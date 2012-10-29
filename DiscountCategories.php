@@ -5,7 +5,7 @@
 include('includes/session.inc');
 
 $title = _('Discount Categories Maintenance');
-/* webERP manual links before header.inc */
+/* KwaMoja manual links before header.inc */
 $ViewTopic= "SalesOrders";
 $BookMark = "DiscountMatrix";
 include('includes/header.inc');

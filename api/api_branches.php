@@ -90,7 +90,7 @@
 		return $Errors;
 	}
 
-/* Check that the area code is set up in the weberp database */
+/* Check that the area code is set up in the kwamoja database */
 	function VerifyAreaCode($AreaCode , $i, $Errors, $db) {
 		$Searchsql = "SELECT COUNT(areacode)
 					  FROM areas
@@ -103,7 +103,7 @@
 		return $Errors;
 	}
 
-/* Check that the salesman is set up in the weberp database */
+/* Check that the salesman is set up in the kwamoja database */
 	function VerifySalesmanCode($SalesmanCode , $i, $Errors, $db) {
 		$Searchsql = "SELECT COUNT(salesmancode)
 					  FROM salesman
@@ -164,7 +164,7 @@
 		return $Errors;
 	}
 
-/* Check that the default location is set up in the weberp database */
+/* Check that the default location is set up in the kwamoja database */
 	function VerifyDefaultLocation($DefaultLocation , $i, $Errors, $db) {
 		$Searchsql = "SELECT COUNT(loccode)
 					  FROM locations
@@ -177,7 +177,7 @@
 		return $Errors;
 	}
 
-/* Check that the tax group id is set up in the weberp database */
+/* Check that the tax group id is set up in the kwamoja database */
 	function VerifyTaxGroupId($TaxGroupId , $i, $Errors, $db) {
 		$Searchsql = "SELECT COUNT(taxgroupid)
 					  FROM taxgroups
@@ -190,7 +190,7 @@
 		return $Errors;
 	}
 
-/* Check that the default shipper is set up in the weberp database */
+/* Check that the default shipper is set up in the kwamoja database */
 	function VerifyDefaultShipVia($DefaultShipVia , $i, $Errors, $db) {
 		$Searchsql = "SELECT COUNT(shipper_id)
 					 FROM shippers

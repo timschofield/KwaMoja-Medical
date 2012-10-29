@@ -1,4 +1,4 @@
-webERP README
+KwaMoja README
 
 /* $Id$*/
 
@@ -12,7 +12,7 @@ Detailed installation instructions are in the file doc/INSTALL.txt in the doc di
 
 DOCUMENTATION
 
-The user documentation contains a wealth of information and is installed under the doc/Manual directory in html format. Links to it are available from the application itself. There is also a wiki at http://www.weberp.org/wiki/ that contains some how-tos descriptions of specification for the original developments.
+The user documentation contains a wealth of information and is installed under the doc/Manual directory in html format. Links to it are available from the application itself. There is also a wiki at http://www.kwamoja.org/wiki/ that contains some how-tos descriptions of specification for the original developments.
 
 The change log at:
 
@@ -23,7 +23,7 @@ lists all changes and the dates they were made.
 
 SUPPORT
 
-The primary means of support queries is through the forum at http://www.weberp.org/forum or the user mailing list.
+The primary means of support queries is through the forum at http://www.kwamoja.org/forum or the user mailing list.
 Please join the list at: http://lists.sourceforge.net/lists/listinfo/web-erp-users
 if you have queries. The archives of the mailing lists on sourceforge and the forum installation issues postings contain the most common issues with respect to installation.
 
@@ -31,17 +31,17 @@ Feedback, wants and gripes are encouraged in the interests of improving the appl
 
 DEVELOPING
 
-Contributions of code are documents including HOW-TOs with screen-shots etc are encouraged. This can be done directly on the wiki at http://www.weberp.org/wiki by any registered user of the wiki. Contributions in the form of bug reports or other feedback through the mainling lists above are also encouraged.
+Contributions of code are documents including HOW-TOs with screen-shots etc are encouraged. This can be done directly on the wiki at http://www.kwamoja.org/wiki by any registered user of the wiki. Contributions in the form of bug reports or other feedback through the mainling lists above are also encouraged.
 
-Guidelines for contributing code are in the document at http://www.weberp.org/Development.html Developers should read this document carefully and follow the guidelines therein. Standards and conventions used in the code are rigorously applied in the interests of consistency and readability. Code submitted that does not conform to these standards will be changed so it does where possible. If the job to make the code conform to webERP standards is too large then the code will not be included.
+Guidelines for contributing code are in the document at http://www.kwamoja.org/Development.html Developers should read this document carefully and follow the guidelines therein. Standards and conventions used in the code are rigorously applied in the interests of consistency and readability. Code submitted that does not conform to these standards will be changed so it does where possible. If the job to make the code conform to KwaMoja standards is too large then the code will not be included.
 
 TRANSLATIONS
 
 All available translations are now included in the archive downloaded.
 
-Translators should read the document http://www.weberp.org/wiki/HowToTranslate which describes how to translate webERP.
+Translators should read the document http://www.kwamoja.org/wiki/HowToTranslate which describes how to translate KwaMoja.
 
-Translations must be installed under the webERP/locale directory and the locale must be available on the web-server.
+Translations must be installed under the KwaMoja/locale directory and the locale must be available on the web-server.
 
 LEGAL
 
@@ -51,4 +51,4 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 A copy of the GNU General Public License is included in the doc directory along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-Copyright © weberp.org 2003-2012 - Contact: info@weberp.org
+Copyright © kwamoja.org 2003-2012 - Contact: info@kwamoja.org

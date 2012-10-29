@@ -14,7 +14,7 @@ and an array of the receipients */
 /*The Sales report to send */
 $_GET['ReportID'] = 2;
 /*The company database to use */
-$DatabaseName = 'weberpdemo';
+$DatabaseName = 'kwamojademo';
 /*The people to receive the emailed report */
 $Recipients = array('"Root" <root@localhost>','"' . _('someone else') . '" <someoneelese@sowhere.com>');
 

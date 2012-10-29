@@ -5,7 +5,7 @@
 include('includes/session.inc');
 
 $title = _('Customer Maintenance');
-/* webERP manual links before header.inc */
+/* KwaMoja manual links before header.inc */
 $ViewTopic= 'AccountsReceivable';
 $BookMark = 'NewCustomer';
 include('includes/header.inc');

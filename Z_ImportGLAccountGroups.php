@@ -7,11 +7,11 @@ include('includes/header.inc');
 include('xmlrpc/lib/xmlrpc.inc');
 include('api/api_errorcodes.php');
 
-$weberpuser = $_SESSION['UserID'];
-$sql="SELECT password FROM www_users WHERE userid='" . $weberpuser . "'";
+$kwamojauser = $_SESSION['UserID'];
+$sql="SELECT password FROM www_users WHERE userid='" . $kwamojauser . "'";
 $result=DB_query($sql, $db);
 $myrow=DB_fetch_array($result);
-$weberppassword = $myrow[0];
+$kwamojapassword = $myrow[0];
 
 $ServerURL = "http://". $_SERVER['HTTP_HOST'].$rootpath."/api/api_xml-rpc.php";
 $DebugLevel = 0; //Set to 0,1, or 2 with 2 being the highest level of debug info
@@ -34,10 +34,10 @@ if (isset($_POST['update'])) {
     			$AccountGroupDetails[$FieldNames[$i]]=$FieldValues[$i];
     		}
 			$accountgroup = php_xmlrpc_encode($AccountGroupDetails);
-			$user = new xmlrpcval($weberpuser);
-			$password = new xmlrpcval($weberppassword);
+			$user = new xmlrpcval($kwamojauser);
+			$password = new xmlrpcval($kwamojapassword);
 
-			$msg = new xmlrpcmsg("weberp.xmlrpc_InsertGLAccountGroup", array($accountgroup, $user, $password));
+			$msg = new xmlrpcmsg("kwamoja.xmlrpc_InsertGLAccountGroup", array($accountgroup, $user, $password));
 
 			$client = new xmlrpc_client($ServerURL);
 			$client->setDebug($DebugLevel);
@@ -63,7 +63,7 @@ if (isset($_POST['update'])) {
 	echo '</table>';
 	fclose ($fp);
 } else {
-	prnMsg( _('Select a csv file containing the details of the account sections that you wish to import into webERP. '). '<br />' .
+	prnMsg( _('Select a csv file containing the details of the account sections that you wish to import into KwaMoja. '). '<br />' .
 		 _('The first line must contain the field names that you wish to import. ').
 		 '<a href ="Z_DescribeTable.php?table=accountsection">' . _('The field names can be found here'). '</a>', 'info');
 	echo '<form id="ItemForm" enctype="multipart/form-data" method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?' .SID .'">';

@@ -9,7 +9,7 @@ The demonstration system has bogus data already entered so that the features of 
 
 <h3>The Company Logo</h3>
 <p>
-For the company logo to appear on the each screen, it must be saved in the format of a .jpg file and be copied to the file logo.jpg in the companies/Your Company Name/ directory. webERP allows for multiple companies to be accessed using the same scripts which each company's configuration stored in the database. The name of the company database has a directory under the directory companies under the webERP root directory. The logo needs to have read permissions for the user that the web server is running as (often the user "nobody" for apache on linux). Permissions issues are of course a none issue under windows installations.</p>
+For the company logo to appear on the each screen, it must be saved in the format of a .jpg file and be copied to the file logo.jpg in the companies/Your Company Name/ directory. KwaMoja allows for multiple companies to be accessed using the same scripts which each company's configuration stored in the database. The name of the company database has a directory under the directory companies under the KwaMoja root directory. The logo needs to have read permissions for the user that the web server is running as (often the user "nobody" for apache on linux). Permissions issues are of course a none issue under windows installations.</p>
 
 <h3>The Chart Of Accounts</h3>
 <p>
@@ -152,7 +152,7 @@ From the setup tab the main system configuration parameters can be set from the 
     <tr>
         <td>Allow Sales Of Zero Cost Items:</td>
 
-        <td>If an item selected at order entry does not have a cost set up then if this parameter is set to No then the order line will not be able to be entered. In an integrated system such as webERP propogation of incorrect data can cause difficulties down the line. The cost of sales for items with zero cost is also recorded as zero in sales analysis and general ledger postings. This is a useful trap for those running full integration.</td>
+        <td>If an item selected at order entry does not have a cost set up then if this parameter is set to No then the order line will not be able to be entered. In an integrated system such as KwaMoja propogation of incorrect data can cause difficulties down the line. The cost of sales for items with zero cost is also recorded as zero in sales analysis and general ledger postings. This is a useful trap for those running full integration.</td>
     </tr>
 
     <tr>
@@ -306,14 +306,14 @@ From the setup tab the main system configuration parameters can be set from the 
     <tr>
         <td>Enable Wiki Integration</td>
 
-        <td>Wiki is the generic name for web-application that allow for the creation of an interlinked free form notes system. Integration of such a system with webERP is a powerful combination. Notes against a customer, supplier or item can be made and retrieved from within webERP. The wiki application selected for integration was the "wacko wiki" - its a minimal download and has several translations. However, wacko wiki was a fork of the wakka wiki and any fork of the orginal wakka wiki should work. To make the integration work this settings must be set to "Enabled"</td>
+        <td>Wiki is the generic name for web-application that allow for the creation of an interlinked free form notes system. Integration of such a system with KwaMoja is a powerful combination. Notes against a customer, supplier or item can be made and retrieved from within KwaMoja. The wiki application selected for integration was the "wacko wiki" - its a minimal download and has several translations. However, wacko wiki was a fork of the wakka wiki and any fork of the orginal wakka wiki should work. To make the integration work this settings must be set to "Enabled"</td>
     </tr>
 
     <tr>
         <td>Wiki Path</td>
 
         <td>
-            The wacko wiki install must be on the same web-server and be one directory up from the webERP tree ie not under the webERP tree but along side it - the name of the web-server directory where it is installed is required to be entered here so that links to the wiki pages can be created by webERP. The integration at the moment is limited to the supplier, product and customer menus - after one has been selected. The links only show if "Enable Wacko Wiki Integration" is enabled. If the wiki page does not currently exist then wacko wiki asks if you wish to create a new page - otherwise the page displays. New pages linked off these pages can be created - showing uploaded images or links to other files appropriate to the product/customer/supplier. The wiki would also make a good place to keep the company processes and policies documentation. Wacko wiki allows pages to be secured from alteration if necessary. An entire business knowlege base and intranet can be built up from the cumulative knowlege of the whole team. Since wacko wiki also allows creation of links to any other web pages particularly webERP pointers to specific information can be provided in the wiki that takes the reviewer of the wiki directly to the information in webERP &#8224;or the webERP manual.
+            The wacko wiki install must be on the same web-server and be one directory up from the KwaMoja tree ie not under the KwaMoja tree but along side it - the name of the web-server directory where it is installed is required to be entered here so that links to the wiki pages can be created by KwaMoja. The integration at the moment is limited to the supplier, product and customer menus - after one has been selected. The links only show if "Enable Wacko Wiki Integration" is enabled. If the wiki page does not currently exist then wacko wiki asks if you wish to create a new page - otherwise the page displays. New pages linked off these pages can be created - showing uploaded images or links to other files appropriate to the product/customer/supplier. The wiki would also make a good place to keep the company processes and policies documentation. Wacko wiki allows pages to be secured from alteration if necessary. An entire business knowlege base and intranet can be built up from the cumulative knowlege of the whole team. Since wacko wiki also allows creation of links to any other web pages particularly KwaMoja pointers to specific information can be provided in the wiki that takes the reviewer of the wiki directly to the information in KwaMoja &#8224;or the KwaMoja manual.
 
             <p>the Product "wiki" could include information such as:</p>
 
@@ -353,7 +353,7 @@ From the setup tab the main system configuration parameters can be set from the 
                 <li>Contract documents</li>
             </ul>
 
-            <p>Wikis are a valuable business advantage for a dispersed company. However, they make no sense for a 5 man operation all in the same office - that's why wacko wiki is not bundled with webERP - it is simply not appropriate accross all the businesses that might be using webERP.</p>
+            <p>Wikis are a valuable business advantage for a dispersed company. However, they make no sense for a 5 man operation all in the same office - that's why wacko wiki is not bundled with KwaMoja - it is simply not appropriate accross all the businesses that might be using KwaMoja.</p>
 
             <p><a href="http://wackowiki.org/">Get Wacko Wiki</a></p>
 
@@ -396,7 +396,7 @@ However, accounts receivable also requires that certain branch information, rela
 <p>
 Having got this base information set up then the business of setting up customer accounts and customer branches with delivery addresses can start.</p>
 <p>
-Desktop databases, spreadsheets and comma separated variables (CSV) export files can also be used to import this information. Using MS Access, the process involves installing an ODBC driver for MySQL on the windows desktop machine that has MS Access on it and then attaching to the weberp database tables DebtorsMaster and CustBranch in a new blank Access database. The CSV file or the spreadsheet is imported into the Access database, then an append query is made to map the fields from the CSV table/spreadsheet into DebtorsMaster and or CustBranch. There are potentially many records in CustBranch each with a different branch code for one customer account in DebtorsMaster. This method is dangerous in the sense that it is imperative to ensure that no customer records or branch records refer to non-existent base data in the fields described above.</p>
+Desktop databases, spreadsheets and comma separated variables (CSV) export files can also be used to import this information. Using MS Access, the process involves installing an ODBC driver for MySQL on the windows desktop machine that has MS Access on it and then attaching to the kwamoja database tables DebtorsMaster and CustBranch in a new blank Access database. The CSV file or the spreadsheet is imported into the Access database, then an append query is made to map the fields from the CSV table/spreadsheet into DebtorsMaster and or CustBranch. There are potentially many records in CustBranch each with a different branch code for one customer account in DebtorsMaster. This method is dangerous in the sense that it is imperative to ensure that no customer records or branch records refer to non-existent base data in the fields described above.</p>
  <div class="floatright">    <a class="minitext" href="#top">⬆ Top</a></div>
 <h3>Setting Up Inventory Items</h3>
 <p>
@@ -450,7 +450,7 @@ It is important to check that the balance on all customers accounts from the age
 
 <h3>Bank Account Balances and Other General Ledger Balances</h3>
 <p>
-General ledger is the accounting hub - and an understanding of the accounting concepts is important in grasping what needs to be done to setup webERP correctly. This document is not a text on general accounting but a brief introduction is necessary.</p>
+General ledger is the accounting hub - and an understanding of the accounting concepts is important in grasping what needs to be done to setup KwaMoja correctly. This document is not a text on general accounting but a brief introduction is necessary.</p>
 <p>
 The general ledger like accounts receivable is made up of many accounts although unlike accounts receivable the balances are not related to how much customers owe you - they represent the amounts that the business has:</p>
 
@@ -469,7 +469,7 @@ The general ledger like accounts receivable is made up of many accounts although
 </ul>
 <p>When these accounts are all listed the report is called a <i>"Balance Sheet"</i> since the value of all of these items will be equal to the accumulated profits net of any drawings or dividends paid to the investors.</p>
 <p>
-The general ledger also keeps track of how much is spent on expenses and is charged out to customers as sales - whether or not the amounts are actually paid to the supplier of the expense or the sale has been paid by the customer. It is really only interesting to look at these accounts over a period to see what the income and expenses of the business have been and produce the <i>"Profit and Loss Statement"</i>. However, in bringing a business on to webERP it is the balances that collectively represent the total worth of the business (in historical terms) that are important to record - these are called balance sheet accounts (the expense and revenue accounts are called profit and loss accounts).</p>
+The general ledger also keeps track of how much is spent on expenses and is charged out to customers as sales - whether or not the amounts are actually paid to the supplier of the expense or the sale has been paid by the customer. It is really only interesting to look at these accounts over a period to see what the income and expenses of the business have been and produce the <i>"Profit and Loss Statement"</i>. However, in bringing a business on to KwaMoja it is the balances that collectively represent the total worth of the business (in historical terms) that are important to record - these are called balance sheet accounts (the expense and revenue accounts are called profit and loss accounts).</p>
  <div class="floatright">    <a class="minitext" href="#top">⬆ Top</a></div>
 <h3>Double Entry Bookkeeping</h3>
 <p>
@@ -593,7 +593,7 @@ Create a general ledger receipt for 1,000.00 to make the opening bank account ba
     </tr>
 </table>
 <p>
-So entering in the receipt the analysis as above - -5,000 Debtors control, 2,000 Creditors control, -10,000 Motor vehicles, 3,000 loan and 11,000 accumulated profits will agree then to the 1,000 received into the bank account. It is important to date the receipt in the month prior to when the new webERP system will commence activity. In this way the brought forward balances for the new period will be correct.</p>
+So entering in the receipt the analysis as above - -5,000 Debtors control, 2,000 Creditors control, -10,000 Motor vehicles, 3,000 loan and 11,000 accumulated profits will agree then to the 1,000 received into the bank account. It is important to date the receipt in the month prior to when the new KwaMoja system will commence activity. In this way the brought forward balances for the new period will be correct.</p>
 <p>
 Where there are several bank accounts each defined with different general ledger accounts, then a receipt should be entered to each bank account with a balance (or a payment if the bank account is overdrawn) - these balances can be cleared through postings to a suspense account.</p>
 <p>
@@ -605,4 +605,4 @@ Once all entries are made to reconcile the customers accounts with the general l
 <p>
 &gt;From a command prompt, using a username and password as created when mysql was installed.</p>
 <p>
-#mysqldump -u username -p password --opt weberp &gt; /home/myhomedir/weberp_backup.sql postgres has a similar utility <!-- Help End: BaseInformation -->
+#mysqldump -u username -p password --opt kwamoja &gt; /home/myhomedir/kwamoja_backup.sql postgres has a similar utility <!-- Help End: BaseInformation -->

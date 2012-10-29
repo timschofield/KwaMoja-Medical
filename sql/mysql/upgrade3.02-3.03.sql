@@ -1,4 +1,4 @@
-/*USE weberp; */
+/*USE kwamoja; */
 /*May need to uncomment the line above or edit to the name of the db you wish to upgrade*/
 
 ALTER TABLE `debtorsmaster` ADD `address5` VARCHAR( 20 ) NOT NULL AFTER `address4` , ADD `address6` VARCHAR( 15 ) NOT NULL AFTER address5;

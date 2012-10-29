@@ -212,7 +212,7 @@
 		return $Errors;
 	}
 
-	/* This function returns a list of the stock categories setup on webERP  */
+	/* This function returns a list of the stock categories setup on KwaMoja  */
 
 	function GetStockCategoryList($user, $password) {
 		$Errors = array();

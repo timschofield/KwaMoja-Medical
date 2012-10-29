@@ -73,7 +73,7 @@
 
 /* Check that the last current cost date is a valid date. The date
  * must be in the same format as the date format specified in the
- * target webERP company */
+ * target KwaMoja company */
 	function VerifyLastCurCostDate($CurCostDate, $i, $Errors, $db) {
 		$sql="SELECT confvalue FROM config WHERE confname='DefaultDateFormat'";
 		$result=DB_query($sql, $db);
@@ -263,7 +263,7 @@
 		return $myrow[0];
 	}
 
-/* Insert a new stock item in the webERP database. This function takes an
+/* Insert a new stock item in the KwaMoja database. This function takes an
    associative array called $StockItemDetails, where the keys are the
    names of the fields in the stockmaster table, and the values are the
    values to insert. The only mandatory fields are the stockid, description,
@@ -381,7 +381,7 @@
 		return $Errors;
 	}
 
-/* Update a stock item in the webERP database. This function takes an
+/* Update a stock item in the KwaMoja database. This function takes an
    associative array called $StockItemDetails, where the keys are the
    names of the fields in the stockmaster table, and the values are the
    values to update. The only mandatory fields are the stockid, description,

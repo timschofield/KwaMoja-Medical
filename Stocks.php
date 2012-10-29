@@ -4,7 +4,7 @@
 
 include('includes/session.inc');
 $title = _('Item Maintenance');
-/* webERP manual links before header.inc */
+/* KwaMoja manual links before header.inc */
 $ViewTopic= 'Inventory';
 $BookMark = 'InventoryAddingItems';
 include('includes/header.inc');

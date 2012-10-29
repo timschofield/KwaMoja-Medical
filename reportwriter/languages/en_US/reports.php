@@ -38,13 +38,13 @@ define('RPT_RPTBROWSE',_('Or browse for a report to upload.'));
 
 // Error messages for importing reports
 define('RPT_IMP_ERMSG1',_('The filesize exceeds the upload_max_filesize directive in your php.ini settings.'));
-define('RPT_IMP_ERMSG2',_('The filesize exceeds the MAX_FILE_SIZE directive in the webERP form.'));
+define('RPT_IMP_ERMSG2',_('The filesize exceeds the MAX_FILE_SIZE directive in the KwaMoja form.'));
 define('RPT_IMP_ERMSG3',_('The file was not completely uploaded. Please retry.'));
 define('RPT_IMP_ERMSG4',_('No file was selected to upload.'));
 define('RPT_IMP_ERMSG5',_('Unknown php upload error, php returned error # '));
 define('RPT_IMP_ERMSG6',_('This file is not reported by the server as a text file.'));
 define('RPT_IMP_ERMSG7',_('The uploaded file does not contain any data!'));
-define('RPT_IMP_ERMSG8',_('webERP could not find a valid report to import in the uploaded file!'));
+define('RPT_IMP_ERMSG8',_('KwaMoja could not find a valid report to import in the uploaded file!'));
 define('RPT_IMP_ERMSG9',_(' was successfully imported!'));
 define('RPT_IMP_ERMSG10',_('There was an unexpected error uploading the file!'));
 

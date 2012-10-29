@@ -79,7 +79,7 @@ The tax group determines the tax authorities to which the supplier reports and m
 <div class="floatright"><a class="minitext" href="#top">⬆ Top</a></div>
  <h2>Selecting Suppliers</h2>
 <p>
-With most operations to operate on a specific supplier, the supplier must first be selected. This applies to any supplier inquiry as well as entry of purchase orders or purchase invoices or debit notes. It is the convention of webERP to select the customer, item or supplier required before performing any function in these areas. For this reason the shortcut menu accross the top of every screen has links to each of these selection screens.<br>
+With most operations to operate on a specific supplier, the supplier must first be selected. This applies to any supplier inquiry as well as entry of purchase orders or purchase invoices or debit notes. It is the convention of KwaMoja to select the customer, item or supplier required before performing any function in these areas. For this reason the shortcut menu accross the top of every screen has links to each of these selection screens.<br>
 To select a supplier then - from any screen - click on Select Supplier, or press the ALT key and the number 4 key - in Internet Explorer one must press the Enter key also.</p>
 <p>
 In common with the other selection screens the focus automatically goes to the supplier code where any character or series of characters of the supplier code can be entered. Having entered as much of the supplier code as is known click the "Search Now" button - this will then retrieve all the suppliers with this extract of text that occurs anywhere in the supplier code field.<br>
@@ -115,7 +115,7 @@ It is not actually necessary to enter any details into the supplier contacts scr
  <div class="floatright"><a class="minitext" href="#top">⬆ Top</a></div>
  <h2><a id="SupplierInvoice">Entering Supplier Invoices</a></h2>
 <p>
-As with all transactions in webERP the entity to be transacted with must first be selected i.e. a customer, item or supplier. Entering accounts payable transactions then requires the selection of a supplier first. Once a supplier is selected, the menu of options shows for the supplier among them "Enter an Invoice". The process below applies equally to entry of supplier credit notes as it does to entry of purchase invoices. In every case, entry of invoices and supplier credit notes (debit notes) requires entry of:
+As with all transactions in KwaMoja the entity to be transacted with must first be selected i.e. a customer, item or supplier. Entering accounts payable transactions then requires the selection of a supplier first. Once a supplier is selected, the menu of options shows for the supplier among them "Enter an Invoice". The process below applies equally to entry of supplier credit notes as it does to entry of purchase invoices. In every case, entry of invoices and supplier credit notes (debit notes) requires entry of:
 
 <ul>
     <li>Invoice Date</li>
@@ -126,11 +126,11 @@ As with all transactions in webERP the entity to be transacted with must first b
 </ul>
 <h3>Invoice Date</h3>
 <p>
-This is the date from which webERP determines the accounting period to create the general ledger postings for the transaction - should AP general ledger interface be activated. It is also the date from which, in conjunction with the supplier's payment terms the due date of the invoice is determined. This is used by the payment run to get all amounts due to a supplier for payment collated and listed. The system will use the information in the payment run to prepare a listing for producing a file of direct credits or printing cheques.</p>
+This is the date from which KwaMoja determines the accounting period to create the general ledger postings for the transaction - should AP general ledger interface be activated. It is also the date from which, in conjunction with the supplier's payment terms the due date of the invoice is determined. This is used by the payment run to get all amounts due to a supplier for payment collated and listed. The system will use the information in the payment run to prepare a listing for producing a file of direct credits or printing cheques.</p>
 
 <h3>Invoice Reference</h3>
 <p>
-This is the supplier's invoice number or alpha reference uniquely identifying the invoice for the supplier. webERP checks that the same supplier invoice reference is not entered previously and reports an error if it has - this is to prevent the duplicate entry of purchase invoices and potentially paying the supplier twice.</p>
+This is the supplier's invoice number or alpha reference uniquely identifying the invoice for the supplier. KwaMoja checks that the same supplier invoice reference is not entered previously and reports an error if it has - this is to prevent the duplicate entry of purchase invoices and potentially paying the supplier twice.</p>
 
 <h3>Invoice Exchange rate</h3>
 <p>
@@ -162,7 +162,7 @@ If the GL interface to creditors is not set to yes in the company preferences sc
 
 <h3>Entry of Charges for Stock/Inventory Items</h3>
 <p>
-All stock items must be received into stock against a purchase order. In the process a GRN (goods received note) entry created. Goods received will be evidenced in webERP by the stock movements inquiry showing the receipt of stock and also by the creation of a GRN against the supplier. If the general ledger interface is active a liability is posted to the GRN suspense account (defined in the company record) and the stock value is increased by the standard cost of the item at the time it is entered as received. The purchase order inquiry will also show the quantity received of the item (against the order). Entering a purchase invoice for stock items requires that the GRN records created for each item being charged for be matched off against the invoice. A special screen is available to search the GRNs outstanding for the supplier. This screen can be accessed directly from the invoice entry screen by clicking the button to enter against stock items.</p>
+All stock items must be received into stock against a purchase order. In the process a GRN (goods received note) entry created. Goods received will be evidenced in KwaMoja by the stock movements inquiry showing the receipt of stock and also by the creation of a GRN against the supplier. If the general ledger interface is active a liability is posted to the GRN suspense account (defined in the company record) and the stock value is increased by the standard cost of the item at the time it is entered as received. The purchase order inquiry will also show the quantity received of the item (against the order). Entering a purchase invoice for stock items requires that the GRN records created for each item being charged for be matched off against the invoice. A special screen is available to search the GRNs outstanding for the supplier. This screen can be accessed directly from the invoice entry screen by clicking the button to enter against stock items.</p>
 <p>
 The list of all the outstanding GRNs is shown together with any quantity already invoiced (on other invoices) and the price at which the purchase order was entered. The actual (currency) price that the supplier charged should be entered and the number of the items being invoiced on this invoice should be entered against the GRN too. This allows the actual charge for the item to be recorded against the GRN. Ultimately when the invoice is posted the actual cost (as converted at the invoice exchange rate)is recorded against the stock movement inquiry. When the invoice is entered, any for all GRNs matched to invoice charges, the purchase price variance calculated and posted to the general ledger (if the GL interface is active).</p>
 
@@ -194,7 +194,7 @@ The tax due to a supplier on the entry of a supplier's invoice is (by default) c
 
 <h3>Committing A Purchase Invoice</h3>
 <p>
-Clicking on "Enter Invoice" immediately processes the invoice against the supplier's account, creates the necessary general ledger transactions, updates the GRNs and the purchase orders for quantities invoiced and creates shipment charges records as required. Zero charge purchase invoices cannot be entered - the system checks to ensure there are at least some charges on the invoice. It also checks to ensure a reference and date is entered. As with all transaction entry in webERP there is no subsequent processing required for all the information to be fully up to date it is all done at the time of clicking this button.</p>
+Clicking on "Enter Invoice" immediately processes the invoice against the supplier's account, creates the necessary general ledger transactions, updates the GRNs and the purchase orders for quantities invoiced and creates shipment charges records as required. Zero charge purchase invoices cannot be entered - the system checks to ensure there are at least some charges on the invoice. It also checks to ensure a reference and date is entered. As with all transaction entry in KwaMoja there is no subsequent processing required for all the information to be fully up to date it is all done at the time of clicking this button.</p>
 
 <h3>General Ledger Postings On Purchase Invoices</h3>
 <p>
@@ -207,7 +207,7 @@ Each of the three types of entries in a purchase invoice are posted to the gener
 
     <li>Shipment Charges - these are posted to the debit of the goods received clearing account as defined in the company record. The rationale for this is that the shipment charges relate to the cost of the stock coming in on shipments and they will be apportioned between the various items on the shipment. As such they together with the invoices cost of the stock make up the total cost of the item for comparison to the standard or weighted average cost of the item. When shipments are closed the system calculates the total purchase price variances using shipment charges posted here - together with the invoices entered for the goods.</li>
 
-    <li>Entry of invoices against stock/inventory received. webERP insists on matching purchase invoices against goods received notes (GRNs) created at the time the stock is received against purchase orders. The reason is to ensure suppliers do not over-deliver and that invoices can only be entered against goods received and the business does not pay for items not received! The general ledger treatment is slightly different depending on whether the goods are on a shipment or not.
+    <li>Entry of invoices against stock/inventory received. KwaMoja insists on matching purchase invoices against goods received notes (GRNs) created at the time the stock is received against purchase orders. The reason is to ensure suppliers do not over-deliver and that invoices can only be entered against goods received and the business does not pay for items not received! The general ledger treatment is slightly different depending on whether the goods are on a shipment or not.
 
         <ul>
             <li>If NO shipment costing is involved then the purchase price at the currency/rate entered in the invoice is compared against the standard or average cost of the item at the time it was received. When the goods were received - the system enters a debit to stock at the standard/average cost and a credit to the goods received clearing account defined in the company record. So the entry of the invoice needs to clear this entry - by crediting the goods received clearing account at the standard/average cost at the time of receiving the item. The difference between this and the cost of the item as invoiced and converted at the days (or covered) exchange rate as entered on the invoice is taken to either the purchase price variance account - as defined in the stock category record under standard costing OR in the event that weighted average standard costing is used the variance is written back to the stock account - again from the stock category record. If weighted average costing is used this also triggers a stock cost update based on this variance divided by the total quantity still in stock. If there is less than the quantity being invoiced in stock still -perhaps some were sold before the purchase invoice was entered - then the variance relating to the quantity left is taken to the stock account and the balance is written off to the purchase price varaince account - hey I told you it was complex!</li>
@@ -241,11 +241,11 @@ In every case, entry of a supplier payment requires entry of:
 </ul>
 <h3>Bank Account Selection</h3>
 <p>
-The choice of bank accounts from which the payment is being made is shown in a select box. webERP does not support multi-currency bank accounts so the exchange rate will always be the rate to purchase the currency of the supplier against the business's functional currency. The bank account selected will have a record created for the payment and if the general ledger link is enabled the postings will be made from the general ledger code stored against this bank account. Bank accounts are defined from the Setup tab -&gt; Bank Accounts - under the General column of options.</p>
+The choice of bank accounts from which the payment is being made is shown in a select box. KwaMoja does not support multi-currency bank accounts so the exchange rate will always be the rate to purchase the currency of the supplier against the business's functional currency. The bank account selected will have a record created for the payment and if the general ledger link is enabled the postings will be made from the general ledger code stored against this bank account. Bank accounts are defined from the Setup tab -&gt; Bank Accounts - under the General column of options.</p>
 
 <h3>Payment Date</h3>
 <p>
-This is the date from which webERP determines the accounting period to create the general ledger postings for the transaction - should AP general ledger interface be activated. This is the date that will show on supplier transaction inquiries and the bank account transaction listings.</p>
+This is the date from which KwaMoja determines the accounting period to create the general ledger postings for the transaction - should AP general ledger interface be activated. This is the date that will show on supplier transaction inquiries and the bank account transaction listings.</p>
 
 <h3>Reference</h3></p>
 <p>

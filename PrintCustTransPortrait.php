@@ -50,8 +50,8 @@ If (isset($PrintPDF)
     $Right_Margin=30;
 
 	$pdf = new Cpdf('P', 'pt', 'A4');
-	$pdf->addInfo('Author','webERP ' . $Version);
-	$pdf->addInfo('Creator','webERP http://www.weberp.org');
+	$pdf->addInfo('Author','KwaMoja ' . $Version);
+	$pdf->addInfo('Creator','KwaMoja http://www.kwamoja.org');
 
 	if ($InvOrCredit=='Invoice'){
 		$pdf->addInfo('Title',_('Sales Invoice') . ' ' . $FromTransNo . ' to ' . $_POST['ToTransNo']);

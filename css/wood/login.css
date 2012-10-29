@@ -1,6 +1,6 @@
 /***
 
-"Wood" Login theme for WebERP
+"Wood" Login theme for KwaMoja
 
 by Hindra Joshua
 
@@ -32,7 +32,7 @@ img{
 }
 
 #login_logo {
-background:url("../webERP.gif") no-repeat scroll center center #FFFFFF;
+background:url("../KwaMoja.gif") no-repeat scroll center center #FFFFFF;
     border:medium outset gray;
     border-radius:19px 19px 19px 19px;
     height:44px;

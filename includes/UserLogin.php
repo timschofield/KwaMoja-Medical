@@ -6,7 +6,7 @@
 define('UL_OK',  0);		/* User verified, session initialised */
 define('UL_NOTVALID', 1);	/* User/password do not agree */
 define('UL_BLOCKED', 2);	/* Account locked, too many failed logins */
-define('UL_CONFIGERR', 3);	/* Configuration error in webERP or server */
+define('UL_CONFIGERR', 3);	/* Configuration error in KwaMoja or server */
 define('UL_SHOWLOGIN', 4);
 define('UL_MAINTENANCE', 5);
 

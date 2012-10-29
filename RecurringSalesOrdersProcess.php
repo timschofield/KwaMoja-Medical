@@ -4,7 +4,7 @@
 /*need to allow this script to run from Cron or windows scheduler */
 $AllowAnyone = true;
 
-/* Get this puppy to run from cron (cd webERP && php -f RecurringSalesOrdersProcess.php "weberpdemo") or direct URL (RecurringSalesOrdersProcess.php?Database=weberpdemo) */
+/* Get this puppy to run from cron (cd KwaMoja && php -f RecurringSalesOrdersProcess.php "kwamojademo") or direct URL (RecurringSalesOrdersProcess.php?Database=kwamojademo) */
 if (isset($_GET['Database'])) {
 	$_SESSION['DatabaseName'] = $_GET['Database'];
 	$DatabaseName = $_GET['Database'];
@@ -21,7 +21,7 @@ if (isset($argc)) {
 include('includes/session.inc');
 
 $title = _('Recurring Orders Process');
-/* webERP manual links before header.inc */
+/* KwaMoja manual links before header.inc */
 $ViewTopic= "SalesOrders";
 $BookMark = "RecurringSalesOrders";
 include('includes/header.inc');

@@ -11,7 +11,7 @@ define('DBReports','reports');			// name of the databse holding the main report 
 define('DBRptFields','reportfields');	// name of the database holding the report fields
 //define('FPDF_FONTPATH','../fonts/');  FPDF path to fonts directory
 define('DefRptPath',$PathPrefix . 'companies/' . $_SESSION['DatabaseName'] . '/reportwriter/');	// path to default reports
-// Fetch necessary include files - Host application specific (webERP)
+// Fetch necessary include files - Host application specific (KwaMoja)
 require_once($PathPrefix . 'includes/DateFunctions.inc');
 
 // Include files for ReportMaker.php

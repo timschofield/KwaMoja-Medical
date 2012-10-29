@@ -4,7 +4,7 @@
 
 include('includes/session.inc');
 $title = _('Search Outstanding Sales Orders');
-/* webERP manual links before header.inc */
+/* KwaMoja manual links before header.inc */
 $ViewTopic= "SalesOrders";
 $BookMark = "SelectSalesOrder";
 include('includes/header.inc');

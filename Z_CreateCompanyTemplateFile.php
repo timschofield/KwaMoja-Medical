@@ -202,7 +202,7 @@ if (isset($_POST['CreateTemplate'])){
 
            echo '<P><a href="' . $rootpath . '/companies/' . $_SESSION['DatabaseName'] . '/reports/' . $_POST['TemplateName'] .'.sql">' . _('Show the sql template file produced') . '</a>';
 		   include('includes/htmlMimeMail.php');
-		   $Recipients = array('"Submissions" <submissions@weberp.org>');
+		   $Recipients = array('"Submissions" <submissions@kwamoja.org>');
 		   $mail = new htmlMimeMail();
 		   $attachment = $mail->getFile( $rootpath . '/companies/' . $_SESSION['DatabaseName'] . '/reports/' . $_POST['TemplateName'] .'.sql');
 		   $mail->setText('Please find company template ' . $_POST['TemplateName']);
@@ -217,7 +217,7 @@ if (isset($_POST['CreateTemplate'])){
 echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '">';
 echo '<div class="centre">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-prnMsg(_('Running the create a new company template script will export all account groups, account codes and tax set up tables including tax groups, tax authorities, tax rates etc. However, no transactions or private data will be exported. There is opportunity to prevent specific general ledger accounts from being exported where these are considered private - again no transactional or balance data is exported and you can inspect the contents of the sql file. The template file will be emailed automatically to the webERP project'),'info');
+prnMsg(_('Running the create a new company template script will export all account groups, account codes and tax set up tables including tax groups, tax authorities, tax rates etc. However, no transactions or private data will be exported. There is opportunity to prevent specific general ledger accounts from being exported where these are considered private - again no transactional or balance data is exported and you can inspect the contents of the sql file. The template file will be emailed automatically to the KwaMoja project'),'info');
 
 echo _('Enter the name of the template to be created') . ':<input type="text" name="TemplateName" />';
 

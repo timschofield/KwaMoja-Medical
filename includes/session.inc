@@ -104,7 +104,7 @@ if (!isset($AllowAnyone)){ /* only do security checks if AllowAnyone is not true
 		$title = _('Account Error Report');
 		include($PathPrefix . 'includes/header.inc');
 		echo '<br /><br /><br />';
-		prnMsg(_('Your user role does not have any access defined for webERP. There is an error in the security setup for this user account'),'error');
+		prnMsg(_('Your user role does not have any access defined for KwaMoja. There is an error in the security setup for this user account'),'error');
 		include($PathPrefix . 'includes/footer.inc');
 			exit;
 
@@ -113,7 +113,7 @@ if (!isset($AllowAnyone)){ /* only do security checks if AllowAnyone is not true
 		die(include($PathPrefix . 'includes/Login.php'));
 
 	case  UL_MAINTENANCE:
-		$demo_text = '<font size="3" color="red"><b>' .  _('system maintenance') . '</b></font><br /><b>' . _('webERP is not available right now') . '<br />' . _('during maintenance of the system') . '</b>';
+		$demo_text = '<font size="3" color="red"><b>' .  _('system maintenance') . '</b></font><br /><b>' . _('KwaMoja is not available right now') . '<br />' . _('during maintenance of the system') . '</b>';
 		die(include($PathPrefix . 'includes/Login.php'));
 
 	}
@@ -258,7 +258,7 @@ if (empty($_SESSION['LogoFile'])) {
 
 if ($_SESSION['HTTPS_Only']==1){
 	if ($_SERVER['HTTPS']!='on'){
-		prnMsg(_('webERP is configured to allow only secure socket connections. Pages must be called with https://') . ' .....','error');
+		prnMsg(_('KwaMoja is configured to allow only secure socket connections. Pages must be called with https://') . ' .....','error');
 		exit;
 	}
 }
@@ -324,7 +324,7 @@ function CryptPass( $Password ) {
 
 
 if (sizeof($_POST) > 0 AND !isset($AllowAnyone)) {
-	/*Security check to ensure that the form submitted is originally sourced from webERP with the FormID = $_SESSION['FormID'] - which is set before the first login*/
+	/*Security check to ensure that the form submitted is originally sourced from KwaMoja with the FormID = $_SESSION['FormID'] - which is set before the first login*/
 	if (!isset($_POST['FormID']) or ($_POST['FormID'] != $_SESSION['FormID'])) {
 		$title = _('Error in form verification');
 		include('includes/header.inc');

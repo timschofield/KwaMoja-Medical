@@ -47,7 +47,7 @@ function ConvertToSQLDate($DateEntry) {
 
 /* Check that the transaction date is a valid date. The date
  * must be in the same format as the date format specified in the
- * target webERP company */
+ * target KwaMoja company */
 	function VerifyTransactionDate($TranDate, $i, $Errors, $db) {
 		$sql="SELECT confvalue FROM config WHERE confname='" . DefaultDateFormat ."'";
 		$result=DB_query($sql, $db);
@@ -257,7 +257,7 @@ function ConvertToSQLDate($DateEntry) {
 	}
 */
 
-/* Retrieves the default debtors code for webERP */
+/* Retrieves the default debtors code for KwaMoja */
 	function GetDebtorsGLCode($db) {
 		$sql="SELECT debtorsact FROM companies";
 		$result=DB_query($sql, $db);
@@ -276,7 +276,7 @@ function ConvertToSQLDate($DateEntry) {
 		 * $Receipt['trandate'] - the date of the receipt in Y-m-d format
 		 * $Receipt['amountfx'] - the amount in FX
 		 * $Receipt['paymentmethod'] - the payment method of the receipt e.g. cash/EFTPOS/credit card
-		 * $Receipt['bankaccount'] - the webERP bank account
+		 * $Receipt['bankaccount'] - the KwaMoja bank account
 		 * $Receipt['reference']
 		 * $Receipt['discountfx']
 
@@ -475,7 +475,7 @@ function ConvertToSQLDate($DateEntry) {
 
 	function CreateCreditNote($Header,$LineDetails, $User, $Password) {
 
-		/* Create a customer credit note in webERP.
+		/* Create a customer credit note in KwaMoja.
 		 * Needs an associative array for the $Header
 		 * and an array of assocative arrays for the $LineDetails
 
@@ -486,7 +486,7 @@ function ConvertToSQLDate($DateEntry) {
 		 * Header['tpe'] - the sales type
 		 * Header['fromstkloc'] - the inventory location where the stock is put back into
 		 * Header['customerref'] - the customer's reference
-		 * Header['shipvia'] - the shipper required by webERP
+		 * Header['shipvia'] - the shipper required by KwaMoja
 		 *
 		 * and $LineDetails contains an array of associative arrays of the format:
 		 *
@@ -1167,8 +1167,8 @@ function ConvertToSQLDate($DateEntry) {
 		return $Errors;
 	} /*End of CreateCreditNote method */
 
-/* Create a customer invoice in webERP. This function will bypass the
- * normal procedure in webERP for creating a sales order first, and then
+/* Create a customer invoice in KwaMoja. This function will bypass the
+ * normal procedure in KwaMoja for creating a sales order first, and then
  * delivering it.
 
  * NB: There are no stock updates no accounting for assemblies no updates
@@ -1464,8 +1464,8 @@ function ConvertToSQLDate($DateEntry) {
 
 	}
 
-/* Create a customer credit note in webERP. This function will bypass the
- * normal procedure in webERP for creating a sales order first, and then
+/* Create a customer credit note in KwaMoja. This function will bypass the
+ * normal procedure in KwaMoja for creating a sales order first, and then
  * delivering it. All values should be sent as negatives.
 
 

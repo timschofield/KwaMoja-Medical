@@ -27,7 +27,7 @@ include('includes/session.inc');
 <?php
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 ?>
-	<span><?php echo _('Thank you for using webERP'); ?></span>
+	<span><?php echo _('Thank you for using KwaMoja'); ?></span>
 	</p>
 	<p><input class="button" type="submit" value="<?php echo _('Login'); ?>" name="SubmitUser" /></p>
 	</form>

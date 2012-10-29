@@ -4,7 +4,7 @@
 
 <a name="SalesAnalysis"><font size="+3"><b>Umsatzauswertungen</b></font></a>
 <br /><br />
-Es gibt verschiedene Möglichkeiten, die Umsätze zu analysieren. Wenn eine schnelle Auswertung erforderlich ist, gibt es eine gewisse Flexibilität im Skript SalesGraph.php, das Sie über Hauptmenü &rarr; Debitoren &rarr; Auswertungen und Berichte &rarr; Umsatzgrafik aufrufen, Es hängt natürlich von der Ebene ab, auf der Sie Planwerte hinterlegt haben, ob ein Plan-/Ist-Vergleich etwas Sinnvolles anzeigen wird. Wenn Sie einen Bericht zu den Istzahlen wünschen, so hat webERP einen Berichtsgenerator, mit dem Ergebnisberichte angelegt werden können. Die erzeugten Berichtsvorlagen können wiederholt ausgeführt oder aber abgeändert werden. Diese Berichte können sowohl eine PDF-Datei in Druckformatierung als auch csv-Dateien für die Verwendung in den meisten Tabellenkalkulationen ausgeben.
+Es gibt verschiedene Möglichkeiten, die Umsätze zu analysieren. Wenn eine schnelle Auswertung erforderlich ist, gibt es eine gewisse Flexibilität im Skript SalesGraph.php, das Sie über Hauptmenü &rarr; Debitoren &rarr; Auswertungen und Berichte &rarr; Umsatzgrafik aufrufen, Es hängt natürlich von der Ebene ab, auf der Sie Planwerte hinterlegt haben, ob ein Plan-/Ist-Vergleich etwas Sinnvolles anzeigen wird. Wenn Sie einen Bericht zu den Istzahlen wünschen, so hat KwaMoja einen Berichtsgenerator, mit dem Ergebnisberichte angelegt werden können. Die erzeugten Berichtsvorlagen können wiederholt ausgeführt oder aber abgeändert werden. Diese Berichte können sowohl eine PDF-Datei in Druckformatierung als auch csv-Dateien für die Verwendung in den meisten Tabellenkalkulationen ausgeben.
 <br /><br />
 Sie wählen Hauptmenü &rarr; Debitoren &rarr; Auswertungen und Berichte &rarr; Umsatzanalysen. Eine Liste aller bereits früher angelegten Berichte erscheint, einschließlich Links, über die Sie
 <br /><br />
@@ -115,10 +115,10 @@ Weil die Seite selbst keine Ausgabe am Bildschirm bewirkt, würde sie im Webbrows
 <br /><br />
 Ein vergleichbares Vorlageskript ist unter dem Namen MailSalesReport_csv.php vorhanden, das in der gleichen Weise den Bericht als CSV-Datei an die festgelegten Empfänger versendet.
 Eine elegantere Lösung, automatisch Umsatzberichte mit email zu versenden, ist die verwendung des Skriptes report_runner.php. Dieses Skript kann direkt von der Kommandozeile gestartet werden oder con cron gestartet werden und verwendet Kommandozeilenparameter. Das den Vorzug gegenüber der festen Programmierung einer Vielzahl von Skripten, ist dass dieses mit den folgenden Parametern gestartet werden kann:
-<br /> -r reportnumber (die Nummer des webERP-Berichtes)
-<br /> -n reportname   (der Name, dem Sie dem webERP-Bericht geben wollen)
+<br /> -r reportnumber (die Nummer des KwaMoja-Berichtes)
+<br /> -n reportname   (der Name, dem Sie dem KwaMoja-Bericht geben wollen)
 <br /> -e emailaddress[;emailaddress;emailaddres...] (an wen Sie den Bericht senden wollen)
 <br /> [-t reporttext ]  (Einige Bemerkungen, die Sie mit dem Bericht in der email vesenden wollen)
-<br /> [ -H weberpHOME]  (das Homeverzeichnis von webERP - oder Sie bearbeiten die php-Datei)
+<br /> [ -H kwamojaHOME]  (das Homeverzeichnis von KwaMoja - oder Sie bearbeiten die php-Datei)
 
 <!-- Help End: SalesAnalRepts -->

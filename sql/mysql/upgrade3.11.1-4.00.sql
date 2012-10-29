@@ -575,7 +575,7 @@ INSERT INTO `scripts` (`script`, `pagesecurity`, `description`) VALUES
 ('InventoryValuation.php', 2, 'Creates a pdf report showing the value of stock at standard cost for a range of product categories selected'),
 ('Labels.php', 15, 'Produces item pricing labels in a pdf from a range of selected criteria'),
 ('Locations.php', 11, 'Defines the inventory stocking locations or warehouses'),
-('Logout.php', 1, 'Shows when the user logs out of webERP'),
+('Logout.php', 1, 'Shows when the user logs out of KwaMoja'),
 ('MailInventoryValuation.php', 1, 'Meant to be run as a scheduled process to email the stock valuation off to a specified person. Creates the same stock valuation report as InventoryValuation.php'),
 ('ManualContents.php', 1, ''),
 ('MenuAccess.php', 15, ''),

@@ -7,7 +7,7 @@ include('includes/DefineStockTransfers.php');
 
 include('includes/session.inc');
 $title = _('Stock Transfers');
-/* webERP manual links before header.inc */
+/* KwaMoja manual links before header.inc */
 $ViewTopic= "Inventory";
 $BookMark = "LocationTransfers";
 include('includes/header.inc');
@@ -212,7 +212,7 @@ if ( isset($_POST['EnterTransfer']) ){
 		}
 		if ($_SESSION['ProhibitNegativeStock']==1
 			AND $QtyOnHandPrior<$_SESSION['Transfer']->TransferItem[0]->Quantity) {
-			prnMsg( _('There is insufficient stock to make this transfer and webERP is setup to prevent negative stock'), 'warn');
+			prnMsg( _('There is insufficient stock to make this transfer and KwaMoja is setup to prevent negative stock'), 'warn');
 			include('includes/footer.inc');
 			exit;
 		}

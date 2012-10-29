@@ -1,6 +1,6 @@
 /***
 
-"Default" Login theme for WebERP
+"Default" Login theme for KwaMoja
 
 by Hindra Joshua
 
@@ -30,7 +30,7 @@ z-index:1000;
 }
 
 #login_logo {
-background:url("../webERP.gif") no-repeat scroll center center #FFFFFF;
+background:url("../KwaMoja.gif") no-repeat scroll center center #FFFFFF;
 border:medium outset gray;
 border-radius:19px 19px 19px 19px;
 height:44px;

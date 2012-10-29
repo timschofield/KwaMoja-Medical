@@ -2,7 +2,7 @@
 /* $Id$*/
 
 /* This function returns a list of the customer types
- * currently setup on webERP
+ * currently setup on KwaMoja
  */
 
 	function GetCustomerTypeList($user, $password) {

@@ -11,7 +11,7 @@ do
 
     if [ $? != 0 ]
     then
-		echo '**Error** '$output >> ~/weberp$(date +%Y%m%d).log
-		echo '' >> ~/weberp$(date +%Y%m%d).log
+		echo '**Error** '$output >> ~/kwamoja$(date +%Y%m%d).log
+		echo '' >> ~/kwamoja$(date +%Y%m%d).log
     fi
 done

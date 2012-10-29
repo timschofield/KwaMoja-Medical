@@ -18,11 +18,11 @@ echo '</head>';
 
 echo '<body>';
 
-$weberpuser = $_SESSION['UserID'];
-$sql="SELECT password FROM www_users WHERE userid='" . $weberpuser . "'";
+$kwamojauser = $_SESSION['UserID'];
+$sql="SELECT password FROM www_users WHERE userid='" . $kwamojauser . "'";
 $result=DB_query($sql, $db);
 $myrow=DB_fetch_array($result);
-$weberppassword = $myrow[0];
+$kwamojapassword = $myrow[0];
 
 $ServerURL = "http://". $_SERVER['HTTP_HOST'].$rootpath."/../../api/api_xml-rpc.php";
 $DebugLevel = 0; //Set to 0,1, or 2 with 2 being the highest level of debug info

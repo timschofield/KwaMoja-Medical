@@ -2,7 +2,7 @@
 /* $Id$*/
 
 /* This function returns a list of the stock salesman codes
- * currently setup on webERP
+ * currently setup on KwaMoja
  */
 
 	function GetSalesmanList($user, $password) {
@@ -47,7 +47,7 @@
 	}
 
 /* This function takes as a parameter an array of salesman details
- * to be inserted into webERP.
+ * to be inserted into KwaMoja.
  */
 
 	function InsertSalesman($SalesmanDetails, $user, $password) {

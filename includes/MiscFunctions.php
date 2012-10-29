@@ -21,7 +21,7 @@ function reverse_escape($str) {
 function getMsg($Msg,$Type='info',$Prefix=''){
 	$Colour='';
 	if (isset($_SESSION['LogSeverity']) and $_SESSION['LogSeverity']>0) {
-		$LogFile=fopen($_SESSION['LogPath'].'/webERP-test.log', 'a');
+		$LogFile=fopen($_SESSION['LogPath'].'/KwaMoja-test.log', 'a');
 	}
 	switch($Type){
 		case 'error':

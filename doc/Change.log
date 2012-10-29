@@ -1,4 +1,4 @@
-webERP Change Log
+KwaMoja Change Log
 
 25/10/12 Phil: Added telephone and email to supplier search - SelectSupplier.php
 25/10/12 Phil: Rounding error prevented CounterSales.php from posting a sale where currency was rounding to 0 decimal places - reported by Arwan
@@ -50,7 +50,7 @@ webERP Change Log
 21/7/2012 Phil: Fix api function for POS prices includes/Z_POSDataCreation.php
 21/7/2012 Ricard: sorting products by discontinued then stockid to ensure obsolete items at the end of the list
 20/7/2012 Tim: Added scripts to inquire on and to print General Ledger Journals
-20/7/2012 Exson: Fixed that delete or editing new serial items will lead to hyper-link changed as select credit items instead of back to credit invoice in scripts InputSerialItemsKeyed.php. Report by UK-Steven from webERP Chinese Community QQ group
+20/7/2012 Exson: Fixed that delete or editing new serial items will lead to hyper-link changed as select credit items instead of back to credit invoice in scripts InputSerialItemsKeyed.php. Report by UK-Steven from KwaMoja Chinese Community QQ group
 15/7/12 Gilberto Dos Santos Alves: updated pt_BR.utf8 translation
 13/7/12 Tim: Fix up the sql where a field was selected twice
 10/7/12 Phil: Made purchase order lines look at the purchasing data lead time and set the delivery date of the line to today + the lead time if this is beyond the delivery date specified in the PO header.
@@ -83,7 +83,7 @@ webERP Change Log
 23/5/2012 Exson: Revise GLAccounts.php to make more than 10 digits account code is allowed.
 2012/05/22 Exson: Modify accountcode to varchar(20) to meet some countries accounting regulation for more digits account code.
 22/5/2012 Phil Klaus's spot - removed issue location (must always be the same as the manufacture location) and the issued date from WorkOrderStatus.php form - as materials could be issued on many different dates and incorrect to say they are always issued on the current date
-20/5/2012 Klaus Beucher (Opto): move leadtime calculation into levelnetting function and resolve bug which does not use leadtime for highest level items of a BOM  see also http://www.weberp.org/forum/showthread.php?tid=203
+20/5/2012 Klaus Beucher (Opto): move leadtime calculation into levelnetting function and resolve bug which does not use leadtime for highest level items of a BOM  see also http://www.kwamoja.org/forum/showthread.php?tid=203
 18/5/2012 Ahmed: Fixed bugs that the offer cannot store more than one item and remove function does not work in SupplierTenders.php and DefineOfferClass.php
 18/5/2012 Ahmed.Fawzy: Fixed Branch code validation rule to rule out '-' in CustomerBranches.php.
 14/5/2012 Exson: Fixed bug that when users input a Exchang Rate manually, when ones changed minds and select another currency, it'll not show the suggested rate correctly in Payments.php.
@@ -107,7 +107,7 @@ webERP Change Log
 29/4/12 David Short: Added EDISendInvoices_Reece.php to send Reece format EDI invoices - approved by Reece (Australian Plumbing retailer)
 28/4/2012 Exson: Fixed bugs in MRPCalendar.php which caused working days cannot be calculated correctly.
 06/4/2012 Exson: Fixed PO header that does not display user's default warehous when iusse a new PO in PO_Header.php.
-25/4/12 Phil: Complete rewrite of PDFPrintLabels.php and Labels.php in webERP style - half the code and maintainable with templates stored with all the other data in the database. The new labels also allow fields to be printed as barcodes too.
+25/4/12 Phil: Complete rewrite of PDFPrintLabels.php and Labels.php in KwaMoja style - half the code and maintainable with templates stored with all the other data in the database. The new labels also allow fields to be printed as barcodes too.
 24/4/2012 Phil: fix CopyBOM.php that was insering a blank stockid into stockmaster as reported by Ricard
 21/04/2012 Vitaly: Editable item description in PO.
 16/04/2012 Vitaly: Added option to display only items that are currently on purchase order in StockLocStatus.php
@@ -117,7 +117,7 @@ webERP Change Log
 12/4/2012 TurboPT: Replaced table row bgcolor [or style=background-color] with the appropriate css class.
 11/4/2012 Ricard: Code simplified on TopItems.php
 7/4/2012 TurboPT: Remove invalid attribute colspan found within table tag elements.
-5/4/2012 Exson: Fixed order delivery comments overlapped with Shipper in Packing slip of PDFOrderPageHeader_generic.inc Reported by CQZ from webERP Chinese Community QQ group
+5/4/2012 Exson: Fixed order delivery comments overlapped with Shipper in Packing slip of PDFOrderPageHeader_generic.inc Reported by CQZ from KwaMoja Chinese Community QQ group
 3/4/2012 Vitaly: Cleaned up Petty Cash module. Fixed several errors in SQL INSERT statements.
 3/4/2012 Exson: Fixed typo in PurchData.php.
 3/4/2012 Tim: fixed Supplier Code and Supplier part code inconsistent with database field length definition in PurchData.php. Reported by rfthomas.
@@ -126,24 +126,24 @@ webERP Change Log
 2/4/2012  Exson: fixed CopyBOM.php sql errors and header already sent error.
 31/3/2012 Exson: Fixed for PcAuthorizeExpenses.php cannot authorized expenses due to no applying gettext function to 'Update'
 31/3/2012: PakRichard: 	Fixed problem that on PCAssignCashToTab.php it should be used the decimal places of the currency of the tab, not the decimal places of the functional currency.The same in PcClaimExpensesFromTab.php
-31/3/2012 Kunshan-Ouhai?G Fixed bug in PDFStockCheckComparision.php when selecting Report and Close the Inventory Comparison, there will be seriously sql errors. Reported and fixed by Kunshan-Ouhai from webERP Chinese community QQ group.
+31/3/2012 Kunshan-Ouhai?G Fixed bug in PDFStockCheckComparision.php when selecting Report and Close the Inventory Comparison, there will be seriously sql errors. Reported and fixed by Kunshan-Ouhai from KwaMoja Chinese community QQ group.
 31/3/2012 Dafydd Crosby: Revise scripts Add_SerialItemsOut.php and OutputSerialItems.php fixes a problem that occurs when receiving a bulk inventory transfer. There was a hard-coded loop that prevented adding bundles that were greater than 10.
 30/3/2012 Richard Andreu Modified security role to order by role name instead of by roleid to make it more user friendly in WWW_Access.php and WWW_Users.php
 29/3/2012Exson:Fixed href typo error which lead to Select another location link does not work in InternalStockRequestFulfill.php
 29/3/2012 Exson: Fixed typo which caused scripts does not work. Cannot add or modify existed items.
 27/3/2012 Exson: fixed typo in footer.inc
 25/3/2012 Exson: Add page footer with total pages for users verification purpose in PrintCustOrder.php Reported by Russell
-25/3/2012 Exson: Add return back link for SupplierInvoice.php while users make input errors. Reported by Ke from webERP Chinese Community QQ group
-23/2/2012 Ke: Fixed footer time displayed garbage in Win OS of simplified Chinese Language in footer.inc. Reported and fixed by Ke from webERP Chinese community QQ group.
-23/3/2012 Exson: Fixed accounting period displayed abnormal in simplified Chinese language in Win OS in DateFunctions.inc. Reported by CQZ from webERP Chinese community QQ group
-23/3/2012 Exson: Fixed accounting period displayed abnormal in simplified Chinese language in Win OS. Reported by CQZ from webERP Chinese community QQ group.
+25/3/2012 Exson: Add return back link for SupplierInvoice.php while users make input errors. Reported by Ke from KwaMoja Chinese Community QQ group
+23/2/2012 Ke: Fixed footer time displayed garbage in Win OS of simplified Chinese Language in footer.inc. Reported and fixed by Ke from KwaMoja Chinese community QQ group.
+23/3/2012 Exson: Fixed accounting period displayed abnormal in simplified Chinese language in Win OS in DateFunctions.inc. Reported by CQZ from KwaMoja Chinese community QQ group
+23/3/2012 Exson: Fixed accounting period displayed abnormal in simplified Chinese language in Win OS. Reported by CQZ from KwaMoja Chinese community QQ group.
 22/3/2012 Exson: Fixed no control of accumulated quantity of the same item during transferring which lead to negative quantity of stock in StockLocTransfer.php reported by Rong.
-22/3/2012 Exson: Fixed time displayed incorrectly in footer in Win OS since the strftime() encoding is not UTF-8. Reported by CQZ and KE in webERP Chinese Community QQ group.
-22/3/2012 Exson: Fixed period displayed incorrectly in GL inquiry in Win OS since the strftime() encoding is not UTF-8. Reported by CQZ and KE in webERP Chinese Community QQ group.
-21/03/2012 CQZ,KE: (From webERP chinese community QQ Group) Fixed the csv file cannot display UTF-8 characters correctly in Excel.
+22/3/2012 Exson: Fixed time displayed incorrectly in footer in Win OS since the strftime() encoding is not UTF-8. Reported by CQZ and KE in KwaMoja Chinese Community QQ group.
+22/3/2012 Exson: Fixed period displayed incorrectly in GL inquiry in Win OS since the strftime() encoding is not UTF-8. Reported by CQZ and KE in KwaMoja Chinese Community QQ group.
+21/03/2012 CQZ,KE: (From KwaMoja chinese community QQ Group) Fixed the csv file cannot display UTF-8 characters correctly in Excel.
 20/03/2012 Exson: Fixed Multi currency payment exchange rate errors in Payments.php. Reported by PakRichard
 20/3/2012 Exson: Fixed bugs that users push Process Credit button in Credit_Invoice.php directly without update will lead to unbalance Journal entry. Reported by Russ
-20/03/2012 Exson: Fixed item properties are not deleted together with item deletion in Stocks.php. Reported by Zhoule from webERP chinese forum QQ group.
+20/03/2012 Exson: Fixed item properties are not deleted together with item deletion in Stocks.php. Reported by Zhoule from KwaMoja chinese forum QQ group.
 19/3/2012 Tim: Remove illegal copyright notices to prevent any legal problems.</p>
 13/3/2012 Exson: Fixed that same parent and component but added in different Work Centers and Locations will display twice in BOMs.php. And fixed that to delete one line of same parents and component will delete all lines with same parents and components. Add ArrayUnique function to get unique array for multi-dimensional array.
 13/3/2012 Exson: Correct mailing sending messages display error in PrintCustTransPortrait.php Reported by Thomas_lie
@@ -164,7 +164,7 @@ webERP Change Log
 28/2/12 Tim: Added functionality that allows for the set up of internal departments, and for the request of stock to be issued - a new issue account is defined in stockcategories. Issue requests must be authorised by a department manager and then issues fulfilled creates a stock adjustment with posting in the gl to the item category issue account.
 28/02/2012 Vitaly: Added DB_escape_string() to narrative in SQL INSERT statements. Fixes a problem posting to database when the string contains quotes.
 26/02/2012 Exson: Fixed bug that when set frequently sold items, there are sql errors which claimed that no group set for sum() function.
-26/02/2012 Exson: PO_Items.php Add $_SESSION and $_POST variables to fixed extra lines added while page refreshing or push F5. Reported by CQZ and Ke from webERP Chinese forum QQ group.
+26/02/2012 Exson: PO_Items.php Add $_SESSION and $_POST variables to fixed extra lines added while page refreshing or push F5. Reported by CQZ and Ke from KwaMoja Chinese forum QQ group.
 
 25/2/12 Vitaly: sql in PDFSuppTransListing.php would not fetch any data and debug message was not showing. Missing FROM in upgrade4.07-4.08.sql.
 25/2/12 James Dupin: Remove extra ) after Create GL entries for stock transactions in CompanyPreferences.php
@@ -242,7 +242,7 @@ Release 4.06.6
 15/12/11 Phil: Fix to UpgradeDatabase.php the button to perform the upgrade was missing for older versions where the version was not stored in the DB.
 15/12/11 Phil: SalesGraph.php was trying to set background colour to 'selection' changed to white
 15/12/11 Vitaly Shevkunov: Shipments.php fixed missing quote in html
-14/12/11 Tim Schofield: check_syntax.sh Script for checking syntax of all php scripts in webERP
+14/12/11 Tim Schofield: check_syntax.sh Script for checking syntax of all php scripts in KwaMoja
 13/12/11 Vitaly Shevkunov: Z_ChangeStockCode.php fixed call to DB_error_no had missing ($db) - also turned off FOREIGN KEY CHECKS before updating the BOM.
 13/12/11 Exson: Fix SelectOrderItems.php and DeliveryDetails.php for where an order is modified while another order is being created in a different tab of the browser - $_SESSION['ExistingOrder'] now modified to $_SESSION['ExistingOrder' .$identifier] as suggested by Tim
 13/12/11 Phil: Fixed other scripts affected and send $identifier to add_to_cart and remove_from_cart functions
@@ -345,7 +345,7 @@ Release 4.06.6
 7/8/11 Phil: SelectProduct.php now disables transactions on items flagged as obsolete (discontinued). /Also obsolete items are shown as such in the selection list - suggested by Klaus (opto)
 7/8/11 Ricard: Corrected INNER JOIN ON clause in sql used in InventoryQuantities.php script
 7/8/11 Klaus: Added docuwiki links to WikiLinks function in MiscFunctions.php and allow Docuwiki option in SystemParameters.php
-6/8/11 Ricard: SalesInquiry.php fix wording of labels to be more consistent with the rest of webERP
+6/8/11 Ricard: SalesInquiry.php fix wording of labels to be more consistent with the rest of KwaMoja
 6/8/11 Phil: PO_Items.php now has checkbox to select items that have purchasing data entered for the supplier ordering from - as per Klaus's (opto) suggestion
 6/8/11 Exson: Added leadtime to the link from SelectProduct.php so that delivery dates used when creating purchase orders make sense
 4/8/11 Phil: Fix GP Percent reported when discounts updated by discount matrix
@@ -360,7 +360,7 @@ Release 4.06.6
 
 27/7/11 includes/LanguageSetup.php now checks for existence of LC_MESSAGES (it doesn't exist on windows servers) and uses LC_ALL as the fall back only
 27/7/11 Fixed quoting in PDFSuppTransListing.php, StockReorderLevel.php WhereUsedInquiry.php Z_ReverseSuppPaymentRun.php
-26/7/11 SalesCategories.php fixed display of active categories - this script is not used by webERP - only by Mo Kelly's joomla cart application
+26/7/11 SalesCategories.php fixed display of active categories - this script is not used by KwaMoja - only by Mo Kelly's joomla cart application
 
 24/7/11 Version 4.04.5
 
@@ -413,7 +413,7 @@ Release 4.06.6
 3/6/11 Version 4.04.3 Release
 
 2/6/11 Phil: ConfirmDispatchControlled_Invoice.php type include/InputSerialItems.php
-2/6/11 Phil: modified build script to include audittrail table in weberp-new.sql and weberpdemo.sql - excluded by mistake
+2/6/11 Phil: modified build script to include audittrail table in kwamoja-new.sql and kwamojademo.sql - excluded by mistake
 2/6/11 Phil: UpgradeDatabase.php manual upgrades from 3.11.x 4.01 and 4.02 now fixed! Brian May's report
 31/5/11 Phil: GetConfig.php amended so that an earlier version without the emailsettings table does not choke before getting to the UpgradeDatabase.php option - reported by Brian May
 
@@ -912,7 +912,7 @@ Version 4.0RC1
 07/07/10 Tim: GLAccountInquiry.php - Layout improvements and properly quoting sql
 07/07/10 Tim: GeocodeSetup.php - Properly quoting sql
 07/07/10 Tim: FreightCosts.php - Layout improvements and properly quoting sql
-07/07/10 Tim: Factors.php - Redo much of script to conform more with webERP standards
+07/07/10 Tim: Factors.php - Redo much of script to conform more with KwaMoja standards
 07/07/10 Tim: ExchangeRateTrend.php - Add Javascript, and layout improvements
 07/07/10 Tim: EDIMessageFormat.php - Bug fixes with updating the format
 05/07/10 Tim: DiscountMatrix.php - Layout improvements
@@ -1031,8 +1031,8 @@ Version 4.0RC1
 06/05/10 Keith: session.inc : Correct SQL error on Currency updater
 06/05/10 Lindsay: Tracker 2929564: dates mangled via QuicK Entry format
 06/05/10 Matt Taylor: upgrade3.11.1-3.12.sql : Added default startdate to prices table.
-06/05/10 Matt Taylor: weberp-demo.sql : Added startdate and enddate columns to prices table.
-06/05/10 Matt Taylor: weberp-new.sql : Added startdate and enddate columns to prices table.
+06/05/10 Matt Taylor: kwamoja-demo.sql : Added startdate and enddate columns to prices table.
+06/05/10 Matt Taylor: kwamoja-new.sql : Added startdate and enddate columns to prices table.
 06/05/10 Matt Taylor: WorkOrderEntry.php : Added feature to convert planned work orders.
 06/05/10 Matt Taylor: MRPPlannedWorkOrders.php : Added feature to convert planned work orders.
 05/05/10 Tim: Fix javascript errors in date picker
@@ -1244,7 +1244,7 @@ Version 4.0RC1
 15/11/09 csrbusiness: api_salesorders.php - Correct date checking functions
 15/11/09 Bryan Nielsen: StockLocStatus.php - Add in link to stock items
 15/11/09 Tim: default.css - Synchronise css files so that all themes include all classes
-15/11/09 Phil: GLTrialBalance_csv.php Creates a csv of the trial balance with parameters for PeriodFrom and PeriodTo  - also with webERP username and password set as part of the URL. This script allows a csv to be retrieved into an open-office spreadsheet directly with the loadComponentFromURL statement. Also modified session.inc - hope I've not broken anything else!!
+15/11/09 Phil: GLTrialBalance_csv.php Creates a csv of the trial balance with parameters for PeriodFrom and PeriodTo  - also with KwaMoja username and password set as part of the URL. This script allows a csv to be retrieved into an open-office spreadsheet directly with the loadComponentFromURL statement. Also modified session.inc - hope I've not broken anything else!!
 14/11/09 Tim: StockLocStatus.php - Correct missing &lt;/a&gt; tag.
 12/11/09 Tim: Improve direct ordering code and make the EOQ the default quantity when ordered direct
 12/11/09 Tim: PO_PDFPurchOrder.php - Correct syntax error
@@ -1413,7 +1413,7 @@ Version 4.0RC1
 28/10/09 Gilles Deacur - SystemParameters.php - Correct Typo.
 28/10/09 Pak Ricard: PDFTopItems.php Print out Top Sales Item to pdf.
 28/10/09 Pak Ricard: PDFTopItemsHeader.php Print out Top Sales Item to pdf.
-28/10/09 Pak Ricard: TopItems.php Improvements to conform with webERP coding standards
+28/10/09 Pak Ricard: TopItems.php Improvements to conform with KwaMoja coding standards
 24/10/09 Phil: CustomerAllocations.php - the date of the allocation was converted to SQL format using the FormatDateForSQL function but the date was hard coded as d/m/Y - so the function failed - hard coded for SQL inserts Y-m-d
 23/10/09 Phil: fix bug reported by Manny Neri - customer statements where the option to show settled transaction in the last month was activiated were actually showing all settled transactions - which was not ideal!!
 10/10/09 Tim: SuppInvGRNs.php - Properly align numbers in table
@@ -1431,8 +1431,8 @@ Version 4.0RC1
 07/10/09 Phil: Fix PO_Items.php to enable changes to prices and weights
 03/10/09 Tim: upgrade3.11-3.11.1 - Enlarge language field in www_users for utf8 codeset
 03/10/09 Tim: upgrade3.11-3.12.sql - Enlarge language field in www_users for utf8 codeset
-03/10/09 Tim: weberp-new.sql - Enlarge language field in www_users for utf8 codeset
-03/10/09 Tim: weberp-demo.sql - Enlarge language field in www_users for utf8 codeset
+03/10/09 Tim: kwamoja-new.sql - Enlarge language field in www_users for utf8 codeset
+03/10/09 Tim: kwamoja-demo.sql - Enlarge language field in www_users for utf8 codeset
 26/09/09 Pak Ricard: Fix to www_users.php branchcode and debtorno could only be 8 characters long should allow 10
 25/09/09 Pak Ricard: Fix to Z_ChangeStockCode.php to change the stock code in more recent tables including MRP tables and locationtransfers tables
 25/09/09 asv: Fix to Z_ImportStocks.php to error trap mbflag
@@ -1441,8 +1441,8 @@ Version 4.0RC1
 20/09/09 Phil: Fix SelectOrderItems.php - option to show frequently ordered items, fixed SQL to be generic using existing date functions in /includes/DateFunctions.inc and also the new parameter to allow up to 99 frequently ordered items to display, GP Percentage rounding problem resolved. Corrected indentation and brackets in line with style guide
 20/09/09 Phil: SystemParameters.php - option to show up to 99 frequently ordered items
 20/09/09 Phil: upgrade3.11-3.12.sql new config parameter for FrequentlyOrderedItems
-18/09/09 Tim: weberp-new.sql - Reinstate missing foreign keys
-18/09/09 Tim: weberp-demo.sql - Reinstate missing foreign keys
+18/09/09 Tim: kwamoja-new.sql - Reinstate missing foreign keys
+18/09/09 Tim: kwamoja-demo.sql - Reinstate missing foreign keys
 16/09/09 Tim: Stocks.php - Updates for Asset manager module
 16/09/09 Tim: WWW_Users.php - Allow the showing of the asset manager module in user setup
 16/09/09 Tim: index.php - Show new functionality on menu pages
@@ -1468,8 +1468,8 @@ Version 4.0RC1
 07/10/09 Phil: Fix PO_Items.php to enable changes to prices and weights
 03/10/09 Tim: upgrade3.11-3.11.1 - Enlarge language field in www_users for utf8 codeset
 03/10/09 Tim: upgrade3.11-3.12.sql - Enlarge language field in www_users for utf8 codeset
-03/10/09 Tim: weberp-new.sql - Enlarge language field in www_users for utf8 codeset
-03/10/09 Tim: weberp-demo.sql - Enlarge language field in www_users for utf8 codeset
+03/10/09 Tim: kwamoja-new.sql - Enlarge language field in www_users for utf8 codeset
+03/10/09 Tim: kwamoja-demo.sql - Enlarge language field in www_users for utf8 codeset
 26/09/09 Pak Ricard: Fix to www_users.php branchcode and debtorno could only be 8 characters long should allow 10
 25/09/09 Pak Ricard: Fix to Z_ChangeStockCode.php to change the stock code in more recent tables including MRP tables and locationtransfers tables
 25/09/09 asv: Fix to Z_ImportStocks.php to error trap mbflag
@@ -1478,8 +1478,8 @@ Version 4.0RC1
 20/09/09 Phil: Fix SelectOrderItems.php - option to show frequently ordered items, fixed SQL to be generic using existing date functions in /includes/DateFunctions.inc and also the new parameter to allow up to 99 frequently ordered items to display, GP Percentage rounding problem resolved. Corrected indentation and brackets in line with style guide
 20/09/09 Phil: SystemParameters.php - option to show up to 99 frequently ordered items
 20/09/09 Phil: upgrade3.11-3.12.sql new config parameter for FrequentlyOrderedItems
-18/09/09 Tim: weberp-new.sql - Reinstate missing foreign keys
-18/09/09 Tim: weberp-demo.sql - Reinstate missing foreign keys
+18/09/09 Tim: kwamoja-new.sql - Reinstate missing foreign keys
+18/09/09 Tim: kwamoja-demo.sql - Reinstate missing foreign keys
 16/09/09 Tim: Stocks.php - Updates for Asset manager module
 16/09/09 Tim: WWW_Users.php - Allow the showing of the asset manager module in user setup
 16/09/09 Tim: index.php - Show new functionality on menu pages
@@ -1579,7 +1579,7 @@ Version 3.11
 21/07/09 Tim: Z_MakeNewCompany.php - Correct the sql for non ansi mode
 19/07/09 Tim: Correct various spelling mistakes and typos
 19/07/09 Juergen Ruemmler: Logout.php - New logout screen
-18/07/09 Phil: Work over installer to try to get it to work and conform to webERP consistency guidelines
+18/07/09 Phil: Work over installer to try to get it to work and conform to KwaMoja consistency guidelines
 18/07/09 Tim: DeliveryDetails.php - Correctly show items when returning to order detail
 18/07/09 Tim: CustomerReceipt.php - Add in javascript functionality
 18/07/09 Tim: ConfirmDispatch_invoice.php - Some layout changes, javascript addition and minor bug fixes
@@ -1601,15 +1601,15 @@ Version 3.11
 15/07/09 Phil: Removed includes/Wiki.php and added wikiLink function to includes/MiscFunctions.php - modified all calls to wikiLink
 15/07/09 Phil: WorkOrderEntry.php added a link to the wiki - if integrated wiki enabled.
 14/07/09 Tim: GoodsReceived.php - Fixed sql for missing qualitytext field in INSERT
-14/07/09 Tim: weberp-demo.sql - Add new data
+14/07/09 Tim: kwamoja-demo.sql - Add new data
 13/07/09 Murray: CustomerReceipt, added link to customer allocations after receipt entry
 13/07/09 Murray: fixed some div centering for SelectCustomer.php
 10/07/09 Tim: PO_SelectOSPurchOrder.php - Correct sql for mysql strict mode
 10/07/09 Tim: PO_Header.php - Correction to goods received link
-10/07/09 Tim: weberp-new.sql - Remove unecessary data
-10/07/09 Tim: weberp-demo.sql - Remove unecessary data (audittrail), and add in 3.11 database changes
+10/07/09 Tim: kwamoja-new.sql - Remove unecessary data
+10/07/09 Tim: kwamoja-demo.sql - Remove unecessary data (audittrail), and add in 3.11 database changes
 10/07/09 Tim: sql/mysql/upgrade3.10-3.11.sql - Make alteration to type for notes field in custnotes table
-10/07/09 Tim: weberp-new.sql - Add in new database changes
+10/07/09 Tim: kwamoja-new.sql - Add in new database changes
 10/07/09 Tim: SelectOrderItems.php - Allow more than one sales order to be open at any one time
 10/07/09 Tim: DefineCartClass.php - Allow more than one sales order to be open at any one time
 10/07/09 Tim: SelectOrderItems_IntoCart.inc - Allow more than one sales order to be open at any one time
@@ -1624,7 +1624,7 @@ Version 3.11
 07/07/09 Tim: GLBalanceSheet.php - Correct sql statement to work in strict mode
 07/07/09 Tim: Payments.php - Correct typing errors
 07/07/09 Tim: RCFunctions.inc - Correction to still design report if table is empty
-07/07/09 Tim: weberp-new.sql - Remove references to weberpdemo
+07/07/09 Tim: kwamoja-new.sql - Remove references to kwamojademo
 05/07/09 Tim: SuppInvGRNs.php - Add a select all and deselect all option
 05/07/09 Tim: PO_ReadInOrder.inc - Updates to allow multiple orders to be opened at the same time
 05/07/09 Tim: PO_Header.php - Updates to allow multiple orders to be opened at the same time
@@ -1906,8 +1906,8 @@ Version 3.11
 09/05/09 Tim: javascripts/MiscFunctions.js - Include date picker and correct browser compatability issues
 08/05/09 Mark: MRPPlannedWorkOrders.php
 07/05/09 Tim: Z_Upgrade3.10.php - Add new salesorders fields
-07/05/09 Tim: sql/mysql/weberp-new.sql - Correct weberp sql data
-07/05/09 Tim: sql/mysql/weberp-demo.sql - Correct demo data
+07/05/09 Tim: sql/mysql/kwamoja-new.sql - Correct kwamoja sql data
+07/05/09 Tim: sql/mysql/kwamoja-demo.sql - Correct demo data
 3/5/09 Phil: DeliveryDetails.php now has code to create work orders for manufactured items where the system parameter is set to do so - it can also allocate serial numbers automatically for work orders created where the item is serialised and has a nextserialno value greater than 0
 03/05/09 Tim: PrintCustTransPortrait.php - Show line description even when on more than one line
 3/5/09 Phil: Mess with the API to add $_SESSION['AllowedSecurityTokens'] array to provide role based authentication infrastructure to the api_php.php script - now just to add the checking $PageSecurity variable in_array for exposed functions - Tim to check!!
@@ -1978,16 +1978,16 @@ Version 3.11
 02/04/09 Tim: SelectCompletedOrder.php - Amend sql to show parts even when no purchase orders
 01/04/09 Tim: SelectProduct.php - Correctly show category product properties
 01/04/09 Tim: PurchData.php - Show most recent price first
-01/04/09 Tim: sql/mysql/weberp-new.sql - Correction to purchdata table to allow for multiple data
-01/04/09 Tim: sql/mysql/weberp-demo.sql - Correction to purchdata table to allow for multiple data
+01/04/09 Tim: sql/mysql/kwamoja-new.sql - Correction to purchdata table to allow for multiple data
+01/04/09 Tim: sql/mysql/kwamoja-demo.sql - Correction to purchdata table to allow for multiple data
 01/04/09 Tim: sql/mysql/upgrade3.10-3.11.sql - Correction to purchdata table to allow for multiple data
 26/03/09 CW: SelectCustomer.php - This will give a link to setup customer types if they are not already
 26/03/09 CW: Customers.php - This will give a link to setup customer types if they are not already
 26/03/09 Tim: Stocks.php - Errors in Camelcasing with pansize variable
 25/03/09 Tim: OrderDetails.php - Correctly show the debtor number in inquiry screen
-24/03/09 Tim: sql/mysql/weberp-new.sql - Add Primary key to geocode_param table
+24/03/09 Tim: sql/mysql/kwamoja-new.sql - Add Primary key to geocode_param table
 24/03/09 Tim: sql/mysql/upgrade3.10-3.11.sql - Add Primary key to geocode_param table
-24/03/09 Tim: sql/mysql/weberp-new.sql - correct geocode_param table setup
+24/03/09 Tim: sql/mysql/kwamoja-new.sql - correct geocode_param table setup
 24/03/09 Tim: sql/mysql/upgrade3.10-3.11.sql - Insert default value into factor companies table
 24/03/09 Tim: config.distrib.php - Update version number
 24/03/09 Tim: CustomerReceipt.php - Revert patch that split up receipt batch
@@ -2034,7 +2034,7 @@ Version 3.11
 27/02/09 Murray: Some CSS fixes for purchase orders
 27/02/09 Murray: PrintCustTransPortrait.php - This fixes problems with pdf_append
 26/02/09 Tim: PrintCustTrans.php - Correct bug in invoice printing
-25/02/09 Tim: sql/mysql/weberp-demo.sql - Latest weberp-demo.sql file
+25/02/09 Tim: sql/mysql/kwamoja-demo.sql - Latest kwamoja-demo.sql file
 25/02/09 Tim: locale/en_GB/LC_MESSAGES/messages.po - Latest messages.po files
 25/02/09 Tim: install/maintenance_db.inc - Updates to installer
 25/02/09 Tim: install/index.php - Updates to installer
@@ -2070,7 +2070,7 @@ Version 3.11
 17/2/09 Tim: PrintCustTrans. - Update to correctly email invoice to customer
 12/2/09 Matt Taylor: BOMInquiry.php BOMs.php Stocks.php WorkOrderReceive.php WorOrderEntry.php includes/SQL_CommonFunctions.inc Z_Im/ortStocks.php - modifications to allow Phantom Items - a new class of item type G - ghost (since P for Phantom could mean purchased). These allow sub-components to be included in the top level of a bill of material as a single line making BOMs simpler to follow and create - the components of ghosts/phantoms are exploded automatically on work order entry so the full requirements show against the work order.
 11/2/09 Moxx consulting: first commit of web based install UI
-10/2/09 Tim: weberp-new.sql - Update data for factor companies and debtortype.
+10/2/09 Tim: kwamoja-new.sql - Update data for factor companies and debtortype.
 10/2/09 Tim: WorkOrderCosting.php - Correct sql to correctly calculate costings.
 09/2/09 Tim: CustomerAllocations.php - Remove commented code that was preventing gettext from working
 09/2/09 Tim: Correct messages.po file for v3.10
@@ -2201,7 +2201,7 @@ Version 3.10
 14/12/08 Murray: CRM related: SelectCustomer now can add notes, add group notes, add contacts
 4/12/08 Tim: Login.php Select default company in login list
 4/12/08 Tim: Improve and reduce javascript functions
-4/12/08 Tim: New api functions to retrieve webERP settings
+4/12/08 Tim: New api functions to retrieve KwaMoja settings
 4/12/08 CW: New theme called gel
 28/11/08 Murray: CRM related: SelectCustomer.php now has export of customers via CSV format
 24/11/08 Murray: CRM related: SelectCustomer.php now has search by Customer Type
@@ -2236,7 +2236,7 @@ Version 3.10
 1/11/08 Tim: Update index.php to include link to GL Tags
 1/11/08 Phil: Add new script to update or insert prices based on standard/WA costs or preferred supplier costs for stock category/currency/sales type of the users selection - work sponsored by Ricard Andreu
 31/10/08 Tim: Add reorder level functions to the api
-30/10/08 Phil: added back the reports directory under companies/weberp - required for StockQties_cvs.php. Fixed StockQties_cvs.php for companies directory structure and trapped non-existent directory -error opening file.
+30/10/08 Phil: added back the reports directory under companies/kwamoja - required for StockQties_cvs.php. Fixed StockQties_cvs.php for companies directory structure and trapped non-existent directory -error opening file.
 29/10/08 Tim: Update api for SearchSuppliers() function.
 29/10/08 Tim: Update api for GetSupplier() function.
 29/10/08 Tim: Update api for inserting and modifying suppliers
@@ -2353,7 +2353,7 @@ Version 3.10
 09/9/08 Tim: Correct bug in MiscFunctions.php for when default currency is not in the ECB list
 08/9/08 Nichlas Lee: Change to show company logo, and to ensure the sourceforge logo is correctly shown when using https and IE
 08/9/08 Tim: Corrected Add_SerialItems.php to show correct path to StockSerialItemResearch.php
-08/9/08 Tim: Updated weberp-new.sql and weberp-demo.sql to create initial periods.
+08/9/08 Tim: Updated kwamoja-new.sql and kwamoja-demo.sql to create initial periods.
 07/9/08 Tim: Correct bug in FormMaker.php that prevented images being shown in forms.
 07/9/08 Ashish Shukla: Correct stock location problem in PO_Header.php.
 07/9/08 Tim: Change Z_ChangeStockCode.php to alter the stockitemproperties table.
@@ -2367,10 +2367,10 @@ Version 3.10
 8/7/08 Tim: Correct date checking bug in api_stock.php
 7/7/08 Tim: Correct MiscFunctions.php for divide by zero errors in Currency function.
 4/7/08 Phil: Fixed bug in PaymentTerms.php that prevented addition of new terms because "day number must exist"
-29/6/08 Harald Ringehahn: Z_SalesIntegrityCheck.php string missed gettextification and single quote space fixed. (Phil) This script extensively edited to conform to webERP coding conventions - single quotes, { at end of conditional statements not next line, SQL broken up on keywords, gettext strings not including trailing spaces.
+29/6/08 Harald Ringehahn: Z_SalesIntegrityCheck.php string missed gettextification and single quote space fixed. (Phil) This script extensively edited to conform to KwaMoja coding conventions - single quotes, { at end of conditional statements not next line, SQL broken up on keywords, gettext strings not including trailing spaces.
 01/7/08 Tim: Provide option to create a new supplier from the select supplier screen
 30/6/08 Tim: Add api functionality for stock items enabling stock balances to be retrieved by a remote application
-29/6/08 Harald Ringehan: Z_SalesIntegrityCheck.php string missed gettextification and single quote space fixed. (Phil) This script extensively edited to conform to webERP coding conventions - single quotes, { at end of conditional statements not next line, SQL broken up on keywords, gettext strings not including trailing spaces.
+29/6/08 Harald Ringehan: Z_SalesIntegrityCheck.php string missed gettextification and single quote space fixed. (Phil) This script extensively edited to conform to KwaMoja coding conventions - single quotes, { at end of conditional statements not next line, SQL broken up on keywords, gettext strings not including trailing spaces.
 28/6/08 Tim: Add api functionality for stock items, allowing stock items to be created, modified, retrieved and searched from a remote application
 28/6/08 Mox Consulting as reworked to latest version (Phil) multiple customer contacts faciltiy on customer.php
 
@@ -2385,8 +2385,8 @@ Version 3.09
 17/6/08 Murray: Added first version SystemCheck.php
 13/6/08 Tim: Correct CustomerBranches.php to enable branch deletion
 13/6/08 Ap Muthu: Correct corrupt messages.mo
-13/6/08 Ap Muthu: Correct missing table in weberp-demo.sql
-13/6/08 Ap Muthu: Correct typos in weberp-new.sql,weberp-demo.sql and GetConfig.php
+13/6/08 Ap Muthu: Correct missing table in kwamoja-demo.sql
+13/6/08 Ap Muthu: Correct typos in kwamoja-new.sql,kwamoja-demo.sql and GetConfig.php
 12/6/08 Murray: minor changes to text labels of UI.
 08/6/08 Tim: DeliveryDetails.php - Correct delivery address details and bug not allowing branch info to be returned.
 26/5/08 Tim: PaymentMethods.php - Improve error handling..
@@ -2403,7 +2403,7 @@ Version 3.09
 03/5/08 Tim: Fixed bug in CustomerAllocations that corrupted table when reallocated amount equalled originally allocated amount
 30/4/08 Tim: Fixed bug in DeliveryDetails.php, to correctly show names and addresses with apostropges.
 29/4/08 Tim: Fixed bug in CustomerAllocations, debug info left in from previous fix.
-28/4/08 Phil: Fixed bug that showed date of GL entries twice on GLTransInquiry.php and munted format of table - attempted to put formating of the script back to webERP conventions
+28/4/08 Phil: Fixed bug that showed date of GL entries twice on GLTransInquiry.php and munted format of table - attempted to put formating of the script back to KwaMoja conventions
 28/4/08 Muz: Add labels to CustomerInquiry.php links Allocation /View GL Entries etc
 27/4/08 Tim: Add api for customer branches.
 27/4/08 Tim: Put all api error codes in one file.
@@ -2607,14 +2607,14 @@ Version 3.05
 2 January 2007
 
 
-2/1/07 Got webERP logo showing on footer.inc in report writer scripts. Updated copyright to change year on title.
+2/1/07 Got KwaMoja logo showing on footer.inc in report writer scripts. Updated copyright to change year on title.
 2/1/07 Fixed bad bug that didn't post freight on Credit_Invoice.php script!!! This resulted in control account out of balance issues.
 2/1/07 Added upgrade script that applies DB changes and does the data conversions for the user - now just have to run the script.
 30/11/06 DB_connect_mysql and DB_connect_psql added a DB_show_tables function to abstract this one in the report writer.
 29/11/06 BOMs.php removed dependency on mysql num rows and mysl_fetch_array functions and used abstraction functions as per the rest of the application. Modifications to consistency of braces use of prnMsg. Bug fixes as per Till
 27/11/06 Upgrade script for 3.04-3.05 for postgres.
 18/11/06 Now check on login that the company entered at login has a companies/directory defined to avoid logins to incorrect companies - bug noted by Alan Jones
-24/10/06 added the directory Numbers to contain the PEAR module Numbers_to_Words that is a multi-language class. There is one modification required to avoid the dependency on PEAR's raiseerror function - this now refers to the webERP prnMsg function - otherwise updates to this module can be imported as necessary. Needs some testing with other Locales to check translation. It is only used in the PrintChecks.php script.
+24/10/06 added the directory Numbers to contain the PEAR module Numbers_to_Words that is a multi-language class. There is one modification required to avoid the dependency on PEAR's raiseerror function - this now refers to the KwaMoja prnMsg function - otherwise updates to this module can be imported as necessary. Needs some testing with other Locales to check translation. It is only used in the PrintChecks.php script.
 27/9/06 includes/LanguageSetup.php  now uses the path prefix for the bindtextdomain statement\ - multi-lang would not have worked with report writer scripts
 27/9/06 Shipt_Select.php now modified SQL per bug report <>'' doesn't work on integers with postgres.
 17/9/06 PO_Header.php now have a button to update the delivery address based on the selection of the stock location
@@ -2779,7 +2779,7 @@ Version 3.05
 1/2/06 GLJournal.php SystemParameters.php new config parameter to prohibit entering GL journals directly to control accounts.
 1/2/06 Jesse Credit_Invoice.php - nasty bug on return of items used invoice number rather than the order number to update the salesorderdetails
 1/2/06 Jesse ConfirmDispatch_Invoice.php and ConfirmDispatch_InvoiceControlled.php corrections for serial items
-31/1/06 Greg Morehead Made the wiki links more generic and possible to have other wikis link to webERP.
+31/1/06 Greg Morehead Made the wiki links more generic and possible to have other wikis link to KwaMoja.
 28/1/06 Joerg Aldinger fixed messages in GLAccounts.php also added DB_escape_string to sql queries
 28/1/06 Greg Morehead - PDFOrdersInvoices.php - did not deal with multiple lines of the same item correctly - now adds these order lines together
 28/1/06 Muz - ConfirmDispatch_Invoice.php made quantity input field wider to accomodate larger decimal places and quantities.
@@ -2795,7 +2795,7 @@ Version 3.05
 12/12/05 New delivery performance report PDFDIFOT.php (Delivery In Full On Time - DIFOT) compares order requested delivery date against the date the invoice is prepared - assumed to be the same as the date of dispatch - the number of days that it is acceptable to dispatch product is entered at run time.
 9/12/05 Obscure bug in GetPrice.inc - if special prices set up for a salestype/customer combo but not default price set up for the salestype then the special price is picked up for customers belonging to the sales type even though it is specific to a different customer! - now fixed
 9/12/05 Danie - StockLocTransfers.php -now checks for positive stock in the location before allowing a transfer.
-6/12/05 Updated the webERP php-gettext to the latest version 1.05
+6/12/05 Updated the KwaMoja php-gettext to the latest version 1.05
 3/12/05 Jo� - WWW_Users.php now options to set theme and language before user logs in. Previously had to be set from the user settings when the user logged in themselves now the sysadmin can change them. Changed locale setting to LC_ALL then changed the LC_NUMERIC back to en_GB.
 21/11/05 Dave Premo - report writer tool - allows adding reports on any web erp data and formating thereof provided some knowledge of the tables etc. Export to PDF, CSV - import and export of reports too. New directory for the files reportwriter as well as changes to session.inc, header.inc, config.php, footer.inc
  16/11/05 Tech Nossomy Credit status - tidied up consistency of wording "Disallow invoices". Also used white and black in .css files instead of #FFFFFF and #000000 respectively
@@ -2871,7 +2871,7 @@ Version 3.02
 15/7/05 Z_PriceChanges.php lowercased to work with new db
 13/7/05 SupplierBalsAtPeriodEnd.php was not taking into account FX diffs that had been realised after the year end. Same for DebtorBalsAtPeriodEnd.php
 13/7/05 RecurringOrders templates set to recurr quarterly were only recurring 3 times per annum - now fixed
-10/7/05 Added Z_MakeNewCompany.php and modified the rest of the system to allow alternative company login - includes/login.php defaulting to $DefaultCompany in config.php. Also now reading part_pics from a new directory companies/{Company Abbreviation}/part_pics reports and EDI files also kept under the company directory. The new Z_MakeNewCompany.php creates a new database from the sql/mysql/weberp-new.sql or sql/pg/weberp-new.psql depending on which $dbType is set in config.php. The idea for this was prompted by the work done by EDO and ITWorx on behalf of EDO - that was contributed by EDO.
+10/7/05 Added Z_MakeNewCompany.php and modified the rest of the system to allow alternative company login - includes/login.php defaulting to $DefaultCompany in config.php. Also now reading part_pics from a new directory companies/{Company Abbreviation}/part_pics reports and EDI files also kept under the company directory. The new Z_MakeNewCompany.php creates a new database from the sql/mysql/kwamoja-new.sql or sql/pg/kwamoja-new.psql depending on which $dbType is set in config.php. The idea for this was prompted by the work done by EDO and ITWorx on behalf of EDO - that was contributed by EDO.
 7/7/05 Scott Rosa bug in includes/PDFSalesAnalysis.inc - $columnno should be $ColumnNo
 3/7/05 Chris Bice modified StockStatus.php to show bin locations of items for managed locations. Also added BinStockStatus.php
 30/6/05 Chris Bice/Jake Stride Locations.php now has flag for warehouse management
@@ -2923,7 +2923,7 @@ Version 3.0
 9/4/05 Danie: CompanyPreferences - Add account code to display of account names
 7/4/05 Added a check to SelectOrderItems_IntoCart.inc and to SelectOrderItems.php to check credit limits - new parameter in SystemParameters and the config table to set the level of credit limit checking to not checked, warn only or prohibit sales. Calculation of credit available in SQL_CommonFunctions.inc
 7/4/05 Changed fpdf.php output method/function to send a string by default - this preserves the way the ros code was written - and was causing issues with the headers/filenames
-31/3/05 Scott Rosa - Blind packing notes - system parameter to default all customer branches to blind - ie not to show the company and logo of the webERP company dispatching the product - useful for where the webERP system is dispatching to customers' of customers. Changes to SelectOrderItems.php DefineCartClass.php and DeliveryDetails.php to allow the default to be overridden and CustomerBranches.php to allow entry of the setting.
+31/3/05 Scott Rosa - Blind packing notes - system parameter to default all customer branches to blind - ie not to show the company and logo of the KwaMoja company dispatching the product - useful for where the KwaMoja system is dispatching to customers' of customers. Changes to SelectOrderItems.php DefineCartClass.php and DeliveryDetails.php to allow the default to be overridden and CustomerBranches.php to allow entry of the setting.
 31/3/05 Defaulted new users to see all modules on screen - WWW_Users.php
 31/3/05 Made new system parameter to set the PackNoteFormat - this ensures that the link to print the packing slip uses the correct script - the pre-printed stationery template script or the laser packing slip script.
 27/3/05 Added a new configuration variable DB_Maintenance and DB_Maintenance_LastRun. This variable is checked in session.inc to see if it is set to maintain the DB using a new function in the DB specific include DB_Connect_XXXXX.inc (where XXXX is the $dbtype) - there is a new function in these files called DB_Maintenance($Conn) that runs the routines necessary to keep the DB on top form. pg needs regular vacuums to run optimally. Changes also in SystemParameters.php to allow the variable to be set.
@@ -2932,7 +2932,7 @@ Version 3.0
 25/3/05 Z_DeleteSalesTrans.php fixed lower caseing of sql and trucate statements not liked by pg
 25/3/05 Recurring sales orders new scripts for SelectRecurringSalesOrder.php RecurringSalesOrder.php and RecurringSalesOrdersProcess.php for selection, modification and processing of recurring sales orders.
 11/03/05 Scott Rosa - Auto DebtorNo - Added a variable to config table and modified Customers.php to control the assignment
-of the DebtorNo to be either manually assigned by the user (the current weberp default)
+of the DebtorNo to be either manually assigned by the user (the current kwamoja default)
 or automatically assigned by the system.  The only automatic numbering scheme available
 right now is sequential, numeric with the value being pulled from the systypes table type 500
 11/3/05 Changed SystemParameters.php to enable the new AutoDebtorNo to be set in the DB - changed validation to allow debtorno to be set automatically.

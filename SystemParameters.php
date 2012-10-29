@@ -870,7 +870,7 @@ for ($i=0; $i < sizeof($WikiApplications); $i++ ) {
 	echo '<option '.($_SESSION['WikiApp'] == $WikiApplications[$i] ? 'selected="selected" ' : '').'value="'.$WikiApplications[$i].'">'.$WikiApplications[$i]  . '</option>';
 }
 echo '</select></td>
-	<td>' . _('This feature makes webERP show links to a free form company knowledge base using a wiki. This allows sharing of important company information - about customers, suppliers and products and the set up of work flow menus and/or company procedures documentation') .'</td></tr>';
+	<td>' . _('This feature makes KwaMoja show links to a free form company knowledge base using a wiki. This allows sharing of important company information - about customers, suppliers and products and the set up of work flow menus and/or company procedures documentation') .'</td></tr>';
 
 echo '<tr style="outline: 1px solid"><td>' . _('Wiki Path') . ':</td>
 	<td><input type="text" name="X_WikiPath" size="40" maxlength="40" value="' . $_SESSION['WikiPath'] . '" /></td>
@@ -953,7 +953,7 @@ if ($_SESSION['WeightedAverageCosting']==1){
 	echo  '<option value="1">' . _('Weighted Average Costing') . '</option>';
 }
 
-echo '</select></td><td>' . _('webERP allows inventory to be costed based on the weighted average of items in stock or full standard costing with price variances reported. The selection here determines the method used and the general ledger postings resulting from purchase invoices and shipment closing') . '</td></tr>';
+echo '</select></td><td>' . _('KwaMoja allows inventory to be costed based on the weighted average of items in stock or full standard costing with price variances reported. The selection here determines the method used and the general ledger postings resulting from purchase invoices and shipment closing') . '</td></tr>';
 
 echo '<tr style="outline: 1px solid"><td>' . _('Auto Issue Components') . ':</td>
 		<td>

@@ -196,10 +196,10 @@ if (!isset($_POST['timezone']) || $_POST['timezone'] == ''){
 	set_error('Please enter timezone');
 }
 
-// Use webERP logo if none supplied.
+// Use KwaMoja logo if none supplied.
 
 // Check if the user has entered a correct path
-if (!file_exists($path_to_root.'/sql/mysql/weberp-demo.sql')){
+if (!file_exists($path_to_root.'/sql/mysql/kwamoja-demo.sql')){
 	set_error('It appears the Absolute path that you entered is incorrect');
 }
 
@@ -240,9 +240,9 @@ if ($_POST['DemoData']==false){
 	$Result = mkdir($CompanyDir . '/reportwriter');
 	$Result = mkdir($CompanyDir . '/pdf_append');
 	$Result = mkdir($CompanyDir . '/FormDesigns');
-	copy ($path_to_root . '/companies/weberpdemo/FormDesigns/GoodsReceived.xml', $CompanyDir . '/FormDesigns/GoodsReceived.xml');
-	copy ($path_to_root . '/companies/weberpdemo/FormDesigns/PickingList.xml', $CompanyDir . '/FormDesigns/PickingList.xml');
-	copy ($path_to_root . '/companies/weberpdemo/FormDesigns/PurchaseOrder.xml', $CompanyDir . '/FormDesigns/PurchaseOrder.xml');
+	copy ($path_to_root . '/companies/kwamojademo/FormDesigns/GoodsReceived.xml', $CompanyDir . '/FormDesigns/GoodsReceived.xml');
+	copy ($path_to_root . '/companies/kwamojademo/FormDesigns/PickingList.xml', $CompanyDir . '/FormDesigns/PickingList.xml');
+	copy ($path_to_root . '/companies/kwamojademo/FormDesigns/PurchaseOrder.xml', $CompanyDir . '/FormDesigns/PurchaseOrder.xml');
 
 	// Now have a destination to place the logo image.
 	if (isset($_FILES['LogoFile'])) {
@@ -294,7 +294,7 @@ $msg .= "\$AllowCompanySelectionBox = true;\n";
 if ($_POST['DemoData'] ==false){
 	$msg .= "\$DefaultCompany = '" . $_POST['company_name']. "';\n";
 } else {
-	$msg .= "\$DefaultCompany = 'weberpdemo';\n";
+	$msg .= "\$DefaultCompany = 'kwamojademo';\n";
 }
 $msg .= "\$SessionLifeTime = 3600;\n";
 $msg .= "\$MaximumExecutionTime =120;\n";
@@ -335,11 +335,11 @@ if($_POST['install_tables'] == true){
 
 	/* Need to read in the sql script and process the queries to initate a new DB */
 	if ($_POST['DemoData'] == true){ //installing the demo data
-		$SQLScriptFile = file($path_to_root . '/sql/mysql/weberp-demo.sql');
-		//need to drop any pre-existing weberpdemo database
-		mysqli_query($db, "DROP DATABASE 'weberpdemo'");
+		$SQLScriptFile = file($path_to_root . '/sql/mysql/kwamoja-demo.sql');
+		//need to drop any pre-existing kwamojademo database
+		mysqli_query($db, "DROP DATABASE 'kwamojademo'");
 	} else { //creating a new database with no demo data
-		$SQLScriptFile = file($path_to_root . '/sql/mysql/weberp-new.sql');
+		$SQLScriptFile = file($path_to_root . '/sql/mysql/kwamoja-new.sql');
 	}
 	mysqli_query($db, 'CREATE DATABASE IF NOT EXISTS `' . mysqli_real_escape_string($db, $_POST['company_name']) . '`');
 	mysqli_select_db($db, $_POST['company_name']);

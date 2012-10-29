@@ -14,7 +14,7 @@
 		return $Errors;
 	}
 
-/* Check that the stock location is set up in the weberp database */
+/* Check that the stock location is set up in the kwamoja database */
 	function VerifyStockLocation($location, $i, $Errors, $db) {
 		$Searchsql = "SELECT COUNT(loccode)
 					 FROM locations

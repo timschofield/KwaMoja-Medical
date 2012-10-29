@@ -1,2 +1,2 @@
-USE weberpdemo;
+USE kwamojademo;
 TRUNCATE TABLE audittrail;

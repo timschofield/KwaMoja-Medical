@@ -12,7 +12,7 @@ Das Demosystem hat bereits erfasste Spiel-Daten, so dass die Funktionen des Syst
 <br /><br />
 <font size="+2"><b>Das Firmenlogo</b></font>
 <br /><br />
-Damit auf jedem Bildschirm das Firmenlogo dargestellt werden kann, muss es als .jpg-Datei logo.jpg im Verzeichnis companies/mandantenname/ albgelegt werden. webERP erlaubt unter einer Installation mit denselben Skripten mehrere Mandanten, deren Konfiguration in jeweils einer eigenen Datenbank abgelegt wird. Mit dem Namen des Mandanten existiert sowohl eine Datenbank als auch ein Unterverzeichnis unter dem Verzeichnis companies/. Für das Logo werden Leserechte für den Benutzer benötigt, unter dem der Webserver läuft (Apache unter Linux läuft normalerweise als "nobody"). Bei Windowsinstallationen ist das natürlich kein Thema.
+Damit auf jedem Bildschirm das Firmenlogo dargestellt werden kann, muss es als .jpg-Datei logo.jpg im Verzeichnis companies/mandantenname/ albgelegt werden. KwaMoja erlaubt unter einer Installation mit denselben Skripten mehrere Mandanten, deren Konfiguration in jeweils einer eigenen Datenbank abgelegt wird. Mit dem Namen des Mandanten existiert sowohl eine Datenbank als auch ein Unterverzeichnis unter dem Verzeichnis companies/. Für das Logo werden Leserechte für den Benutzer benötigt, unter dem der Webserver läuft (Apache unter Linux läuft normalerweise als "nobody"). Bei Windowsinstallationen ist das natürlich kein Thema.
 <br /><br />
 <font size="+2"><b>Der Kontenplan</b></font>
 <br /><br />
@@ -104,9 +104,9 @@ Dieser Bereich kann über Hauptmenü &rarr; Einstellungen &rarr; Allgemeines &rarr
 <tr><td>Verzeichnis in dem die Berichte abgelegt werden</td><td>Das Verzeichnis in dem alle PDF-Berichtsdatein erstellt werden. Es wird dafür ein gesondertes Verzeichnis empfohlen</td></tr>
 <tr><td>Nur SSL-Verbindungen erlauben</td><td>Damit wird angewiesen, dass die Verbindung über das ssl-Protokoll erfolgt, d. h. die Daten werden zwischen Server und Frontend verschlüsselt übertragen</td></tr>
 <tr><td>Datenbankpflege beim Anmelden</td><td>Dieser Parameter wird von der Funktion DB_Maintenance verwendet, um in regelmäßigen Abständen Aufgaben der Datenbankpflege durchzuführen. Bei jeder Anmeldung eines Benutzers wird geprüft, ob das angegebene Intervall verstrichen ist</td></tr>
-<tr><td>Wiki-Anwendung</td><td>Mit dieser Funktion wird es möglich, dass webERP eine Verknüpfung zu einem Knowledge-Management-System des Unternehmens unter Nutzung einer Wiki-Anwendung anzeigt. Das ermöglicht den Autausch von wichtigen Unternehmensinformationen - über Kunden, Lieferanten und Produkte sowie die Einrichtung von Workflow-Menüs und/oder die Verlinkung mit Arbeitsablaufbeschreibungen</td></tr>
- <!--New pages linked off these pages can be created - showing uploaded images or links to other files appropriate to the product/customer/supplier. The wiki would also make a good place to keep the company processes and policies documentation. Wacko wiki allows pages to be secured from alteration if necessary. An entire business knowlege base and intranet can be built up from the cumulative knowlege of the whole team. Since wacko wiki also allows creation of links to any other web pages particularly webERP pointers to specific information can be provided in the wiki that takes the reviewer of the wiki directly to the information in webERP or the webERP manual.  -->
-<tr><td>Wiki-Pfad</td><td>Der Pfad zur Wiki-Installation um die Basis der Wiki-URLs zu bilden, das sollte das Verzeichnis auf dem Webserver sein, in dem das Wiki installiert ist. Das Wiki muss auf dem selben Webserver installiert sein, wie webERP, aber nicht unterhalb im webERP-Baum, sondern neben webERP. Der Name des Web-Server-Verzeichnisses muss angegeben werden, damit Links auf die Wiki-Seiten durch webERP angelegt werden können. Momentan ist die Integration auf die Menüpunkte Lieferanten Produkte und Kunden beschränkt, jeweils nachdem ein Stammsatz ausgewählt wurde. Links werden nur angezeigt wenn der Schalter "Wiki-Anwendung" gesetzt ist. Falls die Wiki-Seite nicht existiert, werden Sie gefragt, ob Sie eine neue Seite anlegen möchten, andernfalls wird die Seite angezeigt.
+<tr><td>Wiki-Anwendung</td><td>Mit dieser Funktion wird es möglich, dass KwaMoja eine Verknüpfung zu einem Knowledge-Management-System des Unternehmens unter Nutzung einer Wiki-Anwendung anzeigt. Das ermöglicht den Autausch von wichtigen Unternehmensinformationen - über Kunden, Lieferanten und Produkte sowie die Einrichtung von Workflow-Menüs und/oder die Verlinkung mit Arbeitsablaufbeschreibungen</td></tr>
+ <!--New pages linked off these pages can be created - showing uploaded images or links to other files appropriate to the product/customer/supplier. The wiki would also make a good place to keep the company processes and policies documentation. Wacko wiki allows pages to be secured from alteration if necessary. An entire business knowlege base and intranet can be built up from the cumulative knowlege of the whole team. Since wacko wiki also allows creation of links to any other web pages particularly KwaMoja pointers to specific information can be provided in the wiki that takes the reviewer of the wiki directly to the information in KwaMoja or the KwaMoja manual.  -->
+<tr><td>Wiki-Pfad</td><td>Der Pfad zur Wiki-Installation um die Basis der Wiki-URLs zu bilden, das sollte das Verzeichnis auf dem Webserver sein, in dem das Wiki installiert ist. Das Wiki muss auf dem selben Webserver installiert sein, wie KwaMoja, aber nicht unterhalb im KwaMoja-Baum, sondern neben KwaMoja. Der Name des Web-Server-Verzeichnisses muss angegeben werden, damit Links auf die Wiki-Seiten durch KwaMoja angelegt werden können. Momentan ist die Integration auf die Menüpunkte Lieferanten Produkte und Kunden beschränkt, jeweils nachdem ein Stammsatz ausgewählt wurde. Links werden nur angezeigt wenn der Schalter "Wiki-Anwendung" gesetzt ist. Falls die Wiki-Seite nicht existiert, werden Sie gefragt, ob Sie eine neue Seite anlegen möchten, andernfalls wird die Seite angezeigt.
 <br /><br />Das Produkt-Wiki könnte solche Informationen beinhalten:
 <ul>
 <li>Hinweise über Produktentwicklungen</li>
@@ -129,7 +129,7 @@ Das Lieferanten-Wiki:
 <li>Angelegenheiten zu Zahlungen</li>
 <li>Vertragsdokumente</li>
 </ul>
-Wikis sind ein Vorteil für ein verzweigtes Unternehmen, sie sind nicht sinnvoll für eine Fünf-Personen-Verwaltung, die sich das Büro teilen. Aus diesem Grunde ist das Wiki auch nicht im webERP-Paket integriert, es betrifft einfach nicht alle Unternehmen, die webERP einsetzen könnten.
+Wikis sind ein Vorteil für ein verzweigtes Unternehmen, sie sind nicht sinnvoll für eine Fünf-Personen-Verwaltung, die sich das Büro teilen. Aus diesem Grunde ist das Wiki auch nicht im KwaMoja-Paket integriert, es betrifft einfach nicht alle Unternehmen, die KwaMoja einsetzen könnten.
 <a href="http://wackowiki.com/WackoDownload/InEnglish?v=xlv">Get Wacko Wiki</a>
 </td></tr></table>
 <br /><br />
@@ -169,7 +169,7 @@ Datenbankanwendungen, Excel-Tabellen oder Exportdateien im CSV-Format können auc
 Bevor Materialstammsätze eingerichtet werden können, sind wiederum einige Grunddaten erforderlich.
 <br /><br />
 <ul>
-<li>Warengruppen - Das sind breit gefasste Überbegriffe, unter denen die Waren und Dienstleistungen eines Unternehmens eingeteilt werden. Der Materialbegriff ist in webERP weit gefasst, Rohmaterialien und Waren für den Verkauf fallen darunter, aber auch Dienstleistungen die das Unternehmen anbietet und Arbeitsleistungen, die in der Fertigung eingesetzt werden. In der Warengruppe sind alle zusätzlichen Informationen zusammengefasst, die für die Integration mit dem Hauptbuch erforderlich sind. Alle Materialien der gleichen Warengruppe werden so auf die selbe Weise im System verbucht. Die Warengruppen pflegen Sie unter Hauptmenü &rarr; Einstellungen &rarr; Bestandsführung.</li>
+<li>Warengruppen - Das sind breit gefasste Überbegriffe, unter denen die Waren und Dienstleistungen eines Unternehmens eingeteilt werden. Der Materialbegriff ist in KwaMoja weit gefasst, Rohmaterialien und Waren für den Verkauf fallen darunter, aber auch Dienstleistungen die das Unternehmen anbietet und Arbeitsleistungen, die in der Fertigung eingesetzt werden. In der Warengruppe sind alle zusätzlichen Informationen zusammengefasst, die für die Integration mit dem Hauptbuch erforderlich sind. Alle Materialien der gleichen Warengruppe werden so auf die selbe Weise im System verbucht. Die Warengruppen pflegen Sie unter Hauptmenü &rarr; Einstellungen &rarr; Bestandsführung.</li>
 <li>Maßeinheiten - Alle für die Materialien möglicherweise benötigten Maßeinheiten können unter Hauptmenü &rarr; Einstellungen &rarr; Bestandsführung gepflegt werden.</li>
 </ul>
 Für die Unterscheidung der verschiedenen Materialien ist die Materialart wichtig, diese dienen der Unterscheidung, welche Daten für ein Material erfasst werden müssen bzw. können. Es gibt die Unterscheidung Kaufteile, Eigenfertigung, Bestellsatz, Sammelmaterial und Dummymaterial. Letzteres bekommt keine Bestandsdaten und wird für Dienstleistungen und Arbeitsstunden verwendet. 
@@ -216,7 +216,7 @@ Es ist wichtig zu prüfen, dass die Salden über alle Kunden in der gerasterten Ku
 <br /><br />
 <font size="+1"><b>Bankkontensalden und Salden anderer Hauptbuchkonten</b></font>
 <br /><br />
-Das Hauptbuch ist die zentrale Stelle der Buchhaltung, deswegen ist ein Verständnis der Buchhaltungsbegriffe wichtig für das Begreifen, was notwendig ist, um webERP ordnungsgemäß einzurichten. Dies kann keine Abhandlung über allgemeine Buchführung sein, aber eine kurze Einführung ist notwendig.
+Das Hauptbuch ist die zentrale Stelle der Buchhaltung, deswegen ist ein Verständnis der Buchhaltungsbegriffe wichtig für das Begreifen, was notwendig ist, um KwaMoja ordnungsgemäß einzurichten. Dies kann keine Abhandlung über allgemeine Buchführung sein, aber eine kurze Einführung ist notwendig.
 <br /><br />
 Das Hauptbuch besteht ähnlich wie das Debitorenbuch aus vielen Konten, aber die Anzahl der Konten im Hauptbuch ist nicht von der Anzahl der Kunden abhängig, sondern sie bilden die Werte ab, die das Unternehmen hat:
 <br />
@@ -230,7 +230,7 @@ Das Hauptbuch besteht ähnlich wie das Debitorenbuch aus vielen Konten, aber die 
 </ul>
 Alle diese Konten werden in Form eine <i>Bilanz</i> aufgelistet, wobei der Wert des Unternehmens auf der Aktivseite dem Kapital und den Verbindlichkeiten auf der Passivseite entsprechen muss.
 <br /><br />
-Das Hauptbuch behält auch die Übersicht darüber, wie viele Aufwendungen angefallen sind und wieviel den Kunden als Umsatz berechnet wurde - unabhängig davon, ob die Bezahlungen dafür bereits erfolgt sind. Man muss einfach nur für eine Periode einen Blick auf diese Konten werfen, um den Erfolg des Unternehmens in diesem Zeitraum zu erkennen und die <i> Gewinn- und Verlustrechnung (GuV)</i> zu erstellen. Wenn man ein Unternehmen mit webERP abbildet, sind die Salden der Konten, die in der Bilanz dargestellt werden, diejenigen, die den Wert den Unternehmens ausmachen, diese werden daher als Bilanzkonten oder Bestandskonten bezeichnet, im Gegensatz zu den so genannten Erfolgskonten oder GuV-Konten.
+Das Hauptbuch behält auch die Übersicht darüber, wie viele Aufwendungen angefallen sind und wieviel den Kunden als Umsatz berechnet wurde - unabhängig davon, ob die Bezahlungen dafür bereits erfolgt sind. Man muss einfach nur für eine Periode einen Blick auf diese Konten werfen, um den Erfolg des Unternehmens in diesem Zeitraum zu erkennen und die <i> Gewinn- und Verlustrechnung (GuV)</i> zu erstellen. Wenn man ein Unternehmen mit KwaMoja abbildet, sind die Salden der Konten, die in der Bilanz dargestellt werden, diejenigen, die den Wert den Unternehmens ausmachen, diese werden daher als Bilanzkonten oder Bestandskonten bezeichnet, im Gegensatz zu den so genannten Erfolgskonten oder GuV-Konten.
 <br /><br />
 <b>Doppelte Buchführung</b>
 <br /><br />
@@ -281,7 +281,7 @@ Wenn alle Buchungen vorgenommen wurden und die Zahlen abgestimmt sind, sollte da
 <br /><br />
 Aus der Konsole, mit dem angelegten Benutzernamen und Passwort, als MySQL installiert wurde. 
 <br />
-<pre>#mysqldump -u username -p password --opt weberp &gt; /home/myhomedir/weberp_backup.sql</pre>
+<pre>#mysqldump -u username -p password --opt kwamoja &gt; /home/myhomedir/kwamoja_backup.sql</pre>
 <br />
 PostgreSQL hat ein vergleichbares Werkzeug.
 <!-- postgres has a similar utility -->

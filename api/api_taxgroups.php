@@ -2,7 +2,7 @@
 /* $Id$*/
 
 /* This function returns a list of the tax group id's
- * currently setup on webERP
+ * currently setup on KwaMoja
  */
 
 	function GetTaxGroupList($user, $password) {
@@ -68,7 +68,7 @@
 	}
 
 /* This function returns a list of the tax authority ids
- * currently setup on webERP
+ * currently setup on KwaMoja
  */
     function GetTaxAuthorityList($User, $Password) {
 		$Errors = array();

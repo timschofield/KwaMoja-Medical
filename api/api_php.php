@@ -3,7 +3,7 @@
 /* Include session.inc, to allow database connection, and access to
    miscfunctions, and datefunctions.*/
 	// FOLLOWING ONLY REQUIRED TO SUPPORT PER FUNCTION AUTHENTICATION
-	$api_DatabaseName='weberpdemo';
+	$api_DatabaseName='kwamojademo';
 	// END OF OLD STYLE AUTHENTICATION
 
 	$AllowAnyone = true;
@@ -18,7 +18,7 @@
 	include($PathPrefix . 'includes/Z_POSDataCreation.php');
 	include($PathPrefix . 'includes/GetPrice.inc');
 
-/* Get weberp authentication, and return a valid database
+/* Get kwamoja authentication, and return a valid database
    connection */
 	function db($user, $password) {
 		if (!isset($_SESSION['AccessLevel']) OR
@@ -60,6 +60,6 @@
 	include 'api_suppliers.php';
 	include 'api_purchdata.php';
 	include 'api_workorders.php';
-	include 'api_webERPsettings.php';
+	include 'api_KwaMojasettings.php';
 
 ?>

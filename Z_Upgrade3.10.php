@@ -2,7 +2,7 @@
 /* $Id$*/
 //$PageSecurity = 15;
 include('includes/session.inc');
-$title = _('Upgrade webERP to version 3.10.5');
+$title = _('Upgrade KwaMoja to version 3.10.5');
 include('includes/header.inc');
 
 

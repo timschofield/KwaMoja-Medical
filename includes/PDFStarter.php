@@ -167,8 +167,8 @@ switch ($PaperSize) {
 //	$pdf = new Cpdf($PageSize);
 $pdf = new Cpdf($DocumentOrientation, 'pt', $DocumentPaper);
 
-$pdf->addInfo('Creator', 'WebERP http://www.weberp.org');
-$pdf->addInfo('Author', 'WebERP ' . $Version);
+$pdf->addInfo('Creator', 'KwaMoja http://www.kwamoja.org');
+$pdf->addInfo('Author', 'KwaMoja ' . $Version);
 
 
 /* Javier: I have brought this piece from the pdf class constructor to get it closer to the admin/user,

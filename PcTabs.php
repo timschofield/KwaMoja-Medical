@@ -3,7 +3,7 @@
 
 include('includes/session.inc');
 $title = _('Maintenance Of Petty Cash Tabs');
-/* webERP manual links before header.inc */
+/* KwaMoja manual links before header.inc */
 $ViewTopic= "PettyCash";
 $BookMark = "PCTabSetup";
 include('includes/header.inc');

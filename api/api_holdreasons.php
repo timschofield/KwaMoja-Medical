@@ -2,7 +2,7 @@
 /* $Id$*/
 
 /* This function returns a list of the hold reason codes
- * currently setup on webERP 
+ * currently setup on KwaMoja 
  */
 
 	function GetHoldReasonList($user, $password) {

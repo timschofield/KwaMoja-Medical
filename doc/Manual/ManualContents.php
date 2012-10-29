@@ -7,8 +7,8 @@
 
      The individual topics in the manual are in straight html files that are called along with the header and foot from here.
 
-     Each function in webERP can initialise a $ViewTopic and $Bookmark variable, prior to including the header.inc file.
-     This will display the specified topic and bookmark if it exists when the user clicks on the Manual link in the webERP main menu.
+     Each function in KwaMoja can initialise a $ViewTopic and $Bookmark variable, prior to including the header.inc file.
+     This will display the specified topic and bookmark if it exists when the user clicks on the Manual link in the KwaMoja main menu.
      In this way the help can be easily broken into sections for online context-sensitive help.
 	 Comments beginning with Help Begin and Help End denote the beginning and end of a section that goes into the online help.
 	 What section is named after Help Begin: and there can be multiple sections separated with a comma.

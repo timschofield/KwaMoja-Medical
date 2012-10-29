@@ -1,6 +1,6 @@
 <a id="SecuritySchema"><h1>Security Schema</h1></a>
 <p>
-The webERP security scheme consists of the following parts:
+The KwaMoja security scheme consists of the following parts:
 </p>
 <ol><li>
 Users:<br />
@@ -28,16 +28,16 @@ See below for a list of the default 'Security Roles' and the <br />
 Security Tokens:<br />
 15 'Security Token' choices are available by default.<br />
 See below for a list of the default 'Security Tokens'.<br />
-Each 'Security Token' allows access to one or more webERP pages.<br />
+Each 'Security Token' allows access to one or more KwaMoja pages.<br />
 +++<br />
-There is no webERP tool to add, remove or edit 'Security Tokens'.<br />
+There is no KwaMoja tool to add, remove or edit 'Security Tokens'.<br />
 However, an administrator can edit the underlying table (securitytokens).<br />
 <br />
 </li><li>
 PageSecurity values:<br />
-Each webERP page is given a Page Security value from 1 to 15 in the table scripts. The system reads all the scripts and the PageSecurity value for each into a SESSION array - $_SESSION['PageSecurityArray'] - the key for each element is the script name and the value is the PageSecurity value for that script. The key - the script name is retrieved from the $_SERVER['SCRIPT_NAME'] variable. In this way every time a script is called, the PageSecurity is retrieved from the array.
+Each KwaMoja page is given a Page Security value from 1 to 15 in the table scripts. The system reads all the scripts and the PageSecurity value for each into a SESSION array - $_SESSION['PageSecurityArray'] - the key for each element is the script name and the value is the PageSecurity value for that script. The key - the script name is retrieved from the $_SERVER['SCRIPT_NAME'] variable. In this way every time a script is called, the PageSecurity is retrieved from the array.
 +++<br />
-There is a webERP tool to change PageSecurity values, for each script which is accessible from the Setup menu.<br />
+There is a KwaMoja tool to change PageSecurity values, for each script which is accessible from the Setup menu.<br />
 <br /></ol>
 <p>
 These parts work together as follows. The user name and password combination
@@ -51,7 +51,7 @@ equal to the 'Security Token' values available to that User.
 </div>
 <h4>A more comprehensive description of the security scheme follows:</h4>
 <p>
-Each webERP page (script) is assigned a specific PageSecurity value.
+Each KwaMoja page (script) is assigned a specific PageSecurity value.
 This page security value is stored in the scripts table of the database and read into a SESSION array on login (from the GetConfig.php script). At the time of writing this is a number between 1 and 15.  If more levels of security
 are necessary then this can be expanded by an administrator or developer.
 The default PageSecurity values for each page can be inspected by browsing the scripts table</p>
@@ -120,14 +120,14 @@ The value of the default settings can be modified as needed from the Page Securi
 <td>1<br />Menu and Order Entry Only</td>
 <td>15 default security tokens are defined.<br />
     This data can not be edited using any<br />
-    webERP tool.</td>
+    KwaMoja tool.</td>
 </tr>
 <tr>
-<td>webERP page</td>
+<td>KwaMoja page</td>
 <td>CustomerInquiry.php<br />$PageSecurity = 1;</td>
 <td>The PageSecurity value for each page<br />
     is pre-defined and can not be edited<br />
-    using any webERP tool.</td>
+    using any KwaMoja tool.</td>
 </tr>
 </tbody></table>
 <div class="floatright">
@@ -137,7 +137,7 @@ The value of the default settings can be modified as needed from the Page Securi
 <p>
 Below the default security roles and page security values are set out. However, be aware that all these settings are now modifiable in the database. The roles can be defined choosing which security tokens will be allowed. Also, as of version 4.0 it is now possible to change the PageSecurity of each script to allow access to be more tightly defined. The PageSecurity value for a particular script is mapped to the security token that is either available to a particular user or not. Without the security token being in the users list of allowed security tokens then the script will not be available to that user.
 </p>
-<h4>Security Roles: Defaults for webERP version 3.0.5:</h4>
+<h4>Security Roles: Defaults for KwaMoja version 3.0.5:</h4>
 
 1 - Inquiries/Order Entry<br />
 2 - Manufac/Stock Admin<br />
@@ -148,7 +148,7 @@ Below the default security roles and page security values are set out. However, 
 7 - Customer logon only<br />
 8 - System Administrator<br />
 
-<h4>Security Token assignments: Defaults for webERP version 3.0.5:,</h4>
+<h4>Security Token assignments: Defaults for KwaMoja version 3.0.5:,</h4>
 
 1 - Inquiries/Order Entry tokens = 1, 2<br />
 2 - Manufac/Stock Admin tokens = 1, 2, 11<br />
@@ -159,7 +159,7 @@ Below the default security roles and page security values are set out. However, 
 7 - Customer logon only token = 1<br />
 8 - System Administrator = All the currently defined security tokens<br />
 <br />
-<h4>Security Tokens: Defaults for webERP version 3.0.5:</h4>
+<h4>Security Tokens: Defaults for KwaMoja version 3.0.5:</h4>
 
 1 - Menu and order entry only<br />
 2 - Inventory, AR & AP inquiries & reports<br />
@@ -177,7 +177,7 @@ Below the default security roles and page security values are set out. However, 
 14 - Not Used<br />
 15 - User management, System Admin setup & utilities<br />
 
-<h4>PageSecurity values: Defaults for webERP version 3.05:</h4>
+<h4>PageSecurity values: Defaults for KwaMoja version 3.05:</h4>
 
 <table border="2">
 <tbody><tr><th>Page (script) File Name

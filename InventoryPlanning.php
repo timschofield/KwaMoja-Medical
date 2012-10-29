@@ -3,7 +3,7 @@
 /* $Id$ */
 
 include('includes/session.inc');
-/* webERP manual links before header.inc */
+/* KwaMoja manual links before header.inc */
 $ViewTopic= "Inventory";
 $BookMark = "PlanningReport";
 
@@ -32,8 +32,8 @@ if (isset($_POST['PrintPDF'])
 // Javier: better to not use references
 //	$pdf = & new Cpdf($PageSize);
 	$pdf = new Cpdf('L', 'pt', 'A4');
-	$pdf->addInfo('Creator','webERP http://www.weberp.org');
-	$pdf->addInfo('Author','webERP ' . $Version);
+	$pdf->addInfo('Creator','KwaMoja http://www.kwamoja.org');
+	$pdf->addInfo('Author','KwaMoja ' . $Version);
 	$pdf->addInfo('Title',_('Inventory Planning Report') . ' ' . Date($_SESSION['DefaultDateFormat']));
 	$pdf->addInfo('Subject',_('Inventory Planning'));
 

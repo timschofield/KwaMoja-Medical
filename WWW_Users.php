@@ -27,7 +27,7 @@ $PDFLanguages = array(_('Latin Western Languages'),
 						_('Chinese'));
 
 $title = _('User Maintenance');
-/* webERP manual links before header.inc */
+/* KwaMoja manual links before header.inc */
 $ViewTopic= "GettingStarted";
 $BookMark = "UserMaintenance";
 include('includes/header.inc');

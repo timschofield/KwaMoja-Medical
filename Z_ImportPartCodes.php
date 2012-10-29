@@ -8,11 +8,11 @@ include('includes/header.inc');
 include('xmlrpc/lib/xmlrpc.inc');
 include('api/api_errorcodes.php');
 
-$webERPUser = $_SESSION['UserID'];
-$sql="SELECT password FROM www_users WHERE userid='" . $webERPUser."'";
+$KwaMojaUser = $_SESSION['UserID'];
+$sql="SELECT password FROM www_users WHERE userid='" . $KwaMojaUser."'";
 $result=DB_query($sql, $db);
 $myrow=DB_fetch_array($result);
-$weberppassword = $myrow[0];
+$kwamojapassword = $myrow[0];
 
 $ServerURL = 'http://'. $_SERVER['HTTP_HOST'] . $rootpath . '/api/api_xml-rpc.php';
 $DebugLevel = 0; //Set to 0,1, or 2 with 2 being the highest level of debug info
@@ -40,10 +40,10 @@ if (isset($_POST['update'])) {
     			$ItemDetails[$FieldNames[$i]]=$FieldValues[$i];
     		}
 			$stockitem = php_xmlrpc_encode($ItemDetails);
-			$user = new xmlrpcval($webERPUser);
-			$password = new xmlrpcval($weberppassword);
+			$user = new xmlrpcval($KwaMojaUser);
+			$password = new xmlrpcval($kwamojapassword);
 
-			$msg = new xmlrpcmsg("weberp.xmlrpc_InsertStockItem", array($stockitem, $user, $password));
+			$msg = new xmlrpcmsg("kwamoja.xmlrpc_InsertStockItem", array($stockitem, $user, $password));
 
 			$client = new xmlrpc_client($ServerURL);
 			$client->setDebug($DebugLevel);
@@ -74,7 +74,7 @@ if (isset($_POST['update'])) {
 	if (DB_num_rows($result)==0) {
 		prnMsg( _('No locations have been set up. At least one location should be set up first'), "error");
 	} else {
-		prnMsg( _('Select a csv file containing the details of the parts that you wish to import into webERP. '). '<br />' .
+		prnMsg( _('Select a csv file containing the details of the parts that you wish to import into KwaMoja. '). '<br />' .
 			 _('The first line must contain the field names that you wish to import. ').
 			 '<a href ="Z_DescribeTable.php?table=stockmaster">' . _('The field names can be found here'). '</a>', 'info');
 		echo '<form id="ItemForm" enctype="multipart/form-data" method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?' .SID .'">';

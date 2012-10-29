@@ -4,7 +4,7 @@
 
      /* -----------------------------------------------------------------------------------------------
 	This class was an extension to the FPDF class to use the syntax of the R&OS pdf.php class,
-	the syntax that WebERP original reports were written in.
+	the syntax that KwaMoja original reports were written in.
 	Due to limitation of R&OS class for foreign character support, this wrapper class was
 	written to allow the same code base to use the more functional fpdf.class by Olivier Plathey.
 
@@ -80,14 +80,14 @@ if (!class_exists('Cpdf', false)) {
 		function addInfo($label, $value) {
 			if ($label == 'Creator') {
 	
-	/* Javier: Some scripts set the creator to be WebERP like this
-				$pdf->addInfo('Creator', 'WebERP http://www.weberp.org');
+	/* Javier: Some scripts set the creator to be KwaMoja like this
+				$pdf->addInfo('Creator', 'KwaMoja http://www.kwamoja.org');
 		But the Creator is TCPDF by Nicola Asuni, PDF_CREATOR is defined as 'TCPDF' in tcpdf/config/tcpdfconfig.php
 	*/ 			$this->SetCreator(PDF_CREATOR);
 			}
 			if ($label == 'Author') {
-	/* Javier: Many scripts set the author to be WebERP like this
-				$pdf->addInfo('Author', 'WebERP ' . $Version);
+	/* Javier: Many scripts set the author to be KwaMoja like this
+				$pdf->addInfo('Author', 'KwaMoja ' . $Version);
 		But the Author might be set to be the user or make it constant here.
 	*/			$this->SetAuthor( $value );
 			}

@@ -25,7 +25,7 @@ if ((!isset($_POST['FromPeriod'])
 		'<br />'
 	. _('The purpose of the income statement is to show whether the company made or lost money during the period being reported.') . '<br />'
 	. _('The P&amp;L represents a period of time. This contrasts with the Balance Sheet, which represents a single moment in time.') . '<br />'
-	. _('webERP is an "accrual" based system (not a "cash based" system).  Accrual systems include items when they are invoiced to the customer, and when expenses are owed based on the supplier invoice date.') . '</div>';
+	. _('KwaMoja is an "accrual" based system (not a "cash based" system).  Accrual systems include items when they are invoiced to the customer, and when expenses are owed based on the supplier invoice date.') . '</div>';
 
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '">';
     echo '<div>';

@@ -1,7 +1,7 @@
 <?php
 
 /* $Id: InternalStockCategoriesByRole.php 5217 2012-04-03 21:57:50Z tehonu $ */
-/* Functionas as described in http://www.weberp.org/forum/showthread.php?tid=171 */
+/* Functionas as described in http://www.kwamoja.org/forum/showthread.php?tid=171 */
 
 include('includes/session.inc');
 $title = _('Internal Stock Categories Requests By Security Role Maintenance ');

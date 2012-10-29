@@ -148,11 +148,11 @@ if (isset($_POST['CommitBatch']) AND $_POST['CommitBatch']==_('Accept and Proces
 		$AllowThisPosting = true; //by default
 		if ($_SESSION['ProhibitJournalsToControlAccounts'] == 1){
 			if ($_SESSION['CompanyRecord']['gllink_debtors'] == '1' AND $_POST['GLManualCode'] == $_SESSION['CompanyRecord']['debtorsact']){
-				prnMsg(_('GL Journals involving the debtors control account cannot be entered. The general ledger debtors ledger (AR) integration is enabled so control accounts are automatically maintained by webERP. This setting can be disabled in System Configuration'),'warn');
+				prnMsg(_('GL Journals involving the debtors control account cannot be entered. The general ledger debtors ledger (AR) integration is enabled so control accounts are automatically maintained by KwaMoja. This setting can be disabled in System Configuration'),'warn');
 				$AllowThisPosting = false;
 			}
 			if ($_SESSION['CompanyRecord']['gllink_creditors'] == '1' AND $_POST['GLManualCode'] == $_SESSION['CompanyRecord']['creditorsact']){
-				prnMsg(_('GL Journals involving the creditors control account cannot be entered. The general ledger creditors ledger (AP) integration is enabled so control accounts are automatically maintained by webERP. This setting can be disabled in System Configuration'),'warn');
+				prnMsg(_('GL Journals involving the creditors control account cannot be entered. The general ledger creditors ledger (AP) integration is enabled so control accounts are automatically maintained by KwaMoja. This setting can be disabled in System Configuration'),'warn');
 				$AllowThisPosting = false;
 			}
 		}
@@ -185,13 +185,13 @@ if (isset($_POST['CommitBatch']) AND $_POST['CommitBatch']==_('Accept and Proces
 			if ($_SESSION['CompanyRecord']['gllink_debtors'] == '1' 
 				AND $_POST['GLCode'] == $_SESSION['CompanyRecord']['debtorsact']){
 				
-				prnMsg(_('GL Journals involving the debtors control account cannot be entered. The general ledger debtors ledger (AR) integration is enabled so control accounts are automatically maintained by webERP. This setting can be disabled in System Configuration'),'warn');
+				prnMsg(_('GL Journals involving the debtors control account cannot be entered. The general ledger debtors ledger (AR) integration is enabled so control accounts are automatically maintained by KwaMoja. This setting can be disabled in System Configuration'),'warn');
 				$AllowThisPosting = false;
 			}
 			if ($_SESSION['CompanyRecord']['gllink_creditors'] == '1' 
 				AND $_POST['GLCode'] == $_SESSION['CompanyRecord']['creditorsact']){
 				
-				prnMsg(_('GL Journals involving the creditors control account cannot be entered. The general ledger creditors ledger (AP) integration is enabled so control accounts are automatically maintained by webERP. This setting can be disabled in System Configuration'),'warn');
+				prnMsg(_('GL Journals involving the creditors control account cannot be entered. The general ledger creditors ledger (AP) integration is enabled so control accounts are automatically maintained by KwaMoja. This setting can be disabled in System Configuration'),'warn');
 				$AllowThisPosting = false;
 			}
 		}

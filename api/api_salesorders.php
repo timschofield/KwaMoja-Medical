@@ -37,7 +37,7 @@ $SOH_DateFields = array ('orddate',
 
 /* Check that the order date is a valid date. The date
  * must be in the same format as the date format specified in the
- * target webERP company */
+ * target KwaMoja company */
 	function VerifyOrderDate($orddate, $i, $Errors, $db) {
 		$sql="SELECT confvalue FROM config WHERE confname='DefaultDateFormat'";
 		$result=api_DB_query($sql, $db);
@@ -71,7 +71,7 @@ $SOH_DateFields = array ('orddate',
 		return $Errors;
 	}
 
-/* Check that the order type is set up in the weberp database */
+/* Check that the order type is set up in the kwamoja database */
 	function VerifyOrderType($ordertype, $i, $Errors, $db) {
 		$Searchsql = "SELECT COUNT(typeabbrev)
 					 FROM salestypes
@@ -100,7 +100,7 @@ $SOH_DateFields = array ('orddate',
 		return $Errors;
 	}
 
-/* Check that the from stock location is set up in the weberp database */
+/* Check that the from stock location is set up in the kwamoja database */
 	function VerifyFromStockLocation($FromStockLocn, $i, $Errors, $db) {
 		$Searchsql = "SELECT COUNT(loccode)
 					 FROM locations
@@ -115,7 +115,7 @@ $SOH_DateFields = array ('orddate',
 
 /* Check that the delivery date is a valid date. The date
  * must be in the same format as the date format specified in the
- * target webERP company */
+ * target KwaMoja company */
 	function VerifyDeliveryDate($DeliveryDate, $i, $Errors, $db) {
 		$sql="SELECT confvalue FROM config WHERE confname='DefaultDateFormat'";
 		$result=api_DB_query($sql, $db);
@@ -225,7 +225,7 @@ $SOH_DateFields = array ('orddate',
 
 /* Check that the item due date is a valid date. The date
  * must be in the same format as the date format specified in the
- * target webERP company */
+ * target KwaMoja company */
 	function VerifyItemDueDate($ItemDue, $i, $Errors, $db) {
 		$sql="SELECT confvalue FROM config WHERE confname='DefaultDateFormat'";
 		$result=api_DB_query($sql, $db);
@@ -259,7 +259,7 @@ $SOH_DateFields = array ('orddate',
 		return $Errors;
 	}
 
-/* Create a customer sales order header in webERP. If successful
+/* Create a customer sales order header in KwaMoja. If successful
  * returns $Errors[0]=0 and $Errors[1] will contain the order number.
  */
 	function InsertSalesOrderHeader($OrderHeader, $user, $password) {
@@ -362,7 +362,7 @@ $SOH_DateFields = array ('orddate',
 		return $Errors;
 	}
 
-/* Modify a customer sales order header in webERP.
+/* Modify a customer sales order header in KwaMoja.
  */
 	function ModifySalesOrderHeader($OrderHeader, $user, $password) {
 		$Errors = array();
@@ -458,8 +458,8 @@ $SOH_DateFields = array ('orddate',
 		return $Errors;
 	}
 
-/* Create a customer sales order line in webERP. The order header must
- * already exist in webERP.
+/* Create a customer sales order line in KwaMoja. The order header must
+ * already exist in KwaMoja.
  */
 	function InsertSalesOrderLine($OrderLine, $user, $password) {
 
@@ -524,8 +524,8 @@ $SOH_DateFields = array ('orddate',
 		return $Errors;
 	}
 
-/* Modify a customer sales order line in webERP. The order header must
- * already exist in webERP.
+/* Modify a customer sales order line in KwaMoja. The order header must
+ * already exist in KwaMoja.
  */
 	function ModifySalesOrderLine($OrderLine, $user, $password) {
 		$Errors = array();

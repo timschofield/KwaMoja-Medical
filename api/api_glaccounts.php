@@ -89,7 +89,7 @@
 	}
 
 /* This function returns a list of the general ledger accounts
- * currently setup on webERP
+ * currently setup on KwaMoja
  */
 
 	function GetGLAccountList($user, $password) {

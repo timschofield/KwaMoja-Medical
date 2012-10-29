@@ -2,7 +2,7 @@
 /* $Id$*/
 
 include('includes/session.inc');
-$title = _('Upgrade webERP 3.09 - 3.10');
+$title = _('Upgrade KwaMoja 3.09 - 3.10');
 include('includes/header.inc');
 
 

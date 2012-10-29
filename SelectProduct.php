@@ -6,7 +6,7 @@ $SuppliersSecurity = 9; //don't show supplier purchasing info unless security to
 
 include ('includes/session.inc');
 $title = _('Search Inventory Items');
-/* webERP manual links before header.inc */
+/* KwaMoja manual links before header.inc */
 $ViewTopic= 'Inventory';
 $BookMark = 'SelectingInventory';
 

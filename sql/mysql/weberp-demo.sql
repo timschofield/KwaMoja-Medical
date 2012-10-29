@@ -1,9 +1,9 @@
-CREATE DATABASE IF NOT EXISTS weberpdemo;
-USE weberpdemo;
+CREATE DATABASE IF NOT EXISTS kwamojademo;
+USE kwamojademo;
 SET FOREIGN_KEY_CHECKS = 0;
 -- MySQL dump 10.13  Distrib 5.5.24, for Linux (i686)
 --
--- Host: localhost    Database: weberpdemo
+-- Host: localhost    Database: kwamojademo
 -- ------------------------------------------------------
 -- Server version	5.5.24
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
@@ -3009,7 +3009,7 @@ CREATE TABLE `www_users` (
 -- Dump completed on 2012-10-14 10:04:00
 -- MySQL dump 10.13  Distrib 5.5.24, for Linux (i686)
 --
--- Host: localhost    Database: weberpdemo
+-- Host: localhost    Database: kwamojademo
 -- ------------------------------------------------------
 -- Server version	5.5.24
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
@@ -4597,7 +4597,7 @@ INSERT INTO `cogsglpostings` VALUES (5,'AN','ANY',5000,'AN');
 -- Dumping data for table `companies`
 --
 
-INSERT INTO `companies` VALUES (1,'weberpdemo','not entered yet','','123 Web Way','PO Box 123','Queen Street','Melbourne','Victoria 3043','Australia','+61 3 4567 8901','+61 3 4567 8902','weberp@weberpdemo.com','AUD',1100,4900,2100,2400,2150,4200,5200,3500,1,1,1,5600);
+INSERT INTO `companies` VALUES (1,'kwamojademo','not entered yet','','123 Web Way','PO Box 123','Queen Street','Melbourne','Victoria 3043','Australia','+61 3 4567 8901','+61 3 4567 8902','kwamoja@kwamojademo.com','AUD',1100,4900,2100,2400,2150,4200,5200,3500,1,1,1,5600);
 
 --
 -- Dumping data for table `config`
@@ -4631,10 +4631,10 @@ INSERT INTO `config` VALUES ('DefineControlledOnWOEntry','1');
 INSERT INTO `config` VALUES ('DispatchCutOffTime','14');
 INSERT INTO `config` VALUES ('DoFreightCalc','0');
 INSERT INTO `config` VALUES ('EDIHeaderMsgId','D:01B:UN:EAN010');
-INSERT INTO `config` VALUES ('EDIReference','WEBERP');
-INSERT INTO `config` VALUES ('EDI_Incoming_Orders','companies/weberpdemo/EDI_Incoming_Orders');
-INSERT INTO `config` VALUES ('EDI_MsgPending','companies/weberpdemo/EDI_MsgPending');
-INSERT INTO `config` VALUES ('EDI_MsgSent','companies/weberpdemo/EDI_Sent');
+INSERT INTO `config` VALUES ('EDIReference','KWAMOJA');
+INSERT INTO `config` VALUES ('EDI_Incoming_Orders','companies/kwamojademo/EDI_Incoming_Orders');
+INSERT INTO `config` VALUES ('EDI_MsgPending','companies/kwamojademo/EDI_MsgPending');
+INSERT INTO `config` VALUES ('EDI_MsgSent','companies/kwamojademo/EDI_Sent');
 INSERT INTO `config` VALUES ('Extended_CustomerInfo','0');
 INSERT INTO `config` VALUES ('Extended_SupplierInfo','0');
 INSERT INTO `config` VALUES ('FactoryManagerEmail','manager@company.com');
@@ -4655,7 +4655,7 @@ INSERT INTO `config` VALUES ('OverChargeProportion','30');
 INSERT INTO `config` VALUES ('OverReceiveProportion','20');
 INSERT INTO `config` VALUES ('PackNoteFormat','1');
 INSERT INTO `config` VALUES ('PageLength','48');
-INSERT INTO `config` VALUES ('part_pics_dir','companies/weberpdemo/part_pics');
+INSERT INTO `config` VALUES ('part_pics_dir','companies/kwamojademo/part_pics');
 INSERT INTO `config` VALUES ('PastDueDays1','30');
 INSERT INTO `config` VALUES ('PastDueDays2','60');
 INSERT INTO `config` VALUES ('PO_AllowSameItemMultipleTimes','1');
@@ -4671,7 +4671,7 @@ INSERT INTO `config` VALUES ('RadioBeaconStockLocation','BL');
 INSERT INTO `config` VALUES ('RadioBraconFTP_server','192.168.2.2');
 INSERT INTO `config` VALUES ('RadioBreaconFilePrefix','ORDXX');
 INSERT INTO `config` VALUES ('RadionBeaconFTP_user_pass','Radio Beacon remote ftp server password');
-INSERT INTO `config` VALUES ('reports_dir','companies/weberpdemo/reportwriter');
+INSERT INTO `config` VALUES ('reports_dir','companies/kwamojademo/reportwriter');
 INSERT INTO `config` VALUES ('RequirePickingNote','0');
 INSERT INTO `config` VALUES ('RomalpaClause','Ownership will not pass to the buyer until the goods have been paid for in full.');
 INSERT INTO `config` VALUES ('ShowStockidOnImages','0');
@@ -5443,7 +5443,7 @@ INSERT INTO `purchorderauth` VALUES ('admin','USD',0,9999999,0);
 -- Dumping data for table `purchorderdetails`
 --
 
-INSERT INTO `purchorderdetails` VALUES (1,1,'DVD-CASE','2007-06-25','webERP Demo DVD Case',1460,0,0.23,0,0.3,45,0,0,'',0,'','',0,1);
+INSERT INTO `purchorderdetails` VALUES (1,1,'DVD-CASE','2007-06-25','KwaMoja Demo DVD Case',1460,0,0.23,0,0.3,45,0,0,'',0,'','',0,1);
 INSERT INTO `purchorderdetails` VALUES (2,1,'DVD-LTWP','2007-06-25','Lethal Weapon Linked',1460,0,2.98,0,2.7,7,0,0,'',0,'','',0,1);
 INSERT INTO `purchorderdetails` VALUES (3,2,'SALT','2009-02-05','Salt',1460,0,100,0,2.5,20,0,0,'',0,'','',0,1);
 INSERT INTO `purchorderdetails` VALUES (4,3,'BREAD','2010-08-14','Bread',1460,10.3,0.25,0.35,0.5625,12,10.3,0,'0',1,'each','',0,1);
@@ -5456,10 +5456,10 @@ INSERT INTO `purchorderdetails` VALUES (11,7,'BREAD','2011-03-08','Bread',1460,0
 INSERT INTO `purchorderdetails` VALUES (12,8,'','2011-03-08','fddfdf',1400,0,95.5,0,0,10,0,0,'',0,'each','',0,1);
 INSERT INTO `purchorderdetails` VALUES (13,8,'DVD-TOPGUN','2011-03-08','Top Gun DVD',1460,0,7.99,0,0,2,0,0,'0',0,'each','1',0,1);
 INSERT INTO `purchorderdetails` VALUES (18,12,'DVD-CASE','2011-03-27',' - ',1460,0,1.975,0,0,200,0,0,'0',0,'each','1',0,2);
-INSERT INTO `purchorderdetails` VALUES (21,14,'DVD-CASE','2011-04-18','webERP Demo DVD Case',1460,0,12.5,0,0,3,0,0,'0',0,'each','1',0,1);
+INSERT INTO `purchorderdetails` VALUES (21,14,'DVD-CASE','2011-04-18','KwaMoja Demo DVD Case',1460,0,12.5,0,0,3,0,0,'0',0,'each','1',0,1);
 INSERT INTO `purchorderdetails` VALUES (22,15,'DVD-CASE','2011-04-18','CrystalCase50 - Crystal Cases 50 Pack',1460,0,30,0,0.3,150,64,0,'0',0,'','CrystalCase50',0,50);
 INSERT INTO `purchorderdetails` VALUES (23,16,'DVD-CASE','2011-04-18','CrystalCase50 - Crystal Cases 50 Pack',1460,0,30,0,0.3,100,98,0,'0',1,'50 pack','CrystalCase50',0,50);
-INSERT INTO `purchorderdetails` VALUES (24,17,'DVD-CASE','2011-06-26','webERP Demo DVD Case',1460,0,0,0,0,2000,0,0,'0',0,'','',0,1);
+INSERT INTO `purchorderdetails` VALUES (24,17,'DVD-CASE','2011-06-26','KwaMoja Demo DVD Case',1460,0,0,0,0,2000,0,0,'0',0,'','',0,1);
 INSERT INTO `purchorderdetails` VALUES (25,17,'DVD-TOPGUN','2011-06-26','Top Gun DVD',1460,0,0,0,0,5000,0,0,'0',0,'','',0,1);
 INSERT INTO `purchorderdetails` VALUES (26,18,'BREAD','2011-10-09','  Loaf of bread',1460,0,1.58,0,0,0.5,0,0,'',0,'','',0,1);
 INSERT INTO `purchorderdetails` VALUES (27,13,'DVD-DHWV','2012-01-05','Die Hard With A Vengeance Linked',1460,0,6.95,0,2.32,3,3,0,'0',1,'each','',0,1);
@@ -5475,15 +5475,15 @@ INSERT INTO `purchorders` VALUES (3,'BINGO','','2010-08-14 00:00:00',0.85,'2010-
 INSERT INTO `purchorders` VALUES (4,'BINGO','','2011-02-18 00:00:00',0.85,NULL,1,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','+61 3 56789012','+61 3 56789012','Box 3499','Gardenier','San Fransisco','California 54424','','','','','Jack Roberts',3.00,'2011-02-18','','1','2011-02-18','Authorised','18/02/2011 - Order Created and Authorised by <a href=\"mailto:phil@logicworks.co.nz\">Demonstration user</a> - <br />','30','');
 INSERT INTO `purchorders` VALUES (6,'CAMPBELL','','2011-03-08 00:00:00',0.85,NULL,1,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','Australia','+61 3 56789012','Box 9882','Ottowa Rise','','','','','','','Jack Roberts',1.00,'2011-03-08','','1','2011-03-08','Authorised','08/03/2011 - Order Created and Authorised by <a href=\"mailto:phil@logicworks.co.nz\">Demonstration user</a> - <br />','30','');
 INSERT INTO `purchorders` VALUES (7,'BINGO','','2011-03-08 00:00:00',0.85,NULL,1,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','+61 3 56789012','+61 3 56789012','Box 3499','Gardenier','San Fransisco','California 54424','','','','','Jack Roberts',3.00,'2011-12-03','','1','2011-03-08','Authorised','03/12/2011 - Order modified by &lt;a href=&quot;mailto:phil@logicworks.co.nz&quot;&gt;Demonstration user&lt;/a&gt;&lt;br /&gt;','30','');
-INSERT INTO `purchorders` VALUES (8,'CRUISE','','2011-03-08 00:00:00',0.8,'2011-03-26 00:00:00',0,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','Australia','+61 3 56789012','Box 2001','Ft Lauderdale, Florida','','','','','Barry Toad','','Jack Roberts',1.00,'2011-03-08','','1','2011-03-08','Rejected','27/03/2011 - Rejected by <a href=\"mailto:info@weberp.org\">Demonstration user</a><br>27/03/2011 - Order set to pending status by &lt;a href=&quot;mailto:info@weberp.org&quot;&gt;Demonstration user&lt;/a&gt;&lt;br&gt;26/03/2011 - Printed by&lt;a href=&quot;mailto:info@weberp.org&quot;&gt;Demonstration user&lt;/a&gt;&lt;br /&gt;08/03/2011 - Order Created and Authorised by &lt;a href=&quot;mailto:phil@logicworks.co.nz&quot;&gt;Demonstration user&lt;/a&gt; - &lt;br /&gt;','30','');
-INSERT INTO `purchorders` VALUES (9,'BINGO','','2011-03-26 00:00:00',0.85,NULL,1,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','+61 3 56789012','+61 3 56789012','Box 3499','Gardenier','San Fransisco','California 54424','','','','','Jack Roberts',2.00,'2011-03-26','','1','2011-03-26','Authorised','26/03/2011 - Order Created and Authorised by <a href=\"mailto:info@weberp.org\">Demonstration user</a> - <br />','30','');
-INSERT INTO `purchorders` VALUES (10,'BINGO','','2011-03-26 00:00:00',0.85,NULL,1,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','+61 3 56789012','+61 3 56789012','Box 3499','Gardenier','San Fransisco','California 54424','','','','','Jack Roberts',2.00,'2011-03-26','','1','2011-03-26','Authorised','26/03/2011 - Order Created and Authorised by <a href=\"mailto:info@weberp.org\">Demonstration user</a> - <br />','30','');
-INSERT INTO `purchorders` VALUES (11,'BINGO','','2011-03-27 00:00:00',0.85,NULL,1,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','+61 3 56789012','+61 3 56789012','Box 3499','Gardenier','San Fransisco','California 54424','','','','','Jack Roberts',2.00,'2011-03-27','','1','2011-03-27','Authorised','18/04/2011 - Authorised by <a href=\"mailto:info@weberp.org\">admin</a><br>27/03/2011 - Order Created by &lt;a href=&quot;mailto:info@weberp.org&quot;&gt;Demonstration user&lt;/a&gt; - &lt;br /&gt;','30','');
+INSERT INTO `purchorders` VALUES (8,'CRUISE','','2011-03-08 00:00:00',0.8,'2011-03-26 00:00:00',0,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','Australia','+61 3 56789012','Box 2001','Ft Lauderdale, Florida','','','','','Barry Toad','','Jack Roberts',1.00,'2011-03-08','','1','2011-03-08','Rejected','27/03/2011 - Rejected by <a href=\"mailto:info@kwamoja.org\">Demonstration user</a><br>27/03/2011 - Order set to pending status by &lt;a href=&quot;mailto:info@kwamoja.org&quot;&gt;Demonstration user&lt;/a&gt;&lt;br&gt;26/03/2011 - Printed by&lt;a href=&quot;mailto:info@kwamoja.org&quot;&gt;Demonstration user&lt;/a&gt;&lt;br /&gt;08/03/2011 - Order Created and Authorised by &lt;a href=&quot;mailto:phil@logicworks.co.nz&quot;&gt;Demonstration user&lt;/a&gt; - &lt;br /&gt;','30','');
+INSERT INTO `purchorders` VALUES (9,'BINGO','','2011-03-26 00:00:00',0.85,NULL,1,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','+61 3 56789012','+61 3 56789012','Box 3499','Gardenier','San Fransisco','California 54424','','','','','Jack Roberts',2.00,'2011-03-26','','1','2011-03-26','Authorised','26/03/2011 - Order Created and Authorised by <a href=\"mailto:info@kwamoja.org\">Demonstration user</a> - <br />','30','');
+INSERT INTO `purchorders` VALUES (10,'BINGO','','2011-03-26 00:00:00',0.85,NULL,1,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','+61 3 56789012','+61 3 56789012','Box 3499','Gardenier','San Fransisco','California 54424','','','','','Jack Roberts',2.00,'2011-03-26','','1','2011-03-26','Authorised','26/03/2011 - Order Created and Authorised by <a href=\"mailto:info@kwamoja.org\">Demonstration user</a> - <br />','30','');
+INSERT INTO `purchorders` VALUES (11,'BINGO','','2011-03-27 00:00:00',0.85,NULL,1,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','+61 3 56789012','+61 3 56789012','Box 3499','Gardenier','San Fransisco','California 54424','','','','','Jack Roberts',2.00,'2011-03-27','','1','2011-03-27','Authorised','18/04/2011 - Authorised by <a href=\"mailto:info@kwamoja.org\">admin</a><br>27/03/2011 - Order Created by &lt;a href=&quot;mailto:info@kwamoja.org&quot;&gt;Demonstration user&lt;/a&gt; - &lt;br /&gt;','30','');
 INSERT INTO `purchorders` VALUES (12,'BINGO','','2011-03-27 00:00:00',0.85,'2011-11-12 00:00:00',0,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','+61 3 56789012','+61 3 56789012','Box 3499','Gardenier','San Fransisco','California 54424','','','','','Jack Roberts',7.00,'2011-11-12','','1','2011-03-27','Printed','12/11/2011 - Printed by&lt;a href=&quot;mailto:phil@logicworks.co.nz&quot;&gt;Demonstration user&lt;/a&gt;&lt;br /&gt;','30','');
 INSERT INTO `purchorders` VALUES (13,'WHYNOT','','2011-04-12 00:00:00',1,'2012-01-07 00:00:00',0,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','+61 3 56789012','+61 3 56789012','Well I will ','If I','Want ','To','','','','12323','Jack Roberts',5.00,'2011-11-12','','1','2011-04-12','Completed','07/01/2012 - Order Completed on entry of GRN<br />07/01/2012 - Printed by <a href=\"mailto:phil@logicworks.co.nz\">Demonstration user</a><br />','20','');
-INSERT INTO `purchorders` VALUES (14,'WHYNOT','','2011-04-18 00:00:00',1,NULL,1,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','Australia','+61 3 56789012','Well I will ','If I','Want ','To','','','','12323','Jack Roberts',1.00,'2011-04-18','','1','2011-04-18','Authorised','18/04/2011 - Order Created and Authorised by <a href=\"mailto:info@weberp.org\">Demonstration user</a> - <br />','20','');
-INSERT INTO `purchorders` VALUES (15,'WHYNOT','','2011-04-18 00:00:00',1,'2011-04-18 00:00:00',0,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','Australia','+61 3 56789012','Well I will ','If I','Want ','To','','','','12323','Jack Roberts',1.00,'2011-04-18','','1','2011-04-18','Printed','18/04/2011 - Printed by<a href=\"mailto:info@weberp.org\">Demonstration user</a><br />18/04/2011 - Order Created and Authorised by <a href=\"mailto:info@weberp.org\">Demonstration user</a> - <br />','20','');
-INSERT INTO `purchorders` VALUES (16,'WHYNOT','','2011-04-18 00:00:00',1,'2011-04-18 00:00:00',1,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','Australia','+61 3 56789012','Well I will ','If I','Want ','To','','','','12323','Jack Roberts',1.00,'2011-04-18','','1','2011-04-18','Completed','12/11/2011 - Order Completed on entry of GRN<br />18/04/2011 - Printed by<a href=\"mailto:info@weberp.org\">Demonstration user</a><br />18/04/2011 - Order Created and Authorised by <a href=\"mailto:info@weberp.org\">Demonstration user</a> - <br />','20','');
+INSERT INTO `purchorders` VALUES (14,'WHYNOT','','2011-04-18 00:00:00',1,NULL,1,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','Australia','+61 3 56789012','Well I will ','If I','Want ','To','','','','12323','Jack Roberts',1.00,'2011-04-18','','1','2011-04-18','Authorised','18/04/2011 - Order Created and Authorised by <a href=\"mailto:info@kwamoja.org\">Demonstration user</a> - <br />','20','');
+INSERT INTO `purchorders` VALUES (15,'WHYNOT','','2011-04-18 00:00:00',1,'2011-04-18 00:00:00',0,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','Australia','+61 3 56789012','Well I will ','If I','Want ','To','','','','12323','Jack Roberts',1.00,'2011-04-18','','1','2011-04-18','Printed','18/04/2011 - Printed by<a href=\"mailto:info@kwamoja.org\">Demonstration user</a><br />18/04/2011 - Order Created and Authorised by <a href=\"mailto:info@kwamoja.org\">Demonstration user</a> - <br />','20','');
+INSERT INTO `purchorders` VALUES (16,'WHYNOT','','2011-04-18 00:00:00',1,'2011-04-18 00:00:00',1,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','Australia','+61 3 56789012','Well I will ','If I','Want ','To','','','','12323','Jack Roberts',1.00,'2011-04-18','','1','2011-04-18','Completed','12/11/2011 - Order Completed on entry of GRN<br />18/04/2011 - Printed by<a href=\"mailto:info@kwamoja.org\">Demonstration user</a><br />18/04/2011 - Order Created and Authorised by <a href=\"mailto:info@kwamoja.org\">Demonstration user</a> - <br />','20','');
 INSERT INTO `purchorders` VALUES (17,'CRUISE','','2011-06-26 00:00:00',0.8,NULL,0,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','Australia','+61 3 56789012','Box 2001','Ft Lauderdale, Florida','','','','','Barry Toad','','Jack Roberts',1.00,'2011-06-26','','1','2011-06-26','Cancelled','03/12/2011 - Cancelled by <a href=\"mailto:phil@logicworks.co.nz\">Demonstration user</a><br />','30','');
 INSERT INTO `purchorders` VALUES (18,'GOTSTUFF',NULL,'2011-10-08 00:00:00',0.85,NULL,0,'Demonstrat',NULL,'MEL','Melbourne','1234 Collins Street','Melbourne','Victoria 2345','',' Australia','+61 3 56789012','Test line 1','Test line 2','Test line 3','Test line 4 - editing','','','','','',1.00,'2011-10-08','','1','2011-10-08','Pending','08/10/2011 - Order Created by  <a href=\"mailto:phil@logicworks.co.nz\">Demonstration user</a> - Auto created from sales orders<br />','20','');
 INSERT INTO `purchorders` VALUES (19,'WHYNOT','','2011-11-26 00:00:00',1,'2011-11-26 00:00:00',0,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','+61 3 56789012','+61 3 56789012','Well I will ','If I','Want ','To','','','','12323','Jack Roberts',2.00,'2011-11-26','','1','2011-11-26','Completed','26/11/2011 - Order Completed on entry of GRN<br />26/11/2011 - Printed by&lt;a href=&quot;mailto:phil@logicworks.co.nz&quot;&gt;Demonstration user&lt;/a&gt;&lt;br /&gt;','20','');
@@ -8549,7 +8549,7 @@ INSERT INTO `scripts` VALUES ('InventoryQuantities.php',2,'');
 INSERT INTO `scripts` VALUES ('InventoryValuation.php',2,'Creates a pdf report showing the value of stock at standard cost for a range of product categories selected');
 INSERT INTO `scripts` VALUES ('Labels.php',15,'Produces item pricing labels in a pdf from a range of selected criteria');
 INSERT INTO `scripts` VALUES ('Locations.php',11,'Defines the inventory stocking locations or warehouses');
-INSERT INTO `scripts` VALUES ('Logout.php',1,'Shows when the user logs out of webERP');
+INSERT INTO `scripts` VALUES ('Logout.php',1,'Shows when the user logs out of KwaMoja');
 INSERT INTO `scripts` VALUES ('MailInventoryValuation.php',1,'Meant to be run as a scheduled process to email the stock valuation off to a specified person. Creates the same stock valuation report as InventoryValuation.php');
 INSERT INTO `scripts` VALUES ('ManualContents.php',1,'');
 INSERT INTO `scripts` VALUES ('MenuAccess.php',15,'');
@@ -8955,7 +8955,7 @@ INSERT INTO `stockmaster` VALUES ('BIGEARS12','DVD','Big Ears and Noddy episodes
 INSERT INTO `stockmaster` VALUES ('BirthdayCakeConstruc','BAKE','12 foot birthday cake for wrestling tournament','12 foot birthday cake for wrestling tournament','each','M',0.0000,0.0000,12.2525,0.0000,0.0000,0,0,0,0,0.0000,0.0000,'','',1,0,'none',0,0,0,0,0,0.0000,'0000-00-00');
 INSERT INTO `stockmaster` VALUES ('BREAD','FOOD','Bread','Bread','each','M',0.0000,0.5625,0.4118,0.0000,0.0000,0,0,0,0,0.0000,0.0000,'','',1,0,'none',0,0,0,0,0,0.0000,'0000-00-00');
 INSERT INTO `stockmaster` VALUES ('DR_TUMMY','FOOD','Gastric exquisite diarrhea','Gastric exquisite diarrhea','each','M',0.0000,0.0000,116.2250,0.0000,0.0000,0,0,0,0,0.0000,0.0000,'','',1,0,'none',0,0,0,0,0,0.0000,'0000-00-00');
-INSERT INTO `stockmaster` VALUES ('DVD-CASE','DVD','webERP Demo DVD Case','webERP Demo DVD Case','each','B',0.0000,0.0000,0.3000,0.0000,0.0000,0,1,0,0,0.0000,0.0000,'','DE',1,0,'0',0,0,0,0,0,0.0000,'0000-00-00');
+INSERT INTO `stockmaster` VALUES ('DVD-CASE','DVD','KwaMoja Demo DVD Case','KwaMoja Demo DVD Case','each','B',0.0000,0.0000,0.3000,0.0000,0.0000,0,1,0,0,0.0000,0.0000,'','DE',1,0,'0',0,0,0,0,0,0.0000,'0000-00-00');
 INSERT INTO `stockmaster` VALUES ('DVD-DHWV','DVD','Die Hard With A Vengeance Linked','Regional Code: 2 (Japan, Europe, Middle East, South Africa). &lt;br /&gt;Languages: English, Deutsch. &lt;br /&gt;Subtitles: English, Deutsch, Spanish. &lt;br /&gt;Audio: Dolby Surround 5.1. &lt;br /&gt;Picture Format: 16:9 Wide-Screen. &lt;br /&gt;Length: (approx) 122 minutes. &lt;br /&gt;Other: Interactive Menus, Chapter Selection, Subtitles (more languages).','each','B',0.0000,5.5000,2.3200,0.0000,0.0000,0,0,0,0,0.0000,7.0000,'','',1,0,'0',0,0,0,0,0,0.0000,'0000-00-00');
 INSERT INTO `stockmaster` VALUES ('DVD-LTWP','AIRCON','Lethal Weapon Linked','Regional Code: 2 (Japan, Europe, Middle East, South Africa).\r\n<br />\r\nLanguages: English, Deutsch.\r\n<br />\r\nSubtitles: English, Deutsch, Spanish.\r\n<br />\r\nAudio: Dolby Surround 5.1.\r\n<br />\r\nPicture Format: 16:9 Wide-Screen.\r\n<br />\r\nLength: (approx) 100 minutes.\r\n<br />\r\nOther: Interactive Menus, Chapter Selection, Subtitles (more languages).','each','B',0.0000,2.6600,2.7000,0.0000,0.0000,0,0,0,0,0.0000,7.0000,'','',1,0,'none',0,0,0,0,0,0.0000,'0000-00-00');
 INSERT INTO `stockmaster` VALUES ('DVD-TOPGUN','DVD','Top Gun DVD','Top Gun DVD','each','B',0.0000,0.0000,6.5000,0.0000,0.0000,0,0,1,0,0.0000,0.0000,'','',1,0,'none',0,0,0,0,0,0.0000,'0000-00-00');
@@ -9265,7 +9265,7 @@ INSERT INTO `workorders` VALUES (23,'MEL','2012-09-08','2012-09-08',0,0);
 -- Dumping data for table `www_users`
 --
 
-INSERT INTO `www_users` VALUES ('admin','f0f77a7f88e7c1e93ab4e316b4574c7843b00ea4','Demonstration user','','','','','info@weberp.org','MEL',8,0,'2012-10-14 10:54:19','','A4','1,1,1,1,1,1,1,1,1,1,1,',0,50,'aguapop','en_GB.utf8',0,0);
+INSERT INTO `www_users` VALUES ('admin','f0f77a7f88e7c1e93ab4e316b4574c7843b00ea4','Demonstration user','','','','','info@kwamoja.org','MEL',8,0,'2012-10-14 10:54:19','','A4','1,1,1,1,1,1,1,1,1,1,1,',0,50,'aguapop','en_GB.utf8',0,0);
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

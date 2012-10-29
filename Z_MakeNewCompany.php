@@ -84,14 +84,14 @@ if (isset($_POST['submit']) AND isset($_POST['NewCompany'])) {
 						}
 					}
 					$db = pg_connect( $PgConnStr );
-					$SQLScriptFile = file('./sql/pg/weberp-new.psql');
+					$SQLScriptFile = file('./sql/pg/kwamoja-new.psql');
 
 				} elseif ($dbType =='mysql') { //its a mysql db < 4.1
 					mysql_select_db($_POST['NewCompany'],$db);
-					$SQLScriptFile = file('./sql/mysql/weberp-new.sql');
+					$SQLScriptFile = file('./sql/mysql/kwamoja-new.sql');
 				} elseif ($dbType =='mysqli') { //its a mysql db using the >4.1 library functions
 					mysqli_select_db($db,$_POST['NewCompany']);
-					$SQLScriptFile = file('./sql/mysql/weberp-new.sql');
+					$SQLScriptFile = file('./sql/mysql/kwamoja-new.sql');
 				}
 
 				$ScriptFileEntries = sizeof($SQLScriptFile);
@@ -189,7 +189,7 @@ if (isset($_POST['submit']) AND isset($_POST['NewCompany'])) {
 		$ForceConfigReload=true;
 		include('includes/GetConfig.php');
 
-		prnMsg (_('The new company database has been created for' . ' ' . $_POST['NewCompany'] . '. ' . _('The company details and parameters should now be set up for the new company. NB: Only a single user "demo" is defined with the password "weberp" in the new company database. A new system administrator user should be defined for the new company and this account deleted immediately.')), 'info');
+		prnMsg (_('The new company database has been created for' . ' ' . $_POST['NewCompany'] . '. ' . _('The company details and parameters should now be set up for the new company. NB: Only a single user "demo" is defined with the password "kwamoja" in the new company database. A new system administrator user should be defined for the new company and this account deleted immediately.')), 'info');
 
 		echo '<p><a href="' . $rootpath . '/CompanyPreferences.php">' . _('Set Up New Company Details') . '</a>';
 		echo '<p><a href="' . $rootpath . '/SystemParameters.php">' . _('Set Up Configuration Details') . '</a>';

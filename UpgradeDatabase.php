@@ -4,7 +4,7 @@
 $PageSecurity = 15; //hard coded in case database is old and PageSecurity stuff cannot be retrieved
 
 include('includes/session.inc');
-$title = _('Upgrade webERP Database');
+$title = _('Upgrade KwaMoja Database');
 include('includes/header.inc');
 
 if (!isset($_POST['DoUpgrade'])){
@@ -14,7 +14,7 @@ if (!isset($_POST['DoUpgrade'])){
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	if (!isset($_SESSION['VersionNumber'])){
-		prnMsg(_('The webERP code is version')  . ' ' . $Version . ' ' . _('and the database version is not actually recorded at this version'),'info');
+		prnMsg(_('The KwaMoja code is version')  . ' ' . $Version . ' ' . _('and the database version is not actually recorded at this version'),'info');
 		echo '<table class="selection">
 			<tr>
 				<td>' . _('Select the version you are upgrading from:') . '</td>
@@ -46,7 +46,7 @@ if (!isset($_POST['DoUpgrade'])){
 		if (strcmp($Version,$_SESSION['VersionNumber'])==0){
 			prnMsg(_('The database is up to date, there are no upgrades to perform'),'info');
 		} else {
-			prnMsg(_('This script will perform any modifications to the database required to allow the additional functionality in later scripts.') . '<br />' . _('The webERP code is version')  . ' ' . $Version . ' ' . _('and the database version is') . ' ' . $_SESSION['VersionNumber'] . '<br /><a target="_blank" href="' . $rootpath . '/BackupDatabase.php">' ._('Click to do a database backup now before proceeding!') . '</a>','info');
+			prnMsg(_('This script will perform any modifications to the database required to allow the additional functionality in later scripts.') . '<br />' . _('The KwaMoja code is version')  . ' ' . $Version . ' ' . _('and the database version is') . ' ' . $_SESSION['VersionNumber'] . '<br /><a target="_blank" href="' . $rootpath . '/BackupDatabase.php">' ._('Click to do a database backup now before proceeding!') . '</a>','info');
 
 			echo '<input type="hidden" name="OldVersion" value="' . $_SESSION['VersionNumber'] . '" />';
 			echo '<div class="centre">

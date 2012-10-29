@@ -10,7 +10,7 @@ $EDIHeaderMsgId = 'D:01B:UN:EAN010';
 
 /*EDI Reference of the company */
 
-$EDIReference = 'WEBERP';
+$EDIReference = 'KWAMOJA';
 
 /* EDI Messages for sending directory */
 

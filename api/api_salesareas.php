@@ -1,7 +1,7 @@
 <?php
 /* $Id$*/
 
-/* Check that the area code is set up in the weberp database */
+/* Check that the area code is set up in the kwamoja database */
 	function VerifyAreaCodeDoesntExist($AreaCode , $i, $Errors, $db) {
 		$Searchsql = "SELECT COUNT(areacode)
 					 FROM areas
@@ -15,7 +15,7 @@
 	}
 
 /* This function returns a list of the sales areas
- * currently setup on webERP
+ * currently setup on KwaMoja
  */
 
 	function GetSalesAreasList($User, $Password) {
@@ -60,7 +60,7 @@
 	}
 
 /* This function takes as a parameter an array of sales area details
- * to be inserted into webERP.
+ * to be inserted into KwaMoja.
  */
 
 	function InsertSalesArea($AreaDetails, $User, $Password) {

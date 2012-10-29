@@ -19,11 +19,11 @@ echo '</head>';
 
 echo '<body>';
 
-$weberpuser = $_SESSION['UserID'];
-$sql="SELECT password FROM www_users WHERE userid='".$weberpuser."'";
+$kwamojauser = $_SESSION['UserID'];
+$sql="SELECT password FROM www_users WHERE userid='".$kwamojauser."'";
 $result=DB_query($sql, $db);
 $myrow=DB_fetch_array($result);
-$weberppassword = $myrow[0];
+$kwamojapassword = $myrow[0];
 
 $ServerString = $_SERVER['HTTP_HOST'].$rootpath;
 $FirstBitOfURL = mb_substr($ServerString,0,mb_strpos($ServerString,'/doc/Manual'));

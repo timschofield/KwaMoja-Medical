@@ -52,8 +52,8 @@ if (isset($PrintPDF) OR isset($_GET['PrintPDF'])
 
 
 	$pdf = new Cpdf('L', 'pt', 'A4');
-	$pdf->addInfo('Creator', 'webERP http://www.weberp.org');
-	$pdf->addInfo('Author', 'webERP ' . $Version);
+	$pdf->addInfo('Creator', 'KwaMoja http://www.kwamoja.org');
+	$pdf->addInfo('Author', 'KwaMoja ' . $Version);
 
 	if ($InvOrCredit=='Invoice') {
 		$pdf->addInfo('Title',_('Sales Invoice') . ' ' . $FromTransNo . ' to ' . $_POST['ToTransNo']);

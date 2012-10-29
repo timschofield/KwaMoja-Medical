@@ -3,7 +3,7 @@
 Mehrsprachigkeit
 </b></font></a>
 <br /><br />
-webERP kann in jede beliebige Sprache übersetzt werden, so dass die gesamte Web-Oberfläche in der Sprache des Benutzers angezeigt werden kann. Das System kann zur gleichen Zeit unterschiedliche Sprachen für unterschiedliche Benutzer anzeigen, das ist davon abhängig, welche Sprache in den Benutzereinstellungen des jeweiligen Benutzers festgelegt ist.
+KwaMoja kann in jede beliebige Sprache übersetzt werden, so dass die gesamte Web-Oberfläche in der Sprache des Benutzers angezeigt werden kann. Das System kann zur gleichen Zeit unterschiedliche Sprachen für unterschiedliche Benutzer anzeigen, das ist davon abhängig, welche Sprache in den Benutzereinstellungen des jeweiligen Benutzers festgelegt ist.
 <br /><br />
 Um eine Übersetzung zu erstellen, wird die folgende Vorgehensweise empfohlen:
 <br />
@@ -15,11 +15,11 @@ Lassen Sie die Mitgieder der Liste wissen, dass Sie mit einer Übersetzung helfen
 <br />
 2. Beschaffen Sie sich die neueste Datei messages.po und geben Sie die Übersetzungen mit ihrem Lieblingseditor ein. Die neueste messages.po-Datei finden Sie im neuesten Archiv unter:
 <br />
-<br />www_root/webERP/locale/en_GB/LC_MESSAGES/message.po
+<br />www_root/KwaMoja/locale/en_GB/LC_MESSAGES/message.po
 <br />
 Bearbeiten Sie diese Datei, indem Sie den in der mit msgid gekennzeichneten Text in dem mit msgstr gekennzeichneten Feld übersetzen. Sichern Sie sich, dass dieser Text ordentlich in Anführungszeichen gesetzt wird. Wenn im Text Html-Tags vorkommen, übernehmens Sie diese so in die Übersetzung. Vervollständigen Sie auch die Angaben im Kopf der Datei massages.po mit Ihren Angaben, so dass Ihnen Ihre Zuarbeit ordentlich zugeschrieben wird.
 <br />
-Es ist besonders wichtig, dass Sie die Zeichenkette "ISO-8859-1" (zum Zeitpunkt als das geschrieben wurde etwa um die Zeile 19400 in der Datei messages.po) in der Übersetzung mit dem Zeichensatz belegen, den Sie für Ihre Übersetzung verwenden. webERP verwendet diese Übersetzung beim Versenden des HTML-Headers, damit die gesamte Seite im Browser richtig decodiert wird.
+Es ist besonders wichtig, dass Sie die Zeichenkette "ISO-8859-1" (zum Zeitpunkt als das geschrieben wurde etwa um die Zeile 19400 in der Datei messages.po) in der Übersetzung mit dem Zeichensatz belegen, den Sie für Ihre Übersetzung verwenden. KwaMoja verwendet diese Übersetzung beim Versenden des HTML-Headers, damit die gesamte Seite im Browser richtig decodiert wird.
 <br /><br />
 Es empfiehlt sich zum Übersetzen poedit einzusezten, weil es einige zeitsparende Funktionen für das Erstellen von Übersetzungsdateien besitzt.
 <br /><br />
@@ -34,9 +34,9 @@ Technische Übersicht
 <b>
 Wie es gemacht wird</b>
 <br /><br />
-webERP verwendet das GNU-gettext-Paket für die Sprachübersetzung. Damit die gettext-Bibliothek verwendet werden kann, muss sie auf Ihrem Webserver installiert sein. PHP muss mit den gettext-Funktionen kompiliert werden. Seit der Version 3.01 wird dank Brian Gomez und der Autoren von PHP-gettext Danilo Segan und Nico Kaiser deren PHP-Klasse zusammen mit webERP ausgeliefert, damit die Übersetzungen auch funktionieren (wielleicht etwas langsamer als mit den Funktionen der gettext-Bibliothek), wenn gettext nicht installiert ist.
+KwaMoja verwendet das GNU-gettext-Paket für die Sprachübersetzung. Damit die gettext-Bibliothek verwendet werden kann, muss sie auf Ihrem Webserver installiert sein. PHP muss mit den gettext-Funktionen kompiliert werden. Seit der Version 3.01 wird dank Brian Gomez und der Autoren von PHP-gettext Danilo Segan und Nico Kaiser deren PHP-Klasse zusammen mit KwaMoja ausgeliefert, damit die Übersetzungen auch funktionieren (wielleicht etwas langsamer als mit den Funktionen der gettext-Bibliothek), wenn gettext nicht installiert ist.
 <br /><br />
-Die gettext-Übersetzungsdateien werden im Locale-Verzeichnis abgelegt, in welchem Unterverzeichnisse für die einzelnen Sprachversionen vorhanden sind. Die Unterverzeichnisse werden durch einen fünf Zeichen langen Schlüssel gekennzeichnet, zwei kleinen Buchstaben für die Sprache, einem Unterstrich und zwei großen Buchstaben für das Land. Die englische Version für die USA heißt so en_US, die für die britische Version en_GB. en_GB ist die Sprachversion, in der webERP geschrieben ist. Die Sprachversion für diesen Schlüssel muss auf dem Webserver installiert sein. Die installierten Sprachversionen können Sie mit dem Kommando locale -a in der Konsole des Linux-Webservers prüfen.
+Die gettext-Übersetzungsdateien werden im Locale-Verzeichnis abgelegt, in welchem Unterverzeichnisse für die einzelnen Sprachversionen vorhanden sind. Die Unterverzeichnisse werden durch einen fünf Zeichen langen Schlüssel gekennzeichnet, zwei kleinen Buchstaben für die Sprache, einem Unterstrich und zwei großen Buchstaben für das Land. Die englische Version für die USA heißt so en_US, die für die britische Version en_GB. en_GB ist die Sprachversion, in der KwaMoja geschrieben ist. Die Sprachversion für diesen Schlüssel muss auf dem Webserver installiert sein. Die installierten Sprachversionen können Sie mit dem Kommando locale -a in der Konsole des Linux-Webservers prüfen.
 <br /><br />
 Neue Verzeichnisse müssen erstellt werden, wenn ein Übersetzer eine lokale Sprachversion haben möchte. Unter dem Verzeichnis mit dem fünf Zeichen langen Schlüssel der Sprachversion gibt es ein weiteres Unterverzeichnis LC_MESSAGES, in diesem werden die Sprachendateien abgelegt. In jedem solchen Verzeichnis gibt es zwei Dateien:
 <br /><br />
@@ -78,11 +78,11 @@ Der Kopf der .po-Datei
 </font></b>
 <br /><br />
 Die .po-Datei beginnt mit einigen einleitenden Kommentaren, die ebenfalls vervollständigt werden sollten.
-<br /><br />"SOME DESCRIPTIVE TITLE", sollte ausgefüllt werden mit webERP - LANGUAGE Translation File, wobei LANGUAGE die Sprache angibt, in welche die Datei übersetzt wurde.<!-- - should be replaced with webERP - LANGUAGE Translation File - where LANGUAGE is the language being translated into -->
+<br /><br />"SOME DESCRIPTIVE TITLE", sollte ausgefüllt werden mit KwaMoja - LANGUAGE Translation File, wobei LANGUAGE die Sprache angibt, in welche die Datei übersetzt wurde.<!-- - should be replaced with KwaMoja - LANGUAGE Translation File - where LANGUAGE is the language being translated into -->
 <br /># FIRST AUTHOR &lt;EMAIL@ADDRESS&gt;, YEAR. sollte Ihren Namen und die email-Adresse enthalten und das Jahr, in dem Sie die Übersetzung durchgeführt haben.<!-- - should be your name and email address - with the year of the work being done -->
 <br /><br />Project-Id-Version
 <br />
-Das sollte die webERP-Versionsnummer sein, zu der die Übersetzung gehört
+Das sollte die KwaMoja-Versionsnummer sein, zu der die Übersetzung gehört
 <br /><br />PO-Revision-Date
 <br />
 Das ist das Datum Ihrer letzten Eintrageungen in der Datei
@@ -127,7 +127,7 @@ Setzen Sie dies auf 8bit.
 <b>
 Verwaltung</b>
 <br /><br />
-Wenn diese Übung vollständig haben, muss die Datei an den Projektadministrator über die Email-Adresse submissions@webERP.org zum Erstellen der .mo-Datei zurückgeschickt werden. Das neue Verzeichnis wird in einer ZIP-Datei zum Entpacken in das webERP-Verzeichnis erstellt. Die Sprache wird dann auch für andere Nutzer von webERP zur Verfügung gestellt.
+Wenn diese Übung vollständig haben, muss die Datei an den Projektadministrator über die Email-Adresse submissions@KwaMoja.org zum Erstellen der .mo-Datei zurückgeschickt werden. Das neue Verzeichnis wird in einer ZIP-Datei zum Entpacken in das KwaMoja-Verzeichnis erstellt. Die Sprache wird dann auch für andere Nutzer von KwaMoja zur Verfügung gestellt.
 <br /><br />
 Jedesmal wenn Sie sich am System anmelden, setzt das System die Sprache auf das was Sie im Benutzerstammsatz eingetragen haben. Der Benutzer kann einstellen, welche Sprache er möchte, indem er auf seinen Benutzernamen in der Menüzeile drückt, wodurch er in seine Benutzereinstellungen gelangt. Wenn Sie die Spracheinstellung ändern, wird dies aktiv, wenn sie diese Einstellung sichern. Nur Spracheinstellungen die im locale-Verzeichnis installiert sind, stehen den Benutzern für die Auswahl zur Verfügung.
 <br /><br />
@@ -140,11 +140,11 @@ Weitere Ressourcen</b>
 Übersetzungshilfsmittel
 </b></font>
 <br /><br />
-webERP wird zusammen mit einigen Online-Werkzeugen für die Sprachenverwaltung ausgeliefert, es gibt aber einige Probleme bei der Pflege von Übersetzungen mit diesen Werkzeugen. Im Einzelnen können bestimmte Zeichen Probleme bereiten und Zeichencodierungen können verlorengehen. Es kann daher die Verwendung dieser nicht empfohlen werden, außer für eine Ad-Hoc-Pflege, wenn die Sicherung der letzten messages.po noch anderweitig verfügbar ist.
+KwaMoja wird zusammen mit einigen Online-Werkzeugen für die Sprachenverwaltung ausgeliefert, es gibt aber einige Probleme bei der Pflege von Übersetzungen mit diesen Werkzeugen. Im Einzelnen können bestimmte Zeichen Probleme bereiten und Zeichencodierungen können verlorengehen. Es kann daher die Verwendung dieser nicht empfohlen werden, außer für eine Ad-Hoc-Pflege, wenn die Sicherung der letzten messages.po noch anderweitig verfügbar ist.
 <br /><br />
-Im Folgenden wird die Verwendung dieser mit webERP gelieferten Werkzeuge für das Anlegen einer neuen Sprachdatei und die Pflege der Übersetzungen beschrieben.
+Im Folgenden wird die Verwendung dieser mit KwaMoja gelieferten Werkzeuge für das Anlegen einer neuen Sprachdatei und die Pflege der Übersetzungen beschrieben.
 <br /><br />
-Allgemein gilt, dass Sie für die Bearbeitung einer Sprache diese zuerst einmal auswählen müssen. Dazu klicken Sie auf Ihren Benutzernamen in der Menüzeile, um in die Benutzereinstellungen zu gelangen. Wählen Sie die Sprache, die Sie bearbeiten wollen aus und drücken Sie auf Speichern. Wenn die Sprache, die Sie bearbeiten wollen, noch nicht existiert können Sie mit dem Servicewerkzeug 'Eine neue Sprache zum System hinzufügen' (siehe unten) eine neue Übersetzung beginnen. Bei einer neuen webERP-Installation ist zunächst nur Englisch (en_GB) verfügbar. Die neuesten Sprachpakete können Sie von der<a href='http://sourceforge.net/project/showfiles.php?group_id=70949'>sourceforge-webERP-Seite</A> herunterladen.
+Allgemein gilt, dass Sie für die Bearbeitung einer Sprache diese zuerst einmal auswählen müssen. Dazu klicken Sie auf Ihren Benutzernamen in der Menüzeile, um in die Benutzereinstellungen zu gelangen. Wählen Sie die Sprache, die Sie bearbeiten wollen aus und drücken Sie auf Speichern. Wenn die Sprache, die Sie bearbeiten wollen, noch nicht existiert können Sie mit dem Servicewerkzeug 'Eine neue Sprache zum System hinzufügen' (siehe unten) eine neue Übersetzung beginnen. Bei einer neuen KwaMoja-Installation ist zunächst nur Englisch (en_GB) verfügbar. Die neuesten Sprachpakete können Sie von der<a href='http://sourceforge.net/project/showfiles.php?group_id=70949'>sourceforge-KwaMoja-Seite</A> herunterladen.
 <br /><br />
 Übersetzungen werden über das Servicemenü gepflegt, das hat selbst keinen Link vom Hauptmenü, weil nur der Systemadministrator zugriff haben sollte. Unberechtigte Änderungen an der Sprachdatei werden dadurch ausgeschlossen. Das Servicemenü ist Z_index.php, wenn Sie auf der Hauptseite sind, müssen Sie im Browser nur Z_ davorschreiben. Die URL bringt Sie in das Servicemenü (nur wenn Sie die Systemadninistratorenberechtigungen haben). Die Übersetzungen werden über den Link "Sprachdateien bearbeiten" verwaltet.
  <!-- Translations are maintained from the utilities menu - this does not have its own link on the main menu since it is an area that only the system administrator should be able to access. Unauthorised modification of translation files is therefore discouraged. The utlities menu is Z_index.php - so you can modify the URL on the main menu by prefixing it with Z_ - this brings up the utilities menu - only if you have system administrator permissions on your user account. The link to 'Maintain Language Files' is where the translations are managed. -->
@@ -192,5 +192,5 @@ Der Hauptteil der Übersetzungsarbeit wird mit diesem Werkzeug gemacht. Zuerst wä
 <br /><br />
 Wenn Sie die Sprache und Module ausgewählt haben, klicken Sie auf Ausführen. Eine Oberfläche erscheint, in der die Zeichenketten des ausgewählten Moduls angezeigt werden und daneben ein Bereich, in den Sie die Übersetzung der Zeichenkette eintragen. Rechts davon ist eine Liste von Zeilennummern, wo die Zeichenkette innerhalb des Moduls vorkommt. Nachdem Sie die Übersetzungen eingetragen haben, klicken Sie Speichern, damit alle Änderungen gesichert werden.
 <br /><br />
-Wenn Sie an Ihrer Version von webERP schon etwas Entwicklungsarbeit geleistet haben, ist es möglich, neue Zeichenketten, die von den Entwicklern erstellt wurden in die vorhandene Sprachdatei einzumischen und damit eine messages.po-Datei zu erstellen, die alle benötigten Zeichenketten enthält. Wenn einige Meldungen noch in Englisch erscheinen, aber beim Bearbeiten der Module für diesen Bildschirm sind keine nicht übersetzten Meldungen, dann wissen Sie, dass Sie die vorhandene messages.po-Datei mit vorhandenen neuen Meldungen mischen müssen. Damit alle Zeichenketten vom gettext-Werkzeug ermittelt werden, müssen Sie zuerst "Die System-Sprachdatei neu erstellen" aufrufen. Dann klicken Sie im Bild "Sprachdatei-Module bearbeiten" auf "Meldungen um neue Zeichenketten ergänzen", damit wird die neu erstellte Systemsprachdatei in die vorhandene Übersetzung hineingemischt.
+Wenn Sie an Ihrer Version von KwaMoja schon etwas Entwicklungsarbeit geleistet haben, ist es möglich, neue Zeichenketten, die von den Entwicklern erstellt wurden in die vorhandene Sprachdatei einzumischen und damit eine messages.po-Datei zu erstellen, die alle benötigten Zeichenketten enthält. Wenn einige Meldungen noch in Englisch erscheinen, aber beim Bearbeiten der Module für diesen Bildschirm sind keine nicht übersetzten Meldungen, dann wissen Sie, dass Sie die vorhandene messages.po-Datei mit vorhandenen neuen Meldungen mischen müssen. Damit alle Zeichenketten vom gettext-Werkzeug ermittelt werden, müssen Sie zuerst "Die System-Sprachdatei neu erstellen" aufrufen. Dann klicken Sie im Bild "Sprachdatei-Module bearbeiten" auf "Meldungen um neue Zeichenketten ergänzen", damit wird die neu erstellte Systemsprachdatei in die vorhandene Übersetzung hineingemischt.
 <br /><br />

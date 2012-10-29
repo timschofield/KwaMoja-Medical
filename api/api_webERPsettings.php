@@ -1,7 +1,7 @@
 <?php
 /* $Id$*/
 
-/* This function returns the default currency code in webERP.
+/* This function returns the default currency code in KwaMoja.
  */
 
 	function GetDefaultCurrency($user, $password) {
@@ -19,7 +19,7 @@
 		return $ReturnValue;
 	}
 
-/* This function returns the default sales type in webERP.
+/* This function returns the default sales type in KwaMoja.
  */
 
 	function GetDefaultPriceList($user, $password) {
@@ -37,7 +37,7 @@
 		return $ReturnValue;
 	}
 
-/* This function returns the default date format in webERP.
+/* This function returns the default date format in KwaMoja.
  */
 
 	function GetDefaultDateFormat($user, $password) {
@@ -55,7 +55,7 @@
 		return $ReturnValue;
 	}
 
-/* This function returns the reports directory of the webERP installation for the company in api/api_php.php */
+/* This function returns the reports directory of the KwaMoja installation for the company in api/api_php.php */
 
 	function GetReportsDirectory($user, $password) {
 		$Errors = array();
@@ -72,7 +72,7 @@
 		return $ReturnValue;
 	}
 
-/* This function returns the default location of the weberp user being used */
+/* This function returns the default location of the kwamoja user being used */
 
 	function GetDefaultLocation($user, $password) {
 		$Errors = array();
@@ -89,7 +89,7 @@
 		return $ReturnValue;
 	}
 
-/* This function returns the default shipper in webERP.
+/* This function returns the default shipper in KwaMoja.
  */
 
 	function GetDefaultShipper($user, $password) {

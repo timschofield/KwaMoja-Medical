@@ -280,7 +280,7 @@ INSERT INTO Scripts VALUES (45, 'GoodsReceivedControlled.php', 'Entry of the ser
 INSERT INTO Scripts VALUES (46, 'InventoryPlanning.php', 'Creates a pdf report showing the last 4 months use of items including as a component of assemblies together with stock quantity on hand, current demand for the item and current quantity on sales order.');
 INSERT INTO Scripts VALUES (47, 'InventoryValuation.php', 'Creates a pdf report showing the value of stock at standard cost for a range of product categories selected');
 INSERT INTO Scripts VALUES (48, 'Locations.php', 'Defines the inventory stocking locations or warehouses');
-INSERT INTO Scripts VALUES (49, 'Logout.php', 'Shows when the user logs out of webERP');
+INSERT INTO Scripts VALUES (49, 'Logout.php', 'Shows when the user logs out of KwaMoja');
 INSERT INTO Scripts VALUES (50, 'MailInventoryValuation.php', 'Meant to be run as a scheduled process to email the stock valuation off to a specified person. Creates the same stock valuation report as InventoryValuation.php');
 INSERT INTO Scripts VALUES (51, 'MailSalesReport.php', 'Creates a sales analysis pdf report and emails it to the defined receipients. This script is meant to be run as a scheduled process for daily or weekly sales reporting');
 INSERT INTO Scripts VALUES (52, 'MailSalesReport_csv.php', 'Creates a sales analysis report as a comma separated values (csv) file and emails it to the defined receipients. This script is meant to be run as a scheduled process for daily or weekly sales reporting');

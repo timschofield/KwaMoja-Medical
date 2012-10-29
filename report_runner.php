@@ -3,11 +3,11 @@
 //--------------------------------------------------------------------
 // report_runner.php
 // This program is designed to run reports in batch command mode for
-// weberp. Much thanks to Phil Daintree as the major author of WEBERP.
+// kwamoja. Much thanks to Phil Daintree as the major author of KWAMOJA.
 //
 // --------------------------------------------------------------------
 // Written by Alan B Jones (mor3ton@yahoo.com)
-// based on code orgiginally from weberp
+// based on code orgiginally from kwamoja
 // (c) alan jones 2006.
 // (c) 2006 logic works Ltd and others
 // licenced under the terms of the GPL V(2)
@@ -17,16 +17,16 @@
 //--------------------------------------------------------------------
 //you must tell the script where you main installation is located
 //Rememeber this is different for each location
-//$weberp_home=/srv/www/htdocs/weberp
+//$kwamoja_home=/srv/www/htdocs/kwamoja
 /* $Id$*/
 
 $usage="USAGE\n".$argv[0].":\n".
-       "     -r reportnumber (the number of the weberp report)\n".
+       "     -r reportnumber (the number of the kwamoja report)\n".
        "     -n reportname   (the name you want to give the report)\n".
        "     -e emailaddress[;emailaddress;emailaddres...] (who you want to send it to)\n".
        "     -d database name (the mysql db to use for the data for the report)\n".
        "     [-t reporttext ]  (some words you want to send with the report-optional)\n".
-       "     [ -H weberpHOME]  (the home directory for weberp - or edit the php file)\n";
+       "     [ -H kwamojaHOME]  (the home directory for kwamoja - or edit the php file)\n";
 
 if ($argc < 7 ) {
         echo $usage;
@@ -52,7 +52,7 @@ for ($i=1;$i<$argc;$i++){
              break;
         case '-H':
                 $i++;
-                $WEBERPHOME=$argv[$i];
+                $KWAMOJAHOME=$argv[$i];
              break;
         case '-t':
                 $i++;
@@ -73,15 +73,15 @@ if (( $reportname=="") ||
              exit;
 }
 // do we have a variable
-if ($WEBERPHOME!="") {
-	$weberp_home=$WEBERPHOME;
+if ($KWAMOJAHOME!="") {
+	$kwamoja_home=$KWAMOJAHOME;
 }
 
-if ($weberp_home=="") {
- 	echo "weberp home is not set in this file or -H is not set";
+if ($kwamoja_home=="") {
+ 	echo "kwamoja home is not set in this file or -H is not set";
 }
-// change directory to the weberp home to get all the includes to work nicely
-chdir($weberp_home);
+// change directory to the kwamoja home to get all the includes to work nicely
+chdir($kwamoja_home);
 
 // get me the report name from the command line
 

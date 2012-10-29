@@ -4,7 +4,7 @@
 
 include ('includes/session.inc');
 /*
-http://127.0.0.1/~brink/webERP/GetStockImage.php
+http://127.0.0.1/~brink/KwaMoja/GetStockImage.php
 ?automake=1&width=81&height=74&stockid=&textcolor=FFFFF0&bevel=3&text=aa&bgcolor=007F00
 
 automake - if specified allows autocreate images
@@ -56,7 +56,7 @@ if (!function_exists('imagecreatefrompng')){
 	include('includes/footer.inc');
 	exit;
 }
-$DefaultImage = 'webERPsmall.png';
+$DefaultImage = 'KwaMojasmall.png';
 
 $FilePath =  $_SESSION['part_pics_dir'] . '/';
 

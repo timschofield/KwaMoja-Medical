@@ -569,7 +569,7 @@ $MenuItems['Utilities']['Maintenance']['Caption'] = array (_('Maintain Language 
 																_('Data Export Options'),
 																_('Import Stock Items from .csv'),
 																_('Import Fixed Assets from .csv file'),
-																_('Create new company template SQL file and submit to webERP'),
+																_('Create new company template SQL file and submit to KwaMoja'),
 																_('Re-calculate brought forward amounts in GL'),
 																_('Re-Post all GL transactions from a specified period'),
 																_('Purge all old prices')

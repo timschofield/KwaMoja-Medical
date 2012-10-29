@@ -58,7 +58,7 @@
 <h2><a id="GLAccounts">General Ledger Accounts</a></h2>
 
 <p>Any number of general ledger accounts can be defined, the structure of the accounts is goverened by the <a href="#AccountGroups">Account Group</a> - which defined whether an account is a balance sheet or profit and loss account and where abouts it should appear in the trial balance. All accounts are displayed under the heading of the account group so the numbering of general ledger accounts has no bearing on the display of the trial balance or accounts (in contrast to legacy systems).</p>
-<p>General ledger accounts are the cost holders for all accounting in webERP. Whilst it is possible to run webERP to keep track of just stock or debtors/accounts receivable or accounts payable, it is only when these functions are all integrated with the accounting hub that the real value of webERP's integrated design is fully realised. With all costs recorded in accounts payable, bank accounts, accounts receivable, stock, shipment costing, contract costing etc and with the correct configuration, the accounts almost drop out with minimal additional manual inputs required. Useful management information is therefore available in real time as the transactions are made.</p>
+<p>General ledger accounts are the cost holders for all accounting in KwaMoja. Whilst it is possible to run KwaMoja to keep track of just stock or debtors/accounts receivable or accounts payable, it is only when these functions are all integrated with the accounting hub that the real value of KwaMoja's integrated design is fully realised. With all costs recorded in accounts payable, bank accounts, accounts receivable, stock, shipment costing, contract costing etc and with the correct configuration, the accounts almost drop out with minimal additional manual inputs required. Useful management information is therefore available in real time as the transactions are made.</p>
 <p>To create a general ledger account, click on:</p>
 <p><blockquote>Main Menu->Maintenance: GL Account</blockquote></p>
 <p>The list of existing general ledger accounts will display - together with the whether the account group of the account is a P &amp; L. To   
@@ -218,7 +218,7 @@
 
 <h2>EDI</h2>
 
-<p>EDI stands for electronic data interchange - the electronic transmission of transaction information between trading partners. There are numerous standards for the encoding of such transactions the most widely used being UN/EDIFACT and its derivative EANCOM implementation. In fact many industry groups use the standard formats in slightly different ways and some businesses within the industry use the industry standard slightly differently again. So ultimately, the standards are really only a framework for what the actual messages look like. In implementing EDI in webERP, some flexibility in the format of messages to be sent and received is available. EDI messages are created in flat files in the directory specified in config.php for EDI outgoing messages and a log of the EDI messages sent is retained also. The messages can be sent either as an email attachment to the customer supplied email address or via ftp to a customer supplied ftp server address - using the ftp username and password provided by the customer.</p><!-- Help Begin: CustEDISetup -->
+<p>EDI stands for electronic data interchange - the electronic transmission of transaction information between trading partners. There are numerous standards for the encoding of such transactions the most widely used being UN/EDIFACT and its derivative EANCOM implementation. In fact many industry groups use the standard formats in slightly different ways and some businesses within the industry use the industry standard slightly differently again. So ultimately, the standards are really only a framework for what the actual messages look like. In implementing EDI in KwaMoja, some flexibility in the format of messages to be sent and received is available. EDI messages are created in flat files in the directory specified in config.php for EDI outgoing messages and a log of the EDI messages sent is retained also. The messages can be sent either as an email attachment to the customer supplied email address or via ftp to a customer supplied ftp server address - using the ftp username and password provided by the customer.</p><!-- Help Begin: CustEDISetup -->
 
 <h3>EDI Setup</h3>
 
@@ -351,7 +351,7 @@
     <tr>
         <td>StockID</td>
 
-        <td>The webERP item code</td>
+        <td>The KwaMoja item code</td>
     </tr>
 
     <tr>
@@ -423,8 +423,8 @@
 
 <p>There is therefore great flexibility in how the messages are defined. The variables for the summary and heading sections can be used in any section. The detail section variables can only be used in the detail section.</p>
 
-<p>Most customers will require that the branch to which the invoiced goods are delivered to, be identified using the customer's coding system. It is therefore important to ensure that the customer's branch code is actually entered against the webERP branch record. The variable CustBranchCode is retrieved from the branch record and if it is not entered then the EDI transaction will fail.</p>
+<p>Most customers will require that the branch to which the invoiced goods are delivered to, be identified using the customer's coding system. It is therefore important to ensure that the customer's branch code is actually entered against the KwaMoja branch record. The variable CustBranchCode is retrieved from the branch record and if it is not entered then the EDI transaction will fail.</p>
 
-<p>Some customers may also require the item code to be their item code, not the webERP item code. The variable CustStockID is derived from the cross reference table EDIItemMapping which would need to contain a cross reference record for each item that they may buy.</p>
+<p>Some customers may also require the item code to be their item code, not the KwaMoja item code. The variable CustStockID is derived from the cross reference table EDIItemMapping which would need to contain a cross reference record for each item that they may buy.</p>
 
 <p>The script that creates the EDI invoices (EDISendInvoices.php) should be run automatically in the background as a scheduled task. It first gets a list of all customers who should receive EDI invoices (or credit notes) - as determined in the settings of their DebtorsMaster record. Then the script goes through each customer returned in turn to get any invoices or credits that have not already been sent. A flat file is created for all the customers invoices and credits and sent to the customer using the transport, address and other parameters defined in the customer edi setup page - recorded against their DebtorsMaster record. There is a link to enable the script to be run manually - the browser will also show the output of the EDI message.</p><!-- Help End: CustEDISetup -->

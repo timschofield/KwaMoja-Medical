@@ -9,7 +9,7 @@ The date format is defined in SystemParameters called DefaultDateFormat
 this can be a string either 'd/m/Y' for UK/Australia/New Zealand dates or
 'm/d/Y' for US/Canada format dates
 
-or Y/m/d  for Sweden ;) Anders Eriksson anders@weberp.se.
+or Y/m/d  for Sweden ;) Anders Eriksson anders@kwamoja.se.
 
 or d.m.Y  for Germany ;) Juergen Ruemmler heinrich@ruemmler.net
 

@@ -5,7 +5,7 @@
 //include ('LanguageSetup.php');
 
 if ($allow_demo_mode == True and !isset($demo_text)) {
-	$demo_text = _('login as user') .': <i>' . _('admin') . '</i><br />' ._('with password') . ': <i>' . _('weberp') . '</i>';
+	$demo_text = _('login as user') .': <i>' . _('admin') . '</i><br />' ._('with password') . ': <i>' . _('kwamoja') . '</i>';
 } elseif (!isset($demo_text)) {
 	$demo_text = _('Please login here');
 }
@@ -15,7 +15,7 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 
 <html>
 <head>
-	<title>webERP Login screen</title>
+	<title>KwaMoja Login screen</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 	<link rel="stylesheet" href="css/<?php echo $theme;?>/login.css" type="text/css" />
@@ -69,7 +69,7 @@ if (get_magic_quotes_gpc()){
 	</form>
 	</div>
 	<br />
-	<div style="text-align:center"><a href="https://sourceforge.net/projects/web-erp"><img src="https://sflogo.sourceforge.net/sflogo.php?group_id=70949&amp;type=8" width="80" height="15" alt="Get webERP Accounting &amp; Business Management at SourceForge.net. Fast, secure and Free Open Source software downloads" /></a></div>
+	<div style="text-align:center"><a href="https://sourceforge.net/projects/web-erp"><img src="https://sflogo.sourceforge.net/sflogo.php?group_id=70949&amp;type=8" width="80" height="15" alt="Get KwaMoja Accounting &amp; Business Management at SourceForge.net. Fast, secure and Free Open Source software downloads" /></a></div>
 </div>
 	<script type="text/javascript">
 			<!--

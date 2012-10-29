@@ -29,7 +29,7 @@ if(isset($ForceConfigReload) AND $ForceConfigReload==true OR !isset($_SESSION['C
 	$sql="SELECT script, pagesecurity FROM scripts";
 	$result=DB_query($sql, $db,'','',false,false);
 	if (DB_error_no($db)!=0){ 
-		/* the table may not exist with the pagesecurity field in it if it is an older webERP database 
+		/* the table may not exist with the pagesecurity field in it if it is an older KwaMoja database 
 		 * divert to the db upgrade if the VersionNumber is not in the config table 
 		 * */
 		header('Location: UpgradeDatabase.php'); 
@@ -125,7 +125,7 @@ $DefaultLanguage = en_GB
 $allow_demo_mode = 1
 
 $EDIHeaderMsgId = D:01B:UN:EAN010
-$EDIReference = WEBERP
+$EDIReference = KWAMOJA
 $EDI_MsgPending = EDI_Pending
 $EDI_MsgSent = EDI_Sent
 $EDI_Incoming_Orders = EDI_Incoming_Orders

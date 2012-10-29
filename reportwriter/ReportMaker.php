@@ -10,7 +10,7 @@ define('DBReports','reports');			// name of the databse table holding the main r
 define('DBRptFields','reportfields');	// name of the database table holding the report fields
 //define('FPDF_FONTPATH','../fonts/');  FPDF path to fonts directory
 
-// Fetch necessary include files - Host application specific (webERP)
+// Fetch necessary include files - Host application specific (KwaMoja)
 require($PathPrefix . 'includes/session.inc');
 require_once($PathPrefix . 'includes/DateFunctions.inc');
 

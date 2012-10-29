@@ -47,7 +47,7 @@
 		return $Errors;
 	}
 
-/* Check that the currency code is set up in the weberp database */
+/* Check that the currency code is set up in the kwamoja database */
 	function VerifyCurrencyCode($CurrCode, $i, $Errors, $db) {
 		$Searchsql = "SELECT COUNT(currabrev)
 					  FROM currencies
@@ -60,7 +60,7 @@
 		return $Errors;
 	}
 
-/* Check that the sales type is set up in the weberp database */
+/* Check that the sales type is set up in the kwamoja database */
 	function VerifySalesType($SalesType, $i, $Errors, $db) {
 		$Searchsql = "SELECT COUNT(typeabbrev)
 					 FROM salestypes
@@ -81,7 +81,7 @@
 		return $Errors;
 	}
 
-/* Check that the hold reason is set up in the weberp database */
+/* Check that the hold reason is set up in the kwamoja database */
 	function VerifyHoldReason($HoldReason , $i, $Errors, $db) {
 		$Searchsql = "SELECT COUNT(reasoncode)
 					 FROM holdreasons
@@ -94,7 +94,7 @@
 		return $Errors;
 	}
 
-/* Check that the payment terms are set up in the weberp database */
+/* Check that the payment terms are set up in the kwamoja database */
 	function VerifyPaymentTerms($PaymentTerms , $i, $Errors, $db) {
 		$Searchsql = "SELECT COUNT(termsindicator)
 					 FROM paymentterms
@@ -228,7 +228,7 @@
 		return $Errors;
 	}
 
-/* Check that the customer type is set up in the weberp database */
+/* Check that the customer type is set up in the kwamoja database */
 	function VerifyCustomerType($debtortype , $i, $Errors, $db) {
 		$Searchsql = "SELECT COUNT(typeid)
 					 FROM debtortype
@@ -241,7 +241,7 @@
 		return $Errors;
 	}
 
-/* Insert a new customer in the webERP database. This function takes an
+/* Insert a new customer in the KwaMoja database. This function takes an
    associative array called $CustomerDetails, where the keys are the
    names of the fields in the debtorsmaster table, and the values are the
    values to insert. The only mandatory fields are the debtorno, name,
@@ -371,7 +371,7 @@
 		return $Errors;
 	}
 
-/* Modifies a customer record in the webERP database. This function takes an
+/* Modifies a customer record in the KwaMoja database. This function takes an
    associative array called $CustomerDetails, where the keys are the
    names of the fields in the debtorsmaster table, and the values are the
    values to update. The debtorno is mandatory and only fields that need

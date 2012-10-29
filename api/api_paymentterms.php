@@ -2,7 +2,7 @@
 /* $Id$*/
 
 /* This function returns a list of the payment terms abbreviations
- * currently setup on webERP 
+ * currently setup on KwaMoja 
  */
 
 	function GetPaymentTermsList($user, $password) {
@@ -41,7 +41,7 @@
 		return DB_fetch_array($result);
 	}
 /* This function returns a list of the payment methods 
- * currently setup on webERP
+ * currently setup on KwaMoja
  */
 	function GetPaymentMethodsList($User, $Password) {
 		$Errors = array();

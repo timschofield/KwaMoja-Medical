@@ -11,7 +11,7 @@ $DefaultLanguage ='en_GB.utf8';
 // Whether to display the demo login and password or not on the login screen
 $allow_demo_mode = True;
 
-// webERP version
+// KwaMoja version
 
 // $Version = '3.13-rc0 UTF-8 capable';
 
@@ -37,14 +37,14 @@ $dbType = 'mysqli';
 //$dbType = 'mysqli'; for PHP 5 and mysql > 4.1
 
 // sql user & password
-$dbuser = 'weberp_db_user';
-$dbpassword = 'weberp_db_pwd';
+$dbuser = 'kwamoja_db_user';
+$dbpassword = 'kwamoja_db_pwd';
 
 //It would probably be inappropraite to allow selection of the company in a hosted envionment so this option can be turned off with this parameter
 $AllowCompanySelectionBox = true;
 
 //If $AllowCompanySelectionBox = false above then the $DefaultCompany string is entered in the login screen as a default - otherwise the user is expected to know the name of the company to log into.
-$DefaultCompany = 'weberpdemo';
+$DefaultCompany = 'kwamojademo';
 
 //The maximum time that a login session can be idle before automatic logout
 //time is in seconds  3600 seconds in an hour
@@ -75,7 +75,7 @@ $DefaultClock = 12;
 /*The $rootpath is used in most scripts to tell the script the installation details of the files.
 
 NOTE: In some windows installation this command doesn't work and the administrator must set this to the path of the installation manually:
-eg. if the files are under the webserver root directory then rootpath =''; if they are under weberp then weberp is the rootpath - notice no additional slashes are necessary.
+eg. if the files are under the webserver root directory then rootpath =''; if they are under kwamoja then kwamoja is the rootpath - notice no additional slashes are necessary.
 */
 
 $rootpath = dirname(htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8'));

@@ -5,7 +5,7 @@
 include('includes/session.inc');
 
 $title = _('Supplier Maintenance');
-/* webERP manual links before header.inc */
+/* KwaMoja manual links before header.inc */
 $ViewTopic= 'AccountsPayable';
 $BookMark = 'NewSupplier';
 include('includes/header.inc');
@@ -139,7 +139,7 @@ Function Is_ValidAccount ($ActNo) {
 
 	default:
 	echo _('The prefix') . ' - ' . $BankPrefix . ' ' . _('is not a valid New Zealand Bank') . '.<br />' .
-			_('If you are using webERP outside New Zealand error trapping relevant to your country should be used');
+			_('If you are using KwaMoja outside New Zealand error trapping relevant to your country should be used');
 	return False;
 	exit;
 

@@ -1,6 +1,6 @@
 <h1><a id="SalesAnalysis">Sales Analysis</a></h1>
 
-<p>There are several ways to analyse sales history. If a quick analysis is required there is some flexibility in the sales graph script that allows a pictorial representation of the sales against budget. It depends of course the level to which sales budgets are recorded as to whether the comparison against budgets will show anything useful. If a report of the actual numbers is required webERP has a sales report writer that allows sales reports to be created - the resulting report templates can be re-run or modified. These reports can output either a pdf or a csv file for reading into most spreadsheet applications.</p>
+<p>There are several ways to analyse sales history. If a quick analysis is required there is some flexibility in the sales graph script that allows a pictorial representation of the sales against budget. It depends of course the level to which sales budgets are recorded as to whether the comparison against budgets will show anything useful. If a report of the actual numbers is required KwaMoja has a sales report writer that allows sales reports to be created - the resulting report templates can be re-run or modified. These reports can output either a pdf or a csv file for reading into most spreadsheet applications.</p>
 
 <p>From the main menu under Accounts Receivable Reports and Inquiries options, "Sales Analysis Reports". A list of all previously defined sales reports shows with links to:</p>
 
@@ -209,10 +209,10 @@ $Recipients = array('"Root" ','"some one else" ');<br></p>
 
 <p>A more elegant solution to automatic emailing of sales analysis reports is available using the report_runner.php script this script can be run from a shell or directly from cron and takes command line parameters. This has the advantage instead of hardcoding a number or scripts this script can be run with the paratmers below:</p>
 
-<p>-r reportnumber (the number of the webERP report)<br>
+<p>-r reportnumber (the number of the KwaMoja report)<br>
 -n reportname (the name you want to give the report)<br>
 -e emailaddress[;emailaddress;emailaddres...] (who you want to send it to)<br>
 [-t reporttext ] (some words you want to send with the report-optional)<br>
-[ -H weberpHOME] (the home directory for weberp - or edit the php file)</p>
+[ -H kwamojaHOME] (the home directory for kwamoja - or edit the php file)</p>
 
 <p><!-- Help End: SalesAnalRepts --></p>

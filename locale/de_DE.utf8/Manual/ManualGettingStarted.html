@@ -52,7 +52,7 @@ Alle Dateien des Archives werden in ein Verzeichnis unterhalb des Dokumenten-Wur
 <br /><br />
 ist das normale Apache-Rootverzeichnis  unter SuSE. Normalerweise ist das Apache-Dokumentenverzeichnis "htdocs" benannt
 <br /><br />
-Kopieren Sie das Archiv in dieses Verzeichnis und entpacken Sie dann das Archiv, das das weberp-Verzeichnis im Root-Verzeichnis anlegt und alle benötigten Dateien in diesem Verzeichnis ablegt.
+Kopieren Sie das Archiv in dieses Verzeichnis und entpacken Sie dann das Archiv, das das kwamoja-Verzeichnis im Root-Verzeichnis anlegt und alle benötigten Dateien in diesem Verzeichnis ablegt.
 <br /><br />
 <font size="+2"><b>Die Datenbank anlegen</b></font>
 <br /><br />
@@ -90,9 +90,9 @@ You can add new users by issuing GRANT statements: -->
 <br /><br />
 shell&gt; mysql --user=root -p 'new_password' mysql
 <br />
-mysql&gt; GRANT ALL PRIVILEGES ON *.* TO weberp@localhost IDENTIFIED BY 'ein_passwort' WITH GRANT OPTION;"
+mysql&gt; GRANT ALL PRIVILEGES ON *.* TO kwamoja@localhost IDENTIFIED BY 'ein_passwort' WITH GRANT OPTION;"
 <br /><br />
-wobei 'ein_passwort' das Passwort Ihrer Wahl für den neuen Benutzer 'weberp' ist. Beachten Sie, dass dieser Benutzer weberp nur vom lokalen Rechner an der Datenbank anmelden kann, so dass, wenn der Webserver auf einen anderen Rechner installiert ist, Sie Berechtigungen zum Anmelden vom einem anderen Computer vergeben müssen. Beachten Sie dazu das <a href="http://dev.mysql.com/doc/refman/4.0/de/adding-users.html?ff=nopfpls" target="_blank">MySQL-Handbuch</a>.
+wobei 'ein_passwort' das Passwort Ihrer Wahl für den neuen Benutzer 'kwamoja' ist. Beachten Sie, dass dieser Benutzer kwamoja nur vom lokalen Rechner an der Datenbank anmelden kann, so dass, wenn der Webserver auf einen anderen Rechner installiert ist, Sie Berechtigungen zum Anmelden vom einem anderen Computer vergeben müssen. Beachten Sie dazu das <a href="http://dev.mysql.com/doc/refman/4.0/de/adding-users.html?ff=nopfpls" target="_blank">MySQL-Handbuch</a>.
 <br /><br />
 InnoDB-Tabellen müssen für den MySQL-Server erlaubt sein. Diese Tabellen erlauben Datenbanktransaktionen, die eine kritische Komponente einer ERP-Software sind. Für InnoDB-Tabellen müssen eine Reihe von Parametern in der my.cnf eingestellt sein. Es gibt einige Beispiele dazu im MySQL-Handbuch unter Tabellentypen / <a href="http://dev.mysql.com/doc/refman/4.0/de/innodb-start.html" target="_blank">InnoDB-Tabellen</a>
 <br /><br />
@@ -101,19 +101,19 @@ Wenn Sie ein Benutzerkonto in MySQL eingerichtet und InnoDB-Tabellen erlaubt hab
 Zwei SQL-Skripte werden mitgeliefert:
 <br /><br />
 <ol>
-<li>weberp-demo.sql Das sind einige Demo-Daten mit einer eingerichteten fiktiven Firma, so dass Sie Vorgänge ausprobieren können und sehen, wie das System funktioniert.</li>
-<li>weberp-new.sql Dieses Skript hat nur die notwendigen Grunddaten, um ein neues Unternehmenssystem anzufangen. Wenn Sie Ihre Firma in webERP einrichten wollen, dann ist dieses Skript zu verwenden. Es legt eine Datenbank 'weberp' an und füllt sie nur mit den nötigsten  Daten zum Anfangen.</li>
+<li>kwamoja-demo.sql Das sind einige Demo-Daten mit einer eingerichteten fiktiven Firma, so dass Sie Vorgänge ausprobieren können und sehen, wie das System funktioniert.</li>
+<li>kwamoja-new.sql Dieses Skript hat nur die notwendigen Grunddaten, um ein neues Unternehmenssystem anzufangen. Wenn Sie Ihre Firma in KwaMoja einrichten wollen, dann ist dieses Skript zu verwenden. Es legt eine Datenbank 'kwamoja' an und füllt sie nur mit den nötigsten  Daten zum Anfangen.</li>
 </ol>
 <br />
-Die Dateien weberp-demo.sql und weberp-new.sql befinden sich im Unterverzeichnis ./sql/mysql. Wechseln Sie zuerst in das Verzeichnis, in dem die Skripte liegen und geben Sie ein:
+Die Dateien kwamoja-demo.sql und kwamoja-new.sql befinden sich im Unterverzeichnis ./sql/mysql. Wechseln Sie zuerst in das Verzeichnis, in dem die Skripte liegen und geben Sie ein:
 <br /><br />
-shell&gt; mysql --user=weberp --password='some_pass' &lt; /path_to_the_sql_script/weberp-demo.sql
+shell&gt; mysql --user=kwamoja --password='some_pass' &lt; /path_to_the_sql_script/kwamoja-demo.sql
 <br /><br />
 oder
 <br /><br />
-shell&gt; mysql --user=weberp --password='some_pass' &lt; /path_to_the_sql_script/weberp-new.sql
+shell&gt; mysql --user=kwamoja --password='some_pass' &lt; /path_to_the_sql_script/kwamoja-new.sql
 <br /><br />
-wobei Sie den hier eingegebenen Benutzernamen weberp auf den Namen ändern, den Sie in MySQL angelegt haben und das Passwort, das hier mit 'ein_passwort' angegeben ist, durch das entsprechende Passwort für Ihren Benutzer ersetzen. Auch wird der pfad_zum_sql_skript durch etwas wie /usr/local/apache/htdocs/web-erp/sql/mysql/ ersetzt.
+wobei Sie den hier eingegebenen Benutzernamen kwamoja auf den Namen ändern, den Sie in MySQL angelegt haben und das Passwort, das hier mit 'ein_passwort' angegeben ist, durch das entsprechende Passwort für Ihren Benutzer ersetzen. Auch wird der pfad_zum_sql_skript durch etwas wie /usr/local/apache/htdocs/web-erp/sql/mysql/ ersetzt.
 <br /><br />
 <font size="+2"><b>Die Datei config.php bearbeiten</b></font>
 <br /><br />
@@ -128,7 +128,7 @@ beginning of config.php<br />
 <br />
 /* $Revision: 1.6 $<br />
 config.php<br />
-Web-ERP - http://weberp.sourceforge.net<br />
+Web-ERP - http://kwamoja.sourceforge.net<br />
 by Logic Works Ltd<br />
 */<br />
 <br />
@@ -141,7 +141,7 @@ $DefaultLanguage ='en_GB';<br />
 // Whether to display the demo login and password or not on the login screen<br />
 $allow_demo_mode = True;<br />
 <br />
-// webERP version<br />
+// KwaMoja version<br />
 $Version = '3.04';<br />
 <br />
 // The timezone of the business - this allows the possibility of having<br />
@@ -163,14 +163,14 @@ $dbType = 'mysql';<br />
 //$dbType = 'mysql';<br />
 <br />
 // sql user &amp; password<br />
-$dbuser = 'weberp_db_user';<br />
-$dbpassword = 'weberp_db_pwd';<br />
+$dbuser = 'kwamoja_db_user';<br />
+$dbpassword = 'kwamoja_db_pwd';<br />
 <br />
 //It would probably be inappropriate to allow selection of the company in a hosted environment so this option can be turned off with this parameter<br />
 $AllowCompanySelectionBox = true;<br />
 <br />
 //If $AllowCompanySelectionBox = false above then the $DefaultCompany string is entered in the login screen as a default - otherwise the user is expected to know the name of the company to log into.<br />
-$DefaultCompany = 'weberp';<br />
+$DefaultCompany = 'kwamoja';<br />
 <br />
 //The maximum time that a login session can be idle before automatic logout<br />
 //time is in seconds  3600 seconds in an hour<br />
@@ -197,7 +197,7 @@ $CryptFunction = "sha1"; // SHA1 Hash<br />
 /*The $rootpath is used in most scripts to tell the script the installation details of the files.<br />
 <br />
 NOTE: In some windows installation this command doesn't work and the administrator must set this to the path of the installation manually:
-eg. if the files are under the web server root directory then rootpath =''; if they are under weberp then weberp is the rootpath - notice no additional slashes are necessary.<br />
+eg. if the files are under the web server root directory then rootpath =''; if they are under kwamoja then kwamoja is the rootpath - notice no additional slashes are necessary.<br />
 */<br />
 <br />
 $rootpath = dirname($_SERVER['PHP_SELF']);<br />
@@ -221,7 +221,7 @@ end of config.php<br />
 <br /><br />
 <font size="+2"><b>Erstmalige Anmeldung</b></font>
 <br /><br />
-Öffnen Sie ein Browserfenster, das mit dem Netzwerk verbunden ist, in dem auch der Webserver verbunden ist, geben Sie die URL für das Serververzeichnis ein, in dem webERP installiert ist. Wenn der Browser auf dem selben Rechner geöffnet wird, auf dem auch der Webserver läuft, dann vielleicht:
+Öffnen Sie ein Browserfenster, das mit dem Netzwerk verbunden ist, in dem auch der Webserver verbunden ist, geben Sie die URL für das Serververzeichnis ein, in dem KwaMoja installiert ist. Wenn der Browser auf dem selben Rechner geöffnet wird, auf dem auch der Webserver läuft, dann vielleicht:
 <br /><br />
 http://localhost/web-erp/index.php
 <br /><br />
@@ -229,7 +229,7 @@ http://localhost/web-erp/index.php
 Geben Sie den Benutzernamen 'demo' ein,
 <br />
 
-Passwort 'weberp'
+Passwort 'kwamoja'
 <br /><br />
 (die Anführungszeichen werden nicht benötigt). Sie können im Hauptmenü unter Einstellungen &rarr; Allgemeines weitere Benutzerstämme anlegen und das Passwort ändern. (Benutzer können ihr eigenes Passwort jederzeit ändern, indem sie auf ihren Benutzernamen links oben am Bildschirm klicken. Seien Sie vorsichtig, nicht bereits den demo-Benutzer zu löschen, solange Sie noch keinen neuen Systemadministrator angelegt haben. Wenn keine Benutzer angelegt sind, werden Sie das nächste mal, wenn Sie versuchen sich anzumelden, nicht dazu in der Lage sein.
 <br /><br />
@@ -254,7 +254,7 @@ Es können auch neue Layouts angelegt werden, zu diesem Zweck erstellt man zunäch
 
 <font size="+2"><b>Benutzer einrichten</b></font>
 <br /><br />
-Sie haben sich als Benutzer demo angemeldet. Zunächst sollte ein neuer Benutzer angelegt werden, der die Berechtigungen eines Systemverwalters erhält, und der Benutzer demo sollte gelöscht werden. Vom Hauptmenü wählen Sie Einstellungen &rarr; Allgemeines den Punkt Benutzerstammsätze aus. Die angelegten Benutzer werden in einer Liste angezeigt. Anmeldenamen müssen mindestens 5 Zeichen lang sein, die Länge ist auf 20 Zeichen begrenzt. Das Passwort muss ebenfalls mindestens 5 Zeichen umfassen und darf den Anmeldenamen nicht enthalten. Die Erfassung des vollen Namens, der Telefonnummer und anderer Angaben ist nicht notwendig. Die ausgewählte Zugriffsebene ist wichtig, weil sie bestlegt, auf welche Bildschirme der Benuzter zugreifen darf. In jedem Unternehmen, das dem Benutzer nicht selbst gehört, ist es üblich, sind die Verantwortlichkeiten unter dem Personal aufgeteilt, so dass grundsätzlich keiner einen Gesamtprozess allein bearbeitet. Bei kleineren Unternehmen mag so etwas unpraktisch sein, webERP ist flexibel genug, dass die Benutzerberechtigungen fein eingestellt werden können. Weitere Informationen finden Sie im Abschnitt Sicherheitskonzept.
+Sie haben sich als Benutzer demo angemeldet. Zunächst sollte ein neuer Benutzer angelegt werden, der die Berechtigungen eines Systemverwalters erhält, und der Benutzer demo sollte gelöscht werden. Vom Hauptmenü wählen Sie Einstellungen &rarr; Allgemeines den Punkt Benutzerstammsätze aus. Die angelegten Benutzer werden in einer Liste angezeigt. Anmeldenamen müssen mindestens 5 Zeichen lang sein, die Länge ist auf 20 Zeichen begrenzt. Das Passwort muss ebenfalls mindestens 5 Zeichen umfassen und darf den Anmeldenamen nicht enthalten. Die Erfassung des vollen Namens, der Telefonnummer und anderer Angaben ist nicht notwendig. Die ausgewählte Zugriffsebene ist wichtig, weil sie bestlegt, auf welche Bildschirme der Benuzter zugreifen darf. In jedem Unternehmen, das dem Benutzer nicht selbst gehört, ist es üblich, sind die Verantwortlichkeiten unter dem Personal aufgeteilt, so dass grundsätzlich keiner einen Gesamtprozess allein bearbeitet. Bei kleineren Unternehmen mag so etwas unpraktisch sein, KwaMoja ist flexibel genug, dass die Benutzerberechtigungen fein eingestellt werden können. Weitere Informationen finden Sie im Abschnitt Sicherheitskonzept.
 <br /><br />
 So wie der Zugriff auf Seiten beschränkt werden kann, gibt es auch eine gewisse Flexibilität zu den Menüfunktionen, die für den Benutzer verfügbar sind. Der Systemverwalter kann festlegen, welche Bereiche des Hauptmenüs für einen Benutzer aktiv und damit zugänglich sind.
 <br /><br />

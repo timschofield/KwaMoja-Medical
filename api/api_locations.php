@@ -44,7 +44,7 @@
 		return $Errors;
 	}
 
-/* Check that the tax province id is set up in the weberp database */
+/* Check that the tax province id is set up in the kwamoja database */
 	function VerifyTaxProvinceId($TaxProvinceId , $i, $Errors, $db) {
 		$Searchsql = "SELECT COUNT(taxprovinceid) 
 						FROM taxprovinces 
@@ -59,7 +59,7 @@
 
 
 /* This function returns a list of the stock location id's
- * currently setup on webERP
+ * currently setup on KwaMoja
  */
 
 	function GetLocationList($user, $password) {
@@ -96,7 +96,7 @@
 		return DB_fetch_array($result);
 	}
 	
-/* Inserts a Location in webERP.
+/* Inserts a Location in KwaMoja.
  */
  	
 	function InsertLocation($Location, $user, $password) {
@@ -162,7 +162,7 @@
 		return $Errors;
 	}
 	
-/* Modify a Location Details in webERP.
+/* Modify a Location Details in KwaMoja.
  */
  	
 	function ModifyLocation($Location, $user, $password) {

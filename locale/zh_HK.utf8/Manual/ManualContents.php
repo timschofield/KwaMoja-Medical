@@ -90,7 +90,7 @@ if (((!isset($_POST['Submit'])) AND (!isset($_GET['ViewTopic']))) OR
               <UL>
                 <LI>硬件要求</LI>
                 <LI>软件要求</LI>
-                <LI>将webERP与维基整合</LI>
+                <LI>将KwaMoja与维基整合</LI>
               </UL>
               <br />
             </LI>
@@ -99,7 +99,7 @@ if (((!isset($_POST['Submit'])) AND (!isset($_GET['ViewTopic']))) OR
   if (!isset($_POST['Submit'])) {
 ?>
               <input type="checkbox" name="SelectGettingStarted">
-              <A HREF="<?php echo htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?ViewTopic=GettingStarted'; ?>">初识webERP</A>
+              <A HREF="<?php echo htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?ViewTopic=GettingStarted'; ?>">初识KwaMoja</A>
 <?php
   } else {
 ?>

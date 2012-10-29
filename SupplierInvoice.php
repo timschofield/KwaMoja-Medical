@@ -12,7 +12,7 @@ include('includes/DefineSuppTransClass.php');
 include('includes/session.inc');
 
 $title = _('Enter Supplier Invoice');
-/* webERP manual links before header.inc */
+/* KwaMoja manual links before header.inc */
 $ViewTopic= 'AccountsPayable';
 $BookMark = 'SupplierInvoice';
 include('includes/header.inc');

@@ -4,7 +4,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 'On');
 
 if (file_exists('../config.php')) {
-	echo '<br />A configuration webERP installation already exists - the file config.php in the webERP installation has been created and must be removed before this utility can be re-run';
+	echo '<br />A configuration KwaMoja installation already exists - the file config.php in the KwaMoja installation has been created and must be removed before this utility can be re-run';
 	exit;
 }
 
@@ -42,7 +42,7 @@ $CompanyPath = $PathToRoot. '/companies';
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title>WebERP Installation Wizard</title>
+<title>KwaMoja Installation Wizard</title>
 <link href="../css/gel/default.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript">
 
@@ -73,7 +73,7 @@ function change_data(type) {
 </head>
 <body>
 
-<form id="weberp_installation_wizard" action="save.php" method="post" enctype="multipart/form-data">
+<form id="kwamoja_installation_wizard" action="save.php" method="post" enctype="multipart/form-data">
 <div>
 <input type="hidden" name="FormID" value="<?php echo $_SESSION['FormID']; ?>" />
 <input type="hidden" name="url" value="" />
@@ -85,8 +85,8 @@ function change_data(type) {
 <tr>
 	<td class="content">
         <div class="centre">
-			<h2>Welcome to the WebERP Installation Wizard.</h2>
-			<img src="<?php echo "../companies/weberpdemo/logo.jpg"; ?>" width="250" height="50" alt="Logo" />
+			<h2>Welcome to the KwaMoja Installation Wizard.</h2>
+			<img src="<?php echo "../companies/kwamojademo/logo.jpg"; ?>" width="250" height="50" alt="Logo" />
 		</div>
 
 
@@ -275,7 +275,7 @@ function change_data(type) {
 		<tr>
 			<td style="color: #666666;" colspan="1">Company Database Name:</td>
 			<td colspan="4">
-				<input type="text" tabindex="50" name="company_name" style="width: 99%;" value="<?php if(isset($_SESSION['company_name'])) { echo $_SESSION['company_name']; } else { echo 'weberpdemo'; } ?>" />
+				<input type="text" tabindex="50" name="company_name" style="width: 99%;" value="<?php if(isset($_SESSION['company_name'])) { echo $_SESSION['company_name']; } else { echo 'kwamojademo'; } ?>" />
 			</td>
 		</tr>
 		<tr>
@@ -286,7 +286,7 @@ function change_data(type) {
 			<td>
                 
 				<input type="checkbox" tabindex="51" name="DemoData" id="db_file_demo" value="demo"<?php if(!isset($_SESSION['db_file']) OR $_SESSION['db_file'] == 'demo') { echo ' checked="checked"'; } ?> />
-			<div style="cursor: pointer;" onclick="javascript: change_data('demo');">	weberpdemo company</div>
+			<div style="cursor: pointer;" onclick="javascript: change_data('demo');">	kwamojademo company</div>
 			</td>
 		</tr>
 		<tr>
@@ -351,7 +351,7 @@ function change_data(type) {
 				<tr valign="top">
 					<td>Please note: &nbsp;</td>
 					<td>
-						WebERP is released under the
+						KwaMoja is released under the
 						<a href="http://www.gnu.org/licenses/gpl.html" target="_blank" tabindex="64">GNU General Public License</a>
 						<br />
 						By clicking install, you are accepting the license.
@@ -363,7 +363,7 @@ function change_data(type) {
 			if ($phpversion > 4.1 AND $_SESSION['session_support'] = '<p class="good">Enabled</p>'
 					AND is_writable($PathToRoot) AND is_writable($CompanyPath)){
 				echo '<td colspan="1" align="right">
-						<input type="submit" tabindex="20" name="submit" value="Install WebERP" class="submit" />
+						<input type="submit" tabindex="20" name="submit" value="Install KwaMoja" class="submit" />
 						</td>';
 			} else {
 				echo '<td>FIX ERRORS FIRST</td></tr><tr><td colspan=5><h2>The installation cannot proceed until the above errors are resolved</h2></td>';
@@ -382,7 +382,7 @@ function change_data(type) {
 <tr>
 	<td align="center" style="font-size: 10px;">
 		<!-- Please note: the below reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
-		<a href="http://www.weberp.org/" style="color: #000000;" target="_blank">WebERP</a>
+		<a href="http://www.kwamoja.org/" style="color: #000000;" target="_blank">KwaMoja</a>
 		is	released under the
 		<a href="http://www.gnu.org/licenses/gpl.html" style="color: #000000;" target="_blank">GNU General Public License</a>
 		<!-- Please note: the above reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->

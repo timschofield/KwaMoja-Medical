@@ -4,7 +4,7 @@
 
 include('includes/session.inc');
 $title = _('Claim Petty Cash Expenses From Tab');
-/* webERP manual links before header.inc */
+/* KwaMoja manual links before header.inc */
 $ViewTopic= "PettyCash";
 $BookMark = "ExpenseClaim";
 include('includes/header.inc');

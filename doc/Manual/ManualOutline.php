@@ -1,7 +1,7 @@
 <?php
 /* $Id: ManualOutline.php 5450 2009-12-24 15:28:49Z icedlava $ */
 /*
- * This is the outline of the webERP manual
+ * This is the outline of the KwaMoja manual
 **/
 $TOC_Array = array (
 'TableOfContents'   => array(
@@ -11,7 +11,7 @@ $TOC_Array = array (
     'Requirements'      => array('Requirements',
                                  'Hardware requirements',
                                  'Software requirements',
-                                 'Using webERP with a Wiki'
+                                 'Using KwaMoja with a Wiki'
                                  ),
     'GettingStarted'    => array('Getting started',
                                  'Prerequisites',

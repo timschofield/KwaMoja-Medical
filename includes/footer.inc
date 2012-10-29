@@ -9,11 +9,11 @@ echo '<div id="FooterDiv">';
 echo '<div id="FooterWrapDiv">';
 
 echo '<div id="FooterLogoDiv">';
-	echo '<img src="'. $rootpath . '/' . $_SESSION['LogoFile'] . '" width="120" alt="webERP" title="webERP ' . _('Copyright') . ' &copy; weberp.org - ' . date('Y') . '" />';
+	echo '<img src="'. $rootpath . '/' . $_SESSION['LogoFile'] . '" width="120" alt="KwaMoja" title="KwaMoja ' . _('Copyright') . ' &copy; kwamoja.org - ' . date('Y') . '" />';
 echo '</div>';
 
 echo '<div id="FooterVersionDiv">';
-	echo 'webERP ' ._('version') .' ' . $_SESSION['VersionNumber'] . ' ' . _('Copyright') . ' © 2004 - ' . Date('Y'). ' <a target="_blank" href="http://www.weberp.org/weberp/doc/Manual/ManualContributors.html">weberp.org</a>';
+	echo 'KwaMoja ' ._('version') .' ' . $_SESSION['VersionNumber'] . ' ' . _('Copyright') . ' © 2004 - ' . Date('Y'). ' <a target="_blank" href="http://www.kwamoja.org/kwamoja/doc/Manual/ManualContributors.html">kwamoja.org</a>';
 echo '</div>';
 
 echo '<div id="FooterTimeDiv">';

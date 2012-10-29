@@ -45,7 +45,7 @@
 
 /* Check that the supplier since date is a valid date. The date
  * must be in the same format as the date format specified in the
- * target webERP company */
+ * target KwaMoja company */
 	function VerifySupplierSinceDate($suppliersincedate, $i, $Errors, $db) {
 		$sql="SELECT confvalue FROM config where confname='DefaultDateFormat'";
 		$result=DB_query($sql, $db);
@@ -107,7 +107,7 @@
 		return $Errors;
 	}
 
-/* Check that the factor company is set up in the weberp database */
+/* Check that the factor company is set up in the kwamoja database */
 	function VerifyFactorCompany($factorco , $i, $Errors, $db) {
 		$Searchsql = "SELECT COUNT(id)
 					 FROM factorcompanies
@@ -120,7 +120,7 @@
 		return $Errors;
 	}
 
-/* Insert a new supplier in the webERP database. This function takes an
+/* Insert a new supplier in the KwaMoja database. This function takes an
    associative array called $SupplierDetails, where the keys are the
    names of the fields in the suppliers table, and the values are the
    values to insert.

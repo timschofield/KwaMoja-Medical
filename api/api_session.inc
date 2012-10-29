@@ -14,7 +14,7 @@ if (isset($SessionSavePath)){
 ini_set('session.gc_Maxlifetime',$SessionLifeTime);
 ini_set('max_execution_time',$MaximumExecutionTime);
 
-session_name('webERPapi');
+session_name('KwaMojaapi');
 session_start();
 
 include($PathPrefix . 'includes/LanguageSetup.php');
@@ -36,7 +36,7 @@ if (!isset($_SESSION['AttemptsCounter'])){
 
 if (isset($_SESSION['HTTPS_Only']) AND $_SESSION['HTTPS_Only']==1){
 	if ($_SERVER['HTTPS']!='on'){
-		prnMsg(_('webERP is configured to allow only secure socket connections. Pages must be called with https://') . ' .....','error');
+		prnMsg(_('KwaMoja is configured to allow only secure socket connections. Pages must be called with https://') . ' .....','error');
 		exit;
 	}
 }

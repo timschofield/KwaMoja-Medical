@@ -4,7 +4,7 @@ in the acssociative array $ReportGroups[]. It will fetch the reports belonging s
 specified to create a select form to choose a report. Two on-submit select forms will be generated, one
 for default reports and the other for custom reports.
 
-For use with webERP
+For use with KwaMoja
 
 Revision History:
 Revision 1.0 - 2005-11-03 - By D. Premo - Initial Release

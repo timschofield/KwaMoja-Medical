@@ -1,4 +1,4 @@
-UPGRADING FROM PREVIOUS VERSIONS OF WEBERP
+UPGRADING FROM PREVIOUS VERSIONS OF KWAMOJA
 
 /* $Id$*/
 
@@ -21,25 +21,25 @@ upgradeXX.XX-YY.YY.sql
 
 where XX.XX is the old version number and YY.YY is the new version number.
 
-No other users should be using the database. The upgrade script will need to be edited to use the name of the database that your webERP installation was created with - by default this is weberpdemo. If the default has not been changed then the following line (or modified for your database name) will need to be added to the upgrade script - right at the beginning:
+No other users should be using the database. The upgrade script will need to be edited to use the name of the database that your KwaMoja installation was created with - by default this is kwamojademo. If the default has not been changed then the following line (or modified for your database name) will need to be added to the upgrade script - right at the beginning:
 
-	use weberpdemo;
+	use kwamojademo;
 
 A similar line will be required but substituting the name of the database that your installation uses where the default database name has been changed.
 
 Upgrading a mysql installation, the script should then be run through mysql from the command line:
 
-/usr/local/mysql/bin/mysql -u weberp_db_user -p weberp_db_pwd < path_to_upgraded_webERP_install/sql/mysql/upgradeXX.X-YY.Y.sql
+/usr/local/mysql/bin/mysql -u kwamoja_db_user -p kwamoja_db_pwd < path_to_upgraded_KwaMoja_install/sql/mysql/upgradeXX.X-YY.Y.sql
 
 where:
 - the mysql client binary is under /usr/local/mysql/bin/mysql
-- the mysql user name is weberp_db_user
-- the mysql password for weberp_db_user is weberp_db_pwd
-- the path to the new webERP installation is path_to_upgraded_webERP_install
+- the mysql user name is kwamoja_db_user
+- the mysql password for kwamoja_db_user is kwamoja_db_pwd
+- the path to the new KwaMoja installation is path_to_upgraded_KwaMoja_install
 - XX.XX is the old version number
 - YY.YY is the new version number
 
-The new php scripts should be copied into the webERP directory under the web-server root directory.
+The new php scripts should be copied into the KwaMoja directory under the web-server root directory.
 
 IMPORTANT NOTE ON UPGRADING A 2.8 to 2.9
 
@@ -57,7 +57,7 @@ IMPORTANT: Note that mysql version 4.1.8 or greater is required because from the
 
 NOTES ON UPGRADING FROM 3.01 to 3.02
 
-3.02 includes extensive changes to the tax schema in webERP and also allows for the same item on a sales order multiple times. This requires all existing sales orders to be updated with an appropriate number to avoid strange behaviour. A special script must be run to effect these changes after the SQL script has been run. The script Z_Upgrade_3.01-3.02.php must be opened in the browser to effect these changes.
+3.02 includes extensive changes to the tax schema in KwaMoja and also allows for the same item on a sales order multiple times. This requires all existing sales orders to be updated with an appropriate number to avoid strange behaviour. A special script must be run to effect these changes after the SQL script has been run. The script Z_Upgrade_3.01-3.02.php must be opened in the browser to effect these changes.
 
 NOTES ON UPGRADING FROM 3.04 to 3.05
 

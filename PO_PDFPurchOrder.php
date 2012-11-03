@@ -1,6 +1,6 @@
 <?php
 
-/* $Id$*/
+/* $Id: PO_PDFPurchOrder.php 5731 2012-10-29 02:00:22Z tehonu $*/
 
 include('includes/session.inc');
 include('includes/SQL_CommonFunctions.inc');

@@ -472,7 +472,7 @@ background:#E0F3B1;
 }
 #FooterLogoDiv{
 	float:right; /* right side */
-	background:white;
+	background:transparent;
     border-radius:8px;
     padding:2px;
 }

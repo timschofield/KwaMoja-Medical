@@ -53,6 +53,7 @@ if (!isset($_GET['InvoiceNumber']) AND !$_SESSION['ProcessingCredit']) {
 								debtorsmaster.currcode,
 								custbranch.defaultlocation,
 								custbranch.taxgroupid,
+								custbranch.salesman,
 								stockmoves.loccode,
 								locations.taxprovinceid,
 								currencies.decimalplaces
@@ -98,6 +99,7 @@ if (!isset($_GET['InvoiceNumber']) AND !$_SESSION['ProcessingCredit']) {
 		$_SESSION['CreditItems' . $identifier]->DispatchTaxProvince = $myrow['taxprovinceid'];
 		$_SESSION['CreditItems' . $identifier]->GetFreightTaxes();
 		$_SESSION['CreditItems' . $identifier]->CurrDecimalPlaces = $myrow['decimalplaces'];
+		$_SESSION['CreditItems' . $identifier]->SalesPerson = $myrow['salesman'];
 
 		DB_free_result($GetInvHdrResult);
 
@@ -204,7 +206,7 @@ if (!isset($_GET['InvoiceNumber']) AND !$_SESSION['ProcessingCredit']) {
 
 }
 
-if (isset($_POST['Location'])){
+if (isset($_POST['Location']) AND !isset($_POST['ProcessCredit'])){
 	$_SESSION['CreditItems' . $identifier]->Location = $_POST['Location'];
 
 	$NewDispatchTaxProvResult = DB_query("SELECT taxprovinceid FROM locations WHERE loccode='" . $_POST['Location'] . "'",$db);

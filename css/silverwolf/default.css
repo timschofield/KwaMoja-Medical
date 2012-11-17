@@ -1,4 +1,4 @@
-/*** 
+/***
 
 New "SilverWolf" Theme for KwaMoja
 
@@ -10,7 +10,7 @@ Credits to the original authors.
 NOTE:
 This CSS is not yet optimized. Some styles maybe 'redundant' or 'unused',
 but for the obvious one it will be cleaned up.
-To optimized the rest we should examined the whole codes! That would be for 
+To optimized the rest we should examined the whole codes! That would be for
 the next project. :)
 
 ***/
@@ -332,9 +332,9 @@ list-style:none; /* hide the bullets */
 display:inline; /* items are inline */
 }
 
-/*** links as buttons!!! clicking anywhere in the button will activate 
+/*** links as buttons!!! clicking anywhere in the button will activate
  the link!!! ***HJ***/
- 
+
 #QuickMenuDiv li a{
 padding:9px; /* links as button */
 border:thin outset lightgray; /* un-pressed state */
@@ -363,7 +363,7 @@ text-align:center;
 #MainMenuDiv{
 float:left; /* REQUIRED:to the left side */
 white-space:nowrap; /* don't break text */
-text-align:center; 
+text-align:center;
 width:12%;
 margin-top:3px;
 }
@@ -427,9 +427,11 @@ color:black;
 }
 
 #TransactionsDiv,#InquiriesDiv,#MaintenanceDiv{
+width: 33%;
 display:table-cell;
 }
 #InquiriesDiv div{ /* default div, used for custom report header */
+width: 33%;
 background:silver;
 color:black;
 padding:2px;

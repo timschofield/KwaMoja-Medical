@@ -445,11 +445,12 @@ padding:0;
 padding:5px;
 }
 #FooterLogoDiv{
-background:white;
-border:2px outset steelblue;
+background:transparent;
+border:0px outset steelblue;
 border-radius:8px 8px 8px 8px;
 float:left;
 padding:3px;
+margin-left:5px;
 }
 #FooterVersionDiv{
 float:left;

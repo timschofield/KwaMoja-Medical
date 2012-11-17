@@ -396,11 +396,11 @@ color:black;
 #MainMenuDiv{
 float:left;
 white-space:nowrap;
-text-align:center; 
+text-align:center;
 width:11%;
 }
 #MainMenuDiv ul{
-margin:0 3px 0 0; 
+margin:0 3px 0 0;
 padding:0;
 }
 #MainMenuDiv li{
@@ -502,8 +502,9 @@ text-indent: -10px; /* this makes the bullet to appear as the li tag previously 
 margin: 0 0 0 12px;
 }
 
-#TransactionsDiv,#InquiriesDiv,#MaintenanceDiv{ 
-display:table-cell; 
+#TransactionsDiv,#InquiriesDiv,#MaintenanceDiv{
+width: 33%;
+display:table-cell;
 }
 #InquiriesDiv div{ /* header for standard reports/forms, custom reports */
 background:url("images/desk.jpg") #631;
@@ -512,6 +513,7 @@ color:white;
 font-weight:bold;
 margin:0 -3px;
 padding:2px;
+width: 33%;
 }
 
 /* FOOTER */

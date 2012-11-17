@@ -1158,31 +1158,31 @@ if (isset($_POST['ProcessCredit']) AND $OKToProcess==true){
 
 	 foreach ($_SESSION['CreditItems'.$identifier]->LineItems as $CreditLine) {
 
-		  If ($CreditLine->Quantity > 0){
+		if ($CreditLine->Quantity > 0){
 
-			    $LocalCurrencyPrice = ($CreditLine->Price / $_SESSION['CurrencyRate']);
+			$LocalCurrencyPrice = ($CreditLine->Price / $_SESSION['CurrencyRate']);
 
-			    if ($CreditLine->MBflag=='M' oR $CreditLine->MBflag=='B'){
-			   /*Need to get the current location quantity will need it later for the stock movement */
-		 	    	$SQL="SELECT locstock.quantity
-					FROM locstock
-					WHERE locstock.stockid='" . $CreditLine->StockID . "'
-					AND loccode= '" . $_SESSION['CreditItems'.$identifier]->Location . "'";
+		    if ($CreditLine->MBflag=='M' oR $CreditLine->MBflag=='B'){
+		   /*Need to get the current location quantity will need it later for the stock movement */
+	 	    	$SQL="SELECT locstock.quantity
+						FROM locstock
+						WHERE locstock.stockid='" . $CreditLine->StockID . "'
+						AND loccode= '" . $_SESSION['CreditItems'.$identifier]->Location . "'";
 
-			    	$Result = DB_query($SQL, $db);
-			    	if (DB_num_rows($Result)==1){
+		    	$Result = DB_query($SQL, $db);
+		    	if (DB_num_rows($Result)==1){
 					$LocQtyRow = DB_fetch_row($Result);
 					$QtyOnHandPrior = $LocQtyRow[0];
-			    	} else {
-					/*There must actually be some error this should never happen */
+		    	} else {
+				/*There must actually be some error this should never happen */
 					$QtyOnHandPrior = 0;
-			    	}
-			    } else {
-			    	$QtyOnHandPrior =0; //because its a dummy/assembly/kitset part
-			    }
+		    	}
+		    } else {
+		    	$QtyOnHandPrior =0; //because its a dummy/assembly/kitset part
+		    }
 
-			    if ($_POST['CreditType']=='ReverseOverCharge') {
-			   /*Insert a stock movement coming back in to show the credit note  - flag the stockmovement not to show on stock movement enquiries - its is not a real stock movement only for invoice line - also no mods to location stock records*/
+		    if ($_POST['CreditType']=='ReverseOverCharge') {
+		   /*Insert a stock movement coming back in to show the credit note  - flag the stockmovement not to show on stock movement enquiries - its is not a real stock movement only for invoice line - also no mods to location stock records*/
 				$SQL = "INSERT INTO stockmoves (stockid,
 												type,
 												transno,

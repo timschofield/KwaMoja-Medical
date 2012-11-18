@@ -33,7 +33,7 @@
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	echo '<p class="page_title_text"><img src="'.$rootpath.'/css/'.$theme.'/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $title.'</p>';
- 
+
 	echo '<table class="selection">
 			<tr><td>' . _('Select Period From:') . '</td>
 			<td><select name="FromPeriod">';
@@ -130,30 +130,29 @@
 	}
 	echo '</select></td></tr>';
 
-	$SalesFolkResult = DB_query("SELECT salesmancode, salesmanname FROM salesman",$db);
-
-	if (! isset($_POST['SalesmanCode'])){
- 		$_POST['SalesmanCode'] = '';
-	}
-
 	echo '<tr>
 			<td>' . _('For Sales Person:') .'</td>
 			<td><select name="SalesmanCode">';
 
-	if($_POST['SalesmanCode']=='All'){
+	$sql = "SELECT salesmancode, salesmanname FROM salesman";
+	if ($_SESSION['SalesmanLogin']!=''){
+		$sql .= " WHERE salesmancode='" . $_SESSION['SalesmanLogin'] . "'";
+		$_POST['Salesperson'] = $_SESSION['SalesmanLogin'];
+	} else if (!isset($_POST['SalesmanCode'])){
+		$_POST['SalesmanCode'] = 'All';
 		echo '<option selected="selected" value="All">' . _('All') . '</option>';
 	} else {
 		echo '<option value="All">' . _('All') . '</option>';
 	}
+	$SalesFolkResult = DB_query($sql,$db);
 	while ($myrow=DB_fetch_array($SalesFolkResult)){
-		if ($myrow['salesmancode']== $_POST['SalesmanCode']){
+		if ($myrow['salesmancode'] == $_POST['SalesmanCode']){
 			echo '<option selected="selected" value="' . $myrow['salesmancode'] . '">' . $myrow['salesmanname'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['salesmancode'] . '">' . $myrow['salesmanname'] . '</option>'; 
+			echo '<option value="' . $myrow['salesmancode'] . '">' . $myrow['salesmanname'] . '</option>';
 		}
 	}
 	echo '</select></td>
-			<td>' . $_POST['SalesmanCode'] . '</td>
 		</tr>';
 
 	echo '<tr><td>'._('Graph Type').'</td>';

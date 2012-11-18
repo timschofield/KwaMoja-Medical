@@ -1162,8 +1162,12 @@ function display(&$db)  //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_##
 			<td>' . _('For Sales Person') . ':</td>
 			<td><select name="Salesman">';
 	$sql="SELECT salesmancode, salesmanname FROM salesman";
+	if ($_SESSION['SalesmanLogin']!=''){
+		$sql .= " WHERE salesmancode='" . $_SESSION['SalesmanLogin'] . "'";
+	} else {
+		echo '<option selected="selected" value="All">' . _('All Salesmen')  . '</option>';
+	}
 	$SalesmanResult= DB_query($sql,$db);
-	echo '<option selected="selected" value="All">' . _('All Salesmen')  . '</option>';
 	While ($myrow = DB_fetch_array($SalesmanResult)){
 		echo '<option value="' . $myrow['salesmancode'] . '">' . $myrow['salesmanname']  . '</option>';
 	}

@@ -472,10 +472,14 @@ if (isset($_POST['PrintPDF'])
 				<td>' . _('Only Show Customers Of') . ':' . '</td>
 				<td><select tabindex="4" name="Salesman">';
 
-		$sql = "SELECT salesmancode, salesmanname FROM salesman";
+		$sql="SELECT salesmancode, salesmanname FROM salesman";
+		if ($_SESSION['SalesmanLogin']!=''){
+			$sql .= " WHERE salesmancode='" . $_SESSION['SalesmanLogin'] . "'";
+		} else {
+			echo '<option selected="selected" value="">' . _('All Salesmen')  . '</option>';
+		}
 
 		$result=DB_query($sql,$db);
-		echo '<option value="">' . _('All Sales people') . '</option>';
 		while ($myrow=DB_fetch_array($result)){
 				echo '<option value="' . $myrow['salesmancode'] . '">' . $myrow['salesmanname'] . '</option>';
 		}

@@ -421,7 +421,7 @@ if (!isset($SelectedBranch)){
 				urlencode($myrow[1]),
 				_('Delete Branch'));
 
-			if ($myrow[11]){
+			if ($myrow[10]){
 				$TotalDisable++;
 			}else {
 				$TotalEnable++;

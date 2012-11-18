@@ -661,6 +661,13 @@ if (isset($StockItemsResult)
 	if(!isset($_POST['StockLocation'])) {
 		$_POST['StockLocation'] = '';
 	}
+
+	if ($_SESSION['SalesmanLogin']!=''){
+		$SalesMan = '=\'' . $_SESSION['SalesmanLogin'] . '\'';
+	} else {
+		$SalesMan = ' LIKE \'%\'';
+	}
+
 	if (isset($OrderNumber)
 		AND $OrderNumber !='') {
 			$SQL = "SELECT salesorders.orderno,
@@ -685,6 +692,7 @@ if (isset($StockItemsResult)
 				WHERE salesorderdetails.completed=0
 				AND salesorders.orderno=". $OrderNumber ."
 				AND salesorders.quotation =" .$Quotations . "
+				AND custbranch.salesman" . $SalesMan . "
 				GROUP BY salesorders.orderno,
 					debtorsmaster.name,
 					custbranch.brname,
@@ -725,6 +733,7 @@ if (isset($StockItemsResult)
 					AND salesorderdetails.stkcode='". $SelectedStockItem ."'
 					AND salesorders.debtorno='" . $SelectedCustomer ."'
 					AND salesorders.fromstkloc = '". $_POST['StockLocation'] . "'
+					AND custbranch.salesman" . $SalesMan . "
 					ORDER BY salesorders.orderno";
 
 
@@ -752,6 +761,7 @@ if (isset($StockItemsResult)
 					AND salesorderdetails.completed=0
 					AND salesorders.debtorno='" . $SelectedCustomer . "'
 					AND salesorders.fromstkloc = '". $_POST['StockLocation'] . "'
+					AND custbranch.salesman" . $SalesMan . "
 					GROUP BY salesorders.orderno,
 						debtorsmaster.name,
 						salesorders.debtorno,
@@ -789,6 +799,7 @@ if (isset($StockItemsResult)
 					AND salesorders.quotation =" .$Quotations . "
 					AND salesorderdetails.stkcode='". $SelectedStockItem . "'
 					AND salesorders.fromstkloc = '". $_POST['StockLocation'] . "'
+					AND custbranch.salesman" . $SalesMan . "
 					GROUP BY salesorders.orderno,
 						debtorsmaster.name,
 						custbranch.brname,
@@ -822,6 +833,7 @@ if (isset($StockItemsResult)
 					WHERE salesorderdetails.completed=0
 					AND salesorders.quotation =" .$Quotations . "
 					AND salesorders.fromstkloc = '". $_POST['StockLocation'] . "'
+					AND custbranch.salesman" . $SalesMan . "
 					GROUP BY salesorders.orderno,
 						debtorsmaster.name,
 						custbranch.brname,

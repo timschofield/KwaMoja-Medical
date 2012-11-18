@@ -40,13 +40,17 @@ echo '</select></td>
 	<td>' . _('Salesperson') . ':</td>
 	<td><select tabindex="2" name="Salesperson">';
 
-$SalespeopleResult = DB_query("SELECT salesmancode, salesmanname FROM salesman",$db);
-if (!isset($_POST['Salesperson'])){
+$sql = "SELECT salesmancode, salesmanname FROM salesman";
+if ($_SESSION['SalesmanLogin']!=''){
+	$sql .= " WHERE salesmancode='" . $_SESSION['SalesmanLogin'] . "'";
+	$_POST['Salesperson'] = $_SESSION['SalesmanLogin'];
+} else if (!isset($_POST['Salesperson'])){
 	$_POST['Salesperson'] = 'All';
 	echo '<option selected="selected" value="All">' . _('All') . '</option>';
 } else {
 	echo '<option value="All">' . _('All') . '</option>';
 }
+$SalespeopleResult = DB_query($sql,$db);
 while ($SalespersonRow = DB_fetch_array($SalespeopleResult)){
 
 	if ($_POST['Salesperson']==$SalespersonRow['salesmancode']) {
@@ -87,7 +91,7 @@ $sql = "SELECT 	trandate,
 			FROM stockmoves
 			INNER JOIN stockmaster
 			ON stockmoves.stockid=stockmaster.stockid
-			INNER JOIN custbranch 
+			INNER JOIN custbranch
 			ON stockmoves.debtorno=custbranch.debtorno
 				AND stockmoves.branchcode=custbranch.branchcode
 			WHERE (stockmoves.type=10 or stockmoves.type=11)

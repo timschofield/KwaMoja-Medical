@@ -6,3 +6,4 @@ ALTER TABLE `salesorderdetails` DROP `commissionearned`;
 INSERT INTO scripts VALUES ('CounterReturns.php','5','Allows credits and refunds from the default Counter Sale account for an inventory location');
 UPDATE config SET confvalue='4.09.1' WHERE confname='VersionNumber';
 
+ALTER TABLE purchorders MODIFY `initiator` VARCHAR(20);

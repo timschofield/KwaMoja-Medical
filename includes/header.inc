@@ -74,7 +74,7 @@
 			echo '<li><a href="'.$rootpath.'/SelectProduct.php">' ._('Items')    .'</a></li>';
 			echo '<li><a href="'.$rootpath.'/SelectSupplier.php">'._('Suppliers').'</a></li>';
 			
-			$DefaultManualLink = '<li><a rel="external" accesskey="8" href="' .  $rootpath . '/doc/Manual/ManualContents.php'. $ViewTopic . $BookMark. '">'._('Manual').'</a></li>';
+			$DefaultManualLink = '<li><a rel="external" target="_blank" accesskey="8" href="' .  $rootpath . '/doc/Manual/ManualContents.php'. $ViewTopic . $BookMark. '">'._('Manual').'</a></li>';
 
 			if (mb_substr($_SESSION['Language'],0,2) != 'en'){
 				if (file_exists('locale/'.$_SESSION['Language'].'/Manual/ManualContents.php')){

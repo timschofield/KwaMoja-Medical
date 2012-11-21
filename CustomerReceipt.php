@@ -22,14 +22,14 @@ if (isset($_POST['Cancel'])) {
 	$Cancel=1;
 }
 
-if (isset($_GET['Type']) AND $_GET['Type']=='GL') {
+if (isset($_GET['Type']) and $_GET['Type']=='GL') {
 	$_POST['GLEntry']=1;
 }
 
 if ((isset($_POST['BatchInput'])
-	AND $_POST['BankAccount']=='')
-	OR (isset($_POST['Process'])
-	AND $_POST['BankAccount']=='')) {
+	and $_POST['BankAccount']=='')
+	or (isset($_POST['Process'])
+	and $_POST['BankAccount']=='')) {
 
 	echo '<br />';
 	prnMsg(_('A bank account must be selected for this receipt'), 'warn');
@@ -40,7 +40,7 @@ if ((isset($_POST['BatchInput'])
 	$BankAccountEmpty=false;
 }
 
-if (!isset($_GET['Delete']) AND isset($_SESSION['ReceiptBatch'])){
+if (!isset($_GET['Delete']) and isset($_SESSION['ReceiptBatch'])){
 	//always process a header update unless deleting an item
 
 	$_SESSION['ReceiptBatch']->Account = $_POST['BankAccount'];
@@ -63,7 +63,7 @@ if (!isset($_GET['Delete']) AND isset($_SESSION['ReceiptBatch'])){
 		$_SESSION['ReceiptBatch']->AccountCurrency=$myrow['currcode'];
 		$_SESSION['ReceiptBatch']->CurrDecimalPlaces=$myrow['decimalplaces'];
 		unset($result);
-	} elseif (DB_num_rows($result)==0 AND !$BankAccountEmpty){
+	} elseif (DB_num_rows($result)==0 and !$BankAccountEmpty){
 		prnMsg( _('The bank account number') . ' ' . $_POST['BankAccount'] . ' ' . _('is not set up as a bank account'),'error');
 		include ('includes/footer.inc');
 		exit;
@@ -73,14 +73,14 @@ if (!isset($_GET['Delete']) AND isset($_SESSION['ReceiptBatch'])){
 		$_POST['DateBanked'] = Date($_SESSION['DefaultDateFormat']);
 	}
 	$_SESSION['ReceiptBatch']->DateBanked = $_POST['DateBanked'];
-	if (isset($_POST['ExRate']) AND $_POST['ExRate']!=''){
+	if (isset($_POST['ExRate']) and $_POST['ExRate']!=''){
 		if (is_numeric(filter_number_format($_POST['ExRate']))){
 			$_SESSION['ReceiptBatch']->ExRate = filter_number_format($_POST['ExRate']);
 		} else {
 			prnMsg(_('The exchange rate entered should be numeric'),'warn');
 		}
 	}
-	if (isset($_POST['FunctionalExRate']) AND $_POST['FunctionalExRate']!=''){
+	if (isset($_POST['FunctionalExRate']) and $_POST['FunctionalExRate']!=''){
 		if (is_numeric(filter_number_format($_POST['FunctionalExRate']))){
 			$_SESSION['ReceiptBatch']->FunctionalExRate=filter_number_format($_POST['FunctionalExRate']); //ex rate between receipt currency and account currency
 		} else {
@@ -167,7 +167,7 @@ if (isset($_POST['Process'])){ //user hit submit a new entry to the receipt batc
 		$_POST['CustomerName']='';
 	}
 
-	if ($_POST['GLCode'] == '' AND $_GET['Type']=='GL') {
+	if ($_POST['GLCode'] == '' and $_GET['Type']=='GL') {
 		prnMsg( _('No General Ledger code has been chosen') . ' - ' . _('so this GL analysis item could not be added'),'warn');
 	} else {
 		$_SESSION['ReceiptBatch']->add_to_batch(filter_number_format($_POST['Amount']),
@@ -561,12 +561,12 @@ if (isset($_POST['CommitBatch'])){
 if (isset($_POST['Search'])){
 /*Will only be true if clicked to search for a customer code */
 
-	if ($_POST['Keywords'] AND $_POST['CustCode']) {
+	if ($_POST['Keywords'] and $_POST['CustCode']) {
 		$msg=_('Customer name keywords have been used in preference to the customer code extract entered');
 	}
 	if ($_POST['Keywords']==''
-		AND $_POST['CustCode']==''
-		AND $_POST['CustInvNo']=='') {
+		and $_POST['CustCode']==''
+		and $_POST['CustInvNo']=='') {
 
 		$msg=_('At least one Customer Name keyword OR an extract of a Customer Code must be entered for the search');
 	} else {
@@ -822,13 +822,13 @@ if (!isset($_SESSION['ReceiptBatch']->ExRate)){
 if (!isset($_SESSION['ReceiptBatch']->FunctionalExRate)){
 	$_SESSION['ReceiptBatch']->FunctionalExRate=1;
 }
-if ($_SESSION['ReceiptBatch']->AccountCurrency!=$_SESSION['ReceiptBatch']->Currency AND isset($_SESSION['ReceiptBatch']->AccountCurrency)){
+if ($_SESSION['ReceiptBatch']->AccountCurrency!=$_SESSION['ReceiptBatch']->Currency and isset($_SESSION['ReceiptBatch']->AccountCurrency)){
 	if (isset($SuggestedExRate)){
 		$SuggestedExRateText = '<b>' . _('Suggested rate:') . ' ' . locale_number_format($SuggestedExRate,6) . '</b>';
 	} else {
 		$SuggestedExRateText ='';
 	}
-	if ($_SESSION['ReceiptBatch']->ExRate==1 AND isset($SuggestedExRate)){
+	if ($_SESSION['ReceiptBatch']->ExRate==1 and isset($SuggestedExRate)){
 		$_SESSION['ReceiptBatch']->ExRate = $SuggestedExRate;
 	}elseif($_POST['Currency'] != $_POST['PreviousCurrency'] and isset($SuggestedExRate)){//the user has changed the currency, then we should revise suggested rate
 		$_SESSION['ReceiptBatch']->ExRate = $SuggestedExRate;
@@ -841,13 +841,13 @@ if ($_SESSION['ReceiptBatch']->AccountCurrency!=$_SESSION['ReceiptBatch']->Curre
 }
 
 if ($_SESSION['ReceiptBatch']->AccountCurrency!=$_SESSION['CompanyRecord']['currencydefault']
-				AND isset($_SESSION['ReceiptBatch']->AccountCurrency)){
+				and isset($_SESSION['ReceiptBatch']->AccountCurrency)){
 	if (isset($SuggestedFunctionalExRate)){
 		$SuggestedFunctionalExRateText = '<b>' . _('Suggested rate:') . ' ' . locale_number_format($SuggestedFunctionalExRate,6) . '</b>';
 	} else {
 		$SuggestedFunctionalExRateText ='';
 	}
-	if ($_SESSION['ReceiptBatch']->FunctionalExRate==1 AND isset($SuggestedFunctionalExRate)){
+	if ($_SESSION['ReceiptBatch']->FunctionalExRate==1 and isset($SuggestedFunctionalExRate)){
 		$_SESSION['ReceiptBatch']->FunctionalExRate = $SuggestedFunctionalExRate;
 	}
 	echo '<tr>
@@ -945,16 +945,16 @@ then set out the customers account summary */
 
 
 if (isset($_SESSION['CustomerRecord'])
-		AND $_SESSION['CustomerRecord']['currcode'] != $_SESSION['ReceiptBatch']->Currency){
+		and $_SESSION['CustomerRecord']['currcode'] != $_SESSION['ReceiptBatch']->Currency){
 	prnMsg(_('The selected customer does not trade in the currency of the receipt being entered - either the currency of the receipt needs to be changed or a different customer selected'),'warn');
 	unset($_SESSION['CustomerRecord']);
 }
 
 
 if (isset($_SESSION['CustomerRecord'])
-		AND isset($_POST['CustomerID'])
-		AND $_POST['CustomerID']!=''
-		AND isset($_SESSION['ReceiptBatch'])){
+		and isset($_POST['CustomerID'])
+		and $_POST['CustomerID']!=''
+		and isset($_SESSION['ReceiptBatch'])){
 /*a customer is selected  */
 
 	echo '<p class="page_title_text"><img src="'.$rootpath.'/css/'.$theme.'/images/customer.png" title="' . _('Customer') . '" alt="" />' . ' ' . $_SESSION['CustomerRecord']['name'] . ' - (' . _('All amounts stated in') . ' ' . $_SESSION['CustomerRecord']['currency'] . ')' . _('Terms') . ': ' . $_SESSION['CustomerRecord']['terms'] . '<br/>' . _('Credit Limit') . ': ' . locale_number_format($_SESSION['CustomerRecord']['creditlimit'],0) . '  ' . _('Credit Status') . ': ' . $_SESSION['CustomerRecord']['reasondescription'];
@@ -993,7 +993,7 @@ if (isset($_SESSION['CustomerRecord'])
 
 }
 
-if (isset($_POST['GLEntry']) AND isset($_SESSION['ReceiptBatch'])){
+if (isset($_POST['GLEntry']) and isset($_SESSION['ReceiptBatch'])){
 /* Set up a heading for the transaction entry for a GL Receipt */
 	echo '<br />
 		<table class="selection">
@@ -1052,10 +1052,10 @@ if (isset($_POST['GLEntry']) AND isset($_SESSION['ReceiptBatch'])){
 the fields for entry of receipt amt, disc, payee details, narrative */
 
 if (((isset($_SESSION['CustomerRecord'])
-		AND isset($_POST['CustomerID'])
-		AND $_POST['CustomerID']!='')
-			OR isset($_POST['GLEntry']))
-		AND isset($_SESSION['ReceiptBatch'])){
+		and isset($_POST['CustomerID'])
+		and $_POST['CustomerID']!='')
+		or isset($_POST['GLEntry']))
+		and isset($_SESSION['ReceiptBatch'])){
 
 	if (!isset($_POST['Amount'])) {
 		$_POST['Amount']=0;
@@ -1099,7 +1099,7 @@ if (((isset($_SESSION['CustomerRecord'])
 		</div>';
 
 } elseif (isset($_SESSION['ReceiptBatch'])
-			AND !isset($_POST['GLEntry'])){
+			and !isset($_POST['GLEntry'])){
 
 	/*Show the form to select a customer */
 	echo '<br />';
@@ -1154,7 +1154,7 @@ if (((isset($_SESSION['CustomerRecord'])
 					$myrow['name']);
 
 			$j++;
-			If ($j == 11){
+			if ($j == 11){
 				$j=1;
 				echo $TableHeader;
 

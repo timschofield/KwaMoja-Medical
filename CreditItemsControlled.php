@@ -12,7 +12,7 @@ $title = _('Specify Credited Controlled Items');
 include('includes/header.inc');
 
 
-if ($_GET['CreditInvoice']=='Yes' OR $_POST['CreditInvoice']=='Yes'){
+if ($_GET['CreditInvoice']=='Yes' or $_POST['CreditInvoice']=='Yes'){
 	$CreditLink = 'Credit_Invoice.php';
 } else {
 	$CreditLink = 'SelectCreditItems.php';

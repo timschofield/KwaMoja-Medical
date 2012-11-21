@@ -44,7 +44,7 @@ if (get_magic_quotes_gpc()){
 
 			$Companies = scandir('companies/', 0);
 			foreach ($Companies as $CompanyEntry){
-				if (is_dir('companies/' . $CompanyEntry) AND $CompanyEntry != '..' AND $CompanyEntry != '' AND $CompanyEntry!='.svn' AND $CompanyEntry!='.'){
+				if (is_dir('companies/' . $CompanyEntry) and $CompanyEntry != '..' and $CompanyEntry != '' and $CompanyEntry!='.svn' and $CompanyEntry!='.'){
 					if ($CompanyEntry==$DefaultCompany) {
 						echo '<option selected="selected" label="'.$CompanyEntry.'" value="'.$CompanyEntry.'">'.$CompanyEntry.'</option>';
 					} else {

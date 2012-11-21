@@ -46,7 +46,7 @@ if (isset($_POST['submit'])) {
 	if (mb_strlen($_POST['UserID'])<4){
 		$InputError = 1;
 		prnMsg(_('The user ID entered must be at least 4 characters long'),'error');
-	} elseif (ContainsIllegalCharacters($_POST['UserID']) OR mb_strstr($_POST['UserID'],' ')) {
+	} elseif (ContainsIllegalCharacters($_POST['UserID']) or mb_strstr($_POST['UserID'],' ')) {
 		$InputError = 1;
 		prnMsg(_('User names cannot contain any of the following characters') . " - ' &amp; + \" \\ " . _('or a space'),'error');
 	} elseif (mb_strlen($_POST['Password'])<5){
@@ -57,12 +57,12 @@ if (isset($_POST['submit'])) {
 	} elseif (mb_strstr($_POST['Password'],$_POST['UserID'])!= false){
 		$InputError = 1;
 		prnMsg(_('The password cannot contain the user id'),'error');
-	} elseif ((mb_strlen($_POST['Cust'])>0) AND (mb_strlen($_POST['BranchCode'])==0)) {
+	} elseif ((mb_strlen($_POST['Cust'])>0) and (mb_strlen($_POST['BranchCode'])==0)) {
 		$InputError = 1;
 		prnMsg(_('If you enter a Customer Code you must also enter a Branch Code valid for this Customer'),'error');
 	}
 
-	if ((mb_strlen($_POST['BranchCode'])>0) AND ($InputError !=1)) {
+	if ((mb_strlen($_POST['BranchCode'])>0) and ($InputError !=1)) {
 		// check that the entered branch is valid for the customer code
 		$sql = "SELECT defaultlocation
 				FROM custbranch
@@ -238,7 +238,7 @@ $ThemeDirectory = dir('css/');
 
 while (false != ($ThemeName = $ThemeDirectory->read())){
 
-	if (is_dir('css/' . $ThemeName) AND $ThemeName != '.' AND $ThemeName != '..' AND $ThemeName != '.svn'){
+	if (is_dir('css/' . $ThemeName) and $ThemeName != '.' and $ThemeName != '..' and $ThemeName != '.svn'){
 
 		if (isset($_POST['Theme']) and $_POST['Theme'] == $ThemeName){
 			echo '<option selected="selected" value="' . $ThemeName . '">' . $ThemeName .'</option>';
@@ -259,7 +259,7 @@ echo '</select></td>
 foreach ($LanguagesArray as $LanguageEntry => $LanguageName){
 	if (isset($_POST['UserLanguage']) and $_POST['UserLanguage'] == $LanguageEntry){
 		echo '<option selected="selected" value="' . $LanguageEntry . '">' . $LanguageName['LanguageName'] .'</option>';
-	} elseif (!isset($_POST['UserLanguage']) AND $LanguageEntry == $DefaultLanguage) {
+	} elseif (!isset($_POST['UserLanguage']) and $LanguageEntry == $DefaultLanguage) {
 		echo '<option selected="selected" value="' . $LanguageEntry . '">' . $LanguageName['LanguageName'] .'</option>';
 	} else {
 		echo '<option value="' . $LanguageEntry . '">' . $LanguageName['LanguageName'] .'</option>';

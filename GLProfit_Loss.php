@@ -13,8 +13,8 @@ if (isset($_POST['FromPeriod']) and ($_POST['FromPeriod'] > $_POST['ToPeriod']))
 }
 
 if ((!isset($_POST['FromPeriod'])
-	AND !isset($_POST['ToPeriod']))
-		OR isset($_POST['SelectADifferentPeriod'])){
+	and !isset($_POST['ToPeriod']))
+		or isset($_POST['SelectADifferentPeriod'])){
 
 	include('includes/header.inc');
 
@@ -54,7 +54,7 @@ if ((!isset($_POST['FromPeriod'])
 
 
 	while ($myrow=DB_fetch_array($Periods,$db)){
-		if(isset($_POST['FromPeriod']) AND $_POST['FromPeriod']!=''){
+		if(isset($_POST['FromPeriod']) and $_POST['FromPeriod']!=''){
 			if( $_POST['FromPeriod']== $myrow['periodno']){
 				echo '<option selected="selected" value="' . $myrow['periodno'] . '">' .MonthAndYearFromSQLDate($myrow['lastdate_in_period']) . '</option>';
 			} else {
@@ -71,7 +71,7 @@ if ((!isset($_POST['FromPeriod'])
 
 	echo '</select></td>
 		</tr>';
-	if (!isset($_POST['ToPeriod']) OR $_POST['ToPeriod']==''){
+	if (!isset($_POST['ToPeriod']) or $_POST['ToPeriod']==''){
 		$LastDate = date('Y-m-d',mktime(0,0,0,Date('m')+1,0,Date('Y')));
 		$sql = "SELECT periodno FROM periods where lastdate_in_period = '" . $LastDate . "'";
 		$MaxPrd = DB_query($sql,$db);
@@ -226,7 +226,7 @@ if ((!isset($_POST['FromPeriod'])
 		if ($myrow['groupname'] != $ActGrp){
 			if ($ActGrp != ''){
 				if ($myrow['parentgroupname']!=$ActGrp){
-					while ($myrow['groupname']!=$ParentGroups[$Level] AND $Level>0) {
+					while ($myrow['groupname']!=$ParentGroups[$Level] and $Level>0) {
 						if ($_POST['Detail'] == 'Detailed'){
 							$ActGrpLabel = $ParentGroups[$Level] . ' ' . _('total');
 						} else {
@@ -356,7 +356,7 @@ if ((!isset($_POST['FromPeriod'])
 		}
 
 		if ($myrow['groupname'] != $ActGrp){
-			if ($myrow['parentgroupname']==$ActGrp AND $ActGrp !=''){ //adding another level of nesting
+			if ($myrow['parentgroupname']==$ActGrp and $ActGrp !=''){ //adding another level of nesting
 				$Level++;
 			}
 			$ActGrp = $myrow['groupname'];
@@ -419,7 +419,7 @@ if ((!isset($_POST['FromPeriod'])
 
 		if ($myrow['parentgroupname']!=$ActGrp){
 
-			while ($myrow['groupname']!=$ParentGroups[$Level] AND $Level>0) {
+			while ($myrow['groupname']!=$ParentGroups[$Level] and $Level>0) {
 				if ($_POST['Detail'] == 'Detailed'){
 					$ActGrpLabel = $ParentGroups[$Level] . ' ' . _('total');
 				} else {
@@ -648,8 +648,8 @@ if ((!isset($_POST['FromPeriod'])
 
 	while ($myrow=DB_fetch_array($AccountsResult)) {
 		if ($myrow['groupname']!= $ActGrp){
-			if ($myrow['parentgroupname']!=$ActGrp AND $ActGrp!=''){
-				while ($myrow['groupname']!=$ParentGroups[$Level] AND $Level>0) {
+			if ($myrow['parentgroupname']!=$ActGrp and $ActGrp!=''){
+				while ($myrow['groupname']!=$ParentGroups[$Level] and $Level>0) {
 					if ($_POST['Detail']=='Detailed'){
 						echo '<tr>
 								<td colspan="2"></td>
@@ -848,7 +848,7 @@ if ((!isset($_POST['FromPeriod'])
 					$j++;
 				}
 
-				if (($Section!=1) AND ($Section!=2)){
+				if (($Section!=1) and ($Section!=2)){
 					echo '<tr>
 							<td colspan="2"></td>
 							<td colspan="6"><hr /></td>
@@ -899,8 +899,8 @@ if ((!isset($_POST['FromPeriod'])
 					echo '<tr>
 							<td colspan="2"></td>
 							<td colspan="6"><hr /></td>
-						</tr>';		
-				} 
+						</tr>';
+				}
 
 			}
 			$SectionPrdLY =0;
@@ -923,7 +923,7 @@ if ((!isset($_POST['FromPeriod'])
 
 		if ($myrow['groupname']!= $ActGrp){
 
-			if ($myrow['parentgroupname']==$ActGrp AND $ActGrp !=''){ //adding another level of nesting
+			if ($myrow['parentgroupname']==$ActGrp and $ActGrp !=''){ //adding another level of nesting
 				$Level++;
 			}
 
@@ -1008,8 +1008,8 @@ if ((!isset($_POST['FromPeriod'])
 
 
 	if ($myrow['groupname']!= $ActGrp){
-		if ($myrow['parentgroupname']!=$ActGrp AND $ActGrp!=''){
-			while ($myrow['groupname']!=$ParentGroups[$Level] AND $Level>0) {
+		if ($myrow['parentgroupname']!=$ActGrp and $ActGrp!=''){
+			while ($myrow['groupname']!=$ParentGroups[$Level] and $Level>0) {
 				if ($_POST['Detail']=='Detailed'){
 					echo '<tr>
 						<td colspan="2"></td>
@@ -1218,7 +1218,7 @@ if ((!isset($_POST['FromPeriod'])
 				</tr>',
 				$Sections[$myrow['sectioninaccounts']]);
 		}
-		
+
 		$j++;
 
 	}

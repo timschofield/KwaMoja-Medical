@@ -45,7 +45,7 @@ function textSet(idEdit, text) {
 }
 
 function comboKey(idEdit, idSel) {
-	if (window.event.keyCode == 13 || window.event.keyCode == 32)
+	if (window.event.keyCode == 13 or window.event.keyCode == 32)
 		textSet(idEdit,idSel.value);
 	else if (window.event.keyCode == 27) {
 		mouseSelect(0);
@@ -114,14 +114,14 @@ document.onmousedown = mouseSelect;
       <td colspan="2"><div align="center"><?php echo RPT_FILL; ?></div></td>
     </tr>
     <tr>
-		<?php if (!$Params['Line'] OR $Params['Line']=='0') $selected=' checked'; else $selected=''; ?>
+		<?php if (!$Params['Line'] or $Params['Line']=='0') $selected=' checked'; else $selected=''; ?>
       <td><input name="Line" type="radio" value="0"<?php echo $selected; ?>><?php echo RPT_NOBRDR; ?> </td>
       <td><?php echo RPT_LINEWIDTH; ?><select name="LineSize">
 	  <?php foreach($LineSizes as $key => $value) {
 			if ($Params['LineSize']==$key) $selected = ' selected'; else  $selected = '';
 			echo '<option value="'.$key.'"'.$selected.'>'.$value.'</option>';
 		} ?> </select></td>
-		<?php if (!$Params['Fill'] OR $Params['Fill']=='0') $selected=' checked'; else $selected=''; ?>
+		<?php if (!$Params['Fill'] or $Params['Fill']=='0') $selected=' checked'; else $selected=''; ?>
       <td colspan="2"><input name="Fill" type="radio" value="0"<?php echo $selected; ?>><?php echo RPT_NOFILL; ?></td>
     </tr>
     <tr>
@@ -227,7 +227,7 @@ document.onmousedown = mouseSelect;
         <input type="text" name="TblColWidth" value="<?php echo $Params['TblColWidth']; ?>" size="3" maxlength="4">
       </div></td>
       <td><div align="center">
-	  	<?php if ($Params['TblShow']=='1' OR $Params['TblShow']=='') $checked=' checked'; else $checked = ''; ?>
+	  	<?php if ($Params['TblShow']=='1' or $Params['TblShow']=='') $checked=' checked'; else $checked = ''; ?>
         <input type="checkbox" name="TblShow" value="1"<?php echo $checked; ?>>
       </div></td>
     </tr>

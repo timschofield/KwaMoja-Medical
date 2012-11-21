@@ -45,7 +45,7 @@ echo '<a href="' . $rootpath . '/SelectProduct.php">' . _('Back to Items') . '</
 		<img src="'.$rootpath.'/css/'.$theme.'/images/inventory.png" title="' . _('Stock') . '" alt="" />' . ' ' . $title . '
 	</p>';
 
-if (isset($_FILES['ItemPicture']) AND $_FILES['ItemPicture']['name'] !='') {
+if (isset($_FILES['ItemPicture']) and $_FILES['ItemPicture']['name'] !='') {
 
 	$result	= $_FILES['ItemPicture']['error'];
  	$UploadTheFile = 'Yes'; //Assume all is well to start off with
@@ -93,7 +93,7 @@ if (isset($_POST['submit'])) {
 	$i=1;
 
 
-	if (!isset($_POST['Description']) OR mb_strlen($_POST['Description']) > 50 OR mb_strlen($_POST['Description'])==0) {
+	if (!isset($_POST['Description']) or mb_strlen($_POST['Description']) > 50 or mb_strlen($_POST['Description'])==0) {
 		$InputError = 1;
 		prnMsg (_('The stock item description must be entered and be fifty characters or less long') . '. ' . _('It cannot be a zero length string either') . ' - ' . _('a description is required'),'error');
 		$Errors[$i] = 'Description';
@@ -111,7 +111,7 @@ if (isset($_POST['submit'])) {
 		$Errors[$i] = 'StockID';
 		$i++;
 	}
-	if (ContainsIllegalCharacters($StockID) OR mb_strpos($StockID,' ')) {
+	if (ContainsIllegalCharacters($StockID) or mb_strpos($StockID,' ')) {
 		$InputError = 1;
 		prnMsg(_('The stock item code cannot contain any of the following characters') . " - ' &amp; + \" \\ ." . _('or a space'),'error');
 		$Errors[$i] = 'StockID';
@@ -166,29 +166,29 @@ if (isset($_POST['submit'])) {
 		$Errors[$i] = 'EOQ';
 		$i++;
 	}
-	if ($_POST['Controlled']==0 AND $_POST['Serialised']==1){
+	if ($_POST['Controlled']==0 and $_POST['Serialised']==1){
 		$InputError = 1;
 		prnMsg(_('The item can only be serialised if there is lot control enabled already') . '. ' . _('Batch control') . ' - ' . _('with any number of items in a lot/bundle/roll is enabled when controlled is enabled') . '. ' . _('Serialised control requires that only one item is in the batch') . '. ' . _('For serialised control') . ', ' . _('both controlled and serialised must be enabled'),'error');
 		$Errors[$i] = 'Serialised';
 		$i++;
 	}
-	if ($_POST['NextSerialNo']!=0 AND $_POST['Serialised']==0){
+	if ($_POST['NextSerialNo']!=0 and $_POST['Serialised']==0){
 		$InputError = 1;
 		prnMsg(_('The item can only have automatically generated serial numbers if it is a serialised item'),'error');
 		$Errors[$i] = 'NextSerialNo';
 		$i++;
 	}
-	if ($_POST['NextSerialNo']!=0 AND $_POST['MBFlag']!='M'){
+	if ($_POST['NextSerialNo']!=0 and $_POST['MBFlag']!='M'){
 		$InputError = 1;
 		prnMsg(_('The item can only have automatically generated serial numbers if it is a manufactured item'),'error');
 		$Errors[$i] = 'NextSerialNo';
 		$i++;
 	}
 	if (($_POST['MBFlag']=='A'
-			OR $_POST['MBFlag']=='K'
-			OR $_POST['MBFlag']=='D'
-			OR $_POST['MBFlag']=='G')
-		AND $_POST['Controlled']==1){
+			or $_POST['MBFlag']=='K'
+			or $_POST['MBFlag']=='D'
+			or $_POST['MBFlag']=='G')
+			and $_POST['Controlled']==1){
 
 		$InputError = 1;
 		prnMsg(_('Assembly/Kitset/Phantom/Service/Labour items cannot also be controlled items') . '. ' . _('Assemblies/Dummies/Phantom and Kitsets are not physical items and batch/serial control is therefore not appropriate'),'error');
@@ -262,9 +262,9 @@ if (isset($_POST['submit'])) {
 			$NewWIPAct = $NewStockActRow['wipact'];
 
 			if ($OldMBFlag != $_POST['MBFlag']){
-				if (($OldMBFlag == 'M' OR $OldMBFlag=='B') AND ($_POST['MBFlag']=='A' OR $_POST['MBFlag']=='K' OR $_POST['MBFlag']=='D' OR $_POST['MBFlag']=='G')){ /*then need to check that there is no stock holding first */
+				if (($OldMBFlag == 'M' or $OldMBFlag=='B') and ($_POST['MBFlag']=='A' or $_POST['MBFlag']=='K' or $_POST['MBFlag']=='D' or $_POST['MBFlag']=='G')){ /*then need to check that there is no stock holding first */
 					/* stock holding OK for phantom (ghost) items */
-					if ($StockQtyRow[0]!=0 AND $OldMBFlag!='G'){
+					if ($StockQtyRow[0]!=0 and $OldMBFlag!='G'){
 						$InputError=1;
 						prnMsg( _('The make or buy flag cannot be changed from') . ' ' . $OldMBFlag . ' ' . _('to') . ' ' . $_POST['MBFlag'] . ' ' . _('where there is a quantity of stock on hand at any location') . '. ' . _('Currently there are') . ' ' . $StockQtyRow[0] .  ' ' . _('on hand') , 'errror');
 					}
@@ -289,7 +289,7 @@ if (isset($_POST['submit'])) {
 					}
 				}
 				/*now check that if it is to be a kitset or assembly or dummy there is no quantity on purchase orders outstanding*/
-				if ($_POST['MBFlag']=='K' OR $_POST['MBFlag']=='A' OR $_POST['MBFlag']=='D') {
+				if ($_POST['MBFlag']=='K' or $_POST['MBFlag']=='A' or $_POST['MBFlag']=='D') {
 
 					$sql = "SELECT quantityord-quantityrecd
 							FROM purchorderdetails INNER JOIN purchorders
@@ -309,7 +309,7 @@ if (isset($_POST['submit'])) {
 				}
 
 				/*now check that if it was a Manufactured, Kitset, Phantom or Assembly and is being changed to a purchased or dummy - that no BOM exists */
-				if (($OldMBFlag=='M' OR $OldMBFlag =='K' OR $OldMBFlag=='A' OR $OldMBFlag=='G') AND ($_POST['MBFlag']=='B' OR $_POST['MBFlag']=='D')) {
+				if (($OldMBFlag=='M' or $OldMBFlag =='K' or $OldMBFlag=='A' or $OldMBFlag=='G') and ($_POST['MBFlag']=='B' or $_POST['MBFlag']=='D')) {
 					$sql = "SELECT COUNT(*)
 							FROM bom
 							WHERE parent = '".$StockID."'
@@ -323,7 +323,7 @@ if (isset($_POST['submit'])) {
 				}
 
 				/*now check that if it was Manufac, Phantom or Purchased and is being changed to assembly or kitset, it is not a component on an existing BOM */
-				if (($OldMBFlag=='M' OR $OldMBFlag =='B' OR $OldMBFlag=='D' OR $OldMBFlag=='G') AND ($_POST['MBFlag']=='A' OR $_POST['MBFlag']=='K')) {
+				if (($OldMBFlag=='M' or $OldMBFlag =='B' or $OldMBFlag=='D' or $OldMBFlag=='G') and ($_POST['MBFlag']=='A' or $_POST['MBFlag']=='K')) {
 					$sql = "SELECT COUNT(*)
 							FROM bom
 							WHERE component = '".$StockID."'
@@ -338,12 +338,12 @@ if (isset($_POST['submit'])) {
 			}
 
 			/* Do some checks for changes in the Serial & Controlled setups */
-			if ($OldControlled != $_POST['Controlled'] AND $StockQtyRow[0]!=0){
+			if ($OldControlled != $_POST['Controlled'] and $StockQtyRow[0]!=0){
 				$InputError=1;
 				prnMsg( _('You can not change a Non-Controlled Item to Controlled (or back from Controlled to non-controlled when there is currently stock on hand for the item') , 'error');
 
 			}
-			if ($OldSerialised != $_POST['Serialised'] AND $StockQtyRow[0]!=0){
+			if ($OldSerialised != $_POST['Serialised'] and $StockQtyRow[0]!=0){
 				$InputError=1;
 				prnMsg( _('You can not change a Serialised Item to Non-Serialised (or vice-versa) when there is a quantity on hand for the item') , 'error');
 			}
@@ -351,7 +351,7 @@ if (isset($_POST['submit'])) {
 
 			for ($i=0;$i<$_POST['PropertyCounter'];$i++){
 				if ($_POST['PropNumeric' .$i]==1){
-					if ( filter_number_format($_POST['PropValue' . $i]) < $_POST['PropMin' . $i] OR filter_number_format($_POST['PropValue' . $i]) > $_POST['PropMax' . $i]){
+					if ( filter_number_format($_POST['PropValue' . $i]) < $_POST['PropMin' . $i] or filter_number_format($_POST['PropValue' . $i]) > $_POST['PropMax' . $i]){
 							$InputError = 1;
 							prnMsg(_('The property value should between') . ' '.$_POST['PropMin' . $i] . ' ' . _('and') . $_POST['PropMax' . $i],'error');
 					}
@@ -419,7 +419,7 @@ if (isset($_POST['submit'])) {
 										$db,$ErrMsg,$DbgMsg,true);
 				} //end of loop around properties defined for the category
 
-				if ($OldStockAccount != $NewStockAct AND $_SESSION['CompanyRecord']['gllink_stock']==1) {
+				if ($OldStockAccount != $NewStockAct and $_SESSION['CompanyRecord']['gllink_stock']==1) {
 				/*Then we need to make a journal to transfer the cost to the new stock account */
 					$JournalNo = GetNextTransNo(0,$db); //enter as a journal
 					$SQL = "INSERT INTO gltrans (type,
@@ -456,7 +456,7 @@ if (isset($_POST['submit'])) {
 					$result = DB_query($SQL,$db, $ErrMsg, $DbgMsg,true);
 
 				} /* end if the stock category changed and forced a change in stock cost account */
-				if ($OldWIPAccount != $NewWIPAct AND $_SESSION['CompanyRecord']['gllink_stock']==1) {
+				if ($OldWIPAccount != $NewWIPAct and $_SESSION['CompanyRecord']['gllink_stock']==1) {
 				/*Then we need to make a journal to transfer the cost  of WIP to the new WIP account */
 				/*First get the total cost of WIP for this category */
 
@@ -644,7 +644,7 @@ if (isset($_POST['submit'])) {
 		prnMsg( _('Validation failed, no updates or deletes took place'), 'error');
 	}
 
-} elseif (isset($_POST['delete']) AND mb_strlen($_POST['delete']) >1 ) {
+} else if (isset($_POST['delete']) and mb_strlen($_POST['delete']) >1 ) {
 //the button to delete a selected record was clicked instead of the submit button
 
 	$CancelDelete = 0;
@@ -766,7 +766,7 @@ echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />'
 echo '<input type="hidden" name="New" value="'.$New.'" />';
 echo '<table class="selection">';
 
-if (!isset($StockID) OR $StockID=='' or isset($_POST['UpdateCategories'])) {
+if (!isset($StockID) or $StockID=='' or isset($_POST['UpdateCategories'])) {
 
 /*If the page was called without $StockID passed to page then assume a new stock item is to be entered show a form with a part Code field other wise the form showing the fields with the existing entries against the part will show for editing with only a hidden StockID field. New is set to flag that the page may have called itself and still be entering a new part, in which case the page needs to know not to go looking up details for an existing part*/
 	if (!isset($StockID)) {
@@ -781,7 +781,7 @@ if (!isset($StockID) OR $StockID=='' or isset($_POST['UpdateCategories'])) {
 				</tr>';
 	}
 
-} elseif (!isset($_POST['UpdateCategories']) AND $InputError!=1) { // Must be modifying an existing item and no changes made yet
+} elseif (!isset($_POST['UpdateCategories']) and $InputError!=1) { // Must be modifying an existing item and no changes made yet
 
 	$sql = "SELECT stockid,
 					description,
@@ -894,7 +894,7 @@ $DbgMsg = _('The SQL used to retrieve stock categories and failed was');
 $result = DB_query($sql,$db,$ErrMsg,$DbgMsg);
 
 while ($myrow=DB_fetch_array($result)){
-	if (!isset($_POST['CategoryID']) OR  $myrow['categoryid']==$_POST['CategoryID']){
+	if (!isset($_POST['CategoryID']) or  $myrow['categoryid']==$_POST['CategoryID']){
 		echo '<option selected="selected" value="'. $myrow['categoryid'] . '">' . $myrow['categorydescription'] . '</option>';
 	} else {
 		echo '<option value="'. $myrow['categoryid'] . '">' . $myrow['categorydescription'] . '</option>';
@@ -909,26 +909,26 @@ if (!isset($_POST['CategoryID'])) {
 echo '</select><a target="_blank" href="'. $rootpath . '/StockCategories.php">' . _('Add or Modify Stock Categories') . '</a></td>
 	</tr>';
 
-if (!isset($_POST['EOQ']) OR $_POST['EOQ']==''){
+if (!isset($_POST['EOQ']) or $_POST['EOQ']==''){
 	$_POST['EOQ']=0;
 }
 
-if (!isset($_POST['Volume']) OR $_POST['Volume']==''){
+if (!isset($_POST['Volume']) or $_POST['Volume']==''){
 	$_POST['Volume']=0;
 }
-if (!isset($_POST['KGS']) OR $_POST['KGS']==''){
+if (!isset($_POST['KGS']) or $_POST['KGS']==''){
 	$_POST['KGS']=0;
 }
-if (!isset($_POST['Controlled']) OR $_POST['Controlled']==''){
+if (!isset($_POST['Controlled']) or $_POST['Controlled']==''){
 	$_POST['Controlled']=0;
 }
-if (!isset($_POST['Serialised']) OR  $_POST['Serialised']=='' || $_POST['Controlled']==0){
+if (!isset($_POST['Serialised']) or  $_POST['Serialised']=='' or $_POST['Controlled']==0){
 	$_POST['Serialised']=0;
 }
-if (!isset($_POST['DecimalPlaces']) OR  $_POST['DecimalPlaces']==''){
+if (!isset($_POST['DecimalPlaces']) or  $_POST['DecimalPlaces']==''){
 	$_POST['DecimalPlaces']=0;
 }
-if (!isset($_POST['Discontinued']) OR  $_POST['Discontinued']==''){
+if (!isset($_POST['Discontinued']) or  $_POST['Discontinued']==''){
 	$_POST['Discontinued']=0;
 }
 if (!isset($_POST['Pansize'])) {
@@ -984,22 +984,22 @@ if ($_POST['MBFlag']=='A'){
 } else {
 	echo '<option value="A">' . _('Assembly') . '</option>';
 }
-if (!isset($_POST['MBFlag']) OR  $_POST['MBFlag']=='K'){
+if (!isset($_POST['MBFlag']) or  $_POST['MBFlag']=='K'){
 	echo '<option selected="selected" value="K">' . _('Kit') . '</option>';
 } else {
 	echo '<option value="K">' . _('Kit') . '</option>';
 }
-if (!isset($_POST['MBFlag']) OR  $_POST['MBFlag']=='M'){
+if (!isset($_POST['MBFlag']) or  $_POST['MBFlag']=='M'){
 	echo '<option selected="selected" value="M">' . _('Manufactured') . '</option>';
 } else {
 	echo '<option value="M">' . _('Manufactured') . '</option>';
 }
-if (!isset($_POST['MBFlag']) OR  $_POST['MBFlag']=='G' OR !isset($_POST['MBFlag']) OR $_POST['MBFlag']==''){
+if (!isset($_POST['MBFlag']) or  $_POST['MBFlag']=='G' or !isset($_POST['MBFlag']) or $_POST['MBFlag']==''){
 	echo '<option selected="selected" value="G">' . _('Phantom') . '</option>';
 } else {
 	echo '<option value="G">' . _('Phantom') . '</option>';
 }
-if (!isset($_POST['MBFlag']) OR  $_POST['MBFlag']=='B' OR !isset($_POST['MBFlag']) OR $_POST['MBFlag']==''){
+if (!isset($_POST['MBFlag']) or  $_POST['MBFlag']=='B' or !isset($_POST['MBFlag']) or $_POST['MBFlag']==''){
 	echo '<option selected="selected" value="B">' . _('Purchased') . '</option>';
 } else {
 	echo '<option value="B">' . _('Purchased') . '</option>';
@@ -1062,7 +1062,7 @@ if ($_POST['Serialised']==1){
 echo '</select><i>' . _('Note') . ', ' . _('this has no effect if the item is not Controlled') . '</i></td>
 	</tr>';
 
-if ($_POST['Serialised']==1 AND $_POST['MBFlag']=='M'){
+if ($_POST['Serialised']==1 and $_POST['MBFlag']=='M'){
 	echo '<tr>
 			<td>' . _('Next Serial No (>0 for auto numbering)') . ':</td>
 			<td><input ' . (in_array('NextSerialNo',$Errors) ?  'class="inputerror"' : '' ) .' type="text" name="NextSerialNo" size="15" maxlength="15" value="' . $_POST['NextSerialNo'] . '" /></td></tr>';
@@ -1074,7 +1074,7 @@ echo '<tr>
 		<td>' . _('Perishable') . ':</td>
 		<td><select name="Perishable">';
 
-if (!isset($_POST['Perishable']) OR  $_POST['Perishable']==0){
+if (!isset($_POST['Perishable']) or $_POST['Perishable']==0){
 		echo '<option selected="selected" value="0">' . _('No'). '</option>';
 } else {
 		echo '<option value="0">' . _('No'). '</option>';
@@ -1166,7 +1166,7 @@ $PropertyWidth = array();
 
 if (DB_num_rows($PropertiesResult)>0) {
 echo '<br />
-    <table class="selection">';
+	<table class="selection">';
 	echo '<tr>
 			<th colspan="2">' . _('Item Category Properties') . '</th>
 		</tr>';
@@ -1184,11 +1184,11 @@ while ($PropertyRow=DB_fetch_array($PropertiesResult)){
 	} else {
 		$PropertyValue =  '';
 	}
-    echo '<tr>
-            <td>';
-  	        echo '<input type="hidden" name="PropID' . $PropertyCounter . '" value="' .$PropertyRow['stkcatpropid'] .'" />';
-	        echo '<input type="hidden" name="PropNumeric' . $PropertyCounter . '" value="' .$PropertyRow['numericvalue'] .'" />';
-            echo $PropertyRow['label'] . '</td>
+	echo '<tr>
+			<td>';
+  			echo '<input type="hidden" name="PropID' . $PropertyCounter . '" value="' .$PropertyRow['stkcatpropid'] .'" />';
+			echo '<input type="hidden" name="PropNumeric' . $PropertyCounter . '" value="' .$PropertyRow['numericvalue'] .'" />';
+			echo $PropertyRow['label'] . '</td>
 
 			<td>';
 	switch ($PropertyRow['controltype']) {
@@ -1252,7 +1252,7 @@ if ($New==1) {
 }
 
 echo '</div>
-    </div>
+	</div>
 	</form>';
 include('includes/footer.inc');
 ?>

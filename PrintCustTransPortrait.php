@@ -24,16 +24,16 @@ if (isset($_GET['PrintPDF'])) {
 	$PrintPDF = $_POST['PrintPDF'];
 }
 
-If (!isset($_POST['ToTransNo'])
-	OR trim($_POST['ToTransNo'])==''
-	OR filter_number_format($_POST['ToTransNo']) < $FromTransNo) {
+if (!isset($_POST['ToTransNo'])
+	or trim($_POST['ToTransNo'])==''
+	or filter_number_format($_POST['ToTransNo']) < $FromTransNo) {
 
 	$_POST['ToTransNo'] = $FromTransNo;
 }
 
 $FirstTrans = $FromTransNo; /* Need to start a new page only on subsequent transactions */
 
-If (isset($PrintPDF)
+if (isset($PrintPDF)
 	and $PrintPDF!=''
 	and isset($FromTransNo)
 	and isset($InvOrCredit)
@@ -42,12 +42,12 @@ If (isset($PrintPDF)
 	include ('includes/class.pdf.php');
 
 
-    $Page_Width=595;
-    $Page_Height=842;
-    $Top_Margin=30;
-    $Bottom_Margin=30;
-    $Left_Margin=40;
-    $Right_Margin=30;
+	$Page_Width=595;
+	$Page_Height=842;
+	$Top_Margin=30;
+	$Bottom_Margin=30;
+	$Left_Margin=40;
+	$Right_Margin=30;
 
 	$pdf = new Cpdf('P', 'pt', 'A4');
 	$pdf->addInfo('Author','KwaMoja ' . $Version);
@@ -235,12 +235,12 @@ If (isset($PrintPDF)
 
 			prnMsg( _('There was a problem retrieving the invoice or credit note details for note number') . ' ' . $InvoiceToPrint . ' ' . _('from the database') . '. ' . _('To print an invoice, the sales order record, the customer transaction record and the branch record for the customer must not have been purged') . '. ' . _('To print a credit note only requires the customer, transaction, salesman and branch records be available'),'error');
 			if ($debug==1){
-			    prnMsg (_('The SQL used to get this information that failed was') . '<br />' . $sql,'error');
+				prnMsg (_('The SQL used to get this information that failed was') . '<br />' . $sql,'error');
 			}
 			include ('includes/footer.inc');
 			exit;
-	    }
-	    if (DB_num_rows($result)==1){
+		}
+		if (DB_num_rows($result)==1){
 			$myrow = DB_fetch_array($result);
 
 			$ExchRate = $myrow['rate'];
@@ -290,7 +290,7 @@ If (isset($PrintPDF)
 			include ('includes/header.inc');
 			echo '<br />' . _('There was a problem retrieving the invoice or credit note stock movement details for invoice number') . ' ' . $FromTransNo . ' ' . _('from the database');
 			if ($debug==1){
-			    echo '<br />' . _('The SQL used to get this information that failed was') . '<br />' . $sql;
+				echo '<br />' . _('The SQL used to get this information that failed was') . '<br />' . $sql;
 			}
 			include('includes/footer.inc');
 			exit;
@@ -305,7 +305,7 @@ If (isset($PrintPDF)
 			include('includes/PDFTransPageHeaderPortrait.inc');
 			$FirstPage = False;
 
-		    while ($myrow2=DB_fetch_array($result)){
+			while ($myrow2=DB_fetch_array($result)){
 					if ($myrow2['discountpercent'] == 0) {
 						$DisplayDiscount = '';
 					} else {
@@ -346,7 +346,7 @@ If (isset($PrintPDF)
 								/* head up a new invoice/credit note page */
 								/*draw the vertical column lines right to the bottom */
 								PrintLinesToBottom ();
-	   		        			include ('includes/PDFTransPageHeaderPortrait.inc');
+	   							include ('includes/PDFTransPageHeaderPortrait.inc');
 			   				} //end if need a new page headed up
 						}
 					} else {
@@ -357,7 +357,7 @@ If (isset($PrintPDF)
 								/* head up a new invoice/credit note page */
 								/*draw the vertical column lines right to the bottom */
 								PrintLinesToBottom ();
-	   		        			include ('includes/PDFTransPageHeaderPortrait.inc');
+	   							include ('includes/PDFTransPageHeaderPortrait.inc');
 			   				} //end if need a new page headed up
 						}
 					}
@@ -371,7 +371,7 @@ If (isset($PrintPDF)
 						/* head up a new invoice/credit note page */
 						/*draw the vertical column lines right to the bottom */
 						PrintLinesToBottom ();
-	   		        	include ('includes/PDFTransPageHeaderPortrait.inc');
+	   					include ('includes/PDFTransPageHeaderPortrait.inc');
 			   		} //end if need a new page headed up
 			   		/*increment a line down for the next line item */
 			   		if (mb_strlen($lines[$i])>1){
@@ -424,15 +424,15 @@ If (isset($PrintPDF)
 
 		if ($InvOrCredit=='Invoice') {
 
-		     $DisplaySubTot = locale_number_format($myrow['ovamount'],$myrow['decimalplaces']);
-		     $DisplayFreight = locale_number_format($myrow['ovfreight'],$myrow['decimalplaces']);
-		     $DisplayTax = locale_number_format($myrow['ovgst'],$myrow['decimalplaces']);
-		     $DisplayTotal = locale_number_format($myrow['ovfreight']+$myrow['ovgst']+$myrow['ovamount'],$myrow['decimalplaces']);
+			 $DisplaySubTot = locale_number_format($myrow['ovamount'],$myrow['decimalplaces']);
+			 $DisplayFreight = locale_number_format($myrow['ovfreight'],$myrow['decimalplaces']);
+			 $DisplayTax = locale_number_format($myrow['ovgst'],$myrow['decimalplaces']);
+			 $DisplayTotal = locale_number_format($myrow['ovfreight']+$myrow['ovgst']+$myrow['ovamount'],$myrow['decimalplaces']);
 		} else {
-		     $DisplaySubTot = locale_number_format(-$myrow['ovamount'],$myrow['decimalplaces']);
-		     $DisplayFreight = locale_number_format(-$myrow['ovfreight'],$myrow['decimalplaces']);
-		     $DisplayTax = locale_number_format(-$myrow['ovgst'],$myrow['decimalplaces']);
-		     $DisplayTotal = locale_number_format(-$myrow['ovfreight']-$myrow['ovgst']-$myrow['ovamount'],$myrow['decimalplaces']);
+			 $DisplaySubTot = locale_number_format(-$myrow['ovamount'],$myrow['decimalplaces']);
+			 $DisplayFreight = locale_number_format(-$myrow['ovfreight'],$myrow['decimalplaces']);
+			 $DisplayTax = locale_number_format(-$myrow['ovgst'],$myrow['decimalplaces']);
+			 $DisplayTotal = locale_number_format(-$myrow['ovfreight']-$myrow['ovgst']-$myrow['ovamount'],$myrow['decimalplaces']);
 		}
 	/*Print out the invoice text entered */
 		$YPos = $Bottom_Margin+(3*$line_height);
@@ -467,7 +467,7 @@ If (isset($PrintPDF)
 			$pdf->addText($Page_Width-$Right_Margin-220, ($YPos+6) - ($line_height*3),$FontSize, _('TOTAL INVOICE'));
 			$FontSize=8;
 			$LeftOvers = $pdf->addTextWrap($Left_Margin+5,$YPos-18,280,$FontSize,$_SESSION['RomalpaClause']);
-			while (mb_strlen($LeftOvers)>0 AND $YPos > $Bottom_Margin){
+			while (mb_strlen($LeftOvers)>0 and $YPos > $Bottom_Margin){
 				$YPos -=10;
 				$LeftOvers = $pdf->addTextWrap($Left_Margin+5,$YPos-18,280,$FontSize,$LeftOvers);
 			}
@@ -476,15 +476,15 @@ If (isset($PrintPDF)
 				$pdf->addJpegFromFile('companies/' . $_SESSION['DatabaseName'] . '/payment.jpg',$Page_Width/2 -60,$YPos-15,0,20);
 			}
 // Print Bank acount details if available and default for invoices is selected
-            $pdf->addText($Page_Width-$Right_Margin-450, $YPos - ($line_height*3)+22,$FontSize, $DefaultBankAccountCode . '  ' . $DefaultBankAccountNumber);
+			$pdf->addText($Page_Width-$Right_Margin-450, $YPos - ($line_height*3)+22,$FontSize, $DefaultBankAccountCode . '  ' . $DefaultBankAccountNumber);
 			$FontSize=10;
 		} else {
 			$pdf->addText($Page_Width-$Right_Margin-220, ($YPos+6)-($line_height*3),$FontSize, _('TOTAL CREDIT'));
  		}
 		$LeftOvers = $pdf->addTextWrap($Left_Margin+450,35,72, $FontSize,$DisplayTotal, 'right');
-	    } /* end of check to see that there was an invoice record to print */
+		} /* end of check to see that there was an invoice record to print */
 
-	    $FromTransNo++;
+		$FromTransNo++;
 	} /* end loop to print invoices */
 
 	/* Put the transaction number back as would have been incremented by one after last pass */
@@ -522,12 +522,12 @@ If (isset($PrintPDF)
 	$title=_('Select Invoices/Credit Notes To Print');
 	include('includes/header.inc');
 
-	if (!isset($FromTransNo) OR $FromTransNo=='') {
+	if (!isset($FromTransNo) or $FromTransNo=='') {
 
 	/*if FromTransNo is not set then show a form to allow input of either a single invoice number or a range of invoices to be printed. Also get the last invoice number created to show the user where the current range is up to */
 
 		echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '" method="post">';
-        echo '<div>';
+		echo '<div>';
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 		echo '<p class="page_title_text"><img src="'.$rootpath.'/css/'.$theme.'/images/printer.png" title="' . _('Print') . '" alt="" />' . ' ' . _('Print Invoices or Credit Notes (Portrait Mode)') . '</p>';
@@ -537,7 +537,7 @@ If (isset($PrintPDF)
 					<td>' . _('Print Invoices or Credit Notes') . '</td>
 					<td><select name="InvOrCredit">';
 
-		if ($InvOrCredit=='Invoice' OR !isset($InvOrCredit)){
+		if ($InvOrCredit=='Invoice' or !isset($InvOrCredit)){
 
 		   echo '<option selected="selected" value="Invoice">' . _('Invoices') . '</option>';
 		   echo '<option value="Credit">' . _('Credit Notes') . '</option>';
@@ -552,7 +552,7 @@ If (isset($PrintPDF)
 				<td>' . _('Print EDI Transactions') . '</td>
 				<td><select name="PrintEDI">';
 
-		if ($InvOrCredit=='Invoice' OR !isset($InvOrCredit)){
+		if ($InvOrCredit=='Invoice' or !isset($InvOrCredit)){
 
 		   echo '<option selected="selected" value="No">' . _('Do not Print PDF EDI Transactions') . '</option>';
 		   echo '<option value="Yes">' . _('Print PDF EDI Transactions Too') . '</option>';
@@ -595,8 +595,8 @@ If (isset($PrintPDF)
 		$myrow = DB_fetch_row($result);
 
 		echo '<br /><b>' . _('The last credit note created was number') . ' ' . $myrow[0] . '</b><br />' . _('A sequential range can be printed using the same method as for invoices above') . '. ' . _('A single credit note can be printed by only entering a start transaction number') . '</div>';
-        echo '</div>
-              </form>';
+		echo '</div>
+			  </form>';
 
 	} else {
 
@@ -708,7 +708,7 @@ If (isset($PrintPDF)
 			}
 
 			$result=DB_query($sql,$db);
-			if (DB_num_rows($result)==0 OR DB_error_no($db)!=0) {
+			if (DB_num_rows($result)==0 or DB_error_no($db)!=0) {
 				echo '<p>' . _('There was a problem retrieving the invoice or credit note details for note number') . ' ' . $InvoiceToPrint . ' ' . _('from the database') . '. ' . _('To print an invoice, the sales order record, the customer transaction record and the branch record for the customer must not have been purged') . '. ' . _('To print a credit note only requires the customer, transaction, salesman and branch records be available');
 				if ($debug==1){
 					prnMsg( _('The SQL used to get this information that failed was') . '<br />' . $sql,'warn');
@@ -720,7 +720,7 @@ If (isset($PrintPDF)
 
 				$myrow = DB_fetch_array($result);
 	/* Then there's an invoice (or credit note) to print. So print out the invoice header and GST Number from the company record */
-				if (count($_SESSION['AllowedPageSecurityTokens'])==1 AND in_array(1, $_SESSION['AllowedPageSecurityTokens']) AND $myrow['debtorno'] != $_SESSION['CustomerID']){
+				if (count($_SESSION['AllowedPageSecurityTokens'])==1 and in_array(1, $_SESSION['AllowedPageSecurityTokens']) and $myrow['debtorno'] != $_SESSION['CustomerID']){
 					echo '<p class="bad">' . _('This transaction is addressed to another customer and cannot be displayed for privacy reasons') . '. ' . _('Please select only transactions relevant to your company');
 					exit;
 				}
@@ -924,28 +924,28 @@ If (isset($PrintPDF)
 
 					while ($myrow2=DB_fetch_array($result)){
 
-					      if ($k==1){
+						  if ($k==1){
 						  $RowStarter = '<tr class="EvenTableRows">';
 						  $k=0;
-					      } else {
+						  } else {
 						  $RowStarter = '<tr class="OddTableRows">';
 						  $k=1;
-					      }
+						  }
 
-					      echo $RowStarter;
+						  echo $RowStarter;
 
-					      $DisplayPrice =locale_number_format($myrow2['fxprice'],$myrow['decimalplaces']);
-					      $DisplayQty = locale_number_format($myrow2['quantity'],$myrow2['decimalplaces']);
-					      $DisplayNet = locale_number_format($myrow2['fxnet'],$myrow['decimalplaces']);
+						  $DisplayPrice =locale_number_format($myrow2['fxprice'],$myrow['decimalplaces']);
+						  $DisplayQty = locale_number_format($myrow2['quantity'],$myrow2['decimalplaces']);
+						  $DisplayNet = locale_number_format($myrow2['fxnet'],$myrow['decimalplaces']);
 
-					      if ($myrow2['discountpercent']==0){
+						  if ($myrow2['discountpercent']==0){
 						   $DisplayDiscount ='';
-					      } else {
+						  } else {
 						   $DisplayDiscount = locale_number_format($myrow2['discountpercent']*100,2) . '%';
-					      }
+						  }
 
-					      printf ('<td>%s</td>
-						      		<td>%s</td>
+						  printf ('<td>%s</td>
+							  		<td>%s</td>
 									<td class="number">%s</td>
 									<td class="number">%s</td>
 									<td class="number">%s</td>
@@ -960,17 +960,17 @@ If (isset($PrintPDF)
 									$DisplayDiscount,
 									$DisplayNet);
 
-					      if (mb_strlen($myrow2['narrative'])>1){
-					      		echo $RowStarter .
+						  if (mb_strlen($myrow2['narrative'])>1){
+						  		echo $RowStarter .
 									'<td></td>
 									<td colspan="6">' . $myrow2['narrative'] . '</td>
 									</tr>';
 							$LineCounter++;
-					      }
+						  }
 
-					      $LineCounter++;
+						  $LineCounter++;
 
-					      if ($LineCounter == ($_SESSION['PageLength'] - 2)){
+						  if ($LineCounter == ($_SESSION['PageLength'] - 2)){
 
 						/* head up a new invoice/credit note page */
 
@@ -982,31 +982,31 @@ If (isset($PrintPDF)
 									<td style="background-color:#bbbbbb">';
 
 						   if ($InvOrCredit=='Invoice') {
-							    echo '<h2>' . _('TAX INVOICE') . ' ';
+								echo '<h2>' . _('TAX INVOICE') . ' ';
 						   } else {
-							    echo '<h2 style="color:red">' . _('TAX CREDIT NOTE') . ' ';
+								echo '<h2 style="color:red">' . _('TAX CREDIT NOTE') . ' ';
 						   }
 						   echo _('Number') . ' ' . $FromTransNo . '</h2><br />' . _('GST Number') . ' - ' . $_SESSION['CompanyRecord']['gstno'] . '</td>
 							</tr>
 							</table>';
 
 	/*Now print out company name and address */
-						    echo '<table class="table1">
+							echo '<table class="table1">
 									<tr>
 										<td><h2>' . $_SESSION['CompanyRecord']['coyname'] . '</h2><br />';
-						    echo $_SESSION['CompanyRecord']['regoffice1'] . '<br />';
-						    echo $_SESSION['CompanyRecord']['regoffice2'] . '<br />';
-						    echo $_SESSION['CompanyRecord']['regoffice3'] . '<br />';
-						    echo $_SESSION['CompanyRecord']['regoffice4'] . '<br />';
-						    echo $_SESSION['CompanyRecord']['regoffice5'] . '<br />';
-						    echo $_SESSION['CompanyRecord']['regoffice6'] . '<br />';
-						    echo _('Telephone') . ': ' . $_SESSION['CompanyRecord']['telephone'] . '<br />';
-						    echo _('Facsimile') . ': ' . $_SESSION['CompanyRecord']['fax'] . '<br />';
-						    echo _('Email') . ': ' . $_SESSION['CompanyRecord']['email'] . '<br />';
-						    echo '</td><td class="number">' . _('Page') . ': ' .  $PageNumber . '</td>
+							echo $_SESSION['CompanyRecord']['regoffice1'] . '<br />';
+							echo $_SESSION['CompanyRecord']['regoffice2'] . '<br />';
+							echo $_SESSION['CompanyRecord']['regoffice3'] . '<br />';
+							echo $_SESSION['CompanyRecord']['regoffice4'] . '<br />';
+							echo $_SESSION['CompanyRecord']['regoffice5'] . '<br />';
+							echo $_SESSION['CompanyRecord']['regoffice6'] . '<br />';
+							echo _('Telephone') . ': ' . $_SESSION['CompanyRecord']['telephone'] . '<br />';
+							echo _('Facsimile') . ': ' . $_SESSION['CompanyRecord']['fax'] . '<br />';
+							echo _('Email') . ': ' . $_SESSION['CompanyRecord']['email'] . '<br />';
+							echo '</td><td class="number">' . _('Page') . ': ' .  $PageNumber . '</td>
 								</tr>
 								</table>';
-						    echo '<table class="table1">
+							echo '<table class="table1">
 									<tr>
 										<th>' . _('Item Code') . '</th>
 										<th>' . _('Item Description') . '</th>
@@ -1017,9 +1017,9 @@ If (isset($PrintPDF)
 										<th>' . _('Net') . '</th>
 									</tr>';
 
-						    $LineCounter = 10;
+							$LineCounter = 10;
 
-					      } //end if need a new page headed up
+						  } //end if need a new page headed up
 					} //end while there are line items to print out
 					echo '</table>';
 				} /*end if there are stock movements to show on the invoice or credit note*/
@@ -1037,9 +1037,9 @@ If (isset($PrintPDF)
 								<td valign="top"><img src="' . $_SESSION['LogoFile'] . '" alt="" /></td>
 								<td style="background-color:#bbbbbb">';
 					if ($InvOrCredit=='Invoice') {
-					      echo '<h2>' . _('TAX INVOICE') .' ';
+						  echo '<h2>' . _('TAX INVOICE') .' ';
 					} else {
-					      echo '<h2 style="color:red">' . _('TAX CREDIT NOTE') . ' ';
+						  echo '<h2 style="color:red">' . _('TAX CREDIT NOTE') . ' ';
 					}
 					echo _('Number') . ' ' . $FromTransNo . '</h2>
 							<br />' . _('GST Number') . ' - ' . $_SESSION['CompanyRecord']['gstno'] . '</td>
@@ -1110,11 +1110,11 @@ If (isset($PrintPDF)
 				echo '<tr><td class="number">' . _('Tax') . '</td>
 					<td class="number" style="background-color:#EEEEEE">' . $DisplayTax . '</td></tr>';
 				if ($InvOrCredit=='Invoice'){
-				     echo '<tr><td class="number"><b>' . _('TOTAL INVOICE') . '</b></td>
-				     	<td class="number" style="background-color:#EEEEEE"><b>' . $DisplayTotal . '</b></td></tr>';
+					 echo '<tr><td class="number"><b>' . _('TOTAL INVOICE') . '</b></td>
+					 	<td class="number" style="background-color:#EEEEEE"><b>' . $DisplayTotal . '</b></td></tr>';
 				} else {
-				     echo '<tr><td class="number" style="color:red"><b>' . _('TOTAL CREDIT') . '</b></td>
-				     		<td class="number" style="background-color:#EEEEEE;color:red"><b>' . $DisplayTotal . '</b></td></tr>';
+					 echo '<tr><td class="number" style="color:red"><b>' . _('TOTAL CREDIT') . '</b></td>
+					 		<td class="number" style="background-color:#EEEEEE;color:red"><b>' . $DisplayTotal . '</b></td></tr>';
 				}
 				echo '</table>';
 			} /* end of check to see that there was an invoice record to print */

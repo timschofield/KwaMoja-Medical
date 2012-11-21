@@ -29,7 +29,7 @@ if ($GRNNo == 'Preview'){
 	$myrow['supplierid'] = str_pad('', 10,'x');
 	$myrow['suppliersunit'] = str_pad('', 10,'x');
 	$myrow['units'] = str_pad('', 10,'x');
-	
+
 	$SuppRow['suppname'] = str_pad('', 30,'x');
 	$SuppRow['address1'] = str_pad('', 30,'x');
 	$SuppRow['address2'] = str_pad('', 30,'x');
@@ -39,7 +39,7 @@ if ($GRNNo == 'Preview'){
 	$SuppRow['address6'] = str_pad('', 10,'x');
 	$NoOfGRNs =1;
 } else { //NOT PREVIEW
-		
+
 	$sql="SELECT grns.itemcode,
 				grns.grnno,
 				grns.deliverydate,
@@ -87,7 +87,7 @@ if ($NoOfGRNs >0){
 		} else {
 			$DecimalPlaces=2;
 		}
-		if (is_numeric($myrow['conversionfactor']) AND $myrow['conversionfactor'] !=0){
+		if (is_numeric($myrow['conversionfactor']) and $myrow['conversionfactor'] !=0){
 			$SuppliersQuantity=locale_number_format($myrow['qtyrecd']/$myrow['conversionfactor'],$DecimalPlaces);
 		} else {
 			$SuppliersQuantity=locale_number_format($myrow['qtyrecd'],$DecimalPlaces);
@@ -114,8 +114,8 @@ if ($NoOfGRNs >0){
 
 	$LeftOvers = $pdf->addText($FormDesign->ReceiptDate->x,$Page_Height-$FormDesign->ReceiptDate->y,$FormDesign->ReceiptDate->FontSize, _('Date of Receipt: ') . $DeliveryDate);
 	$LeftOvers = $pdf->addText($FormDesign->SignedFor->x,$Page_Height-$FormDesign->SignedFor->y,$FormDesign->SignedFor->FontSize, _('Signed for ').'______________________');
-    $pdf->OutputD($_SESSION['DatabaseName'] . '_GRN_' . date('Y-m-d').'.pdf');
-    $pdf->__destruct();
+	$pdf->OutputD($_SESSION['DatabaseName'] . '_GRN_' . date('Y-m-d').'.pdf');
+	$pdf->__destruct();
 } else { //there were not GRNs to print
 	$title = _('GRN Error');
 	include('includes/header.inc');

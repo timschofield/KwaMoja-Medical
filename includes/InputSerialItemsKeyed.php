@@ -55,11 +55,11 @@ foreach ($LineItem->SerialItems as $Bundle){
 	if ($Perishable==1){
 		echo '<td class="number">' . $Bundle->ExpiryDate . '</td>';
 	}
-	
-	
+
+
 	echo '<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?Delete=' . $Bundle->BundleRef . '&amp;StockID=' . $LineItem->StockID . '&amp;LineNo=' . $LineNo .'&amp;identifier=' . $identifier . $CreditInvoice . '">'. _('Delete'). '</a></td>
 		</tr>';
-	
+
 	$TotalQuantity += $Bundle->BundleQty;
 }
 
@@ -85,7 +85,7 @@ echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8'
 		<input type="hidden" name="EntryType" value="KEYED" />
 		<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
-if ($_GET['CreditInvoice']=='Yes' OR $_POST['CreditInvoice']=='Yes'){
+if ($_GET['CreditInvoice']=='Yes' or $_POST['CreditInvoice']=='Yes'){
 	echo '<input type="hidden" name="CreditInvoice" value="Yes" />';
 }
 /*Start a new table for the Serial/Batch ref input  in one column (as a sub table
@@ -160,7 +160,7 @@ echo '</table>
 		</form>
 		</td>
 		<td valign="top">';
-	
+
 if ($ShowExisting){
 	include('includes/InputSerialItemsExisting.php');
 }

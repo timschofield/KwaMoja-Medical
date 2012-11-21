@@ -176,7 +176,7 @@ class PDF extends PDF_Language {
 		if ($Params['index']<>'PgNum') $TextField = $Params['TextField'];
 			else $TextField = $this->PageNo()-$this->PageCnt;
 		if (isset($Params['Processing'])) $TextField = $this->ProcessData($TextField, $Params['Processing']);
-		if ($Params['index']=='TBlk' OR $Params['index']=='CBlk') { // then it's multi-cell data
+		if ($Params['index']=='TBlk' or $Params['index']=='CBlk') { // then it's multi-cell data
 			$this->MultiCell($Params['BoxWidth'],$Params['BoxHeight'],$TextField,$Border,$Params['FontAlign'],$Fill);
 		} else { // print a single data cell
 			$this->Cell($Params['BoxWidth'],$Params['BoxHeight'],$TextField,$Border,0,$Params['FontAlign'],$Fill);
@@ -207,7 +207,7 @@ class PDF extends PDF_Language {
 			$this->SetLeftMargin($Params['LineXStrt']);
 			$this->SetXY($Params['LineXStrt'], $this->y0);
 			// Fill with Fill color if it's time
-			if ($FillThisRow AND $Params['Fill']) $this->SetFillColor($FC[0],$FC[1],$FC[2]);
+			if ($FillThisRow and $Params['Fill']) $this->SetFillColor($FC[0],$FC[1],$FC[2]);
 				else $this->SetFillColor(255);
 			$this->Cell($Params['BoxWidth'],$MaxBoxY-$this->y0,'',0,0,'L',1);
 			// fill in the data
@@ -246,7 +246,7 @@ class PDF extends PDF_Language {
 		$ThisRowHt = $maxY-$this->y0; // seee how tall this row was
 		if ($ThisRowHt>$MaxRowHt) $MaxRowHt = $ThisRowHt; // keep that largest row so far to track pagination
 		$this->y0 = $maxY; // set y position to largest value for next row
-		if ($Heading AND $Params['Line']) { // then it's the heading draw a line after if fill is set
+		if ($Heading and $Params['Line']) { // then it's the heading draw a line after if fill is set
 			$this->Line($Params['LineXStrt'],$maxY,$Params['LineXStrt']+$Params['BoxWidth'],$maxY);
 			$this->y0 = $this->y0+($Params['LineSize']*0.35);
 		}
@@ -341,12 +341,12 @@ function BuildPDF($ReportID, $Prefs) {
 	$ThisMonth = mb_substr($Today,5,2);
 	$ThisYear = mb_substr($Today,0,4);
 	// find total number of days in this month
-	if ($ThisMonth=='04' OR $ThisMonth=='06' OR $ThisMonth=='09' OR $ThisMonth=='11') {
+	if ($ThisMonth=='04' or $ThisMonth=='06' or $ThisMonth=='09' or $ThisMonth=='11') {
 		$TotalDays=30;
-	} elseif ($ThisMonth=='02' AND date('L')) {
+	} elseif ($ThisMonth=='02' and date('L')) {
 		$TotalDays=29;
 	} // Leap year
-	 elseif ($ThisMonth=='02' AND !date('L')) {
+	 elseif ($ThisMonth=='02' and !date('L')) {
 		$TotalDays=28;
 	} else {
 		$TotalDays=31;
@@ -362,7 +362,9 @@ function BuildPDF($ReportID, $Prefs) {
 			$d='';
 			if ($DateArray[1]<>'') $d .= $df.">='".FormatDateForSQL($DateArray[1])."'";
 			if ($DateArray[2]<>'') { // a value entered, check
-				if (mb_strlen($d)>0) $d .= ' AND ';
+				if (mb_strlen($d)>0) {
+					$d .= ' AND ';
+				}
 				$d .= $df."<='".FormatDateForSQL($DateArray[2])."'";
 			}
 			break;
@@ -388,7 +390,7 @@ function BuildPDF($ReportID, $Prefs) {
 		case "h": // RPT_GROUP_QUARTER
 			$QtrStrt = intval(($ThisMonth-1)/3)*3+1;
 			$QtrEnd = intval(($ThisMonth-1)/3)*3+3;
-			if ($QtrEnd==4 OR $QtrEnd==6 OR $QtrEnd==9 OR $QtrEnd==11) {
+			if ($QtrEnd==4 or $QtrEnd==6 or $QtrEnd==9 or $QtrEnd==11) {
 				$TotalDays=30;
 			}
 			$qs = date('Y-m-d', mktime(0,0,0, $QtrStrt, 1, $ThisYear));
@@ -416,13 +418,17 @@ function BuildPDF($ReportID, $Prefs) {
 		$Params = explode(':',$FieldValues['params']);
 		switch ($Params[1]) {
 			case RPT_RANGE:
-				if (mb_strlen($strCrit)>0) $strCrit .= ' AND ';
+				if (mb_strlen($strCrit)>0) {
+					$strCrit .= ' AND ';
+				}
 				$t='';
 				if (isset($Params[2])) { // a from value entered, check
 					$t .= $FieldValues['fieldname'].">='".($Params[2]."'");
 				}
 				if (isset($Params[3])) { // a to value entered, check
-					if (mb_strlen($t)>0) $t .= ' AND ';
+					if (mb_strlen($t)>0) {
+						$t .= ' AND ';
+					}
 					$t .= $FieldValues['fieldname']."<='".($Params[3]."'");
 				}
 				$strCrit .= $t;
@@ -431,14 +437,18 @@ function BuildPDF($ReportID, $Prefs) {
 			case RPT_TRUE:
 			case RPT_ACTIVE:
 			case RPT_PRINTED:
-				if (mb_strlen($strCrit)>0) $strCrit .= ' AND ';
+				if (mb_strlen($strCrit)>0) {
+					$strCrit .= ' AND ';
+				}
 				$strCrit .= $FieldValues['fieldname'].'=1';
 				break;
 			case RPT_NO:
 			case RPT_FALSE:
 			case RPT_INACTIVE:
 			case RPT_UNPRINTED:
-				if (mb_strlen($strCrit)>0) $strCrit .= ' AND ';
+				if (mb_strlen($strCrit)>0) {
+					$strCrit .= ' AND ';
+				}
 				$strCrit .= $FieldValues['fieldname'].'=0';
 				break;
 			case RPT_STOCK: // TBD field to compare so default to nothing
@@ -458,9 +468,15 @@ function BuildPDF($ReportID, $Prefs) {
 
 	// Build query string and execute
 	$sqlCrit = '';
-	if ($strCrit AND $strDate) $sqlCrit .= $strDate.' AND '.$strCrit;
-	if (!$strCrit AND $strDate) $sqlCrit .= $strDate;
-	if ($strCrit AND !$strDate) $sqlCrit .= $strCrit;
+	if ($strCrit and $strDate) $sqlCrit {
+		.= $strDate.' AND '.$strCrit;
+	}
+	if (!$strCrit and $strDate) {
+		$sqlCrit .= $strDate;
+	}
+	if ($strCrit and !$strDate) {
+		$sqlCrit .= $strCrit;
+	}
 
 	// We now have the sql, find out how many groups in the query (to determine the number of forms)
 	$PageBreakField = $Prefs['GroupListings'][0]['fieldname'];
@@ -526,8 +542,11 @@ function BuildPDF($ReportID, $Prefs) {
 	$pdf=new PDF();
 	foreach ($FormPageID as $formNum=>$Fvalue) {
 		// find the single line data from the query for the current form page
-		if ($sqlCrit) $TrailingSQL=" FROM ".$sqlTable." WHERE ".$sqlCrit." AND ".$PageBreakField."='".$Fvalue."'";
-			else $TrailingSQL =" FROM ".$sqlTable." WHERE ".$PageBreakField."='".$Fvalue."'";
+		if ($sqlCrit) {
+			$TrailingSQL=" FROM ".$sqlTable." WHERE ".$sqlCrit." AND ".$PageBreakField."='".$Fvalue."'";
+		} else {
+			$TrailingSQL =" FROM ".$sqlTable." WHERE ".$PageBreakField."='".$Fvalue."'";
+		}
 		$sql = "SELECT " . $strField . $TrailingSQL;
 		$Result=DB_query($sql,$db,'','',false,true);
 		$FieldValues = DB_fetch_row($Result);

@@ -47,7 +47,7 @@ if (!isset($_SESSION['SuppTrans']->SupplierName)) {
 }
 
 echo '<p class="page_title_text"><img src="'.$rootpath.'/css/'.$theme.'/images/transactions.png" title="' . _('Supplier Credit Note') . '" alt="" />' . ' '
-        . _('Enter Supplier Credit Note:') . ' ' . $SupplierName;
+		. _('Enter Supplier Credit Note:') . ' ' . $SupplierName;
 echo '</p>';
 if (isset($_GET['SupplierID']) and $_GET['SupplierID']!=''){
 
@@ -201,7 +201,8 @@ if the link is not active then OvAmount must be entered manually. */
 }
 
 if (isset($_POST['GRNS'])
-	AND $_POST['GRNS'] == _('Purchase Orders')){
+
+	and $_POST['GRNS'] == _('Purchase Orders')){
 
 	/*This ensures that any changes in the page are stored in the session before calling the grn page */
 
@@ -224,7 +225,8 @@ if (isset($_POST['Shipts'])){
 	exit;
 }
 if (isset($_POST['GL'])
-	AND $_POST['GL'] == _('General Ledger')){
+
+	and $_POST['GL'] == _('General Ledger')){
 
 	/*This ensures that any changes in the page are stored in the session before calling the shipments page */
 
@@ -236,7 +238,7 @@ if (isset($_POST['GL'])
 	exit;
 }
 if (isset($_POST['Contracts'])
-	AND $_POST['Contracts'] == _('Contracts')){
+	and $_POST['Contracts'] == _('Contracts')){
 		/*This ensures that any changes in the page are stored in the session before calling the shipments page */
 		echo '<meta http-equiv="refresh" content="0; url=' . $rootpath . '/SuppContractChgs.php">';
 		echo '<div class="centre">
@@ -246,7 +248,7 @@ if (isset($_POST['Contracts'])
 		exit;
 }
 if (isset($_POST['FixedAssets'])
-	AND $_POST['FixedAssets'] == _('Fixed Assets')){
+	and $_POST['FixedAssets'] == _('Fixed Assets')){
 		/*This ensures that any changes in the page are stored in the session before calling the shipments page */
 		echo '<meta http-equiv="refresh" content="0; url=' . $rootpath . '/SuppFixedAssetChgs.php">';
 		echo '<div class="centre">
@@ -513,7 +515,7 @@ if ($_SESSION['SuppTrans']->GLLink_Creditors ==1){
 			<tr>
 				<td style="color:red">' . _('Credit Amount in Supplier Currency') . ':</td>
 				<td colspan="2" class="number">' . locale_number_format($_SESSION['SuppTrans']->OvAmount,$_SESSION['SuppTrans']->CurrDecimalPlaces);
-    echo '<input type="hidden" name="OvAmount" value="' . locale_number_format($_SESSION['SuppTrans']->OvAmount,$_SESSION['SuppTrans']->CurrDecimalPlaces) . '" /></td></tr>';
+	echo '<input type="hidden" name="OvAmount" value="' . locale_number_format($_SESSION['SuppTrans']->OvAmount,$_SESSION['SuppTrans']->CurrDecimalPlaces) . '" /></td></tr>';
 } else {
 	echo '<table class="selection">
 			<tr>
@@ -586,7 +588,7 @@ foreach ($_SESSION['SuppTrans']->Taxes as $Tax) {
 
 
 	echo '</td></tr>';
-    }
+	}
 
 $DisplayTotal = locale_number_format($_SESSION['SuppTrans']->OvAmount + $TaxTotal,$_SESSION['SuppTrans']->CurrDecimalPlaces);
 
@@ -623,7 +625,7 @@ then do the updates and inserts to process the credit note entered */
 		}
 
 
-		if ($_POST['OverRideTax']=='Auto' OR !isset($_POST['OverRideTax'])){
+		if ($_POST['OverRideTax']=='Auto' or !isset($_POST['OverRideTax'])){
 
 			/*Now recaluclate the tax depending on the method */
 			if ($Tax->TaxOnTax ==1){
@@ -855,12 +857,12 @@ then do the updates and inserts to process the credit note entered */
 					}
 
 
-                  $PurchPriceVar = $EnteredGRN->This_QuantityInv * (($EnteredGRN->ChgPrice  / $_SESSION['SuppTrans']->ExRate) - $EnteredGRN->StdCostUnit);
+				  $PurchPriceVar = $EnteredGRN->This_QuantityInv * (($EnteredGRN->ChgPrice  / $_SESSION['SuppTrans']->ExRate) - $EnteredGRN->StdCostUnit);
 					/*Yes but where to post this difference to - if its a stock item the variance account must be retrieved from the stock category record
 					if its a nominal purchase order item with no stock item then  post it to the account specified in the purchase order detail record */
 
 					if ($PurchPriceVar !=0){ /* don't bother with this lot if there is no difference ! */
-						if (mb_strlen($EnteredGRN->ItemCode)>0 OR $EnteredGRN->ItemCode != ''){ /*so it is a stock item */
+						if (mb_strlen($EnteredGRN->ItemCode)>0 or $EnteredGRN->ItemCode != ''){ /*so it is a stock item */
 
 							/*need to get the stock category record for this stock item - this is function in SQL_CommonFunctions.inc */
 							$StockGLCode = GetStockGLCode($EnteredGRN->ItemCode,$db);
@@ -960,8 +962,9 @@ then do the updates and inserts to process the credit note entered */
 									$CostIncrement = ($PurchPriceVar - $WriteOffToVariances) / $TotalQuantityOnHand;
 
 									$sql = "UPDATE stockmaster SET lastcost=materialcost+overheadcost+labourcost,
-																	materialcost=materialcost+" . $CostIncrement . "
-											WHERE stockid='" . $EnteredGRN->ItemCode . "'";
+
+									materialcost=materialcost+" . $CostIncrement . "
+									WHERE stockid='" . $EnteredGRN->ItemCode . "'";
 
 									$Result = DB_query($sql, $db, $ErrMsg, $DbgMsg, True);
 								} else {
@@ -1063,7 +1066,9 @@ then do the updates and inserts to process the credit note entered */
 
 			} /* end of GRN postings */
 
-			if ($debug == 1 AND abs(($_SESSION['SuppTrans']->OvAmount/ $_SESSION['SuppTrans']->ExRate) - $LocalTotal)>0.004){
+
+			if ($debug == 1 and abs(($_SESSION['SuppTrans']->OvAmount/ $_SESSION['SuppTrans']->ExRate) - $LocalTotal)>0.004){
+
 				prnMsg(_('The total posted to the credit accounts is') . ' ' . $LocalTotal . ' ' . _('but the sum of OvAmount converted at ExRate') . ' = ' . ($_SESSION['SuppTrans']->OvAmount / $_SESSION['SuppTrans']->ExRate),'error');
 			}
 			foreach ($_SESSION['SuppTrans']->Taxes as $Tax){
@@ -1147,7 +1152,7 @@ then do the updates and inserts to process the credit note entered */
 		$SuppTransID = DB_Last_Insert_ID($db,'supptrans','id');
 
 		/* Insert the tax totals for each tax authority where tax was charged on the invoice */
-		foreach ($_SESSION['SuppTrans']->Taxes AS $TaxTotals) {
+		foreach ($_SESSION['SuppTrans']->Taxes as $TaxTotals) {
 
 			$SQL = "INSERT INTO supptranstaxes (supptransid,
 												taxauthid,
@@ -1184,7 +1189,7 @@ then do the updates and inserts to process the credit note entered */
 			the total value credited against shipments is apportioned between all the items on the shipment
 			later when the shipment is closed*/
 
-			if (mb_strlen($EnteredGRN->ShiptRef)>0 AND $EnteredGRN->ShiptRef!=0){
+			if (mb_strlen($EnteredGRN->ShiptRef)>0 and $EnteredGRN->ShiptRef!=0){
 
 				/* and insert the shipment charge records */
 				$SQL = "INSERT INTO shipmentcharges (shiptref,
@@ -1338,6 +1343,6 @@ then do the updates and inserts to process the credit note entered */
 } /*end of process credit note */
 
 echo '</div>
-      </form>';
+	  </form>';
 include('includes/footer.inc');
 ?>

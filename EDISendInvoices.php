@@ -97,10 +97,10 @@ while ($CustDetails = DB_fetch_array($EDIInvCusts)){
 			then replace variable names with data
 			write the output to a file one line at a time */
 
-		$sql = "SELECT section, 
-                       linetext 
-                FROM edimessageformat 
-                WHERE partnercode='" . $CustDetails['debtorno'] . "' 
+		$sql = "SELECT section,
+                       linetext
+                FROM edimessageformat
+                WHERE partnercode='" . $CustDetails['debtorno'] . "'
                 AND messagetype='INVOIC' ORDER BY sequenceno";
 		$ErrMsg =  _('An error occurred in getting the EDI format template for') . ' ' . $CustDetails['debtorno'] . ' ' . _('because');
 		$MessageLinesResult = DB_query($sql, $db,$ErrMsg);
@@ -111,7 +111,7 @@ while ($CustDetails = DB_fetch_array($EDIInvCusts)){
 
 			$DetailLines = array();
 			$ArrayCounter =0;
-			While ($MessageLine = DB_fetch_array($MessageLinesResult)){
+			while ($MessageLine = DB_fetch_array($MessageLinesResult)){
 				if ($MessageLine['section']=='Detail'){
 					$DetailLines[$ArrayCounter]=$MessageLine['linetext'];
 					$ArrayCounter++;
@@ -128,7 +128,7 @@ while ($CustDetails = DB_fetch_array($EDIInvCusts)){
 					$MsgLineText = $LineDetails['linetext'];
 					include ('includes/EDIVariableSubstitution.inc');
 					$LastLine ='Heading';
-				} elseif ($LineDetails['section']=='Summary' AND $LastLine=='Heading') {
+				} elseif ($LineDetails['section']=='Summary' and $LastLine=='Heading') {
 					/*This must be the detail section
 					need to get the line details for the invoice or credit note
 					for creating the detail lines */
@@ -230,7 +230,7 @@ while ($CustDetails = DB_fetch_array($EDIInvCusts)){
 				// set up basic connection
 				$conn_id = ftp_connect($CustDetails['ediaddress']); // login with username and password
 				$login_result = ftp_login($conn_id, $CustDetails['ediserveruser'], $CustDetails['ediserverpwd']); // check connection
-				if ((!$conn_id) || (!$login_result)) {
+				if ((!$conn_id) or (!$login_result)) {
 					prnMsg( _('Ftp connection has failed'). '<br />' . _('Attempted to connect to') . ' ' . $CustDetails['ediaddress'] . ' ' ._('for user') . ' ' . $CustDetails['ediserveruser'],'error');
 					include('includes/footer.inc');
 					exit;

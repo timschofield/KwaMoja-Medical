@@ -5,7 +5,7 @@
 /* Common SQL Functions */
 
 
-Function GetNextTransNo ($TransType, &$db){
+function GetNextTransNo ($TransType, &$db){
 
 /* SQL to get the next transaction number these are maintained in the table SysTypes - Transaction Types
 Also updates the transaction number
@@ -38,7 +38,7 @@ etc
 }
 
 
-Function GetStockGLCode ($StockID, &$db){
+function GetStockGLCode ($StockID, &$db){
 
 /*Gets the GL Codes relevant to the stock item account from the stock category record */
 	$QuerySQL = "SELECT stockact,
@@ -58,7 +58,7 @@ Function GetStockGLCode ($StockID, &$db){
 	return $myrow;
 }
 
-Function GetTaxRate ($TaxAuthority, $DispatchTaxProvince, $TaxCategory, &$db){
+function GetTaxRate ($TaxAuthority, $DispatchTaxProvince, $TaxCategory, &$db){
 
 /*Gets the Tax rate applicable to an item from the TaxAuthority of the branch and TaxLevel of the item */
 
@@ -81,7 +81,7 @@ Function GetTaxRate ($TaxAuthority, $DispatchTaxProvince, $TaxCategory, &$db){
 
 }
 
-Function GetTaxes ($TaxGroup, $DispatchTaxProvince, $TaxCategory, &$db) {
+function GetTaxes ($TaxGroup, $DispatchTaxProvince, $TaxCategory, &$db) {
 
 	$SQL = "SELECT taxgrouptaxes.calculationorder,
 					taxauthorities.description,
@@ -112,7 +112,7 @@ Function GetTaxes ($TaxGroup, $DispatchTaxProvince, $TaxCategory, &$db) {
 
 
 
-Function GetCreditAvailable($DebtorNo,&$db) {
+function GetCreditAvailable($DebtorNo,&$db) {
 
 	$sql = "SELECT debtorsmaster.debtorno,
 			debtorsmaster.creditlimit,
@@ -159,7 +159,7 @@ Function GetCreditAvailable($DebtorNo,&$db) {
 
 function ItemCostUpdateGL($db, $StockID, $NewCost, $OldCost, $QOH) {
 
-		if ($_SESSION['CompanyRecord']['gllink_stock']==1 AND $QOH!=0){
+		if ($_SESSION['CompanyRecord']['gllink_stock']==1 and $QOH!=0){
 
 			$CostUpdateNo = GetNextTransNo(35, $db);
 			$PeriodNo = GetPeriod(date($_SESSION['DefaultDateFormat']), $db);

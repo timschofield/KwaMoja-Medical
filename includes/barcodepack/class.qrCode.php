@@ -21,7 +21,7 @@ define('E_BAD_MASK',	802);
 /**
  * qrCode
  * Class for QR Code generation
- * 
+ *
  * @author Tomáš Horáček <info@webpack.cz>
  * @package BarcodePack
  */
@@ -32,9 +32,9 @@ class qrCode extends barcode {
 	const ECL_M_CODE = 'M';
 	const ECL_Q_CODE = 'Q';
 	const ECL_H_CODE = 'H';
-	
+
 	const DEFAULT_ECL = 'M';
-	
+
 	// Error correction levels numbers
 	const ECL_L = 1;
 	const ECL_M = 0;
@@ -119,7 +119,7 @@ class qrCode extends barcode {
 	 * @var int
 	 */
 	private $maskReference;
-	
+
 	/**
 	 * ECL conversion table
 	 * @var array
@@ -305,10 +305,10 @@ class qrCode extends barcode {
 		array(self::ECL_L => array(20,  4), self::ECL_M => array(40,  7), self::ECL_Q => array(43, 22), self::ECL_H => array(10, 67)),
 		array(self::ECL_L => array(19,  6), self::ECL_M => array(18, 31), self::ECL_Q => array(34, 34), self::ECL_H => array(20, 61)),//40
 	);
-	
+
 	/**
 	 * Alphanumeric code coding table
-	 * @var array 
+	 * @var array
 	 */
 	private $alphanumCodingTable = array(
 		'0' => 0,  '1' => 1,  '2' => 2,  '3' => 3,  '4' => 4,  '5' => 5,
@@ -333,36 +333,36 @@ class qrCode extends barcode {
 		0x1ed75, 0x1f250, 0x209d5, 0x216f0, 0x228ba, 0x2379f, 0x24b0b, 0x2542e,
 		0x26a64, 0x27541, 0x28c69,
 	);
-	
+
 	/**
 	 * Galois field
-	 * @var array 
+	 * @var array
 	 */
 	private $galoisField;
-	
+
 	/**
 	 * Galois field with changed index and value
 	 * @var array
 	 */
 	private $indexGaloisField;
-	
-	
+
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param string $text
 	 * @param int $moduleSize
 	 * @param char $ecl
 	 */
 	public function __construct($text, $moduleSize=parent::MODULE_SIZE, $ecl=self::ECL_L_CODE, $version=null)
 	{
-		try {					
+		try {
 			parent::__construct($text, $moduleSize);
 
 			// Convert input text to UTF-8
 			$current_encoding = mb_detect_encoding($this->text, 'auto');
 			$this->text = iconv($current_encoding, 'UTF-8', $this->text);
-				
+
 			$this->ecl = $this->eclConvertTable[$ecl];
 
 			// Num of input chars
@@ -372,7 +372,7 @@ class qrCode extends barcode {
 
 			// Mask reference
 			$this->maskReference = rand(0,7);
-			
+
 
 			// Version
 			$this->version = $this->getVersion($this->charsNum, $this->ecl, $this->mode, $version);
@@ -397,12 +397,12 @@ class qrCode extends barcode {
 			$this->matrix = $this->addFormatInformation($this->matrix, $formatInformation);
 
 			// Version info
-			if($this->version>=7 && $this->version<=40) {
+			if($this->version>=7 and $this->version<=40) {
 				$versionInformation = $this->versionInformation($this->version);
 				$this->matrix = $this->addVersionInformation($this->matrix, $versionInformation);
 			}
-			
-			
+
+
 		} catch (Exception $e) {
 			throw $e;
 		}
@@ -445,27 +445,27 @@ class qrCode extends barcode {
 			}
 			$findversion++;
 		}
-		
+
 		if($findversion==41) {
 			throw new Exception('Input text is too long.', E_BAD_QR_LENGTH);
 		}
-		
-		
+
+
 		if($version) {
-			if($findversion<=$version && $version <= 40) {
+			if($findversion<=$version and $version <= 40) {
 				return $version;
 			} else {
 				throw new Exception('Selected version can not be choosen.', E_BAD_VERSION);
 			}
 		}
-		
+
 		return $findversion;
 	}
 
 
 	/**
 	 * Get Matrix Size
-	 * 
+	 *
 	 * Use bit shift
 	 * x << y = x*(2^y)
 	 *
@@ -480,10 +480,10 @@ class qrCode extends barcode {
 
 	/**
 	 * Init
-	 * 
+	 *
 	 * Matrix init
 	 * prepare matrixes and bits
-	 * 
+	 *
 	 * @return void
 	 */
 	private function init() {
@@ -492,41 +492,41 @@ class qrCode extends barcode {
 				$matrix[$y][$x] = 0; // White as default
 
 				// Vertical synch.
-				if ($y == 6 && $x % 2 == 0) {
+				if ($y == 6 and $x % 2 == 0) {
 					$matrix[$y][$x] = 1;
 				}
 				// Hor. synch
-				if ($x == 6 && $y % 2 == 0) {
+				if ($x == 6 and $y % 2 == 0) {
 					$matrix[$y][$x] = 1;
 				}
 
 				// Mask synch. patterns
-				if ($y == 6 || $x == 6) {
+				if ($y == 6 or $x == 6) {
 					$maskedMatrix[$y][$x] = 1;
 				}
 
 
 				// Format and version mask
 				// all versions
-				if($x==8 && ($y<=8 || $y>=($this->matrixSize-8))) {
+				if($x==8 and ($y<=8 or $y>=($this->matrixSize-8))) {
 					$maskedMatrix[$y][$x] = 1;
 				}
-				if($y==8 && ($x<=8 || $x>=($this->matrixSize-8))) {
+				if($y==8 and ($x<=8 or $x>=($this->matrixSize-8))) {
 					$maskedMatrix[$y][$x] = 1;
 				}
 				// Version >= 7
 				if($this->version >= 7) {
-					if($y<=5 && $x>=$this->matrixSize-11 && $x<=$this->matrixSize-9) {
+					if($y<=5 and $x>=$this->matrixSize-11 and $x<=$this->matrixSize-9) {
 						$maskedMatrix[$y][$x] = 1;
 					}
-					if($x<=5 && $y>=$this->matrixSize-11 && $y<=$this->matrixSize-9) {
+					if($x<=5 and $y>=$this->matrixSize-11 and $y<=$this->matrixSize-9) {
 						$maskedMatrix[$y][$x] = 1;
 					}
 				}
 
 
 				// left top position pattern
-				if ($y <= 6 && $x <= 6) {
+				if ($y <= 6 and $x <= 6) {
 					$shift = $y * 7 + $x;
 					$matrix[$y][$x] = $this->positionPattern[$shift];
 
@@ -534,7 +534,7 @@ class qrCode extends barcode {
 					$maskedMatrix[$y+1][$x+1] = 1; // mask. separatoru
 				}
 				// left bottom position pattern
-				if ($y < 7 && $x < $this->matrixSize && $x > ($this->matrixSize - 8)) {
+				if ($y < 7 and $x < $this->matrixSize and $x > ($this->matrixSize - 8)) {
 					$shift = $y * 7 + ($this->matrixSize - $x - 1);
 					$matrix[$y][$x] = $this->positionPattern[$shift];
 
@@ -542,7 +542,7 @@ class qrCode extends barcode {
 					$maskedMatrix[$y+1][$x-1] = 1;
 				}
 				// right top position pattern
-				if ($x < 7 && $y < $this->matrixSize && $y > ($this->matrixSize - 8)) {
+				if ($x < 7 and $y < $this->matrixSize and $y > ($this->matrixSize - 8)) {
 					$shift = $x + ($this->matrixSize - $y - 1) * 7;
 					$matrix[$y][$x] = $this->positionPattern[$shift];
 
@@ -556,7 +556,7 @@ class qrCode extends barcode {
 		if (count($this->alignmentPatternCoordinate[$this->version]) > 0) {
 			foreach ($this->alignmentPatternCoordinate[$this->version] as $y) {
 				foreach ($this->alignmentPatternCoordinate[$this->version] as $x) {
-					if (!(($x < 7 && $y < 7) || ($y > ($this->matrixSize - 8) && $x < 7) || ($x > ($this->matrixSize - 8) && $y < 7))) {
+					if (!(($x < 7 and $y < 7) or ($y > ($this->matrixSize - 8) and $x < 7) or ($x > ($this->matrixSize - 8) and $y < 7))) {
 						for ($i = 0; $i < 5; $i++) {
 							for ($j = 0; $j < 5; $j++) {
 								$xCoor = $x - $i + 2;
@@ -679,16 +679,16 @@ class qrCode extends barcode {
 
 	/**
 	 * Convert Data
-	 * 
+	 *
 	 * @return void
 	 */
 	private function convertData()
 	{
 		$text = $this->text;
-	
-		
+
+
 		/* DATA CODING ********************************************************/
-		
+
 		$dataCounter = 0;
 		// Mode indicator 4b
 		$data[$dataCounter] = array(
@@ -704,9 +704,9 @@ class qrCode extends barcode {
 			$this->characterCountIndicatorBits[$this->mode][$this->version],
 			$this->charsNum,
 		);
-		$totalDataBits += $this->characterCountIndicatorBits[$this->mode][$this->version];				
+		$totalDataBits += $this->characterCountIndicatorBits[$this->mode][$this->version];
 		$dataCounter++;
-		
+
 		switch($this->mode) {
 			case self::MODE_NUMERIC:
 
@@ -740,11 +740,11 @@ class qrCode extends barcode {
 						$text = substr($text, 3);
 					}
 				}
-				
+
 				break;
-				
+
 			case self::MODE_ALPHANUMERIC:
-				
+
 				// Conversion to num value
 				$i=0;
 				while($i<$this->charsNum) {
@@ -753,27 +753,27 @@ class qrCode extends barcode {
 							6,
 							$this->alphanumCodingTable[$text{$i}],
 						);
-						$addToTotalData = 6;	
+						$addToTotalData = 6;
 					} else {
 						$data[$dataCounter] = array(
 							11,
 							$data[$dataCounter][1]*45 + $this->alphanumCodingTable[$text{$i}],
-							
+
 						);
 						$totalDataBits += 11;
 						$addToTotalData = 0;
 						$dataCounter++;
 					}
-					
+
 					$i++;
 				}
-	
+
 				$totalDataBits += $addToTotalData;
-				
+
 				break;
 
 			case self::MODE_8BITBYTE:
-				
+
 					for($i=0;$i<$this->charsNum;$i++) {
 						$data[] = array(
 							8,
@@ -781,9 +781,9 @@ class qrCode extends barcode {
 						);
 						$totalDataBits += 8;
 					}
-					
+
 					break;
-				
+
 			default:
 				break;
 		}
@@ -811,7 +811,7 @@ class qrCode extends barcode {
 		while($dataCounter < $dataItems) {
 			if($codewordCounter==$totalDataBits/8)
 				break;
-			
+
 			if($remainingBits >= $dataBitsCount) {
 				// OR a ( BITE SHIFT AND 255)
 				// AND delete all bits > 255
@@ -832,7 +832,7 @@ class qrCode extends barcode {
 				$remainingBits = 8;
 			}
 		}
-		
+
 
 		/* ADD ALIGNENT CODEWORDS *********************************************/
 		$i = 0;
@@ -873,11 +873,11 @@ class qrCode extends barcode {
 			// Error correction blocks
 			$ecBlocks[$i] = $this->reedSolomon($dataBlocks[$i], $ecCodewordsPerBlock);
 		}
-		
-		
-		
+
+
+
 		/* INSERT DATA AND ECC INTO MATRIX ************************************/
-		
+
 		// Data blocks
 		$bitCounter = 0;
 		for($i=0;$i<$dataCodewordsPerBlock;$i++) {
@@ -933,7 +933,7 @@ class qrCode extends barcode {
 	/**
 	 * Mask
 	 * Use mask function depends on reference
-	 * 
+	 *
 	 * @param int $y
 	 * @param int $x
 	 * @return int
@@ -975,11 +975,11 @@ class qrCode extends barcode {
 
 	/**
 	 * Format Information
-	 * 
-	 * 
+	 *
+	 *
 	 * Based on libqrencode C library distributed under LGPL 2.1
 	 * Copyright (C) 2006, 2007, 2008, 2009 Kentaro Fukuchi <fukuchi@megaui.net>
-	 * 
+	 *
 	 * @param int $eclIndicator
 	 * @param int $maskReference
 	 * @return int
@@ -1010,7 +1010,7 @@ class qrCode extends barcode {
 
 	/**
 	 * Add Format Information
-	 * 
+	 *
 	 * @param array $matrix
 	 * @param bitstream $formatInformation
 	 * @return array
@@ -1044,14 +1044,14 @@ class qrCode extends barcode {
 
 	/**
 	 * Version Information
-	 * 
+	 *
 	 * @param int $version
 	 * @return int
 	 */
 	private function versionInformation($version)
 	{
 		$verson = intval($version);
-		if($version >=7 && $version<=40) {
+		if($version >=7 and $version<=40) {
 			return $this->versionInformationStream[$version];
 		} else {
 			throw new Exception('Selected version can not be choosen', E_BAD_VERSION);
@@ -1067,7 +1067,7 @@ class qrCode extends barcode {
 	 */
 	private function addVersionInformation($matrix, $versionInformation)
 	{
-		if($this->version>=7 && $this->version <=40) {
+		if($this->version>=7 and $this->version <=40) {
 			// left bottom
 			$counter = 0;
 			for($i=0;$i<6;$i++) {
@@ -1094,9 +1094,9 @@ class qrCode extends barcode {
 
 	/**
 	 * Count Galois Field
-	 * 
+	 *
 	 * more info at http://eduramble.org/rs2/galois.html
-	 * 
+	 *
 	 * @return void
 	 */
 	private function countGaloisField()
@@ -1131,10 +1131,10 @@ class qrCode extends barcode {
 	/**
 	 * Count Generator Polynomials
 	 * Count pollinomial needed for cound reed solomon
-	 * 
+	 *
 	 * Based on similar function in libqrencode
 	 * (http://fukuchi.org/works/qrencode/index.en.html)
-	 * 
+	 *
 	 * @param int $numEcc
 	 * @return array
 	 */
@@ -1152,7 +1152,7 @@ class qrCode extends barcode {
 			}
 			$genpoly[0] = $this->galoisField[($this->indexGaloisField[$genpoly[0]] + $i)%255];
 		}
-		
+
 		// Index equivalent
 		for ($i = 0; $i <= $numEcc; $i++) {
 			$genpoly[$i] = $this->indexGaloisField[$genpoly[$i]];
@@ -1165,7 +1165,7 @@ class qrCode extends barcode {
 	/**
 	 * Reed Solomon
 	 * Count ECL
-	 * 
+	 *
 	 * @param array $dataCodewords
 	 * @param int $numEcc Number od ECL
 	 * @return array
@@ -1173,16 +1173,16 @@ class qrCode extends barcode {
 	private function reedSolomon($dataCodewords, $numEcc)
 	{
 		$generatorPolynomials = $this->countGeneratorPolynomials($numEcc);
-		
+
 		// Num of iterations
 		$mainIterationCount = count($dataCodewords);
 		$subIterationCount = count($generatorPolynomials);
-		
+
 		$ecc = array_fill(0, $subIterationCount-1, 0);
-		
+
 		for($i=0; $i< $mainIterationCount; $i++) {
 			$feedback = $this->indexGaloisField[$dataCodewords[$i] ^ $ecc[0]];
-			if($feedback != 255) {      
+			if($feedback != 255) {
 				$feedback = (255 - $generatorPolynomials[$subIterationCount-1] + $feedback)%255;
 				for($j=1;$j<$subIterationCount-1;$j++) {
 					$ecc[$j] ^= $this->galoisField[($feedback + $generatorPolynomials[$subIterationCount-1-$j])%255];
@@ -1195,22 +1195,22 @@ class qrCode extends barcode {
 				array_push($ecc, 0);
 			}
 		}
-		
+
 		return $ecc;
 	}
-	
-	
+
+
 
 
 
 
 	/**
 	 * Draw
-	 * 
+	 *
 	 * @return image resource
 	 */
 	public function draw() {
-		
+
 		// Create image
 		$im = imageCreate($this->matrixSize, $this->matrixSize);
 
@@ -1228,24 +1228,24 @@ class qrCode extends barcode {
 
 		$dimension = $this->symbolSize * $this->moduleSize;
 		$dimensionNoQuiet = $this->matrixSize * $this->moduleSize;
-		
-		
+
+
 		$out = ImageCreate($dimension, $dimension);
 		Imagecolorallocate($out, 255, 255, 255);
-		
+
 		$move = self::QUIET_ZONE * $this->moduleSize;
-		
+
 		// resize image and add quiet zone
 		imagecopyresized($out, $im, $move, $move, 0, 0, $dimensionNoQuiet, $dimensionNoQuiet, $this->matrixSize, $this->matrixSize);
 
 		return $out;
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Raw Data
-	 * 
+	 *
 	 * @return string $output
 	 */
 	public function rawData()
@@ -1257,10 +1257,10 @@ class qrCode extends barcode {
 			}
 			$output .= "\n";
 		}
-		
+
 		return $output;
 	}
-	
-	
+
+
 
 }

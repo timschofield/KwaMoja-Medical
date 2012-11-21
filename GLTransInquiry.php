@@ -8,7 +8,7 @@ include('includes/header.inc');
 
 $MenuURL = '<div><a href="'. $rootpath . '/index.php?&amp;Application=GL">' . _('General Ledger Menu') . '</a></div>';
 
-if ( !isset($_GET['TypeID']) OR !isset($_GET['TransNo']) ) {
+if ( !isset($_GET['TypeID']) or !isset($_GET['TransNo']) ) {
 	prnMsg(_('This page requires a valid transaction type and number'),'warn');
 	echo $MenuURL;
 } else {
@@ -59,7 +59,7 @@ if ( !isset($_GET['TypeID']) OR !isset($_GET['TransNo']) ) {
 						periods.lastdate_in_period
 					FROM gltrans INNER JOIN chartmaster
 					ON gltrans.account = chartmaster.accountcode
-					INNER JOIN periods 
+					INNER JOIN periods
 					ON periods.periodno=gltrans.periodno
 					WHERE gltrans.type= '" . $_GET['TypeID'] . "'
 					AND gltrans.typeno = '" . $_GET['TransNo'] . "'
@@ -120,7 +120,7 @@ if ( !isset($_GET['TypeID']) OR !isset($_GET['TransNo']) ) {
 					if( mb_strlen($TransRow['narrative'])==0 ) {
 						$TransRow['narrative'] = '&nbsp;';
 					}
-					
+
 					if ($j==1) {
 						echo '<tr class="OddTableRows">';
 						$j=0;

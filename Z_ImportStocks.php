@@ -106,7 +106,7 @@ if ($_FILES['userfile']['name']) { //start file processing
 		}
 
 		//next validate inputs are sensible
-		if (!$myrow[1] or mb_strlen($myrow[1]) > 50 OR mb_strlen($myrow[1])==0) {
+		if (!$myrow[1] or mb_strlen($myrow[1]) > 50 or mb_strlen($myrow[1])==0) {
 			$InputError = 1;
 			prnMsg (_('The stock item description must be entered and be fifty characters or less long') . '. ' . _('It cannot be a zero length string either') . ' - ' . _('a description is required'). ' ("'. implode('","',$myrow). $stockid. '") ','error');
 		}
@@ -118,7 +118,7 @@ if ($_FILES['userfile']['name']) { //start file processing
 			$InputError = 1;
 			prnMsg (_('The Stock Item code cannot be empty'),'error');
 		}
-		if (ContainsIllegalCharacters($StockID) OR mb_strstr($StockID,' ')) {
+		if (ContainsIllegalCharacters($StockID) or mb_strstr($StockID,' ')) {
 			$InputError = 1;
 			prnMsg(_('The stock item code cannot contain any of the following characters') . " ' & + \" \\ " . _('or a space'). " (". $StockID. ")",'error');
 			$StockID='';
@@ -131,7 +131,7 @@ if ($_FILES['userfile']['name']) { //start file processing
 			$InputError = 1;
 			prnMsg(_('The barcode must be 20 characters or less long'),'error');
 		}
-		if ($myrow[10]!=0 AND $myrow[10]!=1) {
+		if ($myrow[10]!=0 and $myrow[10]!=1) {
 			$InputError = 1;
 			prnMsg (_('Values in the Perishable field must be either 0 (No) or 1 (Yes)') ,'error');
 		}
@@ -159,7 +159,7 @@ if ($_FILES['userfile']['name']) { //start file processing
 			$InputError = 1;
 			prnMsg (_('The economic order quantity must be a positive number'),'error');
 		}
-		if ($myrow[8]==0 AND $myrow[9]==1){
+		if ($myrow[8]==0 and $myrow[9]==1){
 			$InputError = 1;
 			prnMsg(_('The item can only be serialised if there is lot control enabled already') . '. ' . _('Batch control') . ' - ' . _('with any number of items in a lot/bundle/roll is enabled when controlled is enabled') . '. ' . _('Serialised control requires that only one item is in the batch') . '. ' . _('For serialised control') . ', ' . _('both controlled and serialised must be enabled'),'error');
 		}
@@ -169,7 +169,7 @@ if ($_FILES['userfile']['name']) { //start file processing
 			$InputError = 1;
 			prnMsg(_('Items must be of MBFlag type Manufactured(M), Assembly(A), Kit-Set(K), Purchased(B), Dummy(D) or Phantom(G)'),'error');
 		}
-		if (($mbflag=='A' OR $mbflag=='K' OR $mbflag=='D' OR $mbflag=='G') AND $myrow[8]==1){
+		if (($mbflag=='A' or $mbflag=='K' or $mbflag=='D' or $mbflag=='G') and $myrow[8]==1){
 			$InputError = 1;
 			prnMsg(_('Assembly/Kitset/Phantom/Service items cannot also be controlled items') . '. ' . _('Assemblies, Dummies and Kitsets are not physical items and batch/serial control is therefore not appropriate'),'error');
 		}
@@ -278,7 +278,7 @@ if ($_FILES['userfile']['name']) { //start file processing
 
 	fclose($handle);
 
-} elseif ( isset($_POST['gettemplate']) || isset($_GET['gettemplate']) ) { //download an import template
+} elseif ( isset($_POST['gettemplate']) or isset($_GET['gettemplate']) ) { //download an import template
 
 	echo '<br /><br /><br />"'. implode('","',$headers). '"<br /><br /><br />';
 

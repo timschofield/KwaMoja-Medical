@@ -7,7 +7,7 @@ function stripcomma($str) { //because we're using comma as a delimiter
 $fp = fopen( $_SESSION['reports_dir'] . "/SalesAnalysis.csv", "w");
 
 
-While ($myrow = DB_fetch_row($result)){
+while ($myrow = DB_fetch_row($result)){
 
 /*First off check that at least one of the columns of data has some none zero amounts */
 	$ThisLineHasOutput=False;   /*assume no output to start with */

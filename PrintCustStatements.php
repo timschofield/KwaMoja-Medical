@@ -5,7 +5,7 @@
 include('includes/session.inc');
 include('includes/SQL_CommonFunctions.inc');
 
-// If this file is called from another script, we set the required POST variables from the GET
+// if this file is called from another script, we set the required POST variables from the GET
 // We call this file from SelectCustomer.php when a customer is selected and we want a statement printed
 
 if (isset($_POST['PrintPDF'])) {
@@ -30,10 +30,10 @@ if (isset($_GET['ToCust'])) {
 	$_POST['ToCust'] = $_GET['ToCust'];
 }
 
-If (isset($_POST['PrintPDF']) AND isset($_POST['FromCust']) AND $_POST['FromCust']!=''){
+if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust']!=''){
 	$_POST['FromCust'] = mb_strtoupper($_POST['FromCust']);
 
-	If (!isset($_POST['ToCust'])){
+	if (!isset($_POST['ToCust'])){
 	      $_POST['ToCust'] = $_POST['FromCust'];
 	} else {
 		$_POST['ToCust'] = mb_strtoupper($_POST['ToCust']);
@@ -375,7 +375,7 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['FromCust']) AND $_POST['FromCust
 			$pdf->line($Left_Margin, $YPos,$Perforation,$YPos);
 
 
-			if (mb_strlen($StmtHeader['lastpaiddate'])>1 AND $StmtHeader['lastpaid']!=0){
+			if (mb_strlen($StmtHeader['lastpaiddate'])>1 and $StmtHeader['lastpaid']!=0){
 				$pdf->addText($Left_Margin+5, $Bottom_Margin+13, $FontSize, _('Last payment received').' ' . ConvertSQLDate($StmtHeader['lastpaiddate']) .
 					'    ' . _('Amount received was').' ' . locale_number_format($StmtHeader['lastpaid'],$StmtHeader['currdecimalplaces']));
 
@@ -410,7 +410,7 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['FromCust']) AND $_POST['FromCust
 	$title = _('Select Statements to Print');
 	include('includes/header.inc');
 	echo '<p class="page_title_text"><img src="'.$rootpath.'/css/'.$theme.'/images/printer.png" title="' . _('Print') . '" alt="" />' . ' ' . _('Print Customer Account Statements') . '</p>';
-	if (!isset($_POST['FromCust']) OR $_POST['FromCust']=='') {
+	if (!isset($_POST['FromCust']) or $_POST['FromCust']=='') {
 
 	/*if FromTransNo is not set then show a form to allow input of either a single statement number or a range of statements to be printed. Also get the last statement number created to show the user where the current range is up to */
 

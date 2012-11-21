@@ -9,13 +9,13 @@ echo '<p class="page_title_text">
 		<img src="'.$rootpath.'/css/'.$theme.'/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $title.'
 	</p>';
 
-if (isset($_POST['submit']) AND !isset($_POST['delete'])) {
+if (isset($_POST['submit']) and !isset($_POST['delete'])) {
 	$InputError=0;
-	if (!isset($_POST['LocationID']) OR mb_strlen($_POST['LocationID'])<1) {
+	if (!isset($_POST['LocationID']) or mb_strlen($_POST['LocationID'])<1) {
 		prnMsg(_('You must enter at least one character in the location ID'),'error');
 		$InputError=1;
 	}
-	if (!isset($_POST['LocationDescription']) OR mb_strlen($_POST['LocationDescription'])<1) {
+	if (!isset($_POST['LocationDescription']) or mb_strlen($_POST['LocationDescription'])<1) {
 		prnMsg(_('You must enter at least one character in the location description'),'error');
 		$InputError=1;
 	}

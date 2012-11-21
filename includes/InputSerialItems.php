@@ -36,7 +36,7 @@ if (isset($_GET['LineNo'])){
 if (!isset($RecvQty)) {
 	$RecvQty=0;
 }
-if (!isset($_POST['EntryType']) OR trim($_POST['EntryType']) == ''){
+if (!isset($_POST['EntryType']) or trim($_POST['EntryType']) == ''){
 	if ($RecvQty <= 50) {
 		$_POST['EntryType'] = 'KEYED';
 	} //elseif ($RecvQty <= 50) { $EntryType = "BARCODE"; }
@@ -54,7 +54,7 @@ echo '<div>
 		<input type="hidden" name="LineNo" value="' . $LineNo . '" />
 		<input type="hidden" name="StockID" value="'. $StockID. '" />';
 
-if ($_GET['CreditInvoice']=='Yes' OR $_POST['CreditInvoice']=='Yes'){
+if ($_GET['CreditInvoice']=='Yes' or $_POST['CreditInvoice']=='Yes'){
 	$CreditInvoice = '&amp;CreditInvoice=Yes';
 	echo '<input type="hidden" name="CreditInvoice" value="Yes" />';
 } else {
@@ -104,7 +104,7 @@ $EditLink =  '<br />
 $RemoveLink = '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?identifier='.$identifier.'&amp;DELETEALL=YES&amp;StockID=' . $LineItem->StockID . '&amp;LineNo=' . $LineNo . $CreditInvoice . '">'. _('Remove All'). '</a>
 			<br />
 			</div>';
-			
+
 $sql="SELECT perishable
 		FROM stockmaster
 		WHERE stockid='".$StockID."'";
@@ -122,7 +122,7 @@ if ($LineItem->Serialised==1){
 							<th>'. _('Expiry Date'). '<th>
 						</tr>';
 	}
-} else if ($LineItem->Serialised==0 AND $Perishable==1){
+} else if ($LineItem->Serialised==0 and $Perishable==1){
 	$TableHeader = '<tr>
 						<th>'. _('Batch/Roll/Bundle'). ' #</th>
 						<th>'. _('Quantity'). '</th>

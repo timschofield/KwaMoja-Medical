@@ -6,7 +6,7 @@ $title = _('Inventory Location Transfer Shipment');
 include('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');
 
-if (isset($_POST['Submit']) OR isset($_POST['EnterMoreItems'])){
+if (isset($_POST['Submit']) or isset($_POST['EnterMoreItems'])){
 /*Trap any errors in input */
 
 	$InputError = False; /*Start off hoping for the best */
@@ -84,7 +84,7 @@ if (isset($_POST['Submit']) OR isset($_POST['EnterMoreItems'])){
 					}
 				}
 			} // end for loop through the columns on the row being processed
-			if ($StockID!='' AND $Quantity!=0){
+			if ($StockID!='' and $Quantity!=0){
 				$_POST['StockID' . $TotalItems] = $StockID;
 				$_POST['StockQTY' . $TotalItems] = $Quantity;
 				$StockID='';
@@ -110,7 +110,7 @@ if (isset($_POST['Submit']) OR isset($_POST['EnterMoreItems'])){
 					unset($_POST['StockID' . $i]);
 					unset($_POST['StockQTY' . $i]);
 				}
-				if (isset($_POST['StockID' . $i]) AND $_POST['StockID' . $i]!=''){
+				if (isset($_POST['StockID' . $i]) and $_POST['StockID' . $i]!=''){
 					$_POST['StockID' . $i]=trim(mb_strtoupper($_POST['StockID' . $i]));
 					$result = DB_query("SELECT COUNT(stockid) FROM stockmaster WHERE stockid='" . $_POST['StockID' . $i] . "'",$db);
 					$myrow = DB_fetch_row($result);
@@ -184,7 +184,7 @@ if (isset($_POST['Submit']) OR isset($_POST['EnterMoreItems'])){
 	 } //end if the transfer is not a duplicated
 }
 
-if(isset($_POST['Submit']) AND $InputError==False){
+if(isset($_POST['Submit']) and $InputError==False){
 
 	$ErrMsg = _('CRITICAL ERROR') . '! ' . _('Unable to BEGIN Location Transfer transaction');
 
@@ -333,7 +333,7 @@ if(isset($_POST['Submit']) AND $InputError==False){
 			</tr>';
 			$j++;
 		}
-	}else {
+	} else {
 		$j = 0;
 	}
 	// $i is incremented an extra time, so 9 to get 10...

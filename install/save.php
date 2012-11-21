@@ -1,10 +1,10 @@
 <?php
 /* $Id$*/
-error_reporting(E_ALL && ~E_NOTICE);
+error_reporting(E_ALL and ~E_NOTICE);
 ini_set('display_errors', 'On');
 ini_set('max_execution_time', '580');
 /*Klaus Opto advised that timeout issues made it difficult to install even though max_execution_time has been set - Tim though set_time_limit should also be set - it might be a windows thing - Klaus was using WAMP */
-set_time_limit(580); 
+set_time_limit(580);
 
 require_once('../includes/MiscFunctions.php');
 // Start a session
@@ -15,7 +15,7 @@ if(!defined('SESSION_STARTED')){
 }
 
 if(!isset($_SESSION['MaxLogoSize'])) {
-    $_SESSION['MaxLogoSize'] = 10 * 1024;       // Limit logo file size.
+	$_SESSION['MaxLogoSize'] = 10 * 1024;	   // Limit logo file size.
 }
 //deal with check boxes
 if(!isset($_POST['install_tables'])) {
@@ -43,7 +43,7 @@ function Replace_Dodgy_Characters ($DodgyString) {
 
 function set_error($message) {
 
-	if(isset($message) AND $message != '') {
+	if(isset($message) and $message != '') {
 		// Copy values entered into session so user doesn't have to re-enter everything
 		if(isset($_POST['company_name'])) {
 			$_SESSION['ba_url'] = $_POST['ba_url'];
@@ -84,7 +84,7 @@ function default_file_mode($temp_dir) {
 	$v = explode('.',PHP_VERSION);
 	$v = $v[0].$v[1];
 
-	if($v > 41 && is_writable($temp_dir)) {
+	if($v > 41 and is_writable($temp_dir)) {
 		$filename = $temp_dir.'/test_permissions.txt';
 		$handle = fopen($filename, 'w');
 		fwrite($handle, 'This file is to get the default file permissions');
@@ -101,7 +101,7 @@ function default_file_mode($temp_dir) {
 function default_dir_mode($temp_dir) {
 	$v = explode('.',PHP_VERSION);
 	$v = $v[0].$v[1];
-	if ($v > 41 && is_writable($temp_dir)) {
+	if ($v > 41 and is_writable($temp_dir)) {
 		$dirname = $temp_dir.'/test_permissions/';
 		mkdir($dirname);
 		$default_dir_mode = '0'.mb_substr(sprintf('%o', fileperms($dirname)), -3);
@@ -131,7 +131,7 @@ if (!isset($_POST['company_name'])) {
 // Begin path and timezone details code
 
 // Check if user has entered the installation url
-if (!isset($_POST['ba_url']) || $_POST['ba_url'] == '') {
+if (!isset($_POST['ba_url']) or $_POST['ba_url'] == '') {
 	set_error('Please enter an absolute URL');
 } else {
 	$ba_url = $_POST['ba_url'];
@@ -154,7 +154,7 @@ if(mb_substr($ba_url, mb_strlen($ba_url) - 1, 1) == "\\") {
 
 // Begin operating system specific code
 // Get operating system
-if (!isset($_POST['operating_system']) || $_POST['operating_system'] != 'linux' && $_POST['operating_system'] != 'windows') {
+if (!isset($_POST['operating_system']) or $_POST['operating_system'] != 'linux' and $_POST['operating_system'] != 'windows') {
 	set_error('Please select a valid operating system');
 } else {
 	$operating_system = $_POST['operating_system'];
@@ -163,7 +163,7 @@ if (!isset($_POST['operating_system']) || $_POST['operating_system'] != 'linux' 
 if($operating_system == 'windows') {
 	$file_mode = '0777';
 	$dir_mode = '0777';
-} elseif (isset($_POST['world_writeable']) && $_POST['world_writeable'] == 'true') {
+} elseif (isset($_POST['world_writeable']) and $_POST['world_writeable'] == 'true') {
 	$file_mode = '0777';
 	$dir_mode = '0777';
 } else {
@@ -174,11 +174,11 @@ if($operating_system == 'windows') {
 
 // Begin database details code
 // Check if user has entered a database host
-if (!isset($_POST['database_host']) || $_POST['database_host'] == '') {
+if (!isset($_POST['database_host']) or $_POST['database_host'] == '') {
 	set_error('Please enter a database host name');
 }
 // Check if user has entered a database username
-if (!isset($_POST['database_username']) || $_POST['database_username'] == '') {
+if (!isset($_POST['database_username']) or $_POST['database_username'] == '') {
 	set_error('Please enter a database username');
 }
 // Check if user has entered a database password
@@ -186,13 +186,13 @@ if (!isset($_POST['database_password'])) {
 	set_error('Please enter a database password');
 }
 // Check if user has entered a database name
-if (!isset($_POST['company_name']) || $_POST['company_name'] == '') {
+if (!isset($_POST['company_name']) or $_POST['company_name'] == '') {
 	set_error('Please enter a company name');
 } else {
 	$_POST['company_name'] = Replace_Dodgy_Characters($_POST['company_name']);
 }
 
-if (!isset($_POST['timezone']) || $_POST['timezone'] == ''){
+if (!isset($_POST['timezone']) or $_POST['timezone'] == ''){
 	set_error('Please enter timezone');
 }
 
@@ -204,7 +204,7 @@ if (!file_exists($path_to_root.'/sql/mysql/kwamoja-demo.sql')){
 }
 
 // Get admin email and validate it
-if (!isset($_POST['admin_email']) || $_POST['admin_email'] == ''){
+if (!isset($_POST['admin_email']) or $_POST['admin_email'] == ''){
 	set_error('Please enter an email for the Administrator account');
 } else {
 	if (IsEmailAddress($_POST['admin_email'])==false) {
@@ -212,10 +212,10 @@ if (!isset($_POST['admin_email']) || $_POST['admin_email'] == ''){
 	}
 }
 // Get the two admin passwords entered, and check that they match
-if (!isset($_POST['admin_password']) || $_POST['admin_password'] == '') {
+if (!isset($_POST['admin_password']) or $_POST['admin_password'] == '') {
 	set_error('Please enter a password for the Administrator account');
 }
-if (!isset($_POST['admin_repassword']) || $_POST['admin_repassword'] == '') {
+if (!isset($_POST['admin_repassword']) or $_POST['admin_repassword'] == '') {
 	set_error('Please make sure you re-enter the password for the Administrator account');
 }
 if ($_POST['admin_password'] != $_POST['admin_repassword']){
@@ -246,24 +246,24 @@ if ($_POST['DemoData']==false){
 
 	// Now have a destination to place the logo image.
 	if (isset($_FILES['LogoFile'])) {
-	    if ($_FILES['LogoFile']['error'] == UPLOAD_ERR_OK) {
+		if ($_FILES['LogoFile']['error'] == UPLOAD_ERR_OK) {
 		$result = move_uploaded_file($_FILES['LogoFile']['tmp_name'],
-						    $CompanyDir . '/logo.jpg');
-	    } elseif ($_FILES['LogoFile']['error'] == UPLOAD_ERR_INI_SIZE ||
-		      $_FILES['LogoFile']['error'] == UPLOAD_ERR_FORM_SIZE) {
+							$CompanyDir . '/logo.jpg');
+		} elseif ($_FILES['LogoFile']['error'] == UPLOAD_ERR_INI_SIZE or
+			  $_FILES['LogoFile']['error'] == UPLOAD_ERR_FORM_SIZE) {
 			set_error( 'Logo file is too big - Limit: ' . $_SESSION['MaxLogoSize'] );
-	    } elseif ($_FILES['LogoFile']['error'] == UPLOAD_ERR_NO_FILE ) {
+		} elseif ($_FILES['LogoFile']['error'] == UPLOAD_ERR_NO_FILE ) {
 		//  No logo file, so use the default.
 		copy( $path_to_root . '/logo_server.jpg', $CompanyDir . '/logo.jpg');
-	    } else {
+		} else {
 		set_error( 'Error uploading logo file' );
-	    }
+		}
 	} else {
 		//  No logo file, so use the default.
 		copy( $path_to_root . '/logo_server.jpg', $CompanyDir . '/logo.jpg');
 	}
 }
-    $mysqlport=3306;
+	$mysqlport=3306;
 $rootpath = dirname(htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8'));
 
 //$msg holds the text of the new config.php file
@@ -307,7 +307,7 @@ $msg .= "   for (\$i=0;\$i<\$DirectoryLevelsDeep;\$i++){\n";
 $msg .= "\$rootpath = mb_substr(\$rootpath,0, strrpos(\$rootpath,'/'));\n";
 $msg .= "} }\n";
 
-$msg .= "if (\$rootpath == '/' OR \$rootpath == '\\\') {;\n";
+$msg .= "if (\$rootpath == '/' or \$rootpath == '\\\') {;\n";
 $msg .= "\$rootpath = '';\n";
 $msg .= "}\n";
 $msg .= "error_reporting (E_ALL & ~E_NOTICE);\n";
@@ -351,8 +351,8 @@ if($_POST['install_tables'] == true){
 		$SQLScriptFile[$i] = trim($SQLScriptFile[$i]);
 		//ignore lines that start with -- or USE or /*
 		if (mb_substr($SQLScriptFile[$i], 0, 2) != '--'
-			AND mb_strstr($SQLScriptFile[$i],'/*')==FALSE
-			AND mb_strlen($SQLScriptFile[$i])>1){
+			and mb_strstr($SQLScriptFile[$i],'/*')==FALSE
+			and mb_strlen($SQLScriptFile[$i])>1){
 
 			$SQL .= ' ' . $SQLScriptFile[$i];
 
@@ -364,14 +364,14 @@ if($_POST['install_tables'] == true){
 			if (mb_substr($SQLScriptFile[$i],0,8) == 'LANGUAGE'){
 				$InAFunction = false;
 			}
-			if (mb_strpos($SQLScriptFile[$i],';')>0 AND ! $InAFunction){
+			if (mb_strpos($SQLScriptFile[$i],';')>0 and ! $InAFunction){
 				// Database created above with correct name.
 				if (strncasecmp($SQL, ' CREATE DATABASE ', 17)
-				    AND strncasecmp($SQL, ' USE ', 5)){
+					and strncasecmp($SQL, ' USE ', 5)){
 					$SQL = mb_substr($SQL,0,mb_strlen($SQL)-1);
 					$result = mysqli_query($db,$SQL);
-				    }
-				    $SQL = '';
+					}
+					$SQL = '';
 			}
 
 		} //end if its a valid sql line not a comment

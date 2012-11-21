@@ -5,10 +5,9 @@ if (!isset($PathPrefix)) {
 	$PathPrefix='';
 }
 
-
 if (!file_exists($PathPrefix . 'config.php')){
 	$rootpath = dirname(htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8'));
-	if ($rootpath == '/' OR $rootpath == "\\") {
+	if ($rootpath == '/' or $rootpath == "\\") {
 		$rootpath = '';
 	}
 	header('Location:' . $rootpath . '/install/index.php');
@@ -78,7 +77,7 @@ if (!isset($AllowAnyone)){ /* only do security checks if AllowAnyone is not true
 
 	include $PathPrefix . 'includes/UserLogin.php';	/* Login checking and setup */
 
-	if (isset($_POST['UserNameEntryField']) AND isset($_POST['Password'])) {
+	if (isset($_POST['UserNameEntryField']) and isset($_POST['Password'])) {
 		$rc = userLogin($_POST['UserNameEntryField'], $_POST['Password'], $db);
 	} elseif (empty($_SESSION['DatabaseName'])) {
 		$rc = UL_SHOWLOGIN;
@@ -132,8 +131,8 @@ if (!isset($PageSecurity)){
 	$PageSecurity = $_SESSION['PageSecurityArray'][basename($_SERVER['SCRIPT_NAME'])];
 }
 
-/*If the Code $Version - held in ConnectDB.inc is > than the Database VersionNumber held in config table then do upgrades */
-if (strcmp($Version,$_SESSION['VersionNumber'])>0 AND (basename($_SERVER['SCRIPT_NAME'])!='UpgradeDatabase.php')) {
+/*if the Code $Version - held in ConnectDB.inc is > than the Database VersionNumber held in config table then do upgrades */
+if (strcmp($Version,$_SESSION['VersionNumber'])>0 and (basename($_SERVER['SCRIPT_NAME'])!='UpgradeDatabase.php')) {
 	header('Location: UpgradeDatabase.php');
 }
 
@@ -159,11 +158,11 @@ if(isset($_SESSION['DB_Maintenance'])){
 
 /*Check to see if currency rates need to be updated */
 if (isset($_SESSION['UpdateCurrencyRatesDaily'])){
-	
+
 	if ($_SESSION['UpdateCurrencyRatesDaily']!=0)  {
 		if (DateDiff(Date($_SESSION['DefaultDateFormat']),
 			ConvertSQLDate($_SESSION['UpdateCurrencyRatesDaily']),'d')> 0){
-				
+
 			if ($_SESSION['ExchangeRateFeed']=='ECB') {
 				$CurrencyRates = GetECBCurrencyRates(); // gets rates from ECB see includes/MiscFunctions.php
 				/*Loop around the defined currencies and get the rate from ECB */
@@ -171,7 +170,7 @@ if (isset($_SESSION['UpdateCurrencyRatesDaily'])){
 					$CurrenciesResult = DB_query("SELECT currabrev FROM currencies",$db);
 					while ($CurrencyRow = DB_fetch_row($CurrenciesResult)){
 						if ($CurrencyRow[0]!=$_SESSION['CompanyRecord']['currencydefault']){
-	
+
 							$UpdateCurrRateResult = DB_query("UPDATE currencies SET rate='" . GetCurrencyRate($CurrencyRow[0],$CurrencyRates) . "'
 																WHERE currabrev='" . $CurrencyRow[0] . "'",$db);
 						}
@@ -193,7 +192,7 @@ if (isset($_SESSION['UpdateCurrencyRatesDaily'])){
 }
 
 
-If (isset($_POST['Theme']) AND ($_SESSION['UsersRealName'] == $_POST['RealName'])) {
+if (isset($_POST['Theme']) and ($_SESSION['UsersRealName'] == $_POST['RealName'])) {
 	$_SESSION['Theme'] = $_POST['Theme'];
 	$theme = $_POST['Theme'];
 } elseif (!isset($_SESSION['Theme'])) {
@@ -219,14 +218,14 @@ if (empty($_SESSION['LogoFile'])) {
 		$dir = $PathPrefix.'companies/' . $CompanyDir . '/';
 		$DirHandle = dir($dir);
 		while ($DirEntry = $DirHandle->read() ){
-			if ($DirEntry != '.' AND $DirEntry !='..'){
+			if ($DirEntry != '.' and $DirEntry !='..'){
 				$InCompanyDir[] = $DirEntry; //make an array of all files under company directory
 			}
 		} //loop through list of files in the company directory
 		if ($InCompanyDir !== FALSE) {
 			foreach($InCompanyDir as $logofilename) {
-				if (strncasecmp($logofilename,'logo.png',8) === 0 AND
-					is_readable($dir . $logofilename) AND
+				if (strncasecmp($logofilename,'logo.png',8) === 0 and
+					is_readable($dir . $logofilename) and
 					is_file($dir . $logofilename)) {
 					$logo = $logofilename;
 					break;
@@ -234,8 +233,8 @@ if (empty($_SESSION['LogoFile'])) {
 			}
 			if (!isset($logo)) {
 				foreach($InCompanyDir as $logofilename) {
-					if (strncasecmp($logofilename,'logo.jpg',8) === 0 AND
-						is_readable($dir . $logofilename) AND
+					if (strncasecmp($logofilename,'logo.jpg',8) === 0 and
+						is_readable($dir . $logofilename) and
 						is_file($dir . $logofilename)) {
 						$logo = $logofilename;
 						break;
@@ -263,14 +262,12 @@ if ($_SESSION['HTTPS_Only']==1){
 	}
 }
 
-
-
 // Now check that the user as logged in has access to the page being called. The $PageSecurity
 // value must be set in the script before header.inc is included. $SecurityGroups is an array of
 // arrays defining access for each group of users. These definitions can be modified by a system admin under setup
 
 
-if (!is_array($_SESSION['AllowedPageSecurityTokens']) AND !isset($AllowAnyone)) {
+if (!is_array($_SESSION['AllowedPageSecurityTokens']) and !isset($AllowAnyone)) {
 	$title = _('Account Error Report');
 	include($PathPrefix . 'includes/header.inc');
 	echo '<br /><br /><br />';
@@ -280,7 +277,7 @@ if (!is_array($_SESSION['AllowedPageSecurityTokens']) AND !isset($AllowAnyone)) 
 }
 
 if (!isset($AllowAnyone)){
-	if ((!in_array($PageSecurity, $_SESSION['AllowedPageSecurityTokens']) OR !isset($PageSecurity))) {
+	if ((!in_array($PageSecurity, $_SESSION['AllowedPageSecurityTokens']) or !isset($PageSecurity))) {
 		$title = _('Security Permissions Problem');
 		include($PathPrefix . 'includes/header.inc');
 		echo '<tr>
@@ -323,7 +320,7 @@ function CryptPass( $Password ) {
  }
 
 
-if (sizeof($_POST) > 0 AND !isset($AllowAnyone)) {
+if (sizeof($_POST) > 0 and !isset($AllowAnyone)) {
 	/*Security check to ensure that the form submitted is originally sourced from KwaMoja with the FormID = $_SESSION['FormID'] - which is set before the first login*/
 	if (!isset($_POST['FormID']) or ($_POST['FormID'] != $_SESSION['FormID'])) {
 		$title = _('Error in form verification');

@@ -66,7 +66,7 @@ $sql="SELECT fixedassets.assetid,
 			fixedassetcategories.depnact,
 			fixedassetcategories.categorydescription
 		ORDER BY assetcategoryid, assetid";
-		
+
 $AssetsResult=DB_query($sql, $db);
 
 $InputError = false; //always hope for the best
@@ -74,7 +74,7 @@ if (Date1GreaterThanDate2($_POST['ProcessDate'],Date($_SESSION['DefaultDateForma
 	prnMsg(_('No depreciation will be committed as the processing date is beyond the current date. The depreciation run can only be run for periods prior to today'),'warn');
 	$InputError =true;
 }
-if (isset($_POST['CommitDepreciation']) AND $InputError==false){
+if (isset($_POST['CommitDepreciation']) and $InputError==false){
 	$result = DB_Txn_Begin($db);
 	$TransNo = GetNextTransNo(44, $db);
 	$PeriodNo = GetPeriod($_POST['ProcessDate'],$db);
@@ -107,7 +107,7 @@ $RowCounter = 0;
 $k=0;
 
 while ($AssetRow=DB_fetch_array($AssetsResult)) {
-	if ($AssetCategoryDescription != $AssetRow['categorydescription'] OR $AssetCategoryDescription =='0'){
+	if ($AssetCategoryDescription != $AssetRow['categorydescription'] or $AssetCategoryDescription =='0'){
 		if ($AssetCategoryDescription !='0'){ //then print totals
 			echo '<tr><th colspan="3" align="right">' . _('Total for') . ' ' . $AssetCategoryDescription . ' </th>
 					<th class="number">' . locale_number_format($TotalCategoryCost,$_SESSION['CompanyRecord']['decimalplaces']) . '</th>
@@ -169,9 +169,9 @@ while ($AssetRow=DB_fetch_array($AssetsResult)) {
 	$TotalAccumDepn +=$AssetRow['depnbfwd'];
 	$TotalDepn +=$NewDepreciation;
 
-	if (isset($_POST['CommitDepreciation']) 
-		AND $NewDepreciation !=0 
-		AND $InputError==false){
+	if (isset($_POST['CommitDepreciation'])
+		and $NewDepreciation !=0
+		and $InputError==false){
 
 		//debit depreciation expense
 		$SQL = "INSERT INTO gltrans (type,
@@ -188,11 +188,11 @@ while ($AssetRow=DB_fetch_array($AssetsResult)) {
 								'" . $AssetRow['depnact'] . "',
 								'" . $AssetRow['assetid'] . "',
 								'" . $NewDepreciation ."')";
-		
+
 		$ErrMsg = _('Cannot insert a depreciation GL entry for the depreciation because');
 		$DbgMsg = _('The SQL that failed to insert the GL Trans record was');
 		$result = DB_query($SQL,$db,$ErrMsg,$DbgMsg,true);
-		
+
 		$SQL = "INSERT INTO gltrans (type,
 									typeno,
 									trandate,
@@ -259,7 +259,7 @@ echo '</table>
 		<hr />
 		<br />';
 
-if (isset($_POST['CommitDepreciation']) AND $InputError==false){
+if (isset($_POST['CommitDepreciation']) and $InputError==false){
 	$result = DB_Txn_Commit($db);
 	prnMsg(_('Depreciation') . ' ' . $TransNo . ' ' . _('has been successfully entered'),'success');
 	unset($_POST['ProcessDate']);

@@ -44,7 +44,7 @@ $Serialised = $myrow['serialised'];
 $Controlled = $myrow['controlled'];
 $Perishable = $myrow['perishable'];
 
-if ($myrow['mbflag']=='K' OR $myrow['mbflag']=='A' OR $myrow['mbflag']=='D'){
+if ($myrow['mbflag']=='K' or $myrow['mbflag']=='A' or $myrow['mbflag']=='D'){
 
 	prnMsg(_('This item is either a kitset or assembly or a dummy part and cannot have a stock holding') . '. ' . _('This page cannot be displayed') . '. ' . _('Only serialised or controlled items can be displayed in this page'),'error');
 	include('includes/footer.inc');
@@ -135,7 +135,7 @@ $Col =0;
 $BGColor ='#CCCCCC';
 while ($myrow=DB_fetch_array($LocStockResult)) {
 
-	if ($Col==0 AND $BGColor=='#EEEEEE'){
+	if ($Col==0 and $BGColor=='#EEEEEE'){
 		$BGColor ='#CCCCCC';
 		echo '<tr class="EvenTableRows">';
 	} elseif ($Col==0){
@@ -162,7 +162,7 @@ while ($myrow=DB_fetch_array($LocStockResult)) {
 			<th></th>';
 	}
 	$j++;
-	If ($j == 36){
+	if ($j == 36){
 		$j=1;
 		echo $tableheader;
 	}

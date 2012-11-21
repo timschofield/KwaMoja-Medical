@@ -305,7 +305,7 @@ echo '<tr>
 		<td class="number">' . locale_number_format($TotalUsageVar,$_SESSION['CompanyRecord']['decimalplaces']) . '</td>
 		<td class="number">' . locale_number_format($TotalCostVar,$_SESSION['CompanyRecord']['decimalplaces']) . '</td>
 	</tr>';
-	
+
 echo '<tr>
 		<td colspan="3"></td>
 		<td><hr/></td>
@@ -313,7 +313,7 @@ echo '<tr>
 		<td colspan="3"><hr /></td>
 	</tr>';
 
-If (isset($_POST['Close'])) {
+if (isset($_POST['Close'])) {
 
 	DB_data_seek($WOItemsResult,0);
 	$NoItemsOnWO = DB_num_rows($WOItemsResult);
@@ -350,7 +350,7 @@ If (isset($_POST['Close'])) {
 				$ProportionOnHand = 1 - (($WORow['qtyrecd']- $TotalOnHand)/$WORow['qtyrecd']);
 			}
 
-			if ($_SESSION['CompanyRecord']['gllink_stock']==1 AND $TotalVariance!=0){
+			if ($_SESSION['CompanyRecord']['gllink_stock']==1 and $TotalVariance!=0){
 
 				//need to get the current cost of the item
 				if ($ProportionOnHand < 1){
@@ -430,7 +430,7 @@ If (isset($_POST['Close'])) {
 			$Result = DB_query($SQL,$db,$ErrMsg,$DbgMsg,true);
 
 		} else { //we are standard costing post the variances
-			if ($_SESSION['CompanyRecord']['gllink_stock']==1 AND $TotalUsageVar!=0){
+			if ($_SESSION['CompanyRecord']['gllink_stock']==1 and $TotalUsageVar!=0){
 
 				$SQL = "INSERT INTO gltrans (type,
 											typeno,
@@ -472,7 +472,7 @@ If (isset($_POST['Close'])) {
 
 			}//end if gl-stock linked and a usage variance exists
 
-			if ($_SESSION['CompanyRecord']['gllink_stock']==1 AND $TotalCostVar!=0){
+			if ($_SESSION['CompanyRecord']['gllink_stock']==1 and $TotalCostVar!=0){
 
 				$SQL = "INSERT INTO gltrans (type,
 											typeno,

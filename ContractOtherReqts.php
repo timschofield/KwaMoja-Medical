@@ -20,7 +20,7 @@ if (!isset($_SESSION['Contract'.$identifier])){
 include('includes/header.inc');
 
 
-if (isset($_POST['UpdateLines']) OR isset($_POST['BackToHeader'])) {
+if (isset($_POST['UpdateLines']) or isset($_POST['BackToHeader'])) {
 	if($_SESSION['Contract'.$identifier]->Status!=2){ //dont do anything if the customer has committed to the contract
 		foreach ($_SESSION['Contract'.$identifier]->ContractReqts as $ContractComponentID => $ContractRequirementItem) {
 
@@ -159,15 +159,15 @@ echo '<table class="selection">
 			<td>' . _('Cost Per Unit') . ':</td>
 			<td><input type="text" class="number" name="CostPerUnit" size="10"	maxlength="10" value="' . $_POST['CostPerUnit'] . '" /></td>
 		</tr>
-		
+
 		</table>
-		
+
 		<br />
 		<div class="centre">
 			<input type="submit" name="EnterNewRequirement" value="' . _('Enter New Contract Requirement') . '" />
 		</div>
 		</div>
 		</form>';
-		
+
 include('includes/footer.inc');
 ?>

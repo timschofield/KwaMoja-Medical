@@ -51,7 +51,7 @@ while ($InventoryIssuesRow = DB_fetch_array($InventoryIssuesResult)){
 	$InventoryIssues[$InventoryIssuesRow['stockid']]->Units = $InventoryIssuesRow['units'];
 	$InventoryIssues[$InventoryIssuesRow['stockid']]->DecimalPlaces = $InventoryIssuesRow['decimalplaces'];
 	$InventoryIssues[$InventoryIssuesRow['stockid']]->Matched = 0;
-	
+
 }
 
 echo '<p class="page_title_text">
@@ -89,7 +89,7 @@ echo '<tr>
 		<th>' . _('Unit Cost') . '</th>
 		<th>' . _('Total Cost') . '</th>
 		</tr>';
-		
+
 $ContractBOMBudget = 0;
 $ContractBOMActual = 0;
 foreach ($_SESSION['Contract'.$identifier]->ContractBOM as $Component) {
@@ -100,9 +100,9 @@ foreach ($_SESSION['Contract'.$identifier]->ContractBOM as $Component) {
 			<td>' . $Component->UOM . '</td>
 			<td class="number">' . locale_number_format($Component->ItemCost,$_SESSION['CompanyRecord']['decimalplaces']) . '</td>
 			<td class="number">' . locale_number_format(($Component->ItemCost * $Component->Quantity),$_SESSION['CompanyRecord']['decimalplaces']) . '</td>';
-	
+
 	$ContractBOMBudget += ($Component->ItemCost *  $Component->Quantity);
-	
+
 	if (isset($InventoryIssues[$Component->StockID])){
 		$InventoryIssues[$Component->StockID]->Matched=1;
 		echo '<td colspan="2" align="center">' . _('Actual usage') . '</td>
@@ -153,7 +153,7 @@ echo '<tr>
 			<th>' . _('Unit Cost') . '</th>
 			<th>' . _('Total Cost') . '</th>
 		</tr>';
-						
+
 foreach ($_SESSION['Contract'.$identifier]->ContractReqts as $Requirement) {
 	echo '<tr><td>' . $Requirement->Requirement . '</td>
 			<td class="number">' . locale_number_format($Requirement->Quantity,'Variable') . '</td>
@@ -217,7 +217,7 @@ echo '</table>';
 
 
 //Do the processing here after the variances are all calculated above
-if (isset($_POST['CloseContract']) AND $_SESSION['Contract'.$identifier]->Status==2){
+if (isset($_POST['CloseContract']) and $_SESSION['Contract'.$identifier]->Status==2){
 
 	include('includes/SQL_CommonFunctions.inc');
 
@@ -355,7 +355,7 @@ if (isset($_POST['CloseContract']) AND $_SESSION['Contract'.$identifier]->Status
 									1,
 									'" .  ($OtherReqtsBudget+$ContractBOMBudget)  . "',
 									'" . ($QtyOnHandPrior + 1) . "')";
-					
+
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('stock movement records could not be inserted when processing the work order receipt because');
 				$DbgMsg =  _('The following SQL to insert the stock movement records was used');
 				$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
@@ -364,7 +364,7 @@ if (isset($_POST['CloseContract']) AND $_SESSION['Contract'.$identifier]->Status
 				$StkMoveNo = DB_Last_Insert_ID($db,'stockmoves','stkmoveno');
 
 				/* If GLLink_Stock then insert GLTrans to debit the GL Code  and credit GRN Suspense account at standard cost*/
-				if ($_SESSION['CompanyRecord']['gllink_stock']==1 AND ($OtherReqtsBudget+$ContractBOMBudget)!=0){
+				if ($_SESSION['CompanyRecord']['gllink_stock']==1 and ($OtherReqtsBudget+$ContractBOMBudget)!=0){
 				/*GL integration with stock is activated so need the GL journals to make it so */
 				/*first the debit the finished stock of the item received from the WO
 				  the appropriate account was already retrieved into the $StockGLCode variable as the Processing code is kicked off

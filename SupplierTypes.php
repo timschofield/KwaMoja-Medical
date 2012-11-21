@@ -58,7 +58,7 @@ if (isset($_POST['submit'])) {
 		$i++;
 	}
 
-	if (isset($SelectedType) AND $InputError !=1) {
+	if (isset($SelectedType) and $InputError !=1) {
 
 		$sql = "UPDATE suppliertype
 			SET typename = '" . $_POST['TypeName'] . "'
@@ -192,9 +192,9 @@ while ($myrow = DB_fetch_row($result)) {
 		</tr>',
 		$myrow[0],
 		$myrow[1],
-		htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?', 
+		htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?',
 		$myrow[0],
-		htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?', 
+		htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?',
 		$myrow[0]);
 	}
 	//END WHILE LIST LOOP
@@ -217,7 +217,7 @@ if (! isset($_GET['delete'])) {
 		<table class="selection">'; //Main table
 
 	// The user wish to EDIT an existing type
-	if ( isset($SelectedType) AND $SelectedType!='' ) {
+	if ( isset($SelectedType) and $SelectedType!='' ) {
 
 		$sql = "SELECT typeid,
 			       typename

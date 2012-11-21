@@ -3,11 +3,11 @@
 
 include('includes/session.inc');
 
-If ((isset($_POST['PrintPDF']))
-			AND isset($_POST['FromCriteria'])
-			AND mb_strlen($_POST['FromCriteria'])>=1
-			AND isset($_POST['ToCriteria'])
-			AND mb_strlen($_POST['ToCriteria'])>=1)	{
+if ((isset($_POST['PrintPDF']))
+			and isset($_POST['FromCriteria'])
+			and mb_strlen($_POST['FromCriteria'])>=1
+			and isset($_POST['ToCriteria'])
+			and mb_strlen($_POST['ToCriteria'])>=1)	{
 	/*Now figure out the invoice less credits due for the Supplier range under review */
 
 	$sql = "SELECT suppliers.supplierid,
@@ -174,7 +174,7 @@ If ((isset($_POST['PrintPDF']))
 		<div class="centre">
 			<input type="submit" name="PrintPDF" value="' . _('Print PDF') . '" />
 		</div>';
-        
+
     echo '</div>
           </form>';
 
@@ -239,7 +239,7 @@ function PageHeader(){
 	  $LineCount += 1;
 	  $pdf->addText($XPos, $YPos-$LineCount*$LineHeight,$FontSize, $_SESSION['CompanyRecord']['regoffice2']);
 	}
-	if (($_SESSION['CompanyRecord']['regoffice3'] <> '') OR ($_SESSION['CompanyRecord']['regoffice4'] <> '') OR ($_SESSION['CompanyRecord']['regoffice5'] <> '')) {
+	if (($_SESSION['CompanyRecord']['regoffice3'] <> '') or ($_SESSION['CompanyRecord']['regoffice4'] <> '') or ($_SESSION['CompanyRecord']['regoffice5'] <> '')) {
 	  $LineCount += 1;
 	  $pdf->addText($XPos, $YPos-$LineCount*$LineHeight,$FontSize, $_SESSION['CompanyRecord']['regoffice3'] . ' ' . $_SESSION['CompanyRecord']['regoffice4'] . ' ' . $_SESSION['CompanyRecord']['regoffice5']);  // country in 6 not printed
 	}

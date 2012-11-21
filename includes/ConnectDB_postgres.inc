@@ -6,14 +6,14 @@ define ('LIKE','ILIKE');
 /* $PgConnStr = $PgConnStr = "host=".$host." dbname=".$_SESSION['DatabaseName']; */
 $PgConnStr = 'dbname='.$_SESSION['DatabaseName'];
 
-if ( isset($host) && ($host != "")) {
+if ( isset($host) and ($host != "")) {
 	$PgConnStr = 'host='.$host.' '.$PgConnStr;
-} 
+}
 
-if ( isset( $dbuser ) && ($dbuser != "") ) {
+if ( isset( $dbuser ) and ($dbuser != "") ) {
     // if we have a user we need to use password if supplied
     $PgConnStr .= " user=".$dbuser;
-    if ( isset( $dbpassword ) && ($dbpassword != "") ) {
+    if ( isset( $dbpassword ) and ($dbpassword != "") ) {
 	$PgConnStr .= " password=".$dbpassword;
     }
 }
@@ -50,7 +50,7 @@ function DB_query ($SQL,
 		$DebugMessage = _('The SQL that failed was:');
 	}
 	//if (DB_error_no($Conn) != 0){
-	if ( !$result AND $TrapErrors){
+	if ( !$result and $TrapErrors){
 		if ($TrapErrors){
 			require_once($PathPrefix . 'includes/header.inc');
 		}
@@ -76,18 +76,18 @@ function DB_query ($SQL,
 
 function DB_fetch_row (&$ResultIndex) {
 	$RowPointer=pg_fetch_row($ResultIndex);
-	Return $RowPointer;
+	return $RowPointer;
 }
 
 function DB_fetch_assoc (&$ResultIndex) {
 
 	$RowPointer=pg_fetch_assoc($ResultIndex);
-	Return $RowPointer;
+	return $RowPointer;
 }
 
 function DB_fetch_array (&$ResultIndex) {
 	$RowPointer=pg_fetch_array($ResultIndex);
-	Return $RowPointer;
+	return $RowPointer;
 }
 
 function DB_data_seek (&$ResultIndex,$Record) {
@@ -122,32 +122,32 @@ function DB_Last_Insert_ID(&$Conn, $table, $fieldname) {
 }
 
 function DB_escape_string($String){
-	Return pg_escape_string(htmlspecialchars($String, ENT_COMPAT, 'ISO-8859-1'));
+	return pg_escape_string(htmlspecialchars($String, ENT_COMPAT, 'ISO-8859-1'));
 }
 
 function INTERVAL( $val, $Inter ) {
 	global $dbtype;
-	return "\n(CAST( (" . $val . ") as text ) || ' ". $Inter ."')::interval\n";
+	return "\n(CAST( (" . $val . ") as text ) or ' ". $Inter ."')::interval\n";
 }
 function DB_show_tables (&$Conn){
 	$Result =DB_query("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'",$Conn);
-	Return $Result; 
+	return $Result;
 }
 function DB_show_fields($TableName,&$Conn){
 	$Result = DB_query("SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_name='" . $TableName . "'",$Conn);
 	if (DB_num_rows($Result)==1){
 		$Result = DB_query("SELECT column_name FROM information_schema.columns WHERE table_name ='$TableName'",$Conn);
-		Return $Result;
-	}
+		return $Result;
+	}r
 }
 function DB_Maintenance($Conn){
 
 	prnMsg(_('The system has just run the regular database administration and optimisation routine'),'info');
-	
+
 	$Result = DB_query('VACUUM ANALYZE',$Conn);
-	
-	$Result = DB_query("UPDATE config 
-				SET confvalue='" . Date('Y-m-d') . "' 
+
+	$Result = DB_query("UPDATE config
+				SET confvalue='" . Date('Y-m-d') . "'
 				WHERE confname='DB_Maintenance_LastRun'",
 				$Conn);
 }

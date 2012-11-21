@@ -14,7 +14,7 @@ normally the lower case two character country code underscore uppercase
 2 character country code does the trick  except for en !!*/
 
 
-If (isset($_POST['Language'])) {
+if (isset($_POST['Language'])) {
 	$_SESSION['Language'] = $_POST['Language'];
 	$Language = $_POST['Language'];
 } elseif (!isset($_SESSION['Language'])) {

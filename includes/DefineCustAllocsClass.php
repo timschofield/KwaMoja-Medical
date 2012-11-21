@@ -2,7 +2,7 @@
 /* $Id$*/
 /* definition of the Debtor Receipt/Credit note allocation class */
 
-Class Allocation {
+class Allocation {
 
 	var $Allocs; /*array of transactions allocated to */
 	var $AllocTrans; /*The ID of the transaction being allocated */
@@ -26,8 +26,8 @@ Class Allocation {
 		// if ($AllocAmt <= ($TransAmount - $PrevAlloc)){
 
 			$this->Allocs[$ID] = new Allocn($ID, $TransType, $TypeNo, $TransDate, $AllocAmt, $TransAmount, $ExRate, $DiffOnExch, $PrevDiffOnExch, $PrevAlloc, $PrevAllocRecordID);
-			Return 1;
-		
+			return 1;
+
 	}
 
 	function remove_alloc_item($AllocnID){
@@ -38,20 +38,20 @@ Class Allocation {
 
 } /* end of class defintion */
 
-Class Allocn {
+class Allocn {
 
-	Var $ID;  /* DebtorTrans ID of the transaction alloc to */
-	Var $TransType;
-	Var $TypeNo;
-	Var $TransDate;
-	Var $AllocAmt;
-	Var $TransAmount;
-	Var $ExRate;
-	Var $DiffOnExch; /*Difference on exchange calculated on this allocation */
-	Var $PrevDiffOnExch; /*Difference on exchange before this allocation */
-	Var $PrevAlloc; /*Total of allocations vs this trans from other receipts/credits*/
-	Var $OrigAlloc; /*Allocation vs this trans from the same receipt/credit before modifications */
-	Var $PrevAllocRecordID; /*The CustAllocn record ID for the previously allocated amount
+	var $ID;  /* DebtorTrans ID of the transaction alloc to */
+	var $TransType;
+	var $TypeNo;
+	var $TransDate;
+	var $AllocAmt;
+	var $TransAmount;
+	var $ExRate;
+	var $DiffOnExch; /*Difference on exchange calculated on this allocation */
+	var $PrevDiffOnExch; /*Difference on exchange before this allocation */
+	var $PrevAlloc; /*Total of allocations vs this trans from other receipts/credits*/
+	var $OrigAlloc; /*Allocation vs this trans from the same receipt/credit before modifications */
+	var $PrevAllocRecordID; /*The CustAllocn record ID for the previously allocated amount
 				   this must be deleted if a new modified record is inserted
 				   THERE CAN BE ONLY ONE ... allocation record for each
 				   receipt/inovice combination  */

@@ -10,7 +10,7 @@ echo '<p class="page_title_text"><img src="' . $rootpath . '/css/' . $theme . '/
 // First check if there are smtp server data or not
 
 
-if (isset($_POST['submit']) AND $_POST['MailServerSetting']==1) {//If there are already data setup, Update the table
+if (isset($_POST['submit']) and $_POST['MailServerSetting']==1) {//if there are already data setup, Update the table
 	$sql="UPDATE emailsettings SET
 				host='".$_POST['Host']."',
 				port='".$_POST['Port']."',

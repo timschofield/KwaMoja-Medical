@@ -73,7 +73,7 @@ $dirhandle = opendir($_SERVER['DOCUMENT_ROOT'] . '/' . $rootpath . '/' . $_SESSI
 
 	$Order = new cart;
 
-	while ($LineText = fgets($fp) AND $TryNextFile != True){ /* get each line of the order file */
+	while ($LineText = fgets($fp) and $TryNextFile != True){ /* get each line of the order file */
 
 		$LineText = StripTrailingComma($LineText);
 		echo '<br />' . $LineText;
@@ -91,14 +91,14 @@ $dirhandle = opendir($_SERVER['DOCUMENT_ROOT'] . '/' . $rootpath . '/' . $_SESSI
 /* Go through segments in the order message array in sequence looking for matching SegTags
 
 */
-		while ($SegTag != $Seg[$SegID]['SegTag'] AND $SegID < $TotalNoOfSegments) {
+		while ($SegTag != $Seg[$SegID]['SegTag'] and $SegID < $TotalNoOfSegments) {
 
 			$SegID++; /*Move to the next Seg in the order message */
 			$LastSeg = $SegID; /*Remember the last segid moved to */
 
 			echo "\n" . _('Segment Group') . ' = ' . $Seg[$SegID]['SegGroup'] . ' ' . _('Max Occurrences of Segment') . ' = ' . $Seg[$SegID]['MaxOccur'] . ' ' . _('No occurrences so far') . ' = ' . $SegCounter;
 
-			if ($Seg[$SegID]['SegGroup'] != $SegGroup AND $Seg[$SegID]['MaxOccur'] > $SegCounter){ /*moved to a new seg group  but could be more segment groups*/
+			if ($Seg[$SegID]['SegGroup'] != $SegGroup and $Seg[$SegID]['MaxOccur'] > $SegCounter){ /*moved to a new seg group  but could be more segment groups*/
 				$SegID = $FirstSegInGroup; /*Try going back to first seg in the group */
 				if ($SegTag != $Seg[$SegID]['SegTag']){ /*still no match - must be into new seg group */
 					$SegID = $LastSeg;
@@ -503,11 +503,7 @@ $dirhandle = opendir($_SERVER['DOCUMENT_ROOT'] . '/' . $rootpath . '/' . $_SESSI
 				}
 				break; /*end of NAD segment */
 
-
-
 			/* UP TO HERE NEED TESTER */
-
-
 
 		} /*end case  Seg Tag*/
 	} /*end while get next line of message */
@@ -562,9 +558,9 @@ include ('includes/footer.inc');
 function StripTrailingComma ($StringToStrip){
 
 	if (strrpos($StringToStrip,"'")){
-		Return mb_substr($StringToStrip,0,strrpos($StringToStrip,"'"));
+		return mb_substr($StringToStrip,0,strrpos($StringToStrip,"'"));
 	} else {
-		Return $StringToStrip;
+		return $StringToStrip;
 	}
 }
 

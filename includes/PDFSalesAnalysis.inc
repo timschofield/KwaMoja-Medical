@@ -4,9 +4,8 @@
 
 include ('includes/class.pdf.php');
 
-
 /* A4_Landscape */
-$DocumentPaper = 'A4'; 
+$DocumentPaper = 'A4';
 $DocumentOrientation ='L';
 $Page_Width=842;
 $Page_Height=595;
@@ -52,7 +51,7 @@ for ($i=0;$i<=10;$i++){
 	$AccumLvl4[$i]=0;
 }
 
-While ($myrow = DB_fetch_array($result)){
+while ($myrow = DB_fetch_array($result)){
 
 /*First off check that at least one of the columns of data has some none zero amounts */
 	DB_data_seek($ColsResult,0); /*go back to the beginning */
@@ -65,7 +64,7 @@ While ($myrow = DB_fetch_array($result)){
 	}
 	if ($ThisLineHasOutput==True){
 
-		if ($myrow['col5']!=$GrpData3 && $myrow['col5']!='0' && $myrow['col7']!='0'){
+		if ($myrow['col5']!=$GrpData3 and $myrow['col5']!='0' and $myrow['col7']!='0'){
 			/*Totals only relevant to GrpByLevel 3 if GrpByLevel 4 also used */
 			if ($Counter > 0){ /*Dont want to print totals if this is the first record */
 				$TotalText = mb_substr(_('TOTAL') . ' ' . $LastLine['col5'] . ' - ' . $LastLine['col6'],0,33);
@@ -119,7 +118,7 @@ While ($myrow = DB_fetch_array($result)){
 			}
 		}
 
-		if ($myrow['col3']!=$GrpData2 AND $myrow['col3']!='0' AND $myrow['col5']!='0'){
+		if ($myrow['col3']!=$GrpData2 and $myrow['col3']!='0' and $myrow['col5']!='0'){
 		/*Totals only relevant to GrpByLevel 2 if GrpByLevel 3 also used */
 			if ($Counter > 0){ /*Dont want to print totals if this is the first record */
 				$TotalText = mb_substr(_('TOTAL') . ' ' . $LastLine['col3'] . ' - ' . $LastLine['col4'],0,43);
@@ -172,7 +171,7 @@ While ($myrow = DB_fetch_array($result)){
 			}/*end if Counter > 0 */
 		}
 
-		if ($myrow['col1']!=$GrpData1  && $myrow['col3']!='0'){
+		if ($myrow['col1']!=$GrpData1  and $myrow['col3']!='0'){
 			/*Totals only relevant to GrpByLevel 1 if GrpByLevel 2 also used */
 			if ($Counter > 0){ /*Dont want to print totals if this is the first record */
 				$TotalText = mb_substr(_('TOTAL') . ' ' . $LastLine['col1'] . ' - ' . $LastLine['col2'],0,46);
@@ -183,25 +182,25 @@ While ($myrow = DB_fetch_array($result)){
 					if ($Cols['calculation']==0){
 						$LeftOvers = $pdf->addTextWrap($Xpos, $Ypos,60,$FontSize, locale_number_format($AccumLvl1[$Cols['colno']],0),'right');
 					} else { /* its a calculation need to re-perform on the totals*/
-	
+
 						switch ($Cols['calcoperator']) {
-							Case '/':
+							case '/':
 								if ($AccumLvl1[$Cols['coldenominator']]==0){
 									$TotalCalculation = 0;
 								} else {
 									$TotalCalculation = $AccumLvl1[$Cols['colnumerator']] / $AccumLvl1[$Cols['coldenominator']];
 								}
 								break;
-							Case '+':
+							case '+':
 								$TotalCalculation = $AccumLvl1[$Cols['colnumerator']] + $AccumLvl1[$Cols['coldenominator']];
 								break;
-							Case '-':
+							case '-':
 								$TotalCalculation = $AccumLvl1[$Cols['colnumerator']] + $AccumLvl1[$Cols['coldenominator']];
 								break;
-							Case '*':
+							case '*':
 								$TotalCalculation = $AccumLvl1[$Cols['colnumerator']] * $Cols['constant'];
 								break;
-							Case 'C':
+							case 'C':
 								if ($Cols['constant']==0){
 									$TotalCalculation = 0;
 								} else {
@@ -218,14 +217,14 @@ While ($myrow = DB_fetch_array($result)){
 					}/*end if its not a calculation */
 				} /* end loop around column defintions */
 				$Ypos -=(2*$line_height);
-	
+
 				/*reset the accumulators to 0 */
 				for ($i=0;$i<=10;$i++){
 					$AccumLvl1[$i]=0;
 				}
 			}/* end if counter>0 */
 		}
-	
+
 		$NewHeading =0;
 
 		if ($myrow['col1']!=$GrpData1){ /*Need a new heading for Level 1 */
@@ -241,7 +240,7 @@ While ($myrow = DB_fetch_array($result)){
 			}
 		}
 
-		if (($myrow['col3']!=$GrpData2  OR $NewHeading ==1) AND $myrow['col3']!='0'){
+		if (($myrow['col3']!=$GrpData2  or $NewHeading ==1) and $myrow['col3']!='0'){
 			/*Need a new heading for Level 2 */
 			$NewHeading = 1;
 			if ($ReportSpec['newpageafter2']==1){
@@ -254,7 +253,7 @@ While ($myrow = DB_fetch_array($result)){
 				$Ypos-=$line_height;
 			}
 		}
-		if (($myrow['col5']!=$GrpData3  OR $NewHeading ==1) AND $myrow['col5']!='0'){
+		if (($myrow['col5']!=$GrpData3  or $NewHeading ==1) and $myrow['col5']!='0'){
 			/*Need a new heading for Level 3 */
 
 			if ($ReportSpec['newpageafter3']==1){
@@ -306,7 +305,7 @@ While ($myrow = DB_fetch_array($result)){
 	} /*The line has some positive amount on it */
 } /*end of the data loop to print lines */
 
-if ($LastLine['col5']!='0' && $LastLine['col7']!='0'){
+if ($LastLine['col5']!='0' and $LastLine['col7']!='0'){
 /* if GrpBY3 and GrpBy4 are both set need to show totals for GrpBy3 */
 if ($Counter>0){ /*Dont want to print totals if this is the first record */
 	$TotalText = mb_substr(_('TOTAL') . ' ' . $LastLine['col5'] . ' - ' . $LastLine['col6'],0,33);
@@ -316,28 +315,28 @@ if ($Counter>0){ /*Dont want to print totals if this is the first record */
 	while ($Cols = DB_fetch_array($ColsResult)){
 		$Xpos = 160 + $Cols['colno']*60;
 		if ($Cols['calculation']==0){
-		$LeftOvers = $pdf->addTextWrap($Xpos,$Ypos,60,$FontSize, locale_number_format($AccumLvl3[$Cols['colno']],0),'right');
+			$LeftOvers = $pdf->addTextWrap($Xpos,$Ypos,60,$FontSize, locale_number_format($AccumLvl3[$Cols['colno']],0),'right');
 
 		} else { /* its a calculation need to re-perform on the totals*/
 
 			switch ($Cols['calcoperator']) {
-				Case '/':
+				case '/':
 					if ($AccumLvl3[$Cols['coldenominator']]==0){
 						$TotalCalculation = 0;
 					} else {
 						$TotalCalculation = $AccumLvl3[$Cols['colnumerator']] / $AccumLvl3[$Cols['coldenominator']];
 					}
 					break;
-				Case '+':
+				case '+':
 					$TotalCalculation = $AccumLvl3[$Cols['colnumerator']] + $AccumLvl3[$Cols['coldenominator']];
 					break;
-				Case '-':
+				case '-':
 					$TotalCalculation = $AccumLvl3[$Cols['colnumerator']] + $AccumLvl3[$Cols['coldenominator']];
 					break;
-				Case '*':
+				case '*':
 					$TotalCalculation = $AccumLvl3[$Cols['colnumerator']] * $Cols['constant'];
 					break;
-				Case 'C':
+				case 'C':
 					if ($Cols['constant']==0){
 						$TotalCalculation = 0;
 					} else {
@@ -358,7 +357,7 @@ if ($Counter>0){ /*Dont want to print totals if this is the first record */
 }
 }
 
-if ($LastLine['col3']!='0' AND $LastLine['col5']!='0'){
+if ($LastLine['col3']!='0' and $LastLine['col5']!='0'){
 /* if GrpBY2 and GrpBy3 are both set need to show totals for GrpBy2 */
 if ($Counter>0){ /*Dont want to print totals if this is the first record */
 	$TotalText = mb_substr(_('TOTAL') . ' ' . $LastLine['col3'] . ' - ' . $LastLine['col4'],0,33);
@@ -372,23 +371,23 @@ if ($Counter>0){ /*Dont want to print totals if this is the first record */
 		} else { /* its a calculation need to re-perform on the totals*/
 
 			switch ($Cols['calcoperator']) {
-				Case '/':
+				case '/':
 					if ($AccumLvl2[$Cols['coldenominator']]==0){
 						$TotalCalculation = 0;
 					} else {
 						$TotalCalculation = $AccumLvl2[$Cols['colnumerator']] / $AccumLvl2[$Cols['coldenominator']];
 					}
 					break;
-				Case '+':
+				case '+':
 					$TotalCalculation = $AccumLvl2[$Cols['colnumerator']] + $AccumLvl2[$Cols['coldenominator']];
 					break;
-				Case '-':
+				case '-':
 					$TotalCalculation = $AccumLvl2[$Cols['colnumerator']] + $AccumLvl2[$Cols['coldenominator']];
 					break;
-				Case '*':
+				case '*':
 					$TotalCalculation = $AccumLvl2[$Cols['colnumerator']] * $Cols['constant'];
 					break;
-				Case 'C':
+				case 'C':
 					if ($Cols['constant']==0){
 						$TotalCalculation = 0;
 					} else {
@@ -421,23 +420,23 @@ if ($Counter>1){ /*Dont want to print totals if this is the first record */
 		} else { /* its a calculation need to re-perform on the totals*/
 
 			switch ($Cols['calcoperator']) {
-			Case '/':
+			case '/':
 				if ($AccumLvl1[$Cols['coldenominator']]==0){
 					$TotalCalculation = 0;
 				} else {
 					$TotalCalculation = $AccumLvl1[$Cols['colnumerator']] / $AccumLvl1[$Cols['coldenominator']];
 				}
 				break;
-			Case '+':
+			case '+':
 				$TotalCalculation = $AccumLvl1[$Cols['colnumerator']] + $AccumLvl1[$Cols['coldenominator']];
 				break;
-			Case '-':
+			case '-':
 				$TotalCalculation = $AccumLvl1[$Cols['colnumerator']] + $AccumLvl1[$Cols['coldenominator']];
 				break;
-			Case '*':
+			case '*':
 				$TotalCalculation = $AccumLvl1[$Cols['colnumerator']] * $Cols['constant'];
 				break;
-			Case 'C':
+			case 'C':
 				if ($Cols['constant']==0){
 					$TotalCalculation = 0;
 				} else {
@@ -468,23 +467,23 @@ if ($Counter>0){
 		} else { /* its a calculation need to re-perform on the totals*/
 
 			switch ($Cols['calcoperator']) {
-			Case '/':
+			case '/':
 				if ($AccumLvl4[$Cols['coldenominator']]==0){
 					$TotalCalculation = 0;
 				} else {
 					$TotalCalculation = $AccumLvl4[$Cols['colnumerator']] / $AccumLvl4[$Cols['coldenominator']];
 				}
 				break;
-			Case '+':
+			case '+':
 				$TotalCalculation = $AccumLvl4[$Cols['colnumerator']] + $AccumLvl4[$Cols['coldenominator']];
 				break;
-			Case '-':
+			case '-':
 				$TotalCalculation = $AccumLvl4[$Cols['colnumerator']] + $AccumLvl4[$Cols['coldenominator']];
 				break;
-			Case '*':
+			case '*':
 				$TotalCalculation = $AccumLvl4[$Cols['colnumerator']] * $Cols['constant'];
 				break;
-			Case 'C':
+			case 'C':
 				if ($Cols['constant']==0){
 					$TotalCalculation = 0;
 				} else {
@@ -514,19 +513,19 @@ if (isset($_GET['ProduceCVSFile'])){
 	$fp = fopen( $_SESSION['reports_dir'] . '/SalesAnalysis.csv', 'w');
 
 
-	While ($myrow = DB_fetch_row($result)){
+	while ($myrow = DB_fetch_row($result)){
 
 	/*First off check that at least one of the columns of data has some none zero amounts */
-	      $ThisLineHasOutput=False;   /*assume no output to start with */
-	      $NumberOfFields = DB_num_rows($ColsResult);
+		  $ThisLineHasOutput=False;   /*assume no output to start with */
+		  $NumberOfFields = DB_num_rows($ColsResult);
 
-	      for ($i=3; $i<=$NumberOfFields+7; $i++) {
-		     if (abs($myrow[$i])>0.009){
+		  for ($i=3; $i<=$NumberOfFields+7; $i++) {
+			 if (abs($myrow[$i])>0.009){
 			 $ThisLineHasOutput = True;
-		     }
-	      }
-	      if ($ThisLineHasOutput==True){
-	      		$line='';
+			 }
+		  }
+		  if ($ThisLineHasOutput==True){
+		  		$line='';
 			for ($i=0;$i<=$NumberOfFields+7;$i++){
 				if (isset($myrow[$i])){
 					if ($i>0){
@@ -536,7 +535,7 @@ if (isset($_GET['ProduceCVSFile'])){
 				}
 			}
 			fputs($fp, $line."\n");
-	      }
+		  }
 	 }
 	 $title = _('Sales Analysis Comma Separated File (CSV) Generation');
 	include('includes/header.inc');

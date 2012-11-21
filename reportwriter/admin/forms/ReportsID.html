@@ -37,7 +37,7 @@
    <tr>
      <td><div align="left"><input name="todo" type="submit" value="<?php echo RPT_BTN_BACK; ?>"></div></td>
      <td><div align="left">
-	   <?php if (isset($_POST['ReportName']) AND $_POST['todo']<>RPT_BTN_RENAME) { ?>
+	   <?php if (isset($_POST['ReportName']) and $_POST['todo']<>RPT_BTN_RENAME) { ?>
          <input name="todo" type="submit" value="<?php echo RPT_BTN_REPLACE; ?>" onClick="return confirm('<?php echo RPT_REPOVER; ?>')">
 	   <?php } ?></div></td>
 	 <?php if ($_POST['todo']==RPT_BTN_RENAME) $Button=RPT_BTN_RENAME; else $Button=RPT_BTN_CONT; ?>

@@ -56,7 +56,7 @@ if (isset($_POST['UpdateAll'])) {
 				$QtyOnHandPrior = 0;
 			}
 
-			if ($_SESSION['ProhibitNegativeStock']==0 OR ($_SESSION['ProhibitNegativeStock']==1 AND $QtyOnHandPrior >= $Quantity)) {
+			if ($_SESSION['ProhibitNegativeStock']==0 or ($_SESSION['ProhibitNegativeStock']==1 and $QtyOnHandPrior >= $Quantity)) {
 
 				$SQL = "INSERT INTO stockmoves (
 									stockid,
@@ -107,7 +107,7 @@ if (isset($_POST['UpdateAll'])) {
 
 				$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
 
-				if ($_SESSION['CompanyRecord']['gllink_stock']==1 AND $StandardCost > 0){
+				if ($_SESSION['CompanyRecord']['gllink_stock']==1 and $StandardCost > 0){
 
 					$StockGLCodes = GetStockGLCode($StockID,$db);
 
@@ -156,7 +156,7 @@ if (isset($_POST['UpdateAll'])) {
 					$Result = DB_query($SQL,$db, $ErrMsg, $DbgMsg,true);
 				}
 
-				if (($Quantity >= $RequestedQuantity) OR $Completed==True) {
+				if (($Quantity >= $RequestedQuantity) or $Completed==True) {
 					$SQL="UPDATE stockrequestitems
 								SET completed=1
 							WHERE dispatchid='".$RequestID."'
@@ -199,7 +199,7 @@ if (isset($_POST['UpdateAll'])) {
 
 if (!isset($_POST['Location'])) {
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-    echo '<div>';
+	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table class="selection">
 			<tr>
@@ -227,8 +227,8 @@ if (!isset($_POST['Location'])) {
 	echo '</select></td></tr>';
 	echo '</table><br />';
 	echo '<div class="centre"><input type="submit" name="EnterAdjustment" value="'. _('Show Requests'). '" /></div>';
-    echo '</div>
-          </form>';
+	echo '</div>
+		  </form>';
 	include('includes/footer.inc');
 	exit;
 }
@@ -264,7 +264,7 @@ if (isset($_POST['Location'])) {
 	}
 
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-    echo '<div>';
+	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table class="selection">
 			<tr>
@@ -347,8 +347,8 @@ if (isset($_POST['Location'])) {
 	} //end while header loop
 	echo '</table>';
 	echo '<br /><div class="centre"><input type="submit" name="UpdateAll" value="' . _('Update'). '" /></div>
-          </div>
-          </form>';
+		  </div>
+		  </form>';
 }
 
 include('includes/footer.inc');

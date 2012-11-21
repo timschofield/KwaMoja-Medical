@@ -34,7 +34,7 @@
       <td colspan="2"><div align="center"><?php echo RPT_ENDPOS; ?></div></td>
     </tr>
     <tr>
-		<?php if (!$Params['LineType'] OR $Params['LineType']=='1') $selected=' checked'; else $selected=''; ?>
+		<?php if (!$Params['LineType'] or $Params['LineType']=='1') $selected=' checked'; else $selected=''; ?>
       <td><input name="LineType" type="radio" value="1"<?php echo $selected; ?>><?php echo RPT_HORIZONTAL; ?></td>
       <td><?php echo RPT_LENGTH; ?> <input name="HLength" type="text" value="<?php echo $Params['HLength']; ?>" size="4" maxlength="3"></td>
     </tr>
@@ -56,7 +56,7 @@
       <td colspan="2"><div align="center"><?php echo RPT_LINEATTRIB; ?></div></td>
     </tr>
     <tr>
-		<?php if (!$Params['Line'] OR $Params['Line']=='1') $selected=' checked'; else $selected=''; ?>
+		<?php if (!$Params['Line'] or $Params['Line']=='1') $selected=' checked'; else $selected=''; ?>
       <td><input name="Line" type="radio" value="1"<?php echo $selected; ?>>        <?php echo RPT_STDCOLOR; ?><br />
 		<select name="BrdrColor">
 		  <?php foreach($FontColors as $key => $value) {

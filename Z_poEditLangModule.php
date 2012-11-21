@@ -187,7 +187,7 @@ if (isset($_POST['module'])) {
 	if ($handle = opendir('.')) {
     	$i=0;
     	while (false !== ($file = readdir($handle))) {
-        if ((mb_substr($file, 0, 1) != ".") && (!is_dir($file))) {
+        if ((mb_substr($file, 0, 1) != ".") and (!is_dir($file))) {
           $AvailableModules[$i] = $file;
         	$i += 1;
         }
@@ -197,7 +197,7 @@ if (isset($_POST['module'])) {
 
 	if ($handle = opendir(".//includes")) {
     	while (false !== ($file = readdir($handle))) {
-        if ((mb_substr($file, 0, 1) != ".") && (!is_dir($file))) {
+        if ((mb_substr($file, 0, 1) != ".") and (!is_dir($file))) {
           $AvailableModules[$i] = $file;
         	$i += 1;
         }

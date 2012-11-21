@@ -7,7 +7,7 @@ include('includes/header.inc');
 
 if (isset($_GET['SelectedShipper'])){
 	$SelectedShipper = $_GET['SelectedShipper'];
-} else if (isset($_POST['SelectedShipper'])){
+} elseif (isset($_POST['SelectedShipper'])){
 	$SelectedShipper = $_POST['SelectedShipper'];
 }
 
@@ -40,7 +40,7 @@ if ( isset($_POST['submit']) ) {
 		$i++;
 	}
 
-	if (isset($SelectedShipper) AND $InputError !=1) {
+	if (isset($SelectedShipper) and $InputError !=1) {
 
 		/*SelectedShipper could also exist if submit had not been clicked this code
 		would not run in this case cos submit is false of course  see the

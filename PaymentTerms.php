@@ -9,7 +9,7 @@ $title = _('Payment Terms Maintenance');
 include('includes/header.inc');
 
 echo '<p class="page_title_text">
-		<img src="'.$rootpath.'/css/'.$theme.'/images/money_add.png" title="' . _('Payment Terms') . '" alt="" />' . ' ' . $title . 
+		<img src="'.$rootpath.'/css/'.$theme.'/images/money_add.png" title="' . _('Payment Terms') . '" alt="" />' . ' ' . $title .
 	'</p>';
 
 if (isset($_GET['SelectedTerms'])){
@@ -47,37 +47,37 @@ if (isset($_POST['submit'])) {
 		$Errors[$i] = 'TermsIndicator';
 		$i++;
 	}
-	if (empty($_POST['DayNumber']) OR !is_numeric(filter_number_format($_POST['DayNumber'])) OR filter_number_format($_POST['DayNumber']) <= 0){
+	if (empty($_POST['DayNumber']) or !is_numeric(filter_number_format($_POST['DayNumber'])) or filter_number_format($_POST['DayNumber']) <= 0){
 		$InputError = 1;
 		prnMsg( _('The number of days or the day in the following month must be numeric') ,'error');
 		$Errors[$i] = 'DayNumber';
 		$i++;
 	}
-	if (empty($_POST['Terms']) OR mb_strlen($_POST['Terms']) > 40) {
+	if (empty($_POST['Terms']) or mb_strlen($_POST['Terms']) > 40) {
 		$InputError = 1;
 		prnMsg( _('The terms description must be forty characters or less long') ,'error');
 		$Errors[$i] = 'Terms';
 		$i++;
 	}
 
-	if ($_POST['DayNumber'] > 30 AND empty($_POST['DaysOrFoll'])) {
+	if ($_POST['DayNumber'] > 30 and empty($_POST['DaysOrFoll'])) {
 		$InputError = 1;
 		prnMsg( _('When the check box is not checked to indicate a day in the following month is the due date') . ', ' . _('the due date cannot be a day after the 30th') . '. ' . _('A number between 1 and 30 is expected') ,'error');
 		$Errors[$i] = 'DayNumber';
 		$i++;
 	}
-	if ($_POST['DayNumber']>360 AND !empty($_POST['DaysOrFoll'])) {
+	if ($_POST['DayNumber']>360 and !empty($_POST['DaysOrFoll'])) {
 		$InputError = 1;
 		prnMsg( _('When the check box is checked to indicate that the term expects a number of days after which accounts are due') . ', ' . _('the number entered should be less than 361 days') ,'error');
 		$Errors[$i] = 'DayNumber';
 		$i++;
 	}
 
-	if (isset($SelectedTerms) AND $InputError !=1) {
+	if (isset($SelectedTerms) and $InputError !=1) {
 
 		/*SelectedTerms could also exist if submit had not been clicked this code would not run in this case cos submit is false of course  see the delete code below*/
 
-		if (isset($_POST['DaysOrFoll']) AND $_POST['DaysOrFoll']=='on') {
+		if (isset($_POST['DaysOrFoll']) and $_POST['DaysOrFoll']=='on') {
 			$sql = "UPDATE paymentterms SET
 							terms='" . $_POST['Terms'] . "',
 							dayinfollowingmonth=0,
@@ -199,7 +199,7 @@ or deletion of the records*/
 		}
 
 	printf('<tr><td>%s</td>
-	        <td>%s</td>
+			<td>%s</td>
 			<td>%s</td>
 			<td>%s</td>
 			<td><a href="%s?SelectedTerms=%s">' . _('Edit') . '</a></td>
@@ -213,7 +213,7 @@ or deletion of the records*/
 			$myrow[0],
 			htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8'),
 			$myrow[0]);
-	
+
 	} //END WHILE LIST LOOP
 	echo '</table><br />';
 } //end of ifs and buts!
@@ -227,7 +227,7 @@ if (isset($SelectedTerms)) {
 if (!isset($_GET['delete'])) {
 
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '">';
-    echo '<div>';
+	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	if (isset($SelectedTerms)) {
@@ -288,10 +288,10 @@ if (!isset($_GET['delete'])) {
 		<tr>
 			<td>'._('Due After A Given No. Of Days').':</td>
 			<td><input type="checkbox" name="DaysOrFoll" ';
-    if (isset($DayInFollowingMonth) AND !$DayInFollowingMonth) {
-         echo 'checked'; 
-    }
-    echo '  /></td>
+	if (isset($DayInFollowingMonth) and !$DayInFollowingMonth) {
+		 echo 'checked';
+	}
+	echo '  /></td>
 		</tr>
 		<tr><td>'._('Days (Or Day In Following Month)').':</td>
 			<td><input type="text"' . (in_array('DayNumber',$Errors) ? 'class="inputerror"' : '' ) .' name="DayNumber" class="number"  size="4" maxlength="3" value="';
@@ -309,8 +309,8 @@ if (!isset($_GET['delete'])) {
 		<div class="centre">
 			<input type="submit" name="submit" value="'._('Enter Information').'" />
 		</div>';
-    echo '</div>
-          </form>';
+	echo '</div>
+		  </form>';
 } //end if record deleted no point displaying form to add record
 
 include('includes/footer.inc');

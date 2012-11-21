@@ -20,7 +20,7 @@ function display_children($Parent, $Level, &$BOMTree) {
 						FROM bom WHERE parent='" . $Parent. "'"
 						,$db);
 	if (DB_num_rows($c_result) > 0) {
-		
+
 		while ($row = DB_fetch_array($c_result)) {
 			//echo '<br />Parent: ' . $Parent . ' Level: ' . $Level . ' row[component]: ' . $row['component'] .'<br />';
 			if ($Parent != $row['component']) {
@@ -85,13 +85,13 @@ function DisplayBOMItems($UltimateParent, $Parent, $Component,$Level, $db) {
 						locstock.quantity AS qoh,
 						stockmaster.decimalplaces
 				FROM bom INNER JOIN stockmaster
-				ON bom.component=stockmaster.stockid 
-				INNER JOIN locations ON 
-				bom.loccode = locations.loccode 
-				INNER JOIN workcentres 
+				ON bom.component=stockmaster.stockid
+				INNER JOIN locations ON
+				bom.loccode = locations.loccode
+				INNER JOIN workcentres
 				ON bom.workcentreadded=workcentres.code
-				INNER JOIN locstock 
-				ON bom.loccode=locstock.loccode 
+				INNER JOIN locstock
+				ON bom.loccode=locstock.loccode
 				AND bom.component = locstock.stockid
 				WHERE bom.component='".$Component."'
 				AND bom.parent = '".$Parent."'";
@@ -106,10 +106,10 @@ function DisplayBOMItems($UltimateParent, $Parent, $Component,$Level, $db) {
 		while ($myrow=DB_fetch_array($result)) {
 
 			$Level1 = str_repeat('-&nbsp;',$Level-1).$Level;
-			if( $myrow['mbflag']=='B' 
-				OR $myrow['mbflag']=='K' 
+			if( $myrow['mbflag']=='B'
+				OR $myrow['mbflag']=='K'
 				OR $myrow['mbflag']=='D') {
-					
+
 				$DrillText = '%s%s';
 				$DrillLink = '<div class="centre">'._('No lower levels').'</div>';
 				$DrillID='';
@@ -118,9 +118,9 @@ function DisplayBOMItems($UltimateParent, $Parent, $Component,$Level, $db) {
 				$DrillLink = htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?';
 				$DrillID=$myrow['component'];
 			}
-			if ($ParentMBflag!='M' AND $ParentMBflag!='G'){
+			if ($ParentMBflag!='M' and $ParentMBflag!='G'){
 				$AutoIssue = _('N/A');
-			} elseif ($myrow['controlled']==0 AND $myrow['autoissue']==1){//autoissue and not controlled
+			} elseif ($myrow['controlled']==0 and $myrow['autoissue']==1){//autoissue and not controlled
 				$AutoIssue = _('Yes');
 			} elseif ($myrow['controlled']==1) {
 				$AutoIssue = _('No');
@@ -132,12 +132,12 @@ function DisplayBOMItems($UltimateParent, $Parent, $Component,$Level, $db) {
 				OR $myrow['mbflag']=='K' //kit-set
 				OR $myrow['mbflag']=='A'  // assembly
 				OR $myrow['mbflag']=='G') /* ghost */ {
-				
+
 				$QuantityOnHand = _('N/A');
 			} else {
 				$QuantityOnHand = locale_number_format($myrow['qoh'],$myrow['decimalplaces']);
-			}	
-			
+			}
+
 			printf('<td>%s</td>
 					<td>%s</td>
 					<td>%s</td>
@@ -231,7 +231,7 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 	echo '<p class="page_title_text"><img src="'.$rootpath.'/css/'.$theme.'/images/maintenance.png" title="' . _('Search') .
 		'" alt="" />' . ' ' . $title.'</p><br />';
 
-	if (isset($SelectedParent) AND isset($_POST['Submit'])) {
+	if (isset($SelectedParent) and isset($_POST['Submit'])) {
 
 		//editing a component need to do some validation of inputs
 
@@ -269,7 +269,7 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 			$Errors[$i] = 'EffectiveTo';
 			$i++;
 		}
-		if($_POST['AutoIssue']==1 AND isset($_POST['Component'])){
+		if($_POST['AutoIssue']==1 and isset($_POST['Component'])){
 			$sql = "SELECT controlled FROM stockmaster WHERE stockid='" . $_POST['Component'] . "'";
 			$CheckControlledResult = DB_query($sql,$db);
 			$CheckControlledRow = DB_fetch_row($CheckControlledResult);
@@ -286,7 +286,7 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 			$EffectiveToSQL = FormatDateForSQL($_POST['EffectiveTo']);
 		}
 
-		if (isset($SelectedParent) AND isset($SelectedComponent) AND $InputError != 1) {
+		if (isset($SelectedParent) and isset($SelectedComponent) and $InputError != 1) {
 
 
 			$sql = "UPDATE bom SET workcentreadded='" . $_POST['WorkCentreAdded'] . "',
@@ -305,7 +305,7 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 			$msg = _('Details for') . ' - ' . $SelectedComponent . ' ' . _('have been updated') . '.';
 			UpdateCost($db, $SelectedComponent);
 
-		} elseif ($InputError !=1 AND ! isset($SelectedComponent) AND isset($SelectedParent)) {
+		} elseif ($InputError !=1 and ! isset($SelectedComponent) and isset($SelectedParent)) {
 
 		/*Selected component is null cos no item selected on first time round so must be				adding a record must be Submitting new entries in the new component form */
 
@@ -368,12 +368,12 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 
 		if ($msg != '') {prnMsg($msg,'success');}
 
-	} elseif (isset($_GET['delete']) AND isset($SelectedComponent) AND isset($SelectedParent)) {
+	} elseif (isset($_GET['delete']) and isset($SelectedComponent) and isset($SelectedParent)) {
 
 	//the link to delete a selected record was clicked instead of the Submit button
 
-		$sql="DELETE FROM bom 
-				WHERE parent='".$SelectedParent."' 
+		$sql="DELETE FROM bom
+				WHERE parent='".$SelectedParent."'
 				AND component='".$SelectedComponent."'
 				AND loccode='".$Location."'
 				AND workcentreadded='".$WorkCentre."'";
@@ -382,8 +382,8 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 		$DbgMsg = _('The SQL used to delete the BOM was');
 		$result = DB_query($sql,$db,$ErrMsg,$DbgMsg);
 
-		$ComponentSQL = "SELECT component 
-							FROM bom 
+		$ComponentSQL = "SELECT component
+							FROM bom
 							WHERE parent='" . $SelectedParent ."'";
 		$ComponentResult = DB_query($ComponentSQL,$db);
 		$ComponentArray = DB_fetch_row($ComponentResult);
@@ -393,8 +393,8 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 		// Now reselect
 
 	} elseif (isset($SelectedParent)
-		AND !isset($SelectedComponent)
-		AND ! isset($_POST['submit'])) {
+		and !isset($SelectedComponent)
+		and ! isset($_POST['submit'])) {
 
 	/* It could still be the second time the page has been run and a record has been selected	for modification - SelectedParent will exist because it was sent with the new call. if		its the first time the page has been displayed with no parameters then none of the above		are true and the list of components will be displayed with links to delete or edit each.		These will call the same page again and allow update/input or deletion of the records*/
 		//DisplayBOMItems($SelectedParent, $db);
@@ -464,11 +464,11 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
      echo '</table>';
 	}
 	// Display Assembly Parent Items
-	$sql = "SELECT bom.parent, 
-				stockmaster.description, 
+	$sql = "SELECT bom.parent,
+				stockmaster.description,
 				stockmaster.mbflag
 		FROM bom INNER JOIN stockmaster
-		ON bom.parent=stockmaster.stockid 
+		ON bom.parent=stockmaster.stockid
 		WHERE bom.component='".$SelectedParent."'
 		AND stockmaster.mbflag='A'";
 
@@ -488,11 +488,11 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
         echo '</table>';
 	}
 	// Display Kit Sets
-	$sql = "SELECT bom.parent, 
-				stockmaster.description, 
+	$sql = "SELECT bom.parent,
+				stockmaster.description,
 				stockmaster.mbflag
 			FROM bom INNER JOIN stockmaster
-			ON bom.parent=stockmaster.stockid 
+			ON bom.parent=stockmaster.stockid
 			WHERE bom.component='".$SelectedParent."'
 			AND stockmaster.mbflag='K'";
 
@@ -512,11 +512,11 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
         echo '</table>';
 	}
 	// Display Phantom/Ghosts
-	$sql = "SELECT bom.parent, 
-				stockmaster.description, 
+	$sql = "SELECT bom.parent,
+				stockmaster.description,
 				stockmaster.mbflag
 			FROM bom INNER JOIN stockmaster
-			ON bom.parent=stockmaster.stockid 
+			ON bom.parent=stockmaster.stockid
 			WHERE bom.component='".$SelectedParent."'
 			AND stockmaster.mbflag='G'";
 
@@ -601,7 +601,7 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 						workcentreadded,
 						quantity,
 						autoissue
-					FROM bom 
+					FROM bom
 					WHERE parent='".$SelectedParent."'
 					AND component='".$SelectedComponent."'";
 
@@ -743,10 +743,10 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 		echo '" /></td>
 			</tr>';
 
-		if (!isset($_POST['EffectiveTo']) OR $_POST['EffectiveTo']=='') {
+		if (!isset($_POST['EffectiveTo']) or $_POST['EffectiveTo']=='') {
 			$_POST['EffectiveTo'] = Date($_SESSION['DefaultDateFormat'],Mktime(0,0,0,Date('m'),Date('d'),(Date('y')+20)));
 		}
-		if (!isset($_POST['EffectiveAfter']) OR $_POST['EffectiveAfter']=='') {
+		if (!isset($_POST['EffectiveAfter']) or $_POST['EffectiveAfter']=='') {
 			$_POST['EffectiveAfter'] = Date($_SESSION['DefaultDateFormat'],Mktime(0,0,0,Date('m'),Date('d')-1,Date('y')));
 		}
 
@@ -759,7 +759,7 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 				<td><input  ' . (in_array('EffectiveTo',$Errors) ?  'class="inputerror"' : '' ) . ' tabindex="6" type="text" name="EffectiveTo" class="date" alt="' .$_SESSION['DefaultDateFormat'] . '" size="11" maxlength="10" value="' . $_POST['EffectiveTo'] .'" /></td>
 			</tr>';
 
-		if ($ParentMBflag=='M' OR $ParentMBflag=='G'){
+		if ($ParentMBflag=='M' or $ParentMBflag=='G'){
 			echo '<tr><td>' . _('Auto Issue this Component to Work Orders') . ':</td>
 				<td>
 				<select tabindex="7" name="AutoIssue">';
@@ -794,13 +794,13 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 
 } elseif (isset($_POST['Search'])){
 	// Work around to auto select
-	if ($_POST['Keywords']=='' AND $_POST['StockCode']=='') {
+	if ($_POST['Keywords']=='' and $_POST['StockCode']=='') {
 		$_POST['StockCode']='%';
 	}
-	if ($_POST['Keywords'] AND $_POST['StockCode']) {
+	if ($_POST['Keywords'] and $_POST['StockCode']) {
 		prnMsg( _('Stock description keywords have been used in preference to the Stock code extract entered'), 'info' );
 	}
-	if ($_POST['Keywords']=='' AND $_POST['StockCode']=='') {
+	if ($_POST['Keywords']=='' and $_POST['StockCode']=='') {
 		prnMsg( _('At least one stock description keyword or an extract of a stock code must be entered for the search'), 'info' );
 	} else {
 		if (mb_strlen($_POST['Keywords'])>0) {
@@ -871,10 +871,10 @@ if (!isset($SelectedParent)) {
 	<br /><div class="centre"><input tabindex="3" type="submit" name="Search" value="' . _('Search Now') . '" /></div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
-	if (isset($_POST['Search']) 
-		AND isset($result) 
-		AND !isset($SelectedParent)) {
-	
+	if (isset($_POST['Search'])
+		and isset($result)
+		and !isset($SelectedParent)) {
+
 		echo '<br />
 			<table cellpadding="2" class="selection">';
 		$TableHeader = '<tr>
@@ -883,9 +883,9 @@ if (!isset($SelectedParent)) {
 							<th>' . _('On Hand') . '</th>
 							<th>' . _('Units') . '</th>
 						</tr>';
-	
+
 		echo $TableHeader;
-	
+
 		$j = 1;
 		$k=0; //row colour counter
 		while ($myrow=DB_fetch_array($result)) {
@@ -896,7 +896,7 @@ if (!isset($SelectedParent)) {
 				echo '<tr class="OddTableRows">';;
 				$k++;
 			}
-			if ($myrow['mbflag']=='A' OR $myrow['mbflag']=='K' OR $myrow['mbflag']=='G'){
+			if ($myrow['mbflag']=='A' or $myrow['mbflag']=='K' or $myrow['mbflag']=='G'){
 				$StockOnHand = _('N/A');
 			} else {
 				$StockOnHand = locale_number_format($myrow['totalonhand'],$myrow['decimalplaces']);
@@ -911,17 +911,17 @@ if (!isset($SelectedParent)) {
 					$myrow['description'],
 					$StockOnHand,
 					$myrow['units']);
-	
+
 			$j++;
 	//end of page full new headings if
 		}
 	//end of while loop
-	
+
 		echo '</table>';
-	
+
 	}
 	//end if results to show
-	
+
 	if (!isset($SelectedParent) or $SelectedParent=='') {
 		echo '<script type="text/javascript">defaultControl(document.forms[0].StockCode);</script>';
 	} else {
@@ -941,7 +941,7 @@ function arrayUnique($array, $preserveKeys = false)
 	foreach($array as $key => $item) {
 		// Serialize the current element and create a md5 hash
 		$hash = md5(serialize($item));
-		// If the md5 didn't come up yet, add the element to 
+		// If the md5 didn't come up yet, add the element to
 		// arrayRewrite, otherwise drop it
 		if (!isset($arrayHashes[$hash])) {
 			// Save the current element hash

@@ -25,10 +25,10 @@ echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8'
 echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
-if (!isset($_POST['BeforeDate']) OR !Is_Date($_POST['BeforeDate'])){
+if (!isset($_POST['BeforeDate']) or !Is_Date($_POST['BeforeDate'])){
    $_POST['BeforeDate'] = Date($_SESSION['DefaultDateFormat']);
 }
-if (!isset($_POST['AfterDate']) OR !Is_Date($_POST['AfterDate'])){
+if (!isset($_POST['AfterDate']) or !Is_Date($_POST['AfterDate'])){
    $_POST['AfterDate'] = Date($_SESSION['DefaultDateFormat'], Mktime(0,0,0,Date('m')-3,Date('d'),Date('y')));
 }
 echo '<br />
@@ -41,7 +41,7 @@ $sql = "SELECT loccode, locationname FROM locations";
 $resultStkLocs = DB_query($sql,$db);
 
 while ($myrow=DB_fetch_array($resultStkLocs)){
-	if (isset($_POST['StockLocation']) AND $_POST['StockLocation']!='All'){
+	if (isset($_POST['StockLocation']) and $_POST['StockLocation']!='All'){
 		if ($myrow['loccode'] == $_POST['StockLocation']){
 		     echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
 		} else {

@@ -32,12 +32,12 @@ if (!isset($_GET['identifier'])) {
 	$identifier=$_GET['identifier'];
 }
 
-if (isset($_GET['NewContract']) AND isset($_SESSION['Contract'.$identifier])){
+if (isset($_GET['NewContract']) and isset($_SESSION['Contract'.$identifier])){
 	unset($_SESSION['Contract'.$identifier]);
 	$_SESSION['ExistingContract'] = 0;
 }
 
-if (isset($_GET['NewContract']) AND isset($_GET['SelectedCustomer'])) {
+if (isset($_GET['NewContract']) and isset($_GET['SelectedCustomer'])) {
 	/*
 	* initialize a new contract
 	*/
@@ -55,9 +55,9 @@ if (isset($_GET['NewContract']) AND isset($_GET['SelectedCustomer'])) {
 	 * */
 }
 
-if (isset($_SESSION['Contract'.$identifier]) AND
+if (isset($_SESSION['Contract'.$identifier]) and
 			(isset($_POST['EnterContractBOM'])
-				OR isset($_POST['EnterContractRequirements']))){
+				or isset($_POST['EnterContractRequirements']))){
 	/**  Ensure session variables updated */
 
 	$_SESSION['Contract'.$identifier]->ContractRef=$_POST['ContractRef'];
@@ -79,7 +79,7 @@ if (isset($_SESSION['Contract'.$identifier]) AND
 		$InputError = true;
 	}
 
-	if (isset($_POST['EnterContractBOM']) AND !$InputError){
+	if (isset($_POST['EnterContractBOM']) and !$InputError){
 		echo '<meta http-equiv="refresh" content="0; url=' . $rootpath . '/ContractBOM.php?identifier='.$identifier. '" />';
 		echo '<br />';
 		prnMsg(_('You should automatically be forwarded to the entry of the Contract line items page') . '. ' .
@@ -87,7 +87,7 @@ if (isset($_SESSION['Contract'.$identifier]) AND
 		include('includes/footer.inc');
 		exit;
 	}
-	if (isset($_POST['EnterContractRequirements']) AND !$InputError){
+	if (isset($_POST['EnterContractRequirements']) and !$InputError){
 		echo '<meta http-equiv="refresh" content="0; url=' . $rootpath . '/ContractOtherReqts.php?identifier='.$identifier. '" />';
 		echo '<br />';
 		prnMsg(_('You should automatically be forwarded to the entry of the Contract requirements page') . '. ' .
@@ -101,7 +101,7 @@ if (isset($_SESSION['Contract'.$identifier]) AND
 echo '<a href="'. $rootpath . '/SelectContract.php">'. _('Back to Contract Selection'). '</a><br />';
 
 //attempting to upload the drawing image file
-if (isset($_FILES['Drawing']) AND $_FILES['Drawing']['name'] !='' AND $_SESSION['Contract'.$identifier]->ContractRef!='') {
+if (isset($_FILES['Drawing']) and $_FILES['Drawing']['name'] !='' and $_SESSION['Contract'.$identifier]->ContractRef!='') {
 
 	$result = $_FILES['Drawing']['error'];
  	$UploadTheFile = 'Yes'; //Assume all is well to start off with
@@ -158,7 +158,7 @@ if (isset($_GET['ModifyContractRef'])){
 if (isset($_POST['CancelContract'])) {
 /*The cancel button on the header screen - to delete the contract */
 	$OK_to_delete = true;	 //assume this in the first instance
-	if(!isset($_SESSION['ExistingContract']) OR $_SESSION['ExistingContract']!=0) {
+	if(!isset($_SESSION['ExistingContract']) or $_SESSION['ExistingContract']!=0) {
 		/* need to check that not already ordered by the customer - status = 100  */
 		if($_SESSION['Contract'.$identifier]->Status==2){
 			$OK_to_delete = false;
@@ -203,7 +203,7 @@ if (!isset($_SESSION['Contract'.$identifier])){
 		$_SESSION['Contract'.$identifier] = new Contract;
 
 		if ($_SESSION['Contract'.$identifier]->DebtorNo==''
-				OR !isset($_SESSION['Contract'.$identifier]->DebtorNo)){
+				or !isset($_SESSION['Contract'.$identifier]->DebtorNo)){
 
 /* a session variable will have to maintain if a supplier
  * has been selected for the order or not the session
@@ -215,7 +215,7 @@ if (!isset($_SESSION['Contract'.$identifier])){
 		}
 }
 
-if (isset($_POST['CommitContract']) OR isset($_POST['CreateQuotation'])){
+if (isset($_POST['CommitContract']) or isset($_POST['CreateQuotation'])){
 	/*This is the bit where the contract object is commited to the database after a bit of error checking */
 
 	//First update the session['Contract'.$identifier] variable with all inputs from the form
@@ -232,7 +232,7 @@ if (isset($_POST['CommitContract']) OR isset($_POST['CreateQuotation'])){
 
 	//The contractRef cannot be the same as an existing stockid or contractref
 	$result = DB_query("SELECT stockid FROM stockmaster WHERE stockid='" . $_POST['ContractRef'] . "'",$db);
-	if (DB_num_rows($result)==1 AND $_SESSION['Contract'.$identifier]->Status ==0){
+	if (DB_num_rows($result)==1 and $_SESSION['Contract'.$identifier]->Status ==0){
 		prnMsg(_('The contract reference cannot be the same as a previously created stock item. Please modify the contract reference before continuing'),'error');
 		$InputError=true;
 	}
@@ -244,7 +244,7 @@ if (isset($_POST['CommitContract']) OR isset($_POST['CreateQuotation'])){
 		prnMsg (_('The date the contract is required to be completed by must be entered in the format') . ' ' . $_SESSION['DefaultDateFormat'],'error');
 		$InputError =true;
 	}
-	if (Date1GreaterThanDate2(Date($_SESSION['DefaultDateFormat']),$_POST['RequiredDate']) AND $_POST['RequiredDate']!=''){
+	if (Date1GreaterThanDate2(Date($_SESSION['DefaultDateFormat']),$_POST['RequiredDate']) and $_POST['RequiredDate']!=''){
 		prnMsg(_('The date that the contract is to be completed by is expected to be a date in the future. Make the required date a date after today before proceeding.'),'error');
 		$InputError =true;
 	}
@@ -300,7 +300,7 @@ if (isset($_POST['CommitContract']) OR isset($_POST['CreateQuotation'])){
 			$InputError=true;
 		}
 
-		if($ExistingContract['status']<=1 AND ! $InputError){
+		if($ExistingContract['status']<=1 and ! $InputError){
 			//then we can accept any changes at all do an update on the whole lot
 			$sql = "UPDATE contracts SET categoryid = '" . $_POST['CategoryID'] ."',
 										requireddate = '" . FormatDateForSQL($_POST['RequiredDate']) . "',
@@ -344,7 +344,7 @@ if (isset($_POST['CommitContract']) OR isset($_POST['CreateQuotation'])){
 
 			prnMsg(_('The changes to the contract have been committed to the database'),'success');
 		}
-		if ($ExistingContract['status']==1 AND ! $InputError){
+		if ($ExistingContract['status']==1 and ! $InputError){
 			//then the quotation will need to be updated with the revised contract cost if necessary
 			$ContractBOMCost =0;
 			foreach ($_SESSION['Contract'.$identifier]->ContractBOM as $Component) {
@@ -378,7 +378,7 @@ if (isset($_POST['CommitContract']) OR isset($_POST['CreateQuotation'])){
 			echo '<br /><a href="' .$rootpath . '/SelectSalesOrder.php?OrderNumber=' .  $_SESSION['Contract'.$identifier]->OrderNo . '&amp;Quotations=Quotes_Only">' . _('Go to Quotation') . ' ' .  $_SESSION['Contract'.$identifier]->OrderNo . '</a>';
 
 		}
-		if ($ExistingContract['status'] == 0 AND $_POST['Status']==1){
+		if ($ExistingContract['status'] == 0 and $_POST['Status']==1){
 			/*we are updating the status on the contract to a quotation so we need to
 			 * add a new item for the contract into the stockmaster
 			 * add a salesorder header and detail as a quotation for the item
@@ -443,7 +443,7 @@ if (isset($_POST['CommitContract']) OR isset($_POST['CreateQuotation'])){
 	} //end of adding a new contract
 }//end of commital to database
 
-if(isset($_POST['CreateQuotation']) AND !$InputError){
+if(isset($_POST['CreateQuotation']) and !$InputError){
 //Create a quotation for the contract as entered
 //First need to create the item in stockmaster
 
@@ -600,10 +600,10 @@ if(isset($_POST['CreateQuotation']) AND !$InputError){
 
 if (isset($_POST['SearchCustomers'])){
 
-	if (($_POST['CustKeywords']!='') AND (($_POST['CustCode']!='') OR ($_POST['CustPhone']!=''))) {
+	if (($_POST['CustKeywords']!='') and (($_POST['CustCode']!='') or ($_POST['CustPhone']!=''))) {
 		prnMsg( _('Customer Branch Name keywords have been used in preference to the Customer Branch Code or Branch Phone Number entered'), 'warn');
 	}
-	if (($_POST['CustCode']!='') AND ($_POST['CustPhone']!='')) {
+	if (($_POST['CustCode']!='') and ($_POST['CustPhone']!='')) {
 		prnMsg(_('Customer Branch Code has been used in preference to the Customer Branch Phone Number entered'), 'warn');
 	}
 	if (mb_strlen($_POST['CustKeywords'])>0) {
@@ -730,9 +730,9 @@ if (isset($_POST['SelectedCustomer1'])) {
 
 		if ($_SESSION['CheckCreditLimits'] > 0){  /*Check credit limits is 1 for warn and 2 for prohibit contracts */
 			$CreditAvailable = GetCreditAvailable($_SESSION['Contract'.$identifier]->DebtorNo,$db);
-			if ($_SESSION['CheckCreditLimits']==1 AND $CreditAvailable <=0){
+			if ($_SESSION['CheckCreditLimits']==1 and $CreditAvailable <=0){
 				prnMsg(_('The') . ' ' . $_SESSION['Contract'.$identifier]->CustomerName . ' ' . _('account is currently at or over their credit limit'),'warn');
-			} elseif ($_SESSION['CheckCreditLimits']==2 AND $CreditAvailable <=0){
+			} elseif ($_SESSION['CheckCreditLimits']==2 and $CreditAvailable <=0){
 				prnMsg(_('No more orders can be placed by') . ' ' . $myrow[0] . ' ' . _(' their account is currently at or over their credit limit'),'warn');
 				include('includes/footer.inc');
 				exit;
@@ -743,7 +743,7 @@ if (isset($_POST['SelectedCustomer1'])) {
 
 
 if (!isset($_SESSION['Contract'.$identifier]->DebtorNo)
-		OR $_SESSION['Contract'.$identifier]->DebtorNo=='' ) {
+		or $_SESSION['Contract'.$identifier]->DebtorNo=='' ) {
 
 	echo '<p class="page_title_text"><img src="'.$rootpath.'/css/'.$theme.'/images/contract.png" title="' . _('Contract') . '" alt="" />' . ' ' . _('Contract: Select Customer') . '</p>';
 	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $identifier .'" name="CustomerSelection" method="post">';

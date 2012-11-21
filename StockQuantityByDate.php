@@ -25,7 +25,7 @@ echo '<table class="selection">
 			<option value="All">' . _('All') . '</option>';
 
 while ($myrow=DB_fetch_array($resultStkLocs)){
-	if (isset($_POST['StockCategory']) AND $_POST['StockCategory']!='All'){
+	if (isset($_POST['StockCategory']) and $_POST['StockCategory']!='All'){
 		if ($myrow['categoryid'] == $_POST['StockCategory']){
 		     echo '<option selected="selected" value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . '</option>';
 		} else {
@@ -44,7 +44,7 @@ echo '<td>' . _('For Stock Location') . ':</td>
 	<td><select name="StockLocation"> ';
 
 while ($myrow=DB_fetch_array($resultStkLocs)){
-	if (isset($_POST['StockLocation']) AND $_POST['StockLocation']!='All'){
+	if (isset($_POST['StockLocation']) and $_POST['StockLocation']!='All'){
 		if ($myrow['loccode'] == $_POST['StockLocation']){
 		     echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
 		} else {
@@ -77,7 +77,7 @@ echo '<tr>
 
 $TotalQuantity = 0;
 
-if(isset($_POST['ShowStatus']) AND Is_Date($_POST['OnHandDate'])) {
+if(isset($_POST['ShowStatus']) and Is_Date($_POST['OnHandDate'])) {
         if ($_POST['StockCategory']=='All') {
                  $sql = "SELECT stockid,
                                  description,

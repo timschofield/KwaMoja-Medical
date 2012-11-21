@@ -102,10 +102,6 @@ if( isset($_GET['notextbg']) ) {
 	$notextbg = false;
 }
 
-
-
-
-
 // Extension requirements and Stock ID Isolation
 if($StockID == '') {
 	$StockID = $DefaultImage;
@@ -118,7 +114,7 @@ if( $i === false )
 else {
 	$type   = strtolower(mb_substr($StockID,$i+1,mb_strlen($StockID)));
 	$StockID = mb_substr($StockID,0,$i);
-	if($blanktext && !isset($text))
+	if($blanktext and !isset($text))
 		$text = '';
 }
 $style = $type;
@@ -143,7 +139,7 @@ if ( file_exists($tmpFileName.'.jpg') ) {
 	$FileName = $DefaultImage;
 	$IsJpeg = $DefaultIsJpeg;
 }
-if( !$automake && !isset($FileName) ) {
+if( !$automake and !isset($FileName) ) {
 		$title = _('Stock Image Retrieval ....');
 		include('includes/header.inc');
 		prnMsg( _('The Image could not be retrieved because it does not exist'), 'error');
@@ -153,7 +149,7 @@ if( !$automake && !isset($FileName) ) {
 }
 
 // See if we need to automake this image
-if( $automake AND !isset($FileName) ) {
+if( $automake and !isset($FileName) ) {
 	// Have we got height and width specs
 	if( !isset($width) )
 		$width = 64;
@@ -250,10 +246,10 @@ if( $automake AND !isset($FileName) ) {
 		$ixtextcolor = imagecolorallocatealpha($im,
 			$TextColour['red'],$TextColour['green'],$TextColour['blue'],$TextColour['alpha']);
 	}
-	
+
 	$sw = imagesx($im);
 	$sh = imagesy($im);
-	if ( isset($width) AND ($width != $sw) OR isset($height) AND ($height != $sh)) {
+	if ( isset($width) and ($width != $sw) or isset($height) and ($height != $sh)) {
 		if( !isset($width) )
 			$width = imagesx($im);
 		if( !isset($height) )
@@ -266,7 +262,7 @@ if( $automake AND !isset($FileName) ) {
 			$resize_new_width = $sw;
 			$resize_new_height = $sh;
 		}
-		
+
 		$tmpim = imagecreatetruecolor($resize_new_width, $resize_new_height);
 		imagealphablending ( $tmpim, true);
 		imagecopyresampled($tmpim,$im,0,0,0,0,$resize_new_width, $resize_new_height, $sw, $sh );

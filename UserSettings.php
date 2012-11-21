@@ -35,7 +35,7 @@ if (isset($_POST['Modify'])) {
 	}
  */
  	$UpdatePassword = 'N';
-	
+
 	if ($_POST['PasswordCheck'] != ''){
 		if (mb_strlen($_POST['Password'])<5){
 			$InputError = 1;
@@ -51,7 +51,7 @@ if (isset($_POST['Modify'])) {
 			$UpdatePassword = 'Y';
 		}
 	}
-	
+
 
 	if ($InputError != 1) {
 		// no errors
@@ -102,7 +102,7 @@ echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_
 echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
-If (!isset($_POST['DisplayRecordsMax']) OR $_POST['DisplayRecordsMax']=='') {
+if (!isset($_POST['DisplayRecordsMax']) or $_POST['DisplayRecordsMax']=='') {
 
   $_POST['DisplayRecordsMax'] = $_SESSION['DefaultDisplayRecordsMax'];
 
@@ -128,15 +128,15 @@ echo '<tr>
 echo '<tr>
 	<td>' . _('Language') . ':</td>
 	<td><select name="Language">';
-	
+
 if (!isset($_POST['Language'])){
 	$_POST['Language']=$_SESSION['Language'];
 }
 
 foreach ($LanguagesArray as $LanguageEntry => $LanguageName){
-	if (isset($_POST['Language']) AND $_POST['Language'] == $LanguageEntry){
+	if (isset($_POST['Language']) and $_POST['Language'] == $LanguageEntry){
 		echo '<option selected="selected" value="' . $LanguageEntry . '">' . $LanguageName['LanguageName'] .'</option>';
-	} elseif (!isset($_POST['Language']) AND $LanguageEntry == $DefaultLanguage) {
+	} elseif (!isset($_POST['Language']) and $LanguageEntry == $DefaultLanguage) {
 		echo '<option selected="selected" value="' . $LanguageEntry . '">' . $LanguageName['LanguageName'] .'</option>';
 	} else {
 		echo '<option value="' . $LanguageEntry . '">' . $LanguageName['LanguageName'] .'</option>';
@@ -153,7 +153,7 @@ $ThemeDirectory = dir('css/');
 
 while (false != ($ThemeName = $ThemeDirectory->read())){
 
-	if (is_dir('css/' . $ThemeName) AND $ThemeName != '.' AND $ThemeName != '..' AND $ThemeName != '.svn'){
+	if (is_dir('css/' . $ThemeName) and $ThemeName != '.' and $ThemeName != '..' and $ThemeName != '.svn'){
 
 		if ($_SESSION['Theme'] == $ThemeName){
 			echo '<option selected="selected" value="' . $ThemeName . '">' . $ThemeName . '</option>';
@@ -179,7 +179,7 @@ echo '</select></td></tr>
 		<td><input type="password" name="PasswordCheck" size="20"  value="' . $_POST['PasswordCheck'] . '" /></td>
 	</tr>
 	<tr>
-		<td colspan="2" align="center"><i>' . _('If you leave the password boxes empty your password will not change') . '</i></td>
+		<td colspan="2" align="center"><i>' . _('if you leave the password boxes empty your password will not change') . '</i></td>
 	</tr>
 	<tr>
 		<td>' . _('Email') . ':</td>';
@@ -201,7 +201,7 @@ if (!isset($_POST['PDFLanguage'])){
 echo '<tr>
 		<td>' . _('PDF Language Support') . ': </td>
 		<td><select name="PDFLanguage">';
-		
+
 for($i=0;$i<count($PDFLanguages);$i++){
 	if ($_POST['PDFLanguage']==$i){
 		echo '<option selected="selected" value="' . $i .'">' . $PDFLanguages[$i] . '</option>';

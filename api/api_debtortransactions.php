@@ -567,7 +567,7 @@ function ConvertToSQLDate($DateEntry) {
 						WHERE stockid ='" . $CN_Line['stockid'] . "'";
 
 			$LineResult = api_DB_query($LineSQL,$db);
-			if (DB_error_no($db) != 0 OR DB_num_rows($LineResult)==0) {
+			if (DB_error_no($db) != 0 or DB_num_rows($LineResult)==0) {
 				$Errors[] = NoReadItem;
 				return $Errors;
 			}
@@ -635,7 +635,7 @@ function ConvertToSQLDate($DateEntry) {
 			$TotalFXTax += $LineTaxAmount;
 
 
-			if ($LineRow['mbflag']=='B' OR $LineRow['mbflag']=='M') {
+			if ($LineRow['mbflag']=='B' or $LineRow['mbflag']=='M') {
 				$Assembly = False;
 
 				/* Need to get the current location quantity
@@ -768,7 +768,7 @@ function ConvertToSQLDate($DateEntry) {
 			} /* end of its an assembly */
 
 
-			if ($LineRow['mbflag']=='A' OR $LineRow['mbflag']=='D'){
+			if ($LineRow['mbflag']=='A' or $LineRow['mbflag']=='D'){
 				/*it's a Dummy/Service item or an Assembly item - still need stock movement record
 				 * but quantites on hand are always nil */
 				$SQL = "INSERT INTO stockmoves (stockid,
@@ -913,7 +913,7 @@ function ConvertToSQLDate($DateEntry) {
 
 			$Result = api_DB_query($SQL,$db,'','',true);
 
-			if ($CompanyRecord['gllink_stock']==1 AND $StandardCost !=0){
+			if ($CompanyRecord['gllink_stock']==1 and $StandardCost !=0){
 
 /*first the cost of sales entry - GL accounts are retrieved using the function GetCOGSGLAccount from includes/GetSalesTransGLCodes.inc  */
 
@@ -956,7 +956,7 @@ function ConvertToSQLDate($DateEntry) {
 
 			} /* end of if GL and stock integrated and standard cost !=0  and not an asset */
 
-			if ($CompanyRecord['gllink_debtors']==1 AND $CN_Line['price'] !=0){
+			if ($CompanyRecord['gllink_debtors']==1 and $CN_Line['price'] !=0){
 
 				//Post sales transaction to GL credit sales
 				$SalesGLAccounts = GetSalesGLAccount($CN_Header['area'], $CN_Line['stockid'], $Header['tpe'], $db);
@@ -1008,7 +1008,7 @@ function ConvertToSQLDate($DateEntry) {
 		if ($CompanyRecord['gllink_debtors']==1){
 
 			/*Now post the tax to the GL at local currency equivalent */
-			if ($CompanyRecord['gllink_debtors']==1 AND $TaxAuthAmount !=0) {
+			if ($CompanyRecord['gllink_debtors']==1 and $TaxAuthAmount !=0) {
 
 				/*Loop through the tax authorities array to post each total to the taxauth glcode */
 				foreach ($TaxTotals as $Tax){
@@ -1089,7 +1089,7 @@ function ConvertToSQLDate($DateEntry) {
 		$DebtorTransID = DB_Last_Insert_ID($db,'debtortrans','id');
 
 		/*for each Tax - need to insert into debtortranstaxes */
-		foreach ($TaxTotals AS $TaxAuthID => $Tax) {
+		foreach ($TaxTotals as $TaxAuthID => $Tax) {
 
 			$SQL = "INSERT INTO debtortranstaxes (debtortransid,
 												taxauthid,
@@ -1114,7 +1114,7 @@ function ConvertToSQLDate($DateEntry) {
 		$TotalCreditFX = $TotalFXNetCredit + $TotalFXTax; #Should be negative number
 		$Allocated = 0;
 		if (DB_num_rows($Result)>0){
-			while ($InvoiceRow = DB_fetch_array($Result) AND $Allocated > $TotalCreditFX){
+			while ($InvoiceRow = DB_fetch_array($Result) and $Allocated > $TotalCreditFX){
 				if ($InvoiceRow['total'] - $InvoiceRow['alloc'] + $TotalCreditFX - $Allocated>0) {
 					/*Then we can allocate all of the (remaining) credit against this invoice */
 					$AllocateAmount = $InvoiceRow['total'] - $InvoiceRow['alloc'] + $TotalCreditFX - $Allocated;
@@ -1320,7 +1320,7 @@ function ConvertToSQLDate($DateEntry) {
 		$Errors=VerifyDebtorExists($AllocDetails['debtorno'], sizeof($Errors), $Errors, $db);
 		/*Get the outstanding amount to allocate (all amounts in FX) from the transaction*/
 
-		if ($AllocDetails['type'] !='11' AND $AllocDetails['type'] !=12){
+		if ($AllocDetails['type'] !='11' and $AllocDetails['type'] !=12){
 			$Errors[] = MustBeReceiptOrCreditNote;
 		}
 		$SQL = "SELECT id,
@@ -1357,7 +1357,7 @@ function ConvertToSQLDate($DateEntry) {
 			$OSInvRow = DB_fetch_array($Result);
 
 
-			if ($OSInvRow['rate']==$LeftToAllocRow['rate'] AND $OSInvRow['outstanding']>0){
+			if ($OSInvRow['rate']==$LeftToAllocRow['rate'] and $OSInvRow['outstanding']>0){
 
 				if ($OSInvRow['outstanding']+$LeftToAllocRow['lefttoalloc']>=0){
 					/*We can allocate the whole amount of the credit/receipt */
@@ -1421,7 +1421,7 @@ function ConvertToSQLDate($DateEntry) {
 			/* there could be several receipts to allocate against ... loop through until $LefToAllocate is exhausted */
 			while ($OSCreditRow = DB_fetch_array($Result)){
 
-				if ($OSCreditRow['rate']==$LeftToAllocRow['rate'] AND $LeftToAllocate > 0){
+				if ($OSCreditRow['rate']==$LeftToAllocRow['rate'] and $LeftToAllocate > 0){
 
 					if ($OSCreditRow['outstanding']+$LeftToAllocate<=0){
 						/*We can allocate the whole amount of the receipt */

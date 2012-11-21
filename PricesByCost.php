@@ -7,7 +7,7 @@ include ('includes/header.inc');
 
 echo '<p class="page_title_text"><img src="' . $rootpath . '/css/' . $theme . '/images/inventory.png" title="' . _('Inventory') . '" alt="" />' . ' ' . _('Update Price By Cost') . '</p>';
 
-if (isset($_POST['submit']) OR isset($_POST['update'])) {
+if (isset($_POST['submit']) or isset($_POST['update'])) {
 	if ($_POST['Margin'] == '') {
 		header('Location: PricesByCost.php');
 	}

@@ -20,7 +20,7 @@ if (empty($_GET['identifier'])) {
 	$identifier=$_GET['identifier'];
 }
 
-if (!isset($_GET['InvoiceNumber']) AND !$_SESSION['ProcessingCredit']) {
+if (!isset($_GET['InvoiceNumber']) and !$_SESSION['ProcessingCredit']) {
 	/* This page can only be called with an invoice number for crediting*/
 	prnMsg(_('This page can only be opened if an invoice has been selected for crediting') . '. ' . _('Please select an invoice first') . ' - ' . _('from the customer inquiry screen click the link to credit an invoice'),'info');
 	include('includes/footer.inc');
@@ -57,14 +57,14 @@ if (!isset($_GET['InvoiceNumber']) AND !$_SESSION['ProcessingCredit']) {
 								stockmoves.loccode,
 								locations.taxprovinceid,
 								currencies.decimalplaces
-							FROM debtortrans INNER JOIN debtorsmaster 
+							FROM debtortrans INNER JOIN debtorsmaster
 							ON debtortrans.debtorno = debtorsmaster.debtorno
-							INNER JOIN custbranch 
+							INNER JOIN custbranch
 							ON debtortrans.branchcode = custbranch.branchcode
 							AND debtortrans.debtorno = custbranch.debtorno
-							INNER JOIN currencies 
+							INNER JOIN currencies
 							ON debtorsmaster.currcode = currencies.currabrev
-							INNER JOIN stockmoves 
+							INNER JOIN stockmoves
 							ON stockmoves.transno=debtortrans.transno
 							AND stockmoves.type=debtortrans.type
 							INNER JOIN locations ON
@@ -168,7 +168,7 @@ if (!isset($_GET['InvoiceNumber']) AND !$_SESSION['ProcessingCredit']) {
 														'',
 														'',
 														$myrow['standardcost']);
-														
+
 				$_SESSION['CreditItems' . $identifier]->GetExistingTaxes($LineNumber, $myrow['stkmoveno']);
 
 				if ($myrow['controlled']==1){/* Populate the SerialItems array too*/
@@ -206,7 +206,7 @@ if (!isset($_GET['InvoiceNumber']) AND !$_SESSION['ProcessingCredit']) {
 
 }
 
-if (isset($_POST['Location']) AND !isset($_POST['ProcessCredit'])){
+if (isset($_POST['Location']) and !isset($_POST['ProcessCredit'])){
 	$_SESSION['CreditItems' . $identifier]->Location = $_POST['Location'];
 
 	$NewDispatchTaxProvResult = DB_query("SELECT taxprovinceid FROM locations WHERE loccode='" . $_POST['Location'] . "'",$db);
@@ -228,7 +228,7 @@ foreach ($_SESSION['CreditItems' . $identifier]->FreightTaxes as $FreightTaxLine
 	}
 }
 
-if ($_SESSION['CreditItems' . $identifier]->ItemsOrdered > 0 OR isset($_POST['NewItem'])){
+if ($_SESSION['CreditItems' . $identifier]->ItemsOrdered > 0 or isset($_POST['NewItem'])){
 
 	if(isset($_GET['Delete'])){
 		$_SESSION['CreditItems' . $identifier]->remove_from_cart($_GET['Delete']);
@@ -243,7 +243,7 @@ if ($_SESSION['CreditItems' . $identifier]->ItemsOrdered > 0 OR isset($_POST['Ne
 			$Price = filter_number_format($_POST['Price_' . $LineItem->LineNumber]);
 			$DiscountPercentage = filter_number_format($_POST['Discount_' . $LineItem->LineNumber]);
 
-			If ($Quantity<0 OR $Price <0 OR $DiscountPercentage >100 OR $DiscountPercentage <0){
+			if ($Quantity<0 or $Price <0 or $DiscountPercentage >100 or $DiscountPercentage <0){
 				prnMsg(_('The item could not be updated because you are attempting to set the quantity credited to less than 0 or the price less than 0 or the discount more than 100% or less than 0%'),'error');
 			} else {
 				$_SESSION['CreditItems' . $identifier]->LineItems[$LineItem->LineNumber]->QtyDispatched=$Quantity;
@@ -302,14 +302,14 @@ $TaxTotal =0;
 
 $k=0; //row colour counter
 $j=0; //row counter
-if(isset($_POST['AutoUpdate']) AND !isset($_POST['Update'])){//clear the $_SESSION value when users have not click update button and directly process the credit note
+if(isset($_POST['AutoUpdate']) and !isset($_POST['Update'])){//clear the $_SESSION value when users have not click update button and directly process the credit note
 	$_SESSION['CreditItems' . $identifier]->total = 0;
 	$_SESSION['CreditItems' . $identifier]->totalVolume = 0;
 	$_SESSION['CreditItems' . $identifier]->totalWeight = 0;
 }
 foreach ($_SESSION['CreditItems' . $identifier]->LineItems as $LnItm) {
 	$LineTotal = $LnItm->QtyDispatched * $LnItm->Price * (1 - $LnItm->DiscountPercent);
-	if (isset($_POST['AutoUpdate']) AND !isset($_POST['Update'])){//If users push Process Credit button instead of Update button, use this variable to update related information
+	if (isset($_POST['AutoUpdate']) and !isset($_POST['Update'])){//if users push Process Credit button instead of Update button, use this variable to update related information
 		$_SESSION['CreditItems' . $identifier]->total +=$LineTotal;
 		$_SESSION['CreditItems' . $identifier]->totalVolume += ($LnItm->QtyDispatched * $LnItm->Volume);
 		$_SESSION['CreditItems' . $identifier]->totalWeight += ($LnItm->QtyDispatched * $LnItm->Weight);
@@ -356,7 +356,7 @@ foreach ($_SESSION['CreditItems' . $identifier]->LineItems as $LnItm) {
 		echo '<td>';
 		$i=0;
 		if (is_array($_SESSION['CreditItems' . $identifier]->LineItems[$LnItm->LineNumber]->Taxes) ){
-			foreach ($_SESSION['CreditItems' . $identifier]->LineItems[$LnItm->LineNumber]->Taxes AS $Tax) {
+			foreach ($_SESSION['CreditItems' . $identifier]->LineItems[$LnItm->LineNumber]->Taxes as $Tax) {
 				if ($i>0){
 					echo '<br />';
 				}
@@ -412,7 +412,7 @@ foreach ($_SESSION['CreditItems' . $identifier]->LineItems as $LnItm) {
 	}
 } /*end foreach loop displaying the invoice lines to credit */
 
-if (!isset($_POST['ChargeFreightCost']) AND !isset($_SESSION['CreditItems' . $identifier]->FreightCost)){
+if (!isset($_POST['ChargeFreightCost']) and !isset($_SESSION['CreditItems' . $identifier]->FreightCost)){
 	$_POST['ChargeFreightCost']=0;
 }
 
@@ -481,12 +481,12 @@ $DefaultDispatchDate = Date($_SESSION['DefaultDateFormat']);
 
 $OKToProcess = true;
 
-if ((isset($_POST['CreditType']) and$_POST['CreditType']=='WriteOff') AND !isset($_POST['WriteOffGLCode'])){
+if ((isset($_POST['CreditType']) and $_POST['CreditType']=='WriteOff') and !isset($_POST['WriteOffGLCode'])){
 	prnMsg (_('The GL code to write off the credit value to must be specified. Please select the appropriate GL code for the selection box'),'info');
 	$OKToProcess = false;
 }
 
-if (isset($_POST['ProcessCredit']) AND $OKToProcess == true) {
+if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 
 /* SQL to process the postings for sales credit notes... First Get the area where the credit note is to from the branches table */
 
@@ -516,7 +516,7 @@ if (isset($_POST['ProcessCredit']) AND $OKToProcess == true) {
 
 /*Start an SQL transaction */
 
-	
+
 	$Result = DB_Txn_Begin($db);
 
 	$DefaultDispatchDate= FormatDateForSQL($DefaultDispatchDate);
@@ -525,7 +525,7 @@ if (isset($_POST['ProcessCredit']) AND $OKToProcess == true) {
 
 	$SQL = "SELECT (ovamount+ovgst+ovfreight-ovdiscount-alloc) AS baltoallocate
 			FROM debtortrans
-			WHERE transno=" . $_SESSION['ProcessingCredit'] . " 
+			WHERE transno=" . $_SESSION['ProcessingCredit'] . "
 			AND type=10";
 	$Result = DB_query($SQL,$db);
 	$myrow = DB_fetch_row($Result);
@@ -611,7 +611,7 @@ if (isset($_POST['ProcessCredit']) AND $OKToProcess == true) {
 	$CreditTransID = DB_Last_Insert_ID($db,'debtortrans','id');
 
 	/* Insert the tax totals for each tax authority where tax was charged on the invoice */
-	foreach ($TaxTotals AS $TaxAuthID => $TaxAmount) {
+	foreach ($TaxTotals as $TaxAuthID => $TaxAmount) {
 
 		$SQL = "INSERT INTO debtortranstaxes (
 							debtortransid,
@@ -658,7 +658,7 @@ if (isset($_POST['ProcessCredit']) AND $OKToProcess == true) {
 					_('The SQL used that failed was'),true);
 			$MBFlagRow = DB_fetch_row($Result);
 			$MBFlag = $MBFlagRow[0];
-			if ($MBFlag=='M' OR $MBFlag=='B'){
+			if ($MBFlag=='M' or $MBFlag=='B'){
 				/*Need to get the current location quantity will need it later for the stock movements */
 		 		$SQL="SELECT locstock.quantity
 					FROM locstock
@@ -678,10 +678,10 @@ if (isset($_POST['ProcessCredit']) AND $OKToProcess == true) {
 
 			if ($_POST['CreditType']=='Return'){
 
-				/* some want this some do not 
+				/* some want this some do not
 				 * We cannot use the orderlineno to update with as it could be different when added to the credit note than it was when the order was created
 				 * Also there could potentially be the same item on the order multiple times with different delivery dates
-				 * So all up the SQL below is a bit hit and miss !! 
+				 * So all up the SQL below is a bit hit and miss !!
 				 * Probably right 99% of time with the item on the order only once */
 
 				$SQL = "UPDATE salesorderdetails
@@ -690,7 +690,7 @@ if (isset($_POST['ProcessCredit']) AND $OKToProcess == true) {
 						WHERE orderno = '" . $_SESSION['CreditItems' . $identifier]->OrderNo . "'
 						AND stkcode = '" . $CreditLine->StockID . "'
 						AND quantity >=" . $CreditLine->QtyDispatched;
-						
+
 
 				$ErrMsg =  _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The sales order detail record could not be updated for the reduced quantity invoiced because');
 				$DbgMsg = _('The following SQL to update the sales order detail record was used');
@@ -698,7 +698,7 @@ if (isset($_POST['ProcessCredit']) AND $OKToProcess == true) {
 
 				/* Update location stock records if not a dummy stock item */
 
-				if ($MBFlag=='B' OR $MBFlag=='M') {
+				if ($MBFlag=='B' or $MBFlag=='M') {
 
 					$SQL = "UPDATE locstock
 								SET locstock.quantity = locstock.quantity + " . $CreditLine->QtyDispatched . "
@@ -742,7 +742,7 @@ if (isset($_POST['ProcessCredit']) AND $OKToProcess == true) {
 						$Component_MBFlag = $MBFlagRow[0];
 
 						/* Insert stock movements for the stock coming back in - with unit cost */
-						if ($Component_MBFlag=='M' OR $Component_MBFlag=='B'){
+						if ($Component_MBFlag=='M' or $Component_MBFlag=='B'){
 							/*Need to get the current location quantity will need it later for the stock movement */
 							$SQL="SELECT locstock.quantity
 									FROM locstock
@@ -760,7 +760,7 @@ if (isset($_POST['ProcessCredit']) AND $OKToProcess == true) {
 							$QtyOnHandPrior =0; //because its a dummy/assembly/kitset part
 						}
 
-						if ($Component_MBFlag=='M' OR $Component_MBFlag=='B'){
+						if ($Component_MBFlag=='M' or $Component_MBFlag=='B'){
 
 							$SQL = "INSERT INTO stockmoves (stockid,
 															type,
@@ -821,7 +821,7 @@ if (isset($_POST['ProcessCredit']) AND $OKToProcess == true) {
 						$DbgMsg = _('The following SQL to insert the assembly components stock movement records was used');
 						$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
 
-						if ($Component_MBFlag=='M' OR $Component_MBFlag=='B'){
+						if ($Component_MBFlag=='M' or $Component_MBFlag=='B'){
 							$SQL = "UPDATE locstock
 									SET locstock.quantity = locstock.quantity + " . ($AssParts['quantity'] * $CreditLine->QtyDispatched) . "
 									WHERE locstock.stockid = '" . $AssParts['component'] . "'
@@ -839,7 +839,7 @@ if (isset($_POST['ProcessCredit']) AND $OKToProcess == true) {
 
 /* Insert stock movements for the stock coming back in - with unit cost */
 
-				if ($MBFlag=='M' OR $MBFlag=='B'){
+				if ($MBFlag=='M' or $MBFlag=='B'){
 					$SQL = "INSERT INTO stockmoves (stockid,
 													type,
 													transno,
@@ -999,7 +999,7 @@ if (isset($_POST['ProcessCredit']) AND $OKToProcess == true) {
 											'" . $CreditLine->StandardCost . "',
 											'" . ($QtyOnHandPrior + $CreditLine->QtyDispatched)  . "',
 											'" . $CreditLine->Narrative . "')";
-						
+
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('Stock movement records could not be inserted because');
 				$DbgMsg = _('The following SQL to insert the stock movement records was used');
 				$Result = DB_query($SQL, $db,$ErrMsg, $DbgMsg, true);
@@ -1037,7 +1037,7 @@ if (isset($_POST['ProcessCredit']) AND $OKToProcess == true) {
 											0,
 											'" . $QtyOnHandPrior . "',
 											'" . $CreditLine->Narrative . "')";
-						
+
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('Stock movement records could not be inserted because');
 				$DbgMsg = _('The following SQL to insert the stock movement records was used');
 				$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
@@ -1076,7 +1076,7 @@ if (isset($_POST['ProcessCredit']) AND $OKToProcess == true) {
 											'" . $QtyOnHandPrior  . "',
 											1,
 											'" . $CreditLine->Narrative . "')";
-						
+
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('Stock movement records could not be inserted because');
 				$DbgMsg = _('The following SQL to insert the stock movement records for the purpose of display on the credit note was used');
@@ -1126,8 +1126,8 @@ if (isset($_POST['ProcessCredit']) AND $OKToProcess == true) {
 					AND custbranch = '" . $_SESSION['CreditItems' . $identifier]->Branch . "'
 					AND salesanalysis.stockid = '" . $CreditLine->StockID . "'
 					AND budgetoractual=1
-					GROUP BY stkcategory, 
-							salesanalysis.area, 
+					GROUP BY stkcategory,
+							salesanalysis.area,
 							salesperson";
 
 			$ErrMsg = _('The count to check for existing Sales analysis records could not run because');
@@ -1247,11 +1247,11 @@ if (isset($_POST['ProcessCredit']) AND $OKToProcess == true) {
 			$Result = DB_query($SQL,$db,$ErrMsg, $DbgMsg, true);
 
 
-		/* If GLLink_Stock then insert GLTrans to credit stock and debit cost of sales at standard cost*/
+		/* if GLLink_Stock then insert GLTrans to credit stock and debit cost of sales at standard cost*/
 
 			if ($_SESSION['CompanyRecord']['gllink_stock']==1
-				AND ($CreditLine->StandardCost !=0  OR (isset($StandardCost) and $StandardCost !=0))
-				AND $_POST['CreditType']!='ReverseOverCharge'){
+				and ($CreditLine->StandardCost !=0  or (isset($StandardCost) and $StandardCost !=0))
+				and $_POST['CreditType']!='ReverseOverCharge'){
 
 /*first the cost of sales entry*/
 
@@ -1319,7 +1319,7 @@ if (isset($_POST['ProcessCredit']) AND $OKToProcess == true) {
 
 			} /* end of if GL and stock integrated and standard cost !=0 */
 
-			if ($_SESSION['CompanyRecord']['gllink_debtors']==1 AND $CreditLine->Price !=0){
+			if ($_SESSION['CompanyRecord']['gllink_debtors']==1 and $CreditLine->Price !=0){
 
 //Post sales transaction to GL credit sales
 				$SalesGLAccounts = GetSalesGLAccount($Area, $CreditLine->StockID, $_SESSION['CreditItems' . $identifier]->DefaultSalesType, $db);
@@ -1475,7 +1475,7 @@ if (isset($_POST['ProcessCredit']) AND $OKToProcess == true) {
 	echo '<tr><td>' . _('Credit Note Type') . '</td>
 			<td><select tabindex="' . $j .'" name="CreditType">';
 
-	if (!isset($_POST['CreditType']) OR $_POST['CreditType']=='Return'){
+	if (!isset($_POST['CreditType']) or $_POST['CreditType']=='Return'){
 		echo '<option selected="selected" value="Return">' . _('Goods returned to store') . '</option>';
 		echo '<option value="WriteOff">' . _('Goods written off') . '</option>';
 		echo '<option value="ReverseOverCharge">' . _('Reverse overcharge') . '</option>';
@@ -1491,7 +1491,7 @@ if (isset($_POST['ProcessCredit']) AND $OKToProcess == true) {
 	echo '</select></td></tr>';
 	$j++;
 
-	if (!isset($_POST['CreditType']) OR $_POST['CreditType']=='Return'){
+	if (!isset($_POST['CreditType']) or $_POST['CreditType']=='Return'){
 
 /*if the credit note is a return of goods then need to know which location to receive them into */
 
@@ -1522,9 +1522,9 @@ if (isset($_POST['ProcessCredit']) AND $OKToProcess == true) {
 					accountname
 				FROM chartmaster INNER JOIN accountgroups
 				ON chartmaster.group_=accountgroups.groupname
-				WHERE accountgroups.pandl=1 
+				WHERE accountgroups.pandl=1
 				ORDER BY chartmaster.accountcode";
-	
+
 		$Result = DB_query($SQL,$db);
 
 		while ($myrow = DB_fetch_array($Result)) {

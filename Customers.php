@@ -43,17 +43,17 @@ if (isset($_POST['submit'])) {
 		prnMsg( _('The customer number already exists in the database'),'error');
 		$Errors[$i] = 'DebtorNo';
 		$i++;
-	}elseif (mb_strlen($_POST['CustName']) > 40 OR mb_strlen($_POST['CustName'])==0) {
+	}elseif (mb_strlen($_POST['CustName']) > 40 or mb_strlen($_POST['CustName'])==0) {
 		$InputError = 1;
 		prnMsg( _('The customer name must be entered and be forty characters or less long'),'error');
 		$Errors[$i] = 'CustName';
 		$i++;
-	} elseif ($_SESSION['AutoDebtorNo']==0 AND mb_strlen($_POST['DebtorNo']) ==0) {
+	} elseif ($_SESSION['AutoDebtorNo']==0 and mb_strlen($_POST['DebtorNo']) ==0) {
 		$InputError = 1;
 		prnMsg( _('The debtor code cannot be empty'),'error');
 		$Errors[$i] = 'DebtorNo';
 		$i++;
-	} elseif ($_SESSION['AutoDebtorNo']==0 AND (ContainsIllegalCharacters($_POST['DebtorNo']) OR mb_strpos($_POST['DebtorNo'], ' '))) {
+	} elseif ($_SESSION['AutoDebtorNo']==0 and (ContainsIllegalCharacters($_POST['DebtorNo']) or mb_strpos($_POST['DebtorNo'], ' '))) {
 		$InputError = 1;
 		prnMsg( _('The customer code cannot contain any of the following characters') . " . - ' &amp; + \" " . _('or a space'),'error');
 		$Errors[$i] = 'DebtorNo';
@@ -108,12 +108,12 @@ if (isset($_POST['submit'])) {
 		prnMsg( _('The credit limit must be a positive number'),'error');
 		$Errors[$i] = 'CreditLimit';
 		$i++;
-	} elseif ((filter_number_format($_POST['PymtDiscount'])> 10) OR (filter_number_format($_POST['PymtDiscount']) <0)) {
+	} elseif ((filter_number_format($_POST['PymtDiscount'])> 10) or (filter_number_format($_POST['PymtDiscount']) <0)) {
 		$InputError = 1;
 		prnMsg( _('The payment discount is expected to be less than 10% and greater than or equal to 0'),'error');
 		$Errors[$i] = 'PymtDiscount';
 		$i++;
-	} elseif ((filter_number_format($_POST['Discount'])> 100) OR (filter_number_format($_POST['Discount']) <0)) {
+	} elseif ((filter_number_format($_POST['Discount'])> 100) or (filter_number_format($_POST['Discount']) <0)) {
 		$InputError = 1;
 		prnMsg( _('The discount is expected to be less than 100% and greater than or equal to 0'),'error');
 		$Errors[$i] = 'Discount';
@@ -386,7 +386,7 @@ if (isset($_POST['Add'])){
 	$Add = $_GET['Add'];
 }
 
-if(isset($_POST['AddContact']) AND (isset($_POST['AddContact'])!='')){
+if(isset($_POST['AddContact']) and (isset($_POST['AddContact'])!='')){
 	echo '<meta http-equiv="Refresh" content="0; url=' . $rootpath . '/AddCustomerContacts.php?DebtorNo=' .$DebtorNo.'">';
 }
 
@@ -422,7 +422,7 @@ if (!isset($DebtorNo)) {
 		exit;
 	}
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '">';
-    echo '<div>';
+	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	echo '<input type="hidden" name="New" value="Yes" />';
@@ -461,9 +461,9 @@ if (!isset($DebtorNo)) {
 			<td>' . _('Country') . ':</td>
 			<td><select name="Address6">';
 	foreach ($CountriesArray as $CountryEntry => $CountryName){
-		if (isset($_POST['Address6']) AND ($_POST['Address6'] == $CountryName)){
+		if (isset($_POST['Address6']) and ($_POST['Address6'] == $CountryName)){
 			echo '<option selected="selected" value="' . $CountryName . '">' . $CountryName .'</option>';
-		}elseif (!isset($_POST['Address6']) AND $CountryName == "") {
+		}elseif (!isset($_POST['Address6']) and $CountryName == "") {
 			echo '<option selected="selected" value="' . $CountryName . '">' . $CountryName .'</option>';
 		} else {
 			echo '<option value="' . $CountryName . '">' . $CountryName .'</option>';
@@ -478,14 +478,14 @@ if (!isset($DebtorNo)) {
 		$DataError =1;
 		echo '<tr><td colspan="2">' . prnMsg(_('No sales types/price lists defined'),'error') . '<br /><a href="SalesTypes.php?" target="_parent">' . _('Setup Types') . '</a></td></tr>';
 	} else {
-        echo '<tr><td>' . _('Sales Type') . '/' . _('Price List') . ':</td>
+		echo '<tr><td>' . _('Sales Type') . '/' . _('Price List') . ':</td>
 			   <td><select tabindex="9" name="SalesType">';
 
 		while ($myrow = DB_fetch_array($result)) {
 		   echo '<option value="'. $myrow['typeabbrev'] . '">' . $myrow['sales_type'] . '</option>';
 		} //end while loopre
 		DB_data_seek($result,0);
-        echo '</select></td></tr>';
+		echo '</select></td></tr>';
 	}
 
 // Show Customer Type drop down list
@@ -621,7 +621,7 @@ if (!isset($DebtorNo)) {
 			</div>';
 
 	}
-    echo '</div>';
+	echo '</div>';
 	echo '</form>';
 
 } else {
@@ -629,7 +629,7 @@ if (!isset($DebtorNo)) {
 //DebtorNo exists - either passed when calling the form or from the form itself
 
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '">';
-    echo '<div>';
+	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table class="selection">
 			<tr><td valign="top">';
@@ -693,12 +693,12 @@ if (!isset($DebtorNo)) {
 		$_POST['typeid'] = $myrow['typeid'];
 
 		echo '<input type="hidden" name="DebtorNo" value="' . $DebtorNo . '" />';
-        echo '<table class="selection">';
+		echo '<table class="selection">';
 
 	} else {
 	// its a new customer being added
 		echo '<input type="hidden" name="New" value="Yes" />';
-        echo '<table class="selection">';
+		echo '<table class="selection">';
 
 		/* if $AutoDebtorNo in config.php has not been set or if it has been set to a number less than one,
 		then provide an input box for the DebtorNo to manually assigned */
@@ -737,9 +737,9 @@ if (!isset($DebtorNo)) {
 				<td>' . _('Country') . ':</td>
 				<td><select name="Address6">';
 		foreach ($CountriesArray as $CountryEntry => $CountryName){
-			if (isset($_POST['Address6']) AND ($_POST['Address6'] == $CountryName)){
+			if (isset($_POST['Address6']) and ($_POST['Address6'] == $CountryName)){
 				echo '<option selected="selected" value="' . $CountryName . '">' . $CountryName .'</option>';
-			}elseif (!isset($_POST['Address6']) AND $CountryName == "") {
+			}elseif (!isset($_POST['Address6']) and $CountryName == "") {
 				echo '<option selected="selected" value="' . $CountryName . '">' . $CountryName .'</option>';
 			} else {
 				echo '<option value="' . $CountryName . '">' . $CountryName .'</option>';
@@ -776,9 +776,9 @@ if (!isset($DebtorNo)) {
 				<td>' . _('Country') . ':</td>
 				<td><select name="Address6">';
 		foreach ($CountriesArray as $CountryEntry => $CountryName){
-			if (isset($_POST['Address6']) AND ($_POST['Address6'] == $CountryName)){
+			if (isset($_POST['Address6']) and ($_POST['Address6'] == $CountryName)){
 				echo '<option selected="selected" value="' . $CountryName . '">' . $CountryName .'</option>';
-			}elseif (!isset($_POST['Address6']) AND $CountryName == "") {
+			}elseif (!isset($_POST['Address6']) and $CountryName == "") {
 				echo '<option selected="selected" value="' . $CountryName . '">' . $CountryName .'</option>';
 			} else {
 				echo '<option value="' . $CountryName . '">' . $CountryName .'</option>';
@@ -805,7 +805,7 @@ if (!isset($DebtorNo)) {
 			}
 		} //end while loop
 		DB_data_seek($result,0);
-        echo '</select></td></tr>';
+		echo '</select></td></tr>';
 	}
 
 // Select Customer types for drop down list for SELECT/UPDATE
@@ -1121,11 +1121,11 @@ if (!isset($DebtorNo)) {
 			<div class="centre">
 				<input type="submit" name="submit" value="' . _('Update Customer') . '" />&nbsp;
 				<input type="submit" name="delete" value="' . _('Delete Customer') . '" onclick="return confirm(\'' . _('Are You Sure?') . '\');" />
-            </div>';
+			</div>';
 	}
 
 	echo '</div>
-          </form>';
+		  </form>';
 } // end of main ifs
 
 include('includes/footer.inc');

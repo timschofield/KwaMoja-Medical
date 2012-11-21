@@ -188,12 +188,12 @@ if (!isset($_SESSION['SPL'.$identifier]->BranchCode)){
 }
 
 
-If(isset($_GET['Delete'])){  /*User hit the delete link on a line */
+if(isset($_GET['Delete'])){  /*User hit the delete link on a line */
 	$_SESSION['SPL'.$identifier]->remove_from_order($_GET['Delete']);
 }
 
 
-If(isset($_POST['EnterLine'])){
+if(isset($_POST['EnterLine'])){
 
 /*Add the header info to the session variable in any event */
 
@@ -237,7 +237,7 @@ If(isset($_POST['EnterLine'])){
 		$AllowAdd = False;
 		prnMsg( _('Cannot Enter this order line') . '<br />' . _('The date entered must be in the format') . ' ' . $_SESSION['DefaultDateFormat'],'warn');
 	}
-	If ($AllowAdd == True){
+	if ($AllowAdd == True){
 
 		$_SESSION['SPL'.$identifier]->add_to_order ($_POST['LineNo'],
 										filter_number_format($_POST['Qty']),
@@ -322,7 +322,7 @@ if (isset($_POST['Commit'])){ /*User wishes to commit the order to the database 
 					$AuthMessage = _('You can only authorise up to').' '.$_SESSION['SPL'.$identifier]->SuppCurrCode.' '.$AuthRow['authlevel'] .'.<br />';
 				}
 
-				prnMsg( _('You do not have permission to authorise this purchase order').'.<br />'. _('This order is for').' '. $_SESSION['SPL'.$identifier]->SuppCurrCode . ' '. $_SESSION['SPL'.$identifier]->Order_Value() .'. '. $AuthMessage . _('If you think this is a mistake please contact the systems administrator') . '<br />'. _('The order will be created with a status of pending and will require authorisation'), 'warn');
+				prnMsg( _('You do not have permission to authorise this purchase order').'.<br />'. _('This order is for').' '. $_SESSION['SPL'.$identifier]->SuppCurrCode . ' '. $_SESSION['SPL'.$identifier]->Order_Value() .'. '. $AuthMessage . _('if you think this is a mistake please contact the systems administrator') . '<br />'. _('The order will be created with a status of pending and will require authorisation'), 'warn');
 
 				$StatusComment=date($_SESSION['DefaultDateFormat']).' - ' . _('Order Created by') . $UserDetails;
 				$_SESSION['SPL'.$identifier]->Status = 'Pending';
@@ -403,7 +403,7 @@ if (isset($_POST['Commit'])){ /*User wishes to commit the order to the database 
 
 			$PartAlreadyExists =True; /*assume the worst */
 			$Counter = 0;
-			While ($PartAlreadyExists==True) {
+			while ($PartAlreadyExists==True) {
 				$sql = "SELECT COUNT(*) FROM stockmaster WHERE stockid = '" . $PartCode . "'";
 				$PartCountResult = DB_query($sql,$db);
 				$PartCount = DB_fetch_row($PartCountResult);
@@ -592,7 +592,7 @@ echo '<table><tr><td>' . _('Receive Purchase Into and Sell From') . ': <select n
 
 $sql = "SELECT loccode, locationname FROM locations";
 $LocnResult = DB_query($sql,$db);
-if (!isset($_SESSION['SPL'.$identifier]->StkLocation) or $_SESSION['SPL'.$identifier]->StkLocation==''){ /*If this is the first time the form loaded set up defaults */
+if (!isset($_SESSION['SPL'.$identifier]->StkLocation) or $_SESSION['SPL'.$identifier]->StkLocation==''){ /*if this is the first time the form loaded set up defaults */
 	$_SESSION['SPL'.$identifier]->StkLocation = $_SESSION['UserStockLocation'];
 }
 

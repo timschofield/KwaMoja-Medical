@@ -17,7 +17,7 @@ if (isset($_POST['SelectedType'])){
 	$SelectedType='';
 }
 
-if (!isset($_GET['delete']) and (ContainsIllegalCharacters($SelectedType) OR mb_strpos($SelectedType,' ')>0)){
+if (!isset($_GET['delete']) and (ContainsIllegalCharacters($SelectedType) or mb_strpos($SelectedType,' ')>0)){
 	$InputError = 1;
 	prnMsg(_('The petty cash tab type contain any of the following characters " \' - &amp; or a space'),'error');
 }
@@ -59,8 +59,8 @@ if (isset($_POST['submit'])) {
 		// First check the type is not being duplicated
 
 		$checkSql = "SELECT count(*)
-			     FROM pctabexpenses
-			     WHERE typetabcode= '" .  $_POST['SelectedTab'] . "'
+				 FROM pctabexpenses
+				 WHERE typetabcode= '" .  $_POST['SelectedTab'] . "'
 				 AND codeexpense = '" .  $_POST['SelectedExpense'] . "'";
 
 		$checkresult = DB_query($checkSql,$db);
@@ -109,7 +109,7 @@ then none of the above are true and the list of sales types will be displayed wi
 links to delete or edit each. These will call the same page again and allow update/input
 or deletion of the records*/
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '">';
-    echo '<div>';
+	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table class="selection">'; //Main table
 
@@ -134,22 +134,22 @@ or deletion of the records*/
 	echo '</select></td></tr>';
 
    	echo '</table>'; // close main table
-    DB_free_result($result);
+	DB_free_result($result);
 
 	echo '<br /><div class="centre"><input type="submit" name="Process" value="' . _('Accept') . '" />
 				<input type="submit" name="Cancel" value="' . _('Cancel') . '" /></div>';
 
 	echo '</div>
-          </form>';
+		  </form>';
 
 }
 
 //end of ifs and buts!
-if (isset($_POST['process'])OR isset($SelectedTab)) {
+if (isset($_POST['process']) or isset($SelectedTab)) {
 
 	echo '<br /><div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '">' . _('Expense Codes for Type of Tab ') . ' ' .$SelectedTab. '</a></div>';
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '">';
-    echo '<div>';
+	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	echo '<input type="hidden" name="SelectedTab" value="' . $SelectedTab . '" />';
@@ -212,7 +212,7 @@ while ($myrow = DB_fetch_array($result)) {
 			echo '<option selected="selected" value="">' . _('Not Yet Selected') . '</option>';
 		}
 		while ($myrow = DB_fetch_array($result)) {
-			if (isset($_POST['SelectedExpense']) AND $myrow['codeexpense']==$_POST['SelectedExpense']) {
+			if (isset($_POST['SelectedExpense']) and $myrow['codeexpense']==$_POST['SelectedExpense']) {
 				echo '<option selected="selected" value="';
 			} else {
 				echo '<option value="';
@@ -224,13 +224,13 @@ while ($myrow = DB_fetch_array($result)) {
 		echo '</select></td></tr>';
 
 	   	echo '</table>'; // close main table
-        DB_free_result($result);
+		DB_free_result($result);
 
 		echo '<br /><div class="centre"><input type="submit" name="submit" value="' . _('Accept') . '" />
 									<input type="submit" name="Cancel" value="' . _('Cancel') . '" /></div>';
 
 		echo '</div>
-              </form>';
+			  </form>';
 
 	} // end if user wish to delete
 }

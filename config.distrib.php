@@ -85,7 +85,7 @@ if (isset($DirectoryLevelsDeep)){
 	}
 }
 
-if ($rootpath == "/" OR $rootpath == "\\") {
+if ($rootpath == "/" or $rootpath == "\\") {
 	$rootpath = "";
 }
 

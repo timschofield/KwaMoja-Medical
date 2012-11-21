@@ -36,7 +36,7 @@ if (isset($_POST['PrintPDFAndProcess'])){
 					rate,
 					ovamount,
 					diffonexch,
-					alloc) 
+					alloc)
 			VALUES (22,
 				'" . $SuppPaymentNo . "',
 				'" . $PaytReference . "',
@@ -49,7 +49,7 @@ if (isset($_POST['PrintPDFAndProcess'])){
 				'" . -$AccumBalance . "',
 				'" . -$AccumDiffOnExch . "',
 				'" . -$AccumBalance . "')";
-				
+
 	$ProcessResult = DB_query($SQL,$db,'','',false,false);
 	if (DB_error_no($db) !=0) {
 		$title = _('Payment Processing - Problem Report');
@@ -69,7 +69,7 @@ if (isset($_POST['PrintPDFAndProcess'])){
 
 	/*Do the inserts for the allocation record against the payment for this charge */
 
-	foreach ($Allocs AS $AllocTrans){ /*loop through the array of allocations */
+	foreach ($Allocs as $AllocTrans){ /*loop through the array of allocations */
 
 		$SQL = "INSERT INTO suppallocs (amt,
 						datealloc,

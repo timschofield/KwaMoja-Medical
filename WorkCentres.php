@@ -30,12 +30,12 @@ if (isset($_POST['submit'])) {
 		$InputError = 1;
 		prnMsg(_('The Work Centre description must be at least 3 characters long'),'error');
 	}
-	if (mb_strstr($_POST['Code'],' ') OR ContainsIllegalCharacters($_POST['Code']) ) {
+	if (mb_strstr($_POST['Code'],' ') or ContainsIllegalCharacters($_POST['Code']) ) {
 		$InputError = 1;
 		prnMsg(_('The work centre code cannot contain any of the following characters') . " - ' &amp; + \" \\ " . _('or a space'),'error');
 	}
 
-	if (isset($SelectedWC) AND $InputError !=1) {
+	if (isset($SelectedWC) and $InputError !=1) {
 
 		/*SelectedWC could also exist if submit had not been clicked this code
 		would not run in this case cos submit is false of course  see the
@@ -147,7 +147,7 @@ or deletion of the records*/
 				$myrow['overheadrecoveryact'],
 				$myrow['overheadperhour'],
 				htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?',
-				$myrow['code'], 
+				$myrow['code'],
 				htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?',
 				$myrow['code']);
 	}
@@ -178,7 +178,7 @@ if (isset($SelectedWC)) {
 					overheadperhour
 			FROM workcentres
 			WHERE code='" . $SelectedWC . "'";
-		
+
 	$result = DB_query($sql, $db);
 	$myrow = DB_fetch_array($result);
 

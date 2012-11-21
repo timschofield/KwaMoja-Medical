@@ -25,7 +25,7 @@ if (empty($_GET['identifier'])) {
 } else {
 	$identifier=$_GET['identifier'];
 }
-if (isset($_SESSION['Items'.$identifier]) AND isset($_POST['CustRef'])){
+if (isset($_SESSION['Items'.$identifier]) and isset($_POST['CustRef'])){
 	//update the Items object variable with the data posted from the form
 	$_SESSION['Items'.$identifier]->CustRef = $_POST['CustRef'];
 	$_SESSION['Items'.$identifier]->Comments = $_POST['Comments'];
@@ -85,7 +85,7 @@ if (!isset($_SESSION['Items'.$identifier])){
 	} else {
 		$myrow = DB_fetch_array($result); //get the only row returned
 
-		if ($myrow['cashsalecustomer']=='' OR $myrow['cashsalebranch']==''){
+		if ($myrow['cashsalecustomer']=='' or $myrow['cashsalebranch']==''){
 			prnMsg(_('To use this script it is first necessary to define a cash sales customer for the location that is your default location. The default cash sale customer is defined under set up ->Inventory Locations Maintenance. The customer should be entered using the customer code and a valid branch code of the customer entered.'),'error');
 			include('includes/footer.inc');
 			exit;
@@ -187,13 +187,13 @@ if (!isset($_SESSION['Items'.$identifier])){
 				prnMsg($_SESSION['Items'.$identifier]->SpecialInstructions,'warn');
 			}
 
-			if ($_SESSION['CheckCreditLimits'] > 0 AND $AlreadyWarnedAboutCredit==false) {  /*Check credit limits is 1 for warn and 2 for prohibit sales */
+			if ($_SESSION['CheckCreditLimits'] > 0 and $AlreadyWarnedAboutCredit==false) {  /*Check credit limits is 1 for warn and 2 for prohibit sales */
 				$_SESSION['Items'.$identifier]->CreditAvailable = GetCreditAvailable($_SESSION['Items'.$identifier]->DebtorNo,$db);
 
-				if ($_SESSION['CheckCreditLimits']==1 AND $_SESSION['Items'.$identifier]->CreditAvailable <=0){
+				if ($_SESSION['CheckCreditLimits']==1 and $_SESSION['Items'.$identifier]->CreditAvailable <=0){
 					prnMsg(_('The') . ' ' . $myrow['brname'] . ' ' . _('account is currently at or over their credit limit'),'warn');
 					$AlreadyWarnedAboutCredit = true;
-				} elseif ($_SESSION['CheckCreditLimits']==2 AND $_SESSION['Items'.$identifier]->CreditAvailable <=0){
+				} elseif ($_SESSION['CheckCreditLimits']==2 and $_SESSION['Items'.$identifier]->CreditAvailable <=0){
 					prnMsg(_('No more orders can be placed by') . ' ' . $myrow[0] . ' ' . _(' their account is currently at or over their credit limit'),'warn');
 					$AlreadyWarnedAboutCredit = true;
 					include('includes/footer.inc');
@@ -231,14 +231,14 @@ if (isset($_POST['CancelOrder'])) {
 
 if (isset($_POST['Search']) or isset($_POST['Next']) or isset($_POST['Previous'])){
 
-	if ($_POST['Keywords']!='' AND $_POST['StockCode']=='') {
+	if ($_POST['Keywords']!='' and $_POST['StockCode']=='') {
 		$msg = _('Item description has been used in search');
-	} else if ($_POST['StockCode']!='' AND $_POST['Keywords']=='') {
+	} else if ($_POST['StockCode']!='' and $_POST['Keywords']=='') {
 		$msg = _('Item Code has been used in search');
-	} else if ($_POST['Keywords']=='' AND $_POST['StockCode']=='') {
+	} else if ($_POST['Keywords']=='' and $_POST['StockCode']=='') {
 		$msg = _('Stock Category has been used in search');
 	}
-	if (isset($_POST['Keywords']) AND mb_strlen($_POST['Keywords'])>0) {
+	if (isset($_POST['Keywords']) and mb_strlen($_POST['Keywords'])>0) {
 		//insert wildcard characters in spaces
 		$_POST['Keywords'] = mb_strtoupper($_POST['Keywords']);
 		$SearchString = '%' . str_replace(' ', '%', $_POST['Keywords']) . '%';
@@ -341,7 +341,7 @@ if (isset($_POST['Search']) or isset($_POST['Next']) or isset($_POST['Previous']
 	if (isset($_POST['Previous'])) {
 		$Offset = $_POST['PreviousList'];
 	}
-	if (!isset($Offset) OR $Offset < 0) {
+	if (!isset($Offset) or $Offset < 0) {
 		$Offset = 0;
 	}
 	$SQL = $SQL . ' LIMIT ' . $_SESSION['DefaultDisplayRecordsMax'].' OFFSET ' . strval($_SESSION['DefaultDisplayRecordsMax']*$Offset);
@@ -387,8 +387,8 @@ if ($_SESSION['Items'.$identifier]->DefaultCurrency != $_SESSION['CompanyRecord'
 /*Process Quick Entry */
 /* If enter is pressed on the quick entry screen, the default button may be Recalculate */
  if (isset($_POST['SelectingOrderItems'])
-		OR isset($_POST['QuickEntry'])
-		OR isset($_POST['Recalculate'])){
+		or isset($_POST['QuickEntry'])
+		or isset($_POST['Recalculate'])){
 
 	/* get the item details from the database and hold them in the cart object */
 
@@ -397,8 +397,8 @@ if ($_SESSION['Items'.$identifier]->DefaultCurrency != $_SESSION['CompanyRecord'
 	$AlreadyWarnedAboutCredit = false;
 	$i=1;
 	while ($i<=$_SESSION['QuickEntries']
-			AND isset($_POST['part_' . $i])
-			AND $_POST['part_' . $i]!='') {
+			and isset($_POST['part_' . $i])
+			and $_POST['part_' . $i]!='') {
 
 		$QuickEntryCode = 'part_' . $i;
 		$QuickEntryQty = 'qty_' . $i;
@@ -485,7 +485,7 @@ if ($_SESSION['Items'.$identifier]->DefaultCurrency != $_SESSION['CompanyRecord'
 
  /*Now do non-quick entry delete/edits/adds */
 
-if ((isset($_SESSION['Items'.$identifier])) OR isset($NewItem)) {
+if ((isset($_SESSION['Items'.$identifier])) or isset($NewItem)) {
 
 	if (isset($_GET['Delete'])){
 		$_SESSION['Items'.$identifier]->remove_from_cart($_GET['Delete']);  /*Don't do any DB updates*/
@@ -523,14 +523,14 @@ if ((isset($_SESSION['Items'.$identifier])) OR isset($NewItem)) {
 					$OrderLine->DiscountPercent = 0;
 				}
 
-			if ($Quantity<0 OR $Price < 0 OR $DiscountPercentage >100 OR $DiscountPercentage <0){
+			if ($Quantity<0 or $Price < 0 or $DiscountPercentage >100 or $DiscountPercentage <0){
 				prnMsg(_('The item could not be updated because you are attempting to set the quantity ordered to less than 0 or the price less than 0 or the discount more than 100% or less than 0%'),'warn');
 			} else if ($OrderLine->Quantity !=$Quantity
-						OR $OrderLine->Price != $Price
-						OR abs($OrderLine->DiscountPercent -$DiscountPercentage/100) >0.001
-						OR $OrderLine->Narrative != $Narrative
-						OR $OrderLine->ItemDue != $_POST['ItemDue_' . $OrderLine->LineNumber]
-						OR $OrderLine->POLine != $_POST['POLine_' . $OrderLine->LineNumber]) {
+						or $OrderLine->Price != $Price
+						or abs($OrderLine->DiscountPercent -$DiscountPercentage/100) >0.001
+						or $OrderLine->Narrative != $Narrative
+						or $OrderLine->ItemDue != $_POST['ItemDue_' . $OrderLine->LineNumber]
+						or $OrderLine->POLine != $_POST['POLine_' . $OrderLine->LineNumber]) {
 
 				$_SESSION['Items'.$identifier]->update_cart_item($OrderLine->LineNumber,
 																$Quantity,
@@ -642,7 +642,7 @@ Now figure out if the item is a kit set - the field MBFlag='K'
 
 } /*end of if its a new item */
 
-if (isset($NewItemArray) AND isset($_POST['SelectingOrderItems'])){
+if (isset($NewItemArray) and isset($_POST['SelectingOrderItems'])){
 /* get the item details from the database and hold them in the cart object make the quantity 1 by default then add it to the cart */
 /*Now figure out if the item is a kit set - the field MBFlag='K'*/
 	$AlreadyWarnedAboutCredit = false;
@@ -698,7 +698,7 @@ if (isset($NewItemArray) AND isset($_POST['SelectingOrderItems'])){
 $DiscCatsDone = array();
 foreach ($_SESSION['Items'.$identifier]->LineItems as $OrderLine) {
 
-	if ($OrderLine->DiscCat !='' AND ! in_array($OrderLine->DiscCat,$DiscCatsDone)){
+	if ($OrderLine->DiscCat !='' and ! in_array($OrderLine->DiscCat,$DiscCatsDone)){
 		$DiscCatsDone[]=$OrderLine->DiscCat;
 		$QuantityOfDiscCat = 0;
 
@@ -770,7 +770,7 @@ if (count($_SESSION['Items'.$identifier]->LineItems)>0 ){ /*only show order line
 		$QtyOrdered = $OrderLine->Quantity;
 		$QtyRemain = $QtyOrdered - $OrderLine->QtyInv;
 
-		if ($OrderLine->QOHatLoc < $OrderLine->Quantity AND ($OrderLine->MBflag=='B' OR $OrderLine->MBflag=='M')) {
+		if ($OrderLine->QOHatLoc < $OrderLine->Quantity and ($OrderLine->MBflag=='B' or $OrderLine->MBflag=='M')) {
 			/*There is a stock deficiency in the stock location selected */
 			$RowStarter = '<tr style="background-color:#EEAABB">';
 		} elseif ($k==1){
@@ -811,7 +811,7 @@ if (count($_SESSION['Items'.$identifier]->LineItems)>0 ){ /*only show order line
 		$i=0; // initialise the number of taxes iterated through
 		$TaxLineTotal =0; //initialise tax total for the line
 
-		foreach ($OrderLine->Taxes AS $Tax) {
+		foreach ($OrderLine->Taxes as $Tax) {
 			if (empty($TaxTotals[$Tax->TaxAuthID])) {
 				$TaxTotals[$Tax->TaxAuthID]=0;
 			}
@@ -878,7 +878,7 @@ if (count($_SESSION['Items'.$identifier]->LineItems)>0 ){ /*only show order line
 	<td>' . _('Sales person'). ':</td>
 	<td><select name="SalesPerson">';
 	$SalesPeopleResult = DB_query("SELECT salesmancode, salesmanname FROM salesman WHERE current=1",$db);
-	if (!isset($_POST['SalesPerson']) AND $_SESSION['SalesmanLogin']!=NULL ){
+	if (!isset($_POST['SalesPerson']) and $_SESSION['SalesmanLogin']!=NULL ){
 		$_SESSION['Items'.$identifier]->SalesPerson = $_SESSION['SalesmanLogin'];
 	}
 
@@ -904,7 +904,7 @@ if (count($_SESSION['Items'.$identifier]->LineItems)>0 ){ /*only show order line
 
 	echo '<tr><td>' . _('Payment Type') . ':</td><td><select name="PaymentMethod">';
 	while ($PaymentMethodRow = DB_fetch_array($PaymentMethodsResult)){
-		if (isset($_POST['PaymentMethod']) AND $_POST['PaymentMethod'] == $PaymentMethodRow['paymentid']){
+		if (isset($_POST['PaymentMethod']) and $_POST['PaymentMethod'] == $PaymentMethodRow['paymentid']){
 			echo '<option selected="selected" value="' . $PaymentMethodRow['paymentid'] . '">' . $PaymentMethodRow['paymentname'] . '</option>';
 		} else {
 			echo '<option value="' . $PaymentMethodRow['paymentid'] . '">' . $PaymentMethodRow['paymentname'] . '</option>';
@@ -918,7 +918,7 @@ if (count($_SESSION['Items'.$identifier]->LineItems)>0 ){ /*only show order line
 			<td>' . _('Banked to') . ':</td>
 			<td><select name="BankAccount">';
 	while ($BankAccountsRow = DB_fetch_array($BankAccountsResult)){
-		if (isset($_POST['BankAccount']) AND $_POST['BankAccount']	== $BankAccountsRow['accountcode']){
+		if (isset($_POST['BankAccount']) and $_POST['BankAccount']	== $BankAccountsRow['accountcode']){
 			echo '<option selected="selected" value="' . $BankAccountsRow['accountcode'] . '">' . $BankAccountsRow['bankaccountname'] . '</option>';
 		} else {
 			echo '<option value="' . $BankAccountsRow['accountcode'] . '">' . $BankAccountsRow['bankaccountname'] . '</option>';
@@ -952,7 +952,7 @@ if (count($_SESSION['Items'.$identifier]->LineItems)>0 ){ /*only show order line
  * Invoice Processing Here
  * **********************************
  * */
-if (isset($_POST['ProcessSale']) AND $_POST['ProcessSale'] != ''){
+if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != ''){
 
 	$InputError = false; //always assume the best
 	//but check for the worst
@@ -981,7 +981,7 @@ if (isset($_POST['ProcessSale']) AND $_POST['ProcessSale'] != ''){
 			$ErrMsg = _('Could not retrieve the quantity left at the location once this order is invoiced (for the purposes of checking that stock will not go negative because)');
 			$Result = DB_query($SQL,$db,$ErrMsg);
 			$CheckNegRow = DB_fetch_array($Result);
-			if ($CheckNegRow['mbflag']=='B' OR $CheckNegRow['mbflag']=='M'){
+			if ($CheckNegRow['mbflag']=='B' or $CheckNegRow['mbflag']=='M'){
 				if ($CheckNegRow['quantity'] < $OrderLine->Quantity){
 					prnMsg( _('Invoicing the selected order would result in negative stock. The system parameters are set to prohibit negative stocks from occurring. This invoice cannot be created until the stock on hand is corrected.'),'error',$OrderLine->StockID . ' ' . $CheckNegRow['description'] . ' - ' . _('Negative Stock Prohibited'));
 					$NegativesFound = true;
@@ -1131,7 +1131,7 @@ if (isset($_POST['ProcessSale']) AND $_POST['ProcessSale'] != ''){
 			 * 			and it is a real order (not just a quotation)*/
 
 			if ($StockItem->MBflag=='M'
-				AND $_SESSION['AutoCreateWOs']==1){ //oh yeah its all on!
+				and $_SESSION['AutoCreateWOs']==1){ //oh yeah its all on!
 
 				//now get the data required to test to see if we need to make a new WO
 				$QOHResult = DB_query("SELECT SUM(quantity) FROM locstock WHERE stockid='" . $StockItem->StockID . "'",$db);
@@ -1216,7 +1216,7 @@ if (isset($_POST['ProcessSale']) AND $_POST['ProcessSale'] != ''){
 																	AND bom.loccode='" . $_SESSION['DefaultFactoryLocation'] . "'",
 																$db);
 					$CostRow = DB_fetch_row($CostResult);
-					if (is_null($CostRow[0]) OR $CostRow[0]==0){
+					if (is_null($CostRow[0]) or $CostRow[0]==0){
 						$Cost =0;
 						prnMsg(_('In automatically creating a work order for') . ' ' . $StockItem->StockID . ' ' . _('an item on this sales order, the cost of this item as accumulated from the sum of the component costs is nil. This could be because there is no bill of material set up ... you may wish to double check this'),'warn');
 					} else {
@@ -1242,7 +1242,7 @@ if (isset($_POST['ProcessSale']) AND $_POST['ProcessSale'] != ''){
 										":\n" . $StockItem->StockID . ' - ' . $StockItem->ItemDescription . ' x ' . $WOQuantity . ' ' . $StockItem->Units .
 										"\n" . _('These are for') . ' ' . $_SESSION['Items'.$identifier]->CustomerName . ' ' . _('there order ref') . ': '  . $_SESSION['Items'.$identifier]->CustRef . ' ' ._('our order number') . ': ' . $OrderNo;
 
-					if ($StockItem->Serialised AND $StockItem->NextSerialNo>0){
+					if ($StockItem->Serialised and $StockItem->NextSerialNo>0){
 						//then we must create the serial numbers for the new WO also
 						$FactoryManagerEmail .= "\n" . _('The following serial numbers have been reserved for this work order') . ':';
 
@@ -1343,7 +1343,7 @@ if (isset($_POST['ProcessSale']) AND $_POST['ProcessSale'] != ''){
 		$DebtorTransID = DB_Last_Insert_ID($db,'debtortrans','id');
 
 	/* Insert the tax totals for each tax authority where tax was charged on the invoice */
-		foreach ($_SESSION['Items'.$identifier]->TaxTotals AS $TaxAuthID => $TaxAmount) {
+		foreach ($_SESSION['Items'.$identifier]->TaxTotals as $TaxAuthID => $TaxAmount) {
 
 			$SQL = "INSERT INTO debtortranstaxes (debtortransid,
 													taxauthid,
@@ -1364,7 +1364,7 @@ if (isset($_POST['ProcessSale']) AND $_POST['ProcessSale'] != ''){
 			$Result = DB_query("SELECT mbflag FROM stockmaster WHERE stockid = '" . $OrderLine->StockID . "'",$db);
 			$myrow = DB_fetch_row($Result);
 			$MBFlag = $myrow[0];
-			if ($MBFlag=='B' OR $MBFlag=='M') {
+			if ($MBFlag=='B' or $MBFlag=='M') {
 				$Assembly = False;
 
 				/* Need to get the current location quantity
@@ -1488,7 +1488,7 @@ if (isset($_POST['ProcessSale']) AND $_POST['ProcessSale'] != ''){
 			if (empty($OrderLine->StandardCost)) {
 				$OrderLine->StandardCost=0;
 			}
-			if ($MBFlag=='B' OR $MBFlag=='M'){
+			if ($MBFlag=='B' or $MBFlag=='M'){
 				$SQL = "INSERT INTO stockmoves (stockid,
 												type,
 												transno,
@@ -1718,7 +1718,7 @@ if (isset($_POST['ProcessSale']) AND $_POST['ProcessSale'] != ''){
 
 		/* If GLLink_Stock then insert GLTrans to credit stock and debit cost of sales at standard cost*/
 
-			if ($_SESSION['CompanyRecord']['gllink_stock']==1 AND $OrderLine->StandardCost !=0){
+			if ($_SESSION['CompanyRecord']['gllink_stock']==1 and $OrderLine->StandardCost !=0){
 
 		/*first the cost of sales entry*/
 
@@ -1764,7 +1764,7 @@ if (isset($_POST['ProcessSale']) AND $_POST['ProcessSale'] != ''){
 				$Result = DB_query($SQL,$db,$ErrMsg,$DbgMsg,true);
 			} /* end of if GL and stock integrated and standard cost !=0 */
 
-			if ($_SESSION['CompanyRecord']['gllink_debtors']==1 AND $OrderLine->Price !=0){
+			if ($_SESSION['CompanyRecord']['gllink_debtors']==1 and $OrderLine->Price !=0){
 
 		//Post sales transaction to GL credit sales
 				$SalesGLAccounts = GetSalesGLAccount($Area, $OrderLine->StockID, $_SESSION['Items'.$identifier]->DefaultSalesType, $db);
@@ -2200,7 +2200,7 @@ if (!isset($_POST['ProcessSale'])){
 		echo '<div class="page_help_text">' . _('Search for Items') . _(', Searches the database for items, you can narrow the results by selecting a stock category, or just enter a partial item description or partial item code') . '.</div><br />';
 		echo '<table class="selection"><tr><td><b>' . _('Select a Stock Category') . ': </b><select tabindex="1" name="StockCat">';
 
-		if (!isset($_POST['StockCat']) OR $_POST['StockCat']=='All'){
+		if (!isset($_POST['StockCat']) or $_POST['StockCat']=='All'){
 			echo '<option selected="selected" value="All">' . _('All').'</option>';
 			$_POST['StockCat'] ='All';
 		} else {

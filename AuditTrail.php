@@ -17,7 +17,7 @@ if (!isset($_POST['ToDate'])){
 	$_POST['ToDate']= Date($_SESSION['DefaultDateFormat']);
 }
 
-if ((!(Is_Date($_POST['FromDate'])) OR (!Is_Date($_POST['ToDate']))) AND (isset($_POST['View']))) {
+if ((!(Is_Date($_POST['FromDate'])) or (!Is_Date($_POST['ToDate']))) and (isset($_POST['View']))) {
 	prnMsg( _('Incorrect date format used, please re-enter'), error);
 	unset($_POST['View']);
 }
@@ -117,7 +117,7 @@ if (isset($_POST['View'])) {
 		$SQLString = str_replace('SET','',$SQLString);
 		$SQLString = str_replace('WHERE',',',$SQLString);
 		$SQLString = str_replace('AND',',',$SQLString);
-		$FieldArray = preg_split("/[[:space:]]*([[:alnum:].]+[[:space:]]*=[[:space:]]*(?:'[^']*'|[[:digit:].]+))[[:space:]]*,/", $SQLString, 0, PREG_SPLIT_DELIM_CAPTURE|PREG_SPLIT_NO_EMPTY);		
+		$FieldArray = preg_split("/[[:space:]]*([[:alnum:].]+[[:space:]]*=[[:space:]]*(?:'[^']*'|[[:digit:].]+))[[:space:]]*,/", $SQLString, 0, PREG_SPLIT_DELIM_CAPTURE|PREG_SPLIT_NO_EMPTY);
 		for ($i=0; $i<sizeof($FieldArray); $i++) {
 			$Assigment = explode('=', $FieldArray[$i]);
 			$_SESSION['SQLString']['fields'][$i] = $Assigment[0];
@@ -138,11 +138,11 @@ if (isset($_POST['View'])) {
 		$_SESSION['SQLString']['fields'][0] = $Assigment[0];
 		$_SESSION['SQLString']['values'][0] = $Assigment[1];
 	}
-	
+
 	if (mb_strlen($ContainingText) > 0) {
-	    $ContainingText = " AND querystring LIKE '%" . $ContainingText . "%' ";
-	}else{
-	    $ContainingText = "";
+		$ContainingText = " AND querystring LIKE '%" . $ContainingText . "%' ";
+	} else {
+		$ContainingText = "";
 	}
 
 	if ($_POST['SelectedUser'] == 'ALL') {
@@ -182,7 +182,7 @@ if (isset($_POST['View'])) {
 			$RowColour = '#fe90bf';
 		}
 
-		if ((trim($_SESSION['SQLString']['table']) == $_POST['SelectedTable'])  ||
+		if ((trim($_SESSION['SQLString']['table']) == $_POST['SelectedTable'])  or
 			($_POST['SelectedTable'] == 'ALL')) {
 			if (!isset($_SESSION['SQLString']['values'])) {
 				$_SESSION['SQLString']['values'][0]='';

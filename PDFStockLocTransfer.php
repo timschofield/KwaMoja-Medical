@@ -61,7 +61,7 @@ $sql = "SELECT loctransfers.reference,
 
 $result = DB_query($sql,$db, $ErrMsg, $DbgMsg);
 
-If (DB_num_rows($result)==0){
+if (DB_num_rows($result)==0){
 
 	include ('includes/header.inc');
 	prnMsg(_('The transfer reference selected does not appear to be set up') . ' - ' . _('enter the items to be transferred first'),'error');

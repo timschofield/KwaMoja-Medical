@@ -15,7 +15,7 @@ function standard_deviation($Data){
 	foreach ($Data as $Element){
 		$TotalDifferenceSquared += (($Element-$Average) * ($Element-$Average));
 	}
-	Return sqrt($TotalDifferenceSquared/$Counter);
+	return sqrt($TotalDifferenceSquared/$Counter);
 }
 
 function NewPageHeader () {

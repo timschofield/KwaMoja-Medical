@@ -45,7 +45,7 @@
       <td colspan="2"><div align="center"><?php echo RPT_BRDRLINE; ?></div></td>
     </tr>
     <tr>
-		<?php if (!$Params['Line'] OR $Params['Line']=='0') $selected=' checked'; else $selected=''; ?>
+		<?php if (!$Params['Line'] or $Params['Line']=='0') $selected=' checked'; else $selected=''; ?>
       <td colspan="2"><input name="Line" type="radio" value="0"<?php echo $selected; ?>><?php echo RPT_NOBRDR; ?> </td>
     </tr>
     <tr>
@@ -76,7 +76,7 @@
       <td colspan="2"><div align="center"><?php echo RPT_FILL; ?></div></td>
     </tr>
     <tr>
-		<?php if (!$Params['Fill'] OR $Params['Fill']=='0') $selected=' checked'; else $selected=''; ?>
+		<?php if (!$Params['Fill'] or $Params['Fill']=='0') $selected=' checked'; else $selected=''; ?>
       <td colspan="2"><input name="Fill" type="radio" value="0"<?php echo $selected; ?>><?php echo RPT_NOFILL; ?></td>
     </tr>
     <tr>

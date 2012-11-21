@@ -40,13 +40,13 @@ if (!isset($_POST['StockID'])) {
 
 if (isset($_POST['Search'])){
 	// Work around to auto select
-	if ($_POST['Keywords']=='' AND $_POST['StockCode']=='') {
+	if ($_POST['Keywords']=='' and $_POST['StockCode']=='') {
 		$_POST['StockCode']='%';
 	}
-	if ($_POST['Keywords'] AND $_POST['StockCode']) {
+	if ($_POST['Keywords'] and $_POST['StockCode']) {
 		prnMsg( _('Stock description keywords have been used in preference to the Stock code extract entered'), 'info' );
 	}
-	if ($_POST['Keywords']=='' AND $_POST['StockCode']=='') {
+	if ($_POST['Keywords']=='' and $_POST['StockCode']=='') {
 		prnMsg( _('At least one stock description keyword or an extract of a stock code must be entered for the search'), 'info' );
 	} else {
 		if (mb_strlen($_POST['Keywords'])>0) {
@@ -61,9 +61,9 @@ if (isset($_POST['Search'])){
 					FROM stockmaster INNER JOIN locstock
 					ON stockmaster.stockid = locstock.stockid
 					WHERE stockmaster.description " . LIKE . " '$SearchString'
-					AND (stockmaster.mbflag='M' 
-						OR stockmaster.mbflag='K' 
-						OR stockmaster.mbflag='A' 
+					AND (stockmaster.mbflag='M'
+						OR stockmaster.mbflag='K'
+						OR stockmaster.mbflag='A'
 						OR stockmaster.mbflag='G')
 					GROUP BY stockmaster.stockid,
 						stockmaster.description,
@@ -98,9 +98,9 @@ if (isset($_POST['Search'])){
 	} //one of keywords or StockCode was more than a zero length string
 } //end of if search
 
-if (isset($_POST['Search']) 
-	AND isset($result) 
-	AND !isset($SelectedParent)) {
+if (isset($_POST['Search'])
+	and isset($result)
+	and !isset($SelectedParent)) {
 
 	echo '<br />
 			<table class="selection">';
@@ -123,7 +123,7 @@ if (isset($_POST['Search'])
 			echo '<tr class="OddTableRows">';
 			$k++;
 		}
-		if ($myrow['mbflag']=='A' OR $myrow['mbflag']=='K'){
+		if ($myrow['mbflag']=='A' or $myrow['mbflag']=='K'){
 			$StockOnHand = 'N/A';
 		} else {
 			$StockOnHand = locale_number_format($myrow['totalonhand'],2);
@@ -151,18 +151,18 @@ if (!isset($_POST['StockID'])) {
 }
 
 if (isset($StockID) and $StockID!=""){
-	
-	$result = DB_query("SELECT description, 
-								units, 
-								labourcost, 
-								overheadcost 
-						FROM stockmaster 
+
+	$result = DB_query("SELECT description,
+								units,
+								labourcost,
+								overheadcost
+						FROM stockmaster
 						WHERE stockid='" . $StockID  . "'",
 						$db);
 	$myrow = DB_fetch_array($result);
 	$ParentLabourCost = $myrow['labourcost'];
 	$ParentOverheadCost = $myrow['overheadcost'];
-	
+
 	$sql = "SELECT bom.parent,
 					bom.component,
 					stockmaster.description,
@@ -170,7 +170,7 @@ if (isset($StockID) and $StockID!=""){
 					stockmaster.materialcost+ stockmaster.labourcost+stockmaster.overheadcost as standardcost,
 					bom.quantity,
 					bom.quantity * (stockmaster.materialcost+ stockmaster.labourcost+ stockmaster.overheadcost) AS componentcost
-			FROM bom INNER JOIN stockmaster 
+			FROM bom INNER JOIN stockmaster
 			ON bom.component = stockmaster.stockid
 			WHERE bom.parent = '" . $StockID . "'
 			AND bom.effectiveafter < Now()
@@ -237,7 +237,7 @@ if (isset($StockID) and $StockID!=""){
 
 			$j++;
 		}
-		
+
 		$TotalCost += $ParentLabourCost;
 		echo '<tr>
 			<td colspan="4" class="number"><b>' . _('Labour Cost') . '</b></td>

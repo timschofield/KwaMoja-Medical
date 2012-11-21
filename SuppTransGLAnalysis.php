@@ -25,8 +25,8 @@ if (!isset($_SESSION['SuppTrans'])){
 
 /*If the user hit the Add to transaction button then process this first before showing  all GL codes on the transaction otherwise it wouldnt show the latest addition*/
 
-if (isset($_POST['AddGLCodeToTrans']) 
-	AND $_POST['AddGLCodeToTrans'] == _('Enter GL Line')){
+if (isset($_POST['AddGLCodeToTrans'])
+	and $_POST['AddGLCodeToTrans'] == _('Enter GL Line')){
 
 	$InputError = False;
 	if ($_POST['GLCode'] == ''){
@@ -63,7 +63,7 @@ if (isset($_POST['AddGLCodeToTrans'])
 	}
 
 	if ($InputError == False){
-		
+
 		$_SESSION['SuppTrans']->Add_GLCodes_To_Trans($_POST['GLCode'],
 													$GLActName,
 													filter_number_format($_POST['Amount']),
@@ -114,8 +114,8 @@ echo $TableHeader;
 $TotalGLValue=0;
 $i=0;
 
-foreach ( $_SESSION['SuppTrans']->GLCodes AS $EnteredGLCode){
-	
+foreach ( $_SESSION['SuppTrans']->GLCodes as $EnteredGLCode){
+
 	echo '<tr>
 			<td>' . $EnteredGLCode->GLCode . '</td>
 			<td>' . $EnteredGLCode->GLActName . '</td>
@@ -176,7 +176,7 @@ $SQL = "SELECT tagref,
 $result=DB_query($SQL,$db);
 echo '<option value="0"></option>';
 while ($myrow=DB_fetch_array($result)){
-	if (isset($_POST['Tag']) AND $_POST['Tag']==$myrow['tagref']){
+	if (isset($_POST['Tag']) and $_POST['Tag']==$myrow['tagref']){
 		echo '<option selected="selected" value="' . $myrow['tagref'] . '">' . $myrow['tagref'].' - ' .$myrow['tagdescription'] . '</option>';
 	} else {
 		echo '<option value="' . $myrow['tagref'] . '">' . $myrow['tagref'].' - ' .$myrow['tagdescription'] . '</option>';

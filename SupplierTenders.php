@@ -155,7 +155,7 @@ if (isset($_POST['Process'])) {
 /* If the supplierID is set then it must be a login from the supplier but if nothing else is
  * set then the supplier must have just logged in so show them the choices.
  */
-if (isset($_POST['SupplierID']) AND empty($_POST['TenderType']) AND empty($_POST['Search']) AND empty($_POST['NewItem']) AND empty($_GET['Delete'])) {
+if (isset($_POST['SupplierID']) and empty($_POST['TenderType']) and empty($_POST['Search']) and empty($_POST['NewItem']) and empty($_GET['Delete'])) {
 	if (isset($_SESSION['offer'.$identifier])) {
 		unset($_SESSION['offer'.$identifier]);
 	}
@@ -183,7 +183,7 @@ if (isset($_POST['SupplierID']) AND empty($_POST['TenderType']) AND empty($_POST
 		</form>';
 }
 
-if (isset($_POST['NewItem']) AND !isset($_POST['Refresh'])) {
+if (isset($_POST['NewItem']) and !isset($_POST['Refresh'])) {
 	foreach ($_POST as $key => $value) {
 		if (mb_substr($key,0,7)=='StockID') {
 			$Index = mb_substr($key,7,mb_strlen($key)-7);
@@ -191,7 +191,7 @@ if (isset($_POST['NewItem']) AND !isset($_POST['Refresh'])) {
 			$Quantity=filter_number_format($_POST['Qty'.$Index]);
 			$Price=filter_number_format($_POST['Price'.$Index]);
 			$UOM=$_POST['uom'.$Index];
-			if (isset($UOM) AND $Quantity>0) {
+			if (isset($UOM) and $Quantity>0) {
 				$sql="SELECT description, decimalplaces FROM stockmaster WHERE stockid='".$StockID."'";
 				$result=DB_query($sql, $db);
 				$myrow=DB_fetch_array($result);
@@ -209,7 +209,7 @@ if (isset($_POST['NewItem']) AND !isset($_POST['Refresh'])) {
 	}
 }
 
-if (isset($_POST['Refresh']) AND !isset($_POST['NewItem'])) {
+if (isset($_POST['Refresh']) and !isset($_POST['NewItem'])) {
 	foreach ($_POST as $key => $value) {
 		if (mb_substr($key,0,7)=='StockID') {
 			$Index = mb_substr($key,7,mb_strlen($key)-7);
@@ -287,7 +287,7 @@ if (isset($_POST['Save'])) {
 
 /*The supplier has chosen option 1
  */
-if (isset($_POST['TenderType']) AND $_POST['TenderType']==1 AND !isset($_POST['Refresh']) AND !isset($_GET['Delete'])) {
+if (isset($_POST['TenderType']) and $_POST['TenderType']==1 and !isset($_POST['Refresh']) and !isset($_GET['Delete'])) {
 	$sql="SELECT offers.offerid,
 				offers.stockid,
 				stockmaster.description,
@@ -453,9 +453,9 @@ if (isset($_POST['TenderType'])
 /*The supplier has chosen option 3
  */
 if (isset($_POST['TenderType'])
-	AND $_POST['TenderType']==3
-	AND !isset($_POST['Search'])
-	OR isset($_GET['Delete'])) {
+	and $_POST['TenderType']==3
+	and !isset($_POST['Search'])
+	or isset($_GET['Delete'])) {
 
 	echo '<p class="page_title_text"><img src="' . $rootpath . '/css/' . $theme . '/images/supplier.png" title="' . _('Tenders') . '" alt="" />' . ' ' . _('Tenders Waiting For Offers').'</p>';
 	$sql="SELECT DISTINCT tendersuppliers.tenderid,
@@ -574,7 +574,7 @@ if (isset($_POST['Search'])){  /*ie seach for stock items */
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<p class="page_title_text"><img src="' . $rootpath . '/css/' . $theme . '/images/supplier.png" title="' . _('Tenders') . '" alt="" />' . ' ' . _('Select items to offer from').' '.$Supplier .'</p>';
 
-	if ($_POST['Keywords'] AND $_POST['StockCode']) {
+	if ($_POST['Keywords'] and $_POST['StockCode']) {
 		prnMsg( _('Stock description keywords have been used in preference to the Stock code extract entered'), 'info' );
 	}
 	if ($_POST['Keywords']) {
@@ -670,7 +670,7 @@ if (isset($_POST['Search'])){  /*ie seach for stock items */
 	$DbgMsg = _('The SQL statement that failed was');
 	$SearchResult = DB_query($sql,$db,$ErrMsg,$DbgMsg);
 
-	if (DB_num_rows($SearchResult)==0 AND $debug==1){
+	if (DB_num_rows($SearchResult)==0 and $debug==1){
 		prnMsg( _('There are no products to display matching the criteria provided'),'warn');
 	}
 	if (DB_num_rows($SearchResult)==1){

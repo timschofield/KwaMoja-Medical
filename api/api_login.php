@@ -7,7 +7,7 @@ function  LoginAPI($databasename, $user, $password) {
 	// Include now for the error code values.
 	include  '../includes/UserLogin.php';	/* Login checking and setup */
 	$RetCode = array();		// Return result.
-	if (!isset($_SESSION['DatabaseName']) OR $_SESSION['DatabaseName'] == '' ) {
+	if (!isset($_SESSION['DatabaseName']) or $_SESSION['DatabaseName'] == '' ) {
 		// Establish the database connection for this session.
 		$_SESSION['DatabaseName'] = $databasename;
 		/* Drag in the code to connect to the DB, and some other
@@ -78,8 +78,8 @@ function GetAPIErrorMessages( $errcodes )
     foreach ($errcodes as $errnum) {
 	$rm = array ($errnum );
 	if (isset ($ErrorDescription[$errnum]) ) {
-	    if ($errnum == DatabaseUpdateFailed &&
-			isset ($_SESSION['db_err_msg']) &&
+	    if ($errnum == DatabaseUpdateFailed and
+			isset ($_SESSION['db_err_msg']) and
 			mb_strlen ($_SESSION['db_err_msg']) > 0 )
 		$rm[] = $ErrorDescription[$errnum] . ":\n" . $_SESSION['db_err_msg'];
 	    else
@@ -103,7 +103,7 @@ function GetAPIErrorMessages( $errcodes )
 function DoSetup()
 {
     global  $PathPrefix;
-    if (isset($_SESSION['db']) AND $_SESSION['db'] != '' )
+    if (isset($_SESSION['db']) and $_SESSION['db'] != '' )
         include($PathPrefix . 'includes/GetConfig.php');
 
     $db = $_SESSION['db'];	    // Used a bit in the following.

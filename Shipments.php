@@ -17,7 +17,7 @@ if (isset($_GET['NewShipment']) and $_GET['NewShipment']=='Yes'){
 echo '<p class="page_title_text"><img src="'.$rootpath.'/css/'.$theme.'/images/magnifier.png" title="' . _('Search') .
 	'" alt="" />' . ' ' . $title . '</p>';
 
-if (!isset($_SESSION['SupplierID']) AND !isset($_SESSION['Shipment']) AND !isset($_GET['SelectedShipment'])){
+if (!isset($_SESSION['SupplierID']) and !isset($_SESSION['Shipment']) and !isset($_GET['SelectedShipment'])){
 	prnMsg( _('To set up a shipment') . ', ' . _('the supplier must first be selected from the Select Supplier page'), 'error');
         echo '<table class="selection">
                 <tr><td class="menu_group_item">
@@ -165,9 +165,9 @@ if (!isset($_SESSION['Shipment'])){
 
 
 
-if (isset($_POST['Update']) 
-	OR (isset($_GET['Add']) 
-	AND $_SESSION['Shipment']->Closed==0)) { //user hit the update button
+if (isset($_POST['Update'])
+	or (isset($_GET['Add'])
+	and $_SESSION['Shipment']->Closed==0)) { //user hit the update button
 
 	$InputError = 0;
 	if (isset($_POST['Update'])){
@@ -188,18 +188,18 @@ if (isset($_POST['Update'])
 		if (mb_strlen($_POST['VoyageRef'])<2){
 			prnMsg( _('A reference to the voyage (or HAWB in the case of air-freight) of more than 2 characters is expected'), 'error');
 		}
-	} elseif(mb_strlen($_SESSION['Shipment']->Vessel)<2 
+	} elseif(mb_strlen($_SESSION['Shipment']->Vessel)<2
 			OR mb_strlen($_SESSION['Shipment']->VoyageRef)<2){
 		prnMsg(_('Cannot add purchase order lines to the shipment unless the shipment is first initiated - hit update to setup the shipment first'),'info');
 		$InputError = 1;
 	}
-	if ($InputError==0 AND !isset($_GET['Add'])){ //don't update vessel and voyage on adding a new PO line to the shipment
+	if ($InputError==0 and !isset($_GET['Add'])){ //don't update vessel and voyage on adding a new PO line to the shipment
 		$_SESSION['Shipment']->Vessel = $_POST['Vessel'];
 		$_SESSION['Shipment']->VoyageRef = $_POST['VoyageRef'];
 	}
 /*The user hit the update the shipment button and there are some lines on the shipment*/
-	if ($InputError == 0 AND (count($_SESSION['Shipment']->LineItems) > 0 OR isset($_GET['Add']))){
-		
+	if ($InputError == 0 and (count($_SESSION['Shipment']->LineItems) > 0 or isset($_GET['Add']))){
+
 		$sql = "SELECT shiptref FROM shipments WHERE shiptref =" . $_SESSION['Shipment']->ShiptRef;
 		$result = DB_query($sql,$db);
 		if (DB_num_rows($result)==1){
@@ -245,9 +245,9 @@ if (isset($_POST['Update'])
 
 } //user hit Update
 
-if (isset($_GET['Add']) 
-	AND $_SESSION['Shipment']->Closed==0 
-	AND $InputError==0){
+if (isset($_GET['Add'])
+	and $_SESSION['Shipment']->Closed==0
+	and $InputError==0){
 
 	$sql = "SELECT purchorderdetails.orderno,
 					purchorderdetails.itemcode,
@@ -272,7 +272,7 @@ if (isset($_GET['Add'])
 
 	if ($myrow['stdcostunit']==0){
 		$StandardCost = $myrow['stdcost'];
-	}else {
+	} else {
 		$StandardCost = $myrow['stdcostunit'];
 	}
 
@@ -291,7 +291,7 @@ if (isset($_GET['Add'])
 											$db);
 }
 
-if (isset($_GET['Delete']) AND $_SESSION['Shipment']->Closed==0){ //shipment is open and user hit delete on a line
+if (isset($_GET['Delete']) and $_SESSION['Shipment']->Closed==0){ //shipment is open and user hit delete on a line
 	$_SESSION['Shipment']->Remove_From_Shipment($_GET['Delete'],$db);
 }
 
@@ -336,10 +336,10 @@ if (count($_SESSION['Shipment']->LineItems)>0){
 		$sql = "SELECT purchorders.intostocklocation
 				FROM purchorders INNER JOIN purchorderdetails
 				ON purchorders.orderno=purchorderdetails.orderno AND podetailitem = '" . key($_SESSION['Shipment']->LineItems) . "'";
-	
+
 		$result = DB_query($sql,$db);
 		$myrow = DB_fetch_row($result);
-	
+
 		$_SESSION['Shipment']->StockLocation = $myrow[0];
 		$_POST['StockLocation']=$_SESSION['Shipment']->StockLocation;
 
@@ -362,7 +362,7 @@ if (!isset($_SESSION['Shipment']->StockLocation)){
 
 		if (isset($_POST['StockLocation'])){
 			if ($myrow['loccode'] == $_POST['StockLocation']){
-				echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>'; 
+				echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
 			} else {
 				echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
 			}

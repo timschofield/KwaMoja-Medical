@@ -4,11 +4,11 @@
 
 include('includes/session.inc');
 
-If (isset($_POST['PrintPDF'])
-	AND isset($_POST['FromCriteria'])
-	AND mb_strlen($_POST['FromCriteria'])>=1
-	AND isset($_POST['ToCriteria'])
-	AND mb_strlen($_POST['ToCriteria'])>=1){
+if (isset($_POST['PrintPDF'])
+	and isset($_POST['FromCriteria'])
+	and mb_strlen($_POST['FromCriteria'])>=1
+	and isset($_POST['ToCriteria'])
+	and mb_strlen($_POST['ToCriteria'])>=1){
 
 	include('includes/PDFStarter.php');
 
@@ -19,7 +19,7 @@ If (isset($_POST['PrintPDF'])
 	$PageNumber=0;
 	$line_height=12;
 
-      /*Now figure out the aged analysis for the Supplier range under review */
+	  /*Now figure out the aged analysis for the Supplier range under review */
 
 	$SQL = "SELECT suppliers.supplierid,
 					suppliers.suppname,
@@ -34,9 +34,9 @@ If (isset($_POST['PrintPDF'])
 						supptrans.diffonexch ELSE 0 END) AS afterdatediffonexch,
 					SUM(CASE WHEN supptrans.trandate > '" . $_POST['PeriodEnd'] . "' THEN
 						supptrans.ovamount + supptrans.ovgst ELSE 0 END) AS fxafterdatetrans
-			FROM suppliers INNER JOIN currencies 
+			FROM suppliers INNER JOIN currencies
 			ON suppliers.currcode = currencies.currabrev
-			INNER JOIN supptrans 
+			INNER JOIN supptrans
 			ON suppliers.supplierid = supptrans.supplierno
 			WHERE suppliers.supplierid >= '" . $_POST['FromCriteria'] . "'
 			AND suppliers.supplierid <= '" . $_POST['ToCriteria'] . "'
@@ -71,12 +71,12 @@ If (isset($_POST['PrintPDF'])
 
 	$TotBal=0;
 
-	While ($SupplierBalances = DB_fetch_array($SupplierResult,$db)){
+	while ($SupplierBalances = DB_fetch_array($SupplierResult,$db)){
 
 		$Balance = $SupplierBalances['balance'] - $SupplierBalances['afterdatetrans'] + $SupplierBalances['afterdatediffonexch'];
 		$FXBalance = $SupplierBalances['fxbalance'] - $SupplierBalances['fxafterdatetrans'];
 
-		if (ABS($Balance)>0.009 OR ABS($FXBalance)>0.009) {
+		if (ABS($Balance)>0.009 or ABS($FXBalance)>0.009) {
 
 			$DisplayBalance = locale_number_format($SupplierBalances['balance'] - $SupplierBalances['afterdatetrans'],$_SESSION['CompanyRecord']['decimalplaces']);
 			$DisplayFXBalance = locale_number_format($SupplierBalances['fxbalance'] - $SupplierBalances['fxafterdatetrans'],$SupplierBalances['currdecimalplaces']);
@@ -124,11 +124,11 @@ If (isset($_POST['PrintPDF'])
 	/*if $FromCriteria is not set then show a form to allow input	*/
 
 	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '" method="post">';
-    echo '<div>';
-    echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-	
-    echo '<table class="selection">';
-    echo '<tr>
+	echo '<div>';
+	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
+
+	echo '<table class="selection">';
+	echo '<tr>
 			<td>' . _('From Supplier Code') . ':</td>
 			<td><input type="text" maxlength="6" size="7" name="FromCriteria" value="'.$_POST['FromCriteria'].'" /></td>
 		</tr>
@@ -140,9 +140,9 @@ If (isset($_POST['PrintPDF'])
 			<td>' . _('Balances As At') . ':</td>
 			<td><select name="PeriodEnd">';
 
-	$sql = "SELECT periodno, 
-					lastdate_in_period 
-			FROM periods 
+	$sql = "SELECT periodno,
+					lastdate_in_period
+			FROM periods
 			ORDER BY periodno DESC";
 
 	$ErrMsg = _('Could not retrieve period data because');
@@ -159,8 +159,8 @@ If (isset($_POST['PrintPDF'])
 			<div class="centre">
 				<input type="submit" name="PrintPDF" value="' . _('Print PDF') . '" />
 			</div>';
-    echo '</div>
-          </form>';
+	echo '</div>
+		  </form>';
 	include('includes/footer.inc');
 }/*end of else not PrintPDF */
 

@@ -129,7 +129,7 @@ if ($NewTransfer){
 
 		$_SESSION['Transfer']->TransferItem[0]->StandardCost = $myrow['standardcost'];
 
-		if ($myrow['mbflag']=='D' OR $myrow['mbflag']=='A' OR $myrow['mbflag']=='K'){
+		if ($myrow['mbflag']=='D' or $myrow['mbflag']=='A' or $myrow['mbflag']=='K'){
 			prnMsg(_('The part entered is either or a dummy part or an assembly or a kit-set part') . '. ' . _('These parts are not physical parts and no stock holding is maintained for them') . '. ' . _('Stock Transfers are therefore not possible'),'warn');
 			echo '.<hr />';
 			echo '<a href="' . $rootpath . '/StockTransfers.php?NewTransfer=Yes">' . _('Enter another Transfer') . '</a>';
@@ -141,15 +141,15 @@ if ($NewTransfer){
 }
 
 if (isset($_POST['Quantity'])
-	AND isset($_SESSION['Transfer']->TransferItem[0]->Controlled)
-	AND $_SESSION['Transfer']->TransferItem[0]->Controlled==0){
+	and isset($_SESSION['Transfer']->TransferItem[0]->Controlled)
+	and $_SESSION['Transfer']->TransferItem[0]->Controlled==0){
 
 	$_SESSION['Transfer']->TransferItem[0]->Quantity = filter_number_format($_POST['Quantity']);
 
 }
 
 if ( isset($_POST['StockLocationFrom'])
-	AND $_POST['StockLocationFrom']!= $_SESSION['Transfer']->StockLocationFrom ){
+	and $_POST['StockLocationFrom']!= $_SESSION['Transfer']->StockLocationFrom ){
 
 	$_SESSION['Transfer']->StockLocationFrom = $_POST['StockLocationFrom'];
 	$_SESSION['Transfer']->StockLocationTo = $_POST['StockLocationTo'];
@@ -211,7 +211,7 @@ if ( isset($_POST['EnterTransfer']) ){
 			$QtyOnHandPrior = 0;
 		}
 		if ($_SESSION['ProhibitNegativeStock']==1
-			AND $QtyOnHandPrior<$_SESSION['Transfer']->TransferItem[0]->Quantity) {
+			and $QtyOnHandPrior<$_SESSION['Transfer']->TransferItem[0]->Quantity) {
 			prnMsg( _('There is insufficient stock to make this transfer and KwaMoja is setup to prevent negative stock'), 'warn');
 			include('includes/footer.inc');
 			exit;
@@ -485,7 +485,7 @@ if (isset($_POST['StockID'])) {
 echo '</td><td><input type="submit" name="CheckCode" value="'._('Check Part').'" /></td></tr>';
 
 if (isset($_SESSION['Transfer']->TransferItem[0]->ItemDescription)
-	AND mb_strlen($_SESSION['Transfer']->TransferItem[0]->ItemDescription)>1){
+	and mb_strlen($_SESSION['Transfer']->TransferItem[0]->ItemDescription)>1){
 
 	echo '<tr>
 			<td colspan="3"><font color="blue" size="3">' . $_SESSION['Transfer']->TransferItem[0]->ItemDescription . ' ('._('In Units of').' ' . $_SESSION['Transfer']->TransferItem[0]->PartUnit . ' )</font></td>
@@ -523,13 +523,13 @@ echo '<tr>
 DB_data_seek($resultStkLocs,0);
 
 while ($myrow=DB_fetch_array($resultStkLocs)){
-	if (isset($_SESSION['Transfer']) AND isset($_SESSION['Transfer']->StockLocationTo)){
+	if (isset($_SESSION['Transfer']) and isset($_SESSION['Transfer']->StockLocationTo)){
 		if ($myrow['loccode'] == $_SESSION['Transfer']->StockLocationTo){
 			 echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
 		} else {
 			 echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
 		}
-	} elseif ($myrow['loccode']==$_SESSION['UserStockLocation'] AND isset($_SESSION['Transfer'])){
+	} else if ($myrow['loccode']==$_SESSION['UserStockLocation'] and isset($_SESSION['Transfer'])){
 		 echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
 		 $_SESSION['Transfer']->StockLocationTo=$myrow['loccode'];
 	} else {
@@ -543,7 +543,7 @@ echo '<tr>
 		<td>'._('Transfer Quantity').':</td>';
 
 if (isset($_SESSION['Transfer']->TransferItem[0]->Controlled)
-	AND $_SESSION['Transfer']->TransferItem[0]->Controlled==1){
+	and $_SESSION['Transfer']->TransferItem[0]->Controlled==1){
 
 	echo '<td class="number"><input type="hidden" name="Quantity" value="' . locale_number_format($_SESSION['Transfer']->TransferItem[0]->Quantity) . '" /><a href="' . $rootpath .'/StockTransferControlled.php?StockLocationFrom='.$_SESSION['Transfer']->StockLocationFrom.'">' . $_SESSION['Transfer']->TransferItem[0]->Quantity . '</a></td></tr>';
 } elseif (isset($_SESSION['Transfer']->TransferItem[0]->Controlled)){

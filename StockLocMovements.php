@@ -21,7 +21,7 @@ echo '<table class="selection">
 $sql = "SELECT loccode, locationname FROM locations";
 $resultStkLocs = DB_query($sql,$db);
 while ($myrow=DB_fetch_array($resultStkLocs)){
-	if (isset($_POST['StockLocation']) AND $_POST['StockLocation']!='All'){
+	if (isset($_POST['StockLocation']) and $_POST['StockLocation']!='All'){
 		if ($myrow['loccode'] == $_POST['StockLocation']){
 		     echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
 		} else {
@@ -37,10 +37,10 @@ while ($myrow=DB_fetch_array($resultStkLocs)){
 
 echo '</select>';
 
-if (!isset($_POST['BeforeDate']) OR !Is_Date($_POST['BeforeDate'])){
+if (!isset($_POST['BeforeDate']) or !Is_Date($_POST['BeforeDate'])){
    $_POST['BeforeDate'] = Date($_SESSION['DefaultDateFormat']);
 }
-if (!isset($_POST['AfterDate']) OR !Is_Date($_POST['AfterDate'])){
+if (!isset($_POST['AfterDate']) or !Is_Date($_POST['AfterDate'])){
    $_POST['AfterDate'] = Date($_SESSION['DefaultDateFormat'], Mktime(0,0,0,Date('m')-1,Date('d'),Date('y')));
 }
 echo ' ' . _('Show Movements before') . ': <input type="text" name="BeforeDate" size="12" maxlength="12" value="' . $_POST['BeforeDate'] . '" />';
@@ -138,7 +138,7 @@ while ($myrow=DB_fetch_array($MovtsResult)) {
 				locale_number_format($myrow['discountpercent']*100,2),
 				locale_number_format($myrow['newqoh'],$myrow['decimalplaces']));
 	$j++;
-	If ($j == 16){
+	if ($j == 16){
 		$j=1;
 		echo $tableheader;
 	}

@@ -2,7 +2,7 @@
 /* $Id$*/
 /* definition of the Journal class */
 
-Class Journal {
+class Journal {
 
 	var $GLEntries; /*array of objects of JournalGLAnalysis class - id is the pointer */
 	var $JnlDate; /*Date the journal to be processed */
@@ -10,7 +10,7 @@ Class Journal {
 	var $GLItemCounter; /*Counter for the number of GL entires being posted to by the journal */
 	var $GLItemID;
 	var $JournalTotal; /*Running total for the journal */
-	var $BankAccounts; /*Array of bank account GLCodes that must be posted to by a bank payment or receipt 
+	var $BankAccounts; /*Array of bank account GLCodes that must be posted to by a bank payment or receipt
 				to ensure integrity for matching off vs bank stmts */
 
 	function Journal(){
@@ -23,15 +23,15 @@ Class Journal {
 	}
 
 	function Add_To_GLAnalysis($Amount, $Narrative, $GLCode, $GLActName, $tag, $assetid=1){
-		if (isset($GLCode) AND $Amount!=0){
+		if (isset($GLCode) and $Amount!=0){
 			$this->GLEntries[$this->GLItemID] = new JournalGLAnalysis($Amount, $Narrative, $this->GLItemID, $GLCode, $GLActName, $tag, $assetid);
 			$this->GLItemCounter++;
 			$this->GLItemID++;
 			$this->JournalTotal += $Amount;
-			
-			Return 1;
+
+			return 1;
 		}
-		Return 0;
+		return 0;
 	}
 
 	function remove_GLEntry($GL_ID){
@@ -42,16 +42,16 @@ Class Journal {
 
 } /* end of class defintion */
 
-Class JournalGLAnalysis {
+class JournalGLAnalysis {
 
-	Var $Amount;
-	Var $Narrative;
-	Var $GLCode;
+	var $Amount;
+	var $Narrative;
+	var $GLCode;
 	var $GLActName;
-	Var $ID;
+	var $ID;
 	var $tag;
 	var $assetid;
-	
+
 	function JournalGLAnalysis ($Amt, $Narr, $id, $GLCode, $GLActName, $tag, $assetid){
 
 /* Constructor function to add a new JournalGLAnalysis object with passed params */

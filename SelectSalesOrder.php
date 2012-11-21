@@ -188,7 +188,7 @@ if (isset($_POST['PlacePO'])){ /*user hit button to place PO for selected orders
 				if ($SupplierID != $ItemRow['supplierno']){
 				/* This order item is purchased from a different supplier so need to finish off the authorisation of the previous order and start a new order */
 
-					if ($SupplierID !='' AND $_SESSION['AutoAuthorisePO']==1) {
+					if ($SupplierID !='' and $_SESSION['AutoAuthorisePO']==1) {
 						/* if an order is/has been created already and the supplier of this item has changed - so need to finish off the order */
 						//if the user has authority to authorise the PO then it should be created as authorised
 						$AuthSQL ="SELECT authlevel
@@ -202,7 +202,7 @@ if (isset($_POST['PlacePO'])){ /*user hit button to place PO for selected orders
 							$AuthRow['authlevel'] = 0;
 						}
 
-						if (DB_num_rows($AuthResult) > 0 AND $AuthRow['authlevel'] > $Order_Value) { //user has authority to authrorise as well as create the order
+						if (DB_num_rows($AuthResult) > 0 and $AuthRow['authlevel'] > $Order_Value) { //user has authority to authrorise as well as create the order
 							$StatusComment = date($_SESSION['DefaultDateFormat']).' - ' . _('Order Created and Authorised by') . ' ' . $UserDetails . ' - '._('Auto created from sales orders') .'<br />';
 							$ErrMsg = _('Could not update purchase order status to Authorised');
 							$DbgMsg = _('The SQL that failed was');
@@ -220,7 +220,7 @@ if (isset($_POST['PlacePO'])){ /*user hit button to place PO for selected orders
 
 							prnMsg( _('You do not have permission to authorise this purchase order').'.<br />'. _('This order is for').' '.
 							$SuppRow['currcode'] . ' '. $Order_Value .'. '.
-							$AuthMessage . _('If you think this is a mistake please contact the systems administrator') . '<br />'.
+							$AuthMessage . _('if you think this is a mistake please contact the systems administrator') . '<br />'.
 							_('The order has been created with a status of pending and will require authorisation'), 'warn');
 						}
 					} //end of authorisation status settings
@@ -353,7 +353,7 @@ if (isset($_POST['PlacePO'])){ /*user hit button to place PO for selected orders
 
 			/* The last line to be purchase ordered was reach so there will be an order which is not yet completed in progress now to completed it */
 
-			if ($SupplierID !='' AND $_SESSION['AutoAuthorisePO']==1) {
+			if ($SupplierID !='' and $_SESSION['AutoAuthorisePO']==1) {
 				//if the user has authority to authorise the PO then it should be created as authorised
 				$AuthSQL ="SELECT authlevel
 							FROM purchorderauth
@@ -366,7 +366,7 @@ if (isset($_POST['PlacePO'])){ /*user hit button to place PO for selected orders
 		                    $AuthRow['authlevel'] = 0;
 				}
 
-				if (DB_num_rows($AuthResult) > 0 AND $AuthRow['authlevel'] > $Order_Value) { //user has authority to authrorise as well as create the order
+				if (DB_num_rows($AuthResult) > 0 and $AuthRow['authlevel'] > $Order_Value) { //user has authority to authrorise as well as create the order
 					$StatusComment = date($_SESSION['DefaultDateFormat']).' - ' . _('Order Created and Authorised by') . $UserDetails . ' - '._('Auto created from sales orders') .'<br />';
 					$ErrMsg = _('Could not update purchase order status to Authorised');
 					$DbgMsg = _('The SQL that failed was');
@@ -382,7 +382,7 @@ if (isset($_POST['PlacePO'])){ /*user hit button to place PO for selected orders
 						$AuthMessage = _('You can only authorise up to').' '.$SuppRow['currcode'].' '.$AuthRow['authlevel'].'.<br />';
 					}
 
-					prnMsg( _('You do not have permission to authorise this purchase order').'.<br />'. _('This order is for').' '. $SuppRow['currcode'] . ' '. $Order_Value .'. '. $AuthMessage . _('If you think this is a mistake please contact the systems administrator') . '<br />'. _('The order has been created with a status of pending and will require authorisation'), 'warn');
+					prnMsg( _('You do not have permission to authorise this purchase order').'.<br />'. _('This order is for').' '. $SuppRow['currcode'] . ' '. $Order_Value .'. '. $AuthMessage . _('if you think this is a mistake please contact the systems administrator') . '<br />'. _('The order has been created with a status of pending and will require authorisation'), 'warn');
 				}
 			} //end of authorisation status settings
 
@@ -420,7 +420,7 @@ if (isset($_GET['OrderNumber'])){
 	unset($OrderNumber);
 }
 
-if (isset($OrderNumber) AND $OrderNumber!='') {
+if (isset($OrderNumber) and $OrderNumber!='') {
 	$OrderNumber = trim($OrderNumber);
 	if (!is_numeric($OrderNumber)){
 		echo '<br />
@@ -444,7 +444,7 @@ if (isset($OrderNumber) AND $OrderNumber!='') {
 
 if (isset($_POST['SearchParts'])){
 
-	if ($_POST['Keywords'] AND $_POST['StockCode']) {
+	if ($_POST['Keywords'] and $_POST['StockCode']) {
 		echo _('Stock description keywords have been used in preference to the Stock code extract entered');
 	}
 	if ($_POST['Keywords']) {
@@ -482,7 +482,7 @@ if (isset($_POST['SearchParts'])){
 					stockmaster.units
 				ORDER BY stockmaster.stockid";
 
-	 } elseif (!isset($_POST['StockCode']) AND !isset($_POST['Keywords'])) {
+	 } elseif (!isset($_POST['StockCode']) and !isset($_POST['Keywords'])) {
 		$SQL = "SELECT stockmaster.stockid,
 					stockmaster.description,
 					stockmaster.decimalplaces,
@@ -517,7 +517,7 @@ if (!isset($StockID)) {
 	$OrdersAfterDate = Date('d/m/Y',Mktime(0,0,0,Date('m')-2,Date('d'),Date('Y')));
      */
 
-	if (!isset($OrderNumber) OR $OrderNumber==''){
+	if (!isset($OrderNumber) or $OrderNumber==''){
 
 		echo '<table class="selection">
 			<tr>
@@ -653,7 +653,7 @@ if (isset($StockItemsResult)
   else {
 
 	//figure out the SQL required from the inputs available
-	if (isset($_POST['Quotations']) AND $_POST['Quotations']=='Orders_Only'){
+	if (isset($_POST['Quotations']) and $_POST['Quotations']=='Orders_Only'){
 		$Quotations = 0;
 	} else {
 		$Quotations =1;
@@ -668,8 +668,7 @@ if (isset($StockItemsResult)
 		$SalesMan = ' LIKE \'%\'';
 	}
 
-	if (isset($OrderNumber)
-		AND $OrderNumber !='') {
+	if (isset($OrderNumber) and $OrderNumber !='') {
 			$SQL = "SELECT salesorders.orderno,
 					debtorsmaster.name,
 					custbranch.brname,
@@ -866,7 +865,7 @@ if (isset($StockItemsResult)
 
 		echo '<table cellpadding="2" width="95%" class="selection">';
 
-		if (isset($_POST['Quotations']) AND $_POST['Quotations']=='Orders_Only'){
+		if (isset($_POST['Quotations']) and $_POST['Quotations']=='Orders_Only'){
 			$tableheader = '<tr>
 								<th>' . _('Modify') . '</th>
 								<th>' . _('Invoice') . '</th>
@@ -879,7 +878,7 @@ if (isset($StockItemsResult)
 								<th>' . _('Delivery To') . '</th>
 								<th>' . _('Order Total') . '<br />' . $_SESSION['CompanyRecord']['currencydefault'] . '</th>';
 
-			if ($AuthRow['cancreate']==0){ //If cancreate==0 then this means the user can create orders hmmm!!
+			if ($AuthRow['cancreate']==0){ //if cancreate==0 then this means the user can create orders hmmm!!
 				$tableheader .= '<th>' . _('Place PO') . '</th></tr>';
 			} else {
 				$tableheader .= '</tr>';
@@ -939,7 +938,7 @@ if (isset($StockItemsResult)
 			if ($_POST['Quotations']=='Orders_Only'){
 
 			 /*Check authority to create POs if user has authority then show the check boxes to select sales orders to place POs for otherwise don't provide this option */
-				if ($AuthRow['cancreate']==0 AND $myrow['poplaced']==0){ //cancreate==0 if the user can create POs and not already placed
+				if ($AuthRow['cancreate']==0 and $myrow['poplaced']==0){ //cancreate==0 if the user can create POs and not already placed
 				printf('<td><a href="%s">%s</a></td>
         				<td><a href="%s">' . _('Invoice') . '</a></td>
         				<td><a target="_blank" href="%s">' . $PrintText . ' <img src="' .$rootpath.'/css/'.$theme.'/images/pdf.png" title="' . _('Click for PDF') . '" alt="" /></a></td>
@@ -1024,7 +1023,7 @@ if (isset($StockItemsResult)
 		//end of page full new headings if
 		}//end while loop through orders to display
 		if ($_POST['Quotations']=='Orders_Only'
-			AND $AuthRow['cancreate']==0){ //cancreate==0 means can create POs
+			and $AuthRow['cancreate']==0){ //cancreate==0 means can create POs
 
 			echo '<tr><td colspan="11" class="number"><input type="submit" name="PlacePO" value="' . _('Place') . " " . _('PO') . '" onclick="return confirm(\'' . _('This will create purchase orders for all the items on the checked sales orders above, based on the preferred supplier purchasing data held in the system. Are You Absolutely Sure?') . '\');" /></td</tr>';
 		}

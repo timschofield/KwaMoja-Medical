@@ -4,7 +4,7 @@
 
 include('includes/session.inc');
 
-if (!isset($_POST['FromCat'])  OR $_POST['FromCat']=='') {
+if (!isset($_POST['FromCat'])  or $_POST['FromCat']=='') {
 	$title=_('Low Gross Profit Sales');
 }
 $debug=0;
@@ -19,7 +19,7 @@ if (isset($_POST['PrintPDF'])) {
 
 	$title = _('Low GP sales') . ' - ' . _('Problem Report');
 
-	if (! Is_Date($_POST['FromDate']) OR ! Is_Date($_POST['ToDate'])){
+	if (! Is_Date($_POST['FromDate']) or ! Is_Date($_POST['ToDate'])){
 		include('includes/header.inc');
 		prnMsg(_('The dates entered must be in the format') . ' '  . $_SESSION['DefaultDateFormat'],'error');
 		include('includes/footer.inc');
@@ -41,15 +41,15 @@ if (isset($_POST['PrintPDF'])) {
 					debtorsmaster.name
 				FROM stockmaster INNER JOIN stockmoves
 					ON stockmaster.stockid=stockmoves.stockid
-				INNER JOIN systypes 
+				INNER JOIN systypes
 					ON stockmoves.type=systypes.typeid
-				INNER JOIN debtorsmaster 
+				INNER JOIN debtorsmaster
 					ON stockmoves.debtorno=debtorsmaster.debtorno
 				WHERE stockmoves.trandate >= '" . FormatDateForSQL($_POST['FromDate']) . "'
 				AND stockmoves.trandate <= '" . FormatDateForSQL($_POST['ToDate']) . "'
 				AND ((stockmoves.price*(1-stockmoves.discountpercent)) - (stockmaster.materialcost + stockmaster.labourcost + stockmaster.overheadcost))/(stockmoves.price*(1-stockmoves.discountpercent)) <=" . $_POST['GPMin']/100 . "
 				ORDER BY stockmaster.stockid";
-	
+
 	$LowGPSalesResult = DB_query($SQL,$db,'','',false,false);
 
 	if (DB_error_no($db) !=0) {
@@ -118,7 +118,7 @@ if (isset($_POST['PrintPDF'])) {
 	echo '<p class="page_title_text"><img src="'.$rootpath.'/css/'.$theme.'/images/transactions.png" title="' . $title . '" alt="" />' . ' '
 		. _('Low Gross Profit Report') . '</p>';
 
-	if (!isset($_POST['FromDate']) OR !isset($_POST['ToDate'])) {
+	if (!isset($_POST['FromDate']) or !isset($_POST['ToDate'])) {
 
 	/*if $FromDate is not set then show a form to allow input */
 		$_POST['FromDate']=Date($_SESSION['DefaultDateFormat']);

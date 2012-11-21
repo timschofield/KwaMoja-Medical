@@ -44,7 +44,7 @@ if (isset($_POST['submit'])) {
 		echo prnMsg(_('The tab code must be twenty characters or less long'),'error');
 		$Errors[$i] = 'TypeTabCode';
 		$i++;
-	}elseif (ContainsIllegalCharacters($_POST['TypeTabCode']) OR mb_strpos($_POST['TypeTabCode'],' ')>0){
+	}elseif (ContainsIllegalCharacters($_POST['TypeTabCode']) or mb_strpos($_POST['TypeTabCode'],' ')>0){
 		$InputError = 1;
 		prnMsg(_('The petty cash tab type code cannot contain any of the illegal characters'),'error');
 	} elseif (mb_strlen($_POST['TypeTabDescription']) >50) {
@@ -54,7 +54,7 @@ if (isset($_POST['submit'])) {
 		$i++;
 	}
 
-	if (isset($SelectedTab) AND $InputError !=1) {
+	if (isset($SelectedTab) and $InputError !=1) {
 
 		$sql = "UPDATE pctypetabs
 			SET typetabdescription = '" . $_POST['TypeTabDescription'] . "'
@@ -125,11 +125,11 @@ if (isset($_POST['submit'])) {
 		prnMsg(_('Cannot delete this tab type because tabs have been created using this tab type'),'error');
 		echo '<br />';
 		echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '">';
-        echo '<div>';
+		echo '<div>';
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 		echo '<br /><div class="centre"><input type="submit" name="Return" value="' . _('Return to list of tab types') . '" /></div>';
 		echo '</div>
-              </form>';
+			  </form>';
 		include('includes/footer.inc');
 		exit;
 	} else {
@@ -194,12 +194,11 @@ if (isset($SelectedTab)) {
 if (! isset($_GET['delete'])) {
 
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '">';
-    echo '<div>';
+	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<br />'; //Main table
 
-	if ( isset($SelectedTab) AND $SelectedTab!='' )
-	{
+	if ( isset($SelectedTab) and $SelectedTab!='' ) {
 
 		$sql = "SELECT typetabcode,
 						typetabdescription
@@ -250,7 +249,7 @@ if (! isset($_GET['delete'])) {
 			<input type="submit" name="submit" value="' . _('Accept') . '" />
 			<input type="submit" name="Cancel" value="' . _('Cancel') . '" />
 		</div>
-        </div>
+		</div>
 		</form>';
 
 } // end if user wish to delete

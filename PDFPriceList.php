@@ -3,11 +3,11 @@
 
 include('includes/session.inc');
 
-If (isset($_POST['PrintPDF'])
-	AND isset($_POST['FromCriteria'])
-	AND mb_strlen($_POST['FromCriteria'])>=1
-	AND isset($_POST['ToCriteria'])
-	AND mb_strlen($_POST['ToCriteria'])>=1){
+if (isset($_POST['PrintPDF'])
+	and isset($_POST['FromCriteria'])
+	and mb_strlen($_POST['FromCriteria'])>=1
+	and isset($_POST['ToCriteria'])
+	and mb_strlen($_POST['ToCriteria'])>=1){
 
 	include('includes/PDFStarter.php');
 
@@ -148,7 +148,7 @@ If (isset($_POST['PrintPDF'])
 	$CatTot_Val=0;
 	$Pos=$Page_Height-$Top_Margin-$YPos+20;
 
-	While ($PriceList = DB_fetch_array($PricesResult,$db)){
+	while ($PriceList = DB_fetch_array($PricesResult,$db)){
 
 		if ($CurrCode != $PriceList['currabrev']){
 			$FontSize=10;
@@ -198,7 +198,7 @@ If (isset($_POST['PrintPDF'])
 				$LeftOvers = $pdf->addTextWrap($Left_Margin+80+47+47+130+65+25,$YPos,60,$FontSize,_('All'),'left');
 			}
 
-		} else If ($_POST['CustomerSpecials']=='Full Description'){
+		} else if ($_POST['CustomerSpecials']=='Full Description'){
 
 			if(file_exists($_SESSION['part_pics_dir'] . '/' .$PriceList['stockid'].'.jpg') ) {
 				$img = imagecreatefromjpeg($_SESSION['part_pics_dir'] . '/' .$PriceList['stockid'].'.jpg');
@@ -267,7 +267,7 @@ If (isset($_POST['PrintPDF'])
 
 		$sql='SELECT categoryid, categorydescription FROM stockcategory ORDER BY categoryid';
 		$CatResult= DB_query($sql,$db);
-		While ($myrow = DB_fetch_array($CatResult)){
+		while ($myrow = DB_fetch_array($CatResult)){
 			echo "<option value='" . $myrow['categoryid'] . "'>" . $myrow['categoryid'] . ' - ' . $myrow['categorydescription'] . '</option>';
 		}
 		echo '</select></td></tr>';
@@ -278,7 +278,7 @@ If (isset($_POST['PrintPDF'])
 		/*Set the index for the categories result set back to 0 */
 		DB_data_seek($CatResult,0);
 
-		While ($myrow = DB_fetch_array($CatResult)){
+		while ($myrow = DB_fetch_array($CatResult)){
 			echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categoryid'] . ' - ' . $myrow['categorydescription'] . '</option>';
 		}
 		echo '</select></td></tr>';

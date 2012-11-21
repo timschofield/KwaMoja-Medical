@@ -31,11 +31,11 @@ echo "<br />&nbsp;<a href='" . $rootpath . "/Z_poAdmin.php'>" . _('Back to the t
 echo '<br /><br />&nbsp;' . _('Utility to create a new language file');
 echo '<br />&nbsp;' . _('Current language is') . ' ' . $_SESSION['Language'];
 
-if (isset($_POST['submit']) AND isset($_POST['NewLanguage'])) {
+if (isset($_POST['submit']) and isset($_POST['NewLanguage'])) {
 
 	if(mb_strlen($_POST['NewLanguage'])<5
-		OR mb_strlen($_POST['NewLanguage'])>5
-		OR mb_substr($_POST['NewLanguage'],2,1)!='_'){
+		or mb_strlen($_POST['NewLanguage'])>5
+		or mb_substr($_POST['NewLanguage'],2,1)!='_'){
 
 		prnMsg(_('Languages must be in the format of a two character country code an underscore _ and a two character language code in upper case'),'error');
 	} else {

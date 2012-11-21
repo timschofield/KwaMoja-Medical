@@ -32,8 +32,6 @@ echo '<a href="' . $rootpath . '/SelectSupplier.php?">' . _('Back to Suppliers')
 
 echo '<p class="page_title_text"><img src="'.$rootpath.'/css/'.$theme.'/images/supplier.png" title="' . _('Supplier') . '" alt="" />' . ' ' . _('Supplier') . ' : ' . $_SESSION['SupplierID'] . _(' has been selected') . '</p><br />';
 
-
-
 if (isset($_POST['submit'])) {
 
 	//initialise no input errors assumed initially before we test
@@ -259,7 +257,7 @@ $ThemeDirectory = dir('css/');
 
 while (false != ($ThemeName = $ThemeDirectory->read())){
 
-	if (is_dir('css/' . $ThemeName) AND $ThemeName != '.' AND $ThemeName != '..' AND $ThemeName != '.svn'){
+	if (is_dir('css/' . $ThemeName) and $ThemeName != '.' and $ThemeName != '..' and $ThemeName != '.svn'){
 
 		if (isset($_POST['Theme']) and $_POST['Theme'] == $ThemeName){
 			echo '<option selected="selected" value="' . $ThemeName . '">' . $ThemeName . '</option>';
@@ -272,7 +270,6 @@ while (false != ($ThemeName = $ThemeDirectory->read())){
 }
 
 echo '</select></td></tr>';
-
 
 echo '<tr>
 	<td>' . _('Language') . ':</td>

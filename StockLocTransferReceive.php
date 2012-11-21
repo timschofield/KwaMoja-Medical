@@ -26,7 +26,7 @@ if(isset($_POST['ProcessTransfer'])){
 	$InputError = False; /*Start off hoping for the best */
 	$i=0;
 	$TotalQuantity = 0;
-	foreach ($_SESSION['Transfer']->TransferItem AS $TrfLine) {
+	foreach ($_SESSION['Transfer']->TransferItem as $TrfLine) {
 		if (is_numeric(filter_number_format($_POST['Qty' . $i]))){
 		/*Update the quantity received from the inputs */
 			$_SESSION['Transfer']->TransferItem[$i]->Quantity= round(filter_number_format($_POST['Qty' . $i]),$_SESSION['Transfer']->TransferItem[$i]->DecimalPlaces);
@@ -58,7 +58,7 @@ if(isset($_POST['ProcessTransfer'])){
 	if (!$InputError){
 	/*All inputs must be sensible so make the stock movement records and update the locations stocks */
 
-		foreach ($_SESSION['Transfer']->TransferItem AS $TrfLine) {
+		foreach ($_SESSION['Transfer']->TransferItem as $TrfLine) {
 			if ($TrfLine->Quantity >=0){
 				$Result = DB_Txn_Begin($db);
 
@@ -436,7 +436,7 @@ if (isset($_SESSION['Transfer'])){
 
 	echo $tableheader;
 	$k=0;
-	foreach ($_SESSION['Transfer']->TransferItem AS $TrfLine) {
+	foreach ($_SESSION['Transfer']->TransferItem as $TrfLine) {
 		if ($k==1){
 			echo '<tr class="EvenTableRows">';
 			$k=0;
@@ -449,12 +449,12 @@ if (isset($_SESSION['Transfer'])){
 			<td>' . $TrfLine->ItemDescription . '</td>';
 
 		echo '<td class="number">' . locale_number_format($TrfLine->ShipQty, $TrfLine->DecimalPlaces) . '</td>';
-		if (isset($_POST['Qty' . $i]) AND is_numeric(filter_number_format($_POST['Qty' . $i]))){
-			
+		if (isset($_POST['Qty' . $i]) and is_numeric(filter_number_format($_POST['Qty' . $i]))){
+
 			$_SESSION['Transfer']->TransferItem[$i]->Quantity= round(filter_number_format($_POST['Qty' . $i]),$TrfLine->DecimalPlaces);
-			
+
 			$Qty = round(filter_number_format($_POST['Qty' . $i]),$TrfLine->DecimalPlaces);
-		
+
 		} else if ($TrfLine->Controlled==1) {
 			if (sizeOf($TrfLine->SerialItems)==0) {
 				$Qty = 0;

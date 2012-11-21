@@ -2,7 +2,7 @@
 /* $Id$*/
 /* definition of the Payment class */
 
-Class Payment {
+class Payment {
 
 	var $GLItems; /*array of objects of Payment class - id is the pointer */
 	var $Account; /*Bank account GL Code Paid from */
@@ -41,26 +41,26 @@ Class Payment {
 
 	}
 
-	function Add_To_GLAnalysis($Amount, 
-								$Narrative, 
-								$GLCode, 
-								$GLActName, 
-								$Tag, 
+	function Add_To_GLAnalysis($Amount,
+								$Narrative,
+								$GLCode,
+								$GLActName,
+								$Tag,
 								$Cheque){
-									
-		if (isset($GLCode) AND $Amount!=0){
-			$this->GLItems[$this->GLItemCounter] = new PaymentGLAnalysis($Amount, 
-																		$Narrative, 
-																		$this->GLItemCounter, 
-																		$GLCode, 
-																		$GLActName, 
-																		$Tag, 
+
+		if (isset($GLCode) and $Amount!=0){
+			$this->GLItems[$this->GLItemCounter] = new PaymentGLAnalysis($Amount,
+																		$Narrative,
+																		$this->GLItemCounter,
+																		$GLCode,
+																		$GLActName,
+																		$Tag,
 																		$Cheque);
 			$this->GLItemCounter++;
 			$this->Amount += $Amount;
-			Return 1;
+			return 1;
 		}
-		Return 0;
+		return 0;
 	}
 
 	function remove_GLItem($GL_ID){
@@ -69,7 +69,7 @@ Class Payment {
 
 } /* end of class defintion */
 
-Class PaymentGLAnalysis {
+class PaymentGLAnalysis {
 
 	var $Amount;	/* in currency of the payment*/
 	var $Narrative;
@@ -79,12 +79,12 @@ Class PaymentGLAnalysis {
 	var $Tag;
 	var $Cheque;
 
-	function PaymentGLAnalysis ($Amt, 
-								$Narr, 
-								$id, 
-								$GLCode, 
-								$GLActName, 
-								$Tag, 
+	function PaymentGLAnalysis ($Amt,
+								$Narr,
+								$id,
+								$GLCode,
+								$GLActName,
+								$Tag,
 								$Cheque){
 
 /* Constructor function to add a new PaymentGLAnalysis object with passed params */

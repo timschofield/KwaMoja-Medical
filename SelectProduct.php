@@ -46,7 +46,7 @@ if (DB_num_rows($result1) == 0) {
 }
 // end of showing search facilities
 /* displays item options if there is one and only one selected */
-if (!isset($_POST['Search']) AND (isset($_POST['Select']) OR isset($_SESSION['SelectedStockItem']))) {
+if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['SelectedStockItem']))) {
 	if (isset($_POST['Select'])) {
 		$_SESSION['SelectedStockItem'] = $_POST['Select'];
 		$StockID = $_POST['Select'];
@@ -134,11 +134,11 @@ if (!isset($_POST['Search']) AND (isset($_POST['Select']) OR isset($_SESSION['Se
 			<td class="select">' . locale_number_format($myrow['kgs'], 3) . '</td>
 			<th class="number">' . _('EOQ') . ':</th>
 			<td class="select">' . locale_number_format($myrow['eoq'], $myrow['decimalplaces']) . '</td></tr>';
-	if (in_array($PricesSecurity, $_SESSION['AllowedPageSecurityTokens']) OR !isset($PricesSecurity)) {
+	if (in_array($PricesSecurity, $_SESSION['AllowedPageSecurityTokens']) or !isset($PricesSecurity)) {
 		echo '<tr><th colspan="2">' . _('Sell Price') . ':</th>
 				<td class="select">';
 		$PriceResult = DB_query("SELECT typeabbrev,
-										price 
+										price
 								FROM prices
 								WHERE currabrev ='" . $_SESSION['CompanyRecord']['currencydefault'] . "'
 								AND typeabbrev = '" . $_SESSION['DefaultPriceList'] . "'
@@ -146,7 +146,7 @@ if (!isset($_POST['Search']) AND (isset($_POST['Select']) OR isset($_SESSION['Se
 								AND branchcode=''
 								AND startdate <= '". Date('Y-m-d') ."' AND ( enddate >= '" . Date('Y-m-d') . "' OR enddate = '0000-00-00')
 								AND stockid='" . $StockID . "'", $db);
-		if ($myrow['mbflag'] == 'K' OR $myrow['mbflag'] == 'A') {
+		if ($myrow['mbflag'] == 'K' or $myrow['mbflag'] == 'A') {
 			$CostResult = DB_query("SELECT SUM(bom.quantity * (stockmaster.materialcost+stockmaster.labourcost+stockmaster.overheadcost)) AS cost
 									FROM bom INNER JOIN stockmaster
 									ON bom.component=stockmaster.stockid
@@ -190,7 +190,7 @@ if (!isset($_POST['Search']) AND (isset($_POST['Select']) OR isset($_SESSION['Se
 				echo '</td></tr>';
 			}
 		}
-		if ($myrow['mbflag'] == 'K' OR $myrow['mbflag'] == 'A') {
+		if ($myrow['mbflag'] == 'K' or $myrow['mbflag'] == 'A') {
 			$CostResult = DB_query("SELECT SUM(bom.quantity * (stockmaster.materialcost+stockmaster.labourcost+stockmaster.overheadcost)) AS cost
 									FROM bom INNER JOIN
 										stockmaster
@@ -358,8 +358,8 @@ echo '<tr>
 	</table>'; //end of nested table
 echo '</td>'; //end cell of master table
 
-if (($myrow['mbflag'] == 'B' OR ($myrow['mbflag'] == 'M'))
-	AND (in_array($SuppliersSecurity, $_SESSION['AllowedPageSecurityTokens']))){
+if (($myrow['mbflag'] == 'B' or ($myrow['mbflag'] == 'M'))
+	and (in_array($SuppliersSecurity, $_SESSION['AllowedPageSecurityTokens']))){
 
 	echo '<td style="width:50%" valign="top"><table>
 			<tr><th style="width:50%">' . _('Supplier') . '</th>
@@ -439,7 +439,7 @@ if ($Its_A_Kitset_Assembly_Or_Dummy == false) {
 	echo '<a href="' . $rootpath . '/StockAdjustments.php?StockID=' . $StockID . '">' . _('Quantity Adjustments') . '</a><br />';
 	echo '<a href="' . $rootpath . '/StockTransfers.php?StockID=' . $StockID . '&amp;NewTransfer=true">' . _('Location Transfers') . '</a><br />';
 	//show the item image if it has been uploaded
-	if( isset($StockID) AND file_exists($_SESSION['part_pics_dir'] . '/' .$StockID.'.jpg') ) {
+	if( isset($StockID) and file_exists($_SESSION['part_pics_dir'] . '/' .$StockID.'.jpg') ) {
 		if ($_SESSION['ShowStockidOnImages'] == "0"){
 			echo '<div class="centre"><img src="' . $rootpath . '/GetStockImage.php?automake=1&amp;textcolor=FFFFF0&amp;bgcolor=007F00&amp;width=120&amp;height=120&amp;StockID=' . $StockID . '&amp;text=""' . '" />';
 		}else{
@@ -447,8 +447,8 @@ if ($Its_A_Kitset_Assembly_Or_Dummy == false) {
 		}
 	}
 	if (($myrow['mbflag'] == 'B')
-		AND (in_array($SuppliersSecurity, $_SESSION['AllowedPageSecurityTokens']))
-		AND $myrow['discontinued']==0){
+		and (in_array($SuppliersSecurity, $_SESSION['AllowedPageSecurityTokens']))
+		and $myrow['discontinued']==0){
 		echo '<br />';
 		$SuppResult = DB_query("SELECT suppliers.suppname,
 										suppliers.supplierid,
@@ -490,8 +490,8 @@ if ($Its_A_Labour_Item == True) {
 if (!$Its_A_Kitset) {
 	echo '<a href="' . $rootpath . '/Prices.php?Item=' . $StockID . '">' . _('Maintain Pricing') . '</a><br />';
 	if (isset($_SESSION['CustomerID'])
-		AND $_SESSION['CustomerID'] != ''
-		AND mb_strlen($_SESSION['CustomerID']) > 0) {
+		and $_SESSION['CustomerID'] != ''
+		and mb_strlen($_SESSION['CustomerID']) > 0) {
 		echo '<a href="' . $rootpath . '/Prices_Customer.php?Item=' . $StockID . '">' . _('Special Prices for customer') . ' - ' . $_SESSION['CustomerID'] . '</a><br />';
 	}
 	echo '<a href="' . $rootpath . '/DiscountCategories.php?StockID=' . $StockID . '">' . _('Maintain Discount Category') . '</a><br />';
@@ -556,17 +556,17 @@ echo '</td></tr></table><br />';
 echo '<div class="centre"><input type="submit" name="Search" value="' . _('Search Now') . '" /></div><br />';
 echo '<script  type="text/javascript">defaultControl(document.forms[0].StockCode);</script>';
 echo '</div>
-      </form>';
+	  </form>';
 // query for list of record(s)
-if(isset($_POST['Go']) OR isset($_POST['Next']) OR isset($_POST['Previous'])) {
+if(isset($_POST['Go']) or isset($_POST['Next']) or isset($_POST['Previous'])) {
 	$_POST['Search']='Search';
 }
-if (isset($_POST['Search']) OR isset($_POST['Go']) OR isset($_POST['Next']) OR isset($_POST['Previous'])) {
-	if (!isset($_POST['Go']) AND !isset($_POST['Next']) AND !isset($_POST['Previous'])) {
+if (isset($_POST['Search']) or isset($_POST['Go']) or isset($_POST['Next']) or isset($_POST['Previous'])) {
+	if (!isset($_POST['Go']) and !isset($_POST['Next']) and !isset($_POST['Previous'])) {
 		// if Search then set to first page
 		$_POST['PageOffset'] = 1;
 	}
-	if ($_POST['Keywords'] AND $_POST['StockCode']) {
+	if ($_POST['Keywords'] and $_POST['StockCode']) {
 		prnMsg (_('Stock description keywords have been used in preference to the Stock code extract entered'), 'info');
 	}
 	if ($_POST['Keywords']) {
@@ -663,7 +663,7 @@ if (isset($_POST['Search']) OR isset($_POST['Go']) OR isset($_POST['Next']) OR i
 						stockmaster.decimalplaces
 					ORDER BY stockmaster.discontinued, stockmaster.stockid";
 		}
-	} elseif (!isset($_POST['StockCode']) AND !isset($_POST['Keywords'])) {
+	} elseif (!isset($_POST['StockCode']) and !isset($_POST['Keywords'])) {
 		if ($_POST['StockCat'] == 'All') {
 			$SQL = "SELECT stockmaster.stockid,
 						stockmaster.description,
@@ -718,9 +718,9 @@ if (isset($_POST['Search']) OR isset($_POST['Go']) OR isset($_POST['Next']) OR i
 }
 /* end query for list of records */
 /* display list if there is more than one record */
-if (isset($searchresult) AND !isset($_POST['Select'])) {
+if (isset($searchresult) and !isset($_POST['Select'])) {
 	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '" method="post">';
-    echo '<div>';
+	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	$ListCount = DB_num_rows($searchresult);
 	if ($ListCount > 0) {
@@ -776,7 +776,7 @@ if (isset($searchresult) AND !isset($_POST['Select'])) {
 		if (DB_num_rows($searchresult) <> 0) {
 			DB_data_seek($searchresult, ($_POST['PageOffset'] - 1) * $_SESSION['DisplayRecordsMax']);
 		}
-		while (($myrow = DB_fetch_array($searchresult)) AND ($RowIndex <> $_SESSION['DisplayRecordsMax'])) {
+		while (($myrow = DB_fetch_array($searchresult)) and ($RowIndex <> $_SESSION['DisplayRecordsMax'])) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;
@@ -803,7 +803,7 @@ if (isset($searchresult) AND !isset($_POST['Select'])) {
 				<td><a target="_blank" href="' . $rootpath . '/StockStatus.php?StockID=' . $myrow['stockid'].'">' . _('View') . '</a></td>
 				</tr>';
 			$j++;
-			if ($j == 20 AND ($RowIndex + 1 != $_SESSION['DisplayRecordsMax'])) {
+			if ($j == 20 and ($RowIndex + 1 != $_SESSION['DisplayRecordsMax'])) {
 				$j = 1;
 				echo $TableHeader;
 			}
@@ -812,9 +812,9 @@ if (isset($searchresult) AND !isset($_POST['Select'])) {
 		}
 		//end of while loop
 		echo '</table>
-              </div>
-              </form>
-              <br />';
+			  </div>
+			  </form>
+			  <br />';
 	}
 }
 /* end display list if there is more than one record */

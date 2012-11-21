@@ -19,7 +19,7 @@ if (isset($_GET['Item'])){
 	$Item = trim(mb_strtoupper($_POST['Item']));
 }
 
-if (!isset($_POST['TypeAbbrev']) OR $_POST['TypeAbbrev']==''){
+if (!isset($_POST['TypeAbbrev']) or $_POST['TypeAbbrev']==''){
 	$_POST['TypeAbbrev'] = $_SESSION['DefaultPriceList'];
 }
 
@@ -43,7 +43,6 @@ if (DB_num_rows($result)==0){
 	$InputError=1;
 }
 
-
 if (!isset($Item)){
 	echo '<p>';
 	prnMsg (_('An item must first be selected before this page is called') . '. ' . _('The product selection page should call this page with a valid product code'),'error');
@@ -66,7 +65,7 @@ if (isset($_POST['submit'])) {
 	//first off validate inputs sensible
 	// This gives some date in 1999?? $ZeroDate = Date($_SESSION['DefaultDateFormat'],Mktime(0,0,0,0,0,0));
 
-	if (!is_numeric(filter_number_format($_POST['Price'])) OR $_POST['Price']=='') {
+	if (!is_numeric(filter_number_format($_POST['Price'])) or $_POST['Price']=='') {
 		$InputError = 1;
 		prnMsg( _('The price entered must be numeric'),'error');
 	}
@@ -76,15 +75,15 @@ if (isset($_POST['submit'])) {
 	}
 	if ($_POST['EndDate']!='') {
 		if (FormatDateForSQL($_POST['EndDate'])!='0000-00-00'){
-			if (! Is_Date($_POST['EndDate']) AND $_POST['EndDate']!=''){
+			if (! Is_Date($_POST['EndDate']) and $_POST['EndDate']!=''){
 				$InputError =1;
 				prnMsg (_('The date this price is be in effect to must be entered in the format') . ' ' . $_SESSION['DefaultDateFormat'],'error');
 			}
-			if (Date1GreaterThanDate2($_POST['StartDate'],$_POST['EndDate']) AND $_POST['EndDate']!='' AND FormatDateForSQL($_POST['EndDate'])!='0000-00-00'){
+			if (Date1GreaterThanDate2($_POST['StartDate'],$_POST['EndDate']) and $_POST['EndDate']!='' and FormatDateForSQL($_POST['EndDate'])!='0000-00-00'){
 				$InputError =1;
 				prnMsg (_('The end date is expected to be after the start date, enter an end date after the start date for this price'),'error');
 			}
-			if (Date1GreaterThanDate2(Date($_SESSION['DefaultDateFormat']),$_POST['EndDate']) AND $_POST['EndDate']!='' AND FormatDateForSQL($_POST['EndDate'])!='0000-00-00'){
+			if (Date1GreaterThanDate2(Date($_SESSION['DefaultDateFormat']),$_POST['EndDate']) and $_POST['EndDate']!='' and FormatDateForSQL($_POST['EndDate'])!='0000-00-00'){
 				$InputError =1;
 				prnMsg(_('The end date is expected to be after today. There is no point entering a new price where the effective date is before today!'),'error');
 			}
@@ -112,9 +111,7 @@ if (isset($_POST['submit'])) {
 		$InputError =1;
 	}
 
-
-
-	if (isset($_POST['OldTypeAbbrev']) AND isset($_POST['OldCurrAbrev']) AND mb_strlen($Item)>1 AND $InputError !=1) {
+	if (isset($_POST['OldTypeAbbrev']) and isset($_POST['OldCurrAbrev']) and mb_strlen($Item)>1 and $InputError !=1) {
 
 		/* Need to see if there is also a price entered that has an end date after the start date of this price and if so we will need to update it so there is no ambiguity as to which price will be used*/
 
@@ -185,7 +182,7 @@ if (isset($_POST['submit'])) {
 //Always do this stuff
 
 $sql = "SELECT currencies.currency,
-        	salestypes.sales_type,
+			salestypes.sales_type,
 		prices.price,
 		prices.stockid,
 		prices.typeabbrev,
@@ -280,7 +277,7 @@ if (isset($_GET['Edit'])){
 	/*the price sent with the get is sql format price so no need to filter */
 	$_POST['Price'] = $_GET['Price'];
 	$_POST['StartDate'] = ConvertSQLDate($_GET['StartDate']);
-	if ($_GET['EndDate']=='' OR $_GET['EndDate']=='0000-00-00'){
+	if ($_GET['EndDate']=='' or $_GET['EndDate']=='0000-00-00'){
 		$_POST['EndDate'] = '';
 	} else {
 		$_POST['EndDate'] = ConvertSQLDate($_GET['EndDate']);
@@ -340,13 +337,13 @@ echo '<tr><td>' . _('Price Effective To Date')  . ':</td>
 			<td><input type="text" class="date" alt="'.$_SESSION['DefaultDateFormat'].'" name="EndDate" size="10" maxlength="10" value="' . $_POST['EndDate'] . '" />';
 echo '<input type="hidden" name="Item" value="' . $Item.'" /></td></tr>';
 echo '<tr><td>' . _('Price') . ':</td>
-          <td>
-          <input type="text" class="number" name="Price" size="12" maxlength="11" value="';
-          if (isset($_POST['Price'])) {
-	         echo $_POST['Price'];
-          }
-          echo '" />
-     </td></tr>
+		  <td>
+		  <input type="text" class="number" name="Price" size="12" maxlength="11" value="';
+		  if (isset($_POST['Price'])) {
+			 echo $_POST['Price'];
+		  }
+		  echo '" />
+	 </td></tr>
 </table>
 <br /><div class="centre">
 <input type="submit" name="submit" value="' . _('Enter') . '/' . _('Amend Price') . '" />
@@ -354,7 +351,7 @@ echo '<tr><td>' . _('Price') . ':</td>
 
 
 echo '</div>
-      </form>';
+	  </form>';
 include('includes/footer.inc');
 
 

@@ -15,7 +15,7 @@ if (!isset($_SESSION['DatabaseName'])){ //need to get the database name from the
 			echo '<br /><a href="index.php">' . _('Back to login page') . '</a>';
 			exit;
 		}
-		if (is_dir('companies/' . $_POST['CompanyNameField']) AND $_POST['CompanyNameField'] != '..'){
+		if (is_dir('companies/' . $_POST['CompanyNameField']) and $_POST['CompanyNameField'] != '..'){
 			$_SESSION['DatabaseName'] = $_POST['CompanyNameField'];
 			include_once ($PathPrefix . 'includes/ConnectDB_' . $dbType . '.inc');
 		} else {

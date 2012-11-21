@@ -7,11 +7,11 @@ include('includes/barcodepack/class.code128.php');
 $PtsPerMM = 2.83465; //pdf points per mm
 
 
-if ((isset($_POST['ShowLabels']) OR isset($_POST['SelectAll']))
-	AND isset($_POST['FromCriteria'])
-	AND mb_strlen($_POST['FromCriteria'])>=1
-	AND isset($_POST['ToCriteria'])
-	AND mb_strlen($_POST['ToCriteria'])>=1){
+if ((isset($_POST['ShowLabels']) or isset($_POST['SelectAll']))
+	and isset($_POST['FromCriteria'])
+	and mb_strlen($_POST['FromCriteria'])>=1
+	and isset($_POST['ToCriteria'])
+	and mb_strlen($_POST['ToCriteria'])>=1){
 
 	$title = _('Print Labels');
 	include('includes/header.inc');
@@ -22,7 +22,7 @@ if ((isset($_POST['ShowLabels']) OR isset($_POST['SelectAll']))
 					prices.price,
 					currencies.decimalplaces
 			FROM stockmaster INNER JOIN	stockcategory
-   			     ON stockmaster.categoryid=stockcategory.categoryid
+   				 ON stockmaster.categoryid=stockcategory.categoryid
 			INNER JOIN prices
 				ON stockmaster.stockid=prices.stockid
 			INNER JOIN currencies
@@ -82,7 +82,7 @@ if ((isset($_POST['ShowLabels']) OR isset($_POST['SelectAll']))
 				<td>' . $LabelRow['description'] . '</td>
 				<td class="number">' . locale_number_format($LabelRow['price'],$LabelRow['decimalplaces']) . '</td>
 				<td>';
-		if (isset($_POST['SelectAll']) AND isset($_POST['CheckAll'])) {
+		if (isset($_POST['SelectAll']) and isset($_POST['CheckAll'])) {
 			echo '<input type="checkbox" checked="checked" name="PrintLabel' . $i .'" />';
 		} else {
 			echo '<input type="checkbox" name="PrintLabel' . $i .'" />';
@@ -118,8 +118,8 @@ if ((isset($_POST['ShowLabels']) OR isset($_POST['SelectAll']))
 	exit;
 }
 if (isset($_POST['PrintLabels'])
-	AND isset($_POST['NoOfLabels'])
-	AND $_POST['NoOfLabels']>0){
+	and isset($_POST['NoOfLabels'])
+	and $_POST['NoOfLabels']>0){
 	$NoOfLabels = 0;
 	for ($i=0;$i < $_POST['NoOfLabels'];$i++){
 		if (isset($_POST['PrintLabel'.$i])){
@@ -130,7 +130,7 @@ if (isset($_POST['PrintLabels'])
 		prnMsg(_('There are no labels selected to print'),'info');
 	}
 }
-if (isset($_POST['PrintLabels']) AND $NoOfLabels>0) {
+if (isset($_POST['PrintLabels']) and $NoOfLabels>0) {
 
 	$result = DB_query("SELECT 	description,
 								pagewidth*" . $PtsPerMM . " as page_width,
@@ -269,9 +269,9 @@ if (isset($_POST['PrintLabels']) AND $NoOfLabels>0) {
 	include('includes/header.inc');
 
 	echo '<p class="page_title_text"><img src="' . $rootpath . '/css/' . $theme . '/images/customer.png" title="' . _('Price Labels') . '" alt="" />
-         ' . ' ' . _('Print Price Labels') . '</p>';
+		 ' . ' ' . _('Print Price Labels') . '</p>';
 
-	if (!isset($_POST['FromCriteria']) OR !isset($_POST['ToCriteria'])) {
+	if (!isset($_POST['FromCriteria']) or !isset($_POST['ToCriteria'])) {
 
 	/*if $FromCriteria is not set then show a form to allow input	*/
 
@@ -299,18 +299,18 @@ if (isset($_POST['PrintLabels']) AND $NoOfLabels>0) {
 		echo '</select></td></tr>';
 
 		echo '<tr><td>' . _('To Inventory Category Code'). ':</td>
-                  <td><select name="ToCriteria">';
+				  <td><select name="ToCriteria">';
 
 		/*Set the index for the categories result set back to 0 */
 		DB_data_seek($CatResult,0);
 
-		While ($myrow = DB_fetch_array($CatResult)){
+		while ($myrow = DB_fetch_array($CatResult)){
 			echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categoryid'] . ' - ' . $myrow['categorydescription'] . '</option>';
 		}
 		echo '</select></td></tr>';
 
 		echo '<tr><td>' . _('For Sales Type/Price List').':</td>
-                  <td><select name="SalesType">';
+				  <td><select name="SalesType">';
 		$sql = "SELECT sales_type, typeabbrev FROM salestypes";
 		$SalesTypesResult=DB_query($sql,$db);
 
@@ -324,7 +324,7 @@ if (isset($_POST['PrintLabels']) AND $NoOfLabels>0) {
 		echo '</select></td></tr>';
 
 		echo '<tr><td>' . _('For Currency').':</td>
-                  <td><select name="Currency">';
+				  <td><select name="Currency">';
 		$sql = "SELECT currabrev, country, currency FROM currencies";
 		$CurrenciesResult=DB_query($sql,$db);
 
@@ -338,8 +338,8 @@ if (isset($_POST['PrintLabels']) AND $NoOfLabels>0) {
 		echo '</select></td></tr>';
 
 		echo '<tr><td>' . _('Effective As At') . ':</td>';
-        echo '<td><input type="text" size="11" class="date"	alt="' . $_SESSION['DefaultDateFormat'] . '" name="EffectiveDate" value="' . Date($_SESSION['DefaultDateFormat']) . '" />';
-        echo '</td></tr>';
+		echo '<td><input type="text" size="11" class="date"	alt="' . $_SESSION['DefaultDateFormat'] . '" name="EffectiveDate" value="' . Date($_SESSION['DefaultDateFormat']) . '" />';
+		echo '</td></tr>';
 
 		echo '</table>
 				<br />

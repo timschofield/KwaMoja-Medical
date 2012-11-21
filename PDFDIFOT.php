@@ -7,16 +7,16 @@ include('includes/SQL_CommonFunctions.inc');
 
 $InputError=0;
 
-if (isset($_POST['FromDate']) AND !Is_Date($_POST['FromDate'])){
+if (isset($_POST['FromDate']) and !Is_Date($_POST['FromDate'])){
 	$msg = _('The date from must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
 	$InputError=1;
 }
-if (isset($_POST['ToDate']) AND !Is_Date($_POST['ToDate'])){
+if (isset($_POST['ToDate']) and !Is_Date($_POST['ToDate'])){
 	$msg =  _('The date to must be specified in the format') . ' ' .  $_SESSION['DefaultDateFormat'];
 	$InputError=1;
 }
 
-if (!isset($_POST['FromDate']) OR !isset($_POST['ToDate']) OR $InputError==1){
+if (!isset($_POST['FromDate']) or !isset($_POST['ToDate']) or $InputError==1){
 
 	 $title = _('Delivery In Full On Time (DIFOT) Report');
 	 include ('includes/header.inc');
@@ -93,7 +93,7 @@ if (!isset($_POST['FromDate']) OR !isset($_POST['ToDate']) OR $InputError==1){
 	 include('includes/ConnectDB.inc');
 }
 
-if ($_POST['CategoryID']=='All' AND $_POST['Location']=='All'){
+if ($_POST['CategoryID']=='All' and $_POST['Location']=='All'){
 	$sql= "SELECT salesorders.orderno,
 				salesorders.deliverydate,
 				salesorderdetails.actualdispatchdate,
@@ -111,7 +111,7 @@ if ($_POST['CategoryID']=='All' AND $_POST['Location']=='All'){
 			AND salesorders.deliverydate <='" . FormatDateForSQL($_POST['ToDate']) . "'
 			AND (TO_DAYS(salesorderdetails.actualdispatchdate) - TO_DAYS(salesorders.deliverydate)) >'" . filter_number_format($_POST['DaysAcceptable']) ."'";
 
-} elseif ($_POST['CategoryID']!='All' AND $_POST['Location']=='All') {
+} elseif ($_POST['CategoryID']!='All' and $_POST['Location']=='All') {
 				$sql= "SELECT salesorders.orderno,
 							salesorders.deliverydate,
 							salesorderdetails.actualdispatchdate,
@@ -131,7 +131,7 @@ if ($_POST['CategoryID']=='All' AND $_POST['Location']=='All'){
 						AND (TO_DAYS(salesorderdetails.actualdispatchdate)
 							- TO_DAYS(salesorders.deliverydate)) >'" . filter_number_format($_POST['DaysAcceptable'])."'";
 
-} elseif ($_POST['CategoryID']=='All' AND $_POST['Location']!='All') {
+} elseif ($_POST['CategoryID']=='All' and $_POST['Location']!='All') {
 
 				$sql= "SELECT salesorders.orderno,
 							salesorders.deliverydate,
@@ -152,7 +152,7 @@ if ($_POST['CategoryID']=='All' AND $_POST['Location']=='All'){
 						AND (TO_DAYS(salesorderdetails.actualdispatchdate)
 								- TO_DAYS(salesorders.deliverydate)) >'" . filter_number_format($_POST['DaysAcceptable']) . "'";
 
-} elseif ($_POST['CategoryID']!='All' AND $_POST['Location']!='All'){
+} elseif ($_POST['CategoryID']!='All' and $_POST['Location']!='All'){
 
 				$sql= "SELECT salesorders.orderno,
 							salesorders.deliverydate,
@@ -241,14 +241,14 @@ while ($myrow=DB_fetch_array($Result)){
 $YPos-=$line_height;
 $LeftOvers = $pdf->addTextWrap($Left_Margin,$YPos,200,$FontSize,_('Total number of differences') . ' ' . locale_number_format($TotalDiffs), 'left');
 
-if ($_POST['CategoryID']=='All' AND $_POST['Location']=='All'){
+if ($_POST['CategoryID']=='All' and $_POST['Location']=='All'){
 	$sql = "SELECT COUNT(salesorderdetails.orderno)
 			FROM salesorderdetails INNER JOIN debtortrans
 				ON salesorderdetails.orderno=debtortrans.order_
 			WHERE debtortrans.trandate>='" . FormatDateForSQL($_POST['FromDate']) . "'
 			AND debtortrans.trandate <='" . FormatDateForSQL($_POST['ToDate']) . "'";
 
-} elseif ($_POST['CategoryID']!='All' AND $_POST['Location']=='All') {
+} elseif ($_POST['CategoryID']!='All' and $_POST['Location']=='All') {
 	$sql = "SELECT COUNT(salesorderdetails.orderno)
 		FROM salesorderdetails INNER JOIN debtortrans
 			ON salesorderdetails.orderno=debtortrans.order_ INNER JOIN stockmaster
@@ -257,7 +257,7 @@ if ($_POST['CategoryID']=='All' AND $_POST['Location']=='All'){
 		AND debtortrans.trandate <='" . FormatDateForSQL($_POST['ToDate']) . "'
 		AND stockmaster.categoryid='" . $_POST['CategoryID'] . "'";
 
-} elseif ($_POST['CategoryID']=='All' AND $_POST['Location']!='All'){
+} elseif ($_POST['CategoryID']=='All' and $_POST['Location']!='All'){
 
 	$sql = "SELECT COUNT(salesorderdetails.orderno)
 		FROM salesorderdetails INNER JOIN debtortrans
@@ -267,7 +267,7 @@ if ($_POST['CategoryID']=='All' AND $_POST['Location']=='All'){
 		AND debtortrans.trandate <='" . FormatDateForSQL($_POST['ToDate']) . "'
 		AND salesorders.fromstkloc='" . $_POST['Location'] . "'";
 
-} elseif ($_POST['CategoryID'] !='All' AND $_POST['Location'] !='All'){
+} elseif ($_POST['CategoryID'] !='All' and $_POST['Location'] !='All'){
 
 	$sql = "SELECT COUNT(salesorderdetails.orderno)
 		FROM salesorderdetails INNER JOIN debtortrans ON salesorderdetails.orderno=debtortrans.order_

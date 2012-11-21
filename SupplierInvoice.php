@@ -29,7 +29,7 @@ if (!isset($_SESSION['SuppTrans']->SupplierName)) {
 }
 
 echo '<p class="page_title_text"><img src="'.$rootpath.'/css/'.$theme.'/images/transactions.png" title="' . _('Supplier Invoice') . '" alt="" />
-     ' . ' ' . _('Enter Supplier Invoice:') . ' ' . $SupplierName;
+	 ' . ' ' . _('Enter Supplier Invoice:') . ' ' . $SupplierName;
 echo '</p>';
 if (isset($_GET['SupplierID']) and $_GET['SupplierID']!=''){
 
@@ -194,7 +194,7 @@ if (!isset($_POST['PostInvoice'])){
 			<br />';
 		exit;
 	}
-	if (isset($_POST['Shipts']) AND $_POST['Shipts'] == _('Shipments')){
+	if (isset($_POST['Shipts']) and $_POST['Shipts'] == _('Shipments')){
 		/*This ensures that any changes in the page are stored in the session before calling the shipments page */
 		echo '<meta http-equiv="Refresh" content="0; url=' . $rootpath . '/SuppShiptChgs.php">';
 		echo '<div class="centre">' . _('You should automatically be forwarded to the entry of invoices against shipments page') .
@@ -202,7 +202,7 @@ if (!isset($_POST['PostInvoice'])){
 			'<a href="' . $rootpath . '/SuppShiptChgs.php">' . _('click here') . '</a> ' . _('to continue') . '.</div><br />';
 		exit;
 	}
-	if (isset($_POST['GL']) AND $_POST['GL'] == _('General Ledger')){
+	if (isset($_POST['GL']) and $_POST['GL'] == _('General Ledger')){
 		/*This ensures that any changes in the page are stored in the session before calling the shipments page */
 		echo '<meta http-equiv="Refresh" content="0; url=' . $rootpath . '/SuppTransGLAnalysis.php">';
 		echo '<div class="centre">' . _('You should automatically be forwarded to the entry of invoices against the general ledger page') .
@@ -210,7 +210,7 @@ if (!isset($_POST['PostInvoice'])){
 			'<a href="' . $rootpath . '/SuppTransGLAnalysis.php">' . _('click here') . '</a> ' . _('to continue') . '.</div><br />';
 		exit;
 	}
-	if (isset($_POST['Contracts']) AND $_POST['Contracts'] == _('Contracts')){
+	if (isset($_POST['Contracts']) and $_POST['Contracts'] == _('Contracts')){
 		/*This ensures that any changes in the page are stored in the session before calling the shipments page */
 		echo '<meta http-equiv="refresh" content="0; url=' . $rootpath . '/SuppContractChgs.php">';
 		echo '<div class="centre">' . _('You should automatically be forwarded to the entry of invoices against contracts page') .
@@ -249,7 +249,7 @@ if (!isset($_POST['PostInvoice'])){
 		</table>';
 
 	echo '<br /><form action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '" method="post" id="form1">';
-    echo '<div>';
+	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	echo '<br /><table class="selection">';
@@ -425,7 +425,7 @@ if (!isset($_POST['PostInvoice'])){
 			echo '<tr>
 					<td>' . $Contract->ContractRef . '</td>
 					<td>' . $Contract->Narrative . '</td>
-					<td class="number">' .    locale_number_format($Contract->Amount,$_SESSION['SuppTrans']->CurrDecimalPlaces) . '</td>
+					<td class="number">' .	locale_number_format($Contract->Amount,$_SESSION['SuppTrans']->CurrDecimalPlaces) . '</td>
 				</tr>';
 
 			$TotalContractsValue += $Contract->Amount;
@@ -456,7 +456,7 @@ if (!isset($_POST['PostInvoice'])){
 					</tr>';
 			$TableHeader = '<tr>
 								<th>' . _('Account') . '</th>
-								<th>' . _('Account Name') .     '</th>
+								<th>' . _('Account Name') .	 '</th>
 								<th>' . _('Narrative') . '</th>
 								<th>' . _('Tag') . '</th>
 								<th>' . _('Amount') . '<br />' . _('in') . ' ' . $_SESSION['SuppTrans']->CurrCode . '</th>
@@ -530,7 +530,7 @@ if (!isset($_POST['PostInvoice'])){
 		/*If a tax rate is entered that is not the same as it was previously then recalculate automatically the tax amounts */
 
 		if (!isset($_POST['OverRideTax'])
-			OR $_POST['OverRideTax']=='Auto'){
+			or $_POST['OverRideTax']=='Auto'){
 
 			echo  ' <input type="text" class="number" name="TaxRate' . $Tax->TaxCalculationOrder . '" maxlength="4" size="4" value="' . locale_number_format($_SESSION['SuppTrans']->Taxes[$Tax->TaxCalculationOrder]->TaxRate * 100,$_SESSION['SuppTrans']->CurrDecimalPlaces)  . '" />%';
 
@@ -589,8 +589,8 @@ if (!isset($_POST['PostInvoice'])){
 				<input type="submit" name="PostInvoice" value="' . _('Enter Invoice') . '" />
 			</div>';
 
-    echo '</div>
-          </form>';
+	echo '</div>
+		  </form>';
 } else { // $_POST['PostInvoice'] is set so do the postings -and dont show the button to process
 
 /*First do input reasonableness checks
@@ -601,7 +601,7 @@ then do the updates and inserts to process the invoice entered */
 		if (isset($_POST['TaxRate'  . $Tax->TaxCalculationOrder])){
 			$_SESSION['SuppTrans']->Taxes[$Tax->TaxCalculationOrder]->TaxRate = filter_number_format($_POST['TaxRate'  . $Tax->TaxCalculationOrder])/100;
 		}
-		if ($_POST['OverRideTax']=='Auto' OR !isset($_POST['OverRideTax'])){
+		if ($_POST['OverRideTax']=='Auto' or !isset($_POST['OverRideTax'])){
 			/*Now recaluclate the tax depending on the method */
 			/*Now recaluclate the tax depending on the method */
 			if ($Tax->TaxOnTax ==1){
@@ -835,7 +835,7 @@ then do the updates and inserts to process the invoice entered */
 			foreach ($_SESSION['SuppTrans']->GRNs as $EnteredGRN){
 
 				if (mb_strlen($EnteredGRN->ShiptRef) == 0
-					OR $EnteredGRN->ShiptRef == 0){
+					or $EnteredGRN->ShiptRef == 0){
 				/*so its not a GRN shipment item
 				  enter the GL entry to reverse the GRN suspense entry created on delivery
 				  * at standard cost/or weighted average cost used on delivery */
@@ -871,7 +871,7 @@ then do the updates and inserts to process the invoice entered */
 					account specified in the purchase order detail record */
 
 					if ($PurchPriceVar !=0){ /* don't bother with this lot if there is no difference ! */
-						if (mb_strlen($EnteredGRN->ItemCode)>0 OR $EnteredGRN->ItemCode != ''){ /*so it is a stock item */
+						if (mb_strlen($EnteredGRN->ItemCode)>0 or $EnteredGRN->ItemCode != ''){ /*so it is a stock item */
 
 							/*need to get the stock category record for this stock item - this is function in SQL_CommonFunctions.inc */
 							$StockGLCode = GetStockGLCode($EnteredGRN->ItemCode,$db);
@@ -1042,7 +1042,7 @@ then do the updates and inserts to process the invoice entered */
 				$LocalTotal += ($EnteredGRN->ChgPrice * $EnteredGRN->This_QuantityInv) / $_SESSION['SuppTrans']->ExRate;
 			} /* end of GRN postings */
 
-			if ($debug == 1 AND ( abs($_SESSION['SuppTrans']->OvAmount/ $_SESSION['SuppTrans']->ExRate) - $LocalTotal) >0.009999){
+			if ($debug == 1 and ( abs($_SESSION['SuppTrans']->OvAmount/ $_SESSION['SuppTrans']->ExRate) - $LocalTotal) >0.009999){
 
 				echo '<p>' . _('The total posted to the debit accounts is') . ' ' .
 						$LocalTotal . ' ' . _('but the sum of OvAmount converted at ExRate') . ' = ' .
@@ -1051,8 +1051,8 @@ then do the updates and inserts to process the invoice entered */
 
 			foreach ($_SESSION['SuppTrans']->Taxes as $Tax){
 				/* Now the TAX account */
-                                if ($Tax->TaxOvAmount <>0){
-                                	$SQL = "INSERT INTO gltrans (type,
+								if ($Tax->TaxOvAmount <>0){
+									$SQL = "INSERT INTO gltrans (type,
 												typeno,
 												trandate,
 												periodno,
@@ -1069,10 +1069,10 @@ then do the updates and inserts to process the invoice entered */
 										 $Tax->TaxOvAmount  . ' @ ' . _('exch rate') . ' ' . $_SESSION['SuppTrans']->ExRate . "',
 												'" . ($Tax->TaxOvAmount/ $_SESSION['SuppTrans']->ExRate) . "')";
 
-				        $ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The general ledger transaction for the tax could not be added because');
-				        $DbgMsg = _('The following SQL to insert the GL transaction was used');
-				        $Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, True);
-                                }
+						$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The general ledger transaction for the tax could not be added because');
+						$DbgMsg = _('The following SQL to insert the GL transaction was used');
+						$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, True);
+								}
 
 			} /*end of loop to post the tax */
 			/* Now the control account */
@@ -1134,7 +1134,7 @@ then do the updates and inserts to process the invoice entered */
 		$SuppTransID = DB_Last_Insert_ID($db,'supptrans','id');
 
 		/* Insert the tax totals for each tax authority where tax was charged on the invoice */
-		foreach ($_SESSION['SuppTrans']->Taxes AS $TaxTotals) {
+		foreach ($_SESSION['SuppTrans']->Taxes as $TaxTotals) {
 
 			$SQL = "INSERT INTO supptranstaxes (supptransid,
 												taxauthid,
@@ -1176,7 +1176,7 @@ then do the updates and inserts to process the invoice entered */
 			$DbgMsg = _('The following SQL to update the GRN quantity invoiced was used');
 			$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, True);
 
-			if (mb_strlen($EnteredGRN->ShiptRef)>0 AND $EnteredGRN->ShiptRef != '0'){
+			if (mb_strlen($EnteredGRN->ShiptRef)>0 and $EnteredGRN->ShiptRef != '0'){
 				/* insert the shipment charge records */
 				$SQL = "INSERT INTO shipmentcharges (shiptref,
 													transtype,
@@ -1201,7 +1201,7 @@ then do the updates and inserts to process the invoice entered */
 
 				if ($PurchPriceVar !=0){ /* don't bother with any of this lot if there is no difference ! */
 
-					if (mb_strlen($EnteredGRN->ItemCode)>0 OR $EnteredGRN->ItemCode != ''){ /*so it is a stock item */
+					if (mb_strlen($EnteredGRN->ItemCode)>0 or $EnteredGRN->ItemCode != ''){ /*so it is a stock item */
 
 						/*We need to:
 						 *
@@ -1277,7 +1277,7 @@ then do the updates and inserts to process the invoice entered */
 																AND periodno='" . $PeriodAllocated . "'",
 																$db);
 									if (DB_num_rows($SalesAnalResult)>0){
-										while ($SalesAnalRow = DB_fetch_array($SalesAnalResult) AND $QuantityVarianceAllocated >0){
+										while ($SalesAnalRow = DB_fetch_array($SalesAnalResult) and $QuantityVarianceAllocated >0){
 											if ($SalesAnalRow['qty']<=$QuantityVarianceAllocated){
 												$QuantityVarianceAllocated -= $SalesAnalRow['qty'];
 												$QuantityAllocated = $SalesAnalRow['qty'];
@@ -1324,7 +1324,7 @@ then do the updates and inserts to process the invoice entered */
 													$db);
 								$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The stock movements for invoices cannot be updated for the cost variances on this purchase invoice');
 								$QuantityVarianceAllocated = $EnteredGRN->This_QuantityInv;
-								while ($StkMoveRow = DB_fetch_array($result) AND $QuantityVarianceAllocated >0){
+								while ($StkMoveRow = DB_fetch_array($result) and $QuantityVarianceAllocated >0){
 									if ($StkMoveRow['qty']+$QuantityVarianceAllocated>0){
 										if ($StkMoveRow['type']==10) { //its a sales invoice
 											$result = DB_query("UPDATE stockmoves

@@ -47,18 +47,18 @@ if ($_GET['Action'] == 'Enter'){
 			$BarCode = 'BarCode_' . $i;
 			$StockID = 'StockID_' . $i;
 			$Reference = 'Ref_' . $i;
-			
+
 			if (strlen($_POST[$BarCode])>0){
 				$sql = "SELECT stockmaster.stockid
 								FROM stockmaster
 								WHERE stockmaster.barcode='". $_POST[$BarCode] ."'";
-			
+
 				$ErrMsg = _('Could not determine if the part being ordered was a kitset or not because');
 				$DbgMsg = _('The sql that was used to determine if the part being ordered was a kitset or not was ');
 				$KitResult = DB_query($sql, $db,$ErrMsg,$DbgMsg);
 				$myrow=DB_fetch_array($KitResult);
-			
-				$_POST[$StockID] = strtoupper($myrow['stockid']);		
+
+				$_POST[$StockID] = strtoupper($myrow['stockid']);
 			}
 
 			if (mb_strlen($_POST[$StockID])>0){
@@ -135,7 +135,7 @@ if ($_GET['Action'] == 'Enter'){
 //END OF action=ENTER
 } elseif ($_GET['Action']=='View'){
 
-	if (isset($_POST['DEL']) AND is_array($_POST['DEL']) ){
+	if (isset($_POST['DEL']) and is_array($_POST['DEL']) ){
 		foreach ($_POST['DEL'] as $id=>$val){
 			if ($val == 'on'){
 				$sql = "DELETE FROM stockcounts WHERE id='".$id."'";

@@ -12,7 +12,7 @@ if (isset($_GET['SupplierID'])) {
 	$_SESSION['SupplierID']=$_GET['SupplierID'];
 }
 // only get geocode information if integration is on, and supplier has been selected
-if ($_SESSION['geocode_integration'] == 1 AND isset($_SESSION['SupplierID'])) {
+if ($_SESSION['geocode_integration'] == 1 and isset($_SESSION['SupplierID'])) {
 	$sql = "SELECT * FROM geocode_param WHERE 1";
 	$ErrMsg = _('An error occurred in retrieving the information');;
 	$result = DB_query($sql, $db, $ErrMsg);
@@ -72,15 +72,15 @@ if (isset($_POST['Select'])) { /*User has hit the button selecting a supplier */
 	unset($_POST['Next']);
 	unset($_POST['Previous']);
 }
-if (isset($_POST['Search']) 
-	OR isset($_POST['Go']) 
-	OR isset($_POST['Next']) 
+if (isset($_POST['Search'])
+	OR isset($_POST['Go'])
+	OR isset($_POST['Next'])
 	OR isset($_POST['Previous'])) {
-	
-	if (mb_strlen($_POST['Keywords']) > 0 AND mb_strlen($_POST['SupplierCode']) > 0) {
+
+	if (mb_strlen($_POST['Keywords']) > 0 and mb_strlen($_POST['SupplierCode']) > 0) {
 		prnMsg( _('Supplier name keywords have been used in preference to the Supplier code extract entered'), 'info' );
 	}
-	if ($_POST['Keywords'] == '' AND $_POST['SupplierCode'] == '') {
+	if ($_POST['Keywords'] == '' and $_POST['SupplierCode'] == '') {
 		$SQL = "SELECT supplierid,
 					suppname,
 					currcode,
@@ -159,7 +159,7 @@ if (isset($_SESSION['SupplierID'])) {
 	echo '<a href="' . $rootpath . '/SupplierInquiry.php?SupplierID=' . $_SESSION['SupplierID'] . '">' . _('Supplier Account Inquiry') . '</a>
 		<br />
 		<br />';
-	
+
 	echo '<br /><a href="' . $rootpath . '/PO_SelectOSPurchOrder.php?SelectedSupplier=' . $_SESSION['SupplierID'] . '">' . _('Add / Receive / View Outstanding Purchase Orders') . '</a>';
 	echo '<br /><a href="' . $rootpath . '/PO_SelectPurchOrder.php?SelectedSupplier=' . $_SESSION['SupplierID'] . '">' . _('View All Purchase Orders') . '</a><br />';
 	wikiLink('Supplier', $_SESSION['SupplierID']);
@@ -224,7 +224,7 @@ if (isset($_POST['SupplierCode'])) {
 echo '</td></tr>
 		</table>
 		<br /><div class="centre"><input type="submit" name="Search" value="' . _('Search Now') . '" /></div>';
-//if (isset($result) AND !isset($SingleSupplierReturned)) {
+//if (isset($result) and !isset($SingleSupplierReturned)) {
 if (isset($_POST['Search'])) {
 	$ListCount = DB_num_rows($result);
 	$ListPageMax = ceil($ListCount / $_SESSION['DisplayRecordsMax']);
@@ -279,7 +279,7 @@ if (isset($_POST['Search'])) {
 	if (DB_num_rows($result) <> 0) {
 		DB_data_seek($result, ($_POST['PageOffset'] - 1) * $_SESSION['DisplayRecordsMax']);
 	}
-	while (($myrow = DB_fetch_array($result)) AND ($RowIndex <> $_SESSION['DisplayRecordsMax'])) {
+	while (($myrow = DB_fetch_array($result)) and ($RowIndex <> $_SESSION['DisplayRecordsMax'])) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;

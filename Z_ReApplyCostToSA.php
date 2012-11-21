@@ -32,7 +32,7 @@ echo '</select>';
 echo '<br /><input type="submit" name="UpdateSalesAnalysis" value="' . _('Update Sales Analysis Costs') .'" /></div>';
 echo '</div></form>';
 
-if (isset($_POST['UpdateSalesAnalysis']) AND $_POST['PeriodNo']!=0){
+if (isset($_POST['UpdateSalesAnalysis']) and $_POST['PeriodNo']!=0){
 	$sql = "SELECT stockmaster.stockid,
 			materialcost+overheadcost+labourcost AS standardcost,
 			stockmaster.mbflag

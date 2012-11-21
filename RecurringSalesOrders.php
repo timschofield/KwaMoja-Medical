@@ -156,7 +156,7 @@ if (isset($_GET['NewRecurringOrder'])){
 	}
 }
 
-if ((!isset($_SESSION['Items'.$identifier]) OR $_SESSION['Items'.$identifier]->ItemsOrdered == 0) AND $NewRecurringOrder=='Yes'){
+if ((!isset($_SESSION['Items'.$identifier]) or $_SESSION['Items'.$identifier]->ItemsOrdered == 0) and $NewRecurringOrder=='Yes'){
 	prnMsg(_('A new recurring order can only be created if an order template has already been created from the normal order entry screen') . '. ' . _('To enter an order template select sales order entry from the orders tab of the main menu'),'error');
 	include('includes/footer.inc');
 	exit;
@@ -181,22 +181,22 @@ if (isset($_POST['DeleteRecurringOrder'])){
 	include('includes/footer.inc');
 	exit;
 }
-If (isset($_POST['Process'])) {
+if (isset($_POST['Process'])) {
 	$Result = DB_Txn_Begin($db);
 	$InputErrors =0;
-	If (!Is_Date($_POST['StartDate'])){
+	if (!Is_Date($_POST['StartDate'])){
 		$InputErrors =1;
 		prnMsg(_('The last recurrence or start date of this recurring order must be a valid date in the format') . ' ' . $_SESSION['DefaultDateFormat'],'error');
 	}
-	If (!Is_Date($_POST['StopDate'])){
+	if (!Is_Date($_POST['StopDate'])){
 		$InputErrors =1;
 		prnMsg(_('The end date of this recurring order must be a valid date in the format') . ' ' . $_SESSION['DefaultDateFormat'],'error');
 	}
-	If (Date1GreaterThanDate2 ($_POST['StartDate'],$_POST['StopDate'])){
+	if (Date1GreaterThanDate2 ($_POST['StartDate'],$_POST['StopDate'])){
 		$InputErrors =1;
 		prnMsg(_('The end date of this recurring order must be after the start date'),'error');
 	}
-	if (isset($_POST['MakeRecurringOrder']) AND $_POST['Quotation']==1){
+	if (isset($_POST['MakeRecurringOrder']) and $_POST['Quotation']==1){
 		$InputErrors =1;
 		prnMsg( _('A recurring order cannot be made from a quotation'),'error');
 	}
@@ -261,7 +261,7 @@ If (isset($_POST['Process'])) {
 			$InsertQryResult = DB_query($HeaderSQL,$db,$ErrMsg,$DbgMsg,true);
 
 			$RecurrOrderNo = DB_Last_Insert_ID($db,'recurringsalesorders','recurrorderno');
-			echo 'xxx'.$RecurrOrderNo;
+
 			$StartOf_LineItemsSQL = "INSERT INTO recurrsalesorderdetails (recurrorderno,
 																			stkcode,
 																			unitprice,

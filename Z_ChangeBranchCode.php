@@ -24,7 +24,7 @@ if (isset($_POST['ProcessCustomerChange'])){
 		include('includes/footer.inc');
 		exit;
 	}
-	if (ContainsIllegalCharacters($_POST['NewBranchCode']) OR mb_strstr($_POST['NewBranchCode'],' ')){
+	if (ContainsIllegalCharacters($_POST['NewBranchCode']) or mb_strstr($_POST['NewBranchCode'],' ')){
 		prnMsg(_('The new customer branch code cannot contain') . ' - & . ' . _('or a space'),'error');
 		include('includes/footer.inc');
 		exit;
@@ -185,7 +185,7 @@ if (isset($_POST['ProcessCustomerChange'])){
 	$sql = "DELETE FROM custbranch
 					WHERE debtorno='" . $_POST['DebtorNo'] . "'
 					AND branchcode='" . $_POST['OldBranchCode'] . "'";
-			
+
 	$ErrMsg = _('The SQL to delete the old customer branch record failed because');
 	$result = DB_query($sql,$db,$ErrMsg,$DbgMsg,true,true);
 	$result = DB_ReinstateForeignKeys($db);

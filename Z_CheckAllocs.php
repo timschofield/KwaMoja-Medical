@@ -103,7 +103,7 @@ while ($myrow = DB_fetch_array($result)){
 				locale_number_format($myrow1['amt'],$CurrDecimalPlaces));
 	
 		$RowCounter++;
-		If ($RowCounter == 12){
+		if ($RowCounter == 12){
 			$RowCounter=1;
 			echo $tableheader;
 		}

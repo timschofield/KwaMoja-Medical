@@ -22,7 +22,7 @@ if (isset($_GET['ParentCategory'])){
 	$ParentCategory = mb_strtoupper($_POST['ParentCategory']);
 }
 
-if(isset($ParentCategory) AND $ParentCategory == 0 ) {
+if(isset($ParentCategory) and $ParentCategory == 0 ) {
 	unset($ParentCategory);
 }
 
@@ -32,7 +32,7 @@ if (isset($_GET['EditName'])){
 	$EditName = mb_strtoupper($_POST['EditName']);
 }
 
-if (isset($SelectedCategory) AND isset($_FILES['ItemPicture']) AND $_FILES['ItemPicture']['name'] !='') {
+if (isset($SelectedCategory) and isset($_FILES['ItemPicture']) and $_FILES['ItemPicture']['name'] !='') {
 
 	$result    = $_FILES['ItemPicture']['error'];
  	$UploadTheFile = 'Yes'; //Assume all is well to start off with
@@ -67,7 +67,7 @@ if (isset($SelectedCategory) AND isset($_FILES['ItemPicture']) AND $_FILES['Item
 
 
 
-if (isset($_POST['submit'])  AND $EditName == 1 ) { // Creating or updating a category
+if (isset($_POST['submit']) and $EditName == 1 ) { // Creating or updating a category
 
 	//initialise no input errors assumed initially before we test
 	$InputError = 0;
@@ -77,7 +77,7 @@ if (isset($_POST['submit'])  AND $EditName == 1 ) { // Creating or updating a ca
 
 	//first off validate inputs sensible
 
-	if (mb_strlen($_POST['SalesCatName']) >20 OR trim($_POST['SalesCatName'])=='') {
+	if (mb_strlen($_POST['SalesCatName']) >20 or trim($_POST['SalesCatName'])=='') {
 		$InputError = 1;
 		prnMsg(_('The Sales category description must be twenty characters or less long'),'error');
 	}
@@ -113,7 +113,7 @@ if (isset($_POST['submit'])  AND $EditName == 1 ) { // Creating or updating a ca
 	unset($_POST['SalesCatName']);
 	unset($EditName);
 
-} elseif (isset($_GET['delete']) AND $EditName == 1) {
+} elseif (isset($_GET['delete']) and $EditName == 1) {
 //the link to delete a selected record was clicked instead of the submit button
 
 // PREVENT DELETES IF DEPENDENT RECORDS IN 'StockMaster'
@@ -140,7 +140,7 @@ if (isset($_POST['submit'])  AND $EditName == 1 ) { // Creating or updating a ca
 	} //end if stock category used in debtor transactions
 	unset($_GET['delete']);
 	unset($EditName);
-} elseif( isset($_POST['submit'])  && isset($_POST['AddStockID']) ) {
+} elseif( isset($_POST['submit'])  and isset($_POST['AddStockID']) ) {
 	$sql = "INSERT INTO salescatprod (stockid,
 										salescatid
 							) VALUES ('". $_POST['AddStockID']."',
@@ -174,9 +174,9 @@ if (isset($ParentCategory)) {
 }
 
 $LastParentName = '';
-for($Buzy = (isset($TmpParentID) AND ($TmpParentID != 0));
+for($Buzy = (isset($TmpParentID) and ($TmpParentID != 0));
 	$Buzy == true;
-	$Buzy = (isset($TmpParentID) AND ($TmpParentID != 0)) ) {
+	$Buzy = (isset($TmpParentID) and ($TmpParentID != 0)) ) {
 	$sql = "SELECT parentcatid, salescatname FROM salescat WHERE salescatid='".$TmpParentID."'";
 	$result = DB_query($sql,$db);
 	if( $result ) {
@@ -203,7 +203,7 @@ echo '<br /><div class="centre"><i>' . _('Selected Sales Category Path') . '</i>
 // ----------------------------------------------------------------------------------------
 // We will always display Categories
 
-/* It could still be the second time the page has been run and a record has been selected for modification - SelectedCategory will exist because it was sent with the new call. If its the first time the page has been displayed with no parameters
+/* It could still be the second time the page has been run and a record has been selected for modification - SelectedCategory will exist because it was sent with the new call. if its the first time the page has been displayed with no parameters
 then none of the above are true and the list of stock categorys will be displayed with
 links to delete or edit each. These will call the same page again and allow update/input
 or deletion of the records*/
@@ -288,9 +288,9 @@ echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />'
 if (isset($SelectedCategory)) {
 	//editing an existing stock category
 
-	$sql = "SELECT salescatid, 
-				parentcatid, 
-				salescatname 
+	$sql = "SELECT salescatid,
+				parentcatid,
+				salescatname
 			FROM salescat
 			WHERE salescatid='". $SelectedCategory."'";
 
@@ -355,7 +355,7 @@ $sql = "SELECT stockid FROM salescatprod
 		WHERE salescatid". (isset($ParentCategory)?('='.$ParentCategory):' is NULL') . "
 		ORDER BY stockid";
 $result = DB_query($sql,$db);
-if($result && DB_num_rows($result)) {
+if($result and DB_num_rows($result)) {
 	while( $myrow = DB_fetch_array($result) ) {
 		$stockids[] = $myrow['stockid']; // Add Stock
 	}
@@ -365,23 +365,23 @@ if($result && DB_num_rows($result)) {
 // This query will return the stock that is available
 $sql = "SELECT stockid, description FROM stockmaster WHERE discontinued = 0 ORDER BY stockid";
 $result = DB_query($sql,$db);
-if($result && DB_num_rows($result)) {
+if($result and DB_num_rows($result)) {
 	// continue id stock id in the stockid array
 	echo '<br /><form enctype="multipart/form-data" method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') .'">';
     echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-	if( isset($SelectedCategory) ) { // If we selected a category we need to keep it selected
+	if( isset($SelectedCategory) ) { // if we selected a category we need to keep it selected
 		echo '<input type="hidden" name="SelectedCategory" value="' . $SelectedCategory . '" />';
 	}
 	echo '<input type="hidden" name="ParentCategory" value="' .
 		(isset($_POST['ParentCategory'])?($_POST['ParentCategory']):('0')) . '" /> ';
 
-	
+
 	echo '<table class="selection">
 		<tr><th colspan="2">'._('Add Inventory to this category.').'</th></tr>
 		<tr><td>' . _('Select Inv. Item') . ':</td>
 		<td><select name="AddStockID">';
-		
+
 	while( $myrow = DB_fetch_array($result) ) {
 		if ( !array_keys( $stockids, $myrow['stockid']  ) ) {
 			// Only if the StockID is not already selected

@@ -4,7 +4,7 @@
 */
 
 
-Class Offer {
+class Offer {
 
 	var $LineItems; /*array of objects of class LineDetails using the product id as the pointer */
 	var $TenderID;
@@ -56,9 +56,9 @@ Class Offer {
 														$DecimalPlaces,
 														$ExpiryDate);
 			$this->LinesOnOffer++;
-			Return 1;
+			return 1;
 		}
-		Return 0;
+		return 0;
 	}
 
 	function GetSupplierName() {
@@ -132,7 +132,7 @@ Class Offer {
 						prnMsg(_('The offer for').' '.$LineItem->StockID.' ' ._('has been deleted in the database'), 'info');
 						$this->OfferMailText .= $LineItem->Quantity.' '.$LineItem->Units.' '._('of').' ' .$LineItem->StockID.' '
 							._('at a price of').' '.$this->CurrCode.$LineItem->Price.' '._('has been deleted')."\n";
-					
+
 					}
 				}
 			}
@@ -173,7 +173,7 @@ Class Offer {
 	}
 } /* end of class defintion */
 
-Class LineDetails {
+class LineDetails {
 /* PurchOrderDetails */
 	var $LineNo;
 	var $StockID;

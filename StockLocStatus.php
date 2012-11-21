@@ -32,7 +32,7 @@ echo '<table class="selection">
 		<tr><td>' . _('From Stock Location') . ':</td>
 			<td><select name="StockLocation"> ';
 while ($myrow=DB_fetch_array($resultStkLocs)){
-	if (isset($_POST['StockLocation']) AND $_POST['StockLocation']!='All'){
+	if (isset($_POST['StockLocation']) and $_POST['StockLocation']!='All'){
 		if ($myrow['loccode'] == $_POST['StockLocation']){
 		     echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
 		} else {
@@ -256,11 +256,14 @@ if (isset($_POST['ShowStatus'])){
 			$QOO = 0;
 		}
 
-		if (($_POST['BelowReorderQuantity']=='Below' AND ($myrow['quantity']-$myrow['reorderlevel']-$DemandQty)<0)
-				OR $_POST['BelowReorderQuantity']=='All' OR $_POST['BelowReorderQuantity']=='NotZero'
-                OR ($_POST['BelowReorderQuantity']=='OnOrder' AND $QOO != 0)){
+		if (($_POST['BelowReorderQuantity']=='Below'
+				and ($myrow['quantity']-$myrow['reorderlevel']-$DemandQty)<0)
+				or $_POST['BelowReorderQuantity']=='All'
+				or $_POST['BelowReorderQuantity']=='NotZero'
+                or ($_POST['BelowReorderQuantity']=='OnOrder'
+                and $QOO != 0)){
 
-			if (($_POST['BelowReorderQuantity']=='NotZero') AND (($myrow['quantity']-$DemandQty)>0)) {
+			if (($_POST['BelowReorderQuantity']=='NotZero') and (($myrow['quantity']-$DemandQty)>0)) {
 
 				if ($k==1){
 					echo '<tr class="OddTableRows">';

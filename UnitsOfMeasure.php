@@ -34,8 +34,8 @@ if (isset($_POST['Submit'])) {
 		prnMsg( _('The unit of measure may not be empty'), 'error');
 	}
 
-	if (isset($_POST['SelectedMeasureID']) AND $_POST['SelectedMeasureID']!='' AND $InputError !=1) {
- 
+	if (isset($_POST['SelectedMeasureID']) and $_POST['SelectedMeasureID']!='' and $InputError !=1) {
+
 
 		/*SelectedMeasureID could also exist if submit had not been clicked this code would not run in this case cos submit is false of course  see the delete code below*/
 		// Check the name does not clash

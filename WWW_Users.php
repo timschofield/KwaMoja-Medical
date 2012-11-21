@@ -2,7 +2,7 @@
 
 /* $Id$*/
 
-if (isset($_POST['UserID']) AND isset($_POST['ID'])){
+if (isset($_POST['UserID']) and isset($_POST['ID'])){
 	if ($_POST['UserID'] == $_POST['ID']) {
 		$_POST['Language'] = $_POST['UserLanguage'];
 	}
@@ -100,7 +100,7 @@ if (isset($_POST['submit'])) {
 		}
 	}
 
-	if ((mb_strlen($_POST['BranchCode'])>0) AND ($InputError !=1)) {
+	if ((mb_strlen($_POST['BranchCode'])>0) and ($InputError !=1)) {
 		// check that the entered branch is valid for the customer code
 		$sql = "SELECT custbranch.debtorno
 				FROM custbranch
@@ -127,13 +127,13 @@ if (isset($_POST['submit'])) {
 	}
 	$_POST['ModulesAllowed']= $ModulesAllowed;
 
-	if (isset($SelectedUser) AND $InputError !=1) {
+	if (isset($SelectedUser) and $InputError !=1) {
 
 /*SelectedUser could also exist if submit had not been clicked this code would not run in this case cos submit is false of course  see the delete code below*/
 
 		if (!isset($_POST['Cust'])
-			OR $_POST['Cust']==NULL
-			OR $_POST['Cust']==''){
+			or $_POST['Cust']==NULL
+			or $_POST['Cust']==''){
 
 			$_POST['Cust']='';
 			$_POST['BranchCode']='';
@@ -505,7 +505,7 @@ $sql = "SELECT loccode, locationname FROM locations";
 $result = DB_query($sql,$db);
 
 while ($myrow=DB_fetch_array($result)){
-	if (isset($_POST['DefaultLocation']) AND $myrow['loccode'] == $_POST['DefaultLocation']){
+	if (isset($_POST['DefaultLocation']) and $myrow['loccode'] == $_POST['DefaultLocation']){
 		echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] .'</option>';
 	} else {
 		echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] .'</option>';
@@ -545,14 +545,14 @@ echo '<tr>
 
 $sql = "SELECT salesmancode, salesmanname FROM salesman WHERE current = 1";
 $result = DB_query($sql,$db);
-if ((isset($_POST['Salesman']) AND $_POST['Salesman']=='') OR !isset($_POST['Salesman'])){
+if ((isset($_POST['Salesman']) and $_POST['Salesman']=='') or !isset($_POST['Salesman'])){
 	echo '<option selected="selected" value="">' .  _('Not a salesperson only login') . '</option>';
 } else {
 	echo '<option value="">' . _('Not a salesperson only login') . '</option>';
 }
 while ($myrow=DB_fetch_array($result)){
 
-	if (isset($_POST['Salesman']) AND $myrow['salesmancode'] == $_POST['Salesman']){
+	if (isset($_POST['Salesman']) and $myrow['salesmancode'] == $_POST['Salesman']){
 		echo '<option selected="selected" value="' . $myrow['salesmancode'] . '">' . $myrow['salesmanname'] . '</option>';
 	} else {
 		echo '<option value="' . $myrow['salesmancode'] . '">' . $myrow['salesmanname'] . '</option>';
@@ -567,42 +567,42 @@ echo '<tr>
 		<td>' . _('Reports Page Size') .':</td>
 		<td><select name="PageSize">';
 
-if(isset($_POST['PageSize']) AND $_POST['PageSize']=='A4'){
+if(isset($_POST['PageSize']) and $_POST['PageSize']=='A4'){
 	echo '<option selected="selected" value="A4">' . _('A4') .'</option>';
 } else {
 	echo '<option value="A4">' . _('A4') . '</option>';
 }
 
-if(isset($_POST['PageSize']) AND $_POST['PageSize']=='A3'){
+if(isset($_POST['PageSize']) and $_POST['PageSize']=='A3'){
 	echo '<option selected="selected" value="A3">' . _('A3') .'</option>';
 } else {
 	echo '<option value="A3">' . _('A3') .'</option>';
 }
 
-if(isset($_POST['PageSize']) AND $_POST['PageSize']=='A3_landscape'){
+if(isset($_POST['PageSize']) and $_POST['PageSize']=='A3_landscape'){
 	echo '<option selected="selected" value="A3_landscape">' . _('A3') . ' ' . _('landscape') .'</option>';
 } else {
 	echo '<option value="A3_landscape">' . _('A3') . ' ' . _('landscape') .'</option>';
 }
 
-if(isset($_POST['PageSize']) AND $_POST['PageSize']=='letter'){
+if(isset($_POST['PageSize']) and $_POST['PageSize']=='letter'){
 	echo '<option selected="selected" value="letter">' . _('Letter') .'</option>';
 } else {
 	echo '<option value="letter">' . _('Letter') .'</option>';
 }
 
-if(isset($_POST['PageSize']) AND $_POST['PageSize']=='letter_landscape'){
+if(isset($_POST['PageSize']) and $_POST['PageSize']=='letter_landscape'){
 	echo '<option selected="selected" value="letter_landscape">' . _('Letter') . ' ' . _('landscape') .'</option>';
 } else {
 	echo '<option value="letter_landscape">' . _('Letter') . ' ' . _('landscape') .'</option>';
 }
 
-if(isset($_POST['PageSize']) AND $_POST['PageSize']=='legal'){
+if(isset($_POST['PageSize']) and $_POST['PageSize']=='legal'){
 	echo '<option selected="selected" value="legal">' . _('Legal') .'</option>';
 } else {
 	echo '<option value="legal">' . _('Legal') .'</option>';
 }
-if(isset($_POST['PageSize']) AND $_POST['PageSize']=='legal_landscape'){
+if(isset($_POST['PageSize']) and $_POST['PageSize']=='legal_landscape'){
 	echo '<option selected="selected" value="legal_landscape">' . _('Legal') . ' ' . _('landscape') .'</option>';
 } else {
 	echo '<option value="legal_landscape">' . _('Legal') . ' ' . _('landscape') .'</option>';
@@ -620,11 +620,11 @@ $ThemeDirectory = dir('css/');
 
 while (false != ($ThemeName = $ThemeDirectory->read())){
 
-	if (is_dir('css/' . $ThemeName) AND $ThemeName != '.' AND $ThemeName != '..' AND $ThemeName != '.svn'){
+	if (is_dir('css/' . $ThemeName) and $ThemeName != '.' and $ThemeName != '..' and $ThemeName != '.svn'){
 
-		if (isset($_POST['Theme']) AND $_POST['Theme'] == $ThemeName){
+		if (isset($_POST['Theme']) and $_POST['Theme'] == $ThemeName){
 			echo '<option selected="selected" value="' . $ThemeName . '">' . $ThemeName .'</option>';
-		} else if (!isset($_POST['Theme']) AND ($_SESSION['DefaultTheme']==$ThemeName)) {
+		} else if (!isset($_POST['Theme']) and ($_SESSION['DefaultTheme']==$ThemeName)) {
 			echo '<option selected="selected" value="' . $ThemeName . '">' . $ThemeName .'</option>';
 		} else {
 			echo '<option value="' . $ThemeName . '">' . $ThemeName .'</option>';
@@ -641,9 +641,9 @@ echo '<tr>
 		<td><select name="UserLanguage">';
 
 foreach ($LanguagesArray as $LanguageEntry => $LanguageName){
-	if (isset($_POST['UserLanguage']) AND $_POST['UserLanguage'] == $LanguageEntry){
+	if (isset($_POST['UserLanguage']) and $_POST['UserLanguage'] == $LanguageEntry){
 		echo '<option selected="selected" value="' . $LanguageEntry . '">' . $LanguageName['LanguageName'] .'</option>';
-	} elseif (!isset($_POST['UserLanguage']) AND $LanguageEntry == $DefaultLanguage) {
+	} elseif (!isset($_POST['UserLanguage']) and $LanguageEntry == $DefaultLanguage) {
 		echo '<option selected="selected" value="' . $LanguageEntry . '">' . $LanguageName['LanguageName'] .'</option>';
 	} else {
 		echo '<option value="' . $LanguageEntry . '">' . $LanguageName['LanguageName'] .'</option>';
@@ -701,13 +701,13 @@ $sql="SELECT departmentid,
 
 $result=DB_query($sql, $db);
 echo '<td><select name="Department">';
-if ((isset($_POST['Department']) AND $_POST['Department']=='0') OR !isset($_POST['Department'])){
+if ((isset($_POST['Department']) and $_POST['Department']=='0') or !isset($_POST['Department'])){
 	echo '<option selected="selected" value="0">' .  _('Any Internal Department') . '</option>';
 } else {
 	echo '<option value="">' . _('Any Internal Department') . '</option>';
 }
 while ($myrow=DB_fetch_array($result)){
-	if (isset($_POST['Department']) AND $myrow['departmentid'] == $_POST['Department']){
+	if (isset($_POST['Department']) and $myrow['departmentid'] == $_POST['Department']){
 		echo '<option selected="selected" value="' . $myrow['departmentid'] . '">' . $myrow['description'] . '</option>';
 	} else {
 		echo '<option value="' . $myrow['departmentid'] . '">' . $myrow['description'] . '</option>';

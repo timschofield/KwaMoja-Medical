@@ -25,8 +25,8 @@ include('ManualHeader.html');
 ?>
 	<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
 <?php
-if (((!isset($_POST['Submit'])) AND (!isset($_GET['ViewTopic']))) OR
-     ((isset($_POST['Submit'])) AND (isset($_POST['SelectTableOfContents'])))) {
+if (((!isset($_POST['Submit'])) and (!isset($_GET['ViewTopic']))) or
+     ((isset($_POST['Submit'])) and (isset($_POST['SelectTableOfContents'])))) {
 // if not submittws then coming into manual to look at TOC
 // if SelectTableOfContents set then user wants it displayed
 ?>
@@ -788,119 +788,119 @@ if (!isset($_GET['ViewTopic'])) {
 	$_GET['ViewTopic'] = '';
 }
 
-if ($_GET['ViewTopic'] == 'Introduction' OR isset($_POST['SelectIntroduction'])) {
+if ($_GET['ViewTopic'] == 'Introduction' or isset($_POST['SelectIntroduction'])) {
   include('ManualIntroduction.html');
 }
 
-if ($_GET['ViewTopic'] == 'Requirements' OR isset($_POST['SelectRequirements'])) {
+if ($_GET['ViewTopic'] == 'Requirements' or isset($_POST['SelectRequirements'])) {
   include('ManualRequirements.html');
 }
 
-if ($_GET['ViewTopic'] == 'GettingStarted' OR isset($_POST['SelectGettingStarted'])) {
+if ($_GET['ViewTopic'] == 'GettingStarted' or isset($_POST['SelectGettingStarted'])) {
   include('ManualGettingStarted.html');
 }
 
-if ($_GET['ViewTopic'] == 'SecuritySchema' OR isset($_POST['SelectSecuritySchema'])) {
+if ($_GET['ViewTopic'] == 'SecuritySchema' or isset($_POST['SelectSecuritySchema'])) {
   include('ManualSecuritySchema.html');
 }
 
-if ($_GET['ViewTopic'] == 'CreatingNewSystem' OR isset($_POST['SelectCreatingNewSystem'])) {
+if ($_GET['ViewTopic'] == 'CreatingNewSystem' or isset($_POST['SelectCreatingNewSystem'])) {
   include('ManualCreatingNewSystem.html');
 }
 
-if ($_GET['ViewTopic'] == 'SystemConventions' OR isset($_POST['SelectSystemConventions'])) {
+if ($_GET['ViewTopic'] == 'SystemConventions' or isset($_POST['SelectSystemConventions'])) {
   include('ManualSystemConventions.html');
 }
 
-if ($_GET['ViewTopic'] == 'Inventory' OR isset($_POST['SelectInventory'])) {
+if ($_GET['ViewTopic'] == 'Inventory' or isset($_POST['SelectInventory'])) {
   include('ManualInventory.html');
 }
 
-if ($_GET['ViewTopic'] == 'AccountsReceivable' OR isset($_POST['SelectAccountsReceivable'])) {
+if ($_GET['ViewTopic'] == 'AccountsReceivable' or isset($_POST['SelectAccountsReceivable'])) {
   include('ManualAccountsReceivable.html');
 }
 
-if ($_GET['ViewTopic'] == 'AccountsPayable' OR isset($_POST['SelectAccountsPayable'])) {
+if ($_GET['ViewTopic'] == 'AccountsPayable' or isset($_POST['SelectAccountsPayable'])) {
   include('ManualAccountsPayable.html');
 }
 
-if ($_GET['ViewTopic'] == 'SalesPeople' OR isset($_POST['SelectSalesPeople'])) {
+if ($_GET['ViewTopic'] == 'SalesPeople' or isset($_POST['SelectSalesPeople'])) {
   include('ManualSalesPeople.html');
 }
 
-if ($_GET['ViewTopic'] == 'SalesTypes' OR isset($_POST['SelectSalesTypes'])) {
+if ($_GET['ViewTopic'] == 'SalesTypes' or isset($_POST['SelectSalesTypes'])) {
   include('ManualSalesTypes.html');
 }
 
-if ($_GET['ViewTopic'] == 'PaymentTerms' OR isset($_POST['SelectPaymentTerms'])) {
+if ($_GET['ViewTopic'] == 'PaymentTerms' or isset($_POST['SelectPaymentTerms'])) {
   include('ManualPaymentTerms.html');
 }
 
-if ($_GET['ViewTopic'] == 'CreditStatus' OR isset($_POST['SelectCreditStatus'])) {
+if ($_GET['ViewTopic'] == 'CreditStatus' or isset($_POST['SelectCreditStatus'])) {
   include('ManualCreditStatus.html');
 }
 
-if ($_GET['ViewTopic'] == 'Tax' OR isset($_POST['SelectTax'])) {
+if ($_GET['ViewTopic'] == 'Tax' or isset($_POST['SelectTax'])) {
   include('ManualTax.html');
 }
 
-if ($_GET['ViewTopic'] == 'Prices' OR isset($_POST['SelectPrices'])) {
+if ($_GET['ViewTopic'] == 'Prices' or isset($_POST['SelectPrices'])) {
   include('ManualPrices.html');
 }
 
-if ($_GET['ViewTopic'] == 'ARTransactions' OR isset($_POST['SelectARTransactions'])) {
+if ($_GET['ViewTopic'] == 'ARTransactions' or isset($_POST['SelectARTransactions'])) {
   include('ManualARTransactions.html');
 }
 
-if ($_GET['ViewTopic'] == 'ARInquiries' OR isset($_POST['SelectARInquiries'])) {
+if ($_GET['ViewTopic'] == 'ARInquiries' or isset($_POST['SelectARInquiries'])) {
   include('ManualARInquiries.html');
 }
 
-if ($_GET['ViewTopic'] == 'ARReports' OR isset($_POST['SelectARReports'])) {
+if ($_GET['ViewTopic'] == 'ARReports' or isset($_POST['SelectARReports'])) {
   include('ManualARReports.html');
 }
 
-if ($_GET['ViewTopic'] == 'SalesAnalysis' OR isset($_POST['SelectSalesAnalysis'])) {
+if ($_GET['ViewTopic'] == 'SalesAnalysis' or isset($_POST['SelectSalesAnalysis'])) {
   include('ManualSalesAnalysis.html');
 }
 
-if ($_GET['ViewTopic'] == 'SalesOrders' OR isset($_POST['SelectSalesOrders'])) {
+if ($_GET['ViewTopic'] == 'SalesOrders' or isset($_POST['SelectSalesOrders'])) {
   include('ManualSalesOrders.html');
 }
 
-if ($_GET['ViewTopic'] == 'Shipments' OR isset($_POST['SelectShipments'])) {
+if ($_GET['ViewTopic'] == 'Shipments' or isset($_POST['SelectShipments'])) {
   include('ManualShipments.html');
 }
 
-if ($_GET['ViewTopic'] == 'Manufacturing' OR isset($_POST['SelectManufacturing'])) {
+if ($_GET['ViewTopic'] == 'Manufacturing' or isset($_POST['SelectManufacturing'])) {
   include('ManualManufacturing.html');
 }
 
-if ($_GET['ViewTopic'] == 'GeneralLedger' OR isset($_POST['SelectGeneralLedger'])) {
+if ($_GET['ViewTopic'] == 'GeneralLedger' or isset($_POST['SelectGeneralLedger'])) {
   include('ManualGeneralLedger.html');
 }
 
-if ($_GET['ViewTopic'] == 'ReportBuilder' OR isset($_POST['SelectReportBuilder'])) {
+if ($_GET['ViewTopic'] == 'ReportBuilder' or isset($_POST['SelectReportBuilder'])) {
   include('ManualReportBuilder.html');
 }
 
-if ($_GET['ViewTopic'] == 'Multilanguage' OR isset($_POST['SelectMultilanguage'])) {
+if ($_GET['ViewTopic'] == 'Multilanguage' or isset($_POST['SelectMultilanguage'])) {
   include('ManualMultilanguage.html');
 }
 
-if ($_GET['ViewTopic'] == 'SpecialUtilities' OR isset($_POST['SelectSpecialUtilities'])) {
+if ($_GET['ViewTopic'] == 'SpecialUtilities' or isset($_POST['SelectSpecialUtilities'])) {
   include('ManualSpecialUtilities.html');
 }
 
-if ($_GET['ViewTopic'] == 'NewScripts' OR isset($_POST['SelectNewScripts'])) {
+if ($_GET['ViewTopic'] == 'NewScripts' or isset($_POST['SelectNewScripts'])) {
   include('ManualNewScripts.html');
 }
 
-if ($_GET['ViewTopic'] == 'Structure' OR isset($_POST['SelectStructure'])) {
+if ($_GET['ViewTopic'] == 'Structure' or isset($_POST['SelectStructure'])) {
   include('ManualDevelopmentStructure.html');
 }
 
-if ($_GET['ViewTopic'] == 'Contributors' OR isset($_POST['SelectContributors'])) {
+if ($_GET['ViewTopic'] == 'Contributors' or isset($_POST['SelectContributors'])) {
   include('ManualContributors.html');
 }
 

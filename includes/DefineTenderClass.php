@@ -3,7 +3,7 @@
 /* Definition of the tender class to hold all the information for a supplier tender
 */
 
-Class Tender {
+class Tender {
 
 	var $TenderId;
 	var $LineItems; /*array of objects of class LineDetails using the product id as the pointer */
@@ -150,7 +150,7 @@ Class Tender {
 								$UOM,
 								$DecimalPlaces,
 								$ExpiryDate){
-				
+
 		if (isset($Qty) and $Qty!=0){
 
 			$this->LineItems[$LineNo] = new LineDetails($LineNo,
@@ -161,9 +161,9 @@ Class Tender {
 														$DecimalPlaces,
 														$ExpiryDate);
 			$this->LinesOnTender++;
-			Return 1;
+			return 1;
 		}
-		Return 0;
+		return 0;
 	}
 
 	function add_supplier_to_tender(	$SupplierCode,
@@ -174,9 +174,9 @@ Class Tender {
 
 			$this->Suppliers[$SupplierCode] = new Supplier($SupplierCode, $SupplierName, $Emailaddress);
 			$this->SuppliersOnTender++;
-			Return 1;
+			return 1;
 		}
-		Return 0;
+		return 0;
 	}
 
 	function update_tender_item($LineNo,
@@ -208,7 +208,7 @@ Class Tender {
 	}
 } /* end of class defintion */
 
-Class LineDetails {
+class LineDetails {
 /* PurchOrderDetails */
 	var $LineNo;
 	var $StockID;
@@ -240,7 +240,7 @@ Class LineDetails {
 	}
 }
 
-Class Supplier {
+class Supplier {
 
 	var $SupplierCode;
 	var $SupplierName;

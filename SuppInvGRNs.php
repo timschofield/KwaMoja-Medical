@@ -29,7 +29,7 @@ if (!isset($_SESSION['SuppTrans'])){
 
 /*If the user hit the Add to Invoice button then process this first before showing  all GRNs on the invoice
 otherwise it wouldnt show the latest additions*/
-if (isset($_POST['AddPOToTrans']) AND $_POST['AddPOToTrans']!=''){
+if (isset($_POST['AddPOToTrans']) and $_POST['AddPOToTrans']!=''){
 	foreach($_SESSION['SuppTransTmp']->GRNs as $GRNTmp) { //loop around temp GRNs array
 		if ($_POST['AddPOToTrans']==$GRNTmp->PONo) {
 			$_SESSION['SuppTrans']->Copy_GRN_To_Trans($GRNTmp); //copy from  temp GRNs array to entered GRNs array
@@ -62,7 +62,7 @@ if (isset($_POST['ModifyGRN'])){
 	} else {
 		$Complete = False;
 	}
-	
+
 	/* It is not logical to allow being charged for more than was received  - and doing so would leave the goods received suspense account out of balance */
 	/*
 	if ($_SESSION['Check_Qty_Charged_vs_Del_Qty']==True) {
@@ -77,10 +77,10 @@ if (isset($_POST['ModifyGRN'])){
 		prnMsg(_('The quantity being invoiced is more than the outstanding quantity that was delivered. It is not possible to enter an invoice for a quantity more than was received into stock'),'warn');
 		$InputError = True;
 	}
-	if (!is_numeric(filter_number_format($_POST['ChgPrice'])) AND filter_number_format($_POST['ChgPrice'])<0){
+	if (!is_numeric(filter_number_format($_POST['ChgPrice'])) and filter_number_format($_POST['ChgPrice'])<0){
 		$InputError = True;
 		prnMsg(_('The price charged in the suppliers currency is either not numeric or negative') . '. ' . _('The goods received cannot be invoiced at this price'),'error');
-	} elseif ($_SESSION['Check_Price_Charged_vs_Order_Price'] == True AND $_POST['OrderPrice'] != 0) {
+	} elseif ($_SESSION['Check_Price_Charged_vs_Order_Price'] == True and $_POST['OrderPrice'] != 0) {
 		if (filter_number_format($_POST['ChgPrice'])/$_POST['OrderPrice'] > (1+ ($_SESSION['OverChargeProportion'] / 100))){
 			prnMsg(_('The price being invoiced is more than the purchase order price by more than') . ' ' . $_SESSION['OverChargeProportion'] . '%. ' .
 			_('The system is set up to prohibit this so will put this invoice on hold until it is authorised'),'warn');
@@ -146,7 +146,7 @@ foreach ($_SESSION['SuppTrans']->GRNs as $EnteredGRN){
 			<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?Modify=' . $EnteredGRN->GRNNo . '">'. _('Modify') . '</a></td>
 			<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?Delete=' . $EnteredGRN->GRNNo . '">' . _('Delete') . '</a></td>
 		</tr>';
-	
+
 	$TotalValueCharged = $TotalValueCharged + ($EnteredGRN->ChgPrice * $EnteredGRN->This_QuantityInv);
 
 	$i++;
@@ -291,8 +291,7 @@ if (isset($_GET['Modify'])){
 	echo '<input type="hidden" name="GLCode" value="' . $GRNTmp->GLCode . '" />';
 	echo '<input type="hidden" name="PODetailItem" value="' . $GRNTmp->PODetailItem . '" />';
 	echo '<input type="hidden" name="AssetID" value="' . $GRNTmp->AssetID . '" />';
-}
-else {
+} else {
 	if (count( $_SESSION['SuppTransTmp']->GRNs)>0){   /*if there are any outstanding GRNs then */
 		echo '<table class="selection">
 				<tr>

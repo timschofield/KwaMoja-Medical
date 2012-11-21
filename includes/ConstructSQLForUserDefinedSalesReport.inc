@@ -1,124 +1,124 @@
 <?php
 /* $Id$*/
-Function GetDataSQL($SQLData){
+function GetDataSQL($SQLData){
 
 /*This function determines the SQL to use to get the value for the columns defined */
 switch ($SQLData) {
-Case 'Quantity':
-	Return 'salesanalysis.qty';
+case 'Quantity':
+	return 'salesanalysis.qty';
 	break;
-Case 'Gross Value':
-	Return 'salesanalysis.amt';
+case 'Gross Value':
+	return 'salesanalysis.amt';
 	break;
-Case 'Net Value':
-	Return 'salesanalysis.amt - salesanalysis.disc';
+case 'Net Value':
+	return 'salesanalysis.amt - salesanalysis.disc';
 	break;
-Case 'Gross Profit':
-	Return 'salesanalysis.amt - salesanalysis.disc - salesanalysis.cost';
+case 'Gross Profit':
+	return 'salesanalysis.amt - salesanalysis.disc - salesanalysis.cost';
 	break;
-Case 'Cost':
-	Return 'salesanalysis.cost';
+case 'Cost':
+	return 'salesanalysis.cost';
 	break;
-Case 'Discount':
-	Return 'salesanalysis.disc';
+case 'Discount':
+	return 'salesanalysis.disc';
 	break;
 } /*end of switch stmt block*/
 }
 
 
-Function GetFieldSQL($Data, $ColNo){
+function GetFieldSQL($Data, $ColNo){
 
 /*This function determines the two columns to get for the group by levels defined in the report heading
 and allocates a Colxx to each  */
 
-Switch ($Data) {
-Case 'Sales Area':
+switch ($Data) {
+case 'Sales Area':
 	$SQL= 'salesanalysis.area AS col'. $ColNo . ', areas.areadescription AS col' . ($ColNo+1);
-	Return $SQL;
+	return $SQL;
 	break;
-Case 'Product Code':
+case 'Product Code':
 	$SQL=	'salesanalysis.stockid AS col'. $ColNo . ', stockmaster.description AS col' . ($ColNo+1);
-	Return $SQL;
+	return $SQL;
 	break;
-Case 'Customer Code':
+case 'Customer Code':
 	$SQL=	'salesanalysis.cust AS col'. $ColNo . ', debtorsmaster.name AS col' . ($ColNo+1);
-	Return $SQL;
+	return $SQL;
 	break;
-Case 'Sales Type':
+case 'Sales Type':
 	$SQL=	'salesanalysis.typeabbrev AS col'. $ColNo . ', salestypes.sales_type AS col' . ($ColNo+1);
-	Return $SQL;
+	return $SQL;
 	break;
-Case 'Product Type':
+case 'Product Type':
 	$SQL=	'salesanalysis.stkcategory AS col' . $ColNo . ', stockcategory.categorydescription AS col' . ($ColNo+1);
-	Return $SQL;
+	return $SQL;
 	break;
-Case 'Customer Branch':
+case 'Customer Branch':
 	$SQL=	'salesanalysis.custbranch AS col' . $ColNo . ', custbranch.brname AS col' . ($ColNo+1);
-	Return $SQL;
+	return $SQL;
 	break;
-Case 'Sales Person':
+case 'Sales Person':
 	$SQL=	'salesanalysis.salesperson AS col' . $ColNo . ', salesman.salesmanname AS col' . ($ColNo+1);
-	Return $SQL;
+	return $SQL;
 	break;
 } /* end of switch statement */
 
 }
 
-Function GetHavingSQL($Data){
+function GetHavingSQL($Data){
 
 /*This function determines the field names to search on in the having clause  */
 
-Switch ($Data) {
-Case 'Sales Area':
-	Return 'salesanalysis.area';
+switch ($Data) {
+case 'Sales Area':
+	return 'salesanalysis.area';
 	break;
-Case 'Product Code':
-	Return 'salesanalysis.stockid';
+case 'Product Code':
+	return 'salesanalysis.stockid';
 	break;
-Case 'Customer Code':
-	Return 'salesanalysis.cust';
+case 'Customer Code':
+	return 'salesanalysis.cust';
 	break;
-Case 'Sales Type':
-	Return 'salesanalysis.typeabbrev';
+case 'Sales Type':
+	return 'salesanalysis.typeabbrev';
 	break;
-Case 'Product Type':
-	Return 'salesanalysis.stkcategory';
+case 'Product Type':
+	return 'salesanalysis.stkcategory';
 	break;
-Case 'Customer Branch':
-	Return 'salesanalysis.custbranch';
+case 'Customer Branch':
+	return 'salesanalysis.custbranch';
 	break;
-Case 'Sales Person':
-	Return 'salesanalysis.salesperson';
+case 'Sales Person':
+	return 'salesanalysis.salesperson';
 	break;
 } /* end of switch statement */
 
 }
 
-Function GetGroupBySQL($GByData){
+function GetGroupBySQL($GByData){
 
 /*This function returns the SQL for the group by clause for the group by levels defined in the report header */
 
-Switch ($GByData) {
-Case 'Sales Area':
-	Return 'salesanalysis.area, areas.areadescription';
+switch ($GByData) {
+case 'Sales Area':
+	return 'salesanalysis.area, areas.areadescription';
 	break;
-Case 'Product Code':
-	Return 'salesanalysis.stockid, stockmaster.description';
+case 'Product Code':
+	return 'salesanalysis.stockid, stockmaster.description';
 	break;
-Case 'Customer Code':
-	Return 'salesanalysis.cust, debtorsmaster.name';
+case 'Customer Code':
+	return 'salesanalysis.cust, debtorsmaster.name';
 	break;
-Case 'Sales Type':
-	Return 'salesanalysis.typeabbrev, salestypes.sales_type';
+case 'Sales Type':
+	return 'salesanalysis.typeabbrev, salestypes.sales_type';
 	break;
-Case 'Product Type':
-	Return 'salesanalysis.stkcategory, stockcategory.categorydescription';
+case 'Product Type':
+	return 'salesanalysis.stkcategory, stockcategory.categorydescription';
 	break;
-Case 'Customer Branch':
-	Return 'salesanalysis.custbranch, custbranch.brname';
+case 'Customer Branch':
+	return 'salesanalysis.custbranch, custbranch.brname';
 	break;
-Case 'Sales Person':
-	Return 'salesanalysis.salesperson, salesman.salesmanname';
+case 'Sales Person':
+	return 'salesanalysis.salesperson, salesman.salesmanname';
 	break;
 } /* end of switch statement */
 }
@@ -172,22 +172,22 @@ $GetColsSQL = "SELECT colno,
 
 $ColsResult = DB_query($GetColsSQL,$db);
 
-If (DB_num_rows($ColsResult)== 0) {
-    $title = _('User Defined Sales Analysis Problem') . ' ....';
-   include('includes/header.inc');
-    prnMsg (  _('The report does not have any output columns') . '. ' . _('You need to set up the data columns that you wish to show in the report'),'error',_('No Columns'));
-    echo '<br /><a href="' . $rootpath . '/SalesAnalReptCols.php?ReportID=' . $_GET['ReportID'] . '">' . _('Enter Columns for this report') . '</a>';
-    echo '<br /><a href="' . $rootpath . '/index.php">' . _('Back to the menu') . '</a>';
-    include('includes/footer.inc');
-    Exit;
+if (DB_num_rows($ColsResult)== 0) {
+	$title = _('User Defined Sales Analysis Problem') . ' ....';
+	include('includes/header.inc');
+	prnMsg (  _('The report does not have any output columns') . '. ' . _('You need to set up the data columns that you wish to show in the report'),'error',_('No Columns'));
+	echo '<br /><a href="' . $rootpath . '/SalesAnalReptCols.php?ReportID=' . $_GET['ReportID'] . '">' . _('Enter Columns for this report') . '</a>';
+	echo '<br /><a href="' . $rootpath . '/index.php">' . _('Back to the menu') . '</a>';
+	include('includes/footer.inc');
+	Exit;
 } elseif (DB_num_rows($ColsResult) >10){
-    $title = _('User Defined Sales Analysis Problem') . ' ....';
-   include('includes/header.inc');
-    prnMsg (_('The report cannot have more than 10 columns in it') . '. ' . _('Please delete one or more columns before attempting to run it'),'error',_('Too Many Columns'));
-    echo '<br /><a href="' . $rootpath . '/SalesAnalReptCols.php?ReportID=' . $_GET['ReportID'] . '">' . _('Maintain Columns for this report') . '</a>';
-    echo '<br /><a href="' . $rootpath . '/index.php">' . _('Back to the menu') . '</a>';
-    include('includes/footer.inc');
-    exit;
+	$title = _('User Defined Sales Analysis Problem') . ' ....';
+	include('includes/header.inc');
+	prnMsg (_('The report cannot have more than 10 columns in it') . '. ' . _('Please delete one or more columns before attempting to run it'),'error',_('Too Many Columns'));
+	echo '<br /><a href="' . $rootpath . '/SalesAnalReptCols.php?ReportID=' . $_GET['ReportID'] . '">' . _('Maintain Columns for this report') . '</a>';
+	echo '<br /><a href="' . $rootpath . '/index.php">' . _('Back to the menu') . '</a>';
+	include('includes/footer.inc');
+	exit;
 }
 
 
@@ -202,33 +202,33 @@ $SQLWhereCls = $SQLWhereCls . GetHavingSQL($ReportSpec['groupbydata1']) . " >= '
 
 $SQLGroupCls = $SQLGroupCls . GetGroupBySQL($ReportSpec['groupbydata1']);
 
-If ($ReportSpec['groupbydata2'] != 'Not Used') {
-     $SQLSelectCls = $SQLSelectCls . ', ' . GetFieldSQL($ReportSpec['groupbydata2'],3);
-     
-     $SQLWhereCls = $SQLWhereCls . " AND " . GetHavingSQL($ReportSpec['groupbydata2']) . " >= '" . $ReportSpec['lower2'] . "' AND " . GetHavingSQL($ReportSpec['groupbydata2']) . " <= '" . $ReportSpec['upper2'] . "'";
-     
+if ($ReportSpec['groupbydata2'] != 'Not Used') {
+	 $SQLSelectCls = $SQLSelectCls . ', ' . GetFieldSQL($ReportSpec['groupbydata2'],3);
 
-     $SQLGroupCls = $SQLGroupCls . ', ' . GetGroupBySQL($ReportSpec['groupbydata2']);
+	 $SQLWhereCls = $SQLWhereCls . " AND " . GetHavingSQL($ReportSpec['groupbydata2']) . " >= '" . $ReportSpec['lower2'] . "' AND " . GetHavingSQL($ReportSpec['groupbydata2']) . " <= '" . $ReportSpec['upper2'] . "'";
+
+
+	 $SQLGroupCls = $SQLGroupCls . ', ' . GetGroupBySQL($ReportSpec['groupbydata2']);
 } else {
 	$SQLSelectCls = $SQLSelectCls . ', 0 AS col3, 0 AS col4';
  	$ReportSpec['groupbydata3'] = 'Not Used'; /*This is forced if no entry in Group By 2 */
 }
 
-If ($ReportSpec['groupbydata3'] != 'Not Used') {
+if ($ReportSpec['groupbydata3'] != 'Not Used') {
 	 $SQLSelectCls = $SQLSelectCls . ', ' . GetFieldSQL($ReportSpec['groupbydata3'],5);
-	 
+
 	$SQLWhereCls = $SQLWhereCls . " AND " . GetHavingSQL($ReportSpec['groupbydata3']) . " >= '" . $ReportSpec['lower3'] . "' AND " . GetHavingSQL($ReportSpec['groupbydata3']) . " <= '" . $ReportSpec['upper3'] . "'";
-		 
+
 	 $SQLGroupCls = $SQLGroupCls . ', ' . GetGroupBySQL($ReportSpec['groupbydata3']);
 } else {
-    	 $ReportSpec['groupbydata4'] = 'Not Used'; /*This is forced if no entry in Group By 3 */
+		 $ReportSpec['groupbydata4'] = 'Not Used'; /*This is forced if no entry in Group By 3 */
 	 $SQLSelectCls = $SQLSelectCls . ', 0 AS col5, 0 AS col6';
 }
 
-If ($ReportSpec['groupbydata4'] != 'Not Used') {
+if ($ReportSpec['groupbydata4'] != 'Not Used') {
 	 $SQLSelectCls = $SQLSelectCls . ', ' . GetFieldSQL($ReportSpec['groupbydata4'],7);
 	$SQLWhereCls = $SQLWhereCls . " AND " . GetHavingSQL($ReportSpec['groupbydata4']) . " >= '" . $ReportSpec['lower4'] . "' AND " . GetHavingSQL($ReportSpec['groupbydata4']) . " <= '" . $ReportSpec['upper4'] . "'";
-	
+
 	 $SQLGroupCls = $SQLGroupCls . ', ' . GetGroupBySQL($ReportSpec['groupbydata4']);
 } else {
 	 $SQLSelectCls = $SQLSelectCls . ', 0 AS col7, 0 AS col8';
@@ -237,10 +237,10 @@ If ($ReportSpec['groupbydata4'] != 'Not Used') {
 /*Right, now run thro the cols and build the select clause from the defined cols */
 
 while ($Cols = DB_fetch_array($ColsResult)){
-    If ($Cols['calculation']==0){
+	if ($Cols['calculation']==0){
 	 $SQLSelectCls = $SQLSelectCls . ', SUM(CASE WHEN salesanalysis.periodno >= ' . $Cols['periodfrom'] . ' AND salesanalysis.periodno <= ' . $Cols['periodto'];
 	 $SQLSelectCls = $SQLSelectCls . ' AND salesanalysis.budgetoractual = ' . $Cols['budgetoractual'] . ' THEN ' . GetDataSQL($Cols['datatype']) . ' ELSE 0 END) AS col' . ($Cols['colno'] + 8);
-    }
+	}
 }
 
 /* Now go through the cols again and do the SQL for the calculations - need the
@@ -250,7 +250,7 @@ Select clause to have all the non-calc fields in it before start using the calcs
 DB_data_seek($ColsResult,0);
 
 while ($Cols = DB_fetch_array($ColsResult)){
-    If ($Cols['calculation']==1){
+	if ($Cols['calculation']==1){
 
 	/*find the end of the col select clause AS Col# start is 8 because no need to search the SELECT
 	First find out the position in the select statement where 'AS ColX' is
@@ -260,23 +260,23 @@ while ($Cols = DB_fetch_array($ColsResult)){
 	$length_ColNum = mb_strpos($SQLSelectCls, 'AS col' . ($Cols['colnumerator'] + 8) , 7);
 
 
-	 If ($length_ColNum == 0) {
+	 if ($length_ColNum == 0) {
 
-	     $title = _('User Defined Sales Analysis Problem') . ' ....';
-	    include('includes/header.inc');
-	     prnMsg(_('Calculated fields must use columns defined in the report specification') . '. ' . _('The numerator column number entered for this calculation is not defined in the report'),'error',_('Calculation With Undefined Column'));
-	     echo '<br /><a href="' . $rootpath . '/SalesAnalReptCols.php?ReportID=' . $_GET['ReportID'] . '">' . _('Maintain Columns for this report') . '</a>';
-	     include('includes/footer.inc');
-	     exit;
+		 $title = _('User Defined Sales Analysis Problem') . ' ....';
+		include('includes/header.inc');
+		 prnMsg(_('Calculated fields must use columns defined in the report specification') . '. ' . _('The numerator column number entered for this calculation is not defined in the report'),'error',_('Calculation With Undefined Column'));
+		 echo '<br /><a href="' . $rootpath . '/SalesAnalReptCols.php?ReportID=' . $_GET['ReportID'] . '">' . _('Maintain Columns for this report') . '</a>';
+		 include('includes/footer.inc');
+		 exit;
 	 }
 	 $strt_ColNum = 9; /* Start searching after SELECT */
 
 	/*find the comma just before the Select Cls statement for the numerator column */
 
 	do {
-	     $strt_ColNum = mb_strpos( $SQLSelectCls, ',', $strt_ColNum + 1) + 1;
+		 $strt_ColNum = mb_strpos( $SQLSelectCls, ',', $strt_ColNum + 1) + 1;
 
-	} while (mb_strpos($SQLSelectCls, ',', $strt_ColNum) < $length_ColNum && mb_strpos($SQLSelectCls, ',' , $strt_ColNum)!=0);
+	} while (mb_strpos($SQLSelectCls, ',', $strt_ColNum) < $length_ColNum and mb_strpos($SQLSelectCls, ',' , $strt_ColNum)!=0);
 
 
 /*The length of the element in the select clause defining the column will be from the comma to the
@@ -284,14 +284,14 @@ while ($Cols = DB_fetch_array($ColsResult)){
 
 	 $length_ColNum = $length_ColNum - $strt_ColNum - 1;
 
-	if (!($Cols['calcoperator']=='C' OR $Cols['calcoperator']=='*')){
+	if (!($Cols['calcoperator']=='C' or $Cols['calcoperator']=='*')){
 
 	/*The denominator column is also required if the constant is not used so do the same again for the denominator */
 
 	$length_ColDen = mb_strpos($SQLSelectCls, 'AS col' . (($Cols['coldenominator']) + 8), 7);
-	 If ($length_ColDen == 0){
-	     prnMsg (_('Calculated fields must use columns defined in the report specification') . '. ' . _('The denominator column number entered for this calculation is not defined in the report'),'error',_('Calculation With Undefined Denominator'));
-	     Exit;
+	 if ($length_ColDen == 0){
+		 prnMsg (_('Calculated fields must use columns defined in the report specification') . '. ' . _('The denominator column number entered for this calculation is not defined in the report'),'error',_('Calculation With Undefined Denominator'));
+		 exit;
 	}
 
 	 $strt_ColDen = 7; /* start searching after SELECT */
@@ -299,9 +299,9 @@ while ($Cols = DB_fetch_array($ColsResult)){
 	/*find the comma just before the Select Cls statement for the denominator column */
 
 	do {
-	     $strt_ColDen = mb_strpos( $SQLSelectCls, ',', $strt_ColDen +1)+1;
+		 $strt_ColDen = mb_strpos( $SQLSelectCls, ',', $strt_ColDen +1)+1;
 
-	} while (mb_strpos($SQLSelectCls, ',', $strt_ColDen) < $length_ColDen && mb_strpos($SQLSelectCls, ',' , $strt_ColDen)!=0);
+	} while (mb_strpos($SQLSelectCls, ',', $strt_ColDen) < $length_ColDen and mb_strpos($SQLSelectCls, ',' , $strt_ColDen)!=0);
 
 	 $length_ColDen = $length_ColDen - $strt_ColDen - 1;
 
@@ -316,7 +316,7 @@ while ($Cols = DB_fetch_array($ColsResult)){
 
 	}
 
-    } /*end if its a calculation */
+	} /*end if its a calculation */
 
 } /* end of loop through defined columns */
 
@@ -333,12 +333,12 @@ $DbgMsg = _('The SQL that was used to retrieve the user defined sales analysis i
 $result=DB_query($SQLTheLot, $db,$ErrMsg,$DbgMsg);
 
 if (DB_num_rows($result)==0){
-    $title = _('User Defined Sales Analysis Problem') . ' ....';
+	$title = _('User Defined Sales Analysis Problem') . ' ....';
    include('includes/header.inc');
-    prnMsg(_('The user defined sales analysis SQL did not return any rows') . ' - ' . _('have another look at the criteria specified'),'error',_('Nothing To Report'));
-    echo '<br /><a href="' . $rootpath . '/SalesAnalRepts.php?SelectedReport=' . $_GET['ReportID'] . '">' . _('Look at the design of this report') . '</a>';
-    echo '<br /><a href="' . $rootpath . '/index.php">' . _('Back to the menu') . '</a>';
-    include('includes/footer.inc');
+	prnMsg(_('The user defined sales analysis SQL did not return any rows') . ' - ' . _('have another look at the criteria specified'),'error',_('Nothing To Report'));
+	echo '<br /><a href="' . $rootpath . '/SalesAnalRepts.php?SelectedReport=' . $_GET['ReportID'] . '">' . _('Look at the design of this report') . '</a>';
+	echo '<br /><a href="' . $rootpath . '/index.php">' . _('Back to the menu') . '</a>';
+	include('includes/footer.inc');
 
    exit;
 }

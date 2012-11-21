@@ -9,7 +9,7 @@
 
  $SelectADifferentPeriod ='';
 
- if (isset($_POST['FromPeriod']) AND isset($_POST['ToPeriod'])){
+ if (isset($_POST['FromPeriod']) and isset($_POST['ToPeriod'])){
 
 	if ($_POST['FromPeriod'] > $_POST['ToPeriod']){
 		prnMsg(_('The selected period from is actually after the period to! Please re-select the reporting period'),'error');
@@ -19,14 +19,15 @@
 		prnMsg(_('The selected period range is more than 12 months - only graphs for a period less than 12 months can be created'),'error');
 		$SelectADifferentPeriod= _('Select A Different Period');
 	}
-	if ((!isset($_POST['ValueFrom']) OR $_POST['ValueFrom']='' OR !isset($_POST['ValueTo']) OR $_POST['ValueTo']='') AND $_POST['GraphOn'] !='All'){
+	if ((!isset($_POST['ValueFrom']) or $_POST['ValueFrom']='' or !isset($_POST['ValueTo']) or $_POST['ValueTo']='') and $_POST['GraphOn'] !='All'){
 		prnMsg(_('For graphs including either a customer or item range - the range must be specified. Please enter the value from and the value to for the range'),'error');
 		$SelectADifferentPeriod= _('Select A Different Period');
 	}
  }
 
- if ((! isset($_POST['FromPeriod']) OR ! isset($_POST['ToPeriod']))
-	OR $SelectADifferentPeriod==_('Select A Different Period')){
+ if ((! isset($_POST['FromPeriod'])
+		or ! isset($_POST['ToPeriod']))
+		or $SelectADifferentPeriod==_('Select A Different Period')){
 
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '">';
     echo '<div>';
@@ -48,7 +49,7 @@
 	$Periods = DB_query($sql,$db);
 
 	while ($myrow=DB_fetch_array($Periods,$db)){
-		if(isset($_POST['FromPeriod']) AND $_POST['FromPeriod']!=''){
+		if(isset($_POST['FromPeriod']) and $_POST['FromPeriod']!=''){
 			if( $_POST['FromPeriod']== $myrow['periodno']){
 				echo '<option selected="selected" value="' . $myrow['periodno'] . '">' .MonthAndYearFromSQLDate($myrow['lastdate_in_period']) . '</option>';
 			} else {
@@ -64,7 +65,7 @@
 	}
 
 	echo '</select></td></tr>';
-	if (!isset($_POST['ToPeriod']) OR $_POST['ToPeriod']==''){
+	if (!isset($_POST['ToPeriod']) or $_POST['ToPeriod']==''){
 		$DefaultToPeriod = GetPeriod(DateAdd(ConvertSQLDate($DefaultFromDate),'m',11),$db);
 	} else {
 		$DefaultToPeriod = $_POST['ToPeriod'];

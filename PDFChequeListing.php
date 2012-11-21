@@ -6,7 +6,7 @@ include('includes/SQL_CommonFunctions.inc');
 include ('includes/session.inc');
 
 $InputError=0;
-if (isset($_POST['FromDate']) AND !Is_Date($_POST['FromDate'])){
+if (isset($_POST['FromDate']) and !Is_Date($_POST['FromDate'])){
 	$msg = _('The date from must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
 	$InputError=1;
 	unset($_POST['FromDate']);
@@ -17,7 +17,7 @@ if (isset($_POST['ToDate']) and !Is_Date($_POST['ToDate'])){
 	unset($_POST['ToDate']);
 }
 
-if (!isset($_POST['FromDate']) OR !isset($_POST['ToDate'])){
+if (!isset($_POST['FromDate']) or !isset($_POST['ToDate'])){
 
 
 	 $title = _('Payment Listing');
@@ -65,10 +65,10 @@ if (!isset($_POST['FromDate']) OR !isset($_POST['ToDate'])){
 			</tr>
 			</table>
 			<div class="centre">
-                <br />
+				<br />
 				<input type="submit" name="Go" value="' . _('Create PDF') . '" />
 			</div>
-            </form>';
+			</form>';
 
 	 include('includes/footer.inc');
 	 exit;
@@ -78,9 +78,9 @@ if (!isset($_POST['FromDate']) OR !isset($_POST['ToDate'])){
 }
 
 $sql = "SELECT bankaccountname,
-               decimalplaces AS bankcurrdecimalplaces
+			   decimalplaces AS bankcurrdecimalplaces
 	FROM bankaccounts INNER JOIN currencies
-    ON bankaccounts.currcode=currencies.currabrev
+	ON bankaccounts.currcode=currencies.currabrev
 	WHERE accountcode = '" .$_POST['BankAccount'] . "'";
 $BankActResult = DB_query($sql,$db);
 $myrow = DB_fetch_row($BankActResult);

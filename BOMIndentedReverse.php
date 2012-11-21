@@ -174,7 +174,7 @@ if (isset($_POST['PrintPDF'])) {
 
     $ListCount = DB_num_rows($result);
 
-	While ($myrow = DB_fetch_array($result,$db)){
+	while ($myrow = DB_fetch_array($result,$db)){
 
 		$YPos -=$line_height;
 		$FontSize=8;

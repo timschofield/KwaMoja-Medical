@@ -10,14 +10,14 @@ $title = _('Reverse Goods Received');
 
 include('includes/header.inc');
 
-if ((isset($_SESSION['SupplierID']) AND $_SESSION['SupplierID']!='')
-	OR (!isset($_POST['SupplierID']) OR $_POST['SupplierID'])==''){
+if ((isset($_SESSION['SupplierID']) and $_SESSION['SupplierID']!='')
+	or (!isset($_POST['SupplierID']) or $_POST['SupplierID'])==''){
 
 	$_POST['SupplierID']=$_SESSION['SupplierID'];
 
 }
 
-if (!isset($_POST['SupplierID']) OR $_POST['SupplierID']==""){
+if (!isset($_POST['SupplierID']) or $_POST['SupplierID']==""){
 	echo '<br />' . _('This page is expected to be called after a supplier has been selected');
 	echo '<meta http-equiv="Refresh" content="0; url=' . $rootpath . '/SelectSupplier.php">';
 	exit;
@@ -30,7 +30,7 @@ if (!isset($_POST['SupplierID']) OR $_POST['SupplierID']==""){
 
 echo '<p class="page_title_text"><img src="'.$rootpath.'/css/'.$theme.'/images/supplier.png" title="' . _('Sales') . '" alt="" />' . ' ' . _('Reverse Goods Received from') . ' ' . $_POST['SuppName'] .  '</p> ';
 
-if (isset($_GET['GRNNo']) AND isset($_POST['SupplierID'])){
+if (isset($_GET['GRNNo']) and isset($_POST['SupplierID'])){
 /* SQL to process the postings for the GRN reversal.. */
 
 	//Get the details of the GRN item and the cost at which it was received and other PODetail info
@@ -279,8 +279,8 @@ if (isset($_GET['GRNNo']) AND isset($_POST['SupplierID'])){
 /* If GLLink_Stock then insert GLTrans to debit the GL Code  and credit GRN Suspense account at standard cost*/
 
 	if ($_SESSION['CompanyRecord']['gllink_stock']==1
-		AND $GRN['glcode'] !=0
-		AND $GRN['stdcostunit']!=0){
+		and $GRN['glcode'] !=0
+		and $GRN['stdcostunit']!=0){
 
 	/*GLCode is set to 0 when the GLLink is not activated
 	this covers a situation where the GLLink is now active  but it wasn't when this PO was entered
@@ -343,7 +343,7 @@ if (isset($_GET['GRNNo']) AND isset($_POST['SupplierID'])){
     echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
-	if (!isset($_POST['RecdAfterDate']) OR !Is_Date($_POST['RecdAfterDate'])) {
+	if (!isset($_POST['RecdAfterDate']) or !Is_Date($_POST['RecdAfterDate'])) {
 		$_POST['RecdAfterDate'] = Date($_SESSION['DefaultDateFormat'],Mktime(0,0,0,Date("m")-3,Date("d"),Date("Y")));
 	}
     echo '<input type="hidden" name="SupplierID" value="' . $_POST['SupplierID'] . '" />';

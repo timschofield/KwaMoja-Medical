@@ -21,7 +21,7 @@ include($PathPrefix . 'includes/LanguageSetup.php');
 //  Establish a DB connection, if possible.   NOTE that this connection
 //  may not have the same 'value' as any previous connection, so
 //  save the new one in the session variable.
-if (isset($_SESSION['DatabaseName']) AND $_SESSION['DatabaseName'] != '' ) {
+if (isset($_SESSION['DatabaseName']) and $_SESSION['DatabaseName'] != '' ) {
 	include($PathPrefix . 'includes/ConnectDB.inc');
 	$_SESSION['db'] = $db;
 }
@@ -34,7 +34,7 @@ if (!isset($_SESSION['AttemptsCounter'])){
 	$_SESSION['AttemptsCounter'] = 0;
 }
 
-if (isset($_SESSION['HTTPS_Only']) AND $_SESSION['HTTPS_Only']==1){
+if (isset($_SESSION['HTTPS_Only']) and $_SESSION['HTTPS_Only']==1){
 	if ($_SERVER['HTTPS']!='on'){
 		prnMsg(_('KwaMoja is configured to allow only secure socket connections. Pages must be called with https://') . ' .....','error');
 		exit;

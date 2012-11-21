@@ -61,7 +61,7 @@ if (!isset($_POST['DoUpgrade'])){
 
 if (isset($_POST['DoUpgrade'])){
 
-	if ($dbType=='mysql' OR $dbType =='mysqli'){
+	if ($dbType=='mysql' or $dbType =='mysqli'){
 
 		$SQLScripts = array();
 
@@ -168,7 +168,7 @@ if (isset($_POST['DoUpgrade'])){
 
 	$result = DB_IgnoreForeignKeys($db);
 
-	foreach ($SQLScripts AS $SQLScriptFile) {
+	foreach ($SQLScripts as $SQLScriptFile) {
 
 		$SQLEntries = file($SQLScriptFile);
 		$ScriptFileEntries = sizeof($SQLEntries);
@@ -185,9 +185,9 @@ if (isset($_POST['DoUpgrade'])){
 			$SQLEntries[$i] = trim($SQLEntries[$i]);
 
 			if (mb_substr($SQLEntries[$i], 0, 2) != '--'
-				AND mb_substr($SQLEntries[$i], 0, 3) != 'USE'
-				AND mb_strstr($SQLEntries[$i],'/*')==FALSE
-				AND mb_strlen($SQLEntries[$i])>1){
+				and mb_substr($SQLEntries[$i], 0, 3) != 'USE'
+				and mb_strstr($SQLEntries[$i],'/*')==FALSE
+				and mb_strlen($SQLEntries[$i])>1){
 
 				$sql .= ' ' . $SQLEntries[$i];
 
@@ -199,7 +199,7 @@ if (isset($_POST['DoUpgrade'])){
 				if (mb_substr($SQLEntries[$i],0,8) == 'LANGUAGE'){
 					$InAFunction = false;
 				}
-				if (mb_strpos($SQLEntries[$i],';')>0 AND ! $InAFunction){
+				if (mb_strpos($SQLEntries[$i],';')>0 and ! $InAFunction){
 					$sql = mb_substr($sql,0,mb_strlen($sql)-1);
 					$result = DB_query($sql, $db, '','', false, false);
 					echo '<tr><td>' . $sql . '</td>';

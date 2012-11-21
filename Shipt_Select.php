@@ -31,11 +31,11 @@ echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 
-If (isset($_POST['ResetPart'])) {
+if (isset($_POST['ResetPart'])) {
      unset($SelectedStockItem);
 }
 
-If (isset($ShiptRef) AND $ShiptRef!='') {
+if (isset($ShiptRef) and $ShiptRef!='') {
 	if (!is_numeric($ShiptRef)){
 		  echo '<br />';
 		  prnMsg( _('The Shipment Number entered MUST be numeric') );
@@ -48,7 +48,7 @@ If (isset($ShiptRef) AND $ShiptRef!='') {
 		echo '<br />' ._('For supplier'). ': '. $SelectedSupplier . ' ' . _('and'). ' ';
 		echo '<input type="hidden" name="SelectedSupplier" value="'. $SelectedSupplier. '" />';
 	}
-	If (isset($SelectedStockItem)) {
+	if (isset($SelectedStockItem)) {
 		 echo _('for the part'). ': ' . $SelectedStockItem . '.';
 		echo '<input type="hidden" name="SelectedStockItem" value="'. $SelectedStockItem. '" />';
 	}
@@ -56,7 +56,7 @@ If (isset($ShiptRef) AND $ShiptRef!='') {
 
 if (isset($_POST['SearchParts'])) {
 
-	If ($_POST['Keywords'] AND $_POST['StockCode']) {
+	if ($_POST['Keywords'] and $_POST['StockCode']) {
 		echo '<br />';
 		prnMsg( _('Stock description keywords have been used in preference to the Stock code extract entered'),'info');
 	}
@@ -71,7 +71,7 @@ if (isset($_POST['SearchParts'])) {
 		INNER JOIN purchorderdetails
 			ON stockmaster.stockid=purchorderdetails.itemcode";
 
-	If ($_POST['Keywords']) {
+	if ($_POST['Keywords']) {
 		//insert wildcard characters in spaces
 		$SearchString = '%' . str_replace(' ', '%', $_POST['Keywords']) . '%';
 
@@ -87,7 +87,7 @@ if (isset($_POST['SearchParts'])) {
 			AND stockmaster.stockid " . LIKE . " '%" . $_POST['StockCode'] . "%'
 			AND categoryid='" . $_POST['StockCat'] ."'";
 
-	 } elseif (!$_POST['StockCode'] AND !$_POST['Keywords']) {
+	 } elseif (!$_POST['StockCode'] and !$_POST['Keywords']) {
 		$SQL .= " WHERE purchorderdetails.shiptref IS NOT NULL
 			AND purchorderdetails.shiptref<>0
 			AND stockmaster.categoryid='" . $_POST['StockCat'] . "'";
@@ -97,7 +97,7 @@ if (isset($_POST['SearchParts'])) {
 						stockmaster.description,
 						stockmaster.decimalplaces,
 						stockmaster.units";
-						
+
 	$ErrMsg = _('No Stock Items were returned from the database because'). ' - '. DB_error_msg($db);
 	$StockItemsResult = DB_query($SQL,$db, $ErrMsg);
 
@@ -214,14 +214,14 @@ Code	 Description	On Hand		 Orders Ostdg     Units		 Code	Description 	 On Hand 
 				<td class="number">%s</td>
 				<td class="number">%s</td>
 				<td>%s</td></tr>',
-				$myrow['stockid'], 
-				$myrow['description'], 
-				locale_number_format($myrow['qoh'],$myrow['decimalplaces']), 
+				$myrow['stockid'],
+				$myrow['description'],
+				locale_number_format($myrow['qoh'],$myrow['decimalplaces']),
 				locale_number_format($myrow['qord'],$myrow['decimalplaces']),
 				$myrow['units']);
 
 		$j++;
-		If ($j == 15){
+		if ($j == 15){
 			$j=1;
 			echo $TableHeader;
 		}
@@ -237,7 +237,7 @@ Code	 Description	On Hand		 Orders Ostdg     Units		 Code	Description 	 On Hand 
 
 	//figure out the SQL required from the inputs available
 
-	if (isset($ShiptRef) AND $ShiptRef !="") {
+	if (isset($ShiptRef) and $ShiptRef !="") {
 		$SQL = "SELECT shipments.shiptref,
 				vessel,
 				voyageref,
@@ -356,7 +356,7 @@ Code	 Description	On Hand		 Orders Ostdg     Units		 Code	Description 	 On Hand 
 						$URL_View_Shipment);
 			}
 			$j++;
-			If ($j == 15){
+			if ($j == 15){
 				$j=1;
 				echo $TableHeader;
 			}

@@ -119,7 +119,7 @@ if ($_FILES['SelectedAssetFile']['name']) { //start file processing
 			} //end switch
 		} //end loop around fields from import
 
-		if (mb_strlen($Description)==0 OR mb_strlen($Description)>50){
+		if (mb_strlen($Description)==0 or mb_strlen($Description)>50){
 			prnMsg('The description of the asset is expected to be more than 3 characters long and less than 50 characters long','error');
 			echo '<br />' . _('Row:') . $Row . ' - ' . _('Invalid Description:') . ' ' . $Description;
 			$InputError=true;
@@ -128,7 +128,7 @@ if ($_FILES['SelectedAssetFile']['name']) { //start file processing
 			prnMsg(_('The depreciation rate is expected to be numeric'),'error');
 			echo '<br />' . _('Row:') . $Row . ' - ' . _('Invalid Depreciation Rate:') . ' ' . $DepnRate;
 			$InputError=true;
-		}elseif ($DepnRate<0 OR $DepnRate>100){
+		}elseif ($DepnRate<0 or $DepnRate>100){
 			prnMsg(_('The depreciation rate is expected to be a number between 0 and 100'),'error');
 			echo '<br />' .  _('Row:') . $Row . ' - ' ._('Invalid Depreciation Rate:') . ' ' . $DepnRate;
 			$InputError=true;
@@ -151,7 +151,7 @@ if ($_FILES['SelectedAssetFile']['name']) { //start file processing
 			echo '<br />' . _('Row:') . $Row . ' - ' . _('Invalid Cost:') . ' ' . $AccumDepn;
 			$InputError=true;
 		}
-		if ($DepnType !='SL' AND $DepnType!='DV'){
+		if ($DepnType !='SL' and $DepnType!='DV'){
 			prnMsg(_('The depreciation type must be either "SL" - Straight Line or "DV" - Diminishing Value'),'error');
 			echo '<br />' . _('Row:') . $Row . ' - ' . _('Invalid depreciation type:') . ' ' . $DepnType;
 			$InputError = true;
@@ -253,7 +253,7 @@ if ($_FILES['SelectedAssetFile']['name']) { //start file processing
 											'" . Date('Y-m-d') . "',
 											'depn',
 											'" . $AccumDepn . "')";
-	
+
 				$ErrMsg =  _('The transaction for the cost of the asset could not be added because');
 				$DbgMsg = _('The SQL that was used to add the fixedasset trans record that failed was');
 				$InsResult = DB_query($sql,$db,$ErrMsg,$DbgMsg);
@@ -276,7 +276,7 @@ if ($_FILES['SelectedAssetFile']['name']) { //start file processing
 
 	fclose($FileHandle);
 
-} elseif ( isset($_POST['gettemplate']) OR isset($_GET['gettemplate']) ) { //download an import template
+} elseif ( isset($_POST['gettemplate']) or isset($_GET['gettemplate']) ) { //download an import template
 
 	echo '<br /><br /><br />"'. implode('","',$FieldNames). '"<br /><br /><br />';
 

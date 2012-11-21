@@ -7,23 +7,23 @@ include('includes/class.pdf.php');
 include('includes/SQL_CommonFunctions.inc');
 
 //Get Out if we have no order number to work with
-If (!isset($_GET['TransNo']) OR $_GET['TransNo']==''){
+if (!isset($_GET['TransNo']) or $_GET['TransNo']==''){
 	$title = _('Select Order To Print');
 	include('includes/header.inc');
 	echo '<div class="centre">
-         <br />
-         <br />
-         <br />';
+		 <br />
+		 <br />
+		 <br />';
 	prnMsg( _('Select an Order Number to Print before calling this page') , 'error');
 	echo '<br />
-          <br />
-          <br />
-          <table class="table_index">
-                 <tr><td class="menu_group_item">
-                 <ul>
+		  <br />
+		  <br />
+		  <table class="table_index">
+				 <tr><td class="menu_group_item">
+				 <ul>
 					<li><a href="'. $rootpath . '/SelectSalesOrder.php">' . _('Outstanding Sales Orders') . '</a></li>
 					<li><a href="'. $rootpath . '/SelectCompletedOrder.php">' . _('Completed Sales Orders') . '</a></li>
-                 </ul>
+				 </ul>
 				 </td>
 				 </tr>
 			</table>
@@ -71,40 +71,40 @@ $sql = "SELECT salesorders.customerref,
 
 $result=DB_query($sql,$db, $ErrMsg);
 
-//If there are no rows, there's a problem.
+//if there are no rows, there's a problem.
 if (DB_num_rows($result)==0){
 
 	$ListCount = 0;
 
 	$title = _('Print Packing Slip Error');
-        include('includes/header.inc');
-        echo '<div class="centre"><br /><br /><br />';
+		include('includes/header.inc');
+		echo '<div class="centre"><br /><br /><br />';
 	prnMsg( _('Unable to Locate Order Number') . ' : ' . $_GET['TransNo'] . ' ', 'error');
-        echo '<br /><br /><br /><table class="table_index"><tr><td class="menu_group_item">
-                <li><a href="'. $rootpath . '/SelectSalesOrder.php">' . _('Outstanding Sales Orders') . '</a></li>
-                <li><a href="'. $rootpath . '/SelectCompletedOrder.php">' . _('Completed Sales Orders') . '</a></li>
-                </td></tr></table></div><br /><br /><br />';
-        include('includes/footer.inc');
-        exit();
+		echo '<br /><br /><br /><table class="table_index"><tr><td class="menu_group_item">
+				<li><a href="'. $rootpath . '/SelectSalesOrder.php">' . _('Outstanding Sales Orders') . '</a></li>
+				<li><a href="'. $rootpath . '/SelectCompletedOrder.php">' . _('Completed Sales Orders') . '</a></li>
+				</td></tr></table></div><br /><br /><br />';
+		include('includes/footer.inc');
+		exit();
 } elseif (DB_num_rows($result)==1){ /*There is only one order header returned - thats good! */
 
 /* Javier */	$ListCount = 1;
 
 	$myrow = DB_fetch_array($result);
-	if ($myrow['printedpackingslip']==1 AND ($_GET['Reprint']!='OK' OR !isset($_GET['Reprint']))){
+	if ($myrow['printedpackingslip']==1 and ($_GET['Reprint']!='OK' or !isset($_GET['Reprint']))){
 		$title = _('Print Packing Slip Error');
-	      	include('includes/header.inc');
+		  	include('includes/header.inc');
 		echo '<p>';
 		prnMsg( _('The packing slip for order number') . ' ' . $_GET['TransNo'] . ' ' .
 			_('has previously been printed') . '. ' . _('It was printed on'). ' ' . ConvertSQLDate($myrow['datepackingslipprinted']) .
 			'<br />' . _('This check is there to ensure that duplicate packing slips are not produced and dispatched more than once to the customer'), 'warn' );
-	      echo '<p><a href="' . $rootpath . '/PrintCustOrder.php?TransNo=' . $_GET['TransNo'] . '&Reprint=OK">'
+		  echo '<p><a href="' . $rootpath . '/PrintCustOrder.php?TransNo=' . $_GET['TransNo'] . '&Reprint=OK">'
 		. _('Do a Re-Print') . ' (' . _('On Pre-Printed Stationery') . ') ' . _('Even Though Previously Printed') . '</a><p>' .
 		'<a href="' . $rootpath. '/PrintCustOrder_generic.php?TransNo=' . $_GET['TransNo'] . '&Reprint=OK">'. _('Do a Re-Print') . ' (' . _('Plain paper') . ' - ' . _('A4') . ' ' . _('landscape') . ') ' . _('Even Though Previously Printed'). '</a>';
 
 		echo '<br /><br /><br />';
 		echo  _('Or select another Order Number to Print');
-	        echo '<table class="table_index">
+			echo '<table class="table_index">
 					<tr>
 						<td class="menu_group_item">
 							<li><a href="'. $rootpath . '/SelectSalesOrder.php">' . _('Outstanding Sales Orders') . '</a></li>
@@ -117,7 +117,7 @@ if (DB_num_rows($result)==0){
 				<br />
 				<br />';
 
-      		include('includes/footer.inc');
+	  		include('includes/footer.inc');
 		exit;
    	}//packing slip has been printed.
 }
@@ -160,9 +160,9 @@ if (DB_num_rows($result)>0){
 // Javier: better to not use references
 //	$PageSize = array(0,0,$Page_Width,$Page_Height);
 	//	$pdf = & new Cpdf($PageSize);
-	Class Cpdf1 extends Cpdf {
+	class Cpdf1 extends Cpdf {
 
-		Public function Footer() {
+		public function Footer() {
 			// Position at 15 mm from bottom
 		$this->SetY(-15);
 		//Set font and Page number
@@ -170,7 +170,7 @@ if (DB_num_rows($result)>0){
 		$this->Cell(0, 10, _('Page').$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
 		}
 	}
-	
+
 	$pdf = new Cpdf1('L', 'pt', 'LETTER');
 
 	$pdf->addInfo('Creator', 'KwaMoja http://www.kwamoja.org');
@@ -208,15 +208,15 @@ if (DB_num_rows($result)>0){
 		if ($YPos-$line_height <= 136){
 	   /* We reached the end of the page so finsih off the page and start a newy */
 
-	      $PageNumber++;
-	      include ('includes/PDFOrderPageHeader.inc');
+		  $PageNumber++;
+		  include ('includes/PDFOrderPageHeader.inc');
 
 	   } //end if need a new page headed up
 
 	   /*increment a line down for the next line item */
 	   $YPos -= ($line_height);
 
-      } //end while there are line items to print out
+	  } //end while there are line items to print out
 
 	$pdf->OutputD($_SESSION['DatabaseName'] . '_Customer_Order_' . $_GET['TransNo'] . '_' . Date('Y-m-d') .'.pdf');
 	$pdf-> __destruct();

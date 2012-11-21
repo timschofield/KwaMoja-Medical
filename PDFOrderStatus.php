@@ -7,18 +7,18 @@ include('includes/SQL_CommonFunctions.inc');
 
 $InputError=0;
 
-if (isset($_POST['FromDate']) AND !Is_Date($_POST['FromDate'])){
+if (isset($_POST['FromDate']) and !Is_Date($_POST['FromDate'])){
 	$msg = _('The date from must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
 	$InputError=1;
 	unset($_POST['FromDate']);
 }
-if (isset($_POST['ToDate']) AND !Is_Date($_POST['ToDate'])){
+if (isset($_POST['ToDate']) and !Is_Date($_POST['ToDate'])){
 	$msg = _('The date to must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
 	$InputError=1;
 	unset($_POST['ToDate']);
 }
 
-if (!isset($_POST['FromDate']) OR !isset($_POST['ToDate'])){
+if (!isset($_POST['FromDate']) or !isset($_POST['ToDate'])){
 
 	$title = _('Order Status Report');
 	include ('includes/header.inc');
@@ -30,7 +30,7 @@ if (!isset($_POST['FromDate']) OR !isset($_POST['ToDate'])){
 	echo '<p class="page_title_text"><img src="'.$rootpath.'/css/'.$theme.'/images/transactions.png" title="' . $title . '" alt="" />' . ' ' . _('Order Status Report') . '</p>';
 
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '">';
-    echo '<div>';
+	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table class="selection">
 			<tr>
@@ -73,8 +73,8 @@ if (!isset($_POST['FromDate']) OR !isset($_POST['ToDate'])){
 			<div class="centre">
 				<input type="submit" name="Go" value="' . _('Create PDF') . '" />
 			</div>';
-    echo '</div>
-          </form>';
+	echo '</div>
+		  </form>';
 
 	include('includes/footer.inc');
 	exit;
@@ -89,7 +89,7 @@ if (!isset($_POST['FromDate']) OR !isset($_POST['ToDate'])){
 }
 
 
-if ($_POST['CategoryID']=='All' AND $_POST['Location']=='All'){
+if ($_POST['CategoryID']=='All' and $_POST['Location']=='All'){
 	$sql= "SELECT salesorders.orderno,
 				  salesorders.debtorno,
 				  salesorders.branchcode,
@@ -124,7 +124,7 @@ if ($_POST['CategoryID']=='All' AND $_POST['Location']=='All'){
 				  AND salesorders.orddate <='" . FormatDateForSQL($_POST['ToDate']) . "'
 			 AND salesorders.quotation=0";
 
-} elseif ($_POST['CategoryID']!='All' AND $_POST['Location']=='All') {
+} elseif ($_POST['CategoryID']!='All' and $_POST['Location']=='All') {
 	$sql= "SELECT salesorders.orderno,
 				  salesorders.debtorno,
 				  salesorders.branchcode,
@@ -161,7 +161,7 @@ if ($_POST['CategoryID']=='All' AND $_POST['Location']=='All'){
 			 AND salesorders.quotation=0";
 
 
-} elseif ($_POST['CategoryID']=='All' AND $_POST['Location']!='All') {
+} elseif ($_POST['CategoryID']=='All' and $_POST['Location']!='All') {
 	$sql= "SELECT salesorders.orderno,
 				  salesorders.debtorno,
 				  salesorders.branchcode,
@@ -198,7 +198,7 @@ if ($_POST['CategoryID']=='All' AND $_POST['Location']=='All'){
 			 AND salesorders.quotation=0";
 
 
-} elseif ($_POST['CategoryID']!='All' AND $_POST['location']!='All'){
+} elseif ($_POST['CategoryID']!='All' and $_POST['location']!='All'){
 
 	$sql= "SELECT salesorders.orderno,
 				  salesorders.debtorno,

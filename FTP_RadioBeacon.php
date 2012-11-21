@@ -256,7 +256,7 @@ if (isset($_GET['OrderNo'])){ /*An order has been selected for sending */
 
 			fwrite($fp, $PHRecord);
 
-			foreach ($PDRec AS $PD) {
+			foreach ($PDRec as $PD) {
 				fwrite($fp, $PD);
 			}
 			fclose($fp);
@@ -265,7 +265,7 @@ if (isset($_GET['OrderNo'])){ /*An order has been selected for sending */
 			// set up basic connection
 			$conn_id = ftp_connect($_SESSION['RadioBeaconFTP_server']); // login with username and password
 			$login_result = ftp_login($conn_id, $_SESSION['RadioBeaconFTP_user_name'], $_SESSION['RadioBeaconFTP_user_pass']); // check connection
-			if ((!$conn_id) || (!$login_result)) {
+			if ((!$conn_id) or (!$login_result)) {
 				echo '<br />' . _('Ftp connection has failed');
 				echo '<br />' . _('Attempted to connect to') . ' ' . $_SESSION['RadioBeaconFTP_server'] . ' ' . _('for user') . ' ' . $_SESSION['RadioBeaconFTP_user_name'];
 				die;

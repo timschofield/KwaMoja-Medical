@@ -28,8 +28,8 @@ $_GET['ViewTopic'] = isset($_GET['ViewTopic'])?$_GET['ViewTopic']:'';
 echo'  <form action="'.htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8').'" method="post">';
 echo '  <input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
-if (((!isset($_POST['Submit'])) AND (empty($_GET['ViewTopic']))) ||
-     ((isset($_POST['Submit'])) AND(isset($_POST['SelectTableOfContents'])))) {
+if (((!isset($_POST['Submit'])) and (empty($_GET['ViewTopic']))) ||
+     ((isset($_POST['Submit'])) and(isset($_POST['SelectTableOfContents'])))) {
 	// if not submittws then coming into manual to look at TOC
 	// if SelectTableOfContents set then user wants it displayed
 	if (!isset($_POST['Submit'])) {
@@ -74,7 +74,7 @@ if (!isset($_GET['ViewTopic']))
 
 foreach ($TOC_Array['TableOfContents'] as $Name=>$FullName){
 	$PostName = 'Select' . $Name;
-	if (($_GET['ViewTopic'] == $Name)  OR (isset($_POST[$PostName])))
+	if (($_GET['ViewTopic'] == $Name)  or (isset($_POST[$PostName])))
 	{
 		$ManualPage = 'Manual'.$Name.'.html';
 		if (file_exists($ManualPage))

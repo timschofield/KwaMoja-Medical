@@ -2,7 +2,7 @@
 /* $Id$*/
 /* Definition of the Shipment class to hold all the information for a shipment*/
 
-Class Shipment {
+class Shipment {
 
 	var $ShiptRef; /*unqique identifier for the shipment */
 	var $LineItems; /*array of objects of class LineDetails using the product id as the pointer */
@@ -40,13 +40,13 @@ Class Shipment {
 		$this->LineItems[$PODetailItem]= new LineDetails($PODetailItem,
 														$OrderNo,
 														$StockID,
-														$ItemDescr, 
-														$QtyInvoiced, 
-														$UnitPrice, 
-														$UOM, 
-														$DelDate, 
-														$QuantityOrd, 
-														$QuantityRecd, 
+														$ItemDescr,
+														$QtyInvoiced,
+														$UnitPrice,
+														$UOM,
+														$DelDate,
+														$QuantityOrd,
+														$QuantityRecd,
 														$StdCostUnit,
 														$DecimalPlaces);
 
@@ -55,7 +55,7 @@ Class Shipment {
 		$ErrMsg = _('There was an error updating the purchase order detail record to make it part of shipment') . ' ' . $this->ShiptRef . ' ' . _('the error reported was');
 		$result = DB_query($sql, $db, $ErrMsg);
 
-		Return 1;
+		return 1;
 	}
 
 
@@ -73,7 +73,7 @@ Class Shipment {
 
 } /* end of class defintion */
 
-Class LineDetails {
+class LineDetails {
 
 	var $PODetailItem;
 	var $OrderNo;
@@ -89,16 +89,16 @@ Class LineDetails {
 	var $DecimalPlaces;
 
 
-	function LineDetails ($PODetailItem, 
-							$OrderNo, 
-							$StockID, 
-							$ItemDescr, 
-							$QtyInvoiced, 
-							$UnitPrice, 
-							$UOM, 
-							$DelDate, 
-							$QuantityOrd, 
-							$QuantityRecd, 
+	function LineDetails ($PODetailItem,
+							$OrderNo,
+							$StockID,
+							$ItemDescr,
+							$QtyInvoiced,
+							$UnitPrice,
+							$UOM,
+							$DelDate,
+							$QuantityOrd,
+							$QuantityRecd,
 							$StdCostUnit,
 							$DecimalPlaces=2){
 

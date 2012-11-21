@@ -6,7 +6,7 @@ include('includes/SQL_CommonFunctions.inc');
 include ('includes/session.inc');
 
 $InputError=0;
-if (isset($_POST['Date']) AND !Is_Date($_POST['Date'])){
+if (isset($_POST['Date']) and !Is_Date($_POST['Date'])){
 	$msg = _('The date must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
 	$InputError=1;
 	unset($_POST['Date']);

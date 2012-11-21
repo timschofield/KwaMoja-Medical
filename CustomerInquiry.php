@@ -10,7 +10,7 @@ include('includes/header.inc');
 
 // always figure out the SQL required from the inputs available
 
-if(!isset($_GET['CustomerID']) AND !isset($_SESSION['CustomerID'])){
+if(!isset($_GET['CustomerID']) and !isset($_SESSION['CustomerID'])){
 	prnMsg(_('To display the enquiry a customer must first be selected from the customer selection screen'),'info');
 	echo '<br /><div class="centre"><a href="'. $rootpath . '/SelectCustomer.php?' . SID . '">' . _('Select a Customer to Inquire On') . '</a><br /></div>';
 	include('includes/footer.inc');
@@ -257,11 +257,11 @@ while ($myrow=DB_fetch_array($TransResult)) {
 	<td><a href="%s/EmailCustTrans.php?FromTransNo=%s&amp;InvOrCredit=Credit">' . _('Email') . ' <img src="%s/email.gif" title="' . _('Click to email the credit note') . '" alt="" /></a></td>';
 
 	/* assumed allowed page security token 3 allows the user to create credits for invoices */
-	if (in_array(3,$_SESSION['AllowedPageSecurityTokens']) AND $myrow['type']==10){
+	if (in_array(3,$_SESSION['AllowedPageSecurityTokens']) and $myrow['type']==10){
 		/*Show a link to allow an invoice to be credited */
 
 		/* assumed allowed page security token 8 allows the user to see GL transaction information */
-		if ($_SESSION['CompanyRecord']['gllink_debtors']== 1 AND in_array(8,$_SESSION['AllowedPageSecurityTokens'])){
+		if ($_SESSION['CompanyRecord']['gllink_debtors']== 1 and in_array(8,$_SESSION['AllowedPageSecurityTokens'])){
 
 			/* format string with GL inquiry options and for invoice to be credited */
 
@@ -359,7 +359,7 @@ while ($myrow=DB_fetch_array($TransResult)) {
 				$rootpath.'/css/'.$theme.'/images');
 
 	} elseif ($myrow['type']==11) { /*its a credit note */
-		if ($_SESSION['CompanyRecord']['gllink_debtors']== 1 AND in_array(8,$_SESSION['AllowedPageSecurityTokens'])){
+		if ($_SESSION['CompanyRecord']['gllink_debtors']== 1 and in_array(8,$_SESSION['AllowedPageSecurityTokens'])){
 			printf($BaseFormatString .
 				$PreviewCreditFormatString .
 				'<td><a href="%s/CustomerAllocations.php?AllocTrans=%s">' . _('Allocation') . '<img src="' .$rootpath .'/css/' . $theme .'/images/allocation.png" title="' . _('Click to allocate funds') . '" alt="" /></a></td>
@@ -423,10 +423,10 @@ while ($myrow=DB_fetch_array($TransResult)) {
 				$myrow['id'],
 				$rootpath.'/css/'.$theme.'/images');
 		}
-	} elseif ($myrow['type']==12 AND $myrow['totalamount']<0) { /*its a receipt  which could have an allocation*/
+	} elseif ($myrow['type']==12 and $myrow['totalamount']<0) { /*its a receipt  which could have an allocation*/
 
 		//If security token 8 in the allowed page security tokens then assumed ok for GL trans inquiries
-		if ($_SESSION['CompanyRecord']['gllink_debtors']== 1 AND in_array(8,$_SESSION['AllowedPageSecurityTokens'])){
+		if ($_SESSION['CompanyRecord']['gllink_debtors']== 1 and in_array(8,$_SESSION['AllowedPageSecurityTokens'])){
 			printf($BaseFormatString .
 				'<td><a href="%s/CustomerAllocations.php?AllocTrans=%s">' . _('Allocation') . '<img src="' .$rootpath . '/css/' . $theme .'/images/allocation.png" title="' . _('Click to allocate funds') . '" alt="" /></a></td>
 				<td><a href="%s/GLTransInquiry.php?TypeID=%s&amp;TransNo=%s">' . _('View GL Entries') . ' <img src="' .$rootpath . '/css/' . $theme .'/images/gl.png" title="' . _('View the GL Entries') . '" alt="" /></a></td>
@@ -463,10 +463,10 @@ while ($myrow=DB_fetch_array($TransResult)) {
 				$rootpath,
 				$myrow['id']);
 		}
-	} elseif ($myrow['type']==12 AND $myrow['totalamount']>0) { /*its a negative receipt */
+	} elseif ($myrow['type']==12 and $myrow['totalamount']>0) { /*its a negative receipt */
 
 		//If security token 8 in the allowed page security tokens then assumed ok for GL trans inquiries
-		if ($_SESSION['CompanyRecord']['gllink_debtors']== 1 AND in_array(8,$_SESSION['AllowedPageSecurityTokens'])){
+		if ($_SESSION['CompanyRecord']['gllink_debtors']== 1 and in_array(8,$_SESSION['AllowedPageSecurityTokens'])){
 			printf($BaseFormatString .
 				'<td><a href="%s/GLTransInquiry.php?TypeID=%s&amp;TransNo=%s">' . _('View GL Entries') . ' <a></td></tr>',
 				$myrow['typename'],
@@ -497,7 +497,7 @@ while ($myrow=DB_fetch_array($TransResult)) {
 		}
 	} else {
 		//If security token 8 in the allowed page security tokens then assumed ok for GL trans inquiries
-		if ($_SESSION['CompanyRecord']['gllink_debtors']== 1 AND in_array(8,$_SESSION['AllowedPageSecurityTokens'])){
+		if ($_SESSION['CompanyRecord']['gllink_debtors']== 1 and in_array(8,$_SESSION['AllowedPageSecurityTokens'])){
 			printf($BaseFormatString .
 				'<td><a href="%s/GLTransInquiry.php?TypeID=%s&amp;TransNo=%s">' . _('View GL Entries') . ' <a></td></tr>',
 				$myrow['typename'],

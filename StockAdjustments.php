@@ -57,7 +57,7 @@ if ($NewAdjustment==true){
 	$_SESSION['Adjustment' . $identifier]->Serialised = $myrow['serialised'];
 	$_SESSION['Adjustment' . $identifier]->DecimalPlaces = $myrow['decimalplaces'];
 	$_SESSION['Adjustment' . $identifier]->SerialItems = array();
-	if (!isset($_SESSION['Adjustment' . $identifier]->Quantity) OR !is_numeric($_SESSION['Adjustment' . $identifier]->Quantity)){
+	if (!isset($_SESSION['Adjustment' . $identifier]->Quantity) or !is_numeric($_SESSION['Adjustment' . $identifier]->Quantity)){
 		$_SESSION['Adjustment' . $identifier]->Quantity=0;
 	}
 
@@ -78,7 +78,7 @@ if (isset($_POST['StockLocation'])){
 	$_SESSION['Adjustment' . $identifier]->StockLocation = $_POST['StockLocation'];
 }
 if (isset($_POST['Quantity'])){
-	if ($_POST['Quantity']=='' OR !is_numeric(filter_number_format($_POST['Quantity']))){
+	if ($_POST['Quantity']=='' or !is_numeric(filter_number_format($_POST['Quantity']))){
 		$_POST['Quantity']=0;
 	}
 } else {
@@ -125,7 +125,7 @@ if (isset($_POST['CheckCode'])) {
 	exit;
 }
 
-if (isset($_POST['EnterAdjustment']) AND $_POST['EnterAdjustment']!= ''){
+if (isset($_POST['EnterAdjustment']) and $_POST['EnterAdjustment']!= ''){
 
 	$InputError = false; /*Start by hoping for the best */
 	$result = DB_query("SELECT * FROM stockmaster WHERE stockid='" . $_SESSION['Adjustment' . $identifier]->StockID . "'",$db);
@@ -139,7 +139,7 @@ if (isset($_POST['EnterAdjustment']) AND $_POST['EnterAdjustment']!= ''){
 	} elseif ($_SESSION['Adjustment' . $identifier]->Quantity==0){
 		prnMsg( _('The quantity entered cannot be zero') . '. ' . _('There would be no adjustment to make'),'error');
 		$InputError = true;
-	} elseif ($_SESSION['Adjustment' . $identifier]->Controlled==1 AND count($_SESSION['Adjustment' . $identifier]->SerialItems)==0) {
+	} elseif ($_SESSION['Adjustment' . $identifier]->Controlled==1 and count($_SESSION['Adjustment' . $identifier]->SerialItems)==0) {
 		prnMsg( _('The item entered is a controlled item that requires the detail of the serial numbers or batch references to be adjusted to be entered'),'error');
 		$InputError = true;
 	}
@@ -285,7 +285,7 @@ if (isset($_POST['EnterAdjustment']) AND $_POST['EnterAdjustment']!= ''){
 
 		$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
 
-		if ($_SESSION['CompanyRecord']['gllink_stock']==1 AND $_SESSION['Adjustment' . $identifier]->StandardCost > 0){
+		if ($_SESSION['CompanyRecord']['gllink_stock']==1 and $_SESSION['Adjustment' . $identifier]->StandardCost > 0){
 
 			$StockGLCodes = GetStockGLCode($_SESSION['Adjustment' . $identifier]->StockID,$db);
 
@@ -407,7 +407,7 @@ if (isset($StockID)) {
 echo '</td>
 		<td><input type="submit" name="CheckCode" value="'._('Check Part').'" /></td>
 	</tr>';
-if (isset($_SESSION['Adjustment' . $identifier]) AND mb_strlen($_SESSION['Adjustment' . $identifier]->ItemDescription)>1){
+if (isset($_SESSION['Adjustment' . $identifier]) and mb_strlen($_SESSION['Adjustment' . $identifier]->ItemDescription)>1){
 	echo '<tr>
 			<td colspan="3"><h3>' . $_SESSION['Adjustment' . $identifier]->ItemDescription . ' ('._('In Units of').' ' . $_SESSION['Adjustment' . $identifier]->PartUnit . ' ) - ' . _('Unit Cost').' = ' . locale_number_format($_SESSION['Adjustment' . $identifier]->StandardCost,4) . '</h3></td>
 		</tr>';
@@ -434,7 +434,7 @@ while ($myrow=DB_fetch_array($resultStkLocs)){
 }
 
 echo '</select></td></tr>';
-if (isset($_SESSION['Adjustment' . $identifier]) AND !isset($_SESSION['Adjustment' . $identifier]->Narrative)) {
+if (isset($_SESSION['Adjustment' . $identifier]) and !isset($_SESSION['Adjustment' . $identifier]->Narrative)) {
 	$_SESSION['Adjustment' . $identifier]->Narrative = '';
 	$Narrative ='';
 } else {
@@ -474,7 +474,7 @@ $SQL = "SELECT tagref,
 $result=DB_query($SQL,$db);
 echo '<option value="0">0 - ' . _('None') . '</option>';
 while ($myrow=DB_fetch_array($result)){
-	if (isset($_SESSION['Adjustment' . $identifier]->tag) AND $_SESSION['Adjustment' . $identifier]->tag==$myrow['tagref']){
+	if (isset($_SESSION['Adjustment' . $identifier]->tag) and $_SESSION['Adjustment' . $identifier]->tag==$myrow['tagref']){
 		echo '<option selected="selected" value="' . $myrow['tagref'] . '">' . $myrow['tagref'].' - ' .$myrow['tagdescription'] . '</option>';
 	} else {
 		echo '<option value="' . $myrow['tagref'] . '">' . $myrow['tagref'].' - ' .$myrow['tagdescription']. '</option>';

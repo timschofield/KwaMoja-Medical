@@ -13,7 +13,7 @@ $FontSize = 10;
 $FromDate = FormatDateForSQL(DateAdd(Date($_SESSION['DefaultDateFormat']),'d', -$_GET['NumberOfDays']));
 
 //the situation if the location and customer type selected "All"
-if (($_GET['Location'] == 'All') AND ($_GET['Customers'] == 'All')) {
+if (($_GET['Location'] == 'All') and ($_GET['Customers'] == 'All')) {
 	$SQL = "SELECT 	salesorderdetails.stkcode,
 				SUM(salesorderdetails.qtyinvoiced) totalinvoiced,
 				SUM(salesorderdetails.qtyinvoiced * salesorderdetails.unitprice ) AS valuesales,
@@ -24,7 +24,7 @@ if (($_GET['Location'] == 'All') AND ($_GET['Customers'] == 'All')) {
 			WHERE 	salesorderdetails.orderno = salesorders.orderno
 				AND salesorderdetails.stkcode = stockmaster.stockid
 				AND salesorders.debtorno = debtorsmaster.debtorno
-				AND salesorderdetails.actualdispatchdate >='" . $FromDate . "' 
+				AND salesorderdetails.actualdispatchdate >='" . $FromDate . "'
 			GROUP BY salesorderdetails.stkcode
 			ORDER BY `" . $_GET['Sequence'] . "` DESC
 			LIMIT " . intval($_GET['NumberOfTopItems']) ;

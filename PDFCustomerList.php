@@ -253,7 +253,7 @@ if (isset($_POST['PrintPDF'])){
 	$Area ='';
 	$SalesPerson='';
 
-	While ($Customers = DB_fetch_array($CustomersResult,$db)){
+	while ($Customers = DB_fetch_array($CustomersResult,$db)){
 
 		if ($_POST['Activity']!='All'){
 
@@ -379,7 +379,7 @@ if (isset($_POST['PrintPDF'])){
 
 	echo '<option selected="selected" value="All">' . _('All Areas') . '</option>';
 
-	While ($myrow = DB_fetch_array($AreasResult)){
+	while ($myrow = DB_fetch_array($AreasResult)){
 		echo '<option value="' . $myrow['areacode'] . '">' . $myrow['areadescription'] . '</option>';
 	}
 	echo '</select></td></tr>';
@@ -395,7 +395,7 @@ if (isset($_POST['PrintPDF'])){
 	}
 	$SalesFolkResult = DB_query($sql,$db);
 
-	While ($myrow = DB_fetch_array($SalesFolkResult)){
+	while ($myrow = DB_fetch_array($SalesFolkResult)){
 		echo '<option value="' . $myrow['salesmancode'] . '">' . $myrow['salesmanname'] . '</option>';
 	}
 	echo '</select></td></tr>';

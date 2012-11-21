@@ -133,7 +133,7 @@ SUM(recurrsalesorderdetails.unitprice*recurrsalesorderdetails.quantity*(1-recurr
 				$FormatedOrderValue);
 
 		$j++;
-		If ($j == 12){
+		if ($j == 12){
 			$j=1;
 			echo $tableheader;
 		}

@@ -40,7 +40,7 @@ if (isset($_POST['submit'])) {
 		prnMsg(_('The area code must be three characters or less long'),'error');
 		$Errors[$i] = 'AreaCode';
 		$i++;
-	} elseif (DB_num_rows($result)>0 AND !isset($SelectedArea)){
+	} elseif (DB_num_rows($result)>0 and !isset($SelectedArea)){
 		$InputError = 1;
 		prnMsg(_('The area code entered already exists'),'error');
 		$Errors[$i] = 'AreaCode';
@@ -62,7 +62,7 @@ if (isset($_POST['submit'])) {
 		$i++;
 	}
 
-	if (isset($SelectedArea) AND $InputError !=1) {
+	if (isset($SelectedArea) and $InputError !=1) {
 
 		/*SelectedArea could also exist if submit had not been clicked this code would not run in this case cos submit is false of course  see the delete code below*/
 

@@ -94,7 +94,7 @@ function submit(&$db,$PartNumber,$PartNumberOp,$SupplierId,$SupplierIdOp,$Suppli
 
 	# Add more to WHERE statement, if user entered something for the part number,supplierid, name
 	$WherePart = ' ';
-	if (mb_strlen($PartNumber) > 0 && $PartNumberOp == 'LIKE') {
+	if (mb_strlen($PartNumber) > 0 and $PartNumberOp == 'LIKE') {
 		$PartNumber = $PartNumber . '%';
 	} else {
 		$PartNumberOp = '=';
@@ -118,7 +118,7 @@ function submit(&$db,$PartNumber,$PartNumberOp,$SupplierId,$SupplierIdOp,$Suppli
 	}
 
 	$WhereSupplierName = ' ';
-	if (mb_strlen($SupplierName) > 0 AND $SupplierNameOp == 'LIKE') {
+	if (mb_strlen($SupplierName) > 0 and $SupplierNameOp == 'LIKE') {
 		$SupplierName = $SupplierName . '%';
 	} else {
 		$SupplierNameOp = '=';
@@ -141,14 +141,13 @@ function submit(&$db,$PartNumber,$PartNumberOp,$SupplierId,$SupplierIdOp,$Suppli
 	# that had used the IF statement to create a field called linestatus
 	if ($_POST['LineStatus'] != 'All') {
 		if ($_POST['DateType'] == 'Order') {
-			$WhereLineStatus = " AND IF(purchorderdetails.quantityord = purchorderdetails.qtyinvoiced ||
+			$WhereLineStatus = " AND IF(purchorderdetails.quantityord = purchorderdetails.qtyinvoiced or
 			  purchorderdetails.completed = 1,'Completed','Open') = '" . $_POST['LineStatus'] . "'";
 		 } else {
 			$WhereLineStatus = " AND IF(grns.qtyrecd - grns.quantityinv <> 0,'Open','Completed') = '"
 			. $_POST['LineStatus'] . "'";
 		 }
 	}
-
 
 	$WhereCategory = ' ';
 	if ($_POST['Category'] != 'All') {
@@ -169,7 +168,7 @@ function submit(&$db,$PartNumber,$PartNumberOp,$SupplierId,$SupplierIdOp,$Suppli
 							   purchorderdetails.qtyinvoiced,
 							   (purchorderdetails.quantityord * purchorderdetails.unitprice) as extprice,
 							   (purchorderdetails.quantityord * purchorderdetails.stdcostunit) as extcost,
-							   IF(purchorderdetails.quantityord = purchorderdetails.qtyinvoiced ||
+							   IF(purchorderdetails.quantityord = purchorderdetails.qtyinvoiced or
 								  purchorderdetails.completed = 1,'Completed','Open') as linestatus,
 							   suppliers.suppname,
 							   stockmaster.decimalplaces,
@@ -228,7 +227,7 @@ function submit(&$db,$PartNumber,$PartNumberOp,$SupplierId,$SupplierIdOp,$Suppli
 				$orderby = 'extprice DESC';
 			}
 			if ($_POST['DateType'] == 'Order') {
-				if ($_POST['SummaryType'] == 'extprice' || $_POST['SummaryType'] == 'itemcode') {
+				if ($_POST['SummaryType'] == 'extprice' or $_POST['SummaryType'] == 'itemcode') {
 					$sql = "SELECT purchorderdetails.itemcode,
 								   SUM(purchorderdetails.quantityord) as quantityord,
 								   SUM(purchorderdetails.qtyinvoiced) as qtyinvoiced,
@@ -278,7 +277,7 @@ function submit(&$db,$PartNumber,$PartNumberOp,$SupplierId,$SupplierIdOp,$Suppli
 							',purchorders.supplierno,
 							  suppliers.suppname
 							ORDER BY ' . $orderby;
-				} elseif ($_POST['SummaryType'] == 'supplierno' || $_POST['SummaryType'] == 'suppname,suppliers.supplierid') {
+				} elseif ($_POST['SummaryType'] == 'supplierno' or $_POST['SummaryType'] == 'suppname,suppliers.supplierid') {
 					$sql = "SELECT purchorders.supplierno,
 								   SUM(purchorderdetails.quantityord) as quantityord,
 								   SUM(purchorderdetails.qtyinvoiced) as qtyinvoiced,
@@ -351,7 +350,7 @@ function submit(&$db,$PartNumber,$PartNumberOp,$SupplierId,$SupplierIdOp,$Suppli
 				}
 			} else {
 					// Selects by delivery date from grns
-				if ($_POST['SummaryType'] == 'extprice' || $_POST['SummaryType'] == 'itemcode') {
+				if ($_POST['SummaryType'] == 'extprice' or $_POST['SummaryType'] == 'itemcode') {
 					$sql = "SELECT purchorderdetails.itemcode,
 								   SUM(grns.qtyrecd) as quantityord,
 								   SUM(grns.quantityinv) as qtyinvoiced,
@@ -401,7 +400,7 @@ function submit(&$db,$PartNumber,$PartNumberOp,$SupplierId,$SupplierIdOp,$Suppli
 							', purchorders.supplierno,
 							   suppliers.suppname
 							ORDER BY ' . $orderby;
-				} elseif ($_POST['SummaryType'] == 'supplierno' || $_POST['SummaryType'] == 'suppname,suppliers.supplierid') {
+				} elseif ($_POST['SummaryType'] == 'supplierno' or $_POST['SummaryType'] == 'suppname,suppliers.supplierid') {
 					$sql = "SELECT purchorders.supplierno,
 								   SUM(grns.qtyrecd) as quantityord,
 								   SUM(grns.quantityinv) as qtyinvoiced,
@@ -548,7 +547,7 @@ function submit(&$db,$PartNumber,$PartNumberOp,$SupplierId,$SupplierIdOp,$Suppli
 						<th>' . _('Item Due') . '</th>
 						<th>' . _('Part Description') . '</th>
 						</tr>';
-						
+
 				$linectr = 0;
 				$k = 0;
 				while ($myrow = DB_fetch_array($result)) {
@@ -673,7 +672,7 @@ function submit(&$db,$PartNumber,$PartNumberOp,$SupplierId,$SupplierIdOp,$Suppli
 							$myrow['linestatus'],
 							ConvertSQLDate($myrow['deliverydate']),
 							$myrow['description']);
-							
+
 					$LastDecimalPlaces = $myrow['decimalplaces'];
 					$TotalQty += $myrow['quantityord'];
 					$TotalExtCost += $myrow['extcost'];
@@ -720,7 +719,7 @@ function submit(&$db,$PartNumber,$PartNumberOp,$SupplierId,$SupplierIdOp,$Suppli
 				$summaryheader = _('Supplier Name');
 				$descriptionheader = _('Supplier Number');
 			}
-			if ($summarytype == 'itemcode' || $summarytype == 'extprice') {
+			if ($summarytype == 'itemcode' or $summarytype == 'extprice') {
 				$description = 'description';
 				$summaryheader = _('Part Number');
 				$descriptionheader = _('Part Description');
@@ -869,7 +868,7 @@ function submitcsv(&$db,
 
 	# Add more to WHERE statement, if user entered something for the part number,supplierid, name
 	$WherePart = ' ';
-	if (mb_strlen($PartNumber) > 0 && $PartNumberOp == 'LIKE') {
+	if (mb_strlen($PartNumber) > 0 and $PartNumberOp == 'LIKE') {
 		$PartNumber = $PartNumber . '%';
 	} else {
 		$PartNumberOp = '=';
@@ -893,7 +892,7 @@ function submitcsv(&$db,
 	}
 
 	$WhereSupplierName = ' ';
-	if (mb_strlen($SupplierName) > 0 && $SupplierNameOp == 'LIKE') {
+	if (mb_strlen($SupplierName) > 0 and $SupplierNameOp == 'LIKE') {
 		$SupplierName = $SupplierName . '%';
 	} else {
 		$SupplierNameOp = '=';
@@ -916,7 +915,7 @@ function submitcsv(&$db,
 	# that had used the IF statement to create a field called linestatus
 	if ($_POST['LineStatus'] != 'All') {
 		if ($_POST['DateType'] == 'Order') {
-			$WhereLineStatus = " AND IF(purchorderdetails.quantityord = purchorderdetails.qtyinvoiced ||
+			$WhereLineStatus = " AND IF(purchorderdetails.quantityord = purchorderdetails.qtyinvoiced or
 			  purchorderdetails.completed = 1,'Completed','Open') = '" . $_POST['LineStatus'] . "'";
 		 } else {
 			$WhereLineStatus = " AND IF(grns.qtyrecd - grns.quantityinv <> 0,'Open','Completed') = '"
@@ -944,7 +943,7 @@ function submitcsv(&$db,
 							   purchorderdetails.qtyinvoiced,
 							   (purchorderdetails.quantityord * purchorderdetails.unitprice) as extprice,
 							   (purchorderdetails.quantityord * purchorderdetails.stdcostunit) as extcost,
-							   IF(purchorderdetails.quantityord = purchorderdetails.qtyinvoiced ||
+							   IF(purchorderdetails.quantityord = purchorderdetails.qtyinvoiced or
 								  purchorderdetails.completed = 1,'Completed','Open') as linestatus,
 							   suppliers.suppname,
 							   stockmaster.decimalplaces,
@@ -1003,7 +1002,7 @@ function submitcsv(&$db,
 			  $orderby = 'extprice DESC';
 		  }
 		  if ($_POST['DateType'] == 'Order') {
-				if ($_POST['SummaryType'] == 'extprice' || $_POST['SummaryType'] == 'itemcode') {
+				if ($_POST['SummaryType'] == 'extprice' or $_POST['SummaryType'] == 'itemcode') {
 					$sql = "SELECT purchorderdetails.itemcode,
 								   SUM(purchorderdetails.quantityord) as quantityord,
 								   SUM(purchorderdetails.qtyinvoiced) as qtyinvoiced,
@@ -1053,7 +1052,7 @@ function submitcsv(&$db,
 							",purchorders.supplierno,
 							  suppliers.suppname
 							ORDER BY " . $orderby;
-			} elseif ($_POST['SummaryType'] == 'supplierno' || $_POST['SummaryType'] == 'suppname,suppliers.supplierid') {
+			} elseif ($_POST['SummaryType'] == 'supplierno' or $_POST['SummaryType'] == 'suppname,suppliers.supplierid') {
 					$sql = "SELECT purchorders.supplierno,
 								   SUM(purchorderdetails.quantityord) as quantityord,
 								   SUM(purchorderdetails.qtyinvoiced) as qtyinvoiced,
@@ -1126,7 +1125,7 @@ function submitcsv(&$db,
 			}
 		} else {
 					// Selects by delivery date from grns
-				if ($_POST['SummaryType'] == 'extprice' || $_POST['SummaryType'] == 'itemcode') {
+				if ($_POST['SummaryType'] == 'extprice' or $_POST['SummaryType'] == 'itemcode') {
 					$sql = "SELECT purchorderdetails.itemcode,
 								   SUM(grns.qtyrecd) as quantityord,
 								   SUM(grns.quantityinv) as qtyinvoiced,
@@ -1176,7 +1175,7 @@ function submitcsv(&$db,
 							", purchorders.supplierno,
 							   suppliers.suppname
 							ORDER BY " . $orderby;
-			} elseif ($_POST['SummaryType'] == 'supplierno' || $_POST['SummaryType'] == 'suppname,suppliers.supplierid') {
+			} elseif ($_POST['SummaryType'] == 'supplierno' or $_POST['SummaryType'] == 'suppname,suppliers.supplierid') {
 					$sql = "SELECT purchorders.supplierno,
 								   SUM(grns.qtyrecd) as quantityord,
 								   SUM(grns.quantityinv) as qtyinvoiced,
@@ -1414,7 +1413,7 @@ function submitcsv(&$db,
 				$summaryheader = _('Supplier Name');
 				$descriptionheader = _('Supplier Number');
 			}
-			if ($summarytype == 'itemcode' || $summarytype == 'extprice') {
+			if ($summarytype == 'itemcode' or $summarytype == 'extprice') {
 				$description = 'description';
 				$summaryheader = _('Part Number');
 				$descriptionheader = _('Part Description');
@@ -1576,7 +1575,7 @@ function display(&$db)  //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_##
 	$sql="SELECT categoryid, categorydescription FROM stockcategory";
 	$CategoryResult= DB_query($sql,$db);
 	echo '<option selected="selected" value="All">' . _('All Categories') . '</option>';
-	While ($myrow = DB_fetch_array($CategoryResult)){
+	while ($myrow = DB_fetch_array($CategoryResult)){
 		echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . '</option>';
 	}
 	echo '</select></td></tr>';
@@ -1587,7 +1586,7 @@ function display(&$db)  //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_##
 	echo '<option selected="selected" value="purchorderdetails.orderno">' . _('Order Number') . '</option>';
 	echo '<option value="purchorderdetails.itemcode">' . _('Part Number') . '</option>';
 	echo '<option value="suppliers.supplierid,purchorderdetails.orderno">' . _('Supplier Number') . '</option>';
-	echo '<option value="suppliers.suppname,suppliers.supplierid,purchorderdetails.orderno">' . _('Supplier Name') . '</option>'; 
+	echo '<option value="suppliers.suppname,suppliers.supplierid,purchorderdetails.orderno">' . _('Supplier Name') . '</option>';
 	echo '</select></td><td>&nbsp;</td></tr>';
 
 	echo '<tr><td>&nbsp;</td></tr>';

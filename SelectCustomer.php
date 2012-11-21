@@ -26,7 +26,7 @@ if (!isset($_SESSION['CustomerType'])) { //initialise if not already done
 	$_SESSION['CustomerType'] = '';
 }
 // only run geocode if integration is turned on and customer has been selected
-if ($_SESSION['geocode_integration'] == 1 AND $_SESSION['CustomerID'] != "") {
+if ($_SESSION['geocode_integration'] == 1 and $_SESSION['CustomerID'] != "") {
 	$sql = "SELECT * FROM geocode_param WHERE 1";
 	$ErrMsg = _('An error occurred in retrieving the information');
 	$result = DB_query($sql, $db, $ErrMsg);
@@ -86,10 +86,10 @@ if (!isset($_POST['PageOffset'])) {
 	}
 }
 if (isset($_POST['Search'])
-	OR isset($_POST['CSV'])
-	OR isset($_POST['Go'])
-	OR isset($_POST['Next'])
-	OR isset($_POST['Previous'])) {
+	or isset($_POST['CSV'])
+	or isset($_POST['Go'])
+	or isset($_POST['Next'])
+	or isset($_POST['Previous'])) {
 
 	unset($_POST['JustSelectedACustomer']);
 	if (isset($_POST['Search'])) {
@@ -97,11 +97,11 @@ if (isset($_POST['Search'])
 	}
 
 	if (($_POST['Keywords'] == '')
-		AND ($_POST['CustCode'] == '')
-		AND ($_POST['CustPhone'] == '')
-		AND ($_POST['CustType'] == 'ALL')
-		AND ($_POST['Area'] == 'ALL')
-		AND ($_POST['CustAdd'] == '')) {
+		and ($_POST['CustCode'] == '')
+		and ($_POST['CustPhone'] == '')
+		and ($_POST['CustType'] == 'ALL')
+		and ($_POST['Area'] == 'ALL')
+		and ($_POST['CustAdd'] == '')) {
 
 		//no criteria set then default to all customers
 		$SQL = "SELECT debtorsmaster.debtorno,
@@ -151,10 +151,10 @@ if (isset($_POST['Search'])
 						OR debtorsmaster.address3 "  . LIKE . " '%" . $_POST['CustAdd'] . "%'
 						OR debtorsmaster.address4 "  . LIKE . " '%" . $_POST['CustAdd'] . "%')";
 
-		if (mb_strlen($_POST['CustType']) > 0 AND $_POST['CustType']!='ALL') {
+		if (mb_strlen($_POST['CustType']) > 0 and $_POST['CustType']!='ALL') {
 			$SQL .= " AND debtortype.typename = '" . $_POST['CustType'] . "'";
 		}
-		if (mb_strlen($_POST['Area']) > 0 AND $_POST['Area']!='ALL') {
+		if (mb_strlen($_POST['Area']) > 0 and $_POST['Area']!='ALL') {
 			$SQL .= " AND custbranch.area = '" . $_POST['Area'] . "'";
 		}
 	} //one of keywords or custcode or custphone was more than a zero length string
@@ -193,9 +193,9 @@ if (isset($_POST['JustSelectedACustomer'])){
 	}
 }
 
-if ($_SESSION['CustomerID'] != '' AND !isset($_POST['Search']) AND !isset($_POST['CSV'])) {
+if ($_SESSION['CustomerID'] != '' and !isset($_POST['Search']) and !isset($_POST['CSV'])) {
 	if (!isset($_SESSION['BranchCode'])){
-		
+
 		$SQL = "SELECT debtorsmaster.name,
 					custbranch.phoneno
 			FROM debtorsmaster INNER JOIN custbranch
@@ -237,7 +237,7 @@ if ($_SESSION['CustomerID'] != '' AND !isset($_POST['Search']) AND !isset($_POST
 	echo '</td><td valign="top" class="select">';
 	echo '<a href="' . $rootpath . '/SelectSalesOrder.php?SelectedCustomer=' . $_SESSION['CustomerID'] . '">' . _('Modify Outstanding Sales Orders') . '</a><br />';
 	echo '<a href="' . $rootpath . '/CustomerAllocations.php?DebtorNo=' . $_SESSION['CustomerID'] . '">' . _('Allocate Receipts or Credit Notes') . '</a><br />';
-	if (isset($_SESSION['CustomerID']) AND isset($_SESSION['BranchCode'])){
+	if (isset($_SESSION['CustomerID']) and isset($_SESSION['BranchCode'])){
 		echo '<a href="' . $rootpath . '/CounterSales.php?DebtorNo=' . $_SESSION['CustomerID'] . '&amp;BranchNo=' . $_SESSION['BranchCode'] . '">' . _('Create a Counter Sale for this Customer') . '</a><br />';
 	}
 	echo '</td><td valign="top" class="select">';
@@ -450,7 +450,7 @@ if (isset($result)) {
 			DB_data_seek($result, ($_POST['PageOffset'] - 1) * $_SESSION['DisplayRecordsMax']);
 		}
 		$i=0; //counter for input controls
-		while (($myrow = DB_fetch_array($result)) AND ($RowIndex <> $_SESSION['DisplayRecordsMax'])) {
+		while (($myrow = DB_fetch_array($result)) and ($RowIndex <> $_SESSION['DisplayRecordsMax'])) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;
@@ -471,7 +471,7 @@ if (isset($result)) {
 			</tr>';
 			$i++;
 			$j++;//row counter
-			if ($j == 11 AND ($RowIndex + 1 != $_SESSION['DisplayRecordsMax'])) {
+			if ($j == 11 and ($RowIndex + 1 != $_SESSION['DisplayRecordsMax'])) {
 				$j = 1;
 				echo $TableHeader;
 			}

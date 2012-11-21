@@ -1,14 +1,14 @@
 <?php
 /* $Id$*/
-/*Function to calculate the freight cost. 
+/*Function to calculate the freight cost.
 Freight cost is determined by looking for a match of destination city from the Address2 and Address3 fields then looking through the freight company rates for the total KGs and Cubic meters  to figure out the least cost shipping company. */
 
 
-Function CalcFreightCost ($TotalValue, 
-				$BrAdd2, 
-				$BrAdd3, 
-				$TotalVolume, 
-				$TotalWeight, 
+function CalcFreightCost ($TotalValue,
+				$BrAdd2,
+				$BrAdd3,
+				$TotalVolume,
+				$TotalWeight,
 				$FromLocation,
 				$db){
 
@@ -50,12 +50,12 @@ Function CalcFreightCost ($TotalValue,
 					$CalcFreightCost=$myrow['fixedprice'];
 					$CalcBestShipper =$myrow['shipperid'];
 				}
-			} elseif ($myrow['cubcost'] > $myrow['kgcost'] && $myrow['cubcost'] > $myrow['minimumchg'] && $myrow['cubcost'] < $CalcFreightCost) {
+			} elseif ($myrow['cubcost'] > $myrow['kgcost'] and $myrow['cubcost'] > $myrow['minimumchg'] and $myrow['cubcost'] < $CalcFreightCost) {
 
 				$CalcFreightCost=$myrow['cubcost'];
 				$CalcBestShipper =$myrow['shipperid'];
 
-			} elseif ($myrow['kgcost']>$myrow['cubcost'] && $myrow['kgcost'] > $myrow['minimumchg'] && $myrow['kgcost'] < $CalcFreightCost) {
+			} elseif ($myrow['kgcost']>$myrow['cubcost'] and $myrow['kgcost'] > $myrow['minimumchg'] and $myrow['kgcost'] < $CalcFreightCost) {
 
 				$CalcFreightCost=$myrow['kgcost'];
 				$CalcBestShipper =$myrow['shipperid'];

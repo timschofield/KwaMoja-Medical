@@ -70,7 +70,7 @@ if (isset($_POST['PrintPDF'])) {
 	$Tot_Val=0;
 	$fill = false;
 	$pdf->SetFillColor(224,235,255);
-	While ($myrow = DB_fetch_array($result,$db)){
+	while ($myrow = DB_fetch_array($result,$db)){
 
 		$YPos -=$line_height;
 		$FontSize=8;
@@ -114,7 +114,7 @@ if (isset($_POST['PrintPDF'])) {
 	}
 
 	$pdf->OutputD($_SESSION['DatabaseName'] . '_MRPReschedules_' . date('Y-m-d').'.pdf');
-	$pdf->__destruct(); 
+	$pdf->__destruct();
 
 } else { /*The option to print PDF was not hit so display form */
 

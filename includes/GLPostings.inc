@@ -133,7 +133,7 @@ for ( $CurrPeriod = $CreateFrom; $CurrPeriod <= $CreateTo; $CurrPeriod++ ) {
 
 if (DB_num_rows($ChartDetailsNotSetUpResult)>0){
 
-	While ($AccountRow = DB_fetch_array($ChartDetailsNotSetUpResult)){
+	while ($AccountRow = DB_fetch_array($ChartDetailsNotSetUpResult)){
 
 		/*Now run through each of the new chartdetail records created for each account and update them with the B/Fwd and B/Fwd budget no updates would be required where there were previously no chart details set up */
 

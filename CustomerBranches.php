@@ -50,7 +50,7 @@ if (isset($_POST['submit'])) {
 
 	$_POST['BranchCode'] = mb_strtoupper($_POST['BranchCode']);
 
-	if (ContainsIllegalCharacters($_POST['BranchCode']) OR mb_strstr($_POST['BranchCode'],' ') OR mb_strstr($_POST['BranchCode'],'-')) {
+	if (ContainsIllegalCharacters($_POST['BranchCode']) or mb_strstr($_POST['BranchCode'],' ') or mb_strstr($_POST['BranchCode'],'-')) {
 		$InputError = 1;
 		prnMsg(_('The Branch code cannot contain any of the following characters')." -  &amp; \'",'error');
 		$Errors[$i] = 'BranchCode';
@@ -134,7 +134,7 @@ if (isset($_POST['submit'])) {
 			}
 		}
 	}
-	if (isset($SelectedBranch) AND $InputError !=1) {
+	if (isset($SelectedBranch) and $InputError !=1) {
 
 		/*SelectedBranch could also exist if submit had not been clicked this code would not run in this case cos submit is false of course see the 	delete code below*/
 
@@ -652,9 +652,9 @@ if (!isset($_GET['delete'])) {
 	}
 	echo '<td><select name="BrAddress6">';
 	foreach ($CountriesArray as $CountryEntry => $CountryName){
-		if (isset($_POST['BrAddress6']) AND ($_POST['BrAddress6'] == $CountryName)){
+		if (isset($_POST['BrAddress6']) and ($_POST['BrAddress6'] == $CountryName)){
 			echo '<option selected="selected" value="' . $CountryName . '">' . $CountryName .'</option>';
-		}elseif (!isset($_POST['BrAddress6']) AND $CountryName == "") {
+		}elseif (!isset($_POST['BrAddress6']) and $CountryName == "") {
 			echo '<option selected="selected" value="' . $CountryName . '">' . $CountryName .'</option>';
 		} else {
 			echo '<option value="' . $CountryName . '">' . $CountryName .'</option>';
@@ -853,7 +853,7 @@ if (!isset($_GET['delete'])) {
 			<td>'._('Default freight/shipper method') . ':</td>
 			<td><select tabindex="21" name="DefaultShipVia">';
 	while ($myrow=DB_fetch_array($ShipperResults)){
-		if (isset($_POST['DefaultShipVia'])and $myrow['shipper_id']==$_POST['DefaultShipVia']){
+		if (isset($_POST['DefaultShipVia']) and $myrow['shipper_id']==$_POST['DefaultShipVia']){
 			echo '<option selected="selected" value="' . $myrow['shipper_id'] . '">' . $myrow['shippername'] . '</option>';
 		}else {
 			echo '<option value="' . $myrow['shipper_id'] . '">' . $myrow['shippername'] . '</option>';

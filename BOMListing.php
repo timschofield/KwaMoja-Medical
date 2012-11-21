@@ -4,11 +4,11 @@
 
 include('includes/session.inc');
 
-If (isset($_POST['PrintPDF'])
-	AND isset($_POST['FromCriteria'])
-	AND mb_strlen($_POST['FromCriteria'])>=1
-	AND isset($_POST['ToCriteria'])
-	AND mb_strlen($_POST['ToCriteria'])>=1){
+if (isset($_POST['PrintPDF'])
+	and isset($_POST['FromCriteria'])
+	and mb_strlen($_POST['FromCriteria'])>=1
+	and isset($_POST['ToCriteria'])
+	and mb_strlen($_POST['ToCriteria'])>=1){
 
 	include('includes/PDFStarter.php');
 	$pdf->addInfo('Title',_('Bill Of Material Listing'));
@@ -98,9 +98,9 @@ If (isset($_POST['PrintPDF'])
 
 	$YPos -=$line_height;
 	$pdf->line($Page_Width-$Right_Margin, $YPos,$Left_Margin, $YPos);
-  
+
     $pdf->OutputD($_SESSION['DatabaseName'] . '_BOMListing_' . date('Y-m-d').'.pdf');
-    $pdf->__destruct(); 
+    $pdf->__destruct();
 
 } else { /*The option to print PDF was not hit */
 
@@ -108,7 +108,7 @@ If (isset($_POST['PrintPDF'])
 	include('includes/header.inc');
 	echo '<p class="page_title_text"><img src="'.$rootpath.'/css/'.$theme.'/images/reports.png" title="' . _('Search') .
 		'" alt="" />' . ' ' . $title . '</p><br />';
-	if (!isset($_POST['FromCriteria']) || !isset($_POST['ToCriteria'])) {
+	if (!isset($_POST['FromCriteria']) or !isset($_POST['ToCriteria'])) {
 
 	/*if $FromCriteria is not set then show a form to allow input	*/
 

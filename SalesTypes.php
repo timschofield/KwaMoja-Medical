@@ -57,7 +57,7 @@ if (isset($_POST['submit'])) {
 		$i++;
 	}
 
-	if (isset($SelectedType) AND $InputError !=1) {
+	if (isset($SelectedType) and $InputError !=1) {
 
 		$sql = "UPDATE salestypes
 			SET sales_type = '" . $_POST['Sales_Type'] . "'
@@ -229,7 +229,7 @@ if (! isset($_GET['delete'])) {
 
 
 	// The user wish to EDIT an existing type
-	if ( isset($SelectedType) AND $SelectedType!='' )
+	if ( isset($SelectedType) and $SelectedType!='' )
 	{
 
 		$sql = "SELECT typeabbrev,

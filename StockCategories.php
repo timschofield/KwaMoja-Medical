@@ -47,7 +47,7 @@ if (isset($_POST['submit'])) {
 	} elseif (mb_strlen($_POST['CategoryDescription']) >20 or mb_strlen($_POST['CategoryDescription'])==0) {
 		$InputError = 1;
 		prnMsg(_('The Sales category description must be twenty characters or less long and cannot be zero'),'error');
-	} elseif ($_POST['StockType'] !='D' AND $_POST['StockType'] !='L' AND $_POST['StockType'] !='F' AND $_POST['StockType'] !='M') {
+	} elseif ($_POST['StockType'] !='D' and $_POST['StockType'] !='L' and $_POST['StockType'] !='F' and $_POST['StockType'] !='M') {
 		$InputError = 1;
 		prnMsg(_('The stock type selected must be one of') . ' "D" - ' . _('Dummy item') . ', "L" - ' . _('Labour stock item') . ', "F" - ' . _('Finished product') . ' ' . _('or') . ' "M" - ' . _('Raw Materials'),'error');
 	}
@@ -64,7 +64,7 @@ if (isset($_POST['submit'])) {
 		}
 	} //check the properties are sensible
 
-	if (isset($SelectedCategory) AND $InputError !=1) {
+	if (isset($SelectedCategory) and $InputError !=1) {
 
 		/*SelectedCategory could also exist if submit had not been clicked this code
 		would not run in this case cos submit is false of course  see the
@@ -99,7 +99,7 @@ if (isset($_POST['submit'])) {
 			} else {
 					$_POST['PropNumeric' .$i] =0;
 			}
-			if ($_POST['PropID' .$i] =='NewProperty' AND mb_strlen($_POST['PropLabel'.$i])>0){
+			if ($_POST['PropID' .$i] =='NewProperty' and mb_strlen($_POST['PropLabel'.$i])>0){
 				$sql = "INSERT INTO stockcatproperties (categoryid,
 														label,
 														controltype,

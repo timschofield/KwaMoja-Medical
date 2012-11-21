@@ -5,10 +5,10 @@
 include('includes/session.inc');
 
 if (isset($_POST['PrintPDF'])
-	AND isset($_POST['FromCriteria'])
-	AND mb_strlen($_POST['FromCriteria'])>=1
-	AND isset($_POST['ToCriteria'])
-	AND mb_strlen($_POST['ToCriteria'])>=1){
+	and isset($_POST['FromCriteria'])
+	and mb_strlen($_POST['FromCriteria'])>=1
+	and isset($_POST['ToCriteria'])
+	and mb_strlen($_POST['ToCriteria'])>=1){
 
 	include('includes/PDFStarter.php');
 
@@ -122,7 +122,7 @@ if (isset($_POST['PrintPDF'])
 				$LeftOvers = $pdf->addTextWrap(360,$YPos,60,$FontSize,$DisplayCatTotQty, 'right');
 				$YPos -=$line_height;
 
-				If ($_POST['DetailedReport']=='Yes'){
+				if ($_POST['DetailedReport']=='Yes'){
 				/*draw a line under the CATEGORY TOTAL*/
 					$pdf->line($Left_Margin, $YPos+$line_height-2,$Page_Width-$Right_Margin, $YPos+$line_height-2);
 					$YPos -=(2*$line_height);
@@ -198,7 +198,7 @@ if (isset($_POST['PrintPDF'])
 	include('includes/header.inc');
 
 
-	if (empty($_POST['FromCriteria']) OR empty($_POST['ToCriteria'])) {
+	if (empty($_POST['FromCriteria']) or empty($_POST['ToCriteria'])) {
 
 	/*if $FromCriteria is not set then show a form to allow input	*/
 		echo '<p class="page_title_text">
@@ -219,7 +219,7 @@ if (isset($_POST['PrintPDF'])
 				ORDER BY categorydescription";
 
 		$CatResult= DB_query($sql,$db);
-		While ($myrow = DB_fetch_array($CatResult)){
+		while ($myrow = DB_fetch_array($CatResult)){
 			echo '<option value="' . $myrow['categorydescription'] . '">' . $myrow['categorydescription'] . ' - ' . $myrow['categoryid'] . '</option>';
 		}
 		echo '</select></td>
@@ -232,7 +232,7 @@ if (isset($_POST['PrintPDF'])
 		/*Set the index for the categories result set back to 0 */
 		DB_data_seek($CatResult,0);
 
-		While ($myrow = DB_fetch_array($CatResult)){
+		while ($myrow = DB_fetch_array($CatResult)){
 			echo '<option value="' . $myrow['categorydescription'] . '">' . $myrow['categorydescription'] . ' - ' . $myrow['categoryid'] . '</option>';
 		}
 		echo '</select></td>

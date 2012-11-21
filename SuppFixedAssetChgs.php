@@ -49,7 +49,7 @@ if (isset($_POST['AddAssetToInvoice'])){
 	}
 
 	if ($InputError == False){
-		$_SESSION['SuppTrans']->Add_Asset_To_Trans($_POST['AssetID'], 
+		$_SESSION['SuppTrans']->Add_Asset_To_Trans($_POST['AssetID'],
 													filter_number_format($_POST['Amount']));
 		unset($_POST['AssetID']);
 		unset($_POST['Amount']);
@@ -132,7 +132,7 @@ $sql = "SELECT assetid,
 $result = DB_query($sql, $db);
 
 while ($myrow = DB_fetch_array($result)) {
-	if (isset($_POST['AssetSelection']) AND $myrow['AssetID']==$_POST['AssetSelection']) {
+	if (isset($_POST['AssetSelection']) and $myrow['AssetID']==$_POST['AssetSelection']) {
 		echo '<option selected="selected" value="';
 	} else {
 		echo '<option value="';

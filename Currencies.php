@@ -269,7 +269,7 @@ or deletion of the records*/
 					$myrow['hundredsname'],
 					locale_number_format($myrow['decimalplaces'],0),
 					locale_number_format($myrow['rate'],8),
-					locale_number_format(1/$myrow['rate'],2),
+					locale_number_format(1/$myrow['rate'],8),
 					locale_number_format(GetCurrencyRate($myrow['currabrev'],$CurrencyRatesArray),8),
 					htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?',
 					$myrow['currabrev'],

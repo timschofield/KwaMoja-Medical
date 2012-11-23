@@ -3,7 +3,7 @@
 <!-- \$ Id$ -->
     <title>Failed Login</title>
     <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
-    <link rel="stylesheet" href="css/default/login.css" type="text/css">
+    <link rel="stylesheet" href="css/login.css" type="text/css">
 </head>
 
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">

@@ -14,7 +14,7 @@ include('includes/session.inc');
 <head>
 	<title><?php echo $_SESSION['CompanyRecord']['coyname'];?> - <?php echo _('Log Off'); ?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" href="css/<?php echo $theme;?>/login.css" type="text/css" />
+	<link rel="stylesheet" href="css/login.css" type="text/css" />
 </head>
 
 <body>

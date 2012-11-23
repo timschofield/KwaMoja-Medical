@@ -401,7 +401,7 @@ if (isset($_POST['StockType']) and $_POST['StockType']=='L') {
 echo '</select></td>
 			</tr>';
 
-echo '<tr><td><input type="submit" name="UpdateTypes" style="visibility:hidden;width:1px" value="Not Seen" />';
+echo '<tr><td><input type="hidden" name="UpdateTypes" value="Not Seen" />';
 if (isset($_POST['StockType']) and $_POST['StockType']=='L') {
 	$Result = $PnLAccountsResult;
 	echo _('Recovery GL Code');

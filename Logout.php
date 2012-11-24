@@ -20,7 +20,9 @@ include('includes/session.inc');
 <body>
 
 <div id="container">
-	<div id="login_logo"></div>
+	<div id="login_logo">
+		<img src="companies/logo.png" style="width:100%" />
+	</div>
 	<div id="login_box">
 	<form action="<?php echo $rootpath;?>/index.php" id="loginform" method="post">
     <p>

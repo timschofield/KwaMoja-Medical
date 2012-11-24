@@ -368,28 +368,27 @@ or deletion of the records*/
 			ON locations.taxprovinceid=taxprovinces.taxprovinceid";
 	$result = DB_query($sql,$db);
 
-	if (DB_num_rows($result)==0){
-		prnMsg (_('There are no locations that match up with a tax province record to display. Check that tax provinces are set up for all dispatch locations'),'error');
-	}
 	echo '<p class="page_title_text"><img src="'.$rootpath.'/css/'.$theme.'/images/supplier.png" title="' .
 			_('Inventory') . '" alt="" />' . ' ' . $title . '</p>';
 
-	echo '<table class="selection">';
-	echo '<tr>
-			<th>' . _('Location Code') . '</th>
-			<th>' . _('Location Name') . '</th>
-			<th>' . _('Tax Province') . '</th>
-		</tr>';
+	if (DB_num_rows($result)!=0){
 
-$k=0; //row colour counter
-while ($myrow = DB_fetch_array($result)) {
-	if ($k==1){
-		echo '<tr class="EvenTableRows">';
-		$k=0;
-	} else {
-		echo '<tr class="OddTableRows">';
-		$k=1;
-	}
+		echo '<table class="selection">';
+		echo '<tr>
+				<th>' . _('Location Code') . '</th>
+				<th>' . _('Location Name') . '</th>
+				<th>' . _('Tax Province') . '</th>
+			</tr>';
+
+		$k=0; //row colour counter
+		while ($myrow = DB_fetch_array($result)) {
+			if ($k==1){
+				echo '<tr class="EvenTableRows">';
+				$k=0;
+			} else {
+				echo '<tr class="OddTableRows">';
+				$k=1;
+			}
 /* warehouse management not implemented ... yet
 	if($myrow['managed'] == 1) {
 		$myrow['managed'] = _('Yes');
@@ -397,20 +396,20 @@ while ($myrow = DB_fetch_array($result)) {
 		$myrow['managed'] = _('No');
 	}
 */
-	printf('<td>%s</td>
-			<td>%s</td>
-			<td>%s</td>
-			<td><a href="%sSelectedLocation=%s">' . _('Edit') . '</a></td>
-			<td><a href="%sSelectedLocation=%s&amp;delete=1" onclick="return confirm(\'' . _('Are you sure you wish to delete this inventory location?') . '\');">' . _('Delete') . '</a></td>
-			</tr>',
-			$myrow['loccode'],
-			$myrow['locationname'],
-			$myrow['description'],
-			htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?',
-			$myrow['loccode'],
-			htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?',
-			$myrow['loccode']);
-
+			printf('<td>%s</td>
+					<td>%s</td>
+					<td>%s</td>
+					<td><a href="%sSelectedLocation=%s">' . _('Edit') . '</a></td>
+					<td><a href="%sSelectedLocation=%s&amp;delete=1" onclick="return confirm(\'' . _('Are you sure you wish to delete this inventory location?') . '\');">' . _('Delete') . '</a></td>
+					</tr>',
+					$myrow['loccode'],
+					$myrow['locationname'],
+					$myrow['description'],
+					htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?',
+					$myrow['loccode'],
+					htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?',
+					$myrow['loccode']);
+		}
 	}
 	//END WHILE LIST LOOP
 	echo '</table>';

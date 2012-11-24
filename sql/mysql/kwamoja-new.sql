@@ -3212,12 +3212,11 @@ INSERT INTO `cogsglpostings` VALUES (5,'AN','ANY',5000,'AN');
 -- Dumping data for table `currencies`
 --
 
-INSERT INTO `currencies` VALUES ('Australian Dollars','AUD','Australia','cents',2,1);
-INSERT INTO `currencies` VALUES ('Swiss Francs','CHF','Swizerland','centimes',2,1);
-INSERT INTO `currencies` VALUES ('Euro','EUR','Euroland','cents',2,0.44);
-INSERT INTO `currencies` VALUES ('Pounds','GBP','England','Pence',2,0.8);
-INSERT INTO `currencies` VALUES ('US Dollars','USD','United States','Cents',2,0.85);
-
+INSERT INTO `currencies` VALUES ('Pounds','GBP','England','Pence',2,0.007692308);
+INSERT INTO `currencies` VALUES ('Kenya Shillings','KES','Kenya','Cent',0,1);
+INSERT INTO `currencies` VALUES ('Rwanda Franc','RWF','Rwanda','Centime',2,7.32849);
+INSERT INTO `currencies` VALUES ('Tanzania Shillings','TZS','Tanzania','Cent',0,21.53846174);
+INSERT INTO `currencies` VALUES ('Uganda Shillings','UGX','Uganda','Centavo',0,26.92307703);
 --
 -- Dumping data for table `holdreasons`
 --
@@ -5970,39 +5969,39 @@ INSERT INTO `salesglpostings` VALUES (2,'AN','AIRCON',5000,4800,'DE');
 -- Dumping data for table `systypes`
 --
 
-INSERT INTO `systypes` VALUES (0,'Journal - GL',6);
-INSERT INTO `systypes` VALUES (1,'Payment - GL',4);
+INSERT INTO `systypes` VALUES (0,'Journal - GL',0);
+INSERT INTO `systypes` VALUES (1,'Payment - GL',0);
 INSERT INTO `systypes` VALUES (2,'Receipt - GL',0);
 INSERT INTO `systypes` VALUES (3,'Standing Journal',0);
-INSERT INTO `systypes` VALUES (10,'Sales Invoice',3);
-INSERT INTO `systypes` VALUES (11,'Credit Note',1);
-INSERT INTO `systypes` VALUES (12,'Receipt',3);
+INSERT INTO `systypes` VALUES (10,'Sales Invoice',0);
+INSERT INTO `systypes` VALUES (11,'Credit Note',0);
+INSERT INTO `systypes` VALUES (12,'Receipt',0);
 INSERT INTO `systypes` VALUES (15,'Journal - Debtors',0);
-INSERT INTO `systypes` VALUES (16,'Location Transfer',24);
-INSERT INTO `systypes` VALUES (17,'Stock Adjustment',26);
-INSERT INTO `systypes` VALUES (18,'Purchase Order',19);
+INSERT INTO `systypes` VALUES (16,'Location Transfer',0);
+INSERT INTO `systypes` VALUES (17,'Stock Adjustment',0);
+INSERT INTO `systypes` VALUES (18,'Purchase Order',0);
 INSERT INTO `systypes` VALUES (19,'Picking List',0);
-INSERT INTO `systypes` VALUES (20,'Purchase Invoice',27);
-INSERT INTO `systypes` VALUES (21,'Debit Note',7);
-INSERT INTO `systypes` VALUES (22,'Creditors Payment',5);
+INSERT INTO `systypes` VALUES (20,'Purchase Invoice',0);
+INSERT INTO `systypes` VALUES (21,'Debit Note',0);
+INSERT INTO `systypes` VALUES (22,'Creditors Payment',0);
 INSERT INTO `systypes` VALUES (23,'Creditors Journal',0);
-INSERT INTO `systypes` VALUES (25,'Purchase Order Delivery',38);
-INSERT INTO `systypes` VALUES (26,'Work Order Receipt',6);
-INSERT INTO `systypes` VALUES (28,'Work Order Issue',12);
-INSERT INTO `systypes` VALUES (29,'Work Order Variance',1);
-INSERT INTO `systypes` VALUES (30,'Sales Order',40);
-INSERT INTO `systypes` VALUES (31,'Shipment Close',28);
-INSERT INTO `systypes` VALUES (32,'Contract Close',6);
-INSERT INTO `systypes` VALUES (35,'Cost Update',18);
-INSERT INTO `systypes` VALUES (36,'Exchange Difference',1);
+INSERT INTO `systypes` VALUES (25,'Purchase Order Delivery',0);
+INSERT INTO `systypes` VALUES (26,'Work Order Receipt',0);
+INSERT INTO `systypes` VALUES (28,'Work Order Issue',0);
+INSERT INTO `systypes` VALUES (29,'Work Order Variance',0);
+INSERT INTO `systypes` VALUES (30,'Sales Order',0);
+INSERT INTO `systypes` VALUES (31,'Shipment Close',0);
+INSERT INTO `systypes` VALUES (32,'Contract Close',0);
+INSERT INTO `systypes` VALUES (35,'Cost Update',0);
+INSERT INTO `systypes` VALUES (36,'Exchange Difference',0);
 INSERT INTO `systypes` VALUES (37,'Tenders',0);
-INSERT INTO `systypes` VALUES (38,'Stock Requests',1);
-INSERT INTO `systypes` VALUES (40,'Work Order',23);
-INSERT INTO `systypes` VALUES (41,'Asset Addition',1);
-INSERT INTO `systypes` VALUES (42,'Asset Category Change',1);
-INSERT INTO `systypes` VALUES (43,'Delete w/down asset',1);
-INSERT INTO `systypes` VALUES (44,'Depreciation',1);
-INSERT INTO `systypes` VALUES (49,'Import Fixed Assets',1);
+INSERT INTO `systypes` VALUES (38,'Stock Requests',0);
+INSERT INTO `systypes` VALUES (40,'Work Order',0);
+INSERT INTO `systypes` VALUES (41,'Asset Addition',0);
+INSERT INTO `systypes` VALUES (42,'Asset Category Change',0);
+INSERT INTO `systypes` VALUES (43,'Delete w/down asset',0);
+INSERT INTO `systypes` VALUES (44,'Depreciation',0);
+INSERT INTO `systypes` VALUES (49,'Import Fixed Assets',0);
 INSERT INTO `systypes` VALUES (50,'Opening Balance',0);
 INSERT INTO `systypes` VALUES (500,'Auto Debtor Number',0);
 

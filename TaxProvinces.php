@@ -36,7 +36,7 @@ if (isset($_POST['submit'])) {
 		prnMsg( _('The tax province name may not be empty'), 'error');
 	}
 
-	if ($_POST['SelectedTaxProvince']!='' and $InputError !=1) {
+	if (isset($_POST['SelectedTaxProvince']) and $_POST['SelectedTaxProvince']!='' and $InputError !=1) {
 
 		/*SelectedTaxProvince could also exist if submit had not been clicked this code would not run in this case cos submit is false of course  see the delete code below*/
 		// Check the name does not clash

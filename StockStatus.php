@@ -17,7 +17,7 @@ if (isset($_GET['StockID'])){
 }
 
 // This is already linked from this page
-//echo "<a href='" . $rootpath . '/SelectProduct.php?' . SID . "'>" . _('Back to Items') . '</a><br />';
+//echo "<a href='" . $rootpath . '/SelectProduct.php'>" . _('Back to Items') . '</a><br />';
 
 $result = DB_query("SELECT description,
 						   units,

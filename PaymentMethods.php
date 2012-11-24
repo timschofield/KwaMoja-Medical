@@ -215,7 +215,7 @@ if (isset($_POST['submit'])) {
 
 
 if (isset($SelectedPaymentID)) {
-	echo '<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?' . SID .'">' . _('Review Payment Methods') . '</a></div>';
+	echo '<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '">' . _('Review Payment Methods') . '</a></div>';
 }
 
 echo '<br />';

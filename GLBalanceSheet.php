@@ -317,7 +317,7 @@ if (! isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod'
 		$title = _('Print Balance Sheet Error');
 		include('includes/header.inc');
 		prnMsg( _('There were no entries to print out for the selections specified') );
-		echo '<br /><a href="'. $rootpath.'/index.php?' . SID . '">'. _('Back to the menu'). '</a>';
+		echo '<br /><a href="'. $rootpath.'/index.php">'. _('Back to the menu'). '</a>';
 		include('includes/footer.inc');
 		exit;
 	} else {

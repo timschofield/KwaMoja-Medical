@@ -9,7 +9,7 @@ include ('includes/SQL_CommonFunctions.inc');
 
 if (isset($_POST['EnterCompanyDetails'])) {
 
-	header ('Location:' . $rootpath . '/CompanyPreferences.php?' . SID);
+	header ('Location:' . $rootpath . '/CompanyPreferences.php');
 	exit;
 }
 
@@ -34,8 +34,8 @@ if (isset($_POST['submit']) and isset($_POST['NewCompany'])) {
 	} else {
 
 		$_POST['NewCompany'] = strtolower($_POST['NewCompany']);
-		echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?' . SID . '">';
-        echo '<div class="centre">';
+		echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '">';
+		echo '<div class="centre">';
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 		/* check for directory existence */
 		if (!file_exists('./companies/' . $_POST['NewCompany'])
@@ -145,7 +145,7 @@ if (isset($_POST['submit']) and isset($_POST['NewCompany'])) {
 			/*OK Now upload the logo */
 			if ($UploadTheLogo=='Yes'){
 				$result  =  move_uploaded_file($_FILES['LogoFile']['tmp_name'], $filename);
-				$message = ($result)?_('File url') ."<a href='". $filename ."'>" .  $filename . '</a>' : _('Something is wrong with uploading a file');
+				$message = ($result)?_('File url') .'<a href="'. $filename . '">' .  $filename . '</a>' : _('Something is wrong with uploading a file');
 			}
 
 		} else {
@@ -209,7 +209,7 @@ echo '<br />';
 prnMsg (_('This utility will create a new company') . '<br /><br />' .
 		_('If the company name already exists then you cannot recreate it'), 'info', _('PLEASE NOTE'));
 echo '<br /></div>';
-echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?' . SID . '" enctype="multipart/form-data">';
+echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '" enctype="multipart/form-data">';
 echo '<div class="centre">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 

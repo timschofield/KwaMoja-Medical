@@ -12,7 +12,7 @@ include('includes/header.inc');
 
 if(!isset($_GET['CustomerID']) and !isset($_SESSION['CustomerID'])){
 	prnMsg(_('To display the enquiry a customer must first be selected from the customer selection screen'),'info');
-	echo '<br /><div class="centre"><a href="'. $rootpath . '/SelectCustomer.php?' . SID . '">' . _('Select a Customer to Inquire On') . '</a><br /></div>';
+	echo '<br /><div class="centre"><a href="'. $rootpath . '/SelectCustomer.php">' . _('Select a Customer to Inquire On') . '</a><br /></div>';
 	include('includes/footer.inc');
 	exit;
 } else {

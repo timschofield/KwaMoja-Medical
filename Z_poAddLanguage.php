@@ -11,7 +11,7 @@ include ('includes/session.inc');
 
 if (isset($_POST['cancel'])) {
 
-	header ('Location:' . $rootpath . '/Z_poAdmin.php?' . SID);
+	header ('Location:' . $rootpath . '/Z_poAdmin.php');
 	exit;
 
 }
@@ -27,7 +27,7 @@ $DefaultLanguage = 'en_GB';		// the default language IS English ...
 
 $PathToDefault		= './locale/' . $DefaultLanguage . '/LC_MESSAGES/messages.po';
 
-echo "<br />&nbsp;<a href='" . $rootpath . "/Z_poAdmin.php'>" . _('Back to the translation menu') . "</a>";
+echo '<br />&nbsp;<a href="' . $rootpath . '/Z_poAdmin.php">' . _('Back to the translation menu') . '</a>';
 echo '<br /><br />&nbsp;' . _('Utility to create a new language file');
 echo '<br />&nbsp;' . _('Current language is') . ' ' . $_SESSION['Language'];
 
@@ -46,7 +46,7 @@ if (isset($_POST['submit']) and isset($_POST['NewLanguage'])) {
 
 		echo '<div class="centre">';
 		echo '<br />';
-		echo '<form method="post" action=' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?' . SID . '>';
+		echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '">';
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 
@@ -83,7 +83,7 @@ echo '<br />';
 prnMsg (_('This utility will create a new language and a new language translation file for it from the system default') . '<br /><br />' .
 		_('If the language already exists then you cannot recreate it'), 'info', _('PLEASE NOTE'));
 echo '<br /></div>';
-echo '<form method="post" action=' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?' . SID . '>';
+echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 echo '<table><tr>';

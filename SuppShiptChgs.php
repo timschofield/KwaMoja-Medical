@@ -56,7 +56,7 @@ if (isset($_POST['AddShiptChgToInvoice'])){
 	}
 
 	if ($InputError == False){
-		$_SESSION['SuppTrans']->Add_Shipt_To_Trans($_POST['ShiptRef'], 
+		$_SESSION['SuppTrans']->Add_Shipt_To_Trans($_POST['ShiptRef'],
 													filter_number_format($_POST['Amount']));
 		unset($_POST['ShiptRef']);
 		unset($_POST['Amount']);
@@ -87,7 +87,7 @@ foreach ($_SESSION['SuppTrans']->Shipts as $EnteredShiptRef){
 
 	echo '<tr><td>' . $EnteredShiptRef->ShiptRef . '</td>
 		<td class="number">' . locale_number_format($EnteredShiptRef->Amount,2) . '</td>
-		<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?' . SID . '&Delete=' . $EnteredShiptRef->Counter . '">' . _('Delete') . '</a></td></tr>';
+		<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?Delete=' . $EnteredShiptRef->Counter . '">' . _('Delete') . '</a></td></tr>';
 
 	$TotalShiptValue = $TotalShiptValue + $EnteredShiptRef->Amount;
 
@@ -155,6 +155,6 @@ echo '<br />
 	</div>
     </div>
 	</form>';
-	
+
 include('includes/footer.inc');
 ?>

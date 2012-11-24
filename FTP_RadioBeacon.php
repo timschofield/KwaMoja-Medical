@@ -76,7 +76,7 @@ while ($myrow=DB_fetch_array($SalesOrdersResult)) {
 	$FormatedOrderDate = ConvertSQLDate($myrow['orddate']);
 	$FormatedOrderValue = locale_number_format($myrow['ordervalue'],2);
 	$FormatedDateLastSent = ConvertSQLDate($myrow['datepackingslipprinted']);
-	$ModifyPage = $rootpath . 'SelectOrderItems.php?' . SID . '&ModifyOrderNumber=' . $myrow['orderno'];
+	$ModifyPage = $rootpath . 'SelectOrderItems.php?ModifyOrderNumber=' . $myrow['orderno'];
 
 	if ($myrow['printedpackingslip'] ==1){
 		printf('<td><font size="2"><a href="%s">%s</a></font></td>

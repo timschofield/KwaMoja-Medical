@@ -69,7 +69,7 @@ if (isset($_POST['update'])) {
 	echo '</table>';
 	fclose ($fp);
 } else {
-	$sql = "select * from locations";
+	$sql = "SELECT * FROM locations";
 	$result = DB_query($sql,$db);
 	if (DB_num_rows($result)==0) {
 		prnMsg( _('No locations have been set up. At least one location should be set up first'), "error");
@@ -77,7 +77,7 @@ if (isset($_POST['update'])) {
 		prnMsg( _('Select a csv file containing the details of the parts that you wish to import into KwaMoja. '). '<br />' .
 			 _('The first line must contain the field names that you wish to import. ').
 			 '<a href ="Z_DescribeTable.php?table=stockmaster">' . _('The field names can be found here'). '</a>', 'info');
-		echo '<form id="ItemForm" enctype="multipart/form-data" method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?' .SID .'">';
+		echo '<form id="ItemForm" enctype="multipart/form-data" method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '">';
         echo '<div class="centre">';
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 		echo '<table><tr><td>'._('File to import').'</td>'.

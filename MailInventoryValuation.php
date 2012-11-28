@@ -38,7 +38,7 @@ $pdf = new Cpdf('P', 'pt', 'A4');
 
 /* Standard PDF file creation header stuff */
 
-$pdf->addInfo('Creator','KwaMoja http://www.kwamoja.org');
+$pdf->addInfo('Creator','KwaMoja http://www.kwamoja.com');
 $pdf->addInfo('Author','KwaMoja ' . $Version);
 
 

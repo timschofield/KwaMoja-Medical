@@ -32,7 +32,7 @@ if (isset($_POST['PrintPDF'])
 // Javier: better to not use references
 //	$pdf = & new Cpdf($PageSize);
 	$pdf = new Cpdf('L', 'pt', 'A4');
-	$pdf->addInfo('Creator','KwaMoja http://www.kwamoja.org');
+	$pdf->addInfo('Creator','KwaMoja http://www.kwamoja.com');
 	$pdf->addInfo('Author','KwaMoja ' . $Version);
 	$pdf->addInfo('Title',_('Inventory Planning Report') . ' ' . Date($_SESSION['DefaultDateFormat']));
 	$pdf->addInfo('Subject',_('Inventory Planning'));

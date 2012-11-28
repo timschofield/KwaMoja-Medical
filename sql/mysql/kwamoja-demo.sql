@@ -3055,9 +3055,11 @@ INSERT INTO `accountsection` VALUES (50,'Financed By');
 -- Dumping data for table `areas`
 --
 
-INSERT INTO `areas` VALUES ('DE','Default');
-INSERT INTO `areas` VALUES ('FL','Florida');
-INSERT INTO `areas` VALUES ('TR','Toronto');
+INSERT INTO `areas` VALUES ('MSA','Mombasa');
+INSERT INTO `areas` VALUES ('NRB','Nairobi');
+INSERT INTO `areas` VALUES ('DAR','Dar es Salaam');
+INSERT INTO `areas` VALUES ('KLA','Kampala');
+INSERT INTO `areas` VALUES ('KGL','Kigali');
 
 --
 -- Dumping data for table `assetmanager`
@@ -3073,18 +3075,18 @@ INSERT INTO `areas` VALUES ('TR','Toronto');
 -- Dumping data for table `bankaccounts`
 --
 
-INSERT INTO `bankaccounts` VALUES ('1030','AUD',1,'12445','Cheque Account','124455667789','123 Straight Street');
-INSERT INTO `bankaccounts` VALUES ('1040','AUD',0,'','Savings Account','','');
+INSERT INTO `bankaccounts` VALUES ('1030','KES',1,'12445','Cheque Account','124455667789','123 Straight Street');
+INSERT INTO `bankaccounts` VALUES ('1040','USD',0,'','Savings Account','','');
 
 --
 -- Dumping data for table `banktrans`
 --
 
-INSERT INTO `banktrans` VALUES (1,1,4,'1030','test 2',0,1,1,'2011-11-12','Cash',-2412.95,'AUD');
-INSERT INTO `banktrans` VALUES (2,12,1,'1030','',0,1,1,'2011-11-12','Cash',579.2,'AUD');
-INSERT INTO `banktrans` VALUES (3,12,2,'1030','Melbourne Counter Sale 1',0,0.85,1,'2011-11-12','1',3.9,'USD');
-INSERT INTO `banktrans` VALUES (4,12,3,'1030','Melbourne Counter Sale 2',0,0.85,1,'2011-11-19','1',2894.85,'USD');
-INSERT INTO `banktrans` VALUES (5,22,5,'1030','BINGO-',0,0.8354,1,'2011-11-19','Direct Credit',-1000.52,'USD');
+INSERT INTO `banktrans` VALUES (1,1,4,'1030','test 2',0,1,1,'2012-11-12','Cash',-2412.95,'KES');
+INSERT INTO `banktrans` VALUES (2,12,1,'1030','',0,1,1,'2012-11-12','Cash',579.2,'KES');
+INSERT INTO `banktrans` VALUES (3,12,2,'1030','Melbourne Counter Sale 1',0,0.85,1,'2012-11-12','1',3.9,'KES');
+INSERT INTO `banktrans` VALUES (4,12,3,'1030','Melbourne Counter Sale 2',0,0.85,1,'2012-11-19','1',2894.85,'KES');
+INSERT INTO `banktrans` VALUES (5,22,5,'1030','BINGO-',0,0.8354,1,'2011-12-19','Direct Credit',-1000.52,'KES');
 
 --
 -- Dumping data for table `bom`
@@ -5475,15 +5477,15 @@ INSERT INTO `purchorders` VALUES (3,'BINGO','','2010-08-14 00:00:00',0.85,'2010-
 INSERT INTO `purchorders` VALUES (4,'BINGO','','2011-02-18 00:00:00',0.85,NULL,1,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','+61 3 56789012','+61 3 56789012','Box 3499','Gardenier','San Fransisco','California 54424','','','','','Jack Roberts',3.00,'2011-02-18','','1','2011-02-18','Authorised','18/02/2011 - Order Created and Authorised by <a href=\"mailto:phil@logicworks.co.nz\">Demonstration user</a> - <br />','30','');
 INSERT INTO `purchorders` VALUES (6,'CAMPBELL','','2011-03-08 00:00:00',0.85,NULL,1,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','Australia','+61 3 56789012','Box 9882','Ottowa Rise','','','','','','','Jack Roberts',1.00,'2011-03-08','','1','2011-03-08','Authorised','08/03/2011 - Order Created and Authorised by <a href=\"mailto:phil@logicworks.co.nz\">Demonstration user</a> - <br />','30','');
 INSERT INTO `purchorders` VALUES (7,'BINGO','','2011-03-08 00:00:00',0.85,NULL,1,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','+61 3 56789012','+61 3 56789012','Box 3499','Gardenier','San Fransisco','California 54424','','','','','Jack Roberts',3.00,'2011-12-03','','1','2011-03-08','Authorised','03/12/2011 - Order modified by &lt;a href=&quot;mailto:phil@logicworks.co.nz&quot;&gt;Demonstration user&lt;/a&gt;&lt;br /&gt;','30','');
-INSERT INTO `purchorders` VALUES (8,'CRUISE','','2011-03-08 00:00:00',0.8,'2011-03-26 00:00:00',0,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','Australia','+61 3 56789012','Box 2001','Ft Lauderdale, Florida','','','','','Barry Toad','','Jack Roberts',1.00,'2011-03-08','','1','2011-03-08','Rejected','27/03/2011 - Rejected by <a href=\"mailto:info@kwamoja.org\">Demonstration user</a><br>27/03/2011 - Order set to pending status by &lt;a href=&quot;mailto:info@kwamoja.org&quot;&gt;Demonstration user&lt;/a&gt;&lt;br&gt;26/03/2011 - Printed by&lt;a href=&quot;mailto:info@kwamoja.org&quot;&gt;Demonstration user&lt;/a&gt;&lt;br /&gt;08/03/2011 - Order Created and Authorised by &lt;a href=&quot;mailto:phil@logicworks.co.nz&quot;&gt;Demonstration user&lt;/a&gt; - &lt;br /&gt;','30','');
-INSERT INTO `purchorders` VALUES (9,'BINGO','','2011-03-26 00:00:00',0.85,NULL,1,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','+61 3 56789012','+61 3 56789012','Box 3499','Gardenier','San Fransisco','California 54424','','','','','Jack Roberts',2.00,'2011-03-26','','1','2011-03-26','Authorised','26/03/2011 - Order Created and Authorised by <a href=\"mailto:info@kwamoja.org\">Demonstration user</a> - <br />','30','');
-INSERT INTO `purchorders` VALUES (10,'BINGO','','2011-03-26 00:00:00',0.85,NULL,1,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','+61 3 56789012','+61 3 56789012','Box 3499','Gardenier','San Fransisco','California 54424','','','','','Jack Roberts',2.00,'2011-03-26','','1','2011-03-26','Authorised','26/03/2011 - Order Created and Authorised by <a href=\"mailto:info@kwamoja.org\">Demonstration user</a> - <br />','30','');
-INSERT INTO `purchorders` VALUES (11,'BINGO','','2011-03-27 00:00:00',0.85,NULL,1,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','+61 3 56789012','+61 3 56789012','Box 3499','Gardenier','San Fransisco','California 54424','','','','','Jack Roberts',2.00,'2011-03-27','','1','2011-03-27','Authorised','18/04/2011 - Authorised by <a href=\"mailto:info@kwamoja.org\">admin</a><br>27/03/2011 - Order Created by &lt;a href=&quot;mailto:info@kwamoja.org&quot;&gt;Demonstration user&lt;/a&gt; - &lt;br /&gt;','30','');
+INSERT INTO `purchorders` VALUES (8,'CRUISE','','2011-03-08 00:00:00',0.8,'2011-03-26 00:00:00',0,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','Australia','+61 3 56789012','Box 2001','Ft Lauderdale, Florida','','','','','Barry Toad','','Jack Roberts',1.00,'2011-03-08','','1','2011-03-08','Rejected','27/03/2011 - Rejected by <a href=\"mailto:info@kwamoja.com\">Demonstration user</a><br>27/03/2011 - Order set to pending status by &lt;a href=&quot;mailto:info@kwamoja.com&quot;&gt;Demonstration user&lt;/a&gt;&lt;br&gt;26/03/2011 - Printed by&lt;a href=&quot;mailto:info@kwamoja.com&quot;&gt;Demonstration user&lt;/a&gt;&lt;br /&gt;08/03/2011 - Order Created and Authorised by &lt;a href=&quot;mailto:phil@logicworks.co.nz&quot;&gt;Demonstration user&lt;/a&gt; - &lt;br /&gt;','30','');
+INSERT INTO `purchorders` VALUES (9,'BINGO','','2011-03-26 00:00:00',0.85,NULL,1,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','+61 3 56789012','+61 3 56789012','Box 3499','Gardenier','San Fransisco','California 54424','','','','','Jack Roberts',2.00,'2011-03-26','','1','2011-03-26','Authorised','26/03/2011 - Order Created and Authorised by <a href=\"mailto:info@kwamoja.com\">Demonstration user</a> - <br />','30','');
+INSERT INTO `purchorders` VALUES (10,'BINGO','','2011-03-26 00:00:00',0.85,NULL,1,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','+61 3 56789012','+61 3 56789012','Box 3499','Gardenier','San Fransisco','California 54424','','','','','Jack Roberts',2.00,'2011-03-26','','1','2011-03-26','Authorised','26/03/2011 - Order Created and Authorised by <a href=\"mailto:info@kwamoja.com\">Demonstration user</a> - <br />','30','');
+INSERT INTO `purchorders` VALUES (11,'BINGO','','2011-03-27 00:00:00',0.85,NULL,1,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','+61 3 56789012','+61 3 56789012','Box 3499','Gardenier','San Fransisco','California 54424','','','','','Jack Roberts',2.00,'2011-03-27','','1','2011-03-27','Authorised','18/04/2011 - Authorised by <a href=\"mailto:info@kwamoja.com\">admin</a><br>27/03/2011 - Order Created by &lt;a href=&quot;mailto:info@kwamoja.com&quot;&gt;Demonstration user&lt;/a&gt; - &lt;br /&gt;','30','');
 INSERT INTO `purchorders` VALUES (12,'BINGO','','2011-03-27 00:00:00',0.85,'2011-11-12 00:00:00',0,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','+61 3 56789012','+61 3 56789012','Box 3499','Gardenier','San Fransisco','California 54424','','','','','Jack Roberts',7.00,'2011-11-12','','1','2011-03-27','Printed','12/11/2011 - Printed by&lt;a href=&quot;mailto:phil@logicworks.co.nz&quot;&gt;Demonstration user&lt;/a&gt;&lt;br /&gt;','30','');
 INSERT INTO `purchorders` VALUES (13,'WHYNOT','','2011-04-12 00:00:00',1,'2012-01-07 00:00:00',0,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','+61 3 56789012','+61 3 56789012','Well I will ','If I','Want ','To','','','','12323','Jack Roberts',5.00,'2011-11-12','','1','2011-04-12','Completed','07/01/2012 - Order Completed on entry of GRN<br />07/01/2012 - Printed by <a href=\"mailto:phil@logicworks.co.nz\">Demonstration user</a><br />','20','');
-INSERT INTO `purchorders` VALUES (14,'WHYNOT','','2011-04-18 00:00:00',1,NULL,1,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','Australia','+61 3 56789012','Well I will ','If I','Want ','To','','','','12323','Jack Roberts',1.00,'2011-04-18','','1','2011-04-18','Authorised','18/04/2011 - Order Created and Authorised by <a href=\"mailto:info@kwamoja.org\">Demonstration user</a> - <br />','20','');
-INSERT INTO `purchorders` VALUES (15,'WHYNOT','','2011-04-18 00:00:00',1,'2011-04-18 00:00:00',0,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','Australia','+61 3 56789012','Well I will ','If I','Want ','To','','','','12323','Jack Roberts',1.00,'2011-04-18','','1','2011-04-18','Printed','18/04/2011 - Printed by<a href=\"mailto:info@kwamoja.org\">Demonstration user</a><br />18/04/2011 - Order Created and Authorised by <a href=\"mailto:info@kwamoja.org\">Demonstration user</a> - <br />','20','');
-INSERT INTO `purchorders` VALUES (16,'WHYNOT','','2011-04-18 00:00:00',1,'2011-04-18 00:00:00',1,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','Australia','+61 3 56789012','Well I will ','If I','Want ','To','','','','12323','Jack Roberts',1.00,'2011-04-18','','1','2011-04-18','Completed','12/11/2011 - Order Completed on entry of GRN<br />18/04/2011 - Printed by<a href=\"mailto:info@kwamoja.org\">Demonstration user</a><br />18/04/2011 - Order Created and Authorised by <a href=\"mailto:info@kwamoja.org\">Demonstration user</a> - <br />','20','');
+INSERT INTO `purchorders` VALUES (14,'WHYNOT','','2011-04-18 00:00:00',1,NULL,1,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','Australia','+61 3 56789012','Well I will ','If I','Want ','To','','','','12323','Jack Roberts',1.00,'2011-04-18','','1','2011-04-18','Authorised','18/04/2011 - Order Created and Authorised by <a href=\"mailto:info@kwamoja.com\">Demonstration user</a> - <br />','20','');
+INSERT INTO `purchorders` VALUES (15,'WHYNOT','','2011-04-18 00:00:00',1,'2011-04-18 00:00:00',0,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','Australia','+61 3 56789012','Well I will ','If I','Want ','To','','','','12323','Jack Roberts',1.00,'2011-04-18','','1','2011-04-18','Printed','18/04/2011 - Printed by<a href=\"mailto:info@kwamoja.com\">Demonstration user</a><br />18/04/2011 - Order Created and Authorised by <a href=\"mailto:info@kwamoja.com\">Demonstration user</a> - <br />','20','');
+INSERT INTO `purchorders` VALUES (16,'WHYNOT','','2011-04-18 00:00:00',1,'2011-04-18 00:00:00',1,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','Australia','+61 3 56789012','Well I will ','If I','Want ','To','','','','12323','Jack Roberts',1.00,'2011-04-18','','1','2011-04-18','Completed','12/11/2011 - Order Completed on entry of GRN<br />18/04/2011 - Printed by<a href=\"mailto:info@kwamoja.com\">Demonstration user</a><br />18/04/2011 - Order Created and Authorised by <a href=\"mailto:info@kwamoja.com\">Demonstration user</a> - <br />','20','');
 INSERT INTO `purchorders` VALUES (17,'CRUISE','','2011-06-26 00:00:00',0.8,NULL,0,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','Australia','+61 3 56789012','Box 2001','Ft Lauderdale, Florida','','','','','Barry Toad','','Jack Roberts',1.00,'2011-06-26','','1','2011-06-26','Cancelled','03/12/2011 - Cancelled by <a href=\"mailto:phil@logicworks.co.nz\">Demonstration user</a><br />','30','');
 INSERT INTO `purchorders` VALUES (18,'GOTSTUFF',NULL,'2011-10-08 00:00:00',0.85,NULL,0,'Demonstrat',NULL,'MEL','Melbourne','1234 Collins Street','Melbourne','Victoria 2345','',' Australia','+61 3 56789012','Test line 1','Test line 2','Test line 3','Test line 4 - editing','','','','','',1.00,'2011-10-08','','1','2011-10-08','Pending','08/10/2011 - Order Created by  <a href=\"mailto:phil@logicworks.co.nz\">Demonstration user</a> - Auto created from sales orders<br />','20','');
 INSERT INTO `purchorders` VALUES (19,'WHYNOT','','2011-11-26 00:00:00',1,'2011-11-26 00:00:00',0,'admin','','MEL','1234 Collins Street','Melbourne','Victoria 2345','','','+61 3 56789012','+61 3 56789012','Well I will ','If I','Want ','To','','','','12323','Jack Roberts',2.00,'2011-11-26','','1','2011-11-26','Completed','26/11/2011 - Order Completed on entry of GRN<br />26/11/2011 - Printed by&lt;a href=&quot;mailto:phil@logicworks.co.nz&quot;&gt;Demonstration user&lt;/a&gt;&lt;br /&gt;','20','');
@@ -9265,7 +9267,7 @@ INSERT INTO `workorders` VALUES (23,'MEL','2012-09-08','2012-09-08',0,0);
 -- Dumping data for table `www_users`
 --
 
-INSERT INTO `www_users` VALUES ('admin','f0f77a7f88e7c1e93ab4e316b4574c7843b00ea4','Demonstration user','','','','','info@kwamoja.org','MEL',8,0,'2012-10-14 10:54:19','','A4','1,1,1,1,1,1,1,1,1,1,1,',0,50,'aguapop','en_GB.utf8',0,0);
+INSERT INTO `www_users` VALUES ('admin','f0f77a7f88e7c1e93ab4e316b4574c7843b00ea4','Demonstration user','','','','','info@kwamoja.com','MEL',8,0,'2012-10-14 10:54:19','','A4','1,1,1,1,1,1,1,1,1,1,1,',0,50,'aguapop','en_GB.utf8',0,0);
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

@@ -66,7 +66,7 @@ One more issue with php setup - by default the setting session.use_cookies is se
 
 There are a number of traps with PHP installation depending on the web-server - see:
 
- http://www.kwamoja.org/wikidocs/FrequentlyAskedQuestionsInstallation
+ http://www.kwamoja.com/wikidocs/FrequentlyAskedQuestionsInstallation
 
 The system is developed using MySQL. KwaMoja was also tested up to version 3.05 with the Postgres database server. Postgres is no longer supported due to lack of a developer using and testing with postgres and writing upgrade scripts. Instructions here are for mysql.
 
@@ -344,7 +344,7 @@ All the standing configuration data is defined from the system setup tab and eac
 
 Please try not to refer questions about PHP or database configuration 
 - check your PHP web server works by installing phpMyAdmin before referring any installation issues
-- check http://www.kwamoja.org for Installation FAQ
+- check http://www.kwamoja.com for Installation FAQ
 
 _____________________________________________________________________
 
@@ -358,4 +358,4 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public
 
 A copy of the GNU General Public License is included in the doc directory along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-Copyright kwamoja.org 2010 - Contact: info@kwamoja.org
+Copyright kwamoja.com 2010 - Contact: info@kwamoja.com

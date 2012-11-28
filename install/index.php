@@ -382,7 +382,7 @@ function change_data(type) {
 <tr>
 	<td align="center" style="font-size: 10px;">
 		<!-- Please note: the below reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
-		<a href="http://www.kwamoja.org/" style="color: #000000;" target="_blank">KwaMoja</a>
+		<a href="http://www.kwamoja.com/" style="color: #000000;" target="_blank">KwaMoja</a>
 		is	released under the
 		<a href="http://www.gnu.org/licenses/gpl.html" style="color: #000000;" target="_blank">GNU General Public License</a>
 		<!-- Please note: the above reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->

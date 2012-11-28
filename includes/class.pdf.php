@@ -81,7 +81,7 @@ if (!class_exists('Cpdf', false)) {
 			if ($label == 'Creator') {
 
 	/* Javier: Some scripts set the creator to be KwaMoja like this
-				$pdf->addInfo('Creator', 'KwaMoja http://www.kwamoja.org');
+				$pdf->addInfo('Creator', 'KwaMoja http://www.kwamoja.com');
 		But the Creator is TCPDF by Nicola Asuni, PDF_CREATOR is defined as 'TCPDF' in tcpdf/config/tcpdfconfig.php
 	*/ 			$this->SetCreator(PDF_CREATOR);
 			}

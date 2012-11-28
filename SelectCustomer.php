@@ -163,7 +163,7 @@ if (isset($_POST['Search'])
 	}
 	$SQL.= " ORDER BY debtorsmaster.name";
 	$ErrMsg = _('The searched customer records requested cannot be retrieved because');
-
+echo $SQL;
 
 	$result = DB_query($SQL, $db, $ErrMsg);
 	if (DB_num_rows($result) == 1) {

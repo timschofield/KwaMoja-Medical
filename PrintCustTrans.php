@@ -53,7 +53,7 @@ if (isset($PrintPDF)
 
 
 	$pdf = new Cpdf('L', 'pt', 'A4');
-	$pdf->addInfo('Creator', 'KwaMoja http://www.kwamoja.org');
+	$pdf->addInfo('Creator', 'KwaMoja http://www.kwamoja.com');
 	$pdf->addInfo('Author', 'KwaMoja ' . $Version);
 
 	if ($InvOrCredit=='Invoice') {

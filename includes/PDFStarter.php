@@ -167,7 +167,7 @@ switch ($PaperSize) {
 //	$pdf = new Cpdf($PageSize);
 $pdf = new Cpdf($DocumentOrientation, 'pt', $DocumentPaper);
 
-$pdf->addInfo('Creator', 'KwaMoja http://www.kwamoja.org');
+$pdf->addInfo('Creator', 'KwaMoja http://www.kwamoja.com');
 $pdf->addInfo('Author', 'KwaMoja ' . $Version);
 
 

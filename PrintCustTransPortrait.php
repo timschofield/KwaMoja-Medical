@@ -51,7 +51,7 @@ if (isset($PrintPDF)
 
 	$pdf = new Cpdf('P', 'pt', 'A4');
 	$pdf->addInfo('Author','KwaMoja ' . $Version);
-	$pdf->addInfo('Creator','KwaMoja http://www.kwamoja.org');
+	$pdf->addInfo('Creator','KwaMoja http://www.kwamoja.com');
 
 	if ($InvOrCredit=='Invoice'){
 		$pdf->addInfo('Title',_('Sales Invoice') . ' ' . $FromTransNo . ' to ' . $_POST['ToTransNo']);

@@ -36,7 +36,7 @@ if (!isset($_GET['TransNo']) or $_GET['TransNo']==''){
 }
 
 $MailTo = $_GET['EMail'];
-$headers = 'From: kwamoja.org <info@kwamoja.org>' . '\n';
+$headers = 'From: kwamoja.com <info@kwamoja.com>' . '\n';
 $headers  .=  'MIME-Version: 1.0\n' . 'Content-Type: text/html; charset="utf-8"\n';
 
 /*retrieve the order details from the database to print */

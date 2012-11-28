@@ -1406,10 +1406,10 @@ else { //dont require customer selection
 				<th>' . _('Unit') . '</th>
 				<th>' . _('Price') . '</th>';
 
-		if (in_array(13, $_SESSION['AllowedPageSecurityTokens'])) {
+		if (in_array(12, $_SESSION['AllowedPageSecurityTokens'])) {
 			echo '<th>' . _('Discount') . '</th>
 						<th>' . _('GP %') . '</th>';
-		} //in_array(13, $_SESSION['AllowedPageSecurityTokens'])
+		} //in_array(12, $_SESSION['AllowedPageSecurityTokens'])
 		echo '<th>' . _('Total') . '</th>
 			<th>' . _('Due Date') . '</th></tr>';
 
@@ -1458,12 +1458,12 @@ else { //dont require customer selection
 					<td class="number">' . locale_number_format($OrderLine->QOHatLoc, $OrderLine->DecimalPlaces) . '</td>
 					<td>' . $OrderLine->Units . '</td>';
 
-			if (in_array(13, $_SESSION['AllowedPageSecurityTokens'])) {
+			if (in_array(12, $_SESSION['AllowedPageSecurityTokens'])) {
 				/*OK to display with discount if it is an internal user with appropriate permissions */
 				echo '<td><input class="number" type="text" name="Price_' . $OrderLine->LineNumber . '" size="16" maxlength="16" value="' . locale_number_format($OrderLine->Price, $_SESSION['Items' . $identifier]->CurrDecimalPlaces) . '" /></td>
 					<td><input class="number" type="text" name="Discount_' . $OrderLine->LineNumber . '" size="5" maxlength="4" value="' . locale_number_format(($OrderLine->DiscountPercent * 100), 2) . '" /></td>
 					<td><input class="number" type="text" name="GPPercent_' . $OrderLine->LineNumber . '" size="4" maxlength="40" value="' . locale_number_format($OrderLine->GPPercent, 2) . '" /></td>';
-			} //in_array(13, $_SESSION['AllowedPageSecurityTokens'])
+			} //in_array(12, $_SESSION['AllowedPageSecurityTokens'])
 			else {
 				echo '<td class="number">' . locale_number_format($OrderLine->Price, $_SESSION['Items' . $identifier]->CurrDecimalPlaces);
 				echo '<input class="number" type="hidden" name="GPPercent_' . $OrderLine->LineNumber . '" size="4" maxlength="40" value="' . locale_number_format($OrderLine->GPPercent, 2) . '" />';
@@ -1503,9 +1503,9 @@ else { //dont require customer selection
 		/* end of loop around items */
 
 		$DisplayTotal = locale_number_format($_SESSION['Items' . $identifier]->total, $_SESSION['Items' . $identifier]->CurrDecimalPlaces);
-		if (in_array(13, $_SESSION['AllowedPageSecurityTokens'])) {
+		if (in_array(12, $_SESSION['AllowedPageSecurityTokens'])) {
 			$ColSpanNumber = 2;
-		} //in_array(13, $_SESSION['AllowedPageSecurityTokens'])
+		} //in_array(12, $_SESSION['AllowedPageSecurityTokens'])
 		else {
 			$ColSpanNumber = 1;
 		}

@@ -16,7 +16,7 @@ else {
 }
 /* KwaMoja manual links before header.inc */
 $ViewTopic = 'SalesOrders';
-$BookMark  = 'SalesOrderEntry';
+$BookMark = 'SalesOrderEntry';
 
 include('includes/header.inc');
 include('includes/GetPrice.inc');
@@ -55,15 +55,15 @@ if (isset($_GET['NewOrder'])) {
 	} //isset($_SESSION['Items' . $identifier])
 
 	$_SESSION['ExistingOrder' . $identifier] = 0;
-	$_SESSION['Items' . $identifier]         = new cart;
+	$_SESSION['Items' . $identifier] = new cart;
 
 	if (count($_SESSION['AllowedPageSecurityTokens']) == 1) { //its a customer logon
 		$_SESSION['Items' . $identifier]->DebtorNo = $_SESSION['CustomerID'];
-		$_SESSION['RequireCustomerSelection']      = 0;
+		$_SESSION['RequireCustomerSelection'] = 0;
 	} //count($_SESSION['AllowedPageSecurityTokens']) == 1
 	else {
 		$_SESSION['Items' . $identifier]->DebtorNo = '';
-		$_SESSION['RequireCustomerSelection']      = 1;
+		$_SESSION['RequireCustomerSelection'] = 1;
 	}
 
 } //isset($_GET['NewOrder'])
@@ -76,8 +76,8 @@ if (isset($_GET['ModifyOrderNumber']) AND $_GET['ModifyOrderNumber'] != '') {
 		unset($_SESSION['Items' . $identifier]);
 	} //isset($_SESSION['Items' . $identifier])
 	$_SESSION['ExistingOrder' . $identifier] = $_GET['ModifyOrderNumber'];
-	$_SESSION['RequireCustomerSelection']    = 0;
-	$_SESSION['Items' . $identifier]         = new cart;
+	$_SESSION['RequireCustomerSelection'] = 0;
+	$_SESSION['Items' . $identifier] = new cart;
 
 	/*read in all the guff from the selected order into the Items cart  */
 
@@ -130,7 +130,7 @@ if (isset($_GET['ModifyOrderNumber']) AND $_GET['ModifyOrderNumber'] != '') {
 						ON debtorsmaster.currcode=currencies.currabrev
 						WHERE salesorders.orderno = '" . $_GET['ModifyOrderNumber'] . "'";
 
-	$ErrMsg          = _('The order cannot be retrieved because');
+	$ErrMsg = _('The order cannot be retrieved because');
 	$GetOrdHdrResult = DB_query($OrderHeaderSQL, $db, $ErrMsg);
 
 	if (DB_num_rows($GetOrdHdrResult) == 1) {
@@ -141,48 +141,48 @@ if (isset($_GET['ModifyOrderNumber']) AND $_GET['ModifyOrderNumber'] != '') {
 			include('includes/footer.inc');
 			exit;
 		} //$_SESSION['SalesmanLogin'] != '' AND $_SESSION['SalesmanLogin'] != $myrow['salesman']
-		$_SESSION['Items' . $identifier]->OrderNo           = $_GET['ModifyOrderNumber'];
-		$_SESSION['Items' . $identifier]->DebtorNo          = $myrow['debtorno'];
+		$_SESSION['Items' . $identifier]->OrderNo = $_GET['ModifyOrderNumber'];
+		$_SESSION['Items' . $identifier]->DebtorNo = $myrow['debtorno'];
 		/*CustomerID defined in header.inc */
-		$_SESSION['Items' . $identifier]->Branch            = $myrow['branchcode'];
-		$_SESSION['Items' . $identifier]->CustomerName      = $myrow['name'];
-		$_SESSION['Items' . $identifier]->CustRef           = $myrow['customerref'];
-		$_SESSION['Items' . $identifier]->Comments          = stripcslashes($myrow['comments']);
-		$_SESSION['Items' . $identifier]->PaymentTerms      = $myrow['terms'];
-		$_SESSION['Items' . $identifier]->DefaultSalesType  = $myrow['ordertype'];
-		$_SESSION['Items' . $identifier]->SalesTypeName     = $myrow['sales_type'];
-		$_SESSION['Items' . $identifier]->DefaultCurrency   = $myrow['currcode'];
+		$_SESSION['Items' . $identifier]->Branch = $myrow['branchcode'];
+		$_SESSION['Items' . $identifier]->CustomerName = $myrow['name'];
+		$_SESSION['Items' . $identifier]->CustRef = $myrow['customerref'];
+		$_SESSION['Items' . $identifier]->Comments = stripcslashes($myrow['comments']);
+		$_SESSION['Items' . $identifier]->PaymentTerms = $myrow['terms'];
+		$_SESSION['Items' . $identifier]->DefaultSalesType = $myrow['ordertype'];
+		$_SESSION['Items' . $identifier]->SalesTypeName = $myrow['sales_type'];
+		$_SESSION['Items' . $identifier]->DefaultCurrency = $myrow['currcode'];
 		$_SESSION['Items' . $identifier]->CurrDecimalPlaces = $myrow['decimalplaces'];
-		$_SESSION['Items' . $identifier]->ShipVia           = $myrow['shipvia'];
-		$BestShipper                                        = $myrow['shipvia'];
-		$_SESSION['Items' . $identifier]->DeliverTo         = $myrow['deliverto'];
-		$_SESSION['Items' . $identifier]->DeliveryDate      = ConvertSQLDate($myrow['deliverydate']);
-		$_SESSION['Items' . $identifier]->DelAdd1           = $myrow['deladd1'];
-		$_SESSION['Items' . $identifier]->DelAdd2           = $myrow['deladd2'];
-		$_SESSION['Items' . $identifier]->DelAdd3           = $myrow['deladd3'];
-		$_SESSION['Items' . $identifier]->DelAdd4           = $myrow['deladd4'];
-		$_SESSION['Items' . $identifier]->DelAdd5           = $myrow['deladd5'];
-		$_SESSION['Items' . $identifier]->DelAdd6           = $myrow['deladd6'];
-		$_SESSION['Items' . $identifier]->PhoneNo           = $myrow['contactphone'];
-		$_SESSION['Items' . $identifier]->Email             = $myrow['contactemail'];
-		$_SESSION['Items' . $identifier]->SalesPerson       = $myrow['salesperson'];
-		$_SESSION['Items' . $identifier]->Location          = $myrow['fromstkloc'];
-		$_SESSION['Items' . $identifier]->LocationName      = $myrow['locationname'];
-		$_SESSION['Items' . $identifier]->Quotation         = $myrow['quotation'];
-		$_SESSION['Items' . $identifier]->FreightCost       = $myrow['freightcost'];
-		$_SESSION['Items' . $identifier]->Orig_OrderDate    = $myrow['orddate'];
-		$_SESSION['PrintedPackingSlip']                     = $myrow['printedpackingslip'];
-		$_SESSION['DatePackingSlipPrinted']                 = $myrow['datepackingslipprinted'];
-		$_SESSION['Items' . $identifier]->DeliverBlind      = $myrow['deliverblind'];
-		$_SESSION['Items' . $identifier]->DefaultPOLine     = $myrow['customerpoline'];
-		$_SESSION['Items' . $identifier]->DeliveryDays      = $myrow['estdeliverydays'];
+		$_SESSION['Items' . $identifier]->ShipVia = $myrow['shipvia'];
+		$BestShipper = $myrow['shipvia'];
+		$_SESSION['Items' . $identifier]->DeliverTo = $myrow['deliverto'];
+		$_SESSION['Items' . $identifier]->DeliveryDate = ConvertSQLDate($myrow['deliverydate']);
+		$_SESSION['Items' . $identifier]->DelAdd1 = $myrow['deladd1'];
+		$_SESSION['Items' . $identifier]->DelAdd2 = $myrow['deladd2'];
+		$_SESSION['Items' . $identifier]->DelAdd3 = $myrow['deladd3'];
+		$_SESSION['Items' . $identifier]->DelAdd4 = $myrow['deladd4'];
+		$_SESSION['Items' . $identifier]->DelAdd5 = $myrow['deladd5'];
+		$_SESSION['Items' . $identifier]->DelAdd6 = $myrow['deladd6'];
+		$_SESSION['Items' . $identifier]->PhoneNo = $myrow['contactphone'];
+		$_SESSION['Items' . $identifier]->Email = $myrow['contactemail'];
+		$_SESSION['Items' . $identifier]->SalesPerson = $myrow['salesperson'];
+		$_SESSION['Items' . $identifier]->Location = $myrow['fromstkloc'];
+		$_SESSION['Items' . $identifier]->LocationName = $myrow['locationname'];
+		$_SESSION['Items' . $identifier]->Quotation = $myrow['quotation'];
+		$_SESSION['Items' . $identifier]->FreightCost = $myrow['freightcost'];
+		$_SESSION['Items' . $identifier]->Orig_OrderDate = $myrow['orddate'];
+		$_SESSION['PrintedPackingSlip'] = $myrow['printedpackingslip'];
+		$_SESSION['DatePackingSlipPrinted'] = $myrow['datepackingslipprinted'];
+		$_SESSION['Items' . $identifier]->DeliverBlind = $myrow['deliverblind'];
+		$_SESSION['Items' . $identifier]->DefaultPOLine = $myrow['customerpoline'];
+		$_SESSION['Items' . $identifier]->DeliveryDays = $myrow['estdeliverydays'];
 
 		//Get The exchange rate used for GPPercent calculations on adding or amending items
 		if ($_SESSION['Items' . $identifier]->DefaultCurrency != $_SESSION['CompanyRecord']['currencydefault']) {
 			$ExRateResult = DB_query("SELECT rate FROM currencies WHERE currabrev='" . $_SESSION['Items' . $identifier]->DefaultCurrency . "'", $db);
 			if (DB_num_rows($ExRateResult) > 0) {
 				$ExRateRow = DB_fetch_row($ExRateResult);
-				$ExRate    = $ExRateRow[0];
+				$ExRate = $ExRateRow[0];
 			} //DB_num_rows($ExRateResult) > 0
 			else {
 				$ExRate = 1;
@@ -225,7 +225,7 @@ if (isset($_GET['ModifyOrderNumber']) AND $_GET['ModifyOrderNumber'] != '') {
 								AND salesorderdetails.orderno ='" . $_GET['ModifyOrderNumber'] . "'
 								ORDER BY salesorderdetails.orderlineno";
 
-		$ErrMsg          = _('The line items of the order cannot be retrieved because');
+		$ErrMsg = _('The line items of the order cannot be retrieved because');
 		$LineItemsResult = DB_query($LineItemsSQL, $db, $ErrMsg);
 		if (DB_num_rows($LineItemsResult) > 0) {
 			while ($myrow = DB_fetch_array($LineItemsResult)) {
@@ -251,13 +251,11 @@ if (!isset($_SESSION['Items' . $identifier])) {
 	inserted depending on the value of ExistingOrder */
 
 	$_SESSION['ExistingOrder' . $identifier] = 0;
-	$_SESSION['Items' . $identifier]         = new cart;
-	$_SESSION['PrintedPackingSlip']          = 0;
+	$_SESSION['Items' . $identifier] = new cart;
+	$_SESSION['PrintedPackingSlip'] = 0;
 	/*Of course cos the order aint even started !!*/
 
-	if (in_array(2,$_SESSION['AllowedPageSecurityTokens'])
-		and ($_SESSION['Items'.$identifier]->DebtorNo==''
-		or !isset($_SESSION['Items'.$identifier]->DebtorNo))){
+	if (in_array(2, $_SESSION['AllowedPageSecurityTokens']) and ($_SESSION['Items' . $identifier]->DebtorNo == '' or !isset($_SESSION['Items' . $identifier]->DebtorNo))) {
 		/* need to select a customer for the first time out if authorisation allows it and if a customer
 		has been selected for the order or not the session variable CustomerID holds the customer code
 		already as determined from user id /password entry  */
@@ -279,11 +277,8 @@ if (isset($_POST['ChangeCustomer']) AND $_POST['ChangeCustomer'] != '') {
 
 //Customer logins are not allowed to select other customers hence in_array(2,$_SESSION['AllowedPageSecurityTokens'])
 
-if (isset($_POST['SearchCust'])
-	and $_SESSION['RequireCustomerSelection']==1
-	and in_array(2,$_SESSION['AllowedPageSecurityTokens'])){
-
-	if (($_POST['CustKeywords']=='') and ($_POST['CustCode']=='')  and ($_POST['CustPhone']=='')) {
+if (isset($_POST['SearchCust']) and $_SESSION['RequireCustomerSelection'] == 1 and in_array(2, $_SESSION['AllowedPageSecurityTokens'])) {
+	if (($_POST['CustKeywords'] == '') and ($_POST['CustCode'] == '') and ($_POST['CustPhone'] == '')) {
 		$SQL = "SELECT custbranch.brname,
 						custbranch.contactname,
 						custbranch.phoneno,
@@ -298,13 +293,13 @@ if (isset($_POST['SearchCust'])
 		if ($_SESSION['SalesmanLogin'] != '') {
 			$SQL .= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
 		} //$_SESSION['SalesmanLogin'] != ''
-		$SQL .= "ORDER BY custbranch.debtorno,
+		$SQL .= " ORDER BY custbranch.debtorno,
 						custbranch.branchcode";
 	} //($_POST['CustKeywords'] == '') AND ($_POST['CustCode'] == '') AND ($_POST['CustPhone'] == '')
 	else {
 		//insert wildcard characters in spaces
 		$_POST['CustKeywords'] = mb_strtoupper(trim($_POST['CustKeywords']));
-		$SearchString          = str_replace(' ', '%', $_POST['CustKeywords']);
+		$SearchString = str_replace(' ', '%', $_POST['CustKeywords']);
 
 		$SQL = "SELECT custbranch.brname,
 						custbranch.contactname,
@@ -329,13 +324,13 @@ if (isset($_POST['SearchCust'])
 	}
 	/*one of keywords or custcode was more than a zero length string */
 
-	$ErrMsg            = _('The searched customer records requested cannot be retrieved because');
+	$ErrMsg = _('The searched customer records requested cannot be retrieved because');
 	$result_CustSelect = DB_query($SQL, $db, $ErrMsg);
 
 	if (DB_num_rows($result_CustSelect) == 1) {
-		$myrow            = DB_fetch_array($result_CustSelect);
+		$myrow = DB_fetch_array($result_CustSelect);
 		$SelectedCustomer = $myrow['debtorno'];
-		$SelectedBranch   = $myrow['branchcode'];
+		$SelectedBranch = $myrow['branchcode'];
 	} //DB_num_rows($result_CustSelect) == 1
 	elseif (DB_num_rows($result_CustSelect) == 0) {
 		prnMsg(_('No Customer Branch records contain the search criteria') . ' - ' . _('please try again') . ' - ' . _('Note a Customer Branch Name may be different to the Customer Name'), 'info');
@@ -356,7 +351,7 @@ if (isset($_POST['JustSelectedACustomer'])) {
 	} //$i == count($_POST)
 	else {
 		$SelectedCustomer = $_POST['SelectedCustomer' . $i];
-		$SelectedBranch   = $_POST['SelectedBranch' . $i];
+		$SelectedBranch = $_POST['SelectedBranch' . $i];
 	}
 } //isset($_POST['JustSelectedACustomer'])
 
@@ -364,7 +359,7 @@ if (isset($_POST['JustSelectedACustomer'])) {
 record returned from a search so parse the $SelectCustomer string into customer code and branch code */
 if (isset($SelectedCustomer)) {
 	$_SESSION['Items' . $identifier]->DebtorNo = trim($SelectedCustomer);
-	$_SESSION['Items' . $identifier]->Branch   = trim($SelectedBranch);
+	$_SESSION['Items' . $identifier]->Branch = trim($SelectedBranch);
 
 	// Now check to ensure this account is not on hold */
 	$sql = "SELECT debtorsmaster.name,
@@ -395,20 +390,20 @@ if (isset($SelectedCustomer)) {
 			prnMsg(_('The') . ' ' . htmlspecialchars($myrow[0], ENT_QUOTES, 'UTF-8', false) . ' ' . _('account is currently flagged as an account that needs to be watched. Please contact the credit control personnel to discuss'), 'warn');
 		} //$myrow[1] == 2
 
-		$_SESSION['RequireCustomerSelection']          = 0;
+		$_SESSION['RequireCustomerSelection'] = 0;
 		$_SESSION['Items' . $identifier]->CustomerName = $myrow['name'];
 
-		# the sales type determines the price list to be used by default the customer of the user is
-		# defaulted from the entry of the userid and password.
+		// the sales type determines the price list to be used by default the customer of the user is
+		// defaulted from the entry of the userid and password.
 
-		$_SESSION['Items' . $identifier]->DefaultSalesType  = $myrow['salestype'];
-		$_SESSION['Items' . $identifier]->SalesTypeName     = $myrow['sales_type'];
-		$_SESSION['Items' . $identifier]->DefaultCurrency   = $myrow['currcode'];
-		$_SESSION['Items' . $identifier]->DefaultPOLine     = $myrow['customerpoline'];
-		$_SESSION['Items' . $identifier]->PaymentTerms      = $myrow['terms'];
+		$_SESSION['Items' . $identifier]->DefaultSalesType = $myrow['salestype'];
+		$_SESSION['Items' . $identifier]->SalesTypeName = $myrow['sales_type'];
+		$_SESSION['Items' . $identifier]->DefaultCurrency = $myrow['currcode'];
+		$_SESSION['Items' . $identifier]->DefaultPOLine = $myrow['customerpoline'];
+		$_SESSION['Items' . $identifier]->PaymentTerms = $myrow['terms'];
 		$_SESSION['Items' . $identifier]->CurrDecimalPlaces = $myrow['decimalplaces'];
 
-		# the branch was also selected from the customer selection so default the delivery details from the customer branches table CustBranch. The order process will ask for branch details later anyway
+		// the branch was also selected from the customer selection so default the delivery details from the customer branches table CustBranch. The order process will ask for branch details later anyway
 
 		$sql = "SELECT custbranch.brname,
 						custbranch.braddress1,
@@ -449,26 +444,26 @@ if (isset($SelectedCustomer)) {
 		echo '<br />';
 		$myrow = DB_fetch_array($result);
 
-		if ($_SESSION['SalesmanLogin']!=NULL and $_SESSION['SalesmanLogin']!=$myrow['salesman']){
-			prnMsg(_('Your login is only set up for a particular salesperson. This customer has a different salesperson.'),'error');
+		if ($_SESSION['SalesmanLogin'] != NULL and $_SESSION['SalesmanLogin'] != $myrow['salesman']) {
+			prnMsg(_('Your login is only set up for a particular salesperson. This customer has a different salesperson.'), 'error');
 			include('includes/footer.inc');
 			exit;
 		} //$_SESSION['SalesmanLogin'] != NULL AND $_SESSION['SalesmanLogin'] != $myrow['salesman']
-		$_SESSION['Items' . $identifier]->DeliverTo           = $myrow['brname'];
-		$_SESSION['Items' . $identifier]->DelAdd1             = $myrow['braddress1'];
-		$_SESSION['Items' . $identifier]->DelAdd2             = $myrow['braddress2'];
-		$_SESSION['Items' . $identifier]->DelAdd3             = $myrow['braddress3'];
-		$_SESSION['Items' . $identifier]->DelAdd4             = $myrow['braddress4'];
-		$_SESSION['Items' . $identifier]->DelAdd5             = $myrow['braddress5'];
-		$_SESSION['Items' . $identifier]->DelAdd6             = $myrow['braddress6'];
-		$_SESSION['Items' . $identifier]->PhoneNo             = $myrow['phoneno'];
-		$_SESSION['Items' . $identifier]->Email               = $myrow['email'];
-		$_SESSION['Items' . $identifier]->Location            = $myrow['defaultlocation'];
-		$_SESSION['Items' . $identifier]->ShipVia             = $myrow['defaultshipvia'];
-		$_SESSION['Items' . $identifier]->DeliverBlind        = $myrow['deliverblind'];
+		$_SESSION['Items' . $identifier]->DeliverTo = $myrow['brname'];
+		$_SESSION['Items' . $identifier]->DelAdd1 = $myrow['braddress1'];
+		$_SESSION['Items' . $identifier]->DelAdd2 = $myrow['braddress2'];
+		$_SESSION['Items' . $identifier]->DelAdd3 = $myrow['braddress3'];
+		$_SESSION['Items' . $identifier]->DelAdd4 = $myrow['braddress4'];
+		$_SESSION['Items' . $identifier]->DelAdd5 = $myrow['braddress5'];
+		$_SESSION['Items' . $identifier]->DelAdd6 = $myrow['braddress6'];
+		$_SESSION['Items' . $identifier]->PhoneNo = $myrow['phoneno'];
+		$_SESSION['Items' . $identifier]->Email = $myrow['email'];
+		$_SESSION['Items' . $identifier]->Location = $myrow['defaultlocation'];
+		$_SESSION['Items' . $identifier]->ShipVia = $myrow['defaultshipvia'];
+		$_SESSION['Items' . $identifier]->DeliverBlind = $myrow['deliverblind'];
 		$_SESSION['Items' . $identifier]->SpecialInstructions = $myrow['specialinstructions'];
-		$_SESSION['Items' . $identifier]->DeliveryDays        = $myrow['estdeliverydays'];
-		$_SESSION['Items' . $identifier]->LocationName        = $myrow['locationname'];
+		$_SESSION['Items' . $identifier]->DeliveryDays = $myrow['estdeliverydays'];
+		$_SESSION['Items' . $identifier]->LocationName = $myrow['locationname'];
 		if ($_SESSION['SalesmanLogin'] != NULL AND $_SESSION['SalesmanLogin'] != '') {
 			$_SESSION['Items' . $identifier]->SalesPerson = $_SESSION['SalesmanLogin'];
 		} //$_SESSION['SalesmanLogin'] != NULL AND $_SESSION['SalesmanLogin'] != ''
@@ -483,10 +478,11 @@ if (isset($SelectedCustomer)) {
 
 			$_SESSION['Items' . $identifier]->CreditAvailable = GetCreditAvailable($_SESSION['Items' . $identifier]->DebtorNo, $db);
 
-			if ($_SESSION['CheckCreditLimits']==1 and $_SESSION['Items'.$identifier]->CreditAvailable <=0){
-				prnMsg(_('The') . ' ' . htmlspecialchars($myrow[0], ENT_QUOTES, 'UTF-8', false) . ' ' . _('account is currently at or over their credit limit'),'warn');
-			} elseif ($_SESSION['CheckCreditLimits']==2 and $_SESSION['Items'.$identifier]->CreditAvailable <=0){
-				prnMsg(_('No more orders can be placed by') . ' ' . htmlspecialchars($myrow[0], ENT_QUOTES, 'UTF-8', false) . ' ' . _(' their account is currently at or over their credit limit'),'warn');
+			if ($_SESSION['CheckCreditLimits'] == 1 and $_SESSION['Items' . $identifier]->CreditAvailable <= 0) {
+				prnMsg(_('The') . ' ' . htmlspecialchars($myrow[0], ENT_QUOTES, 'UTF-8', false) . ' ' . _('account is currently at or over their credit limit'), 'warn');
+			} //$_SESSION['CheckCreditLimits'] == 1 and $_SESSION['Items' . $identifier]->CreditAvailable <= 0
+			elseif ($_SESSION['CheckCreditLimits'] == 2 and $_SESSION['Items' . $identifier]->CreditAvailable <= 0) {
+				prnMsg(_('No more orders can be placed by') . ' ' . htmlspecialchars($myrow[0], ENT_QUOTES, 'UTF-8', false) . ' ' . _(' their account is currently at or over their credit limit'), 'warn');
 				include('includes/footer.inc');
 				exit;
 			} //$_SESSION['CheckCreditLimits'] == 2 AND $_SESSION['Items' . $identifier]->CreditAvailable <= 0
@@ -499,9 +495,9 @@ if (isset($SelectedCustomer)) {
 
 } //isset($SelectedCustomer)
 elseif (!$_SESSION['Items' . $identifier]->DefaultSalesType or $_SESSION['Items' . $identifier]->DefaultSalesType == '') {
-	#Possible that the check to ensure this account is not on hold has not been done
-	#if the customer is placing own order, if this is the case then
-	#DefaultSalesType will not have been set as above
+	//Possible that the check to ensure this account is not on hold has not been done
+	//if the customer is placing own order, if this is the case then
+	//DefaultSalesType will not have been set as above
 
 	$sql = "SELECT debtorsmaster.name,
 					holdreasons.dissallowinvoices,
@@ -524,14 +520,14 @@ elseif (!$_SESSION['Items' . $identifier]->DefaultSalesType or $_SESSION['Items'
 	if ($myrow[1] == 0) {
 		$_SESSION['Items' . $identifier]->CustomerName = $myrow[0];
 
-		# the sales type determines the price list to be used by default the customer of the user is
-		# defaulted from the entry of the userid and password.
+		// the sales type determines the price list to be used by default the customer of the user is
+		// defaulted from the entry of the userid and password.
 
-		$_SESSION['Items' . $identifier]->DefaultSalesType  = $myrow['salestype'];
-		$_SESSION['Items' . $identifier]->DefaultCurrency   = $myrow['currcode'];
+		$_SESSION['Items' . $identifier]->DefaultSalesType = $myrow['salestype'];
+		$_SESSION['Items' . $identifier]->DefaultCurrency = $myrow['currcode'];
 		$_SESSION['Items' . $identifier]->CurrDecimalPlaces = $myrow['decimalplaces'];
-		$_SESSION['Items' . $identifier]->Branch            = $_SESSION['UserBranch'];
-		$_SESSION['Items' . $identifier]->DefaultPOLine     = $myrow['customerpoline'];
+		$_SESSION['Items' . $identifier]->Branch = $_SESSION['UserBranch'];
+		$_SESSION['Items' . $identifier]->DefaultPOLine = $myrow['customerpoline'];
 
 		// the branch would be set in the user data so default delivery details as necessary. However,
 		// the order process will ask for branch details later anyway
@@ -560,17 +556,17 @@ elseif (!$_SESSION['Items' . $identifier]->DefaultSalesType or $_SESSION['Items'
 		$DbgMsg = _('SQL used to retrieve the branch details was');
 		$result = DB_query($sql, $db, $ErrMsg, $DbgMsg);
 
-		$myrow                                         = DB_fetch_array($result);
-		$_SESSION['Items' . $identifier]->DeliverTo    = $myrow['brname'];
-		$_SESSION['Items' . $identifier]->DelAdd1      = $myrow['braddress1'];
-		$_SESSION['Items' . $identifier]->DelAdd2      = $myrow['braddress2'];
-		$_SESSION['Items' . $identifier]->DelAdd3      = $myrow['braddress3'];
-		$_SESSION['Items' . $identifier]->DelAdd4      = $myrow['braddress4'];
-		$_SESSION['Items' . $identifier]->DelAdd5      = $myrow['braddress5'];
-		$_SESSION['Items' . $identifier]->DelAdd6      = $myrow['braddress6'];
-		$_SESSION['Items' . $identifier]->PhoneNo      = $myrow['phoneno'];
-		$_SESSION['Items' . $identifier]->Email        = $myrow['email'];
-		$_SESSION['Items' . $identifier]->Location     = $myrow['defaultlocation'];
+		$myrow = DB_fetch_array($result);
+		$_SESSION['Items' . $identifier]->DeliverTo = $myrow['brname'];
+		$_SESSION['Items' . $identifier]->DelAdd1 = $myrow['braddress1'];
+		$_SESSION['Items' . $identifier]->DelAdd2 = $myrow['braddress2'];
+		$_SESSION['Items' . $identifier]->DelAdd3 = $myrow['braddress3'];
+		$_SESSION['Items' . $identifier]->DelAdd4 = $myrow['braddress4'];
+		$_SESSION['Items' . $identifier]->DelAdd5 = $myrow['braddress5'];
+		$_SESSION['Items' . $identifier]->DelAdd6 = $myrow['braddress6'];
+		$_SESSION['Items' . $identifier]->PhoneNo = $myrow['phoneno'];
+		$_SESSION['Items' . $identifier]->Email = $myrow['email'];
+		$_SESSION['Items' . $identifier]->Location = $myrow['defaultlocation'];
 		$_SESSION['Items' . $identifier]->DeliverBlind = $myrow['deliverblind'];
 		$_SESSION['Items' . $identifier]->DeliveryDays = $myrow['estdeliverydays'];
 		$_SESSION['Items' . $identifier]->LocationName = $myrow['locationname'];
@@ -586,11 +582,9 @@ elseif (!$_SESSION['Items' . $identifier]->DefaultSalesType or $_SESSION['Items'
 		include('includes/footer.inc');
 		exit;
 	}
-}
+} //!$_SESSION['Items' . $identifier]->DefaultSalesType or $_SESSION['Items' . $identifier]->DefaultSalesType == ''
 
-if ($_SESSION['RequireCustomerSelection'] ==1
-	or !isset($_SESSION['Items'.$identifier]->DebtorNo)
-	or $_SESSION['Items'.$identifier]->DebtorNo=='') {
+if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $identifier]->DebtorNo) or $_SESSION['Items' . $identifier]->DebtorNo == '') {
 	echo '<p class="page_title_text"><img src="' . $rootpath . '/css/' . $theme . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Enter an Order or Quotation') . ' : ' . _('Search for the Customer Branch.') . '</p>';
 	echo '<div class="page_help_text">' . _('Orders/Quotations are placed against the Customer Branch. A Customer may have several Branches.') . '</div>';
 	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $identifier . '" method="post">
@@ -616,7 +610,6 @@ if ($_SESSION['RequireCustomerSelection'] ==1
 		</div>';
 
 	if (isset($result_CustSelect)) {
-
 		echo '<div>
 					<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
 					<input type="hidden" name="JustSelectedACustomer" value="Yes" />
@@ -632,8 +625,8 @@ if ($_SESSION['RequireCustomerSelection'] ==1
 						</tr>';
 		echo $TableHeader;
 
-		$j            = 1;
-		$k            = 0; //row counter to determine background colour
+		$j = 1;
+		$k = 0; //row counter to determine background colour
 		$LastCustomer = '';
 		while ($myrow = DB_fetch_array($result_CustSelect)) {
 			if ($k == 1) {
@@ -693,12 +686,12 @@ else { //dont require customer selection
 
 		if ($OK_to_delete == 1) {
 			if ($_SESSION['ExistingOrder' . $identifier] != 0) {
-				$SQL       = "DELETE FROM salesorderdetails WHERE salesorderdetails.orderno ='" . $_SESSION['ExistingOrder' . $identifier] . "'";
-				$ErrMsg    = _('The order detail lines could not be deleted because');
+				$SQL = "DELETE FROM salesorderdetails WHERE salesorderdetails.orderno ='" . $_SESSION['ExistingOrder' . $identifier] . "'";
+				$ErrMsg = _('The order detail lines could not be deleted because');
 				$DelResult = DB_query($SQL, $db, $ErrMsg);
 
-				$SQL       = "DELETE FROM salesorders WHERE salesorders.orderno='" . $_SESSION['ExistingOrder' . $identifier] . "'";
-				$ErrMsg    = _('The order header could not be deleted because');
+				$SQL = "DELETE FROM salesorders WHERE salesorders.orderno='" . $_SESSION['ExistingOrder' . $identifier] . "'";
+				$ErrMsg = _('The order header could not be deleted because');
 				$DelResult = DB_query($SQL, $db, $ErrMsg);
 
 				$_SESSION['ExistingOrder' . $identifier] = 0;
@@ -741,20 +734,21 @@ else { //dont require customer selection
 		echo '</b></div>';
 	}
 
-	$msg ='';
-	if (isset($_POST['Search']) or isset($_POST['Next']) or isset($_POST['Previous'])){
-
-		if ($_POST['Keywords']!='' and $_POST['StockCode']=='') {
-			$msg='<div class="page_help_text">' . _('Order Item description has been used in search') . '.</div>';
-		} elseif ($_POST['StockCode']!='' and $_POST['Keywords']=='') {
-			$msg='<div class="page_help_text">' . _('Stock Code has been used in search') . '.</div>';
-		} elseif ($_POST['Keywords']=='' and $_POST['StockCode']=='') {
-			$msg='<div class="page_help_text">' . _('Stock Category has been used in search') . '.</div>';
-		}
-		if (isset($_POST['Keywords']) and mb_strlen($_POST['Keywords'])>0) {
+	$msg = '';
+	if (isset($_POST['Search']) or isset($_POST['Next']) or isset($_POST['Previous'])) {
+		if ($_POST['Keywords'] != '' and $_POST['StockCode'] == '') {
+			$msg = '<div class="page_help_text">' . _('Order Item description has been used in search') . '.</div>';
+		} //$_POST['Keywords'] != '' and $_POST['StockCode'] == ''
+		elseif ($_POST['StockCode'] != '' and $_POST['Keywords'] == '') {
+			$msg = '<div class="page_help_text">' . _('Stock Code has been used in search') . '.</div>';
+		} //$_POST['StockCode'] != '' and $_POST['Keywords'] == ''
+			elseif ($_POST['Keywords'] == '' and $_POST['StockCode'] == '') {
+			$msg = '<div class="page_help_text">' . _('Stock Category has been used in search') . '.</div>';
+		} //$_POST['Keywords'] == '' and $_POST['StockCode'] == ''
+		if (isset($_POST['Keywords']) and mb_strlen($_POST['Keywords']) > 0) {
 			//insert wildcard characters in spaces
 			$_POST['Keywords'] = mb_strtoupper($_POST['Keywords']);
-			$SearchString      = '%' . str_replace(' ', '%', $_POST['Keywords']) . '%';
+			$SearchString = '%' . str_replace(' ', '%', $_POST['Keywords']) . '%';
 
 			if ($_POST['StockCat'] == 'All') {
 				$SQL = "SELECT stockmaster.stockid,
@@ -787,7 +781,7 @@ else { //dont require customer selection
 		} //isset($_POST['Keywords']) AND mb_strlen($_POST['Keywords']) > 0
 		elseif (mb_strlen($_POST['StockCode']) > 0) {
 			$_POST['StockCode'] = mb_strtoupper($_POST['StockCode']);
-			$SearchString       = '%' . $_POST['StockCode'] . '%';
+			$SearchString = '%' . $_POST['StockCode'] . '%';
 
 			if ($_POST['StockCat'] == 'All') {
 				$SQL = "SELECT stockmaster.stockid,
@@ -852,10 +846,10 @@ else { //dont require customer selection
 		if (isset($_POST['Previous'])) {
 			$Offset = $_POST['PreviousList'];
 
-		}
+		} //isset($_POST['Previous'])
 		if (!isset($Offset) or $Offset < 0) {
-			$Offset=0;
-		}
+			$Offset = 0;
+		} //!isset($Offset) or $Offset < 0
 		$SQL = $SQL . " LIMIT " . $_SESSION['DefaultDisplayRecordsMax'] . " OFFSET " . strval($_SESSION['DefaultDisplayRecordsMax'] * $Offset);
 
 		$ErrMsg = _('There is a problem selecting the part records to display because');
@@ -867,7 +861,7 @@ else { //dont require customer selection
 			prnMsg(_('There are no products available meeting the criteria specified'), 'info');
 		} //DB_num_rows($SearchResult) == 0
 		if (DB_num_rows($SearchResult) == 1) {
-			$myrow   = DB_fetch_array($SearchResult);
+			$myrow = DB_fetch_array($SearchResult);
 			$NewItem = $myrow['stockid'];
 			DB_data_seek($SearchResult, 0);
 		} //DB_num_rows($SearchResult) == 1
@@ -876,10 +870,10 @@ else { //dont require customer selection
 		} //DB_num_rows($SearchResult) < $_SESSION['DisplayRecordsMax']
 	} //end of if search
 
-	#Always do the stuff below if not looking for a customerid
+	//Always do the stuff below if not looking for a customerid
 
 
-	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?identifier='.$identifier . '" id="SelectParts" method="post">';
+	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $identifier . '" id="SelectParts" method="post">';
 	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
@@ -888,7 +882,7 @@ else { //dont require customer selection
 		$ExRateResult = DB_query("SELECT rate FROM currencies WHERE currabrev='" . $_SESSION['Items' . $identifier]->DefaultCurrency . "'", $db);
 		if (DB_num_rows($ExRateResult) > 0) {
 			$ExRateRow = DB_fetch_row($ExRateResult);
-			$ExRate    = $ExRateRow[0];
+			$ExRate = $ExRateRow[0];
 		} //DB_num_rows($ExRateResult) > 0
 		else {
 			$ExRate = 1;
@@ -902,17 +896,14 @@ else { //dont require customer selection
 	/*Process Quick Entry */
 	/* If enter is pressed on the quick entry screen, the default button may be Recalculate */
 
-	 if (isset($_POST['SelectingOrderItems'])
-			or isset($_POST['QuickEntry'])
-			or isset($_POST['Recalculate'])){
-
-		 /* get the item details from the database and hold them in the cart object */
+	if (isset($_POST['SelectingOrderItems']) or isset($_POST['QuickEntry']) or isset($_POST['Recalculate'])) {
+		/* get the item details from the database and hold them in the cart object */
 
 		/*Discount can only be set later on  -- after quick entry -- so default discount to 0 in the first place */
-		$Discount                 = 0;
+		$Discount = 0;
 		$AlreadyWarnedAboutCredit = false;
-		 $i=1;
-		  while ($i<=$_SESSION['QuickEntries'] and isset($_POST['part_' . $i]) and $_POST['part_' . $i]!='') {
+		$i = 1;
+		while ($i <= $_SESSION['QuickEntries'] and isset($_POST['part_' . $i]) and $_POST['part_' . $i] != '') {
 			$QuickEntryCode = 'part_' . $i;
 			$QuickEntryQty = 'qty_' . $i;
 			$QuickEntryPOLine = 'poline_' . $i;
@@ -956,8 +947,8 @@ else { //dont require customer selection
 					FROM stockmaster
 					WHERE stockmaster.stockid='" . $NewItem . "'";
 
-			$ErrMsg    = _('Could not determine if the part being ordered was a kitset or not because');
-			$DbgMsg    = _('The sql that was used to determine if the part being ordered was a kitset or not was ');
+			$ErrMsg = _('Could not determine if the part being ordered was a kitset or not because');
+			$DbgMsg = _('The sql that was used to determine if the part being ordered was a kitset or not was ');
 			$KitResult = DB_query($sql, $db, $ErrMsg, $DbgMsg);
 
 
@@ -974,14 +965,14 @@ else { //dont require customer selection
 							AND bom.effectiveto > '" . Date('Y-m-d') . "'
 							AND bom.effectiveafter < '" . Date('Y-m-d') . "'";
 
-					$ErrMsg    = _('Could not retrieve kitset components from the database because') . ' ';
+					$ErrMsg = _('Could not retrieve kitset components from the database because') . ' ';
 					$KitResult = DB_query($sql, $db, $ErrMsg, $DbgMsg);
 
 					$ParentQty = $NewItemQty;
 					while ($KitParts = DB_fetch_array($KitResult, $db)) {
-						$NewItem    = $KitParts['component'];
+						$NewItem = $KitParts['component'];
 						$NewItemQty = $KitParts['quantity'] * $ParentQty;
-						$NewPOLine  = 0;
+						$NewPOLine = 0;
 						include('includes/SelectOrderItems_IntoCart.inc');
 					} //$KitParts = DB_fetch_array($KitResult, $db)
 
@@ -1017,7 +1008,7 @@ else { //dont require customer selection
 											FROM fixedassetcategories INNER JOIN fixedassets
 											ON fixedassetcategories.categoryid=fixedassets.assetcategoryid
 											WHERE fixedassets.assetid='" . $_POST['AssetToDisposeOf'] . "'", $db);
-			$AssetRow           = DB_fetch_array($AssetDetailsResult);
+			$AssetRow = DB_fetch_array($AssetDetailsResult);
 
 			/* Check that the stock category for disposal "ASSETS" is defined already */
 			$AssetCategoryResult = DB_query("SELECT categoryid FROM stockcategory WHERE categoryid='ASSETS'", $db);
@@ -1039,7 +1030,7 @@ else { //dont require customer selection
 			$TestAssetExistsAlreadyResult = DB_query("SELECT stockid
 														FROM stockmaster
 														WHERE stockid ='ASSET-" . $_POST['AssetToDisposeOf'] . "'", $db);
-			$j                            = 0;
+			$j = 0;
 			while (DB_num_rows($TestAssetExistsAlreadyResult) == 1) { //then it exists already ... bum
 				$j++;
 				$TestAssetExistsAlreadyResult = DB_query("SELECT stockid
@@ -1079,12 +1070,12 @@ else { //dont require customer selection
 												'" . $_SESSION['DefaultTaxCategory'] . "',
 												'" . $NBV . "')", $db);
 			/*not forgetting the location records too */
-			$InsertStkLocRecsResult       = DB_query("INSERT INTO locstock (loccode,
+			$InsertStkLocRecsResult = DB_query("INSERT INTO locstock (loccode,
 																	stockid)
 												SELECT loccode, '" . $AssetStockID . "'
 												FROM locations", $db);
 			/*Now the asset has been added to the stock master we can add it to the sales order */
-			$NewItemDue                   = date($_SESSION['DefaultDateFormat']);
+			$NewItemDue = date($_SESSION['DefaultDateFormat']);
 			if (isset($_POST['POLine'])) {
 				$NewPOLine = $_POST['POLine'];
 			} //isset($_POST['POLine'])
@@ -1099,9 +1090,8 @@ else { //dont require customer selection
 	/*Now do non-quick entry delete/edits/adds */
 
 
-	if ((isset($_SESSION['Items'.$identifier])) or isset($NewItem)){
-
-		if(isset($_GET['Delete'])){
+	if ((isset($_SESSION['Items' . $identifier])) or isset($NewItem)) {
+		if (isset($_GET['Delete'])) {
 			//page called attempting to delete a line - GET['Delete'] = the line number to delete
 			$QuantityAlreadyDelivered = $_SESSION['Items' . $identifier]->Some_Already_Delivered($_GET['Delete']);
 			if ($QuantityAlreadyDelivered == 0) {
@@ -1122,7 +1112,7 @@ else { //dont require customer selection
 				if (ABS($OrderLine->Price - filter_number_format($_POST['Price_' . $OrderLine->LineNumber])) > 0.01) {
 					/*There is a new price being input for the line item */
 
-					$Price                                        = filter_number_format($_POST['Price_' . $OrderLine->LineNumber]);
+					$Price = filter_number_format($_POST['Price_' . $OrderLine->LineNumber]);
 					$_POST['GPPercent_' . $OrderLine->LineNumber] = (($Price * (1 - (filter_number_format($_POST['Discount_' . $OrderLine->LineNumber]) / 100))) - $OrderLine->StandardCost * $ExRate) / ($Price * (1 - filter_number_format($_POST['Discount_' . $OrderLine->LineNumber])) / 100);
 
 				} //ABS($OrderLine->Price - filter_number_format($_POST['Price_' . $OrderLine->LineNumber])) > 0.01
@@ -1154,39 +1144,37 @@ else { //dont require customer selection
 					prnMsg(_('An invalid date entry was made for ') . ' ' . $NewItem . ' ' . _('The date entry') . ' ' . $ItemDue . ' ' . _('must be in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'warn');
 					//Attempt to default the due date to something sensible?
 
-					$_POST['ItemDue_' . $OrderLine->LineNumber] = DateAdd (Date($_SESSION['DefaultDateFormat']),'d', $_SESSION['Items'.$identifier]->DeliveryDays);
-				}
-				if ($Quantity<0 or $Price <0 or $DiscountPercentage >100 or $DiscountPercentage <0){
-					prnMsg(_('The item could not be updated because you are attempting to set the quantity ordered to less than 0 or the price less than 0 or the discount more than 100% or less than 0%'),'warn');
-				} elseif($_SESSION['Items'.$identifier]->Some_Already_Delivered($OrderLine->LineNumber)!=0 and $_SESSION['Items'.$identifier]->LineItems[$OrderLine->LineNumber]->Price != $Price) {
-					prnMsg(_('The item you attempting to modify the price for has already had some quantity invoiced at the old price the items unit price cannot be modified retrospectively'),'warn');
-				} elseif($_SESSION['Items'.$identifier]->Some_Already_Delivered($OrderLine->LineNumber)!=0 and $_SESSION['Items'.$identifier]->LineItems[$OrderLine->LineNumber]->DiscountPercent != ($DiscountPercentage/100)) {
+					$_POST['ItemDue_' . $OrderLine->LineNumber] = DateAdd(Date($_SESSION['DefaultDateFormat']), 'd', $_SESSION['Items' . $identifier]->DeliveryDays);
+				} //!Is_Date($_POST['ItemDue_' . $OrderLine->LineNumber])
+				if ($Quantity < 0 or $Price < 0 or $DiscountPercentage > 100 or $DiscountPercentage < 0) {
+					prnMsg(_('The item could not be updated because you are attempting to set the quantity ordered to less than 0 or the price less than 0 or the discount more than 100% or less than 0%'), 'warn');
+				} //$Quantity < 0 or $Price < 0 or $DiscountPercentage > 100 or $DiscountPercentage < 0
+				elseif ($_SESSION['Items' . $identifier]->Some_Already_Delivered($OrderLine->LineNumber) != 0 and $_SESSION['Items' . $identifier]->LineItems[$OrderLine->LineNumber]->Price != $Price) {
+					prnMsg(_('The item you attempting to modify the price for has already had some quantity invoiced at the old price the items unit price cannot be modified retrospectively'), 'warn');
+				} //$_SESSION['Items' . $identifier]->Some_Already_Delivered($OrderLine->LineNumber) != 0 and $_SESSION['Items' . $identifier]->LineItems[$OrderLine->LineNumber]->Price != $Price
+					elseif ($_SESSION['Items' . $identifier]->Some_Already_Delivered($OrderLine->LineNumber) != 0 and $_SESSION['Items' . $identifier]->LineItems[$OrderLine->LineNumber]->DiscountPercent != ($DiscountPercentage / 100)) {
+					prnMsg(_('The item you attempting to modify has had some quantity invoiced at the old discount percent the items discount cannot be modified retrospectively'), 'warn');
 
-					prnMsg(_('The item you attempting to modify has had some quantity invoiced at the old discount percent the items discount cannot be modified retrospectively'),'warn');
-
-				} elseif ($_SESSION['Items'.$identifier]->LineItems[$OrderLine->LineNumber]->QtyInv > $Quantity){
-					prnMsg( _('You are attempting to make the quantity ordered a quantity less than has already been invoiced') . '. ' . _('The quantity delivered and invoiced cannot be modified retrospectively'),'warn');
-				} elseif ($OrderLine->Quantity !=$Quantity
-							or $OrderLine->Price != $Price
-							or ABoS($OrderLine->DiscountPercent - $DiscountPercentage/100) >0.001
-							or $OrderLine->Narrative != $Narrative
-							or $OrderLine->ItemDue != $_POST['ItemDue_' . $OrderLine->LineNumber]
-							or $OrderLine->POLine != $_POST['POLine_' . $OrderLine->LineNumber]) {
-
+				} //$_SESSION['Items' . $identifier]->Some_Already_Delivered($OrderLine->LineNumber) != 0 and $_SESSION['Items' . $identifier]->LineItems[$OrderLine->LineNumber]->DiscountPercent != ($DiscountPercentage / 100)
+					elseif ($_SESSION['Items' . $identifier]->LineItems[$OrderLine->LineNumber]->QtyInv > $Quantity) {
+					prnMsg(_('You are attempting to make the quantity ordered a quantity less than has already been invoiced') . '. ' . _('The quantity delivered and invoiced cannot be modified retrospectively'), 'warn');
+				} //$_SESSION['Items' . $identifier]->LineItems[$OrderLine->LineNumber]->QtyInv > $Quantity
+					elseif ($OrderLine->Quantity != $Quantity or $OrderLine->Price != $Price or ABoS($OrderLine->DiscountPercent - $DiscountPercentage / 100) > 0.001 or $OrderLine->Narrative != $Narrative or $OrderLine->ItemDue != $_POST['ItemDue_' . $OrderLine->LineNumber] or $OrderLine->POLine != $_POST['POLine_' . $OrderLine->LineNumber]) {
 					$WithinCreditLimit = true;
 
-					if ($_SESSION['CheckCreditLimits'] > 0 and $AlreadyWarnedAboutCredit==false){
+					if ($_SESSION['CheckCreditLimits'] > 0 and $AlreadyWarnedAboutCredit == false) {
 						/*Check credit limits is 1 for warn breach their credit limit and 2 for prohibit sales */
 						$DifferenceInOrderValue = ($Quantity * $Price * (1 - $DiscountPercentage / 100)) - ($OrderLine->Quantity * $OrderLine->Price * (1 - $OrderLine->DiscountPercent));
 
 						$_SESSION['Items' . $identifier]->CreditAvailable -= $DifferenceInOrderValue;
 
 
-						if ($_SESSION['CheckCreditLimits']==1 and $_SESSION['Items'.$identifier]->CreditAvailable <=0){
-							prnMsg(_('The customer account will breach their credit limit'),'warn');
+						if ($_SESSION['CheckCreditLimits'] == 1 and $_SESSION['Items' . $identifier]->CreditAvailable <= 0) {
+							prnMsg(_('The customer account will breach their credit limit'), 'warn');
 							$AlreadyWarnedAboutCredit = true;
-						} elseif ($_SESSION['CheckCreditLimits']==2 and $_SESSION['Items'.$identifier]->CreditAvailable <=0){
-							prnMsg(_('This change would put the customer over their credit limit and is prohibited'),'warn');
+						} //$_SESSION['CheckCreditLimits'] == 1 and $_SESSION['Items' . $identifier]->CreditAvailable <= 0
+						elseif ($_SESSION['CheckCreditLimits'] == 2 and $_SESSION['Items' . $identifier]->CreditAvailable <= 0) {
+							prnMsg(_('This change would put the customer over their credit limit and is prohibited'), 'warn');
 							$WithinCreditLimit = false;
 							$_SESSION['Items' . $identifier]->CreditAvailable += $DifferenceInOrderValue;
 							$AlreadyWarnedAboutCredit = true;
@@ -1204,10 +1192,9 @@ else { //dont require customer selection
 		/* Now Run through each line of the order again to work out the appropriate discount from the discount matrix */
 		$DiscCatsDone = array();
 
-		foreach ($_SESSION['Items'.$identifier]->LineItems as $OrderLine) {
-
-			if ($OrderLine->DiscCat !='' and ! in_array($OrderLine->DiscCat,$DiscCatsDone)){
-				$DiscCatsDone[]=$OrderLine->DiscCat;
+		foreach ($_SESSION['Items' . $identifier]->LineItems as $OrderLine) {
+			if ($OrderLine->DiscCat != '' and !in_array($OrderLine->DiscCat, $DiscCatsDone)) {
+				$DiscCatsDone[] = $OrderLine->DiscCat;
 				$QuantityOfDiscCat = 0;
 
 				foreach ($_SESSION['Items' . $identifier]->LineItems as $OrderLine_2) {
@@ -1221,7 +1208,7 @@ else { //dont require customer selection
 									WHERE salestype='" . $_SESSION['Items' . $identifier]->DefaultSalesType . "'
 									AND discountcategory ='" . $OrderLine->DiscCat . "'
 									AND quantitybreak <= '" . $QuantityOfDiscCat . "'", $db);
-				$myrow  = DB_fetch_row($result);
+				$myrow = DB_fetch_row($result);
 				if ($myrow[0] == NULL) {
 					$DiscountMatrixRate = 0;
 				} //$myrow[0] == NULL
@@ -1233,7 +1220,7 @@ else { //dont require customer selection
 					foreach ($_SESSION['Items' . $identifier]->LineItems as $OrderLine_2) {
 						if ($OrderLine_2->DiscCat == $OrderLine->DiscCat) {
 							$_SESSION['Items' . $identifier]->LineItems[$OrderLine_2->LineNumber]->DiscountPercent = $DiscountMatrixRate;
-							$_SESSION['Items' . $identifier]->LineItems[$OrderLine_2->LineNumber]->GPPercent       = (($_SESSION['Items' . $identifier]->LineItems[$OrderLine_2->LineNumber]->Price * (1 - $DiscountMatrixRate)) - $_SESSION['Items' . $identifier]->LineItems[$OrderLine_2->LineNumber]->StandardCost * $ExRate) / ($_SESSION['Items' . $identifier]->LineItems[$OrderLine_2->LineNumber]->Price * (1 - $DiscountMatrixRate) / 100);
+							$_SESSION['Items' . $identifier]->LineItems[$OrderLine_2->LineNumber]->GPPercent = (($_SESSION['Items' . $identifier]->LineItems[$OrderLine_2->LineNumber]->Price * (1 - $DiscountMatrixRate)) - $_SESSION['Items' . $identifier]->LineItems[$OrderLine_2->LineNumber]->StandardCost * $ExRate) / ($_SESSION['Items' . $identifier]->LineItems[$OrderLine_2->LineNumber]->Price * (1 - $DiscountMatrixRate) / 100);
 						} //$OrderLine_2->DiscCat == $OrderLine->DiscCat
 					} //$_SESSION['Items' . $identifier]->LineItems as $OrderLine_2
 				} //$myrow[0] != 0
@@ -1262,7 +1249,7 @@ else { //dont require customer selection
 
 		$NewItemQty = 1;
 		/*By Default */
-		$Discount   = 0;
+		$Discount = 0;
 		/*By default - can change later or discount category override */
 
 		if ($myrow = DB_fetch_array($KitResult)) {
@@ -1275,14 +1262,14 @@ else { //dont require customer selection
 						AND bom.effectiveto > '" . Date('Y-m-d') . "'
 						AND bom.effectiveafter < '" . Date('Y-m-d') . "'";
 
-				$ErrMsg    = _('Could not retrieve kitset components from the database because');
+				$ErrMsg = _('Could not retrieve kitset components from the database because');
 				$KitResult = DB_query($sql, $db, $ErrMsg);
 
 				$ParentQty = $NewItemQty;
 				while ($KitParts = DB_fetch_array($KitResult, $db)) {
-					$NewItem    = $KitParts['component'];
+					$NewItem = $KitParts['component'];
 					$NewItemQty = $KitParts['quantity'] * $ParentQty;
-					$NewPOLine  = 0;
+					$NewPOLine = 0;
 					$NewItemDue = date($_SESSION['DefaultDateFormat']);
 					include('includes/SelectOrderItems_IntoCart.inc');
 				} //$KitParts = DB_fetch_array($KitResult, $db)
@@ -1291,7 +1278,7 @@ else { //dont require customer selection
 			else {
 				/*Its not a kit set item*/
 				$NewItemDue = date($_SESSION['DefaultDateFormat']);
-				$NewPOLine  = 0;
+				$NewPOLine = 0;
 
 				include('includes/SelectOrderItems_IntoCart.inc');
 			}
@@ -1303,9 +1290,9 @@ else { //dont require customer selection
 	} //isset($NewItem)
 
 
-	if (isset($NewItemArray) and isset($_POST['SelectingOrderItems'])){
-/* get the item details from the database and hold them in the cart object make the quantity 1 by default then add it to the cart */
-/*Now figure out if the item is a kit set - the field MBFlag='K'*/
+	if (isset($NewItemArray) and isset($_POST['SelectingOrderItems'])) {
+		/* get the item details from the database and hold them in the cart object make the quantity 1 by default then add it to the cart */
+		/*Now figure out if the item is a kit set - the field MBFlag='K'*/
 		$AlreadyWarnedAboutCredit = false;
 		foreach ($NewItemArray as $NewItem => $NewItemQty) {
 			if ($NewItemQty > 0) {
@@ -1331,15 +1318,15 @@ else { //dont require customer selection
 								AND bom.effectiveto > '" . Date('Y-m-d') . "'
 								AND bom.effectiveafter < '" . Date('Y-m-d') . "'";
 
-						$ErrMsg    = _('Could not retrieve kitset components from the database because');
+						$ErrMsg = _('Could not retrieve kitset components from the database because');
 						$KitResult = DB_query($sql, $db, $ErrMsg);
 
 						$ParentQty = $NewItemQty;
 						while ($KitParts = DB_fetch_array($KitResult, $db)) {
-							$NewItem    = $KitParts['component'];
+							$NewItem = $KitParts['component'];
 							$NewItemQty = $KitParts['quantity'] * $ParentQty;
 							$NewItemDue = date($_SESSION['DefaultDateFormat']);
-							$NewPOLine  = 0;
+							$NewPOLine = 0;
 							include('includes/SelectOrderItems_IntoCart.inc');
 						} //$KitParts = DB_fetch_array($KitResult, $db)
 
@@ -1347,7 +1334,7 @@ else { //dont require customer selection
 					else {
 						/*Its not a kit set item*/
 						$NewItemDue = date($_SESSION['DefaultDateFormat']);
-						$NewPOLine  = 0;
+						$NewPOLine = 0;
 						include('includes/SelectOrderItems_IntoCart.inc');
 					}
 				} //$myrow = DB_fetch_array($KitResult)
@@ -1365,14 +1352,14 @@ else { //dont require customer selection
 
 	/* Run through each line of the order and work out the appropriate discount from the discount matrix */
 	$DiscCatsDone = array();
-	$counter      = 0;
+	$counter = 0;
 	foreach ($_SESSION['Items' . $identifier]->LineItems as $OrderLine) {
 		if ($OrderLine->DiscCat != "" and !in_array($OrderLine->DiscCat, $DiscCatsDone)) {
 			$DiscCatsDone[$counter] = $OrderLine->DiscCat;
-			$QuantityOfDiscCat      = 0;
+			$QuantityOfDiscCat = 0;
 
 
-			foreach ($_SESSION['Items'.$identifier]->LineItems as $StkItems_2) {
+			foreach ($_SESSION['Items' . $identifier]->LineItems as $StkItems_2) {
 				/* add up total quantity of all lines of this DiscCat */
 				if ($StkItems_2->DiscCat == $OrderLine->DiscCat) {
 					$QuantityOfDiscCat += $StkItems_2->Quantity;
@@ -1383,7 +1370,7 @@ else { //dont require customer selection
 								WHERE salestype='" . $_SESSION['Items' . $identifier]->DefaultSalesType . "'
 								AND discountcategory ='" . $OrderLine->DiscCat . "'
 								AND quantitybreak <= '" . $QuantityOfDiscCat . "'", $db);
-			$myrow  = DB_fetch_row($result);
+			$myrow = DB_fetch_row($result);
 			if ($myrow[0] == NULL) {
 				$DiscountMatrixRate = 0;
 			} //$myrow[0] == NULL
@@ -1427,29 +1414,28 @@ else { //dont require customer selection
 			<th>' . _('Due Date') . '</th></tr>';
 
 
-		$_SESSION['Items'.$identifier]->total = 0;
-		$_SESSION['Items'.$identifier]->totalVolume = 0;
-		$_SESSION['Items'.$identifier]->totalWeight = 0;
-		$k =0;  //row colour counter
-		foreach ($_SESSION['Items'.$identifier]->LineItems as $OrderLine) {
-
+		$_SESSION['Items' . $identifier]->total = 0;
+		$_SESSION['Items' . $identifier]->totalVolume = 0;
+		$_SESSION['Items' . $identifier]->totalWeight = 0;
+		$k = 0; //row colour counter
+		foreach ($_SESSION['Items' . $identifier]->LineItems as $OrderLine) {
 			$LineTotal = $OrderLine->Quantity * $OrderLine->Price * (1 - $OrderLine->DiscountPercent);
-			$DisplayLineTotal = locale_number_format($LineTotal,$_SESSION['Items'.$identifier]->CurrDecimalPlaces);
-			$DisplayDiscount = locale_number_format(($OrderLine->DiscountPercent * 100),2);
+			$DisplayLineTotal = locale_number_format($LineTotal, $_SESSION['Items' . $identifier]->CurrDecimalPlaces);
+			$DisplayDiscount = locale_number_format(($OrderLine->DiscountPercent * 100), 2);
 			$QtyOrdered = $OrderLine->Quantity;
 			$QtyRemain = $QtyOrdered - $OrderLine->QtyInv;
 
-			if ($OrderLine->QOHatLoc < $OrderLine->Quantity and ($OrderLine->MBflag=='B' or $OrderLine->MBflag=='M')) {
+			if ($OrderLine->QOHatLoc < $OrderLine->Quantity and ($OrderLine->MBflag == 'B' or $OrderLine->MBflag == 'M')) {
 				/*There is a stock deficiency in the stock location selected */
 				$RowStarter = '<tr style="background-color:#EEAABB">'; //rows show red where stock deficiency
 			} //$OrderLine->QOHatLoc < $OrderLine->Quantity AND ($OrderLine->MBflag == 'B' OR $OrderLine->MBflag == 'M')
 			elseif ($k == 1) {
 				$RowStarter = '<tr class="OddTableRows">';
-				$k          = 0;
+				$k = 0;
 			} //$k == 1
 			else {
 				$RowStarter = '<tr class="EvenTableRows">';
-				$k          = 1;
+				$k = 1;
 			}
 
 			echo $RowStarter;
@@ -1492,7 +1478,7 @@ else { //dont require customer selection
 			echo '<td class="number">' . $DisplayLineTotal . '</td>';
 			$LineDueDate = $OrderLine->ItemDue;
 			if (!Is_Date($OrderLine->ItemDue)) {
-				$LineDueDate                                                                 = DateAdd(Date($_SESSION['DefaultDateFormat']), 'd', $_SESSION['Items' . $identifier]->DeliveryDays);
+				$LineDueDate = DateAdd(Date($_SESSION['DefaultDateFormat']), 'd', $_SESSION['Items' . $identifier]->DeliveryDays);
 				$_SESSION['Items' . $identifier]->LineItems[$OrderLine->LineNumber]->ItemDue = $LineDueDate;
 			} //!Is_Date($OrderLine->ItemDue)
 
@@ -1508,7 +1494,7 @@ else { //dont require customer selection
 				echo '<tr><td><input type="hidden" name="Narrative" value="" /></td></tr>';
 			}
 
-			$_SESSION['Items' . $identifier]->total       = $_SESSION['Items' . $identifier]->total + $LineTotal;
+			$_SESSION['Items' . $identifier]->total = $_SESSION['Items' . $identifier]->total + $LineTotal;
 			$_SESSION['Items' . $identifier]->totalVolume = $_SESSION['Items' . $identifier]->totalVolume + $OrderLine->Quantity * $OrderLine->Volume;
 			$_SESSION['Items' . $identifier]->totalWeight = $_SESSION['Items' . $identifier]->totalWeight + $OrderLine->Quantity * $OrderLine->Weight;
 
@@ -1545,12 +1531,11 @@ else { //dont require customer selection
 				<input type="submit" name="DeliveryDetails" value="' . _('Enter Delivery Details and Confirm Order') . '" />
 				</div>
 				<br />';
-	} # end of if lines
+	} // end of if lines
 
-/* Now show the stock item selection search stuff below */
+	/* Now show the stock item selection search stuff below */
 
-	 if ((!isset($_POST['QuickEntry'])
-			and !isset($_POST['SelectAsset']))){
+	if ((!isset($_POST['QuickEntry']) and !isset($_POST['SelectAsset']))) {
 		echo '<input type="hidden" name="PartSearch" value="' . _('Yes Please') . '" />';
 
 		if ($_SESSION['FrequentlyOrderedItems'] > 0) { //show the Frequently Order Items selection where configured to do so
@@ -1598,13 +1583,13 @@ else { //dont require customer selection
 				// This code needs sorting out, but until then :
 				$ImageSource = _('No Image');
 				// Find the quantity in stock at location
-				$QOHSQL      = "SELECT sum(locstock.quantity) AS qoh
+				$QOHSQL = "SELECT sum(locstock.quantity) AS qoh
 							FROM locstock
 							WHERE stockid='" . $myrow['stockid'] . "'
 							AND loccode = '" . $_SESSION['Items' . $identifier]->Location . "'";
-				$QOHResult   = DB_query($QOHSQL, $db);
-				$QOHRow      = DB_fetch_array($QOHResult);
-				$QOH         = $QOHRow['qoh'];
+				$QOHResult = DB_query($QOHSQL, $db);
+				$QOHRow = DB_fetch_array($QOHResult);
+				$QOH = $QOHRow['qoh'];
 
 				// Find the quantity on outstanding sales orders
 				$sql = "SELECT SUM(salesorderdetails.quantity-salesorderdetails.qtyinvoiced) AS dem
@@ -1615,7 +1600,7 @@ else { //dont require customer selection
 						AND salesorders.quotation=0
 						AND salesorderdetails.stkcode='" . $myrow['stockid'] . "'";
 
-				$ErrMsg       = _('The demand for this product from') . ' ' . $_SESSION['Items' . $identifier]->Location . ' ' . _('cannot be retrieved because');
+				$ErrMsg = _('The demand for this product from') . ' ' . $_SESSION['Items' . $identifier]->Location . ' ' . _('cannot be retrieved because');
 				$DemandResult = DB_query($sql, $db, $ErrMsg);
 
 				$DemandRow = DB_fetch_row($DemandResult);
@@ -1634,7 +1619,7 @@ else { //dont require customer selection
 						AND purchorders.status<> 'Cancelled'
 						AND purchorderdetails.itemcode='" . $myrow['stockid'] . "'";
 
-				$ErrMsg      = _('The order details for this product cannot be retrieved because');
+				$ErrMsg = _('The order details for this product cannot be retrieved because');
 				$PurchResult = DB_query($sql, $db, $ErrMsg);
 
 				$PurchRow = DB_fetch_row($PurchResult);
@@ -1646,12 +1631,12 @@ else { //dont require customer selection
 				}
 
 				// Find the quantity on works orders
-				$sql      = "SELECT SUM(woitems.qtyreqd - woitems.qtyrecd) AS qwo
+				$sql = "SELECT SUM(woitems.qtyreqd - woitems.qtyrecd) AS qwo
 						   FROM woitems
 						   WHERE stockid='" . $myrow['stockid'] . "'";
-				$ErrMsg   = _('The order details for this product cannot be retrieved because');
+				$ErrMsg = _('The order details for this product cannot be retrieved because');
 				$WoResult = DB_query($sql, $db, $ErrMsg);
-				$WoRow    = DB_fetch_row($WoResult);
+				$WoRow = DB_fetch_row($WoResult);
 				if ($WoRow[0] != null) {
 					$WoQty = $WoRow[0];
 				} //$WoRow[0] != null
@@ -1687,9 +1672,9 @@ else { //dont require customer selection
 				} //$j == 1
 				$i++;
 				$j++;
-				#end of page full new headings if
+				//end of page full new headings if
 			} //$myrow = DB_fetch_array($result2)
-			#end of while loop for Frequently Ordered Items
+			//end of while loop for Frequently Ordered Items
 			echo '<td style="text-align:center" colspan="8"><input type="hidden" name="SelectingOrderItems" value="1" /><input tabindex="' . strval($j + 8) . '" type="submit" value="' . _('Add to Sales Order') . '" /></td></tr>';
 			echo '</table>';
 		} //end of if Frequently Ordered Items > 0
@@ -1701,7 +1686,7 @@ else { //dont require customer selection
 				<tr>
 					<td><b>' . _('Select a Stock Category') . ': </b><select tabindex="1" name="StockCat">';
 
-		if (!isset($_POST['StockCat']) or $_POST['StockCat']=='All'){
+		if (!isset($_POST['StockCat']) or $_POST['StockCat'] == 'All') {
 			echo '<option selected="selected" value="All">' . _('All') . '</option>';
 			$_POST['StockCat'] = 'All';
 		} //!isset($_POST['StockCat']) OR $_POST['StockCat'] == 'All'
@@ -1726,17 +1711,17 @@ else { //dont require customer selection
 
 		echo '</select></td>
 
-			<td><b>' . _('Enter partial Description') . ':</b><input tabindex="2" type="text" name="Keywords" size="20" maxlength="25" value="' ;
+			<td><b>' . _('Enter partial Description') . ':</b><input tabindex="2" type="text" name="Keywords" size="20" maxlength="25" value="';
 
 		if (isset($_POST['Keywords'])) {
-			 echo $_POST['Keywords'] ;
-		}
+			echo $_POST['Keywords'];
+		} //isset($_POST['Keywords'])
 		echo '" /></td>';
 
-		echo '<td align="right"><b>' . _('OR') .  ' ' . _('Enter extract of the Stock Code') . ':</b><input tabindex="3" type="text" name="StockCode" size="15" maxlength="18" value="';
+		echo '<td align="right"><b>' . _('OR') . ' ' . _('Enter extract of the Stock Code') . ':</b><input tabindex="3" type="text" name="StockCode" size="15" maxlength="18" value="';
 		if (isset($_POST['StockCode'])) {
-			echo  $_POST['StockCode'];
-		}
+			echo $_POST['StockCode'];
+		} //isset($_POST['StockCode'])
 		echo '" /></td>
 			</tr>';
 
@@ -1777,20 +1762,20 @@ else { //dont require customer selection
 					   		</tr>';
 			echo $TableHeader;
 			$ImageSource = _('No Image');
-			$i           = 0;
-			$k           = 0; //row colour counter
+			$i = 0;
+			$k = 0; //row colour counter
 
 			while ($myrow = DB_fetch_array($SearchResult)) {
 				// Find the quantity in stock at location
-				$QOHSQL    = "SELECT quantity AS qoh,
+				$QOHSQL = "SELECT quantity AS qoh,
 									stockmaster.decimalplaces
 							   FROM locstock INNER JOIN stockmaster
 							   ON locstock.stockid = stockmaster.stockid
 							   WHERE locstock.stockid='" . $myrow['stockid'] . "' AND
 							   loccode = '" . $_SESSION['Items' . $identifier]->Location . "'";
 				$QOHResult = DB_query($QOHSQL, $db);
-				$QOHRow    = DB_fetch_array($QOHResult);
-				$QOH       = $QOHRow['qoh'];
+				$QOHRow = DB_fetch_array($QOHResult);
+				$QOH = $QOHRow['qoh'];
 
 				// Find the quantity on outstanding sales orders
 				$sql = "SELECT SUM(salesorderdetails.quantity-salesorderdetails.qtyinvoiced) AS dem
@@ -1801,7 +1786,7 @@ else { //dont require customer selection
 						 AND salesorders.quotation=0
 						 AND salesorderdetails.stkcode='" . $myrow['stockid'] . "'";
 
-				$ErrMsg       = _('The demand for this product from') . ' ' . $_SESSION['Items' . $identifier]->Location . ' ' . _('cannot be retrieved because');
+				$ErrMsg = _('The demand for this product from') . ' ' . $_SESSION['Items' . $identifier]->Location . ' ' . _('cannot be retrieved because');
 				$DemandResult = DB_query($sql, $db, $ErrMsg);
 
 				$DemandRow = DB_fetch_row($DemandResult);
@@ -1823,7 +1808,7 @@ else { //dont require customer selection
 						 AND purchorders.status<>'Completed'
 						AND purchorderdetails.itemcode='" . $myrow['stockid'] . "'";
 
-				$ErrMsg      = _('The order details for this product cannot be retrieved because');
+				$ErrMsg = _('The order details for this product cannot be retrieved because');
 				$PurchResult = DB_query($sql, $db, $ErrMsg);
 
 				$PurchRow = DB_fetch_row($PurchResult);
@@ -1835,10 +1820,10 @@ else { //dont require customer selection
 				}
 
 				// Find the quantity on works orders
-				$sql      = "SELECT SUM(woitems.qtyreqd - woitems.qtyrecd) AS dedm
+				$sql = "SELECT SUM(woitems.qtyreqd - woitems.qtyrecd) AS dedm
 					   FROM woitems
 					   WHERE stockid='" . $myrow['stockid'] . "'";
-				$ErrMsg   = _('The order details for this product cannot be retrieved because');
+				$ErrMsg = _('The order details for this product cannot be retrieved because');
 				$WoResult = DB_query($sql, $db, $ErrMsg);
 
 				$WoRow = DB_fetch_row($WoResult);
@@ -1857,7 +1842,7 @@ else { //dont require customer selection
 					echo '<tr class="OddTableRows">';
 					$k = 1;
 				}
-				$OnOrder   = $PurchQty + $WoQty;
+				$OnOrder = $PurchQty + $WoQty;
 				$Available = $QOH - $DemandQty + $OnOrder;
 
 				printf('<td>%s</td>
@@ -1876,9 +1861,9 @@ else { //dont require customer selection
 					$jsCall = '<script  type="text/javascript">if (document.SelectParts) {defaultControl(document.SelectParts.itm' . $myrow['stockid'] . ');}</script>';
 				} //$j == 1
 				$j++;
-				#end of page full new headings if
+				//end of page full new headings if
 			} //$myrow = DB_fetch_array($SearchResult)
-			#end of while loop
+			//end of while loop
 			echo '<tr><td><input type="hidden" name="PreviousList" value="' . strval($Offset - 1) . '" /><input tabindex="' . strval($j + 7) . '" type="submit" name="Previous" value="' . _('Previous') . '" /></td>';
 			echo '<td style="text-align:center" colspan="6"><input type="hidden" name="SelectingOrderItems" value="1" /><input tabindex="' . strval($j + 8) . '" type="submit" value="' . _('Add to Sales Order') . '" /></td>';
 			echo '<td><input type="hidden" name="NextList" value="' . strval($Offset + 1) . '" /><input tabindex="' . strval($j + 9) . '" type="submit" name="Next" value="' . _('Next') . '" /></td></tr>';
@@ -1886,7 +1871,7 @@ else { //dont require customer selection
 				  </div>';
 			echo $jsCall;
 
-		} #end if SearchResults to show
+		} //end if SearchResults to show
 	} //(!isset($_POST['QuickEntry']) AND !isset($_POST['SelectAsset']))
 
 	/*end of PartSearch options to be displayed */
@@ -1915,18 +1900,18 @@ else { //dont require customer selection
 						<td><input type="text" name="qty_' . $i . '" size="6" maxlength="6" /></td>
 						<td><input type="text" class="date" name="itemdue_' . $i . '" size="25" maxlength="25"
 
-						alt="'.$_SESSION['DefaultDateFormat'].'" value="' . $DefaultDeliveryDate . '" /></td></tr>';
-	   		}
-			echo '</table><script  type="text/javascript">if (document.SelectParts) {defaultControl(document.SelectParts.part_1);}</script>';
+						alt="' . $_SESSION['DefaultDateFormat'] . '" value="' . $DefaultDeliveryDate . '" /></td></tr>';
+		} //$i = 1; $i <= $_SESSION['QuickEntries']; $i++
+		echo '</table><script  type="text/javascript">if (document.SelectParts) {defaultControl(document.SelectParts.part_1);}</script>';
 
-		 	echo '<br /><div class="centre"><input type="submit" name="QuickEntry" value="' . _('Quick Entry') . '" />
+		echo '<br /><div class="centre"><input type="submit" name="QuickEntry" value="' . _('Quick Entry') . '" />
 					 <input type="submit" name="PartSearch" value="' . _('Search Parts') . '" /></div>';
 
-			echo '</div>
+		echo '</div>
 				  </form>';
-	  	} elseif (isset($_POST['SelectAsset'])){
-
-			echo '<div class="page_help_text"><b>' . _('Use this screen to select an asset to dispose of to this customer') . '</b></div><br />
+	} //isset($_POST['QuickEntry'])
+		elseif (isset($_POST['SelectAsset'])) {
+		echo '<div class="page_help_text"><b>' . _('Use this screen to select an asset to dispose of to this customer') . '</b></div><br />
 		 			<table border="1">';
 		/*do not display colum unless customer requires po line number by sales order line*/
 		if ($_SESSION['Items' . $identifier]->DefaultPOLine == 1) {
@@ -1945,20 +1930,19 @@ else { //dont require customer selection
 					 <input type="submit" name="PartSearch" value="' . _('Search Parts') . '" /></div>';
 
 
-			echo '</div></form>';
+		echo '</div></form>';
 
 	} //end of if it is a Quick Entry screen/part search or asset selection form to display
 
 
-		if ($_SESSION['Items'.$identifier]->ItemsOrdered >=1){
-			echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?identifier='.$identifier .
-				'" method="post" name="deleteform">';
-					echo '<div>';
-			echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-	  		echo '<br /><div class="centre"><input type="submit" name="CancelOrder" value="' . _('Cancel Whole Order') . '" onclick="return confirm(\'' . _('Are you sure you wish to cancel this entire order?') . '\');" /></div></form>';
-		}
-	}#end of else not selecting a customer
-s
+	if ($_SESSION['Items' . $identifier]->ItemsOrdered >= 1) {
+		echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $identifier . '" method="post" name="deleteform">';
+		echo '<div>';
+		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
+		echo '<br /><div class="centre"><input type="submit" name="CancelOrder" value="' . _('Cancel Whole Order') . '" onclick="return confirm(\'' . _('Are you sure you wish to cancel this entire order?') . '\');" /></div></form>';
+	} //$_SESSION['Items' . $identifier]->ItemsOrdered >= 1
+} //end of else not selecting a customer
+
 if (isset($_GET['NewOrder']) and $_GET['NewOrder'] != '') {
 	echo '<script  type="text/javascript">if (document.SelectParts) {defaultControl(document.SelectCustomer.CustKeywords);}</script>';
 } //isset($_GET['NewOrder']) and $_GET['NewOrder'] != ''

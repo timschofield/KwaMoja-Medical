@@ -74,9 +74,12 @@ if (!isset($_GET['ViewTopic']))
 
 foreach ($TOC_Array['TableOfContents'] as $Name=>$FullName){
 	$PostName = 'Select' . $Name;
-	if (($_GET['ViewTopic'] == $Name)  or (isset($_POST[$PostName])))
-	{
-		$ManualPage = 'Manual'.$Name.'.html';
+	if (($_GET['ViewTopic'] == $Name)  or (isset($_POST[$PostName]))) {
+		if ($Name=='APIFunctions') {
+			$ManualPage = 'Manual'.$Name.'.php';
+		} else {
+			$ManualPage = 'Manual'.$Name.'.html';
+		}
 		if (file_exists($ManualPage))
 		{
 		  include($ManualPage);

@@ -43,7 +43,7 @@ $CompanyPath = $PathToRoot. '/companies';
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <title>KwaMoja Installation Wizard</title>
-<link href="../css/gel/default.css" rel="stylesheet" type="text/css" />
+<link href="../css/jelly/default.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript">
 
 function change_os(type) {
@@ -59,8 +59,8 @@ function change_os(type) {
 }
 function change_data(type) {
 	if(type == 'demo') {
-		document.getElementById('db_file_demo').checked = true;
-		document.getElementById('db_file_new').checked = false;
+		document.getElementById('db_file_demo').checked = false;
+		document.getElementById('db_file_new').checked = true;
 
 	} else if(type == 'new') {
 		document.getElementById('db_file_demo').checked = false;
@@ -236,7 +236,33 @@ function change_data(type) {
 			<td>&nbsp;</td>
 		</tr>
 		<tr>
-			<td style="color: #666666;">Username:</td>
+			<td style="color: #666666;">MySQL Database Name:</td>
+			<td>
+				<input type="text" tabindex="44" name="database_name" size="20" value="<?php
+					if(isset($_SESSION['database_name'])) {
+						echo $_SESSION['database_name'];
+					 } else {
+						echo 'weberpdemo';
+					 }
+				 ?>" />
+			</td>
+			<td>(Excluding prefix if applicable.)</td>
+		</tr>
+		<tr>
+			<td style="color: #666666;">Database Prefix? </td>
+			<td>
+				<input type="text" tabindex="44" name="db_prefix" size="20" value="<?php
+					if(isset($_SESSION['db_prefix'])) {
+						echo $_SESSION['db_prefix'];
+					 } else {
+						echo '';
+					 }
+				 ?>" />
+			</td>
+			<td>(Some shared hosting environments add a prefix automatically; use only if this applies to you. Example: 'prefix_')</td>
+		</tr>
+		 <tr>
+			<td style="color: #666666;">MySQL Username:</td>
 			<td>
 				<input type="text" tabindex="44" name="database_username" size="20" value="<?php
 					if(isset($_SESSION['database_username'])) {
@@ -246,6 +272,7 @@ function change_data(type) {
 					 }
 				 ?>" />
 			</td>
+			<td>(User must already exist, with db access!)</td>
 		</tr>
 		<tr>
 			<td style="color: #666666;">Password:</td>

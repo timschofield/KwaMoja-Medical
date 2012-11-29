@@ -61,7 +61,8 @@ function set_error($message) {
 			$_SESSION['database_username'] = Replace_Dodgy_Characters($_POST['database_username']);
 			$_SESSION['database_password'] = $_POST['database_password'];
 			$_SESSION['install_tables'] = $_POST['install_tables'];
-			$_SESSION['database_name'] = Replace_Dodgy_Characters($_POST['company_name']);
+			$_SESSION['database_name'] = Replace_Dodgy_Characters($_POST['database_name']);
+			$_SESSION['db_prefix'] = Replace_Dodgy_Characters($_POST['db_prefix']);
 			$_SESSION['db_file'] = $_POST['DemoData'] ? 'demo' : 'not';
 			$_SESSION['timezone'] = $_POST['timezone'];
 			$_SESSION['company_name'] = Replace_Dodgy_Characters($_POST['company_name']);
@@ -119,7 +120,6 @@ if (isset($_POST['path_to_root'])) {
 } else {
 	$path_to_root = '..';
 }
-
 // Begin check to see if form was even submitted
 // Set error if no post vars found
 
@@ -186,7 +186,13 @@ if (!isset($_POST['database_password'])) {
 	set_error('Please enter a database password');
 }
 // Check if user has entered a database name
-if (!isset($_POST['company_name']) or $_POST['company_name'] == '') {
+if (!isset($_POST['database_name']) || $_POST['database_name'] == '') {
+	set_error('Please enter a database name');
+} else {
+	$_POST['database_name'] = Replace_Dodgy_Characters($_POST['database_name']);
+}
+// Check if user has entered a company name
+f (!isset($_POST['company_name']) or $_POST['company_name'] == '') {
 	set_error('Please enter a company name');
 } else {
 	$_POST['company_name'] = Replace_Dodgy_Characters($_POST['company_name']);
@@ -230,7 +236,7 @@ $config_filename = $path_to_root . '/config.php';
 // only make a new company directory structure if we are kicking off a new company
 // no need to bother if just setting up the demo data
 $CompanyDir = $path_to_root . '/companies/' . $_POST['company_name'];
-if ($_POST['DemoData']==false){
+if (($_POST['DemoData']==false) or ($_POST['database_name'] != "weberpdemo")){  // Fix? 'Use demo data' when used in conjunction with a new company could be misunderstood. Seems to make more sense to skip the new creation data only if this is set and the name is also that of the default demo. May want to simply check for folder existence.
 	$Result = mkdir($CompanyDir);
 	$Result = mkdir($CompanyDir . '/part_pics');
 	$Result = mkdir($CompanyDir . '/EDI_Incoming_Orders');

@@ -26,7 +26,7 @@ if (!isset($_GET['OrderNo']) and !isset($_POST['OrderNo'])) {
 				<br />';
 	include('includes/footer.inc');
 	exit();
-	
+
 	echo '<div class="centre"><br /><br /><br />' . _('This page must be called with a purchase order number to print');
 	echo '<br /><a href="' . $rootpath . '/index.php">' . _('Back to the menu') . '</a></div>';
 	exit;
@@ -131,29 +131,29 @@ if (isset($OrderNo) and $OrderNo != '' and $OrderNo > 0 and $OrderNo != 'Preview
 	} //DB_num_rows($result) == 0
 	elseif (DB_num_rows($result) == 1) {
 		/*There is only one order header returned  (as it should be!)*/
-		
+
 		$POHeader = DB_fetch_array($result);
-		
+
 		if ($POHeader['status'] != 'Authorised' and $POHeader['status'] != 'Printed') {
 			include('includes/header.inc');
 			prnMsg(_('Purchase orders can only be printed once they have been authorised') . '. ' . _('This order is currently at a status of') . ' ' . _($POHeader['status']), 'warn');
 			include('includes/footer.inc');
 			exit;
 		} //$POHeader['status'] != 'Authorised' and $POHeader['status'] != 'Printed'
-		
+
 		if ($ViewingOnly == 0) {
 			if ($POHeader['allowprint'] == 0) {
 				$title = _('Purchase Order Already Printed');
 				include('includes/header.inc');
 				echo '<p>';
 				prnMsg(_('Purchase Order Number') . ' ' . $OrderNo . ' ' . _('has previously been printed') . '. ' . _('It was printed on') . ' ' . ConvertSQLDate($POHeader['dateprinted']) . '<br />' . _('To re-print the order it must be modified to allow a reprint') . '<br />' . _('This check is there to ensure that duplicate purchase orders are not sent to the supplier resulting in several deliveries of the same supplies'), 'warn');
-				
+
 				echo '<div class="centre">
  					<li><a href="' . $rootpath . '/PO_PDFPurchOrder.php?OrderNo=' . $OrderNo . '&ViewingOnly=1">' . _('Print This Order as a Copy') . '</a>
  					<li><a href="' . $rootpath . '/PO_Header.php?ModifyOrderNumber=' . $OrderNo . '">' . _('Modify the order to allow a real reprint') . '</a>
 					<li><a href="' . $rootpath . '/PO_SelectPurchOrder.php">' . _('Select another order') . '</a>
 					<li><a href="' . $rootpath . '/index.php">' . _('Back to the menu') . '</a></div>';
-				
+
 				include('includes/footer.inc');
 				exit;
 			} //AllowedToPrint
@@ -161,7 +161,7 @@ if (isset($OrderNo) and $OrderNo != '' and $OrderNo > 0 and $OrderNo != 'Preview
 	} // 1 valid record
 } //if there is a valid order number
 else if ($OrderNo == 'Preview') { // We are previewing the order
-	
+
 	/* Fill the order header details with dummy data */
 	$POHeader['supplierno'] = str_pad('', 10, 'x');
 	$POHeader['suppname'] = str_pad('', 40, 'x');
@@ -259,9 +259,9 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 				$DisplayLineTotal = '----';
 			}
 			$Desc = $POLine['suppliers_partno'] . " " . $POLine['itemdescription'];
-			
+
 			$OrderTotal += ($POLine['unitprice'] * $POLine['quantityord']);
-			
+
 			$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column1->x, $YPos, $FormDesign->Data->Column1->Length, $FormDesign->Data->Column1->FontSize, $POLine['itemcode'], 'left');
 			$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column2->x, $YPos, $FormDesign->Data->Column2->Length, $FormDesign->Data->Column2->FontSize, $Desc, 'left');
 			while (mb_strlen($LeftOvers) > 1) {
@@ -289,7 +289,7 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 				$YPos = $Page_Height - $FormDesign->Data->y;
 				include('includes/PO_PDFOrderPageHeader.inc');
 			} //end if need a new page headed up
-			
+
 			/*increment a line down for the next line item */
 			$YPos -= $line_height;
 			/* If we are previewing we want to stop showing order
@@ -303,7 +303,7 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 			include('includes/PO_PDFOrderPageHeader.inc');
 		} //end if need a new page headed up
 		if ($_POST['ShowAmounts'] == 'Yes') {
-			$DisplayOrderTotal = locale_number_format($OrdendrTotal, $POHeader['currdecimalplaces']);
+			$DisplayOrderTotal = locale_number_format($OrderTotal, $POHeader['currdecimalplaces']);
 		} //$_POST['ShowAmounts'] == 'Yes'
 		else {
 			$DisplayOrderTotal = '----';
@@ -311,9 +311,9 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 		$pdf->addText($FormDesign->OrderTotalCaption->x, $Page_Height - $FormDesign->OrderTotalCaption->y, $FormDesign->OrderTotalCaption->FontSize, _('Order Total - excl tax') . ' ' . $POHeader['currcode']);
 		$LeftOvers = $pdf->addTextWrap($FormDesign->OrderTotal->x, $Page_Height - $FormDesign->OrderTotal->y, $FormDesign->OrderTotal->Length, $FormDesign->OrderTotal->FontSize, $DisplayOrderTotal, 'right');
 	} //$OrderNo == 'Preview' or DB_num_rows($result) > 0
-	
+
 	/*end if there are order details to show on the order - or its a preview*/
-	
+
 	$Success = 1; //assume the best and email goes - has to be set to 1 to allow update status
 	if ($MakePDFThenDisplayIt) {
 		$pdf->OutputD($_SESSION['DatabaseName'] . '_PurchaseOrder_' . $OrderNo . '_' . date('Y-m-d') . '.pdf');
@@ -321,7 +321,7 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 	} //$MakePDFThenDisplayIt
 	else {
 		/* must be MakingPDF to email it */
-		
+
 		$PdfFileName = $_SESSION['DatabaseName'] . '_PurchaseOrder_' . $OrderNo . '_' . date('Y-m-d') . '.pdf';
 		$pdf->Output($_SESSION['reports_dir'] . '/' . $PdfFileName, 'F');
 		$pdf->__destruct();
@@ -340,7 +340,7 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 			include('includes/header.inc');
 			echo '<div class="centre"><br /><br /><br />';
 			prnMsg(_('Purchase Order') . ' ' . $OrderNo . ' ' . _('has been emailed to') . ' ' . $_POST['EmailTo'] . ' ' . _('as directed'), 'success');
-			
+
 		} //$Success == 1
 		else { //email failed
 			$title = _('Email a Purchase Order');
@@ -351,7 +351,7 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 	}
 	if ($ViewingOnly == 0 and $Success == 1) {
 		$StatusComment = date($_SESSION['DefaultDateFormat']) . ' - ' . _('Printed by') . ' <a href="mailto:' . $_SESSION['UserEmail'] . '">' . $_SESSION['UsersRealName'] . '</a><br />' . html_entity_decode($POHeader['stat_comment'], ENT_QUOTES, 'UTF-8');
-		
+
 		$sql = "UPDATE purchorders	SET	allowprint =  0,
 										dateprinted  = '" . Date('Y-m-d') . "',
 										status = 'Printed',
@@ -378,7 +378,7 @@ else {
          <tr>
              <td>' . _('Print or Email the Order') . '</td>
              <td><select name="PrintOrEmail">';
-	
+
 	if (!isset($_POST['PrintOrEmail'])) {
 		$_POST['PrintOrEmail'] = 'Print';
 	} //!isset($_POST['PrintOrEmail'])
@@ -447,7 +447,7 @@ else {
          </div>
          </div>
          </form>';
-	
+
 	include('includes/footer.inc');
 }
 ?>

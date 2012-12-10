@@ -10,9 +10,9 @@ $title = _('Journal Entry');
 include('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');
 
-if (isset($_GET['NewJournal']) 
-	AND $_GET['NewJournal'] == 'Yes' 
-	AND isset($_SESSION['JournalDetail'])){
+if (isset($_GET['NewJournal'])
+	and $_GET['NewJournal'] == 'Yes'
+	and isset($_SESSION['JournalDetail'])){
 
 	unset($_SESSION['JournalDetail']->GLEntries);
 	unset($_SESSION['JournalDetail']);
@@ -48,7 +48,7 @@ if (isset($_POST['JournalType'])){
 	$_SESSION['JournalDetail']->JournalType = $_POST['JournalType'];
 }
 
-if (isset($_POST['CommitBatch']) AND $_POST['CommitBatch']==_('Accept and Process Journal')){
+if (isset($_POST['CommitBatch']) and $_POST['CommitBatch']==_('Accept and Process Journal')){
 
  /* once the GL analysis of the journal is entered
   process all the data in the session cookie into the DB
@@ -57,7 +57,7 @@ if (isset($_POST['CommitBatch']) AND $_POST['CommitBatch']==_('Accept and Proces
 
 	$PeriodNo = GetPeriod($_SESSION['JournalDetail']->JnlDate,$db);
 
-     /*Start a transaction to do the whole lot inside */
+	 /*Start a transaction to do the whole lot inside */
 	$result = DB_Txn_Begin($db);
 
 	$TransNo = GetNextTransNo( 0, $db);
@@ -92,7 +92,7 @@ if (isset($_POST['CommitBatch']) AND $_POST['CommitBatch']==_('Accept and Proces
 										account,
 										narrative,
 										amount,
-										tag) 
+										tag)
 					VALUES ('0',
 						'" . $TransNo . "',
 						'" . FormatDateForSQL($_SESSION['JournalDetail']->JnlDate) . "',
@@ -133,7 +133,7 @@ if (isset($_POST['CommitBatch']) AND $_POST['CommitBatch']==_('Accept and Proces
 	/* User hit delete the line from the journal */
 	$_SESSION['JournalDetail']->Remove_GLEntry($_GET['Delete']);
 
-} elseif (isset($_POST['Process']) AND $_POST['Process']==_('Accept')){ //user hit submit a new GL Analysis line into the journal
+} elseif (isset($_POST['Process']) and $_POST['Process']==_('Accept')){ //user hit submit a new GL Analysis line into the journal
 	if ($_POST['GLCode']!='') {
 		$extract = explode(' - ',$_POST['GLCode']);
 		$_POST['GLCode'] = $extract[0];
@@ -147,11 +147,11 @@ if (isset($_POST['CommitBatch']) AND $_POST['CommitBatch']==_('Accept and Proces
 		// If a manual code was entered need to check it exists and isnt a bank account
 		$AllowThisPosting = true; //by default
 		if ($_SESSION['ProhibitJournalsToControlAccounts'] == 1){
-			if ($_SESSION['CompanyRecord']['gllink_debtors'] == '1' AND $_POST['GLManualCode'] == $_SESSION['CompanyRecord']['debtorsact']){
+			if ($_SESSION['CompanyRecord']['gllink_debtors'] == '1' and $_POST['GLManualCode'] == $_SESSION['CompanyRecord']['debtorsact']){
 				prnMsg(_('GL Journals involving the debtors control account cannot be entered. The general ledger debtors ledger (AR) integration is enabled so control accounts are automatically maintained by KwaMoja. This setting can be disabled in System Configuration'),'warn');
 				$AllowThisPosting = false;
 			}
-			if ($_SESSION['CompanyRecord']['gllink_creditors'] == '1' AND $_POST['GLManualCode'] == $_SESSION['CompanyRecord']['creditorsact']){
+			if ($_SESSION['CompanyRecord']['gllink_creditors'] == '1' and $_POST['GLManualCode'] == $_SESSION['CompanyRecord']['creditorsact']){
 				prnMsg(_('GL Journals involving the creditors control account cannot be entered. The general ledger creditors ledger (AP) integration is enabled so control accounts are automatically maintained by KwaMoja. This setting can be disabled in System Configuration'),'warn');
 				$AllowThisPosting = false;
 			}
@@ -172,25 +172,25 @@ if (isset($_POST['CommitBatch']) AND $_POST['CommitBatch']==_('Accept and Proces
 				unset($_POST['GLManualCode']);
 			} else {
 				$myrow = DB_fetch_array($Result);
-				$_SESSION['JournalDetail']->add_to_glanalysis(filter_number_format($_POST['GLAmount']), 
-															$_POST['GLNarrative'], 
-															$_POST['GLManualCode'], 
-															$myrow['accountname'], 
+				$_SESSION['JournalDetail']->add_to_glanalysis(filter_number_format($_POST['GLAmount']),
+															$_POST['GLNarrative'],
+															$_POST['GLManualCode'],
+															$myrow['accountname'],
 															$_POST['tag']);
 			}
 		}
 	} else {
 		$AllowThisPosting =true; //by default
 		if ($_SESSION['ProhibitJournalsToControlAccounts'] == 1){
-			if ($_SESSION['CompanyRecord']['gllink_debtors'] == '1' 
-				AND $_POST['GLCode'] == $_SESSION['CompanyRecord']['debtorsact']){
-				
+			if ($_SESSION['CompanyRecord']['gllink_debtors'] == '1'
+				and $_POST['GLCode'] == $_SESSION['CompanyRecord']['debtorsact']){
+
 				prnMsg(_('GL Journals involving the debtors control account cannot be entered. The general ledger debtors ledger (AR) integration is enabled so control accounts are automatically maintained by KwaMoja. This setting can be disabled in System Configuration'),'warn');
 				$AllowThisPosting = false;
 			}
-			if ($_SESSION['CompanyRecord']['gllink_creditors'] == '1' 
-				AND $_POST['GLCode'] == $_SESSION['CompanyRecord']['creditorsact']){
-				
+			if ($_SESSION['CompanyRecord']['gllink_creditors'] == '1'
+				and $_POST['GLCode'] == $_SESSION['CompanyRecord']['creditorsact']){
+
 				prnMsg(_('GL Journals involving the creditors control account cannot be entered. The general ledger creditors ledger (AP) integration is enabled so control accounts are automatically maintained by KwaMoja. This setting can be disabled in System Configuration'),'warn');
 				$AllowThisPosting = false;
 			}
@@ -212,10 +212,10 @@ if (isset($_POST['CommitBatch']) AND $_POST['CommitBatch']==_('Accept and Proces
 			$SQL = "SELECT accountname FROM chartmaster WHERE accountcode='" . $_POST['GLCode'] . "'";
 			$Result=DB_query($SQL,$db);
 			$myrow=DB_fetch_array($Result);
-			$_SESSION['JournalDetail']->add_to_glanalysis(filter_number_format($_POST['GLAmount']), 
-															$_POST['GLNarrative'], 
-															$_POST['GLCode'], 
-															$myrow['accountname'], 
+			$_SESSION['JournalDetail']->add_to_glanalysis(filter_number_format($_POST['GLAmount']),
+															$_POST['GLNarrative'],
+															$_POST['GLCode'],
+															$myrow['accountname'],
 															$_POST['tag']);
 		}
 	}
@@ -255,8 +255,8 @@ if (!Is_Date($_SESSION['JournalDetail']->JnlDate)){
 }
 
 echo '<table>
-        <tr>
-        <td colspan="5"><table class="selection">
+		<tr>
+		<td colspan="5"><table class="selection">
 						<tr>
 							<td>'._('Date to Process Journal') . ':</td>
 							<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="JournalProcessDate" maxlength="10" size="11" value="' . $_SESSION['JournalDetail']->JnlDate . '" /></td>
@@ -442,11 +442,11 @@ if ($DebitTotal>$CreditTotal) {
 	echo ' ' . _('Debit') . '</td></tr>';
 }
 echo '</table>
-    </td>
-    </tr>
-    </table>';
+	</td>
+	</tr>
+	</table>';
 
-if (abs($_SESSION['JournalDetail']->JournalTotal)<0.001 AND $_SESSION['JournalDetail']->GLItemCounter > 0){
+if (abs($_SESSION['JournalDetail']->JournalTotal)<0.001 and $_SESSION['JournalDetail']->GLItemCounter > 0){
 	echo '<br />
 			<br />
 			<div class="centre">

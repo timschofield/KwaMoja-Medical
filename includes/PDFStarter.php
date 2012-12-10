@@ -167,18 +167,19 @@ switch ($PaperSize) {
 //	$pdf = new Cpdf($PageSize);
 $pdf = new Cpdf($DocumentOrientation, 'pt', $DocumentPaper);
 
-$pdf->addInfo('Creator', 'KwaMoja http://www.kwamoja.org');
+$pdf->addInfo('Creator', 'KwaMoja http://www.kwamoja.com');
 $pdf->addInfo('Author', 'KwaMoja ' . $Version);
 
 
 /* Javier: I have brought this piece from the pdf class constructor to get it closer to the admin/user,
 	I corrected it to match TCPDF, but it still needs check, after which,
 	I think it should be moved to each report to provide flexible Document Header and Margins in a per-report basis. */
- 	$pdf->SetAutoPageBreak(true, 0);	// Javier: needs check.
+
 	$pdf->SetPrintHeader(false);	// Javier: I added this must be called before Add Page
+	$pdf->setAutoPageBreak(0);
+	$pdf->setPrintFooter(false);
 	$pdf->AddPage();
-//	$this->SetLineWidth(1); 	   Javier: It was ok for FPDF but now is too gross with TCPDF. TCPDF defaults to 0'57 pt (0'2 mm) which is ok.
-	$pdf->cMargin = 0;		// Javier: needs check.
+	$pdf->cMargin = 0;
 /* END Brought from class.pdf.php constructor */
 
 ?>

@@ -29,7 +29,7 @@ if (isset($_GET['StockID'])){ //the page was called for the first time - get var
 	$Serialised = $_POST['Serialised'];
 	$NextSerialNo = $_POST['NextSerialNo'];
 }
-if (!isset($WO) OR $WO==''){
+if (!isset($WO) or $WO==''){
 	prnMsg(_('This page must to be called from the work order entry screen'),'error');
 	include('includes/footer.inc');
 	exit;
@@ -240,7 +240,7 @@ echo '<input type="hidden" name="NextSerialNo" value="' . $NextSerialNo . '" />'
 
 echo '<table class="selection">';
 
-if ($Serialised==1 AND $NextSerialNo>0){
+if ($Serialised==1 and $NextSerialNo>0){
 	echo '<tr><td>' . _('Add A Number of New Serial Numbers');
 	echo ':</td>
 		<td><input type="text" name="NumberToAdd" size="10" class="number" maxlength="10" value="1" /></td>

@@ -16,7 +16,7 @@ if (isset($_GET['SelectedRole'])){
 	$SelectedRole = $_POST['SelectedRole'];
 }
 
-if (isset($_POST['submit']) OR isset($_GET['remove']) OR isset($_GET['add']) ) {
+if (isset($_POST['submit']) or isset($_GET['remove']) or isset($_GET['add']) ) {
 
 	//initialise no input errors assumed initially before we test
 	$InputError = 0;
@@ -24,7 +24,7 @@ if (isset($_POST['submit']) OR isset($_GET['remove']) OR isset($_GET['add']) ) {
 	/* actions to take once the user has clicked the submit button
 	ie the page has called itself with some user input */
 	//first off validate inputs sensible
-	if (isset($_POST['SecRoleName']) AND mb_strlen($_POST['SecRoleName'])<4){
+	if (isset($_POST['SecRoleName']) and mb_strlen($_POST['SecRoleName'])<4){
 		$InputError = 1;
 		prnMsg(_('The role description entered must be at least 4 characters long'),'error');
 	}
@@ -48,8 +48,8 @@ if (isset($_POST['submit']) OR isset($_GET['remove']) OR isset($_GET['add']) ) {
 	} elseif (isset($SelectedRole) ) {
 		$PageTokenId = $_GET['PageToken'];
 		if( isset($_GET['add']) ) { // updating Security Groups add a page token
-			$sql = "INSERT INTO securitygroups (secroleid, 
-											tokenid) 
+			$sql = "INSERT INTO securitygroups (secroleid,
+											tokenid)
 									VALUES ('".$SelectedRole."',
 											'".$PageTokenId."' )";
 			$ErrMsg = _('The addition of the page group access failed because');
@@ -66,7 +66,7 @@ if (isset($_POST['submit']) OR isset($_GET['remove']) OR isset($_GET['add']) ) {
 		unset($_GET['PageToken']);
 	}
 	// Need to exec the query
-	if (isset($sql) AND $InputError != 1 ) {
+	if (isset($sql) and $InputError != 1 ) {
 		$result = DB_query($sql,$db,$ErrMsg);
 		if( $result ) {
 			prnMsg( $ResMsg,'success');

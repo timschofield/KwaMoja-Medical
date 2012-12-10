@@ -69,7 +69,7 @@ if ( isset($_POST['pricelist']) ) {
 		$title = _('Price List Export Problem ....');
 		include('includes/header.inc');
 		prnMsg( _('The Price List could not be retrieved by the SQL because'). ' - ' . DB_error_msg($db), 'error');
-		echo '<br /><a href="' .$rootpath .'/index.php?' . SID . '">'.  _('Back to the menu'). '</a>';
+		echo '<br /><a href="' .$rootpath .'/index.php">'.  _('Back to the menu'). '</a>';
 		if ($debug==1){
 			echo '<br />'. $SQL;
 		}
@@ -89,7 +89,7 @@ if ( isset($_POST['pricelist']) ) {
 			stripcomma('categoryid') . ',' .
 			stripcomma('categorydescription') . "\n";
 
-	While ($PriceList = DB_fetch_array($PricesResult,$db)){
+	while ($PriceList = DB_fetch_array($PricesResult,$db)){
 		$Qty = 0;
 		$sqlQty = "SELECT newqoh
 			FROM stockmoves
@@ -193,7 +193,7 @@ if ( isset($_POST['pricelist']) ) {
 			stripcomma('disabletrans') . "\n";
 
 
-	While ($CustList = DB_fetch_array($CustResult,$db)){
+	while ($CustList = DB_fetch_array($CustResult,$db)){
 
 		$CreditLimit = $CustList['creditlimit'];
 		if ( mb_strlen($CustList['braddress1']) <= 3 ) {
@@ -273,7 +273,7 @@ if ( isset($_POST['pricelist']) ) {
 			stripcomma('commissionrate2') . "\n";
 
 
-	While ($SalesManList = DB_fetch_array($SalesManResult,$db)){
+	while ($SalesManList = DB_fetch_array($SalesManResult,$db)){
 
 		$CommissionRate1 = $SalesManList['commissionrate1'];
 		$BreakPoint 	 = $SalesManList['breakpoint'];
@@ -317,7 +317,7 @@ if ( isset($_POST['pricelist']) ) {
 				  stripcomma('filename') . ','.
 				  stripcomma('url') . "\n";
 	$baseurl = 'http://'. $_SERVER['HTTP_HOST'] . dirname(htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8')) . '/' . 'getstockimg.php?automake=1&stockid=%s.png';
-	While ($ImageList = DB_fetch_array($ImageResult,$db)){
+	while ($ImageList = DB_fetch_array($ImageResult,$db)){
 		$url = sprintf($baseurl, urlencode($ImageList['stockid']));
 		$CSVContent .= (
 			stripcomma($ImageList['stockid']) . ',' .
@@ -344,7 +344,7 @@ if ( isset($_POST['pricelist']) ) {
 		$title = _('Security Token List Export Problem ....');
 		include('includes/header.inc');
 		prnMsg( _('The Security Token List could not be retrieved by the SQL because'). ' - ' . DB_error_msg($db), 'error');
-		echo '<br /><a href="' .$rootpath .'/index.php?' . SID . '">'.  _('Back to the menu'). '</a>';
+		echo '<br /><a href="' .$rootpath .'/index.php">'.  _('Back to the menu'). '</a>';
 		if ($debug==1){
 			echo '<br />'. $SQL;
 		}
@@ -356,7 +356,7 @@ if ( isset($_POST['pricelist']) ) {
 			stripcomma('tokenname') . "\n";
 
 
-	While ($SecTokenList = DB_fetch_array($SecTokenResult,$db)){
+	while ($SecTokenList = DB_fetch_array($SecTokenResult,$db)){
 
 		$CSVContent .= (stripcomma($SecTokenList['tokenid']) . ',' .
 			stripcomma($SecTokenList['tokenname']) . "\n");
@@ -392,7 +392,7 @@ if ( isset($_POST['pricelist']) ) {
 			stripcomma('secrolename') . "\n";
 
 
-	While ($SecRoleList = DB_fetch_array($SecRoleResult,$db)){
+	while ($SecRoleList = DB_fetch_array($SecRoleResult,$db)){
 
 		$CSVContent .= (stripcomma($SecRoleList['secroleid']) . ',' .
 			stripcomma($SecRoleList['secrolename']) . "\n");
@@ -416,7 +416,7 @@ if ( isset($_POST['pricelist']) ) {
 		$title = _('Security Group List Export Problem ....');
 		include('includes/header.inc');
 		prnMsg( _('The Security Group List could not be retrieved by the SQL because'). ' - ' . DB_error_msg($db), 'error');
-		echo '<br /><a href="' .$rootpath .'/index.php?' . SID . '">'.  _('Back to the menu'). '</a>';
+		echo '<br /><a href="' .$rootpath .'/index.php">'.  _('Back to the menu'). '</a>';
 		if ($debug==1){
 			echo '<br />'. $SQL;
 		}
@@ -428,7 +428,7 @@ if ( isset($_POST['pricelist']) ) {
 			stripcomma('tokenid') . "\n";
 
 
-	While ($SecGroupList = DB_fetch_array($SecGroupResult,$db)){
+	while ($SecGroupList = DB_fetch_array($SecGroupResult,$db)){
 
 		$CSVContent .= (stripcomma($SecGroupList['secroleid']) . ',' .
 			stripcomma($SecGroupList['tokenid']) . "\n");
@@ -496,7 +496,7 @@ if ( isset($_POST['pricelist']) ) {
 			stripcomma('swipecard') . "\n";
 
 
-	While ($SecUserList = DB_fetch_array($SecUserResult,$db)){
+	while ($SecUserList = DB_fetch_array($SecUserResult,$db)){
 
 		$CSVContent .= (stripcomma($SecUserList['userid']) . ',' .
 			stripcomma($SecUserList['password']) . ',' .

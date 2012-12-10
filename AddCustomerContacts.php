@@ -34,7 +34,7 @@ if ( isset($_POST['submit']) ) {
 	ie the page has called itself with some user input */
 
 	//first off validate inputs sensible
-	if (isset($_POST['Con_ID']) AND !is_long((integer)$_POST['Con_ID'])) {
+	if (isset($_POST['Con_ID']) and !is_long((integer)$_POST['Con_ID'])) {
 		$InputError = 1;
 		prnMsg( _('The Contact ID must be an integer.'), 'error');
 	} elseif (mb_strlen($_POST['ContactName']) >40) {
@@ -43,12 +43,12 @@ if ( isset($_POST['submit']) ) {
 	} elseif( trim($_POST['ContactName']) == '' ) {
 		$InputError = 1;
 		prnMsg( _('The contact name may not be empty'), 'error');
-	} elseif (!IsEmailAddress($_POST['ContactEmail']) AND mb_strlen($_POST['ContactEmail'])>0){
+	} elseif (!IsEmailAddress($_POST['ContactEmail']) and mb_strlen($_POST['ContactEmail'])>0){
 		$InputError = 1;
 		prnMsg( _('The contact email address is not a valid email address'), 'error');
 	}
 
-	if (isset($Id) AND ($Id AND $InputError !=1)) {
+	if (isset($Id) and ($Id and $InputError !=1)) {
 		$sql = "UPDATE custcontacts SET contactname='" . $_POST['ContactName'] . "',
 										role='" . $_POST['ContactRole'] . "',
 										phoneno='" . $_POST['ContactPhone'] . "',
@@ -89,7 +89,7 @@ if ( isset($_POST['submit']) ) {
 		unset($_POST['ContactEmail']);
 		unset($_POST['Con_ID']);
 	}
-} elseif (isset($_GET['delete']) AND $_GET['delete']) {
+} elseif (isset($_GET['delete']) and $_GET['delete']) {
 //the link to delete a selected record was clicked instead of the submit button
 
 // PREVENT DELETES IF DEPENDENT RECORDS IN 'SalesOrders'

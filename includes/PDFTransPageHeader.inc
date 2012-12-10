@@ -116,8 +116,8 @@ if (!function_exists('htmlspecialchars_decode')) {
         function htmlspecialchars_decode($str) {
                 $trans = get_html_translation_table(HTML_SPECIALCHARS);
 
-                $decode = ARRAY();
-                foreach ($trans AS $char=>$entity) {
+                $decode = array();
+                foreach ($trans as $char=>$entity) {
                         $decode[$entity] = $char;
                 }
 

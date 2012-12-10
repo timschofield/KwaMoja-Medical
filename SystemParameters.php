@@ -25,61 +25,61 @@ if (isset($_POST['submit'])) {
 		Note: the X_ in the POST variables, the reason for this is to overcome globals=on replacing
 		the actial system/overidden variables.
 	*/
-	if (mb_strlen($_POST['X_PastDueDays1']) > 3 OR !is_numeric($_POST['X_PastDueDays1']) ) {
+	if (mb_strlen($_POST['X_PastDueDays1']) > 3 or !is_numeric($_POST['X_PastDueDays1']) ) {
 		$InputError = 1;
 		prnMsg(_('First overdue deadline days must be a number'),'error');
-	} elseif (mb_strlen($_POST['X_PastDueDays2'])  > 3 OR !is_numeric($_POST['X_PastDueDays2']) ) {
+	} elseif (mb_strlen($_POST['X_PastDueDays2'])  > 3 or !is_numeric($_POST['X_PastDueDays2']) ) {
 		$InputError = 1;
 		prnMsg(_('Second overdue deadline days must be a number'),'error');
-	} elseif (mb_strlen($_POST['X_DefaultCreditLimit']) > 12 OR !is_numeric($_POST['X_DefaultCreditLimit']) ) {
+	} elseif (mb_strlen($_POST['X_DefaultCreditLimit']) > 12 or !is_numeric($_POST['X_DefaultCreditLimit']) ) {
 		$InputError = 1;
 		prnMsg(_('Default Credit Limit must be a number'),'error');
-	} elseif (mb_strstr($_POST['X_RomalpaClause'], "'") OR mb_strlen($_POST['X_RomalpaClause']) > 5000) {
+	} elseif (mb_strstr($_POST['X_RomalpaClause'], "'") or mb_strlen($_POST['X_RomalpaClause']) > 5000) {
 		$InputError = 1;
 		prnMsg(_('The Romalpa Clause may not contain single quotes and may not be longer than 5000 chars'),'error');
-	} elseif (mb_strlen($_POST['X_QuickEntries']) > 2 OR !is_numeric($_POST['X_QuickEntries']) OR
-		$_POST['X_QuickEntries'] < 1 OR $_POST['X_QuickEntries'] > 99 ) {
+	} elseif (mb_strlen($_POST['X_QuickEntries']) > 2 or !is_numeric($_POST['X_QuickEntries']) or
+		$_POST['X_QuickEntries'] < 1 or $_POST['X_QuickEntries'] > 99 ) {
 		$InputError = 1;
 		prnMsg(_('No less than 1 and more than 99 Quick entries allowed'),'error');
-	} elseif (mb_strlen($_POST['X_FreightChargeAppliesIfLessThan']) > 12 OR !is_numeric($_POST['X_FreightChargeAppliesIfLessThan']) ) {
+	} elseif (mb_strlen($_POST['X_FreightChargeAppliesIfLessThan']) > 12 or !is_numeric($_POST['X_FreightChargeAppliesIfLessThan']) ) {
 		$InputError = 1;
 		prnMsg(_('Freight Charge Applies If Less Than must be a number'),'error');
-	} elseif ( !is_numeric($_POST['X_StandardCostDecimalPlaces']) OR
-		$_POST['X_StandardCostDecimalPlaces'] < 0 OR $_POST['X_StandardCostDecimalPlaces'] > 4 ) {
+	} elseif ( !is_numeric($_POST['X_StandardCostDecimalPlaces']) or
+		$_POST['X_StandardCostDecimalPlaces'] < 0 or $_POST['X_StandardCostDecimalPlaces'] > 4 ) {
 		$InputError = 1;
 		prnMsg(_('Standard Cost Decimal Places must be a number between 0 and 4'),'error');
-	} elseif (mb_strlen($_POST['X_NumberOfPeriodsOfStockUsage']) > 2 OR !is_numeric($_POST['X_NumberOfPeriodsOfStockUsage']) OR
-		$_POST['X_NumberOfPeriodsOfStockUsage'] < 1 OR $_POST['X_NumberOfPeriodsOfStockUsage'] > 12 ) {
+	} elseif (mb_strlen($_POST['X_NumberOfPeriodsOfStockUsage']) > 2 or !is_numeric($_POST['X_NumberOfPeriodsOfStockUsage']) or
+		$_POST['X_NumberOfPeriodsOfStockUsage'] < 1 or $_POST['X_NumberOfPeriodsOfStockUsage'] > 12 ) {
 		$InputError = 1;
 		prnMsg(_('Financial period per year must be a number between 1 and 12'),'error');
 	} elseif (mb_strlen($_POST['X_TaxAuthorityReferenceName']) >25) {
 		$InputError = 1;
 		prnMsg(_('The Tax Authority Reference Name must be 25 characters or less long'),'error');
-	} elseif (mb_strlen($_POST['X_OverChargeProportion']) > 3 OR !is_numeric($_POST['X_OverChargeProportion']) OR
-		$_POST['X_OverChargeProportion'] < 0 OR $_POST['X_OverChargeProportion'] > 100 ) {
+	} elseif (mb_strlen($_POST['X_OverChargeProportion']) > 3 or !is_numeric($_POST['X_OverChargeProportion']) or
+		$_POST['X_OverChargeProportion'] < 0 or $_POST['X_OverChargeProportion'] > 100 ) {
 		$InputError = 1;
 		prnMsg(_('Over Charge Proportion must be a percentage'),'error');
-	} elseif (mb_strlen($_POST['X_OverReceiveProportion']) > 3 OR !is_numeric($_POST['X_OverReceiveProportion']) OR
-		$_POST['X_OverReceiveProportion'] < 0 OR $_POST['X_OverReceiveProportion'] > 100 ) {
+	} elseif (mb_strlen($_POST['X_OverReceiveProportion']) > 3 or !is_numeric($_POST['X_OverReceiveProportion']) or
+		$_POST['X_OverReceiveProportion'] < 0 or $_POST['X_OverReceiveProportion'] > 100 ) {
 		$InputError = 1;
 		prnMsg(_('Over Receive Proportion must be a percentage'),'error');
-	} elseif (mb_strlen($_POST['X_PageLength']) > 3 OR !is_numeric($_POST['X_PageLength']) OR
+	} elseif (mb_strlen($_POST['X_PageLength']) > 3 or !is_numeric($_POST['X_PageLength']) or
 		$_POST['X_PageLength'] < 1 ) {
 		$InputError = 1;
 		prnMsg(_('Lines per page must be greater than 1'),'error');
-	} elseif (mb_strlen($_POST['X_MonthsAuditTrail']) > 2 OR !is_numeric($_POST['X_MonthsAuditTrail']) OR
+	} elseif (mb_strlen($_POST['X_MonthsAuditTrail']) > 2 or !is_numeric($_POST['X_MonthsAuditTrail']) or
 		$_POST['X_MonthsAuditTrail'] < 0 ) {
 		$InputError = 1;
 		prnMsg(_('The number of months of audit trail to keep must be zero or a positive number less than 100 months'),'error');
-	}elseif (mb_strlen($_POST['X_DefaultTaxCategory']) > 1 OR !is_numeric($_POST['X_DefaultTaxCategory']) OR
+	}elseif (mb_strlen($_POST['X_DefaultTaxCategory']) > 1 or !is_numeric($_POST['X_DefaultTaxCategory']) or
 		$_POST['X_DefaultTaxCategory'] < 1 ) {
 		$InputError = 1;
 		prnMsg(_('DefaultTaxCategory must be between 1 and 9'),'error');
-	} elseif (mb_strlen($_POST['X_DefaultDisplayRecordsMax']) > 3 OR !is_numeric($_POST['X_DefaultDisplayRecordsMax']) OR
+	} elseif (mb_strlen($_POST['X_DefaultDisplayRecordsMax']) > 3 or !is_numeric($_POST['X_DefaultDisplayRecordsMax']) or
 		$_POST['X_DefaultDisplayRecordsMax'] < 1 ) {
 		$InputError = 1;
 		prnMsg(_('Default maximum number of records to display must be between 1 and 500'),'error');
-	}elseif (mb_strlen($_POST['X_MaxImageSize']) > 3 OR !is_numeric($_POST['X_MaxImageSize']) OR
+	}elseif (mb_strlen($_POST['X_MaxImageSize']) > 3 or !is_numeric($_POST['X_MaxImageSize']) or
 		$_POST['X_MaxImageSize'] < 1 ) {
 		$InputError = 1;
 		prnMsg(_('The maximum size of item image files must be between 50 and 500 (NB this figure refers to KB)'),'error');
@@ -89,10 +89,10 @@ if (isset($_POST['submit'])) {
 	}elseif (!IsEmailAddress($_POST['X_PurchasingManagerEmail'])){
 		$InputError = 1;
 		prnMsg(_('The Purchasing Manager Email address does not appear to be valid'),'error');
-	}elseif (!IsEmailAddress($_POST['X_InventoryManagerEmail']) AND $_POST['X_InventoryManagerEmail']!=''){
+	}elseif (!IsEmailAddress($_POST['X_InventoryManagerEmail']) and $_POST['X_InventoryManagerEmail']!=''){
 		$InputError = 1;
 		prnMsg(_('The Inventory Manager Email address does not appear to be valid'),'error');
-	}elseif (mb_strlen($_POST['X_FrequentlyOrderedItems']) > 2 OR !is_numeric($_POST['X_FrequentlyOrderedItems'])) {
+	}elseif (mb_strlen($_POST['X_FrequentlyOrderedItems']) > 2 or !is_numeric($_POST['X_FrequentlyOrderedItems'])) {
 		$InputError = 1;
 		prnMsg(_('The number of frequently ordered items to display must be numeric'),'error');
 	}
@@ -363,7 +363,7 @@ echo '<tr style="outline: 1px solid"><td>' . _('New Users Default Theme') . ':</
 	 <td><select name="X_DefaultTheme">';
 $ThemeDirectory = dir('css/');
 while (false != ($ThemeName = $ThemeDirectory->read())){
-	if (is_dir("css/$ThemeName") AND $ThemeName != '.' AND $ThemeName != '..' AND $ThemeName != '.svn'){
+	if (is_dir("css/$ThemeName") and $ThemeName != '.' and $ThemeName != '..' and $ThemeName != '.svn'){
 		if ($_SESSION['DefaultTheme'] == $ThemeName) {
 			echo '<option selected="selected" value="' . $ThemeName . '">' . $ThemeName . '</option>';
 		} else {
@@ -529,7 +529,7 @@ echo '<tr style="outline: 1px solid"><td>' . _('Controlled Items Must Exist For 
 	<td>' . _('This parameter relates to the behaviour of the controlled items code. If a serial numbered item has not previously existed then a credit note for it will not be allowed if this is set to Yes') . '</td></tr>';
 
 // DefaultPriceList
-$sql = "SELECT typeabbrev, sales_type FROM salestypes ORDER BY sales_type";
+$sql = "SELECT typeabbrev, sales_type FROM salestypes orDER BY sales_type";
 $ErrMsg = _('Could not load price lists');
 $result = DB_query($sql,$db,$ErrMsg);
 echo '<tr style="outline: 1px solid"><td>' . _('Default Price List') . ':</td>';
@@ -545,7 +545,7 @@ echo '</select></td>
 	<td>' . _('This price list is used as a last resort where there is no price set up for an item in the price list that the customer is set up for') . '</td></tr>';
 
 // Default_Shipper
-$sql = "SELECT shipper_id, shippername FROM shippers ORDER BY shippername";
+$sql = "SELECT shipper_id, shippername FROM shippers orDER BY shippername";
 $ErrMsg = _('Could not load shippers');
 $result = DB_query($sql,$db,$ErrMsg);
 echo '<tr style="outline: 1px solid"><td>' . _('Default Shipper') . ':</td>';
@@ -589,7 +589,7 @@ echo '</select></td>
 	<td>' . _('Set to Automatic - customer codes are automatically created - as a sequential number') .'</td></tr>';
 
 //==HJ== drop down list for tax category
-$sql = "SELECT taxcatid, taxcatname FROM taxcategories ORDER BY taxcatname";
+$sql = "SELECT taxcatid, taxcatname FROM taxcategories orDER BY taxcatname";
 $ErrMsg = _('Could not load tax categories table');
 $result = DB_query($sql,$db,$ErrMsg);
 echo '<tr style="outline: 1px solid"><td>' . _('Default Tax Category') . ':</td>';
@@ -611,7 +611,7 @@ echo '<tr style="outline: 1px solid"><td>' . _('Tax Authority Reference Name') .
 	<td>' . _('This parameter is what is displayed on tax invoices and credits for the tax authority of the company eg. in Australian this would by A.B.N.: - in NZ it would be GST No: in the UK it would be VAT Regn. No') .'</td></tr>';
 
 // CountryOfOperation
-$sql = "SELECT currabrev, country FROM currencies ORDER BY country";
+$sql = "SELECT currabrev, country FROM currencies orDER BY country";
 $ErrMsg = _('Could not load the countries from the currency table');
 $result = DB_query($sql,$db,$ErrMsg);
 echo '<tr style="outline: 1px solid"><td>' . _('Country Of Operation') . ':</td>';
@@ -927,10 +927,10 @@ echo '</select></td><td>' . _('Setting this to prohibited prevents accidentally 
 echo '<tr style="outline: 1px solid"><td>' . _('Prohibit GL Journals to Periods Prior To') . ':</td>
 	<td><select name="X_ProhibitPostingsBefore">';
 
-$sql = "SELECT lastdate_in_period FROM periods ORDER BY periodno DESC";
+$sql = "SELECT lastdate_in_period FROM periods orDER BY periodno DESC";
 $ErrMsg = _('Could not load periods table');
 $result = DB_query($sql,$db,$ErrMsg);
-if ($_SESSION['ProhibitPostingsBefore']=='' OR $_SESSION['ProhibitPostingsBefore']=='1900-01-01' OR !isset($_SESSION['ProhibitPostingsBefore'])){
+if ($_SESSION['ProhibitPostingsBefore']=='' or $_SESSION['ProhibitPostingsBefore']=='1900-01-01' or !isset($_SESSION['ProhibitPostingsBefore'])){
 	echo '<option selected="selected" value="1900-01-01">' . ConvertSQLDate('1900-01-01') . '</option>';
 }
 while ($PeriodRow = DB_fetch_row($result)){

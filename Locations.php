@@ -45,7 +45,7 @@ if (isset($_POST['submit'])) {
 		}
 	} //end of checking the customer - branch code entered
 
-	if (isset($SelectedLocation) AND $InputError !=1) {
+	if (isset($SelectedLocation) and $InputError !=1) {
 
 		/* Set the managed field to 1 if it is checked, otherwise 0 */
 		if(isset($_POST['Managed']) and $_POST['Managed'] == 'on'){
@@ -114,7 +114,7 @@ if (isset($_POST['submit'])) {
 		} else {
 			$_POST['InternalRequest'] = 0;
 		}
-		
+
 		/*SelectedLocation is null cos no item selected on first time round so must be adding a	record must be submitting new entries in the new Location form */
 
 		$sql = "INSERT INTO locations (loccode,
@@ -148,7 +148,7 @@ if (isset($_POST['submit'])) {
 								'" . $_POST['Contact'] . "',
 								'" . $_POST['TaxProvince'] . "',
 								'" . $_POST['CashSaleCustomer'] . "',
-				        		'" . $_POST['CashSaleBranch'] . "',
+								'" . $_POST['CashSaleBranch'] . "',
 								'" . $_POST['Managed'] . "',
 								'" . $_POST['InternalRequest'] . "')";
 
@@ -368,28 +368,27 @@ or deletion of the records*/
 			ON locations.taxprovinceid=taxprovinces.taxprovinceid";
 	$result = DB_query($sql,$db);
 
-	if (DB_num_rows($result)==0){
-		prnMsg (_('There are no locations that match up with a tax province record to display. Check that tax provinces are set up for all dispatch locations'),'error');
-	}
 	echo '<p class="page_title_text"><img src="'.$rootpath.'/css/'.$theme.'/images/supplier.png" title="' .
 			_('Inventory') . '" alt="" />' . ' ' . $title . '</p>';
 
-	echo '<table class="selection">';
-	echo '<tr>
-			<th>' . _('Location Code') . '</th>
-			<th>' . _('Location Name') . '</th>
-			<th>' . _('Tax Province') . '</th>
-		</tr>';
+	if (DB_num_rows($result)!=0){
 
-$k=0; //row colour counter
-while ($myrow = DB_fetch_array($result)) {
-	if ($k==1){
-		echo '<tr class="EvenTableRows">';
-		$k=0;
-	} else {
-		echo '<tr class="OddTableRows">';
-		$k=1;
-	}
+		echo '<table class="selection">';
+		echo '<tr>
+				<th>' . _('Location Code') . '</th>
+				<th>' . _('Location Name') . '</th>
+				<th>' . _('Tax Province') . '</th>
+			</tr>';
+
+		$k=0; //row colour counter
+		while ($myrow = DB_fetch_array($result)) {
+			if ($k==1){
+				echo '<tr class="EvenTableRows">';
+				$k=0;
+			} else {
+				echo '<tr class="OddTableRows">';
+				$k=1;
+			}
 /* warehouse management not implemented ... yet
 	if($myrow['managed'] == 1) {
 		$myrow['managed'] = _('Yes');
@@ -397,20 +396,20 @@ while ($myrow = DB_fetch_array($result)) {
 		$myrow['managed'] = _('No');
 	}
 */
-	printf('<td>%s</td>
-			<td>%s</td>
-			<td>%s</td>
-			<td><a href="%sSelectedLocation=%s">' . _('Edit') . '</a></td>
-			<td><a href="%sSelectedLocation=%s&amp;delete=1" onclick="return confirm(\'' . _('Are you sure you wish to delete this inventory location?') . '\');">' . _('Delete') . '</a></td>
-			</tr>',
-			$myrow['loccode'],
-			$myrow['locationname'],
-			$myrow['description'],
-			htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?',
-			$myrow['loccode'],
-			htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?',
-			$myrow['loccode']);
-
+			printf('<td>%s</td>
+					<td>%s</td>
+					<td>%s</td>
+					<td><a href="%sSelectedLocation=%s">' . _('Edit') . '</a></td>
+					<td><a href="%sSelectedLocation=%s&amp;delete=1" onclick="return confirm(\'' . _('Are you sure you wish to delete this inventory location?') . '\');">' . _('Delete') . '</a></td>
+					</tr>',
+					$myrow['loccode'],
+					$myrow['locationname'],
+					$myrow['description'],
+					htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?',
+					$myrow['loccode'],
+					htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?',
+					$myrow['loccode']);
+		}
 	}
 	//END WHILE LIST LOOP
 	echo '</table>';
@@ -427,7 +426,7 @@ echo '<br />';
 if (!isset($_GET['delete'])) {
 
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '">';
-    echo '<div>';
+	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	if (isset($SelectedLocation)) {
@@ -634,7 +633,7 @@ if (!isset($_GET['delete'])) {
 		<div class="centre">
 			<input type="submit" name="submit" value="' .  _('Enter Information') . '" />
 		</div>
-        </div>
+		</div>
 		</form>';
 
 } //end if record deleted no point displaying form to add record

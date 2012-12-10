@@ -15,7 +15,7 @@ function standard_deviation($Data){
 	foreach ($Data as $Element){
 		$TotalDifferenceSquared += (($Element-$Average) * ($Element-$Average));
 	}
-	Return sqrt($TotalDifferenceSquared/$Counter);
+	return sqrt($TotalDifferenceSquared/$Counter);
 }
 
 function NewPageHeader () {
@@ -121,7 +121,7 @@ if (isset($_POST['PrintPDF'])){
 	$pdf = new Cpdf('L', 'pt', 'A4');
 
 	$pdf->addInfo('Author','KwaMoja ' . $Version);
-	$pdf->addInfo('Creator','KwaMoja http://www.kwamoja.org');
+	$pdf->addInfo('Creator','KwaMoja http://www.kwamoja.com');
 	$pdf->addInfo('Title',_('Inventory Planning Based On Lead Time Of Preferred Supplier') . ' ' . Date($_SESSION['DefaultDateFormat']));
 //	$PageNumber = 0;
 	$pdf->addInfo('Subject',_('Inventory Planning Based On Lead Time Of Preferred Supplier'));

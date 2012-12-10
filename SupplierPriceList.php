@@ -8,7 +8,7 @@ include ('includes/header.inc');
 
 if (isset($_POST['StockSearch'])) {
 	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
-    echo '<div>';
+	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<input type="hidden" value="' . $_POST['SupplierID'] . '" name="SupplierID" />';
 
@@ -55,17 +55,17 @@ if (isset($_POST['StockSearch'])) {
 	echo '<div class="centre"><input type="submit" name="Search" value="' . _('Search Now') . '" /></div><br />';
 	echo '<script  type="text/javascript">defaultControl(document.forms[0].StockCode);</script>';
 	echo '</div>
-          </form>';
+		  </form>';
 	include('includes/footer.inc');
 	exit;
 }
 
-if (isset($_POST['Search']) OR isset($_POST['Go']) OR isset($_POST['Next']) OR isset($_POST['Previous'])) {
-	if (!isset($_POST['Go']) AND !isset($_POST['Next']) AND !isset($_POST['Previous'])) {
+if (isset($_POST['Search']) or isset($_POST['Go']) or isset($_POST['Next']) or isset($_POST['Previous'])) {
+	if (!isset($_POST['Go']) and !isset($_POST['Next']) and !isset($_POST['Previous'])) {
 		// if Search then set to first page
 		$_POST['PageOffset'] = 1;
 	}
-	if ($_POST['Keywords'] AND $_POST['StockCode']) {
+	if ($_POST['Keywords'] and $_POST['StockCode']) {
 		prnMsg (_('Stock description keywords have been used in preference to the Stock code extract entered'), 'info');
 	}
 	if ($_POST['Keywords']) {
@@ -85,8 +85,8 @@ if (isset($_POST['Search']) OR isset($_POST['Go']) OR isset($_POST['Next']) OR i
 						ON stockmaster.categoryid=stockcategory.categoryid,
 							locstock
 						WHERE stockmaster.stockid=locstock.stockid
-						AND stockmaster.description " . LIKE . " '$SearchString' 
-						AND (stockmaster.mbflag='B' OR stockmaster.mbflag='M') 
+						AND stockmaster.description " . LIKE . " '$SearchString'
+						AND (stockmaster.mbflag='B' OR stockmaster.mbflag='M')
 						GROUP BY stockmaster.stockid,
 							stockmaster.description,
 							stockmaster.units,
@@ -105,7 +105,7 @@ if (isset($_POST['Search']) OR isset($_POST['Go']) OR isset($_POST['Next']) OR i
 						FROM stockmaster INNER JOIN locstock
 						ON stockmaster.stockid=locstock.stockid
 						WHERE description " . LIKE . " '$SearchString'
-						AND (stockmaster.mbflag='B' OR stockmaster.mbflag='M') 
+						AND (stockmaster.mbflag='B' OR stockmaster.mbflag='M')
 						AND categoryid='" . $_POST['StockCat'] . "'
 						GROUP BY stockmaster.stockid,
 							stockmaster.description,
@@ -127,10 +127,10 @@ if (isset($_POST['Search']) OR isset($_POST['Go']) OR isset($_POST['Next']) OR i
 							stockmaster.decimalplaces
 						FROM stockmaster
 						INNER JOIN stockcategory
-						ON stockmaster.categoryid=stockcategory.categoryid 
+						ON stockmaster.categoryid=stockcategory.categoryid
 						INNER JOIN locstock
 						ON stockmaster.stockid=locstock.stockid
-						WHERE (stockmaster.mbflag='B' OR stockmaster.mbflag='M') 
+						WHERE (stockmaster.mbflag='B' OR stockmaster.mbflag='M')
 						AND stockmaster.stockid " . LIKE . " '%" . $_POST['StockCode'] . "%'
 						GROUP BY stockmaster.stockid,
 								stockmaster.description,
@@ -150,7 +150,7 @@ if (isset($_POST['Search']) OR isset($_POST['Go']) OR isset($_POST['Next']) OR i
 				FROM stockmaster INNER JOIN locstock
 				ONstockmaster.stockid=locstock.stockid
 				WHERE stockmaster.stockid " . LIKE . " '%" . $_POST['StockCode'] . "%'
-				AND (stockmaster.mbflag='B' OR stockmaster.mbflag='M') 
+				AND (stockmaster.mbflag='B' OR stockmaster.mbflag='M')
 				AND categoryid='" . $_POST['StockCat'] . "'
 				GROUP BY stockmaster.stockid,
 					stockmaster.description,
@@ -160,7 +160,7 @@ if (isset($_POST['Search']) OR isset($_POST['Go']) OR isset($_POST['Next']) OR i
 					stockmaster.decimalplaces
 				ORDER BY stockmaster.stockid";
 		}
-	} elseif (!isset($_POST['StockCode']) AND !isset($_POST['Keywords'])) {
+	} elseif (!isset($_POST['StockCode']) and !isset($_POST['Keywords'])) {
 		if ($_POST['StockCat'] == 'All') {
 			$SQL = "SELECT stockmaster.stockid,
 					stockmaster.description,
@@ -174,7 +174,7 @@ if (isset($_POST['Search']) OR isset($_POST['Go']) OR isset($_POST['Next']) OR i
 				ON stockmaster.categoryid=stockcategory.categoryid,
 					locstock
 				WHERE stockmaster.stockid=locstock.stockid
-				AND (stockmaster.mbflag='B' OR stockmaster.mbflag='M') 
+				AND (stockmaster.mbflag='B' OR stockmaster.mbflag='M')
 				GROUP BY stockmaster.stockid,
 					stockmaster.description,
 					stockmaster.units,
@@ -193,7 +193,7 @@ if (isset($_POST['Search']) OR isset($_POST['Go']) OR isset($_POST['Next']) OR i
 				FROM stockmaster INNER JOIN locstock
 				ONstockmaster.stockid=locstock.stockid
 				WHERE categoryid='" . $_POST['StockCat'] . "'
-				AND (stockmaster.mbflag='B' OR stockmaster.mbflag='M') 
+				AND (stockmaster.mbflag='B' OR stockmaster.mbflag='M')
 				GROUP BY stockmaster.stockid,
 					stockmaster.description,
 					stockmaster.units,
@@ -213,10 +213,10 @@ if (isset($_POST['Search']) OR isset($_POST['Go']) OR isset($_POST['Next']) OR i
 }
 /* end query for list of records */
 /* display list if there is more than one record */
-if (isset($searchresult) AND !isset($_POST['Select'])) {
+if (isset($searchresult) and !isset($_POST['Select'])) {
 	echo '<p class="page_title_text"><img src="' . $rootpath . '/css/' . $theme . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Search for Inventory Items'). '</p>';
 	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
-    echo '<div>';
+	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<input type="hidden" value="' . $_POST['SupplierID'] . '" name="SupplierID" />';
 	$ListCount = DB_num_rows($searchresult);
@@ -270,7 +270,7 @@ if (isset($searchresult) AND !isset($_POST['Select'])) {
 		if (DB_num_rows($searchresult) <> 0) {
 			DB_data_seek($searchresult, ($_POST['PageOffset'] - 1) * $_SESSION['DisplayRecordsMax']);
 		}
-		while (($myrow = DB_fetch_array($searchresult)) AND ($RowIndex <> $_SESSION['DisplayRecordsMax'])) {
+		while (($myrow = DB_fetch_array($searchresult)) and ($RowIndex <> $_SESSION['DisplayRecordsMax'])) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;
@@ -288,9 +288,9 @@ if (isset($searchresult) AND !isset($_POST['Select'])) {
 		}
 		//end of while loop
 		echo '</table>
-              <br />
-              </div>
-              </form>';
+			  <br />
+			  </div>
+			  </form>';
 		include('includes/footer.inc');
 		exit;
 	}
@@ -369,7 +369,7 @@ if (isset($_GET['SupplierID'])) {
 	$SupplierID = trim(mb_strtoupper($_POST['SupplierID']));
 }
 
-if (isset($SupplierID) AND $SupplierID != '' AND !isset($_POST['SearchSupplier'])) { /*NOT EDITING AN EXISTING BUT SUPPLIER selected OR ENTERED*/
+if (isset($SupplierID) and $SupplierID != '' and !isset($_POST['SearchSupplier'])) { /*NOT EDITING AN EXISTING BUT SUPPLIER selected or ENTERED*/
 	$sql = "SELECT suppliers.suppname, suppliers.currcode FROM suppliers WHERE supplierid='".$SupplierID."'";
 	$ErrMsg = _('The supplier details for the selected supplier could not be retrieved because');
 	$DbgMsg = _('The SQL that failed was');
@@ -390,9 +390,9 @@ if (isset($SupplierID) AND $SupplierID != '' AND !isset($_POST['SearchSupplier']
 	if (!isset($_POST['SearchSupplier'])) {
 		echo '<p class="page_title_text"><img src="' . $rootpath . '/css/' . $theme . '/images/supplier.png" title="' . _('Search') . '" alt="" />' . _('Search for a supplier') . '</p><br />';
 		echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
-        echo '<div>';
-        echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-        
+		echo '<div>';
+		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
+
 		echo '<table cellpadding="3" class="selection"><tr>';
 		echo '<td>' . _('Text in the Supplier') . ' <b>' . _('NAME') . '</b>:</td>';
 		echo '<td><input type="text" name="Keywords" size="20" maxlength="25" /></td>';
@@ -401,15 +401,15 @@ if (isset($SupplierID) AND $SupplierID != '' AND !isset($_POST['SearchSupplier']
 		echo '<td><input type="text" name="SupplierCode" size="15" maxlength="18" /></td>';
 		echo '</tr></table><br />';
 		echo '<div class="centre"><input type="submit" name="SearchSupplier" value="' . _('Find Suppliers Now') . '" /></div>';
-        echo '</div>
-              </form>';
+		echo '</div>
+			  </form>';
 		include ('includes/footer.inc');
 		exit;
 	};
 }
 
 if (isset($_POST['SearchSupplier'])) {
-	if ($_POST['Keywords'] == '' AND $_POST['SupplierCode'] == '') {
+	if ($_POST['Keywords'] == '' and $_POST['SupplierCode'] == '') {
 		$_POST['Keywords'] = ' ';
 	}
 	if (mb_strlen($_POST['Keywords']) > 0) {
@@ -441,9 +441,9 @@ if (isset($_POST['SearchSupplier'])) {
 if (isset($SuppliersResult)) {
 	echo '<p class="page_title_text"><img src="' . $rootpath . '/css/' . $theme . '/images/supplier.png" title="' . _('Search') . '" alt="" />' . _('Select a supplier') . '</p><br />';
 	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
-    echo '<div>';
-    echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-    
+	echo '<div>';
+	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
+
 	echo '<table cellpadding="2" class="selection">';
 	$TableHeader = '<tr><th>' . _('Code') . '</th>
 						<th>' . _('Supplier Name') . '</th>
@@ -480,9 +480,9 @@ if (isset($SuppliersResult)) {
 	}
 	//end of while loop
 	echo '</table>
-          <br/>
-          </div>
-          </form>';
+		  <br/>
+		  </div>
+		  </form>';
 	include('includes/footer.inc');
 	exit;
 }
@@ -491,7 +491,7 @@ if (isset($SuppliersResult)) {
 if (isset($_POST['SupplierID'])) {
 	echo '<p class="page_title_text"><img src="' . $rootpath . '/css/' . $theme . '/images/supplier.png" title="' . _('Search') . '" alt="" />' . _('Supplier Purchasing Data') . '</p><br />';
 	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
-    echo '<div>';
+	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	$SQL="SELECT purchdata.stockid,
 				stockmaster.description,
@@ -597,7 +597,7 @@ if (isset($_POST['SupplierID'])) {
 	}
 	echo '</table>';
 	echo '</div>
-          </form>';
+		  </form>';
 	include('includes/footer.inc');
 	exit;
 }

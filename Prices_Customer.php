@@ -18,11 +18,11 @@ include('includes/header.inc');
 
 if (isset($_GET['Item'])){
 	$Item = $_GET['Item'];
-}elseif (isset($_POST['Item'])){
+} elseif (isset($_POST['Item'])){
 	$Item = $_POST['Item'];
 }
 
-if (!isset($Item) OR !isset($_SESSION['CustomerID']) OR $_SESSION['CustomerID']==''){
+if (!isset($Item) or !isset($_SESSION['CustomerID']) or $_SESSION['CustomerID']==''){
 
 	prnMsg( _('A customer must be selected from the customer selection screen') . ', '
 		. _('then an item must be selected before this page is called') . '. '
@@ -67,7 +67,7 @@ if (isset($_POST['submit'])) {
 
 	//first off validate inputs sensible
 
-	if (!is_numeric(filter_number_format($_POST['Price'])) OR $_POST['Price']=='') {
+	if (!is_numeric(filter_number_format($_POST['Price'])) or $_POST['Price']=='') {
 		$InputError = 1;
 		$msg = _('The price entered must be numeric');
 	}
@@ -89,20 +89,20 @@ if (isset($_POST['submit'])) {
 		$InputError =1;
 		$msg = _('The date this price is to take effect from must be entered in the format') . ' ' . $_SESSION['DefaultDateFormat'];
 	}
-	if (! Is_Date($_POST['EndDate']) AND $_POST['EndDate']!=''){ //EndDate can also be blank for default prices
+	if (! Is_Date($_POST['EndDate']) and $_POST['EndDate']!=''){ //EndDate can also be blank for default prices
 		$InputError =1;
 		$msg = _('The date this price is be in effect to must be entered in the format') . ' ' . $_SESSION['DefaultDateFormat'];
 	}
-	if (Date1GreaterThanDate2($_POST['StartDate'],$_POST['EndDate']) AND $_POST['EndDate']!=''){
+	if (Date1GreaterThanDate2($_POST['StartDate'],$_POST['EndDate']) and $_POST['EndDate']!=''){
 		$InputError =1;
 		$msg = _('The end date is expected to be after the start date, enter an end date after the start date for this price');
 	}
-	if (Date1GreaterThanDate2(Date($_SESSION['DefaultDateFormat']),$_POST['EndDate']) AND $_POST['EndDate']!=''){
+	if (Date1GreaterThanDate2(Date($_SESSION['DefaultDateFormat']),$_POST['EndDate']) and $_POST['EndDate']!=''){
 		$InputError =1;
 		$msg = _('The end date is expected to be after today. There is no point entering a new price where the effective date is before today!');
 	}
 
-	if ((isset($_POST['Editing']) AND $_POST['Editing']=='Yes') AND mb_strlen($Item)>1 AND $InputError !=1) {
+	if ((isset($_POST['Editing']) and $_POST['Editing']=='Yes') and mb_strlen($Item)>1 and $InputError !=1) {
 
 		//editing an existing price
 
@@ -146,12 +146,12 @@ if (isset($_POST['submit'])) {
 	if ($InputError!=1){
 		$result = DB_query($sql,$db,'','',false,false);
 		if (DB_error_no($db)!=0){
-		   If ($msg==_('Price Updated')){
+		   if ($msg==_('Price Updated')){
 				$msg = _('The price could not be updated because') . ' - ' . DB_error_msg($db);
 			} else {
 				$msg = _('The price could not be added because') . ' - ' . DB_error_msg($db);
 			}
-		}else {
+		} else {
 			ReSequenceEffectiveDates ($Item, $SalesType, $CurrCode, $_SESSION['CustomerID'], $db);
 			unset($_POST['EndDate']);
 			unset($_POST['StartDate']);

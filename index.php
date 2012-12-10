@@ -9,7 +9,7 @@ include('includes/header.inc');
 /*The module link codes are hard coded in a switch statement below to determine the options to show for each tab */
 include('includes/MainMenuLinksArray.php');
 
-if (isset($SupplierLogin) AND $SupplierLogin==1){
+if (isset($SupplierLogin) and $SupplierLogin==1){
 	echo '<table class="table_index">
 			<tr>
 			<td class="menu_group_item">
@@ -29,7 +29,7 @@ if (isset($SupplierLogin) AND $SupplierLogin==1){
 		</table>';
 	include('includes/footer.inc');
 	exit;
-} elseif (isset($SupplierLogin) AND $SupplierLogin==0){
+} elseif (isset($SupplierLogin) and $SupplierLogin==0){
 	echo '<table class="table_index">
 			<tr>
 			<td class="menu_group_item">
@@ -65,7 +65,7 @@ while ($i < count($ModuleLink)){
 	if ($_SESSION['ModulesEnabled'][$i]==1)	{
 		// If this is the first time the application is loaded then it is possible that
 		// SESSION['Module'] is not set if so set it to the first module that is enabled for the user
-		if (!isset($_SESSION['Module']) OR $_SESSION['Module']==''){
+		if (!isset($_SESSION['Module']) or $_SESSION['Module']==''){
 			$_SESSION['Module']=$ModuleLink[$i];
 		}
 		if ($ModuleLink[$i] == $_SESSION['Module']){
@@ -102,7 +102,7 @@ foreach ($MenuItems[$_SESSION['Module']]['Transactions']['Caption'] as $Caption)
 /* Transactions Menu Item */
 	$ScriptNameArray = explode('?', substr($MenuItems[$_SESSION['Module']]['Transactions']['URL'][$i],1));
 	$PageSecurity = $_SESSION['PageSecurityArray'][$ScriptNameArray[0]];
-	if ((in_array($PageSecurity, $_SESSION['AllowedPageSecurityTokens']) OR !isset($PageSecurity))) {
+	if ((in_array($PageSecurity, $_SESSION['AllowedPageSecurityTokens']) or !isset($PageSecurity))) {
 		echo '<li class="menu_group_item">
 				<p>&bull; <a href="' . $rootpath . $MenuItems[$_SESSION['Module']]['Transactions']['URL'][$i] .'">' . $Caption . '</a></p>
 			  </li>';
@@ -129,7 +129,7 @@ foreach ($MenuItems[$_SESSION['Module']]['Reports']['Caption'] as $Caption) {
 /* Transactions Menu Item */
 	$ScriptNameArray = explode('?', substr($MenuItems[$_SESSION['Module']]['Reports']['URL'][$i],1));
 	$PageSecurity = $_SESSION['PageSecurityArray'][$ScriptNameArray[0]];
-	if ((in_array($PageSecurity, $_SESSION['AllowedPageSecurityTokens']) OR !isset($PageSecurity))) {
+	if ((in_array($PageSecurity, $_SESSION['AllowedPageSecurityTokens']) or !isset($PageSecurity))) {
 		echo '<li class="menu_group_item">
 				<p>&bull; <a href="' . $rootpath . $MenuItems[$_SESSION['Module']]['Reports']['URL'][$i] .'">' . $Caption . '</a></p>
 			  </li>';
@@ -156,7 +156,7 @@ foreach ($MenuItems[$_SESSION['Module']]['Maintenance']['Caption'] as $Caption) 
 /* Transactions Menu Item */
 	$ScriptNameArray = explode('?', substr($MenuItems[$_SESSION['Module']]['Maintenance']['URL'][$i],1));
 	$PageSecurity = $_SESSION['PageSecurityArray'][$ScriptNameArray[0]];
-	if ((in_array($PageSecurity, $_SESSION['AllowedPageSecurityTokens']) OR !isset($PageSecurity))) {
+	if ((in_array($PageSecurity, $_SESSION['AllowedPageSecurityTokens']) or !isset($PageSecurity))) {
 		echo '<li class="menu_group_item">
 				<p>&bull; <a href="' . $rootpath . $MenuItems[$_SESSION['Module']]['Maintenance']['URL'][$i] .'">' . $Caption . '</a></p>
 			  </li>';
@@ -201,7 +201,7 @@ be generated, one for standard reports and the other for custom reports.
 		$NoEntries = true;
 		if ($ReportList) { // then there are reports to show, show by grouping
 			foreach ($ReportList as $Report) {
-				if ($Report['groupname']==$GroupID AND $Report['defaultreport']==$Def) {
+				if ($Report['groupname']==$GroupID and $Report['defaultreport']==$Def) {
                     $RptLinks .= '<li class="menu_group_item">';
 					$RptLinks .= '<p>&bull; <a href="' . $rootpath . '/reportwriter/ReportMaker.php?action=go&amp;reportid=' . $Report['id'] . '">' . _($Report['reportname']) . '</a></p>';
 					$RptLinks .= '</li>';
@@ -212,7 +212,7 @@ be generated, one for standard reports and the other for custom reports.
 			$NoForms = true;
 			foreach ($ReportList as $Report) {
 				$Group=explode(':',$Report['groupname']); // break into main group and form group array
-				if ($NoForms AND $Group[0]==$GroupID AND $Report['reporttype']=='frm' AND $Report['defaultreport']==$Def) {
+				if ($NoForms and $Group[0]==$GroupID and $Report['reporttype']=='frm' and $Report['defaultreport']==$Def) {
                     $RptLinks .= '<li class="menu_group_item">';
 					$RptLinks .= '<img src="' . $rootpath . '/css/' . $_SESSION['Theme'] . '/images/folders.gif" width="16" height="13" alt="" />&nbsp;';
 					$RptLinks .= '<p>&bull; <a href="' . $rootpath . '/reportwriter/FormMaker.php?id=' . $Report['groupname'] . '"></p>';

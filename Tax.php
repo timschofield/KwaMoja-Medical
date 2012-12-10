@@ -4,9 +4,9 @@
 
 include('includes/session.inc');
 
-if (isset($_POST['TaxAuthority']) AND
-	isset($_POST['PrintPDF']) AND
-	isset($_POST['NoOfPeriods']) AND
+if (isset($_POST['TaxAuthority']) and
+	isset($_POST['PrintPDF']) and
+	isset($_POST['NoOfPeriods']) and
 	isset($_POST['ToPeriod'])){
 
 	include('includes/PDFStarter.php');
@@ -81,7 +81,7 @@ if (isset($_POST['TaxAuthority']) AND
 
     $ListCount = 0;
 
-	While ($DebtorTransRow = DB_fetch_array($DebtorTransResult,$db)){
+	while ($DebtorTransRow = DB_fetch_array($DebtorTransResult,$db)){
 
         $ListCount ++;
 
@@ -180,7 +180,7 @@ if (isset($_POST['TaxAuthority']) AND
 	}
 
 
-	While ($SuppTransRow = DB_fetch_array($SuppTransResult,$db)){
+	while ($SuppTransRow = DB_fetch_array($SuppTransResult,$db)){
 
         $ListCount ++;
 
@@ -340,7 +340,7 @@ if (isset($_POST['TaxAuthority']) AND
 	echo '<tr>
 			<td>' . _('Detail Or Summary Only') . ':</td>
 			<td><select name="DetailOrSummary">
-				<option value="Detail">' . _('Detail and Summary') . '</option> 
+				<option value="Detail">' . _('Detail and Summary') . '</option>
 				<option selected="selected" value="Summary">' . _('Summary Only') . '</option>
 			</select></td>
 		</tr>';

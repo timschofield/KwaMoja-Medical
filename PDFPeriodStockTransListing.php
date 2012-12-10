@@ -5,7 +5,7 @@ include('includes/SQL_CommonFunctions.inc');
 include ('includes/session.inc');
 
 $InputError=0;
-if (isset($_POST['FromDate']) AND !Is_Date($_POST['FromDate'])){
+if (isset($_POST['FromDate']) and !Is_Date($_POST['FromDate'])){
 	$msg = _('The date must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
 	$InputError=1;
 	unset($_POST['FromDate']);
@@ -25,7 +25,7 @@ if (!isset($_POST['FromDate'])){
 	}
 
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '">';
-    echo '<div>';
+	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table class="selection">';
 	echo '<tr>
@@ -58,9 +58,9 @@ if (!isset($_POST['FromDate'])){
 			<td>' . _('For Stock Location') . ':</td>
 			<td><select name="StockLocation">
 				<option value="All">' . _('All') . '</option>';
-				
+
 	while ($myrow=DB_fetch_array($resultStkLocs)){
-		if (isset($_POST['StockLocation']) AND $_POST['StockLocation']!='All'){
+		if (isset($_POST['StockLocation']) and $_POST['StockLocation']!='All'){
 			if ($myrow['loccode'] == $_POST['StockLocation']){
 				echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
 			} else {
@@ -80,8 +80,8 @@ if (!isset($_POST['FromDate'])){
 			<div class="centre">
 				<input type="submit" name="Go" value="' . _('Create PDF') . '" />
 			</div>';
-    echo '</div>
-          </form>';
+	echo '</div>
+		  </form>';
 
 	 include('includes/footer.inc');
 	 exit;

@@ -3,7 +3,7 @@
 /* Definition of the SpecialOrder class to hold all the information for a special quote/order and delivery
 */
 
-Class SpecialOrder {
+class SpecialOrder {
 
 	var $LineItems; /*array of objects of class LineDetails using the product id as the pointer */
 	var $Initiator;
@@ -37,19 +37,19 @@ Class SpecialOrder {
 	}
 
 	function add_to_order($LineNo, $Qty, $ItemDescr, $Price, $Cost, $StkCat, $ReqDelDate){
-		if ($Qty!=0 AND isset($Qty)){
+		if ($Qty!=0 and isset($Qty)){
 			$this->LineItems[$LineNo] = new LineDetails($LineNo, $Qty, $ItemDescr, $Price, $Cost, $StkCat, $ReqDelDate);
 			$this->LinesOnOrder++;
-			Return 1;
+			return 1;
 		}
-		Return 0;
+		return 0;
 	}
 
 
 	function remove_from_order(&$LineNo){
 		 unset($this->LineItems[$LineNo]);
 	}
-	
+
 	function Order_Value() {
 		$TotalValue=0;
 		foreach ($this->LineItems as $OrderedItems) {
@@ -60,7 +60,7 @@ Class SpecialOrder {
 
 } /* end of class defintion */
 
-Class LineDetails {
+class LineDetails {
 
 	var $LineNo;
 	var $ItemDescription;

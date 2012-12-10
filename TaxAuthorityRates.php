@@ -17,13 +17,11 @@ echo '<p class="page_title_text">
 	. '" alt="" />' . $title. '
 	</p>';
 
-
 if (!isset($TaxAuthority)){
 	prnMsg(_('This page can only be called after selecting the tax authority to edit the rates for') . '. ' . _('Please select the Rates link from the tax authority page') . '<br /><a href="' . $rootpath . '/TaxAuthorities.php">' . _('click here') . '</a> ' . _('to go to the Tax Authority page'),'error');
 	include ('includes/footer.inc');
 	exit;
 }
-
 
 if (isset($_POST['UpdateRates'])){
 
@@ -51,7 +49,7 @@ if (isset($_POST['UpdateRates'])){
 /*Display updated rates
 */
 
-$TaxAuthDetail = DB_query("SELECT description 
+$TaxAuthDetail = DB_query("SELECT description
 							FROM taxauthorities WHERE taxid='" . $TaxAuthority . "'",$db);
 $myrow = DB_fetch_row($TaxAuthDetail);
 
@@ -95,7 +93,7 @@ if (DB_num_rows($TaxRatesResult)>0){
 
 	while ($myrow = DB_fetch_array($TaxRatesResult)){
 
-		if ($OldProvince!=$myrow['dispatchtaxprovince'] AND $OldProvince!=''){
+		if ($OldProvince!=$myrow['dispatchtaxprovince'] and $OldProvince!=''){
 			echo '<tr style="background-color:#555555"><td colspan="3"></td></tr>';
 		}
 
@@ -141,7 +139,7 @@ echo '<br />
 	</div>';
 
 echo '</div>
-      </form>';
+	  </form>';
 
 include( 'includes/footer.inc' );
 ?>

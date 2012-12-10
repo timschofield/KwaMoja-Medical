@@ -9,7 +9,7 @@ $title = _('Sales Analysis Report Columns');
 include('includes/header.inc');
 
 
-Function DataOptions ($DataX){
+function DataOptions ($DataX){
 
 /*Sales analysis headers group by data options */
  if ($DataX == 'Quantity'){
@@ -78,32 +78,32 @@ if (isset($_POST['submit'])) {
 		$InputError = 1;
 		prnMsg(_('The report heading must be 70 characters or less long'),'error');
 	}
-	if (!is_numeric($_POST['PeriodFrom']) AND $_POST['Calculation']==0){
+	if (!is_numeric($_POST['PeriodFrom']) and $_POST['Calculation']==0){
 		$InputError = 1;
 		prnMsg(_('The period from must be numeric'),'error');
 	}
-	if (!is_numeric($_POST['PeriodTo']) AND $_POST['Calculation']==0){
+	if (!is_numeric($_POST['PeriodTo']) and $_POST['Calculation']==0){
 		$InputError = 1;
 		prnMsg(_('The period to must be numeric'),'error');
 	}
-	if (!is_numeric($_POST['Constant']) AND $_POST['Calculation']==1){
+	if (!is_numeric($_POST['Constant']) and $_POST['Calculation']==1){
 		$InputError = 1;
 		prnMsg(_('The constant entered must be numeric'),'error');
 	}
-	if (isset($_POST['ColID']) AND !is_numeric($_POST['ColID'])){
+	if (isset($_POST['ColID']) and !is_numeric($_POST['ColID'])){
 		$InputError = 1;
 		prnMsg(_('The column number must be numeric'),'error');
-	} elseif(isset($_POST['ColID']) AND $_POST['ColID'] >10){
+	} elseif(isset($_POST['ColID']) and $_POST['ColID'] >10){
 		$InputError = 1;
 		prnMsg(_('The column number must be less than 11'),'error');
 	}
-	if ($_POST['Calculation']==0 AND $_POST['PeriodFrom'] > $_POST['PeriodTo']){
+	if ($_POST['Calculation']==0 and $_POST['PeriodFrom'] > $_POST['PeriodTo']){
 		$InputError = 1;
 		prnMsg(_('The Period From must be before the Period To, otherwise the column will always have no value'),'error');
 	}
 
 
-	if (isset($SelectedCol) AND $InputError !=1) {
+	if (isset($SelectedCol) and $InputError !=1) {
 
 
 		$sql = "UPDATE reportcolumns SET heading1='" . $_POST['Heading1'] . "',
@@ -142,10 +142,10 @@ if (isset($_POST['submit'])) {
 		unset($_POST['BudgetOrActual']);
 
 
-	} elseif ($InputError !=1 AND
-			(($_POST['Calculation']==1 AND
-			(($_POST['ColNumerator']>0 AND $_POST['Constant']!=0) OR ($_POST['ColNumerator']>0 AND $_POST['ColDenominator']>0))
-			OR $_POST['Calculation']==0))) {
+	} elseif ($InputError !=1 and
+			(($_POST['Calculation']==1 and
+			(($_POST['ColNumerator']>0 and $_POST['Constant']!=0) or ($_POST['ColNumerator']>0 and $_POST['ColDenominator']>0))
+			or $_POST['Calculation']==0))) {
 
 	/*SelectedReport is null cos no item selected on first time round so must be adding a new column to the report */
 

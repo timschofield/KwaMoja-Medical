@@ -36,7 +36,7 @@ if (isset($_POST['submit'])) {
 		prnMsg( _('The tax province name may not be empty'), 'error');
 	}
 
-	if ($_POST['SelectedTaxProvince']!='' AND $InputError !=1) {
+	if (isset($_POST['SelectedTaxProvince']) and $_POST['SelectedTaxProvince']!='' and $InputError !=1) {
 
 		/*SelectedTaxProvince could also exist if submit had not been clicked this code would not run in this case cos submit is false of course  see the delete code below*/
 		// Check the name does not clash
@@ -76,17 +76,17 @@ if (isset($_POST['submit'])) {
 				WHERE taxprovincename " .LIKE. " '".$_POST['TaxProvinceName'] ."'";
 		$result = DB_query($sql,$db);
 		$myrow = DB_fetch_row($result);
-		
+
 		if ( $myrow[0] > 0 ) {
-		
+
 			$InputError = 1;
 			prnMsg( _('The tax province cannot be created because another with the same name already exists'),'error');
-		
+
 		} else {
-			
+
 			$sql = "INSERT INTO taxprovinces (taxprovincename )
 					VALUES ('" . $_POST['TaxProvinceName'] ."')";
-					
+
 			$ErrMsg = _('Could not add tax province');
 			$result = DB_query($sql,$db, $ErrMsg);
 

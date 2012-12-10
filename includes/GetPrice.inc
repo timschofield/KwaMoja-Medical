@@ -143,7 +143,7 @@ function GetPrice ($StockID, $DebtorNo, $BranchCode, $db, $ReportZeroPrice=1){
 									if ($ReportZeroPrice ==1){
 										prnMsg(_('There are no prices set up for') . ' ' . $StockID,'warn');
 									}
-									Return 0;
+									return 0;
 								}
 							}
 						}
@@ -157,9 +157,9 @@ function GetPrice ($StockID, $DebtorNo, $BranchCode, $db, $ReportZeroPrice=1){
 		/*There is a price from one of the above so return that */
 
 		$myrow=DB_fetch_row($result);
-		Return $myrow[0];
+		return $myrow[0];
 	} else {
-		Return 0;
+		return 0;
 	}
 
 }

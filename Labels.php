@@ -31,8 +31,8 @@ if (isset($_POST['SelectedLabelID'])){
 		for ($i=0;$i<=$_POST['NoOfFieldsDefined'];$i++){
 
 			if (ctype_digit($_POST['VPos' . $i])
-				AND ctype_digit($_POST['HPos' . $i])
-				AND ctype_digit($_POST['FontSize' . $i])){ // if all entries are integers
+				and ctype_digit($_POST['HPos' . $i])
+				and ctype_digit($_POST['FontSize' . $i])){ // if all entries are integers
 
 				$result =DB_query("UPDATE labelfields SET fieldvalue='" . $_POST['FieldName' . $i] . "',
 														vpos='" . $_POST['VPos' . $i] . "',
@@ -46,7 +46,7 @@ if (isset($_POST['SelectedLabelID'])){
 			}
 		}
 	}
-	if (ctype_digit($_POST['VPos']) AND ctype_digit($_POST['HPos']) AND ctype_digit($_POST['FontSize'])){
+	if (ctype_digit($_POST['VPos']) and ctype_digit($_POST['HPos']) and ctype_digit($_POST['FontSize'])){
 		//insert the new label field entered
 		$result = DB_query("INSERT INTO labelfields (labelid,
 													fieldvalue,
@@ -79,10 +79,10 @@ if (isset($_POST['submit'])) {
 	}
 	$Message = '';
 
-	if (isset($_POST['PaperSize']) AND $_POST['PaperSize']!='custom'){
+	if (isset($_POST['PaperSize']) and $_POST['PaperSize']!='custom'){
 		$_POST['PageWidth'] = $PaperSize[$_POST['PaperSize']]['PageWidth'];
 		$_POST['PageHeight'] = $PaperSize[$_POST['PaperSize']]['PageHeight'];
-	} elseif ($_POST['PaperSize']=='custom' AND !isset($_POST['PageWidth'])){
+	} elseif ($_POST['PaperSize']=='custom' and !isset($_POST['PageWidth'])){
 		$_POST['PageWidth'] = 0;
 		$_POST['PageHeight'] = 0;
 	}
@@ -137,7 +137,7 @@ if (isset($_POST['submit'])) {
 		$Message = _('The new label template has been added to the database');
 	}
 	//run the SQL from either of the above possibilites
-	if (isset($InputError) AND $InputError !=1) {
+	if (isset($InputError) and $InputError !=1) {
 		unset( $_POST['PaperSize']);
 		unset( $_POST['Description']);
 		unset( $_POST['Width']);
@@ -208,7 +208,7 @@ if (!isset($SelectedLabelID)) {
 			$NoOfCols = floor(($myrow['pagewidth']-$myrow['leftmargin'])/$myrow['columnwidth']);
 
 			foreach ($PaperSize as $PaperName=>$PaperType) {
-				if ($PaperType['PageWidth'] == $myrow['pagewidth'] AND $PaperType['PageHeight'] == $myrow['pageheight']) {
+				if ($PaperType['PageWidth'] == $myrow['pagewidth'] and $PaperType['PageHeight'] == $myrow['pageheight']) {
 					$Paper = $PaperName;
 				}
 			}
@@ -310,7 +310,7 @@ if (isset($SelectedLabelID)) {
 	$_POST['ColumnWidth']	= $myrow['columnwidth'];
 
 	foreach ($PaperSize as $PaperName=>$PaperType) {
-		if ($PaperType['PageWidth'] == $myrow['pagewidth'] AND $PaperType['PageHeight'] == $myrow['pageheight']) {
+		if ($PaperType['PageWidth'] == $myrow['pagewidth'] and $PaperType['PageHeight'] == $myrow['pageheight']) {
 			$_POST['PaperSize'] = $PaperName;
 		}
 	}
@@ -341,7 +341,7 @@ if (!isset($_POST['PaperSize'])){
 	echo '<option value="custom">' . _('Custom Size') . '</option>';
 }
 foreach($PaperSize as $PaperType=>$PaperSizeElement) {
-	if (isset($_POST['PaperSize']) AND $PaperType==$_POST['PaperSize']) {
+	if (isset($_POST['PaperSize']) and $PaperType==$_POST['PaperSize']) {
 		echo '<option selected="selected" value="';
 	} else {
 		echo '<option value="';
@@ -379,7 +379,7 @@ if (!isset($_POST['ColumnWidth'])) {
 	$_POST['ColumnWidth']=0;
 }
 
-if (!isset($_POST['PaperSize']) OR $_POST['PaperSize'] == 'Custom') {
+if (!isset($_POST['PaperSize']) or $_POST['PaperSize'] == 'Custom') {
 	if (!isset($_POST['PageWidth'])){
 		$_POST['PageWidth'] = 0;
 		$_POST['PageHeight'] = 0;

@@ -15,7 +15,7 @@ if (!isset($mysqlport)){
 global $db;	// Make sure it IS global, regardless of our context
 
 $db = mysqli_connect($host , $dbuser, $dbpassword,$_SESSION['DatabaseName'], $mysqlport);
-//$result=DB_query('SET sql_mode = ANSI', $db);
+$result=DB_query('SET sql_mode = ANSI', $db);
 
 
 //this statement sets the charset to be used for sending data to and from the db server
@@ -69,13 +69,14 @@ function DB_query ($SQL,
 	global $PathPrefix;
 
 	$result=mysqli_query($Conn, $SQL);
+
 	$_SESSION['LastInsertId'] = mysqli_insert_id($Conn);
 
 	if ($DebugMessage == '') {
 		$DebugMessage = _('The SQL that failed was');
 	}
 
-	if (DB_error_no($Conn) != 0 AND $TrapErrors==true){
+	if (DB_error_no($Conn) != 0 and $TrapErrors==true){
 		if ($TrapErrors){
 			require_once($PathPrefix . 'includes/header.inc');
 		}
@@ -94,13 +95,13 @@ function DB_query ($SQL,
 			include($PathPrefix . 'includes/footer.inc');
 			exit;
 		}
-	} elseif (isset($_SESSION['MonthsAuditTrail']) and (DB_error_no($Conn)==0 AND $_SESSION['MonthsAuditTrail']>0) AND (DB_affected_rows($result)>0)){
+	} elseif (isset($_SESSION['MonthsAuditTrail']) and (DB_error_no($Conn)==0 and $_SESSION['MonthsAuditTrail']>0) and (DB_affected_rows($result)>0)){
 
 		$SQLArray = explode(' ', $SQL);
 
 		if (($SQLArray[0] == 'INSERT')
-			OR ($SQLArray[0] == 'UPDATE')
-			OR ($SQLArray[0] == 'DELETE')) {
+			or ($SQLArray[0] == 'UPDATE')
+			or ($SQLArray[0] == 'DELETE')) {
 
 			if ($SQLArray[2]!='audittrail'){ // to ensure the auto delete of audit trail history is not logged
 				$AuditSQL = "INSERT INTO audittrail (transactiondate,
@@ -121,19 +122,19 @@ function DB_query ($SQL,
 function DB_fetch_row (&$ResultIndex) {
 
 	$RowPointer=mysqli_fetch_row($ResultIndex);
-	Return $RowPointer;
+	return $RowPointer;
 }
 
 function DB_fetch_assoc (&$ResultIndex) {
 
 	$RowPointer=mysqli_fetch_assoc($ResultIndex);
-	Return $RowPointer;
+	return $RowPointer;
 }
 
 function DB_fetch_array (&$ResultIndex) {
 
 	$RowPointer=mysqli_fetch_array($ResultIndex);
-	Return $RowPointer;
+	return $RowPointer;
 }
 
 function DB_data_seek (&$ResultIndex,$Record) {
@@ -163,7 +164,7 @@ function DB_error_msg(&$Conn){
 	return mysqli_error($Conn);
 }
 
-function DB_Last_Insert_ID(&$Conn,$table, $fieldname){
+function DB_Last_Insert_ID(&$Conn, $Table, $FieldName){
 //	return mysqli_insert_id($Conn);
 	if (isset($_SESSION['LastInsertId'])) {
 		$Last_Insert_ID = $_SESSION['LastInsertId'];
@@ -181,12 +182,12 @@ function DB_escape_string($String){
 
 function DB_show_tables(&$Conn){
 	$Result = DB_query('SHOW TABLES',$Conn);
-	Return $Result;
+	return $Result;
 }
 
 function DB_show_fields($TableName, &$Conn){
 	$Result = DB_query("DESCRIBE $TableName",$Conn);
-	Return $Result;
+	return $Result;
 }
 
 function interval( $val, $Inter ){

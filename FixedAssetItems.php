@@ -23,7 +23,7 @@ if (isset($_GET['AssetID'])){
 	$AssetID = '';
 }
 
-if (isset($_FILES['ItemPicture']) AND $_FILES['ItemPicture']['name'] !='') {
+if (isset($_FILES['ItemPicture']) and $_FILES['ItemPicture']['name'] !='') {
 
 	$result    = $_FILES['ItemPicture']['error'];
  	$UploadTheFile = 'Yes'; //Assume all is well to start off with
@@ -72,7 +72,7 @@ if (isset($_POST['submit'])) {
 	$i=1;
 
 
-	if (!isset($_POST['Description']) or mb_strlen($_POST['Description']) > 50 OR mb_strlen($_POST['Description'])==0) {
+	if (!isset($_POST['Description']) or mb_strlen($_POST['Description']) > 50 or mb_strlen($_POST['Description'])==0) {
 		$InputError = 1;
 		prnMsg (_('The asset description must be entered and be fifty characters or less long. It cannot be a zero length string either, a description is required'),'error');
 		$Errors[$i] = 'Description';
@@ -104,16 +104,16 @@ if (isset($_POST['submit'])) {
 		$Errors[$i] = 'AssetLocation';
 		$i++;
 	}
-	if (!is_numeric(filter_number_format($_POST['DepnRate'])) 
-		OR filter_number_format($_POST['DepnRate'])>100 
+	if (!is_numeric(filter_number_format($_POST['DepnRate']))
+		OR filter_number_format($_POST['DepnRate'])>100
 		OR filter_number_format($_POST['DepnRate'])<0){
-			
+
 		$InputError = 1;
 		prnMsg(_('The depreciation rate is expected to be a number between 0 and 100'),'error');
 		$Errors[$i] = 'DepnRate';
 		$i++;
 	}
-	if (filter_number_format($_POST['DepnRate'])>0 AND filter_number_format($_POST['DepnRate'])<1){
+	if (filter_number_format($_POST['DepnRate'])>0 and filter_number_format($_POST['DepnRate'])<1){
 		prnMsg(_('Numbers less than 1 are interpreted as less than 1%. The depreciation rate should be entered as a number between 0 and 100'),'warn');
 	}
 
@@ -126,22 +126,22 @@ if (isset($_POST['submit'])) {
 			$result = DB_Txn_Begin($db);
 
 			/*Need to check if changing the balance sheet codes - as will need to do journals for the cost and accum depn of the asset to the new category */
-			$result = DB_query("SELECT assetcategoryid,  
-										cost, 
-										accumdepn, 
-										costact, 
-										accumdepnact 
-								FROM fixedassets INNER JOIN fixedassetcategories 
+			$result = DB_query("SELECT assetcategoryid,
+										cost,
+										accumdepn,
+										costact,
+										accumdepnact
+								FROM fixedassets INNER JOIN fixedassetcategories
 								ON fixedassets.assetcategoryid=fixedassetcategories.categoryid
 								WHERE assetid='" . $AssetID . "'",$db);
 			$OldDetails = DB_fetch_array($result);
-			if ($OldDetails['assetcategoryid'] !=$_POST['AssetCategoryID']  AND $OldDetails['cost']!=0){
+			if ($OldDetails['assetcategoryid'] !=$_POST['AssetCategoryID']  and $OldDetails['cost']!=0){
 
 				$PeriodNo = GetPeriod(Date($_SESSION['DefaultDateFormat']),$db);
 				/* Get the new account codes for the new asset category */
-				$result = DB_query("SELECT costact, 
-											accumdepnact 
-									FROM fixedassetcategories 
+				$result = DB_query("SELECT costact,
+											accumdepnact
+									FROM fixedassetcategories
 									WHERE categoryid='" . $_POST['AssetCategoryID'] . "'",$db);
 				$NewAccounts = DB_fetch_array($result);
 
@@ -154,7 +154,7 @@ if (isset($_POST['submit'])) {
 											periodno,
 											account,
 											narrative,
-											amount) 
+											amount)
 							VALUES ('42',
 								'" . $TransNo . "',
 								'" . Date('Y-m-d') . "',
@@ -174,7 +174,7 @@ if (isset($_POST['submit'])) {
 											periodno,
 											account,
 											narrative,
-											amount) 
+											amount)
 							VALUES ('42',
 								'" . $TransNo . "',
 								'" . Date('Y-m-d') . "',
@@ -214,7 +214,7 @@ if (isset($_POST['submit'])) {
 												periodno,
 												account,
 												narrative,
-												amount) 
+												amount)
 								VALUES ('42',
 									'" . $TransNo . "',
 									'" . Date('Y-m-d') . "',
@@ -282,7 +282,7 @@ if (isset($_POST['submit'])) {
 		prnMsg( _('Validation failed, no updates or deletes took place'), 'error');
 	}
 
-} elseif (isset($_POST['delete']) AND mb_strlen($_POST['delete']) >1 ) {
+} elseif (isset($_POST['delete']) and mb_strlen($_POST['delete']) >1 ) {
 //the button to delete a selected record was clicked instead of the submit button
 
 	$CancelDelete = 0;
@@ -324,7 +324,7 @@ if (isset($_POST['submit'])) {
 										periodno,
 										account,
 										narrative,
-										amount) 
+										amount)
 						VALUES ('43',
 							'" . $TransNo . "',
 							'" . Date('Y-m-d') . "',
@@ -344,7 +344,7 @@ if (isset($_POST['submit'])) {
 										periodno,
 										account,
 										narrative,
-										amount) 
+										amount)
 						VALUES ('43',
 							'" . $TransNo . "',
 							'" . Date('Y-m-d') . "',
@@ -386,7 +386,7 @@ echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />'
 echo '<table class="selection">';
 
 
-if (!isset($AssetID) OR $AssetID=='') {
+if (!isset($AssetID) or $AssetID=='') {
 
 /*If the page was called without $AssetID passed to page then assume a new asset is to be entered other wise the form showing the fields with the existing entries against the asset will show for editing with a hidden AssetID field. New is set to flag that the page may have called itself and still be entering a new asset, in which case the page needs to know not to go looking up details for an existing asset*/
 
@@ -467,7 +467,7 @@ echo '<tr>
 	</tr>';
 
 if (!isset($New) ) { //ie not new at all!
-	
+
 	echo '<tr>
 			<td>'. _('Image File (.jpg)') . ':</td>
 			<td><input type="file" id="ItemPicture" name="ItemPicture" /></td>';
@@ -518,7 +518,7 @@ if (!isset($_POST['AssetCategoryID'])) {
 	$_POST['AssetCategoryID']=$category;
 }
 
-if (isset($AssetRow) AND ($AssetRow['datepurchased']!='0000-00-00' AND $AssetRow['datepurchased']!='')){
+if (isset($AssetRow) and ($AssetRow['datepurchased']!='0000-00-00' and $AssetRow['datepurchased']!='')){
 	echo '<tr>
 			<td>' . _('Date Purchased') . ':</td>
 			<td>' . ConvertSQLDate($AssetRow['datepurchased']) . '</td>
@@ -533,7 +533,7 @@ $result = DB_query($sql,$db,$ErrMsg,$DbgMsg);
 echo '<tr>
 		<td>' . _('Asset Location') . ':</td>
 		<td><select name="AssetLocation">';
-		
+
 while ($myrow=DB_fetch_array($result)){
 	if ($_POST['AssetLocation']==$myrow['locationid']){
 		echo '<option selected="selected" value="' . $myrow['locationid'] .'">' . $myrow['locationdescription'] . '</option>';
@@ -576,7 +576,7 @@ echo '</select></td>
 	</table>';
 
 if (isset($AssetRow)){
-	
+
 	echo '<table>
 		<tr>
 			<th colspan="2">' . _('Asset Financial Summary') . '</th>
@@ -595,14 +595,14 @@ if (isset($AssetRow)){
 		</tr>';
 
 	/*Get the last period depreciation (depn is transtype =44) was posted for */
-	$result = DB_query("SELECT periods.lastdate_in_period, 
-								max(fixedassettrans.periodno) 
-					FROM fixedassettrans INNER JOIN periods 
-					ON fixedassettrans.periodno=periods.periodno 
-					WHERE transtype=44 
+	$result = DB_query("SELECT periods.lastdate_in_period,
+								max(fixedassettrans.periodno)
+					FROM fixedassettrans INNER JOIN periods
+					ON fixedassettrans.periodno=periods.periodno
+					WHERE transtype=44
 					GROUP BY periods.lastdate_in_period
 					ORDER BY periods.lastdate_in_period DESC",$db);
-									
+
 	$LastDepnRun = DB_fetch_row($result);
 	if(DB_num_rows($result)==0){
 		$LastRunDate = _('Not Yet Run');

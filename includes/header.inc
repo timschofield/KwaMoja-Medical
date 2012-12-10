@@ -7,7 +7,7 @@
 	//  $title - should be defined in the page this file is included with
 	if (!isset($rootpath)){
 		$rootpath = dirname(htmlspecialchars($_SERVER['PHP_SELF']));
-		if ($rootpath == '/' OR $rootpath == "\\") {
+		if ($rootpath == '/' or $rootpath == "\\") {
 			$rootpath = '';
 		}
 	}
@@ -43,14 +43,14 @@
 	echo '<body>';
 
 
-    echo '<div id="CanvasDiv">'; 
-	echo '<div id="HeaderDiv">'; 
-	echo '<div id="HeaderWrapDiv">'; 
+    echo '<div id="CanvasDiv">';
+	echo '<div id="HeaderDiv">';
+	echo '<div id="HeaderWrapDiv">';
 
 
 	if (isset($title)) {
 
-	
+
 		echo '<div id="AppInfoDiv">'; //===HJ===
 			echo '<div id="AppInfoCompanyDiv">';
 				echo '<img src="'.$rootpath.'/css/'.$theme.'/images/company.png" title="'._('Company').'" alt="'._('Company').'"/>'.stripslashes($_SESSION['CompanyRecord']['coyname']);
@@ -65,16 +65,16 @@
 		echo '</div>'; // AppInfoDiv
 
 
-		echo '<div id="QuickMenuDiv"><ul>'; 
-		
+		echo '<div id="QuickMenuDiv"><ul>';
+
 		echo '<li><a href="'.$rootpath.'/index.php">'._('Main Menu').'</a></li>'; //take off inline formatting, use CSS instead ===HJ===
 
 		if (count($_SESSION['AllowedPageSecurityTokens'])>1){
 			echo '<li><a href="'.$rootpath.'/SelectCustomer.php">'._('Customers').'</a></li>';
 			echo '<li><a href="'.$rootpath.'/SelectProduct.php">' ._('Items')    .'</a></li>';
 			echo '<li><a href="'.$rootpath.'/SelectSupplier.php">'._('Suppliers').'</a></li>';
-			
-			$DefaultManualLink = '<li><a rel="external" accesskey="8" href="' .  $rootpath . '/doc/Manual/ManualContents.php'. $ViewTopic . $BookMark. '">'._('Manual').'</a></li>';
+
+			$DefaultManualLink = '<li><a rel="external" target="_blank" accesskey="8" href="' .  $rootpath . '/doc/Manual/ManualContents.php'. $ViewTopic . $BookMark. '">'._('Manual').'</a></li>';
 
 			if (mb_substr($_SESSION['Language'],0,2) != 'en'){
 				if (file_exists('locale/'.$_SESSION['Language'].'/Manual/ManualContents.php')){
@@ -91,9 +91,9 @@
 
 		echo '</ul></div>'; // QuickMenuDiv
 	}
-	echo '</div>'; // HeaderWrapDiv 
+	echo '</div>'; // HeaderWrapDiv
 	echo '</div>'; // Headerdiv
-	echo '<div id="BodyDiv">'; 
-	echo '<div id="BodyWrapDiv">'; 
+	echo '<div id="BodyDiv">';
+	echo '<div id="BodyWrapDiv">';
 
 ?>

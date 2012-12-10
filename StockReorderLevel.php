@@ -94,7 +94,7 @@ while ($myrow=DB_fetch_array($LocStockResult)) {
 			$myrow['loccode'],
 			$myrow['reorderlevel']);
 	$j++;
-	If ($j == 12){
+	if ($j == 12){
 		$j=1;
 		echo $TableHeader;
 	}

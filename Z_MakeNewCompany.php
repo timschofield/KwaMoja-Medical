@@ -9,7 +9,7 @@ include ('includes/SQL_CommonFunctions.inc');
 
 if (isset($_POST['EnterCompanyDetails'])) {
 
-	header ('Location:' . $rootpath . '/CompanyPreferences.php?' . SID);
+	header ('Location:' . $rootpath . '/CompanyPreferences.php');
 	exit;
 }
 
@@ -26,7 +26,7 @@ if (! is_writeable('./companies/')){
 }
 
 
-if (isset($_POST['submit']) AND isset($_POST['NewCompany'])) {
+if (isset($_POST['submit']) and isset($_POST['NewCompany'])) {
 
 	if(mb_strlen($_POST['NewCompany'])>32
 		OR ContainsIllegalCharacters($_POST['NewCompany'])){
@@ -34,8 +34,8 @@ if (isset($_POST['submit']) AND isset($_POST['NewCompany'])) {
 	} else {
 
 		$_POST['NewCompany'] = strtolower($_POST['NewCompany']);
-		echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?' . SID . '">';
-        echo '<div class="centre">';
+		echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '">';
+		echo '<div class="centre">';
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 		/* check for directory existence */
 		if (!file_exists('./companies/' . $_POST['NewCompany'])
@@ -72,14 +72,14 @@ if (isset($_POST['submit']) AND isset($_POST['NewCompany'])) {
 				if ($dbType=='postgres'){
 
 					$PgConnStr = 'dbname=' . $_POST['NewCompany'];
-					if ( isset($host) && ($host != "")) {
+					if ( isset($host) and ($host != "")) {
 						$PgConnStr = 'host=' . $host . ' ' . $PgConnStr;
 					}
 
-					if (isset( $dbuser ) && ($dbuser != "")) {
+					if (isset( $dbuser ) and ($dbuser != "")) {
 						// if we have a user we need to use password if supplied
 						$PgConnStr .= " user=".$dbuser;
-						if ( isset( $dbpassword ) && ($dbpassword != "") ) {
+						if ( isset( $dbpassword ) and ($dbpassword != "") ) {
 							$PgConnStr .= " password=".$dbpassword;
 						}
 					}
@@ -118,7 +118,7 @@ if (isset($_POST['submit']) AND isset($_POST['NewCompany'])) {
 						if (mb_substr($SQLScriptFile[$i],0,8) == 'LANGUAGE'){
 							$InAFunction = false;
 						}
-						if (mb_strpos($SQLScriptFile[$i],';')>0 AND ! $InAFunction){
+						if (mb_strpos($SQLScriptFile[$i],';')>0 and ! $InAFunction){
 							$SQL = mb_substr($SQL,0,mb_strlen($SQL)-1);
 							$result = DB_query($SQL, $db, $ErrMsg);
 							$SQL='';
@@ -137,15 +137,15 @@ if (isset($_POST['submit']) AND isset($_POST['NewCompany'])) {
 			$Result = mkdir('./companies/' . $_POST['NewCompany'] . '/EDI_Pending');
 			$Result = mkdir('./companies/' . $_POST['NewCompany'] . '/FormDesigns');
 			$Result = mkdir('./companies/' . $_POST['NewCompany'] . '/reportwriter');
-		
+
 			copy ('./companies/' . $_SESSION['DatabaseName'] . '/FormDesigns/GoodsReceived.xml', './companies/' .$_POST['NewCompany']  . '/FormDesigns/GoodsReceived.xml');
 			copy ('./companies/' . $_SESSION['DatabaseName'] . '/FormDesigns/PickingList.xml', './companies/' .$_POST['NewCompany']  . '/FormDesigns/PickingList.xml');
 			copy ('./companies/' . $_SESSION['DatabaseName'] . '/FormDesigns/PurchaseOrder.xml', './companies/' .$_POST['NewCompany']  . '/FormDesigns/PurchaseOrder.xml');
-					
+
 			/*OK Now upload the logo */
 			if ($UploadTheLogo=='Yes'){
 				$result  =  move_uploaded_file($_FILES['LogoFile']['tmp_name'], $filename);
-				$message = ($result)?_('File url') ."<a href='". $filename ."'>" .  $filename . '</a>' : _('Something is wrong with uploading a file');
+				$message = ($result)?_('File url') .'<a href="'. $filename . '">' .  $filename . '</a>' : _('Something is wrong with uploading a file');
 			}
 
 		} else {
@@ -209,7 +209,7 @@ echo '<br />';
 prnMsg (_('This utility will create a new company') . '<br /><br />' .
 		_('If the company name already exists then you cannot recreate it'), 'info', _('PLEASE NOTE'));
 echo '<br /></div>';
-echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?' . SID . '" enctype="multipart/form-data">';
+echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '" enctype="multipart/form-data">';
 echo '<div class="centre">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 

@@ -4,7 +4,7 @@ function Create_POS_Data_Full ($POSDebtorNo, $POSBranchCode, $PathPrefix, $db) {
 
 	set_time_limit(1800);
 	ini_set('max_execution_time',1800);
-	
+
 	$result = DB_query("SELECT confvalue FROM config WHERE confname='reports_dir'",$db);
 	$ReportDirRow = DB_fetch_row($result);
 	$ReportDir = $ReportDirRow[0];
@@ -34,7 +34,7 @@ function Create_POS_Data_Full ($POSDebtorNo, $POSBranchCode, $PathPrefix, $db) {
 	}
 
 	fwrite($FileHandle,"UPDATE config SET configvalue='" . $DefaultDateFormat . "' WHERE configname='DefaultDateFormat';\n");
-	
+
 	fwrite($FileHandle,"DELETE FROM currencies;\n");
 	$result = DB_query('SELECT currency, currabrev, country, hundredsname,decimalplaces, rate FROM currencies',$db);
 	while ($CurrRow = DB_fetch_array($result)) {
@@ -221,21 +221,21 @@ function GetPriceQuick ($StockID, $DebtorNo, $BranchCode, $DefaultPriceList,$db)
 			$Prices[$i]['DebtorNo'] = $myrow['debtorno'];
 			$Prices[$i]['BranchCode'] = $myrow['branchcode'];
 			$Prices[$i]['EndDate'] = $myrow['enddate'];
-			if ($myrow['debtorno']==$DebtorNo AND $myrow['branchcode']==$BranchCode AND $myrow['enddate']!='0000-00-00') {
+			if ($myrow['debtorno']==$DebtorNo and $myrow['branchcode']==$BranchCode and $myrow['enddate']!='0000-00-00') {
 				$RankArray[$i] = 1;
-			} elseif ($myrow['debtorno']==$DebtorNo AND $myrow['branchcode']==$BranchCode) {
+			} elseif ($myrow['debtorno']==$DebtorNo and $myrow['branchcode']==$BranchCode) {
 				$RankArray[$i] = 2;
-			} elseif ($myrow['debtorno']==$DebtorNo AND $myrow['branchcode']=='' AND $myrow['enddate']!='0000-00-00'){
+			} elseif ($myrow['debtorno']==$DebtorNo and $myrow['branchcode']=='' and $myrow['enddate']!='0000-00-00'){
 				$RankArray[$i] = 3;
-			} elseif ($myrow['debtorno']==$DebtorNo AND $myrow['branchcode']=='' ){
+			} elseif ($myrow['debtorno']==$DebtorNo and $myrow['branchcode']=='' ){
 				$RankArray[$i] = 4;
-			} elseif ($myrow['debtorno']=='' AND $myrow['branchcode']=='' AND $myrow['typeabbrev']!=$DefaultPriceList AND $myrow['enddate']!='0000-00-00'){
+			} elseif ($myrow['debtorno']=='' and $myrow['branchcode']=='' and $myrow['typeabbrev']!=$DefaultPriceList and $myrow['enddate']!='0000-00-00'){
 				$RankArray[$i] = 5;
-			} elseif ($myrow['debtorno']=='' AND $myrow['branchcode']=='' AND $myrow['typeabbrev']!=$DefaultPriceList){
+			} elseif ($myrow['debtorno']=='' and $myrow['branchcode']=='' and $myrow['typeabbrev']!=$DefaultPriceList){
 				$RankArray[$i] = 6;
-			} elseif ($myrow['debtorno']=='' AND $myrow['branchcode']=='' AND $myrow['enddate']!='0000-00-00'){
+			} elseif ($myrow['debtorno']=='' and $myrow['branchcode']=='' and $myrow['enddate']!='0000-00-00'){
 				$RankArray[$i] = 7;
-			}  elseif ($myrow['debtorno']=='' AND $myrow['branchcode']==''){
+			}  elseif ($myrow['debtorno']=='' and $myrow['branchcode']==''){
 				$RankArray[$i] = 8;
 			}
 			$i++;

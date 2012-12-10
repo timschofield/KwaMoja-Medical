@@ -50,12 +50,12 @@ if (DB_num_rows($result)==0){
 } else {
 	while ($myrow=DB_fetch_array($result)){
 		$Account = $myrow['accountcode'] . ' - ' . htmlspecialchars($myrow['accountname'],ENT_QUOTES,'UTF-8',false);
-		if (isset($SelectedAccount) AND isset($LastCode) AND $SelectedAccount==$myrow['accountcode']){
+		if (isset($SelectedAccount) and isset($LastCode) and $SelectedAccount==$myrow['accountcode']){
 			echo '<option selected="selected" value="' . $myrow['accountcode'] . '">' . $Account . '</option>';
 			$PrevCode=$LastCode;
 		} else {
 			echo '<option value="' . $myrow['accountcode'] . '">' . $Account . '</option>';
-			if (isset($SelectedAccount) AND isset($LastCode) AND $SelectedAccount == $LastCode) {
+			if (isset($SelectedAccount) and isset($LastCode) and $SelectedAccount == $LastCode) {
 				$NextCode=$myrow['accountcode'];
 			}
 		}
@@ -65,8 +65,12 @@ if (DB_num_rows($result)==0){
 		</tr>';
 }
 
-if (!isset($PrevCode)) {$PrevCode='';}
-if (!isset($NextCode)) {$NextCode='';}
+if (!isset($PrevCode)) {
+	$PrevCode='';
+}
+if (!isset($NextCode)) {
+	$NextCode='';
+}
 
 echo '</table>';
 echo '<input type="hidden" name="PrevAccount" value="'.$PrevCode.'" />';
@@ -135,16 +139,16 @@ if (isset($SelectedAccount) and $SelectedAccount != '') {
 		$Actual[$myrow['period']]=$myrow['actual'];
 	}
 
-	
+
 	if (isset($_POST['Apportion'])) {
 		for ($i=1; $i<=12; $i++) {
-			if (filter_number_format($_POST['AnnualAmountLY']) != '0' AND is_numeric(filter_number_format($_POST['AnnualAmountLY']))){
+			if (filter_number_format($_POST['AnnualAmountLY']) != '0' and is_numeric(filter_number_format($_POST['AnnualAmountLY']))){
 				$Budget[$CurrentYearEndPeriod+$i-24]	=round(filter_number_format( $_POST['AnnualAmountLY'])/12,0);
 			}
-			if (filter_number_format($_POST['AnnualAmountTY']) != '0' AND is_numeric(filter_number_format($_POST['AnnualAmountTY']))){
+			if (filter_number_format($_POST['AnnualAmountTY']) != '0' and is_numeric(filter_number_format($_POST['AnnualAmountTY']))){
 				$Budget[$CurrentYearEndPeriod+$i-12]	= round(filter_number_format($_POST['AnnualAmountTY'])/12,0);
 			}
-			if (filter_number_format($_POST['AnnualAmount']) != '0' AND is_numeric(filter_number_format($_POST['AnnualAmount']))){
+			if (filter_number_format($_POST['AnnualAmount']) != '0' and is_numeric(filter_number_format($_POST['AnnualAmount']))){
 				$Budget[$CurrentYearEndPeriod+$i]	= round(filter_number_format($_POST['AnnualAmount'])/12,0);
 			}
 		}
@@ -228,7 +232,7 @@ if (isset($SelectedAccount) and $SelectedAccount != '') {
 			<td><input type="submit" name="Apportion" value="' . _('Apportion Budget') . '" /></td>
 		</tr>
 		</table>';
-		
+
 	echo '<input type="hidden" name="SelectedAccount" value="'.$SelectedAccount.'" />';
 
 	echo '<script  type="text/javascript">defaultControl(document.form.1next);</script>';
@@ -257,7 +261,7 @@ if (isset($SelectedAccount) and $SelectedAccount != '') {
 					bfwd,
 					bfwdbudget
 				FROM chartdetails
-				WHERE period ='". $i . "' 
+				WHERE period ='". $i . "'
 				AND  accountcode = '" . $SelectedAccount . "'";
 
 		$ErrMsg = _('Could not retrieve the ChartDetail records because');

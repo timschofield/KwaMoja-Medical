@@ -11,7 +11,7 @@ for controlled items - used in:
 */
 
 //we start with a batch or serial no header and need to display something for verification...
-global $tableheader;
+global $TableHeader;
 
 if (isset($_GET['LineNo'])){
 	$LineNo = $_GET['LineNo'];
@@ -24,7 +24,7 @@ if (isset($_GET['LineNo'])){
 echo '<table class="selection">
 		<tr><td valign="top">
 			<table class="selection">';
-echo $tableheader;
+echo $TableHeader;
 
 $TotalQuantity = 0; /*Variable to accumulate total quantity received */
 $RowCounter =0;
@@ -33,7 +33,7 @@ $k=0;
 foreach ($LineItem->SerialItems as $Bundle){
 
 	if ($RowCounter == 10){
-		echo $tableheader;
+		echo $TableHeader;
 		$RowCounter =0;
 	} else {
 		$RowCounter++;
@@ -55,9 +55,11 @@ foreach ($LineItem->SerialItems as $Bundle){
 	if ($Perishable==1){
 		echo '<td class="number">' . $Bundle->ExpiryDate . '</td>';
 	}
-	echo '<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?Delete=' . $Bundle->BundleRef . '&StockID=' . $LineItem->StockID . '&LineNo=' . $LineNo .'&identifier='.$identifier.'&CreditInvoice=Yes ">'. _('Delete'). '</a></td>
+
+
+	echo '<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?Delete=' . $Bundle->BundleRef . '&amp;StockID=' . $LineItem->StockID . '&amp;LineNo=' . $LineNo .'&amp;identifier=' . $identifier . $CreditInvoice . '">'. _('Delete'). '</a></td>
 		</tr>';
-	
+
 	$TotalQuantity += $Bundle->BundleQty;
 }
 
@@ -77,19 +79,21 @@ echo '</table></td><td valign="top">';
 
 
 echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?identifier='.$identifier.'" id="Ga6uF5Wa" method="post">
-      <div>
-      <input type="hidden" name="LineNo" value="' . $LineNo . '" />
-      <input type="hidden" name="StockID" value="' . $StockID . '" />
-      <input type="hidden" name="EntryType" value="KEYED" />';
-echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
+		<div>
+		<input type="hidden" name="LineNo" value="' . $LineNo . '" />
+		<input type="hidden" name="StockID" value="' . $StockID . '" />
+		<input type="hidden" name="EntryType" value="KEYED" />
+		<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
+if ($_GET['CreditInvoice']=='Yes' or $_POST['CreditInvoice']=='Yes'){
+	echo '<input type="hidden" name="CreditInvoice" value="Yes" />';
+}
 /*Start a new table for the Serial/Batch ref input  in one column (as a sub table
 then the multi select box for selection of existing bundle/serial nos for dispatch if applicable*/
-//echo '<TABLE><TR><TD valign=TOP>';
 
 /*in the first column add a table for the input of newies */
 echo '<table class="selection">';
-echo $tableheader;
+echo $TableHeader;
 
 if ( isset($_GET['EditControlled']) ) {
 	$EditControlled = isset($_GET['EditControlled'])?$_GET['EditControlled']:false;
@@ -112,11 +116,9 @@ if ($EditControlled){
 		if ($LineItem->Serialised==1){
 			echo '<input type="hidden" name="Qty' . $StartAddingAt .'" value="1" /></TR>';
 		} else if ($LineItem->Serialised==0 and $Perishable==1) {
-			echo '<td><input type="text" class="number" name="Qty' . $StartAddingAt .'" size="11"
-				value="'. locale_number_format($Bundle->BundleQty, $LineItem->DecimalPlaces). '" maxlength="10" /></tr>';
+			echo '<td><input type="text" class="number" name="Qty' . $StartAddingAt .'" size="11" value="'. locale_number_format($Bundle->BundleQty, $LineItem->DecimalPlaces). '" maxlength="10" /></tr>';
 		} else {
-			echo '<td><input type="text" class="number" name="Qty' . $StartAddingAt .'" size="11"
-				value="'. locale_number_format($Bundle->BundleQty, $LineItem->DecimalPlaces). '" maxlength="10" /></tr>';
+			echo '<td><input type="text" class="number" name="Qty' . $StartAddingAt .'" size="11" value="'. locale_number_format($Bundle->BundleQty, $LineItem->DecimalPlaces). '" maxlength="10" /></tr>';
 		}
 
 		$StartAddingAt++;
@@ -125,22 +127,25 @@ if ($EditControlled){
 
 for ($i=0;$i < 10;$i++){
 
-	echo '<tr><td valign="top"><input type="text" name="SerialNo'. ($StartAddingAt+$i) .'" size="21"  maxlength="20" /></td>';
+	echo '<tr>
+			<td valign="top"><input type="text" name="SerialNo'. ($StartAddingAt+$i) .'" size="21"  maxlength="20" /></td>';
 
 	/*if the item is controlled not serialised - batch quantity required so just enter bundle refs
 	into the form for entry of quantities manually */
 
 	if ($LineItem->Serialised==1){
 		if ($Perishable==0) {
-			echo '<input type="hidden" name="Qty' . ($StartAddingAt+$i) .'" value="1" /></tr>';
+			echo '<input type="hidden" name="Qty' . ($StartAddingAt+$i) .'" value="1" />
+				</tr>';
 		} else {
 			echo '<td><input type="hidden" name="Qty' . ($StartAddingAt+$i) .'" value="1" /><input type="text" class="date" name="ExpiryDate' . ($StartAddingAt+$i) .'" size="11"
-		 value="" alt="'.$_SESSION['DefaultDateFormat'].'"  maxlength="10" /></td></tr>';
+		 value="" alt="'.$_SESSION['DefaultDateFormat'].'"  maxlength="10" /></td>
+				</tr>';
 		}
 	} else if ($LineItem->Serialised==0 and $Perishable==1) {
-		echo '<td><input type="text" class="number" name="Qty' . ($StartAddingAt+$i) .'" size="11"  maxlength="10" /></td>';
-		echo '<td><input type="text" class="date" name="ExpiryDate' . ($StartAddingAt+$i) .'" size="11"
-		 value="" alt="'.$_SESSION['DefaultDateFormat'].'"  maxlength="10" /></td></tr>';
+		echo '<td><input type="text" class="number" name="Qty' . ($StartAddingAt+$i) .'" size="11"  maxlength="10" /></td>
+				<td><input type="text" class="date" name="ExpiryDate' . ($StartAddingAt+$i) .'" size="11" value="" alt="'.$_SESSION['DefaultDateFormat'].'"  maxlength="10" /></td>
+			</tr>';
 	} else {
 		echo '<td><input type="text" class="number" name="Qty' . ($StartAddingAt+$i) .'" size="11"  maxlength="10" /></td></tr>';
 	}
@@ -149,13 +154,13 @@ for ($i=0;$i < 10;$i++){
 echo '</table>
 		<br />
 		<div class="centre">
-			<input type="hidden" name="CreditInvoice" value="Yes" />
 			<input type="submit" name="AddBatches" value="'. _('Enter'). '" />
 		</div>
 		</div>
 		</form>
 		</td>
 		<td valign="top">';
+
 if ($ShowExisting){
 	include('includes/InputSerialItemsExisting.php');
 }

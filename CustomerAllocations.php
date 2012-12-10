@@ -21,7 +21,7 @@ if ( isset($_POST['Cancel']) ) {
 	unset($_POST['AllocTrans']);
 }
 
-if (isset($_POST['UpdateDatabase']) OR isset($_POST['RefreshAllocTotal'])) {
+if (isset($_POST['UpdateDatabase']) or isset($_POST['RefreshAllocTotal'])) {
 
 	if (!isset($_SESSION['Alloc'])) {
 		prnMsg(_('Allocations can not be processed again') . '. ' .
@@ -47,7 +47,7 @@ if (isset($_POST['UpdateDatabase']) OR isset($_POST['RefreshAllocTotal'])) {
 				prnMsg(_('Amount entered was negative') . '. ' . _('Only positive amounts are allowed') . '.','warn');
 				$_POST['Amt' . $AllocCounter] = 0;
 			}
-			if (isset($_POST['All' . $AllocCounter]) AND $_POST['All' . $AllocCounter] == True) {
+			if (isset($_POST['All' . $AllocCounter]) and $_POST['All' . $AllocCounter] == True) {
 				$_POST['Amt' . $AllocCounter] = $_POST['YetToAlloc' . $AllocCounter];
 			}
 			if (filter_number_format($_POST['Amt' . $AllocCounter]) > $_POST['YetToAlloc' . $AllocCounter]) {
@@ -226,12 +226,12 @@ if (isset($_GET['AllocTrans'])) {
 					debtortrans.diffonexch,
 					debtortrans.alloc,
 					currencies.decimalplaces
-			FROM debtortrans INNER JOIN systypes 
+			FROM debtortrans INNER JOIN systypes
 			ON debtortrans.type = systypes.typeid
-			INNER JOIN debtorsmaster 
-			ON debtortrans.debtorno = debtorsmaster.debtorno 
-			INNER JOIN currencies 
-			ON debtorsmaster.currcode=currencies.currabrev 
+			INNER JOIN debtorsmaster
+			ON debtortrans.debtorno = debtorsmaster.debtorno
+			INNER JOIN currencies
+			ON debtorsmaster.currcode=currencies.currabrev
 			WHERE debtortrans.id='" . $_POST['AllocTrans'] . "'";
 	$Result = DB_query($SQL,$db);
 	$myrow = DB_fetch_array($Result);
@@ -291,13 +291,13 @@ if (isset($_GET['AllocTrans'])) {
 					amt,
 					custallocns.id AS allocid
 			FROM debtortrans INNER JOIN systypes
-			ON debtortrans.type = systypes.typeid 
+			ON debtortrans.type = systypes.typeid
 			INNER JOIN custallocns
 			ON debtortrans.id=custallocns.transid_allocto
-			WHERE custallocns.transid_allocfrom='" . $_POST['AllocTrans'] . "' 
+			WHERE custallocns.transid_allocfrom='" . $_POST['AllocTrans'] . "'
 			AND debtorno='" . $_SESSION['Alloc']->DebtorNo . "'
 			ORDER BY debtortrans.trandate";
-	
+
 	$Result=DB_query($SQL,$db);
 
 	while ($myrow=DB_fetch_array($Result)) {
@@ -456,14 +456,14 @@ if (isset($_POST['AllocTrans'])) {
 				debtortrans.alloc,
 				currencies.decimalplaces AS currdecimalplaces,
 				debtorsmaster.currcode
-			FROM debtortrans INNER JOIN debtorsmaster 
+			FROM debtortrans INNER JOIN debtorsmaster
 			ON debtortrans.debtorno=debtorsmaster.debtorno
-			INNER JOIN systypes 
+			INNER JOIN systypes
 			ON debtortrans.type=systypes.typeid
-			INNER JOIN currencies 
+			INNER JOIN currencies
 			ON debtorsmaster.currcode=currencies.currabrev
-			WHERE debtortrans.debtorno='" . $_GET['DebtorNo'] . "' 
-			AND (debtortrans.type=12 OR debtortrans.type=11) 
+			WHERE debtortrans.debtorno='" . $_GET['DebtorNo'] . "'
+			AND (debtortrans.type=12 OR debtortrans.type=11)
 			AND debtortrans.settled=0
 			ORDER BY debtortrans.id";
 	$result = DB_query($SQL,$db);
@@ -499,7 +499,7 @@ if (isset($_POST['AllocTrans'])) {
 	/* Page called with no parameters */
 	unset($_SESSION['Alloc']->Allocs);
 	unset($_SESSION['Alloc']);
-	
+
 	$SQL = "SELECT debtortrans.id,
 				debtortrans.transno,
 				systypes.typename,
@@ -513,14 +513,14 @@ if (isset($_POST['AllocTrans'])) {
 				debtortrans.alloc,
 				debtorsmaster.currcode,
 				currencies.decimalplaces AS currdecimalplaces
-			FROM debtortrans INNER JOIN debtorsmaster 
-			ON debtortrans.debtorno=debtorsmaster.debtorno 
-			INNER JOIN systypes 
-			ON debtortrans.type=systypes.typeid  
-			INNER JOIN currencies 
+			FROM debtortrans INNER JOIN debtorsmaster
+			ON debtortrans.debtorno=debtorsmaster.debtorno
+			INNER JOIN systypes
+			ON debtortrans.type=systypes.typeid
+			INNER JOIN currencies
 			ON debtorsmaster.currcode=currencies.currabrev
-			WHERE (debtortrans.type=12 OR debtortrans.type=11) 
-			AND debtortrans.settled=0 
+			WHERE (debtortrans.type=12 OR debtortrans.type=11)
+			AND debtortrans.settled=0
 			AND debtortrans.ovamount<0
 			ORDER BY debtorsmaster.name";
 	$result = DB_query($SQL,$db);
@@ -532,7 +532,7 @@ if (isset($_POST['AllocTrans'])) {
 
 	$k=0;
 	while ($myrow = DB_fetch_array($result)) {
-		
+
 		$AllocateLink = '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8'). '?AllocTrans=' . $myrow['id'] . '">' . _('Allocate') . '</a>';
 
 		if ( $CurrentDebtor != $myrow['debtorno'] ) {
@@ -558,7 +558,7 @@ if (isset($_POST['AllocTrans'])) {
 		$CurrentTransaction ++;
 		$CurrCode = $myrow['currcode'];
 		$CurrDecimalPlaces = $myrow['currdecimalplaces'];
-		if (isset($Balance) AND abs($Balance) < -0.01 ) {
+		if (isset($Balance) and abs($Balance) < -0.01 ) {
 			$AllocateLink = '&nbsp;';
 		}
 
@@ -580,9 +580,9 @@ if (isset($_POST['AllocTrans'])) {
 				<td>' . $CurrCode . '</td>
 				<td>' . $AllocateLink . '</td>
 				</tr>';
-		
+
 	} //end loop around unallocated receipts and credit notes
-	
+
 	if (!isset($Balance)) {
 		$Balance=0;
 	}
@@ -598,7 +598,6 @@ if (isset($_POST['AllocTrans'])) {
 	echo '</table>
 		<br />';
 }
-
 
 include('includes/footer.inc');
 

@@ -25,10 +25,10 @@ if (isset($_GET['SelectedFreightCost'])){
 	echo '<div class="centre"><p class="page_title_text"><img src="'.$rootpath.'/css/'.$theme.'/images/supplier.png" title="' .
 		_('Freight Costs') . '" alt="" />' . ' ' . $title . '</p></div>';
 
-if (!isset($LocationFrom) OR !isset($ShipperID)) {
+if (!isset($LocationFrom) or !isset($ShipperID)) {
 
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '">';
-    echo '<div>';
+	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	$sql = "SELECT shippername, shipper_id FROM shippers";
 	$ShipperResults = DB_query($sql,$db);
@@ -46,8 +46,8 @@ if (!isset($LocationFrom) OR !isset($ShipperID)) {
 				<td>' . _('Select the warehouse') . ' (' . _('ship from location') . ')</td>
 				<td><select name="LocationFrom">';
 
-	$sql = "SELECT loccode, 
-					locationname 
+	$sql = "SELECT loccode,
+					locationname
 			FROM locations";
 	$LocationResults = DB_query($sql,$db);
 
@@ -58,7 +58,7 @@ if (!isset($LocationFrom) OR !isset($ShipperID)) {
 	echo '</select></td></tr>
 			</table>
 			<br /><div class="centre"><input type="submit" value="' . _('Accept') . '" name="Accept" /></div>
-            </div>
+			</div>
 			</form>';
 
 } else {
@@ -106,14 +106,12 @@ if (isset($_POST['submit'])) {
 		$_POST['MinimumChg'] = 0;
 	}
 
-	if (!is_double((double) $_POST['CubRate']) OR !is_double((double) $_POST['KGRate']) OR !is_double((double) $_POST['MAXKGs']) OR !is_double((double) $_POST['MAXCub']) OR !is_double((double) $_POST['FixedPrice']) OR !is_double((double) $_POST['MinimumChg'])) {
+	if (!is_double((double) $_POST['CubRate']) or !is_double((double) $_POST['KGRate']) or !is_double((double) $_POST['MAXKGs']) or !is_double((double) $_POST['MAXCub']) or !is_double((double) $_POST['FixedPrice']) or !is_double((double) $_POST['MinimumChg'])) {
 		$InputError=1;
 		prnMsg(_('The entries for Cubic Rate, KG Rate, Maximum Weight, Maximum Volume, Fixed Price and Minimum charge must be numeric'),'warn');
 	}
 
-
-
-	if (isset($SelectedFreightCost) AND $InputError !=1) {
+	if (isset($SelectedFreightCost) and $InputError !=1) {
 
 		$sql = "UPDATE freightcosts
 				SET	locationfrom='".$LocationFrom."',
@@ -153,7 +151,7 @@ if (isset($_POST['submit'])) {
 											'" . $_POST['FixedPrice'] ."',
 											'" . $_POST['MinimumChg'] . "'
 										)";
-							
+
 		$msg = _('Freight cost record inserted');
 
 	}
@@ -182,7 +180,7 @@ if (isset($_POST['submit'])) {
 	unset($_GET['delete']);
 }
 
-if (!isset($SelectedFreightCost) AND isset($LocationFrom) AND isset($ShipperID)){
+if (!isset($SelectedFreightCost) and isset($LocationFrom) and isset($ShipperID)){
 
 
 	$sql = "SELECT shipcostfromid,
@@ -197,7 +195,7 @@ if (!isset($SelectedFreightCost) AND isset($LocationFrom) AND isset($ShipperID))
 				WHERE freightcosts.locationfrom = '".$LocationFrom. "'
 				AND freightcosts.shipperid = '" . $ShipperID . "'
 				ORDER BY destination";
-		
+
 	$result = DB_query($sql,$db);
 
 	echo '<br /><table class="selection">';
@@ -269,10 +267,10 @@ if (isset($SelectedFreightCost)) {
 	echo '<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?LocationFrom=' . $LocationFrom . '&amp;ShipperID=' . $ShipperID . '">' . _('Show all freight costs for') . ' ' . $ShipperName  . ' ' . _('from') . ' ' . $LocationName . '</a></div>';
 }
 
-if (isset($LocationFrom) AND isset($ShipperID)) {
+if (isset($LocationFrom) and isset($ShipperID)) {
 
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '">';
-    echo '<div>';
+	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	if (isset($SelectedFreightCost)) {
@@ -340,7 +338,7 @@ if (isset($LocationFrom) AND isset($ShipperID)) {
 	echo '</table><br />';
 
 	echo '<div class="centre"><input type="submit" name="submit" value="' . _('Enter Information') . '" /></div>';
-    echo '</div>';
+	echo '</div>';
 	echo '</form>';
 
 } //end if record deleted no point displaying form to add record

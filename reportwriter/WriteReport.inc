@@ -304,9 +304,9 @@ function BuildSQL($Prefs) {
 	$ThisMonth = mb_substr($Today,5,2);
 	$ThisYear = mb_substr($Today,0,4);
 	// find total number of days in this month
-	if ($ThisMonth==04 OR $ThisMonth==06 OR $ThisMonth==09 OR $ThisMonth==11) { $TotalDays=30; }
-	elseif ($ThisMonth==02 AND date('L', $t)) { $TotalDays=29; } // Leap year
-	elseif ($ThisMonth==02 AND !date('L', $t)) { $TotalDays=28; }
+	if ($ThisMonth==04 or $ThisMonth==06 or $ThisMonth==09 or $ThisMonth==11) { $TotalDays=30; }
+	elseif ($ThisMonth==02 and date('L', $t)) { $TotalDays=29; } // Leap year
+	elseif ($ThisMonth==02 and !date('L', $t)) { $TotalDays=28; }
 	else { $TotalDays=31; }
 	// Calculate date range
 	$DateArray=explode(':',$Prefs['DateListings']['params']);
@@ -324,7 +324,9 @@ function BuildSQL($Prefs) {
 				$fildesc .= ' '.RPT_FROM.' '.$DateArray[1];
 			}
 			if ($DateArray[2]<>'') { // a value entered, check
-				if (mb_strlen($d)>0) $d .= ' AND ';
+				if (mb_strlen($d)>0) {
+					$d .= ' AND ';
+				}
 				$d .= $df."<='".FormatDateForSQL($DateArray[2])."'";
 				$fildesc .= ' '.RPT_TO.' '.$DateArray[1];
 			}
@@ -363,7 +365,7 @@ function BuildSQL($Prefs) {
 		case "h": // RPT_GROUP_QUARTER
 			$QtrStrt = intval(($ThisMonth-1)/3)*3+1;
 			$QtrEnd = intval(($ThisMonth-1)/3)*3+3;
-			if ($QtrEnd==04 OR $QtrEnd==06 OR $QtrEnd==09 OR $QtrEnd==11) { $TotalDays=30; }
+			if ($QtrEnd==04 or $QtrEnd==06 or $QtrEnd==09 or $QtrEnd==11) { $TotalDays=30; }
 			$qs = date('Y-m-d', mktime(0,0,0, $QtrStrt, 1, $ThisYear));
 			$qe = date('Y-m-d', mktime(0,0,0, $QtrEnd, $TotalDays, $ThisYear));
 			$d = $df.">='".$qs."'";
@@ -401,7 +403,10 @@ function BuildSQL($Prefs) {
 		$Params = explode(':',$FieldValues['params']);
 		switch ($Params[1]) {
 			case RPT_RANGE:
-				if (mb_strlen($strCrit)>0) { $strCrit .= ' AND '; $filCrit .= ' AND '; }
+				if (mb_strlen($strCrit)>0) {
+					$strCrit .= ' AND ';
+					$filCrit .= ' AND ';
+				}
 				$t='';
 				$f='';
 				if (isset($Params[2])) { // a from value entered, check
@@ -409,7 +414,10 @@ function BuildSQL($Prefs) {
 					$f .= $FieldValues['displaydesc'].">=".($Params[2]);
 				}
 				if (isset($Params[3])) { // a to value entered, check
-					if (mb_strlen($t)>0) { $t .= ' AND '; $f .= ' AND '; }
+					if (mb_strlen($t)>0) {
+						$t .= ' AND ';
+						$f .= ' AND ';
+					}
 					$t .= $FieldValues['fieldname']."<='".($Params[3]."'");
 					$f .= $FieldValues['displaydesc']."<=".($Params[3]);
 				}
@@ -420,18 +428,26 @@ function BuildSQL($Prefs) {
 			case RPT_TRUE:
 			case RPT_ACTIVE:
 			case RPT_PRINTED:
-				if (mb_strlen($strCrit)>0) $strCrit .= ' AND ';
+				if (mb_strlen($strCrit)>0) {
+					$strCrit .= ' AND ';
+				}
 				$strCrit .= $FieldValues['fieldname'].'=1';
-				if (mb_strlen($filCrit)>0) $filCrit .= ' AND ';
+				if (mb_strlen($filCrit)>0) {
+					$filCrit .= ' AND ';
+				}
 				$filCrit .= $FieldValues['displaydesc'].'='.$Params[1];
 				break;
 			case RPT_NO:
 			case RPT_FALSE:
 			case RPT_INACTIVE:
 			case RPT_UNPRINTED:
-				if (mb_strlen($strCrit)>0) $strCrit .= ' AND ';
+				if (mb_strlen($strCrit)>0) {
+					$strCrit .= ' AND ';
+				}
 				$strCrit .= $FieldValues['fieldname'].'=0';
-				if (mb_strlen($filCrit)>0) $filCrit .= ' AND ';
+				if (mb_strlen($filCrit)>0) {
+					$filCrit .= ' AND ';
+				}
 				$filCrit .= $FieldValues['displaydesc'].'='.$Params[1];
 				break;
 			case RPT_STOCK: // TBD field to compare so default to nothing
@@ -450,9 +466,15 @@ function BuildSQL($Prefs) {
 	if ($Prefs['table6']) $strTable .= ' INNER JOIN '.$Prefs['table6']. ' ON '.$Prefs['table6criteria'];
 	// Build query string and execute
 	$sql = "SELECT ".$strField." FROM ".$strTable;
-	if ($strCrit AND $strDate) $sql .= ' WHERE '.$strDate.' AND '.$strCrit;
-	if (!$strCrit AND $strDate) $sql .= ' WHERE '.$strDate;
-	if ($strCrit AND !$strDate) $sql .= ' WHERE '.$strCrit;
+	if ($strCrit and $strDate) {
+		$sql .= ' WHERE '.$strDate.' AND '.$strCrit;
+	}
+	if (!$strCrit and $strDate) {
+		$sql .= ' WHERE '.$strDate;
+	}
+	if ($strCrit and !$strDate) {
+		$sql .= ' WHERE '.$strCrit;
+	}
 	if ($strSort) $sql .= ' ORDER BY '.$strSort;
 	$usrMsg['level'] = 'success';
 	$usrMsg['data'] = $sql;
@@ -494,7 +516,7 @@ function BuildDataArray($ReportID, $sql, $Prefs) {
 	while ($myrow = DB_fetch_row($Result)) {
 		// Check to see if a total row needs to be displayed
 		if (isset($GrpField)) { // we're checking for group totals, see if this group is complete
-			if ($myrow[$GrpField]<>$GrpWorking AND $GrpWorking<>false) { // it's a new group so print totals
+			if ($myrow[$GrpField]<>$GrpWorking and $GrpWorking<>false) { // it's a new group so print totals
 				$OutputArray[$RowCnt][0] = 'g:'.$GrpWorking;
 				foreach($Seq as $offset=>$TotalCtl) {
 					$OutputArray[$RowCnt][$offset+1] = $TotalCtl['grptotal'];

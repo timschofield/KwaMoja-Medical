@@ -6,7 +6,7 @@ include('includes/session.inc');
 include('includes/SQL_CommonFunctions.inc');
 
 //Get Out if we have no order number to work with
-If (!isset($_GET['QuotationNo']) || $_GET['QuotationNo']==""){
+if (!isset($_GET['QuotationNo']) or $_GET['QuotationNo']==""){
 	$title = _('Select Quotation To Print');
 	include('includes/header.inc');
 	echo '<div class="centre">
@@ -72,16 +72,16 @@ $sql = "SELECT salesorders.customerref,
 
 $result=DB_query($sql,$db, $ErrMsg);
 
-//If there are no rows, there's a problem.
+//if there are no rows, there's a problem.
 if (DB_num_rows($result)==0){
-        $title = _('Print Quotation Error');
-        include('includes/header.inc');
-         echo '<div class="centre">
+		$title = _('Print Quotation Error');
+		include('includes/header.inc');
+		 echo '<div class="centre">
 				<br />
 				<br />
 				<br />';
-        prnMsg( _('Unable to Locate Quotation Number') . ' : ' . $_GET['QuotationNo'] . ' ', 'error');
-        echo '<br />
+		prnMsg( _('Unable to Locate Quotation Number') . ' : ' . $_GET['QuotationNo'] . ' ', 'error');
+		echo '<br />
 				<br />
 				<br />
 				<table class="table_index">
@@ -95,11 +95,11 @@ if (DB_num_rows($result)==0){
 				<br />
 				<br />
 				<br />';
-        include('includes/footer.inc');
-        exit;
+		include('includes/footer.inc');
+		exit;
 } elseif (DB_num_rows($result)==1){ /*There is only one order header returned - thats good! */
 
-        $myrow = DB_fetch_array($result);
+		$myrow = DB_fetch_array($result);
 }
 
 /*retrieve the order details from the database to print */
@@ -148,11 +148,11 @@ if (DB_num_rows($result)>0){
 
 	while ($myrow2=DB_fetch_array($result)){
 
-        $ListCount ++;
+		$ListCount ++;
 
-		if ((mb_strlen($myrow2['narrative']) >200 AND $YPos-$line_height <= 75)
-			OR (mb_strlen($myrow2['narrative']) >1 AND $YPos-$line_height <= 62)
-			OR $YPos-$line_height <= 50){
+		if ((mb_strlen($myrow2['narrative']) >200 and $YPos-$line_height <= 75)
+			or (mb_strlen($myrow2['narrative']) >1 and $YPos-$line_height <= 62)
+			or $YPos-$line_height <= 50){
 		/* We reached the end of the page so finsih off the page and start a newy */
 			$PageNumber++;
 			include ('includes/PDFQuotationPageHeader.inc');
@@ -221,9 +221,9 @@ if (DB_num_rows($result)>0){
 
 	} //end while there are line items to print out
 
-	if ((mb_strlen($myrow['comments']) >200 AND $YPos-$line_height <= 75)
-			OR (mb_strlen($myrow['comments']) >1 AND $YPos-$line_height <= 62)
-			OR $YPos-$line_height <= 50){
+	if ((mb_strlen($myrow['comments']) >200 and $YPos-$line_height <= 75)
+			or (mb_strlen($myrow['comments']) >1 and $YPos-$line_height <= 62)
+			or $YPos-$line_height <= 50){
 		/* We reached the end of the page so finish off the page and start a newy */
 			$PageNumber++;
 			include ('includes/PDFQuotationPageHeader.inc');
@@ -240,7 +240,7 @@ if (DB_num_rows($result)>0){
 	$LeftOvers = $pdf->addTextWrap(700,$YPos,90,$FontSize,locale_number_format($QuotationTotal,$myrow['currdecimalplaces']),'right');
 
 	$YPos -= ($line_height);
-	$LeftOvers = $pdf->addTextWrap($XPos,$YPos,20,10,_('Notes:'));
+	$LeftOvers = $pdf->addTextWrap($XPos,$YPos,30,10,_('Notes:'));
 	$myrow['comments'] = str_replace('\r','',$myrow['comments']);
 	$myrow['comments'] = str_replace('\n','',$myrow['comments']);
 	$LeftOvers = $pdf->addTextWrap($XPos+28,$YPos,800,10,$myrow['comments']);
@@ -273,7 +273,7 @@ if ($ListCount == 0){
 	include('includes/footer.inc');
 	exit;
 } else {
-    $pdf->OutputI($_SESSION['DatabaseName'] . '_Quotation_' . date('Y-m-d') . '.pdf');
-    $pdf->__destruct();
+	$pdf->OutputI($_SESSION['DatabaseName'] . '_Quotation_' . date('Y-m-d') . '.pdf');
+	$pdf->__destruct();
 }
 ?>

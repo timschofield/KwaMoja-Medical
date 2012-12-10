@@ -62,7 +62,7 @@ if (isset($_POST['submit'])) {
 
 	$msg='';
 
-	if (isset($SelectedReason) AND $InputError !=1) {
+	if (isset($SelectedReason) and $InputError !=1) {
 
 		/*SelectedReason could also exist if submit had not been clicked this code would not run in this case cos submit is false of course	see the delete code below*/
 
@@ -83,7 +83,7 @@ if (isset($_POST['submit'])) {
 
 	/*Selected Reason is null cos no item selected on first time round so must be adding a record must be submitting new entries in the new status code form */
 
-		if (isset($_POST['DisallowInvoices']) AND $_POST['DisallowInvoices']=='on'){
+		if (isset($_POST['DisallowInvoices']) and $_POST['DisallowInvoices']=='on'){
 
 			$sql = "INSERT INTO holdreasons (reasoncode,
 											reasondescription,

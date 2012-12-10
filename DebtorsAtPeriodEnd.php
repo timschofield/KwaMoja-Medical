@@ -5,10 +5,10 @@
 include('includes/session.inc');
 
 if (isset($_POST['PrintPDF'])
-	AND isset($_POST['FromCriteria'])
-	AND mb_strlen($_POST['FromCriteria'])>=1
-	AND isset($_POST['ToCriteria'])
-	AND mb_strlen($_POST['ToCriteria'])>=1){
+	and isset($_POST['FromCriteria'])
+	and mb_strlen($_POST['FromCriteria'])>=1
+	and isset($_POST['ToCriteria'])
+	and mb_strlen($_POST['ToCriteria'])>=1){
 
 	include('includes/PDFStarter.php');
 	$pdf->addInfo('Title',_('Customer Balance Listing'));
@@ -42,8 +42,8 @@ if (isset($_POST['PrintPDF'])
 					) AS fxafterdatetrans
 			FROM debtorsmaster INNER JOIN currencies
 			ON debtorsmaster.currcode = currencies.currabrev
-			INNER JOIN debtortrans 
-			ON debtorsmaster.debtorno = debtortrans.debtorno 
+			INNER JOIN debtortrans
+			ON debtorsmaster.debtorno = debtortrans.debtorno
 			WHERE debtorsmaster.debtorno >= '" . $_POST['FromCriteria'] . "'
 			AND debtorsmaster.debtorno <= '" . $_POST['ToCriteria'] . "'
 			GROUP BY debtorsmaster.debtorno,
@@ -83,7 +83,7 @@ if (isset($_POST['PrintPDF'])
 		$Balance = $DebtorBalances['balance'] - $DebtorBalances['afterdatetrans'] + $DebtorBalances['afterdatediffonexch'] ;
 		$FXBalance = $DebtorBalances['fxbalance'] - $DebtorBalances['fxafterdatetrans'];
 
-		if (abs($Balance)>0.009 OR ABS($FXBalance)>0.009) {
+		if (abs($Balance)>0.009 or ABS($FXBalance)>0.009) {
 
 			$DisplayBalance = locale_number_format($DebtorBalances['balance'] - $DebtorBalances['afterdatetrans'],$DebtorBalances['decimalplaces']);
 			$DisplayFXBalance = locale_number_format($DebtorBalances['fxbalance'] - $DebtorBalances['fxafterdatetrans'],$DebtorBalances['decimalplaces']);
@@ -114,9 +114,9 @@ if (isset($_POST['PrintPDF'])
 
 	$LeftOvers = $pdf->addTextWrap(50,$YPos,160,$FontSize,_('Total balances'),'left');
 	$LeftOvers = $pdf->addTextWrap(220,$YPos,60,$FontSize,$DisplayTotBalance,'right');
-	
+
 	$pdf->OutputD($_SESSION['DatabaseName'] . '_DebtorBals_' . date('Y-m-d').'.pdf');
-	$pdf->__destruct(); 
+	$pdf->__destruct();
 
 } else { /*The option to print PDF was not hit */
 
@@ -125,7 +125,7 @@ if (isset($_POST['PrintPDF'])
 	echo '<p class="page_title_text"><img src="'.$rootpath.'/css/'.$theme.'/images/customer.png" title="' . _('Search') .
 	 '" alt="" />' . ' ' . $title.'</p><br />';
 
-	if (!isset($_POST['FromCriteria']) OR !isset($_POST['ToCriteria'])) {
+	if (!isset($_POST['FromCriteria']) or !isset($_POST['ToCriteria'])) {
 
 	/*if $FromCriteria is not set then show a form to allow input	*/
 

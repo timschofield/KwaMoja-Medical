@@ -33,7 +33,7 @@ if (isset($_GET['LineNo'])){
 	exit;
 }
 
-if (!isset($_SESSION['Items'.$identifier]) OR !isset($_SESSION['ProcessingOrder'])) {
+if (!isset($_SESSION['Items'.$identifier]) or !isset($_SESSION['ProcessingOrder'])) {
 	/* This page can only be called with a sales order number to invoice */
 	echo '<div class="centre">
 			<a href="' . $rootpath . '/SelectSalesOrder.php">'. _('Select a sales order to invoice') . '</a>

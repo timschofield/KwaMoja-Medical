@@ -6,7 +6,7 @@ include('includes/session.inc');
 include('includes/SQL_CommonFunctions.inc');
 
 //Get Out if we have no order number to work with
-If (!isset($_GET['TransNo']) OR $_GET['TransNo']==''){
+if (!isset($_GET['TransNo']) or $_GET['TransNo']==''){
 	$title = _('Select Order To Print');
 	include('includes/header.inc');
 	echo '<div class="centre">
@@ -36,7 +36,7 @@ If (!isset($_GET['TransNo']) OR $_GET['TransNo']==''){
 }
 
 $MailTo = $_GET['EMail'];
-$headers = 'From: kwamoja.org <info@kwamoja.org>' . '\n';
+$headers = 'From: kwamoja.com <info@kwamoja.com>' . '\n';
 $headers  .=  'MIME-Version: 1.0\n' . 'Content-Type: text/html; charset="utf-8"\n';
 
 /*retrieve the order details from the database to print */
@@ -77,7 +77,7 @@ $sql = "SELECT salesorders.debtorno,
 
 $result=DB_query($sql,$db, $ErrMsg);
 
-//If there are no rows, there's a problem.
+//if there are no rows, there's a problem.
 if (DB_num_rows($result)==0){
 	$title = _('Print Packing Slip Error');
 	include('includes/header.inc');
@@ -112,7 +112,7 @@ if (DB_num_rows($result)==0){
 	producing the packlist */
 	$DeliverBlind = $myrow['deliverblind'];
 	$DeliveryDate = $myrow['salesorders.deliverydate'];
-	if ($myrow['printedpackingslip']==1 AND ($_GET['Reprint']!='OK' OR !isset($_GET['Reprint']))){
+	if ($myrow['printedpackingslip']==1 and ($_GET['Reprint']!='OK' or !isset($_GET['Reprint']))){
 		$title = _('Print Packing Slip Error');
 		include('includes/header.inc');
 		prnMsg( _('The packing slip for order number') . ' ' . $_GET['TransNo'] . ' ' . _('has previously been printed') . ' ' . _('It was printed on'). ' ' . ConvertSQLDate($myrow['datepackingslipprinted']) . '<br />' . _('This check is there to ensure that duplicate packing slips are not produced and dispatched more than once to the customer'), 'warn' );
@@ -267,7 +267,7 @@ $MailMessage .= '</table>
 				</body>
 				</html>';
 // echo $MailMessage . "=mailMessage<br />";
-iF(mail( $MailTo, $MailSubject, $MailMessage, $headers )){
+if (mail( $MailTo, $MailSubject, $MailMessage, $headers )){
 	echo ' ' ._('The following E-Mail was sent to') . ' ' . $MailTo . ' :';
 }
 

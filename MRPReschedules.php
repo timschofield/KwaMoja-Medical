@@ -14,7 +14,7 @@ if (DB_num_rows($result)==0) {
 	include('includes/header.inc');
 	echo '<br />';
 	prnMsg( _('The MRP calculation must be run before you can run this report').'<br />'.
-			_('To run the MRP calculation click').' '.'<a href='.$rootpath .'/MRP.php?' . SID .'>'._('here').'</a>', 'error');
+			_('To run the MRP calculation click').' '.'<a href="'.$rootpath .'/MRP.php">'._('here').'</a>', 'error');
 	include('includes/footer.inc');
 	exit;
 }
@@ -57,7 +57,7 @@ if (isset($_POST['PrintPDF'])) {
 	  $title = _('MRP Reschedules') . ' - ' . _('Problem Report');
 	  include('includes/header.inc');
 	   prnMsg( _('No MRP reschedule retrieved'), 'warn');
-	   echo '<br /><a href="' .$rootpath .'/index.php?' . SID . '">' . _('Back to the menu') . '</a>';
+	   echo '<br /><a href="' .$rootpath .'/index.php">' . _('Back to the menu') . '</a>';
 	   if ($debug==1){
 		echo '<br />' . $sql;
 	   }
@@ -70,7 +70,7 @@ if (isset($_POST['PrintPDF'])) {
 	$Tot_Val=0;
 	$fill = false;
 	$pdf->SetFillColor(224,235,255);
-	While ($myrow = DB_fetch_array($result,$db)){
+	while ($myrow = DB_fetch_array($result,$db)){
 
 		$YPos -=$line_height;
 		$FontSize=8;
@@ -114,7 +114,7 @@ if (isset($_POST['PrintPDF'])) {
 	}
 
 	$pdf->OutputD($_SESSION['DatabaseName'] . '_MRPReschedules_' . date('Y-m-d').'.pdf');
-	$pdf->__destruct(); 
+	$pdf->__destruct();
 
 } else { /*The option to print PDF was not hit so display form */
 

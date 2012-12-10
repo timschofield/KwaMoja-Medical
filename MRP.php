@@ -8,7 +8,7 @@ include('includes/header.inc');
 
 if (isset($_POST['submit'])) {
 
-	if (!isset($_POST['Leeway']) OR !is_numeric(filter_number_format($_POST['Leeway']))) {
+	if (!isset($_POST['Leeway']) or !is_numeric(filter_number_format($_POST['Leeway']))) {
 		$_POST['Leeway'] = 0;
 	}
 
@@ -680,10 +680,10 @@ function LevelNetting(&$db,$part,$eoq,$PanSize,$ShrinkFactor, $LeadTime) {
 	$TotalRequirement = 0;
 	$TotalSupply = 0;
 
-	if ($RequirementCount > 0 && $SupplyCount > 0) {
+	if ($RequirementCount > 0 and $SupplyCount > 0) {
 		$TotalRequirement += $Requirements[$reqi]['quantity'];
 		$TotalSupply += $Supplies[$supi]['supplyquantity'];
-		while ($TotalRequirement > 0 && $TotalSupply > 0) {
+		while ($TotalRequirement > 0 and $TotalSupply > 0) {
 			$Supplies[$supi]['updateflag'] = 1;
 			// ******** Put leeway calculation in here ********
 			$DueDate = ConvertSQLDate($Supplies[$supi]['duedate']);
@@ -753,7 +753,7 @@ function LevelNetting(&$db,$part,$eoq,$PanSize,$ShrinkFactor, $LeadTime) {
 	foreach($Requirements as $Requirement) {
 		// First, inflate requirement if there is a shrinkage factor
 		// Should the quantity be rounded?
-		if ($_POST['shrinkageflag'] == 'y' AND $ShrinkFactor > 0) {
+		if ($_POST['shrinkageflag'] == 'y' and $ShrinkFactor > 0) {
 			$Requirement['quantity'] = ($Requirement['quantity'] * 100) / (100 - $ShrinkFactor);
 			$Requirement['quantity'] = round($Requirement['quantity'],$DecimalPlaces);
 		}
@@ -765,7 +765,7 @@ function LevelNetting(&$db,$part,$eoq,$PanSize,$ShrinkFactor, $LeadTime) {
 			$ExcessQty = 0;
 		}
 		if ($PlannedQty > 0) {
-			if ($_POST['eoqflag'] == 'y' AND $eoq > $PlannedQty) {
+			if ($_POST['eoqflag'] == 'y' and $eoq > $PlannedQty) {
 				$ExcessQty = $eoq - $PlannedQty;
 				$PlannedQty = $eoq;
 			}
@@ -775,7 +775,7 @@ function LevelNetting(&$db,$part,$eoq,$PanSize,$ShrinkFactor, $LeadTime) {
 			// multiplied by the pansize. For instance, with a planned qty of 17 with a pansize
 			// of 5, divide 17 by 5 to get 3 with a remainder of 2, which is rounded up to 4
 			// and then multiplied by 5 - the pansize - to get 20
-			if ($_POST['pansizeflag'] == 'y' AND $PanSize != 0 AND $PlannedQty != 0) {
+			if ($_POST['pansizeflag'] == 'y' and $PanSize != 0 and $PlannedQty != 0) {
 				$PlannedQty = ceil($PlannedQty / $PanSize) * $PanSize;
 			}
 
@@ -839,7 +839,7 @@ function LevelNetting(&$db,$part,$eoq,$PanSize,$ShrinkFactor, $LeadTime) {
 	// necessary, so change date
 
 	foreach($Supplies as $supply) {
-		if ($supply['supplyquantity'] > 0  && $supply['updateflag'] == 0) {
+		if ($supply['supplyquantity'] > 0  and $supply['updateflag'] == 0) {
 			$id = $supply['id'];
 			$sql = "UPDATE mrpsupplies SET mrpdate ='2050-12-31' WHERE id = '".$id."'
 					  AND ordertype <> 'QOH'";

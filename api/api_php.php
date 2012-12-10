@@ -21,10 +21,10 @@
 /* Get kwamoja authentication, and return a valid database
    connection */
 	function db($user, $password) {
-		if (!isset($_SESSION['AccessLevel']) OR
+		if (!isset($_SESSION['AccessLevel']) or
 		           $_SESSION['AccessLevel'] == '') {
 			//  Login to default database = old clients.
-			if ($user != '' AND $password != '') {
+			if ($user != '' and $password != '') {
 			    global  $api_DatabaseName;
 			    $rc = LoginAPI ($api_DatabaseName, $user, $password);
 			    if ($rc[0] == UL_OK ) {
@@ -60,6 +60,6 @@
 	include 'api_suppliers.php';
 	include 'api_purchdata.php';
 	include 'api_workorders.php';
-	include 'api_KwaMojasettings.php';
+	include 'api_KwaMojaSettings.php';
 
 ?>

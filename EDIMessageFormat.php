@@ -45,7 +45,7 @@ if (isset($_POST['NewEDIInvMsg'])){
 }
 
 $InputError = 0;
-if ($InputError !=1 AND isset($_POST['update'])) {
+if ($InputError !=1 and isset($_POST['update'])) {
 
 	/*SelectedMessageLine could also exist if submit had not been clicked this code would not run in this case cos submit is false of course  see the delete code below*/
 	if (!isset($SelectedMessageLine)) {
@@ -62,7 +62,7 @@ if ($InputError !=1 AND isset($_POST['update'])) {
 	$msg = _('Message line updated');
 	unset ($SelectedMessageLine);
 
-} elseif ($InputError !=1 AND isset($_POST['submit'])) {
+} elseif ($InputError !=1 and isset($_POST['submit'])) {
 
 /*Selected group is null cos no item selected on first time round so must be adding a record must be submitting new entries in the new message line form */
 
@@ -153,9 +153,9 @@ or deletion of the records*/
 				$myrow[1],
 				$myrow[2],
 				$myrow[3],
-				htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?' . SID,
+				htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8'),
 				$myrow[0],
-				htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?' . SID,
+				htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8'),
 				$myrow[0]);
 
 	} //END WHILE LIST LOOP
@@ -215,12 +215,12 @@ if ($_POST['Section']=='Heading') {
 	echo '<option value="Heading">' . _('Heading') . '</option>';
 }
 
-if (isset($_POST['Section']) AND $_POST['Section']=='Detail') {
+if (isset($_POST['Section']) and $_POST['Section']=='Detail') {
 	echo '<option selected="selected" value="Detail">' . _('Detail') . '</option>';
 } else {
 	echo '<option value="Detail">' . _('Detail') . '</option>';
 }
-if (isset($_POST['Section']) AND $_POST['Section']=='Summary') {
+if (isset($_POST['Section']) and $_POST['Section']=='Summary') {
 	echo '<option selected="selected" value="Summary">' . _('Summary') . '</option>';
 } else {
 	echo '<option value="Summary">' . _('Summary') . '</option>';

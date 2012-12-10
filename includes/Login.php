@@ -1,8 +1,7 @@
 <?php
 /* $Id$*/
-
 // Display demo user name and password within login form if $allow_demo_mode is true
-//include ('LanguageSetup.php');
+include ('LanguageSetup.php');
 
 if ($allow_demo_mode == True and !isset($demo_text)) {
 	$demo_text = _('login as user') .': <i>' . _('admin') . '</i><br />' ._('with password') . ': <i>' . _('kwamoja') . '</i>';
@@ -12,13 +11,12 @@ if ($allow_demo_mode == True and !isset($demo_text)) {
 echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
 ?>
-
 <html>
 <head>
-	<title>KwaMoja Login screen</title>
+	<title>webERP Login screen</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-	<link rel="stylesheet" href="css/<?php echo $theme;?>/login.css" type="text/css" />
+	<link rel="stylesheet" href="css/login.css" type="text/css" />
 </head>
 <body>
 
@@ -30,20 +28,21 @@ if (get_magic_quotes_gpc()){
 }
 ?>
 
-<div id="container">
-	<div id="login_logo"></div>
+<div class="left"><div id="container">
+	<div id="login_logo">
+		<img src="companies/logo.png" style="width:100%" />
+	</div>
 	<div id="login_box">
 	<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8');?>" method="post">
-    <div>
 	<input type="hidden" name="FormID" value="<?php echo $_SESSION['FormID']; ?>" />
 	<span><?php echo _('Company'); ?>:</span>
-
 	<?php
 		if ($AllowCompanySelectionBox == true){
 			echo '<select name="CompanyNameField">';
 
-			$Companies = scandir('companies/', 0);
-			foreach ($Companies as $CompanyEntry){
+			$DirHandle = dir('companies/');
+
+			while (false !== ($CompanyEntry = $DirHandle->read())){
 				if (is_dir('companies/' . $CompanyEntry) AND $CompanyEntry != '..' AND $CompanyEntry != '' AND $CompanyEntry!='.svn' AND $CompanyEntry!='.'){
 					if ($CompanyEntry==$DefaultCompany) {
 						echo '<option selected="selected" label="'.$CompanyEntry.'" value="'.$CompanyEntry.'">'.$CompanyEntry.'</option>';
@@ -52,12 +51,14 @@ if (get_magic_quotes_gpc()){
 					}
 				}
 			}
+
+			$DirHandle->close();
+
 			echo '</select>';
 		} else {
 			echo '<input type="text" name="CompanyNameField"  value="' . $DefaultCompany . '" />';
 		}
 	?>
-
 	<br />
 	<span><?php echo _('User name'); ?>:</span><br />
 	<input type="text" name="UserNameEntryField" maxlength="20" /><br />
@@ -65,12 +66,20 @@ if (get_magic_quotes_gpc()){
 	<input type="password" name="Password" /><br />
 	<div id="demo_text"><?php echo $demo_text;?></div>
 	<input class="button" type="submit" value="<?php echo _('Login'); ?>" name="SubmitUser" />
-	    </div>
 	</form>
 	</div>
-	<br />
-	<div style="text-align:center"><a href="https://sourceforge.net/projects/web-erp"><img src="https://sflogo.sourceforge.net/sflogo.php?group_id=70949&amp;type=8" width="80" height="15" alt="Get KwaMoja Accounting &amp; Business Management at SourceForge.net. Fast, secure and Free Open Source software downloads" /></a></div>
-</div>
+</div></div>
+<div class="right"><div id="container">
+	<img src="companies/logo.png" style="width:75%" />
+	<div><font size="4"; color="#2C5D17"><b><i>KwaMoja - </i></b></font></div>
+	<div style="margin: 5px;padding: 3px;border: solid 1px;border-radius: 3px;"><i>
+		<?php
+			echo '<p>' . _('KwaMoja is a swahili concept representing the idea of unity, or integration.') . '</p>';
+			echo '<p>' . _('In the sense of an organisation this represernts the bringing together of all parts of the business in one software package.') . '</p>';
+			echo '<p>' . _('In the sense of an open source project this means having an open democratic and honest organisation behind the project.') . '</p>';
+		?>
+	</i></div>
+</div></div>
 	<script type="text/javascript">
 			<!--
 				  document.forms[0].UserNameEntryField.focus();

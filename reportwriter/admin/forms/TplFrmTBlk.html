@@ -45,7 +45,7 @@ function textSet(idEdit, text) {
 }
 
 function comboKey(idEdit, idSel) {
-	if (window.event.keyCode == 13 || window.event.keyCode == 32)
+	if (window.event.keyCode == 13 or window.event.keyCode == 32)
 		textSet(idEdit,idSel.value);
 	else if (window.event.keyCode == 27) {
 		mouseSelect(0);
@@ -197,14 +197,14 @@ document.onmousedown = mouseSelect;
 	<tr>
       <td><?php echo RPT_TRUNCATE; ?></td>
       <td><select name="Trunc">
-          <?php if (!$Params['Trunc'] OR $Params['Trunc']=='0') $selected=' selected'; else $selected=''; ?>
+          <?php if (!$Params['Trunc'] or $Params['Trunc']=='0') $selected=' selected'; else $selected=''; ?>
           <option value="0"<?php echo $selected; ?>><?php echo RPT_NO; ?></option>
           <?php if ($Params['Trunc']=='1') $selected=' selected'; else $selected=''; ?>
           <option value="1"<?php echo $selected; ?>><?php echo RPT_YES; ?></option>
       </select></td>
     </tr>
 	<tr>
-      <?php if (!$Params['Color'] OR $Params['Color']=='1') $selected=' checked'; else $selected=''; ?>
+      <?php if (!$Params['Color'] or $Params['Color']=='1') $selected=' checked'; else $selected=''; ?>
       <td><input name="Color" type="radio" value="1"<?php echo $selected; ?>><?php echo RPT_STDCOLOR; ?><br />
         <div align="center">
           <select name="FontColor">
@@ -226,7 +226,7 @@ document.onmousedown = mouseSelect;
       <td colspan="2"><div align="center"><?php echo RPT_BRDRLINE; ?></div></td>
     </tr>
     <tr>
-		<?php if (!$Params['Line'] OR $Params['Line']=='0') $selected=' checked'; else $selected=''; ?>
+		<?php if (!$Params['Line'] or $Params['Line']=='0') $selected=' checked'; else $selected=''; ?>
       <td><input name="Line" type="radio" value="0"<?php echo $selected; ?>><?php echo RPT_NOBRDR; ?></td>
       <td><?php echo RPT_LINEWIDTH; ?><select name="LineSize">
 	  <?php foreach($LineSizes as $key => $value) {
@@ -254,7 +254,7 @@ document.onmousedown = mouseSelect;
       <td colspan="2"><div align="center"><?php echo RPT_FILL; ?></div></td>
     </tr>
     <tr>
-		<?php if (!$Params['Fill'] OR $Params['Fill']=='0') $selected=' checked'; else $selected=''; ?>
+		<?php if (!$Params['Fill'] or $Params['Fill']=='0') $selected=' checked'; else $selected=''; ?>
       <td colspan="2"><input name="Fill" type="radio" value="0"<?php echo $selected; ?>><?php echo RPT_NOFILL; ?></td>
     </tr>
     <tr>

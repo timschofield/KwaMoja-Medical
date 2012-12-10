@@ -39,13 +39,13 @@ if (isset($_GET['loccode'])){
 }
 
 foreach ($_POST as $key=>$value) {
-	if (substr($key, 0, 9)=='OutputQty' OR substr($key, 0, 7)=='RecdQty') {
+	if (substr($key, 0, 9)=='OutputQty' or substr($key, 0, 7)=='RecdQty') {
 		$_POST[$key] = filter_number_format($value);
 	}
 }
 
 // check for new or modify condition
-if (isset($SelectedWO) AND$SelectedWO!=''){
+if (isset($SelectedWO) and $SelectedWO!=''){
 	// modify
 	$_POST['WO'] = (int)$SelectedWO;
 	$EditingExisting = true;
@@ -82,10 +82,10 @@ if (!isset($_POST['StockLocation'])){
 
 if (isset($_POST['Search'])){
 
-	If ($_POST['Keywords'] AND $_POST['StockCode']) {
+	if ($_POST['Keywords'] and $_POST['StockCode']) {
 		prnMsg(_('Stock description keywords have been used in preference to the Stock code extract entered'),'warn');
 	}
-	If (mb_strlen($_POST['Keywords'])>0) {
+	if (mb_strlen($_POST['Keywords'])>0) {
 			//insert wildcard characters in spaces
 		$_POST['Keywords'] = mb_strtoupper($_POST['Keywords']);
 		$SearchString = '%' . str_replace(' ', '%', $_POST['Keywords']) . '%';
@@ -197,7 +197,7 @@ if (isset($_POST['Search'])){
 
 } //end of if search
 
-if (isset($NewItem) AND isset($_POST['WO'])){
+if (isset($NewItem) and isset($_POST['WO'])){
 	$InputError=false;
 	$CheckItemResult = DB_query("SELECT mbflag,
 										eoq,
@@ -207,7 +207,7 @@ if (isset($NewItem) AND isset($_POST['WO'])){
 								$db);
 	if (DB_num_rows($CheckItemResult)==1){
 		$CheckItemRow = DB_fetch_array($CheckItemResult);
-		if ($CheckItemRow['controlled']==1 AND $_SESSION['DefineControlledOnWOEntry']==1){ //need to add serial nos or batches to determine quantity
+		if ($CheckItemRow['controlled']==1 and $_SESSION['DefineControlledOnWOEntry']==1){ //need to add serial nos or batches to determine quantity
 			$EOQ = 0;
 		} else {
 			if (!isset($ReqQty)) {
@@ -243,7 +243,7 @@ if (isset($NewItem) AND isset($_POST['WO'])){
 										AND bom.loccode='" . $_POST['StockLocation'] . "'",
 							 $db);
 		$CostRow = DB_fetch_array($CostResult);
-		if (is_null($CostRow['cost']) OR $CostRow['cost']==0){
+		if (is_null($CostRow['cost']) or $CostRow['cost']==0){
 				$Cost =0;
 				prnMsg(_('The cost of this item as accumulated from the sum of the component costs is nil. This could be because there is no bill of material set up ... you may wish to double check this'),'warn');
 		} else {
@@ -279,7 +279,7 @@ if (isset($NewItem) AND isset($_POST['WO'])){
 } //adding a new item to the work order
 
 
-if (isset($_POST['submit']) OR isset($_POST['Search'])) { //The update button has been clicked
+if (isset($_POST['submit']) or isset($_POST['Search'])) { //The update button has been clicked
 
 	echo '<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') .'">' . _('Enter a new work order') . '</a>';
 	echo '<br /><a href="' . $rootpath . '/SelectWorkOrder.php">' . _('Select an existing work order') . '</a>';
@@ -326,10 +326,10 @@ if (isset($_POST['submit']) OR isset($_POST['Search'])) { //The update button ha
 			if (!isset($_POST['NextLotSNRef'.$i])) {
 				$_POST['NextLotSNRef'.$i]='';
 			}
-			if (isset($_POST['QtyRecd'.$i]) AND $_POST['QtyRecd'.$i]>$_POST['OutputQty'.$i]){
+			if (isset($_POST['QtyRecd'.$i]) and $_POST['QtyRecd'.$i]>$_POST['OutputQty'.$i]){
 				$_POST['OutputQty'.$i]=$_POST['QtyRecd'.$i]; //OutputQty must be >= Qty already reced
 			}
-			if ($_POST['RecdQty'.$i]==0 AND (!isset($_POST['HasWOSerialNos'.$i]) OR $_POST['HasWOSerialNos'.$i]==false)){
+			if ($_POST['RecdQty'.$i]==0 and (!isset($_POST['HasWOSerialNos'.$i]) or $_POST['HasWOSerialNos'.$i]==false)){
 				/* can only change location cost if QtyRecd=0 */
 				$CostResult = DB_query("SELECT SUM((materialcost+labourcost+overheadcost)*bom.quantity) AS cost
 												FROM stockmaster
@@ -350,7 +350,7 @@ if (isset($_POST['submit']) OR isset($_POST['Search'])) { //The update button ha
 											 stdcost ='" . $Cost . "'
 										WHERE wo='" . $_POST['WO'] . "'
 										AND stockid='" . $_POST['OutputItem'.$i] . "'";
-  			} elseif (isset($_POST['HasWOSerialNos'.$i]) AND $_POST['HasWOSerialNos'.$i]==false) {
+  			} elseif (isset($_POST['HasWOSerialNos'.$i]) and $_POST['HasWOSerialNos'.$i]==false) {
 				$sql[] = "UPDATE woitems SET qtyreqd =  '". $_POST['OutputQty' . $i] . "',
 											 nextlotsnref = '". $_POST['NextLotSNRef'.$i] ."'
 										WHERE wo='" . $_POST['WO'] . "'
@@ -475,7 +475,7 @@ if (DB_num_rows($WOResult)==1){
 				$_POST['OutputQty' . $i]= $WOItem['qtyreqd'];
 		  		$_POST['RecdQty' .$i] =$WOItem['qtyrecd'];
 		  		$_POST['DecimalPlaces' . $i] = $WOItem['decimalplaces'];
-		  		if ($WOItem['serialised']==1 AND $WOItem['nextserialno']>0){
+		  		if ($WOItem['serialised']==1 and $WOItem['nextserialno']>0){
 		  		   $_POST['NextLotSNRef' .$i]=$WOItem['nextserialno'];
 		  		} else {
 				   $_POST['NextLotSNRef' .$i]=$WOItem['nextlotsnref'];
@@ -548,7 +548,7 @@ if (isset($NumberOfOutputs)){
 		}
 		echo '<td><input type="hidden" name="OutputItem' . $i . '" value="' . $_POST['OutputItem' .$i] . '" />' .
 			$_POST['OutputItem' . $i] . ' - ' . $_POST['OutputItemDesc' .$i] . '</td>';
-		if ($_POST['Controlled'.$i]==1 AND $_SESSION['DefineControlledOnWOEntry']==1){
+		if ($_POST['Controlled'.$i]==1 and $_SESSION['DefineControlledOnWOEntry']==1){
 			echo '<td class="number">' . locale_number_format($_POST['OutputQty' . $i], $_POST['DecimalPlaces' . $i]) . '</td>';
 			echo '<input type="hidden" name="OutputQty' . $i .'" value="' . locale_number_format($_POST['OutputQty' . $i]-$_POST['RecdQty' .$i], $_POST['DecimalPlaces' . $i]) . '" />';
 		} else {
@@ -685,7 +685,7 @@ if (isset($SearchResult)) {
 						htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?WO=' . $_POST['WO'] . '&NewItem=' . $myrow['stockid'].'&Line='.$i);
 
 				$j++;
-				If ($j == 25){
+				if ($j == 25){
 					$j=1;
 					echo $TableHeader;
 				} //end of page full new headings if
@@ -697,7 +697,7 @@ if (isset($SearchResult)) {
 }#end if SearchResults to show
 
 
-if (!isset($_GET['NewItem']) OR $_GET['NewItem']=='') {
+if (!isset($_GET['NewItem']) or $_GET['NewItem']=='') {
 	echo '<script>defaultControl(document.forms[0].StockCode);</script>';
 } else {
 	echo '<script>defaultControl(document.forms[0].OutputQty"'.$_GET['Line'].'");</script>';

@@ -146,7 +146,7 @@ if (isset($_POST['PrintPDF'])){
 					INNER JOIN salesman
 					ON custbranch.salesman=salesman.salesmancode
 					WHERE (";
-	
+
 			$i=0;
 			foreach ($_POST['Areas'] as $Area){
 				if ($i>0){
@@ -253,7 +253,7 @@ if (isset($_POST['PrintPDF'])){
 	$Area ='';
 	$SalesPerson='';
 
-	While ($Customers = DB_fetch_array($CustomersResult,$db)){
+	while ($Customers = DB_fetch_array($CustomersResult,$db)){
 
 		if ($_POST['Activity']!='All'){
 
@@ -379,19 +379,23 @@ if (isset($_POST['PrintPDF'])){
 
 	echo '<option selected="selected" value="All">' . _('All Areas') . '</option>';
 
-	While ($myrow = DB_fetch_array($AreasResult)){
+	while ($myrow = DB_fetch_array($AreasResult)){
 		echo '<option value="' . $myrow['areacode'] . '">' . $myrow['areadescription'] . '</option>';
 	}
 	echo '</select></td></tr>';
 
 	echo '<tr><td>' . _('For Sales folk'). ':</td>
-			<td><select name="SalesPeople[]" multiple="multiple">
-				<option selected="selected" value="All">'. _('All sales folk') . '</option>';
+			<td><select name="SalesPeople[]" multiple="multiple">';
 
 	$sql = "SELECT salesmancode, salesmanname FROM salesman";
+	if ($_SESSION['SalesmanLogin']!=''){
+		$sql .= " WHERE salesmancode='" . $_SESSION['SalesmanLogin'] . "'";
+	} else {
+		echo '<option selected="selected" value="All">'. _('All sales folk') . '</option>';
+	}
 	$SalesFolkResult = DB_query($sql,$db);
 
-	While ($myrow = DB_fetch_array($SalesFolkResult)){
+	while ($myrow = DB_fetch_array($SalesFolkResult)){
 		echo '<option value="' . $myrow['salesmancode'] . '">' . $myrow['salesmanname'] . '</option>';
 	}
 	echo '</select></td></tr>';

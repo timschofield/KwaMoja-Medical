@@ -3,7 +3,7 @@
 
 /* definition of the ReceiptBatch class */
 
-Class Receipt_Batch {
+class Receipt_Batch {
 
 	var $Items; /*array of objects of Receipt class - id is the pointer */
 	var $BatchNo; /*Batch Number*/
@@ -28,13 +28,13 @@ Class Receipt_Batch {
 	}
 
 	function add_to_batch($Amount, $Customer, $Discount, $Narrative, $GLCode, $PayeeBankDetail, $CustomerName, $tag){
-		if ((isset($Customer)||isset($GLCode)) && ($Amount + $Discount) !=0){
+		if ((isset($Customer)orisset($GLCode)) and ($Amount + $Discount) !=0){
 			$this->Items[$this->ItemCounter] = new Receipt($Amount, $Customer, $Discount, $Narrative, $this->ItemCounter, $GLCode, $PayeeBankDetail, $CustomerName, $tag);
 			$this->ItemCounter++;
 			$this->total = $this->total + ($Amount + $Discount) / $this->ExRate;
-			Return 1;
+			return 1;
 		}
-		Return 0;
+		return 0;
 	}
 
 	function remove_receipt_item($RcptID){
@@ -46,15 +46,15 @@ Class Receipt_Batch {
 
 } /* end of class defintion */
 
-Class Receipt {
-	Var $Amount;	/*in currency of the customer*/
-	Var $Customer; /*customer code */
-	Var $CustomerName;
-	Var $Discount;
-	Var $Narrative;
-	Var $GLCode;
-	Var $PayeeBankDetail;
-	Var $ID;
+class Receipt {
+	var $Amount;	/*in currency of the customer*/
+	var $Customer; /*customer code */
+	var $CustomerName;
+	var $Discount;
+	var $Narrative;
+	var $GLCode;
+	var $PayeeBankDetail;
+	var $ID;
 	var $tag;
 
 	function Receipt ($Amt, $Cust, $Disc, $Narr, $id, $GLCode, $PayeeBankDetail, $CustomerName, $tag){

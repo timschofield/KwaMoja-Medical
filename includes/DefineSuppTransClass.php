@@ -3,7 +3,7 @@
 /* Definition of the Supplier Transactions class to hold all the information for an accounts payable invoice or credit note
 */
 
-Class SuppTrans {
+class SuppTrans {
 
 	var $GRNs; /*array of objects of class GRNs using the GRN No as the pointer */
 	var $GLCodes; /*array of objects of class GLCode using a counter as the pointer */
@@ -104,7 +104,7 @@ Class SuppTrans {
 								$DecimalPlaces=2,
 								$GRNBatchNo){
 
-		if ($This_QuantityInv!=0 AND isset($This_QuantityInv)){
+		if ($This_QuantityInv!=0 and isset($This_QuantityInv)){
 			$this->GRNs[$GRNNo] = new GRNs($GRNNo,
 											$PODetailItem,
 											$ItemCode,
@@ -124,9 +124,9 @@ Class SuppTrans {
 											$Hold,
 											$DecimalPlaces,
 											$GRNBatchNo);
-			Return 1;
+			return 1;
 		}
-		Return 0;
+		return 0;
 	}
 
 	function Modify_GRN_To_Trans($GRNNo,
@@ -145,7 +145,7 @@ Class SuppTrans {
 									$GLCode,
 									$Hold){
 
-		if ($This_QuantityInv!=0 && isset($This_QuantityInv)){
+		if ($This_QuantityInv!=0 and isset($This_QuantityInv)){
 			$this->GRNs[$GRNNo]->Modify($PODetailItem,
 										$ItemCode,
 										$ItemDescription,
@@ -160,13 +160,13 @@ Class SuppTrans {
 										$JobRef,
 										$GLCode,
 										$Hold );
-			Return 1;
+			return 1;
 		}
-		Return 0;
+		return 0;
 	}
 
 	function Copy_GRN_To_Trans($GRNSrc){
-		if ($GRNSrc->This_QuantityInv!=0 && isset($GRNSrc->This_QuantityInv)){
+		if ($GRNSrc->This_QuantityInv!=0 and isset($GRNSrc->This_QuantityInv)){
 
 			$this->GRNs[$GRNSrc->GRNNo] = new GRNs($GRNSrc->GRNNo,
 													$GRNSrc->PODetailItem,
@@ -187,9 +187,9 @@ Class SuppTrans {
 													$GRNSrc->Hold,
 													$GRNSrc->DecimalPlaces,
 													$GRNSrc->GRNBatchNo);
-			Return 1;
+			return 1;
 		}
-		Return 0;
+		return 0;
 	}
 
 	function Add_GLCodes_To_Trans($GLCode,
@@ -197,8 +197,8 @@ Class SuppTrans {
 									$Amount,
 									$Narrative,
 									$Tag){
-		
-		if ($Amount!=0 AND isset($Amount)){
+
+		if ($Amount!=0 and isset($Amount)){
 			$this->GLCodes[$this->GLCodesCounter] = new GLCodes($this->GLCodesCounter,
 																$GLCode,
 																$GLActName,
@@ -206,9 +206,9 @@ Class SuppTrans {
 																$Narrative,
 																$Tag);
 			$this->GLCodesCounter++;
-			Return 1;
+			return 1;
 		}
-		Return 0;
+		return 0;
 	}
 
 	function Add_Shipt_To_Trans($ShiptRef, $Amount){
@@ -217,9 +217,9 @@ Class SuppTrans {
 																$ShiptRef,
 																$Amount);
 			$this->ShiptCounter++;
-			Return 1;
+			return 1;
 		}
-		Return 0;
+		return 0;
 	}
 
 	function Add_Asset_To_Trans($AssetID, $Amount){
@@ -228,9 +228,9 @@ Class SuppTrans {
 															$AssetID,
 															$Amount);
 			$this->AssetCounter++;
-			Return 1;
+			return 1;
 		}
-		Return 0;
+		return 0;
 	}
 
 	function Add_Contract_To_Trans($ContractRef, $Amount,$Narrative, $AnticipatedCost){
@@ -241,29 +241,29 @@ Class SuppTrans {
 																	$Narrative,
 																	$AnticipatedCost);
 			$this->ContractsCounter++;
-			Return 1;
+			return 1;
 		}
-		Return 0;
+		return 0;
 	}
 	function Remove_Asset_From_Trans($AssetCounter){
-	     unset($this->Assets[$AssetCounter]);
+		 unset($this->Assets[$AssetCounter]);
 	}
 	function Remove_GRN_From_Trans($GRNNo){
-	     unset($this->GRNs[$GRNNo]);
+		 unset($this->GRNs[$GRNNo]);
 	}
 
 	function Remove_GLCodes_From_Trans($GLCodeCounter){
-	     unset($this->GLCodes[$GLCodeCounter]);
+		 unset($this->GLCodes[$GLCodeCounter]);
 	}
 
 	function Remove_Shipt_From_Trans($ShiptCounter){
-	     unset($this->Shipts[$ShiptCounter]);
+		 unset($this->Shipts[$ShiptCounter]);
 	}
 
 	function Remove_Contract_From_Trans($ContractID){
-	     unset($this->Contracts[$ContractID]);
+		 unset($this->Contracts[$ContractID]);
 	}
-	
+
 	function Total_GRN_Value(){
 		$TotalGRNs =0;
 		foreach ($this->GRNs as $GRN) {
@@ -301,7 +301,7 @@ Class SuppTrans {
 	}
 } /* end of class defintion */
 
-Class GRNs {
+class GRNs {
 
 /* Contains relavent information from the PurchOrderDetails as well to provide in cached form,
 all the info to do the necessary entries without looking up ie additional queries of the database again */
@@ -403,15 +403,15 @@ all the info to do the necessary entries without looking up ie additional querie
 	}
 }
 
-Class GLCodes {
+class GLCodes {
 
-	Var $Counter;
-	Var $GLCode;
-	Var $GLActName;
-	Var $Amount;
-	Var $Narrative;
-	Var $Tag;
-	Var $TagName;
+	var $Counter;
+	var $GLCode;
+	var $GLActName;
+	var $Amount;
+	var $Narrative;
+	var $Tag;
+	var $TagName;
 
 	function GLCodes ($Counter, $GLCode, $GLActName, $Amount, $Narrative, $Tag=0, $TagName=''){
 
@@ -423,7 +423,7 @@ Class GLCodes {
 		$this->Amount = $Amount;
 		$this->Narrative = $Narrative;
 		$this->Tag = $Tag;
-		
+
 		$TagResult=DB_query("SELECT tagdescription from tags where tagref='" . $Tag . "'", $db);
 		$TagMyrow=DB_fetch_array($TagResult);
 		if ($Tag==0) {
@@ -434,11 +434,11 @@ Class GLCodes {
 	}
 }
 
-Class Shipment {
+class Shipment {
 
-	Var $Counter;
-	Var $ShiptRef;
-	Var $Amount;
+	var $Counter;
+	var $ShiptRef;
+	var $Amount;
 
 	function Shipment ($Counter, $ShiptRef, $Amount){
 		$this->Counter = $Counter;
@@ -447,13 +447,13 @@ Class Shipment {
 	}
 }
 
-Class Asset {
+class Asset {
 
-	Var $Counter;
-	Var $AssetID;
-	Var $Description;
-	Var $CostAct;
-	Var $Amount;
+	var $Counter;
+	var $AssetID;
+	var $Description;
+	var $CostAct;
+	var $Amount;
 
 	function Asset ($Counter, $AssetID, $Amount){
 		global $db;
@@ -472,13 +472,13 @@ Class Asset {
 	}
 }
 
-Class Contract {
+class Contract {
 
-	Var $Counter;
-	Var $ContractRef;
-	Var $Amount;
-	Var $Narrative;
-	Var $AniticipatedCost;
+	var $Counter;
+	var $ContractRef;
+	var $Amount;
+	var $Narrative;
+	var $AniticipatedCost;
 
 	function Contract ($Counter, $ContractRef, $Amount,$Narrative,$AnticipatedCost){
 		$this->Counter = $Counter;
@@ -490,14 +490,14 @@ Class Contract {
 }
 
 
-Class Tax {
-	Var $TaxCalculationOrder;  /*the index for the array */
-	Var $TaxAuthID;
-	Var $TaxAuthDescription;
-	Var $TaxRate;
-	Var $TaxOnTax;
-	Var $TaxGLCode;
-	Var $TaxOvAmount;
+class Tax {
+	var $TaxCalculationOrder;  /*the index for the array */
+	var $TaxAuthID;
+	var $TaxAuthDescription;
+	var $TaxRate;
+	var $TaxOnTax;
+	var $TaxGLCode;
+	var $TaxOvAmount;
 
 	function Tax ($TaxCalculationOrder,
 					$TaxAuthID,

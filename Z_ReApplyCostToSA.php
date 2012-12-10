@@ -8,7 +8,7 @@ include('includes/header.inc');
 
 $Period = 42;
 
-echo "<form method='post' action='" . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?' . SID . "'>";
+echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '">';
 echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
@@ -32,7 +32,7 @@ echo '</select>';
 echo '<br /><input type="submit" name="UpdateSalesAnalysis" value="' . _('Update Sales Analysis Costs') .'" /></div>';
 echo '</div></form>';
 
-if (isset($_POST['UpdateSalesAnalysis']) AND $_POST['PeriodNo']!=0){
+if (isset($_POST['UpdateSalesAnalysis']) and $_POST['PeriodNo']!=0){
 	$sql = "SELECT stockmaster.stockid,
 			materialcost+overheadcost+labourcost AS standardcost,
 			stockmaster.mbflag

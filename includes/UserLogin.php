@@ -21,8 +21,8 @@ function userLogin($Name, $Password, $db) {
 
 	global $debug;
 
-	if (!isset($_SESSION['AccessLevel']) OR $_SESSION['AccessLevel'] == '' OR
-		(isset($Name) AND $Name != '')) {
+	if (!isset($_SESSION['AccessLevel']) or $_SESSION['AccessLevel'] == '' or
+		(isset($Name) and $Name != '')) {
 	/* if not logged in */
 		$_SESSION['AccessLevel'] = '';
 		$_SESSION['CustomerID'] = '';
@@ -102,7 +102,7 @@ function userLogin($Name, $Password, $db) {
 			// 5 login attempts, show failed login screen
 			if (!isset($_SESSION['AttemptsCounter'])) {
 				$_SESSION['AttemptsCounter'] = 0;
-			} elseif ($_SESSION['AttemptsCounter'] >= 5 AND isset($Name)) {
+			} elseif ($_SESSION['AttemptsCounter'] >= 5 and isset($Name)) {
 				/*User blocked from future accesses until sysadmin releases */
 				$sql = "UPDATE www_users
 							SET blocked=1

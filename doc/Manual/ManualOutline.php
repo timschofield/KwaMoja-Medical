@@ -322,6 +322,8 @@ $TOC_Array = array (
                                  ),
     'APITutorial'       => array('API Tutorial'
                                 ),
+    'APIFunctions'       => array('API Function reference'
+                                ),
     'DevelopmentStructure' => array('Development Structure',
                                 'Sales orders',
                                 'Pricing',

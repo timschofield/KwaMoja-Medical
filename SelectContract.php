@@ -22,7 +22,7 @@ if (isset($_GET['SelectedCustomer'])){
 }
 
 
-if (isset($_POST['ContractRef']) AND $_POST['ContractRef']!='') {
+if (isset($_POST['ContractRef']) and $_POST['ContractRef']!='') {
 	$_POST['ContractRef'] = trim($_POST['ContractRef']);
 	echo _('Contract Reference') . ' - ' . $_POST['ContractRef'];
 } else {
@@ -68,7 +68,7 @@ echo '&nbsp;&nbsp;<a href="' . $rootpath . '/Contracts.php">' . _('New Contract'
 
 //figure out the SQL required from the inputs available
 
-if (isset($_POST['ContractRef']) AND $_POST['ContractRef'] !='') {
+if (isset($_POST['ContractRef']) and $_POST['ContractRef'] !='') {
 		$SQL = "SELECT contractref,
 					   contractdescription,
 					   categoryid,
@@ -161,12 +161,12 @@ while ($myrow=DB_fetch_array($ContractsResult)) {
 	$CostingPage = $rootpath . '/ContractCosting.php?SelectedContract=' . $myrow['contractref'];
 	$FormatedRequiredDate = ConvertSQLDate($myrow['requireddate']);
 
-	if ($myrow['status']==0 OR $myrow['status']==1){ //still setting up the contract
+	if ($myrow['status']==0 or $myrow['status']==1){ //still setting up the contract
 		echo '<td><a href="' . $ModifyPage . '">' . _('Modify') . '</a></td>';
 	} else {
 		echo '<td>' . _('n/a') . '</td>';
 	}
-	if ($myrow['status']==1 OR $myrow['status']==2){ // quoted or ordered
+	if ($myrow['status']==1 or $myrow['status']==2){ // quoted or ordered
 		echo '<td><a href="' . $OrderModifyPage . '">' . $myrow['orderno'] . '</a></td>';
 	} else {
 		echo '<td>' . _('n/a') . '</td>';
@@ -176,7 +176,7 @@ while ($myrow=DB_fetch_array($ContractsResult)) {
 	} else {
 		echo '<td>' . _('n/a') . '</td>';
 	}
-	if ($myrow['status']==2 OR $myrow['status']==3){
+	if ($myrow['status']==2 or $myrow['status']==3){
 			echo '<td><a href="' . $CostingPage . '">' . _('View') . '</a></td>';
 		} else {
 			echo '<td>' . _('n/a') . '</td>';

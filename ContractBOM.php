@@ -19,7 +19,7 @@ if (!isset($_SESSION['Contract'.$identifier])){
 }
 include('includes/header.inc');
 
-if (isset($_POST['UpdateLines']) OR isset($_POST['BackToHeader'])) {
+if (isset($_POST['UpdateLines']) or isset($_POST['BackToHeader'])) {
 	if($_SESSION['Contract'.$identifier]->Status!=2){ //dont do anything if the customer has committed to the contract
 		foreach ($_SESSION['Contract'.$identifier]->ContractBOM as $ContractComponent) {
 			if (filter_number_format($_POST['Qty'.$ContractComponent->ComponentID])==0){
@@ -43,7 +43,7 @@ if (isset($_POST['BackToHeader'])){
 
 if (isset($_POST['Search'])){  /*ie seach for stock items */
 
-	if ($_POST['Keywords'] AND $_POST['StockCode']) {
+	if ($_POST['Keywords'] and $_POST['StockCode']) {
 		prnMsg(_('Stock description keywords have been used in preference to the Stock code extract entered'), 'info');
 	}
 
@@ -140,7 +140,7 @@ if (isset($_POST['Search'])){  /*ie seach for stock items */
 	$DbgMsg = _('The SQL statement that failed was');
 	$SearchResult = DB_query($sql,$db,$ErrMsg,$DbgMsg);
 
-	if (DB_num_rows($SearchResult)==0 AND $debug==1){
+	if (DB_num_rows($SearchResult)==0 and $debug==1){
 		prnMsg( _('There are no products to display matching the criteria provided'),'warn');
 	}
 	if (DB_num_rows($SearchResult)==1){
@@ -166,7 +166,7 @@ if (isset($_POST['NewItem'])){ /* NewItem is set from the part selection list as
 		if (filter_number_format($_POST['Qty'.$i])>0){
 			if (count($_SESSION['Contract'.$identifier]->ContractBOM)!=0){
 
-				foreach ($_SESSION['Contract'.$identifier]->ContractBOM AS $Component) {
+				foreach ($_SESSION['Contract'.$identifier]->ContractBOM as $Component) {
 
 				/* do a loop round the items on the order to see that the item
 				is not already on this order */
@@ -399,7 +399,7 @@ if (isset($SearchResult)) {
 }#end if SearchResults to show
 
 echo '<hr />
-    </div> 
+    </div>
 	</form>';
 include('includes/footer.inc');
 ?>

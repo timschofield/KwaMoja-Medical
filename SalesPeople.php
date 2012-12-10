@@ -35,7 +35,7 @@ if (isset($_POST['submit'])) {
 		prnMsg(_('The salesperson code must be three characters or less long'),'error');
 		$Errors[$i] = 'SalesmanCode';
 		$i++;
-	} elseif (mb_strlen($_POST['SalesmanCode'])==0 OR $_POST['SalesmanCode']=='') {
+	} elseif (mb_strlen($_POST['SalesmanCode'])==0 or $_POST['SalesmanCode']=='') {
 		$InputError = 1;
 		prnMsg(_('The salesperson code cannot be empty'),'error');
 		$Errors[$i] = 'SalesmanCode';
@@ -53,7 +53,7 @@ if (isset($_POST['submit'])) {
 		$InputError = 1;
 		prnMsg(_('The salesperson telephone number must be twenty characters or less long'),'error');
 
-	} elseif (!is_numeric(filter_number_format($_POST['CommissionRate1'])) 
+	} elseif (!is_numeric(filter_number_format($_POST['CommissionRate1']))
 			OR !is_numeric(filter_number_format($_POST['CommissionRate2']))) {
 		$InputError = 1;
 		prnMsg(_('The commission rates must be a floating point number'),'error');
@@ -81,7 +81,7 @@ if (isset($_POST['submit'])) {
 	  $_POST['Current']=0;
 	}
 
-	if (isset($SelectedSalesPerson) AND $InputError !=1) {
+	if (isset($SelectedSalesPerson) and $InputError !=1) {
 
 		/*SelectedSalesPerson could also exist if submit had not been clicked this code would not run in this case cos submit is false of course  see the delete code below*/
 
@@ -216,7 +216,7 @@ or deletion of the records*/
 		$k++;
 	}
 	if ($myrow[7] == 1) {
-		$ActiveText = _('Yes'); 
+		$ActiveText = _('Yes');
 	} else {
 		$ActiveText = _('No');
 	}
@@ -244,7 +244,7 @@ or deletion of the records*/
 			$myrow['salesmancode'],
 			htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?',
 			$myrow['salesmancode']);
-	
+
 	} //END WHILE LIST LOOP
 	echo '</table><br />';
 } //end of ifs and buts!

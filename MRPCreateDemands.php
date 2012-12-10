@@ -11,12 +11,12 @@ if (isset($_POST['submit'])) {
 
 	$InputError=0;
 
-	if (isset($_POST['FromDate']) AND !Is_Date($_POST['FromDate'])){
+	if (isset($_POST['FromDate']) and !Is_Date($_POST['FromDate'])){
 		$msg = _('The date from must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
 		$InputError=1;
 		unset($_POST['FromDate']);
 	}
-	if (isset($_POST['ToDate']) AND !Is_Date($_POST['ToDate'])){
+	if (isset($_POST['ToDate']) and !Is_Date($_POST['ToDate'])){
 		$msg = _('The date to must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
 		$InputError=1;
 		unset($_POST['ToDate']);
@@ -28,7 +28,7 @@ if (isset($_POST['submit'])) {
 			unset($_POST['ToDate']);
 			unset($_POST['FromoDate']);
 	}
-	if (isset($_POST['DistDate']) AND !Is_Date($_POST['DistDate'])){
+	if (isset($_POST['DistDate']) and !Is_Date($_POST['DistDate'])){
 		$msg = _('The distribution start date must be specified in the format') . ' ' .  $_SESSION['DefaultDateFormat'];
 		$InputError=1;
 		unset($_POST['DistDate']);
@@ -151,7 +151,7 @@ if (isset($_POST['submit'])) {
 
 	$TotalRecords = 0;
 	while ($myrow = DB_fetch_array($result)) {
-		if (($myrow['totqty'] >= $ExcludeQty) AND ($myrow['totextqty'] >= $ExcludeAmount)) {
+		if (($myrow['totqty'] >= $ExcludeQty) and ($myrow['totextqty'] >= $ExcludeAmount)) {
 			unset($PeriodQty);
 			$PeriodQty[] = ' ';
 			$TotalQty = $myrow['totqtyinvoiced'] * $Multiplier;
@@ -262,7 +262,7 @@ echo '<tr>
 	<tr>
 		<td>' . _('Exclude Total Quantity Less Than') . ':</td>
 		<td><input type ="text" class="number" name="ExcludeQuantity" size="4" value="1" /></td>
-    </tr>
+	</tr>
 	<tr>
 		<td>' . _('Exclude Total Dollars Less Than') . ':</td>
 		<td><input type ="text" class="number" name="ExcludeAmount" size="8" value="0" /></td>
@@ -280,7 +280,7 @@ echo '<tr>
 		<input type="submit" name="submit" value="' . _('Submit') .  '" />
 	</div>';
 echo '</div>
-      </form>';
+	  </form>';
 
 include('includes/footer.inc');
 ?>

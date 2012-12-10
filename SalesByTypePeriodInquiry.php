@@ -126,7 +126,7 @@ echo '<br />
 		</form>
 		<br />';
 
-if ($_POST['DateRange']=='Custom' AND !isset($_POST['FromDate']) AND !isset($_POST['ToDate'])){
+if ($_POST['DateRange']=='Custom' and !isset($_POST['FromDate']) and !isset($_POST['ToDate'])){
 	//Don't run the report until custom dates entered
 	unset($_POST['ShowSales']);
 }

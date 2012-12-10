@@ -10,15 +10,15 @@ if (file_exists('../config.php')) {
 
 // Start a session
 if(!defined('SESSION_STARTED')) {
-        session_name('ba_session_id');
+		session_name('ba_session_id');
 	session_start();
 	define('SESSION_STARTED', true);
 }
 
-$_SESSION['MaxLogoSize'] = 10 * 1024;	    // Limit logo file size.
+$_SESSION['MaxLogoSize'] = 10 * 1024;		// Limit logo file size.
 
 // Check if the page has been reloaded
-if(!isset($_GET['sessions_checked']) || $_GET['sessions_checked'] != 'true') {
+if(!isset($_GET['sessions_checked']) or $_GET['sessions_checked'] != 'true') {
 	// Set session variable
 	$_SESSION['session_support'] = '<p class="good">Enabled</p>';
 	// Reload page
@@ -38,12 +38,12 @@ $CompanyPath = $PathToRoot. '/companies';
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-            "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+			"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <title>KwaMoja Installation Wizard</title>
-<link href="../css/gel/default.css" rel="stylesheet" type="text/css" />
+<link href="../css/jelly/default.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript">
 
 function change_os(type) {
@@ -59,8 +59,8 @@ function change_os(type) {
 }
 function change_data(type) {
 	if(type == 'demo') {
-		document.getElementById('db_file_demo').checked = true;
-		document.getElementById('db_file_new').checked = false;
+		document.getElementById('db_file_demo').checked = false;
+		document.getElementById('db_file_new').checked = true;
 
 	} else if(type == 'new') {
 		document.getElementById('db_file_demo').checked = false;
@@ -84,14 +84,14 @@ function change_data(type) {
 <table cellpadding="0" cellspacing="0" border="0" width="750" style="margin-top: 10px;">
 <tr>
 	<td class="content">
-        <div class="centre">
+		<div class="centre">
 			<h2>Welcome to the KwaMoja Installation Wizard.</h2>
-			<img src="<?php echo "../companies/kwamojademo/logo.jpg"; ?>" width="250" height="50" alt="Logo" />
+			<img src="<?php echo "../companies/logo.png"; ?>" width="250" height="50" alt="Logo" />
 		</div>
 
 
 		<?php
-		if(isset($_SESSION['message']) AND $_SESSION['message'] != '') {
+		if(isset($_SESSION['message']) and $_SESSION['message'] != '') {
 			?><div style="width: 700px; padding: 10px; margin-bottom: 5px; border: 1px solid #FF0000; background-color: #FFDBDB;"><b>Error:</b> <?php echo $_SESSION['message']; ?></div><?php
 		}
 		?>
@@ -163,14 +163,14 @@ function change_data(type) {
 			</td>
 			<td>
 				<?php
-                if (isset($_SESSION['ba_url'])) {
-                   $IntstallUrl = $_SESSION['ba_url'];
-                } else {
-                   // Try to guess installation URL
-                   $GuessedURL = 'http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"];
-                   $GuessedURL = trim(rtrim(dirname($GuessedURL), 'install'));
-                   $IntstallUrl = $GuessedURL;
-                }
+				if (isset($_SESSION['ba_url'])) {
+				   $IntstallUrl = $_SESSION['ba_url'];
+				} else {
+				   // Try to guess installation URL
+				   $GuessedURL = 'http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"];
+				   $GuessedURL = trim(rtrim(dirname($GuessedURL), 'install'));
+				   $IntstallUrl = $GuessedURL;
+				}
 				?>
 				<input type="text" tabindex="30" name="ba_url" style="width: 99%;" value="<?php echo $IntstallUrl;?>" />
 			</td>
@@ -186,31 +186,31 @@ function change_data(type) {
 			</td>
 			<td>
 				<p style="cursor: pointer;" onclick="javascript: change_os('linux');">
-                <input type="radio" tabindex="40" name="operating_system" id="operating_system_linux" onclick="document.getElementById('file_perms_box').style.display = 'block';" value="linux"
-				<?php 
-					if(!isset($_SESSION['operating_system']) OR $_SESSION['operating_system'] == 'linux') { 
-						echo ' checked="checked"'; 
-					} ?> 
+				<input type="radio" tabindex="40" name="operating_system" id="operating_system_linux" onclick="document.getElementById('file_perms_box').style.display = 'block';" value="linux"
+				<?php
+					if(!isset($_SESSION['operating_system']) or $_SESSION['operating_system'] == 'linux') {
+						echo ' checked="checked"';
+					} ?>
 				/>Linux/Unix based</p>
 				<br />
-                <p style="cursor: pointer;" onclick="javascript: change_os('windows');">
+				<p style="cursor: pointer;" onclick="javascript: change_os('windows');">
 				<input type="radio" tabindex="41" name="operating_system" id="operating_system_windows" onclick="document.getElementById('file_perms_box').style.display = 'none';" value="windows"
-				<?php 
-					if(isset($_SESSION['operating_system']) AND $_SESSION['operating_system'] == 'windows') { 
-						echo ' checked="checked"'; } 
-					?> 
+				<?php
+					if(isset($_SESSION['operating_system']) and $_SESSION['operating_system'] == 'windows') {
+						echo ' checked="checked"'; }
+					?>
 				/>Windows</p>
 			</td>
 			<td>
-			  <?php 
-					if(isset($_SESSION['operating_system']) AND $_SESSION['operating_system'] == 'windows') {
+			  <?php
+					if(isset($_SESSION['operating_system']) and $_SESSION['operating_system'] == 'windows') {
 						echo '<div id="file_perms_box" style="margin:0; padding:0; display:none">';
 					} else {
 						echo '<div id="file_perms_box" style="margin:0; padding:0; display:block">';
 					}
 				?>
-                
-					<input type="checkbox" tabindex="42" name="world_writeable" id="world_writeable" value="true"<?php if(isset($_SESSION['world_writeable']) AND $_SESSION['world_writeable'] == true) { echo 'checked="checked"'; } ?> />
+
+					<input type="checkbox" tabindex="42" name="world_writeable" id="world_writeable" value="true"<?php if(isset($_SESSION['world_writeable']) and $_SESSION['world_writeable'] == true) { echo 'checked="checked"'; } ?> />
 					<label for="world_writeable">
 						World-writeable file permissions (777)
 					</label>
@@ -234,9 +234,35 @@ function change_data(type) {
 																									  } ?>" />
 			</td>
 			<td>&nbsp;</td>
-        </tr>
-        <tr>
-			<td style="color: #666666;">Username:</td>
+		</tr>
+		<tr>
+			<td style="color: #666666;">MySQL Database Name:</td>
+			<td>
+				<input type="text" tabindex="44" name="database_name" size="20" value="<?php
+					if(isset($_SESSION['database_name'])) {
+						echo $_SESSION['database_name'];
+					 } else {
+						echo 'weberpdemo';
+					 }
+				 ?>" />
+			</td>
+			<td>(Excluding prefix if applicable.)</td>
+		</tr>
+		<tr>
+			<td style="color: #666666;">Database Prefix? </td>
+			<td>
+				<input type="text" tabindex="44" name="db_prefix" size="20" value="<?php
+					if(isset($_SESSION['db_prefix'])) {
+						echo $_SESSION['db_prefix'];
+					 } else {
+						echo '';
+					 }
+				 ?>" />
+			</td>
+			<td>(Some shared hosting environments add a prefix automatically; use only if this applies to you. Example: 'prefix_')</td>
+		</tr>
+		 <tr>
+			<td style="color: #666666;">MySQL Username:</td>
 			<td>
 				<input type="text" tabindex="44" name="database_username" size="20" value="<?php
 					if(isset($_SESSION['database_username'])) {
@@ -246,6 +272,7 @@ function change_data(type) {
 					 }
 				 ?>" />
 			</td>
+			<td>(User must already exist, with db access!)</td>
 		</tr>
 		<tr>
 			<td style="color: #666666;">Password:</td>
@@ -254,7 +281,7 @@ function change_data(type) {
 																											echo ' value = "'.$_SESSION['database_password'].'"';
 																										} ?> />
 			</td>
-            <td>&nbsp;</td>
+			<td>&nbsp;</td>
 		</tr>
 		<tr>
 
@@ -284,8 +311,8 @@ function change_data(type) {
 			</td>
 
 			<td>
-                
-				<input type="checkbox" tabindex="51" name="DemoData" id="db_file_demo" value="demo"<?php if(!isset($_SESSION['db_file']) OR $_SESSION['db_file'] == 'demo') { echo ' checked="checked"'; } ?> />
+
+				<input type="checkbox" tabindex="51" name="DemoData" id="db_file_demo" value="demo"<?php if(!isset($_SESSION['db_file']) or $_SESSION['db_file'] == 'demo') { echo ' checked="checked"'; } ?> />
 			<div style="cursor: pointer;" onclick="javascript: change_data('demo');">	kwamojademo company</div>
 			</td>
 		</tr>
@@ -309,8 +336,8 @@ function change_data(type) {
 			</td>
 
 			<td>
-			    <input type="hidden" name="MAX_FILE_SIZE" <?php echo "value=\"" . $_SESSION['MaxLogoSize'] . "\"" ?> />
-			    <input type="file" size="50" id="LogoFile" name="LogoFile" tabindex="53" />
+				<input type="hidden" name="MAX_FILE_SIZE" <?php echo "value=\"" . $_SESSION['MaxLogoSize'] . "\"" ?> />
+				<input type="file" size="50" id="LogoFile" name="LogoFile" tabindex="53" />
 			</td>
 		</tr>
 		<tr>
@@ -320,8 +347,8 @@ function change_data(type) {
 			<td style="color: #666666;">Username:</td>
 			<td>
 				admin
-				<!--<input type="text" tabindex="60" name="admin_username" style="width: 98%;" value="<?php if(isset($_SESSION['admin_username'])) { echo $_SESSION['admin_username']; 
-				} else { 
+				<!--<input type="text" tabindex="60" name="admin_username" style="width: 98%;" value="<?php if(isset($_SESSION['admin_username'])) { echo $_SESSION['admin_username'];
+				} else {
 					echo 'admin'; } ?>" />-->
 			</td>
 			<td>&nbsp;</td>
@@ -360,8 +387,8 @@ function change_data(type) {
 				</table>
 			</td>
 			<?php //only show submit button if ready to go
-			if ($phpversion > 4.1 AND $_SESSION['session_support'] = '<p class="good">Enabled</p>'
-					AND is_writable($PathToRoot) AND is_writable($CompanyPath)){
+			if ($phpversion > 4.1 and $_SESSION['session_support'] = '<p class="good">Enabled</p>'
+					and is_writable($PathToRoot) and is_writable($CompanyPath)){
 				echo '<td colspan="1" align="right">
 						<input type="submit" tabindex="20" name="submit" value="Install KwaMoja" class="submit" />
 						</td>';
@@ -382,7 +409,7 @@ function change_data(type) {
 <tr>
 	<td align="center" style="font-size: 10px;">
 		<!-- Please note: the below reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
-		<a href="http://www.kwamoja.org/" style="color: #000000;" target="_blank">KwaMoja</a>
+		<a href="http://www.kwamoja.com/" style="color: #000000;" target="_blank">KwaMoja</a>
 		is	released under the
 		<a href="http://www.gnu.org/licenses/gpl.html" style="color: #000000;" target="_blank">GNU General Public License</a>
 		<!-- Please note: the above reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->

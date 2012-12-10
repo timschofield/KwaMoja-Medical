@@ -6,15 +6,15 @@ include('includes/session.inc');
 include('includes/SQL_CommonFunctions.inc');
 
 //Get Out if we have no order number to work with
-If (!isset($_GET['QuotationNo']) || $_GET['QuotationNo']==""){
-        $title = _('Select Quotation To Print');
-        include('includes/header.inc');
-        echo '<div class="centre">
+if (!isset($_GET['QuotationNo']) or $_GET['QuotationNo']==""){
+		$title = _('Select Quotation To Print');
+		include('includes/header.inc');
+		echo '<div class="centre">
 				<br />
 				<br />
 				<br />';
-        prnMsg( _('Select a Quotation to Print before calling this page') , 'error');
-        echo '<br />
+		prnMsg( _('Select a Quotation to Print before calling this page') , 'error');
+		echo '<br />
 				<br />
 				<br />
 				<table class="table_index">
@@ -29,8 +29,8 @@ If (!isset($_GET['QuotationNo']) || $_GET['QuotationNo']==""){
 				<br />
 				<br />
 				<br />';
-        include('includes/footer.inc');
-        exit();
+		include('includes/footer.inc');
+		exit();
 }
 
 /*retrieve the order details from the database to print */
@@ -74,11 +74,11 @@ $sql = "SELECT salesorders.customerref,
 
 $result=DB_query($sql,$db, $ErrMsg);
 
-//If there are no rows, there's a problem.
+//if there are no rows, there's a problem.
 if (DB_num_rows($result)==0){
 	$title = _('Print Quotation Error');
 	include('includes/header.inc');
-	 echo '<div class="centre">
+	echo '<div class="centre">
 			<br />
 			<br />
 			<br />';
@@ -148,11 +148,13 @@ if (DB_num_rows($result)>0){
 
 	while ($myrow2=DB_fetch_array($result)){
 
-        $ListCount ++;
+		$ListCount ++;
 
-		if ((mb_strlen($myrow2['narrative']) >200 AND $YPos-$line_height <= 75)
-			OR (mb_strlen($myrow2['narrative']) >1 AND $YPos-$line_height <= 62)
-			OR $YPos-$line_height <= 50){
+		if ((mb_strlen($myrow2['narrative']) >200
+			and $YPos-$line_height <= 75)
+			or (mb_strlen($myrow2['narrative']) >1
+			and $YPos-$line_height <= 62)
+			or $YPos-$line_height <= 50){
 		/* We reached the end of the page so finsih off the page and start a newy */
 			$PageNumber++;
 			include ('includes/PDFQuotationPageHeader.inc');
@@ -220,15 +222,15 @@ if (DB_num_rows($result)>0){
 		$YPos -= ($line_height);
 
 	} //end while there are line items to print out
-	if ((mb_strlen($myrow['comments']) >200 AND $YPos-$line_height <= 75)
-		OR (mb_strlen($myrow['comments']) >1 AND $YPos-$line_height <= 62)
-		OR $YPos-$line_height <= 50){
+	if ((mb_strlen($myrow['comments']) >200 and $YPos-$line_height <= 75)
+		or (mb_strlen($myrow['comments']) >1d and $YPos-$line_height <= 62)
+		or $YPos-$line_height <= 50){
 	/* We reached the end of the page so finsih off the page and start a newy */
 		$PageNumber++;
 		include ('includes/PDFQuotationPageHeader.inc');
 	} //end if need a new page headed up
 
-	$LeftOvers = $pdf->addTextWrap($XPos,$YPos-80,200,10,_('Notes:'));
+	$LeftOvers = $pdf->addTextWrap($XPos,$YPos-80,30,10,_('Notes:'));
 	$LeftOvers = $pdf->addText($XPos,$YPos-95,10,$myrow['comments']);
 
 	if (mb_strlen($LeftOvers)>1){
@@ -261,15 +263,15 @@ if (DB_num_rows($result)>0){
 
 
 if ($ListCount == 0){
-        $title = _('Print Quotation Error');
-        include('includes/header.inc');
-        echo '<p>'. _('There were no items on the quotation') . '. ' . _('The quotation cannot be printed').
-                '<br /><a href="' . $rootpath . '/SelectSalesOrder.php?Quotation=Quotes_only">'. _('Print Another Quotation').
-                '</a>' . '<br />'. '<a href="' . $rootpath . '/index.php">' . _('Back to the menu') . '</a>';
-        include('includes/footer.inc');
+		$title = _('Print Quotation Error');
+		include('includes/header.inc');
+		echo '<p>'. _('There were no items on the quotation') . '. ' . _('The quotation cannot be printed').
+				'<br /><a href="' . $rootpath . '/SelectSalesOrder.php?Quotation=Quotes_only">'. _('Print Another Quotation').
+				'</a>' . '<br />'. '<a href="' . $rootpath . '/index.php">' . _('Back to the menu') . '</a>';
+		include('includes/footer.inc');
 	exit;
 } else {
-    $pdf->OutputI($_SESSION['DatabaseName'] . '_Quotation_' . date('Y-m-d') . '.pdf');
-    $pdf->__destruct();
+	$pdf->OutputI($_SESSION['DatabaseName'] . '_Quotation_' . date('Y-m-d') . '.pdf');
+	$pdf->__destruct();
 }
 ?>

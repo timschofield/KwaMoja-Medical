@@ -4,11 +4,11 @@
 
 include('includes/session.inc');
 
-If (isset($_POST['PrintPDF'])
-		AND isset($_POST['FromCriteria'])
-		AND mb_strlen($_POST['FromCriteria'])>=1
-		AND isset($_POST['ToCriteria'])
-		AND mb_strlen($_POST['ToCriteria'])>=1){
+if (isset($_POST['PrintPDF'])
+		and isset($_POST['FromCriteria'])
+		and mb_strlen($_POST['FromCriteria'])>=1
+		and isset($_POST['ToCriteria'])
+		and mb_strlen($_POST['ToCriteria'])>=1){
 
 	include('includes/PDFStarter.php');
 	$pdf->addInfo('Title',_('Stock Count Sheets'));
@@ -159,7 +159,7 @@ If (isset($_POST['PrintPDF'])
 
 	$Category = '';
 
-	While ($InventoryCheckRow = DB_fetch_array($InventoryResult,$db)){
+	while ($InventoryCheckRow = DB_fetch_array($InventoryResult,$db)){
 
 		if ($Category!=$InventoryCheckRow['categoryid']){
 			$FontSize=12;
@@ -274,7 +274,7 @@ If (isset($_POST['PrintPDF'])
 
 		$sql="SELECT categoryid, categorydescription FROM stockcategory ORDER BY categorydescription";
 		$CatResult= DB_query($sql,$db);
-		While ($myrow = DB_fetch_array($CatResult)){
+		while ($myrow = DB_fetch_array($CatResult)){
 			echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . ' - ' . $myrow['categoryid'] . '</option>';
 		}
 		echo '</select></td></tr>';
@@ -286,7 +286,7 @@ If (isset($_POST['PrintPDF'])
 		/*Set the index for the categories result set back to 0 */
 		DB_data_seek($CatResult,0);
 
-		While ($myrow = DB_fetch_array($CatResult)){
+		while ($myrow = DB_fetch_array($CatResult)){
 			echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . ' - ' . $myrow['categoryid'] . '</option>';
 		}
 		echo '</select></td></tr>';

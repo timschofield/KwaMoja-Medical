@@ -22,7 +22,7 @@ if (isset($_POST['BankStatementBalance'])){
 	$_POST['BankStatementBalance'] = filter_number_format($_POST['BankStatementBalance']);
 }
 
-if (isset($_POST['PostExchangeDifference']) AND is_numeric(filter_number_format($_POST['DoExchangeDifference']))){
+if (isset($_POST['PostExchangeDifference']) and is_numeric(filter_number_format($_POST['DoExchangeDifference']))){
 
 	if (!is_numeric($_POST['BankStatementBalance'])){
 		prnMsg(_('The entry in the bank statement balance is not numeric. The balance on the bank statement should be entered. The exchange difference has not been calculated and no general ledger journal has been created'),'warn');
@@ -137,7 +137,7 @@ echo '</table>
 	<br />';
 
 
-if (isset($_POST['ShowRec']) OR isset($_POST['DoExchangeDifference'])){
+if (isset($_POST['ShowRec']) or isset($_POST['DoExchangeDifference'])){
 
 /*Get the balance of the bank account concerned */
 
@@ -246,7 +246,7 @@ if (isset($_POST['ShowRec']) OR isset($_POST['DoExchangeDifference'])){
 		$TotalUnpresentedCheques +=$myrow['outstanding'];
 
 		$j++;
-		If ($j == 18){
+		if ($j == 18){
 			$j=1;
 			echo $TableHeader;
 		}
@@ -359,13 +359,13 @@ if (isset($_POST['ShowRec']) OR isset($_POST['DoExchangeDifference'])){
 			</tr>';
 	}
 
-	if ($_SESSION['CompanyRecord']['currencydefault']!=$CurrencyRow['currcode'] AND !isset($_POST['DoExchangeDifference'])){
+	if ($_SESSION['CompanyRecord']['currencydefault']!=$CurrencyRow['currcode'] and !isset($_POST['DoExchangeDifference'])){
 
 		echo '<tr>
 				<td colspan="7"><hr /></td>
 			</tr>
 			<tr>
-				<td colspan="7">' . _('It is normal for foreign currency accounts to have exchange differences that need to be reflected as the exchange rate varies. This reconciliation is prepared using the exchange rate set up in the currencies table (see the set-up tab). This table must be maintained with the current exchange rate before running the reconciliation. If you wish to create a journal to reflect the exchange difference based on the current exchange rate to correct the reconciliation to the actual bank statement balance click below.') . '</td>
+				<td colspan="7">' . _('It is normal for foreign currency accounts to have exchange differences that need to be reflected as the exchange rate varies. This reconciliation is prepared using the exchange rate set up in the currencies table (see the set-up tab). This table must be maintained with the current exchange rate before running the reconciliation. if you wish to create a journal to reflect the exchange difference based on the current exchange rate to correct the reconciliation to the actual bank statement balance click below.') . '</td>
 			</tr>
 			<tr>
 				<td colspan="7" align="center"><input type="submit" name="DoExchangeDifference" value="' . _('Calculate and Post Exchange Difference') . '" /></td>

@@ -11,7 +11,7 @@ if (isset($_POST['Select'])) {
 	$_POST['PrintPDF']='Yes';
 }
 
-if (isset($_POST['PrintPDF']) AND $_POST['Part']!='') {
+if (isset($_POST['PrintPDF']) and $_POST['Part']!='') {
 
 	include('includes/PDFStarter.php');
 	$pdf->addInfo('Title',_('MRP Report'));
@@ -77,8 +77,8 @@ if (isset($_POST['PrintPDF']) AND $_POST['Part']!='') {
 	$sql = "SELECT mrpsupplies.*,
 				   TRUNCATE(((TO_DAYS(duedate) - TO_DAYS(CURRENT_DATE)) / 7),0) AS weekindex,
 				   TO_DAYS(duedate) - TO_DAYS(CURRENT_DATE) AS datediff
-			 FROM mrpsupplies 
-			 WHERE part = '" . $_POST['Part'] . "' 
+			 FROM mrpsupplies
+			 WHERE part = '" . $_POST['Part'] . "'
 			 ORDER BY mrpdate";
 	$result = DB_query($sql,$db,'','',false,true);
 	if (DB_error_no($db) !=0) {
@@ -422,8 +422,8 @@ if (isset($_POST['PrintPDF']) AND $_POST['Part']!='') {
 
 	// Details for Demand/Supply Sections
 	$i = 0;
-	while ((isset($Supplies[$i]) AND mb_strlen($Supplies[$i]['part'])) > 1 
-			OR (isset($Requirements[$i]) AND mb_strlen($Requirements[$i]['part']) > 1)){
+	while ((isset($Supplies[$i]) and mb_strlen($Supplies[$i]['part'])) > 1
+			or (isset($Requirements[$i]) and mb_strlen($Requirements[$i]['part']) > 1)){
 
 		$YPos -=$line_height;
 		$FontSize=7;
@@ -450,7 +450,7 @@ if (isset($_POST['PrintPDF']) AND $_POST['Part']!='') {
 			$suptype = $Supplies[$i]['ordertype'];
 			// If ordertype is not QOH,PO,or WO, it is an MRP generated planned order and the
 			// ordertype is actually the demandtype that caused the planned order
-			if ($suptype == 'QOH' || $suptype == 'PO' || $suptype == 'WO') {
+			if ($suptype == 'QOH' or $suptype == 'PO' or $suptype == 'WO') {
 				$displaytype = $suptype;
 				$fortype = " ";
 			} else {
@@ -460,7 +460,7 @@ if (isset($_POST['PrintPDF']) AND $_POST['Part']!='') {
 			$FormatedSupDueDate = ConvertSQLDate($Supplies[$i]['duedate']);
 			$FormatedSupMRPDate = ConvertSQLDate($Supplies[$i]['mrpdate']);
 			// Order no is meaningless for QOH and REORD ordertypes
-			if ($suptype == 'QOH' OR $suptype == 'REORD') {
+			if ($suptype == 'QOH' or $suptype == 'REORD') {
 				$pdf->addTextWrap(310,$YPos,45,$FontSize,' ','');
 			} else {
 				$pdf->addTextWrap(310,$YPos,45,$FontSize,$Supplies[$i]['orderno'],'');
@@ -488,7 +488,7 @@ if (isset($_POST['PrintPDF']) AND $_POST['Part']!='') {
 	}
 
 	$pdf->OutputD($_SESSION['DatabaseName'] . '_MRPReport_' . date('Y-m-d').'.pdf');//UldisN
-	$pdf->__destruct(); 
+	$pdf->__destruct();
 
 } else { /*The option to print PDF was not hit so display form */
 
@@ -511,7 +511,7 @@ if (isset($_POST['PrintPDF']) AND $_POST['Part']!='') {
 	}
 
 	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '" method="post">';
-    echo '<div>';
+	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<p class="page_title_text"><img src="' . $rootpath . '/css/' . $theme . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Search for Inventory Items').'</p>';
 	echo '<table class="selection"><tr>';
@@ -555,9 +555,9 @@ if (isset($_POST['PrintPDF']) AND $_POST['Part']!='') {
 			<input type="submit" name="Search" value="' . _('Search Now') . '" />
 		</div>
 		<br />';
-		
+
 	echo '<script  type="text/javascript">defaultControl(document.forms[0].StockCode);</script>';
-    echo '</div>';
+	echo '</div>';
 	echo '</form>';
 	if (!isset($_POST['Search'])) {
 		include('includes/footer.inc');
@@ -565,15 +565,20 @@ if (isset($_POST['PrintPDF']) AND $_POST['Part']!='') {
 
 } /*end of else not PrintPDF */
 // query for list of record(s)
-if(isset($_POST['Go']) OR isset($_POST['Next']) OR isset($_POST['Previous'])) {
+if(isset($_POST['Go']) or isset($_POST['Next']) or isset($_POST['Previous'])) {
 	$_POST['Search']='Search';
 }
-if (isset($_POST['Search']) OR isset($_POST['Go']) OR isset($_POST['Next']) OR isset($_POST['Previous'])) {
-	if (!isset($_POST['Go']) AND !isset($_POST['Next']) AND !isset($_POST['Previous'])) {
+if (isset($_POST['Search'])
+		or isset($_POST['Go'])
+		or isset($_POST['Next'])
+		or isset($_POST['Previous'])) {
+	if (!isset($_POST['Go'])
+			and !isset($_POST['Next'])
+			and !isset($_POST['Previous'])) {
 		// if Search then set to first page
 		$_POST['PageOffset'] = 1;
 	}
-	if ($_POST['Keywords'] AND $_POST['StockCode']) {
+	if ($_POST['Keywords'] and $_POST['StockCode']) {
 		prnMsg( _('Stock description keywords have been used in preference to the Stock code extract entered'), 'info' );
 	}
 	if ($_POST['Keywords']) {
@@ -654,7 +659,7 @@ if (isset($_POST['Search']) OR isset($_POST['Go']) OR isset($_POST['Next']) OR i
 					stockmaster.decimalplaces
 				ORDER BY stockmaster.stockid";
 		}
-	} elseif (!isset($_POST['StockCode']) AND !isset($_POST['Keywords'])) {
+	} elseif (!isset($_POST['StockCode']) and !isset($_POST['Keywords'])) {
 		if ($_POST['StockCat'] == 'All') {
 			$SQL = "SELECT stockmaster.stockid,
 					stockmaster.description,
@@ -700,9 +705,9 @@ if (isset($_POST['Search']) OR isset($_POST['Go']) OR isset($_POST['Next']) OR i
 }
 /* end query for list of records */
 /* display list if there is more than one record */
-if (isset($searchresult) AND !isset($_POST['Select'])) {
+if (isset($searchresult) and !isset($_POST['Select'])) {
 	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '" method="post">';
-    echo '<div>';
+	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	$ListCount = DB_num_rows($searchresult);
 	if ($ListCount > 0) {
@@ -758,7 +763,7 @@ if (isset($searchresult) AND !isset($_POST['Select'])) {
 		if (DB_num_rows($searchresult) <> 0) {
 			DB_data_seek($searchresult, ($_POST['PageOffset'] - 1) * $_SESSION['DisplayRecordsMax']);
 		}
-		while (($myrow = DB_fetch_array($searchresult)) AND ($RowIndex <> $_SESSION['DisplayRecordsMax'])) {
+		while (($myrow = DB_fetch_array($searchresult)) and ($RowIndex <> $_SESSION['DisplayRecordsMax'])) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;
@@ -778,7 +783,7 @@ if (isset($searchresult) AND !isset($_POST['Select'])) {
 				<td><a target="_blank" href="' . $rootpath . '/StockStatus.php?StockID=' . $myrow['stockid'] .'">' . _('View') . '</a></td>
 				</tr>';
 			$j++;
-			if ($j == 20 AND ($RowIndex + 1 != $_SESSION['DisplayRecordsMax'])) {
+			if ($j == 20 and ($RowIndex + 1 != $_SESSION['DisplayRecordsMax'])) {
 				$j = 1;
 				echo $tableheader;
 			}
@@ -787,7 +792,7 @@ if (isset($searchresult) AND !isset($_POST['Select'])) {
 		}
 		//end of while loop
 		echo '</table>
-            </div>
+			</div>
 			</form>
 			<br />';
 	}
@@ -804,27 +809,27 @@ function PrintHeader(&$pdf,&$YPos,&$PageNumber,$Page_Height,$Top_Margin,$Left_Ma
 	if ($PageNumber>1){
 		$pdf->newPage();
 	}
-	
+
 	$FontSize=9;
 	$YPos= $Page_Height-$Top_Margin;
-	
+
 	$pdf->addTextWrap($Left_Margin,$YPos,300,$FontSize,$_SESSION['CompanyRecord']['coyname']);
-	
+
 	$YPos -=$line_height;
-	
+
 	$pdf->addTextWrap($Left_Margin,$YPos,300,$FontSize,_('MRP Report'));
 	$pdf->addTextWrap($Page_Width-$Right_Margin-110,$YPos,160,$FontSize,_('Printed') . ': ' .
 		 Date($_SESSION['DefaultDateFormat']) . '   ' . _('Page') . ' ' . $PageNumber,'left');
-	
+
 	$YPos -=(2*$line_height);
-	
+
 	/*set up the headings */
 	$Xpos = $Left_Margin+1;
-	
+
 	$FontSize=8;
 	$YPos =$YPos - (2*$line_height);
 	$PageNumber++;
-	
+
 } // End of PrintHeader function
 
 ?>

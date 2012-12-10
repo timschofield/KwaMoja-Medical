@@ -22,8 +22,8 @@ if (!isset($_GET['CreditNoteNo'])){
 }
 /*get the order number that was credited */
 
-$SQL = "SELECT order_, id 
-		FROM debtortrans 
+$SQL = "SELECT order_, id
+		FROM debtortrans
 		WHERE transno='" . $_GET['CreditNoteNo'] . "' AND type='11'";
 $Result = DB_query($SQL, $db);
 
@@ -45,7 +45,7 @@ $Result = DB_query($SQL,$db);
 
 $i=0;
 
-While ($myrow = DB_fetch_array($Result)){
+while ($myrow = DB_fetch_array($Result)){
 	$StockMovement[$i] = $myrow;
 	$i++;
 }
@@ -104,7 +104,7 @@ foreach ($StockMovement as $CreditLine) {
 
 	$Result = DB_query($SQL, $db,$ErrMsg,$DbgMsg, true);
 
-/*Delete Sales Analysis records 
+/*Delete Sales Analysis records
  * This is unreliable as the salesanalysis record contains totals for the item cust custbranch periodno */
 	$SQL = "DELETE FROM salesanalysis
                        WHERE periodno = '" . $CreditLine['prd'] . "'
@@ -119,6 +119,15 @@ foreach ($StockMovement as $CreditLine) {
 }
 
 /* Delete the stock movements  */
+$SQL = "DELETE stockmovestaxes.* FROM stockmovestaxes INNER JOIN stockmoves
+			ON stockmovestaxes.stkmoveno=stockmoves.stkmoveno
+               WHERE stockmoves.type=11 AND stockmoves.transno = '" . $_GET['CreditNoteNo'] . "'";
+
+$ErrMsg = _('SQL to delete the stock movement tax records failed with the message');
+$Result = DB_query($SQL, $db,$ErrMsg,$DbgMsg,true);
+prnMsg(_('Deleted the credit note stock move taxes').'info');
+echo '<br /><br />';
+
 
 $SQL = "DELETE FROM stockmoves
                WHERE type=11 AND transno = '" . $_GET['CreditNoteNo'] . "'";
@@ -127,6 +136,14 @@ $ErrMsg = _('SQL to delete the stock movement record failed with the message');
 $Result = DB_query($SQL, $db,$ErrMsg,$DbgMsg,true);
 prnMsg(_('Deleted the credit note stock movements').'info');
 echo '<br /><br />';
+
+
+
+
+$SQL = "DELETE FROM gltrans WHERE type=11 AND typeno= '" . $_GET['CreditNoteNo'] . "'";
+$ErrMsg = _('SQL to delete the gl transaction records failed with the message');
+$Result = DB_query($SQL, $db,$ErrMsg,$DbgMsg,true);
+prnMsg(_('Deleted the credit note general ledger transactions').'info');
 
 $result = DB_Txn_Commit($db);
 prnMsg(_('Credit note number') . ' ' . $_GET['CreditNoteNo'] . ' ' . _('has been completely deleted') . '. ' . _('To ensure the integrity of the general ledger transactions must be reposted from the period the credit note was created'),'info');

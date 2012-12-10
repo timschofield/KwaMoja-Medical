@@ -66,7 +66,7 @@ function DB_query ($SQL,
 		$DebugMessage = _('The SQL that failed was');
 	}
 
-	if (DB_error_no($Conn) != 0 AND $TrapErrors==true){
+	if (DB_error_no($Conn) != 0 and $TrapErrors==true){
 		if ($TrapErrors){
 			require_once($PathPrefix . 'includes/header.inc');
 		}
@@ -85,13 +85,13 @@ function DB_query ($SQL,
 			include($PathPrefix . 'includes/footer.inc');
 			exit;
 		}
-	} elseif (isset($_SESSION['MonthsAuditTrail']) and (DB_error_no($Conn)==0 AND $_SESSION['MonthsAuditTrail']>0)){
+	} elseif (isset($_SESSION['MonthsAuditTrail']) and (DB_error_no($Conn)==0 and $_SESSION['MonthsAuditTrail']>0)){
 
 		$SQLArray = explode(' ', $SQL);
 
 		if (($SQLArray[0] == 'INSERT')
-			OR ($SQLArray[0] == 'UPDATE')
-			OR ($SQLArray[0] == 'DELETE')) {
+			or ($SQLArray[0] == 'UPDATE')
+			or ($SQLArray[0] == 'DELETE')) {
 
 			if ($SQLArray[2]!='audittrail'){ // to ensure the auto delete of audit trail history is not logged
 				$AuditSQL = "INSERT INTO audittrail (transactiondate,
@@ -113,19 +113,19 @@ function DB_query ($SQL,
 function DB_fetch_row (&$ResultIndex) {
 
 	$RowPointer=mysql_fetch_row($ResultIndex);
-	Return $RowPointer;
+	return $RowPointer;
 }
 
 function DB_fetch_assoc (&$ResultIndex) {
 
 	$RowPointer=mysql_fetch_assoc($ResultIndex);
-	Return $RowPointer;
+	return $RowPointer;
 }
 
 function DB_fetch_array (&$ResultIndex) {
 
 	$RowPointer=mysql_fetch_array($ResultIndex);
-	Return $RowPointer;
+	return $RowPointer;
 }
 
 function DB_data_seek (&$ResultIndex,$Record) {
@@ -169,12 +169,12 @@ function DB_escape_string($String){
 
 function DB_show_tables(&$Conn){
 	$Result = DB_query('SHOW TABLES',$Conn);
-	Return $Result;
+	return $Result;
 }
 
 function DB_show_fields($TableName, &$Conn){
 	$Result = DB_query("DESCRIBE $TableName",$Conn);
-	Return $Result;
+	return $Result;
 }
 
 function interval( $val, $Inter ){

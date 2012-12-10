@@ -46,7 +46,7 @@ if (isset($_POST['submit'])) {
 		$Errors[$i] = 'MethodName';
 		$i++;
 	}
-	if (isset($_POST['SelectedPaymentID']) AND $InputError !=1) {
+	if (isset($_POST['SelectedPaymentID']) and $InputError !=1) {
 
 		/*SelectedPaymentID could also exist if submit had not been clicked this code would not run in this case cos submit is false of course  see the delete code below*/
 		// Check the name does not clash
@@ -133,7 +133,7 @@ if (isset($_POST['submit'])) {
 	} else {
 		$myrow = DB_fetch_row($result);
 		$OldMeasureName = $myrow[0];
-		$sql= "SELECT COUNT(*) FROM banktrans 
+		$sql= "SELECT COUNT(*) FROM banktrans
 				WHERE banktranstype LIKE '" . $OldMeasureName . "'";
 		$result = DB_query($sql,$db);
 		$myrow = DB_fetch_row($result);
@@ -215,7 +215,7 @@ if (isset($_POST['submit'])) {
 
 
 if (isset($SelectedPaymentID)) {
-	echo '<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?' . SID .'">' . _('Review Payment Methods') . '</a></div>';
+	echo '<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '">' . _('Review Payment Methods') . '</a></div>';
 }
 
 echo '<br />';
@@ -223,7 +223,7 @@ echo '<br />';
 if (! isset($_GET['delete'])) {
 
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '">';
-    echo '<div>';
+	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	if (isset($SelectedPaymentID)) {
@@ -255,7 +255,7 @@ if (! isset($_GET['delete'])) {
 			echo '<table class="selection">';
 		}
 
-	}  else {
+	} else {
 		$_POST['MethodName']='';
 		$_POST['ForPayment'] = 1; // Default is use for payment
 		$_POST['ForReceipt'] = 1; // Default is use for receipts
@@ -272,7 +272,7 @@ if (! isset($_GET['delete'])) {
 		<td><select name="ForPayment">
 			<option' . ($_POST['ForPayment'] ? ' selected="selected"' : '') .' value="1">' . _('Yes') . '</option>
 			<option' . ($_POST['ForPayment'] ? '' : ' selected="selected"') .' value="0">' . _('No') . '</option>
-            </select></td>
+			</select></td>
 		</tr>';
 	echo '<tr>
 			<td>' . _('Use For Receipts') . ':' . '</td>
@@ -298,7 +298,7 @@ if (! isset($_GET['delete'])) {
 	echo '</table>';
 
 	echo '<br /><div class="centre"><input type="submit" name="submit" value="' . _('Enter Information') . '" /></div>';
-    echo '</div>';
+	echo '</div>';
 	echo '</form>';
 
 } //end if record deleted no point displaying form to add record

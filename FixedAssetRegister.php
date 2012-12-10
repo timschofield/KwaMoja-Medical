@@ -4,7 +4,7 @@ include ('includes/session.inc');
 $title = _('Fixed Asset Register');
 $csv_output = '';
 // Reports being generated in HTML, PDF and CSV/EXCEL format
-if (isset($_POST['submit']) OR isset($_POST['pdf']) OR isset($_POST['csv'])) {
+if (isset($_POST['submit']) or isset($_POST['pdf']) or isset($_POST['csv'])) {
 	if (isset($_POST['pdf'])) {
 		$PaperSize = 'A4_Landscape';
 		include ('includes/PDFStarter.php');
@@ -73,7 +73,7 @@ if (isset($_POST['submit']) OR isset($_POST['pdf']) OR isset($_POST['csv'])) {
 	} elseif (isset($_POST['csv'])) {
 		$csv_output = "'Asset ID','Description','Serial Number','Location','Date Acquired','Cost B/Fwd','Period Additions','Depn B/Fwd','Period Depreciation','Cost C/Fwd', 'Accum Depn C/Fwd','NBV','Disposal Value'\n";
 	} else {
-		echo '<form id="RegisterForm" method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?' . SID . '">
+		echo '<form id="RegisterForm" method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '">
               <div>';
         echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 		echo '<div class="centre">' ._('From') . ':' . $_POST['FromDate'] . ' ' . _('to') . ' ' . $_POST['ToDate'] . '</div>';
@@ -120,9 +120,9 @@ if (isset($_POST['submit']) OR isset($_POST['pdf']) OR isset($_POST['csv'])) {
 			$Ancestors[$i] = $ParentRow['locationdescription'];
 		}
 		*/
-		if (Date1GreaterThanDate2(ConvertSQLDate($myrow['disposaldate']),$_POST['FromDate']) OR $myrow['disposaldate']='0000-00-00') {
+		if (Date1GreaterThanDate2(ConvertSQLDate($myrow['disposaldate']),$_POST['FromDate']) or $myrow['disposaldate']='0000-00-00') {
 
-			if ($myrow['disposaldate']!='0000-00-00' AND Date1GreaterThanDate2($_POST['ToDate'], ConvertSQLDate($myrow['disposaldate']))){
+			if ($myrow['disposaldate']!='0000-00-00' and Date1GreaterThanDate2($_POST['ToDate'], ConvertSQLDate($myrow['disposaldate']))){
 				/*The asset was disposed during the period */
 				$CostCfwd = 0;
 				$AccumDepnCfwd = 0;
@@ -273,7 +273,7 @@ if (isset($_POST['submit']) OR isset($_POST['pdf']) OR isset($_POST['csv'])) {
 			<td><select name="AssetLocation">
 				<option value="%">' . _('ALL') . '</option>';
 	while ($myrow = DB_fetch_array($result)) {
-		if (isset($_POST['AssetLocation']) AND $myrow['locationid'] == $_POST['AssetLocation']) {
+		if (isset($_POST['AssetLocation']) and $myrow['locationid'] == $_POST['AssetLocation']) {
 			echo '<option selected="selected" value="' . $myrow['locationid'] . '">' . $myrow['locationdescription'] . '</option>';
 		} else {
 			echo '<option value="' . $myrow['locationid'] . '">' . $myrow['locationdescription'] . '</option>';
@@ -288,7 +288,7 @@ if (isset($_POST['submit']) OR isset($_POST['pdf']) OR isset($_POST['csv'])) {
 			<td><select name="AssetID">
 				<option value="%">' . _('ALL') . '</option>';
 	while ($myrow = DB_fetch_array($result)) {
-		if (isset($_POST['AssetID']) AND $myrow['assetid'] == $_POST['AssetID']) {
+		if (isset($_POST['AssetID']) and $myrow['assetid'] == $_POST['AssetID']) {
 			echo '<option selected="selected" value="' . $myrow['assetid'] . '">' . $myrow['assetid'] . ' - ' . $myrow['description'] . '</option>';
 		} else {
 			echo '<option value="' . $myrow['assetid'] . '">'  . $myrow['assetid'] . ' - ' . $myrow['description'] . '</option>';

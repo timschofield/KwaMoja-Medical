@@ -14,7 +14,7 @@ if (isset($_GET['SelectedGroup'])){
 
 echo '<p class="page_title_text"><img src="'.$rootpath.'/css/'.$theme.'/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $title.'</p><br />';
 
-if (isset($_POST['submit']) OR isset($_GET['remove']) OR isset($_GET['add']) ) {
+if (isset($_POST['submit']) or isset($_GET['remove']) or isset($_GET['add']) ) {
 
 	//initialise no input errors assumed initially before we test
 	$InputError = 0;
@@ -22,7 +22,7 @@ if (isset($_POST['submit']) OR isset($_GET['remove']) OR isset($_GET['add']) ) {
 	/* actions to take once the user has clicked the submit button
 	ie the page has called itself with some user input */
 	//first off validate inputs sensible
-	if (isset($_POST['GroupName']) AND mb_strlen($_POST['GroupName'])<4){
+	if (isset($_POST['GroupName']) and mb_strlen($_POST['GroupName'])<4){
 		$InputError = 1;
 		prnMsg(_('The Group description entered must be at least 4 characters long'),'error');
 	}
@@ -77,7 +77,7 @@ if (isset($_POST['submit']) OR isset($_GET['remove']) OR isset($_GET['add']) ) {
 		unset($_GET['TaxAuthority']);
 	}
 	// Need to exec the query
-	if (isset($sql) AND $InputError != 1 ) {
+	if (isset($sql) and $InputError != 1 ) {
 		$result = DB_query($sql,$db,$ErrMsg);
 		if( $result ) {
 			prnMsg( $SuccessMsg,'success');
@@ -90,7 +90,7 @@ if (isset($_POST['submit']) OR isset($_GET['remove']) OR isset($_GET['add']) ) {
 
 	while ($myrow=DB_fetch_row($Result)){
 
-		if (is_numeric($_POST['CalcOrder_' . $myrow[0]]) AND $_POST['CalcOrder_' . $myrow[0]] <5){
+		if (is_numeric($_POST['CalcOrder_' . $myrow[0]]) and $_POST['CalcOrder_' . $myrow[0]] <5){
 
 			$sql = "UPDATE taxgrouptaxes
 				SET calculationorder='" . $_POST['CalcOrder_' . $myrow[0]] . "',
@@ -240,9 +240,9 @@ echo '<tr><td>' . _('Tax Group') . ':</td>
 		<td><input type="text" name="GroupName" size="40" maxlength="40" value="' . $_POST['GroupName'] . '" /></td>';
 echo '<td><input type="submit" name="submit" value="' . _('Enter Group') . '" /></td>
 	</tr>
-    </table>
-    <br />
-    </div>
+	</table>
+	<br />
+	</div>
 	</form>';
 
 
@@ -278,7 +278,7 @@ if (isset($SelectedGroup)) {
 	/* the order and tax on tax will only be an issue if more than one tax authority in the group */
 	if (count($TaxAuthsUsed)>0) {
 		echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '">';
-        echo '<div>';
+		echo '<div>';
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
 				<input type="hidden" name="SelectedGroup" value="' . $SelectedGroup .'" />';
 		echo '<table class="selection">
@@ -326,7 +326,7 @@ if (isset($SelectedGroup)) {
 	}
 
 	echo '</div>
-          </form>';
+		  </form>';
 
 	if (DB_num_rows($Result)>0 ) {
 		echo '<br />';

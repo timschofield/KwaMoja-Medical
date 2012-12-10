@@ -26,7 +26,7 @@ echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 
-if (!isset($_POST['WO']) OR !isset($_POST['StockID'])) {
+if (!isset($_POST['WO']) or !isset($_POST['StockID'])) {
 	/* This page can only be called with a work order number for issuing stock to*/
 	echo '<div class="centre"><a href="' . $rootpath . '/SelectWorkOrder.php">'.
 		_('Select a work order to issue materials to').'</a></div>';
@@ -109,7 +109,8 @@ if (isset($_POST['Process'])){ //user hit the process the work order issues ente
 	}
 
 	if ($_SESSION['ProhibitNegativeStock']==1
-			AND ($IssueItemRow['mbflag']=='M' OR $IssueItemRow['mbflag']=='B')){
+			and ($IssueItemRow['mbflag']=='M'
+			or $IssueItemRow['mbflag']=='B')){
 											//don't need to check labour or dummy items
 		$SQL = "SELECT quantity FROM locstock
 				WHERE stockid ='" . $_POST['IssueItem'] . "'
@@ -137,7 +138,7 @@ if (isset($_POST['Process'])){ //user hit the process the work order issues ente
 		$StockGLCode = GetStockGLCode($_POST['IssueItem'],$db);
 
 
-		if ($IssueItemRow['mbflag']=='M' OR $IssueItemRow['mbflag']=='B'){
+		if ($IssueItemRow['mbflag']=='M' or $IssueItemRow['mbflag']=='B'){
 			/* Need to get the current location quantity will need it later for the stock movement */
 			$SQL="SELECT locstock.quantity
 				FROM locstock
@@ -375,7 +376,7 @@ if (isset($_POST['Process'])){ //user hit the process the work order issues ente
 /*User hit the search button looking for an item to issue to the WO */
 if (isset($_POST['Search'])){
 
-	if ($_POST['Keywords'] AND $_POST['StockCode']) {
+	if ($_POST['Keywords'] and $_POST['StockCode']) {
 		prnMsg(_('Stock description keywords have been used in preference to the Stock code extract entered'),'warn');
 	}
 	if (mb_strlen($_POST['Keywords'])>0) {
@@ -543,7 +544,7 @@ if ($WORow['closed']==1){
 	prnMsg(_('The selected work order has been closed and variances calculated and posted. No more issues of materials and components can be made against this work order.'),'info');
 	include('includes/footer.inc');
 	exit;
-}	
+}
 DB_data_seek($WOResult,0);
 
 while($WORow = DB_fetch_array($WOResult)){
@@ -677,12 +678,12 @@ if (!isset($_POST['IssueItem'])){ //no item selected to issue yet
 	echo '</select></td>
 	    <td>' . _('Enter text extracts in the') . ' <b>' . _('description') . '</b>:</td>
 	    <td><input type="text" name="Keywords" size="20" maxlength="25" value="';
-            if (isset($_POST['Keywords'])) echo $_POST['Keywords']; 
+            if (isset($_POST['Keywords'])) echo $_POST['Keywords'];
             echo '" /></td></tr>
 	    <tr><td></td>
 		<td><b>' . _('OR') . ' </b>' . _('Enter extract of the') . ' <b>' . _('Stock Code') . '</b>:</td>
 		<td><input type="text" name="StockCode" size="15" maxlength="18" value="';
-            if (isset($_POST['StockCode'])) echo $_POST['StockCode']; 
+            if (isset($_POST['StockCode'])) echo $_POST['StockCode'];
             echo '" /></td>
 			</tr>
 			</table>
@@ -748,7 +749,7 @@ if (!isset($_POST['IssueItem'])){ //no item selected to issue yet
 							$IssueLink);
 
 					$j++;
-					If ($j == 25){
+					if ($j == 25){
 						$j=1;
 						echo $TableHeader;
 					} //end of page full new headings if

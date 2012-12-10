@@ -77,7 +77,7 @@ if (isset($_POST['submit'])) {
 		$i++;
 	}
 
-	if (isset($SelectedBankAccount) AND $InputError !=1) {
+	if (isset($SelectedBankAccount) and $InputError !=1) {
 
 		/*Check if there are already transactions against this account - cant allow change currency if there are*/
 
@@ -253,7 +253,7 @@ echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT
 echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
-if (isset($SelectedBankAccount) AND !isset($_GET['delete'])) {
+if (isset($SelectedBankAccount) and !isset($_GET['delete'])) {
 	//editing an existing bank account  - not deleting
 
 	$sql = "SELECT accountcode,
@@ -366,7 +366,7 @@ echo '<tr>
 		<td>' . _('Default for Invoices') . ': </td>
 		<td><select tabindex="6" name="DefAccount">';
 
-if (!isset($_POST['DefAccount']) OR $_POST['DefAccount']==''){
+if (!isset($_POST['DefAccount']) or $_POST['DefAccount']==''){
 	$_POST['DefAccount'] = $_SESSION['CompanyRecord']['currencydefault'];
 }
 

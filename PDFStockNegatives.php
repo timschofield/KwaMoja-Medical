@@ -34,7 +34,7 @@ $sql = "SELECT stockmaster.stockid,
 
 $result = DB_query($sql,$db, $ErrMsg, $DbgMsg);
 
-If (DB_num_rows($result)==0){
+if (DB_num_rows($result)==0){
 	include ('includes/header.inc');
 	prnMsg(_('There are no negative stocks to list'),'error');
 	include ('includes/footer.inc');

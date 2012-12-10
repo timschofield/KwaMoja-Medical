@@ -7,6 +7,7 @@ include('includes/session.inc');
 $title = _('Account Groups');
 $ViewTopic= 'GeneralLedger';
 $BookMark = 'AccountGroups';
+
 include('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');
 
@@ -62,7 +63,7 @@ if (isset($_POST['submit'])) {
 	$i=1;
 
 	$sql="SELECT count(groupname)
-			FROM accountgroups 
+			FROM accountgroups
 			WHERE groupname='".$_POST['GroupName']."'";
 
 	$DbgMsg = _('The SQL that was used to retrieve the information was');
@@ -71,7 +72,7 @@ if (isset($_POST['submit'])) {
 	$result=DB_query($sql, $db,$ErrMsg,$DbgMsg);
 	$myrow=DB_fetch_row($result);
 
-	if ($myrow[0]!=0 AND $_POST['SelectedAccountGroup']=='') {
+	if ($myrow[0]!=0 and $_POST['SelectedAccountGroup']=='') {
 		$InputError = 1;
 		prnMsg( _('The account group name already exists in the database'),'error');
 		$Errors[$i] = 'GroupName';
@@ -126,7 +127,7 @@ if (isset($_POST['submit'])) {
 		$Errors[$i] = 'SequenceInTB';
 		$i++;
 	}
-	if (!ctype_digit($_POST['SequenceInTB']) OR $_POST['SequenceInTB'] > 10000) {
+	if (!ctype_digit($_POST['SequenceInTB']) or $_POST['SequenceInTB'] > 10000) {
 		$InputError = 1;
 		prnMsg( _('The sequence in the TB must be numeric and less than') . ' 10,000','error');
 		$Errors[$i] = 'SequenceInTB';
@@ -134,7 +135,7 @@ if (isset($_POST['submit'])) {
 	}
 
 
-	if ($_POST['SelectedAccountGroup']!='' AND $InputError !=1) {
+	if ($_POST['SelectedAccountGroup']!='' and $InputError !=1) {
 
 		/*SelectedAccountGroup could also exist if submit had not been clicked this code would not run in this case cos submit is false of course  see the delete code below*/
 
@@ -190,7 +191,7 @@ if (isset($_POST['submit'])) {
 		prnMsg( _('Cannot delete this account group because general ledger accounts have been created using this group'),'warn');
 		echo '<br />' . _('There are') . ' ' . $myrow['groups'] . ' ' . _('general ledger accounts that refer to this account group');
 		echo '<br /><form method="post" id="AccountGroups" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-			
+
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 		echo '<table class="selection">';
 		echo '<input  type="hidden" name="OriginalAccountGroup" value="' . $_GET['SelectedAccountGroup'] . '" />';
@@ -202,7 +203,7 @@ if (isset($_POST['submit'])) {
 		$GroupResult = DB_query($sql, $db,$ErrMsg,$DbgMsg);
 		while ($GroupRow = DB_fetch_array($GroupResult) ) {
 
-			if (isset($_POST['ParentGroupName']) AND $_POST['ParentGroupName']==$RroupRow['groupname']) {
+			if (isset($_POST['ParentGroupName']) and $_POST['ParentGroupName']==$RroupRow['groupname']) {
 				echo '<option selected="selected" value="'.htmlentities($GroupRow['groupname'], ENT_QUOTES,'UTF-8').'">' .htmlentities($GroupRow['groupname'], ENT_QUOTES,'UTF-8'). '</option>';
 			} else {
 				echo '<option value="'.htmlentities($GroupRow['groupname'], ENT_QUOTES,'UTF-8').'">' .htmlentities($GroupRow['groupname'], ENT_QUOTES,'UTF-8').'</option>';
@@ -237,7 +238,7 @@ if (isset($_POST['submit'])) {
 
 }
 
-if (!isset($_GET['SelectedAccountGroup']) AND !isset($_POST['SelectedAccountGroup'])) {
+if (!isset($_GET['SelectedAccountGroup']) and !isset($_POST['SelectedAccountGroup'])) {
 
 /* An account group could be posted when one has been edited and is being updated or GOT when selected for modification
  SelectedAccountGroup will exist because it was sent with the page in a GET .
@@ -357,7 +358,7 @@ if (!isset($_GET['delete'])) {
 			</tr>';
 
 	} elseif (!isset($_POST['MoveGroup'])) { //end of if $_POST['SelectedAccountGroup'] only do the else when a new record is being entered
-	
+
 		if (!isset($_POST['SelectedAccountGroup'])){
 			$_POST['SelectedAccountGroup']='';
 		}
@@ -400,7 +401,7 @@ if (!isset($_GET['delete'])) {
 
 	while ( $grouprow = DB_fetch_array($groupresult) ) {
 
-		if (isset($_POST['ParentGroupName']) AND $_POST['ParentGroupName']==$grouprow['groupname']) {
+		if (isset($_POST['ParentGroupName']) and $_POST['ParentGroupName']==$grouprow['groupname']) {
 			echo '<option selected="selected" value="'.htmlspecialchars($grouprow['groupname'], ENT_QUOTES,'UTF-8').'">' .htmlspecialchars($grouprow['groupname'], ENT_QUOTES,'UTF-8').'</option>';
 		} else {
 			echo '<option value="'.htmlspecialchars($grouprow['groupname'], ENT_QUOTES,'UTF-8').'">' .htmlspecialchars($grouprow['groupname'], ENT_QUOTES,'UTF-8').'</option>';

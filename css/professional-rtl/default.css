@@ -1,4 +1,4 @@
-/*** 
+/***
 
 New "Professional RTL" Theme for KwaMoja
 For Right-To-Left Languages
@@ -10,10 +10,10 @@ by Hindra Joshua
 Based from the previous theme "SilverWolf"
 Credits to the original authors.
 
-NOTE: 
+NOTE:
 This CSS is not yet optimized. Some styles maybe 'redundant' or 'unused',
 but for the obvious one it will be cleaned up.
-To optimized the rest we should examined the whole codes! That would be for 
+To optimized the rest we should examined the whole codes! That would be for
 the next project. :)
 
 ***/
@@ -131,7 +131,7 @@ div.info {
 
 /* input as button or text */
 /* NOTE: input for button should have different class, one for 'normal' and one for 'input button inside a table,
-which should have the same width as the column where it is located 
+which should have the same width as the column where it is located
 e.g.: class input_button, input_column_button, input_text */
 input {
 	font-family: Arial, Verdana, Helvetica;
@@ -367,9 +367,9 @@ li {
 	float:right; /* right to left */
 }
 
-/*** links as buttons!!! clicking anywhere in the button will activate 
+/*** links as buttons!!! clicking anywhere in the button will activate
      the link!!! ***HJ***/
-	 
+
 #QuickMenuDiv li a{
 	padding:3px; /* links as button */
 	border:thin outset #ddd; /* un-pressed state */
@@ -411,7 +411,7 @@ li {
 #MainMenuDiv{
 	float:right; /* REQUIRED: to the RIGHT side */
 	white-space:nowrap; /* don't break text */
-	text-align:center; 
+	text-align:center;
 	width:11%;
 	background:#ddd;
 }
@@ -434,12 +434,12 @@ li {
 	text-decoration:none;
 	padding:3px;
 	border:thin inset #ddd;
-	background:#ddd;	
+	background:#ddd;
 }
 #MainMenuDiv .main_menu_selected a{ /* the selected button */
-	border:thin inset #ccc;	
+	border:thin inset #ccc;
 	background:#ccc;
-	color:blue;	
+	color:blue;
 	text-decoration:none;
 }
 
@@ -453,7 +453,7 @@ li {
 #SubMenuDiv ul{
 	list-style-type:none; /* REQUIRED: hide bullets */
 	padding:0; /* REQUIRED: remove extra gaps (ex-bullets) */
-	margin-top:0px;	
+	margin-top:0px;
 	margin-left:3px;
 	border:thin outset #ddd;
 }
@@ -473,27 +473,32 @@ li {
 }
 #TransactionsDiv{
 	display:table-cell;
+	width: 33%;
 }
 #InquiriesDiv{
 	display:table-cell;
+	width: 33%;
 }
 #InquiriesDiv div{ /* default div, used for custom report header */
 	background:#ddd;
 	color:black;
 	padding:2px;
 	border:thin outset #ddd;
+	width: 33%;
 }
 #InquiriesDiv body{
 	background:#eee;
 	color:red;
 	padding:2px;
+	width: 33%;
 }
 #MaintenanceDiv{
 	display:table-cell;
+	width: 33%;
 /*    float:left;*/
 /*    width:32.5%;
 	border:thin solid black;*/
-	
+
 }
 .menu_group_item p {
 	color: #00f; /* This is the color for bullets, I like it to be the same as the anchor color, but it's up to you */
@@ -505,14 +510,14 @@ li {
 
 #FooterDiv{
 	clear:both; /* REQUIRED */
-    overflow:hidden;	
+    overflow:hidden;
     color:gray;
 }
 #FooterWrapDiv{
 	overflow:hidden;
 	padding:3px;
 }
-#FooterLogoDiv{ 
+#FooterLogoDiv{
 	float:left; /* right side */
 }
 #FooterVersionDiv{

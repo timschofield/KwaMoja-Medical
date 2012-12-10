@@ -31,13 +31,13 @@ echo '<div class="centre"><p class="page_title_text"><img src="'.$rootpath.'/css
 //initialise no input errors assumed initially before we test
 $InputError = 0;
 
-if (isset($_POST['Submit']) OR isset($_POST['Update'])) {
+if (isset($_POST['Submit']) or isset($_POST['Update'])) {
 
-	if (mb_strlen($_POST['FactorName']) > 40 OR mb_strlen($_POST['FactorName']) == 0 OR $_POST['FactorName'] == '') {
+	if (mb_strlen($_POST['FactorName']) > 40 or mb_strlen($_POST['FactorName']) == 0 or $_POST['FactorName'] == '') {
 		$InputError = 1;
 		prnMsg(_('The factoring company name must be entered and be forty characters or less long'),'error');
 	}
-	if (mb_strlen($_POST['Email'])>0 AND !IsEmailAddress($_POST['Email'])){
+	if (mb_strlen($_POST['Email'])>0 and !IsEmailAddress($_POST['Email'])){
 		prnMsg(_('The email address entered does not appear to be a valid email address format'),'error');
 		$InputError = 1;
 	}
@@ -47,9 +47,9 @@ if (isset($_POST['Submit']) OR isset($_POST['Update'])) {
 		include('includes/footer.inc');
 		exit;
 	}
-	
+
 	/* If no input errors have been recieved */
-	if ($InputError == 0 AND isset($_POST['Submit'])){
+	if ($InputError == 0 and isset($_POST['Submit'])){
 		//And if its not a new part then update existing one
 
 		$sql = "INSERT INTO factorcompanies (id,
@@ -198,10 +198,10 @@ if (isset($_POST['Amend']) or isset($_POST['Create'])) {
 	// its a new factor being added
 
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '">';
-    echo '<div>';
+	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<input type="hidden" name="FactorID" value="' . $FactorID .'" />
-        <input type="hidden" name="New" value="Yes" />
+		<input type="hidden" name="New" value="Yes" />
 		<table class="selection">
 		<tr>
 			<td>' . _('Factor company Name') . ':</td>
@@ -255,29 +255,29 @@ if (isset($_POST['Create'])) {
 		<div class="centre">
 			<input tabindex="12" type="submit" name="Submit" value="' . _('Insert New Factor') . '" />
 		</div>
-        </div>
+		</div>
 		</form>';
 } else if (isset($_POST['Amend'])) {
 	echo '<br />
 		<div class="centre">
 			<input tabindex="13" type="submit" name="Update" value="' . _('Update Factor') . '" />
 			<br />
-            <br />';
+			<br />';
 			prnMsg ( _('There is no second warning if you hit the delete button below') . '. ' . _('However checks will be made to ensure there are no suppliers are using this factor before the deletion is processed'), 'warn');
 			echo '<br />
 				<input tabindex="14" type="submit" name="Delete" value="' . _('Delete Factor') . '" onclick="return confirm(\'' . _('Are you sure you wish to delete this factoring company?') . '\');" />
 		</div>
-        </div>
+		</div>
 		</form>';
 }
 
 /* If it didn't come with a $FactorID it must be a completely fresh start, so choose a new $factorID or give the
   option to create a new one*/
 
-if (empty($FactorID) AND !isset($_POST['Create']) AND !isset($_POST['Amend'])) {
+if (empty($FactorID) and !isset($_POST['Create']) and !isset($_POST['Amend'])) {
 
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '">';
-    echo '<div>';
+	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	echo '<input type="hidden" name="New" value="No" />';
@@ -340,7 +340,7 @@ if (empty($FactorID) AND !isset($_POST['Create']) AND !isset($_POST['Amend'])) {
 			<br />
 			<input tabindex="3" type="submit" name="Create" value="' . _('Create New Factor') . '" />
 		</div>
-        </div>
+		</div>
 		</form>';
 }
 

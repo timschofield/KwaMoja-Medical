@@ -1,8 +1,29 @@
 INSERT INTO config VALUES('ExchangeRateFeed','ECB');
-ALTER TABLE `salesorders` ADD `salesperson` VARCHAR( 4 ) NOT NULL , ADD INDEX ( `salesperson` ); 
+ALTER TABLE `salesorders` ADD `salesperson` VARCHAR( 4 ) NOT NULL , ADD INDEX ( `salesperson` );
 ALTER TABLE `salesman` CHANGE `salesmancode` `salesmancode` VARCHAR( 4 ) NOT NULL DEFAULT '';
 ALTER TABLE `salesorderdetails` DROP `commissionrate`;
 ALTER TABLE `salesorderdetails` DROP `commissionearned`;
 INSERT INTO scripts VALUES ('CounterReturns.php','5','Allows credits and refunds from the default Counter Sale account for an inventory location');
 UPDATE config SET confvalue='4.09.1' WHERE confname='VersionNumber';
 
+ALTER TABLE purchorders MODIFY `initiator` VARCHAR(20);
+
+CREATE TABLE `jobcards` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `debtorno` varchar(255) DEFAULT NULL,
+  `description` varchar(500) DEFAULT NULL,
+  `task1` varchar(500) DEFAULT NULL,
+  `task2` varchar(500) DEFAULT NULL,
+  `task3` varchar(500) DEFAULT NULL,
+  `task4` varchar(500) DEFAULT NULL,
+  `task5` varchar(500) DEFAULT NULL,
+  `task6` varchar(500) DEFAULT NULL,
+  `CreateDate` date DEFAULT NULL,
+  `CompleteDate` date DEFAULT NULL,
+  `Invoice` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+ALTER TABLE `jobcards` CHANGE `CreateDate` `createdate` date DEFAULT NULL;
+ALTER TABLE `jobcards` CHANGE `CompleteDate` `completedate` date DEFAULT NULL;
+ALTER TABLE `jobcards` CHANGE `Invoice` `invoice` varchar(255) DEFAULT NULL;

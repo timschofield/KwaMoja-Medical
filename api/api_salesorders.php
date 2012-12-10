@@ -350,7 +350,7 @@ $SOH_DateFields = array ('orddate',
 		if (sizeof($Errors)==0) {
 
 			$result = api_DB_Query($sql, $db);
-			
+
 			if (DB_error_no($db) != 0) {
 				//$Errors[0] = DatabaseUpdateFailed;
 				$Errors[0] = $sql;
@@ -713,7 +713,7 @@ $SOH_DateFields = array ('orddate',
 						AND completed=0";
 
 		$LineItemsResult = api_DB_query($LineItemsSQL,$db);
-		if (DB_error_no($db) != 0 OR DB_num_rows($LineItemsResult)==0) {
+		if (DB_error_no($db) != 0 or DB_num_rows($LineItemsResult)==0) {
 			$Errors[] = NoReadOrderLines;
 			return $Errors;
 		}
@@ -803,7 +803,7 @@ $SOH_DateFields = array ('orddate',
 			$Result = api_DB_query($SQL,$db,'','',true);
 
 
-			if ($OrderLineRow['mbflag']=='B' OR $OrderLineRow['mbflag']=='M') {
+			if ($OrderLineRow['mbflag']=='B' or $OrderLineRow['mbflag']=='M') {
 				$Assembly = False;
 
 				/* Need to get the current location quantity
@@ -935,7 +935,7 @@ $SOH_DateFields = array ('orddate',
 			} /* end of its an assembly */
 
 
-			if ($OrderLineRow['mbflag']=='A' OR $OrderLineRow['mbflag']=='D'){
+			if ($OrderLineRow['mbflag']=='A' or $OrderLineRow['mbflag']=='D'){
 				/*it's a Dummy/Service item or an Assembly item - still need stock movement record
 				 * but quantites on hand are always nil */
 				$SQL = "INSERT INTO stockmoves (stockid,
@@ -1082,7 +1082,7 @@ $SOH_DateFields = array ('orddate',
 
 			$Result = api_DB_query($SQL,$db,'','',true);
 
-			if ($CompanyRecord['gllink_stock']==1 AND $StandardCost !=0){
+			if ($CompanyRecord['gllink_stock']==1 and $StandardCost !=0){
 
 /*first the cost of sales entry - GL accounts are retrieved using the function GetCOGSGLAccount from includes/GetSalesTransGLCodes.inc  */
 
@@ -1125,7 +1125,7 @@ $SOH_DateFields = array ('orddate',
 
 			} /* end of if GL and stock integrated and standard cost !=0  and not an asset */
 
-			if ($CompanyRecord['gllink_debtors']==1 AND $OrderLineRow['unitprice'] !=0){
+			if ($CompanyRecord['gllink_debtors']==1 and $OrderLineRow['unitprice'] !=0){
 
 				//Post sales transaction to GL credit sales
 				$SalesGLAccounts = GetSalesGLAccount($OrderHeader['area'], $OrderLineRow['stkcode'], $OrderHeader['ordertype'], $db);
@@ -1177,7 +1177,7 @@ $SOH_DateFields = array ('orddate',
 		if ($CompanyRecord['gllink_debtors']==1){
 
 			/*Now post the tax to the GL at local currency equivalent */
-			if ($CompanyRecord['gllink_debtors']==1 AND $TaxAuthAmount !=0) {
+			if ($CompanyRecord['gllink_debtors']==1 and $TaxAuthAmount !=0) {
 
 				/*Loop through the tax authorities array to post each total to the taxauth glcode */
 				foreach ($TaxTotals as $Tax){
@@ -1264,7 +1264,7 @@ $SOH_DateFields = array ('orddate',
 		$DebtorTransID = DB_Last_Insert_ID($db,'debtortrans','id');
 
 		/*for each Tax - need to insert into debtortranstaxes */
-		foreach ($TaxTotals AS $TaxAuthID => $Tax) {
+		foreach ($TaxTotals as $TaxAuthID => $Tax) {
 
 			$SQL = "INSERT INTO debtortranstaxes (debtortransid,
 												taxauthid,

@@ -1,4 +1,4 @@
-/* 
+/*
 "Fluid Tabs" theme for KwaMoja
 
 by Hindra Joshua
@@ -337,7 +337,7 @@ background:#fff
 #SubMenuDiv li{}
 #SubMenuDiv .menu_group_headers{background:#ddd;border:thin solid #ddd;text-align:center;}
 #TransactionsDiv,#InquiriesDiv,#MaintenanceDiv{float:left;width:33.33%;}
-#InquiriesDiv div{background:#ddd;padding:1px;border:thin solid #ddd;}
+#InquiriesDiv div{background:#ddd;padding:1px;border:thin solid #ddd;width: 33%;}
 
 .menu_group_item p{color:#f00;text-indent:-10px;margin:0 0 0 12px;}
 

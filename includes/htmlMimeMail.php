@@ -699,7 +699,7 @@ class htmlMimeMail
 				// Get flat representation of headers, parsing
 				// Cc and Bcc as we go
 				foreach ($this->headers as $name => $value) {
-					if ($name == 'Cc' OR $name == 'Bcc') {
+					if ($name == 'Cc' or $name == 'Bcc') {
 						$addresses = Mail_RFC822::parseAddressList($value, $this->smtp_params['helo'], null, false);
 						foreach ($addresses as $address) {
 							$smtp_recipients[] = sprintf('%s@%s', $address->mailbox, $address->host);

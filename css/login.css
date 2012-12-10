@@ -9,6 +9,16 @@ body {
 	color: #000000;
 }
 
+div.left {
+	width: 50%;
+	float: left;
+}
+
+div.right {
+	width: 50%;
+	float: left;
+}
+
 #container {
 	text-align: left;
 	margin: 70px auto 0px auto;
@@ -20,7 +30,7 @@ body {
 	background: -moz-linear-gradient(left, #EEE7E7, #9CA4AE);
 	background: -webkit-linear-gradient(left, #EEE7E7, #9CA4AE);
 	border: solid #A49999 1px;
-	border-radius: 115px;
+	border-radius: 15px;
 	opacity: 0.6;
 }
 

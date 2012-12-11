@@ -694,12 +694,6 @@ else {
 		$myrow = DB_fetch_array($result);
 		/* if $AutoDebtorNo in config.php has not been set or if it has been set to a number less than one,
 		then display the DebtorNo */
-		if ($_SESSION['AutoDebtorNo'] == 0) {
-			echo '<table class="selection"><tr>
-					<td>' . _('Customer Code') . ':</td>
-					<td>' . $DebtorNo . '</td>
-				</tr></table><br />';
-		} //$_SESSION['AutoDebtorNo'] == 0
 		$_POST['CustName'] = $myrow['name'];
 		$_POST['Address1'] = $myrow['address1'];
 		$_POST['Address2'] = $myrow['address2'];
@@ -723,6 +717,12 @@ else {
 
 		echo '<input type="hidden" name="DebtorNo" value="' . $DebtorNo . '" />';
 		echo '<table class="selection">';
+		if ($_SESSION['AutoDebtorNo'] == 0) {
+			echo '<tr>
+					<td>' . _('Customer Code') . ':</td>
+					<td>' . $DebtorNo . '</td>
+				</tr>';
+		} //$_SESSION['AutoDebtorNo'] == 0
 
 	} //!isset($_POST['New'])
 	else {

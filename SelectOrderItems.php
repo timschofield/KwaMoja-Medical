@@ -57,7 +57,7 @@ if (isset($_GET['NewOrder'])) {
 	$_SESSION['ExistingOrder' . $identifier] = 0;
 	$_SESSION['Items' . $identifier] = new cart;
 
-	if (count($_SESSION['AllowedPageSecurityTokens']) == 1) { //its a customer logon
+	if ((isset($SupplierLogin) and $SupplierLogin==0)) { //its a customer logon
 		$_SESSION['Items' . $identifier]->DebtorNo = $_SESSION['CustomerID'];
 		$_SESSION['RequireCustomerSelection'] = 0;
 	} //count($_SESSION['AllowedPageSecurityTokens']) == 1
@@ -195,35 +195,36 @@ if (isset($_GET['ModifyOrderNumber']) AND $_GET['ModifyOrderNumber'] != '') {
 		/*need to look up customer name from debtors master then populate the line items array with the sales order details records */
 
 		$LineItemsSQL = "SELECT salesorderdetails.orderlineno,
-									salesorderdetails.stkcode,
-									stockmaster.description,
-									stockmaster.longdescription,
-									stockmaster.volume,
-									stockmaster.kgs,
-									stockmaster.units,
-									stockmaster.serialised,
-									stockmaster.nextserialno,
-									stockmaster.eoq,
-									salesorderdetails.unitprice,
-									salesorderdetails.quantity,
-									salesorderdetails.discountpercent,
-									salesorderdetails.actualdispatchdate,
-									salesorderdetails.qtyinvoiced,
-									salesorderdetails.narrative,
-									salesorderdetails.itemdue,
-									salesorderdetails.poline,
-									locstock.quantity as qohatloc,
-									stockmaster.mbflag,
-									stockmaster.discountcategory,
-									stockmaster.decimalplaces,
-									stockmaster.materialcost+stockmaster.labourcost+stockmaster.overheadcost AS standardcost,
-									salesorderdetails.completed
-								FROM salesorderdetails INNER JOIN stockmaster
+								salesorderdetails.stkcode,
+								stockmaster.description,
+								stockmaster.longdescription,
+								stockmaster.volume,
+								stockmaster.kgs,
+								stockmaster.units,
+								stockmaster.serialised,
+								stockmaster.nextserialno,
+								stockmaster.eoq,
+								salesorderdetails.unitprice,
+								salesorderdetails.quantity,
+								salesorderdetails.discountpercent,
+								salesorderdetails.actualdispatchdate,
+								salesorderdetails.qtyinvoiced,
+								salesorderdetails.narrative,
+								salesorderdetails.itemdue,
+								salesorderdetails.poline,
+								locstock.quantity as qohatloc,
+								stockmaster.mbflag,
+								stockmaster.discountcategory,
+								stockmaster.decimalplaces,
+								stockmaster.materialcost+stockmaster.labourcost+stockmaster.overheadcost AS standardcost,
+								salesorderdetails.completed
+							FROM salesorderdetails
+							INNER JOIN stockmaster
 								ON salesorderdetails.stkcode = stockmaster.stockid
-								INNER JOIN locstock ON locstock.stockid = stockmaster.stockid
-								WHERE  locstock.loccode = '" . $myrow['fromstkloc'] . "'
+							INNER JOIN locstock ON locstock.stockid = stockmaster.stockid
+							WHERE  locstock.loccode = '" . $myrow['fromstkloc'] . "'
 								AND salesorderdetails.orderno ='" . $_GET['ModifyOrderNumber'] . "'
-								ORDER BY salesorderdetails.orderlineno";
+							ORDER BY salesorderdetails.orderlineno";
 
 		$ErrMsg = _('The line items of the order cannot be retrieved because');
 		$LineItemsResult = DB_query($LineItemsSQL, $db, $ErrMsg);

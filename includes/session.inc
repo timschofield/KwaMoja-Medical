@@ -299,10 +299,10 @@ if (!isset($AllowAnyone)) {
 	} //(!in_array($PageSecurity, $_SESSION['AllowedPageSecurityTokens']) or !isset($PageSecurity))
 } //!isset($AllowAnyone)
 
-if (in_array(9, $_SESSION['AllowedPageSecurityTokens']) and $PageSecurity == 0 and count($_SESSION['AllowedPageSecurityTokens']) == 2) {
+if (in_array(9, $_SESSION['AllowedPageSecurityTokens']) and count($_SESSION['AllowedPageSecurityTokens']) == 2) {
 	$SupplierLogin = 1;
 } //in_array(9, $_SESSION['AllowedPageSecurityTokens']) and $PageSecurity == 0 and count($_SESSION['AllowedPageSecurityTokens']) == 2
-else if (in_array(1, $_SESSION['AllowedPageSecurityTokens']) and $PageSecurity == 0 and count($_SESSION['AllowedPageSecurityTokens']) == 2) {
+else if (in_array(1, $_SESSION['AllowedPageSecurityTokens']) and count($_SESSION['AllowedPageSecurityTokens']) == 2) {
 	$SupplierLogin = 0;
 } //in_array(1, $_SESSION['AllowedPageSecurityTokens']) and $PageSecurity == 0 and count($_SESSION['AllowedPageSecurityTokens']) == 2
 

@@ -179,8 +179,9 @@ echo '</table>
 	</form>';
 
 if (isset($SelectedRole)) {
-	$sql = "SELECT tokenid, tokenname
-			FROM securitytokens";
+	$sql = "SELECT tokenid,
+					tokenname
+				FROM securitytokens";
 
 	$sqlUsed = "SELECT tokenid FROM securitygroups WHERE secroleid='". $SelectedRole . "'";
 

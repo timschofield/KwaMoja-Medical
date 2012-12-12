@@ -27,3 +27,6 @@ CREATE TABLE `jobcards` (
 ALTER TABLE `jobcards` CHANGE `CreateDate` `createdate` date DEFAULT NULL;
 ALTER TABLE `jobcards` CHANGE `CompleteDate` `completedate` date DEFAULT NULL;
 ALTER TABLE `jobcards` CHANGE `Invoice` `invoice` varchar(255) DEFAULT NULL;
+
+INSERT INTO `securitytokens` VALUES(1000, 'USER can view and alter sales prices');
+UPDATE `securitytokens` SET tokenname='Unknown' WHERE tokenid=12;

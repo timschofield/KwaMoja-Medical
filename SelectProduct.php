@@ -1,7 +1,7 @@
 <?php
 /* $Id$*/
 
-$PricesSecurity = 12;//don't show pricing info unless security token 12 available to user
+$PricesSecurity = 1000;//don't show pricing info unless security token 1000 available to user
 $SuppliersSecurity = 9; //don't show supplier purchasing info unless security token 9 available to user
 
 include ('includes/session.inc');

@@ -1,11 +1,9 @@
 <?php
 
 /* $Id$*/
-
 // SalesInquiry.php
 // Inquiry on Sales Orders - if Date Type is Order Date, salesorderdetails is the main table
 // if Date Type is Invoice, stockmoves is the main table
-
 
 include('includes/session.inc');
 $title = _('Sales Inquiry');
@@ -13,6 +11,7 @@ include('includes/header.inc');
 
 // Sets default date range for current month
 if (!isset($_POST['FromDate'])) {
+
 	$_POST['FromDate'] = Date($_SESSION['DefaultDateFormat'], mktime(0, 0, 0, Date('m'), 1, Date('Y')));
 } //!isset($_POST['FromDate'])
 if (!isset($_POST['ToDate'])) {
@@ -106,7 +105,6 @@ function submit(&$db, $PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $Debto
 		prnMsg(_('Cannot sort by transaction number with a date type of Order Date'), 'error');
 		return;
 	} //$_POST['ReportType'] == 'Detail' and $_POST['DateType'] == 'Order' and $_POST['SortBy'] == 'tempstockmoves.transno,salesorderdetails.stkcode'
-
 
 	// TempStockmoves function creates a temporary table of stockmoves that is used when the DateType
 	// is Invoice Date
@@ -377,7 +375,9 @@ function submit(&$db, $PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $Debto
 							LEFT JOIN areas ON areas.areacode = custbranch.area
 							WHERE salesorders.orddate >='" . $FromDate . "'
 							 AND salesorders.orddate <='" . $ToDate . "'
-							 AND salesorders.quotation = '" . $_POST['OrderType'] . "'" . $WherePart . $WhereOrderNo . $WhereDebtorNo . $WhereDebtorName . $WhereLineStatus . $WhereArea . $WhereSalesman . $WhereCategory . "GROUP BY " . $_POST['SummaryType'] . ",categorydescription
+							 AND salesorders.quotation = '" . $_POST['OrderType'] . "'" . $WherePart . $WhereOrderNo . $WhereDebtorNo . $WhereDebtorName . $WhereLineStatus . $WhereArea . $WhereSalesman . $WhereCategory . "GROUP BY " . $_POST['SummaryType'] .
+							 ",categorydescription
+
 							ORDER BY " . $orderby;
 				} //$_POST['SummaryType'] == 'categoryid'
 					elseif ($_POST['SummaryType'] == 'salesman') {
@@ -611,7 +611,7 @@ function submit(&$db, $PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $Debto
 		$Summary_Array['orderno'] = _('Order Number');
 		$Summary_Array['stkcode'] = _('Stock Code');
 		$Summary_Array['extprice'] = _('Extended Price');
-		$Summary_Array['debtorno'] = _('Customer Number');
+		$Summary_Array['debtorno'] = _('Customer Code');
 		$Summary_Array['name'] = _('Customer Name');
 		$Summary_Array['month'] = _('Month');
 		$Summary_Array['categoryid'] = _('Stock Category');
@@ -621,7 +621,7 @@ function submit(&$db, $PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $Debto
 		// Create array for sort for detail report to display in header
 		$Detail_Array['salesorderdetails.orderno'] = _('Order Number');
 		$Detail_Array['salesorderdetails.stkcode'] = _('Stock Code');
-		$Detail_Array['debtorsmaster.debtorno,salesorderdetails.orderno'] = _('Customer Number');
+		$Detail_Array['debtorsmaster.debtorno,salesorderdetails.orderno'] = _('Customer Code');
 		$Detail_Array['debtorsmaster.name,debtorsmaster.debtorno,salesorderdetails.orderno'] = _('Customer Name');
 		$Detail_Array['tempstockmoves.transno,salesorderdetails.stkcode'] = _('Transaction Number');
 
@@ -646,7 +646,7 @@ function submit(&$db, $PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $Debto
 			echo '  ' . _('Stock Code') . ' - ' . $_POST['PartNumberOp'] . ' ' . $_POST['PartNumber'] . '<br/>';
 		} //mb_strlen(trim($PartNumber)) > 0
 		if (mb_strlen(trim($_POST['DebtorNo'])) > 0) {
-			echo '  ' . _('Customer Number') . ' - ' . $_POST['DebtorNoOp'] . ' ' . $_POST['DebtorNo'] . '<br/>';
+			echo '  ' . _('Customer Code') . ' - ' . $_POST['DebtorNoOp'] . ' ' . $_POST['DebtorNo'] . '<br/>';
 		} //mb_strlen(trim($_POST['DebtorNo'])) > 0
 		if (mb_strlen(trim($_POST['DebtorName'])) > 0) {
 			echo '  ' . _('Customer Name') . ' - ' . $_POST['DebtorNameOp'] . ' ' . $_POST['DebtorName'] . '<br/>';
@@ -788,10 +788,10 @@ function submit(&$db, $PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $Debto
 				$SummaryType = 'name';
 				$Description = 'debtorno';
 				$SummaryHeader = _('Customer Name');
-				$Descriptionheader = _('Customer Number');
+				$Descriptionheader = _('Customer Code');
 			} //$SummaryType == 'name'
 			if ($SummaryType == 'stkcode' or $SummaryType == 'extprice') {
-				$Description = 'description';
+				$Description = 'Description';
 				$SummaryHeader = _('Stock Code');
 				$Descriptionheader = _('Item Description');
 			} //$SummaryType == 'stkcode' or $SummaryType == 'extprice'
@@ -803,13 +803,13 @@ function submit(&$db, $PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $Debto
 			} //$SummaryType == 'transno'
 			if ($SummaryType == 'debtorno') {
 				$Description = 'name';
-				$SummaryHeader = _('Customer Number');
+				$SummaryHeader = _('Customer Code');
 				$Descriptionheader = _('Customer Name');
 			} //$SummaryType == 'debtorno'
 			if ($SummaryType == 'orderno') {
 				$Description = 'debtorno';
 				$SummaryHeader = _('Order Number');
-				$Descriptionheader = _('Customer Number');
+				$Descriptionheader = _('Customer Code');
 				$columnheader7 = _('Customer Name');
 			} //$SummaryType == 'orderno'
 			if ($SummaryType == 'categoryid') {
@@ -945,7 +945,7 @@ function display(&$db) //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_###
 		$_POST['DebtorNo'] = '';
 	} //!isset($_POST['DebtorNo'])
 	echo '<tr>
-			<td>' . _('Customer Number') . ':</td>
+			<td>' . _('Customer Code') . ':</td>
 			<td><select name="DebtorNoOp">
 				<option selected="selected" value="Equals">' . _('Equals') . '</option>
 				<option value="LIKE">' . _('Begins With') . '</option>
@@ -1029,7 +1029,7 @@ function display(&$db) //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_###
 			<td><select name="SortBy">
 				<option selected="selected" value="salesorderdetails.orderno">' . _('Order Number') . '</option>
 				<option value="salesorderdetails.stkcode">' . _('Stock Code') . '</option>
-				<option value="debtorsmaster.debtorno,salesorderdetails.orderno">' . _('Customer Number') . '</option>
+				<option value="debtorsmaster.debtorno,salesorderdetails.orderno">' . _('Customer Code') . '</option>
 				<option value="debtorsmaster.name,debtorsmaster.debtorno,salesorderdetails.orderno">' . _('Customer Name') . '</option>
 				<option value="tempstockmoves.transno,salesorderdetails.stkcode">' . _('Transaction Number') . '</option>
 			</select></td>
@@ -1048,7 +1048,7 @@ function display(&$db) //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_###
 				<option value="transno">' . _('Transaction Number') . '</option>
 				<option value="stkcode">' . _('Stock Code') . '</option>
 				<option value="extprice">' . _('Extended Price') . '</option>
-				<option value="debtorno">' . _('Customer Number') . '</option>
+				<option value="debtorno">' . _('Customer Code') . '</option>
 				<option value="name">' . _('Customer Name') . '</option>
 				<option value="month">' . _('Month') . '</option>
 				<option value="categoryid">' . _('Stock Category') . '</option>

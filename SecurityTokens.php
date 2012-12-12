@@ -51,6 +51,10 @@ if (isset($_POST['Submit']) or isset($_POST['Update'])){
 		prnMsg(_('The token ID is expected to be a number. Please enter a number for the token ID'),'error');
 		$InputError = 1;
 	}
+	if ($_POST['TokenID'] > 999) {
+		prnMsg(_('The token ID must be less than 1000'), 'error');
+		$InputError = 1;
+	}
 	if (mb_strlen($_POST['TokenDescription'])==0){
 		prnMsg(_('A token description must be entered'),'error');
 		$InputError = 1;
@@ -98,7 +102,7 @@ if (isset($_GET['Action']) and $_GET['Action']=='edit') {
 			<input type="submit" name="Update" value="' . _('Update') . '" />';
 } else {
 	echo '<td>'._('Token ID') . '</td>
-			<td><input type="text" name="TokenID" value="'.$_POST['TokenID'].'" /></td>
+			<td><input class="number" size="6" maxlength="4" type="text" name="TokenID" value="'.$_POST['TokenID'].'" /></td>
 		</tr>
 		<tr>
 		<td>'. _('Description') . '</td>
@@ -120,7 +124,7 @@ echo '<tr>
 		<th>'. _('Description'). '</th>
 	</tr>';
 
-$sql="SELECT tokenid, tokenname FROM securitytokens ORDER BY tokenid";
+$sql="SELECT tokenid, tokenname FROM securitytokens WHERE tokenid<1000 ORDER BY tokenid";
 $Result= DB_query($sql,$db);
 
 while ($myrow = DB_fetch_array($Result,$db)){

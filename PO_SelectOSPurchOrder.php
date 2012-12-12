@@ -2,7 +2,7 @@
 
 /* $Id: PO_SelectOSPurchOrder.php 5752 2012-12-05 08:39:15Z daintree $*/
 
-$PricesSecurity = 12;
+$PricesSecurity = 1000;
 
 include('includes/session.inc');
 
@@ -66,7 +66,7 @@ if (isset($_POST['SearchParts'])) {
 	if (isset($_POST['Keywords']) and isset($_POST['StockCode'])) {
 		echo '<div class="page_help_text">' . _('Stock description keywords have been used in preference to the Stock code extract entered') . '.</div>';
 	} //isset($_POST['Keywords']) and isset($_POST['StockCode'])
-	If ($_POST['Keywords']) {
+	if ($_POST['Keywords']) {
 		//insert wildcard characters in spaces
 		$SearchString = '%' . str_replace(' ', '%', $_POST['Keywords']) . '%';
 

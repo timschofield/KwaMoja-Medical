@@ -28,5 +28,7 @@ ALTER TABLE `jobcards` CHANGE `CreateDate` `createdate` date DEFAULT NULL;
 ALTER TABLE `jobcards` CHANGE `CompleteDate` `completedate` date DEFAULT NULL;
 ALTER TABLE `jobcards` CHANGE `Invoice` `invoice` varchar(255) DEFAULT NULL;
 
-INSERT INTO `securitytokens` VALUES(1000, 'USER can view and alter sales prices');
+INSERT INTO `securitytokens` VALUES(1000, 'User can view and alter sales prices');
+INSERT INTO `securitytokens` VALUES(1001, 'User can bypass purchasing security and go straight from order to invoice');
 UPDATE `securitytokens` SET tokenname='Unknown' WHERE tokenid=12;
+ALTER TABLE `www_users` ADD `fontsize` TINYINT( 2 ) NOT NULL DEFAULT 0;

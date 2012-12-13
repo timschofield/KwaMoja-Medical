@@ -42,6 +42,29 @@
 	echo '</head>';
 	echo '<body>';
 
+	if (isset($_POST['FontSize'])) {
+		$_SESSION['ScreenFontSize']=$_POST['FontSize'];
+	}
+
+	switch ($_SESSION['ScreenFontSize']) {
+
+		case 0:
+			$FontSize='8pt';
+			break;
+		case 1:
+			$FontSize='10pt';
+			break;
+		case 2:
+			$FontSize='12pt';
+			break;
+		default:
+			$FontSize='10pt';
+		}
+	echo '<style>
+			body {
+					font-size: ' . $FontSize . ';
+				}
+			</style>';
 
     echo '<div id="CanvasDiv">';
 	echo '<div id="HeaderDiv">';

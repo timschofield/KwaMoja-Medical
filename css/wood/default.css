@@ -20,7 +20,6 @@ Notes:
 
 body{
 font-family:Arial, Verdana, Helvetica, sans-serif;
-font-size:10px;
 margin:10px;
 background:url(images/desk.jpg) #631;
 }
@@ -74,7 +73,6 @@ box-shadow:none;
 }
 th { /* table headers */
 font-weight: normal;
-font-size: 10px;
 background-color: #ffd980;
 color: black;
 text-align: center;
@@ -102,7 +100,6 @@ margin:5px;
 
 input { /* used for text box and buttons (buttons should have their own styles) */
 font-family: Arial, Verdana, Helvetica, sans-serif;;
-font-size: 10px;
 }
 input.number{
 text-align: right;
@@ -117,7 +114,6 @@ background:#fff791;
 
 select { /* drop down */
 font-family: Arial, Verdana, Helvetica, sans-serif;;
-font-size: 10px;
 }
 select:hover { /* drop down */
 background:#fff791;
@@ -125,7 +121,6 @@ background:#fff791;
 
 textarea{
 font-family: Arial, Verdana, Helvetica, sans-serif;
-font-size: 10px;
 }
 textarea:hover{
 background:#fff791;
@@ -188,7 +183,6 @@ VISIBILITY: visible;
 POSITION: static;
 font-family: Arial, Verdana, Helvetica, sans-serif;
 font-weight: normal;
-font-size: 10px;
 color: black;
 TEXT-ALIGN:center;
 
@@ -206,7 +200,6 @@ POSITION: static;
 background: lightgray;
 font-family: Arial, Verdana, Helvetica, sans-serif;
 font-weight: normal;
-font-size: 10px;
 color: black;
 TEXT-ALIGN:left;
 
@@ -267,7 +260,7 @@ color:#555555;
 .label {
 font-weight:bold;
 font-style:normal;
-font-size:12px;
+font-size:120%;
 color:black;
 background-color:#cccccc;
 }
@@ -363,7 +356,7 @@ padding-left:5px;
 }
 #AppInfoModuleDiv{
 font-weight:bold;
-font-size:12px;
+font-size:120%;
 padding:3px;
 }
 

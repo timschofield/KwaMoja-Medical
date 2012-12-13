@@ -61,7 +61,8 @@ if (isset($_POST['Modify'])) {
 					theme='" . $_POST['Theme'] . "',
 					language='" . $_POST['Language'] . "',
 					email='". $_POST['email'] ."',
-					pdflanguage='" . $_POST['PDFLanguage'] . "'
+					pdflanguage='" . $_POST['PDFLanguage'] . "',
+					fontsize='" . $_POST['FontSize'] . "'
 				WHERE userid = '" . $_SESSION['UserID'] . "'";
 
 			$ErrMsg =  _('The user alterations could not be processed because');
@@ -77,7 +78,8 @@ if (isset($_POST['Modify'])) {
 					language='" . $_POST['Language'] . "',
 					email='". $_POST['email'] ."',
 					pdflanguage='" . $_POST['PDFLanguage'] . "',
-					password='" . CryptPass($_POST['Password']) . "'
+					password='" . CryptPass($_POST['Password']) . "',
+					fontsize='" . $_POST['FontSize'] . "'
 				WHERE userid = '" . $_SESSION['UserID'] . "'";
 
 			$ErrMsg =  _('The user alterations could not be processed because');
@@ -197,6 +199,27 @@ echo '<td><input type="text" name="email" size="40" value="' . $_POST['email'] .
 if (!isset($_POST['PDFLanguage'])){
 	$_POST['PDFLanguage']=$_SESSION['PDFLanguage'];
 }
+
+/* Screen Font Size */
+
+echo '<tr>
+		<td>' . _('Screen Font Size') . ':</td>
+		<td><select name="FontSize">';
+if (isset($_SESSION['ScreenFontSize']) and $_SESSION['ScreenFontSize']==0){
+	echo '<option selected="selected" value="0">' . _('Small') . '</option>';
+	echo '<option value="1">' . _('Medium') . '</option>';
+	echo '<option value="2">' . _('Large') . '</option>';
+} else if (isset($_SESSION['ScreenFontSize']) and $_SESSION['ScreenFontSize']==1) {
+	echo '<option value="0">' . _('Small') . '</option>';
+	echo '<option selected="selected" value="1">' . _('Medium') . '</option>';
+	echo '<option value="2">' . _('Large') . '</option>';
+} else  {
+	echo '<option value="0">' . _('Small') . '</option>';
+	echo '<option value="1">' . _('Medium') . '</option>';
+	echo '<option selected="selected" value="2">' . _('Large') . '</option>';
+}
+echo '</select></td>
+	</tr>';
 
 echo '<tr>
 		<td>' . _('PDF Language Support') . ': </td>

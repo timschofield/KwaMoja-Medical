@@ -143,6 +143,9 @@ if (isset($_POST['submit'])) {
 			$UpdatePassword = "password='" . CryptPass($_POST['Password']) . "',";
 		}
 
+		if ($SelectedUser==$_SESSION['UserID']) {
+			$_SESSION['ScreenFontSize']=$_POST['FontSize'];
+		}
 		$sql = "UPDATE www_users SET realname='" . $_POST['RealName'] . "',
 						customerid='" . $_POST['Cust'] ."',
 						phone='" . $_POST['Phone'] ."',
@@ -160,7 +163,8 @@ if (isset($_POST['submit'])) {
 						modulesallowed='" . $ModulesAllowed . "',
 						blocked='" . $_POST['Blocked'] . "',
 						pdflanguage='" . $_POST['PDFLanguage'] . "',
-						department='" . $_POST['Department'] . "'
+						department='" . $_POST['Department'] . "',
+						fontsize='" . $_POST['FontSize'] . "'
 					WHERE userid = '". $SelectedUser . "'";
 
 		prnMsg( _('The selected user record has been updated'), 'success' );
@@ -184,7 +188,8 @@ if (isset($_POST['submit'])) {
 						theme,
 						language,
 						pdflanguage,
-						department)
+						department,
+						fontsize)
 					VALUES ('" . $_POST['UserID'] . "',
 						'" . $_POST['RealName'] ."',
 						'" . $_POST['Cust'] ."',
@@ -203,7 +208,8 @@ if (isset($_POST['submit'])) {
 						'" . $_POST['Theme'] . "',
 						'". $_POST['UserLanguage'] ."',
 						'" . $_POST['PDFLanguage'] . "',
-						'" . $_POST['Department'] . "')";
+						'" . $_POST['Department'] . "',
+						'" . $_POST['FontSize'] . "')";
 		prnMsg( _('A new user record has been inserted'), 'success' );
 	}
 
@@ -232,6 +238,7 @@ if (isset($_POST['submit'])) {
 		unset($_POST['UserLanguage']);
 		unset($_POST['PDFLanguage']);
 		unset($_POST['Department']);
+		unset($_POST['FontSize']);
 		unset($SelectedUser);
 	}
 
@@ -277,7 +284,8 @@ if (!isset($SelectedUser)) {
 					cancreatetender,
 					pagesize,
 					theme,
-					language
+					language,
+					fontsize
 				FROM www_users";
 	$result = DB_query($sql,$db);
 
@@ -295,6 +303,7 @@ if (!isset($SelectedUser)) {
 				<th>' . _('Report Size') .'</th>
 				<th>' . _('Theme') .'</th>
 				<th>' . _('Language') .'</th>
+				<th>' . _('Screen Font Size') .'</th>
 			</tr>';
 
 	$k=0; //row colour counter
@@ -316,7 +325,23 @@ if (!isset($SelectedUser)) {
 
 		/*The SecurityHeadings array is defined in config.php */
 
+		switch ($myrow['fontsize']) {
+
+			case 0:
+				$FontSize=_('Small');
+				break;
+			case 1:
+				$FontSize=_('Medium');
+				break;
+			case 2:
+				$FontSize=_('Large');
+				break;
+			default:
+				$FontSize=_('Medium');
+		}
+
 		printf('<td>%s</td>
+					<td>%s</td>
 					<td>%s</td>
 					<td>%s</td>
 					<td>%s</td>
@@ -345,6 +370,7 @@ if (!isset($SelectedUser)) {
 					$myrow['pagesize'],
 					$myrow['theme'],
 					$LanguagesArray[$myrow['language']]['LanguageName'],
+					$FontSize,
 					htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8')  . '?',
 					$myrow['userid'],
 					htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?',
@@ -384,7 +410,8 @@ if (isset($SelectedUser)) {
 			theme,
 			language,
 			pdflanguage,
-			department
+			department,
+			fontsize
 		FROM www_users
 		WHERE userid='" . $SelectedUser . "'";
 
@@ -409,6 +436,7 @@ if (isset($SelectedUser)) {
 	$_POST['Blocked'] = $myrow['blocked'];
 	$_POST['PDFLanguage'] = $myrow['pdflanguage'];
 	$_POST['Department'] = $myrow['department'];
+	$_POST['FontSize'] = $myrow['fontsize'];
 
 	echo '<input type="hidden" name="SelectedUser" value="' . $SelectedUser . '" />';
 	echo '<input type="hidden" name="UserID" value="' . $_POST['UserID'] . '" />';
@@ -488,7 +516,7 @@ echo '<input type="hidden" name="ID" value="'.$_SESSION['UserID'].'" /></td>
 
 echo '<tr><td>' . _('User Can Create Tenders') . ':</td><td><select name="CanCreateTender">';
 
-if ($_POST['CanCreateTender']==0){
+if (isset($_POST['CanCreateTender']) and $_POST['CanCreateTender']==0){
 	echo '<option selected="selected" value="0">' . _('No') . '</option>';
 	echo '<option value="1">' . _('Yes') . '</option>';
 } else {
@@ -721,12 +749,33 @@ echo '</select></td>
 echo '<tr>
 		<td>' . _('Account Status') . ':</td>
 		<td><select name="Blocked">';
-if ($_POST['Blocked']==0){
+if (isset($_POST['Blocked']) and $_POST['Blocked']==0){
 	echo '<option selected="selected" value="0">' . _('Open') . '</option>';
 	echo '<option value="1">' . _('Blocked') . '</option>';
 } else {
  	echo '<option selected="selected" value="1">' . _('Blocked') . '</option>';
 	echo '<option value="0">' . _('Open') . '</option>';
+}
+echo '</select></td>
+	</tr>';
+
+/* Screen Font Size */
+
+echo '<tr>
+		<td>' . _('Screen Font Size') . ':</td>
+		<td><select name="FontSize">';
+if (isset($_POST['FontSize']) and $_POST['FontSize']==0){
+	echo '<option selected="selected" value="0">' . _('Small') . '</option>';
+	echo '<option value="1">' . _('Medium') . '</option>';
+	echo '<option value="2">' . _('Large') . '</option>';
+} else if (isset($_POST['FontSize']) and $_POST['FontSize']==1) {
+	echo '<option value="0">' . _('Small') . '</option>';
+	echo '<option selected="selected" value="1">' . _('Medium') . '</option>';
+	echo '<option value="2">' . _('Large') . '</option>';
+} else  {
+	echo '<option value="0">' . _('Small') . '</option>';
+	echo '<option value="1">' . _('Medium') . '</option>';
+	echo '<option selected="selected" value="2">' . _('Large') . '</option>';
 }
 echo '</select></td>
 	</tr>';

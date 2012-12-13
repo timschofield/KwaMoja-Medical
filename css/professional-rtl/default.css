@@ -20,7 +20,6 @@ the next project. :)
 
 body {
 	font-family: Arial, Verdana, Helvetica, sans-serif;
-	font-size: 10px;
 	background-color: #ddd;
 	margin:0;
 	padding:0;
@@ -48,7 +47,6 @@ a:hover {
 /*table detail items default format */
 td {
 	font-family: Arial, Verdana, Helvetica;
-	font-size: 10px;
 	text-align: left;
 }
 td.select {
@@ -94,14 +92,12 @@ td.number {
 
 th { /* table heading */
 	font-weight: normal;
-	font-size: 10px;
 	background-color: #cccce5;
 	color: #330000;
 	text-align: center;
 }
 th.number {
 	font-weight: normal;
-	font-size: 10px;
 	background-color: #cccce5;
 	color: #330000;
 	text-align: right;
@@ -135,7 +131,6 @@ which should have the same width as the column where it is located
 e.g.: class input_button, input_column_button, input_text */
 input {
 	font-family: Arial, Verdana, Helvetica;
-	font-size: 10px;
 }
 input.number{
 	text-align: right;
@@ -159,7 +154,6 @@ input.inputerror {
 
 /* for buttons ***HJ***/
 button{
-	font-size:10px;
 }
 button:hover{
 	background:lightblue;
@@ -169,7 +163,6 @@ button:hover{
 
 select {
 	font-family: Arial, Verdana, Helvetica;
-	font-size: 10px;
 }
 select.selecterror {
 	background-color: #fddbdb;
@@ -198,7 +191,6 @@ p.bad {
 
 textarea{ /* default style for textarre */
 	font-family: Arial, Verdana, Helvetica;
-	font-size: 10px;
 }
 textarea:hover{
 }
@@ -230,7 +222,6 @@ div.csv {
         padding-top: 1px;
         padding-bottom: 1px;
         font-weight: normal;
-        font-size: 10px;
         TEXT-ALIGN:center;
 }
 
@@ -239,7 +230,6 @@ div.csv {
         padding-top: 2px;
         padding-bottom: 2px;
 	font-weight: bold;
-	font-size: 10px;
 	color: black;
 	TEXT-ALIGN:center;
 }
@@ -258,7 +248,6 @@ DIV.page_help_text {
 	POSITION: static;
 	font-family: Arial, Verdana, Helvetica;
         font-weight: normal;
-        font-size: 10px;
         color: black;
 	TEXT-ALIGN:center;
 }
@@ -293,7 +282,7 @@ textarea.texterror {
 .label { /* used */
 	font-weight:bold;
 	font-style:normal;
-	font-size:12px;
+	font-size:120%;
 	color:black;
 	background-color:#cccccc;
 }

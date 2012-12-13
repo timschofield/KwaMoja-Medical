@@ -10,7 +10,6 @@ by Hindra Joshua
 
 body {
 font-family:Arial, Verdana, Helvetica, sans-serif;
-font-size:10px;
 background: silver;
 margin:0;
 padding:0;
@@ -97,7 +96,7 @@ text-align:center;
 
 input { /*specifies the input field text characteristics*/
 font-family: Arial, Verdana, Helvetica, sans-serif;
-font-size: 9px;
+font-size: 100%;
 font-style: italic;
 }
 input.number{
@@ -113,7 +112,7 @@ background:#9ffffb;
 
 select {
 font-family: Arial, Verdana, Helvetica, sans-serif;
-font-size: 11px;
+font-size: 110%;
 }
 select:hover { /* drop down */
 background:#9ffffb;
@@ -121,7 +120,6 @@ background:#9ffffb;
 
 textarea{
 font-family: Arial, Verdana, Helvetica, sans-serif;
-font-size: 10px;
 }
 textarea:hover{
 background:#9ffffb;
@@ -177,7 +175,6 @@ margin: 0 auto;
 position: static;
 font-family: Arial, Verdana, Helvetica, sans-serif;
 font-weight: normal;
-font-size: 10px;
 color: black;
 text-align:center;
 padding-left: 24px;
@@ -231,7 +228,7 @@ color: gray;
 .label {
 font-weight: bold;
 font-style: normal;
-font-size: 11px;
+font-size: 110%;
 color: black;
 background-color: gainsboro;
 }
@@ -287,7 +284,7 @@ padding-left:5px;
 }
 #AppInfoModuleDiv{
 font-weight:bold;
-font-size:12px;
+font-size:120%;
 padding:3px;
 }
 

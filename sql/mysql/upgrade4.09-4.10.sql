@@ -34,3 +34,4 @@ UPDATE `securitytokens` SET tokenname='Unknown' WHERE tokenid=12;
 ALTER TABLE `www_users` ADD `fontsize` TINYINT( 2 ) NOT NULL DEFAULT 0;
 INSERT INTO scripts VALUES ('CustomerPurchases.php','5','Shows the purchases a customer has made.');
 INSERT INTO scripts VALUES ('GoodsReceivedButNotInvoiced.php','15','Shows the list of Goods Received Not Yet Invoiced, both in supplier currency and home currency. Total in home curency should match the GL Account for Goods received not invoiced. Any discrepancy is due to multicurrency errors.');
+INSERT INTO scripts VALUES ('ItemsWithoutPicture.php','15','Shows the list of curent items without picture in webERP');

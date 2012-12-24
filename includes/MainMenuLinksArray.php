@@ -560,13 +560,17 @@ $MenuItems['Utilities']['Transactions']['URL'] = array ('/Z_ChangeCustomerCode.p
 													'/Z_DeleteSalesTransActions.php',
 													'/Z_ReverseSuppPaymentRun.php');
 
-$MenuItems['Utilities']['Reports']['Caption'] = array (_('Show Local Currency Total Debtor Balances'),
-													_('Show Local Currency Total Suppliers Balances'),
-													_('Show General Transactions That Do Not Balance'));
+$MenuItems['Utilities']['Reports']['Caption'] = array ( _('Show Local Currency Total Debtor Balances'),
+														_('Show Local Currency Total Suppliers Balances'),
+														_('Show General Transactions That Do Not Balance'),
+														_('List of items without picture')
+													);
 
-$MenuItems['Utilities']['Reports']['URL'] = array ('/Z_CurrencyDebtorsBalances.php',
-												'/Z_CurrencySuppliersBalances.php',
-												'/Z_CheckGLTransBalance.php');
+$MenuItems['Utilities']['Reports']['URL'] = array ( '/Z_CurrencyDebtorsBalances.php',
+													'/Z_CurrencySuppliersBalances.php',
+													'/Z_CheckGLTransBalance.php',
+													'/ItemsWithoutPicture.php'
+												);
 
 $MenuItems['Utilities']['Maintenance']['Caption'] = array (_('Maintain Language Files'),
 																_('Make New Company'),

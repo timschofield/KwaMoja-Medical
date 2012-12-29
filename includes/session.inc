@@ -123,7 +123,7 @@ if (!isset($AllowAnyone)) {
 
 	} //$rc
 } //!isset($AllowAnyone)
-elseif(basename($_SERVER['SCRIPT_NAME'])!='Logout.php'){
+else if (basename($_SERVER['SCRIPT_NAME']) == 'Logout.php'){
 	/* User nust have hit refresh on Logout page */
 	die(include($PathPrefix . 'includes/Login.php'));
 }

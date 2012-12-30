@@ -178,7 +178,7 @@ function DB_show_fields($TableName, &$Conn){
 }
 
 function interval( $val, $Inter ){
-		global $dbtype;
+		global $DBType;
 		return "\n".'interval ' . $val . ' '. $Inter."\n";
 }
 

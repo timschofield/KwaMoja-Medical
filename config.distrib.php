@@ -32,7 +32,7 @@ $host = 'localhost';
 $mysqlport=3306;
 //The type of db server being used - currently only postgres or mysql
 $dbType = 'mysqli';
-//$dbType = 'postgres' - DEPRECIATED;
+//$dbType = 'postgres' - DEPRECATED;
 //$dbType = 'mysql';
 //$dbType = 'mysqli'; for PHP 5 and mysql > 4.1
 

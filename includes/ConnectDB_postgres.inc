@@ -126,7 +126,7 @@ function DB_escape_string($String){
 }
 
 function INTERVAL( $val, $Inter ) {
-	global $dbtype;
+	global $DBType;
 	return "\n(CAST( (" . $val . ") as text ) or ' ". $Inter ."')::interval\n";
 }
 function DB_show_tables (&$Conn){

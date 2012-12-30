@@ -24,7 +24,7 @@ include('includes/session.inc');
 		<img src="companies/logo.png" style="width:100%" />
 	</div>
 	<div id="login_box">
-	<form action="<?php echo $rootpath;?>/index.php" id="loginform" method="post">
+	<form action="<?php echo $RootPath;?>/index.php" id="loginform" method="post">
     <p>
 <?php
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';

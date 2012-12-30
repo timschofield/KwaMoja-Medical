@@ -37,8 +37,8 @@ $dbType = 'mysqli';
 //$dbType = 'mysqli'; for PHP 5 and mysql > 4.1
 
 // sql user & password
-$dbuser = 'kwamoja_db_user';
-$dbpassword = 'kwamoja_db_pwd';
+$DBUser = 'kwamoja_db_user';
+$DBPassword = 'kwamoja_db_pwd';
 
 //It would probably be inappropraite to allow selection of the company in a hosted envionment so this option can be turned off with this parameter
 $AllowCompanySelectionBox = true;

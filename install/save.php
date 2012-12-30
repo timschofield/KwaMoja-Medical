@@ -289,9 +289,9 @@ $msg .= "// assuming that the web server is also the sql server\n";
 $msg .= "\$dbType = 'mysqli';\n";
 
 $msg .= "// assuming that the web server is also the sql server\n";
-$msg .= "\$dbuser = '" . $_POST['database_username'] . "';\n";
+$msg .= "\$DBUser = '" . $_POST['database_username'] . "';\n";
 $msg .= "// assuming that the web server is also the sql server\n";
-$msg .= "\$dbpassword = '" . $_POST['database_password'] . "';\n";
+$msg .= "\$DBPassword = '" . $_POST['database_password'] . "';\n";
 
 $msg .= "// The timezone of the business - this allows the possibility of having;\n";
 

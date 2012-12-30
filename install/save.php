@@ -286,7 +286,7 @@ $msg .= "// assuming that the web server is also the sql server\n";
 $msg .= "\$host = '" . $_POST['database_host'] . "';\n\n";
 $msg .= "\$mysqlport = 3306;\n\n";
 $msg .= "// assuming that the web server is also the sql server\n";
-$msg .= "\$dbType = 'mysqli';\n";
+$msg .= "\$DBType = 'mysqli';\n";
 
 $msg .= "// assuming that the web server is also the sql server\n";
 $msg .= "\$DBUser = '" . $_POST['database_username'] . "';\n";
@@ -310,10 +310,10 @@ $msg .= "\$DefaultClock = 12;\n";
 $msg .= "\$RootPath = dirname(htmlspecialchars(\$_SERVER['PHP_SELF'],ENT_QUOTES,\'UTF-8\'));\n";
 $msg .= "if (isset(\$DirectoryLevelsDeep)){\n";
 $msg .= "   for (\$i=0;\$i<\$DirectoryLevelsDeep;\$i++){\n";
-$msg .= "\$RootPath = mb_substr(\$rootpath,0, strrpos(\$rootpath,'/'));\n";
+$msg .= "\$RootPath = mb_substr(\$RootPath,0, strrpos(\$rootpath,'/'));\n";
 $msg .= "} }\n";
 
-$msg .= "if (\$RootPath == '/' or \$rootpath == '\\\') {;\n";
+$msg .= "if (\$RootPath == '/' or \$RootPath == '\\\') {;\n";
 $msg .= "\$RootPath = '';\n";
 $msg .= "}\n";
 $msg .= "error_reporting (E_ALL & ~E_NOTICE);\n";

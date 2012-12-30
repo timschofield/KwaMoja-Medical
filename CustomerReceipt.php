@@ -547,8 +547,8 @@ if (isset($_POST['CommitBatch'])){
 	echo '<br />';
 	prnMsg( _('Receipt batch') . ' ' . $_SESSION['ReceiptBatch']->BatchNo . ' ' . _('has been successfully entered into the database'),'success');
 
-	echo '<p class="page_title_text"><img src="'.$RootPath.'/css/'.$Theme.'/images/printer.png" title="' . _('Print') . '" alt="" />' . ' ' . '<a href="' . $rootpath . '/PDFBankingSummary.php?BatchNo=' . $_SESSION['ReceiptBatch']->BatchNo . '">' . _('Print PDF Batch Summary') . '</a></p>';
-	echo '<p class="page_title_text"><img src="'.$RootPath.'/css/'.$Theme.'/images/allocation.png" title="' . _('Allocate') . '" alt="" />' . ' ' . '<a href="' . $rootpath . '/CustomerAllocations.php">' . _('Allocate Receipts') . '</a></p>';
+	echo '<p class="page_title_text"><img src="'.$RootPath.'/css/'.$Theme.'/images/printer.png" title="' . _('Print') . '" alt="" />' . ' ' . '<a href="' . $RootPath . '/PDFBankingSummary.php?BatchNo=' . $_SESSION['ReceiptBatch']->BatchNo . '">' . _('Print PDF Batch Summary') . '</a></p>';
+	echo '<p class="page_title_text"><img src="'.$RootPath.'/css/'.$Theme.'/images/allocation.png" title="' . _('Allocate') . '" alt="" />' . ' ' . '<a href="' . $RootPath . '/CustomerAllocations.php">' . _('Allocate Receipts') . '</a></p>';
 	echo '<p class="page_title_text"><a href="' . $RootPath . '/CustomerReceipt.php?NewReceipt=Yes&Type=Customer">' . _('Enter Receipts') . '</a>
 		</p>';
 

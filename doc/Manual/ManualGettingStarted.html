@@ -29,7 +29,7 @@
 
     <li>When the system is hosted on a multi-homed web server farm, the session needs a directory to be specified as a permanent directory otherwise alternative servers serving subsequent pages depending on the load at the time will not be able to find the session cookie. There is a config.php setting for $SessionSavePath which should be set appropriately for the web server host.</li>
 
-    <li>For a reason unknown some servers are unable to obtain the correct directory automatically using the line: $RootPath = dirname(htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8')); This will be evidenced by the system's inability to find the page links for the various system options. If this happens the $rootpath variable can be set to the root path of the scripts directly.</li>
+    <li>For a reason unknown some servers are unable to obtain the correct directory automatically using the line: $RootPath = dirname(htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8')); This will be evidenced by the system's inability to find the page links for the various system options. If this happens the $RootPath variable can be set to the root path of the scripts directly.</li>
 </ol>
 
 <p>The system could be used with many other database servers but it is tested and developed on MySQL. A Postgres ConnectDB.inc is provided and there is a $DBType setting in config.php that allows the system administrator to use a Postgres database if preferred. Postgres database dumps are also available for building a postgres KwaMoja installation. Independent benchmarks show that MySQL is one of the fastest databases for most common database tasks. It is especially fast at initiating a connection. Due to the stateless nature of the web, a new connection is required to be established on every page. This makes MySQL particularly suitable for web based applications.</p>
@@ -208,8 +208,8 @@ mysql&gt; GRANT ALL PRIVILEGES ON *.* TO kwamoja@localhost IDENTIFIED BY 'some_p
         $host = 'localhost';
 
         //The type of db server being used - currently only postgres or mysql
-        $dbType = 'mysql';
-        //$dbType = 'mysqli';
+        $DBType = 'mysql';
+        //$DBType = 'mysqli';
 
         // sql user & password
         $DBUser = 'kwamoja_db_user';
@@ -248,7 +248,7 @@ mysql&gt; GRANT ALL PRIVILEGES ON *.* TO kwamoja@localhost IDENTIFIED BY 'some_p
         */
 
         $RootPath = dirname(htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8'));
-        if ($RootPath == "/" OR $rootpath == "\\") {
+        if ($RootPath == "/" OR $RootPath == "\\") {
         $RootPath = "";
         }
         //$RootPath = '/web-erp';

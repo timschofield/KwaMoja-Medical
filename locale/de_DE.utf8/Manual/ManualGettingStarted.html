@@ -25,7 +25,7 @@ Die Hauptprobleme bei der Installation von PHP scheinen zu sein:
 <ol>
 <li>Einige für Windows deklarierte Installationen kommen mit einer Einstellung für session.save_path = /tmp, das ist natürlich für ein Windows-Verzeichnis unangebracht und sollte auf C:\temp oder etwas passenderes geändert werden.</li>
 <li>Wenn das System bei Ihrem Provider auf einer Rechnergruppe gehostet wird, muss das als ein permanentes Verzeichnis angegeben werden, andernfalls finden von Seite zu Seite wechselnde Server die Anmeldeinformationen nicht. Es gibt in der config.php eine Einstellung $SessionSavePath, diese sollte in diesen Fällen entsprechend gesetzt werden.</li>
-<li>Aus unklaren Gründen sind manche Server nicht in der Lage, über $RootPath = dirname($_SERVER['PHP_SELF']); automatisch das korrekte Verzeichnis zu ermitteln. Das äußert sich darin, dass das System nicht in der Lage ist, die Seiten-Links für die unterschiedlichen Systemfunktionen zu finden. Wenn das geschieht, kann die Variable $rootpath direkt auf den Pfad gesetzt werden, in dem die Skripte liegen.</li>
+<li>Aus unklaren Gründen sind manche Server nicht in der Lage, über $RootPath = dirname($_SERVER['PHP_SELF']); automatisch das korrekte Verzeichnis zu ermitteln. Das äußert sich darin, dass das System nicht in der Lage ist, die Seiten-Links für die unterschiedlichen Systemfunktionen zu finden. Wenn das geschieht, kann die Variable $RootPath direkt auf den Pfad gesetzt werden, in dem die Skripte liegen.</li>
 </ol>
 <br /><br />
 Das System könnte mit vielen anderen Datenbankservern genutzt werden, aber es ist auf MySQL entwickelt und getestet worden. Eine ConnectDB.inc-Datei für Postgres ist mit beigefügt und es gibt eine Einstellung in der config.php ($DBType), die es dem Systemadministrator erlaubt, eine Postrgres-Datenbank zu verwenden, wenn ihm diese lieber ist. Unabhängige Benchmarks zeigen, dass MySQL für die allgemeinsten Datenbankaufgaben eines der schnellsten Systeme ist. Es ist insbesondere schnell beim Aufbau der Verbindungen, und weil es in der Natur des Web liegt, dass für jede Seite eine neue Verbindung erstellt wird, macht das MySQL für Web-Anwendungen besonders tauglich.
@@ -158,9 +158,9 @@ $Version = '3.04';<br />
 $host = 'localhost';<br />
 <br />
 //The type of db server being used - currently only postgres or mysql<br />
-$dbType = 'mysql';<br />
-//$dbType = 'postgres';<br />
-//$dbType = 'mysql';<br />
+$DBType = 'mysql';<br />
+//$DBType = 'postgres';<br />
+//$DBType = 'mysql';<br />
 <br />
 // sql user &amp; password<br />
 $DBUser = 'kwamoja_db_user';<br />
@@ -201,7 +201,7 @@ eg. if the files are under the web server root directory then rootpath =''; if t
 */<br />
 <br />
 $RootPath = dirname($_SERVER['PHP_SELF']);<br />
-if ($RootPath == "/" or $rootpath == "\\") {<br />
+if ($RootPath == "/" or $RootPath == "\\") {<br />
 	$RootPath = "";<br />
 }<br />
 //$RootPath = '/web-erp';<br />

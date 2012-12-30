@@ -7,9 +7,9 @@ if (!isset($PathPrefix)) {
 
 if (!file_exists($PathPrefix . 'config.php')) {
 	$RootPath = dirname(htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'));
-	if ($RootPath == '/' or $rootpath == "\\") {
+	if ($RootPath == '/' or $RootPath == "\\") {
 		$RootPath = '';
-	} //$RootPath == '/' or $rootpath == "\\"
+	} //$RootPath == '/' or $RootPath == "\\"
 	header('Location:' . $RootPath . '/install/index.php');
 } //!file_exists($PathPrefix . 'config.php')
 include($PathPrefix . 'config.php');
@@ -129,8 +129,7 @@ else if (basename($_SERVER['SCRIPT_NAME']) == 'Logout.php'){
 
 /*User is logged in so get configuration parameters  - save in session*/
 include($PathPrefix . 'includes/GetConfig.php');
-echo ConvertSQLDate($_SESSION['DB_Maintenance_LastRun']);
-exit;
+
 /*if the Code $Version - held in ConnectDB.inc is > than the Database VersionNumber held in config table then do upgrades */
 if (strcmp($Version, $_SESSION['VersionNumber']) > 0 and (basename($_SERVER['SCRIPT_NAME']) != 'UpgradeDatabase.php')) {
 	header('Location: UpgradeDatabase.php');

@@ -7,7 +7,7 @@
 	//  $Title - should be defined in the page this file is included with
 	if (!isset($RootPath)){
 		$RootPath = dirname(htmlspecialchars($_SERVER['PHP_SELF']));
-		if ($RootPath == '/' or $rootpath == "\\") {
+		if ($RootPath == '/' or $RootPath == "\\") {
 			$RootPath = '';
 		}
 	}
@@ -79,7 +79,7 @@
 				echo '<img src="'.$RootPath.'/css/'.$Theme.'/images/company.png" title="'._('Company').'" alt="'._('Company').'"/>'.stripslashes($_SESSION['CompanyRecord']['coyname']);
 			echo '</div>';
 			echo '<div id="AppInfoUserDiv">';
-				echo '<a href="'. $RootPath.'/UserSettings.php"><img src="'.$rootpath.'/css/'.$Theme.'/images/user.png" title="User" alt="'._('User').'"/>'.stripslashes($_SESSION['UsersRealName']).'</a>';
+				echo '<a href="'. $RootPath.'/UserSettings.php"><img src="'.$RootPath.'/css/'.$Theme.'/images/user.png" title="User" alt="'._('User').'"/>'.stripslashes($_SESSION['UsersRealName']).'</a>';
 			echo '</div>';
 			echo '<div id="AppInfoModuleDiv">';
 				// Make the title text a class, can be set to display:none is some themes

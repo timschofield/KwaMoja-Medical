@@ -9,7 +9,7 @@
 $DefaultLanguage ='en_GB.utf8';
 
 // Whether to display the demo login and password or not on the login screen
-$allow_demo_mode = True;
+$AllowDemoMode = True;
 
 // KwaMoja version
 

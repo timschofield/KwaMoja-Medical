@@ -279,7 +279,7 @@ $msg .= "//---------------------------------------------------\n\n";
 $msg .= "//DefaultLanguage to use for the login screen and the setup of new users - the users language selection will override\n";
 $msg .= "\$DefaultLanguage ='en_GB.utf8';\n\n";
 $msg .= "// Whether to display the demo login and password or not on the login screen\n";
-$msg .= "\$allow_demo_mode = False;\n\n";
+$msg .= "\$AllowDemoMode = False;\n\n";
 $msg .= "//  Connection information for the database\n";
 $msg .= "// \$host is the computer ip address or name where the database is located\n";
 $msg .= "// assuming that the web server is also the sql server\n";

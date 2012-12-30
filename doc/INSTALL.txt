@@ -261,7 +261,7 @@ The contents of the config.php file appears as follows for reference purposes. T
 $DefaultLanguage ='en_GB.utf8';
 
 // Whether to display the admin login and password or not 
-$allow_demo_mode = True;
+$AllowDemoMode = True;
 
 // Application version
 $Version = 'XXX';

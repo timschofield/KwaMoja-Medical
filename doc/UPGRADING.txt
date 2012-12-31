@@ -1,6 +1,6 @@
 UPGRADING FROM PREVIOUS VERSIONS OF KWAMOJA
 
-/* $Id$*/
+/* $Id: UPGRADING.txt 5695 2012-10-06 01:10:42Z daintree $*/
 
 A new css structure was released with 4.09 and upgraders will need to clear their cache for the new css to render correctly. This was reported by a user with Internet Explorer 9.
 

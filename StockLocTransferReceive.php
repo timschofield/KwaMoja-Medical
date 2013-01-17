@@ -328,6 +328,15 @@ if(isset($_POST['ProcessTransfer'])){
 						AND stockid = '".  $TrfLine->StockID."'";
 				$ErrMsg =  _('CRITICAL ERROR') . '! ' . _('Unable to set the quantity received to the quantity shipped to cancel the balance on this transfer line');
 				$Result = DB_query($sql, $db, $ErrMsg, $DbgMsg, true);
+				// send an email to the inventory manager about this cancellation (as can lead to employee fraud)
+				if ($_SESSION['InventoryManagerEmail']!=''){
+					$ConfirmationText = _('Cancelled balance at transfer'). ': ' . $_SESSION['Transfer']->TrfID .
+										' ' . _('stock code') . ': ' . $TrfLine->StockID .
+										' ' . _('by user') . ': ' . $_SESSION['UserID'] .
+										' ' . _('at') . ': ' . Date('Y-m-d H:i:s');
+					$EmailSubject = _('Cancelled balance at transfer'). ' ' . $_SESSION['Transfer']->TrfID;
+					mail($_SESSION['InventoryManagerEmail'],$EmailSubject,$ConfirmationText);
+				}
 			}
 			$i++;
 		} /*end of foreach TransferItem */
@@ -411,7 +420,7 @@ if (isset($_SESSION['Transfer'])){
 	echo '<p class="page_title_text noPrint" ><img src="'.$RootPath.'/css/'.$Theme.'/images/supplier.png" title="' . _('Dispatch') .
 		'" alt="" />' . ' ' . $Title . '</p>';
 	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '" method="post" class="noPrint">';
-    echo '<div>';
+	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	prnMsg(_('Please Verify Shipment Quantities Received'),'info');
@@ -496,7 +505,7 @@ if (isset($_SESSION['Transfer'])){
 			<input type="submit" name="ProcessTransfer" value="'. _('Process Inventory Transfer'). '" />
 			<br />
 		</div>
-        </div>
+	</div>
 		</form>';
 	echo '<a href="'.htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8'). '?NewTransfer=true">'. _('Select A Different Transfer').'</a>';
 
@@ -505,7 +514,7 @@ if (isset($_SESSION['Transfer'])){
 	echo '<p class="page_title_text noPrint" ><img src="'.$RootPath.'/css/'.$Theme.'/images/supplier.png" title="' . _('Dispatch') . '" alt="" />' . ' ' . $Title . '</p>';
 
 	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '" method="post" class="noPrint" id="form1">';
-    echo '<div>';
+	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	$LocResult = DB_query("SELECT locationname, loccode FROM locations ORDER BY locationname",$db);
@@ -571,7 +580,7 @@ if (isset($_SESSION['Transfer'])){
 		prnMsg(_('There are no incoming transfers to this location'), 'info');
 	}
 	echo '</div>
-          </form>';
+	  </form>';
 }
 include('includes/footer.inc');
 ?>

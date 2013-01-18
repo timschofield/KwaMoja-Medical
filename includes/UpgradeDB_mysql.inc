@@ -165,6 +165,26 @@ function ChangeColumnDefault($Column, $Table, $Type, $Null, $Default, $db) {
 	}
 }
 
+function RemoveAutoIncrement($Column, $Table, $Type, $Null, $Default, $db) {
+	$sql="SELECT COLUMN_DEFAULT
+		FROM information_schema.columns
+		WHERE TABLE_SCHEMA='".$_SESSION['DatabaseName']."'
+			AND TABLE_NAME='".$Table."'
+			AND COLUMN_NAME='".$Column."'";
+	$result=DB_query($sql, $db);
+	$myrow=DB_fetch_row($result);
+	if ($myrow[0]<>$Default) {
+		$response=executeSQL("ALTER TABLE ".$Table." CHANGE COLUMN ".$Column." ".$Column." ".$Type." ".$Null." DEFAULT '".$Default."'", $db, False);
+		if ($response==0) {
+			OutputResult( _('The column').' '.$Column.' '._('has been changed') , 'success');
+		} else {
+			OutputResult( _('The column').' '.$Column.' '._('could not be changed') , 'error');
+		}
+	} else {
+		OutputResult( _('The column').' '.$Column.' '._('is already changed') , 'info');
+	}
+}
+
 function NewConfigValue($ConfName, $ConfValue, $db) {
 	$sql="SELECT confvalue
 		FROM config

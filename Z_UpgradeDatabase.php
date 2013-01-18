@@ -4,11 +4,11 @@ $PageSecurity = 15;
 
 include('includes/session.inc');
 
-$title = _('Database Upgrade');
+$Title = _('Database Upgrade');
 
 //ob_start(); /*what is this for? */
 
-include('includes/main_header.inc');
+include('includes/header.inc');
 
 function executeSQL($sql, $db, $TrapErrors=False) {
 	global $SQLFile;
@@ -36,7 +36,7 @@ if ($DBType='mysql' or $DBType='mysqli') {
 	prnMsg( _('Your database type is not covered by this upgrade script. Please see your system administrator'), 'error');
 }
 
-echo '<div class="centre"><img src="'.$rootpath.'/css/'.$theme.'/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $title;
+echo '<div class="centre"><img src="'.$RootPath.'/css/'.$Theme.'/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title;
 
 if (!isset($_POST['continue'])) {
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';

@@ -9,6 +9,7 @@ if (!isset($mysqlport)){
 	$mysqlport = 3306;
 }
 $db = mysql_connect($host.':'.$mysqlport , $DBUser, $DBPassword);
+$result=DB_query("SET sql_mode = 'ANSI'", $db);
 
 //this statement sets the charset to be used for sending data to and from the db server
 //if not set, both mysql server and mysql client/library may assume otherwise

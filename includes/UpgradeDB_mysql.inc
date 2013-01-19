@@ -59,6 +59,24 @@ function AddIndex($Columns, $Table, $Name, $db) {
 	}
 }
 
+function DropIndex($Table, $Name, $db) {
+	if (DB_table_exists($Table, $db)) {
+		$sql="SHOW INDEX FROM " . $Table . " WHERE Key_name='".$Name."'";
+		$result = DB_query($sql, $db);
+	}
+	if (DB_num_rows($result)!=0) {
+		$sql="ALTER TABLE `".$Table."` DROP INDEX ".$Name;
+		$response=executeSQL($sql, $db, False);
+		if ($response==0) {
+			OutputResult( _('The index has been droppeed') , 'success');
+		} else {
+			OutputResult( _('The index could not be dropped') , 'error');
+		}
+	} else {
+		OutputResult( _('The index does not exist') , 'info');
+	}
+}
+
 function DropColumn($Column, $Table, $db) {
 	global $SQLFile;
 	if (DB_table_exists($Table, $db)) {
@@ -330,7 +348,6 @@ function DropTable($Table, $Field, $db) {
 }
 
 function InsertRecord($Table, $CheckFields, $CheckValues, $Fields, $Values, $db) {
-	global $SQLFile;
 	if (DB_table_exists($Table, $db)) {
 		$sql="SELECT * FROM ".$Table." WHERE ";
 		for ($i=0;$i<sizeOf($CheckFields);$i++) {

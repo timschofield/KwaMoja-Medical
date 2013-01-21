@@ -221,6 +221,43 @@ function NewConfigValue($ConfName, $ConfValue, $db) {
 	}
 }
 
+function ChangeConfigValue($ConfName, $NewConfigValue,$db) {
+	$sql="SELECT confvalue
+		FROM config
+		WHERE confname='".$ConfName."'
+			AND confvalue='".$NewConfigValue."'";
+	$result=DB_query($sql, $db);
+	$myrow=DB_fetch_row($result);
+	if (DB_num_rows($result)==0) {
+		$response=executeSQL("UPDATE `config` SET `confvalue`='".$NewConfigValue."' WHERE `confname`='".$ConfName."'", $db, False);
+		if ($response==0) {
+			OutputResult( _('The config value').' '.$ConfName.' '._('has been updated') , 'success');
+		} else {
+			OutputResult( _('The config value').' '.$ConfName.' '._('could not be updated') , 'error');
+		}
+	} else {
+		OutputResult( _('The config value').' '.$ConfName.' '._('is already set to').' '.$NewConfigValue , 'info');
+	}
+}
+
+function ChangeConfigName($OldConfName, $NewConfName,$db) {
+	$sql="SELECT confvalue
+		FROM config
+		WHERE confname='".$NewConfName."'";
+	$result=DB_query($sql, $db);
+	$myrow=DB_fetch_row($result);
+	if (DB_num_rows($result)==0) {
+		$response=executeSQL("UPDATE `config` SET `confname`='".$NewConfName."' WHERE `confname`='".$OldConfName."'", $db, False);
+		if ($response==0) {
+			OutputResult( _('The config value').' '.$OldConfName.' '._('has been updated') , 'success');
+		} else {
+			OutputResult( _('The config value').' '.$OldConfName.' '._('could not be updated') , 'error');
+		}
+	} else {
+		OutputResult( _('The config value').' '.$OldConfName.' '._('is already changed to').' '.$NewConfName , 'info');
+	}
+}
+
 function CreateTable($Table, $sql, $db) {
 	$ShowSQL="SHOW TABLES WHERE Tables_in_".$_SESSION['DatabaseName']."='".$Table."'";
 	$result=DB_query($ShowSQL, $db);

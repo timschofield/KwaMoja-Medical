@@ -303,6 +303,14 @@ function DropConstraint($Table, $Constraint, $db) {
 
 function AddConstraint($Table, $Constraint, $Field, $ReferenceTable, $ReferenceField, $db) {
 	if (!ConstraintExists($Table, $Constraint, $db)) {
+		if (gettype($Field)=='array') {
+			$List=implode(',', $Field);
+			$Field=$List;
+		}
+		if (gettype($ReferenceField)=='array') {
+			$List=implode(',', $ReferenceField);
+			$ReferenceField=$List;
+		}
 		$response=executeSQL("ALTER TABLE ".$Table. " ADD CONSTRAINT ".$Constraint." FOREIGN KEY (".$Field.
 			") REFERENCES ".$ReferenceTable." (".$ReferenceField.")", $db, False);
 		if ($response==0) {

@@ -21,50 +21,59 @@ CreateTable('mrpdemands',
 )",
 $db);
 
-ALTER TABLE mrpdemands ADD CONSTRAINT `mrpdemands_ibfk_1` FOREIGN KEY (`mrpdemandtype`) REFERENCES `mrpdemandtypes` (`mrpdemandtype`);
-ALTER TABLE mrpdemands ADD CONSTRAINT `mrpdemands_ibfk_2` FOREIGN KEY (`stockid`) REFERENCES `stockmaster` (`stockid`);
+AddConstraint('mrpdemands', 'mrpdemands_ibfk_1', 'mrpdemantype', 'mrpdemandtypes', 'mrpdemandtype', $db);
+AddConstraint('mrpdemands', 'mrpdemands_ibfk_2', 'stockid', 'stockmaster', 'stockid', $db);
 
-ALTER TABLE `stockmaster` ADD `pansize` double NOT NULL default '0',
-  						  ADD `shrinkfactor` double NOT NULL default '0';
+AddColumn('pansize', 'stockmaster', 'DOUBLE', 'NOT NULL', 'DEFAULT 0.0', 'decimalplaces', $db);
+AddColumn('shrinkfactor', 'stockmaster', 'DOUBLE', 'NOT NULL', 'DEFAULT 0.0', 'pansize', $db);
 
-CREATE TABLE `mrpcalendar` (
+CreateTable('mrpcalendar',
+"CREATE TABLE `mrpcalendar` (
 	calendardate date NOT NULL,
 	daynumber int(6) NOT NULL,
 	manufacturingflag smallint(6) NOT NULL default '1',
 	INDEX (daynumber),
 	PRIMARY KEY (calendardate)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)",
+$db);
 
-INSERT INTO mrpdemandtypes (mrpdemandtype,description) VALUES ('FOR','Forecast');
+InsertRecord('mrpdemandtypes', array('mrpdemandtype', 'description'), array('FOR','Forecast'), array('mrpdemandtype', 'description'), array('FOR','Forecast'), $db);
 
-ALTER TABLE `geocode_param` add PRIMARY KEY (`geocodeid`);
-ALTER TABLE `geocode_param` CHANGE `geocodeid` `geocodeid` TINYINT( 4 ) NOT NULL AUTO_INCREMENT;
-CREATE UNIQUE INDEX factor_name ON factorcompanies (coyname);
-INSERT INTO `factorcompanies` ( `id` , `coyname` ) VALUES (null, 'None');
+AddPrimaryKey('geocode_param', array('geocodeid'), $db);
+ChangeColumnName('geocodeid', 'geocode_param', 'TINYINT', 'NOT NULL', 'DEFAULT 0', 'geocodeid', $db, 'autoincrement');
+AddIndex(array('coyname'), 'factorcompanies', 'factor_name', $db);
 
-ALTER TABLE bankaccounts ADD COLUMN `currcode` char(3) NOT NULL;
-ALTER TABLE `custcontacts` CHANGE `role` `role` VARCHAR( 40 ) NOT NULL;
+AddColumn('currcode', 'bankaccounts', 'CHAR(3)', 'NOT NULL', "DEFAULT ''", 'accountcode', $db);
 
-ALTER TABLE `custcontacts` CHANGE `phoneno` `phoneno` VARCHAR( 20 ) NOT NULL;
-ALTER TABLE `custcontacts` CHANGE `notes` `notes` VARCHAR( 255 ) NOT NULL;
-UPDATE `purchdata` SET `effectivefrom`=NOW() WHERE `effectivefrom`='0000-00-00';
+ChangeColumnType('role', 'custcontacts', 'VARCHAR(40)', 'NOT NULL', "DEFAULT ''", $db);
+ChangeColumnType('phoneno', 'custcontacts', 'VARCHAR(20)', 'NOT NULL', "DEFAULT ''", $db);
+ChangeColumnType('notes', 'custcontacts', 'VARCHAR(255)', 'NOT NULL', "DEFAULT ''", $db);
+
+
+
+
+
+
 ALTER TABLE `purchdata` DROP PRIMARY KEY;
 ALTER TABLE `purchdata` ADD PRIMARY KEY (`supplierno`,`stockid`, `effectivefrom`);
 ALTER TABLE `salesorders` ADD `quotedate` date NOT NULL default '0000-00-00';
 ALTER TABLE `salesorders` ADD `confirmeddate` date NOT NULL default '0000-00-00';
-CREATE TABLE `woserialnos` (
+
+CreateTable('woserialnos',
+"CREATE TABLE `woserialnos` (
 	`wo` INT NOT NULL ,
 	`stockid` VARCHAR( 20 ) NOT NULL ,
 	`serialno` VARCHAR( 30 ) NOT NULL ,
 	`quantity` DOUBLE NOT NULL DEFAULT '1',
 	`qualitytext` TEXT NOT NULL,
 	 PRIMARY KEY (`wo`,`stockid`,`serialno`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)",
+$db);
 
-INSERT INTO config (confname, confvalue) VALUES ('AutoCreateWOs',1);
-INSERT INTO config (confname, confvalue) VALUES ('DefaultFactoryLocation','MEL');
-INSERT INTO config (confname, confvalue) VALUES ('FactoryManagerEmail','manager@company.com');
-INSERT INTO config (`confname`,`confvalue`) VALUES ('DefineControlledOnWOEntry', '1');
+NewConfigValue('AutoCreateWOs', 1, $db);
+NewConfigValue('DefaultFactoryLocation','MEL', $db);
+NewConfigValue('FactoryManagerEmail','manager@company.com', $db);
+NewConfigValue('DefineControlledOnWOEntry', '1', $db);
 ALTER TABLE `stockmaster` ADD `nextserialno` BIGINT NOT NULL DEFAULT '0';
 ALTER TABLE `salesorders` CHANGE `orderno` `orderno` INT( 11 ) NOT NULL;
 ALTER TABLE `stockserialitems` ADD `qualitytext` TEXT NOT NULL;

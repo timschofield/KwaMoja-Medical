@@ -258,6 +258,24 @@ function ChangeConfigName($OldConfName, $NewConfName,$db) {
 	}
 }
 
+function DeleteConfigValue($ConfName,$db) {
+	$sql="SELECT confvalue
+		FROM config
+		WHERE confname='".$ConfName."'";
+	$result=DB_query($sql, $db);
+	$myrow=DB_fetch_row($result);
+	if (DB_num_rows($result)==0) {
+		$response=executeSQL("DELETE FROM `config` WHERE `confname`='".$ConfName."'", $db, False);
+		if ($response==0) {
+			OutputResult( _('The config value').' '.$ConfName.' '._('has been removed') , 'success');
+		} else {
+			OutputResult( _('The config value').' '.$ConfName.' '._('could not be removed') , 'error');
+		}
+	} else {
+		OutputResult( _('The config value').' '.$ConfName.' '._('is already removed') , 'info');
+	}
+}
+
 function CreateTable($Table, $sql, $db) {
 	$ShowSQL="SHOW TABLES WHERE Tables_in_".$_SESSION['DatabaseName']."='".$Table."'";
 	$result=DB_query($ShowSQL, $db);

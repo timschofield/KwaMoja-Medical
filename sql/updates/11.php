@@ -49,15 +49,11 @@ ChangeColumnType('role', 'custcontacts', 'VARCHAR(40)', 'NOT NULL', "DEFAULT ''"
 ChangeColumnType('phoneno', 'custcontacts', 'VARCHAR(20)', 'NOT NULL', "DEFAULT ''", $db);
 ChangeColumnType('notes', 'custcontacts', 'VARCHAR(255)', 'NOT NULL', "DEFAULT ''", $db);
 
+DropPrimaryKey('purchdata', ('supplierno','stockid'), $db);
+AddPrimaryKey('purchdata', ('supplierno','stockid', 'effectivefrom'), $db);
 
-
-
-
-
-ALTER TABLE `purchdata` DROP PRIMARY KEY;
-ALTER TABLE `purchdata` ADD PRIMARY KEY (`supplierno`,`stockid`, `effectivefrom`);
-ALTER TABLE `salesorders` ADD `quotedate` date NOT NULL default '0000-00-00';
-ALTER TABLE `salesorders` ADD `confirmeddate` date NOT NULL default '0000-00-00';
+AddColumn('quotedate', 'salesorders', 'DATE', 'NOT NULL', "DEFAULT '0000-00-00'", 'quotation', $db);
+AddColumn('confirmeddate', 'salesorders', 'DATE', 'NOT NULL', "DEFAULT '0000-00-00'", 'deliverydate', $db);
 
 CreateTable('woserialnos',
 "CREATE TABLE `woserialnos` (
@@ -74,64 +70,69 @@ NewConfigValue('AutoCreateWOs', 1, $db);
 NewConfigValue('DefaultFactoryLocation','MEL', $db);
 NewConfigValue('FactoryManagerEmail','manager@company.com', $db);
 NewConfigValue('DefineControlledOnWOEntry', '1', $db);
-ALTER TABLE `stockmaster` ADD `nextserialno` BIGINT NOT NULL DEFAULT '0';
-ALTER TABLE `salesorders` CHANGE `orderno` `orderno` INT( 11 ) NOT NULL;
-ALTER TABLE `stockserialitems` ADD `qualitytext` TEXT NOT NULL;
 
-CREATE TABLE `purchorderauth` (
+AddColumn('nextserialno', 'stockmaster', 'BIGINT', 'NOT NULL', "DEFAULT 0", 'shrinkfactor', $db);
+AddColumn('qualitytext', 'stockserialitems', 'TEXT', 'NOT NULL', "DEFAULT ''", 'quantity', $db);
+ChangeColumnType('orderno', 'salesorders', 'INT( 11 )', 'NOT NULL', "DEFAULT ''", $db);
+
+CreateTable('purchorderauth',
+"CREATE TABLE `purchorderauth` (
 	`userid` varchar(20) NOT NULL DEFAULT '',
 	`currabrev` char(3) NOT NULL DEFAULT '',
 	`cancreate` smallint(2) NOT NULL DEFAULT 0,
 	`authlevel` int(11) NOT NULL DEFAULT 0,
 	PRIMARY KEY (`userid`,`currabrev`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)",
+$db);
 
-ALTER TABLE `purchorders` ADD `version` decimal(3,2) NOT NULL default '1.00';
-ALTER TABLE `purchorders` ADD `revised` date NOT NULL default '0000-00-00';
-ALTER TABLE `purchorders` ADD `realorderno` varchar(16) NOT NULL default '';
-ALTER TABLE `purchorders` ADD `deliveryby` varchar(100) NOT NULL default '';
-ALTER TABLE `purchorders` ADD `deliverydate` date NOT NULL default '0000-00-00';
-ALTER TABLE `purchorders` ADD `status` varchar(12) NOT NULL default '';
-ALTER TABLE `purchorders` ADD `stat_comment` text NOT NULL;
-ALTER TABLE `purchorderdetails` ADD `itemno` varchar(50) NOT NULL default '';
-ALTER TABLE `purchorderdetails` ADD `uom` varchar(50) NOT NULL default '';
-ALTER TABLE `purchorderdetails` ADD `subtotal_amount` varchar(50) NOT NULL default '';
-ALTER TABLE `purchorderdetails` ADD `package` varchar(100) NOT NULL default '';
-ALTER TABLE `purchorderdetails` ADD `pcunit` varchar(50) NOT NULL default '';
-ALTER TABLE `purchorderdetails` ADD `nw` varchar(50) NOT NULL default '';
-ALTER TABLE `purchorderdetails` ADD `suppliers_partno` varchar(50) NOT NULL default '';
-ALTER TABLE `purchorderdetails` ADD `gw` varchar(50) NOT NULL default '';
-ALTER TABLE `purchorderdetails` ADD `cuft` varchar(50) NOT NULL default '';
-ALTER TABLE `purchorderdetails` ADD `total_quantity` varchar(50) NOT NULL default '';
-ALTER TABLE `purchorderdetails` ADD `total_amount` varchar(50) NOT NULL default '';
-ALTER TABLE `suppliers` ADD `phn` varchar(50) NOT NULL default '';
-ALTER TABLE `suppliers` ADD `port` varchar(200) NOT NULL default '';
+AddColumn('version', 'purchorders', 'DECIMAL(3,2)', 'NOT NULL', "DEFAULT 1.0", 'contact', $db);
+AddColumn('revised', 'purchorders', 'DATE', 'NOT NULL', "DEFAULT '0000-00-00'", 'version', $db);
+AddColumn('realorderno', 'purchorders', 'VARCHAR(16)', 'NOT NULL', "DEFAULT ''", 'revised', $db);
+AddColumn('deliveryby', 'purchorders', 'VARCHAR(100)', 'NOT NULL', "DEFAULT ''", 'realorderno', $db);
+AddColumn('deliverydate', 'purchorders', 'DATE', 'NOT NULL', "DEFAULT '0000-00-00'", 'deliveryby', $db);
+AddColumn('status', 'purchorders', 'VARCHAR(12)', 'NOT NULL', "DEFAULT ''", 'deliverydate', $db);
+AddColumn('stat_comment', 'purchorders', 'TEXT', 'NOT NULL', "DEFAULT ''", 'status', $db);
 
-ALTER TABLE `stockmaster` ADD `netweight` decimal(20,4) NOT NULL default '0.0000';
-ALTER TABLE `purchdata` ADD `suppliers_partno` varchar(50) NOT NULL default '';
+AddColumn('itemno', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', "DEFAULT ''", 'itemcode', $db);
+AddColumn('uom', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', "DEFAULT ''", 'itemno', $db);
+AddColumn('subtotal_amount', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', "DEFAULT ''", 'uom', $db);
+AddColumn('package', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', "DEFAULT ''", 'subtotal_amount', $db);
+AddColumn('pcunit', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', "DEFAULT ''", 'package', $db);
+AddColumn('nw', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', "DEFAULT ''", 'pcunit', $db);
+AddColumn('suppliers_partno', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', "DEFAULT ''", 'nw', $db);
+AddColumn('gw', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', "DEFAULT ''", 'suppliers_partno', $db);
+AddColumn('cuft', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', "DEFAULT ''", 'gw', $db);
+AddColumn('total_quantity', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', "DEFAULT ''", 'cuft', $db);
+AddColumn('total_amount', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', "DEFAULT ''", 'total_quantity', $db);
 
-UPDATE `purchorders` SET `status`='Authorised';
-UPDATE `purchorders` SET `status`='Printed' WHERE `allowprint`=0;
-UPDATE `purchorders` SET `status`='Completed' WHERE (SELECT SUM(`purchorderdetails`.`completed`)-COUNT(`purchorderdetails`.`podetailitem`) FROM `purchorderdetails` where `purchorderdetails`.`orderno`=`purchorders`.`orderno`)=0;
-UPDATE `purchorders` SET `deliverydate`=(SELECT MAX(`purchorderdetails`.`deliverydate`) FROM `purchorderdetails` WHERE `purchorderdetails`.`orderno`=`purchorders`.`orderno`);
+AddColumn('phn', 'suppliers', 'VARCHAR(50)', 'NOT NULL', "DEFAULT ''", 'taxref', $db);
+AddColumn('port', 'suppliers', 'VARCHAR(50)', 'NOT NULL', "DEFAULT ''", 'phn', $db);
 
-ALTER TABLE custnotes CHANGE note note TEXT NOT NULL;
-ALTER TABLE `bankaccounts` ADD `bankaccountcode` varchar(50) NOT NULL default '' AFTER `currcode`;
-ALTER TABLE `bankaccounts` ADD `invoice` smallint(2) NOT NULL default 0 AFTER `currcode`;
+AddColumn('netweight', 'stockmaster', 'DECIMAL(20,4)', 'NOT NULL', "DEFAULT 0.0", 'nextserialno', $db);
+AddColumn('suppliers_partno', 'purchdata', 'VARCHAR(50)', 'NOT NULL', "DEFAULT ''", 'effectivefrom', $db);
 
-ALTER TABLE `www_users` ADD `salesman` CHAR( 3 ) NOT NULL AFTER `customerid`;
+ChangeColumnType('note', 'custnotes', 'TEXT', 'NOT NULL', "DEFAULT ''", $db);
 
-ALTER TABLE debtortrans CHANGE shipvia shipvia int(11) NOT NULL DEFAULT 0;
+AddColumn('bankaccountcode', 'bankaccounts', 'VARCHAR(50)', 'NOT NULL', "DEFAULT ''", 'currcode', $db);
+AddColumn('invoice', 'bankaccounts', 'SMALLINT(2)', 'NOT NULL', "DEFAULT 0", 'bankaccountcode', $db);
 
-CREATE TABLE IF NOT EXISTS `audittrail` (
+AddColumn('salesman', 'www_users', 'CHAR( 3 )', 'NOT NULL', "DEFAULT ''", 'customerid', $db);
+
+ChangeColumnType('shipvia', 'debtortrans', 'INT(11)', 'NOT NULL', 'DEFAULT 0', $db);
+
+CreateTable('audittrail',
+"CREATE TABLE IF NOT EXISTS `audittrail` (
   `transactiondate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `userid` varchar(20) NOT NULL DEFAULT '',
   `querystring` text,
   KEY `UserID` (`userid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-ALTER TABLE `audittrail`  ADD CONSTRAINT `audittrail_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `www_users` (`userid`);
+)",
+$db);
 
-CREATE TABLE IF NOT EXISTS `deliverynotes` (
+AddConstraint('audittrail', 'audittrail_ibfk_1', 'userid', 'www_users', 'userid', $db);
+
+CreateTable('deliverynotes',
+"CREATE TABLE IF NOT EXISTS `deliverynotes` (
   `deliverynotenumber` int(11) NOT NULL,
   `deliverynotelineno` tinyint(4) NOT NULL,
   `salesorderno` int(11) NOT NULL,
@@ -142,9 +143,11 @@ CREATE TABLE IF NOT EXISTS `deliverynotes` (
   `deliverydate` date NOT NULL DEFAULT '0000-00-00',
   PRIMARY KEY (`deliverynotenumber`,`deliverynotelineno`),
   KEY `deliverynotes_ibfk_2` (`salesorderno`,`salesorderlineno`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)",
+$db);
 
-ALTER TABLE `deliverynotes`  ADD CONSTRAINT `deliverynotes_ibfk_1` FOREIGN KEY (`salesorderno`, `salesorderlineno`) REFERENCES `salesorderdetails` (`orderno`, `orderlineno`);
+AddConstraint('deliverynotes', 'deliverynotes_ibfk_1', array('salesorderno', 'salesorderlineno'), 'salesorderdetails', array('orderno', 'orderlineno'), $db);
+ALTER TABLE ``  ADD CONSTRAINT `` FOREIGN KEY  REFERENCES `` (`orderno`, `orderlineno`);
 
 
 UpdateDBNo(basename(__FILE__, '.php'), $db);

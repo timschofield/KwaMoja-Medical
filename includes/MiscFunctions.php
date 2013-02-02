@@ -248,11 +248,11 @@ function wikiLink($type, $id) {
 		$WikiPath='../' . $_SESSION['WikiPath'] . '/';
 	}
 	if ($_SESSION['WikiApp']==_('WackoWiki')){
-		echo '<a href="' . $WikiPath . $type .  $id . '" target="_blank">' . _('Wiki ' . $type . ' Knowlege Base') . ' </a>  <br />';
+		echo '<a href=""' . $WikiPath . $WikiType .  $WikiPageID . '"" target="_blank">' . _('Wiki ' . $WikiType . ' Knowledge Base') . ' </a>  <br />';
 	} elseif ($_SESSION['WikiApp']==_('MediaWiki')){
-		echo '<a href="' . $WikiPath . 'index.php?title=' .  $id . '" target="_blank">' . _('Wiki ' . $type . ' Knowlege Base') . '</a><br />';
+		echo '<a href="' . $WikiPath . 'index.php/' . $WikiType . '/' . $WikiPageID . '" target="_blank">' . _('Wiki ' . $WikiType . ' Knowlege Base') . '</a><br />';
 	} elseif ($_SESSION['WikiApp']==_('DokuWiki')){
-		echo '<a href="' . $WikiPath . '/doku.php?id=' . $type . ':' . $id . '" target="_blank">' . _('Wiki ' .$type . ' Knowlege Base') . '</a><br />';
+		echo '<a href="' . $WikiPath . '/doku.php?id=' . $WikiType . ':' . $WikiPageID . '" target="_blank">' . _('Wiki ' .$WikiType . ' Knowlege Base') . '</a><br />';
 	}
 }
 

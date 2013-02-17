@@ -288,7 +288,7 @@ if (isset($PrintPDF)
 					$DisplayQty=locale_number_format($myrow2['quantity'],$myrow2['decimalplaces']);
 
 					$LeftOvers = $pdf->addTextWrap($Left_Margin+3,$YPos,95,$FontSize,$myrow2['stockid']);
-					$LeftOvers = $pdf->addTextWrap($Left_Margin+100,$YPos,123,$FontSize,$myrow2['description']);
+					$LeftOvers = $pdf->addTextWrap($Left_Margin+100,$YPos,251,$FontSize,$myrow2['description']);
 					$LeftOvers = $pdf->addTextWrap($Left_Margin+353,$YPos,96,$FontSize,$DisplayPrice,'right');
 					$LeftOvers = $pdf->addTextWrap($Left_Margin+453,$YPos,95,$FontSize,$DisplayQty,'right');
 					$LeftOvers = $pdf->addTextWrap($Left_Margin+553,$YPos,35,$FontSize,$myrow2['units'],'centre');
@@ -465,13 +465,13 @@ if (isset($PrintPDF)
 		include('includes/header.inc');
 
 		include ('includes/htmlMimeMail.php');
-		$FileName = $_SESSION['reports_dir'] . '/' . $_SESSION['DatabaseName'] . '_' . $InvOrCredit . '_' . $_GET['FromTransNo'] . '.pdf';
+		$FileName = $_SESSION['reports_dir'] . '/' . $_SESSION['DatabaseName'] . '_' . $InvOrCredit . '_' . $FromTransNo . '.pdf';
 		$pdf->Output($FileName,'F');
 		$mail = new htmlMimeMail();
 
 		$Attachment = $mail->getFile($FileName);
-		$mail->setText(_('Please find attached') . ' ' . $InvOrCredit . ' ' . $_GET['FromTransNo'] );
-		$mail->SetSubject($InvOrCredit . ' ' . $_GET['FromTransNo']);
+		$mail->setText(_('Please find attached') . ' ' . $InvOrCredit . ' ' . $FromTransNo );
+		$mail->SetSubject($InvOrCredit . ' ' . $FromTransNo);
 		$mail->addAttachment($Attachment, $FileName, 'application/pdf');
 		$mail->setFrom($_SESSION['CompanyRecord']['coyname'] . ' <' . $_SESSION['CompanyRecord']['email'] . '>');
 		$result = $mail->send(array($_GET['Email']));
@@ -493,6 +493,9 @@ if (isset($PrintPDF)
 } else { /*The option to print PDF was not hit */
 
 	$Title=_('Select Invoices/Credit Notes To Print');
+	/* KwaMoja manual links before header.inc */
+	$ViewTopic = 'ARReports';
+	$BookMark = 'PrintInvoicesCredits';
 	include('includes/header.inc');
 
 	if (!isset($FromTransNo) or $FromTransNo=='') {

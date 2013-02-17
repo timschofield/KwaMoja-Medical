@@ -13,6 +13,40 @@ function CharacterSet($table, $db) {
 	return $myrow['TABLE_COLLATION'];
 }
 
+function NewScript($ScriptName, $PageSecurity, $db) {
+	/*Is page already in table */
+	$sql = "SELECT script FROM scripts WHERE script='" . $ScriptName . "'";
+	$result = DB_query($sql, $db);
+	if (DB_num_rows($result)==0) {
+		$sql = "INSERT INTO `scripts` VALUES('" . $ScriptName . "', '" . $PageSecurity . "', '')";
+		response = executeSQL($sql, $db, False);
+		if ($response==0) {
+			OutputResult( _('The script').' '.$ScriptName.' '._('has been inserted') , 'success');
+		} else {
+			OutputResult( _('The script').' '.$ScriptName.' '._('could not be inserted') , 'error');
+		}
+	} else {
+		OutputResult( _('The script').' '.$ScriptName.' '._('already exists') , 'info');
+	}
+}
+
+function RemoveScript($ScriptName, $db) {
+	/*Is page already in table */
+	$sql = "SELECT script FROM scripts WHERE script='" . $ScriptName . "'";
+	$result = DB_query($sql, $db);
+	if (DB_num_rows($result)!=0) {
+		$sql = "DELETE FROM `scripts` WHERE script='" . $ScriptName . "'";
+		response = executeSQL($sql, $db, False);
+		if ($response==0) {
+			OutputResult( _('The script').' '.$ScriptName.' '._('has been removed') , 'success');
+		} else {
+			OutputResult( _('The script').' '.$ScriptName.' '._('could not be removed') , 'error');
+		}
+	} else {
+		OutputResult( _('The script').' '.$ScriptName.' '._('does not exist') , 'info');
+	}
+}
+
 function AddColumn($Column, $Table, $Type, $Null, $Default, $After, $db) {
 	global $SQLFile;
 	if (DB_table_exists($Table, $db)) {

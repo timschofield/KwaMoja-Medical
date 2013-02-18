@@ -19,7 +19,7 @@ function NewScript($ScriptName, $PageSecurity, $db) {
 	$result = DB_query($sql, $db);
 	if (DB_num_rows($result)==0) {
 		$sql = "INSERT INTO `scripts` VALUES('" . $ScriptName . "', '" . $PageSecurity . "', '')";
-		response = executeSQL($sql, $db, False);
+		$response = executeSQL($sql, $db, False);
 		if ($response==0) {
 			OutputResult( _('The script').' '.$ScriptName.' '._('has been inserted') , 'success');
 		} else {
@@ -36,7 +36,7 @@ function RemoveScript($ScriptName, $db) {
 	$result = DB_query($sql, $db);
 	if (DB_num_rows($result)!=0) {
 		$sql = "DELETE FROM `scripts` WHERE script='" . $ScriptName . "'";
-		response = executeSQL($sql, $db, False);
+		$response = executeSQL($sql, $db, False);
 		if ($response==0) {
 			OutputResult( _('The script').' '.$ScriptName.' '._('has been removed') , 'success');
 		} else {

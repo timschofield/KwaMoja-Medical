@@ -1371,8 +1371,8 @@ CreateTable('taxauthorities',
   PRIMARY KEY (`taxid`),
   KEY `TaxGLCode` (`taxglcode`),
   KEY `PurchTaxGLAccount` (`purchtaxglaccount`),
-  CONSTRAINT `taxauthorities_ibfk_1` FOREIGN KEY (`taxglcode`) REFERENCES `chartmaster` (`accountcode`),
   CONSTRAINT `taxauthorities_ibfk_2` FOREIGN KEY (`purchtaxglaccount`) REFERENCES `chartmaster` (`accountcode`)
+  CONSTRAINT `taxauthorities_ibfk_1` FOREIGN KEY (`taxglcode`) REFERENCES `chartmaster` (`accountcode`),
 )",
 $db);
 
@@ -1420,8 +1420,8 @@ CreateTable('worksorders',
   KEY `ReleasedDate` (`releaseddate`),
   KEY `RequiredBy` (`requiredby`),
   KEY `WORef` (`woref`,`loccode`),
-  CONSTRAINT `worksorders_ibfk_1` FOREIGN KEY (`loccode`) REFERENCES `locations` (`loccode`),
-  CONSTRAINT `worksorders_ibfk_2` FOREIGN KEY (`stockid`) REFERENCES `stockmaster` (`stockid`)
+  CONSTRAINT `workorders_ibfk_1` FOREIGN KEY (`loccode`) REFERENCES `locations` (`loccode`),
+  CONSTRAINT `workorders_ibfk_2` FOREIGN KEY (`stockid`) REFERENCES `stockmaster` (`stockid`)
 )",
 $db);
 

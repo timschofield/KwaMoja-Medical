@@ -47,9 +47,9 @@ NewScript('InternalStockRequest.php', '1', $db);
 NewScript('InternalStockRequestFulfill.php', '1', $db);
 NewScript('InternalStockRequestAuthorisation.php', '1', $db);
 
-AddColumn('issueglact', 'stockcategory', 'INT', 'NOT NULL', 'DEFAULT 0', 'adjglact', $db);
+AddColumn('issueglact', 'stockcategory', 'INT', 'NOT NULL', '0', 'adjglact', $db);
 executeSQL("UPDATE `stockcategory` SET `issueglact`=`adjglact`", $db);
-InsertRecord('systypes', array('typeid', 'typename', 'typeno'), array('38', 'Stock Requests', '0'), array('typeid', 'typename', 'typeno'), array('38', 'Stock Requests', '0'), $db)
+InsertRecord('systypes', array('typeid', 'typename', 'typeno'), array('38', 'Stock Requests', '0'), array('typeid', 'typename', 'typeno'), array('38', 'Stock Requests', '0'), $db);
 
 NewConfigValue('ShowStockidOnImages','0', $db);
 
@@ -87,49 +87,49 @@ $db);
 
 AddIndex(array('locationname'), 'locations', 'locationname', $db);
 
-ChangeColumnName('papersize', 'labels', 'DOUBLE', 'NOT NULL', 'DEFAULT 0', 'pagewidth', $db);
-AddColumn('pageheight', 'labels', 'DOUBLE', 'NOT NULL', 'DEFAULT 0', 'pagewidth', $db);
-ChangeColumnType('height', 'labels', 'DOUBLE', 'NOT NULL', 'DEFAULT 0', $db);
-ChangeColumnType('width', 'labels', 'DOUBLE', 'NOT NULL', 'DEFAULT 0', $db);
-ChangeColumnType('topmargin', 'labels', 'DOUBLE', 'NOT NULL', 'DEFAULT 0', $db);
-ChangeColumnType('leftmargin', 'labels', 'DOUBLE', 'NOT NULL', 'DEFAULT 0', $db);
-ChangeColumnType('rowheight', 'labels', 'DOUBLE', 'NOT NULL', 'DEFAULT 0', $db);
-ChangeColumnType('columnwidth', 'labels', 'DOUBLE', 'NOT NULL', 'DEFAULT 0', $db);
-ChangeColumnType('vpos', 'labelfields', 'DOUBLE', 'NOT NULL', 'DEFAULT 0', $db);
-ChangeColumnType('hpos', 'labelfields', 'DOUBLE', 'NOT NULL', 'DEFAULT 0', $db);
+ChangeColumnName('papersize', 'labels', 'DOUBLE', 'NOT NULL', '0', 'pagewidth', $db);
+AddColumn('pageheight', 'labels', 'DOUBLE', 'NOT NULL', '0', 'pagewidth', $db);
+ChangeColumnType('height', 'labels', 'DOUBLE', 'NOT NULL', '0', $db);
+ChangeColumnType('width', 'labels', 'DOUBLE', 'NOT NULL', '0', $db);
+ChangeColumnType('topmargin', 'labels', 'DOUBLE', 'NOT NULL', '0', $db);
+ChangeColumnType('leftmargin', 'labels', 'DOUBLE', 'NOT NULL', '0', $db);
+ChangeColumnType('rowheight', 'labels', 'DOUBLE', 'NOT NULL', '0', $db);
+ChangeColumnType('columnwidth', 'labels', 'DOUBLE', 'NOT NULL', '0', $db);
+ChangeColumnType('vpos', 'labelfields', 'DOUBLE', 'NOT NULL', '0', $db);
+ChangeColumnType('hpos', 'labelfields', 'DOUBLE', 'NOT NULL', '0', $db);
 
-AddColumn('opencashdrawer', 'paymentmethods', 'TINYINT', 'NOT NULL', 'DEFAULT 0', 'usepreprintedstationery', $db);
+AddColumn('opencashdrawer', 'paymentmethods', 'TINYINT', 'NOT NULL', '0', 'usepreprintedstationery', $db);
 
 DropConstraint('bankaccounts', 'bankaccounts_ibfk_1', $db);
 DropConstraint('banktrans', 'banktrans_ibfk_2', $db);
 
-ChangeColumnType('accountcode', 'bankaccounts', 'varchar(20)', 'NOT NULL', 'DEFAULT 0', $db);
-ChangeColumnType('bankact', 'banktrans', 'varchar(20)', 'NOT NULL', 'DEFAULT 0', $db);
+ChangeColumnType('accountcode', 'bankaccounts', 'varchar(20)', 'NOT NULL', '0', $db);
+ChangeColumnType('bankact', 'banktrans', 'varchar(20)', 'NOT NULL', '0', $db);
 
 AddConstraint('banktrans', 'banktrans_ibfk_2', 'bankact', 'bankaccounts', 'accountcode', $db);
 
 DropConstraint('chartdetails', 'chartdetails_ibfk_1', $db);
 DropPrimaryKey('chartdetails', array('accountcode', 'period'), $db);
-ChangeColumnType('accountcode', 'chartdetails', 'varchar(20)', 'NOT NULL', 'DEFAULT 0', $db);
+ChangeColumnType('accountcode', 'chartdetails', 'varchar(20)', 'NOT NULL', '0', $db);
 AddPrimaryKey('chartdetails', array('accountcode','period'), $db);
 DropConstraint('gltrans', 'gltrans_ibfk_1', $db);
-ChangeColumnType('account', 'gltrans', 'varchar(20)', 'NOT NULL', 'DEFAULT 0', $db);
+ChangeColumnType('account', 'gltrans', 'varchar(20)', 'NOT NULL', '0', $db);
 AddConstraint('gltrans', 'gltrans_ibfk_1', 'account', 'chartmaster', 'accountcode', $db);
 DropConstraint('pcexpenses', 'pcexpenses_ibfk_1', $db);
-ChangeColumnType('glaccount', 'pcexpenses', 'varchar(20)', 'NOT NULL', 'DEFAULT 0', $db);
+ChangeColumnType('glaccount', 'pcexpenses', 'varchar(20)', 'NOT NULL', '0', $db);
 AddConstraint('pcexpenses', 'pcexpenses_ibfk_1', 'glaccount', 'chartmaster', 'accountcode', $db);
 DropConstraint('pctabs', 'pctabs_ibfk_5', $db);
-ChangeColumnType('glaccountassignment', 'pctabs', 'varchar(20)', 'NOT NULL', 'DEFAULT 0', $db);
-ChangeColumnType('glaccountpcash', 'pctabs', 'varchar(20)', 'NOT NULL', 'DEFAULT 0', $db);
+ChangeColumnType('glaccountassignment', 'pctabs', 'varchar(20)', 'NOT NULL', '0', $db);
+ChangeColumnType('glaccountpcash', 'pctabs', 'varchar(20)', 'NOT NULL', '0', $db);
 AddConstraint('pctabs', 'pctabs_ibfk_5', 'glaccountassignment', 'chartmaster', 'accountcode', $db);
 DropConstraint('taxauthorities', 'taxauthorities_ibfk_1', $db);
-ChangeColumnType('taxglcode', 'taxauthorities', 'varchar(20)', 'NOT NULL', 'DEFAULT 0', $db);
+ChangeColumnType('taxglcode', 'taxauthorities', 'varchar(20)', 'NOT NULL', '0', $db);
 AddConstraint('taxauthorities', 'taxauthorities_ibfk_1', 'taxglcode', 'chartmaster', 'accountcode', $db);
 DropConstraint('taxauthorities', 'taxauthorities_ibfk_2', $db);
-ChangeColumnType('purchtaxglaccount', 'taxauthorities', 'varchar(20)', 'NOT NULL', 'DEFAULT 0', $db);
+ChangeColumnType('purchtaxglaccount', 'taxauthorities', 'varchar(20)', 'NOT NULL', '0', $db);
 AddConstraint('taxauthorities', 'taxauthorities_ibfk_2', 'purchtaxglaccount', 'chartmaster', 'accountcode', $db);
-ChangeColumnType('accountcode', 'chartmaster', 'varchar(20)', 'NOT NULL', 'DEFAULT 0', $db);
-AddConstraint('bankaccounts', 'accountcode', 'accountcode', 'chartmaster', 'accountcode', $db);
+ChangeColumnType('accountcode', 'chartmaster', 'varchar(20)', 'NOT NULL', '0', $db);
+AddConstraint('bankaccounts', 'bankaccounts_ibfk_1', 'accountcode', 'chartmaster', 'accountcode', $db);
 AddConstraint('chartdetails', 'chartdetails_ibfk_1', 'accountcode', 'chartmaster', 'accountcode', $db);
 
 NewScript('NoSalesItems.php',  '2',  $db);

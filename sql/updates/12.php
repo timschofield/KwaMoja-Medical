@@ -147,7 +147,7 @@ AddColumn('inputdate', 'debtortrans', 'datetime', 'NOT NULL', '0000-00-00', 'tra
  * the previous size was not big enough to hold all field names
  */
 
-ChangeColumnSize('fieldname', 'reportfields', 'varchar(60)', 'NOT NULL', "''", 60, $db);
+ChangeColumnSize('fieldname', 'reportfields', 'varchar(60)', 'NOT NULL', '', 60, $db);
 
 /* Database changes needed for the picking list functionality
  */
@@ -184,8 +184,8 @@ AddColumn('enddate', 'prices', 'Date', 'NOT NULL', '9999-12-31', 'startdate', $d
 
 DropPrimaryKey('prices', array('stockid' , 'typeabbrev' , 'currabrev' , 'debtorno'), $db);
 AddPrimaryKey('prices', array('stockid' , 'typeabbrev' , 'currabrev' , 'debtorno' , 'branchcode', 'startdate' , 'enddate'), $db);
-UpdateField('prices', 'startdate', '1999-01-01', 'stockid="%"', $db);
-UpdateField('prices', 'enddate', '', 'stockid="%"', $db);
+UpdateField('prices', 'startdate', '1999-01-01', "stockid='%'", $db);
+UpdateField('prices', 'enddate', '', "stockid='%'", $db);
 
 /* Add in minimum order quantity field to the supplier purchasing data
  */
@@ -399,7 +399,7 @@ for ($i=9; $i<=20; $i++) {
 /* Increase the size of the fieldname field to accomodate all field names
  */
 
-ChangeColumnSize('fieldname', 'reportfields', 'varchar(80)', 'NOT NULL', "''", 80, $db);
+ChangeColumnSize('fieldname', 'reportfields', 'varchar(80)', 'NOT NULL', '', 80, $db);
 /* Addin extra fields to stockcatproperties table
  */
 
@@ -973,23 +973,23 @@ NewConfigValue('VersionNumber', '3.12.0', $db);
 ChangeConfigValue('VersionNumber', '3.12.1', $db);
 ChangeConfigValue('VersionNumber', '3.12.2', $db);
 
-ChangeColumnName('nw', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', "DEFAULT ''", 'netweight', $db),
-ChangeColumnName('gw', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', "DEFAULT ''", 'kgs', $db),
-AddColumn('conversionfactor', 'purchorderdetails', 'DOUBLE', 'NOT NULL', 'DEFAULT 1', 'assetid', $db);
+ChangeColumnName('nw', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', '', 'netweight', $db);
+ChangeColumnName('gw', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', '', 'kgs', $db);
+AddColumn('conversionfactor', 'purchorderdetails', 'DOUBLE', 'NOT NULL', '1', 'assetid', $db);
 ChangeConfigValue('VersionNumber', '3.12.3', $db);
-ChangeColumnName('uom', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', "DEFAULT ''", 'suppliersunit', $db),
+ChangeColumnName('uom', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', '', 'suppliersunit', $db);
 ChangeConfigValue('VersionNumber', '3.12.31', $db);
 NewConfigValue('AutoAuthorisePO', '1', $db);
 ChangeConfigValue('VersionNumber', '4.03', $db);
 
-AddColumn('poplaced', 'salesorders', 'TINYINT', 'NOT NULL', 'DEFAULT 0', 'quotedate', $db);
+AddColumn('poplaced', 'salesorders', 'TINYINT', 'NOT NULL', '0', 'quotedate', $db);
 AddIndex(array('poplaced'), 'salesorders', 'poplaced', $db);
 
 ChangeConfigValue('VersionNumber', '4.03.1', $db);
 ChangeConfigValue('VersionNumber', '4.03.2', $db);
 
 AddColumn('cashsalebranch', 'locations', 'VARCHAR(10)', 'NOT NULL', "Default ''", 'managed', $db);
-ChangeColumnType('cashsalecustomer', 'locations', 'VARCHAR(10)', 'NOT NULL', "DEFAULT ''", $db);
+ChangeColumnType('cashsalecustomer', 'locations', 'VARCHAR(10)', 'NOT NULL', '', $db);
 
 ChangeConfigValue('VersionNumber', '4.03.3', $db);
 
@@ -1000,7 +1000,7 @@ ChangeConfigValue('VersionNumber', '4.03.5', $db);
 NewScript('ReprintGRN.php', '11', $db);
 ChangeConfigValue('VersionNumber', '4.03.6', $db);
 
-AddColumn('usepreprintedstationery', 'paymentmethods', 'TINYINT', 'NOT NULL', 'DEFAULT 0', 'receipttype', $db);
+AddColumn('usepreprintedstationery', 'paymentmethods', 'TINYINT', 'NOT NULL', '0', 'receipttype', $db);
 
 RemoveScript('PDFStockTransListing.php', $db);
 NewScript('PDFPeriodStockTransListing.php','3', $db);
@@ -1015,10 +1015,11 @@ DropColumn('cuft', 'purchorderdetails', $db);
 DropColumn('total_quantity', 'purchorderdetails', $db);
 DropColumn('netweight', 'purchorderdetails', $db);
 DropColumn('total_amount', 'purchorderdetails', $db);
+DropColumn('uom', 'purchorderdetails', $db);
 
 ChangeConfigValue('VersionNumber', '4.03.8', $db);
 
-ChangeColumnType('stockcheckdate', 'stockcheckfreeze', 'DATE', 'NOt NULL', "DEFAULT '0000-00-00'", $db);
+ChangeColumnType('stockcheckdate', 'stockcheckfreeze', 'DATE', 'NOt NULL', "'0000-00-00'", $db);
 
 UpdateDBNo(basename(__FILE__, '.php'), $db);
 

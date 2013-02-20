@@ -12,21 +12,21 @@ CreateTable('internalstockcatrole',
 $db);
 
 NewScript('InternalStockCategoriesByRole.php','15',$db);
-AddColumn('internalrequest', 'locations', 'TINYINT(1)', 'NOT NULL', 'DEFAULT 1', 'cashsalebranch', $db);
+AddColumn('internalrequest', 'locations', 'TINYINT(1)', 'NOT NULL', '1', 'cashsalebranch', $db);
 
-ChangeColumnType('shipdate', 'loctransfers', 'DATETIME', 'NOT NULL', "DEFAULT 0000-00-00 00:00:00", $db);
-ChangeColumnType('recdate', 'loctransfers', 'DATETIME', 'NOT NULL', "DEFAULT 0000-00-00 00:00:00", $db);
+ChangeColumnType('shipdate', 'loctransfers', 'DATETIME', 'NOT NULL', "0000-00-00 00:00:00", $db);
+ChangeColumnType('recdate', 'loctransfers', 'DATETIME', 'NOT NULL', "0000-00-00 00:00:00", $db);
 
 NewScript('GLJournalInquiry.php','15',$db);
 NewScript('PDFGLJournal.php','15',$db);
 
-AddColumn('department', 'www_users', 'INT(11)', 'NOT NULL', 'DEFAULT 0', 'pdflanguage', $db);
+AddColumn('department', 'www_users', 'INT(11)', 'NOT NULL', '0', 'pdflanguage', $db);
 
 NewConfigValue('WorkingDaysWeek','5', $db);
 
-ChangeColumnType('address6', 'suppliers', 'VARCHAR(40)', 'NOT NULL', "Default ''", $db);
-ChangeColumnType('braddress6', 'custbranch', 'VARCHAR(40)', 'NOT NULL', "Default ''", $db);
-ChangeColumnType('address6', 'debtorsmaster', 'VARCHAR(40)', 'NOT NULL', "Default ''", $db);
+ChangeColumnType('address6', 'suppliers', 'VARCHAR(40)', 'NOT NULL', '', $db);
+ChangeColumnType('braddress6', 'custbranch', 'VARCHAR(40)', 'NOT NULL', '', $db);
+ChangeColumnType('address6', 'debtorsmaster', 'VARCHAR(40)', 'NOT NULL', '', $db);
 
 AddConstraint('stockcatproperties', 'categoryid', 'categoryid', 'stockcategory', 'categoryid', $db);
 AddConstraint('stockitemproperties', 'stockid', 'stockid', 'stockmaster', 'stockid', $db);

@@ -45,7 +45,7 @@ NewScript('PDFSellThroughSupportClaim.php',  '9', $db);
 NewScript('ReportBug.php',  '15', $db);
 NewScript('UploadPriceList.php',  '15', $db);
 
-AddColumn('bin', 'locstock', 'VARCHAR(10)', 'NOT NULL', "DEFAULT ''", 'reorderlevel', $db);
+AddColumn('bin', 'locstock', 'VARCHAR(10)', 'NOT NULL', '', 'reorderlevel', $db);
 
 ChangeConfigValue('VersionNumber', '4.10.1', $db);
 

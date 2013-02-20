@@ -1,8 +1,8 @@
 <?php
 
-ChangeColumnType('area', 'custbranch', 'CHAR(3)', 'NOT NULL', "DEFAULT ''", $db);
-AddColumn('specialinstructions', 'custbranch', 'TEXT', 'NOT NULL', "DEFAULT ''", 'brpostaddr6', $db);
-AddColumn('parentgroupname', 'accountgroups', 'VARCHAR(30)', 'NOT NULL', "DEFAULT ''", 'sequenceintb', $db);
+ChangeColumnType('area', 'custbranch', 'CHAR(3)', 'NOT NULL', '', $db);
+AddColumn('specialinstructions', 'custbranch', 'TEXT', 'NOT NULL', '', 'brpostaddr6', $db);
+AddColumn('parentgroupname', 'accountgroups', 'VARCHAR(30)', 'NOT NULL', '', 'sequenceintb', $db);
 
 DropTable('worksorders', 'accumvalueissued', $db);
 
@@ -55,12 +55,12 @@ AddConstraint('worequirements', 'worequirements_ibfk_1', 'wo', 'workorders', 'wo
 AddConstraint('worequirements', 'worequirements_ibfk_2', 'stockid', 'stockmaster', 'stockid', $db);
 AddConstraint('worequirements', 'worequirements_ibfk_3', 'parentstockid', 'woitems', 'stockid', $db);
 
-AddColumn('autoissue', 'bom', 'TINYINT', 'NOT NULL', 'DEFAULT 0', 'quantity', $db);
+AddColumn('autoissue', 'bom', 'TINYINT', 'NOT NULL', '0', 'quantity', $db);
 
-NewConfigValue('AutoIssue', '1');
+NewConfigValue('AutoIssue', '1', $db);
 
 DropIndex('stockmoves', 'StockID', $db);
-AddIndex(array('reference'), 'stockmoves', $db);
+AddIndex(array('reference'), 'stockmoves', 'stockmoves', $db);
 DropPrimaryKey('recurrsalesorderdetails', array('recurrorderno','stkcode'), $db);
 
 

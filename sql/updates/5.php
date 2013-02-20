@@ -94,28 +94,28 @@ $db);
  * but for the time being do it as mysql only
  */
 
-if ($DBtype=='mysql' or $DBType=='mysqli') {
+if ($DBType=='mysql' or $DBType=='mysqli') {
 	$sql = "INSERT INTO reportlinks SELECT table_name, referenced_table_name, concat(table_name, '.', column_name, '=' , referenced_table_name, '.', referenced_column_name) FROM information_schema.key_column_usage WHERE referenced_table_name is not null and table_schema = '" . $_SESSION['DatabaseName'] . "'";
 	executeSQL($sql, $db);
 }
 
-NewConfigValue('WikiApp','Disabled');
-NewConfigValue('WikiPath','wiki');
-NewConfigValue('ProhibitJournalsToControlAccounts','0');
-NewConfigValue('InvoicePortraitFormat', '0');
-NewConfigValue('ProhibitPostingsBefore', '2006-01-01');
-NewConfigValue('WeightedAverageCosting', '1');
-NewConfigValue('AllowOrderLineItemNarrative', '1');
-NewConfigValue('vtiger_integration', '0');
+NewConfigValue('WikiApp','Disabled', $db);
+NewConfigValue('WikiPath','wiki', $db);
+NewConfigValue('ProhibitJournalsToControlAccounts','0', $db);
+NewConfigValue('InvoicePortraitFormat', '0', $db);
+NewConfigValue('ProhibitPostingsBefore', '2006-01-01', $db);
+NewConfigValue('WeightedAverageCosting', '1', $db);
+NewConfigValue('AllowOrderLineItemNarrative', '1', $db);
+NewConfigValue('vtiger_integration', '0', $db);
 
-AddIndex(array('serialno'), 'stockserialitems', 'stockserialitems_idx_1', $db);
-AddIndex(array('serialno'), 'stockserialmoves', 'stockserialmoves_idx_1', $db);
+AddIndex(array('serialno'), 'stockserialitems', 'serialno', $db);
+AddIndex(array('serialno'), 'stockserialmoves', 'serialno', $db);
 
 InsertRecord('taxcategories', array('taxcatname'), array('Freight'), array('taxcatname'), array('Freight'), $db);
 
 DropIndex('custbranch', 'BranchCode', $db);
 
-AddColumn('stdcostunit', 'grns', 'double', 'NOT NULL', 'DEFAULT 0', 'supplierid',$db);
+AddColumn('stdcostunit', 'grns', 'double', 'NOT NULL', '0', 'supplierid',$db);
 DropPrimaryKey('stockcheckfreeze', array('stockid'), $db);
 AddPrimaryKey('stockcheckfreeze', array('stockid', 'loccode'), $db);
 

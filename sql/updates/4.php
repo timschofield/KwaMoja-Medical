@@ -8,7 +8,7 @@ ChangeConfigValue('EDI_Sent', 'companies/kwamoja/EDI_Sent', $db);
 ChangeConfigValue('companies/kwamoja/reports', 'reports_dir', $db);
 DropColumn('pinno', 'www_users', $db);
 DropColumn('swipecard', 'www_users', $db);
-ChangeColumnType('bankact', 'suppliers', 'VARCHAR( 30 )', 'NOT NULL', "''", $db);
+ChangeColumnType('bankact', 'suppliers', 'VARCHAR( 30 )', 'NOT NULL', '', $db);
 
 UpdateDBNo(basename(__FILE__, '.php'), $db);
 

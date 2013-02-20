@@ -38,8 +38,8 @@ CreateTable('tendersuppliers',
 $db);
 
 NewScript('SupplierTenderCreate.php', '4', $db);
-AddColumn('cancreatetender', 'www_users', 'TINYINT(1)', 'NOT NULL', 'DEFAULT 0', 'fullaccess', $db);
-InsertRecord('systypes', array('typeid', 'typename', 'typeno'), array('37', 'Tenders', '0'), array('typeid', 'typename', 'typeno'), array('37', 'Tenders', '0'), $db)
+AddColumn('cancreatetender', 'www_users', 'TINYINT(1)', 'NOT NULL', '0', 'fullaccess', $db);
+InsertRecord('systypes', array('typeid', 'typename', 'typeno'), array('37', 'Tenders', '0'), array('typeid', 'typename', 'typeno'), array('37', 'Tenders', '0'), $db);
 
 NewConfigValue('StandardCostDecimalPlaces','2', $db);
 

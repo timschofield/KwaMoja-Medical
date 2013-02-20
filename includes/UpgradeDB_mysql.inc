@@ -512,10 +512,15 @@ function AddPrimaryKey($Table, $Fields, $db) {
 }
 
 function RenameTable($OldName, $NewName, $db) {
-	$sql="SHOW TABLES WHERE Tables_in_".$_SESSION['DatabaseName']."='".$OldName."'";
-	$result=DB_query($sql, $db);
+	$Newsql="SHOW TABLES WHERE Tables_in_".$_SESSION['DatabaseName']."='".$NewName."'";
+	$Newresult=DB_query($Newsql, $db);
+	$Oldsql="SHOW TABLES WHERE Tables_in_".$_SESSION['DatabaseName']."='".$OldName."'";
+	$Oldresult=DB_query($Oldsql, $db);
 
-	if (DB_num_rows($result)!=0) {
+	if (DB_num_rows($Newresult)!=0 and DB_num_rows($Oldresult)!=0) {
+		$response=executeSQL("DROP TABLE ".$OldName."", $db, False);
+	}
+	if (DB_num_rows($Oldresult)!=0) {
 		$response=executeSQL("RENAME TABLE ".$OldName." to ".$NewName, $db, False);
 		if ($response==0) {
 			OutputResult( _('The table').' '.$OldName.' '._('has been renamed to').' '.$NewName , 'success');

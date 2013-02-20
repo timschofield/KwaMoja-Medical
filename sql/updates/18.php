@@ -1,13 +1,13 @@
 <?php
 
 DropColumn('lastcurcostdate', 'stockmaster', $db);
-AddColumn('lastcostupdate', 'stockmaster', 'DATE', 'NOT NULL', "DEFAULT '0000-00-00'", 'netweight', $db);
+AddColumn('lastcostupdate', 'stockmaster', 'DATE', 'NOT NULL', "'0000-00-00'", 'netweight', $db);
 
 NewConfigValue('InventoryManagerEmail',  'inventory@example.com', $db);
 
-AddIndex(array('ref'), 'bantrans', 'ref', $db);
+AddIndex(array('ref'), 'banktrans', 'ref', $db);
 
-AddColumn('tag', 'pcexpenses', 'TINYINT( 4 )', 'NOT NULL', "DEFAULT 0", 'glaccount', $db);
+AddColumn('tag', 'pcexpenses', 'TINYINT( 4 )', 'NOT NULL', "0", 'glaccount', $db);
 
 DropConstraint('debtotrans', 'debtortrans_ibfk_1', $db);
 

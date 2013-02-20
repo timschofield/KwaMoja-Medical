@@ -24,8 +24,8 @@ $db);
 AddConstraint('mrpdemands', 'mrpdemands_ibfk_1', 'mrpdemantype', 'mrpdemandtypes', 'mrpdemandtype', $db);
 AddConstraint('mrpdemands', 'mrpdemands_ibfk_2', 'stockid', 'stockmaster', 'stockid', $db);
 
-AddColumn('pansize', 'stockmaster', 'DOUBLE', 'NOT NULL', 'DEFAULT 0.0', 'decimalplaces', $db);
-AddColumn('shrinkfactor', 'stockmaster', 'DOUBLE', 'NOT NULL', 'DEFAULT 0.0', 'pansize', $db);
+AddColumn('pansize', 'stockmaster', 'DOUBLE', 'NOT NULL', '0.0', 'decimalplaces', $db);
+AddColumn('shrinkfactor', 'stockmaster', 'DOUBLE', 'NOT NULL', '0.0', 'pansize', $db);
 
 CreateTable('mrpcalendar',
 "CREATE TABLE `mrpcalendar` (
@@ -40,20 +40,20 @@ $db);
 InsertRecord('mrpdemandtypes', array('mrpdemandtype', 'description'), array('FOR','Forecast'), array('mrpdemandtype', 'description'), array('FOR','Forecast'), $db);
 
 AddPrimaryKey('geocode_param', array('geocodeid'), $db);
-ChangeColumnName('geocodeid', 'geocode_param', 'TINYINT', 'NOT NULL', 'DEFAULT 0', 'geocodeid', $db, 'autoincrement');
+ChangeColumnName('geocodeid', 'geocode_param', 'TINYINT', 'NOT NULL', '0', 'geocodeid', $db, 'autoincrement');
 AddIndex(array('coyname'), 'factorcompanies', 'factor_name', $db);
 
-AddColumn('currcode', 'bankaccounts', 'CHAR(3)', 'NOT NULL', "DEFAULT ''", 'accountcode', $db);
+AddColumn('currcode', 'bankaccounts', 'CHAR(3)', 'NOT NULL', '', 'accountcode', $db);
 
-ChangeColumnType('role', 'custcontacts', 'VARCHAR(40)', 'NOT NULL', "DEFAULT ''", $db);
-ChangeColumnType('phoneno', 'custcontacts', 'VARCHAR(20)', 'NOT NULL', "DEFAULT ''", $db);
-ChangeColumnType('notes', 'custcontacts', 'VARCHAR(255)', 'NOT NULL', "DEFAULT ''", $db);
+ChangeColumnType('role', 'custcontacts', 'VARCHAR(40)', 'NOT NULL', '', $db);
+ChangeColumnType('phoneno', 'custcontacts', 'VARCHAR(20)', 'NOT NULL', '', $db);
+ChangeColumnType('notes', 'custcontacts', 'VARCHAR(255)', 'NOT NULL', '', $db);
 
-DropPrimaryKey('purchdata', ('supplierno','stockid'), $db);
-AddPrimaryKey('purchdata', ('supplierno','stockid', 'effectivefrom'), $db);
+DropPrimaryKey('purchdata', array('supplierno','stockid'), $db);
+AddPrimaryKey('purchdata', array('supplierno','stockid', 'effectivefrom'), $db);
 
-AddColumn('quotedate', 'salesorders', 'DATE', 'NOT NULL', "DEFAULT '0000-00-00'", 'quotation', $db);
-AddColumn('confirmeddate', 'salesorders', 'DATE', 'NOT NULL', "DEFAULT '0000-00-00'", 'deliverydate', $db);
+AddColumn('quotedate', 'salesorders', 'DATE', 'NOT NULL', "'0000-00-00'", 'quotation', $db);
+AddColumn('confirmeddate', 'salesorders', 'DATE', 'NOT NULL', "'0000-00-00'", 'deliverydate', $db);
 
 CreateTable('woserialnos',
 "CREATE TABLE `woserialnos` (
@@ -71,9 +71,9 @@ NewConfigValue('DefaultFactoryLocation','MEL', $db);
 NewConfigValue('FactoryManagerEmail','manager@company.com', $db);
 NewConfigValue('DefineControlledOnWOEntry', '1', $db);
 
-AddColumn('nextserialno', 'stockmaster', 'BIGINT', 'NOT NULL', "DEFAULT 0", 'shrinkfactor', $db);
-AddColumn('qualitytext', 'stockserialitems', 'TEXT', 'NOT NULL', "DEFAULT ''", 'quantity', $db);
-ChangeColumnType('orderno', 'salesorders', 'INT( 11 )', 'NOT NULL', "DEFAULT ''", $db);
+AddColumn('nextserialno', 'stockmaster', 'BIGINT', 'NOT NULL', "0", 'shrinkfactor', $db);
+AddColumn('qualitytext', 'stockserialitems', 'TEXT', 'NOT NULL', '', 'quantity', $db);
+ChangeColumnType('orderno', 'salesorders', 'INT( 11 )', 'NOT NULL', '', $db);
 
 CreateTable('purchorderauth',
 "CREATE TABLE `purchorderauth` (
@@ -85,40 +85,40 @@ CreateTable('purchorderauth',
 )",
 $db);
 
-AddColumn('version', 'purchorders', 'DECIMAL(3,2)', 'NOT NULL', "DEFAULT 1.0", 'contact', $db);
-AddColumn('revised', 'purchorders', 'DATE', 'NOT NULL', "DEFAULT '0000-00-00'", 'version', $db);
-AddColumn('realorderno', 'purchorders', 'VARCHAR(16)', 'NOT NULL', "DEFAULT ''", 'revised', $db);
-AddColumn('deliveryby', 'purchorders', 'VARCHAR(100)', 'NOT NULL', "DEFAULT ''", 'realorderno', $db);
-AddColumn('deliverydate', 'purchorders', 'DATE', 'NOT NULL', "DEFAULT '0000-00-00'", 'deliveryby', $db);
-AddColumn('status', 'purchorders', 'VARCHAR(12)', 'NOT NULL', "DEFAULT ''", 'deliverydate', $db);
-AddColumn('stat_comment', 'purchorders', 'TEXT', 'NOT NULL', "DEFAULT ''", 'status', $db);
+AddColumn('version', 'purchorders', 'DECIMAL(3,2)', 'NOT NULL', "1.0", 'contact', $db);
+AddColumn('revised', 'purchorders', 'DATE', 'NOT NULL', "'0000-00-00'", 'version', $db);
+AddColumn('realorderno', 'purchorders', 'VARCHAR(16)', 'NOT NULL', '', 'revised', $db);
+AddColumn('deliveryby', 'purchorders', 'VARCHAR(100)', 'NOT NULL', '', 'realorderno', $db);
+AddColumn('deliverydate', 'purchorders', 'DATE', 'NOT NULL', "'0000-00-00'", 'deliveryby', $db);
+AddColumn('status', 'purchorders', 'VARCHAR(12)', 'NOT NULL', '', 'deliverydate', $db);
+AddColumn('stat_comment', 'purchorders', 'TEXT', 'NOT NULL', '', 'status', $db);
 
-AddColumn('itemno', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', "DEFAULT ''", 'itemcode', $db);
-AddColumn('uom', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', "DEFAULT ''", 'itemno', $db);
-AddColumn('subtotal_amount', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', "DEFAULT ''", 'uom', $db);
-AddColumn('package', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', "DEFAULT ''", 'subtotal_amount', $db);
-AddColumn('pcunit', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', "DEFAULT ''", 'package', $db);
-AddColumn('nw', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', "DEFAULT ''", 'pcunit', $db);
-AddColumn('suppliers_partno', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', "DEFAULT ''", 'nw', $db);
-AddColumn('gw', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', "DEFAULT ''", 'suppliers_partno', $db);
-AddColumn('cuft', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', "DEFAULT ''", 'gw', $db);
-AddColumn('total_quantity', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', "DEFAULT ''", 'cuft', $db);
-AddColumn('total_amount', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', "DEFAULT ''", 'total_quantity', $db);
+AddColumn('itemno', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', '', 'itemcode', $db);
+AddColumn('uom', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', '', 'itemno', $db);
+AddColumn('subtotal_amount', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', '', 'uom', $db);
+AddColumn('package', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', '', 'subtotal_amount', $db);
+AddColumn('pcunit', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', '', 'package', $db);
+AddColumn('nw', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', '', 'pcunit', $db);
+AddColumn('suppliers_partno', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', '', 'nw', $db);
+AddColumn('gw', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', '', 'suppliers_partno', $db);
+AddColumn('cuft', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', '', 'gw', $db);
+AddColumn('total_quantity', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', '', 'cuft', $db);
+AddColumn('total_amount', 'purchorderdetails', 'VARCHAR(50)', 'NOT NULL', '', 'total_quantity', $db);
 
-AddColumn('phn', 'suppliers', 'VARCHAR(50)', 'NOT NULL', "DEFAULT ''", 'taxref', $db);
-AddColumn('port', 'suppliers', 'VARCHAR(50)', 'NOT NULL', "DEFAULT ''", 'phn', $db);
+AddColumn('phn', 'suppliers', 'VARCHAR(50)', 'NOT NULL', '', 'taxref', $db);
+AddColumn('port', 'suppliers', 'VARCHAR(50)', 'NOT NULL', '', 'phn', $db);
 
-AddColumn('netweight', 'stockmaster', 'DECIMAL(20,4)', 'NOT NULL', "DEFAULT 0.0", 'nextserialno', $db);
-AddColumn('suppliers_partno', 'purchdata', 'VARCHAR(50)', 'NOT NULL', "DEFAULT ''", 'effectivefrom', $db);
+AddColumn('netweight', 'stockmaster', 'DECIMAL(20,4)', 'NOT NULL', "0.0", 'nextserialno', $db);
+AddColumn('suppliers_partno', 'purchdata', 'VARCHAR(50)', 'NOT NULL', '', 'effectivefrom', $db);
 
-ChangeColumnType('note', 'custnotes', 'TEXT', 'NOT NULL', "DEFAULT ''", $db);
+ChangeColumnType('note', 'custnotes', 'TEXT', 'NOT NULL', '', $db);
 
-AddColumn('bankaccountcode', 'bankaccounts', 'VARCHAR(50)', 'NOT NULL', "DEFAULT ''", 'currcode', $db);
-AddColumn('invoice', 'bankaccounts', 'SMALLINT(2)', 'NOT NULL', "DEFAULT 0", 'bankaccountcode', $db);
+AddColumn('bankaccountcode', 'bankaccounts', 'VARCHAR(50)', 'NOT NULL', '', 'currcode', $db);
+AddColumn('invoice', 'bankaccounts', 'SMALLINT(2)', 'NOT NULL', "0", 'bankaccountcode', $db);
 
-AddColumn('salesman', 'www_users', 'CHAR( 3 )', 'NOT NULL', "DEFAULT ''", 'customerid', $db);
+AddColumn('salesman', 'www_users', 'CHAR( 3 )', 'NOT NULL', '', 'customerid', $db);
 
-ChangeColumnType('shipvia', 'debtortrans', 'INT(11)', 'NOT NULL', 'DEFAULT 0', $db);
+ChangeColumnType('shipvia', 'debtortrans', 'INT(11)', 'NOT NULL', '0', $db);
 
 CreateTable('audittrail',
 "CREATE TABLE IF NOT EXISTS `audittrail` (
@@ -147,8 +147,6 @@ CreateTable('deliverynotes',
 $db);
 
 AddConstraint('deliverynotes', 'deliverynotes_ibfk_1', array('salesorderno', 'salesorderlineno'), 'salesorderdetails', array('orderno', 'orderlineno'), $db);
-ALTER TABLE ``  ADD CONSTRAINT `` FOREIGN KEY  REFERENCES `` (`orderno`, `orderlineno`);
-
 
 UpdateDBNo(basename(__FILE__, '.php'), $db);
 

@@ -1,6 +1,6 @@
 <?php
 
-CreateTable('audittrail';
+CreateTable('audittrail',
 "CREATE TABLE `audittrail` (
 	`transactiondate` datetime NOT NULL default '0000-00-00',
 	`userid` varchar(20) NOT NULL default '',
@@ -10,9 +10,9 @@ CreateTable('audittrail';
 )",
 $db);
 
-ChangeColumnType('contactemail', 'salesorders', 'VARCHAR(40)', 'NOT NULL', "DEFAULT ''", $db);
+ChangeColumnType('contactemail', 'salesorders', 'VARCHAR(40)', 'NOT NULL', '', $db);
 
-NewConfigValue('MonthsAuditTrail', '1');
+NewConfigValue('MonthsAuditTrail', '1', $db);
 
 CreateTable('factorcompanies',
 "CREATE TABLE `factorcompanies` (
@@ -32,27 +32,27 @@ CreateTable('factorcompanies',
 )",
 $db);
 
-InsertRecord('factorcompanies', array( 'id' , 'coyname' ), array('null', 'None'), array( 'id' , 'coyname' ), array('null', 'None'), $db);
-AddColumn('factorcompanyid', 'suupliers', 'INT(11)', 'NOT NULL', 'DEFAULT 1', 'taxgroupid', $db);
+InsertRecord('factorcompanies', array( 'id' , 'coyname' ), array(NULL, 'None'), array( 'id' , 'coyname' ), array(NULL, 'None'), $db);
+AddColumn('factorcompanyid', 'suppliers', 'INT(11)', 'NOT NULL', '1', 'taxgroupid', $db);
 AddConstraint('suppliers', 'suppliers_ibfk_4', 'factorcompanyid', 'factorcompanies', 'id', $db);
 
-AddColumn('perishable', 'stockmaster', 'TINYINT(1)', 'NOT NULL', 'DEFAULT 0', 'serialised', $db);
-AddColumn('appendfile', 'stockmaster', 'VARCHAR(40)', 'NOT NULL', "DEFAULT 'none'", 'serialised', $db);
+AddColumn('perishable', 'stockmaster', 'TINYINT(1)', 'NOT NULL', '0', 'serialised', $db);
+AddColumn('appendfile', 'stockmaster', 'VARCHAR(40)', 'NOT NULL', "'none'", 'serialised', $db);
 
-AddColumn('expirationdate', 'stockserialitems', 'DATETIME', 'NOT NULL', "DEFAULT '0000-00-00'", 'serialno', $db);
-AddColumn('currcode', 'bankaccounts', 'CHAR( 3 )', 'NOT NULL', "DEFAULT ''", 'accountcode', $db);
+AddColumn('expirationdate', 'stockserialitems', 'DATETIME', 'NOT NULL', "'0000-00-00'", 'serialno', $db);
+AddColumn('currcode', 'bankaccounts', 'CHAR( 3 )', 'NOT NULL', '', 'accountcode', $db);
 AddIndex(array('currcode'), 'bankaccounts', 'currcode', $db);
-ChangeColumnType('exrate', 'banktrans', 'DOUBLE', 'NOT NULL', 'DEFAULT 1.0', $db);
-AddColumn('functionalexrate', 'banktrans', 'DOUBLE', 'NOT NULL', "DEFAULT '1'", 'exrate', $db);
+ChangeColumnType('exrate', 'banktrans', 'DOUBLE', 'NOT NULL', '1.0', $db);
+AddColumn('functionalexrate', 'banktrans', 'DOUBLE', 'NOT NULL', "'1'", 'exrate', $db);
 
 DropConstraint('worequirements', 'worequirements_ibfk_3', $db);
 
 AddConstraint('worequirements', 'worequirements_ibfk_3', array('wo', 'parentstockid'), 'woitems', array('wo', 'stockid'), $db);
 
-NewConfigValue('ProhibitNegativeStock','1');
+NewConfigValue('ProhibitNegativeStock','1', $db);
 InsertRecord('systypes', array('typeid' ,'typename' ,'typeno'), array('36', 'Exchange Difference', '1'), array('typeid' ,'typename' ,'typeno'), array('36', 'Exchange Difference', '1'), $db);
 InsertRecord('systypes', array('typeid' ,'typename' ,'typeno'), array('40', 'Work Order', '1'), array('typeid' ,'typename' ,'typeno'), array('40', 'Work Order', '1'), $db);
-NewConfigValue('UpdateCurrencyRatesDaily', '0');
+NewConfigValue('UpdateCurrencyRatesDaily', '0', $db);
 
 CreateTable('assetmanager',
 "CREATE TABLE `assetmanager` (

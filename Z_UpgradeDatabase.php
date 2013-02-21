@@ -33,11 +33,7 @@ function updateDBNo($NewNumber, $db) {
 	}
 }
 
-if ($DBType='mysql' or $DBType='mysqli') {
-	include('includes/UpgradeDB_mysql.inc');
-} else {
-	prnMsg( _('Your database type is not covered by this upgrade script. Please see your system administrator'), 'error');
-}
+include('includes/UpgradeDB_' . $DBType . '.inc');
 
 echo '<div class="centre"><img src="'.$RootPath.'/css/'.$Theme.'/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title;
 

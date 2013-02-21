@@ -150,13 +150,19 @@ function ChangeColumnSize($Column, $Table, $Type, $Null, $Default, $Size, $db) {
 }
 
 function ChangeColumnName($OldName, $Table, $Type, $Null, $Default, $NewName, $db, $AutoIncrement='') {
-	$sql="SELECT CHARACTER_MAXIMUM_LENGTH
+	$OldSQL="SELECT CHARACTER_MAXIMUM_LENGTH
 		FROM information_schema.columns
 		WHERE TABLE_SCHEMA='".$_SESSION['DatabaseName']."'
 			AND TABLE_NAME='".$Table."'
 			AND COLUMN_NAME='".$OldName."'";
-	$result=DB_query($sql, $db);
-	if (DB_num_rows($result)>0) {
+	$OldResult=DB_query($OldSQL, $db);
+	$NewSQL="SELECT CHARACTER_MAXIMUM_LENGTH
+		FROM information_schema.columns
+		WHERE TABLE_SCHEMA='".$_SESSION['DatabaseName']."'
+			AND TABLE_NAME='".$Table."'
+			AND COLUMN_NAME='".$NewName."'";
+	$NewResult=DB_query($NewSQL, $db);
+	if (DB_num_rows($OldResult)>0 and DB_num_rows($NewResult)==0) {
 		if ($AutoIncrement=='') {
 			$response=executeSQL("ALTER TABLE ".$Table." CHANGE COLUMN ".$OldName." ".$NewName." ".$Type." ".$Null." DEFAULT '".$Default."'", $db, False);
 		} else {
@@ -182,15 +188,16 @@ function ChangeColumnType($Column, $Table, $Type, $Null, $Default, $db) {
 	$myrow=DB_fetch_row($result);
 	if ($myrow[0]<>$Type) {
 		if ($Default=='') {
-			$response=executeSQL("ALTER TABLE ".$Table." CHANGE COLUMN ".$Column." ".$Column." ".$Type." ".$Null."'", $db, False);
-			echo "ALTER TABLE ".$Table." CHANGE COLUMN ".$Column." ".$Column." ".$Type." ".$Null;
+			$sql="ALTER TABLE ".$Table." CHANGE COLUMN ".$Column." ".$Column." ".$Type." ".$Null;
+			$response=executeSQL($sql, $db, False);
 		} else {
-			$response=executeSQL("ALTER TABLE ".$Table." CHANGE COLUMN ".$Column." ".$Column." ".$Type." ".$Null." DEFAULT '".$Default."'", $db, False);
+			$sql="ALTER TABLE ".$Table." CHANGE COLUMN ".$Column." ".$Column." ".$Type." ".$Null." DEFAULT '".$Default."'";
+			$response=executeSQL($sql, $db, False);
 		}
 		if ($response==0) {
 			OutputResult( _('The column').' '.$Column.' '._('has been changed') , 'success');
 		} else {
-			OutputResult( _('The column').' '.$Column.' '._('could not be changed') , 'error');
+			OutputResult( _('The column').' '.$Column.' '._('in the table').' '.$Table.' '._('could not be changed to type').' '.$Type.' '._('and returned error number').' '.$response.'<br />'.$sql , 'error');
 		}
 	} else {
 		OutputResult( _('The column').' '.$Column.' '._('is already changed') , 'info');
@@ -363,12 +370,12 @@ function AddConstraint($Table, $Constraint, $Field, $ReferenceTable, $ReferenceF
 			$List=implode(',', $ReferenceField);
 			$ReferenceField=$List;
 		}
-		$response=executeSQL("ALTER TABLE ".$Table. " ADD CONSTRAINT ".$Constraint." FOREIGN KEY (".$Field.
-			") REFERENCES ".$ReferenceTable." (".$ReferenceField.")", $db, False);
+		$sql="ALTER TABLE ".$Table. " ADD CONSTRAINT ".$Constraint." FOREIGN KEY (".$Field.") REFERENCES ".$ReferenceTable." (".$ReferenceField.")";
+		$response=executeSQL($sql, $db, False);
 		if ($response==0) {
 			OutputResult( _('The constraint').' '.$Constraint.' '._('has been added') , 'success');
 		} else {
-			OutputResult( _('The constraint').' '.$Constraint.' '._('could not be added') , 'error');
+			OutputResult( _('The constraint').' '.$Constraint.' '._('could not be added').'<br />'.$sql , 'error');
 		}
 	} else {
 		OutputResult( _('The constraint').' '.$Constraint.' '._('already exists') , 'info');
@@ -389,11 +396,12 @@ function UpdateField($Table, $Field, $NewValue, $Criteria, $db) {
 		$result=DB_query($sql, $db);
 		$myrow=DB_fetch_row($result);
 		if ($myrow[0]!=$NewValue) {
-			$response=executeSQL("UPDATE ".$Table." SET ".$Field."='".$NewValue."' WHERE ".$Criteria, $db, False);
+			$sql="UPDATE ".$Table." SET ".$Field."='".$NewValue."' WHERE ".$Criteria;
+			$response=executeSQL($sql, $db, False);
 			if ($response==0) {
 				OutputResult( _('The field').' '.$Field.' '._('has been updated') , 'success');
 			} else {
-				OutputResult( _('The field').' '.$Field.' '._('could not be updated') , 'error');
+				OutputResult( _('The field').' '.$Field.' '._('could not be updated').'<br />'.$sql , 'error');
 			}
 		} else {
 			OutputResult( _('The field').' '.$Field.' '._('is already correct') , 'info');
@@ -467,7 +475,7 @@ function InsertRecord($Table, $CheckFields, $CheckValues, $Fields, $Values, $db)
 		if ($response==0) {
 			OutputResult( _('The record has been inserted') , 'success');
 		} else {
-			OutputResult( _('The record could not be inserted') , 'error');
+			OutputResult( _('The record could not be inserted').' '._('The sql used was').'<br />'.$sql , 'error');
 		}
 	} else {
 		OutputResult( _('The record is already in the table') , 'info');
@@ -475,19 +483,20 @@ function InsertRecord($Table, $CheckFields, $CheckValues, $Fields, $Values, $db)
 }
 
 function DropPrimaryKey($Table, $OldKey, $db) {
-	$Total=0;
-	foreach ($OldKey as $Field) {
-		$sql="SELECT table_name FROM information_schema.key_column_usage WHERE table_name='".$Table."' AND constraint_name='primary' AND
-		table_schema='".$_SESSION['DatabaseName']."' AND COLUMN_NAME='".$Field."'";
-		$result = DB_query($sql, $db);
-		$Total = $Total + DB_num_rows($result);
+	$sql="SELECT COLUMN_NAME, TABLE_NAME FROM information_schema.key_column_usage WHERE table_name='".$Table."' AND constraint_name='primary' AND table_schema='".$_SESSION['DatabaseName']."'";
+	$result = DB_query($sql, $db);
+	$Total = DB_num_rows($result);
+	$Fields = array();
+	while ($myrow=DB_fetch_array($result)) {
+		$Fields[] = $myrow['COLUMN_NAME'];
 	}
-	if ($Total==sizeOf($OldKey)) {
-		$response=executeSQL("ALTER TABLE ".$Table." DROP PRIMARY KEY", $db);
+	if ($Total==sizeOf($OldKey) and $Fields==$OldKey) {
+		$sql="ALTER TABLE ".$Table." DROP PRIMARY KEY";
+		$response=executeSQL($sql, $db);
 		if ($response==0) {
 			OutputResult( _('The primary key in').' '.$Table.' '._('has been removed') , 'success');
 		} else {
-			OutputResult( _('The primary key in').' '.$Table.' '._('could not be removed') , 'error');
+			OutputResult( _('The primary key in').' '.$Table.' '._('could not be removed').'<br />'.$sql , 'error');
 		}
 	} else {
 		OutputResult( _('The primary key in').' '.$Table.' '._('has already been removed') , 'info');
@@ -520,12 +529,13 @@ function RenameTable($OldName, $NewName, $db) {
 	if (DB_num_rows($Newresult)!=0 and DB_num_rows($Oldresult)!=0) {
 		$response=executeSQL("DROP TABLE ".$OldName."", $db, False);
 	}
-	if (DB_num_rows($Oldresult)!=0) {
-		$response=executeSQL("RENAME TABLE ".$OldName." to ".$NewName, $db, False);
+	if (DB_num_rows($Newresult)==0) {
+		$sql="RENAME TABLE ".$OldName." to ".$NewName;
+		$response=executeSQL($sql, $db, False);
 		if ($response==0) {
 			OutputResult( _('The table').' '.$OldName.' '._('has been renamed to').' '.$NewName , 'success');
 		} else {
-			OutputResult( _('The table').' '.$OldName.' '._('could not be renamed to').' '.$NewName , 'error');
+			OutputResult( _('The table').' '.$OldName.' '._('could not be renamed to').' '.$NewName.'<br />'.$sql , 'error');
 		}
 	} else {
 		OutputResult( _('The table').' '.$NewName.' '._('already exists') , 'info');

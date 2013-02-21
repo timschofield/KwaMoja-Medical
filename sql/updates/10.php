@@ -58,7 +58,7 @@ PRIMARY KEY (`typeid`)
 )",
 $db);
 
-InsertRecord('debtortype', array( 'typeid' , 'typename' ), array(1, 'Default'), array( 'typeid' , 'typename' ), array(1, 'Default'), $db);
+InsertRecord('debtortype', array( 'typeid' , 'typename' ), array(NULL, 'Default'), array( 'typeid' , 'typename' ), array(NULL, 'Default'), $db);
 
 AddColumn('typeid', 'debtorsmaster', 'TINYINT(4)', 'NOT NULL', "1", 'customerpoline', $db);
 AddConstraint('debtorsmaster', 'debtorsmaster_ibfk_5', 'typeid', 'debtortype', 'typeid', $db);
@@ -94,7 +94,7 @@ NewConfigValue('Extended_SupplierInfo', '0', $db);
 
 ChangeColumnType('area', 'salesglpostings', 'VARCHAR(3)', 'NOT NULL', '', $db);
 ChangeColumnType('area', 'salesanalysis', 'VARCHAR(3)', 'NOT NULL', '', $db);
-ChangeColumnType('trandate', 'debtortrans', 'DATE', 'NOT NULL', "'0000-00-00'", $db);
+ChangeColumnType('trandate', 'debtortrans', 'DATE', 'NOT NULL', '0000-00-00', $db);
 
 UpdateDBNo(basename(__FILE__, '.php'), $db);
 

@@ -16,8 +16,9 @@ function executeSQL($sql, $db, $TrapErrors=False) {
 	if (!isset($SQLFile)) {
 		DB_IgnoreForeignKeys($db);
 		$result = DB_query($sql, $db, '', '', false, $TrapErrors);
+		$ErrorNumber=DB_error_no($db);
 		DB_ReinstateForeignKeys($db);
-		return DB_error_no($db);
+		return $ErrorNumber;
 	} else {
 		fwrite($SQLFile, $sql.";\n");
 	}

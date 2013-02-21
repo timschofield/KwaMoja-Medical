@@ -358,7 +358,7 @@ CreateTable('suppliertype', "CREATE TABLE `suppliertype` (
 )", $db);
 
 NewConfigValue('DefaultSupplierType', 1, $db);
-InsertRecord('suppliertype', array('typeid', 'typename'), array(1, 'Default'), array('typeid', 'typename'), array(1, 'Default'), $db);
+InsertRecord('suppliertype', array('typeid', 'typename'), array(NULL, 'Default'), array('typeid', 'typename'), array(NULL, 'Default'), $db);
 AddColumn('supptype', 'suppliers', 'tinyint(4)', 'NOT NULL', 1, 'address6', $db);
 
 /* Change the shipment quantity to a double from integer,
@@ -1019,7 +1019,7 @@ DropColumn('uom', 'purchorderdetails', $db);
 
 ChangeConfigValue('VersionNumber', '4.03.8', $db);
 
-ChangeColumnType('stockcheckdate', 'stockcheckfreeze', 'DATE', 'NOt NULL', "'0000-00-00'", $db);
+ChangeColumnType('stockcheckdate', 'stockcheckfreeze', 'DATE', 'NOT NULL', '0000-00-00', $db);
 
 UpdateDBNo(basename(__FILE__, '.php'), $db);
 

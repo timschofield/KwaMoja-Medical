@@ -40,6 +40,8 @@ NewScript('GoodsReceivedButNotInvoiced.php','15', $db);
 NewScript('ItemsWithoutPicture.php','15', $db);
 
 UpdateField('scripts', 'pagesecurity', '2', "script='GoodsReceivedButNotInvoiced.php'", $db);
+
+DeleteRecords('scripts', "script='Z_ItemsWithoutPicture.php'", $db);
 UpdateField('scripts', 'script', 'Z_ItemsWithoutPicture.php', "script='ItemsWithoutPicture.php'", $db);
 
 ChangeColumnType('description', 'taxauthorities', 'VARCHAR(40)', 'NOT NULL', '', $db);

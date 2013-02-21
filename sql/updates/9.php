@@ -50,8 +50,8 @@ DropConstraint('worequirements', 'worequirements_ibfk_3', $db);
 AddConstraint('worequirements', 'worequirements_ibfk_3', array('wo', 'parentstockid'), 'woitems', array('wo', 'stockid'), $db);
 
 NewConfigValue('ProhibitNegativeStock','1', $db);
-InsertRecord('systypes', array('typeid' ,'typename' ,'typeno'), array('36', 'Exchange Difference', '1'), array('typeid' ,'typename' ,'typeno'), array('36', 'Exchange Difference', '1'), $db);
-InsertRecord('systypes', array('typeid' ,'typename' ,'typeno'), array('40', 'Work Order', '1'), array('typeid' ,'typename' ,'typeno'), array('40', 'Work Order', '1'), $db);
+InsertRecord('systypes', array('typeid' ,'typename'), array('36', 'Exchange Difference'), array('typeid' ,'typename'), array('36', 'Exchange Difference'), $db);
+InsertRecord('systypes', array('typeid' ,'typename'), array('40', 'Work Order'), array('typeid' ,'typename'), array('40', 'Work Order'), $db);
 NewConfigValue('UpdateCurrencyRatesDaily', '0', $db);
 
 CreateTable('assetmanager',

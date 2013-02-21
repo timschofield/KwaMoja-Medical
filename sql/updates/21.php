@@ -41,10 +41,10 @@ AddPrimaryKey('stockrequestitems', array('dispatchitemsid'), $db);
 AddIndex(array('dispatchid'), 'stockrequestitems', 'dispatchid', $db);
 AddIndex(array('stockid'), 'stockrequestitems', 'stockid', $db);
 AddConstraint('stockrequestitems', 'dispatchid', 'dispatchid', 'stockrequest', 'dispatchid', $db);
-AddConstraint('stockrequestitems', 'stockid', 'stockid', 'stockmaster', 'stockid', $db);
+AddConstraint('stockrequestitems', 'stockrequestitems_ibfk_2', 'stockid', 'stockmaster', 'stockid', $db);
 
 AddPrimaryKey('internalstockcatrole', array('categoryid', 'secroleid'), $db);
-AddConstraint('internalstockcatrole', 'categoryid', 'categoryid', 'stockcategory', 'categoryid', $db);
+AddConstraint('internalstockcatrole', 'internalstockcatrole_ibfk_1', 'categoryid', 'stockcategory', 'categoryid', $db);
 AddConstraint('internalstockcatrole', 'secroleid', 'secroleid', 'securityroles', 'secroleid', $db);
 
 NewScript('PDFQuotationPortrait.php','2',$db);

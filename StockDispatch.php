@@ -26,8 +26,10 @@ if (isset($_POST['PrintPDF'])) {
 		$template='simple';
 	} elseif($_POST['template']=='standard') {
 		$template='standard';
-	} else {
+	} elseif($_POST['template']=='full') {
 		$template='full';
+	} else {
+		$template='fullprices';
 	}
 	// Create Transfer Number
 	if(!isset($Trf_ID) and $_POST['ReportType'] == 'Batch') {
@@ -42,10 +44,30 @@ if (isset($_POST['PrintPDF'])) {
 	$FromLocation=$Row['0'];
 
 	// to location
-	$sqlto="SELECT locationname FROM `locations` WHERE loccode='" . $_POST['ToLocation'] .  "'";
+	$sqlto="SELECT locationname,
+					cashsalecustomer,
+					cashsalebranch
+				FROM `locations`
+				WHERE loccode='" . $_POST['ToLocation'] . "'";
 	$resultto = DB_query($sqlto,$db,$ErrMsg);
 	$RowTo = DB_fetch_row($resultto);
 	$ToLocation=$RowTo['0'];
+	$ToCustomer=$RowTo['1'];
+	$ToBranch=$RowTo['2'];
+
+	if($template=='fullprices'){
+		$SqlPrices="SELECT debtorsmaster.currcode,
+							debtorsmaster.salestype,
+							currencies.decimalplaces
+						FROM debtorsmaster, currencies
+						WHERE debtorsmaster.currcode = currencies.currabrev
+							AND debtorsmaster.debtorno ='" . $ToCustomer . "'";
+		$ResultPrices = DB_query($SqlPrices,$db,$ErrMsg);
+		$RowPrices = DB_fetch_row($ResultPrices);
+		$ToCurrency=$RowPrices['0'];
+		$ToPriceList=$RowPrices['1'];
+		$ToDecimalPlaces=$RowPrices['2'];
+	}
 
 	// Creates WHERE clause for stock categories. StockCat is defined as an array so can choose
 	// more than one category
@@ -74,6 +96,7 @@ if (isset($_POST['PrintPDF'])) {
 				stockmaster.decimalplaces,
 				stockmaster.serialised,
 				stockmaster.controlled,
+				stockmaster.discountcategory,
 				ROUND((locstock.reorderlevel - locstock.quantity) *
 				   (1 + (" . filter_number_format($_POST['Percent']) . "/100)))
 				as neededqty,
@@ -207,6 +230,19 @@ if (isset($_POST['PrintPDF'])) {
 				$pdf->addTextWrap(405,$YPos,40,$FontSize,locale_number_format($myrow['quantity'] + $InTransitQuantityAtTo,$myrow['decimalplaces']),'right',0,$fill);
 				$pdf->addTextWrap(450,$YPos,40,11,locale_number_format($ShipQty,$myrow['decimalplaces']),'right',0,$fill);
 				$pdf->addTextWrap(510,$YPos,40,$FontSize,'_________','right',0,$fill);
+			}
+			if($template=='fullprices'){
+				// looking for price info
+				$DefaultPrice = GetPrice($myrow['stockid'], $ToCustomer, $ToBranch, $db, false);
+				if ($myrow['discountcategory'] != "") {
+					$DiscountLine = ' -> ' . _('Discount Category') . ':' . $myrow['discountcategory'];
+				} else {
+					$DiscountLine = '';
+				}
+				if ($DefaultPrice != 0){
+					$PriceLine = $ToPriceList . ":" . locale_number_format($DefaultPrice,$ToDecimalPlaces) . " " . $ToCurrency . $DiscountLine;
+					$pdf->addTextWrap(180,$YPos - 0.5 * $line_height,200,$FontSize,$PriceLine,'',0,$fill);
+				}
 			}
 
 			if ($YPos < $Bottom_Margin + $line_height + 200){
@@ -393,7 +429,8 @@ if (isset($_POST['PrintPDF'])) {
 			<td>' . _('Template') . ':</td>
 			<td>
 				<select name="template">
-					<option selected="selected" value="full">' . _('Full') . '</option>
+					<option selected="selected" value="fullprices">' . _('Full with Prices') . '</option>
+					<option value="full">' . _('Full') . '</option>
 					<option value="standard">' . _('Standard') . '</option>
 					<option value="simple">' . _('Simple') . '</option>
 				</select>

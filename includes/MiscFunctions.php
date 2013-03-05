@@ -241,7 +241,7 @@ function AddCarriageReturns($str) {
 }
 
 
-function wikiLink($type, $id) {
+function wikiLink($WikiType, $WikiPageID) {
 	if (strstr($_SESSION['WikiPath'], 'http:')) {
 		$WikiPath=$_SESSION['WikiPath'];
 	} else {

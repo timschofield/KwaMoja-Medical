@@ -97,6 +97,7 @@ if (!isset($_POST['Show'])) {
 					banktrans.banktranstype,
 					banktrans.transdate,
 					banktrans.ref,
+					banktrans.chequeno,
 					bankaccounts.bankaccountname,
 					systypes.typename,
 					systypes.typeid
@@ -127,6 +128,7 @@ if (!isset($_POST['Show'])) {
 					<th>'._('Transaction type').'</th>
 					<th>'._('Type').'</th>
 					<th>'._('Reference').'</th>
+					<th>'._('Number').'</th>
 					<th>'._('Amount in').' '.$BankDetailRow['currcode'].'</th>
 					<th>'._('Running Total').' '.$BankDetailRow['currcode'].'</th>
 					<th>'._('Amount in').' '.$_SESSION['CompanyRecord']['currencydefault'].'</th>
@@ -154,6 +156,7 @@ if (!isset($_POST['Show'])) {
 						<td>'.$myrow['typename'].'</td>
 						<td>'.$myrow['banktranstype'].'</td>
 						<td>'.$myrow['ref'].'</td>
+						<td>'.$myrow['chequeno'].'</td>
 						<td class="number">'.locale_number_format($myrow['amount'],$BankDetailRow['decimalplaces']).'</td>
 						<td class="number">'.locale_number_format($AccountCurrTotal,$BankDetailRow['decimalplaces']).'</td>
 						<td class="number">'.locale_number_format($myrow['amount']/$myrow['functionalexrate']/$myrow['exrate'],$_SESSION['CompanyRecord']['decimalplaces']).'</td>

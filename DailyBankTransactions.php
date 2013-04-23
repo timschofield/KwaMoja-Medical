@@ -117,7 +117,7 @@ if (!isset($_POST['Show'])) {
 		$BankDetailRow = DB_fetch_array($BankResult);
 		echo '<table class="selection" summary="' . _('Account Transactions For').' '.$BankDetailRow['bankaccountname'].' '._('Between').' '.$_POST['FromTransDate'] . ' ' . _('and') . ' ' . $_POST['ToTransDate'] . '">
 				<tr>
-					<th colspan="9">
+					<th colspan="10">
 						<h3>' . _('Account Transactions For').' '.$BankDetailRow['bankaccountname'].' '._('Between').' '.$_POST['FromTransDate'] . ' ' . _('and') . ' ' . $_POST['ToTransDate'] . '
 							<img src="'.$RootPath.'/css/'.$Theme.'/images/printer.png" class="PrintIcon noPrint" title="' . _('Print') . '" alt="' . _('Print') . '" onclick="window.print();" />
 						</h3>

@@ -407,12 +407,13 @@ function SendMailBySmtp(&$mail,$To) {
 	if(IsEmailAddress($_SESSION['SMTPSettings']['username'])){//user has set the fully mail address as user name
 		$SendFrom = $_SESSION['SMTPSettings']['username'];
 	} else {//user only set it's name instead of fully mail address
-		if(strpos('smtp',$_SESSION['SMTPSettings']['host'])){
-			$HostDomain = substr($_SESSION['SMTPSettings']['host'],4);
+		if(strpos($_SESSION['SMTPSettings']['host'],'mail') !== false) {
+			$SubStr = 'mail';
+		} elseif(strpos($_SESSION['SMTPSettings']['host'],'smtp') !== false) {
+			$SubStr = 'smtp';
 		}
-		if(!strpos('@',$_SESSION['SMTPSettings']['username'])){
-			$SendFrom = $_SESSION['SMTPSettings']['username'] . $HostDomain;
-		}
+		$Domain = substr($_SESSION['SMTPSettings']['host'],strpos($_SESSION['SMTPSettings']['host'],$SubStr)+5);
+		$SendFrom = $_SESSION['SMTPSettings']['username'].'@'.$Domain;
 	}
 	$mail->setFrom($SendFrom);
 	$result = $mail->send($To,'smtp');

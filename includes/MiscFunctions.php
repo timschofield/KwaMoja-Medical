@@ -404,15 +404,14 @@ function indian_number_format($Number,$DecimalPlaces){
 }
 
 function SendMailBySmtp(&$mail,$To) {
-
-	if(strpos('@',$_SESSION['SMTPSettings']['username'])){//user has set the fully mail address as user name
-		$mail->setFrom($_SESSION['SMTPSettings']['username']);
-	}else{//user only set it's name instead of fully mail address
+	if(IsEmailAddress($_SESSION['SMTPSettings']['username'])){//user has set the fully mail address as user name
+		$SendFrom = $_SESSION['SMTPSettings']['username'];
+	} else {//user only set it's name instead of fully mail address
 		if(strpos('smtp',$_SESSION['SMTPSettings']['host'])){
 			$HostDomain = substr($_SESSION['SMTPSettings']['host'],4);
 		}
 		if(!strpos('@',$_SESSION['SMTPSettings']['username'])){
-			$SendFrom = $_SESSION['SMTPSettings']['username'].$HostDomain;
+			$SendFrom = $_SESSION['SMTPSettings']['username'] . $HostDomain;
 		}
 	}
 	$mail->setFrom($SendFrom);

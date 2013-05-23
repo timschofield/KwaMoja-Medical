@@ -565,7 +565,7 @@ $MenuItems['Utilities']['Transactions']['Caption'] = array (_('Change A Customer
 																_('Change A Supplier Code'),
 																_('Change An Inventory Item Code'),
 																_('Change A Location Code'),
-																_('Change A GeneralLedger Code'),
+																_('Change A General Ledger Code'),
 																_('Update costs for all BOM items, from the bottom up'),
 																_('Re-apply costs to Sales Analysis'),
 																_('Delete sales transactions'),

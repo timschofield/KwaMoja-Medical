@@ -220,7 +220,7 @@ function VerifyForm(f) {
 				alert('The '+a.getAttribute("description")+' field, must be less than '+a.getAttribute("minlength")+' characters long');
 				return false;
 			}
-			if (a.getAttribute("class")=='number' and !is_Number(f.elements[i].value)) {
+			if ((a.getAttribute("class")=='number') && (!isNumber(f.elements[i].value))) {
 				alert('The '+a.getAttribute("description")+' field, must be less than '+a.getAttribute("minlength")+' characters long');
 				return false;
 			}

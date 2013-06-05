@@ -207,9 +207,6 @@ function changeDate(){
 }
 function VerifyForm(f) {
 	for(var i=0,fLen=f.length;i<fLen;i++){
-		if(f.elements[i].type=='checkbox' && !f.elements[i].checked) {
-			f.elements[i].value=null;
-		}
 		if(f.elements[i].type=='text') {
 			var a=document.getElementById(f.elements[i].id);
 			if (a.getAttribute("minlength")>f.elements[i].value.length) {

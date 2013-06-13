@@ -1,30 +1,23 @@
 <?php
-$ModuleLink = array('orders', 'AR', 'AP', 'PO', 'stock', 'manuf',  'GL', 'FA', 'PC', 'system', 'Utilities');
-$ReportList = array('orders'=>'ord',
-					'AR'=>'ar',
-					'AP'=>'ap',
-					'PO'=>'prch',
-					'stock'=>'inv',
-					'manuf'=>'man',
-					'GL'=>'gl',
-					'FA'=>'fa',
-					'PC'=>'pc',
-					'system'=>'sys',
-					'Utilities'=>'utils'
-					);
+$ModuleLink = array();
+$ReportList = array();
 
 /*The headings showing on the tabs accross the main index used also in WWW_Users for defining what should be visible to the user */
-$ModuleList = array(_('Sales'),
-					_('Receivables'),
-					_('Payables'),
-					_('Purchases'),
-					_('Inventory'),
-					_('Manufacturing'),
-					_('General Ledger'),
-					_('Asset Manager'),
-					_('Petty Cash'),
-					_('Setup'),
-					_('Utilities'));
+$ModuleList = array();
+
+$sql = "SELECT `modulelink`,
+				`reportlink` ,
+				`modulename`
+			FROM modules
+			WHERE secroleid = '" . $_SESSION['AccessLevel'] . "'
+			ORDER BY `sequence`";
+$result = DB_query($sql, $db);
+
+while ($myrow=DB_fetch_array($result)) {
+	$ModuleLink[] = $myrow['modulelink'];
+	$ReportList[$myrow['modulelink']] = $myrow['reportlink'];
+	$ModuleList[] = _($myrow['modulename']);
+}
 
 $MenuItems['orders']['Transactions']['Caption'] = array( _('Enter An Order or Quotation'),
 														_('Enter Counter Sales'),

@@ -1,5 +1,5 @@
 <?php
-$PageSecurity=15;
+
 include('includes/session.inc');
 $Title = _('Import General Ledger Transactions');
 include('includes/header.inc');

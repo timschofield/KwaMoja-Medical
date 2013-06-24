@@ -10,21 +10,7 @@ include('includes/header.inc');
 
 echo '<p class="page_title_text"><img src="'.$RootPath.'/css/'.$Theme.'/images/maintenance.png" title="' . _('Shop Configuration')
 	. '" alt="" />' . $Title. '</p>';
-?>
 
-<script>
-	/* jQuery/javascript code */
-	jQuery(document).ready(function() {
-		jQuery('.noSpecialChars').bind('input', function() {
-			jQuery(this).val($(this).val().replace(/[^a-z0-9@\._\-]/gi, ''));
-		});
-		jQuery('.number').bind('input', function() {
-			jQuery(this).val($(this).val().replace(/[^0-9.]/gi, ''));
-		});
-	});
-</script>
-
-<?php
 if (isset($_POST['submit'])) {
 
 	//initialise no input errors assumed initially before we test
@@ -34,7 +20,7 @@ if (isset($_POST['submit'])) {
 	ie the page has called itself with some user input */
 
 	//first off validate inputs sensible
-	 
+
 	if ($InputError !=1){
 
 		$SQL = array();
@@ -63,8 +49,8 @@ if (isset($_POST['submit'])) {
 		if ($_SESSION['ShopBranchCode'] != $_POST['X_ShopBranchCode'] ) {
 			$SQL[] = "UPDATE config SET confvalue = '".$_POST['X_ShopBranchCode']."' WHERE confname = 'ShopBranchCode'";
 		}
-		
-		
+
+
 		if ($_SESSION['ShopAllowCreditCards'] != $_POST['X_ShopAllowCreditCards'] ) {
 			$SQL[] = "UPDATE config SET confvalue = '".$_POST['X_ShopAllowCreditCards']."' WHERE confname = 'ShopAllowCreditCards'";
 		}
@@ -76,7 +62,7 @@ if (isset($_POST['submit'])) {
 		}
 
 
-		
+
 		if ($_SESSION['ShopPayPalSurcharge'] != $_POST['X_ShopPayPalSurcharge'] ) {
 			$SQL[] = "UPDATE config SET confvalue = '".$_POST['X_ShopPayPalSurcharge']."' WHERE confname = 'ShopPayPalSurcharge'";
 		}
@@ -130,11 +116,11 @@ if (isset($_POST['submit'])) {
 			if ($_SESSION['ShopPayFlowMerchant'] != $_POST['X_ShopPayFlowMerchant'] ) {
 				$SQL[] = "UPDATE config SET confvalue = '".$_POST['X_ShopPayFlowMerchant']."' WHERE confname = 'ShopPayFlowMerchant'";
 			}
-			
+
 			if ($_SESSION['ShopMode'] != $_POST['X_ShopMode'] ) {
 				$SQL[] = "UPDATE config SET confvalue = '".$_POST['X_ShopMode']."' WHERE confname = 'ShopMode'";
 			}
-			
+
 			if ($_SESSION['ShopSwipeHQMerchantID'] != $_POST['X_ShopSwipeHQMerchantID'] ) {
 				$SQL[] = "UPDATE config SET confvalue = '".$_POST['X_ShopSwipeHQMerchantID']."' WHERE confname = 'ShopSwipeHQMerchantID'";
 			}
@@ -145,7 +131,7 @@ if (isset($_POST['submit'])) {
 			else { //always ensure test mode and PayFlow for demo site
 				$SQL[] = "UPDATE config SET confvalue = 'test' WHERE confname = 'ShopMode'";
 				$SQL[] = "UPDATE config SET confvalue = 'PayPalPro' WHERE confname = 'ShopCreditCardGateway'";
-			
+
 		}
 		$ErrMsg =  _('The shop configuration could not be updated because');
 		$DbgMsg = _('The SQL that failed was:');
@@ -416,7 +402,7 @@ if ($AllowDemoMode){
 			<td><input type="text" class="noSpecialChars"  size="40" maxlength="40" name="X_ShopPayPalProUser" value="' . $_SESSION['ShopPayPalProUser'] . '" /></td>
 			<td>' . _('The PayPal Pro Merchant User account for credit card payment available in only USA and Canada') . '</td>
 		</tr>';
-	
+
 	echo '<tr>
 			<td>' . _('PayPal Pro Password') . ':</td>
 			<td><input type="text" size="20" maxlength="20" name="X_ShopPayPalProPassword" value="' . $_SESSION['ShopPayPalProPassword'] . '" /></td>
@@ -432,7 +418,7 @@ if ($AllowDemoMode){
 			<td><input type="text" class="noSpecialChars"  size="40" maxlength="40" name="X_ShopPayFlowUser" value="' . $_SESSION['ShopPayFlowUser'] . '" /></td>
 			<td>' . _('The') . ' <a href="https://www.paypal.com/webapps/mpp/payflow-payment-gateway">PayFlow Pro</a> ' . _('Merchant User account') . '</td>
 		</tr>';
-	
+
 	echo '<tr>
 			<td>' . _('Pay Flow Pro Password') . ':</td>
 			<td><input type="text" size="20" maxlength="20" name="X_ShopPayFlowPassword" value="' . $_SESSION['ShopPayFlowPassword'] . '" /></td>

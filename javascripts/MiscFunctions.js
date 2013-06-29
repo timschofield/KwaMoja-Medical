@@ -272,6 +272,7 @@ function VerifyForm(f) {
 			if ((f.elements[i].getAttribute("minlength")>0) && (f.elements[i].value.length==0)) {
 				Alert=Alert+'You must make a selection in the field '+f.elements[i].getAttribute("name")+'<br />';
 				f.elements[i].className=Class+' inputerror';
+				Clean=false;
 			}
 		}
 	}

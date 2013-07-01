@@ -2,7 +2,7 @@
 
 //this script can be set to run from cron
 
-$AllowAnyone = true;
+//$AllowAnyone = true;
 include('includes/session.inc');
 include('includes/htmlMimeMail.php');
 
@@ -89,5 +89,12 @@ if (DB_num_rows($result) > 0) {
 		$LastManagerEmail
 	));
 }
+
+$Title = _('Send Maintenance Email Reminders');
+include('includes/header.inc');
+
+prnMsg( _('All reminders have been sent'), 'info');
+
+include('includes/footer.inc');
 
 ?>

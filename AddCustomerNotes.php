@@ -217,10 +217,10 @@ if (!isset($_GET['delete'])) {
 	echo '<tr>
 			<td>' . _('Priority') . '</td>';
 	if (isset($_POST['Priority'])) {
-		echo '<td><input type="text" name="Priority" value="' . $_POST['Priority'] . '" size="1" minlength="0" maxlength="3" /></td>
+		echo '<td><input type="text" class=integer" name="Priority" value="' . $_POST['Priority'] . '" size="1" minlength="0" maxlength="3" /></td>
 			</tr>';
 	} else {
-		echo '<td><input type="text" name="Priority" size="1" minlength="0" maxlength="3" /></td>
+		echo '<td><input type="text" class="integer" name="Priority" size="1" minlength="0" maxlength="3" /></td>
 			</tr>';
 	}
 	echo '<tr>

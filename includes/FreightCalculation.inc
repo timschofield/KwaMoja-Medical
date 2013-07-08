@@ -15,8 +15,8 @@ function CalcFreightCost($TotalValue, $BrAdd2, $BrAdd3, $BrAdd4, $BrAdd5, $BrAdd
 					fixedprice,
 					minimumchg
 				FROM freightcosts
-				WHERE locationfrom = " . $FromLocation . "
-					AND destinationcountry = " . $BrAddCountry . "
+				WHERE locationfrom = '" . $FromLocation . "'
+					AND destinationcountry = '" . $BrAddCountry . "'
 					AND maxkgs > " . $TotalWeight . "
 				AND maxcub >" . $TotalVolume . " ";
 	if (($BrAdd2 != "") OR ($BrAdd3 != "") OR ($BrAdd4 != "") OR ($BrAdd5 != "")){

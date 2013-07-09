@@ -262,12 +262,12 @@ if (!isset($SelectedFreightCost) and isset($LocationFrom) and isset($ShipperID))
 			</tr>',
 				$myrow['destinationcountry'],
 				$myrow['destination'],
-				$myrow['cubrate'],
-				$myrow['kgrate'],
-				$myrow['maxkgs'],
-				$myrow['maxcub'],
-				$myrow['fixedprice'],
-				$myrow['minimumchg'],
+				locale_number_format($myrow['cubrate'],0),
+				locale_number_format($myrow['kgrate'],0),
+				locale_number_format($myrow['maxkgs'],2),
+				locale_number_format($myrow['maxcub'],3),
+				locale_number_format($myrow['fixedprice'],0),
+				locale_number_format($myrow['minimumchg'],0),
 				htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?',
 				$myrow['shipcostfromid'],
 				$LocationFrom,
@@ -362,7 +362,7 @@ if (isset($LocationFrom) and isset($ShipperID)) {
 			<td>' . _('Destination Country') . ':</td>
 			<td><select name="DestinationCountry">';
 	foreach ($CountriesArray as $CountryEntry => $CountryName){
-		if (isset($_POST['DestinationCountry']) AND (strtoupper($_POST['DestinationCountry']) == strtoupper($CountryName))){
+		if (isset($_POST['DestinationCountry']) and (strtoupper($_POST['DestinationCountry']) == strtoupper($CountryName))){
 			echo '<option selected="selected" value="' . $CountryName . '">' . $CountryName .'</option>';
 		} else {
 			echo '<option value="' . $CountryName . '">' . $CountryName .'</option>';

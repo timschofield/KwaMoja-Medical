@@ -86,7 +86,7 @@ else return false;
 }
 function rLN(){
 switch(Lang){
-case 'US':
+case 'GB':
 var patt = /(?:^([1-9]{1,3}(?:,?\d{3})*(?:\.\d{1,})?)$)|(?:^(0\.\d{1,})$)/;
 break;
 case 'IN':

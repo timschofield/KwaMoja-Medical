@@ -106,9 +106,7 @@ echo '<style>
 				}
 			</style>';
 
-echo '<script type="text/javascript">
-		Lang=' . json_encode($Lang) . '
-	</script>';
+echo '<input type="hidden" name="Lang" id="Lang" value="'.$Lang.'" />';
 
 echo '<div id="CanvasDiv">';
 echo '<div id="HeaderDiv" class="noPrint">';

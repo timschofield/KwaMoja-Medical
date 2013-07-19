@@ -270,7 +270,7 @@ echo '<tr>
 	</tr>
 	<tr>
 		<td>' . _('Fixed Asset Cost GL Code') . ':</td>
-		<td><select minlength="0" name="CostAct">';
+		<td><select required="required" minlength="0" name="CostAct">';
 
 while ($myrow = DB_fetch_array($BSAccountsResult)) {
 
@@ -284,7 +284,7 @@ echo '</select></td>
 	</tr>
 	<tr>
 		<td>' . _('Profit and Loss Depreciation GL Code') . ':</td>
-		<td><select minlength="0" name="DepnAct">';
+		<td><select required="required" minlength="0" name="DepnAct">';
 
 while ($myrow = DB_fetch_array($PnLAccountsResult)) {
 	if (isset($_POST['DepnAct']) and $myrow['accountcode'] == $_POST['DepnAct']) {
@@ -299,7 +299,7 @@ echo '</select></td>
 DB_data_seek($PnLAccountsResult, 0);
 echo '<tr>
 		<td>' . _('Profit or Loss on Disposal GL Code:') . '</td>
-		<td><select minlength="0" name="DisposalAct">';
+		<td><select required="required" minlength="0" name="DisposalAct">';
 while ($myrow = DB_fetch_array($PnLAccountsResult)) {
 	if (isset($_POST['DisposalAct']) and $myrow['accountcode'] == $_POST['DisposalAct']) {
 		echo '<option selected="selected" value="' . $myrow['accountcode'] . '">' . htmlspecialchars($myrow['accountname'], ENT_QUOTES, 'UTF-8', false) . ' (' . $myrow['accountcode'] . ')' . '</option>';
@@ -313,7 +313,7 @@ echo '</select></td>
 DB_data_seek($BSAccountsResult, 0);
 echo '<tr>
 		<td>' . _('Balance Sheet Accumulated Depreciation GL Code') . ':</td>
-		<td><select minlength="0" name="AccumDepnAct">';
+		<td><select required="required" minlength="0" name="AccumDepnAct">';
 
 while ($myrow = DB_fetch_array($BSAccountsResult)) {
 

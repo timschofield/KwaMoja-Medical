@@ -238,11 +238,15 @@ if (isset($SelectedCategory) and !isset($_POST['submit'])) {
 }
 
 //SQL to poulate account selection boxes
-$sql = "SELECT accountcode,
-				 accountname
-		FROM chartmaster INNER JOIN accountgroups
-		ON chartmaster.group_=accountgroups.groupname
+$sql = "SELECT chartmaster.accountcode,
+				chartmaster.accountname
+		FROM chartmaster
+		INNER JOIN accountgroups
+			ON chartmaster.group_=accountgroups.groupname
+		LEFT JOIN bankaccounts
+			ON chartmaster.accountcode=bankaccounts.accountcode
 		WHERE accountgroups.pandl=0
+			AND bankaccounts.currcode IS NULL
 		ORDER BY accountcode";
 
 $BSAccountsResult = DB_query($sql, $db);

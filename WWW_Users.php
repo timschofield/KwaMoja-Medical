@@ -462,7 +462,7 @@ if (!isset($_POST['Email'])) {
 }
 echo '<tr>
 		<td>' . _('Password') . ':</td>
-		<td><input type="password" name="Password" size="22" required="required" minlength="1" maxlength="20" value="' . $_POST['Password'] . '" /></td>
+		<td><input type="password" name="Password" size="22" minlength="1" maxlength="20" value="' . $_POST['Password'] . '" /></td>
 	</tr>';
 echo '<tr>
 		<td>' . _('Full Name') . ':</td>
@@ -470,7 +470,7 @@ echo '<tr>
 	</tr>';
 echo '<tr>
 		<td>' . _('Telephone No') . ':</td>
-		<td><input type="text" name="Phone" value="' . $_POST['Phone'] . '" size="32" minlength="0" maxlength="30" /></td>
+		<td><input type="tel" name="Phone" value="' . $_POST['Phone'] . '" size="32" minlength="0" maxlength="30" /></td>
 	</tr>';
 echo '<tr>
 		<td>' . _('Email Address') . ':</td>

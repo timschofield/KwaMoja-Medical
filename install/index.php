@@ -1,7 +1,7 @@
 <?php
 /* $Id: index.php 6156 2013-07-28 15:24:37Z icedlava $*/
 	ini_set('max_execution_time', "600");
-	session_name('weberp_installation');
+	session_name('kwamoja_installation');
 	session_start();
 
     //we need a languate for the LanguageSetup.php functions - first load we have none
@@ -28,7 +28,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title><?php echo _('WebERP Installer'); ?></title>
+    <title><?php echo _('KwaMoja Installer'); ?></title>
     <link rel="stylesheet" type="text/css" href="installer.css" />
 </head>
 <body>
@@ -183,13 +183,13 @@
 			}
 		}
 		if(!empty($_POST['Demo']) and $_POST['Demo'] == 'on'){
-			if(strtolower($DatabaseName) == 'weberpdemo'){//user select to install the weberpdemo
+			if(strtolower($DatabaseName) == 'kwamojademo'){//user select to install the kwamojademo
 				$OnlyDemo = 1;
 
 			}else{
 				$DualCompany = 1; //user choose to install the demo company and production environment
 			}
-		}else{//user only choose to install the new weberp company
+		}else{//user only choose to install the new kwamoja company
 			$NewCompany = 1;
 		}
 		if(!empty($_POST['Email']) and IsEmailAddress($_POST['Email'])){
@@ -199,8 +199,8 @@
 			$InputError = 1;
 			prnMsg(_('You must enter a valid email address for the Administrator.'),'error');
 		}
-		if(!empty($_POST['webERPPassword']) and !empty($_POST['PasswordConfirm']) and $_POST['webERPPassword'] == $_POST['PasswordConfirm']){
-			$AdminPassword = $_POST['webERPPassword'];
+		if(!empty($_POST['KwaMojaPassword']) and !empty($_POST['PasswordConfirm']) and $_POST['KwaMojaPassword'] == $_POST['PasswordConfirm']){
+			$AdminPassword = $_POST['KwaMojaPassword'];
 		}else{
 			$InputError = 1;
 			prnMsg(_('Please correct the password. The password is either blank, or the password check does not match.'),'error');
@@ -297,10 +297,10 @@
 				$Result = mkdir($CompanyDir . '/reportwriter');
 				$Result = mkdir($CompanyDir . '/pdf_append');
 				$Result = mkdir($CompanyDir . '/FormDesigns');
-				copy ($Path_To_Root . '/companies/weberpdemo/FormDesigns/GoodsReceived.xml', $CompanyDir . '/FormDesigns/GoodsReceived.xml');
-				copy ($Path_To_Root . '/companies/weberpdemo/FormDesigns/PickingList.xml', $CompanyDir . '/FormDesigns/PickingList.xml');
-				copy ($Path_To_Root . '/companies/weberpdemo/FormDesigns/PurchaseOrder.xml', $CompanyDir . '/FormDesigns/PurchaseOrder.xml');
-				copy ($Path_To_Root . '/companies/weberpdemo/FormDesigns/Journal.xml', $CompanyDir . '/FormDesigns/Journal.xml');
+				copy ($Path_To_Root . '/companies/kwamojademo/FormDesigns/GoodsReceived.xml', $CompanyDir . '/FormDesigns/GoodsReceived.xml');
+				copy ($Path_To_Root . '/companies/kwamojademo/FormDesigns/PickingList.xml', $CompanyDir . '/FormDesigns/PickingList.xml');
+				copy ($Path_To_Root . '/companies/kwamojademo/FormDesigns/PurchaseOrder.xml', $CompanyDir . '/FormDesigns/PurchaseOrder.xml');
+				copy ($Path_To_Root . '/companies/kwamojademo/FormDesigns/Journal.xml', $CompanyDir . '/FormDesigns/Journal.xml');
 				if(isset($File_Temp_Name)){
 					$Result = move_uploaded_file($File_Temp_Name, $CompanyDir . '/logo.jpg');
 
@@ -330,7 +330,7 @@
 			$msg .= "putenv('TZ=" . $TimeZone ."');\n";
 			$msg .= "\$AllowCompanySelectionBox = 'ShowSelectionBox';\n";
 			$msg .= "//The system administrator name use the user input mail;\n";
-			if(strtolower($AdminEmail) != 'admin@weberp.org'){
+			if(strtolower($AdminEmail) != 'admin@kwamoja.com'){
 			$msg .= "\$SysAdminEmail = '".$AdminEmail."';\n";
 			}
 			if(isset($NewCompany)){
@@ -384,7 +384,7 @@
 			}
 			}
 			$NewSQLFile = $Path_To_Root.'/sql/mysql/coa/'.$COA;
-			$DemoSQLFile = $Path_To_Root.'/sql/mysql/coa/weberp-demo.sql';
+			$DemoSQLFile = $Path_To_Root.'/sql/mysql/coa/kwamoja-demo.sql';
 			if(!empty($DualCompany) and $DualCompany == 1){
 				//we should install the production data and demo data
 				$sql = 'CREATE DATABASE IF NOT EXISTS `'.$DatabaseName.'`';
@@ -397,13 +397,13 @@
 
 					}
 				}
-				$sql = 'CREATE DATABASE IF NOT EXISTS `weberpdemo`';
+				$sql = 'CREATE DATABASE IF NOT EXISTS `kwamojademo`';
 				$result = ($DBConnectType == 'mysqli') ? mysqli_query($Db,$sql) : mysql_query($sql,$Db);
 				if(!$result){
 					if($DBConnectType == 'mysqli'){
-						prnMsg(_('Failed to create database weberpdemo and the error is '.' '.mysqli_error($Db)),'error');
+						prnMsg(_('Failed to create database kwamojademo and the error is '.' '.mysqli_error($Db)),'error');
 					}else{
-						prnMsg(_('Failed to create database weberpdemo and the error is '.' '.mysql_error($Db)),'error');
+						prnMsg(_('Failed to create database kwamojademo and the error is '.' '.mysql_error($Db)),'error');
 
 					}
 
@@ -411,8 +411,8 @@
 				}
 				PopulateSQLData($NewSQLFile,false,$Db,$DBConnectType,$DatabaseName);
 				DBUpdate($Db,$DatabaseName,$DBConnectType,$AdminPassword,$Email,$UserLanguage,$DatabaseName);
-				PopulateSQLData(false,$DemoSQLFile,$Db,$DBConnectType,'weberpdemo');
-				DBUpdate($Db,'weberpdemo',$DBConnectType,$AdminPassword,$Email,$UserLanguage,'weberpdemo');
+				PopulateSQLData(false,$DemoSQLFile,$Db,$DBConnectType,'kwamojademo');
+				DBUpdate($Db,'kwamojademo',$DBConnectType,$AdminPassword,$Email,$UserLanguage,'kwamojademo');
 
 			}elseif(!empty($NewCompany) and $NewCompany == 1){//only install the production data
 
@@ -420,9 +420,9 @@
 				$result = ($DBConnectType == 'mysqli')? mysqli_query($Db,$sql) : mysql_query($sql,$Db);
 				if(!$result){
 					if($DBConnectType == 'mysqli'){
-						prnMsg(_('Failed to create database weberpdemo and the error is '.' '.mysqli_error($Db)),'error');
+						prnMsg(_('Failed to create database kwamojademo and the error is '.' '.mysqli_error($Db)),'error');
 					}else{
-						prnMsg(_('Failed to create database weberpdemo and the error is '.' '.mysql_error($Db)),'error');
+						prnMsg(_('Failed to create database kwamojademo and the error is '.' '.mysql_error($Db)),'error');
 
 					}
 
@@ -432,20 +432,20 @@
 				DBUpdate($Db,$DatabaseName,$DBConnectType,$AdminPassword,$Email,$UserLanguage,$DatabaseName);
 
 			}elseif(!empty($OnlyDemo) and $OnlyDemo == 1){//only install the demo data
-				$sql = 'CREATE DATABASE IF NOT EXISTS `weberpdemo`';
+				$sql = 'CREATE DATABASE IF NOT EXISTS `kwamojademo`';
 				$result = ($DBConnectType == 'mysqli') ? mysqli_query($Db,$sql) : mysql_query($sql,$Db);
 				if(!$result){
 					if($DBConnectType == 'mysqli'){
-						prnMsg(_('Failed to create database weberpdemo and the error is '.' '.mysqli_error($Db)),'error');
+						prnMsg(_('Failed to create database kwamojademo and the error is '.' '.mysqli_error($Db)),'error');
 					}else{
-						prnMsg(_('Failed to create database weberpdemo and the error is '.' '.mysql_error($Db)),'error');
+						prnMsg(_('Failed to create database kwamojademo and the error is '.' '.mysql_error($Db)),'error');
 
 					}
 
 
 				}
-				PopulateSQLData(false,$DemoSQLFile,$Db,$DBConnectType,'weberpdemo');
-				DBUpdate($Db,'weberpdemo',$DBConnectType,$AdminPassword,$Email,$UserLanguage,'weberpdemo');
+				PopulateSQLData(false,$DemoSQLFile,$Db,$DBConnectType,'kwamojademo');
+				DBUpdate($Db,'kwamojademo',$DBConnectType,$AdminPassword,$Email,$UserLanguage,'kwamojademo');
 
 			}
 			session_unset();
@@ -538,7 +538,7 @@
 
 	?>
 
-    <h1><?php echo _('webERP Installation Wizard'); ?></h1>
+    <h1><?php echo _('KwaMoja Installation Wizard'); ?></h1>
 	<?php
     	if(!isset($_POST['LanguageSet'])){
 		 Installation($DefaultLanguage);
@@ -555,7 +555,7 @@
 		    //Check if the browser has been set properly
 		    if(!isset($_SESSION['CookieAllowed']) or !($_SESSION['CookieAllowed'] == 1)){
 			    $InputError = 1;
-			    $ErrMsg .= '<p>'._('Please set Cookies allowed in your web brower, otherwise webERP cannot run properly').'</p>';
+			    $ErrMsg .= '<p>'._('Please set Cookies allowed in your web brower, otherwise KwaMoja cannot run properly').'</p>';
 
 		    }
 		    //Check the situation of php safe mode
@@ -577,14 +577,14 @@
 		    //check the directory access authority of rootpath and companies
 		    if(empty($_POST['ConfigFile'])){
 			    $InputError = 1;
-			    //get the directory where weberp live
-			    $WebERPHome = dirname(dirname(__FILE__));
-			    $ErrMsg .= '<p>'._('The directory').' '.$WebERPHome.' '._('must be writable by web server').'</p>';
+			    //get the directory where kwamoja live
+			    $KwaMojaHome = dirname(dirname(__FILE__));
+			    $ErrMsg .= '<p>'._('The directory').' '.$KwaMojaHome.' '._('must be writable by web server').'</p>';
 		    }
 		    if(empty($_POST['CompaniesCreate'])){
 			    $InputError = 1;
-			    $WebERPHome = dirname(dirname(__FILE__));
-			    $ErrMsg .= '<p>'._('The directory').' '.$WebERPHome.'/companies/'.' '.('must be writable by web server').'</p>';
+			    $KwaMojaHome = dirname(dirname(__FILE__));
+			    $ErrMsg .= '<p>'._('The directory').' '.$KwaMojaHome.'/companies/'.' '.('must be writable by web server').'</p>';
 		    }
 		    //check the necessary php extensions
 		    if(empty($_POST['MbstringExt']) or $_POST['MbstringExt'] != 1){
@@ -713,7 +713,7 @@ function Installation($DefaultLanguage)
 
     <form id="installation" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8'); ?>" method="post">
     <fieldset>
-        <legend><?php echo _('Welcome to the webERP Installation Wizard'); ?></legend>
+        <legend><?php echo _('Welcome to the KwaMoja Installation Wizard'); ?></legend>
         <div class="page_help_text">
             <?php echo '
             <ul>
@@ -845,9 +845,9 @@ function Installation($DefaultLanguage)
 
         <?php echo '
         <div class="page_help_text">
-            <p>'. _('webERP is an open source application licenced under GPL V2 and absolutely free to download.<br /> By installing webERP you acknowledge you have read <a href="http://www.gnu.org/licenses/gpl-2.0.html#SEC1" target="_blank">the licence</a>. <br />Please visit the official webERP website for more information.').'
+            <p>'. _('KwaMoja is an open source application licenced under GPL V2 and absolutely free to download.<br /> By installing KwaMoja you acknowledge you have read <a href="http://www.gnu.org/licenses/gpl-2.0.html#SEC1" target="_blank">the licence</a>. <br />Please visit the official KwaMoja website for more information.').'
             </p>
-            <p><img src="../css/webERPweb.gif" title="webERP" alt="webERP" />&#160; <a href="http://www.weberp.org">http://www.weberp.org</a></p>
+            <p><img src="../css/KwaMojaweb.gif" title="KwaMoja" alt="KwaMoja" />&#160; <a href="http://www.kwamoja.com">http://www.kwamoja.com</a></p>
         </div>';
         ?>
 
@@ -934,7 +934,7 @@ function Recheck(){
 //@para $HostName is the Host of mysql server
 //@para $UserName is the name of the mysql user
 //@para $Password is the user's password which is stored in plain text in config.php
-//@DatabaseName is the database used by weberp
+//@DatabaseName is the database used by kwamoja
 //@$MysqlExt to check if it's use mysql extension in php instead of mysqli
 //The function used to check if mysql parameters have been set correctly and can connect correctly
 
@@ -946,7 +946,7 @@ function DbCheck($UserLanguage,$HostName,$UserName,$Password,$DatabaseName,$Mysq
 			$Con = mysqli_connect($HostName,$UserName,$Password);
 		}
 		if(!$Con){
-			echo '<h1>'._('webERP Installation Wizard').'</h1>';
+			echo '<h1>'._('KwaMoja Installation Wizard').'</h1>';
 			prnMsg(_('Failed to connect to the database. Please correct the following error:').'<br/>'.mysqli_connect_error().'<br/> '.('This error is usually caused by entry of an incorrect database password or user name.'),'error');
 			if($MysqlExt){
 				DbConfig($UserLanguage,$MysqlExt);
@@ -967,13 +967,13 @@ function DbCheck($UserLanguage,$HostName,$UserName,$Password,$DatabaseName,$Mysq
 //@para $HostName is the host for mysql server
 //@para $UserName is the name of mysql user
 //@para $Password is the password for mysql server
-//@para $DatabaseName is the name of the database of webERP and also the same name of company
+//@para $DatabaseName is the name of the database of KwaMoja and also the same name of company
 //@para $MysqlEx is refer to the php mysql extention if it's false, it means the php configuration only support mysql instead of mysqli
 //The purpose of this function is to display the final screen for users to input company, admin user accounts etc informatioin
 function CompanySetup($UserLanguage,$HostName,$UserName,$Password,$DatabaseName,$MysqlExt = FALSE){//display the company setup for users
 
 ?>
-    <h1><?php echo _('webERP Installation Wizard'); ?></h1>
+    <h1><?php echo _('KwaMoja Installation Wizard'); ?></h1>
     <!--<p style="text-align:center;"><?php echo _("Please enter the company name and please pay attention the company will be as same as the database name"); ?></p>-->
     <form id="companyset" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8'); ?>" method="post" enctype="multipart/form-data">
         <fieldset>
@@ -995,7 +995,7 @@ function CompanySetup($UserLanguage,$HostName,$UserName,$Password,$DatabaseName,
                         $COAs = array_diff($COAs,array('.','..'));
                         if(!empty($COAs)){
                             foreach($COAs as $Value){
-                                if($Value == 'weberp-new.sql'){
+                                if($Value == 'kwamoja-new.sql'){
                                     echo '<option value="'.$Value.'" selected="true">'.$Value.'</option>';
                                 }else{
                                     echo '<option value="'.$Value.'">'.$Value.'</option>';
@@ -1024,7 +1024,7 @@ function CompanySetup($UserLanguage,$HostName,$UserName,$Password,$DatabaseName,
             <ul>
                 <li>
                     <label for="InstallDemo"><?php echo _('Install the demo data?'); ?>: </label><input type="checkbox" name="Demo" checked="checked"  />
-                    <span><?php echo _("WebERPDemo site and data will be installed"); ?></span>
+                    <span><?php echo _("KwaMojaDemo site and data will be installed"); ?></span>
                 </li>
             </ul>
         </fieldset>
@@ -1036,13 +1036,13 @@ function CompanySetup($UserLanguage,$HostName,$UserName,$Password,$DatabaseName,
                             <?php echo _('The default user name is \'admin\' and it cannot be changed.'); ?>
                         </li>
                         <li>
-                            <?php echo _('The default password is \'weberp\' which you can change below.'); ?>
+                            <?php echo _('The default password is \'kwamoja\' which you can change below.'); ?>
                         </li>
                     </ul>
                 </div>
                 <ul>
                     <li>
-                        <label for="adminaccount"><?php echo _('webERP Admin Account'); ?>: </label>
+                        <label for="adminaccount"><?php echo _('KwaMoja Admin Account'); ?>: </label>
                         <input type="text" name="adminaccount" value="admin" disabled="disabled" />
                     </li>
                     <li>
@@ -1051,12 +1051,12 @@ function CompanySetup($UserLanguage,$HostName,$UserName,$Password,$DatabaseName,
                         <span> <?php echo _('For example: admin@yourcompany.com'); ?></span>
                     </li>
                     <li>
-                        <label for="webERPPassword"><?php echo _('webERP Password'); ?>: </label>
-                        <input type="password" name="webERPPassword" value="weberp" required="true" />
+                        <label for="KwaMojaPassword"><?php echo _('KwaMoja Password'); ?>: </label>
+                        <input type="password" name="KwaMojaPassword" value="kwamoja" required="true" />
                     </li>
                     <li>
                         <label for="PasswordConfirm"><?php echo _('Re-enter Password'); ?>: </label>
-                        <input type="password" required="true" value="weberp" name="PasswordConfirm" />
+                        <input type="password" required="true" value="kwamoja" name="PasswordConfirm" />
                     </li>
                 </ul>
 
@@ -1075,8 +1075,8 @@ function CompanySetup($UserLanguage,$HostName,$UserName,$Password,$DatabaseName,
 <?php
 
 }
-//@para $NewSQL is the weberp new sql file which contains the COA file
-//@para $Demo is the weberp demo sql file
+//@para $NewSQL is the kwamoja new sql file which contains the COA file
+//@para $Demo is the kwamoja demo sql file
 //@para $db refer to the database connection reference
 //@para $DBType refer to the database connection type mysqli or mysql
 //@para $NewDB is the new database name
@@ -1125,7 +1125,7 @@ function PopulateSQLData($NewSQL=false,$Demo=false,$db,$DBType,$NewDB = false){
 					PopulateSQLDataBySQL($Demo,$db,$DBType,false,$NewDB);
 						//we can let users wait instead of changing the my.cnf file
 						//It is a non affordable challenge for them since wamp set the max_allowed_packet 1M
-						//and weberpdemo.sql is 1.4M so at least it cannot install in wamp
+						//and kwamojademo.sql is 1.4M so at least it cannot install in wamp
 						//so we not use the multi query here
 
 
@@ -1166,7 +1166,7 @@ function PopulateSQLData($NewSQL=false,$Demo=false,$db,$DBType,$NewDB = false){
 //@para $NewDB is the new database name
 //@para $DemoDB is the demo database name
 //The purpose of this function is populate the database with mysql extention
-function PopulateSQLDataBySQL($File,$db,$DBType,$NewDB=false,$DemoDB='weberpdemo'){
+function PopulateSQLDataBySQL($File,$db,$DBType,$NewDB=false,$DemoDB='kwamojademo'){
 						$dbName = ($NewDB) ? $NewDB : $DemoDB;
 						($DBType=='mysqli')?mysqli_select_db($db,$dbName):mysql_select_db($dbName,$db);
 						$SQLScriptFile = file($File);
@@ -1215,8 +1215,8 @@ function PopulateSQLDataBySQL($File,$db,$DBType,$NewDB=false,$DemoDB='weberpdemo
 //@para $db the database connection
 //@para $DatabaseName the database to update
 //@para $DBConnectType if it is mysql extention or not
-//@para $AdminPasswd the weberp administrator's password
-//@para $AdminEmail the weberp administrators' email
+//@para $AdminPasswd the kwamoja administrator's password
+//@para $AdminEmail the kwamoja administrators' email
 //@para $AdminLangauge the administrator's language for login
 //@para $CompanyName the company
 //The purpose of this function is to update the admin accounts and company name information

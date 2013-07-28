@@ -1,5 +1,5 @@
 /*
- * Installer Theme for WebERP
+ * Installer Theme for KwaMoja
  * V1.0 2013-07-26
  * HTML5 - for usability
  * (incomplete- needs refinement with font size, margin sizes etc)
@@ -47,7 +47,7 @@ img{
     border:none;
     vertical-align:middle;
 }
-/*** Standard webERP STATUS MESSAGE classes ***/
+/*** Standard KwaMoja STATUS MESSAGE classes ***/
 
 div.error {
     background: #ffd3bf;

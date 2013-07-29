@@ -847,7 +847,7 @@ function Installation($DefaultLanguage)
         <div class="page_help_text">
             <p>'. _('KwaMoja is an open source application licenced under GPL V2 and absolutely free to download.<br /> By installing KwaMoja you acknowledge you have read <a href="http://www.gnu.org/licenses/gpl-2.0.html#SEC1" target="_blank">the licence</a>. <br />Please visit the official KwaMoja website for more information.').'
             </p>
-            <p><img src="../css/KwaMojaweb.gif" title="KwaMoja" alt="KwaMoja" />&#160; <a href="http://www.kwamoja.com">http://www.kwamoja.com</a></p>
+            <p><a href="http://www.kwamoja.com"><img src="../css/logo.png" title="KwaMoja" alt="KwaMoja" /></a></p>
         </div>';
         ?>
 

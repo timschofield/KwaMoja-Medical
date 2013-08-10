@@ -287,7 +287,7 @@ if (DB_num_rows($LineItemsResult) > 0) {
 									'" . Date('Y-m-d') . "',
 									'" . $PeriodNo . "',
 							 		'" . $StockGLCodes['purchpricevaract'] . "',
-								 	'" . $myrow['itemcode'] . ' ' . _('shipment cost') . ' ' . locale_number_format($ItemShipmentCost, $_SESSION['CompanyRecord']['deicmalplaces']) . _('shipment quantity > stock held - variance write off') . "',
+								 	'" . $myrow['itemcode'] . ' ' . _('shipment cost') . ' ' . locale_number_format($ItemShipmentCost, $_SESSION['CompanyRecord']['deicmalplaces']) . _('shipment quantity is greater than stock held - variance write off') . "',
 									 " . $WriteOffToVariances . ")";
 
 						$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The GL entry for the shipment variance posting for') . ' ' . $myrow['itemcode'] . ' ' . _('could not be inserted into the database because');

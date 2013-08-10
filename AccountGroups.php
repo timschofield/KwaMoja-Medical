@@ -125,7 +125,7 @@ if (isset($_POST['submit'])) {
 	$myrow = DB_fetch_array($result);
 	if ($myrow['porl'] > 0) {
 		$InputError = 1;
-		prnMsg(_('You are trying to mix Balance Sheet groups with P & L groups within the same AccountSection'), 'error');
+		prnMsg(_('You are trying to mix Balance Sheet groups with P and L groups within the same Account Section'), 'error');
 	}
 
 	if (isset($_POST['OldGroupName']) and $InputError != 1) {

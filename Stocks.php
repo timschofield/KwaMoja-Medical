@@ -1191,7 +1191,7 @@ echo '</select><i>' . _('Note') . ', ' . _('this has no effect if the item is no
 
 if ($_POST['Serialised'] == 1 and $_POST['MBFlag'] == 'M') {
 	echo '<tr>
-			<td>' . _('Next Serial No (>0 for auto numbering)') . ':</td>
+			<td>' . _('Next Serial No (Greater than zero for auto numbering)') . ':</td>
 			<td><input  type="text" name="NextSerialNo" size="15" minlength="0" maxlength="15" value="' . $_POST['NextSerialNo'] . '" /></td></tr>';
 } else {
 	echo '<tr><td><input type="hidden" name="NextSerialNo" value="0" /></td></tr>';

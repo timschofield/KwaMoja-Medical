@@ -27,7 +27,7 @@ if (!is_writeable('./companies/')) {
 if (isset($_POST['submit']) and isset($_POST['NewCompany'])) {
 
 	if (mb_strlen($_POST['NewCompany']) > 32 OR ContainsIllegalCharacters($_POST['NewCompany'])) {
-		prnMsg(_('Company abbreviations must not contain spaces, \& or " or \''), 'error');
+		prnMsg(_('Company abbreviations must not contain spaces,') . ' \& ' . _('or') . ' " ' . _('or') . ' \'', 'error');
 	} else {
 
 		$_POST['NewCompany'] = strtolower($_POST['NewCompany']);

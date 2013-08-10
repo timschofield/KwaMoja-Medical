@@ -4,6 +4,13 @@ ini_set('max_execution_time', "600");
 session_name('kwamoja_installation');
 session_start();
 
+/* If the installer is just starting */
+if (isset($_GET['New'])) {
+	unset($_SESSION['Installer']);
+	$_SESSION['Installer']['Language'] = 'en_GB.utf8';
+	$_SESSION['Installer']['DBMS'] = 'mysqli';
+}
+
 /*
  * KwaMoja Installer
  * Step 1: Licence acknowledgement and Choose Language
@@ -32,6 +39,16 @@ echo '<body>
  * = 1 for production
  */
 error_reporting(-1);
+
+if (isset($_POST['SystemValid'])) {
+	//If all of them are OK, then users can input the data of database etc
+	//Show the database
+	if (!empty($MysqlExt)) {
+		DbConfig($_SESSION['Installer']['Language'], $MysqlExt);
+	} else {
+		DbConfig($_SESSION['Installer']['Language']);
+	}
+}
 
 /* Get the php-gettext function.
  * When users have not select the language, we guess user's language via
@@ -127,20 +144,21 @@ if (!isset($_POST['Language'])) {
 				$Language = 'en_GB.utf8';
 
 		}
-		$DefaultLanguage = $Language;
+		$_SESSION['Installer']['Language'] = $Language;
 		if (isset($_SESSION['Language'])) {
 			unset($_SESSION['Language']);
 		}
 
 	} else {
 		$Language = 'en_GB.utf8';
-		$DefaultLanguage = 'en_US.utf8';
+		$_SESSION['Installer']['Language'] = 'en_US.utf8';
 	}
 } else {
-	$DefaultLanguage = $_POST['Language'];
+	$_SESSION['Installer']['Language'] = $_POST['Language'];
 }
 
 $PathPrefix = '../'; //To make the LanguageSetup.php script run properly
+$DefaultLanguage = $_SESSION['Installer']['Language'];
 include('../includes/LanguageSetup.php');
 include('../includes/MiscFunctions.php');
 
@@ -261,7 +279,7 @@ if (isset($_POST['Install'])) { //confirm the final install data, the last valid
 			$COA = $_POST['COA'];
 		} else {
 			$InputError = 1;
-			prnMsg(_('The COA file name must only contain letters,"-","_"'), 'error');
+			prnMsg(_('The COA file name must only contain letters,') . ' "-","_"', 'error');
 		}
 	} else {
 		$InputError = 1;
@@ -306,7 +324,7 @@ if (isset($_POST['Install'])) { //confirm the final install data, the last valid
 		$msg .= "// User configurable variables\n";
 		$msg .= "//---------------------------------------------------\n\n";
 		$msg .= "//DefaultLanguage to use for the login screen and the setup of new users.\n";
-		$msg .= "\$DefaultLanguage = '" . $UserLanguage . "';\n\n";
+		$msg .= "\$_SESSION['Installer']['Language'] = '" . $UserLanguage . "';\n\n";
 		$msg .= "// Whether to display the demo login and password or not on the login screen\n";
 		$msg .= "\$AllowDemoMode = FALSE;\n\n";
 		$msg .= "// Connection information for the database\n";
@@ -530,14 +548,10 @@ if (isset($_POST['DbConfig'])) {
 	//if everything is OK, then we try to connect the DB, the database should be connect by two types of method, if there is no mysqli
 } //end of users has submit the database configuration data
 
-?>
+echo '<h1>' . _('KwaMoja Installation Wizard') . '</h1>';
 
-	<h1><?php
-echo _('KwaMoja Installation Wizard');
-?></h1>
-	<?php
 if (!isset($_POST['LanguageSet'])) {
-	Installation($DefaultLanguage);
+	Installation();
 } else { //The locale has been set, it's time to check the settings item.
 	$ErrMsg = '';
 	$InputError = 0;
@@ -605,57 +619,49 @@ if (!isset($_POST['LanguageSet'])) {
 		echo '<div class="success">' . _('The libxml extension is correctly installed') . '</div>';
 	}
 	//check if the mysqli or mysql is exist
-	if (!empty($_POST['NosqlExt']) and $_POST['NosqlExt'] == 1) {
+	if (!empty($_POST['DBMSExt']) and $_POST['DBMSExt'] == 1) {
 		$InputError = 1;
-		echo '<div class="error">' . _('There is no MySQL or MySQL extension available') . '</div>';
+		echo '<div class="error">' . _('You do not have the correct database extension installed for PHP') . '</div>';
 	} else {
-		echo '<div class="success">' . _('The base KwaMoja directory is writable') . '</div>';
+		echo '<div class="success">' . _('The database extension is installed') . '</div>';
 	}
-	if (!empty($_POST['MysqlExt']) and $_POST['MysqlExt'] == 1 and empty($_POST['PHP55'])) {
 
+	if ($_SESSION['Installer']['DBMS'] == 'mysql' and empty($_POST['PHP55'])) {
 		$InputWarn = 1;
-		$MysqlExt = 1;
-		$WarnMsg .= _('The PHP MySQLI extension is recommend as MySQL extension has been deprecated since PHP 5.5') . '<br/>';
-
-	} elseif (!empty($_POST['MysqlExt']) and $_POST['MysqlExt'] == 1 and !empty($_POST['PHP55'])) {
+		echo '<div class="warn">' . _('The PHP MySQLI extension is recommend as MySQL extension has been deprecated since PHP 5.5') . '</div>';
+	} elseif ($_SESSION['Installer']['DBMS'] == 'mysql' and !empty($_POST['PHP55'])) {
 		$InputError = 1;
 		echo '<div class="error">' . _('The MySQL extension has been deprecated since 5.5. You should install the MySQLI extension or downgrade you PHP version to  one prior to 5.5') . '</p>';
 	}
 	//Check if the GD extension is available
 	if (empty($_POST['GdExt']) or $_POST['GdExt'] != 1) {
-		$InputWarn = 1;
-		$WarnMsg .= '<p>' . _('The GD extension should be installed in your PHP configuration') . '</p>';
-
+		$InputError = 1;
+		echo '<div class="error">' . _('The GD extension should be installed in your PHP configuration') . '</p>';
+	} else {
+		echo '<div class="success">' . _('The GD extension is correctly installed') . '</div>';
 	}
 
 	if ($InputError != 0) {
-		prnMsg($ErrMsg, 'error');
 		Recheck();
 		exit;
 	}
 	if ($InputWarn != 0) {
-
-		prnMsg($WarnMsg, 'warn');
 		Recheck();
 	}
-	//If all of them are OK, then users can input the data of database etc
-	//Show the database
-	if (!empty($MysqlExt)) {
-		DbConfig($Language, $MysqlExt);
-	} else {
-		DbConfig($Language);
-	}
 
+	echo '<form id="DatabaseConfig" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
+	echo '<fieldset>
+			<input type="hidden" name="SystemValid" value="1" />
+			<button type="submit">' . _('Next Step') . '</button>
+		</fieldset>';
+	echo '</form>';
 
 }
 
-?>
 
-
-<?php
 //This function used to display the first screen for users to select they preferred langauage
 //And at the mean time to check if the php configuration has meet requirements.
-function Installation($DefaultLanguage) {
+function Installation() {
 	//Check if the cookie is allowed
 
 	$_SESSION['CookieAllowed'] = 1;
@@ -749,7 +755,7 @@ function Installation($DefaultLanguage) {
 						<label for="Language">' . _('Language:') . '&#160;</label>
 							<select id="Language" name="Language">';
 
-	if (substr($DefaultLanguage, 0, 2) != 'en') { //ensure that the bilingual only display when the language is not english
+	if (substr($_SESSION['Installer']['Language'], 0, 2) != 'en') { //ensure that the bilingual only display when the language is not english
 		foreach ($LanguagesArray as $Key => $Language1) { //since we only use the first 2 characters to separate the language, there are some
 			//chance that different locale but use same first 2 letters.
 			if (!isset($SelectedKey) and substr($DefaultLanugage, 0, 2) == substr($Key, 0, 2)) {
@@ -787,14 +793,26 @@ function Installation($DefaultLanguage) {
 			<ul>
 				<li>
 					<label for="DBMS">' . _('DBMS:') . '&#160;</label>
-					<select id="DBMS" name="DBMS">
-						<option value="mysql">MySQL</option>
-						<option value="mysqli">MySQLi</option>
-						<option value="mariadb">MariaDB</option>
-					</select>
-				</li>
-			</ul>
-		</fieldset>';
+					<select id="DBMS" name="DBMS">';
+	if ($_SESSION['Installer']['DBMS'] == 'mysql') {
+		echo '<option selected="selected" value="mysql">MySQL</option>';
+	} else {
+		echo '<option value="mysql">MySQL</option>';
+	}
+	if ($_SESSION['Installer']['DBMS'] == 'mysqli') {
+		echo '<option selected="selected" value="mysqli">MySQLi</option>';
+	} else {
+		echo '<option value="mysqli">MySQLi</option>';
+	}
+	if ($_SESSION['Installer']['DBMS'] == 'mariadb') {
+		echo '<option selected="selected" value="mariadb">MariaDB</option>';
+	} else {
+		echo '<option value="mariadb">MariaDB</option>';
+	}
+	echo '</select>
+			</li>
+		</ul>
+	</fieldset>';
 
 
 	/* Now we acquire default information about the system setup */
@@ -843,37 +861,40 @@ function Installation($DefaultLanguage) {
 			<button type="submit">' . _('Next Step') . '</button>
 		</fieldset>';
 
-	echo '<div class="page_help_text">
-			<p>' . _('KwaMoja is an open source application licenced under GPL V2 and absolutely free to download.<br /> By installing KwaMoja you acknowledge you have read <a href="http://www.gnu.org/licenses/gpl-2.0.html#SEC1" target="_blank">the licence</a>. <br />Please visit the official KwaMoja website for more information.') . '</p>
-			<p><a href="http://www.kwamoja.com"><img src="../css/logo.png" title="KwaMoja" alt="KwaMoja" /></a></p>
+	echo '<fieldset>
+			<p>' . _('KwaMoja is an open source application licenced under GPL V2 and absolutely free to download.') . '<br />' . _('By installing KwaMoja you acknowledge you have read <a href="http://www.gnu.org/licenses/gpl-2.0.html#SEC1" target="_blank">the licence</a>. <br />Please visit the official KwaMoja website for more information.') . '</p>
+		</fieldset>
+		<div class="centre">
+			<a href="http://www.kwamoja.com"><img src="../css/logo.png" title="KwaMoja" alt="KwaMoja" /></a>
 		</div>';
 
-	echo '</form>
-		</div>';
+	echo '</form>';
 }
 
 //@para Language used to determine user's preferred language
 //@para MysqlExt use to mark if mysql extension has been used by users
 //The function used to provide a screen for users to input mysql server parameters data
 function DbConfig($Language, $MysqlExt = FALSE) { //The screen for users to input mysql database information
+
+	echo '<h1>' . _('KwaMoja Installation Wizard') . '</h1>';
 	echo '<form id="DatabaseConfig" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
 	echo '<fieldset>
 			<legend>' . _('Database settings') . '</legend>
 			<div class="page_help_text">
-				<p>' . _('Please enter your MySQL Database information below. The database name is also used at log in time to choose the company for use.') . '<br />
+				<p>' . _('Please enter your Database information below. The database name is also used at log in time to choose the company for use.') . '<br />
 					<span>' . _('* Denotes required field') . '</span>
 				</p>
 			</div>
 			<ul>
 				<li>
-					<label for="HostName">' . _('Host Name') . '</label>
+					<label for="HostName">' . _('Host Name') . ': *</label>
 					<input type="text" name="HostName" id="HostName" required="required" value="localhost" placeholder="' . _('Enter database host name') . '" />
 					<span>' . _('Commonly: localhost or 127.0.0.1') . '</span>
 				</li>
 				<li>
-					<label for="Database">' . _('Database Name') . ': </label>
-					<input type="text" name="Database" id="Database" required="required" value="weberp" maxlength="16" placeholder="' . _('The database name') . '" />
-					<span>' . _('The database must have a valid name') . '</span>
+					<label for="Database">' . _('Database Name') . ': *</label>
+					<input type="text" name="Database" id="Database" required="required" value="kwamoja" maxlength="16" placeholder="' . _('The database name') . '" />
+					<span>' . _('If your user name below does not have permissions to create a database then this database must be created and empty.') . '</span>
 				</li>
 				<li>
 					<label for="Prefix">' . _('Database Prefix') . ': </label>
@@ -881,13 +902,13 @@ function DbConfig($Language, $MysqlExt = FALSE) { //The screen for users to inpu
 					<span>' . _('Optional: in the form of prefix_') . '</span>
 				</li>
 				<li>
-					<label for="UserName">' . _('Database User Name') . ': </label>
+					<label for="UserName">' . _('Database User Name') . ': *</label>
 					<input type="text" name="UserName" id="UserName" value="root" placeholder="' . _('A valid database user name') . '" maxlength="16" required="required" />&#160;
-					<span>' . _('Must be a user that has permission to create a database.') . '</span>
+					<span>' . _('If this user does not have permission to create databases, then the database entered above must exist and be empty.') . '</span>
 				</li>
 				<li>
 					<label for="Password">' . _('Password') . ': </label>
-					<input type="password" name="Password" placeholder="' . _('mySQL user password') . '"  />
+					<input type="password" name="Password" placeholder="' . _('DB user password') . '"  />
 					<span>' . _('Enter the user password if one exists') . '</span>
 				</li>
 			</ul>
@@ -896,11 +917,12 @@ function DbConfig($Language, $MysqlExt = FALSE) { //The screen for users to inpu
 	echo '<input type="hidden" name="UserLanguage" value="' . $Language . '" />';
 	echo '<input type="hidden" name="Language" value="' . $Language . '" />';
 
-	echo '<input type="hidden" name="required" value="' . $_POST['DBMS'] . '" />';
+	echo '<input type="hidden" name="required" value="' . $_SESSION['Installer']['DBMS'] . '" />';
 
 	echo '<fieldset>
 			<button type="submit" name="DbConfig">' . _('Next Step') . '</button>
 		</fieldset>';
+	exit;
 }
 
 //The function is used by users to return to start page

@@ -115,19 +115,19 @@ if (isset($_POST['submit'])) {
 	}
 	if ($_POST['GroupByData1'] != 'Not Used' and $_POST['Lower1'] > $_POST['Upper1']) {
 		$InputError = 1;
-		prnMsg(_('Group by Level 1 is set but the lower limit is greater than the upper limit') . ' - ' . _('the report will have no output'), 'error', _('Lower Limit > Upper Limit'));
+		prnMsg(_('Group by Level 1 is set but the lower limit is greater than the upper limit') . ' - ' . _('the report will have no output'), 'error', _('Lower Limit greater than Upper Limit'));
 	}
 	if ($_POST['GroupByData2'] != 'Not Used' and $_POST['Lower2'] > $_POST['Upper2']) {
 		$InputError = 1;
-		prnMsg(_('Group by Level 2 is set but the lower limit is greater than the upper limit') . ' - ' . _('the report will have no output'), 'error', _('Lower Limit > Upper Limit'));
+		prnMsg(_('Group by Level 2 is set but the lower limit is greater than the upper limit') . ' - ' . _('the report will have no output'), 'error', _('Lower Limit greater than Upper Limit'));
 	}
 	if ($_POST['GroupByData3'] != 'Not Used' and $_POST['Lower3'] > $_POST['Upper3']) {
 		$InputError = 1;
-		prnMsg(_('Group by Level 3 is set but the lower limit is greater than the upper limit') . ' - ' . _('the report will have no output'), 'error', _('Lower Limit > Upper Limit'));
+		prnMsg(_('Group by Level 3 is set but the lower limit is greater than the upper limit') . ' - ' . _('the report will have no output'), 'error', _('Lower Limit greater than Upper Limit'));
 	}
 	if ($_POST['GroupByData4'] != 'Not Used' and $_POST['Lower4'] > $_POST['Upper4']) {
 		$InputError = 1;
-		prnMsg(_('Group by Level 4 is set but the lower limit is greater than the upper limit') . ' - ' . _('the report will have no output'), 'error', _('Lower Limit > Upper Limit'));
+		prnMsg(_('Group by Level 4 is set but the lower limit is greater than the upper limit') . ' - ' . _('the report will have no output'), 'error', _('Lower Limit greater than Upper Limit'));
 	}
 
 

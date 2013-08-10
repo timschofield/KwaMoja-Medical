@@ -111,7 +111,7 @@ $DataTags = array(
 		'maxsz' => 8
 	),
 	'max' => array(
-		'desc' => _('Max text<br />length'),
+		'desc' => _('Max text') . '<br />' . _('length'),
 		'type' => 'n',
 		'sz' => 5,
 		'maxsz' => 8

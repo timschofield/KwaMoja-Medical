@@ -157,7 +157,7 @@ if (!isset($SelectedCategory) or isset($_POST['submit'])) {
 			<th>' . _('Cat Code') . '</th>
 			<th>' . _('Description') . '</th>
 			<th>' . _('Cost GL') . '</th>
-			<th>' . _('P &amp; L Depn GL') . '</th>
+			<th>' . _('P and L') . '<br />' . _('Depreciation GL') . '</th>
 			<th>' . _('Disposal GL') . '</th>
 			<th>' . _('Accum Depn GL') . '</th>
 		  </tr>';

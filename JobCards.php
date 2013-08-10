@@ -79,7 +79,7 @@ if (!isset($_POST['SaveUpdateJob'])) {
 											)";
 			$result = DB_query($query, $db, $ErrMsg);
 
-			echo '<div class="page_help_text noPrint">' . _('Record has been added.<br>Please wait the browser will redirect you automatically ...') . '.</div><br />';
+			echo '<div class="page_help_text noPrint">' . _('Record has been added.') . '<br />' . _('Please wait the browser will redirect you automatically ...') . '.</div><br />';
 
 			// Show Message Box
 			echo "<script type='text/javascript'>";
@@ -277,7 +277,7 @@ else {
 	$query = "Update jobcards SET " . $dbvalues . " where id=" . $_POST['JobCardNo'];
 	$result = DB_query($query, $db, $ErrMsg);
 
-	echo '<div class="page_help_text noPrint">' . _('Record has been updated.<br>Please wait the browser will redirect you automatically ...') . '.</div><br />';
+	echo '<div class="page_help_text noPrint">' . _('Record has been updated.') . '<br />' . _('Please wait the browser will redirect you automatically ...') . '.</div><br />';
 
 	// Show Message Box
 	echo "<script type='text/javascript'>";

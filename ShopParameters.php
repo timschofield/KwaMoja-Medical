@@ -292,7 +292,7 @@ if ($_SESSION['ShopShowOnlyAvailableItems'] == '1') {
 	echo '<option value="1">' . _('Yes') . '</option>';
 }
 echo '</select></td>
-		<td>' . _('Shows only items with QOH > 0 thus avoiding the Arriving Soon items.') . '</td>
+		<td>' . _('Shows only items with QOH greater than zero thus avoiding the Arriving Soon items.') . '</td>
 	</tr>';
 
 echo '<tr>
@@ -621,12 +621,12 @@ if ($AllowDemoMode) {
 	echo '<tr>
 			<td>' . _('SwipeHQ Merchant ID') . ':</td>
 			<td><input type="text" class="noSpecialChars" size="15" maxlength="15" name="X_ShopSwipeHQMerchantID" value="' . $_SESSION['ShopSwipeHQMerchantID'] . '" /></td>
-			<td>' . _('The') . ' <a href="https://www.swipehq.com/credit-card-payment-solutions/index.php">SwipeHQ</a> ' . _('Merchant ID - see SwipeHQ settings -> API credentials') . '</td>
+			<td>' . _('The') . ' <a href="https://www.swipehq.com/credit-card-payment-solutions/index.php">SwipeHQ</a> ' . _('Merchant ID - see SwipeHQ settings - API credentials') . '</td>
 		</tr>';
 	echo '<tr>
 			<td>' . _('SwipeHQ API Key') . ':</td>
 			<td><input type="text" size="80"  maxlenght="100" name="X_ShopSwipeHQAPIKey" value="' . $_SESSION['ShopSwipeHQAPIKey'] . '" /></td>
-			<td>' . _('The') . ' <a href="https://www.swipehq.com/credit-card-payment-solutions/index.php">SwipeHQ</a> ' . _('API Key - see SwipeHQ admin settings -> API credentials') . '</td>
+			<td>' . _('The') . ' <a href="https://www.swipehq.com/credit-card-payment-solutions/index.php">SwipeHQ</a> ' . _('API Key - see SwipeHQ admin settings - API credentials') . '</td>
 		</tr>';
 } //end of blocked inputs in demo mode
 echo '</table>

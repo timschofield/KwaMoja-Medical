@@ -836,7 +836,7 @@ echo '<tr style="outline: 1px solid"><td>' . _('Only allow secure socket connect
 	</tr>';
 
 /*Perform Database maintenance DB_Maintenance*/
-echo '<tr style="outline: 1px solid"><td>' . _('Perform Database Maintenance At Logon') . ':</td>
+echo '<tr style="outline: 1px solid"><td>' . _('Perform database maintenance at logon') . ':</td>
 	<td><select required="required" minlength="1" name="X_DB_Maintenance">';
 if ($_SESSION['DB_Maintenance'] == '1') {
 	echo '<option selected="selected" value="1">' . _('Daily') . '</option>';

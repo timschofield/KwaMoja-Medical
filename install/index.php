@@ -862,7 +862,7 @@ function Installation() {
 		</fieldset>';
 
 	echo '<fieldset>
-			<p>' . _('KwaMoja is an open source application licenced under GPL V2 and absolutely free to download.') . '<br />' . _('By installing KwaMoja you acknowledge you have read <a href="http://www.gnu.org/licenses/gpl-2.0.html#SEC1" target="_blank">the licence</a>. <br />Please visit the official KwaMoja website for more information.') . '</p>
+			<p>' . _('KwaMoja is an open source application licenced under GPL V2 and absolutely free to download.') . '<br />' . _('By installing KwaMoja you acknowledge you have read') . ' ' . '<a href="http://www.gnu.org/licenses/gpl-2.0.html#SEC1" target="_blank">the licence</a>. <br />' . _('Please visit the official KwaMoja website for more information.') . '</p>
 		</fieldset>
 		<div class="centre">
 			<a href="http://www.kwamoja.com"><img src="../css/logo.png" title="KwaMoja" alt="KwaMoja" /></a>
@@ -1021,8 +1021,8 @@ function CompanySetup($UserLanguage, $HostName, $UserName, $Password, $DatabaseN
 
 	echo '<li>
 			<label for="Logo">' . _('Company logo file') . ': </label>
-			<input type="file" accept="image/jpg" name="LogoFile" title="' . _('A jpg file up to 10k, and not greater than 170px x 80px') . '" />
-			<span>' . _("jpg file to 10k, not greater than 170px x 80px") . '</span>
+			<input type="file" accept="image/jpg" name="LogoFile" title="' . _('A jpg file up to 10kb, and not greater than 170px x 80px') . '" />
+			<span>' . _("jpg file to 10kb, and not greater than 170px x 80px") . '</span>
 		</li>
 	</ul>
 </fieldset>';

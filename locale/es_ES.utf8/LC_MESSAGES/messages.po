@@ -15726,7 +15726,7 @@ msgstr "Muestra la lista de los bienes recibidos aún no facturado , tanto en mo
 #: OutstandingGRNs.php:179
 #, fuzzy
 msgid "PO#"
-msgstr "OC"
+msgstr "OC#"
 
 #: OutstandingGRNs.php:181 WorkOrderEntry.php:138
 #: includes/PDFStockLocTransferHeader.inc:64
@@ -22997,7 +22997,7 @@ msgstr "Pedidos de Venta"
 
 #: SelectContract.php:4 sql/updates/42.php:66
 msgid "Select Contract"
-msgstr "Seleccione Contrato"
+msgstr "Seleccionar contrato"
 
 #: SelectContract.php:9 SupplierCredit.php:235 SupplierCredit.php:295
 #: SupplierInvoice.php:573 SupplierInvoice.php:630
@@ -40846,7 +40846,7 @@ msgstr "Informe de Ventas con Baja de Ganancias Brutas"
 
 #: sql/updates/42.php:67
 msgid "Create Contract"
-msgstr "Crear Contrato"
+msgstr "Agregar contrato"
 
 #: sql/updates/42.php:68
 msgid "Sell Through Support Deals"
@@ -40894,11 +40894,11 @@ msgstr "Lista de Transacciones Diarias"
 
 #: sql/updates/42.php:87
 msgid "Add Customer"
-msgstr "Registrar un Nuevo Cliente"
+msgstr "Agregar cliente"
 
 #: sql/updates/42.php:88
 msgid "Select Customer"
-msgstr "Seleccionar un cliente"
+msgstr "Seleccionar cliente"
 
 #: sql/updates/42.php:93
 msgid "Aged Supplier Report"
@@ -40914,7 +40914,7 @@ msgstr "Consultas de Proveedores de Transacción"
 
 #: sql/updates/42.php:101
 msgid "Add Supplier"
-msgstr "Registrar un Nuevo Proveedor"
+msgstr "Agregar proveedor"
 
 #: sql/updates/42.php:103
 msgid "Maintain Factor Companies"
@@ -41050,11 +41050,11 @@ msgstr "Nota de Transferencia de Existencias"
 
 #: sql/updates/42.php:155
 msgid "Add A New Item"
-msgstr "Agregar un Nuevo Artículo"
+msgstr "Agregar artículo"
 
 #: sql/updates/42.php:156
 msgid "Select An Item"
-msgstr "Seleccionar un Artículo"
+msgstr "Seleccionar artículo"
 
 #: sql/updates/42.php:158
 msgid "Add or Update Prices Based On Costs"

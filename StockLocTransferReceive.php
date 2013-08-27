@@ -95,7 +95,7 @@ if (isset($_POST['ProcessTransfer'])) {
 						'" . $_SESSION['Transfer']->StockLocationFrom . "',
 						'" . $SQLTransferDate . "',
 						'" . $PeriodNo . "',
-						'" . _('To') . ' ' . $_SESSION['Transfer']->StockLocationToName . "',
+						'" . _('To') . ' ' . mysql_real_escape_string($_SESSION['Transfer']->StockLocationToName) . "',
 						'" . round(-$TrfLine->Quantity, $TrfLine->DecimalPlaces) . "',
 						'" . round($QtyOnHandPrior - $TrfLine->Quantity, $TrfLine->DecimalPlaces) . "'
 					)";

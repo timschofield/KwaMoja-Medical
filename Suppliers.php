@@ -1091,7 +1091,7 @@ if (!isset($SupplierID)) {
 		echo '<div class="centre">
 					<input type="submit" name="submit" value="' . _('Update Supplier') . '" />
 				</div>';
-		prnMsg(_('WARNING') . ': ' . _('There is no second warning if you hit the delete button below') . '. ' . _('However checks will be made to ensure there are no outstanding purchase orders or existing accounts payable transactions before the deletion is processed'), 'Warn');
+		prnMsg( _('There is no second warning if you hit the delete button below') . '. ' . _('However checks will be made to ensure there are no outstanding purchase orders or existing accounts payable transactions before the deletion is processed'), 'Warn');
 		echo '<div class="centre">
 				<input type="submit" name="delete" value="' . _('Delete Supplier') . '" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this supplier?') . '\');" />
 			</div>';

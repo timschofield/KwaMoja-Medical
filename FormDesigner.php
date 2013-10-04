@@ -178,7 +178,7 @@ $Papers = array(
 	'A3_Landscape',
 	'A3_Portrait',
 	'letter_Portrait',
-	'letter_Landscape',
+	'Letter_Landscape',
 	'legal_Portrait',
 	'legal_Landscape'
 ); // Possible paper sizes/orientations

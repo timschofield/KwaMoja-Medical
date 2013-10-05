@@ -347,8 +347,8 @@ echo '</select></td>
 	</tr>';
 
 echo '<tr>
-               <td>' . _('Freight Calculations') . ':</td>
-               <td><select name="X_ShopFreightModule">';
+		<td>' . _('Freight Calculations') . ':</td>
+		<td><select name="X_ShopFreightModule">';
 
 $FreightModules = array(
 	array(
@@ -372,9 +372,10 @@ foreach ($FreightModules as $FreightCalc) {
 		echo '<option value="' . $FreightCalc['MethodCode'] . '">' . $FreightCalc['MethodName'] . '</option>';
 	}
 }
-echo '</select></td>
-               <td>' . _('Select the freight calculation method to use for the webSHOP') . '</td>
-       </tr>';
+echo '</select>
+			</td>
+			<td>' . _('Select the freight calculation method to use for the webSHOP') . '</td>
+		</tr>';
 
 echo '<tr>
 		<th colspan="3">' . _('Bank Transfer Settings') . '</th>

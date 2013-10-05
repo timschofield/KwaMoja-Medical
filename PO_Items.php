@@ -454,7 +454,7 @@ if (isset($_POST['EnterLine'])) {
 	 * [icedlava] GL Code is required for non stock item variance in price vs purchase order when supplier invoice generated even if stock not linked to GL, but AP is else
 	 * there will be an sql error  in SupplierInvoice.php without a valid GL Code
 	 */
-	if ($_SESSION['PO'.$identifier]->GLLink==1 OR $_SESSION['CompanyRecord']['gllink_creditors']==1){
+	if ($_SESSION['PO'.$identifier]->GLLink == 1 or $_SESSION['CompanyRecord']['gllink_creditors'] == 1) {
 		$sql = "SELECT accountname
 					FROM chartmaster
 					WHERE accountcode ='" . $_POST['GLCode'] . "'";
@@ -481,7 +481,7 @@ if (isset($_POST['EnterLine'])) {
 		}
 	} /* dont bother checking the GL Code if there is no GL code to check ie not linked to GL */
 	else {
-		$_POST['GLCode']=0;
+		$_POST['GLCode'] = 0;
 	}
 
 	if ($_POST['AssetID'] != 'Not an Asset') {

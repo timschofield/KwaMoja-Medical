@@ -843,7 +843,7 @@ echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
 	<input type="hidden" name="New" value="' . $New . '" />
 	<table class="selection">';
 
-if (isset($StockID)) {
+if (isset($StockID) and $StockID != '') {
 	echo '<table width="100%">
 			<tr>
 				<td><input class="image" src="css/' . $Theme . '/images/previous.png" type="image" name="PreviousItem" title="' . _('Previous Item') . '" value="" /></td>

@@ -57,7 +57,6 @@ if (isset($_POST['New'])) {
 echo '<div class="toplink">
 		<a href="' . $RootPath . '/SelectProduct.php">' . _('Back to Items') . '</a>
 	</div>
-	<br />
 	<p class="page_title_text noPrint" >
 		<img src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Stock') . '" alt="" />' . ' ' . $Title . '
 	</p>';

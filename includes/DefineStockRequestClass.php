@@ -2,12 +2,15 @@
 
 class StockRequest {
 
+	var $ID;
 	var $LineItems;
 	/*array of objects of class LineDetails using the product id as the pointer */
 	var $DispatchDate;
+	var $UserID;
 	var $Location;
 	var $Department;
 	var $Narrative;
+	var $NewRequest=0;
 	var $LineCounter = 0;
 
 	function StockRequest() {

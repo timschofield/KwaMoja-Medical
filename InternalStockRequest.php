@@ -3,15 +3,60 @@
 include('includes/DefineStockRequestClass.php');
 
 include('includes/session.inc');
+$Title = _('Internal Materials Request');
+include('includes/header.inc');
 $ViewTopic = 'Inventory';
 $BookMark = 'CreateRequest';
-$Title = _('Create an Internal Materials Request');
-include('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');
 
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '</p>';
+
+if (isset($_GET['Cancel'])) {
+	$Title = _('Amend an Internal Materials Request');
+	$sql = "UPDATE stockrequest SET closed=1
+				WHERE dispatchid='" . $_GET['Cancel'] . "'";
+	$result = DB_query($sql, $db);
+	$_GET['Edit'] = 'Yes';
+}
+
 if (isset($_GET['New'])) {
-	unset($_SESSION['Transfer']);
+	unset($_SESSION['Request']);
 	$_SESSION['Request'] = new StockRequest();
+}
+
+if (isset($_GET['Amend'])) {
+	unset($_SESSION['Request']);
+	$_SESSION['Request'] = new StockRequest();
+	$sql = "SELECT userid,
+					loccode,
+					departmentid,
+					despatchdate,
+					narrative
+				FROM stockrequest
+				WHERE dispatchid='" . $_GET['Amend'] . "'";
+	$result = DB_query($sql, $db);
+	$myrow = DB_fetch_array($result);
+	$_SESSION['Request']->DispatchDate = ConvertSQLDate($myrow['despatchdate']);
+	$_SESSION['Request']->ID = $_GET['Amend'];
+	$_SESSION['Request']->UserID = $myrow['userid'];
+	$_SESSION['Request']->Location = $myrow['loccode'];
+	$_SESSION['Request']->Department = $myrow['departmentid'];
+	$_SESSION['Request']->Narrative = $myrow['narrative'];
+	$_SESSION['Request']->NewRequest = 1;
+	$LineSQL = "SELECT dispatchitemsid,
+						stockrequestitems.stockid,
+						stockrequestitems.decimalplaces,
+						stockrequestitems.uom,
+						quantity,
+						stockmaster.description
+					FROM stockrequestitems
+					INNER JOIN stockmaster
+						ON stockmaster.stockid=stockrequestitems.stockid
+					WHERE dispatchid='" . $_GET['Amend'] . "'";
+	$LineResult = DB_query($LineSQL, $db);
+	while ($LineRow = DB_fetch_array($LineResult)) {
+		$_SESSION['Request']->AddLine($LineRow['stockid'], $LineRow['description'], $LineRow['quantity'], $LineRow['uom'], $LineRow['decimalplaces'], $LineRow['dispatchitemsid']);
+	}
 }
 
 if (isset($_POST['Update'])) {
@@ -43,6 +88,99 @@ if (isset($_GET['Delete'])) {
 	echo '<br />';
 }
 
+if (isset($_GET['Edit']) and $_GET['Edit'] == 'Yes') {
+	unset($_SESSION['Request']);
+	$_SESSION['Request'] = new StockRequest();
+
+	/* Retrieve the requisition header information
+	 */
+	$sql = "SELECT stockrequest.dispatchid,
+					locations.locationname,
+					stockrequest.despatchdate,
+					stockrequest.narrative,
+					departments.description,
+					w1.realname as authoriser,
+					w2.realname as initiator,
+					w1.email
+				FROM stockrequest
+				INNER JOIN departments
+					ON stockrequest.departmentid=departments.departmentid
+				INNER JOIN locations
+					ON stockrequest.loccode=locations.loccode
+				INNER JOIN www_users as w2
+					ON w2.userid=stockrequest.userid
+				INNER JOIN www_users as w1
+					ON w1.userid=departments.authoriser
+				WHERE stockrequest.closed=0
+					AND authorised=0
+					AND w2.userid='" . $_SESSION['UserID'] . "'";
+	$result = DB_query($sql, $db);
+
+	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
+	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
+	echo '<table class="selection">';
+
+	/* Create the table for the purchase order header */
+	echo '<tr>
+			<th>' . _('Request Number') . '</th>
+			<th>' . _('Department') . '</th>
+			<th>' . _('Initiator') . '</th>
+			<th>' . _('Location Of Stock') . '</th>
+			<th>' . _('Requested Date') . '</th>
+			<th>' . _('Narrative') . '</th>
+		</tr>';
+
+	while ($myrow = DB_fetch_array($result)) {
+
+		echo '<tr>
+				<td>' . $myrow['dispatchid'] . '</td>
+				<td>' . $myrow['description'] . '</td>
+				<td>' . $myrow['initiator'] . '</td>
+				<td>' . $myrow['locationname'] . '</td>
+				<td>' . ConvertSQLDate($myrow['despatchdate']) . '</td>
+				<td>' . $myrow['narrative'] . '</td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Amend=' . $myrow['dispatchid'] . '">' . _('Amend') . '</a></td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Cancel=' . $myrow['dispatchid'] . '">' . _('Cancel') . '</a></td>
+			</tr>';
+		$linesql = "SELECT stockrequestitems.dispatchitemsid,
+							stockrequestitems.stockid,
+							stockrequestitems.decimalplaces,
+							stockrequestitems.uom,
+							stockmaster.description,
+							stockrequestitems.quantity
+					FROM stockrequestitems
+					INNER JOIN stockmaster
+						ON stockmaster.stockid=stockrequestitems.stockid
+					WHERE dispatchid='" . $myrow['dispatchid'] . "'";
+		$lineresult = DB_query($linesql, $db);
+
+		echo '<tr>
+				<td></td>
+				<td colspan="5" align="left">
+					<table class="selection" align="left">
+						<tr>
+							<th>' . _('Product') . '</th>
+							<th>' . _('Quantity Required') . '</th>
+							<th>' . _('Units') . '</th>
+						</tr>';
+
+		while ($linerow = DB_fetch_array($lineresult)) {
+			echo '<tr>
+					<td>' . $linerow['description'] . '</td>
+					<td class="number">' . locale_number_format($linerow['quantity'], $linerow['decimalplaces']) . '</td>
+					<td>' . $linerow['uom'] . '</td>
+				</tr>';
+		} // end while order line detail
+		echo '</table>
+			</td>
+		</tr>';
+	} //end while header loop
+	echo '</table>
+		</form>';
+	include('includes/footer.inc');
+	exit;
+}
+
 foreach ($_POST as $key => $value) {
 	if (mb_strstr($key, 'StockID')) {
 		$Index = mb_substr($key, 7);
@@ -69,36 +207,60 @@ if (isset($_POST['Submit'])) {
 		$InputError = 1;
 	}
 	if ($InputError == 0) {
-		$RequestNo = GetNextTransNo(38, $db);
-		$HeaderSQL = "INSERT INTO stockrequest (dispatchid,
-											loccode,
-											departmentid,
-											despatchdate,
-											narrative)
-										VALUES(
-											'" . $RequestNo . "',
-											'" . $_SESSION['Request']->Location . "',
-											'" . $_SESSION['Request']->Department . "',
-											'" . FormatDateForSQL($_SESSION['Request']->DispatchDate) . "',
-											'" . $_SESSION['Request']->Narrative . "')";
+		if ($_SESSION['Request']->NewRequest == 0) {
+			$_SESSION['Request']->ID = GetNextTransNo(38, $db);
+			$HeaderSQL = "INSERT INTO stockrequest (dispatchid,
+													loccode,
+													userid,
+													departmentid,
+													despatchdate,
+													narrative)
+												VALUES(
+													'" . $_SESSION['Request']->ID . "',
+													'" . $_SESSION['Request']->Location . "',
+													'" . $_SESSION['UserID'] . "',
+													'" . $_SESSION['Request']->Department . "',
+													'" . FormatDateForSQL($_SESSION['Request']->DispatchDate) . "',
+													'" . $_SESSION['Request']->Narrative . "')";
+		} else {
+			$HeaderSQL = "UPDATE stockrequest SET loccode='" . $_SESSION['Request']->Location . "',
+													userid='" . $_SESSION['UserID'] . "',
+													departmentid='" . $_SESSION['Request']->Department . "',
+													despatchdate='" . FormatDateForSQL($_SESSION['Request']->DispatchDate) . "',
+													narrative='" . $_SESSION['Request']->Narrative . "'
+												WHERE dispatchid='" . $_SESSION['Request']->ID . "'";
+		}
 		$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The request header record could not be inserted because');
 		$DbgMsg = _('The following SQL to insert the request header record was used');
 		$Result = DB_query($HeaderSQL, $db, $ErrMsg, $DbgMsg, true);
 
 		foreach ($_SESSION['Request']->LineItems as $LineItems) {
-			$LineSQL = "INSERT INTO stockrequestitems (dispatchitemsid,
-													dispatchid,
-													stockid,
-													quantity,
-													decimalplaces,
-													uom)
-												VALUES(
-													'" . $LineItems->LineNumber . "',
-													'" . $RequestNo . "',
-													'" . $LineItems->StockID . "',
-													'" . $LineItems->Quantity . "',
-													'" . $LineItems->DecimalPlaces . "',
-													'" . $LineItems->UOM . "')";
+			$sql = "SELECT COUNT(stockid) as total FROM stockrequestitems
+									WHERE dispatchid='" . $_SESSION['Request']->ID . "'
+										AND dispatchitemsid='" . $LineItems->LineNumber . "'";			$result = DB_query($sql, $db);
+			$myrow = DB_fetch_array($result);
+			if ($myrow['total'] == 0) {
+				$LineSQL = "INSERT INTO stockrequestitems (dispatchitemsid,
+															dispatchid,
+															stockid,
+															quantity,
+															decimalplaces,
+															uom)
+														VALUES(
+															'" . $LineItems->LineNumber . "',
+															'" . $_SESSION['Request']->ID . "',
+															'" . $LineItems->StockID . "',
+															'" . $LineItems->Quantity . "',
+															'" . $LineItems->DecimalPlaces . "',
+															'" . $LineItems->UOM . "')";
+			} else {
+				$LineSQL = "UPDATE stockrequestitems SET stockid='" . $LineItems->StockID . "',
+														quantity='" . $LineItems->Quantity . "',
+														decimalplaces='" . $LineItems->DecimalPlaces . "',
+														uom='" . $LineItems->UOM . "'
+													WHERE dispatchid='" . $_SESSION['Request']->ID . "'
+														AND dispatchitemsid='" . $LineItems->LineNumber . "'";
+			}
 			$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The request line record could not be inserted because');
 			$DbgMsg = _('The following SQL to insert the request header record was used');
 			$Result = DB_query($LineSQL, $db, $ErrMsg, $DbgMsg, true);
@@ -127,14 +289,17 @@ if (isset($_POST['Submit'])) {
 
 	}
 	DB_Txn_Commit($db);
-	prnMsg(_('The internal stock request has been entered and now needs to be authorised'), 'success');
-	echo '<br /><div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?New=Yes">' . _('Create another request') . '</a></div>';
+	if ($_SESSION['Request']->NewRequest == 0) {
+		prnMsg(_('The internal stock request has been entered and now needs to be authorised'), 'success');
+		echo '<br /><div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?New=Yes">' . _('Create another request') . '</a></div>';
+	} else {
+		prnMsg(_('The internal stock request has been updated'), 'success');
+		echo '<br /><div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Edit=Yes">' . _('Amend another request') . '</a></div>';
+	}
 	include('includes/footer.inc');
 	unset($_SESSION['Request']);
 	exit;
 }
-
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" title="' . _('Dispatch') . '" alt="" />' . ' ' . $Title . '</p>';
 
 if (isset($_GET['Edit'])) {
 	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
@@ -309,7 +474,8 @@ echo '</table>
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Search for Inventory Items') . '</p>';
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Inventory Items') . '" alt="" />' . ' ' . _('Inventory Items') . '</p>';
+
 $SQL = "SELECT stockcategory.categoryid,
 				stockcategory.categorydescription
 			FROM stockcategory, internalstockcatrole
@@ -331,9 +497,9 @@ if (!isset($_POST['StockCat'])) {
 	$_POST['StockCat'] = '';
 }
 if ($_POST['StockCat'] == 'All') {
-	echo '<option selected="True" value="All">' . _('All Authorized') . '</option>';
+	echo '<option selected="True" value="All">' . _('All Categories') . '</option>';
 } else {
-	echo '<option value="All">' . _('All Authorized') . '</option>';
+	echo '<option value="All">' . _('All Categories') . '</option>';
 }
 while ($myrow1 = DB_fetch_array($result1)) {
 	if ($myrow1['categoryid'] == $_POST['StockCat']) {
@@ -510,6 +676,7 @@ if (isset($_POST['Search']) or isset($_POST['Next']) or isset($_POST['Prev'])) {
 } //end of if search
 /* display list if there is more than one record */
 if (isset($searchresult) and !isset($_POST['Select'])) {
+
 	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	$ListCount = DB_num_rows($searchresult);

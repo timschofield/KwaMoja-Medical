@@ -4,9 +4,9 @@ include('includes/session.inc');
 $Title = _('General Ledger Transaction Inquiry');
 include('includes/header.inc');
 
-$MenuURL = '<div><a href="' . $RootPath . '/index.php?&amp;Application=GL">' . _('General Ledger Menu') . '</a></div>';
+$MenuURL = '<div class="toplink"><a href="' . $RootPath . '/index.php?&amp;Application=GL">' . _('General Ledger Menu') . '</a></div>';
 
-if (!isset($_GET['TypeID']) OR !isset($_GET['TransNo'])) {
+if (!isset($_GET['TypeID']) or !isset($_GET['TransNo'])) {
 	prnMsg(_('This page requires a valid transaction type and number'), 'warn');
 	echo $MenuURL;
 } else {

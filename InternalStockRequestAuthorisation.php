@@ -25,21 +25,25 @@ if (isset($_POST['UpdateAll'])) {
 /* Retrieve the requisition header information
  */
 $sql = "SELECT stockrequest.dispatchid,
-			locations.locationname,
-			stockrequest.despatchdate,
-			stockrequest.narrative,
-			departments.description,
-			www_users.realname,
-			www_users.email
-		FROM stockrequest INNER JOIN departments
-			ON stockrequest.departmentid=departments.departmentid
-		INNER JOIN locations
-			ON stockrequest.loccode=locations.loccode
-		INNER JOIN www_users
-			ON www_users.userid=departments.authoriser
-		WHERE stockrequest.authorised=0
-		AND stockrequest.closed=0
-		AND www_users.userid='" . $_SESSION['UserID'] . "'";
+				locations.locationname,
+				stockrequest.despatchdate,
+				stockrequest.narrative,
+				departments.description,
+				w1.realname as authoriser,
+				w2.realname as initiator,
+				w1.email
+			FROM stockrequest
+			INNER JOIN departments
+				ON stockrequest.departmentid=departments.departmentid
+			INNER JOIN locations
+				ON stockrequest.loccode=locations.loccode
+			INNER JOIN www_users as w2
+				ON w2.userid=stockrequest.userid
+			INNER JOIN www_users as w1
+				ON w1.userid=departments.authoriser
+			WHERE stockrequest.authorised=0
+				AND stockrequest.closed=0
+				AND w1.userid='" . $_SESSION['UserID'] . "'";
 $result = DB_query($sql, $db);
 
 echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
@@ -50,6 +54,7 @@ echo '<table class="selection">';
 echo '<tr>
 		<th>' . _('Request Number') . '</th>
 		<th>' . _('Department') . '</th>
+		<th>' . _('Initiator') . '</th>
 		<th>' . _('Location Of Stock') . '</th>
 		<th>' . _('Requested Date') . '</th>
 		<th>' . _('Narrative') . '</th>
@@ -61,6 +66,7 @@ while ($myrow = DB_fetch_array($result)) {
 	echo '<tr>
 			<td>' . $myrow['dispatchid'] . '</td>
 			<td>' . $myrow['description'] . '</td>
+			<td>' . $myrow['initiator'] . '</td>
 			<td>' . $myrow['locationname'] . '</td>
 			<td>' . ConvertSQLDate($myrow['despatchdate']) . '</td>
 			<td>' . $myrow['narrative'] . '</td>

@@ -84,9 +84,9 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 	echo '<img src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Inventory') . '" alt="" /><b title="' . $myrow['longdescription'] . '">' . ' ' . $StockID . ' - ' . $myrow['description'] . '</b> ' . $ItemStatus ;
 
 
-	echo '<table width="90%">
+	echo '<table width="95%">
 			<tr>
-			<td style="width:40%" valign="top">
+			<td style="width:45%" valign="top">
 			<table>'; //nested table
 	$sql = "SELECT abccategory FROM abcstock WHERE stockid='" . $StockID . "'";
 	$ABCResult = DB_query($sql, $db);
@@ -144,18 +144,17 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 			<td class="select">' . locale_number_format($myrow['eoq'], $myrow['decimalplaces']) . '</td>
 		</tr>';
 	if (in_array($PricesSecurity, $_SESSION['AllowedPageSecurityTokens']) or !isset($PricesSecurity)) {
-		echo '<tr>
-				<th colspan="2">' . _('Sell Price') . ':</th>
-				<td class="select">';
-		$PriceResult = DB_query("SELECT typeabbrev,
+		$PriceResult = DB_query("SELECT sales_type,
+										currabrev,
 										price
 								FROM prices
+								INNER JOIN salestypes
+									ON prices.typeabbrev=salestypes.typeabbrev
 								WHERE currabrev ='" . $_SESSION['CompanyRecord']['currencydefault'] . "'
-								AND typeabbrev = '" . $_SESSION['DefaultPriceList'] . "'
-								AND debtorno=''
-								AND branchcode=''
-								AND startdate <= '" . Date('Y-m-d') . "' AND ( enddate >= '" . Date('Y-m-d') . "' OR enddate = '0000-00-00')
-								AND stockid='" . $StockID . "'", $db);
+									AND debtorno=''
+									AND branchcode=''
+									AND startdate <= '" . Date('Y-m-d') . "' AND ( enddate >= '" . Date('Y-m-d') . "' OR enddate = '0000-00-00')
+									AND stockid='" . $StockID . "'", $db);
 		if ($myrow['mbflag'] == 'K' or $myrow['mbflag'] == 'A') {
 			$CostResult = DB_query("SELECT SUM(bom.quantity * (stockmaster.materialcost+stockmaster.labourcost+stockmaster.overheadcost)) AS cost
 									FROM bom INNER JOIN stockmaster
@@ -172,19 +171,23 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 			echo _('No Default Price Set in Home Currency') . '</td></tr>';
 			$Price = 0;
 		} else {
-			$PriceRow = DB_fetch_row($PriceResult);
-			$Price = $PriceRow[1];
-			echo $PriceRow[0] . '</td>
-				<td class="select">' . locale_number_format($Price, $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
-				<th class="number">' . _('Gross Profit') . '</th>
-				<td class="select">';
-			if ($Price > 0) {
-				$GP = locale_number_format(($Price - $Cost) * 100 / $Price, 1);
-			} else {
-				$GP = _('N/A');
+			while ($PriceRow = DB_fetch_array($PriceResult)) {
+				echo '<tr>
+						<th colspan="1">' . _('Sell Price') . ':</th>
+						<td class="select">';
+				$Price = $PriceRow['price'];
+				echo $PriceRow['sales_type'] . '</td>
+					<td class="select" style="width:17%">' . locale_number_format($Price, $_SESSION['CompanyRecord']['decimalplaces']) . ' ' . $PriceRow['currabrev'] . '</td>
+					<th class="number">' . _('Gross Profit') . '</th>
+					<td class="select">';
+				if ($Price > 0) {
+					$GP = locale_number_format(($Price - $Cost) * 100 / $Price, 1);
+				} else {
+					$GP = _('N/A');
+				}
+				echo $GP . '%' . '</td>
+						</tr>';
 			}
-			echo $GP . '%' . '</td>
-				</tr>';
 		}
 		if ($myrow['mbflag'] == 'K' or $myrow['mbflag'] == 'A') {
 			$CostResult = DB_query("SELECT SUM(bom.quantity * (stockmaster.materialcost+stockmaster.labourcost+stockmaster.overheadcost)) AS cost
@@ -495,6 +498,7 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 			echo '<a href="' . $RootPath . '/Prices_Customer.php?Item=' . $StockID . '">' . _('Special Prices for customer') . ' - ' . $_SESSION['CustomerID'] . '</a><br />';
 		}
 		echo '<a href="' . $RootPath . '/DiscountCategories.php?StockID=' . $StockID . '">' . _('Maintain Discount Category') . '</a><br />';
+		echo '<a href="' . $RootPath . '/StockClone.php?OldStockID=' . $StockID . '">' . _('Clone This Item') . '</a><br />';
 	}
 	echo '</td></tr></table>';
 } else {

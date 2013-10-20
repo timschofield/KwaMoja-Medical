@@ -25,10 +25,9 @@ if (!isset($_POST['CurrAbrev'])) {
 	$_POST['CurrAbrev'] = $_SESSION['CompanyRecord']['currencydefault'];
 }
 
+echo '<div class="toplink"><a href="' . $RootPath . '/SelectProduct.php">' . _('Back to Items') . '</a></div>';
+
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/money_add.png" title="' . _('Search') . '" alt="" />' . $Title . '</p>';
-
-echo '<a href="' . $RootPath . '/SelectProduct.php">' . _('Back to Items') . '</a><br />';
-
 
 $result = DB_query("SELECT stockmaster.description,
 							stockmaster.mbflag
@@ -203,7 +202,6 @@ $result = DB_query($sql, $db);
 
 if (DB_num_rows($result) > 0) {
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<table class="selection">
 			<tr>
 				<th colspan="7">
@@ -255,9 +253,8 @@ if (DB_num_rows($result) > 0) {
 
 	}
 	//END WHILE LIST LOOP
-	echo '</table><br />';
-	echo '</div>
-		  </form>';
+	echo '</table>
+		</form>';
 } else {
 	prnMsg(_('There are no prices set up for this part'), 'warn');
 }
@@ -287,11 +284,10 @@ $SQL = "SELECT currabrev,
 		FROM currencies";
 $result = DB_query($SQL, $db);
 
-echo '<br />
-		<table class="selection">
-			<tr>
-				<th colspan="5"><h3>' . $Item . ' - ' . $PartDescription . '</h3></th>
-			</tr>';
+echo '<table class="selection">
+		<tr>
+			<th colspan="5"><h3>' . $Item . ' - ' . $PartDescription . '</h3></th>
+		</tr>';
 echo '<tr>
 		<td>' . _('Currency') . ':</td>
 		<td><select required="required" minlength="1" name="CurrAbrev">';
@@ -351,7 +347,7 @@ if (isset($_POST['Price'])) {
 echo '" />
 	 </td></tr>
 </table>
-<br /><div class="centre">
+<div class="centre">
 <input type="submit" name="submit" value="' . _('Enter') . '/' . _('Amend Price') . '" />
 </div>';
 

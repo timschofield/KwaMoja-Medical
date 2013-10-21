@@ -1,70 +1,78 @@
-/*
- * manual.css used with the KwaMoja manual
- * http://web-erp.sourceforge.net
- *
- */
 body {
-	font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
-	font-size:.95em;
-	margin:0;
-    padding:2em;
+font-family:"Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+font-size:.85em;
+color:#0000;
+font-weight:lighter;
+margin:0;
+padding:2em;
 }
 
 img {
-	border:none;
+border:none;
 }
-#pagetitle {
-    font-weight: bold;
-    font-size: 2.8em;
-    text-align:center;
-    color: #0033cc;
-}
-#manualpage{
-    margin: 10px;
-    margin-top:20px;
-}
-#toc {
-    padding:0;
-    margin:0;
-}
-h1, h2, h3, h4, h1 a, h2 a, h3 a, h4 a {
-    font-weight: bold;
-}
-h1 {
-    padding-top: 10px;
-    color: #0033cc;
-}
-h2 { }
-h3 { }
-h4 { }
 
+#pagetitle {
+font-weight:400;
+font-size:330%;
+text-align:center;
+color:#066307;
+background:#71EB73;
+text-shadow:2px 1px #2ED104;
+}
+
+#manualpage {
+margin:20px 10px 10px;
+}
+
+#toc {
+margin:0;
+padding:0;
+}
+
+h1,h2,h3,h4,h1 a,h2 a,h3 a,h4 a {
+font-weight:400;
+}
+
+h1 {
+color:#0D1F54;
+background:#90A3F7;
+text-shadow:1px 1px #293EF5;
+padding:10px;
+}
+
+h2 {
+color:#0D1F54;
+background:#B8C3F3;
+padding:8px 8px 8px 20px;
+}
 
 a {
-
-	text-decoration: none;
-	border-bottom: 1px dotted #0033cc;
-	padding:0;
-	margin:0;
+text-decoration:none;
+margin:0;
+padding:0;
 }
 
 a:hover {
-	background:#fff;
-	color: #0033cc;
+color:#03c;
 }
-.right {
-    text-align:right;
-}
-.floatright {
-    float:right;
-}
-.left {
-    text-align:left;
-}
-.minitext {
-    font-size: .8em;
-}
-li.toc {
-   color: #0033cc;
-   padding-top:10px;
 
+.right {
+text-align:right;
+}
+
+.floatright {
+float:right;
+}
+
+.left {
+text-align:left;
+}
+
+.minitext {
+font-size:.8em;
+}
+
+li.toc {
+color:#03c;
+padding-top:10px;
 }

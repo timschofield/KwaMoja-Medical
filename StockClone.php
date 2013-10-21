@@ -47,7 +47,7 @@ echo '<div class="toplink"><a href="' . $RootPath . '/SelectProduct.php">' . _('
 	<p class="page_title_text">
 		<img src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Stock') . '" alt="" />' . ' ' . $Title . '
 	</p>';
-echo '<div class="page_help_text">' . _('Cloning will create a new item with the same properties, image, cost, purchasing and pricing data as the selected item. Item image and general item details can be changed below prior to cloning.') . '.</div><br />';
+echo '<div class="page_help_text">' . _('Cloning will create a new item with the same properties, image, cost, purchasing and pricing data as the selected item. Item image and general item details can be changed below prior to cloning.') . '</div>';
 if (!empty($_POST['OldStockID'])) { //only show this if there is a valid call to this script
 	if (isset($_FILES['ItemPicture']) and $_FILES['ItemPicture']['name'] != '') { //we are uploading a new file
 		$newfilename = ($_POST['OldStockID'] == $_POST['StockID']) or $_POST['StockID'] == '' ? $_POST['OldStockID'] . '-TEMP' : $_POST['StockID']; //so we can add a new file but not remove an existing item file
@@ -977,8 +977,7 @@ if ($_POST['New'] == 1) {
 			<td><input type="text" class="number" name="ShrinkFactor" size="6" maxlength="6" value="' . locale_number_format($_POST['ShrinkFactor'], 0) . '" /></td>
 		</tr>';
 
-	echo '</table>
-		<div class="centre">';
+	echo '</table>';
 
 	if (!isset($_POST['CategoryID'])) {
 		$_POST['CategoryID'] = '';
@@ -1067,14 +1066,12 @@ if ($_POST['New'] == 1) {
 		echo '</table>';
 	}
 	echo '<input type="hidden" name="PropertyCounter" value="' . $PropertyCounter . '" />';
-	echo '<br />';
 
-	echo '<input type="submit" name="submit" value="' . _('Insert New Item') . '" />';
-	echo '<input type="submit" name="UpdateCategories" style="visibility:hidden;width:1px" value="' . _('Categories') . '" />';
+	echo '<div class="centre"><input type="submit" name="submit" value="' . _('Insert New Item') . '" />';
+	echo '<input type="submit" name="UpdateCategories" style="visibility:hidden;width:1px" value="' . _('Categories') . '" /></div>';
 
 }
-echo '</div>
-	</form>';
+echo '</form>';
 include('includes/footer.inc');
 
 ?>

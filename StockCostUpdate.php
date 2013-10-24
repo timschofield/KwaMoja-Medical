@@ -13,11 +13,11 @@ if (isset($_GET['StockID'])) {
 	$StockID = trim(mb_strtoupper($_POST['StockID']));
 }
 
-echo '<a href="' . $RootPath . '/SelectProduct.php">' . _('Back to Items') . '</a><br />';
+echo '<div class="toplink"><a href="' . $RootPath . '/SelectProduct.php">' . _('Back to Items') . '</a></div>';
 
 echo '<p class="page_title_text noPrint" >
-	 <img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" title="' . _('Inventory Adjustment') . '" alt="" />
-	 ' . ' ' . $Title . '</p>';
+		<img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" title="' . _('Inventory Adjustment') . '" alt="" />' . $Title . '
+	</p>';
 
 if (isset($_POST['UpdateData'])) {
 
@@ -115,7 +115,6 @@ $result = DB_query("SELECT description,
 $myrow = DB_fetch_array($result);
 
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 echo '<table cellpadding="2" class="selection">
@@ -188,12 +187,9 @@ if (!in_array($UpdateSecurity, $_SESSION['AllowedPageSecurityTokens'])) {
 		echo '<input type="hidden" name="OverheadCost" value="0" /></td></tr>';
 	}
 	echo '</table>
-		 <br />
 			 <div class="centre">
 				  <input type="submit" name="UpdateData" value="' . _('Update') . '" />
-			 </div>
-		 <br />
-		 <br />';
+			 </div>';
 }
 if ($myrow['mbflag'] != 'D') {
 	echo '<div class="centre"><a href="' . $RootPath . '/StockStatus.php?StockID=' . $StockID . '">' . _('Show Stock Status') . '</a>';
@@ -202,7 +198,6 @@ if ($myrow['mbflag'] != 'D') {
 	echo '<br /><a href="' . $RootPath . '/SelectSalesOrder.php?SelectedStockItem=' . $StockID . '">' . _('Search Outstanding Sales Orders') . '</a>';
 	echo '<br /><a href="' . $RootPath . '/SelectCompletedOrder.php?SelectedStockItem=' . $StockID . '">' . _('Search Completed Sales Orders') . '</a></div>';
 }
-echo '</div>
-	  </form>';
+echo '</form>';
 include('includes/footer.inc');
 ?>

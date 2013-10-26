@@ -670,11 +670,11 @@ class htmlMimeMail {
 			case 'smtp':
 				require_once(dirname(__FILE__) . '/smtp.php');
 				require_once(dirname(__FILE__) . '/RFC822.php');
-				$smtp = smtp->connect($this->smtp_params);
+				$smtp = smtp::connect($this->smtp_params);
 
 				// Parse recipients argument for internet addresses
 				foreach ($recipients as $recipient) {
-					$addresses = Mail_RFC822->parseAddressList($recipient, $this->smtp_params['helo'], null, false);
+					$addresses = Mail_RFC822::parseAddressList($recipient, $this->smtp_params['helo'], null, false);
 					foreach ($addresses as $address) {
 						$smtp_recipients[] = sprintf('%s@%s', $address->mailbox, $address->host);
 					}
@@ -686,7 +686,7 @@ class htmlMimeMail {
 				// Cc and Bcc as we go
 				foreach ($this->headers as $name => $value) {
 					if ($name == 'Cc' or $name == 'Bcc') {
-						$addresses = Mail_RFC822->parseAddressList($value, $this->smtp_params['helo'], null, false);
+						$addresses = Mail_RFC822::parseAddressList($value, $this->smtp_params['helo'], null, false);
 						foreach ($addresses as $address) {
 							$smtp_recipients[] = sprintf('%s@%s', $address->mailbox, $address->host);
 						}
@@ -708,7 +708,7 @@ class htmlMimeMail {
 				if (isset($this->return_path)) {
 					$send_params['from'] = $this->return_path;
 				} elseif (!empty($this->headers['From'])) {
-					$from = Mail_RFC822->parseAddressList($this->headers['From']);
+					$from = Mail_RFC822::parseAddressList($this->headers['From']);
 					$send_params['from'] = sprintf('%s@%s', $from[0]->mailbox, $from[0]->host);
 				} else {
 					$send_params['from'] = 'postmaster@' . $this->smtp_params['helo'];

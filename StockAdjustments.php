@@ -405,9 +405,9 @@ echo '<tr>
 		<td>' . _('Stock Code') . ':</td>
 		<td>';
 if (isset($StockID)) {
-	echo '<input type="text" name="StockID" size="21" required="required" value="' . $StockID . '" minlength="1" maxlength="20" /></td></tr>';
+	echo '<input type="text" name="StockID" size="21" value="' . $StockID . '" minlength="0" maxlength="20" /></td></tr>';
 } else {
-	echo '<input type="text" name="StockID" size="21" required="required" value="" minlength="1" maxlength="20" /></td></tr>';
+	echo '<input type="text" name="StockID" size="21" value="" minlength="0" maxlength="20" /></td></tr>';
 }
 echo '<tr>
 		<td>' . _('Partial Description') . ':</td>

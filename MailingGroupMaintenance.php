@@ -139,15 +139,9 @@ if (isset($_GET['Remove'])) {
 }
 if (!isset($_GET['Edit'])) { //display the input form
 ?>
-	<form onSubmit="return VerifyForm(this);" id="MailGroups" action="<?php
-	echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8');
-?>" method="post" />
-		<input type="hidden" name="FormID" value="<?php
-	echo $_SESSION['FormID'];
-?>" />
-		<label for="MailGroup"><?php
-	echo _('Mail Group');
-?></label>
+	<form onSubmit="return VerifyForm(this);" id="MailGroups" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8');?>" method="post">
+		<input type="hidden" name="FormID" value="<?php echo $_SESSION['FormID'];?>" />
+		<label for="MailGroup"><?php echo _('Mail Group');?></label>
 			<input type="text" autofocus="autofocus" name="MailGroup" required="required" minlength="1" maxlength="100" size="20" />
 			<input type="hidden" name="Clean" value="1" />
 			<input type="submit" name="Enter" value="<?php
@@ -185,11 +179,9 @@ function GetMailGroup() {
 ?></td>
 
 				<td><?php
-			echo '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?GroupId=' . $myrow['id'] . '&amp;Edit=1&amp;GroupName=' . $myrow['groupname'] . '" >' . _('Edit') . '</a>';
-?></td>
+			echo '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?GroupId=' . $myrow['id'] . '&amp;Edit=1&amp;GroupName=' . $myrow['groupname'] . '" >' . _('Edit') . '</a>';?></td>
 				<td><?php
-			echo '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Id=' . $myrow['id'] . '&amp;Delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this group?') . '\', \'Confirm Delete\', this);">' . _('Delete');
-?></a></td>
+			echo '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Id=' . $myrow['id'] . '&amp;Delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this group?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a>';?></td>
 			</tr>
 
 <?php
@@ -231,12 +223,10 @@ function GetUsers($GroupId, $GroupName) {
 ?></a>
 
 <table class="selection">
-		<th colspan="3"><div class="centre"><?php
-		echo _('Assigned Users');
-?></div></th>
-		<th colspan="3"><div class="centre"><?php
-		echo _('Available Users');
-?></div></th>
+	<tr>
+		<th colspan="3"><?php echo _('Assigned Users');?></div></th>
+		<th colspan="3"><?php echo _('Available Users');?></div></th>
+	</tr>
 <?php
 		$k = 0;
 		while ($myrow = DB_fetch_array($result)) {
@@ -262,7 +252,7 @@ function GetUsers($GroupId, $GroupName) {
 ?></td>
 			<td><a href="<?php
 				echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?UserId=' . $myrow['userid'] . '&amp;GroupName=' . $GroupName . '&amp;Remove=1&amp;GroupId=' . $GroupId;
-?>" onclick="return MakeConfirm('Are you sure you want to remove this user?', \'Confirm Delete\', this); " /><?php
+?>" onclick="return MakeConfirm('Are you sure you want to remove this user?', \'Confirm Delete\', this); "></a><?php
 				echo _('Remove');
 ?></a></td>
 			<td>&nbsp;</td>
@@ -282,7 +272,7 @@ function GetUsers($GroupId, $GroupName) {
 ?></td>
 			<td><a href="<?php
 				echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?UserId=' . $myrow['userid'] . '&amp;Add=1&amp;GroupName=' . $GroupName . '&amp;GroupId=' . $GroupId;
-?>" /><?php
+?>"<?php
 				echo _('Add');
 ?></a></td>
 <?php

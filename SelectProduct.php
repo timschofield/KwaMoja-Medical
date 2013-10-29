@@ -543,20 +543,22 @@ while ($myrow1 = DB_fetch_array($result1)) {
 echo '</select></td>';
 echo '<td>' . _('Enter partial') . '<b> ' . _('Description') . '</b>:</td><td>';
 if (isset($_POST['Keywords'])) {
-	echo '<input type="text" name="Keywords" autofocus="autofocus" value="' . $_POST['Keywords'] . '" size="20" minlength="0" maxlength="25" />';
+	echo '<input type="search" name="Keywords" autofocus="autofocus" value="' . $_POST['Keywords'] . '" size="20" minlength="0" maxlength="25" />';
 } else {
-	echo '<input type="text" name="Keywords" autofocus="autofocus" size="20" minlength="0" maxlength="25" />';
+	echo '<input type="search" name="Keywords" autofocus="autofocus" size="20" minlength="0" maxlength="25" />';
 }
 echo '</td></tr><tr><td></td>';
 echo '<td><b>' . _('OR') . ' ' . '</b>' . _('Enter partial') . ' <b>' . _('Stock Code') . '</b>:</td>';
 echo '<td>';
 if (isset($_POST['StockCode'])) {
-	echo '<input type="text" name="StockCode" value="' . $_POST['StockCode'] . '" size="15" minlength="0" maxlength="18" />';
+	echo '<input type="search" name="StockCode" value="' . $_POST['StockCode'] . '" size="15" minlength="0" maxlength="18" />';
 } else {
-	echo '<input type="text" name="StockCode" size="15" minlength="0" maxlength="18" />';
+	echo '<input type="search" name="StockCode" size="15" minlength="0" maxlength="18" />';
 }
-echo '</td></tr></table><br />';
-echo '<div class="centre"><input type="submit" name="Search" value="' . _('Search Now') . '" /></div><br />';
+echo '</td></tr></table>';
+echo '<div class="centre">
+		<input type="submit" name="Search" value="' . _('Search Now') . '" />
+	</div>';
 echo '</form>';
 // query for list of record(s)
 if (isset($_POST['Go']) or isset($_POST['Next']) or isset($_POST['Previous'])) {

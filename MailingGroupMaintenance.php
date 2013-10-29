@@ -90,7 +90,6 @@ if (isset($_GET['Edit'])) {
 			include('includes/footer.inc');
 			exit;
 		}
-
 	} else {
 		prnMsg(_('The page must be called with a group id'), 'error');
 		include('includes/footer.inc');
@@ -98,9 +97,8 @@ if (isset($_GET['Edit'])) {
 	}
 	GetUsers($GroupId, $GroupName);
 	include('includes/footer.inc');
-
-
 }
+
 //Users remove one user from the group
 if (isset($_GET['Remove'])) {
 	if (!empty($_GET['GroupName']) and mb_strlen($_GET['GroupName']) <= 100 and !ContainsIllegalCharacters($_GET['GroupName'])) {
@@ -134,29 +132,19 @@ if (isset($_GET['Remove'])) {
 	$ErrMsg = 'Failed to delete the userid ' . $UserId . ' from group ' . $GroupName;
 	$result = DB_query($sql, $db, $ErrMsg);
 	GetUsers($GroupId, $GroupName);
-
-
 }
+
 if (!isset($_GET['Edit'])) { //display the input form
-?>
-	<form onSubmit="return VerifyForm(this);" id="MailGroups" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8');?>" method="post">
-		<input type="hidden" name="FormID" value="<?php echo $_SESSION['FormID'];?>" />
-		<label for="MailGroup"><?php echo _('Mail Group');?></label>
+	echo '<form onSubmit="return VerifyForm(this);" id="MailGroups" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
+	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
+	echo '<label for="MailGroup">' .  _('Mail Group') . '</label>
 			<input type="text" autofocus="autofocus" name="MailGroup" required="required" minlength="1" maxlength="100" size="20" />
 			<input type="hidden" name="Clean" value="1" />
-			<input type="submit" name="Enter" value="<?php
-	echo _('Submit');
-?>" />
-	</form>
-
-
-<?php
-
+			<input type="submit" name="Enter" value="' . _('Submit') . '" />
+		</form>';
 	include('includes/footer.inc');
 }
-?>
 
-<?php
 function GetMailGroup() {
 	global $db;
 	//GET the mailing group data if there are any
@@ -164,31 +152,18 @@ function GetMailGroup() {
 	$ErrMsg = _('Failed to retrieve mail groups information');
 	$result = DB_query($sql, $db, $ErrMsg);
 	if (DB_num_rows($result) != 0) {
-?>
-	<table class="selection">
-		<tr>
-			<th><?php
-		echo _('Mail Group');
-?></th></tr>
-<?php
+		echo '<table class="selection">
+				<tr>
+					<th>' . _('Mail Group') . '</th>
+				</tr>';
 		while ($myrow = DB_fetch_array($result)) {
-?>
-			<tr>
-				<td><?php
-			echo $myrow['groupname'];
-?></td>
-
-				<td><?php
-			echo '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?GroupId=' . $myrow['id'] . '&amp;Edit=1&amp;GroupName=' . $myrow['groupname'] . '" >' . _('Edit') . '</a>';?></td>
-				<td><?php
-			echo '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Id=' . $myrow['id'] . '&amp;Delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this group?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a>';?></td>
-			</tr>
-
-<?php
+			echo '<tr>
+					<td>' . $myrow['groupname'] . '</td>
+					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?GroupId=' . $myrow['id'] . '&amp;Edit=1&amp;GroupName=' . $myrow['groupname'] . '" >' . _('Edit') . '</a></td>
+					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Id=' . $myrow['id'] . '&amp;Delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this group?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+				</tr>';
 		}
-?>
-	</table>
-<?php
+		echo '</table>';
 	}
 }
 
@@ -211,83 +186,43 @@ function GetUsers($GroupId, $GroupName) {
 	$ErrMsg = _('Failed to retrieve user information');
 	$result = DB_query($sql, $db, $ErrMsg);
 	if (DB_num_rows($result) != 0) {
+		echo '<div class="centre">' . _('Current Mail Group') . ' : ' . $GroupName . '</div>
+			<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('View All Groups') . '</a></div>';
 
-?>
-	<div class="centre"><?php
-		echo _('Current Mail Group') . ' : ' . $GroupName;
-?></div>
-	<div class="centre"><a href="<?php
-		echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8');
-?>" /><?php
-		echo _('View All Groups');
-?></a>
-
-<table class="selection">
-	<tr>
-		<th colspan="3"><?php echo _('Assigned Users');?></div></th>
-		<th colspan="3"><?php echo _('Available Users');?></div></th>
-	</tr>
-<?php
+		echo '<table class="selection">
+				<tr>
+					<th colspan="3">' . _('Assigned Users') . '</th>
+					<th colspan="3">' . _('Available Users') . '</th>
+				</tr>';
 		$k = 0;
 		while ($myrow = DB_fetch_array($result)) {
 			if ($k == 0) {
-?>
-			<tr class="EvenTableRows">
-<?php
+				echo '<tr class="EvenTableRows">';
 				$k = 1;
 			} else {
-?>
-			<tr class="OddTableRows">
-<?php
+				echo '<tr class="OddTableRows">';
 				$k = 0;
 			}
 
 			if (in_array($myrow['userid'], $UsersAssigned)) {
-?>
-			<td><?php
-				echo $myrow['userid'];
-?></td>
-			<td><?php
-				echo $myrow['realname'];
-?></td>
-			<td><a href="<?php
-				echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?UserId=' . $myrow['userid'] . '&amp;GroupName=' . $GroupName . '&amp;Remove=1&amp;GroupId=' . $GroupId;
-?>" onclick="return MakeConfirm('Are you sure you want to remove this user?', \'Confirm Delete\', this); "></a><?php
-				echo _('Remove');
-?></a></td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-<?php
+				echo '<td>' . $myrow['userid'] . '</td>
+					<td>' . $myrow['realname'] . '</td>
+					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?UserId=' . $myrow['userid'] . '&amp;GroupName=' . $GroupName . '&amp;Remove=1&amp;GroupId=' . $GroupId . '" onclick="return MakeConfirm(\'Are you sure you want to remove this user?\', \'Confirm Delete\', this); "></a>' . _('Remove') . '</a></td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>';
 			} else {
-?>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-			<td><?php
-				echo $myrow['userid'];
-?></td>
-			<td><?php
-				echo $myrow['realname'];
-?></td>
-			<td><a href="<?php
-				echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?UserId=' . $myrow['userid'] . '&amp;Add=1&amp;GroupName=' . $GroupName . '&amp;GroupId=' . $GroupId;
-?>"<?php
-				echo _('Add');
-?></a></td>
-<?php
+				echo '<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td>' . $myrow['userid'] . '</td>
+					<td>' . $myrow['realname'] . '</td>
+					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?UserId=' . $myrow['userid'] . '&amp;Add=1&amp;GroupName=' . $GroupName . '&amp;GroupId=' . $GroupId . '"' . _('Add') . '</a></td>';
 			}
 
-?>
-		</tr>
-
-
-<?php
+			echo '</tr>';
 		}
-?>
-</table>
-<?php
-
+		echo '</table>';
 	} else {
 		prnMsg(_('There are no user set up, please set up user first'), 'error');
 		include('includes/footer.inc');

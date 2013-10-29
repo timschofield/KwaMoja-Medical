@@ -202,7 +202,9 @@ if (isset($_POST['Currency']) and $_POST['Currency'] != '') {
 	}
 } //isset($_POST['Currency']) and $_POST['Currency'] != ''
 
-
+if (isset($_POST['BankTransRef']) and $_POST['BankTransRef'] != ''){     // Reference on Bank Transactions Inquiry
+	$_SESSION['PaymentDetail' . $identifier]->BankTransRef=$_POST['BankTransRef'];
+}
 if (isset($_POST['Narrative']) and $_POST['Narrative'] != '') {
 	$_SESSION['PaymentDetail' . $identifier]->Narrative = $_POST['Narrative'];
 } //isset($_POST['Narrative']) and $_POST['Narrative'] != ''
@@ -566,7 +568,7 @@ if (isset($_POST['CommitBatch'])) {
 							VALUES ('" . $TransNo . "',
 									'" . $TransType . "',
 									'" . $_SESSION['PaymentDetail' . $identifier]->Account . "',
-									'" . $_SESSION['PaymentDetail' . $identifier]->Narrative . "',
+									'" . $_SESSION['PaymentDetail' . $identifier]->BankTransRef . "',
 									'" . $_POST['Cheque'] . "',
 									'" . $_SESSION['PaymentDetail' . $identifier]->ExRate . "',
 									'" . $_SESSION['PaymentDetail' . $identifier]->FunctionalExRate . "',
@@ -595,7 +597,7 @@ if (isset($_POST['CommitBatch'])) {
 						VALUES ('" . $TransNo . "',
 								'" . $TransType . "',
 								'" . $_SESSION['PaymentDetail' . $identifier]->Account . "',
-								'" . $_SESSION['PaymentDetail' . $identifier]->Narrative . ' - ' . $PaymentItem->Narrative . "',
+								'" . $_SESSION['PaymentDetail' . $identifier]->BankTransRef . "',
 								'" . $PaymentItem->Cheque . "',
 								'" . $_SESSION['PaymentDetail' . $identifier]->ExRate . "',
 								'" . $_SESSION['PaymentDetail' . $identifier]->FunctionalExRate . "',
@@ -927,6 +929,14 @@ if ($myrow['usepreprintedstationery'] == 1) {
 		</tr>';
 }
 
+if (!isset($_POST['BankTransRef'])) {  // Payment (Bank Account) info to be inserted on banktrans.ref, varchar(50).
+	$_POST['BankTransRef'] = '';
+}
+echo '<tr>
+		<td>' . _('Reference') . ':</td>
+		<td colspan="2"><input type="text" name="BankTransRef" maxlength="50" size="52" value="' . stripslashes($_POST['BankTransRef'] ) . '" />  ' . _('Reference on Bank Transactions Inquiry (Max. length 50 characters)') . '</td>
+	</tr>';
+
 if (!isset($_POST['Narrative'])) {
 	$_POST['Narrative'] = '';
 } //!isset($_POST['Narrative'])
@@ -936,8 +946,8 @@ if (!isset($_POST['Currency'])) {
 } //!isset($_POST['Currency'])
 
 echo '<tr>
-		<td>' . _('Reference / Narrative') . ':</td>
-		<td colspan="2"><input type="text" name="Narrative" minlength="0" maxlength="80" size="82" value="' . stripslashes($_POST['Narrative']) . '" />  ' . _('(Max. length 80 characters)') . '</td>
+		<td>' . _('Narrative') . ':</td>
+		<td colspan="2"><input type="text" name="Narrative" maxlength="80" size="82" value="' . stripslashes($_POST['Narrative'] ) . '" />' . _('Narrative on GL Trans') . '</td>
 	</tr>
 		<td><input type="hidden" name="PreviousCurrency" value="' . $_POST['Currency'] . '" /></td>
 		<td colspan="3"><div class="centre"><input type="submit" name="UpdateHeader" value="' . _('Update') . '" /></div></td>
@@ -1064,7 +1074,7 @@ if ($_SESSION['CompanyRecord']['gllink_creditors'] == 1 and $_SESSION['PaymentDe
 			<td><input type="text" name="Cheque" minlength="0" maxlength="12" size="12" /></td>
 		</tr>';
 
-	if (isset($_POST['GLNarrative'])) {
+	if (isset($_POST['GLNarrative'])) { // General Ledger Payment (Different than Bank Account) info to be inserted on gltrans.narrative, varchar(200).
 		echo '<tr>
 				<td>' . _('GL Narrative') . ':</td>
 				<td><input type="text" name="GLNarrative" minlength="0" maxlength="50" size="52" value="' . stripslashes($_POST['GLNarrative']) . '" /></td>

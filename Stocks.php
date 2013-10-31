@@ -554,6 +554,9 @@ if (isset($_POST['submit'])) {
 				DB_Txn_Commit($db);
 				prnMsg(_('Stock Item') . ' ' . $StockID . ' ' . _('has been updated'), 'success');
 			}
+			if (DB_error_no($db) != 0){
+				$result = DB_Txn_Rollback($db);
+			}
 
 		} else { //it is a NEW part
 			//but lets be really sure here
@@ -689,7 +692,9 @@ if (isset($_POST['submit'])) {
 							unset($_POST['Description_' . str_replace('.', '_', $DescriptionLanguage)]);
 						}
 						$New = 1;
-					} //ALL WORKED SO RESET THE FORM VARIABLES
+					} else {
+						$InsResult = DB_Txn_Rollback($db);
+					}
 				} //THE INSERT OF THE NEW CODE WORKED SO BANG IN THE STOCK LOCATION RECORDS TOO
 			} //END CHECK FOR ALREADY EXISTING ITEM OF THE SAME CODE
 		}

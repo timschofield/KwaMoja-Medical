@@ -482,7 +482,7 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 	/* end of ($Its_A_Kitset_Assembly_Or_Dummy == False) */
 	echo '</td><td valign="top" class="select">';
 	/* Stock Maintenance Options */
-	echo '<a href="' . $RootPath . '/Stocks.php?">' . _('Add Inventory Items') . '</a><br />';
+	echo '<a href="' . $RootPath . '/Stocks.php?">' . _('Insert New Item') . '</a><br />';
 	echo '<a href="' . $RootPath . '/Stocks.php?StockID=' . $StockID . '">' . _('Modify Item Details') . '</a><br />';
 	if ($Its_A_Kitset_Assembly_Or_Dummy == False) {
 		echo '<a href="' . $RootPath . '/StockReorderLevel.php?StockID=' . $StockID . '">' . _('Maintain Reorder Levels') . '</a><br />';
@@ -515,7 +515,7 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 	/* Stock Transactions */
 	echo '</td><td class="select">';
 	/*Stock Maintenance Options */
-	echo '<a href="' . $RootPath . '/Stocks.php?">' . _('Add Inventory Items') . '</a><br />';
+	echo '<a href="' . $RootPath . '/Stocks.php?">' . _('Insert New Item') . '</a><br />';
 	echo '</td></tr></table>';
 } // end displaying item options if there is one and only one record
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';

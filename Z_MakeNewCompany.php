@@ -210,7 +210,7 @@ echo '<td>' . _('Enter up to 32 character lower case character abbreviation for 
 	<td><input type="text" size="33" minlength="0" maxlength="32" name="NewCompany" /></td>
 	</tr>
 	<tr>
-		<td>' . _('Logo Image File (.jpg)') . ':</td><td><input type="file" id="LogoFile" name="LogoFile" /></td>
+		<td>' . _('Logo Image File (.jpg)') . ':</td><td><input type="file" required="required" id="LogoFile" name="LogoFile" /></td>
 	</tr>
 	<tr>
 		<td>' . _('Create Database?') . '</td>

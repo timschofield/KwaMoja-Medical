@@ -554,6 +554,9 @@ if (isset($_POST['submit'])) {
 				DB_Txn_Commit($db);
 				prnMsg(_('Stock Item') . ' ' . $StockID . ' ' . _('has been updated'), 'success');
 			}
+			if (DB_error_no($db) != 0){
+				$result = DB_Txn_Rollback($db);
+			}
 
 		} else { //it is a NEW part
 			//but lets be really sure here
@@ -566,6 +569,7 @@ if (isset($_POST['submit'])) {
 				$Errors[$i] = 'StockID';
 				$i++;
 			} else {
+				DB_Txn_Begin($db);
 				$sql = "INSERT INTO stockmaster (stockid,
 												description,
 												longdescription,
@@ -609,7 +613,7 @@ if (isset($_POST['submit'])) {
 
 				$ErrMsg = _('The item could not be added because');
 				$DbgMsg = _('The SQL that was used to add the item failed was');
-				$result = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+				$result = DB_query($sql, $db, $ErrMsg, $DbgMsg, true);
 				if (DB_error_no($db) == 0) {
 					//now insert the language descriptions
 					$ErrMsg = _('Could not update the language description because');
@@ -656,7 +660,8 @@ if (isset($_POST['submit'])) {
 
 					$ErrMsg = _('The locations for the item') . ' ' . $StockID . ' ' . _('could not be added because');
 					$DbgMsg = _('NB Locations records can be added by opening the utility page') . ' <i>Z_MakeStockLocns.php</i> ' . _('The SQL that was used to add the location records that failed was');
-					$InsResult = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+					$InsResult = DB_query($sql, $db, $ErrMsg, $DbgMsg, true);
+					DB_Txn_Commit($db);
 
 					if (DB_error_no($db) == 0) {
 						prnMsg(_('New Item') . ' ' . '<a href="SelectProduct.php?StockID=' . $StockID . '">' . $StockID . '</a> ' . _('has been added to the database') . '<br />' . _('NB: The item cost and pricing must also be setup') . '<br />' . '<a target="_blank" href="StockCostUpdate.php?StockID=' . $StockID . '">' . _('Enter Item Cost') . '</a>
@@ -687,7 +692,9 @@ if (isset($_POST['submit'])) {
 							unset($_POST['Description_' . str_replace('.', '_', $DescriptionLanguage)]);
 						}
 						$New = 1;
-					} //ALL WORKED SO RESET THE FORM VARIABLES
+					} else {
+						$InsResult = DB_Txn_Rollback($db);
+					}
 				} //THE INSERT OF THE NEW CODE WORKED SO BANG IN THE STOCK LOCATION RECORDS TOO
 			} //END CHECK FOR ALREADY EXISTING ITEM OF THE SAME CODE
 		}

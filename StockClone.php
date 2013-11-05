@@ -266,6 +266,7 @@ if (isset($_POST['submit'])) {
 				prnMsg(_('The stock code entered is already in the database - duplicate stock codes are prohibited by the system. Try choosing an alternative stock code'), 'error');
 				$Errors[$i] = 'DuplicateStockID';
 			} else {
+				DB_Txn_Begin($db);
 				$sql = "INSERT INTO stockmaster (stockid,
 												description,
 												longdescription,
@@ -309,7 +310,7 @@ if (isset($_POST['submit'])) {
 
 				$ErrMsg = _('The item could not be added because');
 				$DbgMsg = _('The SQL that was used to add the item failed was');
-				$result = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+				$result = DB_query($sql,$db, $ErrMsg, $DbgMsg,'',true);
 				if (DB_error_no($db) == 0) {
 					//now insert the language descriptions
 					$ErrMsg = _('Could not update the language description because');
@@ -356,7 +357,7 @@ if (isset($_POST['submit'])) {
 
 					$ErrMsg = _('The locations for the item') . ' ' . $_POST['StockID'] . ' ' . _('could not be added because');
 					$DbgMsg = _('NB Locations records can be added by opening the utility page') . ' <i>Z_MakeStockLocns.php</i> ' . _('The SQL that was used to add the location records that failed was');
-					$InsResult = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+					$InsResult = DB_query($sql, $db, $ErrMsg, $DbgMsg, true);
 
 					//check for any purchase data
 					$sql = "SELECT purchdata.supplierno,
@@ -410,7 +411,7 @@ if (isset($_POST['submit'])) {
 									'" . $myrow['preferred'] . "')";
 							$ErrMsg = _('The cloned supplier purchasing details could not be added to the database because');
 							$DbgMsg = _('The SQL that failed was');
-							$AddResult = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+							$AddResult = DB_query($sql, $db, $ErrMsg, $DbgMsg, true);
 						}
 					}
 
@@ -459,7 +460,8 @@ if (isset($_POST['submit'])) {
 									'" . $myrow['enddate'] . "',
 									'" . $myrow['price'] . "')";
 							$ErrMsg = _('The cloned pricing could not be added');
-							$result = DB_query($sql, $db, $ErrMsg);
+							$DbgMsg = _('The sql that failed to add the cloned pricing');
+							$result = DB_query($sql, $db, $ErrMsg, $DbgMsg, true);
 						}
 					}
 					//What about cost data?
@@ -540,6 +542,7 @@ if (isset($_POST['submit'])) {
 						}
 					} //Reset the form variables
 				} //Stock records finished
+				DB_Txn_Commit($db);
 			} //End of check for existing item
 		} //END Cloned item
 	} else {

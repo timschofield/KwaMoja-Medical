@@ -347,7 +347,7 @@ if (!isset($SelectedCurrency)) {
 					<td><a href="%s&amp;SelectedCurrency=%s">%s</a></td>
 					<td><a href="%s&amp;SelectedCurrency=%s&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this currency?') . '\', \'Confirm Delete\', this);">%s</a></td>
 					<td><a href="%s/ExchangeRateTrend.php?%s">' . _('Graph') . '</a></td>
-					</tr>', $ImageFile, $myrow['currabrev'], _($myrow['currency']), $myrow['country'], $myrow['hundredsname'], locale_number_format($myrow['decimalplaces'], 0), $ShowInWebText, locale_number_format($myrow['rate'], 8), locale_number_format(1 / $myrow['rate'], 8), locale_number_format(GetCurrencyRate($myrow['currabrev'], $CurrencyRatesArray), 8), htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['currabrev'], _('Edit'), htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['currabrev'], _('Delete'), $RootPath, '&amp;CurrencyToShow=' . $myrow['currabrev']);
+					</tr>', $ImageFile, $myrow['currabrev'], $CurrenciesArray[$myrow['currabrev']]['Currency'], $myrow['country'], $myrow['hundredsname'], locale_number_format($myrow['decimalplaces'], 0), $ShowInWebText, locale_number_format($myrow['rate'], 8), locale_number_format(1 / $myrow['rate'], 8), locale_number_format(GetCurrencyRate($myrow['currabrev'], $CurrencyRatesArray), 8), htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['currabrev'], _('Edit'), htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['currabrev'], _('Delete'), $RootPath, '&amp;CurrencyToShow=' . $myrow['currabrev']);
 		} else {
 			printf('<td><img src="%s" alt="" /></td>
 					<td>%s</td>
@@ -358,7 +358,7 @@ if (!isset($SelectedCurrency)) {
 					<td>%s</td>
 					<td class="number">%s</td>
 					<td colspan="5">%s</td>
-					</tr>', $ImageFile, $myrow['currabrev'], _($myrow['currency']), $myrow['country'], $myrow['hundredsname'], locale_number_format($myrow['decimalplaces'], 0), $ShowInWebText, 1, _('Functional Currency'));
+					</tr>', $ImageFile, $myrow['currabrev'], $CurrenciesArray[$myrow['currabrev']]['Currency'], $myrow['country'], $myrow['hundredsname'], locale_number_format($myrow['decimalplaces'], 0), $ShowInWebText, 1, _('Functional Currency'));
 		}
 
 	} //END WHILE LIST LOOP

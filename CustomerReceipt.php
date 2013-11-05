@@ -789,9 +789,9 @@ if (DB_num_rows($result) == 0) {
 } else {
 	while ($myrow = DB_fetch_array($result)) {
 		if ($_SESSION['ReceiptBatch']->Currency == $myrow['currabrev']) {
-			echo '<option selected="selected" value="' . $myrow['currabrev'] . '">' . $myrow['currency'] . '</option>';
+			echo '<option selected="selected" value="' . $myrow['currabrev'] . '">' . $CurrenciesArray[$myrow['currabrev']]['Currency'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['currabrev'] . '">' . $myrow['currency'] . '</option>';
+			echo '<option value="' . $myrow['currabrev'] . '">' . $CurrenciesArray[$myrow['currabrev']]['Currency'] . '</option>';
 		}
 	}
 	echo '</select></td>

@@ -817,10 +817,10 @@ if ($_SESSION['PaymentDetail' . $identifier]->SupplierID == '') {
 	else {
 		while ($myrow = DB_fetch_array($result)) {
 			if ($_SESSION['PaymentDetail' . $identifier]->Currency == $myrow['currabrev']) {
-				echo '<option selected="selected" value="' . $myrow['currabrev'] . '">' . $myrow['currency'] . '</option>';
+				echo '<option selected="selected" value="' . $myrow['currabrev'] . '">' . $CurrenciesArray[$myrow['currabrev']]['Currency'] . '</option>';
 			} //$_SESSION['PaymentDetail' . $identifier]->Currency == $myrow['currabrev']
 			else {
-				echo '<option value="' . $myrow['currabrev'] . '">' . $myrow['currency'] . '</option>';
+				echo '<option value="' . $myrow['currabrev'] . '">' . $CurrenciesArray[$myrow['currabrev']]['Currency'] . '</option>';
 			}
 		} //$myrow = DB_fetch_array($result)
 		echo '</select></td>

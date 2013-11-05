@@ -17,7 +17,7 @@ if (isset($_POST['stockID'])) {
 	$_POST['SelectChoice'] = 1;
 }
 
-if (isset($_POST['submit'])) {
+if (isset($_POST['submit']) and !isset($_POST['SubmitCategory'])) {
 
 	//initialise no input errors assumed initially before we test
 	$InputError = 0;
@@ -58,10 +58,19 @@ if (isset($_POST['submit'])) {
 	prnMsg(_('The stock master record has been updated to no discount category'), 'success');
 	echo '<br />';
 } elseif (isset($_POST['SubmitCategory'])) {
-	$sql = "UPDATE stockmaster
-			SET discountcategory='" . $_POST['DiscountCategory'] . "'
-			WHERE categoryid='" . $_POST['stockcategory'] . "'";
-	$result = DB_query($sql, $db);
+	$sql = "SELECT stockid FROM stockmaster WHERE categoryid='".$_POST['stockcategory']."'";
+	$ErrMsg = _('Failed to retrieve stock category data');
+	$result = DB_query($sql,$db,$ErrMsg);
+	if (DB_num_rows($result) > 0){
+		$sql = "UPDATE stockmaster
+				SET discountcategory='" . $_POST['DiscountCategory'] . "'
+				WHERE categoryid='" . $_POST['stockcategory'] . "'";
+		$result = DB_query($sql, $db);
+	} else {
+		prnMsg(_('There are no stock defined for this stock category, you must define stock for it first'), 'error');
+		include('includes/footer.inc');
+		exit;
+	}
 }
 
 if (isset($_POST['SelectChoice'])) {

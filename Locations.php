@@ -582,10 +582,19 @@ if (!isset($_GET['delete'])) {
 			<td>' . _('Delivery Address 5') . ':' . '</td>
 			<td><input type="text" name="DelAdd5" value="' . $_POST['DelAdd5'] . '" size="21" minlength="0" maxlength="20" /></td>
 		</tr>
-		<tr>
-			<td>' . _('Delivery Address 6') . ':' . '</td>
-			<td><input type="text" name="DelAdd6" value="' . $_POST['DelAdd6'] . '" size="16" minlength="0" maxlength="15" /></td>
-		</tr>
+			<td>' . _('Country') . ':</td>
+			<td><select name="DelAdd6">';
+		foreach ($CountriesArray as $CountryEntry => $CountryName){
+			if (isset($_POST['DelAdd6']) and (strtoupper($_POST['DelAdd6']) == strtoupper($CountryName))){
+				echo '<option selected="selected" value="' . $CountryName . '">' . $CountryName  . '</option>';
+			} elseif (!isset($_POST['Address6']) AND $CountryName == "") {
+				echo '<option selected="selected" value="' . $CountryName . '">' . $CountryName  . '</option>';
+			} else {
+				echo '<option value="' . $CountryName . '">' . $CountryName  . '</option>';
+			}
+		}
+		echo '</select></td>
+ 		</tr>
 		<tr>
 			<td>' . _('Telephone No') . ':' . '</td>
 			<td><input type="tel" name="Tel" value="' . $_POST['Tel'] . '" size="31" minlength="0" maxlength="30" /></td>

@@ -584,13 +584,13 @@ if (!isset($_GET['delete'])) {
 		</tr>
 			<td>' . _('Country') . ':</td>
 			<td><select name="DelAdd6">';
-		foreach ($CountriesArray as $CountryEntry => $CountryName){
-			if (isset($_POST['DelAdd6']) and (strtoupper($_POST['DelAdd6']) == strtoupper($CountryName))){
-				echo '<option selected="selected" value="' . $CountryName . '">' . $CountryName  . '</option>';
-			} elseif (!isset($_POST['Address6']) AND $CountryName == "") {
-				echo '<option selected="selected" value="' . $CountryName . '">' . $CountryName  . '</option>';
+		foreach ($CountriesArray as $CountryEntry => $CountryName) {
+			if (isset($_POST['DelAdd6']) and (strtoupper($_POST['DelAdd6']) == strtoupper($CountryName))) {
+				echo '<option selected="selected" value="' . $CountryName . '">' . $CountryName . '</option>';
+			} elseif (!isset($_POST['Address6']) and $CountryName == "") {
+				echo '<option selected="selected" value="' . $CountryName . '">' . $CountryName . '</option>';
 			} else {
-				echo '<option value="' . $CountryName . '">' . $CountryName  . '</option>';
+				echo '<option value="' . $CountryName . '">' . $CountryName . '</option>';
 			}
 		}
 		echo '</select></td>

@@ -260,26 +260,22 @@ foreach ($FormDesign as $key) {
 							<th colspan="7">' . _($key['name']) . '</th>
 						</tr>' . "\n";
 			foreach ($key as $subkey) {
+				echo '<tr>';
 				if ($subkey['type'] == 'SimpleText') {
-					echo '<tr>';
 					echo '<td>' . _($subkey['name']) . '</td>';
 					SimpleTextLine($subkey);
-					echo '</tr>';
 				} else if ($subkey['type'] == 'MultiLineText') {
-					echo '<tr>';
 					echo '<td>' . _($subkey['name']) . '</td>';
 					MultiTextLine($subkey);
-					echo '</tr>';
 				} else {
-					echo '<tr>';
 					if ($subkey['type'] == 'DataText') {
 						echo '<td>' . _($subkey['name']) . '</td>';
 						DataTextLine($subkey);
 					} elseif ($subkey['type'] == 'StartLine') {
 						echo '<td colspan="3">' . _($subkey['name']) . ' = ' . '</td><td><input type="text" class="number" name="StartLine" size="4" minlength="0" maxlength="4" value="' . $key->y . '" /></td>';
 					}
-					echo '</tr>';
 				}
+				echo '</tr>';
 			}
 			echo '</table></td>';
 			$counter = $counter + 1;

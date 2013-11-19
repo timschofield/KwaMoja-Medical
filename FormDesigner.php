@@ -3,6 +3,28 @@
 include('includes/session.inc');
 $Title = _('Form Designer');
 include('includes/header.inc');
+// General function to select a text alignment
+function SelectAlignment($keyId, $keyAlignment) {
+	$Alignments = array(); // Possible alignments
+	$Alignments['left']['Caption'] = _('Left');
+	$Alignments['left']['Title'] = _('Text lines are rendered flush left');
+	$Alignments['centre']['Caption'] = _('Centre');
+	$Alignments['centre']['Title'] = _('Text lines are centered');
+	$Alignments['right']['Caption'] = _('Right');
+	$Alignments['right']['Title'] = _('Text lines are rendered flush right');
+	$Alignments['full']['Caption'] = _('Justify');
+	$Alignments['full']['Title'] = _('Text lines are justified to both margins');
+	echo '<select name="' . $keyId . 'Alignment">';
+	foreach ($Alignments as $AlignmentValue => $AlignmentOption) {
+		echo '<option';
+		if ($AlignmentValue == $keyAlignment) {
+			echo ' selected="selected"';
+		}
+		echo ' value="' . $AlignmentValue . '" title="' . $AlignmentOption['Title'] . '">' . $AlignmentOption['Caption'] . '</option>';
+	}
+	echo '</select>';
+}
+// General function to select a font size
 function FontSizes() {
 	return array(
 		6,
@@ -20,22 +42,26 @@ function FontSizes() {
 		22,
 		24
 	); //Possible font sizes
+	echo '<select name="' . $keyId . 'FontSize">';
+	foreach ($FontSizes as $FontSize) {
+		echo '<option';
+		if ($FontSize==$keyFontSize) {
+			echo ' selected="selected"';
+		}
+		echo ' value="' . $FontSize . '">' . $FontSize . '</option>';
+	}
+	echo '</select>';
 }
 function SimpleTextLine($key) {
 	/* Displays a table row containing the attributes for a
 	 * line of text of type `SimpleText` and the values
 	 * given in the object $key
 	 */
-	$FontSizes = FontSizes();
-	echo '<td class="number">' . _('Font Size') . ' = ' . '</td><td><select minlength="0" name="' . $key['id'] . 'FontSize">';
-	foreach ($FontSizes as $FontSize) {
-		if ($FontSize == $key->FontSize) {
-			echo '<option selected="selected" value="' . $FontSize . '">' . $FontSize . '</option>';
-		} else {
-			echo '<option value="' . $FontSize . '">' . $FontSize . '</option>';
-		}
-	}
-	echo '</select></td>';
+
+	// Displays the text font size in dpi (72 dpi = 1 inch)
+	echo '<td class="number">' . _('Font Size'). ' = </td><td>';
+	SelectFontSize($key['id'], $key->FontSize);
+	echo '</td>';
 	/* Display the X co-ordinate (mm from the left hand side of page) */
 	echo '<td class="number">' . _('x') . ' = ' . '</td><td><input type="text" class="number" name="' . $key['id'] . 'x" size="4" minlength="0" maxlength="4" value="' . $key->x . '" /></td>';
 	/* Display the Y co-ordinate (mm from the top of the page) */
@@ -46,16 +72,11 @@ function MultiTextLine($key) {
 	 * line of text of type `MultiLineText` and the values
 	 * given in the object $key
 	 */
-	$FontSizes = FontSizes();
-	echo '<td class="number">' . _('Font Size') . ' = ' . '</td><td><select minlength="0" name="' . $key['id'] . 'FontSize">';
-	foreach ($FontSizes as $FontSize) {
-		if ($FontSize == $key->FontSize) {
-			echo '<option selected="selected" value="' . $FontSize . '">' . $FontSize . '</option>';
-		} else {
-			echo '<option value="' . $FontSize . '">' . $FontSize . '</option>';
-		}
-	}
-	echo '</select></td>';
+
+	// Displays the text font size in dpi (72 dpi = 1 inch)
+	echo '<td class="number">' . _('Font Size'). ' = </td><td>';
+	SelectFontSize($key['id'], $key->FontSize);
+	echo '</td>';
 	/* Display the length of the field in mm */
 	echo '<td class="number">' . _('Length') . ' = ' . '</td><td><input type="text" class="number" name="' . $key['id'] . 'Length" size="4" minlength="0" maxlength="4" value="' . $key->Length . '" /></td></tr><tr>';
 	/* Display the X co-ordinate (mm from the left hand side of page) */
@@ -68,16 +89,11 @@ function DataTextLine($key) {
 	 * line of text of type `DataText` and the values
 	 * given in the object $key
 	 */
-	$FontSizes = FontSizes();
-	echo '<td class="number">' . _('Font Size') . ' = ' . '</td><td><select minlength="0" name="' . $key['id'] . 'FontSize">';
-	foreach ($FontSizes as $FontSize) {
-		if ($FontSize == $key->FontSize) {
-			echo '<option selected="selected" value="' . $FontSize . '">' . $FontSize . '</option>';
-		} else {
-			echo '<option value="' . $FontSize . '">' . $FontSize . '</option>';
-		}
-	}
-	echo '</select></td>';
+
+	// Displays the text font size in dpi (72 dpi = 1 inch)
+	echo '<td class="number">' . _('Font Size'). ' = </td><td>';
+	SelectFontSize($key['id'], $key->FontSize);
+	echo '</td>';
 	/* Display the length of the field in mm */
 	echo '<td class="number">' . _('Length') . ' = ' . '</td><td><input type="text" class="number" name="' . $key['id'] . 'Length" size="4" minlength="0" maxlength="4" value="' . $key->Length . '" /></td>';
 	/* Display the X co-ordinate (mm from the left hand side of page) */

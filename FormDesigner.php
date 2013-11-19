@@ -213,7 +213,7 @@ foreach ($FormDesign as $key) {
 			echo '<td colspan="1" valign="top">
 					<table width="100%" border="1">
 						<tr>
-							<th colspan="8">' . $key['name'] . '</th>
+							<th colspan="8">' . _($key['name']) . '</th>
 						</tr>
 						<tr>
 							<td class="number">' . _('x') . ' = ' . '</td>
@@ -233,7 +233,7 @@ foreach ($FormDesign as $key) {
 			echo '<td colspan="1" valign="top">
 					<table width="100%" border="1">
 						<tr>
-							<th colspan="6">' . $key['name'] . '</th>
+							<th colspan="6">' . _($key['name']) . '</th>
 						</tr>' . "\n";
 			echo '<tr>';
 			SimpleTextLine($key);
@@ -245,7 +245,7 @@ foreach ($FormDesign as $key) {
 			echo '<td colspan="1" valign="top">
 					<table width="100%" border="1">
 						<tr>
-							<th colspan="4">' . $key['name'] . '</th>
+							<th colspan="4">' . _($key['name']) . '</th>
 						</tr>' . "\n";
 			echo '<tr>';
 			MultiTextLine($key);
@@ -257,7 +257,7 @@ foreach ($FormDesign as $key) {
 			echo '<td colspan="1" valign="top">
 					<table width="100%" border="1">
 						<tr>
-							<th colspan="7">' . $key['name'] . '</th>
+							<th colspan="7">' . _($key['name']) . '</th>
 						</tr>' . "\n";
 			foreach ($key as $subkey) {
 				if ($subkey['type'] == 'SimpleText') {
@@ -288,7 +288,7 @@ foreach ($FormDesign as $key) {
 			echo '<td colspan="1" valign="top">
 					<table width="100%" border="1">
 						<tr>
-							<th colspan="6">' . $key['name'] . '</th>
+							<th colspan="6">' . _($key['name']) . '</th>
 						</tr>
 						<tr>
 							<td class="number">' . _('x') . ' = ' . '</td>
@@ -312,7 +312,7 @@ foreach ($FormDesign as $key) {
 			echo '<td colspan="1" valign="top">
 					<table width="100%" border="1">
 						<tr>
-							<th colspan="6">' . $key['name'] . '</th>
+							<th colspan="6">' . _($key['name']) . '</th>
 						</tr>
 						<tr>
 							<td class="number">' . _('x') . ' = ' . '</td>
@@ -334,7 +334,7 @@ foreach ($FormDesign as $key) {
 			echo '<td colspan="1" valign="top">
 					<table width="100%" border="1">
 						<tr>
-							<th colspan="6">' . $key['name'] . '</th>
+							<th colspan="6">' . _($key['name']) . '</th>
 						</tr>
 						<tr>
 							<td class="number">' . _('Start x co-ordinate') . ' = ' . '</td>

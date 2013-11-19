@@ -151,7 +151,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 
 					$FontSize = 12;
 
-					$pdf->addText($Left_Margin + 1, $YPos + 20, $FontSize, _('Settled Transactions'));
+					$pdf->addText($Left_Margin + 1, $YPos + 5, $FontSize, _('Settled Transactions'));
 
 					$YPos -= (2 * $line_height);
 

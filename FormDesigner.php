@@ -3,6 +3,28 @@
 include('includes/session.inc');
 $Title = _('Form Designer');
 include('includes/header.inc');
+// General function to select a text alignment
+function SelectAlignment($keyId, $keyAlignment) {
+	$Alignments = array(); // Possible alignments
+	$Alignments['left']['Caption'] = _('Left');
+	$Alignments['left']['Title'] = _('Text lines are rendered flush left');
+	$Alignments['centre']['Caption'] = _('Centre');
+	$Alignments['centre']['Title'] = _('Text lines are centered');
+	$Alignments['right']['Caption'] = _('Right');
+	$Alignments['right']['Title'] = _('Text lines are rendered flush right');
+	$Alignments['full']['Caption'] = _('Justify');
+	$Alignments['full']['Title'] = _('Text lines are justified to both margins');
+	echo '<select name="' . $keyId . 'Alignment">';
+	foreach ($Alignments as $AlignmentValue => $AlignmentOption) {
+		echo '<option';
+		if ($AlignmentValue == $keyAlignment) {
+			echo ' selected="selected"';
+		}
+		echo ' value="' . $AlignmentValue . '" title="' . $AlignmentOption['Title'] . '">' . $AlignmentOption['Caption'] . '</option>';
+	}
+	echo '</select>';
+}
+// General function to select a font size
 function FontSizes() {
 	return array(
 		6,
@@ -20,22 +42,26 @@ function FontSizes() {
 		22,
 		24
 	); //Possible font sizes
+	echo '<select name="' . $keyId . 'FontSize">';
+	foreach ($FontSizes as $FontSize) {
+		echo '<option';
+		if ($FontSize==$keyFontSize) {
+			echo ' selected="selected"';
+		}
+		echo ' value="' . $FontSize . '">' . $FontSize . '</option>';
+	}
+	echo '</select>';
 }
 function SimpleTextLine($key) {
 	/* Displays a table row containing the attributes for a
 	 * line of text of type `SimpleText` and the values
 	 * given in the object $key
 	 */
-	$FontSizes = FontSizes();
-	echo '<td class="number">' . _('Font Size') . ' = ' . '</td><td><select minlength="0" name="' . $key['id'] . 'FontSize">';
-	foreach ($FontSizes as $FontSize) {
-		if ($FontSize == $key->FontSize) {
-			echo '<option selected="selected" value="' . $FontSize . '">' . $FontSize . '</option>';
-		} else {
-			echo '<option value="' . $FontSize . '">' . $FontSize . '</option>';
-		}
-	}
-	echo '</select></td>';
+
+	// Displays the text font size in dpi (72 dpi = 1 inch)
+	echo '<td class="number">' . _('Font Size'). ' = </td><td>';
+	SelectFontSize($key['id'], $key->FontSize);
+	echo '</td>';
 	/* Display the X co-ordinate (mm from the left hand side of page) */
 	echo '<td class="number">' . _('x') . ' = ' . '</td><td><input type="text" class="number" name="' . $key['id'] . 'x" size="4" minlength="0" maxlength="4" value="' . $key->x . '" /></td>';
 	/* Display the Y co-ordinate (mm from the top of the page) */
@@ -46,16 +72,11 @@ function MultiTextLine($key) {
 	 * line of text of type `MultiLineText` and the values
 	 * given in the object $key
 	 */
-	$FontSizes = FontSizes();
-	echo '<td class="number">' . _('Font Size') . ' = ' . '</td><td><select minlength="0" name="' . $key['id'] . 'FontSize">';
-	foreach ($FontSizes as $FontSize) {
-		if ($FontSize == $key->FontSize) {
-			echo '<option selected="selected" value="' . $FontSize . '">' . $FontSize . '</option>';
-		} else {
-			echo '<option value="' . $FontSize . '">' . $FontSize . '</option>';
-		}
-	}
-	echo '</select></td>';
+
+	// Displays the text font size in dpi (72 dpi = 1 inch)
+	echo '<td class="number">' . _('Font Size'). ' = </td><td>';
+	SelectFontSize($key['id'], $key->FontSize);
+	echo '</td>';
 	/* Display the length of the field in mm */
 	echo '<td class="number">' . _('Length') . ' = ' . '</td><td><input type="text" class="number" name="' . $key['id'] . 'Length" size="4" minlength="0" maxlength="4" value="' . $key->Length . '" /></td></tr><tr>';
 	/* Display the X co-ordinate (mm from the left hand side of page) */
@@ -68,16 +89,11 @@ function DataTextLine($key) {
 	 * line of text of type `DataText` and the values
 	 * given in the object $key
 	 */
-	$FontSizes = FontSizes();
-	echo '<td class="number">' . _('Font Size') . ' = ' . '</td><td><select minlength="0" name="' . $key['id'] . 'FontSize">';
-	foreach ($FontSizes as $FontSize) {
-		if ($FontSize == $key->FontSize) {
-			echo '<option selected="selected" value="' . $FontSize . '">' . $FontSize . '</option>';
-		} else {
-			echo '<option value="' . $FontSize . '">' . $FontSize . '</option>';
-		}
-	}
-	echo '</select></td>';
+
+	// Displays the text font size in dpi (72 dpi = 1 inch)
+	echo '<td class="number">' . _('Font Size'). ' = </td><td>';
+	SelectFontSize($key['id'], $key->FontSize);
+	echo '</td>';
 	/* Display the length of the field in mm */
 	echo '<td class="number">' . _('Length') . ' = ' . '</td><td><input type="text" class="number" name="' . $key['id'] . 'Length" size="4" minlength="0" maxlength="4" value="' . $key->Length . '" /></td>';
 	/* Display the X co-ordinate (mm from the left hand side of page) */
@@ -213,7 +229,7 @@ foreach ($FormDesign as $key) {
 			echo '<td colspan="1" valign="top">
 					<table width="100%" border="1">
 						<tr>
-							<th colspan="8">' . $key['name'] . '</th>
+							<th colspan="8">' . _($key['name']) . '</th>
 						</tr>
 						<tr>
 							<td class="number">' . _('x') . ' = ' . '</td>
@@ -233,7 +249,7 @@ foreach ($FormDesign as $key) {
 			echo '<td colspan="1" valign="top">
 					<table width="100%" border="1">
 						<tr>
-							<th colspan="6">' . $key['name'] . '</th>
+							<th colspan="6">' . _($key['name']) . '</th>
 						</tr>' . "\n";
 			echo '<tr>';
 			SimpleTextLine($key);
@@ -245,7 +261,7 @@ foreach ($FormDesign as $key) {
 			echo '<td colspan="1" valign="top">
 					<table width="100%" border="1">
 						<tr>
-							<th colspan="4">' . $key['name'] . '</th>
+							<th colspan="4">' . _($key['name']) . '</th>
 						</tr>' . "\n";
 			echo '<tr>';
 			MultiTextLine($key);
@@ -257,29 +273,25 @@ foreach ($FormDesign as $key) {
 			echo '<td colspan="1" valign="top">
 					<table width="100%" border="1">
 						<tr>
-							<th colspan="7">' . $key['name'] . '</th>
+							<th colspan="7">' . _($key['name']) . '</th>
 						</tr>' . "\n";
 			foreach ($key as $subkey) {
+				echo '<tr>';
 				if ($subkey['type'] == 'SimpleText') {
-					echo '<tr>';
-					echo '<td>' . $subkey['name'] . '</td>';
+					echo '<td>' . _($subkey['name']) . '</td>';
 					SimpleTextLine($subkey);
-					echo '</tr>';
 				} else if ($subkey['type'] == 'MultiLineText') {
-					echo '<tr>';
-					echo '<td>' . $subkey['name'] . '</td>';
+					echo '<td>' . _($subkey['name']) . '</td>';
 					MultiTextLine($subkey);
-					echo '</tr>';
 				} else {
-					echo '<tr>';
 					if ($subkey['type'] == 'DataText') {
-						echo '<td>' . $subkey['name'] . '</td>';
+						echo '<td>' . _($subkey['name']) . '</td>';
 						DataTextLine($subkey);
 					} elseif ($subkey['type'] == 'StartLine') {
-						echo '<td colspan="3">' . $subkey['name'] . ' = ' . '</td><td><input type="text" class="number" name="StartLine" size="4" minlength="0" maxlength="4" value="' . $key->y . '" /></td>';
+						echo '<td colspan="3">' . _($subkey['name']) . ' = ' . '</td><td><input type="text" class="number" name="StartLine" size="4" minlength="0" maxlength="4" value="' . $key->y . '" /></td>';
 					}
-					echo '</tr>';
 				}
+				echo '</tr>';
 			}
 			echo '</table></td>';
 			$counter = $counter + 1;
@@ -288,7 +300,7 @@ foreach ($FormDesign as $key) {
 			echo '<td colspan="1" valign="top">
 					<table width="100%" border="1">
 						<tr>
-							<th colspan="6">' . $key['name'] . '</th>
+							<th colspan="6">' . _($key['name']) . '</th>
 						</tr>
 						<tr>
 							<td class="number">' . _('x') . ' = ' . '</td>
@@ -312,7 +324,7 @@ foreach ($FormDesign as $key) {
 			echo '<td colspan="1" valign="top">
 					<table width="100%" border="1">
 						<tr>
-							<th colspan="6">' . $key['name'] . '</th>
+							<th colspan="6">' . _($key['name']) . '</th>
 						</tr>
 						<tr>
 							<td class="number">' . _('x') . ' = ' . '</td>
@@ -334,7 +346,7 @@ foreach ($FormDesign as $key) {
 			echo '<td colspan="1" valign="top">
 					<table width="100%" border="1">
 						<tr>
-							<th colspan="6">' . $key['name'] . '</th>
+							<th colspan="6">' . _($key['name']) . '</th>
 						</tr>
 						<tr>
 							<td class="number">' . _('Start x co-ordinate') . ' = ' . '</td>

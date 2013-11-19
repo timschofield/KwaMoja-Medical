@@ -25,7 +25,7 @@ if (isset($_POST['submit'])) {
 
 	//first off validate inputs sensible
 
-	if (mb_strlen($_POST['CoyName']) > 40 or mb_strlen($_POST['CoyName']) == 0) {
+	if (mb_strlen($_POST['CoyName']) > 50 or mb_strlen($_POST['CoyName']) == 0) {
 		$InputError = 1;
 		prnMsg(_('The company name must be entered and be fifty characters or less long'), 'error');
 		$Errors[$i] = 'CoyName';

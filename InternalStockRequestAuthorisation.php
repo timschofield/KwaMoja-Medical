@@ -19,6 +19,14 @@ if (isset($_POST['UpdateAll'])) {
 					WHERE dispatchid='" . $RequestNo . "'";
 			$result = DB_query($sql, $db);
 		}
+		if (strpos($key, 'cancel')) {
+			$CancelItems = explode('cancel', $key);
+			$sql = "UPDATE stockrequestitems
+						SET completed=1
+						WHERE dispatchid='" . $CancelItems[0] . "'
+							AND dispatchitemsid='" . $CancelItems[1] . "'";
+			$result = DB_query($sql, $db);
+		}
 	}
 }
 
@@ -80,8 +88,9 @@ while ($myrow = DB_fetch_array($result)) {
 						stockrequestitems.quantity
 				FROM stockrequestitems
 				INNER JOIN stockmaster
-				ON stockmaster.stockid=stockrequestitems.stockid
-			WHERE dispatchid='" . $myrow['dispatchid'] . "'";
+					ON stockmaster.stockid=stockrequestitems.stockid
+				WHERE dispatchid='" . $myrow['dispatchid'] . "'
+					AND completed=0";
 	$lineresult = DB_query($linesql, $db);
 
 	echo '<tr>
@@ -92,6 +101,7 @@ while ($myrow = DB_fetch_array($result)) {
 					<th>' . _('Product') . '</th>
 					<th>' . _('Quantity Required') . '</th>
 					<th>' . _('Units') . '</th>
+					<th>' . _('Cancel Line') . '</th>
 				</tr>';
 
 	while ($linerow = DB_fetch_array($lineresult)) {
@@ -99,6 +109,7 @@ while ($myrow = DB_fetch_array($result)) {
 				<td>' . $linerow['description'] . '</td>
 				<td class="number">' . locale_number_format($linerow['quantity'], $linerow['decimalplaces']) . '</td>
 				<td>' . $linerow['uom'] . '</td>
+				<td><input type="checkbox" name="' . $myrow['dispatchid'] . 'cancel' . $linerow['dispatchitemsid'] . '" /></td>
 			</tr>';
 	} // end while order line detail
 	echo '</table>

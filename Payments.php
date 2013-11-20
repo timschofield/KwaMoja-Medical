@@ -135,14 +135,16 @@ if (isset($_POST['BankAccount']) and $_POST['BankAccount'] != '') {
 						WHERE accountcode ='" . $_POST['BankAccount'] . "'", $db, $ErrMsg);
 
 	$myrow = DB_fetch_array($result);
-	$_SESSION['PaymentDetail' . $identifier]->AccountCurrency = $myrow['currcode'];
-	$_SESSION['PaymentDetail' . $identifier]->CurrDecimalPlaces = $myrow['decimalplaces'];
-
-} //isset($_POST['BankAccount']) and $_POST['BankAccount'] != ''
-else {
-	$_SESSION['PaymentDetail' . $identifier]->AccountCurrency = $_SESSION['CompanyRecord']['currencydefault'];
-	$_SESSION['PaymentDetail' . $identifier]->CurrDecimalPlaces = $_SESSION['CompanyRecord']['decimalplaces'];
+	if ($_SESSION['PaymentDetail' . $identifier]->AccountCurrency != $myrow['currcode']) {
+		//then we'd better update the functional exchange rate
+		$DefaultFunctionalRate = true;
+		$_SESSION['PaymentDetail' . $identifier]->AccountCurrency = $myrow['currcode'];
+		$_SESSION['PaymentDetail' . $identifier]->CurrDecimalPlaces = $myrow['decimalplaces'];
+	} else {
+		$DefaultFunctionalRate = false;
+	}
 }
+
 if (isset($_POST['DatePaid']) and $_POST['DatePaid'] != '' and Is_Date($_POST['DatePaid'])) {
 	$_SESSION['PaymentDetail' . $identifier]->DatePaid = $_POST['DatePaid'];
 } //isset($_POST['DatePaid']) and $_POST['DatePaid'] != '' and Is_Date($_POST['DatePaid'])
@@ -174,6 +176,9 @@ if (isset($_POST['Currency']) and $_POST['Currency'] != '') {
 		$_SESSION['PaymentDetail' . $identifier]->FunctionalExRate = filter_number_format($_POST['FunctionalExRate']);
 		$SuggestedExRate = $tableExRate;
 		$SuggestedFunctionalExRate = 1;
+		if ($DefaultFunctionalRate) {
+			$_SESSION['PaymentDetail' . $identifier]->FunctionalExRate = $SuggestedFunctionalExRate;
+		}
 
 	} //$_SESSION['PaymentDetail' . $identifier]->AccountCurrency == $_SESSION['CompanyRecord']['currencydefault']
 	else {

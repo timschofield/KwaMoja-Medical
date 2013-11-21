@@ -16,7 +16,7 @@ $LanguagesArray['en_IN.utf8']['WindowsLocale'] = 'english-in';
 $LanguagesArray['en_IN.utf8']['DecimalPoint'] = '.';
 $LanguagesArray['en_IN.utf8']['ThousandsSeparator'] = ',';
 
-$LanguagesArray['ar_EG.utf8']['LanguageName'] = _('Arabic Eygptian');
+$LanguagesArray['ar_EG.utf8']['LanguageName'] = 'مصرى'; // Egyptian Spoken Arabic ?
 $LanguagesArray['ar_EG.utf8']['WindowsLocale'] = 'arabic';
 $LanguagesArray['ar_EG.utf8']['DecimalPoint'] = ',';
 $LanguagesArray['ar_EG.utf8']['ThousandsSeparator'] = ' ';
@@ -51,7 +51,7 @@ $LanguagesArray['fa_IR.utf8']['WindowsLocale'] = 'persian';
 $LanguagesArray['fa_IR.utf8']['DecimalPoint'] = ',';
 $LanguagesArray['fa_IR.utf8']['ThousandsSeparator'] = '.';
 
-$LanguagesArray['fr_CA.utf8']['LanguageName'] = 'Français Quebec';
+$LanguagesArray['fr_CA.utf8']['LanguageName'] = 'Français Québec';
 $LanguagesArray['fr_CA.utf8']['WindowsLocale'] = 'french-quebec';
 $LanguagesArray['fr_CA.utf8']['DecimalPoint'] = ',';
 $LanguagesArray['fr_CA.utf8']['ThousandsSeparator'] = ' ';

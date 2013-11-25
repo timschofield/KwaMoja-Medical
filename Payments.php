@@ -202,7 +202,11 @@ if (isset($_POST['Currency']) and $_POST['Currency'] != '') {
 		$tableExRate = $myrow[0]; //this is the rate of exchange between the functional currency and the payment currency
 
 		/*Calculate cross rate to suggest appropriate exchange rate between payment currency and account currency */
-		$SuggestedExRate = $tableExRate / $SuggestedFunctionalExRate;
+		if ($SuggestedFunctionalExRate != 0) {
+			$SuggestedExRate = $tableExRate / $SuggestedFunctionalExRate;
+		} else {
+			$SuggestedExRate = 0;
+		}
 
 	}
 } //isset($_POST['Currency']) and $_POST['Currency'] != ''
@@ -652,13 +656,11 @@ if (isset($_POST['CommitBatch'])) {
 	include('includes/footer.inc');
 	exit;
 
-} //isset($_POST['CommitBatch'])
-elseif (isset($_GET['Delete'])) {
+} elseif (isset($_GET['Delete'])) {
 	/* User hit delete the receipt entry from the batch */
 	$_SESSION['PaymentDetail' . $identifier]->Remove_GLItem($_GET['Delete']);
 
-} //isset($_GET['Delete'])
-	elseif (isset($_POST['Process']) and !$BankAccountEmpty) { //user hit submit a new GL Analysis line into the payment
+} elseif (isset($_POST['Process']) and !$BankAccountEmpty) { //user hit submit a new GL Analysis line into the payment
 
 	$ChequeNoSQL = "SELECT account FROM gltrans WHERE chequeno='" . $_POST['Cheque'] . "'";
 	$ChequeNoResult = DB_query($ChequeNoSQL, $db);
@@ -832,8 +834,7 @@ if ($_SESSION['PaymentDetail' . $identifier]->SupplierID == '') {
 				<td><i>' . _('The transaction currency does not need to be the same as the bank account currency') . '</i></td>
 			</tr>';
 	}
-} //$_SESSION['PaymentDetail' . $identifier]->SupplierID == ''
-else {
+} else {
 	/*its a supplier payment so it must be in the suppliers currency */
 	echo '<tr>';
 	echo '<td><input type="hidden" name="Currency" value="' . $_SESSION['PaymentDetail' . $identifier]->Currency . '" />
@@ -1155,15 +1156,43 @@ if ($_SESSION['CompanyRecord']['gllink_creditors'] == 1 and $_SESSION['PaymentDe
 		echo '<div class="centre"><input type="submit" name="CommitBatch" value="' . _('Accept and Process Payment') . '" /></div>';
 	} //sizeOf($_SESSION['PaymentDetail' . $identifier]->GLItems) > 0
 
-} //$_SESSION['CompanyRecord']['gllink_creditors'] == 1 and $_SESSION['PaymentDetail' . $identifier]->SupplierID == ''
-else {
+} else {
 	/*a supplier is selected or the GL link is not active then set out
 	the fields for entry of receipt amt and disc */
-
+	$SQL = "SELECT systypes.typename,
+					supptrans.transno,
+					supptrans.suppreference,
+					supptrans.trandate,
+					supptrans.ovamount+supptrans.ovgst+supptrans.diffonexch-supptrans.alloc AS amount
+				FROM supptrans
+				INNER JOIN systypes
+					ON systypes.typeid=supptrans.type
+				WHERE settled=0
+					AND supplierno='" . $_SESSION['PaymentDetail' . $identifier]->SupplierID . "'";
+	$Result = DB_query($SQL, $db);
+	echo '<table class="selection">
+			<tr>
+				<th class="SortableColumn">' . _('Date') . '</th>
+				<th class="SortableColumn">' . _('Transaction Type') . '</th>
+				<th class="SortableColumn">' . _('Transaction Number') . '</th>
+				<th class="SortableColumn">' . _('Reference') . '</th>
+				<th class="SortableColumn">' . _('Amount') . '</th>
+			</tr>';
+	while ($myrow = DB_fetch_array($Result)) {
+		echo '<tr>
+				<td>' . ConvertSQLDate($myrow['trandate']) . '</td>
+				<td>' . $myrow['typename'] . '</td>
+				<td>' . $myrow['transno'] . '</td>
+				<td>' . $myrow['suppreference'] . '</td>
+				<td class="number">' . locale_number_format($myrow['amount'], $_SESSION['PaymentDetail' . $identifier]->CurrDecimalPlaces) . '</td>
+				<td><input onclick="AddAmount(this);" type="checkbox" name="' . $myrow['transno'] . '" value="' . $myrow['amount'] . '" />' . _('Pay') . '</td>
+			</tr>';
+	}
+	echo '</table>';
 	echo '<table class="selection">
 		<tr>
 			<td>' . _('Amount of Payment') . ' ' . $_SESSION['PaymentDetail' . $identifier]->Currency . ':</td>
-			<td><input class="number" type="text" name="Amount" minlength="0" maxlength="12" size="13" value="' . $_SESSION['PaymentDetail' . $identifier]->Amount . '" /></td>
+			<td><input class="number" type="text" id="Amount" name="Amount" minlength="0" maxlength="12" size="13" value="' . $_SESSION['PaymentDetail' . $identifier]->Amount . '" /></td>
 		</tr>';
 
 	if (isset($_SESSION['PaymentDetail' . $identifier]->SupplierID)) {

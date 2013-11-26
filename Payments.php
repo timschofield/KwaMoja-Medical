@@ -13,6 +13,7 @@ if (isset($_GET['SupplierID'])) {
 	$BookMark = 'BankAccountPayments';
 }
 include('includes/header.inc');
+include('includes/CurrenciesArray.php');
 
 include('includes/SQL_CommonFunctions.inc');
 
@@ -1185,7 +1186,7 @@ if ($_SESSION['CompanyRecord']['gllink_creditors'] == 1 and $_SESSION['PaymentDe
 				<td>' . $myrow['transno'] . '</td>
 				<td>' . $myrow['suppreference'] . '</td>
 				<td class="number">' . locale_number_format($myrow['amount'], $_SESSION['PaymentDetail' . $identifier]->CurrDecimalPlaces) . '</td>
-				<td><input onclick="AddAmount(this);" type="checkbox" name="' . $myrow['transno'] . '" value="' . $myrow['amount'] . '" />' . _('Pay') . '</td>
+				<td><input onclick="AddAmount(this, \'Amount\');" type="checkbox" name="' . $myrow['transno'] . '" value="' . $myrow['amount'] . '" />' . _('Pay') . '</td>
 			</tr>';
 	}
 	echo '</table>';

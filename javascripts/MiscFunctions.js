@@ -423,8 +423,12 @@ function UpdateFavourites(e, t) {
 	return false
 }
 
-function AddAmount(t) {
-	document.getElementById("Amount").value=parseInt(document.getElementById("Amount").value)+parseInt(t.value);
+function AddAmount(t,Target) {
+	if (t.checked) {
+		document.getElementById(Target).value=parseInt(document.getElementById(Target).value)+parseInt(t.value);
+	} else {
+		document.getElementById(Target).value=parseInt(document.getElementById(Target).value)-parseInt(t.value);
+	}
 }
 
 function initial() {

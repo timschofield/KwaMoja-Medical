@@ -424,7 +424,11 @@ function UpdateFavourites(e, t) {
 }
 
 function AddAmount(t) {
-	document.getElementById("Amount").value=parseInt(document.getElementById("Amount").value)+parseInt(t.value);
+	if (t.checked) {
+		document.getElementById("Amount").value=parseInt(document.getElementById("Amount").value)+parseInt(t.value);
+	} else {
+		document.getElementById("Amount").value=parseInt(document.getElementById("Amount").value)-parseInt(t.value);
+	}
 }
 
 function initial() {

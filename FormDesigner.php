@@ -422,7 +422,7 @@ echo '<br /><div class="centre"><input tabindex="6" type="submit" name="preview"
 echo '<input tabindex="7" type="submit" name="save" value="' . _('Save the Form Layout') . '" /></div>';
 /*echo '<br /><div class="centre"><input tabindex="8" type="submit" name="return" value="' . _('Return') . '" /></div>';*/
 echo '</form>';
-/* END: Procedure division. */
+/* END: PROCEDURE DIVISION. */
 
 /* BEGIN: Final common code division. */
 include('includes/footer.inc');

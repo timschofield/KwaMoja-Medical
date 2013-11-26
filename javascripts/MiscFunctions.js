@@ -423,11 +423,11 @@ function UpdateFavourites(e, t) {
 	return false
 }
 
-function AddAmount(t) {
+function AddAmount(t,Target) {
 	if (t.checked) {
-		document.getElementById("Amount").value=parseInt(document.getElementById("Amount").value)+parseInt(t.value);
+		document.getElementById(Target).value=parseInt(document.getElementById(Target).value)+parseInt(t.value);
 	} else {
-		document.getElementById("Amount").value=parseInt(document.getElementById("Amount").value)-parseInt(t.value);
+		document.getElementById(Target).value=parseInt(document.getElementById(Target).value)-parseInt(t.value);
 	}
 }
 

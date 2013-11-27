@@ -225,7 +225,7 @@ if ($InputError != 1 and isset($_POST['BankAccount']) and $_POST['BankAccount'] 
 						WHERE amount < 0
 							AND transdate >= '" . $SQLAfterDate . "'
 							AND transdate <= '" . $SQLBeforeDate . "'
-							AND bankact=" . $_POST['BankAccount'] . "
+							AND bankact='" . $_POST['BankAccount'] . "'
 							AND  ABS(amountcleared - (amount / exrate)) > 0.009
 						ORDER BY transdate";
 		} else {

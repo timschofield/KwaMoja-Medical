@@ -278,51 +278,29 @@ if (isset($_POST['ChangeCustomer']) and $_POST['ChangeCustomer'] != '') {
 //Customer logins are not allowed to select other customers hence in_array(2,$_SESSION['AllowedPageSecurityTokens'])
 
 if (isset($_POST['SearchCust']) and $_SESSION['RequireCustomerSelection'] == 1) {
-	if (($_POST['CustKeywords'] == '') and ($_POST['CustCode'] == '') and ($_POST['CustPhone'] == '')) {
-		$SQL = "SELECT custbranch.brname,
-						custbranch.contactname,
-						custbranch.phoneno,
-						custbranch.faxno,
-						custbranch.branchcode,
-						custbranch.debtorno,
-						debtorsmaster.name
-					FROM custbranch
-					LEFT JOIN debtorsmaster
-					ON custbranch.debtorno=debtorsmaster.debtorno";
-		$SQL .= " WHERE custbranch.disabletrans=0";
-		if ($_SESSION['SalesmanLogin'] != '') {
-			$SQL .= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
-		} //$_SESSION['SalesmanLogin'] != ''
-		$SQL .= " ORDER BY custbranch.debtorno,
-						custbranch.branchcode";
-	} //($_POST['CustKeywords'] == '') and ($_POST['CustCode'] == '') and ($_POST['CustPhone'] == '')
-	else {
-		//insert wildcard characters in spaces
-		$_POST['CustKeywords'] = mb_strtoupper(trim($_POST['CustKeywords']));
-		$SearchString = str_replace(' ', '%', $_POST['CustKeywords']);
+	//insert wildcard characters in spaces
+	$_POST['CustKeywords'] = mb_strtoupper(trim($_POST['CustKeywords']));
+	$SearchString = str_replace(' ', '%', $_POST['CustKeywords']);
 
-		$SQL = "SELECT custbranch.brname,
-						custbranch.contactname,
-						custbranch.phoneno,
-						custbranch.faxno,
-						custbranch.branchcode,
-						custbranch.debtorno,
-						debtorsmaster.name
-					FROM custbranch
-					LEFT JOIN debtorsmaster
+	$SQL = "SELECT custbranch.brname,
+					custbranch.contactname,
+					custbranch.phoneno,
+					custbranch.faxno,
+					custbranch.branchcode,
+					custbranch.debtorno,
+					debtorsmaster.name
+				FROM custbranch
+				LEFT JOIN debtorsmaster
 					ON custbranch.debtorno=debtorsmaster.debtorno
-					WHERE custbranch.brname " . LIKE . " '%" . $SearchString . "%'
+				WHERE custbranch.brname " . LIKE . " '%" . $SearchString . "%'
 					AND custbranch.branchcode " . LIKE . " '%" . mb_strtoupper(trim($_POST['CustCode'])) . "%'
-					AND custbranch.phoneno " . LIKE . " '%" . trim($_POST['CustPhone']) . "%'";
-
-		if ($_SESSION['SalesmanLogin'] != '') {
-			$SQL .= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
-		} //$_SESSION['SalesmanLogin'] != ''
-		$SQL .= " AND custbranch.disabletrans=0
-						ORDER BY custbranch.debtorno,
-								custbranch.branchcode";
-	}
-	/*one of keywords or custcode was more than a zero length string */
+					AND custbranch.phoneno " . LIKE . " '%" . trim($_POST['CustPhone']) . "%'
+					AND custbranch.disabletrans=0";
+	if ($_SESSION['SalesmanLogin'] != '') {
+		$SQL .= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
+	} //$_SESSION['SalesmanLogin'] != ''
+	$SQL .= " ORDER BY custbranch.debtorno,
+						custbranch.branchcode";
 
 	$ErrMsg = _('The searched customer records requested cannot be retrieved because');
 	$result_CustSelect = DB_query($SQL, $db, $ErrMsg);
@@ -339,7 +317,7 @@ if (isset($_POST['SearchCust']) and $_SESSION['RequireCustomerSelection'] == 1) 
 
 /*end of if search for customer codes/names */
 
-if (isset($_POST['JustSelectedACustomer'])) {
+if (isset($_POST['JustSelectedACustomer']) and !isset($_POST['SearchCust'])) {
 	/*Need to figure out the number of the form variable that the user clicked on */
 	for ($i = 0; $i < count($_POST); $i++) { //loop through the returned customers
 		if (isset($_POST['SubmitCustomerSelection' . $i])) {
@@ -493,8 +471,7 @@ if (isset($SelectedCustomer)) {
 		prnMsg(_('The') . ' ' . htmlspecialchars($myrow[0], ENT_QUOTES, 'UTF-8', false) . ' ' . _('account is currently on hold please contact the credit control personnel to discuss'), 'warn');
 	}
 
-} //isset($SelectedCustomer)
-elseif (!$_SESSION['Items' . $identifier]->DefaultSalesType or $_SESSION['Items' . $identifier]->DefaultSalesType == '') {
+} elseif (!$_SESSION['Items' . $identifier]->DefaultSalesType or $_SESSION['Items' . $identifier]->DefaultSalesType == '') {
 	//Possible that the check to ensure this account is not on hold has not been done
 	//if the customer is placing own order, if this is the case then
 	//DefaultSalesType will not have been set as above
@@ -507,10 +484,10 @@ elseif (!$_SESSION['Items' . $identifier]->DefaultSalesType or $_SESSION['Items'
 					debtorsmaster.customerpoline
 			FROM debtorsmaster
 			INNER JOIN holdreasons
-			ON debtorsmaster.holdreason=holdreasons.reasoncode
+				ON debtorsmaster.holdreason=holdreasons.reasoncode
 			INNER JOIN currencies
-			ON debtorsmaster.currcode=currencies.currabrev
-			AND debtorsmaster.debtorno = '" . $_SESSION['Items' . $identifier]->DebtorNo . "'";
+				ON debtorsmaster.currcode=currencies.currabrev
+			WHERE debtorsmaster.debtorno = '" . $_SESSION['Items' . $identifier]->DebtorNo . "'";
 
 	$ErrMsg = _('The details for the customer selected') . ': ' . $_SESSION['Items' . $identifier]->DebtorNo . ' ' . _('cannot be retrieved because');
 	$DbgMsg = _('SQL used to retrieve the customer details was') . ':<br />' . $sql;

@@ -105,7 +105,9 @@ if ($_SESSION['RestrictLocations'] == 0) {
 				WHERE salesorders.orderno='" . $_GET['TransNo'] . "'
 					AND www_users.userid='" . $_SESSION['UserID'] . "'";
 }
-
+if ($_SESSION['SalesmanLogin'] != '') {
+       $sql .= " AND salesorders.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
+}
 $result = DB_query($sql, $db, $ErrMsg);
 
 //if there are no rows, there's a problem.

@@ -45,7 +45,9 @@ function CalcFreightCost($TotalValue, $BrAdd2, $BrAdd3, $BrAdd4, $BrAdd5, $BrAdd
 		// if there is some details of the address besides the country
 		$sql .= " AND (";
 		foreach ($FindCity as $City) {
-			$sql = $sql . " destination LIKE '" . ucwords($City) . "%' OR";
+			if (ucwords($City) != ''){
+				$sql = $sql . " destination LIKE '" . ucwords($City) . "%' OR";
+			}
 		}
 		if ($BrAddCountry != $CountriesArray[$_SESSION['CountryOfOperation']]){
 			/* For international shipments empty destination (ANY) is allowed */

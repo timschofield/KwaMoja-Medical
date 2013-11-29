@@ -482,14 +482,14 @@ echo '<tr style="outline: 1px solid"><td>' . _('A picking note must be produced 
 //UpdateCurrencyRatesDaily
 echo '<tr style="outline: 1px solid"><td>' . _('Auto Update Exchange Rates Daily') . ':</td>
 	<td><select required="required" minlength="1" name="X_UpdateCurrencyRatesDaily">
-	<option ' . ($_SESSION['UpdateCurrencyRatesDaily'] != '1' ? 'selected="selected" ' : '') . 'value="1">' . _('Automatic') . '</option>
+	<option ' . ($_SESSION['UpdateCurrencyRatesDaily'] == '1' ? 'selected="selected" ' : '') . 'value="1">' . _('Automatic') . '</option>
 	<option ' . ($_SESSION['UpdateCurrencyRatesDaily'] == '0' ? 'selected="selected" ' : '') . 'value="0">' . _('Manually') . '</option>
 	</select></td>
 	<td>' . _('Automatic updates to exchange rates will retrieve the latest daily rates from either the European Central Bank or Google once per day - when the first user logs in for the day. Manual will never update the rates automatically - exchange rates will need to be maintained manually') . '</td>
 	</tr>';
 echo '<tr style="outline: 1px solid"><td>' . _('Source Exchange Rates From') . ':</td>
 	<td><select required="required" minlength="1" name="X_ExchangeRateFeed">
-	<option ' . ($_SESSION['ExchangeRateFeed'] != 'ECB' ? 'selected="selected" ' : '') . 'value="ECB">' . _('European Central Bank') . '</option>
+	<option ' . ($_SESSION['ExchangeRateFeed'] == 'ECB' ? 'selected="selected" ' : '') . 'value="ECB">' . _('European Central Bank') . '</option>
 	<option ' . ($_SESSION['ExchangeRateFeed'] == 'Google' ? 'selected="selected" ' : '') . 'value="Google">' . _('Google') . '</option>
 	</select></td>
 	<td>' . _('Specify the source to use for exchange rates') . '</td>

@@ -94,7 +94,13 @@ if (isset($_POST['PostExchangeDifference']) and is_numeric(filter_number_format(
 
 echo '<table class="selection">';
 
-$SQL = "SELECT bankaccountname, accountcode FROM bankaccounts";
+$SQL = "SELECT bankaccounts.accountcode,
+				bankaccounts.bankaccountname
+			FROM bankaccounts
+			INNER JOIN bankaccountusers
+				ON bankaccounts.accountcode=bankaccountusers.accountcode
+			WHERE bankaccountusers.userid = '" . $_SESSION['UserID'] . "'
+			ORDER BY bankaccounts.bankaccountname";
 
 $ErrMsg = _('The bank accounts could not be retrieved by the SQL because');
 $DbgMsg = _('The SQL used to retrieve the bank accounts was');

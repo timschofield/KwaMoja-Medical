@@ -130,6 +130,10 @@ if (!isset($_GET['OrderNumber']) and !isset($_SESSION['ProcessingOrder'])) {
 							AND www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
 
+	if ($_SESSION['SalesmanLogin'] != '') {
+		$OrderHeaderSQL .= " AND salesorders.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
+	}
+
 	$ErrMsg = _('The order cannot be retrieved because');
 	$DbgMsg = _('The SQL to get the order header was');
 	$GetOrdHdrResult = DB_query($OrderHeaderSQL, $db, $ErrMsg, $DbgMsg);

@@ -88,7 +88,13 @@ echo '<table class="selection" summary="' . _('Selection Criteria for inquiry') 
 			<td>' . _('Bank Account') . ':</td>
 			<td colspan="3"><select autofocus="autofocus" minlength="1" tabindex="1" name="BankAccount">';
 
-$sql = "SELECT accountcode, bankaccountname FROM bankaccounts";
+$sql = "SELECT bankaccounts.accountcode,
+				bankaccounts.bankaccountname
+			FROM bankaccounts
+			INNER JOIN bankaccountusers
+				ON bankaccounts.accountcode=bankaccountusers.accountcode
+			WHERE bankaccountusers.userid = '" . $_SESSION['UserID'] . "'
+			ORDER BY bankaccounts.bankaccountname";
 $resultBankActs = DB_query($sql, $db);
 while ($myrow = DB_fetch_array($resultBankActs)) {
 	if (isset($_POST['BankAccount']) and $myrow['accountcode'] == $_POST['BankAccount']) {

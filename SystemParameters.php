@@ -770,16 +770,8 @@ echo '<tr style="outline: 1px solid">
 		<td><input type="text" class="integer" name="X_MaxImageSize" size="4" required="required" minlength="1" maxlength="3" value="' . $_SESSION['MaxImageSize'] . '" /></td>
 		<td>' . _('Picture files of items can be uploaded to the server. The system will check that files uploaded are less than this size (in KB) before they will be allowed to be uploaded. Large pictures will make the system slow and will be difficult to view in the stock maintenance screen.') . '</td>
 	</tr>';
+
 //NumberOfMonthMustBeShown
-$sql = "SELECT confvalue
-		FROM `config`
-		WHERE confname ='numberOfMonthMustBeShown'";
-
-$ErrMsg = _('Could not load the Number Of Month Must be Shown');
-$result = DB_query($sql, $db, $ErrMsg);
-$row = DB_fetch_array($result);
-$_SESSION['NumberOfMonthMustBeShown'] = $row['confvalue'];
-
 echo '<tr style="outline: 1px solid"><td>' . _('Number Of Month Must Be Shown') . ':</td>
 		  <td><input type="text" class="integer" name="X_NumberOfMonthMustBeShown" size="4" required="required" minlength="1" maxlength="3" value="' . $_SESSION['NumberOfMonthMustBeShown'] . '" /></td>
 		  <td>' . _('Number of month must be shown on report can be changed with this parameters ex: in CustomerInquiry.php ') . '</td>

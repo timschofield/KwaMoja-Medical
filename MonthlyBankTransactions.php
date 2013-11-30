@@ -16,9 +16,12 @@ if (!isset($_POST['Show'])) {
 	$SQL = "SELECT 	bankaccountname,
 					bankaccounts.accountcode,
 					bankaccounts.currcode
-			FROM bankaccounts,
-				chartmaster
-			WHERE bankaccounts.accountcode=chartmaster.accountcode";
+				FROM bankaccounts
+				INNER JOIN chartmaster
+					ON bankaccounts.accountcode=chartmaster.accountcode
+				INNER JOIN bankaccountusers
+					ON bankaccounts.accountcode=bankaccountusers.accountcode
+				WHERE bankaccountusers.userid = '" . $_SESSION['UserID'] ."'";
 
 	$ErrMsg = _('The bank accounts could not be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve the bank accounts was');

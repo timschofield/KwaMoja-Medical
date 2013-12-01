@@ -35,22 +35,24 @@ while ($PeriodRow = DB_fetch_array($PeriodsResult)) {
 	}
 }
 echo '</select></td>
-	<td>' . _('Salesperson') . ':</td>
-	<td><select minlength="0" tabindex="2" name="Salesperson">';
+	<td>' . _('Salesperson') . ':</td>';
 
-$sql = "SELECT salesmancode, salesmanname FROM salesman";
-if ($_SESSION['SalesmanLogin'] != '') {
-	$sql .= " WHERE salesmancode='" . $_SESSION['SalesmanLogin'] . "'";
-	$_POST['Salesperson'] = $_SESSION['SalesmanLogin'];
-} else if (!isset($_POST['Salesperson'])) {
-	$_POST['Salesperson'] = 'All';
-	echo '<option selected="selected" value="All">' . _('All') . '</option>';
+if($_SESSION['SalesmanLogin'] != '') {
+	echo '<td>';
+	echo $_SESSION['UsersRealName'];
+	echo '</td>';
 } else {
-	echo '<option value="All">' . _('All') . '</option>';
-}
-$SalespeopleResult = DB_query($sql, $db);
-while ($SalespersonRow = DB_fetch_array($SalespeopleResult)) {
+	echo '<td><select tabindex="2" name="Salesperson">';
 
+	$SalespeopleResult = DB_query("SELECT salesmancode, salesmanname FROM salesman",$db);
+	if (!isset($_POST['Salesperson'])){
+		$_POST['Salesperson'] = 'All';
+		echo '<option selected="selected" value="All">' . _('All') . '</option>';
+	} else {
+		echo '<option value="All">' . _('All') . '</option>';
+	}
+}
+while ($SalespersonRow = DB_fetch_array($SalespeopleResult)) {
 	if ($_POST['Salesperson'] == $SalespersonRow['salesmancode']) {
 		echo '<option selected="selected" value="' . $SalespersonRow['salesmancode'] . '">' . $SalespersonRow['salesmanname'] . '</option>';
 	} else {
@@ -96,7 +98,9 @@ $sql = "SELECT 	trandate,
 			AND trandate>='" . $StartDateSQL . "'
 			AND trandate<='" . $EndDateSQL . "'";
 
-if ($_POST['Salesperson'] != 'All') {
+if ($_SESSION['SalesmanLogin'] != '') {
+	$sql .= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
+} elseif ($_POST['Salesperson'] != 'All') {
 	$sql .= " AND custbranch.salesman='" . $_POST['Salesperson'] . "'";
 }
 

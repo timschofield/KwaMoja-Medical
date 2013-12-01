@@ -174,7 +174,11 @@ function submit(&$db, $PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $Debto
 	} //$_POST['Area'] != 'All'
 
 	$WhereSalesman = ' ';
-	if ($_POST['Salesman'] != 'All') {
+	if ($_SESSION['SalesmanLogin'] != '') {
+
+		$WhereSalesman .= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
+
+	} elseif ($_POST['Salesman'] != 'All') {
 		$WhereSalesman = " AND custbranch.salesman = '" . $_POST['Salesman'] . "'";
 	} //$_POST['Salesman'] != 'All'
 
@@ -1042,20 +1046,21 @@ function display(&$db) //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_###
 		</tr>';
 
 	echo '<tr>
-			<td>' . _('For Sales Person') . ':</td>
-			<td><select minlength="0" name="Salesman">';
-	$sql = "SELECT salesmancode, salesmanname FROM salesman";
+			<td>' . _('For Sales Person') . ':</td>';
 	if ($_SESSION['SalesmanLogin'] != '') {
-		$sql .= " WHERE salesmancode='" . $_SESSION['SalesmanLogin'] . "'";
-	} //$_SESSION['SalesmanLogin'] != ''
-	else {
-		echo '<option selected="selected" value="All">' . _('All Salesmen') . '</option>';
-	}
-	$SalesmanResult = DB_query($sql, $db);
-	while ($myrow = DB_fetch_array($SalesmanResult)) {
-		echo '<option value="' . $myrow['salesmancode'] . '">' . $myrow['salesmanname'] . '</option>';
-	} //$myrow = DB_fetch_array($SalesmanResult)
-	echo '</select></td></tr>';
+		echo '<td>';
+		echo $_SESSION['UsersRealName'];
+		echo '</td>';
+	} else {
+		echo '<td><select name="Salesman">';
+		$sql = "SELECT salesmancode, salesmanname FROM salesman";
+		$SalesmanResult = DB_query($sql,$db);
+		echo '<option selected="selected" value="All">' . _('All Salesmen')  . '</option>';
+		while ($myrow = DB_fetch_array($SalesmanResult)){
+			echo '<option value="' . $myrow['salesmancode'] . '">' . $myrow['salesmanname']  . '</option>';
+		}
+		echo '</select></td>';
+	}	echo '</tr>';
 
 	// Use name='Areas[]' multiple - if want to create an array for Areas and allow multiple selections
 	echo '<tr><td>' . _('For Sales Areas') . ':</td>

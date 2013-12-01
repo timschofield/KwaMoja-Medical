@@ -4,7 +4,6 @@ include('includes/session.inc');
 $Title = _('Sales Report');
 include('includes/header.inc');
 
-
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . _('Sales Report') . '" alt="" />' . ' ' . _('Sales Report') . '</p>';
 echo '<div class="page_help_text noPrint">' . _('Select the parameters for the report') . '</div><br />';
 
@@ -18,7 +17,6 @@ if (!isset($_POST['DateRange'])) {
 }
 
 echo '<form onSubmit="return VerifyForm(this);" id="Form1" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 echo '<table cellpadding="2" class="selection">
@@ -123,7 +121,6 @@ echo '<br />
 		<div class="centre">
 			<input tabindex="4" type="submit" name="ShowSales" value="' . _('Show Sales') . '" />
 		</div>
-		</div>
 		</form>
 		<br />';
 
@@ -210,8 +207,13 @@ if (isset($_POST['ShowSales'])) {
 					WHERE (stockmoves.type=10 or stockmoves.type=11)
 					AND show_on_inv_crds =1
 					AND debtortrans.trandate>='" . $FromDate . "'
-					AND debtortrans.trandate<='" . $ToDate . "'
-					GROUP BY debtortrans.trandate,
+					AND debtortrans.trandate<='" . $ToDate . "'";
+
+			if ($_SESSION['SalesmanLogin'] != '') {
+				$sql .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
+			}
+
+			$sql .= " GROUP BY debtortrans.trandate,
 							tpe
 					ORDER BY debtortrans.trandate,
 							tpe";
@@ -243,8 +245,13 @@ if (isset($_POST['ShowSales'])) {
 					WHERE (stockmoves.type=10 or stockmoves.type=11)
 					AND show_on_inv_crds =1
 					AND debtortrans.trandate>='" . $FromDate . "'
-					AND debtortrans.trandate<='" . $ToDate . "'
-					GROUP BY week_no,
+					AND debtortrans.trandate<='" . $ToDate . "'";
+
+			if ($_SESSION['SalesmanLogin'] != '') {
+				$sql .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
+			}
+
+			$sql .= " GROUP BY week_no,
 							transyear,
 							tpe
 					ORDER BY transyear,
@@ -279,8 +286,13 @@ if (isset($_POST['ShowSales'])) {
 					WHERE (stockmoves.type=10 or stockmoves.type=11)
 					AND show_on_inv_crds =1
 					AND debtortrans.trandate>='" . $FromDate . "'
-					AND debtortrans.trandate<='" . $ToDate . "'
-					GROUP BY month_no,
+					AND debtortrans.trandate<='" . $ToDate . "'";
+
+			if ($_SESSION['SalesmanLogin'] != '') {
+				$sql .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
+			}
+
+			$sql .= " GROUP BY month_no,
 							month_name,
 							transyear,
 							debtortrans.tpe
@@ -315,8 +327,13 @@ if (isset($_POST['ShowSales'])) {
 					WHERE (stockmoves.type=10 or stockmoves.type=11)
 					AND show_on_inv_crds =1
 					AND debtortrans.trandate>='" . $FromDate . "'
-					AND debtortrans.trandate<='" . $ToDate . "'
-					GROUP BY quarter_no,
+					AND debtortrans.trandate<='" . $ToDate . "'";
+
+			if ($_SESSION['SalesmanLogin'] != '') {
+				$sql .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
+			}
+
+			$sql .= " GROUP BY quarter_no,
 							transyear,
 							tpe
 					ORDER BY transyear,

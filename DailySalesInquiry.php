@@ -9,7 +9,6 @@ echo '<div class="page_help_text noPrint">' . _('Select the month to show daily 
 	<br />';
 
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 if (!isset($_POST['MonthToShow'])) {
@@ -37,39 +36,34 @@ while ($PeriodRow = DB_fetch_array($PeriodsResult)) {
 echo '</select></td>
 	<td>' . _('Salesperson') . ':</td>';
 
-if($_SESSION['SalesmanLogin'] != '') {
-	echo '<td>';
-	echo $_SESSION['UsersRealName'];
-	echo '</td>';
+if ($_SESSION['SalesmanLogin'] != '') {
+	echo '<td>' . $_SESSION['UsersRealName'] . '</td>';
 } else {
 	echo '<td><select tabindex="2" name="Salesperson">';
 
 	$SalespeopleResult = DB_query("SELECT salesmancode, salesmanname FROM salesman",$db);
-	if (!isset($_POST['Salesperson'])){
+	if (!isset($_POST['Salesperson'])) {
 		$_POST['Salesperson'] = 'All';
 		echo '<option selected="selected" value="All">' . _('All') . '</option>';
 	} else {
 		echo '<option value="All">' . _('All') . '</option>';
 	}
-}
-while ($SalespersonRow = DB_fetch_array($SalespeopleResult)) {
-	if ($_POST['Salesperson'] == $SalespersonRow['salesmancode']) {
-		echo '<option selected="selected" value="' . $SalespersonRow['salesmancode'] . '">' . $SalespersonRow['salesmanname'] . '</option>';
-	} else {
-		echo '<option value="' . $SalespersonRow['salesmancode'] . '">' . $SalespersonRow['salesmanname'] . '</option>';
-	}
-}
-echo '</select></td>';
 
+	while ($SalespersonRow = DB_fetch_array($SalespeopleResult)) {
+		if ($_POST['Salesperson'] == $SalespersonRow['salesmancode']) {
+			echo '<option selected="selected" value="' . $SalespersonRow['salesmancode'] . '">' . $SalespersonRow['salesmanname'] . '</option>';
+		} else {
+			echo '<option value="' . $SalespersonRow['salesmancode'] . '">' . $SalespersonRow['salesmanname'] . '</option>';
+		}
+	}
+	echo '</select></td>';
+}
 echo '</tr>
 	</table>
-	<br />
 	<div class="centre">
 		<input tabindex="4" type="submit" name="ShowResults" value="' . _('Show Daily Sales For The Selected Month') . '" />
 	</div>
-	</div>
-	</form></div>
-	<br />';
+	</form>';
 /*Now get and display the sales data returned */
 if (mb_strpos($EndDateSQL, '/')) {
 	$Date_Array = explode('/', $EndDateSQL);

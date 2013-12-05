@@ -467,7 +467,7 @@ foreach ($LanguagesArray as $LanguageEntry => $LanguageName) {
 	}
 }
 echo '</select></td>
-		<td>' . _('Select all the languages for which item description translations are to be maintained.') . '</td>
+		<td>' . _('Select the languages ​​in which translations of the item description will be maintained. The default language is excluded.') . '</td>
 	</tr>';
 
 //'RequirePickingNote'

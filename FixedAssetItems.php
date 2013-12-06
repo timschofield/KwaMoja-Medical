@@ -7,7 +7,7 @@ $BookMark = 'AssetItems';
 include('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');
 
-echo '<a href="' . $RootPath . '/SelectAsset.php">' . _('Back to Select') . '</a><br />' . "\n";
+echo '<div class="toplink"><a href="' . $RootPath . '/SelectAsset.php">' . _('Back to Select') . '</a></div>' . "\n";
 
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/money_add.png" title="' . _('Fixed Asset Items') . '" alt="" />' . ' ' . $Title . '</p>';
 
@@ -451,7 +451,7 @@ if (!isset($AssetID) or $AssetID == '') {
 		</tr>';
 	echo '<tr><td><input type="hidden" name="AssetID" value="' . $AssetID . '"/></td></tr>';
 }
-if ($AssetRow['disposaldate'] != '0000-00-00'){
+if (isset($AssetRow['disposaldate']) and $AssetRow['disposaldate'] != '0000-00-00') {
 	echo '<tr>
 			<td>' . _('Asset Already disposed on') . ':</td>
 			<td>' . ConvertSQLDate($AssetRow['disposaldate']) . '</td>

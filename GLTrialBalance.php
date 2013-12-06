@@ -28,7 +28,6 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 			<img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Trial Balance') . '" alt="' . _('Trial Balance') . '" />' . ' ' . $Title . '
 		</p>';
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	if (Date('m') > $_SESSION['YearEnd']) {
@@ -707,7 +706,6 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 	echo '</table><br />';
 	echo '<div class="centre noPrint"><input type="submit" name="SelectADifferentPeriod" value="' . _('Select A Different Period') . '" /></div>';
 }
-echo '</div>';
 echo '</form>';
 include('includes/footer.inc');
 

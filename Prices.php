@@ -215,10 +215,15 @@ if (DB_num_rows($result) > 0) {
 			<th class="SortableColumn">' . _('Sales Type') . '</th>
 			<th>' . _('Price') . '</th>
 			<th class="SortableColumn">' . _('Start Date') . ' </th>
-			<th>' . _('End Date') . '</th>
-		</tr>';
+			<th>' . _('End Date') . '</th>';
+	if (in_array(1000, $_SESSION['AllowedPageSecurityTokens'])) { // If is allow to modify prices.
+		echo '<th colspan="2">' . _('Maintenance') . '</th>';
+	}
+	echo '</tr>';
 
 	$k = 0; //row colour counter
+
+	include('includes/CurrenciesArray.php'); // To get the currency name.
 
 	while ($myrow = DB_fetch_array($result)) {
 		if ($k == 1) {
@@ -233,24 +238,18 @@ if (DB_num_rows($result) > 0) {
 		} else {
 			$EndDateDisplay = ConvertSQLDate($myrow['enddate']);
 		}
-		/*Only allow access to modify prices if securiy token 5 is allowed */
+
+		echo   '<td>' . $CurrenciesArray[$myrow['currabrev']]['Currency'] . '</td>
+				<td>' .  $myrow['sales_type'] . '</td>
+				<td class="number">' . locale_number_format($myrow['price'], $myrow['currdecimalplaces'] + 2) . '</td>
+				<td>' . ConvertSQLDate($myrow['startdate']) . '</td>
+				<td>' . $EndDateDisplay . '</td>';
+		/*Only allow access to modify prices if securiy token 1000 is allowed */
 		if (in_array(5, $_SESSION['AllowedPageSecurityTokens'])) {
-			echo '<td>' . $myrow['currency'] . '</td>
-				<td>' . $myrow['sales_type'] . '</td>
-				<td class="number">' . locale_number_format($myrow['price'], $myrow['currdecimalplaces'] + 1) . '</td>
-				<td>' . ConvertSQLDate($myrow['startdate']) . '</td>
-				<td>' . $EndDateDisplay . '</td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Item=' . $myrow['stockid'] . '&amp;TypeAbbrev=' . $myrow['typeabbrev'] . '&amp;CurrAbrev=' . $myrow['currabrev'] . '&amp;Price=' . locale_number_format($myrow['price'], $myrow['currdecimalplaces']) . '&amp;StartDate=' . $myrow['startdate'] . '&amp;EndDate=' . $myrow['enddate'] . '&amp;Edit=1">' . _('Edit') . '</a></td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Item=' . $myrow['stockid'] . '&amp;TypeAbbrev=' . $myrow['typeabbrev'] . '&amp;CurrAbrev=' . $myrow['currabrev'] . '&amp;StartDate=' . $myrow['startdate'] . '&amp;EndDate=' . $myrow['enddate'] . '&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this price?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td></tr>';
-
-		} else {
-			echo '<td>' . $myrow['currency'] . '</td>
-				<td>' . $myrow['sales_type'] . '</td>
-				<td class="number">' . locale_number_format($myrow['price'], $myrow['currdecimalplaces'] + 1) . '</td>
-				<td>' . ConvertSQLDate($myrow['startdate']) . '</td>
-				<td>' . $EndDateDisplay . '</td></tr>';
-		}
-
+			echo '<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?Item=' . $myrow['stockid'] . '&amp;TypeAbbrev=' . $myrow['typeabbrev'] . '&amp;CurrAbrev=' . $myrow['currabrev'] . '&amp;Price=' . locale_number_format($myrow['price'],$myrow['currdecimalplaces']) . '&amp;StartDate=' . $myrow['startdate'] . '&amp;EndDate=' . $myrow['enddate'] . '&amp;Edit=1">' . _('Edit') . '</a></td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?Item=' . $myrow['stockid'] . '&amp;TypeAbbrev=' . $myrow['typeabbrev'] . '&amp;CurrAbrev=' . $myrow['currabrev'] . '&amp;StartDate=' . $myrow['startdate'] . '&amp;EndDate=' . $myrow['enddate'] . '&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this price?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>';
+ 		}
+		echo '</tr>';
 	}
 	//END WHILE LIST LOOP
 	echo '</table>

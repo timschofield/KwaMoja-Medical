@@ -1018,13 +1018,13 @@ else {
 		$result = DB_query("SELECT currency FROM currencies WHERE currabrev='" . $_POST['CurrCode'] . "'", $db);
 		$myrow = DB_fetch_array($result);
 		echo '<tr>
-				<td>' . _('Customers Currency') . ':</td>
-				<td>' . $myrow['currency'] . '</td></tr>';
+				<td>' . _('Customer Currency') . ':</td>
+				<td>' . _($myrow['currency']) . '</td></tr>';
 	} //isset($_GET['Modify'])
 	else {
 		$result = DB_query("SELECT currency, currabrev FROM currencies", $db);
 		echo '<tr>
-				<td>' . _('Customers Currency') . ':</td>
+				<td>' . _('Customer Currency') . ':</td>
 				<td><select minlength="0" name="CurrCode">';
 		while ($myrow = DB_fetch_array($result)) {
 			if ($_POST['CurrCode'] == $myrow['currabrev']) {

@@ -34,6 +34,7 @@ class Payment {
 	var $Amount;
 	var $Narrative;
 	var $GLItemCounter;
+	var $BankTransRef;
 	/*Counter for the number of GL accounts being posted to by the Payment */
 
 	function Payment() {

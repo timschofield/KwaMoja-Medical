@@ -206,6 +206,7 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 							debtortrans.debtorno,
 							debtortrans.branchcode,
 							paymentterms.terms,
+							currencies.currency,
 							currencies.decimalplaces
 						FROM debtortrans
 						INNER JOIN debtorsmaster

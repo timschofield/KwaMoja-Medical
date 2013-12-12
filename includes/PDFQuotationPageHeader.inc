@@ -90,9 +90,7 @@ $pdf->addTextWrap($Page_Width - $Right_Margin - 200, $Page_Height - $Top_Margin 
 $pdf->addTextWrap($Page_Width - $Right_Margin - 200, $Page_Height - $Top_Margin - $FontSize * 3, 200, $FontSize, _('Date') . ': ' . ConvertSQLDate($myrow['orddate']), 'right');
 $pdf->addTextWrap($Page_Width - $Right_Margin - 200, $Page_Height - $Top_Margin - $FontSize * 4, 200, $FontSize, _('Page') . ': ' . $PageNumber, 'right');
 
-include($PathPrefix . 'includes/CurrenciesArray.php');
-/* To get the currency name */
-$pdf->addText($Page_Width / 2 - 60, $YPos - 5, $FontSize, _('All amounts stated in') . ' - ' . $myrow['currcode'] . ' ' . $CurrenciesArray[$myrow['currcode']]['Currency']);
+$pdf->addText($Page_Width / 2 - 60, $YPos - 5, $FontSize, _('All amounts stated in') . ' - ' . $myrow['currcode'] . ' ' . _($myrow['currency']));
 
 $YPos -= 37;
 $XPos = 40;

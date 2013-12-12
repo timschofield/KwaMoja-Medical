@@ -111,12 +111,11 @@ if ($NIL_BALANCE == True) {
 	$SupplierRecord['overdue2'] = 0;
 }
 
-include('includes/CurrenciesArray.php'); // To get the currency name.
 echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" title="' . _('Supplier') . '" alt="" /> ' .
 		_('Supplier') . ': ' .
 			$SupplierID . ' - ' . $SupplierRecord['suppname'] . '<br />' .
 		_('All amounts stated in') . ': ' .
-			$SupplierRecord['currcode'] . ' - ' . $CurrenciesArray[$SupplierRecord['currcode']]['Currency'] . '<br />' .
+			$SupplierRecord['currcode'] . ' - ' . _($SupplierRecord['currency']) . '<br />' .
 		_('Terms') . ': ' .
 			$SupplierRecord['terms'] . '</p>';
 

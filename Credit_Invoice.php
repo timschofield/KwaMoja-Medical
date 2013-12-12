@@ -711,7 +711,7 @@ if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 
 					while ($AssParts = DB_fetch_array($AssResult, $db)) {
 
-						$StandardCost += $AssParts['standard'];
+						$StandardCost += $AssParts['standard'] * $AssParts['quantity'];
 						/*Determine the type of stock item being credited */
 						$SQL = "SELECT mbflag
 								FROM stockmaster

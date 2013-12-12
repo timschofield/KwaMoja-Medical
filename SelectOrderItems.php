@@ -814,7 +814,7 @@ else { //dont require customer selection
 		if (!isset($Offset) or $Offset < 0) {
 			$Offset = 0;
 		} //!isset($Offset) or $Offset < 0
-		$SQL = $SQL . " LIMIT " . $_SESSION['DefaultDisplayRecordsMax'] . " OFFSET " . strval($_SESSION['DefaultDisplayRecordsMax'] * $Offset);
+		$SQL = $SQL . " LIMIT " . $_SESSION['DisplayRecordsMax'] . " OFFSET " . strval($_SESSION['DisplayRecordsMax'] * $Offset);
 
 		$ErrMsg = _('There is a problem selecting the part records to display because');
 		$DbgMsg = _('The SQL used to get the part selection was');

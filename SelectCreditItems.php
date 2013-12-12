@@ -1377,7 +1377,7 @@ if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 
 					while ($AssParts = DB_fetch_array($AssResult, $db)) {
 
-						$StandardCost += $AssParts['standard'];
+						$StandardCost += $AssParts['standard'] * $AssParts['quantity'];
 
 						/*Need to get the current location quantity will need it later for the stock movement */
 						$SQL = "SELECT locstock.quantity
@@ -1421,7 +1421,7 @@ if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 													'" . $AssParts['quantity'] * $CreditLine->Quantity . "',
 													'" . $AssParts['standard'] . "',
 													0,
-													'" . $QtyOnHandPrior + ($AssParts['quantity'] * $CreditLine->Quantity) . "'
+													'" . ($QtyOnHandPrior + ($AssParts['quantity'] * $CreditLine->Quantity)) . "'
 													)";
 
 						$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('Stock movement records for the assembly components of') . ' ' . $CreditLine->StockID . ' ' . _('could not be inserted because');

@@ -106,6 +106,7 @@ if (isset($_POST['submit'])) {
 
 		/*SelectedCurrency could also exist if submit had not been clicked this code would not run in this case cos submit is false of course  see the delete code below*/
 		$sql = "UPDATE currencies SET country='" . $_POST['Country'] . "',
+										currency='" . $CurrencyName[$_POST['Abbreviation']] . "',
 										hundredsname='" . $_POST['HundredsName'] . "',
 										decimalplaces='" . filter_number_format($_POST['DecimalPlaces']) . "',
 										rate='" . filter_number_format($_POST['ExchangeRate']) . "',
@@ -124,7 +125,7 @@ if (isset($_POST['submit'])) {
 										decimalplaces,
 										rate,
 										webcart)
-								VALUES ('" . $CurrenciesArray[$_POST['Abbreviation']]['Currency'] . "',
+								VALUES ('" . $CurrencyName[$_POST['Abbreviation']] . "',
 										'" . $_POST['Abbreviation'] . "',
 										'" . $_POST['Country'] . "',
 										'" . $_POST['HundredsName'] . "',
@@ -297,7 +298,7 @@ if (!isset($SelectedCurrency)) {
 			<th>' . _('Country') . '</th>
 			<th>' . _('Hundredths Name') . '</th>
 			<th>' . _('Decimal Places') . '</th>
-			<th>' . _('Use in webSHOP') . '</th>
+			<th>' . _('Show in webSHOP') . '</th>
 			<th>' . _('Exchange Rate') . '</th>
 			<th>' . _('1 / Ex Rate') . '</th>
 			<th>' . _('Ex Rate - ECB') . '</th>
@@ -347,7 +348,7 @@ if (!isset($SelectedCurrency)) {
 					<td><a href="%s&amp;SelectedCurrency=%s">%s</a></td>
 					<td><a href="%s&amp;SelectedCurrency=%s&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this currency?') . '\', \'Confirm Delete\', this);">%s</a></td>
 					<td><a href="%s/ExchangeRateTrend.php?%s">' . _('Graph') . '</a></td>
-					</tr>', $ImageFile, $myrow['currabrev'], $CurrenciesArray[$myrow['currabrev']]['Currency'], $myrow['country'], $myrow['hundredsname'], locale_number_format($myrow['decimalplaces'], 0), $ShowInWebText, locale_number_format($myrow['rate'], 8), locale_number_format(1 / $myrow['rate'], 8), locale_number_format(GetCurrencyRate($myrow['currabrev'], $CurrencyRatesArray), 8), htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['currabrev'], _('Edit'), htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['currabrev'], _('Delete'), $RootPath, '&amp;CurrencyToShow=' . $myrow['currabrev']);
+					</tr>', $ImageFile, $myrow['currabrev'], _($myrow['currency']), $myrow['country'], $myrow['hundredsname'], locale_number_format($myrow['decimalplaces'], 0), $ShowInWebText, locale_number_format($myrow['rate'], 8), locale_number_format(1 / $myrow['rate'], 8), locale_number_format(GetCurrencyRate($myrow['currabrev'], $CurrencyRatesArray), 8), htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['currabrev'], _('Edit'), htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['currabrev'], _('Delete'), $RootPath, '&amp;CurrencyToShow=' . $myrow['currabrev']);
 		} else {
 			printf('<td><img src="%s" alt="" /></td>
 					<td>%s</td>
@@ -358,7 +359,7 @@ if (!isset($SelectedCurrency)) {
 					<td>%s</td>
 					<td class="number">%s</td>
 					<td colspan="5">%s</td>
-					</tr>', $ImageFile, $myrow['currabrev'], $CurrenciesArray[$myrow['currabrev']]['Currency'], $myrow['country'], $myrow['hundredsname'], locale_number_format($myrow['decimalplaces'], 0), $ShowInWebText, 1, _('Functional Currency'));
+					</tr>', $ImageFile, $myrow['currabrev'], $myrow['currency'], $myrow['country'], $myrow['hundredsname'], locale_number_format($myrow['decimalplaces'], 0), $ShowInWebText, 1, _('Functional Currency'));
 		}
 
 	} //END WHILE LIST LOOP
@@ -420,8 +421,8 @@ if (!isset($_GET['delete'])) {
 			<tr>
 				<td>' . _('Currency') . ':</td>
 				<td><select minlength="0" name="Abbreviation">';
-		foreach ($CurrenciesArray as $CurrencyAbbreviation => $Currency) {
-			echo '<option value="' . $CurrencyAbbreviation . '">' . $CurrencyAbbreviation . '-' . $Currency['Currency'] . '</option>';
+		foreach ($CurrencyName as $CurrencyAbbreviation => $Currency) {
+			echo '<option value="' . $CurrencyAbbreviation . '">' . $CurrencyAbbreviation . '-' . $Currency . '</option>';
 		}
 
 		echo '</select></td>
@@ -465,7 +466,7 @@ if (!isset($_GET['delete'])) {
 	}
 
 	echo '<tr>
-			<td>' . _('Show in webSHOP?') . ':</td>
+			<td>' . _('Show in webSHOP') . ':</td>
 			<td><select minlength="0" name="webcart">';
 
 	if ($_POST['webcart'] == 1) {

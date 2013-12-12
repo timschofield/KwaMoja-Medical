@@ -791,15 +791,14 @@ if (DB_num_rows($result) == 0) {
 } else {
 	while ($myrow = DB_fetch_array($result)) {
 		if ($_SESSION['ReceiptBatch']->Currency == $myrow['currabrev']) {
-			echo '<option selected="selected" value="' . $myrow['currabrev'] . '">' . $CurrenciesArray[$myrow['currabrev']]['Currency'] . '</option>';
+			echo '<option selected="selected" value="' . $myrow['currabrev'] . '">' . _($myrow['currency']) . '</option>';
 		} else {
-			echo '<option value="' . $myrow['currabrev'] . '">' . $CurrenciesArray[$myrow['currabrev']]['Currency'] . '</option>';
+			echo '<option value="' . $myrow['currabrev'] . '">' . _($myrow['currency']) . '</option>';
 		}
 	}
 	echo '</select></td>
 		</tr>';
 }
-
 
 if (!isset($_SESSION['ReceiptBatch']->ExRate)) {
 	$_SESSION['ReceiptBatch']->ExRate = 1;

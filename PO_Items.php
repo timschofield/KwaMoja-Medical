@@ -864,7 +864,7 @@ if (isset($_POST['Search'])) {
 						AND purchdata.supplierno='" . $_SESSION['PO' . $identifier]->SupplierID . "'
 						AND stockmaster.description " . LIKE . " '" . $SearchString . "'
 						ORDER BY stockmaster.stockid
-						LIMIT " . $_SESSION['DefaultDisplayRecordsMax'];
+						LIMIT " . $_SESSION['DisplayRecordsMax'];
 			} //$_POST['SupplierItemsOnly'] == 'on'
 			else { // not just supplier purchdata items
 
@@ -880,7 +880,7 @@ if (isset($_POST['Search'])) {
 					AND stockmaster.discontinued<>1
 					AND stockmaster.description " . LIKE . " '" . $SearchString . "'
 					ORDER BY stockmaster.stockid
-					LIMIT " . $_SESSION['DefaultDisplayRecordsMax'];
+					LIMIT " . $_SESSION['DisplayRecordsMax'];
 			}
 		} //$_POST['StockCat'] == 'All'
 		else { //for a specific stock category
@@ -901,7 +901,7 @@ if (isset($_POST['Search'])) {
 						AND stockmaster.description " . LIKE . " '" . $SearchString . "'
 						AND stockmaster.categoryid='" . $_POST['StockCat'] . "'
 						ORDER BY stockmaster.stockid
-						LIMIT " . $_SESSION['DefaultDisplayRecordsMax'];
+						LIMIT " . $_SESSION['DisplayRecordsMax'];
 			} //$_POST['SupplierItemsOnly'] == 'on'
 			else {
 				$sql = "SELECT stockmaster.stockid,
@@ -917,7 +917,7 @@ if (isset($_POST['Search'])) {
 						AND stockmaster.description " . LIKE . " '" . $SearchString . "'
 						AND stockmaster.categoryid='" . $_POST['StockCat'] . "'
 						ORDER BY stockmaster.stockid
-						LIMIT " . $_SESSION['DefaultDisplayRecordsMax'];
+						LIMIT " . $_SESSION['DisplayRecordsMax'];
 			}
 		}
 
@@ -942,7 +942,7 @@ if (isset($_POST['Search'])) {
 						AND stockmaster.discontinued<>1
 						AND stockmaster.stockid " . LIKE . " '" . $_POST['StockCode'] . "'
 						ORDER BY stockmaster.stockid
-						LIMIT " . $_SESSION['DefaultDisplayRecordsMax'];
+						LIMIT " . $_SESSION['DisplayRecordsMax'];
 			} //$_POST['SupplierItemsOnly'] == 'on'
 			else {
 				$sql = "SELECT stockmaster.stockid,
@@ -957,7 +957,7 @@ if (isset($_POST['Search'])) {
 					AND stockmaster.discontinued<>1
 					AND stockmaster.stockid " . LIKE . " '" . $_POST['StockCode'] . "'
 					ORDER BY stockmaster.stockid
-					LIMIT " . $_SESSION['DefaultDisplayRecordsMax'];
+					LIMIT " . $_SESSION['DisplayRecordsMax'];
 			}
 		} //$_POST['StockCat'] == 'All'
 		else { //for a specific stock category and LIKE stock code
@@ -978,7 +978,7 @@ if (isset($_POST['Search'])) {
 						AND stockmaster.stockid " . LIKE . " '" . $_POST['StockCode'] . "'
 						AND stockmaster.categoryid='" . $_POST['StockCat'] . "'
 						ORDER BY stockmaster.stockid
-						LIMIT " . $_SESSION['DefaultDisplayRecordsMax'];
+						LIMIT " . $_SESSION['DisplayRecordsMax'];
 			} //$_POST['SupplierItemsOnly'] == 'on'
 			else {
 				$sql = "SELECT stockmaster.stockid,
@@ -994,7 +994,7 @@ if (isset($_POST['Search'])) {
 					AND stockmaster.stockid " . LIKE . " '" . $_POST['StockCode'] . "'
 					AND stockmaster.categoryid='" . $_POST['StockCat'] . "'
 					ORDER BY stockmaster.stockid
-					LIMIT " . $_SESSION['DefaultDisplayRecordsMax'];
+					LIMIT " . $_SESSION['DisplayRecordsMax'];
 			}
 		}
 
@@ -1016,7 +1016,7 @@ if (isset($_POST['Search'])) {
 						AND purchdata.supplierno='" . $_SESSION['PO' . $identifier]->SupplierID . "'
 						AND stockmaster.discontinued<>1
 						ORDER BY stockmaster.stockid
-						LIMIT " . $_SESSION['DefaultDisplayRecordsMax'];
+						LIMIT " . $_SESSION['DisplayRecordsMax'];
 			} //isset($_POST['SupplierItemsOnly'])
 			else {
 				$sql = "SELECT stockmaster.stockid,
@@ -1030,7 +1030,7 @@ if (isset($_POST['Search'])) {
 					AND stockmaster.mbflag<>'G'
 					AND stockmaster.discontinued<>1
 					ORDER BY stockmaster.stockid
-					LIMIT " . $_SESSION['DefaultDisplayRecordsMax'];
+					LIMIT " . $_SESSION['DisplayRecordsMax'];
 			}
 		} //$_POST['StockCat'] == 'All'
 		else { // for a specific stock category
@@ -1050,7 +1050,7 @@ if (isset($_POST['Search'])) {
 						AND stockmaster.discontinued<>1
 						AND stockmaster.categoryid='" . $_POST['StockCat'] . "'
 						ORDER BY stockmaster.stockid
-						LIMIT " . $_SESSION['DefaultDisplayRecordsMax'];
+						LIMIT " . $_SESSION['DisplayRecordsMax'];
 			} //$_POST['SupplierItemsOnly'] == 'on'
 			else {
 				$sql = "SELECT stockmaster.stockid,
@@ -1065,7 +1065,7 @@ if (isset($_POST['Search'])) {
 					AND stockmaster.discontinued<>1
 					AND stockmaster.categoryid='" . $_POST['StockCat'] . "'
 					ORDER BY stockmaster.stockid
-					LIMIT " . $_SESSION['DefaultDisplayRecordsMax'];
+					LIMIT " . $_SESSION['DisplayRecordsMax'];
 			}
 		}
 	}

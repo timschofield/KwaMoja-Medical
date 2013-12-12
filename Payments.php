@@ -13,7 +13,6 @@ if (isset($_GET['SupplierID'])) {
 	$BookMark = 'BankAccountPayments';
 }
 include('includes/header.inc');
-include('includes/CurrenciesArray.php');
 
 include('includes/SQL_CommonFunctions.inc');
 
@@ -828,10 +827,10 @@ if ($_SESSION['PaymentDetail' . $identifier]->SupplierID == '') {
 	else {
 		while ($myrow = DB_fetch_array($result)) {
 			if ($_SESSION['PaymentDetail' . $identifier]->Currency == $myrow['currabrev']) {
-				echo '<option selected="selected" value="' . $myrow['currabrev'] . '">' . $CurrenciesArray[$myrow['currabrev']]['Currency'] . '</option>';
+				echo '<option selected="selected" value="' . $myrow['currabrev'] . '">' . _($myrow['currency']) . '</option>';
 			} //$_SESSION['PaymentDetail' . $identifier]->Currency == $myrow['currabrev']
 			else {
-				echo '<option value="' . $myrow['currabrev'] . '">' . $CurrenciesArray[$myrow['currabrev']]['Currency'] . '</option>';
+				echo '<option value="' . $myrow['currabrev'] . '">' . _($myrow['currency']) . '</option>';
 			}
 		} //$myrow = DB_fetch_array($result)
 		echo '</select></td>

@@ -200,20 +200,20 @@ function GetECBCurrencyRates() {
 	}
 }
 
-function GetCurrencyRate($CurrCode, $CurrenciesArray) {
-	if ((!isset($CurrenciesArray[$CurrCode]) or !isset($CurrenciesArray[$_SESSION['CompanyRecord']['currencydefault']]))) {
+function GetCurrencyRate($CurrCode, $CurrencyRates) {
+	if ((!isset($CurrencyRates[$CurrCode]) or !isset($CurrencyRates[$_SESSION['CompanyRecord']['currencydefault']]))) {
 		return google_currency_rate($CurrCode);
 	} elseif ($CurrCode == 'EUR') {
-		if ($CurrenciesArray[$_SESSION['CompanyRecord']['currencydefault']] == 0) {
+		if ($CurrencyRates[$_SESSION['CompanyRecord']['currencydefault']] == 0) {
 			return 0;
 		} else {
-			return 1 / $CurrenciesArray[$_SESSION['CompanyRecord']['currencydefault']];
+			return 1 / $CurrencyRates[$_SESSION['CompanyRecord']['currencydefault']];
 		}
 	} else {
-		if ($CurrenciesArray[$_SESSION['CompanyRecord']['currencydefault']] == 0) {
+		if ($CurrencyRates[$_SESSION['CompanyRecord']['currencydefault']] == 0) {
 			return 0;
 		} else {
-			return $CurrenciesArray[$CurrCode] / $CurrenciesArray[$_SESSION['CompanyRecord']['currencydefault']];
+			return $CurrencyRates[$CurrCode] / $CurrencyRates[$_SESSION['CompanyRecord']['currencydefault']];
 		}
 	}
 }

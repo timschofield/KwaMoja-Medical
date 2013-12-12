@@ -191,6 +191,7 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 							debtortrans.debtorno,
 							debtortrans.branchcode,
 							paymentterms.terms,
+							currencies.currency,
 							currencies.decimalplaces
 						FROM debtortrans
 						INNER JOIN debtorsmaster

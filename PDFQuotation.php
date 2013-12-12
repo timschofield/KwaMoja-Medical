@@ -56,6 +56,7 @@ $sql = "SELECT salesorders.customerref,
 				salesorders.branchcode,
 				locations.taxprovinceid,
 				locations.locationname,
+				currencies.currency,
 				currencies.decimalplaces AS currdecimalplaces
 			FROM salesorders INNER JOIN debtorsmaster
 			ON salesorders.debtorno=debtorsmaster.debtorno

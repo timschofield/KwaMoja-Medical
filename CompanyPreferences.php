@@ -355,9 +355,9 @@ echo '<tr>
 
 while ($myrow = DB_fetch_array($result)) {
 	if ($_POST['CurrencyDefault'] == $myrow['currabrev']) {
-		echo '<option selected="selected" value="' . $myrow['currabrev'] . '">' . $CurrenciesArray[$myrow['currabrev']]['Currency'] . '</option>';
+		echo '<option selected="selected" value="' . $myrow['currabrev'] . '">' . _($myrow['currency']) . '</option>';
 	} else {
-		echo '<option value="' . $myrow['currabrev'] . '">' . $CurrenciesArray[$myrow['currabrev']]['Currency'] . '</option>';
+		echo '<option value="' . $myrow['currabrev'] . '">' . _($myrow['currency']) . '</option>';
 	}
 } //end while loop
 

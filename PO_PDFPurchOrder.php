@@ -100,6 +100,7 @@ if (isset($OrderNo) and $OrderNo != '' and $OrderNo > 0 and $OrderNo != 'Preview
 					suppliers.currcode,
 					purchorders.status,
 					purchorders.stat_comment,
+					currencies.currency,
 					currencies.decimalplaces AS currdecimalplaces
 				FROM purchorders INNER JOIN suppliers
 					ON purchorders.supplierno = suppliers.supplierid

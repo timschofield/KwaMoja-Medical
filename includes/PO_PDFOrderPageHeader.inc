@@ -64,10 +64,7 @@ $LeftOvers = $pdf->addTextWrap($FormDesign->Comments->x, $Page_Height - $FormDes
 if (mb_strlen($LeftOvers) > 0) {
 	$LeftOvers = $pdf->addTextWrap($FormDesign->Comments->x, $Page_Height - $FormDesign->Comments->y - $line_height, $FormDesign->Comments->Length, $FormDesign->Comments->FontSize, $LeftOvers, 'left');
 }
-/*Now the currency the order is in */
-include($PathPrefix . 'includes/CurrenciesArray.php');
-/* To get the currency name */
-$pdf->addText($FormDesign->Currency->x, $Page_Height - $FormDesign->Currency->y, $FormDesign->Currency->FontSize, _('All amounts stated in') . ' - ' . $POHeader['currcode'] . ' ' . $CurrenciesArray[$POHeader['currcode']]['Currency']);
+$pdf->addText($FormDesign->Currency->x, $Page_Height - $FormDesign->Currency->y, $FormDesign->Currency->FontSize, _('All amounts stated in') . ' - ' . $POHeader['currcode'] . ' ' . $POHeader['currency']);
 /*draw a square grid for entering line headings */
 $pdf->Rectangle($FormDesign->HeaderRectangle->x, $Page_Height - $FormDesign->HeaderRectangle->y, $FormDesign->HeaderRectangle->width, $FormDesign->HeaderRectangle->height);
 /*Set up headings */

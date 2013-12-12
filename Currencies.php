@@ -298,7 +298,7 @@ if (!isset($SelectedCurrency)) {
 			<th>' . _('Country') . '</th>
 			<th>' . _('Hundredths Name') . '</th>
 			<th>' . _('Decimal Places') . '</th>
-			<th>' . _('Use in webSHOP') . '</th>
+			<th>' . _('Show in webSHOP') . '</th>
 			<th>' . _('Exchange Rate') . '</th>
 			<th>' . _('1 / Ex Rate') . '</th>
 			<th>' . _('Ex Rate - ECB') . '</th>
@@ -466,7 +466,7 @@ if (!isset($_GET['delete'])) {
 	}
 
 	echo '<tr>
-			<td>' . _('Show in webSHOP?') . ':</td>
+			<td>' . _('Show in webSHOP') . ':</td>
 			<td><select minlength="0" name="webcart">';
 
 	if ($_POST['webcart'] == 1) {

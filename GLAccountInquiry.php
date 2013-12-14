@@ -204,8 +204,7 @@ if (isset($_POST['Show'])) {
 		$RunningTotal = $ChartDetailRow['bfwd'];
 		if ($RunningTotal < 0) { //its a credit balance b/fwd
 			echo '<tr>
-					<td colspan="3"><b>' . _('Brought Forward Balance') . '</b></td>
-					<td></td>
+					<td colspan="4"><b>' . _('Brought Forward Balance') . '</b></td>
 					<td class="number"><b>' . locale_number_format(-$RunningTotal, $_SESSION['CompanyRecord']['decimalplaces']) . '</b></td>
 				</tr>';
 		} else { //its a debit balance b/fwd

@@ -86,7 +86,6 @@ if (DB_num_rows($result) != 0) {
 
 
 echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 echo '<input type="hidden" name="MailServerSetting" value="' . $MailServerSetting . '" />';
 echo '<table class="selection">';
@@ -119,11 +118,11 @@ echo '</select>
 if ($myrow['auth'] == 1) {
 	echo '<tr>
 			<td>' . _('User Name') . '</td>
-			<td><input type="text" name="UserName" required="required" minlength="1" maxlength="20" value="' . $myrow['username'] . '" /></td>
+			<td><input type="text" name="UserName" required="required" minlength="1" maxlength="50" value="' . $myrow['username'] . '" /></td>
 		</tr>
 		<tr>
 			<td>' . _('Password') . '</td>
-			<td><input type="password" name="Password" required="required" minlength="1" maxlength="20" value="' . $myrow['password'] . '" /></td>
+			<td><input type="password" name="Password" required="required" minlength="1" maxlength="50" value="' . $myrow['password'] . '" /></td>
 		</tr>';
 } else {
 	echo '<input type="hidden" name="UserName" value="' . $myrow['username'] . '" />
@@ -138,7 +137,6 @@ echo '<tr>
 	</tr>';
 echo '<input type="submit" name="reload" value="Reload" hidden="hidden" />';
 echo '</table>
-	  </div>
 	  </form>';
 
 include('includes/footer.inc');

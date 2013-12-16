@@ -2,7 +2,7 @@
 <h2>Overview</h2>
 <p>The Petty Cash module enables employees to submit expense claims directly into the system that can then be authorised by their immediate supervisor.</p>
 <p>Petty cash expenses are controlled in a friendly way, enabling all employees (including those without accounting knowledge) to enter their expenses and get paid for them.</p>
-<p>The Petty cash module uses a temporary GL table (pcashdetails), containing all information about payments and expenses entered as petty cash. When cash assignments or expenses are authorized by a supervisor, they are posted into the gltrans table and flagged.</p>
+<p>The Petty cash module uses a temporary GL table (pcashdetails), containing all information about payments and expenses entered as petty cash. When cash assignments or expenses are authorised by a supervisor, they are posted into the gltrans table and flagged.</p>
 <p>Once any transaction in the petty cash system has been posted it cannot be modified, edited or deleted in any way. Once posted, that's it.</p>
 <div class="floatright">
 	<a class="minitext" href="#top">⬆ Top</a>
@@ -38,7 +38,7 @@ Account: 12345678 - Commercial car expenses
 	<li>Type of tab: As previously defined</li>
 	<li>Currency: A tab will handle money in one currency only. So users allowed to spend in 2 or more currencies (e.g. international commercial team) will have 1 tab for each currency</li>
 	<li>Limit: Maximum amount the user can spend, to have a better control. Nowadays it only issues a warning of the supervisor, but can be coded to work differently (better)</li>
-	<li>Authorizer: User supervisor of the petty cash user. User authorizing (or not) expenses done, checking money is spent wisely and asigning cash to users</li>
+	<li>Authoriser: User supervisor of the petty cash user. User authorizing (or not) expenses done, checking money is spent wisely and asigning cash to users</li>
 	<li>GL Account For Cash Assignment: GL account where the cash assigment comes from. It must be a bank account, so when assigning cash to a tab, the system will deduct the amount from the bank account and increase the petty cash account</li>
 	<li>GL Account Petty Cash Tab. In GL we should have an account (one per currency) to reflect "amount of money distributed among employees" or "Petty Cash Account". This is the account where the money goes after a cash assigment is done or where the money comes where an expense is posted</li>
 </ul>
@@ -48,14 +48,14 @@ Account: 12345678 - Commercial car expenses
 </div>
 <h2>Workflow</h2>
 <h3><a id="CashAssignment">Assignment of cash</a></h3>
-<p>The supervisor (authorizer) gives money cash to an employee to be used as petty cash. In script PcAssignCashToTab.php we record this fact.<br></p>
+<p>The supervisor (authoriser) gives money cash to an employee to be used as petty cash. In script PcAssignCashToTab.php we record this fact.<br></p>
 <p>Supervisor can select only the tabs he/she is supervisor. Must specify amount, date. There are 2 additional fields:</p>
 <ul>
 	<li>Notes: For any further detail needed to remember</li>
 	<li>Receipt: In case the company has a physical receipt, or any proof, the code, number, etc of this receipt, to help solving disputes later on</li>
 </ul>
 <p>At this stage no tranasction is posted in gltrans table, only at pcashdetails we write down: "Supervisor gives to user X (tab really), Y dollars on date D".<br></p>
-<p>Cash Assignments can be edited and deleted before are authorized. Once authorized and posted can not be modified in any way.<br></p>
+<p>Cash Assignments can be edited and deleted before are authorised. Once authorised and posted can not be modified in any way.<br></p>
 <h3><a id="ExpenseClaim">Expense claims</a></h3>
 <p>Employee will go out and spend money. Then will report to KwaMoja these expenses in script PcClaimExpensesFromTab.php<br></p>
 <p>Employee will select a tab (from his/her own tabs). And then records details of all expenses incurred:</p>
@@ -67,11 +67,11 @@ Account: 12345678 - Commercial car expenses
 	<li>Receipt: In case the company has a physical receipt, or any proof, the code, number, etc of this receipt, to help solving disputes later on.</li>
 </ul>
 <p>At this stage no tranasction is posted in gltrans table, only at pcashdetails we write down: "User U reports spending X amount in concept C on date D".<br></p>
-<p>Expenses reported can be edited and deleted before are authorized. Once authorized and posted can not be modified in any way.<br></p>
+<p>Expenses reported can be edited and deleted before are authorised. Once authorised and posted can not be modified in any way.<br></p>
 <h3><a id="AuthorizeExpense">Expense authorisation</a></h3>
-<p>Supervisor will need to authorize expenses and cash assignemnts reported.<br></p>
+<p>Supervisor will need to authorise expenses and cash assignemnts reported.<br></p>
 <p>In script PcAuthorizeExpenses.php the supervisor must select a tab he/she is supervising<br></p>
-<p>If there is any assignment or expense not authorized yet, it can be checked and if correct just tick it. If incorrect or in doubt (an employee claiming 10.000.000 USD for fuel car) he can call/email/report him and sort it out. Because it's not authorized yet it can be modified (to 100 USD...)<br></p>
+<p>If there is any assignment or expense not authorised yet, it can be checked and if correct just tick it. If incorrect or in doubt (an employee claiming 10.000.000 USD for fuel car) he can call/email/report him and sort it out. Because it's not authorised yet it can be modified (to 100 USD...)<br></p>
 <p>Once the update button is pressed and there are some entried ticked, then GL posting occurs.</p>
 <h3>Posting workflow</h3>
 <p>If a cash assigment need to be posted then:</p>

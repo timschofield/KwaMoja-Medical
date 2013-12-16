@@ -231,7 +231,7 @@ if (!isset($SelectedTabs)) {
 				<th>' . _('Date Of Expense') . '</th>
 				<th>' . _('Expense Description') . '</th>
 				<th>' . _('Amount') . '</th>
-				<th>' . _('Authorized') . '</th>
+				<th>' . _('Authorised') . '</th>
 				<th>' . _('Notes') . '</th>
 				<th>' . _('Receipt') . '</th>
 			</tr>';
@@ -263,23 +263,23 @@ if (!isset($SelectedTabs)) {
 				$AuthorisedDate = ConvertSQLDate($myrow['5']);
 			}
 			if (($myrow['5'] == '0000-00-00') and ($Description['0'] != 'ASSIGNCASH')) {
-				// only movements NOT authorized can be modified or deleted
+				// only movements NOT authorised can be modified or deleted
 				printf('<td>%s</td>
-					<td>%s</td>
-					<td class="number">%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td><a href="%sSelectedIndex=%s&amp;SelectedTabs=' . $SelectedTabs . '&amp;Days=' . $Days . '&amp;edit=yes">' . _('Edit') . '</a></td>
-					<td><a href="%sSelectedIndex=%s&amp;SelectedTabs=' . $SelectedTabs . '&amp;Days=' . $Days . '&amp;delete=yes" onclick=\'return MakeConfirm("' . _('Are you sure you wish to delete this code and the expenses it may have set up?') . '", \'Confirm Delete\', this);\'>' . _('Delete') . '</a></td>
+						<td>%s</td>
+						<td class="number">%s</td>
+						<td>%s</td>
+						<td>%s</td>
+						<td>%s</td>
+						<td><a href="%sSelectedIndex=%s&amp;SelectedTabs=' . $SelectedTabs . '&amp;Days=' . $Days . '&amp;edit=yes">' . _('Edit') . '</a></td>
+						<td><a href="%sSelectedIndex=%s&amp;SelectedTabs=' . $SelectedTabs . '&amp;Days=' . $Days . '&amp;delete=yes" onclick=\'return MakeConfirm("' . _('Are you sure you wish to delete this code and the expenses it may have set up?') . '", \'Confirm Delete\', this);\'>' . _('Delete') . '</a></td>
 					</tr>', ConvertSQLDate($myrow['2']), $Description['0'], locale_number_format($myrow['4'], $CurrDecimalPlaces), $AuthorisedDate, $myrow['7'], $myrow['8'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['0'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['0']);
 			} else {
 				printf('<td>%s</td>
-					<td>%s</td>
-					<td class="number">%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
+						<td>%s</td>
+						<td class="number">%s</td>
+						<td>%s</td>
+						<td>%s</td>
+						<td>%s</td>
 					</tr>', ConvertSQLDate($myrow['2']), $Description['0'], locale_number_format($myrow['4'], $CurrDecimalPlaces), $AuthorisedDate, $myrow['7'], $myrow['8']);
 
 			}

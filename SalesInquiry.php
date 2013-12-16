@@ -95,7 +95,7 @@ function submit(&$db, $PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $Debto
 
 	if ($_POST['ReportType'] == 'Summary' and $_POST['DateType'] == 'Order' and $_POST['SummaryType'] == 'transno') {
 		$InputError = 1;
-		prnMsg(_('Cannot summarize by transaction number with a date type of Order Date'), 'error');
+		prnMsg(_('Cannot summarise by transaction number with a date type of Order Date'), 'error');
 		return;
 	} //$_POST['ReportType'] == 'Summary' and $_POST['DateType'] == 'Order' and $_POST['SummaryType'] == 'transno'
 

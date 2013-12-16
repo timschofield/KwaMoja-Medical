@@ -9,7 +9,7 @@ $db);
 
 NewScript('BankAccountUsers.php', 15, $db);
 
-NewMenuItem('system', 'Maintenance', _('Bank Account Authorized Users'), '/BankAccountUsers.php', 13, $db);
+NewMenuItem('system', 'Maintenance', _('Bank Account Authorised Users'), '/BankAccountUsers.php', 13, $db);
 
 UpdateDBNo(basename(__FILE__, '.php'), $db);
 

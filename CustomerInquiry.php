@@ -72,8 +72,13 @@ $SQL = "SELECT debtorsmaster.name,
 	 		AND debtorsmaster.currcode = currencies.currabrev
 	 		AND debtorsmaster.holdreason = holdreasons.reasoncode
 	 		AND debtorsmaster.debtorno = '" . $CustomerID . "'
-	 		AND debtorsmaster.debtorno = debtortrans.debtorno
-		GROUP BY debtorsmaster.name,
+     		AND debtorsmaster.debtorno = debtortrans.debtorno";
+
+if ($_SESSION['SalesmanLogin'] != '') {
+	$SQL .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
+}
+
+$SQL .= " GROUP BY debtorsmaster.name,
 			currencies.currency,
 			paymentterms.terms,
 			paymentterms.daysbeforedue,
@@ -185,8 +190,13 @@ $SQL = "SELECT systypes.typename,
 		FROM debtortrans INNER JOIN systypes
 		ON debtortrans.type = systypes.typeid
 		WHERE debtortrans.debtorno = '" . $CustomerID . "'
-		AND debtortrans.trandate >= '" . $DateAfterCriteria . "'
-		ORDER BY debtortrans.id";
+		AND debtortrans.trandate >= '" . $DateAfterCriteria . "'";
+
+if ($_SESSION['SalesmanLogin'] != '') {
+	$SQL .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
+}
+
+$SQL .= " ORDER BY debtortrans.id";
 
 $ErrMsg = _('No transactions were returned by the SQL because');
 $TransResult = DB_query($SQL, $db, $ErrMsg);

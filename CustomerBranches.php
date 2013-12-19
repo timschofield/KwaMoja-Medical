@@ -47,6 +47,10 @@ if (isset($_POST['submit'])) {
 
 	$_POST['BranchCode'] = mb_strtoupper($_POST['BranchCode']);
 
+	if ($_SESSION['SalesmanLogin'] != '') {
+		$_POST['Salesman'] = $_SESSION['SalesmanLogin'];
+	}
+
 	if (ContainsIllegalCharacters($_POST['BranchCode']) or mb_strstr($_POST['BranchCode'], ' ') or mb_strstr($_POST['BranchCode'], '-')) {
 		$InputError = 1;
 		prnMsg(_('The Branch code cannot contain any of the following characters') . " -  &amp; \'", 'error');
@@ -165,6 +169,10 @@ if (isset($_POST['submit'])) {
 						custbranchcode='" . $_POST['CustBranchCode'] . "',
 						deliverblind='" . $_POST['DeliverBlind'] . "'
 					WHERE branchcode = '" . $SelectedBranch . "' AND debtorno='" . $DebtorNo . "'";
+
+		if ($_SESSION['SalesmanLogin'] != '') {
+			$sql .= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
+		}
 
 		$msg = $_POST['BrName'] . ' ' . _('branch has been updated.');
 
@@ -319,21 +327,24 @@ if (isset($_POST['submit'])) {
 					prnMsg(_('Cannot delete this branch because users exist that refer to it') . '. ' . _('Purge old users first'), 'warn');
 					echo '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('users referring to this Branch/customer');
 				} else {
-						// Check if there are any contract that refer to this branch code
-					$sql= "SELECT COUNT(*) FROM contracts WHERE contracts.branchcode='".$SelectedBranch."' AND contracts.debtorno = '".$DebtorNo."'";
+					// Check if there are any contract that refer to this branch code
+					$sql = "SELECT COUNT(*) FROM contracts WHERE contracts.branchcode='" . $SelectedBranch . "' AND contracts.debtorno = '" . $DebtorNo . "'";
 
-					$result = DB_query($sql,$db);
+					$result = DB_query($sql, $db);
 					$myrow = DB_fetch_row($result);
 
-					if ($myrow[0]>0) {
-						prnMsg(_('Cannot delete this branch because contract have been created that refer to it') . '. ' . _('Purge old contracts first'),'warn');
-						echo '<br />'._('There are').' ' . $myrow[0] . ' '._('contracts referring to this branch/customer');
+					if ($myrow[0] > 0) {
+						prnMsg(_('Cannot delete this branch because contract have been created that refer to it') . '. ' . _('Purge old contracts first'), 'warn');
+						echo '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('contracts referring to this branch/customer');
 					} else {
-						$sql="DELETE FROM custbranch WHERE branchcode='" . $SelectedBranch . "' AND debtorno='" . $DebtorNo . "'";
+						$sql = "DELETE FROM custbranch WHERE branchcode='" . $SelectedBranch . "' AND debtorno='" . $DebtorNo . "'";
+						if ($_SESSION['SalesmanLogin'] != '') {
+							$SQL .= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
+						}
 						$ErrMsg = _('The branch record could not be deleted') . ' - ' . _('the SQL server returned the following message');
-							$result = DB_query($sql,$db,$ErrMsg);
-						if (DB_error_no($db)==0){
-							prnMsg(_('Branch Deleted'),'success');
+						$result = DB_query($sql, $db, $ErrMsg);
+						if (DB_error_no($db) == 0) {
+							prnMsg(_('Branch Deleted'), 'success');
 						}
 					}
 				}
@@ -366,6 +377,10 @@ if (!isset($SelectedBranch)) {
 				INNER JOIN taxgroups
 				ON custbranch.taxgroupid=taxgroups.taxgroupid
 				WHERE custbranch.debtorno = '" . $DebtorNo . "'";
+
+	if ($_SESSION['SalesmanLogin'] != '') {
+		$sql .= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
+	}
 
 	$result = DB_query($sql, $db);
 	$myrow = DB_fetch_row($result);
@@ -493,6 +508,10 @@ if (!isset($_GET['delete'])) {
 					FROM custbranch
 					WHERE branchcode='" . $SelectedBranch . "'
 					AND debtorno='" . $DebtorNo . "'";
+
+		if ($_SESSION['SalesmanLogin'] != '') {
+			$sql .= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
+		}
 
 		$result = DB_query($sql, $db);
 		$myrow = DB_fetch_array($result);
@@ -710,40 +729,49 @@ if (!isset($_GET['delete'])) {
 	echo '</select></td>
 		</tr>';
 	DB_data_seek($result, 0);
+	if ($_SESSION['SalesmanLogin'] != '') {
+		echo '<tr>
+				<td>' . _('Salesperson') . ':</td><td>';
+		echo $_SESSION['UsersRealName'];
+		echo '</td>
+			</tr>';
+	} else {
 
-	//SQL to poulate account selection boxes
-	$sql = "SELECT salesmanname,
-					salesmancode
-			FROM salesman
-			WHERE current = 1";
+		//SQL to poulate account selection boxes
+		$sql = "SELECT salesmanname,
+						salesmancode
+				FROM salesman
+				WHERE current = 1";
 
-	$result = DB_query($sql, $db);
+		$result = DB_query($sql, $db);
 
-	if (DB_num_rows($result) == 0) {
-		echo '</table>';
-		prnMsg(_('There are no sales people defined as yet') . ' - ' . _('customer branches must be allocated to a sales person') . '. ' . _('Please use the link below to define at least one sales person'), 'error');
-		echo '<p align="center"><a href="' . $RootPath . '/SalesPeople.php">' . _('Define Sales People') . '</a>';
-		include('includes/footer.inc');
-		exit;
-	}
-
-	echo '<tr>
-			<td>' . _('Salesperson') . ':</td>
-			<td><select required="required" minlength="1" tabindex="13" name="Salesman">
-					<option value=""></option>';
-
-	while ($myrow = DB_fetch_array($result)) {
-		if (isset($_POST['Salesman']) and $myrow['salesmancode'] == $_POST['Salesman']) {
-			echo '<option selected="selected" value="';
-		} else {
-			echo '<option value="';
+		if (DB_num_rows($result) == 0) {
+			echo '</table>';
+			prnMsg(_('There are no sales people defined as yet') . ' - ' . _('customer branches must be allocated to a sales person') . '. ' . _('Please use the link below to define at least one sales person'), 'error');
+			echo '<p align="center"><a href="' . $RootPath . '/SalesPeople.php">' . _('Define Sales People') . '</a>';
+			include('includes/footer.inc');
+			exit;
 		}
-		echo $myrow['salesmancode'] . '">' . $myrow['salesmanname'] . '</option>';
 
-	} //end while loop
+		echo '<tr>
+				<td>' . _('Salesperson') . ':</td>
+				<td><select tabindex="13" name="Salesman">';
 
-	echo '</select></td>
-		</tr>';
+		while ($myrow = DB_fetch_array($result)) {
+			if (isset($_POST['Salesman']) AND $myrow['salesmancode'] == $_POST['Salesman']) {
+				echo '<option selected="selected" value="';
+			} else {
+				echo '<option value="';
+			}
+			echo $myrow['salesmancode'] . '">' . $myrow['salesmanname'] . '</option>';
+
+		} //end while loop
+
+		echo '</select></td>
+			</tr>';
+
+		//	DB_data_seek($result,0); //by thumb
+	}
 
 	if ($_SESSION['RestrictLocations'] == 0) {
 		$sql = "SELECT locationname,

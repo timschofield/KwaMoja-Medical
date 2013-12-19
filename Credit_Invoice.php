@@ -74,6 +74,10 @@ if (!isset($_GET['InvoiceNumber']) and !$_SESSION['ProcessingCredit']) {
 							WHERE debtortrans.transno = '" . intval($_GET['InvoiceNumber']) . "'
 								AND stockmoves.type=10";
 
+	if ($_SESSION['SalesmanLogin'] != '') {
+		$sql .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
+	}
+
 	$ErrMsg = _('A credit cannot be produced for the selected invoice') . '. ' . _('The invoice details cannot be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve the invoice details was');
 	$GetInvHdrResult = DB_query($InvoiceHeaderSQL, $db, $ErrMsg, $DbgMsg);
@@ -202,6 +206,12 @@ if (isset($_POST['Location'])) {
 }
 if (isset($_POST['ChargeFreightCost'])) {
 	$_SESSION['CreditItems' . $identifier]->FreightCost = filter_number_format($_POST['ChargeFreightCost']);
+}
+
+if ($_SESSION['SalesmanLogin'] == '') {
+	if (isset($_POST['SalesPerson'])){
+		$_SESSION['CreditItems' . $identifier]->SalesPerson = $_POST['SalesPerson'];
+	}
 }
 
 foreach ($_SESSION['CreditItems' . $identifier]->FreightTaxes as $FreightTaxLine) {
@@ -1516,7 +1526,9 @@ if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 	} elseif ($_POST['CreditType'] == 'WriteOff') {
 		/* the goods are to be written off to somewhere */
 
-		echo '<tr><td>' . _('Write off the cost of the goods to') . '</td><td><select minlength="0" tabindex="' . $j . '" name="WriteOffGLCode">';
+		echo '<tr>
+				<td>' . _('Write off the cost of the goods to') . '</td>
+				<td><select minlength="0" tabindex="' . $j . '" name="WriteOffGLCode">';
 
 		$SQL = "SELECT accountcode,
 					accountname
@@ -1539,15 +1551,22 @@ if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 	}
 	$j++;
 	echo '<tr>
-			<td>' . _('Sales person') . ':</td>
-			<td><select minlength="0" tabindex="' . $j . '" name="SalesPerson">';
-	$SalesPeopleResult = DB_query("SELECT salesmancode, salesmanname FROM salesman WHERE current=1", $db);
-	/* SalesPerson will be set because it is an invoice being credited and the order salesperson would/should have been retrieved */
-	while ($SalesPersonRow = DB_fetch_array($SalesPeopleResult)) {
-		if ($SalesPersonRow['salesmancode'] == $_SESSION['CreditItems' . $identifier]->SalesPerson) {
-			echo '<option selected="selected" value="' . $SalesPersonRow['salesmancode'] . '">' . $SalesPersonRow['salesmanname'] . '</option>';
-		} else {
-			echo '<option value="' . $SalesPersonRow['salesmancode'] . '">' . $SalesPersonRow['salesmanname'] . '</option>';
+			<td>' . _('Sales person'). ':</td>';
+
+	if ($_SESSION['SalesmanLogin'] != '') {
+		echo '<td>';
+		echo $_SESSION['UsersRealName'];
+		echo '</td>';
+	} else {
+		echo '<td><select tabindex="' . $j . '" name="SalesPerson">';
+		$SalesPeopleResult = DB_query("SELECT salesmancode, salesmanname FROM salesman WHERE current=1", $db);
+		/* SalesPerson will be set because it is an invoice being credited and the order salesperson would/should have been retrieved */
+		while ($SalesPersonRow = DB_fetch_array($SalesPeopleResult)){
+			if ($SalesPersonRow['salesmancode'] == $_SESSION['CreditItems'.$identifier]->SalesPerson){
+				echo '<option selected="selected" value="' . $SalesPersonRow['salesmancode'] . '">' . $SalesPersonRow['salesmanname'] . '</option>';
+			} else {
+				echo '<option value="' . $SalesPersonRow['salesmancode'] . '">' . $SalesPersonRow['salesmanname'] . '</option>';
+			}
 		}
 	}
 

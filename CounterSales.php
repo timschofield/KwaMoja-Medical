@@ -31,7 +31,11 @@ if (isset($_SESSION['Items' . $identifier]) and isset($_POST['CustRef'])) {
 	$_SESSION['Items' . $identifier]->DeliverTo = $_POST['DeliverTo'];
 	$_SESSION['Items' . $identifier]->PhoneNo = $_POST['PhoneNo'];
 	$_SESSION['Items' . $identifier]->Email = $_POST['Email'];
-	$_SESSION['Items' . $identifier]->SalesPerson = $_POST['SalesPerson'];
+	if ($_SESSION['SalesmanLogin'] != '') {
+		$_SESSION['Items' . $identifier]->SalesPerson = $_SESSION['SalesmanLogin'];
+	} else {
+		$_SESSION['Items' . $identifier]->SalesPerson = $_POST['SalesPerson'];
+	}
 }
 
 if (isset($_POST['QuickEntry'])) {
@@ -891,23 +895,29 @@ if (count($_SESSION['Items' . $identifier]->LineItems) > 0) {
 		</tr>';
 
 	echo '<tr>
-	<td>' . _('Sales person') . ':</td>
-	<td><select minlength="0" name="SalesPerson">';
-	$SalesPeopleResult = DB_query("SELECT salesmancode, salesmanname FROM salesman WHERE current=1", $db);
-	if (!isset($_POST['SalesPerson']) and $_SESSION['SalesmanLogin'] != NULL) {
-		$_SESSION['Items' . $identifier]->SalesPerson = $_SESSION['SalesmanLogin'];
-	}
+			<td>' . _('Sales person'). ':</td>';
 
-	while ($SalesPersonRow = DB_fetch_array($SalesPeopleResult)) {
-		if ($SalesPersonRow['salesmancode'] == $_SESSION['Items' . $identifier]->SalesPerson) {
-			echo '<option selected="selected" value="' . $SalesPersonRow['salesmancode'] . '">' . $SalesPersonRow['salesmanname'] . '</option>';
-		} else {
-			echo '<option value="' . $SalesPersonRow['salesmancode'] . '">' . $SalesPersonRow['salesmanname'] . '</option>';
+	if ($_SESSION['SalesmanLogin'] != '') {
+		echo '<td>';
+		echo $_SESSION['UsersRealName'];
+		echo '</td>';
+	} else {
+		echo '<td><select name="SalesPerson">';
+		$SalesPeopleResult = DB_query("SELECT salesmancode, salesmanname FROM salesman WHERE current=1", $db);
+		if (!isset($_POST['SalesPerson']) and $_SESSION['SalesmanLogin'] != NULL ){
+			$_SESSION['Items' . $identifier]->SalesPerson = $_SESSION['SalesmanLogin'];
 		}
-	}
 
-	echo '</select></td>
-		</tr>';
+		while ($SalesPersonRow = DB_fetch_array($SalesPeopleResult)){
+			if ($SalesPersonRow['salesmancode'] == $_SESSION['Items' . $identifier]->SalesPerson){
+				echo '<option selected="selected" value="' . $SalesPersonRow['salesmancode'] . '">' . $SalesPersonRow['salesmanname'] . '</option>';
+			} else {
+				echo '<option value="' . $SalesPersonRow['salesmancode'] . '">' . $SalesPersonRow['salesmanname'] . '</option>';
+			}
+		}
+		echo '</select></td>';
+	}
+	echo '</tr>';
 	echo '<tr>
 			<td>' . _('Comments') . ':</td>
 			<td><textarea name="Comments" cols="23" rows="5">' . stripcslashes($_SESSION['Items' . $identifier]->Comments) . '</textarea></td>
@@ -2012,7 +2022,8 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 							ovamount,
 							alloc,
 							invtext,
-							settled)
+							settled,
+							salesperson)
 					VALUES ('" . $ReceiptNumber . "',
 						12,
 						'" . $_SESSION['Items' . $identifier]->DebtorNo . "',
@@ -2024,7 +2035,8 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 						'" . -filter_number_format($_POST['AmountPaid']) . "',
 						'" . -filter_number_format($_POST['AmountPaid']) . "',
 						'" . $_SESSION['Items' . $identifier]->LocationName . ' ' . _('Counter Sale') . "',
-						'1')";
+						'1',
+						'" . $_SESSION['Items' . $identifier]->SalesPerson . "')";
 
 			$DbgMsg = _('The SQL that failed to insert the customer receipt transaction was');
 			$ErrMsg = _('Cannot insert a receipt transaction against the customer because');

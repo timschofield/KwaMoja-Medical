@@ -50,8 +50,13 @@ if ($_SESSION['RestrictLocations'] == 0) {
 					ON stockmoves.type=systypes.typeid
 				INNER JOIN locations
 					ON stockmoves.loccode=locations.loccode
-				WHERE debtorno='" . $DebtorNo . "'
-				ORDER BY trandate DESC";
+				WHERE debtorno='" . $DebtorNo . "'";
+	if ($_SESSION['SalesmanLogin'] != '') {
+		$SQL .= " INNER JOIN custbranch
+					ON stockmoves.branchcode=custbranch.branchcode";
+		$SQLWhere .= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
+	}
+	$SQL .= $SQLWhere . " ORDER BY trandate DESC";
 } else {
 	$SQL = "SELECT stockmoves.stockid,
 					stockmaster.description,
@@ -74,8 +79,13 @@ if ($_SESSION['RestrictLocations'] == 0) {
 				INNER JOIN www_users
 					ON locations.loccode=www_users.defaultlocation
 				WHERE debtorno='" . $DebtorNo . "'
-					AND www_users.userid='" . $_SESSION['UserID'] . "'
-				ORDER BY trandate DESC";
+					AND www_users.userid='" . $_SESSION['UserID'] . "'";
+	if ($_SESSION['SalesmanLogin'] != '') {
+		$SQL .= " INNER JOIN custbranch
+					ON stockmoves.branchcode=custbranch.branchcode";
+		$SQLWhere .= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
+	}
+	$SQL .= $SQLWhere . " ORDER BY trandate DESC";
 }
 $ErrMsg = _('The stock movement details could not be retrieved by the SQL because');
 $StockMovesResult = DB_query($SQL, $db, $ErrMsg);

@@ -332,6 +332,10 @@ while ($Cols = DB_fetch_array($ColsResult)) {
 }
 /* end of loop through defined columns */
 
+if ($_SESSION['SalesmanLogin'] != '') {
+	$SQLWhereCls .= " AND salesanalysis.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
+}
+
 $SQLTheLot = $SQLSelectCls . ' ' . $SQLFromCls . ' ' . $SQLWhereCls . ' ' . $SQLGroupCls;
 
 /*For the purposes of debugging */

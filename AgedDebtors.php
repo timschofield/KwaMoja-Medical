@@ -26,6 +26,9 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 	}
 
 	/*Now figure out the aged analysis for the customer range under review */
+	if ($_SESSION['SalesmanLogin'] != '') {
+		$_POST['Salesman'] = $_SESSION['SalesmanLogin'];
+	}
 	if (trim($_POST['Salesman']) != '') {
 		$SalesLimit = " AND debtorsmaster.debtorno IN (SELECT DISTINCT debtorno FROM custbranch WHERE salesman = '" . $_POST['Salesman'] . "') ";
 	} else {
@@ -366,6 +369,9 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 						AND debtortrans.debtorno = '" . $AgedAnalysis['debtorno'] . "'
 						AND ABS(debtortrans.ovamount + debtortrans.ovgst + debtortrans.ovfreight + debtortrans.ovdiscount - debtortrans.alloc)>0.004";
 
+			if ($_SESSION['SalesmanLogin'] != '') {
+				$sql .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
+			}
 
 			$DetailResult = DB_query($sql, $db, '', '', False, False);
 			/*Dont trap errors */
@@ -492,23 +498,25 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				</td>
 			</tr>
 			<tr>
-				<td>' . _('Only Show Customers Of') . ':' . '</td>
-				<td><select minlength="0" tabindex="4" name="Salesman">';
-
-		$sql = "SELECT salesmancode, salesmanname FROM salesman";
+				<td>' . _('Only Show Customers Of') . ':' . '</td>';
 		if ($_SESSION['SalesmanLogin'] != '') {
-			$sql .= " WHERE salesmancode='" . $_SESSION['SalesmanLogin'] . "'";
+			echo '<td>';
+			echo $_SESSION['UsersRealName'];
+			echo '</td>';
 		} else {
-			echo '<option selected="selected" value="">' . _('All Salesmen') . '</option>';
-		}
+			echo '<td><select tabindex="4" name="Salesman">';
 
-		$result = DB_query($sql, $db);
-		while ($myrow = DB_fetch_array($result)) {
-			echo '<option value="' . $myrow['salesmancode'] . '">' . $myrow['salesmanname'] . '</option>';
+			$sql = "SELECT salesmancode, salesmanname FROM salesman";
+
+			$result = DB_query($sql, $db);
+			echo '<option value="">' . _('All Sales people') . '</option>';
+			while ($myrow = DB_fetch_array($result)){
+					echo '<option value="' . $myrow['salesmancode'] . '">' . $myrow['salesmanname'] . '</option>';
+			}
+			echo '</select></td>
+			</tr>';
 		}
-		echo '</select></td>
-			</tr>
-			<tr>
+		echo '<tr>
 				<td>' . _('Only show customers trading in') . ':' . '</td>
 				<td><select minlength="0" tabindex="5" name="Currency">';
 

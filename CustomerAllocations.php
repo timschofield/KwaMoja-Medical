@@ -226,6 +226,11 @@ if (isset($_GET['AllocTrans'])) {
 			INNER JOIN currencies
 			ON debtorsmaster.currcode=currencies.currabrev
 			WHERE debtortrans.id='" . $_POST['AllocTrans'] . "'";
+
+	if ($_SESSION['SalesmanLogin'] != '') {
+		$SQL .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
+	}
+
 	$Result = DB_query($SQL, $db);
 	$myrow = DB_fetch_array($Result);
 
@@ -253,8 +258,14 @@ if (isset($_GET['AllocTrans'])) {
 			FROM debtortrans INNER JOIN systypes
 			ON debtortrans.type = systypes.typeid
 			WHERE debtortrans.settled=0
-			AND debtorno='" . $_SESSION['Alloc']->DebtorNo . "'
-			ORDER BY debtortrans.trandate";
+			AND debtorno='" . $_SESSION['Alloc']->DebtorNo . "'";
+
+	if ($_SESSION['SalesmanLogin'] != '') {
+		$SQL .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
+	}
+
+	$SQL .= " ORDER BY debtortrans.trandate";
+
 	$Result = DB_query($SQL, $db);
 
 	while ($myrow = DB_fetch_array($Result)) {
@@ -278,8 +289,13 @@ if (isset($_GET['AllocTrans'])) {
 			INNER JOIN custallocns
 			ON debtortrans.id=custallocns.transid_allocto
 			WHERE custallocns.transid_allocfrom='" . $_POST['AllocTrans'] . "'
-			AND debtorno='" . $_SESSION['Alloc']->DebtorNo . "'
-			ORDER BY debtortrans.trandate";
+			AND debtorno='" . $_SESSION['Alloc']->DebtorNo . "'";
+
+	if ($_SESSION['SalesmanLogin'] != '') {
+		$SQL .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
+	}
+
+	$SQL .= " ORDER BY debtortrans.trandate";
 
 	$Result = DB_query($SQL, $db);
 
@@ -423,8 +439,14 @@ if (isset($_POST['AllocTrans'])) {
 			ON debtorsmaster.currcode=currencies.currabrev
 			WHERE debtortrans.debtorno='" . $_GET['DebtorNo'] . "'
 			AND (debtortrans.type=12 OR debtortrans.type=11)
-			AND debtortrans.settled=0
-			ORDER BY debtortrans.id";
+			AND debtortrans.settled=0";
+
+	if ($_SESSION['SalesmanLogin'] != '') {
+		$SQL .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
+	}
+
+	$SQL .= " ORDER BY debtortrans.id";
+
 	$result = DB_query($SQL, $db);
 
 	if (DB_num_rows($result) == 0) {
@@ -490,8 +512,14 @@ if (isset($_POST['AllocTrans'])) {
 			ON debtorsmaster.currcode=currencies.currabrev
 			WHERE (debtortrans.type=12 OR debtortrans.type=11)
 			AND debtortrans.settled=0
-			AND debtortrans.ovamount<0
-			ORDER BY debtorsmaster.name";
+			AND debtortrans.ovamount<0";
+
+	if ($_SESSION['SalesmanLogin'] != '') {
+		$SQL .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
+	}
+
+	$SQL .= " ORDER BY debtorsmaster.name";
+
 	$result = DB_query($SQL, $db);
 	$NoOfUnallocatedTrans = DB_num_rows($result);
 	$CurrentTransaction = 1;

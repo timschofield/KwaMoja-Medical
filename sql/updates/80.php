@@ -14,7 +14,7 @@ $db);
 
 NewScript('PriceMatrix.php', 11, $db);
 
-NewMenuItem('system', 'Reports', _('Mantain stock prices according to quantity break and sales types'), '/PriceMatrix.php', 15, $db);
+NewMenuItem('system', 'Reports', _('Mantain prices by quantity break and sales types'), '/PriceMatrix.php', 15, $db);
 
 UpdateDBNo(basename(__FILE__, '.php'), $db);
 

@@ -6,13 +6,24 @@ include('includes/session.inc');
 $Title = _('Price break matrix Maintenance');
 include('includes/header.inc');
 
-if (isset($Errors)) {
-	unset($Errors);
+if (isset($_GET['StockID'])) {
+	$StockID = trim(mb_strtoupper($_GET['StockID']));
+} elseif (isset($_POST['StockID'])) {
+	$StockID = trim(mb_strtoupper($_POST['StockID']));
 }
 
-$i = 1;
+if (!isset($StockID)) {
+	prnMsg( _('This page must be called with a stock code. Please select a stock item first'), 'warn');
+	include('includes/footer.inc');
+	exit;
+}
 
-echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p><br />';
+$SQL = "SELECT description FROM stockmaster WHERE stockid='" . $StockID . "'";
+$Result = DB_query($SQL, $db);
+$MyRow = DB_fetch_array($Result);
+
+echo '<div class="toplink"><a href="' . $RootPath . '/SelectProduct.php">' . _('Back to Items') . '</a></div>';
+echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . ' - ' . $MyRow['description'] . '</p><br />';
 
 if (isset($_POST['submit'])) {
 
@@ -42,15 +53,13 @@ if (isset($_POST['submit'])) {
 							stockid,
 							quantitybreak,
 							price)
-					VALUES('" . $_POST['SalesType'] . "',
-						'" . $_POST['StockID'] . "',
-						'" . filter_number_format($_POST['QuantityBreak']) . "',
-						'" . filter_number_format($_POST['Price']) . "')";
+					VALUES( '" . $_POST['SalesType'] . "',
+							'" . $StockID . "',
+							'" . filter_number_format($_POST['QuantityBreak']) . "',
+							'" . filter_number_format($_POST['Price']) . "')";
 
 		$result = DB_query($sql, $db);
 		prnMsg(_('The price matrix record has been added'), 'success');
-		unset($_POST['StockID']);
-		unset($_POST['SalesType']);
 		unset($_POST['QuantityBreak']);
 		unset($_POST['Price']);
 	}
@@ -58,7 +67,7 @@ if (isset($_POST['submit'])) {
 	/*the link to delete a selected record was clicked instead of the submit button */
 
 	$sql = "DELETE FROM pricematrix
-		WHERE stockid='" . $_GET['StockID'] . "'
+		WHERE stockid='" . $StockID . "'
 		AND salestype='" . $_GET['SalesType'] . "'
 		AND quantitybreak='" . $_GET['QuantityBreak'] . "'";
 
@@ -96,35 +105,15 @@ echo '</select>
 		</td>
 	</tr>';
 
-
-$sql = "SELECT stockid FROM stockmaster WHERE stockid <>''";
-$result = DB_query($sql, $db);
-if (DB_num_rows($result) > 0) {
-	echo '<tr>
-			<td>' . _('Stock Code') . ': </td>
-			<td><select name="StockID">';
-
-	while ($myrow = DB_fetch_array($result)) {
-		if ($myrow['stockid'] == $_POST['DiscCat']) {
-			echo '<option selected="selected" value="' . $myrow['stockid'] . '">' . $myrow['stockid'] . '</option>';
-		} else {
-			echo '<option value="' . $myrow['stockid'] . '">' . $myrow['stockid'] . '</option>';
-		}
-	}
-	echo '</select></td></tr>';
-} else {
-	echo '<tr>
-			<td><input type="hidden" name="StockID" value="" /></td>
-		</tr>';
-}
+echo '<input type="hidden" name="StockID" value="' . $StockID . '" /></td>';
 
 echo '<tr>
 		<td>' . _('Quantity Break') . '</td>
-		<td><input class="integer" tabindex="3" required="required" type="number" name="QuantityBreak" size="10" maxlength="10" /></td>
+		<td><input class="integer" tabindex="3" required="required" type="number" name="QuantityBreak" size="10" maxlength="10" value="0" /></td>
 	</tr>
 	<tr>
 		<td>' . _('Price') . ' :</td>
-		<td><input class="number" tabindex="4" type="text" required="required" name="Price" title="' . _('The price to apply to orders where the quantity exceeds the specified quantity') . '" size="5" maxlength="5" /></td>
+		<td><input class="number" tabindex="4" type="number" required="required" name="Price" title="' . _('The price to apply to orders where the quantity exceeds the specified quantity') . '" size="5" maxlength="5" value="0" /></td>
 	</tr>
 	</table>
 	<div class="centre">
@@ -136,11 +125,12 @@ $sql = "SELECT sales_type,
 			stockid,
 			quantitybreak,
 			price
-		FROM pricematrix INNER JOIN salestypes
+		FROM pricematrix
+		INNER JOIN salestypes
 			ON pricematrix.salestype=salestypes.typeabbrev
 		ORDER BY salestype,
-			stockid,
-			quantitybreak";
+				stockid,
+				quantitybreak";
 
 $result = DB_query($sql, $db);
 

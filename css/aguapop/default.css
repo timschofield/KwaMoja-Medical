@@ -278,6 +278,7 @@ background-color:#F5F5F5;
 }
 
 div.error {
+margin-top: 5px;
 background-color:#FFE4E1;
 width:98%;
 color:red;
@@ -286,6 +287,7 @@ margin:5px auto;
 }
 
 div.warn {
+margin-top: 5px;
 background-color:#FFC0CB;
 width:98%;
 color:maroon;
@@ -294,6 +296,7 @@ margin:5px auto;
 }
 
 div.success {
+margin-top: 5px;
 background-color:#7FFFD4;
 width:98%;
 color:green;
@@ -302,6 +305,7 @@ margin:5px auto;
 }
 
 div.info {
+margin-top: 5px;
 background-color:#87CEFA;
 width:98%;
 color:navy;

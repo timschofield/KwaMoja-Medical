@@ -20,8 +20,9 @@ if (empty($_GET['identifier'])) {
 $Title = _('Receive Purchase Orders');
 include('includes/header.inc');
 
-echo '<a href="' . $RootPath . '/PO_SelectOSPurchOrder.php">' . _('Back to Purchase Orders') . '</a>
-	<br />';
+echo '<div class="toplink">
+		<a href="' . $RootPath . '/PO_SelectOSPurchOrder.php">' . _('Back to Purchase Orders') . '</a>
+	</div>';
 
 if (isset($_GET['PONumber']) and $_GET['PONumber'] <= 0 and !isset($_SESSION['PO' . $identifier])) {
 	/* This page can only be called with a purchase order number for invoicing*/

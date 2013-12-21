@@ -3,21 +3,30 @@
 function GetPrice($StockID, $DebtorNo, $BranchCode, $db, $ReportZeroPrice = 1) {
 
 	$Price = 0;
-	/*Search by branch and customer for a date specified price */
-	$sql = "SELECT prices.price
-			FROM prices,
-				debtorsmaster
-			WHERE debtorsmaster.salestype=prices.typeabbrev
-			AND debtorsmaster.debtorno='" . $DebtorNo . "'
-			AND prices.stockid = '" . $StockID . "'
-			AND prices.currabrev = debtorsmaster.currcode
-			AND prices.debtorno=debtorsmaster.debtorno
-			AND prices.branchcode='" . $BranchCode . "'
-			AND prices.startdate <='" . Date('Y-m-d') . "'
-			AND prices.enddate >='" . Date('Y-m-d') . "'";
+	//get the price from price matrix
+	$sql = "SELECT pricematrix.price FROM pricematrix,debtorsmaster
+				WHERE debtorsmaster.salestype=pricematrix.salestype
+				AND debtorsmaster.debtorno = '".$DebtorNo."'
+				AND pricematrix.stockid = '".$StockID."'";
+	$ErrorMsg = _('Failed to retrieve price from price matrix');
+	$result = DB_query($sql,$db,$ErrMsg);
+	if (DB_num_rows($result) == 0) {
+		/*Search by branch and customer for a date specified price */
+		$sql="SELECT prices.price
+				FROM prices,
+					debtorsmaster
+				WHERE debtorsmaster.salestype=prices.typeabbrev
+					AND debtorsmaster.debtorno='" . $DebtorNo . "'
+					AND prices.stockid = '" . $StockID . "'
+					AND prices.currabrev = debtorsmaster.currcode
+					AND prices.debtorno=debtorsmaster.debtorno
+					AND prices.branchcode='" . $BranchCode . "'
+					AND prices.startdate<=CURRENT_DATE
+					AND prices.enddate>=CURRENT_DATE";
 
-	$ErrMsg = _('There is a problem in retrieving the pricing information for part') . ' ' . $StockID . ' ' . _('and for Customer') . ' ' . $DebtorNo . ' ' . _('the error message returned by the SQL server was');
-	$result = DB_query($sql, $db, $ErrMsg);
+				$ErrMsg =  _('There is a problem in retrieving the pricing information for part') . ' ' . $StockID  . ' ' . _('and for Customer') . ' ' . $DebtorNo .  ' ' . _('the error message returned by the SQL server was');
+				$result = DB_query($sql, $db,$ErrMsg);
+	}
 	if (DB_num_rows($result) == 0) {
 		/*Need to try same specific search but for a default price with a zero end date */
 		$sql = "SELECT prices.price,
@@ -30,7 +39,7 @@ function GetPrice($StockID, $DebtorNo, $BranchCode, $db, $ReportZeroPrice = 1) {
 				AND prices.currabrev = debtorsmaster.currcode
 				AND prices.debtorno=debtorsmaster.debtorno
 				AND prices.branchcode='" . $BranchCode . "'
-				AND prices.startdate <='" . Date('Y-m-d') . "'
+				AND prices.startdate <=CURRENT_DATE
 				AND prices.enddate ='0000-00-00'
 				ORDER BY prices.startdate DESC";
 
@@ -48,8 +57,8 @@ function GetPrice($StockID, $DebtorNo, $BranchCode, $db, $ReportZeroPrice = 1) {
 					AND prices.currabrev = debtorsmaster.currcode
 					AND prices.debtorno=debtorsmaster.debtorno
 					AND prices.branchcode=''
-					AND prices.startdate <='" . Date('Y-m-d') . "'
-					AND prices.enddate >='" . Date('Y-m-d') . "'";
+					AND prices.startdate <=CURRENT_DATE
+					AND prices.enddate >=CURRENT_DATE";
 
 
 			$result = DB_query($sql, $db, $ErrMsg);
@@ -65,7 +74,7 @@ function GetPrice($StockID, $DebtorNo, $BranchCode, $db, $ReportZeroPrice = 1) {
 						AND prices.currabrev = debtorsmaster.currcode
 						AND prices.debtorno=debtorsmaster.debtorno
 						AND prices.branchcode=''
-						AND prices.startdate <='" . Date('Y-m-d') . "'
+						AND prices.startdate <=CURRENT_DATE
 						AND prices.enddate >='0000-00-00'
 						ORDER BY prices.startdate DESC";
 
@@ -82,8 +91,8 @@ function GetPrice($StockID, $DebtorNo, $BranchCode, $db, $ReportZeroPrice = 1) {
 							AND prices.stockid = '" . $StockID . "'
 							AND prices.debtorno=''
 							AND prices.currabrev = debtorsmaster.currcode
-							AND prices.startdate <='" . Date('Y-m-d') . "'
-							AND prices.enddate >='" . Date('Y-m-d') . "'";
+							AND prices.startdate <=CURRENT_DATE
+							AND prices.enddate >=CURRENT_DATE";
 
 					$result = DB_query($sql, $db, $ErrMsg);
 
@@ -98,7 +107,7 @@ function GetPrice($StockID, $DebtorNo, $BranchCode, $db, $ReportZeroPrice = 1) {
 								AND prices.stockid = '" . $StockID . "'
 								AND prices.debtorno=''
 								AND prices.currabrev = debtorsmaster.currcode
-								AND prices.startdate <='" . Date('Y-m-d') . "'
+								AND prices.startdate <=CURRENT_DATE
 								AND prices.enddate ='0000-00-00'
 								ORDER BY prices.startdate DESC";
 
@@ -115,8 +124,8 @@ function GetPrice($StockID, $DebtorNo, $BranchCode, $db, $ReportZeroPrice = 1) {
 									AND debtorsmaster.debtorno='" . $DebtorNo . "'
 									AND prices.typeabbrev='" . $_SESSION['DefaultPriceList'] . "'
 									AND prices.debtorno=''
-									AND prices.startdate <='" . Date('Y-m-d') . "'
-									AND prices.enddate >='" . Date('Y-m-d') . "'";
+									AND prices.startdate <=CURRENT_DATE
+									AND prices.enddate >=CURRENT_DATE";
 
 							$result = DB_query($sql, $db, $ErrMsg);
 
@@ -132,7 +141,7 @@ function GetPrice($StockID, $DebtorNo, $BranchCode, $db, $ReportZeroPrice = 1) {
 										AND debtorsmaster.debtorno='" . $DebtorNo . "'
 										AND prices.typeabbrev='" . $_SESSION['DefaultPriceList'] . "'
 										AND prices.debtorno=''
-										AND prices.startdate <='" . Date('Y-m-d') . "'
+										AND prices.startdate <=CURRENT_DATE
 										AND prices.enddate ='0000-00-00'
 										ORDER BY prices.startdate DESC";
 

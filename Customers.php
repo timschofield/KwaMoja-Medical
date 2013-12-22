@@ -614,9 +614,7 @@ if (!isset($DebtorNo)) {
 	} //DB_num_rows($result) == 0
 	else {
 		if (!isset($_POST['CurrCode'])) {
-			$CurrResult = DB_query("SELECT currencydefault FROM companies WHERE coycode=1", $db);
-			$myrow = DB_fetch_row($CurrResult);
-			$_POST['CurrCode'] = $myrow[0];
+			$_POST['CurrCode'] = $_SESSION['CompanyRecord']['currencydefault'];
 		} //!isset($_POST['CurrCode'])
 		echo '<tr>
 				<td>' . _('Customer Currency') . ':</td>

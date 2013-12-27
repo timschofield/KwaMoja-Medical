@@ -6,6 +6,24 @@ $Title = _('Stock Category Maintenance');
 
 include('includes/header.inc');
 
+// BEGIN: Stock Type Name array.
+$StockTypeName = array();
+$StockTypeName['D'] = _('Dummy Item - (No Movements)');
+$StockTypeName['F'] = _('Finished Goods');
+$StockTypeName['L'] = _('Labour');
+$StockTypeName['M'] = _('Raw Materials');
+asort($StockTypeName);
+// END: Stock Type Name array.
+
+// BEGIN: Tax Category Name array.
+$TaxCategoryName = array();
+$Query = "SELECT taxcatid, taxcatname FROM taxcategories ORDER BY taxcatname";
+$Result = DB_query($Query, $db);
+while ($Row = DB_fetch_array($Result)) {
+	$TaxCategoryName[$Row['taxcatid']] = $Row['taxcatname'];
+}
+// END: Tax Category Name array.
+
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" title="' . _('Inventory Adjustment') . '" alt="" />' . ' ' . $Title . '</p>';
 
 if (isset($_GET['SelectedCategory'])) {
@@ -210,7 +228,7 @@ if (isset($_POST['submit'])) {
 											purchpricevaract,
 											materialuseagevarac,
 											wipact)
-										VALUES (
+										) VALUES (
 											'" . $_POST['CategoryID'] . "',
 											'" . $_POST['StockType'] . "',
 											'" . $_POST['CategoryDescription'] . "',
@@ -281,6 +299,7 @@ if (!isset($SelectedCategory)) {
 	$sql = "SELECT categoryid,
 					categorydescription,
 					stocktype,
+					defaulttaxcatid,
 					stockact,
 					adjglact,
 					issueglact,
@@ -294,13 +313,15 @@ if (!isset($SelectedCategory)) {
 			<tr>
 				<th>' . _('Cat Code') . '</th>
 				<th>' . _('Description') . '</th>
-				<th>' . _('Type') . '</th>
+				<th>' . _('Stock Type') . '</th>
+				<th>' . _('Default Tax Category') . '</th>
 				<th>' . _('Stock GL') . '</th>
 				<th>' . _('Adjts GL') . '</th>
 				<th>' . _('Issues GL') . '</th>
 				<th>' . _('Price Var GL') . '</th>
 				<th>' . _('Usage Var GL') . '</th>
 				<th>' . _('WIP GL') . '</th>
+				<th colspan="2">' . _('Maintenance') . '</th>
 			</tr>';
 
 	$k = 0; //row colour counter
@@ -316,6 +337,7 @@ if (!isset($SelectedCategory)) {
 		printf('<td>%s</td>
 				<td>%s</td>
 				<td>%s</td>
+				<td>%s</td>
 				<td class="number">%s</td>
 				<td class="number">%s</td>
 				<td class="number">%s</td>
@@ -324,7 +346,7 @@ if (!isset($SelectedCategory)) {
 				<td class="number">%s</td>
 				<td><a href="%sSelectedCategory=%s">' . _('Edit') . '</td>
 				<td><a href="%sSelectedCategory=%s&delete=yes" onclick="return MakeConfirm("' . _('Are you sure you wish to delete this stock category? Additional checks will be performed before actual deletion to ensure data integrity is not compromised.') . '", \'Confirm Delete\', this);">' . _('Delete') . '</td>
-			</tr>', $myrow['categoryid'], $myrow['categorydescription'], $myrow['stocktype'], $myrow['stockact'], $myrow['adjglact'], $myrow['issueglact'], $myrow['purchpricevaract'], $myrow['materialuseagevarac'], $myrow['wipact'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['categoryid'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['categoryid']);
+			</tr>', $myrow['categoryid'], $myrow['categorydescription'], $StockTypeName[$myrow['stocktype']], $TaxCategoryName[$myrow['defaulttaxcatid']], $myrow['stockact'], $myrow['adjglact'], $myrow['issueglact'], $myrow['purchpricevaract'], $myrow['materialuseagevarac'], $myrow['wipact'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['categoryid'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['categoryid']);
 	}
 	//END WHILE LIST LOOP
 	echo '</table>';
@@ -408,6 +430,7 @@ $sql = "SELECT accountcode,
 
 $PnLAccountsResult = DB_query($sql, $db);
 
+// Category Description input.
 if (!isset($_POST['CategoryDescription'])) {
 	$_POST['CategoryDescription'] = '';
 }
@@ -417,33 +440,18 @@ echo '<tr>
 		<td><input type="text" name="CategoryDescription" size="22" required="required" minlength="1" maxlength="20" value="' . $_POST['CategoryDescription'] . '" /></td>
 	</tr>';
 
-
+// Stock Type input.
 echo '<tr>
-		<td>' . _('Stock Type') . ':</td>
-		<td><select required="required" minlength="1" name="StockType" onChange="ReloadForm(CategoryForm.UpdateTypes)" >';
-if (isset($_POST['StockType']) and $_POST['StockType'] == 'F') {
-	echo '<option selected="selected" value="F">' . _('Finished Goods') . '</option>';
-} else {
-	echo '<option value="F">' . _('Finished Goods') . '</option>';
+		<td>' . _('Stock Type') . '</td>
+		<td><select id="StockType" name="StockType" onChange="ReloadForm(CategoryForm.UpdateTypes)" >';
+foreach ($StockTypeName as $StockTypeId => $Row) {
+	if (isset($_POST['StockType']) and $_POST['StockType']==$StockTypeId) {
+		echo '<option selected="selected" value="' . $StockTypeId . '">' . $Row . '</option>';
+	} else {
+		echo '<option value="' . $StockTypeId . '">' . $Row . '</option>';
+	}
 }
-if (isset($_POST['StockType']) and $_POST['StockType'] == 'M') {
-	echo '<option selected="selected" value="M">' . _('Raw Materials') . '</option>';
-} else {
-	echo '<option value="M">' . _('Raw Materials') . '</option>';
-}
-if (isset($_POST['StockType']) and $_POST['StockType'] == 'D') {
-	echo '<option selected="selected" value="D">' . _('Dummy Item - (No Movements)') . '</option>';
-} else {
-	echo '<option value="D">' . _('Dummy Item - (No Movements)') . '</option>';
-}
-if (isset($_POST['StockType']) and $_POST['StockType'] == 'L') {
-	echo '<option selected="selected" value="L">' . _('Labour') . '</option>';
-} else {
-	echo '<option value="L">' . _('Labour') . '</option>';
-}
-
-echo '</select></td>
-			</tr>';
+echo '</select></td></tr>';
 
 echo '<tr>
 		<td>' . _('Default Tax Category') . ':</td>
@@ -469,12 +477,15 @@ echo '</select></td>
 echo '<input type="submit" name="UpdateTypes" style="visibility:hidden;width:1px" value="Not Seen" />';
 if (isset($_POST['StockType']) and $_POST['StockType'] == 'L') {
 	$Result = $PnLAccountsResult;
-	echo '<tr><td>' . _('Recovery GL Code');
+	echo '<tr>
+			<td>' . _('Recovery GL Code');
 } else {
 	$Result = $BSAccountsResult;
-	echo '<tr><td>' . _('Stock GL Code');
+	echo '<tr>
+			<td>' . _('Stock GL Code');
 }
-echo ':</td><td><select required="required" minlength="1" name="StockAct">';
+echo ':</td>
+		<td><select required="required" minlength="1" name="StockAct">';
 
 while ($myrow = DB_fetch_array($Result)) {
 
@@ -486,9 +497,13 @@ while ($myrow = DB_fetch_array($Result)) {
 } //end while loop
 DB_data_seek($PnLAccountsResult, 0);
 DB_data_seek($BSAccountsResult, 0);
-echo '</select></td></tr>';
+echo '</select>
+		</td>
+	</tr>';
 
-echo '<tr><td>' . _('WIP GL Code') . ':</td><td><select required="required" minlength="1" name="WIPAct">';
+echo '<tr>
+		<td>' . _('WIP GL Code') . ':</td>
+		<td><select required="required" minlength="1" name="WIPAct">';
 
 while ($myrow = DB_fetch_array($BSAccountsResult)) {
 
@@ -499,7 +514,9 @@ while ($myrow = DB_fetch_array($BSAccountsResult)) {
 	}
 
 } //end while loop
-echo '</select></td></tr>';
+echo '</select>
+			</td>
+		</tr>';
 DB_data_seek($BSAccountsResult, 0);
 
 echo '<tr>
@@ -515,7 +532,9 @@ while ($myrow = DB_fetch_array($PnLAccountsResult)) {
 
 } //end while loop
 DB_data_seek($PnLAccountsResult, 0);
-echo '</select></td></tr>';
+echo '</select>
+		</td>
+	</tr>';
 
 echo '<tr>
 		<td>' . _('Internal Stock Issues GL Code') . ':</td>
@@ -530,7 +549,9 @@ while ($myrow = DB_fetch_array($PnLAccountsResult)) {
 
 } //end while loop
 DB_data_seek($PnLAccountsResult, 0);
-echo '</select></td></tr>';
+echo '</select>
+		</td>
+	</tr>';
 
 echo '<tr>
 		<td>' . _('Price Variance GL Code') . ':</td>

@@ -92,13 +92,13 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 	$ABCResult = DB_query($sql, $db);
 	$ABCRow = DB_fetch_array($ABCResult);
 	echo '<tr>
-			<th class="number">' . _('Category:') . '</th>
+			<th class="number">' . _('Category') . ':</th>
 			<td colspan="2" class="select">' . $myrow['categorydescription'], '</td>
-			<th class="number">' . _('ABC Rank:') . '</th>
+			<th class="number">' . _('ABC Rank') . ':</th>
 			<td class="select">' . $ABCRow['abccategory'], '</td>
 		</tr>';
 	echo '<tr>
-			<th class="number">' . _('Item Type:') . '</th>
+			<th class="number">' . _('Item Type') . ':</th>
 			<td colspan="2" class="select">';
 	switch ($myrow['mbflag']) {
 		case 'A':
@@ -125,7 +125,7 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 			echo _('Manufactured Item');
 			break;
 	}
-	echo '</td><th class="number">' . _('Control Level:') . '</th><td class="select">';
+	echo '</td><th class="number">' . _('Control Level') . ':</th><td class="select">';
 	if ($myrow['serialised'] == 1) {
 		echo _('serialised');
 	} elseif ($myrow['controlled'] == 1) {

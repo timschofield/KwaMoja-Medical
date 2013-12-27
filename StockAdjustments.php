@@ -73,8 +73,35 @@ if (isset($_POST['tag'])) {
 if (isset($_POST['Narrative'])) {
 	$_SESSION['Adjustment' . $identifier]->Narrative = $_POST['Narrative'];
 }
+
+if ($_SESSION['RestrictLocations'] == 0) {
+	$sql = "SELECT locationname,
+					loccode
+				FROM locations";
+} else {
+	$sql = "SELECT locationname,
+					loccode
+				FROM locations
+				INNER JOIN www_users
+					ON locations.loccode=www_users.defaultlocation
+				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
+}
+$resultStkLocs = DB_query($sql,$db);
+$LocationList = array();
+while ($myrow = DB_fetch_array($resultStkLocs)) {
+	$LocationList[$myrow['loccode']] = $myrow['locationname'];
+}
+
 if (isset($_POST['StockLocation'])) {
 	$_SESSION['Adjustment' . $identifier]->StockLocation = $_POST['StockLocation'];
+} else {
+	if(empty($_SESSION['Adjustment' . $identifier]->StockLocation)) {
+		if(empty($_SESSION['UserStockLocation'])){
+			$_SESSION['Adjustment' . $identifier]->StockLocation = key(reset($LocationList));
+		} else {
+			$_SESSION['Adjustment' . $identifier]->StockLocation = $_SESSION['UserStockLocation'];
+		}
+	}
 }
 if (isset($_POST['Quantity'])) {
 	if ($_POST['Quantity'] == '' or !is_numeric(filter_number_format($_POST['Quantity']))) {
@@ -85,6 +112,10 @@ if (isset($_POST['Quantity'])) {
 }
 if ($_POST['Quantity'] != 0) { //To prevent from serilised quantity changing to zero
 	$_SESSION['Adjustment' . $identifier]->Quantity = filter_number_format($_POST['Quantity']);
+}
+
+if(isset($_GET['OldIdentifier'])) {
+	$_SESSION['Adjustment' . $identifier]->StockLocation = $_SESSION['Adjustment' . $_GET['OldIdentifier']]->StockLocation;
 }
 
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" title="' . _('Inventory Adjustment') . '" alt="" />' . ' ' . _('Inventory Adjustment') . '</p>';
@@ -116,7 +147,7 @@ if (isset($_POST['CheckCode'])) {
 		echo '<tr>
 				<td>' . $myrow['stockid'] . '</td>
 				<td>' . $myrow['description'] . '</td>
-				<td><a href="StockAdjustments.php?StockID=' . $myrow[0] . '&amp;Description=' . $myrow[1] . '">' . _('Adjust') . '</a>
+				<td><a href="StockAdjustments.php?StockID=' . $myrow[0] . '&amp;Description=' . $myrow[1] . '&amp;OldIdentifier=' . $identifier . '">' . _('Adjust') . '</a>
 			</tr>';
 	}
 	echo '</table>';
@@ -427,34 +458,13 @@ if (isset($_SESSION['Adjustment' . $identifier]) and mb_strlen($_SESSION['Adjust
 		</tr>';
 }
 
-echo '<tr><td>' . _('Adjustment to Stock At Location') . ':</td>
-		<td><select required="required" minlength="1" name="StockLocation"> ';
-
-if ($_SESSION['RestrictLocations'] == 0) {
-	$sql = "SELECT locationname,
-					loccode
-				FROM locations";
-} else {
-	$sql = "SELECT locationname,
-					loccode
-				FROM locations
-				INNER JOIN www_users
-					ON locations.loccode=www_users.defaultlocation
-				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-}
-$resultStkLocs = DB_query($sql, $db);
-while ($myrow = DB_fetch_array($resultStkLocs)) {
-	if (isset($_SESSION['Adjustment' . $identifier]->StockLocation)) {
-		if ($myrow['loccode'] == $_SESSION['Adjustment' . $identifier]->StockLocation) {
-			echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
-		} else {
-			echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
-		}
-	} elseif ($myrow['loccode'] == $_SESSION['UserStockLocation']) {
-		echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
-		$_POST['StockLocation'] = $myrow['loccode'];
+echo '<tr><td>'. _('Adjustment to Stock At Location').':</td>
+		<td><select name="StockLocation" onchange="submit();"> ';
+foreach ($LocationList as $Loccode=>$Locationname){
+	if ($Loccode == $_SESSION['Adjustment' . $identifier]->StockLocation){
+		echo '<option selected="selected" value="' . $Loccode . '">' . $Locationname . '</option>';
 	} else {
-		echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+		echo '<option value="' . $Loccode . '">' . $Locationname . '</option>';
 	}
 }
 

@@ -227,7 +227,7 @@ if (isset($_POST['submit'])) {
 											issueglact,
 											purchpricevaract,
 											materialuseagevarac,
-											wipact)
+											wipact
 										) VALUES (
 											'" . $_POST['CategoryID'] . "',
 											'" . $_POST['StockType'] . "',

@@ -5,7 +5,7 @@
  */
 
 include('includes/session.inc');
-if (isset($_POST['PrintPDF'])) {
+if (isset($_POST['PrintPDF']) or isset($_POST['CSV'])) {
 
 	include('includes/PDFStarter.php');
 	$pdf->addInfo('Title', _('Inventory Quantities Report'));
@@ -98,43 +98,61 @@ if (isset($_POST['PrintPDF'])) {
 		exit;
 	}
 
-	PrintHeader($pdf, $YPos, $PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin, $CatDescription);
+	if (isset($_POST['PrintPDF'])) {
+		PrintHeader($pdf, $YPos, $PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin, $CatDescription);
 
-	$FontSize = 8;
+		$FontSize = 8;
 
-	$holdpart = " ";
-	while ($myrow = DB_fetch_array($result, $db)) {
-		if ($myrow['stockid'] != $holdpart) {
-			$YPos -= (2 * $line_height);
-			$holdpart = $myrow['stockid'];
-		} else {
-			$YPos -= ($line_height);
+		$holdpart = " ";
+		while ($myrow = DB_fetch_array($result, $db)) {
+			if ($myrow['stockid'] != $holdpart) {
+				$YPos -= (2 * $line_height);
+				$holdpart = $myrow['stockid'];
+			} else {
+				$YPos -= ($line_height);
+			}
+
+			// Parameters for addTextWrap are defined in /includes/class.pdf.php
+			// 1) X position 2) Y position 3) Width
+			// 4) Height 5) Text 6) Alignment 7) Border 8) Fill - True to use SetFillColor
+			// and False to set to transparent
+
+			$pdf->addTextWrap(50, $YPos, 100, $FontSize, $myrow['stockid'], '', 0);
+			$pdf->addTextWrap(150, $YPos, 150, $FontSize, $myrow['description'], '', 0);
+			$pdf->addTextWrap(310, $YPos, 60, $FontSize, $myrow['loccode'], 'left', 0);
+			$pdf->addTextWrap(370, $YPos, 50, $FontSize, locale_number_format($myrow['quantity'], $myrow['decimalplaces']), 'right', 0);
+			$pdf->addTextWrap(420, $YPos, 50, $FontSize, locale_number_format($myrow['reorderlevel'], $myrow['decimalplaces']), 'right', 0);
+
+			if ($YPos < $Bottom_Margin + $line_height) {
+				PrintHeader($pdf, $YPos, $PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin, $CatDescription);
+			}
 		}
-
-		// Parameters for addTextWrap are defined in /includes/class.pdf.php
-		// 1) X position 2) Y position 3) Width
-		// 4) Height 5) Text 6) Alignment 7) Border 8) Fill - True to use SetFillColor
-		// and False to set to transparent
-
-		$pdf->addTextWrap(50, $YPos, 100, $FontSize, $myrow['stockid'], '', 0);
-		$pdf->addTextWrap(150, $YPos, 150, $FontSize, $myrow['description'], '', 0);
-		$pdf->addTextWrap(310, $YPos, 60, $FontSize, $myrow['loccode'], 'left', 0);
-		$pdf->addTextWrap(370, $YPos, 50, $FontSize, locale_number_format($myrow['quantity'], $myrow['decimalplaces']), 'right', 0);
-		$pdf->addTextWrap(420, $YPos, 50, $FontSize, locale_number_format($myrow['reorderlevel'], $myrow['decimalplaces']), 'right', 0);
+		/*end while loop */
 
 		if ($YPos < $Bottom_Margin + $line_height) {
 			PrintHeader($pdf, $YPos, $PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin, $CatDescription);
 		}
-	}
-	/*end while loop */
+		/*Print out the grand totals */
 
-	if ($YPos < $Bottom_Margin + $line_height) {
-		PrintHeader($pdf, $YPos, $PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin, $CatDescription);
+		$pdf->OutputD($_SESSION['DatabaseName'] . '_Inventory_Quantities_' . Date('Y-m-d') . '.pdf');
+		$pdf->__destruct();
+	} elseif (isset($_POST['CSV'])) {
+		$Lines[0] = _('Stock ID') .','. _('Description') .','. _('Location Code') .','. _('Location') .','. _('Quantity') .','. _('Reorder Level') .','. _('Decimal Places') .','. _('Serialised') .','. _('Controlled') . "\n";
+		while ($myrow = DB_fetch_row($result, $db)) {
+			$Lines[] = implode(',', $myrow) . "\n";
+		}
+		$FileHandler = fopen('companies/' . $_SESSION['DatabaseName'] . '/reportwriter/Inventory_Quantity_' . Date('Y-m-d') . '.csv', 'w');
+		foreach ($Lines as $Line) {
+			fwrite($FileHandler, $Line);
+		}
+		$Title = _('View CSV File');
+		include('includes/header.inc');
+		echo '<div class="centre">' . _('Please click') . ' ' . '
+				<a href="' . 'companies/' . $_SESSION['DatabaseName'] . '/reportwriter/Inventory_Quantity_' . Date('Y-m-d') . '.csv">' . _('here') . '</a>
+				' . ' ' . _('to view the csv file') . '
+			</div>';
+		include('includes/footer.inc');
 	}
-	/*Print out the grand totals */
-
-	$pdf->OutputD($_SESSION['DatabaseName'] . '_Inventory_Quantities_' . Date('Y-m-d') . '.pdf');
-	$pdf->__destruct();
 } else {
 	/*The option to print PDF was not hit so display form */
 
@@ -144,10 +162,7 @@ if (isset($_POST['PrintPDF'])) {
 	echo '<div class="page_help_text noPrint">' . _('Use this report to display the quantity of Inventory items in different categories.') . '</div><br />';
 
 
-	echo '<br />
-		<br />
-		<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">
-		<div>
+	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">
 		<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
 		<table class="selection">
 		<tr>
@@ -193,12 +208,11 @@ if (isset($_POST['PrintPDF'])) {
 	echo '</select></td>
 		</tr>
 		</table>
-		<br />
 		<div class="centre">
 			<input type="submit" name="PrintPDF" value="' . _('Print PDF') . '" />
+			<input type="submit" name="CSV" value="' . _('Output to CSV') . '" />
 		</div>';
-	echo '</div>
-		  </form>';
+	echo '</form>';
 	include('includes/footer.inc');
 
 }

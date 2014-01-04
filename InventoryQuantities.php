@@ -137,21 +137,18 @@ if (isset($_POST['PrintPDF']) or isset($_POST['CSV'])) {
 		$pdf->OutputD($_SESSION['DatabaseName'] . '_Inventory_Quantities_' . Date('Y-m-d') . '.pdf');
 		$pdf->__destruct();
 	} elseif (isset($_POST['CSV'])) {
-		$Lines[0] = _('Stock ID') .','. _('Description') .','. _('Location Code') .','. _('Location') .','. _('Quantity') .','. _('Reorder Level') .','. _('Decimal Places') .','. _('Serialised') .','. _('Controlled') . "\n";
-		while ($myrow = DB_fetch_row($result, $db)) {
-			$Lines[] = implode(',', $myrow) . "\n";
+		$CSVListing = _('Stock ID') .','. _('Description') .','. _('Location Code') .','. _('Location') .','. _('Quantity') .','. _('Reorder Level') .','. _('Decimal Places') .','. _('Serialised') .','. _('Controlled') . "\n";
+		while ($InventoryQties = DB_fetch_row($result, $db)) {
+			$CSVListing .= implode(',', $InventoryQties) . "\n";
 		}
-		$FileHandler = fopen('companies/' . $_SESSION['DatabaseName'] . '/reportwriter/Inventory_Quantity_' . Date('Y-m-d') . '.csv', 'w');
-		foreach ($Lines as $Line) {
-			fwrite($FileHandler, $Line);
-		}
-		$Title = _('View CSV File');
-		include('includes/header.inc');
-		echo '<div class="centre">' . _('Please click') . ' ' . '
-				<a href="' . 'companies/' . $_SESSION['DatabaseName'] . '/reportwriter/Inventory_Quantity_' . Date('Y-m-d') . '.csv">' . _('here') . '</a>
-				' . ' ' . _('to view the csv file') . '
-			</div>';
-		include('includes/footer.inc');
+		header('Content-Encoding: UTF-8');
+		header('Content-type: text/csv; charset=UTF-8');
+		header("Content-disposition: attachment; filename=InventoryQuantities_" . '.csv');
+		header("Pragma: public");
+		header("Expires: 0");
+		echo "\xEF\xBB\xBF"; // UTF-8 BOM
+		echo $CSVListing;
+		exit;
 	}
 } else {
 	/*The option to print PDF was not hit so display form */

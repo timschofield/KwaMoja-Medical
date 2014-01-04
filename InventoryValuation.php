@@ -189,21 +189,18 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['CSV'])) and isset($_POST['FromCr
 		$pdf->OutputD($_SESSION['DatabaseName'] . '_Inventory_Valuation_' . Date('Y-m-d') . '.pdf');
 		$pdf->__destruct();
 	} elseif (isset($_POST['CSV'])) {
-		$Lines[0] = _('Category ID') .','. _('Category Description') .','. _('Stock ID') .','. _('Description') .','. _('Decimal Places') .','. _('Qty On Hand') .','. _('Units') .','. _('Unit Cost') .','. _('Total') . "\n";
+		$CSVListing = _('Category ID') .','. _('Category Description') .','. _('Stock ID') .','. _('Description') .','. _('Decimal Places') .','. _('Qty On Hand') .','. _('Units') .','. _('Unit Cost') .','. _('Total') . "\n";
 		while ($InventoryValn = DB_fetch_row($InventoryResult, $db)) {
-			$Lines[] = implode(',', $InventoryValn) . "\n";
+			$CSVListing .= implode(',', $InventoryValn) . "\n";
 		}
-		$FileHandler = fopen('companies/' . $_SESSION['DatabaseName'] . '/reportwriter/Inventory_Valuation_' . Date('Y-m-d') . '.csv', 'w');
-		foreach ($Lines as $Line) {
-			fwrite($FileHandler, $Line);
-		}
-		$Title = _('View CSV File');
-		include('includes/header.inc');
-		echo '<div class="centre">' . _('Please click') . ' ' . '
-				<a href="' . 'companies/' . $_SESSION['DatabaseName'] . '/reportwriter/Inventory_Valuation_' . Date('Y-m-d') . '.csv">' . _('here') . '</a>
-				' . ' ' . _('to view the csv file') . '
-			</div>';
-		include('includes/footer.inc');
+		header('Content-Encoding: UTF-8');
+		header('Content-type: text/csv; charset=UTF-8');
+		header("Content-disposition: attachment; filename=InventoryValuation_Categories_" .  $_POST['FromCriteria']  . '-' .  $_POST['Toriteria']  .'.csv');
+		header("Pragma: public");
+		header("Expires: 0");
+		echo "\xEF\xBB\xBF"; // UTF-8 BOM
+		echo $CSVListing;
+		exit;
 	}
 
 } else {

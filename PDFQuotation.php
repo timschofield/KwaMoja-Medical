@@ -107,7 +107,7 @@ if (DB_num_rows($result) == 0) {
 /* Then there's an order to print and its not been printed already (or its been flagged for reprinting/ge_Width=807;
 )
 LETS GO */
-$PaperSize = 'A4_Landscape'; //	PDFStarter.php: $Page_Width=842; $Page_Height=595; $Top_Margin=30; $Bottom_Margin=30; $Left_Margin=40; $Right_Margin=30;
+$PaperSize = 'A4_Landscape';// PDFStarter.php: $Page_Width=842; $Page_Height=595; $Top_Margin=30; $Bottom_Margin=30; $Left_Margin=40; $Right_Margin=30;
 include('includes/PDFStarter.php');
 $pdf->addInfo('Title', _('Customer Quotation'));
 $pdf->addInfo('Subject', _('Quotation') . ' ' . $_GET['QuotationNo']);

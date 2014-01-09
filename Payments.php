@@ -823,8 +823,7 @@ if ($_SESSION['PaymentDetail' . $identifier]->SupplierID == '') {
 		echo '</select></td>
 			</tr>';
 		prnMsg(_('No currencies are defined yet. Payments cannot be entered until a currency is defined'), 'error');
-	} //DB_num_rows($result) == 0
-	else {
+	} else {
 		while ($myrow = DB_fetch_array($result)) {
 			if ($_SESSION['PaymentDetail' . $identifier]->Currency == $myrow['currabrev']) {
 				echo '<option selected="selected" value="' . $myrow['currabrev'] . '">' . _($myrow['currency']) . '</option>';

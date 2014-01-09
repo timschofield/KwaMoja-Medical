@@ -217,7 +217,6 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['CSV'])) and isset($_POST['FromCr
 			</p>';
 
 		echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">
-			  <div>
 			<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
 			<table class="selection">
 			<tr>
@@ -284,13 +283,11 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['CSV'])) and isset($_POST['FromCr
 					</select></td>
 			</tr>
 			</table>
-			<br />
 			<div class="centre">
 				<input type="submit" name="PrintPDF" value="' . _('Print PDF') . '" />
 				<input type="submit" name="CSV" value="' . _('Output to CSV') . '" />
 			</div>';
-		echo '</div>
-			  </form>';
+		echo '</form>';
 	}
 	include('includes/footer.inc');
 

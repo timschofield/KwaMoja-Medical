@@ -892,7 +892,7 @@ if ($_SESSION['PaymentDetail' . $identifier]->AccountCurrency != $_SESSION['Comp
 	} //$_POST['FunctionalExRate'] == 1 and isset($SuggestedFunctionalExRate)
 	echo '<tr>
 			<td>' . _('Functional Exchange Rate') . ':</td>
-			<td><input type="text" name="FunctionalExRate" required="required" minlength="1" maxlength="10" size="12" value="' . $_POST['FunctionalExRate'] . '" /></td>
+			<td><input type="text" class="number" name="FunctionalExRate" required="required" minlength="1" maxlength="10" size="12" value="' . $_POST['FunctionalExRate'] . '" /></td>
 			<td>' . ' ' . $SuggestedFunctionalExRateText . ' <i>' . _('The exchange rate between the currency of the business (the functional currency) and the currency of the bank account') . '. 1 ' . $_SESSION['CompanyRecord']['currencydefault'] . ' = ? ' . $_SESSION['PaymentDetail' . $identifier]->AccountCurrency . '</i></td>
 		</tr>';
 } //$_SESSION['PaymentDetail' . $identifier]->AccountCurrency != $_SESSION['CompanyRecord']['currencydefault'] and isset($_SESSION['PaymentDetail' . $identifier]->AccountCurrency)

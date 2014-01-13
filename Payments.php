@@ -24,8 +24,7 @@ if (isset($_POST['PaymentCancelled'])) {
 if (empty($_GET['identifier'])) {
 	/*unique session identifier to ensure that there is no conflict with other order enty session on the same machine */
 	$identifier = date('U');
-} //empty($_GET['identifier'])
-else {
+} else {
 	$identifier = $_GET['identifier']; //edit GLItems
 }
 if (isset($_GET['NewPayment']) and $_GET['NewPayment'] == 'Yes') {
@@ -439,8 +438,15 @@ if (isset($_POST['CommitBatch'])) {
 
 				} //in_array($PaymentItem->GLCode, $BankAccounts)
 			} //$_SESSION['PaymentDetail' . $identifier]->GLItems as $PaymentItem
-		} //$_SESSION['PaymentDetail' . $identifier]->SupplierID == ''
-		else {
+		} else {
+
+			/* Get an array of suuptans id fields that were paid */
+			$PaidArray = array();
+			foreach ($_POST as $name=>$value) {
+				if (substr($name, 0, 4) == 'paid') {
+					$PaidArray[substr($name, 4)] = $value;
+				}
+			}
 			/*Its a supplier payment type 22 */
 			$CreditorTotal = (($_SESSION['PaymentDetail' . $identifier]->Discount + $_SESSION['PaymentDetail' . $identifier]->Amount) / $_SESSION['PaymentDetail' . $identifier]->ExRate) / $_SESSION['PaymentDetail' . $identifier]->FunctionalExRate;
 
@@ -457,7 +463,7 @@ if (isset($_POST['CommitBatch'])) {
 											rate,
 											ovamount,
 											transtext) ";
-			$SQL = $SQL . "valueS ('" . $TransNo . "',
+			$SQL = $SQL . "VALUES ('" . $TransNo . "',
 					22,
 					'" . $_SESSION['PaymentDetail' . $identifier]->SupplierID . "',
 					'" . FormatDateForSQL($_SESSION['PaymentDetail' . $identifier]->DatePaid) . "',
@@ -471,6 +477,40 @@ if (isset($_POST['CommitBatch'])) {
 			$ErrMsg = _('Cannot insert a payment transaction against the supplier because');
 			$DbgMsg = _('Cannot insert a payment transaction against the supplier using the SQL');
 			$result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+
+			$SQL = "SELECT id FROM supptrans WHERE transno='" . $TransNo . "' AND type=22";
+			$Result = DB_query($SQL, $db);
+			$MyRow = DB_fetch_array($Result);
+			$PaymentID = $MyRow['id'];
+
+			if (sizeof($PaidArray) > 0) {
+				foreach ($PaidArray as $PaidID=>$PaidAmount) {
+					/* Firstly subtract from the payment the amount of the invoice  */
+					$SQL = "UPDATE supptrans SET alloc=alloc-" . $PaidAmount . " WHERE id='" . $PaymentID . "'";
+					$ErrMsg = _('Cannot update an allocation against the supplier because');
+					$DbgMsg = _('Cannot update an allocation against the supplier using the SQL');
+					$result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+					/* Then add theamount of the invoice to the invoice allocation */
+					$SQL = "UPDATE supptrans SET alloc=alloc+" . $PaidAmount . " WHERE id='" . $PaidID . "'";
+					$ErrMsg = _('Cannot update an allocation against the supplier because');
+					$DbgMsg = _('Cannot update an allocation against the supplier using the SQL');
+					$result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+					/* Finally update the supplier allocations table */
+					$SQL = "INSERT INTO suppallocs (amt,
+													datealloc,
+													transid_allocfrom,
+													transid_allocto
+												) VALUES (
+													'" . $PaidAmount . "',
+													'" . FormatDateForSQL($_SESSION['PaymentDetail' . $identifier]->DatePaid) . "',
+													'" . $PaymentID . "',
+													'" . $PaidID . "'
+												)";
+					$ErrMsg = _('Cannot update an allocation against the supplier because');
+					$DbgMsg = _('Cannot update an allocation against the supplier using the SQL');
+					$result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+				}
+			}
 
 			/*Update the supplier master with the date and amount of the last payment made */
 			$SQL = "UPDATE suppliers
@@ -645,7 +685,9 @@ if (isset($_POST['CommitBatch'])) {
 			$IdSQL = "SELECT id FROM supptrans WHERE type=22 AND transno='" . $TransNo . "'";
 			$IdResult = DB_query($IdSQL, $db);
 			$IdRow = DB_fetch_array($IdResult);
-			echo '<br /><a href="' . $RootPath . '/SupplierAllocations.php?AllocTrans=' . $IdRow['id'] . '">' . _('Allocate this payment') . '</a>';
+			if (sizeof($PaidArray) == 0) {
+				echo '<br /><a href="' . $RootPath . '/SupplierAllocations.php?AllocTrans=' . $IdRow['id'] . '">' . _('Allocate this payment') . '</a>';
+			}
 			echo '<br /><a href="' . $RootPath . '/Payments.php?SupplierID=' . $LastSupplier . '">' . _('Enter another Payment for') . ' ' . $SupplierRow['suppname'] . '</a>';
 		} //isset($LastSupplier) and $LastSupplier != ''
 		else {
@@ -1162,6 +1204,7 @@ if ($_SESSION['CompanyRecord']['gllink_creditors'] == 1 and $_SESSION['PaymentDe
 	/*a supplier is selected or the GL link is not active then set out
 	the fields for entry of receipt amt and disc */
 	$SQL = "SELECT systypes.typename,
+					supptrans.id,
 					supptrans.transno,
 					supptrans.suppreference,
 					supptrans.trandate,
@@ -1170,7 +1213,8 @@ if ($_SESSION['CompanyRecord']['gllink_creditors'] == 1 and $_SESSION['PaymentDe
 				INNER JOIN systypes
 					ON systypes.typeid=supptrans.type
 				WHERE settled=0
-					AND supplierno='" . $_SESSION['PaymentDetail' . $identifier]->SupplierID . "'";
+					AND supplierno='" . $_SESSION['PaymentDetail' . $identifier]->SupplierID . "'
+					AND (supptrans.ovamount+supptrans.ovgst+supptrans.diffonexch-supptrans.alloc)<>0";
 	$Result = DB_query($SQL, $db);
 	echo '<table class="selection">
 			<tr>
@@ -1187,14 +1231,14 @@ if ($_SESSION['CompanyRecord']['gllink_creditors'] == 1 and $_SESSION['PaymentDe
 				<td>' . $myrow['transno'] . '</td>
 				<td>' . $myrow['suppreference'] . '</td>
 				<td class="number">' . locale_number_format($myrow['amount'], $_SESSION['PaymentDetail' . $identifier]->CurrDecimalPlaces) . '</td>
-				<td><input onclick="AddAmount(this, \'Amount\');" type="checkbox" name="' . $myrow['transno'] . '" value="' . $myrow['amount'] . '" />' . _('Pay') . '</td>
+				<td><input onclick="AddAmount(this, \'Amount\');" type="checkbox" name="paid' . $myrow['id'] . '" value="' . $myrow['amount'] . '" />' . _('Pay') . '</td>
 			</tr>';
 	}
 	echo '</table>';
 	echo '<table class="selection">
 		<tr>
 			<td>' . _('Amount of Payment') . ' ' . $_SESSION['PaymentDetail' . $identifier]->Currency . ':</td>
-			<td><input class="number" type="text" id="Amount" name="Amount" minlength="0" maxlength="12" size="13" value="' . $_SESSION['PaymentDetail' . $identifier]->Amount . '" /></td>
+			<td><input class="number" type="text" id="Amount" name="Amount" minlength="0" maxlength="12" size="13" value="' . locale_number_format($_SESSION['PaymentDetail' . $identifier]->Amount, $_SESSION['PaymentDetail' . $identifier]->CurrDecimalPlaces) . '" /></td>
 		</tr>';
 
 	if (isset($_SESSION['PaymentDetail' . $identifier]->SupplierID)) {

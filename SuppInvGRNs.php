@@ -78,7 +78,7 @@ if (isset($_POST['ModifyGRN'])) {
 	} //$_SESSION['Check_Price_Charged_vs_Order_Price'] == True and $_POST['OrderPrice'] != 0
 
 	if ($InputError == False) {
-		$_SESSION['SuppTrans']->Modify_GRN_To_Trans($_POST['GRNNumber'], $_POST['PODetailItem'], $_POST['ItemCode'], $_POST['ItemDescription'], $_POST['QtyRecd'], $_POST['Prev_QuantityInv'], filter_number_format($_POST['This_QuantityInv']), $_POST['OrderPrice'], filter_number_format($_POST['ChgPrice']), $Complete, $_POST['StdCostUnit'], $_POST['ShiptRef'], $_POST['JobRef'], $_POST['GLCode'], $Hold);
+		$_SESSION['SuppTrans']->Modify_GRN_To_Trans($_POST['GRNNumber'], $_POST['PODetailItem'], $_POST['ItemCode'], $_POST['ItemDescription'], $_POST['QtyRecd'], $_POST['Prev_QuantityInv'], filter_number_format($_POST['This_QuantityInv']), $_POST['OrderPrice'], filter_number_format($_POST['ChgPrice']), $Complete, $_SESSION['SuppTrans']->GRNs[$_POST['GRNNo'.$i]]->StdCostUnit, $_SESSION['SuppTrans']->GRNs[$_POST['GRNNo'.$i]]->ShiptRef, $_SESSION['SuppTrans']->GRNs[$_POST['GRNNo'.$i]]->JobRef, $_SESSION['SuppTrans']->GRNs[$_POST['GRNNo'.$i]]->GLCode, $Hold);
 	} //$InputError == False
 } //isset($_POST['ModifyGRN'])
 

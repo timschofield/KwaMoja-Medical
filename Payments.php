@@ -717,13 +717,24 @@ if (isset($_POST['CommitBatch'])) {
 		if (DB_num_rows($Result) == 0) {
 			prnMsg(_('The manual GL code entered does not exist in the database') . ' - ' . _('so this GL analysis item could not be added'), 'warn');
 			unset($_POST['GLManualCode']);
-		} //DB_num_rows($Result) == 0
-		else if (DB_num_rows($ChequeNoResult) != 0 and $_POST['Cheque'] != '') {
+		} else if (DB_num_rows($ChequeNoResult) != 0 and $_POST['Cheque'] != '') {
 			prnMsg(_('The Cheque/Voucher number has already been used') . ' - ' . _('This GL analysis item could not be added'), 'error');
-		} //DB_num_rows($ChequeNoResult) != 0 and $_POST['Cheque'] != ''
-		else {
+		} else {
 			$myrow = DB_fetch_array($Result);
-			$_SESSION['PaymentDetail' . $identifier]->add_to_glanalysis(filter_number_format($_POST['GLAmount']), $_POST['GLNarrative'], $_POST['GLManualCode'], $myrow['accountname'], $_POST['Tag'], $_POST['Cheque']);
+			$AllowThisPosting = true;
+			if ($_SESSION['ProhibitJournalsToControlAccounts'] == 1) {
+				if ($_SESSION['CompanyRecord']['gllink_debtors'] == '1' and $_POST['GLManualCode'] == $_SESSION['CompanyRecord']['debtorsact']) {
+					prnMsg(_('Payments involving the debtors control account cannot be entered. The general ledger debtors ledger (AR) integration is enabled so control accounts are automatically maintained by KwaMoja. This setting can be disabled in System Configuration'), 'warn');
+					$AllowThisPosting = false;
+				}
+				if ($_SESSION['CompanyRecord']['gllink_creditors'] == '1' and $_POST['GLManualCode'] == $_SESSION['CompanyRecord']['creditorsact']) {
+					prnMsg(_('Payments involving the creditors control account cannot be entered. The general ledger creditors ledger (AP) integration is enabled so control accounts are automatically maintained by KwaMoja. This setting can be disabled in System Configuration'), 'warn');
+					$AllowThisPosting = false;
+				}
+			}
+			if ($AllowThisPosting) {
+				$_SESSION['PaymentDetail' . $identifier]->add_to_glanalysis(filter_number_format($_POST['GLAmount']), $_POST['GLNarrative'], $_POST['GLManualCode'], $myrow['accountname'], $_POST['Tag'], $_POST['Cheque']);
+			}
 			unset($_POST['GLManualCode']);
 		}
 	} //is_numeric($_POST['GLManualCode'])
@@ -1066,8 +1077,7 @@ if ($_SESSION['CompanyRecord']['gllink_creditors'] == 1 and $_SESSION['PaymentDe
 		echo '</select></td>
 			</tr>';
 		prnMsg(_('No General ledger account groups have been set up yet') . ' - ' . _('payments cannot be analysed against GL accounts until the GL accounts are set up'), 'error');
-	} //DB_num_rows($result) == 0
-	else {
+	} else {
 		echo '<option value=""></option>';
 		while ($myrow = DB_fetch_array($result)) {
 			if (isset($_POST['GLGroup']) and ($_POST['GLGroup'] == $myrow['groupname'])) {
@@ -1088,8 +1098,7 @@ if ($_SESSION['CompanyRecord']['gllink_creditors'] == 1 and $_SESSION['PaymentDe
 				FROM chartmaster
 				WHERE group_='" . $_POST['GLGroup'] . "'
 				ORDER BY accountcode";
-	} //isset($_POST['GLGroup']) and $_POST['GLGroup'] != ''
-	else {
+	} else {
 		$SQL = "SELECT accountcode,
 						accountname
 				FROM chartmaster

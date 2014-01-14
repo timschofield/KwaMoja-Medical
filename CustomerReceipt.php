@@ -173,12 +173,27 @@ if (isset($_POST['Process'])) { //user hit submit a new entry to the receipt bat
 
 	if ($_POST['GLCode'] == '' and $_GET['Type'] == 'GL') {
 		prnMsg(_('No General Ledger code has been chosen') . ' - ' . _('so this GL analysis item could not be added'), 'warn');
+	} elseif ($_POST['GLCode'] != '' and $_GET['Type'] == 'GL') {
+		$AllowThisPosting = true;
+		if ($_SESSION['ProhibitJournalsToControlAccounts'] == 1) {
+			if ($_SESSION['CompanyRecord']['gllink_debtors'] == '1' and $_POST['GLCode'] == $_SESSION['CompanyRecord']['debtorsact']) {
+				prnMsg(_('Payments involving the debtors control account cannot be entered. The general ledger debtors ledger (AR) integration is enabled so control accounts are automatically maintained by KwaMoja. This setting can be disabled in System Configuration'), 'warn');
+				$AllowThisPosting = false;
+			}
+			if ($_SESSION['CompanyRecord']['gllink_creditors'] == '1' and $_POST['GLCode'] == $_SESSION['CompanyRecord']['creditorsact']) {
+				prnMsg(_('Payments involving the creditors control account cannot be entered. The general ledger creditors ledger (AP) integration is enabled so control accounts are automatically maintained by KwaMoja. This setting can be disabled in System Configuration'), 'warn');
+				$AllowThisPosting = false;
+			}
+		}
+		if ($AllowThisPosting) {
+			$_SESSION['ReceiptBatch']->add_to_batch(filter_number_format($_POST['Amount']), $_POST['CustomerID'], filter_number_format($_POST['Discount']), $_POST['Narrative'], $_POST['GLCode'], $_POST['PayeeBankDetail'], $_POST['CustomerName'], $_POST['tag']);
+		}
+
 	} else {
 		$_SESSION['ReceiptBatch']->add_to_batch(filter_number_format($_POST['Amount']), $_POST['CustomerID'], filter_number_format($_POST['Discount']), $_POST['Narrative'], $_POST['GLCode'], $_POST['PayeeBankDetail'], $_POST['CustomerName'], $_POST['tag']);
-
-		/*Make sure the same receipt is not double processed by a page refresh */
-		$Cancel = 1;
 	}
+	/*Make sure the same receipt is not double processed by a page refresh */
+	$Cancel = 1;
 }
 
 if (isset($Cancel)) {
@@ -397,24 +412,25 @@ if (isset($_POST['CommitBatch'])) {
 											tpe,
 											rate,
 											ovamount,
+											ovdiscount,
 											invtext,
-											salesperson)
-					VALUES (
-						'" . $_SESSION['ReceiptBatch']->BatchNo . "',
-						12,
-						'" . $ReceiptItem->Customer . "',
-						'',
-						'" . FormatDateForSQL($_SESSION['ReceiptBatch']->DateBanked) . "',
-						'" . date('Y-m-d H-i-s') . "',
-						'" . $PeriodNo . "',
-						'" . $_SESSION['ReceiptBatch']->ReceiptType . ' ' . $ReceiptItem->PayeeBankDetail . "',
-						'',
-						'" . ($_SESSION['ReceiptBatch']->ExRate / $_SESSION['ReceiptBatch']->FunctionalExRate) . "',
-						'" . -$ReceiptItem->Amount . "',
-						'" . -$ReceiptItem->Discount . "',
-						'" . $ReceiptItem->Narrative . "',
-						'" . $_SESSION['SalesmanLogin'] . "'
-					)";
+											salesperson
+										) VALUES (
+											'" . $_SESSION['ReceiptBatch']->BatchNo . "',
+											12,
+											'" . $ReceiptItem->Customer . "',
+											'',
+											'" . FormatDateForSQL($_SESSION['ReceiptBatch']->DateBanked) . "',
+											CURRENT_TIME,
+											'" . $PeriodNo . "',
+											'" . $_SESSION['ReceiptBatch']->ReceiptType . ' ' . $ReceiptItem->PayeeBankDetail . "',
+											'',
+											'" . ($_SESSION['ReceiptBatch']->ExRate / $_SESSION['ReceiptBatch']->FunctionalExRate) . "',
+											'" . -$ReceiptItem->Amount . "',
+											'" . -$ReceiptItem->Discount . "',
+											'" . $ReceiptItem->Narrative . "',
+											'" . $_SESSION['SalesmanLogin'] . "'
+										)";
 			$DbgMsg = _('The SQL that failed to insert the customer receipt transaction was');
 			$ErrMsg = _('Cannot insert a receipt transaction against the customer because');
 			$result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
@@ -1152,7 +1168,7 @@ if (((isset($_SESSION['CustomerRecord']) and isset($_POST['CustomerID']) and $_P
 				echo '<tr class="EvenTableRows">';
 				$k = 1;
 			}
-			printf('<td><input tabindex="' . strval(12 + $j) . '" type="submit" name="Select" value="%s" /></td>
+			printf('<td><input type="submit" name="Select" value="%s" /></td>
 					<td>%s</td>
 					</tr>', $myrow['debtorno'], $myrow['name']);
 

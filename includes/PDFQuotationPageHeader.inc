@@ -2,22 +2,30 @@
 
 /* pdf-php by R&OS code to set up a new sales order page */
 
+// The $PageNumber variable is initialised in 0 by PDFStarter.php
+// This page header increments variable $PageNumber before printing it.
+$PageNumber++;
+// Inserts a page break if it is not the first page
 if ($PageNumber > 1) {
 	$pdf->newPage();
 }
-// Modified 60->140 and 60->50 by Arnold on 1-8-2008
-$XPos = $Page_Width / 2 - 140;
-$pdf->addJpegFromFile($_SESSION['LogoFile'], $XPos + 20, 520, 0, 60);
 
-// Added by Arnold on 1-8-2008 to move text to right
-$XPos = $XPos + 80;
+// Print 'Quotation' title
+$pdf->addText(361, 500, 18, _('Quotation'));
 
-$FontSize = 18;
-$pdf->addText($XPos, 500, $FontSize, _('Quotation'));
-// Prints company info
+// Print 'Quotation' info
+$pdf->addTextWrap($Page_Width - $Right_Margin - 200, $Page_Height - $Top_Margin - $FontSize * 1, 200, $FontSize, _('Number') . ': ' . $_GET['QuotationNo'], 'right');
+$pdf->addTextWrap($Page_Width - $Right_Margin - 200, $Page_Height - $Top_Margin - $FontSize * 2, 200, $FontSize, _('Your Ref') . ': ' . $myrow['customerref'], 'right');
+$pdf->addTextWrap($Page_Width - $Right_Margin - 200, $Page_Height - $Top_Margin - $FontSize * 3, 200, $FontSize, _('Date') . ': ' . ConvertSQLDate($myrow['orddate']), 'right');
+$pdf->addTextWrap($Page_Width - $Right_Margin - 200, $Page_Height - $Top_Margin - $FontSize * 4, 200, $FontSize, _('Page') . ': ' . $PageNumber, 'right');
 
-$FontSize = 14;
+// Print company logo
+$pdf->addJpegFromFile($_SESSION['LogoFile'], 301, 520, 0, 60);
+
+// Print company info
+$XPos = 361;
 $YPos = 482;
+$FontSize = 14;
 $pdf->addText($XPos, $YPos, $FontSize, $_SESSION['CompanyRecord']['coyname']);
 $FontSize = 10;
 $pdf->addText($XPos, $YPos - 12, $FontSize, $_SESSION['CompanyRecord']['regoffice1']);
@@ -25,7 +33,6 @@ $pdf->addText($XPos, $YPos - 21, $FontSize, $_SESSION['CompanyRecord']['regoffic
 $pdf->addText($XPos, $YPos - 30, $FontSize, $_SESSION['CompanyRecord']['regoffice3'] . ' ' . $_SESSION['CompanyRecord']['regoffice4'] . ' ' . $_SESSION['CompanyRecord']['regoffice5']);
 $pdf->addText($XPos, $YPos - 39, $FontSize, _('Ph') . ': ' . $_SESSION['CompanyRecord']['telephone'] . ' ' . _('Fax') . ': ' . $_SESSION['CompanyRecord']['fax']);
 $pdf->addText($XPos, $YPos - 48, $FontSize, $_SESSION['CompanyRecord']['email']);
-
 
 $XPos = 46;
 $YPos = 566;
@@ -48,56 +55,20 @@ $pdf->addText($XPos, $YPos - 30, $FontSize, $myrow['address1']);
 $pdf->addText($XPos, $YPos - 45, $FontSize, $myrow['address2']);
 $pdf->addText($XPos, $YPos - 60, $FontSize, $myrow['address3'] . ' ' . $myrow['address4'] . ' ' . $myrow['address5']);
 
-
+// Draw a rectangle with rounded corners around 'Delivery To' info
 $XPos = 50;
 $YPos += 12;
-/*draw a nice curved corner box around the delivery details */
-/*from the top right */
-$pdf->partEllipse($XPos + 225, $YPos + 60, 0, 90, 10, 10);
-/*line to the top left */
-$pdf->line($XPos + 225, $YPos + 70, $XPos, $YPos + 70);
-/*Dow top left corner */
-$pdf->partEllipse($XPos, $YPos + 60, 90, 180, 10, 10);
-/*Do a line to the bottom left corner */
-$pdf->line($XPos - 10, $YPos + 60, $XPos - 10, $YPos);
-/*Now do the bottom left corner 180 - 270 coming back west*/
-$pdf->partEllipse($XPos, $YPos, 180, 270, 10, 10);
-/*Now a line to the bottom right */
-$pdf->line($XPos, $YPos - 10, $XPos + 225, $YPos - 10);
-/*Now do the bottom right corner */
-$pdf->partEllipse($XPos + 225, $YPos, 270, 360, 10, 10);
-/*Finally join up to the top right corner where started */
-$pdf->line($XPos + 235, $YPos, $XPos + 235, $YPos + 60);
+$pdf->RoundRectangle($XPos - 10, $YPos + 60 + 10, 225 + 10 + 10, 60 + 10 + 10, 10, 10); // Function RoundRectangle from includes/class.pdf.php
 
-
+// Draw a rectangle with rounded corners around 'Quotation For' info
 $YPos -= 82;
-/*draw a nice curved corner box around the billing details */
-/*from the top right */
-$pdf->partEllipse($XPos + 225, $YPos + 60, 0, 90, 10, 10);
-/*line to the top left */
-$pdf->line($XPos + 225, $YPos + 70, $XPos, $YPos + 70);
-/*Dow top left corner */
-$pdf->partEllipse($XPos, $YPos + 60, 90, 180, 10, 10);
-/*Do a line to the bottom left corner */
-$pdf->line($XPos - 10, $YPos + 60, $XPos - 10, $YPos);
-/*Now do the bottom left corner 180 - 270 coming back west*/
-$pdf->partEllipse($XPos, $YPos, 180, 270, 10, 10);
-/*Now a line to the bottom right */
-$pdf->line($XPos, $YPos - 10, $XPos + 225, $YPos - 10);
-/*Now do the bottom right corner */
-$pdf->partEllipse($XPos + 225, $YPos, 270, 360, 10, 10);
-/*Finally join up to the top right corner where started */
-$pdf->line($XPos + 235, $YPos, $XPos + 235, $YPos + 60);
+$pdf->RoundRectangle($XPos - 10, $YPos + 60 + 10, 225 + 10 + 10, 60 + 10 + 10, 10, 10); // Function RoundRectangle from includes/class.pdf.php
 
-$pdf->addTextWrap($Page_Width - $Right_Margin - 200, $Page_Height - $Top_Margin - $FontSize * 1, 200, $FontSize, _('Number') . ': ' . $_GET['QuotationNo'], 'right');
-$pdf->addTextWrap($Page_Width - $Right_Margin - 200, $Page_Height - $Top_Margin - $FontSize * 2, 200, $FontSize, _('Your Ref') . ': ' . $myrow['customerref'], 'right');
-$pdf->addTextWrap($Page_Width - $Right_Margin - 200, $Page_Height - $Top_Margin - $FontSize * 3, 200, $FontSize, _('Date') . ': ' . ConvertSQLDate($myrow['orddate']), 'right');
-$pdf->addTextWrap($Page_Width - $Right_Margin - 200, $Page_Height - $Top_Margin - $FontSize * 4, 200, $FontSize, _('Page') . ': ' . $PageNumber, 'right');
-
+// Print the currency name
 $pdf->addText($Page_Width / 2 - 60, $YPos - 5, $FontSize, _('All amounts stated in') . ' - ' . $myrow['currcode'] . ' ' . _($myrow['currency']));
-
-$YPos -= 37;
+// Print table header
 $XPos = 40;
+$YPos -= 37;
 
 $FontSize = 10;
 $LeftOvers = $pdf->addTextWrap(42, $YPos, 103, $FontSize, _('Item Code'), 'left');

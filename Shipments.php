@@ -38,7 +38,8 @@ if (isset($_GET['SelectedShipment'])) {
 	/*read in all the guff from the selected shipment into the Shipment Class variable - the class code is included in the main script before this script is included  */
 
 	$ShipmentHeaderSQL = "SELECT shipments.supplierid,
-					   				suppliers.suppname,
+					   			suppliers.suppname,
+								shipments.shipmentdate,
 								shipments.eta,
 								suppliers.currcode,
 								shipments.vessel,
@@ -71,6 +72,7 @@ if (isset($_GET['SelectedShipment'])) {
 		$_SESSION['Shipment']->SupplierName = $myrow['suppname'];
 		$_SESSION['Shipment']->CurrCode = $myrow['currcode'];
 		$_SESSION['Shipment']->ETA = $myrow['eta'];
+		$_SESSION['Shipment']->ShipmentDate = $myrow['shipmentdate'];
 		$_SESSION['Shipment']->Vessel = $myrow['vessel'];
 		$_SESSION['Shipment']->VoyageRef = $myrow['voyageref'];
 
@@ -156,12 +158,18 @@ if (isset($_POST['Update']) or (isset($_GET['Add']) and $_SESSION['Shipment']->C
 	$InputError = 0;
 	if (isset($_POST['Update'])) {
 
+		if (!Is_Date($_POST['ShipmentDate'])) {
+			$InputError = 1;
+			prnMsg(_('The date of expected arrival of the shipment must be entered in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
+		} else {
+			$_SESSION['Shipment']->ShipmentDate = FormatDateForSQL($_POST['ShipmentDate']);
+		}
 		if (!Is_Date($_POST['ETA'])) {
 			$InputError = 1;
 			prnMsg(_('The date of expected arrival of the shipment must be entered in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
-		} elseif (Date1GreaterThanDate2($_POST['ETA'], Date($_SESSION['DefaultDateFormat'])) == 0) {
+		} elseif (Date1GreaterThanDate2($_POST['ETA'], $_POST['ShipmentDate']) == 0) {
 			$InputError = 1;
-			prnMsg(_('An expected arrival of the shipment must be a date after today'), 'error');
+			prnMsg(_('An expected arrival of the shipment must be a date after the shipment date'), 'error');
 		} else {
 			$_SESSION['Shipment']->ETA = FormatDateForSQL($_POST['ETA']);
 		}
@@ -188,21 +196,26 @@ if (isset($_POST['Update']) or (isset($_GET['Add']) and $_SESSION['Shipment']->C
 		if (DB_num_rows($result) == 1) {
 			$sql = "UPDATE shipments SET vessel='" . $_SESSION['Shipment']->Vessel . "',
 										voyageref='" . $_SESSION['Shipment']->VoyageRef . "',
+										shipmentdate='" . $_SESSION['Shipment']->ShipmentDate . "'
 										eta='" . $_SESSION['Shipment']->ETA . "'
 					WHERE shiptref ='" . $_SESSION['Shipment']->ShiptRef . "'";
 
 		} else {
 
 			$sql = "INSERT INTO shipments (shiptref,
-							vessel,
-							voyageref,
-							eta,
-							supplierid)
-					VALUES ('" . $_SESSION['Shipment']->ShiptRef . "',
-						'" . $_SESSION['Shipment']->Vessel . "',
-						'" . $_SESSION['Shipment']->VoyageRef . "',
-						'" . $_SESSION['Shipment']->ETA . "',
-						'" . $_SESSION['Shipment']->SupplierID . "')";
+											vessel,
+											voyageref,
+											shipmentdate,
+											eta,
+											supplierid
+										) VALUES (
+											'" . $_SESSION['Shipment']->ShiptRef . "',
+											'" . $_SESSION['Shipment']->Vessel . "',
+											'" . $_SESSION['Shipment']->VoyageRef . "',
+											'" . $_SESSION['Shipment']->ShipmentDate . "',
+											'" . $_SESSION['Shipment']->ETA . "',
+											'" . $_SESSION['Shipment']->SupplierID . "'
+										)";
 
 		}
 		/*now update or insert as necessary */
@@ -272,31 +285,49 @@ echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />'
 
 echo '<table class="selection">
 		<tr>
-			<td><b>' . _('Shipment') . ': </b></td>
-			<td><b>' . $_SESSION['Shipment']->ShiptRef . '</b></td>
-			<td><b>' . _('From') . ' ' . $_SESSION['Shipment']->SupplierName . '</b></td>
-		</tr>';
+			<td>' . _('Shipment') . ': </td>
+			<td>' . $_SESSION['Shipment']->ShiptRef . '</td>
+		</tr>
+		<tr>
+			<td>' . _('From') . ': </td>
+			<td>' . $_SESSION['Shipment']->SupplierName . '</td>';
 
 echo '<tr>
 		<td>' . _('Vessel Name /Transport Agent') . ': </td>
-		<td colspan="3"><input type="text" name="Vessel" required="required" minlength="1" maxlength="50" size="50" value="' . $_SESSION['Shipment']->Vessel . '" /></td>
+		<td><input type="text" name="Vessel" required="required" minlength="1" maxlength="50" size="50" value="' . $_SESSION['Shipment']->Vessel . '" /></td>
+	</tr>
+	<tr>
 		<td>' . _('Voyage Ref / Consignment Note') . ': </td>
 		<td><input type="text" name="VoyageRef" required="required" minlength="1" maxlength="20" size="20" value="' . $_SESSION['Shipment']->VoyageRef . '" /></td>
 	</tr>';
 
+if (isset($_SESSION['Shipment']->ShipmentDate)) {
+	$ShipmentDate = ConvertSQLDate($_SESSION['Shipment']->ShipmentDate);
+} else {
+	$ShipmentDate = Date($_SESSION['DefaultDateFormat']);
+}
+
 if (isset($_SESSION['Shipment']->ETA)) {
 	$ETA = ConvertSQLDate($_SESSION['Shipment']->ETA);
 } else {
-	$ETA = '';
+	$ETA = DateAdd(Date($_SESSION['DefaultDateFormat']), 'd', 1);
 }
 
-echo '<tr><td>' . _('Expected Arrival Date (ETA)') . ': </td>';
-if (isset($_SESSION['Shipment']->ETA)) {
-	echo '<td><input type="text" name="ETA" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '"  required="required" minlength="1" maxlength="10" size="10" value="' . $ETA . '" /></td>';
-} else {
-	echo '<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="ETA" required="required" minlength="1" maxlength="10" size="10" value="' . DateAdd(Date($_SESSION['DefaultDateFormat']), 'd', 1) . '" /></td>';
-}
-echo '<td>' . _('Into') . ' ';
+echo '<tr>
+		<td>' . _('Shipment Date') . ': </td>
+		<td>
+			<input type="text" name="ShipmentDate" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" required="required" minlength="1" maxlength="10" size="10" value="' . $ShipmentDate . '" />
+		</td>
+	</tr>
+	<tr>
+		<td>' . _('Expected Arrival Date (ETA)') . ': </td>
+		<td>
+			<input type="text" name="ETA" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" required="required" minlength="1" maxlength="10" size="10" value="' . $ETA . '" />
+		</td>
+	</tr>';
+
+echo '<tr>
+		<td>' . _('Into') . ' ';
 
 if (count($_SESSION['Shipment']->LineItems) > 0) {
 
@@ -321,7 +352,9 @@ if (count($_SESSION['Shipment']->LineItems) > 0) {
 
 if (!isset($_SESSION['Shipment']->StockLocation)) {
 
-	echo _('Stock Location') . ': <select required="required" minlength="1" name="StockLocation">';
+	echo _('Stock Location') . ': </td>
+			<td>
+				<select required="required" minlength="1" name="StockLocation">';
 
 	if ($_SESSION['RestrictLocations'] == 0) {
 		$sql = "SELECT locationname,
@@ -403,7 +436,7 @@ if (count($_SESSION['Shipment']->LineItems) > 0) {
 
 
 		echo '<td>' . $LnItm->OrderNo . '</td>
-			<td>' . $LnItm->StockID . ' - ' . $LnItm->ItemDescription . '</td><td class="number">' . locale_number_format($LnItm->QuantityOrd, $LnItm->DecimalPlaces) . '</td>
+			<td>' . $LnItm->StockID . ' - ' . stripslashes($LnItm->ItemDescription) . '</td><td class="number">' . locale_number_format($LnItm->QuantityOrd, $LnItm->DecimalPlaces) . '</td>
 			<td>' . $LnItm->UOM . '</td>
 			<td class="number">' . locale_number_format($LnItm->QuantityRecd, $LnItm->DecimalPlaces) . '</td>
 			<td class="number">' . locale_number_format($LnItm->QtyInvoiced, $LnItm->DecimalPlaces) . '</td>

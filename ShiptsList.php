@@ -14,10 +14,11 @@ if (!isset($_GET['SupplierID']) or !isset($_GET['SupplierName'])) {
 }
 
 $SQL = "SELECT shiptref,
-		vessel,
-		eta
-	FROM shipments
-	WHERE supplierid='" . $_GET['SupplierID'] . "'";
+				vessel,
+				eta,
+				shipmentdate
+			FROM shipments
+			WHERE supplierid='" . $_GET['SupplierID'] . "'";
 $ErrMsg = _('No shipments were returned from the database because') . ' - ' . DB_error_msg($db);
 $ShiptsResult = DB_query($SQL, $db, $ErrMsg);
 
@@ -32,6 +33,7 @@ echo '<table cellpadding="2" class="selection">';
 echo '<tr>
 		<th>' . _('Reference') . '</th>
 		<th>' . _('Vessel') . '</th>
+		<th>' . _('Shipment Date') . '</th>
 		<th>' . _('ETA') . '</th></tr>';
 
 $j = 1;
@@ -48,7 +50,8 @@ while ($myrow = DB_fetch_array($ShiptsResult)) {
 
 	echo '<td><a href="' . $RootPath . '/Shipments.php?SelectedShipment=' . $myrow['shiptref'] . '">' . $myrow['shiptref'] . '</a></td>
 			<td>' . $myrow['vessel'] . '</td>
-		<td>' . ConvertSQLDate($myrow['eta']) . '</td>
+			<td>' . ConvertSQLDate($myrow['shipmentdate']) . '</td>
+			<td>' . ConvertSQLDate($myrow['eta']) . '</td>
 		</tr>';
 
 }

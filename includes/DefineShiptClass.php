@@ -17,6 +17,7 @@ class Shipment {
 	var $StockLocation;
 	var $Closed;
 	var $CurrDecimalPlaces;
+	var $ShipmentDate;
 
 	function Shipment() {
 		/*Constructor function initialises a new Shipment object */

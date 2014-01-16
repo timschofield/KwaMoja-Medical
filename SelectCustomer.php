@@ -229,6 +229,7 @@ if ($_SESSION['CustomerID'] != '' and !isset($_POST['Search']) and !isset($_POST
 	echo '<a href="' . $RootPath . '/SelectSalesOrder.php?SelectedCustomer=' . $_SESSION['CustomerID'] . '">' . _('Modify Outstanding Sales Orders') . '</a><br />';
 	echo '<a href="' . $RootPath . '/CustomerAllocations.php?DebtorNo=' . $_SESSION['CustomerID'] . '">' . _('Allocate Receipts or Credit Notes') . '</a><br />';
 	echo '<a href="' . $RootPath . '/JobCards.php?DebtorNo=' . $_SESSION['CustomerID'] . '&amp;BranchNo=' . $_SESSION['BranchCode'] . '">' . _('Job Cards') . '</a><br />';
+	echo '<a href="' . $RootPath . '/CustomerReceipt.php?CustomerID=' . $_SESSION['CustomerID'] . '&NewReceipt=Yes&Type=Customer">' . _('Enter a Receipt From This Customer') . '</a><br />';
 	if (isset($_SESSION['CustomerID']) and isset($_SESSION['BranchCode'])) {
 		echo '<a href="' . $RootPath . '/CounterSales.php?DebtorNo=' . $_SESSION['CustomerID'] . '&amp;BranchNo=' . $_SESSION['BranchCode'] . '">' . _('Create a Counter Sale for this Customer') . '</a><br />';
 	} //isset($_SESSION['CustomerID']) and isset($_SESSION['BranchCode'])

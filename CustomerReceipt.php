@@ -24,6 +24,10 @@ if (isset($_GET['NewReceipt'])) {
 	unset($_SESSION['CustomerRecord']);
 }
 
+if (isset($_GET['CustomerID'])) {
+	$Select = $_GET['CustomerID'];
+}
+
 if (isset($_POST['Cancel'])) {
 	$Cancel = 1;
 }
@@ -251,11 +255,9 @@ if (isset($_POST['CommitBatch'])) {
 	$k = 0; //Table row counter for row styles
 	$CustomerReceiptCounter = 1; //Count lines of customer receipts in this batch
 
-	echo '<br />
-		<p class="page_title_text noPrint" >
+	echo '<p class="page_title_text noPrint" >
 			<img src="' . $RootPath . '/css/' . $Theme . '/images/money_add.png" title="' . _('Allocate') . '" alt="" />' . ' ' . _('Summary of Receipt Batch') . '
-		</p>
-		<br />';
+		</p>';
 
 	echo '<table class="selection" summary="' . _('Batch Listing') . '">
 			<tr>
@@ -743,18 +745,31 @@ echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 /*show the batch header details and the entries in the batch so far */
-
-$SQL = "SELECT bankaccountname,
-				bankaccounts.accountcode,
-				bankaccounts.currcode
-			FROM bankaccounts
-			INNER JOIN chartmaster
-				ON bankaccounts.accountcode=chartmaster.accountcode
-			INNER JOIN bankaccountusers
-				ON bankaccounts.accountcode=bankaccountusers.accountcode
-			WHERE bankaccountusers.userid = '" . $_SESSION['UserID'] . "'
-			ORDER BY bankaccountname";
-
+if (isset($_SESSION['CustomerRecord']['currcode'])) {
+	$SQL = "SELECT bankaccountname,
+					bankaccounts.accountcode,
+					bankaccounts.currcode
+				FROM bankaccounts
+				INNER JOIN chartmaster
+					ON bankaccounts.accountcode=chartmaster.accountcode
+				INNER JOIN bankaccountusers
+					ON bankaccounts.accountcode=bankaccountusers.accountcode
+				WHERE bankaccountusers.userid = '" . $_SESSION['UserID'] . "'
+					AND bankaccounts.currcode='" . $_SESSION['CustomerRecord']['currcode'] . "'
+				ORDER BY bankaccountname";
+	$_SESSION['ReceiptBatch']->Currency = $_SESSION['CustomerRecord']['currcode'];
+} else {
+	$SQL = "SELECT bankaccountname,
+					bankaccounts.accountcode,
+					bankaccounts.currcode
+				FROM bankaccounts
+				INNER JOIN chartmaster
+					ON bankaccounts.accountcode=chartmaster.accountcode
+				INNER JOIN bankaccountusers
+					ON bankaccounts.accountcode=bankaccountusers.accountcode
+				WHERE bankaccountusers.userid = '" . $_SESSION['UserID'] . "'
+				ORDER BY bankaccountname";
+}
 $ErrMsg = _('The bank accounts could not be retrieved because');
 $DbgMsg = _('The SQL used to retrieve the bank accounts was');
 $AccountsResults = DB_query($SQL, $db, $ErrMsg, $DbgMsg);
@@ -765,17 +780,15 @@ if (isset($_POST['GLEntry'])) {
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . _('Enter Receipt') . '" alt="" />' . ' ' . _('Enter Customer Receipt') . '</p>';
 	echo '<div class="page_help_text noPrint">' . _('To enter a payment TO a customer (ie. to pay out a credit note), enter a negative payment amount.') . '</div>';
 }
-echo '<br />
-	<table class="selection" summary="' . _('Select batch header details') . '">
-	<tr>
-		<td>' . _('Bank Account') . ':</td>
-		 <td><select autofocus="autofocus" required="required" minlength="1" tabindex="1" name="BankAccount" onchange="ReloadForm(form1.BatchInput)">';
+echo '<table class="selection" summary="' . _('Select batch header details') . '">
+		<tr>
+			<td>' . _('Bank Account') . ':</td>
+			<td><select autofocus="autofocus" required="required" minlength="1" tabindex="1" name="BankAccount" onchange="ReloadForm(form1.BatchInput)">';
 
 if (DB_num_rows($AccountsResults) == 0) {
 	echo '</select></td>
 		</tr>
-		</table>
-		<p />';
+		</table>';
 	prnMsg(_('Bank Accounts have not yet been defined') . '. ' . _('You must first') . ' ' . '<a href="' . $RootPath . '/BankAccounts.php">' . _('define the bank accounts') . '</a>' . _('and general ledger accounts to be affected'), 'info');
 	include('includes/footer.inc');
 	exit;
@@ -916,8 +929,7 @@ echo '<tr>
 		</div>
 		</td>
 	</tr>
-	</table>
-	<br />';
+	</table>';
 
 if (isset($_SESSION['ReceiptBatch'])) {
 	/* Now show the entries made so far */
@@ -977,7 +989,7 @@ Finally enter the amount */
 then set out the customers account summary */
 
 
-if (isset($_SESSION['CustomerRecord']) and $_SESSION['CustomerRecord']['currcode'] != $_SESSION['ReceiptBatch']->Currency) {
+if (isset($_SESSION['CustomerRecord']) and isset($_SESSION['ReceiptBatch']->Currency) and $_SESSION['CustomerRecord']['currcode'] != $_SESSION['ReceiptBatch']->Currency) {
 	prnMsg(_('The selected customer does not trade in the currency of the receipt being entered - either the currency of the receipt needs to be changed or a different customer selected'), 'warn');
 	unset($_SESSION['CustomerRecord']);
 }
@@ -1116,7 +1128,6 @@ if (((isset($_SESSION['CustomerRecord']) and isset($_POST['CustomerID']) and $_P
 			<td><textarea name="Narrative" cols="40" rows="1"></textarea></td>
 		</tr>
 		</table>
-		<br />
 		<div class="centre">
 			<input tabindex="14" type="submit" name="Process" value="' . _('Accept') . '" />
 			<input tabindex="15" type="submit" name="Cancel" value="' . _('Cancel') . '" />
@@ -1125,8 +1136,6 @@ if (((isset($_SESSION['CustomerRecord']) and isset($_POST['CustomerID']) and $_P
 } elseif (isset($_SESSION['ReceiptBatch']) and !isset($_POST['GLEntry'])) {
 
 	/*Show the form to select a customer */
-	echo '<br />';
-
 	echo '<p class="page_title_text noPrint" >
 			<img src="' . $RootPath . '/css/' . $Theme . '/images/customer.png" title="' . _('Customer') . '" alt="" />' . ' ' . _('Select a Customer') . '</p>
 		<table class="selection">

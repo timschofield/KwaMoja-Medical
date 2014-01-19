@@ -733,7 +733,7 @@ if (!isset($SupplierID)) {
 		</tr>';
 	echo '<tr>
 			<td>' . _('URL') . ':</td>
-			<td><input type="url" name="url" size="30" minlength="0" maxlength="50" /></td>
+			<td><input type="url" name="URL" size="30" minlength="0" maxlength="50" /></td>
 		</tr>';
 	echo '<tr>
 			<td>' . _('Supplier Type') . ':</td>

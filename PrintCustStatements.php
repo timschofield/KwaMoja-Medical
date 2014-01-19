@@ -99,8 +99,13 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 				FROM debtortrans INNER JOIN systypes
 					ON debtortrans.type=systypes.typeid
 				WHERE debtortrans.debtorno='" . $StmtHeader['debtorno'] . "'
-				AND debtortrans.settled=0
-				ORDER BY debtortrans.id";
+				AND debtortrans.settled=0";
+
+		if ($_SESSION['SalesmanLogin'] != '') {
+			$sql .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
+		}
+
+		$sql .= " ORDER BY debtortrans.id";
 
 		$OstdgTrans = DB_query($sql, $db, $ErrMsg);
 
@@ -123,8 +128,13 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 								OR debtortrans.id=custallocns.transid_allocto)
 						WHERE custallocns.datealloc >='" . Date('Y-m-d', Mktime(0, 0, 0, Date('m') - 1, Date('d'), Date('y'))) . "'
 						AND debtortrans.debtorno='" . $StmtHeader['debtorno'] . "'
-						AND debtortrans.settled=1
-						ORDER BY debtortrans.id";
+						AND debtortrans.settled=1";
+
+			if ($_SESSION['SalesmanLogin'] != '') {
+				$sql .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
+			}
+
+			$sql .= " ORDER BY debtortrans.id";
 
 			$SetldTrans = DB_query($sql, $db, $ErrMsg);
 			$NumberOfRecordsReturned += DB_num_rows($SetldTrans);
@@ -319,9 +329,14 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 					INNER JOIN debtortrans
 						ON debtorsmaster.debtorno = debtortrans.debtorno
 					WHERE
-						debtorsmaster.debtorno = '" . $StmtHeader['debtorno'] . "'
-					GROUP BY
-						debtorsmaster.name,
+						debtorsmaster.debtorno = '" . $StmtHeader['debtorno'] . "'";
+
+			if ($_SESSION['SalesmanLogin'] != '') {
+				$sql .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
+			}
+
+			$sql .= " GROUP BY
+ 						debtorsmaster.name,
 						currencies.currency,
 						paymentterms.terms,
 						paymentterms.daysbeforedue,
@@ -392,7 +407,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 
 	if (isset($pdf)) {
 
-		$pdf->OutputI($_SESSION['DatabaseName'] . '_CustStatements_' . date('Y-m-d') . '.pdf');
+        $pdf->OutputD($_SESSION['DatabaseName'] . '_CustStatements_' . date('Y-m-d') . '.pdf');
 		$pdf->__destruct();
 
 	} else {

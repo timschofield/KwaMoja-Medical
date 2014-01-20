@@ -15,7 +15,8 @@ function display_children($Parent, $Level, &$BOMTree) {
 	// retrive all children of parent
 	$c_result = DB_query("SELECT parent,
 								component
-						FROM bom WHERE parent='" . $Parent . "'", $db);
+						FROM bom WHERE parent='" . $Parent . "'
+						ORDER BY sequence", $db);
 	if (DB_num_rows($c_result) > 0) {
 
 		while ($row = DB_fetch_array($c_result)) {
@@ -76,6 +77,7 @@ function DisplayBOMItems($UltimateParent, $Parent, $Component, $Level, $db) {
 							bom.quantity,
 							bom.effectiveafter,
 							bom.effectiveto,
+							bom.sequence,
 							stockmaster.mbflag,
 							bom.autoissue,
 							stockmaster.controlled,
@@ -92,7 +94,8 @@ function DisplayBOMItems($UltimateParent, $Parent, $Component, $Level, $db) {
 							ON bom.loccode=locstock.loccode
 							AND bom.component = locstock.stockid
 						WHERE bom.component='" . $Component . "'
-							AND bom.parent = '" . $Parent . "'";
+							AND bom.parent = '" . $Parent . "'
+						ORDER BY bom.sequence ASC";
 	} else {
 		$sql = "SELECT bom.component,
 							stockmaster.description as itemdescription,
@@ -103,6 +106,7 @@ function DisplayBOMItems($UltimateParent, $Parent, $Component, $Level, $db) {
 							bom.quantity,
 							bom.effectiveafter,
 							bom.effectiveto,
+							bom.sequence,
 							stockmaster.mbflag,
 							bom.autoissue,
 							stockmaster.controlled,
@@ -122,7 +126,8 @@ function DisplayBOMItems($UltimateParent, $Parent, $Component, $Level, $db) {
 							ON locations.loccode=www_users.defaultlocation
 						WHERE bom.component='" . $Component . "'
 							AND bom.parent = '" . $Parent . "'
-							AND www_users.userid='" . $_SESSION['UserID'] . "'";
+							AND www_users.userid='" . $_SESSION['UserID'] . "'
+						ORDER BY bom.sequence ASC";
 	}
 
 	$ErrMsg = _('Could not retrieve the BOM components because');
@@ -169,6 +174,7 @@ function DisplayBOMItems($UltimateParent, $Parent, $Component, $Level, $db) {
 				<td>%s</td>
 				<td>%s</td>
 				<td>%s</td>
+				<td>%s</td>
 				<td class="number">%s</td>
 				<td>%s</td>
 				<td>%s</td>
@@ -177,7 +183,7 @@ function DisplayBOMItems($UltimateParent, $Parent, $Component, $Level, $db) {
 				<td><a href="%s&amp;Select=%s&amp;SelectedComponent=%s">' . _('Edit') . '</a></td>
 				<td>' . $DrillText . '</td>
 				<td><a href="%s&amp;Select=%s&amp;SelectedComponent=%s&amp;delete=1&amp;ReSelect=%s&amp;Location=%s&amp;WorkCentre=%s" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this component from the bill of material?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-			 </tr>', $Level1, $myrow['component'], $myrow['itemdescription'], $myrow['locationname'], $myrow['workcentrename'], locale_number_format($myrow['quantity'], 'Variable'), ConvertSQLDate($myrow['effectiveafter']), ConvertSQLDate($myrow['effectiveto']), $AutoIssue, $QuantityOnHand, htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $Parent, $myrow['component'], $DrillLink, $DrillID, htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $Parent, $myrow['component'], $UltimateParent, $myrow['loccode'], $myrow['workcentrecode']);
+			 </tr>', $Level1, $myrow['sequence'], $myrow['component'], $myrow['itemdescription'], $myrow['locationname'], $myrow['workcentrename'], locale_number_format($myrow['quantity'], 'Variable'), ConvertSQLDate($myrow['effectiveafter']), ConvertSQLDate($myrow['effectiveto']), $AutoIssue, $QuantityOnHand, htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $Parent, $myrow['component'], $DrillLink, $DrillID, htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $Parent, $myrow['component'], $UltimateParent, $myrow['loccode'], $myrow['workcentrecode']);
 
 	} //END WHILE LIST LOOP
 } //end of function DisplayBOMItems
@@ -295,6 +301,7 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 						loccode='" . $_POST['LocCode'] . "',
 						effectiveafter='" . $EffectiveAfterSQL . "',
 						effectiveto='" . $EffectiveToSQL . "',
+						sequence='" . $_POST['Sequence'] . "',
 						quantity= '" . filter_number_format($_POST['Quantity']) . "',
 						autoissue='" . $_POST['AutoIssue'] . "'
 					WHERE bom.parent='" . $SelectedParent . "'
@@ -335,6 +342,7 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 											workcentreadded,
 											loccode,
 											quantity,
+											sequence,
 											effectiveafter,
 											effectiveto,
 											autoissue)
@@ -343,6 +351,7 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 								'" . $_POST['WorkCentreAdded'] . "',
 								'" . $_POST['LocCode'] . "',
 								" . filter_number_format($_POST['Quantity']) . ",
+								" . $_POST['Sequence'] . ",
 								'" . $EffectiveAfterSQL . "',
 								'" . $EffectiveToSQL . "',
 								" . $_POST['AutoIssue'] . ")";
@@ -550,6 +559,7 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 
 	echo '<tr>
 			<th>' . _('Level') . '</th>
+			<th>' . _('Sequence') . '</th>
 			<th>' . _('Code') . '</th>
 			<th>' . _('Description') . '</th>
 			<th>' . _('Location') . '</th>
@@ -596,6 +606,7 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 		$sql = "SELECT loccode,
 						effectiveafter,
 						effectiveto,
+						sequence,
 						workcentreadded,
 						quantity,
 						autoissue
@@ -609,6 +620,7 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 		$_POST['LocCode'] = $myrow['loccode'];
 		$_POST['EffectiveAfter'] = ConvertSQLDate($myrow['effectiveafter']);
 		$_POST['EffectiveTo'] = ConvertSQLDate($myrow['effectiveto']);
+		$_POST['Sequence'] = $myrow['sequence'];
 		$_POST['WorkCentreAdded'] = $myrow['workcentreadded'];
 		$_POST['Quantity'] = locale_number_format($myrow['quantity'], 'Variable');
 		$_POST['AutoIssue'] = $myrow['autoissue'];
@@ -626,6 +638,10 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 					<td><b>' . $SelectedComponent . '</b></td>
 					<input type="hidden" name="Component" value="' . $SelectedComponent . '" />
 				</tr>';
+		echo '<tr>
+					<td>' . _('Sequence in BOM') . ':</td>
+					<td><input type="number" class="integer" required="required" name="Sequence" value="' . $_POST['Sequence'] . '" /></td>
+				</tr>';
 
 	} else { //end of if $SelectedComponent
 
@@ -636,6 +652,10 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 		echo '<table class="selection">';
 		echo '<tr>
 					<th colspan="13"><div class="centre"><b>' . _('New Component Details') . '</b></div></th>
+				</tr>';
+		echo '<tr>
+					<td>' . _('Sequence in BOM') . ':</td>
+					<td><input required="required" type="number" class="integer" name="Sequence" value="0" /></td>
 				</tr>';
 		echo '<tr>
 					<td>' . _('Component code') . ':</td>

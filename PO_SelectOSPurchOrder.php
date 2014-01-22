@@ -145,6 +145,19 @@ if (!isset($OrderNumber) or $OrderNumber == '') {
 				<td>' . _('Order Number') . ': <input type="text" name="OrderNumber" autofocus="autofocus" minlength="0" maxlength="8" size="9" />  ' . _('Into Stock Location') . ':
 				<select minlength="0" name="StockLocation">';
 
+	if (!isset($_POST['DateFrom'])) {
+		$DateSQL = "SELECT min(orddate) as fromdate,
+							max(orddate) as todate
+						FROM purchorders";
+		$DateResult = DB_query($DateSQL, $db);
+		$DateRow = DB_fetch_array($DateResult);
+		$DateFrom = $DateRow['fromdate'];
+		$DateTo = $DateRow['todate'];
+	} else {
+		$DateFrom = FormatDateForSQL($_POST['DateFrom']);
+		$DateTo = FormatDateForSQL($_POST['DateTo']);
+	}
+
 	if ($_SESSION['RestrictLocations'] == 0) {
 		$sql = "SELECT locationname,
 						loccode
@@ -205,7 +218,10 @@ if (!isset($OrderNumber) or $OrderNumber == '') {
 	else {
 		echo '<option value="Rejected">' . _('Rejected') . '</option>';
 	}
-	echo '</select> <input type="submit" name="SearchOrders" value="' . _('Search Purchase Orders') . '" />
+	echo '</select>
+		' . _('Orders Between') . ':&nbsp;<input type="text" name="DateFrom" value="' . ConvertSQLDate($DateFrom) . '"  class="date" size="10" alt="' . $_SESSION['DefaultDateFormat'] . '"  />
+		' . _('and') . ':&nbsp;<input type="text" name="DateTo" value="' . ConvertSQLDate($DateTo) . '"  class="date" size="10" alt="' . $_SESSION['DefaultDateFormat'] . '"  />
+		<input type="submit" name="SearchOrders" value="' . _('Search Purchase Orders') . '" />
 		</td>
 		</tr>
 		</table>';
@@ -317,6 +333,8 @@ else if (isset($_POST['SearchOrders'])) {
 				ON suppliers.currcode=currencies.currabrev
 				WHERE purchorderdetails.completed=0
 				AND purchorders.orderno='" . $OrderNumber . "'
+				AND orddate>='" . FormatDateForSQL($_POST['DateFrom']) . "'
+				AND orddate<='" . FormatDateForSQL($_POST['DateTo']) . "'
 				GROUP BY purchorders.orderno ASC,
 					suppliers.suppname,
 					purchorders.orddate,
@@ -353,6 +371,8 @@ else if (isset($_POST['SearchOrders'])) {
 						INNER JOIN currencies
 						ON suppliers.currcode=currencies.currabrev
 						WHERE purchorderdetails.completed=0
+						AND orddate>='" . FormatDateForSQL($_POST['DateFrom']) . "'
+						AND orddate<='" . FormatDateForSQL($_POST['DateTo']) . "'
 						AND purchorderdetails.itemcode='" . $SelectedStockItem . "'
 						AND purchorders.supplierno='" . $SelectedSupplier . "'
 						AND purchorders.intostocklocation = '" . $_POST['StockLocation'] . "'
@@ -388,6 +408,8 @@ else if (isset($_POST['SearchOrders'])) {
 						INNER JOIN currencies
 						ON suppliers.currcode=currencies.currabrev
 						WHERE purchorderdetails.completed=0
+						AND orddate>='" . FormatDateForSQL($_POST['DateFrom']) . "'
+						AND orddate<='" . FormatDateForSQL($_POST['DateTo']) . "'
 						AND purchorders.supplierno='" . $SelectedSupplier . "'
 						AND purchorders.intostocklocation = '" . $_POST['StockLocation'] . "'
 						" . $StatusCriteria . "
@@ -427,6 +449,8 @@ else if (isset($_POST['SearchOrders'])) {
 						INNER JOIN currencies
 						ON suppliers.currcode=currencies.currabrev
 						WHERE purchorderdetails.completed=0
+						AND orddate>='" . FormatDateForSQL($_POST['DateFrom']) . "'
+						AND orddate<='" . FormatDateForSQL($_POST['DateTo']) . "'
 						AND purchorderdetails.itemcode='" . $SelectedStockItem . "'
 						AND purchorders.intostocklocation = '" . $_POST['StockLocation'] . "'
 						" . $StatusCriteria . "
@@ -461,6 +485,8 @@ else if (isset($_POST['SearchOrders'])) {
 						INNER JOIN currencies
 						ON suppliers.currcode=currencies.currabrev
 						WHERE purchorderdetails.completed=0
+						AND orddate>='" . FormatDateForSQL($_POST['DateFrom']) . "'
+						AND orddate<='" . FormatDateForSQL($_POST['DateTo']) . "'
 						AND purchorders.intostocklocation = '" . $_POST['StockLocation'] . "'
 						" . $StatusCriteria . "
 						GROUP BY purchorders.orderno ASC,

@@ -13,9 +13,9 @@ $FormDesign = simplexml_load_file($PathPrefix . 'companies/' . $_SESSION['Databa
 
 // Set the paper size/orintation
 $PaperSize = $FormDesign->PaperSize;
-$PageNumber = 1;
 $line_height = $FormDesign->LineHeight;
 include('includes/PDFStarter.php');
+$PageNumber = 1;
 $pdf->addInfo('Title', _('Goods Received Note'));
 
 if ($GRNNo == 'Preview') {

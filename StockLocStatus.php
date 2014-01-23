@@ -15,7 +15,6 @@ if (isset($_GET['StockID'])) {
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
 
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 echo '<table class="selection">
@@ -122,61 +121,45 @@ if ($_POST['BelowReorderQuantity'] == 'All') {
 echo '</select></td></tr>
 	 </table>';
 
-echo '<br />
-	 <div class="centre">
+echo '<div class="centre">
 		  <input type="submit" name="ShowStatus" value="' . _('Show Stock Status') . '" />
 	 </div>';
 
 if (isset($_POST['ShowStatus'])) {
 
 	if ($_POST['StockCat'] == 'All') {
-		$sql = "SELECT locstock.stockid,
-						stockmaster.description,
-						locstock.loccode,
-						locstock.bin,
-						locations.locationname,
-						locstock.quantity,
-						locstock.reorderlevel,
-						stockmaster.decimalplaces,
-						stockmaster.serialised,
-						stockmaster.controlled
-					FROM locstock,
-						stockmaster,
-						locations
-					WHERE locstock.stockid=stockmaster.stockid
-						AND locstock.loccode = '" . $_POST['StockLocation'] . "'
-						AND locstock.loccode=locations.loccode
-						AND (stockmaster.mbflag='B' OR stockmaster.mbflag='M')
-					ORDER BY locstock.stockid";
-	} else {
-		$sql = "SELECT locstock.stockid,
-						stockmaster.description,
-						locstock.loccode,
-						locstock.bin,
-						locations.locationname,
-						locstock.quantity,
-						locstock.reorderlevel,
-						stockmaster.decimalplaces,
-						stockmaster.serialised,
-						stockmaster.controlled
-					FROM locstock,
-						stockmaster,
-						locations
-					WHERE locstock.stockid=stockmaster.stockid
-						AND locstock.loccode = '" . $_POST['StockLocation'] . "'
-						AND locstock.loccode=locations.loccode
-						AND (stockmaster.mbflag='B' OR stockmaster.mbflag='M')
-						AND stockmaster.categoryid='" . $_POST['StockCat'] . "'
-					ORDER BY locstock.stockid";
+		$_POST['StockCat'] = '%';
 	}
+	if ($_POST['StockLocation'] == 'All') {
+		$_POST['StockLocation'] = '%';
+	}
+	$sql = "SELECT locstock.stockid,
+					stockmaster.description,
+					locstock.loccode,
+					locstock.bin,
+					locations.locationname,
+					locstock.quantity,
+					locstock.reorderlevel,
+					stockmaster.decimalplaces,
+					stockmaster.serialised,
+					stockmaster.controlled
+				FROM locstock
+				INNER JOIN stockmaster
+					ON locstock.stockid=stockmaster.stockid
+				INNER JOIN locations
+					ON locstock.loccode=locations.loccode
+				WHERE locstock.loccode " . LIKE . "'" . $_POST['StockLocation'] . "'
+					AND (stockmaster.mbflag='B' OR stockmaster.mbflag='M')
+					AND stockmaster.categoryid " . LIKE . "'" . $_POST['StockCat'] . "'
+				ORDER BY locstock.stockid";
 
 	$ErrMsg = _('The stock held at each location cannot be retrieved because');
 	$DbgMsg = _('The SQL that failed was');
 	$LocStockResult = DB_query($sql, $db, $ErrMsg, $DbgMsg);
 
-	echo '<br />
-		 <table cellpadding="5" cellspacing="4" class="selection">
+	echo '<table cellpadding="5" cellspacing="4" class="selection">
 		 	<tr>
+				<th>' . _('Location') . '</th>
 				<th>' . _('StockID') . '</th>
 				<th>' . _('Description') . '</th>
 				<th>' . _('Quantity On Hand') . '</th>
@@ -184,6 +167,7 @@ if (isset($_POST['ShowStatus'])) {
 				<th>' . _('Demand') . '</th>
 				<th>' . _('Available') . '</th>
 				<th>' . _('On Order') . '</th>
+				<th>' . _('Need To Order(ROL)') . '</th>
 			</tr>';
 	$k = 0; //row colour counter
 
@@ -266,6 +250,12 @@ if (isset($_POST['ShowStatus'])) {
 
 		if (($_POST['BelowReorderQuantity'] == 'Below' and ($myrow['quantity'] - $myrow['reorderlevel'] - $DemandQty) < 0) or $_POST['BelowReorderQuantity'] == 'All' or $_POST['BelowReorderQuantity'] == 'NotZero' or ($_POST['BelowReorderQuantity'] == 'OnOrder' and $QOO != 0)) {
 
+			if (($myrow['quantity'] - $DemandQty) < $myrow['reorderlevel']) {
+				$ReorderQty = $myrow['reorderlevel'] - ($myrow['quantity'] - $DemandQty);
+			} else {
+				$ReorderQty = 0;
+			}
+
 			if (($_POST['BelowReorderQuantity'] == 'NotZero') and (($myrow['quantity'] - $DemandQty) > 0)) {
 
 				if ($k == 1) {
@@ -275,15 +265,27 @@ if (isset($_POST['ShowStatus'])) {
 					echo '<tr class="EvenTableRows">';
 					$k = 1;
 				}
-				printf('<td><a target="_blank" href="' . $RootPath . '/StockStatus.php?StockID=%s">%s</a></td>
+				printf('<td>%s</td>
+						<td><a target="_blank" href="' . $RootPath . '/StockStatus.php?StockID=%s">%s</a></td>
 						<td>%s</td>
 						<td class="number">%s</td>
-						<td>%s</td>
 						<td class="number">%s</td>
 						<td class="number">%s</td>
 						<td class="number"><a target="_blank" href="' . $RootPath . '/SelectProduct.php?StockID=%s">%s</a></td>
 						<td class="number">%s</td>
-						</tr>', mb_strtoupper($myrow['stockid']), mb_strtoupper($myrow['stockid']), $myrow['description'], locale_number_format($myrow['quantity'], $myrow['decimalplaces']), $myrow['bin'], locale_number_format($myrow['reorderlevel'], $myrow['decimalplaces']), locale_number_format($DemandQty, $myrow['decimalplaces']), mb_strtoupper($myrow['stockid']), locale_number_format($myrow['quantity'] - $DemandQty, $myrow['decimalplaces']), locale_number_format($QOO, $myrow['decimalplaces']));
+						<td class="number">%s</td>',
+						mb_strtoupper($myrow['locationname']),
+						mb_strtoupper($myrow['stockid']),
+						mb_strtoupper($myrow['stockid']),
+						$myrow['description'],
+						locale_number_format($myrow['quantity'], $myrow['decimalplaces']),
+						locale_number_format($myrow['reorderlevel'], $myrow['decimalplaces']),
+						locale_number_format($DemandQty, $myrow['decimalplaces']),
+						mb_strtoupper($myrow['stockid']),
+						locale_number_format($myrow['quantity'] - $DemandQty, $myrow['decimalplaces']),
+						locale_number_format($QOO, $myrow['decimalplaces']),
+						locale_number_format($ReorderQty, $myrow['decimalplaces'])
+					);
 
 				if ($myrow['serialised'] == 1) {
 					/*The line is a serialised item*/
@@ -300,14 +302,26 @@ if (isset($_POST['ShowStatus'])) {
 					echo '<tr class="EvenTableRows">';
 					$k = 1;
 				}
-				printf('<td><a target="_blank" href="' . $RootPath . '/StockStatus.php?StockID=%s">%s</a></td>
+				printf('<td>%s</td>
+						<td><a target="_blank" href="' . $RootPath . '/StockStatus.php?StockID=%s">%s</a></td>
 						<td>%s</td>
 						<td class="number">%s</td>
-						<td>%s</td>
 						<td class="number">%s</td>
 						<td class="number">%s</td>
 						<td class="number"><a target="_blank" href="' . $RootPath . '/SelectProduct.php?StockID=%s">%s</a></td>
-						<td class="number">%s</td>', mb_strtoupper($myrow['stockid']), mb_strtoupper($myrow['stockid']), $myrow['description'], locale_number_format($myrow['quantity'], $myrow['decimalplaces']), $myrow['bin'], locale_number_format($myrow['reorderlevel'], $myrow['decimalplaces']), locale_number_format($DemandQty, $myrow['decimalplaces']), mb_strtoupper($myrow['stockid']), locale_number_format($myrow['quantity'] - $DemandQty, $myrow['decimalplaces']), locale_number_format($QOO, $myrow['decimalplaces']));
+						<td class="number">%s</td>
+						<td class="number">%s</td>',
+						mb_strtoupper($myrow['locationname']),
+						mb_strtoupper($myrow['stockid']),
+						mb_strtoupper($myrow['stockid']),
+						$myrow['description'],
+						locale_number_format($myrow['quantity'], $myrow['decimalplaces']),
+						locale_number_format($myrow['reorderlevel'], $myrow['decimalplaces']),
+						locale_number_format($DemandQty, $myrow['decimalplaces']),
+						mb_strtoupper($myrow['stockid']), locale_number_format($myrow['quantity'] - $DemandQty, $myrow['decimalplaces']),
+						locale_number_format($QOO, $myrow['decimalplaces']),
+						locale_number_format($ReorderQty, $myrow['decimalplaces'])
+					);
 				if ($myrow['serialised'] == 1) {
 					/*The line is a serialised item*/
 
@@ -323,8 +337,7 @@ if (isset($_POST['ShowStatus'])) {
 	echo '</table>';
 }
 /* Show status button hit */
-echo '</div>
-	  </form>';
+echo '</form>';
 include('includes/footer.inc');
 
 ?>

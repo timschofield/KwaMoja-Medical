@@ -51,7 +51,7 @@ if (isset($_POST['submit'])) {
 		$_POST['Salesman'] = $_SESSION['SalesmanLogin'];
 	}
 
-	if (ContainsIllegalCharacters($_POST['BranchCode']) or mb_strstr($_POST['BranchCode'], ' ') or mb_strstr($_POST['BranchCode'], '-')) {
+	if (ContainsIllegalCharacters($_POST['BranchCode']) or mb_strstr($_POST['BranchCode'], ' ')) {
 		$InputError = 1;
 		prnMsg(_('The Branch code cannot contain any of the following characters') . " -  &amp; \'", 'error');
 		$Errors[$i] = 'BranchCode';
@@ -337,14 +337,24 @@ if (isset($_POST['submit'])) {
 						prnMsg(_('Cannot delete this branch because contract have been created that refer to it') . '. ' . _('Purge old contracts first'), 'warn');
 						echo '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('contracts referring to this branch/customer');
 					} else {
-						$sql = "DELETE FROM custbranch WHERE branchcode='" . $SelectedBranch . "' AND debtorno='" . $DebtorNo . "'";
-						if ($_SESSION['SalesmanLogin'] != '') {
-							$SQL .= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
-						}
-						$ErrMsg = _('The branch record could not be deleted') . ' - ' . _('the SQL server returned the following message');
-						$result = DB_query($sql, $db, $ErrMsg);
-						if (DB_error_no($db) == 0) {
-							prnMsg(_('Branch Deleted'), 'success');
+						//check if this it the last customer branch - don't allow deletion of the last branch
+						$SQL = "SELECT COUNT(*) FROM custbranch WHERE debtorno='" . $DebtorNo . "'";
+
+						$result = DB_query($SQL, $db);
+						$myrow = DB_fetch_row($result);
+
+						if ($myrow[0] == 1) {
+							prnMsg(_('Cannot delete this branch because it is the only branch defined for this customer.'), 'warn');
+						} else {
+							$SQL = "DELETE FROM custbranch WHERE branchcode='" . $SelectedBranch . "' AND debtorno='" . $DebtorNo . "'";
+							if ($_SESSION['SalesmanLogin'] != '') {
+								$SQL .= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
+							}
+							$ErrMsg = _('The branch record could not be deleted') . ' - ' . _('the SQL server returned the following message');
+							$result = DB_query($SQL, $db, $ErrMsg);
+							if (DB_error_no($db) == 0){
+								prnMsg(_('Branch Deleted'), 'success');
+							}
 						}
 					}
 				}

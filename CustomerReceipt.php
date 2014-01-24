@@ -741,7 +741,6 @@ if (isset($Select)) {
 
 
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Type=' . $_GET['Type'] . '" method="post" class="noPrint" id="form1">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 /*show the batch header details and the entries in the batch so far */
@@ -1195,7 +1194,6 @@ if (isset($_SESSION['ReceiptBatch']->Items) and count($_SESSION['ReceiptBatch']-
 			<input tabindex="13" type="submit" name="CommitBatch" value="' . _('Accept and Process Batch') . '" />
 		</div>';
 }
-echo '</div>';
 echo '</form>';
 include('includes/footer.inc');
 ?>

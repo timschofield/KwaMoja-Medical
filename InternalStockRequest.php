@@ -4,9 +4,9 @@ include('includes/DefineStockRequestClass.php');
 
 include('includes/session.inc');
 $Title = _('Internal Materials Request');
-include('includes/header.inc');
 $ViewTopic = 'Inventory';
 $BookMark = 'CreateRequest';
+include('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');
 
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '</p>';

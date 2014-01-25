@@ -4,8 +4,7 @@ include('includes/session.inc');
 
 if (isset($_GET['GRNNo'])) {
 	$GRNNo = $_GET['GRNNo'];
-} //isset($_GET['GRNNo'])
-else {
+} else {
 	$GRNNo = '';
 }
 
@@ -37,8 +36,7 @@ if ($GRNNo == 'Preview') {
 	$SuppRow['address5'] = str_pad('', 10, 'x');
 	$SuppRow['address6'] = str_pad('', 10, 'x');
 	$NoOfGRNs = 1;
-} //$GRNNo == 'Preview'
-else { //NOT PREVIEW
+} else { //NOT PREVIEW
 
 	$sql = "SELECT grns.itemcode,
 				grns.grnno,
@@ -99,18 +97,25 @@ if ($NoOfGRNs > 0) {
 
 		$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column1->x, $Page_Height - $YPos, $FormDesign->Data->Column1->Length, $FormDesign->Data->Column1->FontSize, $myrow['itemcode']);
 		$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column2->x, $Page_Height - $YPos, $FormDesign->Data->Column2->Length, $FormDesign->Data->Column2->FontSize, $myrow['itemdescription']);
-		$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column3->x, $Page_Height - $YPos, $FormDesign->Data->Column3->Length, $FormDesign->Data->Column3->FontSize, $DeliveryDate);
+		/*resmart mods */
+		/*$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column3->x,$Page_Height-$YPos,$FormDesign->Data->Column3->Length,$FormDesign->Data->Column3->FontSize, $DeliveryDate);*/
+		$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column3->x, $Page_Height - $YPos, $FormDesign->Data->Column3->Length, $FormDesign->Data->Column3->FontSize, $DeliveryDate, 'right');
+		/*resmart ends*/
 		$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column4->x, $Page_Height - $YPos, $FormDesign->Data->Column4->Length, $FormDesign->Data->Column4->FontSize, $SuppliersQuantity, 'right');
 		$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column5->x, $Page_Height - $YPos, $FormDesign->Data->Column5->Length, $FormDesign->Data->Column5->FontSize, $myrow['suppliersunit'], 'left');
 		$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column6->x, $Page_Height - $YPos, $FormDesign->Data->Column6->Length, $FormDesign->Data->Column6->FontSize, $OurUnitsQuantity, 'right');
 		$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column7->x, $Page_Height - $YPos, $FormDesign->Data->Column7->Length, $FormDesign->Data->Column7->FontSize, $myrow['units'], 'left');
 		$YPos += $line_height;
 
-		if ($FooterPrintedInPage == 0) {
-			$LeftOvers = $pdf->addText($FormDesign->ReceiptDate->x, $Page_Height - $FormDesign->ReceiptDate->y, $FormDesign->ReceiptDate->FontSize, _('Date of Receipt: ') . $DeliveryDate);
-			$LeftOvers = $pdf->addText($FormDesign->SignedFor->x, $Page_Height - $FormDesign->SignedFor->y, $FormDesign->SignedFor->FontSize, _('Signed for ') . '______________________');
-			$FooterPrintedInPage = 1;
-		} //$FooterPrintedInPage == 0
+		/*resmoart mods*/
+		/* move to after serial print
+		if($FooterPrintedInPage == 0){
+		$LeftOvers = $pdf->addText($FormDesign->ReceiptDate->x,$Page_Height-$FormDesign->ReceiptDate->y,$FormDesign->ReceiptDate->FontSize, _('Date of Receipt: ') . $DeliveryDate);
+		$LeftOvers = $pdf->addText($FormDesign->SignedFor->x,$Page_Height-$FormDesign->SignedFor->y,$FormDesign->SignedFor->FontSize, _('Signed for ').'______________________');
+		$FooterPrintedInPage= 1;
+		}
+		*/
+		/*resmart ends*/
 
 		if ($YPos >= $FormDesign->LineAboveFooter->starty) {
 			/* We reached the end of the page so finsih off the page and start a newy */
@@ -118,12 +123,54 @@ if ($NoOfGRNs > 0) {
 			$YPos = $FormDesign->Data->y;
 			include('includes/PDFGrnHeader.inc');
 		} //end if need a new page headed up
+
+		/*resmart mods*/
+		$SQL = "SELECT stockmaster.controlled
+		    FROM stockmaster WHERE stockid ='" . $myrow['itemcode'] . "'";
+		$CheckControlledResult = DB_query($SQL, $db, '<br />' . _('Could not determine if the item was controlled or not because') . ' ');
+		$ControlledRow = DB_fetch_row($CheckControlledResult);
+
+		if ($ControlledRow[0] == 1) {
+			/*Then its a controlled item */
+			$SQL = "SELECT stockserialmoves.serialno,
+					stockserialmoves.moveqty
+					FROM stockmoves INNER JOIN stockserialmoves
+					ON stockmoves.stkmoveno= stockserialmoves.stockmoveno
+					WHERE stockmoves.stockid='" . $myrow['itemcode'] . "'
+					AND stockmoves.type =25
+					AND stockmoves.transno='" . $GRNNo . "'";
+			$GetStockMoveResult = DB_query($SQL, $db, _('Could not retrieve the stock movement reference number which is required in order to retrieve details of the serial items that came in with this GRN'));
+			while ($SerialStockMoves = DB_fetch_array($GetStockMoveResult)) {
+				$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column1->x - 20, $Page_Height - $YPos, $FormDesign->Data->Column1->Length, $FormDesign->Data->Column1->FontSize, _('Lot/Serial:'), 'right');
+				$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column2->x, $Page_Height - $YPos, $FormDesign->Data->Column2->Length, $FormDesign->Data->Column2->FontSize, $SerialStockMoves['serialno']);
+				$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column2->x, $Page_Height - $YPos, $FormDesign->Data->Column2->Length, $FormDesign->Data->Column2->FontSize, $SerialStockMoves['moveqty'], 'right');
+				$YPos += $line_height;
+
+				if ($YPos >= $FormDesign->LineAboveFooter->starty) {
+					$FooterPrintedInPage = 0;
+					$YPos = $FormDesign->Data->y;
+					include('includes/PDFGrnHeader.inc');
+				} //end if need a new page headed up
+			} //while SerialStockMoves
+			$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column2->x, $Page_Height - $YPos, $FormDesign->Data->Column2->Length, $FormDesign->Data->Column2->FontSize, ' ');
+			$YPos += $line_height;
+			if ($YPos >= $FormDesign->LineAboveFooter->starty) {
+				$FooterPrintedInPage = 0;
+				$YPos = $FormDesign->Data->y;
+				include('includes/PDFGrnHeader.inc');
+			} //end if need a new page headed up
+		} //controlled item*/
+		/*resmart ends*/
+		if ($FooterPrintedInPage == 0) {
+			$LeftOvers = $pdf->addText($FormDesign->ReceiptDate->x, $Page_Height - $FormDesign->ReceiptDate->y, $FormDesign->ReceiptDate->FontSize, _('Date of Receipt: ') . $DeliveryDate);
+			$LeftOvers = $pdf->addText($FormDesign->SignedFor->x, $Page_Height - $FormDesign->SignedFor->y, $FormDesign->SignedFor->FontSize, _('Signed for ') . '______________________');
+			$FooterPrintedInPage = 1;
+		}
 	} //end of loop around GRNs to print
 
-	$pdf->OutputD($_SESSION['DatabaseName'] . '_GRN_' . $GRNNo . '_' . date('Y-m-d').'.pdf');
+	$pdf->OutputD($_SESSION['DatabaseName'] . '_GRN_' . $GRNNo . '_' . date('Y-m-d') . '.pdf');
 	$pdf->__destruct();
-} //$NoOfGRNs > 0
-else { //there were not GRNs to print
+} else { //there were not GRNs to print
 	$Title = _('GRN Error');
 	include('includes/header.inc');
 	prnMsg(_('There were no GRNs to print'), 'warn');

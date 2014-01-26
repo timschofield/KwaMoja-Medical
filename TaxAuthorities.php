@@ -144,9 +144,6 @@ if (!isset($SelectedTaxAuthID)) {
 		echo '<div class="page_help_text">' . _('As this is the first time that the system has been used, you must first create a tax authority.') .
 				'<br />' . _('For help, click on the help icon in the top right') .
 				'<br />' . _('Once you have filled in all the details, click on the button at the bottom of the screen') . '</div>';
-	} elseif (DB_num_rows($RatesResult) == 0 and DB_num_rows($result) == 1) {
-		echo '<meta http-equiv="refresh" content="0; url=' . $RootPath . '/TaxAuthorityRates.php?TaxAuthority=' . $NewTaxID . '">';
-		exit;
 	}
 
 	echo '<table class="selection">

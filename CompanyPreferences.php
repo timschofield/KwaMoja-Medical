@@ -276,15 +276,12 @@ if ($InputError != 1) {
 	$_POST['FreightAct'] = $myrow['freightact'];
 }
 
-	if (DB_num_rows($result) == 0) {
-		echo '<div class="page_help_text">' . _('As this is the first time that the system has been used, you must first fill out the company details.') .
-				'<br />' . _('Once you have filled in all the details, click on the button at the bottom of the screen') . '</div>';
-		include('companies/' . $_SESSION['DatabaseName'] . '/Companies.php');
-		$_POST['CoyName'] = $CompanyName[$_SESSION['DatabaseName']];
-	} elseif (DB_num_rows($result) == 1 and isset($_SESSION['FirstStart'])) {
-		echo '<meta http-equiv="refresh" content="0; url=' . $RootPath . '/TaxProvinces.php">';
-		exit;
-	}
+if (DB_num_rows($result) == 0) {
+	echo '<div class="page_help_text">' . _('As this is the first time that the system has been used, you must first fill out the company details.') .
+			'<br />' . _('Once you have filled in all the details, click on the button at the bottom of the screen') . '</div>';
+	include('companies/' . $_SESSION['DatabaseName'] . '/Companies.php');
+	$_POST['CoyName'] = $CompanyName[$_SESSION['DatabaseName']];
+}
 
 echo '<tr>
 		<td>' . _('Name') . ' (' . _('to appear on reports') . '):</td>

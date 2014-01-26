@@ -285,11 +285,6 @@ if (!isset($SelectedCurrency)) {
 				FROM currencies";
 	$result = DB_query($sql, $db);
 
-	if (DB_num_rows($result) == 1 and isset($_SESSION['FirstStart'])) {
-		echo '<meta http-equiv="refresh" content="0; url=' . $RootPath . '/CompanyPreferences.php">';
-		exit;
-	}
-
 	echo '<table class="selection">';
 	echo '<tr>
 			<td></td>
@@ -370,8 +365,6 @@ if (!isset($SelectedCurrency)) {
 if (isset($SelectedCurrency)) {
 	echo '<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Show all currency definitions') . '</a></div>';
 }
-
-echo '<br />';
 
 if (!isset($_GET['delete'])) {
 

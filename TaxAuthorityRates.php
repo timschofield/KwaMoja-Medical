@@ -38,10 +38,6 @@ if (isset($_POST['UpdateRates'])) {
 		DB_query($sql, $db);
 	}
 	prnMsg(_('All rates updated successfully'), 'info');
-	if (isset($_SESSION['FirstStart'])) {
-		echo '<meta http-equiv="refresh" content="0; url=' . $RootPath . '/Locations.php">';
-		exit;
-	}
 }
 
 /* end of update code
@@ -118,23 +114,21 @@ if (DB_num_rows($TaxRatesResult) > 0) {
 	}
 	//end of while loop
 	echo '</table>';
-	echo '<br />
-		<div class="centre">
-		<input type="submit" name="UpdateRates" value="' . _('Update Rates') . '" />';
-} //end if tax taxcatid/rates to show
-else {
+	echo '<div class="centre">
+			<input type="submit" name="UpdateRates" value="' . _('Update Rates') . '" />
+		</div>';
+} else {
 	prnMsg(_('There are no tax rates to show - perhaps the dispatch tax province records have not yet been created?'), 'warn');
 }
 
-echo '<br />
-	<br />
-	<a href="' . $RootPath . '/TaxAuthorities.php">' . _('Tax Authorities') . '</a>
-	<br />
-	<a href="' . $RootPath . '/TaxGroups.php">' . _('Tax Groupings') . '</a>
-	<br />
-	<a href="' . $RootPath . '/TaxCategories.php">' . _('Tax Categories') . '</a>
-	<br />
-	<a href="' . $RootPath . '/TaxProvinces.php">' . _('Dispatch Tax Provinces') . '</a>
+echo '<div class="centre">
+		<a href="' . $RootPath . '/TaxAuthorities.php">' . _('Tax Authorities') . '</a>
+		<br />
+		<a href="' . $RootPath . '/TaxGroups.php">' . _('Tax Groupings') . '</a>
+		<br />
+		<a href="' . $RootPath . '/TaxCategories.php">' . _('Tax Categories') . '</a>
+		<br />
+		<a href="' . $RootPath . '/TaxProvinces.php">' . _('Dispatch Tax Provinces') . '</a>
 	</div>';
 
 echo '</form>';

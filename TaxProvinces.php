@@ -163,9 +163,6 @@ if (!isset($SelectedTaxProvince)) {
 		echo '<div class="page_help_text">' . _('As this is the first time that the system has been used, you must first create a tax province.') .
 				'<br />' . _('For help, click on the help icon in the top right') .
 				'<br />' . _('Once you have filled in the details, click on the button at the bottom of the screen') . '</div>';
-	} elseif (DB_num_rows($result) == 1 and isset($_SESSION['FirstStart'])) {
-		echo '<meta http-equiv="refresh" content="0; url=' . $RootPath . '/TaxAuthorities.php">';
-		exit;
 	}
 
 	echo '<table class="selection">

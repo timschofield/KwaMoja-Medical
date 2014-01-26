@@ -5,6 +5,9 @@ ini_set('output_buffering', 4096);
 
 session_name('kwamoja_installation');
 session_start();
+if (isset($_POST['DefaultTimeZone'])) {
+	$_SESSION['Installer']['TimeZone'] = $_POST['DefaultTimeZone'];
+}
 
 if (isset($_POST['next']) and isset($_SESSION['Installer']['CurrentPage']) and $_SESSION['Installer']['CurrentPage'] == 1) {
 	/* Page 1 has been submitted so deal with the input */
@@ -187,7 +190,7 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.or
 			<link rel="stylesheet" type="text/css" href="installer.css" />
 		</head>';
 
-echo '<body>
+echo '<body onload="tz();">
 		<div id="CanvasDiv">';
 echo '<h1>' . _('KwaMoja Installation Wizard') . '</h1>';
 
@@ -196,6 +199,8 @@ if (file_exists($PathPrefix . 'config.php') or file_exists($PathPrefix . 'Config
 } else {
 	include('Page' . $_SESSION['Installer']['CurrentPage'] . '.php');
 }
+
+echo '<script src="installer.js"></script>';
 
 echo '</div>
 	</body>

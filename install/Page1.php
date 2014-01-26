@@ -178,13 +178,13 @@ echo '</select>
 
 /* Now we acquire default information about the system setup */
 
+echo '<input type="hidden" name="DefaultTimeZone" id="DefaultTimeZone" />';
 /* JavaScript function to guess the default time zone */
 echo '<script>
 			function tz(){
 				document.getElementById(\'DefaultTimeZone\').value = jstz.determine().name();
 			}
 		</script>';
-echo '<input type="hidden" name="DefaultTimeZone" id="DefaultTimeZone" />';
 
 if (!empty($SafeModeWarning)) {
 	echo '<input type="hidden" name="SafeModeWarning" value="' . $SafeModeWarning . '" />';

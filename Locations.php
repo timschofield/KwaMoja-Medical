@@ -386,9 +386,6 @@ if (!isset($SelectedLocation)) {
 		echo '<div class="page_help_text">' . _('As this is the first time that the system has been used, you must first create a location.') .
 				'<br />' . _('Once you have filled in all the details, click on the button at the bottom of the screen') . '</div>';
 		$_SESSION['RestrictLocations'] = 0;
-	} elseif (DB_num_rows($result) == 1 and isset($_SESSION['FirstStart'])) {
-		echo '<meta http-equiv="refresh" content="0; url=' . $RootPath . '/SalesTypes.php">';
-		exit;
 	}
 
 	if (DB_num_rows($result) != 0) {

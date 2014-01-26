@@ -8,6 +8,8 @@ $_SESSION['DatabaseName'] = $_SESSION['Installer']['Database'];
 
 include($PathPrefix . 'includes/ConnectDB_' . $_SESSION['Installer']['DBMS'] . '.inc');
 include($PathPrefix . 'includes/UpgradeDB_' . $_SESSION['Installer']['DBMS'] . '.inc');
+include($PathPrefix . 'includes/DateFunctions.inc');
+date_default_timezone_set($_SESSION['Installer']['TimeZone']);
 $Path_To_Root = '..';
 $Config_File = $Path_To_Root . '/config.php';
 if (!file_exists($Path_To_Root . '/companies/' . $_SESSION['Installer']['Database'])) {
@@ -116,7 +118,7 @@ $_SESSION['Updates']['Errors'] = 0;
 $_SESSION['Updates']['Successes'] = 0;
 $_SESSION['Updates']['Warnings'] = 0;
 for ($UpdateNumber = $StartingUpdate; $UpdateNumber <= $EndingUpdate; $UpdateNumber++) {
-	if (file_exists($PathPrefix . 'sql/updates/' . $UpdateNumber . '.php')) {
+	if (file_exists($PathPrefix . 'sql/install/' . $UpdateNumber . '.php')) {
 		$percent = intval($UpdateNumber / $EndingUpdate * 100) . "%";
 		echo '<script language="javascript">
 						document.getElementById("progress").innerHTML="<div style=\"margin: 1px;border-radius: 5px; width:' . $percent . ';background-color:#157213;\">&nbsp;</div>";
@@ -127,7 +129,7 @@ for ($UpdateNumber = $StartingUpdate; $UpdateNumber <= $EndingUpdate; $UpdateNum
 		$result = executeSQL($sql, $db, False);
 		flush();
 		if ($result == 0) {
-			include($PathPrefix . 'sql/updates/' . $UpdateNumber . '.php');
+			include($PathPrefix . 'sql/install/' . $UpdateNumber . '.php');
 		}
 		flush();
 	}
@@ -170,7 +172,7 @@ InsertRecord('www_users', array(
 	$_SESSION['Installer']['AdminAccount'],
 	$_SESSION['Installer']['Email'],
 	50,
-	8,
+	1,
 	1,
 	'1,1,1,1,1,1,1,1,1,1,1,1,',
 	0,
@@ -225,7 +227,7 @@ if (isset($_POST['Demo'])) {
 
 
 function HighestFileName($PathPrefix) {
-	$files = glob($PathPrefix . 'sql/updates/*.php');
+	$files = glob($PathPrefix . 'sql/install/*.php');
 	natsort($files);
 	return basename(array_pop($files), ".php");
 }
@@ -315,7 +317,5 @@ echo '<fieldset style="text-align:center">
 		<button type="submit" name="end">' . _('Start KwaMoja') . '<img src="restart.png" style="float:right" /></button>
 	</fieldset>
 </form>';
-
-echo '<script src="installer.js"></script>';
 
 ?>

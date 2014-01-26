@@ -14,11 +14,18 @@ $result = DB_query($sql,$db);
 $myrow = DB_fetch_array($result);
 $arr = explode(',',$myrow["scripts"]);
 
+$UserSQL = "SELECT scripts FROM dashboard_users WHERE userid = '".$_SESSION['UserID']."' ";
+$Result = DB_query($UserSQL, $db);
+if (DB_num_rows($Result) == 0) {
+	$InsertSQL = "INSERT INTO dashboard_users VALUES(null, '" . $_SESSION['UserID'] . "', '')";
+	$InsertResult = DB_query($InsertSQL, $db);
+}
+
 if (isset($_GET['Remove'])) {
 	if(($key = array_search($_GET['Remove'], $arr)) !== false) {
 		unset($arr[$key]);
 	}
-	$UpdateSQL = "UPDATE dashboard_users SET scripts='" . implode(',', $arr) . "' WHERE userid = '".$_SESSION['UserID']."' ";
+	$UpdateSQL = "UPDATE dashboard_users SET scripts='" . implode(',', $arr) . "' WHERE userid = '".$_SESSION['UserID']."'";
 	$UpdateResult = DB_query($UpdateSQL, $db);
 }
 

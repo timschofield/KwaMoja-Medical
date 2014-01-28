@@ -94,7 +94,9 @@ if (isset($_POST['submit'])) {
 
 	if ($InputError != 1) {
 
-		if (isset($_SESSION['FirstStart'])) {
+		$CompanySQL = "SELECT coycode FROM companies";
+		$CompanyResult = DB_query($CompanySQL, $db);
+		if (DB_num_rows($CompanyResult) == 0) {
 			$sql = "INSERT INTO companies (coycode,
 											coyname,
 											companynumber,

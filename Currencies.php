@@ -26,9 +26,16 @@ $Errors = array();
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/money_add.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '</p>
 	<br />';
 
+$sql = "SELECT count(currabrev)
+		FROM currencies";
+$result = DB_query($sql, $db);
+$myrow = DB_fetch_row($result);
+
 if (isset($_SESSION['CompanyRecord']['currencydefault'])) {
 	$FunctionalCurrency = $_SESSION['CompanyRecord']['currencydefault'];
-} else {
+}
+
+if ($myrow[0] == 0) {
 	echo '<div class="page_help_text">' . _('As this is the first time that the system has been used, you must first set up your main accounting currency.') . '</div>';
 }
 

@@ -96,18 +96,9 @@ if (isset($ForceConfigReload) and $ForceConfigReload == true or !isset($_SESSION
 			$_SESSION['DefaultDateFormat'] = 'd/m/Y';
 			GetPeriod(DateAdd(date($_SESSION['DefaultDateFormat']), 'm', -12),$db);
 		}
-		$CurrencySQL = "SELECT currabrev FROM currencies";
-		$CurrencyResult = DB_query($CurrencySQL, $db);
-		if (DB_num_rows($CurrencyResult) == 0 and (basename($_SERVER['SCRIPT_NAME']) != 'Currencies.php')) {
-			$_SESSION['FirstStart'] = 'True';
-			echo '<meta http-equiv="refresh" content="0; url=' . $RootPath . '/Currencies.php">';
-			exit;
-		}
 	} else {
 		$_SESSION['CompanyRecord'] = DB_fetch_array($ReadCoyResult);
 	}
-
-	/*Now read in smtp email settings - not needed in a properly set up server environment - but helps for those who can't control their server .. I think! */
 
 	$sql = "SELECT id,
 				host,

@@ -108,6 +108,23 @@ if (!$zp = fopen($Path_To_Root . '/config.php', 'w')) {
 echo '<div class="success">' . _('The config.php file has been created based on your settings.') . '</div>';
 ob_flush();
 
+$InitialScripts[] = 'Currencies.php';
+$InitialScripts[] = 'CompanyPreferences.php';
+$InitialScripts[] = 'TaxProvinces.php';
+$InitialScripts[] = 'TaxAuthorities.php';
+$InitialScripts[] = 'TaxCategories.php';
+$InitialScripts[] = 'TaxAuthorityRates.php';
+$InitialScripts[] = 'Locations.php';
+$InitialScripts[] = 'SalesTypes.php';
+$InitialScripts[] = 'Shippers.php';
+$InitialScripts[] = 'SystemParameters.php';
+
+$FileHandle = fopen($Path_To_Root . '/install/InitialScripts.txt', 'w');
+foreach ($InitialScripts as $InitialScript) {
+	fwrite($FileHandle, $InitialScript . "\n");
+}
+fclose($FileHandle);
+
 echo '<legend>' . _('Building your database.') . ' ' . _('This may take some time, please be patient') . '</legend>';
 echo '<div id="progress" class="centre" style="border-radius: 5px;width:100%;border:1px solid #157213;"></div>';
 echo '<div id="information" style="width"></div>';

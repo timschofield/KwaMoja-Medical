@@ -2,6 +2,12 @@
 $PageSecurity = 0;
 
 include('includes/session.inc');
+
+if ((filesize('install/InitialScripts.txt') > 0) and isset($_SESSION['DatabaseName'])) {
+	echo '<meta http-equiv="refresh" content="0; url=' . $RootPath . '/InitialScripts.php">';
+	exit;
+}
+
 $Title = _('Main Menu');
 include('includes/header.inc');
 

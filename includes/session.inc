@@ -74,7 +74,7 @@ if (isset($_SESSION['DatabaseName'])) {
 	*/
 	foreach ($_GET as $GetKey => $GetValue) {
 		if (gettype($GetValue) != 'array') {
-			$_GET[$GetKey] = DB_escape_string($GetValue);
+			$_GET[$GetKey] = DB_escape_string(urldecode($GetValue));
 		} //gettype($value) != 'array'
 	} //$_GET as $key => $value
 } //isset($_SESSION['DatabaseName'])

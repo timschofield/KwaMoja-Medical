@@ -113,7 +113,7 @@ if ($NIL_BALANCE == True) {
 
 echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" title="' . _('Supplier') . '" alt="" /> ' .
 		_('Supplier') . ': ' .
-			$SupplierID . ' - ' . $SupplierRecord['suppname'] . '<br />' .
+			stripslashes($SupplierID) . ' - ' . $SupplierRecord['suppname'] . '<br />' .
 		_('All amounts stated in') . ': ' .
 			$SupplierRecord['currcode'] . ' - ' . _($SupplierRecord['currency']) . '<br />' .
 		_('Terms') . ': ' .

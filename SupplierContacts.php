@@ -9,12 +9,14 @@ $BookMark = 'SupplierContact';
 include('includes/header.inc');
 
 if (isset($_GET['SupplierID'])) {
-	$SupplierID = $_GET['SupplierID'];
+	$SupplierID = urldecode($_GET['SupplierID']);
 } elseif (isset($_POST['SupplierID'])) {
 	$SupplierID = $_POST['SupplierID'];
 }
 
-echo '<a href="' . $RootPath . '/SelectSupplier.php">' . _('Back to Suppliers') . '</a><br />';
+echo '<div class="toplink">
+		<a href="' . $RootPath . '/SelectSupplier.php">' . _('Back to Suppliers') . '</a>
+	</div>';
 
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . _('Supplier Allocations') . '" alt="" />' . ' ' . $Title . '</p>';
 
@@ -86,7 +88,6 @@ if (isset($_POST['submit'])) {
 					'" . $_POST['Fax'] . "',
 					'" . $_POST['Email'] . "',
 					'" . $_POST['Mobile'] . "')";
-
 		$msg = _('The new supplier contact has been added to the database');
 	}
 	//run the SQL from either of the above possibilites
@@ -183,7 +184,6 @@ if (isset($SelectedContact)) {
 if (!isset($_GET['delete'])) {
 
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	if (isset($SelectedContact)) {
@@ -243,7 +243,7 @@ if (!isset($_GET['delete'])) {
 	}
 
 	echo '<tr>
-			<td><input type="hidden" name="SupplierID" value="' . $SupplierID . '" />
+			<td><input type="hidden" name="SupplierID" value="' . stripslashes($SupplierID) . '" />
 			' . _('Position') . ':</td>
 			<td><input type="text" name="Position" size="31" minlength="0" maxlength="30" value="' . $_POST['Position'] . '" /></td>
 		</tr>
@@ -268,7 +268,6 @@ if (!isset($_GET['delete'])) {
 
 	echo '<div class="centre">
 			<input type="submit" name="submit" value="' . _('Enter Information') . '" />
-		</div>
 		</div>
 		</form>';
 

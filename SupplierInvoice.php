@@ -596,7 +596,7 @@ if (!isset($_POST['PostInvoice'])) {
 			</tr>';
 
 	echo '<tr>
-			<td><b>' . $_SESSION['SuppTrans']->SupplierID . ' - ' . $_SESSION['SuppTrans']->SupplierName . '</b></td>
+			<td><b>' . stripslashes($_SESSION['SuppTrans']->SupplierID) . ' - ' . $_SESSION['SuppTrans']->SupplierName . '</b></td>
 			<th><b>' . $_SESSION['SuppTrans']->CurrCode . '</b></th>
 			<td><b>' . $_SESSION['SuppTrans']->TermsDescription . '</b></td>
 			<td><b>' . $_SESSION['SuppTrans']->TaxGroupDescription . '</b></td>

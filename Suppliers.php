@@ -303,7 +303,7 @@ echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $T
 
 if (isset($SupplierID)) {
 	echo '<p>
-			<a href="' . $RootPath . '/SupplierContacts.php?SupplierID=' . $SupplierID . '">' . _('Review Supplier Contact Details') . '</a>
+			<a href="' . $RootPath . '/SupplierContacts.php?SupplierID=' . urlencode(stripslashes($SupplierID)) . '">' . _('Review Supplier Contact Details') . '</a>
 		</p>';
 }
 

@@ -151,7 +151,7 @@ if (isset($_GET['New']) or isset($_POST['cancel'])) { /* If the installer is jus
 	$_SESSION['Installer']['HostName'] = 'localhost';
 	$_SESSION['Installer']['UserName'] = 'root';
 	$_SESSION['Installer']['Password'] = '';
-	$_SESSION['Installer']['Database'] = 'kwamoja';
+	$_SESSION['Installer']['Database'] = 'kwamojadb';
 	$_SESSION['Installer']['Email'] = 'info@example.com';
 	$_SESSION['Installer']['AdminAccount'] = 'admin';
 	$_SESSION['Installer']['KwaMojaPassword'] = 'kwamoja';

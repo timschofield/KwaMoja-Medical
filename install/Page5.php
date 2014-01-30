@@ -176,6 +176,8 @@ if (!isset($_POST['Demo'])) {
 	PopulateSQLDataBySQL($PathPrefix . 'sql/demodata/data.sql', $db, $DBType, false, $_SESSION['Installer']['Database']);
 }
 
+ChangeConfigValue('VersionNumber', '14.02', $db);
+
 function HighestFileName($PathPrefix) {
 	$files = glob($PathPrefix . 'sql/install/*.php');
 	natsort($files);

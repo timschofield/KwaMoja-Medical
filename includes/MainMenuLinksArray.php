@@ -7,9 +7,8 @@ $sql = "SELECT `modulelink`,
 			WHERE secroleid = '" . $_SESSION['AccessLevel'] . "'
 			ORDER BY `sequence`";
 $result = DB_query($sql, $db);
-$Modules = DB_fetch_all($result);
 
-foreach ($Modules as $myrow) {
+while ($myrow = DB_fetch_array($result)) {
 	$ModuleLink[] = $myrow['modulelink'];
 	$ReportList[$myrow['modulelink']] = $myrow['reportlink'];
 	$ModuleList[] = _($myrow['modulename']);
@@ -24,9 +23,7 @@ $sql = "SELECT `modulelink`,
 			ORDER BY `sequence`, `menusection`";
 $result = DB_query($sql, $db);
 
-$Items = DB_fetch_all($result);
-
-foreach ($Items as $myrow) {
+while ($myrow = DB_fetch_array($result)) {
 	$MenuItems[$myrow['modulelink']][$myrow['menusection']]['Caption'][] = _($myrow['caption']);
 	$MenuItems[$myrow['modulelink']][$myrow['menusection']]['URL'][] = $myrow['url'];
 }

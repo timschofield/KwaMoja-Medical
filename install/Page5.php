@@ -158,97 +158,29 @@ if ($_SESSION['Updates']['Errors'] > 0) {
 	}
 	exit;
 }
+InsertRecord('www_users', array('userid'),
+							array('admin'),
+							array('userid', 'password', 'realname', 'email', 'displayrecordsmax', 'fullaccess', 'cancreatetender', 'modulesallowed', 'blocked', 'theme', 'language', 'pdflanguage', 'fontsize'),
+							array($_SESSION['Installer']['AdminAccount'], sha1($_SESSION['Installer']['KwaMojaPassword']), $_SESSION['Installer']['AdminAccount'], $_SESSION['Installer']['Email'], 50, 1, 1, '1,1,1,1,1,1,1,1,1,1,1,1,', 0, 'aguapop', $_SESSION['Installer']['Language'], 0, 0)
+						, $db);
 /* Now we uploade the chosen chart of accounts */
-$sql = "SET foreign_key_checks=0";
-$result = executeSQL($sql, $db, False);
-include($PathPrefix . 'install/coa/' . $_SESSION['Installer']['CoA']);
-echo '<div class="success">' . _('Your chosen chart of accounts has been uploaded') . '</div>';
-ob_flush();
-/* Create the admin user */
-InsertRecord('www_users', array(
-	'userid'
-), array(
-	'admin'
-), array(
-	'userid',
-	'password',
-	'realname',
-	'email',
-	'displayrecordsmax',
-	'fullaccess',
-	'cancreatetender',
-	'modulesallowed',
-	'blocked',
-	'theme',
-	'language',
-	'pdflanguage',
-	'fontsize'
-), array(
-	$_SESSION['Installer']['AdminAccount'],
-	sha1($_SESSION['Installer']['KwaMojaPassword']),
-	$_SESSION['Installer']['AdminAccount'],
-	$_SESSION['Installer']['Email'],
-	50,
-	1,
-	1,
-	'1,1,1,1,1,1,1,1,1,1,1,1,',
-	0,
-	'aguapop',
-	$_SESSION['Installer']['Language'],
-	0,
-	0
-), $db);
-if (isset($_POST['Demo'])) {
-	echo '<legend>' . _('Populating the database with demo currencies data.') . '</legend>';
-	PopulateSQLDataBySQL($PathPrefix . 'sql/demodata/currencies.sql', $db, $DBType, false, $_SESSION['Installer']['Database']);
-
-	echo '<legend>' . _('Populating the database with demo salestypes data.') . '</legend>';
-	PopulateSQLDataBySQL($PathPrefix . 'sql/demodata/salestypes.sql', $db, $DBType, false, $_SESSION['Installer']['Database']);
-
-	echo '<legend>' . _('Populating the database with demo areas data.') . '</legend>';
-	PopulateSQLDataBySQL($PathPrefix . 'sql/demodata/areas.sql', $db, $DBType, false, $_SESSION['Installer']['Database']);
-
-	echo '<legend>' . _('Populating the database with demo holdreasons data.') . '</legend>';
-	PopulateSQLDataBySQL($PathPrefix . 'sql/demodata/holdreasons.sql', $db, $DBType, false, $_SESSION['Installer']['Database']);
-
-	echo '<legend>' . _('Populating the database with demo paymentterms data.') . '</legend>';
-	PopulateSQLDataBySQL($PathPrefix . 'sql/demodata/paymentterms.sql', $db, $DBType, false, $_SESSION['Installer']['Database']);
-
-	echo '<legend>' . _('Populating the database with demo suppliers data.') . '</legend>';
-	PopulateSQLDataBySQL($PathPrefix . 'sql/demodata/suppliers.sql', $db, $DBType, false, $_SESSION['Installer']['Database']);
-
-	echo '<legend>' . _('Populating the database with demo debtors data.') . '</legend>';
-	PopulateSQLDataBySQL($PathPrefix . 'sql/demodata/debtorsmaster.sql', $db, $DBType, false, $_SESSION['Installer']['Database']);
-
-	echo '<legend>' . _('Populating the database with demo salesman data.') . '</legend>';
-	PopulateSQLDataBySQL($PathPrefix . 'sql/demodata/salesman.sql', $db, $DBType, false, $_SESSION['Installer']['Database']);
-
-	echo '<legend>' . _('Populating the database with demo taxprovinces data.') . '</legend>';
-	PopulateSQLDataBySQL($PathPrefix . 'sql/demodata/taxprovinces.sql', $db, $DBType, false, $_SESSION['Installer']['Database']);
-
-	echo '<legend>' . _('Populating the database with demo locations data.') . '</legend>';
-	PopulateSQLDataBySQL($PathPrefix . 'sql/demodata/locations.sql', $db, $DBType, false, $_SESSION['Installer']['Database']);
-
-	echo '<legend>' . _('Populating the database with demo branch data.') . '</legend>';
-	PopulateSQLDataBySQL($PathPrefix . 'sql/demodata/custbranch.sql', $db, $DBType, false, $_SESSION['Installer']['Database']);
-
-	echo '<legend>' . _('Populating the database with demo stockcategory data.') . '</legend>';
-	PopulateSQLDataBySQL($PathPrefix . 'sql/demodata/stockcategory.sql', $db, $DBType, false, $_SESSION['Installer']['Database']);
-
-	echo '<legend>' . _('Populating the database with demo unitsofmeasure data.') . '</legend>';
-	PopulateSQLDataBySQL($PathPrefix . 'sql/demodata/unitsofmeasure.sql', $db, $DBType, false, $_SESSION['Installer']['Database']);
-
-	echo '<legend>' . _('Populating the database with demo stockmaster data.') . '</legend>';
-	PopulateSQLDataBySQL($PathPrefix . 'sql/demodata/stockmaster.sql', $db, $DBType, false, $_SESSION['Installer']['Database']);
+if (!isset($_POST['Demo'])) {
+	$sql = "SET foreign_key_checks=0";
+	$result = executeSQL($sql, $db, False);
+	include($PathPrefix . 'install/coa/' . $_SESSION['Installer']['CoA']);
+	echo '<div class="success">' . _('Your chosen chart of accounts has been uploaded') . '</div>';
+	ob_flush();
+	/* Create the admin user */
+} else {
+	echo '<legend>' . _('Populating the database with demo data.') . '</legend>';
+	PopulateSQLDataBySQL($PathPrefix . 'sql/demodata/data.sql', $db, $DBType, false, $_SESSION['Installer']['Database']);
 }
-
 
 function HighestFileName($PathPrefix) {
 	$files = glob($PathPrefix . 'sql/install/*.php');
 	natsort($files);
 	return basename(array_pop($files), ".php");
 }
-
 
 function executeSQL($sql, $db, $TrapErrors = False) {
 	global $SQLFile;
@@ -289,20 +221,20 @@ function PopulateSQLDataBySQL($File, $db, $DBType, $NewDB = false, $DemoDB = 'kw
 	echo '<div id="information' . $File . '" style="width"></div>';
 	for ($i = 1; $i <= $ScriptFileEntries; $i++) {
 
-		$SQLScriptFile[$i-1] = trim($SQLScriptFile[$i-1]);
+		$SQLScriptFile[$i - 1] = trim($SQLScriptFile[$i - 1]);
 		//ignore lines that start with -- or USE or /*
 
-		$SQL .= ' ' . $SQLScriptFile[$i-1];
+		$SQL .= ' ' . $SQLScriptFile[$i - 1];
 
 		//check if this line kicks off a function definition - pg chokes otherwise
-		if (mb_substr($SQLScriptFile[$i-1], 0, 15) == 'CREATE FUNCTION') {
+		if (mb_substr($SQLScriptFile[$i - 1], 0, 15) == 'CREATE FUNCTION') {
 			$InAFunction = true;
 		}
 		//check if this line completes a function definition - pg chokes otherwise
-		if (mb_substr($SQLScriptFile[$i-1], 0, 8) == 'LANGUAGE') {
+		if (mb_substr($SQLScriptFile[$i - 1], 0, 8) == 'LANGUAGE') {
 			$InAFunction = false;
 		}
-		if (mb_strpos($SQLScriptFile[$i-1], ';') > 0 and !$InAFunction) {
+		if (mb_strpos($SQLScriptFile[$i - 1], ';') > 0 and !$InAFunction) {
 			// Database created above with correct name.
 			$result = ($DBType == 'mysql') ? mysql_query($SQL, $db) : mysqli_query($db, $SQL);
 			$SQL = '';
@@ -313,6 +245,7 @@ function PopulateSQLDataBySQL($File, $db, $DBType, $NewDB = false, $DemoDB = 'kw
 						document.getElementById("information' . $File . '").innerHTML="' . ($i - 1) . ' row(s) processed.";
 					</script>';
 		echo str_repeat(' ', 1024 * 4);
+		flush();
 
 	} //end of for loop around the lines of the sql script
 }

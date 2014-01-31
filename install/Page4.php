@@ -28,7 +28,7 @@ foreach ($COAs as $Value) {
 	}
 }
 echo '</select>
-			<span>' . _('Will be installed as starter Chart of Accounts') . '</span>
+			<span>' . _('Will be installed as starter Chart of Accounts. If installing the Demo data then this wont work and you will just get a standard set of accounts') . '</span>
 		</li>';
 
 echo '<li>

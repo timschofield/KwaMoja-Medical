@@ -234,12 +234,10 @@ if (!isset($SelectedManufacturer)) {
 if (isset($SelectedManufacturer)) {
 	echo '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Review Records') . '</a>';
 }
-echo '<br />';
 
 if (!isset($_GET['delete'])) {
 
 	echo '<form onSubmit="return VerifyForm(this);" enctype="multipart/form-data" method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	if (isset($SelectedManufacturer)) {
@@ -304,10 +302,8 @@ if (!isset($_GET['delete'])) {
 	}
 
 	echo '</table>
-			<br />
 			<div class="centre">
 				<input type="submit" name="submit" value="' . _('Enter Information') . '" />
-			</div>
 			</div>
 			</form>';
 

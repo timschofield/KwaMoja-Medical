@@ -269,7 +269,7 @@ while ($myrow = DB_fetch_array($TransResult)) {
 	<td><a href="%s/EmailCustTrans.php?FromTransNo=%s&amp;InvOrCredit=Credit">' . _('Email') . ' <img src="%s/email.gif" title="' . _('Click to email the credit note') . '" alt="" /></a></td>';
 
 	/* assumed allowed page security token 3 allows the user to create credits for invoices */
-	if (in_array(3, $_SESSION['AllowedPageSecurityTokens']) and $myrow['type'] == 10) {
+	if (in_array($_SESSION['PageSecurityArray']['Credit_Invoice.php'], $_SESSION['AllowedPageSecurityTokens']) and $myrow['type'] == 10) {
 		/*Show a link to allow an invoice to be credited */
 
 		/* assumed allowed page security token 8 allows the user to see GL transaction information */

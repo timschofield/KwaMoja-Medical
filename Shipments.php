@@ -196,7 +196,7 @@ if (isset($_POST['Update']) or (isset($_GET['Add']) and $_SESSION['Shipment']->C
 		if (DB_num_rows($result) == 1) {
 			$sql = "UPDATE shipments SET vessel='" . $_SESSION['Shipment']->Vessel . "',
 										voyageref='" . $_SESSION['Shipment']->VoyageRef . "',
-										shipmentdate='" . $_SESSION['Shipment']->ShipmentDate . "'
+										shipmentdate='" . $_SESSION['Shipment']->ShipmentDate . "',
 										eta='" . $_SESSION['Shipment']->ETA . "'
 					WHERE shiptref ='" . $_SESSION['Shipment']->ShiptRef . "'";
 
@@ -405,20 +405,20 @@ echo '</td></tr></table>';
 if (count($_SESSION['Shipment']->LineItems) > 0) {
 	/* Always display all shipment lines */
 
-	echo '<br /><table class="selection">';
-	echo '<tr>
-			<th colspan="9"><h3>' . _('Order Lines On This Shipment') . '</h3></th>
-		</tr>
-		<tr>
-			<th>' . _('Order') . '</th>
-			<th>' . _('Item') . '</th>
-			<th>' . _('Quantity') . '<br />' . _('Ordered') . '</th>
-			<th>' . _('Units') . '</th>
-			<th>' . _('Quantity') . '<br />' . _('Received') . '</th>
-			<th>' . _('Quantity') . '<br />' . _('Invoiced') . '</th>
-			<th>' . $_SESSION['Shipment']->CurrCode . ' ' . _('Price') . '</th>
-			<th>' . _('Current') . '<br />' . _('Std Cost') . '</th>
-		</tr>';
+	echo '<table class="selection">
+			<tr>
+				<th colspan="9"><h3>' . _('Order Lines On This Shipment') . '</h3></th>
+			</tr>
+			<tr>
+				<th>' . _('Order') . '</th>
+				<th>' . _('Item') . '</th>
+				<th>' . _('Quantity') . '<br />' . _('Ordered') . '</th>
+				<th>' . _('Units') . '</th>
+				<th>' . _('Quantity') . '<br />' . _('Received') . '</th>
+				<th>' . _('Quantity') . '<br />' . _('Invoiced') . '</th>
+				<th>' . $_SESSION['Shipment']->CurrCode . ' ' . _('Price') . '</th>
+				<th>' . _('Current') . '<br />' . _('Std Cost') . '</th>
+			</tr>';
 
 	/*show the line items on the shipment with the quantity being received for modification */
 
@@ -448,10 +448,9 @@ if (count($_SESSION['Shipment']->LineItems) > 0) {
 	echo '</table>';
 } //there are lines on the shipment
 
-echo '<br />
-		<div class="centre">
-			<input type="submit" name="Update" value="' . _('Update Shipment Details') . '" />
-		</div>';
+echo '<div class="centre">
+		<input type="submit" name="Update" value="' . _('Update Shipment Details') . '" />
+	</div>';
 
 if (!isset($_POST['StockLocation'])) {
 	$_POST['StockLocation'] = $_SESSION['UserStockLocation'];
@@ -510,7 +509,7 @@ if (DB_num_rows($result) > 0) {
 		}
 
 		echo '<td>' . $myrow['orderno'] . '</td>
-				<td>' . $myrow['itemcode'] . ' - ' . $myrow['itemdescription'] . '</td>
+				<td>' . $myrow['itemcode'] . ' - ' . stripslashes($myrow['itemdescription']) . '</td>
 				<td class="number">' . locale_number_format($myrow['quantityord'], $myrow['decimalplaces']) . '</td>
 				<td>' . $myrow['units'] . '</td>
 				<td class="number">' . locale_number_format($myrow['quantityrecd'], $myrow['decimalplaces']) . '</td>

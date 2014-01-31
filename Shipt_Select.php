@@ -24,7 +24,6 @@ if (isset($_GET['SelectedSupplier'])) {
 }
 
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 
@@ -42,11 +41,11 @@ if (isset($ShiptRef) and $ShiptRef != '') {
 	}
 } else {
 	if (isset($SelectedSupplier)) {
-		echo '<br />' . _('For supplier') . ': ' . $SelectedSupplier . ' ' . _('and') . ' ';
+		echo  _('For supplier') . ': ' . stripslashes($SelectedSupplier) . ' ' . _('and') . ' ';
 		echo '<input type="hidden" name="SelectedSupplier" value="' . $SelectedSupplier . '" />';
 	}
 	if (isset($SelectedStockItem)) {
-		echo _('for the part') . ': ' . $SelectedStockItem . '.';
+		echo _('for the part') . ': ' . stripslashes($SelectedStockItem) . '.';
 		echo '<input type="hidden" name="SelectedStockItem" value="' . $SelectedStockItem . '" />';
 	}
 }
@@ -143,11 +142,9 @@ if (!isset($ShiptRef) or $ShiptRef == "") {
 	}
 	echo '</select></td></tr></table>';
 
-	echo '<br />
-			<div class="centre">
-				<input type="submit" name="SearchShipments" value="' . _('Search Shipments') . '" />
-			</div>
-			<br />';
+	echo '<div class="centre">
+			<input type="submit" name="SearchShipments" value="' . _('Search Shipments') . '" />
+		</div>';
 }
 
 $SQL = "SELECT categoryid,
@@ -181,14 +178,12 @@ echo '</select></td>
 		<td><b>' . _('OR') . ' </b> ' . _('Enter extract of the') . ' <b> ' . _('Stock Code') . '</b>:</td>
 		<td><input type="text" name="StockCode" size="15" minlength="0" maxlength="18" /></td>
 	</tr>
-	</table>
-	<br />';
+	</table>';
 
 echo '<div class="centre">
 		<input type="submit" name="SearchParts" value="' . _('Search Parts Now') . '" />
 		<input type="submit" name="ResetPart" value="' . _('Show All') . '" />
-	</div>
-	<br />';
+	</div>';
 
 if (isset($StockItemsResult)) {
 
@@ -340,7 +335,6 @@ else {
 	} // end if shipments to show
 }
 
-echo '</div>
-	  </form>';
+echo '</form>';
 include('includes/footer.inc');
 ?>

@@ -82,8 +82,8 @@ if (isset($_POST['Search']) OR isset($_POST['Go']) OR isset($_POST['Next']) OR i
 	if (mb_strlen($_POST['Keywords']) > 0 and mb_strlen($_POST['SupplierCode']) > 0) {
 		prnMsg(_('Supplier name keywords have been used in preference to the Supplier code extract entered'), 'info');
 	}
-	if ($_POST['Keywords'] == '' and $_POST['SupplierCode'] == '') {
-		$SQL = "SELECT supplierid,
+	$SearchString = '%' . str_replace(' ', '%', $_POST['Keywords']) . '%';
+	$SQL = "SELECT supplierid,
 					suppname,
 					currcode,
 					address1,
@@ -94,42 +94,9 @@ if (isset($_POST['Search']) OR isset($_POST['Go']) OR isset($_POST['Next']) OR i
 					email,
 					url
 				FROM suppliers
+				WHERE suppname " . LIKE . " '" . $SearchString . "'
+					AND supplierid " . LIKE . " '%" . $_POST['SupplierCode'] . "%'
 				ORDER BY suppname";
-	} else {
-		if (mb_strlen($_POST['Keywords']) > 0) {
-			$_POST['Keywords'] = mb_strtoupper($_POST['Keywords']);
-			//insert wildcard characters in spaces
-			$SearchString = '%' . str_replace(' ', '%', $_POST['Keywords']) . '%';
-			$SQL = "SELECT supplierid,
-							suppname,
-							currcode,
-							address1,
-							address2,
-							address3,
-							address4,
-							telephone,
-							email,
-							url
-						FROM suppliers
-						WHERE suppname " . LIKE . " '" . $SearchString . "'
-						ORDER BY suppname";
-		} elseif (mb_strlen($_POST['SupplierCode']) > 0) {
-			$_POST['SupplierCode'] = mb_strtoupper($_POST['SupplierCode']);
-			$SQL = "SELECT supplierid,
-							suppname,
-							currcode,
-							address1,
-							address2,
-							address3,
-							address4,
-							telephone,
-							email,
-							url
-						FROM suppliers
-						WHERE supplierid " . LIKE . " '%" . $_POST['SupplierCode'] . "%'
-						ORDER BY supplierid";
-		}
-	} //one of keywords or SupplierCode was more than a zero length string
 	$result = DB_query($SQL, $db);
 	if (DB_num_rows($result) == 1) {
 		$myrow = DB_fetch_row($result);
@@ -137,7 +104,7 @@ if (isset($_POST['Search']) OR isset($_POST['Go']) OR isset($_POST['Next']) OR i
 	}
 	if (isset($SingleSupplierReturned)) {
 		/*there was only one supplier returned */
-		$_SESSION['SupplierID'] = $SingleSupplierReturned;
+		$_SESSION['SupplierID'] = DB_escape_string($SingleSupplierReturned);
 		unset($_POST['Keywords']);
 		unset($_POST['SupplierCode']);
 		unset($_POST['Search']);
@@ -166,30 +133,26 @@ if (isset($_SESSION['SupplierID'])) {
 		</tr>';
 	echo '<tr><td valign="top" class="select">';
 	/* Inquiry Options */
-	echo '<a href="' . $RootPath . '/SupplierInquiry.php?SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Supplier Account Inquiry') . '</a>
-		<br />
-		<br />';
+	echo '<a href="' . $RootPath . '/SupplierInquiry.php?SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Supplier Account Inquiry') . '</a>';
 
 	echo '<br /><a href="' . $RootPath . '/PO_SelectOSPurchOrder.php?SelectedSupplier=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Add / Receive / View Outstanding Purchase Orders') . '</a>';
-	echo '<br /><a href="' . $RootPath . '/PO_SelectPurchOrder.php?SelectedSupplier=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('View All Purchase Orders') . '</a><br />';
+	echo '<br /><a href="' . $RootPath . '/PO_SelectPurchOrder.php?SelectedSupplier=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('View All Purchase Orders') . '</a>';
 	wikiLink('Supplier', urlencode(stripslashes($_SESSION['SupplierID'])));
 	echo '<br /><a href="' . $RootPath . '/ShiptsList.php?SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '&amp;SupplierName=' . urlencode($SupplierName) . '">' . _('List all open shipments for') . ' ' . $SupplierName . '</a>';
 	echo '<br /><a href="' . $RootPath . '/Shipt_Select.php?SelectedSupplier=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Search / Modify / Close Shipments') . '</a>';
 	echo '<br /><a href="' . $RootPath . '/SuppPriceList.php?SelectedSupplier=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Supplier Price List') . '</a>';
 	echo '</td><td valign="top" class="select">';
 	/* Supplier Transactions */
-	echo '<a href="' . $RootPath . '/PO_Header.php?NewOrder=Yes&amp;SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Enter a Purchase Order for This Supplier') . '</a><br />';
-	echo '<a href="' . $RootPath . '/SupplierInvoice.php?SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Enter a Suppliers Invoice') . '</a><br />';
-	echo '<a href="' . $RootPath . '/SupplierCredit.php?New=true&amp;SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Enter a Suppliers Credit Note') . '</a><br />';
-	echo '<a href="' . $RootPath . '/Payments.php?SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Enter a Payment to, or Receipt from the Supplier') . '</a><br />';
-	echo '<br />';
+	echo '<a href="' . $RootPath . '/PO_Header.php?NewOrder=Yes&amp;SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Enter a Purchase Order for This Supplier') . '</a>';
+	echo '<br /><a href="' . $RootPath . '/SupplierInvoice.php?SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Enter a Suppliers Invoice') . '</a>';
+	echo '<br /><a href="' . $RootPath . '/SupplierCredit.php?New=true&amp;SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Enter a Suppliers Credit Note') . '</a>';
+	echo '<br /><a href="' . $RootPath . '/Payments.php?SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Enter a Payment to, or Receipt from the Supplier') . '</a>';
 	echo '<br /><a href="' . $RootPath . '/ReverseGRN.php?SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Reverse an Outstanding Goods Received Note (GRN)') . '</a>';
 	echo '</td><td valign="top" class="select">';
 	/* Supplier Maintenance */
 	echo '<a href="' . $RootPath . '/Suppliers.php">' . _('Add a New Supplier') . '</a>
 		<br /><a href="' . $RootPath . '/Suppliers.php?SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Modify Or Delete Supplier Details') . '</a>
 		<br /><a href="' . $RootPath . '/SupplierContacts.php?SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Add/Modify/Delete Supplier Contacts') . '</a>
-		<br />
 		<br /><a href="' . $RootPath . '/SellThroughSupport.php?SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Set Up Sell Through Support Deals') . '</a>
 		<br /><a href="' . $RootPath . '/Shipments.php?NewShipment=Yes">' . _('Set Up A New Shipment') . '</a>
 		<br /><a href="' . $RootPath . '/SuppLoginSetup.php">' . _('Supplier Login Configuration') . '</a>

@@ -412,18 +412,20 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 		$SectionPrdBudget += $AccountPeriodBudget;
 
 		if ($_POST['Detail'] == 'Detailed') {
-			$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 60, $FontSize, $myrow['accountcode']);
-			$LeftOvers = $pdf->addTextWrap($Left_Margin + 60, $YPos, 190, $FontSize, $myrow['accountname']);
-			if (isset($_POST['ShowZeroBalances']) or (!isset($_POST['ShowZeroBalances']) and ($AccountPeriodActual <> 0 or $AccountPeriodBudget <> 0 or $AccountPeriodLY <> 0))){ //condition for pdf
 
-				if ($Section == 1) { /*Income*/
-					$LeftOvers = $pdf->addTextWrap($Left_Margin+310,$YPos,70,$FontSize,locale_number_format(-$AccountPeriodActual,$_SESSION['CompanyRecord']['decimalplaces']),'right');
-					$LeftOvers = $pdf->addTextWrap($Left_Margin+370,$YPos,70,$FontSize,locale_number_format(-$AccountPeriodBudget,$_SESSION['CompanyRecord']['decimalplaces']),'right');
-					$LeftOvers = $pdf->addTextWrap($Left_Margin+430,$YPos,70,$FontSize,locale_number_format(-$AccountPeriodLY,$_SESSION['CompanyRecord']['decimalplaces']),'right');
+			if (isset($_POST['ShowZeroBalances']) or (!isset($_POST['ShowZeroBalances']) and ($AccountPeriodActual <> 0 or $AccountPeriodBudget <> 0 or $AccountPeriodLY <> 0))) { //condition for pdf
+				$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 60, $FontSize, $myrow['accountcode']);
+				$LeftOvers = $pdf->addTextWrap($Left_Margin + 60, $YPos, 190, $FontSize, $myrow['accountname']);
+
+				if ($Section == 1) {
+					/*Income*/
+					$LeftOvers = $pdf->addTextWrap($Left_Margin + 310, $YPos, 70, $FontSize, locale_number_format(-$AccountPeriodActual, $_SESSION['CompanyRecord']['decimalplaces']), 'right');
+					$LeftOvers = $pdf->addTextWrap($Left_Margin + 370, $YPos, 70, $FontSize, locale_number_format(-$AccountPeriodBudget, $_SESSION['CompanyRecord']['decimalplaces']), 'right');
+					$LeftOvers = $pdf->addTextWrap($Left_Margin + 430, $YPos, 70, $FontSize, locale_number_format(-$AccountPeriodLY, $_SESSION['CompanyRecord']['decimalplaces']), 'right');
 				} else {
-					$LeftOvers = $pdf->addTextWrap($Left_Margin+310,$YPos,70,$FontSize,locale_number_format($AccountPeriodActual,$_SESSION['CompanyRecord']['decimalplaces']),'right');
-					$LeftOvers = $pdf->addTextWrap($Left_Margin+370,$YPos,70,$FontSize,locale_number_format($AccountPeriodBudget,$_SESSION['CompanyRecord']['decimalplaces']),'right');
-					$LeftOvers = $pdf->addTextWrap($Left_Margin+430,$YPos,70,$FontSize,locale_number_format($AccountPeriodLY,$_SESSION['CompanyRecord']['decimalplaces']),'right');
+					$LeftOvers = $pdf->addTextWrap($Left_Margin + 310, $YPos, 70, $FontSize, locale_number_format($AccountPeriodActual, $_SESSION['CompanyRecord']['decimalplaces']), 'right');
+					$LeftOvers = $pdf->addTextWrap($Left_Margin + 370, $YPos, 70, $FontSize, locale_number_format($AccountPeriodBudget, $_SESSION['CompanyRecord']['decimalplaces']), 'right');
+					$LeftOvers = $pdf->addTextWrap($Left_Margin + 430, $YPos, 70, $FontSize, locale_number_format($AccountPeriodLY, $_SESSION['CompanyRecord']['decimalplaces']), 'right');
 				}
 				$YPos -= $line_height;
 			}
@@ -981,7 +983,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 				$ActEnquiryURL = '<a href="' . $RootPath . '/GLAccountInquiry.php?Period=' . $_POST['ToPeriod'] . '&amp;Account=' . $myrow['accountcode'] . '&amp;Show=Yes">' . $myrow['accountcode'] . '</a>';
 
 				if ($Section == 1) {
-					 printf('<td>%s</td>
+					printf('<td>%s</td>
 							<td>%s</td>
 							<td></td>
 							<td class="number">%s</td>
@@ -989,12 +991,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 							<td class="number">%s</td>
 							<td></td>
 							<td class="number">%s</td>
-							</tr>',
-							$ActEnquiryURL,
-							htmlspecialchars($myrow['accountname'], ENT_QUOTES,'UTF-8', false),
-							locale_number_format(-$AccountPeriodActual,$_SESSION['CompanyRecord']['decimalplaces']),
-							locale_number_format(-$AccountPeriodBudget,$_SESSION['CompanyRecord']['decimalplaces']),
-							locale_number_format(-$AccountPeriodLY,$_SESSION['CompanyRecord']['decimalplaces']));
+							</tr>', $ActEnquiryURL, htmlspecialchars($myrow['accountname'], ENT_QUOTES, 'UTF-8', false), locale_number_format(-$AccountPeriodActual, $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format(-$AccountPeriodBudget, $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format(-$AccountPeriodLY, $_SESSION['CompanyRecord']['decimalplaces']));
 				} else {
 					printf('<td>%s</td>
 							<td>%s</td>
@@ -1004,12 +1001,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 							<td></td>
 							<td class="number">%s</td>
 							<td></td>
-							</tr>',
-							$ActEnquiryURL,
-							htmlspecialchars($myrow['accountname'], ENT_QUOTES,'UTF-8', false),
-							locale_number_format($AccountPeriodActual,$_SESSION['CompanyRecord']['decimalplaces']),
-							locale_number_format($AccountPeriodBudget,$_SESSION['CompanyRecord']['decimalplaces']),
-							locale_number_format($AccountPeriodLY,$_SESSION['CompanyRecord']['decimalplaces']));
+							</tr>', $ActEnquiryURL, htmlspecialchars($myrow['accountname'], ENT_QUOTES, 'UTF-8', false), locale_number_format($AccountPeriodActual, $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($AccountPeriodBudget, $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($AccountPeriodLY, $_SESSION['CompanyRecord']['decimalplaces']));
 				}
 				$j++;
 			}

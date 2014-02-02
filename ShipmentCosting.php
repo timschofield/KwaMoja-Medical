@@ -138,21 +138,21 @@ if (DB_num_rows($LineItemsResult) > 0) {
 		$PeriodNo = GetPeriod(Date($_SESSION['DefaultDateFormat']), $db);
 	}
 
-	echo '<br /><table cellpadding="2" class="selection">';
-	echo '<tr>
-			<th colspan="9"><h3>' . _('Items on shipment') . '</h3></th>
-		</tr>
-		<tr>
-			<th>' . _('Item') . '</th>
-			<th>' . _('Quantity') . '<br />' . _('Invoiced') . '</th>
-			<th>' . _('Quantity') . '<br />' . _('Received') . '</th>
-			<th>' . _('Invoiced') . '<br />' . _('Charges') . '</th>
-			<th>' . _('Shipment') . '<br />' . _('Charges') . '</th>
-			<th>' . _('Shipment') . '<br />' . _('Cost') . '</th>
-			<th>' . _('Standard') . '<br />' . _('Cost') . '</th>
-			<th>' . _('Variance') . '</th>
-			<th>%</th>
-		</tr>';
+	echo '<table cellpadding="2" class="selection">
+			<tr>
+				<th colspan="9"><h3>' . _('Items on shipment') . '</h3></th>
+			</tr>
+			<tr>
+				<th>' . _('Item') . '</th>
+				<th>' . _('Quantity') . '<br />' . _('Invoiced') . '</th>
+				<th>' . _('Quantity') . '<br />' . _('Received') . '</th>
+				<th>' . _('Invoiced') . '<br />' . _('Charges') . '</th>
+				<th>' . _('Shipment') . '<br />' . _('Charges') . '</th>
+				<th>' . _('Shipment') . '<br />' . _('Cost') . '</th>
+				<th>' . _('Standard') . '<br />' . _('Cost') . '</th>
+				<th>' . _('Variance') . '</th>
+				<th>%</th>
+			</tr>';
 
 	/*show the line items on the shipment with the value invoiced and shipt cost */
 
@@ -475,7 +475,7 @@ if (DB_num_rows($LineItemsResult) > 0) {
 
 		/*  Item / Qty Inv/  FX price/ Local Val/ Portion of chgs/ Shipt Cost/ Std Cost/ Variance/ Var % */
 
-		echo '<td>' . $myrow['itemcode'] . ' - ' . $myrow['itemdescription'] . '</td>
+		echo '<td>' . $myrow['itemcode'] . ' - ' . stripslashes($myrow['itemdescription']) . '</td>
 			<td class="number">' . locale_number_format($myrow['totqtyinvoiced'], 'Variable') . '</td>
 			<td class="number">' . locale_number_format($myrow['totqtyrecd'], 'Variable') . '</td>
 			<td class="number">' . locale_number_format($ItemCharges, $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
@@ -500,10 +500,9 @@ echo '<tr>
 echo '</table>';
 
 
-echo '<br />
-	<table width="95%">
-	<tr>
-		<td valign="top">'; // put this shipment charges side by side in a table (major table 2 cols)
+echo '<table width="95%">
+		<tr>
+			<td valign="top">'; // put this shipment charges side by side in a table (major table 2 cols)
 
 $sql = "SELECT suppliers.suppname,
 			supptrans.suppreference,
@@ -666,11 +665,8 @@ if (isset($_GET['Close'])) {
 					<option value="No">' . _('No') . '</option>
 					</select>';
 	}
-	echo '<br />
-		<br />
-		<input type="submit" name="Close" value="' . _('Confirm OK to Close') . '" />
-		</form>
-		</div>';
+	echo '<input type="submit" name="Close" value="' . _('Confirm OK to Close') . '" />
+		</form>';
 }
 
 if (isset($_POST['Close'])) {
@@ -695,7 +691,6 @@ if (isset($_POST['Close'])) {
 	$result = DB_query("UPDATE shipments SET closed=1 WHERE shiptref='" . $_GET['SelectedShipment'] . "'", $db, _('Could not update the shipment to closed'), '', TRUE);
 	$result = DB_Txn_Commit($db);
 
-	echo '<br /><br />';
 	prnMsg(_('Shipment') . ' ' . $_GET['SelectedShipment'] . ' ' . _('has been closed'));
 	if ($_SESSION['CompanyRecord']['gllink_stock'] == 1) {
 		echo '<br />';

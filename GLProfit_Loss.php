@@ -412,9 +412,10 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 		$SectionPrdBudget += $AccountPeriodBudget;
 
 		if ($_POST['Detail'] == 'Detailed') {
-			$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 60, $FontSize, $myrow['accountcode']);
-			$LeftOvers = $pdf->addTextWrap($Left_Margin + 60, $YPos, 190, $FontSize, $myrow['accountname']);
+
 			if (isset($_POST['ShowZeroBalances']) or (!isset($_POST['ShowZeroBalances']) and ($AccountPeriodActual <> 0 or $AccountPeriodBudget <> 0 or $AccountPeriodLY <> 0))){ //condition for pdf
+				$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 60, $FontSize, $myrow['accountcode']);
+				$LeftOvers = $pdf->addTextWrap($Left_Margin + 60, $YPos, 190, $FontSize, $myrow['accountname']);
 
 				if ($Section == 1) { /*Income*/
 					$LeftOvers = $pdf->addTextWrap($Left_Margin+310,$YPos,70,$FontSize,locale_number_format(-$AccountPeriodActual,$_SESSION['CompanyRecord']['decimalplaces']),'right');

@@ -97,6 +97,7 @@ if (isset($_GET['SelectedShipment'])) {
 							INNER JOIN purchorders
 								ON purchorderdetails.orderno=purchorders.orderno
 							WHERE purchorderdetails.shiptref='" . $_GET['SelectedShipment'] . "'";
+
 		$ErrMsg = _('The lines on the shipment cannot be retrieved because') . ' - ' . DB_error_msg($db);
 		$LineItemsResult = DB_query($LineItemsSQL, $db, $ErrMsg);
 
@@ -128,7 +129,6 @@ if (isset($_GET['SelectedShipment'])) {
 	}
 } // end of reading in the existing shipment
 
-
 if (!isset($_SESSION['Shipment'])) {
 
 	$_SESSION['Shipment'] = new Shipment;
@@ -150,8 +150,6 @@ if (!isset($_SESSION['Shipment'])) {
 	$_SESSION['Shipment']->CurrDecimalPlaces = $myrow['currdecimalplaces'];
 	$_SESSION['Shipment']->ShiptRef = GetNextTransNo(31, $db);
 }
-
-
 
 if (isset($_POST['Update']) or (isset($_GET['Add']) and $_SESSION['Shipment']->Closed == 0)) { //user hit the update button
 
@@ -277,10 +275,7 @@ if (isset($_GET['Delete']) and $_SESSION['Shipment']->Closed == 0) { //shipment 
 	$_SESSION['Shipment']->Remove_From_Shipment($_GET['Delete'], $db);
 }
 
-
-
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 echo '<table class="selection">
@@ -473,7 +468,7 @@ $sql = "SELECT purchorderdetails.podetailitem,
 			WHERE qtyinvoiced=0
 			AND purchorders.status <> 'Cancelled'
 			AND purchorders.status <> 'Rejected'
-			AND purchorders.supplierno ='" . $_SESSION['Shipment']->SupplierID . "'
+			AND purchorders.supplierno ='" . DB_escape_string($_SESSION['Shipment']->SupplierID, $db) . "'
 			AND purchorderdetails.shiptref=0
 			AND purchorders.intostocklocation='" . $_POST['StockLocation'] . "'";
 
@@ -521,8 +516,7 @@ if (DB_num_rows($result) > 0) {
 	echo '</table>';
 }
 
-echo '</div>
-	  </form>';
+echo '</form>';
 
 include('includes/footer.inc');
 ?>

@@ -29,14 +29,14 @@ if (DB_num_rows($ShiptsResult) == 0) {
 }
 /*show a table of the shipments returned by the SQL */
 
-echo '<table cellpadding="2" class="selection">';
-echo '<tr>
-		<th>' . _('Reference') . '</th>
-		<th>' . _('Vessel') . '</th>
-		<th>' . _('Shipment Date') . '</th>
-		<th>' . _('ETA') . '</th></tr>';
+echo '<table cellpadding="2" class="selection">
+		<tr>
+			<th>' . _('Reference') . '</th>
+			<th>' . _('Vessel') . '</th>
+			<th>' . _('Shipment Date') . '</th>
+			<th>' . _('ETA') . '</th>
+		</tr>';
 
-$j = 1;
 $k = 0; //row colour counter
 
 while ($myrow = DB_fetch_array($ShiptsResult)) {

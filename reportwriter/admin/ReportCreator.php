@@ -50,14 +50,17 @@ if (!isset($_POST['ReportID'])) { // entered for the first time or created new r
 		$Type = $myrow[0];
 	}
 }
+if (!isset($_GET['action'])) {
+	$_GET['action'] = '';
+}
 switch ($_GET['action']) {
 	default:
 	case "step2": // entered from select an action (home) page
 		// first check to see if a report was selected (except new report and import)
-		if (!isset($_GET['action']) or ($ReportID=='' and $_POST['todo']<>RPT_BTN_ADDNEW and $_POST['todo']<>RPT_BTN_IMPORT)) {
+		if ($_GET['action'] == '' or ($ReportID=='' and $_POST['todo']<>RPT_BTN_ADDNEW and $_POST['todo']<>RPT_BTN_IMPORT)) {
 			// skip error message if back from import was pressed
 			$DropDownString = RetrieveReports();
-			if (isset($_GET['action'])) $usrMsg[] = array('message'=>FRM_NORPT, 'level'=>'error');
+			if ($_GET['action'] != '') $usrMsg[] = array('message'=>FRM_NORPT, 'level'=>'error');
 			$FormParams = PrepStep('1');
 			break;
 		}

@@ -1,10 +1,12 @@
 <?php
 
 /* Session started in session.inc for password checking and authorisation level check
-config.php is in turn included in session.inc*/
-include ('includes/session.inc');
+ * config.php is in turn included in session.inc
+ */
+
+include('includes/session.inc');
 $Title = _('Raw Materials Not Used Anywhere');
-include ('includes/header.inc');
+include('includes/header.inc');
 
 $SQL = "SELECT stockmaster.stockid,
 				stockmaster.description,
@@ -24,22 +26,20 @@ $SQL = "SELECT stockmaster.stockid,
 				WHERE bom.component = stockmaster.stockid )
 		ORDER BY stockmaster.stockid";
 $result = DB_query($SQL, $db);
-if (DB_num_rows($result) != 0){
+echo '<p class="page_title_text" align="center"><strong>' . _('Raw Materials Not Used in any BOM') . '</strong></p>';
+if (DB_num_rows($result) != 0) {
 	$TotalValue = 0;
-	echo '<p class="page_title_text" align="center"><strong>' . _('Raw Materials Not Used in any BOM') . '</strong></p>';
 	echo '<div>';
-	echo '<table class="selection">';
-	$TableHeader = '<tr>
-						<th>' . _('#') . '</th>
-						<th>' . _('Code') . '</th>
-						<th>' . _('Description') . '</th>
-						<th>' . _('QOH') . '</th>
-						<th>' . _('Std Cost') . '</th>
-						<th>' . _('Value') . '</th>
-					</tr>';
-	echo $TableHeader;
+	echo '<table class="selection">
+			<tr>
+				<th>' . _('#') . '</th>
+				<th>' . _('Code') . '</th>
+				<th>' . _('Description') . '</th>
+				<th>' . _('QOH') . '</th>
+				<th>' . _('Std Cost') . '</th>
+				<th>' . _('Value') . '</th>
+			</tr>';
 	$k = 0; //row colour counter
-	$i = 1;
 	while ($myrow = DB_fetch_array($result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -51,36 +51,28 @@ if (DB_num_rows($result) != 0){
 		$CodeLink = '<a href="' . $RootPath . '/SelectProduct.php?StockID=' . $myrow['stockid'] . '">' . $myrow['stockid'] . '</a>';
 		$LineValue = $myrow['qoh'] * $myrow['stdcost'];
 		$TotalValue = $TotalValue + $LineValue;
-		
+
 		printf('<td class="number">%s</td>
 				<td>%s</td>
 				<td>%s</td>
 				<td class="number">%s</td>
 				<td class="number">%s</td>
 				<td class="number">%s</td>
-				</tr>', 
-				$i, 
-				$CodeLink, 
-				$myrow['description'],
-				locale_number_format($myrow['qoh'],$myrow['decimalplaces']),
-				locale_number_format($myrow['stdcost'],$_SESSION['CompanyRecord']['decimalplaces']),
-				locale_number_format($LineValue,$_SESSION['CompanyRecord']['decimalplaces'])
-				);
+				</tr>', $i, $CodeLink, $myrow['description'], locale_number_format($myrow['qoh'], $myrow['decimalplaces']), locale_number_format($myrow['stdcost'], $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($LineValue, $_SESSION['CompanyRecord']['decimalplaces']));
 		$i++;
 	}
 
 	printf('<td colspan="4">%s</td>
 			<td>%s</td>
 			<td class="number">%s</td>
-			</tr>', 
-			'',
-			_('Total').':', 
-			locale_number_format($TotalValue,$_SESSION['CompanyRecord']['decimalplaces']));
+			</tr>', '', _('Total') . ':', locale_number_format($TotalValue, $_SESSION['CompanyRecord']['decimalplaces']));
 
 	echo '</table>
 			</div>
 			</form>';
+} else {
+	prnMsg(_('There are no raw materials to show in this inquiry'), 'info');
 }
 
-include ('includes/footer.inc');
+include('includes/footer.inc');
 ?>

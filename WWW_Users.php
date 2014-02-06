@@ -1,40 +1,29 @@
 <?php
 
-/* $Id$*/
-
-if (isset($_POST['UserID']) and isset($_POST['ID'])){
+if (isset($_POST['UserID']) and isset($_POST['ID'])) {
 	if ($_POST['UserID'] == $_POST['ID']) {
 		$_POST['Language'] = $_POST['UserLanguage'];
 	}
 }
 include('includes/session.inc');
 
-$ModuleList = array(_('Orders'),
-					_('Receivables'),
-					_('Payables'),
-					_('Purchasing'),
-					_('Inventory'),
-					_('Manufacturing'),
-					_('General Ledger'),
-					_('Asset Manager'),
-					_('Petty Cash'),
-					_('Setup'),
-					_('Utilities')
-					);
+include('includes/MainMenuLinksArray.php');
 
-$PDFLanguages = array(  _('Latin Western Languages'),
-						_('Eastern European Russian Japanese Korean Vietnamese Hebrew Arabic Thai'),
-						_('Chinese'),
-						_('Free Serif'));
+$PDFLanguages = array(
+	_('Latin Western Languages'),
+	_('Eastern European Russian Japanese Korean Vietnamese Hebrew Arabic Thai'),
+	_('Chinese'),
+	_('Free Serif')
+);
 
 $Title = _('User Maintenance');
 /* KwaMoja manual links before header.inc */
-$ViewTopic= "GettingStarted";
-$BookMark = "UserMaintenance";
+$ViewTopic = 'GettingStarted';
+$BookMark = 'UserMaintenance';
 include('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');
 
-echo '<p class="page_title_text noPrint" ><img src="'.$RootPath.'/css/'.$Theme.'/images/group_add.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title.'</p>
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/group_add.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>
 	<br />';
 
 // Make an array of the security roles
@@ -46,14 +35,14 @@ $sql = "SELECT secroleid,
 $Sec_Result = DB_query($sql, $db);
 $SecurityRoles = array();
 // Now load it into an a ray using Key/Value pairs
-while( $Sec_row = DB_fetch_row($Sec_Result) ) {
+while ($Sec_row = DB_fetch_row($Sec_Result)) {
 	$SecurityRoles[$Sec_row[0]] = $Sec_row[1];
 }
 DB_free_result($Sec_Result);
 
-if (isset($_GET['SelectedUser'])){
+if (isset($_GET['SelectedUser'])) {
 	$SelectedUser = $_GET['SelectedUser'];
-} elseif (isset($_POST['SelectedUser'])){
+} elseif (isset($_POST['SelectedUser'])) {
 	$SelectedUser = $_POST['SelectedUser'];
 }
 
@@ -66,42 +55,41 @@ if (isset($_POST['submit'])) {
 	ie the page has called itself with some user input */
 
 	//first off validate inputs sensible
-	if (mb_strlen($_POST['UserID'])<4){
+	if (mb_strlen($_POST['UserID']) < 3) {
 		$InputError = 1;
-		prnMsg(_('The user ID entered must be at least 4 characters long'),'error');
+		prnMsg(_('The user ID entered must be at least 3 characters long'), 'error');
 	} elseif (ContainsIllegalCharacters($_POST['UserID'])) {
 		$InputError = 1;
-		prnMsg(_('User names cannot contain any of the following characters') . " - ' &amp; + \" \\ " . _('or a space'),'error');
-	} elseif (mb_strlen($_POST['Password'])<5){
-		if (!$SelectedUser){
+		prnMsg(_('User names cannot contain any of the following characters') . " - ' &amp; + \" \\ " . _('or a space'), 'error');
+	} elseif (mb_strlen($_POST['Password']) < 5) {
+		if (!$SelectedUser) {
 			$InputError = 1;
-			prnMsg(_('The password entered must be at least 5 characters long'),'error');
+			prnMsg(_('The password entered must be at least 5 characters long'), 'error');
 		}
-	} elseif (mb_strstr($_POST['Password'],$_POST['UserID'])!= False){
+	} elseif (mb_strstr($_POST['Password'], $_POST['UserID']) != False) {
 		$InputError = 1;
-		prnMsg(_('The password cannot contain the user id'),'error');
-	} elseif ((mb_strlen($_POST['Cust'])>0)
-				AND (mb_strlen($_POST['BranchCode'])==0)) {
+		prnMsg(_('The password cannot contain the user id'), 'error');
+	} elseif ((mb_strlen($_POST['Cust']) > 0) AND (mb_strlen($_POST['BranchCode']) == 0)) {
 		$InputError = 1;
-		prnMsg(_('If you enter a Customer Code you must also enter a Branch Code valid for this Customer'),'error');
+		prnMsg(_('If you enter a Customer Code you must also enter a Branch Code valid for this Customer'), 'error');
 	}
 	//comment out except for demo!  Do not want anyone modifying demo user.
 	/*
-	  elseif ($_POST['UserID'] == 'admin') {
-		prnMsg(_('The demonstration user called demo cannot be modified.'),'error');
-		$InputError = 1;
+	elseif ($_POST['UserID'] == 'admin') {
+	prnMsg(_('The demonstration user called demo cannot be modified.'),'error');
+	$InputError = 1;
 	}
 	*/
-	if (!isset($SelectedUser)){
+	if (!isset($SelectedUser)) {
 		/* check to ensure the user id is not already entered */
-		$result = DB_query("SELECT userid FROM www_users WHERE userid='" . $_POST['UserID'] . "'",$db);
-		if (DB_num_rows($result)==1){
-			$InputError =1;
-			prnMsg(_('The user ID') . ' ' . $_POST['UserID'] . ' ' . _('already exists and cannot be used again'),'error');
+		$result = DB_query("SELECT userid FROM www_users WHERE userid='" . $_POST['UserID'] . "'", $db);
+		if (DB_num_rows($result) == 1) {
+			$InputError = 1;
+			prnMsg(_('The user ID') . ' ' . $_POST['UserID'] . ' ' . _('already exists and cannot be used again'), 'error');
 		}
 	}
 
-	if ((mb_strlen($_POST['BranchCode'])>0) and ($InputError !=1)) {
+	if ((mb_strlen($_POST['BranchCode']) > 0) and ($InputError != 1)) {
 		// check that the entered branch is valid for the customer code
 		$sql = "SELECT custbranch.debtorno
 				FROM custbranch
@@ -110,47 +98,45 @@ if (isset($_POST['submit'])) {
 
 		$ErrMsg = _('The check on validity of the customer code and branch failed because');
 		$DbgMsg = _('The SQL that was used to check the customer code and branch was');
-		$result = DB_query($sql,$db,$ErrMsg,$DbgMsg);
+		$result = DB_query($sql, $db, $ErrMsg, $DbgMsg);
 
-		if (DB_num_rows($result)==0){
-			prnMsg(_('The entered Branch Code is not valid for the entered Customer Code'),'error');
+		if (DB_num_rows($result) == 0) {
+			prnMsg(_('The entered Branch Code is not valid for the entered Customer Code'), 'error');
 			$InputError = 1;
 		}
 	}
 
 	/* Make a comma separated list of modules allowed ready to update the database*/
-	$i=0;
+	$i = 0;
 	$ModulesAllowed = '';
-	while ($i < count($ModuleList)){
+	while ($i < count($ModuleList)) {
 		$FormVbl = 'Module_' . $i;
 		$ModulesAllowed .= $_POST[($FormVbl)] . ',';
 		$i++;
 	}
-	$_POST['ModulesAllowed']= $ModulesAllowed;
+	$_POST['ModulesAllowed'] = $ModulesAllowed;
 
-	if (isset($SelectedUser) and $InputError !=1) {
+	if (isset($SelectedUser) and $InputError != 1) {
 
-/*SelectedUser could also exist if submit had not been clicked this code would not run in this case cos submit is false of course  see the delete code below*/
+		/*SelectedUser could also exist if submit had not been clicked this code would not run in this case cos submit is false of course  see the delete code below*/
 
-		if (!isset($_POST['Cust'])
-			or $_POST['Cust']==NULL
-			or $_POST['Cust']==''){
+		if (!isset($_POST['Cust']) or $_POST['Cust'] == NULL or $_POST['Cust'] == '') {
 
-			$_POST['Cust']='';
-			$_POST['BranchCode']='';
+			$_POST['Cust'] = '';
+			$_POST['BranchCode'] = '';
 		}
 		$UpdatePassword = '';
-		if ($_POST['Password'] != ''){
+		if ($_POST['Password'] != '') {
 			$UpdatePassword = "password='" . CryptPass($_POST['Password']) . "',";
 		}
 
-		if ($SelectedUser==$_SESSION['UserID']) {
-			$_SESSION['ScreenFontSize']=$_POST['FontSize'];
+		if ($SelectedUser == $_SESSION['UserID']) {
+			$_SESSION['ScreenFontSize'] = $_POST['FontSize'];
 		}
 		$sql = "UPDATE www_users SET realname='" . $_POST['RealName'] . "',
-						customerid='" . $_POST['Cust'] ."',
-						phone='" . $_POST['Phone'] ."',
-						email='" . $_POST['Email'] ."',
+						customerid='" . $_POST['Cust'] . "',
+						phone='" . $_POST['Phone'] . "',
+						email='" . $_POST['Email'] . "',
 						" . $UpdatePassword . "
 						branchcode='" . $_POST['BranchCode'] . "',
 						supplierid='" . $_POST['SupplierID'] . "',
@@ -160,16 +146,17 @@ if (isset($_POST['submit'])) {
 						cancreatetender='" . $_POST['CanCreateTender'] . "',
 						theme='" . $_POST['Theme'] . "',
 						language ='" . $_POST['UserLanguage'] . "',
-						defaultlocation='" . $_POST['DefaultLocation'] ."',
+						defaultlocation='" . $_POST['DefaultLocation'] . "',
+						restrictlocations='" . $_POST['RestrictLocations'] . "',
 						modulesallowed='" . $ModulesAllowed . "',
 						blocked='" . $_POST['Blocked'] . "',
 						pdflanguage='" . $_POST['PDFLanguage'] . "',
 						department='" . $_POST['Department'] . "',
 						fontsize='" . $_POST['FontSize'] . "'
-					WHERE userid = '". $SelectedUser . "'";
+					WHERE userid = '" . $SelectedUser . "'";
 
-		prnMsg( _('The selected user record has been updated'), 'success' );
-	} elseif ($InputError !=1) {
+		prnMsg(_('The selected user record has been updated'), 'success');
+	} elseif ($InputError != 1) {
 
 		$sql = "INSERT INTO www_users (userid,
 						realname,
@@ -184,6 +171,7 @@ if (isset($_POST['submit'])) {
 						fullaccess,
 						cancreatetender,
 						defaultlocation,
+						restrictlocations,
 						modulesallowed,
 						displayrecordsmax,
 						theme,
@@ -192,33 +180,36 @@ if (isset($_POST['submit'])) {
 						department,
 						fontsize)
 					VALUES ('" . $_POST['UserID'] . "',
-						'" . $_POST['RealName'] ."',
-						'" . $_POST['Cust'] ."',
-						'" . $_POST['BranchCode'] ."',
-						'" . $_POST['SupplierID'] ."',
+						'" . $_POST['RealName'] . "',
+						'" . $_POST['Cust'] . "',
+						'" . $_POST['BranchCode'] . "',
+						'" . $_POST['SupplierID'] . "',
 						'" . $_POST['Salesman'] . "',
-						'" . CryptPass($_POST['Password']) ."',
+						'" . CryptPass($_POST['Password']) . "',
 						'" . $_POST['Phone'] . "',
-						'" . $_POST['Email'] ."',
-						'" . $_POST['PageSize'] ."',
+						'" . $_POST['Email'] . "',
+						'" . $_POST['PageSize'] . "',
 						'" . $_POST['Access'] . "',
 						'" . $_POST['CanCreateTender'] . "',
-						'" . $_POST['DefaultLocation'] ."',
+						'" . $_POST['DefaultLocation'] . "',
+						'" . $_POST['RestrictLocations'] . "',
 						'" . $ModulesAllowed . "',
 						'" . $_SESSION['DefaultDisplayRecordsMax'] . "',
 						'" . $_POST['Theme'] . "',
-						'". $_POST['UserLanguage'] ."',
+						'" . $_POST['UserLanguage'] . "',
 						'" . $_POST['PDFLanguage'] . "',
 						'" . $_POST['Department'] . "',
 						'" . $_POST['FontSize'] . "')";
-		prnMsg( _('A new user record has been inserted'), 'success' );
+		prnMsg(_('A new user record has been inserted'), 'success');
 	}
-
-	if ($InputError!=1){
+	if ($_SESSION['UserID'] == $_POST['UserID']) {
+		$_SESSION['RestrictLocations'] = $_POST['RestrictLocations'];
+	}
+	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
 		$ErrMsg = _('The user alterations could not be processed because');
 		$DbgMsg = _('The SQL that was used to update the user and failed was');
-		$result = DB_query($sql,$db,$ErrMsg,$DbgMsg);
+		$result = DB_query($sql, $db, $ErrMsg, $DbgMsg);
 
 		unset($_POST['UserID']);
 		unset($_POST['RealName']);
@@ -244,33 +235,34 @@ if (isset($_POST['submit'])) {
 	}
 
 } elseif (isset($_GET['delete'])) {
-//the link to delete a selected record was clicked instead of the submit button
+	//the link to delete a selected record was clicked instead of the submit button
 
 	// comment out except for demo!  Do not want anyopne deleting demo user.
-	/*
-	if ($SelectedUser == 'admin') {
-		prnMsg(_('The demonstration user called demo cannot be deleted'),'error');
+
+
+	if ($AllowDemoMode AND $SelectedUser == 'admin') {
+		prnMsg(_('The demonstration user called demo cannot be deleted'), 'error');
 	} else {
-	*/
-		$sql="SELECT userid FROM audittrail where userid='" . $SelectedUser ."'";
-		$result=DB_query($sql, $db);
-		if (DB_num_rows($result)!=0) {
+
+		$sql = "SELECT userid FROM audittrail where userid='" . $SelectedUser . "'";
+		$result = DB_query($sql, $db);
+		if (DB_num_rows($result) != 0) {
 			prnMsg(_('Cannot delete user as entries already exist in the audit trail'), 'warn');
 		} else {
 
-			$sql="DELETE FROM www_users WHERE userid='" . $SelectedUser . "'";
-			$ErrMsg = _('The User could not be deleted because');;
-			$result = DB_query($sql,$db,$ErrMsg);
-			prnMsg(_('User Deleted'),'info');
+			$sql = "DELETE FROM www_users WHERE userid='" . $SelectedUser . "'";
+			$ErrMsg = _('The User could not be deleted because');
+			$result = DB_query($sql, $db, $ErrMsg);
+			prnMsg(_('User Deleted'), 'info');
 		}
 		unset($SelectedUser);
-	// }
+	}
 
 }
 
 if (!isset($SelectedUser)) {
 
-/* If its the first time the page has been displayed with no parameters then none of the above are true and the list of Users will be displayed with links to delete or edit each. These will call the same page again and allow update/input or deletion of the records*/
+	/* If its the first time the page has been displayed with no parameters then none of the above are true and the list of Users will be displayed with links to delete or edit each. These will call the same page again and allow update/input or deletion of the records*/
 
 	$sql = "SELECT userid,
 					realname,
@@ -288,10 +280,11 @@ if (!isset($SelectedUser)) {
 					language,
 					fontsize
 				FROM www_users";
-	$result = DB_query($sql,$db);
+	$result = DB_query($sql, $db);
 
-	echo '<table class="selection">';
-	echo '<tr><th>' . _('User Login') . '</th>
+	echo '<table class="selection">
+			<tr>
+				<th>' . _('User Login') . '</th>
 				<th>' . _('Full Name') . '</th>
 				<th>' . _('Telephone') . '</th>
 				<th>' . _('Email') . '</th>
@@ -300,82 +293,64 @@ if (!isset($SelectedUser)) {
 				<th>' . _('Supplier Code') . '</th>
 				<th>' . _('Salesperson') . '</th>
 				<th>' . _('Last Visit') . '</th>
-				<th>' . _('Security Role') .'</th>
-				<th>' . _('Report Size') .'</th>
-				<th>' . _('Theme') .'</th>
-				<th>' . _('Language') .'</th>
-				<th>' . _('Screen Font Size') .'</th>
+				<th>' . _('Security Role') . '</th>
+				<th>' . _('Report Size') . '</th>
+				<th>' . _('Theme') . '</th>
+				<th>' . _('Language') . '</th>
+				<th>' . _('Screen Font Size') . '</th>
 			</tr>';
 
-	$k=0; //row colour counter
+	$k = 0; //row colour counter
 
 	while ($myrow = DB_fetch_array($result)) {
-		if ($k==1){
+		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
-			$k=0;
+			$k = 0;
 		} else {
 			echo '<tr class="OddTableRows">';
-			$k=1;
+			$k = 1;
 		}
 
-	if ($myrow[8]=='') {
-		$LastVisitDate = Date($_SESSION['DefaultDateFormat']);
-	} else {
-		$LastVisitDate = ConvertSQLDate($myrow[8]);
-	}
+		if ($myrow[8] == '') {
+			$LastVisitDate = Date($_SESSION['DefaultDateFormat']);
+		} else {
+			$LastVisitDate = ConvertSQLDate($myrow[8]);
+		}
 
 		/*The SecurityHeadings array is defined in config.php */
 
 		switch ($myrow['fontsize']) {
 
 			case 0:
-				$FontSize=_('Small');
+				$FontSize = _('Small');
 				break;
 			case 1:
-				$FontSize=_('Medium');
+				$FontSize = _('Medium');
 				break;
 			case 2:
-				$FontSize=_('Large');
+				$FontSize = _('Large');
 				break;
 			default:
-				$FontSize=_('Medium');
+				$FontSize = _('Medium');
 		}
 
 		printf('<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td><a href="%s&amp;SelectedUser=%s">' . _('Edit') . '</a></td>
-					<td><a href="%s&amp;SelectedUser=%s&amp;delete=1" onclick="return confirm(\'' . _('Are you sure you wish to delete this user?') . '\');">' . _('Delete') . '</a></td>
-					</tr>',
-					$myrow['userid'],
-					$myrow['realname'],
-					$myrow['phone'],
-					$myrow['email'],
-					$myrow['customerid'],
-					$myrow['branchcode'],
-					$myrow['supplierid'],
-					$myrow['salesman'],
-					$LastVisitDate,
-					$SecurityRoles[($myrow['fullaccess'])],
-					$myrow['pagesize'],
-					$myrow['theme'],
-					$LanguagesArray[$myrow['language']]['LanguageName'],
-					$FontSize,
-					htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8')  . '?',
-					$myrow['userid'],
-					htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?',
-					$myrow['userid']);
+				<td>%s</td>
+				<td>%s</td>
+				<td>%s</td>
+				<td>%s</td>
+				<td>%s</td>
+				<td>%s</td>
+				<td>%s</td>
+				<td>%s</td>
+				<td>%s</td>
+				<td>%s</td>
+				<td>%s</td>
+				<td>%s</td>
+				<td>%s</td>
+				<td><a href="%s&amp;SelectedUser=%s">' . _('Edit') . '</a></td>
+				<td><a href="%s&amp;SelectedUser=%s&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this user?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+			</tr>', $myrow['userid'], $myrow['realname'], $myrow['phone'], $myrow['email'], $myrow['customerid'], $myrow['branchcode'], $myrow['supplierid'], $myrow['salesman'], $LastVisitDate, $SecurityRoles[($myrow['fullaccess'])], $myrow['pagesize'], $myrow['theme'], $LanguagesArray[$myrow['language']]['LanguageName'], $FontSize, htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['userid'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['userid']);
 
 	} //END WHILE LIST LOOP
 	echo '</table><br />';
@@ -383,10 +358,10 @@ if (!isset($SelectedUser)) {
 
 
 if (isset($SelectedUser)) {
-	echo '<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8')  . '">' . _('Review Existing Users') . '</a></div><br />';
+	echo '<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Review Existing Users') . '</a></div><br />';
 }
 
-echo '<form method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '">';
+echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
@@ -406,6 +381,7 @@ if (isset($SelectedUser)) {
 			fullaccess,
 			cancreatetender,
 			defaultlocation,
+			restrictlocations,
 			modulesallowed,
 			blocked,
 			theme,
@@ -423,14 +399,15 @@ if (isset($SelectedUser)) {
 	$_POST['RealName'] = $myrow['realname'];
 	$_POST['Phone'] = $myrow['phone'];
 	$_POST['Email'] = $myrow['email'];
-	$_POST['Cust']	= $myrow['customerid'];
-	$_POST['BranchCode']  = $myrow['branchcode'];
+	$_POST['Cust'] = $myrow['customerid'];
+	$_POST['BranchCode'] = $myrow['branchcode'];
 	$_POST['SupplierID'] = $myrow['supplierid'];
 	$_POST['Salesman'] = $myrow['salesman'];
 	$_POST['PageSize'] = $myrow['pagesize'];
 	$_POST['Access'] = $myrow['fullaccess'];
 	$_POST['CanCreateTender'] = $myrow['cancreatetender'];
 	$_POST['DefaultLocation'] = $myrow['defaultlocation'];
+	$_POST['RestrictLocations'] = $myrow['restrictlocations'];
 	$_POST['ModulesAllowed'] = $myrow['modulesallowed'];
 	$_POST['Theme'] = $myrow['theme'];
 	$_POST['UserLanguage'] = $myrow['language'];
@@ -454,18 +431,18 @@ if (isset($SelectedUser)) {
 	echo '<table class="selection">
 			<tr>
 				<td>' . _('User Login') . ':</td>
-				<td><input type="text" name="UserID" size="22" maxlength="20" /></td>
+				<td><input type="text" name="UserID" size="22" required="required" minlength="3" maxlength="20" /></td>
 			</tr>';
 
 	/*set the default modules to show to all
 	this had trapped a few people previously*/
-	$i=0;
+	$i = 0;
 	if (!isset($_POST['ModulesAllowed'])) {
-		$_POST['ModulesAllowed']='';
+		$_POST['ModulesAllowed'] = '';
 	}
-	foreach($ModuleList as $ModuleName){
-		if ($i>0){
-			$_POST['ModulesAllowed'] .=',';
+	foreach ($ModuleList as $ModuleName) {
+		if ($i > 0) {
+			$_POST['ModulesAllowed'] .= ',';
 		}
 		$_POST['ModulesAllowed'] .= '1';
 		$i++;
@@ -473,115 +450,130 @@ if (isset($SelectedUser)) {
 }
 
 if (!isset($_POST['Password'])) {
-	$_POST['Password']='';
+	$_POST['Password'] = '';
 }
 if (!isset($_POST['RealName'])) {
-	$_POST['RealName']='';
+	$_POST['RealName'] = '';
 }
 if (!isset($_POST['Phone'])) {
-	$_POST['Phone']='';
+	$_POST['Phone'] = '';
 }
 if (!isset($_POST['Email'])) {
-	$_POST['Email']='';
+	$_POST['Email'] = '';
 }
 echo '<tr>
 		<td>' . _('Password') . ':</td>
-		<td><input type="password" name="Password" size="22" maxlength="20" value="' . $_POST['Password'] . '" /></td>
+		<td><input type="password" name="Password" size="22" minlength="0" maxlength="20" value="' . $_POST['Password'] . '" /></td>
 	</tr>';
 echo '<tr>
 		<td>' . _('Full Name') . ':</td>
-		<td><input type="text" name="RealName" value="' . $_POST['RealName'] . '" size="36" maxlength="35" /></td>
+		<td><input type="text" name="RealName" value="' . $_POST['RealName'] . '" size="36" required="required" minlength="1" maxlength="35" /></td>
 	</tr>';
 echo '<tr>
 		<td>' . _('Telephone No') . ':</td>
-		<td><input type="text" name="Phone" value="' . $_POST['Phone'] . '" size="32" maxlength="30" /></td>
+		<td><input type="tel" name="Phone" value="' . $_POST['Phone'] . '" size="32" minlength="0" maxlength="30" /></td>
 	</tr>';
 echo '<tr>
-		<td>' . _('Email Address') .':</td>
-		<td><input type="text" name="Email" value="' . $_POST['Email'] .'" size="32" maxlength="55" /></td>
+		<td>' . _('Email Address') . ':</td>
+		<td><input type="email" name="Email" value="' . $_POST['Email'] . '" size="32" minlength="0" maxlength="55" /></td>
 	</tr>';
 echo '<tr>
 		<td>' . _('Security Role') . ':</td>
-		<td><select name="Access">';
+		<td><select minlength="0" name="Access">';
 
 foreach ($SecurityRoles as $SecKey => $SecVal) {
-	if (isset($_POST['Access']) and $SecKey == $_POST['Access']){
-		echo '<option selected="selected" value="' . $SecKey . '">' . $SecVal .'</option>';
+	if (isset($_POST['Access']) and $SecKey == $_POST['Access']) {
+		echo '<option selected="selected" value="' . $SecKey . '">' . $SecVal . '</option>';
 	} else {
-		echo '<option value="' . $SecKey . '">' . $SecVal .'</option>';
+		echo '<option value="' . $SecKey . '">' . $SecVal . '</option>';
 	}
 }
 echo '</select>';
-echo '<input type="hidden" name="ID" value="'.$_SESSION['UserID'].'" /></td>
-    </tr>';
+echo '<input type="hidden" name="ID" value="' . $_SESSION['UserID'] . '" /></td>
+	</tr>';
 
-echo '<tr><td>' . _('User Can Create Tenders') . ':</td><td><select name="CanCreateTender">';
+echo '<tr>
+		<td>' . _('User Can Create Tenders') . ':</td>
+		<td><select minlength="0" name="CanCreateTender">';
 
-if (isset($_POST['CanCreateTender']) and $_POST['CanCreateTender']==0){
+if (isset($_POST['CanCreateTender']) and $_POST['CanCreateTender'] == 0) {
 	echo '<option selected="selected" value="0">' . _('No') . '</option>';
 	echo '<option value="1">' . _('Yes') . '</option>';
 } else {
- 	echo '<option selected="selected" value="1">' . _('Yes') . '</option>';
+	echo '<option selected="selected" value="1">' . _('Yes') . '</option>';
 	echo '<option value="0">' . _('No') . '</option>';
 }
 echo '</select></td></tr>';
 
 echo '<tr>
 		<td>' . _('Default Location') . ':</td>
-		<td><select name="DefaultLocation">';
+		<td><select minlength="0" name="DefaultLocation">';
 
 $sql = "SELECT loccode, locationname FROM locations";
-$result = DB_query($sql,$db);
+$result = DB_query($sql, $db);
 
-while ($myrow=DB_fetch_array($result)){
-	if (isset($_POST['DefaultLocation']) and $myrow['loccode'] == $_POST['DefaultLocation']){
-		echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] .'</option>';
+while ($myrow = DB_fetch_array($result)) {
+	if (isset($_POST['DefaultLocation']) and $myrow['loccode'] == $_POST['DefaultLocation']) {
+		echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
 	} else {
-		echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] .'</option>';
+		echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
 	}
 }
 
 echo '</select></td>
 	</tr>';
 
+echo '<tr>
+		<td>' . _('Restrict to just this location') . ': </td>
+		<td><select minlength="0" name="RestrictLocations">';
+if (isset($_POST['RestrictLocations']) and $_POST['RestrictLocations'] == 0) {
+	echo '<option selected="selected" value="0">' . _('No') . '</option>';
+	echo '<option value="1">' . _('Yes') . '</option>';
+} else {
+	echo '<option selected="selected" value="1">' . _('Yes') . '</option>';
+	echo '<option value="0">' . _('No') . '</option>';
+}
+echo '</select></td>
+	</tr>';
+
 if (!isset($_POST['Cust'])) {
-	$_POST['Cust']='';
+	$_POST['Cust'] = '';
 }
 if (!isset($_POST['BranchCode'])) {
-	$_POST['BranchCode']='';
+	$_POST['BranchCode'] = '';
 }
 if (!isset($_POST['SupplierID'])) {
-	$_POST['SupplierID']='';
+	$_POST['SupplierID'] = '';
 }
 echo '<tr>
 		<td>' . _('Customer Code') . ':</td>
-		<td><input type="text" name="Cust" size="10" maxlength="10" value="' . $_POST['Cust'] . '" /></td>
+		<td><input type="text" name="Cust" size="10" minlength="0" maxlength="10" value="' . $_POST['Cust'] . '" /></td>
 	</tr>';
 
 echo '<tr>
 		<td>' . _('Branch Code') . ':</td>
-		<td><input type="text" name="BranchCode" size="10" maxlength="10" value="' . $_POST['BranchCode'] .'" /></td>
+		<td><input type="text" name="BranchCode" size="10" minlength="0" maxlength="10" value="' . $_POST['BranchCode'] . '" /></td>
 	</tr>';
 
 echo '<tr>
 		<td>' . _('Supplier Code') . ':</td>
-		<td><input type="text" name="SupplierID" size="10" maxlength="10" value="' . $_POST['SupplierID'] .'" /></td>
+		<td><input type="text" name="SupplierID" size="10" minlength="0" maxlength="10" value="' . $_POST['SupplierID'] . '" /></td>
 	</tr>';
 
 echo '<tr>
 		<td>' . _('Restrict to Sales Person') . ':</td>
-		<td><select name="Salesman">';
+		<td><select minlength="0" name="Salesman">';
 
-$sql = "SELECT salesmancode, salesmanname FROM salesman WHERE current = 1";
-$result = DB_query($sql,$db);
-if ((isset($_POST['Salesman']) and $_POST['Salesman']=='') or !isset($_POST['Salesman'])){
-	echo '<option selected="selected" value="">' .  _('Not a salesperson only login') . '</option>';
+$sql = "SELECT salesmancode, salesmanname FROM salesman WHERE current = 1 ORDER BY salesmanname";
+$result = DB_query($sql, $db);
+if ((isset($_POST['Salesman']) and $_POST['Salesman'] == '') or !isset($_POST['Salesman'])) {
+	echo '<option selected="selected" value="">' . _('Not a salesperson only login') . '</option>';
 } else {
 	echo '<option value="">' . _('Not a salesperson only login') . '</option>';
 }
-while ($myrow=DB_fetch_array($result)){
+while ($myrow = DB_fetch_array($result)) {
 
-	if (isset($_POST['Salesman']) and $myrow['salesmancode'] == $_POST['Salesman']){
+	if (isset($_POST['Salesman']) and $myrow['salesmancode'] == $_POST['Salesman']) {
 		echo '<option selected="selected" value="' . $myrow['salesmancode'] . '">' . $myrow['salesmanname'] . '</option>';
 	} else {
 		echo '<option value="' . $myrow['salesmancode'] . '">' . $myrow['salesmanname'] . '</option>';
@@ -593,48 +585,48 @@ echo '</select></td>
 	</tr>';
 
 echo '<tr>
-		<td>' . _('Reports Page Size') .':</td>
-		<td><select name="PageSize">';
+		<td>' . _('Reports Page Size') . ':</td>
+		<td><select minlength="0" name="PageSize">';
 
-if(isset($_POST['PageSize']) and $_POST['PageSize']=='A4'){
-	echo '<option selected="selected" value="A4">' . _('A4') .'</option>';
+if (isset($_POST['PageSize']) and $_POST['PageSize'] == 'A4') {
+	echo '<option selected="selected" value="A4">' . _('A4') . '</option>';
 } else {
 	echo '<option value="A4">' . _('A4') . '</option>';
 }
 
-if(isset($_POST['PageSize']) and $_POST['PageSize']=='A3'){
-	echo '<option selected="selected" value="A3">' . _('A3') .'</option>';
+if (isset($_POST['PageSize']) and $_POST['PageSize'] == 'A3') {
+	echo '<option selected="selected" value="A3">' . _('A3') . '</option>';
 } else {
-	echo '<option value="A3">' . _('A3') .'</option>';
+	echo '<option value="A3">' . _('A3') . '</option>';
 }
 
-if(isset($_POST['PageSize']) and $_POST['PageSize']=='A3_landscape'){
-	echo '<option selected="selected" value="A3_landscape">' . _('A3') . ' ' . _('landscape') .'</option>';
+if (isset($_POST['PageSize']) and $_POST['PageSize'] == 'A3_Landscape') {
+	echo '<option selected="selected" value="A3_Landscape">' . _('A3') . ' ' . _('landscape') . '</option>';
 } else {
-	echo '<option value="A3_landscape">' . _('A3') . ' ' . _('landscape') .'</option>';
+	echo '<option value="A3_Landscape">' . _('A3') . ' ' . _('landscape') . '</option>';
 }
 
-if(isset($_POST['PageSize']) and $_POST['PageSize']=='letter'){
-	echo '<option selected="selected" value="letter">' . _('Letter') .'</option>';
+if (isset($_POST['PageSize']) and $_POST['PageSize'] == 'Letter') {
+	echo '<option selected="selected" value="Letter">' . _('Letter') . '</option>';
 } else {
-	echo '<option value="letter">' . _('Letter') .'</option>';
+	echo '<option value="Letter">' . _('Letter') . '</option>';
 }
 
-if(isset($_POST['PageSize']) and $_POST['PageSize']=='letter_landscape'){
-	echo '<option selected="selected" value="letter_landscape">' . _('Letter') . ' ' . _('landscape') .'</option>';
+if (isset($_POST['PageSize']) and $_POST['PageSize'] == 'Letter_Landscape') {
+	echo '<option selected="selected" value="Letter_Landscape">' . _('Letter') . ' ' . _('landscape') . '</option>';
 } else {
-	echo '<option value="letter_landscape">' . _('Letter') . ' ' . _('landscape') .'</option>';
+	echo '<option value="Letter_Landscape">' . _('Letter') . ' ' . _('landscape') . '</option>';
 }
 
-if(isset($_POST['PageSize']) and $_POST['PageSize']=='legal'){
-	echo '<option selected="selected" value="legal">' . _('Legal') .'</option>';
+if (isset($_POST['PageSize']) and $_POST['PageSize'] == 'Legal') {
+	echo '<option selected="selected" value="Legal">' . _('Legal') . '</option>';
 } else {
-	echo '<option value="legal">' . _('Legal') .'</option>';
+	echo '<option value="Legal">' . _('Legal') . '</option>';
 }
-if(isset($_POST['PageSize']) and $_POST['PageSize']=='legal_landscape'){
-	echo '<option selected="selected" value="legal_landscape">' . _('Legal') . ' ' . _('landscape') .'</option>';
+if (isset($_POST['PageSize']) and $_POST['PageSize'] == 'Legal_Landscape') {
+	echo '<option selected="selected" value="Legal_Landscape">' . _('Legal') . ' ' . _('landscape') . '</option>';
 } else {
-	echo '<option value="legal_landscape">' . _('Legal') . ' ' . _('landscape') .'</option>';
+	echo '<option value="Legal_Landscape">' . _('Legal') . ' ' . _('landscape') . '</option>';
 }
 
 echo '</select></td>
@@ -642,15 +634,15 @@ echo '</select></td>
 
 echo '<tr>
 		<td>' . _('Theme') . ':</td>
-		<td><select name="Theme">';
+		<td><select minlength="0" name="Theme">';
 
 $Themes = scandir('css/');
 
 foreach ($Themes as $ThemeName) {
 
-	if (is_dir('css/' . $ThemeName) and $ThemeName != '.' and $ThemeName != '..' and $ThemeName != '.svn'){
+	if (is_dir('css/' . $ThemeName) and $ThemeName != '.' and $ThemeName != '..' and $ThemeName != '.svn') {
 
-		if ($_SESSION['Theme'] == $ThemeName){
+		if ($_SESSION['Theme'] == $ThemeName) {
 			echo '<option selected="selected" value="' . $ThemeName . '">' . $ThemeName . '</option>';
 		} else {
 			echo '<option value="' . $ThemeName . '">' . $ThemeName . '</option>';
@@ -664,52 +656,52 @@ echo '</select></td>
 
 echo '<tr>
 		<td>' . _('Language') . ':</td>
-		<td><select name="UserLanguage">';
+		<td><select minlength="0" name="UserLanguage">';
 
-foreach ($LanguagesArray as $LanguageEntry => $LanguageName){
-	if (isset($_POST['UserLanguage']) and $_POST['UserLanguage'] == $LanguageEntry){
-		echo '<option selected="selected" value="' . $LanguageEntry . '">' . $LanguageName['LanguageName'] .'</option>';
+foreach ($LanguagesArray as $LanguageEntry => $LanguageName) {
+	if (isset($_POST['UserLanguage']) and $_POST['UserLanguage'] == $LanguageEntry) {
+		echo '<option selected="selected" value="' . $LanguageEntry . '">' . $LanguageName['LanguageName'] . '</option>';
 	} elseif (!isset($_POST['UserLanguage']) and $LanguageEntry == $DefaultLanguage) {
-		echo '<option selected="selected" value="' . $LanguageEntry . '">' . $LanguageName['LanguageName'] .'</option>';
+		echo '<option selected="selected" value="' . $LanguageEntry . '">' . $LanguageName['LanguageName'] . '</option>';
 	} else {
-		echo '<option value="' . $LanguageEntry . '">' . $LanguageName['LanguageName'] .'</option>';
+		echo '<option value="' . $LanguageEntry . '">' . $LanguageName['LanguageName'] . '</option>';
 	}
 }
 echo '</select></td>
 	</tr>';
 
 /*Make an array out of the comma separated list of modules allowed*/
-$ModulesAllowed = explode(',',$_POST['ModulesAllowed']);
+$ModulesAllowed = explode(',', $_POST['ModulesAllowed']);
 
-$i=0;
-foreach($ModuleList as $ModuleName){
+$i = 0;
+foreach ($ModuleList as $ModuleName) {
 
 	echo '<tr>
 			<td>' . _('Display') . ' ' . $ModuleName . ' ' . _('module') . ': </td>
-			<td><select name="Module_' . $i . '">';
-	if ($ModulesAllowed[$i]==0){
+			<td><select minlength="0" name="Module_' . $i . '">';
+	if ($ModulesAllowed[$i] == 0) {
 		echo '<option selected="selected" value="0">' . _('No') . '</option>';
 		echo '<option value="1">' . _('Yes') . '</option>';
 	} else {
-	 	echo '<option selected="selected" value="1">' . _('Yes') . '</option>';
+		echo '<option selected="selected" value="1">' . _('Yes') . '</option>';
 		echo '<option value="0">' . _('No') . '</option>';
 	}
 	echo '</select></td>
 		</tr>';
 	$i++;
 }
-if (!isset($_POST['PDFLanguage'])){
-	$_POST['PDFLanguage']=0;
+if (!isset($_POST['PDFLanguage'])) {
+	$_POST['PDFLanguage'] = 0;
 }
 
 echo '<tr>
 		<td>' . _('PDF Language Support') . ': </td>
-		<td><select name="PDFLanguage">';
-for($i=0;$i<count($PDFLanguages);$i++){
-	if ($_POST['PDFLanguage']==$i){
-		echo '<option selected="selected" value="' . $i .'">' . $PDFLanguages[$i] . '</option>';
+		<td><select minlength="0" name="PDFLanguage">';
+for ($i = 0; $i < count($PDFLanguages); $i++) {
+	if ($_POST['PDFLanguage'] == $i) {
+		echo '<option selected="selected" value="' . $i . '">' . $PDFLanguages[$i] . '</option>';
 	} else {
-		echo '<option value="' . $i .'">' . $PDFLanguages[$i]. '</option>';
+		echo '<option value="' . $i . '">' . $PDFLanguages[$i] . '</option>';
 	}
 }
 echo '</select></td>
@@ -720,20 +712,20 @@ echo '</select></td>
 echo '<tr>
 		<td>' . _('Allowed Department for Internal Requests') . ':</td>';
 
-$sql="SELECT departmentid,
+$sql = "SELECT departmentid,
 			description
 		FROM departments
 		ORDER BY description";
 
-$result=DB_query($sql, $db);
-echo '<td><select name="Department">';
-if ((isset($_POST['Department']) and $_POST['Department']=='0') or !isset($_POST['Department'])){
-	echo '<option selected="selected" value="0">' .  _('Any Internal Department') . '</option>';
+$result = DB_query($sql, $db);
+echo '<td><select minlength="0" name="Department">';
+if ((isset($_POST['Department']) and $_POST['Department'] == '0') or !isset($_POST['Department'])) {
+	echo '<option selected="selected" value="0">' . _('Any Internal Department') . '</option>';
 } else {
 	echo '<option value="">' . _('Any Internal Department') . '</option>';
 }
-while ($myrow=DB_fetch_array($result)){
-	if (isset($_POST['Department']) and $myrow['departmentid'] == $_POST['Department']){
+while ($myrow = DB_fetch_array($result)) {
+	if (isset($_POST['Department']) and $myrow['departmentid'] == $_POST['Department']) {
 		echo '<option selected="selected" value="' . $myrow['departmentid'] . '">' . $myrow['description'] . '</option>';
 	} else {
 		echo '<option value="' . $myrow['departmentid'] . '">' . $myrow['description'] . '</option>';
@@ -746,12 +738,12 @@ echo '</select></td>
 
 echo '<tr>
 		<td>' . _('Account Status') . ':</td>
-		<td><select name="Blocked">';
-if (isset($_POST['Blocked']) and $_POST['Blocked']==0){
+		<td><select minlength="0" name="Blocked">';
+if (isset($_POST['Blocked']) and $_POST['Blocked'] == 0) {
 	echo '<option selected="selected" value="0">' . _('Open') . '</option>';
 	echo '<option value="1">' . _('Blocked') . '</option>';
 } else {
- 	echo '<option selected="selected" value="1">' . _('Blocked') . '</option>';
+	echo '<option selected="selected" value="1">' . _('Blocked') . '</option>';
 	echo '<option value="0">' . _('Open') . '</option>';
 }
 echo '</select></td>
@@ -761,16 +753,16 @@ echo '</select></td>
 
 echo '<tr>
 		<td>' . _('Screen Font Size') . ':</td>
-		<td><select name="FontSize">';
-if (isset($_POST['FontSize']) and $_POST['FontSize']==0){
+		<td><select minlength="0" name="FontSize">';
+if (isset($_POST['FontSize']) and $_POST['FontSize'] == 0) {
 	echo '<option selected="selected" value="0">' . _('Small') . '</option>';
 	echo '<option value="1">' . _('Medium') . '</option>';
 	echo '<option value="2">' . _('Large') . '</option>';
-} else if (isset($_POST['FontSize']) and $_POST['FontSize']==1) {
+} else if (isset($_POST['FontSize']) and $_POST['FontSize'] == 1) {
 	echo '<option value="0">' . _('Small') . '</option>';
 	echo '<option selected="selected" value="1">' . _('Medium') . '</option>';
 	echo '<option value="2">' . _('Large') . '</option>';
-} else  {
+} else {
 	echo '<option value="0">' . _('Small') . '</option>';
 	echo '<option value="1">' . _('Medium') . '</option>';
 	echo '<option selected="selected" value="2">' . _('Large') . '</option>';
@@ -783,13 +775,8 @@ echo '</table>
 	<div class="centre">
 		<input type="submit" name="submit" value="' . _('Enter Information') . '" />
 	</div>
-    </div>
+	</div>
 	</form>';
 
-if (isset($_GET['SelectedUser'])) {
-	echo '<script  type="text/javascript">defaultControl(document.forms[0].Password);</script>';
-} else {
-	echo '<script  type="text/javascript">defaultControl(document.forms[0].UserID);</script>';
-}
 include('includes/footer.inc');
 ?>

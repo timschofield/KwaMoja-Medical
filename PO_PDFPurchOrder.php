@@ -1,7 +1,5 @@
 <?php
 
-/* $Id: PO_PDFPurchOrder.php 5752 2012-12-05 08:39:15Z daintree $*/
-
 include('includes/session.inc');
 include('includes/SQL_CommonFunctions.inc');
 include('includes/DefinePOClass.php');
@@ -83,6 +81,8 @@ if (isset($OrderNo) and $OrderNo != '' and $OrderNo > 0 and $OrderNo != 'Preview
 					suppliers.address2,
 					suppliers.address3,
 					suppliers.address4,
+					suppliers.address5,
+					suppliers.address6,
 					purchorders.comments,
 					purchorders.orddate,
 					purchorders.rate,
@@ -100,6 +100,7 @@ if (isset($OrderNo) and $OrderNo != '' and $OrderNo > 0 and $OrderNo != 'Preview
 					suppliers.currcode,
 					purchorders.status,
 					purchorders.stat_comment,
+					currencies.currency,
 					currencies.decimalplaces AS currdecimalplaces
 				FROM purchorders INNER JOIN suppliers
 					ON purchorders.supplierno = suppliers.supplierid
@@ -168,7 +169,9 @@ else if ($OrderNo == 'Preview') { // We are previewing the order
 	$POHeader['address1'] = str_pad('', 40, 'x');
 	$POHeader['address2'] = str_pad('', 40, 'x');
 	$POHeader['address3'] = str_pad('', 40, 'x');
-	$POHeader['address4'] = str_pad('', 30, 'x');
+	$POHeader['address4'] = str_pad('', 40, 'x');
+	$POHeader['address5'] = str_pad('', 20, 'x');
+	$POHeader['address6'] = str_pad('', 15, 'x');
 	$POHeader['comments'] = str_pad('', 50, 'x');
 	$POHeader['orddate'] = '1900-01-01';
 	$POHeader['rate'] = '0.0000';
@@ -216,7 +219,9 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 						suppliers_partno
 				FROM purchorderdetails LEFT JOIN stockmaster
 					ON purchorderdetails.itemcode=stockmaster.stockid
-				WHERE orderno ='" . $OrderNo . "'";
+				WHERE orderno ='" . $OrderNo . "'
+				ORDER BY itemcode";
+		/*- ADDED: Sort by our item code -*/
 		$result = DB_query($sql, $db);
 	} //$OrderNo != 'Preview'
 	if ($OrderNo == 'Preview' or DB_num_rows($result) > 0) {
@@ -224,7 +229,7 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 		include('includes/PO_PDFOrderPageHeader.inc');
 		$YPos = $Page_Height - $FormDesign->Data->y;
 		$OrderTotal = 0;
-		while ((isset($OrderNo) and $OrderNo == 'Preview') or (isset($result) and $POLine = DB_fetch_array($result))) {
+		while ((isset($OrderNo) and $OrderNo == 'Preview') or (isset($result) and !is_bool($result) and $POLine = DB_fetch_array($result))) {
 			/* If we are previewing the order then fill the
 			 * order line with dummy data */
 			if ($OrderNo == 'Preview') {
@@ -258,7 +263,7 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 			else {
 				$DisplayLineTotal = '----';
 			}
-			$Desc = $POLine['suppliers_partno'] . " " . $POLine['itemdescription'];
+			$Desc = $POLine['itemdescription'];
 
 			$OrderTotal += ($POLine['unitprice'] * $POLine['quantityord']);
 
@@ -331,10 +336,21 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 		$mail->setText(_('Please find herewith our purchase order number') . ' ' . $OrderNo);
 		$mail->setSubject(_('Purchase Order Number') . ' ' . $OrderNo);
 		$mail->addAttachment($attachment, $PdfFileName, 'application/pdf');
-		$mail->setFrom($_SESSION['CompanyRecord']['coyname'] . '<' . $_SESSION['CompanyRecord']['email'] . '>');
-		$Success = $mail->send(array(
-			$_POST['EmailTo']
-		));
+		//since sometime the mail server required to verify the users, so must set this information.
+		if ($_SESSION['SmtpSetting'] == 0) { //use the mail service provice by the server.
+			$mail->setFrom($_SESSION['CompanyRecord']['coyname'] . '<' . $_SESSION['CompanyRecord']['email'] . '>');
+			$Success = $mail->send(array(
+				$_POST['EmailTo']
+			));
+		} else if ($_SESSION['SmtpSetting'] == 1) {
+			$Success = SendmailBySmtp($mail, array(
+				$_POST['EmailTo']
+			));
+		} else {
+			prnMsg(_('The SMTP settings are wrong, please ask administrator for help'), 'error');
+			exit;
+			include('includes/footer.inc');
+		}
 		if ($Success == 1) {
 			$Title = _('Email a Purchase Order');
 			include('includes/header.inc');
@@ -366,7 +382,7 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 else {
 	/*the user has just gone into the page need to ask the question whether to print the order or email it to the supplier */
 	include('includes/header.inc');
-	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
+	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	if ($ViewingOnly == 1) {
@@ -375,9 +391,9 @@ else {
 	echo '<br /><br />';
 	echo '<input type="hidden" name="OrderNo" value="' . $OrderNo . '" />';
 	echo '<table>
-         <tr>
-             <td>' . _('Print or Email the Order') . '</td>
-             <td><select name="PrintOrEmail">';
+		 <tr>
+			 <td>' . _('Print or Email the Order') . '</td>
+			 <td><select required="required" minlength="1" name="PrintOrEmail">';
 
 	if (!isset($_POST['PrintOrEmail'])) {
 		$_POST['PrintOrEmail'] = 'Print';
@@ -396,8 +412,9 @@ else {
 		}
 	}
 	echo '</select></td></tr>';
-	echo '<tr><td>' . _('Show Amounts on the Order') . '</td><td>
-		<select name="ShowAmounts">';
+	echo '<tr>
+			<td>' . _('Show Amounts on the Order') . '</td>
+			<td><select required="required" minlength="1" name="ShowAmounts">';
 	if (!isset($_POST['ShowAmounts'])) {
 		$_POST['ShowAmounts'] = 'Yes';
 	} //!isset($_POST['ShowAmounts'])
@@ -419,7 +436,7 @@ else {
 				WHERE purchorders.orderno='" . $OrderNo . "'";
 		$ContactsResult = DB_query($SQL, $db, $ErrMsg);
 		if (DB_num_rows($ContactsResult) > 0) {
-			echo '<tr><td>' . _('Email to') . ':</td><td><select name="EmailTo">';
+			echo '<tr><td>' . _('Email to') . ':</td><td><select minlength="0" name="EmailTo">';
 			while ($ContactDetails = DB_fetch_array($ContactsResult)) {
 				if (mb_strlen($ContactDetails['email']) > 2 and mb_strpos($ContactDetails['email'], '@') > 0) {
 					if ($_POST['EmailTo'] == $ContactDetails['email']) {
@@ -442,11 +459,11 @@ else {
 		echo '</table>';
 	}
 	echo '<br />
-         <div class="centre">
-              <input type="submit" name="DoIt" value="' . _('OK') . '" />
-         </div>
-         </div>
-         </form>';
+		 <div class="centre">
+			  <input type="submit" name="DoIt" value="' . _('OK') . '" />
+		 </div>
+		 </div>
+		 </form>';
 
 	include('includes/footer.inc');
 }

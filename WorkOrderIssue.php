@@ -1,5 +1,4 @@
 <?php
-/* $Id$*/
 
 include('includes/session.inc');
 $Title = _('Issue Materials To Work Order');
@@ -13,16 +12,15 @@ if (isset($_GET['StockID'])){
 	$_POST['StockID']=$_GET['StockID'];
 }
 
-echo '<a href="'. $RootPath . '/SelectWorkOrder.php">' . _('Back to Work Orders'). '</a>
-	<br />';
-echo '<a href="'. $RootPath . '/WorkOrderCosting.php?WO=' .  $_POST['WO'] . '">' . _('Back to Costing'). '</a>
-	<br />';
+echo '<div class="toplink">
+		<a href="'. $RootPath . '/SelectWorkOrder.php">' . _('Back to Work Orders'). '</a><br />
+		<a href="'. $RootPath . '/WorkOrderCosting.php?WO=' .  $_POST['WO'] . '">' . _('Back to Costing'). '</a>
+	</div>';
 
 echo '<p class="page_title_text noPrint" ><img src="'.$RootPath.'/css/'.$Theme.'/images/group_add.png" title="' .
 	_('Search') . '" alt="" />' . ' ' . $Title.'</p>';
 
-echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '" method="post" class="noPrint">';
-echo '<div>';
+echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '" method="post" class="noPrint">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 
@@ -48,23 +46,45 @@ if (isset($_POST['Process'])){ //user hit the process the work order issues ente
 
 	$InputError = false; //ie assume no problems for a start - ever the optomist
 	$ErrMsg = _('Could not retrieve the details of the selected work order item');
-	$WOResult = DB_query("SELECT workorders.loccode,
-								 locations.locationname,
-								 workorders.closed,
-								 stockcategory.wipact,
-								 stockcategory.stockact
-							FROM workorders INNER JOIN locations
-							ON workorders.loccode=locations.loccode
-							INNER JOIN woitems
-							ON workorders.wo=woitems.wo
-							INNER JOIN stockmaster
-							ON woitems.stockid=stockmaster.stockid
-							INNER JOIN stockcategory
-							ON stockmaster.categoryid=stockcategory.categoryid
-							WHERE woitems.stockid='" . $_POST['StockID'] . "'
-							AND woitems.wo='" . $_POST['WO'] . "'",
-							$db,
-							$ErrMsg);
+	if ($_SESSION['RestrictLocations']==0) {
+		$sql = "SELECT workorders.loccode,
+						locations.locationname,
+						workorders.closed,
+						stockcategory.wipact,
+						stockcategory.stockact
+					FROM workorders
+					INNER JOIN locations
+						ON workorders.loccode=locations.loccode
+					INNER JOIN woitems
+						ON workorders.wo=woitems.wo
+					INNER JOIN stockmaster
+						ON woitems.stockid=stockmaster.stockid
+					INNER JOIN stockcategory
+						ON stockmaster.categoryid=stockcategory.categoryid
+					WHERE woitems.stockid='" . $_POST['StockID'] . "'
+						AND woitems.wo='" . $_POST['WO'] . "'";
+	} else {
+		$sql = "SELECT workorders.loccode,
+						locations.locationname,
+						workorders.closed,
+						stockcategory.wipact,
+						stockcategory.stockact
+					FROM workorders
+					INNER JOIN locations
+						ON workorders.loccode=locations.loccode
+					INNER JOIN www_users
+						ON locations.loccode=www_users.defaultlocation
+					INNER JOIN woitems
+						ON workorders.wo=woitems.wo
+					INNER JOIN stockmaster
+						ON woitems.stockid=stockmaster.stockid
+					INNER JOIN stockcategory
+						ON stockmaster.categoryid=stockcategory.categoryid
+					WHERE woitems.stockid='" . $_POST['StockID'] . "'
+						AND woitems.wo='" . $_POST['WO'] . "'
+						AND www_users.userid='" . $_SESSION['UserID'] . "'";
+	}
+	$WOResult = DB_query($sql, $db, $ErrMsg);
 
 	if (DB_num_rows($WOResult)==0){
 		prnMsg(_('The selected work order item cannot be retrieved from the database'),'info');
@@ -564,9 +584,21 @@ echo '<tr>
 		<td>';
 
 if (!isset($_POST['IssueItem'])){
-	$LocResult = DB_query("SELECT loccode, locationname FROM locations",$db);
+	if ($_SESSION['RestrictLocations']==0) {
+		$sql = "SELECT locationname,
+						loccode
+					FROM locations";
+	} else {
+		$sql = "SELECT locationname,
+						loccode
+					FROM locations
+					INNER JOIN www_users
+						ON locations.loccode=www_users.defaultlocation
+					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
+	}
+	$LocResult = DB_query($sql, $db);
 
-	echo '<select name="FromLocation">';
+	echo '<select minlength="0" name="FromLocation">';
 
 	if (!isset($_POST['FromLocation'])){
 		$_POST['FromLocation']=$WORow['loccode'];
@@ -657,7 +689,7 @@ if (!isset($_POST['IssueItem'])){ //no item selected to issue yet
 		$result1 = DB_query($SQL,$db);
 
 	echo '<table class="selection">
-			<tr><td>' . _('Select a stock category') . ':<select name="StockCat">';
+			<tr><td>' . _('Select a stock category') . ':<select minlength="0" name="StockCat">';
 
 	if (!isset($_POST['StockCat'])){
 		echo '<option selected="selected" value="All">' . _('All') . '</option>';
@@ -676,15 +708,15 @@ if (!isset($_POST['IssueItem'])){ //no item selected to issue yet
 	}
 
 	echo '</select></td>
-	    <td>' . _('Enter text extracts in the') . ' <b>' . _('description') . '</b>:</td>
-	    <td><input type="text" name="Keywords" size="20" maxlength="25" value="';
-            if (isset($_POST['Keywords'])) echo $_POST['Keywords'];
-            echo '" /></td></tr>
-	    <tr><td></td>
+		<td>' . _('Enter text extracts in the') . ' <b>' . _('description') . '</b>:</td>
+		<td><input type="text" name="Keywords" size="20" minlength="0" maxlength="25" value="';
+			if (isset($_POST['Keywords'])) echo $_POST['Keywords'];
+			echo '" /></td></tr>
+		<tr><td></td>
 		<td><b>' . _('OR') . ' </b>' . _('Enter extract of the') . ' <b>' . _('Stock Code') . '</b>:</td>
-		<td><input type="text" name="StockCode" size="15" maxlength="18" value="';
-            if (isset($_POST['StockCode'])) echo $_POST['StockCode'];
-            echo '" /></td>
+		<td><input type="text" name="StockCode" size="15" minlength="0" maxlength="18" value="';
+			if (isset($_POST['StockCode'])) echo $_POST['StockCode'];
+			echo '" /></td>
 			</tr>
 			</table>
 			<br />
@@ -702,14 +734,12 @@ if (!isset($_POST['IssueItem'])){ //no item selected to issue yet
 		if (DB_num_rows($SearchResult)>1){
 
 			echo '<br />
-				<table cellpadding="2" class="selection">';
-			$TableHeader = '<tr>
-								<th>' . _('Code') . '</th>
-								<th>' . _('Description') . '</th>
-								<th>' . _('Units') . '</th>
-							</tr>';
-			echo $TableHeader;
-			$j = 1;
+				<table cellpadding="2" class="selection">
+					<tr>
+						<th>' . _('Code') . '</th>
+						<th>' . _('Description') . '</th>
+						<th>' . _('Units') . '</th>
+					</tr>';
 			$k=0; //row colour counter
 			$ItemCodes = array();
 
@@ -748,11 +778,6 @@ if (!isset($_POST['IssueItem'])){ //no item selected to issue yet
 							$ImageSource,
 							$IssueLink);
 
-					$j++;
-					if ($j == 25){
-						$j=1;
-						echo $TableHeader;
-					} //end of page full new headings if
 				} //end if not already on work order
 			}//end of while loop
 		} //end if more than 1 row to show
@@ -788,12 +813,15 @@ if (!isset($_POST['IssueItem'])){ //no item selected to issue yet
 	if ($IssueItemRow['controlled']==1){ //controlled
 
 		if ($IssueItemRow['serialised']==1){ //serialised
-			echo '<tr><th>' . _('Serial Numbers Issued') . '</th></tr>';
+			echo '<tr>
+					<th>' . _('Serial Numbers Issued') . '</th>
+				</tr>';
 
 			$SerialNoResult = DB_query("SELECT serialno
 										FROM stockserialitems
 										WHERE stockid='" . $_POST['IssueItem'] . "'
-										AND loccode='" . $_POST['FromLocation'] . "'",
+										AND loccode='" . $_POST['FromLocation'] . "'
+										AND quantity > 0",
 						$db,_('Could not retrieve the serial numbers available at the location specified because'));
 			if (DB_num_rows($SerialNoResult)==0){
 				echo '<tr>
@@ -804,7 +832,7 @@ if (!isset($_POST['IssueItem'])){ //no item selected to issue yet
 					</tr>';
 			} else {
 				echo '<tr>
-						<td><select name="SerialNos[]" multiple="multiple">';
+						<td><select minlength="0" name="SerialNos[]" multiple="multiple">';
 				while ($SerialNoRow = DB_fetch_array($SerialNoResult)){
 					if (in_array($SerialNoRow['serialno'],$_POST['SerialNos'])){
 						echo '<option selected="selected" value="' . $SerialNoRow['serialno'] . '">' . $SerialNoRow['serialno'] . '</option>';
@@ -826,7 +854,7 @@ if (!isset($_POST['IssueItem'])){ //no item selected to issue yet
 				echo '<tr>
 						<td><input type="text" name="BatchRef' . $i .'" ';
 				echo '/></td>
-					  <td><input type="text" name="Qty' . $i .'" /></td></tr>';
+					  <td><input type="text" class="number" name="Qty' . $i .'" /></td></tr>';
 			}
 			echo '<input type="hidden" name="IssueItem" value="' . $_POST['IssueItem'] . '" />';
 			echo '<tr>
@@ -835,16 +863,17 @@ if (!isset($_POST['IssueItem'])){ //no item selected to issue yet
 		} //end of lot/batch control
 	} else { //not controlled - an easy one!
 		echo '<input type="hidden" name="IssueItem" value="' . $_POST['IssueItem'] . '" />';
-		echo '<tr><td>' . _('Quantity Issued') . ':</td>
-			  <td><input class="number" type="text" name="Qty" /></tr>';
+		echo '<tr>
+				<td>' . _('Quantity Issued') . ':</td>
+				<td><input class="number" required="required" minlength="1" maxlength="10" type="text" name="Qty" />
+			</tr>';
 		echo '<tr>
 				<td colspan="2"><input type="submit" name="Process" value="' . _('Process Items Issued') . '" /></div></td>
 			</tr>';
 	}
-    echo '</table>';
+	echo '</table>';
 } //end if selecting new item to issue or entering the issued item quantities
-echo '</div>
-      </form>';
+echo '</form>';
 
 include('includes/footer.inc');
 ?>

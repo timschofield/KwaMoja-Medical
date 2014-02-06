@@ -121,6 +121,10 @@ $TOC_Array = array (
 								'Amending customer details',
 								'Shippers',
 								),
+	'CreditNotes'       => array('Creating Credit Notes',
+								 'Crediting an Invoice',
+								 'Creating Credit Notes Manually',
+								 'Allocating Credit Notes'),
 	'AccountsPayable'   => array('Accounts Payable',
 								 'Overview',
 								 'Features',
@@ -279,12 +283,17 @@ $TOC_Array = array (
 								 'EDI setup',
 								 'Sending EDI Invoices'
 								),
+	'EDI'				=> array('EDI',
+								 'EDI Setup',
+								 'Sending EDI Invoices'
+								),
 	'FixedAssets'       => array('Fixed assets',
 								 'Fixed assets overview',
 								 'Creating a fixed asset',
 								 'Selecting fixed assets',
 								 'Depreciation run',
-								 'Fixed asset schedule'
+								 'Fixed asset schedule',
+								 'Maintenance tasks'
 								),
 	'ReportBuilder'     => array('SQL Report Writer',
 								 'Report writer introduction',

@@ -1,7 +1,5 @@
 <?php
 
-/* $Id PO_Items.php 4183 2010-12-14 09:30:20Z daintree $ */
-
 include('includes/DefinePOClass.php');
 include('includes/SQL_CommonFunctions.inc');
 
@@ -16,7 +14,6 @@ $identifier = $_GET['identifier'];
 /* If a purchase order header doesn't exist, then go to
  * PO_Header.php to create one
  */
-
 if (!isset($_SESSION['PO' . $identifier])) {
 	header('Location:' . $RootPath . '/PO_Header.php');
 	exit;
@@ -25,7 +22,7 @@ if (!isset($_SESSION['PO' . $identifier])) {
 include('includes/header.inc');
 
 if (!isset($_POST['Commit'])) {
-	echo '<a href="' . $RootPath . '/PO_Header.php?identifier=' . $identifier . '">' . _('Back To Purchase Order Header') . '</a><br />';
+	echo '<div class="toplink"><a href="' . $RootPath . '/PO_Header.php?identifier=' . $identifier . '">' . _('Back To Purchase Order Header') . '</a></div>';
 } //!isset($_POST['Commit'])
 
 if (isset($_POST['UpdateLines']) or isset($_POST['Commit'])) {
@@ -42,7 +39,7 @@ if (isset($_POST['UpdateLines']) or isset($_POST['Commit'])) {
 				prnMsg(_('The quantity in the supplier units is expected to be numeric. Please re-enter as a number'), 'error');
 			} //!is_numeric(filter_number_format($_POST['SuppQty' . $POLine->LineNo]))
 			else { //ok to update the PO object variables
-				$_SESSION['PO' . $identifier]->LineItems[$POLine->LineNo]->Quantity = filter_number_format(round(filter_number_format($_POST['SuppQty' . $POLine->LineNo]) * filter_number_format($_SESSION['PO' . $identifier]->LineItems[$POLine->LineNo]->ConversionFactor), $_SESSION['PO' . $identifier]->LineItems[$POLine->LineNo]->DecimalPlaces));
+				$_SESSION['PO' . $identifier]->LineItems[$POLine->LineNo]->Quantity = round(filter_number_format($_POST['SuppQty' . $POLine->LineNo]) * $_SESSION['PO' . $identifier]->LineItems[$POLine->LineNo]->ConversionFactor, $_SESSION['PO' . $identifier]->LineItems[$POLine->LineNo]->DecimalPlaces);
 			}
 			if (!is_numeric(filter_number_format($_POST['SuppPrice' . $POLine->LineNo]))) {
 				prnMsg(_('The supplier price is expected to be numeric. Please re-enter as a number'), 'error');
@@ -238,8 +235,11 @@ if (isset($_POST['Commit'])) {
 			} //$_SESSION['PO' . $identifier]->LineItems as $POLine
 
 			/* end of the loop round the detail line items on the order */
-			echo '<p />';
 			prnMsg(_('Purchase Order') . ' ' . $_SESSION['PO' . $identifier]->OrderNo . ' ' . _('on') . ' ' . $_SESSION['PO' . $identifier]->SupplierName . ' ' . _('has been created'), 'success');
+			if ($_SESSION['PO' . $identifier]->AllowPrintPO == 1 and ($_SESSION['PO' . $identifier]->Status == 'Authorised' or $_SESSION['PO' . $identifier]->Status == 'Printed')) {
+
+				echo '<div class="centre"><a target="_blank" href="' . $RootPath . '/PO_PDFPurchOrder.php?OrderNo=' . $_SESSION['PO' . $identifier]->OrderNo . '">' . _('Print Purchase Order') . '</a></div>';
+			}
 		} //$_SESSION['ExistingOrder'] == 0
 		else {
 			/*its an existing order need to update the old order info */
@@ -276,7 +276,7 @@ if (isset($_POST['Commit'])) {
 										deladd4='" . $_SESSION['PO' . $identifier]->DelAdd4 . "',
 										deladd5='" . $_SESSION['PO' . $identifier]->DelAdd5 . "',
 										deladd6='" . $_SESSION['PO' . $identifier]->DelAdd6 . "',
-										deladd6='" . $_SESSION['PO' . $identifier]->Tel . "',
+										tel='" . $_SESSION['PO' . $identifier]->Tel . "',
 										suppdeladdress1='" . $_SESSION['PO' . $identifier]->SuppDelAdd1 . "',
 										suppdeladdress2='" . $_SESSION['PO' . $identifier]->SuppDelAdd2 . "',
 										suppdeladdress3='" . $_SESSION['PO' . $identifier]->SuppDelAdd3 . "',
@@ -381,7 +381,6 @@ if (isset($_POST['Commit'])) {
 			} //$_SESSION['PO' . $identifier]->LineItems as $POLine
 
 			/* end of the loop round the detail line items on the order */
-			echo '<br /><br />';
 			prnMsg(_('Purchase Order') . ' ' . $_SESSION['PO' . $identifier]->OrderNo . ' ' . _('has been updated'), 'success');
 			if ($_SESSION['PO' . $identifier]->AllowPrintPO == 1 and ($_SESSION['PO' . $identifier]->Status == 'Authorised' or $_SESSION['PO' . $identifier]->Status == 'Printed')) {
 				echo '<br /><div class="centre"><a target="_blank" href="' . $RootPath . '/PO_PDFPurchOrder.php?OrderNo=' . $_SESSION['PO' . $identifier]->OrderNo . '">' . _('Print Purchase Order') . '</a></div>';
@@ -393,7 +392,8 @@ if (isset($_POST['Commit'])) {
 
 		$Result = DB_Txn_Commit($db);
 		/* Only show the link to auto receive the order if the user has permission to receive goods and permission to authorise and has authorised the order */
-		if ($_SESSION['PO' . $identifier]->Status == 'Authorised' and in_array(1001, $_SESSION['AllowedPageSecurityTokens'])) {
+		if ($_SESSION['PO' . $identifier]->Status == 'Authorised' and in_array($_SESSION['PageSecurityArray']['GoodsReceived.php'], $_SESSION['AllowedPageSecurityTokens'])) {
+
 			echo '<a href="SupplierInvoice.php?SupplierID=' . $_SESSION['PO' . $identifier]->SupplierID . '&amp;ReceivePO=' . $_SESSION['PO' . $identifier]->OrderNo . '&amp;DeliveryDate=' . $_SESSION['PO' . $identifier]->DeliveryDate . '">' . _('Receive and Enter Purchase Invoice') . '</a>';
 		} //$_SESSION['PO' . $identifier]->Status == 'Authorised' and in_array(1001, $_SESSION['AllowedPageSecurityTokens'])
 
@@ -413,8 +413,7 @@ if (isset($_POST['Commit'])) {
 
 if (isset($_GET['Delete'])) {
 	if ($_SESSION['PO' . $identifier]->Some_Already_Received($_GET['Delete']) == 0) {
-		$_SESSION['PO' . $identifier]->LineItems[$_GET['Delete']]->Deleted = True;
-		$_SESSION['PO' . $identifier]->LinesOnOrder--;
+		$_SESSION['PO' . $identifier]->remove_from_order($_GET['Delete']);
 		include('includes/PO_UnsetFormVbls.php');
 	} //$_SESSION['PO' . $identifier]->Some_Already_Received($_GET['Delete']) == 0
 	else {
@@ -448,13 +447,15 @@ if (isset($_POST['EnterLine'])) {
 		prnMsg(_('Cannot Enter this order line') . '</b><br />' . _('The date entered must be in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
 	} //!Is_Date($_POST['ReqDelDate'])
 
-	/*It's not a stock item */
-
-	/*need to check GL Code is valid if GLLink is active */
-	if ($_SESSION['PO' . $identifier]->GLLink == 1) {
+	/*It's not a stock item
+	 * need to check GL Code is valid if GLLink is active
+	 * [icedlava] GL Code is required for non stock item variance in price vs purchase order when supplier invoice generated even if stock not linked to GL, but AP is else
+	 * there will be an sql error  in SupplierInvoice.php without a valid GL Code
+	 */
+	if ($_SESSION['PO'.$identifier]->GLLink == 1 or $_SESSION['CompanyRecord']['gllink_creditors'] == 1) {
 		$sql = "SELECT accountname
-				FROM chartmaster
-				WHERE accountcode ='" . $_POST['GLCode'] . "'";
+					FROM chartmaster
+					WHERE accountcode ='" . $_POST['GLCode'] . "'";
 		$ErrMsg = _('The account details for') . ' ' . $_POST['GLCode'] . ' ' . _('could not be retrieved because');
 		$DbgMsg = _('The SQL used to retrieve the details of the account, but failed was');
 		$GLValidResult = DB_query($sql, $db, $ErrMsg, $DbgMsg, false, false);
@@ -476,12 +477,11 @@ if (isset($_POST['EnterLine'])) {
 			$myrow = DB_fetch_row($GLValidResult);
 			$GLAccountName = $myrow[0];
 		}
-	} //$_SESSION['PO' . $identifier]->GLLink == 1
-
-	/* dont bother checking the GL Code if there is no GL code to check ie not linked to GL */
+	} /* dont bother checking the GL Code if there is no GL code to check ie not linked to GL */
 	else {
 		$_POST['GLCode'] = 0;
 	}
+
 	if ($_POST['AssetID'] != 'Not an Asset') {
 		$ValidAssetResult = DB_query("SELECT assetid,
 											description,
@@ -515,7 +515,7 @@ if (isset($_POST['EnterLine'])) {
 	if ($AllowUpdate == true) {
 		//adding the non-stock item
 
-		$_SESSION['PO' . $identifier]->add_to_order($_SESSION['PO' . $identifier]->LinesOnOrder + 1, '', 0, /*Serialised */ 0, /*Controlled */ filter_number_format($_POST['Qty']), $_POST['ItemDescription'], filter_number_format($_POST['Price']), $_POST['SuppliersUnit'], $_POST['GLCode'], $_POST['ReqDelDate'], '', 0, '', 0, 0, $GLAccountName, 2, $_POST['SuppliersUnit'], 1, '', $_POST['AssetID']);
+		$_SESSION['PO' . $identifier]->add_to_order($_SESSION['PO' . $identifier]->LinesOnOrder + 1, '', 0, /*Serialised */ 0, /*Controlled */ filter_number_format($_POST['Qty']), $_POST['ItemDescription'], filter_number_format($_POST['Price']), $_POST['SuppliersUnit'], $_POST['GLCode'], $_POST['ReqDelDate'], '', 0, '', 0, 0, $GLAccountName, 2, $_POST['SuppliersUnit'], 1, 1, '', $_POST['AssetID']);
 		include('includes/PO_UnsetFormVbls.php');
 	} //$AllowUpdate == true
 } //isset($_POST['EnterLine'])
@@ -599,9 +599,37 @@ if (isset($_POST['NewItem']) and !empty($_POST['PO_ItemsResubmitFormValue']) and
 					$PurchDataResult = DB_query($sql, $db, $ErrMsg, $DbgMsg);
 					if (DB_num_rows($PurchDataResult) > 0) { //the purchasing data is set up
 						$PurchRow = DB_fetch_array($PurchDataResult);
-						$PurchPrice = $PurchRow['price'] / $PurchRow['conversionfactor'];
+						/* Now to get the applicable discounts */
+						$sql = "SELECT discountpercent,
+										discountamount
+								FROM supplierdiscounts
+								WHERE supplierno= '" . $_SESSION['PO' . $identifier]->SupplierID . "'
+								AND effectivefrom <='" . Date('Y-m-d') . "'
+								AND effectiveto >='" . Date('Y-m-d') . "'
+								AND stockid = '" . $ItemCode . "'";
+
+						$ItemDiscountPercent = 0;
+						$ItemDiscountAmount = 0;
+						$ErrMsg = _('Could not retrieve the supplier discounts applicable to the item');
+						$DbgMsg = _('The SQL used to retrive the supplier discounts that failed was');
+						$DiscountResult = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+						while ($DiscountRow = DB_fetch_array($DiscountResult)) {
+							$ItemDiscountPercent += $DiscountRow['discountpercent'];
+							$ItemDiscountAmount += $DiscountRow['discountamount'];
+						}
+						if ($ItemDiscountPercent != 0) {
+							prnMsg(_('Taken accumulated supplier percentage discounts of') . ' ' . locale_number_format($ItemDiscountPercent * 100, 2) . '%', 'info');
+						}
+						if ($ItemDiscountAmount != 0) {
+							prnMsg(_('Taken accumulated round sum supplier discount of') . ' ' . $_SESSION['PO' . $identifier]->CurrCode . ' ' . locale_number_format($ItemDiscountAmount, $_SESSION['PO' . $identifier]->CurrDecimalPlaces) . ' (' . _('per supplier unit') . ')', 'info');
+						}
+						$PurchPrice = ($PurchRow['price'] * (1 - $ItemDiscountPercent) - $ItemDiscountAmount) / $PurchRow['conversionfactor'];
 						$ConversionFactor = $PurchRow['conversionfactor'];
-						$SupplierDescription = $PurchRow['suppliers_partno'] . ' - ';
+						if ($PurchRow['suppliers_partno'] != $ItemCode) { //only show supplier's part code if not the same as our item code
+							$SupplierDescription = $PurchRow['suppliers_partno'] . ' - ';
+						} else {
+							$SupplierDescription = '';
+						}
 						if (mb_strlen($PurchRow['supplierdescription']) > 2) {
 							$SupplierDescription .= $PurchRow['supplierdescription'];
 						} //mb_strlen($PurchRow['supplierdescription']) > 2
@@ -615,7 +643,7 @@ if (isset($_POST['NewItem']) and !empty($_POST['PO_ItemsResubmitFormValue']) and
 						 * if > header DeliveryDate then set DeliveryDate to today + leadtime
 						 */
 						$DeliveryDate = DateAdd(Date($_SESSION['DefaultDateFormat']), 'd', $LeadTime);
-						if (!Date1GreaterThanDate2($DeliveryDate, $_SESSION['PO' . $identifier]->DeliveryDate)) {
+						if (Date1GreaterThanDate2($_SESSION['PO' . $identifier]->DeliveryDate, $DeliveryDate)) {
 							$DeliveryDate = $_SESSION['PO' . $identifier]->DeliveryDate;
 						} //!Date1GreaterThanDate2($DeliveryDate, $_SESSION['PO' . $identifier]->DeliveryDate)
 					} //DB_num_rows($PurchDataResult) > 0
@@ -655,8 +683,7 @@ if (isset($_POST['NewItem']) and !empty($_POST['PO_ItemsResubmitFormValue']) and
 
 /* This is where the order as selected should be displayed  reflecting any deletions or insertions*/
 
-echo '<form id="form1" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $identifier . '" method="post" class="noPrint">';
-echo '<div>';
+echo '<form onSubmit="return VerifyForm(this);" id="form1" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $identifier . '" method="post" class="noPrint">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 /*need to set up entry for item description where not a stock item and GL Codes */
@@ -670,8 +697,8 @@ if (count($_SESSION['PO' . $identifier]->LineItems) > 0 and !isset($_GET['Edit']
 	echo '<br /><b>' . _(' Order Summary') . '</b></p>';
 	echo '<table cellpadding="2" class="selection">';
 	echo '<tr>
-			<th>' . _('Item Code') . '</th>
-			<th>' . _('Description') . '</th>
+			<th class="SortableColumn">' . _('Item Code') . '</th>
+			<th class="SortableColumn">' . _('Description') . '</th>
 			<th>' . _('Quantity Our Units') . '</th>
 			<th>' . _('Our Unit') . '</th>
 			<th>' . _('Price Our Units') . ' (' . $_SESSION['PO' . $identifier]->CurrCode . ')</th>
@@ -694,9 +721,11 @@ if (count($_SESSION['PO' . $identifier]->LineItems) > 0 and !isset($_GET['Edit']
 			// This should help display where item-price is a fraction
 			if ($POLine->Price > 1) {
 				$DisplayPrice = locale_number_format($POLine->Price, $_SESSION['PO' . $identifier]->CurrDecimalPlaces);
+				$SuppPrice = locale_number_format(round(($POLine->Price * $POLine->ConversionFactor), $_SESSION['PO' . $identifier]->CurrDecimalPlaces), $_SESSION['PO' . $identifier]->CurrDecimalPlaces);
 			} //$POLine->Price > 1
 			else {
 				$DisplayPrice = locale_number_format($POLine->Price, 4);
+				$SuppPrice = locale_number_format(round(($POLine->Price * $POLine->ConversionFactor), 4), 4);
 			}
 
 			if ($k == 1) {
@@ -709,16 +738,16 @@ if (count($_SESSION['PO' . $identifier]->LineItems) > 0 and !isset($_GET['Edit']
 			}
 
 			echo '<td>' . $POLine->StockID . '</td>
-				<td><input type="text" name="ItemDescription' . $POLine->LineNo . '" size="30" value="' . $POLine->ItemDescription . '" /></td>
+				<td><input type="text" name="ItemDescription' . $POLine->LineNo . '" size="30" value="' . stripslashes($POLine->ItemDescription) . '" /></td>
 				<td class="number">' . locale_number_format($POLine->Quantity, $POLine->DecimalPlaces) . '</td>
 				<td>' . $POLine->Units . '</td>
 				<td class="number">' . $DisplayPrice . '</td>
-				<td><input type="text" class="number" name="ConversionFactor' . $POLine->LineNo . '" size="8" value="' . locale_number_format($POLine->ConversionFactor,'Variable') . '" /></td>
-				<td><input type="text" class="number" name="SuppQty' . $POLine->LineNo . '" size="10" value="' . locale_number_format(round($POLine->Quantity / $POLine->ConversionFactor, $POLine->DecimalPlaces), $POLine->DecimalPlaces) . '" /></td>
+				<td><input type="text" class="number" required="required" minlength="1" maxlength="8" name="ConversionFactor' . $POLine->LineNo . '" size="8" value="' . locale_number_format($POLine->ConversionFactor, 'Variable') . '" /></td>
+				<td><input type="text" class="number" required="required" minlength="1" maxlength="10" name="SuppQty' . $POLine->LineNo . '" size="10" value="' . locale_number_format(round($POLine->Quantity / $POLine->ConversionFactor, $POLine->DecimalPlaces), $POLine->DecimalPlaces) . '" /></td>
 				<td>' . $POLine->SuppliersUnit . '</td>
-				<td><input type="text" class="number" name="SuppPrice' . $POLine->LineNo . '" size="10" value="' . locale_number_format(round(($POLine->Price * $POLine->ConversionFactor), $_SESSION['PO' . $identifier]->CurrDecimalPlaces), $_SESSION['PO' . $identifier]->CurrDecimalPlaces) . '" /></td>
+				<td><input type="text" class="number" name="SuppPrice' . $POLine->LineNo . '" size="10" value="' . $SuppPrice . '" /></td>
 				<td class="number">' . $DisplayLineTotal . '</td>
-				<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="ReqDelDate' . $POLine->LineNo . '" size="10" value="' . $POLine->ReqDelDate . '" /></td>';
+				<td><input type="text" class="date" required="required" minlength="1" maxlength="10" alt="' . $_SESSION['DefaultDateFormat'] . '" name="ReqDelDate' . $POLine->LineNo . '" size="10" value="' . $POLine->ReqDelDate . '" /></td>';
 			if ($POLine->QtyReceived != 0 and $POLine->Completed != 1) {
 				echo '<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $identifier . '&amp;Complete=' . $POLine->LineNo . '">' . _('Complete') . '</a></td>';
 			} //$POLine->QtyReceived != 0 and $POLine->Completed != 1
@@ -731,15 +760,15 @@ if (count($_SESSION['PO' . $identifier]->LineItems) > 0 and !isset($_GET['Edit']
 	} //$_SESSION['PO' . $identifier]->LineItems as $POLine
 
 	$DisplayTotal = locale_number_format($_SESSION['PO' . $identifier]->Total, $_SESSION['PO' . $identifier]->CurrDecimalPlaces);
-	echo '<tr><td colspan="9" class="number">' . _('TOTAL') . _(' excluding Tax') . '</td>
-						<td class="number"><b>' . $DisplayTotal . '</b></td>
-			</tr></table>';
-	echo '<br />
-			<div class="centre">
-			<input type="submit" name="UpdateLines" value="' . _('Update Order Lines') . '" />';
-
-	echo '&nbsp;<input type="submit" name="Commit" value="' . _('Process Order') . '" />
-			</div>';
+	echo '<tr>
+			<td colspan="9" class="number">' . _('TOTAL') . _(' excluding Tax') . '</td>
+			<td class="number"><b>' . $DisplayTotal . '</b></td>
+		</tr>
+	</table>';
+	echo '<div class="centre">
+			<input type="submit" name="UpdateLines" value="' . _('Update Order Lines') . '" />
+			&nbsp;<input type="submit" name="Commit" value="' . _('Process Order') . '" />
+		</div>';
 
 } //count($_SESSION['PO' . $identifier]->LineItems) > 0 and !isset($_GET['Edit'])
 
@@ -751,8 +780,8 @@ if (isset($_POST['NonStockOrder'])) {
 				<td>' . _('Item Description') . '</td>';
 	echo '<td><input type="text" name="ItemDescription" size="40" /></td></tr>';
 	echo '<tr>
-			<td>' . _('General Ledger Code') . '</td>';
-	echo '<td><select name="GLCode">';
+			<td>' . _('General Ledger Code') . '</td>
+			<td><select minlength="0" name="GLCode">';
 	$sql = "SELECT accountcode,
 				  accountname
 				FROM chartmaster
@@ -765,8 +794,14 @@ if (isset($_POST['NonStockOrder'])) {
 	echo '</select></td></tr>';
 	echo '<tr>
 			<td>' . _('OR Asset ID') . '</td>
-			<td><select name="AssetID">';
-	$AssetsResult = DB_query("SELECT assetid, description, datepurchased FROM fixedassets ORDER BY assetid DESC", $db);
+			<td><select required="required" minlength="1" name="AssetID">';
+
+	$sql = "SELECT assetid,
+					description,
+					datepurchased
+				FROM fixedassets
+				ORDER BY assetid DESC";
+	$AssetsResult = DB_query($sql, $db);
 	echo '<option selected="selected" value="Not an Asset">' . _('Not an Asset') . '</option>';
 	while ($AssetRow = DB_fetch_array($AssetsResult)) {
 		if ($AssetRow['datepurchased'] == '0000-00-00') {
@@ -781,19 +816,19 @@ if (isset($_POST['NonStockOrder'])) {
 	echo '</select><a href="FixedAssetItems.php" target=_blank>' . _('New Fixed Asset') . '</a></td></tr>
 		<tr>
 			<td>' . _('Quantity to purchase') . '</td>
-			<td><input type="text" class="number" name="Qty" size="10" value="1" /></td>
+			<td><input type="text" class="number" name="Qty" required="required" minlength="1" maxlength="10" size="10" value="1" /></td>
 		</tr>
 		<tr>
 			<td>' . _('Price per item') . '</td>
-			<td><input type="text" class="number" name="Price" size="10" /></td>
+			<td><input type="text" required="required" minlength="1" maxlength="10" class="number" name="Price" size="10" /></td>
 		</tr>
 		<tr>
 			<td>' . _('Unit') . '</td>
-			<td><input type="text" name="SuppliersUnit" size="10" value="' . _('each') . '" /></td>
+			<td><input type="text" required="required" minlength="1" maxlength="10" name="SuppliersUnit" size="10" value="' . _('each') . '" /></td>
 		</tr>
 		<tr>
 			<td>' . _('Delivery Date') . '</td>
-			<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="ReqDelDate" size="11" value="' . $_SESSION['PO' . $identifier]->DeliveryDate . '" /></td>
+			<td><input type="text" class="date" required="required" minlength="1" maxlength="10" alt="' . $_SESSION['DefaultDateFormat'] . '" name="ReqDelDate" size="11" value="' . $_SESSION['PO' . $identifier]->DeliveryDate . '" /></td>
 		</tr>
 		</table>
 		<div class="centre">
@@ -822,13 +857,14 @@ if (isset($_POST['Search'])) {
 						INNER JOIN purchdata
 						ON stockmaster.stockid=purchdata.stockid
 						WHERE stockmaster.mbflag<>'D'
+						AND stockmaster.mbflag<>'A'
 						AND stockmaster.mbflag<>'K'
 						AND stockmaster.mbflag<>'G'
 						AND stockmaster.discontinued<>1
 						AND purchdata.supplierno='" . $_SESSION['PO' . $identifier]->SupplierID . "'
 						AND stockmaster.description " . LIKE . " '" . $SearchString . "'
 						ORDER BY stockmaster.stockid
-						LIMIT " . $_SESSION['DefaultDisplayRecordsMax'];
+						LIMIT " . $_SESSION['DisplayRecordsMax'];
 			} //$_POST['SupplierItemsOnly'] == 'on'
 			else { // not just supplier purchdata items
 
@@ -838,12 +874,13 @@ if (isset($_POST['Search'])) {
 					FROM stockmaster INNER JOIN stockcategory
 					ON stockmaster.categoryid=stockcategory.categoryid
 					WHERE stockmaster.mbflag<>'D'
+					AND stockmaster.mbflag<>'A'
 					AND stockmaster.mbflag<>'K'
 					AND stockmaster.mbflag<>'G'
 					AND stockmaster.discontinued<>1
 					AND stockmaster.description " . LIKE . " '" . $SearchString . "'
 					ORDER BY stockmaster.stockid
-					LIMIT " . $_SESSION['DefaultDisplayRecordsMax'];
+					LIMIT " . $_SESSION['DisplayRecordsMax'];
 			}
 		} //$_POST['StockCat'] == 'All'
 		else { //for a specific stock category
@@ -856,6 +893,7 @@ if (isset($_POST['Search'])) {
 						INNER JOIN purchdata
 						ON stockmaster.stockid=purchdata.stockid
 						WHERE stockmaster.mbflag<>'D'
+						AND stockmaster.mbflag<>'A'
 						AND stockmaster.mbflag<>'K'
 						AND stockmaster.mbflag<>'G'
 						AND purchdata.supplierno='" . $_SESSION['PO' . $identifier]->SupplierID . "'
@@ -863,7 +901,7 @@ if (isset($_POST['Search'])) {
 						AND stockmaster.description " . LIKE . " '" . $SearchString . "'
 						AND stockmaster.categoryid='" . $_POST['StockCat'] . "'
 						ORDER BY stockmaster.stockid
-						LIMIT " . $_SESSION['DefaultDisplayRecordsMax'];
+						LIMIT " . $_SESSION['DisplayRecordsMax'];
 			} //$_POST['SupplierItemsOnly'] == 'on'
 			else {
 				$sql = "SELECT stockmaster.stockid,
@@ -872,13 +910,14 @@ if (isset($_POST['Search'])) {
 						FROM stockmaster INNER JOIN stockcategory
 						ON stockmaster.categoryid=stockcategory.categoryid
 						WHERE stockmaster.mbflag<>'D'
+						AND stockmaster.mbflag<>'A'
 						AND stockmaster.mbflag<>'K'
 						AND stockmaster.mbflag<>'G'
 						AND stockmaster.discontinued<>1
 						AND stockmaster.description " . LIKE . " '" . $SearchString . "'
 						AND stockmaster.categoryid='" . $_POST['StockCat'] . "'
 						ORDER BY stockmaster.stockid
-						LIMIT " . $_SESSION['DefaultDisplayRecordsMax'];
+						LIMIT " . $_SESSION['DisplayRecordsMax'];
 			}
 		}
 
@@ -896,13 +935,14 @@ if (isset($_POST['Search'])) {
 						INNER JOIN purchdata
 						ON stockmaster.stockid=purchdata.stockid
 						WHERE stockmaster.mbflag<>'D'
+						AND stockmaster.mbflag<>'A'
 						AND stockmaster.mbflag<>'K'
 						AND stockmaster.mbflag<>'G'
 						AND purchdata.supplierno='" . $_SESSION['PO' . $identifier]->SupplierID . "'
 						AND stockmaster.discontinued<>1
 						AND stockmaster.stockid " . LIKE . " '" . $_POST['StockCode'] . "'
 						ORDER BY stockmaster.stockid
-						LIMIT " . $_SESSION['DefaultDisplayRecordsMax'];
+						LIMIT " . $_SESSION['DisplayRecordsMax'];
 			} //$_POST['SupplierItemsOnly'] == 'on'
 			else {
 				$sql = "SELECT stockmaster.stockid,
@@ -911,12 +951,13 @@ if (isset($_POST['Search'])) {
 					FROM stockmaster INNER JOIN stockcategory
 					ON stockmaster.categoryid=stockcategory.categoryid
 					WHERE stockmaster.mbflag<>'D'
+					AND stockmaster.mbflag<>'A'
 					AND stockmaster.mbflag<>'K'
 					AND stockmaster.mbflag<>'G'
 					AND stockmaster.discontinued<>1
 					AND stockmaster.stockid " . LIKE . " '" . $_POST['StockCode'] . "'
 					ORDER BY stockmaster.stockid
-					LIMIT " . $_SESSION['DefaultDisplayRecordsMax'];
+					LIMIT " . $_SESSION['DisplayRecordsMax'];
 			}
 		} //$_POST['StockCat'] == 'All'
 		else { //for a specific stock category and LIKE stock code
@@ -929,14 +970,15 @@ if (isset($_POST['Search'])) {
 						INNER JOIN purchdata
 						ON stockmaster.stockid=purchdata.stockid
 						WHERE stockmaster.mbflag<>'D'
+						AND stockmaster.mbflag<>'A'
 						AND stockmaster.mbflag<>'K'
 						AND stockmaster.mbflag<>'G'
 						AND purchdata.supplierno='" . $_SESSION['PO' . $identifier]->SupplierID . "'
-						and stockmaster.discontinued<>1
+						AND stockmaster.discontinued<>1
 						AND stockmaster.stockid " . LIKE . " '" . $_POST['StockCode'] . "'
 						AND stockmaster.categoryid='" . $_POST['StockCat'] . "'
 						ORDER BY stockmaster.stockid
-						LIMIT " . $_SESSION['DefaultDisplayRecordsMax'];
+						LIMIT " . $_SESSION['DisplayRecordsMax'];
 			} //$_POST['SupplierItemsOnly'] == 'on'
 			else {
 				$sql = "SELECT stockmaster.stockid,
@@ -945,13 +987,14 @@ if (isset($_POST['Search'])) {
 					FROM stockmaster INNER JOIN stockcategory
 					ON stockmaster.categoryid=stockcategory.categoryid
 					WHERE stockmaster.mbflag<>'D'
+					AND stockmaster.mbflag<>'A'
 					AND stockmaster.mbflag<>'K'
 					AND stockmaster.mbflag<>'G'
-					and stockmaster.discontinued<>1
+					AND stockmaster.discontinued<>1
 					AND stockmaster.stockid " . LIKE . " '" . $_POST['StockCode'] . "'
 					AND stockmaster.categoryid='" . $_POST['StockCat'] . "'
 					ORDER BY stockmaster.stockid
-					LIMIT " . $_SESSION['DefaultDisplayRecordsMax'];
+					LIMIT " . $_SESSION['DisplayRecordsMax'];
 			}
 		}
 
@@ -967,12 +1010,13 @@ if (isset($_POST['Search'])) {
 						INNER JOIN purchdata
 						ON stockmaster.stockid=purchdata.stockid
 						WHERE stockmaster.mbflag<>'D'
+						AND stockmaster.mbflag<>'A'
 						AND stockmaster.mbflag<>'K'
 						AND stockmaster.mbflag<>'G'
 						AND purchdata.supplierno='" . $_SESSION['PO' . $identifier]->SupplierID . "'
 						AND stockmaster.discontinued<>1
 						ORDER BY stockmaster.stockid
-						LIMIT " . $_SESSION['DefaultDisplayRecordsMax'];
+						LIMIT " . $_SESSION['DisplayRecordsMax'];
 			} //isset($_POST['SupplierItemsOnly'])
 			else {
 				$sql = "SELECT stockmaster.stockid,
@@ -981,11 +1025,12 @@ if (isset($_POST['Search'])) {
 					FROM stockmaster INNER JOIN stockcategory
 					ON stockmaster.categoryid=stockcategory.categoryid
 					WHERE stockmaster.mbflag<>'D'
+					AND stockmaster.mbflag<>'A'
 					AND stockmaster.mbflag<>'K'
 					AND stockmaster.mbflag<>'G'
 					AND stockmaster.discontinued<>1
 					ORDER BY stockmaster.stockid
-					LIMIT " . $_SESSION['DefaultDisplayRecordsMax'];
+					LIMIT " . $_SESSION['DisplayRecordsMax'];
 			}
 		} //$_POST['StockCat'] == 'All'
 		else { // for a specific stock category
@@ -998,13 +1043,14 @@ if (isset($_POST['Search'])) {
 						INNER JOIN purchdata
 						ON stockmaster.stockid=purchdata.stockid
 						WHERE stockmaster.mbflag<>'D'
+						AND stockmaster.mbflag<>'A'
 						AND stockmaster.mbflag<>'K'
 						AND stockmaster.mbflag<>'G'
 						AND purchdata.supplierno='" . $_SESSION['PO' . $identifier]->SupplierID . "'
 						AND stockmaster.discontinued<>1
 						AND stockmaster.categoryid='" . $_POST['StockCat'] . "'
 						ORDER BY stockmaster.stockid
-						LIMIT " . $_SESSION['DefaultDisplayRecordsMax'];
+						LIMIT " . $_SESSION['DisplayRecordsMax'];
 			} //$_POST['SupplierItemsOnly'] == 'on'
 			else {
 				$sql = "SELECT stockmaster.stockid,
@@ -1013,12 +1059,13 @@ if (isset($_POST['Search'])) {
 					FROM stockmaster INNER JOIN stockcategory
 					ON stockmaster.categoryid=stockcategory.categoryid
 					WHERE stockmaster.mbflag<>'D'
+					AND stockmaster.mbflag<>'A'
 					AND stockmaster.mbflag<>'K'
 					AND stockmaster.mbflag<>'G'
 					AND stockmaster.discontinued<>1
 					AND stockmaster.categoryid='" . $_POST['StockCat'] . "'
 					ORDER BY stockmaster.stockid
-					LIMIT " . $_SESSION['DefaultDisplayRecordsMax'];
+					LIMIT " . $_SESSION['DisplayRecordsMax'];
 			}
 		}
 	}
@@ -1054,7 +1101,7 @@ if (!isset($_GET['Edit'])) {
 				<th colspan="3"><h3>' . _('Search For Stock Items') . ':</h3></th>';
 
 	echo '</tr>
-			<tr><td>' . _('Item Category') . ': <select name="StockCat">';
+			<tr><td>' . _('Item Category') . ': <select minlength="0" name="StockCat">';
 
 	echo '<option selected="selected" value="All">' . _('All') . '</option>';
 
@@ -1080,42 +1127,41 @@ if (!isset($_GET['Edit'])) {
 
 	echo '</select></td>
 		<td>' . _('Enter text extracts in the description') . ':</td>
-		<td><input type="text" name="Keywords" size="20" maxlength="25" value="' . $_POST['Keywords'] . '" /></td></tr>
+		<td><input type="text" name="Keywords" size="20" minlength="0" maxlength="25" value="' . $_POST['Keywords'] . '" /></td></tr>
 		<tr><td>' . _('Only items defined as from this Supplier') . ' <input type="checkbox" name="SupplierItemsOnly" ';
 	if (isset($_POST['SupplierItemsOnly']) and $_POST['SupplierItemsOnly'] == 'on') {
 		echo 'checked';
 	} //isset($_POST['SupplierItemsOnly']) and $_POST['SupplierItemsOnly'] == 'on'
 	echo ' /></td>
-		<td><b>' . _('OR') . ' </b>' . _('Enter extract of the Stock Code') . ':</td>
-		<td><input type="text" name="StockCode" size="15" maxlength="18" value="' . $_POST['StockCode'] . '" /></td>
+			<td><b>' . _('OR') . ' </b>' . _('Enter extract of the Stock Code') . ':</td>
+			<td><input type="text" name="StockCode" size="15" minlength="0" maxlength="18" value="' . $_POST['StockCode'] . '" /></td>
 		</tr>
-		<tr><td></td>
-		<td><b>' . _('OR') . ' </b><a target="_blank" href="' . $RootPath . '/Stocks.php">' . _('Create a New Stock Item') . '</a></td></tr>
+		<tr>
+			<td></td>
+			<td><b>' . _('OR') . ' </b><a target="_blank" href="' . $RootPath . '/Stocks.php">' . _('Insert New Item') . '</a></td>
+		</tr>
 		</table>
-		<br />
 
 		<div class="centre"><input type="submit" name="Search" value="' . _('Search Now') . '" />
 		<input type="submit" name="NonStockOrder" value="' . _('Order a non stock item') . '" />
-		</div><br />';
+		</div>';
 
 	$PartsDisplayed = 0;
 } //!isset($_GET['Edit'])
 
 if (isset($SearchResult)) {
-	echo '<table cellpadding="1" class="selection">';
+	echo '<table cellpadding="1" class="selection">
+			<tr>
+				<th class="SortableColumn">' . _('Code') . '</th>
+				<th class="SortableColumn">' . _('Description') . '</th>
+				<th>' . _('Our Units') . '</th>
+				<th>' . _('Conversion') . '<br />' . _('Factor') . '</th>
+				<th>' . _('Supplier/Order') . '<br />' . _('Units') . '</th>
+				<th colspan="2"><a href="#end">' . _('Go to end of list') . '</a></th>
+			</tr>';
 
-	$TableHeader = '<tr>
-						<th>' . _('Code') . '</th>
-						<th>' . _('Description') . '</th>
-						<th>' . _('Our Units') . '</th>
-						<th>' . _('Conversion') . '<br />' . _('Factor') . '</th>
-						<th>' . _('Supplier/Order') . '<br />' . _('Units') . '</th>
-						<th colspan="2"><a href="#end">' . _('Go to end of list') . '</a></th>
-					</tr>';
-	echo $TableHeader;
-
-	$j = 1;
 	$k = 0; //row colour counter
+	$j = 0;
 
 	while ($myrow = DB_fetch_array($SearchResult)) {
 		if ($k == 1) {
@@ -1147,7 +1193,7 @@ if (isset($SearchResult)) {
 		if (DB_num_rows($PurchDataResult) > 0) {
 			$PurchDataRow = DB_fetch_array($PurchDataResult);
 			$OrderUnits = $PurchDataRow['suppliersuom'];
-			$ConversionFactor = $PurchDataRow['conversionfactor'];
+			$ConversionFactor = locale_number_format($PurchDataRow['conversionfactor'], 'Variable');
 		} //DB_num_rows($PurchDataResult) > 0
 		else {
 			$OrderUnits = $myrow['units'];
@@ -1159,7 +1205,7 @@ if (isset($SearchResult)) {
 			<td class="number">' . $ConversionFactor . '</td>
 			<td>' . $OrderUnits . '</td>
 			<td>' . $ImageSource . '</td>
-			<td><input class="number" type="text" size="6" value="0" name="NewQty' . $j . '" /></td>
+			<td><input class="number" type="text" size="6" required="required" minlength="1" maxlength="11" value="0" name="NewQty' . $j . '" /></td>
 			<input type="hidden" name="StockID' . $j . '" . value="' . $myrow['stockid'] . '" />
 			</tr>';
 		$j++;
@@ -1169,10 +1215,9 @@ if (isset($SearchResult)) {
 	//end of while loop
 	echo '</table>';
 	echo '<input type="hidden" name="PO_ItemsResubmitFormValue" value="' . $_SESSION['PO_ItemsResubmitForm' . $identifier] . '" />';
-	echo '<a name="end"></a><br /><div class="centre"><input type="submit" name="NewItem" value="Order some" /></div>';
+	echo '<a name="end"></a><br /><div class="centre"><input type="submit" name="NewItem" value="' . _('Order some') . '" /></div>';
 } //end if SearchResults to show
 
-echo '</div>
-	  </form>';
+echo '</form>';
 include('includes/footer.inc');
 ?>

@@ -1,138 +1,251 @@
-/***
-
-New "SilverWolf" Theme for KwaMoja
-
-by Hindra Joshua
-
-Based from the previous theme "SilverWolf"
-Credits to the original authors.
-
-NOTE:
-This CSS is not yet optimized. Some styles maybe 'redundant' or 'unused',
-but for the obvious one it will be cleaned up.
-To optimized the rest we should examined the whole codes! That would be for
-the next project. :)
-
-***/
-
+@font-face {
+font-family:Ubuntu;
+font-style:normal;
+font-weight:400;
+src:local(Ubuntu), url(http://themes.googleusercontent.com/static/fonts/ubuntu/v4/_xyN3apAT_yRRDeqB3sPRg.woff) format(woff);
+}
 
 body {
-font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
-font-weight:normal;
-background:url(images/stripe.png) white;
+font-family:"Ubuntu, Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+font-weight:400;
+background:url(images/stripe.png) #FFF;
 margin:0;
 padding:5px;
 }
-input, textarea, select{font-family:inherit;}
-a{
+
+input,textarea,select {
+font-family:inherit;
+font-size:inherit;
+}
+
+div.container {
+width:100%;
+padding-top:1%;
+}
+
+div.box {
+box-sizing:border-box;
+-moz-box-sizing:border-box;
+-webkit-box-sizing:border-box;
+width:32%;
+float:left;
+margin-left:1%;
+border:1px solid;
+border-radius:5px;
+}
+
+div.box_header {
+width:98%;
+border:solid 1px;
+border-radius:7px;
+font-size:120%;
+font-weight:700;
+color:#727277;
+margin:1%;
+}
+
+label.box {
+clear:left;
+float:left;
+width:48%;
+text-align:left;
+padding-left:1%;
+}
+
+select.box {
+width:98%;
+background:#E0E0E2;
+border-radius:7px;
+margin:1%;
+}
+
+#mask {
+display:none;
+position:fixed;
+top:0;
+right:0;
+bottom:0;
+left:0;
+background-image:url(images/mask.png);
+z-index:2;
+}
+
+#dialog {
+min-width:10%;
+max-width:50%;
+display:inline-block;
+background:#fff;
+z-index:99;
+border:solid #000 1px;
+border-radius:7px;
+position:fixed;
+top:50%;
+left:50%;
+margin-top:-9em;
+margin-left:-15em;
+box-shadow:0 0 5px #16187A;
+padding:2px 2px 5px;
+}
+
+#dialog_header {
+background:lightgray;
+width:auto;
+border-radius:4px;
+font-size:130%;
+text-align:left;
+padding-left:5px;
+color:#000;
+margin:2px;
+}
+
+#dialog_main {
+background:#FFF;
+width:auto;
+border-radius:4px;
+text-align:left;
+padding-left:5px;
+padding-right:5px;
+font-style:italic;
+font-size:130%;
+color:#565141;
+margin:3% 2px;
+}
+
+input.okButton {
+display:inline-block;
+background-color:lightgray;
+border:thin;
+color:#000;
+border-radius:3px;
+cursor:pointer;
+font-style:normal;
+box-shadow:2px 2px 3px;
+width:20%;
+border-color:#CCC;
+margin:2px 15px 5px 0;
+padding:2px;
+}
+
+input.okButton:active {
+box-shadow:0 0 0;
+border:thin;
+border-color:#CCC;
+padding:2px;
+}
+
+input.okButton:hover {
+background-color:lightgray;
+box-shadow:2px 2px 3px;
+border:thin;
+border-color:#CCC;
+padding:2px;
+}
+
+input:required,select:required,textarea:required {
+background-color:#BFBFBF;
+}
+
+a {
 color:#5B5B68;
 text-decoration:none;
 }
-a:hover{
-color:#000;
-text-decoration:underline;
-}
-form{
-}
-img{
+
+img {
 border:none;
 vertical-align:middle;
+margin-left: 4px;
 }
+
 .PrintIcon {
-	float: right;
-	cursor: pointer;
+float:right;
+cursor:pointer;
 }
-p.good{
-font-weight:bold;
+
+p.good {
+font-weight:700;
 color:green;
 }
-p.bad{
-font-weight:bold;
+
+p.bad {
+font-weight:700;
 color:red;
 }
-p.page_title_text{ /* page title, used in many *.php */
-background:gainsboro;
+
+p.page_title_text {
+background:#DCDCDC;
 font-size:120%;
+text-align:center;
 margin:10px auto;
 padding:5px;
-text-align:center;
 }
-table{
-width:auto; /* automatic width */
+
+table {
+width:auto;
 max-width:90%;
-margin:0 auto;
-margin-bottom:10px;
+margin:0 auto 10px;
 }
-table.selection{
+
+table.selection {
+border:solid 1px #B8BAC5;
+border-radius:5px;
 }
-th{
+
+th {
 background-color:#C3C3C3;
 color:#300;
 text-align:center;
 vertical-align:middle;
 }
-th.number{
+
+th.number {
 background-color:#cccce5;
 color:#300;
 text-align:right;
 vertical-align:middle;
 }
-td{
+
+th.SortableColumn {
+cursor:s-resize;
+}
+
+td {
 text-align:left;
 }
-td.select{
-background-color:#eee;
-}
-td.number{
-text-align:right;
-}
-.centre{
-margin:0 auto 10px;
+
+.centre {
 text-align:center;
+margin:0 auto 10px;
 }
-input, textarea, select{font-size:inherit;}
-input{
-background-color:#e3e1e1;
-border-width:1px;
-border-bottom-color:gray;
-border-bottom-style:solid;
-border-top-color:gray;
-border-top-style:solid;
-border-left-color:gray;
-border-left-style:solid;
-border-right-color:gray;
-border-right-style:solid;
-}
-input:hover{
+
+input:hover {
 background-color:#e3e5f5;
+border-color:gray;
+border-style:solid;
 border-width:1px;
-border-bottom-color:gray;
-border-bottom-style:solid;
-border-top-color:gray;
-border-top-style:solid;
-border-left-color:gray;
-border-left-style:solid;
-border-right-color:gray;
-border-right-style:solid;
 }
-input.number{
-text-align:right;
+
+input.image {
+background-color:transparent;
+border-width:0;
 }
-input.image{
-border-width:0px;
+
+input.image:hover {
 background-color:transparent;
 }
 
-select{
-}
-.EvenTableRows{
-background-color:#ccc;
-}
-.OddTableRows{
-background-color:#eee;
+select.inputerror {
+background:#FFA4A4;
 }
 
-div.error{
+:-moz-ui-invalid {
+background-color:#FFA4A4;
+}
+
+.EvenTableRows {
+background-color:#ccc;
+}
+
+div.error {
 background-color:#fddbdb;
 color:red;
 border:1px solid red;
@@ -140,7 +253,8 @@ width:80%;
 text-align:center;
 margin:0 auto;
 }
-div.warn{
+
+div.warn {
 background-color:#f5dbfd;
 color:maroon;
 border:1px solid maroon;
@@ -148,15 +262,17 @@ width:80%;
 text-align:center;
 margin:0 auto;
 }
-div.success{
+
+div.success {
 background-color:#b9ecb4;
-color:#006400;/* darkgreen is not a w3c css valid color */
-border:1px solid #006400;/* darkgreen is not a w3c css valid color */
+color:#006400;
+border:1px solid #006400;
 width:80%;
 text-align:center;
 margin:0 auto;
 }
-div.info{
+
+div.info {
 background-color:#c7ccf6;
 color:navy;
 border:1px solid navy;
@@ -164,40 +280,45 @@ width:80%;
 text-align:center;
 margin:0 auto;
 }
-div.page_help_text noPrint{ /* many */
-background-color:#ccc;/* lightgray is not a w3c css valid color #ccc */
+
+div.page_help_text {
+background-color:#ccc;
 border:#a52a2a 1px solid;
-padding-top:1px;/* 2px in merge */
-padding-bottom:1px; /* 2px in merge */
-padding-left:3px;   /* 10px in merge */
+border-radius:5px;
+padding-top:3px;
+padding-bottom:3px;
+padding-left:3px;
 z-index:1;
-width:50%; /* 80% in merge */
+width:50%;
 float:none;
 visibility:visible;
-margin:0 auto;
 position:static;
-color:black;
+color:#000;
 text-align:center;
+margin:0 auto;
 }
 
-.dpTbl{
+.dpTbl {
 border:solid navy 1px;
 }
-.dpTD{
+
+.dpTD {
 border:0;
 width:20px;
 background-color:#eee;
 text-align:right;
 cursor:pointer;
 }
-.dpDayHighlight{
+
+.dpDayHighlight {
 border:0;
 width:20px;
-background-color:yellow;
+background-color:#FF0;
 text-align:right;
 cursor:pointer;
 }
-.dpTDHover{
+
+.dpTDHover {
 border:0;
 width:20px;
 background-color:#ccc;
@@ -206,185 +327,137 @@ cursor:pointer;
 }
 
 .table1 {
-  width:90%;
-  background: #eee;
-  border: 0px 0px 2px 2px #222 solid;
-  background: #eee;
-  margin: 0 auto;
+width:90%;
+border:0 0 2px 2px #222 solid;
+background:#eee;
+margin:0 auto;
 }
-.tableheader{
+
+.tableheader {
 background-color:#cccce5;
 color:#300;
 }
-.notavailable{ /* WorkOrderIssue.php, WorkOrderStatus.php  */
-font-weight:lighter;/* light is not a w3c css valid font weight */
+
+.notavailable {
+font-weight:lighter;
 font-style:italic;
 color:#555;
 }
-.label{ /*WorkOrderCosting.php, WorkOrderEntry.php, WorkOrderIssue.php, WorkOrderStatus.php */
-font-weight:bold;
+
+.label {
+font-weight:700;
 font-style:normal;
-color:black;
+color:#000;
 background-color:#ccc;
 }
+
 .table_index {
-	background-color: #F1FFDD;
+background-color:#F1FFDD;
 }
 
-.header{ /* used in \includes\InputSerialItemsFile.php */
-background-image:url("");
+.header {
+background-image:url();
 background-repeat:no-repeat;
 background-attachment:fixed;
 border:none;
-margin:0px;
-padding:0px;
-}
-input.inputerror{ /* many * .php */
-background-color:#fddbdb;
-}
-textarea{
-background-color:#e3e1e1;
-border-width:1px;
-border-bottom-color:gray;
-border-bottom-style:solid;
-border-top-color:gray;
-border-top-style:solid;
-border-left-color:gray;
-border-left-style:solid;
-border-right-color:gray;
-border-right-style:solid;
-}
-select.selecterror{ /*AccountGroups.php, BankAccounts.php, BOMs.php, Stocks.php */
-background-color:#fddbdb;
+margin:0;
+padding:0;
 }
 
-.OsRow{ /* PO_OrderDetails.php */
+.OsRow {
 background-color:#234567;
-color:white;
+color:#FFF;
 }
 
-/*** CANVAS ***/
-
-#CanvasDiv{
-}
-
-/*** HEADER ***/
-
-#HeaderDiv{
-overflow:hidden; /* REQUIRED:height according to items contained */
+#HeaderDiv {
+overflow:hidden;
 background:url(images/menu_bg_grey.png) repeat-x #cfcfcf;
 color:gray;
-padding:3px;
 border:thin solid lightgray;
-}
-#HeaderWrapDiv{
+padding:3px;
 }
 
-/*** HEADER - APP INFO ***/
+#AppInfoDiv {
+float:left;
+}
 
-#AppInfoDiv{
-float:left; /* REQUIRED:to the left */
-}
-#AppInfoDiv img{
-vertical-align:middle; /* center image and text vertically */
-}
-#AppInfoCompanyDiv{
-display:table-cell; /* REQUIRED:as a cell */
-}
-#AppInfoUserDiv{
-display:table-cell; /* REQUIRED:as a cell */
-}
-#AppInfoUserDiv a{
+#AppInfoUserDiv a {
 color:gray;
 }
-#AppInfoUserDiv a:hover{
-color:black;
-text-decoration:underline;
-}
-#AppInfoModuleDiv{
-}
 
-/*** HEADER - QUICK MENU ***/
-
-#QuickMenuDiv{
-float:right; /* to the right side  */
+#QuickMenuDiv {
+float:right;
 margin-top:2px;
 }
-#QuickMenuDiv ul{
-list-style:none; /* hide the bullets */
-}
-#QuickMenuDiv li{
-display:inline; /* items are inline */
+
+#QuickMenuDiv ul {
+list-style:none;
 }
 
-/*** links as buttons!!! clicking anywhere in the button will activate
- the link!!! ***HJ***/
-
-#QuickMenuDiv li a{
-padding:9px; /* links as button */
-border:thin outset lightgray; /* un-pressed state */
-}
-#QuickMenuDiv li a:hover{
-padding:9px; /* links as button */
-border:thin inset lightgray; /* pressed state */
-text-decoration:none; /* no underline */
-color:black;
+#QuickMenuDiv li {
+display:inline;
 }
 
-/*** BODY ***/
+#QuickMenuDiv li a {
+border:thin outset lightgray;
+padding:9px;
+}
 
-#BodyDiv{
-clear:both; /* REQUIRED */
-overflow:hidden; /* REQUIRED */
-color:black;
-background:whitesmoke;
+#QuickMenuDiv li a:hover {
+border:thin inset lightgray;
+text-decoration:none;
+color:#000;
+padding:9px;
+}
+
+#BodyDiv {
+clear:both;
+overflow:hidden;
+color:#000;
+background:#F5F5F5;
 padding-bottom:5px;
 text-align:center;
 }
 
-
-/*** BODY - MAIN MENU ***/
-
-#MainMenuDiv{
-float:left; /* REQUIRED:to the left side */
-white-space:nowrap; /* don't break text */
+#MainMenuDiv {
+float:left;
+white-space:nowrap;
 text-align:center;
 width:12%;
 margin-top:3px;
 }
-#MainMenuDiv ul{
-padding:0; /* REQUIRED:remove extra gaps (ex-bullets) */
+
+#MainMenuDiv ul {
+border:thin outset silver;
 margin:0 3px 0 0;
-border:thin outset silver;
+padding:0;
 }
-#MainMenuDiv li{
-list-style:none; /* REQUIRED */
-padding:0; /* REQUIRED */
+
+#MainMenuDiv li {
+list-style:none;
+padding:0;
 }
-#MainMenuDiv li a,
-#MainMenuDiv li a:hover,
-#MainMenuDiv li a:active,
-#MainMenuDiv .main_menu_selected a,
-#MainMenuDiv .main_menu_selected a:hover{ /* common styles */
-display:block; /* REQUIRED */
-padding:3px;
+
+#MainMenuDiv li a,#MainMenuDiv li a:hover,#MainMenuDiv li a:active,#MainMenuDiv .main_menu_selected a,#MainMenuDiv .main_menu_selected a:hover {
+display:block;
 border:thin outset silver;
-color:black;
+color:#000;
 text-decoration:none;
 background:silver;
-}
-#MainMenuDiv li a:hover{ /* link as button!!! pressed state */
-border:thin inset silver;
-}
-#MainMenuDiv .main_menu_selected a,#MainMenuDiv .main_menu_selected a:hover{ /* the selected button */
-border:thin inset silver;
-background:dimgray;
-color:white;
+padding:3px;
 }
 
-/*** BODY - SUB MENU ***/
+#MainMenuDiv li a:hover {
+border:thin inset silver;
+}
 
-#SubMenuDiv{
+#MainMenuDiv .main_menu_selected a,#MainMenuDiv .main_menu_selected a:hover {
+border:thin inset silver;
+background:#696969;
+color:#FFF;
+}
+
+#SubMenuDiv {
 display:table;
 float:right;
 overflow:hidden;
@@ -392,72 +465,159 @@ width:88%;
 margin-top:3px;
 text-align:left;
 }
-#SubMenuDiv ul{
-list-style-type:none; /* REQUIRED:hide bullets */
-padding:0; /* REQUIRED:remove extra gaps (ex-bullets) */
-margin:0;
-background:gainsboro;
-border:thin outset gainsboro;
-margin-left:3px;
+
+#SubMenuDiv ul {
+list-style-type:none;
+background:#DCDCDC;
+border:thin outset #DCDCDC;
+margin:0 0 0 3px;
+padding:0;
 }
-#SubMenuDiv li{
-list-style:none; /* REQUIRED:hide the bullets */
+
+#SubMenuDiv li {
+list-style:none;
 padding:2px;
 }
-.menu_group_headers{
+
+.menu_group_headers {
 background:silver;
 outline:thin outset silver;
 text-align:center;
-color:black;
+color:#000;
 }
 
-#TransactionsDiv,#InquiriesDiv,#MaintenanceDiv{
-width: 33%;
+#TransactionsDiv,#InquiriesDiv,#MaintenanceDiv {
+width:33%;
 display:table-cell;
 }
-#InquiriesDiv div{ /* default div, used for custom report header */
-width: 33%;
+
+#InquiriesDiv div {
+width:33%;
 background:silver;
-color:black;
+color:#000;
 padding:2px;
 }
-.menu_group_item p{
-color:#00f; /* This is the color for bullets, I like it to be the same as the anchor color, but it's up to you */
-text-indent:-10px; /* this makes the bullet to appear as the li tag previously used */
-margin:0 0 0 12px; /* One thing that I didnÃÂÃÂ´t like of the li was that it had no left margin applied */
+
+.menu_group_item p {
+color:#00f;
+text-indent:-10px;
+margin:0 0 0 12px;
 }
 
-/*** FOOTER ***/
-
-#FooterDiv{
-clear:both; /* REQUIRED */
+#FooterDiv {
+clear:both;
 overflow:hidden;
 color:gray;
 background:url(images/menu_bg_grey.png) repeat-x #cfcfcf;
 border:thin solid lightgray;
 }
-#FooterWrapDiv{
+
+#FooterWrapDiv {
 overflow:hidden;
 padding:3px;
 }
-#FooterLogoDiv{
+
+#FooterLogoDiv {
 float:left;
-background:white;
+background:#FFF;
 border-radius:8px 8px 8px 8px;
+margin-left:47%;
 padding:3px;
-margin-left:47%; /* to the center (approx) */
-}
-#FooterLogoDiv img{
-vertical-align:middle;
-}
-#FooterVersionDiv{
-clear:both; /* below the logo */
-float:left;
-margin-left:47%; /* to the center (approx) */
-}
-#FooterTimeDiv{
-float:right;
-margin-top:-22px; /* go up to center */
 }
 
-/*** END ***/
+#FooterVersionDiv {
+clear:both;
+float:left;
+margin-left:47%;
+}
+
+#FooterTimeDiv {
+float:right;
+margin-top:-22px;
+}
+
+#dialog_buttons,td.number,input.number,input.integer {
+text-align:right;
+}
+
+a:hover,#AppInfoUserDiv a:hover {
+color:#000;
+text-decoration:underline;
+}
+
+td.select,.OddTableRows {
+background-color:#eee;
+}
+
+input,textarea {
+background-color:#e3e1e1;
+border-color:gray;
+border-style:solid;
+border-width:1px;
+}
+
+input.inputerror,select.selecterror {
+background-color:#fddbdb;
+}
+
+#AppInfoDiv img,#FooterLogoDiv img {
+vertical-align:middle;
+}
+
+#AppInfoCompanyDiv,#AppInfoUserDiv {
+display:table-cell;
+}
+
+#favourites {
+background:#B6B6B6;
+color:#3C434D;
+font-size: 150%;
+padding-top: 2px;
+padding-bottom: 2px;
+padding-left: 7px;
+padding-right: 7px;
+border-radius: 15px;
+border: solid 1px #000;
+margin: 2px;
+}
+
+#favourites:hover {
+box-shadow:2px 2px 3px #86C3D7, -2px -2px 3px #383878;
+cursor:pointer;
+}
+
+#PlusMinus:hover {
+box-shadow:2px 2px 3px #86C3D7, -2px -2px 3px #383878;
+cursor:pointer;
+}
+
+.CanvasTitle {
+background:#4682B4;
+border-top-left-radius:15px;
+border-top-right-radius:15px;
+box-shadow:3px 3px 4px #86C3D7 inset, -3px -3px 4px #383878 inset, 0 0 0px #000;
+padding: 5px;
+color:#fff;
+text-shadow: 1px 1px #0E0C6D;
+}
+
+iframe {
+border-width: 0px;
+width:30%;
+margin-left:10px;
+margin-top:5px;
+margin-bottom:5px;
+}
+
+#CloseButton {
+cursor:pointer;
+float:right;
+padding: 1px;
+padding-right:5px;
+color: #fff;
+text-shadow: 1px 1px #0E0C6D;
+}
+
+#CloseButton:hover {
+box-shadow:2px 2px 3px #86C3D7, -2px -2px 3px #383878;
+}

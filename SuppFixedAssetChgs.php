@@ -1,7 +1,5 @@
 <?php
 
-/* $Id: SuppFixedAssetChgs.php 4473 2011-01-23 04:08:53Z daintree $ */
-
 /*The supplier transaction uses the SuppTrans class to hold the information about the invoice
 the SuppTrans class contains an array of Asset objects called Assets - containing details of all asset additions on a supplier invoice
 Asset additions are posted to the debit of fixed asset category cost account if the creditors GL link is on */
@@ -13,6 +11,8 @@ include('includes/session.inc');
 
 $Title = _('Fixed Asset Charges or Credits');
 
+$ViewTopic = 'FixedAssets';
+$BookMark = 'AssetInvoices';
 include('includes/header.inc');
 
 if (!isset($_SESSION['SuppTrans'])) {
@@ -69,31 +69,34 @@ else {
 }
 echo $_SESSION['SuppTrans']->SuppReference . ' ' . _('From') . ' ' . $_SESSION['SuppTrans']->SupplierName;
 echo '</p></div>';
-echo '<table class="selection">';
-$TableHeader = '<tr>
-					<th>' . _('Asset ID') . '</th>
-					<th>' . _('Description') . '</th>
-					<th>' . _('Amount') . '</th>
-				</tr>';
-echo $TableHeader;
+echo '<table class="selection">
+		<tbody>
+			<tr>
+				<th class="SortableColumn">' . _('Asset ID') . '</th>
+				<th class="SortableColumn">' . _('Description') . '</th>
+				<th>' . _('Amount') . '</th>
+			</tr>';
 
 $TotalAssetValue = 0;
 
 foreach ($_SESSION['SuppTrans']->Assets as $EnteredAsset) {
-	echo '<tr><td>' . $EnteredAsset->AssetID . '</td>
-		<td>' . $EnteredAsset->Description . '</td>
-		<td class="number">' . locale_number_format($EnteredAsset->Amount, $_SESSION['SuppTrans']->CurrDecimalPlaces) . '</td>
-		<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Delete=' . $EnteredAsset->Counter . '">' . _('Delete') . '</a></td></tr>';
+	echo '<tr>
+			<td>' . $EnteredAsset->AssetID . '</td>
+			<td>' . $EnteredAsset->Description . '</td>
+			<td class="number">' . locale_number_format($EnteredAsset->Amount, $_SESSION['SuppTrans']->CurrDecimalPlaces) . '</td>
+			<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Delete=' . $EnteredAsset->Counter . '">' . _('Delete') . '</a></td>
+		</tr>';
 
 	$TotalAssetValue += $EnteredAsset->Amount;
 
 } //$_SESSION['SuppTrans']->Assets as $EnteredAsset
 
-echo '<tr>
-	<td class="number"><h4>' . _('Total') . ':</h4></td>
-	<td class="number"><h4>' . locale_number_format($TotalAssetValue, $_SESSION['SuppTrans']->CurrDecimalPlaces) . '</h4></td>
-</tr>
-</table><br />';
+echo '</tbody>
+		<tr>
+			<td class="number"><h4>' . _('Total') . ':</h4></td>
+			<td class="number"><h4>' . locale_number_format($TotalAssetValue, $_SESSION['SuppTrans']->CurrDecimalPlaces) . '</h4></td>
+		</tr>
+	</table>';
 
 if ($_SESSION['SuppTrans']->InvoiceOrCredit == 'Invoice') {
 	echo '<div class="centre"><a href="' . $RootPath . '/SupplierInvoice.php">' . _('Back to Invoice Entry') . '</a></div>';
@@ -103,8 +106,7 @@ else {
 }
 
 /*Set up a form to allow input of new Shipment charges */
-echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint" />';
-echo '<div>';
+echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint" />';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 if (!isset($_POST['AssetID'])) {
@@ -117,11 +119,11 @@ echo '<br /><table class="selection">';
 
 echo '<tr>
 		<td>' . _('Enter Asset ID') . ':</td>
-		<td><input type="text" name="AssetID" size="5" maxlength="6" value="' . $_POST['AssetID'] . '" /> <a href="FixedAssetItems.php" target="_blank">' . _('New Fixed Asset') . '</a></td>
+		<td><input type="integer" name="AssetID" size="5" required="required" minlength="1" maxlength="6" value="' . $_POST['AssetID'] . '" /> <a href="FixedAssetItems.php" target="_blank">' . _('New Fixed Asset') . '</a></td>
 	</tr>';
 echo '<tr>
 		<td><b>' . _('OR') . ' </b>' . _('Select from list') . ':</td>
-		<td><select name="AssetSelection">';
+		<td><select minlength="0" name="AssetSelection">';
 
 $sql = "SELECT assetid,
 			description
@@ -149,7 +151,7 @@ if (!isset($_POST['Amount'])) {
 } //!isset($_POST['Amount'])
 echo '<tr>
 		<td>' . _('Amount') . ':</td>
-		<td><input type="text" class="number" name="Amount" size="12" maxlength="11" value="' . locale_number_format($_POST['Amount'], $_SESSION['SuppTrans']->CurrDecimalPlaces) . '" /></td>
+		<td><input type="text" class="number" name="Amount" size="12" required="required" minlength="1" maxlength="11" value="' . locale_number_format($_POST['Amount'], $_SESSION['SuppTrans']->CurrDecimalPlaces) . '" /></td>
 	</tr>';
 echo '</table>';
 
@@ -158,7 +160,6 @@ echo '<br />
 		<input type="submit" name="AddAssetToInvoice" value="' . _('Enter Fixed Asset') . '" />
 	</div>';
 
-echo '</div>
-      </form>';
+echo '</form>';
 include('includes/footer.inc');
 ?>

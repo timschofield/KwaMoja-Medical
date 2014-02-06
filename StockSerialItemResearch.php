@@ -9,7 +9,6 @@ echo '<p class="page_title_text noPrint" >
 		<img src="'.$RootPath.'/css/'.$Theme.'/images/inventory.png" title="' . _('Inventory') . '" alt="" /><b>' . $Title. '</b>
 	  </p>';
 
-
 //validate the submission
 if (isset($_POST['serialno'])) {
 	$SerialNo = trim($_POST['serialno']);
@@ -19,15 +18,13 @@ if (isset($_POST['serialno'])) {
 	$SerialNo = '';
 }
 
-
-
 echo '<div class="centre">
 <br />
-<form id="SerialNoResearch" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') .'">';
+<form onSubmit="return VerifyForm(this);" id="SerialNoResearch" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') .'">';
 echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
-echo  _('Serial Number') .': <input id="serialno" type="text" name="serialno" size="21" maxlength="20" value="'. $SerialNo . '" /> &nbsp;<input type="submit" name="submit" value="' . _('Search') . '" />
+echo  _('Serial Number') .': <input id="serialno" type="text" name="serialno" size="21" required="required" minlength="1" maxlength="20" value="'. $SerialNo . '" /> &nbsp;<input type="submit" name="submit" value="' . _('Search') . '" />
 <br />
 </div>
 </form>';
@@ -36,8 +33,7 @@ echo '<script  type="text/javascript">
 		document.getElementById("serialno").focus();
 	</script>';
 
-
-if ($SerialNo!='') {
+if ($SerialNo != '') {
 	//the point here is to allow a semi fuzzy search, but still keep someone from killing the db server
 	if (mb_strstr($SerialNo,'%')){
 		while(mb_strstr($SerialNo,'%%'))	{
@@ -48,22 +44,66 @@ if ($SerialNo!='') {
 			prnMsg('You can not use LIKE with short numbers. It has been removed.','warn');
 		}
 	}
-	$SQL = "SELECT ssi.serialno,
-			ssi.stockid, ssi.quantity CurInvQty,
-			ssm.moveqty,
-			sm.type, st.typename,
-			sm.transno, sm.loccode, l.locationname, sm.trandate, sm.debtorno, sm.branchcode, sm.reference, sm.qty TotalMoveQty
-			FROM stockserialitems ssi INNER JOIN stockserialmoves ssm
-				ON ssi.serialno = ssm.serialno AND ssi.stockid=ssm.stockid
-			INNER JOIN stockmoves sm
-				ON ssm.stockmoveno = sm.stkmoveno and ssi.loccode=sm.loccode
-			INNER JOIN systypes st
-				ON sm.type=st.typeid
-			INNER JOIN locations l
-				on sm.loccode = l.loccode
-			WHERE ssi.serialno " . LIKE . " '" . $SerialNo . "'
-			ORDER BY stkmoveno";
-
+	if ($_SESSION['RestrictLocations']==0) {
+		$SQL = "SELECT stockserialitems.serialno,
+						stockserialitems.stockid,
+						stockserialitems.quantity AS CurInvQty,
+						stockserialmoves.moveqty,
+						stockmoves.type,
+						systypes.typename,
+						stockmoves.transno,
+						stockmoves.loccode,
+						locations.locationname,
+						stockmoves.trandate,
+						stockmoves.debtorno,
+						stockmoves.branchcode,
+						stockmoves.reference,
+						stockmoves.qty AS TotalMoveQty
+					FROM stockserialitems
+					INNER JOIN stockserialmoves
+						ON stockserialitems.serialno = stockserialmoves.serialno
+						AND stockserialitems.stockid=stockserialmoves.stockid
+					INNER JOIN stockmoves
+						ON stockserialmoves.stockmoveno = stockmoves.stkmoveno
+						AND stockserialitems.loccode=stockmoves.loccode
+					INNER JOIN systypes
+						ON stockmoves.type=systypes.typeid
+					INNER JOIN locations
+						on stockmoves.loccode = locations.loccode
+					WHERE stockserialitems.serialno " . LIKE . " '" . $SerialNo . "'
+					ORDER BY stkmoveno";
+	} else {
+		$SQL = "SELECT stockserialitems.serialno,
+						stockserialitems.stockid,
+						stockserialitems.quantity AS CurInvQty,
+						stockserialmoves.moveqty,
+						stockmoves.type,
+						systypes.typename,
+						stockmoves.transno,
+						stockmoves.loccode,
+						locations.locationname,
+						stockmoves.trandate,
+						stockmoves.debtorno,
+						stockmoves.branchcode,
+						stockmoves.reference,
+						stockmoves.qty AS TotalMoveQty
+					FROM stockserialitems
+					INNER JOIN stockserialmoves
+						ON stockserialitems.serialno = stockserialmoves.serialno
+						AND stockserialitems.stockid=stockserialmoves.stockid
+					INNER JOIN stockmoves
+						ON stockserialmoves.stockmoveno = stockmoves.stkmoveno
+						AND stockserialitems.loccode=stockmoves.loccode
+					INNER JOIN systypes
+						ON stockmoves.type=systypes.typeid
+					INNER JOIN locations
+						ON stockmoves.loccode = locations.loccode
+					INNER JOIN www_users
+						ON locations.loccode=www_users.defaultlocation
+					WHERE stockserialitems.serialno " . LIKE . " '" . $SerialNo . "'
+						AND www_users.userid='" . $_SESSION['UserID'] . "'
+					ORDER BY stkmoveno";
+	}
 	$result = DB_query($SQL,$db);
 
 	if (DB_num_rows($result) == 0){

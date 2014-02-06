@@ -1,10 +1,9 @@
 <?php
-/* $Id$*/
 
-if (isset($_POST['TaxAuthority'])){
+if (isset($_POST['TaxAuthority'])) {
 	$TaxAuthority = $_POST['TaxAuthority'];
 }
-if (isset($_GET['TaxAuthority'])){
+if (isset($_GET['TaxAuthority'])) {
 	$TaxAuthority = $_GET['TaxAuthority'];
 }
 
@@ -13,48 +12,45 @@ $Title = _('Tax Rates');
 include('includes/header.inc');
 
 echo '<p class="page_title_text noPrint" >
-		<img src="'.$RootPath.'/css/'.$Theme.'/images/maintenance.png" title="' . _('Supplier Types')
-	. '" alt="" />' . $Title. '
+		<img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Supplier Types') . '" alt="" />' . $Title . '
 	</p>';
 
-if (!isset($TaxAuthority)){
-	prnMsg(_('This page can only be called after selecting the tax authority to edit the rates for') . '. ' . _('Please select the Rates link from the tax authority page') . '<br /><a href="' . $RootPath . '/TaxAuthorities.php">' . _('click here') . '</a> ' . _('to go to the Tax Authority page'),'error');
-	include ('includes/footer.inc');
+if (!isset($TaxAuthority)) {
+	prnMsg(_('This page can only be called after selecting the tax authority to edit the rates for') . '. ' . _('Please select the Rates link from the tax authority page') . '<br /><a href="' . $RootPath . '/TaxAuthorities.php">' . _('click here') . '</a> ' . _('to go to the Tax Authority page'), 'error');
+	include('includes/footer.inc');
 	exit;
 }
 
-if (isset($_POST['UpdateRates'])){
+if (isset($_POST['UpdateRates'])) {
 
 	$TaxRatesResult = DB_query("SELECT taxauthrates.taxcatid,
 										taxauthrates.taxrate,
 										taxauthrates.dispatchtaxprovince
 								FROM taxauthrates
-								WHERE taxauthrates.taxauthority='" . $TaxAuthority . "'",
-								$db);
+								WHERE taxauthrates.taxauthority='" . $TaxAuthority . "'", $db);
 
-	while ($myrow=DB_fetch_array($TaxRatesResult)){
+	while ($myrow = DB_fetch_array($TaxRatesResult)) {
 
-		$sql = "UPDATE taxauthrates SET taxrate=" . (filter_number_format($_POST[$myrow['dispatchtaxprovince'] . '_' . $myrow['taxcatid']])/100) . "
+		$sql = "UPDATE taxauthrates SET taxrate=" . (filter_number_format($_POST[$myrow['dispatchtaxprovince'] . '_' . $myrow['taxcatid']]) / 100) . "
 						WHERE taxcatid = '" . $myrow['taxcatid'] . "'
 						AND dispatchtaxprovince = '" . $myrow['dispatchtaxprovince'] . "'
 						AND taxauthority = '" . $TaxAuthority . "'";
-		DB_query($sql,$db);
+		DB_query($sql, $db);
 	}
-	prnMsg(_('All rates updated successfully'),'info');
+	prnMsg(_('All rates updated successfully'), 'info');
 }
 
 /* end of update code
-*/
+ */
 
 /*Display updated rates
-*/
+ */
 
 $TaxAuthDetail = DB_query("SELECT description
-							FROM taxauthorities WHERE taxid='" . $TaxAuthority . "'",$db);
+							FROM taxauthorities WHERE taxid='" . $TaxAuthority . "'", $db);
 $myrow = DB_fetch_row($TaxAuthDetail);
 
-echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '" method="post" class="noPrint">';
-echo '<div>';
+echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 echo '<input type="hidden" name="TaxAuthority" value="' . $TaxAuthority . '" />';
@@ -72,74 +68,70 @@ $TaxRatesResult = DB_query("SELECT taxauthrates.taxcatid,
 							ON taxauthrates.taxcatid=taxcategories.taxcatid
 							WHERE taxauthrates.taxauthority='" . $TaxAuthority . "'
 							ORDER BY taxauthrates.dispatchtaxprovince,
-							taxauthrates.taxcatid",
-							$db);
+							taxauthrates.taxcatid", $db);
 
-if (DB_num_rows($TaxRatesResult)>0){
+if (isset($_SESSION['FirstStart'])) {
+	echo '<div class="page_help_text">' . _('As this is the first time that the system has been used, you must first create a tax authority.') .
+			'<br />' . _('For help, click on the help icon in the top right') .
+			'<br />' . _('Once you have filled in all the details, click on the button at the bottom of the screen') . '</div>';
+}
+
+if (DB_num_rows($TaxRatesResult) > 0) {
 
 	echo '<table class="selection">';
 	echo '<tr>
 			<th colspan="3"><h3>' . _('Update') . ' ' . $myrow[0] . ' ' . _('Rates') . '</h3></th>
+		</tr>
+		<tr>
+			<th class="SortableColumn">' . _('Deliveries From') . '<br />' . _('Tax Province') . '</th>
+			<th class="SortableColumn">' . _('Tax Category') . '</th>
+			<th>' . _('Tax Rate') . ' %</th>
 		</tr>';
-	$TableHeader = '<tr>
-						<th>' . _('Deliveries From') . '<br />' . _('Tax Province') . '</th>
-						<th>' . _('Tax Category') . '</th>
-						<th>' . _('Tax Rate') . ' %</th>
-					</tr>';
-	echo $TableHeader;
-	$j = 1;
 	$k = 0; //row counter to determine background colour
-	$OldProvince='';
+	$OldProvince = '';
 
-	while ($myrow = DB_fetch_array($TaxRatesResult)){
+	while ($myrow = DB_fetch_array($TaxRatesResult)) {
 
-		if ($OldProvince!=$myrow['dispatchtaxprovince'] and $OldProvince!=''){
+		if ($OldProvince != $myrow['dispatchtaxprovince'] and $OldProvince != '') {
 			echo '<tr style="background-color:#555555"><td colspan="3"></td></tr>';
 		}
 
-		if ($k==1){
+		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
-			$k=0;
+			$k = 0;
 		} else {
 			echo '<tr class="OddTableRows">';
-			$k=1;
+			$k = 1;
 		}
 
 		printf('<td>%s</td>
 				<td>%s</td>
-				<td><input type="text" class="number" name="%s" maxlength="5" size="5" value="%s" /></td>
-				</tr>',
-				$myrow['taxprovincename'],
-				$myrow['taxcatname'],
-				$myrow['dispatchtaxprovince'] . '_' . $myrow['taxcatid'],
-				locale_number_format($myrow['taxrate']*100,2));
+				<td><input type="text" class="number" name="%s" required="required" minlength="1" maxlength="5" size="5" value="%s" /></td>
+				</tr>', $myrow['taxprovincename'], $myrow['taxcatname'], $myrow['dispatchtaxprovince'] . '_' . $myrow['taxcatid'], locale_number_format($myrow['taxrate'] * 100, 2));
 
 		$OldProvince = $myrow['dispatchtaxprovince'];
 
 	}
-//end of while loop
-echo '</table>';
-echo '<br />
-		<div class="centre">
-		<input type="submit" name="UpdateRates" value="' . _('Update Rates') . '" />';
-} //end if tax taxcatid/rates to show
-	else {
-	prnMsg(_('There are no tax rates to show - perhaps the dispatch tax province records have not yet been created?'),'warn');
+	//end of while loop
+	echo '</table>';
+	echo '<div class="centre">
+			<input type="submit" name="UpdateRates" value="' . _('Update Rates') . '" />
+		</div>';
+} else {
+	prnMsg(_('There are no tax rates to show - perhaps the dispatch tax province records have not yet been created?'), 'warn');
 }
 
-echo '<br />
-	<br />
-	<a href="' . $RootPath . '/TaxAuthorities.php">' . _('Tax Authorities') .  '</a>
-	<br />
-	<a href="' . $RootPath . '/TaxGroups.php">' . _('Tax Groupings') .  '</a>
-	<br />
-	<a href="' . $RootPath . '/TaxCategories.php">' . _('Tax Categories') .  '</a>
-	<br />
-	<a href="' . $RootPath . '/TaxProvinces.php">' . _('Dispatch Tax Provinces') .  '</a>
+echo '<div class="centre">
+		<a href="' . $RootPath . '/TaxAuthorities.php">' . _('Tax Authorities') . '</a>
+		<br />
+		<a href="' . $RootPath . '/TaxGroups.php">' . _('Tax Groupings') . '</a>
+		<br />
+		<a href="' . $RootPath . '/TaxCategories.php">' . _('Tax Categories') . '</a>
+		<br />
+		<a href="' . $RootPath . '/TaxProvinces.php">' . _('Dispatch Tax Provinces') . '</a>
 	</div>';
 
-echo '</div>
-	  </form>';
+echo '</form>';
 
-include( 'includes/footer.inc' );
+include('includes/footer.inc');
 ?>

@@ -1,5 +1,4 @@
 <?php
-/* $Id$*/
 
 if (!isset($PathPrefix)) {
 	$PathPrefix = '';
@@ -10,19 +9,24 @@ if (!file_exists($PathPrefix . 'config.php')) {
 	if ($RootPath == '/' or $RootPath == "\\") {
 		$RootPath = '';
 	} //$RootPath == '/' or $RootPath == "\\"
-	header('Location:' . $RootPath . '/install/index.php');
+	header('Location:' . $RootPath . '/install/index.php?New=True');
+	exit;
 } //!file_exists($PathPrefix . 'config.php')
 include($PathPrefix . 'config.php');
-
+$DBVersion = HighestFileName($PathPrefix);
 if (isset($dbuser)) {
-	$DBUser=$dbuser;
-	$DBPassword=$dbpassword;
-	$DBType=$dbType;
+	$DBUser = $dbuser;
+	$DBPassword = $dbpassword;
+	$DBType = $dbType;
 }
 
 if (isset($SessionSavePath)) {
 	session_save_path($SessionSavePath);
 } //isset($SessionSavePath)
+
+if (!isset($SysAdminEmail)) {
+	$SysAdminEmail = '';
+}
 
 ini_set('session.gc_maxlifetime', $SessionLifeTime);
 
@@ -39,7 +43,7 @@ include($PathPrefix . 'includes/DateFunctions.inc');
 // Uncomment to turn off attempts counter
 //$_SESSION['AttemptsCounter'] = 0;
 
-if (!isset($_SESSION['AttemptsCounter'])) {
+if (!isset($_SESSION['AttemptsCounter']) or $AllowDemoMode==true){
 	$_SESSION['AttemptsCounter'] = 0;
 } //!isset($_SESSION['AttemptsCounter'])
 
@@ -70,15 +74,13 @@ if (isset($_SESSION['DatabaseName'])) {
 	*/
 	foreach ($_GET as $GetKey => $GetValue) {
 		if (gettype($GetValue) != 'array') {
-			$_GET[$GetKey] = DB_escape_string($GetValue);
+			$_GET[$GetKey] = DB_escape_string(urldecode($GetValue));
 		} //gettype($value) != 'array'
 	} //$_GET as $key => $value
 } //isset($_SESSION['DatabaseName'])
 else { //set SESSION['FormID'] before the a user has even logged in
 	$_SESSION['FormID'] = sha1(uniqid(mt_rand(), true));
 }
-
-include($PathPrefix . 'includes/LanguageSetup.php');
 
 /* only do security checks if AllowAnyone is not true */
 if (!isset($AllowAnyone)) {
@@ -88,7 +90,7 @@ if (!isset($AllowAnyone)) {
 	/* Login checking and setup */
 
 	if (isset($_POST['UserNameEntryField']) and isset($_POST['Password'])) {
-		$rc = userLogin($_POST['UserNameEntryField'], $_POST['Password'], $db);
+		$rc = userLogin($_POST['UserNameEntryField'], $_POST['Password'], $SysAdminEmail, $db);
 	} //isset($_POST['UserNameEntryField']) and isset($_POST['Password'])
 	elseif (empty($_SESSION['DatabaseName'])) {
 		$rc = UL_SHOWLOGIN;
@@ -129,34 +131,17 @@ if (!isset($AllowAnyone)) {
 
 	} //$rc
 } //!isset($AllowAnyone)
-else if (basename($_SERVER['SCRIPT_NAME']) == 'Logout.php'){
+else if (basename($_SERVER['SCRIPT_NAME']) == 'Logout.php') {
 	header('Location: index.php');
 }
 
 /*User is logged in so get configuration parameters  - save in session*/
 include($PathPrefix . 'includes/GetConfig.php');
 
-/*if the Code $Version - held in ConnectDB.inc is > than the Database VersionNumber held in config table then do upgrades */
-if (strcmp($Version, $_SESSION['VersionNumber']) > 0 and (basename($_SERVER['SCRIPT_NAME']) != 'UpgradeDatabase.php')) {
-	header('Location: UpgradeDatabase.php');
-} //strcmp($Version, $_SESSION['VersionNumber']) > 0 and (basename($_SERVER['SCRIPT_NAME']) != 'UpgradeDatabase.php')
-
-if (isset($_SESSION['DB_Maintenance'])) {
-	if ($_SESSION['DB_Maintenance'] != 0) {
-		if (DateDiff(Date($_SESSION['DefaultDateFormat']), ConvertSQLDate($_SESSION['DB_Maintenance_LastRun']), 'd') >= $_SESSION['DB_Maintenance']) {
-			/*Do the DB maintenance routing for the DB_type selected */
-			DB_Maintenance($db);
-			//purge the audit trail if necessary
-			if (isset($_SESSION['MonthsAuditTrail'])) {
-				$sql = "DELETE FROM audittrail
-						WHERE  transactiondate <= '" . Date('Y-m-d', mktime(0, 0, 0, Date('m') - $_SESSION['MonthsAuditTrail'])) . "'";
-				$ErrMsg = _('There was a problem deleting expired audit-trail history');
-				$result = DB_query($sql, $db);
-			} //isset($_SESSION['MonthsAuditTrail'])
-			$_SESSION['DB_Maintenance_LastRun'] = Date('Y-m-d');
-		} //DateDiff(Date($_SESSION['DefaultDateFormat']), ConvertSQLDate($_SESSION['DB_Maintenance_LastRun']), 'd') >= $_SESSION['DB_Maintenance']
-	} //$_SESSION['DB_Maintenance'] != 0
-} //isset($_SESSION['DB_Maintenance'])
+/*If the highest of the DB update files is greater than the DBUpdateNumber held in config table then do upgrades */
+if (($DBVersion > $_SESSION['DBUpdateNumber']) and (basename($_SERVER['SCRIPT_NAME']) != 'Z_UpgradeDatabase.php')) {
+	header('Location: Z_UpgradeDatabase.php');
+}
 
 /*Check to see if currency rates need to be updated */
 if (isset($_SESSION['UpdateCurrencyRatesDaily'])) {
@@ -311,13 +296,6 @@ else if (in_array(1, $_SESSION['AllowedPageSecurityTokens']) and count($_SESSION
 	$SupplierLogin = 0;
 } //in_array(1, $_SESSION['AllowedPageSecurityTokens']) and $PageSecurity == 0 and count($_SESSION['AllowedPageSecurityTokens']) == 2
 
-if (in_array(15, $_SESSION['AllowedPageSecurityTokens'])) {
-	/*System administrator login */
-	$debug = 1; //allow debug messages
-} //in_array(15, $_SESSION['AllowedPageSecurityTokens'])
-else {
-	$debug = 0; //don't allow debug messages
-}
 function CryptPass($Password) {
 	global $CryptFunction;
 	if ($CryptFunction == 'sha1') {
@@ -331,6 +309,11 @@ function CryptPass($Password) {
 	}
 }
 
+function HighestFileName($PathPrefix) {
+	$files = glob('sql/updates/*.php');
+	natsort($files);
+	return basename(array_pop($files), ".php");
+}
 
 if (sizeof($_POST) > 0 and !isset($AllowAnyone)) {
 	/*Security check to ensure that the form submitted is originally sourced from KwaMoja with the FormID = $_SESSION['FormID'] - which is set before the first login*/

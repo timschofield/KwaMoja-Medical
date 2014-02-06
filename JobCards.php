@@ -1,5 +1,5 @@
 <?php
-$PageSecurity = 1;
+
 if (!isset($_GET['DebtorNo'])) {
 	// Show Message Box
 	echo "<script type='text/javascript'>";
@@ -47,7 +47,7 @@ if (!isset($_POST['SaveUpdateJob'])) {
 				</tr>';
 		echo GetJobCards($db, $RootPath);
 		echo '</table>';
-		echo '<form action="' . $_SERVER['PHP_SELF'] . '?DebtorNo=' . $_SESSION['CustomerID'] . '&BranchNo=' . $_GET['BranchNo'] . '&AddJob=1" method="post" class="noPrint">';
+		echo '<form onSubmit="return VerifyForm(this);" action="' . $_SERVER['PHP_SELF'] . '?DebtorNo=' . $_SESSION['CustomerID'] . '&BranchNo=' . $_GET['BranchNo'] . '&AddJob=1" method="post" class="noPrint">';
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 		echo '<div class="centre">';
 		echo '<br><input type=submit name="AddJob" value="' . _('Add Job Card') . '">';
@@ -79,7 +79,7 @@ if (!isset($_POST['SaveUpdateJob'])) {
 											)";
 			$result = DB_query($query, $db, $ErrMsg);
 
-			echo '<div class="page_help_text noPrint">' . _('Record has been added.<br>Please wait the browser will redirect you automatically ...') . '.</div><br />';
+			echo '<div class="page_help_text noPrint">' . _('Record has been added.') . '<br />' . _('Please wait the browser will redirect you automatically ...') . '.</div><br />';
 
 			// Show Message Box
 			echo "<script type='text/javascript'>";
@@ -88,10 +88,10 @@ if (!isset($_POST['SaveUpdateJob'])) {
 		} //(isset($_POST["SaveJob"])) and (!isset($_POST['UpdateJob']))
 		else {
 			if (isset($_POST['UpdateJob'])) {
-				echo '<form action="' . $_SERVER['PHP_SELF'] . '?DebtorNo=' . $_SESSION['CustomerID'] . '&BranchNo=' . $_GET['BranchNo'] . '&JobCardNo=' . $_POST['JobCardNo'] . '&SaveUpdateJob=1" method="post" class="noPrint">';
+				echo '<form onSubmit="return VerifyForm(this);" action="' . $_SERVER['PHP_SELF'] . '?DebtorNo=' . $_SESSION['CustomerID'] . '&BranchNo=' . $_GET['BranchNo'] . '&JobCardNo=' . $_POST['JobCardNo'] . '&SaveUpdateJob=1" method="post" class="noPrint">';
 			} //isset($_POST['UpdateJob'])
 			else {
-				echo '<form action="' . $_SERVER['PHP_SELF'] . '?DebtorNo=' . $_SESSION['CustomerID'] . '&BranchNo=' . $_GET['BranchNo'] . '&AddJob=1&SaveJob=1" method="post" class="noPrint">';
+				echo '<form onSubmit="return VerifyForm(this);" action="' . $_SERVER['PHP_SELF'] . '?DebtorNo=' . $_SESSION['CustomerID'] . '&BranchNo=' . $_GET['BranchNo'] . '&AddJob=1&SaveJob=1" method="post" class="noPrint">';
 			}
 			echo '<table cellpadding=4 width=99% style ="outline-style:solid;outline-width:1px;' . $printbk . '">';
 			echo '<tr>';
@@ -277,7 +277,7 @@ else {
 	$query = "Update jobcards SET " . $dbvalues . " where id=" . $_POST['JobCardNo'];
 	$result = DB_query($query, $db, $ErrMsg);
 
-	echo '<div class="page_help_text noPrint">' . _('Record has been updated.<br>Please wait the browser will redirect you automatically ...') . '.</div><br />';
+	echo '<div class="page_help_text noPrint">' . _('Record has been updated.') . '<br />' . _('Please wait the browser will redirect you automatically ...') . '.</div><br />';
 
 	// Show Message Box
 	echo "<script type='text/javascript'>";

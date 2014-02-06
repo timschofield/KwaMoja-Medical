@@ -43,23 +43,25 @@ if (isset($_POST['ProcessStockChange'])) {
 	$result = DB_Txn_Begin($db);
 	echo '<br />' . _('Adding the new stock Category record');
 	$sql = "INSERT INTO stockcategory (categoryid,
-					categorydescription,
-					stocktype,
-					stockact,
-					adjglact,
-					purchpricevaract,
-					materialuseagevarac,
-					wipact)
-			SELECT '" . $_POST['NewStockCategory'] . "',
-				categorydescription,
-					stocktype,
-					stockact,
-					adjglact,
-					purchpricevaract,
-					materialuseagevarac,
-					wipact
-			FROM stockcategory
-			WHERE categoryid='" . $_POST['OldStockCategory'] . "'";
+						categorydescription,
+						defaulttaxcatid,
+						stocktype,
+						stockact,
+						adjglact,
+						purchpricevaract,
+						materialuseagevarac,
+						wipact)
+					SELECT '" . $_POST['NewStockCategory'] . "',
+							categorydescription,
+							defaulttaxcatid,
+							stocktype,
+							stockact,
+							adjglact,
+							purchpricevaract,
+							materialuseagevarac,
+							wipact
+						FROM stockcategory
+						WHERE categoryid='" . $_POST['OldStockCategory'] . "'";
 	$DbgMsg = _('The SQL statement that failed was');
 	$ErrMsg = _('The SQL to insert the new stock category record failed');
 	$result = DB_query($sql, $db, $ErrMsg, $DbgMsg, true);
@@ -90,21 +92,21 @@ if (isset($_POST['ProcessStockChange'])) {
 	echo '<p>' . _('Stock Code') . ': ' . $_POST['OldStockCategory'] . ' ' . _('was successfully changed to') . ' : ' . $_POST['NewStockCategory'];
 }
 
-echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '" method="post" class="noPrint">';
+echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '" method="post" class="noPrint">';
 echo '<div class="centre">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 echo '<br />
 	<table>
 		<tr>
 			<td>' . _('Existing Inventory Category Code') . ':</td>
-			<td><input type="text" name="OldStockCategory" size="20" maxlength="20" /></td>
+			<td><input type="text" name="OldStockCategory" size="20" minlength="0" maxlength="20" /></td>
 		</tr>
 		<tr>
 			<td>' . _('New Inventory Category Code') . ':</td>
-			<td><input type="text" name="NewStockCategory" size="20" maxlength="20" /></td>
+			<td><input type="text" name="NewStockCategory" size="20" minlength="0" maxlength="20" /></td>
 		</tr>
 	</table>
-	
+
 		<input type="submit" name="ProcessStockChange" value="' . _('Process') . '" />
 	</div>
 	</form>';

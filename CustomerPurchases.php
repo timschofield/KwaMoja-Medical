@@ -11,7 +11,7 @@ else if (isset($_POST['DebtorNo'])) {
 	$DebtorNo = $_POST['DebtorNo'];
 } //isset($_POST['DebtorNo'])
 else {
-	prnMsg(_('This script must be called with a customer number.'), 'notice');
+	prnMsg(_('This script must be called with a customer code.'), 'info');
 	include('includes/footer.inc');
 	exit;
 }
@@ -31,26 +31,62 @@ echo '<p class="page_title_text noPrint" >
 		<img src="' . $RootPath . '/css/' . $Theme . '/images/customer.png" title="' . _('Customer') . '" alt="" /> ' . _('Items Purchased by Customer') . ' : ' . $CustomerRecord['name'] . '
 	</p>';
 
-$SQL = "SELECT stockmoves.stockid,
-				stockmaster.description,
-				systypes.typename,
-				transno,
-				locations.locationname,
-				trandate,
-				branchcode,
-				price,
-				reference,
-				qty,
-				narrative
-			FROM stockmoves
-			INNER JOIN stockmaster
-				ON stockmaster.stockid=stockmoves.stockid
-			INNER JOIN systypes
-				ON stockmoves.type=systypes.typeid
-			INNER JOIN locations
-				ON stockmoves.loccode=locations.loccode
-			WHERE debtorno='" . $DebtorNo . "'
-			ORDER BY trandate DESC";
+if ($_SESSION['RestrictLocations'] == 0) {
+	$SQL = "SELECT stockmoves.stockid,
+					stockmaster.description,
+					systypes.typename,
+					transno,
+					locations.locationname,
+					trandate,
+					branchcode,
+					price,
+					reference,
+					qty,
+					narrative
+				FROM stockmoves
+				INNER JOIN stockmaster
+					ON stockmaster.stockid=stockmoves.stockid
+				INNER JOIN systypes
+					ON stockmoves.type=systypes.typeid
+				INNER JOIN locations
+					ON stockmoves.loccode=locations.loccode
+				WHERE debtorno='" . $DebtorNo . "'";
+	if ($_SESSION['SalesmanLogin'] != '') {
+		$SQL .= " INNER JOIN custbranch
+					ON stockmoves.branchcode=custbranch.branchcode";
+		$SQLWhere .= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
+	}
+	$SQL .= $SQLWhere . " ORDER BY trandate DESC";
+} else {
+	$SQL = "SELECT stockmoves.stockid,
+					stockmaster.description,
+					systypes.typename,
+					transno,
+					locations.locationname,
+					trandate,
+					stockmoves.branchcode,
+					price,
+					reference,
+					qty,
+					narrative
+				FROM stockmoves
+				INNER JOIN stockmaster
+					ON stockmaster.stockid=stockmoves.stockid
+				INNER JOIN systypes
+					ON stockmoves.type=systypes.typeid
+				INNER JOIN locations
+					ON stockmoves.loccode=locations.loccode
+				INNER JOIN www_users
+					ON locations.loccode=www_users.defaultlocation
+				WHERE debtorno='" . $DebtorNo . "'
+					AND www_users.userid='" . $_SESSION['UserID'] . "'";
+	if ($_SESSION['SalesmanLogin'] != '') {
+		$SQL .= " INNER JOIN custbranch
+					ON stockmoves.branchcode=custbranch.branchcode";
+		$SQLWhere .= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
+	}
+	$SQL .= $SQLWhere . " ORDER BY trandate DESC";
+}
 $ErrMsg = _('The stock movement details could not be retrieved by the SQL because');
 $StockMovesResult = DB_query($SQL, $db, $ErrMsg);
 
@@ -97,7 +133,7 @@ else {
 	echo '</table>';
 }
 
-echo '<br /><div class="centre"><a href="SelectCustomer.php">' . _('Return to customer screen') . '</a></div><br />';
+echo '<br /><div class="centre"><a href="SelectCustomer.php">' . _('Return to customer selection screen') . '</a></div><br />';
 
 include('includes/footer.inc');
 ?>

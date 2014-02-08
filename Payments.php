@@ -731,6 +731,10 @@ if (isset($_POST['CommitBatch'])) {
 					prnMsg(_('Payments involving the creditors control account cannot be entered. The general ledger creditors ledger (AP) integration is enabled so control accounts are automatically maintained by KwaMoja. This setting can be disabled in System Configuration'), 'warn');
 					$AllowThisPosting = false;
 				}
+				if ($_POST['GLCode'] == $_SESSION['CompanyRecord']['retainedearnings']) {
+					prnMsg(_('Payments involving the retained earnings control account cannot be entered. This account is automtically maintained.'), 'warn');
+					$AllowThisPosting = false;
+				}
 			}
 			if ($AllowThisPosting) {
 				$_SESSION['PaymentDetail' . $identifier]->add_to_glanalysis(filter_number_format($_POST['GLAmount']), $_POST['GLNarrative'], $_POST['GLManualCode'], $myrow['accountname'], $_POST['Tag'], $_POST['Cheque']);

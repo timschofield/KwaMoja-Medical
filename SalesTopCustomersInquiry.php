@@ -1,11 +1,11 @@
 <?php
 
 include('includes/session.inc');
-$Title = _('Top Sales Inquiry');
+$Title = _('Top Customers Inquiry');
 include('includes/header.inc');
 
 echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . _('Sales Inquiry') . '" alt="" />' . ' ' . _('Top Customer Sales Inquiry') . '</p>';
-echo '<div class="page_help_text">' . _('Select the parameters for the report') . '</div><br />';
+echo '<div class="page_help_text">' . _('Select the parameters for the report') . '</div>';
 
 if (!isset($_POST['DateRange'])) {
 	/* then assume report is for This Month - maybe wrong to do this but hey better than reporting an error?*/
@@ -13,7 +13,6 @@ if (!isset($_POST['DateRange'])) {
 }
 
 echo '<form id="form1" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 echo '<table cellpadding="2" class="selection">
@@ -100,19 +99,18 @@ if (!isset($_POST['NoToDisplay'])) {
 echo ' /></td>
 		</tr>
 		<tr>
-		<td>' . _('Number to Display') . ':</td>
-		<td><input type="text" class="number" name="NoToDisplay" size="4" maxlength="4" value="' . $_POST['NoToDisplay'] . '"  /></td>
+			<td>' . _('Number to Display') . ':</td>
+			<td><input type="text" class="number" name="NoToDisplay" size="4" maxlength="4" value="' . $_POST['NoToDisplay'] . '"  /></td>
 		</tr>
 	</table>
 	</td></tr>
 	</table>';
 
 
-echo '<br /><div class="centre"><input tabindex="4" type="submit" name="ShowSales" value="' . _('Show Sales') . '" />';
-echo '</div>';
-echo '<br />';
-echo '</div>
-      </form>';
+echo '<div class="centre">
+		<input tabindex="4" type="submit" name="ShowSales" value="' . _('Show Sales') . '" />
+	</div>';
+echo '</form>';
 
 if (isset($_POST['ShowSales'])) {
 	$InputError = 0; //assume no input errors now test for errors
@@ -207,16 +205,15 @@ if (isset($_POST['ShowSales'])) {
 	$SalesResult = DB_query($sql, $db, $ErrMsg);
 
 
-	echo '<table cellpadding="2" class="selection">';
-
-	echo '<tr>
-			<th>' . _('Rank') . '</th>
-			<th>' . _('Customer') . '</th>
-			<th>' . _('Sales Value') . '</th>
-			<th>' . _('Refunds') . '</th>
-			<th>' . _('Net Sales') . '</th>
-			<th>' . _('Sales') . '<br />' . _('Quantity') . '</th>
-		</tr>';
+	echo '<table cellpadding="2" class="selection">
+			<tr>
+				<th>' . _('Rank') . '</th>
+				<th>' . _('Customer') . '</th>
+				<th>' . _('Sales Value') . '</th>
+				<th>' . _('Refunds') . '</th>
+				<th>' . _('Net Sales') . '</th>
+				<th>' . _('Sales') . '<br />' . _('Quantity') . '</th>
+			</tr>';
 
 	$CumulativeTotalSales = 0;
 	$CumulativeTotalRefunds = 0;
@@ -257,10 +254,10 @@ if (isset($_POST['ShowSales'])) {
 		echo '<tr class="EvenTableRows">';
 	}
 	echo '<td class="number" colspan="2">' . _('GRAND Total') . '</td>
-		<td class="number">' . locale_number_format($CumulativeTotalSales, $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
-		<td class="number">' . locale_number_format($CumulativeTotalRefunds, $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
-		<td class="number">' . locale_number_format($CumulativeTotalNetSales, $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
-		<td class="number">' . locale_number_format($CumulativeTotalQuantity, 'Variable') . '</td>
+			<td class="number">' . locale_number_format($CumulativeTotalSales, $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
+			<td class="number">' . locale_number_format($CumulativeTotalRefunds, $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
+			<td class="number">' . locale_number_format($CumulativeTotalNetSales, $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
+			<td class="number">' . locale_number_format($CumulativeTotalQuantity, 'Variable') . '</td>
 		</tr>';
 
 	echo '</table>';

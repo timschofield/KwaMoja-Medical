@@ -125,33 +125,33 @@ if (isset($_POST['Update']) or isset($_POST['BackToLineDetails']) or isset($_POS
 																			$_SESSION['Items'.$identifier]->totalWeight,
 																			$_SESSION['Items'.$identifier]->Location,
 																			$_SESSION['Items'.$identifier]->DefaultCurrency,
+																			$CountriesArray,
 																			$db);
 			if (!empty($BestShipper)) {
 				$_POST['FreightCost'] = round($_POST['FreightCost'], 2);
 				$_POST['ShipVia'] = $BestShipper;
-			} //!empty($BestShipper)
-			else {
+			} else {
 				prnMsg(_($_POST['FreightCost']), 'warn');
 			}
 		} //$_SESSION['DoFreightCalc'] == True
 		$sql = "SELECT custbranch.brname,
-					custbranch.braddress1,
-					custbranch.braddress2,
-					custbranch.braddress3,
-					custbranch.braddress4,
-					custbranch.braddress5,
-					custbranch.braddress6,
-					custbranch.phoneno,
-					custbranch.email,
-					custbranch.defaultlocation,
-					custbranch.defaultshipvia,
-					custbranch.deliverblind,
-					custbranch.specialinstructions,
-					custbranch.estdeliverydays,
-					custbranch.salesman
-				FROM custbranch
-				WHERE custbranch.branchcode='" . $_SESSION['Items' . $identifier]->Branch . "'
-				AND custbranch.debtorno = '" . $_SESSION['Items' . $identifier]->DebtorNo . "'";
+						custbranch.braddress1,
+						custbranch.braddress2,
+						custbranch.braddress3,
+						custbranch.braddress4,
+						custbranch.braddress5,
+						custbranch.braddress6,
+						custbranch.phoneno,
+						custbranch.email,
+						custbranch.defaultlocation,
+						custbranch.defaultshipvia,
+						custbranch.deliverblind,
+						custbranch.specialinstructions,
+						custbranch.estdeliverydays,
+						custbranch.salesman
+					FROM custbranch
+					WHERE custbranch.branchcode='" . $_SESSION['Items' . $identifier]->Branch . "'
+						AND custbranch.debtorno = '" . $_SESSION['Items' . $identifier]->DebtorNo . "'";
 
 		$ErrMsg = _('The customer branch record of the customer selected') . ': ' . $_SESSION['Items' . $identifier]->CustomerName . ' ' . _('cannot be retrieved because');
 		$DbgMsg = _('SQL used to retrieve the branch details was') . ':';

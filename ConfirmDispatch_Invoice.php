@@ -11,6 +11,7 @@ $ViewTopic = 'ARTransactions';
 $BookMark = 'ConfirmInvoice';
 include('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');
+include('includes/CountriesArray.php');
 include('includes/FreightCalculation.inc');
 include('includes/GetSalesTransGLCodes.inc');
 
@@ -453,7 +454,7 @@ depending on the business logic required this condition may not be required.
 It seems unfair to charge the customer twice for freight if the order
 was not fully delivered the first time ?? */
 
-if (!isset($_SESSION['Items' . $identifier]->FreightCost)) {
+if (!isset($_SESSION['Items' . $identifier]->FreightCost) or $_SESSION['Items' . $identifier]->FreightCost == 0) {
 	if ($_SESSION['DoFreightCalc'] == True) {
 		list($FreightCost, $BestShipper) = CalcFreightCost( $_SESSION['Items' . $identifier]->total,
 															$_SESSION['Items' . $identifier]->BrAdd2,
@@ -465,6 +466,7 @@ if (!isset($_SESSION['Items' . $identifier]->FreightCost)) {
 															$_SESSION['Items' . $identifier]->totalWeight,
 															$_SESSION['Items' . $identifier]->Location,
 															$_SESSION['Items' . $identifier]->DefaultCurrency,
+															$CountriesArray,
 															$db);
 		$_SESSION['Items' . $identifier]->ShipVia = $BestShipper;
 	}

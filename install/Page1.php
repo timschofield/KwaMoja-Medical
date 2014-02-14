@@ -170,6 +170,11 @@ if ($_SESSION['Installer']['DBMS'] == 'mariadb') {
 } else {
 	echo '<option value="mariadb">MariaDB</option>';
 }
+if ($_SESSION['Installer']['DBMS'] == 'postgres') {
+	echo '<option selected="selected" value="postgres">PostgreSQL</option>';
+} else {
+	echo '<option value="postgres">PostgreSQL</option>';
+}
 echo '</select>
 			</li>
 		</ul>

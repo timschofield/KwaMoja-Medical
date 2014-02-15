@@ -124,14 +124,17 @@ echo '<tr>
 			<th>' . _('Qty Issued') . '</th>
 		</tr>';
 
-$RequirmentsResult = DB_query("SELECT worequirements.stockid,
-										stockmaster.description,
-										stockmaster.decimalplaces,
-										autoissue,
-										qtypu
-									FROM worequirements INNER JOIN stockmaster
-									ON worequirements.stockid=stockmaster.stockid
-									WHERE wo='" . $SelectedWO . "'", $db);
+$RequirementsSQL = "SELECT worequirements.stockid,
+							stockmaster.description,
+							stockmaster.decimalplaces,
+							autoissue,
+							qtypu
+						FROM worequirements
+						INNER JOIN stockmaster
+							ON worequirements.stockid=stockmaster.stockid
+						WHERE wo='" . $SelectedWO . "'
+							AND worequirements.parentstockid='" . $StockID . "'";
+$RequirmentsResult = DB_query($RequirementsSQL, $db);
 
 while ($RequirementsRow = DB_fetch_array($RequirmentsResult)) {
 	if ($RequirementsRow['autoissue'] == 0) {

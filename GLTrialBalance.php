@@ -100,7 +100,8 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 
 	echo '<div class="centre">
 			<input type="submit" name="ShowTB" value="' . _('Show Trial Balance') . '" />
-			<input type="submit" name="PrintPDF" value="' . _('PrintPDF') . '" />
+			<input type="submit" name="PrintPDF" value="' . _('Print PDF') . '" />
+			<input type="submit" name="ExportCSV" value="' . _('Export to Spreadsheet') . '" />
 		</div>';
 
 	/*Now do the posting while the user is thinking about the period to select */
@@ -395,6 +396,10 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 	$pdf->OutputD($_SESSION['DatabaseName'] . '_GL_Trial_Balance_' . Date('Y-m-d') . '.pdf');
 	$pdf->__destruct();
 	exit;
+} elseif (isset($_POST['ExportCSV'])) {
+	include('includes/header.inc');
+	echo '<div class="centre noPrint"><a href="GLTrialBalance.php">' . _('Select A Different Period') . '</a></div>';
+	echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/GLTrialBalance_csv.php?FromPeriod=' . $_POST['FromPeriod'] . '&ToPeriod=' . $_POST['ToPeriod'] . '">';
 } else {
 
 	$ViewTopic = 'GeneralLedger';

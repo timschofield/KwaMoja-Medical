@@ -35,7 +35,13 @@ if ($_GET['Action'] == 'Enter') {
 	if (isset($_POST['EnterCounts'])) {
 
 		$Added = 0;
-		for ($i = 1; $i <= 10; $i++) {
+		// Arbitrary number of 10 hard coded as default as originally used - should there be a setting?
+		if (isset($_POST['RowCount'])) {
+			$Counter = $_POST['RowCount'];
+		} else {
+			$Counter = 10;
+		}
+		for ($i = 1;$i <= $Counter;$i++) {
 			$InputError = False; //always assume the best to start with
 
 			$Quantity = 'Qty_' . $i;
@@ -159,15 +165,15 @@ if ($_GET['Action'] == 'Enter') {
 										WHERE categoryid='" . $_POST['StkCat'] . "'
 										ORDER BY stockcheckfreeze.stockid", $db);
 
-			$i = 1;
+			$RowCount = 1;
 			while ($StkRow = DB_fetch_array($StkItemsResult)) {
 				echo '<tr>
-						<td><input type="hidden" name="StockID_' . $i . '" value="' . $StkRow['stockid'] . '" />' . $StkRow['stockid'] . '</td>
+						<td><input type="hidden" name="StockID_' . $RowCount . '" value="' . $StkRow['stockid'] . '" />' . $StkRow['stockid'] . '</td>
 						<td>' . $StkRow['description'] . '</td>
-						<td><input type="text" name="Qty_' . $i . '" maxlength="10" size="10" /></td>
-						<td><input type="text" name="Ref_' . $i . '" maxlength="20" size="20" /></td>
+						<td><input type="text" name="Qty_' . $RowCount . '" maxlength="10" size="10" /></td>
+						<td><input type="text" name="Ref_' . $RowCount . '" maxlength="20" size="20" /></td>
 					</tr>';
-				$i++;
+				$RowCount++;
 			}
 
 		} else {
@@ -179,22 +185,22 @@ if ($_GET['Action'] == 'Enter') {
 					<th>' . _('Reference') . '</th>
 				</tr>';
 
-			for ($i = 1; $i <= 10; $i++) {
+			for ($RowCount = 1; $RowCount <= 10; $RowCount++) {
 
 				echo '<tr>
-						<td><input type="text" name="BarCode_' . $i . '" maxlength="20" size="20" /></td>
-						<td><input type="text" name="StockID_' . $i . '" maxlength="20" size="20" /></td>
-						<td><input type="text" name="Qty_' . $i . '" maxlength="10" size="10" /></td>
-						<td><input type="text" name="Ref_' . $i . '" maxlength="20" size="20" /></td>
+						<td><input type="text" name="BarCode_' . $RowCount . '" maxlength="20" size="20" /></td>
+						<td><input type="text" name="StockID_' . $RowCount . '" maxlength="20" size="20" /></td>
+						<td><input type="text" name="Qty_' . $RowCount . '" maxlength="10" size="10" /></td>
+						<td><input type="text" name="Ref_' . $RowCount . '" maxlength="20" size="20" /></td>
 					</tr>';
 
 			}
 		}
 
 		echo '</table>
-				<br />
 				<div class="centre">
 					<input type="submit" name="EnterCounts" value="' . _('Enter Above Counts') . '" />
+					<input type="hidden" name="RowCount" value="' .$RowCount . '" />
 				</div>';
 	} // there is a stock check to enter counts for
 
@@ -234,7 +240,10 @@ if ($_GET['Action'] == 'Enter') {
 		echo '<input type="checkbox" name="DEL[' . $myrow['id'] . ']" minlength="0" maxlength="20" size="20" /></td></tr>';
 
 	}
-	echo '</table><br /><div class="centre"><input type="submit" name="SubmitChanges" value="' . _('Save Changes') . '" /></div>';
+	echo '</table>
+			<div class="centre">
+				<input type="submit" name="SubmitChanges" value="' . _('Save Changes') . '" />
+			</div>';
 
 	//END OF action=VIEW
 }

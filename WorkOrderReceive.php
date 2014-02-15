@@ -60,6 +60,7 @@ if (isset($_POST['Process'])) { //user hit the process the work order receipts e
 						stockmaster.serialised,
 						stockmaster.decimalplaces,
 						stockmaster.units,
+						stockmaster.perishable,
 						woitems.qtyreqd,
 						woitems.qtyrecd,
 						woitems.stdcost,
@@ -87,6 +88,7 @@ if (isset($_POST['Process'])) { //user hit the process the work order receipts e
 						stockmaster.serialised,
 						stockmaster.decimalplaces,
 						stockmaster.units,
+						stockmaster.perishable,
 						woitems.qtyreqd,
 						woitems.qtyrecd,
 						woitems.stdcost,
@@ -139,6 +141,13 @@ if (isset($_POST['Process'])) { //user hit the process the work order receipts e
 				}
 			}
 		} //end of lot/batch control
+
+		if (!empty($_POST['ExpiryDate'])) {
+			if(!is_date($_POST['ExpiryDate'])) {
+				$InputError = true;
+				prnMsg(_('The Expiry Date should be in date format'), 'error');
+			}
+		}
 	} else { //not controlled - an easy one!
 		if (!is_numeric(filter_number_format($_POST['Qty']))) {
 			$InputError = true;
@@ -520,16 +529,35 @@ if (isset($_POST['Process'])) { //user hit the process the work order receipts e
 								$QualityText = '';
 							}
 
-							$SQL = "INSERT INTO stockserialitems (stockid,
+							if (empty($_POST['ExpiryDate'])) {
+								$SQL = "INSERT INTO stockserialitems (stockid,
 																	loccode,
 																	serialno,
 																	quantity,
 																	qualitytext)
-											VALUES ('" . $_POST['StockID'] . "',
-													'" . $_POST['IntoLocation'] . "',
-													'" . $_POST['SerialNo' . $i] . "',
-													1,
-													'" . $QualityText . "')";
+																VALUES (
+																	'" . $_POST['StockID'] . "',
+																	'" . $_POST['IntoLocation'] . "',
+																	'" . $_POST['SerialNo' . $i] . "',
+																	1,
+																	'" . $QualityText . "')";
+							} else {
+							// Store expiry date for perishable product
+								$SQL = "INSERT INTO stockserialitems(stockid,
+																	loccode,
+																	serialno,
+																	quantity,
+																	qualitytext,
+																	expirationdate)
+																VALUES (
+																	'" . $_POST['StockID'] . "',
+																	'" . $_POST['IntoLocation'] . "',
+																	'" . $_POST['SerialNo' . $i] . "',
+																	1,
+																	'" . $QualityText . "',
+																	'" . FormatDateForSQL($_POST['ExpiryDate']) . "')";
+							}
+
 							$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The serial stock item record could not be inserted because');
 							$DbgMsg = _('The following SQL to insert the serial stock item records was used');
 							$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
@@ -590,16 +618,34 @@ if (isset($_POST['Process'])) { //user hit the process the work order receipts e
 										AND loccode = '" . $_POST['IntoLocation'] . "'
 										AND serialno = '" . $_POST['BatchRef' . $i] . "'";
 						} else {
-							$SQL = "INSERT INTO stockserialitems (stockid,
-																loccode,
-																serialno,
-																quantity,
-																qualitytext)
-										VALUES ('" . $_POST['StockID'] . "',
-												'" . $_POST['IntoLocation'] . "',
-												'" . $_POST['BatchRef' . $i] . "',
-												'" . filter_number_format($_POST['Qty' . $i]) . "',
-												'" . $_POST['QualityText'] . "')";
+							if (empty($_POST['ExpiryDate'])) {
+								$SQL = "INSERT INTO stockserialitems (stockid,
+																	loccode,
+																	serialno,
+																	quantity,
+																	qualitytext)
+																VALUES (
+																	'" . $_POST['StockID'] . "',
+																	'" . $_POST['IntoLocation'] . "',
+																	'" . $_POST['BatchRef' . $i] . "',
+																	'" . filter_number_format($_POST['Qty'.$i]) . "',
+																	'" . $_POST['QualityText'] . "')";
+							} else {
+								//If it's a perishable product, add expiry date
+								$SQL = "INSERT INTO stockserialitems (stockid,
+																	loccode,
+																	serialno,
+																	quantity,
+																	qualitytext,
+																	expirationdate)
+																VALUES (
+																	'" . $_POST['StockID'] . "',
+																	'" . $_POST['IntoLocation'] . "',
+																	'" . $_POST['BatchRef' . $i] . "',
+																	'" . filter_number_format($_POST['Qty'.$i]) . "',
+																	'" . $_POST['QualityText'] . "',
+																	'" . FormatDateForSQL($_POST['ExpiryDate']) . "')";
+							}
 						}
 						$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The serial stock item record could not be inserted because');
 						$DbgMsg = _('The following SQL to insert the serial stock item records was used');
@@ -800,8 +846,14 @@ echo '<table class="selection">
 		</tr>
 		 <tr>
 			<td>' . _('Date Received') . ':</td>
-		 	<td>' . Date($_SESSION['DefaultDateFormat']) . '</td>
-			<td>' . _('Received Into') . ':</td>
+			<td>' . Date($_SESSION['DefaultDateFormat']) . '</td>';
+		//add expiry date for perishable product
+		if ($WORow['perishable'] == 1){
+			echo '<td>' . _('Expiry Date') . ':<td>
+			      <td><input type="text" name="ExpiryDate" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" required="required"  /></td>';
+		}
+
+		echo '<td>' . _('Received Into') . ':</td>
 			<td><select minlength="0" name="IntoLocation">';
 
 

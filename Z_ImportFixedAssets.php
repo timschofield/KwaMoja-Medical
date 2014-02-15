@@ -114,57 +114,57 @@ if ($_FILES['SelectedAssetFile']['name']) { //start file processing
 
 		if (mb_strlen($Description) == 0 or mb_strlen($Description) > 50) {
 			prnMsg('The description of the asset is expected to be more than 3 characters long and less than 50 characters long', 'error');
-			echo '<br />' . _('Row:') . $Row . ' - ' . _('Invalid Description:') . ' ' . $Description;
+			echo '<br />' . _('Row') . ':' . $Row . ' - ' . _('Invalid Description') . ': ' . $Description;
 			$InputError = true;
 		}
 		if (!is_numeric($DepnRate)) {
 			prnMsg(_('The depreciation rate is expected to be numeric'), 'error');
-			echo '<br />' . _('Row:') . $Row . ' - ' . _('Invalid Depreciation Rate:') . ' ' . $DepnRate;
+			echo '<br />' . _('Row') . ':' . $Row . ' - ' . _('Invalid Depreciation Rate') . ': ' . $DepnRate;
 			$InputError = true;
 		} elseif ($DepnRate < 0 or $DepnRate > 100) {
 			prnMsg(_('The depreciation rate is expected to be a number between 0 and 100'), 'error');
-			echo '<br />' . _('Row:') . $Row . ' - ' . _('Invalid Depreciation Rate:') . ' ' . $DepnRate;
+			echo '<br />' . _('Row') . ':' . $Row . ' - ' . _('Invalid Depreciation Rate') . ': ' . $DepnRate;
 			$InputError = true;
 		}
 		if (!is_numeric($AccumDepn)) {
 			prnMsg(_('The accumulated depreciation is expected to be numeric'), 'error');
-			echo '<br />' . _('Row:') . $Row . ' - ' . _('Invalid Accumulated Depreciation:') . ' ' . $AccumDepn;
+			echo '<br />' . _('Row') . ':' . $Row . ' - ' . _('Invalid Accumulated Depreciation') . ': ' . $AccumDepn;
 			$InputError = true;
 		} elseif ($AccumDepn < 0) {
 			prnMsg(_('The accumulated depreciation is expected to be either zero or a positive number'), 'error');
-			echo '<br />' . _('Row:') . $Row . ' - ' . _('Invalid Accumulated Depreciation:') . ' ' . $AccumDepn;
+			echo '<br />' . _('Row') . ':' . $Row . ' - ' . _('Invalid Accumulated Depreciation') . ': ' . $AccumDepn;
 			$InputError = true;
 		}
 		if (!is_numeric($Cost)) {
 			prnMsg(_('The cost is expected to be numeric'), 'error');
-			echo '<br />' . _('Row:') . $Row . ' - ' . _('Invalid Cost:') . ' ' . $Cost;
+			echo '<br />' . _('Row') . ':' . $Row . ' - ' . _('Invalid Cost') . ': ' . $Cost;
 			$InputError = true;
 		} elseif ($Cost <= 0) {
 			prnMsg(_('The cost is expected to be a positive number'), 'error');
-			echo '<br />' . _('Row:') . $Row . ' - ' . _('Invalid Cost:') . ' ' . $AccumDepn;
+			echo '<br />' . _('Row') . ':' . $Row . ' - ' . _('Invalid Cost') . ': ' . $AccumDepn;
 			$InputError = true;
 		}
 		if ($DepnType != 'SL' and $DepnType != 'DV') {
 			prnMsg(_('The depreciation type must be either SL - Straight Line or DV - Diminishing Value'), 'error');
-			echo '<br />' . _('Row:') . $Row . ' - ' . _('Invalid depreciation type:') . ' ' . $DepnType;
+			echo '<br />' . _('Row') . ':' . $Row . ' - ' . _('Invalid depreciation type') . ': ' . $DepnType;
 			$InputError = true;
 		}
 		$result = DB_query("SELECT categoryid FROM fixedassetcategories WHERE categoryid='" . $AssetCategoryID . "'", $db);
 		if (DB_num_rows($result) == 0) {
 			$InputError = true;
 			prnMsg(_('The asset category code entered must be exist in the assetcategories table'), 'error');
-			echo '<br />' . _('Row:') . $Row . ' - ' . _('Invalid asset category:') . ' ' . $AssetCategoryID;
+			echo '<br />' . _('Row') . ':' . $Row . ' - ' . _('Invalid asset category') . ': ' . $AssetCategoryID;
 		}
 		$result = DB_query("SELECT locationid FROM fixedassetlocations WHERE locationid='" . $AssetLocationCode . "'", $db);
 		if (DB_num_rows($result) == 0) {
 			$InputError = true;
 			prnMsg(_('The asset location code entered must be exist in the asset locations table'), 'error');
-			echo '<br />' . _('Row:') . $Row . ' - ' . _('Invalid asset location code:') . ' ' . $AssetLocationCode;
+			echo '<br />' . _('Row') . ':' . $Row . ' - ' . _('Invalid asset location code') . ': ' . $AssetLocationCode;
 		}
 		if (!Is_Date($DatePurchased)) {
 			$InputError = true;
-			prnMsg(_('The date purchased must be entered in the format:') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
-			echo '<br />' . _('Row:') . $Row . ' - ' . _('Invalid date format:') . ' ' . $DatePurchased;
+			prnMsg(_('The date purchased must be entered in the format') . ': ' . $_SESSION['DefaultDateFormat'], 'error');
+			echo '<br />' . _('Row') . ':' . $Row . ' - ' . _('Invalid date format') . ': ' . $DatePurchased;
 		}
 		if ($DepnType == 'DV') {
 			$DepnType = 1;
@@ -252,7 +252,7 @@ if ($_FILES['SelectedAssetFile']['name']) { //start file processing
 				$InsResult = DB_query($sql, $db, $ErrMsg, $DbgMsg);
 
 				if (DB_error_no($db) == 0) {
-					prnMsg(_('Inserted the new asset:') . ' ' . $Description, 'info');
+					prnMsg(_('Inserted the new asset') . ': ' . $Description, 'info');
 				}
 			}
 		} // there were errors checking the row so no inserts
@@ -288,7 +288,7 @@ if ($_FILES['SelectedAssetFile']['name']) { //start file processing
 	echo '<input type="hidden" name="MAX_FILE_SIZE" value="1000000" />';
 	echo '<table class="selection">
 			<tr>
-				<td>' . _('Select Date to Upload B/Fwd Assets To:') . '</td>
+				<td>' . _('Select Date to Upload B/Fwd Assets To') . ':</td>
 				<td><select minlength="0" name="DateToEnter">';
 	$PeriodsResult = DB_query("SELECT lastdate_in_period FROM periods ORDER BY periodno", $db);
 	while ($PeriodRow = DB_fetch_row($PeriodsResult)) {
@@ -296,7 +296,7 @@ if ($_FILES['SelectedAssetFile']['name']) { //start file processing
 	}
 	echo '</select></td></tr>';
 	echo '<tr>
-			<td>' . _('Fixed Assets Upload file:') . '</td><td><input name="SelectedAssetFile" type="file" /></td>
+			<td>' . _('Fixed Assets Upload file') . ':</td><td><input name="SelectedAssetFile" type="file" /></td>
 		</tr>
 	</table>
 			<input type="submit" value="' . _('Send File') . '" />

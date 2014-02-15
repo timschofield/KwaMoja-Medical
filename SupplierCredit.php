@@ -41,8 +41,7 @@ if (!isset($_SESSION['SuppTrans']->SupplierName)) {
 	$SupplierName = $_SESSION['SuppTrans']->SupplierName;
 }
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . _('Supplier Credit Note') . '" alt="" />' . ' ' . _('Enter Supplier Credit Note:') . ' ' . $SupplierName;
-echo '</p>';
+echo '<p class="page_title_text noPrint"><img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . _('Supplier Credit Note') . '" alt="" />' . ' ' . _('Enter Supplier Credit Note') . ': ' . $SupplierName . '</p>';
 if (isset($_GET['SupplierID']) and $_GET['SupplierID'] != '') {
 
 	/*It must be a new credit note entry - clear any existing credit note details from the SuppTrans object and initiate a newy*/
@@ -1156,7 +1155,7 @@ if (isset($_POST['PostCreditNote'])) {
 											'" . -$TaxTotals->TaxOvAmount . "')";
 
 			$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The supplier transaction taxes records could not be inserted because');
-			$DbgMsg = _('The following SQL to insert the supplier transaction taxes record was used:');
+			$DbgMsg = _('The following SQL to insert the supplier transaction taxes record was used') . ':';
 			$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
 		}
 
@@ -1228,8 +1227,8 @@ if (isset($_POST['PostCreditNote'])) {
 					/*Now update the asset cost in fixedassets table */
 					$SQL = "UPDATE fixedassets SET cost = cost - " . $PurchPriceVar . "
 							WHERE assetid = '" . $EnteredGRN->AssetID . "'";
-					$ErrMsg = _('CRITICAL ERROR! NOTE DOWN THIS ERROR AND SEEK ASSISTANCE. The fixed asset cost was not able to be updated because:');
-					$DbgMsg = _('The following SQL was used to attempt the update of the fixed asset cost:');
+					$ErrMsg = _('CRITICAL ERROR! NOTE DOWN THIS ERROR AND SEEK ASSISTANCE. The fixed asset cost was not able to be updated because') . ':';
+					$DbgMsg = _('The following SQL was used to attempt the update of the fixed asset cost') . ':';
 					$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
 				} //end if there is a cost difference on invoice compared to purchase order for the fixed asset
 			} //the line is a fixed asset
@@ -1317,15 +1316,15 @@ if (isset($_POST['PostCreditNote'])) {
 			/*Now update the asset cost in fixedassets table */
 			$SQL = "UPDATE fixedassets SET cost = cost - " . ($AssetAddition->Amount / $_SESSION['SuppTrans']->ExRate) . "
 					WHERE assetid = '" . $AssetAddition->AssetID . "'";
-			$ErrMsg = _('CRITICAL ERROR! NOTE DOWN THIS ERROR AND SEEK ASSISTANCE. The fixed asset cost  was not able to be updated because:');
-			$DbgMsg = _('The following SQL was used to attempt the update of the asset cost:');
+			$ErrMsg = _('CRITICAL ERROR! NOTE DOWN THIS ERROR AND SEEK ASSISTANCE. The fixed asset cost  was not able to be updated because') . ':';
+			$DbgMsg = _('The following SQL was used to attempt the update of the asset cost') . ':';
 			$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
 		} //end of non-gl fixed asset stuff
 
 		DB_Txn_Commit($db);
 
 		prnMsg(_('Supplier credit note number') . ' ' . $CreditNoteNo . ' ' . _('has been processed'), 'success');
-		echo '<br /><div class="centre"><a href="' . $RootPath . '/SupplierCredit.php?&SupplierID=' . $_SESSION['SuppTrans']->SupplierID . '">' . _('Enter another Credit Note for this Supplier') . '</a></div>';
+		echo '<div class="centre"><a href="' . $RootPath . '/SupplierCredit.php?&SupplierID=' . $_SESSION['SuppTrans']->SupplierID . '">' . _('Enter another Credit Note for this Supplier') . '</a></div>';
 		unset($_SESSION['SuppTrans']->GRNs);
 		unset($_SESSION['SuppTrans']->Shipts);
 		unset($_SESSION['SuppTrans']->GLCodes);

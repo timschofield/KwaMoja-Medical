@@ -841,7 +841,7 @@ if (!isset($_GET['delete'])) {
 		$_POST['Email'] = '';
 	}
 	echo '<tr>
-			<td>' . (($_POST['Email']) ? '<a href="Mailto:' . $_POST['Email'] . '">' . _('Email') . ':</a>' : _('Email') . ':') . '</td>';
+			<td>' . (($_POST['Email']) ? '<a href="Mailto:' . $_POST['Email'] . '">' . _('Email') . ':</a>' : _('Email') . ': ') . '</td>';
 	//only display email link if there is an email address
 	echo '<td><input tabindex="18" type="email" name="Email" size="56" minlength="0" maxlength="55" value="' . $_POST['Email'] . '" /></td>
 		</tr>';

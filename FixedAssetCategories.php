@@ -298,7 +298,7 @@ echo '</select></td>
 
 DB_data_seek($PnLAccountsResult, 0);
 echo '<tr>
-		<td>' . _('Profit or Loss on Disposal GL Code:') . '</td>
+		<td>' . _('Profit or Loss on Disposal GL Code') . ':</td>
 		<td><select required="required" minlength="0" name="DisposalAct">';
 while ($myrow = DB_fetch_array($PnLAccountsResult)) {
 	if (isset($_POST['DisposalAct']) and $myrow['accountcode'] == $_POST['DisposalAct']) {

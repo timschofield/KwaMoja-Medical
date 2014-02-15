@@ -8,7 +8,6 @@ echo '<p class="page_title_text noPrint" > <img src="' . $RootPath . '/css/' . $
 
 if (!isset($_POST['Show'])) {
 	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	echo '<table class="selection">';
@@ -60,7 +59,7 @@ if (!isset($_POST['Show'])) {
 	$Periods = DB_query($sql, $db);
 
 	echo '<tr>
-				<td>' . _('Select Period:') . '</td>
+				<td>' . _('Select Period') . ':</td>
 				<td><select minlength="0" name="FromPeriod">';
 	while ($myrow = DB_fetch_array($Periods, $db)) {
 		if (isset($_POST['FromPeriod']) and $_POST['FromPeriod'] == $myrow['periodno']) {
@@ -72,10 +71,8 @@ if (!isset($_POST['Show'])) {
 
 	echo '</select></td>
 		</table>
-		<br />
 		<div class="centre">
 			<input type="submit" name="Show" value="' . _('Show transactions') . '" />
-		</div>
 		</div>
 		</form>';
 } else {

@@ -473,7 +473,7 @@ if (isset($_POST['SelectingOrderItems']) or isset($_POST['QuickEntry']) or isset
 				}
 
 			} else if ($myrow['mbflag'] == 'G') {
-				prnMsg(_('Phantom assemblies cannot be sold, these items exist only as bills of materials used in other manufactured items. The following item has not been added to the order:') . ' ' . $NewItem, 'warn');
+				prnMsg(_('Phantom assemblies cannot be sold, these items exist only as bills of materials used in other manufactured items. The following item has not been added to the order') . ': ' . $NewItem, 'warn');
 			} else if ($myrow['controlled'] == 1) {
 				prnMsg(_('The system does not currently cater for counter sales of lot controlled or serialised items'), 'warn');
 			} else if ($NewItemQty <= 0) {

@@ -55,7 +55,9 @@ if ($_POST['EntryType'] == 'KEYED'){
 				if ( !array_key_exists($myrow['serialno'], $AllSerials)  or
 					($myrow['quantity'] - $AllSerials[$myrow['serialno']] >= 0) ) {
 					//Use the $InOutModifier to ajust the negative or postive direction of the quantity. Otherwise the calculated quantity is wrong.
-					$RecvQty = $myrow['quantity'] - $InOutModifier*$AllSerials[$myrow['serialno']];
+					if (sizeof($AllSerials) > 0) {
+						$RecvQty = $myrow['quantity'] - $InOutModifier*$AllSerials[$myrow['serialno']];
+					}
 					echo '<option value="' . $myrow['serialno'] . '/|/'. $RecvQty .'">' . $myrow['serialno'].' - ' . _('Qty left'). ': ' . $RecvQty . '</option>';
 					$ItemsAvailable += $RecvQty;
 				}

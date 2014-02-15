@@ -44,7 +44,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 	/*Show a form to allow input of criteria for TB to show */
 	echo '<table class="selection" summary="' . _('Input criteria for inquiry') . '">
 			<tr>
-				<td>' . _('Select Period From:') . '</td>
+				<td>' . _('Select Period From') . ':</td>
 				<td><select minlength="0" name="FromPeriod">';
 	$NextYear = date('Y-m-d', strtotime('+1 Year'));
 	$sql = "SELECT periodno,
@@ -80,7 +80,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 	}
 
 	echo '<tr>
-			<td>' . _('Select Period To:') . '</td>
+			<td>' . _('Select Period To') . ':</td>
 			<td><select minlength="0" name="ToPeriod">';
 
 	$RetResult = DB_data_seek($Periods, 0);
@@ -100,7 +100,8 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 
 	echo '<div class="centre">
 			<input type="submit" name="ShowTB" value="' . _('Show Trial Balance') . '" />
-			<input type="submit" name="PrintPDF" value="' . _('PrintPDF') . '" />
+			<input type="submit" name="PrintPDF" value="' . _('Print PDF') . '" />
+			<input type="submit" name="ExportCSV" value="' . _('Export to Spreadsheet') . '" />
 		</div>';
 
 	/*Now do the posting while the user is thinking about the period to select */
@@ -395,6 +396,10 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 	$pdf->OutputD($_SESSION['DatabaseName'] . '_GL_Trial_Balance_' . Date('Y-m-d') . '.pdf');
 	$pdf->__destruct();
 	exit;
+} elseif (isset($_POST['ExportCSV'])) {
+	include('includes/header.inc');
+	echo '<div class="centre noPrint"><a href="GLTrialBalance.php">' . _('Select A Different Period') . '</a></div>';
+	echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/GLTrialBalance_csv.php?FromPeriod=' . $_POST['FromPeriod'] . '&ToPeriod=' . $_POST['ToPeriod'] . '">';
 } else {
 
 	$ViewTopic = 'GeneralLedger';
@@ -441,7 +446,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 			chartdetails.accountcode";
 
 
-	$AccountsResult = DB_query($SQL, $db, _('No general ledger accounts were returned by the SQL because'), _('The SQL that failed was:'));
+	$AccountsResult = DB_query($SQL, $db, _('No general ledger accounts were returned by the SQL because'), _('The SQL that failed was') . ': ');
 
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Trial Balance') . '" alt="' . _('Print') . '" />' . ' ' . _('Trial Balance Report') . '</p>';
 

@@ -82,8 +82,8 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 		if (DB_error_no($db) != 1) {
 			if (DB_num_rows($result) == 1) {
 				$myrow = DB_fetch_array($result);
-				$DefaultBankAccountNumber = _('Account:') . ' ' . $myrow['bankaccountnumber'];
-				$DefaultBankAccountCode = _('Bank Code:') . ' ' . $myrow['bankaccountcode'];
+				$DefaultBankAccountNumber = _('Account') . ': ' . $myrow['bankaccountnumber'];
+				$DefaultBankAccountCode = _('Bank Code') . ': ' . $myrow['bankaccountcode'];
 			} else {
 				$DefaultBankAccountNumber = '';
 				$DefaultBankAccountCode = '';

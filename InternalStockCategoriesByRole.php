@@ -73,7 +73,7 @@ if (isset($_POST['submit'])) {
 										VALUES ('" . $_POST['SelectedRole'] . "',
 												'" . $_POST['SelectedCategory'] . "')";
 
-			$msg = _('Stock Category:') . ' ' . $_POST['SelectedCategory'] . ' ' . _('has been allowed to user role') . ' ' . $_POST['SelectedRole'] . ' ' . _('as internal');
+			$msg = _('Stock Category') . ': ' . $_POST['SelectedCategory'] . ' ' . _('has been allowed to user role') . ' ' . $_POST['SelectedRole'] . ' ' . _('as internal');
 			$checkSql = "SELECT count(secroleid)
 							FROM securityroles";
 			$result = DB_query($checkSql, $db);

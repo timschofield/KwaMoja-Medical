@@ -84,7 +84,7 @@ if (count($_SESSION['Contract' . $identifier]->ContractReqts) > 0) {
 
 	if (isset($_SESSION['Contract' . $identifier]->ContractRef)) {
 		echo '<tr>
-				<th colspan="5">' . _('Contract Reference:') . ' ' . $_SESSION['Contract' . $identifier]->ContractRef . '</th>
+				<th colspan="5">' . _('Contract Reference') . ': ' . $_SESSION['Contract' . $identifier]->ContractRef . '</th>
 			</tr>';
 	}
 

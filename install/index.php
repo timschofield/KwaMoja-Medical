@@ -22,6 +22,9 @@ if (isset($_POST['next']) and isset($_SESSION['Installer']['CurrentPage']) and $
 		case 'mysqli':
 			$_SESSION['Installer']['DBPort'] = 3306;
 			break;
+		case 'postgres':
+			$_SESSION['Installer']['DBPort'] = 5432;
+			break;
 		default:
 			$_SESSION['Installer']['DBPort'] = 3306;
 			break;
@@ -53,6 +56,9 @@ if (isset($_POST['next']) and isset($_SESSION['Installer']['CurrentPage']) and $
 			break;
 		case 'mysqli':
 			$db = @mysqli_connect($_SESSION['Installer']['HostName'], $_SESSION['Installer']['UserName'], $_SESSION['Installer']['Password']);
+			break;
+		case 'posgres':
+			$db = pg_connect('host=' . $_SESSION['Installer']['HostName'] . ' dbname=kwamoja port=5432 user=postgres');;
 			break;
 		default:
 			$db = @mysqli_connect($_SESSION['Installer']['HostName'], $_SESSION['Installer']['UserName'], $_SESSION['Installer']['Password']);
@@ -146,7 +152,7 @@ if (isset($_GET['New']) or isset($_POST['cancel'])) { /* If the installer is jus
 	$_SESSION['Installer']['CurrentPage'] = 1;
 	$_SESSION['Installer']['Language'] = 'en_GB.utf8';
 	$_SESSION['Installer']['CoA'] = 'en_GB-utf8.php';
-	$_SESSION['Installer']['DBMS'] = 'mariadb';
+	$_SESSION['Installer']['DBMS'] = 'postgres';
 	$_SESSION['Installer']['DBExt'] = 1;
 	$_SESSION['Installer']['HostName'] = 'localhost';
 	$_SESSION['Installer']['UserName'] = 'root';

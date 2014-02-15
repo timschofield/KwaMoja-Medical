@@ -585,18 +585,18 @@ if (isset($_SESSION['CustomerID']) and $_SESSION['CustomerID'] != '') {
 					</tr>';
 			} //$myrow['lastpaiddate'] == 0
 			else {
-				echo _('Last Paid Date:') . '</td>
+				echo _('Last Paid Date') . ':</td>
 					<td class="select"> <b>' . ConvertSQLDate($myrow['lastpaiddate']) . '</b> </td>
 					<td class="select">' . $myrow['lastpaiddays'] . ' ' . _('days') . '</td>
 					</tr>';
 			}
 			echo '<tr>
-					<td class="select">' . _('Last Paid Amount (inc tax):') . '</td>
+					<td class="select">' . _('Last Paid Amount (inc tax)') . ':</td>
 					<td class="select"> <b>' . locale_number_format($myrow['lastpaid'], $myrow['currdecimalplaces']) . '</b></td>
 					<td class="select"></td>
 				</tr>';
 			echo '<tr>
-					<td class="select">' . _('Customer since:') . '</td>
+					<td class="select">' . _('Customer since') . ':</td>
 					<td class="select"> <b>' . ConvertSQLDate($myrow['clientsince']) . '</b> </td>
 					<td class="select">' . $myrow['customersincedays'] . ' ' . _('days') . '</td>
 				</tr>';
@@ -609,13 +609,13 @@ if (isset($_SESSION['CustomerID']) and $_SESSION['CustomerID'] != '') {
 			} //$row['total'] == 0
 			else {
 				echo '<tr>
-						<td class="select">' . _('Total Spend from this Customer (inc tax):') . ' </td>
+						<td class="select">' . _('Total Spend from this Customer (inc tax)') . ':</td>
 						<td class="select"><b>' . locale_number_format($row['total'], $myrow['currdecimalplaces']) . '</b></td>
 						<td class="select"></td>
 					</tr>';
 			}
 			echo '<tr>
-					<td class="select">' . _('Customer Type:') . ' </td>
+					<td class="select">' . _('Customer Type') . ':</td>
 					<td class="select"><b>' . $CustomerTypeName . '</b></td>
 					<td class="select"></td>
 				</tr>';

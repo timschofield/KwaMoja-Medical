@@ -4,7 +4,7 @@
 Freight cost is determined by looking for a match of destination city from the Address2 and Address3 fields then looking through the freight company rates for the total KGs and Cubic meters  to figure out the least cost shipping company. */
 
 
-function CalcFreightCost($TotalValue, $BrAdd2, $BrAdd3, $BrAdd4, $BrAdd5, $BrAddCountry, $TotalVolume, $TotalWeight, $FromLocation, $Currency, $db) {
+function CalcFreightCost($TotalValue, $BrAdd2, $BrAdd3, $BrAdd4, $BrAdd5, $BrAddCountry, $TotalVolume, $TotalWeight, $FromLocation, $Currency, $CountriesArray, $db) {
 
 	$ParameterError = FALSE;
 	if ((!isset($BrAdd2)) and (!isset($BrAdd3)) and (!isset($BrAdd4)) and (!isset($BrAdd5)) and (!isset($BrAddCountry))){
@@ -93,6 +93,7 @@ function CalcFreightCost($TotalValue, $BrAdd2, $BrAdd3, $BrAdd4, $BrAdd5, $BrAdd
 		}
 	} else {
 		$CalcFreightCost = "NOT AVAILABLE";
+		$CalcBestShipper = 1;
 	}
 	if ($TotalValue >= $_SESSION['FreightChargeAppliesIfLessThan']) {
 

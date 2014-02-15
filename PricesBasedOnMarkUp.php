@@ -306,7 +306,7 @@ if (isset($_POST['UpdatePrices'])) {
 			} else { //Must be using standard/weighted average costs
 				$Cost = $myrow['cost'];
 				if ($Cost <= 0) {
-					prnMsg(_('The cost for this item is not set up or is set up as less than or equal to zero - no price changes will be made based on zero cost items. The item concerned is:') . ' ' . $myrow['stockid'], 'warn');
+					prnMsg(_('The cost for this item is not set up or is set up as less than or equal to zero - no price changes will be made based on zero cost items. The item concerned is') . ': ' . $myrow['stockid'], 'warn');
 				}
 			}
 			$_POST['RoundingFactor'] = filter_number_format($_POST['RoundingFactor']);

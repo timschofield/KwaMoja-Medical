@@ -667,6 +667,7 @@ function InvoiceSalesOrder($OrderNo, $User, $Password) {
 								  salesorders.orddate,
 								  salesorders.ordertype,
 								  salesorders.shipvia,
+								  salesorders.freightcost,
 								  custbranch.area,
 								  custbranch.taxgroupid,
 								  debtorsmaster.currcode,

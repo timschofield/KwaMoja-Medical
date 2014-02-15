@@ -159,7 +159,7 @@ if (isset($_POST['submit'])) {
 
 		}
 		$ErrMsg = _('The shop configuration could not be updated because');
-		$DbgMsg = _('The SQL that failed was:');
+		$DbgMsg = _('The SQL that failed was') . ':';
 		if (sizeof($SQL) > 0) {
 			$result = DB_Txn_Begin($db);
 			foreach ($SQL as $SqlLine) {

@@ -15,7 +15,7 @@ echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $T
 
 echo '<table class="selection">
 		<tr>
-			<td>' . _('Select recurring order templates for delivery from:') . ' </td>
+			<td>' . _('Select recurring order templates for delivery from') . ':</td>
 			<td>' . '<select required="required" minlength="1" name="StockLocation">';
 
 if ($_SESSION['RestrictLocations'] == 0) {

@@ -98,7 +98,7 @@ if (isset($_POST['PrintPDF'])) {
 		$YPos -= $line_height;
 		if ($SellThroRow['suppname'] != $Supplier) {
 			if ($SupplierClaimTotal > 0) {
-				$LeftOvers = $pdf->addTextWrap($Left_Margin + 2, $YPos, 30, $FontSize, $Supplier . ' ' . _('Total Claim:') . ' (' . $CurrCode . ')');
+				$LeftOvers = $pdf->addTextWrap($Left_Margin + 2, $YPos, 30, $FontSize, $Supplier . ' ' . _('Total Claim') . ': (' . $CurrCode . ')');
 				$LeftOvers = $pdf->addTextWrap(440, $YPos, 60, $FontSize, locale_number_format($SupplierClaimTotal, $CurrDecimalPlaces), 'right');
 				include('includes/PDFSellThroughClaimPageHeader.inc');
 			}
@@ -140,7 +140,7 @@ if (isset($_POST['PrintPDF'])) {
 		$pdf->line($Left_Margin + 480, $YPos, $Left_Margin + 480 + 60, $YPos);
 		$YPos -= $line_height;
 
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 2, $YPos, 470, $FontSize, $Supplier . ' ' . _('Total Claim:'), 'right');
+		$LeftOvers = $pdf->addTextWrap($Left_Margin + 2, $YPos, 470, $FontSize, $Supplier . ' ' . _('Total Claim') . ': ', 'right');
 		$LeftOvers = $pdf->addTextWrap($Left_Margin + 480, $YPos, 60, $FontSize, locale_number_format($SupplierClaimTotal, $CurrDecimalPlaces), 'right');
 		$YPos -= 5;
 

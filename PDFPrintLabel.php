@@ -39,7 +39,7 @@ if ((isset($_POST['ShowLabels']) or isset($_POST['SetAll'])) and isset($_POST['F
 		prnMsg(_('The Price Labels could not be retrieved by the SQL because') . ' - ' . DB_error_msg($db), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($debug == 1) {
-			prnMsg(_('For debugging purposes the SQL used was:') . $SQL, 'error');
+			prnMsg(_('For debugging purposes the SQL used was') . ': ' . $SQL, 'error');
 		}
 		include('includes/footer.inc');
 		exit;

@@ -104,7 +104,7 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 					$OrderValue += $PurchItems[$StockID]['Quantity'] * $PurchItems[$StockID]['Price'];
 				} else { //item could not be found
 					$InputError = 1;
-					prnmsg(_('An item where a quantity was entered could not be retrieved from the database. The order cannot proceed. The item code was:') . ' ' . $StockID, 'error');
+					prnmsg(_('An item where a quantity was entered could not be retrieved from the database. The order cannot proceed. The item code was') . ': ' . $StockID, 'error');
 				}
 			} //end if the quantity entered into the form is positive
 		} //end if the form variable name is OrderQtyXXX

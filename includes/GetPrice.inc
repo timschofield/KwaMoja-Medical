@@ -8,7 +8,7 @@ function GetPrice($StockID, $DebtorNo, $BranchCode, $db, $ReportZeroPrice = 1) {
 				WHERE debtorsmaster.salestype=pricematrix.salestype
 				AND debtorsmaster.debtorno = '".$DebtorNo."'
 				AND pricematrix.stockid = '".$StockID."'";
-	$ErrorMsg = _('Failed to retrieve price from price matrix');
+	$ErrMsg = _('Failed to retrieve price from price matrix');
 	$result = DB_query($sql,$db,$ErrMsg);
 	if (DB_num_rows($result) == 0) {
 		/*Search by branch and customer for a date specified price */

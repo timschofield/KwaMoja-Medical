@@ -36,9 +36,7 @@ else {
 	$SupplierName = $_SESSION['SuppTrans']->SupplierName;
 }
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . _('Supplier Invoice') . '" alt="" />
-	 ' . ' ' . _('Enter Supplier Invoice:') . ' ' . $SupplierName;
-echo '</p>';
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . _('Supplier Invoice') . '" alt="" />' . ' ' . _('Enter Supplier Invoice') . ': ' . $SupplierName . '</p>';
 if (isset($_GET['SupplierID']) and $_GET['SupplierID'] != '') {
 	/*It must be a new invoice entry - clear any existing invoice details from the SuppTrans object and initiate a newy*/
 	if (isset($_SESSION['SuppTrans'])) {
@@ -373,7 +371,7 @@ if (isset($_GET['ReceivePO']) and $_GET['ReceivePO'] != '') {
 								$SQL = "UPDATE fixedassets SET cost = cost + " . ($CurrentStandardCost * $OrderLine->ReceiveQty) . "
 											WHERE assetid = '" . $OrderLine->AssetID . "'";
 							}
-							$ErrMsg = _('CRITICAL ERROR! NOTE DOWN THIS ERROR AND SEEK ASSISTANCE. The fixed asset cost and date purchased was not able to be updated because:');
+							$ErrMsg = _('CRITICAL ERROR! NOTE DOWN THIS ERROR AND SEEK ASSISTANCE. The fixed asset cost and date purchased was not able to be updated because') . ':';
 							$DbgMsg = _('The following SQL was used to attempt the update of the cost and the date the asset was purchased');
 							$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
 
@@ -1473,7 +1471,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 										'" . $TaxTotals->TaxOvAmount . "')";
 
 			$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The supplier transaction taxes records could not be inserted because');
-			$DbgMsg = _('The following SQL to insert the supplier transaction taxes record was used:');
+			$DbgMsg = _('The following SQL to insert the supplier transaction taxes record was used') . ':';
 			$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
 		} //$_SESSION['SuppTrans']->Taxes AS $TaxTotals
 
@@ -1737,8 +1735,8 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 					$SQL = "UPDATE fixedassets SET cost = cost + " . ($PurchPriceVar) . "
 							WHERE assetid = '" . $EnteredGRN->AssetID . "'";
 
-					$ErrMsg = _('CRITICAL ERROR! NOTE DOWN THIS ERROR AND SEEK ASSISTANCE. The fixed asset cost could not be updated because:');
-					$DbgMsg = _('The following SQL was used to attempt the update of the asset cost:');
+					$ErrMsg = _('CRITICAL ERROR! NOTE DOWN THIS ERROR AND SEEK ASSISTANCE. The fixed asset cost could not be updated because') . ':';
+					$DbgMsg = _('The following SQL was used to attempt the update of the asset cost') . ':';
 					$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
 				} //end if there was a difference in the cost
 			} //the item was an asset received on a purchase order
@@ -1831,7 +1829,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 				$SQL .= ", datepurchased='" . $SQLInvoiceDate . "'";
 			} //$AssetRow['datepurchased'] == '0000-00-00'
 			$SQL .= " WHERE assetid = '" . $AssetAddition->AssetID . "'";
-			$ErrMsg = _('CRITICAL ERROR! NOTE DOWN THIS ERROR AND SEEK ASSISTANCE. The fixed asset cost and date purchased was not able to be updated because:');
+			$ErrMsg = _('CRITICAL ERROR! NOTE DOWN THIS ERROR AND SEEK ASSISTANCE. The fixed asset cost and date purchased was not able to be updated because') . ':';
 			$DbgMsg = _('The following SQL was used to attempt the update of the cost and the date the asset was purchased');
 			$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
 		} //end of non-gl fixed asset stuff

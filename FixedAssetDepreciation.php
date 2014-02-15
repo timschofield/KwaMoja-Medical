@@ -236,8 +236,8 @@ while ($AssetRow = DB_fetch_array($AssetsResult)) {
 		/*now update the accum depn in fixedassets */
 		$SQL = "UPDATE fixedassets SET accumdepn = accumdepn + " . $NewDepreciation . "
 				WHERE assetid = '" . $AssetRow['assetid'] . "'";
-		$ErrMsg = _('CRITICAL ERROR! NOTE DOWN THIS ERROR AND SEEK ASSISTANCE. The fixed asset accumulated depreciation could not be updated:');
-		$DbgMsg = _('The following SQL was used to attempt the update the accumulated depreciation of the asset was:');
+		$ErrMsg = _('CRITICAL ERROR! NOTE DOWN THIS ERROR AND SEEK ASSISTANCE. The fixed asset accumulated depreciation could not be updated') . ': ';
+		$DbgMsg = _('The following SQL was used to attempt the update the accumulated depreciation of the asset was') . ': ';
 		$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
 	} //end if Committing the depreciation to DB
 } //end loop around the assets to calculate depreciation for

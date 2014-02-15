@@ -241,7 +241,7 @@ if (DB_num_rows($result) > 0) {
 	// Print salesorders.comments
 	$line_height = 10;// Line height to print salesorders.comments
 	$YPos -= $line_height;
-	$pdf->addText($XPos, $YPos + 10, $FontSize, _('Notes').':');// Comment: addText Y-Coordinate is to top left corner (add a FontSize mesure to equal addTextWrap Y-Coordinate)
+	$pdf->addText($XPos, $YPos + 10, $FontSize, _('Notes') . ': ');// Comment: addText Y-Coordinate is to top left corner (add a FontSize mesure to equal addTextWrap Y-Coordinate)
 	$LeftOvers = str_replace('\n', ' ', $myrow['comments']);// Get salesorders.comments and replace line feed character. '<br />' works?
 	$LeftOvers = str_replace('\r', '', $LeftOvers);// Delete carriage return character
 	$LeftOvers = str_replace('\t', '', $LeftOvers);// Delete tabulator character

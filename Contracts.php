@@ -598,7 +598,7 @@ if (isset($_POST['CreateQuotation']) and !$InputError) {
 	$_SESSION['Contract' . $identifier]->Status = 1;
 	$_SESSION['Contract' . $identifier]->OrderNo = $OrderNo;
 	prnMsg(_('The contract has been made into quotation number') . ' ' . $OrderNo, 'info');
-	echo '<br /><a href="' . $RootPath . '/SelectSalesOrder.php?OrderNumber=' . $OrderNo . '&amp;Quotations=Quotes_Only">' . _('Go to quotation number:') . ' ' . $OrderNo . '</a>';
+	echo '<br /><a href="' . $RootPath . '/SelectSalesOrder.php?OrderNumber=' . $OrderNo . '&amp;Quotations=Quotes_Only">' . _('Go to quotation number') . ': ' . $OrderNo . '</a>';
 
 } //end of if making a quotation
 
@@ -712,7 +712,7 @@ if (isset($_POST['SelectedCustomer'])) {
 	if (DB_num_rows($result) == 0) {
 		prnMsg(_('The customer details were unable to be retrieved'), 'error');
 		if ($debug == 1) {
-			prnMsg(_('The SQL used that failed to get the customer details was:') . '<br />' . $sql, 'error');
+			prnMsg(_('The SQL used that failed to get the customer details was') . ':<br />' . $sql, 'error');
 		}
 	} else {
 		$_SESSION['Contract' . $identifier]->BranchName = $myrow['brname'];

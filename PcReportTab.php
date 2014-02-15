@@ -55,13 +55,13 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 
 	echo '</select></td></tr>';
 	echo '<tr>
-			<td>' . _('From Date :') . '</td>
+			<td>' . _('From Date') . ':</td>
 			<td>
 				<input tabindex="2" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" type="text" name="FromDate" required="required" minlength="1" maxlength="10" size="11" value="' . $_POST['FromDate'] . '" />
 			</td>
 		</tr>
 		<tr>
-			<td>' . _('To Date:') . '</td>
+			<td>' . _('To Date') . ':</td>
 			<td>
 				<input tabindex="3" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" type="text" name="ToDate" required="required" minlength="1" maxlength="10" size="11" value="' . $_POST['ToDate'] . '" />
 			</td>
@@ -113,7 +113,7 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 	$SqlTabs = "SELECT * FROM pctabs
 			WHERE tabcode='" . $SelectedTabs . "'";
 
-	$TabResult = DB_query($SqlTabs, $db, _('No Petty Cash tabs were returned by the SQL because'), _('The SQL that failed was:'));
+	$TabResult = DB_query($SqlTabs, $db, _('No Petty Cash tabs were returned by the SQL because'), _('The SQL that failed was') . ': ');
 
 	$Tabs = DB_fetch_array($TabResult);
 
@@ -130,7 +130,7 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 	}
 
 	$YPos -= (2 * $line_height);
-	$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 60, $FontSize, _('Tab Code :'));
+	$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 60, $FontSize, _('Tab Code') . ': ');
 	$LeftOvers = $pdf->addTextWrap($Left_Margin + 100, $YPos, 20, $FontSize, _(': '));
 	$LeftOvers = $pdf->addTextWrap($Left_Margin + 110, $YPos, 70, $FontSize, $SelectedTabs);
 	$LeftOvers = $pdf->addTextWrap($Left_Margin + 290, $YPos, 70, $FontSize, _('From') . ' ');
@@ -138,7 +138,7 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 	$LeftOvers = $pdf->addTextWrap($Left_Margin + 340, $YPos, 70, $FontSize, $_POST['FromDate']);
 
 	$YPos -= $line_height;
-	$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 60, $FontSize, _('User '));
+	$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 60, $FontSize, _('User'));
 	$LeftOvers = $pdf->addTextWrap($Left_Margin + 100, $YPos, 20, $FontSize, _(': '));
 	$LeftOvers = $pdf->addTextWrap($Left_Margin + 110, $YPos, 70, $FontSize, $Tabs['usercode']);
 	$LeftOvers = $pdf->addTextWrap($Left_Margin + 290, $YPos, 70, $FontSize, _('To '));
@@ -146,17 +146,17 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 	$LeftOvers = $pdf->addTextWrap($Left_Margin + 340, $YPos, 70, $FontSize, $_POST['ToDate']);
 
 	$YPos -= $line_height;
-	$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 60, $FontSize, _('Authoriser '));
+	$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 60, $FontSize, _('Authoriser'));
 	$LeftOvers = $pdf->addTextWrap($Left_Margin + 100, $YPos, 20, $FontSize, _(': '));
 	$LeftOvers = $pdf->addTextWrap($Left_Margin + 110, $YPos, 70, $FontSize, $Tabs['authorizer']);
 
 	$YPos -= $line_height;
-	$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 60, $FontSize, _('Currency '));
+	$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 60, $FontSize, _('Currency'));
 	$LeftOvers = $pdf->addTextWrap($Left_Margin + 100, $YPos, 20, $FontSize, _(': '));
 	$LeftOvers = $pdf->addTextWrap($Left_Margin + 110, $YPos, 70, $FontSize, $Tabs['currency']);
 
 	$YPos -= $line_height;
-	$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 40, $FontSize, _('Balance before '));
+	$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 40, $FontSize, _('Balance before'));
 	$LeftOvers = $pdf->addTextWrap($Left_Margin + 55, $YPos, 70, $FontSize, $_POST['FromDate']);
 	$LeftOvers = $pdf->addTextWrap($Left_Margin + 100, $YPos, 20, $FontSize, _(': '));
 	$LeftOvers = $pdf->addTextWrap($Left_Margin + 110, $YPos, 70, $FontSize, locale_number_format($Balance['0'], $_SESSION['CompanyRecord']['decimalplaces']));
@@ -241,7 +241,7 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 	$SqlTabs = "SELECT * FROM pctabs
 			WHERE tabcode='" . $SelectedTabs . "'";
 
-	$TabResult = DB_query($SqlTabs, $db, _('No Petty Cash Tabs were returned by the SQL because'), _('The SQL that failed was:'));
+	$TabResult = DB_query($SqlTabs, $db, _('No Petty Cash Tabs were returned by the SQL because'), _('The SQL that failed was') . ': ');
 
 	$Tabs = DB_fetch_array($TabResult);
 
@@ -322,9 +322,9 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 				AND date <= '" . $SQL_ToDate . "'
 			ORDER BY date, counterindex Asc";
 
-	$TabDetail = DB_query($SQL, $db, _('No Petty Cash movements for this tab were returned by the SQL because'), _('The SQL that failed was:'));
+	$TabDetail = DB_query($SQL, $db, _('No Petty Cash movements for this tab were returned by the SQL because'), _('The SQL that failed was') . ': ');
 
-	echo '<br /><table class="selection">';
+	echo '<table class="selection">';
 	echo '<tr>
 			<th>' . _('Date Of Expense') . '</th>
 			<th>' . _('Expense Description') . '</th>

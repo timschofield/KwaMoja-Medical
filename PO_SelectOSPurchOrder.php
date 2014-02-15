@@ -109,6 +109,7 @@ if (!isset($OrderNumber) or $OrderNumber == '') {
 		$DateRow = DB_fetch_array($DateResult);
 		$DateFrom = $DateRow['fromdate'];
 		$DateTo = $DateRow['todate'];
+		$_POST['SearchOrders'] = 'New';
 	} else {
 		$DateFrom = FormatDateForSQL($_POST['DateFrom']);
 		$DateTo = FormatDateForSQL($_POST['DateTo']);
@@ -143,7 +144,7 @@ if (!isset($OrderNumber) or $OrderNumber == '') {
 			echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
 		}
 	} //$myrow = DB_fetch_array($resultStkLocs)
-	echo '</select> ' . _('Order Status:') . ' <select minlength="0" name="Status">';
+	echo '</select> ' . _('Order Status') . ':<select minlength="0" name="Status">';
 	if (!isset($_POST['Status']) or $_POST['Status'] == 'Pending_Authorised') {
 		echo '<option selected="selected" value="Pending_Authorised">' . _('Pending and Authorised') . '</option>';
 	} //!isset($_POST['Status']) or $_POST['Status'] == 'Pending_Authorised'
@@ -257,7 +258,7 @@ if (isset($StockItemsResult)) {
 
 	echo '</table>';
 
-} else if (isset($_POST['SearchOrders'])) {
+} elseif (isset($_POST['SearchOrders'])) {
 	//figure out the SQL required from the inputs available
 
 	if (!isset($_POST['Status']) or $_POST['Status'] == 'Pending_Authorised') {
@@ -321,8 +322,8 @@ if (isset($StockItemsResult)) {
 					" . $OrderNumberSearchString . "
 					" . $StatusCriteria . "
 					" . $LocationSearchString . "
-					AND orddate>='" . FormatDateForSQL($_POST['DateFrom']) . "'
-					AND orddate<='" . FormatDateForSQL($_POST['DateTo']) . "'
+					AND orddate>='" . $DateFrom . "'
+					AND orddate<='" . $DateTo . "'
 				GROUP BY purchorders.orderno ASC,
 						suppliers.suppname,
 						purchorders.orddate,

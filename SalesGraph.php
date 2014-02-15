@@ -29,13 +29,12 @@ if (isset($_POST['FromPeriod']) and isset($_POST['ToPeriod'])) {
 if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADifferentPeriod == _('Select A Different Period')) {
 
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/sales.png" title="' . _('Select criteria') . '" alt="' . _('Select criteria') . '" />' . ' ' . $Title . '</p>';
 
 	echo '<table class="selection" summary="' . _('Criteria for the sales graph') . '">
-			<tr><td>' . _('Select Period From:') . '</td>
+			<tr><td>' . _('Select Period From') . ':</td>
 			<td><select minlength="0" name="FromPeriod">';
 
 	if (Date('m') > $_SESSION['YearEnd']) {
@@ -71,7 +70,7 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 	}
 
 	echo '<tr>
-			<td>' . _('Select Period To:') . '</td>
+			<td>' . _('Select Period To') . ':</td>
 			<td><select minlength="0" name="ToPeriod">';
 
 	$RetResult = DB_data_seek($Periods, 0);
@@ -92,7 +91,7 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 		$_POST['SalesArea'] = '';
 	}
 	echo '<tr>
-			<td>' . _('For Sales Area/Region:') . '</td>
+			<td>' . _('For Sales Area/Region') . ':</td>
 			<td><select minlength="0" name="SalesArea">';
 	if ($_POST['SalesArea'] == 'All') {
 		echo '<option selected="selected" value="All">' . _('All') . '</option>';
@@ -114,7 +113,7 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 		$_POST['CategoryID'] = '';
 	}
 	echo '<tr>
-			<td>' . _('For Stock Category:') . '</td>
+			<td>' . _('For Stock Category') . ':</td>
 			<td><select minlength="0" name="CategoryID">';
 	if ($_POST['CategoryID'] == 'All') {
 		echo '<option selected="selected" value="All">' . _('All') . '</option>';
@@ -131,7 +130,7 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 	echo '</select></td></tr>';
 
 	echo '<tr>
-			<td>' . _('For Sales Person:') . '</td>
+			<td>' . _('For Sales Person') . ':</td>
 			<td><select minlength="0" name="SalesmanCode">';
 
 	$sql = "SELECT salesmancode, salesmanname FROM salesman";
@@ -175,23 +174,22 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 	if (!isset($_POST['ValueTo'])) {
 		$_POST['ValueTo'] = '';
 	}
-	echo '<tr><td>' . _('Graph On:') . '</td><td>
+	echo '<tr><td>' . _('Graph On') . ':</td><td>
 			<input type="radio" name="GraphOn" value="All" checked="checked" />' . _('All') . '<br />
 			<input type="radio" name="GraphOn" value="Customer" />' . _('Customer') . '<br />
 			<input type="radio" name="GraphOn" value="StockID" />' . _('Item Code') . '</td></tr>';
-	echo '<tr><td>' . _('From:') . ' <input type="text" name="ValueFrom" value="' . $_POST['ValueFrom'] . '" /></td>
-	 		<td>' . _('To:') . ' <input type="text" name="ValueTo" value="' . $_POST['ValueTo'] . '" /></td></tr>';
+	echo '<tr><td>' . _('From') . ':<input type="text" name="ValueFrom" value="' . $_POST['ValueFrom'] . '" /></td>
+	 		<td>' . _('To') . ':<input type="text" name="ValueTo" value="' . $_POST['ValueTo'] . '" /></td></tr>';
 
-	echo '<tr><td>' . _('Graph Value:') . '</td><td>
+	echo '<tr><td>' . _('Graph Value') . ':</td><td>
 			<input type="radio" name="GraphValue" value="Net" checked="checked" />' . _('Net Sales Value') . '<br />
 			<input type="radio" name="GraphValue" value="GP" />' . _('Gross Profit') . '<br />
 			<input type="radio" name="GraphValue" value="Quantity" />' . _('Quantity') . '</td></tr>';
 
 	echo '</table>';
 
-	echo '<br /><div class="centre"><input type="submit" name="ShowGraph" value="' . _('Show Sales Graph') . '" /></div>';
-	echo '</div>
-		  </form>';
+	echo '<div class="centre"><input type="submit" name="ShowGraph" value="' . _('Show Sales Graph') . '" /></div>';
+	echo '</form>';
 	include('includes/footer.inc');
 } else {
 
@@ -234,7 +232,7 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 	} else {
 		$result = DB_query("SELECT salesmanname FROM salesman WHERE salesmancode='" . $_POST['SalesmanCode'] . "'", $db);
 		$myrow = DB_fetch_row($result);
-		$GraphTitle .= ' ' . _('For Salesperson:') . ' ' . $myrow[0];
+		$GraphTitle .= ' ' . _('For Salesperson') . ': ' . $myrow[0];
 		$WhereClause .= " salesperson='" . $_POST['SalesmanCode'] . "' AND";
 
 	}

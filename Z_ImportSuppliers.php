@@ -329,9 +329,9 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 		DB_Txn_Commit($db);
 		prnMsg(_('Batch Import of') . ' ' . $FileName . ' ' . _('has been completed. All transactions committed to the database.'), 'success');
 		if ($_POST['UpdateIfExists'] == 1) {
-			prnMsg(_('Updated:') . ' ' . $UpdatedNum . ' ' . _('Insert:') . $InsertNum);
+			prnMsg(_('Updated') . ': ' . $UpdatedNum . ' ' . _('Insert') . ':' . $InsertNum);
 		} else {
-			prnMsg(_('Exist:') . ' ' . $UpdatedNum . ' ' . _('Insert:') . $InsertNum);
+			prnMsg(_('Exist') . ': ' . $UpdatedNum . ' ' . _('Insert') . ':' . $InsertNum);
 		}
 
 	}

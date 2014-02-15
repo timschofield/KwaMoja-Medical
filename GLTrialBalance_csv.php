@@ -12,9 +12,7 @@
 
 $AllowAnyone = true;
 
-//Page must be called with GLTrialBalance_csv.php?CompanyName=XXXXX&FromPeriod=Y&ToPeriod=Z
-$_POST['CompanyNameField'] = $_GET['CompanyName'];
-//htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') = dirname(htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8')) .'/GLTrialBalance_csv.php?ToPeriod=' . $_GET['ToPeriod'] . '&FromPeriod=' . $_GET['FromPeriod'];
+//Page must be called with GLTrialBalance_csv.php?FromPeriod=Y&ToPeriod=Z
 
 include('includes/session.inc');
 include('includes/SQL_CommonFunctions.inc');
@@ -50,6 +48,12 @@ $SQL = "SELECT accountgroups.groupname,
 			chartdetails.accountcode";
 
 $AccountsResult = DB_query($SQL, $db);
+$PeriodProfitLoss = 0;
+$PeriodBudgetProfitLoss = 0;
+$MonthProfitLoss = 0;
+$MonthBudgetProfitLoss = 0;
+$BFwdProfitLoss = 0;
+$CSV_File = '';
 
 while ($myrow = DB_fetch_array($AccountsResult)) {
 
@@ -78,6 +82,12 @@ while ($myrow = DB_fetch_array($AccountsResult)) {
 function stripcomma($str) { //because we're using comma as a delimiter
 	return str_replace(',', '', $str);
 }
+header('Content-Encoding: UTF-8');
+header('Content-type: text/csv; charset=UTF-8');
+header("Content-disposition: attachment; filename=GL_Trial_Balance_" .  $_GET['FromPeriod']  . '-' .  $_GET['ToPeriod']  .'.csv');
+header("Pragma: public");
+header("Expires: 0");
+echo "\xEF\xBB\xBF"; // UTF-8 BOM
 echo $CSV_File;
 
 ?>

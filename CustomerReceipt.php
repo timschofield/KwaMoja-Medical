@@ -852,7 +852,7 @@ if (!isset($_SESSION['ReceiptBatch']->FunctionalExRate)) {
 }
 if ($_SESSION['ReceiptBatch']->AccountCurrency != $_SESSION['ReceiptBatch']->Currency and isset($_SESSION['ReceiptBatch']->AccountCurrency)) {
 	if (isset($SuggestedExRate)) {
-		$SuggestedExRateText = '<b>' . _('Suggested rate:') . ' ' . locale_number_format($SuggestedExRate, 6) . '</b>';
+		$SuggestedExRateText = '<b>' . _('Suggested rate') . ': ' . locale_number_format($SuggestedExRate, 6) . '</b>';
 	} else {
 		$SuggestedExRateText = '';
 	}
@@ -870,7 +870,7 @@ if ($_SESSION['ReceiptBatch']->AccountCurrency != $_SESSION['ReceiptBatch']->Cur
 
 if ($_SESSION['ReceiptBatch']->AccountCurrency != $_SESSION['CompanyRecord']['currencydefault'] and isset($_SESSION['ReceiptBatch']->AccountCurrency)) {
 	if (isset($SuggestedFunctionalExRate)) {
-		$SuggestedFunctionalExRateText = '<b>' . _('Suggested rate:') . ' ' . locale_number_format($SuggestedFunctionalExRate, 6) . '</b>';
+		$SuggestedFunctionalExRateText = '<b>' . _('Suggested rate') . ': ' . locale_number_format($SuggestedFunctionalExRate, 6) . '</b>';
 	} else {
 		$SuggestedFunctionalExRateText = '';
 	}

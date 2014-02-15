@@ -7,11 +7,14 @@ $Title = _('Stock Category Maintenance');
 include('includes/header.inc');
 
 // BEGIN: Stock Type Name array.
+$sql = "SELECT type,
+				name
+			FROM stocktypes";
+$Result = DB_query($sql, $db);
 $StockTypeName = array();
-$StockTypeName['D'] = _('Dummy Item - (No Movements)');
-$StockTypeName['F'] = _('Finished Goods');
-$StockTypeName['L'] = _('Labour');
-$StockTypeName['M'] = _('Raw Materials');
+while ($Row = DB_fetch_array($Result)) {
+	$StockTypeName[$Row['type']] = $Row['name'];
+}
 asort($StockTypeName);
 // END: Stock Type Name array.
 

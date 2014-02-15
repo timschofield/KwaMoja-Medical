@@ -121,7 +121,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 					AND www_users.userid='" . $_SESSION['UserID'] . "'";
 }
 
-$RecurrOrdersDueResult = DB_query($sql, $db, _('There was a problem retrieving the recurring sales order templates. The database reported:'));
+$RecurrOrdersDueResult = DB_query($sql, $db, _('There was a problem retrieving the recurring sales order templates. The database reported') . ': ');
 
 if (DB_num_rows($RecurrOrdersDueResult) == 0) {
 	prnMsg(_('There are no recurring order templates that are due to have another recurring order created'), 'warn');
@@ -193,7 +193,7 @@ while ($RecurrOrderRow = DB_fetch_array($RecurrOrdersDueResult)) {
 	$ErrMsg = _('The order cannot be added because');
 	$InsertQryResult = DB_query($HeaderSQL, $db, $ErrMsg, true);
 
-	$EmailText = _('A new order has been created from a recurring order template for customer') . ' ' . $RecurrOrderRow['debtorno'] . ' ' . $RecurrOrderRow['branchcode'] . "\n" . _('The order number is:') . ' ' . $OrderNo;
+	$EmailText = _('A new order has been created from a recurring order template for customer') . ' ' . $RecurrOrderRow['debtorno'] . ' ' . $RecurrOrderRow['branchcode'] . "\n" . _('The order number is') . ': ' . $OrderNo;
 
 	/*need to look up RecurringOrder from the template and populate the line RecurringOrder array with the sales order details records */
 	$LineItemsSQL = "SELECT recurrsalesorderdetails.stkcode,
@@ -242,7 +242,7 @@ while ($RecurrOrderRow = DB_fetch_array($RecurrOrdersDueResult)) {
 
 	$sql = "UPDATE recurringsalesorders SET lastrecurrence = '" . $DelDate . "'
 			WHERE recurrorderno='" . $RecurrOrderRow['recurrorderno'] . "'";
-	$ErrMsg = _('Could not update the last recurrence of the recurring order template. The database reported the error:');
+	$ErrMsg = _('Could not update the last recurrence of the recurring order template. The database reported the error') . ':';
 	$Result = DB_query($sql, $db, $ErrMsg, true);
 
 	$Result = DB_Txn_Commit($db);
@@ -273,13 +273,13 @@ while ($RecurrOrderRow = DB_fetch_array($RecurrOrdersDueResult)) {
 				FROM currencies INNER JOIN debtorsmaster
 				ON debtorsmaster.currcode=currencies.currabrev
 				WHERE debtorno='" . $RecurrOrderRow['debtorno'] . "'";
-		$ErrMsg = _('The exchange rate for the customer currency could not be retrieved from the currency table because:');
+		$ErrMsg = _('The exchange rate for the customer currency could not be retrieved from the currency table because') . ':';
 		$Result = DB_query($SQL, $db, $ErrMsg);
 		$myrow = DB_fetch_row($Result);
 		$CurrencyRate = $myrow[0];
 
 		$SQL = "SELECT taxprovinceid FROM locations WHERE loccode='" . $RecurrOrderRow['fromstkloc'] . "'";
-		$ErrMsg = _('Could not retrieve the tax province of the location from where the order was fulfilled because:');
+		$ErrMsg = _('Could not retrieve the tax province of the location from where the order was fulfilled because') . ':';
 		$Result = DB_query($SQL, $db, $ErrMsg);
 		$myrow = DB_fetch_row($Result);
 		$DispTaxProvinceID = $myrow[0];

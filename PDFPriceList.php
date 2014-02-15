@@ -123,7 +123,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 		prnMsg(_('The Price List could not be retrieved by the SQL because') . ' - ' . DB_error_msg($db), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($debug == 1) {
-			prnMsg(_('For debugging purposes the SQL used was:') . $SQL, 'error');
+			prnMsg(_('For debugging purposes the SQL used was') . ': ' . $SQL, 'error');
 		}
 		include('includes/footer.inc');
 		exit;

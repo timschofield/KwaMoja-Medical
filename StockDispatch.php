@@ -268,7 +268,7 @@ if (isset($_POST['PrintPDF'])) {
 	}
 	/*end while loop  */
 	//add prepared by
-	$pdf->addTextWrap(50, $YPos - 50, 100, 9, _('Prepared By :'), 'left');
+	$pdf->addTextWrap(50, $YPos - 50, 100, 9, _('Prepared By') . ' :', 'left');
 	$pdf->addTextWrap(50, $YPos - 70, 100, $FontSize, _('Name'), 'left');
 	$pdf->addTextWrap(90, $YPos - 70, 200, $FontSize, ':__________________', 'left', 0, $fill);
 	$pdf->addTextWrap(50, $YPos - 90, 100, $FontSize, _('Date'), 'left');
@@ -279,7 +279,7 @@ if (isset($_POST['PrintPDF'])) {
 	$pdf->addTextWrap(90, $YPos - 150, 200, $FontSize, ':__________________', 'left', 0, $fill);
 
 	//add shipped by
-	$pdf->addTextWrap(240, $YPos - 50, 100, 9, _('Shipped By :'), 'left');
+	$pdf->addTextWrap(240, $YPos - 50, 100, 9, _('Shipped By') . ' :', 'left');
 	$pdf->addTextWrap(240, $YPos - 70, 100, $FontSize, _('Name'), 'left');
 	$pdf->addTextWrap(280, $YPos - 70, 200, $FontSize, ':__________________', 'left', 0, $fill);
 	$pdf->addTextWrap(240, $YPos - 90, 100, $FontSize, _('Date'), 'left');
@@ -290,7 +290,7 @@ if (isset($_POST['PrintPDF'])) {
 	$pdf->addTextWrap(280, $YPos - 150, 200, $FontSize, ':__________________', 'left', 0, $fill);
 
 	//add received by
-	$pdf->addTextWrap(440, $YPos - 50, 100, 9, _('Received By :'), 'left');
+	$pdf->addTextWrap(440, $YPos - 50, 100, 9, _('Received By') . ' :', 'left');
 	$pdf->addTextWrap(440, $YPos - 70, 100, $FontSize, _('Name'), 'left');
 	$pdf->addTextWrap(480, $YPos - 70, 200, $FontSize, ':__________________', 'left', 0, $fill);
 	$pdf->addTextWrap(440, $YPos - 90, 100, $FontSize, _('Date'), 'left');
@@ -409,7 +409,7 @@ if (isset($_POST['PrintPDF'])) {
 		</tr>';
 
 	echo '<tr>
-			<td>' . _('Dispatch Strategy:') . ':</td>
+			<td>' . _('Dispatch Strategy') . ':</td>
 			<td>
 				<select required="required" minlength="1" name="Strategy">
 					<option selected="selected" value="All">' . _('Items needed at TO location with overstock at FROM location') . '</option>
@@ -476,7 +476,7 @@ function PrintHeader(&$pdf, &$YPos, &$PageNumber, $Page_Height, $Top_Margin, $Le
 	$YPos -= $line_height;
 
 	$pdf->addTextWrap($Left_Margin, $YPos, 150, $FontSize, _('Stock Dispatch ') . $_POST['ReportType']);
-	$pdf->addTextWrap(200, $YPos, 30, $FontSize, _('From :'));
+	$pdf->addTextWrap(200, $YPos, 30, $FontSize, _('From') . ' : ');
 	$pdf->addTextWrap(230, $YPos, 200, $FontSize, $FromLocation);
 
 	$pdf->addTextWrap($Page_Width - $Right_Margin - 150, $YPos, 160, $FontSize, _('Printed') . ': ' . Date($_SESSION['DefaultDateFormat']) . '   ' . _('Page') . ' ' . $PageNumber, 'left');
@@ -484,7 +484,7 @@ function PrintHeader(&$pdf, &$YPos, &$PageNumber, $Page_Height, $Top_Margin, $Le
 	$pdf->addTextWrap($Left_Margin, $YPos, 50, $FontSize, _('Transfer No.'));
 	$pdf->addTextWrap(95, $YPos, 50, $FontSize, $Trf_ID);
 	$pdf->setFont('', 'B');
-	$pdf->addTextWrap(200, $YPos, 30, $FontSize, _('To :'));
+	$pdf->addTextWrap(200, $YPos, 30, $FontSize, _('To') . ' : ');
 	$pdf->addTextWrap(230, $YPos, 200, $FontSize, $ToLocation);
 	$pdf->setFont('', '');
 	$YPos -= $line_height;

@@ -221,9 +221,9 @@ if (isset($_POST['PrintPDF']) or isset($_POST['Review'])) {
 			// include('includes/MRPPlannedWorkOrdersPageHeader.inc');
 		}
 		/*Print out the grand totals */
-		$pdf->addTextWrap($Left_Margin, $YPos, 120, $FontSize, _('Number of Work Orders: '), 'left');
+		$pdf->addTextWrap($Left_Margin, $YPos, 120, $FontSize, _('Number of Work Orders') . ': ', 'left');
 		$pdf->addTextWrap(150, $YPos, 30, $FontSize, $PartCounter, 'left');
-		$pdf->addTextWrap(200, $YPos, 100, $FontSize, _('Total Extended Cost:'), 'right');
+		$pdf->addTextWrap(200, $YPos, 100, $FontSize, _('Total Extended Cost') . ': ', 'right');
 		$DisplayTotalVal = locale_number_format($Total_ExtCost, 2);
 		$pdf->addTextWrap(310, $YPos, 60, $FontSize, $DisplayTotalVal, 'right');
 
@@ -378,7 +378,7 @@ function PrintHeader(&$pdf, &$YPos, &$PageNumber, $Page_Height, $Top_Margin, $Le
 	} else {
 		$displayconsolidation = _('Monthly');
 	}
-	$pdf->addTextWrap($Left_Margin, $YPos, 65, $FontSize, _('Consolidation:'));
+	$pdf->addTextWrap($Left_Margin, $YPos, 65, $FontSize, _('Consolidation') . ': ');
 	$pdf->addTextWrap(110, $YPos, 40, $FontSize, $displayconsolidation);
 
 	$YPos -= (2 * $line_height);

@@ -427,7 +427,7 @@ if (isset($_POST['SelectingReturnItems']) or isset($_POST['QuickEntry']) or isse
 				}
 
 			} else if ($myrow['mbflag'] == 'G') {
-				prnMsg(_('Phantom assemblies cannot be returned, these items exist only as bills of materials used in other manufactured items. The following item has not been added to the return:') . ' ' . $NewItem, 'warn');
+				prnMsg(_('Phantom assemblies cannot be returned, these items exist only as bills of materials used in other manufactured items. The following item has not been added to the return') . ': ' . $NewItem, 'warn');
 			} else if ($myrow['controlled'] == 1) {
 				prnMsg(_('The system does not currently cater for counter returns of lot controlled or serialised items'), 'warn');
 			} else if ($NewItemQty <= 0) {

@@ -292,7 +292,7 @@ if (isset($_POST['CloseContract']) and $_SESSION['Contract' . $identifier]->Stat
 		//then close the work order
 		$CloseWOResult = DB_query("UPDATE workorders
 									SET closed=1
-									WHERE wo='" . $_SESSION['Contract' . $identifier]->WO . "'", $db, _('Could not update the work order to closed because:'), _('The SQL used to close the work order was:'), true);
+									WHERE wo='" . $_SESSION['Contract' . $identifier]->WO . "'", $db, _('Could not update the work order to closed because') . ': ', _('The SQL used to close the work order was') . ': ', true);
 
 
 		/* Check if the contract BOM has received the contract item manually

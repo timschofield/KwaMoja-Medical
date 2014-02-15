@@ -114,7 +114,7 @@ if (!isset($OrderNumber) or $OrderNumber == "") {
 			echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
 		}
 	}
-	echo '</select> ' . _('Order Status:') . ' <select minlength="0" name="Status">';
+	echo '</select> ' . _('Order Status') . ':<select minlength="0" name="Status">';
 	if (!isset($_POST['Status'])) {
 		$_POST['Status'] = 'Pending';
 	}

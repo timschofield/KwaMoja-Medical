@@ -171,7 +171,7 @@ if (isset($_POST['Process'])) { //user hit the process the work order receipts e
 				$AlreadyExistsRow = DB_fetch_row($Result);
 
 				if ($AlreadyExistsRow[0] > 0) {
-					prnMsg(_('The serial number entered already exists. Duplicate serial numbers are prohibited. The duplicate item is:') . ' ' . $_POST['SerialNo' . $i], 'error');
+					prnMsg(_('The serial number entered already exists. Duplicate serial numbers are prohibited. The duplicate item is') . ': ' . $_POST['SerialNo' . $i], 'error');
 					$InputError = true;
 				}
 			}

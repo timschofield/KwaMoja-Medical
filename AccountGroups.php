@@ -44,7 +44,7 @@ if (isset($_POST['MoveGroup'])) {
 	$DbgMsg = _('The SQL that was used to move the account group was');
 	$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg);
 	echo '<div class="toplink"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Review Account Groups') . '</a></div>';
-	prnMsg(_('All accounts in the account group:') . ' ' . $_POST['OriginalAccountGroup'] . ' ' . _('have been changed to the account group:') . ' ' . $_POST['DestinyAccountGroup'], 'success');
+	prnMsg(_('All accounts in the account group') . ': ' . $_POST['OriginalAccountGroup'] . ' ' . _('have been changed to the account group') . ': ' . $_POST['DestinyAccountGroup'], 'success');
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '<br /></p>';
 } //isset($_POST['MoveGroup'])
 

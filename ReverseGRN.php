@@ -177,8 +177,8 @@ if (isset($_GET['GRNNo']) and isset($_POST['SupplierID'])) {
 		/*now reverse the cost put to fixedassets */
 		$SQL = "UPDATE fixedassets SET cost = cost - " . $GRN['stdcostunit'] * $QtyToReverse . "
 				WHERE assetid = '" . $GRN['assetid'] . "'";
-		$ErrMsg = _('CRITICAL ERROR! NOTE DOWN THIS ERROR AND SEEK ASSISTANCE. The fixed asset cost addition could not be reversed:');
-		$DbgMsg = _('The following SQL was used to attempt the reduce the cost of the asset was:');
+		$ErrMsg = _('CRITICAL ERROR! NOTE DOWN THIS ERROR AND SEEK ASSISTANCE. The fixed asset cost addition could not be reversed') . ':';
+		$DbgMsg = _('The following SQL was used to attempt the reduce the cost of the asset was') . ':';
 		$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
 
 	} //end of if it is an asset

@@ -119,7 +119,7 @@ if ((isset($_POST['PrintPDF'])) and isset($_POST['FromCriteria']) and mb_strlen(
 		$YPos -= (0.5 * $line_height);
 		$pdf->line($Left_Margin, $YPos + $line_height, $Page_Width - $Right_Margin, $YPos + $line_height);
 
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 280, $YPos, 75, $FontSize, _('Total Payment:'), 'right');
+		$LeftOvers = $pdf->addTextWrap($Left_Margin + 280, $YPos, 75, $FontSize, _('Total Payment') . ': ', 'right');
 
 		$TotalPayments += $AccumBalance;
 
@@ -222,7 +222,7 @@ function PageHeader() {
 	$pdf->addText($XPos, $YPos, $FontSize, _('Remittance Advice'));
 
 	$FontSize = 10;
-	$pdf->addText($XPos + 150, $YPos, $FontSize, ' ' . _('printed:') . ' ' . Date($_SESSION['DefaultDateFormat']));
+	$pdf->addText($XPos + 150, $YPos, $FontSize, ' ' . _('printed') . ': ' . Date($_SESSION['DefaultDateFormat']));
 
 	$pdf->addText($XPos + 280, $YPos, $FontSize, _('Page') . ': ' . $PageNumber);
 
@@ -275,7 +275,7 @@ function PageHeader() {
 	$LineCount++;
 	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, $SuppliersPaid['address3'] . ' ' . $SuppliersPaid['address4'] . ' ' . $SuppliersPaid['address5'] . ' ' . $SuppliersPaid['address6']);
 	$LineCount += 2;
-	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, _('Our Code:') . ' ' . $SuppliersPaid['supplierid']);
+	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, _('Our Code') . ': ' . $SuppliersPaid['supplierid']);
 
 	$YPos = $Page_Height - $Top_Margin - 120;
 

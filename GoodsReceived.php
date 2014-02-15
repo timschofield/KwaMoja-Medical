@@ -646,7 +646,7 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 						$SQL = "UPDATE fixedassets SET cost = cost + " . ($CurrentStandardCost * $OrderLine->ReceiveQty) . "
 									WHERE assetid = '" . $OrderLine->AssetID . "'";
 					}
-					$ErrMsg = _('CRITICAL ERROR! NOTE DOWN THIS ERROR AND SEEK ASSISTANCE. The fixed asset cost and date purchased was not able to be updated because:');
+					$ErrMsg = _('CRITICAL ERROR! NOTE DOWN THIS ERROR AND SEEK ASSISTANCE. The fixed asset cost and date purchased was not able to be updated because') . ': ';
 					$DbgMsg = _('The following SQL was used to attempt the update of the cost and the date the asset was purchased');
 					$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
 

@@ -44,7 +44,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 	/*Show a form to allow input of criteria for TB to show */
 	echo '<table class="selection" summary="' . _('Input criteria for inquiry') . '">
 			<tr>
-				<td>' . _('Select Period From:') . '</td>
+				<td>' . _('Select Period From') . ':</td>
 				<td><select minlength="0" name="FromPeriod">';
 	$NextYear = date('Y-m-d', strtotime('+1 Year'));
 	$sql = "SELECT periodno,
@@ -80,7 +80,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 	}
 
 	echo '<tr>
-			<td>' . _('Select Period To:') . '</td>
+			<td>' . _('Select Period To') . ':</td>
 			<td><select minlength="0" name="ToPeriod">';
 
 	$RetResult = DB_data_seek($Periods, 0);
@@ -441,7 +441,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 			chartdetails.accountcode";
 
 
-	$AccountsResult = DB_query($SQL, $db, _('No general ledger accounts were returned by the SQL because'), _('The SQL that failed was:'));
+	$AccountsResult = DB_query($SQL, $db, _('No general ledger accounts were returned by the SQL because'), _('The SQL that failed was') . ': ');
 
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Trial Balance') . '" alt="' . _('Print') . '" />' . ' ' . _('Trial Balance Report') . '</p>';
 

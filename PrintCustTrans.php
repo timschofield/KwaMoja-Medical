@@ -462,7 +462,7 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 					$YPos -= 4;
 					$LeftOvers = $pdf->addTextWrap($Left_Margin + 280, $YPos, 220, $FontSize, $BankDetailsRow['bankaddress']);
 					$YPos -= 12;
-					$LeftOvers = $pdf->addTextWrap($Left_Margin + 280, $YPos, 220, $FontSize, $BankDetailsRow['bankaccountcode'] . ' ' . _('Account No:') . ' ' . $BankDetailsRow['bankaccountnumber']);
+					$LeftOvers = $pdf->addTextWrap($Left_Margin + 280, $YPos, 220, $FontSize, $BankDetailsRow['bankaccountcode'] . ' ' . _('Account No') . ': ' . $BankDetailsRow['bankaccountnumber']);
 				}
 
 				/* Add Images for Visa / Mastercard / Paypal */

@@ -294,7 +294,7 @@ if (isset($_POST['TaxAuthority']) and isset($_POST['PrintPDF']) and isset($_POST
 	echo '<table class="selection" summary="' . _('Criteria for report') . '">';
 
 	echo '<tr>
-			<td>' . _('Tax Authority To Report On:') . ':</td>
+			<td>' . _('Tax Authority To Report On') . ':</td>
 			<td><select required="required" minlength="1" name="TaxAuthority">';
 
 	$result = DB_query("SELECT taxid, description FROM taxauthorities", $db);

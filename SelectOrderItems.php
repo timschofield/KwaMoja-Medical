@@ -697,7 +697,7 @@ else { //dont require customer selection
 		}
 
 		echo ':<b> ' . $_SESSION['Items' . $identifier]->DebtorNo . ' ' . _('Customer Name') . ': ' . htmlspecialchars($_SESSION['Items' . $identifier]->CustomerName, ENT_QUOTES, 'UTF-8', false);
-		echo '</b></p><div class="page_help_text noPrint">' . '<b>' . _('Default Options (can be modified during order):') . '</b><br />' . _('Deliver To') . ':<b> ' . htmlspecialchars($_SESSION['Items' . $identifier]->DeliverTo, ENT_QUOTES, 'UTF-8', false);
+		echo '</b></p><div class="page_help_text noPrint">' . '<b>' . _('Default Options (can be modified during order)') . ':</b><br />' . _('Deliver To') . ':<b> ' . htmlspecialchars($_SESSION['Items' . $identifier]->DeliverTo, ENT_QUOTES, 'UTF-8', false);
 		echo '</b>&nbsp;' . _('From Location') . ':<b> ' . $_SESSION['Items' . $identifier]->LocationName;
 		echo '</b><br />' . _('Sales Type') . '/' . _('Price List') . ':<b> ' . $_SESSION['Items' . $identifier]->SalesTypeName;
 		echo '</b><br />' . _('Terms') . ':<b> ' . $_SESSION['Items' . $identifier]->PaymentTerms;
@@ -942,7 +942,7 @@ else { //dont require customer selection
 
 				} //$myrow['mbflag'] == 'K'
 				elseif ($myrow['mbflag'] == 'G') {
-					prnMsg(_('Phantom assemblies cannot be sold, these items exist only as bills of materials used in other manufactured items. The following item has not been added to the order:') . ' ' . $NewItem, 'warn');
+					prnMsg(_('Phantom assemblies cannot be sold, these items exist only as bills of materials used in other manufactured items. The following item has not been added to the order') . ': ' . $NewItem, 'warn');
 				} //$myrow['mbflag'] == 'G'
 				else {
 					/*Its not a kit set item*/

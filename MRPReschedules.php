@@ -174,7 +174,7 @@ function PrintHeader(&$pdf, &$YPos, &$PageNumber, $Page_Height, $Top_Margin, $Le
 	$pdf->addTextWrap($Left_Margin, $YPos, 300, $FontSize, _('MRP Reschedule Report'));
 	$pdf->addTextWrap($Page_Width - $Right_Margin - 115, $YPos, 160, $FontSize, _('Printed') . ': ' . Date($_SESSION['DefaultDateFormat']) . '   ' . _('Page') . ' ' . $PageNumber);
 	$YPos -= $line_height;
-	$pdf->addTextWrap($Left_Margin, $YPos, 70, $FontSize, _('Selection:'));
+	$pdf->addTextWrap($Left_Margin, $YPos, 70, $FontSize, _('Selection') . ': ');
 	$pdf->addTextWrap(90, $YPos, 15, $FontSize, $_POST['Selection']);
 
 	$YPos -= (2 * $line_height);

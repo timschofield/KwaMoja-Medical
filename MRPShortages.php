@@ -225,9 +225,9 @@ if (isset($_POST['PrintPDF'])) {
 	$pdf->addTextWrap($Left_Margin, $YPos, 120, $FontSize, _('Number of Parts: '), 'left');
 	$pdf->addTextWrap(150, $YPos, 30, $FontSize, $Partctr, 'left');
 	if ($_POST['ReportType'] == 'Shortage') {
-		$pdf->addTextWrap(300, $YPos, 180, $FontSize, _('Total Extended Shortage:'), 'right');
+		$pdf->addTextWrap(300, $YPos, 180, $FontSize, _('Total Extended Shortage') . ': ', 'right');
 	} else {
-		$pdf->addTextWrap(300, $YPos, 180, $FontSize, _('Total Extended Excess:'), 'right');
+		$pdf->addTextWrap(300, $YPos, 180, $FontSize, _('Total Extended Excess') . ': ', 'right');
 	}
 	$DisplayTotalVal = locale_number_format($Total_Shortage, 2);
 	$pdf->addTextWrap(510, $YPos, 60, $FontSize, $DisplayTotalVal, 'right');

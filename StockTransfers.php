@@ -393,7 +393,7 @@ if (isset($_POST['EnterTransfer'])) {
 													)";
 
 					$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The serial stock item record could not be added because');
-					$DbgMsg = _('The following SQL to insert the serial stock item record was used:');
+					$DbgMsg = _('The following SQL to insert the serial stock item record was used') . ':';
 					$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
 				}
 

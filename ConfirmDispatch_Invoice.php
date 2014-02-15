@@ -871,7 +871,7 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 			} else {
 				$AssetNumber = intval(mb_substr($OrderLine->StockID, 6, mb_strlen($OrderLine->StockID) - $HyphenOccursAt - 1));
 			}
-			prnMsg(_('The asset number being disposed of is:') . ' ' . $AssetNumber, 'info');
+			prnMsg(_('The asset number being disposed of is') . ': ' . $AssetNumber, 'info');
 		} else {
 			$IsAsset = false;
 			$AssetNumber = 0;

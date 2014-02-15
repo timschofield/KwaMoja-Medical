@@ -141,7 +141,7 @@ if ($NoOfGRNs > 0) {
 					AND stockmoves.transno='" . $GRNNo . "'";
 			$GetStockMoveResult = DB_query($SQL, $db, _('Could not retrieve the stock movement reference number which is required in order to retrieve details of the serial items that came in with this GRN'));
 			while ($SerialStockMoves = DB_fetch_array($GetStockMoveResult)) {
-				$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column1->x - 20, $Page_Height - $YPos, $FormDesign->Data->Column1->Length, $FormDesign->Data->Column1->FontSize, _('Lot/Serial:'), 'right');
+				$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column1->x - 20, $Page_Height - $YPos, $FormDesign->Data->Column1->Length, $FormDesign->Data->Column1->FontSize, _('Lot/Serial') . ': ', 'right');
 				$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column2->x, $Page_Height - $YPos, $FormDesign->Data->Column2->Length, $FormDesign->Data->Column2->FontSize, $SerialStockMoves['serialno']);
 				$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column2->x, $Page_Height - $YPos, $FormDesign->Data->Column2->Length, $FormDesign->Data->Column2->FontSize, $SerialStockMoves['moveqty'], 'right');
 				$YPos += $line_height;

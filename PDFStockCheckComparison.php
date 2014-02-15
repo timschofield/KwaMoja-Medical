@@ -186,7 +186,8 @@ if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 					stockcheckfreeze.loccode,
 					locations.locationname,
 					stockcheckfreeze.qoh,
-					stockmaster.decimalplaces
+					stockmaster.decimalplaces,
+					bin
 				FROM stockcheckfreeze
 				INNER JOIN stockmaster
 					ON stockcheckfreeze.stockid=stockmaster.stockid
@@ -194,6 +195,9 @@ if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 					ON stockcheckfreeze.loccode=locations.loccode
 				INNER JOIN stockcategory
 					ON stockmaster.categoryid=stockcategory.categoryid
+				INNER JOIN locstock
+					ON stockcheckfreeze.loccode=locstock.loccode
+					AND stockcheckfreeze.stockid=locstock.stockid
 				ORDER BY stockcheckfreeze.loccode,
 						stockmaster.categoryid,
 						stockcheckfreeze.stockid";
@@ -274,7 +278,11 @@ if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 		if ($CheckItemRow['qoh'] != 0 or DB_num_rows($Counts) > 0) {
 			$YPos -= $line_height;
 			$FontSize = 8;
-			$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 120, $FontSize, $CheckItemRow['stockid'], 'left');
+			if (mb_strlen($CheckItemRow['bin']) > 0){
+				$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 120, $FontSize, $CheckItemRow['stockid'] . ' - ' . _('Bin:') . $CheckItemRow['bin'], 'left');
+			} else {
+				$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 120, $FontSize, $CheckItemRow['stockid'], 'left');
+			}
 			$LeftOvers = $pdf->addTextWrap(135, $YPos, 180, $FontSize, $CheckItemRow['description'], 'left');
 			$LeftOvers = $pdf->addTextWrap(315, $YPos, 60, $FontSize, locale_number_format($CheckItemRow['qoh'], $CheckItemRow['decimalplaces']), 'right');
 		}

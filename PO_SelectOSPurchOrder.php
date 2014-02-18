@@ -187,7 +187,7 @@ if (!isset($OrderNumber) or $OrderNumber == '') {
 $SQL = "SELECT categoryid, categorydescription FROM stockcategory ORDER BY categorydescription";
 $result1 = DB_query($SQL, $db);
 
-echo '<br /><div class="page_help_text noPrint">' . _('To search for purchase orders for a specific part use the part selection facilities below') . '</div>';
+echo '<div class="page_help_text noPrint">' . _('To search for purchase orders for a specific part use the part selection facilities below') . '</div>';
 
 if (!isset($_POST['StockCode'])) {
 	$_POST['StockCode'] = '';

@@ -10,8 +10,6 @@
  * also need to work on authentication with username and password sent too
  */
 
-$AllowAnyone = true;
-
 //Page must be called with GLTrialBalance_csv.php?FromPeriod=Y&ToPeriod=Z
 
 include('includes/session.inc');

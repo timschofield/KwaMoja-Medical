@@ -102,12 +102,12 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 		include('includes/footer.inc');
 		exit;
 	}
-	$Period_0_Name = GetMonthText(mktime(0, 0, 0, Date('m'), Date('d'), Date('Y')));
-	$Period_1_Name = GetMonthText(mktime(0, 0, 0, Date('m') - 1, Date('d'), Date('Y')));
-	$Period_2_Name = GetMonthText(mktime(0, 0, 0, Date('m') - 2, Date('d'), Date('Y')));
-	$Period_3_Name = GetMonthText(mktime(0, 0, 0, Date('m') - 3, Date('d'), Date('Y')));
-	$Period_4_Name = GetMonthText(mktime(0, 0, 0, Date('m') - 4, Date('d'), Date('Y')));
-	$Period_5_Name = GetMonthText(mktime(0, 0, 0, Date('m') - 5, Date('d'), Date('Y')));
+	$Period_0_Name = GetMonthText(Date('m'));
+	$Period_1_Name = GetMonthText(Date('m') - 1);
+	$Period_2_Name = GetMonthText(Date('m') - 2);
+	$Period_3_Name = GetMonthText(Date('m') - 3);
+	$Period_4_Name = GetMonthText(Date('m') - 4);
+	$Period_5_Name = GetMonthText(Date('m') - 5);
 
 	include('includes/PDFInventoryPlanPageHeader.inc');
 

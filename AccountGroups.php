@@ -71,10 +71,6 @@ if (isset($_POST['submit'])) {
 		$InputError = 1;
 		prnMsg(_('The account group name already exists in the database'), 'error');
 	} //$MyRow[0] != 0 and $_POST['SelectedAccountGroup'] == ''
-	if (ContainsIllegalCharacters($_POST['GroupName'])) {
-		$InputError = 1;
-		prnMsg(_('The account group name cannot contain the character') . " '&' " . _('or the character') . "' '", 'error');
-	} //ContainsIllegalCharacters($_POST['GroupName'])
 	if (mb_strlen($_POST['GroupName']) == 0) {
 		$InputError = 1;
 		prnMsg(_('The account group name must be at least one character long'), 'error');
@@ -288,7 +284,7 @@ if (!isset($_GET['SelectedAccountGroup']) and !isset($_POST['SelectedAccountGrou
 				break;
 		} //end of switch statement
 
-		echo '<td>' . htmlspecialchars($MyRow['groupname'], ENT_QUOTES, 'UTF-8') . '</td>
+		echo '<td>' . $MyRow['groupname'] . '</td>
 			<td>' . $MyRow['sectionname'] . '</td>
 			<td>' . $MyRow['sequenceintb'] . '</td>
 			<td>' . $PandLText . '</td>
@@ -375,7 +371,7 @@ if (!isset($_GET['delete'])) {
 	} //!isset($_POST['MoveGroup'])
 	echo '<tr>
 				<td>' . _('Account Group Name') . ':' . '</td>
-				<td><input tabindex="1" type="text" name="GroupName" size="50" autofocus="autofocus" required="required" minlength="3" maxlength="50" value="' . $_POST['GroupName'] . '" /></td>
+				<td><input tabindex="1" type="text" name="GroupName" size="50" autofocus="autofocus" required="required" minlength="3" maxlength="50" value="' . stripslashes($_POST['GroupName']) . '" /></td>
 			</tr>';
 	echo '<tr>
 			<td>' . _('Parent Group') . ':' . '</td>

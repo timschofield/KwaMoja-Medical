@@ -63,12 +63,6 @@ if (isset($_POST['submit'])) {
 			$i++;
 		}
 	}
-	if (ContainsIllegalCharacters($_POST['SectionName'])) {
-		$InputError = 1;
-		prnMsg(_('The account section name cannot contain any illegal characters'), 'error');
-		$Errors[$i] = 'SectionName';
-		$i++;
-	}
 	if (mb_strlen($_POST['SectionName']) == 0) {
 		$InputError = 1;
 		prnMsg(_('The account section name must contain at least three characters'), 'error');

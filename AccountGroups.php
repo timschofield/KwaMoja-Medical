@@ -142,7 +142,6 @@ if (isset($_POST['submit'])) {
 									WHERE groupname = '" . $_POST['SelectedAccountGroup'] . "'";
 		$ErrMsg = _('An error occurred in updating the account group');
 		$DbgMsg = _('The SQL that was used to update the account group was');
-
 		$msg = _('Record Updated');
 	} elseif ($InputError != 1) {
 		/*Selected group is null cos no item selected on first time round so must be adding a record must be submitting new entries in the new account group form */
@@ -286,7 +285,7 @@ if (!isset($_GET['SelectedAccountGroup']) and !isset($_POST['SelectedAccountGrou
 
 		echo '<td>' . $MyRow['groupname'] . '</td>
 			<td>' . $MyRow['sectionname'] . '</td>
-			<td>' . $MyRow['sequenceintb'] . '</td>
+			<td class="number">' . $MyRow['sequenceintb'] . '</td>
 			<td>' . $PandLText . '</td>
 			<td>' . $MyRow['parentgroupname'] . '</td>';
 		echo '<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?SelectedAccountGroup=' . urlencode($MyRow['groupname']), ENT_QUOTES, 'UTF-8') . '">' . _('Edit') . '</a></td>';
@@ -339,7 +338,7 @@ if (!isset($_GET['delete'])) {
 				<th colspan="2">' . _('Edit Account Group Details') . '</th>
 			</tr>';
 		echo '<tr>
-				 <td><input type="hidden" name="SelectedAccountGroup" value="' . $_GET['SelectedAccountGroup'] . '" /></td>
+				 <td><input type="hidden" name="SelectedAccountGroup" value="' . stripslashes($_GET['SelectedAccountGroup']) . '" /></td>
 				 <td><input type="hidden" name="OldGroupName" value="' . $_POST['GroupName'] . '" /></td>
 			 </tr>';
 
@@ -387,9 +386,9 @@ if (!isset($_GET['delete'])) {
 
 	while ($grouprow = DB_fetch_array($groupresult)) {
 		if (isset($_POST['ParentGroupName']) and $_POST['ParentGroupName'] == $grouprow['groupname']) {
-			echo '<option selected="selected" value="' . htmlspecialchars($grouprow['groupname'], ENT_QUOTES, 'UTF-8') . '">' . htmlspecialchars($grouprow['groupname'], ENT_QUOTES, 'UTF-8') . '</option>';
+			echo '<option selected="selected" value="' . htmlspecialchars($grouprow['groupname'], ENT_QUOTES, 'UTF-8') . '">' . $grouprow['groupname'] . '</option>';
 		} else {
-			echo '<option value="' . htmlspecialchars($grouprow['groupname'], ENT_QUOTES, 'UTF-8') . '">' . htmlspecialchars($grouprow['groupname'], ENT_QUOTES, 'UTF-8') . '</option>';
+			echo '<option value="' . htmlspecialchars($grouprow['groupname'], ENT_QUOTES, 'UTF-8') . '">' . $grouprow['groupname'] . '</option>';
 		}
 	} //$grouprow = DB_fetch_array($groupresult)
 	echo '</select>';

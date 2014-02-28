@@ -74,7 +74,7 @@ while ($myrow = DB_fetch_array($AccountsResult)) {
 		}
 	}
 
-	$CSV_File .= $myrow['accountcode'] . ', ' . stripcomma($myrow['accountname']) . ', ' . $AccountPeriodActual . ', ' . $AccountPeriodBudget . "\n";
+	$CSV_File .= $myrow['accountcode'] . ', ' . html_entity_decode(stripcomma($myrow['accountname'])) . ', ' . locale_number_format($AccountPeriodActual, $_SESSION['CompanyRecord']['decimalplaces']) . ', ' . locale_number_format($AccountPeriodBudget, $_SESSION['CompanyRecord']['decimalplaces']) . "\n";
 } //loop through the accounts
 
 function stripcomma($str) { //because we're using comma as a delimiter

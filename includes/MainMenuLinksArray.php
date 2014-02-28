@@ -9,9 +9,9 @@ $sql = "SELECT `modulelink`,
 $result = DB_query($sql, $db);
 
 while ($myrow = DB_fetch_array($result)) {
-	$ModuleLink[] = $myrow['modulelink'];
-	$ReportList[$myrow['modulelink']] = $myrow['reportlink'];
-	$ModuleList[] = _($myrow['modulename']);
+	$_SESSION['ModuleLink'][] = $myrow['modulelink'];
+	$_SESSION['ReportList'][$myrow['modulelink']] = $myrow['reportlink'];
+	$_SESSION['ModuleList'][] = _($myrow['modulename']);
 }
 
 $sql = "SELECT `modulelink`,
@@ -24,8 +24,8 @@ $sql = "SELECT `modulelink`,
 $result = DB_query($sql, $db);
 
 while ($myrow = DB_fetch_array($result)) {
-	$MenuItems[$myrow['modulelink']][$myrow['menusection']]['Caption'][] = _($myrow['caption']);
-	$MenuItems[$myrow['modulelink']][$myrow['menusection']]['URL'][] = $myrow['url'];
+	$_SESSION['MenuItems'][$myrow['modulelink']][$myrow['menusection']]['Caption'][] = _($myrow['caption']);
+	$_SESSION['MenuItems'][$myrow['modulelink']][$myrow['menusection']]['URL'][] = $myrow['url'];
 }
 
 include('includes/PluginMenuLinksArray.php');

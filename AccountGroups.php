@@ -386,9 +386,9 @@ if (!isset($_GET['delete'])) {
 
 	while ($grouprow = DB_fetch_array($groupresult)) {
 		if (isset($_POST['ParentGroupName']) and $_POST['ParentGroupName'] == $grouprow['groupname']) {
-			echo '<option selected="selected" value="' . htmlspecialchars($grouprow['groupname'], ENT_QUOTES, 'UTF-8') . '">' . htmlspecialchars($grouprow['groupname'], ENT_QUOTES, 'UTF-8') . '</option>';
+			echo '<option selected="selected" value="' . htmlspecialchars($grouprow['groupname'], ENT_QUOTES, 'UTF-8') . '">' . $grouprow['groupname'] . '</option>';
 		} else {
-			echo '<option value="' . htmlspecialchars($grouprow['groupname'], ENT_QUOTES, 'UTF-8') . '">' . htmlspecialchars($grouprow['groupname'], ENT_QUOTES, 'UTF-8') . '</option>';
+			echo '<option value="' . htmlspecialchars($grouprow['groupname'], ENT_QUOTES, 'UTF-8') . '">' . $grouprow['groupname'] . '</option>';
 		}
 	} //$grouprow = DB_fetch_array($groupresult)
 	echo '</select>';

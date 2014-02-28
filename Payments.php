@@ -1083,7 +1083,7 @@ if ($_SESSION['CompanyRecord']['gllink_creditors'] == 1 and $_SESSION['PaymentDe
 	} else {
 		echo '<option value=""></option>';
 		while ($myrow = DB_fetch_array($result)) {
-			if (isset($_POST['GLGroup']) and ($_POST['GLGroup'] == $myrow['groupname'])) {
+			if (isset($_POST['GLGroup']) and (stripslashes($_POST['GLGroup']) == $myrow['groupname'])) {
 				echo '<option selected="selected" value="' . $myrow['groupname'] . '">' . $myrow['groupname'] . '</option>';
 			} //isset($_POST['GLGroup']) and ($_POST['GLGroup'] == $myrow['groupname'])
 			else {

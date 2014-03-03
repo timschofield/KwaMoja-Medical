@@ -16,8 +16,6 @@ include('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');
 
 if (isset($_POST['Cancel'])) {
-	unset($_POST['UpdateDatabase']);
-	unset($_POST['RefreshAllocTotal']);
 	unset($_POST['AllocTrans']);
 }
 

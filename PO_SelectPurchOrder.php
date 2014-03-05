@@ -217,11 +217,9 @@ if (isset($StockItemsResult)) {
 	}
 	//end of while loop
 	echo '</table>';
-}
-//end if stock search results to show
-else {
+} else {
 	//figure out the SQL required from the inputs available
-
+	$Completed = 0;
 	if (!isset($_POST['Status']) or $_POST['Status'] == 'Pending_Authorised_Completed') {
 		$StatusCriteria = " AND (purchorders.status='Pending' OR purchorders.status='Authorised' OR purchorders.status='Printed' OR purchorders.status='Completed') ";
 	} elseif ($_POST['Status'] == 'Authorised') {
@@ -234,6 +232,7 @@ else {
 		$StatusCriteria = " AND purchorders.status='Cancelled' ";
 	} elseif ($_POST['Status'] == 'Completed') {
 		$StatusCriteria = " AND purchorders.status='Completed' ";
+		$Completed = 1;
 	}
 
 	//If searching on supplier code
@@ -279,7 +278,7 @@ else {
 					ON purchorders.supplierno = suppliers.supplierid
 				INNER JOIN currencies
 					ON suppliers.currcode=currencies.currabrev
-				WHERE purchorderdetails.completed=0
+				WHERE purchorderdetails.completed='" . $Completed . "'
 					" . $SupplierSearchString . "
 					" . $StockItemSearchString . "
 					" . $OrderNumberSearchString . "

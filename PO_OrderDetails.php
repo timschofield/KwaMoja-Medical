@@ -40,25 +40,42 @@ if (!isset($_GET['OrderNo'])) {
 }
 
 $ErrMsg = _('The order requested could not be retrieved') . ' - ' . _('the SQL returned the following error');
-$OrderHeaderSQL = "SELECT purchorders.*,
-						suppliers.supplierid,
-						suppliers.suppname,
-						suppliers.currcode,
-						www_users.realname,
-						locations.locationname,
-						currencies.decimalplaces AS currdecimalplaces
-					FROM purchorders
-					INNER JOIN locations
-						ON locations.loccode=purchorders.intostocklocation
-					INNER JOIN suppliers
-						ON purchorders.supplierno = suppliers.supplierid
-					INNER JOIN currencies
-						ON suppliers.currcode = currencies.currabrev
-					LEFT JOIN www_users
-						ON purchorders.initiator=www_users.userid
-						AND locations.loccode=www_users.defaultlocation
-					WHERE purchorders.orderno = '" . $_GET['OrderNo'] . "'
-						AND www_users.userid='" . $_SESSION['UserID'] . "'";
+if ($_SESSION['RestrictLocations'] == 0) {
+	$OrderHeaderSQL = "SELECT purchorders.*,
+							suppliers.supplierid,
+							suppliers.suppname,
+							suppliers.currcode,
+							locations.locationname,
+							currencies.decimalplaces AS currdecimalplaces
+						FROM purchorders
+						INNER JOIN locations
+							ON locations.loccode=purchorders.intostocklocation
+						INNER JOIN suppliers
+							ON purchorders.supplierno = suppliers.supplierid
+						INNER JOIN currencies
+							ON suppliers.currcode = currencies.currabrev
+						WHERE purchorders.orderno = '" . $_GET['OrderNo'] . "'";
+} else {
+	$OrderHeaderSQL = "SELECT purchorders.*,
+							suppliers.supplierid,
+							suppliers.suppname,
+							suppliers.currcode,
+							www_users.realname,
+							locations.locationname,
+							currencies.decimalplaces AS currdecimalplaces
+						FROM purchorders
+						INNER JOIN locations
+							ON locations.loccode=purchorders.intostocklocation
+						INNER JOIN suppliers
+							ON purchorders.supplierno = suppliers.supplierid
+						INNER JOIN currencies
+							ON suppliers.currcode = currencies.currabrev
+						LEFT JOIN www_users
+							ON purchorders.initiator=www_users.userid
+							AND locations.loccode=www_users.defaultlocation
+						WHERE purchorders.orderno = '" . $_GET['OrderNo'] . "'
+							AND www_users.userid='" . $_SESSION['UserID'] . "'";
+}
 
 $GetOrdHdrResult = DB_query($OrderHeaderSQL, $db, $ErrMsg);
 
@@ -83,6 +100,10 @@ if (DB_num_rows($GetOrdHdrResult) != 1) {
 // the checks all good get the order now
 
 $myrow = DB_fetch_array($GetOrdHdrResult);
+
+if (!isset($myrow['realname'])) {
+	$myrow['realname'] = $_SESSION['UsersRealName'];
+}
 
 /* SHOW ALL THE ORDER INFO IN ONE PLACE */
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" title="' . _('Purchase Order') . '" alt="" />' . ' ' . $Title . '</p>';
@@ -225,7 +246,7 @@ while ($myrow = DB_fetch_array($LineItemsResult)) {
 			<td class="number">%s</td>
 			<td class="number">%s</td>
 			<td>%s</td>
-		</tr>', $myrow['itemcode'], $myrow['itemdescription'], locale_number_format($myrow['quantityord'], $DecimalPlaces), locale_number_format($myrow['quantityrecd'], $DecimalPlaces), locale_number_format($myrow['qtyinvoiced'], $DecimalPlaces), locale_number_format($myrow['unitprice'], $CurrDecimalPlaces), locale_number_format($myrow['actprice'], $CurrDecimalPlaces), $DisplayReqdDate);
+		</tr>', $myrow['itemcode'], stripslashes($myrow['itemdescription']), locale_number_format($myrow['quantityord'], $DecimalPlaces), locale_number_format($myrow['quantityrecd'], $DecimalPlaces), locale_number_format($myrow['qtyinvoiced'], $DecimalPlaces), locale_number_format($myrow['unitprice'], $CurrDecimalPlaces), locale_number_format($myrow['actprice'], $CurrDecimalPlaces), $DisplayReqdDate);
 
 }
 

@@ -806,22 +806,9 @@ else {
 			</tr>';
 		echo '<tr>
 				<td>' . _('Country') . ':</td>
-				<td><select minlength="0" name="Address6">';
-		foreach ($CountriesArray as $CountryEntry => $CountryName) {
-			if (isset($_POST['Address6']) and (strtoupper($_POST['Address6']) == strtoupper($CountryName))) {
-				echo '<option selected="selected" value="' . $CountryName . '">' . $CountryName . '</option>';
-			} //isset($_POST['Address6']) and ($_POST['Address6'] == $CountryName)
-			elseif (!isset($_POST['Address6']) and $CountryName == "") {
-				echo '<option selected="selected" value="' . $CountryName . '">' . $CountryName . '</option>';
-			} //!isset($_POST['Address6']) and $CountryName == ""
-			else {
-				echo '<option value="' . $CountryName . '">' . $CountryName . '</option>';
-			}
-		} //$CountriesArray as $CountryEntry => $CountryName
-		echo '</select></td>
+				<td>' . $_POST['Address6'] . '</td>
 			</tr>';
-	} //isset($_GET['Modify'])
-	else {
+	} else {
 		echo '<tr>
 				<td>' . _('Customer Name') . ':</td>
 				<td><input type="text" name="CustName" value="' . $_POST['CustName'] . '" size="42" required="required" minlength="1" maxlength="40" /></td>
@@ -845,8 +832,8 @@ else {
 			<tr>
 				<td>' . _('Address Line 5 (Postal Code)') . ':</td>
 				<td><input type="text" name="Address5" size="42" minlength="0" maxlength="40" value="' . $_POST['Address5'] . '" /></td>
-			</tr>';
-		echo '<tr>
+			</tr>
+			<tr>
 				<td>' . _('Country') . ':</td>
 				<td><select minlength="0" name="Address6">';
 		foreach ($CountriesArray as $CountryEntry => $CountryName) {
@@ -869,8 +856,7 @@ else {
 		$result = DB_query("SELECT sales_type FROM salestypes WHERE typeabbrev='" . $_POST['SalesType'] . "'", $db);
 		$myrow = DB_fetch_array($result);
 		echo '<tr><td>' . _('Sales Type') . ':</td><td>' . $myrow['sales_type'] . '</td></tr>';
-	} //isset($_GET['Modify'])
-	else {
+	} else {
 		$result = DB_query("SELECT typeabbrev, sales_type FROM salestypes", $db);
 		echo '<tr><td>' . _('Sales Type') . '/' . _('Price List') . ':</td>
 			<td><select minlength="0" name="SalesType">';
@@ -894,8 +880,7 @@ else {
 				<td>' . _('Customer Type') . ':</td>
 				<td>' . $myrow['typename'] . '</td>
 			</tr>';
-	} //isset($_GET['Modify'])
-	else {
+	} else {
 		$result = DB_query("SELECT typeid, typename FROM debtortype ORDER BY typename", $db);
 		echo '<tr>
 				<td>' . _('Customer Type') . ':</td>
@@ -1030,8 +1015,7 @@ else {
 		echo '<tr>
 				<td>' . _('Customer Currency') . ':</td>
 				<td>' . _($myrow['currency']) . '</td></tr>';
-	} //isset($_GET['Modify'])
-	else {
+	} else {
 		$result = DB_query("SELECT currency, currabrev FROM currencies", $db);
 		echo '<tr>
 				<td>' . _('Customer Currency') . ':</td>
@@ -1048,23 +1032,35 @@ else {
 		echo '</select></td>
 			</tr>';
 	}
-	echo '<tr>
-			<td>' . _('Language') . ':</td>
-			<td><select minlength="0" name="LanguageID">';
 
-	if (!isset($_POST['LanguageID']) OR $_POST['LanguageID'] == '') {
+	if (!isset($_POST['LanguageID']) or $_POST['LanguageID'] == ''){
 		$_POST['LanguageID'] = $_SESSION['Language'];
 	}
 
-	foreach ($LanguagesArray as $LanguageCode => $LanguageName) {
-		if ($_POST['LanguageID'] == $LanguageCode) {
-			echo '<option selected="selected" value="' . $LanguageCode . '">' . $LanguageName['LanguageName'] . '</option>';
-		} else {
-			echo '<option value="' . $LanguageCode . '">' . $LanguageName['LanguageName'] . '</option>';
+	if (isset($_GET['Modify'])) {
+		echo '<tr>
+				<td>' . _('Language') . ':</td>';
+		foreach ($LanguagesArray as $LanguageCode => $LanguageName){
+			if ($_POST['LanguageID'] == $LanguageCode){
+				echo '<td>' . $LanguageName['LanguageName'];
+			}
 		}
+		echo '</td>
+		</tr>';
+	} else {
+		echo '<tr>
+				<td>' . _('Language') . ':</td>
+				<td><select name="LanguageID" required="required">';
+		foreach ($LanguagesArray as $LanguageCode => $LanguageName){
+			if ($_POST['LanguageID'] == $LanguageCode){
+				echo '<option selected="selected" value="' . $LanguageCode . '">' . $LanguageName['LanguageName']  . '</option>';
+			} else {
+				echo '<option value="' . $LanguageCode . '">' . $LanguageName['LanguageName']  . '</option>';
+			}
+		}
+		echo '</select></td>
+		</tr>';
 	}
-	echo '</select></td>
-			</tr>';
 	echo '<tr>
 			<td>' . _('Require Customer PO Line on SO') . ':</td>';
 	if (isset($_GET['Modify'])) {

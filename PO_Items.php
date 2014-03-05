@@ -260,7 +260,7 @@ if (isset($_POST['Commit'])) {
 			}
 			/*Update the purchase order header with any changes */
 
-			$sql = "UPDATE purchorders SET supplierno = '" . $_SESSION['PO' . $identifier]->SupplierID . "' ,
+			$sql = "UPDATE purchorders SET supplierno = '" . DB_escape_string($_SESSION['PO' . $identifier]->SupplierID) . "' ,
 										comments='" . $_SESSION['PO' . $identifier]->Comments . "',
 										rate='" . $_SESSION['PO' . $identifier]->ExRate . "',
 										initiator='" . $_SESSION['PO' . $identifier]->Initiator . "',

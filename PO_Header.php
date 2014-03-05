@@ -473,7 +473,7 @@ if (isset($_POST['Select'])) {
  * or set because only one supplier record returned from a search
  */
 else {
-	$_POST['Select'] = $_SESSION['PO' . $identifier]->SupplierID;
+	$_POST['Select'] = DB_escape_string($_SESSION['PO' . $identifier]->SupplierID);
 	$sql = "SELECT suppliers.suppname,
 					suppliers.currcode,
 					currencies.decimalplaces,

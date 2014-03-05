@@ -165,9 +165,9 @@ if (DB_num_rows($GetOrdHdrResult) == 1 and !isset($_SESSION['PO' . $identifier]-
 									suppliers.address6,
 									suppliers.currcode
 							FROM suppliers
-							WHERE suppliers.supplierid='" . $_SESSION['PO' . $identifier]->SupplierID . "'
+							WHERE suppliers.supplierid='" . DB_escape_string($_SESSION['PO' . $identifier]->SupplierID) . "'
 							ORDER BY suppliers.supplierid";
-
+echo $SupplierSQL;
 	$ErrMsg = _('The searched supplier records requested cannot be retrieved because');
 	$result_SuppSelect = DB_query($SupplierSQL, $db, $ErrMsg);
 

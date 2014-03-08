@@ -398,7 +398,7 @@ if (!isset($_SESSION['tender' . $identifier]) or isset($_POST['LookupDeliveryAdd
 		</tr>';
 	foreach ($_SESSION['tender' . $identifier]->Suppliers as $Supplier) {
 		echo '<tr>
-				<td>' . $Supplier->SupplierCode . '</td>
+				<td>' . stripslashes($Supplier->SupplierCode) . '</td>
 				<td>' . $Supplier->SupplierName . '</td>
 				<td>' . $Supplier->EmailAddress . '</td>
 				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?identifier=' . $identifier, ENT_QUOTES, 'UTF-8') . '&amp;DeleteSupplier=' . $Supplier->SupplierCode . '">' . _('Delete') . '</a></td>
@@ -505,6 +505,7 @@ if (isset($_POST['SearchSupplier']) or isset($_POST['Go']) or isset($_POST['Next
 						ORDER BY supplierid";
 		}
 	} //one of keywords or SupplierCode was more than a zero length string
+echo $SQL;
 	$result = DB_query($SQL, $db);
 	if (DB_num_rows($result) == 1) {
 		$myrow = DB_fetch_array($result);

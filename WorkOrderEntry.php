@@ -62,7 +62,7 @@ if (isset($_GET['WO'])) {
 	$_SESSION['WorkOrder' . $identifier]->Load($_GET['WO']);
 }
 
-echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $identifier . '" name="MainForm">';
+echo '<form onSubmit="return VerifyForm(this);" method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $identifier . '" name="MainForm">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 echo '<table class="selection">
@@ -185,7 +185,7 @@ if ($_SESSION['WorkOrder' . $identifier]->NumberOfItems > 0) {
 }
 echo '</table>';
 
-echo '<table class="selection">
+echo '<table class="selection print">
 		<tr>
 			<th colspan="5"><h3>' . _('Requirements for order') . '
 				<img src="' . $RootPath . '/css/' . $Theme . '/images/printer.png" class="PrintIcon noPrint" title="' . _('Print Requirements') . '" alt="' . _('Print Requirements') . '" onclick="window.print();" />

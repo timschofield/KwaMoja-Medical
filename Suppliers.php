@@ -292,9 +292,9 @@ function Is_ValidAccount($ActNo) {
 
 
 if (isset($_GET['SupplierID'])) {
-	$SupplierID = mb_strtoupper($_GET['SupplierID']);
+	$SupplierID = mb_strtoupper(stripslashes($_GET['SupplierID']));
 } elseif (isset($_POST['SupplierID'])) {
-	$SupplierID = mb_strtoupper($_POST['SupplierID']);
+	$SupplierID = mb_strtoupper(stripslashes($_POST['SupplierID']));
 } else {
 	unset($SupplierID);
 }
@@ -321,7 +321,7 @@ if (isset($_POST['submit'])) {
 	ie the page has called itself with some user input */
 
 	//first off validate inputs sensible
-	$sql = "SELECT COUNT(supplierid) FROM suppliers WHERE supplierid='" . $SupplierID . "'";
+	$sql = "SELECT COUNT(supplierid) FROM suppliers WHERE supplierid='" . DB_escape_string($SupplierID) . "'";
 	$result = DB_query($sql, $db);
 	$myrow = DB_fetch_row($result);
 	if ($myrow[0] > 0 and isset($_POST['New'])) {
@@ -454,13 +454,13 @@ if (isset($_POST['submit'])) {
 
 			$supptranssql = "SELECT supplierno
 							FROM supptrans
-							WHERE supplierno='" . $SupplierID . "'";
+							WHERE supplierno='" . DB_escape_string($SupplierID) . "'";
 			$suppresult = DB_query($supptranssql, $db);
 			$supptrans = DB_num_rows($suppresult);
 
 			$suppcurrssql = "SELECT currcode
 							FROM suppliers
-							WHERE supplierid='" . $SupplierID . "'";
+							WHERE supplierid='" . DB_escape_string($SupplierID) . "'";
 			$currresult = DB_query($suppcurrssql, $db);
 			$suppcurr = DB_fetch_row($currresult);
 
@@ -489,7 +489,7 @@ if (isset($_POST['submit'])) {
 							lat='" . $latitude . "',
 							lng='" . $longitude . "',
 							taxref='" . $_POST['TaxRef'] . "'
-						WHERE supplierid = '" . $SupplierID . "'";
+						WHERE supplierid = '" . DB_escape_string($SupplierID) . "'";
 			} else {
 				if ($suppcurr[0] != $_POST['CurrCode']) {
 					prnMsg(_('Cannot change currency code as transactions already exist'), 'info');
@@ -517,7 +517,7 @@ if (isset($_POST['submit'])) {
 							lat='" . $latitude . "',
 							lng='" . $longitude . "',
 							taxref='" . $_POST['TaxRef'] . "'
-						WHERE supplierid = '" . $SupplierID . "'";
+						WHERE supplierid = '" . DB_escape_string($SupplierID) . "'";
 			}
 
 			$ErrMsg = _('The supplier could not be updated because');
@@ -553,7 +553,7 @@ if (isset($_POST['submit'])) {
 										lat,
 										lng,
 										taxref)
-								 VALUES ('" . $SupplierID . "',
+								 VALUES ('" . DB_escape_string($SupplierID) . "',
 								 	'" . $_POST['SuppName'] . "',
 									'" . $_POST['Address1'] . "',
 									'" . $_POST['Address2'] . "',
@@ -876,7 +876,7 @@ if (!isset($SupplierID)) {
 						factorcompanyid,
 						taxref
 					FROM suppliers
-					WHERE supplierid = '" . $SupplierID . "'";
+					WHERE supplierid = '" . DB_escape_string($SupplierID) . "'";
 
 		$result = DB_query($sql, $db);
 		$myrow = DB_fetch_array($result);

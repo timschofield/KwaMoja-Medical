@@ -520,20 +520,20 @@ padding:3px;
 #FooterLogoDiv {
 float:left;
 background:#FFF;
-border-radius:8px 8px 8px 8px;
-margin-left:47%;
+border-radius:8px;
+margin-left:44%;
 padding:3px;
 }
 
 #FooterVersionDiv {
 clear:both;
-float:left;
-margin-left:47%;
+text-align:center;
 }
 
 #FooterTimeDiv {
+display:block;
 float:right;
-margin-top:-22px;
+line-height:2.8em; /* Center the text vertically. */
 }
 
 #dialog_buttons,td.number,input.number,input.integer {

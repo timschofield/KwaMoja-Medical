@@ -10,7 +10,6 @@ echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $T
 	 ' . ' ' . _('Search Sales Orders') . '</p>';
 
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 if (isset($_POST['completed'])) {
@@ -37,9 +36,9 @@ if (isset($_GET['CustomerRef'])) {
 	$CustomerRef = $_POST['CustomerRef'];
 }
 if (isset($_GET['SelectedCustomer'])) {
-	$SelectedCustomer = $_GET['SelectedCustomer'];
+	$SelectedCustomer = stripslashes($_GET['SelectedCustomer']);
 } elseif (isset($_POST['SelectedCustomer'])) {
-	$SelectedCustomer = $_POST['SelectedCustomer'];
+	$SelectedCustomer = stripslashes($_POST['SelectedCustomer']);
 }
 if (isset($SupplierLogin) and $SupplierLogin == 0) {
 	$SelectedCustomer = $_SESSION['CustomerID'];
@@ -65,18 +64,18 @@ if (isset($OrderNumber)) {
 	echo '<p class="page_title_text noPrint"><img src="' . $RootPath . '/css/' . $Theme . '/images/sales.png" title="' . _('Sales Order') . '" alt="" />
 		 ' . ' ' . _('Order Number') . ' - ' . $OrderNumber . '</p>';
 	if (mb_strlen($_SESSION['UserBranch']) > 1) {
-		echo _('For customer') . ': ' . $SelectedCustomer;
+		echo _('For customer') . ': ' . stripslashes($SelectedCustomer);
 		echo '<input type="hidden" name="SelectedCustomer" value="' . $SelectedCustomer . '" />';
 	}
 } elseif (isset($CustomerRef)) {
 	echo _('Customer Ref') . ' - ' . $CustomerRef;
 	if (mb_strlen($_SESSION['UserBranch']) > 1) {
-		echo ' ' . _('and for customer') . ': ' . $SelectedCustomer . ' ' . _('and') . ' ';
+		echo ' ' . _('and for customer') . ': ' . stripslashes($SelectedCustomer) . ' ' . _('and') . ' ';
 		echo '<input type="hidden" name="SelectedCustomer" value="' . $SelectedCustomer . '" />';
 	}
 } else {
 	if (isset($SelectedCustomer)) {
-		echo _('For customer') . ': ' . $SelectedCustomer . ' ' . _('and') . ' ';
+		echo _('For customer') . ': ' . stripslashes($SelectedCustomer) . ' ' . _('and') . ' ';
 		echo '<input type="hidden" name="SelectedCustomer" value="' . $SelectedCustomer . '" />';
 	}
 
@@ -477,8 +476,7 @@ if (isset($SalesOrdersResult)) {
 	echo '</tbody></table>';
 }
 
-echo '</div>
-	  </form>';
+echo '</form>';
 include('includes/footer.inc');
 
 ?>

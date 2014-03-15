@@ -16,7 +16,7 @@ padding:0;
 div.toplink {
 padding-top:1%;
 padding-left:1%;
-margin-bottom:-0.5%;
+margin-bottom:-1%;
 text-align:left
 }
 
@@ -145,6 +145,13 @@ background-color:#B0C4DE;
 a {
 color:blue;
 text-decoration:none;
+display:block;
+}
+
+a.FontSize {
+color:blue;
+text-decoration:none;
+display:inline;
 }
 
 a:hover {

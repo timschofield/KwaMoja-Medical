@@ -88,8 +88,8 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 				ON debtorsmaster.currcode=currencies.currabrev
 			INNER JOIN paymentterms
 				ON debtorsmaster.paymentterms=paymentterms.termsindicator
-			WHERE debtorsmaster.debtorno >='" . $_POST['FromCust'] . "'
-			AND debtorsmaster.debtorno <='" . $_POST['ToCust'] . "'
+			WHERE debtorsmaster.debtorno >='" . stripslashes($_POST['FromCust']) . "'
+			AND debtorsmaster.debtorno <='" . stripslashes($_POST['ToCust']) . "'
 			ORDER BY debtorsmaster.debtorno";
 	$StatementResults = DB_query($sql, $db, $ErrMsg);
 
@@ -116,7 +116,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 					debtortrans.ovamount+debtortrans.ovdiscount+debtortrans.ovfreight+debtortrans.ovgst-debtortrans.alloc as ostdg
 				FROM debtortrans INNER JOIN systypes
 					ON debtortrans.type=systypes.typeid
-				WHERE debtortrans.debtorno='" . $StmtHeader['debtorno'] . "'
+				WHERE debtortrans.debtorno='" . DB_escape_string($StmtHeader['debtorno']) . "'
 				AND debtortrans.settled=0";
 
 		if ($_SESSION['SalesmanLogin'] != '') {
@@ -145,7 +145,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 							ON (debtortrans.id=custallocns.transid_allocfrom
 								OR debtortrans.id=custallocns.transid_allocto)
 						WHERE custallocns.datealloc >='" . Date('Y-m-d', Mktime(0, 0, 0, Date('m') - 1, Date('d'), Date('y'))) . "'
-						AND debtortrans.debtorno='" . $StmtHeader['debtorno'] . "'
+						AND debtortrans.debtorno='" . DB_escape_string($StmtHeader['debtorno']) . "'
 						AND debtortrans.settled=1";
 
 			if ($_SESSION['SalesmanLogin'] != '') {
@@ -291,7 +291,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 			}
 			/*Now figure out the aged analysis for the customer under review */
 
-			$SQL = "SELECT debtorsmaster.name,
+			$sql = "SELECT debtorsmaster.name,
 						currencies.currency,
 						paymentterms.terms,
 						debtorsmaster.creditlimit,

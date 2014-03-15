@@ -5,10 +5,10 @@ $Title = _('Customer Purchases');
 include('includes/header.inc');
 
 if (isset($_GET['DebtorNo'])) {
-	$DebtorNo = $_GET['DebtorNo'];
+	$DebtorNo = stripslashes($_GET['DebtorNo']);
 } //isset($_GET['DebtorNo'])
 else if (isset($_POST['DebtorNo'])) {
-	$DebtorNo = $_POST['DebtorNo'];
+	$DebtorNo = stripslashes($_POST['DebtorNo']);
 } //isset($_POST['DebtorNo'])
 else {
 	prnMsg(_('This script must be called with a customer code.'), 'info');
@@ -27,10 +27,13 @@ $ErrMsg = _('The customer details could not be retrieved by the SQL because');
 $CustomerResult = DB_query($SQL, $db, $ErrMsg);
 $CustomerRecord = DB_fetch_array($CustomerResult);
 
+echo '<div class="toplink"><a href="SelectCustomer.php">' . _('Return to customer selection screen') . '</a></div>';
+
 echo '<p class="page_title_text noPrint" >
 		<img src="' . $RootPath . '/css/' . $Theme . '/images/customer.png" title="' . _('Customer') . '" alt="" /> ' . _('Items Purchased by Customer') . ' : ' . $CustomerRecord['name'] . '
 	</p>';
 
+$SQLWhere = '';
 if ($_SESSION['RestrictLocations'] == 0) {
 	$SQL = "SELECT stockmoves.stockid,
 					stockmaster.description,
@@ -54,7 +57,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 	if ($_SESSION['SalesmanLogin'] != '') {
 		$SQL .= " INNER JOIN custbranch
 					ON stockmoves.branchcode=custbranch.branchcode";
-		$SQLWhere .= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
+		$SQLWhere = " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
 	}
 	$SQL .= $SQLWhere . " ORDER BY trandate DESC";
 } else {
@@ -83,7 +86,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 	if ($_SESSION['SalesmanLogin'] != '') {
 		$SQL .= " INNER JOIN custbranch
 					ON stockmoves.branchcode=custbranch.branchcode";
-		$SQLWhere .= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
+		$SQLWhere = " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
 	}
 	$SQL .= $SQLWhere . " ORDER BY trandate DESC";
 }
@@ -91,9 +94,7 @@ $ErrMsg = _('The stock movement details could not be retrieved by the SQL becaus
 $StockMovesResult = DB_query($SQL, $db, $ErrMsg);
 
 if (DB_num_rows($StockMovesResult) == 0) {
-	echo '<br />';
 	prnMsg(_('There are no items for this customer'), 'notice');
-	echo '<br />';
 } //DB_num_rows($StockMovesResult) == 0
 else {
 	echo '<table class="selection">
@@ -132,8 +133,6 @@ else {
 
 	echo '</table>';
 }
-
-echo '<br /><div class="centre"><a href="SelectCustomer.php">' . _('Return to customer selection screen') . '</a></div><br />';
 
 include('includes/footer.inc');
 ?>

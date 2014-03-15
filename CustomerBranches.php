@@ -9,9 +9,9 @@ include('includes/header.inc');
 include('includes/CountriesArray.php');
 
 if (isset($_GET['DebtorNo'])) {
-	$DebtorNo = mb_strtoupper($_GET['DebtorNo']);
+	$DebtorNo = mb_strtoupper(html_entity_decode(stripslashes($_GET['DebtorNo'])));
 } else if (isset($_POST['DebtorNo'])) {
-	$DebtorNo = mb_strtoupper($_POST['DebtorNo']);
+	$DebtorNo = mb_strtoupper(stripslashes($_POST['DebtorNo']));
 }
 
 if (!isset($DebtorNo)) {
@@ -51,12 +51,6 @@ if (isset($_POST['submit'])) {
 		$_POST['Salesman'] = $_SESSION['SalesmanLogin'];
 	}
 
-	if (ContainsIllegalCharacters($_POST['BranchCode']) or mb_strstr($_POST['BranchCode'], ' ')) {
-		$InputError = 1;
-		prnMsg(_('The Branch code cannot contain any of the following characters') . " -  &amp; \'", 'error');
-		$Errors[$i] = 'BranchCode';
-		$i++;
-	}
 	if (mb_strlen($_POST['BranchCode']) == 0) {
 		$InputError = 1;
 		prnMsg(_('The Branch code must be at least one character long'), 'error');
@@ -211,8 +205,8 @@ if (isset($_POST['submit'])) {
 						defaultshipvia,
 						custbranchcode,
 						deliverblind)
-				VALUES ('" . $_POST['BranchCode'] . "',
-					'" . $DebtorNo . "',
+				VALUES ('" . html_entity_decode($_POST['BranchCode']) . "',
+					'" . html_entity_decode($DebtorNo) . "',
 					'" . $_POST['BrName'] . "',
 					'" . $_POST['BrAddress1'] . "',
 					'" . $_POST['BrAddress2'] . "',
@@ -387,7 +381,7 @@ if (!isset($SelectedBranch)) {
 				INNER JOIN taxgroups
 				ON custbranch.taxgroupid=taxgroups.taxgroupid
 				WHERE custbranch.debtorno = '" . $DebtorNo . "'";
-
+echo $sql;
 	if ($_SESSION['SalesmanLogin'] != '') {
 		$sql .= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
 	}
@@ -433,7 +427,7 @@ if (!isset($SelectedBranch)) {
 					<td>%s</td>
 					<td>%s</td>
 					<td><a href="%s?DebtorNo=%s&amp;SelectedBranch=%s">%s</a></td>
-					<td><a href="%s?DebtorNo=%s&amp;SelectedBranch=%s&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this branch?') . '\', \'Confirm Delete\', this);">%s</a></td></tr>', $myrow[1], $myrow[2], $myrow[5], $myrow[3], $myrow[4], $myrow[6], $myrow[7], $myrow[8], $myrow[8], $myrow[9], ($myrow[10] ? _('No') : _('Yes')), htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $DebtorNo, urlencode($myrow[1]), _('Edit'), htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $DebtorNo, urlencode($myrow[1]), _('Delete Branch'));
+					<td><a href="%s?DebtorNo=%s&amp;SelectedBranch=%s&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this branch?') . '\', \'Confirm Delete\', this);">%s</a></td></tr>', $myrow[1], $myrow[2], $myrow[5], $myrow[3], $myrow[4], $myrow[6], $myrow[7], $myrow[8], $myrow[8], $myrow[9], ($myrow[10] ? _('No') : _('Yes')), htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $DebtorNo, urlencode($myrow[1]), _('Edit'), htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), urlencode($DebtorNo), urlencode($myrow[1]), _('Delete Branch'));
 
 			if ($myrow[10]) {
 				$TotalDisable++;
@@ -574,7 +568,7 @@ if (!isset($_GET['delete'])) {
 			</tr>
 			<tr>
 				<td>' . _('Branch Code') . ':</td>
-				<td>' . $_POST['BranchCode'] . '</td>
+				<td>' . stripslashes($_POST['BranchCode']) . '</td>
 			</tr>';
 
 	} else { //end of if $SelectedBranch only do the else when a new record is being entered
@@ -611,7 +605,7 @@ if (!isset($_GET['delete'])) {
 		echo '<table class="selection">
 				<tr>
 					<td>' . _('Branch Code') . ':</td>
-					<td><input tabindex="1" type="text" name="BranchCode" size="12" autofocus="autofocus" required="required" minlength="1" maxlength="10" value="' . $_POST['BranchCode'] . '" /></td>
+					<td><input tabindex="1" type="text" name="BranchCode" size="12" autofocus="autofocus" required="required" minlength="1" maxlength="10" value="' . stripslashes($_POST['BranchCode']) . '" /></td>
 				</tr>';
 		$_POST['DeliverBlind'] = $_SESSION['DefaultBlindPackNote'];
 	}

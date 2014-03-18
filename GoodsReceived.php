@@ -471,7 +471,7 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 								'" . DB_escape_string($OrderLine->ItemDescription) . "',
 								'" . $_POST['DefaultReceivedDate'] . "',
 								'" . $OrderLine->ReceiveQty . "',
-								'" . $_SESSION['PO' . $identifier]->SupplierID . "',
+								'" . DB_escape_string($_SESSION['PO' . $identifier]->SupplierID) . "',
 								'" . $CurrentStandardCost . "')";
 
 			$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('A GRN record could not be inserted') . '. ' . _('This receipt of goods has not been processed because');
@@ -528,7 +528,7 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 										'" . $_POST['DefaultReceivedDate'] . "',
 										'" . $LocalCurrencyPrice . "',
 										'" . $PeriodNo . "',
-										'" . $_SESSION['PO' . $identifier]->SupplierID . " (" . DB_escape_string($_SESSION['PO' . $identifier]->SupplierName) . ") - " . $_SESSION['PO' . $identifier]->OrderNo . "',
+										'" . DB_escape_string($_SESSION['PO' . $identifier]->SupplierID) . " (" . DB_escape_string($_SESSION['PO' . $identifier]->SupplierName) . ") - " . $_SESSION['PO' . $identifier]->OrderNo . "',
 										'" . $OrderLine->ReceiveQty . "',
 										'" . $_SESSION['PO' . $identifier]->LineItems[$OrderLine->LineNo]->StandardCost . "',
 										'" . ($QtyOnHandPrior + $OrderLine->ReceiveQty) . "'
@@ -683,7 +683,7 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 											'" . $_POST['DefaultReceivedDate'] . "',
 											'" . $PeriodNo . "',
 											'" . $OrderLine->GLCode . "',
-											'" . _('PO') . ' ' . $_SESSION['PO'.$identifier]->OrderNo . ': ' . $_SESSION['PO'.$identifier]->SupplierID . ' - ' . $OrderLine->StockID . ' - ' . DB_escape_string($OrderLine->ItemDescription) . ' x ' . $OrderLine->ReceiveQty . " @ " . locale_number_format($CurrentStandardCost,$_SESSION['CompanyRecord']['decimalplaces']) . "',
+											'" . _('PO') . ' ' . $_SESSION['PO'.$identifier]->OrderNo . ': ' . DB_escape_string($_SESSION['PO'.$identifier]->SupplierID) . ' - ' . $OrderLine->StockID . ' - ' . DB_escape_string($OrderLine->ItemDescription) . ' x ' . $OrderLine->ReceiveQty . " @ " . locale_number_format($CurrentStandardCost,$_SESSION['CompanyRecord']['decimalplaces']) . "',
 											'" . $CurrentStandardCost * $OrderLine->ReceiveQty . "'
 										)";
 
@@ -706,7 +706,7 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 											'" . $_POST['DefaultReceivedDate'] . "',
 											'" . $PeriodNo . "',
 											'" . $_SESSION['CompanyRecord']['grnact'] . "',
-											'" . _('PO') . ' ' . $_SESSION['PO'.$identifier]->OrderNo . ': ' . $_SESSION['PO'.$identifier]->SupplierID . ' - ' . $OrderLine->StockID . ' - ' . DB_escape_string($OrderLine->ItemDescription) . ' x ' . $OrderLine->ReceiveQty . ' @ ' . locale_number_format($UnitCost,$_SESSION['CompanyRecord']['decimalplaces']) . "',
+											'" . _('PO') . ' ' . $_SESSION['PO'.$identifier]->OrderNo . ': ' . DB_escape_string($_SESSION['PO'.$identifier]->SupplierID) . ' - ' . $OrderLine->StockID . ' - ' . DB_escape_string($OrderLine->ItemDescription) . ' x ' . $OrderLine->ReceiveQty . ' @ ' . locale_number_format($UnitCost,$_SESSION['CompanyRecord']['decimalplaces']) . "',
 											'" . -$UnitCost * $OrderLine->ReceiveQty . "'
 										)";
 

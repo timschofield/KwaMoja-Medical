@@ -5,6 +5,9 @@ include('includes/session.inc');
 $Title = _('Supplier Purchasing Data');
 
 include('includes/header.inc');
+if (isset($_POST['SupplierID'])) {
+	$_POST['SupplierID'] = stripslashes($_POST['SupplierID']);
+}
 
 if (isset($_POST['StockSearch'])) {
 	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
@@ -214,7 +217,7 @@ if (isset($searchresult) and !isset($_POST['Select'])) {
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Search for Inventory Items') . '</p>';
 	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-	echo '<input type="hidden" value="' . $_POST['SupplierID'] . '" name="SupplierID" />';
+	echo '<input type="hidden" value="' . stripslashes($_POST['SupplierID']) . '" name="SupplierID" />';
 	$ListCount = DB_num_rows($searchresult);
 	if ($ListCount > 0) {
 		// If the user hit the search button and there is more than one item to show
@@ -319,7 +322,7 @@ foreach ($_POST as $key => $value) {
 									effectivefrom='" . FormatDateForSQL($EffectiveFrom) . "',
 									suppliers_partno='" . $SupplierPartNo . "',
 									minorderqty='" . $MinOrderQty . "'
-								WHERE supplierno='" . $_POST['SupplierID'] . "'
+								WHERE supplierno='" . DB_escape_string($_POST['SupplierID']) . "'
 								AND stockid='" . $StockID . "'";
 		$result = DB_query($sql, $db);
 	}
@@ -342,7 +345,7 @@ foreach ($_POST as $key => $value) {
 									minorderqty
 								) VALUES (
 									'" . $_POST['StockID0'] . "',
-									'" . $_POST['SupplierID'] . "',
+									'" . DB_escape_string($_POST['SupplierID']) . "',
 									'" . $_POST['Price0'] . "',
 									'" . $_POST['SuppUOM0'] . "',
 									'" . $_POST['ConversionFactor0'] . "',
@@ -358,14 +361,14 @@ foreach ($_POST as $key => $value) {
 }
 
 if (isset($_GET['SupplierID'])) {
-	$SupplierID = trim(mb_strtoupper($_GET['SupplierID']));
+	$SupplierID = stripslashes(trim(mb_strtoupper($_GET['SupplierID'])));
 } elseif (isset($_POST['SupplierID'])) {
-	$SupplierID = trim(mb_strtoupper($_POST['SupplierID']));
+	$SupplierID = stripslashes(trim(mb_strtoupper($_POST['SupplierID'])));
 }
 
-if (isset($SupplierID) and $SupplierID != '' and !isset($_POST['SearchSupplier'])) {
+if ((isset($SupplierID) and $SupplierID != '') and !isset($_POST['SearchSupplier'])) {
 	/*NOT EDITING AN EXISTING BUT SUPPLIER selected or ENTERED*/
-	$sql = "SELECT suppliers.suppname, suppliers.currcode FROM suppliers WHERE supplierid='" . $SupplierID . "'";
+	$sql = "SELECT suppliers.suppname, suppliers.currcode FROM suppliers WHERE supplierid='" . DB_escape_string($SupplierID) . "'";
 	$ErrMsg = _('The supplier details for the selected supplier could not be retrieved because');
 	$DbgMsg = _('The SQL that failed was');
 	$SuppSelResult = DB_query($sql, $db, $ErrMsg, $DbgMsg);
@@ -489,7 +492,7 @@ if (isset($_POST['SupplierID'])) {
 			FROM purchdata
 			INNER JOIN stockmaster
 			ON purchdata.stockid=stockmaster.stockid
-			WHERE supplierno='" . $_POST['SupplierID'] . "'
+			WHERE supplierno='" . DB_escape_string($_POST['SupplierID']) . "'
 			ORDER BY purchdata.stockid, effectivefrom DESC";
 
 	$result = DB_query($SQL, $db);
@@ -498,10 +501,10 @@ if (isset($_POST['SupplierID'])) {
 						unitname
 					FROM unitsofmeasure";
 	$UOMResult = DB_query($UOMSQL, $db);
-	echo '<input type="hidden" value="' . $_POST['SupplierID'] . '" name="SupplierID" />';
+	echo '<input type="hidden" value="' . stripslashes($_POST['SupplierID']) . '" name="SupplierID" />';
 	echo '<table class="selection">
 			<tr>
-				<th colspan="8" style="text-align: left"><h3>' . _('Supplier purchasing data for') . ' ' . $_POST['SupplierID'] . '</h3></th>
+				<th colspan="8" style="text-align: left"><h3>' . _('Supplier purchasing data for') . ' ' . stripslashes($_POST['SupplierID']). '</h3></th>
 				<th colspan="5" style="text-align: right">' . _('Find new Item Code') . '
 					<button type="submit" name="StockSearch"><img width="15" src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" alt="" /></button>
 				</th>

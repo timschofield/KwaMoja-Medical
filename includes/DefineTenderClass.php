@@ -200,7 +200,7 @@ class Tender {
 	}
 
 	function remove_supplier_from_tender(&$SupplierCode) {
-		unset($this->Suppliers[$SupplierCode]);
+		unset($this->Suppliers[stripslashes($SupplierCode)]);
 		$this->SuppliersOnTender--;
 	}
 

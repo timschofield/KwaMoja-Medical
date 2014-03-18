@@ -1,12 +1,12 @@
 <?php
 $LanguagesArray = array();
 
-$LanguagesArray['en_US.utf8']['LanguageName'] = 'US English';
+$LanguagesArray['en_US.utf8']['LanguageName'] = 'English United States';
 $LanguagesArray['en_US.utf8']['WindowsLocale'] = 'english-us';
 $LanguagesArray['en_US.utf8']['DecimalPoint'] = '.';
 $LanguagesArray['en_US.utf8']['ThousandsSeparator'] = ',';
 
-$LanguagesArray['en_GB.utf8']['LanguageName'] = 'English British';
+$LanguagesArray['en_GB.utf8']['LanguageName'] = 'English United Kingdom';
 $LanguagesArray['en_GB.utf8']['WindowsLocale'] = 'english-uk';
 $LanguagesArray['en_GB.utf8']['DecimalPoint'] = '.';
 $LanguagesArray['en_GB.utf8']['ThousandsSeparator'] = ',';
@@ -51,7 +51,7 @@ $LanguagesArray['fa_IR.utf8']['WindowsLocale'] = 'persian';
 $LanguagesArray['fa_IR.utf8']['DecimalPoint'] = ',';
 $LanguagesArray['fa_IR.utf8']['ThousandsSeparator'] = '.';
 
-$LanguagesArray['fr_CA.utf8']['LanguageName'] = 'Français Québec';
+$LanguagesArray['fr_CA.utf8']['LanguageName'] = 'Français Canada';
 $LanguagesArray['fr_CA.utf8']['WindowsLocale'] = 'french-quebec';
 $LanguagesArray['fr_CA.utf8']['DecimalPoint'] = ',';
 $LanguagesArray['fr_CA.utf8']['ThousandsSeparator'] = ' ';

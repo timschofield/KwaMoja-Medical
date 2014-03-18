@@ -68,7 +68,6 @@ if ($_SESSION['PO' . $identifier]->Status != 'Printed') {
 echo '<p class="page_title_text noPrint" >
 		<img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" title="' . _('Receive') . '" alt="" />' . ' ' . _('Receive Purchase Order') . ' : ' . $_SESSION['PO' . $identifier]->OrderNo . ' ' . _('from') . ' ' . $_SESSION['PO' . $identifier]->SupplierName . '</p>';
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $identifier . '" method="post" class="noPrint">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 if (!isset($_POST['ProcessGoodsReceived'])) {
@@ -303,6 +302,19 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 
 	$Changes = 0;
 	$LineNo = 1;
+	if (DB_num_rows($Result) == 0){ //Those goods must have been received by another user. So should destroy the session data and show warning to users
+		prnMsg(_('This order has been changed or invoiced since this delivery was started to be actioned').' . '._('Processing halted'),'error');
+
+		echo '<div class="centre">
+				<a href="' . $RootPath . '/PO_SelectOSPurchOrder.php">' . _('Select a different purchase order for receiving goods against') . '</a>
+			</div>';
+		unset($_SESSION['PO' . $identifier]->LineItems);
+		unset($_SESSION['PO' . $identifier]);
+		unset($_POST['ProcessGoodsReceived']);
+		echo '</form>';
+		include ('includes/footer.inc');
+		exit;
+	}
 
 	while ($myrow = DB_fetch_array($Result)) {
 

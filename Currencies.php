@@ -315,7 +315,7 @@ if (!isset($SelectedCurrency)) {
 	}
 
 	while ($myrow = DB_fetch_array($result)) {
-		if ($myrow[1] == $FunctionalCurrency) {
+		if ($myrow['currabrev'] == $FunctionalCurrency) {
 			echo '<tr style="background-color:#FFbbbb">';
 		} elseif ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -325,7 +325,7 @@ if (!isset($SelectedCurrency)) {
 			$k++;
 		}
 		// Lets show the country flag
-		$ImageFile = 'flags/' . mb_strtoupper($myrow[1]) . '.gif';
+		$ImageFile = 'flags/' . mb_strtoupper($myrow['currabrev']) . '.gif';
 
 		if (!file_exists($ImageFile)) {
 			$ImageFile = 'flags/blank.gif';
@@ -336,7 +336,7 @@ if (!isset($SelectedCurrency)) {
 			$ShowInWebText = _('No');
 		}
 
-		if ($myrow[1] != $FunctionalCurrency) {
+		if ($myrow['currabrev'] != $FunctionalCurrency) {
 			printf('<td><img src="%s" alt="" /></td>
 					<td>%s</td>
 					<td>%s</td>

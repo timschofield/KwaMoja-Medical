@@ -118,7 +118,8 @@ if ($_GET['Action'] == 'Enter') {
 						FROM locations
 						INNER JOIN www_users
 							ON locations.loccode=www_users.defaultlocation
-						WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
+						WHERE www_users.userid='" . $_SESSION['UserID'] . "'
+							AND loccode='" . $_POST['Location'] . "'";
 		}
 		$result = DB_query($sql, $db);
 		while ($myrow = DB_fetch_array($result)) {

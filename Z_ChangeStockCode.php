@@ -109,18 +109,22 @@ if (isset($_POST['ProcessStockChange'])) {
 
 		//check if MRP tables exist before assuming
 
-		$result = DB_query("SELECT COUNT(*) FROM mrpplannedorders", $db, '', '', false, false);
+		$sql = "SELECT * FROM mrpparameters";
+		$result = DB_query($sql, $db, '', '', false, false);
 		if (DB_error_no($db) == 0) {
-			ChangeFieldInTable("mrpplannedorders", "part", $_POST['OldStockID'], $_POST['NewStockID'], $db);
-		}
+			$result = DB_query("SELECT COUNT(*) FROM mrpplannedorders", $db, '', '', false, false);
+			if (DB_error_no($db) == 0) {
+				ChangeFieldInTable("mrpplannedorders", "part", $_POST['OldStockID'], $_POST['NewStockID'], $db);
+			}
 
-		$result = DB_query("SELECT * FROM mrprequirements", $db, '', '', false, false);
-		if (DB_error_no($db) == 0) {
-			ChangeFieldInTable("mrprequirements", "part", $_POST['OldStockID'], $_POST['NewStockID'], $db);
-		}
-		$result = DB_query("SELECT * FROM mrpsupplies", $db, '', '', false, false);
-		if (DB_error_no($db) == 0) {
-			ChangeFieldInTable("mrpsupplies", "part", $_POST['OldStockID'], $_POST['NewStockID'], $db);
+			$result = DB_query("SELECT * FROM mrprequirements", $db, '', '', false, false);
+			if (DB_error_no($db) == 0) {
+				ChangeFieldInTable("mrprequirements", "part", $_POST['OldStockID'], $_POST['NewStockID'], $db);
+			}
+			$result = DB_query("SELECT * FROM mrpsupplies", $db, '', '', false, false);
+			if (DB_error_no($db) == 0) {
+				ChangeFieldInTable("mrpsupplies", "part", $_POST['OldStockID'], $_POST['NewStockID'], $db);
+			}
 		}
 
 		ChangeFieldInTable("salesanalysis", "stockid", $_POST['OldStockID'], $_POST['NewStockID'], $db);
@@ -174,23 +178,22 @@ if (isset($_POST['ProcessStockChange'])) {
 }
 
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-echo '<div class="centre">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
-echo '<br />
-	<table>
-	<tr>
-		<td>' . _('Existing Inventory Code') . ':</td>
-		<td><input type="text" name="OldStockID" size="20" minlength="0" maxlength="20" /></td>
-	</tr>
-	<tr>
-		<td>' . _('New Inventory Code') . ':</td>
-		<td><input type="text" name="NewStockID" size="20" minlength="0" maxlength="20" /></td>
-	</tr>
-	</table>
-
-		<input type="submit" name="ProcessStockChange" value="' . _('Process') . '" />
-	</div>
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Inventory') . '" alt="" />' . ' ' . $Title . '</p>';
+echo '<table>
+		<tr>
+			<td>' . _('Existing Inventory Code') . ':</td>
+			<td><input type="text" name="OldStockID" size="20" minlength="0" maxlength="20" /></td>
+		</tr>
+		<tr>
+			<td>' . _('New Inventory Code') . ':</td>
+			<td><input type="text" name="NewStockID" size="20" minlength="0" maxlength="20" /></td>
+		</tr>
+		</table>
+		<div class="centre">
+			<input type="submit" name="ProcessStockChange" value="' . _('Process') . '" />
+		</div>
 	</form>';
 
 include('includes/footer.inc');

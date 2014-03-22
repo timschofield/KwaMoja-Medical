@@ -148,6 +148,13 @@ background-color:#BFBFBF;
 a {
 color:#5B5B68;
 text-decoration:none;
+display:block;
+}
+
+a.FontSize {
+color:blue;
+text-decoration:none;
+display:inline;
 }
 
 img {

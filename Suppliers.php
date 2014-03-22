@@ -336,7 +336,7 @@ if (isset($_POST['submit'])) {
 		$Errors[$i] = 'Name';
 		$i++;
 	}
-	if (mb_strlen($SupplierID) == 0) {
+	if ($_SESSION['AutoSupplierNo'] == 0 and mb_strlen($SupplierID) == 0) {
 		$InputError = 1;
 		prnMsg(_('The Supplier Code cannot be empty'), 'error');
 		$Errors[$i] = 'ID';
@@ -528,6 +528,11 @@ if (isset($_POST['submit'])) {
 
 		} else { //its a new supplier
 
+			if ($_SESSION['AutoSupplierNo'] == 1) {
+				/* system assigned, sequential, numeric */
+				$SupplierID = GetNextTransNo(600, $db);
+			}
+
 			$sql = "INSERT INTO suppliers (supplierid,
 										suppname,
 										address1,
@@ -585,6 +590,10 @@ if (isset($_POST['submit'])) {
 			$result = DB_query($sql, $db, $ErrMsg, $DbgMsg);
 
 			prnMsg(_('A new supplier for') . ' ' . $_POST['SuppName'] . ' ' . _('has been added to the database'), 'success');
+
+			echo '<p>
+					<a href="' . $RootPath . '/SupplierContacts.php?SupplierID=' . $SupplierID . '">' . _('Review Supplier Contact Details') . '</a>
+				  </p>';
 
 			unset($SupplierID);
 			unset($_POST['SuppName']);
@@ -675,10 +684,14 @@ if (!isset($SupplierID)) {
 	echo '<input type="hidden" name="New" value="Yes" />';
 
 	echo '<table class="selection">';
-	echo '<tr>
-			<td>' . _('Supplier Code') . ':</td>
-			<td><input type="text" name="SupplierID" size="11" required="required" minlength="1" maxlength="10" /></td>
-		</tr>';
+
+	/* if $AutoSupplierNo is off (not 0) then provide an input box for the SupplierID to manually assigned */
+	if ($_SESSION['AutoSupplierNo'] == 0)  {
+		echo '<tr>
+				<td>' . _('Supplier Code') . ':</td>
+				<td><input type="text" title="' . _('The supplier id should not be within 10 legal characters and cannot be blank') . '" required="required" name="SupplierID" size="11" maxlength="10" /></td>
+			</tr>';
+	}
 	echo '<tr>
 			<td>' . _('Supplier Name') . ':</td>
 			<td><input type="text" name="SuppName" size="42" required="required" minlength="1" maxlength="40" /></td>
@@ -907,11 +920,15 @@ if (!isset($SupplierID)) {
 		echo '<tr><td><input type="hidden" name="SupplierID" value="' . $SupplierID . '" /></td></tr>';
 
 	} else {
+		/* if $AutoSupplierNo is off (i.e. 0) then provide an input box for the SupplierID to manually assigned */
+		echo '<input type="hidden" name="New" value="Yes" />';
+		if ($_SESSION['AutoSupplierNo'] == 0)  {
 		// its a new supplier being added
-		echo '<tr><td><input type="hidden" name="New" value="Yes" />';
-		echo _('Supplier Code') . ':</td>
-				<td><input type="text" name="SupplierID" value="' . $SupplierID . '" size="12" required="required" minlength="1" maxlength="10" /></td>
-			</tr>';
+			echo '<tr>
+					<td>' . _('Supplier Code') . ':</td>
+					<td><input type="text" name="SupplierID" value="' . $SupplierID . '" size="12" maxlength="10" /></td>
+				</tr>';
+		}
 	}
 
 	echo '<tr>
@@ -1061,7 +1078,9 @@ if (!isset($SupplierID)) {
 
 	}
 
-	echo '</select></td></tr>';
+	echo '</select>
+				</td>
+			</tr>';
 
 	echo '<tr>
 			<td>' . _('Tax Group') . ':</td>
@@ -1081,7 +1100,10 @@ if (!isset($SupplierID)) {
 
 	} //end while loop
 
-	echo '</select></td></tr></table>';
+	echo '</select>
+				</td>
+			</tr>
+		</table>';
 
 	if (isset($_POST['New'])) {
 		echo '<div class="centre">

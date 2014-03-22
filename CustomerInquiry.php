@@ -18,7 +18,7 @@ if (!isset($_GET['CustomerID']) and !isset($_SESSION['CustomerID'])) {
 	exit;
 } else {
 	if (isset($_GET['CustomerID'])) {
-		$_SESSION['CustomerID'] = $_GET['CustomerID'];
+		$_SESSION['CustomerID'] = stripslashes($_GET['CustomerID']);
 	}
 	$CustomerID = $_SESSION['CustomerID'];
 }
@@ -128,9 +128,11 @@ if ($NIL_BALANCE == True) {
 	$CustomerRecord['overdue2'] = 0;
 }
 
+echo '<div class="toplink"><a href="' . $RootPath . '/SelectCustomer.php">' . _('Back to Customer Screen') . '</a></div>';
+
 echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/customer.png" title="' . _('Customer') . '" alt="" /> ' .
 	_('Customer') . ': ' .
-		$CustomerID . ' - ' . $CustomerRecord['name'] . '<br />' .
+		stripslashes($CustomerID) . ' - ' . $CustomerRecord['name'] . '<br />' .
 	_('All amounts stated in') . ': ' .
 		$CustomerRecord['currency'] . '<br />' . // To be replaced by:
 	_('Terms') . ': ' .

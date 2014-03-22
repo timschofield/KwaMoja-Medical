@@ -113,7 +113,7 @@ foreach ($_SESSION['MenuItems'][$_SESSION['Module']]['Transactions']['Caption'] 
 	}
 	if ((in_array($PageSecurity, $_SESSION['AllowedPageSecurityTokens']) and $PageSecurity != '')) {
 		echo '<li class="menu_group_item">
-				<p>&bull; <a href="' . $RootPath . $_SESSION['MenuItems'][$_SESSION['Module']]['Transactions']['URL'][$i] . '">' . $Caption . '</a></p>
+				<p><a href="' . $RootPath . $_SESSION['MenuItems'][$_SESSION['Module']]['Transactions']['URL'][$i] . '">&bull; ' . $Caption . '</a></p>
 			  </li>';
 	}
 	$i++;
@@ -141,7 +141,7 @@ if (isset($_SESSION['MenuItems'][$_SESSION['Module']]['Reports'])) {
 		$PageSecurity = $_SESSION['PageSecurityArray'][$ScriptNameArray[0]];
 		if ((in_array($PageSecurity, $_SESSION['AllowedPageSecurityTokens']) or !isset($PageSecurity))) {
 			echo '<li class="menu_group_item">
-					<p>&bull; <a href="' . $RootPath . $_SESSION['MenuItems'][$_SESSION['Module']]['Reports']['URL'][$i] . '">' . $Caption . '</a></p>
+					<p><a href="' . $RootPath . $_SESSION['MenuItems'][$_SESSION['Module']]['Reports']['URL'][$i] . '">&bull; ' . $Caption . '</a></p>
 				</li>';
 		}
 		$i++;
@@ -171,7 +171,7 @@ if (isset($_SESSION['MenuItems'][$_SESSION['Module']]['Maintenance'])) {
 			$PageSecurity = $_SESSION['PageSecurityArray'][$ScriptNameArray[0]];
 			if ((in_array($PageSecurity, $_SESSION['AllowedPageSecurityTokens']) or !isset($PageSecurity))) {
 				echo '<li class="menu_group_item">
-						<p>&bull; <a href="' . $RootPath . $_SESSION['MenuItems'][$_SESSION['Module']]['Maintenance']['URL'][$i] . '">' . $Caption . '</a></p>
+						<p><a href="' . $RootPath . $_SESSION['MenuItems'][$_SESSION['Module']]['Maintenance']['URL'][$i] . '">&bull; ' . $Caption . '</a></p>
 					</li>';
 			}
 		}

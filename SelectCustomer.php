@@ -208,7 +208,7 @@ if ($_SESSION['CustomerID'] != '' and !isset($_POST['Search']) and !isset($_POST
 	} //$myrow = DB_fetch_array($result)
 	unset($result);
 
-	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/customer.png" title="' . _('Customer') . '" alt="" />' . ' ' . _('Customer') . ' : ' . $_SESSION['CustomerID'] . ' - ' . $CustomerName . ' - ' . $PhoneNo . _(' has been selected') . '</p>';
+	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/customer.png" title="' . _('Customer') . '" alt="" />' . ' ' . _('Customer') . ' : ' . stripslashes($_SESSION['CustomerID']) . ' - ' . $CustomerName . ' - ' . $PhoneNo . _(' has been selected') . '</p>';
 	echo '<div class="page_help_text noPrint">' . _('Select a menu option to operate using this customer') . '.</div><br />';
 
 	echo '<table cellpadding="4" width="90%" class="selection">
@@ -219,29 +219,29 @@ if ($_SESSION['CustomerID'] != '' and !isset($_POST['Search']) and !isset($_POST
 			</tr>';
 	echo '<tr><td valign="top" class="select">';
 	/* Customer Inquiry Options */
-	echo '<a href="' . $RootPath . '/CustomerInquiry.php?CustomerID=' . $_SESSION['CustomerID'] . '">' . _('Customer Transaction Inquiries') . '</a><br />';
-	echo '<a href="' . $RootPath . '/Customers.php?DebtorNo=' . $_SESSION['CustomerID'] . '&amp;Modify=No">' . _('View Customer Details') . '</a><br />';
-	echo '<a href="' . $RootPath . '/PrintCustStatements.php?FromCust=' . $_SESSION['CustomerID'] . '&amp;ToCust=' . $_SESSION['CustomerID'] . '&amp;PrintPDF=Yes">' . _('Print Customer Statement') . '</a><br />';
-	echo '<a href="' . $RootPath . '/SelectCompletedOrder.php?SelectedCustomer=' . $_SESSION['CustomerID'] . '">' . _('Order Inquiries') . '</a><br />';
-	echo '<a href="' . $RootPath . '/CustomerPurchases.php?DebtorNo=' . $_SESSION['CustomerID'] . '">' . _('Show purchases from this customer') . '</a><br />';
+	echo '<a href="' . $RootPath . '/CustomerInquiry.php?CustomerID=' . urlencode($_SESSION['CustomerID']) . '">' . _('Customer Transaction Inquiries') . '</a>';
+	echo '<a href="' . $RootPath . '/Customers.php?DebtorNo=' . urlencode($_SESSION['CustomerID']) . '&amp;Modify=No">' . _('View Customer Details') . '</a>';
+	echo '<a href="' . $RootPath . '/PrintCustStatements.php?FromCust=' . urlencode($_SESSION['CustomerID']) . '&amp;ToCust=' . urlencode($_SESSION['CustomerID']) . '&amp;PrintPDF=Yes">' . _('Print Customer Statement') . '</a>';
+	echo '<a href="' . $RootPath . '/SelectCompletedOrder.php?SelectedCustomer=' . urlencode($_SESSION['CustomerID']) . '">' . _('Order Inquiries') . '</a>';
+	echo '<a href="' . $RootPath . '/CustomerPurchases.php?DebtorNo=' . urlencode($_SESSION['CustomerID']) . '">' . _('Show purchases from this customer') . '</a>';
 	wikiLink('Customer', $_SESSION['CustomerID']);
 	echo '</td><td valign="top" class="select">';
-	echo '<a href="' . $RootPath . '/SelectSalesOrder.php?SelectedCustomer=' . $_SESSION['CustomerID'] . '">' . _('Modify Outstanding Sales Orders') . '</a><br />';
-	echo '<a href="' . $RootPath . '/CustomerAllocations.php?DebtorNo=' . $_SESSION['CustomerID'] . '">' . _('Allocate Receipts or Credit Notes') . '</a><br />';
-	echo '<a href="' . $RootPath . '/JobCards.php?DebtorNo=' . $_SESSION['CustomerID'] . '&amp;BranchNo=' . $_SESSION['BranchCode'] . '">' . _('Job Cards') . '</a><br />';
-	echo '<a href="' . $RootPath . '/CustomerReceipt.php?CustomerID=' . $_SESSION['CustomerID'] . '&NewReceipt=Yes&Type=Customer">' . _('Enter a Receipt From This Customer') . '</a><br />';
+	echo '<a href="' . $RootPath . '/SelectSalesOrder.php?SelectedCustomer=' . urlencode($_SESSION['CustomerID']) . '">' . _('Modify Outstanding Sales Orders') . '</a>';
+	echo '<a href="' . $RootPath . '/CustomerAllocations.php?DebtorNo=' . urlencode($_SESSION['CustomerID']) . '">' . _('Allocate Receipts or Credit Notes') . '</a>';
+	echo '<a href="' . $RootPath . '/JobCards.php?DebtorNo=' . urlencode($_SESSION['CustomerID']) . '&amp;BranchNo=' . $_SESSION['BranchCode'] . '">' . _('Job Cards') . '</a>';
+	echo '<a href="' . $RootPath . '/CustomerReceipt.php?CustomerID=' . urlencode($_SESSION['CustomerID']) . '&NewReceipt=Yes&Type=Customer">' . _('Enter a Receipt From This Customer') . '</a>';
 	if (isset($_SESSION['CustomerID']) and isset($_SESSION['BranchCode'])) {
-		echo '<a href="' . $RootPath . '/CounterSales.php?DebtorNo=' . $_SESSION['CustomerID'] . '&amp;BranchNo=' . $_SESSION['BranchCode'] . '">' . _('Create a Counter Sale for this Customer') . '</a><br />';
+		echo '<a href="' . $RootPath . '/CounterSales.php?DebtorNo=' . urlencode($_SESSION['CustomerID']) . '&amp;BranchNo=' . $_SESSION['BranchCode'] . '">' . _('Create a Counter Sale for this Customer') . '</a>';
 	} //isset($_SESSION['CustomerID']) and isset($_SESSION['BranchCode'])
 	echo '</td><td valign="top" class="select">';
-	echo '<a href="' . $RootPath . '/Customers.php?">' . _('Add a New Customer') . '</a><br />';
-	echo '<a href="' . $RootPath . '/Customers.php?DebtorNo=' . $_SESSION['CustomerID'] . '">' . _('Modify Customer Details') . '</a><br />';
-	echo '<a href="' . $RootPath . '/CustomerBranches.php?DebtorNo=' . $_SESSION['CustomerID'] . '">' . _('Add/Modify/Delete Customer Branches') . '</a><br />';
-	echo '<a href="' . $RootPath . '/SelectProduct.php">' . _('Special Customer Prices') . '</a><br />';
-	echo '<a href="' . $RootPath . '/CustEDISetup.php">' . _('Customer EDI Configuration') . '</a><br />';
-	echo '<a href="' . $RootPath . '/CustLoginSetup.php">' . _('Customer Login Configuration') . '</a><br />';
-	echo '<a href="' . $RootPath . '/AddCustomerContacts.php?DebtorNo=' . $_SESSION['CustomerID'] . '">' . _('Add a customer contact') . '</a><br />';
-	echo '<a href="' . $RootPath . '/AddCustomerNotes.php?DebtorNo=' . $_SESSION['CustomerID'] . '">' . _('Add a note on this customer') . '</a>';
+	echo '<a href="' . $RootPath . '/Customers.php?">' . _('Add a New Customer') . '</a>';
+	echo '<a href="' . $RootPath . '/Customers.php?DebtorNo=' . urlencode($_SESSION['CustomerID']) . '">' . _('Modify Customer Details') . '</a>';
+	echo '<a href="' . $RootPath . '/CustomerBranches.php?DebtorNo=' . urlencode($_SESSION['CustomerID']) . '">' . _('Add/Modify/Delete Customer Branches') . '</a>';
+	echo '<a href="' . $RootPath . '/SelectProduct.php">' . _('Special Customer Prices') . '</a>';
+	echo '<a href="' . $RootPath . '/CustEDISetup.php">' . _('Customer EDI Configuration') . '</a>';
+	echo '<a href="' . $RootPath . '/CustLoginSetup.php">' . _('Customer Login Configuration') . '</a>';
+	echo '<a href="' . $RootPath . '/AddCustomerContacts.php?DebtorNo=' . urlencode($_SESSION['CustomerID']) . '">' . _('Add a customer contact') . '</a>';
+	echo '<a href="' . $RootPath . '/AddCustomerNotes.php?DebtorNo=' . urlencode($_SESSION['CustomerID']) . '">' . _('Add a note on this customer') . '</a>';
 	echo '</td>';
 	echo '</tr></table><br />';
 } //$_SESSION['CustomerID'] != '' and !isset($_POST['Search']) and !isset($_POST['CSV'])
@@ -464,7 +464,7 @@ if (isset($result)) {
 				echo '<tr class="OddTableRows">';
 				$k = 1;
 			}
-			echo '<td><input type="submit" name="SubmitCustomerSelection' . $i . '" value="' . htmlspecialchars($myrow['debtorno'] . ' ' . $myrow['branchcode'], ENT_QUOTES, 'UTF-8', false) . '" />
+			echo '<td><input type="submit" name="SubmitCustomerSelection' . $i . '" value="' . $myrow['debtorno'] . ' ' . $myrow['branchcode'] . '" />
 				<input type="hidden" name="SelectedCustomer' . $i . '" value="' . $myrow['debtorno'] . '" />
 				<input type="hidden" name="SelectedBranch' . $i . '" value="' . $myrow['branchcode'] . '" /></td>
 				<td>' . htmlspecialchars($myrow['name'], ENT_QUOTES, 'UTF-8', false) . '</td>

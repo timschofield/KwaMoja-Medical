@@ -98,6 +98,13 @@ background-color:#F4F59E;
 a {
 color:blue;
 text-decoration:none;
+display:block;
+}
+
+a.FontSize {
+color:blue;
+text-decoration:none;
+display:inline;
 }
 
 a:hover {

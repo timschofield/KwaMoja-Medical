@@ -56,12 +56,6 @@ if (isset($_POST['submit'])) {
 		prnMsg(_('The debtor code cannot be empty'), 'error');
 		$Errors[$i] = 'DebtorNo';
 		$i++;
-	} //$_SESSION['AutoDebtorNo'] == 0 and mb_strlen($_POST['DebtorNo']) == 0
-		elseif ($_SESSION['AutoDebtorNo'] == 0 and (ContainsIllegalCharacters($_POST['DebtorNo']) or mb_strpos($_POST['DebtorNo'], ' '))) {
-		$InputError = 1;
-		prnMsg(_('The customer code cannot contain any of the following characters') . " . - ' &amp; + \" " . _('or a space'), 'error');
-		$Errors[$i] = 'DebtorNo';
-		$i++;
 	} //$_SESSION['AutoDebtorNo'] == 0 and (ContainsIllegalCharacters($_POST['DebtorNo']) or mb_strpos($_POST['DebtorNo'], ' '))
 		elseif (mb_strlen($_POST['Address1']) > 40) {
 		$InputError = 1;
@@ -274,7 +268,7 @@ if (isset($_POST['submit'])) {
 
 			$BranchCode = mb_substr($_POST['DebtorNo'], 0, 4);
 
-			echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/CustomerBranches.php?DebtorNo=' . $_POST['DebtorNo'] . '">';
+			echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/CustomerBranches.php?DebtorNo=' . urlencode($_POST['DebtorNo']) . '">';
 
 			echo '<div class="centre">' . _('You should automatically be forwarded to the entry of a new Customer Branch page') . '. ' . _('If this does not happen') . ' (' . _('if the browser does not support META Refresh') . ') ' . '<a href="' . $RootPath . '/CustomerBranches.php?DebtorNo=' . $_POST['DebtorNo'] . '"></a></div>';
 
@@ -386,10 +380,10 @@ if (isset($_POST['Reset'])) {
 /*DebtorNo could be set from a post or a get when passed as a parameter to this page */
 
 if (isset($_POST['DebtorNo'])) {
-	$DebtorNo = $_POST['DebtorNo'];
+	$DebtorNo = stripslashes($_POST['DebtorNo']);
 } //isset($_POST['DebtorNo'])
 elseif (isset($_GET['DebtorNo'])) {
-	$DebtorNo = $_GET['DebtorNo'];
+	$DebtorNo = stripslashes($_GET['DebtorNo']);
 } //isset($_GET['DebtorNo'])
 if (isset($_POST['ID'])) {
 	$ID = $_POST['ID'];
@@ -761,7 +755,7 @@ else {
 		if ($_SESSION['AutoDebtorNo'] == 0) {
 			echo '<tr>
 					<td>' . _('Customer Code') . ':</td>
-					<td>' . $DebtorNo . '</td>
+					<td>' . stripslashes($DebtorNo) . '</td>
 				</tr>';
 		} //$_SESSION['AutoDebtorNo'] == 0
 
@@ -1102,7 +1096,7 @@ else {
 		echo '<tr>
 				<td>' . _('Invoice Addressing') . ':</td>
 				<td><select minlength="0" name="AddrInvBranch">';
-		if ($_POST['InvAddrBranch'] == 0) {
+		if (isset($_POST['InvAddrBranch']) and $_POST['InvAddrBranch'] == 0) {
 			echo '<option selected="selected" value="0">' . _('Address to HO') . '</option>';
 			echo '<option value="1">' . _('Address to Branch') . '</option>';
 		} //$_POST['InvAddrBranch'] == 0

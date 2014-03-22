@@ -114,9 +114,9 @@ if (isset($Title)) {
 	echo $Title;
 	if (basename($_SERVER['PHP_SELF']) == 'index.php') {
 		echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-		echo '<span style="font-size:8pt;"><a href="' . $RootPath . '/index.php?FontSize=0" data-tooltip="Small text size">A</a></span>&nbsp;';
-		echo '<span style="font-size:10pt;"><a href="' . $RootPath . '/index.php?FontSize=1" data-tooltip="Medium text size">A</a></span>&nbsp;';
-		echo '<span style="font-size:12pt;"><a href="' . $RootPath . '/index.php?FontSize=2" data-tooltip="Large text size">A</a></span>&nbsp;';
+		echo '<span style="font-size:8pt;"><a class="FontSize" href="' . $RootPath . '/index.php?FontSize=0" data-tooltip="Small text size">A</a></span>&nbsp;';
+		echo '<span style="font-size:10pt;"><a class="FontSize" href="' . $RootPath . '/index.php?FontSize=1" data-tooltip="Medium text size">A</a></span>&nbsp;';
+		echo '<span style="font-size:12pt;"><a class="FontSize" href="' . $RootPath . '/index.php?FontSize=2" data-tooltip="Large text size">A</a></span>&nbsp;';
 	}
 	echo '</div>';
 	echo '</div>'; // AppInfoDiv

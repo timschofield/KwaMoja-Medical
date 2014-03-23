@@ -656,26 +656,51 @@ if (!isset($_POST['IssueItem'])){ //no item selected to issue yet
 											autoissue",
 									$db);
 
-	while ($RequirementsRow = DB_fetch_array($RequirmentsResult)){
-		if ($RequirementsRow['autoissue']==0){
+	$IssuedAlreadyResult = DB_query("SELECT stockid,
+											SUM(-qty) as total
+										FROM stockmoves
+										WHERE stockmoves.type=28
+											AND reference='" . $_POST['WO'] . "' GROUP BY stockid", $db);
+	while ($IssuedRow = DB_fetch_array($IssuedAlreadyResult)) {
+		$IssuedAlreadyRow[$IssuedRow['stockid']] = $IssuedRow['total'];
+	}
+
+	while ($RequirementsRow = DB_fetch_array($RequirmentsResult)) {
+		if ($RequirementsRow['autoissue'] == 0) {
 			echo '<tr>
-					<td><input type="submit" name="IssueItem" value="' .$RequirementsRow['stockid'] . '" /></td>
+					<td><input type="submit" name="IssueItem" value="' . $RequirementsRow['stockid'] . '" /></td>
 					<td>' . $RequirementsRow['stockid'] . ' - ' . $RequirementsRow['description'] . '</td>';
 		} else {
 			echo '<tr>
 					<td class="notavailable">' . _('Auto Issue') . '</td>
 					<td class="notavailable">' .$RequirementsRow['stockid'] . ' - ' . $RequirementsRow['description'] .'</td>';
 		}
-		$IssuedAlreadyResult = DB_query("SELECT SUM(-qty) FROM stockmoves
-											WHERE stockmoves.type=28
-											AND stockid='" . $RequirementsRow['stockid'] . "'
-											AND reference='" . $_POST['WO'] . "'",
-										$db);
-		$IssuedAlreadyRow = DB_fetch_row($IssuedAlreadyResult);
+		if (isset($IssuedAlreadyRow[$RequirementsRow['stockid']])) {
+			$Issued = $IssuedAlreadyRow[$RequirementsRow['stockid']];
+			unset($IssuedAlreadyRow[$RequirementsRow['stockid']]);
+		} else {
+			$Issued= 0;
+		}
 
 		echo '<td class="number">' . locale_number_format($RequirementsRow['quantityrequired'],$RequirementsRow['decimalplaces']) . '</td>
-			<td class="number">' . locale_number_format($IssuedAlreadyRow[0],$RequirementsRow['decimalplaces']) . '</td>
+			<td class="number">' . locale_number_format($Issued, $RequirementsRow['decimalplaces']) . '</td>
 		</tr>';
+	}
+
+	/* Now do any additional issues of items not in the BOM */
+	foreach ($IssuedAlreadyRow as $StockID=>$Issued) {
+		$RequirementsSQL = "SELECT stockmaster.description,
+									stockmaster.decimalplaces
+								FROM stockmaster
+							WHERE stockid='" . $StockID . "'";
+		$RequirmentsResult = DB_query($RequirementsSQL, $db);
+		$RequirementsRow = DB_fetch_array($RequirmentsResult);
+		echo '<tr>
+				<td>' . _('Additional Issue') . '</td>
+				<td>' . $StockID . ' - ' . $RequirementsRow['description'] . '</td>';
+		echo '<td class="number">0</td>
+				<td class="number">' . locale_number_format($Issued, $RequirementsRow['decimalplaces']) . '</td>
+			</tr>';
 	}
 
 	echo '</table>

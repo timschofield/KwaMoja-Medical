@@ -106,7 +106,7 @@ if (isset($_POST['SearchParts'])) {
 
 	$ErrMsg = _('No items were returned by the SQL because');
 	$DbgMsg = _('The SQL used to retrieve the searched parts was');
-	$StockItemsResult = DB_query($SQL, $db, $ErrMsg, $DbgMsg);
+	$StockItemsResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 }
 
 if (isset($_POST['StockID'])) {
@@ -142,7 +142,7 @@ if (!isset($StockID)) {
 						WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 		}
 
-		$resultStkLocs = DB_query($sql, $db);
+		$resultStkLocs = DB_query($sql);
 
 		while ($myrow = DB_fetch_array($resultStkLocs)) {
 			if (isset($_POST['StockLocation'])) {
@@ -183,7 +183,7 @@ if (!isset($StockID)) {
 			FROM stockcategory
 			ORDER BY categorydescription";
 
-	$result1 = DB_query($SQL, $db);
+	$result1 = DB_query($SQL);
 
 	echo '<table class="selection">
 			<tr>
@@ -313,7 +313,7 @@ if (!isset($StockID)) {
 		} //end not order number selected
 
 		$ErrMsg = _('No works orders were returned by the SQL because');
-		$WorkOrdersResult = DB_query($SQL, $db, $ErrMsg);
+		$WorkOrdersResult = DB_query($SQL, $ErrMsg);
 
 		/*show a table of the orders returned by the SQL */
 		if (DB_num_rows($WorkOrdersResult) > 0) {

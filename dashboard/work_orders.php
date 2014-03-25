@@ -50,7 +50,7 @@ echo '<style>
 			</style>';
 
 $sql = "SELECT id FROM dashboard_scripts WHERE scripts='" . basename($_SERVER['PHP_SELF']) . "'";
-$result = DB_query($sql, $db);
+$result = DB_query($sql);
 $myrow = DB_fetch_array($result);
 
 echo '<div align="center">
@@ -77,7 +77,7 @@ $SQL = "SELECT workorders.wo,
 			INNER JOIN stockmaster
 				ON woitems.stockid = stockmaster.stockid
 			ORDER BY workorders.wo LIMIT 5";
-$WorkOrdersResult = DB_query($SQL, $db);
+$WorkOrdersResult = DB_query($SQL);
 
 echo '<tbody>
 		<tr>

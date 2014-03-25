@@ -29,7 +29,7 @@ if (!isset($SupplierID)) {
 
 /*Deleting a supplier sell through support record */
 if (isset($_GET['Delete'])) {
-	$Result = DB_query("DELETE FROM sellthroughsupport WHERE id='" . intval($_GET['SellSupportID']) . "'", $db);
+	$Result = DB_query("DELETE FROM sellthroughsupport WHERE id='" . intval($_GET['SellSupportID']) . "'");
 	prnMsg(_('Deleted the supplier sell through support record'), 'success');
 }
 
@@ -85,7 +85,7 @@ if ((isset($_POST['AddRecord']) OR isset($_POST['UpdateRecord'])) AND isset($Sup
 
 		$ErrMsg = _('The sell through support record could not be added to the database because');
 		$DbgMsg = _('The SQL that failed was');
-		$AddResult = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+		$AddResult = DB_query($sql, $ErrMsg, $DbgMsg);
 		prnMsg(_('This sell through support has been added to the database'), 'success');
 	}
 	if ($InputError == 0 AND isset($_POST['UpdateRecord'])) {
@@ -101,7 +101,7 @@ if ((isset($_POST['AddRecord']) OR isset($_POST['UpdateRecord'])) AND isset($Sup
 
 		$ErrMsg = _('The sell through support record could not be updated because');
 		$DbgMsg = _('The SQL that failed was');
-		$UpdResult = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+		$UpdResult = DB_query($sql, $ErrMsg, $DbgMsg);
 		prnMsg(_('Sell Through Support record has been updated'), 'success');
 		$Edit = false;
 
@@ -151,7 +151,7 @@ if (isset($_POST['SearchSupplier'])) {
 	} //one of keywords or SupplierCode was more than a zero length string
 	$ErrMsg = _('The suppliers matching the criteria entered could not be retrieved because');
 	$DbgMsg = _('The SQL to retrieve supplier details that failed was');
-	$SuppliersResult = DB_query($SQL, $db, $ErrMsg, $DbgMsg);
+	$SuppliersResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">
 			<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
@@ -220,7 +220,7 @@ if (isset($SupplierID)) {
 									decimalplaces
 							FROM suppliers INNER JOIN currencies
 							ON suppliers.currcode=currencies.currabrev
-							WHERE supplierid='" . $SupplierID . "'", $db);
+							WHERE supplierid='" . $SupplierID . "'");
 	$SuppRow = DB_fetch_array($SuppResult);
 	echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . ' ' . _('For Supplier') . ' - ' . $SupplierID . ' - ' . $SuppRow['suppname'] . '</p><br />';
 
@@ -249,7 +249,7 @@ if (isset($SupplierID) AND $Edit == false) {
 			WHERE supplierno = '" . $SupplierID . "'
 			ORDER BY sellthroughsupport.effectivefrom DESC";
 	$ErrMsg = _('The supplier sell through support deals could not be retrieved because');
-	$Result = DB_query($sql, $db, $ErrMsg);
+	$Result = DB_query($sql, $ErrMsg);
 	if (DB_num_rows($Result) == 0) {
 		prnMsg(_('There are no sell through support deals entered for this supplier'), 'info');
 	} else {
@@ -317,7 +317,7 @@ if (isset($SupplierID)) { //not selecting a supplier
 				WHERE id='" . floatval($_GET['SellSupportID']) . "'";
 
 		$ErrMsg = _('The supplier sell through support could not be retrieved because');
-		$EditResult = DB_query($sql, $db, $ErrMsg);
+		$EditResult = DB_query($sql, $ErrMsg);
 		$myrow = DB_fetch_array($EditResult);
 	}
 
@@ -370,7 +370,7 @@ if (isset($SupplierID)) { //not selecting a supplier
 		echo '<option value="">' . _('All Customers') . '</option>';
 	}
 
-	$CustomerResult = DB_query("SELECT debtorno, name FROM debtorsmaster", $db);
+	$CustomerResult = DB_query("SELECT debtorno, name FROM debtorsmaster");
 
 	while ($CustomerRow = DB_fetch_array($CustomerResult)) {
 		if ($CustomerRow['debtorno'] == $_POST['DebtorNo']) {
@@ -391,7 +391,7 @@ if (isset($SupplierID)) { //not selecting a supplier
 		echo '<option value="">' . _('Specific Item Only') . '</option>';
 	}
 
-	$CategoriesResult = DB_query("SELECT categoryid, categorydescription FROM stockcategory WHERE stocktype='F'", $db);
+	$CategoriesResult = DB_query("SELECT categoryid, categorydescription FROM stockcategory WHERE stocktype='F'");
 
 	while ($CategoriesRow = DB_fetch_array($CategoriesResult)) {
 		if (isset($_POST['CategoryID']) and $CategoriesRow['categoryid'] == $_POST['CategoryID']) {
@@ -421,7 +421,7 @@ if (isset($SupplierID)) { //not selecting a supplier
 			AND preferred=1";
 	$ErrMsg = _('Could not retrieve the items that the supplier provides');
 	$DbgMsg = _('The SQL that was used to get the supplier items and failed was');
-	$ItemsResult = DB_query($SQL, $db, $ErrMsg, $DbgMsg);
+	$ItemsResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	while ($ItemsRow = DB_fetch_array($ItemsResult)) {
 		if (isset($_POST['StockID']) and $ItemsRow['stockid'] == $_POST['StockID']) {

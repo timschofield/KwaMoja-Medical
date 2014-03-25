@@ -226,12 +226,12 @@ if (isset($_POST['PrintPDF'])) {
 	/* end if not all sales areas was selected */
 
 
-	$CustomersResult = DB_query($SQL, $db);
+	$CustomersResult = DB_query($SQL);
 
-	if (DB_error_no($db) != 0) {
+	if (DB_error_no() != 0) {
 		$Title = _('Customer List') . ' - ' . _('Problem Report') . '....';
 		include('includes/header.inc');
-		prnMsg(_('The customer List could not be retrieved by the SQL because') . ' - ' . DB_error_msg($db));
+		prnMsg(_('The customer List could not be retrieved by the SQL because') . ' - ' . DB_error_msg());
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($debug == 1) {
 			echo '<br />' . $SQL;
@@ -255,7 +255,7 @@ if (isset($_POST['PrintPDF'])) {
 	$Area = '';
 	$SalesPerson = '';
 
-	while ($Customers = DB_fetch_array($CustomersResult, $db)) {
+	while ($Customers = DB_fetch_array($CustomersResult)) {
 
 		if ($_POST['Activity'] != 'All') {
 
@@ -268,7 +268,7 @@ if (isset($_POST['PrintPDF'])) {
 					AND branchcode='" . $Customers['branchcode'] . "'
 					AND (type=10 or type=11)
 					AND trandate >='" . FormatDateForSQL($_POST['ActivitySince']) . "'";
-			$ActivityResult = DB_query($SQL, $db, _('Could not retrieve the activity of the branch because'), _('The failed SQL was'));
+			$ActivityResult = DB_query($SQL, _('Could not retrieve the activity of the branch because'), _('The failed SQL was'));
 
 			$ActivityRow = DB_fetch_row($ActivityResult);
 			$LocalCurrencyTurnover = $ActivityRow[0];
@@ -383,7 +383,7 @@ if (isset($_POST['PrintPDF'])) {
 			<td><select required="required" minlength="1" name="Areas[]" multiple="multiple">';
 
 	$sql = "SELECT areacode, areadescription FROM areas";
-	$AreasResult = DB_query($sql, $db);
+	$AreasResult = DB_query($sql);
 
 	echo '<option selected="selected" value="All">' . _('All Areas') . '</option>';
 
@@ -401,7 +401,7 @@ if (isset($_POST['PrintPDF'])) {
 	} else {
 		echo '<option selected="selected" value="All">' . _('All sales folk') . '</option>';
 	}
-	$SalesFolkResult = DB_query($sql, $db);
+	$SalesFolkResult = DB_query($sql);
 
 	while ($myrow = DB_fetch_array($SalesFolkResult)) {
 		echo '<option value="' . $myrow['salesmancode'] . '">' . $myrow['salesmanname'] . '</option>';

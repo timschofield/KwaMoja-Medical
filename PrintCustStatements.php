@@ -50,8 +50,8 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 				bankaccounts.bankaccountcode
 			FROM bankaccounts
 			WHERE bankaccounts.invoice = '1'";
-	$result = DB_query($sql, $db, '', '', false, false);
-	if (DB_error_no($db) != 1) {
+	$result = DB_query($sql, '', '', false, false);
+	if (DB_error_no() != 1) {
 		if (DB_num_rows($result) == 1){
 			$myrow = DB_fetch_array($result);
 			$DefaultBankAccountNumber = $myrow['bankaccountnumber'];
@@ -67,7 +67,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 	$DbgMsg = _('The SQL used to settle outstanding transactions was');
 	$sql = "UPDATE debtortrans SET settled=1
 			WHERE ABS(debtortrans.ovamount+debtortrans.ovdiscount+debtortrans.ovfreight+debtortrans.ovgst-debtortrans.alloc)<0.009";
-	$SettleAsNec = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+	$SettleAsNec = DB_query($sql, $ErrMsg, $DbgMsg);
 
 	/*Figure out who all the customers in this range are */
 	$ErrMsg = _('There was a problem retrieving the customer information for the statements from the database');
@@ -91,7 +91,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 			WHERE debtorsmaster.debtorno >='" . stripslashes($_POST['FromCust']) . "'
 			AND debtorsmaster.debtorno <='" . stripslashes($_POST['ToCust']) . "'
 			ORDER BY debtorsmaster.debtorno";
-	$StatementResults = DB_query($sql, $db, $ErrMsg);
+	$StatementResults = DB_query($sql, $ErrMsg);
 
 	if (DB_Num_Rows($StatementResults) == 0) {
 		$Title = _('Print Statements') . ' - ' . _('No Customers Found');
@@ -125,7 +125,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 
 		$sql .= " ORDER BY debtortrans.id";
 
-		$OstdgTrans = DB_query($sql, $db, $ErrMsg);
+		$OstdgTrans = DB_query($sql, $ErrMsg);
 
 		$NumberOfRecordsReturned = DB_num_rows($OstdgTrans);
 
@@ -154,7 +154,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 
 			$sql .= " ORDER BY debtortrans.id";
 
-			$SetldTrans = DB_query($sql, $db, $ErrMsg);
+			$SetldTrans = DB_query($sql, $ErrMsg);
 			$NumberOfRecordsReturned += DB_num_rows($SetldTrans);
 
 		}
@@ -364,10 +364,10 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 						holdreasons.reasondescription";
 
 			$ErrMsg = 'The customer details could not be retrieved by the SQL because';
-			$CustomerResult = DB_query($SQL, $db);
+			$CustomerResult = DB_query($SQL);
 
 			/*there should be only one record returned ?? */
-			$AgedAnalysis = DB_fetch_array($CustomerResult, $db);
+			$AgedAnalysis = DB_fetch_array($CustomerResult);
 
 
 			/*Now print out the footer and totals */
@@ -458,7 +458,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 						max(debtorno) AS tocriteria
 					FROM debtorsmaster";
 
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		$myrow = DB_fetch_array($result);
 
 		echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';

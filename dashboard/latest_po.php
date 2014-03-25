@@ -48,7 +48,7 @@ echo '<style>
 			</style>';
 
 $sql = "SELECT id FROM dashboard_scripts WHERE scripts='" . basename($_SERVER['PHP_SELF']) . "'";
-$result = DB_query($sql, $db);
+$result = DB_query($sql);
 $myrow = DB_fetch_array($result);
 
 echo '<table style="max-width:100%;width:99%;" cellspacing="0" cellpadding="1" border="0">
@@ -88,7 +88,7 @@ $SQL = 'SELECT purchorders.orderno,
 					suppliers.currcode,
 					currencies.decimalplaces
 			ORDER BY orddate DESC LIMIT 5';
-$SalesOrdersResult2 = DB_query($SQL, $db);
+$SalesOrdersResult2 = DB_query($SQL);
 $Total = 0;
 
 echo '<tbody>

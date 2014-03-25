@@ -82,7 +82,7 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 				AND pcashdetails.date >= DATE_SUB(CURDATE(), INTERVAL '" . $Days . "' DAY)
 			ORDER BY pcashdetails.date, pcashdetails.counterindex ASC";
 
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 
 	echo '<tr>
 		<th>' . _('Date') . '</th>
@@ -101,7 +101,7 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 		//update database if update pressed
 		if (isset($_POST['Submit']) and $_POST['Submit'] == _('Update') and isset($_POST[$myrow['counterindex']])) {
 
-			$PeriodNo = GetPeriod(ConvertSQLDate($myrow['date']), $db);
+			$PeriodNo = GetPeriod(ConvertSQLDate($myrow['date']));
 
 			if ($myrow['rate'] == 1) { // functional currency
 				$Amount = $myrow['amount'];
@@ -122,19 +122,19 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 									tag
 								FROM pcexpenses
 								WHERE codeexpense = '" . $myrow['codeexpense'] . "'";
-				$ResultAccExp = DB_query($SQLAccExp, $db);
+				$ResultAccExp = DB_query($SQLAccExp);
 				$myrowAccExp = DB_fetch_array($ResultAccExp);
 				$AccountTo = $myrowAccExp['glaccount'];
 				$TagTo = $myrowAccExp['tag'];
 			}
 
 			//get typeno
-			$typeno = GetNextTransNo($type, $db);
+			$typeno = GetNextTransNo($type);
 
 			//build narrative
 			$Narrative = _('PettyCash') . ' - ' . $myrow['tabcode'] . ' - ' . $myrow['codeexpense'] . ' - ' . DB_escape_string($myrow['notes']) . ' - ' . $myrow['receipt'];
 			//insert to gltrans
-			DB_Txn_Begin($db);
+			DB_Txn_Begin();
 
 			$sqlFrom = "INSERT INTO `gltrans` (`counterindex`,
 											`type`,
@@ -161,7 +161,7 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 											'',
 											'" . $TagTo . "')";
 
-			$ResultFrom = DB_Query($sqlFrom, $db, '', '', true);
+			$ResultFrom = DB_Query($sqlFrom, '', '', true);
 
 			$sqlTo = "INSERT INTO `gltrans` (`counterindex`,
 										`type`,
@@ -188,11 +188,11 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 										'',
 										'" . $TagTo . "')";
 
-			$ResultTo = DB_Query($sqlTo, $db, '', '', true);
+			$ResultTo = DB_Query($sqlTo, '', '', true);
 
 			if ($myrow['codeexpense'] == 'ASSIGNCASH') {
 				// if it's a cash assignation we need to updated banktrans table as well.
-				$ReceiptTransNo = GetNextTransNo(2, $db);
+				$ReceiptTransNo = GetNextTransNo(2);
 				$SQLBank = "INSERT INTO banktrans (transno,
 												type,
 												bankact,
@@ -216,7 +216,7 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 										)";
 				$ErrMsg = _('Cannot insert a bank transaction because');
 				$DbgMsg = _('Cannot insert a bank transaction with the SQL');
-				$resultBank = DB_query($SQLBank, $db, $ErrMsg, $DbgMsg, true);
+				$resultBank = DB_query($SQLBank, $ErrMsg, $DbgMsg, true);
 
 			}
 
@@ -224,8 +224,8 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 					SET authorized = '" . Date('Y-m-d') . "',
 					posted = 1
 					WHERE counterindex = '" . $myrow['counterindex'] . "'";
-			$resultupdate = DB_query($sql, $db, '', '', true);
-			DB_Txn_Commit($db);
+			$resultupdate = DB_query($sql, '', '', true);
+			DB_Txn_Commit();
 		}
 
 		if ($k == 1) {
@@ -268,7 +268,7 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 			FROM pcashdetails
 			WHERE tabcode='" . $SelectedTabs . "'";
 
-	$ResultAmount = DB_query($sqlamount, $db);
+	$ResultAmount = DB_query($sqlamount);
 	$Amount = DB_fetch_array($ResultAmount);
 
 	if (!isset($Amount['0'])) {
@@ -296,7 +296,7 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 		FROM pctabs
 		WHERE authorizer='" . $_SESSION['UserID'] . "'";
 
-	$result = DB_query($SQL, $db);
+	$result = DB_query($SQL);
 
 	echo '<tr>
 			<td>' . _('Authorise expenses to Petty Cash Tab') . ':</td>

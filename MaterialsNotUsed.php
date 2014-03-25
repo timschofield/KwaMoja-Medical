@@ -25,7 +25,7 @@ $SQL = "SELECT stockmaster.stockid,
 				FROM bom
 				WHERE bom.component = stockmaster.stockid )
 		ORDER BY stockmaster.stockid";
-$result = DB_query($SQL, $db);
+$result = DB_query($SQL);
 echo '<p class="page_title_text" align="center"><strong>' . _('Raw Materials Not Used in any BOM') . '</strong></p>';
 if (DB_num_rows($result) != 0) {
 	$TotalValue = 0;

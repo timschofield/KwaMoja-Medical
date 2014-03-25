@@ -63,12 +63,12 @@ if (isset($_POST['PrintPDF'])) {
 				ORDER BY sellthroughsupport.supplierno,
 					stockmaster.stockid";
 
-	$ClaimsResult = DB_query($SQL, $db, '', '', false, false);
+	$ClaimsResult = DB_query($SQL, '', '', false, false);
 
-	if (DB_error_no($db) != 0) {
+	if (DB_error_no() != 0) {
 
 		include('includes/header.inc');
-		prnMsg(_('The sell through support items to claim could not be retrieved by the SQL because') . ' - ' . DB_error_msg($db), 'error');
+		prnMsg(_('The sell through support items to claim could not be retrieved by the SQL because') . ' - ' . DB_error_msg(), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($debug == 1) {
 			echo '<br />' . $SQL;
@@ -93,7 +93,7 @@ if (isset($_POST['PrintPDF'])) {
 	$SupplierClaimTotal = 0;
 	$Supplier = '';
 	$FontSize = 8;
-	while ($SellThroRow = DB_fetch_array($ClaimsResult, $db)) {
+	while ($SellThroRow = DB_fetch_array($ClaimsResult)) {
 
 		$YPos -= $line_height;
 		if ($SellThroRow['suppname'] != $Supplier) {

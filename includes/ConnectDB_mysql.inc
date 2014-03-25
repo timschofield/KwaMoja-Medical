@@ -52,31 +52,32 @@ function DB_connect($host, $DBUser, $DBPassword, $DBPort) {
 	return mysql_connect($host, $DBUser, $DBPassword, $_SESSION['DatabaseName'], $DBPort);
 }
 
-function DB_query($SQL, &$Conn, $ErrorMessage = '', $DebugMessage = '', $Transaction = false, $TrapErrors = true) {
+function DB_query($SQL, $ErrorMessage = '', $DebugMessage = '', $Transaction = false, $TrapErrors = true) {
 
+	global $db;
 	global $debug;
 	global $PathPrefix;
 
-	$result = mysql_query($SQL, $Conn);
-	$_SESSION['LastInsertId'] = mysql_insert_id($Conn);
+	$result = mysql_query($SQL, $db);
+	$_SESSION['LastInsertId'] = mysql_insert_id($db);
 
 	if ($DebugMessage == '') {
 		$DebugMessage = _('The SQL that failed was');
 	}
 
-	if (DB_error_no($Conn) != 0 and $TrapErrors == true) {
+	if (DB_error_no() != 0 and $TrapErrors == true) {
 		if ($TrapErrors) {
 			require_once($PathPrefix . 'includes/header.inc');
 		}
-		prnMsg($ErrorMessage . '<br />' . DB_error_msg($Conn), 'error', _('Database Error') . ' ' . DB_error_no($Conn));
+		prnMsg($ErrorMessage . '<br />' . DB_error_msg(), 'error', _('Database Error') . ' ' . DB_error_no());
 		if ($debug == 1) {
 			prnMsg($DebugMessage . '<br />' . $SQL . '<br />', 'error', _('Database SQL Failure'));
 		}
 		if ($Transaction) {
 			$SQL = 'rollback';
-			$Result = DB_query($SQL, $Conn);
-			if (DB_error_no($Conn) != 0) {
-				prnMsg(_('Error Rolling Back Transaction'), 'error', _('Database Rollback Error') . ' ' . DB_error_no($Conn));
+			$Result = DB_query($SQL);
+			if (DB_error_no() != 0) {
+				prnMsg(_('Error Rolling Back Transaction'), 'error', _('Database Rollback Error') . ' ' . DB_error_no());
 			} else {
 				prnMsg(_('Rolling Back Transaction OK'), 'error', _('Database Rollback Due to Error Above'));
 			}
@@ -85,7 +86,7 @@ function DB_query($SQL, &$Conn, $ErrorMessage = '', $DebugMessage = '', $Transac
 			include($PathPrefix . 'includes/footer.inc');
 			exit;
 		}
-	} elseif (isset($_SESSION['MonthsAuditTrail']) and (DB_error_no($Conn) == 0 and $_SESSION['MonthsAuditTrail'] > 0)) {
+	} elseif (isset($_SESSION['MonthsAuditTrail']) and (DB_error_no() == 0 and $_SESSION['MonthsAuditTrail'] > 0)) {
 
 		$SQLArray = explode(' ', $SQL);
 
@@ -99,7 +100,7 @@ function DB_query($SQL, &$Conn, $ErrorMessage = '', $DebugMessage = '', $Transac
 							'" . trim($_SESSION['UserID']) . "',
 							'" . DB_escape_string($SQL) . "')";
 
-				$AuditResult = mysql_query($AuditSQL, $Conn);
+				$AuditResult = mysql_query($AuditSQL, $db);
 			}
 		}
 	}
@@ -148,15 +149,17 @@ function DB_affected_rows(&$ResultIndex) {
 	return mysql_affected_rows($ResultIndex);
 }
 
-function DB_error_no(&$Conn) {
-	return mysql_errno($Conn);
+function DB_error_no() {
+	global $db;
+	return mysql_errno($db);
 }
 
-function DB_error_msg(&$Conn) {
-	return mysql_error($Conn);
+function DB_error_msg() {
+	global $db;
+	return mysql_error($db);
 }
 
-function DB_Last_Insert_ID(&$Conn, $table, $fieldname) {
+function DB_Last_Insert_ID($table, $fieldname) {
 	//	return mysql_insert_id($Conn);
 	if (isset($_SESSION['LastInsertId'])) {
 		$Last_Insert_ID = $_SESSION['LastInsertId'];
@@ -171,13 +174,13 @@ function DB_escape_string($String) {
 	return mysql_real_escape_string($String);
 }
 
-function DB_show_tables(&$Conn, $TableName = '%') {
-	$Result = DB_query("SHOW TABLES WHERE Tables_in_" . $_SESSION['DatabaseName'] . " " . LIKE . "'" . $TableName . "'", $Conn);
+function DB_show_tables($TableName = '%') {
+	$Result = DB_query("SHOW TABLES WHERE Tables_in_" . $_SESSION['DatabaseName'] . " " . LIKE . "'" . $TableName . "'");
 	return $Result;
 }
 
-function DB_show_fields($TableName, &$Conn) {
-	$Result = DB_query("DESCRIBE $TableName", $Conn);
+function DB_show_fields($TableName) {
+	$Result = DB_query("DESCRIBE $TableName"n);
 	return $Result;
 }
 
@@ -186,50 +189,60 @@ function interval($val, $Inter) {
 	return "\n" . 'interval ' . $val . ' ' . $Inter . "\n";
 }
 
-function DB_Maintenance($Conn) {
+function DB_Maintenance() {
 
 	prnMsg(_('The system has just run the regular database administration and optimisation routine.'), 'info');
 
-	$TablesResult = DB_query('SHOW TABLES', $Conn);
+	$TablesResult = DB_query('SHOW TABLES');
 	while ($myrow = DB_fetch_row($TablesResult)) {
-		$Result = DB_query('OPTIMIZE TABLE ' . $myrow[0], $Conn);
+		$Result = DB_query('OPTIMIZE TABLE ' . $myrow[0]);
 	}
 
 	$Result = DB_query("UPDATE config
 				SET confvalue='" . Date('Y-m-d') . "'
-				WHERE confname='DB_Maintenance_LastRun'", $Conn);
+				WHERE confname='DB_Maintenance_LastRun'");
 }
 
 
-function DB_Txn_Begin($Conn) {
-	mysql_query("SET autocommit=0", $Conn);
-	mysql_query("START TRANSACTION", $Conn);
+function DB_Txn_Begin() {
+	global $db;
+	mysql_query("SET autocommit=0", $db);
+	mysql_query("START TRANSACTION", $db);
 }
 
-function DB_Txn_Commit($Conn) {
-	mysql_query("COMMIT", $Conn);
-	mysql_query("SET autocommit=1", $Conn);
+function DB_Txn_Commit) {
+	global $db;
+	mysql_query("COMMIT", $db);
+	mysql_query("SET autocommit=1", $db);
 }
 
-function DB_Txn_Rollback($Conn) {
-	mysql_query("ROLLBACK", $Conn);
+function DB_Txn_Rollback() {
+	global $db;
+	mysql_query("ROLLBACK", $db);
 }
 
-function DB_IgnoreForeignKeys($Conn) {
-	mysql_query("SET FOREIGN_KEY_CHECKS=0", $Conn);
+function DB_IgnoreForeignKeys() {
+	global $db;
+	mysql_query("SET FOREIGN_KEY_CHECKS=0", $db);
 }
-function DB_ReinstateForeignKeys($Conn) {
-	mysql_query("SET FOREIGN_KEY_CHECKS=1", $Conn);
+function DB_ReinstateForeignKeys() {
+	global $db;
+	mysql_query("SET FOREIGN_KEY_CHECKS=1", $db);
 }
 
-function DB_table_exists($TableName, $Conn) {
+function DB_table_exists($TableName) {
 	$ShowSQL = "SHOW TABLES WHERE Tables_in_" . $_SESSION['DatabaseName'] . "='" . $TableName . "'";
-	$result = DB_query($ShowSQL, $Conn);
+	$result = DB_query($ShowSQL);
 	if (DB_num_rows($result) > 0) {
 		return True;
 	} else {
 		return False;
 	}
+}
+
+function DB_select_database($DBName) {
+	global $db;
+	mysql_select_db($DBName, $db);
 }
 
 ?>

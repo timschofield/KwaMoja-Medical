@@ -1,7 +1,7 @@
 <?php
 
-DeleteConfigValue('DefaultTheme', $db);
+DeleteConfigValue('DefaultTheme');
 
-UpdateDBNo(basename(__FILE__, '.php'), $db);
+UpdateDBNo(basename(__FILE__, '.php'));
 
 ?>

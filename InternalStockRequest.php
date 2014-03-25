@@ -15,7 +15,7 @@ if (isset($_GET['Cancel'])) {
 	$Title = _('Amend an Internal Materials Request');
 	$sql = "UPDATE stockrequest SET closed=1
 				WHERE dispatchid='" . $_GET['Cancel'] . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$_GET['Edit'] = 'Yes';
 }
 
@@ -34,7 +34,7 @@ if (isset($_GET['Amend'])) {
 					narrative
 				FROM stockrequest
 				WHERE dispatchid='" . $_GET['Amend'] . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_array($result);
 	$_SESSION['Request']->DispatchDate = ConvertSQLDate($myrow['despatchdate']);
 	$_SESSION['Request']->ID = $_GET['Amend'];
@@ -53,7 +53,7 @@ if (isset($_GET['Amend'])) {
 					INNER JOIN stockmaster
 						ON stockmaster.stockid=stockrequestitems.stockid
 					WHERE dispatchid='" . $_GET['Amend'] . "'";
-	$LineResult = DB_query($LineSQL, $db);
+	$LineResult = DB_query($LineSQL);
 	while ($LineRow = DB_fetch_array($LineResult)) {
 		$_SESSION['Request']->AddLine($LineRow['stockid'], $LineRow['description'], $LineRow['quantity'], $LineRow['uom'], $LineRow['decimalplaces'], $LineRow['dispatchitemsid']);
 	}
@@ -114,7 +114,7 @@ if (isset($_GET['Edit']) and $_GET['Edit'] == 'Yes') {
 				WHERE stockrequest.closed=0
 					AND authorised=0
 					AND w2.userid='" . $_SESSION['UserID'] . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -152,7 +152,7 @@ if (isset($_GET['Edit']) and $_GET['Edit'] == 'Yes') {
 					INNER JOIN stockmaster
 						ON stockmaster.stockid=stockrequestitems.stockid
 					WHERE dispatchid='" . $myrow['dispatchid'] . "'";
-		$lineresult = DB_query($linesql, $db);
+		$lineresult = DB_query($linesql);
 
 		echo '<tr>
 				<td></td>
@@ -196,7 +196,7 @@ foreach ($_POST as $key => $value) {
 }
 
 if (isset($_POST['Submit'])) {
-	DB_Txn_Begin($db);
+	DB_Txn_Begin();
 	$InputError = 0;
 	if ($_SESSION['Request']->Department == '') {
 		prnMsg(_('You must select a Department for the request'), 'error');
@@ -208,7 +208,7 @@ if (isset($_POST['Submit'])) {
 	}
 	if ($InputError == 0) {
 		if ($_SESSION['Request']->NewRequest == 0) {
-			$_SESSION['Request']->ID = GetNextTransNo(38, $db);
+			$_SESSION['Request']->ID = GetNextTransNo(38);
 			$HeaderSQL = "INSERT INTO stockrequest (dispatchid,
 													loccode,
 													userid,
@@ -232,12 +232,12 @@ if (isset($_POST['Submit'])) {
 		}
 		$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The request header record could not be inserted because');
 		$DbgMsg = _('The following SQL to insert the request header record was used');
-		$Result = DB_query($HeaderSQL, $db, $ErrMsg, $DbgMsg, true);
+		$Result = DB_query($HeaderSQL, $ErrMsg, $DbgMsg, true);
 
 		foreach ($_SESSION['Request']->LineItems as $LineItems) {
 			$sql = "SELECT COUNT(stockid) as total FROM stockrequestitems
 									WHERE dispatchid='" . $_SESSION['Request']->ID . "'
-										AND dispatchitemsid='" . $LineItems->LineNumber . "'";			$result = DB_query($sql, $db);
+										AND dispatchitemsid='" . $LineItems->LineNumber . "'";			$result = DB_query($sql);
 			$myrow = DB_fetch_array($result);
 			if ($myrow['total'] == 0) {
 				$LineSQL = "INSERT INTO stockrequestitems (dispatchitemsid,
@@ -263,14 +263,14 @@ if (isset($_POST['Submit'])) {
 			}
 			$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The request line record could not be inserted because');
 			$DbgMsg = _('The following SQL to insert the request header record was used');
-			$Result = DB_query($LineSQL, $db, $ErrMsg, $DbgMsg, true);
+			$Result = DB_query($LineSQL, $ErrMsg, $DbgMsg, true);
 		}
 
 		$EmailSQL = "SELECT email
 					FROM www_users, departments
 					WHERE departments.authoriser = www_users.userid
 						AND departments.departmentid = '" . $_SESSION['Request']->Department . "'";
-		$EmailResult = DB_query($EmailSQL, $db);
+		$EmailResult = DB_query($EmailSQL);
 		if ($myEmail = DB_fetch_array($EmailResult)) {
 			$ConfirmationText = _('An internal stock request has been created and is waiting for your authoritation');
 			$EmailSubject = _('Internal Stock Request needs your authoritation');
@@ -288,7 +288,7 @@ if (isset($_POST['Submit'])) {
 		}
 
 	}
-	DB_Txn_Commit($db);
+	DB_Txn_Commit();
 	if ($_SESSION['Request']->NewRequest == 0) {
 		prnMsg(_('The internal stock request has been entered and now needs to be authorised'), 'success');
 		echo '<br /><div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?New=Yes">' . _('Create another request') . '</a></div>';
@@ -361,7 +361,7 @@ if ($_SESSION['AllowedDepartment'] == 0) {
 			WHERE departmentid = '" . $_SESSION['AllowedDepartment'] . "'
 			ORDER BY description";
 }
-$result = DB_query($sql, $db);
+$result = DB_query($sql);
 echo '<td><select required="required" minlength="1" name="Department">
 		<option value="">' . _('Select a Department') . '</option>';
 while ($myrow = DB_fetch_array($result)) {
@@ -393,7 +393,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 				ORDER BY locationname";
 }
 
-$result = DB_query($sql, $db);
+$result = DB_query($sql);
 echo '<td><select required="required" minlength="1" name="Location">
 		<option value="">' . _('Select a Location') . '</option>';
 while ($myrow = DB_fetch_array($result)) {
@@ -482,7 +482,7 @@ $SQL = "SELECT stockcategory.categoryid,
 			WHERE stockcategory.categoryid = internalstockcatrole.categoryid
 				AND internalstockcatrole.secroleid= " . $_SESSION['AccessLevel'] . "
 			ORDER BY stockcategory.categorydescription";
-$result1 = DB_query($SQL, $db);
+$result1 = DB_query($SQL);
 if (DB_num_rows($result1) == 0) {
 	echo '<p class="bad">' . _('Problem Report') . ':<br />' . _('There are no stock categories currently defined please use the link below to set them up') . '</p>';
 	echo '<br />
@@ -664,7 +664,7 @@ if (isset($_POST['Search']) or isset($_POST['Next']) or isset($_POST['Prev'])) {
 
 	$ErrMsg = _('There is a problem selecting the part records to display because');
 	$DbgMsg = _('The SQL used to get the part selection was');
-	$SearchResult = DB_query($SQL, $db, $ErrMsg, $DbgMsg);
+	$SearchResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	if (DB_num_rows($SearchResult) == 0) {
 		prnMsg(_('There are no products available meeting the criteria specified'), 'info');
@@ -804,7 +804,7 @@ if (isset($SearchResult)) {
 			$DecimalPlacesSQL = "SELECT decimalplaces
 								FROM stockmaster
 								WHERE stockid='" . $myrow['stockid'] . "'";
-			$DecimalPlacesResult = DB_query($DecimalPlacesSQL, $db);
+			$DecimalPlacesResult = DB_query($DecimalPlacesSQL);
 			$DecimalPlacesRow = DB_fetch_array($DecimalPlacesResult);
 			$DecimalPlaces = $DecimalPlacesRow['decimalplaces'];
 		} else {
@@ -815,7 +815,7 @@ if (isset($SearchResult)) {
 							   FROM locstock
 							   WHERE locstock.stockid='" . $myrow['stockid'] . "' AND
 							   loccode = '" . $_SESSION['Request']->Location . "'";
-		$QOHResult = DB_query($QOHSQL, $db);
+		$QOHResult = DB_query($QOHSQL);
 		$QOHRow = DB_fetch_array($QOHResult);
 		$QOH = $QOHRow['qoh'];
 
@@ -828,7 +828,7 @@ if (isset($SearchResult)) {
 				 AND salesorders.quotation=0
 				 AND salesorderdetails.stkcode='" . $myrow['stockid'] . "'";
 		$ErrMsg = _('The demand for this product from') . ' ' . $_SESSION['Request']->Location . ' ' . _('cannot be retrieved because');
-		$DemandResult = DB_query($sql, $db, $ErrMsg);
+		$DemandResult = DB_query($sql, $ErrMsg);
 
 		$DemandRow = DB_fetch_row($DemandResult);
 		if ($DemandRow[0] != null) {
@@ -848,7 +848,7 @@ if (isset($SearchResult)) {
 				AND purchorderdetails.itemcode='" . $myrow['stockid'] . "'";
 
 		$ErrMsg = _('The order details for this product cannot be retrieved because');
-		$PurchResult = DB_query($sql, $db, $ErrMsg);
+		$PurchResult = DB_query($sql, $ErrMsg);
 
 		$PurchRow = DB_fetch_row($PurchResult);
 		if ($PurchRow[0] != null) {
@@ -862,7 +862,7 @@ if (isset($SearchResult)) {
 			   FROM woitems
 			   WHERE stockid='" . $myrow['stockid'] . "'";
 		$ErrMsg = _('The order details for this product cannot be retrieved because');
-		$WoResult = DB_query($sql, $db, $ErrMsg);
+		$WoResult = DB_query($sql, $ErrMsg);
 
 		$WoRow = DB_fetch_row($WoResult);
 		if ($WoRow[0] != null) {

@@ -54,7 +54,7 @@ if (isset($_POST['submit'])) {
 			     WHERE accountcode= '" . $_POST['SelectedBankAccount'] . "'
 				 AND userid = '" . $_POST['SelectedUser'] . "'";
 
-		$checkresult = DB_query($checkSql, $db);
+		$checkresult = DB_query($checkSql);
 		$checkrow = DB_fetch_row($checkresult);
 
 		if ($checkrow[0] > 0) {
@@ -68,7 +68,7 @@ if (isset($_POST['submit'])) {
 												'" . $_POST['SelectedUser'] . "')";
 
 			$msg = _('User') . ': ' . $_POST['SelectedUser'] . ' ' . _('has been authorised to use') . ' ' . $_POST['SelectedBankAccount'] . ' ' . _('bank account');
-			$result = DB_query($sql, $db);
+			$result = DB_query($sql);
 			prnMsg($msg, 'success');
 			unset($_POST['SelectedUser']);
 		}
@@ -79,7 +79,7 @@ if (isset($_POST['submit'])) {
 		AND userid='" . $SelectedUser . "'";
 
 	$ErrMsg = _('The bank account user record could not be deleted because');
-	$result = DB_query($sql, $db, $ErrMsg);
+	$result = DB_query($sql, $ErrMsg);
 	prnMsg(_('User') . ' ' . $SelectedUser . ' ' . _('has been un-authorised to use') . ' ' . $SelectedBankAccount . ' ' . _('bank account'), 'success');
 	unset($_GET['delete']);
 }
@@ -99,7 +99,7 @@ if (!isset($SelectedBankAccount)) {
 					bankaccountname
 			FROM bankaccounts";
 
-	$result = DB_query($SQL, $db);
+	$result = DB_query($SQL);
 	echo '<option value="">' . _('Not Yet Selected') . '</option>';
 	while ($myrow = DB_fetch_array($result)) {
 		if (isset($SelectedBankAccount) and $myrow['accountcode'] == $SelectedBankAccount) {
@@ -129,7 +129,7 @@ if (isset($_POST['process']) OR isset($SelectedBankAccount)) {
 	$SQLName = "SELECT bankaccountname
 			FROM bankaccounts
 			WHERE accountcode='" . $SelectedBankAccount . "'";
-	$result = DB_query($SQLName, $db);
+	$result = DB_query($SQLName);
 	$myrow = DB_fetch_array($result);
 	$SelectedBankName = $myrow['bankaccountname'];
 
@@ -147,7 +147,7 @@ if (isset($_POST['process']) OR isset($SelectedBankAccount)) {
 			WHERE bankaccountusers.accountcode='" . $SelectedBankAccount . "'
 			ORDER BY bankaccountusers.userid ASC";
 
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 
 	echo '<br />
 			<table class="selection">';
@@ -187,7 +187,7 @@ if (isset($_POST['process']) OR isset($SelectedBankAccount)) {
 						realname
 				FROM www_users";
 
-		$result = DB_query($SQL, $db);
+		$result = DB_query($SQL);
 		if (!isset($_POST['SelectedUser'])) {
 			echo '<option selected="selected" value="">' . _('Not Yet Selected') . '</option>';
 		}

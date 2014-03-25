@@ -10,7 +10,7 @@ $sql = 'SELECT  paymentid,
 			FROM paymentmethods
 			ORDER by paymentname';
 
-$PMResult = DB_query($sql, $db);
+$PMResult = DB_query($sql);
 while ($PMrow = DB_fetch_array($PMResult)) {
 	if ($PMrow['paymenttype'] == 1) {
 		$PaytTypes[$PMrow['paymentid']] = $PMrow['paymentname'];

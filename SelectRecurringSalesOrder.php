@@ -31,7 +31,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 }
 
-$resultStkLocs = DB_query($sql, $db);
+$resultStkLocs = DB_query($sql);
 
 while ($myrow = DB_fetch_array($resultStkLocs)) {
 	if (isset($_POST['StockLocation'])) {
@@ -88,7 +88,7 @@ SUM(recurrsalesorderdetails.unitprice*recurrsalesorderdetails.quantity*(1-recurr
 				recurringsalesorders.frequency";
 
 	$ErrMsg = _('No recurring orders were returned by the SQL because');
-	$SalesOrdersResult = DB_query($SQL, $db, $ErrMsg);
+	$SalesOrdersResult = DB_query($SQL, $ErrMsg);
 
 	/*show a table of the orders returned by the SQL */
 

@@ -1,7 +1,7 @@
 <?php
 
-DropTable('warehouse', 'warehouseid', $db);
-DropTable('whlocations', 'whlocationid', $db);
+DropTable('warehouse', 'warehouseid');
+DropTable('whlocations', 'whlocationid');
 
 CreateTable('container',
 "CREATE TABLE IF NOT EXISTS `container` (
@@ -22,17 +22,16 @@ CreateTable('container',
   `quarantine` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   CONSTRAINT `container_ibfk_1` FOREIGN KEY (`location`) REFERENCES `locations` (`loccode`)
-)",
-$db);
+)");
 
 $LocationsSQL = "SELECT loccode FROM locations";
-$LocationsResult = DB_query($LocationsSQL, $db);
+$LocationsResult = DB_query($LocationsSQL);
 while ($LocationsRow = DB_fetch_array($LocationsResult)) {
-	InsertRecord('container', array('location', 'parentid'), array($LocationsRow['loccode'], ''), array('id', 'name', 'location', 'parentid', 'xcoord', 'ycoord', 'zcoord', 'width', 'length', 'height', 'sequence', 'putaway', 'picking', 'replenishment', 'quarantine'), array($LocationsRow['loccode'], _('Primary location for warehouse') . '-' . $LocationsRow['loccode'], $LocationsRow['loccode'], '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0), $db);
+	InsertRecord('container', array('location', 'parentid'), array($LocationsRow['loccode'], ''), array('id', 'name', 'location', 'parentid', 'xcoord', 'ycoord', 'zcoord', 'width', 'length', 'height', 'sequence', 'putaway', 'picking', 'replenishment', 'quarantine'), array($LocationsRow['loccode'], _('Primary location for warehouse') . '-' . $LocationsRow['loccode'], $LocationsRow['loccode'], '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0));
 }
 
-NewScript('DefineWarehouse.php', 15, $db);
+NewScript('DefineWarehouse.php', 15);
 
-UpdateDBNo(basename(__FILE__, '.php'), $db);
+UpdateDBNo(basename(__FILE__, '.php'));
 
 ?>

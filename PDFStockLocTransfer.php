@@ -57,7 +57,7 @@ $sql = "SELECT loctransfers.reference,
 		INNER JOIN locations AS locationsrec ON loctransfers.recloc = locationsrec.loccode
 		WHERE loctransfers.reference='" . $_GET['TransferNo'] . "'";
 
-$result = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+$result = DB_query($sql, $ErrMsg, $DbgMsg);
 
 if (DB_num_rows($result) == 0) {
 

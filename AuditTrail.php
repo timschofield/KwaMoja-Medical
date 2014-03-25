@@ -27,10 +27,10 @@ if (isset($_POST['ContainingText'])) {
 }
 
 // Get list of tables
-$TableResult = DB_show_tables($db);
+$TableResult = DB_show_tables();
 
 // Get list of users
-$UserResult = DB_query("SELECT userid FROM www_users ORDER BY userid", $db);
+$UserResult = DB_query("SELECT userid FROM www_users ORDER BY userid");
 
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -163,7 +163,7 @@ if (isset($_POST['View'])) {
 			WHERE userid='" . $_POST['SelectedUser'] . "'
 			AND transactiondate BETWEEN '" . $FromDate . "' AND '" . $ToDate . "'" . $ContainingText;
 	}
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 
 	echo '<table border="0" width="98%" class="selection">';
 	echo '<tr>

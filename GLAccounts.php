@@ -38,7 +38,7 @@ if (isset($_POST['submit'])) {
 				WHERE accountcode ='" . $SelectedAccount . "'";
 
 		$ErrMsg = _('Could not update the account because');
-		$result = DB_query($sql, $db, $ErrMsg);
+		$result = DB_query($sql, $ErrMsg);
 		prnMsg(_('The general ledger account has been updated'), 'success');
 	} elseif ($InputError != 1) {
 
@@ -51,7 +51,7 @@ if (isset($_POST['submit'])) {
 					VALUES ('" . $_POST['AccountCode'] . "',
 							'" . $_POST['AccountName'] . "',
 							'" . $_POST['Group'] . "')";
-		$result = DB_query($sql, $db, $ErrMsg);
+		$result = DB_query($sql, $ErrMsg);
 
 		prnMsg(_('The new general ledger account has been added'), 'success');
 	}
@@ -70,7 +70,7 @@ if (isset($_POST['submit'])) {
 			FROM chartdetails
 			WHERE chartdetails.accountcode ='" . $SelectedAccount . "'
 			AND chartdetails.actual <>0";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_row($result);
 	if ($myrow[0] > 0) {
 		$CancelDelete = 1;
@@ -85,7 +85,7 @@ if (isset($_POST['submit'])) {
 
 		$ErrMsg = _('Could not test for existing transactions because');
 
-		$result = DB_query($sql, $db, $ErrMsg);
+		$result = DB_query($sql, $ErrMsg);
 
 		$myrow = DB_fetch_row($result);
 		if ($myrow[0] > 0) {
@@ -108,7 +108,7 @@ if (isset($_POST['submit'])) {
 
 			$ErrMsg = _('Could not test for default company GL codes because');
 
-			$result = DB_query($sql, $db, $ErrMsg);
+			$result = DB_query($sql, $ErrMsg);
 
 			$myrow = DB_fetch_row($result);
 			if ($myrow[0] > 0) {
@@ -122,7 +122,7 @@ if (isset($_POST['submit'])) {
 					OR purchtaxglaccount ='" . $SelectedAccount . "'";
 
 				$ErrMsg = _('Could not test for tax authority GL codes because');
-				$result = DB_query($sql, $db, $ErrMsg);
+				$result = DB_query($sql, $ErrMsg);
 
 				$myrow = DB_fetch_row($result);
 				if ($myrow[0] > 0) {
@@ -136,7 +136,7 @@ if (isset($_POST['submit'])) {
 
 					$ErrMsg = _('Could not test for existing sales interface GL codes because');
 
-					$result = DB_query($sql, $db, $ErrMsg);
+					$result = DB_query($sql, $ErrMsg);
 
 					$myrow = DB_fetch_row($result);
 					if ($myrow[0] > 0) {
@@ -150,7 +150,7 @@ if (isset($_POST['submit'])) {
 
 						$ErrMsg = _('Could not test for existing cost of sales interface codes because');
 
-						$result = DB_query($sql, $db, $ErrMsg);
+						$result = DB_query($sql, $ErrMsg);
 
 						$myrow = DB_fetch_row($result);
 						if ($myrow[0] > 0) {
@@ -168,7 +168,7 @@ if (isset($_POST['submit'])) {
 
 							$Errmsg = _('Could not test for existing stock GL codes because');
 
-							$result = DB_query($sql, $db, $ErrMsg);
+							$result = DB_query($sql, $ErrMsg);
 
 							$myrow = DB_fetch_row($result);
 							if ($myrow[0] > 0) {
@@ -180,7 +180,7 @@ if (isset($_POST['submit'])) {
 								WHERE accountcode='" . $SelectedAccount . "'";
 								$ErrMsg = _('Could not test for existing bank account GL codes because');
 
-								$result = DB_query($sql, $db, $ErrMsg);
+								$result = DB_query($sql, $ErrMsg);
 
 								$myrow = DB_fetch_row($result);
 								if ($myrow[0] > 0) {
@@ -189,9 +189,9 @@ if (isset($_POST['submit'])) {
 								} else {
 
 									$sql = "DELETE FROM chartdetails WHERE accountcode='" . $SelectedAccount . "'";
-									$result = DB_query($sql, $db);
+									$result = DB_query($sql);
 									$sql = "DELETE FROM chartmaster WHERE accountcode= '" . $SelectedAccount . "'";
-									$result = DB_query($sql, $db);
+									$result = DB_query($sql);
 									prnMsg(_('Account') . ' ' . $SelectedAccount . ' ' . _('has been deleted'), 'succes');
 								}
 							}
@@ -214,7 +214,7 @@ if (!isset($_GET['delete'])) {
 
 		$sql = "SELECT accountcode, accountname, group_ FROM chartmaster WHERE accountcode='" . $SelectedAccount . "'";
 
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		$myrow = DB_fetch_array($result);
 
 		$_POST['AccountCode'] = $myrow['accountcode'];
@@ -252,7 +252,7 @@ if (!isset($_GET['delete'])) {
 	}
 
 	$sql = "SELECT groupname FROM accountgroups ORDER BY sequenceintb";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 
 	echo '<tr>
 			<td>' . _('Account Group') . ':</td>
@@ -294,7 +294,7 @@ if (!isset($SelectedAccount)) {
 
 	$ErrMsg = _('The chart accounts could not be retrieved because');
 
-	$result = DB_query($sql, $db, $ErrMsg);
+	$result = DB_query($sql, $ErrMsg);
 
 	echo '<br /><table class="selection">';
 	echo '<tr>

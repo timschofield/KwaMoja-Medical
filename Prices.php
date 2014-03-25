@@ -32,7 +32,7 @@ echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $T
 $result = DB_query("SELECT stockmaster.description,
 							stockmaster.mbflag
 					FROM stockmaster
-					WHERE stockmaster.stockid='" . $Item . "'", $db);
+					WHERE stockmaster.stockid='" . $Item . "'");
 $myrow = DB_fetch_row($result);
 
 if (DB_num_rows($result) == 0) {
@@ -100,7 +100,7 @@ if (isset($_POST['submit'])) {
 			AND prices.typeabbrev='" . $_POST['TypeAbbrev'] . "'
 			AND prices.currabrev='" . $_POST['CurrAbrev'] . "'";
 
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_row($result);
 
 	if ($myrow[0] != 0 and !isset($_POST['OldTypeAbbrev']) and !isset($_POST['OldCurrAbrev'])) {
@@ -127,9 +127,9 @@ if (isset($_POST['submit'])) {
 				AND prices.debtorno=''";
 
 		$ErrMsg = _('Could not be update the existing prices');
-		$result = DB_query($sql, $db, $ErrMsg);
+		$result = DB_query($sql, $ErrMsg);
 
-		ReSequenceEffectiveDates($Item, $_POST['TypeAbbrev'], $_POST['CurrAbrev'], $db);
+		ReSequenceEffectiveDates($Item, $_POST['TypeAbbrev'], $_POST['CurrAbrev']);
 
 		prnMsg(_('The price has been updated'), 'success');
 
@@ -150,9 +150,9 @@ if (isset($_POST['submit'])) {
 								'" . $SQLEndDate . "',
 								'" . filter_number_format($_POST['Price']) . "')";
 		$ErrMsg = _('The new price could not be added');
-		$result = DB_query($sql, $db, $ErrMsg);
+		$result = DB_query($sql, $ErrMsg);
 
-		ReSequenceEffectiveDates($Item, $_POST['TypeAbbrev'], $_POST['CurrAbrev'], $db);
+		ReSequenceEffectiveDates($Item, $_POST['TypeAbbrev'], $_POST['CurrAbrev']);
 		prnMsg(_('The new price has been inserted'), 'success');
 	}
 
@@ -171,7 +171,7 @@ if (isset($_POST['submit'])) {
 			AND  prices.enddate = '" . $_GET['EndDate'] . "'
 			AND prices.debtorno=''";
 	$ErrMsg = _('Could not delete this price');
-	$result = DB_query($sql, $db, $ErrMsg);
+	$result = DB_query($sql, $ErrMsg);
 	prnMsg(_('The selected price has been deleted'), 'success');
 
 }
@@ -198,7 +198,7 @@ $sql = "SELECT currencies.currency,
 		prices.typeabbrev,
 		prices.startdate";
 
-$result = DB_query($sql, $db);
+$result = DB_query($sql);
 
 if (DB_num_rows($result) > 0) {
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
@@ -279,7 +279,7 @@ if (isset($_GET['Edit'])) {
 $SQL = "SELECT currabrev,
 				currency
 		FROM currencies";
-$result = DB_query($SQL, $db);
+$result = DB_query($SQL);
 
 echo '<table class="selection">
 		<tr>
@@ -305,7 +305,7 @@ echo '</select>	</td></tr>
 			<td><select required="required" minlength="1" name="TypeAbbrev">';
 
 $SQL = "SELECT typeabbrev, sales_type FROM salestypes";
-$result = DB_query($SQL, $db);
+$result = DB_query($SQL);
 
 while ($myrow = DB_fetch_array($result)) {
 	if ($myrow['typeabbrev'] == $_POST['TypeAbbrev']) {
@@ -354,7 +354,7 @@ echo '</div>
 include('includes/footer.inc');
 
 
-function ReSequenceEffectiveDates($Item, $PriceList, $CurrAbbrev, $db) {
+function ReSequenceEffectiveDates($Item, $PriceList, $CurrAbbrev) {
 
 	/*This is quite complicated - the idea is that prices set up should be unique and there is no way two prices could be returned as valid - when getting a price in includes/GetPrice.inc the logic is to first look for a price of the salestype/currency within the effective start and end dates - then if not get the price with a start date prior but a blank end date (the default price). We would not want two prices where one price falls inside another effective date range except in the case of a blank end date - ie no end date - the default price for the currency/salestype.
 	I first thought that we would need to update the previous default price (blank end date), when a new default price is entered, to have an end date of the startdate of this new default price less 1 day - but this is  converting a default price into a special price which could result in having two special prices over the same date range - best to leave it unchanged and use logic in the GetPrice.inc to ensure the correct default price is returned
@@ -372,7 +372,7 @@ function ReSequenceEffectiveDates($Item, $PriceList, $CurrAbbrev, $db) {
 				AND typeabbrev='" . $PriceList . "'
 				AND enddate <>'0000-00-00'
 				ORDER BY startdate, enddate";
-	$result = DB_query($SQL, $db);
+	$result = DB_query($SQL);
 
 	while ($myrow = DB_fetch_array($result)) {
 		if (isset($NextStartDate)) {
@@ -388,7 +388,7 @@ function ReSequenceEffectiveDates($Item, $PriceList, $CurrAbbrev, $db) {
 										AND startdate ='" . $StartDate . "'
 										AND enddate = '" . $EndDate . "'
 										AND debtorno =''";
-					$UpdateResult = DB_query($SQL, $db);
+					$UpdateResult = DB_query($SQL);
 				}
 			} //end of if startdate  after NextStartDate - we have a new NextStartDate
 		} //end of if set NextStartDate
@@ -411,7 +411,7 @@ function ReSequenceEffectiveDates($Item, $PriceList, $CurrAbbrev, $db) {
 					AND typeabbrev='" . $PriceList . "'
 					AND enddate ='0000-00-00'
 					ORDER BY startdate";
-	$result = DB_query($SQL, $db);
+	$result = DB_query($SQL);
 
 	while ($myrow = DB_fetch_array($result)) {
 		if (isset($OldStartDate)) {
@@ -424,7 +424,7 @@ function ReSequenceEffectiveDates($Item, $PriceList, $CurrAbbrev, $db) {
 							AND startdate ='" . $OldStartDate . "'
 							AND enddate = '0000-00-00'
 							AND debtorno =''";
-			$UpdateResult = DB_query($SQL, $db);
+			$UpdateResult = DB_query($SQL);
 		}
 		$OldStartDate = $myrow['startdate'];
 	} // end of loop around duplicate no end date prices

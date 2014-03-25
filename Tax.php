@@ -10,11 +10,11 @@ if (isset($_POST['TaxAuthority']) and isset($_POST['PrintPDF']) and isset($_POST
 			FROM periods
 			WHERE periodno='" . $_POST['ToPeriod'] . "'";
 	$ErrMsg = _('Could not determine the last date of the period selected') . '. ' . _('The sql returned the following error');
-	$PeriodEndResult = DB_query($sql, $db, $ErrMsg);
+	$PeriodEndResult = DB_query($sql, $ErrMsg);
 	$PeriodEndRow = DB_fetch_row($PeriodEndResult);
 	$PeriodEnd = ConvertSQLDate($PeriodEndRow[0]);
 
-	$result = DB_query("SELECT description FROM taxauthorities WHERE taxid='" . $_POST['TaxAuthority'] . "'", $db);
+	$result = DB_query("SELECT description FROM taxauthorities WHERE taxid='" . $_POST['TaxAuthority'] . "'");
 	$TaxAuthDescription = DB_fetch_row($result);
 	$TaxAuthorityName = $TaxAuthDescription[0];
 
@@ -49,12 +49,12 @@ if (isset($_POST['TaxAuthority']) and isset($_POST['PrintPDF']) and isset($_POST
 			AND debtortranstaxes.taxauthid = '" . $_POST['TaxAuthority'] . "'
 			ORDER BY debtortrans.id";
 
-	$DebtorTransResult = DB_query($SQL, $db, '', '', false, false); //don't trap errors in DB_query
+	$DebtorTransResult = DB_query($SQL, '', '', false, false); //don't trap errors in DB_query
 
-	if (DB_error_no($db) != 0) {
+	if (DB_error_no() != 0) {
 		$Title = _('Taxation Reporting Error');
 		include('includes/header.inc');
-		prnMsg(_('The accounts receivable transaction details could not be retrieved because') . ' ' . DB_error_msg($db), 'error');
+		prnMsg(_('The accounts receivable transaction details could not be retrieved because') . ' ' . DB_error_msg(), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($debug == 1) {
 			echo '<br />' . $SQL;
@@ -76,7 +76,7 @@ if (isset($_POST['TaxAuthority']) and isset($_POST['PrintPDF']) and isset($_POST
 
 	$ListCount = 0;
 
-	while ($DebtorTransRow = DB_fetch_array($DebtorTransResult, $db)) {
+	while ($DebtorTransRow = DB_fetch_array($DebtorTransResult)) {
 
 		$ListCount++;
 
@@ -155,12 +155,12 @@ if (isset($_POST['TaxAuthority']) and isset($_POST['PrintPDF']) and isset($_POST
 		AND supptranstaxes.taxauthid = '" . $_POST['TaxAuthority'] . "'
 		ORDER BY supptrans.trandate";
 
-	$SuppTransResult = DB_query($SQL, $db, '', '', false, false); //doint trap errors in DB_query
+	$SuppTransResult = DB_query($SQL, '', '', false, false); //doint trap errors in DB_query
 
-	if (DB_error_no($db) != 0) {
+	if (DB_error_no() != 0) {
 		$Title = _('Taxation Reporting Error');
 		include('includes/header.inc');
-		echo _('The accounts payable transaction details could not be retrieved because') . ' ' . DB_error_msg($db);
+		echo _('The accounts payable transaction details could not be retrieved because') . ' ' . DB_error_msg();
 		echo '<br /><a href="' . $RootPath . '/index.php?">' . _('Back to the menu') . '</a>';
 		if ($debug == 1) {
 			echo '<br />' . $SQL;
@@ -176,7 +176,7 @@ if (isset($_POST['TaxAuthority']) and isset($_POST['PrintPDF']) and isset($_POST
 	}
 
 
-	while ($SuppTransRow = DB_fetch_array($SuppTransResult, $db)) {
+	while ($SuppTransRow = DB_fetch_array($SuppTransResult)) {
 
 		$ListCount++;
 
@@ -297,7 +297,7 @@ if (isset($_POST['TaxAuthority']) and isset($_POST['PrintPDF']) and isset($_POST
 			<td>' . _('Tax Authority To Report On') . ':</td>
 			<td><select required="required" minlength="1" name="TaxAuthority">';
 
-	$result = DB_query("SELECT taxid, description FROM taxauthorities", $db);
+	$result = DB_query("SELECT taxid, description FROM taxauthorities");
 	while ($myrow = DB_fetch_array($result)) {
 		echo '<option value="' . $myrow['taxid'] . '">' . $myrow['description'] . '</option>';
 	}
@@ -313,16 +313,16 @@ if (isset($_POST['TaxAuthority']) and isset($_POST['PrintPDF']) and isset($_POST
 			<td>' . _('Return To') . ':</td>
 			<td><select required="required" minlength="1" name="ToPeriod">';
 
-	$DefaultPeriod = GetPeriod(Date($_SESSION['DefaultDateFormat'], Mktime(0, 0, 0, Date('m'), 0, Date('Y'))), $db);
+	$DefaultPeriod = GetPeriod(Date($_SESSION['DefaultDateFormat'], Mktime(0, 0, 0, Date('m'), 0, Date('Y'))));
 
 	$sql = "SELECT periodno,
 			lastdate_in_period
 		FROM periods";
 
 	$ErrMsg = _('Could not retrieve the period data because');
-	$Periods = DB_query($sql, $db, $ErrMsg);
+	$Periods = DB_query($sql, $ErrMsg);
 
-	while ($myrow = DB_fetch_array($Periods, $db)) {
+	while ($myrow = DB_fetch_array($Periods)) {
 		if ($myrow['periodno'] == $DefaultPeriod) {
 			echo '<option selected="selected" value="' . $myrow['periodno'] . '">' . ConvertSQLDate($myrow['lastdate_in_period']) . '</option>';
 		} else {

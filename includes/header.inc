@@ -62,7 +62,7 @@ if (isset($_GET['FontSize'])) {
 	$sql = "UPDATE www_users
 						SET fontsize='" . $_GET['FontSize'] . "'
 						WHERE userid = '" . $_SESSION['UserID'] . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 }
 
 if (isset($_POST['FontSize'])) {
@@ -134,7 +134,7 @@ if (isset($Title)) {
 		if (basename($_SERVER['PHP_SELF']) != 'index.php') {
 			if ($_SESSION['DBUpdateNumber'] >= 56) {
 				$sql = "SELECT caption, href FROM favourites WHERE href='" . basename($_SERVER['PHP_SELF']) . "' AND userid='" . $_SESSION['UserID'] . "'";
-				$result = DB_query($sql, $db);
+				$result = DB_query($sql);
 
 				if (DB_num_rows($result) == 0) {
 					echo '<li><img src="' . $RootPath . '/css/' . $Theme . '/images/add.png" id="PlusMinus" onclick="AddScript(\'' . basename($_SERVER['PHP_SELF']) . '\',\'' . $Title . '\')" data-tooltip="' . _('Add this script to your list of commonly used') . '" alt="' . _('Add to commonly used') . '" /></li>';
@@ -146,7 +146,7 @@ if (isset($Title)) {
 
 		if ($_SESSION['DBUpdateNumber'] >= 56) {
 			$sql = "SELECT caption, href FROM favourites WHERE userid='" . $_SESSION['UserID'] . "'";
-			$result = DB_query($sql, $db);
+			$result = DB_query($sql);
 
 			echo '<li><select name="Favourites" id="favourites" onchange="window.open (this.value,\'_self\',false)">';
 			echo '<option value=""><i><----' . _('Commonly used') . '----></i></option>';

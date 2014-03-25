@@ -29,7 +29,7 @@ $result = DB_query("SELECT description,
 							controlled,
 							perishable
 						FROM stockmaster
-						WHERE stockid='" . $StockID . "'", $db, _('Could not retrieve the requested item because'));
+						WHERE stockid='" . $StockID . "'", _('Could not retrieve the requested item because'));
 
 $myrow = DB_fetch_array($result);
 
@@ -49,7 +49,7 @@ if ($myrow['mbflag'] == 'K' or $myrow['mbflag'] == 'A' or $myrow['mbflag'] == 'D
 
 $result = DB_query("SELECT locationname
 						FROM locations
-						WHERE loccode='" . $_GET['Location'] . "'", $db, _('Could not retrieve the stock location of the item because'), _('The SQL used to lookup the location was'));
+						WHERE loccode='" . $_GET['Location'] . "'", _('Could not retrieve the stock location of the item because'), _('The SQL used to lookup the location was'));
 
 $myrow = DB_fetch_row($result);
 
@@ -63,7 +63,7 @@ $sql = "SELECT serialno,
 
 
 $ErrMsg = _('The serial numbers/batches held cannot be retrieved because');
-$LocStockResult = DB_query($sql, $db, $ErrMsg);
+$LocStockResult = DB_query($sql, $ErrMsg);
 
 echo '<table class="selection">';
 

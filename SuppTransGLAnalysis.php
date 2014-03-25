@@ -39,7 +39,7 @@ if (isset($_POST['AddGLCodeToTrans']) and $_POST['AddGLCodeToTrans'] == _('Enter
 			accountname
 		FROM chartmaster
 		WHERE accountcode='" . $_POST['GLCode'] . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	if (DB_num_rows($result) == 0 and $_POST['GLCode'] != '') {
 		prnMsg(_('The account code entered is not a valid code') . '. ' . _('This line cannot be added to the transaction') . '.<br />' . _('You can use the selection box to select the account you want'), 'error');
 		$InputError = True;
@@ -51,7 +51,7 @@ if (isset($_POST['AddGLCodeToTrans']) and $_POST['AddGLCodeToTrans'] == _('Enter
 			$InputError = True;
 		} elseif ($_POST['JobRef'] != '') {
 			$sql = "SELECT contractref FROM contracts WHERE contractref='" . $_POST['JobRef'] . "'";
-			$result = DB_query($sql, $db);
+			$result = DB_query($sql);
 			if (DB_num_rows($result) == 0) {
 				prnMsg(_('The contract reference entered is not a valid contract, this line cannot be added to the transaction'), 'error');
 				$InputError = True;
@@ -159,7 +159,7 @@ $SQL = "SELECT tagref,
 		FROM tags
 		ORDER BY tagref";
 
-$result = DB_query($SQL, $db);
+$result = DB_query($SQL);
 echo '<option value="0"></option>';
 while ($myrow = DB_fetch_array($result)) {
 	if (isset($_POST['Tag']) and $_POST['Tag'] == $myrow['tagref']) {
@@ -184,7 +184,7 @@ echo '<tr>
 
 $sql = "SELECT accountcode, accountname FROM chartmaster ORDER BY accountcode";
 
-$result = DB_query($sql, $db);
+$result = DB_query($sql);
 echo '<option value=""></option>';
 while ($myrow = DB_fetch_array($result)) {
 	if (isset($_POST['AcctSelection']) and $myrow['accountcode'] == $_POST['AcctSelection']) {

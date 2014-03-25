@@ -25,10 +25,10 @@ if (isset($Run)) { //start bom processing
 	$ErrMsg = _('An error occurred selecting all bottom level components');
 	$DbgMsg = _('The SQL that was used to select bottom level components and failed in the process was');
 
-	$result = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+	$result = DB_query($sql, $ErrMsg, $DbgMsg);
 
 	while ($item = DB_fetch_array($result)) {
-		$inputerror = UpdateCost($db, $item['component']);
+		$inputerror = UpdateCost($item['component']);
 		if ($inputerror == 0) {
 			prnMsg(_('Component') . ' ' . $item['component'] . ' ' . _('has been processed'), 'success');
 		} else {
@@ -38,9 +38,9 @@ if (isset($Run)) { //start bom processing
 
 	if ($inputerror == 1) { //exited loop with errors so rollback
 		prnMsg(_('Failed on item') . ' ' . $item['component'] . ' ' . _('Cost update has been rolled back'), 'error');
-		DB_Txn_Rollback($db);
+		DB_Txn_Rollback();
 	} else { //all good so commit data transaction
-		DB_Txn_Commit($db);
+		DB_Txn_Commit();
 		prnMsg(_('All cost updates committed to the database.'), 'success');
 	}
 

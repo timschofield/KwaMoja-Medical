@@ -44,9 +44,9 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 		$DefaultFromDate = Date('Y-m-d', Mktime(0, 0, 0, $_SESSION['YearEnd'] + 2, 0, Date('Y') - 1));
 	}
 	$sql = "SELECT periodno, lastdate_in_period FROM periods ORDER BY periodno";
-	$Periods = DB_query($sql, $db);
+	$Periods = DB_query($sql);
 
-	while ($myrow = DB_fetch_array($Periods, $db)) {
+	while ($myrow = DB_fetch_array($Periods)) {
 		if (isset($_POST['FromPeriod']) and $_POST['FromPeriod'] != '') {
 			if ($_POST['FromPeriod'] == $myrow['periodno']) {
 				echo '<option selected="selected" value="' . $myrow['periodno'] . '">' . MonthAndYearFromSQLDate($myrow['lastdate_in_period']) . '</option>';
@@ -64,7 +64,7 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 
 	echo '</select></td></tr>';
 	if (!isset($_POST['ToPeriod']) or $_POST['ToPeriod'] == '') {
-		$DefaultToPeriod = GetPeriod(DateAdd(ConvertSQLDate($DefaultFromDate), 'm', 11), $db);
+		$DefaultToPeriod = GetPeriod(DateAdd(ConvertSQLDate($DefaultFromDate), 'm', 11));
 	} else {
 		$DefaultToPeriod = $_POST['ToPeriod'];
 	}
@@ -75,7 +75,7 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 
 	$RetResult = DB_data_seek($Periods, 0);
 
-	while ($myrow = DB_fetch_array($Periods, $db)) {
+	while ($myrow = DB_fetch_array($Periods)) {
 
 		if ($myrow['periodno'] == $DefaultToPeriod) {
 			echo '<option selected="selected" value="' . $myrow['periodno'] . '">' . MonthAndYearFromSQLDate($myrow['lastdate_in_period']) . '</option>';
@@ -85,7 +85,7 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 	}
 	echo '</select></td></tr>';
 
-	$AreasResult = DB_query("SELECT areacode, areadescription FROM areas", $db);
+	$AreasResult = DB_query("SELECT areacode, areadescription FROM areas");
 
 	if (!isset($_POST['SalesArea'])) {
 		$_POST['SalesArea'] = '';
@@ -107,7 +107,7 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 	}
 	echo '</select></td></tr>';
 
-	$CategoriesResult = DB_query("SELECT categoryid, categorydescription FROM stockcategory", $db);
+	$CategoriesResult = DB_query("SELECT categoryid, categorydescription FROM stockcategory");
 
 	if (!isset($_POST['CategoryID'])) {
 		$_POST['CategoryID'] = '';
@@ -143,7 +143,7 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 	} else {
 		echo '<option value="All">' . _('All') . '</option>';
 	}
-	$SalesFolkResult = DB_query($sql, $db);
+	$SalesFolkResult = DB_query($sql);
 	while ($myrow = DB_fetch_array($SalesFolkResult)) {
 		if ($myrow['salesmancode'] == $_POST['SalesmanCode']) {
 			echo '<option selected="selected" value="' . $myrow['salesmancode'] . '">' . $myrow['salesmanname'] . '</option>';
@@ -213,7 +213,7 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 	if ($_POST['SalesArea'] == 'All') {
 		$GraphTitle .= ' ' . _('For All Sales Areas');
 	} else {
-		$result = DB_query("SELECT areadescription FROM areas WHERE areacode='" . $_POST['SalesArea'] . "'", $db);
+		$result = DB_query("SELECT areadescription FROM areas WHERE areacode='" . $_POST['SalesArea'] . "'");
 		$myrow = DB_fetch_row($result);
 		$GraphTitle .= ' ' . _('For') . ' ' . $myrow[0];
 		$WhereClause .= " area='" . $_POST['SalesArea'] . "' AND";
@@ -221,7 +221,7 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 	if ($_POST['CategoryID'] == 'All') {
 		$GraphTitle .= ' ' . _('For All Stock Categories');
 	} else {
-		$result = DB_query("SELECT categorydescription FROM stockcategory WHERE categoryid='" . $_POST['CategoryID'] . "'", $db);
+		$result = DB_query("SELECT categorydescription FROM stockcategory WHERE categoryid='" . $_POST['CategoryID'] . "'");
 		$myrow = DB_fetch_row($result);
 		$GraphTitle .= ' ' . _('For') . ' ' . $myrow[0];
 		$WhereClause .= " stkcategory='" . $_POST['CategoryID'] . "' AND";
@@ -230,7 +230,7 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 	if ($_POST['SalesmanCode'] == 'All') {
 		$GraphTitle .= ' ' . _('For All Salespeople');
 	} else {
-		$result = DB_query("SELECT salesmanname FROM salesman WHERE salesmancode='" . $_POST['SalesmanCode'] . "'", $db);
+		$result = DB_query("SELECT salesmanname FROM salesman WHERE salesmancode='" . $_POST['SalesmanCode'] . "'");
 		$myrow = DB_fetch_row($result);
 		$GraphTitle .= ' ' . _('For Salesperson') . ': ' . $myrow[0];
 		$WhereClause .= " salesperson='" . $_POST['SalesmanCode'] . "' AND";
@@ -279,10 +279,10 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 	$graph->SetDrawYGrid(TRUE);
 	$graph->SetDataType('text-data');
 
-	$SalesResult = DB_query($SQL, $db);
-	if (DB_error_no($db) != 0) {
+	$SalesResult = DB_query($SQL);
+	if (DB_error_no() != 0) {
 
-		prnMsg(_('The sales graph data for the selected criteria could not be retrieved because') . ' - ' . DB_error_msg($db), 'error');
+		prnMsg(_('The sales graph data for the selected criteria could not be retrieved because') . ' - ' . DB_error_msg(), 'error');
 		include('includes/footer.inc');
 		exit;
 	}

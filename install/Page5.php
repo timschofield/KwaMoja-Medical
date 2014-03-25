@@ -143,7 +143,7 @@ for ($UpdateNumber = $StartingUpdate; $UpdateNumber <= $EndingUpdate; $UpdateNum
 					</script>';
 		echo str_repeat(' ', 1024 * 4);
 		$sql = "SET foreign_key_checks=0";
-		$result = executeSQL($sql, $db, False);
+		$result = executeSQL($sql, $DB, False);
 		flush();
 		if ($result == 0) {
 			include($PathPrefix . 'sql/install/' . $UpdateNumber . '.php');
@@ -162,21 +162,21 @@ InsertRecord('www_users', array('userid'),
 							array('admin'),
 							array('userid', 'password', 'realname', 'email', 'displayrecordsmax', 'fullaccess', 'cancreatetender', 'modulesallowed', 'blocked', 'theme', 'language', 'pdflanguage', 'fontsize'),
 							array($_SESSION['Installer']['AdminAccount'], sha1($_SESSION['Installer']['KwaMojaPassword']), $_SESSION['Installer']['AdminAccount'], $_SESSION['Installer']['Email'], 50, 1, 1, '1,1,1,1,1,1,1,1,1,1,1,1,', 0, 'aguapop', $_SESSION['Installer']['Language'], 0, 0)
-						, $db);
+						, $DB);
 /* Now we uploade the chosen chart of accounts */
 if (!isset($_POST['Demo'])) {
 	$sql = "SET foreign_key_checks=0";
-	$result = executeSQL($sql, $db, False);
+	$result = executeSQL($sql, $DB, False);
 	include($PathPrefix . 'install/coa/' . $_SESSION['Installer']['CoA']);
 	echo '<div class="success">' . _('Your chosen chart of accounts has been uploaded') . '</div>';
 	ob_flush();
 	/* Create the admin user */
 } else {
 	echo '<legend>' . _('Populating the database with demo data.') . '</legend>';
-	PopulateSQLDataBySQL($PathPrefix . 'sql/demodata/data.sql', $db, $DBType, false, $_SESSION['Installer']['Database']);
+	PopulateSQLDataBySQL($PathPrefix . 'sql/demodata/data.sql', $DB, $DBType, false, $_SESSION['Installer']['Database']);
 }
 
-ChangeConfigValue('VersionNumber', '14.02', $db);
+ChangeConfigValue('VersionNumber', '14.02');
 
 function HighestFileName($PathPrefix) {
 	$files = glob($PathPrefix . 'sql/install/*.php');
@@ -184,37 +184,37 @@ function HighestFileName($PathPrefix) {
 	return basename(array_pop($files), ".php");
 }
 
-function executeSQL($sql, $db, $TrapErrors = False) {
+function executeSQL($sql, $TrapErrors = False) {
 	global $SQLFile;
 	/* Run an sql statement and return an error code */
 	if (!isset($SQLFile)) {
-		DB_IgnoreForeignKeys($db);
-		$result = DB_query($sql, $db, '', '', false, $TrapErrors);
-		$ErrorNumber = DB_error_no($db);
-		DB_ReinstateForeignKeys($db);
+		DB_IgnoreForeignKeys();
+		$result = DB_query($sql, '', '', false, $TrapErrors);
+		$ErrorNumber = DB_error_no();
+		DB_ReinstateForeignKeys();
 		return $ErrorNumber;
 	} else {
 		fwrite($SQLFile, $sql . ";\n");
 	}
 }
 
-function updateDBNo($NewNumber, $db) {
+function updateDBNo($NewNumber) {
 	global $SQLFile;
 	if (!isset($SQLFile)) {
 		$sql = "UPDATE config SET confvalue='" . $NewNumber . "' WHERE confname='DBUpdateNumber'";
-		executeSQL($sql, $db);
+		executeSQL($sql);
 		$_SESSION['DBUpdateNumber'] = $NewNumber;
 	}
 }
 //@para $File is the sql file name
-//@para $db is the DB connect reference
+//@para $DB is the DB connect reference
 //@para $DBType refer to mysqli or mysql connection
 //@para $NewDB is the new database name
 //@para $DemoDB is the demo database name
 //The purpose of this function is populate the database with mysql extention
-function PopulateSQLDataBySQL($File, $db, $DBType, $NewDB = false, $DemoDB = 'kwamojademo') {
-	$dbName = ($NewDB) ? $NewDB : $DemoDB;
-	($DBType == 'mysql') ? mysql_select_db($dbName, $db) : mysqli_select_db($db, $dbName);
+function PopulateSQLDataBySQL($File, $DB, $DBType, $NewDB = false, $DemoDB = 'kwamojademo') {
+	$DBName = ($NewDB) ? $NewDB : $DemoDB;
+	($DBType == 'mysql') ? mysql_select_db($DBName, $DB) : mysqli_select_db($DB, $DBName);
 	$SQLScriptFile = file($File);
 	$ScriptFileEntries = sizeof($SQLScriptFile);
 	$SQL = '';
@@ -238,7 +238,7 @@ function PopulateSQLDataBySQL($File, $db, $DBType, $NewDB = false, $DemoDB = 'kw
 		}
 		if (mb_strpos($SQLScriptFile[$i - 1], ';') > 0 and !$InAFunction) {
 			// Database created above with correct name.
-			$result = ($DBType == 'mysql') ? mysql_query($SQL, $db) : mysqli_query($db, $SQL);
+			$result = ($DBType == 'mysql') ? mysql_query($SQL, $DB) : mysqli_query($DB, $SQL);
 			$SQL = '';
 		}
 		$percent = intval($i / $ScriptFileEntries * 100) . "%";

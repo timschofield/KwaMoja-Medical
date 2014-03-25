@@ -63,12 +63,13 @@ function DB_connect($host, $DBUser, $DBPassword, $DBPort) {
 	return pg_connect($PgConnStr);
 }
 
-function DB_query($SQL, &$Conn, $ErrorMessage = '', $DebugMessage = '', $Transaction = false, $TrapErrors = true) {
+function DB_query($SQL, $ErrorMessage = '', $DebugMessage = '', $Transaction = false, $TrapErrors = true) {
 
+	global $db;
 	global $debug;
 	global $PathPrefix;
 
-	$result = pg_query($Conn, $SQL);
+	$result = pg_query($db, $SQL);
 	if ($DebugMessage == '') {
 		$DebugMessage = _('The SQL that failed was:');
 	}
@@ -83,8 +84,8 @@ function DB_query($SQL, &$Conn, $ErrorMessage = '', $DebugMessage = '', $Transac
 		}
 		if ($Transaction) {
 			$SQL = 'rollback';
-			$Result = DB_query($SQL, $Conn);
-			if (DB_error_no($Conn) != 0) {
+			$Result = DB_query($SQL);
+			if (DB_error_no() != 0) {
 				prnMsg('<br />' . _('Error Rolling Back Transaction!!'), '', _('DB DEBUG:'));
 			}
 		}
@@ -135,16 +136,19 @@ function DB_affected_rows(&$ResultIndex) {
 	return pg_affected_rows($ResultIndex);
 }
 
-function DB_error_no(&$Conn) {
-	return DB_error_msg($Conn) == "" ? 0 : -1;
+function DB_error_no() {
+	global $db;
+	return DB_error_msg() == "" ? 0 : -1;
 }
 
-function DB_error_msg(&$Conn) {
-	return pg_last_error($Conn);
+function DB_error_msg() {
+	global $db;
+	return pg_last_error($db);
 }
 
-function DB_Last_Insert_ID(&$Conn, $table, $fieldname) {
-	$tempres = DB_query("SELECT currval('" . $table . "_" . $fieldname . "_seq') FROM " . $table, $Conn);
+function DB_Last_Insert_ID($table, $fieldname) {
+	global $db;
+	$tempres = DB_query("SELECT currval('" . $table . "_" . $fieldname . "_seq') FROM " . $table);
 	$Res = pg_fetch_result($tempres, 0, 0);
 	DB_free_result($tempres);
 	return $Res;
@@ -158,26 +162,37 @@ function INTERVAL($val, $Inter) {
 	global $DBType;
 	return "\n(CAST( (" . $val . ") as text ) or ' " . $Inter . "')::interval\n";
 }
-function DB_show_tables(&$Conn, $TableName = '%') {
-	$Result = DB_query("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_name " . LIKE . " '" . $TableName . "'", $Conn);
+
+function DB_show_tables($TableName = '%') {
+	global $db;
+	$Result = DB_query("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_name " . LIKE . " '" . $TableName . "'");
 	return $Result;
 }
-function DB_show_fields($TableName, &$Conn) {
-	$Result = DB_query("SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_name='" . $TableName . "'", $Conn);
+
+function DB_show_fields($TableName) {
+	global $db;
+	$Result = DB_query("SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_name='" . $TableName . "'");
 	if (DB_num_rows($Result) == 1) {
-		$Result = DB_query("SELECT column_name FROM information_schema.columns WHERE table_name ='$TableName'", $Conn);
+		$Result = DB_query("SELECT column_name FROM information_schema.columns WHERE table_name ='$TableName'");
 		return $Result;
 	}
 }
-function DB_Maintenance($Conn) {
+
+function DB_Maintenance() {
+	global $db;
 
 	prnMsg(_('The system has just run the regular database administration and optimisation routine'), 'info');
 
-	$Result = DB_query('VACUUM ANALYZE', $Conn);
+	$Result = DB_query('VACUUM ANALYZE');
 
 	$Result = DB_query("UPDATE config
 				SET confvalue='" . Date('Y-m-d') . "'
-				WHERE confname='DB_Maintenance_LastRun'", $Conn);
+				WHERE confname='DB_Maintenance_LastRun'");
+}
+
+function DB_select_database($DBName) {
+	global $db;
+	mysqli_select_db($db, $DBName);
 }
 
 ?>

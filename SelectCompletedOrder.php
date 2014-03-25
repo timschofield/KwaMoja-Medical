@@ -110,7 +110,7 @@ if (isset($_POST['SearchParts']) and $_POST['SearchParts'] != '') {
 
 	$ErrMsg = _('No stock items were returned by the SQL because');
 	$DbgMsg = _('The SQL used to retrieve the searched parts was');
-	$StockItemsResult = DB_query($SQL, $db, $ErrMsg, $DbgMsg);
+	$StockItemsResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	if (DB_num_rows($StockItemsResult) == 1) {
 		$myrow = DB_fetch_row($StockItemsResult);
@@ -302,10 +302,10 @@ if (isset($_POST['SearchParts']) and $_POST['SearchParts'] != '') {
 					salesorders.deliverto
 				ORDER BY salesorders.orderno";
 
-	$SalesOrdersResult = DB_query($SQL, $db);
+	$SalesOrdersResult = DB_query($SQL);
 
-	if (DB_error_no($db) != 0) {
-		prnMsg(_('No orders were returned by the SQL because') . ' ' . DB_error_msg($db), 'info');
+	if (DB_error_no() != 0) {
+		prnMsg(_('No orders were returned by the SQL because') . ' ' . DB_error_msg(), 'info');
 		echo '<br /> ' . $SQL;
 	}
 
@@ -342,7 +342,7 @@ if (!isset($SelectedStockItem)) {
 	$result1 = DB_query("SELECT categoryid,
 							categorydescription
 						FROM stockcategory
-						ORDER BY categorydescription", $db);
+						ORDER BY categorydescription");
 
 	echo '<br />';
 	echo '<div class="page_help_text noPrint">' . _('To search for sales orders for a specific part use the part selection facilities below') . '</div>';

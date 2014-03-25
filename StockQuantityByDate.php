@@ -13,7 +13,7 @@ echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 $sql = "SELECT categoryid, categorydescription FROM stockcategory";
-$resultStkLocs = DB_query($sql, $db);
+$resultStkLocs = DB_query($sql);
 
 echo '<table class="selection">
 	<tr>
@@ -47,7 +47,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 					ON locations.loccode=www_users.defaultlocation
 				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 }
-$resultStkLocs = DB_query($sql, $db);
+$resultStkLocs = DB_query($sql);
 
 echo '<td>' . _('For Stock Location') . ':</td>
 	<td><select required="required" minlength="1" name="StockLocation"> ';
@@ -105,7 +105,7 @@ if (isset($_POST['ShowStatus']) and Is_Date($_POST['OnHandDate'])) {
 	$ErrMsg = _('The stock items in the category selected cannot be retrieved because');
 	$DbgMsg = _('The SQL that failed was');
 
-	$StockResult = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+	$StockResult = DB_query($sql, $ErrMsg, $DbgMsg);
 
 	$SQLOnHandDate = FormatDateForSQL($_POST['OnHandDate']);
 
@@ -129,9 +129,9 @@ if (isset($_POST['ShowStatus']) and Is_Date($_POST['OnHandDate'])) {
 
 		$ErrMsg = _('The stock held as at') . ' ' . $_POST['OnHandDate'] . ' ' . _('could not be retrieved because');
 
-		$LocStockResult = DB_query($sql, $db, $ErrMsg);
+		$LocStockResult = DB_query($sql, $ErrMsg);
 
-		$NumRows = DB_num_rows($LocStockResult, $db);
+		$NumRows = DB_num_rows($LocStockResult);
 
 		$k = 0; //row colour counter
 

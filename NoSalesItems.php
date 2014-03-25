@@ -30,7 +30,7 @@ if (!(isset($_POST['Search']))) {
 						ON locations.loccode=www_users.defaultlocation
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
-	$locationresult = DB_query($sql, $db);
+	$locationresult = DB_query($sql);
 	$i = 0;
 	while ($myrow = DB_fetch_array($locationresult)) {
 		if (isset($_POST['Location'][$i]) and $myrow['loccode'] == $_POST['Location'][$i]) {
@@ -52,7 +52,7 @@ if (!(isset($_POST['Search']))) {
 	$sql = "SELECT typename,
 					typeid
 				FROM debtortype";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	echo '<option value="All">' . _('All') . '</option>';
 	while ($myrow = DB_fetch_array($result)) {
 		echo '<option value="' . $myrow['typeid'] . '">' . $myrow['typename'] . '</option>';
@@ -64,7 +64,7 @@ if (!(isset($_POST['Search']))) {
 	$SQL = "SELECT categoryid,categorydescription
 			FROM stockcategory
 			ORDER BY categorydescription";
-	$result1 = DB_query($SQL, $db);
+	$result1 = DB_query($SQL);
 	echo '<tr>
 			<td width="150">' . _('In Stock Category') . ' </td>
 			<td>:</td>
@@ -180,7 +180,7 @@ if (!(isset($_POST['Search']))) {
 										AND stockmoves.qty >0)
 				ORDER BY stockmaster.stockid";
 	}
-	$result = DB_query($SQL, $db);
+	$result = DB_query($SQL);
 	echo '<p class="page_title_text noPrint"  align="center"><strong>' . _('No Sales Items') . '</strong></p>';
 	echo '<form onSubmit="return VerifyForm(this);" action="PDFNoSalesItems.php"  method="GET">
 		<table class="selection">';
@@ -208,7 +208,7 @@ if (!(isset($_POST['Search']))) {
 		}
 		$QOHResult = DB_query("SELECT sum(quantity)
 				FROM locstock
-				WHERE stockid = '" . $myrow['stockid'] . "'", $db);
+				WHERE stockid = '" . $myrow['stockid'] . "'");
 		$QOHRow = DB_fetch_row($QOHResult);
 		$QOH = $QOHRow[0];
 

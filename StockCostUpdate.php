@@ -38,7 +38,7 @@ if (isset($_POST['UpdateData'])) {
 					overheadcost,
 					mbflag";
 	$ErrMsg = _('The entered item code does not exist');
-	$OldResult = DB_query($sql, $db, $ErrMsg);
+	$OldResult = DB_query($sql, $ErrMsg);
 	$OldRow = DB_fetch_array($OldResult);
 	$_POST['QOH'] = $OldRow['totalqoh'];
 	$_POST['OldMaterialCost'] = $OldRow['materialcost'];
@@ -56,14 +56,14 @@ if (isset($_POST['UpdateData'])) {
 	$OldCost = $_POST['OldMaterialCost'] + $_POST['OldLabourCost'] + $_POST['OldOverheadCost'];
 	$NewCost = filter_number_format($_POST['MaterialCost']) + filter_number_format($_POST['LabourCost']) + filter_number_format($_POST['OverheadCost']);
 
-	$result = DB_query("SELECT * FROM stockmaster WHERE stockid='" . $StockID . "'", $db);
+	$result = DB_query("SELECT * FROM stockmaster WHERE stockid='" . $StockID . "'");
 	$myrow = DB_fetch_row($result);
 	if (DB_num_rows($result) == 0) {
 		prnMsg(_('The entered item code does not exist'), 'error', _('Non-existent Item'));
 	} elseif ($OldCost != $NewCost) {
 
-		$Result = DB_Txn_Begin($db);
-		ItemCostUpdateGL($db, $StockID, $NewCost, $OldCost, $_POST['QOH']);
+		$Result = DB_Txn_Begin();
+		ItemCostUpdateGL($StockID, $NewCost, $OldCost, $_POST['QOH']);
 
 		$SQL = "UPDATE stockmaster SET	materialcost='" . filter_number_format($_POST['MaterialCost']) . "',
 										labourcost='" . filter_number_format($_POST['LabourCost']) . "',
@@ -74,10 +74,10 @@ if (isset($_POST['UpdateData'])) {
 
 		$ErrMsg = _('The cost details for the stock item could not be updated because');
 		$DbgMsg = _('The SQL that failed was');
-		$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
-		$Result = DB_Txn_Commit($db);
-		UpdateCost($db, $StockID); //Update any affected BOMs
+		$Result = DB_Txn_Commit();
+		UpdateCost($StockID); //Update any affected BOMs
 
 	}
 }
@@ -109,7 +109,7 @@ $result = DB_query("SELECT description,
 							labourcost,
 							overheadcost,
 							mbflag,
-							stocktype", $db, $ErrMsg, $DbgMsg);
+							stocktype", $ErrMsg, $DbgMsg);
 
 
 $myrow = DB_fetch_array($result);

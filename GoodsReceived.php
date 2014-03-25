@@ -235,7 +235,7 @@ if (count($_SESSION['PO' . $identifier]->LineItems) > 0) {
 						WHERE locstock.stockid='" . $OrderLine->StockID . "'
 						AND loccode= '" . $_SESSION['PO' . $identifier]->Location . "'";
 
-			$CheckNegResult = DB_query($SQL, $db);
+			$CheckNegResult = DB_query($SQL);
 			$CheckNegRow = DB_fetch_row($CheckNegResult);
 			if ($CheckNegRow[0] + $OrderLine->ReceiveQty < 0) {
 				$NegativesFound = true;
@@ -298,7 +298,7 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 
 	$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('Could not check that the details of the purchase order had not been changed by another user because') . ':';
 	$DbgMsg = _('The following SQL to retrieve the purchase order details was used');
-	$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg);
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	$Changes = 0;
 	$LineNo = 1;
@@ -380,11 +380,11 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 
 	/* *********************** BEGIN SQL TRANSACTIONS *********************** */
 
-	$Result = DB_Txn_Begin($db);
+	$Result = DB_Txn_Begin();
 	/*Now Get the next GRN - function in SQL_CommonFunctions*/
-	$GRN = GetNextTransNo(25, $db);
+	$GRN = GetNextTransNo(25);
 
-	$PeriodNo = GetPeriod($_POST['DefaultReceivedDate'], $db);
+	$PeriodNo = GetPeriod($_POST['DefaultReceivedDate']);
 	$_POST['DefaultReceivedDate'] = FormatDateForSQL($_POST['DefaultReceivedDate']);
 	$OrderCompleted = true; //assume all received and completed - now test in case not
 	foreach ($_SESSION['PO' . $identifier]->LineItems as $OrderLine) {
@@ -402,7 +402,7 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 							WHERE stockid='" . $OrderLine->StockID . "'";
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The standard cost of the item being received cannot be retrieved because');
 				$DbgMsg = _('The following SQL to retrieve the standard cost was used');
-				$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 				$myrow = DB_fetch_row($Result);
 
@@ -444,7 +444,7 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 
 			$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The purchase order detail record could not be updated with the quantity received because');
 			$DbgMsg = _('The following SQL to update the purchase order detail record was used');
-			$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 
 			if ($OrderLine->StockID != '') {
@@ -476,7 +476,7 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 
 			$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('A GRN record could not be inserted') . '. ' . _('This receipt of goods has not been processed because');
 			$DbgMsg = _('The following SQL to insert the GRN record was used');
-			$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 			if ($OrderLine->StockID != '') {
 				/* if the order line is in fact a stock item */
@@ -489,7 +489,7 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 								WHERE locstock.stockid='" . $OrderLine->StockID . "'
 								AND loccode= '" . $_SESSION['PO' . $identifier]->Location . "'";
 
-				$Result = DB_query($SQL, $db);
+				$Result = DB_query($SQL);
 				if (DB_num_rows($Result) == 1) {
 					$LocQtyRow = DB_fetch_row($Result);
 					$QtyOnHandPrior = $LocQtyRow[0];
@@ -505,7 +505,7 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The location stock record could not be updated because');
 				$DbgMsg = _('The following SQL to update the location stock record was used');
-				$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 				/* Insert stock movements - with unit cost */
 
@@ -536,10 +536,10 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('stock movement records could not be inserted because');
 				$DbgMsg = _('The following SQL to insert the stock movement records was used');
-				$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 				/*Get the ID of the StockMove... */
-				$StkMoveNo = DB_Last_Insert_ID($db, 'stockmoves', 'stkmoveno');
+				$StkMoveNo = DB_Last_Insert_ID('stockmoves', 'stkmoveno');
 				/* Do the Controlled Item INSERTS HERE */
 
 				if ($OrderLine->Controlled == 1) {
@@ -554,7 +554,7 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 									AND serialno = '" . $Item->BundleRef . "'";
 						$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('Could not check if a batch or lot stock item already exists because');
 						$DbgMsg = _('The following SQL to test for an already existing controlled but not serialised stock item was used');
-						$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+						$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 						$AlreadyExistsRow = DB_fetch_row($Result);
 						if (trim($Item->BundleRef) != '') {
 							if ($AlreadyExistsRow[0] > 0) {
@@ -583,7 +583,7 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 
 							$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The serial stock item record could not be inserted because');
 							$DbgMsg = _('The following SQL to insert the serial stock item records was used');
-							$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+							$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 							/* end of handle stockserialitems records */
 
@@ -600,7 +600,7 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 																)";
 							$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The serial stock movement record could not be inserted because');
 							$DbgMsg = _('The following SQL to insert the serial stock movement records was used');
-							$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+							$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 						} //non blank BundleRef
 					} //end foreach
 				}
@@ -617,7 +617,7 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 													FROM fixedassets
 													INNER JOIN fixedassetcategories
 													ON fixedassets.assetcategoryid=fixedassetcategories.categoryid
-													WHERE assetid='" . $OrderLine->AssetID . "'", $db);
+													WHERE assetid='" . $OrderLine->AssetID . "'");
 				if (DB_num_rows($CheckAssetExistsResult) == 1) { //then work with the assetid provided
 
 					/*Need to add a fixedassettrans for the cost of the asset being received */
@@ -639,7 +639,7 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 											'" . $CurrentStandardCost * $OrderLine->ReceiveQty . "')";
 					$ErrMsg = _('CRITICAL ERROR! NOTE DOWN THIS ERROR AND SEEK ASSISTANCE The fixed asset transaction could not be inserted because');
 					$DbgMsg = _('The following SQL to insert the fixed asset transaction record was used');
-					$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 					/*Now get the correct cost GL account from the asset category */
 					$AssetRow = DB_fetch_array($CheckAssetExistsResult);
@@ -660,7 +660,7 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 					}
 					$ErrMsg = _('CRITICAL ERROR! NOTE DOWN THIS ERROR AND SEEK ASSISTANCE. The fixed asset cost and date purchased was not able to be updated because') . ': ';
 					$DbgMsg = _('The following SQL was used to attempt the update of the cost and the date the asset was purchased');
-					$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 				} //assetid provided doesn't exist so ignore it and treat as a normal nominal item
 			} //assetid is set so the nominal item is an asset
@@ -689,7 +689,7 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The purchase GL posting could not be inserted because');
 				$DbgMsg = _('The following SQL to insert the purchase GLTrans record was used');
-				$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 				/* if the CurrentStandardCost != UnitCost (the standard at the time the first delivery was booked in,  and its a stock item, then the difference needs to be booked in against the purchase price variance account */
 
@@ -712,7 +712,7 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The GRN suspense side of the GL posting could not be inserted because');
 				$DbgMsg = _('The following SQL to insert the GRN Suspense GLTrans record was used');
-				$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 			}
 			/* end of if GL and stock integrated and standard cost !=0 */
@@ -727,14 +727,14 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 				SET status='Completed',
 				stat_comment='" . $StatusComment . "'
 				WHERE orderno='" . $_SESSION['PO' . $identifier]->OrderNo . "'";
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 	}
 
 	if ($_SESSION['PO' . $identifier]->GLLink == 1) {
-		EnsureGLEntriesBalance(25, $GRN, $db);
+		EnsureGLEntriesBalance(25, $GRN);
 	}
 
-	$Result = DB_Txn_Commit($db);
+	$Result = DB_Txn_Commit();
 	$PONo = $_SESSION['PO' . $identifier]->OrderNo;
 	unset($_SESSION['PO' . $identifier]->LineItems);
 	unset($_SESSION['PO' . $identifier]);

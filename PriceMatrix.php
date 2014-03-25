@@ -19,7 +19,7 @@ if (!isset($StockID)) {
 }
 
 $SQL = "SELECT description FROM stockmaster WHERE stockid='" . $StockID . "'";
-$Result = DB_query($SQL, $db);
+$Result = DB_query($SQL);
 $MyRow = DB_fetch_array($Result);
 
 echo '<div class="toplink"><a href="' . $RootPath . '/SelectProduct.php">' . _('Back to Items') . '</a></div>';
@@ -58,7 +58,7 @@ if (isset($_POST['submit'])) {
 							'" . filter_number_format($_POST['QuantityBreak']) . "',
 							'" . filter_number_format($_POST['Price']) . "')";
 
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		prnMsg(_('The price matrix record has been added'), 'success');
 		unset($_POST['QuantityBreak']);
 		unset($_POST['Price']);
@@ -71,7 +71,7 @@ if (isset($_POST['submit'])) {
 		AND salestype='" . $_GET['SalesType'] . "'
 		AND quantitybreak='" . $_GET['QuantityBreak'] . "'";
 
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	prnMsg(_('The price matrix record has been deleted'), 'success');
 	echo '<br />';
 }
@@ -85,7 +85,7 @@ $sql = "SELECT typeabbrev,
 				sales_type
 			FROM salestypes";
 
-$result = DB_query($sql, $db);
+$result = DB_query($sql);
 
 echo '<tr>
 		<td>' . _('Customer Price List') . ' (' . _('Sales Type') . '):</td>
@@ -132,7 +132,7 @@ $sql = "SELECT sales_type,
 				stockid,
 				quantitybreak";
 
-$result = DB_query($sql, $db);
+$result = DB_query($sql);
 
 echo '<table class="selection">
 		<tr>

@@ -29,7 +29,7 @@ if (isset($_POST['Submit'])) {
 		$NewStockID = $_POST['ExStockID'];
 	}
 	if ($InputError == 0) {
-		$result = DB_Txn_Begin($db);
+		$result = DB_Txn_Begin();
 
 		if ($NewOrExisting == 'N') {
 			/* duplicate rows into stockmaster */
@@ -91,7 +91,7 @@ if (isset($_POST['Submit'])) {
 									netweight
 							FROM stockmaster
 							WHERE stockid='" . $StockID . "';";
-			$result = DB_query($sql, $db);
+			$result = DB_query($sql);
 		} else {
 			$sql = "SELECT lastcostupdate,
 							actualcost,
@@ -102,7 +102,7 @@ if (isset($_POST['Submit'])) {
 							lowestlevel
 						FROM stockmaster
 						WHERE stockid='" . $StockID . "';";
-			$result = DB_query($sql, $db);
+			$result = DB_query($sql);
 
 			$myrow = DB_fetch_row($result);
 
@@ -115,7 +115,7 @@ if (isset($_POST['Submit'])) {
 					overheadcost    = " . $myrow[5] . ",
 					lowestlevel     = " . $myrow[6] . "
 					WHERE stockid='" . $NewStockID . "';";
-			$result = DB_query($sql, $db);
+			$result = DB_query($sql);
 		}
 
 		$sql = "INSERT INTO bom
@@ -130,7 +130,7 @@ if (isset($_POST['Submit'])) {
 							autoissue
 					FROM bom
 					WHERE parent='" . $StockID . "';";
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 
 		if ($NewOrExisting == 'N') {
 			$sql = "INSERT INTO locstock (
@@ -146,12 +146,12 @@ if (isset($_POST['Submit'])) {
 				FROM locstock
 				WHERE stockid='" . $StockID . "'";
 
-			$result = DB_query($sql, $db);
+			$result = DB_query($sql);
 		}
 
-		$result = DB_Txn_Commit($db);
+		$result = DB_Txn_Commit();
 
-		UpdateCost($db, $NewStockID);
+		UpdateCost($NewStockID);
 
 		header('Location: BOMs.php?Select=' . $NewStockID);
 		ob_end_flush();
@@ -168,7 +168,7 @@ if (isset($_POST['Submit'])) {
 				FROM stockmaster
 				WHERE stockid IN (SELECT DISTINCT parent FROM bom)
 				AND  mbflag IN ('M', 'A', 'K', 'G');";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 
 	echo '<table class="selection">
 			<tr>
@@ -192,7 +192,7 @@ if (isset($_POST['Submit'])) {
 				FROM stockmaster
 				WHERE stockid NOT IN (SELECT DISTINCT parent FROM bom)
 				AND mbflag IN ('M', 'A', 'K', 'G');";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 
 	if (DB_num_rows($result) > 0) {
 		echo '<tr>

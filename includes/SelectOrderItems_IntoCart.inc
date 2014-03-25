@@ -52,7 +52,7 @@ if ($AlreadyOnThisOrder != 1) {
 
 	$ErrMsg = _('The details for') . ' ' . $NewItem . ' ' . _('could not be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve the pricing details but failed was');
-	$result1 = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+	$result1 = DB_query($sql, $ErrMsg, $DbgMsg);
 
 	if (DB_num_rows($result1) == 0) {
 		prnMsg(_('The item code') . ' ' . $NewItem . ' ' . _('could not be found in the database') . ' - ' . _('it has not been added to the order'), 'warn', _('Item Does Not Exist'));
@@ -69,7 +69,7 @@ if ($AlreadyOnThisOrder != 1) {
 
 			if ($_SESSION['ExistingOrder' . $identifier] != 0) {
 				$UpdateDB = 'Yes';
-				$result = DB_query("SELECT MAX(orderlineno) AS newlineno FROM salesorderdetails WHERE orderno='" . $_SESSION['ExistingOrder' . $identifier] . "'", $db);
+				$result = DB_query("SELECT MAX(orderlineno) AS newlineno FROM salesorderdetails WHERE orderno='" . $_SESSION['ExistingOrder' . $identifier] . "'");
 				$MaxNumRow = DB_fetch_row($result);
 				if ($MaxNumRow[0] != '' and $MaxNumRow[0] >= 0) {
 					$NewLineNo = $MaxNumRow[0] + 1;
@@ -89,7 +89,7 @@ if ($AlreadyOnThisOrder != 1) {
 										FROM discountmatrix
 										WHERE salestype='" . $_SESSION['Items' . $identifier]->DefaultSalesType . "'
 										AND discountcategory ='" . $myrow['discountcategory'] . "'
-										AND quantitybreak <" . $NewItemQty, $db);
+										AND quantitybreak <" . $NewItemQty);
 				$DiscCatRow = DB_fetch_row($result);
 				if ($DiscCatRow[0] != '' and $DiscCatRow[0] > 0) {
 					$Discount = $DiscCatRow[0];
@@ -100,7 +100,7 @@ if ($AlreadyOnThisOrder != 1) {
 				$Discount = 0;
 			}
 
-			$Price = GetPrice($NewItem, $_SESSION['Items' . $identifier]->DebtorNo, $_SESSION['Items' . $identifier]->Branch, $db);
+			$Price = GetPrice($NewItem, $_SESSION['Items' . $identifier]->DebtorNo, $_SESSION['Items' . $identifier]->Branch);
 
 			/* Need to check for sell through support deals */
 
@@ -115,7 +115,7 @@ if ($AlreadyOnThisOrder != 1) {
 						OR debtorno='')
 					AND effectivefrom <='" . Date('Y-m-d') . "'
 					AND effectiveto >='" . Date('Y-m-d') . "'";
-			$SellSuppResult = DB_query($sql, $db);
+			$SellSuppResult = DB_query($sql);
 			$SellSupportDiscount = 0;
 			$SellSupportPercent = 0;
 			/*Only the highest discount is taken - it is not accumulated ? */
@@ -145,7 +145,7 @@ if ($AlreadyOnThisOrder != 1) {
 						OR debtorno='')
 					AND effectivefrom <='" . Date('Y-m-d') . "'
 					AND effectiveto >='" . Date('Y-m-d') . "'";
-			$SellSuppResult = DB_query($sql, $db);
+			$SellSuppResult = DB_query($sql);
 			/*Only the highest discount is taken - it is not accumulated ? */
 			if (DB_num_rows($SellSuppResult) > 0) {
 				while ($SellSupportRow = DB_fetch_array($SellSuppResult)) {
@@ -160,7 +160,7 @@ if ($AlreadyOnThisOrder != 1) {
 			if ($_SESSION['Items' . $identifier]->DefaultCurrency != $_SESSION['CompanyRecord']['currencydefault'] and $SellSupportDiscount != 0) {
 				/* Customer currency is not the same as the functional/home currency so need to convert the rebate amount */
 				/* Would be better to have the currency rate held in the cart object so only have to run this query once - this is a hack for this purpose! */
-				$CurrResult = DB_query("SELECT rate FROM currencies WHERE currabrev='" . $_SESSION['Items' . $identifier]->DefaultCurrency . "'", $db);
+				$CurrResult = DB_query("SELECT rate FROM currencies WHERE currabrev='" . $_SESSION['Items' . $identifier]->DefaultCurrency . "'");
 				$CurrRow = DB_fetch_array($CurrResult);
 				$SellSupportDiscount *= $CurrRow['rate'];
 			}

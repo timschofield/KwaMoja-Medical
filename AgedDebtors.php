@@ -15,7 +15,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 					max(debtorno) AS tocriteria
 				FROM debtorsmaster";
 
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_array($result);
 
 	if ($_POST['FromCriteria']=='') {
@@ -269,13 +269,13 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 					debtortrans.ovdiscount -
 					debtortrans.alloc)) >0.005";
 	}
-	$CustomerResult = DB_query($SQL, $db, '', '', False, False);
+	$CustomerResult = DB_query($SQL, '', '', False, False);
 	/*dont trap errors handled below*/
 
-	if (DB_error_no($db) != 0) {
+	if (DB_error_no() != 0) {
 		$Title = _('Aged Customer Account Analysis') . ' - ' . _('Problem Report') . '.... ';
 		include('includes/header.inc');
-		prnMsg(_('The customer details could not be retrieved by the SQL because') . ' ' . DB_error_msg($db), 'error');
+		prnMsg(_('The customer details could not be retrieved by the SQL because') . ' ' . DB_error_msg(), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($debug == 1) {
 			echo '<br />' . $SQL;
@@ -295,7 +295,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 	$ListCount = DB_num_rows($CustomerResult);
 	$CurrDecimalPlaces = 2; //by default
 
-	while ($AgedAnalysis = DB_fetch_array($CustomerResult, $db)) {
+	while ($AgedAnalysis = DB_fetch_array($CustomerResult)) {
 		$CurrDecimalPlaces = $AgedAnalysis['decimalplaces'];
 		$DisplayDue = locale_number_format($AgedAnalysis['due'] - $AgedAnalysis['overdue1'], $CurrDecimalPlaces);
 		$DisplayCurrent = locale_number_format($AgedAnalysis['balance'] - $AgedAnalysis['due'], $CurrDecimalPlaces);
@@ -373,12 +373,12 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				$sql .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
 			}
 
-			$DetailResult = DB_query($sql, $db, '', '', False, False);
+			$DetailResult = DB_query($sql, '', '', False, False);
 			/*Dont trap errors */
-			if (DB_error_no($db) != 0) {
+			if (DB_error_no() != 0) {
 				$Title = _('Aged Customer Account Analysis') . ' - ' . _('Problem Report') . '....';
 				include('includes/header.inc');
-				prnMsg(_('The details of outstanding transactions for customer') . ' - ' . $AgedAnalysis['debtorno'] . ' ' . _('could not be retrieved because') . ' - ' . DB_error_msg($db), 'error');
+				prnMsg(_('The details of outstanding transactions for customer') . ' - ' . $AgedAnalysis['debtorno'] . ' ' . _('could not be retrieved because') . ' - ' . DB_error_msg(), 'error');
 				echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 				if ($debug == 1) {
 					echo '<br />' . _('The SQL that failed was') . '<br />' . $sql;
@@ -474,7 +474,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 						max(debtorno) AS tocriteria
 					FROM debtorsmaster";
 
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		$myrow = DB_fetch_array($result);
 
 		echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">
@@ -508,7 +508,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 
 			$sql = "SELECT salesmancode, salesmanname FROM salesman";
 
-			$result = DB_query($sql, $db);
+			$result = DB_query($sql);
 			echo '<option value="">' . _('All Sales people') . '</option>';
 			while ($myrow = DB_fetch_array($result)){
 					echo '<option value="' . $myrow['salesmancode'] . '">' . $myrow['salesmanname'] . '</option>';
@@ -522,7 +522,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 
 		$sql = "SELECT currency, currabrev FROM currencies";
 
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		while ($myrow = DB_fetch_array($result)) {
 			if ($myrow['currabrev'] == $_SESSION['CompanyRecord']['currencydefault']) {
 				echo '<option selected="selected" value="' . $myrow['currabrev'] . '">' . $myrow['currency'] . '</option>';

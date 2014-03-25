@@ -48,7 +48,7 @@ echo '<style>
 			</style>';
 
 $sql = "SELECT id FROM dashboard_scripts WHERE scripts='" . basename($_SERVER['PHP_SELF']) . "'";
-$result = DB_query($sql, $db);
+$result = DB_query($sql);
 $myrow = DB_fetch_array($result);
 
 echo '<table border="0" cellspacing="0" cellpadding="1" style="max-width:100%;width:99%;">
@@ -78,7 +78,7 @@ $sql = "SELECT banktrans.currcode,
 				ON banktrans.currcode=currencies.currabrev
 			ORDER BY banktrans.transdate DESC LIMIT 5";
 
-$result = DB_query($sql, $db);
+$result = DB_query($sql);
 $AccountCurrTotal = 0;
 $LocalCurrTotal = 0;
 

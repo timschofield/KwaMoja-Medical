@@ -46,7 +46,7 @@ $SQL = "SELECT accountgroups.groupname,
 			accountgroups.groupname,
 			chartdetails.accountcode";
 
-$AccountsResult = DB_query($SQL, $db);
+$AccountsResult = DB_query($SQL);
 $PeriodProfitLoss = 0;
 $PeriodBudgetProfitLoss = 0;
 $MonthProfitLoss = 0;

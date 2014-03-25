@@ -70,7 +70,7 @@ if (isset($_POST['submit'])) {
 				FROM pctabs
 				WHERE tabcode='" . $SelectedTabs . "'";
 
-	$ResultLimit = DB_query($sqlLimit, $db);
+	$ResultLimit = DB_query($sqlLimit);
 	$Limit = DB_fetch_array($ResultLimit);
 
 	if (($_POST['CurrentAmount'] + $_POST['Amount']) > $Limit['tablimit']) {
@@ -115,7 +115,7 @@ if (isset($_POST['submit'])) {
 
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		prnMsg($msg, 'success');
 		unset($_POST['SelectedExpense']);
 		unset($_POST['Amount']);
@@ -131,7 +131,7 @@ if (isset($_POST['submit'])) {
 	$sql = "DELETE FROM pcashdetails
 		WHERE counterindex='" . $SelectedIndex . "'";
 	$ErrMsg = _('The assignment of cash record could not be deleted because');
-	$result = DB_query($sql, $db, $ErrMsg);
+	$result = DB_query($sql, $ErrMsg);
 	prnMsg(_('Assignment of cash to PC Tab ') . ' ' . $SelectedTabs . ' ' . _('has been deleted'), 'success');
 	unset($_GET['delete']);
 }
@@ -153,7 +153,7 @@ if (!isset($SelectedTabs)) {
 			WHERE assigner='" . $_SESSION['UserID'] . "'
 			ORDER BY tabcode";
 
-	$result = DB_query($SQL, $db);
+	$result = DB_query($SQL);
 
 	echo '<br /><table class="selection">'; //Main table
 
@@ -210,7 +210,7 @@ if (isset($_POST['Process']) or isset($SelectedTabs)) {
 					FROM currencies,pctabs
 					WHERE currencies.currabrev = pctabs.currency
 						AND tabcode='" . $SelectedTabs . "'";
-		$result = DB_query($SqlDecimalPlaces, $db);
+		$result = DB_query($SqlDecimalPlaces);
 		$myrow = DB_fetch_array($result);
 		$CurrDecimalPlaces = $myrow['decimalplaces'];
 
@@ -218,7 +218,7 @@ if (isset($_POST['Process']) or isset($SelectedTabs)) {
 				WHERE tabcode='" . $SelectedTabs . "'
 				AND date >=DATE_SUB(CURDATE(), INTERVAL " . $Days . " DAY)
 				ORDER BY date, counterindex ASC";
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 
 		echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -254,7 +254,7 @@ if (isset($_POST['Process']) or isset($SelectedTabs)) {
 					FROM pcexpenses
 					WHERE codeexpense='" . $myrow['3'] . "'";
 
-			$ResultDes = DB_query($sqldes, $db);
+			$ResultDes = DB_query($sqldes);
 			$Description = DB_fetch_array($ResultDes);
 
 			if (!isset($Description['0'])) {
@@ -288,7 +288,7 @@ if (isset($_POST['Process']) or isset($SelectedTabs)) {
 					FROM pcashdetails
 					WHERE tabcode='" . $SelectedTabs . "'";
 
-		$ResultAmount = DB_query($sqlamount, $db);
+		$ResultAmount = DB_query($sqlamount);
 		$Amount = DB_fetch_array($ResultAmount);
 
 		if (!isset($Amount['0'])) {
@@ -318,7 +318,7 @@ if (isset($_POST['Process']) or isset($SelectedTabs)) {
 			$sql = "SELECT * FROM pcashdetails
 				WHERE counterindex='" . $SelectedIndex . "'";
 
-			$result = DB_query($sql, $db);
+			$result = DB_query($sql);
 			$myrow = DB_fetch_array($result);
 
 			$_POST['Date'] = ConvertSQLDate($myrow['date']);

@@ -62,7 +62,7 @@ if (!isset($_SESSION['SPL' . $identifier]->SupplierID)) {
 				WHERE supplierid='" . $_SESSION['SupplierID'] . "'";
 	$ErrMsg = _('The supplier record of the supplier selected') . ": " . $_SESSION['SupplierID'] . ' ' . _('cannot be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve the supplier details and failed was');
-	$result = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+	$result = DB_query($sql, $ErrMsg, $DbgMsg);
 
 	$myrow = DB_fetch_array($result);
 	$_SESSION['SPL' . $identifier]->SupplierID = $_SESSION['SupplierID'];
@@ -86,7 +86,7 @@ if (!isset($_SESSION['SPL' . $identifier]->CustomerID)) {
 
 	$ErrMsg = _('The customer record for') . ' : ' . $_SESSION['CustomerID'] . ' ' . _('cannot be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve the customer details and failed was');
-	$result = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+	$result = DB_query($sql, $ErrMsg, $DbgMsg);
 
 	$myrow = DB_fetch_array($result);
 	if ($myrow['dissallowinvoices'] != 1) {
@@ -107,7 +107,7 @@ if (isset($_POST['SelectBranch'])) {
 			FROM custbranch
 			WHERE debtorno='" . $_SESSION['SPL' . $identifier]->CustomerID . "'
 			AND branchcode='" . $_POST['SelectBranch'] . "'";
-	$BranchResult = DB_query($sql, $db);
+	$BranchResult = DB_query($sql);
 	$myrow = DB_fetch_array($BranchResult);
 	$_SESSION['SPL' . $identifier]->BranchCode = $_POST['SelectBranch'];
 	$_SESSION['SPL' . $identifier]->BranchName = $myrow['brname'];
@@ -128,7 +128,7 @@ if (!isset($_SESSION['SPL' . $identifier]->BranchCode)) {
 					brname
 			FROM custbranch
 			WHERE debtorno='" . $_SESSION['CustomerID'] . "'";
-	$BranchResult = DB_query($sql, $db);
+	$BranchResult = DB_query($sql);
 
 	if (DB_num_rows($BranchResult) > 0) {
 
@@ -292,7 +292,7 @@ if (isset($_POST['Commit'])) {
 						WHERE userid='" . $_SESSION['UserID'] . "'
 						AND currabrev='" . $_SESSION['SPL' . $identifier]->SuppCurrCode . "'";
 
-			$AuthResult = DB_query($AuthSQL, $db);
+			$AuthResult = DB_query($AuthSQL);
 			$AuthRow = DB_fetch_array($AuthResult);
 
 			if (DB_num_rows($AuthResult) > 0 and $AuthRow['authlevel'] > $_SESSION['SPL' . $identifier]->Order_Value()) { //user has authority to authrorise as well as create the order
@@ -326,10 +326,10 @@ if (isset($_POST['Commit'])) {
 				FROM locations
 				WHERE loccode='" . $_SESSION['SPL' . $identifier]->StkLocation . "'";
 
-		$StkLocAddResult = DB_query($sql, $db);
+		$StkLocAddResult = DB_query($sql);
 		$StkLocAddress = DB_fetch_array($StkLocAddResult);
 
-		$result = DB_Txn_Begin($db);
+		$result = DB_Txn_Begin();
 
 		/*Insert to purchase order header record */
 		$sql = "INSERT INTO purchorders (supplierno,
@@ -374,9 +374,9 @@ if (isset($_POST['Commit'])) {
 
 		$ErrMsg = _('The purchase order header record could not be inserted into the database because');
 		$DbgMsg = _('The SQL statement used to insert the purchase order header record and failed was');
-		$result = DB_query($sql, $db, $ErrMsg, $DbgMsg, true);
+		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
 
-		$_SESSION['SPL' . $identifier]->PurchOrderNo = GetNextTransNo(18, $db);
+		$_SESSION['SPL' . $identifier]->PurchOrderNo = GetNextTransNo(18);
 
 		/*Insert the purchase order detail records */
 		foreach ($_SESSION['SPL' . $identifier]->LineItems as $SPLLine) {
@@ -390,7 +390,7 @@ if (isset($_POST['Commit'])) {
 			$Counter = 0;
 			while ($PartAlreadyExists == True) {
 				$sql = "SELECT COUNT(*) FROM stockmaster WHERE stockid = '" . $PartCode . "'";
-				$PartCountResult = DB_query($sql, $db);
+				$PartCountResult = DB_query($sql);
 				$PartCount = DB_fetch_row($PartCountResult);
 				if ($PartCount[0] != 0) {
 					$PartAlreadyExists = True;
@@ -421,19 +421,19 @@ if (isset($_POST['Commit'])) {
 			$ErrMsg = _('The item record for line') . ' ' . $SPLLine->LineNo . ' ' . _('could not be created because');
 			$DbgMsg = _('The SQL statement used to insert the item and failed was');
 
-			$result = DB_query($sql, $db, $ErrMsg, $DbgMsg, true);
+			$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
 
 			$sql = "INSERT INTO locstock (loccode, stockid)
 					SELECT loccode,'" . $PartCode . "' FROM locations";
 			$ErrMsg = _('The item stock locations for the special order line') . ' ' . $SPLLine->LineNo . ' ' . _('could not be created because');
 			$DbgMsg = _('The SQL statement used to insert the location stock records and failed was');
-			$result = DB_query($sql, $db, $ErrMsg, $DbgMsg, true);
+			$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
 
 			/*need to get the stock category GL information */
 			$sql = "SELECT stockact FROM stockcategory WHERE categoryid = '" . $SPLLine->StkCat . "'";
 			$ErrMsg = _('The item stock category information for the special order line') . ' ' . $SPLLine->LineNo . ' ' . _('could not be retrieved because');
 			$DbgMsg = _('The SQL statement used to get the category information and that failed was');
-			$result = DB_query($sql, $db, $ErrMsg, $DbgMsg, true);
+			$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
 
 			$StkCatGL = DB_fetch_row($result);
 			$GLCode = $StkCatGL[0];
@@ -458,7 +458,7 @@ if (isset($_POST['Commit'])) {
 
 			$ErrMsg = _('One of the purchase order detail records could not be inserted into the database because');
 			$DbgMsg = _('The SQL statement used to insert the purchase order detail record and failed was');
-			$result = DB_query($sql, $db, $ErrMsg, $DbgMsg, true);
+			$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
 
 		}
 		/* end of the loop round the detail line items on the order */
@@ -487,10 +487,10 @@ if (isset($_POST['Commit'])) {
 
 		$ErrMsg = _('The delivery and sales type for the customer could not be retrieved for this special order') . ' ' . $SPLLine->LineNo . ' ' . _('because');
 		$DbgMsg = _('The SQL statement used to get the delivery details and that failed was');
-		$result = DB_query($sql, $db, $ErrMsg, $DbgMsg, true);
+		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
 
 		$BranchDetails = DB_fetch_array($result);
-		$SalesOrderNo = GetNextTransNo(30, $db);
+		$SalesOrderNo = GetNextTransNo(30);
 		$HeaderSQL = "INSERT INTO salesorders (orderno,
 											debtorno,
 											branchcode,
@@ -529,7 +529,7 @@ if (isset($_POST['Commit'])) {
 							'" . $OrderDate . "')";
 
 		$ErrMsg = _('The sales order cannot be added because');
-		$InsertQryResult = DB_query($HeaderSQL, $db, $ErrMsg, $DbgMsg);
+		$InsertQryResult = DB_query($HeaderSQL, $ErrMsg, $DbgMsg);
 
 		$StartOf_LineItemsSQL = "INSERT INTO salesorderdetails (orderno,
 																stkcode,
@@ -547,7 +547,7 @@ if (isset($_POST['Commit'])) {
 							'" . $StockItem->Price . "',
 							'" . $StockItem->Quantity . "',
 							'" . $StockItem->LineNo . "')";
-			$Ins_LineItemResult = DB_query($LineItemsSQL, $db, $ErrMsg);
+			$Ins_LineItemResult = DB_query($LineItemsSQL, $ErrMsg);
 
 		}
 		/* inserted line items into sales order details */
@@ -563,7 +563,7 @@ if (isset($_POST['Commit'])) {
 
 		}
 
-		$Result = DB_Txn_Commit($db);
+		$Result = DB_Txn_Commit();
 		unset($_SESSION['SPL' . $identifier]);
 		/*Clear the PO data to allow a newy to be input*/
 		echo '<br /><br /><a href="' . $RootPath . '/SpecialOrder.php">' . _('Enter A New Special Order') . '</a>';
@@ -590,7 +590,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 					ON locations.loccode=www_users.defaultlocation
 				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 }
-$LocnResult = DB_query($sql, $db);
+$LocnResult = DB_query($sql);
 if (!isset($_SESSION['SPL' . $identifier]->StkLocation) or $_SESSION['SPL' . $identifier]->StkLocation == '') {
 	/*if this is the first time the form loaded set up defaults */
 	$_SESSION['SPL' . $identifier]->StkLocation = $_SESSION['UserStockLocation'];
@@ -701,7 +701,7 @@ echo '<tr>
 $sql = "SELECT categoryid, categorydescription FROM stockcategory";
 $ErrMsg = _('The stock categories could not be retrieved because');
 $DbgMsg = _('The SQL used to retrieve stock categories and failed was');
-$result = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+$result = DB_query($sql, $ErrMsg, $DbgMsg);
 
 while ($myrow = DB_fetch_array($result)) {
 	if (isset($_POST['StkCat']) and $myrow['categoryid'] == $_POST['StkCat']) {

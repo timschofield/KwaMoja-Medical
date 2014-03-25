@@ -19,7 +19,7 @@ if (isset($StockID)) {
 								units,
 								mbflag
 						FROM stockmaster
-						WHERE stockid='" . $StockID . "'", $db);
+						WHERE stockid='" . $StockID . "'");
 	$myrow = DB_fetch_row($result);
 	if (DB_num_rows($result) == 0) {
 		prnMsg(_('The item code entered') . ' - ' . $StockID . ' ' . _('is not set up as an item in the system') . '. ' . _('Re-enter a valid item code or select from the Select Item link above'), 'error');
@@ -56,7 +56,7 @@ if (isset($StockID)) {
 			AND bom.effectiveto >='" . Date('Y-m-d') . "'";
 
 	$ErrMsg = _('The parents for the selected part could not be retrieved because');
-	$result = DB_query($SQL, $db, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 	if (DB_num_rows($result) == 0) {
 		prnMsg(_('The selected item') . ' ' . $StockID . ' ' . _('is not used as a component of any other parts'), 'error');
 	} else {

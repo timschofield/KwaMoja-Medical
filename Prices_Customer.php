@@ -8,7 +8,7 @@ $result = DB_query("SELECT debtorsmaster.name,
 							currencies.decimalplaces AS currdecimalplaces
 					 FROM debtorsmaster INNER JOIN currencies
 					 ON debtorsmaster.currcode=currencies.currabrev
-					 WHERE debtorsmaster.debtorno='" . $_SESSION['CustomerID'] . "'", $db);
+					 WHERE debtorsmaster.debtorno='" . $_SESSION['CustomerID'] . "'");
 $myrow = DB_fetch_array($result);
 
 $Title = _('Special Prices for') . ' ' . htmlspecialchars($myrow['name'], ENT_QUOTES, 'UTF-8');
@@ -39,7 +39,7 @@ $CurrDecimalPlaces = $myrow['currdecimalplaces'];
 $result = DB_query("SELECT stockmaster.description,
 							stockmaster.mbflag
 					FROM stockmaster
-					WHERE stockmaster.stockid='" . $Item . "'", $db);
+					WHERE stockmaster.stockid='" . $Item . "'");
 
 $myrow = DB_fetch_row($result);
 if (DB_num_rows($result) == 0) {
@@ -74,7 +74,7 @@ if (isset($_POST['submit'])) {
 				WHERE custbranch.debtorno='" . $_SESSION['CustomerID'] . "'
 				AND custbranch.branchcode='" . $_POST['Branch'] . "'";
 
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		if (DB_num_rows($result) == 0) {
 			$InputError = 1;
 			$msg = _('The branch code entered is not currently defined');
@@ -140,15 +140,15 @@ if (isset($_POST['submit'])) {
 	}
 	//run the SQL from either of the above possibilites
 	if ($InputError != 1) {
-		$result = DB_query($sql, $db, '', '', false, false);
-		if (DB_error_no($db) != 0) {
+		$result = DB_query($sql, '', '', false, false);
+		if (DB_error_no() != 0) {
 			if ($msg == _('Price Updated')) {
-				$msg = _('The price could not be updated because') . ' - ' . DB_error_msg($db);
+				$msg = _('The price could not be updated because') . ' - ' . DB_error_msg();
 			} else {
-				$msg = _('The price could not be added because') . ' - ' . DB_error_msg($db);
+				$msg = _('The price could not be added because') . ' - ' . DB_error_msg();
 			}
 		} else {
-			ReSequenceEffectiveDates($Item, $SalesType, $CurrCode, $_SESSION['CustomerID'], $db);
+			ReSequenceEffectiveDates($Item, $SalesType, $CurrCode, $_SESSION['CustomerID']);
 			unset($_POST['EndDate']);
 			unset($_POST['StartDate']);
 			unset($_POST['Price']);
@@ -169,7 +169,7 @@ if (isset($_POST['submit'])) {
 			AND prices.startdate='" . $_GET['StartDate'] . "'
 			AND prices.enddate='" . $_GET['EndDate'] . "'";
 
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	prnMsg(_('This price has been deleted') . '!', 'success');
 }
 
@@ -193,7 +193,7 @@ $sql = "SELECT prices.price,
 
 $ErrMsg = _('Could not retrieve the normal prices set up because');
 $DbgMsg = _('The SQL used to retrieve these records was');
-$result = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+$result = DB_query($sql, $ErrMsg, $DbgMsg);
 
 echo '<table><tr><td valign="top">';
 echo '<table class="selection">';
@@ -240,7 +240,7 @@ $sql = "SELECT prices.price,
 
 $ErrMsg = _('Could not retrieve the special prices set up because');
 $DbgMsg = _('The SQL used to retrieve these records was');
-$result = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+$result = DB_query($sql, $ErrMsg, $DbgMsg);
 
 echo '<table class="selection">';
 
@@ -319,7 +319,7 @@ $sql = "SELECT branchcode,
 				brname
 		FROM custbranch
 		WHERE debtorno='" . $_SESSION['CustomerID'] . "'";
-$result = DB_query($sql, $db);
+$result = DB_query($sql);
 
 echo '<table class="selection">
 		<tr>
@@ -360,7 +360,7 @@ echo '<br />
 include('includes/footer.inc');
 exit;
 
-function ReSequenceEffectiveDates($Item, $PriceList, $CurrAbbrev, $CustomerID, $db) {
+function ReSequenceEffectiveDates($Item, $PriceList, $CurrAbbrev, $CustomerID) {
 
 	/*This is quite complicated - the idea is that prices set up should be unique and there is no way two prices could be returned as valid - when getting a price in includes/GetPrice.inc the logic is to first look for a price of the salestype/currency within the effective start and end dates - then if not get the price with a start date prior but a blank end date (the default price). We would not want two prices where the effective dates fall between an existing price so it is necessary to update enddates of prices  - with me - I am just hanging on here myself
 
@@ -380,7 +380,7 @@ function ReSequenceEffectiveDates($Item, $PriceList, $CurrAbbrev, $CustomerID, $
 					startdate,
 					enddate";
 
-	$result = DB_query($SQL, $db);
+	$result = DB_query($SQL);
 
 	unset($BranchCode);
 
@@ -405,7 +405,7 @@ function ReSequenceEffectiveDates($Item, $PriceList, $CurrAbbrev, $CustomerID, $
 									AND enddate = '" . $EndDate . "'
 									AND debtorno ='" . $CustomerID . "'
 									AND branchcode='" . $BranchCode . "'";
-					$UpdateResult = DB_query($SQL, $db);
+					$UpdateResult = DB_query($SQL);
 				}
 			} //end of if startdate  after NextStartDate - we have a new NextStartDate
 		} //end of if set NextStartDate
@@ -429,7 +429,7 @@ function ReSequenceEffectiveDates($Item, $PriceList, $CurrAbbrev, $CustomerID, $
 				AND branchcode=''
 				AND enddate ='0000-00-00'
 				ORDER BY startdate";
-	$result = DB_query($SQL, $db);
+	$result = DB_query($SQL);
 
 	while ($myrow = DB_fetch_array($result)) {
 		if (isset($OldStartDate)) {
@@ -444,7 +444,7 @@ function ReSequenceEffectiveDates($Item, $PriceList, $CurrAbbrev, $CustomerID, $
 						AND branchcode=''
 						AND enddate = '0000-00-00'
 						AND debtorno =''";
-			$UpdateResult = DB_query($SQL, $db);
+			$UpdateResult = DB_query($SQL);
 		}
 		$OldStartDate = $myrow['startdate'];
 	} // end of loop around duplicate no end date prices

@@ -45,7 +45,7 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate'])) {
 				<td>' . _('Bank Account') . '</td><td>';
 
 	$sql = "SELECT bankaccountname, accountcode FROM bankaccounts";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 
 
 	echo '<select minlength="0" name="BankAccount">';
@@ -85,7 +85,7 @@ $sql = "SELECT bankaccountname,
 			INNER JOIN currencies
 				ON bankaccounts.currcode=currencies.currabrev
 			WHERE accountcode = '" . $_POST['BankAccount'] . "'";
-$BankActResult = DB_query($sql, $db);
+$BankActResult = DB_query($sql);
 $myrow = DB_fetch_array($BankActResult);
 $BankAccountName = $myrow['bankaccountname'];
 $Currency = $myrow['currcode'];
@@ -103,8 +103,8 @@ $sql = "SELECT amount,
 				AND transdate >='" . FormatDateForSQL($_POST['FromDate']) . "'
 				AND transdate <='" . FormatDateForSQL($_POST['ToDate']) . "'";
 
-$Result = DB_query($sql, $db, '', '', false, false);
-if (DB_error_no($db) != 0) {
+$Result = DB_query($sql, '', '', false, false);
+if (DB_error_no() != 0) {
 	$Title = _('Payment Listing');
 	include('includes/header.inc');
 	prnMsg(_('An error occurred getting the payments'), 'error');
@@ -147,8 +147,8 @@ while ($myrow = DB_fetch_array($Result)) {
 				WHERE gltrans.typeno ='" . $myrow['transno'] . "'
 					AND gltrans.type='" . $myrow['type'] . "'";
 
-	$GLTransResult = DB_query($sql, $db, '', '', false, false);
-	if (DB_error_no($db) != 0) {
+	$GLTransResult = DB_query($sql, '', '', false, false);
+	if (DB_error_no() != 0) {
 		$Title = _('Payment Listing');
 		include('includes/header.inc');
 		prnMsg(_('An error occurred getting the GL transactions'), 'error');

@@ -45,7 +45,7 @@ if (isset($_POST['submit']) or isset($_POST['update'])) {
 				AND prices.typeabbrev ='" . $_POST['SalesType'] . "'
 				AND prices.currabrev ='" . $_POST['CurrCode'] . "'
 				AND (prices.enddate>='" . Date('Y-m-d') . "' OR prices.enddate='0000-00-00')";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$numrow = DB_num_rows($result);
 
 	if ($_POST['submit'] == 'Update') {
@@ -66,7 +66,7 @@ if (isset($_POST['submit']) or isset($_POST['update'])) {
 								AND prices.startdate ='" . $_POST['StartDate_' . $PriceCounter] . "'
 								AND prices.enddate ='" . $_POST['EndDate_' . $PriceCounter] . "'
 								AND prices.price ='" . filter_number_format($_POST['Price_' . $PriceCounter]) . "'";
-			$TestExistsResult = DB_query($SQLTestExists, $db);
+			$TestExistsResult = DB_query($SQLTestExists);
 			if (DB_num_rows($TestExistsResult) == 0) { //the price doesn't currently exist
 				//now check to see if a new price has already been created from start date of today
 
@@ -77,7 +77,7 @@ if (isset($_POST['submit']) or isset($_POST['update'])) {
 									AND prices.debtorno ='" . $_POST['DebtorNo_' . $PriceCounter] . "'
 									AND prices.branchcode ='" . $_POST['BranchCode_' . $PriceCounter] . "'
 									AND prices.startdate ='CURRENT_DATE'";
-				$TestExistsResult = DB_query($SQLTestExists, $db);
+				$TestExistsResult = DB_query($SQLTestExists);
 				if (DB_num_rows($TestExistsResult) == 1) {
 					//then we are updating
 					$SQLUpdate = "UPDATE prices	SET price = '" . filter_number_format($_POST['Price_' . $PriceCounter]) . "'
@@ -88,7 +88,7 @@ if (isset($_POST['submit']) or isset($_POST['update'])) {
 									AND prices.branchcode ='" . $_POST['BranchCode_' . $PriceCounter] . "'
 									AND prices.startdate ='CURRENT_DATE'
 									AND prices.enddate ='" . $_POST['EndDate_' . $PriceCounter] . "'";
-					$ResultUpdate = DB_query($SQLUpdate, $db);
+					$ResultUpdate = DB_query($SQLUpdate);
 				} else { //there is not a price already starting today so need to create one
 					//update the old price to have an end date of yesterday too
 					$SQLUpdate = "UPDATE prices	SET enddate = '" . FormatDateForSQL(DateAdd(Date($_SESSION['DefaultDateFormat']), 'd', -1)) . "'
@@ -99,7 +99,7 @@ if (isset($_POST['submit']) or isset($_POST['update'])) {
 									AND prices.branchcode ='" . $_POST['BranchCode_' . $PriceCounter] . "'
 									AND prices.startdate ='" . $_POST['StartDate_' . $PriceCounter] . "'
 									AND prices.enddate ='" . $_POST['EndDate_' . $PriceCounter] . "'";
-					$Result = DB_query($SQLUpdate, $db);
+					$Result = DB_query($SQLUpdate);
 					//we need to add a new price from today
 					$SQLInsert = "INSERT INTO prices (	stockid,
 														price,
@@ -117,26 +117,26 @@ if (isset($_POST['submit']) or isset($_POST['update'])) {
 														'" . $_POST['BranchCode_' . $PriceCounter] . "',
 														'CURRENT_DATE'
 													)";
-					$ResultInsert = DB_query($SQLInsert, $db);
+					$ResultInsert = DB_query($SQLInsert);
 				}
 			}
 			$PriceCounter++;
 		} //end while loop
 		DB_free_result($result); //clear the old result
-		$result = DB_query($sql, $db); //re-run the query with the updated prices
+		$result = DB_query($sql); //re-run the query with the updated prices
 		$numrow = DB_num_rows($result); // get the new number - should be the same!!
 	}
 
 	$sqlcat = "SELECT categorydescription
 				FROM stockcategory
 				WHERE categoryid='" . $_POST['StockCat'] . "'";
-	$ResultCat = DB_query($sqlcat, $db);
+	$ResultCat = DB_query($sqlcat);
 	$CategoryRow = DB_fetch_array($ResultCat);
 
 	$sqltype = "SELECT sales_type
 				FROM salestypes
 				WHERE typeabbrev='" . $_POST['SalesType'] . "'";
-	$ResultType = DB_query($sqltype, $db);
+	$ResultType = DB_query($sqltype);
 	$SalesTypeRow = DB_fetch_array($ResultType);
 
 	if (isset($CategoryRow['categorgdescription'])) {
@@ -244,7 +244,7 @@ if (isset($_POST['submit']) or isset($_POST['update'])) {
 	$SQL = "SELECT categoryid, categorydescription
 			  FROM stockcategory
 			  ORDER BY categorydescription";
-	$result1 = DB_query($SQL, $db);
+	$result1 = DB_query($SQL);
 	echo '<tr>
 			<td>' . _('Category') . ':</td>
 			<td><select required="required" minlength="1" name="StockCat">';
@@ -267,7 +267,7 @@ if (isset($_POST['submit']) or isset($_POST['update'])) {
 		$_POST['Margin'] = 1;
 	}
 	echo '<td><input type="text" class="number" name="Margin" required="required" minlength="1" maxlength="8" size="8" value="' . $_POST['Margin'] . '" /></td></tr>';
-	$result = DB_query("SELECT typeabbrev, sales_type FROM salestypes", $db);
+	$result = DB_query("SELECT typeabbrev, sales_type FROM salestypes");
 	echo '<tr>
 			<td>' . _('Sales Type') . '/' . _('Price List') . ':</td>
 			<td><select required="required" minlength="1" name="SalesType">';
@@ -279,7 +279,7 @@ if (isset($_POST['submit']) or isset($_POST['update'])) {
 		}
 	} //end while loop
 	DB_data_seek($result, 0);
-	$result = DB_query("SELECT currency, currabrev FROM currencies", $db);
+	$result = DB_query("SELECT currency, currabrev FROM currencies");
 	echo '</select>
 			</td></tr>';
 	echo '<tr>

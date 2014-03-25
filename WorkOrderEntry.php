@@ -86,7 +86,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 					ON locations.loccode=www_users.defaultlocation
 				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 }
-$LocResult = DB_query($sql, $db);
+$LocResult = DB_query($sql);
 
 while ($LocRow = DB_fetch_array($LocResult)) {
 	if ($_SESSION['WorkOrder' . $identifier]->LocationCode == $LocRow['loccode']) {
@@ -226,7 +226,7 @@ $SQL = "SELECT categoryid,
 		FROM stockcategory
 		WHERE stocktype='F' OR stocktype='M'
 		ORDER BY categorydescription";
-$result1 = DB_query($SQL, $db);
+$result1 = DB_query($SQL);
 
 echo '<table class="search" id="ItemSelect">
 		<tr>
@@ -304,7 +304,7 @@ if (isset($_POST['Search'])) {
 
 	$ErrMsg = _('There is a problem selecting the part records to display because');
 	$DbgMsg = _('The SQL used to get the part selection was');
-	$SearchResult = DB_query($SQL, $db, $ErrMsg, $DbgMsg);
+	$SearchResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	if (DB_num_rows($SearchResult) == 0) {
 		prnMsg(_('There are no products available meeting the criteria specified'), 'info');

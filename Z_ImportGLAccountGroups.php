@@ -9,7 +9,7 @@ include('api/api_errorcodes.php');
 
 $kwamojauser = $_SESSION['UserID'];
 $sql = "SELECT password FROM www_users WHERE userid='" . $kwamojauser . "'";
-$result = DB_query($sql, $db);
+$result = DB_query($sql);
 $myrow = DB_fetch_array($result);
 $kwamojapassword = $myrow[0];
 

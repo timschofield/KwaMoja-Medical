@@ -12,10 +12,10 @@ echo '<p class="page_title_text noPrint" >
 
 if (isset($_GET['Delete'])) {
 	$CheckSQL = "SELECT groupid FROM abcstock WHERE groupid='" . $_GET['SelectedGroupID'] . "'";
-	$CheckResult = DB_query($CheckSQL, $db);
+	$CheckResult = DB_query($CheckSQL);
 	if (DB_num_rows($CheckResult) == 0) {
 		$sql = "DELETE FROM abcgroups WHERE groupid='" . $_GET['SelectedGroupID'] . "'";
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		prnMsg(_('ABC Ranking group number') . ' ' . $_GET['SelectedGroupID'] . ' ' . _('has been deleted'), 'success');
 		echo '<div class="centre">
 				<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('View all the ranking groups') . '</a>
@@ -91,7 +91,7 @@ if (isset($_POST['Submit'])) {
 										'" . $_POST['ZeroUsage'] . "',
 										'" . $_POST['Months'] . "'
 									)";
-		$InputResult = DB_query($sql, $db);
+		$InputResult = DB_query($sql);
 		prnMsg(_('The ranking group has been successfully saved to the database'), 'success');
 		echo '<div class="centre">
 				<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('View all the ranking groups') . '</a>
@@ -112,7 +112,7 @@ if (isset($_POST['Submit'])) {
 				FROM abcgroups
 				INNER JOIN abcmethods
 					ON abcgroups.methodid=abcmethods.methodid";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	echo '<table class="selection" summary="' . _('List of ABC Ranking Methods') . '">
 			<tr>
 				<th colspan="10">
@@ -171,7 +171,7 @@ if (isset($_POST['Submit'])) {
 	$sql = "SELECT methodid,
 					methodname
 				FROM abcmethods";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 
 	echo '<option value=""></option>';
 	while ($myrow = DB_fetch_array($result)) {

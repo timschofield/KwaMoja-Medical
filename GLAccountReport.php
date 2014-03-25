@@ -38,7 +38,7 @@ if (isset($_POST['RunReport'])) {
 								accountgroups.pandl
 							FROM accountgroups
 							INNER JOIN chartmaster ON accountgroups.groupname=chartmaster.group_
-							WHERE chartmaster.accountcode='" . $SelectedAccount . "'", $db);
+							WHERE chartmaster.accountcode='" . $SelectedAccount . "'");
 		$AccountDetailRow = DB_fetch_row($result);
 		$AccountName = $AccountDetailRow[0];
 		if ($AccountDetailRow[1] == 1) {
@@ -92,7 +92,7 @@ if (isset($_POST['RunReport'])) {
 		}
 
 		$ErrMsg = _('The transactions for account') . ' ' . $SelectedAccount . ' ' . _('could not be retrieved because');
-		$TransResult = DB_query($sql, $db, $ErrMsg);
+		$TransResult = DB_query($sql, $ErrMsg);
 
 		if ($YPos < ($Bottom_Margin + (5 * $line_height))) { //need 5 lines grace otherwise start new page
 			$PageNumber++;
@@ -113,7 +113,7 @@ if (isset($_POST['RunReport'])) {
 					AND chartdetails.period='" . $FirstPeriodSelected . "'";
 
 			$ErrMsg = _('The chart details for account') . ' ' . $SelectedAccount . ' ' . _('could not be retrieved');
-			$ChartDetailsResult = DB_query($sql, $db, $ErrMsg);
+			$ChartDetailsResult = DB_query($sql, $ErrMsg);
 			$ChartDetailRow = DB_fetch_array($ChartDetailsResult);
 
 			$RunningTotal = $ChartDetailRow['bfwd'];
@@ -162,7 +162,7 @@ if (isset($_POST['RunReport'])) {
 			$FormatedTranDate = ConvertSQLDate($myrow['trandate']);
 
 			$tagsql = "SELECT tagdescription FROM tags WHERE tagref='" . $myrow['tag'] . "'";
-			$tagresult = DB_query($tagsql, $db);
+			$tagresult = DB_query($tagsql);
 			$tagrow = DB_fetch_array($tagresult);
 
 			// to edit this block
@@ -238,9 +238,9 @@ else {
 				 <td>' . _('Selected Accounts') . ':</td>
 				 <td><select minlength="0" name="Account[]" multiple="multiple">';
 	$sql = "SELECT accountcode, accountname FROM chartmaster ORDER BY accountcode";
-	$AccountsResult = DB_query($sql, $db);
+	$AccountsResult = DB_query($sql);
 	$i = 0;
-	while ($myrow = DB_fetch_array($AccountsResult, $db)) {
+	while ($myrow = DB_fetch_array($AccountsResult)) {
 		if (isset($_POST['Account'][$i]) and $myrow['accountcode'] == $_POST['Account'][$i]) {
 			echo '<option selected="selected" value="' . $myrow['accountcode'] . '">' . $myrow['accountcode'] . ' ' . $myrow['accountname'] . '</option>';
 			$i++;
@@ -253,10 +253,10 @@ else {
 	echo '<td>' . _('For Period range') . ':</td>
 			<td><select minlength="0" Name=Period[] multiple="multiple">';
 	$sql = "SELECT periodno, lastdate_in_period FROM periods ORDER BY periodno DESC";
-	$Periods = DB_query($sql, $db);
+	$Periods = DB_query($sql);
 	$id = 0;
 
-	while ($myrow = DB_fetch_array($Periods, $db)) {
+	while ($myrow = DB_fetch_array($Periods)) {
 		if (isset($SelectedPeriod[$id]) and $myrow['periodno'] == $SelectedPeriod[$id]) {
 			echo '<option selected="selected" value="' . $myrow['periodno'] . '">' . _(MonthAndYearFromSQLDate($myrow['lastdate_in_period'])) . '</option>';
 			$id++;
@@ -276,7 +276,7 @@ else {
 				FROM tags
 				ORDER BY tagref";
 
-	$result = DB_query($SQL, $db);
+	$result = DB_query($SQL);
 	echo '<option value="0">0 - ' . _('All tags') . '</option>';
 	while ($myrow = DB_fetch_array($result)) {
 		if (isset($_POST['tag']) and $_POST['tag'] == $myrow['tagref']) {

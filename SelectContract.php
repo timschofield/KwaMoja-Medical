@@ -125,7 +125,7 @@ if (isset($_POST['ContractRef']) and $_POST['ContractRef'] != '') {
 } //end not contract ref selected
 
 $ErrMsg = _('No contracts were returned by the SQL because');
-$ContractsResult = DB_query($SQL, $db, $ErrMsg);
+$ContractsResult = DB_query($SQL, $ErrMsg);
 
 /*show a table of the contracts returned by the SQL */
 

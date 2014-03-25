@@ -63,32 +63,8 @@ if (isset($_POST['submit']) and isset($_POST['NewCompany'])) {
 			if ($_POST['CreateDB'] == TRUE) {
 				/* Need to read in the sql script and process the queries to initate a new DB */
 
-				$result = DB_query('CREATE DATABASE ' . $_POST['NewCompany'], $db);
-
-				if ($DBType == 'postgres') {
-
-					$PgConnStr = 'dbname=' . $_POST['NewCompany'];
-					if (isset($host) and ($host != "")) {
-						$PgConnStr = 'host=' . $host . ' ' . $PgConnStr;
-					}
-
-					if (isset($DBUser) and ($DBUser != "")) {
-						// if we have a user we need to use password if supplied
-						$PgConnStr .= " user=" . $DBUser;
-						if (isset($DBPassword) and ($DBPassword != "")) {
-							$PgConnStr .= " password=" . $DBPassword;
-						}
-					}
-					$db = pg_connect($PgConnStr);
-					$SQLScriptFile = file('./sql/pg/kwamoja-new.psql');
-
-				} elseif ($DBType == 'mysql') { //its a mysql db < 4.1
-					mysql_select_db($_POST['NewCompany'], $db);
-					$SQLScriptFile = file('./sql/mysql/kwamoja-new.sql');
-				} elseif ($DBType == 'mysqli') { //its a mysql db using the >4.1 library functions
-					mysqli_select_db($db, $_POST['NewCompany']);
-					$SQLScriptFile = file('./sql/mysql/kwamoja-new.sql');
-				}
+				$result = DB_query('CREATE DATABASE ' . $_POST['NewCompany']);
+				DB_select_database($_POST['NewCompany'])
 
 				$ScriptFileEntries = sizeof($SQLScriptFile);
 				$ErrMsg = _('The script to create the new company database failed because');
@@ -113,7 +89,7 @@ if (isset($_POST['submit']) and isset($_POST['NewCompany'])) {
 						}
 						if (mb_strpos($SQLScriptFile[$i], ';') > 0 and !$InAFunction) {
 							$SQL = mb_substr($SQL, 0, mb_strlen($SQL) - 1);
-							$result = DB_query($SQL, $db, $ErrMsg);
+							$result = DB_query($SQL, $ErrMsg);
 							$SQL = '';
 						}
 
@@ -169,15 +145,15 @@ if (isset($_POST['submit']) and isset($_POST['NewCompany'])) {
 		unset($_SESSION['CreditItems']);
 
 		$SQL = "UPDATE config SET confvalue='companies/" . $_POST['NewCompany'] . "/EDI__Sent' WHERE confname='EDI_MsgSent'";
-		$result = DB_query($SQL, $db);
+		$result = DB_query($SQL);
 		$SQL = "UPDATE config SET confvalue='companies/" . $_POST['NewCompany'] . "/EDI_Incoming_Orders' WHERE confname='EDI_Incoming_Orders'";
-		$result = DB_query($SQL, $db);
+		$result = DB_query($SQL);
 		$SQL = "UPDATE config SET confvalue='companies/" . $_POST['NewCompany'] . "/part_pics' WHERE confname='part_pics_dir'";
-		$result = DB_query($SQL, $db);
+		$result = DB_query($SQL);
 		$SQL = "UPDATE config SET confvalue='companies/" . $_POST['NewCompany'] . "/reports' WHERE confname='reports_dir'";
-		$result = DB_query($SQL, $db);
+		$result = DB_query($SQL);
 		$SQL = "UPDATE config SET confvalue='companies/" . $_POST['NewCompany'] . "/EDI_Pending' WHERE confname='EDI_MsgPending'";
-		$result = DB_query($SQL, $db);
+		$result = DB_query($SQL);
 
 		$ForceConfigReload = true;
 		include('includes/GetConfig.php');

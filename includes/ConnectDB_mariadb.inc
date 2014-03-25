@@ -13,7 +13,7 @@ if (!isset($DBPort)) {
 global $db; // Make sure it IS global, regardless of our context
 
 $db = mysqli_connect('p:'.$host, $DBUser, $DBPassword, $_SESSION['DatabaseName'], $DBPort);
-$result = DB_query('SET sql_mode = ANSI', $db);
+$result = DB_query('SET sql_mode = ANSI');
 
 
 //this statement sets the charset to be used for sending data to and from the db server
@@ -60,12 +60,13 @@ function DB_connect($host, $DBUser, $DBPassword, $DBPort) {
 	return mysqli_connect($host, $DBUser, $DBPassword, $_SESSION['DatabaseName'], $DBPort);
 }
 
-function DB_query($SQL, &$Conn, $ErrorMessage = '', $DebugMessage = '', $Transaction = false, $TrapErrors = true) {
+function DB_query($SQL, $ErrorMessage = '', $DebugMessage = '', $Transaction = false, $TrapErrors = true) {
 
 	global $debug;
+	global $db;
 	global $PathPrefix;
 
-	if (isset($_SESSION['MonthsAuditTrail']) and (DB_error_no($Conn) == 0 and $_SESSION['MonthsAuditTrail'] > 0) and (DB_affected_rows($result) > 0)) {
+	if (isset($_SESSION['MonthsAuditTrail']) and (DB_error_no($db) == 0 and $_SESSION['MonthsAuditTrail'] > 0) and (DB_affected_rows($result) > 0)) {
 
 		$SQLArray = explode(' ', $SQL);
 
@@ -79,30 +80,30 @@ function DB_query($SQL, &$Conn, $ErrorMessage = '', $DebugMessage = '', $Transac
 							'" . trim($_SESSION['UserID']) . "',
 							'" . DB_escape_string($SQL) . "')";
 
-				$AuditResult = mysqli_query($Conn, $AuditSQL);
+				$AuditResult = mysqli_query($db, $AuditSQL);
 			}
 		}
 	}
 
-	$result = mysqli_query($Conn, $SQL);
+	$result = mysqli_query($db, $SQL);
 
 	if ($DebugMessage == '') {
 		$DebugMessage = _('The SQL that failed was');
 	}
 
-	if (DB_error_no($Conn) != 0 and $TrapErrors == true) {
+	if (DB_error_no($db) != 0 and $TrapErrors == true) {
 		if ($TrapErrors) {
 			require_once($PathPrefix . 'includes/header.inc');
 		}
-		prnMsg($ErrorMessage . '<br />' . DB_error_msg($Conn), 'error', _('Database Error') . ' ' . DB_error_no($Conn));
+		prnMsg($ErrorMessage . '<br />' . DB_error_msg(), 'error', _('Database Error') . ' ' . DB_error_no());
 		if ($debug == 1) {
 			prnMsg($DebugMessage . '<br />' . $SQL . '<br />', 'error', _('Database SQL Failure'));
 		}
 		if ($Transaction) {
 			$SQL = 'rollback';
-			$Result = DB_query($SQL, $Conn);
-			if (DB_error_no($Conn) != 0) {
-				prnMsg(_('Error Rolling Back Transaction'), 'error', _('Database Rollback Error') . ' ' . DB_error_no($Conn));
+			$Result = DB_query($SQL);
+			if (DB_error_no() != 0) {
+				prnMsg(_('Error Rolling Back Transaction'), 'error', _('Database Rollback Error') . ' ' . DB_error_no());
 			} else {
 				prnMsg(_('Rolling Back Transaction OK'), 'error', _('Database Rollback Due to Error Above'));
 			}
@@ -162,16 +163,19 @@ function DB_affected_rows(&$ResultIndex) {
 
 }
 
-function DB_error_no(&$Conn) {
-	return mysqli_errno($Conn);
+function DB_error_no() {
+	global $db;
+	return mysqli_errno($db);
 }
 
-function DB_error_msg(&$Conn) {
-	return mysqli_error($Conn);
+function DB_error_msg() {
+	global $db;
+	return mysqli_error($db);
 }
 
-function DB_Last_Insert_ID(&$Conn, $Table, $FieldName) {
-	$_SESSION['LastInsertId'] = mysqli_insert_id($Conn);
+function DB_Last_Insert_ID($Table, $FieldName) {
+	global $db;
+	$_SESSION['LastInsertId'] = mysqli_insert_id($db);
 	//	return mysqli_insert_id($Conn);
 	if (isset($_SESSION['LastInsertId'])) {
 		$Last_Insert_ID = $_SESSION['LastInsertId'];
@@ -187,13 +191,15 @@ function DB_escape_string($String) {
 	return mysqli_real_escape_string($db, $String);
 }
 
-function DB_show_tables(&$Conn, $TableName = '%') {
-	$Result = DB_query("SHOW TABLES WHERE Tables_in_" . $_SESSION['DatabaseName'] . " " . LIKE . "'" . $TableName . "'", $Conn);
+function DB_show_tables($TableName = '%') {
+	global $db;
+	$Result = DB_query("SHOW TABLES WHERE Tables_in_" . $_SESSION['DatabaseName'] . " " . LIKE . "'" . $TableName . "'");
 	return $Result;
 }
 
-function DB_show_fields($TableName, &$Conn) {
-	$Result = DB_query("DESCRIBE $TableName", $Conn);
+function DB_show_fields($TableName) {
+	global $db;
+	$Result = DB_query("DESCRIBE $TableName");
 	return $Result;
 }
 
@@ -202,48 +208,60 @@ function interval($val, $Inter) {
 	return "\n" . 'interval ' . $val . ' ' . $Inter . "\n";
 }
 
-function DB_Maintenance($Conn) {
+function DB_Maintenance() {
+	global $db;
 
 	prnMsg(_('The system has just run the regular database administration and optimisation routine.'), 'info');
 
-	$TablesResult = DB_query('SHOW TABLES', $Conn);
+	$TablesResult = DB_query('SHOW TABLES');
 	while ($myrow = DB_fetch_row($TablesResult)) {
-		$Result = DB_query('OPTIMIZE TABLE ' . $myrow[0], $Conn);
+		$Result = DB_query('OPTIMIZE TABLE ' . $myrow[0]);
 	}
 
 	$Result = DB_query("UPDATE config
 				SET confvalue='" . Date('Y-m-d') . "'
-				WHERE confname='DB_Maintenance_LastRun'", $Conn);
+				WHERE confname='DB_Maintenance_LastRun'");
 }
 
-function DB_Txn_Begin($Conn) {
-	mysqli_query($Conn, 'SET autocommit=0');
-	mysqli_query($Conn, 'START TRANSACTION');
+function DB_Txn_Begin() {
+	global $db;
+	mysqli_query($db, 'SET autocommit=0');
+	mysqli_query($db, 'START TRANSACTION');
 }
 
-function DB_Txn_Commit($Conn) {
-	mysqli_query($Conn, 'COMMIT');
-	mysqli_query($Conn, 'SET autocommit=1');
+function DB_Txn_Commit() {
+	global $db;
+	mysqli_query($db, 'COMMIT');
+	mysqli_query($db, 'SET autocommit=1');
 }
 
-function DB_Txn_Rollback($Conn) {
-	mysqli_query($Conn, 'ROLLBACK');
+function DB_Txn_Rollback() {
+	global $db;
+	mysqli_query($db, 'ROLLBACK');
 }
-function DB_IgnoreForeignKeys($Conn) {
-	mysqli_query($Conn, 'SET FOREIGN_KEY_CHECKS=0');
+function DB_IgnoreForeignKeys() {
+	global $db;
+	mysqli_query($db, 'SET FOREIGN_KEY_CHECKS=0');
 }
-function DB_ReinstateForeignKeys($Conn) {
-	mysqli_query($Conn, 'SET FOREIGN_KEY_CHECKS=1');
+function DB_ReinstateForeignKeys() {
+	global $db;
+	mysqli_query($db, 'SET FOREIGN_KEY_CHECKS=1');
 }
 
-function DB_table_exists($TableName, $Conn) {
+function DB_table_exists($TableName) {
+	global $db;
 	$ShowSQL = "SHOW TABLES WHERE Tables_in_" . $_SESSION['DatabaseName'] . "='" . $TableName . "'";
-	$result = DB_query($ShowSQL, $Conn);
+	$result = DB_query($ShowSQL);
 	if (DB_num_rows($result) > 0) {
 		return True;
 	} else {
 		return False;
 	}
+}
+
+function DB_select_database($DBName) {
+	global $db;
+	mysqli_select_db($db, $DBName);
 }
 
 ?>

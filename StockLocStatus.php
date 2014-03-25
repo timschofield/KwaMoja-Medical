@@ -41,7 +41,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 	}
 }
 
-$resultStkLocs = DB_query($sql, $db);
+$resultStkLocs = DB_query($sql);
 while ($myrow = DB_fetch_array($resultStkLocs)) {
 	if (isset($_POST['StockLocation']) and $_POST['StockLocation'] != 'All') {
 		if ($myrow['loccode'] == $_POST['StockLocation']) {
@@ -60,7 +60,7 @@ $SQL = "SELECT categoryid,
 				categorydescription
 		FROM stockcategory
 		ORDER BY categorydescription";
-$result1 = DB_query($SQL, $db);
+$result1 = DB_query($SQL);
 if (DB_num_rows($result1) == 0) {
 	echo '</table><p>';
 	prnMsg(_('There are no stock categories currently defined please use the link below to set them up'), 'warn');
@@ -155,7 +155,7 @@ if (isset($_POST['ShowStatus'])) {
 
 	$ErrMsg = _('The stock held at each location cannot be retrieved because');
 	$DbgMsg = _('The SQL that failed was');
-	$LocStockResult = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+	$LocStockResult = DB_query($sql, $ErrMsg, $DbgMsg);
 
 	echo '<table cellpadding="5" cellspacing="4" class="selection">
 		 	<tr>
@@ -184,7 +184,7 @@ if (isset($_POST['ShowStatus'])) {
 					AND salesorders.quotation=0";
 
 		$ErrMsg = _('The demand for this product from') . ' ' . $myrow['loccode'] . ' ' . _('cannot be retrieved because');
-		$DemandResult = DB_query($sql, $db, $ErrMsg);
+		$DemandResult = DB_query($sql, $ErrMsg);
 
 		if (DB_num_rows($DemandResult) == 1) {
 			$DemandRow = DB_fetch_row($DemandResult);
@@ -208,7 +208,7 @@ if (isset($_POST['ShowStatus'])) {
 				AND salesorders.quotation=0";
 
 		$ErrMsg = _('The demand for this product from') . ' ' . $myrow['loccode'] . ' ' . _('cannot be retrieved because');
-		$DemandResult = DB_query($sql, $db, $ErrMsg);
+		$DemandResult = DB_query($sql, $ErrMsg);
 
 		if (DB_num_rows($DemandResult) == 1) {
 			$DemandRow = DB_fetch_row($DemandResult);
@@ -222,7 +222,7 @@ if (isset($_POST['ShowStatus'])) {
 				WHERE workorders.closed=0
 				AND   bom.component = '" . $StockID . "'
 				AND   workorders.loccode='" . $myrow['loccode'] . "'";
-		$DemandResult = DB_query($sql, $db, $ErrMsg);
+		$DemandResult = DB_query($sql, $ErrMsg);
 
 		if (DB_num_rows($DemandResult) == 1) {
 			$DemandRow = DB_fetch_row($DemandResult);
@@ -239,7 +239,7 @@ if (isset($_POST['ShowStatus'])) {
 					AND (purchorders.status = 'Authorised' OR purchorders.status='Printed')";
 
 		$ErrMsg = _('The quantity on order for this product to be received into') . ' ' . $myrow['loccode'] . ' ' . _('cannot be retrieved because');
-		$QOOResult = DB_query($sql, $db, $ErrMsg);
+		$QOOResult = DB_query($sql, $ErrMsg);
 
 		if (DB_num_rows($QOOResult) == 1) {
 			$QOORow = DB_fetch_row($QOOResult);

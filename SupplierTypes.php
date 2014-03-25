@@ -46,7 +46,7 @@ if (isset($_POST['submit'])) {
 	$checksql = "SELECT count(*)
 			 FROM suppliertype
 			 WHERE typename = '" . $_POST['TypeName'] . "'";
-	$checkresult = DB_query($checksql, $db);
+	$checkresult = DB_query($checksql);
 	$checkrow = DB_fetch_row($checkresult);
 	if ($checkrow[0] > 0) {
 		$InputError = 1;
@@ -70,7 +70,7 @@ if (isset($_POST['submit'])) {
 				 FROM suppliertype
 				 WHERE typeid = '" . $_POST['TypeID'] . "'";
 
-		$checkresult = DB_query($checkSql, $db);
+		$checkresult = DB_query($checkSql);
 		$checkrow = DB_fetch_row($checkresult);
 
 		if ($checkrow[0] > 0) {
@@ -88,7 +88,7 @@ if (isset($_POST['submit'])) {
 			$msg = _('Supplier type') . ' ' . $_POST['TypeName'] . ' ' . _('has been created');
 			$checkSql = "SELECT count(typeid)
 				 FROM suppliertype";
-			$result = DB_query($checkSql, $db);
+			$result = DB_query($checkSql);
 			$row = DB_fetch_row($result);
 
 		}
@@ -96,14 +96,14 @@ if (isset($_POST['submit'])) {
 
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 
 
 		// Fetch the default price list.
 		$sql = "SELECT confvalue
 					FROM config
 					WHERE confname='DefaultSupplierType'";
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		$SupplierTypeRow = DB_fetch_row($result);
 		$DefaultSupplierType = $SupplierTypeRow[0];
 
@@ -111,7 +111,7 @@ if (isset($_POST['submit'])) {
 		$checkSql = "SELECT count(*)
 				 FROM suppliertype
 				 WHERE typeid = '" . $DefaultSupplierType . "'";
-		$checkresult = DB_query($checkSql, $db);
+		$checkresult = DB_query($checkSql);
 		$checkrow = DB_fetch_row($checkresult);
 
 		// If it doesnt then update config with newly created one.
@@ -119,7 +119,7 @@ if (isset($_POST['submit'])) {
 			$sql = "UPDATE config
 					SET confvalue='" . $_POST['TypeID'] . "'
 					WHERE confname='DefaultSupplierType'";
-			$result = DB_query($sql, $db);
+			$result = DB_query($sql);
 			$_SESSION['DefaultSupplierType'] = $_POST['TypeID'];
 		}
 
@@ -135,7 +135,7 @@ if (isset($_POST['submit'])) {
 	$sql = "SELECT COUNT(*) FROM suppliers WHERE supptype='" . $SelectedType . "'";
 
 	$ErrMsg = _('The number of suppliers using this Type record could not be retrieved because');
-	$result = DB_query($sql, $db, $ErrMsg);
+	$result = DB_query($sql, $ErrMsg);
 	$myrow = DB_fetch_row($result);
 	if ($myrow[0] > 0) {
 		prnMsg(_('Cannot delete this type because suppliers are currently set up to use this type') . '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('suppliers with this type code'));
@@ -143,7 +143,7 @@ if (isset($_POST['submit'])) {
 
 		$sql = "DELETE FROM suppliertype WHERE typeid='" . $SelectedType . "'";
 		$ErrMsg = _('The Type record could not be deleted because');
-		$result = DB_query($sql, $db, $ErrMsg);
+		$result = DB_query($sql, $ErrMsg);
 		prnMsg(_('Supplier type') . $SelectedType . ' ' . _('has been deleted'), 'success');
 
 		unset($SelectedType);
@@ -161,7 +161,7 @@ if (!isset($SelectedType)) {
 	 */
 
 	$sql = "SELECT typeid, typename FROM suppliertype";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 
 	echo '<table class="selection">';
 	echo '<tr>
@@ -213,7 +213,7 @@ if (!isset($_GET['delete'])) {
 				FROM suppliertype
 				WHERE typeid='" . $SelectedType . "'";
 
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		$myrow = DB_fetch_array($result);
 
 		$_POST['TypeID'] = $myrow['typeid'];

@@ -14,7 +14,7 @@ if (isset($_POST['Save'])) {
 			$sql = "UPDATE modules SET sequence='" . $Value . "'
 									WHERE reportlink='" . $ReportLink . "'
 										AND secroleid='" . $_POST['SecurityRole'] . "'";
-			$result = DB_query($sql, $db);
+			$result = DB_query($sql);
 		}
 	}
 }
@@ -23,7 +23,7 @@ if (!isset($_POST['SecurityRole'])) {
 	$sql = "SELECT secroleid,
 					secrolename
 				FROM securityroles";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p><br />';
 
@@ -60,7 +60,7 @@ if (!isset($_POST['SecurityRole'])) {
 				FROM modules
 				WHERE secroleid='" . $_POST['SecurityRole'] . "'
 				ORDER BY sequence";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 
 	echo '<table class="selection">
 			<tr>

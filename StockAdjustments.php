@@ -49,7 +49,7 @@ if ($NewAdjustment == true) {
 							materialcost+labourcost+overheadcost AS totalcost,
 							units
 						FROM stockmaster
-						WHERE stockid='" . $_SESSION['Adjustment' . $identifier]->StockID . "'", $db);
+						WHERE stockid='" . $_SESSION['Adjustment' . $identifier]->StockID . "'");
 	$myrow = DB_fetch_array($result);
 	$_SESSION['Adjustment' . $identifier]->ItemDescription = $myrow['description'];
 	$_SESSION['Adjustment' . $identifier]->Controlled = $myrow['controlled'];
@@ -86,7 +86,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 					ON locations.loccode=www_users.defaultlocation
 				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 }
-$resultStkLocs = DB_query($sql,$db);
+$resultStkLocs = DB_query($sql);
 $LocationList = array();
 while ($myrow = DB_fetch_array($resultStkLocs)) {
 	$LocationList[$myrow['loccode']] = $myrow['locationname'];
@@ -95,8 +95,8 @@ while ($myrow = DB_fetch_array($resultStkLocs)) {
 if (isset($_POST['StockLocation'])) {
 	$_SESSION['Adjustment' . $identifier]->StockLocation = $_POST['StockLocation'];
 } else {
-	if(empty($_SESSION['Adjustment' . $identifier]->StockLocation)) {
-		if(empty($_SESSION['UserStockLocation'])){
+	if (empty($_SESSION['Adjustment' . $identifier]->StockLocation)) {
+		if (empty($_SESSION['UserStockLocation'])) {
 			$_SESSION['Adjustment' . $identifier]->StockLocation = key(reset($LocationList));
 		} else {
 			$_SESSION['Adjustment' . $identifier]->StockLocation = $_SESSION['UserStockLocation'];
@@ -114,7 +114,7 @@ if ($_POST['Quantity'] != 0) { //To prevent from serilised quantity changing to 
 	$_SESSION['Adjustment' . $identifier]->Quantity = filter_number_format($_POST['Quantity']);
 }
 
-if(isset($_GET['OldIdentifier'])) {
+if (isset($_GET['OldIdentifier'])) {
 	$_SESSION['Adjustment' . $identifier]->StockLocation = $_SESSION['Adjustment' . $_GET['OldIdentifier']]->StockLocation;
 }
 
@@ -137,7 +137,7 @@ if (isset($_POST['CheckCode'])) {
 	}
 	$ErrMsg = _('The stock information cannot be retrieved because');
 	$DbgMsg = _('The SQL to get the stock description was');
-	$result = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+	$result = DB_query($sql, $ErrMsg, $DbgMsg);
 	echo '<table class="selection">
 			<tr>
 				<th class="SortableColumn">' . _('Stock Code') . '</th>
@@ -159,7 +159,7 @@ if (isset($_POST['EnterAdjustment']) and $_POST['EnterAdjustment'] != '') {
 
 	$InputError = false;
 	/*Start by hoping for the best */
-	$result = DB_query("SELECT * FROM stockmaster WHERE stockid='" . $_SESSION['Adjustment' . $identifier]->StockID . "'", $db);
+	$result = DB_query("SELECT * FROM stockmaster WHERE stockid='" . $_SESSION['Adjustment' . $identifier]->StockID . "'");
 	$myrow = DB_fetch_row($result);
 	if (DB_num_rows($result) == 0) {
 		prnMsg(_('The entered item code does not exist'), 'error');
@@ -179,7 +179,7 @@ if (isset($_POST['EnterAdjustment']) and $_POST['EnterAdjustment'] != '') {
 		$SQL = "SELECT quantity FROM locstock
 				WHERE stockid='" . $_SESSION['Adjustment' . $identifier]->StockID . "'
 				AND loccode='" . $_SESSION['Adjustment' . $identifier]->StockLocation . "'";
-		$CheckNegResult = DB_query($SQL, $db);
+		$CheckNegResult = DB_query($SQL);
 		$CheckNegRow = DB_fetch_array($CheckNegResult);
 		if ($CheckNegRow['quantity'] + $_SESSION['Adjustment' . $identifier]->Quantity < 0) {
 			$InputError = true;
@@ -191,18 +191,18 @@ if (isset($_POST['EnterAdjustment']) and $_POST['EnterAdjustment'] != '') {
 
 		/*All inputs must be sensible so make the stock movement records and update the locations stocks */
 
-		$AdjustmentNumber = GetNextTransNo(17, $db);
-		$PeriodNo = GetPeriod(Date($_SESSION['DefaultDateFormat']), $db);
+		$AdjustmentNumber = GetNextTransNo(17);
+		$PeriodNo = GetPeriod(Date($_SESSION['DefaultDateFormat']));
 		$SQLAdjustmentDate = FormatDateForSQL(Date($_SESSION['DefaultDateFormat']));
 
-		$Result = DB_Txn_Begin($db);
+		$Result = DB_Txn_Begin();
 
 		// Need to get the current location quantity will need it later for the stock movement
 		$SQL = "SELECT locstock.quantity
 			FROM locstock
 			WHERE locstock.stockid='" . $_SESSION['Adjustment' . $identifier]->StockID . "'
 			AND loccode= '" . $_SESSION['Adjustment' . $identifier]->StockLocation . "'";
-		$Result = DB_query($SQL, $db);
+		$Result = DB_query($SQL);
 		if (DB_num_rows($Result) == 1) {
 			$LocQtyRow = DB_fetch_row($Result);
 			$QtyOnHandPrior = $LocQtyRow[0];
@@ -235,10 +235,10 @@ if (isset($_POST['EnterAdjustment']) and $_POST['EnterAdjustment'] != '') {
 
 		$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The stock movement record cannot be inserted because');
 		$DbgMsg = _('The following SQL to insert the stock movement record was used');
-		$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 		/*Get the ID of the StockMove... */
-		$StkMoveNo = DB_Last_Insert_ID($db, 'stockmoves', 'stkmoveno');
+		$StkMoveNo = DB_Last_Insert_ID('stockmoves', 'stkmoveno');
 
 		/*Insert the StockSerialMovements and update the StockSerialItems  for controlled items*/
 
@@ -254,7 +254,7 @@ if (isset($_POST['EnterAdjustment']) and $_POST['EnterAdjustment'] != '') {
 						AND loccode='" . $_SESSION['Adjustment' . $identifier]->StockLocation . "'
 						AND serialno='" . $Item->BundleRef . "'";
 				$ErrMsg = _('Unable to determine if the serial item exists');
-				$Result = DB_query($SQL, $db, $ErrMsg);
+				$Result = DB_query($SQL, $ErrMsg);
 				$SerialItemExistsRow = DB_fetch_row($Result);
 
 				if ($SerialItemExistsRow[0] == 1) {
@@ -266,7 +266,7 @@ if (isset($_POST['EnterAdjustment']) and $_POST['EnterAdjustment'] != '') {
 
 					$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The serial stock item record could not be updated because');
 					$DbgMsg = _('The following SQL to update the serial stock item record was used');
-					$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 				} else {
 					/*Need to insert a new serial item record */
 					$SQL = "INSERT INTO stockserialitems (stockid,
@@ -284,7 +284,7 @@ if (isset($_POST['EnterAdjustment']) and $_POST['EnterAdjustment'] != '') {
 
 					$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The serial stock item record could not be updated because');
 					$DbgMsg = _('The following SQL to update the serial stock item record was used');
-					$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 				}
 
 
@@ -300,7 +300,7 @@ if (isset($_POST['EnterAdjustment']) and $_POST['EnterAdjustment'] != '') {
 											'" . $Item->BundleQty . "')";
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The serial stock movement record could not be inserted because');
 				$DbgMsg = _('The following SQL to insert the serial stock movement records was used');
-				$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 			}
 			/* foreach controlled item in the serialitems array */
@@ -316,11 +316,11 @@ if (isset($_POST['EnterAdjustment']) and $_POST['EnterAdjustment'] != '') {
 		$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The location stock record could not be updated because');
 		$DbgMsg = _('The following SQL to update the stock record was used');
 
-		$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 		if ($_SESSION['CompanyRecord']['gllink_stock'] == 1 and $_SESSION['Adjustment' . $identifier]->StandardCost > 0) {
 
-			$StockGLCodes = GetStockGLCode($_SESSION['Adjustment' . $identifier]->StockID, $db);
+			$StockGLCodes = GetStockGLCode($_SESSION['Adjustment' . $identifier]->StockID);
 
 			$SQL = "INSERT INTO gltrans (type,
 										typeno,
@@ -341,7 +341,7 @@ if (isset($_POST['EnterAdjustment']) and $_POST['EnterAdjustment'] != '') {
 
 			$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The general ledger transaction entries could not be added because');
 			$DbgMsg = _('The following SQL to insert the GL entries was used');
-			$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 			$SQL = "INSERT INTO gltrans (type,
 										typeno,
@@ -363,12 +363,12 @@ if (isset($_POST['EnterAdjustment']) and $_POST['EnterAdjustment'] != '') {
 
 			$Errmsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The general ledger transaction entries could not be added because');
 			$DbgMsg = _('The following SQL to insert the GL entries was used');
-			$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		}
 
-		EnsureGLEntriesBalance(17, $AdjustmentNumber, $db);
+		EnsureGLEntriesBalance(17, $AdjustmentNumber);
 
-		$Result = DB_Txn_Commit($db);
+		$Result = DB_Txn_Commit();
 
 		$ConfirmationText = _('A stock adjustment for') . ' ' . $_SESSION['Adjustment' . $identifier]->StockID . ' -  ' . $_SESSION['Adjustment' . $identifier]->ItemDescription . ' ' . _('has been created from location') . ' ' . $_SESSION['Adjustment' . $identifier]->StockLocation . ' ' . _('for a quantity of') . ' ' . locale_number_format($_SESSION['Adjustment' . $identifier]->Quantity, $_SESSION['Adjustment' . $identifier]->DecimalPlaces);
 		prnMsg($ConfirmationText, 'success');
@@ -399,7 +399,6 @@ if (isset($_POST['EnterAdjustment']) and $_POST['EnterAdjustment'] != '') {
 
 
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $identifier . '" method="post" class="noPrint">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 if (!isset($_SESSION['Adjustment' . $identifier])) {
@@ -418,7 +417,7 @@ if (!isset($_SESSION['Adjustment' . $identifier])) {
 			FROM stockmaster
 			WHERE stockid='" . $StockID . "'";
 
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_array($result);
 	$_SESSION['Adjustment' . $identifier]->PartUnit = $myrow['units'];
 	$_SESSION['Adjustment' . $identifier]->StandardCost = $myrow['materialcost'] + $myrow['labourcost'] + $myrow['overheadcost'];
@@ -458,10 +457,10 @@ if (isset($_SESSION['Adjustment' . $identifier]) and mb_strlen($_SESSION['Adjust
 		</tr>';
 }
 
-echo '<tr><td>'. _('Adjustment to Stock At Location').':</td>
+echo '<tr><td>' . _('Adjustment to Stock At Location') . ':</td>
 		<td><select name="StockLocation" onchange="submit();"> ';
-foreach ($LocationList as $Loccode=>$Locationname){
-	if ($Loccode == $_SESSION['Adjustment' . $identifier]->StockLocation){
+foreach ($LocationList as $Loccode => $Locationname) {
+	if ($Loccode == $_SESSION['Adjustment' . $identifier]->StockLocation) {
 		echo '<option selected="selected" value="' . $Loccode . '">' . $Locationname . '</option>';
 	} else {
 		echo '<option value="' . $Loccode . '">' . $Locationname . '</option>';
@@ -506,7 +505,7 @@ $SQL = "SELECT tagref,
 		FROM tags
 		ORDER BY tagref";
 
-$result = DB_query($SQL, $db);
+$result = DB_query($SQL);
 echo '<option value="0">0 - ' . _('None') . '</option>';
 while ($myrow = DB_fetch_array($result)) {
 	if (isset($_SESSION['Adjustment' . $identifier]->tag) and $_SESSION['Adjustment' . $identifier]->tag == $myrow['tagref']) {
@@ -540,7 +539,6 @@ echo '<br />
 	<a href="' . $RootPath . '/SelectCompletedOrder.php?SelectedStockItem=' . $StockID . '">' . _('Search Completed Sales Orders') . '</a>';
 
 echo '</div>
-	  </div>
 	  </form>';
 include('includes/footer.inc');
 ?>

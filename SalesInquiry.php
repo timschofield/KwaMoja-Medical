@@ -67,15 +67,15 @@ else {
 }
 
 if (isset($_POST['submit'])) {
-	submit($db, $PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $DebtorName, $DebtorNameOp, $SaveSummaryType, $RootPath, $Theme);
+	submit($PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $DebtorName, $DebtorNameOp, $SaveSummaryType, $RootPath, $Theme);
 } //isset($_POST['submit'])
 else {
-	display($db);
+	display();
 }
 
 
 //####_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT####
-function submit(&$db, $PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $DebtorName, $DebtorNameOp, $SaveSummaryType, $RootPath, $Theme) {
+function submit($PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $DebtorName, $DebtorNameOp, $SaveSummaryType, $RootPath, $Theme) {
 	//initialise no input errors
 	$InputError = 0;
 
@@ -108,7 +108,7 @@ function submit(&$db, $PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $Debto
 	// TempStockmoves function creates a temporary table of stockmoves that is used when the DateType
 	// is Invoice Date
 	if ($_POST['DateType'] == 'Invoice') {
-		TempStockmoves($db);
+		TempStockmoves();
 	} //$_POST['DateType'] == 'Invoice'
 
 
@@ -617,7 +617,7 @@ function submit(&$db, $PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $Debto
 			}
 		} // End of if ($_POST['ReportType']
 		$ErrMsg = _('The SQL to find the parts selected failed with the message');
-		$result = DB_query($sql, $db, $ErrMsg);
+		$result = DB_query($sql, $ErrMsg);
 		$ctr = 0;
 		$TotalQty = 0;
 		$TotalExtCost = 0;
@@ -919,15 +919,12 @@ function submit(&$db, $PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $Debto
 } // End of function submit()
 
 
-function display(&$db) //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
+function display() //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
 	{
 	// Display form fields. This function is called the first time
 	// the page is called.
 
-	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">
-		  <div>
-			<br/>
-			<br/>';
+	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	echo '<table>';
@@ -1037,7 +1034,7 @@ function display(&$db) //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_###
 			<td>' . _('Stock Categories') . ':</td>
 			<td><select minlength="0" name="Category">';
 
-	$CategoryResult = DB_query("SELECT categoryid, categorydescription FROM stockcategory", $db);
+	$CategoryResult = DB_query("SELECT categoryid, categorydescription FROM stockcategory");
 	echo '<option selected="selected" value="All">' . _('All Categories') . '</option>';
 	while ($myrow = DB_fetch_array($CategoryResult)) {
 		echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . '</option>';
@@ -1054,18 +1051,19 @@ function display(&$db) //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_###
 	} else {
 		echo '<td><select name="Salesman">';
 		$sql = "SELECT salesmancode, salesmanname FROM salesman";
-		$SalesmanResult = DB_query($sql,$db);
-		echo '<option selected="selected" value="All">' . _('All Salesmen')  . '</option>';
-		while ($myrow = DB_fetch_array($SalesmanResult)){
-			echo '<option value="' . $myrow['salesmancode'] . '">' . $myrow['salesmanname']  . '</option>';
+		$SalesmanResult = DB_query($sql);
+		echo '<option selected="selected" value="All">' . _('All Salesmen') . '</option>';
+		while ($myrow = DB_fetch_array($SalesmanResult)) {
+			echo '<option value="' . $myrow['salesmancode'] . '">' . $myrow['salesmanname'] . '</option>';
 		}
 		echo '</select></td>';
-	}	echo '</tr>';
+	}
+	echo '</tr>';
 
 	// Use name='Areas[]' multiple - if want to create an array for Areas and allow multiple selections
 	echo '<tr><td>' . _('For Sales Areas') . ':</td>
 				<td><select minlength="0" name="Area">';
-	$AreasResult = DB_query("SELECT areacode, areadescription FROM areas", $db);
+	$AreasResult = DB_query("SELECT areacode, areadescription FROM areas");
 	echo '<option selected="selected" value="All">' . _('All Areas') . '</option>';
 	while ($myrow = DB_fetch_array($AreasResult)) {
 		echo '<option value="' . $myrow['areacode'] . '">' . $myrow['areadescription'] . '</option>';
@@ -1115,14 +1113,12 @@ function display(&$db) //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_###
 			<td>&nbsp;</td>
 			<td><input type="submit" name="submit" value="' . _('Run Inquiry') . '" /></td>
 		</tr>
-		</table>
-	<br />';
-	echo '</div>
-		 </form>';
+		</table>';
+	echo '</form>';
 
 } // End of function display()
 
-function TempStockmoves(&$db) {
+function TempStockmoves() {
 	// When report based on Invoice Date, use stockmoves as the main file, but credit
 	// notes, which are type 11 in stockmoves, do not have the order number in the
 	// reference field; instead they have "Ex Inv - " and then the transno from the
@@ -1135,14 +1131,14 @@ function TempStockmoves(&$db) {
 
 	$sql = "CREATE TEMPORARY TABLE tempstockmoves LIKE stockmoves";
 	$ErrMsg = _('The SQL to the create temp stock moves table failed with the message');
-	$result = DB_query($sql, $db, $ErrMsg);
+	$result = DB_query($sql, $ErrMsg);
 
 	$sql = "INSERT tempstockmoves
 			  SELECT * FROM stockmoves
 			  WHERE (stockmoves.type='10' OR stockmoves.type='11')
 			  AND stockmoves.trandate >='" . $FromDate . "' AND stockmoves.trandate <='" . $ToDate . "'";
 	$ErrMsg = _('The SQL to insert temporary stockmoves records failed with the message');
-	$result = DB_query($sql, $db, $ErrMsg);
+	$result = DB_query($sql, $ErrMsg);
 
 	$sql = "UPDATE tempstockmoves, stockmoves
 			  SET tempstockmoves.reference = stockmoves.reference
@@ -1151,7 +1147,7 @@ function TempStockmoves(&$db) {
 				AND tempstockmoves.stockid = stockmoves.stockid
 				AND stockmoves.type ='10'";
 	$ErrMsg = _('The SQL to update tempstockmoves failed with the message');
-	$result = DB_query($sql, $db, $ErrMsg);
+	$result = DB_query($sql, $ErrMsg);
 
 
 } // End of function TempStockmoves

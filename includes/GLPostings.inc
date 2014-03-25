@@ -21,19 +21,19 @@ ChartDetail records should already exist - they are created (from includes/DateF
 */
 
 
-$FirstPeriodResult = DB_query("SELECT MIN(periodno) FROM periods", $db);
+$FirstPeriodResult = DB_query("SELECT MIN(periodno) FROM periods");
 $FirstPeriodRow = DB_fetch_row($FirstPeriodResult);
 $CreateFrom = $FirstPeriodRow[0];
 
 if (is_null($FirstPeriodRow[0])) {
 	//There are no periods defined
-	$InsertFirstPeriodResult = DB_query("INSERT INTO periods VALUES (-1,'" . Date('Y-m-d', mktime(0, 0, 0, Date('m') - 1, 0, Date('Y'))) . "')", $db, _('Could not insert first period'));
-	$InsertFirstPeriodResult = DB_query("INSERT INTO periods VALUES (0,'" . Date('Y-m-d', mktime(0, 0, 0, Date('m') + 1, 0, Date('Y'))) . "')", $db, _('Could not insert first period'));
-	$InsertFirstPeriodResult = DB_query("INSERT INTO periods VALUES (1,'" . Date('Y-m-d', mktime(0, 0, 0, Date('m') + 2, 0, Date('Y'))) . "')", $db, _('Could not insert second period'));
+	$InsertFirstPeriodResult = DB_query("INSERT INTO periods VALUES (-1,'" . Date('Y-m-d', mktime(0, 0, 0, Date('m') - 1, 0, Date('Y'))) . "')", _('Could not insert first period'));
+	$InsertFirstPeriodResult = DB_query("INSERT INTO periods VALUES (0,'" . Date('Y-m-d', mktime(0, 0, 0, Date('m') + 1, 0, Date('Y'))) . "')", _('Could not insert first period'));
+	$InsertFirstPeriodResult = DB_query("INSERT INTO periods VALUES (1,'" . Date('Y-m-d', mktime(0, 0, 0, Date('m') + 2, 0, Date('Y'))) . "')", _('Could not insert second period'));
 	$CreateFrom = -1;
 }
 
-$LastPeriodResult = DB_query("SELECT MAX(periodno) FROM periods", $db);
+$LastPeriodResult = DB_query("SELECT MAX(periodno) FROM periods");
 $LastPeriodRow = DB_fetch_row($LastPeriodResult);
 
 
@@ -51,7 +51,7 @@ $sql = "SELECT chartmaster.accountcode, MIN(periods.periodno) AS startperiod
 				AND chartdetails.actual IS NULL
 				GROUP BY chartmaster.accountcode";
 
-$ChartDetailsNotSetUpResult = DB_query($sql, $db, _('Could not test to see that all chart detail records properly initiated'));
+$ChartDetailsNotSetUpResult = DB_query($sql, _('Could not test to see that all chart detail records properly initiated'));
 
 if (DB_num_rows($ChartDetailsNotSetUpResult) > 0) {
 
@@ -65,7 +65,7 @@ if (DB_num_rows($ChartDetailsNotSetUpResult) > 0) {
 					AND chartdetails.accountcode IS NULL";
 
 	$ErrMsg = _('Inserting new chart details records required failed because');
-	$InsChartDetailsRecords = DB_query($sql, $db, $ErrMsg);
+	$InsChartDetailsRecords = DB_query($sql, $ErrMsg);
 }
 
 
@@ -79,7 +79,7 @@ for ($CurrPeriod = $CreateFrom; $CurrPeriod <= $CreateTo; $CurrPeriod++) {
 						WHERE posted=0
 							AND periodno='" . $CurrPeriod . "'
 						ORDER BY account";
-	$CheckResult = DB_query($CheckSQL, $db);
+	$CheckResult = DB_query($CheckSQL);
 	$CheckRow = DB_fetch_array($CheckResult);
 
 	if ($CheckRow['checksum'] != 0) {
@@ -99,9 +99,9 @@ for ($CurrPeriod = $CreateFrom; $CurrPeriod <= $CreateTo; $CurrPeriod++) {
 					AND periodno='" . $CurrPeriod . "'
 				ORDER BY account";
 
-	$UnpostedTransResult = DB_query($sql, $db);
+	$UnpostedTransResult = DB_query($sql);
 
-	$TransStart = DB_Txn_Begin($db);
+	$TransStart = DB_Txn_Begin();
 	$CurrentAccount = '0';
 	$TotalAmount = 0;
 	while ($UnpostedTrans = DB_fetch_array($UnpostedTransResult)) {
@@ -110,14 +110,14 @@ for ($CurrPeriod = $CreateFrom; $CurrPeriod <= $CreateTo; $CurrPeriod++) {
 										FROM chartdetails
 										WHERE  accountcode = '" . $UnpostedTrans['account'] . "'
 											AND period= '" . $CurrPeriod . "'";
-		$CheckCurrentPeriodResult = DB_query($CheckCurrentPeriodSQL, $db);
+		$CheckCurrentPeriodResult = DB_query($CheckCurrentPeriodSQL);
 		$CheckCurrentPeriodRow = DB_fetch_array($CheckCurrentPeriodResult);
 
 		$CheckNextPeriodSQL = "SELECT COUNT(actual) as periodexists
 										FROM chartdetails
 										WHERE  accountcode = '" . $UnpostedTrans['account'] . "'
 											AND period= '" . ($CurrPeriod + 1) . "'";
-		$CheckNextPeriodResult = DB_query($CheckNextPeriodSQL, $db);
+		$CheckNextPeriodResult = DB_query($CheckNextPeriodSQL);
 		$CheckNextPeriodRow = DB_fetch_array($CheckNextPeriodResult);
 
 		if ($CheckCurrentPeriodRow['periodexists'] == 0 or $CheckNextPeriodRow['periodexists'] == 0) {
@@ -133,12 +133,12 @@ for ($CurrPeriod = $CreateFrom; $CurrPeriod <= $CreateTo; $CurrPeriod++) {
 				$sql = "UPDATE chartdetails SET actual = actual + " . $TotalAmount . "
 						WHERE accountcode = '" . $CurrentAccount . "'
 						AND period= '" . $CurrPeriod . "'";
-				$PostPrd = DB_query($sql, $db);
+				$PostPrd = DB_query($sql);
 				/*Update the BFwd for all following ChartDetail records */
 				$sql = "UPDATE chartdetails SET bfwd = bfwd + " . $TotalAmount . "
 						WHERE accountcode = '" . $CurrentAccount . "'
 						AND period > '" . $CurrPeriod . "'";
-				$PostBFwds = DB_query($sql, $db);
+				$PostBFwds = DB_query($sql);
 			}
 			$TotalAmount = 0;
 		}
@@ -150,18 +150,18 @@ for ($CurrPeriod = $CreateFrom; $CurrPeriod <= $CreateTo; $CurrPeriod++) {
 		$sql = "UPDATE chartdetails SET actual = actual + " . $TotalAmount . "
 				WHERE accountcode = '" . $CurrentAccount . "'
 				AND period= '" . $CurrPeriod . "'";
-		$PostPrd = DB_query($sql, $db);
+		$PostPrd = DB_query($sql);
 		/*Update the BFwd for all following ChartDetail records */
 		$sql = "UPDATE chartdetails SET bfwd = bfwd + " . $TotalAmount . "
 				WHERE accountcode = '" . $CurrentAccount . "'
 				AND period > '" . $CurrPeriod . "'";
-		$PostBFwds = DB_query($sql, $db);
+		$PostBFwds = DB_query($sql);
 	}
 
 	$sql = "UPDATE gltrans SET posted = 1 WHERE periodno = '" . $CurrPeriod . "' AND posted=0";
-	$Posted = DB_query($sql, $db);
+	$Posted = DB_query($sql);
 
-	$TransCommit = DB_Txn_Commit($db);
+	$TransCommit = DB_Txn_Commit();
 }
 
 ?>

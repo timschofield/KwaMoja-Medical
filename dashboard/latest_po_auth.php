@@ -49,7 +49,7 @@ echo '<style>
 			</style>';
 
 $sql = "SELECT id FROM dashboard_scripts WHERE scripts='" . basename($_SERVER['PHP_SELF']) . "'";
-$result = DB_query($sql, $db);
+$result = DB_query($sql);
 $myrow = DB_fetch_array($result);
 
 echo '<table style="max-width:100%;width:99%;" border="0" cellspacing="0" cellpadding="1" border="1">
@@ -73,7 +73,7 @@ $SQL = "SELECT purchorders.*,
 		INNER JOIN www_users
 			ON www_users.userid=purchorders.initiator
 		WHERE status='Pending' LIMIT 5";
-$result = DB_query($SQL, $db);
+$result = DB_query($SQL);
 echo '<tbody>
 		<tr>
 			<th>' . _('Supplier') . '</th>
@@ -97,7 +97,7 @@ while ($row = DB_fetch_array($result)) {
 					WHERE currabrev='" . $row['currcode'] . "'
 						AND userid='" . $_SESSION['UserID'] . "'";
 
-	$AuthResult = DB_query($AuthSQL, $db);
+	$AuthResult = DB_query($AuthSQL);
 	$myauthrow = DB_fetch_array($AuthResult);
 	$AuthLevel = $myauthrow['authlevel'];
 
@@ -107,7 +107,7 @@ while ($row = DB_fetch_array($result)) {
 						GROUP BY orderno";
 
 
-	$OrderValueResult = DB_query($OrderValueSQL, $db);
+	$OrderValueResult = DB_query($OrderValueSQL);
 	$MyOrderValueRow = DB_fetch_array($OrderValueResult);
 	$OrderValue = $MyOrderValueRow['ordervalue'];
 	$totalOV = $MyOrderValueRow['total'];

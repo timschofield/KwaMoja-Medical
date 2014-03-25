@@ -88,7 +88,7 @@ if (isset($_POST['Install'])) {
 				$handle = fopen($TempName, "w");
 				fwrite($handle, $Code);
 				rename($TempName, $Script->name);
-				NewScript($Script->name, $Script->pagesecurity, $db);
+				NewScript($Script->name, $Script->pagesecurity);
 				prnMsg($Script->name . ' ' . _('has been successfully added to KwaMoja'), 'success');
 			}
 		}
@@ -214,12 +214,12 @@ function RemoveLine($FileName) {
 	fclose($fp);
 }
 
-function executeSQL($sql, $db, $TrapErrors = False) {
+function executeSQL($sql, $TrapErrors = False) {
 	/* Run an sql statement and return an error code */
-	DB_IgnoreForeignKeys($db);
-	$result = DB_query($sql, $db, '', '', false, $TrapErrors);
-	$ErrorNumber = DB_error_no($db);
-	DB_ReinstateForeignKeys($db);
+	DB_IgnoreForeignKeys();
+	$result = DB_query($sql, '', '', false, $TrapErrors);
+	$ErrorNumber = DB_error_no();
+	DB_ReinstateForeignKeys();
 	return $ErrorNumber;
 }
 

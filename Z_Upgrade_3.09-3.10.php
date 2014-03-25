@@ -13,22 +13,22 @@ echo '<input type="submit" name="DoUpgrade" value="' . _('Perform Upgrade') . '"
 echo '</form>';
 
 if ($_POST['DoUpgrade'] == _('Perform Upgrade')) {
-	
+
 	$SQLScriptFile = file('./sql/mysql/upgrade3.09-3.10.sql');
-	
+
 	$ScriptFileEntries = sizeof($SQLScriptFile);
 	$ErrMsg = _('The script to upgrade the database failed because');
 	$SQL = '';
 	$InAFunction = false;
-	
+
 	for ($i = 0; $i <= $ScriptFileEntries; $i++) {
-		
+
 		$SQLScriptFile[$i] = trim($SQLScriptFile[$i]);
-		
+
 		if (mb_substr($SQLScriptFile[$i], 0, 2) != '--' and mb_substr($SQLScriptFile[$i], 0, 3) != 'USE' and mb_strstr($SQLScriptFile[$i], '/*') == FALSE and mb_strlen($SQLScriptFile[$i]) > 1) {
-			
+
 			$SQL .= ' ' . $SQLScriptFile[$i];
-			
+
 			//check if this line kicks off a function definition - pg chokes otherwise
 			if (mb_substr($SQLScriptFile[$i], 0, 15) == 'CREATE FUNCTION') {
 				$InAFunction = true;
@@ -39,15 +39,15 @@ if ($_POST['DoUpgrade'] == _('Perform Upgrade')) {
 			}
 			if (mb_strpos($SQLScriptFile[$i], ';') > 0 and !$InAFunction) {
 				$SQL = mb_substr($SQL, 0, mb_strlen($SQL) - 1);
-				$result = DB_query($SQL, $db, $ErrMsg);
+				$result = DB_query($SQL, $ErrMsg);
 				$SQL = '';
 			}
-			
+
 		} //end if its a valid sql line not a comment
 	} //end of for loop around the lines of the sql script
-	
+
 	/*Now run the data conversions required. */
-	
+
 }
 /*Dont do upgrade */
 

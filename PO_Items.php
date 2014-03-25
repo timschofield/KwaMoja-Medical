@@ -77,7 +77,7 @@ if (isset($_POST['Commit'])) {
 	/*If all clear then proceed to update the database
 	 */
 	if ($InputError != 1) {
-		$result = DB_Txn_Begin($db);
+		$result = DB_Txn_Begin();
 
 		/*figure out what status to set the order to */
 		if (IsEmailAddress($_SESSION['UserEmail'])) {
@@ -93,7 +93,7 @@ if (isset($_POST['Commit'])) {
 						WHERE userid='" . $_SESSION['UserID'] . "'
 						AND currabrev='" . $_SESSION['PO' . $identifier]->CurrCode . "'";
 
-			$AuthResult = DB_query($AuthSQL, $db);
+			$AuthResult = DB_query($AuthSQL);
 			$AuthRow = DB_fetch_array($AuthResult);
 
 			if (DB_num_rows($AuthResult) > 0 and $AuthRow['authlevel'] > $_SESSION['PO' . $identifier]->Order_Value()) { //user has authority to authrorise as well as create the order
@@ -126,7 +126,7 @@ if (isset($_POST['Commit'])) {
 			/*its a new order to be inserted */
 
 			/*Get the order number */
-			$_SESSION['PO' . $identifier]->OrderNo = GetNextTransNo(18, $db);
+			$_SESSION['PO' . $identifier]->OrderNo = GetNextTransNo(18);
 
 			/*Insert to purchase order header record */
 			$sql = "INSERT INTO purchorders ( orderno,
@@ -196,7 +196,7 @@ if (isset($_POST['Commit'])) {
 
 			$ErrMsg = _('The purchase order header record could not be inserted into the database because');
 			$DbgMsg = _('The SQL statement used to insert the purchase order header record and failed was');
-			$result = DB_query($sql, $db, $ErrMsg, $DbgMsg, true);
+			$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
 
 			/*Insert the purchase order detail records */
 			foreach ($_SESSION['PO' . $identifier]->LineItems as $POLine) {
@@ -230,7 +230,7 @@ if (isset($_POST['Commit'])) {
 					$ErrMsg = _('One of the purchase order detail records could not be inserted into the database because');
 					$DbgMsg = _('The SQL statement used to insert the purchase order detail record and failed was');
 
-					$result = DB_query($sql, $db, $ErrMsg, $DbgMsg, true);
+					$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
 				} //$POLine->Deleted == False
 			} //$_SESSION['PO' . $identifier]->LineItems as $POLine
 
@@ -294,7 +294,7 @@ if (isset($_POST['Commit'])) {
 
 			$ErrMsg = _('The purchase order could not be updated because');
 			$DbgMsg = _('The SQL statement used to update the purchase order header record, that failed was');
-			$result = DB_query($sql, $db, $ErrMsg, $DbgMsg, true);
+			$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
 
 			/*Now Update the purchase order detail records */
 			foreach ($_SESSION['PO' . $identifier]->LineItems as $POLine) {
@@ -303,7 +303,7 @@ if (isset($_POST['Commit'])) {
 						$sql = "DELETE FROM purchorderdetails WHERE podetailitem='" . $POLine->PODetailRec . "'";
 						$ErrMsg = _('The purchase order detail line could not be deleted because');
 						$DbgMsg = _('The SQL statement used to delete the purchase order detail record, that failed was');
-						$result = DB_query($sql, $db, $ErrMsg, $DbgMsg, true);
+						$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
 					} //$POLine->PODetailRec != ''
 				} //$POLine->Deleted == true
 				else if ($POLine->PODetailRec == '') {
@@ -376,7 +376,7 @@ if (isset($_POST['Commit'])) {
 
 				$ErrMsg = _('One of the purchase order detail records could not be updated because');
 				$DbgMsg = _('The SQL statement used to update the purchase order detail record that failed was');
-				$result = DB_query($sql, $db, $ErrMsg, $DbgMsg, true);
+				$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
 
 			} //$_SESSION['PO' . $identifier]->LineItems as $POLine
 
@@ -390,7 +390,7 @@ if (isset($_POST['Commit'])) {
 		/*end of if its a new order or an existing one */
 
 
-		$Result = DB_Txn_Commit($db);
+		$Result = DB_Txn_Commit();
 		/* Only show the link to auto receive the order if the user has permission to receive goods and permission to authorise and has authorised the order */
 		if ($_SESSION['PO' . $identifier]->Status == 'Authorised' and in_array($_SESSION['PageSecurityArray']['GoodsReceived.php'], $_SESSION['AllowedPageSecurityTokens'])) {
 
@@ -458,16 +458,16 @@ if (isset($_POST['EnterLine'])) {
 					WHERE accountcode ='" . $_POST['GLCode'] . "'";
 		$ErrMsg = _('The account details for') . ' ' . $_POST['GLCode'] . ' ' . _('could not be retrieved because');
 		$DbgMsg = _('The SQL used to retrieve the details of the account, but failed was');
-		$GLValidResult = DB_query($sql, $db, $ErrMsg, $DbgMsg, false, false);
-		if (DB_error_no($db) != 0) {
+		$GLValidResult = DB_query($sql, $ErrMsg, $DbgMsg, false, false);
+		if (DB_error_no() != 0) {
 			$AllowUpdate = false;
-			prnMsg(_('The validation process for the GL Code entered could not be executed because') . ' ' . DB_error_msg($db), 'error');
+			prnMsg(_('The validation process for the GL Code entered could not be executed because') . ' ' . DB_error_msg(), 'error');
 			if ($debug == 1) {
 				prnMsg(_('The SQL used to validate the code entered was') . ' ' . $sql, 'error');
 			} //$debug == 1
 			include('includes/footer.inc');
 			exit;
-		} //DB_error_no($db) != 0
+		} //DB_error_no() != 0
 		if (DB_num_rows($GLValidResult) == 0) {
 			/*The GLCode entered does not exist */
 			$AllowUpdate = false;
@@ -489,7 +489,7 @@ if (isset($_POST['EnterLine'])) {
 										FROM fixedassets
 										INNER JOIN fixedassetcategories
 										ON fixedassets.assetcategoryid=fixedassetcategories.categoryid
-										WHERE assetid='" . $_POST['AssetID'] . "'", $db);
+										WHERE assetid='" . $_POST['AssetID'] . "'");
 		if (DB_num_rows($ValidAssetResult) == 0) { // then the asset id entered doesn't exist
 			$AllowUpdate = false;
 			prnMsg(_('An asset code was entered but it does not yet exist. Only pre-existing asset ids can be entered when ordering a fixed asset'), 'error');
@@ -571,7 +571,7 @@ if (isset($_POST['NewItem']) and !empty($_POST['PO_ItemsResubmitFormValue']) and
 
 				$ErrMsg = _('The item details for') . ' ' . $ItemCode . ' ' . _('could not be retrieved because');
 				$DbgMsg = _('The SQL used to retrieve the item details but failed was');
-				$ItemResult = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+				$ItemResult = DB_query($sql, $ErrMsg, $DbgMsg);
 				if (DB_num_rows($ItemResult) == 1) {
 					$ItemRow = DB_fetch_array($ItemResult);
 
@@ -596,7 +596,7 @@ if (isset($_POST['NewItem']) and !empty($_POST['PO_ItemsResubmitFormValue']) and
 
 					$ErrMsg = _('The purchasing data for') . ' ' . $ItemCode . ' ' . _('could not be retrieved because');
 					$DbgMsg = _('The SQL used to retrieve the purchasing data but failed was');
-					$PurchDataResult = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+					$PurchDataResult = DB_query($sql, $ErrMsg, $DbgMsg);
 					if (DB_num_rows($PurchDataResult) > 0) { //the purchasing data is set up
 						$PurchRow = DB_fetch_array($PurchDataResult);
 						/* Now to get the applicable discounts */
@@ -612,7 +612,7 @@ if (isset($_POST['NewItem']) and !empty($_POST['PO_ItemsResubmitFormValue']) and
 						$ItemDiscountAmount = 0;
 						$ErrMsg = _('Could not retrieve the supplier discounts applicable to the item');
 						$DbgMsg = _('The SQL used to retrive the supplier discounts that failed was');
-						$DiscountResult = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+						$DiscountResult = DB_query($sql, $ErrMsg, $DbgMsg);
 						while ($DiscountRow = DB_fetch_array($DiscountResult)) {
 							$ItemDiscountPercent += $DiscountRow['discountpercent'];
 							$ItemDiscountAmount += $DiscountRow['discountamount'];
@@ -787,7 +787,7 @@ if (isset($_POST['NonStockOrder'])) {
 				FROM chartmaster
 				ORDER BY accountcode ASC";
 
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	while ($myrow = DB_fetch_array($result)) {
 		echo '<option value="' . $myrow['accountcode'] . '">' . $myrow['accountcode'] . ' - ' . $myrow['accountname'] . '</option>';
 	} //$myrow = DB_fetch_array($result)
@@ -801,7 +801,7 @@ if (isset($_POST['NonStockOrder'])) {
 					datepurchased
 				FROM fixedassets
 				ORDER BY assetid DESC";
-	$AssetsResult = DB_query($sql, $db);
+	$AssetsResult = DB_query($sql);
 	echo '<option selected="selected" value="Not an Asset">' . _('Not an Asset') . '</option>';
 	while ($AssetRow = DB_fetch_array($AssetsResult)) {
 		if ($AssetRow['datepurchased'] == '0000-00-00') {
@@ -1071,7 +1071,7 @@ if (isset($_POST['Search'])) {
 
 	$ErrMsg = _('There is a problem selecting the part records to display because');
 	$DbgMsg = _('The SQL statement that failed was');
-	$SearchResult = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+	$SearchResult = DB_query($sql, $ErrMsg, $DbgMsg);
 
 	if (DB_num_rows($SearchResult) == 0 and $debug == 1) {
 		prnMsg(_('There are no products to display matching the criteria provided'), 'warn');
@@ -1093,7 +1093,7 @@ if (!isset($_GET['Edit'])) {
 			ORDER BY categorydescription";
 	$ErrMsg = _('The supplier category details could not be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve the category details but failed was');
-	$result1 = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+	$result1 = DB_query($sql, $ErrMsg, $DbgMsg);
 
 	echo '<table class="selection">
 			<tr>
@@ -1187,7 +1187,7 @@ if (isset($SearchResult)) {
 					WHERE purchdata.supplierno='" . $_SESSION['PO' . $identifier]->SupplierID . "'
 					AND purchdata.stockid='" . $myrow['stockid'] . "'";
 		$ErrMsg = _('Could not retrieve the purchasing data for the item');
-		$PurchDataResult = DB_query($sql, $db, $ErrMsg);
+		$PurchDataResult = DB_query($sql, $ErrMsg);
 
 		if (DB_num_rows($PurchDataResult) > 0) {
 			$PurchDataRow = DB_fetch_array($PurchDataResult);

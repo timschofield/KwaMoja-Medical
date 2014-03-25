@@ -25,7 +25,7 @@ if (isset($_POST['CreateTemplate'])) {
 								  freightact
 								FROM currencies INNER JOIN companies
 								ON companies.currencydefault=currencies.currabrev
-								WHERE coycode='1'", $db);
+								WHERE coycode='1'");
 		$CurrRow = DB_fetch_array($CurrResult);
 
 
@@ -69,7 +69,7 @@ if (isset($_POST['CreateTemplate'])) {
 									pandl,
 									sequenceintb,
 									parentgroupname
-									FROM accountgroups", $db);
+									FROM accountgroups");
 
 		while ($GroupRow = DB_fetch_array($GroupsResult)) {
 			$SQLScript .= "INSERT INTO accountgroups (groupname,sectioninaccounts,pandl, sequenceintb, parentgroupname)
@@ -80,7 +80,7 @@ if (isset($_POST['CreateTemplate'])) {
 					  '" . $GroupRow['parentgroupname'] . "');\n";
 		}
 
-		$ChartResult = DB_query("SELECT accountcode, accountname, group_ FROM chartmaster", $db);
+		$ChartResult = DB_query("SELECT accountcode, accountname, group_ FROM chartmaster");
 		$i = 0;
 		while ($ChartRow = DB_fetch_array($ChartResult)) {
 			if ($_POST['IncludeAccount_' . $i] == 'on') {
@@ -104,7 +104,7 @@ if (isset($_POST['CreateTemplate'])) {
 										bankacctype,
 										bankacc,
 										bankswift
-										FROM taxauthorities", $db);
+										FROM taxauthorities");
 
 		while ($TaxAuthoritiesRow = DB_fetch_array($TaxAuthoritiesResult)) {
 			$SQLScript .= "INSERT INTO taxauthorities (taxid,
@@ -130,7 +130,7 @@ if (isset($_POST['CreateTemplate'])) {
 									 dispatchtaxprovince,
 									 taxcatid,
 									 taxrate
-									FROM taxauthrates", $db);
+									FROM taxauthrates");
 
 		while ($TaxAuthRatesRow = DB_fetch_array($TaxAuthRatesResult)) {
 			$SQLScript .= "INSERT INTO taxauthrates (taxauthority,
@@ -146,7 +146,7 @@ if (isset($_POST['CreateTemplate'])) {
 		/*taxgroups table */
 		$TaxGroupsResult = DB_query("SELECT taxgroupid,
 										taxgroupdescription
-										FROM taxgroups", $db);
+										FROM taxgroups");
 
 		while ($TaxGroupsRow = DB_fetch_array($TaxGroupsResult)) {
 			$SQLScript .= "INSERT INTO taxgroups (taxgroupid,
@@ -157,7 +157,7 @@ if (isset($_POST['CreateTemplate'])) {
 		/*tax categories table */
 		$TaxCategoriesResult = DB_query("SELECT taxcatid,
 										  taxcatname
-										FROM taxcategories", $db);
+										FROM taxcategories");
 
 		while ($TaxCategoriesRow = DB_fetch_array($TaxCategoriesResult)) {
 			$SQLScript .= "INSERT INTO taxcategories (taxcatid,
@@ -168,7 +168,7 @@ if (isset($_POST['CreateTemplate'])) {
 		/*tax provinces table */
 		$TaxProvincesResult = DB_query("SELECT taxprovinceid,
 										  taxprovincename
-										FROM taxprovinces", $db);
+										FROM taxprovinces");
 
 		while ($TaxProvincesRow = DB_fetch_array($TaxProvincesResult)) {
 			$SQLScript .= "INSERT INTO taxprovinces (taxprovinceid,
@@ -181,7 +181,7 @@ if (isset($_POST['CreateTemplate'])) {
 											 taxauthid,
 											 calculationorder,
 											 taxontax
-											FROM taxgrouptaxes", $db);
+											FROM taxgrouptaxes");
 
 		while ($TaxGroupTaxesRow = DB_fetch_array($TaxGroupTaxesResult)) {
 			$SQLScript .= "INSERT INTO taxgrouptaxes (taxgroupid,
@@ -234,7 +234,7 @@ prnMsg(_('Warning: All selected accounts will be exported - please de-select the
 echo '<table>';
 /*Show the chart of accounts to be exported for deslection of company specific ones */
 
-$ChartResult = DB_query("SELECT accountcode, accountname, group_ FROM chartmaster", $db);
+$ChartResult = DB_query("SELECT accountcode, accountname, group_ FROM chartmaster");
 
 echo '<tr>
 		<th>' . _('Account Code') . '</th>

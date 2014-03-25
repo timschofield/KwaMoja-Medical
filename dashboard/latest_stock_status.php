@@ -50,7 +50,7 @@ echo '<style>
 			</style>';
 
 $sql = "SELECT id FROM dashboard_scripts WHERE scripts='" . basename($_SERVER['PHP_SELF']) . "'";
-$result = DB_query($sql, $db);
+$result = DB_query($sql);
 $myrow = DB_fetch_array($result);
 
 echo '<table style="max-width:100%;width:99%;" border="0" cellspacing="0" cellpadding="1">
@@ -81,7 +81,7 @@ $SQL = "SELECT stockmaster.stockid,
 						stockmaster.discontinued,
 						stockmaster.decimalplaces
 					ORDER BY stockmaster.discontinued, stockmaster.stockid LIMIT 5";
-$searchresult = DB_query($SQL, $db);
+$searchresult = DB_query($SQL);
 
 echo '<tbody>
 		<tr>

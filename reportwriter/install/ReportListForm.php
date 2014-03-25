@@ -10,7 +10,7 @@ Revision History:
 Revision 1.0 - 2005-11-03 - By D. Premo - Initial Release
 */
 function GetReports($GroupID) {
-	global $db, $RootPath;
+	global $RootPath;
 	$Title= array(_('Custom Reports'), _('Default Reports'));
 	$RptForm = '<form name="ReportList" method="post" class="noPrint" action="'.$RootPath.'/reportwriter/ReportMaker.php?action=go">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -20,7 +20,7 @@ function GetReports($GroupID) {
 		$sql= "SELECT id, reportname FROM reports
 			WHERE defaultreport='".$Def."' AND groupname='".$GroupID."'
 			ORDER BY reportname";
-		$Result=DB_query($sql,$db,'','',false,true);
+		$Result=DB_query($sql,'','',false,true);
 		if (DB_num_rows($Result)>0) {
 			$RptForm .= '<tr><td><select name="ReportID" size="10" onchange="submit()">';
 			while ($Temp = DB_fetch_array($Result)) {

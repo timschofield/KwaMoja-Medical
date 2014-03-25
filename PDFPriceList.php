@@ -38,7 +38,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				debtorsmaster.salestype
 				FROM debtorsmaster
 				WHERE debtorno = '" . $_SESSION['CustomerID'] . "'";
-		$CustNameResult = DB_query($SQL, $db);
+		$CustNameResult = DB_query($SQL);
 		$CustNameRow = DB_fetch_row($CustNameResult);
 		$CustomerName = $CustNameRow[0];
 		$SalesType = $CustNameRow[1];
@@ -82,7 +82,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 		/* the sales type list only */
 
 		$SQL = "SELECT sales_type FROM salestypes WHERE typeabbrev='" . $_POST['SalesType'] . "'";
-		$SalesTypeResult = DB_query($SQL, $db);
+		$SalesTypeResult = DB_query($SQL);
 		$SalesTypeRow = DB_fetch_row($SalesTypeResult);
 		$SalesTypeName = $SalesTypeRow[0];
 
@@ -115,12 +115,12 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 					stockmaster.stockid,
 					prices.startdate";
 	}
-	$PricesResult = DB_query($SQL, $db, '', '', false, false);
+	$PricesResult = DB_query($SQL, '', '', false, false);
 
-	if (DB_error_no($db) != 0) {
+	if (DB_error_no() != 0) {
 		$Title = _('Price List') . ' - ' . _('Problem Report....');
 		include('includes/header.inc');
-		prnMsg(_('The Price List could not be retrieved by the SQL because') . ' - ' . DB_error_msg($db), 'error');
+		prnMsg(_('The Price List could not be retrieved by the SQL because') . ' - ' . DB_error_msg(), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($debug == 1) {
 			prnMsg(_('For debugging purposes the SQL used was') . ': ' . $SQL, 'error');
@@ -144,7 +144,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 	$CatTot_Val = 0;
 	$Pos = $Page_Height - $Top_Margin - $YPos + 20;
 
-	while ($PriceList = DB_fetch_array($PricesResult, $db)) {
+	while ($PriceList = DB_fetch_array($PricesResult)) {
 
 		if ($CurrCode != $PriceList['currabrev']) {
 			$FontSize = 10;
@@ -261,7 +261,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 					<td><select autofocus="autofocus" required="required" minlength="1" name="FromCriteria">';
 
 		$sql = 'SELECT categoryid, categorydescription FROM stockcategory ORDER BY categoryid';
-		$CatResult = DB_query($sql, $db);
+		$CatResult = DB_query($sql);
 		while ($myrow = DB_fetch_array($CatResult)) {
 			echo "<option value='" . $myrow['categoryid'] . "'>" . $myrow['categoryid'] . ' - ' . $myrow['categorydescription'] . '</option>';
 		}
@@ -282,7 +282,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				<td>' . _('For Sales Type/Price List') . ':</td>
 				<td><select minlength="0" name="SalesType">';
 		$sql = "SELECT sales_type, typeabbrev FROM salestypes";
-		$SalesTypesResult = DB_query($sql, $db);
+		$SalesTypesResult = DB_query($sql);
 
 		while ($myrow = DB_fetch_array($SalesTypesResult)) {
 			echo '<option value="' . $myrow['typeabbrev'] . '">' . $myrow['sales_type'] . '</option>';

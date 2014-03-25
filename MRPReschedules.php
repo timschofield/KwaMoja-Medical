@@ -6,7 +6,7 @@
 
 include('includes/session.inc');
 
-$result = DB_show_tables($db, 'mrprequirements');
+$result = DB_show_tables('mrprequirements');
 if (DB_num_rows($result) == 0) {
 	$Title = 'MRP error';
 	include('includes/header.inc');
@@ -36,12 +36,12 @@ if (isset($_POST['PrintPDF'])) {
 			  WHERE mrpsupplies.part = stockmaster.stockid AND duedate <> mrpdate
 				 $selecttype
 			  ORDER BY mrpsupplies.part";
-	$result = DB_query($sql, $db, '', '', false, true);
+	$result = DB_query($sql, '', '', false, true);
 
-	if (DB_error_no($db) != 0) {
+	if (DB_error_no() != 0) {
 		$Title = _('MRP Reschedules') . ' - ' . _('Problem Report');
 		include('includes/header.inc');
-		prnMsg(_('The MRP reschedules could not be retrieved by the SQL because') . ' ' . DB_error_msg($db), 'error');
+		prnMsg(_('The MRP reschedules could not be retrieved by the SQL because') . ' ' . DB_error_msg(), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($debug == 1) {
 			echo '<br />' . $sql;
@@ -66,7 +66,7 @@ if (isset($_POST['PrintPDF'])) {
 	$Tot_Val = 0;
 	$fill = false;
 	$pdf->SetFillColor(224, 235, 255);
-	while ($myrow = DB_fetch_array($result, $db)) {
+	while ($myrow = DB_fetch_array($result)) {
 
 		$YPos -= $line_height;
 		$FontSize = 8;

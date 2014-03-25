@@ -79,7 +79,7 @@ if (isset($_POST['SearchParts'])) {
 				ORDER BY stockmaster.stockid";
 	$ErrMsg = _('No stock items were returned by the SQL because');
 	$DbgMsg = _('The SQL used to retrieve the searched parts was');
-	$StockItemsResult = DB_query($SQL, $db, $ErrMsg, $DbgMsg);
+	$StockItemsResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 }
 /* Not appropriate really to restrict search by date since user may miss older
  * ouststanding orders
@@ -100,7 +100,7 @@ if (!isset($OrderNumber) or $OrderNumber == "") {
 						ON locations.loccode=www_users.defaultlocation
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
-	$resultStkLocs = DB_query($sql, $db);
+	$resultStkLocs = DB_query($sql);
 	while ($myrow = DB_fetch_array($resultStkLocs)) {
 		if (isset($_POST['StockLocation'])) {
 			if ($myrow['loccode'] == $_POST['StockLocation']) {
@@ -156,7 +156,7 @@ $SQL = "SELECT categoryid,
 			categorydescription
 		FROM stockcategory
 		ORDER BY categorydescription";
-$result1 = DB_query($SQL, $db);
+$result1 = DB_query($SQL);
 
 echo '<div class="page_help_text noPrint">' . _('To search for purchase orders for a specific part use the part selection facilities below') . '</div>';
 
@@ -294,7 +294,7 @@ if (isset($StockItemsResult)) {
 						suppliers.currcode";
 
 	$ErrMsg = _('No orders were returned by the SQL because');
-	$PurchOrdersResult = DB_query($SQL, $db, $ErrMsg);
+	$PurchOrdersResult = DB_query($SQL, $ErrMsg);
 
 	if (DB_num_rows($PurchOrdersResult) > 0) {
 		/*show a table of the orders returned by the SQL */

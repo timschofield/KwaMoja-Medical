@@ -27,7 +27,7 @@ echo '<table>'; // First column
 $SQL = "SELECT currabrev,
 				currency
 			FROM currencies";
-$result = DB_query($SQL, $db);
+$result = DB_query($SQL);
 
 // CurrencyToShow Currency Picker
 echo '<tr>

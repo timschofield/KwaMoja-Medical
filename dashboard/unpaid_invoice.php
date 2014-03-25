@@ -48,7 +48,7 @@ echo '<style>
 			</style>';
 
 $sql = "SELECT id FROM dashboard_scripts WHERE scripts='" . basename($_SERVER['PHP_SELF']) . "'";
-$result = DB_query($sql, $db);
+$result = DB_query($sql);
 $myrow = DB_fetch_array($result);
 
 echo '<div align="center" style="width:100%;">
@@ -93,7 +93,7 @@ $SQL = "SELECT salesorders.orderno,
 					salesorders.printedpackingslip,
 					salesorders.poplaced
 			ORDER BY salesorders.orderno";
-$SalesOrdersResult1 = DB_query($SQL, $db);
+$SalesOrdersResult1 = DB_query($SQL);
 
 
 echo '<tr>

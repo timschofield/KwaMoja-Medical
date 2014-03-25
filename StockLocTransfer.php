@@ -12,7 +12,7 @@ if (isset($_POST['Submit']) or isset($_POST['EnterMoreItems'])) {
 	/*Start off hoping for the best */
 	$TotalItems = 0;
 	//Make sure this Transfer has not already been entered... aka one way around the refresh & insert new records problem
-	$result = DB_query("SELECT * FROM loctransfers WHERE reference='" . $_POST['Trf_ID'] . "'", $db);
+	$result = DB_query("SELECT * FROM loctransfers WHERE reference='" . $_POST['Trf_ID'] . "'");
 	if (DB_num_rows($result) != 0) {
 		$InputError = true;
 		$ErrorMessage = _('This transaction has already been entered') . '. ' . _('Please start over now') . '<br />';
@@ -47,7 +47,7 @@ if (isset($_POST['Submit']) or isset($_POST['EnterMoreItems'])) {
 					switch ($i) {
 						case 0:
 							$StockID = trim(mb_strtoupper($myrow[$i]));
-							$result = DB_query("SELECT COUNT(stockid) FROM stockmaster WHERE stockid='" . $StockID . "'", $db);
+							$result = DB_query("SELECT COUNT(stockid) FROM stockmaster WHERE stockid='" . $StockID . "'");
 							$StockIDCheck = DB_fetch_row($result);
 							if ($StockIDCheck[0] == 0) {
 								$InputError = True;
@@ -68,14 +68,14 @@ if (isset($_POST['Submit']) or isset($_POST['EnterMoreItems'])) {
 									WHERE stockid='" . $StockID . "'
 										AND shiploc='" . $_POST['FromStockLocation'] . "'
 										AND shipqty>recqty";
-						$InTransitResult = DB_query($InTransitSQL, $db);
+						$InTransitResult = DB_query($InTransitSQL);
 						$InTransitRow = DB_fetch_array($InTransitResult);
 						$InTransitQuantity = $InTransitRow['intransit'];
 						// Only if stock exists at this location
 						$result = DB_query("SELECT quantity
 										FROM locstock
 										WHERE stockid='" . $StockID . "'
-										AND loccode='" . $_POST['FromStockLocation'] . "'", $db);
+										AND loccode='" . $_POST['FromStockLocation'] . "'");
 						$CheckStockRow = DB_fetch_array($result);
 						if (($CheckStockRow['quantity'] - $InTransitQuantity) < $Quantity) {
 							$InputError = True;
@@ -111,7 +111,7 @@ if (isset($_POST['Submit']) or isset($_POST['EnterMoreItems'])) {
 				}
 				if (isset($_POST['StockID' . $i]) and $_POST['StockID' . $i] != '') {
 					$_POST['StockID' . $i] = trim(mb_strtoupper($_POST['StockID' . $i]));
-					$result = DB_query("SELECT COUNT(stockid) FROM stockmaster WHERE stockid='" . $_POST['StockID' . $i] . "'", $db);
+					$result = DB_query("SELECT COUNT(stockid) FROM stockmaster WHERE stockid='" . $_POST['StockID' . $i] . "'");
 					$myrow = DB_fetch_row($result);
 					if ($myrow[0] == 0) {
 						$InputError = True;
@@ -135,14 +135,14 @@ if (isset($_POST['Submit']) or isset($_POST['EnterMoreItems'])) {
 										WHERE stockid='" . $_POST['StockID' . $i] . "'
 											AND shiploc='" . $_POST['FromStockLocation'] . "'
 											AND shipqty>recqty";
-						$InTransitResult = DB_query($InTransitSQL, $db);
+						$InTransitResult = DB_query($InTransitSQL);
 						$InTransitRow = DB_fetch_array($InTransitResult);
 						$InTransitQuantity = $InTransitRow['intransit'];
 						// Only if stock exists at this location
 						$result = DB_query("SELECT quantity
 											FROM locstock
 											WHERE stockid='" . $_POST['StockID' . $i] . "'
-											AND loccode='" . $_POST['FromStockLocation'] . "'", $db);
+											AND loccode='" . $_POST['FromStockLocation'] . "'");
 
 						$myrow = DB_fetch_array($result);
 						if (($myrow['quantity'] - $InTransitQuantity) < filter_number_format($_POST['StockQTY' . $i])) {
@@ -186,14 +186,14 @@ if (isset($_POST['Submit']) and $InputError == False) {
 
 	$ErrMsg = _('CRITICAL ERROR') . '! ' . _('Unable to BEGIN Location Transfer transaction');
 
-	DB_Txn_Begin($db);
+	DB_Txn_Begin();
 	for ($i = 0; $i < $_POST['LinesCounter']; $i++) {
 
 		if ($_POST['StockID' . $i] != '') {
 			$DecimalsSql = "SELECT decimalplaces
 							FROM stockmaster
 							WHERE stockid='" . $_POST['StockID' . $i] . "'";
-			$DecimalResult = DB_Query($DecimalsSql, $db);
+			$DecimalResult = DB_Query($DecimalsSql);
 			$DecimalRow = DB_fetch_array($DecimalResult);
 			$sql = "INSERT INTO loctransfers (reference,
 								stockid,
@@ -208,11 +208,11 @@ if (isset($_POST['Submit']) and $InputError == False) {
 							'" . $_POST['FromStockLocation'] . "',
 							'" . $_POST['ToStockLocation'] . "')";
 			$ErrMsg = _('CRITICAL ERROR') . '! ' . _('Unable to enter Location Transfer record for') . ' ' . $_POST['StockID' . $i];
-			$resultLocShip = DB_query($sql, $db, $ErrMsg);
+			$resultLocShip = DB_query($sql, $ErrMsg);
 		}
 	}
 	$ErrMsg = _('CRITICAL ERROR') . '! ' . _('Unable to COMMIT Location Transfer transaction');
-	DB_Txn_Commit($db);
+	DB_Txn_Commit();
 
 	prnMsg(_('The inventory transfer records have been created successfully'), 'success');
 	echo '<p><a href="' . $RootPath . '/PDFStockLocTransfer.php?TransferNo=' . $_POST['Trf_ID'] . '">' . _('Print the Transfer Docket') . '</a></p>';
@@ -227,7 +227,7 @@ if (isset($_POST['Submit']) and $InputError == False) {
 	}
 
 	if (!isset($Trf_ID)) {
-		$Trf_ID = GetNextTransNo(16, $db);
+		$Trf_ID = GetNextTransNo(16);
 	}
 
 	if (isset($InputError) and $InputError == true) {
@@ -260,7 +260,7 @@ if (isset($_POST['Submit']) and $InputError == False) {
 						ON locations.loccode=www_users.defaultlocation
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
-	$resultStkLocs = DB_query($sql, $db);
+	$resultStkLocs = DB_query($sql);
 
 	echo '<tr>
 			<td>' . _('From Stock Location') . ':</td>
@@ -285,7 +285,7 @@ if (isset($_POST['Submit']) and $InputError == False) {
 	$sql = "SELECT locationname,
 					loccode
 				FROM locations";
-	$resultStkLocs = DB_query($sql, $db);
+	$resultStkLocs = DB_query($sql);
 	echo '<td>' . _('To Stock Location') . ':</td>
 			<td><select required="required" minlength="1" name="ToStockLocation">';
 	while ($myrow = DB_fetch_array($resultStkLocs)) {

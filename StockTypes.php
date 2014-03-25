@@ -58,7 +58,7 @@ if (isset($_POST['submit'])) {
 				 FROM stocktypes
 				 WHERE type = '" . $_POST['TypeAbbrev'] . "'";
 
-		$CheckResult = DB_query($checkSql, $db);
+		$CheckResult = DB_query($checkSql);
 		$CheckRow = DB_fetch_row($CheckResult);
 
 		if ($CheckRow[0] > 0) {
@@ -83,7 +83,7 @@ if (isset($_POST['submit'])) {
 
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 
 		prnMsg($msg, 'success');
 
@@ -101,7 +101,7 @@ if (isset($_POST['submit'])) {
 		   WHERE stocktype='" . $SelectedType . "'";
 
 	$ErrMsg = _('The number of stock categories using this stock type could not be retrieved');
-	$result = DB_query($sql, $db, $ErrMsg);
+	$result = DB_query($sql, $ErrMsg);
 
 	$myrow = DB_fetch_row($result);
 	if ($myrow[0] > 0) {
@@ -111,7 +111,7 @@ if (isset($_POST['submit'])) {
 
 		$sql = "DELETE FROM stocktypes WHERE type='" . $SelectedType . "'";
 		$ErrMsg = _('The Stock Type record could not be deleted because');
-		$result = DB_query($sql, $db, $ErrMsg);
+		$result = DB_query($sql, $ErrMsg);
 		prnMsg(_('Stock type') . ' ' . $SelectedType . ' ' . _('has been deleted'), 'success');
 		unset($SelectedType);
 		unset($_GET['delete']);
@@ -139,7 +139,7 @@ if (!isset($SelectedType)) {
 					name,
 					physicalitem
 				FROM stocktypes";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 
 	echo '<table class="selection">
 			<tr>
@@ -200,7 +200,7 @@ if (!isset($_GET['delete'])) {
 				FROM stocktypes
 				WHERE type='" . $SelectedType . "'";
 
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		$myrow = DB_fetch_array($result);
 
 		$_POST['TypeAbbrev'] = $myrow['type'];

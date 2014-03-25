@@ -48,7 +48,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 	}
 
 	//start database transaction
-	DB_Txn_Begin($db);
+	DB_Txn_Begin();
 
 	//loop through file rows
 	$row = 1;
@@ -72,7 +72,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 
 		//first off check that the item actually exists
 		$sql = "SELECT COUNT(stockid) FROM stockmaster WHERE stockid='" . $myrow[0] . "'";
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		$testrow = DB_fetch_row($result);
 		if ($testrow[0] == 0) {
 			$InputError = 1;
@@ -80,7 +80,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 		}
 		//Then check that the price list actually exists
 		$sql = "SELECT COUNT(typeabbrev) FROM salestypes WHERE typeabbrev='" . $myrow[1] . "'";
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		$testrow = DB_fetch_row($result);
 		if ($testrow[0] == 0) {
 			$InputError = 1;
@@ -89,7 +89,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 
 		//Then check that the currency code actually exists
 		$sql = "SELECT COUNT(currabrev) FROM currencies WHERE currabrev='" . $myrow[2] . "'";
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		$testrow = DB_fetch_row($result);
 		if ($testrow[0] == 0) {
 			$InputError = 1;
@@ -106,7 +106,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 						WHERE stockid='" . $myrow[0] . "'
 							AND enddate>CURRENT_DATE
 							AND typeabbrev='" . $myrow[1] . "'";
-			$result = DB_query($sql, $db);
+			$result = DB_query($sql);
 
 			//Insert the price
 			$sql = "INSERT INTO prices (stockid,
@@ -124,7 +124,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 
 			$ErrMsg = _('The price could not be added because');
 			$DbgMsg = _('The SQL that was used to add the price failed was');
-			$result = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+			$result = DB_query($sql, $ErrMsg, $DbgMsg);
 
 
 		}
@@ -139,9 +139,9 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 
 	if ($InputError == 1) { //exited loop with errors so rollback
 		prnMsg(_('Failed on row ' . $row . '. Batch import has been rolled back.'), 'error');
-		DB_Txn_Rollback($db);
+		DB_Txn_Rollback();
 	} else { //all good so commit data transaction
-		DB_Txn_Commit($db);
+		DB_Txn_Commit();
 		prnMsg(_('Batch Import of') . ' ' . $FileName . ' ' . _('has been completed. All transactions committed to the database.'), 'success');
 	}
 

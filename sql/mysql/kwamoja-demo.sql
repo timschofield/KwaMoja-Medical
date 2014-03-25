@@ -5489,7 +5489,6 @@ INSERT INTO `config` VALUES ('DefaultFactoryLocation','MSA');
 INSERT INTO `config` VALUES ('DefaultPriceList','EA');
 INSERT INTO `config` VALUES ('DefaultSupplierType','1');
 INSERT INTO `config` VALUES ('DefaultTaxCategory','1');
-INSERT INTO `config` VALUES ('DefaultTheme','silverwolf');
 INSERT INTO `config` VALUES ('Default_Shipper','1');
 INSERT INTO `config` VALUES ('DefineControlledOnWOEntry','1');
 INSERT INTO `config` VALUES ('DispatchCutOffTime','14');

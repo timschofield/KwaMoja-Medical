@@ -239,7 +239,7 @@ while (false != ($ThemeName = $ThemeDirectory->read())) {
 
 		if (isset($_POST['Theme']) and $_POST['Theme'] == $ThemeName) {
 			echo '<option selected="selected" value="' . $ThemeName . '">' . $ThemeName . '</option>';
-		} else if (!isset($_POST['Theme']) and ($_SESSION['DefaultTheme'] == $ThemeName)) {
+		} elseif (!isset($_POST['Theme']) and ($Theme == $ThemeName)) {
 			echo '<option selected="selected" value="' . $ThemeName . '">' . $ThemeName . '</option>';
 		} else {
 			echo '<option value="' . $ThemeName . '">' . $ThemeName . '</option>';

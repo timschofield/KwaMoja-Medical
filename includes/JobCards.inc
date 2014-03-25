@@ -1,16 +1,16 @@
 <?php
 
-function GetJobCards($db) {
+function GetJobCards() {
 	// No option selected yet, so show Customer Type drop down list
 	$sql = "SELECT id,
-							invoice,
-							createdate,
-							completedate,
-							description
-						FROM jobcards
-						WHERE debtorno='" . $_SESSION['CustomerID'] . "'";
+					invoice,
+					createdate,
+					completedate,
+					description
+				FROM jobcards
+				WHERE debtorno='" . $_SESSION['CustomerID'] . "'";
 	$ErrMsg = _('The job cards can not be retrieved!');
-	$jobc_result = DB_query($sql, $db, $ErrMsg);
+	$jobc_result = DB_query($sql, $ErrMsg);
 
 	// Error if no customer types setup
 	if (DB_num_rows($jobc_result) == 0) {
@@ -42,7 +42,7 @@ function GetJobCards($db) {
 
 }
 
-function GetDebtorInfo($db, $printbk, $DebtorNo, $BranchCode) {
+function GetDebtorInfo($printbk, $DebtorNo, $BranchCode) {
 	// No option selected yet, so show Customer Type drop down list
 	$sql = "SELECT debtorsmaster.debtorno,
 					debtorsmaster.name,
@@ -68,7 +68,7 @@ function GetDebtorInfo($db, $printbk, $DebtorNo, $BranchCode) {
 					AND custbranch.debtorno='" . $DebtorNo . "'";
 
 	$ErrMsg = _('The job cards can not be retrieved!');
-	$jobc_result = DB_query($sql, $db, $ErrMsg);
+	$jobc_result = DB_query($sql, $ErrMsg);
 	$myrow = DB_fetch_array($jobc_result);
 
 	// Error if no customer types setup
@@ -93,10 +93,10 @@ function GetDebtorInfo($db, $printbk, $DebtorNo, $BranchCode) {
 
 }
 
-function GetJobCardNO($db) {
+function GetJobCardNO() {
 	$sql = 'SELECT MAX(id) FROM jobcards';
 	$ErrMsg = _('The job cards can not be retrieved!');
-	$jobc_result = DB_query($sql, $db, $ErrMsg);
+	$jobc_result = DB_query($sql, $ErrMsg);
 	$myrow = DB_fetch_row($jobc_result);
 	$ret = $myrow[0] + 1;
 	return $ret;

@@ -45,14 +45,14 @@ if (isset($_POST['Update']) and $_POST['RowCounter'] > 1) {
 						FROM banktrans
 						WHERE banktransid='" . $_POST['BankTrans_' . $Counter] . "'";
 			$ErrMsg = _('Could not retrieve transaction information');
-			$result = DB_query($sql, $db, $ErrMsg);
+			$result = DB_query($sql, $ErrMsg);
 			$myrow = DB_fetch_array($result);
 			$AmountCleared = round($myrow[0] / $myrow[1], 2);
 			/*Update the banktrans recoord to match it off */
 			$sql = "UPDATE banktrans SET amountcleared= " . $AmountCleared . "
 									WHERE banktransid='" . $_POST['BankTrans_' . $Counter] . "'";
 			$ErrMsg = _('Could not match off this payment because');
-			$result = DB_query($sql, $db, $ErrMsg);
+			$result = DB_query($sql, $ErrMsg);
 
 		} elseif ((isset($_POST['AmtClear_' . $Counter]) and filter_number_format($_POST['AmtClear_' . $Counter]) < 0 and $Type == 'Payments') or ($Type == 'Receipts' and isset($_POST['AmtClear_' . $Counter]) and filter_number_format($_POST['AmtClear_' . $Counter]) > 0)) {
 
@@ -62,14 +62,14 @@ if (isset($_POST['Update']) and $_POST['RowCounter'] > 1) {
 					 WHERE banktransid='" . $_POST['BankTrans_' . $Counter] . "'";
 
 			$ErrMsg = _('Could not update the amount matched off this bank transaction because');
-			$result = DB_query($sql, $db, $ErrMsg);
+			$result = DB_query($sql, $ErrMsg);
 
 		} elseif (isset($_POST['Unclear_' . $Counter]) and $_POST['Unclear_' . $Counter] == True) {
 
 			$sql = "UPDATE banktrans SET amountcleared = 0
 					 WHERE banktransid='" . $_POST['BankTrans_' . $Counter] . "'";
 			$ErrMsg = _('Could not unclear this bank transaction because');
-			$result = DB_query($sql, $db, $ErrMsg);
+			$result = DB_query($sql, $ErrMsg);
 		}
 	}
 	/*Show the updated position with the same criteria as previously entered*/
@@ -95,7 +95,7 @@ $sql = "SELECT bankaccounts.accountcode,
 				ON bankaccounts.accountcode=bankaccountusers.accountcode
 			WHERE bankaccountusers.userid = '" . $_SESSION['UserID'] . "'
 			ORDER BY bankaccounts.bankaccountname";
-$resultBankActs = DB_query($sql, $db);
+$resultBankActs = DB_query($sql);
 while ($myrow = DB_fetch_array($resultBankActs)) {
 	if (isset($_POST['BankAccount']) and $myrow['accountcode'] == $_POST['BankAccount']) {
 
@@ -182,7 +182,7 @@ if ($InputError != 1 and isset($_POST['BankAccount']) and $_POST['BankAccount'] 
 									currcode
 							FROM bankaccounts INNER JOIN currencies
 							ON bankaccounts.currcode=currencies.currabrev
-							WHERE accountcode='" . $_POST['BankAccount'] . "'", $db);
+							WHERE accountcode='" . $_POST['BankAccount'] . "'");
 	$BankRow = DB_fetch_array($BankResult);
 	$CurrDecimalPlaces = $BankRow['decimalplaces'];
 	$CurrCode = $BankRow['currcode'];
@@ -255,7 +255,7 @@ if ($InputError != 1 and isset($_POST['BankAccount']) and $_POST['BankAccount'] 
 	}
 
 	$ErrMsg = _('The payments with the selected criteria could not be retrieved because');
-	$PaymentsResult = DB_query($sql, $db, $ErrMsg);
+	$PaymentsResult = DB_query($sql, $ErrMsg);
 
 	echo '<table cellpadding="2" class="selection" summary="' . _('Payments to be matched') . '">
 			<tr>

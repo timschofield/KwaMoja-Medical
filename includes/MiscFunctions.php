@@ -429,11 +429,10 @@ function SendMailBySmtp(&$mail, $To) {
 }
 
 function GetMailList($Recipients) {
-	global $db;
 	$ToList = array();
 	$sql = "SELECT email,realname FROM mailgroupdetails INNER JOIN www_users ON www_users.userid=mailgroupdetails.userid WHERE mailgroupdetails.groupname='" . $Recipients . "'";
 	$ErrMsg = _('Failed to retrieve mail lists');
-	$result = DB_query($sql, $db, $ErrMsg);
+	$result = DB_query($sql, $ErrMsg);
 	if (DB_num_rows($result) != 0) {
 
 		//Create the string which meets the Recipients requirements
@@ -445,14 +444,14 @@ function GetMailList($Recipients) {
 	return $ToList;
 }
 
-function ChangeFieldInTable($TableName, $FieldName, $OldValue, $NewValue, $db) {
+function ChangeFieldInTable($TableName, $FieldName, $OldValue, $NewValue) {
 	/* Used in Z_ scripts to change one field across the table.
 	 */
 	echo '<br />' . _('Changing') . ' ' . $TableName . ' ' . _('records');
 	$sql = "UPDATE " . $TableName . " SET " . $FieldName . " ='" . $NewValue . "' WHERE " . $FieldName . "='" . $OldValue . "'";
 	$DbgMsg = _('The SQL statement that failed was');
 	$ErrMsg = _('The SQL to update' . ' ' . $TableName . ' ' . _('records failed'));
-	$result = DB_query($sql, $db, $ErrMsg, $DbgMsg, true);
+	$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
 	echo ' ... ' . _('completed');
 }
 

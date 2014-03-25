@@ -56,18 +56,18 @@ if (isset($_POST['SummaryType']) and $_POST['SummaryType'] == 'suppname') {
 
 if (isset($_POST['submit'])) {
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
-	submit($db, $PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $SupplierName, $SupplierNameOp, $SaveSummaryType);
+	submit($PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $SupplierName, $SupplierNameOp, $SaveSummaryType);
 } else if (isset($_POST['submitcsv'])) {
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
-	submitcsv($db, $PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $SupplierName, $SupplierNameOp, $SaveSummaryType);
+	submitcsv($PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $SupplierName, $SupplierNameOp, $SaveSummaryType);
 } else {
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . $Title . '</p>';
-	display($db);
+	display();
 }
 
 
 //####_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT####
-function submit(&$db, $PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $SupplierName, $SupplierNameOp, $SaveSummaryType) {
+function submit($PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $SupplierName, $SupplierNameOp, $SaveSummaryType) {
 
 	global $RootPath;
 	//initialize no input errors
@@ -461,7 +461,7 @@ function submit(&$db, $PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $S
 			}
 		} // End of if ($_POST['ReportType']
 		$ErrMsg = _('The SQL to find the parts selected failed with the message');
-		$result = DB_query($sql, $db, $ErrMsg);
+		$result = DB_query($sql, $ErrMsg);
 		$ctr = 0;
 		$TotalQty = 0;
 		$TotalExtCost = 0;
@@ -776,7 +776,7 @@ function submit(&$db, $PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $S
 } // End of function submit()
 
 //####_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT####
-function submitcsv(&$db, $PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $SupplierName, $SupplierNameOp, $SaveSummaryType) {
+function submitcsv($PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $SupplierName, $SupplierNameOp, $SaveSummaryType) {
 
 	//initialize no input errors
 	$InputError = 0;
@@ -1170,7 +1170,7 @@ function submitcsv(&$db, $PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp,
 			}
 		} // End of if ($_POST['ReportType']
 		$ErrMsg = _('The SQL to find the parts selected failed with the message');
-		$result = DB_query($sql, $db, $ErrMsg);
+		$result = DB_query($sql, $ErrMsg);
 		$ctr = 0;
 		$TotalQty = 0;
 		$TotalExtCost = 0;
@@ -1317,7 +1317,7 @@ function submitcsv(&$db, $PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp,
 } // End of function submitcvs()
 
 
-function display(&$db) //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
+function display() //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
 	{
 	// Display form fields. This function is called the first time
 	// the page is called.
@@ -1419,7 +1419,7 @@ function display(&$db) //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_###
 			<td>' . _('Stock Categories') . ':</td>
 			<td><select required="required" minlength="1" name="Category">';
 	$sql = "SELECT categoryid, categorydescription FROM stockcategory";
-	$CategoryResult = DB_query($sql, $db);
+	$CategoryResult = DB_query($sql);
 	echo '<option selected="selected" value="All">' . _('All Categories') . '</option>';
 	while ($myrow = DB_fetch_array($CategoryResult)) {
 		echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . '</option>';

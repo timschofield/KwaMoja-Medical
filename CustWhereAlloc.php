@@ -65,7 +65,7 @@ if (isset($_POST['ShowResults']) and $_POST['TransNo'] != '') {
 			WHERE type='" . $_POST['TransType'] . "'
 			AND transno = '" . $_POST['TransNo'] . "'";
 
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 
 	if (DB_num_rows($result) == 1) {
 		$myrow = DB_fetch_array($result);
@@ -87,7 +87,7 @@ if (isset($_POST['ShowResults']) and $_POST['TransNo'] != '') {
 				WHERE custallocns.transid_allocto='" . $AllocToID . "'";
 
 		$ErrMsg = _('The customer transactions for the selected criteria could not be retrieved because');
-		$TransResult = DB_query($sql, $db, $ErrMsg);
+		$TransResult = DB_query($sql, $ErrMsg);
 
 		if (DB_num_rows($TransResult) == 0) {
 			prnMsg(_('There are no allocations made against this transaction'), 'info');

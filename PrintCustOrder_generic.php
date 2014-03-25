@@ -107,7 +107,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 if ($_SESSION['SalesmanLogin'] != '') {
        $sql .= " AND salesorders.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
 }
-$result = DB_query($sql, $db, $ErrMsg);
+$result = DB_query($sql, $ErrMsg);
 
 //if there are no rows, there's a problem.
 if (DB_num_rows($result) == 0) {
@@ -209,7 +209,7 @@ for ($i = 1; $i <= 2; $i++) {
 					ON stockmaster.stockid = locstock.stockid
 				WHERE locstock.loccode = '" . $myrow['fromstkloc'] . "'
 					AND salesorderdetails.orderno='" . $_GET['TransNo'] . "'";
-	$result = DB_query($sql, $db, $ErrMsg);
+	$result = DB_query($sql, $ErrMsg);
 
 	if (DB_num_rows($result) > 0) {
 		/*Yes there are line items to start the ball rolling with a page header */
@@ -249,7 +249,7 @@ for ($i = 1; $i <= 2; $i++) {
 						ON bom.component=stockmaster.stockid
 						WHERE bom.parent='" . $myrow2['stkcode'] . "'";
 				$ErrMsg = _('Could not retrieve the components of the ordered assembly item');
-				$AssemblyResult = DB_query($sql, $db, $ErrMsg);
+				$AssemblyResult = DB_query($sql, $ErrMsg);
 				$LeftOvers = $pdf->addTextWrap($XPos, $YPos, 150, $FontSize, _('Assembly Components:-'));
 				$YPos -= ($line_height);
 				/*Loop around all the components of the assembly and list the quantity supplied */
@@ -292,7 +292,7 @@ if ($ListCount == 0) {
 	$sql = "UPDATE salesorders SET printedpackingslip=1,
 									datepackingslipprinted='" . Date('Y-m-d') . "'
 				WHERE salesorders.orderno='" . $_GET['TransNo'] . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 }
 
 ?>

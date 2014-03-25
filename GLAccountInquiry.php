@@ -48,8 +48,8 @@ if (isset($SelectedPeriod)) { //If it was called from itself (in other words an 
 	$FirstPeriodSelected = $_GET['FromPeriod'];
 	$LastPeriodSelected = $_GET['ToPeriod'];
 } else { // Otherwise just highlight the current period
-	$FirstPeriodSelected = GetPeriod(date($_SESSION['DefaultDateFormat']), $db);
-	$LastPeriodSelected = GetPeriod(date($_SESSION['DefaultDateFormat']), $db);
+	$FirstPeriodSelected = GetPeriod(date($_SESSION['DefaultDateFormat']));
+	$LastPeriodSelected = GetPeriod(date($_SESSION['DefaultDateFormat']));
 }
 
 /*Dates in SQL format for the last day of last month*/
@@ -60,8 +60,8 @@ echo '<table class="selection" summary="' . _('Inquiry Selection Criteria') . '"
 		<tr>
 			<td>' . _('Account') . ':</td><td><select minlength="0" name="Account">';
 $sql = "SELECT accountcode, accountname FROM chartmaster ORDER BY accountcode";
-$Account = DB_query($sql, $db);
-while ($myrow = DB_fetch_array($Account, $db)) {
+$Account = DB_query($sql);
+while ($myrow = DB_fetch_array($Account)) {
 	if ($myrow['accountcode'] == $SelectedAccount) {
 		echo '<option selected="selected" value="' . $myrow['accountcode'] . '">' . $myrow['accountcode'] . ' ' . htmlspecialchars($myrow['accountname'], ENT_QUOTES, 'UTF-8', false) . '</option>';
 	} else {
@@ -82,7 +82,7 @@ $SQL = "SELECT tagref,
 		FROM tags
 		ORDER BY tagref";
 
-$result = DB_query($SQL, $db);
+$result = DB_query($SQL);
 echo '<option value="0">0 - ' . _('All tags') . '</option>';
 while ($myrow = DB_fetch_array($result)) {
 	if (isset($_POST['tag']) and $_POST['tag'] == $myrow['tagref']) {
@@ -93,9 +93,9 @@ while ($myrow = DB_fetch_array($result)) {
 }
 echo '</select></td></tr><tr> <td>' . _('For Period range') . ':</td><td><select minlength="0" name="Period[]" size="12" multiple="multiple">';
 $sql = "SELECT periodno, lastdate_in_period FROM periods ORDER BY periodno DESC";
-$Periods = DB_query($sql, $db);
+$Periods = DB_query($sql);
 $id = 0;
-while ($myrow = DB_fetch_array($Periods, $db)) {
+while ($myrow = DB_fetch_array($Periods)) {
 	if (isset($FirstPeriodSelected) and $myrow['periodno'] >= $FirstPeriodSelected and $myrow['periodno'] <= $LastPeriodSelected) {
 		echo '<option selected="selected" value="' . $myrow['periodno'] . '">' . _(MonthAndYearFromSQLDate($myrow['lastdate_in_period'])) . '</option>';
 		$id++;
@@ -126,7 +126,7 @@ if (isset($_POST['Show'])) {
 	$result = DB_query("SELECT pandl
 				FROM accountgroups
 				INNER JOIN chartmaster ON accountgroups.groupname=chartmaster.group_
-				WHERE chartmaster.accountcode='" . $SelectedAccount . "'", $db);
+				WHERE chartmaster.accountcode='" . $SelectedAccount . "'");
 	$PandLRow = DB_fetch_row($result);
 	if ($PandLRow[0] == 1) {
 		$PandLAccount = True;
@@ -161,11 +161,11 @@ if (isset($_POST['Show'])) {
 	$sql = $sql . " ORDER BY periodno, gltrans.trandate, counterindex";
 
 	$NameSQL = "SELECT accountname FROM chartmaster WHERE accountcode='" . $SelectedAccount . "'";
-	$NameResult = DB_query($NameSQL, $db);
+	$NameResult = DB_query($NameSQL);
 	$NameRow = DB_fetch_array($NameResult);
 	$SelectedAccountName = $NameRow['accountname'];
 	$ErrMsg = _('The transactions for account') . ' ' . $SelectedAccount . ' ' . _('could not be retrieved because');
-	$TransResult = DB_query($sql, $db, $ErrMsg);
+	$TransResult = DB_query($sql, $ErrMsg);
 
 	echo '<br />
 			<table class="selection" summary="' . _('General Ledger account inquiry details') . '">
@@ -198,7 +198,7 @@ if (isset($_POST['Show'])) {
 					AND chartdetails.period='" . $FirstPeriodSelected . "'";
 
 		$ErrMsg = _('The chart details for account') . ' ' . $SelectedAccount . ' ' . _('could not be retrieved');
-		$ChartDetailsResult = DB_query($sql, $db, $ErrMsg);
+		$ChartDetailsResult = DB_query($sql, $ErrMsg);
 		$ChartDetailRow = DB_fetch_array($ChartDetailsResult);
 
 		$RunningTotal = $ChartDetailRow['bfwd'];
@@ -233,7 +233,7 @@ if (isset($_POST['Show'])) {
 								AND chartdetails.period='" . $PeriodNo . "'";
 
 				$ErrMsg = _('The chart details for account') . ' ' . $SelectedAccount . ' ' . _('could not be retrieved');
-				$ChartDetailsResult = DB_query($sql, $db, $ErrMsg);
+				$ChartDetailsResult = DB_query($sql, $ErrMsg);
 				$ChartDetailRow = DB_fetch_array($ChartDetailsResult);
 
 				echo '<tr>
@@ -287,7 +287,7 @@ if (isset($_POST['Show'])) {
 		$URL_to_TransDetail = $RootPath . '/GLTransInquiry.php?TypeID=' . $myrow['type'] . '&amp;TransNo=' . $myrow['typeno'];
 
 		$tagsql = "SELECT tagdescription FROM tags WHERE tagref='" . $myrow['tag'] . "'";
-		$tagresult = DB_query($tagsql, $db);
+		$tagresult = DB_query($tagsql);
 		$tagrow = DB_fetch_array($tagresult);
 		if ($tagrow['tagdescription'] == '') {
 			$tagrow['tagdescription'] = _('None');

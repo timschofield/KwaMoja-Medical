@@ -77,7 +77,7 @@ if (isset($_POST['submit'])) {
 		$ErrMsg = _('An error occurred updating the') . ' ' . $SelectedManufacturer . ' ' . _('manufacturer record because');
 		$DbgMsg = _('The SQL used to update the manufacturer record was');
 
-		$result = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+		$result = DB_query($sql, $ErrMsg, $DbgMsg);
 
 		prnMsg(_('The manufacturer record has been updated'), 'success');
 		unset($_POST['ManufacturersName']);
@@ -96,7 +96,7 @@ if (isset($_POST['submit'])) {
 
 		$ErrMsg = _('An error occurred inserting the new manufacturer record because');
 		$DbgMsg = _('The SQL used to insert the manufacturer record was');
-		$result = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+		$result = DB_query($sql, $ErrMsg, $DbgMsg);
 
 		if (isset($_FILES['BrandPicture']) and $_FILES['BrandPicture']['name'] != '') {
 
@@ -126,7 +126,7 @@ if (isset($_POST['submit'])) {
 			if ($UploadTheFile == 'Yes') {
 				$result = move_uploaded_file($_FILES['BrandPicture']['tmp_name'], $FileName);
 				$message = ($result) ? _('File url') . '<a href="' . $FileName . '">' . $FileName . '</a>' : _('Something is wrong with uploading a file');
-				DB_query("UPDATE manufacturers SET  manufacturers_image='" . $FileName . "'", $db);
+				DB_query("UPDATE manufacturers SET  manufacturers_image='" . $FileName . "'");
 			}
 		}
 
@@ -146,7 +146,7 @@ if (isset($_POST['submit'])) {
 
 	// PREVENT DELETES IF DEPENDENT RECORDS
 	$sql = "SELECT COUNT(*) FROM salescatprod WHERE manufacturers_id='" . $SelectedManufacturer . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_row($result);
 	if ($myrow[0] > 0) {
 		$CancelDelete = true;
@@ -156,7 +156,7 @@ if (isset($_POST['submit'])) {
 
 	if (!$CancelDelete) {
 
-		$result = DB_query("DELETE FROM manufacturers WHERE manufacturers_id='" . $SelectedManufacturer . "'", $db);
+		$result = DB_query("DELETE FROM manufacturers WHERE manufacturers_id='" . $SelectedManufacturer . "'");
 		if (file_exists($_SESSION['part_pics_dir'] . '/BRAND-' . $SelectedManufacturer . '.jpg')) {
 			unlink($_SESSION['part_pics_dir'] . '/BRAND-' . $SelectedManufacturer . '.jpg');
 		}
@@ -179,7 +179,7 @@ if (!isset($SelectedManufacturer)) {
 				manufacturers_url,
 				manufacturers_image
 			FROM manufacturers";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 
 	echo '<p class="page_Title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" Title="' . _('Manufacturers') . '" alt="" />' . ' ' . $Title . '</p>';
 
@@ -251,7 +251,7 @@ if (!isset($_GET['delete'])) {
 				FROM manufacturers
 				WHERE manufacturers_id='" . $SelectedManufacturer . "'";
 
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		$myrow = DB_fetch_array($result);
 
 		$_POST['ManufacturersName'] = $myrow['manufacturers_name'];

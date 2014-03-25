@@ -110,7 +110,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 				WHERE salesorders.orderno='" . $_GET['TransNo'] . "'
 					AND www_users.userid='" . $_SESSION['UserID'] . "'";
 }
-$result = DB_query($sql, $db, $ErrMsg);
+$result = DB_query($sql, $ErrMsg);
 
 //if there are no rows, there's a problem.
 if (DB_num_rows($result) == 0) {
@@ -268,7 +268,7 @@ $sql = "SELECT salesorderdetails.stkcode,
 			ON salesorderdetails.stkcode=stockmaster.stockid
 		WHERE salesorderdetails.orderno=" . $_GET['TransNo'] . "
 		ORDER BY poline";
-$result = DB_query($sql, $db, $ErrMsg);
+$result = DB_query($sql, $ErrMsg);
 $i = 0;
 if (DB_num_rows($result) > 0) {
 

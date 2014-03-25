@@ -29,25 +29,25 @@ if (isset($_POST['UpdateAll'])) {
 			}
 
 			$sql = "SELECT materialcost, labourcost, overheadcost, decimalplaces FROM stockmaster WHERE stockid='" . $StockID . "'";
-			$result = DB_query($sql, $db);
+			$result = DB_query($sql);
 			$myrow = DB_fetch_array($result);
 			$StandardCost = $myrow['materialcost'] + $myrow['labourcost'] + $myrow['overheadcost'];
 			$DecimalPlaces = $myrow['decimalplaces'];
 
 			$Narrative = _('Issue') . ' ' . $Quantity . ' ' . _('of') . ' ' . $StockID . ' ' . _('to department') . ' ' . $Department . ' ' . _('from') . ' ' . $Location;
 
-			$AdjustmentNumber = GetNextTransNo(17, $db);
-			$PeriodNo = GetPeriod(Date($_SESSION['DefaultDateFormat']), $db);
+			$AdjustmentNumber = GetNextTransNo(17);
+			$PeriodNo = GetPeriod(Date($_SESSION['DefaultDateFormat']));
 			$SQLAdjustmentDate = FormatDateForSQL(Date($_SESSION['DefaultDateFormat']));
 
-			$Result = DB_Txn_Begin($db);
+			$Result = DB_Txn_Begin();
 
 			// Need to get the current location quantity will need it later for the stock movement
 			$SQL = "SELECT locstock.quantity
 					FROM locstock
 					WHERE locstock.stockid='" . $StockID . "'
 						AND loccode= '" . $Location . "'";
-			$Result = DB_query($SQL, $db);
+			$Result = DB_query($SQL);
 			if (DB_num_rows($Result) == 1) {
 				$LocQtyRow = DB_fetch_row($Result);
 				$QtyOnHandPrior = $LocQtyRow[0];
@@ -83,11 +83,11 @@ if (isset($_POST['UpdateAll'])) {
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The stock movement record cannot be inserted because');
 				$DbgMsg = _('The following SQL to insert the stock movement record was used');
-				$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 
 				/*Get the ID of the StockMove... */
-				$StkMoveNo = DB_Last_Insert_ID($db, 'stockmoves', 'stkmoveno');
+				$StkMoveNo = DB_Last_Insert_ID('stockmoves', 'stkmoveno');
 
 				$SQL = "UPDATE stockrequestitems
 						SET qtydelivered=qtydelivered+" . $Quantity . "
@@ -96,7 +96,7 @@ if (isset($_POST['UpdateAll'])) {
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The location stock record could not be updated because');
 				$DbgMsg = _('The following SQL to update the stock record was used');
-				$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 				$SQL = "UPDATE locstock SET quantity = quantity - '" . $Quantity . "'
 									WHERE stockid='" . $StockID . "'
@@ -105,11 +105,11 @@ if (isset($_POST['UpdateAll'])) {
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The location stock record could not be updated because');
 				$DbgMsg = _('The following SQL to update the stock record was used');
 
-				$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 				if ($_SESSION['CompanyRecord']['gllink_stock'] == 1 and $StandardCost > 0) {
 
-					$StockGLCodes = GetStockGLCode($StockID, $db);
+					$StockGLCodes = GetStockGLCode($StockID);
 
 					$SQL = "INSERT INTO gltrans (type,
 												typeno,
@@ -131,7 +131,7 @@ if (isset($_POST['UpdateAll'])) {
 
 					$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The general ledger transaction entries could not be added because');
 					$DbgMsg = _('The following SQL to insert the GL entries was used');
-					$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 					$SQL = "INSERT INTO gltrans (type,
 												typeno,
@@ -153,7 +153,7 @@ if (isset($_POST['UpdateAll'])) {
 
 					$Errmsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The general ledger transaction entries could not be added because');
 					$DbgMsg = _('The following SQL to insert the GL entries was used');
-					$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 				}
 
 				if (($Quantity >= $RequestedQuantity) or $Completed == True) {
@@ -161,10 +161,10 @@ if (isset($_POST['UpdateAll'])) {
 								SET completed=1
 							WHERE dispatchid='" . $RequestID . "'
 								AND dispatchitemsid='" . $LineID . "'";
-					$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 				}
 
-				$Result = DB_Txn_Commit($db);
+				$Result = DB_Txn_Commit();
 
 				$ConfirmationText = _('An internal stock request for') . ' ' . $StockID . ' ' . _('has been fulfilled from location') . ' ' . $Location . ' ' . _('for a quantity of') . ' ' . locale_number_format($Quantity, $DecimalPlaces);
 				prnMsg($ConfirmationText, 'success');
@@ -197,12 +197,12 @@ if (isset($_POST['UpdateAll'])) {
 						FROM stockrequestitems
 						WHERE dispatchid='" . $RequestID . "'
 							AND completed=0";
-				$Result = DB_query($SQL, $db);
+				$Result = DB_query($SQL);
 				if (DB_num_rows($Result) == 0) {
 					$SQL = "UPDATE stockrequest
 						SET closed=1
 					WHERE dispatchid='" . $RequestID . "'";
-					$Result = DB_query($SQL, $db);
+					$Result = DB_query($SQL);
 				}
 			}
 		}
@@ -233,7 +233,7 @@ if (!isset($_POST['Location'])) {
 						AND internalrequest = 1
 					ORDER BY locationname";
 	}
-	$resultStkLocs = DB_query($sql, $db);
+	$resultStkLocs = DB_query($sql);
 	while ($myrow = DB_fetch_array($resultStkLocs)) {
 		if (isset($_SESSION['Adjustment']->StockLocation)) {
 			if ($myrow['loccode'] == $_SESSION['Adjustment']->StockLocation) {
@@ -273,7 +273,7 @@ if (isset($_POST['Location'])) {
 	WHERE stockrequest.authorised=1
 		AND stockrequest.closed=0
 		AND stockrequest.loccode='" . $_POST['Location'] . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 
 	if (DB_num_rows($result) == 0) {
 		prnMsg(_('There are no outstanding authorised requests for this location'), 'info');
@@ -317,7 +317,7 @@ if (isset($_POST['Location'])) {
 				ON stockmaster.stockid=stockrequestitems.stockid
 			WHERE dispatchid='" . $myrow['dispatchid'] . "'
 				AND completed=0";
-		$LineResult = DB_query($LineSQL, $db);
+		$LineResult = DB_query($LineSQL);
 
 		echo '<tr>
 				<td></td>
@@ -346,7 +346,7 @@ if (isset($_POST['Location'])) {
 						FROM tags
 						ORDER BY tagref";
 
-			$TagResult = DB_query($SQL, $db);
+			$TagResult = DB_query($SQL);
 			echo '<option value=0>0 - None</option>';
 			while ($mytagrow = DB_fetch_array($TagResult)) {
 				if (isset($_SESSION['Adjustment']->tag) and $_SESSION['Adjustment']->tag == $mytagrow['tagref']) {

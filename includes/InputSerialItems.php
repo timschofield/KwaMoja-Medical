@@ -49,8 +49,7 @@ $invalid_imports = 0;
 $valid = true;
 
 echo '<form method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $identifier . '" enctype="multipart/form-data" >';
-echo '<div>
-		<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
+echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
 		<input type="hidden" name="LineNo" value="' . $LineNo . '" />
 		<input type="hidden" name="StockID" value="' . $StockID . '" />';
 
@@ -92,7 +91,6 @@ echo ' value="FILE" />' . _('File Upload') . '&nbsp; <input type="file" name="Im
 		</td>
 	</tr>
 	</table>
-	</div>
 	</form>';
 
 global $TableHeader;
@@ -108,7 +106,7 @@ $RemoveLink = '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, '
 $sql = "SELECT perishable
 		FROM stockmaster
 		WHERE stockid='" . $StockID . "'";
-$result = DB_query($sql, $db);
+$result = DB_query($sql);
 $myrow = DB_fetch_array($result);
 $Perishable = $myrow['perishable'];
 if ($LineItem->Serialised == 1) {

@@ -77,7 +77,7 @@ if (isset($_POST['Submit']) or isset($_POST['Update'])) {
 		$ErrMsg = _('The factoring company') . ' ' . $_POST['FactorName'] . ' ' . _('could not be added because');
 		$DbgMsg = _('The SQL that was used to insert the factor but failed was');
 
-		$result = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+		$result = DB_query($sql, $ErrMsg, $DbgMsg);
 
 		prnMsg(_('A new factoring company for') . ' ' . $_POST['FactorName'] . ' ' . _('has been added to the database'), 'success');
 
@@ -97,7 +97,7 @@ if (isset($_POST['Submit']) or isset($_POST['Update'])) {
 
 		$ErrMsg = _('The factoring company could not be updated because');
 		$DbgMsg = _('The SQL that was used to update the factor but failed was');
-		$result = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+		$result = DB_query($sql, $ErrMsg, $DbgMsg);
 
 		prnMsg(_('The factoring company record for') . ' ' . $_POST['FactorName'] . ' ' . _('has been updated'), 'success');
 
@@ -123,7 +123,7 @@ if (isset($_POST['Delete'])) {
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'SuppTrans' , PurchOrders, SupplierContacts
 
 	$sql = "SELECT COUNT(*) FROM suppliers WHERE factorcompanyid='" . $FactorID . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_row($result);
 	if ($myrow[0] > 0) {
 		$CancelDelete = 1;
@@ -133,7 +133,7 @@ if (isset($_POST['Delete'])) {
 
 	if ($CancelDelete == 0) {
 		$sql = "DELETE FROM factorcompanies WHERE id='" . $FactorID . "'";
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		prnMsg(_('Factoring company record record for') . ' ' . $_POST['FactorName'] . ' ' . _('has been deleted'), 'success');
 		echo '<br />';
 		unset($_SESSION['FactorID']);
@@ -162,7 +162,7 @@ if (isset($FactorID) and isset($_POST['Amend'])) {
 			FROM factorcompanies
 			WHERE id = '" . $FactorID . "'";
 
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_array($result);
 
 	$_POST['FactorName'] = $myrow['coyname'];
@@ -306,7 +306,7 @@ if (empty($FactorID) and !isset($_POST['Create']) and !isset($_POST['Amend'])) {
 					fax,
 					email
 			FROM factorcompanies";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$j = 1;
 	while ($myrow = DB_fetch_array($result)) {
 		if ($j == 1) {

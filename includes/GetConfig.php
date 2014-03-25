@@ -3,18 +3,17 @@
 // $ForceConfigReload to true
 
 if (isset($ForceConfigReload) and $ForceConfigReload == true or !isset($_SESSION['CompanyDefaultsLoaded']) or isset($_SESSION['FirstStart'])) {
-	global $db; // It is global, we may not be.
 
 	//purge the audit trail if necessary
 	if (isset($_SESSION['MonthsAuditTrail'])) {
 		$sql = "DELETE FROM audittrail
 				WHERE  transactiondate <= '" . Date('Y-m-d', mktime(0, 0, 0, Date('m') - $_SESSION['MonthsAuditTrail'])) . "'";
 		$ErrMsg = _('There was a problem deleting expired audit-trail history');
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 	} //isset($_SESSION['MonthsAuditTrail'])
 	$sql = "SELECT confname, confvalue FROM config";
 	$ErrMsg = _('Could not get the configuration parameters from the database because');
-	$ConfigResult = DB_query($sql, $db, $ErrMsg);
+	$ConfigResult = DB_query($sql, $ErrMsg);
 	while ($myrow = DB_fetch_array($ConfigResult)) {
 		if (is_numeric($myrow['confvalue']) and $myrow['confname'] != 'DefaultPriceList' and $myrow['confname'] != 'VersionNumber') {
 			//the variable name is given by $myrow[0]
@@ -30,8 +29,8 @@ if (isset($ForceConfigReload) and $ForceConfigReload == true or !isset($_SESSION
 
 	/*Load the pagesecurity settings from the database */
 	$sql = "SELECT script, pagesecurity FROM scripts";
-	$result = DB_query($sql, $db, '', '', false, false);
-	if (DB_error_no($db) != 0) {
+	$result = DB_query($sql, '', '', false, false);
+	if (DB_error_no() != 0) {
 		/* the table may not exist with the pagesecurity field in it if it is an older KwaMoja database
 		 * divert to the db upgrade if the VersionNumber is not in the config table
 		 * */
@@ -50,10 +49,10 @@ if (isset($ForceConfigReload) and $ForceConfigReload == true or !isset($_SESSION
 	/*
 	check the decimalplaces field exists in currencies - this was added in 4.0 but is required in 4.04 as it is used everywhere as the default decimal places to show on all home currency amounts
 	*/
-	$result = DB_query("SELECT decimalplaces FROM currencies", $db, '', '', false, false);
-	if (DB_error_no($db) != 0) { //then decimalplaces not already a field in currencies
+	$result = DB_query("SELECT decimalplaces FROM currencies", '', '', false, false);
+	if (DB_error_no() != 0) { //then decimalplaces not already a field in currencies
 		$result = DB_query("ALTER TABLE `currencies`
-							ADD COLUMN `decimalplaces` tinyint(3) NOT NULL DEFAULT 2 AFTER `hundredsname`", $db);
+							ADD COLUMN `decimalplaces` tinyint(3) NOT NULL DEFAULT 2 AFTER `hundredsname`");
 	}
 	/* Also reads all the company data set up in the company record and returns an array */
 
@@ -87,14 +86,14 @@ if (isset($ForceConfigReload) and $ForceConfigReload == true or !isset($_SESSION
 				WHERE coycode=1";
 
 	$ErrMsg = _('An error occurred accessing the database to retrieve the company information');
-	$ReadCoyResult = DB_query($sql, $db, $ErrMsg);
+	$ReadCoyResult = DB_query($sql, $ErrMsg);
 
 	if (DB_num_rows($ReadCoyResult) == 0) {
 		$PeriodsSQL = "SELECT periodno FROM periods";
-		$PeriodResult = DB_query($PeriodsSQL, $db);
+		$PeriodResult = DB_query($PeriodsSQL);
 		if (DB_num_rows($PeriodResult) == 0) {
 			$_SESSION['DefaultDateFormat'] = 'd/m/Y';
-			GetPeriod(DateAdd(date($_SESSION['DefaultDateFormat']), 'm', -12),$db);
+			GetPeriod(DateAdd(date($_SESSION['DefaultDateFormat']), 'm', -12));
 		}
 	} else {
 		$_SESSION['CompanyRecord'] = DB_fetch_array($ReadCoyResult);
@@ -109,8 +108,8 @@ if (isset($ForceConfigReload) and $ForceConfigReload == true or !isset($_SESSION
 				timeout,
 				auth
 			FROM emailsettings";
-	$result = DB_query($sql, $db, '', '', false, false);
-	if (DB_error_no($db) == 0) {
+	$result = DB_query($sql, '', '', false, false);
+	if (DB_error_no() == 0) {
 		/*test to ensure that the emailsettings table exists!!
 		 * if it doesn't exist then we are into an UpgradeDatabase scenario anyway
 		 */

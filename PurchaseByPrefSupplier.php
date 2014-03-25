@@ -27,7 +27,7 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 
 				$ErrMsg = _('The item details for') . ' ' . $StockID . ' ' . _('could not be retrieved because');
 				$DbgMsg = _('The SQL used to retrieve the item details but failed was');
-				$ItemResult = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+				$ItemResult = DB_query($sql, $ErrMsg, $DbgMsg);
 				if (DB_num_rows($ItemResult) == 1) {
 					$ItemRow = DB_fetch_array($ItemResult);
 
@@ -52,7 +52,7 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 
 					$ErrMsg = _('The purchasing data for') . ' ' . $StockID . ' ' . _('could not be retrieved because');
 					$DbgMsg = _('The SQL used to retrieve the purchasing data but failed was');
-					$PurchDataResult = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+					$PurchDataResult = DB_query($sql, $ErrMsg, $DbgMsg);
 					if (DB_num_rows($PurchDataResult) > 0) { //the purchasing data is set up
 						$PurchRow = DB_fetch_array($PurchDataResult);
 
@@ -69,7 +69,7 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 						$ItemDiscountAmount = 0;
 						$ErrMsg = _('Could not retrieve the supplier discounts applicable to the item');
 						$DbgMsg = _('The SQL used to retrive the supplier discounts that failed was');
-						$DiscountResult = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+						$DiscountResult = DB_query($sql, $ErrMsg, $DbgMsg);
 						while ($DiscountRow = DB_fetch_array($DiscountResult)) {
 							$ItemDiscountPercent += $DiscountRow['discountpercent'];
 							$ItemDiscountAmount += $DiscountRow['discountamount'];
@@ -128,7 +128,7 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 				INNER JOIN currencies
 					ON suppliers.currcode=currencies.currabrev
 				WHERE supplierid='" . $_POST['Supplier'] . "'";
-		$SupplierResult = DB_query($sql, $db);
+		$SupplierResult = DB_query($sql);
 		$SupplierRow = DB_fetch_array($SupplierResult);
 
 		$sql = "SELECT deladd1,
@@ -141,7 +141,7 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 						contact
 					FROM locations
 					WHERE loccode='" . $_SESSION['UserStockLocation'] . "'";
-		$LocnAddrResult = DB_query($sql, $db);
+		$LocnAddrResult = DB_query($sql);
 		if (DB_num_rows($LocnAddrResult) == 1) {
 			$LocnRow = DB_fetch_array($LocnAddrResult);
 		} else {
@@ -160,7 +160,7 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 						WHERE userid='" . $_SESSION['UserID'] . "'
 							AND currabrev='" . $SupplierRow['currcode'] . "'";
 
-			$AuthResult = DB_query($AuthSQL, $db);
+			$AuthResult = DB_query($AuthSQL);
 			$AuthRow = DB_fetch_array($AuthResult);
 
 			if (DB_num_rows($AuthResult) > 0 and $AuthRow['authlevel'] > $OrderValue) { //user has authority to authrorise as well as create the order
@@ -187,7 +187,7 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 		}
 
 		/*Get the order number */
-		$OrderNo = GetNextTransNo(18, $db);
+		$OrderNo = GetNextTransNo(18);
 
 		/*Insert to purchase order header record */
 		$sql = "INSERT INTO purchorders ( orderno,
@@ -249,7 +249,7 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 
 		$ErrMsg = _('The purchase order header record could not be inserted into the database because');
 		$DbgMsg = _('The SQL statement used to insert the purchase order header record and failed was');
-		$result = DB_query($sql, $db, $ErrMsg, $DbgMsg, true);
+		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
 
 		/*Insert the purchase order detail records */
 		foreach ($PurchItems as $StockID => $POLine) {
@@ -286,7 +286,7 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 			$ErrMsg = _('One of the purchase order detail records could not be inserted into the database because');
 			$DbgMsg = _('The SQL statement used to insert the purchase order detail record and failed was');
 
-			$result = DB_query($sql, $db, $ErrMsg, $DbgMsg, true);
+			$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
 		}
 		/* end of the loop round the detail line items on the order */
 		echo '<p />';
@@ -310,7 +310,7 @@ echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/
 		<td><select name="Supplier">';
 
 $sql = "SELECT supplierid, suppname FROM suppliers WHERE supptype<>7 ORDER BY suppname";
-$SuppResult = DB_query($sql, $db);
+$SuppResult = DB_query($sql);
 
 echo '<option value="">' . _('Not Yet Selected') . '</option>';
 
@@ -359,13 +359,13 @@ if (isset($_POST['Supplier']) and isset($_POST['ShowItems']) and $_POST['Supplie
 						purchdata.supplierno,
 						stockmaster.stockid";
 
-	$ItemsResult = DB_query($SQL, $db, '', '', false, false);
+	$ItemsResult = DB_query($SQL, '', '', false, false);
 	$ListCount = DB_num_rows($ItemsResult);
 
-	if (DB_error_no($db) != 0) {
+	if (DB_error_no() != 0) {
 		$Title = _('Supplier Ordering') . ' - ' . _('Problem Report') . '....';
 		include('includes/header.inc');
-		prnMsg(_('The supplier inventory quantities could not be retrieved by the SQL because') . ' - ' . DB_error_msg($db), 'error');
+		prnMsg(_('The supplier inventory quantities could not be retrieved by the SQL because') . ' - ' . DB_error_msg(), 'error');
 		echo '<div class="toplink"><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a></div>';
 		include('includes/footer.inc');
 		exit;
@@ -389,7 +389,7 @@ if (isset($_POST['Supplier']) and isset($_POST['ShowItems']) and $_POST['Supplie
 
 		$i = 0;
 
-		while ($ItemRow = DB_fetch_array($ItemsResult, $db)) {
+		while ($ItemRow = DB_fetch_array($ItemsResult)) {
 
 
 			$SQL = "SELECT SUM(CASE WHEN (trandate>='" . Date('Y-m-d', mktime(0, 0, 0, date('m') - 2, date('d'), date('Y'))) . "' AND
@@ -405,12 +405,12 @@ if (isset($_POST['Supplier']) and isset($_POST['ShowItems']) and $_POST['Supplie
 					FROM stockmoves
 					WHERE stockid='" . $ItemRow['stockid'] . "'
 					AND (type=10 OR type=11)";
-			$SalesResult = DB_query($SQL, $db, '', '', FALSE, FALSE);
+			$SalesResult = DB_query($SQL, '', '', FALSE, FALSE);
 
-			if (DB_error_no($db) != 0) {
+			if (DB_error_no() != 0) {
 				$Title = _('Preferred supplier purchasing') . ' - ' . _('Problem Report') . '....';
 				include('includes/header.inc');
-				prnMsg(_('The sales quantities could not be retrieved by the SQL because') . ' - ' . DB_error_msg($db), 'error');
+				prnMsg(_('The sales quantities could not be retrieved by the SQL because') . ' - ' . DB_error_msg(), 'error');
 				echo '<div class="toplink"><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a></div>';
 				include('includes/footer.inc');
 				exit;
@@ -425,13 +425,13 @@ if (isset($_POST['Supplier']) and isset($_POST['ShowItems']) and $_POST['Supplie
 					AND salesorderdetails.completed = 0
 					AND salesorders.quotation=0";
 
-			$DemandResult = DB_query($SQL, $db, '', '', false, false);
+			$DemandResult = DB_query($SQL, '', '', false, false);
 
 
-			if (DB_error_no($db) != 0) {
+			if (DB_error_no() != 0) {
 				$Title = _('Preferred supplier purchasing') . ' - ' . _('Problem Report') . '....';
 				include('includes/header.inc');
-				prnMsg(_('The sales order demand quantities could not be retrieved by the SQL because') . ' - ' . DB_error_msg($db), 'error');
+				prnMsg(_('The sales order demand quantities could not be retrieved by the SQL because') . ' - ' . DB_error_msg(), 'error');
 				echo '<div class="toplink"><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a></div>';
 				include('includes/footer.inc');
 				exit;
@@ -452,12 +452,12 @@ if (isset($_POST['Supplier']) and isset($_POST['ShowItems']) and $_POST['Supplie
 					AND salesorderdetails.completed=0
 					AND salesorders.quotation=0";
 
-			$BOMDemandResult = DB_query($SQL, $db, '', '', false, false);
+			$BOMDemandResult = DB_query($SQL, '', '', false, false);
 
-			if (DB_error_no($db) != 0) {
+			if (DB_error_no() != 0) {
 				$Title = _('Preferred supplier purchasing') . ' - ' . _('Problem Report') . '....';
 				include('includes/header.inc');
-				prnMsg(_('The sales order demand quantities from parent assemblies could not be retrieved by the SQL because') . ' - ' . DB_error_msg($db), 'error');
+				prnMsg(_('The sales order demand quantities from parent assemblies could not be retrieved by the SQL because') . ' - ' . DB_error_msg(), 'error');
 				echo '<div class="toplink"><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a></div>';
 				include('includes/footer.inc');
 				exit;
@@ -481,11 +481,11 @@ if (isset($_POST['Supplier']) and isset($_POST['ShowItems']) and $_POST['Supplie
 			$BOMDemandRow = DB_fetch_array($BOMDemandResult);
 			$TotalDemand = $DemandRow['qtydemand'] + $BOMDemandRow['dem'];
 
-			$OnOrdResult = DB_query($SQL, $db, '', '', false, false);
-			if (DB_error_no($db) != 0) {
+			$OnOrdResult = DB_query($SQL, '', '', false, false);
+			if (DB_error_no() != 0) {
 				$Title = _('Preferred supplier purchasing') . ' - ' . _('Problem Report') . '....';
 				include('includes/header.inc');
-				prnMsg(_('The purchase order quantities could not be retrieved by the SQL because') . ' - ' . DB_error_msg($db), 'error');
+				prnMsg(_('The purchase order quantities could not be retrieved by the SQL because') . ' - ' . DB_error_msg(), 'error');
 				echo '<div class="toplink"><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a></div>';
 				include('includes/footer.inc');
 				exit;

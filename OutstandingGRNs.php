@@ -10,7 +10,7 @@ if (isset($_POST['FromCriteria']) and mb_strlen($_POST['FromCriteria']) >= 1 and
 					max(supplierid) AS tocriteria
 				FROM suppliers";
 
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_array($result);
 
 	if ($_POST['FromCriteria']=='') {
@@ -49,12 +49,12 @@ if (isset($_POST['FromCriteria']) and mb_strlen($_POST['FromCriteria']) >= 1 and
 				ORDER BY supplierid,
 					grnno";
 
-	$GRNsResult = DB_query($SQL, $db, '', '', false, false);
+	$GRNsResult = DB_query($SQL, '', '', false, false);
 
-	if (DB_error_no($db) != 0) {
+	if (DB_error_no() != 0) {
 		$Title = _('Outstanding GRN Valuation') . ' - ' . _('Problem Report');
 		include('includes/header.inc');
-		prnMsg(_('The outstanding GRNs valuation details could not be retrieved by the SQL because') . ' - ' . DB_error_msg($db), 'error');
+		prnMsg(_('The outstanding GRNs valuation details could not be retrieved by the SQL because') . ' - ' . DB_error_msg(), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		include('includes/footer.inc');
 		exit;
@@ -85,7 +85,7 @@ if (isset($_POST['PrintPDF']) and DB_num_rows($GRNsResult) > 0) {
 	$Tot_Val = 0;
 	$Supplier = '';
 	$SuppTot_Val = 0;
-	while ($GRNs = DB_fetch_array($GRNsResult, $db)) {
+	while ($GRNs = DB_fetch_array($GRNsResult)) {
 
 		if ($Supplier != $GRNs['supplierid']) {
 
@@ -190,7 +190,7 @@ if (isset($_POST['PrintPDF']) and DB_num_rows($GRNsResult) > 0) {
 			</tr>';
 	$k = 0; //row colour counter
 	$TotalHomeCurrency = 0;
-	while ($GRNs = DB_fetch_array($GRNsResult, $db)) {
+	while ($GRNs = DB_fetch_array($GRNsResult)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -233,7 +233,7 @@ if (isset($_POST['PrintPDF']) and DB_num_rows($GRNsResult) > 0) {
 					max(supplierid) AS tocriteria
 				FROM suppliers";
 
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_array($result);
 
 	$Title = _('Outstanding GRNs Report');

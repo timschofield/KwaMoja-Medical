@@ -182,13 +182,13 @@ if (isset($_POST['PrintPDF'])) {
 
 
 	}
-	$InventoryResult = DB_query($SQL, $db, '', '', false, false);
+	$InventoryResult = DB_query($SQL, '', '', false, false);
 	$ListCount = DB_num_rows($InventoryResult);
 
-	if (DB_error_no($db) != 0) {
+	if (DB_error_no() != 0) {
 		$Title = _('Inventory Planning') . ' - ' . _('Problem Report') . '....';
 		include('includes/header.inc');
-		prnMsg(_('The inventory quantities could not be retrieved by the SQL because') . ' - ' . DB_error_msg($db), 'error');
+		prnMsg(_('The inventory quantities could not be retrieved by the SQL because') . ' - ' . DB_error_msg(), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($debug == 1) {
 			echo '<br />' . $SQL;
@@ -201,14 +201,14 @@ if (isset($_POST['PrintPDF'])) {
 
 	$SupplierID = '';
 
-	$CurrentPeriod = GetPeriod(Date($_SESSION['DefaultDateFormat']), $db);
+	$CurrentPeriod = GetPeriod(Date($_SESSION['DefaultDateFormat']));
 	$Period_1 = $CurrentPeriod - 1;
 	$Period_2 = $CurrentPeriod - 2;
 	$Period_3 = $CurrentPeriod - 3;
 	$Period_4 = $CurrentPeriod - 4;
 
 
-	while ($InventoryPlan = DB_fetch_array($InventoryResult, $db)) {
+	while ($InventoryPlan = DB_fetch_array($InventoryResult)) {
 
 		if ($SupplierID != $InventoryPlan['supplierno']) {
 			$FontSize = 10;
@@ -252,12 +252,12 @@ if (isset($_POST['PrintPDF'])) {
 						AND stockmoves.hidemovt=0";
 		}
 
-		$SalesResult = DB_query($SQL, $db, '', '', FALSE, FALSE);
+		$SalesResult = DB_query($SQL, '', '', FALSE, FALSE);
 
-		if (DB_error_no($db) != 0) {
+		if (DB_error_no() != 0) {
 			$Title = _('Inventory Planning') . ' - ' . _('Problem Report') . '....';
 			include('includes/header.inc');
-			prnMsg(_('The sales quantities could not be retrieved by the SQL because') . ' - ' . DB_error_msg($db), 'error');
+			prnMsg(_('The sales quantities could not be retrieved by the SQL because') . ' - ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 			if ($debug == 1) {
 				echo '<br />' . $SQL;
@@ -285,13 +285,13 @@ if (isset($_POST['PrintPDF'])) {
 					AND salesorders.quotation=0";
 		}
 
-		$DemandResult = DB_query($SQL, $db, '', '', false, false);
+		$DemandResult = DB_query($SQL, '', '', false, false);
 
 
-		if (DB_error_no($db) != 0) {
+		if (DB_error_no() != 0) {
 			$Title = _('Inventory Planning') . ' - ' . _('Problem Report') . '....';
 			include('includes/header.inc');
-			prnMsg(_('The sales order demand quantities could not be retrieved by the SQL because') . ' - ' . DB_error_msg($db), 'error');
+			prnMsg(_('The sales order demand quantities could not be retrieved by the SQL because') . ' - ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 			if ($debug == 1) {
 				echo '<br />' . $SQL;
@@ -331,12 +331,12 @@ if (isset($_POST['PrintPDF'])) {
 					AND salesorders.quotation=0";
 		}
 
-		$BOMDemandResult = DB_query($SQL, $db, '', '', false, false);
+		$BOMDemandResult = DB_query($SQL, '', '', false, false);
 
-		if (DB_error_no($db) != 0) {
+		if (DB_error_no() != 0) {
 			$Title = _('Inventory Planning') . ' - ' . _('Problem Report') . '....';
 			include('includes/header.inc');
-			prnMsg(_('The sales order demand quantities from parent assemblies could not be retrieved by the SQL because') . ' - ' . DB_error_msg($db), 'error');
+			prnMsg(_('The sales order demand quantities from parent assemblies could not be retrieved by the SQL because') . ' - ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 			if ($debug == 1) {
 				echo '<br />' . $SQL;
@@ -380,11 +380,11 @@ if (isset($_POST['PrintPDF'])) {
 		$BOMDemandRow = DB_fetch_array($BOMDemandResult);
 		$TotalDemand = $DemandRow['qtydemand'] + $BOMDemandRow['dem'];
 
-		$OnOrdResult = DB_query($SQL, $db, '', '', false, false);
-		if (DB_error_no($db) != 0) {
+		$OnOrdResult = DB_query($SQL, '', '', false, false);
+		if (DB_error_no() != 0) {
 			$Title = _('Inventory Planning') . ' - ' . _('Problem Report') . '....';
 			include('includes/header.inc');
-			prnMsg(_('The purchase order quantities could not be retrieved by the SQL because') . ' - ' . DB_error_msg($db), 'error');
+			prnMsg(_('The purchase order quantities could not be retrieved by the SQL because') . ' - ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 			if ($debug == 1) {
 				echo '<br />' . $SQL;
@@ -483,7 +483,7 @@ if (isset($_POST['PrintPDF'])) {
 						ON locations.loccode=www_users.defaultlocation
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
-	$LocnResult = DB_query($sql, $db);
+	$LocnResult = DB_query($sql);
 
 	echo '<option value="All">' . _('All Locations') . '</option>';
 

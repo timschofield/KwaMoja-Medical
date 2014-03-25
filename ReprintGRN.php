@@ -39,7 +39,7 @@ if (isset($_POST['Show'])) {
 	$sql = "SELECT count(orderno)
 				FROM purchorders
 				WHERE orderno='" . $_POST['PONumber'] . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_row($result);
 	if ($myrow[0] == 0) {
 		echo '<br />';
@@ -63,7 +63,7 @@ if (isset($_POST['Show'])) {
 			LEFT JOIN stockmaster
 			ON grns.itemcode=stockmaster.stockid
 			WHERE orderno='" . $_POST['PONumber'] . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	if (DB_num_rows($result) == 0) {
 		echo '<br />';
 		prnMsg(_('There are no GRNs for this purchase order that can be reprinted.'), 'warn');

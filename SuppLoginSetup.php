@@ -91,7 +91,7 @@ if (isset($_POST['submit'])) {
 							'" . $_POST['UserLanguage'] . "')";
 		$ErrMsg = _('The user could not be added because');
 		$DbgMsg = _('The SQL that was used to insert the new user and failed was');
-		$result = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+		$result = DB_query($sql, $ErrMsg, $DbgMsg);
 		prnMsg(_('A new supplier login has been created'), 'success');
 		include('includes/footer.inc');
 		exit;
@@ -148,13 +148,13 @@ echo '<tr>
 //- Only one entry in securitygroups AND the tokenid of this entry == 9
 
 //First get all available security role ID's'
-$RolesResult = DB_query("SELECT secroleid FROM securityroles", $db);
+$RolesResult = DB_query("SELECT secroleid FROM securityroles");
 $FoundTheSupplierRole = false;
 while ($myroles = DB_fetch_array($RolesResult)) {
 	//Now look to find the tokens for the role - we just wnat the role that has just one token i.e. token 9
 	$TokensResult = DB_query("SELECT tokenid
 								FROM securitygroups
-								WHERE secroleid = '" . $myroles['secroleid'] . "'", $db);
+								WHERE secroleid = '" . $myroles['secroleid'] . "'");
 
 	while ($mytoken = DB_fetch_row($TokensResult)) {
 		if ($mytoken[0] == 9) {
@@ -190,7 +190,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 					ON locations.loccode=www_users.defaultlocation
 				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 }
-$result = DB_query($sql, $db);
+$result = DB_query($sql);
 
 while ($myrow = DB_fetch_array($result)) {
 

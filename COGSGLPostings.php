@@ -52,7 +52,7 @@ if (isset($_POST['submit'])) {
 	}
 	//run the SQL from either of the above possibilites
 
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	prnMsg($msg, 'info');
 	unset($SelectedCOGSPostingID);
 
@@ -60,7 +60,7 @@ if (isset($_POST['submit'])) {
 	//the link to delete a selected record was clicked instead of the submit button
 
 	$sql = "DELETE FROM cogsglpostings WHERE id='" . $SelectedCOGSPostingID . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	prnMsg(_('The cost of sales posting code record has been deleted'), 'info');
 	unset($SelectedCOGSPostingID);
 }
@@ -81,7 +81,7 @@ if (!isset($SelectedCOGSPostingID)) {
 				cogsglpostings.stkcat,
 				cogsglpostings.salestype";
 
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	if (DB_num_rows($result) > 0) {
 		$ShowLivePostingRecords = false;
 		prnMsg(_('The following cost of sales posting records that do not have valid general ledger code specified - these records must be amended.'), 'error');
@@ -122,13 +122,13 @@ if (!isset($SelectedCOGSPostingID)) {
 				cogsglpostings.stkcat,
 				cogsglpostings.salestype";
 
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 
 	if (DB_num_rows($result) == 0) {
 		/* there is no default set up so need to check that account 1 is not already used */
 		/* First Check if we have at least a group_ caled Sales */
 		$sql = "SELECT groupname FROM accountgroups WHERE groupname = 'Sales'";
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		if (DB_num_rows($result) == 0) {
 			/* The required group does not seem to exist so we create it */
 			$sql = "INSERT INTO accountgroups (	groupname,
@@ -140,10 +140,10 @@ if (!isset($SelectedCOGSPostingID)) {
 												'1',
 												'10')";
 
-			$result = DB_query($sql, $db);
+			$result = DB_query($sql);
 		}
 		$sql = "SELECT accountcode FROM chartmaster WHERE accountcode ='1'";
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		if (DB_num_rows($result) == 0) {
 			/* account number 1 is not used, so insert a new account */
 			$sql = "INSERT INTO chartmaster (accountcode,
@@ -153,7 +153,7 @@ if (!isset($SelectedCOGSPostingID)) {
 											'Default Sales/Discounts',
 											'Sales'
 											)";
-			$result = DB_query($sql, $db);
+			$result = DB_query($sql);
 		}
 
 		$sql = "INSERT INTO cogsglpostings (	area,
@@ -164,7 +164,7 @@ if (!isset($SelectedCOGSPostingID)) {
 											'ANY',
 											'AN',
 											'1')";
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 	}
 
 	if ($ShowLivePostingRecords) {
@@ -180,7 +180,7 @@ if (!isset($SelectedCOGSPostingID)) {
 						cogsglpostings.stkcat,
 						cogsglpostings.salestype";
 
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 
 		echo '<table class="selection">
 			<tr>
@@ -233,7 +233,7 @@ if (isset($SelectedCOGSPostingID)) {
 			FROM cogsglpostings
 			WHERE id='" . $SelectedCOGSPostingID . "'";
 
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_array($result);
 
 	$_POST['GLCode'] = $myrow['glcode'];
@@ -249,7 +249,7 @@ if (isset($SelectedCOGSPostingID)) {
 $sql = "SELECT areacode,
 		areadescription
 		FROM areas";
-$result = DB_query($sql, $db);
+$result = DB_query($sql);
 
 echo '<table class="selection">
 		<tr><td>' . _('Area') . ':</td>
@@ -268,7 +268,7 @@ while ($myrow = DB_fetch_array($result)) {
 DB_free_result($result);
 
 $sql = "SELECT categoryid, categorydescription FROM stockcategory";
-$result = DB_query($sql, $db);
+$result = DB_query($sql);
 
 echo '</select></td>
 	</tr>
@@ -290,7 +290,7 @@ while ($myrow = DB_fetch_array($result)) {
 DB_free_result($result);
 
 $sql = "SELECT typeabbrev, sales_type FROM salestypes";
-$result = DB_query($sql, $db);
+$result = DB_query($sql);
 
 echo '</select></td>
 	</tr>
@@ -325,7 +325,7 @@ $sql = "SELECT chartmaster.accountcode,
 		ORDER BY accountgroups.sequenceintb,
 			chartmaster.accountcode,
 			chartmaster.accountname";
-$result = DB_query($sql, $db);
+$result = DB_query($sql);
 
 echo '<option value=""></option>';
 while ($myrow = DB_fetch_array($result)) {

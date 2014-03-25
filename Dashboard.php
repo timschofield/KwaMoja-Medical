@@ -9,16 +9,16 @@ include('includes/MainMenuLinksArray.php');
 
 $sql = "SELECT scripts FROM dashboard_users WHERE userid = '".$_SESSION['UserID']."' ";
 
-$result = DB_query($sql,$db);
+$result = DB_query($sql);
 
 $myrow = DB_fetch_array($result);
 $arr = explode(',',$myrow["scripts"]);
 
 $UserSQL = "SELECT scripts FROM dashboard_users WHERE userid = '".$_SESSION['UserID']."' ";
-$Result = DB_query($UserSQL, $db);
+$Result = DB_query($UserSQL);
 if (DB_num_rows($Result) == 0) {
 	$InsertSQL = "INSERT INTO dashboard_users VALUES(null, '" . $_SESSION['UserID'] . "', '')";
-	$InsertResult = DB_query($InsertSQL, $db);
+	$InsertResult = DB_query($InsertSQL);
 }
 
 if (isset($_GET['Remove'])) {
@@ -26,14 +26,14 @@ if (isset($_GET['Remove'])) {
 		unset($arr[$key]);
 	}
 	$UpdateSQL = "UPDATE dashboard_users SET scripts='" . implode(',', $arr) . "' WHERE userid = '".$_SESSION['UserID']."'";
-	$UpdateResult = DB_query($UpdateSQL, $db);
+	$UpdateResult = DB_query($UpdateSQL);
 }
 
 if (isset($_POST['Reports'])) {
 	$arr[] = $_POST['Reports'];
 	asort($arr);
 	$UpdateSQL = "UPDATE dashboard_users SET scripts='" . implode(',', $arr) . "' WHERE userid = '".$_SESSION['UserID']."' ";
-	$UpdateResult = DB_query($UpdateSQL, $db);
+	$UpdateResult = DB_query($UpdateSQL);
 }
 
 $sql = "SELECT id,
@@ -42,7 +42,7 @@ $sql = "SELECT id,
 				description
 			FROM dashboard_scripts";
 
-$result = DB_query($sql,$db);
+$result = DB_query($sql);
 
 while($myrow = DB_fetch_array($result)) {
 	if (in_array($myrow['id'], $arr) and in_array($myrow['pagesecurity'], $_SESSION['AllowedPageSecurityTokens'])) {

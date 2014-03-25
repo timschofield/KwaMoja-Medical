@@ -39,7 +39,7 @@ $sql = "SELECT stockmoves.stockid,
 				stockmaster.units,
 				stockmaster.decimalplaces";
 $ErrMsg = _('Could not get the inventory issues for this contract because');
-$InventoryIssuesResult = DB_query($sql, $db, $ErrMsg);
+$InventoryIssuesResult = DB_query($sql, $ErrMsg);
 $InventoryIssues = array();
 while ($InventoryIssuesRow = DB_fetch_array($InventoryIssuesResult)) {
 	$InventoryIssues[$InventoryIssuesRow['stockid']]->StockID = $InventoryIssuesRow['stockid'];
@@ -191,7 +191,7 @@ $sql = "SELECT supptrans.supplierno,
 		WHERE contractcharges.contractref='" . $ContractRef . "'
 		ORDER BY contractcharges.anticipated";
 $ErrMsg = _('Could not get the other charges to the contract because');
-$OtherChargesResult = DB_query($sql, $db, $ErrMsg);
+$OtherChargesResult = DB_query($sql, $ErrMsg);
 $OtherReqtsActual = 0;
 while ($OtherChargesRow = DB_fetch_array($OtherChargesResult)) {
 	if ($OtherChargesRow['anticipated'] == 0) {
@@ -229,14 +229,14 @@ if (isset($_POST['CloseContract']) and $_SESSION['Contract' . $identifier]->Stat
 
 	include('includes/SQL_CommonFunctions.inc');
 
-	$GLCodes = GetStockGLCode($_SESSION['Contract' . $identifier]->ContractRef, $db);
+	$GLCodes = GetStockGLCode($_SESSION['Contract' . $identifier]->ContractRef);
 	//Compare actual costs to original budgeted contract costs - if actual > budgeted - CR WIP and DR usage variance
 	$Variance = ($OtherReqtsBudget + $ContractBOMBudget) - ($OtherReqtsActual + $ContractBOMActual);
 
-	$ContractCloseNo = GetNextTransNo(32, $db);
-	$PeriodNo = GetPeriod(Date($_SESSION['DefaultDateFormat']), $db);
+	$ContractCloseNo = GetNextTransNo(32);
+	$PeriodNo = GetPeriod(Date($_SESSION['DefaultDateFormat']));
 
-	DB_Txn_Begin($db);
+	DB_Txn_Begin();
 
 	$SQL = "INSERT INTO gltrans (type,
 								typeno,
@@ -255,7 +255,7 @@ if (isset($_POST['CloseContract']) and $_SESSION['Contract' . $identifier]->Stat
 
 	$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The gl entry of WIP for the variance on closing the contract could not be inserted because');
 	$DbgMsg = _('The following SQL to insert the GLTrans record was used');
-	$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 	$SQL = "INSERT INTO gltrans (type,
 								typeno,
 								trandate,
@@ -273,7 +273,7 @@ if (isset($_POST['CloseContract']) and $_SESSION['Contract' . $identifier]->Stat
 
 	$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The gl entry of WIP for the variance on closing the contract could not be inserted because');
 	$DbgMsg = _('The following SQL to insert the GLTrans record was used');
-	$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 	//Now update the status of the contract to closed
 	$SQL = "UPDATE contracts
@@ -281,18 +281,18 @@ if (isset($_POST['CloseContract']) and $_SESSION['Contract' . $identifier]->Stat
 				WHERE contractref='" . $_SESSION['Contract' . $identifier]->ContractRef . "'";
 	$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The status of the contract could not be updated to closed because');
 	$DbgMsg = _('The following SQL to change the status of the contract was used');
-	$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 	/*Check if the contract work order is still open */
 	$CheckIfWOOpenResult = DB_query("SELECT closed
 									FROM workorders
-									WHERE wo='" . $_SESSION['Contract' . $identifier]->WO . "'", $db);
+									WHERE wo='" . $_SESSION['Contract' . $identifier]->WO . "'");
 	$CheckWORow = DB_fetch_row($CheckIfWOOpenResult);
 	if ($CheckWORow[0] == 0) {
 		//then close the work order
 		$CloseWOResult = DB_query("UPDATE workorders
 									SET closed=1
-									WHERE wo='" . $_SESSION['Contract' . $identifier]->WO . "'", $db, _('Could not update the work order to closed because') . ': ', _('The SQL used to close the work order was') . ': ', true);
+									WHERE wo='" . $_SESSION['Contract' . $identifier]->WO . "'", _('Could not update the work order to closed because') . ': ', _('The SQL used to close the work order was') . ': ', true);
 
 
 		/* Check if the contract BOM has received the contract item manually
@@ -302,12 +302,12 @@ if (isset($_POST['CloseContract']) and $_SESSION['Contract' . $identifier]->Stat
 
 		$result = DB_query("SELECT qtyrecd FROM woitems
 							WHERE stockid='" . $_SESSION['Contract' . $identifier]->ContractRef . "'
-							AND wo='" . $_SESSION['Contract' . $identifier]->WO . "'", $db);
+							AND wo='" . $_SESSION['Contract' . $identifier]->WO . "'");
 		if (DB_num_rows($result) == 1) {
 			$myrow = DB_fetch_row($result);
 			if ($myrow[0] == 0) { //then the contract wo has not been received (it will only ever be for 1 item)
 
-				$WOReceiptNo = GetNextTransNo(26, $db);
+				$WOReceiptNo = GetNextTransNo(26);
 
 				/* Need to get the current location quantity will need it later for the stock movement */
 				$SQL = "SELECT locstock.quantity
@@ -315,7 +315,7 @@ if (isset($_POST['CloseContract']) and $_SESSION['Contract' . $identifier]->Stat
 						WHERE locstock.stockid='" . $_SESSION['Contract' . $identifier]->ContractRef . "'
 						AND loccode= '" . $_SESSION['Contract' . $identifier]->LocCode . "'";
 
-				$Result = DB_query($SQL, $db);
+				$Result = DB_query($SQL);
 				if (DB_num_rows($Result) == 1) {
 					$LocQtyRow = DB_fetch_row($Result);
 					$QtyOnHandPrior = $LocQtyRow[0];
@@ -331,7 +331,7 @@ if (isset($_POST['CloseContract']) and $_SESSION['Contract' . $identifier]->Stat
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The location stock record could not be updated because');
 				$DbgMsg = _('The following SQL to update the location stock record was used');
-				$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 				/*Insert stock movements - with unit cost */
 
@@ -360,10 +360,10 @@ if (isset($_POST['CloseContract']) and $_SESSION['Contract' . $identifier]->Stat
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('stock movement records could not be inserted when processing the work order receipt because');
 				$DbgMsg = _('The following SQL to insert the stock movement records was used');
-				$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 				/*Get the ID of the StockMove... */
-				$StkMoveNo = DB_Last_Insert_ID($db, 'stockmoves', 'stkmoveno');
+				$StkMoveNo = DB_Last_Insert_ID('stockmoves', 'stkmoveno');
 
 				/* If GLLink_Stock then insert GLTrans to debit the GL Code  and credit GRN Suspense account at standard cost*/
 				if ($_SESSION['CompanyRecord']['gllink_stock'] == 1 and ($OtherReqtsBudget + $ContractBOMBudget) != 0) {
@@ -389,7 +389,7 @@ if (isset($_POST['CloseContract']) and $_SESSION['Contract' . $identifier]->Stat
 
 					$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The receipt of contract work order finished stock GL posting could not be inserted because');
 					$DbgMsg = _('The following SQL to insert the work order receipt of finished items GLTrans record was used');
-					$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 					/*now the credit WIP entry*/
 					$SQL = "INSERT INTO gltrans (type,
@@ -409,7 +409,7 @@ if (isset($_POST['CloseContract']) and $_SESSION['Contract' . $identifier]->Stat
 
 					$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The WIP credit on receipt of finished items from a work order GL posting could not be inserted because');
 					$DbgMsg = _('The following SQL to insert the WIP GLTrans record was used');
-					$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 				}
 				/* end of if GL and stock integrated and standard cost !=0 */
@@ -420,12 +420,12 @@ if (isset($_POST['CloseContract']) and $_SESSION['Contract' . $identifier]->Stat
 				$UpdateWOResult = DB_query("UPDATE woitems
 										SET qtyrecd=qtyrecd+1
 										WHERE wo='" . $_SESSION['Contract' . $identifier]->WO . "'
-										AND stockid='" . $_SESSION['Contract' . $identifier]->ContractRef . "'", $db, $ErrMsg, $DbgMsg, true);
+										AND stockid='" . $_SESSION['Contract' . $identifier]->ContractRef . "'", $ErrMsg, $DbgMsg, true);
 			} //end if the contract wo was not received - work order item received/processed above if not
 		} //end if there was a row returned from the woitems query
 	} //end if the work order was still open (so end of closing it and processing receipt if necessary)
 
-	DB_Txn_Commit($db);
+	DB_Txn_Commit();
 
 	$_SESSION['Contract' . $identifier]->Status = 3;
 	prnMsg(_('The contract has been closed. No further charges can be posted against this contract.'), 'success');

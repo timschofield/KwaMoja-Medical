@@ -67,7 +67,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 					AND www_users.userid='" . $_SESSION['UserID'] . "'";
 }
 
-$WOResult = DB_query($sql, $db, $ErrMsg);
+$WOResult = DB_query($sql, $ErrMsg);
 
 if (DB_num_rows($WOResult) == 0) {
 	prnMsg(_('The selected work order item cannot be retrieved from the database'), 'info');
@@ -134,14 +134,14 @@ $RequirementsSQL = "SELECT worequirements.stockid,
 							ON worequirements.stockid=stockmaster.stockid
 						WHERE wo='" . $SelectedWO . "'
 							AND worequirements.parentstockid='" . $StockID . "'";
-$RequirmentsResult = DB_query($RequirementsSQL, $db);
+$RequirmentsResult = DB_query($RequirementsSQL);
 
 $IssuedAlreadyResult = DB_query("SELECT stockid,
 										SUM(-qty) AS total
 									FROM stockmoves
 									WHERE stockmoves.type=28
 										AND reference='" . $SelectedWO . "'
-									GROUP BY stockid", $db);
+									GROUP BY stockid");
 
 while ($IssuedRow = DB_fetch_array($IssuedAlreadyResult)) {
 	$IssuedAlreadyRow[$IssuedRow['stockid']] = $IssuedRow['total'];
@@ -173,7 +173,7 @@ foreach ($IssuedAlreadyRow as $StockID=>$Issued) {
 								stockmaster.decimalplaces
 						FROM stockmaster
 						WHERE stockid='" . $StockID . "'";
-	$RequirmentsResult = DB_query($RequirementsSQL, $db);
+	$RequirmentsResult = DB_query($RequirementsSQL);
 	$RequirementsRow = DB_fetch_array($RequirmentsResult);
 	echo '<tr>
 			<td>' . _('Additional Issue') . '</td>

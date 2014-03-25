@@ -12,10 +12,10 @@ echo '<p class="page_title_text noPrint" >
 
 if (isset($_GET['Delete'])) {
 	$CheckSQL = "SELECT methodid FROM abcgroups WHERE methodid='" . $_GET['SelectedMethodID'] . "'";
-	$CheckResult = DB_query($CheckSQL, $db);
+	$CheckResult = DB_query($CheckSQL);
 	if (DB_num_rows($CheckResult) == 0) {
 		$sql = "DELETE FROM abcmethods WHERE methodid='" . $_GET['SelectedMethodID'] . "'";
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		prnMsg(_('ABC Ranking method number') . ' ' . $_GET['SelectedMethodID'] . ' ' . _('has been deleted'), 'success');
 		echo '<div class="centre">
 				<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('View all the ranking methods') . '</a>
@@ -35,11 +35,11 @@ if (isset($_POST['Submit'])) {
 										'" . $_POST['MethodID'] . "',
 										'" . $_POST['MethodName'] . "'
 									)";
-		$InsertResult = DB_query($sql, $db);
+		$InsertResult = DB_query($sql);
 	} else {
 		$sql = "UPDATE abcmethods SET methodname='" . $_POST['MethodName'] . "'
 							WHERE methodid='" . $_POST['MethodID'] . "'";
-		$UpdateResult = DB_query($sql, $db);
+		$UpdateResult = DB_query($sql);
 	}
 	prnMsg(_('The ranking method has been successfully saved to the database'), 'success');
 	echo '<div class="centre">
@@ -51,7 +51,7 @@ if (isset($_POST['Submit'])) {
 	$sql = "SELECT methodid,
 					methodname
 				FROM abcmethods";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	echo '<table class="selection" summary="' . _('List of ABC Ranking Methods') . '">
 			<tr>
 				<th colspan="10">
@@ -83,7 +83,7 @@ if (isset($_POST['Submit'])) {
 							methodname
 						FROM abcmethods
 						WHERE methodid='" . $_GET['SelectedMethodID'] . "'";
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		$myrow = DB_fetch_array($result);
 		echo '<input type="hidden" name="Mode" value="Edit" />';
 		$IDInput = '<input type="hidden" name="MethodID" value="' . $myrow['methodid'] . '" />' . $myrow['methodid'];

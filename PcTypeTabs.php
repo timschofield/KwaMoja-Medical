@@ -67,7 +67,7 @@ if (isset($_POST['submit'])) {
 				 FROM pctypetabs
 				 WHERE typetabcode = '" . $_POST['TypeTabCode'] . "'";
 
-		$checkresult = DB_query($checkSql, $db);
+		$checkresult = DB_query($checkSql);
 		$checkrow = DB_fetch_row($checkresult);
 
 		if ($checkrow[0] > 0) {
@@ -90,7 +90,7 @@ if (isset($_POST['submit'])) {
 
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		prnMsg($msg, 'success');
 		echo '<br />';
 		unset($SelectedTab);
@@ -107,7 +107,7 @@ if (isset($_POST['submit'])) {
 		WHERE typetabcode='" . $SelectedTab . "'";
 
 	$ErrMsg = _('The number of tabs using this Tab type could not be retrieved');
-	$ResultPcTabExpenses = DB_query($SQLPcTabExpenses, $db, $ErrMsg);
+	$ResultPcTabExpenses = DB_query($SQLPcTabExpenses, $ErrMsg);
 
 	$myrowPcTabExpenses = DB_fetch_row($ResultPcTabExpenses);
 
@@ -116,7 +116,7 @@ if (isset($_POST['submit'])) {
 		WHERE typetabcode='" . $SelectedTab . "'";
 
 	$ErrMsg = _('The number of tabs using this Tab type could not be retrieved');
-	$ResultPcTabs = DB_query($SqlPcTabs, $db, $ErrMsg);
+	$ResultPcTabs = DB_query($SqlPcTabs, $ErrMsg);
 
 	$myrowPcTabs = DB_fetch_row($ResultPcTabs);
 	if ($myrowPcTabExpenses[0] > 0 or $myrowPcTabs[0] > 0) {
@@ -134,7 +134,7 @@ if (isset($_POST['submit'])) {
 
 		$sql = "DELETE FROM pctypetabs WHERE typetabcode='" . $SelectedTab . "'";
 		$ErrMsg = _('The Tab Type record could not be deleted because');
-		$result = DB_query($sql, $db, $ErrMsg);
+		$result = DB_query($sql, $ErrMsg);
 		prnMsg(_('Tab type') . ' ' . $SelectedTab . ' ' . _('has been deleted'), 'success');
 		unset($SelectedTab);
 		unset($_GET['delete']);
@@ -151,7 +151,7 @@ if (!isset($SelectedTab)) {
 	or deletion of the records*/
 
 	$sql = 'SELECT * FROM pctypetabs';
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 
 	echo '<table class="selection">';
 	echo '<tr>
@@ -198,7 +198,7 @@ if (!isset($_GET['delete'])) {
 				FROM pctypetabs
 				WHERE typetabcode='" . $SelectedTab . "'";
 
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		$myrow = DB_fetch_array($result);
 
 		$_POST['TypeTabCode'] = $myrow['typetabcode'];

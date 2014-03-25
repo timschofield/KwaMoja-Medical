@@ -36,7 +36,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 	}
 }
 
-$resultStkLocs = DB_query($sql, $db);
+$resultStkLocs = DB_query($sql);
 while ($myrow = DB_fetch_array($resultStkLocs)) {
 	if (isset($_POST['StockLocation']) and $_POST['StockLocation'] != 'All') {
 		if ($myrow['loccode'] == $_POST['StockLocation']) {
@@ -95,7 +95,7 @@ $sql = "SELECT stockmoves.stockid,
 			ORDER BY stkmoveno DESC";
 
 $ErrMsg = _('The stock movements for the selected criteria could not be retrieved because');
-$MovtsResult = DB_query($sql, $db, $ErrMsg);
+$MovtsResult = DB_query($sql, $ErrMsg);
 
 echo '<table cellpadding="5" cellspacing="4 "class="selection">
 		<tr>

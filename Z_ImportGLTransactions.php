@@ -51,16 +51,16 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 	}
 
 	//Get the next transaction number
-	$TransNo = GetNextTransNo($_POST['TransactionType'], $db);
+	$TransNo = GetNextTransNo($_POST['TransactionType']);
 
 	//Get the exchange rate to use between the transaction currency and the functional currency
 	$sql = "SELECT rate FROM currencies WHERE currabrev='" . $_POST['Currency'] . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_array($result);
 	$ExRate = $myrow['rate'];
 
 	//start database transaction
-	DB_Txn_Begin($db);
+	DB_Txn_Begin();
 
 	//Total for transactions must come back to zero
 	$TransactionTotal = 0;
@@ -86,7 +86,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 
 		//first off check that the account code actually exists
 		$sql = "SELECT COUNT(accountcode) FROM chartmaster WHERE accountcode='" . $myrow[1] . "'";
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		$testrow = DB_fetch_row($result);
 		if ($testrow[0] == 0) {
 			$InputError = 1;
@@ -102,7 +102,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 		//Then check that the tag ref is either zero, or exists in the tags table
 		if ($myrow[5] != 0) {
 			$sql = "SELECT COUNT(tagref) FROM tags WHERE tagref='" . $myrow[5] . "'";
-			$result = DB_query($sql, $db);
+			$result = DB_query($sql);
 			$testrow = DB_fetch_row($result);
 			if ($testrow[0] == 0) {
 				$InputError = 1;
@@ -111,7 +111,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 		}
 
 		//Find the period number from the date
-		$Period = GetPeriod($myrow[0], $db);
+		$Period = GetPeriod($myrow[0]);
 
 		//All transactions must be in the same period
 		if (isset($PreviousPeriod) and $PreviousPeriod != $Period) {
@@ -145,7 +145,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 										'" . $myrow[5] . "'
 									)";
 
-			$result = DB_query($sql, $db);
+			$result = DB_query($sql);
 
 			if ($_POST['TransactionType'] != 0 and IsBankAccount($myrow[1])) {
 
@@ -155,7 +155,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 							INNER JOIN bankaccounts
 								ON currencies.currabrev=bankaccounts.currcode
 							WHERE bankaccounts.accountcode='" . $myrow[1] . "'";
-				$result = DB_query($sql, $db);
+				$result = DB_query($sql);
 				$MyRateRow = DB_fetch_array($result);
 				$FuncExRate = $MyRateRow['rate'];
 				$sql = "INSERT INTO banktrans (transno,
@@ -182,7 +182,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 												'" . round($myrow[3], 2) . "',
 												'" . $_POST['Currency'] . "'
 											)";
-				$result = DB_query($sql, $db);
+				$result = DB_query($sql);
 			}
 			$PreviousPeriod = $Period;
 			$TransactionTotal = $TransactionTotal + $myrow[3];
@@ -202,9 +202,9 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 
 	if ($InputError == 1) { //exited loop with errors so rollback
 		prnMsg(_('Failed on row ' . $row . '. Batch import has been rolled back.'), 'error');
-		DB_Txn_Rollback($db);
+		DB_Txn_Rollback();
 	} else { //all good so commit data transaction
-		DB_Txn_Commit($db);
+		DB_Txn_Commit();
 		prnMsg(_('Batch Import of') . ' ' . $FileName . ' ' . _('has been completed. All transactions committed to the database.'), 'success');
 	}
 
@@ -228,7 +228,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 
 	echo _('Select Currency') . ':&nbsp;<select minlength="0" name="Currency">';
 	$SQL = "SELECT currency, currabrev, rate FROM currencies";
-	$result = DB_query($SQL, $db);
+	$result = DB_query($SQL);
 	if (DB_num_rows($result) == 0) {
 		echo '</select>';
 		prnMsg(_('No currencies are defined yet') . '. ' . _('Receipts cannot be entered until a currency is defined'), 'warn');
@@ -253,10 +253,9 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 include('includes/footer.inc');
 
 function IsBankAccount($Account) {
-	global $db;
 
 	$sql = "SELECT accountcode FROM bankaccounts WHERE accountcode='" . $Account . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	if (DB_num_rows($result) == 0) {
 		return false;
 	} else {

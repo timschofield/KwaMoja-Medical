@@ -54,7 +54,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 						stockmaster.decimalplaces";
 }
 
-$result = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+$result = DB_query($sql, $ErrMsg, $DbgMsg);
 
 if (DB_num_rows($result) == 0) {
 	include('includes/header.inc');

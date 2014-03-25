@@ -6,7 +6,7 @@
 
 include('includes/session.inc');
 
-$result = DB_show_tables($db, 'mrprequirements');
+$result = DB_show_tables('mrprequirements');
 if (DB_num_rows($result) == 0) {
 	$Title = _('MRP error');
 	include('includes/header.inc');
@@ -104,12 +104,12 @@ if (isset($_POST['PrintPDF'])) {
 					   computedcost
 				ORDER BY mrpplannedorders.part,yearmonth ";
 	}
-	$result = DB_query($sql, $db, '', '', false, true);
+	$result = DB_query($sql, '', '', false, true);
 
-	if (DB_error_no($db) != 0) {
+	if (DB_error_no() != 0) {
 		$Title = _('MRP Planned Purchase Orders') . ' - ' . _('Problem Report');
 		include('includes/header.inc');
-		prnMsg(_('The MRP planned purchase orders could not be retrieved by the SQL because') . ' ' . DB_error_msg($db), 'error');
+		prnMsg(_('The MRP planned purchase orders could not be retrieved by the SQL because') . ' ' . DB_error_msg(), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($debug == 1) {
 			echo '<br />' . $sql;
@@ -142,7 +142,7 @@ if (isset($_POST['PrintPDF'])) {
 	$totalpartcost = 0;
 	$Total_Extcost = 0;
 
-	while ($myrow = DB_fetch_array($result, $db)) {
+	while ($myrow = DB_fetch_array($result)) {
 		$YPos -= $line_height;
 
 		// Use to alternate between lines with transparent and painted background
@@ -160,7 +160,7 @@ if (isset($_POST['PrintPDF'])) {
 			$pdf->addTextWrap(380, $YPos, 30, $FontSize, _('M/B: '), 'right', 0, $fill);
 			$pdf->addTextWrap(410, $YPos, 15, $FontSize, $holdmbflag, 'right', 0, $fill);
 			// Get and print supplier info for part
-			list($lastdate, $lastsupplier, $preferredsupplier) = GetPartInfo($db, $holdpart);
+			list($lastdate, $lastsupplier, $preferredsupplier) = GetPartInfo($holdpart);
 			$displaydate = $lastdate;
 			if (!Is_Date($lastdate)) {
 				$displaydate = ' ';
@@ -222,7 +222,7 @@ if (isset($_POST['PrintPDF'])) {
 	$pdf->addTextWrap(370, $YPos, 30, $FontSize, _('M/B: '), 'right', 0, $fill);
 	$pdf->addTextWrap(400, $YPos, 15, $FontSize, $holdmbflag, 'right', 0, $fill);
 	// Get and print supplier info for part
-	list($lastdate, $lastsupplier, $preferredsupplier) = GetPartInfo($db, $holdpart);
+	list($lastdate, $lastsupplier, $preferredsupplier) = GetPartInfo($holdpart);
 	$displaydate = $lastdate;
 	if (!Is_Date($lastdate)) {
 		$displaydate = ' ';
@@ -348,7 +348,7 @@ function PrintHeader(&$pdf, &$YPos, &$PageNumber, $Page_Height, $Top_Margin, $Le
 	$PageNumber++;
 } // End of PrintHeader function
 
-function GetPartInfo(&$db, $part) {
+function GetPartInfo($part) {
 	// Get last purchase order date and supplier for part, and also preferred supplier
 	// Printed when there is a part break
 	$sql = "SELECT orddate as maxdate,
@@ -357,23 +357,23 @@ function GetPartInfo(&$db, $part) {
 			ON purchorders.orderno = purchorderdetails.orderno
 			WHERE purchorderdetails.itemcode = '" . $part . "'
 			ORDER BY orddate DESC LIMIT 1";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	if (DB_num_rows($result) > 0) {
-		$myrow = DB_fetch_array($result, $db);
+		$myrow = DB_fetch_array($result);
 		$PartInfo[] = ConvertSQLDate($myrow['maxdate']);
 		$OrderNo = $myrow['orderno'];
 		$sql = "SELECT supplierno
 				FROM purchorders
 				WHERE purchorders.orderno = '" . $OrderNo . "'";
-		$result = DB_query($sql, $db);
-		$myrow = DB_fetch_array($result, $db);
+		$result = DB_query($sql);
+		$myrow = DB_fetch_array($result);
 		$PartInfo[] = $myrow['supplierno'];
 		$sql = "SELECT supplierno
 				FROM purchdata
 				WHERE stockid = '" . $part . "'
 				AND preferred='1'";
-		$result = DB_query($sql, $db);
-		$myrow = DB_fetch_array($result, $db);
+		$result = DB_query($sql);
+		$myrow = DB_fetch_array($result);
 		$PartInfo[] = $myrow['supplierno'];
 		return $PartInfo;
 	} else {

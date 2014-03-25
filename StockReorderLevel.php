@@ -18,7 +18,7 @@ echo '<p class="page_title_text noPrint" >
 		<img src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Inventory') . '" alt="" /><b>' . $Title . '</b>
 	</p>';
 
-$result = DB_query("SELECT description, units FROM stockmaster WHERE stockid='" . $StockID . "'", $db);
+$result = DB_query("SELECT description, units FROM stockmaster WHERE stockid='" . $StockID . "'");
 $myrow = DB_fetch_row($result);
 
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
@@ -58,7 +58,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 $ErrMsg = _('The stock held at each location cannot be retrieved because');
 $DbgMsg = _('The SQL that failed was');
 
-$LocStockResult = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+$LocStockResult = DB_query($sql, $ErrMsg, $DbgMsg);
 
 echo '<table class="selection">';
 echo '<tr>
@@ -92,7 +92,7 @@ while ($myrow = DB_fetch_array($LocStockResult)) {
 		$sql = "UPDATE locstock SET reorderlevel = '" . filter_number_format($_POST[$myrow['loccode']]) . "'
 	   		WHERE stockid = '" . $StockID . "'
 			AND loccode = '" . $myrow['loccode'] . "'";
-		$UpdateReorderLevel = DB_query($sql, $db);
+		$UpdateReorderLevel = DB_query($sql);
 
 	}
 

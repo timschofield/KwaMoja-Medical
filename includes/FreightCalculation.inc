@@ -4,7 +4,7 @@
 Freight cost is determined by looking for a match of destination city from the Address2 and Address3 fields then looking through the freight company rates for the total KGs and Cubic meters  to figure out the least cost shipping company. */
 
 
-function CalcFreightCost($TotalValue, $BrAdd2, $BrAdd3, $BrAdd4, $BrAdd5, $BrAddCountry, $TotalVolume, $TotalWeight, $FromLocation, $Currency, $CountriesArray, $db) {
+function CalcFreightCost($TotalValue, $BrAdd2, $BrAdd3, $BrAdd4, $BrAdd5, $BrAddCountry, $TotalVolume, $TotalWeight, $FromLocation, $Currency, $CountriesArra) {
 
 	$ParameterError = FALSE;
 	if ((!isset($BrAdd2)) and (!isset($BrAdd3)) and (!isset($BrAdd4)) and (!isset($BrAdd5)) and (!isset($BrAddCountry))){
@@ -56,9 +56,9 @@ function CalcFreightCost($TotalValue, $BrAdd2, $BrAdd3, $BrAdd4, $BrAdd5, $BrAdd
 		$sql = mb_substr($sql, 0, mb_strrpos($sql,' OR')) . ')';
 	}
 
-	$CalcFreightCostResult = DB_query($sql, $db);
-	if (DB_error_no($db) != 0) {
-		echo _('The freight calculation for the destination city cannot be performed because') . ' - ' . DB_error_msg($db) . ' - ' . $sql;
+	$CalcFreightCostResult = DB_query($sql);
+	if (DB_error_no() != 0) {
+		echo _('The freight calculation for the destination city cannot be performed because') . ' - ' . DB_error_msg() . ' - ' . $sql;
 	} elseif (DB_num_rows($CalcFreightCostResult) > 0) {
 
 		$CalcFreightCost =9999999999;
@@ -103,7 +103,7 @@ function CalcFreightCost($TotalValue, $BrAdd2, $BrAdd3, $BrAdd4, $BrAdd5, $BrAdd
 	}
 
 	if ($Currency != $_SESSION['CompanyRecord']['currencydefault']){
-		$ExRateResult = DB_query("SELECT rate FROM currencies WHERE currabrev='" . $Currency . "'",$db);
+		$ExRateResult = DB_query("SELECT rate FROM currencies WHERE currabrev='" . $Currency . "'");
 		if (DB_num_rows($ExRateResult)>0){
 			$ExRateRow = DB_fetch_row($ExRateResult);
 			$ExRate = $ExRateRow[0];

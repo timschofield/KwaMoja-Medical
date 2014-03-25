@@ -28,7 +28,7 @@ if (!isset($_POST['TransAfterDate'])) {
 			FROM `config`
 			WHERE confname ='NumberOfMonthMustBeShown'";
 	$ErrMsg = _('The config value NumberOfMonthMustBeShown cannot be retrieved');
-	$result = DB_query($sql, $db, $ErrMsg);
+	$result = DB_query($sql, $ErrMsg);
 	$row = DB_fetch_array($result);
 	$_POST['TransAfterDate'] = Date($_SESSION['DefaultDateFormat'], Mktime(0, 0, 0, Date('m') - $row['confvalue'], Date('d'), Date('Y')));
 }
@@ -88,7 +88,7 @@ $SQL .= " GROUP BY debtorsmaster.name,
 			holdreasons.reasondescription";
 
 $ErrMsg = _('The customer details could not be retrieved by the SQL because');
-$CustomerResult = DB_query($SQL, $db, $ErrMsg);
+$CustomerResult = DB_query($SQL, $ErrMsg);
 
 if (DB_num_rows($CustomerResult) == 0) {
 
@@ -113,7 +113,7 @@ if (DB_num_rows($CustomerResult) == 0) {
 			WHERE debtorsmaster.debtorno = '" . $CustomerID . "'";
 
 	$ErrMsg = _('The customer details could not be retrieved by the SQL because');
-	$CustomerResult = DB_query($SQL, $db, $ErrMsg);
+	$CustomerResult = DB_query($SQL, $ErrMsg);
 
 } else {
 	$NIL_BALANCE = False;
@@ -201,7 +201,7 @@ if ($_SESSION['SalesmanLogin'] != '') {
 $SQL .= " ORDER BY debtortrans.id";
 
 $ErrMsg = _('No transactions were returned by the SQL because');
-$TransResult = DB_query($SQL, $db, $ErrMsg);
+$TransResult = DB_query($SQL, $ErrMsg);
 
 if (DB_num_rows($TransResult) == 0) {
 	echo '<div class="centre">' . _('There are no transactions to display since') . ' ' . $_POST['TransAfterDate'] . '</div>';

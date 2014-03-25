@@ -101,7 +101,6 @@ class Cart {
 				being retrieved from the DB - dont want to add them again - would return
 				errors anyway */
 
-				global $db;
 				$sql = "INSERT INTO salesorderdetails (orderlineno,
 														orderno,
 														stkcode,
@@ -118,7 +117,7 @@ class Cart {
 														" . $Disc . ",'
 														" . FormatDateForSQL($ItemDue) . "',
 														" . $POLine . ")";
-				$result = DB_query($sql, $db, _('The order line for') . ' ' . mb_strtoupper($StockID) . ' ' . _('could not be inserted'));
+				$result = DB_query($sql, _('The order line for') . ' ' . mb_strtoupper($StockID) . ' ' . _('could not be inserted'));
 			}
 
 			$this->LineCounter = $LineNumber + 1;
@@ -139,7 +138,6 @@ class Cart {
 		$this->LineItems[$UpdateLineNumber]->POLine = $POLine;
 		$this->LineItems[$UpdateLineNumber]->GPPercent = $GPPercent;
 		if ($UpdateDB == 'Yes') {
-			global $db;
 			$result = DB_query("UPDATE salesorderdetails SET quantity=" . $Qty . ",
 															unitprice=" . $Price . ",
 															discountpercent=" . $Disc . ",
@@ -147,7 +145,7 @@ class Cart {
 															itemdue = '" . FormatDateForSQL($ItemDue) . "',
 															poline = '" . $POLine . "'
 								WHERE orderno=" . $_SESSION['ExistingOrder' . $identifier] . "
-								AND orderlineno=" . $UpdateLineNumber, $db, _('The order line number') . ' ' . $UpdateLineNumber . ' ' . _('could not be updated'));
+								AND orderlineno=" . $UpdateLineNumber, _('The order line number') . ' ' . $UpdateLineNumber . ' ' . _('could not be updated'));
 		}
 	}
 
@@ -159,19 +157,18 @@ class Cart {
 			return;
 		}
 		if ($UpdateDB == 'Yes') {
-			global $db;
 			if ($this->Some_Already_Delivered($LineNumber) == 0) {
 				/* nothing has been delivered, delete it. */
 				$result = DB_query("DELETE FROM salesorderdetails
 									WHERE orderno='" . $_SESSION['ExistingOrder' . $identifier] . "'
-									AND orderlineno='" . $LineNumber . "'", $db, _('The order line could not be deleted because'));
+									AND orderlineno='" . $LineNumber . "'", _('The order line could not be deleted because'));
 				prnMsg(_('Deleted Line Number') . ' ' . $LineNumber . ' ' . _('from existing Order Number') . ' ' . $_SESSION['ExistingOrder' . $identifier], 'success');
 			} else {
 				/* something has been delivered. Clear the remaining Qty and Mark Completed */
 				$result = DB_query("UPDATE salesorderdetails SET quantity=qtyinvoiced,
 																completed=1
 									WHERE orderno='" . $_SESSION['ExistingOrder'] . "'
-									AND orderlineno='" . $LineNumber . "'", $db, _('The order line could not be updated as completed because'));
+									AND orderlineno='" . $LineNumber . "'", _('The order line could not be updated as completed because'));
 				prnMsg(_('Removed Remaining Quantity and set Line Number ') . ' ' . $LineNumber . ' ' . _('as Completed for existing Order Number') . ' ' . $_SESSION['ExistingOrder'], 'success');
 			}
 		}
@@ -228,8 +225,6 @@ class Cart {
 
 	function GetExistingTaxes($LineNumber, $stkmoveno) {
 
-		global $db;
-
 		/*Gets the Taxes and rates applicable to this line from the TaxGroup of the branch and TaxCategory of the item
 		and the taxprovince of the dispatch location */
 
@@ -246,7 +241,7 @@ class Cart {
 					ORDER BY taxcalculationorder";
 
 		$ErrMsg = _('The taxes and rates for this item could not be retrieved because');
-		$GetTaxRatesResult = DB_query($sql, $db, $ErrMsg);
+		$GetTaxRatesResult = DB_query($sql, $ErrMsg);
 
 		while ($myrow = DB_fetch_array($GetTaxRatesResult)) {
 
@@ -255,8 +250,6 @@ class Cart {
 	} //end method GetExistingTaxes
 
 	function GetTaxes($LineNumber) {
-
-		global $db;
 
 		/*Gets the Taxes and rates applicable to this line from the TaxGroup of the branch and TaxCategory of the item
 		and the taxprovince of the dispatch location */
@@ -278,7 +271,7 @@ class Cart {
 					ORDER BY taxgrouptaxes.calculationorder";
 
 		$ErrMsg = _('The taxes and rates for this item could not be retrieved because');
-		$GetTaxRatesResult = DB_query($SQL, $db, $ErrMsg);
+		$GetTaxRatesResult = DB_query($SQL, $ErrMsg);
 		unset($this->LineItems[$LineNumber]->Taxes);
 		if (DB_num_rows($GetTaxRatesResult) == 0) {
 			prnMsg(_('It appears that taxes are not defined correctly for this customer tax group'), 'error');
@@ -293,13 +286,11 @@ class Cart {
 
 	function GetFreightTaxes() {
 
-		global $db;
-
 		/*Gets the Taxes and rates applicable to the freight based on the tax group of the branch combined with the tax category for this particular freight
 		and SESSION['FreightTaxCategory'] the taxprovince of the dispatch location */
 
 		$sql = "SELECT taxcatid FROM taxcategories WHERE taxcatname='Freight'";
-		$TaxCatQuery = DB_query($sql, $db);
+		$TaxCatQuery = DB_query($sql);
 
 		if ($TaxCatRow = DB_fetch_array($TaxCatQuery)) {
 			$TaxCatID = $TaxCatRow['taxcatid'];
@@ -324,7 +315,7 @@ class Cart {
 				ORDER BY taxgrouptaxes.calculationorder";
 
 		$ErrMsg = _('The taxes and rates for this item could not be retrieved because');
-		$GetTaxRatesResult = DB_query($SQL, $db, $ErrMsg);
+		$GetTaxRatesResult = DB_query($SQL, $ErrMsg);
 
 		while ($myrow = DB_fetch_array($GetTaxRatesResult)) {
 

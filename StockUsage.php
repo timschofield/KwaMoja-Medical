@@ -29,7 +29,7 @@ $result = DB_query("SELECT description,
 						mbflag,
 						decimalplaces
 					FROM stockmaster
-					WHERE stockid='" . $StockID . "'", $db);
+					WHERE stockid='" . $StockID . "'");
 $myrow = DB_fetch_row($result);
 
 $DecimalPlaces = $myrow[3];
@@ -71,7 +71,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 					ON locations.loccode=www_users.defaultlocation
 				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 }
-$resultStkLocs = DB_query($sql, $db);
+$resultStkLocs = DB_query($sql);
 while ($myrow = DB_fetch_array($resultStkLocs)) {
 	if (isset($_POST['StockLocation'])) {
 		if ($myrow['loccode'] == $_POST['StockLocation']) {
@@ -100,7 +100,7 @@ echo ' <input type="submit" name="ShowGraphUsage" value="' . _('Show Graph Of St
 /*HideMovt ==1 if the movement was only created for the purpose of a transaction but is not a physical movement eg. A price credit will create a movement record for the purposes of display on a credit note
 but there is no physical stock movement - it makes sense honest ??? */
 
-$CurrentPeriod = GetPeriod(Date($_SESSION['DefaultDateFormat']), $db);
+$CurrentPeriod = GetPeriod(Date($_SESSION['DefaultDateFormat']));
 
 if (isset($_POST['ShowUsage'])) {
 	if ($_POST['StockLocation'] == 'All') {
@@ -132,9 +132,9 @@ if (isset($_POST['ShowUsage'])) {
 				ORDER BY periodno DESC LIMIT " . $_SESSION['NumberOfPeriodsOfStockUsage'];
 
 	}
-	$MovtsResult = DB_query($sql, $db);
-	if (DB_error_no($db) != 0) {
-		echo _('The stock usage for the selected criteria could not be retrieved because') . ' - ' . DB_error_msg($db);
+	$MovtsResult = DB_query($sql);
+	if (DB_error_no() != 0) {
+		echo _('The stock usage for the selected criteria could not be retrieved because') . ' - ' . DB_error_msg();
 		if ($debug == 1) {
 			echo '<br />' . _('The SQL that failed was') . $sql;
 		}

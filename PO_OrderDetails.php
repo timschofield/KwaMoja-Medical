@@ -19,7 +19,7 @@ if (isset($_GET['FromGRNNo'])) {
 				WHERE grns.grnno='" . $_GET['FromGRNNo'] . "'";
 
 	$ErrMsg = _('The search of the GRNs was unsuccessful') . ' - ' . _('the SQL statement returned the error');
-	$OrderResult = DB_query($SQL, $db, $ErrMsg);
+	$OrderResult = DB_query($SQL, $ErrMsg);
 
 	$OrderRow = DB_fetch_row($OrderResult);
 	$_GET['OrderNo'] = $OrderRow[0];
@@ -77,7 +77,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 							AND www_users.userid='" . $_SESSION['UserID'] . "'";
 }
 
-$GetOrdHdrResult = DB_query($OrderHeaderSQL, $db, $ErrMsg);
+$GetOrdHdrResult = DB_query($OrderHeaderSQL, $ErrMsg);
 
 if (DB_num_rows($GetOrdHdrResult) != 1) {
 	echo '<br /><br />';
@@ -192,7 +192,7 @@ $LineItemsSQL = "SELECT purchorderdetails.*,
 				ORDER BY itemcode";
 /*- ADDED: Sort by our item code -*/
 
-$LineItemsResult = DB_query($LineItemsSQL, $db, $ErrMsg);
+$LineItemsResult = DB_query($LineItemsSQL, $ErrMsg);
 
 
 echo '<table class="selection" cellpadding="0">';

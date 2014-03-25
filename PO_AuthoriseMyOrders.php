@@ -9,7 +9,7 @@ include('includes/header.inc');
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '</p>';
 
 $EmailSQL = "SELECT email FROM www_users WHERE userid='" . $_SESSION['UserID'] . "'";
-$EmailResult = DB_query($EmailSQL, $db);
+$EmailResult = DB_query($EmailSQL);
 $EmailRow = DB_fetch_array($EmailResult);
 
 if (isset($_POST['UpdateAll'])) {
@@ -23,7 +23,7 @@ if (isset($_POST['UpdateAll'])) {
 						stat_comment='" . $Comment . "',
 						allowprint=1
 					WHERE orderno='" . $OrderNo . "'";
-			$result = DB_query($sql, $db);
+			$result = DB_query($sql);
 		}
 	}
 }
@@ -43,7 +43,7 @@ $sql = "SELECT purchorders.*,
 		INNER JOIN www_users
 			ON www_users.userid=purchorders.initiator
 	WHERE status='Pending'";
-$result = DB_query($sql, $db);
+$result = DB_query($sql);
 
 echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -65,7 +65,7 @@ while ($myrow = DB_fetch_array($result)) {
 				WHERE userid='" . $_SESSION['UserID'] . "'
 				AND currabrev='" . $myrow['currcode'] . "'";
 
-	$AuthResult = DB_query($AuthSQL, $db);
+	$AuthResult = DB_query($AuthSQL);
 	$myauthrow = DB_fetch_array($AuthResult);
 	$AuthLevel = $myauthrow['authlevel'];
 
@@ -73,7 +73,7 @@ while ($myrow = DB_fetch_array($result)) {
 				   	FROM purchorderdetails
 					WHERE orderno='" . $myrow['orderno'] . "'";
 
-	$OrderValueResult = DB_query($OrderValueSQL, $db);
+	$OrderValueResult = DB_query($OrderValueSQL);
 	$MyOrderValueRow = DB_fetch_array($OrderValueResult);
 	$OrderValue = $MyOrderValueRow['ordervalue'];
 
@@ -101,7 +101,7 @@ while ($myrow = DB_fetch_array($result)) {
 				LEFT JOIN stockmaster
 				ON stockmaster.stockid=purchorderdetails.itemcode
 			WHERE orderno='" . $myrow['orderno'] . "'";
-		$LineResult = DB_query($LineSQL, $db);
+		$LineResult = DB_query($LineSQL);
 
 		echo '<tr>
 				<td></td>

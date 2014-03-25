@@ -13,7 +13,7 @@ if (isset($_POST['ClearSupplierBackOrders'])) {
 					WHERE quantityrecd >0
 						AND supplierno>= '" . $_POST['FromSupplierNo'] . "'
 						AND supplierno <= '" . $_POST['ToSupplierNo'] . "'";
-	$result = DB_query($SQL, $db);
+	$result = DB_query($SQL);
 	prnMsg( _('All back order quantities have been cleared'), 'success');
 
 }
@@ -26,7 +26,7 @@ $sql = "SELECT min(supplierid) AS fromcriteria,
 				max(supplierid) AS tocriteria
 			FROM suppliers";
 
-$result = DB_query($sql, $db);
+$result = DB_query($sql);
 $myrow = DB_fetch_array($result);
 
 echo '<table>

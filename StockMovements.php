@@ -15,7 +15,7 @@ if (isset($_GET['StockID'])) {
 	$StockID = '';
 }
 
-$result = DB_query("SELECT description, units FROM stockmaster WHERE stockid='" . $StockID . "'", $db);
+$result = DB_query("SELECT description, units FROM stockmaster WHERE stockid='" . $StockID . "'");
 $myrow = DB_fetch_row($result);
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Inventory') . '" alt="" /><b>' . ' ' . $StockID . ' - ' . $myrow['0'] . ' : ' . _('in units of') . ' : ' . $myrow[1] . '</b></p>';
 
@@ -48,7 +48,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 					ON locations.loccode=www_users.defaultlocation
 				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 }
-$resultStkLocs = DB_query($sql, $db);
+$resultStkLocs = DB_query($sql);
 
 while ($myrow = DB_fetch_array($resultStkLocs)) {
 	if (isset($_POST['StockLocation']) and $_POST['StockLocation'] != 'All') {
@@ -104,7 +104,7 @@ $sql = "SELECT stockmoves.stockid,
 $ErrMsg = _('The stock movements for the selected criteria could not be retrieved because') . ' - ';
 $DbgMsg = _('The SQL that failed was') . ' ';
 
-$MovtsResult = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+$MovtsResult = DB_query($sql, $ErrMsg, $DbgMsg);
 
 echo '<tr>
 		<th>' . _('Type') . '</th>

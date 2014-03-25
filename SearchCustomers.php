@@ -20,12 +20,12 @@ if (isset($_GET['SingleOption'])) {
 }
 
 if (isset($_GET['Update']) and $_GET['Update'] == 'Customers') {
-	CustomerBox($db, $_POST['PartialCode'], $_POST['PartialName'], $_POST['PartialAddress']);
+	CustomerBox($_POST['PartialCode'], $_POST['PartialName'], $_POST['PartialAddress']);
 	exit;
 }
 
 if (isset($_GET['Update']) and $_GET['Update'] == 'Branches') {
-	BranchBox($db, $_POST['DebtorNo']);
+	BranchBox($_POST['DebtorNo']);
 	exit;
 }
 
@@ -70,7 +70,7 @@ echo '<form method="post" name="BranchDetails" onSubmit="return SubmitForm(this,
 			<input type="submit" name="SubmitBranchDetails" style="display: none;" />
 			<div class="box_header">' . _('Select a Customer') . '</div>
 			<select minlength="0" size="15" class="box bloc" id="customers" name="DebtorNo" onChange="ReloadForm(SubmitBranchDetails)">';
-CustomerBox($db);
+CustomerBox();
 echo '</select>
 		</div>
 	</form>';
@@ -83,7 +83,7 @@ echo '<form method="post" name="Details" onSubmit="return SubmitForm(this, \'opt
 			<input type="submit" name="SubmitAllDetails" style="display: none;" />
 			<div class="box_header">' . _('Select a Branch') . '</div>
 			<select minlength="0" size="15" class="box bloc" id="branches" name="BranchNo" onChange="ReloadForm(SubmitAllDetails)">';
-BranchBox($db);
+BranchBox();
 echo '</select>
 		</div>
 	</form>';
@@ -105,7 +105,7 @@ if (!isset($_SESSION['BranchNo'])) {
 
 include('includes/footer.inc');
 
-function CustomerBox($db, $PartialCode = '', $PartialName = '', $PartialAddress = '') {
+function CustomerBox($PartialCode = '', $PartialName = '', $PartialAddress = '') {
 	if ($PartialCode == '') {
 		$PartialCode = '%';
 	} else {
@@ -134,7 +134,7 @@ function CustomerBox($db, $PartialCode = '', $PartialName = '', $PartialAddress 
 								OR address6 LIKE '" . $PartialAddress . "')
 						LIMIT 15";
 
-	$CustomerResult = DB_query($CustomerSQL, $db);
+	$CustomerResult = DB_query($CustomerSQL);
 
 	while ($MyCustomerRow = DB_fetch_array($CustomerResult)) {
 		echo '<option value="' . $MyCustomerRow['debtorno'] . '">' . $MyCustomerRow['debtorno'] . ' - ' . $MyCustomerRow['name'] . '</option>';
@@ -142,13 +142,13 @@ function CustomerBox($db, $PartialCode = '', $PartialName = '', $PartialAddress 
 
 }
 
-function BranchBox($db, $DebtorNo = '') {
+function BranchBox($DebtorNo = '') {
 	if ($DebtorNo != '') {
 		$BranchSQL = "SELECT branchcode,
 							brname
 						FROM custbranch
 						WHERE debtorno='" . $DebtorNo . "'";
-		$BranchResult = DB_query($BranchSQL, $db);
+		$BranchResult = DB_query($BranchSQL);
 		while ($MyBranchRow = DB_fetch_array($BranchResult)) {
 			echo '<option value="' . $MyBranchRow['branchcode'] . '">' . $MyBranchRow['branchcode'] . ' - ' . $MyBranchRow['brname'] . '</option>';
 		}

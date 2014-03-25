@@ -23,7 +23,7 @@ if ($_POST['EntryType'] == 'KEYED'){
 			AND quantity > 0";
 
 	$ErrMsg = '<br />'. _('Could not retrieve the items for'). ' ' . $StockID;
-    $Bundles = DB_query($sql,$db, $ErrMsg );
+    $Bundles = DB_query($sql, $ErrMsg );
 	echo '<table class="selection"><tr>';
 	if (DB_num_rows($Bundles)>0){
 		$AllSerials=array();
@@ -45,7 +45,7 @@ if ($_POST['EntryType'] == 'KEYED'){
 
 		$id=0;
 		$ItemsAvailable=0;
-		while ($myrow=DB_fetch_array($Bundles,$db)){
+		while ($myrow=DB_fetch_array($Bundles)){
 			if ($LineItem->Serialised==1){
 				if ( !array_key_exists($myrow['serialno'], $AllSerials) ){
 					echo '<option value="' . $myrow['serialno'] . '">' . $myrow['serialno'].'</option>';

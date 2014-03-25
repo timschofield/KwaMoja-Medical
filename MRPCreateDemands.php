@@ -69,7 +69,7 @@ if (isset($_POST['submit'])) {
 			AND salesorders.quotation=0
 			GROUP BY salesorderdetails.stkcode";
 	//echo "<br />$sql<br />";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	// To get the quantity per period, get the whole number amount of the total quantity divided
 	// by the number of periods and also get the remainder from that calculation. Put the whole
 	// number quantity into each entry of the periodqty array, and add 1 to the periodqty array
@@ -113,7 +113,7 @@ if (isset($_POST['submit'])) {
 					  WHERE mrpcalendar.calendardate = '" . $datearray[0] . "'
 						AND cal2.manufacturingflag='1'
 						GROUP BY cal2.calendardate";
-	$resultdate = DB_query($calendarsql, $db);
+	$resultdate = DB_query($calendarsql);
 	$myrowdate = DB_fetch_array($resultdate);
 	// If find date based on manufacturing calendar, change date in array
 	if ($myrowdate[0] != 0) {
@@ -139,7 +139,7 @@ if (isset($_POST['submit'])) {
 						  WHERE mrpcalendar.calendardate = '" . $datearray[$i] . "'
 							AND cal2.manufacturingflag='1'
 							GROUP BY cal2.calendardate";
-		$resultdate = DB_query($calendarsql, $db);
+		$resultdate = DB_query($calendarsql);
 		$myrowdate = DB_fetch_array($resultdate);
 		// If find date based on manufacturing calendar, change date in array
 		if ($myrowdate[0] != 0) {
@@ -177,7 +177,7 @@ if (isset($_POST['submit'])) {
 									'" . $_POST['MRPDemandtype'] . "',
 									'" . $demandqty . "',
 									'" . $datearray[$i] . "')";
-				$insertresult = DB_query($sql, $db);
+				$insertresult = DB_query($sql);
 				$i++;
 				$TotalRecords++;
 
@@ -201,7 +201,7 @@ echo '<table class="selection">
 $sql = "SELECT mrpdemandtype,
 				description
 		FROM mrpdemandtypes";
-$result = DB_query($sql, $db);
+$result = DB_query($sql);
 while ($myrow = DB_fetch_array($result)) {
 	echo '<option value="' . $myrow['mrpdemandtype'] . '">' . $myrow['mrpdemandtype'] . ' - ' . $myrow['description'] . '</option>';
 } //end while loop
@@ -212,7 +212,7 @@ echo '<option selected="selected" value="All">' . _('All Stock Categories') . '<
 $sql = "SELECT categoryid,
 			   categorydescription
 		FROM stockcategory";
-$result = DB_query($sql, $db);
+$result = DB_query($sql);
 while ($myrow = DB_fetch_array($result)) {
 	echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categoryid'] . ' - ' . $myrow['categorydescription'] . '</option>';
 } //end while loop
@@ -234,7 +234,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 					ON locations.loccode=www_users.defaultlocation
 				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 }
-$result = DB_query($sql, $db);
+$result = DB_query($sql);
 while ($myrow = DB_fetch_array($result)) {
 	echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
 }

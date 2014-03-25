@@ -22,7 +22,7 @@ while ($ThisScript == '' and filesize('install/InitialScripts.txt') > 0) {
 	$NextScript = ReadFirstLine('install/InitialScripts.txt');
 	if (trim($NextScript) == 'Currencies.php') {
 		$CurrenciesSQL = "SELECT currency FROM currencies";
-		$CurrenciesResult = DB_query($CurrenciesSQL, $db);
+		$CurrenciesResult = DB_query($CurrenciesSQL);
 		if (DB_num_rows($CurrenciesResult) == 0) {
 			$ThisScript = $NextScript;
 		} else {
@@ -31,7 +31,7 @@ while ($ThisScript == '' and filesize('install/InitialScripts.txt') > 0) {
 	}
 	if (trim($NextScript) == 'CompanyPreferences.php' and $ThisScript == '') {
 		$CompanySQL = "SELECT coycode FROM companies";
-		$CompanyResult = DB_query($CompanySQL, $db);
+		$CompanyResult = DB_query($CompanySQL);
 		if (DB_num_rows($CompanyResult) == 0) {
 			$ThisScript = $NextScript;
 		} else {
@@ -40,7 +40,7 @@ while ($ThisScript == '' and filesize('install/InitialScripts.txt') > 0) {
 	}
 	if (trim($NextScript) == 'TaxProvinces.php' and $ThisScript == '') {
 		$ProvinceSQL = "SELECT taxprovinceid FROM taxprovinces";
-		$ProvinceResult = DB_query($ProvinceSQL, $db);
+		$ProvinceResult = DB_query($ProvinceSQL);
 		if (DB_num_rows($ProvinceResult) == 0) {
 			$ThisScript = $NextScript;
 		} else {
@@ -49,7 +49,7 @@ while ($ThisScript == '' and filesize('install/InitialScripts.txt') > 0) {
 	}
 	if (trim($NextScript) == 'TaxAuthorities.php' and $ThisScript == '') {
 		$AuthoritySQL = "SELECT taxid FROM taxauthorities";
-		$AuthorityResult = DB_query($AuthoritySQL, $db);
+		$AuthorityResult = DB_query($AuthoritySQL);
 		if (DB_num_rows($AuthorityResult) == 0) {
 			$ThisScript = $NextScript;
 		} else {
@@ -60,7 +60,7 @@ while ($ThisScript == '' and filesize('install/InitialScripts.txt') > 0) {
 	}
 	if (trim($NextScript) == 'TaxCategories.php' and $ThisScript == '') {
 		$CategorySQL = "SELECT taxcatid FROM taxcategories";
-		$CategoryResult = DB_query($CategorySQL, $db);
+		$CategoryResult = DB_query($CategorySQL);
 		if (DB_num_rows($CategoryResult) == 0) {
 			$ThisScript = $NextScript;
 		} else {
@@ -69,7 +69,7 @@ while ($ThisScript == '' and filesize('install/InitialScripts.txt') > 0) {
 	}
 	if (trim($NextScript) == 'TaxAuthorityRates.php' and $ThisScript == '') {
 		$AuthRatesSQL = "SELECT SUM(taxrate) FROM taxauthrates";
-		$AuthRatesResult = DB_query($AuthRatesSQL, $db);
+		$AuthRatesResult = DB_query($AuthRatesSQL);
 		$Row = DB_fetch_row($AuthRatesResult);
 		if ($Row[0] == 0) {
 			$ThisScript = 'TaxAuthorityRates.php?TaxAuthority=' . $_SESSION['TaxAuthority'];
@@ -79,7 +79,7 @@ while ($ThisScript == '' and filesize('install/InitialScripts.txt') > 0) {
 	}
 	if (trim($NextScript) == 'Locations.php' and $ThisScript == '') {
 		$LocationsSQL = "SELECT loccode FROM locations";
-		$LocationsResult = DB_query($LocationsSQL, $db);
+		$LocationsResult = DB_query($LocationsSQL);
 		if (DB_num_rows($LocationsResult) == 0) {
 			$ThisScript = $NextScript;
 		} else {
@@ -88,7 +88,7 @@ while ($ThisScript == '' and filesize('install/InitialScripts.txt') > 0) {
 	}
 	if (trim($NextScript) == 'SalesTypes.php' and $ThisScript == '') {
 		$SalesTypesSQL = "SELECT typeabbrev FROM salestypes";
-		$SalesTypesResult = DB_query($SalesTypesSQL, $db);
+		$SalesTypesResult = DB_query($SalesTypesSQL);
 		if (DB_num_rows($SalesTypesResult) == 0) {
 			$ThisScript = $NextScript;
 		} else {
@@ -97,7 +97,7 @@ while ($ThisScript == '' and filesize('install/InitialScripts.txt') > 0) {
 	}
 	if (trim($NextScript) == 'Shippers.php' and $ThisScript == '') {
 		$ShippersSQL = "SELECT shipper_id FROM shippers";
-		$ShippersResult = DB_query($ShippersSQL, $db);
+		$ShippersResult = DB_query($ShippersSQL);
 		if (DB_num_rows($ShippersResult) == 0) {
 			$ThisScript = $NextScript;
 		} else {

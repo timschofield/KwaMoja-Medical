@@ -49,7 +49,7 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate']) or $InputError == 1) 
 					<option selected="selected" value="All">' . _('Over All Categories') . '</option>';
 
 	$sql = "SELECT categorydescription, categoryid FROM stockcategory WHERE stocktype<>'D' AND stocktype<>'L'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 
 
 	while ($myrow = DB_fetch_array($result)) {
@@ -76,7 +76,7 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate']) or $InputError == 1) 
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
 
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	while ($myrow = DB_fetch_array($result)) {
 		echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
 	}
@@ -190,9 +190,9 @@ if ($_POST['CategoryID'] == 'All' and $_POST['Location'] == 'All') {
 
 }
 
-$Result = DB_query($sql, $db, '', '', false, false); //dont error check - see below
+$Result = DB_query($sql, '', '', false, false); //dont error check - see below
 
-if (DB_error_no($db) != 0) {
+if (DB_error_no() != 0) {
 	$Title = _('DIFOT Report Error');
 	include('includes/header.inc');
 	prnMsg(_('An error occurred getting the days between delivery requested and actual invoice'), 'error');
@@ -296,7 +296,7 @@ if ($_POST['CategoryID'] == 'All' and $_POST['Location'] == 'All') {
 
 }
 $ErrMsg = _('Could not retrieve the count of sales order lines in the period under review');
-$result = DB_query($sql, $db, $ErrMsg);
+$result = DB_query($sql, $ErrMsg);
 
 
 $myrow = DB_fetch_row($result);

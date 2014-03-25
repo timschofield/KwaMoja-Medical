@@ -61,7 +61,7 @@ if (isset($_POST['submit'])) {
 	//run the SQL from either of the above possibilites
 
 	if ($InputError != 1) {
-		$result = DB_query($sql, $db, _('The update/addition of the demand type failed because'));
+		$result = DB_query($sql, _('The update/addition of the demand type failed because'));
 		prnMsg($msg, 'success');
 		echo '<br />';
 		unset($_POST['Description']);
@@ -77,13 +77,13 @@ if (isset($_POST['submit'])) {
 	$sql = "SELECT COUNT(*) FROM mrpdemands
 			 WHERE mrpdemands.mrpdemandtype='" . $SelectedDT . "'
 			 GROUP BY mrpdemandtype";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_row($result);
 	if ($myrow[0] > 0) {
 		prnMsg(_('Cannot delete this demand type because MRP Demand records exist for this type') . '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('MRP Demands referring to this type'), 'warn');
 	} else {
 		$sql = "DELETE FROM mrpdemandtypes WHERE mrpdemandtype='" . $SelectedDT . "'";
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		prnMsg(_('The selected demand type record has been deleted'), 'succes');
 		echo '<br />';
 	} // end of MRPDemands test
@@ -102,7 +102,7 @@ if (!isset($SelectedDT) or isset($_GET['delete'])) {
 					description
 			FROM mrpdemandtypes";
 
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 
 	echo '<table class="selection">
 			<tr>
@@ -142,7 +142,7 @@ if (isset($SelectedDT) and !isset($_GET['delete'])) {
 		FROM mrpdemandtypes
 		WHERE mrpdemandtype='" . $SelectedDT . "'";
 
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_array($result);
 
 	$_POST['MRPDemandType'] = $myrow['mrpdemandtype'];

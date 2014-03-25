@@ -30,7 +30,7 @@ if (isset($_POST['Search'])) {
 				ORDER BY accountgroups.sequenceintb,
 					chartmaster.accountcode";
 
-	$result = DB_query($SQL, $db);
+	$result = DB_query($SQL);
 
 }
 
@@ -50,7 +50,7 @@ echo '<table class="selection" summary="' . _('Criteria for inquiry') . '">
 		</tr>';
 
 $GroupSQL = "SELECT groupname FROM accountgroups ORDER BY sequenceintb";
-$GroupResult = DB_query($GroupSQL, $db);
+$GroupResult = DB_query($GroupSQL);
 
 echo '<tr>
 		<td>' . _('Search In Account Group') . ':</td>

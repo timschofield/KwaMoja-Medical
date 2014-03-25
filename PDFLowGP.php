@@ -48,12 +48,12 @@ if (isset($_POST['PrintPDF'])) {
 				AND ((stockmoves.price*(1-stockmoves.discountpercent)) - (stockmaster.materialcost + stockmaster.labourcost + stockmaster.overheadcost))/(stockmoves.price*(1-stockmoves.discountpercent)) <=" . $_POST['GPMin'] / 100 . "
 				ORDER BY stockmaster.stockid";
 
-	$LowGPSalesResult = DB_query($SQL, $db, '', '', false, false);
+	$LowGPSalesResult = DB_query($SQL, '', '', false, false);
 
-	if (DB_error_no($db) != 0) {
+	if (DB_error_no() != 0) {
 
 		include('includes/header.inc');
-		prnMsg(_('The low GP items could not be retrieved by the SQL because') . ' - ' . DB_error_msg($db), 'error');
+		prnMsg(_('The low GP items could not be retrieved by the SQL because') . ' - ' . DB_error_msg(), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($debug == 1) {
 			echo '<br />' . $SQL;
@@ -78,7 +78,7 @@ if (isset($_POST['PrintPDF'])) {
 	$Tot_Val = 0;
 	$Category = '';
 	$CatTot_Val = 0;
-	while ($LowGPItems = DB_fetch_array($LowGPSalesResult, $db)) {
+	while ($LowGPItems = DB_fetch_array($LowGPSalesResult)) {
 
 		$YPos -= $line_height;
 		$FontSize = 8;

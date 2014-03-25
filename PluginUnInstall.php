@@ -92,7 +92,7 @@ if (isset($_POST['UnInstall'])) {
 			$Entry = zip_entry_name($FileName);
 			if ($Entry == $Script->name) {
 				unlink($Script->name);
-				RemoveScript($Script->name, $db);
+				RemoveScript($Script->name);
 				prnMsg($Script->name . ' ' . _('has been successfully removed from KwaMoja'), 'success');
 			}
 		}
@@ -209,12 +209,12 @@ function RemoveLine($FileName, $Text) {
 	fclose($fp);
 }
 
-function executeSQL($sql, $db, $TrapErrors = False) {
+function executeSQL($sql, $TrapErrors = False) {
 	/* Run an sql statement and return an error code */
-	DB_IgnoreForeignKeys($db);
-	$result = DB_query($sql, $db, '', '', false, $TrapErrors);
-	$ErrorNumber = DB_error_no($db);
-	DB_ReinstateForeignKeys($db);
+	DB_IgnoreForeignKeys();
+	$result = DB_query($sql, '', '', false, $TrapErrors);
+	$ErrorNumber = DB_error_no();
+	DB_ReinstateForeignKeys();
 	return $ErrorNumber;
 }
 

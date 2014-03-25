@@ -32,7 +32,7 @@ if (isset($_POST['submit'])) {
 
 	$sql = "SELECT count(reasoncode)
 			FROM holdreasons WHERE reasoncode='" . $_POST['ReasonCode'] . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_row($result);
 
 	if ($myrow[0] != 0 and !isset($SelectedReason)) {
@@ -103,7 +103,7 @@ if (isset($_POST['submit'])) {
 		unset($_POST['ReasonDescription']);
 	}
 	//run the SQL from either of the above possibilites
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	if ($msg != '') {
 		prnMsg($msg, 'success');
 	}
@@ -116,7 +116,7 @@ if (isset($_POST['submit'])) {
 			FROM debtorsmaster
 			WHERE debtorsmaster.holdreason='" . $SelectedReason . "'";
 
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_row($result);
 	if ($myrow[0] > 0) {
 		prnMsg(_('Cannot delete this credit status code because customer accounts have been created referring to it'), 'warn');
@@ -125,7 +125,7 @@ if (isset($_POST['submit'])) {
 		//only delete if used in neither customer or supplier accounts
 
 		$sql = "DELETE FROM holdreasons WHERE reasoncode='" . $SelectedReason . "'";
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		prnMsg(_('This credit status code has been deleted'), 'success');
 	}
 	//end if status code used in customer or supplier accounts
@@ -142,7 +142,7 @@ if (!isset($SelectedReason)) {
 	or deletion of the records*/
 
 	$sql = "SELECT reasoncode, reasondescription, dissallowinvoices FROM holdreasons";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 
 	echo '<table class="selection">
 		<tr>
@@ -200,7 +200,7 @@ if (!isset($_GET['delete'])) {
 				FROM holdreasons
 				WHERE reasoncode='" . $SelectedReason . "'";
 
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		$myrow = DB_fetch_array($result);
 
 		$_POST['ReasonCode'] = $myrow['reasoncode'];

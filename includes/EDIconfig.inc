@@ -33,7 +33,7 @@ $MessageType = 'INVOIC';
 
 include('includes/SQL_CommonFunctions.inc');
 
-$EDITrans = GetNextTransNo(99, $db);
+$EDITrans = GetNextTransNo(99);
 
 /* Get the message lines for the heading
 replace variable names with data
@@ -48,7 +48,7 @@ $sql = "SELECT section,
 	AND messagetype='" . $MessageType . "'
 	ORDER BY sequenceno";
 
-$MessageLinesResult = DB_query($sql, $db);
+$MessageLinesResult = DB_query($sql);
 
 $fp = fopen($EDI_Pending . '/EDI_' . $MessageType . '_' . $EDITrans, 'w');
 

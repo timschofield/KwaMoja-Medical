@@ -46,7 +46,7 @@ $SQL = "SELECT accountcode,
 			WHERE pandl=1
 			ORDER BY accountcode";
 
-$result = DB_query($SQL, $db);
+$result = DB_query($SQL);
 if (DB_num_rows($result) == 0) {
 	echo '</select></td>
 		</tr>';
@@ -96,7 +96,7 @@ echo '<br />
 
 if (isset($SelectedAccount) and $SelectedAccount != '') {
 
-	$CurrentYearEndPeriod = GetPeriod(Date($_SESSION['DefaultDateFormat'], YearEndDate($_SESSION['YearEnd'], 0)), $db);
+	$CurrentYearEndPeriod = GetPeriod(Date($_SESSION['DefaultDateFormat'], YearEndDate($_SESSION['YearEnd'], 0)));
 
 	// If the update button has been hit, then update chartdetails with the budget figures
 	// for this year and next.
@@ -107,15 +107,15 @@ if (isset($SelectedAccount) and $SelectedAccount != '') {
 			$SQL = "UPDATE chartdetails SET budget='" . round(filter_number_format($_POST[$i . 'last']), $_SESSION['CompanyRecord']['decimalplaces']) . "'
 					WHERE period='" . ($CurrentYearEndPeriod - (24 - $i)) . "'
 					AND  accountcode = '" . $SelectedAccount . "'";
-			$result = DB_query($SQL, $db, $ErrMsg, $DbgMsg);
+			$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 			$SQL = "UPDATE chartdetails SET budget='" . round(filter_number_format($_POST[$i . 'this']), $_SESSION['CompanyRecord']['decimalplaces']) . "'
 					WHERE period='" . ($CurrentYearEndPeriod - (12 - $i)) . "'
 					AND  accountcode = '" . $SelectedAccount . "'";
-			$result = DB_query($SQL, $db, $ErrMsg, $DbgMsg);
+			$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 			$SQL = "UPDATE chartdetails SET budget='" . round(filter_number_format($_POST[$i . 'next']), $_SESSION['CompanyRecord']['decimalplaces']) . "'
 					WHERE period='" . ($CurrentYearEndPeriod + $i) . "'
 					AND  accountcode = '" . $SelectedAccount . "'";
-			$result = DB_query($SQL, $db, $ErrMsg, $DbgMsg);
+			$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 		}
 	}
 	// End of update
@@ -125,7 +125,7 @@ if (isset($SelectedAccount) and $SelectedAccount != '') {
 	/* If the periods dont exist then create them */
 	for ($i = 1; $i <= 36; $i++) {
 		$MonthEnd = mktime(0, 0, 0, $_SESSION['YearEnd'] + 1 + $i, 0, $YearEndYear - 2);
-		$period = GetPeriod(Date($_SESSION['DefaultDateFormat'], $MonthEnd), $db, false);
+		$period = GetPeriod(Date($_SESSION['DefaultDateFormat'], $MonthEnd), false);
 		$PeriodEnd[$period] = Date('M Y', $MonthEnd);
 	}
 	include('includes/GLPostings.inc'); //creates chartdetails with correct values
@@ -137,7 +137,7 @@ if (isset($SelectedAccount) and $SelectedAccount != '') {
 				FROM chartdetails
 				WHERE accountcode='" . $SelectedAccount . "'";
 
-	$result = DB_query($SQL, $db);
+	$result = DB_query($SQL);
 	while ($myrow = DB_fetch_array($result)) {
 		$Budget[$myrow['period']] = $myrow['budget'];
 		$Actual[$myrow['period']] = $myrow['actual'];
@@ -250,12 +250,12 @@ if (isset($SelectedAccount) and $SelectedAccount != '') {
 		</form>';
 
 	$SQL = "SELECT MIN(periodno) FROM periods";
-	$result = DB_query($SQL, $db);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 	$FirstPeriod = $MyRow[0];
 
 	$SQL = "SELECT MAX(periodno) FROM periods";
-	$result = DB_query($SQL, $db);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 	$LastPeriod = $MyRow[0];
 
@@ -271,7 +271,7 @@ if (isset($SelectedAccount) and $SelectedAccount != '') {
 				AND  accountcode = '" . $SelectedAccount . "'";
 
 		$ErrMsg = _('Could not retrieve the ChartDetail records because');
-		$result = DB_query($sql, $db, $ErrMsg);
+		$result = DB_query($sql, $ErrMsg);
 
 		while ($myrow = DB_fetch_array($result)) {
 
@@ -282,7 +282,7 @@ if (isset($SelectedAccount) and $SelectedAccount != '') {
 					AND  accountcode = '" . $SelectedAccount . "'";
 
 			$ErrMsg = _('Could not update the chartdetails record because');
-			$updresult = DB_query($sql, $db, $ErrMsg);
+			$updresult = DB_query($sql, $ErrMsg);
 		}
 	}
 	/* end of for loop */

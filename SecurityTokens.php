@@ -7,7 +7,7 @@ include('includes/header.inc');
 
 if (isset($_GET['SelectedToken'])) {
 	if ($_GET['Action'] == 'delete') {
-		$Result = DB_query("SELECT script FROM scripts WHERE pagesecurity='" . $_GET['SelectedToken'] . "'", $db);
+		$Result = DB_query("SELECT script FROM scripts WHERE pagesecurity='" . $_GET['SelectedToken'] . "'");
 		if (DB_num_rows($Result) > 0) {
 			prnMsg(_('This secuirty token is currently used by the following scripts and cannot be deleted'), 'error');
 			echo '<table>
@@ -24,15 +24,15 @@ if (isset($_GET['SelectedToken'])) {
 			}
 			echo '</tr></table>';
 		} else {
-			$Result = DB_query("DELETE FROM securitytokens WHERE tokenid='" . $_GET['SelectedToken'] . "'", $db);
+			$Result = DB_query("DELETE FROM securitytokens WHERE tokenid='" . $_GET['SelectedToken'] . "'");
 		}
 	} else { // it must be an edit
 		$sql = "SELECT tokenid,
 					tokenname
 				FROM securitytokens
 				WHERE tokenid='" . $_GET['SelectedToken'] . "'";
-		$Result = DB_query($sql, $db);
-		$myrow = DB_fetch_array($Result, $db);
+		$Result = DB_query($sql);
+		$myrow = DB_fetch_array($Result);
 		$_POST['TokenID'] = $myrow['tokenid'];
 		$_POST['TokenDescription'] = $myrow['tokenname'];
 	}
@@ -62,14 +62,14 @@ if (isset($_POST['Submit']) or isset($_POST['Update'])) {
 if (isset($_POST['Submit'])) {
 
 	$TestSQL = "SELECT tokenid FROM securitytokens WHERE tokenid='" . $_POST['TokenID'] . "'";
-	$TestResult = DB_query($TestSQL, $db);
+	$TestResult = DB_query($TestSQL);
 	if (DB_num_rows($TestResult) != 0) {
 		prnMsg(_('This token ID has already been used. Please use a new one'), 'warn');
 		$InputError = 1;
 	}
 	if ($InputError == 0) {
 		$sql = "INSERT INTO securitytokens values('" . $_POST['TokenID'] . "', '" . $_POST['TokenDescription'] . "')";
-		$Result = DB_query($sql, $db);
+		$Result = DB_query($sql);
 		$_POST['TokenID'] = '';
 		$_POST['TokenDescription'] = '';
 	}
@@ -79,7 +79,7 @@ if (isset($_POST['Update']) and $InputError == 0) {
 	$sql = "UPDATE securitytokens
 				SET tokenname='" . $_POST['TokenDescription'] . "'
 			WHERE tokenid='" . $_POST['TokenID'] . "'";
-	$Result = DB_query($sql, $db);
+	$Result = DB_query($sql);
 	$_POST['TokenDescription'] = '';
 	$_POST['TokenID'] = '';
 }
@@ -122,9 +122,9 @@ echo '<tr>
 	</tr>';
 
 $sql = "SELECT tokenid, tokenname FROM securitytokens WHERE tokenid<1000 ORDER BY tokenid";
-$Result = DB_query($sql, $db);
+$Result = DB_query($sql);
 
-while ($myrow = DB_fetch_array($Result, $db)) {
+while ($myrow = DB_fetch_array($Result)) {
 	echo '<tr>
 			<td>' . $myrow['tokenid'] . '</td>
 			<td>' . htmlspecialchars($myrow['tokenname'], ENT_QUOTES, 'UTF-8') . '</td>

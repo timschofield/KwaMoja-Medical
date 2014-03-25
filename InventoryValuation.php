@@ -67,12 +67,12 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['CSV'])) and isset($_POST['FromCr
 					stockmaster.stockid";
 	}
 
-	$InventoryResult = DB_query($SQL, $db, '', '', false, true);
+	$InventoryResult = DB_query($SQL, '', '', false, true);
 
-	if (DB_error_no($db) != 0) {
+	if (DB_error_no() != 0) {
 		$Title = _('Inventory Valuation') . ' - ' . _('Problem Report');
 		include('includes/header.inc');
-		prnMsg(_('The inventory valuation could not be retrieved by the SQL because') . ' ' . DB_error_msg($db), 'error');
+		prnMsg(_('The inventory valuation could not be retrieved by the SQL because') . ' ' . DB_error_msg(), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($debug == 1) {
 			echo '<br />' . $SQL;
@@ -96,7 +96,7 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['CSV'])) and isset($_POST['FromCr
 		$CatTot_Val = 0;
 		$CatTot_Qty = 0;
 
-		while ($InventoryValn = DB_fetch_array($InventoryResult, $db)) {
+		while ($InventoryValn = DB_fetch_array($InventoryResult)) {
 
 			if ($Category != $InventoryValn['categoryid']) {
 				$FontSize = 10;
@@ -190,7 +190,7 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['CSV'])) and isset($_POST['FromCr
 		$pdf->__destruct();
 	} elseif (isset($_POST['CSV'])) {
 		$CSVListing = _('Category ID') .','. _('Category Description') .','. _('Stock ID') .','. _('Description') .','. _('Decimal Places') .','. _('Qty On Hand') .','. _('Units') .','. _('Unit Cost') .','. _('Total') . "\n";
-		while ($InventoryValn = DB_fetch_row($InventoryResult, $db)) {
+		while ($InventoryValn = DB_fetch_row($InventoryResult)) {
 			$CSVListing .= implode(',', $InventoryValn) . "\n";
 		}
 		header('Content-Encoding: UTF-8');
@@ -228,7 +228,7 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['CSV'])) and isset($_POST['FromCr
 				FROM stockcategory
 				ORDER BY categorydescription";
 
-		$CatResult = DB_query($sql, $db);
+		$CatResult = DB_query($sql);
 		while ($myrow = DB_fetch_array($CatResult)) {
 			echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . ' - ' . $myrow['categoryid'] . '</option>';
 		}
@@ -266,7 +266,7 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['CSV'])) and isset($_POST['FromCr
 						WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 		}
 
-		$LocnResult = DB_query($sql, $db);
+		$LocnResult = DB_query($sql);
 
 
 		while ($myrow = DB_fetch_array($LocnResult)) {

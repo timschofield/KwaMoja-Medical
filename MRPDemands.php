@@ -1,8 +1,8 @@
 <?php
 
 /* Add, Edit, Delete, and List MRP demand records. Table is mrpdemands.
- * Have separate functions for each routine. Use pass-by-reference - (&$db,&$StockID) -
- * to pass values of $db and $StockID to functions. - when just used $db as variable,
+ * Have separate functions for each routine. Use pass-by-reference - (&$StockID) -
+ * to pass values of $StockID to functions. - when just used $StockID as variable,
  * got error: Catchable fatal error: Object of class mysqli could not be converted to string
  */
 
@@ -25,22 +25,22 @@ if (isset($_POST['StockID'])) {
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Inventory') . '" alt="" />' . ' ' . $Title . '</p>';
 
 if (isset($_POST['Search'])) {
-	search($db, $StockID);
+	search($StockID);
 } elseif (isset($_POST['submit'])) {
-	submit($db, $StockID, $DemandID);
+	submit($StockID, $DemandID);
 } elseif (isset($_GET['delete'])) {
-	delete($db, $DemandID, '', $StockID);
+	delete($DemandID, '', $StockID);
 } elseif (isset($_POST['deletesome'])) {
-	delete($db, '', $_POST['MRPDemandtype'], $StockID);
+	delete('', $_POST['MRPDemandtype'], $StockID);
 } elseif (isset($_GET['listall'])) {
-	listall($db, '', '');
+	listall('', '');
 } elseif (isset($_POST['listsome'])) {
-	listall($db, $StockID, $_POST['MRPDemandtype']);
+	listall($StockID, $_POST['MRPDemandtype']);
 } else {
-	display($db, $StockID, $DemandID);
+	display($StockID, $DemandID);
 }
 
-function search(&$db, &$StockID) { //####SEARCH_SEARCH_SEARCH_SEARCH_SEARCH_SEARCH_SEARCH_#####
+function search(&$StockID) { //####SEARCH_SEARCH_SEARCH_SEARCH_SEARCH_SEARCH_SEARCH_#####
 
 	// Search by partial part number or description. Display the part number and description from
 	// the stockmaster so user can select one. If the user clicks on a part number
@@ -76,7 +76,7 @@ function search(&$db, &$StockID) { //####SEARCH_SEARCH_SEARCH_SEARCH_SEARCH_SEAR
 		}
 
 		$ErrMsg = _('The SQL to find the parts selected failed with the message');
-		$result = DB_query($sql, $db, $ErrMsg);
+		$result = DB_query($sql, $ErrMsg);
 
 	} //one of keywords or StockCode was more than a zero length string
 
@@ -115,14 +115,14 @@ function search(&$db, &$StockID) { //####SEARCH_SEARCH_SEARCH_SEARCH_SEARCH_SEAR
 	} else {
 		prnMsg(_('No record found in search'), 'error');
 		unset($StockID);
-		display($db, $StockID, $DemandID);
+		display( $StockID, $DemandID);
 	}
 
 
 } // End of function search()
 
 
-function submit(&$db, &$StockID, &$DemandID) //####SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT####
+function submit(&$StockID, &$DemandID) //####SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT####
 	{
 	// In this section if hit submit button. Do edit checks. If all checks pass, see if record already
 	// exists for StockID/Duedate/MRPDemandtype combo; that means do an Update, otherwise, do INSERT.
@@ -150,7 +150,7 @@ function submit(&$db, &$StockID, &$DemandID) //####SUBMIT_SUBMIT_SUBMIT_SUBMIT_S
 	}
 	$sql = "SELECT * FROM mrpdemandtypes
 			WHERE mrpdemandtype='" . $_POST['MRPDemandtype'] . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 
 	if (DB_num_rows($result) == 0) {
 		$InputError = 1;
@@ -160,7 +160,7 @@ function submit(&$db, &$StockID, &$DemandID) //####SUBMIT_SUBMIT_SUBMIT_SUBMIT_S
 	// even if there was no record.
 	$sql = "SELECT * FROM stockmaster
 			WHERE stockid='" . $StockID . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 
 	if (DB_num_rows($result) == 0) {
 		$InputError = 1;
@@ -174,7 +174,7 @@ function submit(&$db, &$StockID, &$DemandID) //####SUBMIT_SUBMIT_SUBMIT_SUBMIT_S
 			AND mrpdemandtype='" . $_POST['MRPDemandtype'] . "'
 			AND duedate='" . $FormatedDuedate . "'
 			AND demandid <> '" . $DemandID . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 
 	if (DB_num_rows($result) > 0) {
 		$InputError = 1;
@@ -185,7 +185,7 @@ function submit(&$db, &$StockID, &$DemandID) //####SUBMIT_SUBMIT_SUBMIT_SUBMIT_S
 		$sql = "SELECT COUNT(*) FROM mrpdemands
 				   WHERE demandid='" . $DemandID . "'
 				   GROUP BY demandid";
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		$myrow = DB_fetch_row($result);
 
 		if ($myrow[0] > 0) {
@@ -211,7 +211,7 @@ function submit(&$db, &$StockID, &$DemandID) //####SUBMIT_SUBMIT_SUBMIT_SUBMIT_S
 		}
 
 
-		$result = DB_query($sql, $db, _('The update/addition of the MRP demand record failed because'));
+		$result = DB_query($sql, _('The update/addition of the MRP demand record failed because'));
 		prnMsg($msg, 'success');
 		echo '<br />';
 		unset($_POST['MRPDemandtype']);
@@ -222,11 +222,11 @@ function submit(&$db, &$StockID, &$DemandID) //####SUBMIT_SUBMIT_SUBMIT_SUBMIT_S
 		unset($DemandID);
 	} // End of else where DB_num_rows showed there was a valid stockmaster record
 
-	display($db, $StockID, $DemandID);
+	display($StockID, $DemandID);
 } // End of function submit()
 
 
-function delete(&$db, $DemandID, $DemandType, $StockID) { //####DELETE_DELETE_DELETE_DELETE_DELETE_DELETE_####
+function delete($DemandID, $DemandType, $StockID) { //####DELETE_DELETE_DELETE_DELETE_DELETE_DELETE_####
 
 	// If wanted to have a Confirm routine before did actually deletion, could check if
 	// deletion = "yes"; if it did, display link that redirects back to this page
@@ -243,7 +243,7 @@ function delete(&$db, $DemandID, $DemandType, $StockID) { //####DELETE_DELETE_DE
 	}
 	$sql = "DELETE FROM mrpdemands
 		   $where";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	if ($DemandID) {
 		prnMsg(_('The MRP demand record for') . ' ' . $StockID . ' ' . _('has been deleted'), 'succes');
 	} else {
@@ -251,12 +251,12 @@ function delete(&$db, $DemandID, $DemandType, $StockID) { //####DELETE_DELETE_DE
 	}
 	unset($DemandID);
 	unset($StockID);
-	display($db, $stockID, $DemandID);
+	display($stockID, $DemandID);
 
 } // End of function delete()
 
 
-function listall(&$db, $part, $DemandType) { //####LISTALL_LISTALL_LISTALL_LISTALL_LISTALL_LISTALL_LISTALL_####
+function listall($part, $DemandType) { //####LISTALL_LISTALL_LISTALL_LISTALL_LISTALL_LISTALL_LISTALL_####
 
 	// List all mrpdemands records, with anchors to Edit or Delete records if hit List All anchor
 	// Lists some in hit List Selection submit button, and uses part number if it is entered or
@@ -284,7 +284,7 @@ function listall(&$db, $part, $DemandType) { //####LISTALL_LISTALL_LISTALL_LISTA
 			LEFT JOIN stockmaster on mrpdemands.stockid = stockmaster.stockid" . $where . " ORDER BY mrpdemands.stockid, mrpdemands.duedate";
 
 	$ErrMsg = _('The SQL to find the parts selected failed with the message');
-	$result = DB_query($sql, $db, $ErrMsg);
+	$result = DB_query($sql, $ErrMsg);
 
 	echo '<table class="selection">
 		<tr>
@@ -315,12 +315,12 @@ function listall(&$db, $part, $DemandType) { //####LISTALL_LISTALL_LISTALL_LISTA
 	echo '</div>';
 	echo '</form><br/><br/><br/><br/>';
 	unset($StockID);
-	display($db, $StockID, $DemandID);
+	display($StockID, $DemandID);
 
 } // End of function listall()
 
 
-function display(&$db, &$StockID, &$DemandID) { //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
+function display(&$StockID, &$DemandID) { //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
 
 	// Display Seach fields at top and Entry form below that. This function is called the first time
 	// the page is called, and is also invoked at the end of all of the other functions.
@@ -349,7 +349,7 @@ function display(&$db, &$StockID, &$DemandID) { //####DISPLAY_DISPLAY_DISPLAY_DI
 					duedate
 				FROM mrpdemands
 				WHERE demandid='" . $DemandID . "'";
-			$result = DB_query($sql, $db);
+			$result = DB_query($sql);
 			$myrow = DB_fetch_array($result);
 
 			if (DB_num_rows($result) > 0) {
@@ -403,7 +403,7 @@ function display(&$db, &$StockID, &$DemandID) { //####DISPLAY_DISPLAY_DISPLAY_DI
 		$sql = "SELECT mrpdemandtype,
 						description
 				FROM mrpdemandtypes";
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		while ($myrow = DB_fetch_array($result)) {
 			if (isset($_POST['MRPDemandtype']) and $myrow['mrpdemandtype'] == $_POST['MRPDemandtype']) {
 				echo '<option selected="selected" value="';

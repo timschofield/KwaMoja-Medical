@@ -43,7 +43,7 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate']) or $InputError == 1) 
 			WHERE stocktype<>'D'
 			AND stocktype<>'L'";
 
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 
 
 	echo '<select required="required" minlength="1" name="CategoryID">
@@ -74,7 +74,7 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate']) or $InputError == 1) 
 						WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
 
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	while ($myrow = DB_fetch_array($result)) {
 		echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
 	}
@@ -188,9 +188,9 @@ if ($_SESSION['SalesmanLogin'] != '') {
 	$sql .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
 }
 
-$Result = DB_query($sql, $db, '', '', false, false); //dont error check - see below
+$Result = DB_query($sql, '', '', false, false); //dont error check - see below
 
-if (DB_error_no($db) != 0) {
+if (DB_error_no() != 0) {
 	$Title = _('Delivery Differences Log Report Error');
 	include('includes/header.inc');
 	prnMsg(_('An error occurred getting the variances between deliveries and orders'), 'error');
@@ -293,7 +293,7 @@ if ($_SESSION['SalesmanLogin'] != '') {
 }
 
 $ErrMsg = _('Could not retrieve the count of sales order lines in the period under review');
-$result = DB_query($sql, $db, $ErrMsg);
+$result = DB_query($sql, $ErrMsg);
 
 
 $myrow = DB_fetch_row($result);

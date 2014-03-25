@@ -15,7 +15,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 					max(supplierid) AS tocriteria
 				FROM suppliers";
 
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_array($result);
 
 	if ($_POST['FromCriteria']=='') {
@@ -110,13 +110,13 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 
 	}
 
-	$SupplierResult = DB_query($SQL, $db, '', '', False, False);
+	$SupplierResult = DB_query($SQL, '', '', False, False);
 	/*dont trap errors */
 
-	if (DB_error_no($db) != 0) {
+	if (DB_error_no() != 0) {
 		$Title = _('Aged Supplier Account Analysis') . ' - ' . _('Problem Report');
 		include('includes/header.inc');
-		prnMsg(_('The Supplier details could not be retrieved by the SQL because') . ' ' . DB_error_msg($db), 'error');
+		prnMsg(_('The Supplier details could not be retrieved by the SQL because') . ' ' . DB_error_msg(), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($debug == 1) {
 			echo '<br />' . $SQL;
@@ -135,7 +135,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 
 	$ListCount = DB_num_rows($SupplierResult); // UldisN
 
-	while ($AgedAnalysis = DB_fetch_array($SupplierResult, $db)) {
+	while ($AgedAnalysis = DB_fetch_array($SupplierResult)) {
 
 		$CurrDecimalPlaces = $AgedAnalysis['currdecimalplaces'];
 
@@ -199,12 +199,12 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 							AND supptrans.settled = 0
 							AND supptrans.supplierno = '" . $AgedAnalysis["supplierid"] . "'";
 
-			$DetailResult = DB_query($sql, $db, '', '', False, False);
+			$DetailResult = DB_query($sql, '', '', False, False);
 			/*dont trap errors - trapped below*/
-			if (DB_error_no($db) != 0) {
+			if (DB_error_no() != 0) {
 				$Title = _('Aged Supplier Account Analysis - Problem Report');
 				include('includes/header.inc');
-				prnMsg(_('The details of outstanding transactions for Supplier') . ' - ' . $AgedAnalysis['supplierid'] . ' ' . _('could not be retrieved because') . ' - ' . DB_error_msg($db), 'error');
+				prnMsg(_('The details of outstanding transactions for Supplier') . ' - ' . $AgedAnalysis['supplierid'] . ' ' . _('could not be retrieved because') . ' - ' . DB_error_msg(), 'error');
 				echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 				if ($debug == 1) {
 					echo '<br />' . _('The SQL that failed was') . '<br />' . $sql;
@@ -297,7 +297,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 						max(supplierid) AS tocriteria
 					FROM suppliers";
 
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		$myrow = DB_fetch_array($result);
 
 		echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">
@@ -323,7 +323,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				<td><select minlength="0" tabindex="4" name="Currency">';
 
 		$sql = "SELECT currency, currabrev FROM currencies";
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 
 		while ($myrow = DB_fetch_array($result)) {
 			if ($myrow['currabrev'] == $_SESSION['CompanyRecord']['currencydefault']) {

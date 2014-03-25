@@ -38,7 +38,7 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 		FROM pctabs
 		WHERE ( authorizer='" . $_SESSION['UserID'] . "' OR usercode ='" . $_SESSION['UserID'] . "' OR assigner ='" . $_SESSION['UserID'] . "' )
 		ORDER BY tabcode";
-	$result = DB_query($SQL, $db);
+	$result = DB_query($SQL);
 
 	while ($myrow = DB_fetch_array($result)) {
 		if (isset($_POST['SelectedTabs']) and $myrow['tabcode'] == $_POST['SelectedTabs']) {
@@ -88,9 +88,9 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 			AND date >='" . $SQL_FromDate . "' AND date <= '" . $SQL_ToDate . "'
 			ORDER BY date, counterindex ASC";
 
-	$TabDetail = DB_query($SQL, $db);
+	$TabDetail = DB_query($SQL);
 
-	if (DB_error_no($db) != 0) {
+	if (DB_error_no() != 0) {
 		include('includes/header.inc');
 		prnMsg(_('An error occurred getting the orders details'), '', _('Database Error'));
 		if ($debug == 1) {
@@ -113,7 +113,7 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 	$SqlTabs = "SELECT * FROM pctabs
 			WHERE tabcode='" . $SelectedTabs . "'";
 
-	$TabResult = DB_query($SqlTabs, $db, _('No Petty Cash tabs were returned by the SQL because'), _('The SQL that failed was') . ': ');
+	$TabResult = DB_query($SqlTabs, _('No Petty Cash tabs were returned by the SQL because'), _('The SQL that failed was') . ': ');
 
 	$Tabs = DB_fetch_array($TabResult);
 
@@ -121,7 +121,7 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 					WHERE tabcode='" . $SelectedTabs . "'
 					AND date<'" . $SQL_FromDate . "'";
 
-	$TabBalance = DB_query($SqlBalance, $db);
+	$TabBalance = DB_query($SqlBalance);
 
 	$Balance = DB_fetch_array($TabBalance);
 
@@ -181,7 +181,7 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 					FROM pcexpenses
 					WHERE codeexpense='" . $myrow[3] . "'";
 
-		$ResultDes = DB_query($sqldes, $db);
+		$ResultDes = DB_query($sqldes);
 		$Description = DB_fetch_array($ResultDes);
 
 		if (!isset($Description[0])) {
@@ -204,7 +204,7 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 				WHERE tabcode='" . $SelectedTabs . "'
 				AND date<='" . $SQL_ToDate . "'";
 
-	$ResultAmount = DB_query($sqlamount, $db);
+	$ResultAmount = DB_query($sqlamount);
 	$Amount = DB_fetch_array($ResultAmount);
 
 	if (!isset($Amount[0])) {
@@ -241,7 +241,7 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 	$SqlTabs = "SELECT * FROM pctabs
 			WHERE tabcode='" . $SelectedTabs . "'";
 
-	$TabResult = DB_query($SqlTabs, $db, _('No Petty Cash Tabs were returned by the SQL because'), _('The SQL that failed was') . ': ');
+	$TabResult = DB_query($SqlTabs, _('No Petty Cash Tabs were returned by the SQL because'), _('The SQL that failed was') . ': ');
 
 	$Tabs = DB_fetch_array($TabResult);
 
@@ -279,7 +279,7 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 			WHERE tabcode='" . $SelectedTabs . "'
 			AND date<'" . $SQL_FromDate . "'";
 
-	$TabBalance = DB_query($SqlBalance, $db);
+	$TabBalance = DB_query($SqlBalance);
 
 	$Balance = DB_fetch_array($TabBalance);
 
@@ -299,7 +299,7 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 			AND authorized = '0000-00-00'
 			AND date<'" . $SQL_FromDate . "'";
 
-	$TabBalanceNotAut = DB_query($SqlBalanceNotAut, $db);
+	$TabBalanceNotAut = DB_query($SqlBalanceNotAut);
 
 	$BalanceNotAut = DB_fetch_array($TabBalanceNotAut);
 
@@ -322,7 +322,7 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 				AND date <= '" . $SQL_ToDate . "'
 			ORDER BY date, counterindex Asc";
 
-	$TabDetail = DB_query($SQL, $db, _('No Petty Cash movements for this tab were returned by the SQL because'), _('The SQL that failed was') . ': ');
+	$TabDetail = DB_query($SQL, _('No Petty Cash movements for this tab were returned by the SQL because'), _('The SQL that failed was') . ': ');
 
 	echo '<table class="selection">';
 	echo '<tr>
@@ -351,7 +351,7 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 				FROM pcexpenses
 				WHERE codeexpense='" . $myrow['3'] . "'";
 
-		$ResultDes = DB_query($sqldes, $db);
+		$ResultDes = DB_query($sqldes);
 		$Description = DB_fetch_array($ResultDes);
 
 		if (!isset($Description['0'])) {
@@ -382,7 +382,7 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 				WHERE tabcode='" . $SelectedTabs . "'
 				AND date<='" . $SQL_ToDate . "'";
 
-	$ResultAmount = DB_query($sqlamount, $db);
+	$ResultAmount = DB_query($sqlamount);
 	$Amount = DB_fetch_array($ResultAmount);
 
 	if (!isset($Amount[0])) {

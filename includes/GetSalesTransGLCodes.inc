@@ -5,7 +5,7 @@ $Area, $StockID to determine the stock category and the SalesType (Price List)
 
 function returns the relavent GL Code to post COGS entries to*/
 
-function GetCOGSGLAccount($Area, $StockID, $SalesType, &$db) {
+function GetCOGSGLAccount($Area, $StockID, $SalesType) {
 
 	$ErrMsg = _('Can not retrieve the cost of sales GL code because');
 	$DbgMsg = _('SQL to get the cost of sales GL Code');
@@ -13,7 +13,7 @@ function GetCOGSGLAccount($Area, $StockID, $SalesType, &$db) {
 	/*Get the StockCategory for this item */
 
 	$SQL = "SELECT categoryid FROM stockmaster WHERE stockid='" . $StockID . "'";
-	$Result = DB_query($SQL, $db);
+	$Result = DB_query($SQL);
 	$myrow = DB_fetch_row($Result);
 	$StockCategory = $myrow[0];
 
@@ -39,7 +39,7 @@ function GetCOGSGLAccount($Area, $StockID, $SalesType, &$db) {
 	*/
 
 
-	$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg);
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	if (DB_num_rows($Result) == 0) {
 
@@ -49,7 +49,7 @@ function GetCOGSGLAccount($Area, $StockID, $SalesType, &$db) {
 			AND stkcat = '" . $StockCategory . "'
 			AND salestype = 'AN'";
 
-		$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	}
 
@@ -60,7 +60,7 @@ function GetCOGSGLAccount($Area, $StockID, $SalesType, &$db) {
 			WHERE area = '" . $Area . "'
 			AND stkcat = 'ANY' AND salestype = '" . $SalesType . "'";
 
-		$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 	}
 
 	if (DB_num_rows($Result) == 0) {
@@ -72,7 +72,7 @@ function GetCOGSGLAccount($Area, $StockID, $SalesType, &$db) {
 						AND stkcat = '" . $StockCategory . "'
 						AND salestype = '" . $SalesType . "'";
 
-		$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 	}
 
 	if (DB_num_rows($Result) == 0) {
@@ -84,7 +84,7 @@ function GetCOGSGLAccount($Area, $StockID, $SalesType, &$db) {
 			AND salestype='AN'
 			AND stkcat = '" . $StockCategory . "'";
 
-		$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 	}
 
 	if (DB_num_rows($Result) == 0) {
@@ -95,7 +95,7 @@ function GetCOGSGLAccount($Area, $StockID, $SalesType, &$db) {
 			WHERE area = '" . $Area . "'
 			AND stkcat = 'ANY'
 			AND salestype='AN'";
-		$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 	}
 
 	if (DB_num_rows($Result) == 0) {
@@ -105,7 +105,7 @@ function GetCOGSGLAccount($Area, $StockID, $SalesType, &$db) {
 						WHERE area = 'AN'
 						AND stkcat = 'ANY'
 						AND salestype = '" . $SalesType . "'";
-		$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 	}
 
 	if (DB_num_rows($Result) == 0) {
@@ -116,7 +116,7 @@ function GetCOGSGLAccount($Area, $StockID, $SalesType, &$db) {
 				  WHERE area = 'AN'
 				  AND stkcat = 'ANY'
 				  AND salestype='AN'";
-		$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 	}
 
 	if (DB_num_rows($Result) == 0) {
@@ -125,10 +125,10 @@ function GetCOGSGLAccount($Area, $StockID, $SalesType, &$db) {
 		/*Check GL account 1 exists */
 		prnMsg(_('Could not determine the correct general ledger account to use for posting the cost of this sale. Go to the setup menu and define appropriate COGS (Cost Of Goods Sold) accounts. To enable this invoice to be posted it has been posted to default sales and COGS - account number 1'), 'warn');
 		$SQL = "SELECT accountcode FROM chartmaster WHERE accountcode=1";
-		$Result = DB_query($SQL, $db);
+		$Result = DB_query($SQL);
 		if (DB_num_rows($Result) == 0) {
 			/*It doesn't exist so  create it */
-			$Result = DB_query("SELECT groupname FROM accountgroups WHERE groupname='Sales'", $db);
+			$Result = DB_query("SELECT groupname FROM accountgroups WHERE groupname='Sales'");
 			if (DB_num_rows($Result) == 0) {
 				$Result = DB_query("INSERT INTO accountgroups (groupname,
 									sectioninaccounts,
@@ -137,10 +137,10 @@ function GetCOGSGLAccount($Area, $StockID, $SalesType, &$db) {
 							VALUES ('Sales',
 								1,
 								1,
-								5)", $db);
+								5)");
 			}
 			$SQL = "INSERT INTO chartmaster VALUES (1, 'Default Sales and COGS', 'Sales')";
-			$Result = DB_query($SQL, $db);
+			$Result = DB_query($SQL);
 		}
 		return 1;
 	}
@@ -149,7 +149,7 @@ function GetCOGSGLAccount($Area, $StockID, $SalesType, &$db) {
 	return $myrow[0];
 }
 
-function GetSalesGLAccount($Area, $StockID, $SalesType, &$db) {
+function GetSalesGLAccount($Area, $StockID, $SalesType) {
 
 	/*Gets the  Sales GL Code for a specific area, sales type and stock category */
 
@@ -159,7 +159,7 @@ function GetSalesGLAccount($Area, $StockID, $SalesType, &$db) {
 
 	/*Get the StockCategory for this item */
 	$SQL = "SELECT categoryid FROM stockmaster WHERE stockid='" . $StockID . "'";
-	$Result = DB_query($SQL, $db);
+	$Result = DB_query($SQL);
 	$myrow = DB_fetch_row($Result);
 	$StockCategory = $myrow[0];
 
@@ -185,7 +185,7 @@ function GetSalesGLAccount($Area, $StockID, $SalesType, &$db) {
 			AND stkcat = '" . $StockCategory . "'
 			AND salestype = '" . $SalesType . "'";
 
-	$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg);
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	if (DB_num_rows($Result) == 0) {
 		DB_free_result($Result);
@@ -196,7 +196,7 @@ function GetSalesGLAccount($Area, $StockID, $SalesType, &$db) {
 				AND stkcat = '" . $StockCategory . "'
 				AND salestype = 'AN'";
 
-		$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 	}
 
 	if (DB_num_rows($Result) == 0) {
@@ -208,7 +208,7 @@ function GetSalesGLAccount($Area, $StockID, $SalesType, &$db) {
 				AND stkcat = 'ANY'
 				AND salestype = '" . $SalesType . "'";
 
-		$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 	}
 
 	if (DB_num_rows($Result) == 0) {
@@ -220,7 +220,7 @@ function GetSalesGLAccount($Area, $StockID, $SalesType, &$db) {
 					AND salestype='" . $SalesType . "'
 					AND stkcat = '" . $StockCategory . "'";
 
-		$Result = DB_query($SQL,$db,$ErrMsg,$DbgMsg);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 	}
 
 	if (DB_num_rows($Result)==0){
@@ -232,7 +232,7 @@ function GetSalesGLAccount($Area, $StockID, $SalesType, &$db) {
 						AND salestype='AN'
 						AND stkcat = '" . $StockCategory . "'";
 
-		$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 	}
 
 	if (DB_num_rows($Result) == 0) {
@@ -244,7 +244,7 @@ function GetSalesGLAccount($Area, $StockID, $SalesType, &$db) {
 				AND stkcat = 'ANY'
 				AND salestype='AN'";
 
-		$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 	}
 
 	if (DB_num_rows($Result) == 0) {
@@ -255,7 +255,7 @@ function GetSalesGLAccount($Area, $StockID, $SalesType, &$db) {
 					WHERE area = 'AN'
 					AND stkcat = 'ANY'
 					AND salestype = '" . $SalesType . "'";
-		$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 	}
 
 	if (DB_num_rows($Result) == 0) {
@@ -268,7 +268,7 @@ function GetSalesGLAccount($Area, $StockID, $SalesType, &$db) {
 				AND stkcat = 'ANY'
 				AND salestype='AN'";
 
-		$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 	}
 	if (DB_num_rows($Result) == 0) {
 		/*STILL!*/
@@ -276,11 +276,11 @@ function GetSalesGLAccount($Area, $StockID, $SalesType, &$db) {
 		prnMsg(_('Could not determine the correct general ledger account to use for posting this sale to. Go to the setup menu and define appropriate Sale GL Posting accounts. To enable this invoice to be posted it has been posted to default sales and COGS - account number 1'), 'warn');
 		/*Check GL account 1 exists */
 		$SQL = "SELECT accountcode FROM chartmaster WHERE accountcode=1";
-		$Result = DB_query($SQL, $db);
+		$Result = DB_query($SQL);
 		if (DB_num_rows($Result) == 0) {
 			/*It doesn't exist so  create it */
 			/*First check the account group sales exists */
-			$Result = DB_query("SELECT groupname FROM accountgroups WHERE groupname='Sales'", $db);
+			$Result = DB_query("SELECT groupname FROM accountgroups WHERE groupname='Sales'");
 			if (DB_num_rows($Result) == 0) {
 				$Result = DB_query("INSERT INTO accountgroups (groupname,
 																sectioninaccounts,
@@ -289,10 +289,10 @@ function GetSalesGLAccount($Area, $StockID, $SalesType, &$db) {
 														VALUES ('Sales',
 																1,
 																1,
-																5)", $db);
+																5)");
 			}
 			$SQL = "INSERT INTO chartmaster VALUES (1, 'Default Sales and COGS', 'Sales')";
-			$Result = DB_query($SQL, $db);
+			$Result = DB_query($SQL);
 		}
 		return array(
 			'salesglcode' => 1,

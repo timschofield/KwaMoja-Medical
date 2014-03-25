@@ -14,11 +14,11 @@ echo '<br /><br />' . _('Check every Invoice has a Sales Order') . '<br />';
 echo '<br /><br />' . _('Check every Invoice has a Tax Entry') . '<br />';
 echo '<br /><br />' . _('Check every Invoice has a GL Entry') . '<br />';
 $SQL = 'SELECT id, transno, order_, trandate FROM debtortrans WHERE type = 10';
-$Result = DB_query($SQL, $db);
+$Result = DB_query($SQL);
 
 while ($myrow = DB_fetch_array($Result)) {
 	$SQL2 = "SELECT orderno, orddate FROM salesorders WHERE orderno = '" . $myrow['order_'] . "'";
-	$Result2 = DB_query($SQL2, $db);
+	$Result2 = DB_query($SQL2);
 
 	if (DB_num_rows($Result2) == 0) {
 		echo '<br />' . _('Invoice ') . ' ' . $myrow['transno'] . ' : ';
@@ -26,7 +26,7 @@ while ($myrow = DB_fetch_array($Result)) {
 	}
 
 	$SQL3 = "SELECT debtortransid FROM debtortranstaxes WHERE debtortransid = '" . $myrow['id'] . "'";
-	$Result3 = DB_query($SQL3, $db);
+	$Result3 = DB_query($SQL3);
 
 	if (DB_num_rows($Result3) == 0) {
 		echo '<br />' . _('Invoice ') . ' ' . $myrow['transno'] . ' : ';
@@ -37,7 +37,7 @@ while ($myrow = DB_fetch_array($Result)) {
 				FROM gltrans
 				WHERE type = 10
 				AND typeno = '" . $myrow['transno'] . "'";
-	$Result4 = DB_query($SQL4, $db);
+	$Result4 = DB_query($SQL4);
 
 	if (DB_num_rows($Result4) == 0) {
 		echo '<br />' . _('Invoice') . ' ' . $myrow['transno'] . ' : ';
@@ -48,7 +48,7 @@ while ($myrow = DB_fetch_array($Result)) {
 
 echo '<br /><br />' . _('Check for orphan GL Entries') . '<br />';
 $SQL = "SELECT DISTINCT typeno, counterindex FROM gltrans WHERE type = 10";
-$Result = DB_query($SQL, $db);
+$Result = DB_query($SQL);
 
 while ($myrow = DB_fetch_array($Result)) {
 	$SQL2 = "SELECT id,
@@ -57,7 +57,7 @@ while ($myrow = DB_fetch_array($Result)) {
 				FROM debtortrans
 				WHERE type = 10
 				AND transno = '" . $myrow['typeno'] . "'";
-	$Result2 = DB_query($SQL2, $db);
+	$Result2 = DB_query($SQL2);
 
 	if (DB_num_rows($Result2) == 0) {
 		echo "<br />" . _('GL Entry ') . $myrow['counterindex'] . " : ";
@@ -72,7 +72,7 @@ $SQL = "SELECT typeno,
 		WHERE type = 12
 		AND account = '" . $_SESSION['CompanyRecord']['debtorsact'] . "'";
 
-$Result = DB_query($SQL, $db);
+$Result = DB_query($SQL);
 
 while ($myrow = DB_fetch_array($Result)) {
 	$SQL2 = "SELECT SUM((ovamount+ovgst)/rate)
@@ -80,7 +80,7 @@ while ($myrow = DB_fetch_array($Result)) {
 			WHERE type = 12
 			AND transno = '" . $myrow['typeno'] . "'";
 
-	$Result2 = DB_query($SQL2, $db);
+	$Result2 = DB_query($SQL2);
 	$myrow2 = DB_fetch_row($Result2);
 
 	if ($myrow2[0] + $myrow['amount'] == 0) {
@@ -91,11 +91,11 @@ while ($myrow = DB_fetch_array($Result)) {
 
 echo '<br /><br />' . _('Check for orphan Receipts') . '<br />';
 $SQL = "SELECT transno FROM debtortrans WHERE type = 12";
-$Result = DB_query($SQL, $db);
+$Result = DB_query($SQL);
 
 while ($myrow = DB_fetch_array($Result)) {
 	$SQL2 = "SELECT amount FROM gltrans WHERE type = 12 AND typeno = '" . $myrow['transno'] . "'";
-	$Result2 = DB_query($SQL2, $db);
+	$Result2 = DB_query($SQL2);
 	$myrow2 = DB_fetch_row($Result2);
 
 	if (!$myrow2[0]) {
@@ -107,7 +107,7 @@ while ($myrow = DB_fetch_array($Result)) {
 
 echo '<br /><br />' . _('Check for orphan Sales Orders') . '<br />';
 $SQL = "SELECT orderno, orddate FROM salesorders";
-$Result = DB_query($SQL, $db);
+$Result = DB_query($SQL);
 
 while ($myrow = DB_fetch_array($Result)) {
 	$SQL2 = "SELECT transno,
@@ -117,7 +117,7 @@ while ($myrow = DB_fetch_array($Result)) {
 				WHERE type = 10
 				AND order_ = '" . $myrow['orderno'] . "'";
 
-	$Result2 = DB_query($SQL2, $db);
+	$Result2 = DB_query($SQL2);
 
 	if (DB_num_rows($Result2) == 0) {
 		echo '<br />' . _('Sales Order') . ' ' . $myrow['orderno'] . ' : ';
@@ -128,11 +128,11 @@ while ($myrow = DB_fetch_array($Result)) {
 echo '<br /><br />' . _('Check for orphan Order Items') . '<br />';
 echo '<br /><br />' . _('Check Order Item Amounts') . '<br />';
 $SQL = "SELECT orderno FROM salesorderdetails";
-$Result = DB_query($SQL, $db);
+$Result = DB_query($SQL);
 
 while ($myrow = DB_fetch_array($Result)) {
 	$SQL2 = "SELECT orderno, orddate FROM salesorders WHERE orderno = '" . $myrow['orderno'] . "'";
-	$Result2 = DB_query($SQL2, $db);
+	$Result2 = DB_query($SQL2);
 
 	if (DB_num_rows($Result2) == 0) {
 		echo '<br />' . _('Order Item') . ' ' . $myrow['orderno'] . ' : ';
@@ -142,7 +142,7 @@ while ($myrow = DB_fetch_array($Result)) {
 	$sumsql = "SELECT SUM( qtyinvoiced * unitprice ) AS InvoiceTotal
 				FROM salesorderdetails
 				WHERE orderno = '" . $myrow['orderno'] . "'";
-	$sumresult = DB_query($sumsql, $db);
+	$sumresult = DB_query($sumsql);
 
 	if ($sumrow = DB_fetch_array($sumresult)) {
 		$invSQL = "SELECT transno,
@@ -153,7 +153,7 @@ while ($myrow = DB_fetch_array($Result)) {
 							ovamount,
 							ovgst
 				 	FROM debtortrans WHERE order_ = '" . $myrow['orderno'] . "'";
-		$invResult = DB_query($invSQL, $db);
+		$invResult = DB_query($invSQL);
 
 		while ($invrow = DB_fetch_array($invResult)) {
 			// Ignore credit notes
@@ -170,7 +170,7 @@ while ($myrow = DB_fetch_array($Result)) {
 
 echo '<br /><br />' . _('Check for orphan Stock Moves') . '<br />';
 $SQL = "SELECT stkmoveno, transno FROM stockmoves";
-$Result = DB_query($SQL, $db);
+$Result = DB_query($SQL);
 
 while ($myrow = DB_fetch_array($Result)) {
 	$SQL2 = "SELECT transno,
@@ -180,7 +180,7 @@ while ($myrow = DB_fetch_array($Result)) {
 				WHERE type BETWEEN 10 AND 11
 				AND transno = '" . $myrow['transno'] . "'";
 
-	$Result2 = DB_query($SQL2, $db);
+	$Result2 = DB_query($SQL2);
 
 	if (DB_num_rows($Result2) == 0) {
 		echo '<br />' . _('Stock Move') . ' ' . $myrow['stkmoveno'] . ' : ';
@@ -191,11 +191,11 @@ while ($myrow = DB_fetch_array($Result)) {
 
 echo '<br /><br />' . _('Check for orphan Tax Entries') . '<br />';
 $SQL = "SELECT debtortransid FROM debtortranstaxes";
-$Result = DB_query($SQL, $db);
+$Result = DB_query($SQL);
 
 while ($myrow = DB_fetch_array($Result)) {
 	$SQL2 = "SELECT id, transno, trandate FROM debtortrans WHERE type BETWEEN 10 AND 11 AND id = '" . $myrow['debtortransid'] . "'";
-	$Result2 = DB_query($SQL2, $db);
+	$Result2 = DB_query($SQL2);
 
 	if (DB_num_rows($Result2) == 0) {
 		echo '<br />' . _('Tax Entry') . ' ' . $myrow['debtortransid'] . ' : ';

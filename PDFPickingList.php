@@ -31,7 +31,7 @@ if ((!isset($_GET['TransNo']) or $_GET['TransNo'] == '') and !isset($_POST['Tran
 							ON locations.loccode=www_users.defaultlocation
 						WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/sales.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p><br />';
 	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint" name="form">';
 	echo '<div>';
@@ -140,7 +140,7 @@ if ($_SESSION['SalesmanLogin'] != '') {
 }
 
 if (isset($_POST['TransDate']) or (isset($_GET['TransNo']) and $_GET['TransNo'] != 'Preview')) {
-	$result = DB_query($sql, $db, $ErrMsg);
+	$result = DB_query($sql, $ErrMsg);
 
 	/*if there are no rows, there's a problem. */
 	if (DB_num_rows($result) == 0) {
@@ -229,7 +229,7 @@ for ($i = 0; $i < sizeof($OrdersToPick); $i++) {
 		$sql = "SELECT COUNT(orderno)
 				FROM pickinglists
 				WHERE orderno='" . $OrdersToPick[$i]['orderno'] . "'";
-		$CountResult = DB_query($sql, $db);
+		$CountResult = DB_query($sql);
 		$Count = DB_fetch_row($CountResult);
 		if ($Count[0] == 0) {
 			/* There are no previous picking lists for this order */
@@ -269,7 +269,7 @@ for ($i = 0; $i < sizeof($OrdersToPick); $i++) {
 						WHERE salesorderdetails.orderno='" . $OrdersToPick[$i]['orderno'] . "'
 						AND salesorderdetails.orderlineno=pickinglistdetails.orderlineno";
 		}
-		$LineResult = DB_query($sql, $db, $ErrMsg);
+		$LineResult = DB_query($sql, $ErrMsg);
 	}
 
 	if ((isset($_GET['TransNo']) and $_GET['TransNo'] == 'Preview') or (isset($LineResult) and DB_num_rows($LineResult) > 0)) {
@@ -277,7 +277,7 @@ for ($i = 0; $i < sizeof($OrdersToPick); $i++) {
 		include('includes/PDFPickingListHeader.inc');
 		if (isset($_POST['TransDate']) or (isset($_GET['TransNo']) and $_GET['TransNo'] != 'Preview')) {
 			$LinesToShow = DB_num_rows($LineResult);
-			$PickingListNo = GetNextTransNo(19, $db);
+			$PickingListNo = GetNextTransNo(19);
 			$sql = "INSERT INTO pickinglists
 				VALUES (
 				'" . $PickingListNo . "',
@@ -285,7 +285,7 @@ for ($i = 0; $i < sizeof($OrdersToPick); $i++) {
 				'" . FormatDateForSQL($_POST['TransDate']) . "',
 				'CURRENT_DATE',
 				'0000-00-00')";
-			$headerresult = DB_query($sql, $db);
+			$headerresult = DB_query($sql);
 		} else {
 			$LinesToShow = 1;
 		}
@@ -319,7 +319,7 @@ for ($i = 0; $i < sizeof($OrdersToPick); $i++) {
 					'" . $myrow2['orderlineno'] . "',
 					'" . $DisplayQtySupplied . "',
 					0)";
-				$Result = DB_query($sql, $db);
+				$Result = DB_query($sql);
 			}
 			$ListCount++;
 

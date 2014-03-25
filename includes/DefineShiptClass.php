@@ -26,26 +26,26 @@ class Shipment {
 		$this->Closed = 0;
 	}
 
-	function Add_To_Shipment($PODetailItem, $OrderNo, $StockID, $ItemDescr, $QtyInvoiced, $UnitPrice, $UOM, $DelDate, $QuantityOrd, $QuantityRecd, $StdCostUnit, $DecimalPlaces, &$db) {
+	function Add_To_Shipment($PODetailItem, $OrderNo, $StockID, $ItemDescr, $QtyInvoiced, $UnitPrice, $UOM, $DelDate, $QuantityOrd, $QuantityRecd, $StdCostUnit, $DecimalPlaces) {
 
 		$this->LineItems[$PODetailItem] = new LineDetails($PODetailItem, $OrderNo, $StockID, $ItemDescr, $QtyInvoiced, $UnitPrice, $UOM, $DelDate, $QuantityOrd, $QuantityRecd, $StdCostUnit, $DecimalPlaces);
 
 		$sql = "UPDATE purchorderdetails SET shiptref = '" . $this->ShiptRef . "'
 			WHERE podetailitem = '" . $PODetailItem . "'";
 		$ErrMsg = _('There was an error updating the purchase order detail record to make it part of shipment') . ' ' . $this->ShiptRef . ' ' . _('the error reported was');
-		$result = DB_query($sql, $db, $ErrMsg);
+		$result = DB_query($sql, $ErrMsg);
 
 		return 1;
 	}
 
 
-	function Remove_From_Shipment($PODetailItem, &$db) {
+	function Remove_From_Shipment($PODetailItem) {
 
 		if ($this->LineItems[$PODetailItem]->QtyInvoiced == 0) {
 
 			unset($this->LineItems[$PODetailItem]);
 			$sql = "UPDATE purchorderdetails SET shiptref = 0 WHERE podetailitem='" . $PODetailItem . "'";
-			$Result = DB_query($sql, $db);
+			$Result = DB_query($sql);
 		} else {
 			prnMsg(_('This shipment line has a quantity invoiced and already charged to the shipment - it cannot now be removed'), 'warn');
 		}

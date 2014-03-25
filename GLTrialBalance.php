@@ -39,7 +39,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 		$FromDate = Date($_SESSION['DefaultDateFormat'], Mktime(0, 0, 0, $_SESSION['YearEnd'] + 2, 0, Date('Y') - 1));
 	}
 	/*GetPeriod function creates periods if need be the return value is not used */
-	$NotUsedPeriodNo = GetPeriod($FromDate, $db);
+	$NotUsedPeriodNo = GetPeriod($FromDate);
 
 	/*Show a form to allow input of criteria for TB to show */
 	echo '<table class="selection" summary="' . _('Input criteria for inquiry') . '">
@@ -52,10 +52,10 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 				FROM periods
 				WHERE lastdate_in_period < '" . $NextYear . "'
 				ORDER BY periodno DESC";
-	$Periods = DB_query($sql, $db);
+	$Periods = DB_query($sql);
 
 
-	while ($myrow = DB_fetch_array($Periods, $db)) {
+	while ($myrow = DB_fetch_array($Periods)) {
 		if (isset($_POST['FromPeriod']) and $_POST['FromPeriod'] != '') {
 			if ($_POST['FromPeriod'] == $myrow['periodno']) {
 				echo '<option selected="selected" value="' . $myrow['periodno'] . '">' . MonthAndYearFromSQLDate($myrow['lastdate_in_period']) . '</option>';
@@ -74,7 +74,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 	echo '</select></td>
 		</tr>';
 	if (!isset($_POST['ToPeriod']) or $_POST['ToPeriod'] == '') {
-		$DefaultToPeriod = GetPeriod(date($_SESSION['DefaultDateFormat'], mktime(0, 0, 0, Date('m') + 1, 0, Date('Y'))), $db);
+		$DefaultToPeriod = GetPeriod(date($_SESSION['DefaultDateFormat'], mktime(0, 0, 0, Date('m') + 1, 0, Date('Y'))));
 	} else {
 		$DefaultToPeriod = $_POST['ToPeriod'];
 	}
@@ -85,7 +85,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 
 	$RetResult = DB_data_seek($Periods, 0);
 
-	while ($myrow = DB_fetch_array($Periods, $db)) {
+	while ($myrow = DB_fetch_array($Periods)) {
 
 		if ($myrow['periodno'] == $DefaultToPeriod) {
 			echo '<option selected="selected" value="' . $myrow['periodno'] . '">' . MonthAndYearFromSQLDate($myrow['lastdate_in_period']) . '</option>';
@@ -123,7 +123,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 	$sql = "SELECT lastdate_in_period
 			FROM periods
 			WHERE periodno='" . $_POST['ToPeriod'] . "'";
-	$PrdResult = DB_query($sql, $db);
+	$PrdResult = DB_query($sql);
 	$myrow = DB_fetch_row($PrdResult);
 	$PeriodToDate = MonthAndYearFromSQLDate($myrow[0]);
 
@@ -153,13 +153,13 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 			accountgroups.groupname,
 			chartdetails.accountcode";
 
-	$AccountsResult = DB_query($SQL, $db);
-	if (DB_error_no($db) != 0) {
+	$AccountsResult = DB_query($SQL);
+	if (DB_error_no() != 0) {
 		$Title = _('Trial Balance') . ' - ' . _('Problem Report') . '....';
 		$ViewTopic = 'GeneralLedger';
 		$BookMark = 'TrialBalance';
 		include('includes/header.inc');
-		prnMsg(_('No general ledger accounts were returned by the SQL because') . ' - ' . DB_error_msg($db));
+		prnMsg(_('No general ledger accounts were returned by the SQL because') . ' - ' . DB_error_msg());
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($debug == 1) {
 			echo '<br />' . $SQL;
@@ -415,7 +415,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 	$sql = "SELECT lastdate_in_period
 			FROM periods
 			WHERE periodno='" . $_POST['ToPeriod'] . "'";
-	$PrdResult = DB_query($sql, $db);
+	$PrdResult = DB_query($sql);
 	$myrow = DB_fetch_row($PrdResult);
 	$PeriodToDate = MonthAndYearFromSQLDate($myrow[0]);
 
@@ -446,7 +446,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 			chartdetails.accountcode";
 
 
-	$AccountsResult = DB_query($SQL, $db, _('No general ledger accounts were returned by the SQL because'), _('The SQL that failed was') . ': ');
+	$AccountsResult = DB_query($SQL, _('No general ledger accounts were returned by the SQL because'), _('The SQL that failed was') . ': ');
 
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Trial Balance') . '" alt="' . _('Print') . '" />' . ' ' . _('Trial Balance Report') . '</p>';
 

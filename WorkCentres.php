@@ -65,7 +65,7 @@ if (isset($_POST['submit'])) {
 	//run the SQL from either of the above possibilites
 
 	if ($InputError != 1) {
-		$result = DB_query($sql, $db, _('The update/addition of the work centre failed because'));
+		$result = DB_query($sql, _('The update/addition of the work centre failed because'));
 		prnMsg($msg, 'success');
 		unset($_POST['Location']);
 		unset($_POST['Description']);
@@ -81,19 +81,19 @@ if (isset($_POST['submit'])) {
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'BOM'
 
 	$sql = "SELECT COUNT(*) FROM bom WHERE bom.workcentreadded='" . $SelectedWC . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_row($result);
 	if ($myrow[0] > 0) {
 		prnMsg(_('Cannot delete this work centre because bills of material have been created requiring components to be added at this work center') . '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('BOM items referring to this work centre code'), 'warn');
 	} else {
 		$sql = "SELECT COUNT(*) FROM contractbom WHERE contractbom.workcentreadded='" . $SelectedWC . "'";
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		$myrow = DB_fetch_row($result);
 		if ($myrow[0] > 0) {
 			prnMsg(_('Cannot delete this work centre because contract bills of material have been created having components added at this work center') . '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('Contract BOM items referring to this work centre code'), 'warn');
 		} else {
 			$sql = "DELETE FROM workcentres WHERE code='" . $SelectedWC . "'";
-			$result = DB_query($sql, $db);
+			$result = DB_query($sql);
 			prnMsg(_('The selected work centre record has been deleted'), 'succes');
 		} // end of Contract BOM test
 	} // end of BOM test
@@ -131,7 +131,7 @@ if (!isset($SelectedWC)) {
 						ON locations.loccode=www_users.defaultlocation
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	echo '<table class="selection">
 			<tr>
 				<th class="SortableColumn">' . _('WC Code') . '</th>
@@ -180,7 +180,7 @@ if (isset($SelectedWC)) {
 			FROM workcentres
 			WHERE code='" . $SelectedWC . "'";
 
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_array($result);
 
 	$_POST['Code'] = $myrow['code'];
@@ -220,7 +220,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 					ON locations.loccode=www_users.defaultlocation
 				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 }
-$result = DB_query($sql, $db);
+$result = DB_query($sql);
 
 if (!isset($_POST['Description'])) {
 	$_POST['Description'] = '';
@@ -259,7 +259,7 @@ $SQL = "SELECT accountcode,
 		WHERE accountgroups.pandl!=0
 		ORDER BY accountcode";
 
-$result = DB_query($SQL, $db);
+$result = DB_query($SQL);
 
 while ($myrow = DB_fetch_array($result)) {
 	if (isset($_POST['OverheadRecoveryAct']) and $myrow['accountcode'] == $_POST['OverheadRecoveryAct']) {

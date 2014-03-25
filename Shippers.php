@@ -58,7 +58,7 @@ if (isset($_POST['submit'])) {
 
 	//run the SQL from either of the above possibilites
 	if ($InputError != 1) {
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		echo '<br />';
 		prnMsg($msg, 'success');
 		unset($SelectedShipper);
@@ -72,7 +72,7 @@ if (isset($_POST['submit'])) {
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'SalesOrders'
 
 	$sql = "SELECT COUNT(*) FROM salesorders WHERE salesorders.shipvia='" . $SelectedShipper . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_row($result);
 	if ($myrow[0] > 0) {
 		$CancelDelete = 1;
@@ -83,7 +83,7 @@ if (isset($_POST['submit'])) {
 		// PREVENT DELETES IF DEPENDENT RECORDS IN 'DebtorTrans'
 
 		$sql = "SELECT COUNT(*) FROM debtortrans WHERE debtortrans.shipvia='" . $SelectedShipper . "'";
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		$myrow = DB_fetch_row($result);
 		if ($myrow[0] > 0) {
 			$CancelDelete = 1;
@@ -100,7 +100,7 @@ if (isset($_POST['submit'])) {
 			} else {
 
 				$sql = "DELETE FROM shippers WHERE shipper_id='" . $SelectedShipper . "'";
-				$result = DB_query($sql, $db);
+				$result = DB_query($sql);
 				echo '<br />';
 				prnMsg(_('The shipper record has been deleted'), 'success');
 			}
@@ -120,7 +120,7 @@ if (!isset($SelectedShipper)) {
 			<img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
 
 	$sql = "SELECT * FROM shippers ORDER BY shipper_id";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 
 	echo '<table class="selection">
 			<tr>
@@ -165,7 +165,7 @@ if (!isset($_GET['delete'])) {
 
 		$sql = "SELECT shipper_id, shippername FROM shippers WHERE shipper_id='" . $SelectedShipper . "'";
 
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		$myrow = DB_fetch_array($result);
 
 		$_POST['Shipper_ID'] = $myrow['shipper_id'];

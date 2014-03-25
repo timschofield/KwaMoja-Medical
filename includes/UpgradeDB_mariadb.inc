@@ -3,23 +3,23 @@
 /* mysqli specific functions for the database upgrade script
  */
 
-function CharacterSet($table, $db) {
+function CharacterSet($table) {
 	$sql = "SELECT TABLE_COLLATION
 		FROM information_schema.tables
 		WHERE TABLE_SCHEMA='" . $_SESSION['DatabaseName'] . "'
 			AND TABLE_NAME='" . $table . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_array($result);
 	return $myrow['TABLE_COLLATION'];
 }
 
-function NewScript($ScriptName, $PageSecurity, $db) {
+function NewScript($ScriptName, $PageSecurity) {
 	/*Is page already in table */
 	$sql = "SELECT script FROM scripts WHERE script='" . $ScriptName . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	if (DB_num_rows($result) == 0) {
 		$sql = "INSERT INTO `scripts` (`script`, `pagesecurity`, `description`) VALUES ('" . $ScriptName . "', '" . $PageSecurity . "', '')";
-		$response = executeSQL($sql, $db, False);
+		$response = executeSQL($sql, False);
 		if ($response == 0) {
 			OutputResult(_('The script') . ' ' . $ScriptName . ' ' . _('has been inserted'), 'success');
 		} else {
@@ -30,13 +30,13 @@ function NewScript($ScriptName, $PageSecurity, $db) {
 	}
 }
 
-function RemoveScript($ScriptName, $db) {
+function RemoveScript($ScriptName) {
 	/*Is page already in table */
 	$sql = "SELECT script FROM scripts WHERE script='" . $ScriptName . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	if (DB_num_rows($result) != 0) {
 		$sql = "DELETE FROM `scripts` WHERE script='" . $ScriptName . "'";
-		$response = executeSQL($sql, $db, False);
+		$response = executeSQL($sql, False);
 		if ($response == 0) {
 			OutputResult(_('The script') . ' ' . $ScriptName . ' ' . _('has been removed'), 'success');
 		} else {
@@ -47,13 +47,13 @@ function RemoveScript($ScriptName, $db) {
 	}
 }
 
-function NewModule($Link, $Report, $Name, $Sequence, $db) {
+function NewModule($Link, $Report, $Name, $Sequence) {
 	/*Is module already in table */
 	$sql = "SELECT modulelink FROM modules WHERE modulelink='" . $Link . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	if (DB_num_rows($result) == 0) {
 		$sql = "SELECT secroleid FROM securityroles";
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		while ($myrow = DB_fetch_array($result)) {
 			$sql = "INSERT INTO `modules` ( `secroleid`,
 											`modulelink`,
@@ -67,7 +67,7 @@ function NewModule($Link, $Report, $Name, $Sequence, $db) {
 											'" . $Name . "',
 											'" . $Sequence . "'
 										)";
-			$response = executeSQL($sql, $db, False);
+			$response = executeSQL($sql, False);
 			if ($response == 0) {
 				OutputResult(_('The module') . ' ' . $Name . ' ' . _('has been inserted'), 'success');
 			} else {
@@ -79,13 +79,13 @@ function NewModule($Link, $Report, $Name, $Sequence, $db) {
 	}
 }
 
-function NewMenuItem($Link, $Section, $Caption, $URL, $Sequence, $db) {
+function NewMenuItem($Link, $Section, $Caption, $URL, $Sequence) {
 	/*Is module already in table */
 	$sql = "SELECT modulelink FROM menuitems WHERE modulelink='" . $Link . "' AND menusection='" . $Section . "' AND url='" . $URL . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	if (DB_num_rows($result) == 0) {
 		$sql = "SELECT secroleid FROM securityroles";
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		while ($myrow = DB_fetch_array($result)) {
 			$sql = "INSERT INTO `menuitems` (`secroleid`,
 												`modulelink`,
@@ -101,7 +101,7 @@ function NewMenuItem($Link, $Section, $Caption, $URL, $Sequence, $db) {
 												'" . $URL . "',
 												'" . $Sequence . "'
 											)";
-			$response = executeSQL($sql, $db, False);
+			$response = executeSQL($sql, False);
 			if ($response == 0) {
 				OutputResult(_('The menu link') . ' ' . $Caption . ' ' . _('has been inserted'), 'success');
 			} else {
@@ -113,16 +113,16 @@ function NewMenuItem($Link, $Section, $Caption, $URL, $Sequence, $db) {
 	}
 }
 
-function AddColumn($Column, $Table, $Type, $Null, $Default, $After, $db) {
+function AddColumn($Column, $Table, $Type, $Null, $Default, $After) {
 	global $SQLFile;
-	if (DB_table_exists($Table, $db)) {
+	if (DB_table_exists($Table)) {
 		$sql = "desc " . $Table . " " . $Column;
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		if (isset($SQLFile) or DB_num_rows($result) == 0) {
 			if ($Type == 'text') {
-				$response = executeSQL("ALTER TABLE `" . $Table . "` ADD COLUMN `" . $Column . "` " . $Type . " " . $Null . " AFTER `" . $After . "`", $db, False);
+				$response = executeSQL("ALTER TABLE `" . $Table . "` ADD COLUMN `" . $Column . "` " . $Type . " " . $Null . " AFTER `" . $After . "`", False);
 			} else {
-				$response = executeSQL("ALTER TABLE `" . $Table . "` ADD COLUMN `" . $Column . "` " . $Type . " " . $Null . " DEFAULT '" . $Default . "' AFTER `" . $After . "`", $db, False);
+				$response = executeSQL("ALTER TABLE `" . $Table . "` ADD COLUMN `" . $Column . "` " . $Type . " " . $Null . " DEFAULT '" . $Default . "' AFTER `" . $After . "`", False);
 			}
 			$SQL = "ALTER TABLE `" . $Table . "` ADD COLUMN `" . $Column . "` " . $Type . " " . $Null . " DEFAULT '" . $Default . "' AFTER `" . $After . "`";
 			if ($response == 0) {
@@ -136,17 +136,17 @@ function AddColumn($Column, $Table, $Type, $Null, $Default, $After, $db) {
 	}
 }
 
-function AddIndex($Columns, $Table, $Name, $db) {
-	if (DB_table_exists($Table, $db)) {
+function AddIndex($Columns, $Table, $Name) {
+	if (DB_table_exists($Table)) {
 		$sql = "SHOW INDEX FROM " . $Table . " WHERE Key_name='" . $Name . "'";
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		if (DB_num_rows($result) == 0) {
 			$sql = "ALTER TABLE `" . $Table . "` ADD INDEX " . $Name . " (`" . $Columns[0] . "`";
 			for ($i = 1; $i < sizeOf($Columns); $i++) {
 				$sql .= "," . $Columns[$i];
 			}
 			$sql .= ")";
-			$response = executeSQL($sql, $db, False);
+			$response = executeSQL($sql, False);
 			if ($response == 0) {
 				OutputResult(_('The index has been inserted'), 'success');
 			} else {
@@ -158,13 +158,13 @@ function AddIndex($Columns, $Table, $Name, $db) {
 	}
 }
 
-function DropIndex($Table, $Name, $db) {
-	if (DB_table_exists($Table, $db)) {
+function DropIndex($Table, $Name) {
+	if (DB_table_exists($Table)) {
 		$sql = "SHOW INDEX FROM " . $Table . " WHERE Key_name='" . $Name . "'";
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		if (DB_num_rows($result) != 0) {
 			$sql = "ALTER TABLE `" . $Table . "` DROP INDEX " . $Name;
-			$response = executeSQL($sql, $db, False);
+			$response = executeSQL($sql, False);
 			if ($response == 0) {
 				OutputResult(_('The index has been droppeed'), 'success');
 			} else {
@@ -176,13 +176,13 @@ function DropIndex($Table, $Name, $db) {
 	}
 }
 
-function DropColumn($Column, $Table, $db) {
+function DropColumn($Column, $Table) {
 	global $SQLFile;
-	if (DB_table_exists($Table, $db)) {
+	if (DB_table_exists($Table)) {
 		$sql = "desc " . $Table . " " . $Column;
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		if (isset($SQLFile) or DB_num_rows($result) != 0) {
-			$response = executeSQL("ALTER TABLE `" . $Table . "` DROP `" . $Column, $db, False);
+			$response = executeSQL("ALTER TABLE `" . $Table . "` DROP `" . $Column, False);
 			if ($response == 0) {
 				OutputResult(_('The column') . ' ' . $Column . ' ' . _('has been removed'), 'success');
 			} else {
@@ -194,16 +194,16 @@ function DropColumn($Column, $Table, $db) {
 	}
 }
 
-function ChangeColumnSize($Column, $Table, $Type, $Null, $Default, $Size, $db) {
+function ChangeColumnSize($Column, $Table, $Type, $Null, $Default, $Size) {
 	$sql = "SELECT CHARACTER_MAXIMUM_LENGTH
 		FROM information_schema.columns
 		WHERE TABLE_SCHEMA='" . $_SESSION['DatabaseName'] . "'
 			AND TABLE_NAME='" . $Table . "'
 			AND COLUMN_NAME='" . $Column . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_row($result);
 	if ($myrow[0] <> $Size) {
-		$response = executeSQL("ALTER TABLE " . $Table . " CHANGE COLUMN " . $Column . " " . $Column . " " . $Type . " " . $Null . " DEFAULT '" . $Default . "'", $db, False);
+		$response = executeSQL("ALTER TABLE " . $Table . " CHANGE COLUMN " . $Column . " " . $Column . " " . $Type . " " . $Null . " DEFAULT '" . $Default . "'", False);
 		if ($response == 0) {
 			OutputResult(_('The column') . ' ' . $Column . ' ' . _('has been changed'), 'success');
 		} else {
@@ -214,26 +214,26 @@ function ChangeColumnSize($Column, $Table, $Type, $Null, $Default, $Size, $db) {
 	}
 }
 
-function ChangeColumnName($OldName, $Table, $Type, $Null, $Default, $NewName, $db, $AutoIncrement = '') {
+function ChangeColumnName($OldName, $Table, $Type, $Null, $Default, $NewName, $AutoIncrement = '') {
 	$OldSQL = "SELECT CHARACTER_MAXIMUM_LENGTH
 		FROM information_schema.columns
 		WHERE TABLE_SCHEMA='" . $_SESSION['DatabaseName'] . "'
 			AND TABLE_NAME='" . $Table . "'
 			AND COLUMN_NAME='" . $OldName . "'";
-	$OldResult = DB_query($OldSQL, $db);
+	$OldResult = DB_query($OldSQL);
 	$NewSQL = "SELECT CHARACTER_MAXIMUM_LENGTH
 		FROM information_schema.columns
 		WHERE TABLE_SCHEMA='" . $_SESSION['DatabaseName'] . "'
 			AND TABLE_NAME='" . $Table . "'
 			AND COLUMN_NAME='" . $NewName . "'";
-	$NewResult = DB_query($NewSQL, $db);
+	$NewResult = DB_query($NewSQL);
 	if (DB_num_rows($OldResult) > 0 and DB_num_rows($NewResult) == 0) {
 		if ($AutoIncrement == '') {
 			$sql = "ALTER TABLE " . $Table . " CHANGE COLUMN " . $OldName . " " . $NewName . " " . $Type . " " . $Null . " DEFAULT '" . $Default . "'";
 		} else {
 			$sql = "ALTER TABLE " . $Table . " CHANGE COLUMN " . $OldName . " " . $NewName . " " . $Type . " " . $Null . " " . $AutoIncrement;
 		}
-		$response = executeSQL($sql, $db, False);
+		$response = executeSQL($sql, False);
 		if ($response == 0) {
 			OutputResult(_('The column') . ' ' . $OldName . ' ' . _('has been renamed') . ' ' . $NewName, 'success');
 		} else {
@@ -244,13 +244,13 @@ function ChangeColumnName($OldName, $Table, $Type, $Null, $Default, $NewName, $d
 	}
 }
 
-function ChangeColumnType($Column, $Table, $Type, $Null, $Default, $db) {
+function ChangeColumnType($Column, $Table, $Type, $Null, $Default) {
 	$sql = "SELECT DATA_TYPE
 		FROM information_schema.columns
 		WHERE TABLE_SCHEMA='" . $_SESSION['DatabaseName'] . "'
 			AND TABLE_NAME='" . $Table . "'
 			AND COLUMN_NAME='" . $Column . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_row($result);
 	if ($myrow[0] <> $Type) {
 		if ($Default == '') {
@@ -258,7 +258,7 @@ function ChangeColumnType($Column, $Table, $Type, $Null, $Default, $db) {
 		} else {
 			$sql = "ALTER TABLE " . $Table . " CHANGE COLUMN " . $Column . " " . $Column . " " . $Type . " " . $Null . " DEFAULT '" . $Default . "'";
 		}
-		$response = executeSQL($sql, $db, False);
+		$response = executeSQL($sql, False);
 		if ($response == 0) {
 			OutputResult(_('The column') . ' ' . $Column . ' ' . _('has been changed'), 'success');
 		} else {
@@ -269,16 +269,16 @@ function ChangeColumnType($Column, $Table, $Type, $Null, $Default, $db) {
 	}
 }
 
-function ChangeColumnDefault($Column, $Table, $Type, $Null, $Default, $db) {
+function ChangeColumnDefault($Column, $Table, $Type, $Null, $Default) {
 	$sql = "SELECT COLUMN_DEFAULT
 		FROM information_schema.columns
 		WHERE TABLE_SCHEMA='" . $_SESSION['DatabaseName'] . "'
 			AND TABLE_NAME='" . $Table . "'
 			AND COLUMN_NAME='" . $Column . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_row($result);
 	if ($myrow[0] <> $Default) {
-		$response = executeSQL("ALTER TABLE " . $Table . " CHANGE COLUMN " . $Column . " " . $Column . " " . $Type . " " . $Null . " DEFAULT '" . $Default . "'", $db, False);
+		$response = executeSQL("ALTER TABLE " . $Table . " CHANGE COLUMN " . $Column . " " . $Column . " " . $Type . " " . $Null . " DEFAULT '" . $Default . "'", False);
 		if ($response == 0) {
 			OutputResult(_('The column') . ' ' . $Column . ' ' . _('has been changed'), 'success');
 		} else {
@@ -289,16 +289,16 @@ function ChangeColumnDefault($Column, $Table, $Type, $Null, $Default, $db) {
 	}
 }
 
-function RemoveAutoIncrement($Column, $Table, $Type, $Null, $Default, $db) {
+function RemoveAutoIncrement($Column, $Table, $Type, $Null, $Default) {
 	$sql = "SELECT COLUMN_DEFAULT
 		FROM information_schema.columns
 		WHERE TABLE_SCHEMA='" . $_SESSION['DatabaseName'] . "'
 			AND TABLE_NAME='" . $Table . "'
 			AND COLUMN_NAME='" . $Column . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_row($result);
 	if ($myrow[0] <> $Default) {
-		$response = executeSQL("ALTER TABLE " . $Table . " CHANGE COLUMN " . $Column . " " . $Column . " " . $Type . " " . $Null . " DEFAULT '" . $Default . "'", $db, False);
+		$response = executeSQL("ALTER TABLE " . $Table . " CHANGE COLUMN " . $Column . " " . $Column . " " . $Type . " " . $Null . " DEFAULT '" . $Default . "'", False);
 		if ($response == 0) {
 			OutputResult(_('The column') . ' ' . $Column . ' ' . _('has been changed'), 'success');
 		} else {
@@ -309,14 +309,14 @@ function RemoveAutoIncrement($Column, $Table, $Type, $Null, $Default, $db) {
 	}
 }
 
-function NewConfigValue($ConfName, $ConfValue, $db) {
+function NewConfigValue($ConfName, $ConfValue) {
 	$sql = "SELECT confvalue
 		FROM config
 		WHERE confname='" . $ConfName . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_row($result);
 	if (DB_num_rows($result) == 0) {
-		$response = executeSQL("INSERT INTO `config` (`confname`, `confvalue`) VALUES ('" . $ConfName . "', '" . $ConfValue . "')", $db, False);
+		$response = executeSQL("INSERT INTO `config` (`confname`, `confvalue`) VALUES ('" . $ConfName . "', '" . $ConfValue . "')", False);
 		if ($response == 0) {
 			OutputResult(_('The config value') . ' ' . $ConfName . ' ' . _('has been inserted'), 'success');
 		} else {
@@ -327,15 +327,15 @@ function NewConfigValue($ConfName, $ConfValue, $db) {
 	}
 }
 
-function ChangeConfigValue($ConfName, $NewConfigValue, $db) {
+function ChangeConfigValue($ConfName, $NewConfigValue) {
 	$sql = "SELECT confvalue
 		FROM config
 		WHERE confname='" . $ConfName . "'
 			AND confvalue='" . $NewConfigValue . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_row($result);
 	if (DB_num_rows($result) == 0) {
-		$response = executeSQL("UPDATE `config` SET `confvalue`='" . $NewConfigValue . "' WHERE `confname`='" . $ConfName . "'", $db, False);
+		$response = executeSQL("UPDATE `config` SET `confvalue`='" . $NewConfigValue . "' WHERE `confname`='" . $ConfName . "'", False);
 		if ($response == 0) {
 			OutputResult(_('The config value') . ' ' . $ConfName . ' ' . _('has been updated'), 'success');
 		} else {
@@ -346,14 +346,14 @@ function ChangeConfigValue($ConfName, $NewConfigValue, $db) {
 	}
 }
 
-function ChangeConfigName($OldConfName, $NewConfName, $db) {
+function ChangeConfigName($OldConfName, $NewConfName) {
 	$sql = "SELECT confvalue
 		FROM config
 		WHERE confname='" . $NewConfName . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_row($result);
 	if (DB_num_rows($result) == 0) {
-		$response = executeSQL("UPDATE `config` SET `confname`='" . $NewConfName . "' WHERE `confname`='" . $OldConfName . "'", $db, False);
+		$response = executeSQL("UPDATE `config` SET `confname`='" . $NewConfName . "' WHERE `confname`='" . $OldConfName . "'", False);
 		if ($response == 0) {
 			OutputResult(_('The config value') . ' ' . $OldConfName . ' ' . _('has been updated'), 'success');
 		} else {
@@ -364,14 +364,14 @@ function ChangeConfigName($OldConfName, $NewConfName, $db) {
 	}
 }
 
-function DeleteConfigValue($ConfName, $db) {
+function DeleteConfigValue($ConfName) {
 	$sql = "SELECT confvalue
 		FROM config
 		WHERE confname='" . $ConfName . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_row($result);
 	if (DB_num_rows($result) == 0) {
-		$response = executeSQL("DELETE FROM `config` WHERE `confname`='" . $ConfName . "'", $db, False);
+		$response = executeSQL("DELETE FROM `config` WHERE `confname`='" . $ConfName . "'", False);
 		if ($response == 0) {
 			OutputResult(_('The config value') . ' ' . $ConfName . ' ' . _('has been removed'), 'success');
 		} else {
@@ -382,14 +382,14 @@ function DeleteConfigValue($ConfName, $db) {
 	}
 }
 
-function CreateTable($Table, $sql, $db) {
+function CreateTable($Table, $sql) {
 	$ShowSQL = "SHOW TABLES WHERE Tables_in_" . $_SESSION['DatabaseName'] . "='" . $Table . "'";
-	$result = DB_query($ShowSQL, $db);
+	$result = DB_query($ShowSQL);
 
 	if (DB_num_rows($result) == 0) {
-		DB_IgnoreForeignKeys($db);
-		$response = executeSQL($sql . ' ENGINE=InnoDB DEFAULT CHARSET=utf8', $db, False);
-		DB_ReinstateForeignKeys($db);
+		DB_IgnoreForeignKeys();
+		$response = executeSQL($sql . ' ENGINE=InnoDB DEFAULT CHARSET=utf8', False);
+		DB_ReinstateForeignKeys();
 		if ($response == 0) {
 			OutputResult(_('The table') . ' ' . $Table . ' ' . _('has been created'), 'success');
 		} else {
@@ -400,13 +400,13 @@ function CreateTable($Table, $sql, $db) {
 	}
 }
 
-function ConstraintExists($Table, $Constraint, $db) {
+function ConstraintExists($Table, $Constraint) {
 	$sql = "SELECT CONSTRAINT_NAME
 		FROM information_schema.TABLE_CONSTRAINTS
 		WHERE TABLE_SCHEMA='" . $_SESSION['DatabaseName'] . "'
 			AND TABLE_NAME='" . $Table . "'
 			AND CONSTRAINT_NAME='" . $Constraint . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	if (DB_num_rows($result) == 0) {
 		return false;
 	} else {
@@ -414,9 +414,9 @@ function ConstraintExists($Table, $Constraint, $db) {
 	}
 }
 
-function DropConstraint($Table, $Constraint, $db) {
-	if (ConstraintExists($Table, $Constraint, $db)) {
-		$response = executeSQL("ALTER TABLE `" . $Table . "` DROP FOREIGN KEY `" . $Constraint . "`", $db, False);
+function DropConstraint($Table, $Constraint) {
+	if (ConstraintExists($Table, $Constraint)) {
+		$response = executeSQL("ALTER TABLE `" . $Table . "` DROP FOREIGN KEY `" . $Constraint . "`", False);
 		if ($response == 0) {
 			OutputResult(_('The constraint') . ' ' . $Constraint . ' ' . _('has been removed'), 'success');
 		} else {
@@ -427,8 +427,8 @@ function DropConstraint($Table, $Constraint, $db) {
 	}
 }
 
-function AddConstraint($Table, $Constraint, $Field, $ReferenceTable, $ReferenceField, $db) {
-	if (!ConstraintExists($Table, $Constraint, $db)) {
+function AddConstraint($Table, $Constraint, $Field, $ReferenceTable, $ReferenceField) {
+	if (!ConstraintExists($Table, $Constraint)) {
 		if (gettype($Field) == 'array') {
 			$List = implode(',', $Field);
 			$Field = $List;
@@ -438,7 +438,7 @@ function AddConstraint($Table, $Constraint, $Field, $ReferenceTable, $ReferenceF
 			$ReferenceField = $List;
 		}
 		$sql = "ALTER TABLE " . $Table . " ADD CONSTRAINT " . $Constraint . " FOREIGN KEY (" . $Field . ") REFERENCES " . $ReferenceTable . " (" . $ReferenceField . ")";
-		$response = executeSQL($sql, $db, False);
+		$response = executeSQL($sql, False);
 		if ($response == 0) {
 			OutputResult(_('The constraint') . ' ' . $Constraint . ' ' . _('has been added'), 'success');
 		} else {
@@ -449,22 +449,22 @@ function AddConstraint($Table, $Constraint, $Field, $ReferenceTable, $ReferenceF
 	}
 }
 
-function UpdateField($Table, $Field, $NewValue, $Criteria, $db) {
+function UpdateField($Table, $Field, $NewValue, $Criteria) {
 	global $SQLFile;
-	if (DB_table_exists($Table, $db)) {
+	if (DB_table_exists($Table)) {
 		$sql = "desc " . $Table . " " . $Field;
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		$myrow = DB_fetch_row($result);
 	} else {
 		$myrow[0] = 0;
 	}
 	if ($myrow[0] != 0 or DB_num_rows($result) > 0) {
 		$sql = "SELECT " . $Field . " FROM " . $Table . " WHERE " . $Criteria;
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		$myrow = DB_fetch_row($result);
 		if ($myrow[0] != $NewValue) {
 			$sql = "UPDATE " . $Table . " SET " . $Field . "='" . $NewValue . "' WHERE " . $Criteria;
-			$response = executeSQL($sql, $db, False);
+			$response = executeSQL($sql, False);
 			if ($response == 0) {
 				OutputResult(_('The field') . ' ' . $Field . ' ' . _('has been updated'), 'success');
 			} else {
@@ -474,15 +474,15 @@ function UpdateField($Table, $Field, $NewValue, $Criteria, $db) {
 			OutputResult(_('The field') . ' ' . $Field . ' ' . _('is already correct'), 'info');
 		}
 	} else if (isset($SQLFile)) {
-		$response = executeSQL("UPDATE " . $Table . " SET " . $Field . "='" . $NewValue . "' WHERE " . $Criteria, $db, False);
+		$response = executeSQL("UPDATE " . $Table . " SET " . $Field . "='" . $NewValue . "' WHERE " . $Criteria, False);
 	}
 }
 
-function DeleteRecords($Table, $Criteria, $db) {
+function DeleteRecords($Table, $Criteria) {
 	$sql = "SELECT * FROM " . $Table . " WHERE " . $Criteria;
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	if (DB_num_rows($result) > 0) {
-		$response = executeSQL("DELETE FROM " . $Table . " WHERE " . $Criteria, $db, False);
+		$response = executeSQL("DELETE FROM " . $Table . " WHERE " . $Criteria, False);
 		if ($response == 0) {
 			OutputResult(_('Rows have been deleted from') . ' ' . $Table, 'success');
 		} else {
@@ -493,14 +493,14 @@ function DeleteRecords($Table, $Criteria, $db) {
 	}
 }
 
-function DropTable($Table, $Field, $db) {
+function DropTable($Table, $Field) {
 	$sql = "SHOW tables WHERE Tables_in_" . $_SESSION['DatabaseName'] . " ='" . $Table . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$CanDrop = False;
 	if (DB_num_rows($result) > 0) {
 		$CanDrop = True;
 		$sql = "desc " . $Table . " " . $Field;
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		if (DB_num_rows($result) > 0) {
 			$CanDrop = True;
 		} else {
@@ -508,7 +508,7 @@ function DropTable($Table, $Field, $db) {
 		}
 	}
 	if ($CanDrop) {
-		$response = executeSQL("DROP TABLE IF EXISTS `" . $Table . "`", $db);
+		$response = executeSQL("DROP TABLE IF EXISTS `" . $Table . "`");
 		if ($response == 0) {
 			OutputResult(_('The old table') . ' ' . $Table . ' ' . _('has been removed'), 'success');
 		} else {
@@ -519,14 +519,14 @@ function DropTable($Table, $Field, $db) {
 	}
 }
 
-function InsertRecord($Table, $CheckFields, $CheckValues, $Fields, $Values, $db) {
-	if (DB_table_exists($Table, $db)) {
+function InsertRecord($Table, $CheckFields, $CheckValues, $Fields, $Values) {
+	if (DB_table_exists($Table)) {
 		$sql = "SELECT * FROM " . $Table . " WHERE ";
 		for ($i = 0; $i < sizeOf($CheckFields); $i++) {
 			$sql = $sql . $CheckFields[$i] . "='" . $CheckValues[$i] . "' AND ";
 		}
 		$sql = mb_substr($sql, 0, mb_strlen($sql) - 5);
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 	}
 	if (DB_num_rows($result) == 0 or isset($SQLFile)) {
 		$sql = "INSERT INTO " . $Table . " (";
@@ -538,7 +538,7 @@ function InsertRecord($Table, $CheckFields, $CheckValues, $Fields, $Values, $db)
 			$sql = $sql . "'" . $Values[$i] . "',";
 		}
 		$sql = mb_substr($sql, 0, mb_strlen($sql) - 1) . ")";
-		$response = executeSQL($sql, $db);
+		$response = executeSQL($sql);
 		if ($response == 0) {
 			OutputResult(_('The record has been inserted'), 'success');
 		} else {
@@ -549,9 +549,9 @@ function InsertRecord($Table, $CheckFields, $CheckValues, $Fields, $Values, $db)
 	}
 }
 
-function DropPrimaryKey($Table, $OldKey, $db) {
+function DropPrimaryKey($Table, $OldKey) {
 	$sql = "SELECT COLUMN_NAME, TABLE_NAME FROM information_schema.key_column_usage WHERE table_name='" . $Table . "' AND constraint_name='primary' AND table_schema='" . $_SESSION['DatabaseName'] . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$Total = DB_num_rows($result);
 	$Fields = array();
 	while ($myrow = DB_fetch_array($result)) {
@@ -559,7 +559,7 @@ function DropPrimaryKey($Table, $OldKey, $db) {
 	}
 	if ($Total == sizeOf($OldKey) and $Fields == $OldKey) {
 		$sql = "ALTER TABLE " . $Table . " DROP PRIMARY KEY";
-		$response = executeSQL($sql, $db);
+		$response = executeSQL($sql);
 		if ($response == 0) {
 			OutputResult(_('The primary key in') . ' ' . $Table . ' ' . _('has been removed'), 'success');
 		} else {
@@ -570,13 +570,13 @@ function DropPrimaryKey($Table, $OldKey, $db) {
 	}
 }
 
-function AddPrimaryKey($Table, $Fields, $db) {
+function AddPrimaryKey($Table, $Fields) {
 	$sql = "SELECT table_name FROM information_schema.key_column_usage WHERE table_name='" . $Table . "' AND constraint_name='primary' AND
 		table_schema='" . $_SESSION['DatabaseName'] . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	if (DB_num_rows($result) != sizeOf($Fields)) {
 		$KeyString = implode(",", $Fields);
-		$response = executeSQL("ALTER TABLE " . $Table . " ADD PRIMARY KEY ( " . $KeyString . " )", $db);
+		$response = executeSQL("ALTER TABLE " . $Table . " ADD PRIMARY KEY ( " . $KeyString . " )");
 		if ($response == 0) {
 			OutputResult(_('The primary key in') . ' ' . $Table . ' ' . _('has been added'), 'success');
 		} else {
@@ -587,18 +587,18 @@ function AddPrimaryKey($Table, $Fields, $db) {
 	}
 }
 
-function RenameTable($OldName, $NewName, $db) {
+function RenameTable($OldName, $NewName) {
 	$Newsql = "SHOW TABLES WHERE Tables_in_" . $_SESSION['DatabaseName'] . "='" . $NewName . "'";
-	$Newresult = DB_query($Newsql, $db);
+	$Newresult = DB_query($Newsql);
 	$Oldsql = "SHOW TABLES WHERE Tables_in_" . $_SESSION['DatabaseName'] . "='" . $OldName . "'";
-	$Oldresult = DB_query($Oldsql, $db);
+	$Oldresult = DB_query($Oldsql);
 
 	if (DB_num_rows($Newresult) != 0 and DB_num_rows($Oldresult) != 0) {
-		$response = executeSQL("DROP TABLE " . $OldName . "", $db, False);
+		$response = executeSQL("DROP TABLE " . $OldName . "", False);
 	}
 	if (DB_num_rows($Newresult) == 0) {
 		$sql = "RENAME TABLE " . $OldName . " to " . $NewName;
-		$response = executeSQL($sql, $db, False);
+		$response = executeSQL($sql, False);
 		if ($response == 0) {
 			OutputResult(_('The table') . ' ' . $OldName . ' ' . _('has been renamed to') . ' ' . $NewName, 'success');
 		} else {

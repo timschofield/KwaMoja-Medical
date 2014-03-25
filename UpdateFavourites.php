@@ -6,7 +6,7 @@ $sql = "SELECT caption
 			FROM favourites
 			WHERE userid='" . $_SESSION['UserID'] . "'
 				AND href='" . $_GET['Script'] . "'";
-$result = DB_query($sql, $db);
+$result = DB_query($sql);
 
 if (DB_num_rows($result) == 0) {
 	$sql = "INSERT INTO favourites ( userid,
@@ -17,12 +17,12 @@ if (DB_num_rows($result) == 0) {
 									'" . $_GET['Title'] . "',
 									'" . $_GET['Script'] . "'
 								)";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 } else {
 	$sql = "DELETE FROM favourites
 					WHERE userid='" . $_SESSION['UserID'] . "'
 						AND href='" . $_GET['Script'] . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 }
 
 ?>

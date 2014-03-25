@@ -23,7 +23,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['CSV'])) {
 					categorydescription
 				FROM stockcategory
 				WHERE categoryid='" . $_POST['StockCat'] . "' ";
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		$myrow = DB_fetch_row($result);
 		$CatDescription = $myrow[1];
 	}
@@ -76,12 +76,12 @@ if (isset($_POST['PrintPDF']) or isset($_POST['CSV'])) {
 	}
 
 
-	$result = DB_query($sql, $db, '', '', false, true);
+	$result = DB_query($sql, '', '', false, true);
 
-	if (DB_error_no($db) != 0) {
+	if (DB_error_no() != 0) {
 		$Title = _('Inventory Quantities') . ' - ' . _('Problem Report');
 		include('includes/header.inc');
-		prnMsg(_('The Inventory Quantity report could not be retrieved by the SQL because') . ' ' . DB_error_msg($db), 'error');
+		prnMsg(_('The Inventory Quantity report could not be retrieved by the SQL because') . ' ' . DB_error_msg(), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($debug == 1) {
 			echo '<br />' . $sql;
@@ -104,7 +104,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['CSV'])) {
 		$FontSize = 8;
 
 		$holdpart = " ";
-		while ($myrow = DB_fetch_array($result, $db)) {
+		while ($myrow = DB_fetch_array($result)) {
 			if ($myrow['stockid'] != $holdpart) {
 				$YPos -= (2 * $line_height);
 				$holdpart = $myrow['stockid'];
@@ -138,7 +138,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['CSV'])) {
 		$pdf->__destruct();
 	} elseif (isset($_POST['CSV'])) {
 		$CSVListing = _('Stock ID') .','. _('Description') .','. _('Location Code') .','. _('Location') .','. _('Quantity') .','. _('Reorder Level') .','. _('Decimal Places') .','. _('Serialised') .','. _('Controlled') . "\n";
-		while ($InventoryQties = DB_fetch_row($result, $db)) {
+		while ($InventoryQties = DB_fetch_row($result)) {
 			$CSVListing .= implode(',', $InventoryQties) . "\n";
 		}
 		header('Content-Encoding: UTF-8');
@@ -174,7 +174,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['CSV'])) {
 				categorydescription
 			FROM stockcategory
 			ORDER BY categorydescription";
-	$result1 = DB_query($SQL, $db);
+	$result1 = DB_query($SQL);
 	if (DB_num_rows($result1) == 0) {
 		echo '</table>
 			<p />';

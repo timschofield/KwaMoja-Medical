@@ -54,8 +54,6 @@ class SuppTrans {
 
 	function GetTaxes() {
 
-		global $db;
-
 		/*Gets the Taxes and rates applicable to the tax group of the supplier
 		and SESSION['DefaultTaxCategory'] and the taxprovince of the location that the user is setup to use*/
 
@@ -75,7 +73,7 @@ class SuppTrans {
 			ORDER BY taxgrouptaxes.calculationorder";
 
 		$ErrMsg = _('The taxes and rates for this item could not be retrieved because');
-		$GetTaxRatesResult = DB_query($SQL, $db, $ErrMsg);
+		$GetTaxRatesResult = DB_query($SQL, $ErrMsg);
 
 		while ($myrow = DB_fetch_array($GetTaxRatesResult)) {
 
@@ -287,7 +285,6 @@ class GLCodes {
 
 	function GLCodes($Counter, $GLCode, $GLActName, $Amount, $Narrative, $Tag = 0, $TagName = '') {
 
-		global $db;
 		/* Constructor function to add a new GLCodes object with passed params */
 		$this->Counter = $Counter;
 		$this->GLCode = $GLCode;
@@ -296,7 +293,7 @@ class GLCodes {
 		$this->Narrative = $Narrative;
 		$this->Tag = $Tag;
 
-		$TagResult = DB_query("SELECT tagdescription from tags where tagref='" . $Tag . "'", $db);
+		$TagResult = DB_query("SELECT tagdescription from tags where tagref='" . $Tag . "'");
 		$TagMyrow = DB_fetch_array($TagResult);
 		if ($Tag == 0) {
 			$this->TagName = _('None');
@@ -328,7 +325,6 @@ class Asset {
 	var $Amount;
 
 	function Asset($Counter, $AssetID, $Amount) {
-		global $db;
 		$this->Counter = $Counter;
 		$this->AssetID = $AssetID;
 		$this->Amount = $Amount;
@@ -337,7 +333,7 @@ class Asset {
 									fixedassetcategories.costact
 							FROM fixedassets INNER JOIN fixedassetcategories
 							ON fixedassets.assetcategoryid=fixedassetcategories.categoryid
-							WHERE assetid='" . $AssetID . "'", $db);
+							WHERE assetid='" . $AssetID . "'");
 		$AssetRow = DB_fetch_array($result);
 		$this->Description = $AssetRow['description'];
 		$this->CostAct = $AssetRow['costact'];

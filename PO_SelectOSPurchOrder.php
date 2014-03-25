@@ -67,7 +67,7 @@ if (isset($_POST['SearchParts'])) {
 				ORDER BY stockmaster.stockid";
 	$ErrMsg = _('No stock items were returned by the SQL because');
 	$DbgMsg = _('The SQL used to retrieve the searched parts was');
-	$StockItemsResult = DB_query($SQL, $db, $ErrMsg, $DbgMsg);
+	$StockItemsResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 } //isset($_POST['SearchParts'])
 
 
@@ -105,7 +105,7 @@ if (!isset($OrderNumber) or $OrderNumber == '') {
 		$DateSQL = "SELECT min(orddate) as fromdate,
 							max(orddate) as todate
 						FROM purchorders";
-		$DateResult = DB_query($DateSQL, $db);
+		$DateResult = DB_query($DateSQL);
 		$DateRow = DB_fetch_array($DateResult);
 		$DateFrom = $DateRow['fromdate'];
 		$DateTo = $DateRow['todate'];
@@ -127,7 +127,7 @@ if (!isset($OrderNumber) or $OrderNumber == '') {
 						ON locations.loccode=www_users.defaultlocation
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
-	$resultStkLocs = DB_query($sql, $db);
+	$resultStkLocs = DB_query($sql);
 	while ($myrow = DB_fetch_array($resultStkLocs)) {
 		if (isset($_POST['StockLocation'])) {
 			if ($myrow['loccode'] == $_POST['StockLocation']) {
@@ -185,7 +185,7 @@ if (!isset($OrderNumber) or $OrderNumber == '') {
 } //!isset($OrderNumber) or $OrderNumber == ''
 
 $SQL = "SELECT categoryid, categorydescription FROM stockcategory ORDER BY categorydescription";
-$result1 = DB_query($SQL, $db);
+$result1 = DB_query($SQL);
 
 echo '<div class="page_help_text noPrint">' . _('To search for purchase orders for a specific part use the part selection facilities below') . '</div>';
 
@@ -333,7 +333,7 @@ if (isset($StockItemsResult)) {
 						purchorders.allowprint,
 						suppliers.currcode";
 	$ErrMsg = _('No orders were returned by the SQL because');
-	$PurchOrdersResult = DB_query($SQL, $db, $ErrMsg);
+	$PurchOrdersResult = DB_query($SQL, $ErrMsg);
 
 	/*show a table of the orders returned by the SQL */
 
@@ -386,7 +386,7 @@ if (isset($StockItemsResult)) {
 		$FormatedDeliveryDate = ConvertSQLDate($myrow['deliverydate']);
 		$FormatedOrderValue = locale_number_format($myrow['ordervalue'], $myrow['currdecimalplaces']);
 		$sql = "SELECT realname FROM www_users WHERE userid='" . $myrow['initiator'] . "'";
-		$UserResult = DB_query($sql, $db);
+		$UserResult = DB_query($sql);
 		$MyUserRow = DB_fetch_array($UserResult);
 		$InitiatorName = $MyUserRow['realname'];
 

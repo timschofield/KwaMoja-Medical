@@ -124,13 +124,13 @@ if ($Location == 'All') {
 				stockmaster.stockid";
 
 }
-$InventoryResult = DB_query($SQL, $db, '', '', false, true);
+$InventoryResult = DB_query($SQL, '', '', false, true);
 $ListCount = DB_num_rows($InventoryResult);
 
-if (DB_error_no($db) != 0) {
+if (DB_error_no() != 0) {
 	$Title = _('Inventory Valuation') . ' - ' . _('Problem Report');
 	include('includes/header.inc');
-	echo _('The inventory valuation could not be retrieved by the SQL because') . ' - ' . DB_error_msg($db);
+	echo _('The inventory valuation could not be retrieved by the SQL because') . ' - ' . DB_error_msg();
 	echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 	if ($debug == 1) {
 		echo '<br />' . $SQL;
@@ -145,7 +145,7 @@ include('includes/PDFInventoryValnPageHeader.inc');
 $Tot_Val = 0;
 $Category = '';
 $CatTot_Val = 0;
-while ($InventoryValn = DB_fetch_array($InventoryResult, $db)) {
+while ($InventoryValn = DB_fetch_array($InventoryResult)) {
 
 	if ($Category != $InventoryValn['categoryid']) {
 		$FontSize = 10;

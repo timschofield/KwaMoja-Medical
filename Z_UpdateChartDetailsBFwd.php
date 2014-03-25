@@ -6,7 +6,6 @@ $Title = _('Recalculation of Brought Forward Balances in Chart Details Table');
 include('includes/header.inc');
 
 echo '<form method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" onSubmit="return VerifyForm(this);">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 if ($_POST['FromPeriod'] > $_POST['ToPeriod']) {
@@ -23,17 +22,17 @@ if (!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) {
 	echo '<table><tr><td>' . _('Select Period From') . ':</td><td><select minlength="0" name="FromPeriod">';
 
 	$sql = "SELECT periodno, lastdate_in_period FROM periods ORDER BY periodno";
-	$Periods = DB_query($sql, $db);
+	$Periods = DB_query($sql);
 
 
-	while ($myrow = DB_fetch_array($Periods, $db)) {
+	while ($myrow = DB_fetch_array($Periods)) {
 		echo '<option value="' . $myrow['periodno'] . '">' . MonthAndYearFromSQLDate($myrow['lastdate_in_period']) . '</option>';
 	}
 
 	echo '</select></td></tr>';
 
 	$sql = "SELECT MAX(periodno) FROM periods";
-	$MaxPrd = DB_query($sql, $db);
+	$MaxPrd = DB_query($sql);
 	$MaxPrdrow = DB_fetch_row($MaxPrd);
 
 	$DefaultToPeriod = (int) ($MaxPrdrow[0] - 1);
@@ -42,7 +41,7 @@ if (!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) {
 
 	$RetResult = DB_data_seek($Periods, 0);
 
-	while ($myrow = DB_fetch_array($Periods, $db)) {
+	while ($myrow = DB_fetch_array($Periods)) {
 
 		if ($myrow['periodno'] == $DefaultToPeriod) {
 			echo '<option selected="selected" value="' . $myrow['periodno'] . '">' . MonthAndYearFromSQLDate($myrow['lastdate_in_period']) . '</option>';
@@ -53,7 +52,6 @@ if (!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) {
 	echo '</select></td></tr></table>';
 
 	echo '<div class="centre"><input type="submit" name="recalc" value="' . _('Do the Recalculation') . '" /></div>
-		</div>
 		</form>';
 
 } else {
@@ -71,7 +69,7 @@ if (!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) {
 				WHERE period ='" . $i . "'";
 
 		$ErrMsg = _('Could not retrieve the ChartDetail records because');
-		$result = DB_query($sql, $db, $ErrMsg);
+		$result = DB_query($sql, $ErrMsg);
 
 		while ($myrow = DB_fetch_array($result)) {
 
@@ -86,7 +84,7 @@ if (!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) {
 					AND  accountcode = '" . $myrow['accountcode'] . "'";
 
 			$ErrMsg = _('Could not update the chartdetails record because');
-			$updresult = DB_query($sql, $db, $ErrMsg);
+			$updresult = DB_query($sql, $ErrMsg);
 		}
 	}
 	/* end of for loop */

@@ -19,7 +19,7 @@ include('includes/JobCards.inc');
 
 if (!isset($_POST['JobCPrint'])) {
 	$sql = "SELECT name FROM debtorsmaster WHERE debtorno='" . $_GET['DebtorNo'] . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_array($result);
 	$CustomerName = $myrow['name'];
 	echo '<p class="page_title_text noPrint" >';
@@ -45,7 +45,7 @@ if (!isset($_POST['SaveUpdateJob'])) {
 					<th width=50%>' . _('Job Card Description') . '</th>
 					<th width=10%>' . _('Print') . '</th>
 				</tr>';
-		echo GetJobCards($db, $RootPath);
+		echo GetJobCards($RootPath);
 		echo '</table>';
 		echo '<form onSubmit="return VerifyForm(this);" action="' . $_SERVER['PHP_SELF'] . '?DebtorNo=' . $_SESSION['CustomerID'] . '&BranchNo=' . $_GET['BranchNo'] . '&AddJob=1" method="post" class="noPrint">';
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -77,7 +77,7 @@ if (!isset($_POST['SaveUpdateJob'])) {
 											'" . $_POST['AddJobTask5'] . "',
 											'" . date('Y/m/d') . "'
 											)";
-			$result = DB_query($query, $db, $ErrMsg);
+			$result = DB_query($query, $ErrMsg);
 
 			echo '<div class="page_help_text noPrint">' . _('Record has been added.') . '<br />' . _('Please wait the browser will redirect you automatically ...') . '.</div><br />';
 
@@ -99,7 +99,7 @@ if (!isset($_POST['SaveUpdateJob'])) {
 				$jobno = $_POST['JobCardNo'];
 			} //isset($_POST['UpdateJob'])
 			else {
-				$jobno = GetJobCardNO($db);
+				$jobno = GetJobCardNO();
 			}
 			echo '<th width=50% colspan="2" style="font-size:16px;">' . _('Job Card # ' . $jobno) . '</th>';
 			echo '</tr>';
@@ -124,7 +124,7 @@ if (!isset($_POST['SaveUpdateJob'])) {
 					<th width=50% style="text-align:left;font-size:12px;">' . _('Customer Address') . '</th>
 					<th width=50%  style="text-align:left;font-size:12px;">' . _('Customer Contact') . '</th>
 				</tr>';
-			echo GetDebtorInfo($db, $printbk, $_GET['DebtorNo'], $_GET['BranchNo']);
+			echo GetDebtorInfo($printbk, $_GET['DebtorNo'], $_GET['BranchNo']);
 			echo '<tr>
 					<th width=100% colspan="2" style="font-size:14px;">' . _('Job Description') . '</th>
 				</tr>
@@ -228,7 +228,7 @@ if (!isset($_POST['SaveUpdateJob'])) {
 				$sql = 'SELECT id,debtorno,description,task1,task2,task3,task4,task5,task6, DATE_FORMAT(CreateDate, "%d/%m/%Y") as CreateDate,
 						DATE_FORMAT(CompleteDate, "%d/%m/%Y") as CompleteDate, Invoice from jobcards where debtorno="' . $_SESSION['CustomerID'] . '" and id=' . $_POST['JobCardNo'];
 				$ErrMsg = _('The job cards can not be retrieved!');
-				$job_update = DB_query($sql, $db, $ErrMsg);
+				$job_update = DB_query($sql, $ErrMsg);
 				$myrow = DB_fetch_row($job_update);
 
 				//Set Values
@@ -267,15 +267,15 @@ if (!isset($_POST['SaveUpdateJob'])) {
 } //!isset($_POST['SaveUpdateJob'])
 else {
 	// Insert new Account in DB
-	$dbvalues = 'Description="' . $_POST["AddJobDescription"] . '",';
-	$dbvalues = $dbvalues . 'CompleteDate=DATE_FORMAT(STR_TO_DATE("' . $_POST["codate"] . '", "%d/%m/%Y"), "%Y/%m/%d"),';
-	$dbvalues = $dbvalues . 'Invoice="' . $_POST["inno"] . '",';
-	$dbvalues = $dbvalues . 'task1="' . $_POST["AddJobTask0"] . '",task2="' . $_POST["AddJobTask1"] . '",';
-	$dbvalues = $dbvalues . 'task3="' . $_POST["AddJobTask2"] . '",task4="' . $_POST["AddJobTask3"] . '",';
-	$dbvalues = $dbvalues . 'task5="' . $_POST["AddJobTask4"] . '",task6="' . $_POST["AddJobTask5"] . '"';
+	$DBValues = 'Description="' . $_POST["AddJobDescription"] . '",';
+	$DBValues = $DBValues . 'CompleteDate=DATE_FORMAT(STR_TO_DATE("' . $_POST["codate"] . '", "%d/%m/%Y"), "%Y/%m/%d"),';
+	$DBValues = $DBValues . 'Invoice="' . $_POST["inno"] . '",';
+	$DBValues = $DBValues . 'task1="' . $_POST["AddJobTask0"] . '",task2="' . $_POST["AddJobTask1"] . '",';
+	$DBValues = $DBValues . 'task3="' . $_POST["AddJobTask2"] . '",task4="' . $_POST["AddJobTask3"] . '",';
+	$DBValues = $DBValues . 'task5="' . $_POST["AddJobTask4"] . '",task6="' . $_POST["AddJobTask5"] . '"';
 
-	$query = "Update jobcards SET " . $dbvalues . " where id=" . $_POST['JobCardNo'];
-	$result = DB_query($query, $db, $ErrMsg);
+	$query = "Update jobcards SET " . $DBValues . " where id=" . $_POST['JobCardNo'];
+	$result = DB_query($query, $ErrMsg);
 
 	echo '<div class="page_help_text noPrint">' . _('Record has been updated.') . '<br />' . _('Please wait the browser will redirect you automatically ...') . '.</div><br />';
 

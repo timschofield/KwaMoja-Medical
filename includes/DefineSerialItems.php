@@ -1,14 +1,13 @@
 <?php
 
 function ValidBundleRef($StockID, $LocCode, $BundleRef) {
-	global $db;
 
 	$SQL = "SELECT quantity
 				FROM stockserialitems
 				WHERE stockid='" . $StockID . "'
 				AND loccode ='" . $LocCode . "'
 				AND serialno='" . $BundleRef . "'";
-	$Result = DB_query($SQL, $db);
+	$Result = DB_query($SQL);
 	if (DB_num_rows($Result) == 0) {
 		return 0;
 	} else {

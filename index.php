@@ -190,7 +190,7 @@ function GetRptLinks($GroupID) {
 	specified to create a list of links for insertion into a table to choose a report. Two table sections will
 	be generated, one for standard reports and the other for custom reports.
 	*/
-	global $db, $RootPath;
+	global $RootPath;
 	$FormGroups = array (
 		'gl:chk' => _('Bank Checks'),	// Bank checks grouped with the gl report group
 		'ar:col' => _('Collection Letters'),
@@ -220,7 +220,7 @@ function GetRptLinks($GroupID) {
 				FROM reports
 				ORDER BY groupname,
 						reportname";
-	$Result = DB_query($sql, $db, '', '', false, true);
+	$Result = DB_query($sql, '', '', false, true);
 	$_SESSION['ReportList'] = array();
 	while ($Temp = DB_fetch_array($Result))
 		$_SESSION['ReportList'][] = $Temp;

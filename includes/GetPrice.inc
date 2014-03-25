@@ -1,6 +1,6 @@
 <?php
 
-function GetPrice($StockID, $DebtorNo, $BranchCode, $db, $ReportZeroPrice = 1) {
+function GetPrice($StockID, $DebtorNo, $BranchCode, $ReportZeroPrice = 1) {
 
 	$Price = 0;
 	//get the price from price matrix
@@ -9,7 +9,7 @@ function GetPrice($StockID, $DebtorNo, $BranchCode, $db, $ReportZeroPrice = 1) {
 				AND debtorsmaster.debtorno = '".$DebtorNo."'
 				AND pricematrix.stockid = '".$StockID."'";
 	$ErrMsg = _('Failed to retrieve price from price matrix');
-	$result = DB_query($sql,$db,$ErrMsg);
+	$result = DB_query($sql, $ErrMsg);
 	if (DB_num_rows($result) == 0) {
 		/*Search by branch and customer for a date specified price */
 		$sql="SELECT prices.price
@@ -25,7 +25,7 @@ function GetPrice($StockID, $DebtorNo, $BranchCode, $db, $ReportZeroPrice = 1) {
 					AND prices.enddate>=CURRENT_DATE";
 
 				$ErrMsg =  _('There is a problem in retrieving the pricing information for part') . ' ' . $StockID  . ' ' . _('and for Customer') . ' ' . $DebtorNo .  ' ' . _('the error message returned by the SQL server was');
-				$result = DB_query($sql, $db,$ErrMsg);
+				$result = DB_query($sql, $ErrMsg);
 	}
 	if (DB_num_rows($result) == 0) {
 		/*Need to try same specific search but for a default price with a zero end date */
@@ -43,7 +43,7 @@ function GetPrice($StockID, $DebtorNo, $BranchCode, $db, $ReportZeroPrice = 1) {
 				AND prices.enddate ='0000-00-00'
 				ORDER BY prices.startdate DESC";
 
-		$result = DB_query($sql, $db, $ErrMsg);
+		$result = DB_query($sql, $ErrMsg);
 
 		if (DB_num_rows($result) == 0) {
 
@@ -61,7 +61,7 @@ function GetPrice($StockID, $DebtorNo, $BranchCode, $db, $ReportZeroPrice = 1) {
 					AND prices.enddate >=CURRENT_DATE";
 
 
-			$result = DB_query($sql, $db, $ErrMsg);
+			$result = DB_query($sql, $ErrMsg);
 			if (DB_num_rows($result) == 0) {
 				//if no specific price between the dates maybe there is a default price with no end date specified
 				$sql = "SELECT prices.price,
@@ -78,7 +78,7 @@ function GetPrice($StockID, $DebtorNo, $BranchCode, $db, $ReportZeroPrice = 1) {
 						AND prices.enddate >='0000-00-00'
 						ORDER BY prices.startdate DESC";
 
-				$result = DB_query($sql, $db, $ErrMsg);
+				$result = DB_query($sql, $ErrMsg);
 
 				if (DB_num_rows($result) == 0) {
 
@@ -94,7 +94,7 @@ function GetPrice($StockID, $DebtorNo, $BranchCode, $db, $ReportZeroPrice = 1) {
 							AND prices.startdate <=CURRENT_DATE
 							AND prices.enddate >=CURRENT_DATE";
 
-					$result = DB_query($sql, $db, $ErrMsg);
+					$result = DB_query($sql, $ErrMsg);
 
 					if (DB_num_rows($result) == 0) {
 						/*No special customer specific pricing use the customers normal price list but look for default price with 0000-00-00 end date*/
@@ -111,7 +111,7 @@ function GetPrice($StockID, $DebtorNo, $BranchCode, $db, $ReportZeroPrice = 1) {
 								AND prices.enddate ='0000-00-00'
 								ORDER BY prices.startdate DESC";
 
-						$result = DB_query($sql, $db, $ErrMsg);
+						$result = DB_query($sql, $ErrMsg);
 
 						if (DB_num_rows($result) == 0) {
 
@@ -127,7 +127,7 @@ function GetPrice($StockID, $DebtorNo, $BranchCode, $db, $ReportZeroPrice = 1) {
 									AND prices.startdate <=CURRENT_DATE
 									AND prices.enddate >=CURRENT_DATE";
 
-							$result = DB_query($sql, $db, $ErrMsg);
+							$result = DB_query($sql, $ErrMsg);
 
 							if (DB_num_rows($result) == 0) {
 
@@ -145,7 +145,7 @@ function GetPrice($StockID, $DebtorNo, $BranchCode, $db, $ReportZeroPrice = 1) {
 										AND prices.enddate ='0000-00-00'
 										ORDER BY prices.startdate DESC";
 
-								$result = DB_query($sql, $db, $ErrMsg);
+								$result = DB_query($sql, $ErrMsg);
 
 								if (DB_num_rows($result) == 0) {
 									/*Not even a price set up in the default price list so return 0 */

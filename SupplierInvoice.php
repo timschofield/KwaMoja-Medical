@@ -28,7 +28,7 @@ else {
 
 if (!isset($_SESSION['SuppTrans']->SupplierName)) {
 	$sql = "SELECT suppname FROM suppliers WHERE supplierid='" . $_GET['SupplierID'] . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_row($result);
 	$SupplierName = $myrow[0];
 } //!isset($_SESSION['SuppTrans']->SupplierName)
@@ -78,7 +78,7 @@ if (isset($_GET['SupplierID']) and $_GET['SupplierID'] != '') {
 	$ErrMsg = _('The supplier record selected') . ': ' . $_GET['SupplierID'] . ' ' . _('cannot be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve the supplier details and failed was');
 
-	$result = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+	$result = DB_query($sql, $ErrMsg, $DbgMsg);
 
 	$myrow = DB_fetch_array($result);
 
@@ -101,7 +101,7 @@ if (isset($_GET['SupplierID']) and $_GET['SupplierID'] != '') {
 
 	$LocalTaxProvinceResult = DB_query("SELECT taxprovinceid
 								FROM locations
-								WHERE loccode = '" . $_SESSION['UserStockLocation'] . "'", $db);
+								WHERE loccode = '" . $_SESSION['UserStockLocation'] . "'");
 
 	if (DB_num_rows($LocalTaxProvinceResult) == 0) {
 		prnMsg(_('The tax province associated with your user account has not been set up in this database. Tax calculations are based on the tax group of the supplier and the tax province of the user entering the invoice. The system administrator should redefine your account with a valid default stocking location and this location should refer to a valid tax province'), 'error');
@@ -148,9 +148,9 @@ if (isset($_GET['ReceivePO']) and $_GET['ReceivePO'] != '') {
 		include('includes/PO_ReadInOrder.inc');
 
 		if ($_SESSION['PO' . $identifier]->Status == 'Authorised') {
-			$Result = DB_Txn_Begin($db);
+			$Result = DB_Txn_Begin();
 			/*Now Get the next GRN - function in SQL_CommonFunctions*/
-			$GRN = GetNextTransNo(25, $db);
+			$GRN = GetNextTransNo(25);
 			if (!isset($_GET['DeliveryDate'])) {
 				$DeliveryDate = date($_SESSION['DefaultDateFormat']);
 			} //!isset($_GET['DeliveryDate'])
@@ -160,7 +160,7 @@ if (isset($_GET['ReceivePO']) and $_GET['ReceivePO'] != '') {
 			$_POST['ExRate'] = $_SESSION['SuppTrans']->ExRate;
 			$_POST['TranDate'] = $DeliveryDate;
 
-			$PeriodNo = GetPeriod($DeliveryDate, $db);
+			$PeriodNo = GetPeriod($DeliveryDate);
 
 			$OrderHasControlledItems = false; //assume the best
 			foreach ($_SESSION['PO' . $identifier]->LineItems as $OrderLine) {
@@ -184,7 +184,7 @@ if (isset($_GET['ReceivePO']) and $_GET['ReceivePO'] != '') {
 									WHERE stockid='" . $OrderLine->StockID . "'";
 						$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The standard cost of the item being received cannot be retrieved because');
 						$DbgMsg = _('The following SQL to retrieve the standard cost was used');
-						$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+						$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 						$myrow = DB_fetch_row($Result);
 						$CurrentStandardCost = $myrow[0];
@@ -219,7 +219,7 @@ if (isset($_GET['ReceivePO']) and $_GET['ReceivePO'] != '') {
 
 					$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The purchase order detail record could not be updated with the quantity received because');
 					$DbgMsg = _('The following SQL to update the purchase order detail record was used');
-					$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 
 					if ($OrderLine->StockID != '') {
@@ -252,7 +252,7 @@ if (isset($_GET['ReceivePO']) and $_GET['ReceivePO'] != '') {
 
 					$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('A GRN record could not be inserted') . '. ' . _('This receipt of goods has not been processed because');
 					$DbgMsg = _('The following SQL to insert the GRN record was used');
-					$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 					if ($OrderLine->StockID != '') {
 						/* if the order line is in fact a stock item */
@@ -265,7 +265,7 @@ if (isset($_GET['ReceivePO']) and $_GET['ReceivePO'] != '') {
 										WHERE locstock.stockid='" . $OrderLine->StockID . "'
 										AND loccode= '" . $_SESSION['PO' . $identifier]->Location . "'";
 
-						$Result = DB_query($SQL, $db);
+						$Result = DB_query($SQL);
 						if (DB_num_rows($Result) == 1) {
 							$LocQtyRow = DB_fetch_row($Result);
 							$QtyOnHandPrior = $LocQtyRow[0];
@@ -282,7 +282,7 @@ if (isset($_GET['ReceivePO']) and $_GET['ReceivePO'] != '') {
 
 						$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The location stock record could not be updated because');
 						$DbgMsg = _('The following SQL to update the location stock record was used');
-						$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+						$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 						/* Insert stock movements - with unit cost */
 
@@ -313,7 +313,7 @@ if (isset($_GET['ReceivePO']) and $_GET['ReceivePO'] != '') {
 
 						$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('stock movement records could not be inserted because');
 						$DbgMsg = _('The following SQL to insert the stock movement records was used');
-						$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+						$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 					} //$OrderLine->StockID != ''
 
@@ -329,7 +329,7 @@ if (isset($_GET['ReceivePO']) and $_GET['ReceivePO'] != '') {
 															FROM fixedassets
 															INNER JOIN fixedassetcategories
 															ON fixedassets.assetcategoryid=fixedassetcategories.categoryid
-															WHERE assetid='" . $OrderLine->AssetID . "'", $db);
+															WHERE assetid='" . $OrderLine->AssetID . "'");
 						if (DB_num_rows($CheckAssetExistsResult) == 1) { //then work with the assetid provided
 
 							/*Need to add a fixedassettrans for the cost of the asset being received */
@@ -351,7 +351,7 @@ if (isset($_GET['ReceivePO']) and $_GET['ReceivePO'] != '') {
 													'" . $CurrentStandardCost * $OrderLine->ReceiveQty . "')";
 							$ErrMsg = _('CRITICAL ERROR! NOTE DOWN THIS ERROR AND SEEK ASSISTANCE The fixed asset transaction could not be inserted because');
 							$DbgMsg = _('The following SQL to insert the fixed asset transaction record was used');
-							$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+							$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 							/*Now get the correct cost GL account from the asset category */
 							$AssetRow = DB_fetch_array($CheckAssetExistsResult);
@@ -373,7 +373,7 @@ if (isset($_GET['ReceivePO']) and $_GET['ReceivePO'] != '') {
 							}
 							$ErrMsg = _('CRITICAL ERROR! NOTE DOWN THIS ERROR AND SEEK ASSISTANCE. The fixed asset cost and date purchased was not able to be updated because') . ':';
 							$DbgMsg = _('The following SQL was used to attempt the update of the cost and the date the asset was purchased');
-							$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+							$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 						} //assetid provided doesn't exist so ignore it and treat as a normal nominal item
 					} //assetid is set so the nominal item is an asset
@@ -402,7 +402,7 @@ if (isset($_GET['ReceivePO']) and $_GET['ReceivePO'] != '') {
 
 						$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The purchase GL posting could not be inserted because');
 						$DbgMsg = _('The following SQL to insert the purchase GLTrans record was used');
-						$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+						$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 						/* If the CurrentStandardCost != UnitCost (the standard at the time the first delivery was booked in,  and its a stock item, then the difference needs to be booked in against the purchase price variance account */
 
@@ -425,7 +425,7 @@ if (isset($_GET['ReceivePO']) and $_GET['ReceivePO'] != '') {
 
 						$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The GRN suspense side of the GL posting could not be inserted because');
 						$DbgMsg = _('The following SQL to insert the GRN Suspense GLTrans record was used');
-						$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+						$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 					} //$_SESSION['PO' . $identifier]->GLLink == 1 and $OrderLine->GLCode != 0
 
@@ -439,13 +439,13 @@ if (isset($_GET['ReceivePO']) and $_GET['ReceivePO'] != '') {
 						SET status='Completed',
 						stat_comment='" . $StatusComment . "'
 						WHERE orderno='" . $_SESSION['PO' . $identifier]->OrderNo . "'";
-				$result = DB_query($sql, $db);
+				$result = DB_query($sql);
 
 				if ($_SESSION['PO' . $identifier]->GLLink == 1) {
-					EnsureGLEntriesBalance(25, $GRN, $db);
+					EnsureGLEntriesBalance(25, $GRN);
 				} //$_SESSION['PO' . $identifier]->GLLink == 1
 
-				$Result = DB_Txn_Commit($db);
+				$Result = DB_Txn_Commit();
 
 				//Now add all these deliveries to this purchase invoice
 
@@ -473,7 +473,7 @@ if (isset($_GET['ReceivePO']) and $_GET['ReceivePO'] != '') {
 						AND purchorderdetails.orderno = '" . intval($_GET['ReceivePO']) . "'
 						AND grns.qtyrecd - grns.quantityinv > 0
 						ORDER BY grns.grnno";
-				$GRNResults = DB_query($SQL, $db);
+				$GRNResults = DB_query($SQL);
 
 				while ($myrow = DB_fetch_array($GRNResults)) {
 					if ($myrow['decimalplaces'] == '') {
@@ -999,7 +999,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 
 		$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The sql to check for the previous entry of the same invoice failed');
 		$DbgMsg = _('The following SQL to test for a previous invoice with the same reference from the same supplier was used');
-		$result = DB_query($sql, $db, $ErrMsg, $DbgMsg, True);
+		$result = DB_query($sql, $ErrMsg, $DbgMsg, True);
 
 		$myrow = DB_fetch_row($result);
 		if ($myrow[0] == 1) {
@@ -1013,11 +1013,11 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 		/* SQL to process the postings for purchase invoice */
 		/*Start an SQL transaction */
 
-		$Result = DB_Txn_Begin($db);
+		$Result = DB_Txn_Begin();
 
 		/*Get the next transaction number for internal purposes and the period to post GL transactions in based on the invoice date*/
-		$InvoiceNo = GetNextTransNo(20, $db);
-		$PeriodNo = GetPeriod($_SESSION['SuppTrans']->TranDate, $db);
+		$InvoiceNo = GetNextTransNo(20);
+		$PeriodNo = GetPeriod($_SESSION['SuppTrans']->TranDate);
 		$SQLInvoiceDate = FormatDateForSQL($_SESSION['SuppTrans']->TranDate);
 
 		if ($_SESSION['SuppTrans']->GLLink_Creditors == 1) {
@@ -1074,7 +1074,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The general ledger transaction could not be added because');
 				$DbgMsg = _('The following SQL to insert the GL transaction was used');
 
-				$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, True);
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
 
 				$LocalTotal += $EnteredGLCode->Amount / $_SESSION['SuppTrans']->ExRate;
 			} //$_SESSION['SuppTrans']->GLCodes as $EnteredGLCode
@@ -1102,7 +1102,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 
 				$DbgMsg = _('The following SQL to insert the GL transaction was used');
 
-				$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, True);
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
 
 				$LocalTotal += $ShiptChg->Amount / $_SESSION['SuppTrans']->ExRate;
 
@@ -1126,7 +1126,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 									'" . ($AssetAddition->Amount / $_SESSION['SuppTrans']->ExRate) . "')";
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The general ledger transaction for the asset addition could not be added because');
 				$DbgMsg = _('The following SQL to insert the GL transaction was used');
-				$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, True);
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
 
 				$LocalTotal += ($AssetAddition->Amount / $_SESSION['SuppTrans']->ExRate);
 			} //$_SESSION['SuppTrans']->Assets as $AssetAddition
@@ -1138,7 +1138,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 				$result = DB_query("SELECT wipact FROM stockcategory
 									INNER JOIN stockmaster ON
 									stockcategory.categoryid=stockmaster.categoryid
-									WHERE stockmaster.stockid='" . $Contract->ContractRef . "'", $db);
+									WHERE stockmaster.stockid='" . $Contract->ContractRef . "'");
 				$WIPRow = DB_fetch_row($result);
 				$WIPAccount = $WIPRow[0];
 				$SQL = "INSERT INTO gltrans (type,
@@ -1157,7 +1157,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 											'" . ($Contract->Amount / $_SESSION['SuppTrans']->ExRate) . "')";
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The general ledger transaction for the contract') . ' ' . $Contract->ContractRef . ' ' . _('could not be added because');
 				$DbgMsg = _('The following SQL to insert the GL transaction was used');
-				$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, True);
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
 				$LocalTotal += ($Contract->Amount / $_SESSION['SuppTrans']->ExRate);
 			} //$_SESSION['SuppTrans']->Contracts as $Contract
 
@@ -1187,7 +1187,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 
 						$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The general ledger transaction could not be added because');
 						$DbgMsg = _('The following SQL to insert the GL transaction was used');
-						$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, True);
+						$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
 					} //$EnteredGRN->StdCostUnit * ($EnteredGRN->This_QuantityInv) != 0
 
 					$PurchPriceVar = $EnteredGRN->This_QuantityInv * (($EnteredGRN->ChgPrice / $_SESSION['SuppTrans']->ExRate) - $EnteredGRN->StdCostUnit);
@@ -1202,7 +1202,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 							/*so it is a stock item */
 
 							/*need to get the stock category record for this stock item - this is function in SQL_CommonFunctions.inc */
-							$StockGLCode = GetStockGLCode($EnteredGRN->ItemCode, $db);
+							$StockGLCode = GetStockGLCode($EnteredGRN->ItemCode);
 
 							/*We have stock item and a purchase price variance need to see whether we are using Standard or WeightedAverageCosting */
 
@@ -1220,7 +1220,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 								$sql = "SELECT SUM(quantity) FROM locstock WHERE stockid='" . $EnteredGRN->ItemCode . "'";
 								$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The quantity on hand could not be retrieved from the database');
 								$DbgMsg = _('The following SQL to retrieve the total stock quantity was used');
-								$Result = DB_query($sql, $db, $ErrMsg, $DbgMsg, True);
+								$Result = DB_query($sql, $ErrMsg, $DbgMsg, True);
 								$QtyRow = DB_fetch_row($Result);
 								$TotalQuantityOnHand = $QtyRow[0];
 
@@ -1257,7 +1257,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 									$DbgMsg = _('The following SQL to insert the GL transaction was used');
 
 
-									$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, True);
+									$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
 								} // end if the quantity being invoiced here is greater than the current stock on hand
 
 								/*Now post any remaining price variance to stock rather than price variances */
@@ -1280,7 +1280,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 								$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The general ledger transaction could not be added for the price variance of the stock item because');
 								$DbgMsg = _('The following SQL to insert the GL transaction was used');
 
-								$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, True);
+								$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
 
 							} //$_SESSION['WeightedAverageCosting'] == 1
 							else { //It must be Standard Costing
@@ -1302,7 +1302,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 
 								$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The general ledger transaction could not be added for the price variance of the stock item because');
 								$DbgMsg = _('The following SQL to insert the GL transaction was used');
-								$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, True);
+								$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
 							}
 						} //mb_strlen($EnteredGRN->ItemCode) > 0 or $EnteredGRN->ItemCode != ''
 						else {
@@ -1316,7 +1316,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 								$result = DB_query("SELECT costact
 													FROM fixedassets INNER JOIN fixedassetcategories
 													ON fixedassets.assetcategoryid= fixedassetcategories.categoryid
-													WHERE assetid='" . $EnteredGRN->AssetID . "'", $db);
+													WHERE assetid='" . $EnteredGRN->AssetID . "'");
 								if (DB_num_rows($result) != 0) { // the asset exists
 									$AssetRow = DB_fetch_array($result);
 									$GLCode = $AssetRow['costact'];
@@ -1341,7 +1341,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 							$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The general ledger transaction could not be added for the price variance of the stock item because');
 
 							$DbgMsg = _('The following SQL to insert the GL transaction was used');
-							$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, True);
+							$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
 						}
 					} //$PurchPriceVar != 0
 
@@ -1366,7 +1366,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 
 					$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The general ledger transaction could not be added because');
 					$DbgMsg = _('The following SQL to insert the GL transaction was used');
-					$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, True);
+					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
 				}
 				$LocalTotal += ($EnteredGRN->ChgPrice * $EnteredGRN->This_QuantityInv) / $_SESSION['SuppTrans']->ExRate;
 			} //$_SESSION['SuppTrans']->GRNs as $EnteredGRN
@@ -1397,7 +1397,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 
 					$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The general ledger transaction for the tax could not be added because');
 					$DbgMsg = _('The following SQL to insert the GL transaction was used');
-					$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, True);
+					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
 				} //$Tax->TaxOvAmount <> 0
 
 			} //$_SESSION['SuppTrans']->Taxes as $Tax
@@ -1422,9 +1422,9 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 
 			$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The general ledger transaction for the control total could not be added because');
 			$DbgMsg = _('The following SQL to insert the GL transaction was used');
-			$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, True);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
 
-			EnsureGLEntriesBalance(20, $InvoiceNo, $db);
+			EnsureGLEntriesBalance(20, $InvoiceNo);
 		} //$_SESSION['SuppTrans']->GLLink_Creditors == 1
 
 		/*Thats the end of the GL postings */
@@ -1457,8 +1457,8 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 
 		$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The supplier invoice transaction could not be added to the database because');
 		$DbgMsg = _('The following SQL to insert the supplier invoice was used');
-		$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, True);
-		$SuppTransID = DB_Last_Insert_ID($db, 'supptrans', 'id');
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
+		$SuppTransID = DB_Last_Insert_ID('supptrans', 'id');
 
 		/* Insert the tax totals for each tax authority where tax was charged on the invoice */
 		foreach ($_SESSION['SuppTrans']->Taxes AS $TaxTotals) {
@@ -1472,7 +1472,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 
 			$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The supplier transaction taxes records could not be inserted because');
 			$DbgMsg = _('The following SQL to insert the supplier transaction taxes record was used') . ':';
-			$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		} //$_SESSION['SuppTrans']->Taxes AS $TaxTotals
 
 		/* Now update the GRN and PurchOrderDetails records for amounts invoiced  - can't use the other loop through the GRNs as this was only where the GL link to credtors is active */
@@ -1491,7 +1491,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 
 			$DbgMsg = _('The following SQL to update the purchase order details was used');
 
-			$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, True);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
 
 			$SQL = "UPDATE grns
 					SET quantityinv = quantityinv + " . $EnteredGRN->This_QuantityInv . "
@@ -1499,7 +1499,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 
 			$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The quantity invoiced off the goods received record could not be updated because');
 			$DbgMsg = _('The following SQL to update the GRN quantity invoiced was used');
-			$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, True);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
 
 			if (mb_strlen($EnteredGRN->ShiptRef) > 0 and $EnteredGRN->ShiptRef != '0') {
 				/* insert the shipment charge records */
@@ -1517,7 +1517,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The shipment charge record for the shipment') . ' ' . $EnteredGRN->ShiptRef . ' ' . _('could not be added because');
 				$DbgMsg = _('The following SQL to insert the Shipment charge record was used');
-				$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, True);
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
 
 			} //end of adding GRN shipment charges
 			else {
@@ -1538,7 +1538,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 						/*Get the location that the stock was booked into */
 						$result = DB_query("SELECT intostocklocation
 											FROM purchorders
-											WHERE orderno='" . $EnteredGRN->PONo . "'", $db);
+											WHERE orderno='" . $EnteredGRN->PONo . "'");
 						$LocRow = DB_fetch_array($result);
 						$LocCode = $LocRow['intostocklocation'];
 
@@ -1550,7 +1550,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 											AND loccode='" . $LocCode . "'
 											AND transno='" . $EnteredGRN->GRNBatchNo . "'";
 
-						$result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, True);
+						$result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
 
 						if ($_SESSION['WeightedAverageCosting'] == 1) {
 							/*
@@ -1566,7 +1566,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 									WHERE stockid='" . $EnteredGRN->ItemCode . "'";
 							$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The quantity on hand could not be retrieved from the database');
 							$DbgMsg = _('The following SQL to retrieve the total stock quantity was used');
-							$Result = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+							$Result = DB_query($sql, $ErrMsg, $DbgMsg);
 							$QtyRow = DB_fetch_row($Result);
 							$TotalQuantityOnHand = $QtyRow[0];
 
@@ -1598,7 +1598,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 																FROM salesanalysis
 																WHERE salesanalysis.stockid = '" . $EnteredGRN->ItemCode . "'
 																AND salesanalysis.budgetoractual=1
-																AND periodno='" . $PeriodAllocated . "'", $db);
+																AND periodno='" . $PeriodAllocated . "'");
 									if (DB_num_rows($SalesAnalResult) > 0) {
 										while ($SalesAnalRow = DB_fetch_array($SalesAnalResult) and $QuantityVarianceAllocated > 0) {
 											if ($SalesAnalRow['qty'] <= $QuantityVarianceAllocated) {
@@ -1619,7 +1619,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 																			AND area='" . $SalesAnalRow['area'] . "'
 																			AND salesperson='" . $SalesAnalRow['salesperson'] . "'
 																			AND stkcategory='" . $SalesAnalRow['stkcategory'] . "'
-																			AND budgetoractual=1", $db, $ErrMsg, $DbgMsg, True);
+																			AND budgetoractual=1", $ErrMsg, $DbgMsg, True);
 										} //$SalesAnalRow = DB_fetch_array($SalesAnalResult) and $QuantityVarianceAllocated > 0
 									} //end if there were sales in that period
 									$PeriodAllocated--; //decrement the period
@@ -1645,7 +1645,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 													AND qty < 0
 													AND stockid='" . $EnteredGRN->ItemCode . "'
 													AND trandate>='" . FormatDateForSQL(DateAdd($_SESSION['SuppTrans']->TranDate, 'm', -6)) . "'
-													ORDER BY stkmoveno DESC", $db);
+													ORDER BY stkmoveno DESC");
 								$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The stock movements for invoices cannot be updated for the cost variances on this purchase invoice');
 								$QuantityVarianceAllocated = $EnteredGRN->This_QuantityInv;
 								while ($StkMoveRow = DB_fetch_array($result) and $QuantityVarianceAllocated > 0) {
@@ -1653,7 +1653,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 										if ($StkMoveRow['type'] == 10) { //its a sales invoice
 											$result = DB_query("UPDATE stockmoves
 																SET standardcost = '" . $ActualCost . "'
-																WHERE stkmoveno = '" . $StkMoveRow['stkmoveno'] . "'", $db, $ErrMsg, $DbgMsg, True);
+																WHERE stkmoveno = '" . $StkMoveRow['stkmoveno'] . "'", $ErrMsg, $DbgMsg, True);
 										} //$StkMoveRow['type'] == 10
 									} //$StkMoveRow['qty'] + $QuantityVarianceAllocated > 0
 									else { //Only $QuantityVarianceAllocated left to allocate so need need to apportion cost using weighted average
@@ -1663,7 +1663,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 
 											$UpdStkMovesResult = DB_query("UPDATE stockmoves
 																SET standardcost = '" . $WACost . "'
-																WHERE stkmoveno = '" . $StkMoveRow['stkmoveno'] . "'", $db, $ErrMsg, $DbgMsg, True);
+																WHERE stkmoveno = '" . $StkMoveRow['stkmoveno'] . "'", $ErrMsg, $DbgMsg, True);
 										} //$StkMoveRow['type'] == 10
 									}
 									$QuantityVarianceAllocated += $StkMoveRow['qty'];
@@ -1687,7 +1687,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 										SET lastcost=materialcost+overheadcost+labourcost,
 										materialcost=materialcost+" . $CostIncrement . "
 										WHERE stockid='" . $EnteredGRN->ItemCode . "'";
-								$Result = DB_query($sql, $db, $ErrMsg, $DbgMsg, True);
+								$Result = DB_query($sql, $ErrMsg, $DbgMsg, True);
 							} //$TotalQuantityOnHand > 0
 							else {
 								/* if stock is negative then update the cost to this cost */
@@ -1695,7 +1695,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 										SET lastcost=materialcost+overheadcost+labourcost,
 											materialcost='" . $ActualCost . "'
 										WHERE stockid='" . $EnteredGRN->ItemCode . "'";
-								$Result = DB_query($sql, $db, $ErrMsg, $DbgMsg, True);
+								$Result = DB_query($sql, $ErrMsg, $DbgMsg, True);
 							}
 						} //$_SESSION['WeightedAverageCosting'] == 1
 
@@ -1729,7 +1729,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 													'" . ($PurchPriceVar) . "')";
 					$ErrMsg = _('CRITICAL ERROR! NOTE DOWN THIS ERROR AND SEEK ASSISTANCE The fixed asset transaction could not be inserted because');
 					$DbgMsg = _('The following SQL to insert the fixed asset transaction record was used');
-					$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 					/*Now update the asset cost in fixedassets table */
 					$SQL = "UPDATE fixedassets SET cost = cost + " . ($PurchPriceVar) . "
@@ -1737,7 +1737,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 
 					$ErrMsg = _('CRITICAL ERROR! NOTE DOWN THIS ERROR AND SEEK ASSISTANCE. The fixed asset cost could not be updated because') . ':';
 					$DbgMsg = _('The following SQL was used to attempt the update of the asset cost') . ':';
-					$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 				} //end if there was a difference in the cost
 			} //the item was an asset received on a purchase order
 		} //$_SESSION['SuppTrans']->GRNs as $EnteredGRN
@@ -1759,7 +1759,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 
 			$DbgMsg = _('The following SQL to insert the Shipment charge record was used');
 
-			$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, True);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
 
 		} //$_SESSION['SuppTrans']->Shipts as $ShiptChg
 
@@ -1787,7 +1787,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 
 			$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The contract charge record for contract') . ' ' . $Contract->ContractRef . ' ' . _('could not be added because');
 			$DbgMsg = _('The following SQL to insert the contract charge record was used');
-			$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, True);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
 		} //$_SESSION['SuppTrans']->Contracts as $Contract
 
 		foreach ($_SESSION['SuppTrans']->Assets as $AssetAddition) {
@@ -1816,12 +1816,12 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 											'" . ($AssetAddition->Amount / $_SESSION['SuppTrans']->ExRate) . "')";
 			$ErrMsg = _('CRITICAL ERROR! NOTE DOWN THIS ERROR AND SEEK ASSISTANCE The fixed asset transaction could not be inserted because');
 			$DbgMsg = _('The following SQL to insert the fixed asset transaction record was used');
-			$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 			/*Now update the asset cost in fixedassets table */
 			$result = DB_query("SELECT datepurchased
 								FROM fixedassets
-								WHERE assetid='" . $AssetAddition->AssetID . "'", $db);
+								WHERE assetid='" . $AssetAddition->AssetID . "'");
 			$AssetRow = DB_fetch_array($result);
 
 			$SQL = "UPDATE fixedassets SET cost = cost + " . ($AssetAddition->Amount / $_SESSION['SuppTrans']->ExRate);
@@ -1831,10 +1831,10 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 			$SQL .= " WHERE assetid = '" . $AssetAddition->AssetID . "'";
 			$ErrMsg = _('CRITICAL ERROR! NOTE DOWN THIS ERROR AND SEEK ASSISTANCE. The fixed asset cost and date purchased was not able to be updated because') . ':';
 			$DbgMsg = _('The following SQL was used to attempt the update of the cost and the date the asset was purchased');
-			$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		} //end of non-gl fixed asset stuff
 
-		$Result = DB_Txn_Commit($db);
+		$Result = DB_Txn_Commit();
 
 		prnMsg(_('Supplier invoice number') . ' ' . $InvoiceNo . ' ' . _('has been processed'), 'success');
 		echo '<br />

@@ -19,7 +19,7 @@ if (isset($_GET['SupplierID'])) {
 if ($_SESSION['geocode_integration'] == 1 and isset($_SESSION['SupplierID'])) {
 	$sql = "SELECT * FROM geocode_param WHERE 1";
 	$ErrMsg = _('An error occurred in retrieving the information');
-	$result = DB_query($sql, $db, $ErrMsg);
+	$result = DB_query($sql, $ErrMsg);
 	$myrow = DB_fetch_array($result);
 	$sql = "SELECT suppliers.supplierid,
 					suppliers.lat,
@@ -28,7 +28,7 @@ if ($_SESSION['geocode_integration'] == 1 and isset($_SESSION['SupplierID'])) {
 				WHERE suppliers.supplierid = '" . $_SESSION['SupplierID'] . "'
 				ORDER BY suppliers.supplierid";
 	$ErrMsg = _('An error occurred in retrieving the information');
-	$result2 = DB_query($sql, $db, $ErrMsg);
+	$result2 = DB_query($sql, $ErrMsg);
 	$myrow2 = DB_fetch_array($result2);
 	$lat = $myrow2['lat'];
 	$lng = $myrow2['lng'];
@@ -97,7 +97,7 @@ if (isset($_POST['Search']) OR isset($_POST['Go']) OR isset($_POST['Next']) OR i
 				WHERE suppname " . LIKE . " '" . $SearchString . "'
 					AND supplierid " . LIKE . " '%" . $_POST['SupplierCode'] . "%'
 				ORDER BY suppname";
-	$result = DB_query($SQL, $db);
+	$result = DB_query($SQL);
 	if (DB_num_rows($result) == 1) {
 		$myrow = DB_fetch_row($result);
 		$SingleSupplierReturned = $myrow[0];
@@ -117,7 +117,7 @@ if (isset($_SESSION['SupplierID'])) {
 	$SQL = "SELECT suppliers.suppname
 			FROM suppliers
 			WHERE suppliers.supplierid ='" . $_SESSION['SupplierID'] . "'";
-	$SupplierNameResult = DB_query($SQL, $db);
+	$SupplierNameResult = DB_query($SQL);
 	if (DB_num_rows($SupplierNameResult) == 1) {
 		$myrow = DB_fetch_row($SupplierNameResult);
 		$SupplierName = $myrow[0];
@@ -333,11 +333,11 @@ if (isset($_SESSION['SupplierID']) and $_SESSION['SupplierID'] != '') {
 					ON suppliers.currcode=currencies.currabrev
 					WHERE suppliers.supplierid ='" . $_SESSION['SupplierID'] . "'";
 			$ErrMsg = _('An error occurred in retrieving the information');
-			$DataResult = DB_query($sql, $db, $ErrMsg);
+			$DataResult = DB_query($sql, $ErrMsg);
 			$myrow = DB_fetch_array($DataResult);
 			// Select some more data about the supplier
 			$SQL = "SELECT SUM(-ovamount) AS total FROM supptrans WHERE supplierno = '" . $_SESSION['SupplierID'] . "' and type != '20'";
-			$Total1Result = DB_query($SQL, $db);
+			$Total1Result = DB_query($SQL);
 			$row = DB_fetch_array($Total1Result);
 			echo '<br />';
 			echo '<table width="45%" cellpadding="4">

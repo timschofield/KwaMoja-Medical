@@ -12,11 +12,11 @@ if (isset($_GET['SelectedTag'])) {
 		//first off test there are no transactions created with this tag
 		$Result = DB_query("SELECT counterindex
 							FROM gltrans
-							WHERE tag='" . $_GET['SelectedTag'] . "'", $db);
+							WHERE tag='" . $_GET['SelectedTag'] . "'");
 		if (DB_num_rows($Result) > 0) {
 			prnMsg(_('This tag cannot be deleted since there are already general ledger transactions created using it.'), 'error');
 		} else {
-			$Result = DB_query("DELETE FROM tags WHERE tagref='" . $_GET['SelectedTag'] . "'", $db);
+			$Result = DB_query("DELETE FROM tags WHERE tagref='" . $_GET['SelectedTag'] . "'");
 			prnMsg(_('The selected tag has been deleted'), 'success');
 		}
 		$Description = '';
@@ -26,8 +26,8 @@ if (isset($_GET['SelectedTag'])) {
 				FROM tags
 				WHERE tagref='" . $_GET['SelectedTag'] . "'";
 
-		$result = DB_query($sql, $db);
-		$myrow = DB_fetch_array($result, $db);
+		$result = DB_query($sql);
+		$myrow = DB_fetch_array($result);
 		$ref = $myrow['tagref'];
 		$Description = $myrow['tagdescription'];
 	}
@@ -38,13 +38,13 @@ if (isset($_GET['SelectedTag'])) {
 
 if (isset($_POST['submit'])) {
 	$sql = "INSERT INTO tags values(NULL, '" . $_POST['Description'] . "')";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 }
 
 if (isset($_POST['update'])) {
 	$sql = "UPDATE tags SET tagdescription='" . $_POST['Description'] . "'
 		WHERE tagref='" . $_POST['reference'] . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 }
 echo '<p class="page_title_text noPrint" >
 		<img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Print') . '" alt="' . $Title . '" />' . ' ' . $Title . '
@@ -83,9 +83,9 @@ $sql = "SELECT tagref,
 		FROM tags
 		ORDER BY tagref";
 
-$result = DB_query($sql, $db);
+$result = DB_query($sql);
 
-while ($myrow = DB_fetch_array($result, $db)) {
+while ($myrow = DB_fetch_array($result)) {
 	echo '<tr>
 			<td>' . $myrow['tagref'] . '</td>
 			<td>' . $myrow['tagdescription'] . '</td>

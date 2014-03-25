@@ -58,7 +58,7 @@ if (isset($_POST['submit'])) {
 						'" . filter_number_format($_POST['QuantityBreak']) . "',
 						'" . (filter_number_format($_POST['DiscountRate']) / 100) . "')";
 
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		prnMsg(_('The discount matrix record has been added'), 'success');
 		echo '<br />';
 		unset($_POST['DiscountCategory']);
@@ -74,7 +74,7 @@ if (isset($_POST['submit'])) {
 		AND salestype='" . $_GET['SalesType'] . "'
 		AND quantitybreak='" . $_GET['QuantityBreak'] . "'";
 
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	prnMsg(_('The discount matrix record has been deleted'), 'success');
 	echo '<br />';
 }
@@ -90,7 +90,7 @@ $sql = "SELECT typeabbrev,
 		sales_type
 		FROM salestypes";
 
-$result = DB_query($sql, $db);
+$result = DB_query($sql);
 
 echo '<tr><td>' . _('Customer Price List') . ' (' . _('Sales Type') . '):</td><td>';
 
@@ -108,7 +108,7 @@ echo '</select></td></tr>';
 
 
 $sql = "SELECT DISTINCT discountcategory FROM stockmaster WHERE discountcategory <>''";
-$result = DB_query($sql, $db);
+$result = DB_query($sql);
 if (DB_num_rows($result) > 0) {
 	echo '<tr>
 			<td>' . _('Discount Category Code') . ': </td>
@@ -152,7 +152,7 @@ $sql = "SELECT sales_type,
 			discountcategory,
 			quantitybreak";
 
-$result = DB_query($sql, $db);
+$result = DB_query($sql);
 
 echo '<table class="selection">';
 echo '<tr>

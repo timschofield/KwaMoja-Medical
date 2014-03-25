@@ -33,7 +33,7 @@ if (!(isset($_POST['Search']))) {
 						ON locations.loccode=www_users.defaultlocation
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	while ($myrow = DB_fetch_array($result)) {
 		echo '<option value="' . $myrow['loccode'] . '">' . $myrow['loccode'] . ' - ' . $myrow['locationname'] . '</option>';
 	}
@@ -48,7 +48,7 @@ if (!(isset($_POST['Search']))) {
 	$sql = "SELECT typename,
 					typeid
 				FROM debtortype";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	echo '<option value="All">' . _('All') . '</option>';
 	while ($myrow = DB_fetch_array($result)) {
 		echo '<option value="' . $myrow['typeid'] . '">' . $myrow['typename'] . '</option>';
@@ -61,7 +61,7 @@ if (!(isset($_POST['Search']))) {
 					categorydescription
 			FROM stockcategory
 			ORDER BY categorydescription";
-	$result1 = DB_query($SQL, $db);
+	$result1 = DB_query($SQL);
 
 	echo '<tr>
 			<td style="width:150px">' . _('In Stock Category') . ' </td>
@@ -158,7 +158,7 @@ if (!(isset($_POST['Search']))) {
 					ORDER BY `" . $_POST['Sequence'] . "` DESC
 					LIMIT " . filter_number_format($_POST['NumberOfTopItems']);
 
-	$result = DB_query($SQL, $db);
+	$result = DB_query($SQL);
 
 	echo '<p class="page_title_text noPrint"  align="center"><strong>' . _('Top Sales Items List') . '</strong></p>';
 	echo '<form onSubmit="return VerifyForm(this);" action="PDFTopItems.php"  method="GET">';
@@ -197,7 +197,7 @@ if (!(isset($_POST['Search']))) {
 			case 'B':
 				$QOHResult = DB_query("SELECT sum(quantity)
 								FROM locstock
-								WHERE stockid = '" . DB_escape_string($myrow['stkcode']) . "'", $db);
+								WHERE stockid = '" . DB_escape_string($myrow['stkcode']) . "'");
 				$QOHRow = DB_fetch_row($QOHResult);
 				$QOH = $QOHRow[0];
 				$QOOSQL = "SELECT SUM(purchorderdetails.quantityord -purchorderdetails.quantityrecd) AS QtyOnOrder
@@ -208,7 +208,7 @@ if (!(isset($_POST['Search']))) {
 							AND purchorders.status<>'Cancelled'
 							AND purchorders.status<>'Pending'
 							AND purchorders.status<>'Rejected'";
-				$QOOResult = DB_query($QOOSQL, $db);
+				$QOOResult = DB_query($QOOSQL);
 				if (DB_num_rows($QOOResult) == 0) {
 					$QOO = 0;
 				} else {
@@ -222,7 +222,7 @@ if (!(isset($_POST['Search']))) {
 						WHERE workorders.closed=0
 						AND woitems.stockid='" . DB_escape_string($myrow['stkcode']) . "'";
 				$ErrMsg = _('The quantity on work orders for this product cannot be retrieved because');
-				$QOOResult = DB_query($sql, $db, $ErrMsg);
+				$QOOResult = DB_query($sql, $ErrMsg);
 				if (DB_num_rows($QOOResult) == 1) {
 					$QOORow = DB_fetch_row($QOOResult);
 					$QOO += $QOORow[0];

@@ -52,7 +52,7 @@ if (isset($_POST['submit'])) {
 	$SQL = "SELECT bankaccounts.accountcode
 			FROM bankaccounts INNER JOIN chartmaster
 			ON bankaccounts.accountcode=chartmaster.accountcode";
-	$result = DB_query($SQL, $db);
+	$result = DB_query($SQL);
 	$BankAccounts = array();
 	$i = 0;
 
@@ -84,7 +84,7 @@ if (isset($_POST['submit'])) {
 				WHERE categoryid = '" . $SelectedCategory . "'";
 
 		$ErrMsg = _('Could not update the fixed asset category') . $_POST['CategoryDescription'] . _('because');
-		$result = DB_query($sql, $db, $ErrMsg);
+		$result = DB_query($sql, $ErrMsg);
 
 		prnMsg(_('Updated the fixed asset category record for') . ' ' . $_POST['CategoryDescription'], 'success');
 
@@ -103,7 +103,7 @@ if (isset($_POST['submit'])) {
 										'" . $_POST['DisposalAct'] . "',
 										'" . $_POST['AccumDepnAct'] . "')";
 		$ErrMsg = _('Could not insert the new fixed asset category') . $_POST['CategoryDescription'] . _('because');
-		$result = DB_query($sql, $db, $ErrMsg);
+		$result = DB_query($sql, $ErrMsg);
 		prnMsg(_('A new fixed asset category record has been added for') . ' ' . $_POST['CategoryDescription'], 'success');
 
 	}
@@ -122,14 +122,14 @@ if (isset($_POST['submit'])) {
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'fixedassets'
 
 	$sql = "SELECT COUNT(*) FROM fixedassets WHERE fixedassets.assetcategoryid='" . $SelectedCategory . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_row($result);
 	if ($myrow[0] > 0) {
 		prnMsg(_('Cannot delete this fixed asset category because fixed assets have been created using this category') . '<br /> ' . _('There are') . ' ' . $myrow[0] . ' ' . _('fixed assets referring to this category code'), 'warn');
 
 	} else {
 		$sql = "DELETE FROM fixedassetcategories WHERE categoryid='" . $SelectedCategory . "'";
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		prnMsg(_('The fixed asset category') . ' ' . $SelectedCategory . ' ' . _('has been deleted'), 'success');
 		unset($SelectedCategory);
 	} //end if stock category used in debtor transactions
@@ -149,7 +149,7 @@ if (!isset($SelectedCategory) or isset($_POST['submit'])) {
 				disposalact,
 				accumdepnact
 			FROM fixedassetcategories";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 
 	echo '<br />
 			<table class="selection">';
@@ -208,7 +208,7 @@ if (isset($SelectedCategory) and !isset($_POST['submit'])) {
 				FROM fixedassetcategories
 				WHERE categoryid='" . $SelectedCategory . "'";
 
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_array($result);
 
 	$_POST['CategoryID'] = $myrow['categoryid'];
@@ -249,7 +249,7 @@ $sql = "SELECT chartmaster.accountcode,
 			AND bankaccounts.currcode IS NULL
 		ORDER BY accountcode";
 
-$BSAccountsResult = DB_query($sql, $db);
+$BSAccountsResult = DB_query($sql);
 
 $sql = "SELECT accountcode,
 				 accountname
@@ -258,7 +258,7 @@ $sql = "SELECT accountcode,
 		WHERE accountgroups.pandl!=0
 		ORDER BY accountcode";
 
-$PnLAccountsResult = DB_query($sql, $db);
+$PnLAccountsResult = DB_query($sql);
 
 if (!isset($_POST['CategoryDescription'])) {
 	$_POST['CategoryDescription'] = '';

@@ -20,7 +20,7 @@ if (empty($_GET['identifier'])) {
 
 if (!isset($_POST['SupplierID'])) {
 	$sql = "SELECT supplierid FROM www_users WHERE userid='" . $_SESSION['UserID'] . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_array($result);
 	if ($myrow['supplierid'] == '') {
 		prnMsg(_('This functionality can only be accessed via a supplier login.'), 'warning');
@@ -41,19 +41,19 @@ $sql = "SELECT suppname,
 			currcode
 		FROM suppliers
 		WHERE supplierid='" . $_POST['SupplierID'] . "'";
-$result = DB_query($sql, $db);
+$result = DB_query($sql);
 $myrow = DB_fetch_array($result);
 $Supplier = $myrow['suppname'];
 $Currency = $myrow['currcode'];
 
 if (isset($_POST['Confirm'])) {
-	$_SESSION['offer' . $identifier]->Save($db);
+	$_SESSION['offer' . $identifier]->Save();
 	$_SESSION['offer' . $identifier]->EmailOffer();
 	$sql = "UPDATE tendersuppliers
 			SET responded=1
 			WHERE supplierid='" . $_SESSION['offer' . $identifier]->SupplierID . "'
 			AND tenderid='" . $_SESSION['offer' . $identifier]->TenderID . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 }
 
 if (isset($_POST['Process'])) {
@@ -93,10 +93,10 @@ if (isset($_POST['Process'])) {
 					ON tenders.location=locations.loccode
 					WHERE closed=0
 					AND tenderid='" . $_SESSION['offer' . $identifier]->TenderID . "'";
-	$LocationResult = DB_query($LocationSQL, $db);
+	$LocationResult = DB_query($LocationSQL);
 	$MyLocationRow = DB_fetch_row($LocationResult);
 	$CurrencySQL = "SELECT decimalplaces from currencies WHERE currabrev='" . $_SESSION['offer' . $identifier]->CurrCode . "'";
-	$CurrencyResult = DB_query($CurrencySQL, $db);
+	$CurrencyResult = DB_query($CurrencySQL);
 	$CurrencyRow = DB_fetch_array($CurrencyResult);
 	echo '<tr>
 			<td valign="top" style="background-color:#cccce5">' . _('Deliver To') . ':</td>
@@ -184,7 +184,7 @@ if (isset($_POST['NewItem']) and !isset($_POST['Refresh'])) {
 			$UOM = $_POST['uom' . $Index];
 			if (isset($UOM) and $Quantity > 0) {
 				$sql = "SELECT description, decimalplaces FROM stockmaster WHERE stockid='" . $StockID . "'";
-				$result = DB_query($sql, $db);
+				$result = DB_query($sql);
 				$myrow = DB_fetch_array($result);
 				$_SESSION['offer' . $identifier]->add_to_offer($_SESSION['offer' . $identifier]->LinesOnOffer, $StockID, $Quantity, $myrow['description'], $Price, $UOM, $myrow['decimalplaces'], DateAdd(date($_SESSION['DefaultDateFormat']), 'm', 3));
 				unset($UOM);
@@ -226,7 +226,7 @@ if (isset($_POST['Update'])) {
 			unset($ExpiryDate);
 		}
 	}
-	$_SESSION['offer' . $identifier]->Save($db, 'Yes');
+	$_SESSION['offer' . $identifier]->Save('Yes');
 	$_SESSION['offer' . $identifier]->EmailOffer();
 	unset($_SESSION['offer' . $identifier]);
 	include('includes/footer.inc');
@@ -250,7 +250,7 @@ if (isset($_POST['Save'])) {
 			unset($ExpiryDate);
 		}
 	}
-	$_SESSION['offer' . $identifier]->Save($db);
+	$_SESSION['offer' . $identifier]->Save();
 	$_SESSION['offer' . $identifier]->EmailOffer();
 	unset($_SESSION['offer' . $identifier]);
 	include('includes/footer.inc');
@@ -274,7 +274,7 @@ if (isset($_POST['TenderType']) and $_POST['TenderType'] == 1 and !isset($_POST[
 			WHERE offers.supplierid='" . $_POST['SupplierID'] . "'
 				AND offers.expirydate>=CURRENT_DATE";
 
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$_SESSION['offer' . $identifier] = new Offer($_POST['SupplierID']);
 	$_SESSION['offer' . $identifier]->CurrCode = $Currency;
 	while ($myrow = DB_fetch_array($result)) {
@@ -354,7 +354,7 @@ if (isset($_POST['TenderType']) AND $_POST['TenderType'] == 2 AND !isset($_POST[
 				categorydescription
 			FROM stockcategory
 			ORDER BY categorydescription";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 
 	if (DB_num_rows($result) == 0) {
 		echo '<p><font size="4" color="red">' . _('Problem Report') . ':</font><br />' . _('There are no stock categories currently defined please use the link below to set them up');
@@ -426,7 +426,7 @@ if (isset($_POST['TenderType']) and $_POST['TenderType'] == 3 and !isset($_POST[
 			AND tenders.closed=0
 			AND tendersuppliers.responded=0
 			ORDER BY tendersuppliers.tenderid";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	echo '<table class="selection">';
 	echo '<tr>
 			<th colspan="13"><font size="3" color="#616161">' . _('Outstanding Tenders Waiting For Offer') . '</font></th>
@@ -449,7 +449,7 @@ if (isset($_POST['TenderType']) and $_POST['TenderType'] == 3 and !isset($_POST[
 						ON tenders.location=locations.loccode
 						WHERE closed=0
 						AND tenderid='" . $myrow[0] . "'";
-		$LocationResult = DB_query($LocationSQL, $db);
+		$LocationResult = DB_query($LocationSQL);
 		$MyLocationRow = DB_fetch_row($LocationResult);
 		echo '<tr>
 				<td valign="top" style="background-color:#cccce5">' . _('Deliver To') . ':</td>
@@ -482,7 +482,7 @@ if (isset($_POST['TenderType']) and $_POST['TenderType'] == 3 and !isset($_POST[
 					LEFT JOIN tenders
 					ON tenders.tenderid=tenderitems.tenderid
 					WHERE tenderitems.tenderid='" . $myrow[0] . "'";
-		$ItemResult = DB_query($ItemSQL, $db);
+		$ItemResult = DB_query($ItemSQL);
 		echo '<tr>
 				<th>' . stripslashes($_SESSION['CompanyRecord']['coyname']) . '<br />' . _('Item Code') . '</th>
 				<th>' . _('Item Description') . '</th>
@@ -626,7 +626,7 @@ if (isset($_POST['Search'])) {
 
 	$ErrMsg = _('There is a problem selecting the part records to display because');
 	$DbgMsg = _('The SQL statement that failed was');
-	$SearchResult = DB_query($sql, $db, $ErrMsg, $DbgMsg);
+	$SearchResult = DB_query($sql, $ErrMsg, $DbgMsg);
 
 	if (DB_num_rows($SearchResult) == 0 and $debug == 1) {
 		prnMsg(_('There are no products to display matching the criteria provided'), 'warn');
@@ -681,7 +681,7 @@ if (isset($_POST['Search'])) {
 					WHERE supplierno='" . $_POST['SupplierID'] . "'
 					AND stockid='" . $myrow['stockid'] . "'";
 
-			$UOMresult = DB_query($UOMsql, $db);
+			$UOMresult = DB_query($UOMsql);
 			if (DB_num_rows($UOMresult) > 0) {
 				$UOMrow = DB_fetch_array($UOMresult);
 				if (mb_strlen($UOMrow['suppliersuom']) > 0) {

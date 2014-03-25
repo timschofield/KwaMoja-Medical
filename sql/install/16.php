@@ -30,7 +30,6 @@ NewConfigValue('DefaultFactoryLocation','', $db);
 NewConfigValue('DefaultPriceList','', $db);
 NewConfigValue('DefaultSupplierType',1, $db);
 NewConfigValue('DefaultTaxCategory',1, $db);
-NewConfigValue('DefaultTheme','aguapop', $db);
 NewConfigValue('Default_Shipper',1, $db);
 NewConfigValue('DefineControlledOnWOEntry',1, $db);
 NewConfigValue('DispatchCutOffTime',14, $db);

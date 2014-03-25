@@ -95,9 +95,6 @@ if (isset($_POST['submit'])) {
 		if ($_SESSION['DefaultDateFormat'] != $_POST['X_DefaultDateFormat']) {
 			$sql[] = "UPDATE config SET confvalue = '" . $_POST['X_DefaultDateFormat'] . "' WHERE confname = 'DefaultDateFormat'";
 		}
-		if ($_SESSION['DefaultTheme'] != $_POST['X_DefaultTheme']) {
-			$sql[] = "UPDATE config SET confvalue = '" . $_POST['X_DefaultTheme'] . "' WHERE confname = 'DefaultTheme'";
-		}
 		if ($_SESSION['PastDueDays1'] != $_POST['X_PastDueDays1']) {
 			$sql[] = "UPDATE config SET confvalue = '" . $_POST['X_PastDueDays1'] . "' WHERE confname = 'PastDueDays1'";
 		}
@@ -369,22 +366,6 @@ echo '<tr style="outline: 1px solid">
 		</td>
 		<td>' . _('The default date format for entry of dates and display.') . '</td>
 	</tr>';
-
-// DefaultTheme
-echo '<tr style="outline: 1px solid"><td>' . _('New Users Default Theme') . ':</td>
-	 <td><select required="required" minlength="1" name="X_DefaultTheme">';
-$ThemeDirectory = dir('css/');
-while (false != ($ThemeName = $ThemeDirectory->read())) {
-	if (is_dir("css/$ThemeName") and $ThemeName != '.' and $ThemeName != '..' and $ThemeName != '.svn') {
-		if ($_SESSION['DefaultTheme'] == $ThemeName) {
-			echo '<option selected="selected" value="' . $ThemeName . '">' . $ThemeName . '</option>';
-		} else {
-			echo '<option value="' . $ThemeName . '">' . $ThemeName . '</option>';
-		}
-	}
-}
-echo '</select></td>
-	<td>' . _('The default theme is used for new users who have not yet defined the display colour scheme theme of their choice') . '</td></tr>';
 
 echo '<tr>
 		<th colspan="3">' . _('Accounts Receivable/Payable Settings') . '</th>

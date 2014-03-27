@@ -173,7 +173,7 @@ if (isset($_POST['PrintPDF'])) {
 		$Title = _('Print Reorder Level Report');
 		include('includes/header.inc');
 		prnMsg(_('There were no items with demand greater than supply'), 'error');
-		echo '<br /><a href="' . $RootPath . '/index.php?">' . _('Back to the menu') . '</a>';
+		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		include('includes/footer.inc');
 		exit;
 	} else {

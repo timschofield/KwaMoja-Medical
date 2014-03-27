@@ -56,7 +56,7 @@ echo '<table  style="max-width:100%;width:99%;" border="0" cellspacing="0" cellp
       <tr>
         <th colspan="6" style="margin:0px;padding:0px;background: transparent;">
 			<div class="CanvasTitle">' . _('Latest customer orders') . '
-				<a href="' . $RootPath . 'Dashboard.php?Remove=' . $myrow['id'] . '" target="_parent" id="CloseButton">X</a>
+				<a href="' . $RootPath . 'Dashboard.php?Remove=' . urlencode($myrow['id']) . '" target="_parent" id="CloseButton">X</a>
 			</div>
         </th>
       </tr>';

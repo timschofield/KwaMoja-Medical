@@ -22,7 +22,7 @@ if (!isset($_SESSION['PO' . $identifier])) {
 include('includes/header.inc');
 
 if (!isset($_POST['Commit'])) {
-	echo '<div class="toplink"><a href="' . $RootPath . '/PO_Header.php?identifier=' . $identifier . '">' . _('Back To Purchase Order Header') . '</a></div>';
+	echo '<div class="toplink"><a href="' . $RootPath . '/PO_Header.php?identifier=' . urlencode($identifier) . '">' . _('Back To Purchase Order Header') . '</a></div>';
 } //!isset($_POST['Commit'])
 
 if (isset($_POST['UpdateLines']) or isset($_POST['Commit'])) {
@@ -394,7 +394,7 @@ if (isset($_POST['Commit'])) {
 		/* Only show the link to auto receive the order if the user has permission to receive goods and permission to authorise and has authorised the order */
 		if ($_SESSION['PO' . $identifier]->Status == 'Authorised' and in_array($_SESSION['PageSecurityArray']['GoodsReceived.php'], $_SESSION['AllowedPageSecurityTokens'])) {
 
-			echo '<a href="SupplierInvoice.php?SupplierID=' . $_SESSION['PO' . $identifier]->SupplierID . '&amp;ReceivePO=' . $_SESSION['PO' . $identifier]->OrderNo . '&amp;DeliveryDate=' . $_SESSION['PO' . $identifier]->DeliveryDate . '">' . _('Receive and Enter Purchase Invoice') . '</a>';
+			echo '<a href="SupplierInvoice.php?SupplierID=' . urlencode($_SESSION['PO' . $identifier]->SupplierID) . '&amp;ReceivePO=' . urlencode($_SESSION['PO' . $identifier]->OrderNo) . '&amp;DeliveryDate=' . urlencode($_SESSION['PO' . $identifier]->DeliveryDate) . '">' . _('Receive and Enter Purchase Invoice') . '</a>';
 		} //$_SESSION['PO' . $identifier]->Status == 'Authorised' and in_array(1001, $_SESSION['AllowedPageSecurityTokens'])
 
 		unset($_SESSION['PO' . $identifier]);

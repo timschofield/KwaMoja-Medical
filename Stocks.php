@@ -664,8 +664,9 @@ if (isset($_POST['submit'])) {
 					DB_Txn_Commit();
 
 					if (DB_error_no() == 0) {
-						prnMsg(_('New Item') . ' ' . '<a href="SelectProduct.php?StockID=' . $StockID . '">' . $StockID . '</a> ' . _('has been added to the database') . '<br />' . _('NB: The item cost and pricing must also be setup') . '<br />' . '<a target="_blank" href="StockCostUpdate.php?StockID=' . $StockID . '">' . _('Enter Item Cost') . '</a>
-							<br />' . '<a target="_blank" href="Prices.php?Item=' . $StockID . '">' . _('Enter Item Prices') . '</a> ', 'success');
+						prnMsg(_('New Item') . ' ' . '
+								<a href="SelectProduct.php?StockID=' . urlencode($StockID) . '">' . $StockID . '</a> ' . _('has been added to the database') . '<br />' . _('NB: The item cost and pricing must also be setup') . '<br />' . '<a target="_blank" href="StockCostUpdate.php?StockID=' . $StockID . '">' . _('Enter Item Cost') . '</a>
+							<br />' . '<a target="_blank" href="Prices.php?Item=' . urlencode($StockID) . '">' . _('Enter Item Prices') . '</a> ', 'success');
 						echo '<br />';
 						unset($_POST['Description']);
 						unset($_POST['LongDescription']);

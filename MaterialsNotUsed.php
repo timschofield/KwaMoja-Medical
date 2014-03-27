@@ -48,7 +48,7 @@ if (DB_num_rows($result) != 0) {
 			echo '<tr class="OddTableRows">';
 			$k = 1;
 		}
-		$CodeLink = '<a href="' . $RootPath . '/SelectProduct.php?StockID=' . $myrow['stockid'] . '">' . $myrow['stockid'] . '</a>';
+		$CodeLink = '<a href="' . $RootPath . '/SelectProduct.php?StockID=' . urlencode($myrow['stockid']) . '">' . $myrow['stockid'] . '</a>';
 		$LineValue = $myrow['qoh'] * $myrow['stdcost'];
 		$TotalValue = $TotalValue + $LineValue;
 

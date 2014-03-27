@@ -291,8 +291,8 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 		/* end of the loop round the detail line items on the order */
 		echo '<p />';
 		prnMsg(_('Purchase Order') . ' ' . $OrderNo . ' ' . _('has been created.') . ' ' . _('Total order value of') . ': ' . locale_number_format($OrderValue, $SupplierRow['decimalplaces']) . ' ' . $SupplierRow['currcode'], 'success');
-		echo '<br /><a href="' . $RootPath . '/PO_PDFPurchOrder.php?OrderNo=' . $OrderNo . '">' . _('Print Order') . '</a>
-				<br /><a href="' . $RootPath . '/PO_Header.php?ModifyOrderNumber=' . $OrderNo . '">' . _('Edit Order') . '</a>';
+		echo '<a href="' . $RootPath . '/PO_PDFPurchOrder.php?OrderNo=' . urlencode($OrderNo) . '">' . _('Print Order') . '</a>
+				<a href="' . $RootPath . '/PO_Header.php?ModifyOrderNumber=' . urlencode($OrderNo) . '">' . _('Edit Order') . '</a>';
 		include('includes/footer.inc');
 		exit;
 	} else {

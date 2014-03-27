@@ -195,7 +195,6 @@ if (isset($_POST['Amend']) or isset($_POST['Create'])) {
 	// its a new factor being added
 
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<input type="hidden" name="FactorID" value="' . $FactorID . '" />
 		<input type="hidden" name="New" value="Yes" />
@@ -252,18 +251,13 @@ if (isset($_POST['Create'])) {
 		<div class="centre">
 			<input tabindex="12" type="submit" name="Submit" value="' . _('Insert New Factor') . '" />
 		</div>
-		</div>
 		</form>';
 } else if (isset($_POST['Amend'])) {
 	echo '<br />
 		<div class="centre">
-			<input tabindex="13" type="submit" name="Update" value="' . _('Update Factor') . '" />
-			<br />
-			<br />';
+			<input tabindex="13" type="submit" name="Update" value="' . _('Update Factor') . '" />';
 	prnMsg(_('There is no second warning if you hit the delete button below') . '. ' . _('However checks will be made to ensure there are no suppliers are using this factor before the deletion is processed'), 'warn');
-	echo '<br />
-				<input tabindex="14" type="submit" name="Delete" value="' . _('Delete Factor') . '" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this factoring company?') . '\');" />
-		</div>
+	echo '<input tabindex="14" type="submit" name="Delete" value="' . _('Delete Factor') . '" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this factoring company?') . '\');" />
 		</div>
 		</form>';
 }
@@ -274,7 +268,6 @@ option to create a new one*/
 if (empty($FactorID) and !isset($_POST['Create']) and !isset($_POST['Amend'])) {
 
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	echo '<input type="hidden" name="New" value="No" />';
@@ -328,15 +321,12 @@ if (empty($FactorID) and !isset($_POST['Create']) and !isset($_POST['Amend'])) {
 			<td>' . $myrow['telephone'] . '</td>
 			<td>' . $myrow['fax'] . '</td>
 			<td>' . $myrow['email'] . '</td>
-			<td><a href="' . $RootPath . '/Factors.php?FactorID=' . $myrow['id'] . '">' . _('Edit') . '</a></td>
+			<td><a href="' . $RootPath . '/Factors.php?FactorID=' . urlencode($myrow['id']) . '">' . _('Edit') . '</a></td>
 			</tr>';
 	} //end while loop
 	echo '</table>
-		<br />
 		<div class="centre">
-			<br />
 			<input tabindex="3" type="submit" name="Create" value="' . _('Create New Factor') . '" />
-		</div>
 		</div>
 		</form>';
 }

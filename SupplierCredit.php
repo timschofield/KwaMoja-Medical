@@ -265,14 +265,12 @@ echo '<table class="selection">
 	</table>';
 
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint" id="form1">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
-echo '<br />
-		<table class="selection">';
-echo '<tr>
-		<td style="color:red">' . _('Supplier Credit Note Reference') . ':</td>
-		<td><input type="text" size="20" required="required" minlength="1" maxlength="20" name="SuppReference" value="' . $_SESSION['SuppTrans']->SuppReference . '" /></td>';
+echo '<table class="selection">
+		<tr>
+			<td style="color:red">' . _('Supplier Credit Note Reference') . ':</td>
+			<td><input type="text" size="20" required="required" minlength="1" maxlength="20" name="SuppReference" value="' . $_SESSION['SuppTrans']->SuppReference . '" /></td>';
 
 if (!isset($_SESSION['SuppTrans']->TranDate)) {
 	$_SESSION['SuppTrans']->TranDate = Date($_SESSION['DefaultDateFormat'], Mktime(0, 0, 0, Date('m'), Date('d') - 1, Date('y')));
@@ -284,8 +282,7 @@ echo '<td style="color:red">' . _('Credit Note Date') . ' (' . _('in format') . 
 	</tr>
 	</table>';
 
-echo '<br />
-	<div class="centre">
+echo '<div class="centre">
 		<input type="submit" name="GRNS" value="' . _('Purchase Orders') . '"/>
 		<input type="submit" name="Shipts" value="' . _('Shipments') . '" />
 		<input type="submit" name="Contracts" value="' . _('Contracts') . '" /> ';
@@ -293,8 +290,7 @@ if ($_SESSION['SuppTrans']->GLLink_Creditors == 1) {
 	echo '<input type="submit" name="GL" value="' . _('General Ledger') . '" /> ';
 }
 echo '<input type="submit" name="FixedAssets" value="' . _('Fixed Assets') . '" />
-	</div>
-	<br />';
+	</div>';
 
 if (count($_SESSION['SuppTrans']->GRNs) > 0) {
 	/*if there are some GRNs selected for crediting then */
@@ -1324,7 +1320,9 @@ if (isset($_POST['PostCreditNote'])) {
 		DB_Txn_Commit();
 
 		prnMsg(_('Supplier credit note number') . ' ' . $CreditNoteNo . ' ' . _('has been processed'), 'success');
-		echo '<div class="centre"><a href="' . $RootPath . '/SupplierCredit.php?&SupplierID=' . $_SESSION['SuppTrans']->SupplierID . '">' . _('Enter another Credit Note for this Supplier') . '</a></div>';
+		echo '<div class="centre">
+				<a href="' . $RootPath . '/SupplierCredit.php?&SupplierID=' . urlencode($_SESSION['SuppTrans']->SupplierID) . '">' . _('Enter another Credit Note for this Supplier') . '</a>
+			</div>';
 		unset($_SESSION['SuppTrans']->GRNs);
 		unset($_SESSION['SuppTrans']->Shipts);
 		unset($_SESSION['SuppTrans']->GLCodes);
@@ -1336,7 +1334,6 @@ if (isset($_POST['PostCreditNote'])) {
 }
 /*end of process credit note */
 
-echo '</div>
-	  </form>';
+echo '</form>';
 include('includes/footer.inc');
 ?>

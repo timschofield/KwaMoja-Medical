@@ -53,7 +53,7 @@ if ($myrow[2] == 'K') {
 }
 
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-echo '<div class="centre"><input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
+echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 echo _('Stock Code') . ':<input type="text" name="StockID" size="21" value="' . $StockID . '" required="required" minlength="1" maxlength="20" />';
 
 echo ' <input type="submit" name="ShowStatus" value="' . _('Show Stock Status') . '" />';
@@ -91,8 +91,7 @@ $ErrMsg = _('The stock held at each location cannot be retrieved because');
 $DbgMsg = _('The SQL that was used to fetch the location details and failed was');
 $LocStockResult = DB_query($sql, $ErrMsg, $DbgMsg);
 
-echo '<br />
-		<table class="selection">
+echo '<table class="selection">
 			<tbody>';
 
 if ($Its_A_KitSet_Assembly_Or_Dummy == True) {
@@ -367,8 +366,7 @@ if ($DebtorNo) {
 		);
 	}
 	if (isset($PriceHistory)) {
-		echo '<br />
-			<table class="selection">
+		echo '<table class="selection">
 				<tr>
 					<th colspan="4"><font color="navy" size="2">' . _('Pricing history for sales of') . ' ' . $StockID . ' ' . _('to') . ' ' . $DebtorNo . '</font></th>
 				</tr>
@@ -407,15 +405,15 @@ if ($DebtorNo) {
 	}
 } //end of displaying price history for a debtor
 
-echo '<br /><a href="' . $RootPath . '/StockMovements.php?StockID=' . $StockID . '">' . _('Show Movements') . '</a>
-		<br /><a href="' . $RootPath . '/StockUsage.php?StockID=' . $StockID . '">' . _('Show Usage') . '</a>
-		<br /><a href="' . $RootPath . '/SelectSalesOrder.php?SelectedStockItem=' . $StockID . '">' . _('Search Outstanding Sales Orders') . '</a>
-		<br /><a href="' . $RootPath . '/SelectCompletedOrder.php?SelectedStockItem=' . $StockID . '">' . _('Search Completed Sales Orders') . '</a>';
+echo '<a href="' . $RootPath . '/StockMovements.php?StockID=' . urlencode($StockID) . '">' . _('Show Movements') . '</a>
+		<a href="' . $RootPath . '/StockUsage.php?StockID=' . urlencode($StockID) . '">' . _('Show Usage') . '</a>
+		<a href="' . $RootPath . '/SelectSalesOrder.php?SelectedStockItem=' . urlencode($StockID) . '">' . _('Search Outstanding Sales Orders') . '</a>
+		<a href="' . $RootPath . '/SelectCompletedOrder.php?SelectedStockItem=' . urlencode($StockID) . '">' . _('Search Completed Sales Orders') . '</a>';
 if ($Its_A_KitSet_Assembly_Or_Dummy == False) {
-	echo '<br /><a href="' . $RootPath . '/PO_SelectOSPurchOrder.php?SelectedStockItem=' . $StockID . '">' . _('Search Outstanding Purchase Orders') . '</a>';
+	echo '<a href="' . $RootPath . '/PO_SelectOSPurchOrder.php?SelectedStockItem=' . urlencode($StockID) . '">' . _('Search Outstanding Purchase Orders') . '</a>';
 }
 
-echo '</div></form>';
+echo '</form>';
 include('includes/footer.inc');
 
 ?>

@@ -69,7 +69,7 @@ if (DB_num_rows($GetOrdHdrResult) == 1) {
 			</tr>
 			<tr>
 				<th style="text-align: left">' . _('Customer Code') . ':</th>
-				<td class="OddTableRows"><a href="' . $RootPath . '/SelectCustomer.php?Select=' . $myrow['debtorno'] . '">' . $myrow['debtorno'] . '</a></td>
+				<td class="OddTableRows"><a href="' . $RootPath . '/SelectCustomer.php?Select=' . urlencode($myrow['debtorno']) . '">' . $myrow['debtorno'] . '</a></td>
 				<th style="text-align: left">' . _('Customer Name') . ':</th>
 				<th>' . $myrow['name'] . '</th>
 			</tr>

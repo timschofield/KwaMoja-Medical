@@ -1839,9 +1839,8 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 		prnMsg(_('Supplier invoice number') . ' ' . $InvoiceNo . ' ' . _('has been processed'), 'success');
 		echo '<br />
 				<div class="centre">
-					<a href="' . $RootPath . '/SupplierInvoice.php?&SupplierID=' . $_SESSION['SuppTrans']->SupplierID . '">' . _('Enter another Invoice for this Supplier') . '</a>
-					<br />
-					<a href="' . $RootPath . '/Payments.php?&SupplierID=' . $_SESSION['SuppTrans']->SupplierID . '&amp;Amount=' . ($_SESSION['SuppTrans']->OvAmount + $TaxTotal) . '">' . _('Enter payment') . '</a>
+					<a href="' . $RootPath . '/SupplierInvoice.php?&SupplierID=' . urlencode($_SESSION['SuppTrans']->SupplierID) . '">' . _('Enter another Invoice for this Supplier') . '</a>
+					<a href="' . $RootPath . '/Payments.php?&SupplierID=' . urlencode($_SESSION['SuppTrans']->SupplierID) . '&amp;Amount=' . urlencode($_SESSION['SuppTrans']->OvAmount + $TaxTotal) . '">' . _('Enter payment') . '</a>
 				</div>';
 		unset($_SESSION['SuppTrans']->GRNs);
 		unset($_SESSION['SuppTrans']->Shipts);

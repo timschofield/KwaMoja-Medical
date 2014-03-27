@@ -241,7 +241,7 @@ if (isset($_POST['EnterLines']) or isset($_POST['AllowRePrint'])) {
 	if (!isset($_POST['AllowRePrint'])) { // user only hit update not "Enter Lines"
 		echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/PO_Items.php?identifier=' . $identifier . '">';
 		echo '<p>';
-		prnMsg(_('You should automatically be forwarded to the entry of the purchase order line items page') . '. ' . _('If this does not happen') . ' (' . _('if the browser does not support META Refresh') . ') ' . '<a href="' . $RootPath . '/PO_Items.php?identifier=' . $identifier . '">' . _('click here') . '</a> ' . _('to continue'), 'info');
+		prnMsg(_('You should automatically be forwarded to the entry of the purchase order line items page') . '. ' . _('If this does not happen') . ' (' . _('if the browser does not support META Refresh') . ') ' . '<a href="' . $RootPath . '/PO_Items.php?identifier=' . urlencode($identifier) . '">' . _('click here') . '</a> ' . _('to continue'), 'info');
 		include('includes/footer.inc');
 		exit;
 	} // end if reprint not allowed
@@ -249,7 +249,7 @@ if (isset($_POST['EnterLines']) or isset($_POST['AllowRePrint'])) {
 
 /* end of if isset _POST'EnterLines' */
 
-echo '<div class="toplink"><a href="' . $RootPath . '/PO_SelectOSPurchOrder.php?identifier=' . $identifier . '">' . _('Back to Purchase Orders') . '</a></div>';
+echo '<div class="toplink"><a href="' . $RootPath . '/PO_SelectOSPurchOrder.php?identifier=' . urlencode($identifier) . '">' . _('Back to Purchase Orders') . '</a></div>';
 
 /*The page can be called with ModifyOrderNumber=x where x is a purchase
  * order number. The page then looks up the details of order x and allows
@@ -628,7 +628,7 @@ else {
 					<td class="menu_group_item">';
 
 		/* the link */
-		echo '<a href="' . $RootPath . '/PO_Items.php?NewItem=' . $Purch_Item . '&identifier=' . $identifier . '">' . _('Enter Line Item to this purchase order') . '</a>';
+		echo '<a href="' . $RootPath . '/PO_Items.php?NewItem=' . urlencode($Purch_Item) . '&identifier=' . urlencode($identifier) . '">' . _('Enter Line Item to this purchase order') . '</a>';
 
 		echo '</td>
 			</tr>
@@ -809,7 +809,7 @@ else {
 
 	if ($_SESSION['ExistingOrder'] != 0 and $_SESSION['PO' . $identifier]->Status == 'Printed') {
 		echo '<tr>
-				<td><a href="' . $RootPath . '/GoodsReceived.php?PONumber=' . $_SESSION['PO' . $identifier]->OrderNo . '&amp;identifier=' . $identifier . '">' . _('Receive this order') . '</a></td>
+				<td><a href="' . $RootPath . '/GoodsReceived.php?PONumber=' . urlencode($_SESSION['PO' . $identifier]->OrderNo) . '&amp;identifier=' . urlencode($identifier) . '">' . _('Receive this order') . '</a></td>
 			</tr>';
 	} //$_SESSION['ExistingOrder'] != 0 and $_SESSION['PO' . $identifier]->Status == 'Printed'
 

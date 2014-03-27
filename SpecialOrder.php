@@ -464,7 +464,7 @@ if (isset($_POST['Commit'])) {
 		/* end of the loop round the detail line items on the order */
 
 		echo '<br /><br />' . _('Purchase Order') . ' ' . $_SESSION['SPL' . $identifier]->PurchOrderNo . ' ' . _('on') . ' ' . $_SESSION['SPL' . $identifier]->SupplierName . ' ' . _('has been created');
-		echo '<br /><a href="' . $RootPath . '/PO_PDFPurchOrder.php?OrderNo=' . $_SESSION['SPL' . $identifier]->PurchOrderNo . '">' . _('Print Purchase Order') . '</a>';
+		echo '<br /><a href="' . $RootPath . '/PO_PDFPurchOrder.php?OrderNo=' . urlencode($_SESSION['SPL' . $identifier]->PurchOrderNo) . '">' . _('Print Purchase Order') . '</a>';
 
 		/*Now insert the sales order too */
 
@@ -558,8 +558,8 @@ if (isset($_POST['Commit'])) {
 		if (count($_SESSION['AllowedPageSecurityTokens']) > 1) {
 
 			/* Only allow print of packing slip for internal staff - customer logon's cannot go here */
-			echo '<p><a href="' . $RootPath . '/PrintCustOrder.php?TransNo=' . $SalesOrderNo . '">' . _('Print packing slip') . ' (' . _('Preprinted stationery') . ')</a></p>';
-			echo '<p><a href="' . $RootPath . '/PrintCustOrder_generic.php?TransNo=' . $SalesOrderNo . '">' . _('Print packing slip') . ' (' . _('Laser') . ')</a></p>';
+			echo '<a href="' . $RootPath . '/PrintCustOrder.php?TransNo=' . urlencode($SalesOrderNo) . '">' . _('Print packing slip') . ' (' . _('Preprinted stationery') . ')</a>';
+			echo '<a href="' . $RootPath . '/PrintCustOrder_generic.php?TransNo=' . urlencode($SalesOrderNo) . '">' . _('Print packing slip') . ' (' . _('Laser') . ')</a>';
 
 		}
 

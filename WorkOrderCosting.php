@@ -20,7 +20,6 @@ echo '<div class="toplink"><a href="' . $RootPath . '/SelectWorkOrder.php">' . _
 	</p>';
 
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 if (!isset($SelectedWO)) {
@@ -79,9 +78,7 @@ echo '<table class="selection">
 		<td class="label">' . _('Required By') . ':</td>
 		<td>' . ConvertSQLDate($WorkOrderRow['requiredby']) . '</td>
 	</tr>
-	</table>
-	<br />';
-
+	</table>';
 
 $WOItemsResult = DB_query("SELECT woitems.stockid,
 									stockmaster.description,
@@ -122,16 +119,15 @@ while ($WORow = DB_fetch_array($WOItemsResult)) {
 	 			<td class="number">' . locale_number_format($WORow['qtyreqd'], $WORow['decimalplaces']) . '</td>
 	 			<td>' . $WORow['units'] . '</td>
 	 			<td class="number">' . locale_number_format($WORow['qtyrecd'], $WORow['decimalplaces']) . '</td>
-	 			<td class="number"><a href="' . $RootPath . '/WorkOrderStatus.php?WO=' . $_POST['WO'] . '&amp;StockID=' . $WORow['stockid'] . '">' . _('Status') . '</a></td>
-	 			<td class="number"><a href="' . $RootPath . '/WorkOrderReceive.php?WO=' . $_POST['WO'] . '&amp;StockID=' . $WORow['stockid'] . '">' . _('Receive') . '</a></td>
-	 			<td class="number"><a href="' . $RootPath . '/WorkOrderIssue.php?WO=' . $_POST['WO'] . '&amp;StockID=' . $WORow['stockid'] . '">' . _('Issue') . '</a></td>
+	 			<td class="number"><a href="' . $RootPath . '/WorkOrderStatus.php?WO=' . urlencode($_POST['WO']) . '&amp;StockID=' . urlencode($WORow['stockid']) . '">' . _('Status') . '</a></td>
+	 			<td class="number"><a href="' . $RootPath . '/WorkOrderReceive.php?WO=' . urlencode($_POST['WO']) . '&amp;StockID=' . urlencode($WORow['stockid']) . '">' . _('Receive') . '</a></td>
+	 			<td class="number"><a href="' . $RootPath . '/WorkOrderIssue.php?WO=' . urlencode($_POST['WO']) . '&amp;StockID=' . urlencode($WORow['stockid']) . '">' . _('Issue') . '</a></td>
  			</tr>';
 
 	$TotalStdValueRecd += ($WORow['stdcost'] * $WORow['qtyrecd']);
 
 }
 echo '</table>
-	<br />
 	<table class="selection">';
 
 echo '<tr>
@@ -557,7 +553,6 @@ if ($WorkOrderRow['closed'] == 0) {
 		</tr>';
 }
 echo '</table>
-	</div>
 	</form>';
 
 include('includes/footer.inc');

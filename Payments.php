@@ -292,10 +292,7 @@ if (isset($_POST['CommitBatch'])) {
 	if ((!isset($_POST['ChequePrinted'])) and (!isset($_POST['PaymentCancelled'])) and ($myrow['usepreprintedstationery'] == 1)) {
 		// it is a supplier payment by cheque and haven't printed yet so print cheque
 
-		echo '<br />
-			<a href="' . $RootPath . '/PrintCheque.php?ChequeNum=' . $_POST['ChequeNum'] . '&amp;identifier=' . $identifier . '">' . _('Print Cheque using pre-printed stationery') . '</a>
-			<br />
-			<br />';
+		echo '<a href="' . $RootPath . '/PrintCheque.php?ChequeNum=' . urlencode($_POST['ChequeNum']) . '&amp;identifier=' . urlencode($identifier) . '">' . _('Print Cheque using pre-printed stationery') . '</a>';
 
 		echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?identifier=' . $identifier) . '">';
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -686,12 +683,11 @@ if (isset($_POST['CommitBatch'])) {
 			$IdResult = DB_query($IdSQL);
 			$IdRow = DB_fetch_array($IdResult);
 			if (sizeof($PaidArray) == 0) {
-				echo '<br /><a href="' . $RootPath . '/SupplierAllocations.php?AllocTrans=' . $IdRow['id'] . '">' . _('Allocate this payment') . '</a>';
+				echo '<a href="' . $RootPath . '/SupplierAllocations.php?AllocTrans=' . urlencode($IdRow['id']) . '">' . _('Allocate this payment') . '</a>';
 			}
-			echo '<br /><a href="' . $RootPath . '/Payments.php?SupplierID=' . $LastSupplier . '">' . _('Enter another Payment for') . ' ' . $SupplierRow['suppname'] . '</a>';
-		} //isset($LastSupplier) and $LastSupplier != ''
-		else {
-			echo '<br /><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Enter another General Ledger Payment') . '</a><br />';
+			echo '<a href="' . $RootPath . '/Payments.php?SupplierID=' . urlencode($LastSupplier) . '">' . _('Enter another Payment for') . ' ' . $SupplierRow['suppname'] . '</a>';
+		} else {
+			echo '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Enter another General Ledger Payment') . '</a><br />';
 		}
 	}
 

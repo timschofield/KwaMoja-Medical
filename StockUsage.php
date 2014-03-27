@@ -14,7 +14,7 @@ if (isset($_GET['StockID'])) {
 
 if (isset($_POST['ShowGraphUsage'])) {
 	echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/StockUsageGraph.php?StockLocation=' . $_POST['StockLocation'] . '&amp;StockID=' . $StockID . '">';
-	prnMsg(_('You should automatically be forwarded to the usage graph') . '. ' . _('If this does not happen') . ' (' . _('if the browser does not support META Refresh') . ') ' . '<a href="' . $RootPath . '/StockUsageGraph.php?StockLocation=' . $_POST['StockLocation'] . '&amp;StockID=' . $StockID . '">' . _('click here') . '</a> ' . _('to continue'), 'info');
+	prnMsg(_('You should automatically be forwarded to the usage graph') . '. ' . _('If this does not happen') . ' (' . _('if the browser does not support META Refresh') . ') ' . '<a href="' . $RootPath . '/StockUsageGraph.php?StockLocation=' . urlencode($_POST['StockLocation']) . '&amp;StockID=' . urlencode($StockID) . '">' . _('click here') . '</a> ' . _('to continue'), 'info');
 	exit;
 }
 
@@ -93,8 +93,7 @@ echo '</select>';
 echo ' <input type="submit" name="ShowUsage" value="' . _('Show Stock Usage') . '" />';
 echo ' <input type="submit" name="ShowGraphUsage" value="' . _('Show Graph Of Stock Usage') . '" /></td>
 		</tr>
-		</table>
-		<br />';
+		</table>';
 
 
 /*HideMovt ==1 if the movement was only created for the purpose of a transaction but is not a physical movement eg. A price credit will create a movement record for the purposes of display on a credit note
@@ -185,20 +184,15 @@ if (isset($_POST['ShowUsage'])) {
 }
 /* end if Show Usage is clicked */
 
-echo '<div class="centre">';
-echo '<br />
-	<a href="' . $RootPath . '/StockStatus.php?StockID=' . $StockID . '">' . _('Show Stock Status') . '</a>';
-echo '<br />
-	<a href="' . $RootPath . '/StockMovements.php?StockID=' . $StockID . '&amp;StockLocation=' . $_POST['StockLocation'] . '">' . _('Show Stock Movements') . '</a>';
-echo '<br />
-	<a href="' . $RootPath . '/SelectSalesOrder.php?SelectedStockItem=' . $StockID . '&amp;StockLocation=' . $_POST['StockLocation'] . '">' . _('Search Outstanding Sales Orders') . '</a>';
-echo '<br />
-	<a href="' . $RootPath . '/SelectCompletedOrder.php?SelectedStockItem=' . $StockID . '">' . _('Search Completed Sales Orders') . '</a>';
-echo '<br />
-	<a href="' . $RootPath . '/PO_SelectOSPurchOrder.php?SelectedStockItem=' . $StockID . '">' . _('Search Outstanding Purchase Orders') . '</a>';
+echo '<div class="centre">
+		<a href="' . $RootPath . '/StockStatus.php?StockID=' . urlencode($StockID) . '">' . _('Show Stock Status') . '</a>
+		<a href="' . $RootPath . '/StockMovements.php?StockID=' . urlencode($StockID) . '&amp;StockLocation=' . urlencode($_POST['StockLocation']) . '">' . _('Show Stock Movements') . '</a>
+		<a href="' . $RootPath . '/SelectSalesOrder.php?SelectedStockItem=' . urlencode($StockID) . '&amp;StockLocation=' . $_POST['StockLocation'] . '">' . _('Search Outstanding Sales Orders') . '</a>
+		<a href="' . $RootPath . '/SelectCompletedOrder.php?SelectedStockItem=' . urlencode($StockID) . '">' . _('Search Completed Sales Orders') . '</a>
+		<a href="' . $RootPath . '/PO_SelectOSPurchOrder.php?SelectedStockItem=' . urlencode($StockID) . '">' . _('Search Outstanding Purchase Orders') . '</a>
+	</div>';
 
-echo '</div>
-	  </form>';
+echo '</form>';
 include('includes/footer.inc');
 
 ?>

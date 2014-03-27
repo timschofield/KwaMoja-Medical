@@ -158,7 +158,7 @@ echo '</table>
 		<input tabindex="6" type="submit" name="ShowTransactions" value="' . _('Show selected') . ' ' . $TypeName . '" />';
 if (isset($_POST['BankAccount'])) {
 	echo '<p>
-		<a href="' . $RootPath . '/BankReconciliation.php?Account=' . $_POST['BankAccount'] . '">' . _('Show reconciliation') . '</a>
+		<a href="' . $RootPath . '/BankReconciliation.php?Account=' . urlencode($_POST['BankAccount']) . '">' . _('Show reconciliation') . '</a>
 		</p>
 	</div>';
 }

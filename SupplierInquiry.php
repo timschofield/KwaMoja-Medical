@@ -255,8 +255,8 @@ while ($myrow = DB_fetch_array($TransResult)) {
 					<td class="number">' . locale_number_format($myrow['allocated'], $SupplierRecord['currdecimalplaces']) . '</td>
 					<td class="number">' . locale_number_format($myrow['totalamount'] - $myrow['allocated'], $SupplierRecord['currdecimalplaces']) . '</td>
 					<td align="left">' . $myrow['transtext'] . '</td>
-					<td><a target="_blank" href="' . $RootPath . '/GLTransInquiry.php?TypeID=' . $myrow['type'] . '&amp;TransNo=' . $myrow['transno'] . '">' . _('View GL Postings') . '</a></td>
-					<td><a href="' . $RootPath . '/PaymentAllocations.php?SuppID=' . $myrow['supplierno'] . '&amp;InvID=' . $myrow['suppreference'] . '">' . _('View Payments') . '</a></td>
+					<td><a target="_blank" href="' . $RootPath . '/GLTransInquiry.php?TypeID=' . urlencode($myrow['type']) . '&amp;TransNo=' . urlencode($myrow['transno']) . '">' . _('View GL Postings') . '</a></td>
+					<td><a href="' . $RootPath . '/PaymentAllocations.php?SuppID=' . urlencode($myrow['supplierno']) . '&amp;InvID=' . urlencode($myrow['suppreference']) . '">' . _('View Payments') . '</a></td>
 					</tr>';
 			} else {
 				echo '<td>' . $myrow['transno'] . '</td>
@@ -294,28 +294,29 @@ while ($myrow = DB_fetch_array($TransResult)) {
 
 				/*The trans is settled so don't show option to hold */
 
-				printf('<td>%s</td>
-						<td>%s</td>
-						<td>%s</td>
-						<td>%s</td>
-						<td class="number">%s</td>
-						<td class="number">%s</td>
-						<td class="number">%s</td>
-						<td align="left">%s</td>
-						</td></tr>', $myrow['transno'], $myrow['typename'], $myrow['suppreference'], ConvertSQLDate($myrow['trandate']), locale_number_format($myrow['totalamount'], $SupplierRecord['currdecimalplaces']), locale_number_format($myrow['allocated'], $SupplierRecord['currdecimalplaces']), locale_number_format($myrow['totalamount'] - $myrow['allocated'], $SupplierRecord['currdecimalplaces']), $myrow['transtext']);
+				echo '<td>' . $myrow['transno'] . '</td>
+						<td>' . $myrow['typename'] . '</td>
+						<td>' . $myrow['suppreference'] . '</td>
+						<td>' . ConvertSQLDate($myrow['trandate']) . '</td>
+						<td class="number">' . locale_number_format($myrow['totalamount'], $SupplierRecord['currdecimalplaces']) . '</td>
+						<td class="number">' . locale_number_format($myrow['allocated'], $SupplierRecord['currdecimalplaces']) . '</td>
+						<td class="number">' . locale_number_format($myrow['totalamount'] - $myrow['allocated'], $SupplierRecord['currdecimalplaces']) . '</td>
+						<td align="left">' . $myrow['transtext'] . '</td>
+					</tr>';
 
 			} else {
 
-				printf('<td>%s</td>
-						<td>%s</td>
-						<td>%s</td>
-						<td>%s</td>
-						<td class="number">%s</td>
-						<td class="number">%s</td>
-						<td class="number">%s</td>
-						<td align=left>%s</td>
-						<td><a href="%s?HoldType=%s&amp;HoldTrans=%s&amp;HoldStatus=%s&amp;FromDate=%s">%s</a></td>
-						<td><a href="%s/PaymentAllocations.php?SuppID=%s&amp;InvID=%s">' . _('View Payments') . '</a></tr>', $myrow['transno'], $myrow['typename'], $myrow['suppreference'], ConvertSQLDate($myrow['trandate']), locale_number_format($myrow['totalamount'], $SupplierRecord['currdecimalplaces']), locale_number_format($myrow['allocated'], $SupplierRecord['currdecimalplaces']), locale_number_format($myrow['totalamount'] - $myrow['allocated'], $SupplierRecord['currdecimalplaces']), $myrow['transtext'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $myrow['type'], $myrow['transno'], $HoldValue, $_POST['TransAfterDate'], $HoldValue, $RootPath, $myrow['supplierno'], $myrow['suppreference']);
+				echo '<td>' . $myrow['transno'] . '</td>
+						<td>' . $myrow['typename'] . '</td>
+						<td>' . $myrow['suppreference'] . '</td>
+						<td>' . ConvertSQLDate($myrow['trandate']) . '</td>
+						<td class="number">' . locale_number_format($myrow['totalamount'], $SupplierRecord['currdecimalplaces']) . '</td>
+						<td class="number">' . locale_number_format($myrow['allocated'], $SupplierRecord['currdecimalplaces']) . '</td>
+						<td class="number">' . locale_number_format($myrow['totalamount'] - $myrow['allocated'], $SupplierRecord['currdecimalplaces']) . '</td>
+						<td align=left>' . $myrow['transtext'] . '</td>
+						<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?HoldType=' . urlencode($myrow['type']) . '&amp;HoldTrans=' . urlencode($myrow['transno']) . '&amp;HoldStatus=' . $HoldValue . '&amp;FromDate=' . urlencode($_POST['TransAfterDate']) . '">' . $HoldValue . '</a></td>
+						<td><a href="' . $RootPath . '/PaymentAllocations.php?SuppID=' . urlencode($myrow['supplierno']) . '&amp;InvID=' . urlencode($myrow['suppreference']) . '">' . _('View Payments') . '</a>
+					</tr>';
 			}
 		}
 
@@ -324,31 +325,31 @@ while ($myrow = DB_fetch_array($TransResult)) {
 
 		if ($_SESSION['CompanyRecord']['gllink_creditors'] == True) {
 
-			printf('<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td class="number">%s</td>
-					<td class="number">%s</td>
-					<td class="number">%s</td>
-					<td align="left">%s</td>
-					<td><a href="%s/SupplierAllocations.php?AllocTrans=%s">' . _('View Allocations') . '</a></td>
-					<td><a target="_blank" href="%s/GLTransInquiry.php?TypeID=%s&amp;TransNo=%s">' . _('View GL Postings') . '</a></td>
-					</tr>', $myrow['transno'], $myrow['typename'], $myrow['suppreference'], ConvertSQLDate($myrow['trandate']), locale_number_format($myrow['totalamount'], $SupplierRecord['currdecimalplaces']), locale_number_format($myrow['allocated'], $SupplierRecord['currdecimalplaces']), locale_number_format($myrow['totalamount'] - $myrow['allocated'], $SupplierRecord['currdecimalplaces']), $myrow['transtext'], $RootPath, $myrow['id'], $RootPath, $myrow['type'], $myrow['transno']);
+			echo '<td>' . $myrow['transno'] . '</td>
+					<td>' . $myrow['typename'] . '</td>
+					<td>' . $myrow['suppreference'] . '</td>
+					<td>' . ConvertSQLDate($myrow['trandate']) . '</td>
+					<td class="number">' . locale_number_format($myrow['totalamount'], $SupplierRecord['currdecimalplaces']) . '</td>
+					<td class="number">' . locale_number_format($myrow['allocated'], $SupplierRecord['currdecimalplaces']) . '</td>
+					<td class="number">' . locale_number_format($myrow['totalamount'] - $myrow['allocated'], $SupplierRecord['currdecimalplaces']) . '</td>
+					<td align="left">' . $myrow['transtext'] . '</td>
+					<td><a href="' . $RootPath . '/SupplierAllocations.php?AllocTrans=' . urlencode($myrow['id']) . '">' . _('View Allocations') . '</a></td>
+					<td><a target="_blank" href="' . $RootPath . '/GLTransInquiry.php?TypeID=' . urlencode($myrow['type']) . '&amp;TransNo=' . urlencode($myrow['transno']) . '">' . _('View GL Postings') . '</a></td>
+					</tr>';
 
 		} else {
 			/*Not linked to GL */
 
-			printf('<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td class="number">%s</td>
-					<td class="number">%s</td>
-					<td class="number">%s</td>
-					<td align="left">%s</td>
-					<td><a href="%s/SupplierAllocations.php?AllocTrans=%s">' . _('View Allocations') . '</a></td>
-					</tr>', $myrow['transno'], $myrow['typename'], $myrow['suppreference'], ConvertSQLDate($myrow['trandate']), locale_number_format($myrow['totalamount'], $SupplierRecord['currdecimalplaces']), locale_number_format($myrow['allocated'], $SupplierRecord['currdecimalplaces']), locale_number_format($myrow['totalamount'] - $myrow['allocated'], $SupplierRecord['currdecimalplaces']), $myrow['transtext'], $RootPath, $myrow['id']);
+			echo '<td>' . $myrow['transno'] . '</td>
+					<td>' . $myrow['typename'] . '</td>
+					<td>' . $myrow['suppreference'] . '</td>
+					<td>' . ConvertSQLDate($myrow['trandate']) . '</td>
+					<td class="number">' . locale_number_format($myrow['totalamount'], $SupplierRecord['currdecimalplaces']) . '</td>
+					<td class="number">' . locale_number_format($myrow['allocated'], $SupplierRecord['currdecimalplaces']) . '</td>
+					<td class="number">' . locale_number_format($myrow['totalamount'] - $myrow['allocated'], $SupplierRecord['currdecimalplaces']) . '</td>
+					<td align="left">' . $myrow['transtext'] . '</td>
+					<td><a href="' . $RootPath . '/SupplierAllocations.php?AllocTrans=' . urlencode($myrow['id']) . '">' . _('View Allocations') . '</a></td>
+					</tr>';
 
 		}
 	} //end of page full new headings if

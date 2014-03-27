@@ -105,7 +105,7 @@ echo '</tbody>
 echo '</table>
 	<br />
 	<div class="centre">
-		<a href="' . $RootPath . '/SupplierCredit.php?">' . _('Back to Credit Note Entry') . '</a>
+		<a href="' . $RootPath . '/SupplierCredit.php">' . _('Back to Credit Note Entry') . '</a>
 	</div>';
 
 /* Now get all the GRNs for this supplier from the database
@@ -138,18 +138,16 @@ $GRNResults = DB_query($SQL);
 if (DB_num_rows($GRNResults) == 0) {
 	prnMsg(_('There are no goods received records for') . ' ' . $_SESSION['SuppTrans']->SupplierName . ' ' . _('since') . ' ' . $_POST['Show_Since'] . '<br /> ' . _('To enter a credit against goods received') . ', ' . _('the goods must first be received using the link below to select purchase orders to receive'), 'info');
 	echo '<br />
-	<a href="' . $RootPath . '/PO_SelectOSPurchOrder.php?SupplierID=' . $_SESSION['SuppTrans']->SupplierID . '">' . _('Select Purchase Orders to Receive') . '</a>';
+	<a href="' . $RootPath . '/PO_SelectOSPurchOrder.php?SupplierID=' . urlencode($_SESSION['SuppTrans']->SupplierID) . '">' . _('Select Purchase Orders to Receive') . '</a>';
 }
 
 
 /*Set up a table to show the GRNs outstanding for selection */
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
-echo '<br />
-	<table class="selection">
-	<tr>
+echo '<table class="selection">
+		<tr>
 		<th colspan="10"><h3>' . _('Show Goods Received Since') . ':&nbsp;</h3>';
 echo '<input type="text" name="Show_Since" required="required" minlength="1" maxlength="11" size="12" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" value="' . $_POST['Show_Since'] . '" />
 		<input type="submit" name="FindGRNs" value="' . _('Display GRNs') . '" />
@@ -246,19 +244,18 @@ if (DB_num_rows($GRNResults) > 0) {
 		$GRNEntryResult = DB_query($SQL);
 		$myrow = DB_fetch_array($GRNEntryResult);
 
-		echo '<br />
-			<table class="selection">';
-		echo '<tr>
-				<th colspan="6"><h3>' . _('GRN Selected For Adding To A Suppliers Credit Note') . '</h3></th>
-			</tr>';
-		echo '<tr>
-				<th>' . _('GRN') . '</th>
-				<th>' . _('Item') . '</th>
-				<th>' . _('Quantity') . '<br />' . _('Outstanding') . '</th>
-				<th>' . _('Quantity') . '<br />' . _('credited') . '</th>
-				<th>' . _('Supplier') . '<br />' . _('Price') . ' ' . $_SESSION['SuppTrans']->CurrCode . '</th>
-				<th>' . _('Credit') . '<br />' . _('Price') . ' ' . $_SESSION['SuppTrans']->CurrCode . '</th>
-			</tr>';
+		echo '<table class="selection">
+				<tr>
+					<th colspan="6"><h3>' . _('GRN Selected For Adding To A Suppliers Credit Note') . '</h3></th>
+				</tr>
+				<tr>
+					<th>' . _('GRN') . '</th>
+					<th>' . _('Item') . '</th>
+					<th>' . _('Quantity') . '<br />' . _('Outstanding') . '</th>
+					<th>' . _('Quantity') . '<br />' . _('credited') . '</th>
+					<th>' . _('Supplier') . '<br />' . _('Price') . ' ' . $_SESSION['SuppTrans']->CurrCode . '</th>
+					<th>' . _('Credit') . '<br />' . _('Price') . ' ' . $_SESSION['SuppTrans']->CurrCode . '</th>
+				</tr>';
 		if ($myrow['actprice'] <> 0) {
 			$Price = $myrow['actprice'];
 		} else {
@@ -290,8 +287,7 @@ if (DB_num_rows($GRNResults) > 0) {
 			echo '<input type="hidden" name="ShiptRef" value="' . $myrow['shiptref'] . '" />';
 		}
 
-		echo '<br />
-			<div class="centre">
+		echo '<div class="centre">
 				<input type="submit" name="AddGRNToTrans" value="' . _('Add to Credit Note') . '" />
 			</div>';
 
@@ -315,7 +311,6 @@ if (DB_num_rows($GRNResults) > 0) {
 else {
 	echo '</table>';
 }
-echo '</div>
-	  </form>';
+echo '</form>';
 include('includes/footer.inc');
 ?>

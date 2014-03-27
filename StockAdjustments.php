@@ -147,7 +147,7 @@ if (isset($_POST['CheckCode'])) {
 		echo '<tr>
 				<td>' . $myrow['stockid'] . '</td>
 				<td>' . $myrow['description'] . '</td>
-				<td><a href="StockAdjustments.php?StockID=' . $myrow[0] . '&amp;Description=' . $myrow[1] . '&amp;OldIdentifier=' . $identifier . '">' . _('Adjust') . '</a>
+				<td><a href="StockAdjustments.php?StockID=' . urlencode($myrow[0]) . '&amp;Description=' . urlencode($myrow[1]) . '&amp;OldIdentifier=' . urlencode($identifier) . '">' . _('Adjust') . '</a>
 			</tr>';
 	}
 	echo '</table>';
@@ -489,8 +489,8 @@ if ($Controlled == 1) {
 	}
 	echo '<input type="hidden" name="Quantity" value="' . $_SESSION['Adjustment' . $identifier]->Quantity . '" />
 				' . locale_number_format($_SESSION['Adjustment' . $identifier]->Quantity, $DecimalPlaces) . ' &nbsp; &nbsp; &nbsp; &nbsp;
-				[<a href="' . $RootPath . '/StockAdjustmentsControlled.php?AdjType=REMOVE&identifier=' . $identifier . '">' . _('Remove') . '</a>]
-				[<a href="' . $RootPath . '/StockAdjustmentsControlled.php?AdjType=ADD&identifier=' . $identifier . '">' . _('Add') . '</a>]';
+				[<a href="' . $RootPath . '/StockAdjustmentsControlled.php?AdjType=REMOVE&identifier=' . urlencode($identifier) . '">' . _('Remove') . '</a>]
+				[<a href="' . $RootPath . '/StockAdjustmentsControlled.php?AdjType=ADD&identifier=' . urlencode($identifier) . '">' . _('Add') . '</a>]';
 } else {
 	echo '<input type="text" class="number" name="Quantity" size="12" required="required" minlength="1" maxlength="12" value="' . locale_number_format($Quantity, $DecimalPlaces) . '" />';
 }
@@ -519,24 +519,17 @@ echo '</select></td></tr>';
 
 echo '</table>
 	<div class="centre">
-	<br />
-	<input type="submit" name="EnterAdjustment" value="' . _('Enter Stock Adjustment') . '" />
-	<br />';
+		<input type="submit" name="EnterAdjustment" value="' . _('Enter Stock Adjustment') . '" />';
 
 if (!isset($_POST['StockLocation'])) {
 	$_POST['StockLocation'] = '';
 }
 
-echo '<br />
-	<a href="' . $RootPath . '/StockStatus.php?StockID=' . $StockID . '">' . _('Show Stock Status') . '</a>';
-echo '<br />
-	<a href="' . $RootPath . '/StockMovements.php?StockID=' . $StockID . '">' . _('Show Movements') . '</a>';
-echo '<br />
-	<a href="' . $RootPath . '/StockUsage.php?StockID=' . $StockID . '&amp;StockLocation=' . $_POST['StockLocation'] . '">' . _('Show Stock Usage') . '</a>';
-echo '<br />
-	<a href="' . $RootPath . '/SelectSalesOrder.php?SelectedStockItem=' . $StockID . '&amp;StockLocation=' . $_POST['StockLocation'] . '">' . _('Search Outstanding Sales Orders') . '</a>';
-echo '<br />
-	<a href="' . $RootPath . '/SelectCompletedOrder.php?SelectedStockItem=' . $StockID . '">' . _('Search Completed Sales Orders') . '</a>';
+echo '<a href="' . $RootPath . '/StockStatus.php?StockID=' . urlencode($StockID) . '">' . _('Show Stock Status') . '</a>';
+echo '<a href="' . $RootPath . '/StockMovements.php?StockID=' . urlencode($StockID) . '">' . _('Show Movements') . '</a>';
+echo '<a href="' . $RootPath . '/StockUsage.php?StockID=' . urlencode($StockID) . '&amp;StockLocation=' . urlencode($_POST['StockLocation']) . '">' . _('Show Stock Usage') . '</a>';
+echo '<a href="' . $RootPath . '/SelectSalesOrder.php?SelectedStockItem=' . urlencode($StockID) . '&amp;StockLocation=' . urlencode($_POST['StockLocation']) . '">' . _('Search Outstanding Sales Orders') . '</a>';
+echo '<a href="' . $RootPath . '/SelectCompletedOrder.php?SelectedStockItem=' . urlencode($StockID) . '">' . _('Search Completed Sales Orders') . '</a>';
 
 echo '</div>
 	  </form>';

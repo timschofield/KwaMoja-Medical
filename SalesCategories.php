@@ -204,7 +204,7 @@ echo '<br />
 		</div>';
 
 if ($ParentCategory != 0) {
-	echo '<div class="centre"><a href="' . $RootPath . '/SalesCategoryDescriptions.php?SelectedSalesCategory=' . $ParentCategory . '">' . _('Manage Sales Category Translations') . '</a></div>';
+	echo '<div class="centre"><a href="' . $RootPath . '/SalesCategoryDescriptions.php?SelectedSalesCategory=' . urlencode($ParentCategory) . '">' . _('Manage Sales Category Translations') . '</a></div>';
 }
 
 // END Calculate Path for navigation

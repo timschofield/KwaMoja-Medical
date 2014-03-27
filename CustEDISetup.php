@@ -106,7 +106,7 @@ if ($myrow['ediinvoices'] == 0) {
 	echo '<option selected="selected" value="1">' . _('Enabled') . '</option>';
 }
 
-echo '</select><a href="' . $RootPath . '/EDIMessageFormat.php?MessageType=INVOIC&amp;PartnerCode=' . $_SESSION['CustomerID'] . '">' . _('Create') . '/' . _('Edit Invoice Message Format') . '</a></td>
+echo '</select><a href="' . $RootPath . '/EDIMessageFormat.php?MessageType=INVOIC&amp;PartnerCode=' . urlencode($_SESSION['CustomerID']) . '">' . _('Create') . '/' . _('Edit Invoice Message Format') . '</a></td>
 	</tr>';
 
 echo '<tr><td>' . _('Enable Receiving of EDI Orders') . ':</td>
@@ -124,11 +124,14 @@ if ($myrow['ediorders'] == 0) {
 echo '</select></td>
 	</tr>';
 
-echo '<tr><td>' . _('Customer EDI Reference') . ':</td>
-	<td><input tabindex="3" type="text" name="EDIReference" size="20" required="required" minlength="1" maxlength="20" value="' . $myrow['edireference'] . '" /></td></tr>';
+echo '<tr>
+		<td>' . _('Customer EDI Reference') . ':</td>
+		<td><input tabindex="3" type="text" name="EDIReference" size="20" required="required" minlength="1" maxlength="20" value="' . $myrow['edireference'] . '" /></td>
+	</tr>';
 
-echo '<tr><td>' . _('EDI Communication Method') . ':</td>
-	<td><select minlength="0" tabindex="4" name="EDITransport" >';
+echo '<tr>
+		<td>' . _('EDI Communication Method') . ':</td>
+		<td><select minlength="0" tabindex="4" name="EDITransport" >';
 
 if ($myrow['editransport'] == 'email') {
 	echo '<option selected="selected" value="email">' . _('Email Attachments') . '</option>';
@@ -140,8 +143,10 @@ if ($myrow['editransport'] == 'email') {
 
 echo '</select></td></tr>';
 
-echo '<tr><td>' . _('FTP Server or Email Address') . ':</td>
-	<td><input tabindex="5" type="text" name="EDIAddress" size="42" required="required" minlength="1" maxlength="40" value="' . $myrow['ediaddress'] . '" /></td></tr>';
+echo '<tr>
+		<td>' . _('FTP Server or Email Address') . ':</td>
+		<td><input tabindex="5" type="text" name="EDIAddress" size="42" required="required" minlength="1" maxlength="40" value="' . $myrow['ediaddress'] . '" /></td>
+	</tr>';
 
 if ($myrow['editransport'] == 'ftp') {
 

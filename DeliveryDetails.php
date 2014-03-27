@@ -267,7 +267,7 @@ if (isset($_POST['Update']) or isset($_POST['BackToLineDetails']) or isset($_POS
 
 if (isset($_POST['MakeRecurringOrder']) and !$InputErrors) {
 	echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/RecurringSalesOrders.php?identifier=' . $identifier . '&amp;NewRecurringOrder=Yes">';
-	prnMsg(_('You should automatically be forwarded to the entry of recurring order details page') . '. ' . _('if this does not happen') . '(' . _('if the browser does not support META Refresh') . ') ' . '<a href="' . $RootPath . '/RecurringOrders.php?identifier=' . $identifier . '&amp;NewRecurringOrder=Yes">' . _('click here') . '</a> ' . _('to continue'), 'info');
+	prnMsg(_('You should automatically be forwarded to the entry of recurring order details page') . '. ' . _('if this does not happen') . '(' . _('if the browser does not support META Refresh') . ') ' . '<a href="' . $RootPath . '/RecurringOrders.php?identifier=' . urlencode($identifier) . '&amp;NewRecurringOrder=Yes">' . _('click here') . '</a> ' . _('to continue'), 'info');
 	include('includes/footer.inc');
 	exit;
 } //isset($_POST['MakeRecurringOrder']) and !$InputErrors
@@ -275,7 +275,7 @@ if (isset($_POST['MakeRecurringOrder']) and !$InputErrors) {
 
 if (isset($_POST['BackToLineDetails']) and $_POST['BackToLineDetails'] == _('Modify Order Lines')) {
 	echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/SelectOrderItems.php?identifier=' . $identifier . '">';
-	prnMsg(_('You should automatically be forwarded to the entry of the order line details page') . '. ' . _('if this does not happen') . '(' . _('if the browser does not support META Refresh') . ') ' . '<a href="' . $RootPath . '/SelectOrderItems.php?identifier=' . $identifier . '">' . _('click here') . '</a> ' . _('to continue'), 'info');
+	prnMsg(_('You should automatically be forwarded to the entry of the order line details page') . '. ' . _('if this does not happen') . '(' . _('if the browser does not support META Refresh') . ') ' . '<a href="' . $RootPath . '/SelectOrderItems.php?identifier=' . urlencode($identifier) . '">' . _('click here') . '</a> ' . _('to continue'), 'info');
 	include('includes/footer.inc');
 	exit;
 
@@ -594,16 +594,16 @@ if (isset($OK_to_PROCESS) and $OK_to_PROCESS == 1 and $_SESSION['ExistingOrder' 
 			echo '<br /><table class="selection">
 					<tr>
 						<td><img src="' . $RootPath . '/css/' . $Theme . '/images/printer.png" title="' . _('Print') . '" alt="" /></td>
-						<td>' . ' ' . '<a target="_blank" href="' . $RootPath . '/PrintCustOrder.php?identifier=' . $identifier . '&amp;TransNo=' . $OrderNo . '">' . _('Print packing slip') . ' (' . _('Preprinted stationery') . ')' . '</a></td>
+						<td>' . ' ' . '<a target="_blank" href="' . $RootPath . '/PrintCustOrder.php?identifier=' . urlencode($identifier) . '&amp;TransNo=' . urlencode($OrderNo) . '">' . _('Print packing slip') . ' (' . _('Preprinted stationery') . ')' . '</a></td>
 					</tr>';
 			echo '<tr>
 					<td><img src="' . $RootPath . '/css/' . $Theme . '/images/printer.png" title="' . _('Print') . '" alt="" /></td>
-					<td>' . ' ' . '<a  target="_blank" href="' . $RootPath . '/PrintCustOrder_generic.php?identifier=' . $identifier . '&amp;TransNo=' . $OrderNo . '">' . _('Print packing slip') . ' (' . _('Laser') . ')' . '</a></td>
+					<td>' . ' ' . '<a  target="_blank" href="' . $RootPath . '/PrintCustOrder_generic.php?identifier=' . urlencode($identifier) . '&amp;TransNo=' . urlencode($OrderNo) . '">' . _('Print packing slip') . ' (' . _('Laser') . ')' . '</a></td>
 				</tr>';
 
 			echo '<tr>
 					<td><img src="' . $RootPath . '/css/' . $Theme . '/images/reports.png" title="' . _('Invoice') . '" alt="" /></td>
-					<td>' . ' ' . '<a href="' . $RootPath . '/ConfirmDispatch_Invoice.php?identifier=' . $identifier . '&amp;OrderNumber=' . $OrderNo . '">' . _('Confirm Dispatch and Produce Invoice') . '</a></td>
+					<td>' . ' ' . '<a href="' . $RootPath . '/ConfirmDispatch_Invoice.php?identifier=' . urlencode($identifier) . '&amp;OrderNumber=' . urlencode($OrderNo) . '">' . _('Confirm Dispatch and Produce Invoice') . '</a></td>
 				</tr>';
 
 			echo '</table>';
@@ -614,20 +614,20 @@ if (isset($OK_to_PROCESS) and $OK_to_PROCESS == 1 and $_SESSION['ExistingOrder' 
 			echo '<br /><table class="selection">
 					<tr>
 						<td><img src="' . $RootPath . '/css/' . $Theme . '/images/reports.png" title="' . _('Order') . '" alt=""></td>
-						<td>' . ' ' . '<a href="' . $RootPath . '/PDFQuotation.php?identifier=' . $identifier . '&amp;QuotationNo=' . $OrderNo . '">' . _('Print Quotation (Landscape)') . '</a></td>
+						<td>' . ' ' . '<a href="' . $RootPath . '/PDFQuotation.php?identifier=' . urlencode($identifier) . '&amp;QuotationNo=' . urlencode($OrderNo) . '">' . _('Print Quotation (Landscape)') . '</a></td>
 					</tr>
 					</table>';
 			echo '<br /><table class="selection">
 					<tr>
 						<td><img src="' . $RootPath . '/css/' . $Theme . '/images/reports.png" title="' . _('Order') . '" alt="" /></td>
-						<td>' . ' ' . '<a href="' . $RootPath . '/PDFQuotationPortrait.php?identifier=' . $identifier . '&amp;QuotationNo=' . $OrderNo . '">' . _('Print Quotation (Portrait)') . '</a></td>
+						<td>' . ' ' . '<a href="' . $RootPath . '/PDFQuotationPortrait.php?identifier=' . urlencode($identifier) . '&amp;QuotationNo=' . urlencode($OrderNo) . '">' . _('Print Quotation (Portrait)') . '</a></td>
 					</tr>
 					</table>';
 		}
 		echo '<br /><table class="selection">
 				<tr>
 					<td><img src="' . $RootPath . '/css/' . $Theme . '/images/sales.png" title="' . _('Order') . '" alt="" /></td>
-					<td>' . ' ' . '<a href="' . $RootPath . '/SelectOrderItems.php?identifier=' . $identifier . '&amp;NewOrder=Yes">' . _('Add Another Sales Order') . '</a></td>
+					<td>' . ' ' . '<a href="' . $RootPath . '/SelectOrderItems.php?identifier=' . urlencode($identifier) . '&amp;NewOrder=Yes">' . _('Add Another Sales Order') . '</a></td>
 				</tr>
 				</table>';
 	} //count($_SESSION['AllowedPageSecurityTokens']) > 1
@@ -802,13 +802,13 @@ elseif (isset($OK_to_PROCESS) and ($OK_to_PROCESS == 1 and $_SESSION['ExistingOr
 		echo '<br /><table class="selection">
 				<tr>
 					<td><img src="' . $RootPath . '/css/' . $Theme . '/images/reports.png" title="' . _('Order') . '" alt=""></td>
-					<td>' . ' ' . '<a href="' . $RootPath . '/PDFQuotation.php?identifier=' . $identifier . '&amp;QuotationNo=' . $_SESSION['ExistingOrder' . $identifier] . '">' . _('Print Quotation (Landscape)') . '</a></td>
+					<td>' . ' ' . '<a href="' . $RootPath . '/PDFQuotation.php?identifier=' . urlencode($identifier) . '&amp;QuotationNo=' . urlencode($_SESSION['ExistingOrder' . $identifier]) . '">' . _('Print Quotation (Landscape)') . '</a></td>
 				</tr>
 				</table>';
 		echo '<br /><table class="selection">
 				<tr>
 					<td><img src="' . $RootPath . '/css/' . $Theme . '/images/reports.png" title="' . _('Order') . '" alt="" /></td>
-					<td>' . ' ' . '<a href="' . $RootPath . '/PDFQuotationPortrait.php?identifier=' . $identifier . '&amp;QuotationNo=' . $_SESSION['ExistingOrder' . $identifier] . '">' . _('Print Quotation (Portrait)') . '</a></td>
+					<td>' . ' ' . '<a href="' . $RootPath . '/PDFQuotationPortrait.php?identifier=' . urlencode($identifier) . '&amp;QuotationNo=' . urlencode($_SESSION['ExistingOrder' . $identifier]) . '">' . _('Print Quotation (Portrait)') . '</a></td>
 				</tr>
 				</table>';
 	} //$Quotation
@@ -819,19 +819,19 @@ elseif (isset($OK_to_PROCESS) and ($OK_to_PROCESS == 1 and $_SESSION['ExistingOr
 			<table class="selection">
 			<tr>
 			<td><img src="' . $RootPath . '/css/' . $Theme . '/images/printer.png" title="' . _('Print') . '" alt="" /></td>
-			<td><a target="_blank" href="' . $RootPath . '/PrintCustOrder.php?identifier=' . $identifier . '&amp;TransNo=' . $_SESSION['ExistingOrder' . $identifier] . '">' . _('Print packing slip - pre-printed stationery') . '</a></td>
+			<td><a target="_blank" href="' . $RootPath . '/PrintCustOrder.php?identifier=' . urlencode($identifier) . '&amp;TransNo=' . urlencode($_SESSION['ExistingOrder' . $identifier]) . '">' . _('Print packing slip - pre-printed stationery') . '</a></td>
 			</tr>';
 		echo '<tr>
 			<td><img src="' . $RootPath . '/css/' . $Theme . '/images/printer.png" title="' . _('Print') . '" alt="" /></td>
-			<td><a  target="_blank" href="' . $RootPath . '/PrintCustOrder_generic.php?identifier=' . $identifier . '&amp;TransNo=' . $_SESSION['ExistingOrder' . $identifier] . '">' . _('Print packing slip') . ' (' . _('Laser') . ')' . '</a></td>
+			<td><a  target="_blank" href="' . $RootPath . '/PrintCustOrder_generic.php?identifier=' . urlencode($identifier) . '&amp;TransNo=' . urlencode($_SESSION['ExistingOrder' . $identifier]) . '">' . _('Print packing slip') . ' (' . _('Laser') . ')' . '</a></td>
 		</tr>';
 		echo '<tr>
 			<td><img src="' . $RootPath . '/css/' . $Theme . '/images/reports.png" title="' . _('Invoice') . '" alt="" /></td>
-			<td><a href="' . $RootPath . '/ConfirmDispatch_Invoice.php?identifier=' . $identifier . '&amp;OrderNumber=' . $_SESSION['ExistingOrder' . $identifier] . '">' . _('Confirm Order Delivery Quantities and Produce Invoice') . '</a></td>
+			<td><a href="' . $RootPath . '/ConfirmDispatch_Invoice.php?identifier=' . urlencode($identifier) . '&amp;OrderNumber=' . urlencode($_SESSION['ExistingOrder' . $identifier]) . '">' . _('Confirm Order Delivery Quantities and Produce Invoice') . '</a></td>
 		</tr>';
 		echo '<tr>
 			<td><img src="' . $RootPath . '/css/' . $Theme . '/images/sales.png" title="' . _('Order') . '" alt="" /></td>
-			<td><a href="' . $RootPath . '/SelectSalesOrder.php?identifier=' . $identifier . '">' . _('Select A Different Order') . '</a></td>
+			<td><a href="' . $RootPath . '/SelectSalesOrder.php?identifier=' . urlencode($identifier) . '">' . _('Select A Different Order') . '</a></td>
 		</tr>
 		</table>';
 	} //end of print orders

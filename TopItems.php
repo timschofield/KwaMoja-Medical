@@ -246,7 +246,7 @@ if (!(isset($_POST['Search']))) {
 				echo '<tr class="OddTableRows">';
 				$k = 1;
 			}
-			$CodeLink = '<a href="' . $RootPath . '/SelectProduct.php?StockID=' . $myrow['stkcode'] . '">' . $myrow['stkcode'] . '</a>';
+			$CodeLink = '<a href="' . $RootPath . '/SelectProduct.php?StockID=' . urlencode($myrow['stkcode']) . '">' . $myrow['stkcode'] . '</a>';
 			if (is_numeric($QOH)) {
 				$QOH = locale_number_format($QOH, $myrow['decimalplaces']);
 			}

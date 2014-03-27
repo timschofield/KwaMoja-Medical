@@ -570,7 +570,7 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 					$k++;
 				}
 
-				$ActEnquiryURL = '<a href="' . $RootPath . '/GLAccountInquiry.php?Period=' . $_POST['BalancePeriodEnd'] . '&amp;Account=' . $myrow['accountcode'] . '">' . $myrow['accountcode'] . '</a>';
+				$ActEnquiryURL = '<a href="' . $RootPath . '/GLAccountInquiry.php?Period=' . urlencode($_POST['BalancePeriodEnd']) . '&amp;Account=' . urlencode($myrow['accountcode']) . '">' . $myrow['accountcode'] . '</a>';
 
 				printf('<td>%s</td>
 						<td>%s</td>

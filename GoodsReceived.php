@@ -81,8 +81,7 @@ if (!isset($_POST['ProcessGoodsReceived'])) {
 				<td>' . _('Date Goods/Service Received') . ':</td>
 				<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" minlength="0" maxlength="10" size="10" onchange="return isDate(this, this.value, ' . "'" . $_SESSION['DefaultDateFormat'] . "'" . ')" name="DefaultReceivedDate" value="' . $_POST['DefaultReceivedDate'] . '" /></td>
 			</tr>
-		</table>
-		<br />';
+		</table>';
 
 	echo '<table cellpadding="2" class="selection">
 			<tr>
@@ -169,7 +168,7 @@ if (count($_SESSION['PO' . $identifier]->LineItems) > 0 and !isset($_POST['Proce
 
 		if ($LnItm->Controlled == 1) {
 
-			echo '<input type="hidden" name="RecvQty_' . $LnItm->LineNo . '" value="' . locale_number_format($LnItm->ReceiveQty, $LnItm->DecimalPlaces) . '" /><a href="GoodsReceivedControlled.php?identifier=' . $identifier . '&amp;LineNo=' . $LnItm->LineNo . '">' . locale_number_format($LnItm->ReceiveQty, $LnItm->DecimalPlaces) . '</a></td>';
+			echo '<input type="hidden" name="RecvQty_' . $LnItm->LineNo . '" value="' . locale_number_format($LnItm->ReceiveQty, $LnItm->DecimalPlaces) . '" /><a href="GoodsReceivedControlled.php?identifier=' . urlencode($identifier) . '&amp;LineNo=' . urlencode($LnItm->LineNo) . '">' . locale_number_format($LnItm->ReceiveQty, $LnItm->DecimalPlaces) . '</a></td>';
 
 		} else {
 			if ($LnItm->LineNo == 1) {
@@ -192,9 +191,9 @@ if (count($_SESSION['PO' . $identifier]->LineItems) > 0 and !isset($_POST['Proce
 
 		if ($LnItm->Controlled == 1) {
 			if ($LnItm->Serialised == 1) {
-				echo '<td><a href="GoodsReceivedControlled.php?identifier=' . $identifier . '&amp;LineNo=' . $LnItm->LineNo . '">' . _('Enter Serial Nos') . '</a></td>';
+				echo '<td><a href="GoodsReceivedControlled.php?identifier=' . urlencode($identifier) . '&amp;LineNo=' . urlencode($LnItm->LineNo) . '">' . _('Enter Serial Nos') . '</a></td>';
 			} else {
-				echo '<td><a href="GoodsReceivedControlled.php?identifier=' . $identifier . '&amp;LineNo=' . $LnItm->LineNo . '">' . _('Enter Batches') . '</a></td>';
+				echo '<td><a href="GoodsReceivedControlled.php?identifier=' . urlencode($identifier) . '&amp;LineNo=' . urlencode($LnItm->LineNo) . '">' . _('Enter Batches') . '</a></td>';
 			}
 		}
 		echo '</tr>';
@@ -275,7 +274,6 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 
 	if ($_SESSION['CompanyRecord'] == 0) {
 		/*The company data and preferences could not be retrieved for some reason */
-		echo '</div>';
 		echo '</form>';
 		prnMsg(_('The company information and preferences could not be retrieved') . ' - ' . _('see your system administrator'), 'error');
 		include('includes/footer.inc');
@@ -363,11 +361,10 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 					</table>';
 			}
 			echo '<div class="centre"><a href="' . $RootPath . '/PO_SelectOSPurchOrder.php">' . _('Select a different purchase order for receiving goods against') . '</a></div>';
-			echo '<div class="centre"><a href="' . $RootPath . '/GoodsReceived.php?PONumber=' . $_SESSION['PO' . $identifier]->OrderNo . '">' . _('Re-read the updated purchase order for receiving goods against') . '</a></div>';
+			echo '<div class="centre"><a href="' . $RootPath . '/GoodsReceived.php?PONumber=' . urlencode($_SESSION['PO' . $identifier]->OrderNo) . '">' . _('Re-read the updated purchase order for receiving goods against') . '</a></div>';
 			unset($_SESSION['PO' . $identifier]->LineItems);
 			unset($_SESSION['PO' . $identifier]);
 			unset($_POST['ProcessGoodsReceived']);
-			echo '</div>';
 			echo '</form>';
 			include('includes/footer.inc');
 			exit;
@@ -740,18 +737,12 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 	unset($_SESSION['PO' . $identifier]);
 	unset($_POST['ProcessGoodsReceived']);
 
-	echo '<br />
-		<div class="centre">
+	echo '<div class="centre">
 			' . prnMsg(_('GRN number') . ' ' . $GRN . ' ' . _('has been processed'), 'success') . '
-			<br />
-			<br />
-			<a href="PDFGrn.php?GRNNo=' . $GRN . '&amp;PONo=' . $PONo . '">' . _('Print this Goods Received Note (GRN)') . '</a>
-			<br />
-			<br />
+			<a href="PDFGrn.php?GRNNo=' . urlencode($GRN) . '&amp;PONo=' . urlencode($PONo) . '">' . _('Print this Goods Received Note (GRN)') . '</a>
 			<a href="' . $RootPath . '/PO_SelectOSPurchOrder.php">' . _('Select a different purchase order for receiving goods against') . '</a>
 		</div>';
 	/*end of process goods received entry */
-	echo '</div>';
 	echo '</form>';
 	include('includes/footer.inc');
 	exit;
@@ -759,19 +750,15 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 } else {
 	/*Process Goods received not set so show a link to allow mod of line items on order and allow input of date goods received*/
 
-	echo '<br />
-		<div class="centre">
-			<a href="' . $RootPath . '/PO_Header.php?ModifyOrderNumber=' . $_SESSION['PO' . $identifier]->OrderNo . '">' . _('Modify Order Items') . '</a>
+	echo '<div class="centre">
+			<a href="' . $RootPath . '/PO_Header.php?ModifyOrderNumber=' . urlencode($_SESSION['PO' . $identifier]->OrderNo) . '">' . _('Modify Order Items') . '</a>
 		</div>
-		<br />
 		<div class="centre">
 			<input type="submit" name="Update" value="' . _('Update') . '" />
-			<br />
 			<br />
 			<input type="submit" name="ProcessGoodsReceived" value="' . _('Process Goods Received') . '" />
 		</div>';
 }
-echo '</div>';
 echo '</form>';
 include('includes/footer.inc');
 ?>

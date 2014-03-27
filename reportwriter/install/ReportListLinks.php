@@ -29,7 +29,7 @@ function GetRptLinks($GroupID) {
 			while ($Temp = DB_fetch_array($Result)) {
 				$RptLinks .= '<tr>
 								<td class="menu_group_item">
-									<a href="' . $RootPath . '/reportwriter/ReportMaker.php?action=go&reportid=' . $Temp['id'] . '"><li>' . _($Temp['reportname']) . '</li></a>
+									<a href="' . $RootPath . '/reportwriter/ReportMaker.php?action=go&reportid=' . urlencode($Temp['id']) . '"><li>' . _($Temp['reportname']) . '</li></a>
 								</td>
 							</tr>';
 			}

@@ -16,7 +16,7 @@ include('includes/header.inc');
 
 if (!isset($_SESSION['Trans'])) {
 	prnMsg(_('This page can only be called from the importation of bank transactions page which sets up the data to receive the analysed general ledger entries'), 'info');
-	echo '<br /><a href="' . $RootPath . '/ImportBankTrans.php">' . _('Import Bank Transactions') . '</a>';
+	echo '<a href="' . $RootPath . '/ImportBankTrans.php">' . _('Import Bank Transactions') . '</a>';
 	include('includes/footer.inc');
 	exit;
 	/*It all stops here if there aint no bank transactions being imported i.e. $_SESSION['Trans'] has not been initiated
@@ -30,14 +30,14 @@ if (isset($_GET['TransID'])) {
 }
 if (!isset($TransID)) {
 	prnMsg(_('This page can only be called from the importation of bank transactions page which sets up the data to receive the analysed general ledger entries'), 'info');
-	echo '<br /><a href="' . $RootPath . '/ImportBankTrans.php">' . _('Import Bank Transactions') . '</a>';
+	echo '<a href="' . $RootPath . '/ImportBankTrans.php">' . _('Import Bank Transactions') . '</a>';
 	include('includes/footer.inc');
 	exit;
 }
 
 if ($_SESSION['Trans'][$TransID]->BankTransID != 0) {
 	prnMsg(_('This transaction appears to be already entered against this bank account. By entering values in this analysis form the transaction will be entered again. Only proceed to analyse this transaction if you are sure it has not already been processed'), 'warn');
-	echo '<br /><div class="centre"><a href="' . $RootPath . '/ImportBankTrans.php">' . _('Back to Main Import Screen - Recommended') . '</a></div>';
+	echo '<div class="centre"><a href="' . $RootPath . '/ImportBankTrans.php">' . _('Back to Main Import Screen - Recommended') . '</a></div>';
 
 }
 
@@ -110,7 +110,7 @@ if ($_SESSION['Trans'][$TransID]->Amount >= 0) { //its a receipt
 }
 
 /*Set up a form to allow input of new GL entries */
-echo '</p><form name="form1" action="' . $_SERVER['PHP_SELF'] . '" method="post">';
+echo '<form name="form1" action="' . $_SERVER['PHP_SELF'] . '" method="post">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 echo '<input type="hidden" name="TransID" value=' . $TransID . ' />';

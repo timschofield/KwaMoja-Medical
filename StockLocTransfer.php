@@ -215,7 +215,7 @@ if (isset($_POST['Submit']) and $InputError == False) {
 	DB_Txn_Commit();
 
 	prnMsg(_('The inventory transfer records have been created successfully'), 'success');
-	echo '<p><a href="' . $RootPath . '/PDFStockLocTransfer.php?TransferNo=' . $_POST['Trf_ID'] . '">' . _('Print the Transfer Docket') . '</a></p>';
+	echo '<p><a href="' . $RootPath . '/PDFStockLocTransfer.php?TransferNo=' . urlencode($_POST['Trf_ID']) . '">' . _('Print the Transfer Docket') . '</a></p>';
 	include('includes/footer.inc');
 
 } else {

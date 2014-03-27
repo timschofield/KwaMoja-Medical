@@ -640,7 +640,8 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 			if ($LineItem->Controlled == 0) {
 				echo '<td><input type="text" class="number" name="Quantity_' . $LineItem->LineNumber . '" required="required" minlength="1" maxlength="11" size="6" value="' . locale_number_format(round($LineItem->Quantity, $LineItem->DecimalPlaces), $LineItem->DecimalPlaces) . '" /></td>';
 			} else {
-				echo '<td class="number"><a href="' . $RootPath . '/CreditItemsControlled.php?LineNo=' . $LineItem->LineNumber . '&identifier=' . $identifier . '">' . locale_number_format($LineItem->Quantity, $LineItem->DecimalPlaces) . '</a>
+				echo '<td class="number">
+						<a href="' . $RootPath . '/CreditItemsControlled.php?LineNo=' . urlencode($LineItem->LineNumber) . '&identifier=' . urlencode($identifier) . '">' . locale_number_format($LineItem->Quantity, $LineItem->DecimalPlaces) . '</a>
                       <input type="hidden" name="Quantity_' . $LineItem->LineNumber . '" value="' . locale_number_format(round($LineItem->Quantity, $LineItem->DecimalPlaces), $LineItem->DecimalPlaces) . '" /></td>';
 			}
 
@@ -1929,11 +1930,11 @@ if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 	unset($_SESSION['CreditItems' . $identifier]);
 
 	echo _('Credit Note number') . ' ' . $CreditNo . ' ' . _('processed') . '<br />';
-	echo '<a target="_blank" href="' . $RootPath . '/PrintCustTrans.php?FromTransNo=' . $CreditNo . '&InvOrCredit=Credit">' . _('Show this Credit Note on screen') . '</a><br />';
+	echo '<a target="_blank" href="' . $RootPath . '/PrintCustTrans.php?FromTransNo=' . urlencode($CreditNo) . '&InvOrCredit=Credit">' . _('Show this Credit Note on screen') . '</a><br />';
 	if ($_SESSION['InvoicePortraitFormat'] == 0) {
-		echo '<a href="' . $RootPath . '/PrintCustTrans.php?FromTransNo=' . $CreditNo . '&InvOrCredit=Credit&PrintPDF=True">' . _('Print this Credit Note') . '</a>';
+		echo '<a href="' . $RootPath . '/PrintCustTrans.php?FromTransNo=' . urlencode($CreditNo) . '&InvOrCredit=Credit&PrintPDF=True">' . _('Print this Credit Note') . '</a>';
 	} else {
-		echo '<a href="' . $RootPath . '/PrintCustTransPortrait.php?FromTransNo=' . $CreditNo . '&InvOrCredit=Credit&PrintPDF=True">' . _('Print this Credit Note') . '</a>';
+		echo '<a href="' . $RootPath . '/PrintCustTransPortrait.php?FromTransNo=' . urlencode($CreditNo) . '&InvOrCredit=Credit&PrintPDF=True">' . _('Print this Credit Note') . '</a>';
 	}
 	echo '<br /><a href="' . $RootPath . '/SelectCreditItems.php">' . _('Enter Another Credit Note') . '</a>';
 

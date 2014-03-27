@@ -274,7 +274,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['Review'])) {
 				$k++;
 			}
 
-			echo '<td><a href="' . $RootPath . '/WorkOrderEntry.php?NewItem=' . $myrow['part'] . '&amp;ReqQty=' . $myrow['supplyquantity'] . '&amp;ReqDate=' . $myrow['duedate'] . '">' . _('Convert') . '</a></td>
+			echo '<td><a href="' . $RootPath . '/WorkOrderEntry.php?NewItem=' . urlencode($myrow['part']) . '&amp;ReqQty=' . urlencode($myrow['supplyquantity']) . '&amp;ReqDate=' . urlencode($myrow['duedate']) . '">' . _('Convert') . '</a></td>
 				<td>' . $myrow['part'] . ' <input type="hidden" name="' . $j . '_part" value="' . $myrow['part'] . '" /></td>
 				<td>' . $myrow['description'] . '</td>
 				<td>' . ConvertSQLDate($myrow['mrpdate']) . '</td>

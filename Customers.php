@@ -270,7 +270,7 @@ if (isset($_POST['submit'])) {
 
 			echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/CustomerBranches.php?DebtorNo=' . urlencode($_POST['DebtorNo']) . '">';
 
-			echo '<div class="centre">' . _('You should automatically be forwarded to the entry of a new Customer Branch page') . '. ' . _('If this does not happen') . ' (' . _('if the browser does not support META Refresh') . ') ' . '<a href="' . $RootPath . '/CustomerBranches.php?DebtorNo=' . $_POST['DebtorNo'] . '"></a></div>';
+			echo '<div class="centre">' . _('You should automatically be forwarded to the entry of a new Customer Branch page') . '. ' . _('If this does not happen') . ' (' . _('if the browser does not support META Refresh') . ') ' . '<a href="' . $RootPath . '/CustomerBranches.php?DebtorNo=' . urlencode($_POST['DebtorNo']) . '"></a></div>';
 
 			include('includes/footer.inc');
 			exit;
@@ -450,7 +450,6 @@ if (!isset($DebtorNo)) {
 		exit;
 	} //$SetupErrors > 0
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	echo '<input type="hidden" name="New" value="Yes" />';
@@ -513,7 +512,7 @@ if (!isset($DebtorNo)) {
 	$result = DB_query("SELECT typeabbrev, sales_type FROM salestypes ORDER BY sales_type");
 	if (DB_num_rows($result) == 0) {
 		$DataError = 1;
-		echo '<tr><td colspan="2">' . prnMsg(_('No sales types/price lists defined'), 'error') . '<br /><a href="SalesTypes.php?" target="_parent">' . _('Setup Types') . '</a></td></tr>';
+		echo '<tr><td colspan="2">' . prnMsg(_('No sales types/price lists defined'), 'error') . '<br /><a href="SalesTypes.php" target="_parent">' . _('Setup Types') . '</a></td></tr>';
 	} //DB_num_rows($result) == 0
 	else {
 		echo '<tr><td>' . _('Sales Type') . '/' . _('Price List') . ':</td>
@@ -530,7 +529,7 @@ if (!isset($DebtorNo)) {
 	$result = DB_query("SELECT typeid, typename FROM debtortype ORDER BY typename");
 	if (DB_num_rows($result) == 0) {
 		$DataError = 1;
-		echo '<a href="SalesTypes.php?" target="_parent">' . _('Setup Types') . '</a>';
+		echo '<a href="SalesTypes.php" target="_parent">' . _('Setup Types') . '</a>';
 		echo '<tr>
 				<td colspan="2">' . prnMsg(_('No Customer types/price lists defined'), 'error') . '</td>
 			</tr>';
@@ -683,7 +682,6 @@ if (!isset($DebtorNo)) {
 			</div>';
 
 	} //$DataError == 0
-	echo '</div>';
 	echo '</form>';
 
 } //!isset($DebtorNo)
@@ -691,7 +689,6 @@ else {
 	//DebtorNo exists - either passed when calling the form or from the form itself
 
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table class="selection">
 			<tr><td valign="top">';
@@ -1167,22 +1164,22 @@ else {
 		}
 
 		if (isset($_GET['Modify'])) {
-			printf('<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td><a href="mailto:%s">%s</a></td>
-					<td>%s</td>
-					</tr>', $myrow['contactname'], $myrow['role'], $myrow['phoneno'], $myrow['email'], $myrow['email'], $myrow['notes']);
+			echo '<td>' . $myrow['contactname'] . '</td>
+					<td>' . $myrow['role'] . '</td>
+					<td>' . $myrow['phoneno'] . '</td>
+					<td><a href="mailto:' . $myrow['email'] . '">' . $myrow['email'] . '</a></td>
+					<td>' . $myrow['notes'] . '</td>
+				</tr>';
 		} //isset($_GET['Modify'])
 		else {
-			printf('<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td><a href="mailto:%s">%s</a></td>
-					<td>%s</td>
-					<td><a href="AddCustomerContacts.php?Id=%s&amp;DebtorNo=%s">' . _('Edit') . '</a></td>
-					<td><a href="%sID=%s&amp;DebtorNo=%s&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this customer contact?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-					</tr>', $myrow['contactname'], $myrow['role'], $myrow['phoneno'], $myrow['email'], $myrow['email'], $myrow['notes'], $myrow['contid'], $myrow['debtorno'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['contid'], $myrow['debtorno']);
+			echo '<td>' . $myrow['contactname'] . '</td>
+					<td>' . $myrow['role'] . '</td>
+					<td>' . $myrow['phoneno'] . '</td>
+					<td><a href="mailto:' . $myrow['email'] . '">' . $myrow['email'] . '</a></td>
+					<td>' . $myrow['notes'] . '</td>
+					<td><a href="AddCustomerContacts.php?Id=' . urlencode($myrow['contid']) . '&amp;DebtorNo=' . urlencode($myrow['debtorno']) . '">' . _('Edit') . '</a></td>
+					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?ID=' . urlencode($myrow['contid']) . '&amp;DebtorNo=' . urlencode($myrow['debtorno']) . '&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this customer contact?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+				</tr>';
 		}
 	} //END WHILE LIST LOOP
 	echo '</table>';
@@ -1196,15 +1193,13 @@ else {
 			</div>';
 	} //isset($_POST['New']) and $_POST['New']
 	elseif (!isset($_GET['Modify'])) {
-		echo '<br />
-			<div class="centre">
+		echo '<div class="centre">
 				<input type="submit" name="submit" value="' . _('Update Customer') . '" />&nbsp;
 				<input type="submit" name="delete" value="' . _('Delete Customer') . '" onclick="return MakeConfirm(\'' . _('Are You Sure?') . '\');" />
 			</div>';
 	} //!isset($_GET['Modify'])
 
-	echo '</div>
-		  </form>';
+	echo '</form>';
 } // end of main ifs
 
 include('includes/footer.inc');

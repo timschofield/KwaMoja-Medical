@@ -48,7 +48,7 @@ while ($myrow = DB_fetch_array($ShiptsResult)) {
 		$k = 1;
 	}
 
-	echo '<td><a href="' . $RootPath . '/Shipments.php?SelectedShipment=' . $myrow['shiptref'] . '">' . $myrow['shiptref'] . '</a></td>
+	echo '<td><a href="' . $RootPath . '/Shipments.php?SelectedShipment=' . urlencode($myrow['shiptref']) . '">' . $myrow['shiptref'] . '</a></td>
 			<td>' . $myrow['vessel'] . '</td>
 			<td>' . ConvertSQLDate($myrow['shipmentdate']) . '</td>
 			<td>' . ConvertSQLDate($myrow['eta']) . '</td>

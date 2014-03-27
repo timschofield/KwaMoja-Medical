@@ -61,7 +61,7 @@ Get the page going....
 ********************************************/
 echo '<div class="centre">';
 
-echo '<br /><a href="' . $RootPath . '/ConfirmDispatch_Invoice.php?identifier=' . $identifier . '">' . _('Back to Confirmation of Dispatch') . '/' . _('Invoice') . '</a>';
+echo '<br /><a href="' . $RootPath . '/ConfirmDispatch_Invoice.php?identifier=' . urlencode($identifier) . '">' . _('Back to Confirmation of Dispatch') . '/' . _('Invoice') . '</a>';
 
 echo '<br /><b>' . _('Dispatch of up to') . ' ' . locale_number_format($LineItem->Quantity - $LineItem->QtyInv, $LineItem->DecimalPlaces) . ' ' . _('Controlled items') . ' ' . $LineItem->StockID . ' - ' . $LineItem->ItemDescription . ' ' . _('on order') . ' ' . $_SESSION['Items' . $identifier]->OrderNo . ' ' . _('to') . ' ' . $_SESSION['Items' . $identifier]->CustomerName . '</b></div>';
 

@@ -44,7 +44,9 @@ if (isset($_GET['DeleteDiscountID'])) {
 
 $NoPurchasingData = 0;
 
-echo '<a href="' . $RootPath . '/SelectProduct.php">' . _('Back to Items') . '</a><br />';
+echo '<div class="toplink">
+		<a href="' . $RootPath . '/SelectProduct.php">' . _('Back to Items') . '</a>
+	</div>';
 
 if (isset($_POST['SupplierDescription'])) {
 	$_POST['SupplierDescription'] = trim($_POST['SupplierDescription']);
@@ -358,7 +360,6 @@ if (isset($SupplierID) and $SupplierID != '' and !isset($_POST['SearchSupplier']
 					<td><input type="text" name="SupplierCode" size="20" minlength="0" maxlength="50" /></td>
 				</tr>
 				</table>
-				<br />
 				<div class="centre">
 					<input type="submit" name="SearchSupplier" value="' . _('Find Suppliers Now') . '" />
 				</div>
@@ -637,7 +638,6 @@ if (!isset($SuppliersResult)) {
 	echo '</select></td>
 		</tr>
 		</table>
-		<br />
 		<div class="centre">';
 
 	if ($Edit == true) {
@@ -699,8 +699,7 @@ if (!isset($SuppliersResult)) {
 			<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="DiscountEffectiveFrom" minlength="0" maxlength="10" size="11" value="' . Date($_SESSION['DefaultDateFormat']) . '" /></td>
 				<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="DiscountEffectiveTo" minlength="0" maxlength="10" size="11" value="' . $DefaultEndDate . '" /></td>
 			</tr>
-			</table>
-			<br/>';
+			</table>';
 
 		echo '<input type="submit" name="UpdateRecord" value="' . _('Update') . '" />';
 		echo '<input type="hidden" name="Edit" value="1" />';
@@ -709,16 +708,15 @@ if (!isset($SuppliersResult)) {
 	} else {
 		echo '<input type="submit" name="AddRecord" value="' . _('Add') . '" />';
 	}
-	echo '</div>
-		<div class="centre">';
+	echo '<div class="centre">';
 
 	if (isset($StockLocation) and isset($StockID) and mb_strlen($StockID) != 0) {
-		echo '<br /><a href="' . $RootPath . '/StockStatus.php?StockID=' . $StockID . '">' . _('Show Stock Status') . '</a>';
-		echo '<br /><a href="' . $RootPath . '/StockMovements.php?StockID=' . $StockID . '&StockLocation=' . $StockLocation . '">' . _('Show Stock Movements') . '</a>';
-		echo '<br /><a href="' . $RootPath . '/SelectSalesOrder.php?SelectedStockItem=' . $StockID . '&StockLocation=' . $StockLocation . '">' . _('Search Outstanding Sales Orders') . '</a>';
-		echo '<br /><a href="' . $RootPath . '/SelectCompletedOrder.php?SelectedStockItem=' . $StockID . '">' . _('Search Completed Sales Orders') . '</a>';
+		echo '<a href="' . $RootPath . '/StockStatus.php?StockID=' . urlencode($StockID) . '">' . _('Show Stock Status') . '</a>';
+		echo '<a href="' . $RootPath . '/StockMovements.php?StockID=' . urlencode($StockID) . '&StockLocation=' . $StockLocation . '">' . _('Show Stock Movements') . '</a>';
+		echo '<a href="' . $RootPath . '/SelectSalesOrder.php?SelectedStockItem=' . urlencode($StockID) . '&StockLocation=' . $StockLocation . '">' . _('Search Outstanding Sales Orders') . '</a>';
+		echo '<a href="' . $RootPath . '/SelectCompletedOrder.php?SelectedStockItem=' . urlencode($StockID) . '">' . _('Search Completed Sales Orders') . '</a>';
 	}
-	echo '</form></div>';
+	echo '</div></form>';
 }
 
 include('includes/footer.inc');

@@ -212,7 +212,7 @@ if (!(isset($_POST['Search']))) {
 		$QOHRow = DB_fetch_row($QOHResult);
 		$QOH = $QOHRow[0];
 
-		$CodeLink = '<a href="' . $RootPath . '/SelectProduct.php?StockID=' . $myrow['stockid'] . '">' . $myrow['stockid'] . '</a>';
+		$CodeLink = '<a href="' . $RootPath . '/SelectProduct.php?StockID=' . urlencode($myrow['stockid']) . '">' . $myrow['stockid'] . '</a>';
 		if ($_POST['Location'][0] == 'All') {
 			printf('<td class="number">%s</td>
 					<td>%s</td>

@@ -427,15 +427,13 @@ if (isset($_SESSION['Transfer'])) {
 
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" title="' . _('Dispatch') . '" alt="" />' . ' ' . $Title . '</p>';
 	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	prnMsg(_('Please Verify Shipment Quantities Received'), 'info');
 
 	$i = 0; //Line Item Array pointer
 
-	echo '<br />
-			<table class="selection">';
+	echo '<table class="selection">';
 	echo '<tr>
 			<th colspan="7"><h3>' . _('Location Transfer Reference') . ' #' . $_SESSION['Transfer']->TrfID . ' ' . _('from') . ' ' . $_SESSION['Transfer']->StockLocationFromName . ' ' . _('to') . ' ' . $_SESSION['Transfer']->StockLocationToName . '</h3></th>
 		</tr>
@@ -482,7 +480,10 @@ if (isset($_SESSION['Transfer'])) {
 		echo '<td class="number">' . locale_number_format($TrfLine->PrevRecvQty, $TrfLine->DecimalPlaces) . '</td>';
 
 		if ($TrfLine->Controlled == 1) {
-			echo '<td class="number"><input type="hidden" name="Qty' . $i . '" value="' . locale_number_format($Qty, $TrfLine->DecimalPlaces) . '" /><a href="' . $RootPath . '/StockTransferControlled.php?TransferItem=' . $i . '" />' . $Qty . '</a></td>';
+			echo '<td class="number">
+					<input type="hidden" name="Qty' . $i . '" value="' . locale_number_format($Qty, $TrfLine->DecimalPlaces) . '" />
+					<a href="' . $RootPath . '/StockTransferControlled.php?TransferItem=' . urlencode($i) . '" />' . $Qty . '</a>
+				</td>';
 		} else {
 			echo '<td><input type="text" class="number" name="Qty' . $i . '" required="required" minlength="1" maxlength="10" size="auto" value="' . locale_number_format($Qty, $TrfLine->DecimalPlaces) . '" /></td>';
 		}
@@ -494,9 +495,9 @@ if (isset($_SESSION['Transfer'])) {
 
 		if ($TrfLine->Controlled == 1) {
 			if ($TrfLine->Serialised == 1) {
-				echo '<td><a href="' . $RootPath . '/StockTransferControlled.php?TransferItem=' . $i . '">' . _('Enter Serial Numbers') . '</a></td>';
+				echo '<td><a href="' . $RootPath . '/StockTransferControlled.php?TransferItem=' . urlencode($i) . '">' . _('Enter Serial Numbers') . '</a></td>';
 			} else {
-				echo '<td><a href="' . $RootPath . '/StockTransferControlled.php?TransferItem=' . $i . '">' . _('Enter Batch Refs') . '</a></td>';
+				echo '<td><a href="' . $RootPath . '/StockTransferControlled.php?TransferItem=' . urlencode($i) . '">' . _('Enter Batch Refs') . '</a></td>';
 			}
 		}
 
@@ -508,13 +509,11 @@ if (isset($_SESSION['Transfer'])) {
 	/*end of foreach TransferItem */
 
 	echo '</tbody></table>
-		<br />
 		<div class="centre">
 			<input type="submit" name="ProcessTransfer" value="' . _('Process Inventory Transfer') . '" />
 			<br />
 		</div>
-	</div>
-		</form>';
+	</form>';
 	echo '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?NewTransfer=true">' . _('Select A Different Transfer') . '</a>';
 
 } else {
@@ -523,7 +522,6 @@ if (isset($_SESSION['Transfer'])) {
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" title="' . _('Dispatch') . '" alt="" />' . ' ' . $Title . '</p>';
 
 	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint" id="form1">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	if ($_SESSION['RestrictLocations'] == 0) {
@@ -558,8 +556,7 @@ if (isset($_SESSION['Transfer'])) {
 	echo '</select>
 		<input type="submit" name="RefreshTransferList" value="' . _('Refresh Transfer List') . '" /></td>
 		</tr>
-		</table>
-		<br />';
+		</table>';
 
 	$sql = "SELECT DISTINCT reference,
 				locations.locationname as trffromloc,
@@ -603,8 +600,7 @@ if (isset($_SESSION['Transfer'])) {
 	} else if (!isset($_POST['ProcessTransfer'])) {
 		prnMsg(_('There are no incoming transfers to this location'), 'info');
 	}
-	echo '</div>
-	  </form>';
+	echo '</form>';
 }
 include('includes/footer.inc');
 ?>

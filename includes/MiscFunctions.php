@@ -261,7 +261,7 @@ function wikiLink($WikiType, $WikiPageID) {
 	} elseif ($_SESSION['WikiApp'] == _('MediaWiki')) {
 		echo '<a target="_blank" href="' . $WikiPath . 'index.php?title=' . $WikiType . '/' . $WikiPageID . '">' . _('Wiki ' . $WikiType . ' Knowledge Base') . '</a><br />';
 	} elseif ($_SESSION['WikiApp'] == _('DokuWiki')) {
-		echo '<a href="' . $WikiPath . '/doku.php?id=' . $WikiType . ':' . $WikiPageID . '" target="_blank">' . _('Wiki ' . $WikiType . ' Knowlege Base') . '</a><br />';
+		echo '<a href="' . $WikiPath . '/doku.php?id=' . urlencode($WikiType . ':' . $WikiPageID) . '" target="_blank">' . _('Wiki ' . $WikiType . ' Knowlege Base') . '</a><br />';
 	}
 }
 

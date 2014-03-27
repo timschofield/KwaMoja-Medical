@@ -501,7 +501,7 @@ if (isset($_POST['submit'])) {
 
 					//finish up
 					if (DB_error_no() == 0) {
-						prnMsg(_('New Cloned Item') . ' ' . '<a href="SelectProduct.php?StockID=' . $_POST['StockID'] . '">' . $_POST['StockID'] . '</a> ' . _('has been added to the database') . '<br />' . _('We also attempted to setup item purchase data and pricing.'));
+						prnMsg(_('New Cloned Item') . ' ' . '<a href="SelectProduct.php?StockID=' . urlencode($_POST['StockID']) . '">' . $_POST['StockID'] . '</a> ' . _('has been added to the database') . '<br />' . _('We also attempted to setup item purchase data and pricing.'));
 
 						if ($NoPricingData == 1) {
 							prnMsg(_('There is no pricing data to clone. Use the following link to add pricing.'));

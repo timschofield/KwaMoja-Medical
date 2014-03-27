@@ -28,12 +28,12 @@ function GetJobCards() {
 				$myrow['completedate'] = '0000-00-00';
 			} //$myrow['completedate'] == NULL
 			echo '<tr>
-					<td width=10%><a href="JobCards.php?DebtorNo=' . $_SESSION['CustomerID'] . '&BranchNo=' . $_GET['BranchNo'] . '&JobCardNo=' . $myrow['id'] . '&UpdateJob=1">' . $myrow['id'] . '</a></td>
+					<td width=10%><a href="JobCards.php?DebtorNo=' . urlencode($_SESSION['CustomerID']) . '&BranchNo=' . urlencode($_GET['BranchNo']) . '&JobCardNo=' . urlencode($myrow['id']) . '&UpdateJob=1">' . $myrow['id'] . '</a></td>
 					<td width=10%>' . $myrow['invoice'] . '</td>
 					<td width=10%>' . ConvertSQLDate($myrow['createdate']) . '</td>
 					<td width=10%>' . ConvertSQLDate($myrow['completedate']) . '</td>
 					<td width=50%>' . $myrow['description'] . '</td>
-					<td width=10%><a href="#" onclick=window.open("JobCards.php?DebtorNo=' . $_SESSION['CustomerID'] . '&BranchNo=' . $_GET['BranchNo'] . '&JobCardNo=' . $myrow['id'] . '&UpdateJob=1&JobCPrint=1","Test")><center>Print</center></a></td>
+					<td width=10%><a href="#" onclick=window.open("JobCards.php?DebtorNo=' . urlencode($_SESSION['CustomerID']) . '&BranchNo=' . urlencode($_GET['BranchNo']) . '&JobCardNo=' . urlencode($myrow['id']) . '&UpdateJob=1&JobCPrint=1","Test")><center>Print</center></a></td>
 				</tr>';
 		} //$myrow = DB_fetch_array($jobc_result)
 		echo '</td>';

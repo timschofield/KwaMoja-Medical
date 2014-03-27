@@ -249,23 +249,20 @@ if (!isset($_POST['SaveUpdateJob'])) {
 					echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 					echo '<br><div class="centre"><input type=submit name="UpdateJob" value="' . _('Update Job Card') . '">';
 					echo '</form>';
-					echo '<a href="JobCards.php?DebtorNo=' . $_SESSION['CustomerID'] . '&BranchNo=' . $_GET['BranchNo'] . '"><input type=button value="Close"></a></div>';
-				} //!isset($_POST['JobCPrint'])
-				else {
+					echo '<a href="JobCards.php?DebtorNo=' . urlencode($_SESSION['CustomerID']) . '&BranchNo=' . urlencode($_GET['BranchNo']) . '"><input type=button value="Close"></a></div>';
+				} else {
 					echo '<br>';
 				}
 
-			} //isset($_POST['UpdateJob'])
-			else {
+			} else {
 				echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 				echo '<br><div class="centre"><input type=submit name="SaveJob" value="' . _('Save Job Card') . '">';
 				echo '</form>';
-				echo '<a href="JobCards.php?DebtorNo=' . $_SESSION['CustomerID'] . '&BranchNo=' . $_GET['BranchNo'] . '"><input type=button value="Close"></a></div>';
+				echo '<a href="JobCards.php?DebtorNo=' . urlencode($_SESSION['CustomerID']) . '&BranchNo=' . urlencode($_GET['BranchNo']) . '"><input type=button value="Close"></a></div>';
 			}
 		}
 	}
-} //!isset($_POST['SaveUpdateJob'])
-else {
+} else {
 	// Insert new Account in DB
 	$DBValues = 'Description="' . $_POST["AddJobDescription"] . '",';
 	$DBValues = $DBValues . 'CompleteDate=DATE_FORMAT(STR_TO_DATE("' . $_POST["codate"] . '", "%d/%m/%Y"), "%Y/%m/%d"),';

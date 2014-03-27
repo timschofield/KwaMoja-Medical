@@ -517,7 +517,7 @@ if (isset($_SESSION['Statement'])) {
 			echo '<td></td><td class="number">' . number_format($_SESSION['Trans'][$i]->Amount, $_SESSION['Statement']->CurrDecimalPlaces) . '</td>';
 		}
 		if ($AllowImport == true) {
-			echo '<td><a href="' . $RootPath . '/ImportBankTransAnalysis.php?TransID=' . $i . '">' . _('Analysis') . '</a></td>';
+			echo '<td><a href="' . $RootPath . '/ImportBankTransAnalysis.php?TransID=' . urlencode($i) . '">' . _('Analysis') . '</a></td>';
 		}
 		echo '</tr>';
 	}
@@ -547,7 +547,6 @@ if (isset($_SESSION['Statement'])) {
 		</tr>
 		</table>';
 }
-
 
 include('includes/footer.inc');
 ?>

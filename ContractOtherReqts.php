@@ -40,7 +40,7 @@ if (isset($_POST['UpdateLines']) or isset($_POST['BackToHeader'])) {
 if (isset($_POST['BackToHeader'])) {
 	echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/Contracts.php?identifier=' . $identifier . '" />';
 	echo '<br />';
-	prnMsg(_('You should automatically be forwarded to the Contract page. If this does not happen perhaps the browser does not support META Refresh') . '<a href="' . $RootPath . '/Contracts.php?identifier=' . $identifier . '">' . _('click here') . '</a> ' . _('to continue'), 'info');
+	prnMsg(_('You should automatically be forwarded to the Contract page. If this does not happen perhaps the browser does not support META Refresh') . '<a href="' . $RootPath . '/Contracts.php?identifier=' . urlencode($identifier) . '">' . _('click here') . '</a> ' . _('to continue'), 'info');
 	include('includes/footer.inc');
 	exit;
 }

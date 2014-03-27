@@ -7,15 +7,9 @@ include('includes/SQL_CommonFunctions.inc');
 if (!isset($_GET['TransNo']) or $_GET['TransNo'] == '') {
 	$Title = _('Select Order To Print');
 	include('includes/header.inc');
-	echo '<div class="centre">
-			<br />
-			<br />
-			<br />';
+	echo '<div class="centre">';
 	prnMsg(_('Select an Order Number to Print before calling this page'), 'error');
-	echo '<br />
-			<br />
-			<br />
-			<table class="table_index">
+	echo '<table class="table_index">
 			<tr>
 				<td class="menu_group_item">
 					<ul>
@@ -24,11 +18,7 @@ if (!isset($_GET['TransNo']) or $_GET['TransNo'] == '') {
 					</ul>
 				</td>
 			</tr>
-			</table>
-			</div>
-			<br />
-			<br />
-			<br />';
+			</table>';
 	include('includes/footer.inc');
 	exit;
 }
@@ -116,15 +106,9 @@ $result = DB_query($sql, $ErrMsg);
 if (DB_num_rows($result) == 0) {
 	$Title = _('Print Packing Slip Error');
 	include('includes/header.inc');
-	echo '<div class="centre">
-			<br />
-			<br />
-			<br />';
+	echo '<div class="centre">';
 	prnMsg(_('Unable to Locate Order Number') . ' : ' . $_GET['TransNo'] . ' ', 'error');
-	echo '<br />
-			<br />
-			<br />
-			<table class="table_index">
+	echo '<table class="table_index">
 			<tr>
 				<td class="menu_group_item">
 				<ul>
@@ -133,11 +117,7 @@ if (DB_num_rows($result) == 0) {
 				</ul>
 				</td>
 			</tr>
-			</table>
-			</div>
-			<br />
-			<br />
-			<br />';
+			</table>';
 	include('includes/footer.inc');
 	exit;
 } elseif (DB_num_rows($result) == 1) {
@@ -152,11 +132,8 @@ if (DB_num_rows($result) == 0) {
 		$Title = _('Print Packing Slip Error');
 		include('includes/header.inc');
 		prnMsg(_('The packing slip for order number') . ' ' . $_GET['TransNo'] . ' ' . _('has previously been printed') . ' ' . _('It was printed on') . ' ' . ConvertSQLDate($myrow['datepackingslipprinted']) . '<br />' . _('This check is there to ensure that duplicate packing slips are not produced and dispatched more than once to the customer'), 'warn');
-		echo '<p><a href="' . $RootPath . '/PrintCustOrder.php?TransNo=' . $_GET['TransNo'] . '&Reprint=OK">' . _('Do a Re-Print') . ' (' . _('On Pre-Printed Stationery') . ') ' . _('Even Though Previously Printed') . '</a></p><p><a href="' . $RootPath . '/PrintCustOrder_generic.php?TransNo=' . $_GET['TransNo'] . '&Reprint=OK">' . _('Do a Re-Print') . ' (' . _('Plain paper') . ' - ' . _('A4') . ' ' . _('landscape') . ') ' . _('Even Though Previously Printed') . '</a></p>';
+		echo '<p><a href="' . $RootPath . '/PrintCustOrder.php?TransNo=' . urlencode($_GET['TransNo']) . '&Reprint=OK">' . _('Do a Re-Print') . ' (' . _('On Pre-Printed Stationery') . ') ' . _('Even Though Previously Printed') . '</a></p><p><a href="' . $RootPath . '/PrintCustOrder_generic.php?TransNo=' . $_GET['TransNo'] . '&Reprint=OK">' . _('Do a Re-Print') . ' (' . _('Plain paper') . ' - ' . _('A4') . ' ' . _('landscape') . ') ' . _('Even Though Previously Printed') . '</a></p>';
 
-		echo '<br />
-				<br />
-				<br />';
 		echo _('Or select another Order Number to Print');
 		echo '<table class="table_index">
 				<tr>
@@ -167,11 +144,7 @@ if (DB_num_rows($result) == 0) {
 					</ul>
 					</td>
 				</tr>
-			</table>
-			</div>
-			<br />
-			<br />
-			<br />';
+			</table>';
 
 		include('includes/footer.inc');
 		exit;
@@ -334,9 +307,7 @@ echo '<html>
 		</tr>
 	 	<tr>
 	 		<td align="center" colspan="4"> <b>' . _('Order Number') . ' ' . $_GET['TransNo'] . '</b>
-			<br />
-			<br />
-			<br /></td>
+			/td>
 	 	</tr>
 	 	<tr>
 	 		<td colspan="2" nowrap width="50%"> <b>' . $_SESSION['CompanyRecord']['coyname'] . '</b></td>
@@ -363,16 +334,10 @@ echo '<html>
 	 	<tr>
 	 		<td colspan="2" nowrap width="50%">
 	 			<b>' . $_SESSION['CompanyRecord']['email'] . '
-	 			<br />
-	 			<br />
-	 			<br />
 	 		</td>
 		 		<td nowrap width="50%">
 		   		<b>' . $myrow['deladd3'] . ' ' . $myrow['deladd4'] . ' ' . $myrow['deladd5'] . '
-		   		<br />
-		   		<br />
-		   		<br />
-		  		</td>
+		   		</td>
 	 	</tr>
 	</table>
 	<table border="1" width="60%" cellpadding="2" cellspacing="2">
@@ -382,9 +347,9 @@ if ($_GET['POLine'] == 1) {
 	echo '<td align="center">' . _('PO Line') . '</td>';
 }
 echo '<td align="center">' . _('Stock Code') . '</td>
-	<td align="center">' . _('Description') . '</td>
-	<td align="center">' . _('Quantity Ordered') . '</td>
-	<td align="center">' . _('Due Date') . '</td>
+		<td align="center">' . _('Description') . '</td>
+		<td align="center">' . _('Quantity Ordered') . '</td>
+		<td align="center">' . _('Due Date') . '</td>
    	</tr>';
 
 for ($j = 0; $j < $i; $j++) {

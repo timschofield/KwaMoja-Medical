@@ -563,19 +563,19 @@ function submit($PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $Supplie
 					}
 					$linectr++;
 					// Detail for both DateType of Order
-					printf('<td><a href="' . $RootPath . '/PO_OrderDetails.php?OrderNo=%s">%s</a></td>
-							<td>%s</td>
-							<td>%s</td>
-							<td>%s</td>
-							<td>%s</td>
-							<td class="number">%s</td>
-							<td class="number">%s</td>
-							<td class="number">%s</td>
-							<td class="number">%s</td>
-							<td>%s</td>
-							<td>%s</td>
-							<td>%s</td>
-							</tr>', $myrow['orderno'], $myrow['orderno'], $myrow['itemcode'], ConvertSQLDate($myrow['orddate']), $myrow['supplierno'], $myrow['suppname'], locale_number_format($myrow['quantityord'], $myrow['decimalplaces']), locale_number_format($myrow['extcost'], 2), locale_number_format($myrow['extprice'], 2), locale_number_format($myrow['qtyinvoiced'], $myrow['decimalplaces']), $myrow['linestatus'], ConvertSQLDate($myrow['deliverydate']), $myrow['description']);
+					echo '<td><a href="' . $RootPath . '/PO_OrderDetails.php?OrderNo=' . urlencode($myrow['orderno']) . '">' . $myrow['orderno'] . '</a></td>
+							<td>' . $myrow['itemcode'] . '</td>
+							<td>' . ConvertSQLDate($myrow['orddate']) . '</td>
+							<td>' . $myrow['supplierno'] . '</td>
+							<td>' . $myrow['suppname'] . '</td>
+							<td class="number">' . locale_number_format($myrow['quantityord'], $myrow['decimalplaces']) . '</td>
+							<td class="number">' . locale_number_format($myrow['extcost'], 2) . '</td>
+							<td class="number">' . locale_number_format($myrow['extprice'], 2) . '</td>
+							<td class="number">' . locale_number_format($myrow['qtyinvoiced'], $myrow['decimalplaces']) . '</td>
+							<td>' . $myrow['linestatus'] . '</td>
+							<td>' . ConvertSQLDate($myrow['deliverydate']) . '</td>
+							<td>' . $myrow['description'] . '</td>
+							</tr>';
 					$LastDecimalPlaces = $myrow['decimalplaces'];
 					$TotalQty += $myrow['quantityord'];
 					$TotalExtCost += $myrow['extcost'];
@@ -583,19 +583,19 @@ function submit($PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $Supplie
 					$TotalInvQty += $myrow['qtyinvoiced'];
 				} //END WHILE LIST LOOP
 				// Print totals
-				printf('<tr>
-							<td>%s</td>
-							<td>%s</td>
-							<td>%s</td>
-							<td>%s</td>
-							<td>%s</td>
-							<td class="number">%s</td>
-							<td class="number">%s</td>
-							<td class="number">%s</td>
-							<td class="number">%s</td>
-							<td>%s</td>
-							<td>%s</td>
-							</tr>', _('Totals'), _('Lines - ') . $linectr, ' ', ' ', ' ', locale_number_format($TotalQty, 2), locale_number_format($TotalExtCost, 2), locale_number_format($TotalExtPrice, 2), locale_number_format($TotalInvQty, 2), ' ', ' ');
+				echo '<tr>
+						<td>' . _('Totals') . '</td>
+						<td>' . _('Lines') . ' - ' . $linectr . '</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td class="number">' . locale_number_format($TotalQty, 2) . '</td>
+						<td class="number">' . locale_number_format($TotalExtCost, 2) . '</td>
+						<td class="number">' . locale_number_format($TotalExtPrice, 2) . '</td>
+						<td class="number">' . locale_number_format($TotalInvQty, 2) . '</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>';
 			} else {
 				// Header for Date Type of Delivery Date
 				echo '<tr>

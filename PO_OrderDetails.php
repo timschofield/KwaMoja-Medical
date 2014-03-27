@@ -160,10 +160,10 @@ echo '<table class="selection" cellpadding="2">
 
 if ($myrow['dateprinted'] == '') {
 	echo '<i>' . _('Not yet printed') . '</i> &nbsp; &nbsp; ';
-	echo '[<a href="PO_PDFPurchOrder.php?OrderNo=' . $_GET['OrderNo'] . '">' . _('Print') . '</a>]';
+	echo '[<a href="PO_PDFPurchOrder.php?OrderNo=' . urlencode($_GET['OrderNo']) . '">' . _('Print') . '</a>]';
 } else {
 	echo _('Printed on') . ' ' . ConvertSQLDate($myrow['dateprinted']) . '&nbsp; &nbsp;';
-	echo '[<a href="PO_PDFPurchOrder.php?OrderNo=' . $_GET['OrderNo'] . '">' . _('Print a Copy') . '</a>]';
+	echo '[<a href="PO_PDFPurchOrder.php?OrderNo=' . urlencode($_GET['OrderNo']) . '">' . _('Print a Copy') . '</a>]';
 }
 
 echo '</td></tr>';

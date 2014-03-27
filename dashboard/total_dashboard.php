@@ -49,7 +49,7 @@ echo '<div class="centre">
 			<tr>
 				<th colspan="2" style="margin:0px;padding:0px;background: transparent;">
 					<div class="CanvasTitle">' . _('Sales/Purchase Order Report') . '
-						<a href="' . $RootPath . 'Dashboard.php?Remove=' . $myrow['id'] . '" target="_parent" id="CloseButton">X</a>
+						<a href="' . $RootPath . 'Dashboard.php?Remove=' . urlencode($myrow['id']) . '" target="_parent" id="CloseButton">X</a>
 					</div>
 				</th>
 			</tr>

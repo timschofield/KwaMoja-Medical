@@ -63,8 +63,7 @@ Get the page going....
 ********************************************/
 echo '<div class="centre">
 		<br />
-		<a href="' . $RootPath . '/GoodsReceived.php?identifier=' . $identifier . '">' . _('Back To Purchase Order') . ' # ' . $_SESSION['PO' . $identifier]->OrderNo . '</a>
-		<br />
+		<a href="' . $RootPath . '/GoodsReceived.php?identifier=' . urlencode($identifier) . '">' . _('Back To Purchase Order') . ' # ' . $_SESSION['PO' . $identifier]->OrderNo . '</a>
 		<h4>' . _('Receive controlled item') . ' ' . $LineItem->StockID . ' - ' . $LineItem->ItemDescription . ' ' . _('on order') . ' ' . $_SESSION['PO' . $identifier]->OrderNo . ' ' . _('from') . ' ' . $_SESSION['PO' . $identifier]->SupplierName . '</h4>
 	</div>';
 

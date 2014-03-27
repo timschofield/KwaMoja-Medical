@@ -55,7 +55,7 @@ echo '<table border="0" cellspacing="0" cellpadding="2" style="max-width:100%;wi
 		<tr>
 			<th colspan="4" style="margin:0px;padding:0px;background: transparent;">
 				<div class="CanvasTitle">' . _('MRP') . '
-					<a href="' . $RootPath . 'Dashboard.php?Remove=' . $myrow['id'] . '" target="_parent" id="CloseButton">X</a>
+					<a href="' . $RootPath . 'Dashboard.php?Remove=' . urlencode($myrow['id']) . '" target="_parent" id="CloseButton">X</a>
 				</div>
 			</th>
 		</tr>';
@@ -95,7 +95,7 @@ while ($row = DB_fetch_array($searchresult)) {
 	}
 	$qoh = locale_number_format($row['qoh'], $row['decimalplaces']);
 
-	echo '<td><a href="' . $RootPath . '/StockStatus.php?StockID=' . $StockID . '" target="_blank">' . $row['stockid'] . '</td>
+	echo '<td><a href="' . $RootPath . '/StockStatus.php?StockID=' . urlencode($StockID) . '" target="_blank">' . $row['stockid'] . '</td>
 		<td>' . $row['description'] . '</td>
 		<td class="number">' . $qoh . '</td>
 		<td>' . $row['units'] . '</td>

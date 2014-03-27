@@ -1195,7 +1195,7 @@ else { //dont require customer selection
 	} // the order session is started or there is a new item being added
 	if (isset($_POST['DeliveryDetails'])) {
 		echo '<meta http-equiv="refresh" content="0; url=' . $RootPath . '/DeliveryDetails.php?identifier=' . $identifier . '">';
-		prnMsg(_('You should automatically be forwarded to the entry of the delivery details page') . '. ' . _('if this does not happen') . ' (' . _('if the browser does not support META Refresh') . ') ' . '<a href="' . $RootPath . '/DeliveryDetails.php?identifier=' . $identifier . '">' . _('click here') . '</a> ' . _('to continue'), 'info');
+		prnMsg(_('You should automatically be forwarded to the entry of the delivery details page') . '. ' . _('if this does not happen') . ' (' . _('if the browser does not support META Refresh') . ') ' . '<a href="' . $RootPath . '/DeliveryDetails.php?identifier=' . urlencode($identifier) . '">' . _('click here') . '</a> ' . _('to continue'), 'info');
 		exit;
 	} //isset($_POST['DeliveryDetails'])
 

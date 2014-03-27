@@ -168,14 +168,15 @@ $GRNResults = DB_query($SQL);
 
 if (DB_num_rows($GRNResults) == 0) {
 	prnMsg(_('There are no outstanding goods received from') . ' ' . $_SESSION['SuppTrans']->SupplierName . ' ' . _('that have not been invoiced by them') . '<br />' . _('The goods must first be received using the link below to select purchase orders to receive'), 'warn');
-	echo '<div class="centre"><p><a href="' . $RootPath . '/PO_SelectOSPurchOrder.php?SupplierID=' . $_SESSION['SuppTrans']->SupplierID . '">' . _('Select Purchase Orders to Receive') . '</a></p></div>';
+	echo '<div class="centre">
+			<a href="' . $RootPath . '/PO_SelectOSPurchOrder.php?SupplierID=' . urlencode($_SESSION['SuppTrans']->SupplierID) . '">' . _('Select Purchase Orders to Receive') . '</a>
+		</div>';
 	include('includes/footer.inc');
 	exit;
 } //DB_num_rows($GRNResults) == 0
 
 /*Set up a table to show the GRNs outstanding for selection */
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 if (!isset($_SESSION['SuppTransTmp'])) {
@@ -306,7 +307,6 @@ else {
 	} //count($_SESSION['SuppTransTmp']->GRNs) > 0
 }
 
-echo '</div>
-	  </form>';
+echo '</form>';
 include('includes/footer.inc');
 ?>

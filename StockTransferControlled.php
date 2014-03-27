@@ -57,15 +57,12 @@ if (isset($TransferItem)) {
 
 	echo _('Transfer Items is set equal to') . ' ' . $TransferItem;
 
-	echo '<br />
-			<a href="' . $RootPath . '/StockLocTransferReceive.php?StockID=' . $LineItem->StockID . '">' . _('Back To Transfer Screen') . '</a>';
+	echo '<a href="' . $RootPath . '/StockLocTransferReceive.php?StockID=' . urlencode($LineItem->StockID) . '">' . _('Back To Transfer Screen') . '</a>';
 } else {
-	echo '<br />
-			<a href="' . $RootPath . '/StockTransfers.php?StockID=' . $LineItem->StockID . '">' . _('Back To Transfer Screen') . '</a>';
+	echo '<a href="' . $RootPath . '/StockTransfers.php?StockID=' . urlencode($LineItem->StockID) . '">' . _('Back To Transfer Screen') . '</a>';
 }
 
-echo '<br />
-	<font size="2"><b>' . _('Transfer of controlled item') . ' ' . $LineItem->StockID . ' - ' . $LineItem->ItemDescription . '</b></font>
+echo '<font size="2"><b>' . _('Transfer of controlled item') . ' ' . $LineItem->StockID . ' - ' . $LineItem->ItemDescription . '</b></font>
 	</div>';
 
 /** vars needed by InputSerialItem : **/

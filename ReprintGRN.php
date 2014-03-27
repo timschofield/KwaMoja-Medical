@@ -101,7 +101,7 @@ if (isset($_POST['Show'])) {
 			<td>' . $myrow['itemdescription'] . '</td>
 			<td>' . $myrow['deliverydate'] . '</td>
 			<td class="number">' . locale_number_format($myrow['qtyrecd'], $myrow['decimalplaces']) . '</td>
-			<td><a href="PDFGrn.php?GRNNo=' . $myrow['grnbatch'] . '&PONo=' . $_POST['PONumber'] . '">' . _('Reprint') . '</a></td>
+			<td><a href="PDFGrn.php?GRNNo=' . urlencode($myrow['grnbatch']) . '&PONo=' . urlencode($_POST['PONumber']) . '">' . _('Reprint') . '</a></td>
 		</tr>';
 	}
 	echo '</table>';

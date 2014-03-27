@@ -592,7 +592,7 @@ if (isset($_POST['submit'])) {
 			prnMsg(_('A new supplier for') . ' ' . $_POST['SuppName'] . ' ' . _('has been added to the database'), 'success');
 
 			echo '<p>
-					<a href="' . $RootPath . '/SupplierContacts.php?SupplierID=' . $SupplierID . '">' . _('Review Supplier Contact Details') . '</a>
+					<a href="' . $RootPath . '/SupplierContacts.php?SupplierID=' . urlencode($SupplierID) . '">' . _('Review Supplier Contact Details') . '</a>
 				  </p>';
 
 			unset($SupplierID);

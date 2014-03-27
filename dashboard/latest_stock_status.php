@@ -56,7 +56,8 @@ $myrow = DB_fetch_array($result);
 echo '<table style="max-width:100%;width:99%;" border="0" cellspacing="0" cellpadding="1">
       <tr>
         <th colspan="4" style="margin:0px;padding:0px;background: transparent;">
-			<div class="CanvasTitle">' . _('Latest stock status') . '<a href="' . $RootPath . 'Dashboard.php?Remove=' . $myrow['id'] . '" target="_parent" id="CloseButton">X</a>
+			<div class="CanvasTitle">' . _('Latest stock status') . '
+				<a href="' . $RootPath . 'Dashboard.php?Remove=' . urlencode($myrow['id']) . '" target="_parent" id="CloseButton">X</a>
 			</div>
 		</th>
       </tr>';

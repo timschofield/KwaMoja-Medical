@@ -58,7 +58,7 @@ echo '<div align="center">
       <tr>
         <th colspan="3" style="margin:0px;padding:0px;background: transparent;">
 			<div class="CanvasTitle">' . _('Work orders') . '
-				<a href="' . $RootPath . 'Dashboard.php?Remove=' . $myrow['id'] . '" target="_parent" id="CloseButton">X</a>
+				<a href="' . $RootPath . 'Dashboard.php?Remove=' . urlencode($myrow['id']) . '" target="_parent" id="CloseButton">X</a>
 			</div>
 		</th>
       </tr>';
@@ -100,7 +100,7 @@ while ($row = DB_fetch_array($WorkOrdersResult)) {
 	$qreq = locale_number_format($row['qtyreqd'], $row['decimalplaces']);
 	$qout = locale_number_format($row['qtyreqd'] - $row['qtyrecd'], $row['decimalplaces']);
 
-	echo '<td><a href="' . $RootPath . '/StockStatus.php?StockID=' . $StockID . '" target="_blank">' . $row['stockid'] . ' -' . $row['description'] . '</td>
+	echo '<td><a href="' . $RootPath . '/StockStatus.php?StockID=' . urlencode($StockID) . '" target="_blank">' . $row['stockid'] . ' -' . $row['description'] . '</td>
 			<td class="number">' . $qreq . '</td>
 			<td class="number">' . $qout . '</td>
 		</tbody>';

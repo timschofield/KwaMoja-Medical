@@ -253,9 +253,9 @@ if (!isset($_POST['submit']) and isset($_POST['supplierid'])) {
 			$result = SendMailBySmtp($mail, $Recipients);
 		}
 		if ($result) {
-			prnMsg(_('The accepted offers from') . ' ' . $SupplierName . ' ' . _('have been converted to purchase orders and an email sent to') . ' ' . $Email . "\n" . _('Please review the order contents') . ' ' . '<a href="' . $RootPath . '/PO_Header.php?ModifyOrderNumber=' . $OrderNo . '">' . _('here') . '</a>', 'success');
+			prnMsg(_('The accepted offers from') . ' ' . $SupplierName . ' ' . _('have been converted to purchase orders and an email sent to') . ' ' . $Email . "\n" . _('Please review the order contents') . ' ' . '<a href="' . $RootPath . '/PO_Header.php?ModifyOrderNumber=' . urlencode($OrderNo) . '">' . _('here') . '</a>', 'success');
 		} else {
-			prnMsg(_('The accepted offers from') . ' ' . $SupplierName . ' ' . _('have been converted to purcharse orders but failed to mail, you can view the order contents') . ' ' . '<a href="' . $RootPath . '/PO_Header.php?ModifyOrderNumber=' . $OrderNo . '">' . _('here') . '</a>', 'warn');
+			prnMsg(_('The accepted offers from') . ' ' . $SupplierName . ' ' . _('have been converted to purcharse orders but failed to mail, you can view the order contents') . ' ' . '<a href="' . $RootPath . '/PO_Header.php?ModifyOrderNumber=' . urlencode($OrderNo) . '">' . _('here') . '</a>', 'warn');
 		}
 	}
 	if (sizeOf($RejectsArray) > 0) {

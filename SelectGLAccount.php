@@ -35,9 +35,7 @@ if (isset($_POST['Search'])) {
 }
 
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Search') . '" alt="' . _('Search for General Ledger Accounts') . '" />' . ' ' . _('Search for General Ledger Accounts') . '</p>';
-echo '<br />
-		<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-echo '<div>';
+echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 echo '<table class="selection" summary="' . _('Criteria for inquiry') . '">
@@ -67,8 +65,7 @@ while ($GroupRow = DB_fetch_array($GroupResult)) {
 }
 echo '</select></td>
 	</tr>
-	</table>
-	<br />';
+	</table>';
 
 echo '<div class="centre">
 		<input type="submit" name="Search" value="' . _('Search Now') . '" />
@@ -77,10 +74,9 @@ echo '<div class="centre">
 
 if (isset($result) and DB_num_rows($result) > 0) {
 
-	echo '<br />
-	<form onSubmit="return VerifyForm(this);" action="GLAccountInquiry.php" method="post" class="noPrint">';
+	echo '<form onSubmit="return VerifyForm(this);" action="GLAccountInquiry.php" method="post" class="noPrint">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-	echo '<br /><table class="selection" summary="' . _('List of GL Accounts') . '">';
+	echo '<table class="selection" summary="' . _('List of GL Accounts') . '">';
 
 	echo '<tr>
 			<th class="SortableColumn">' . _('Code') . '</th>
@@ -90,26 +86,21 @@ if (isset($result) and DB_num_rows($result) > 0) {
 		</tr>';
 
 	while ($myrow = DB_fetch_array($result)) {
-		printf('<tr>
-					<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td><a href="%s/GLAccountInquiry.php?Account=%s&amp;Show=Yes"><img width="24px" src="%s/css/%s/images/magnifier.png" title="' . _('Inquiry') . '" alt="' . _('Inquiry') . '" /></td>
-					<td><a href="%s/GLAccounts.php?SelectedAccount=%s"><img width="24px" src="%s/css/%s/images/maintenance.png" title="' . _('Edit') . '" alt="' . _('Edit') . '" /></a>
-				</tr>',
-					htmlspecialchars($myrow['accountcode'],ENT_QUOTES,'UTF-8',false),
-					htmlspecialchars($myrow['accountname'],ENT_QUOTES,'UTF-8',false),
-					$myrow['group_'],
-					$myrow['pl'],
-					$RootPath,
-					$myrow['accountcode'],
-					$RootPath,
-					$Theme,
-					$RootPath,
-					$myrow['accountcode'],
-					$RootPath,
-					$Theme);
+		echo '<tr>
+				<td>' . htmlspecialchars($myrow['accountcode'],ENT_QUOTES,'UTF-8',false) . '</td>
+				<td>' . htmlspecialchars($myrow['accountname'],ENT_QUOTES,'UTF-8',false) . '</td>
+				<td>' . $myrow['group_'] . '</td>
+				<td>' . $myrow['pl'] . '</td>
+				<td>
+					<a href="' . $RootPath . '/GLAccountInquiry.php?Account=' . urlencode($myrow['accountcode']) . '&amp;Show=Yes">
+						<img width="24px" src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Inquiry') . '" alt="' . _('Inquiry') . '" />
+					</a>
+				</td>
+				<td>
+					<a href="' . $RootPath . '/GLAccounts.php?SelectedAccount=' . urlencode($myrow['accountcode']) . '">
+						<img width="24px" src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Edit') . '" alt="' . _('Edit') . '" />
+					</a>
+			</tr>';
 	}
 	//end of while loop
 
@@ -118,8 +109,7 @@ if (isset($result) and DB_num_rows($result) > 0) {
 }
 //end if results to show
 
-echo '</div>
-	  </form>';
+echo '</form>';
 
 include('includes/footer.inc');
 ?>

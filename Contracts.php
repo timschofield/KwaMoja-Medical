@@ -88,14 +88,14 @@ if (isset($_SESSION['Contract' . $identifier]) and (isset($_POST['EnterContractB
 	if (isset($_POST['EnterContractBOM']) and !$InputError) {
 		echo '<meta http-equiv="refresh" content="0; url=' . $RootPath . '/ContractBOM.php?identifier=' . $identifier . '" />';
 		echo '<br />';
-		prnMsg(_('You should automatically be forwarded to the entry of the Contract line items page') . '. ' . _('If this does not happen') . ' (' . _('if the browser does not support META Refresh') . ') ' . '<a href="' . $RootPath . '/ContractBOM.php?identifier=' . $identifier . '">' . _('click here') . '</a> ' . _('to continue'), 'info');
+		prnMsg(_('You should automatically be forwarded to the entry of the Contract line items page') . '. ' . _('If this does not happen') . ' (' . _('if the browser does not support META Refresh') . ') ' . '<a href="' . $RootPath . '/ContractBOM.php?identifier=' . urlencode($identifier) . '">' . _('click here') . '</a> ' . _('to continue'), 'info');
 		include('includes/footer.inc');
 		exit;
 	}
 	if (isset($_POST['EnterContractRequirements']) and !$InputError) {
 		echo '<meta http-equiv="refresh" content="0; url=' . $RootPath . '/ContractOtherReqts.php?identifier=' . $identifier . '" />';
 		echo '<br />';
-		prnMsg(_('You should automatically be forwarded to the entry of the Contract requirements page') . '. ' . _('If this does not happen') . ' (' . _('if the browser does not support META Refresh') . ') ' . '<a href="' . $RootPath . '/ContractOtherReqts.php?identifier=' . $identifier . '">' . _('click here') . '</a> ' . _('to continue'), 'info');
+		prnMsg(_('You should automatically be forwarded to the entry of the Contract requirements page') . '. ' . _('If this does not happen') . ' (' . _('if the browser does not support META Refresh') . ') ' . '<a href="' . $RootPath . '/ContractOtherReqts.php?identifier=' . urlencode($identifier) . '">' . _('click here') . '</a> ' . _('to continue'), 'info');
 		include('includes/footer.inc');
 		exit;
 	}
@@ -378,7 +378,7 @@ if (isset($_POST['CommitContract']) or isset($_POST['CreateQuotation'])) {
 			$DbgMsg = _('The SQL that failed to update the quotation was');
 			$UpdQuoteResult = DB_query($sql, $ErrMsg, $DbgMsg);
 			prnMsg(_('The contract quotation has been updated based on the new contract cost and margin'), 'success');
-			echo '<br /><a href="' . $RootPath . '/SelectSalesOrder.php?OrderNumber=' . $_SESSION['Contract' . $identifier]->OrderNo . '&amp;Quotations=Quotes_Only">' . _('Go to Quotation') . ' ' . $_SESSION['Contract' . $identifier]->OrderNo . '</a>';
+			echo '<br /><a href="' . $RootPath . '/SelectSalesOrder.php?OrderNumber=' . urlencode($_SESSION['Contract' . $identifier]->OrderNo) . '&amp;Quotations=Quotes_Only">' . _('Go to Quotation') . ' ' . $_SESSION['Contract' . $identifier]->OrderNo . '</a>';
 
 		}
 		if ($ExistingContract['status'] == 0 and $_POST['Status'] == 1) {
@@ -598,7 +598,7 @@ if (isset($_POST['CreateQuotation']) and !$InputError) {
 	$_SESSION['Contract' . $identifier]->Status = 1;
 	$_SESSION['Contract' . $identifier]->OrderNo = $OrderNo;
 	prnMsg(_('The contract has been made into quotation number') . ' ' . $OrderNo, 'info');
-	echo '<br /><a href="' . $RootPath . '/SelectSalesOrder.php?OrderNumber=' . $OrderNo . '&amp;Quotations=Quotes_Only">' . _('Go to quotation number') . ': ' . $OrderNo . '</a>';
+	echo '<br /><a href="' . $RootPath . '/SelectSalesOrder.php?OrderNumber=' . urlencode($OrderNo) . '&amp;Quotations=Quotes_Only">' . _('Go to quotation number') . ': ' . $OrderNo . '</a>';
 
 } //end of if making a quotation
 
@@ -975,7 +975,7 @@ if (!isset($_SESSION['Contract' . $identifier]->DebtorNo) or $_SESSION['Contract
 	if ($_SESSION['Contract' . $identifier]->Status >= 1) {
 		echo '<tr>
 				<td>' . _('Quotation Reference/Sales Order No') . ':</td>
-				<td><a href="' . $RootPath . '/SelectSalesOrder.php?OrderNumber=' . $_SESSION['Contract' . $identifier]->OrderNo . '&amp;Quotations=Quotes_Only">' . $_SESSION['Contract' . $identifier]->OrderNo . '</a></td>
+				<td><a href="' . $RootPath . '/SelectSalesOrder.php?OrderNumber=' . urlencode($_SESSION['Contract' . $identifier]->OrderNo) . '&amp;Quotations=Quotes_Only">' . $_SESSION['Contract' . $identifier]->OrderNo . '</a></td>
 			</tr>';
 	}
 	if ($_SESSION['Contract' . $identifier]->Status != 2 and isset($_SESSION['Contract' . $identifier]->WO)) {

@@ -234,7 +234,7 @@ if ($_SESSION['CustomerID'] != '' and !isset($_POST['Search']) and !isset($_POST
 		echo '<a href="' . $RootPath . '/CounterSales.php?DebtorNo=' . urlencode($_SESSION['CustomerID']) . '&amp;BranchNo=' . $_SESSION['BranchCode'] . '">' . _('Create a Counter Sale for this Customer') . '</a>';
 	} //isset($_SESSION['CustomerID']) and isset($_SESSION['BranchCode'])
 	echo '</td><td valign="top" class="select">';
-	echo '<a href="' . $RootPath . '/Customers.php?">' . _('Add a New Customer') . '</a>';
+	echo '<a href="' . $RootPath . '/Customers.php">' . _('Add a New Customer') . '</a>';
 	echo '<a href="' . $RootPath . '/Customers.php?DebtorNo=' . urlencode($_SESSION['CustomerID']) . '">' . _('Modify Customer Details') . '</a>';
 	echo '<a href="' . $RootPath . '/CustomerBranches.php?DebtorNo=' . urlencode($_SESSION['CustomerID']) . '">' . _('Add/Modify/Delete Customer Branches') . '</a>';
 	echo '<a href="' . $RootPath . '/SelectProduct.php">' . _('Special Customer Prices') . '</a>';
@@ -257,7 +257,7 @@ else {
 			<td class="select"></td>
 			<td class="select">';
 	if (!isset($_SESSION['SalesmanLogin']) or $_SESSION['SalesmanLogin'] == '') {
-		echo '<a href="' . $RootPath . '/Customers.php?">' . _('Add a New Customer') . '</a><br />';
+		echo '<a href="' . $RootPath . '/Customers.php">' . _('Add a New Customer') . '</a><br />';
 	} //!isset($_SESSION['SalesmanLogin']) or $_SESSION['SalesmanLogin'] == ''
 	echo '</td></tr></table>';
 }
@@ -637,7 +637,7 @@ if (isset($_SESSION['CustomerID']) and $_SESSION['CustomerID'] != '') {
 					<th>' . _('Notes') . '</th>
 					<th>' . _('Edit') . '</th>
 					<th>' . _('Delete') . '</th>
-					<th> <a href="AddCustomerContacts.php?DebtorNo=' . $_SESSION['CustomerID'] . '">' . _('Add New Contact') . '</a> </th>
+					<th> <a href="AddCustomerContacts.php?DebtorNo=' . urlencode($_SESSION['CustomerID']) . '">' . _('Add New Contact') . '</a> </th>
 				</tr>';
 			$k = 0; //row colour counter
 			while ($myrow = DB_fetch_array($result)) {
@@ -654,15 +654,18 @@ if (isset($_SESSION['CustomerID']) and $_SESSION['CustomerID'] != '') {
 					<td>' . $myrow[4] . '</td>
 					<td><a href="mailto:' . $myrow[6] . '">' . $myrow[6] . '</a></td>
 					<td>' . $myrow[5] . '</td>
-					<td><a href="AddCustomerContacts.php?Id=' . $myrow[0] . '&amp;DebtorNo=' . $myrow[1] . '">' . _('Edit') . '</a></td>
-					<td><a href="AddCustomerContacts.php?Id=' . $myrow[0] . '&amp;DebtorNo=' . $myrow[1] . '&amp;delete=1">' . _('Delete') . '</a></td>
+					<td><a href="AddCustomerContacts.php?Id=' . urlencode($myrow[0]) . '&amp;DebtorNo=' . urlencode($myrow[1]) . '">' . _('Edit') . '</a></td>
+					<td><a href="AddCustomerContacts.php?Id=' . urlencode($myrow[0]) . '&amp;DebtorNo=' . urlencode($myrow[1]) . '&amp;delete=1">' . _('Delete') . '</a></td>
 					</tr>';
 			} //END WHILE LIST LOOP
 			echo '</table>';
 		} //DB_num_rows($result) <> 0
 		else {
 			if ($_SESSION['CustomerID'] != "") {
-				echo '<br /><div class="centre"><img src="' . $RootPath . '/css/' . $Theme . '/images/group_add.png" title="' . _('Customer Contacts') . '" alt="" /><a href="AddCustomerContacts.php?DebtorNo=' . $_SESSION['CustomerID'] . '">' . ' ' . _('Add New Contact') . '</a></div>';
+				echo '<div class="centre">
+						<img src="' . $RootPath . '/css/' . $Theme . '/images/group_add.png" title="' . _('Customer Contacts') . '" alt="" />
+						<a href="AddCustomerContacts.php?DebtorNo=' . urlencode($_SESSION['CustomerID']) . '">' . ' ' . _('Add New Contact') . '</a>
+					</div>';
 			} //$_SESSION['CustomerID'] != ""
 		}
 		// Customer Notes
@@ -677,7 +680,7 @@ if (isset($_SESSION['CustomerID']) and $_SESSION['CustomerID'] != '') {
 				ORDER BY date DESC";
 		$result = DB_query($sql);
 		if (DB_num_rows($result) <> 0) {
-			echo '<br /><div class="centre"><img src="' . $RootPath . '/css/' . $Theme . '/images/note_add.png" title="' . _('Customer Notes') . '" alt="" />' . ' ' . _('Customer Notes') . '</div><br />';
+			echo '<div class="centre"><img src="' . $RootPath . '/css/' . $Theme . '/images/note_add.png" title="' . _('Customer Notes') . '" alt="" />' . ' ' . _('Customer Notes') . '</div><br />';
 			echo '<table width="45%">';
 			echo '<tr>
 					<th class="SortableColumn">' . _('date') . '</th>
@@ -686,7 +689,7 @@ if (isset($_SESSION['CustomerID']) and $_SESSION['CustomerID'] != '') {
 					<th class="SortableColumn">' . _('priority') . '</th>
 					<th>' . _('Edit') . '</th>
 					<th>' . _('Delete') . '</th>
-					<th> <a href="AddCustomerNotes.php?DebtorNo=' . $_SESSION['CustomerID'] . '">' . ' ' . _('Add New Note') . '</a> </th>
+					<th> <a href="AddCustomerNotes.php?DebtorNo=' . urlencode($_SESSION['CustomerID']) . '">' . ' ' . _('Add New Note') . '</a> </th>
 				</tr>';
 			$k = 0; //row colour counter
 			while ($myrow = DB_fetch_array($result)) {
@@ -702,15 +705,18 @@ if (isset($_SESSION['CustomerID']) and $_SESSION['CustomerID'] != '') {
 					<td>' . $myrow['note'] . '</td>
 					<td><a href="' . $myrow['href'] . '">' . $myrow['href'] . '</a></td>
 					<td>' . $myrow['priority'] . '</td>
-					<td><a href="AddCustomerNotes.php?Id=' . $myrow['noteid'] . '&amp;DebtorNo=' . $myrow['debtorno'] . '">' . _('Edit') . '</a></td>
-					<td><a href="AddCustomerNotes.php?Id=' . $myrow['noteid'] . '&amp;DebtorNo=' . $myrow['debtorno'] . '&amp;delete=1">' . _('Delete') . '</a></td>
+					<td><a href="AddCustomerNotes.php?Id=' . urlencode($myrow['noteid']) . '&amp;DebtorNo=' . urlencode($myrow['debtorno']) . '">' . _('Edit') . '</a></td>
+					<td><a href="AddCustomerNotes.php?Id=' . urlencode($myrow['noteid']) . '&amp;DebtorNo=' . urlencode($myrow['debtorno']) . '&amp;delete=1">' . _('Delete') . '</a></td>
 					</tr>';
 			} //END WHILE LIST LOOP
 			echo '</table>';
 		} //DB_num_rows($result) <> 0
 		else {
 			if ($_SESSION['CustomerID'] != '') {
-				echo '<br /><div class="centre"><img src="' . $RootPath . '/css/' . $Theme . '/images/note_add.png" title="' . _('Customer Notes') . '" alt="" /><a href="AddCustomerNotes.php?DebtorNo=' . $_SESSION['CustomerID'] . '">' . ' ' . _('Add New Note for this Customer') . '</a></div>';
+				echo '<div class="centre">
+						<img src="' . $RootPath . '/css/' . $Theme . '/images/note_add.png" title="' . _('Customer Notes') . '" alt="" />
+						<a href="AddCustomerNotes.php?DebtorNo=' . urlencode($_SESSION['CustomerID']) . '">' . ' ' . _('Add New Note for this Customer') . '</a>
+					</div>';
 			} //$_SESSION['CustomerID'] != ''
 		}
 		// Custome Type Notes
@@ -719,7 +725,9 @@ if (isset($_SESSION['CustomerID']) and $_SESSION['CustomerID'] != '') {
 				ORDER BY date DESC";
 		$result = DB_query($sql);
 		if (DB_num_rows($result) <> 0) {
-			echo '<br /><div class="centre"><img src="' . $RootPath . '/css/' . $Theme . '/images/folder_add.png" title="' . _('Customer Type (Group) Notes') . '" alt="" />' . ' ' . _('Customer Type (Group) Notes for') . ':<b> ' . $CustomerTypeName . '</b>' . '</div><br />';
+			echo '<div class="centre">
+					<img src="' . $RootPath . '/css/' . $Theme . '/images/folder_add.png" title="' . _('Customer Type (Group) Notes') . '" alt="" />' . ' ' . _('Customer Type (Group) Notes for') . ':<b> ' . $CustomerTypeName . '</b>' . '
+				</div>';
 			echo '<table width="45%">';
 			echo '<tr>
 				 	<th class="SortableColumn">' . _('date') . '</th>
@@ -728,7 +736,7 @@ if (isset($_SESSION['CustomerID']) and $_SESSION['CustomerID'] != '') {
 				   	<th class="SortableColumn">' . _('priority') . '</th>
 				   	<th>' . _('Edit') . '</th>
 				   	<th>' . _('Delete') . '</th>
-				   	<th><a href="AddCustomerTypeNotes.php?DebtorType=' . $CustomerType . '">' . _('Add New Group Note') . '</a></th>
+				   	<th><a href="AddCustomerTypeNotes.php?DebtorType=' . urlencode($CustomerType) . '">' . _('Add New Group Note') . '</a></th>
 				  </tr>';
 			$k = 0; //row colour counter
 			while ($myrow = DB_fetch_array($result)) {
@@ -744,15 +752,17 @@ if (isset($_SESSION['CustomerID']) and $_SESSION['CustomerID'] != '') {
 					<td>' . $myrow[3] . '</td>
 					<td>' . $myrow[2] . '</td>
 					<td>' . $myrow[5] . '</td>
-					<td><a href="AddCustomerTypeNotes.php?Id=' . $myrow[0] . '&amp;DebtorType=' . $myrow[1] . '">' . _('Edit') . '</a></td>
-					<td><a href="AddCustomerTypeNotes.php?Id=' . $myrow[0] . '&amp;DebtorType=' . $myrow[1] . '&amp;delete=1">' . _('Delete') . '</a></td>
-					</tr>';
+					<td><a href="AddCustomerTypeNotes.php?Id=' . urlencode($myrow[0]) . '&amp;DebtorType=' . urlencode($myrow[1]) . '">' . _('Edit') . '</a></td>
+					<td><a href="AddCustomerTypeNotes.php?Id=' . urlencode($myrow[0]) . '&amp;DebtorType=' . urlencode($myrow[1]) . '&amp;delete=1">' . _('Delete') . '</a></td>
+				</tr>';
 			} //END WHILE LIST LOOP
 			echo '</table>';
 		} //DB_num_rows($result) <> 0
 		else {
 			if ($_SESSION['CustomerID'] != '') {
-				echo '<br /><div class="centre"><img src="' . $RootPath . '/css/' . $Theme . '/images/folder_add.png" title="' . _('Customer Group Notes') . '" alt="" /><a href="AddCustomerTypeNotes.php?DebtorType=' . $CustomerType . '">' . ' ' . _('Add New Group Note') . '</a></div><br />';
+				echo '<div class="centre"><img src="' . $RootPath . '/css/' . $Theme . '/images/folder_add.png" title="' . _('Customer Group Notes') . '" alt="" />
+						<a href="AddCustomerTypeNotes.php?DebtorType=' . urlencode($CustomerType) . '">' . ' ' . _('Add New Group Note') . '</a>
+					</div>';
 			} //$_SESSION['CustomerID'] != ''
 		}
 	} //$_SESSION['Extended_CustomerInfo'] == 1

@@ -117,7 +117,7 @@ if (!isset($_POST['Show'])) {
 					<td class="number">' . $myrow['tag'] . ' - ' . $myrow['tagdescription'] . '</td>';
 
 			if ($myrow['typeno'] != $LastJournal) {
-				echo '<td class="number"><a href="PDFGLJournal.php?JournalNo=' . $myrow['typeno'] . '">' . _('Print') . '</a></td></tr>';
+				echo '<td class="number"><a href="PDFGLJournal.php?JournalNo=' . urlencode($myrow['typeno']) . '">' . _('Print') . '</a></td></tr>';
 
 				$LastJournal = $myrow['typeno'];
 			} else {

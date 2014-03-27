@@ -161,7 +161,7 @@ if (isset($_POST['TaxAuthority']) and isset($_POST['PrintPDF']) and isset($_POST
 		$Title = _('Taxation Reporting Error');
 		include('includes/header.inc');
 		echo _('The accounts payable transaction details could not be retrieved because') . ' ' . DB_error_msg();
-		echo '<br /><a href="' . $RootPath . '/index.php?">' . _('Back to the menu') . '</a>';
+		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($debug == 1) {
 			echo '<br />' . $SQL;
 		}

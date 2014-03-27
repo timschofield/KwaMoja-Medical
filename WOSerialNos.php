@@ -227,7 +227,6 @@ if (isset($_POST['UpdateItems'])) {
 
 
 echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 echo '<input type="hidden" name="StockID" value="' . $StockID . '" />';
@@ -239,10 +238,11 @@ echo '<input type="hidden" name="NextSerialNo" value="' . $NextSerialNo . '" />'
 echo '<table class="selection">';
 
 if ($Serialised == 1 and $NextSerialNo > 0) {
-	echo '<tr><td>' . _('Add A Number of New Serial Numbers');
-	echo ':</td>
-		<td><input type="text" name="NumberToAdd" size="10" class="number" required="required" minlength="1" maxlength="10" value="1" /></td>
-		<td>' . _('Starting at') . ':</td><td align="right">' . $NextSerialNo . '</td>';
+	echo '<tr>
+			<td>' . _('Add A Number of New Serial Numbers') . ':</td>
+			<td><input type="text" name="NumberToAdd" size="10" class="number" required="required" minlength="1" maxlength="10" value="1" /></td>
+			<td>' . _('Starting at') . ':</td>
+			<td align="right">' . $NextSerialNo . '</td>';
 } else {
 	//Need to allow entry of batch or serial number and its a batch a quantity too for individual entry
 	if ($Serialised == 1) {
@@ -268,8 +268,7 @@ if ($Serialised == 1 and $NextSerialNo > 0) {
 
 echo '<td><input type="submit" name="AddControlledItems" value="' . _('Add') . '" /></td>
 	</tr>
-	</table>
-	<br />';
+	</table>';
 
 $sql = "SELECT serialno,
 				quantity,
@@ -284,8 +283,7 @@ $WOSerialNoResult = DB_query($sql, $ErrMsg);
 if (DB_num_rows($WOSerialNoResult) == 0) {
 	prnMsg(_('There are no serial items or batches yet defined for this work order item. Create new items first'), 'info');
 } else {
-	echo '<br />
-		<table class="selection">';
+	echo '<table class="selection">';
 	if ($Serialised == 1) {
 		$Header = '<tr>
 					<th>' . _('Serial No') . '</th>
@@ -335,10 +333,9 @@ if (DB_num_rows($WOSerialNoResult) == 0) {
 
 } //end of if there are woserialno items defined
 
-echo '<br /><a href="' . $RootPath . '/WorkOrderEntry.php?WO=' . $WO . '">' . _('Back To Work Order') . ' ' . $WO . '</a>';
+echo '<br /><a href="' . $RootPath . '/WorkOrderEntry.php?WO=' . urlencode($WO) . '">' . _('Back To Work Order') . ' ' . $WO . '</a>';
 
-echo '</div>
-	  </form>';
+echo '</form>';
 
 include('includes/footer.inc');
 

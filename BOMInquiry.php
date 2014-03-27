@@ -204,7 +204,7 @@ if (isset($StockID) and $StockID != "") {
 				$k++;
 			}
 
-			$ComponentLink = '<a href="' . $RootPath . '/SelectProduct.php?StockID=' . $myrow['component'] . '">' . $myrow['component'] . '</a>';
+			$ComponentLink = '<a href="' . $RootPath . '/SelectProduct.php?StockID=' . urlencode($myrow['component']) . '">' . $myrow['component'] . '</a>';
 
 			/* Component Code  Description  Quantity Std Cost  Total Cost */
 			printf('<td>%s</td>

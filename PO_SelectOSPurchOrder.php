@@ -77,7 +77,7 @@ $OrdersAfterDate = Date("d/m/Y",Mktime(0,0,0,Date("m")-2,Date("d"),Date("Y")));
 
 if (!isset($OrderNumber) or $OrderNumber == '') {
 	if (isset($SelectedSupplier)) {
-		echo '<div class="toplink"><a href="' . $RootPath . '/PO_Header.php?NewOrder=Yes&amp;SupplierID=' . $SelectedSupplier . '">' . _('Add Purchase Order') . '</a></div>';
+		echo '<div class="toplink"><a href="' . $RootPath . '/PO_Header.php?NewOrder=Yes&amp;SupplierID=' . urlencode($SelectedSupplier) . '">' . _('Add Purchase Order') . '</a></div>';
 	} else {
 		echo '<div class="toplink"><a href="' . $RootPath . '/PO_Header.php?NewOrder=Yes">' . _('Add Purchase Order') . '</a></div>';
 	}
@@ -365,18 +365,18 @@ if (isset($StockItemsResult)) {
 			$k++;
 		}
 
-		$ModifyPage = $RootPath . '/PO_Header.php?ModifyOrderNumber=' . $myrow['orderno'];
+		$ModifyPage = $RootPath . '/PO_Header.php?ModifyOrderNumber=' . urlencode($myrow['orderno']);
 		if ($myrow['status'] == 'Printed') {
-			$ReceiveOrder = '<a href="' . $RootPath . '/GoodsReceived.php?PONumber=' . $myrow['orderno'] . '">' . _('Receive') . '</a>';
+			$ReceiveOrder = '<a href="' . $RootPath . '/GoodsReceived.php?PONumber=' . urlencode($myrow['orderno']) . '">' . _('Receive') . '</a>';
 		} else {
 			$ReceiveOrder = '';
 		}
 		if ($myrow['status'] == 'Authorised' and $myrow['allowprint'] == 1) {
-			$PrintPurchOrder = '<a target="_blank" href="' . $RootPath . '/PO_PDFPurchOrder.php?OrderNo=' . $myrow['orderno'] . '">' . _('Print') . '</a>';
+			$PrintPurchOrder = '<a target="_blank" href="' . $RootPath . '/PO_PDFPurchOrder.php?OrderNo=' . urlencode($myrow['orderno']) . '">' . _('Print') . '</a>';
 		} elseif ($myrow['status'] == 'Authorisied' and $myrow['allowprint'] == 0) {
 			$PrintPurchOrder = _('Printed');
 		} elseif ($myrow['status'] == 'Printed') {
-			$PrintPurchOrder = '<a target="_blank" href="' . $RootPath . '/PO_PDFPurchOrder.php?OrderNo=' . $myrow['orderno'] . '&amp;realorderno=' . $myrow['realorderno'] . '&amp;ViewingOnly=2">
+			$PrintPurchOrder = '<a target="_blank" href="' . $RootPath . '/PO_PDFPurchOrder.php?OrderNo=' . urlencode($myrow['orderno']) . '&amp;realorderno=' . urlencode($myrow['realorderno']) . '&amp;ViewingOnly=2">
 				' . _('Print Copy') . '</a>';
 		} else {
 			$PrintPurchOrder = _('N/A');

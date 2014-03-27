@@ -337,31 +337,31 @@ if (!isset($SelectedCurrency)) {
 		}
 
 		if ($myrow['currabrev'] != $FunctionalCurrency) {
-			printf('<td><img src="%s" alt="" /></td>
-					<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td class="number">%s</td>
-					<td>%s</td>
-					<td class="number">%s</td>
-					<td class="number">%s</td>
-					<td class="number">%s</td>
-					<td><a href="%s&amp;SelectedCurrency=%s">%s</a></td>
-					<td><a href="%s&amp;SelectedCurrency=%s&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this currency?') . '\', \'Confirm Delete\', this);">%s</a></td>
-					<td><a href="%s/ExchangeRateTrend.php?%s">' . _('Graph') . '</a></td>
-					</tr>', $ImageFile, $myrow['currabrev'], _($myrow['currency']), $myrow['country'], $myrow['hundredsname'], locale_number_format($myrow['decimalplaces'], 0), $ShowInWebText, locale_number_format($myrow['rate'], 8), locale_number_format(1 / $myrow['rate'], 8), locale_number_format(GetCurrencyRate($myrow['currabrev'], $CurrencyRatesArray), 8), htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['currabrev'], _('Edit'), htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['currabrev'], _('Delete'), $RootPath, '&amp;CurrencyToShow=' . $myrow['currabrev']);
+			echo '<td><img src="' . $ImageFile . '" alt="" /></td>
+					<td>' . $myrow['currabrev'] . '</td>
+					<td>' . _($myrow['currency']) . '</td>
+					<td>' . $myrow['country'] . '</td>
+					<td>' . $myrow['hundredsname'] . '</td>
+					<td class="number">' . locale_number_format($myrow['decimalplaces'], 0) . '</td>
+					<td>' . $ShowInWebText . '</td>
+					<td class="number">' . locale_number_format($myrow['rate'], 8) . '</td>
+					<td class="number">' . locale_number_format(1 / $myrow['rate'], 8) . '</td>
+					<td class="number">' . locale_number_format(GetCurrencyRate($myrow['currabrev'], $CurrencyRatesArray), 8) . '</td>
+					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?&amp;SelectedCurrency=' . urlencode($myrow['currabrev']) . '">' . _('Edit') . '</a></td>
+					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?&amp;SelectedCurrency=' . urlencode($myrow['currabrev']) . '&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this currency?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+					<td><a href="' . $RootPath . '/ExchangeRateTrend.php?CurrencyToShow=' . urlencode($myrow['currabrev']) . '">' . _('Graph') . '</a></td>
+				</tr>';
 		} else {
-			printf('<td><img src="%s" alt="" /></td>
-					<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td class="number">%s</td>
-					<td>%s</td>
-					<td class="number">%s</td>
-					<td colspan="5">%s</td>
-					</tr>', $ImageFile, $myrow['currabrev'], $myrow['currency'], $myrow['country'], $myrow['hundredsname'], locale_number_format($myrow['decimalplaces'], 0), $ShowInWebText, 1, _('Functional Currency'));
+			echo '<td><img src="' . $ImageFile . '" alt="" /></td>
+					<td>' . $myrow['currabrev'] . '</td>
+					<td>' . $myrow['currency'] . '</td>
+					<td>' . $myrow['country'] . '</td>
+					<td>' . $myrow['hundredsname'] . '</td>
+					<td class="number">' . locale_number_format($myrow['decimalplaces'], 0) . '</td>
+					<td>' . $ShowInWebText . '</td>
+					<td class="number">1</td>
+					<td colspan="5">' . _('Functional Currency') . '</td>
+					</tr>';
 		}
 
 	} //END WHILE LIST LOOP

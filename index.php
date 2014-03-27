@@ -39,7 +39,7 @@ if (isset($SupplierLogin) and $SupplierLogin == 1) {
 	echo '<br /><table class="table_index">
 			<tr>
 			<td class="menu_group_item">
-				<p>&bull; <a href="' . $RootPath . '/CustomerInquiry.php?CustomerID=' . $_SESSION['CustomerID'] . '">' . _('Account Status') . '</a></p>
+				<p>&bull; <a href="' . $RootPath . '/CustomerInquiry.php?CustomerID=' . urlencode($_SESSION['CustomerID']) . '">' . _('Account Status') . '</a></p>
 			</td>
 			</tr>
 			<tr>
@@ -49,7 +49,7 @@ if (isset($SupplierLogin) and $SupplierLogin == 1) {
 			</tr>
 			<tr>
 			<td class="menu_group_item">
-				<p>&bull; <a href="' . $RootPath . '/SelectCompletedOrder.php?SelectedCustomer=' . $_SESSION['CustomerID'] . '">' . _('Order Status') . '</a></p>
+				<p>&bull; <a href="' . $RootPath . '/SelectCompletedOrder.php?SelectedCustomer=' . urlencode($_SESSION['CustomerID']) . '">' . _('Order Status') . '</a></p>
 			</td>
 			</tr>
 		</table><br />';
@@ -81,7 +81,7 @@ while ($i < count($_SESSION['ModuleLink'])) {
 			echo '<li class="main_menu_unselected">';
 
 		}
-		echo '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Application=' . $_SESSION['ModuleLink'][$i] . '">' . $_SESSION['ModuleList'][$i] . '</a></li>';
+		echo '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Application=' . urlencode($_SESSION['ModuleLink'][$i]) . '">' . $_SESSION['ModuleList'][$i] . '</a></li>';
 	}
 	$i++;
 }
@@ -235,7 +235,7 @@ function GetRptLinks($GroupID) {
 			foreach ($_SESSION['ReportList'] as $Report) {
 				if ($Report['groupname'] == $GroupID and $Report['defaultreport'] == $Def) {
 					$RptLinks .= '<li class="menu_group_item">';
-					$RptLinks .= '<p>&bull; <a href="' . $RootPath . '/reportwriter/ReportMaker.php?action=go&amp;reportid=' . $Report['id'] . '">' . _($Report['reportname']) . '</a></p>';
+					$RptLinks .= '<p>&bull; <a href="' . $RootPath . '/reportwriter/ReportMaker.php?action=go&amp;reportid=' . urlencode($Report['id']) . '">' . _($Report['reportname']) . '</a></p>';
 					$RptLinks .= '</li>';
 					$NoEntries = false;
 				}
@@ -247,7 +247,7 @@ function GetRptLinks($GroupID) {
 				if ($NoForms and $Group[0] == $GroupID and $Report['reporttype'] == 'frm' and $Report['defaultreport'] == $Def) {
 					$RptLinks .= '<li class="menu_group_item">';
 					$RptLinks .= '<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/folders.gif" width="16" height="13" alt="" />&nbsp;';
-					$RptLinks .= '<p>&bull; <a href="' . $RootPath . '/reportwriter/FormMaker.php?id=' . $Report['groupname'] . '"></p>';
+					$RptLinks .= '<p>&bull; <a href="' . $RootPath . '/reportwriter/FormMaker.php?id=' . urlencode($Report['groupname']) . '"></p>';
 					$RptLinks .= $FormGroups[$Report['groupname']] . '</a>';
 					$RptLinks .= '</li>';
 					$NoForms = false;

@@ -13,8 +13,8 @@ if (isset($_GET['StockID'])) {
 }
 
 echo '<div class="toplink">
-		<a href="' . $RootPath . '/SelectWorkOrder.php">' . _('Back to Work Orders') . '</a><br />
-		<a href="' . $RootPath . '/WorkOrderCosting.php?WO=' . $_POST['WO'] . '">' . _('Back to Costing') . '</a>
+		<a href="' . $RootPath . '/SelectWorkOrder.php">' . _('Back to Work Orders') . '</a>
+		<a href="' . $RootPath . '/WorkOrderCosting.php?WO=' . urlencode($_POST['WO']) . '">' . _('Back to Costing') . '</a>
 	</div>';
 
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/group_add.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
@@ -368,7 +368,7 @@ if (isset($_POST['Process'])) { //user hit the process the work order issues ent
 		$Result = DB_Txn_Commit();
 
 		prnMsg(_('The issue of') . ' ' . $QuantityIssued . ' ' . _('of') . ' ' . $_POST['IssueItem'] . ' ' . _('against work order') . ' ' . $_POST['WO'] . ' ' . _('has been processed'), 'info');
-		echo '<p><ul><li><a href="' . $RootPath . '/WorkOrderIssue.php?WO=' . $_POST['WO'] . '&amp;StockID=' . $_POST['StockID'] . '">' . _('Issue more components to this work order') . '</a></li>';
+		echo '<p><ul><li><a href="' . $RootPath . '/WorkOrderIssue.php?WO=' . urlencode($_POST['WO']) . '&amp;StockID=' . urlencode($_POST['StockID']) . '">' . _('Issue more components to this work order') . '</a></li>';
 		echo '<li><a href="' . $RootPath . '/SelectWorkOrder.php">' . _('Select a different work order for issuing materials and components against') . '</a></li></ul>';
 		unset($_POST['WO']);
 		unset($_POST['StockID']);

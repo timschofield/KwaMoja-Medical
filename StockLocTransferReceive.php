@@ -129,12 +129,12 @@ if (isset($_POST['ProcessTransfer'])) {
 
 						if ($SerialItemExistsRow[0] == 1) {
 
-							$SQL = "UPDATE stockserialitems SET
-								quantity= quantity - " . $Item->BundleQty . "
-								WHERE
-								stockid='" . $TrfLine->StockID . "'
-								AND loccode='" . $_SESSION['Transfer']->StockLocationFrom . "'
-								AND serialno='" . $Item->BundleRef . "'";
+							$SQL = "UPDATE stockserialitems
+										SET quantity= quantity - '" . $Item->BundleQty . "',
+											expirationdate='" . FormatDateForSQL($Item->ExpiryDate) . "'
+										WHERE stockid='" . $_SESSION['Transfer']->TransferItem[0]->StockID . "'
+											AND loccode='" . $_SESSION['Transfer']->StockLocationFrom . "'
+											AND serialno='" . $Item->BundleRef . "'";
 
 							$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The serial stock item record could not be updated because');
 							$DbgMsg = _('The following SQL to update the serial stock item record was used');
@@ -142,13 +142,17 @@ if (isset($_POST['ProcessTransfer'])) {
 						} else {
 							/*Need to insert a new serial item record */
 							$SQL = "INSERT INTO stockserialitems (stockid,
-												loccode,
-												serialno,
-												quantity)
-								VALUES ('" . $TrfLine->StockID . "',
-								'" . $_SESSION['Transfer']->StockLocationFrom . "',
-								'" . $Item->BundleRef . "',
-								'" . -$Item->BundleQty . "')";
+																loccode,
+																serialno,
+																expirationdate,
+																quantity
+															) VALUES (
+																'" . $_SESSION['Transfer']->TransferItem[0]->StockID . "',
+																'" . $_SESSION['Transfer']->StockLocationFrom . "',
+																'" . $Item->BundleRef . "',
+																'" . FormatDateForSQL($Item->ExpiryDate) . "',
+																'" . -$Item->BundleQty . "'
+															)";
 
 							$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The serial stock item for the stock being transferred out of the existing location could not be inserted because');
 							$DbgMsg = _('The following SQL to update the serial stock item record was used');
@@ -245,12 +249,12 @@ if (isset($_POST['ProcessTransfer'])) {
 
 						if ($SerialItemExistsRow[0] == 1) {
 
-							$SQL = "UPDATE stockserialitems SET
-								quantity= quantity + '" . $Item->BundleQty . "'
-								WHERE
-								stockid='" . $TrfLine->StockID . "'
-								AND loccode='" . $_SESSION['Transfer']->StockLocationTo . "'
-								AND serialno='" . $Item->BundleRef . "'";
+							$SQL = "UPDATE stockserialitems
+										SET quantity= quantity - '" . $Item->BundleQty . "',
+											expirationdate='" . FormatDateForSQL($Item->ExpiryDate) . "'
+										WHERE stockid='" . $_SESSION['Transfer']->TransferItem[0]->StockID . "'
+											AND loccode='" . $_SESSION['Transfer']->StockLocationFrom . "'
+											AND serialno='" . $Item->BundleRef . "'";
 
 							$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The serial stock item record could not be updated for the quantity coming in because');
 							$DbgMsg = _('The following SQL to update the serial stock item record was used');
@@ -258,13 +262,17 @@ if (isset($_POST['ProcessTransfer'])) {
 						} else {
 							/*Need to insert a new serial item record */
 							$SQL = "INSERT INTO stockserialitems (stockid,
-											loccode,
-											serialno,
-											quantity)
-								VALUES ('" . $TrfLine->StockID . "',
-								'" . $_SESSION['Transfer']->StockLocationTo . "',
-								'" . $Item->BundleRef . "',
-								'" . $Item->BundleQty . "')";
+																loccode,
+																serialno,
+																expirationdate,
+																quantity
+															) VALUES (
+																'" . $_SESSION['Transfer']->TransferItem[0]->StockID . "',
+																'" . $_SESSION['Transfer']->StockLocationFrom . "',
+																'" . $Item->BundleRef . "',
+																'" . FormatDateForSQL($Item->ExpiryDate) . "',
+																'" . -$Item->BundleQty . "'
+															)";
 
 							$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The serial stock item record for the stock coming in could not be added because');
 							$DbgMsg = _('The following SQL to update the serial stock item record was used');

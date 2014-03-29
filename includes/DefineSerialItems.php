@@ -25,7 +25,7 @@ function GetExpiryDate ($StockID, $LocCode, $BundleRef){
 				WHERE stockid = '" . $StockID . "'
 				AND loccode = '" . $LocCode . "'
 				AND serialno = '" . $BundleRef . "'";
-	$Result = DB_query($SQl);
+	$Result = DB_query($SQL);
 	if (DB_num_rows($Result) == 0){
 		return '0000-00-00';
 	} else {

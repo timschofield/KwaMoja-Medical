@@ -123,11 +123,8 @@ if (DB_num_rows($TaxRatesResult) > 0) {
 
 echo '<div class="centre">
 		<a href="' . $RootPath . '/TaxAuthorities.php">' . _('Tax Authorities') . '</a>
-		<br />
 		<a href="' . $RootPath . '/TaxGroups.php">' . _('Tax Groupings') . '</a>
-		<br />
 		<a href="' . $RootPath . '/TaxCategories.php">' . _('Tax Categories') . '</a>
-		<br />
 		<a href="' . $RootPath . '/TaxProvinces.php">' . _('Dispatch Tax Provinces') . '</a>
 	</div>';
 

@@ -73,7 +73,7 @@ if (isset($_POST['submit'])) {
 										VALUES ('" . $_POST['SelectedRole'] . "',
 												'" . $_POST['SelectedCategory'] . "')";
 
-			$msg = _('Stock Category') . ': ' . $_POST['SelectedCategory'] . ' ' . _('has been allowed to user role') . ' ' . $_POST['SelectedRole'] . ' ' . _('as internal');
+			$msg = _('Stock Category') . ': ' . stripslashes($_POST['SelectedCategory']) . ' ' . _('has been allowed to user role') . ' ' . $_POST['SelectedRole'] . ' ' . _('as internal');
 			$checkSql = "SELECT count(secroleid)
 							FROM securityroles";
 			$result = DB_query($checkSql);
@@ -95,14 +95,13 @@ if (isset($_POST['submit'])) {
 
 	$ErrMsg = _('The Stock Category by Role record could not be deleted because');
 	$result = DB_query($sql, $ErrMsg);
-	prnMsg(_('Internal Stock Category') . ' ' . $SelectedType . ' ' . _('for user role') . ' ' . $SelectedRole . ' ' . _('has been deleted'), 'success');
+	prnMsg(_('Internal Stock Category') . ' ' . stripslashes($SelectedType) . ' ' . _('for user role') . ' ' . $SelectedRole . ' ' . _('has been deleted'), 'success');
 	unset($_GET['delete']);
 }
 
 if (!isset($SelectedRole)) {
 
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table class="selection">'; //Main table
 
@@ -129,20 +128,18 @@ if (!isset($SelectedRole)) {
 	echo '</table>'; // close main table
 	DB_free_result($result);
 
-	echo '<br /><div class="centre"><input type="submit" name="Process" value="' . _('Accept') . '" />
+	echo '<div class="centre"><input type="submit" name="Process" value="' . _('Accept') . '" />
 				<input type="submit" name="Cancel" value="' . _('Cancel') . '" /></div>';
 
-	echo '</div>
-		  </form>';
+	echo '</form>';
 
 }
 
 //end of ifs and buts!
 if (isset($_POST['process']) or isset($SelectedRole)) {
 
-	echo '<br /><div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Stock Categories available as internal for role') . ' ' . $SelectedRole . '</a></div>';
+	echo '<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Stock Categories available as internal for role') . ' ' . $SelectedRole . '</a></div>';
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	echo '<input type="hidden" name="SelectedRole" value="' . $SelectedRole . '" />';
@@ -156,8 +153,7 @@ if (isset($_POST['process']) or isset($SelectedRole)) {
 
 	$result = DB_query($sql);
 
-	echo '<br />
-			<table class="selection">';
+	echo '<table class="selection">';
 	echo '<tr>
 			<th colspan="3"><h3>' . _('Internal Stock Categories Allowed to user role') . ' ' . $SelectedRole . '</h3></th>
 		</tr>
@@ -177,10 +173,10 @@ if (isset($_POST['process']) or isset($SelectedRole)) {
 			$k = 1;
 		}
 
-		printf('<td>%s</td>
-			<td>%s</td>
-			<td><a href="%s?SelectedType=%s&amp;delete=yes&amp;SelectedRole=' . $SelectedRole . '" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this internal stock category code?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-			</tr>', $myrow['categoryid'], $myrow['categorydescription'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $myrow['categoryid'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $myrow['categoryid']);
+		echo '<td>' . $myrow['categoryid'] . '</td>
+			<td>' . $myrow['categorydescription'] . '</td>
+			<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedType=' . urlencode($myrow['categoryid']) . '&amp;delete=yes&amp;SelectedRole=' . urlencode($SelectedRole) . '" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this internal stock category code?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+			</tr>';
 	}
 	//END WHILE LIST LOOP
 	echo '</table>';
@@ -188,7 +184,7 @@ if (isset($_POST['process']) or isset($SelectedRole)) {
 	if (!isset($_GET['delete'])) {
 
 
-		echo '<br /><table  class="selection">'; //Main table
+		echo '<table  class="selection">'; //Main table
 
 		echo '<tr><td>' . _('Select Stock Category Code') . ':</td><td><select minlength="0" name="SelectedCategory">';
 
@@ -215,11 +211,10 @@ if (isset($_POST['process']) or isset($SelectedRole)) {
 		echo '</table>'; // close main table
 		DB_free_result($result);
 
-		echo '<br /><div class="centre"><input type="submit" name="submit" value="' . _('Accept') . '" />
+		echo '<div class="centre"><input type="submit" name="submit" value="' . _('Accept') . '" />
 									<input type="submit" name="Cancel" value="' . _('Cancel') . '" /></div>';
 
-		echo '</div>
-			  </form>';
+		echo '</form>';
 
 	} // end if user wish to delete
 }

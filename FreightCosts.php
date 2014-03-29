@@ -145,7 +145,7 @@ if (isset($_POST['submit'])) {
 	} elseif ($InputError != 1) {
 
 		/*Selected freight cost is null cos no item selected on first time round so must be adding a record must be submitting new entries */
-
+		$LocationFrom = stripslashes($LocationFrom);
 		$sql = "INSERT INTO freightcosts (locationfrom,
 											destinationcountry,
 											destination,
@@ -173,14 +173,13 @@ if (isset($_POST['submit'])) {
 
 	}
 	//run the SQL from either of the above possibilites
-
-
 	$ErrMsg = _('The freight cost record could not be updated because');
 	$result = DB_query($sql, $ErrMsg);
 
 	prnMsg($msg, 'success');
 
 	unset($SelectedFreightCost);
+	unset($_POST['Destination']);
 	unset($_POST['DestinationCountry']);
 	unset($_POST['CubRate']);
 	unset($_POST['KGRate']);

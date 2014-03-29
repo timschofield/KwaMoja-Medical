@@ -23,10 +23,6 @@ if (isset($_POST['Submit'])) {
 
 	//first off validate inputs sensible
 
-	if (ContainsIllegalCharacters($_POST['DepartmentName'])) {
-		$InputError = 1;
-		prnMsg(_('The description of the department must not contain the character') . " '&amp;' " . _('or the character') . " '", 'error');
-	}
 	if (trim($_POST['DepartmentName']) == '') {
 		$InputError = 1;
 		prnMsg(_('The Name of the Department should not be empty'), 'error');
@@ -179,8 +175,8 @@ if (!isset($SelectedDepartmentID)) {
 
 		echo '<td>' . $myrow['description'] . '</td>
 				<td>' . $myrow['authoriser'] . '</td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedDepartmentID=' . $myrow['departmentid'] . '">' . _('Edit') . '</a></td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedDepartmentID=' . $myrow['departmentid'] . '&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this department?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedDepartmentID=' . urlencode($myrow['departmentid']) . '">' . _('Edit') . '</a></td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedDepartmentID=' . urlencode($myrow['departmentid']) . '&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this department?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
 			</tr>';
 
 	} //END WHILE LIST LOOP
@@ -194,12 +190,9 @@ if (isset($SelectedDepartmentID)) {
 		</div>';
 }
 
-echo '<br />';
-
 if (!isset($_GET['delete'])) {
 
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	if (isset($SelectedDepartmentID)) {
@@ -250,10 +243,8 @@ if (!isset($_GET['delete'])) {
 	echo '</select></td>
 		</tr>
 		</table>
-		<br />
 		<div class="centre">
 			<input type="submit" name="Submit" value="' . _('Enter Information') . '" />
-		</div>
 		</div>
 		</form>';
 

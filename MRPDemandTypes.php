@@ -112,12 +112,12 @@ if (!isset($SelectedDT) or isset($_GET['delete'])) {
 
 	while ($myrow = DB_fetch_row($result)) {
 
-		printf('<tr>
-					<td>%s</td>
-					<td>%s</td>
-					<td><a href="%sSelectedDT=%s">' . _('Edit') . '</a></td>
-					<td><a href="%sSelectedDT=%s&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this account group?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-				</tr>', $myrow[0], $myrow[1], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow[0], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow[0]);
+		echo '<tr>
+					<td>' . $myrow[0] . '</td>
+					<td>' . $myrow[1] . '</td>
+					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedDT=' . urlencode($myrow[0]) . '">' . _('Edit') . '</a></td>
+					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedDT=' . urlencode($myrow[0]) . '&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this account group?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+				</tr>';
 	}
 
 	//END WHILE LIST LOOP
@@ -130,8 +130,7 @@ if (isset($SelectedDT) and !isset($_GET['delete'])) {
 	echo '<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Show all Demand Types') . '</a></div>';
 }
 
-echo '<br /><form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-echo '<div>';
+echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 if (isset($SelectedDT) and !isset($_GET['delete'])) {
@@ -176,10 +175,8 @@ echo '<tr>
 		<td><input type="text" name="Description" size="31" required="required" minlength="1" maxlength="30" value="' . $_POST['Description'] . '" /></td>
 	</tr>
 	</table>
-	<br />
 	<div class="centre">
 		<input type="submit" name="submit" value="' . _('Enter Information') . '" />
-	</div>
 	</div>
 	</form>';
 

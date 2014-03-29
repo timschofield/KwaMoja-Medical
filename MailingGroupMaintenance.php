@@ -13,11 +13,11 @@ if (!isset($_POST['Clean']) and !isset($_GET['Delete']) and !isset($_GET['Edit']
 //validate the input
 if (isset($_POST['Enter'])) { //user has input a new value
 	$InputError = 0;
-	if (!empty($_POST['MailGroup']) and mb_strlen(trim($_POST['MailGroup'])) <= 100 and !ContainsIllegalCharacters($_POST['MailGroup'])) {
+	if (!empty($_POST['MailGroup']) and mb_strlen(trim($_POST['MailGroup'])) <= 100) {
 		$MailGroup = strtolower(trim($_POST['MailGroup']));
 	} else {
 		$InputError = 1;
-		prnMsg(_('The Mail Group should be less than 100 characters and cannot contain illegal characters and cannot be null'), 'error');
+		prnMsg(_('The Mail Group should be less than 100 characters and cannot be null'), 'error');
 		exit;
 		include('includes/footer.inc');
 	}
@@ -32,10 +32,10 @@ if (isset($_POST['Enter'])) { //user has input a new value
 } //end of handling new mail group input
 //Add the new users to the mail group
 if (isset($_GET['Add']) and isset($_GET['UserId'])) {
-	if (isset($_GET['UserId']) and mb_strlen($_GET['UserId']) < 21 and !ContainsIllegalCharacters($_GET['UserId'])) {
+	if (isset($_GET['UserId']) and mb_strlen($_GET['UserId']) < 21) {
 		$UserId = $_GET['UserId'];
 	} else {
-		prnMsg(_('The User Id should be set and must be less than 21 and cannot contains illegal characters'), 'error');
+		prnMsg(_('The User Id should be set and must be less than 21 characters'), 'error');
 		include('includes/footer.inc');
 		exit;
 	}
@@ -46,11 +46,11 @@ if (isset($_GET['Add']) and isset($_GET['UserId'])) {
 		include('includes/footer.inc');
 		exit;
 	}
-	if (!empty($_GET['GroupName']) and mb_strlen($_GET['GroupName']) <= 100 and !ContainsIllegalCharacters($_GET['GroupName'])) {
+	if (!empty($_GET['GroupName']) and mb_strlen($_GET['GroupName']) <= 100) {
 		$GroupName = trim($_GET['GroupName']);
 
 	} else {
-		prnMsg(_('The Group name should be set and must be less than 100 characters and cannot contains illegal characters'), 'error');
+		prnMsg(_('The Group name should be set and must be less than 100 characters'), 'error');
 		include('includes/footer.inc');
 		exit;
 	}
@@ -83,10 +83,10 @@ if (isset($_GET['Edit'])) {
 	//First Get mailing list from database;
 	if (isset($_GET['GroupId']) and is_numeric($_GET['GroupId'])) {
 		$GroupId = (int) $_GET['GroupId'];
-		if (isset($_GET['GroupName']) and mb_strlen($_GET['GroupName']) <= 100 and !ContainsIllegalCharacters($_GET['GroupName'])) {
+		if (isset($_GET['GroupName']) and mb_strlen($_GET['GroupName']) <= 100) {
 			$GroupName = trim($_GET['GroupName']);
 		} else {
-			prnMsg(_('The Group Name should be less than 100 and cannot contains illegal characters'), 'error');
+			prnMsg(_('The Group Name should be less than 100 characters long'), 'error');
 			include('includes/footer.inc');
 			exit;
 		}
@@ -101,28 +101,28 @@ if (isset($_GET['Edit'])) {
 
 //Users remove one user from the group
 if (isset($_GET['Remove'])) {
-	if (!empty($_GET['GroupName']) and mb_strlen($_GET['GroupName']) <= 100 and !ContainsIllegalCharacters($_GET['GroupName'])) {
+	if (!empty($_GET['GroupName']) and mb_strlen($_GET['GroupName']) <= 100) {
 		$GroupName = trim($_GET['GroupName']);
 	} else {
-		prnMsg(_('The Group Name should be less than 100 and cannot contains illegal characters'), 'error');
+		prnMsg(_('The Group Name should be less than 100 characters'), 'error');
 		include('includes/footer.inc');
 		exit;
 
 	}
-	if (isset($_GET['UserId']) and mb_strlen($_GET['UserId']) < 21 and !ContainsIllegalCharacters($_GET['UserId'])) {
+	if (isset($_GET['UserId']) and mb_strlen($_GET['UserId']) < 21) {
 		$UserId = $_GET['UserId'];
 	} else {
-		prnMsg(_('The User Id should be set and must be less than 21 and cannot contains illegal characters'), 'error');
+		prnMsg(_('The User Id should be set and must be less than 21 characters'), 'error');
 		include('includes/footer.inc');
 		exit;
 	}
 
 	if (isset($_GET['GroupId']) and is_numeric($_GET['GroupId'])) {
 		$GroupId = (int) $_GET['GroupId'];
-		if (isset($_GET['GroupName']) and mb_strlen($_GET['GroupName']) <= 100 and !ContainsIllegalCharacters($_GET['GroupName'])) {
+		if (isset($_GET['GroupName']) and mb_strlen($_GET['GroupName']) <= 100) {
 			$GroupName = trim($_GET['GroupName']);
 		} else {
-			prnMsg(_('The Group Name should be less than 100 and cannot contains illegal characters'), 'error');
+			prnMsg(_('The Group Name should be less than 100 characters'), 'error');
 			include('includes/footer.inc');
 			exit;
 		}
@@ -158,8 +158,8 @@ function GetMailGroup() {
 		while ($myrow = DB_fetch_array($result)) {
 			echo '<tr>
 					<td>' . $myrow['groupname'] . '</td>
-					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?GroupId=' . $myrow['id'] . '&amp;Edit=1&amp;GroupName=' . $myrow['groupname'] . '" >' . _('Edit') . '</a></td>
-					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Id=' . $myrow['id'] . '&amp;Delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this group?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?GroupId=' . urlencode($myrow['id']) . '&amp;Edit=1&amp;GroupName=' . urlencode($myrow['groupname']) . '" >' . _('Edit') . '</a></td>
+					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Id=' . urlencode($myrow['id']) . '&amp;Delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this group?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
 				</tr>';
 		}
 		echo '</table>';
@@ -184,7 +184,7 @@ function GetUsers($GroupId, $GroupName) {
 	$ErrMsg = _('Failed to retrieve user information');
 	$result = DB_query($sql, $ErrMsg);
 	if (DB_num_rows($result) != 0) {
-		echo '<div class="centre">' . _('Current Mail Group') . ' : ' . $GroupName . '</div>
+		echo '<div class="centre">' . _('Current Mail Group') . ' : ' . stripslashes($GroupName) . '</div>
 			<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('View All Groups') . '</a></div>';
 
 		echo '<table class="selection">
@@ -205,7 +205,7 @@ function GetUsers($GroupId, $GroupName) {
 			if (in_array($myrow['userid'], $UsersAssigned)) {
 				echo '<td>' . $myrow['userid'] . '</td>
 					<td>' . $myrow['realname'] . '</td>
-					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?UserId=' . $myrow['userid'] . '&amp;GroupName=' . $GroupName . '&amp;Remove=1&amp;GroupId=' . $GroupId . '" onclick="return MakeConfirm(\'Are you sure you want to remove this user?\', \'Confirm Delete\', this); "></a>' . _('Remove') . '</a></td>
+					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?UserId=' . urlencode(stripslashes($myrow['userid'])) . '&amp;GroupName=' . urlencode(stripslashes($GroupName)) . '&amp;Remove=1&amp;GroupId=' . urlencode(stripslashes($GroupId)) . '" onclick="return MakeConfirm(\'Are you sure you want to remove this user?\', \'Confirm Delete\', this); ">' . _('Remove') . '</a></td>
 					<td>&nbsp;</td>
 					<td>&nbsp;</td>
 					<td>&nbsp;</td>';
@@ -215,7 +215,7 @@ function GetUsers($GroupId, $GroupName) {
 					<td>&nbsp;</td>
 					<td>' . $myrow['userid'] . '</td>
 					<td>' . $myrow['realname'] . '</td>
-					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?UserId=' . $myrow['userid'] . '&amp;Add=1&amp;GroupName=' . $GroupName . '&amp;GroupId=' . $GroupId . '"' . _('Add') . '</a></td>';
+					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?UserId=' . urlencode(stripslashes($myrow['userid'])) . '&amp;Add=1&amp;GroupName=' . urlencode(stripslashes($GroupName)) . '&amp;GroupId=' . urlencode(stripslashes($GroupId)) . '">' . _('Add') . '</a></td>';
 			}
 
 			echo '</tr>';

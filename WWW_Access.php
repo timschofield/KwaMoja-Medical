@@ -87,7 +87,7 @@ if (isset($_POST['submit']) or isset($_GET['remove']) or isset($_GET['add'])) {
 		$result = DB_query($sql);
 		$sql = "DELETE FROM securityroles WHERE secroleid='" . $_GET['SelectedRole'] . "'";
 		$result = DB_query($sql);
-		prnMsg($_GET['SecRoleName'] . ' ' . _('security role has been deleted') . '!', 'success');
+		prnMsg(stripslashes($_GET['SecRoleName']) . ' ' . _('security role has been deleted') . '!', 'success');
 
 	} //end if account group used in GL accounts
 	unset($SelectedRole);

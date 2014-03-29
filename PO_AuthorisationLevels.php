@@ -5,7 +5,7 @@ include('includes/session.inc');
 $Title = _('Purchase Order Authorisation Maintenance');
 include('includes/header.inc');
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/group_add.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p><br />';
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/group_add.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
 
 
 /*Note: If CanCreate==0 then this means the user can create orders
@@ -150,7 +150,7 @@ while ($myrow = DB_fetch_array($Result)) {
 		</tr>';
 }
 
-echo '</table><br /><br />';
+echo '</table>';
 
 if (!isset($_GET['Edit'])) {
 	$UserID = $_SESSION['UserID'];
@@ -161,7 +161,6 @@ if (!isset($_GET['Edit'])) {
 }
 
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint" id="form1">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 echo '<table class="selection">';
 
@@ -213,9 +212,15 @@ if (isset($_GET['Edit'])) {
 	echo '<tr>
 			<td>' . _('Currency') . '</td>
 			<td><select required="required" minlength="1" name="CurrCode">';
-	$currencysql = "SELECT currabrev,currency FROM currencies";
+	$currencysql = "SELECT currabrev,
+							currency,
+							decimalplaces
+						FROM currencies";
 	$currencyresult = DB_query($currencysql);
 	while ($myrow = DB_fetch_array($currencyresult)) {
+		if ($_SESSION['CompanyRecord']['currencydefault'] == $myrow['currabrev']) {
+			$CurrDecimalPlaces = $myrow['decimalplaces'];
+		}
 		if ($myrow['currabrev'] == $Currency) {
 			echo '<option selected="selected" value="' . $myrow['currabrev'] . '">' . $myrow['currency'] . '</option>';
 		} else {
@@ -252,17 +257,14 @@ echo '<td><input type="text" name="AuthLevel" required="required" minlength="1" 
 	</table>';
 
 if (isset($_GET['Edit'])) {
-	echo '<br />
-			<div class="centre">
+	echo '<div class="centre">
 				<input type="submit" name="Update" value="' . _('Update Information') . '" />
 			</div>';
 } else {
-	echo '<br />
-		<div class="centre">
+	echo '<div class="centre">
 			<input type="submit" name="Submit" value="' . _('Enter Information') . '" />
 		</div>';
 }
-echo '</div>
-		</form>';
+echo '</form>';
 include('includes/footer.inc');
 ?>

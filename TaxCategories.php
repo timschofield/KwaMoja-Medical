@@ -12,6 +12,8 @@ if (isset($_GET['SelectedTaxCategory'])) {
 	$SelectedTaxCategory = $_GET['SelectedTaxCategory'];
 } elseif (isset($_POST['SelectedTaxCategory'])) {
 	$SelectedTaxCategory = $_POST['SelectedTaxCategory'];
+} else {
+	$SelectedTaxCategory = '';
 }
 
 if (isset($_POST['submit'])) {
@@ -25,16 +27,12 @@ if (isset($_POST['submit'])) {
 
 	//first off validate inputs sensible
 
-	if (ContainsIllegalCharacters($_POST['TaxCategoryName'])) {
-		$InputError = 1;
-		prnMsg(_('The tax category name cannot contain the character') . " '&amp;' " . _('or the character') . " ' " . _('or a space'), 'error');
-	}
 	if (trim($_POST['TaxCategoryName']) == '') {
 		$InputError = 1;
 		prnMsg(_('The tax category name may not be empty'), 'error');
 	}
 
-	if ($_POST['SelectedTaxCategory'] != '' and $InputError != 1) {
+	if ($SelectedTaxCategory != '' and $InputError != 1) {
 
 		/*SelectedTaxCategory could also exist if submit had not been clicked this code would not run in this case cos submit is false of course  see the delete code below*/
 		// Check the name does not clash
@@ -58,7 +56,7 @@ if (isset($_POST['submit'])) {
 				$OldTaxCategoryName = $myrow[0];
 				$sql = "UPDATE taxcategories
 						SET taxcatname='" . $_POST['TaxCategoryName'] . "'
-						WHERE taxcatname " . LIKE . " '" . $OldTaxCategoryName . "'";
+						WHERE taxcatname " . LIKE . " '" . DB_escape_string($OldTaxCategoryName) . "'";
 				$ErrMsg = _('The tax category could not be updated');
 				$result = DB_query($sql, $ErrMsg);
 			} else {
@@ -192,7 +190,7 @@ if (!isset($SelectedTaxCategory)) {
 		}
 
 	} //END WHILE LIST LOOP
-	echo '</table><br />';
+	echo '</table>';
 } //end of ifs and buts!
 
 
@@ -202,12 +200,9 @@ if (isset($SelectedTaxCategory)) {
 		</div>';
 }
 
-echo '<br />';
-
 if (!isset($_GET['delete'])) {
 
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	if (isset($SelectedTaxCategory)) {
@@ -241,12 +236,10 @@ if (!isset($_GET['delete'])) {
 		</tr>
 		</table>';
 
-	echo '<br />
-			<div class="centre">
-				<input type="submit" name="submit" value="' . _('Enter Information') . '" />
-			</div>
+	echo '<div class="centre">
+			<input type="submit" name="submit" value="' . _('Enter Information') . '" />
 		</div>
-		</form>';
+	</form>';
 
 } //end if record deleted no point displaying form to add record
 

@@ -196,8 +196,16 @@ if (!isset($SelectedLabelID)) {
 				echo '<tr class="OddTableRows">';
 				$k++;
 			}
-			$NoOfRows = floor(($myrow['pageheight'] - $myrow['topmargin']) / $myrow['rowheight']);
-			$NoOfCols = floor(($myrow['pagewidth'] - $myrow['leftmargin']) / $myrow['columnwidth']);
+			if ($myrow['rowheight'] == 0 ) {
+				$NoOfRows = 0;
+			} else {
+				$NoOfRows = floor(($myrow['pageheight'] - $myrow['topmargin']) / $myrow['rowheight']);
+			}
+			if ($myrow['columnwidth'] == 0 ) {
+				$NoOfCols = 0;
+			} else {
+				$NoOfCols = floor(($myrow['pagewidth'] - $myrow['leftmargin']) / $myrow['columnwidth']);
+			}
 
 			foreach ($PaperSize as $PaperName => $PaperType) {
 				if ($PaperType['PageWidth'] == $myrow['pagewidth'] and $PaperType['PageHeight'] == $myrow['pageheight']) {
@@ -490,11 +498,9 @@ if (isset($SelectedLabelID)) {
 		</table>';
 }
 
-echo '<br />
-		<div class="centre">
+echo '<div class="centre">
 			<input type="submit" name="submit" value="' . _('Enter Information') . '" />
 		</div>
-	<br />
 		<div class="centre">
 			<a href="' . $RootPath . '/PDFPrintLabel.php">' . _('Print Labels') . '</a>
 		</div>

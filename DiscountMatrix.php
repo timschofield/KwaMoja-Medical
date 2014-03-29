@@ -172,7 +172,7 @@ while ($myrow = DB_fetch_array($result)) {
 		echo '<tr class="OddTableRows">';
 		$k = 1;
 	}
-	$DeleteURL = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Delete=yes&amp;SalesType=' . $myrow['salestype'] . '&amp;DiscountCategory=' . $myrow['discountcategory'] . '&amp;QuantityBreak=' . $myrow['quantitybreak'];
+	$DeleteURL = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Delete=yes&amp;SalesType=' . urlencode($myrow['salestype']) . '&amp;DiscountCategory=' . urlencode($myrow['discountcategory']) . '&amp;QuantityBreak=' . urlencode($myrow['quantitybreak']);
 
 	printf('<td>%s</td>
 			<td>%s</td>

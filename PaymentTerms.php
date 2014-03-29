@@ -38,7 +38,7 @@ if (isset($_POST['submit'])) {
 		$Errors[$i] = 'TermsIndicator';
 		$i++;
 	}
-	if (mb_strlen($_POST['TermsIndicator']) > 2) {
+	if (mb_strlen(stripslashes($_POST['TermsIndicator'])) > 2) {
 		$InputError = 1;
 		prnMsg(_('The payment terms name must be two characters or less long'), 'error');
 		$Errors[$i] = 'TermsIndicator';
@@ -79,13 +79,13 @@ if (isset($_POST['submit'])) {
 							terms='" . $_POST['Terms'] . "',
 							dayinfollowingmonth=0,
 							daysbeforedue='" . filter_number_format($_POST['DayNumber']) . "'
-					WHERE termsindicator = '" . $SelectedTerms . "'";
+					WHERE termsindicator = '" . stripslashes($SelectedTerms) . "'";
 		} else {
 			$sql = "UPDATE paymentterms SET
 							terms='" . $_POST['Terms'] . "',
 							dayinfollowingmonth='" . filter_number_format($_POST['DayNumber']) . "',
 							daysbeforedue=0
-						WHERE termsindicator = '" . $SelectedTerms . "'";
+						WHERE termsindicator = '" . stripslashes($SelectedTerms) . "'";
 		}
 
 		$msg = _('The payment terms definition record has been updated') . '.';
@@ -195,16 +195,17 @@ if (!isset($SelectedTerms)) {
 			$DueAfterText = $myrow['daysbeforedue'] . ' ' . _('days');
 		}
 
-		printf('<tr><td>%s</td>
-			<td>%s</td>
-			<td>%s</td>
-			<td>%s</td>
-			<td><a href="%s?SelectedTerms=%s">' . _('Edit') . '</a></td>
-			<td><a href="%s?SelectedTerms=%s&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this payment term?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-			</tr>', $myrow['termsindicator'], $myrow['terms'], $FollMthText, $DueAfterText, htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $myrow[0], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $myrow[0]);
+		echo '<tr>
+				<td>' . $myrow['termsindicator'] . '</td>
+				<td>' . $myrow['terms'] . '</td>
+				<td>' . $FollMthText . '</td>
+				<td>' . $DueAfterText . '</td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedTerms=' . urlencode($myrow[0]) . '">' . _('Edit') . '</a></td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedTerms=' . urlencode($myrow[0]) . '&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this payment term?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+			</tr>';
 
 	} //END WHILE LIST LOOP
-	echo '</table><br />';
+	echo '</table>';
 } //end of ifs and buts!
 
 if (isset($SelectedTerms)) {
@@ -216,7 +217,6 @@ if (isset($SelectedTerms)) {
 if (!isset($_GET['delete'])) {
 
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	if (isset($SelectedTerms)) {
@@ -239,8 +239,7 @@ if (!isset($_GET['delete'])) {
 
 		echo '<input type="hidden" name="SelectedTerms" value="' . $SelectedTerms . '" />';
 		echo '<input type="hidden" name="TermsIndicator" value="' . $_POST['TermsIndicator'] . '" />';
-		echo '<br />
-			<table class="selection">';
+		echo '<table class="selection">';
 		echo '<tr>
 				<th colspan="6"><h3>' . _('Update Payment Terms.') . '</h3></th>
 			</tr>';
@@ -295,12 +294,10 @@ if (!isset($_GET['delete'])) {
 	echo '" /></td>
 		</tr>
 		</table>
-		<br />
 		<div class="centre">
 			<input type="submit" name="submit" value="' . _('Enter Information') . '" />
 		</div>';
-	echo '</div>
-		  </form>';
+	echo '</form>';
 } //end if record deleted no point displaying form to add record
 
 include('includes/footer.inc');

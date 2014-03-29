@@ -109,7 +109,7 @@ if (isset($_POST['submit'])) {
 	/* Make a comma separated list of modules allowed ready to update the database*/
 	$i = 0;
 	$ModulesAllowed = '';
-	while ($i < count($ModuleList)) {
+	while ($i < count($_SESSION['ModuleList'])) {
 		$FormVbl = 'Module_' . $i;
 		$ModulesAllowed .= $_POST[($FormVbl)] . ',';
 		$i++;
@@ -438,9 +438,9 @@ if (isset($SelectedUser)) {
 	this had trapped a few people previously*/
 	$i = 0;
 	if (!isset($_POST['ModulesAllowed'])) {
-		$_POST['ModulesAllowed'] = '';
+		$_POST['ModulesAllowed'] = '1,1,1,1,1,1,1,1,1,1,1,1,';
 	}
-	foreach ($ModuleList as $ModuleName) {
+	foreach ($_SESSION['ModuleList'] as $ModuleName) {
 		if ($i > 0) {
 			$_POST['ModulesAllowed'] .= ',';
 		}
@@ -674,7 +674,7 @@ echo '</select></td>
 $ModulesAllowed = explode(',', $_POST['ModulesAllowed']);
 
 $i = 0;
-foreach ($ModuleList as $ModuleName) {
+foreach ($_SESSION['ModuleList'] as $ModuleName) {
 
 	echo '<tr>
 			<td>' . _('Display') . ' ' . $ModuleName . ' ' . _('module') . ': </td>

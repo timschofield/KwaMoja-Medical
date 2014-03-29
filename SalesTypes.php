@@ -16,8 +16,6 @@ if (isset($Errors)) {
 
 $Errors = array();
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
-
 if (isset($_POST['submit'])) {
 
 	//initialise no input errors assumed initially before we test
@@ -29,7 +27,7 @@ if (isset($_POST['submit'])) {
 	//first off validate inputs sensible
 	$i = 1;
 
-	if (mb_strlen($_POST['TypeAbbrev']) > 2) {
+	if (mb_strlen(stripslashes($_POST['TypeAbbrev'])) > 2) {
 		$InputError = 1;
 		prnMsg(_('The sales type (price list) code must be two characters or less long'), 'error');
 		$Errors[$i] = 'SalesType';
@@ -60,9 +58,9 @@ if (isset($_POST['submit'])) {
 
 		$sql = "UPDATE salestypes
 			SET sales_type = '" . $_POST['Sales_Type'] . "'
-			WHERE typeabbrev = '" . $SelectedType . "'";
+			WHERE typeabbrev = '" . stripslashes($SelectedType) . "'";
 
-		$msg = _('The customer/sales/pricelist type') . ' ' . $SelectedType . ' ' . _('has been updated');
+		$msg = _('The customer/sales/pricelist type') . ' ' . stripslashes($SelectedType) . ' ' . _('has been updated');
 	} elseif ($InputError != 1) {
 
 		// First check the type is not being duplicated
@@ -86,7 +84,7 @@ if (isset($_POST['submit'])) {
 							VALUES ('" . str_replace(' ', '', $_POST['TypeAbbrev']) . "',
 									'" . $_POST['Sales_Type'] . "')";
 
-			$msg = _('Customer/sales/pricelist type') . ' ' . $_POST['Sales_Type'] . ' ' . _('has been created');
+			$msg = _('Customer/sales/pricelist type') . ' ' . stripslashes($_POST['Sales_Type']) . ' ' . _('has been created');
 			$checkSql = "SELECT count(typeabbrev)
 						FROM salestypes";
 			$result = DB_query($checkSql);
@@ -152,7 +150,7 @@ if (isset($_POST['submit'])) {
 			$sql = "DELETE FROM salestypes WHERE typeabbrev='" . $SelectedType . "'";
 			$ErrMsg = _('The Sales Type record could not be deleted because');
 			$result = DB_query($sql, $ErrMsg);
-			prnMsg(_('Sales type') . ' / ' . _('price list') . ' ' . $SelectedType . ' ' . _('has been deleted'), 'success');
+			prnMsg(_('Sales type') . ' / ' . _('price list') . ' ' . stripslashes($SelectedType) . ' ' . _('has been deleted'), 'success');
 
 			$sql = "DELETE FROM prices WHERE prices.typeabbrev='" . $SelectedType . "'";
 			$ErrMsg = _('The Sales Type prices could not be deleted because');
@@ -180,6 +178,8 @@ if (!isset($SelectedType)) {
 	links to delete or edit each. These will call the same page again and allow update/input
 	or deletion of the records*/
 
+	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
+
 	$sql = "SELECT * FROM salestypes";
 	$result = DB_query($sql);
 
@@ -206,11 +206,11 @@ if (!isset($SelectedType)) {
 			$k = 1;
 		}
 
-		printf('<td>%s</td>
-		<td>%s</td>
-		<td><a href="%sSelectedType=%s">' . _('Edit') . '</a></td>
-		<td><a href="%sSelectedType=%s&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this price list and all the prices it may have set up?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-		</tr>', $myrow[0], $myrow[1], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow[0], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow[0]);
+		echo '<td>' . $myrow[0] . '</td>
+				<td>' . $myrow[1] . '</td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedType=' . urlencode($myrow[0]) . '">' . _('Edit') . '</a></td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedType=' . urlencode($myrow[0]) . '&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this price list and all the prices it may have set up?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+			</tr>';
 	}
 	//END WHILE LIST LOOP
 	echo '</table>';
@@ -218,13 +218,12 @@ if (!isset($SelectedType)) {
 
 //end of ifs and buts!
 if (isset($SelectedType)) {
-
-	echo '<br /><div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Show All Sales Types Defined') . '</a></div>';
+	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
+	echo '<div class="toplink"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Show All Sales Types Defined') . '</a></div>';
 }
 if (!isset($_GET['delete'])) {
 
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" >';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<br />';
 
@@ -282,10 +281,9 @@ if (!isset($_GET['delete'])) {
 
 	echo '</table>'; // close main table
 
-	echo '<br /><div class="centre"><input type="submit" name="submit" value="' . _('Accept') . '" /><input type="submit" name="Cancel" value="' . _('Cancel') . '" /></div>';
+	echo '<div class="centre"><input type="submit" name="submit" value="' . _('Accept') . '" /><input type="submit" name="Cancel" value="' . _('Cancel') . '" /></div>';
 
-	echo '</div>
-		  </form>';
+	echo '</form>';
 
 } // end if user wish to delete
 

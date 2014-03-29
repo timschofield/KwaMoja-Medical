@@ -32,12 +32,6 @@ if (isset($_POST['submit'])) {
 
 	//first off validate inputs sensible
 
-	if (ContainsIllegalCharacters($_POST['MethodName'])) {
-		$InputError = 1;
-		prnMsg(_('The payment method cannot contain illegal characters'), 'error');
-		$Errors[$i] = 'MethodName';
-		$i++;
-	}
 	if (trim($_POST['MethodName']) == "") {
 		$InputError = 1;
 		prnMsg(_('The payment method may not be empty.'), 'error');
@@ -71,7 +65,7 @@ if (isset($_POST['submit'])) {
 							receipttype = '" . $_POST['ForReceipt'] . "',
 							usepreprintedstationery = '" . $_POST['UsePrePrintedStationery'] . "',
 							opencashdrawer = '" . $_POST['OpenCashDrawer'] . "'
-						WHERE paymentname " . LIKE . " '" . $OldName . "'";
+						WHERE paymentname " . LIKE . " '" . DB_escape_string($OldName) . "'";
 
 			} else {
 				$InputError = 1;
@@ -132,14 +126,14 @@ if (isset($_POST['submit'])) {
 		$myrow = DB_fetch_row($result);
 		$OldMeasureName = $myrow[0];
 		$sql = "SELECT COUNT(*) FROM banktrans
-				WHERE banktranstype LIKE '" . $OldMeasureName . "'";
+				WHERE banktranstype LIKE '" . DB_escape_string($OldMeasureName) . "'";
 		$result = DB_query($sql);
 		$myrow = DB_fetch_row($result);
 		if ($myrow[0] > 0) {
 			prnMsg(_('Cannot delete this payment method because bank transactions have been created using this payment method'), 'warn');
 			echo '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('bank transactions that refer to this payment method') . '</font>';
 		} else {
-			$sql = "DELETE FROM paymentmethods WHERE paymentname " . LIKE . " '" . $OldMeasureName . "'";
+			$sql = "DELETE FROM paymentmethods WHERE paymentname " . LIKE . " '" . DB_escape_string($OldMeasureName) . "'";
 			$result = DB_query($sql);
 			prnMsg($OldMeasureName . ' ' . _('payment method has been deleted') . '!', 'success');
 			echo '<br />';
@@ -203,12 +197,12 @@ if (!isset($SelectedPaymentID)) {
 				<td class="centre">' . ($myrow['receipttype'] ? _('Yes') : _('No')) . '</td>
 				<td class="centre">' . ($myrow['usepreprintedstationery'] ? _('Yes') : _('No')) . '</td>
 				<td class="centre">' . ($myrow['opencashdrawer'] ? _('Yes') : _('No')) . '</td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedPaymentID=' . $myrow['paymentid'] . '">' . _('Edit') . '</a></td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedPaymentID=' . $myrow['paymentid'] . '&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this payment method?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedPaymentID=' . urlencode($myrow['paymentid']) . '">' . _('Edit') . '</a></td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedPaymentID=' . urlencode($myrow['paymentid']) . '&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this payment method?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
 			</tr>';
 
 	} //END WHILE LIST LOOP
-	echo '</table><br />';
+	echo '</table>';
 } //end of ifs and buts!
 
 
@@ -216,12 +210,9 @@ if (isset($SelectedPaymentID)) {
 	echo '<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Review Payment Methods') . '</a></div>';
 }
 
-echo '<br />';
-
 if (!isset($_GET['delete'])) {
 
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	if (isset($SelectedPaymentID)) {
@@ -231,7 +222,8 @@ if (!isset($_GET['delete'])) {
 						paymentname,
 						paymenttype,
 						receipttype,
-						usepreprintedstationery
+						usepreprintedstationery,
+						opencashdrawer
 				FROM paymentmethods
 				WHERE paymentid='" . $SelectedPaymentID . "'";
 
@@ -263,7 +255,7 @@ if (!isset($_GET['delete'])) {
 	}
 	echo '<tr>
 			<td>' . _('Payment Method') . ':' . '</td>
-			<td><input type="text" name="MethodName" size="30" autofocus="autofocus" required="required" minlength="1" maxlength="30" value="' . $_POST['MethodName'] . '" /></td>
+			<td><input type="text" name="MethodName" size="15" autofocus="autofocus" required="required" minlength="1" maxlength="15" value="' . $_POST['MethodName'] . '" /></td>
 		</tr>';
 	echo '<tr>
 		<td>' . _('Use For Payments') . ':' . '</td>
@@ -295,8 +287,9 @@ if (!isset($_GET['delete'])) {
 		</tr>';
 	echo '</table>';
 
-	echo '<br /><div class="centre"><input type="submit" name="submit" value="' . _('Enter Information') . '" /></div>';
-	echo '</div>';
+	echo '<div class="centre">
+			<input type="submit" name="submit" value="' . _('Enter Information') . '" />
+		</div>';
 	echo '</form>';
 
 } //end if record deleted no point displaying form to add record

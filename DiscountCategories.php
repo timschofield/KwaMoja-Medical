@@ -86,7 +86,7 @@ if (isset($_POST['SelectChoice'])) {
 		echo '<td><select minlength="0" name="DiscCat" onchange="ReloadForm(update.select)">';
 
 		while ($myrow = DB_fetch_array($result)) {
-			if ($myrow['discountcategory'] == $_POST['DiscCat']) {
+			if (isset($_POST['DiscCat']) and $myrow['discountcategory'] == $_POST['DiscCat']) {
 				echo '<option selected="selected" value="' . $myrow['discountcategory'] . '">' . $myrow['discountcategory'] . '</option>';
 			} else {
 				echo '<option value="' . $myrow['discountcategory'] . '">' . $myrow['discountcategory'] . '</option>';
@@ -210,7 +210,7 @@ if (isset($_POST['SelectChoice'])) {
 			stockmaster.description,
 			discountcategory
 		FROM stockmaster
-		WHERE discountcategory='" . $_POST['DiscCat'] . "'
+		WHERE discountcategory='" . DB_escape_string($_POST['DiscCat']) . "'
 		ORDER BY stockmaster.stockid";
 
 		$result = DB_query($sql);

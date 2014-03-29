@@ -111,15 +111,15 @@ if (isset($_POST['submit'])) {
 	if (empty($_POST['PropertyCounter'])) {
 		$_POST['PropertyCounter'] = 0;
 	}
-	if (mb_strlen($_POST['CategoryID']) > 6) {
+	if (mb_strlen(stripslashes($_POST['CategoryID'])) > 6) {
 		$InputError = 1;
 		prnMsg(_('The Inventory Category code must be six characters or less long'), 'error');
 	} elseif (mb_strlen($_POST['CategoryID']) == 0) {
 		$InputError = 1;
 		prnMsg(_('The Inventory category code must be at least 1 character but less than six characters long'), 'error');
-	} elseif (mb_strlen($_POST['CategoryDescription']) > 20) {
+	} elseif (mb_strlen(stripslashes($_POST['CategoryDescription'])) > 20) {
 		$InputError = 1;
-		prnMsg(_('The Sales category description must be twenty characters or less long'), 'error');
+		prnMsg(_('The stock category description must be twenty characters or less long'), 'error');
 	} elseif ($_POST['StockType'] != 'D' and $_POST['StockType'] != 'L' and $_POST['StockType'] != 'F' and $_POST['StockType'] != 'M') {
 		$InputError = 1;
 		prnMsg(_('The stock type selected must be one of') . ' "D" - ' . _('Dummy item') . ', "L" - ' . _('Labour stock item') . ', "F" - ' . _('Finished product') . ' ' . _('or') . ' "M" - ' . _('Raw Materials'), 'error');
@@ -152,7 +152,7 @@ if (isset($_POST['submit'])) {
 									 purchpricevaract = '" . $_POST['PurchPriceVarAct'] . "',
 									 materialuseagevarac = '" . $_POST['MaterialUseageVarAc'] . "',
 									 wipact = '" . $_POST['WIPAct'] . "'
-								WHERE categoryid = '" . $SelectedCategory . "'";
+								WHERE categoryid = '" . stripslashes($SelectedCategory) . "'";
 		$ErrMsg = _('Could not update the stock category') . $_POST['CategoryDescription'] . _('because');
 		$result = DB_query($sql, $ErrMsg);
 
@@ -244,7 +244,7 @@ if (isset($_POST['submit'])) {
 											'" . $_POST['WIPAct'] . "')";
 		$ErrMsg = _('Could not insert the new stock category') . $_POST['CategoryDescription'] . _('because');
 		$result = DB_query($sql, $ErrMsg);
-		prnMsg(_('A new stock category record has been added for') . ' ' . $_POST['CategoryDescription'], 'success');
+		prnMsg(_('A new stock category record has been added for') . ' ' . stripslashes($_POST['CategoryDescription']), 'success');
 
 	}
 	//run the SQL from either of the above possibilites
@@ -285,7 +285,7 @@ if (isset($_POST['submit'])) {
 			} else {
 				$sql = "DELETE FROM stockcategory WHERE categoryid='" . $SelectedCategory . "'";
 				$result = DB_query($sql);
-				prnMsg(_('The stock category') . ' ' . $SelectedCategory . ' ' . _('has been deleted') . ' !', 'success');
+				prnMsg(_('The stock category') . ' ' . stripslashes($SelectedCategory) . ' ' . _('has been deleted') . ' !', 'success');
 				unset($SelectedCategory);
 			}
 		}
@@ -337,19 +337,19 @@ if (!isset($SelectedCategory)) {
 			echo '<tr class="OddTableRows">';
 			$k = 1;
 		}
-		printf('<td>%s</td>
-				<td>%s</td>
-				<td>%s</td>
-				<td>%s</td>
-				<td class="number">%s</td>
-				<td class="number">%s</td>
-				<td class="number">%s</td>
-				<td class="number">%s</td>
-				<td class="number">%s</td>
-				<td class="number">%s</td>
-				<td><a href="%sSelectedCategory=%s">' . _('Edit') . '</td>
-				<td><a href="%sSelectedCategory=%s&delete=yes" onclick="return MakeConfirm("' . _('Are you sure you wish to delete this stock category? Additional checks will be performed before actual deletion to ensure data integrity is not compromised.') . '", \'Confirm Delete\', this);">' . _('Delete') . '</td>
-			</tr>', $myrow['categoryid'], $myrow['categorydescription'], $StockTypeName[$myrow['stocktype']], $TaxCategoryName[$myrow['defaulttaxcatid']], $myrow['stockact'], $myrow['adjglact'], $myrow['issueglact'], $myrow['purchpricevaract'], $myrow['materialuseagevarac'], $myrow['wipact'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['categoryid'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['categoryid']);
+		echo '<td>' . $myrow['categoryid'] . '</td>
+				<td>' . $myrow['categorydescription'] . '</td>
+				<td>' . $StockTypeName[$myrow['stocktype']] . '</td>
+				<td>' . $TaxCategoryName[$myrow['defaulttaxcatid']] . '</td>
+				<td class="number">' . $myrow['stockact'] . '</td>
+				<td class="number">' . $myrow['adjglact'] . '</td>
+				<td class="number">' . $myrow['issueglact'] . '</td>
+				<td class="number">' . $myrow['purchpricevaract'] . '</td>
+				<td class="number">' . $myrow['materialuseagevarac'] . '</td>
+				<td class="number">' . $myrow['wipact'] . '</td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedCategory=' . urlencode($myrow['categoryid']) . '">' . _('Edit') . '</td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedCategory=' . urlencode($myrow['categoryid']) . '&delete=yes" onclick="return MakeConfirm("' . _('Are you sure you wish to delete this stock category? Additional checks will be performed before actual deletion to ensure data integrity is not compromised.') . '", \'Confirm Delete\', this);">' . _('Delete') . '</td>
+			</tr>';
 	}
 	//END WHILE LIST LOOP
 	echo '</table>';

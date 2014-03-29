@@ -297,7 +297,7 @@ echo '<tr>
 
 echo '<tr>
 		<td>' . _('Tax Authority Reference') . ':</td>
-		<td><input tabindex="3" type="text" name="GSTNo" value="' . $_POST['GSTNo'] . '" size="22" minlength="0" maxlength="20" /></td>
+		<td><input tabindex="3" type="text" name="GSTNo" value="' . stripslashes($_POST['GSTNo']) . '" size="22" minlength="0" maxlength="20" /></td>
 	</tr>';
 
 echo '<tr>

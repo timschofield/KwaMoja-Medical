@@ -17,9 +17,9 @@ if (isset($Errors)) {
 $Errors = array();
 
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Supplier Types') . '" alt="" />' . _('Supplier Type Setup') . '</p>';
-echo '<div class="page_help_text noPrint">' . _('Add/edit/delete Supplier Types') . '</div><br />';
+echo '<div class="page_help_text noPrint">' . _('Add/edit/delete Supplier Types') . '</div>';
 
-if (isset($_POST['submit'])) {
+if (isset($_POST['insert']) or isset($_POST['update'])) {
 
 	//initialise no input errors assumed initially before we test
 	$InputError = 0;
@@ -48,14 +48,14 @@ if (isset($_POST['submit'])) {
 			 WHERE typename = '" . $_POST['TypeName'] . "'";
 	$checkresult = DB_query($checksql);
 	$checkrow = DB_fetch_row($checkresult);
-	if ($checkrow[0] > 0) {
+	if ($checkrow[0] > 0 and isset($_POST['insert'])) {
 		$InputError = 1;
 		echo prnMsg(_('You already have a supplier type called') . ' ' . $_POST['TypeName'], 'error');
 		$Errors[$i] = 'SupplierName';
 		$i++;
 	}
 
-	if (isset($SelectedType) and $InputError != 1) {
+	if (isset($_POST['update']) and $InputError != 1) {
 
 		$sql = "UPDATE suppliertype
 			SET typename = '" . $_POST['TypeName'] . "'
@@ -64,34 +64,18 @@ if (isset($_POST['submit'])) {
 		$msg = _('The supplier type') . ' ' . $SelectedType . ' ' . _('has been updated');
 	} elseif ($InputError != 1) {
 
-		// First check the type is not being duplicated
+		// Add new record on submit
 
-		$checkSql = "SELECT count(*)
-				 FROM suppliertype
-				 WHERE typeid = '" . $_POST['TypeID'] . "'";
+		$sql = "INSERT INTO suppliertype
+					(typename)
+				VALUES ('" . $_POST['TypeName'] . "')";
 
-		$checkresult = DB_query($checkSql);
-		$checkrow = DB_fetch_row($checkresult);
-
-		if ($checkrow[0] > 0) {
-			$InputError = 1;
-			prnMsg(_('The supplier type ') . $_POST['TypeID'] . _(' already exist.'), 'error');
-		} else {
-
-			// Add new record on submit
-
-			$sql = "INSERT INTO suppliertype
-						(typename)
-					VALUES ('" . $_POST['TypeName'] . "')";
-
-
-			$msg = _('Supplier type') . ' ' . $_POST['TypeName'] . ' ' . _('has been created');
-			$checkSql = "SELECT count(typeid)
+		$msg = _('Supplier type') . ' ' . stripslashes($_POST['TypeName']) . ' ' . _('has been created');
+		$checkSql = "SELECT count(typeid)
 				 FROM suppliertype";
-			$result = DB_query($checkSql);
-			$row = DB_fetch_row($result);
+		$result = DB_query($checkSql);
+		$row = DB_fetch_row($result);
 
-		}
 	}
 
 	if ($InputError != 1) {
@@ -180,11 +164,11 @@ if (!isset($SelectedType)) {
 			$k = 1;
 		}
 
-		printf('<td>%s</td>
-				<td>%s</td>
-				<td><a href="%sSelectedType=%s">' . _('Edit') . '</a></td>
-				<td><a href="%sSelectedType=%s&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this Supplier Type?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-			</tr>', $myrow[0], $myrow[1], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow[0], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow[0]);
+		echo '<td>' . $myrow[0] . '</td>
+				<td>' . $myrow[1] . '</td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedType=' . urlencode($myrow[0]) . '&Edit=Yes">' . _('Edit') . '</a></td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedType=' . urlencode($myrow[0]) . '&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this Supplier Type?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+			</tr>';
 	}
 	//END WHILE LIST LOOP
 	echo '</table>';
@@ -200,10 +184,8 @@ if (isset($SelectedType)) {
 if (!isset($_GET['delete'])) {
 
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-	echo '<br />
-		<table class="selection">'; //Main table
+	echo '<table class="selection">'; //Main table
 
 	// The user wish to EDIT an existing type
 	if (isset($SelectedType) and $SelectedType != '') {
@@ -238,16 +220,27 @@ if (!isset($_GET['delete'])) {
 			<td><input type="text" autofocus="autofocus" required="required" minlength="1" maxlength="100" name="TypeName" value="' . $_POST['TypeName'] . '" /></td>
 		</tr>';
 
-	echo '<tr>
-			<td colspan="2">
-				<div class="centre">
-					<input type="submit" name="submit" value="' . _('Accept') . '" />
-				</div>
-			</td>
-		</tr>
+	if (isset($_GET['Edit'])) {
+		echo '<tr>
+				<td colspan="2">
+					<div class="centre">
+						<input type="submit" name="update" value="' . _('Update Type') . '" />
+					</div>
+				</td>
+			</tr>
 		</table>
-		</div>
 		</form>';
+	} else {
+		echo '<tr>
+				<td colspan="2">
+					<div class="centre">
+						<input type="submit" name="insert" value="' . _('Add Type') . '" />
+					</div>
+				</td>
+			</tr>
+		</table>
+		</form>';
+	}
 
 } // end if user wish to delete
 

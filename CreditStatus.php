@@ -17,8 +17,7 @@ $Errors = array();
 $InputError = 0;
 echo '<p class="page_title_text noPrint" >
 		<img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '
-	</p>
-	<br />';
+	</p>';
 
 if (isset($_POST['submit'])) {
 
@@ -167,12 +166,12 @@ if (!isset($SelectedReason)) {
 			$k = 1;
 		}
 
-		printf('<td>%s</td>
-			<td>%s</td>
-			<td>%s</td>
-			<td><a href="%s?SelectedReason=%s">' . _('Edit') . '</a></td>
-			<td><a href="%s?SelectedReason=%s&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this credit status record?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-			</tr>', $myrow['reasoncode'], $myrow['reasondescription'], $DissallowText, htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $myrow['reasoncode'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $myrow['reasoncode']);
+		echo '<td>' . $myrow['reasoncode'] . '</td>
+			<td>' . $myrow['reasondescription'] . '</td>
+			<td>' . $DissallowText . '</td>
+			<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedReason=' . urlencode($myrow['reasoncode']) . '">' . _('Edit') . '</a></td>
+			<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedReason=' . urlencode($myrow['reasoncode']) . '&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this credit status record?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+			</tr>';
 
 	} //END WHILE LIST LOOP
 	echo '</table>';
@@ -188,7 +187,6 @@ if (isset($SelectedReason)) {
 if (!isset($_GET['delete'])) {
 
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	if (isset($SelectedReason) and ($InputError != 1)) {
@@ -219,11 +217,10 @@ if (!isset($_GET['delete'])) {
 		if (!isset($_POST['ReasonCode'])) {
 			$_POST['ReasonCode'] = '';
 		}
-		echo '<br />
-			<table class="selection">
+		echo '<table class="selection">
 			<tr>
 				<td>' . _('Status Code') . ':</td>
-				<td><input tabindex="1" type="text" name="ReasonCode" value="' . $_POST['ReasonCode'] . '" size="3" autofocus="autofocus" required="required" minlength="1" maxlength="2" /></td>
+				<td><input tabindex="1" class="integer" type="text" name="ReasonCode" value="' . $_POST['ReasonCode'] . '" size="3" autofocus="autofocus" required="required" minlength="1" maxlength="2" /></td>
 			</tr>';
 	}
 
@@ -244,10 +241,8 @@ if (!isset($_GET['delete'])) {
 			</tr>';
 	}
 	echo '</table>
-			<br />
 			<div class="centre">
 				<input tabindex="4" type="submit" name="submit" value="' . _('Enter Information') . '" />
-			</div>
 			</div>
 			</form>';
 } //end if record deleted no point displaying form to add record

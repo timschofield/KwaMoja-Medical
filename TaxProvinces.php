@@ -26,10 +26,6 @@ if (isset($_POST['submit'])) {
 
 	//first off validate inputs sensible
 
-	if (ContainsIllegalCharacters($_POST['TaxProvinceName'])) {
-		$InputError = 1;
-		prnMsg(_('The tax province name cannot contain any of the illegal characters'), 'error');
-	}
 	if (trim($_POST['TaxProvinceName']) == '') {
 		$InputError = 1;
 		prnMsg(_('The tax province name may not be empty'), 'error');
@@ -58,7 +54,7 @@ if (isset($_POST['submit'])) {
 				$OldTaxProvinceName = $myrow[0];
 				$sql = "UPDATE taxprovinces
 					SET taxprovincename='" . $_POST['TaxProvinceName'] . "'
-					WHERE taxprovincename " . LIKE . " '" . $OldTaxProvinceName . "'";
+					WHERE taxprovincename " . LIKE . " '" . DB_escape_string($OldTaxProvinceName) . "'";
 				$ErrMsg = _('Could not update tax province');
 				$result = DB_query($sql, $ErrMsg);
 				if (!$result) {
@@ -194,14 +190,12 @@ if (!isset($SelectedTaxProvince)) {
 if (isset($SelectedTaxProvince)) {
 	echo '<div class="centre">
 			<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Review Tax Provinces') . '</a>
-		</div>
-		<br />';
+		</div>';
 }
 
 if (!isset($_GET['delete'])) {
 
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	if (isset($SelectedTaxProvince)) {
@@ -235,22 +229,17 @@ if (!isset($_GET['delete'])) {
 		</tr>
 		</table>';
 
-	echo '<br />
-			<div class="centre">
-				<input type="submit" name="submit" value="' . _('Enter Information') . '" />
-			</div>';
+	echo '<div class="centre">
+			<input type="submit" name="submit" value="' . _('Enter Information') . '" />
+		</div>';
 
-	echo '</div>
-		  </form>';
+	echo '</form>';
 
 } //end if record deleted no point displaying form to add record
 
 echo '<div class="centre">
-		<br />
 		<a href="' . $RootPath . '/TaxAuthorities.php">' . _('Edit/Review Tax Authorities') . '</a>
-		<br />
 		<a href="' . $RootPath . '/TaxGroups.php">' . _('Edit/Review Tax Groupings') . '</a>
-		<br />
 		<a href="' . $RootPath . '/TaxCategories.php">' . _('Edit/Review Tax Categories') . '</a>
 	</div>';
 

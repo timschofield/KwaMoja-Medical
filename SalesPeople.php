@@ -29,7 +29,7 @@ if (isset($_POST['submit'])) {
 
 	//first off validate inputs sensible
 
-	if (mb_strlen($_POST['SalesmanCode']) > 3) {
+	if (mb_strlen(stripslashes($_POST['SalesmanCode'])) > 3) {
 		$InputError = 1;
 		prnMsg(_('The salesperson code must be three characters or less long'), 'error');
 		$Errors[$i] = 'SalesmanCode';
@@ -104,9 +104,9 @@ if (isset($_POST['submit'])) {
 									commissionrate2='" . filter_number_format($_POST['CommissionRate2']) . "',
 									manager='" . $_POST['Manager'] . "',
 									current='" . $_POST['Current'] . "'
-								WHERE salesmancode = '" . $SelectedSalesPerson . "'";
+								WHERE salesmancode = '" . stripslashes($SelectedSalesPerson) . "'";
 
-		$msg = _('Salesperson record for') . ' ' . $_POST['SalesmanName'] . ' ' . _('has been updated');
+		$msg = _('Salesperson record for') . ' ' . stripslashes($_POST['SalesmanName']) . ' ' . _('has been updated');
 	} elseif ($InputError != 1) {
 
 		/*Selected group is null cos no item selected on first time round so must be adding a record must be submitting new entries in the new Sales-person form */
@@ -133,7 +133,7 @@ if (isset($_POST['submit'])) {
 						'" . $_POST['Current'] . "'
 					)";
 
-		$msg = _('A new salesperson record has been added for') . ' ' . $_POST['SalesmanName'];
+		$msg = _('A new salesperson record has been added for') . ' ' . stripslashes($_POST['SalesmanName']);
 	}
 	if ($InputError != 1) {
 
@@ -194,7 +194,7 @@ if (isset($_POST['submit'])) {
 				$ErrMsg = _('The salesperson could not be deleted because');
 				$result = DB_query($sql, $ErrMsg);
 
-				prnMsg(_('Salesperson') . ' ' . $SelectedSalesPerson . ' ' . _('has been deleted from the database'), 'success');
+				prnMsg(_('Salesperson') . ' ' . stripslashes($SelectedSalesPerson) . ' ' . _('has been deleted from the database'), 'success');
 				unset($SelectedSalesPerson);
 				unset($delete);
 			}
@@ -261,19 +261,19 @@ if (!isset($SelectedSalesPerson)) {
 		$AreaResult = DB_query($sql);
 		$AreaRow = DB_fetch_array($AreaResult);
 
-		printf('<td>%s</td>
-				<td>%s</td>
-				<td>%s</td>
-				<td>%s</td>
-				<td>%s</td>
-				<td>%s</td>
-				<td class="number">%s</td>
-				<td class="number">%s</td>
-				<td class="number">%s</td>
-				<td>%s</td>
-				<td><a href="%sSelectedSalesPerson=%s">' . _('Edit') . '</a></td>
-				<td><a href="%sSelectedSalesPerson=%s&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this sales person?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-				</tr>', $myrow['salesmancode'], $myrow['salesmanname'], $AreaRow['areadescription'], $ManagerText, $myrow['smantel'], $myrow['smanfax'], locale_number_format($myrow['commissionrate1'], 2), locale_number_format($myrow['breakpoint'], $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($myrow['commissionrate2'], 2), $ActiveText, htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['salesmancode'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['salesmancode']);
+		echo '<td>' . $myrow['salesmancode'] . '</td>
+				<td>' . $myrow['salesmanname'] . '</td>
+				<td>' . $AreaRow['areadescription'] . '</td>
+				<td>' . $ManagerText . '</td>
+				<td>' . $myrow['smantel'] . '</td>
+				<td>' . $myrow['smanfax'] . '</td>
+				<td class="number">' . locale_number_format($myrow['commissionrate1'], 2) . '</td>
+				<td class="number">' . locale_number_format($myrow['breakpoint'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
+				<td class="number">' . locale_number_format($myrow['commissionrate2'], 2) . '</td>
+				<td>' . $ActiveText . '</td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedSalesPerson=' . urlencode($myrow['salesmancode']) . '">' . _('Edit') . '</a></td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedSalesPerson=' . urlencode($myrow['salesmancode']) . '&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this sales person?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+				</tr>';
 
 	} //END WHILE LIST LOOP
 	echo '</table><br />';
@@ -286,7 +286,6 @@ if (isset($SelectedSalesPerson)) {
 if (!isset($_GET['delete'])) {
 
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	if (isset($SelectedSalesPerson)) {
@@ -439,10 +438,8 @@ if (!isset($_GET['delete'])) {
 	echo '</select></td>
 		</tr>
 		</table>
-		<br />
 		<div class="centre">
 			<input type="submit" name="submit" value="' . _('Enter Information') . '" />
-		</div>
 		</div>
 		</form>';
 

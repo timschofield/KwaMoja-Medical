@@ -23,10 +23,6 @@ if (isset($_POST['Submit'])) {
 
 	//first off validate inputs sensible
 
-	if (ContainsIllegalCharacters($_POST['MeasureName'])) {
-		$InputError = 1;
-		prnMsg(_('The unit of measure cannot contain any of the illegal characters'), 'error');
-	}
 	if (trim($_POST['MeasureName']) == '') {
 		$InputError = 1;
 		prnMsg(_('The unit of measure may not be empty'), 'error');
@@ -59,10 +55,10 @@ if (isset($_POST['Submit'])) {
 				$sql = array();
 				$sql[] = "UPDATE unitsofmeasure
 					SET unitname='" . $_POST['MeasureName'] . "'
-					WHERE unitname " . LIKE . " '" . $OldMeasureName . "'";
+					WHERE unitname " . LIKE . " '" . DB_escape_string($OldMeasureName) . "'";
 				$sql[] = "UPDATE stockmaster
 					SET units='" . $_POST['MeasureName'] . "'
-					WHERE units " . LIKE . " '" . $OldMeasureName . "'";
+					WHERE units " . LIKE . " '" . DB_escape_string($OldMeasureName) . "'";
 			} else {
 				$InputError = 1;
 				prnMsg(_('The unit of measure no longer exist.'), 'error');
@@ -125,14 +121,14 @@ if (isset($_POST['Submit'])) {
 	} else {
 		$myrow = DB_fetch_row($result);
 		$OldMeasureName = $myrow[0];
-		$sql = "SELECT COUNT(*) FROM stockmaster WHERE units " . LIKE . " '" . $OldMeasureName . "'";
+		$sql = "SELECT COUNT(*) FROM stockmaster WHERE units " . LIKE . " '" . DB_escape_string($OldMeasureName) . "'";
 		$result = DB_query($sql);
 		$myrow = DB_fetch_row($result);
 		if ($myrow[0] > 0) {
 			prnMsg(_('Cannot delete this unit of measure because inventory items have been created using this unit of measure'), 'warn');
 			echo '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('inventory items that refer to this unit of measure') . '</font>';
 		} else {
-			$sql = "DELETE FROM unitsofmeasure WHERE unitname " . LIKE . "'" . $OldMeasureName . "'";
+			$sql = "DELETE FROM unitsofmeasure WHERE unitname " . LIKE . "'" . DB_escape_string($OldMeasureName) . "'";
 			$result = DB_query($sql);
 			prnMsg($OldMeasureName . ' ' . _('unit of measure has been deleted') . '!', 'success');
 		}
@@ -180,12 +176,12 @@ if (!isset($SelectedMeasureID)) {
 		}
 
 		echo '<td>' . $myrow[1] . '</td>';
-		echo '<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedMeasureID=' . $myrow[0] . '">' . _('Edit') . '</a></td>';
-		echo '<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedMeasureID=' . $myrow[0] . '&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this unit of measure?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>';
+		echo '<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedMeasureID=' . urlencode($myrow[0]) . '">' . _('Edit') . '</a></td>';
+		echo '<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedMeasureID=' . urlencode($myrow[0]) . '&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this unit of measure?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>';
 		echo '</tr>';
 
 	} //END WHILE LIST LOOP
-	echo '</table><br />';
+	echo '</table>';
 } //end of ifs and buts!
 
 
@@ -195,12 +191,9 @@ if (isset($SelectedMeasureID)) {
 		</div>';
 }
 
-echo '<br />';
-
 if (!isset($_GET['delete'])) {
 
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	if (isset($SelectedMeasureID)) {
@@ -231,7 +224,7 @@ if (!isset($_GET['delete'])) {
 	}
 	echo '<tr>
 		<td>' . _('Unit of Measure') . ':' . '</td>
-		<td><input type="text" name="MeasureName" size="30" required="required" minlength="1" maxlength="30" value="' . $_POST['MeasureName'] . '" /></td>
+		<td><input type="text" name="MeasureName" size="15" required="required" minlength="1" maxlength="15" value="' . $_POST['MeasureName'] . '" /></td>
 		</tr>';
 	echo '</table>';
 
@@ -239,8 +232,7 @@ if (!isset($_GET['delete'])) {
 			<input type="submit" name="Submit" value="' . _('Enter Information') . '" />
 		</div>';
 
-	echo '</div>
-		  </form>';
+	echo '</form>';
 
 } //end if record deleted no point displaying form to add record
 

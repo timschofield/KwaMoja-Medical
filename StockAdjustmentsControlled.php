@@ -43,9 +43,9 @@ if ($LineItem->Controlled != 1) {
 /*****  get the page going now... *****/
 echo '<div class="centre">';
 
-echo '<br /><a href="' . $RootPath . '/StockAdjustments.php?identifier=' . urlencode($identifier) . '">' . _('Back to Adjustment Screen') . '</a>';
+echo '<a href="' . $RootPath . '/StockAdjustments.php?identifier=' . urlencode($identifier) . '">' . _('Back to Adjustment Screen') . '</a>';
 
-echo '<br /><b>' . _('Adjustment of controlled item') . ' ' . $LineItem->StockID . ' - ' . $LineItem->ItemDescription;
+echo '<b>' . _('Adjustment of controlled item') . ' ' . $LineItem->StockID . ' - ' . $LineItem->ItemDescription;
 
 /** vars needed by InputSerialItem : **/
 $LocationOut = $_SESSION['Adjustment' . $identifier]->StockLocation;

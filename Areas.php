@@ -33,7 +33,7 @@ if (isset($_POST['submit'])) {
 	$sql = "SELECT areacode FROM areas WHERE areacode='" . $_POST['AreaCode'] . "'";
 	$result = DB_query($sql);
 	// mod to handle 3 char area codes
-	if (mb_strlen($_POST['AreaCode']) > 3) {
+	if (mb_strlen(stripslashes($_POST['AreaCode'])) > 3) {
 		$InputError = 1;
 		prnMsg(_('The area code must be three characters or less long'), 'error');
 		$Errors[$i] = 'AreaCode';
@@ -66,9 +66,9 @@ if (isset($_POST['submit'])) {
 
 		$sql = "UPDATE areas SET areadescription='" . $_POST['AreaDescription'] . "',
 								parentarea='" . $_POST['ParentArea'] . "'
-								WHERE areacode = '" . $SelectedArea . "'";
+								WHERE areacode = '" . stripslashes($SelectedArea) . "'";
 
-		$msg = _('Area code') . ' ' . $SelectedArea . ' ' . _('has been updated');
+		$msg = _('Area code') . ' ' . stripslashes($SelectedArea) . ' ' . _('has been updated');
 
 	} elseif ($InputError != 1) {
 
@@ -84,7 +84,7 @@ if (isset($_POST['submit'])) {
 								)";
 
 		$SelectedArea = $_POST['AreaCode'];
-		$msg = _('New area code') . ' ' . $_POST['AreaCode'] . ' ' . _('has been inserted');
+		$msg = _('New area code') . ' ' . stripslashes($_POST['AreaCode']) . ' ' . _('has been inserted');
 	} else {
 		$msg = '';
 	}
@@ -129,7 +129,7 @@ if (isset($_POST['submit'])) {
 	if ($CancelDelete == 0) {
 		$sql = "DELETE FROM areas WHERE areacode='" . $SelectedArea . "'";
 		$result = DB_query($sql);
-		prnMsg(_('Area Code') . ' ' . $SelectedArea . ' ' . _('has been deleted') . ' !', 'success');
+		prnMsg(_('Area Code') . ' ' . stripslashes($SelectedArea) . ' ' . _('has been deleted') . ' !', 'success');
 	} //end if Delete area
 	unset($SelectedArea);
 	unset($_GET['delete']);

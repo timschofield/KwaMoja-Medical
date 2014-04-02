@@ -37,7 +37,6 @@ echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $T
 echo '<div class="page_help_text noPrint">' . _('Use the keyboard Shift key to select multiple periods') . '</div><br />';
 
 echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 /* Get the start and periods, depending on how this script was called*/
@@ -106,10 +105,8 @@ while ($myrow = DB_fetch_array($Periods)) {
 echo '</select></td>
 		</tr>
 		</table>
-		<br />
 		<div class="centre">
 				<input type="submit" name="Show" value="' . _('Show Account Transactions') . '" />
-		</div>
 		</div>
 		</form>';
 
@@ -167,8 +164,7 @@ if (isset($_POST['Show'])) {
 	$ErrMsg = _('The transactions for account') . ' ' . $SelectedAccount . ' ' . _('could not be retrieved because');
 	$TransResult = DB_query($sql, $ErrMsg);
 
-	echo '<br />
-			<table class="selection" summary="' . _('General Ledger account inquiry details') . '">
+	echo '<table class="selection" summary="' . _('General Ledger account inquiry details') . '">
 			<tr>
 				<th colspan="8">
 					<b>' . _('Transactions for account') . ' ' . $SelectedAccount . ' - ' . $SelectedAccountName . '</b>
@@ -240,7 +236,7 @@ if (isset($_POST['Show'])) {
 						<td colspan="3"><b>' . _('Total for period') . ' ' . $PeriodNo . '</b></td>';
 				if ($PeriodTotal < 0) { //its a credit balance b/fwd
 					if ($PandLAccount == True) {
-						$RunningTotal = 0;
+//						$RunningTotal = 0;
 					}
 					echo '<td></td>
 							<td class="number"><b>' . locale_number_format(-$PeriodTotal, $_SESSION['CompanyRecord']['decimalplaces']) . '</b></td>
@@ -248,7 +244,7 @@ if (isset($_POST['Show'])) {
 						</tr>';
 				} else { //its a debit balance b/fwd
 					if ($PandLAccount == True) {
-						$RunningTotal = 0;
+//						$RunningTotal = 0;
 					}
 					echo '<td class="number"><b>' . locale_number_format($PeriodTotal, $_SESSION['CompanyRecord']['decimalplaces']) . '</b></td>
 							<td colspan="2"></td>
@@ -303,10 +299,22 @@ if (isset($_POST['Show'])) {
 			</tr>', $myrow['typename'], $URL_to_TransDetail, $myrow['typeno'], $FormatedTranDate, $DebitAmount, $CreditAmount, $myrow['narrative'], locale_number_format($RunningTotal, $_SESSION['CompanyRecord']['decimalplaces']), $tagrow['tagdescription']);
 
 	}
+	echo '<tr>
+			<td colspan="3"><b>' . _('Total for period') . ' ' . $PeriodNo . '</b></td>';
+	if ($PeriodTotal < 0) { //its a credit balance b/fwd
+		echo '<td></td>
+				<td class="number"><b>' . locale_number_format(-$PeriodTotal, $_SESSION['CompanyRecord']['decimalplaces']) . '</b></td>
+				<td></td>
+			</tr>';
+	} else { //its a debit balance b/fwd
+		echo '<td class="number"><b>' . locale_number_format($PeriodTotal, $_SESSION['CompanyRecord']['decimalplaces']) . '</b></td>
+				<td colspan="2"></td>
+			</tr>';
+	}
 
 	echo '<tr><td colspan="3"><b>';
 	if ($PandLAccount == True) {
-		echo _('Total Period Movement');
+		echo _('Total Movement for selected periods');
 	} else {
 		/*its a balance sheet account*/
 		echo _('Balance C/Fwd');

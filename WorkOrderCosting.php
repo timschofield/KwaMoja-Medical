@@ -319,7 +319,24 @@ echo '<tr>
 
 if (isset($_POST['Close'])) {
 
-	DB_data_seek($WOItemsResult, 0);
+
+	$WOItemsResult = DB_query("SELECT woitems.stockid,
+									stockmaster.description,
+									stockmaster.decimalplaces,
+									stockmaster.units,
+									stockmaster.materialcost+stockmaster.labourcost+stockmaster.overheadcost AS currcost,
+									woitems.qtyreqd,
+									woitems.qtyrecd,
+									woitems.stdcost,
+									stockcategory.materialuseagevarac,
+									stockcategory.purchpricevaract,
+									stockcategory.wipact,
+									stockcategory.stockact
+							FROM woitems INNER JOIN stockmaster
+							ON woitems.stockid=stockmaster.stockid
+							INNER JOIN stockcategory
+							ON stockmaster.categoryid=stockcategory.categoryid
+							WHERE woitems.wo='" . $_POST['WO'] . "'", $ErrMsg);
 	$NoItemsOnWO = DB_num_rows($WOItemsResult);
 	$TotalVariance = $TotalUsageVar + $TotalCostVar;
 	$PeriodNo = GetPeriod(Date($_SESSION['DefaultDateFormat']));

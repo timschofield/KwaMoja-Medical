@@ -221,7 +221,6 @@ if (!isset($_SESSION['tender' . $identifier]) or isset($_POST['LookupDeliveryAdd
 		$_SESSION['tender' . $identifier]->RequiredByDate = FormatDateForSQL(date($_SESSION['DefaultDateFormat']));
 	}
 	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $identifier . '" method="post" class="noPrint">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table class="selection">';
 	echo '<tr>
@@ -302,7 +301,7 @@ if (!isset($_SESSION['tender' . $identifier]) or isset($_POST['LookupDeliveryAdd
 			$_POST['Tel'] = $LocnRow['tel'];
 			$_POST['Contact'] = $LocnRow['contact'];
 
-			$_SESSION['tender' . $identifier]->Location = $_POST['StkLocation'];
+			$_SESSION['tender' . $identifier]->Location = stripslashes($_POST['StkLocation']);
 			$_SESSION['tender' . $identifier]->DelAdd1 = $_POST['DelAdd1'];
 			$_SESSION['tender' . $identifier]->DelAdd2 = $_POST['DelAdd2'];
 			$_SESSION['tender' . $identifier]->DelAdd3 = $_POST['DelAdd3'];
@@ -377,7 +376,7 @@ if (!isset($_SESSION['tender' . $identifier]) or isset($_POST['LookupDeliveryAdd
 			<td>' . _('Phone') . ':</td>
 			<td><input type="tel" name="Tel" size="31" minlength="0" maxlength="30" value="' . $_SESSION['tender' . $identifier]->Telephone . '" /></td>
 		</tr>';
-	echo '</table><br />';
+	echo '</table>';
 
 	/* Display the supplier/item details
 	 */
@@ -435,7 +434,7 @@ if (!isset($_SESSION['tender' . $identifier]) or isset($_POST['LookupDeliveryAdd
 				</tr>';
 		}
 	}
-	echo '</table></td></tr></table><br />';
+	echo '</table></td></tr></table>';
 
 	echo '<div class="centre">
 			<input type="submit" name="Suppliers" value="' . _('Select Suppliers') . '" />
@@ -444,18 +443,39 @@ if (!isset($_SESSION['tender' . $identifier]) or isset($_POST['LookupDeliveryAdd
 	if ($_SESSION['tender' . $identifier]->LinesOnTender > 0 and $_SESSION['tender' . $identifier]->SuppliersOnTender > 0) {
 		echo '<input type="submit" name="Close" value="' . _('Close This Tender') . '" />';
 	}
-	echo '</div>
-		<br />';
+	echo '</div>';
 	if ($_SESSION['tender' . $identifier]->LinesOnTender > 0 and $_SESSION['tender' . $identifier]->SuppliersOnTender > 0) {
 
 		echo '<div class="centre">
 				<input type="submit" name="Save" value="' . _('Save Tender') . '" />
 			</div>';
 	}
-	echo '</div>
-		</form>';
+	echo '</form>';
 	include('includes/footer.inc');
 	exit;
+}
+
+if (isset($_POST['Suppliers'])) {
+	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?identifier=' . $identifier, ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
+	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
+	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Search for Suppliers') . '</p>
+		<table cellpadding="3" class="selection">
+			<tr>
+				<td>' . _('Enter a partial Name') . ':</td>
+				<td>';
+	if (isset($_POST['Keywords'])) {
+		echo '<input type="text" name="Keywords" value="' . $_POST['Keywords'] . '" size="20" minlength="0" maxlength="25" />';
+	} else {
+		echo '<input type="text" name="Keywords" size="20" minlength="0" maxlength="25" />';
+	}
+	echo '</td><td><b>' . _('OR') . '</b></td><td>' . _('Enter a partial Code') . ':</td><td>';
+	if (isset($_POST['SupplierCode'])) {
+		echo '<input type="text" name="SupplierCode" value="' . $_POST['SupplierCode'] . '" size="15" minlength="0" maxlength="18" />';
+	} else {
+		echo '<input type="text" name="SupplierCode" size="15" minlength="0" maxlength="18" />';
+	}
+	echo '</td></tr></table><div class="centre"><input type="submit" name="SearchSupplier" value="' . _('Search Now') . '" /></div>';
+	echo '</form>';
 }
 
 if (isset($_POST['SearchSupplier']) or isset($_POST['Go']) or isset($_POST['Next']) or isset($_POST['Previous'])) {
@@ -463,49 +483,22 @@ if (isset($_POST['SearchSupplier']) or isset($_POST['Go']) or isset($_POST['Next
 	if (mb_strlen($_POST['Keywords']) > 0 and mb_strlen($_POST['SupplierCode']) > 0) {
 		prnMsg('<br />' . _('Supplier name keywords have been used in preference to the Supplier code extract entered'), 'info');
 	}
-	if ($_POST['Keywords'] == '' and $_POST['SupplierCode'] == '') {
-		$SQL = "SELECT supplierid,
-						suppname,
-						currcode,
-						address1,
-						address2,
-						address3,
-						address4
-					FROM suppliers
-					WHERE email<>''
-					ORDER BY suppname";
-	} else {
-		if (mb_strlen($_POST['Keywords']) > 0) {
-			$_POST['Keywords'] = mb_strtoupper($_POST['Keywords']);
-			//insert wildcard characters in spaces
-			$SearchString = '%' . str_replace(' ', '%', $_POST['Keywords']) . '%';
-			$SQL = "SELECT supplierid,
-							suppname,
-							currcode,
-							address1,
-							address2,
-							address3,
-							address4
-						FROM suppliers
-						WHERE suppname " . LIKE . " '$SearchString'
-							AND email<>''
-						ORDER BY suppname";
-		} elseif (mb_strlen($_POST['SupplierCode']) > 0) {
-			$_POST['SupplierCode'] = mb_strtoupper($_POST['SupplierCode']);
-			$SQL = "SELECT supplierid,
-							suppname,
-							currcode,
-							address1,
-							address2,
-							address3,
-							address4
-						FROM suppliers
-						WHERE supplierid " . LIKE . " '%" . $_POST['SupplierCode'] . "%'
-							AND email<>''
-						ORDER BY supplierid";
-		}
-	} //one of keywords or SupplierCode was more than a zero length string
-echo $SQL;
+	$_POST['Keywords'] = mb_strtoupper($_POST['Keywords']);
+	//insert wildcard characters in spaces
+	$SearchString = '%' . str_replace(' ', '%', $_POST['Keywords']) . '%';
+	$_POST['SupplierCode'] = mb_strtoupper($_POST['SupplierCode']);
+	$SQL = "SELECT supplierid,
+					suppname,
+					currcode,
+					address1,
+					address2,
+					address3,
+					address4
+				FROM suppliers
+				WHERE suppname " . LIKE . " '" . $SearchString . "'
+					AND supplierid " . LIKE . " '%" . $_POST['SupplierCode'] . "%'
+					AND email<>''
+				ORDER BY suppname";
 	$result = DB_query($SQL);
 	if (DB_num_rows($result) == 1) {
 		$myrow = DB_fetch_array($result);
@@ -527,34 +520,8 @@ if (!isset($_POST['PageOffset'])) {
 	}
 }
 
-if (isset($_POST['Suppliers'])) {
-	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?identifier=' . $identifier, ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-	echo '<div>';
-	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Search for Suppliers') . '</p>
-		<table cellpadding="3" class="selection">
-			<tr>
-				<td>' . _('Enter a partial Name') . ':</td>
-				<td>';
-	if (isset($_POST['Keywords'])) {
-		echo '<input type="text" name="Keywords" value="' . $_POST['Keywords'] . '" size="20" minlength="0" maxlength="25" />';
-	} else {
-		echo '<input type="text" name="Keywords" size="20" minlength="0" maxlength="25" />';
-	}
-	echo '</td><td><b>' . _('OR') . '</b></td><td>' . _('Enter a partial Code') . ':</td><td>';
-	if (isset($_POST['SupplierCode'])) {
-		echo '<input type="text" name="SupplierCode" value="' . $_POST['SupplierCode'] . '" size="15" minlength="0" maxlength="18" />';
-	} else {
-		echo '<input type="text" name="SupplierCode" size="15" minlength="0" maxlength="18" />';
-	}
-	echo '</td></tr></table><br /><div class="centre"><input type="submit" name="SearchSupplier" value="' . _('Search Now') . '" /></div>';
-	echo '</div>
-		</form>';
-}
-
 if (isset($_POST['SearchSupplier'])) {
 	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?identifier=' . $identifier, ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	$ListCount = DB_num_rows($result);
 	$ListPageMax = ceil($ListCount / $_SESSION['DisplayRecordsMax']);
@@ -584,13 +551,9 @@ if (isset($_POST['SearchSupplier'])) {
 			<input type="submit" name="Go" value="' . _('Go') . '" />
 			<input type="submit" name="Previous" value="' . _('Previous') . '" />
 			<input type="submit" name="Next" value="' . _('Next') . '" />';
-		echo '<br />';
 	}
 	echo '<input type="hidden" name="Search" value="' . _('Search Now') . '" />';
-	echo '<br />
-		<br />
-		<br />
-		<table cellpadding="2">';
+	echo '<table cellpadding="2">';
 	echo '<tr>
 	  		<th class="SortableColumn">' . _('Code') . '</th>
 			<th class="SortableColumn">' . _('Supplier Name') . '</th>
@@ -629,8 +592,7 @@ if (isset($_POST['SearchSupplier'])) {
 	}
 	//end of while loop
 	echo '</table>';
-	echo '</div>
-		</form>';
+	echo '</form>';
 }
 
 /*The supplier has chosen option 2
@@ -688,11 +650,9 @@ if (isset($_POST['Items'])) {
 	}
 	echo '</td></tr>
 		</table>
-		<br />
 		<div class="centre">
 			<input type="submit" name="Search" value="' . _('Search Now') . '" />
 		</div>
-		<br />
 		</form>';
 
 }
@@ -700,7 +660,6 @@ if (isset($_POST['Items'])) {
 if (isset($_POST['Search'])) {
 	/*ie seach for stock items */
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?identifier=' . $identifier, ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" title="' . _('Tenders') . '" alt="" />' . ' ' . _('Select items required on this tender') . '</p>';
 
@@ -862,7 +821,7 @@ if (isset($_POST['Search'])) {
 					<td><input class="number" type="text" required="required" minlength="1" maxlength="10" size="6" value="0" name="Qty' . $i . '" /></td>
 					<input type="hidden" value="' . $myrow['units'] . '" name="UOM' . $i . '" />
 					<input type="hidden" value="' . $myrow['stockid'] . '" name="StockID' . $i . '" />
-					</tr>';
+				</tr>';
 
 			$i++;
 			#end of page full new headings if
@@ -871,14 +830,12 @@ if (isset($_POST['Search'])) {
 		echo '</table>';
 
 		echo '<a name="end"></a>
-			<br />
 			<div class="centre">
 				<input type="submit" name="NewItem" value="' . _('Add to Tender') . '" />
 			</div>';
 	} #end if SearchResults to show
 
-	echo '</div>
-		</form>';
+	echo '</form>';
 
 } //end of if search
 

@@ -142,6 +142,7 @@ if (isset($_GET['ModifyOrderNumber']) and $_GET['ModifyOrderNumber'] != '') {
 		} //$_SESSION['SalesmanLogin'] != '' and $_SESSION['SalesmanLogin'] != $myrow['salesman']
 		$_SESSION['Items' . $identifier]->OrderNo = $_GET['ModifyOrderNumber'];
 		$_SESSION['Items' . $identifier]->DebtorNo = $myrow['debtorno'];
+		$_SESSION['Items' . $identifier]->CreditAvailable = GetCreditAvailable($_SESSION['Items' . $identifier]->DebtorNo);
 		/*CustomerID defined in header.inc */
 		$_SESSION['Items' . $identifier]->Branch = $myrow['branchcode'];
 		$_SESSION['Items' . $identifier]->CustomerName = $myrow['name'];

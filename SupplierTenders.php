@@ -635,7 +635,6 @@ if (isset($_POST['Search'])) {
 
 		$myrow = DB_fetch_array($SearchResult);
 		$_GET['NewItem'] = $myrow['stockid'];
-		DB_data_seek($SearchResult, 0);
 	}
 
 	if (isset($SearchResult)) {

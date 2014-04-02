@@ -168,25 +168,25 @@ if (!isset($SelectedTaxAuthID)) {
 			$k++;
 		}
 
-		printf('<td>%s</td>
-				<td>%s</td>
-				<td>%s</td>
-				<td>%s</td>
-				<td>%s</td>
-				<td>%s</td>
-				<td>%s</td>
-				<td>%s</td>
-				<td><a href="%sSelectedTaxAuthID=%s">' . _('Edit') . '</a></td>
-				<td><a href="%sSelectedTaxAuthID=%s&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this tax authority?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-				<td><a href="%sTaxAuthority=%s">' . _('Edit Rates') . '</a></td>
-				</tr>', $myrow[0], $myrow[1], $myrow[3], $myrow[2], $myrow[4], $myrow[5], $myrow[6], $myrow[7], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow[0], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow[0], $RootPath . '/TaxAuthorityRates.php?', $myrow[0]);
+		echo '<td>' . $myrow[0] . '</td>
+				<td>' . $myrow[1]. '</td>
+				<td>' . $myrow[3] . '</td>
+				<td>' . $myrow[2] . '</td>
+				<td>' . $myrow[4] . '</td>
+				<td>' . $myrow[5] . '</td>
+				<td>' . $myrow[6] . '</td>
+				<td>' . $myrow[7] . '</td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedTaxAuthID=' . urlencode($myrow[0]) . '">' . _('Edit') . '</a></td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedTaxAuthID=' . urlencode($myrow[0]) . '&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this tax authority?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+				<td><a href="' . $RootPath . '/TaxAuthorityRates.php?TaxAuthority=' . urlencode($myrow[0]) . '">' . _('Edit Rates') . '</a></td>
+				</tr>';
 
 	}
 	//END WHILE LIST LOOP
 
 	//end of ifs and buts!
 
-	echo '</table><br />';
+	echo '</table>';
 }
 
 
@@ -194,8 +194,7 @@ if (!isset($SelectedTaxAuthID)) {
 if (isset($SelectedTaxAuthID)) {
 	echo '<div class="centre">
 			<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Review all defined tax authority records') . '</a>
-		</div>
-		<br />';
+		</div>';
 }
 
 
@@ -239,6 +238,9 @@ $SQL = "SELECT accountcode,
 		WHERE accountgroups.pandl=0
 		ORDER BY accountcode";
 $result = DB_query($SQL);
+while ($myrow = DB_fetch_array($result)) {
+	$GLAccounts[$myrow['accountcode']] =$myrow['accountname'];
+}
 
 if (!isset($_POST['Description'])) {
 	$_POST['Description'] = '';
@@ -252,33 +254,27 @@ echo '<table class="selection">
 			<td>' . _('Input tax GL Account') . ':</td>
 			<td><select required="required" minlength="1" name="PurchTaxGLCode">';
 
-while ($myrow = DB_fetch_array($result)) {
-	if (isset($_POST['PurchTaxGLCode']) and $myrow['accountcode'] == $_POST['PurchTaxGLCode']) {
-		echo '<option selected="selected" value="';
+foreach ($GLAccounts as $Code => $Name) {
+	if (isset($_POST['PurchTaxGLCode']) and $Code == $_POST['PurchTaxGLCode']) {
+		echo '<option selected="selected" value="' . $Code . '">' . $Name . ' (' . $Code .  ')</option>';
 	} else {
-		echo '<option value="';
+		echo '<option value="' . $Code . '">' . $Name . ' (' . $Code .  ')</option>';
 	}
-	echo $myrow['accountcode'] . '">' . htmlspecialchars($myrow['accountname'], ENT_QUOTES, 'UTF-8', false) . ' (' . $myrow['accountcode'] . ')' . '</option>';
-
 } //end while loop
 
 echo '</select></td>
 	</tr>';
 
-DB_data_seek($result, 0);
-
 echo '<tr>
 		<td>' . _('Output tax GL Account') . ':</td>
 		<td><select required="required" minlength="1" name="TaxGLCode">';
 
-while ($myrow = DB_fetch_array($result)) {
-	if (isset($_POST['TaxGLCode']) and $myrow['accountcode'] == $_POST['TaxGLCode']) {
-		echo '<option selected="selected" value="';
+foreach ($GLAccounts as $Code => $Name) {
+	if (isset($_POST['TaxGLCode']) and $Code == $_POST['TaxGLCode']) {
+		echo '<option selected="selected" value="' . $Code . '">' . $Name . ' (' . $Code .  ')</option>';
 	} else {
-		echo '<option value="';
+		echo '<option value="' . $Code . '">' . $Name . ' (' . $Code .  ')</option>';
 	}
-	echo $myrow['accountcode'] . '">' . htmlspecialchars($myrow['accountname'], ENT_QUOTES, 'UTF-8', false) . ' (' . $myrow['accountcode'] . ')' . '</option>';
-
 } //end while loop
 
 if (!isset($_POST['Bank'])) {
@@ -314,8 +310,7 @@ echo '</select></td>
 	</tr>
 	</table>';
 
-echo '<br />
-		<div class="centre">
+echo '<div class="centre">
 			<input type="submit" name="submit" value="' . _('Enter Information') . '" />
 		</div>
 	</form>';

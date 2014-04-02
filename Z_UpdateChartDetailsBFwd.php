@@ -8,54 +8,63 @@ include('includes/header.inc');
 echo '<form method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" onSubmit="return VerifyForm(this);">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
-if ($_POST['FromPeriod'] > $_POST['ToPeriod']) {
-	prnMsg(_('The selected period from is actually after the period to') . '. ' . _('Please re-select the reporting period'), 'error');
-	unset($_POST['FromPeriod']);
-	unset($_POST['ToPeriod']);
-
-}
-
 if (!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) {
 
-
-	/*Show a form to allow input of criteria for TB to show */
-	echo '<table><tr><td>' . _('Select Period From') . ':</td><td><select minlength="0" name="FromPeriod">';
-
-	$sql = "SELECT periodno, lastdate_in_period FROM periods ORDER BY periodno";
+	$sql = "SELECT periodno, lastdate_in_period FROM periods ORDER BY periodno ASC";
 	$Periods = DB_query($sql);
 
-
 	while ($myrow = DB_fetch_array($Periods)) {
-		echo '<option value="' . $myrow['periodno'] . '">' . MonthAndYearFromSQLDate($myrow['lastdate_in_period']) . '</option>';
+		$PeriodsArray[$myrow['periodno']] = MonthAndYearFromSQLDate($myrow['lastdate_in_period']);
 	}
 
-	echo '</select></td></tr>';
+	$DefaultFromPeriod = min(array_keys($PeriodsArray));
+	$DefaultToPeriod = max(array_keys($PeriodsArray));
 
-	$sql = "SELECT MAX(periodno) FROM periods";
-	$MaxPrd = DB_query($sql);
-	$MaxPrdrow = DB_fetch_row($MaxPrd);
-
-	$DefaultToPeriod = (int) ($MaxPrdrow[0] - 1);
-
-	echo '<tr><td>' . _('Select Period To') . ':</td><td><select minlength="0" name="ToPeriod">';
-
-	$RetResult = DB_data_seek($Periods, 0);
-
-	while ($myrow = DB_fetch_array($Periods)) {
-
-		if ($myrow['periodno'] == $DefaultToPeriod) {
-			echo '<option selected="selected" value="' . $myrow['periodno'] . '">' . MonthAndYearFromSQLDate($myrow['lastdate_in_period']) . '</option>';
+	/*Show a form to allow input of criteria for TB to show */
+	echo '<table>
+			<tr>
+				<td>' . _('Select Period From') . ':</td>
+				<td><select minlength="0" name="FromPeriod">';
+	foreach ($PeriodsArray as $PeriodNo => $PeriodName) {
+		if ($PeriodNo == $DefaultFromPeriod) {
+			echo '<option selected="selected" value="' . $PeriodNo . '">' . $PeriodName . '</option>';
 		} else {
-			echo '<option value="' . $myrow['periodno'] . '">' . MonthAndYearFromSQLDate($myrow['lastdate_in_period']) . '</option>';
+			echo '<option value="' . $PeriodNo . '">' . $PeriodName . '</option>';
 		}
 	}
-	echo '</select></td></tr></table>';
+
+	echo '</select>
+			</td>
+		</tr>';
+
+	echo '<tr>
+			<td>' . _('Select Period To') . ':</td>
+			<td><select minlength="0" name="ToPeriod">';
+
+	foreach ($PeriodsArray as $PeriodNo => $PeriodName) {
+		if ($PeriodNo == $DefaultToPeriod) {
+			echo '<option selected="selected" value="' . $PeriodNo . '">' . $PeriodName . '</option>';
+		} else {
+			echo '<option value="' . $PeriodNo . '">' . $PeriodName . '</option>';
+		}
+	}
+	echo '</select>
+				</td>
+			</tr>
+		</table>';
 
 	echo '<div class="centre"><input type="submit" name="recalc" value="' . _('Do the Recalculation') . '" /></div>
 		</form>';
 
 } else {
 	/*OK do the updates */
+
+	if ($_POST['FromPeriod'] > $_POST['ToPeriod']) {
+		prnMsg(_('The selected period from is actually after the period to') . '. ' . _('Please re-select the reporting period'), 'error');
+		unset($_POST['FromPeriod']);
+		unset($_POST['ToPeriod']);
+		include('includes/footer.inc');
+	}
 
 	for ($i = $_POST['FromPeriod']; $i <= $_POST['ToPeriod']; $i++) {
 

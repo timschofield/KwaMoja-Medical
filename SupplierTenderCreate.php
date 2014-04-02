@@ -438,16 +438,15 @@ if (!isset($_SESSION['tender' . $identifier]) or isset($_POST['LookupDeliveryAdd
 
 	echo '<div class="centre">
 			<input type="submit" name="Suppliers" value="' . _('Select Suppliers') . '" />
-			<input type="submit" name="Items" value="' . _('Select Item Details') . '" />
-		';
+			<input type="submit" name="Items" value="' . _('Select Items For Tender') . '" />
+		</div>';
+	echo '<div class="centre">';
 	if ($_SESSION['tender' . $identifier]->LinesOnTender > 0 and $_SESSION['tender' . $identifier]->SuppliersOnTender > 0) {
 		echo '<input type="submit" name="Close" value="' . _('Close This Tender') . '" />';
 	}
-	echo '</div>';
 	if ($_SESSION['tender' . $identifier]->LinesOnTender > 0 and $_SESSION['tender' . $identifier]->SuppliersOnTender > 0) {
 
-		echo '<div class="centre">
-				<input type="submit" name="Save" value="' . _('Save Tender') . '" />
+		echo '<input type="submit" name="Save" value="' . _('Save Tender') . '" />
 			</div>';
 	}
 	echo '</form>';
@@ -479,10 +478,20 @@ if (isset($_POST['Suppliers'])) {
 }
 
 if (isset($_POST['SearchSupplier']) or isset($_POST['Go']) or isset($_POST['Next']) or isset($_POST['Previous'])) {
-
-	if (mb_strlen($_POST['Keywords']) > 0 and mb_strlen($_POST['SupplierCode']) > 0) {
-		prnMsg('<br />' . _('Supplier name keywords have been used in preference to the Supplier code extract entered'), 'info');
+	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?identifier=' . urlencode($identifier), ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
+	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
+	if (!isset($_POST['PageOffset'])) {
+		$_POST['PageOffset'] = 0;
 	}
+	if (isset($_POST['Next'])) {
+		$_POST['PageOffset'] = $_POST['PageOffset'] + 1;
+	}
+	if (isset($_POST['Previous'])) {
+		$_POST['PageOffset'] = $_POST['PageOffset'] - 1;
+	}
+	echo '<input type="hidden" name="Keywords" value="' . $_POST['Keywords'] . '" />';
+	echo '<input type="hidden" name="SupplierCode" value="' . $_POST['SupplierCode'] . '" />';
+	echo '<input type="hidden" name="PageOffset" value="' . $_POST['PageOffset'] . '" />';
 	$_POST['Keywords'] = mb_strtoupper($_POST['Keywords']);
 	//insert wildcard characters in spaces
 	$SearchString = '%' . str_replace(' ', '%', $_POST['Keywords']) . '%';
@@ -498,7 +507,9 @@ if (isset($_POST['SearchSupplier']) or isset($_POST['Go']) or isset($_POST['Next
 				WHERE suppname " . LIKE . " '" . $SearchString . "'
 					AND supplierid " . LIKE . " '%" . $_POST['SupplierCode'] . "%'
 					AND email<>''
-				ORDER BY suppname";
+				ORDER BY suppname
+				LIMIT " . ($_SESSION['DisplayRecordsMax'] * $_POST['PageOffset']) . ", " . ($_SESSION['DisplayRecordsMax']);
+
 	$result = DB_query($SQL);
 	if (DB_num_rows($result) == 1) {
 		$myrow = DB_fetch_array($result);
@@ -512,47 +523,31 @@ if (isset($SingleSupplierReturned)) {
 	unset($_POST['SupplierCode']);
 }
 
-if (!isset($_POST['PageOffset'])) {
-	$_POST['PageOffset'] = 1;
-} else {
-	if ($_POST['PageOffset'] == 0) {
-		$_POST['PageOffset'] = 1;
-	}
-}
-
 if (isset($_POST['SearchSupplier'])) {
-	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?identifier=' . $identifier, ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	$ListCount = DB_num_rows($result);
-	$ListPageMax = ceil($ListCount / $_SESSION['DisplayRecordsMax']);
-	if (isset($_POST['Next'])) {
-		if ($_POST['PageOffset'] < $ListPageMax) {
-			$_POST['PageOffset'] = $_POST['PageOffset'] + 1;
-		}
+	if ($ListCount == $_SESSION['DisplayRecordsMax']) {
+		$Next = 'Active';
+	} else {
+		$Next = 'InActive';
 	}
-	if (isset($_POST['Previous'])) {
-		if ($_POST['PageOffset'] > 1) {
-			$_POST['PageOffset'] = $_POST['PageOffset'] - 1;
-		}
+	if ($_POST['PageOffset'] > 0) {
+		$Previous = 'Active';
+	} else {
+		$Previous = 'InActive';
 	}
-	if ($ListPageMax > 1) {
-		echo '<br />&nbsp;&nbsp;' . $_POST['PageOffset'] . ' ' . _('of') . ' ' . $ListPageMax . ' ' . _('pages') . '. ' . _('Go to Page') . ': ';
-		echo '<select required="required" minlength="1" name="PageOffset">';
-		$ListPage = 1;
-		while ($ListPage <= $ListPageMax) {
-			if ($ListPage == $_POST['PageOffset']) {
-				echo '<option value="' . $ListPage . '" selected="selected">' . $ListPage . '</option>';
-			} else {
-				echo '<option value="' . $ListPage . '">' . $ListPage . '</option>';
-			}
-			$ListPage++;
-		}
-		echo '</select>
-			<input type="submit" name="Go" value="' . _('Go') . '" />
-			<input type="submit" name="Previous" value="' . _('Previous') . '" />
-			<input type="submit" name="Next" value="' . _('Next') . '" />';
+
+	if ($Previous == 'Active') {
+		echo '<input type="submit" name="Previous" value="' . _('Previous') . '" />';
+	} else {
+		echo '<input type="submit" name="Previous" value="' . _('Previous') . '" disabled />';
 	}
-	echo '<input type="hidden" name="Search" value="' . _('Search Now') . '" />';
+	if ($Next == 'Active') {
+		echo '<input type="submit" name="Next" value="' . _('Next') . '" />';
+	} else {
+		echo '<input type="submit" name="Next" value="' . _('Next') . '" disabled />';
+	}
+
+	echo '<input type="hidden" name="SearchSupplier" value="' . _('Search Now') . '" />';
 	echo '<table cellpadding="2">';
 	echo '<tr>
 	  		<th class="SortableColumn">' . _('Code') . '</th>
@@ -566,12 +561,8 @@ if (isset($_POST['SearchSupplier'])) {
 	$j = 1;
 	$k = 0; //row counter to determine background colour
 	$RowIndex = 0;
-	if (DB_num_rows($result) <> 0) {
-		DB_data_seek($result, ($_POST['PageOffset'] - 1) * $_SESSION['DisplayRecordsMax']);
-	} else {
-		prnMsg(_('There are no suppliers returned, one reason maybe no email addresses set for those suppliers'),'warn');
-	}
-	while (($myrow = DB_fetch_array($result)) and ($RowIndex <> $_SESSION['DisplayRecordsMax'])) {
+
+	while ($myrow = DB_fetch_array($result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -666,120 +657,35 @@ if (isset($_POST['Search'])) {
 	if ($_POST['Keywords'] and $_POST['StockCode']) {
 		prnMsg(_('Stock description keywords have been used in preference to the Stock code extract entered'), 'info');
 	}
-	if ($_POST['Keywords']) {
-		//insert wildcard characters in spaces
-		$SearchString = '%' . str_replace(' ', '%', $_POST['Keywords']) . '%';
+	//insert wildcard characters in spaces
+	$SearchString = '%' . str_replace(' ', '%', $_POST['Keywords']) . '%';
 
-		if ($_POST['StockCat'] == 'All') {
-			$sql = "SELECT stockmaster.stockid,
-						stockmaster.description,
-						stockmaster.units
-					FROM stockmaster INNER JOIN stockcategory
-					ON stockmaster.categoryid=stockcategory.categoryid
-					WHERE stockmaster.mbflag!='D'
-					AND stockmaster.mbflag!='A'
-					AND stockmaster.mbflag!='K'
-					AND stockmaster.mbflag!='G'
-					AND stockmaster.discontinued!=1
-					AND stockmaster.description " . LIKE . " '$SearchString'
-					ORDER BY stockmaster.stockid
-					LIMIT " . $_SESSION['DisplayRecordsMax'];
-		} else {
-			$sql = "SELECT stockmaster.stockid,
-						stockmaster.description,
-						stockmaster.units
-					FROM stockmaster INNER JOIN stockcategory
-					ON stockmaster.categoryid=stockcategory.categoryid
-					WHERE stockmaster.mbflag!='D'
-					AND stockmaster.mbflag!='A'
-					AND stockmaster.mbflag!='K'
-					AND stockmaster.mbflag!='G'
-					AND stockmaster.discontinued!=1
-					AND stockmaster.description " . LIKE . " '$SearchString'
-					AND stockmaster.categoryid='" . $_POST['StockCat'] . "'
-					ORDER BY stockmaster.stockid
-					LIMIT " . $_SESSION['DisplayRecordsMax'];
-		}
-
-	} elseif ($_POST['StockCode']) {
-
-		$_POST['StockCode'] = '%' . $_POST['StockCode'] . '%';
-
-		if ($_POST['StockCat'] == 'All') {
-			$sql = "SELECT stockmaster.stockid,
-						stockmaster.description,
-						stockmaster.units
-					FROM stockmaster INNER JOIN stockcategory
-					ON stockmaster.categoryid=stockcategory.categoryid
-					WHERE stockmaster.mbflag!='D'
-					AND stockmaster.mbflag!='A'
-					AND stockmaster.mbflag!='K'
-					AND stockmaster.mbflag!='G'
-					AND stockmaster.discontinued!=1
-					AND stockmaster.stockid " . LIKE . " '" . $_POST['StockCode'] . "'
-					ORDER BY stockmaster.stockid
-					LIMIT " . $_SESSION['DisplayRecordsMax'];
-		} else {
-			$sql = "SELECT stockmaster.stockid,
-						stockmaster.description,
-						stockmaster.units
-					FROM stockmaster INNER JOIN stockcategory
-					ON stockmaster.categoryid=stockcategory.categoryid
-					WHERE stockmaster.mbflag!='D'
-					AND stockmaster.mbflag!='A'
-					AND stockmaster.mbflag!='K'
-					AND stockmaster.mbflag!='G'
-					AND stockmaster.discontinued!=1
-					AND stockmaster.stockid " . LIKE . " '" . $_POST['StockCode'] . "'
-					AND stockmaster.categoryid='" . $_POST['StockCat'] . "'
-					ORDER BY stockmaster.stockid
-					LIMIT " . $_SESSION['DisplayRecordsMax'];
-		}
-
+	if ($_POST['StockCat'] == 'All') {
+		$CategoryString = '%';
 	} else {
-		if ($_POST['StockCat'] == 'All') {
-			$sql = "SELECT stockmaster.stockid,
-						stockmaster.description,
-						stockmaster.units
-					FROM stockmaster INNER JOIN stockcategory
-					ON stockmaster.categoryid=stockcategory.categoryid
-					WHERE stockmaster.mbflag!='D'
-					AND stockmaster.mbflag!='A'
-					AND stockmaster.mbflag!='K'
-					AND stockmaster.mbflag!='G'
-					AND stockmaster.discontinued!=1
-					ORDER BY stockmaster.stockid
-					LIMIT " . $_SESSION['DisplayRecordsMax'];
-		} else {
-			$sql = "SELECT stockmaster.stockid,
-						stockmaster.description,
-						stockmaster.units
-					FROM stockmaster INNER JOIN stockcategory
-					ON stockmaster.categoryid=stockcategory.categoryid
-					WHERE stockmaster.mbflag!='D'
-					AND stockmaster.mbflag!='A'
-					AND stockmaster.mbflag!='K'
-					AND stockmaster.mbflag!='G'
-					AND stockmaster.discontinued!=1
-					AND stockmaster.categoryid='" . $_POST['StockCat'] . "'
-					ORDER BY stockmaster.stockid
-					LIMIT " . $_SESSION['DisplayRecordsMax'];
-		}
+		$CategoryString = $_POST['StockCat'];
 	}
+	$_POST['StockCode'] = '%' . $_POST['StockCode'] . '%';
+	$sql = "SELECT stockmaster.stockid,
+					stockmaster.description,
+					stockmaster.units
+				FROM stockmaster
+				INNER JOIN stockcategory
+					ON stockmaster.categoryid=stockcategory.categoryid
+				WHERE stockmaster.mbflag!='D'
+					AND stockmaster.mbflag!='A'
+					AND stockmaster.mbflag!='K'
+					AND stockmaster.mbflag!='G'
+					AND stockmaster.discontinued!=1
+					AND stockmaster.description " . LIKE . " '" . $SearchString . "'
+					AND stockmaster.categoryid " . LIKE . " '" . $CategoryString . "'
+					AND stockmaster.stockid " . LIKE . " '" . $_POST['StockCode'] . "'
+				ORDER BY stockmaster.stockid
+				LIMIT " . $_SESSION['DisplayRecordsMax'];
 
 	$ErrMsg = _('There is a problem selecting the part records to display because');
 	$DbgMsg = _('The SQL statement that failed was');
 	$SearchResult = DB_query($sql, $ErrMsg, $DbgMsg);
-
-	if (DB_num_rows($SearchResult) == 0 and $debug == 1) {
-		prnMsg(_('There are no products to display matching the criteria provided'), 'warn');
-	}
-	if (DB_num_rows($SearchResult) == 1) {
-
-		$myrow = DB_fetch_array($SearchResult);
-		$_GET['NewItem'] = $myrow['stockid'];
-		DB_data_seek($SearchResult, 0);
-	}
 
 	if (isset($SearchResult)) {
 

@@ -784,7 +784,6 @@ if (!isset($SupplierID)) {
 	while ($myrow = DB_fetch_array($result)) {
 		echo '<option value="' . $myrow['termsindicator'] . '">' . $myrow['terms'] . '</option>';
 	} //end while loop
-	DB_data_seek($result, 0);
 	echo '</select></td></tr>';
 
 	$result = DB_query("SELECT id, coyname FROM factorcompanies");
@@ -822,7 +821,6 @@ if (!isset($SupplierID)) {
 			echo '<option value="' . $myrow['currabrev'] . '">' . $myrow['currency'] . '</option>';
 		}
 	} //end while loop
-	DB_data_seek($result, 0);
 
 	echo '</select></td></tr>
 			<tr>
@@ -837,7 +835,6 @@ if (!isset($SupplierID)) {
 			<td>' . _('Tax Group') . ':</td>
 			<td><select required="required" minlength="1" name="TaxGroup">';
 
-	DB_data_seek($result, 0);
 
 	$sql = "SELECT taxgroupid, taxgroupdescription FROM taxgroups";
 	$result = DB_query($sql);
@@ -852,7 +849,6 @@ if (!isset($SupplierID)) {
 
 	echo '</select></td></tr>
 		</table>
-		<br />
 		<div class="centre"><input type="submit" name="submit" value="' . _('Insert New Supplier') . '" /></div>';
 	echo '</form>';
 
@@ -1031,7 +1027,6 @@ if (!isset($SupplierID)) {
 			echo '<option value="' . $myrow['termsindicator'] . '">' . $myrow['terms'] . '</option>';
 		}
 	} //end while loop
-	DB_data_seek($result, 0);
 	echo '</select></td></tr>';
 
 	$result = DB_query("SELECT id, coyname FROM factorcompanies");
@@ -1063,7 +1058,6 @@ if (!isset($SupplierID)) {
 			echo '<option value="' . $myrow['currabrev'] . '">' . $myrow['currency'] . '</option>';
 		}
 	} //end while loop
-	DB_data_seek($result, 0);
 
 	echo '</select></td></tr>
 		<tr><td>' . _('Remittance Advice') . ':</td>
@@ -1085,8 +1079,6 @@ if (!isset($SupplierID)) {
 	echo '<tr>
 			<td>' . _('Tax Group') . ':</td>
 			<td><select minlength="0" name="TaxGroup">';
-
-	DB_data_seek($result, 0);
 
 	$sql = "SELECT taxgroupid, taxgroupdescription FROM taxgroups";
 	$result = DB_query($sql);

@@ -281,7 +281,8 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				<td><select required="required" minlength="1" name="ToCriteria">';
 
 		/*Set the index for the categories result set back to 0 */
-		DB_data_seek($CatResult, 0);
+		$sql = "SELECT categoryid, categorydescription FROM stockcategory ORDER BY categorydescription";
+		$CatResult = DB_query($sql);
 
 		while ($myrow = DB_fetch_array($CatResult)) {
 			echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . ' - ' . $myrow['categoryid'] . '</option>';

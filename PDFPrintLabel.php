@@ -258,7 +258,7 @@ if (isset($_POST['PrintLabels']) and $NoOfLabels > 0) {
 
 	$FileName = $_SESSION['DatabaseName'] . '_' . _('Price_Labels') . '_' . date('Y-m-d') . '.pdf';
 	//	ob_clean();
-	$pdf->OutputI($FileName);
+	$pdf->OutputD($FileName);
 	$pdf->__destruct();
 
 } else {

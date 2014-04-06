@@ -6,14 +6,14 @@ include('includes/session.inc');
 include('includes/SQL_CommonFunctions.inc');
 if (isset($_GET['WO'])) {
 	$SelectedWO = $_GET['WO'];
-} elseif (isset($_POST['WO'])){
+} elseif (isset($_POST['WO'])) {
 	$SelectedWO = $_POST['WO'];
 } else {
 	unset($SelectedWO);
 }
 if (isset($_GET['StockID'])) {
 	$StockID = $_GET['StockID'];
-} elseif (isset($_POST['StockID'])){
+} elseif (isset($_POST['StockID'])) {
 	$StockID = $_POST['StockID'];
 } else {
 	unset($StockID);
@@ -21,7 +21,7 @@ if (isset($_GET['StockID'])) {
 
 if (isset($_GET['PrintLabels'])) {
 	$PrintLabels = $_GET['PrintLabels'];
-} elseif (isset($_POST['PrintLabels'])){
+} elseif (isset($_POST['PrintLabels'])) {
 	$PrintLabels = $_POST['LabelItem'];
 } else {
 	unset($LabelItem);
@@ -29,59 +29,59 @@ if (isset($_GET['PrintLabels'])) {
 
 if (isset($_GET['LabelItem'])) {
 	$LabelItem = $_GET['LabelItem'];
-} elseif (isset($_POST['LabelItem'])){
+} elseif (isset($_POST['LabelItem'])) {
 	$LabelItem = $_POST['LabelItem'];
 } else {
 	unset($LabelItem);
 }
 if (isset($_GET['LabelDesc'])) {
 	$LabelDesc = $_GET['LabelDesc'];
-} elseif (isset($_POST['LabelDesc'])){
+} elseif (isset($_POST['LabelDesc'])) {
 	$LabelDesc = $_POST['LabelDesc'];
 } else {
 	unset($LabelDesc);
 }
 if (isset($_GET['LabelLot'])) {
 	$LabelLot = $_GET['LabelLot'];
-} elseif (isset($_POST['LabelLot'])){
+} elseif (isset($_POST['LabelLot'])) {
 	$LabelLot = $_POST['LabelLot'];
 } else {
 	unset($LabelLot);
 }
 if (isset($_GET['NoOfBoxes'])) {
 	$NoOfBoxes = $_GET['NoOfBoxes'];
-} elseif (isset($_POST['NoOfBoxes'])){
+} elseif (isset($_POST['NoOfBoxes'])) {
 	$NoOfBoxes = $_POST['NoOfBoxes'];
 } else {
 	unset($NoOfBoxes);
 }
 if (isset($_GET['LabelsPerBox'])) {
 	$LabelsPerBox = $_GET['LabelsPerBox'];
-} elseif (isset($_POST['LabelsPerBox'])){
+} elseif (isset($_POST['LabelsPerBox'])) {
 	$LabelsPerBox = $_POST['LabelsPerBox'];
 } else {
 	unset($LabelsPerBox);
 }
 if (isset($_GET['QtyPerBox'])) {
 	$QtyPerBox = $_GET['QtyPerBox'];
-} elseif (isset($_POST['QtyPerBox'])){
+} elseif (isset($_POST['QtyPerBox'])) {
 	$QtyPerBox = $_POST['QtyPerBox'];
 } else {
 	unset($QtyPerBox);
 }
 if (isset($_GET['LeftOverQty'])) {
 	$LeftOverQty = $_GET['LeftOverQty'];
-} elseif (isset($_POST['LeftOverQty'])){
+} elseif (isset($_POST['LeftOverQty'])) {
 	$LeftOverQty = $_POST['LeftOverQty'];
 } else {
 	unset($LeftOverQty);
 }
 if (isset($_GET['PrintLabels'])) {
 	$PrintLabels = $_GET['PrintLabels'];
-} elseif (isset($_POST['PrintLabels'])){
+} elseif (isset($_POST['PrintLabels'])) {
 	$PrintLabels = $_POST['PrintLabels'];
 } else {
-	$PrintLabels="Yes";
+	$PrintLabels = "Yes";
 }
 
 
@@ -105,8 +105,7 @@ if (!isset($_GET['WO']) AND !isset($_POST['WO'])) {
 }
 if (isset($_GET['WO'])) {
 	$SelectedWO = $_GET['WO'];
-}
-elseif (isset($_POST['WO'])) {
+} elseif (isset($_POST['WO'])) {
 	$SelectedWO = $_POST['WO'];
 }
 $Title = _('Print Work Order Number') . ' ' . $SelectedWO;
@@ -184,21 +183,20 @@ if (isset($SelectedWO) AND $SelectedWO != '' AND $SelectedWO > 0 AND $SelectedWO
 	} elseif (DB_num_rows($result) == 1) {
 		/*There is only one order header returned  (as it should be!)*/
 		$WOHeader = DB_fetch_array($result);
-		if ($WOHeader['controlled']==1) {
+		if ($WOHeader['controlled'] == 1) {
 			$sql = "SELECT serialno
 							FROM woserialnos
 							WHERE woserialnos.stockid='" . $StockID . "'
 							AND woserialnos.wo ='" . $SelectedWO . "'";
 			$result = DB_query($sql, $db, $ErrMsg);
 			if (DB_num_rows($result) > 0) {
-				$SerialNoArray=DB_fetch_array($result);
-				$SerialNo=$SerialNoArray[0];
-			}
-			else {
-				$SerialNo=$WOHeader['nextlotsnref'];
+				$SerialNoArray = DB_fetch_array($result);
+				$SerialNo = $SerialNoArray[0];
+			} else {
+				$SerialNo = $WOHeader['nextlotsnref'];
 			}
 		} //controlled
-		$PackQty=0;
+		$PackQty = 0;
 		$sql = "SELECT value
 				FROM stockitemproperties
 				INNER JOIN stockcatproperties
@@ -206,10 +204,10 @@ if (isset($SelectedWO) AND $SelectedWO != '' AND $SelectedWO > 0 AND $SelectedWO
 				WHERE stockid='" . $StockID . "'
 				AND label='PackQty'";
 		$result = DB_query($sql, $db, $ErrMsg);
-		$PackQtyArray=DB_fetch_array($result);
-		$PackQty=$PackQtyArray['value'];
-		if ($PackQty==0) {
-			$PackQty=1;
+		$PackQtyArray = DB_fetch_array($result);
+		$PackQty = $PackQtyArray['value'];
+		if ($PackQty == 0) {
+			$PackQty = 1;
 		}
 	} // 1 valid record
 } //if there is a valid order number
@@ -218,8 +216,8 @@ else if ($SelectedWO == 'Preview') { // We are previewing the order
 	/* Fill the order header details with dummy data */
 	$WOHeader['comments'] = str_pad('', 1050, 'x');
 	$WOHeader['locationname'] = str_pad('', 35, 'y');
-	$SerialNo="XXXXXXXXXX";
-	$PackQty='999999999';
+	$SerialNo = "XXXXXXXXXX";
+	$PackQty = '999999999';
 	$WOHeader['requiredby'] = date('m/d/Y');
 	$WOHeader['startdate'] = date('m/d/Y');
 	$WOHeader['qtyreqd'] = '999999999';
@@ -261,58 +259,57 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 									FROM worequirements INNER JOIN stockmaster
 									ON worequirements.stockid=stockmaster.stockid
 									WHERE wo='" . $SelectedWO . "'
-									AND worequirements.parentstockid='" . $StockID . "'",
-									$db);
+									AND worequirements.parentstockid='" . $StockID . "'", $db);
 		$IssuedAlreadyResult = DB_query("SELECT stockid,
 						SUM(-qty) AS total
 					FROM stockmoves
 					WHERE stockmoves.type=28
-					AND reference='".$SelectedWO."'
-					GROUP BY stockid",$db);
-		while ($IssuedRow = DB_fetch_array($IssuedAlreadyResult)){
+					AND reference='" . $SelectedWO . "'
+					GROUP BY stockid", $db);
+		while ($IssuedRow = DB_fetch_array($IssuedAlreadyResult)) {
 			$IssuedAlreadyRow[$IssuedRow['stockid']] = $IssuedRow['total'];
 		}
-		$i=0;
-		$WOLine=array();
-		while ($RequirementsRow = DB_fetch_array($RequirmentsResult)){
-			if ($RequirementsRow['autoissue']==0){
-				$WOLine[$i][action]='Manual Issue';
+		$i = 0;
+		$WOLine = array();
+		while ($RequirementsRow = DB_fetch_array($RequirmentsResult)) {
+			if ($RequirementsRow['autoissue'] == 0) {
+				$WOLine[$i][action] = 'Manual Issue';
 			} else {
-				$WOLine[$i][action]='Auto Issue';
+				$WOLine[$i][action] = 'Auto Issue';
 			}
-			if (isset($IssuedAlreadyRow[$RequirementsRow['stockid']])){
+			if (isset($IssuedAlreadyRow[$RequirementsRow['stockid']])) {
 				$Issued = $IssuedAlreadyRow[$RequirementsRow['stockid']];
 				unset($IssuedAlreadyRow[$RequirementsRow['stockid']]);
-			}else{
+			} else {
 				$Issued = 0;
 			}
 			$WOLine[$i]['item'] = $RequirementsRow['stockid'];
 			$WOLine[$i]['description'] = $RequirementsRow['description'];
 			$WOLine[$i]['controlled'] = $RequirementsRow['controlled'];
-			$WOLine[$i]['qtyreqd'] = $WOHeader['qtyreqd']*$RequirementsRow['qtypu'];
-			$WOLine[$i]['issued'] = $Issued  ;
+			$WOLine[$i]['qtyreqd'] = $WOHeader['qtyreqd'] * $RequirementsRow['qtypu'];
+			$WOLine[$i]['issued'] = $Issued;
 			$WOLine[$i]['decimalplaces'] = $RequirementsRow['decimalplaces'];
-			$i+=1;
+			$i += 1;
 		}
 		/* Now do any additional issues of items not in the BOM */
-		if(count($IssuedAlreadyRow)>0){
-			$AdditionalStocks = implode("','",array_keys($IssuedAlreadyRow));
+		if (count($IssuedAlreadyRow) > 0) {
+			$AdditionalStocks = implode("','", array_keys($IssuedAlreadyRow));
 			$RequirementsSQL = "SELECT stockid,
 							description,
 							decimalplaces,
 							controlled
-					FROM stockmaster WHERE stockid IN ('".$AdditionalStocks."')";
-			$RequirementsResult = DB_query($RequirementsSQL,$db);
+					FROM stockmaster WHERE stockid IN ('" . $AdditionalStocks . "')";
+			$RequirementsResult = DB_query($RequirementsSQL, $db);
 			$AdditionalStocks = array();
-			while($myrow = DB_fetch_array($RequirementsResult)){
-				$WOLine[$i]['action']='Additional Issue';
-				$WOLine[$i]['item'] =  $myrow['stockid'];
+			while ($myrow = DB_fetch_array($RequirementsResult)) {
+				$WOLine[$i]['action'] = 'Additional Issue';
+				$WOLine[$i]['item'] = $myrow['stockid'];
 				$WOLine[$i]['description'] = $myrow['description'];
 				$WOLine[$i]['controlled'] = $myrow['controlled'];
 				$WOLine[$i]['qtyreqd'] = 0;
 				$WOLine[$i]['issued'] = $IssuedAlreadyRow[$myrow['stockid']];
 				$WOLine[$i]['decimalplaces'] = $RequirementsRow['decimalplaces'];
-				$i+=1;
+				$i += 1;
 			}
 		}
 
@@ -321,8 +318,8 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 		/*Yes there are line items to start the ball rolling with a page header */
 		include('includes/PDFWOPageHeader.inc');
 		$YPos = $Page_Height - $FormDesign->Data->y;
-		$i=0;
-		while ((isset($SelectedWO) AND $SelectedWO == 'Preview') OR (count($WOLine) > $i )) {
+		$i = 0;
+		while ((isset($SelectedWO) AND $SelectedWO == 'Preview') OR (count($WOLine) > $i)) {
 			if ($SelectedWO == 'Preview') {
 				$WOLine[$i]['action'] = str_pad('', 20, 'x');
 				$WOLine[$i]['item'] = str_pad('', 10, 'x');
@@ -333,19 +330,18 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 			}
 			if ($WOLine['decimalplaces'] != NULL) {
 				$DecimalPlaces = $WOLine[$i]['decimalplaces'];
-			}
-			else {
+			} else {
 				$DecimalPlaces = 2;
 			}
 			//echo $WOLine[$i]['item'] . ' ' . $WOLine[$i]['controlled'] . '<br>';
 			$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column1->x, $YPos, $FormDesign->Data->Column1->Length, $FormDesign->Data->Column1->FontSize, $WOLine[$i]['action'], 'left');
 			$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column2->x, $YPos, $FormDesign->Data->Column2->Length, $FormDesign->Data->Column2->FontSize, $WOLine[$i]['item'], 'left');
 			$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column3->x, $YPos, $FormDesign->Data->Column3->Length, $FormDesign->Data->Column3->FontSize, $WOLine[$i]['description'], 'left');
-			$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column4->x, $YPos, $FormDesign->Data->Column4->Length, $FormDesign->Data->Column4->FontSize, locale_number_format($WOLine[$i]['qtyreqd'],$WOLine[$i]['decimalplaces']), 'right');
-			$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column5->x, $YPos, $FormDesign->Data->Column5->Length, $FormDesign->Data->Column5->FontSize, locale_number_format($WOLine[$i]['issued'],$WOLine[$i]['decimalplaces']), 'right');
+			$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column4->x, $YPos, $FormDesign->Data->Column4->Length, $FormDesign->Data->Column4->FontSize, locale_number_format($WOLine[$i]['qtyreqd'], $WOLine[$i]['decimalplaces']), 'right');
+			$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column5->x, $YPos, $FormDesign->Data->Column5->Length, $FormDesign->Data->Column5->FontSize, locale_number_format($WOLine[$i]['issued'], $WOLine[$i]['decimalplaces']), 'right');
 
 			$YPos -= $line_height;
-			if ($YPos - (2*$line_height) <= $Page_Height - $FormDesign->Comments->y) {
+			if ($YPos - (2 * $line_height) <= $Page_Height - $FormDesign->Comments->y) {
 				$PageNumber++;
 				$YPos = $Page_Height - $FormDesign->Data->y;
 				include('includes/PDFWOPageHeader.inc');
@@ -363,22 +359,21 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 													INNER JOIN locations
 													ON stockmoves.loccode=locations.loccode
 													WHERE stockmoves.type=28
-													AND stockmoves.stockid = '".$WOLine[$i]['item']."'
-													AND reference='".$SelectedWO."'
-													GROUP BY stockserialmoves.serialno",$db);
-			while ($IssuedRow = DB_fetch_array($IssuedAlreadyDetail)){
+													AND stockmoves.stockid = '" . $WOLine[$i]['item'] . "'
+													AND reference='" . $SelectedWO . "'
+													GROUP BY stockserialmoves.serialno", $db);
+			while ($IssuedRow = DB_fetch_array($IssuedAlreadyDetail)) {
 				if ($WOLine[$i]['controlled']) {
-					$CurLot=$IssuedRow['serialno'];
-					$CurQty=-$IssuedRow['moveqty'];
-				}
-				else {
-					$CurLot=$IssuedRow['locationname'];
-					$CurQty=-$IssuedRow['qty'];
+					$CurLot = $IssuedRow['serialno'];
+					$CurQty = -$IssuedRow['moveqty'];
+				} else {
+					$CurLot = $IssuedRow['locationname'];
+					$CurQty = -$IssuedRow['qty'];
 				}
 				$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column3->x, $YPos, $FormDesign->Data->Column3->Length, $FormDesign->Data->Column3->FontSize, $CurLot, 'left');
 				$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column5->x, $YPos, $FormDesign->Data->Column5->Length, $FormDesign->Data->Column5->FontSize, $CurQty, 'right');
 				$YPos -= $line_height;
-				if ($YPos - (2*$line_height) <= $Page_Height - $FormDesign->Comments->y) {
+				if ($YPos - (2 * $line_height) <= $Page_Height - $FormDesign->Comments->y) {
 					$PageNumber++;
 					$YPos = $Page_Height - $FormDesign->Data->y;
 					include('includes/PDFWOPageHeader.inc');
@@ -393,23 +388,22 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 											stockserialitems.quantity as qty
 											FROM locstock LEFT OUTER JOIN stockserialitems
 											ON locstock.loccode=stockserialitems.loccode AND locstock.stockid = stockserialitems.stockid
-											WHERE locstock.loccode='".$WOHeader['loccode']."'
-											AND locstock.stockid='".$WOLine[$i]['item']."'",$db);
-				while ($ToIssue = DB_fetch_array($AvailQty)){
+											WHERE locstock.loccode='" . $WOHeader['loccode'] . "'
+											AND locstock.stockid='" . $WOLine[$i]['item'] . "'", $db);
+				while ($ToIssue = DB_fetch_array($AvailQty)) {
 					if ($WOLine[$i]['controlled']) {
-						$CurLot=$ToIssue['serialno'];
-						$CurQty=$ToIssue['qty'];
-					}
-					else {
-						$CurLot=substr($WOHeader['locationname'] . ' ' . $ToIssue['bin'],0,34);
-						$CurQty=$ToIssue['quantity'];
+						$CurLot = $ToIssue['serialno'];
+						$CurQty = $ToIssue['qty'];
+					} else {
+						$CurLot = substr($WOHeader['locationname'] . ' ' . $ToIssue['bin'], 0, 34);
+						$CurQty = $ToIssue['quantity'];
 					}
 					if ($CurQty > 0) {
 						$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column3->x, $YPos, $FormDesign->Data->Column3->Length, $FormDesign->Data->Column3->FontSize, $CurLot, 'left');
 						$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column3->x, $YPos, $FormDesign->Data->Column3->Length, $FormDesign->Data->Column3->FontSize, $CurQty, 'right');
 						$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column5->x, $YPos, $FormDesign->Data->Column5->Length, $FormDesign->Data->Column5->FontSize, '________', 'right');
 						$YPos -= $line_height;
-						if ($YPos - (2*$line_height) <= $Page_Height - $FormDesign->Comments->y) {
+						if ($YPos - (2 * $line_height) <= $Page_Height - $FormDesign->Comments->y) {
 							$PageNumber++;
 							$YPos = $Page_Height - $FormDesign->Data->y;
 							include('includes/PDFWOPageHeader.inc');
@@ -421,37 +415,39 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 			if ($SelectedWO == 'Preview') {
 				$SelectedWO = 'Preview_WorkOrder';
 			} //$SelectedWO == 'Preview'
-			$i+=1;
-			$YPos -= $line_height; /*extra line*/
-			if ($YPos - (2*$line_height) <= $Page_Height - $FormDesign->Comments->y) {
+			$i += 1;
+			$YPos -= $line_height;
+			/*extra line*/
+			if ($YPos - (2 * $line_height) <= $Page_Height - $FormDesign->Comments->y) {
 				$PageNumber++;
 				$YPos = $Page_Height - $FormDesign->Data->y;
 				include('includes/PDFWOPageHeader.inc');
 			}
 		} //end while there are line items to print out
 
-		if ($YPos - (2*$line_height) <= $Page_Height - $FormDesign->Comments->y) { // need to ensure space for totals
+		if ($YPos - (2 * $line_height) <= $Page_Height - $FormDesign->Comments->y) { // need to ensure space for totals
 			$PageNumber++;
 			include('includes/PDFWOPageHeader.inc');
 		} //end if need a new page headed up
-	} /*end if there are order details to show on the order - or its a preview*/
-	if($FooterPrintedInPage == 0){
-			$LeftOvers = $pdf->addText($FormDesign->SignedDate->x,$Page_Height-$FormDesign->SignedDate->y,$FormDesign->SignedDate->FontSize, _('Date : ') . '______________');
-			$LeftOvers = $pdf->addText($FormDesign->SignedBy->x,$Page_Height-$FormDesign->SignedBy->y,$FormDesign->SignedBy->FontSize, _('Signed for: ').'____________________________________');
-			$FooterPrintedInPage= 1;
+	}
+	/*end if there are order details to show on the order - or its a preview*/
+	if ($FooterPrintedInPage == 0) {
+		$LeftOvers = $pdf->addText($FormDesign->SignedDate->x, $Page_Height - $FormDesign->SignedDate->y, $FormDesign->SignedDate->FontSize, _('Date : ') . '______________');
+		$LeftOvers = $pdf->addText($FormDesign->SignedBy->x, $Page_Height - $FormDesign->SignedBy->y, $FormDesign->SignedBy->FontSize, _('Signed for: ') . '____________________________________');
+		$FooterPrintedInPage = 1;
 	}
 
-	$PrintingComments=true;
-	$LeftOvers = $pdf->addTextWrap($FormDesign->Comments->x, $Page_Height - $FormDesign->Comments->y,$FormDesign->Comments->Length,$FormDesign->Comments->FontSize, $WOHeader['comments'], 'left');
-	$YPos=$Page_Height - $FormDesign->Comments->y;
+	$PrintingComments = true;
+	$LeftOvers = $pdf->addTextWrap($FormDesign->Comments->x, $Page_Height - $FormDesign->Comments->y, $FormDesign->Comments->Length, $FormDesign->Comments->FontSize, $WOHeader['comments'], 'left');
+	$YPos = $Page_Height - $FormDesign->Comments->y;
 	while (mb_strlen($LeftOvers) > 1) {
 		$YPos -= $line_height;
-		if ($YPos - $line_height <= $Bottom_Margin)  {
+		if ($YPos - $line_height <= $Bottom_Margin) {
 			$PageNumber++;
 			$YPos = $Page_Height - $FormDesign->Headings->Column1->y;
 			include('includes/PDFWOPageHeader.inc');
 		}
-		$LeftOvers = $pdf->addTextWrap($FormDesign->Comments->x, $YPos,$FormDesign->Comments->Length,$FormDesign->Comments->FontSize, $LeftOvers, 'left');
+		$LeftOvers = $pdf->addTextWrap($FormDesign->Comments->x, $YPos, $FormDesign->Comments->Length, $FormDesign->Comments->FontSize, $LeftOvers, 'left');
 	}
 
 	$Success = 1; //assume the best and email goes - has to be set to 1 to allow update status
@@ -469,14 +465,18 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 		$mail->setSubject(_('Work Order Number') . ' ' . $SelectedWO);
 		$mail->addAttachment($attachment, $PdfFileName, 'application/pdf');
 		//since sometime the mail server required to verify the users, so must set this information.
-		if($_SESSION['SmtpSetting'] == 0){//use the mail service provice by the server.
+		if ($_SESSION['SmtpSetting'] == 0) { //use the mail service provice by the server.
 			$mail->setFrom($_SESSION['CompanyRecord']['coyname'] . '<' . $_SESSION['CompanyRecord']['email'] . '>');
-			$Success = $mail->send(array($_POST['EmailTo']));
-		}else if($_SESSION['SmtpSetting'] == 1) {
-			$Success = SendmailBySmtp($mail,array($_POST['EmailTo']));
+			$Success = $mail->send(array(
+				$_POST['EmailTo']
+			));
+		} else if ($_SESSION['SmtpSetting'] == 1) {
+			$Success = SendmailBySmtp($mail, array(
+				$_POST['EmailTo']
+			));
 
-		}else{
-			prnMsg(_('The SMTP settings are wrong, please ask administrator for help'),'error');
+		} else {
+			prnMsg(_('The SMTP settings are wrong, please ask administrator for help'), 'error');
 			exit;
 			include('includes/footer.inc');
 		}
@@ -521,9 +521,9 @@ else {
 
 		$result = DB_query($sql, $db, $ErrMsg);
 		$Labels = DB_fetch_array($result);
-		$LabelItem=$Labels['stockid'];
-		$LabelDesc=$Labels['description'];
-		$QtyPerBox=0;
+		$LabelItem = $Labels['stockid'];
+		$LabelDesc = $Labels['description'];
+		$QtyPerBox = 0;
 		$sql = "SELECT value
 				FROM stockitemproperties
 				INNER JOIN stockcatproperties
@@ -531,28 +531,27 @@ else {
 				WHERE stockid='" . $StockID . "'
 				AND label='PackQty'";
 		$result = DB_query($sql, $db, $ErrMsg);
-		$PackQtyArray=DB_fetch_array($result);
-		$QtyPerBox=$PackQtyArray['value'];
-		if ($QtyPerBox==0) {
-			$QtyPerBox=1;
+		$PackQtyArray = DB_fetch_array($result);
+		$QtyPerBox = $PackQtyArray['value'];
+		if ($QtyPerBox == 0) {
+			$QtyPerBox = 1;
 		}
-		$NoOfBoxes=(int)($Labels['qtyreqd'] / $QtyPerBox);
-		$LeftOverQty=$Labels['qtyreqd'] % $QtyPerBox;
-		$LabelsPerBox=1;
-		$QtyPerBox=locale_number_format($QtyPerBox, $Labels['decimalplaces']);
-		$LeftOverQty=locale_number_format($LeftOverQty, $Labels['decimalplaces']);
-		if ($Labels['controlled']==1) {
+		$NoOfBoxes = (int) ($Labels['qtyreqd'] / $QtyPerBox);
+		$LeftOverQty = $Labels['qtyreqd'] % $QtyPerBox;
+		$LabelsPerBox = 1;
+		$QtyPerBox = locale_number_format($QtyPerBox, $Labels['decimalplaces']);
+		$LeftOverQty = locale_number_format($LeftOverQty, $Labels['decimalplaces']);
+		if ($Labels['controlled'] == 1) {
 			$sql = "SELECT serialno
 							FROM woserialnos
 							WHERE woserialnos.stockid='" . $StockID . "'
 							AND woserialnos.wo ='" . $SelectedWO . "'";
 			$result = DB_query($sql, $db, $ErrMsg);
 			if (DB_num_rows($result) > 0) {
-				$SerialNoArray=DB_fetch_array($result);
-				$LabelLot=$SerialNoArray[0];
-			}
-			else {
-				$LabelLot=$WOHeader['nextlotsnref'];
+				$SerialNoArray = DB_fetch_array($result);
+				$LabelLot = $SerialNoArray[0];
+			} else {
+				$LabelLot = $WOHeader['nextlotsnref'];
 			}
 		} //controlled
 	} //not set yet
@@ -574,8 +573,7 @@ else {
 	}
 	if ($ViewingOnly != 0) {
 		echo '<option selected="selected" value="Print">' . _('Print') . '</option>';
-	}
-	else {
+	} else {
 		if ($_POST['PrintOrEmail'] == 'Print') {
 			echo '<option selected="selected" value="Print">' . _('Print') . '</option>';
 			echo '<option value="Email">' . _('Email') . '</option>';
@@ -586,11 +584,10 @@ else {
 	}
 	echo '</select></td></tr>';
 	echo '<tr><td>' . _('Print Labels') . ':</td><td><select name="PrintLabels" >';
-	if ($PrintLabels=="Yes") {
+	if ($PrintLabels == "Yes") {
 		echo '<option value="Yes" selected>' . _('Yes') . '</option>';
 		echo '<option value="No">' . _('No') . '</option>';
-	}
-	else {
+	} else {
 		echo '<option value="Yes" >' . _('Yes') . '</option>';
 		echo '<option value="No" selected>' . _('No') . '</option>';
 	}
@@ -627,7 +624,7 @@ else {
          </div>
          </form>';
 
-	if ($PrintLabels=="Yes") {
+	if ($PrintLabels == "Yes") {
 		echo '<form action="PDFFGLabel.php" method="post">';
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 		if ($ViewingOnly == 1) {
@@ -638,24 +635,23 @@ else {
 		echo '<input type="hidden" name="StockID" value="' . $StockID . '" />';
 		echo '<input type="hidden" name="EmailTo" value="' . $EmailTo . '" />';
 		echo '<input type="hidden" name="PrintOrEmail" value="' . $_POST['PrintOrEmail'] . '" />';
-		echo '<table><tr><td>' . _('Label Item') . ':</td><td><input name="LabelItem" value="' .$LabelItem.'"/></td></tr>';
-		echo '<tr><td>' . _('Label Description') . ':</td><td><input name="LabelDesc" value="' .$LabelDesc.'"/></td></tr>';
-		echo '<tr><td>' . _('Label Lot') . ':</td><td><input name="LabelLot" value="' .$LabelLot.'"/></td></tr>';
-		echo '<tr><td>' . _('No of Full Packages') . ':</td><td><input name="NoOfBoxes" class="integer" value="' .$NoOfBoxes.'"/></td></tr>';
-		echo '<tr><td>' . _('Labels/Package') . ':</td><td><input name="LabelsPerBox" class="integer" value="' .$LabelsPerBox.'"/></td></tr>';
-		echo '<tr><td>' . _('Weight/Package') . ':</td><td><input name="QtyPerBox" class="number" value="' .$QtyPerBox. '"/></td></tr>';
-		echo '<tr><td>' . _('LeftOver Qty') . ':</td><td><input name="LeftOverQty" class="number" value="' .$LeftOverQty.'"/></td></tr>';
+		echo '<table><tr><td>' . _('Label Item') . ':</td><td><input name="LabelItem" value="' . $LabelItem . '"/></td></tr>';
+		echo '<tr><td>' . _('Label Description') . ':</td><td><input name="LabelDesc" value="' . $LabelDesc . '"/></td></tr>';
+		echo '<tr><td>' . _('Label Lot') . ':</td><td><input name="LabelLot" value="' . $LabelLot . '"/></td></tr>';
+		echo '<tr><td>' . _('No of Full Packages') . ':</td><td><input name="NoOfBoxes" class="integer" value="' . $NoOfBoxes . '"/></td></tr>';
+		echo '<tr><td>' . _('Labels/Package') . ':</td><td><input name="LabelsPerBox" class="integer" value="' . $LabelsPerBox . '"/></td></tr>';
+		echo '<tr><td>' . _('Weight/Package') . ':</td><td><input name="QtyPerBox" class="number" value="' . $QtyPerBox . '"/></td></tr>';
+		echo '<tr><td>' . _('LeftOver Qty') . ':</td><td><input name="LeftOverQty" class="number" value="' . $LeftOverQty . '"/></td></tr>';
 		echo '<tr>
              <td>' . _('Print or Email the Order') . '</td>
              <td><select name="PrintOrEmail">';
 
 		if (!isset($_POST['PrintOrEmail'])) {
 			$_POST['PrintOrEmail'] = 'Print';
-	}
+		}
 		if ($ViewingOnly != 0) {
 			echo '<option selected="selected" value="Print">' . _('Print') . '</option>';
-		}
-		else {
+		} else {
 			if ($_POST['PrintOrEmail'] == 'Print') {
 				echo '<option selected="selected" value="Print">' . _('Print') . '</option>';
 				echo '<option value="Email">' . _('Email') . '</option>';
@@ -683,8 +679,7 @@ else {
 				}
 			}
 			echo '"/></td></tr></table>';
-		}
-		else {
+		} else {
 			echo '</table>';
 		}
 		echo '<div class="centre">

@@ -25,8 +25,8 @@ Class WorkOrder {
 		$this->NumberOfItems = 0;
 	}
 
-	function AddItemToOrder($StockID, $QuantityRequired, $QuantityReceived, $NextLotSerialNumber) {
-		$this->Items[$this->NumberOfItems + 1] = new WOItem($StockID, $QuantityRequired, $QuantityReceived, $NextLotSerialNumber, $this->LocationCode, $this->NumberOfItems + 1);
+	function AddItemToOrder($StockID, $Comments, $QuantityRequired, $QuantityReceived, $NextLotSerialNumber) {
+		$this->Items[$this->NumberOfItems + 1] = new WOItem($StockID, $Comments, $QuantityRequired, $QuantityReceived, $NextLotSerialNumber, $this->LocationCode, $this->NumberOfItems + 1);
 		$this->NumberOfItems++;
 	}
 
@@ -132,6 +132,7 @@ Class WorkOrder {
 Class WOItem {
 
 	var $StockID;
+	var $Comments;
 	var $Description;
 	var $DecimalPlaces;
 	var $QuantityRequired;
@@ -164,6 +165,7 @@ Class WOItem {
 		$Serialised = $StockRow['serialised'];
 
 		$this->StockID = $StockID;
+		$this->Comments = $Comments;
 		$this->Description = $Description;
 		$this->DecimalPlaces = $DecimalPlaces;
 		$this->QuantityRequired = $QuantityRequired;
@@ -206,6 +208,7 @@ Class WOItem {
 		if (DB_num_rows($CheckResult) == 0) {
 			$sql = "INSERT INTO woitems (wo,
 										stockid,
+										comments,
 										qtyreqd,
 										qtyrecd,
 										stdcost,
@@ -213,6 +216,7 @@ Class WOItem {
 									) VALUES (
 										'" . $OrderNumber . "',
 										'" . $this->StockID . "',
+										'" . $this->Comments . "',
 										'" . $this->QuantityRequired . "',
 										'" . $this->QuantityReceived . "',
 										'" . $this->StandardCost . "',
@@ -220,6 +224,7 @@ Class WOItem {
 									)";
 		} else {
 			$sql = "UPDATE woitems SET  qtyreqd='" . $this->QuantityRequired . "',
+										comments='" . $this->Comments . "',
 										qtyrecd='" . $this->QuantityReceived . "',
 										stdcost='" . $this->StandardCost . "',
 										nextlotsnref='" . $this->NextLotSerialNumbers . "'

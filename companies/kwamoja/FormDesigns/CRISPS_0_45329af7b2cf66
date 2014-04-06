@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="1.6" method="upgrade">
+  <name>Dash</name>
+  <creationDate>11-Feb-2012</creationDate>
+  <author>Mo Kelly</author>
+  <authorEmail>mo@joomlamo.com</authorEmail>
+  <authorUrl>http://www.joomlamo.com</authorUrl>
+  <copyright>Mo Kelly 2012</copyright>
+  <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+  <version>2.5</version>
+  <description>Present Franchisee detail information.</description>
+  <scriptfile/>
+  <install>
+    <sql>
+      <file driver="mysqli" charset="utf8">install/sql/install.utf.sql</file>
+    </sql>
+  </install>
+  <uninstall>
+    <sql>
+      <file driver="mysqli" charset="utf8">install/sql/uninstall.utf.sql</file>
+    </sql>
+  </uninstall>
+  <update>
+    <schemas/>
+  </update>
+  <installfile>install/install.php</installfile>
+  <uninstallfile>install/uninstall.php</uninstallfile>
+  <files folder="site">
+    <folder>controllers</folder>
+    <folder>models</folder>
+    <folder>views</folder>
+    <filename>backlink.js</filename>
+    <filename>controller.php</filename>
+    <filename>dash.php</filename>
+    <filename>index.html</filename>
+  </files>
+  <administration>
+    <menu img="class:class:component">webERP</menu>
+    <submenu><menu>Dash</menu></submenu>
+
+    <files folder="admin">
+      <folder>assets</folder>
+      <folder>controllers</folder>
+      <folder>images</folder>
+      <folder>install</folder>
+      <folder>models</folder>
+      <folder>tables</folder>
+      <folder>views</folder>
+      <filename>CHANGELOG.php</filename>
+      <filename>admin.dash.old.php</filename>
+      <filename>admin.dash.php</filename>
+      <filename>config.xml</filename>
+      <filename>index.html</filename>
+      <filename>manifest.xml.old</filename>
+    </files>
+  </administration>
+  <params/>
+</extension>

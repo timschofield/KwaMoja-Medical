@@ -24,7 +24,7 @@ if (isset($_POST['NewItems'])) {
 		if (substr($Key, 0, 7) == 'StockID') {
 			$Index = substr($Key, 7);
 			if ($_POST['Quantity' . $Index] > 0) {
-				$_SESSION['WorkOrder' . $identifier]->AddItemToOrder($_POST['StockID' . $Index], $_POST['Quantity' . $Index], 0, '');
+				$_SESSION['WorkOrder' . $identifier]->AddItemToOrder($_POST['StockID' . $Index], $_POST['WOComments' . $Index], $_POST['Quantity' . $Index], 0, '');
 			}
 		}
 	}
@@ -134,6 +134,7 @@ echo '<table class="selection">
 		</tr>
 		<tr>
 			<th>' . _('Output Item') . '</th>
+			<th>' . _('Comment') . '</th>
 			<th>' . _('Qty Required') . '</th>
 			<th>' . _('Qty Received') . '</th>
 			<th>' . _('Balance Remaining') . '</th>
@@ -152,6 +153,9 @@ if ($_SESSION['WorkOrder' . $identifier]->NumberOfItems > 0) {
 		}
 		echo '<td>
 				<input type="hidden" name="OutputItem' . $WOItem->LineNumber . '" value="' . $WOItem->StockID . '" />' . $WOItem->StockID . ' - ' . $WOItem->Description . '
+			</td>
+			<td>
+				<textarea style="width:100%" rows="5" cols="20" name="WOComments' . $i . '" >' . $WOItem->Comments . '</textarea>
 			</td>';
 		if ($WOItem->Controlled == 1 and $_SESSION['DefineControlledOnWOEntry'] == 1) {
 			echo '<td class="number">' . locale_number_format($_POST['OutputQty' . $i], $_POST['DecimalPlaces' . $i]) . '</td>';

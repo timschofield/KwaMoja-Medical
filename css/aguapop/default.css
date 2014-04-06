@@ -221,6 +221,14 @@ width:auto;
 max-width:90%;
 }
 
+tr.visible {
+display:table-row;
+}
+
+tr.invisible {
+display:none;
+}
+
 th {
 background-color:#87CEEB;
 color:#000;

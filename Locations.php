@@ -174,6 +174,44 @@ if (isset($_POST['submit'])) {
 		$result = DB_query($sql, $ErrMsg, $DbgMsg);
 
 		prnMsg('........ ' . _('and new stock locations inserted for all existing stock items for the new location'), 'success');
+
+		/* Also need to create a container for the whole of the warehouse */
+
+		$InsertSQL = "INSERT INTO container (id,
+											name,
+											location,
+											parentid,
+											xcoord,
+											ycoord,
+											zcoord,
+											width,
+											length,
+											height,
+											sequence,
+											putaway,
+											picking,
+											replenishment
+										) VALUES (
+											'" . $_POST['LocCode'] . "',
+											'" . _('Primary location for warehouse') . '-' . $_POST['LocCode'] . "',
+											'" . $_POST['LocCode'] . "',
+											'',
+											'0',
+											'0',
+											'0',
+											'0',
+											'0',
+											'0',
+											'1',
+											'1',
+											'1',
+											'1'
+										)";
+
+		$ErrMsg = _('An error occurred inserting the container detaails');
+		$DbgMsg = _('The SQL used to insert the container record was');
+		$result = DB_query($InsertSQL, $ErrMsg, $DbgMsg);
+
 		unset($_POST['LocCode']);
 		unset($_POST['LocationName']);
 		unset($_POST['DelAdd1']);
@@ -417,8 +455,9 @@ if (!isset($SelectedLocation)) {
 					<td>%s</td>
 					<td>%s</td>
 					<td><a href="%sSelectedLocation=%s">' . _('Edit') . '</a></td>
+					<td><a href="%sLocation=%s">' . _('Define') . '</a></td>
 					<td><a href="%sSelectedLocation=%s&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this inventory location?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-					</tr>', $myrow['loccode'], $myrow['locationname'], $myrow['description'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['loccode'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['loccode']);
+					</tr>', $myrow['loccode'], $myrow['locationname'], $myrow['description'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['loccode'], 'DefineWarehouse.php?', $myrow['loccode'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['loccode']);
 		}
 	}
 	//END WHILE LIST LOOP
@@ -426,18 +465,16 @@ if (!isset($SelectedLocation)) {
 }
 
 //end of ifs and buts!
-
-echo '<br />';
 if (isset($SelectedLocation)) {
-	echo '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Review Records') . '</a>';
+	echo '<div class="toplink">
+			<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Review Records') . '</a>
+		</div>';
 }
-echo '<br />';
 
 if (!isset($_GET['delete'])) {
 
 	include('includes/CountriesArray.php');
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	if (isset($SelectedLocation)) {
@@ -648,10 +685,8 @@ if (!isset($_GET['delete'])) {
 	<td><input type='checkbox' name='Managed'<?php if($_POST['Managed'] == 1) echo ' checked';?>></td></tr>
 	*/
 	echo '</table>
-		<br />
 		<div class="centre">
 			<input type="submit" name="submit" value="' . _('Enter Information') . '" />
-		</div>
 		</div>
 		</form>';
 

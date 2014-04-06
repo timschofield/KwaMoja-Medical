@@ -36,6 +36,30 @@ function hideConfirm(e) {
 	return true
 }
 
+function expandTable(e) {
+	parent=e.cells[0].innerHTML;
+	table=e.parentNode;
+	for (var r = 1, i; i = table.rows[r]; r++) {
+		if (i.cells[3].innerHTML == parent) {
+			i.className='visible';
+		}
+	}
+	e.onclick=function onclick(event) {collapseTable(this)};
+	return true
+}
+
+function collapseTable(e) {
+	parent=e.cells[0].innerHTML;
+	table=e.parentNode;
+	for (var r = 1, i; i = table.rows[r]; r++) {
+		if (i.cells[3].innerHTML == parent) {
+			i.className='invisible';
+		}
+	}
+	e.onclick=function onclick(event) {expandTable(this)};
+	return true
+}
+
 function isInteger(e) {
 	return e.toString().search(/^-?[0-9]+$/) == 0
 }

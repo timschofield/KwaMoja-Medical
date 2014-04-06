@@ -11,7 +11,6 @@ if (!isset($_POST['PONumber'])) {
 }
 
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 echo '<table class="selection">
 		<tr>
@@ -25,8 +24,6 @@ echo '<table class="selection">
 			<td colspan="2" style="text-align: center"><input type="submit" name="Show" value="' . _('Show GRNs') . '" /></td>
 		</tr>
 	</table>
-	<br />
-	</div>
 	</form>';
 
 if (isset($_POST['Show'])) {
@@ -71,8 +68,7 @@ if (isset($_POST['Show'])) {
 		exit;
 	}
 	$k = 0;
-	echo '<br />
-			<table class="selection">
+	echo '<table class="selection">
 			<tr>
 				<th colspan="8"><h3>' . _('GRNs for Purchase Order No') . ' ' . $_POST['PONumber'] . '</h3></th>
 			</tr>
@@ -101,7 +97,8 @@ if (isset($_POST['Show'])) {
 			<td>' . $myrow['itemdescription'] . '</td>
 			<td>' . $myrow['deliverydate'] . '</td>
 			<td class="number">' . locale_number_format($myrow['qtyrecd'], $myrow['decimalplaces']) . '</td>
-			<td><a href="PDFGrn.php?GRNNo=' . urlencode($myrow['grnbatch']) . '&PONo=' . urlencode($_POST['PONumber']) . '">' . _('Reprint') . '</a></td>
+			<td><a href="PDFGrn.php?GRNNo=' . urlencode($myrow['grnbatch']) . '&PONo=' . urlencode($_POST['PONumber']) . '">' . _('Reprint GRN ') . '</a></td>
+			<td><a href="PDFQALabel.php?GRNNo=' . urlencode($myrow['grnbatch']) .'&PONo=' . urlencode($_POST['PONumber']) . '">' . _('Reprint QA Label') . '</a></td>
 		</tr>';
 	}
 	echo '</table>';

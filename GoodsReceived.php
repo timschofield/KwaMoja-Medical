@@ -300,19 +300,6 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 
 	$Changes = 0;
 	$LineNo = 1;
-	if (DB_num_rows($Result) == 0){ //Those goods must have been received by another user. So should destroy the session data and show warning to users
-		prnMsg(_('This order has been changed or invoiced since this delivery was started to be actioned').' . '._('Processing halted'),'error');
-
-		echo '<div class="centre">
-				<a href="' . $RootPath . '/PO_SelectOSPurchOrder.php">' . _('Select a different purchase order for receiving goods against') . '</a>
-			</div>';
-		unset($_SESSION['PO' . $identifier]->LineItems);
-		unset($_SESSION['PO' . $identifier]);
-		unset($_POST['ProcessGoodsReceived']);
-		echo '</form>';
-		include ('includes/footer.inc');
-		exit;
-	}
 
 	while ($myrow = DB_fetch_array($Result)) {
 
@@ -752,6 +739,8 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 
 	echo '<div class="centre">
 			<a href="' . $RootPath . '/PO_Header.php?ModifyOrderNumber=' . urlencode($_SESSION['PO' . $identifier]->OrderNo) . '">' . _('Modify Order Items') . '</a>
+			<a href="PDFQALabel.php?GRNNo=' . urlencode($GRN) . '&amp;PONo=' . urlencode($PONo) . '">' . _('Print QA Labels for this Receipt') . '</a>
+			<a href="' . $RootPath . '/PO_SelectOSPurchOrder.php">' . _('Select a different purchase order for receiving goods against'). '</a>
 		</div>
 		<div class="centre">
 			<input type="submit" name="Update" value="' . _('Update') . '" />

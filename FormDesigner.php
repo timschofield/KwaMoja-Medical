@@ -174,6 +174,18 @@ if (isset($_POST['preview']) or isset($_POST['save'])) {
 			case 'PickingList.xml':
 				echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/PDFPickingList.php?TransNo=Preview">';
 				break;
+			case 'QALabel.xml':
+				echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/PDFQALabel.php?GRNNo=Preview&PONo=1">';
+				break;
+			case 'WOPaperwork.xml':
+				echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/PDFWOPrint.php?WO=Preview">';
+				break;
+			case 'FGLabel.xml':
+				echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/PDFFGLabel.php?WO=Preview">';
+				break;
+			case 'ShippingLabel.xml':
+				echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/PDFShipLabel.php?SO=Preview">';
+				break;
 		}
 	} else {
 		/* otherwise check that the web server has write premissions on the companies
@@ -225,6 +237,7 @@ echo '<div class="page_help_text">' .
 $Papers = array(
 	'A4_Landscape',
 	'A4_Portrait',
+	'A6_Landscape',
 	'A5_Landscape',
 	'A5_Portrait',
 	'A3_Landscape',

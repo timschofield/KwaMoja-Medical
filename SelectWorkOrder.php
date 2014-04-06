@@ -325,6 +325,7 @@ if (!isset($StockID)) {
 						<th>' . _('Receive') . '</th>
 						<th>' . _('Issue To') . '</th>
 						<th>' . _('Costing') . '</th>
+						<th>' . _('Paperwork') . '</th>
 						<th>' . _('Item') . '</th>
 						<th>' . _('Quantity Required') . '</th>
 						<th>' . _('Quantity Received') . '</th>
@@ -344,11 +345,12 @@ if (!isset($StockID)) {
 					$k++;
 				}
 
-				$ModifyPage = $RootPath . '/WorkOrderEntry.php?WO=' . $myrow['wo'];
-				$Status_WO = $RootPath . '/WorkOrderStatus.php?WO=' . $myrow['wo'] . '&amp;StockID=' . $myrow['stockid'];
-				$Receive_WO = $RootPath . '/WorkOrderReceive.php?WO=' . $myrow['wo'] . '&amp;StockID=' . $myrow['stockid'];
-				$Issue_WO = $RootPath . '/WorkOrderIssue.php?WO=' . $myrow['wo'] . '&amp;StockID=' . $myrow['stockid'];
-				$Costing_WO = $RootPath . '/WorkOrderCosting.php?WO=' . $myrow['wo'];
+				$ModifyPage = $RootPath . '/WorkOrderEntry.php?WO=' . urlencode($myrow['wo']);
+				$Status_WO = $RootPath . '/WorkOrderStatus.php?WO=' . urlencode($myrow['wo']) . '&amp;StockID=' . urlencode($myrow['stockid']);
+				$Receive_WO = $RootPath . '/WorkOrderReceive.php?WO=' . urlencode($myrow['wo']) . '&amp;StockID=' . urlencode($myrow['stockid']);
+				$Issue_WO = $RootPath . '/WorkOrderIssue.php?WO=' . urlencode($myrow['wo']) . '&amp;StockID=' . urlencode($myrow['stockid']);
+				$Costing_WO = $RootPath . '/WorkOrderCosting.php?WO=' . urlencode($myrow['wo']);
+				$Printing_WO = $RootPath . '/PDFWOPrint.php?WO=' . urlencode($myrow['wo']) . '&amp;StockID=' . urlencode($myrow['stockid']);
 
 				$FormatedRequiredByDate = ConvertSQLDate($myrow['requiredby']);
 				$FormatedStartDate = ConvertSQLDate($myrow['startdate']);
@@ -359,13 +361,14 @@ if (!isset($StockID)) {
 					<td><a href="%s">' . _('Receive') . '</a></td>
 					<td><a href="%s">' . _('Issue To') . '</a></td>
 					<td><a href="%s">' . _('Costing') . '</a></td>
+					<td><a href="%s">' . _('Print W/O') . '</a></td>
 					<td>%s - %s</td>
 					<td class="number">%s</td>
 					<td class="number">%s</td>
 					<td class="number">%s</td>
 					<td>%s</td>
 					<td>%s</td>
-					</tr>', $ModifyPage, $myrow['wo'], $Status_WO, $Receive_WO, $Issue_WO, $Costing_WO, $myrow['stockid'], $myrow['description'], locale_number_format($myrow['qtyreqd'], $myrow['decimalplaces']), locale_number_format($myrow['qtyrecd'], $myrow['decimalplaces']), locale_number_format($myrow['qtyreqd'] - $myrow['qtyrecd'], $myrow['decimalplaces']), $FormatedStartDate, $FormatedRequiredByDate);
+					</tr>', $ModifyPage, $myrow['wo'], $Status_WO, $Receive_WO, $Issue_WO, $Costing_WO, $Printing_WO, $myrow['stockid'], $myrow['description'], locale_number_format($myrow['qtyreqd'], $myrow['decimalplaces']), locale_number_format($myrow['qtyrecd'], $myrow['decimalplaces']), locale_number_format($myrow['qtyreqd'] - $myrow['qtyrecd'], $myrow['decimalplaces']), $FormatedStartDate, $FormatedRequiredByDate);
 
 			}
 			//end of while loop

@@ -64,7 +64,7 @@ if (isset($_POST['submit']) and isset($_POST['NewCompany'])) {
 				/* Need to read in the sql script and process the queries to initate a new DB */
 
 				$result = DB_query('CREATE DATABASE ' . $_POST['NewCompany']);
-				DB_select_database($_POST['NewCompany'])
+				DB_select_database($_POST['NewCompany']);
 
 				$ScriptFileEntries = sizeof($SQLScriptFile);
 				$ErrMsg = _('The script to create the new company database failed because');
@@ -110,6 +110,9 @@ if (isset($_POST['submit']) and isset($_POST['NewCompany'])) {
 			copy('./companies/' . $_SESSION['DatabaseName'] . '/FormDesigns/GoodsReceived.xml', './companies/' . $_POST['NewCompany'] . '/FormDesigns/GoodsReceived.xml');
 			copy('./companies/' . $_SESSION['DatabaseName'] . '/FormDesigns/PickingList.xml', './companies/' . $_POST['NewCompany'] . '/FormDesigns/PickingList.xml');
 			copy('./companies/' . $_SESSION['DatabaseName'] . '/FormDesigns/PurchaseOrder.xml', './companies/' . $_POST['NewCompany'] . '/FormDesigns/PurchaseOrder.xml');
+			copy('./companies/' . $_SESSION['DatabaseName'] . '/FormDesigns/FGLabel.xml', './companies/' . $_POST['NewDatabase'] . '/FormDesigns/FGLabel.xml');
+			copy('./companies/' . $_SESSION['DatabaseName'] . '/FormDesigns/WOPaperwork.xml', './companies/' . $_POST['NewDatabase'] . '/FormDesigns/WOPaperwork.xml');
+			copy('./companies/' . $_SESSION['DatabaseName'] . '/FormDesigns/QALabel.xml', './companies/' . $_POST['NewDatabase'] . '/FormDesigns/QALabel.xml');
 
 			/*OK Now upload the logo */
 			if ($UploadTheLogo == 'Yes') {

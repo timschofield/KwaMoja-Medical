@@ -10,8 +10,7 @@ if ((isset($AllowDemoMode)) and ($AllowDemoMode == True) and (!isset($demo_text)
 	$demo_text = _('Please login here');
 }
 
-echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-			"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+//echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
 ?>
 <html>
 <head>
@@ -55,7 +54,7 @@ if (get_magic_quotes_gpc()) {
 		<tr>
 			<td width="70%">
 				<div id="login_box">
-					<form action="index.php" method="post" class="noPrint">
+					<form action="index.php" name="LogIn" method="post" class="noPrint">
 					<input type="hidden" name="FormID" value="<?php
 echo $_SESSION['FormID'];
 ?>" />
@@ -120,7 +119,6 @@ echo _('Login');
 echo _('Login');
 ?>
 					 <img src="css/tick.png" title="' . _('Upgrade') . '" alt="" class="ButtonIcon" /></button>
-					 </div>
 					</form>
 				</div>
 			</td>

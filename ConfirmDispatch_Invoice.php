@@ -27,9 +27,7 @@ if (!isset($_GET['OrderNumber']) and !isset($_SESSION['ProcessingOrder'])) {
 	/* This page can only be called with an order number for invoicing*/
 	echo '<div class="centre">
 			<a href="' . $RootPath . '/SelectSalesOrder.php">' . _('Select a sales order to invoice') . '</a>
-		</div>
-		<br />
-		<br />';
+		</div>';
 	prnMsg(_('This page can only be opened if an order has been selected Please select an order first from the delivery details screen click on Confirm for invoicing'), 'error');
 	include('includes/footer.inc');
 	exit;
@@ -1245,21 +1243,20 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 						salesanalysis.periodno,
 						salesanalysis.typeabbrev,
 						salesanalysis.salesperson
-					FROM salesanalysis,
-						custbranch,
-						stockmaster
-					WHERE salesanalysis.stkcategory=stockmaster.categoryid
-					AND salesanalysis.stockid=stockmaster.stockid
-					AND salesanalysis.cust=custbranch.debtorno
-					AND salesanalysis.custbranch=custbranch.branchcode
-					AND salesanalysis.area=custbranch.area
-					AND salesanalysis.salesperson='" . $_SESSION['Items' . $identifier]->SalesPerson . "'
-					AND salesanalysis.typeabbrev ='" . $_SESSION['Items' . $identifier]->DefaultSalesType . "'
-					AND salesanalysis.periodno='" . $PeriodNo . "'
-					AND salesanalysis.cust " . LIKE . " '" . $_SESSION['Items' . $identifier]->DebtorNo . "'
-					AND salesanalysis.custbranch " . LIKE . " '" . $_SESSION['Items' . $identifier]->Branch . "'
-					AND salesanalysis.stockid " . LIKE . " '" . $OrderLine->StockID . "'
-					AND salesanalysis.budgetoractual=1
+					FROM salesanalysis
+					INNER JOIN custbranch
+						ON salesanalysis.cust=custbranch.debtorno
+							AND salesanalysis.custbranch=custbranch.branchcode
+							AND salesanalysis.area=custbranch.area
+					INNER JOIN stockmaster
+						ON salesanalysis.stkcategory=stockmaster.categoryid
+					WHERE salesanalysis.salesperson='" . $_SESSION['Items' . $identifier]->SalesPerson . "'
+						AND salesanalysis.typeabbrev='" . $_SESSION['Items' . $identifier]->DefaultSalesType . "'
+						AND salesanalysis.periodno='" . $PeriodNo . "'
+						AND salesanalysis.cust='" . $_SESSION['Items' . $identifier]->DebtorNo . "'
+						AND salesanalysis.custbranch='" . $_SESSION['Items' . $identifier]->Branch . "'
+						AND salesanalysis.stockid='" . $OrderLine->StockID . "'
+						AND salesanalysis.budgetoractual=1
 					GROUP BY salesanalysis.stockid,
 						salesanalysis.stkcategory,
 						salesanalysis.cust,
@@ -1267,7 +1264,8 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 						salesanalysis.area,
 						salesanalysis.periodno,
 						salesanalysis.typeabbrev,
-						salesanalysis.salesperson";
+						salesanalysis.salesperson,
+						salesanalysis.budgetoractual";
 
 			$ErrMsg = _('The count of existing Sales analysis records could not run because');
 			$DbgMsg = '<br />' . _('SQL to count the no of sales analysis records');

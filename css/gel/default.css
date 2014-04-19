@@ -104,6 +104,11 @@ text-decoration:none;
 display:inline;
 }
 
+a.ButtonLink {
+text-decoration:none;
+display:inline;
+}
+
 img {
 border:none;
 vertical-align:middle;

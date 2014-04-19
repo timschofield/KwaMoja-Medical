@@ -115,6 +115,11 @@ text-decoration:none;
 display:inline;
 }
 
+a.ButtonLink {
+text-decoration:none;
+display:inline;
+}
+
 .centre {
 text-align:center;
 margin:0 auto;

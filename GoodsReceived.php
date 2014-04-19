@@ -301,6 +301,18 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 	$Changes = 0;
 	$LineNo = 1;
 
+	if (DB_num_rows($Result) == 0) {//Those goods must have been received by another user. So should destroy the session data and show warning to users
+		prnMsg(_('This order has been changed or invoiced since this delivery was started to be actioned') . ' . ' . _('Processing halted'), 'error');
+		echo '<div class="centre"><a href="' . $RootPath . '/PO_SelectOSPurchOrder.php">' .
+			_('Select a different purchase order for receiving goods against') . '</a></div>';
+		unset($_SESSION['PO' . $identifier]->LineItems);
+		unset($_SESSION['PO' . $identifier]);
+		unset($_POST['ProcessGoodsReceived']);
+		echo '</form>';
+		include ('includes/footer.inc');
+		exit;
+	}
+
 	while ($myrow = DB_fetch_array($Result)) {
 
 		if ($_SESSION['PO' . $identifier]->LineItems[$LineNo]->GLCode != $myrow['glcode'] or $_SESSION['PO' . $identifier]->LineItems[$LineNo]->ShiptRef != $myrow['shiptref'] or $_SESSION['PO' . $identifier]->LineItems[$LineNo]->JobRef != $myrow['jobref'] or $_SESSION['PO' . $identifier]->LineItems[$LineNo]->QtyInv != $myrow['qtyinvoiced'] or $_SESSION['PO' . $identifier]->LineItems[$LineNo]->StockID != $myrow['itemcode'] or $_SESSION['PO' . $identifier]->LineItems[$LineNo]->Quantity != $myrow['quantityord'] or $_SESSION['PO' . $identifier]->LineItems[$LineNo]->QtyReceived != $myrow['quantityrecd']) {

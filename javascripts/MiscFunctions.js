@@ -21,7 +21,7 @@ function MakeConfirm(e, t, n) {
 	document.getElementById("mask").style["display"] = "inline";
 	h = '<div id="dialog_header"><img src="css/' + th + '/images/help.png" />' + t + '</div><div id="dialog_main">' + e;
 	h = h + '</div><div id="dialog_buttons"><input type="submit" class="okButton" value="Cancel" onClick="hideConfirm(\'\')" />';
-	h = h + '<a href="' + url + '" ><input type="submit" class="okButton" value="OK" onClick="hideConfirm(\'OK\')" /></a></div></div>';
+	h = h + '<a class="ButtonLink" href="' + url + '" ><input type="submit" class="okButton" value="OK" onClick="hideConfirm(\'OK\')" /></a></div></div>';
 	document.getElementById("dialog").innerHTML = h;
 	document.getElementById("dialog").style.marginTop = -document.getElementById("dialog").offsetHeight + "px";
 	document.getElementById("dialog").style.marginLeft = -(document.getElementById("dialog").offsetWidth / 2) + "px";

@@ -154,6 +154,11 @@ text-decoration:none;
 display:inline;
 }
 
+a.ButtonLink {
+text-decoration:none;
+display:inline;
+}
+
 a:hover {
 color:#0C0C5E;
 text-decoration:underline;

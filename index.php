@@ -19,17 +19,17 @@ if (isset($SupplierLogin) and $SupplierLogin == 1) {
 	echo '<br /><table class="table_index">
 			<tr>
 			<td class="menu_group_item">
-				<p>&bull; <a href="' . $RootPath . '/SupplierTenders.php?TenderType=1">' . _('View or Amend outstanding offers') . '</a></p>
+				<p><a href="' . $RootPath . '/SupplierTenders.php?TenderType=1">&bull; ' . _('View or Amend outstanding offers') . '</a></p>
 			</td>
 			</tr>
 			<tr>
 			<td class="menu_group_item">
-				<p>&bull; <a href="' . $RootPath . '/SupplierTenders.php?TenderType=2">' . _('Create a new offer') . '</a></p>
+				<p><a href="' . $RootPath . '/SupplierTenders.php?TenderType=2">&bull; ' . _('Create a new offer') . '</a></p>
 			</td>
 			</tr>
 			<tr>
 			<td class="menu_group_item">
-				<p>&bull; <a href="' . $RootPath . '/SupplierTenders.php?TenderType=3">' . _('View any open tenders without an offer') . '</a></p>
+				<p><a href="' . $RootPath . '/SupplierTenders.php?TenderType=3">&bull; ' . _('View any open tenders without an offer') . '</a></p>
 			</td>
 			</tr>
 		</table><br />';
@@ -39,17 +39,17 @@ if (isset($SupplierLogin) and $SupplierLogin == 1) {
 	echo '<br /><table class="table_index">
 			<tr>
 			<td class="menu_group_item">
-				<p>&bull; <a href="' . $RootPath . '/CustomerInquiry.php?CustomerID=' . urlencode($_SESSION['CustomerID']) . '">' . _('Account Status') . '</a></p>
+				<p><a href="' . $RootPath . '/CustomerInquiry.php?CustomerID=' . urlencode($_SESSION['CustomerID']) . '">&bull; ' . _('Account Status') . '</a></p>
 			</td>
 			</tr>
 			<tr>
 			<td class="menu_group_item">
-				<p>&bull; <a href="' . $RootPath . '/SelectOrderItems.php?NewOrder=Yes">' . _('Place An Order') . '</a></p>
+				<p><a href="' . $RootPath . '/SelectOrderItems.php?NewOrder=Yes">&bull; ' . _('Place An Order') . '</a></p>
 			</td>
 			</tr>
 			<tr>
 			<td class="menu_group_item">
-				<p>&bull; <a href="' . $RootPath . '/SelectCompletedOrder.php?SelectedCustomer=' . urlencode($_SESSION['CustomerID']) . '">' . _('Order Status') . '</a></p>
+				<p><a href="' . $RootPath . '/SelectCompletedOrder.php?SelectedCustomer=' . urlencode($_SESSION['CustomerID']) . '">&bull; ' . _('Order Status') . '</a></p>
 			</td>
 			</tr>
 		</table><br />';
@@ -235,7 +235,7 @@ function GetRptLinks($GroupID) {
 			foreach ($_SESSION['ReportList'] as $Report) {
 				if ($Report['groupname'] == $GroupID and $Report['defaultreport'] == $Def) {
 					$RptLinks .= '<li class="menu_group_item">';
-					$RptLinks .= '<p>&bull; <a href="' . $RootPath . '/reportwriter/ReportMaker.php?action=go&amp;reportid=' . urlencode($Report['id']) . '">' . _($Report['reportname']) . '</a></p>';
+					$RptLinks .= '<p><a href="' . $RootPath . '/reportwriter/ReportMaker.php?action=go&amp;reportid=' . urlencode($Report['id']) . '">&bull; ' . _($Report['reportname']) . '</a></p>';
 					$RptLinks .= '</li>';
 					$NoEntries = false;
 				}
@@ -247,7 +247,7 @@ function GetRptLinks($GroupID) {
 				if ($NoForms and $Group[0] == $GroupID and $Report['reporttype'] == 'frm' and $Report['defaultreport'] == $Def) {
 					$RptLinks .= '<li class="menu_group_item">';
 					$RptLinks .= '<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/folders.gif" width="16" height="13" alt="" />&nbsp;';
-					$RptLinks .= '<p>&bull; <a href="' . $RootPath . '/reportwriter/FormMaker.php?id=' . urlencode($Report['groupname']) . '"></p>';
+					$RptLinks .= '<a href="' . $RootPath . '/reportwriter/FormMaker.php?id=' . urlencode($Report['groupname']) . '">&bull; ';
 					$RptLinks .= $FormGroups[$Report['groupname']] . '</a>';
 					$RptLinks .= '</li>';
 					$NoForms = false;

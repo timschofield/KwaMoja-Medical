@@ -52,13 +52,15 @@ $pdf->addText($FormDesign->PackageQtyLab->x, $Page_Height - $FormDesign->Package
 $pdf->addText($FormDesign->ItemNumber->x, $Page_Height - $FormDesign->ItemNumber->y, $FormDesign->ItemNumber->FontSize, $WOHeader['stockid']);
 $pdf->addText($FormDesign->ItemDesc->x, $Page_Height - $FormDesign->ItemDesc->y, $FormDesign->ItemDesc->FontSize, $WOHeader['description']);
 $pdf->addText($FormDesign->RequiredDate->x, $Page_Height - $FormDesign->RequiredDate->y, $FormDesign->RequiredDate->FontSize, ConvertSQLDate($WOHeader['requiredby']));
-$pdf->addText($FormDesign->Lot->x, $Page_Height - $FormDesign->Lot->y, $FormDesign->Lot->FontSize, $SerialNo);
+if (isset($SerialNo)) {
+	$pdf->addText($FormDesign->Lot->x, $Page_Height - $FormDesign->Lot->y, $FormDesign->Lot->FontSize, $SerialNo);
+}
 $pdf->addTextWrap($FormDesign->RequiredQty->x, $Page_Height - $FormDesign->RequiredQty->y, $FormDesign->RequiredQty->Length, $FormDesign->RequiredQty->FontSize, $WOHeader['qtyreqd'], 'right');
 $pdf->addTextWrap($FormDesign->ReceivedQty->x, $Page_Height - $FormDesign->ReceivedQty->y, $FormDesign->ReceivedQty->Length, $FormDesign->ReceivedQty->FontSize, $WOHeader['qtyrecd'], 'right');
 $pdf->addTextWrap($FormDesign->PackageQty->x, $Page_Height - $FormDesign->PackageQty->y, $FormDesign->PackageQty->Length, $FormDesign->PackageQty->FontSize, $PackQty, 'right');
 $pdf->setFont('', '');
 
-if ($PrintingComments == true) {
+if (isset($PrintingComments) and $PrintingComments == true) {
 	return;
 }
 $pdf->addText($FormDesign->MatReqTitle->x, $Page_Height - $FormDesign->MatReqTitle->y, $FormDesign->MatReqTitle->FontSize, _('Material Requirements for this Work Order'));

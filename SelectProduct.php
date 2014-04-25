@@ -488,6 +488,7 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 		echo '<a href="' . $RootPath . '/StockReorderLevel.php?StockID=' . urlencode($StockID) . '">' . _('Maintain Reorder Levels') . '</a>';
 		echo '<a href="' . $RootPath . '/StockCostUpdate.php?StockID=' . urlencode($StockID) . '">' . _('Maintain Standard Cost') . '</a>';
 		echo '<a href="' . $RootPath . '/PurchData.php?StockID=' . urlencode($StockID) . '">' . _('Maintain Purchasing Data') . '</a>';
+		echo '<a href="' . $RootPath . '/CustItem.php?StockID=' . urlencode($StockID) . '">' . _('Maintain Customer Item Data') . '</a>';
 	}
 	if ($Its_A_Labour_Item == True) {
 		echo '<a href="' . $RootPath . '/StockCostUpdate.php?StockID=' . urlencode($StockID) . '">' . _('Maintain Standard Cost') . '</a>';

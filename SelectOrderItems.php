@@ -711,6 +711,14 @@ else { //dont require customer selection
 
 	$msg = '';
 	if (isset($_POST['Search']) or isset($_POST['Next']) or isset($_POST['Previous'])) {
+		if (!empty($_POST['CustItemFlag'])) {
+			$IncludeCustItem = " INNER JOIN custitem ON custitem.stockid=stockmaster.stockid
+								AND custitem.debtorno='" . $_SESSION['Items' . $identifier]->DebtorNo . "'";
+		} else {
+			$IncludeCustItem = " LEFT OUTER JOIN custitem ON custitem.stockid=stockmaster.stockid
+								AND custitem.debtorno='" . $_SESSION['Items' . $identifier]->DebtorNo . "'";
+		}
+
 		if ($_POST['Keywords'] != '' and $_POST['StockCode'] == '') {
 			$msg = '<div class="page_help_text noPrint">' . _('Order Item description has been used in search') . '.</div>';
 		} //$_POST['Keywords'] != '' and $_POST['StockCode'] == ''
@@ -729,9 +737,12 @@ else { //dont require customer selection
 				$SQL = "SELECT stockmaster.stockid,
 								stockmaster.description,
 								stockmaster.longdescription,
-								stockmaster.units
-						FROM stockmaster INNER JOIN stockcategory
-						ON stockmaster.categoryid=stockcategory.categoryid
+								stockmaster.units,
+								custitem.cust_part,
+								custitem.cust_description
+						FROM stockmaster
+						INNER JOIN stockcategory
+							ON stockmaster.categoryid=stockcategory.categoryid" . $IncludeCustItem . "
 						WHERE stockmaster.mbflag <>'G'
 						AND stockmaster.description " . LIKE . " '" . $SearchString . "'
 						AND stockmaster.discontinued=0
@@ -741,9 +752,12 @@ else { //dont require customer selection
 				$SQL = "SELECT stockmaster.stockid,
 								stockmaster.description,
 								stockmaster.longdescription,
-								stockmaster.units
-						FROM stockmaster INNER JOIN stockcategory
-						ON stockmaster.categoryid=stockcategory.categoryid
+								stockmaster.units,
+								custitem.cust_part,
+								custitem.cust_description
+						FROM stockmaster
+						INNER JOIN stockcategory
+							ON stockmaster.categoryid=stockcategory.categoryid" . $IncludeCustItem . "
 						WHERE stockmaster.mbflag <>'G'
 						AND stockmaster.discontinued=0
 						AND stockmaster.description " . LIKE . " '" . $SearchString . "'
@@ -760,9 +774,12 @@ else { //dont require customer selection
 				$SQL = "SELECT stockmaster.stockid,
 								stockmaster.description,
 								stockmaster.longdescription,
-								stockmaster.units
-						FROM stockmaster INNER JOIN stockcategory
-						ON stockmaster.categoryid=stockcategory.categoryid
+								stockmaster.units,
+								custitem.cust_part,
+								custitem.cust_description
+						FROM stockmaster
+						INNER JOIN stockcategory
+							ON stockmaster.categoryid=stockcategory.categoryid" . $IncludeCustItem . "
 						WHERE stockmaster.stockid " . LIKE . " '" . $SearchString . "'
 						AND stockmaster.mbflag <>'G'
 						AND stockmaster.discontinued=0
@@ -772,9 +789,12 @@ else { //dont require customer selection
 				$SQL = "SELECT stockmaster.stockid,
 								stockmaster.description,
 								stockmaster.longdescription,
-								stockmaster.units
-						FROM stockmaster INNER JOIN stockcategory
-						ON stockmaster.categoryid=stockcategory.categoryid
+								stockmaster.units,
+								custitem.cust_part,
+								custitem.cust_description
+						FROM stockmaster
+						INNER JOIN stockcategory
+							ON stockmaster.categoryid=stockcategory.categoryid" . $IncludeCustItem . "
 						WHERE stockmaster.stockid " . LIKE . " '" . $SearchString . "'
 						AND stockmaster.mbflag <>'G'
 						AND stockmaster.discontinued=0
@@ -788,9 +808,12 @@ else { //dont require customer selection
 				$SQL = "SELECT stockmaster.stockid,
 								stockmaster.description,
 								stockmaster.longdescription,
-								stockmaster.units
-						FROM stockmaster INNER JOIN stockcategory
-						ON stockmaster.categoryid=stockcategory.categoryid
+								stockmaster.units,
+								custitem.cust_part,
+								custitem.cust_description
+						FROM stockmaster
+						INNER JOIN stockcategory
+							ON stockmaster.categoryid=stockcategory.categoryid" . $IncludeCustItem . "
 						WHERE stockmaster.mbflag <>'G'
 						AND stockmaster.discontinued=0
 						ORDER BY stockmaster.stockid";
@@ -799,9 +822,12 @@ else { //dont require customer selection
 				$SQL = "SELECT stockmaster.stockid,
 								stockmaster.description,
 								stockmaster.longdescription,
-								stockmaster.units
-						FROM stockmaster INNER JOIN stockcategory
-						ON stockmaster.categoryid=stockcategory.categoryid
+								stockmaster.units,
+								custitem.cust_part,
+								custitem.cust_description
+						FROM stockmaster
+						INNER JOIN stockcategory
+							ON stockmaster.categoryid=stockcategory.categoryid" . $IncludeCustItem . "
 						WHERE stockmaster.mbflag <>'G'
 						AND stockmaster.discontinued=0
 						AND stockmaster.categoryid='" . $_POST['StockCat'] . "'
@@ -1689,6 +1715,7 @@ else { //dont require customer selection
 			echo $_POST['StockCode'];
 		} //isset($_POST['StockCode'])
 		echo '" /></td>
+				<td><input type="checkbox" name="CustItemFlag" value="C" />'._('Customer Item flag').'&nbsp;&nbsp;<br/><span class="dpTbl">'._('If checked, only items for this customer will show').'</span> </td>
 			</tr>';
 
 		echo '<tr>
@@ -1712,6 +1739,7 @@ else { //dont require customer selection
 					<tr>
 						<th class="SortableColumn">' . _('Code') . '</th>
 						<th class="SortableColumn">' . _('Description') . '</th>
+						<th class="SortableColumn" >' . _('Customer Item') . '</th>
 						<th>' . _('Units') . '</th>
 						<th>' . _('On Hand') . '</th>
 						<th>' . _('On Demand') . '</th>
@@ -1806,6 +1834,7 @@ else { //dont require customer selection
 				printf('<td>%s</td>
 						<td title="%s">%s</td>
 						<td>%s</td>
+						<td>%s</td>
 						<td class="number">%s</td>
 						<td class="number">%s</td>
 						<td class="number">%s</td>
@@ -1813,7 +1842,7 @@ else { //dont require customer selection
 						<td><input class="number"  tabindex="' . strval($j + 7) . '" type="text" size="6" required="required" minlength="1" maxlength="10" name="OrderQty' . $i . '" value="0" />
 						<input type="hidden" name="StockID' . $i . '" value="' . $myrow['stockid'] . '" />
 						</td>
-						</tr>', $myrow['stockid'], $myrow['longdescription'], $myrow['description'], $myrow['units'], locale_number_format($QOH, $QOHRow['decimalplaces']), locale_number_format($DemandQty, $QOHRow['decimalplaces']), locale_number_format($OnOrder, $QOHRow['decimalplaces']), locale_number_format($Available, $QOHRow['decimalplaces']));
+						</tr>', $myrow['stockid'], $myrow['longdescription'], $myrow['description'], $myrow['cust_part'] . '-' . $myrow['cust_description'], $myrow['units'], locale_number_format($QOH, $QOHRow['decimalplaces']), locale_number_format($DemandQty, $QOHRow['decimalplaces']), locale_number_format($OnOrder, $QOHRow['decimalplaces']), locale_number_format($Available, $QOHRow['decimalplaces']));
 				$i++;
 				//end of page full new headings if
 			} //$myrow = DB_fetch_array($SearchResult)

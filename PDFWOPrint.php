@@ -185,7 +185,7 @@ if (isset($SelectedWO) and $SelectedWO != '' and $SelectedWO > 0 and $SelectedWO
 						ON woitems.stockid=stockmaster.stockid
 						WHERE woitems.stockid='" . $StockID . "'
 						AND woitems.wo ='" . $SelectedWO . "'";
-	$result = DB_query($sql, $db, $ErrMsg);
+	$result = DB_query($sql, $ErrMsg);
 	if (DB_num_rows($result) == 0) {
 		/*There is no order header returned */
 		$Title = _('Print Work Order Error');
@@ -209,7 +209,7 @@ if (isset($SelectedWO) and $SelectedWO != '' and $SelectedWO > 0 and $SelectedWO
 							FROM woserialnos
 							WHERE woserialnos.stockid='" . $StockID . "'
 							AND woserialnos.wo ='" . $SelectedWO . "'";
-			$result = DB_query($sql, $db, $ErrMsg);
+			$result = DB_query($sql, $ErrMsg);
 			if (DB_num_rows($result) > 0) {
 				$SerialNoArray = DB_fetch_array($result);
 				$SerialNo = $SerialNoArray[0];
@@ -224,7 +224,7 @@ if (isset($SelectedWO) and $SelectedWO != '' and $SelectedWO > 0 and $SelectedWO
 				ON stockcatproperties.stkcatpropid=stockitemproperties.stkcatpropid
 				WHERE stockid='" . $StockID . "'
 				AND label='PackQty'";
-		$result = DB_query($sql, $db, $ErrMsg);
+		$result = DB_query($sql, $ErrMsg);
 		$PackQtyArray = DB_fetch_array($result);
 		$PackQty = $PackQtyArray['value'];
 		if ($PackQty == 0) {
@@ -280,13 +280,13 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 									FROM worequirements INNER JOIN stockmaster
 									ON worequirements.stockid=stockmaster.stockid
 									WHERE wo='" . $SelectedWO . "'
-									AND worequirements.parentstockid='" . $StockID . "'", $db);
+									AND worequirements.parentstockid='" . $StockID . "'");
 		$IssuedAlreadyResult = DB_query("SELECT stockid,
 						SUM(-qty) AS total
 					FROM stockmoves
 					WHERE stockmoves.type=28
 					AND reference='" . $SelectedWO . "'
-					GROUP BY stockid", $db);
+					GROUP BY stockid");
 		while ($IssuedRow = DB_fetch_array($IssuedAlreadyResult)) {
 			$IssuedAlreadyRow[$IssuedRow['stockid']] = $IssuedRow['total'];
 		}
@@ -320,7 +320,7 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 							decimalplaces,
 							controlled
 					FROM stockmaster WHERE stockid IN ('" . $AdditionalStocks . "')";
-			$RequirementsResult = DB_query($RequirementsSQL, $db);
+			$RequirementsResult = DB_query($RequirementsSQL);
 			$AdditionalStocks = array();
 			while ($myrow = DB_fetch_array($RequirementsResult)) {
 				$WOLine[$i]['action'] = 'Additional Issue';
@@ -381,7 +381,7 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 													WHERE stockmoves.type=28
 													AND stockmoves.stockid = '" . $WOLine[$i]['item'] . "'
 													AND reference='" . $SelectedWO . "'
-													GROUP BY stockserialmoves.serialno", $db);
+													GROUP BY stockserialmoves.serialno");
 			while ($IssuedRow = DB_fetch_array($IssuedAlreadyDetail)) {
 				if ($WOLine[$i]['controlled']) {
 					$CurLot = $IssuedRow['serialno'];
@@ -409,7 +409,7 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 											FROM locstock LEFT OUTER JOIN stockserialitems
 											ON locstock.loccode=stockserialitems.loccode AND locstock.stockid = stockserialitems.stockid
 											WHERE locstock.loccode='" . $WOHeader['loccode'] . "'
-											AND locstock.stockid='" . $WOLine[$i]['item'] . "'", $db);
+											AND locstock.stockid='" . $WOLine[$i]['item'] . "'");
 				while ($ToIssue = DB_fetch_array($AvailQty)) {
 					if ($WOLine[$i]['controlled']) {
 						$CurLot = $ToIssue['serialno'];
@@ -535,7 +535,7 @@ else {
 						WHERE woitems.stockid='" . $StockID . "'
                         AND woitems.wo ='" . $SelectedWO . "'";
 
-		$result = DB_query($sql, $db, $ErrMsg);
+		$result = DB_query($sql, $ErrMsg);
 		$Labels = DB_fetch_array($result);
 		$LabelItem = $Labels['stockid'];
 		$LabelDesc = $Labels['description'];
@@ -546,7 +546,7 @@ else {
 				ON stockcatproperties.stkcatpropid=stockitemproperties.stkcatpropid
 				WHERE stockid='" . $StockID . "'
 				AND label='PackQty'";
-		$result = DB_query($sql, $db, $ErrMsg);
+		$result = DB_query($sql, $ErrMsg);
 		$PackQtyArray = DB_fetch_array($result);
 		$QtyPerBox = $PackQtyArray['value'];
 		if ($QtyPerBox == 0) {
@@ -562,7 +562,7 @@ else {
 							FROM woserialnos
 							WHERE woserialnos.stockid='" . $StockID . "'
 							AND woserialnos.wo ='" . $SelectedWO . "'";
-			$result = DB_query($sql, $db, $ErrMsg);
+			$result = DB_query($sql, $ErrMsg);
 			if (DB_num_rows($result) > 0) {
 				$SerialNoArray = DB_fetch_array($result);
 				$LabelLot = $SerialNoArray[0];
@@ -621,7 +621,7 @@ else {
 						ON workorders.wo=woitems.wo
 						WHERE woitems.stockid='" . $StockID . "'
 						AND woitems.wo ='" . $SelectedWO . "'";
-		$ContactsResult = DB_query($SQL, $db, $ErrMsg);
+		$ContactsResult = DB_query($SQL, $ErrMsg);
 		if (DB_num_rows($ContactsResult) > 0) {
 			echo '<tr><td>' . _('Email to') . ':</td><td><input name="EmailTo" value="';
 			while ($ContactDetails = DB_fetch_array($ContactsResult)) {
@@ -709,7 +709,7 @@ else {
 						ON workorders.wo=woitems.wo
 						WHERE woitems.stockid='" . $StockID . "'
 						AND woitems.wo ='" . $SelectedWO . "'";
-		$ContactsResult = DB_query($SQL, $db, $ErrMsg);
+		$ContactsResult = DB_query($SQL, $ErrMsg);
 		if (DB_num_rows($ContactsResult) > 0) {
 			echo '<tr><td>' . _('Email to') . ':</td><td><input name="EmailTo" value="';
 			while ($ContactDetails = DB_fetch_array($ContactsResult)) {

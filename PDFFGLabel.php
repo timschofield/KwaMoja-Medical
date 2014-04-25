@@ -143,7 +143,7 @@ if ($NoOfLabels > 0) {
 				stockmaster.units
 			    FROM stockmaster WHERE stockid ='" . $myrow['itemcode'] . "'";
 			//echo $SQL;
-			$CheckControlledResult = DB_query($SQL, $db, '<br />' . _('Could not determine if the item was controlled or not because') . ' ');
+			$CheckControlledResult = DB_query($SQL, '<br />' . _('Could not determine if the item was controlled or not because') . ' ');
 			$ControlledRow = DB_fetch_row($CheckControlledResult);
 			//var_dump($ControlledRow);
 		}
@@ -165,7 +165,7 @@ if ($NoOfLabels > 0) {
 
 		if ($ControlledRow[0] == 1) {
 			/*Then its a controlled item */
-			$pdf->addText($FormDesign->ResMartLot->x, $Page_Height - $FormDesign->ResMartLot->y, $FormDesign->ResMartLot->FontSize, 'Lot: ' . $myrow['serialno']);
+			$pdf->addText($FormDesign->Lot->x, $Page_Height - $FormDesign->Lot->y, $FormDesign->Lot->FontSize, 'Lot: ' . $myrow['serialno']);
 		} //controlled item*/
 	} //end of loop around GRNs to print
 

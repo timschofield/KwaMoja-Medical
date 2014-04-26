@@ -1708,7 +1708,7 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 	$j++;
 	echo '<tr>
 			<td>' . _('Consignment Note Ref') . ':</td>
-			<td><input tabindex="' . $j . '" type="text" minlength="0" maxlength="15" size="15" name="Consignment" value="' . $_POST['Consignment'] . '" /></td>
+			<td><input tabindex="' . $j . '" type="text" minlength="0" maxlength="20" size="20" name="Consignment" value="' . $_POST['Consignment'] . '" /></td>
 		</tr>';
 	$j++;
 	echo '<tr>

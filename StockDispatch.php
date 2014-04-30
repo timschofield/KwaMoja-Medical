@@ -231,7 +231,7 @@ if (isset($_POST['PrintPDF'])) {
 			}
 			if ($template == 'fullprices') {
 				// looking for price info
-				$DefaultPrice = GetPrice($myrow['stockid'], $ToCustomer, $ToBranch, false);
+				$DefaultPrice = GetPrice($myrow['stockid'], $ToCustomer, $ToBranch, $ShipQty, false);
 				if ($myrow['discountcategory'] != "") {
 					$DiscountLine = ' -> ' . _('Discount Category') . ':' . $myrow['discountcategory'];
 				} else {

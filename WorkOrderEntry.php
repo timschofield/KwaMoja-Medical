@@ -24,7 +24,7 @@ if (isset($_POST['NewItems'])) {
 		if (substr($Key, 0, 7) == 'StockID') {
 			$Index = substr($Key, 7);
 			if ($_POST['Quantity' . $Index] > 0) {
-				$_SESSION['WorkOrder' . $identifier]->AddItemToOrder($_POST['StockID' . $Index], $_POST['WOComments' . $Index], $_POST['Quantity' . $Index], 0, '');
+				$_SESSION['WorkOrder' . $identifier]->AddItemToOrder($_POST['StockID' . $Index], '', $_POST['Quantity' . $Index], 0, '');
 			}
 		}
 	}
@@ -37,7 +37,7 @@ if (isset($_POST['RequiredBy']) and !isset($_POST['NewItems'])) {
 
 	if (isset($_POST['OutputItem1'])) {
 		foreach ($_SESSION['WorkOrder' . $identifier]->Items as $i => $Item) {
-			$_SESSION['WorkOrder' . $identifier]->UpdateItem($_POST['OutputItem' . $Item->LineNumber], $_POST['OutputQty' . $Item->LineNumber]);
+			$_SESSION['WorkOrder' . $identifier]->UpdateItem($_POST['OutputItem' . $Item->LineNumber], $_POST['WOComments' . $Item->LineNumber], $_POST['OutputQty' . $Item->LineNumber]);
 		}
 	}
 }
@@ -128,7 +128,7 @@ echo '</table>';
 
 echo '<table class="selection">
 		<tr>
-			<th colspan="5"><h3>' . _('Items to be manufactured') . '
+			<th colspan="8"><h3>' . _('Items to be manufactured') . '
 				<img src="' . $RootPath . '/css/' . $Theme . '/images/add.png" class="PrintIcon noPrint" title="' . _('Add items to the work order') . '" alt="' . _('Add items to the work order') . '" onclick="ShowTable(\'ItemSelect\');" />
 			</h3></th>
 		</tr>
@@ -155,7 +155,7 @@ if ($_SESSION['WorkOrder' . $identifier]->NumberOfItems > 0) {
 				<input type="hidden" name="OutputItem' . $WOItem->LineNumber . '" value="' . $WOItem->StockID . '" />' . $WOItem->StockID . ' - ' . $WOItem->Description . '
 			</td>
 			<td>
-				<textarea style="width:100%" rows="5" cols="20" name="WOComments' . $i . '" >' . $WOItem->Comments . '</textarea>
+				<textarea style="width:100%" rows="3" cols="40" name="WOComments' . $i . '" >' . $WOItem->Comments . '</textarea>
 			</td>';
 		if ($WOItem->Controlled == 1 and $_SESSION['DefineControlledOnWOEntry'] == 1) {
 			echo '<td class="number">' . locale_number_format($_POST['OutputQty' . $i], $_POST['DecimalPlaces' . $i]) . '</td>';
@@ -191,7 +191,7 @@ echo '</table>';
 
 echo '<table class="selection print">
 		<tr>
-			<th colspan="5"><h3>' . _('Requirements for order') . '
+			<th colspan="7"><h3>' . _('Requirements for order') . '
 				<img src="' . $RootPath . '/css/' . $Theme . '/images/printer.png" class="PrintIcon noPrint" title="' . _('Print Requirements') . '" alt="' . _('Print Requirements') . '" onclick="window.print();" />
 			</h3></th>
 		</tr>
@@ -204,6 +204,7 @@ echo '<table class="selection print">
 		</tr>';
 
 foreach ($_SESSION['WorkOrder' . $identifier]->Items as $i => $WOItem) {
+	$WOItem->RefreshRequirements($_SESSION['WorkOrder' . $identifier]->LocationCode);
 	foreach ($WOItem->Requirements as $j => $WORequirement) {
 		if ($WORequirement->AutoIssue == 0) {
 			$AutoIssue = _('No');
@@ -345,7 +346,7 @@ if (isset($SearchResult)) {
 					$ImageSource = '<img title="' . $myrow['longdescription'] . '" src="GetStockImage.php?automake=1&textcolor=FFFFFF&bgcolor=CCCCCC&StockID=' . urlencode($myrow['stockid']) . '&text=&width=64&height=64" />';
 				} else {
 					if (file_exists($_SERVER['DOCUMENT_ROOT'] . $RootPath . '/' . $_SESSION['part_pics_dir'] . '/' . $myrow['stockid'] . '.jpg')) {
-						$ImageSource = '<img src="' . $_SERVER['DOCUMENT_ROOT'] . $RootPath . '/' . $_SESSION['part_pics_dir'] . '/' . $myrow['stockid'] . '.jpg" />';
+						$ImageSource = '<img src="' . $_SERVER['DOCUMENT_ROOT'] . $RootPath . '/' . $_SESSION['part_pics_dir'] . '/' . $myrow['stockid'] . '.jpg" alt="' . _('No Image') . '" />';
 					} else {
 						$ImageSource = _('No Image');
 					}

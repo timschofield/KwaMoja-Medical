@@ -30,8 +30,9 @@ Class WorkOrder {
 		$this->NumberOfItems++;
 	}
 
-	function UpdateItem($StockID, $QuantityRequired) {
+	function UpdateItem($StockID, $Comments, $QuantityRequired) {
 		$this->Items[$this->ItemByStockID($StockID)]->QuantityRequired = $QuantityRequired;
+		$this->Items[$this->ItemByStockID($StockID)]->Comments = $Comments;
 		$this->Items[$this->ItemByStockID($StockID)]->RefreshRequirements($this->LocationCode);
 	}
 
@@ -113,14 +114,15 @@ Class WorkOrder {
 												qtyreqd,
 												qtyrecd,
 												stdcost,
-												nextlotsnref
+												nextlotsnref,
+												comments
 											FROM woitems
 											WHERE wo='" . $WONumber . "'", $ErrMsg);
 
 			$NumberOfOutputs = DB_num_rows($WOItemsResult);
 			$i = 1;
 			while ($WOItem = DB_fetch_array($WOItemsResult)) {
-				$this->Items[$i] = new WOItem($WOItem['stockid'], $WOItem['qtyreqd'], $WOItem['qtyrecd'], $WOItem['nextlotsnref'], $this->LocationCode, $i);
+				$this->Items[$i] = new WOItem($WOItem['stockid'], $WOItem['comments'], $WOItem['qtyreqd'], $WOItem['qtyrecd'], $WOItem['nextlotsnref'], $this->LocationCode, $i);
 				$i++;
 			}
 			$this->NumberOfItems = $i;
@@ -145,7 +147,7 @@ Class WOItem {
 	var $Requirements; // Array of WORequirement objects
 	var $NumberOfRequirements;
 
-	function WOItem($StockID, $QuantityRequired, $QuantityReceived, $NextLotSerialNumber, $LocationCode, $NumberOfItems) {
+	function WOItem($StockID, $Comments, $QuantityRequired, $QuantityReceived, $NextLotSerialNumber, $LocationCode, $NumberOfItems) {
 
 		$StockResult = DB_query("SELECT materialcost+labourcost+overheadcost AS cost,
 										stockmaster.description,
@@ -155,8 +157,7 @@ Class WOItem {
 									FROM stockmaster
 									INNER JOIN bom
 										ON stockmaster.stockid=bom.parent
-									WHERE bom.parent='" . $StockID . "'
-										AND bom.loccode='" . $LocationCode . "'");
+									WHERE bom.parent='" . $StockID . "'");
 		$StockRow = DB_fetch_array($StockResult);
 		$StandardCost = $StockRow['cost'] * $QuantityRequired;
 		$Description = $StockRow['description'];

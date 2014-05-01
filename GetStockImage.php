@@ -1,5 +1,7 @@
 <?php
 
+include('includes/session.inc');
+
 /*
  * http:///KwaMoja/GetStockImage.php?automake=1&width=81&height=74&stockid=&textcolor=FFFFF0&bevel=3&text=aa&bgcolor=007F00
  *

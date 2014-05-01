@@ -1,8 +1,5 @@
 <?php
 
-//this script can be set to run from cron
-
-$AllowAnyone = true;
 include('includes/session.inc');
 include('includes/htmlMimeMail.php');
 

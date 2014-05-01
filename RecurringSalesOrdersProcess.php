@@ -1,8 +1,5 @@
 <?php
 
-/*need to allow this script to run from Cron or windows scheduler */
-$AllowAnyone = true;
-
 /* Get this puppy to run from cron (cd KwaMoja and php -f RecurringSalesOrdersProcess.php "kwamojademo") or direct URL (RecurringSalesOrdersProcess.php?Database=kwamojademo) */
 if (isset($_GET['Database'])) {
 	$_SESSION['DatabaseName'] = $_GET['Database'];

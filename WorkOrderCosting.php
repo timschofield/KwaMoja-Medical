@@ -566,6 +566,10 @@ if ($WorkOrderRow['closed'] == 0) {
 	}
 }
 
+if (!isset($_POST['CloseComments'])) {
+	$_POST['CloseComments'] = '';
+}
+
 echo '<tr>
 		<td colspan="9">
 			<div class="centre">

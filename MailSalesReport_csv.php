@@ -15,7 +15,6 @@ $ReportID = 4;
 
 /* ----------------------------------------------------------------------------------------------*/
 
-$AllowAnyone = true;
 include('includes/session.inc');
 /*The company database to use */
 $DatabaseName = $_SESSION['DatabaseName'];

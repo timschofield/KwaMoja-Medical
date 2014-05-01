@@ -1,7 +1,5 @@
 <?php
 
-$AllowAnyone = true;
-
 $FromCriteria = '1';
 /*Category From */
 $ToCriteria = 'zzzzzzzz';

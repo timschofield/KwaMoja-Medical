@@ -49,6 +49,7 @@ if (isset($_GET['PONumber']) and $_GET['PONumber'] <= 0 and !isset($_SESSION['PO
 			$RecvQty = 0;
 		}
 		$_SESSION['PO' . $identifier]->LineItems[$Line->LineNo]->ReceiveQty = $RecvQty;
+		$_SESSION['PO' . $identifier]->LineItems[$Line->LineNo]->GRNReference = $_POST['Reference_' . $Line->LineNo];
 		if (isset($_POST['Complete_' . $Line->LineNo])) {
 			$_SESSION['PO' . $identifier]->LineItems[$Line->LineNo]->Completed = 1;
 		} else {
@@ -107,7 +108,7 @@ if (!isset($_POST['ProcessGoodsReceived'])) {
 		echo '<th>' . _('Price') . '</th>
 				<th>' . _('Total Value') . '<br />' . _('Received') . '</th>';
 	}
-
+	echo '<th>' . _('Reference') . '</th>';
 	echo '<td>&nbsp;</td>
 		</tr>';
 	/*show the line items on the order with the quantity being received for modification */
@@ -196,13 +197,18 @@ if (count($_SESSION['PO' . $identifier]->LineItems) > 0 and !isset($_POST['Proce
 				echo '<td><a href="GoodsReceivedControlled.php?identifier=' . urlencode($identifier) . '&amp;LineNo=' . urlencode($LnItm->LineNo) . '">' . _('Enter Batches') . '</a></td>';
 			}
 		}
+		echo '<td>
+				<input type="text" name="Reference_' . $LnItm->LineNo . '" minlength="0" maxlength="50" size="25" value="' . $LnItm->GRNReference . '" />
+			</td>';
 		echo '</tr>';
 	} //foreach(LineItem)
 	$DisplayTotal = locale_number_format($_SESSION['PO' . $identifier]->Total, $_SESSION['PO' . $identifier]->CurrDecimalPlaces);
 	if ($_SESSION['ShowValueOnGRN'] == 1) {
-		echo '<tr><td colspan="11" class="number"><b>' . _('Total value of goods received') . '</b></td>
-							<td class="number"><b>' . $DisplayTotal . '</b></td>
-					</tr></table>';
+		echo '<tr>
+				<td colspan="12" class="number"><b>' . _('Total value of goods received') . '</b></td>
+				<td class="number"><b>' . $DisplayTotal . '</b></td>
+			</tr>
+		</table>';
 	} else {
 		echo '</table>';
 	}
@@ -460,7 +466,8 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 									deliverydate,
 									qtyrecd,
 									supplierid,
-									stdcostunit)
+									stdcostunit,
+									reference)
 							VALUES ('" . $GRN . "',
 								'" . $OrderLine->PODetailRec . "',
 								'" . $OrderLine->StockID . "',
@@ -468,7 +475,9 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 								'" . $_POST['DefaultReceivedDate'] . "',
 								'" . $OrderLine->ReceiveQty . "',
 								'" . DB_escape_string($_SESSION['PO' . $identifier]->SupplierID) . "',
-								'" . $CurrentStandardCost . "')";
+								'" . $CurrentStandardCost . "',
+								'" . DB_escape_string($OrderLine->GRNReference) . "'
+							)";
 
 			$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('A GRN record could not be inserted') . '. ' . _('This receipt of goods has not been processed because');
 			$DbgMsg = _('The following SQL to insert the GRN record was used');
@@ -751,7 +760,6 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 
 	echo '<div class="centre">
 			<a href="' . $RootPath . '/PO_Header.php?ModifyOrderNumber=' . urlencode($_SESSION['PO' . $identifier]->OrderNo) . '">' . _('Modify Order Items') . '</a>
-			<a href="PDFQALabel.php?GRNNo=' . urlencode($GRN) . '&amp;PONo=' . urlencode($PONo) . '">' . _('Print QA Labels for this Receipt') . '</a>
 			<a href="' . $RootPath . '/PO_SelectOSPurchOrder.php">' . _('Select a different purchase order for receiving goods against'). '</a>
 		</div>
 		<div class="centre">

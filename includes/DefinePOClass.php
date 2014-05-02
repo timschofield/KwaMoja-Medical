@@ -183,6 +183,7 @@ class LineDetails {
 	var $Controlled;
 	var $Serialised;
 	var $SerialItems;
+	var $GRNReference;
 	/*An array holding the batch/serial numbers and quantities in each batch*/
 	var $AssetID;
 
@@ -222,6 +223,7 @@ class LineDetails {
 		/*if Controlled then need to populate this later */
 		$this->SerialItemsValid = false;
 		$this->AssetID = $AssetID;
+		$this->GRNReference = '';
 
 	}
 }

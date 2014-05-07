@@ -24,6 +24,7 @@ if (isset($_POST['Cancel'])) {
 	unset($_POST['TabLimit']);
 	unset($_POST['SelectAssigner']);
 	unset($_POST['SelectAuthoriser']);
+	unset($_POST['SelectAuthoriserExpenses']);
 	unset($_POST['GLAccountCash']);
 	unset($_POST['GLAccountPcashTab']);
 }
@@ -96,6 +97,7 @@ if (isset($_POST['Submit'])) {
 									tablimit = '" . filter_number_format($_POST['TabLimit']) . "',
 									assigner = '" . $_POST['SelectAssigner'] . "',
 									authorizer = '" . $_POST['SelectAuthoriser'] . "',
+									authorizerexpenses = '" . $_POST['SelectAuthoriserExpenses'] . "',
 									glaccountassignment = '" . $_POST['GLAccountCash'] . "',
 									glaccountpcash = '" . $_POST['GLAccountPcashTab'] . "'
 				WHERE tabcode = '" . $SelectedTab . "'";
@@ -183,6 +185,7 @@ if (!isset($SelectedTab)) {
 					tablimit,
 					assigner,
 					authorizer,
+					authorizerexpenses,
 					glaccountassignment,
 					glaccountpcash,
 					currencies.decimalplaces,
@@ -207,7 +210,8 @@ if (!isset($SelectedTab)) {
 				<th>' . _('Currency') . '</th>
 				<th>' . _('Limit') . '</th>
 				<th>' . _('Assigner') . '</th>
-				<th>' . _('Authoriser') . '</th>
+				<th>' . _('Authoriser - Payment') . '</th>
+				<th>' . _('Authoriser - Expenses') . '</th>
 				<th>' . _('GL Account For Cash Assignment') . '</th>
 				<th>' . _('GL Account Petty Cash Tab') . '</th>
 			</tr>';
@@ -232,9 +236,10 @@ if (!isset($SelectedTab)) {
 					<td>%s</td>
 					<td>%s</td>
 					<td>%s</td>
+					<td>%s</td>
 					<td><a href="%sSelectedTab=%s">' . _('Edit') . '</a></td>
 					<td><a href="%sSelectedTab=%s&amp;delete=yes" onclick=\' return MakeConfirm("' . _('Are you sure you wish to delete this tab code?') . '", \'Confirm Delete\', this);\'>' . _('Delete') . '</a></td>
-					</tr>', $myrow['tabcode'], $myrow['usercode'], $myrow['typetabdescription'], $myrow['currabrev'], locale_number_format($myrow['tablimit'], $myrow['decimalplaces']), $myrow['assigner'], $myrow['authorizer'], $myrow['glaccountassignment'] . ' - ' . $myrow['glactassigntname'], $myrow['glaccountpcash'] . ' - ' . $myrow['glactpcashname'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['tabcode'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['tabcode']);
+					</tr>', $myrow['tabcode'], $myrow['usercode'], $myrow['typetabdescription'], $myrow['currabrev'], locale_number_format($myrow['tablimit'], $myrow['decimalplaces']), $myrow['assigner'], $myrow['authorizer'],  $myrow['authorizerexpenses'], $myrow['glaccountassignment'] . ' - ' . $myrow['glactassigntname'], $myrow['glaccountpcash'] . ' - ' . $myrow['glactpcashname'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['tabcode'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['tabcode']);
 		}
 		//END WHILE LIST LOOP
 		echo '</table>';
@@ -267,6 +272,7 @@ if (!isset($_GET['delete'])) {
 		$_POST['TabLimit'] = locale_number_format($myrow['tablimit']);
 		$_POST['SelectAssigner'] = $myrow['assigner'];
 		$_POST['SelectAuthoriser'] = $myrow['authorizer'];
+		$_POST['SelectAuthoriserExpenses'] = $myrow['authorizerexpenses'];
 		$_POST['GLAccountCash'] = $myrow['glaccountassignment'];
 		$_POST['GLAccountPcashTab'] = $myrow['glaccountpcash'];
 
@@ -275,8 +281,8 @@ if (!isset($_GET['delete'])) {
 		echo '<input type="hidden" name="TabCode" value="' . $_POST['TabCode'] . '" />';
 		echo '<table class="selection">
 				<tr>
-				<td>' . _('Tab Code') . ':</td>
-				<td>' . $_POST['TabCode'] . '</td>
+					<td>' . _('Tab Code') . ':</td>
+					<td>' . $_POST['TabCode'] . '</td>
 				</tr>';
 	} else {
 		// This is a new type so the user may volunteer a type code
@@ -396,7 +402,7 @@ if (!isset($_GET['delete'])) {
 	DB_free_result($result);
 
 	echo '<tr>
-			<td>' . _('Authoriser') . ':</td>
+			<td>' . _('Authoriser - Payment') . ':</td>
 			<td><select required="required" minlength="1" name="SelectAuthoriser">';
 
 	$SQL = "SELECT userid,
@@ -408,6 +414,29 @@ if (!isset($_GET['delete'])) {
 
 	while ($myrow = DB_fetch_array($result)) {
 		if (isset($_POST['SelectAuthoriser']) and $myrow['userid'] == $_POST['SelectAuthoriser']) {
+			echo '<option selected="selected" value="';
+		} else {
+			echo '<option value="';
+		}
+		echo $myrow['userid'] . '">' . $myrow['userid'] . ' - ' . $myrow['realname'] . '</option>';
+
+	} //end while loop get authoriser
+
+	echo '</select></td></tr>';
+
+	echo '<tr>
+			<td>' . _('Authoriser - Expenses') . ':</td>
+			<td><select required="required" minlength="1" name="SelectAuthoriserExpenses">';
+
+	$SQL = "SELECT userid,
+					realname
+			FROM www_users
+			ORDER BY userid";
+
+	$result = DB_query($SQL);
+
+	while ($myrow = DB_fetch_array($result)) {
+		if (isset($_POST['SelectAuthoriserExpenses']) and $myrow['userid'] == $_POST['SelectAuthoriserExpenses']) {
 			echo '<option selected="selected" value="';
 		} else {
 			echo '<option value="';

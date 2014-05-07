@@ -48,6 +48,7 @@ if (isset($_POST['ProcessStockChange'])) {
 						stocktype,
 						stockact,
 						adjglact,
+						issueglact,
 						purchpricevaract,
 						materialuseagevarac,
 						wipact)
@@ -57,6 +58,7 @@ if (isset($_POST['ProcessStockChange'])) {
 							stocktype,
 							stockact,
 							adjglact,
+							issueglact,
 							purchpricevaract,
 							materialuseagevarac,
 							wipact

@@ -80,7 +80,7 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 				AND pctabs.currency = currencies.currabrev
 				AND pcashdetails.tabcode = '" . $SelectedTabs . "'
 				AND pcashdetails.date >= DATE_SUB(CURDATE(), INTERVAL '" . $Days . "' DAY)
-				AND pcashdetails.codeexpense<>'ASSIGNCASH'
+				AND pcashdetails.codeexpense='ASSIGNCASH'
 			ORDER BY pcashdetails.date, pcashdetails.counterindex ASC";
 
 	$result = DB_query($sql);
@@ -268,7 +268,7 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 	$sqlamount = "SELECT sum(amount)
 			FROM pcashdetails
 			WHERE tabcode='" . $SelectedTabs . "'
-				AND codeexpense<>'ASSIGNCASH'";
+				AND codeexpense='ASSIGNCASH'";
 
 	$ResultAmount = DB_query($sqlamount);
 	$Amount = DB_fetch_array($ResultAmount);
@@ -296,7 +296,7 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 
 	$SQL = "SELECT tabcode
 		FROM pctabs
-		WHERE authorizerexpenses='" . $_SESSION['UserID'] . "'";
+		WHERE authorizer='" . $_SESSION['UserID'] . "'";
 
 	$result = DB_query($SQL);
 

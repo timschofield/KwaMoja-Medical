@@ -29,7 +29,7 @@ function CalcFreightCost($TotalValue, $BrAdd2, $BrAdd3, $BrAdd4, $BrAdd5, $BrAdd
 	// All parameters are OK, so we move ahead...
 
 	// make an array of all the words that could be the name of the destination zone (city, state or ZIP)
-	$FindCity = explode(' ', $BrAdd2 . ' ' . $BrAdd3 . ' ' . $BrAdd4 . ' ' . $BrAdd5);
+	$FindCity = array($BrAdd2, $BrAdd3, $BrAdd4, $BrAdd5);
 
 	$sql = "SELECT shipperid,
 					kgrate * " . $TotalWeight . " AS kgcost,
@@ -40,21 +40,19 @@ function CalcFreightCost($TotalValue, $BrAdd2, $BrAdd3, $BrAdd4, $BrAdd5, $BrAdd
 				WHERE locationfrom = '" . $FromLocation . "'
 					AND destinationcountry = '" . $BrAddCountry . "'
 					AND maxkgs > " . $TotalWeight . "
-				AND maxcub >" . $TotalVolume . " ";
-	if (($BrAdd2 != '') or ($BrAdd3 != '') or ($BrAdd4 != '') or ($BrAdd5 != '')){
-		// if there is some details of the address besides the country
-		$sql .= " AND (";
-		foreach ($FindCity as $City) {
-			if (ucwords($City) != ''){
-				$sql = $sql . " destination LIKE '" . ucwords($City) . "%' OR";
-			}
+					AND maxcub >" . $TotalVolume . "  AND (";
+
+	//ALL suburbs and cities are compared in upper case - so data in freight tables must be in upper case too
+	foreach ($FindCity as $City) {
+		if ($City != ''){
+			$sql .= " destination LIKE '" . $City . "%' OR";
 		}
-		if ($BrAddCountry != $CountriesArray[$_SESSION['CountryOfOperation']]){
-			/* For international shipments empty destination (ANY) is allowed */
-			$sql = $sql . " destination = '' OR";
-		}
-		$sql = mb_substr($sql, 0, mb_strrpos($sql,' OR')) . ')';
 	}
+	if ($BrAddCountry != $CountriesArray[$_SESSION['CountryOfOperation']]) {
+		/* For international shipments empty destination (ANY) is allowed */
+		$sql .= " destination = '' OR";
+	}
+	$sql = mb_substr($sql, 0, mb_strrpos($sql,' OR')) . ')';
 
 	$CalcFreightCostResult = DB_query($sql);
 	if (DB_error_no() != 0) {
@@ -74,12 +72,12 @@ function CalcFreightCost($TotalValue, $BrAdd2, $BrAdd3, $BrAdd4, $BrAdd5, $BrAdd
 					$CalcFreightCost = $myrow['fixedprice'];
 					$CalcBestShipper = $myrow['shipperid'];
 				}
-			} elseif ($myrow['cubcost'] > $myrow['kgcost'] and $myrow['cubcost'] > $myrow['minimumchg'] and $myrow['cubcost'] < $CalcFreightCost) {
+			} elseif ($myrow['cubcost'] > $myrow['kgcost'] and $myrow['cubcost'] > $myrow['minimumchg'] and $myrow['cubcost'] <= $CalcFreightCost) {
 
 				$CalcFreightCost = $myrow['cubcost'];
 				$CalcBestShipper = $myrow['shipperid'];
 
-			} elseif ($myrow['kgcost'] > $myrow['cubcost'] and $myrow['kgcost'] > $myrow['minimumchg'] and $myrow['kgcost'] < $CalcFreightCost) {
+			} elseif ($myrow['kgcost'] > $myrow['cubcost'] and $myrow['kgcost'] > $myrow['minimumchg'] and $myrow['kgcost'] <= $CalcFreightCost) {
 
 				$CalcFreightCost = $myrow['kgcost'];
 				$CalcBestShipper = $myrow['shipperid'];
@@ -95,7 +93,7 @@ function CalcFreightCost($TotalValue, $BrAdd2, $BrAdd3, $BrAdd4, $BrAdd5, $BrAdd
 		$CalcFreightCost = "NOT AVAILABLE";
 		$CalcBestShipper = 1;
 	}
-	if ($TotalValue >= $_SESSION['FreightChargeAppliesIfLessThan']) {
+	if ($TotalValue >= $_SESSION['FreightChargeAppliesIfLessThan'] and $_SESSION['FreightChargeAppliesIfLessThan'] != 0){
 
 		/*Even though the order is over the freight free threshold - still need to calculate the best shipper to ensure get best deal*/
 
@@ -111,7 +109,7 @@ function CalcFreightCost($TotalValue, $BrAdd2, $BrAdd3, $BrAdd4, $BrAdd5, $BrAdd
 			$ExRate =1;
 		}
 		if ($CalcFreightCost != "NOT AVAILABLE"){
-			$CalcFreightCost = $CalcFreightCost * $ExRate;
+			$CalcFreightCost *= $ExRate;
 		}
 	}
 

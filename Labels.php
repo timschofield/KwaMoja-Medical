@@ -18,7 +18,7 @@ $PaperSize['Legal']['PageHeight'] = 355.6;
 $PaperSize['Legal']['PageWidth'] = 215.9;
 
 echo '<p class="page_title_text noPrint" >
-		<img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Label Template Maintenance') . '" alt="' . _('Label Template Maintenance') . '" />' . $Title . '
+		<img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Label Template Maintenance') . '" alt="' . _('Label Template Maintenance') . '" />' . $Title . _('all measurements in PDF points') . '
 	</p>';
 
 if (isset($_POST['SelectedLabelID'])) {

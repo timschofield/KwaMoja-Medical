@@ -1,8 +1,8 @@
 <?php
 
-$UpdateSecurity = 10;
-
 include('includes/session.inc');
+
+$UpdateSecurity = $_SESSION['PageSecurityArray']['PurchData.php'];
 $Title = _('Stock Cost Update');
 include('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');
@@ -165,8 +165,9 @@ if (!in_array($UpdateSecurity, $_SESSION['AllowedPageSecurityTokens'])) {
 } else {
 
 	if ($myrow['mbflag'] == 'M') {
-		echo '<tr><td><input type="hidden" name="MaterialCost" value="' . $myrow['materialcost'] . '" />';
-		echo _('Standard Material Cost Per Unit') . ':</td>
+		echo '<input type="hidden" name="MaterialCost" value="' . $myrow['materialcost'] . '" />';
+		echo '<tr>
+				<td>' . _('Standard Material Cost Per Unit') . ':</td>
 				<td class="number">' . locale_number_format($myrow['materialcost'], $_SESSION['StandardCostDecimalPlaces']) . '</td>
 			</tr>';
 		echo '<tr>
@@ -183,8 +184,8 @@ if (!in_array($UpdateSecurity, $_SESSION['AllowedPageSecurityTokens'])) {
 				<td class="number"><input type="text" class="number" name="MaterialCost" value="' . locale_number_format($myrow['materialcost'], $_SESSION['StandardCostDecimalPlaces']) . '" /></td>
 			</tr>';
 	} else {
-		echo '<tr><td><input type="hidden" name="LabourCost" value="0" />';
-		echo '<input type="hidden" name="OverheadCost" value="0" /></td></tr>';
+		echo '<input type="hidden" name="LabourCost" value="0" />
+			<input type="hidden" name="OverheadCost" value="0" />';
 	}
 	echo '</table>
 			 <div class="centre">

@@ -615,6 +615,7 @@ if (isset($_POST['CommitBatch'])) {
 											typeno,
 											trandate,
 											periodno,
+											chequeno,
 											account,
 											narrative,
 											amount)
@@ -622,6 +623,7 @@ if (isset($_POST['CommitBatch'])) {
 								'" . $TransNo . "',
 								'" . FormatDateForSQL($_SESSION['PaymentDetail' . $identifier]->DatePaid) . "',
 								'" . $PeriodNo . "',
+								'" . $PaymentItem->Cheque . "',
 								'" . $_SESSION['PaymentDetail' . $identifier]->Account . "',
 								'" . $_SESSION['PaymentDetail' . $identifier]->Narrative . "',
 								'" . (-$_SESSION['PaymentDetail' . $identifier]->Amount / $_SESSION['PaymentDetail' . $identifier]->ExRate / $_SESSION['PaymentDetail' . $identifier]->FunctionalExRate) . "')";

@@ -419,7 +419,7 @@ if (isset($_POST['PrintPDF']) and $_POST['Part'] != '') {
 
 	// Details for Demand/Supply Sections
 	$i = 0;
-	while ((isset($Supplies[$i]) and mb_strlen($Supplies[$i]['part'])) > 1 or (isset($Requirements[$i]) and mb_strlen($Requirements[$i]['part']) > 1)) {
+	while ((isset($Supplies[$i]) and mb_strlen($Supplies[$i]['part']) > 1) or (isset($Requirements[$i]) and mb_strlen($Requirements[$i]['part']) > 1)) {
 
 		$YPos -= $line_height;
 		$FontSize = 7;

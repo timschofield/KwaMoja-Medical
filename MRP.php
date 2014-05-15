@@ -237,7 +237,7 @@ if (isset($_POST['submit'])) {
 										 directdemand,
 										 whererequired)
 							   SELECT stkcode,
-									  deliverydate,
+									  itemdue,
 									  (quantity - qtyinvoiced) AS netqty,
 									  'SO',
 									  salesorderdetails.orderno,

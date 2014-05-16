@@ -1234,6 +1234,11 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 
 			/*Insert Sales Analysis records */
 
+			$SalesValue = 0;
+			if ($_SESSION['CurrencyRate'] > 0) {
+				$SalesValue = $OrderLine->Price * $OrderLine->QtyDispatched / $_SESSION['CurrencyRate'];
+			}
+
 			$SQL = "SELECT COUNT(*),
 						salesanalysis.stockid,
 						salesanalysis.stkcategory,
@@ -1276,10 +1281,10 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 			if ($myrow[0] > 0) {
 				/*Update the existing record that already exists */
 
-				$SQL = "UPDATE salesanalysis SET amt=amt+" . round(($OrderLine->Price * $OrderLine->QtyDispatched / $_SESSION['CurrencyRate']), $_SESSION['CompanyRecord']['decimalplaces']) . ",
+				$SQL = "UPDATE salesanalysis SET amt=amt+" . round(($SalesValue), $_SESSION['CompanyRecord']['decimalplaces']) . ",
 												cost=cost+" . round(($OrderLine->StandardCost * $OrderLine->QtyDispatched), $_SESSION['CompanyRecord']['decimalplaces']) . ",
-												qty=qty +" . $OrderLine->QtyDispatched . ",
-												disc=disc+" . round(($OrderLine->DiscountPercent * $OrderLine->Price * $OrderLine->QtyDispatched / $_SESSION['CurrencyRate']), $_SESSION['CompanyRecord']['decimalplaces']) . "
+												qty=qty+" . $OrderLine->QtyDispatched . ",
+												disc=disc+" . round(($OrderLine->DiscountPercent * $SalesValue), $_SESSION['CompanyRecord']['decimalplaces']) . "
 								WHERE salesanalysis.area='" . $myrow[5] . "'
 								AND salesanalysis.salesperson='" . $myrow[8] . "'
 								AND typeabbrev ='" . $_SESSION['Items' . $identifier]->DefaultSalesType . "'
@@ -1308,12 +1313,12 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 												stkcategory )
 								SELECT '" . $_SESSION['Items' . $identifier]->DefaultSalesType . "',
 										'" . $PeriodNo . "',
-										'" . round(($OrderLine->Price * $OrderLine->QtyDispatched / $_SESSION['CurrencyRate']), $_SESSION['CompanyRecord']['decimalplaces']) . "',
+										'" . round(($SalesValue), $_SESSION['CompanyRecord']['decimalplaces']) . "',
 										'" . round(($OrderLine->StandardCost * $OrderLine->QtyDispatched), $_SESSION['CompanyRecord']['decimalplaces']) . "',
 										'" . $_SESSION['Items' . $identifier]->DebtorNo . "',
 										'" . $_SESSION['Items' . $identifier]->Branch . "',
 										'" . ($OrderLine->QtyDispatched) . "',
-										'" . round(($OrderLine->DiscountPercent * $OrderLine->Price * $OrderLine->QtyDispatched / $_SESSION['CurrencyRate']), $_SESSION['CompanyRecord']['decimalplaces']) . "',
+										'" . round(($OrderLine->DiscountPercent * $SalesValue), $_SESSION['CompanyRecord']['decimalplaces']) . "',
 										'" . $OrderLine->StockID . "',
 										custbranch.area,
 										1,

@@ -1117,6 +1117,10 @@ if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 			}
 
 			/*Insert Sales Analysis records */
+			$SalesValue = 0;
+			if ($_SESSION['CurrencyRate'] > 0) {
+				$SalesValue = $CreditLine->Price * $CreditLine->QtyDispatched / $_SESSION['CurrencyRate'];
+			}
 
 			$SQL = "SELECT COUNT(*),
 						stkcategory,
@@ -1152,7 +1156,7 @@ if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 				if ($_POST['CreditType'] == 'ReverseOverCharge') {
 
 					$SQL = "UPDATE salesanalysis
-							SET amt=amt-" . $CreditLine->Price * $CreditLine->QtyDispatched / $_SESSION['CurrencyRate'] . ",
+							SET amt=amt-" . $SalesValue . ",
 							disc=disc-" . ($CreditLine->DiscountPercent * $CreditLine->Price * $CreditLine->QtyDispatched / $_SESSION['CurrencyRate']) . "
 							WHERE salesanalysis.area='" . $myrow[2] . "'
 							AND salesanalysis.salesperson='" . $myrow[3] . "'
@@ -1167,10 +1171,10 @@ if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 				} else {
 
 					$SQL = "UPDATE salesanalysis
-							SET amt=amt-" . $CreditLine->Price * $CreditLine->QtyDispatched / $_SESSION['CurrencyRate'] . ",
+							SET amt=amt-" . $SalesValue . ",
 							cost=cost-" . $CreditLine->StandardCost * $CreditLine->QtyDispatched . ",
 							qty=qty-" . $CreditLine->QtyDispatched . ",
-							disc=disc-" . $CreditLine->DiscountPercent * $CreditLine->Price * $CreditLine->QtyDispatched / $_SESSION['CurrencyRate'] . "
+							disc=disc-" . $CreditLine->DiscountPercent * $SalesValue . "
 							WHERE salesanalysis.area='" . $myrow[2] . "'
 							AND salesanalysis.salesperson='" . $myrow[3] . "'
 							AND typeabbrev ='" . $_SESSION['CreditItems' . $identifier]->DefaultSalesType . "'
@@ -1205,7 +1209,7 @@ if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 							'" . $_SESSION['CreditItems' . $identifier]->DebtorNo . "',
 							'" . $_SESSION['CreditItems' . $identifier]->Branch . "',
 							0,
-							'" . -$CreditLine->DiscountPercent * $CreditLine->Price * $CreditLine->QtyDispatched / $_SESSION['CurrencyRate'] . "',
+							'" . -$CreditLine->DiscountPercent * $SalesValue . "',
 							'" . $CreditLine->StockID . "',
 							custbranch.area,
 							1,
@@ -1233,12 +1237,12 @@ if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 								stkcategory)
 						SELECT '" . $_SESSION['CreditItems' . $identifier]->DefaultSalesType . "',
 							'" . $PeriodNo . "',
-							'" . -$CreditLine->Price * $CreditLine->QtyDispatched / $_SESSION['CurrencyRate'] . "',
+							'" . -$SalesValue . "',
 							'" . -$CreditLine->StandardCost * $CreditLine->QtyDispatched . "',
 							'" . $_SESSION['CreditItems' . $identifier]->DebtorNo . "',
 							'" . $_SESSION['CreditItems' . $identifier]->Branch . "',
 							'" . -$CreditLine->QtyDispatched . "',
-							'" . -$CreditLine->DiscountPercent * $CreditLine->Price * $CreditLine->QtyDispatched / $_SESSION['CurrencyRate'] . "',
+							'" . -$CreditLine->DiscountPercent * $SalesValue . "',
 							'" . $CreditLine->StockID . "',
 							custbranch.area,
 							1,

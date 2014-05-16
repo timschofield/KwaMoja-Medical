@@ -1206,6 +1206,10 @@ if (isset($_POST['ProcessReturn']) and $_POST['ProcessReturn'] != '') {
 
 
 			/*Insert Sales Analysis records */
+			$SalesValue = 0;
+			if ($ExRate > 0) {
+				$SalesValue = $ReturnItemLine->Price * $ReturnItemLine->Quantity / $ExRate;
+			}
 
 			$SQL = "SELECT COUNT(*),
 					salesanalysis.stockid,
@@ -1250,10 +1254,10 @@ if (isset($_POST['ProcessReturn']) and $_POST['ProcessReturn'] != '') {
 				/*Update the existing record that already exists */
 
 				$SQL = "UPDATE salesanalysis
-							SET amt=amt-" . ($ReturnItemLine->Price * $ReturnItemLine->Quantity / $ExRate) . ",
+							SET amt=amt-" . ($SalesValue) . ",
 								cost=cost-" . ($ReturnItemLine->StandardCost * $ReturnItemLine->Quantity) . ",
-								qty=qty -" . $ReturnItemLine->Quantity . ",
-								disc=disc-" . ($ReturnItemLine->DiscountPercent * $ReturnItemLine->Price * $ReturnItemLine->Quantity / $ExRate) . "
+								qty=qty-" . $ReturnItemLine->Quantity . ",
+								disc=disc-" . ($ReturnItemLine->DiscountPercent * $SalesValue) . "
 							WHERE salesanalysis.area='" . $myrow[5] . "'
 								AND salesanalysis.salesperson='" . $_SESSION['Items' . $identifier]->SalesPerson . "'
 								AND typeabbrev ='" . $_SESSION['Items' . $identifier]->DefaultSalesType . "'
@@ -1282,12 +1286,12 @@ if (isset($_POST['ProcessReturn']) and $_POST['ProcessReturn'] != '') {
 													stkcategory	)
 					SELECT '" . $_SESSION['Items' . $identifier]->DefaultSalesType . "',
 						'" . $PeriodNo . "',
-						'" . -($ReturnItemLine->Price * $ReturnItemLine->Quantity / $ExRate) . "',
+						'" . -($SalesValue) . "',
 						'" . -($ReturnItemLine->StandardCost * $ReturnItemLine->Quantity) . "',
 						'" . $_SESSION['Items' . $identifier]->DebtorNo . "',
 						'" . $_SESSION['Items' . $identifier]->Branch . "',
 						'" . -$ReturnItemLine->Quantity . "',
-						'" . -($ReturnItemLine->DiscountPercent * $ReturnItemLine->Price * $ReturnItemLine->Quantity / $ExRate) . "',
+						'" . -($ReturnItemLine->DiscountPercent * $SalesValue) . "',
 						'" . $ReturnItemLine->StockID . "',
 						custbranch.area,
 						1,

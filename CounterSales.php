@@ -1660,6 +1660,10 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 			End of controlled stuff not currently handled by counter orders
 			*/
 
+			$SalesValue = 0;
+			if ($ExRate > 0) {
+				$SalesValue = $OrderLine->Price * $OrderLine->Quantity / $ExRate;
+			}
 
 			/*Insert Sales Analysis records */
 
@@ -1706,10 +1710,10 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 				/*Update the existing record that already exists */
 
 				$SQL = "UPDATE salesanalysis
-							SET amt=amt+" . ($OrderLine->Price * $OrderLine->Quantity / $ExRate) . ",
+							SET amt=amt+" . ($SalesValue) . ",
 								cost=cost+" . ($OrderLine->StandardCost * $OrderLine->Quantity) . ",
-								qty=qty +" . $OrderLine->Quantity . ",
-								disc=disc+" . ($OrderLine->DiscountPercent * $OrderLine->Price * $OrderLine->Quantity / $ExRate) . "
+								qty=qty+" . $OrderLine->Quantity . ",
+								disc=disc+" . ($OrderLine->DiscountPercent * $SalesValue) . "
 							WHERE salesanalysis.area='" . $myrow[5] . "'
 							AND salesanalysis.salesperson='" . $_SESSION['Items' . $identifier]->SalesPerson . "'
 							AND typeabbrev ='" . $_SESSION['Items' . $identifier]->DefaultSalesType . "'
@@ -1738,12 +1742,12 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 													stkcategory	)
 					SELECT '" . $_SESSION['Items' . $identifier]->DefaultSalesType . "',
 						'" . $PeriodNo . "',
-						'" . ($OrderLine->Price * $OrderLine->Quantity / $ExRate) . "',
+						'" . ($SalesValue) . "',
 						'" . ($OrderLine->StandardCost * $OrderLine->Quantity) . "',
 						'" . $_SESSION['Items' . $identifier]->DebtorNo . "',
 						'" . $_SESSION['Items' . $identifier]->Branch . "',
 						'" . $OrderLine->Quantity . "',
-						'" . ($OrderLine->DiscountPercent * $OrderLine->Price * $OrderLine->Quantity / $ExRate) . "',
+						'" . ($OrderLine->DiscountPercent * $SalesValue) . "',
 						'" . $OrderLine->StockID . "',
 						custbranch.area,
 						1,

@@ -41,11 +41,11 @@ if ($LineItem->Controlled != 1) {
 }
 
 /*****  get the page going now... *****/
-echo '<div class="centre">';
+echo '<div class="toplink">
+		<a href="' . $RootPath . '/StockAdjustments.php?identifier=' . urlencode($identifier) . '">' . _('Back to Adjustment Screen') . '</a>
+	</div>';
 
-echo '<a href="' . $RootPath . '/StockAdjustments.php?identifier=' . urlencode($identifier) . '">' . _('Back to Adjustment Screen') . '</a>';
-
-echo '<b>' . _('Adjustment of controlled item') . ' ' . $LineItem->StockID . ' - ' . $LineItem->ItemDescription;
+echo '<p class="page_title_text noPrint" >' . _('Adjustment of controlled item') . ' ' . $LineItem->StockID . ' - ' . $LineItem->ItemDescription;
 
 /** vars needed by InputSerialItem : **/
 $LocationOut = $_SESSION['Adjustment' . $identifier]->StockLocation;
@@ -65,7 +65,7 @@ if ($LineItem->AdjustmentType == 'ADD') {
 	include('includes/footer.inc');
 	exit;
 }
-echo '</b></div>';
+echo '</p>';
 include('includes/InputSerialItems.php');
 
 /*TotalQuantity set inside this include file from the sum of the bundles

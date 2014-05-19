@@ -98,8 +98,7 @@ if (isset($_POST['submit'])) {
 		$i++;
 	}
 	if (($FunctionalCurrency != '') and (isset($SelectedCurrency) and $SelectedCurrency == $FunctionalCurrency)) {
-		$InputError = 1;
-		prnMsg(_('The functional currency cannot be modified or deleted'), 'error');
+		$_POST['ExchangeRate'] = 1;
 	}
 
 	if (isset($SelectedCurrency) and $InputError != 1) {
@@ -188,7 +187,7 @@ if (isset($_POST['submit'])) {
 
 			/* If some adjustment has to be done, do it! */
 			$DifferenceToAdjust = $NewBalanceInFucntionalCurrency - $OldBalanceInFunctionalCurrency;
-			if (OldRate != NewRate) {
+			if ($OldRate != $NewRate) {
 
 				$SQL = "INSERT INTO gltrans (type,
 											typeno,
@@ -360,12 +359,14 @@ if (!isset($SelectedCurrency)) {
 					<td class="number">' . locale_number_format($myrow['decimalplaces'], 0) . '</td>
 					<td>' . $ShowInWebText . '</td>
 					<td class="number">1</td>
-					<td colspan="5">' . _('Functional Currency') . '</td>
+					<td colspan="2">' . _('Functional Currency') . '</td>
+					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?&amp;SelectedCurrency=' . urlencode($myrow['currabrev']) . '">' . _('Edit') . '</a></td>
+					<td colspan="2"></td>
 					</tr>';
 		}
 
 	} //END WHILE LIST LOOP
-	echo '</table><br />';
+	echo '</table>';
 } //end of ifs and buts!
 
 
@@ -430,13 +431,17 @@ if (!isset($_GET['delete'])) {
 	}
 
 	echo '<tr>
-			<td>' . _('Country') . ':</td>
-			<td>';
+			<td>' . _('Country') . ':</td>';
 	if (!isset($_POST['Country'])) {
 		$_POST['Country'] = '';
 	}
-	echo '<input type="text" name="Country" size="30" required="required" minlength="1" maxlength="50" value="' . $_POST['Country'] . '" /></td>
-		</tr>
+	if ($_POST['Abbreviation'] != $FunctionalCurrency) {
+		echo '<td><input type="text" name="Country" size="30" required="required" minlength="1" maxlength="50" value="' . $_POST['Country'] . '" /></td>';
+	} else {
+		echo '<td>' . $_POST['Country'] . '</td>';
+		echo '<input type="hidden" name="Country" value="' . $_POST['Country'] . '" />';
+	}
+	echo '</tr>
 		<tr>
 			<td>' . _('Hundredths Name') . ':</td>
 			<td>';
@@ -454,13 +459,17 @@ if (!isset($_GET['delete'])) {
 	echo '<input class="integer" type="text" name="DecimalPlaces" size="2" required="required" minlength="1" maxlength="2" value="' . $_POST['DecimalPlaces'] . '" /></td>
 		</tr>
 		<tr>
-			<td>' . _('Exchange Rate') . ':</td>
-			<td>';
+			<td>' . _('Exchange Rate') . ':</td>';
 	if (!isset($_POST['ExchangeRate'])) {
 		$_POST['ExchangeRate'] = 1;
 	}
-	echo '<input type="text" class="number" name="ExchangeRate" size="10" required="required" minlength="1" maxlength="10" value="' . $_POST['ExchangeRate'] . '" /></td>
-		</tr>';
+	if ($_POST['Abbreviation'] != $FunctionalCurrency) {
+		echo '<td><input type="text" class="number" name="ExchangeRate" size="10" required="required" minlength="1" maxlength="10" value="' . $_POST['ExchangeRate'] . '" /></td>';
+	} else {
+		echo '<td>' . $_POST['ExchangeRate'] . '</td>';
+		echo '<input type="hidden" class="number" name="ExchangeRate" value="' . $_POST['ExchangeRate'] . '" />';
+	}
+	echo '</tr>';
 	if (!isset($_POST['webcart'])) {
 		$_POST['webcart'] = 1;
 	}
@@ -482,11 +491,10 @@ if (!isset($_GET['delete'])) {
 
 	echo '</table>';
 
-	echo '<br />
-		<div class="centre">
+	echo '<div class="centre">
 			<input type="submit" name="submit" value="' . _('Enter Information') . '" />
 		</div>
-		</form>';
+	</form>';
 
 } //end if record deleted no point displaying form to add record
 

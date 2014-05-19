@@ -1,7 +1,7 @@
 <?php
 
 include('includes/session.inc');
-$Title = _('Upgrade KwaMoja 3.01 - 3.02');
+$Title = _('Upgrade 3.01 - 3.02');
 include('includes/header.inc');
 
 prnMsg(_('Upgrade script to number salesorderdetails records as required by version 3.02 .... please wait'), 'info');

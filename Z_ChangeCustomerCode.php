@@ -1,6 +1,6 @@
 <?php
 
-/*Script to change a customer code throughout KwaMoja*/
+/*Script to change a customer code throughout the database*/
 
 include('includes/session.inc');
 $Title = _('UTILITY PAGE To Changes A Customer Code In All Tables');

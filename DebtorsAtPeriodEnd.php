@@ -130,7 +130,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 	/*The option to print PDF was not hit */
 
 	$Title = _('Debtor Balances');
-	/* KwaMoja manual links before header.inc */
+	/* Manual links before header.inc */
 	$ViewTopic = 'ARReports';
 	$BookMark = 'PriorMonthDebtors';
 	include('includes/header.inc');

@@ -17,7 +17,7 @@ $SQL = "SELECT stockmaster.stockid,
 $result = DB_query($SQL);
 $PrintHeader = TRUE;
 if (DB_num_rows($result) != 0) {
-	echo '<p class="page_title_text noPrint"  align="center"><strong>' . _('Current Items without picture in KwaMoja') . '</strong></p>';
+	echo '<p class="page_title_text noPrint"  align="center"><strong>' . _('Current Items without picture') . '</strong></p>';
 	echo '<div>';
 	echo '<table class="selection">';
 	$k = 0; //row colour counter

@@ -4,7 +4,7 @@ include('includes/SQL_CommonFunctions.inc');
 
 include('includes/session.inc');
 $Title = _('Customer Inquiry');
-/* KwaMoja manual links before header.inc */
+/* Manual links before header.inc */
 $ViewTopic = 'ARInquiries';
 $BookMark = 'CustomerInquiry';
 include('includes/header.inc');

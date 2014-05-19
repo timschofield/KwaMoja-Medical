@@ -17,7 +17,7 @@ if (isset($argc)) {
 include('includes/session.inc');
 
 $Title = _('Recurring Orders Process');
-/* KwaMoja manual links before header.inc */
+/* Manual links before header.inc */
 $ViewTopic = 'SalesOrders';
 $BookMark = 'RecurringSalesOrders';
 include('includes/header.inc');

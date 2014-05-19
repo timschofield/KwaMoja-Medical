@@ -6,7 +6,7 @@ include('includes/DefineSerialItems.php');
 include('includes/session.inc');
 $Title = _('Confirm Dispatches and Invoice An Order');
 
-/* KwaMoja manual links before header.inc */
+/* Manual links before header.inc */
 $ViewTopic = 'ARTransactions';
 $BookMark = 'ConfirmInvoice';
 include('includes/header.inc');

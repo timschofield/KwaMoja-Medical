@@ -2,7 +2,7 @@
 
 include('includes/session.inc');
 $Title = _('Customer Transactions Inquiry');
-/* KwaMoja manual links before header.inc */
+/* Manual links before header.inc */
 $ViewTopic = 'ARInquiries';
 $BookMark = 'ARTransInquiry';
 include('includes/header.inc');

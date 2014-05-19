@@ -9,7 +9,7 @@ if (isset($_GET['BatchNo'])) {
 
 if (!isset($_POST['BatchNo'])) {
 	$Title = _('Create PDF Print Out For A Batch Of Receipts');
-	/* KwaMoja manual links before header.inc */
+	/* Manual links before header.inc */
 	$ViewTopic = 'ARReports';
 	$BookMark = 'BankingSummary';
 	include('includes/header.inc');

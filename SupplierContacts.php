@@ -3,7 +3,7 @@
 include('includes/session.inc');
 
 $Title = _('Supplier Contacts');
-/* KwaMoja manual links before header.inc */
+/* Manual links before header.inc */
 $ViewTopic = 'AccountsPayable';
 $BookMark = 'SupplierContact';
 include('includes/header.inc');

@@ -3,7 +3,7 @@
 include('includes/session.inc');
 
 $Title = _('Discount Categories Maintenance');
-/* KwaMoja manual links before header.inc */
+/* Manual links before header.inc */
 $ViewTopic = 'SalesOrders';
 $BookMark = 'DiscountMatrix';
 include('includes/header.inc');

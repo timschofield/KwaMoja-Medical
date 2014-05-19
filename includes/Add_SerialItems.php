@@ -164,6 +164,7 @@ if (isset($_POST['AddSequence']) and $_POST['AddSequence'] != '') {
 Validate an uploaded FILE and save entries
 ********************************************/
 $valid = true;
+$invalid_imports = 0;
 if (isset($_POST['EntryType']) and $_POST['EntryType'] == 'FILE' and isset($_POST['ValidateFile'])) {
 
 	$filename = $_SESSION['CurImportFile']['tmp_name'];

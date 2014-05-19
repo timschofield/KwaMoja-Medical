@@ -2,7 +2,7 @@
 
 include('includes/session.inc');
 $Title = _('Assignment of Cash to Petty Cash Tab');
-/* KwaMoja manual links before header.inc */
+/* Manual links before header.inc */
 $ViewTopic = 'PettyCash';
 $BookMark = 'CashAssignment';
 include('includes/header.inc');

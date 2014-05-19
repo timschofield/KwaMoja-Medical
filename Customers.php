@@ -3,7 +3,7 @@
 include('includes/session.inc');
 
 $Title = _('Customer Maintenance');
-/* KwaMoja manual links before header.inc */
+/* Manual links before header.inc */
 if (isset($_POST['Edit']) or isset($_GET['Edit']) or isset($_GET['DebtorNo'])) {
 	$ViewTopic = 'AccountsReceivable';
 	$BookMark = 'AmendCustomer';
@@ -317,7 +317,7 @@ elseif (isset($_POST['delete'])) {
 			} else {
 				// Check if there are any users that refer to this CUSTOMER code
 				$SQL = "SELECT COUNT(*) FROM www_users WHERE www_users.customerid = '" . $_POST['DebtorNo'] . "'";
-				$result = DB_query($SQL
+				$result = DB_query($SQL);
 				$myrow = DB_fetch_row($result);
 				if ($myrow[0] > 0) {
 					prnMsg(_('Cannot delete this customer because users exist that refer to it') . '. ' . _('Purge old users first'), 'warn');

@@ -13,7 +13,7 @@ if (isset($_POST['Date']) and !Is_Date($_POST['Date'])) {
 if (!isset($_POST['Date'])) {
 
 	$Title = _('Customer Transaction Listing');
-	/* KwaMoja manual links before header.inc */
+	/* Manual links before header.inc */
 	$ViewTopic = 'ARReports';
 	$BookMark = 'DailyTransactions';
 	include('includes/header.inc');

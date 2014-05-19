@@ -6,11 +6,11 @@ include('includes/header.inc');
 include('xmlrpc/lib/xmlrpc.inc');
 include('api/api_errorcodes.php');
 
-$KwaMojaUser = $_SESSION['UserID'];
-$sql = "SELECT password FROM www_users WHERE userid='" . $KwaMojaUser . "'";
+$User = $_SESSION['UserID'];
+$sql = "SELECT password FROM www_users WHERE userid='" . $User . "'";
 $result = DB_query($sql);
 $myrow = DB_fetch_array($result);
-$kwamojapassword = $myrow[0];
+$password = $myrow[0];
 
 $ServerURL = 'http://' . $_SERVER['HTTP_HOST'] . $RootPath . '/api/api_xml-rpc.php';
 $DebugLevel = 0; //Set to 0,1, or 2 with 2 being the highest level of debug info
@@ -38,10 +38,10 @@ if (isset($_POST['update'])) {
 				$ItemDetails[$FieldNames[$i]] = $FieldValues[$i];
 			}
 			$stockitem = php_xmlrpc_encode($ItemDetails);
-			$user = new xmlrpcval($KwaMojaUser);
-			$password = new xmlrpcval($kwamojapassword);
+			$user = new xmlrpcval($User);
+			$password = new xmlrpcval($password);
 
-			$msg = new xmlrpcmsg("kwamoja.xmlrpc_InsertStockItem", array(
+			$msg = new xmlrpcmsg($APIServer . ".xmlrpc_InsertStockItem", array(
 				$stockitem,
 				$user,
 				$password
@@ -76,7 +76,7 @@ if (isset($_POST['update'])) {
 	if (DB_num_rows($result) == 0) {
 		prnMsg(_('No locations have been set up. At least one location should be set up first'), "error");
 	} else {
-		prnMsg(_('Select a csv file containing the details of the parts that you wish to import into KwaMoja. ') . '<br />' . _('The first line must contain the field names that you wish to import. ') . '<a href ="Z_DescribeTable.php?table=stockmaster">' . _('The field names can be found here') . '</a>', 'info');
+		prnMsg(_('Select a csv file containing the details of the parts that you wish to import') . '. ' . '<br />' . _('The first line must contain the field names that you wish to import. ') . '<a href ="Z_DescribeTable.php?table=stockmaster">' . _('The field names can be found here') . '</a>', 'info');
 		echo '<form onSubmit="return VerifyForm(this);" id="ItemForm" enctype="multipart/form-data" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 		echo '<div class="centre">';
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';

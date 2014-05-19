@@ -8,7 +8,7 @@ config.php is in turn included in session.inc $PageSecurity now comes from sessi
 include('includes/session.inc');
 
 $Title = _('Counter Sales');
-/* KwaMoja manual links before header.inc */
+/* Manual links before header.inc */
 $ViewTopic = 'SalesOrders';
 $BookMark = 'SalesOrderCounterSales';
 

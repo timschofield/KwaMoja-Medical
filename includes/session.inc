@@ -3,6 +3,7 @@
 if (!isset($PathPrefix)) {
 	$PathPrefix = '';
 } //!isset($PathPrefix)
+include($PathPrefix . 'Branding.php');
 
 if (!file_exists($PathPrefix . 'config.php')) {
 	$RootPath = dirname(htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'));
@@ -13,6 +14,7 @@ if (!file_exists($PathPrefix . 'config.php')) {
 	exit;
 } //!file_exists($PathPrefix . 'config.php')
 include($PathPrefix . 'config.php');
+
 $DBVersion = HighestFileName($PathPrefix);
 if (isset($dbuser)) {
 	$DBUser = $dbuser;

@@ -147,7 +147,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `companies` WRITE;
 /*!40000 ALTER TABLE `companies` DISABLE KEYS */;
-INSERT INTO `companies` VALUES (1,'KwaMoja Demonstration Company Ltd','not entered yet','KE1234567890','Plot 8172','Kisanjani Road','Ganjoni','Mombasa','Kenya','East Africa','+61 3 4567 8901','+61 3 4567 8902','kwamoja@kwamojademo.com','KES','1100','4900','2100','2400','2150','4200','5200','3500',1,1,1,'5600');
+INSERT INTO `companies` VALUES (1,'Demonstration Company Ltd','not entered yet','KE1234567890','Plot 8172','Kisanjani Road','Ganjoni','Mombasa','Kenya','East Africa','+61 3 4567 8901','+61 3 4567 8902','kwamoja@kwamojademo.com','KES','1100','4900','2100','2400','2150','4200','5200','3500',1,1,1,'5600');
 /*!40000 ALTER TABLE `companies` ENABLE KEYS */;
 UNLOCK TABLES;
 

@@ -2,7 +2,7 @@
 
 include('includes/session.inc');
 $Title = _('Clone Item');
-/* KwaMoja manual links before header.inc */
+/* Manual links before header.inc */
 $ViewTopic = 'Inventory';
 $BookMark = 'CloneItem';
 include('includes/header.inc');

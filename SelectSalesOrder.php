@@ -2,7 +2,7 @@
 
 include('includes/session.inc');
 $Title = _('Search Outstanding Sales Orders');
-/* KwaMoja manual links before header.inc */
+/* Manual links before header.inc */
 $ViewTopic = 'SalesOrders';
 $BookMark = 'SelectSalesOrder';
 include('includes/header.inc');

@@ -1,7 +1,7 @@
 <?php
 
 include('includes/session.inc');
-$Title = _('Upgrade KwaMoja 3.04 - 3.05');
+$Title = _('Upgrade 3.04 - 3.05');
 include('includes/header.inc');
 
 

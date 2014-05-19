@@ -3,7 +3,7 @@
 include('includes/session.inc');
 
 $Title = _('Supplier Maintenance');
-/* KwaMoja manual links before header.inc */
+/* Manual links before header.inc */
 $ViewTopic = 'AccountsPayable';
 $BookMark = 'NewSupplier';
 include('includes/header.inc');
@@ -136,7 +136,7 @@ function Is_ValidAccount($ActNo) {
 			break;
 
 		default:
-			echo _('The prefix') . ' - ' . $BankPrefix . ' ' . _('is not a valid New Zealand Bank') . '.<br />' . _('if you are using KwaMoja outside New Zealand error trapping relevant to your country should be used');
+			echo _('The prefix') . ' - ' . $BankPrefix . ' ' . _('is not a valid New Zealand Bank') . '.<br />' . _('if you are outside New Zealand error trapping relevant to your country should be used');
 			return False;
 			exit;
 

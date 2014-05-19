@@ -2,7 +2,7 @@
 
 include('includes/session.inc');
 $Title = _('Claim Petty Cash Expenses From Tab');
-/* KwaMoja manual links before header.inc */
+/* Manual links before header.inc */
 $ViewTopic = 'PettyCash';
 $BookMark = 'ExpenseClaim';
 include('includes/header.inc');

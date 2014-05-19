@@ -368,7 +368,7 @@ if (isset($_POST['PrintPDF'])) {
 } else {
 
 	$Title = _('Customer Details Listing');
-	/* KwaMoja manual links before header.inc */
+	/* Manual links before header.inc */
 	$ViewTopic = 'ARReports';
 	$BookMark = 'CustomerListing';
 	include('includes/header.inc');

@@ -1,7 +1,7 @@
 <?php
 
 include('includes/session.inc');
-/* KwaMoja manual links before header.inc */
+/* Manual links before header.inc */
 $ViewTopic = 'Inventory';
 $BookMark = 'PlanningReport';
 

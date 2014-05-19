@@ -276,10 +276,10 @@ NewMenuItem('system', 'Maintenance', _('MRP Available Production Days'), '/MRPCa
 NewMenuItem('system', 'Maintenance', _('MRP Demand Types'), '/MRPDemandTypes.php', 6);
 NewMenuItem('system', 'Maintenance', _('Maintain Internal Departments'), '/Departments.php', 7);
 NewMenuItem('system', 'Maintenance', _('Maintain Internal Stock Categories to User Roles'),'/InternalStockCategoriesByRole.php', 8);
-NewMenuItem('system', 'Maintenance', _('Report a problem with KwaMoja'), '/ReportBug.php', 9);
-NewMenuItem('system', 'Maintenance', _('Upload a KwaMoja plugin file'), '/PluginUpload.php', 10);
-NewMenuItem('system', 'Maintenance', _('Install a KwaMoja plugin'), '/PluginInstall.php', 11);
-NewMenuItem('system', 'Maintenance', _('Remove a KwaMoja plugin'), '/PluginUnInstall.php', 12);
+NewMenuItem('system', 'Maintenance', _('Report a problem'), '/ReportBug.php', 9);
+NewMenuItem('system', 'Maintenance', _('Upload a plugin file'), '/PluginUpload.php', 10);
+NewMenuItem('system', 'Maintenance', _('Install a plugin'), '/PluginInstall.php', 11);
+NewMenuItem('system', 'Maintenance', _('Remove a plugin'), '/PluginUnInstall.php', 12);
 
 NewMenuItem('Utilities', 'Transactions', _('Change A Customer Code'), '/Z_ChangeCustomerCode.php', 1);
 NewMenuItem('Utilities', 'Transactions', _('Change A Customer Branch Code'), '/Z_ChangeBranchCode.php', 2);
@@ -302,7 +302,7 @@ NewMenuItem('Utilities', 'Maintenance', _('Make New Company'), '/Z_MakeNewCompan
 NewMenuItem('Utilities', 'Maintenance', _('Data Export Options'), '/Z_DataExport.php', 3);
 NewMenuItem('Utilities', 'Maintenance', _('Import Stock Items from .csv'), '/Z_ImportStocks.php', 4);
 NewMenuItem('Utilities', 'Maintenance', _('Import Fixed Assets from .csv file'), '/Z_ImportFixedAssets.php', 5);
-NewMenuItem('Utilities', 'Maintenance', _('Create new company template SQL file and submit to KwaMoja'), '/Z_CreateCompanyTemplateFile.php', 6);
+NewMenuItem('Utilities', 'Maintenance', _('Create new company template SQL file and submit to Project'), '/Z_CreateCompanyTemplateFile.php', 6);
 NewMenuItem('Utilities', 'Maintenance', _('Re-calculate brought forward amounts in GL'), '/Z_UpdateChartDetailsBFwd.php', 7);
 NewMenuItem('Utilities', 'Maintenance', _('Re-Post all GL transactions from a specified period'), '/Z_RePostGLFromPeriod.php', 8);
 NewMenuItem('Utilities', 'Maintenance', _('Purge all old prices'), '/Z_DeleteOldPrices.php', 9);

@@ -14,7 +14,7 @@ if ((isset($AllowDemoMode)) and ($AllowDemoMode == True) and (!isset($demo_text)
 ?>
 <html>
 <head>
-	<title>KwaMoja Login screen</title>
+	<title><?php echo $ProjectName; echo ' ' . _('Login screen'); ?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 	<link rel="stylesheet" href="css/login.css" type="text/css" />
@@ -47,7 +47,7 @@ if (get_magic_quotes_gpc()) {
 		<tr>
 			<th colspan="2">
 				<div id="login_logo">
-					<a href="http://www.kwamoja.com" target="_blank"><img src="css/logo.png" style="width:100%" /></a>
+					<a href="<?php echo $HomePage; ?>" target="_blank"><img src="css/<?php echo $DefaultDatabase;?>.png" style="width:100%" /></a>
 				</div>
 			</th>
 		</tr>
@@ -125,19 +125,19 @@ echo _('Login');
 			<td style="width: 20%; padding-left: 1%;">
 				<div>
 					<b>Join us at :</b><br />
-					<a href="https://sourceforge.net/projects/kwamoja" target="_blank"><img src="css/sourceforge-logo.png" style="width:70%; border: 1px solid #A49999;" /></a><br />
-					<a href="https://launchpad.net/kwamoja" target="_blank"><img src="css/launchpad.png" style="width:70%; border: 1px solid #A49999;" /></a><br />
-					<a href="https://kwamoja.codeplex.com/" target="_blank"><img src="css/codeplex-logo.png" style="width:70%; border: 1px solid #A49999;" /></a><br /><br />
+					<a href="<?php echo $SourceforgeSite; ?>" target="_blank"><img src="css/sourceforge-logo.png" style="width:70%; border: 1px solid #A49999;" /></a><br />
+					<a href="<?php echo $LaunchpadSite; ?>" target="_blank"><img src="css/launchpad.png" style="width:70%; border: 1px solid #A49999;" /></a><br />
+					<a href="<?php echo $CodeplexSite; ?>" target="_blank"><img src="css/codeplex-logo.png" style="width:70%; border: 1px solid #A49999;" /></a><br /><br />
 				</div>
 			</td>
 			<td style="width: 25%; padding-left: 0%;">
 				<div>
-					<b>Follow us at :</b>
+					<b>Follow us at:</b>
 					<!--Follow us on twitter button-->
-					<a href="https://twitter.com/KwaMoja" class="twitter-follow-button" data-show-count="false">Follow @KwaMoja</a><br />
-					<a href="https://plus.google.com/u/0/communities/106845561370559503655" target="_blank"><img src="css/google-plus.png" style="width:50%; border: 1px solid #A49999;" /></a>
-					<a href="http://www.facebook.com/Kwamoja" target="_blank"><img src="css/FindUsOnFacebook.png" style="width:70%; border: 1px solid #A49999;" /></a>
-					<a href="http://www.linkedin.com/groups/KwaMoja-4833235?trk=myg_ugrp_ovr" target="_blank"><img src="css/linkedin.png" style="width:70%; border: 1px solid #A49999;" /></a>
+					<a href="https://twitter.com/<?php echo $TwitterAccount; ?>" class="twitter-follow-button" data-show-count="false"><?php echo _('Follow') . ' @' . $TwitterAccount; ?></a><br />
+					<a href="https://plus.google.com/u/0/communities/<?php echo $GoogleCommunity; ?>" target="_blank"><img src="css/google-plus.png" style="width:50%; border: 1px solid #A49999;" /></a>
+					<a href="<?php echo $FacebookPage; ?>" target="_blank"><img src="css/FindUsOnFacebook.png" style="width:70%; border: 1px solid #A49999;" /></a>
+					<a href="<?php echo $LinkedInGroup; ?>" target="_blank"><img src="css/linkedin.png" style="width:70%; border: 1px solid #A49999;" /></a>
 				</div>
 			</td>
 		</tr>

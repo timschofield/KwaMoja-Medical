@@ -150,7 +150,7 @@ if (isset($_POST['MakeCSV'])) {
 
 		} else {
 			$sql = "SELECT gltrans.type,
-						gltrans.typename,
+						typename,
 						gltrans.typeno,
 						gltrans.trandate,
 						gltrans.narrative,

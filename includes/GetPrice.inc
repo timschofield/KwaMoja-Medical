@@ -127,7 +127,7 @@ function GetPrice($StockID, $DebtorNo, $BranchCode, $OrderLineQty, $ReportZeroPr
 											 prices.startdate
 										FROM prices
 										INNER JOIN debtorsmaster
-											AND prices.currabrev = debtorsmaster.currcode
+											ON prices.currabrev = debtorsmaster.currcode
 										WHERE prices.stockid = '" . $StockID . "'
 											AND debtorsmaster.debtorno='" . $DebtorNo . "'
 											AND prices.typeabbrev='" . $_SESSION['DefaultPriceList'] . "'

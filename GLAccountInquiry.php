@@ -79,7 +79,7 @@ echo '<tr>
 $SQL = "SELECT tagref,
 			tagdescription
 		FROM tags
-		ORDER BY tagref";
+		ORDER BY tagdescription";
 
 $result = DB_query($SQL);
 echo '<option value="0">0 - ' . _('All tags') . '</option>';
@@ -197,7 +197,18 @@ if (isset($_POST['Show'])) {
 		$ChartDetailsResult = DB_query($sql, $ErrMsg);
 		$ChartDetailRow = DB_fetch_array($ChartDetailsResult);
 
-		$RunningTotal = $ChartDetailRow['bfwd'];
+		if ($_POST['tag'] == 0) {
+			$_POST['tag'] = '%%';
+		}
+		$BfwdSQL = "SELECT sum(amount) as bfwd
+						FROM gltrans
+						WHERE account='" . $SelectedAccount . "'
+							AND periodno<" . $FirstPeriodSelected . "
+							AND tag like '" . $_POST['tag'] . "'";
+		$BfwdResult = DB_query($BfwdSQL);
+		$BfwdRow = DB_fetch_array($BfwdResult);
+
+		$RunningTotal = $BfwdRow['bfwd'];
 		if ($RunningTotal < 0) { //its a credit balance b/fwd
 			echo '<tr>
 					<td colspan="4"><b>' . _('Brought Forward Balance') . '</b></td>

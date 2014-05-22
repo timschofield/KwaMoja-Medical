@@ -61,7 +61,7 @@ echo '<table class="selection" summary="' . _('Inquiry Selection Criteria') . '"
 $sql = "SELECT accountcode, accountname FROM chartmaster ORDER BY accountcode";
 $Account = DB_query($sql);
 while ($myrow = DB_fetch_array($Account)) {
-	if ($myrow['accountcode'] == $SelectedAccount) {
+	if (isset($SelectedAccount) and $myrow['accountcode'] == $SelectedAccount) {
 		echo '<option selected="selected" value="' . $myrow['accountcode'] . '">' . $myrow['accountcode'] . ' ' . htmlspecialchars($myrow['accountname'], ENT_QUOTES, 'UTF-8', false) . '</option>';
 	} else {
 		echo '<option value="' . $myrow['accountcode'] . '">' . $myrow['accountcode'] . ' ' . htmlspecialchars($myrow['accountname'], ENT_QUOTES, 'UTF-8', false) . '</option>';

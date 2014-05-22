@@ -613,13 +613,13 @@ if (isset($OK_to_PROCESS) and $OK_to_PROCESS == 1 and $_SESSION['ExistingOrder' 
 			/*link to print the quotation */
 			echo '<br /><table class="selection">
 					<tr>
-						<td><img src="' . $RootPath . '/css/' . $Theme . '/images/reports.png" title="' . _('Order') . '" alt=""></td>
+						<td><img src="' . $RootPath . '/css/' . $Theme . '/images/printer.png" title="' . _('Order') . '" alt=""></td>
 						<td>' . ' ' . '<a href="' . $RootPath . '/PDFQuotation.php?identifier=' . urlencode($identifier) . '&amp;QuotationNo=' . urlencode($OrderNo) . '">' . _('Print Quotation (Landscape)') . '</a></td>
 					</tr>
 					</table>';
 			echo '<br /><table class="selection">
 					<tr>
-						<td><img src="' . $RootPath . '/css/' . $Theme . '/images/reports.png" title="' . _('Order') . '" alt="" /></td>
+						<td><img src="' . $RootPath . '/css/' . $Theme . '/images/printer.png" title="' . _('Order') . '" alt="" /></td>
 						<td>' . ' ' . '<a href="' . $RootPath . '/PDFQuotationPortrait.php?identifier=' . urlencode($identifier) . '&amp;QuotationNo=' . urlencode($OrderNo) . '">' . _('Print Quotation (Portrait)') . '</a></td>
 					</tr>
 					</table>';
@@ -801,13 +801,13 @@ elseif (isset($OK_to_PROCESS) and ($OK_to_PROCESS == 1 and $_SESSION['ExistingOr
 		/*link to print the quotation */
 		echo '<br /><table class="selection">
 				<tr>
-					<td><img src="' . $RootPath . '/css/' . $Theme . '/images/reports.png" title="' . _('Order') . '" alt=""></td>
+					<td><img src="' . $RootPath . '/css/' . $Theme . '/images/printer.png" title="' . _('Order') . '" alt=""></td>
 					<td>' . ' ' . '<a href="' . $RootPath . '/PDFQuotation.php?identifier=' . urlencode($identifier) . '&amp;QuotationNo=' . urlencode($_SESSION['ExistingOrder' . $identifier]) . '">' . _('Print Quotation (Landscape)') . '</a></td>
 				</tr>
 				</table>';
 		echo '<br /><table class="selection">
 				<tr>
-					<td><img src="' . $RootPath . '/css/' . $Theme . '/images/reports.png" title="' . _('Order') . '" alt="" /></td>
+					<td><img src="' . $RootPath . '/css/' . $Theme . '/images/printer.png" title="' . _('Order') . '" alt="" /></td>
 					<td>' . ' ' . '<a href="' . $RootPath . '/PDFQuotationPortrait.php?identifier=' . urlencode($identifier) . '&amp;QuotationNo=' . urlencode($_SESSION['ExistingOrder' . $identifier]) . '">' . _('Print Quotation (Portrait)') . '</a></td>
 				</tr>
 				</table>';

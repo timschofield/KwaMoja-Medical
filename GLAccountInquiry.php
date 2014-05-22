@@ -138,6 +138,7 @@ if (isset($_POST['Show'])) {
 				gltrans.typeno,
 				trandate,
 				narrative,
+				chequeno,
 				amount,
 				periodno,
 				gltrans.tag,
@@ -173,7 +174,8 @@ if (isset($_POST['Show'])) {
 			</tr>
 			<tr>
 				<th>' . _('Type') . '</th>
-				<th>' . _('Number') . '</th>
+				<th>' . _('Trans no') . '</th>
+				<th>' . _('Cheque') . '</th>
 				<th>' . _('Date') . '</th>
 				<th>' . _('Debit') . '</th>
 				<th>' . _('Credit') . '</th>
@@ -302,12 +304,13 @@ if (isset($_POST['Show'])) {
 		printf('<td>%s</td>
 				<td class="number"><a href="%s">%s</a></td>
 				<td>%s</td>
+				<td>%s</td>
 				<td class="number">%s</td>
 				<td class="number">%s</td>
 				<td>%s</td>
 				<td class="number"><b>%s</b></td>
 				<td>%s</td>
-			</tr>', $myrow['typename'], $URL_to_TransDetail, $myrow['typeno'], $FormatedTranDate, $DebitAmount, $CreditAmount, $myrow['narrative'], locale_number_format($RunningTotal, $_SESSION['CompanyRecord']['decimalplaces']), $tagrow['tagdescription']);
+			</tr>', $myrow['typename'], $URL_to_TransDetail, $myrow['typeno'], $myrow['chequeno'], $FormatedTranDate, $DebitAmount, $CreditAmount, $myrow['narrative'], locale_number_format($RunningTotal, $_SESSION['CompanyRecord']['decimalplaces']), $tagrow['tagdescription']);
 
 	}
 	echo '<tr>

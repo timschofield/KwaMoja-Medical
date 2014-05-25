@@ -7,15 +7,9 @@ include('includes/SQL_CommonFunctions.inc');
 if (!isset($_GET['QuotationNo']) or $_GET['QuotationNo'] == "") {
 	$Title = _('Select Quotation To Print');
 	include('includes/header.inc');
-	echo '<div class="centre">
-				<br />
-				<br />
-				<br />';
+	echo '<div class="centre">';
 	prnMsg(_('Select a Quotation to Print before calling this page'), 'error');
-	echo '<br />
-				<br />
-				<br />
-				<table class="table_index">
+	echo '<table class="table_index">
 				<tr>
 					<td class="menu_group_item">
 						<ul><li><a href="' . $RootPath . '/SelectSalesOrder.php?Quotations=Quotes_Only">' . _('Quotations') . '</a></li>
@@ -23,10 +17,7 @@ if (!isset($_GET['QuotationNo']) or $_GET['QuotationNo'] == "") {
 					</td>
 				</tr>
 				</table>
-				</div>
-				<br />
-				<br />
-				<br />';
+				</div>';
 	include('includes/footer.inc');
 	exit();
 }
@@ -55,6 +46,7 @@ $sql = "SELECT salesorders.customerref,
 				shippers.shippername,
 				salesorders.printedpackingslip,
 				salesorders.datepackingslipprinted,
+				salesorders.quotedate,
 				salesorders.branchcode,
 				locations.taxprovinceid,
 				locations.locationname,
@@ -266,7 +258,7 @@ if ($ListCount == 0) {
 	include('includes/footer.inc');
 	exit;
 } else {
-	$pdf->OutputD($_SESSION['DatabaseName'] . '_Quotation_' . date('Y-m-d') . '.pdf');
+    $pdf->OutputI($_SESSION['DatabaseName'] . '_Quotation_' . $_GET['QuotationNo'] . '_' . date('Y-m-d') . '.pdf');
 	$pdf->__destruct();
 }
 ?>

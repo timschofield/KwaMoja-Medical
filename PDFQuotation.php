@@ -53,6 +53,7 @@ $sql = "SELECT salesorders.customerref,
 				shippers.shippername,
 				salesorders.printedpackingslip,
 				salesorders.datepackingslipprinted,
+				salesorders.quotedate,
 				salesorders.branchcode,
 				locations.taxprovinceid,
 				locations.locationname,
@@ -75,25 +76,16 @@ $result = DB_query($sql, $ErrMsg);
 if (DB_num_rows($result) == 0) {
 	$Title = _('Print Quotation Error');
 	include('includes/header.inc');
-	echo '<div class="centre">
-				<br />
-				<br />
-				<br />';
+	echo '<div class="centre">';
 	prnMsg(_('Unable to Locate Quotation Number') . ' : ' . $_GET['QuotationNo'] . ' ', 'error');
-	echo '<br />
-				<br />
-				<br />
-				<table class="table_index">
+	echo '<table class="table_index">
 				<tr>
 					<td class="menu_group_item">
 						<a href="' . $RootPath . '/SelectSalesOrder.php?Quotations=Quotes_Only">' . _('Outstanding Quotations') . '</a>
 					</td>
 				</tr>
 				</table>
-				</div>
-				<br />
-				<br />
-				<br />';
+				</div>';
 	include('includes/footer.inc');
 	exit;
 } elseif (DB_num_rows($result) == 1) {
@@ -266,7 +258,7 @@ if ($ListCount == 0) {
 	include('includes/footer.inc');
 	exit;
 } else {
-	$pdf->OutputD($_SESSION['DatabaseName'] . '_Quotation_' . date('Y-m-d') . '.pdf');
+    $pdf->OutputI($_SESSION['DatabaseName'] . '_Quotation_' . $_GET['QuotationNo'] . '_' . date('Y-m-d') . '.pdf');
 	$pdf->__destruct();
 }
 ?>

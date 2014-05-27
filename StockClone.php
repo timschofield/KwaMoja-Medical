@@ -26,7 +26,7 @@ if (isset($_GET['OldStockID']) or isset($_POST['OldStockID'])) { //we are clonin
 	prnMsg(_('To use this script it must be called with the Stock ID of the item to be cloned passed in as $OldStockID. Please use the Clone This Item option in the Items Menu.'), 'error');
 }
 
-$ItemDescriptionLanguages = explode(',', $_SESSION['ItemDescriptionLanguages']);
+$ItemDescriptionLanguagesArray = explode(',',$_SESSION['ItemDescriptionLanguages']);
 
 if (isset($_POST['StockID']) and !empty($_POST['StockID']) and !isset($_POST['UpdateCategories'])) {
 	$sql = "SELECT COUNT(stockid)
@@ -315,10 +315,10 @@ if (isset($_POST['submit'])) {
 					//now insert the language descriptions
 					$ErrMsg = _('Could not update the language description because');
 					$DbgMsg = _('The SQL that was used to update the language description and failed was');
-					if (count($ItemDescriptionLanguages) > 0) {
-						foreach ($ItemDescriptionLanguages as $DescriptionLanguage) {
-							if ($DescriptionLanguage != '') {
-								$result = DB_query("INSERT INTO stockdescriptiontranslations VALUES('" . $_POST['StockID'] . "','" . $DescriptionLanguage . "', '" . $_POST['Description_' . str_replace('.', '_', $DescriptionLanguage)] . "')", $ErrMsg, $DbgMsg, true);
+					if (count($ItemDescriptionLanguagesArray) > 0) {
+						foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
+							if ($LanguageId!=''){
+								$result = DB_query("INSERT INTO stockdescriptiontranslations VALUES('" . $_POST['StockID'] . "','" . $LanguageId . "', '" . $_POST['Description_' . str_replace('.', '_', $LanguageId)] . "')", $db, $ErrMsg, $DbgMsg, true);
 							}
 						}
 					}
@@ -526,8 +526,8 @@ if (isset($_POST['submit'])) {
 						unset($_POST['ShrinkFactor']);
 						unset($_POST['Pansize']);
 						unset($_POST['StockID']);
-						foreach ($ItemDescriptionLanguages as $DescriptionLanguage) {
-							unset($_POST['Description_' . str_replace('.', '_', $DescriptionLanguage)]);
+						foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
+							unset($_POST['Description_' . str_replace('.', '_', $LanguageId)]);
 							$_POST['New'] = 1; //do not show input form again
 						}
 					} //Reset the form variables
@@ -543,7 +543,6 @@ if (isset($_POST['submit'])) {
 
 }
 
-
 echo '<form name="ItemForm" enctype="multipart/form-data" method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
 	<input type="hidden" name="New" value="' . $_POST['New'] . '" />
@@ -558,7 +557,7 @@ if ($_POST['StockID'] == '' or ($_POST['StockID'] == $_POST['OldStockID']) or is
 	$StockID = !empty($_POST['StockID']) ? $_POST['StockID'] : $_POST['OldStockID'];
 	echo '<tr>
 			<td>' . _('Cloned Item Code') . ':</td>
-			<td><input type="text" ' . $StockIDStyle . '" data-type="no-illegal-chars" autofocus="autofocus" required="required" value="' . $StockID . '" name="StockID" size="21" maxlength="20" />
+			<td><input type="text" ' . $StockIDStyle . '" autofocus="autofocus" required="required" value="' . $StockID . '" name="StockID" size="21" maxlength="20" />
 				<input type="hidden" name="OldStockID" value="' . $_POST['OldStockID'] . '" />  ' . _('Enter a unique item code for the new item.') . '
 			</td>
 		</tr>';
@@ -616,8 +615,8 @@ if ((!isset($_POST['UpdateCategories']) and ($InputError != 1)) or $_POST['New']
 	$_POST['ShrinkFactor'] = $myrow['shrinkfactor'];
 
 	$sql = "SELECT descriptiontranslation, language_id FROM stockdescriptiontranslations WHERE stockid='" . $selectedStockID . "' AND (";
-	foreach ($ItemDescriptionLanguages as $DescriptionLanguage) {
-		$sql .= "language_id='" . $DescriptionLanguage . "' OR ";
+	foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
+		$sql .= "language_id='" . $LanguageId . "' OR ";
 	}
 	$sql = mb_substr($sql, 0, mb_strlen($sql) - 3) . ')';
 	$result = DB_query($sql);
@@ -637,15 +636,15 @@ echo '<tr>
 			<td><input ' . (in_array('Description', $Errors) ? 'class="inputerror"' : '') . ' type="text" name="Description" size="52" maxlength="50" value="' . $Description . '" /></td>
 		</tr>';
 
-foreach ($ItemDescriptionLanguages as $DescriptionLanguage) {
-	if ($DescriptionLanguage != '') {
+foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
+	if ($LanguageId != '') {
 		//unfortunately cannot have points in POST variables so have to mess with the language id
-		$PostVariableName = 'Description_' . str_replace('.', '_', $DescriptionLanguage);
+		$PostVariableName = 'Description_' . str_replace('.', '_', $LanguageId);
 		if (!isset($_POST[$PostVariableName])) {
 			$_POST[$PostVariableName] = '';
 		}
 		echo '<tr>
-				<td>' . $LanguagesArray[$DescriptionLanguage]['LanguageName'] . ' ' . _('Description') . ':</td>
+				<td>' . $LanguagesArray[$LanguageId]['LanguageName'] . ' ' . _('Description') . ':</td>
 				<td><input type="text" name="' . $PostVariableName . '" size="52" maxlength="50" value="' . $_POST[$PostVariableName] . '" /></td>
 			</tr>';
 	}

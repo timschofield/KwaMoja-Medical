@@ -258,6 +258,11 @@ if ($_POST['BackOrders'] == 'Yes') {
 	$sql .= " AND salesorderdetails.quantity-salesorderdetails.qtyinvoiced >0";
 }
 
+//Add salesman role control
+if ($_SESSION['SalesmanLogin'] != '') {
+	$sql .= " AND salesorders.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
+}
+
 $sql .= " ORDER BY salesorders.orderno";
 
 $Result = DB_query($sql, '', '', false, false); //dont trap errors here

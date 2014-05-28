@@ -7,9 +7,9 @@ $Title = _('Supplier Purchasing Data');
 include('includes/header.inc');
 
 if (isset($_GET['SupplierID'])) {
-	$SupplierID = trim(mb_strtoupper($_GET['SupplierID']));
+	$SupplierID = trim(mb_strtoupper(stripslashes($_GET['SupplierID'])));
 } elseif (isset($_POST['SupplierID'])) {
-	$SupplierID = trim(mb_strtoupper($_POST['SupplierID']));
+	$SupplierID = trim(mb_strtoupper(stripslashes($_POST['SupplierID'])));
 }
 
 if (isset($_GET['StockID'])) {
@@ -101,7 +101,7 @@ if ((isset($_POST['AddRecord']) or isset($_POST['UpdateRecord'])) and isset($Sup
 										leadtime,
 										minorderqty,
 										preferred)
-									VALUES ('" . $SupplierID . "',
+									VALUES ('" . DB_escape_string($SupplierID) . "',
 										'" . $StockID . "',
 										'" . filter_number_format($_POST['Price']) . "',
 										'" . FormatDateForSQL($_POST['EffectiveFrom']) . "',
@@ -112,6 +112,7 @@ if ((isset($_POST['AddRecord']) or isset($_POST['UpdateRecord'])) and isset($Sup
 										'" . filter_number_format($_POST['LeadTime']) . "',
 										'" . filter_number_format($_POST['MinOrderQty']) . "',
 										'" . $_POST['Preferred'] . "')";
+echo $sql;
 		$ErrMsg = _('The supplier purchasing details could not be added to the database because');
 		$DbgMsg = _('The SQL that failed was');
 		$AddResult = DB_query($sql, $ErrMsg, $DbgMsg);
@@ -128,7 +129,7 @@ if ((isset($_POST['AddRecord']) or isset($_POST['UpdateRecord'])) and isset($Sup
 									minorderqty='" . filter_number_format($_POST['MinOrderQty']) . "',
 									preferred='" . $_POST['Preferred'] . "'
 								WHERE purchdata.stockid='" . $StockID . "'
-									AND purchdata.supplierno='" . $SupplierID . "'
+									AND purchdata.supplierno='" . DB_escape_string($SupplierID) . "'
 									AND purchdata.effectivefrom='" . $_POST['WasEffectiveFrom'] . "'";
 		$ErrMsg = _('The supplier purchasing details could not be updated because');
 		$DbgMsg = _('The SQL that failed was');
@@ -210,12 +211,14 @@ if ((isset($_POST['AddRecord']) or isset($_POST['UpdateRecord'])) and isset($Sup
 		unset($_POST['SupplierCode']);
 		unset($_POST['MinOrderQty']);
 		unset($SuppName);
-		for ($i = 0; $i < $_POST['NumberOfDiscounts']; $i++) {
-			unset($_POST['DiscountNarrative' . $i]);
-			unset($_POST['DiscountAmount' . $i]);
-			unset($_POST['DiscountPercent' . $i]);
-			unset($_POST['DiscountEffectiveFrom' . $i]);
-			unset($_POST['DiscountEffectiveTo' . $i]);
+		if (isset($_POST['NumberOfDiscounts'])) {
+			for ($i = 0; $i < $_POST['NumberOfDiscounts']; $i++) {
+				unset($_POST['DiscountNarrative' . $i]);
+				unset($_POST['DiscountAmount' . $i]);
+				unset($_POST['DiscountPercent' . $i]);
+				unset($_POST['DiscountEffectiveFrom' . $i]);
+				unset($_POST['DiscountEffectiveTo' . $i]);
+			}
 		}
 		unset($_POST['NumberOfDiscounts']);
 
@@ -330,7 +333,7 @@ if (isset($SupplierID) and $SupplierID != '' and !isset($_POST['SearchSupplier']
 				FROM suppliers
 				INNER JOIN currencies
 					ON suppliers.currcode=currencies.currabrev
-				WHERE supplierid='" . $SupplierID . "'";
+				WHERE supplierid='" . DB_escape_string($SupplierID) . "'";
 	$ErrMsg = _('The supplier details for the selected supplier could not be retrieved because');
 	$DbgMsg = _('The SQL that failed was');
 	$SuppSelResult = DB_query($sql, $ErrMsg, $DbgMsg);
@@ -499,7 +502,7 @@ if (!isset($SuppliersResult)) {
 						ON purchdata.stockid=stockmaster.stockid
 					INNER JOIN currencies
 						ON suppliers.currcode = currencies.currabrev
-					WHERE purchdata.supplierno='" . $SupplierID . "'
+					WHERE purchdata.supplierno='" . DB_escape_string($SupplierID) . "'
 						AND purchdata.stockid='" . $StockID . "'
 						AND purchdata.effectivefrom='" . $_GET['EffectiveFrom'] . "'";
 
@@ -651,7 +654,7 @@ if (!isset($SuppliersResult)) {
 						effectivefrom,
 						effectiveto
 				FROM supplierdiscounts
-				WHERE supplierno = '" . $SupplierID . "'
+				WHERE supplierno = '" . DB_escape_string($SupplierID) . "'
 				AND stockid = '" . $StockID . "'";
 
 		$ErrMsg = _('The supplier discounts could not be retrieved because');

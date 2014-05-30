@@ -21,6 +21,7 @@ if (isset($_POST['UpdateAll'])) {
 			$sql = "UPDATE purchorders
 					SET status='" . $Status . "',
 						stat_comment='" . $Comment . "',
+						authoriser='" . $_SESSION['UserID'] . "',
 						allowprint=1
 					WHERE orderno='" . $OrderNo . "'";
 			$result = DB_query($sql);

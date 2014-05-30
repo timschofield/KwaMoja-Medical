@@ -77,39 +77,39 @@
 	</CompanyEmail>
 	<DeliveryAddress type="ElementArray" name="Delivery address">
 		<Caption type="SimpleText" name="Caption" id="DeliveryAddressCaption">
-			<FontSize>12</FontSize>
+			<FontSize>10</FontSize>
 			<x>448</x>
-			<y>142</y>
+			<y>132</y>
 		</Caption>
 		<Line1 type="SimpleText" name="Line 1" id="DeliveryAddress1">
-			<FontSize>12</FontSize>
+			<FontSize>10</FontSize>
 			<x>448</x>
-			<y>154</y>
+			<y>142</y>
 		</Line1>
 		<Line2 type="SimpleText" name="Line 2" id="DeliveryAddress2">
-			<FontSize>12</FontSize>
+			<FontSize>10</FontSize>
 			<x>448</x>
-			<y>166</y>
+			<y>152</y>
 		</Line2>
 		<Line3 type="SimpleText" name="Line 3" id="DeliveryAddress3">
-			<FontSize>12</FontSize>
+			<FontSize>10</FontSize>
 			<x>448</x>
-			<y>178</y>
+			<y>162</y>
 		</Line3>
 		<Line4 type="SimpleText" name="Line 4" id="DeliveryAddress4">
-			<FontSize>12</FontSize>
+			<FontSize>10</FontSize>
 			<x>448</x>
-			<y>190</y>
+			<y>172</y>
 		</Line4>
 		<Line5 type="SimpleText" name="Line 5" id="DeliveryAddress5">
-			<FontSize>12</FontSize>
+			<FontSize>10</FontSize>
 			<x>448</x>
-			<y>202</y>
+			<y>182</y>
 		</Line5>
 	</DeliveryAddress>
 	<DeliveryAddressBox type="CurvedRectangle" name="Delivery address box" id="DeliveryAddressBox">
 		<x>436</x>
-		<y>154</y>
+		<y>128</y>
 		<width>252</width>
 		<height>96</height>
 		<radius>12</radius>
@@ -159,18 +159,23 @@
 	<Initiator type="SimpleText" name="Order initiator" id="Initiator">
 		<FontSize>12</FontSize>
 		<x>446</x>
-		<y>264</y>
+		<y>262</y>
 	</Initiator>
+	<Authoriser type="SimpleText" name="Order authoriser" id="Authoriser">
+		<FontSize>12</FontSize>
+		<x>446</x>
+		<y>274</y>
+	</Authoriser>
 	<PaymentTerms type="SimpleText" name="Payment terms" id="PaymentTerms">
 		<FontSize>12</FontSize>
 		<x>446</x>
-		<y>278</y>
+		<y>286</y>
 	</PaymentTerms>
 	<Comments type="MultiLineText" name="Comments" id="Comments">
 		<FontSize>12</FontSize>
 		<Length>250</Length>
 		<x>446</x>
-		<y>302</y>
+		<y>316</y>
 	</Comments>
 	<Currency type="SimpleText" name="Currency text" id="Currency">
 		<FontSize>12</FontSize>

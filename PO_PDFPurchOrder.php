@@ -7,26 +7,17 @@ include('includes/DefinePOClass.php');
 if (!isset($_GET['OrderNo']) and !isset($_POST['OrderNo'])) {
 	$Title = _('Select a Purchase Order');
 	include('includes/header.inc');
-	echo '<div class="centre"><br /><br /><br />';
 	prnMsg(_('Select a Purchase Order Number to Print before calling this page'), 'error');
-	echo '<br />
-				<br />
-				<br />
-				<table class="table_index">
+	echo '<table class="table_index">
 					<tr><td class="menu_group_item">
 						<li><a href="' . $RootPath . '/PO_SelectOSPurchOrder.php">' . _('Outstanding Purchase Orders') . '</a></li>
 						<li><a href="' . $RootPath . '/PO_SelectPurchOrder.php">' . _('Purchase Order Inquiry') . '</a></li>
 						</td>
-					</tr></table>
-				</div>
-				<br />
-				<br />
-				<br />';
-	include('includes/footer.inc');
-	exit();
+					</tr></table>';
 
-	echo '<div class="centre"><br /><br /><br />' . _('This page must be called with a purchase order number to print');
-	echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a></div>';
+	echo '<div class="centre">' . _('This page must be called with a purchase order number to print');
+	echo '<a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a></div>';
+	include('includes/footer.inc');
 	exit;
 } //!isset($_GET['OrderNo']) and !isset($_POST['OrderNo'])
 if (isset($_GET['OrderNo'])) {
@@ -95,7 +86,8 @@ if (isset($OrderNo) and $OrderNo != '' and $OrderNo > 0 and $OrderNo != 'Preview
 					purchorders.deladd6,
 					purchorders.allowprint,
 					purchorders.requisitionno,
-					www_users.realname as initiator,
+					users1.realname as initiator,
+					users2.realname as authoriser,
 					purchorders.paymentterms,
 					suppliers.currcode,
 					purchorders.status,
@@ -106,27 +98,24 @@ if (isset($OrderNo) and $OrderNo != '' and $OrderNo > 0 and $OrderNo != 'Preview
 					ON purchorders.supplierno = suppliers.supplierid
 				INNER JOIN currencies
 					ON suppliers.currcode=currencies.currabrev
-				INNER JOIN www_users
-					ON purchorders.initiator=www_users.userid
+				INNER JOIN www_users users1
+					ON purchorders.initiator=users1.userid
+				INNER JOIN www_users users2
+					ON purchorders.authoriser=users2.userid
 				WHERE purchorders.orderno='" . $OrderNo . "'";
 	$result = DB_query($sql, $ErrMsg);
 	if (DB_num_rows($result) == 0) {
 		/*There is no order header returned */
 		$Title = _('Print Purchase Order Error');
 		include('includes/header.inc');
-		echo '<div class="centre"><br /><br /><br />';
 		prnMsg(_('Unable to Locate Purchase Order Number') . ' : ' . $OrderNo . ' ', 'error');
-		echo '<br />
-			<br />
-			<br />
-			<table class="table_index">
+		echo '<table class="table_index">
 				<tr><td class="menu_group_item">
 				<li><a href="' . $RootPath . '/PO_SelectOSPurchOrder.php">' . _('Outstanding Purchase Orders') . '</a></li>
 				<li><a href="' . $RootPath . '/PO_SelectPurchOrder.php">' . _('Purchase Order Inquiry') . '</a></li>
 				</td>
 				</tr>
-			</table>
-			</div><br /><br /><br />';
+			</table>';
 		include('includes/footer.inc');
 		exit();
 	} //DB_num_rows($result) == 0
@@ -142,7 +131,7 @@ if (isset($OrderNo) and $OrderNo != '' and $OrderNo > 0 and $OrderNo != 'Preview
 			exit;
 		} //$POHeader['status'] != 'Authorised' and $POHeader['status'] != 'Printed'
 
-		if ($ViewingOnly == 0) {
+		if (!isset($ViewingOnly)) {
 			if ($POHeader['allowprint'] == 0) {
 				$Title = _('Purchase Order Already Printed');
 				include('includes/header.inc');

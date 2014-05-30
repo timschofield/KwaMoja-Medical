@@ -42,6 +42,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 								purchorders.requisitionno,
 								purchorders.intostocklocation,
 								purchorders.initiator,
+								purchorders.authoriser,
 								purchorders.version,
 								purchorders.status,
 								purchorders.stat_comment,
@@ -87,6 +88,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 								purchorders.requisitionno,
 								purchorders.intostocklocation,
 								purchorders.initiator,
+								purchorders.authoriser,
 								purchorders.version,
 								purchorders.status,
 								purchorders.stat_comment,
@@ -128,6 +130,7 @@ if (DB_num_rows($GetOrdHdrResult) == 1 and !isset($_SESSION['PO' . $identifier]-
 	$_SESSION['PO' . $identifier]->ExRate = $myrow['rate'];
 	$_SESSION['PO' . $identifier]->Location = $myrow['intostocklocation'];
 	$_SESSION['PO' . $identifier]->Initiator = $myrow['initiator'];
+	$_SESSION['PO' . $identifier]->Authoriser = $myrow['authoriser'];
 	$_SESSION['PO' . $identifier]->RequisitionNo = $myrow['requisitionno'];
 	$_SESSION['PO' . $identifier]->DelAdd1 = $myrow['deladd1'];
 	$_SESSION['PO' . $identifier]->DelAdd2 = $myrow['deladd2'];
@@ -152,8 +155,8 @@ if (DB_num_rows($GetOrdHdrResult) == 1 and !isset($_SESSION['PO' . $identifier]-
 	$_SESSION['PO' . $identifier]->Status = $myrow['status'];
 	$_SESSION['PO' . $identifier]->StatusComments = html_entity_decode($myrow['stat_comment'], ENT_QUOTES, 'UTF-8');
 	$_SESSION['PO' . $identifier]->DeliveryDate = ConvertSQLDate($myrow['deliverydate']);
-	$_SESSION['ExistingOrder'] = $_SESSION['PO' . $identifier]->OrderNo;
 	$_SESSION['PO' . $identifier]->PaymentTerms = $myrow['paymentterms'];
+	$_SESSION['ExistingOrder'] = $_SESSION['PO' . $identifier]->OrderNo;
 
 	$SupplierSQL = "SELECT suppliers.supplierid,
 									suppliers.suppname,

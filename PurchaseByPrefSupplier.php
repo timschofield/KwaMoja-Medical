@@ -3,7 +3,6 @@
 include('includes/session.inc');
 $Title = _('Preferred Supplier Purchasing');
 include('includes/header.inc');
-
 if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 	include('includes/SQL_CommonFunctions.inc');
 	$InputError = 0; //Always hope for the best
@@ -167,6 +166,7 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 				$StatusComment = date($_SESSION['DefaultDateFormat']) . ' - ' . _('Order Created and Authorised by') . $UserDetails;
 				$AllowPrintPO = 1;
 				$Status = 'Authorised';
+				$Authorised = $_SESSION['UserID'];
 			} else { // no authority to authorise this order
 				if (DB_num_rows($AuthResult) == 0) {
 					$AuthMessage = _('Your authority to approve purchase orders in') . ' ' . $SupplierRow['currcode'] . ' ' . _('has not yet been set up') . '<br />';
@@ -179,6 +179,7 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 				$AllowPrintPO = 0;
 				$StatusComment = date($_SESSION['DefaultDateFormat']) . ' - ' . _('Order Created by') . ' ' . $UserDetails;
 				$Status = 'Pending';
+				$Authorised = '';
 			}
 		} else { //auto authorise is set to off
 			$AllowPrintPO = 0;
@@ -195,6 +196,7 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 										orddate,
 										rate,
 										initiator,
+										authoriser,
 										intostocklocation,
 										deladd1,
 										deladd2,
@@ -223,6 +225,7 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 								'" . Date('Y-m-d') . "',
 								'" . $SupplierRow['rate'] . "',
 								'" . $_SESSION['UserID'] . "',
+								'" . $Authorised . "',
 								'" . $_SESSION['UserStockLocation'] . "',
 								'" . $LocnRow['deladd1'] . "',
 								'" . $LocnRow['deladd2'] . "',
@@ -246,7 +249,6 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 								'" . Date('Y-m-d', mktime(0, 0, 0, Date('m'), Date('d') + 1, Date('Y'))) . "',
 								'" . $SupplierRow['paymentterms'] . "',
 								'" . $AllowPrintPO . "' )";
-
 		$ErrMsg = _('The purchase order header record could not be inserted into the database because');
 		$DbgMsg = _('The SQL statement used to insert the purchase order header record and failed was');
 		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
@@ -511,9 +513,10 @@ if (isset($_POST['Supplier']) and isset($_POST['ShowItems']) and $_POST['Supplie
 				</tr>';
 			$i++;
 		}
+		echo '<input type="hidden" name="Supplier" value="' . stripslashes($_POST['Supplier']) . '" />';
 		/*end preferred supplier items while loop */
 		echo '<tr>
-				<td colspan="7"><input type="submit" name="CreatePO" value="' . _('Create Purchase Order') . '" onclick="return MakeConfirm(\'' . _('This will create a purchase order for all of these items for immediate delivery. Are you sure?') . '\', \'Confirm Purchase Order\', this);"/></td>
+				<td colspan="7"><input type="submit" name="CreatePO" value="' . _('Create Purchase Order') . '" /></td>
 			</tr>
 			</table>';
 

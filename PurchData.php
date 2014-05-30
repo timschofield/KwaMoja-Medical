@@ -112,7 +112,6 @@ if ((isset($_POST['AddRecord']) or isset($_POST['UpdateRecord'])) and isset($Sup
 										'" . filter_number_format($_POST['LeadTime']) . "',
 										'" . filter_number_format($_POST['MinOrderQty']) . "',
 										'" . $_POST['Preferred'] . "')";
-echo $sql;
 		$ErrMsg = _('The supplier purchasing details could not be added to the database because');
 		$DbgMsg = _('The SQL that failed was');
 		$AddResult = DB_query($sql, $ErrMsg, $DbgMsg);

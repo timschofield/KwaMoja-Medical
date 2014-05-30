@@ -3,7 +3,6 @@
 /* R & OS PHP-PDF class code to set up a new page a new page is implicit
  * on the establishment of a new pdf object so only for subsequent pages
  */
-
 if ($PageNumber > 1) {
 	$pdf->newPage();
 }
@@ -49,6 +48,7 @@ $pdf->addText($FormDesign->RequisitionNumber->x + 120, $Page_Height - $FormDesig
 $pdf->addText($FormDesign->OrderDate->x, $Page_Height - $FormDesign->OrderDate->y, $FormDesign->OrderDate->FontSize, _('Order Date') . ': ' . ConvertSQLDate($POHeader['orddate']));
 /*Now the Initiator */
 $pdf->addText($FormDesign->Initiator->x, $Page_Height - $FormDesign->Initiator->y, $FormDesign->Initiator->FontSize, _('Initiator') . ': ' . $POHeader['initiator']);
+$pdf->addText($FormDesign->Authoriser->x, $Page_Height - $FormDesign->Authoriser->y, $FormDesign->Authoriser->FontSize, _('Authoriser') . ': ' . $POHeader['authoriser']);
 /*Find the description of the payment terms and display.
  * If it is a preview then just insert dummy data */
 if ($OrderNo != 'Preview') {

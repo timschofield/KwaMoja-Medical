@@ -12,6 +12,7 @@ class PurchOrder {
 	var $CurrDecimalPlaces;
 	var $ExRate;
 	var $Initiator;
+	var $Authoriser;
 	var $DeliveryDate;
 	var $RequisitionNo;
 	var $DelAdd1;

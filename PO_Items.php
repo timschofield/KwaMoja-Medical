@@ -99,6 +99,7 @@ if (isset($_POST['Commit'])) {
 			if (DB_num_rows($AuthResult) > 0 and $AuthRow['authlevel'] > $_SESSION['PO' . $identifier]->Order_Value()) { //user has authority to authrorise as well as create the order
 				$StatusComment = date($_SESSION['DefaultDateFormat']) . ' - ' . _('Order Created and Authorised by') . $UserDetails . '<br />' . $_SESSION['PO' . $identifier]->StatusComments . '<br />';
 				$_SESSION['PO' . $identifier]->AllowPrintPO = 1;
+				$_SESSION['PO' . $identifier]->Authoriser = $_SESSION['UserID'];
 				$_SESSION['PO' . $identifier]->Status = 'Authorised';
 			} //DB_num_rows($AuthResult) > 0 and $AuthRow['authlevel'] > $_SESSION['PO' . $identifier]->Order_Value()
 			else { // no authority to authorise this order
@@ -135,6 +136,7 @@ if (isset($_POST['Commit'])) {
 											orddate,
 											rate,
 											initiator,
+											authoriser,
 											requisitionno,
 											intostocklocation,
 											deladd1,
@@ -167,6 +169,7 @@ if (isset($_POST['Commit'])) {
 									'" . Date('Y-m-d') . "',
 									'" . $_SESSION['PO' . $identifier]->ExRate . "',
 									'" . $_SESSION['PO' . $identifier]->Initiator . "',
+									'" . $_SESSION['PO' . $identifier]->Authoriser . "',
 									'" . $_SESSION['PO' . $identifier]->RequisitionNo . "',
 									'" . $_SESSION['PO' . $identifier]->Location . "',
 									'" . $_SESSION['PO' . $identifier]->DelAdd1 . "',

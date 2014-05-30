@@ -92,6 +92,7 @@ if ((isset($_POST['UpdateStatus']) and $_POST['UpdateStatus'] != '')) {
 			if ($AuthorityLevel > $OrderTotal) {
 				$_SESSION['PO' . $identifier]->StatusComments = date($_SESSION['DefaultDateFormat']) . ' - ' . _('Authorised by') . $UserChangedStatus . $_POST['StatusComments'] . '<br />' . html_entity_decode($_POST['StatusCommentsComplete'], ENT_QUOTES, 'UTF-8');
 				$_SESSION['PO' . $identifier]->AllowPrintPO = 1;
+				$_SESSION['PO' . $identifier]->Authoriser = $_SESSION['UserID'];
 			} //$AuthorityLevel > $OrderTotal
 			else {
 				$OKToUpdateStatus = 0;
@@ -149,6 +150,7 @@ if ((isset($_POST['UpdateStatus']) and $_POST['UpdateStatus'] != '')) {
 			}
 			$SQL = "UPDATE purchorders SET status='" . $_POST['Status'] . "',
 							stat_comment='" . $_SESSION['PO' . $identifier]->StatusComments . "',
+							authoriser='" . $_SESSION['PO' . $identifier]->Authoriser . "'
 							allowprint='" . $AllowPrint . "'
 					WHERE purchorders.orderno ='" . $_SESSION['ExistingOrder'] . "'";
 

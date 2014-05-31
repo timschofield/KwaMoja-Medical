@@ -7,7 +7,6 @@ $Title = _('All Stock Movements By Location');
 include('includes/header.inc');
 
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
@@ -57,17 +56,18 @@ if (!isset($_POST['BeforeDate']) or !Is_Date($_POST['BeforeDate'])) {
 if (!isset($_POST['AfterDate']) or !Is_Date($_POST['AfterDate'])) {
 	$_POST['AfterDate'] = Date($_SESSION['DefaultDateFormat'], Mktime(0, 0, 0, Date('m') - 1, Date('d'), Date('y')));
 }
-echo ' ' . _('Show Movements before') . ': <input type="text" name="BeforeDate" size="12" required="required" minlength="1" maxlength="12" value="' . $_POST['BeforeDate'] . '" />';
-echo ' ' . _('But after') . ': <input type="text" name="AfterDate" size="12" required="required" minlength="1" maxlength="12" value="' . $_POST['AfterDate'] . '" />';
+echo ' ' . _('Show Movements before') . ': <input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="BeforeDate" size="12" required="required" minlength="1" maxlength="12" value="' . $_POST['BeforeDate'] . '" />';
+echo ' ' . _('But after') . ': <input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="AfterDate" size="12" required="required" minlength="1" maxlength="12" value="' . $_POST['AfterDate'] . '" />';
 echo '</td>
 	 </tr>
-	 </table>
-	 <br />';
+	 </table>';
 echo '<div class="centre">
 		   <input type="submit" name="ShowMoves" value="' . _('Show Stock Movements') . '" />
-	 </div>
-	 <br />';
+	 </div>';
 
+if ($_POST['StockLocation'] == 'All') {
+	$_POST['StockLocation'] = '%%';
+}
 
 $SQLBeforeDate = FormatDateForSQL($_POST['BeforeDate']);
 $SQLAfterDate = FormatDateForSQL($_POST['AfterDate']);
@@ -88,12 +88,11 @@ $sql = "SELECT stockmoves.stockid,
 			FROM stockmoves
 			INNER JOIN systypes ON stockmoves.type=systypes.typeid
 			INNER JOIN stockmaster ON stockmoves.stockid=stockmaster.stockid
-			WHERE  stockmoves.loccode='" . $_POST['StockLocation'] . "'
+			WHERE  stockmoves.loccode " . LIKE . " '" . $_POST['StockLocation'] . "'
 			AND stockmoves.trandate >= '" . $SQLAfterDate . "'
 			AND stockmoves.trandate <= '" . $SQLBeforeDate . "'
 			AND hidemovt=0
 			ORDER BY stkmoveno DESC";
-
 $ErrMsg = _('The stock movements for the selected criteria could not be retrieved because');
 $MovtsResult = DB_query($sql, $ErrMsg);
 
@@ -141,8 +140,7 @@ while ($myrow = DB_fetch_array($MovtsResult)) {
 //end of while loop
 
 echo '</table>';
-echo '</div>
-	  </form>';
+echo '</form>';
 
 include('includes/footer.inc');
 

@@ -5,6 +5,8 @@ $Title = _('Import General Ledger Transactions');
 include('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');
 
+echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Import GL Payments Receipts Or Journals From CSV') . '" />' . ' ' . _('Import GL Payments Receipts Or Journals From CSV') . '</p>';
+
 $FieldHeadings = array(
 	'Date', //  0 'Transaction Date',
 	'Account', //  1 'GL Account Code,
@@ -13,8 +15,6 @@ $FieldHeadings = array(
 	'Narrative', //  4 'Narrative'
 	'Tag' //  5 'Tag reference'
 );
-
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . $Title . '" alt="' . $Title . '" />' . ' ' . $Title . '</p>';
 
 if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file processing
 	//check file info

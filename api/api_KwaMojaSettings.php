@@ -11,7 +11,7 @@ function GetDefaultCurrency($user, $password) {
 		return $Errors;
 	}
 	$sql = "SELECT currencydefault FROM companies WHERE coycode=1";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$answer = DB_fetch_array($result);
 	$ReturnValue[0] = 0;
 	$ReturnValue[1] = $answer;
@@ -29,7 +29,7 @@ function GetDefaultPriceList($user, $password) {
 		return $Errors;
 	}
 	$sql = "SELECT confvalue FROM config WHERE confname='DefaultPriceList'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$answer = DB_fetch_array($result);
 	$ReturnValue[0] = 0;
 	$ReturnValue[1] = $answer;
@@ -47,7 +47,7 @@ function GetDefaultDateFormat($user, $password) {
 		return $Errors;
 	}
 	$sql = "SELECT confvalue FROM config WHERE confname='DefaultDateFormat'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$answer = DB_fetch_array($result);
 	$ReturnValue[0] = 0;
 	$ReturnValue[1] = $answer;
@@ -64,7 +64,7 @@ function GetReportsDirectory($user, $password) {
 		return $Errors;
 	}
 	$sql = "SELECT confvalue FROM config WHERE confname='reports_dir'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$answer = DB_fetch_array($result);
 	$ReturnValue[0] = 0;
 	$ReturnValue[1] = $answer;
@@ -81,7 +81,7 @@ function GetDefaultLocation($user, $password) {
 		return $Errors;
 	}
 	$sql = "select defaultlocation from www_users where userid='" . $user . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$answer = DB_fetch_array($result);
 	$ReturnValue[0] = 0;
 	$ReturnValue[1] = $answer;
@@ -99,7 +99,7 @@ function GetDefaultShipper($user, $password) {
 		return $Errors;
 	}
 	$sql = "SELECT confvalue from config WHERE confname='Default_Shipper'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$answer = DB_fetch_array($result);
 	$ReturnValue[0] = 0;
 	$ReturnValue[1] = $answer;
@@ -115,7 +115,7 @@ function CreatePOSDataFull($POSDebtorNo, $POSBranchCode, $User, $Password) {
 	if (gettype($db) == 'integer') {
 		return NoAuthorisation;
 	}
-	$Result = Create_POS_Data_Full($POSDebtorNo, $POSBranchCode, dirname(__FILE__) . '/../', $db);
+	$Result = Create_POS_Data_Full($POSDebtorNo, $POSBranchCode, dirname(__FILE__) . '/../');
 	if ($Result == 1) {
 		$ReturnValue = 0;
 	} else {
@@ -130,7 +130,7 @@ function DeletePOSData($User, $Password) {
 	if (gettype($db) == 'integer') {
 		return NoAuthorisation;
 	}
-	$Result = Delete_POS_Data(dirname(__FILE__) . '/../', $db);
+	$Result = Delete_POS_Data(dirname(__FILE__) . '/../');
 	if ($Result == 1) {
 		return 0;
 	} else {

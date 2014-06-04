@@ -63,7 +63,7 @@ function api_DB_query($sql, $db, $EMsg = '', $DMsg = '', $Transaction = '', $Tra
 	//  data.
 
 	$result = DB_query($sql, $db, $EMsg, $DMsg, $Transaction, $TrapErrors);
-	if (DB_error_no($db) != 0) {
+	if (DB_error_no() != 0) {
 		$_SESSION['db_err_msg'] = "SQL: " . $sql . "\nDB error message: " . DB_error_msg($db) . "\n";
 	} else {
 		$_SESSION['db_err_msg'] = '';

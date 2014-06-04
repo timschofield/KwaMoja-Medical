@@ -1,11 +1,11 @@
 <?php
 
 /* Check that the stock code exists*/
-function VerifyWorkOrderExists($WorkOrder, $i, $Errors, $db) {
+function VerifyWorkOrderExists($WorkOrder, $i, $Errors) {
 	$Searchsql = "SELECT count(wo)
 				FROM workorders
 				WHERE wo='" . $WorkOrder . "'";
-	$SearchResult = DB_query($Searchsql, $db);
+	$SearchResult = DB_query($Searchsql);
 	$answer = DB_fetch_array($SearchResult);
 	if ($answer[0] == 0) {
 		$Errors[$i] = WorkOrderDoesntExist;
@@ -14,11 +14,11 @@ function VerifyWorkOrderExists($WorkOrder, $i, $Errors, $db) {
 }
 
 /* Check that the stock location is set up in the kwamoja database */
-function VerifyStockLocation($location, $i, $Errors, $db) {
+function VerifyStockLocation($location, $i, $Errors) {
 	$Searchsql = "SELECT COUNT(loccode)
 					 FROM locations
 					  WHERE loccode='" . $location . "'";
-	$SearchResult = DB_query($Searchsql, $db);
+	$SearchResult = DB_query($Searchsql);
 	$answer = DB_fetch_row($SearchResult);
 	if ($answer[0] == 0) {
 		$Errors[$i] = LocationCodeNotSetup;
@@ -42,9 +42,9 @@ function VerifyReceivedQuantity($quantity, $i, $Errors) {
 	return $Errors;
 }
 
-function VerifyRequiredByDate($RequiredByDate, $i, $Errors, $db) {
+function VerifyRequiredByDate($RequiredByDate, $i, $Errors) {
 	$sql = "SELECT confvalue FROM config WHERE confname='DefaultDateFormat'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_array($result);
 	$DateFormat = $myrow[0];
 	if (mb_strstr('/', $PeriodEnd)) {
@@ -75,9 +75,9 @@ function VerifyRequiredByDate($RequiredByDate, $i, $Errors, $db) {
 	return $Errors;
 }
 
-function VerifyStartDate($StartDate, $i, $Errors, $db) {
+function VerifyStartDate($StartDate, $i, $Errors) {
 	$sql = "SELECT confvalue FROM config WHERE confname='DefaultDateFormat'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_array($result);
 	$DateFormat = $myrow[0];
 	if (mb_strstr('/', $PeriodEnd)) {
@@ -143,9 +143,9 @@ function VerifyLotSerialNumber($nextlotsnref, $i, $Errors) {
 	return $Errors;
 }
 
-function VerifyBatch($batch, $stockid, $location, $i, $Errors, $db) {
+function VerifyBatch($batch, $stockid, $location, $i, $Errors) {
 	$sql = "SELECT controlled, serialised FROM stockmaster WHERE stockid='" . $stockid . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_row($result);
 	if ($myrow[0] != 1) {
 		$Errors[$i] = ItemNotControlled;
@@ -158,7 +158,7 @@ function VerifyBatch($batch, $stockid, $location, $i, $Errors, $db) {
 			  WHERE stockid='" . $stockid . "'
 			  AND loccode='" . $location . "'
 			  AND serialno='" . $batch . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	if (DB_num_rows($result) == 0) {
 		$Errors[$i] = BatchNumberDoesntExist;
 		return $Errors;
@@ -181,22 +181,22 @@ function InsertWorkOrder($WorkOrderDetails, $user, $password) {
 	foreach ($WorkOrderDetails as $key => $value) {
 		$WorkOrderDetails[$key] = DB_escape_string($value);
 	}
-	$WorkOrder['wo'] = GetNextTransactionNo(40, $db);
+	$WorkOrder['wo'] = GetNextTransactionNo(40);
 	$WorkOrderItem['wo'] = $WorkOrder['wo'];
 	if (isset($WorkOrderDetails['loccode'])) {
-		$Errors = VerifyFromStockLocation($WorkOrderDetails['loccode'], sizeof($Errors), $Errors, $db);
+		$Errors = VerifyFromStockLocation($WorkOrderDetails['loccode'], sizeof($Errors), $Errors);
 		$WorkOrder['loccode'] = $WorkOrderDetails['loccode'];
 	}
 	if (isset($WorkOrderDetails['requiredby'])) {
-		//			$Errors=VerifyRequiredByDate($WorkOrderDetails['requiredby'], sizeof($Errors), $Errors, $db);
+		//			$Errors=VerifyRequiredByDate($WorkOrderDetails['requiredby'], sizeof($Errors), $Errors);
 		$WorkOrder['requiredby'] = $WorkOrderDetails['requiredby'];
 	}
 	if (isset($WorkOrderDetails['startdate'])) {
-		//			$Errors=VerifyStartDate($WorkOrderDetails['startdate'], sizeof($Errors), $Errors, $db);
+		//			$Errors=VerifyStartDate($WorkOrderDetails['startdate'], sizeof($Errors), $Errors);
 		$WorkOrder['startdate'] = $WorkOrderDetails['startdate'];
 	}
 	if (isset($WorkOrderDetails['costissued'])) {
-		$Errors = VerifyCostIssued($WorkOrderDetails['costissued'], sizeof($Errors), $Errors, $db);
+		$Errors = VerifyCostIssued($WorkOrderDetails['costissued'], sizeof($Errors), $Errors);
 		$WorkOrder['costissued'] = $WorkOrderDetails['costissued'];
 	}
 	if (isset($WorkOrderDetails['closed'])) {
@@ -204,7 +204,7 @@ function InsertWorkOrder($WorkOrderDetails, $user, $password) {
 		$WorkOrder['closed'] = $WorkOrderDetails['closed'];
 	}
 	if (isset($WorkOrderDetails['stockid'])) {
-		$Errors = VerifyStockCodeExists($WorkOrderDetails['stockid'], sizeof($Errors), $Errors, $db);
+		$Errors = VerifyStockCodeExists($WorkOrderDetails['stockid'], sizeof($Errors), $Errors);
 		$WorkOrderItem['stockid'] = $WorkOrderDetails['stockid'];
 	}
 	if (isset($WorkOrderDetails['qtyreqd'])) {
@@ -239,13 +239,13 @@ function InsertWorkOrder($WorkOrderDetails, $user, $password) {
 	if (sizeof($Errors) == 0) {
 		$wosql = 'INSERT INTO workorders (' . mb_substr($WOFieldNames, 0, -2) . ') ' . 'VALUES (' . mb_substr($WOFieldValues, 0, -2) . ') ';
 		$itemsql = 'INSERT INTO woitems (' . mb_substr($ItemFieldNames, 0, -2) . ') ' . 'VALUES (' . mb_substr($ItemFieldValues, 0, -2) . ') ';
-		$systypessql = 'UPDATE systypes set typeno=' . GetNextTransactionNo(40, $db) . ' where typeid=40';
-		DB_Txn_Begin($db);
-		$woresult = DB_Query($wosql, $db);
-		$itemresult = DB_Query($itemsql, $db);
-		$systyperesult = DB_Query($systypessql, $db);
-		DB_Txn_Commit($db);
-		if (DB_error_no($db) != 0) {
+		$systypessql = 'UPDATE systypes set typeno=' . GetNextTransactionNo(40) . ' where typeid=40';
+		DB_Txn_Begin();
+		$woresult = DB_Query($wosql);
+		$itemresult = DB_Query($itemsql);
+		$systyperesult = DB_Query($systypessql);
+		DB_Txn_Commit();
+		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;
 		} else {
 			$Errors[0] = 0;
@@ -262,13 +262,13 @@ function WorkOrderIssue($WONumber, $StockID, $Location, $Quantity, $TranDate, $B
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	$Errors = VerifyStockCodeExists($StockID, sizeof($Errors), $Errors, $db);
-	$Errors = VerifyWorkOrderExists($WONumber, sizeof($Errors), $Errors, $db);
-	$Errors = VerifyStockLocation($Location, sizeof($Errors), $Errors, $db);
+	$Errors = VerifyStockCodeExists($StockID, sizeof($Errors), $Errors);
+	$Errors = VerifyWorkOrderExists($WONumber, sizeof($Errors), $Errors);
+	$Errors = VerifyStockLocation($Location, sizeof($Errors), $Errors);
 	$Errors = VerifyIssuedQuantity($Quantity, sizeof($Errors), $Errors);
-	//		$Errors = VerifyTransactionDate($TranDate, sizeof($Errors), $Errors, $db);
+	//		$Errors = VerifyTransactionDate($TranDate, sizeof($Errors), $Errors);
 	if ($Batch != '') {
-		VerifyBatch($Batch, $StockID, $Location, sizeof($Errors), $Errors, $db);
+		VerifyBatch($Batch, $StockID, $Location, sizeof($Errors), $Errors);
 	}
 	if (sizeof($Errors) != 0) {
 		return $Errors;
@@ -280,10 +280,10 @@ function WorkOrderIssue($WONumber, $StockID, $Location, $Quantity, $TranDate, $B
 		}
 		$newqoh = $Quantity + $balance;
 		$itemdetails = GetStockItem($StockID, $user, $password);
-		$wipglact = GetCategoryGLCode($itemdetails[1]['categoryid'], 'wipact', $db);
-		$stockact = GetCategoryGLCode($itemdetails[1]['categoryid'], 'stockact', $db);
+		$wipglact = GetCategoryGLCode($itemdetails[1]['categoryid'], 'wipact');
+		$stockact = GetCategoryGLCode($itemdetails[1]['categoryid'], 'stockact');
 		$cost = $itemdetails[1]['materialcost'] + $itemdetails[1]['labourcost'] + $itemdetails[1]['overheadcost'];
-		$TransactionNo = GetNextTransactionNo(28, $db);
+		$TransactionNo = GetNextTransactionNo(28);
 
 		$stockmovesql = "INSERT INTO stockmoves (stockid,
 												   type,
@@ -301,7 +301,7 @@ function WorkOrderIssue($WONumber, $StockID, $Location, $Quantity, $TranDate, $B
 												'" . $TransactionNo . "',
 												'" . $Location . "',
 												'" . $TranDate . "',
-												'" . GetPeriodFromTransactionDate($TranDate, sizeof($Errors), $Errors, $db) . "',
+												'" . GetPeriodFromTransactionDate($TranDate, sizeof($Errors), $Errors) . "',
 												'" . $WONumber . "',
 												'" . $Quantity . "',
 												'" . $newqoh . "',
@@ -320,7 +320,7 @@ function WorkOrderIssue($WONumber, $StockID, $Location, $Quantity, $TranDate, $B
 										  VALUES (28,
 																	  '" . $TransactionNo . "',
 																	  '" . $TranDate . "',
-																	  '" . GetPeriodFromTransactionDate($TranDate, sizeof($Errors), $Errors, $db) . "',
+																	  '" . GetPeriodFromTransactionDate($TranDate, sizeof($Errors), $Errors) . "',
 																	  '" . $wipglact . "',
 																	  '" . $cost * -$Quantity . "',
 																	  '" . $StockID . ' x ' . $Quantity . ' @ ' . $cost . "')";
@@ -334,7 +334,7 @@ function WorkOrderIssue($WONumber, $StockID, $Location, $Quantity, $TranDate, $B
 												  VALUES (28,
 																'" . $TransactionNo . "',
 																'" . $TranDate . "',
-																'" . GetPeriodFromTransactionDate($TranDate, sizeof($Errors), $Errors, $db) . "',
+																'" . GetPeriodFromTransactionDate($TranDate, sizeof($Errors), $Errors) . "',
 																'" . $stockact . "',
 																'" . $cost * $Quantity . "',
 																'" . $StockID . ' x ' . $Quantity . ' @ ' . $cost . "')";
@@ -343,18 +343,18 @@ function WorkOrderIssue($WONumber, $StockID, $Location, $Quantity, $TranDate, $B
 							  AND loccode='" . $Location . "' AND serialno='" . $Batch . "'";
 		$costsql = "UPDATE workorders SET costissued=costissued+" . $cost . " WHERE wo='" . $WONumber . "'";
 
-		DB_Txn_Begin($db);
-		DB_query($stockmovesql, $db);
-		DB_query($locstocksql, $db);
-		DB_query($glupdatesql1, $db);
-		DB_query($glupdatesql2, $db);
-		DB_query($systypessql, $db);
-		DB_query($costsql, $db);
+		DB_Txn_Begin();
+		DB_query($stockmovesql);
+		DB_query($locstocksql);
+		DB_query($glupdatesql1);
+		DB_query($glupdatesql2);
+		DB_query($systypessql);
+		DB_query($costsql);
 		if ($Batch != '') {
-			DB_Query($batchsql, $db);
+			DB_Query($batchsql);
 		}
-		DB_Txn_Commit($db);
-		if (DB_error_no($db) != 0) {
+		DB_Txn_Commit();
+		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;
 			return $Errors;
 		} else {
@@ -370,9 +370,9 @@ function WorkOrderReceive($WONumber, $StockID, $Location, $Quantity, $TranDate, 
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	$Errors = VerifyStockCodeExists($StockID, sizeof($Errors), $Errors, $db);
-	$Errors = VerifyWorkOrderExists($WONumber, sizeof($Errors), $Errors, $db);
-	$Errors = VerifyStockLocation($Location, sizeof($Errors), $Errors, $db);
+	$Errors = VerifyStockCodeExists($StockID, sizeof($Errors), $Errors);
+	$Errors = VerifyWorkOrderExists($WONumber, sizeof($Errors), $Errors);
+	$Errors = VerifyStockLocation($Location, sizeof($Errors), $Errors);
 	$Errors = VerifyReceivedQuantity($Quantity, sizeof($Errors), $Errors);
 	//		$Errors = VerifyTransactionDate($TranDate, sizeof($Errors), $Errors);
 	if (sizeof($Errors) != 0) {
@@ -385,13 +385,13 @@ function WorkOrderReceive($WONumber, $StockID, $Location, $Quantity, $TranDate, 
 		$balance = $balance + $balances[$i]['quantity'];
 	}
 	$newqoh = $Quantity + $balance;
-	$wipglact = GetCategoryGLCode($itemdetails['categoryid'], 'wipact', $db);
-	$stockact = GetCategoryGLCode($itemdetails['categoryid'], 'stockact', $db);
+	$wipglact = GetCategoryGLCode($itemdetails['categoryid'], 'wipact');
+	$stockact = GetCategoryGLCode($itemdetails['categoryid'], 'stockact');
 	$costsql = "SELECT costissued FROM workorders WHERE wo='" . $WONumber . "'";
 	$costresult = DB_query($costsql);
 	$myrow = DB_fetch_row($costresult);
 	$cost = $myrow[0];
-	$TransactionNo = GetNextTransactionNo(26, $db);
+	$TransactionNo = GetNextTransactionNo(26);
 	$stockmovesql = "INSERT INTO stockmoves (stockid,
 												   type,
 												   transno,
@@ -408,7 +408,7 @@ function WorkOrderReceive($WONumber, $StockID, $Location, $Quantity, $TranDate, 
 												'" . $TransactionNo . "',
 												'" . $Location . "',
 												'" . $TranDate . "',
-												'" . GetPeriodFromTransactionDate($TranDate, sizeof($Errors), $Errors, $db) . "',
+												'" . GetPeriodFromTransactionDate($TranDate, sizeof($Errors), $Errors) . "',
 												'" . $WONumber . "',
 												'" . $Quantity . "',
 												'" . $newqoh . "',
@@ -427,7 +427,7 @@ function WorkOrderReceive($WONumber, $StockID, $Location, $Quantity, $TranDate, 
 										VALUES (26,
 											   '" . $TransactionNo . "',
 											   '" . $TranDate . "',
-											   '" . GetPeriodFromTransactionDate($TranDate, sizeof($Errors), $Errors, $db) . "',
+											   '" . GetPeriodFromTransactionDate($TranDate, sizeof($Errors), $Errors) . "',
 											   '" . $wipglact . "',
 											   '" . $cost * $Quantity . "',
 											   '" . $StockID . ' x ' . $Quantity . ' @ ' . $cost . "')";
@@ -441,18 +441,18 @@ function WorkOrderReceive($WONumber, $StockID, $Location, $Quantity, $TranDate, 
 										VALUES (26,
 											   '" . $TransactionNo . "',
 											   '" . $TranDate . "',
-											   '" . GetPeriodFromTransactionDate($TranDate, sizeof($Errors), $Errors, $db) . "',
+											   '" . GetPeriodFromTransactionDate($TranDate, sizeof($Errors), $Errors) . "',
 											   '" . $stockact . ',' . $cost * -$Quantity . "',
 											   '" . $StockID . ' x ' . $Quantity . ' @ ' . $cost . "')";
 	$systypessql = "UPDATE systypes set typeno='" . $TransactionNo . "' where typeid=26";
-	DB_Txn_Begin($db);
-	DB_query($stockmovesql, $db);
-	DB_query($locstocksql, $db);
-	DB_query($glupdatesql1, $db);
-	DB_query($glupdatesql2, $db);
-	DB_query($systypessql, $db);
-	DB_Txn_Commit($db);
-	if (DB_error_no($db) != 0) {
+	DB_Txn_Begin();
+	DB_query($stockmovesql);
+	DB_query($locstocksql);
+	DB_query($glupdatesql1);
+	DB_query($glupdatesql2);
+	DB_query($systypessql);
+	DB_Txn_Commit();
+	if (DB_error_no() != 0) {
 		$Errors[0] = DatabaseUpdateFailed;
 	} else {
 		$Errors[0] = 0;
@@ -471,7 +471,7 @@ function SearchWorkOrders($Field, $Criteria, $user, $password) {
 	$sql = "SELECT wo
 			  FROM woitems
 			  WHERE " . $Field . " " . LIKE . " '%" . $Criteria . "%'";
-	$result = DB_Query($sql, $db);
+	$result = DB_Query($sql);
 	$i = 0;
 	$WOList = array();
 	while ($myrow = DB_fetch_array($result)) {

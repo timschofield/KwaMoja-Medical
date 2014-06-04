@@ -1,11 +1,11 @@
 <?php
 
 /* Check that the account code doesn't already exist'*/
-function VerifyAccountCode($AccountCode, $i, $Errors, $db) {
+function VerifyAccountCode($AccountCode, $i, $Errors) {
 	$Searchsql = "SELECT count(accountcode)
 				FROM chartmaster
 				WHERE accountcode='" . $AccountCode . "'";
-	$SearchResult = DB_query($Searchsql, $db);
+	$SearchResult = DB_query($Searchsql);
 	$answer = DB_fetch_array($SearchResult);
 	if ($answer[0] > 0) {
 		$Errors[$i] = GLAccountCodeAlreadyExists;
@@ -14,11 +14,11 @@ function VerifyAccountCode($AccountCode, $i, $Errors, $db) {
 }
 
 /* Check that the account code already exists'*/
-function VerifyAccountCodeExists($AccountCode, $i, $Errors, $db) {
+function VerifyAccountCodeExists($AccountCode, $i, $Errors) {
 	$Searchsql = "SELECT count(accountcode)
 				FROM chartmaster
 				WHERE accountcode='" . $AccountCode . "'";
-	$SearchResult = DB_query($Searchsql, $db);
+	$SearchResult = DB_query($Searchsql);
 	$answer = DB_fetch_array($SearchResult);
 	if ($answer[0] == 0) {
 		$Errors[$i] = GLAccountCodeDoesntExists;
@@ -35,11 +35,11 @@ function VerifyAccountName($AccountName, $i, $Errors) {
 }
 
 /* Check that the account group exists*/
-function VerifyAccountGroupExists($AccountGroup, $i, $Errors, $db) {
+function VerifyAccountGroupExists($AccountGroup, $i, $Errors) {
 	$Searchsql = "SELECT count(groupname)
 				FROM accountgroups
 				WHERE groupname='" . $AccountGroup . "'";
-	$SearchResult = DB_query($Searchsql, $db);
+	$SearchResult = DB_query($Searchsql);
 	$answer = DB_fetch_array($SearchResult);
 	if ($answer[0] == 0) {
 		$Errors[$i] = AccountGroupDoesntExist;
@@ -57,11 +57,11 @@ function InsertGLAccount($AccountDetails, $user, $password) {
 	foreach ($AccountDetails as $key => $value) {
 		$AccountDetails[$key] = DB_escape_string($value);
 	}
-	$Errors = VerifyAccountCode($AccountDetails['accountcode'], sizeof($Errors), $Errors, $db);
+	$Errors = VerifyAccountCode($AccountDetails['accountcode'], sizeof($Errors), $Errors);
 	if (isset($AccountDetails['accountname'])) {
 		$Errors = VerifyAccountName($AccountDetails['accountname'], sizeof($Errors), $Errors);
 	}
-	$Errors = VerifyAccountGroupExists($AccountDetails['group_'], sizeof($Errors), $Errors, $db);
+	$Errors = VerifyAccountGroupExists($AccountDetails['group_'], sizeof($Errors), $Errors);
 	$FieldNames = '';
 	$FieldValues = '';
 	foreach ($AccountDetails as $key => $value) {
@@ -70,14 +70,14 @@ function InsertGLAccount($AccountDetails, $user, $password) {
 	}
 	if (sizeof($Errors) == 0) {
 		$sql = 'INSERT INTO chartmaster (' . mb_substr($FieldNames, 0, -2) . ') ' . "VALUES ('" . mb_substr($FieldValues, 0, -2) . "') ";
-		$result = DB_Query($sql, $db);
+		$result = DB_Query($sql);
 		$sql = 'INSERT INTO chartdetails (accountcode,
 							period)
 				SELECT ' . $AccountDetails['accountcode'] . ',
 					periodno
 				FROM periods';
 		$result = DB_query($sql, $db, '', '', '', false);
-		if (DB_error_no($db) != 0) {
+		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;
 		} else {
 			$Errors[0] = 0;
@@ -103,7 +103,7 @@ function GetGLAccountList($user, $password) {
 				FROM chartmaster INNER JOIN accountgroups
 				ON chartmaster.group_=accountgroups.groupname
 				ORDER BY accountcode';
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$i = 0;
 	while ($myrow = DB_fetch_array($result)) {
 		$GLAccountList[$i]['accountcode'] = $myrow[0];
@@ -127,7 +127,7 @@ function GetGLAccountDetails($AccountCode, $user, $password) {
 		return $Errors;
 	}
 	$sql = "SELECT * FROM chartmaster WHERE accountcode='" . $AccountCode . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	return DB_fetch_array($result);
 }
 

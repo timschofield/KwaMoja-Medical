@@ -38,9 +38,9 @@ function VerifyComments($comments, $i, $Errors) {
 /* Check that the order date is a valid date. The date
  * must be in the same format as the date format specified in the
  * target KwaMoja company */
-function VerifyOrderDate($orddate, $i, $Errors, $db) {
+function VerifyOrderDate($orddate, $i, $Errors) {
 	$sql = "SELECT confvalue FROM config WHERE confname='DefaultDateFormat'";
-	$result = api_DB_query($sql, $db);
+	$result = api_DB_query($sql);
 	$myrow = DB_fetch_array($result);
 	$DateFormat = $myrow[0];
 	if (mb_strstr($orddate, "/")) {
@@ -72,11 +72,11 @@ function VerifyOrderDate($orddate, $i, $Errors, $db) {
 }
 
 /* Check that the order type is set up in the kwamoja database */
-function VerifyOrderType($ordertype, $i, $Errors, $db) {
+function VerifyOrderType($ordertype, $i, $Errors) {
 	$Searchsql = "SELECT COUNT(typeabbrev)
 					 FROM salestypes
 					 WHERE typeabbrev='" . $ordertype . "'";
-	$SearchResult = api_DB_query($Searchsql, $db);
+	$SearchResult = api_DB_query($Searchsql);
 	$answer = DB_fetch_row($SearchResult);
 	if ($answer[0] == 0) {
 		$Errors[$i] = SalesTypeNotSetup;
@@ -101,11 +101,11 @@ function VerifyFreightCost($freightcost, $i, $Errors) {
 }
 
 /* Check that the from stock location is set up in the kwamoja database */
-function VerifyFromStockLocation($FromStockLocn, $i, $Errors, $db) {
+function VerifyFromStockLocation($FromStockLocn, $i, $Errors) {
 	$Searchsql = "SELECT COUNT(loccode)
 					 FROM locations
 					  WHERE loccode='" . $FromStockLocn . "'";
-	$SearchResult = api_DB_query($Searchsql, $db);
+	$SearchResult = api_DB_query($Searchsql);
 	$answer = DB_fetch_row($SearchResult);
 	if ($answer[0] == 0) {
 		$Errors[$i] = LocationCodeNotSetup;
@@ -116,9 +116,9 @@ function VerifyFromStockLocation($FromStockLocn, $i, $Errors, $db) {
 /* Check that the delivery date is a valid date. The date
  * must be in the same format as the date format specified in the
  * target KwaMoja company */
-function VerifyDeliveryDate($DeliveryDate, $i, $Errors, $db) {
+function VerifyDeliveryDate($DeliveryDate, $i, $Errors) {
 	$sql = "SELECT confvalue FROM config WHERE confname='DefaultDateFormat'";
-	$result = api_DB_query($sql, $db);
+	$result = api_DB_query($sql);
 	$myrow = DB_fetch_array($result);
 	$DateFormat = $myrow[0];
 	if (mb_strstr($DeliveryDate, '/')) {
@@ -158,11 +158,11 @@ function VerifyQuotation($quotation, $i, $Errors) {
 }
 
 /* Fetch the next line number */
-function GetOrderLineNumber($OrderNo, $i, $Errors, $db) {
+function GetOrderLineNumber($OrderNo, $i, $Errors) {
 	$linesql = "SELECT MAX(orderlineno)
 					FROM salesorderdetails
 					 WHERE orderno='" . $OrderNo . "'";
-	$lineresult = api_DB_query($linesql, $db);
+	$lineresult = api_DB_query($linesql);
 	if ($myrow = DB_fetch_row($lineresult)) {
 		return $myrow[0] + 1;
 	} else {
@@ -171,11 +171,11 @@ function GetOrderLineNumber($OrderNo, $i, $Errors, $db) {
 }
 
 /* Check that the order header already exists */
-function VerifyOrderHeaderExists($OrderNo, $i, $Errors, $db) {
+function VerifyOrderHeaderExists($OrderNo, $i, $Errors) {
 	$Searchsql = "SELECT COUNT(orderno)
 					 FROM salesorders
 					  WHERE orderno='" . $OrderNo . "'";
-	$SearchResult = api_DB_query($Searchsql, $db);
+	$SearchResult = api_DB_query($Searchsql);
 	$answer = DB_fetch_row($SearchResult);
 	if ($answer[0] == 0) {
 		$Errors[$i] = OrderHeaderNotSetup;
@@ -226,9 +226,9 @@ function VerifyPOLine($poline, $i, $Errors) {
 /* Check that the item due date is a valid date. The date
  * must be in the same format as the date format specified in the
  * target KwaMoja company */
-function VerifyItemDueDate($ItemDue, $i, $Errors, $db) {
+function VerifyItemDueDate($ItemDue, $i, $Errors) {
 	$sql = "SELECT confvalue FROM config WHERE confname='DefaultDateFormat'";
-	$result = api_DB_query($sql, $db);
+	$result = api_DB_query($sql);
 	$myrow = DB_fetch_array($result);
 	$DateFormat = $myrow[0];
 	if (mb_strstr($ItemDue, '/')) {
@@ -272,8 +272,8 @@ function InsertSalesOrderHeader($OrderHeader, $user, $password) {
 	foreach ($OrderHeader as $key => $value) {
 		$OrderHeader[$key] = DB_escape_string($value);
 	}
-	$Errors = VerifyDebtorExists($OrderHeader['debtorno'], sizeof($Errors), $Errors, $db);
-	$Errors = VerifyBranchNoExists($OrderHeader['debtorno'], $OrderHeader['branchcode'], sizeof($Errors), $Errors, $db);
+	$Errors = VerifyDebtorExists($OrderHeader['debtorno'], sizeof($Errors), $Errors);
+	$Errors = VerifyBranchNoExists($OrderHeader['debtorno'], $OrderHeader['branchcode'], sizeof($Errors), $Errors);
 	if (isset($OrderHeader['customerref'])) {
 		$Errors = VerifyCustomerRef($OrderHeader['customerref'], sizeof($Errors), $Errors);
 	}
@@ -284,13 +284,13 @@ function InsertSalesOrderHeader($OrderHeader, $user, $password) {
 		$Errors = VerifyComments($OrderHeader['comments'], sizeof($Errors), $Errors);
 	}
 	if (isset($OrderHeader['orddate'])) {
-		$Errors = VerifyOrderDate($OrderHeader['orddate'], sizeof($Errors), $Errors, $db);
+		$Errors = VerifyOrderDate($OrderHeader['orddate'], sizeof($Errors), $Errors);
 	}
 	if (isset($OrderHeader['ordertype'])) {
-		$Errors = VerifyOrderType($OrderHeader['ordertype'], sizeof($Errors), $Errors, $db);
+		$Errors = VerifyOrderType($OrderHeader['ordertype'], sizeof($Errors), $Errors);
 	}
 	if (isset($OrderHeader['shipvia'])) {
-		$Errors = VerifyShipVia($OrderHeader['shipvia'], sizeof($Errors), $Errors, $db);
+		$Errors = VerifyShipVia($OrderHeader['shipvia'], sizeof($Errors), $Errors);
 	}
 	if (isset($OrderHeader['deladd1'])) {
 		$Errors = VerifyAddressLine($OrderHeader['deladd1'], 40, sizeof($Errors), $Errors);
@@ -326,10 +326,10 @@ function InsertSalesOrderHeader($OrderHeader, $user, $password) {
 		$Errors = VerifyFreightCost($OrderHeader['freightcost'], sizeof($Errors), $Errors);
 	}
 	if (isset($OrderHeader['fromstkloc'])) {
-		$Errors = VerifyFromStockLocation($OrderHeader['fromstkloc'], sizeof($Errors), $Errors, $db);
+		$Errors = VerifyFromStockLocation($OrderHeader['fromstkloc'], sizeof($Errors), $Errors);
 	}
 	if (isset($OrderHeader['deliverydate'])) {
-		$Errors = VerifyDeliveryDate($OrderHeader['deliverydate'], sizeof($Errors), $Errors, $db);
+		$Errors = VerifyDeliveryDate($OrderHeader['deliverydate'], sizeof($Errors), $Errors);
 	}
 	if (isset($OrderHeader['quotation'])) {
 		$Errors = VerifyQuotation($OrderHeader['quotation'], sizeof($Errors), $Errors);
@@ -337,7 +337,7 @@ function InsertSalesOrderHeader($OrderHeader, $user, $password) {
 	$FieldNames = '';
 	$FieldValues = '';
 	global $SOH_DateFields;
-	$OrderHeader['orderno'] = GetNextTransNo(30, $db);
+	$OrderHeader['orderno'] = GetNextTransNo(30);
 	foreach ($OrderHeader as $key => $value) {
 		$FieldNames .= $key . ', ';
 		if (in_array($key, $SOH_DateFields)) {
@@ -349,9 +349,9 @@ function InsertSalesOrderHeader($OrderHeader, $user, $password) {
 					VALUES (" . mb_substr($FieldValues, 0, -2) . ")";
 	if (sizeof($Errors) == 0) {
 
-		$result = api_DB_Query($sql, $db);
+		$result = api_DB_Query($sql);
 
-		if (DB_error_no($db) != 0) {
+		if (DB_error_no() != 0) {
 			//$Errors[0] = DatabaseUpdateFailed;
 			$Errors[0] = $sql;
 		} else {
@@ -374,9 +374,9 @@ function ModifySalesOrderHeader($OrderHeader, $user, $password) {
 	foreach ($OrderHeader as $key => $value) {
 		$OrderHeader[$key] = DB_escape_string($value);
 	}
-	$Errors = VerifyOrderHeaderExists($OrderHeader['orderno'], sizeof($Errors), $Errors, $db);
-	$Errors = VerifyDebtorExists($OrderHeader['debtorno'], sizeof($Errors), $Errors, $db);
-	$Errors = VerifyBranchNoExists($OrderHeader['debtorno'], $OrderHeader['branchcode'], sizeof($Errors), $Errors, $db);
+	$Errors = VerifyOrderHeaderExists($OrderHeader['orderno'], sizeof($Errors), $Errors);
+	$Errors = VerifyDebtorExists($OrderHeader['debtorno'], sizeof($Errors), $Errors);
+	$Errors = VerifyBranchNoExists($OrderHeader['debtorno'], $OrderHeader['branchcode'], sizeof($Errors), $Errors);
 	if (isset($OrderHeader['customerref'])) {
 		$Errors = VerifyCustomerRef($OrderHeader['customerref'], sizeof($Errors), $Errors);
 	}
@@ -387,13 +387,13 @@ function ModifySalesOrderHeader($OrderHeader, $user, $password) {
 		$Errors = VerifyComments($OrderHeader['comments'], sizeof($Errors), $Errors);
 	}
 	if (isset($OrderHeader['orddate'])) {
-		$Errors = VerifyOrderDate($OrderHeader['orddate'], sizeof($Errors), $Errors, $db);
+		$Errors = VerifyOrderDate($OrderHeader['orddate'], sizeof($Errors), $Errors);
 	}
 	if (isset($OrderHeader['ordertype'])) {
-		$Errors = VerifyOrderType($OrderHeader['ordertype'], sizeof($Errors), $Errors, $db);
+		$Errors = VerifyOrderType($OrderHeader['ordertype'], sizeof($Errors), $Errors);
 	}
 	if (isset($OrderHeader['shipvia'])) {
-		$Errors = VerifyShipVia($OrderHeader['shipvia'], sizeof($Errors), $Errors, $db);
+		$Errors = VerifyShipVia($OrderHeader['shipvia'], sizeof($Errors), $Errors);
 	}
 	if (isset($OrderHeader['deladd1'])) {
 		$Errors = VerifyAddressLine($OrderHeader['deladd1'], 40, sizeof($Errors), $Errors);
@@ -429,10 +429,10 @@ function ModifySalesOrderHeader($OrderHeader, $user, $password) {
 		$Errors = VerifyFreightCost($OrderHeader['freightcost'], sizeof($Errors), $Errors);
 	}
 	if (isset($OrderHeader['fromstkloc'])) {
-		$Errors = VerifyFromStockLocation($OrderHeader['fromstkloc'], sizeof($Errors), $Errors, $db);
+		$Errors = VerifyFromStockLocation($OrderHeader['fromstkloc'], sizeof($Errors), $Errors);
 	}
 	if (isset($OrderHeader['deliverydate'])) {
-		$Errors = VerifyDeliveryDate($OrderHeader['deliverydate'], sizeof($Errors), $Errors, $db);
+		$Errors = VerifyDeliveryDate($OrderHeader['deliverydate'], sizeof($Errors), $Errors);
 	}
 	if (isset($OrderHeader['quotation'])) {
 		$Errors = VerifyQuotation($OrderHeader['quotation'], sizeof($Errors), $Errors);
@@ -447,9 +447,9 @@ function ModifySalesOrderHeader($OrderHeader, $user, $password) {
 	}
 	$sql = mb_substr($sql, 0, -2) . " WHERE orderno='" . $OrderHeader['orderno'] . "'";
 	if (sizeof($Errors) == 0) {
-		$result = api_DB_Query($sql, $db);
-		echo DB_error_no($db);
-		if (DB_error_no($db) != 0) {
+		$result = api_DB_Query($sql);
+		echo DB_error_no();
+		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;
 		} else {
 			$Errors[0] = 0;
@@ -472,9 +472,9 @@ function InsertSalesOrderLine($OrderLine, $user, $password) {
 	foreach ($OrderLine as $key => $value) {
 		$OrderLine[$key] = DB_escape_string($value);
 	}
-	$OrderLine['orderlineno'] = GetOrderLineNumber($OrderLine['orderno'], sizeof($Errors), $Errors, $db);
-	$Errors = VerifyOrderHeaderExists($OrderLine['orderno'], sizeof($Errors), $Errors, $db);
-	$Errors = VerifyStockCodeExists($OrderLine['stkcode'], sizeof($Errors), $Errors, $db);
+	$OrderLine['orderlineno'] = GetOrderLineNumber($OrderLine['orderno'], sizeof($Errors), $Errors);
+	$Errors = VerifyOrderHeaderExists($OrderLine['orderno'], sizeof($Errors), $Errors);
+	$Errors = VerifyStockCodeExists($OrderLine['stkcode'], sizeof($Errors), $Errors);
 	if (isset($OrderLine['unitprice'])) {
 		$Errors = VerifyUnitPrice($OrderLine['unitprice'], sizeof($Errors), $Errors);
 	}
@@ -514,8 +514,8 @@ function InsertSalesOrderLine($OrderLine, $user, $password) {
 			VALUES (" . mb_substr($FieldValues, 0, -2) . ")";
 
 	if (sizeof($Errors) == 0) {
-		$result = api_DB_Query($sql, $db);
-		if (DB_error_no($db) != 0) {
+		$result = api_DB_Query($sql);
+		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;
 		} else {
 			$Errors[0] = 0;
@@ -537,8 +537,8 @@ function ModifySalesOrderLine($OrderLine, $user, $password) {
 	foreach ($OrderLine as $key => $value) {
 		$OrderLine[$key] = DB_escape_string($value);
 	}
-	$Errors = VerifyOrderHeaderExists($OrderLine['orderno'], sizeof($Errors), $Errors, $db);
-	$Errors = VerifyStockCodeExists($OrderLine['stkcode'], sizeof($Errors), $Errors, $db);
+	$Errors = VerifyOrderHeaderExists($OrderLine['orderno'], sizeof($Errors), $Errors);
+	$Errors = VerifyStockCodeExists($OrderLine['stkcode'], sizeof($Errors), $Errors);
 	if (isset($OrderLine['unitprice'])) {
 		$Errors = VerifyUnitPrice($OrderLine['unitprice'], sizeof($Errors), $Errors);
 	}
@@ -573,9 +573,9 @@ function ModifySalesOrderLine($OrderLine, $user, $password) {
 	//echo $sql;
 	//exit;
 	if (sizeof($Errors) == 0) {
-		$result = api_DB_Query($sql, $db);
-		echo DB_error_no($db);
-		if (DB_error_no($db) != 0) {
+		$result = api_DB_Query($sql);
+		echo DB_error_no();
+		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;
 		} else {
 			$Errors[0] = 0;
@@ -595,12 +595,12 @@ function GetSalesOrderHeader($OrderNo, $user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	$Errors = VerifyOrderHeaderExists($OrderNo, sizeof($Errors), $Errors, $db);
+	$Errors = VerifyOrderHeaderExists($OrderNo, sizeof($Errors), $Errors);
 	if (sizeof($Errors) != 0) {
 		return $Errors;
 	}
 	$sql = "SELECT * FROM salesorders WHERE orderno='" . $OrderNo . "'";
-	$result = api_DB_Query($sql, $db);
+	$result = api_DB_Query($sql);
 	if (sizeof($Errors) == 0) {
 		return DB_fetch_array($result);
 	} else {
@@ -620,12 +620,12 @@ function GetSalesOrderLine($OrderNo, $user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	$Errors = VerifyOrderHeaderExists($OrderNo, sizeof($Errors), $Errors, $db);
+	$Errors = VerifyOrderHeaderExists($OrderNo, sizeof($Errors), $Errors);
 	if (sizeof($Errors) != 0) {
 		return $Errors;
 	}
 	$sql = "SELECT * FROM salesorderdetails WHERE orderno='" . $OrderNo . "'";
-	$result = api_DB_Query($sql, $db);
+	$result = api_DB_Query($sql);
 	if (sizeof($Errors) == 0) {
 		return DB_fetch_array($result);
 	} else {
@@ -642,7 +642,7 @@ function InvoiceSalesOrder($OrderNo, $User, $Password) {
 		$Errors[] = NoAuthorisation;
 		return $Errors;
 	}
-	$Errors = VerifyOrderHeaderExists($OrderNo, sizeof($Errors), $Errors, $db);
+	$Errors = VerifyOrderHeaderExists($OrderNo, sizeof($Errors), $Errors);
 	if (sizeof($Errors) != 0) {
 		return $Errors;
 	}
@@ -653,10 +653,10 @@ function InvoiceSalesOrder($OrderNo, $User, $Password) {
 												gllink_debtors,
 												gllink_stock
 										FROM companies
-										WHERE coycode=1", $db);
+										WHERE coycode=1");
 
 	$CompanyRecord = DB_fetch_array($ReadCoyResult);
-	if (DB_error_no($db) != 0) {
+	if (DB_error_no() != 0) {
 		$Errors[] = NoCompanyRecord;
 	}
 
@@ -686,15 +686,15 @@ function InvoiceSalesOrder($OrderNo, $User, $Password) {
 							ON debtorsmaster.currcode=currencies.currabrev
 							WHERE salesorders.orderno = '" . $OrderNo . "'";
 
-	$OrderHeaderResult = api_DB_query($OrderHeaderSQL, $db);
-	if (DB_error_no($db) != 0) {
+	$OrderHeaderResult = api_DB_query($OrderHeaderSQL);
+	if (DB_error_no() != 0) {
 		$Errors[] = NoReadOrder;
 	}
 
 	$OrderHeader = DB_fetch_array($OrderHeaderResult);
 
-	$TaxProvResult = api_DB_query("SELECT taxprovinceid FROM locations WHERE loccode='" . $OrderHeader['fromstkloc'] . "'", $db);
-	if (DB_error_no($db) != 0) {
+	$TaxProvResult = api_DB_query("SELECT taxprovinceid FROM locations WHERE loccode='" . $OrderHeader['fromstkloc'] . "'");
+	if (DB_error_no() != 0) {
 		$Errors[] = NoTaxProvince;
 	}
 	$myrow = DB_fetch_row($TaxProvResult);
@@ -712,16 +712,16 @@ function InvoiceSalesOrder($OrderNo, $User, $Password) {
 						WHERE orderno ='" . $OrderNo . "'
 						AND completed=0";
 
-	$LineItemsResult = api_DB_query($LineItemsSQL, $db);
-	if (DB_error_no($db) != 0 or DB_num_rows($LineItemsResult) == 0) {
+	$LineItemsResult = api_DB_query($LineItemsSQL);
+	if (DB_error_no() != 0 or DB_num_rows($LineItemsResult) == 0) {
 		$Errors[] = NoReadOrderLines;
 		return $Errors;
 	}
 
 	/*Start an SQL transaction */
-	$result = DB_Txn_Begin($db);
+	$result = DB_Txn_Begin();
 	/*Now Get the next invoice number - function in SQL_CommonFunctions*/
-	$InvoiceNo = GetNextTransNo(10, $db);
+	$InvoiceNo = GetNextTransNo(10);
 	$PeriodNo = GetCurrentPeriod($db);
 
 	$TaxTotals = array();
@@ -754,9 +754,9 @@ function InvoiceSalesOrder($OrderNo, $User, $Password) {
 					AND taxauthrates.taxcatid = '" . $OrderLineRow['taxcatid'] . "'
 					ORDER BY taxgrouptaxes.calculationorder";
 
-		$GetTaxRatesResult = api_DB_query($SQL, $db);
+		$GetTaxRatesResult = api_DB_query($SQL);
 
-		if (DB_error_no($db) != 0) {
+		if (DB_error_no() != 0) {
 			$Errors[] = TaxRatesFailed;
 		}
 		$LineTaxAmount = 0;
@@ -814,7 +814,7 @@ function InvoiceSalesOrder($OrderNo, $User, $Password) {
 						FROM locstock
 						WHERE locstock.stockid='" . $OrderLineRow['stkcode'] . "'
 						AND loccode= '" . $OrderHeader['fromstkloc'] . "'";
-			$Result = api_DB_query($SQL, $db);
+			$Result = api_DB_query($SQL);
 
 			if (DB_num_rows($Result) == 1) {
 				$LocQtyRow = DB_fetch_row($Result);
@@ -877,9 +877,9 @@ function InvoiceSalesOrder($OrderNo, $User, $Password) {
 							AND bom.effectiveto >= '" . Date('Y-m-d') . "'
 							AND bom.effectiveafter < '" . Date('Y-m-d') . "'";
 
-			$AssResult = api_DB_query($SQL, $db);
+			$AssResult = api_DB_query($SQL);
 
-			while ($AssParts = DB_fetch_array($AssResult, $db)) {
+			while ($AssParts = DB_fetch_array($AssResult)) {
 
 				$StandardCost += ($AssParts['standard'] * $AssParts['quantity']);
 				/* Need to get the current location quantity
@@ -889,7 +889,7 @@ function InvoiceSalesOrder($OrderNo, $User, $Password) {
 							WHERE locstock.stockid='" . $AssParts['component'] . "'
 							AND loccode= '" . $OrderHeader['fromstkloc'] . "'";
 
-				$Result = api_DB_query($SQL, $db);
+				$Result = api_DB_query($SQL);
 				if (DB_num_rows($Result) == 1) {
 					$LocQtyRow = DB_fetch_row($Result);
 					$QtyOnHandPrior = $LocQtyRow[0];
@@ -1105,14 +1105,14 @@ function InvoiceSalesOrder($OrderNo, $User, $Password) {
 										'" . $InvoiceNo . "',
 										'" . $OrderHeader['orddate'] . "',
 										'" . $PeriodNo . "',
-										'" . GetCOGSGLAccount($OrderHeader['area'], $OrderLineRow['stkcode'], $OrderHeader['ordertype'], $db) . "',
+										'" . GetCOGSGLAccount($OrderHeader['area'], $OrderLineRow['stkcode'], $OrderHeader['ordertype']) . "',
 										'" . $OrderHeader['debtorno'] . " - " . $OrderLineRow['stkcode'] . " x " . $OrderLineRow['quantity'] . " @ " . $StandardCost . "',
 										'" . ($StandardCost * $OrderLineRow['quantity']) . "')";
 
 			$Result = api_DB_query($SQL, $db, '', '', true);
 
 			/*now the stock entry - this is set to the cost act in the case of a fixed asset disposal */
-			$StockGLCode = GetStockGLCode($OrderLineRow['stkcode'], $db);
+			$StockGLCode = GetStockGLCode($OrderLineRow['stkcode']);
 
 			$SQL = "INSERT INTO gltrans (type,
 											typeno,
@@ -1137,7 +1137,7 @@ function InvoiceSalesOrder($OrderNo, $User, $Password) {
 		if ($CompanyRecord['gllink_debtors'] == 1 and $OrderLineRow['unitprice'] != 0) {
 
 			//Post sales transaction to GL credit sales
-			$SalesGLAccounts = GetSalesGLAccount($OrderHeader['area'], $OrderLineRow['stkcode'], $OrderHeader['ordertype'], $db);
+			$SalesGLAccounts = GetSalesGLAccount($OrderHeader['area'], $OrderLineRow['stkcode'], $OrderHeader['ordertype']);
 
 			$SQL = "INSERT INTO gltrans (type,
 											typeno,
@@ -1231,7 +1231,7 @@ function InvoiceSalesOrder($OrderNo, $User, $Password) {
 
 			$Result = api_DB_query($SQL, $db, '', '', true);
 		}
-		EnsureGLEntriesBalance(10, $InvoiceNo, $db);
+		EnsureGLEntriesBalance(10, $InvoiceNo);
 
 	}
 	/*end of if Sales and GL integrated */
@@ -1292,7 +1292,7 @@ function InvoiceSalesOrder($OrderNo, $User, $Password) {
 
 	if (sizeof($Errors) == 0) {
 
-		$Result = DB_Txn_Commit($db);
+		$Result = DB_Txn_Commit();
 		$Errors[0] = 0;
 		$Errors[1] = $InvoiceNo;
 	} else {
@@ -1307,12 +1307,12 @@ function GetCurrentPeriod(&$db) {
 	$TransDate = time(); //The current date to find the period for
 	/* Find the unix timestamp of the last period end date in periods table */
 	$sql = "SELECT MAX(lastdate_in_period), MAX(periodno) from periods";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$myrow = DB_fetch_row($result);
 
 	if (is_null($myrow[0])) {
-		$InsertFirstPeriodResult = api_DB_query("INSERT INTO periods VALUES (0,'" . Date('Y-m-d', mktime(0, 0, 0, Date('m') + 1, 0, Date('Y'))) . "')", $db);
-		$InsertFirstPeriodResult = api_DB_query("INSERT INTO periods VALUES (1,'" . Date('Y-m-d', mktime(0, 0, 0, Date('m') + 2, 0, Date('Y'))) . "')", $db);
+		$InsertFirstPeriodResult = api_DB_query("INSERT INTO periods VALUES (0,'" . Date('Y-m-d', mktime(0, 0, 0, Date('m') + 1, 0, Date('Y'))) . "')");
+		$InsertFirstPeriodResult = api_DB_query("INSERT INTO periods VALUES (1,'" . Date('Y-m-d', mktime(0, 0, 0, Date('m') + 2, 0, Date('Y'))) . "')");
 		$LastPeriod = 1;
 		$LastPeriodEnd = mktime(0, 0, 0, Date('m') + 2, 0, Date('Y'));
 	} else {
@@ -1322,14 +1322,14 @@ function GetCurrentPeriod(&$db) {
 	}
 	/* Find the unix timestamp of the first period end date in periods table */
 	$sql = "SELECT MIN(lastdate_in_period), MIN(periodno) from periods";
-	$result = api_DB_query($sql, $db);
+	$result = api_DB_query($sql);
 	$myrow = DB_fetch_row($result);
 	$Date_Array = explode('-', $myrow[0]);
 	$FirstPeriodEnd = mktime(0, 0, 0, $Date_Array[1], 0, (int) $Date_Array[0]);
 	$FirstPeriod = $myrow[1];
 
 	/* If the period number doesn't exist */
-	if (!PeriodExists($TransDate, $db)) {
+	if (!PeriodExists($TransDate)) {
 		/* if the transaction is after the last period */
 		if ($TransDate > $LastPeriodEnd) {
 
@@ -1342,14 +1342,14 @@ function GetCurrentPeriod(&$db) {
 					$LastPeriodEnd = mktime(0, 0, 0, 2, 0, Date('Y', $LastPeriodEnd) + 1);
 				}
 				$LastPeriod++;
-				CreatePeriod($LastPeriod, $LastPeriodEnd, $db);
+				CreatePeriod($LastPeriod, $LastPeriodEnd);
 			}
 		} else {
 			/* The transaction is before the first period */
 			$PeriodEnd = mktime(0, 0, 0, Date('m', $TransDate), 0, Date('Y', $TransDate));
 			$Period = $FirstPeriod - 1;
 			while ($FirstPeriodEnd > $PeriodEnd) {
-				CreatePeriod($Period, $FirstPeriodEnd, $db);
+				CreatePeriod($Period, $FirstPeriodEnd);
 				$Period--;
 				if (Date('m', $FirstPeriodEnd) > 0) {
 					$FirstPeriodEnd = mktime(0, 0, 0, Date('m', $FirstPeriodEnd), 0, Date('Y', $FirstPeriodEnd));
@@ -1358,15 +1358,15 @@ function GetCurrentPeriod(&$db) {
 				}
 			}
 		}
-	} else if (!PeriodExists(mktime(0, 0, 0, Date('m', $TransDate) + 1, Date('d', $TransDate), Date('Y', $TransDate)), $db)) {
+	} else if (!PeriodExists(mktime(0, 0, 0, Date('m', $TransDate) + 1, Date('d', $TransDate), Date('Y', $TransDate)))) {
 		/* Make sure the following months period exists */
 		$sql = "SELECT MAX(lastdate_in_period), MAX(periodno) from periods";
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		$myrow = DB_fetch_row($result);
 		$Date_Array = explode('-', $myrow[0]);
 		$LastPeriodEnd = mktime(0, 0, 0, $Date_Array[1] + 2, 0, (int) $Date_Array[0]);
 		$LastPeriod = $myrow[1];
-		CreatePeriod($LastPeriod + 1, $LastPeriodEnd, $db);
+		CreatePeriod($LastPeriod + 1, $LastPeriodEnd);
 	}
 
 	/* Now return the period number of the transaction */

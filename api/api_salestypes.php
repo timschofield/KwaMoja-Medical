@@ -12,7 +12,7 @@ function GetSalesTypeList($user, $password) {
 		return $Errors;
 	}
 	$sql = "SELECT typeabbrev FROM salestypes";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$i = 0;
 	while ($myrow = DB_fetch_array($result)) {
 		$SalesTypeList[$i] = $myrow[0];
@@ -35,10 +35,10 @@ function GetSalesTypeDetails($salestype, $user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	$Errors = VerifySalesType($salestype, sizeof($Errors), $Errors, $db);
+	$Errors = VerifySalesType($salestype, sizeof($Errors), $Errors);
 	if (sizeof($Errors) == 0) {
 		$sql = "SELECT * FROM salestypes WHERE typeabbrev='" . $salestype . "'";
-		$result = DB_query($sql, $db);
+		$result = DB_query($sql);
 		$Errors[0] = 0;
 		$Errors[1] = DB_fetch_array($result);
 		return $Errors;
@@ -68,8 +68,8 @@ function InsertSalesType($SalesTypeDetails, $user, $password) {
 	$sql = "INSERT INTO salestypes ('" . mb_substr($FieldNames, 0, -2) . "')
 				VALUES ('" . mb_substr($FieldValues, 0, -2) . "') ";
 	if (sizeof($Errors) == 0) {
-		$result = DB_Query($sql, $db);
-		if (DB_error_no($db) != 0) {
+		$result = DB_Query($sql);
+		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;
 		} else {
 			$Errors[0] = 0;

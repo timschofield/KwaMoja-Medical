@@ -1,7 +1,7 @@
 <?php
 
-function VerifyPurchDataLineExists($SupplierID, $StockID, $i, $Errors, $db) {
-	if (VerifyStockCodeExists($StockID, $i, $Errors, $db) != 0 and VerifySupplierNoExists($SupplierID, $i, $Errors, $db) != 0) {
+function VerifyPurchDataLineExists($SupplierID, $StockID, $i, $Errors) {
+	if (VerifyStockCodeExists($StockID, $i, $Errors) != 0 and VerifySupplierNoExists($SupplierID, $i, $Errors) != 0) {
 		$Errors[$i] = StockSupplierLineDoesntExist;
 	}
 }
@@ -54,8 +54,8 @@ function InsertPurchData($PurchDataDetails, $user, $password) {
 	foreach ($PurchDataDetails as $key => $value) {
 		$PurchDataDetails[$key] = DB_escape_string($value);
 	}
-	$Errors = VerifyStockCodeExists($PurchDataDetails['stockid'], sizeof($Errors), $Errors, $db);
-	$Errors = VerifySupplierNoExists($PurchDataDetails['supplierno'], sizeof($Errors), $Errors, $db);
+	$Errors = VerifyStockCodeExists($PurchDataDetails['stockid'], sizeof($Errors), $Errors);
+	$Errors = VerifySupplierNoExists($PurchDataDetails['supplierno'], sizeof($Errors), $Errors);
 	if (isset($StockItemDetails['price'])) {
 		$Errors = VerifyUnitPrice($PurchDataDetails['price'], sizeof($Errors), $Errors);
 	}
@@ -83,10 +83,10 @@ function InsertPurchData($PurchDataDetails, $user, $password) {
 	if (sizeof($Errors) == 0) {
 		$sql = "INSERT INTO purchdata (" . mb_substr($FieldNames, 0, -2) . ")
 					VALUES ('" . mb_substr($FieldValues, 0, -2) . "') ";
-		DB_Txn_Begin($db);
-		$result = DB_Query($sql, $db);
-		DB_Txn_Commit($db);
-		if (DB_error_no($db) != 0) {
+		DB_Txn_Begin();
+		$result = DB_Query($sql);
+		DB_Txn_Commit();
+		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;
 		} else {
 			$Errors[0] = 0;
@@ -105,9 +105,9 @@ function ModifyPurchData($PurchDataDetails, $user, $password) {
 	foreach ($PurchDataDetails as $key => $value) {
 		$PurchDataDetails[$key] = DB_escape_string($value);
 	}
-	$Errors = VerifyPurchDataLineExists($PurchDataDetails['supplierno'], $PurchDataDetails['stockid'], sizeof($Errors), $Errors, $db);
-	$Errors = VerifyStockCodeExists($PurchDataDetails['stockid'], sizeof($Errors), $Errors, $db);
-	$Errors = VerifySupplierNoExists($PurchDataDetails['supplierno'], sizeof($Errors), $Errors, $db);
+	$Errors = VerifyPurchDataLineExists($PurchDataDetails['supplierno'], $PurchDataDetails['stockid'], sizeof($Errors), $Errors);
+	$Errors = VerifyStockCodeExists($PurchDataDetails['stockid'], sizeof($Errors), $Errors);
+	$Errors = VerifySupplierNoExists($PurchDataDetails['supplierno'], sizeof($Errors), $Errors);
 	if (isset($StockItemDetails['price'])) {
 		$Errors = VerifyUnitPrice($PurchDataDetails['price'], sizeof($Errors), $Errors);
 	}
@@ -133,9 +133,9 @@ function ModifyPurchData($PurchDataDetails, $user, $password) {
 	$sql = mb_substr($sql, 0, -2) . " WHERE stockid='" . $PurchDataDetails['stockid'] . "'
 								AND supplierno='" . $PurchDataDetails['supplierno'] . "'";
 	if (sizeof($Errors) == 0) {
-		$result = DB_Query($sql, $db);
-		echo DB_error_no($db);
-		if (DB_error_no($db) != 0) {
+		$result = DB_Query($sql);
+		echo DB_error_no();
+		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;
 		} else {
 			$Errors[0] = 0;

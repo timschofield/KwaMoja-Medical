@@ -8,11 +8,11 @@ function VerifyCategoryID($CategoryID, $i, $Errors) {
 }
 
 /* Verify the category doesnt exist */
-function VerifyStockCategoryAlreadyExists($StockCategory, $i, $Errors, $db) {
+function VerifyStockCategoryAlreadyExists($StockCategory, $i, $Errors) {
 	$Searchsql = "SELECT count(categoryid)
 					  FROM stockcategory
 					  WHERE categoryid='" . $StockCategory . "'";
-	$SearchResult = DB_query($Searchsql, $db);
+	$SearchResult = DB_query($Searchsql);
 	$answer = DB_fetch_array($SearchResult);
 	if ($answer[0] > 0) {
 		$Errors[$i] = StockCategoryAlreadyExists;
@@ -47,15 +47,15 @@ function InsertStockCategory($CategoryDetails, $user, $password) {
 	foreach ($CategoryDetails as $key => $value) {
 		$CategoryDetails[$key] = DB_escape_string($value);
 	}
-	$Errors = VerifyStockCategoryAlreadyExists($CategoryDetails['categoryid'], sizeof($Errors), $Errors, $db);
+	$Errors = VerifyStockCategoryAlreadyExists($CategoryDetails['categoryid'], sizeof($Errors), $Errors);
 	$Errors = VerifyCategoryID($CategoryDetails['categoryid'], sizeof($Errors), $Errors);
 	$Errors = VerifyCategoryDescription($CategoryDetails['categorydescription'], sizeof($Errors), $Errors);
 	$Errors = VerifyStockType($CategoryDetails['stocktype'], sizeof($Errors), $Errors);
-	$Errors = VerifyAccountCodeExists($CategoryDetails['stockact'], sizeof($Errors), $Errors, $db);
-	$Errors = VerifyAccountCodeExists($CategoryDetails['adjglact'], sizeof($Errors), $Errors, $db);
-	$Errors = VerifyAccountCodeExists($CategoryDetails['purchpricevaract'], sizeof($Errors), $Errors, $db);
-	$Errors = VerifyAccountCodeExists($CategoryDetails['materialuseagevarac'], sizeof($Errors), $Errors, $db);
-	$Errors = VerifyAccountCodeExists($CategoryDetails['wipact'], sizeof($Errors), $Errors, $db);
+	$Errors = VerifyAccountCodeExists($CategoryDetails['stockact'], sizeof($Errors), $Errors);
+	$Errors = VerifyAccountCodeExists($CategoryDetails['adjglact'], sizeof($Errors), $Errors);
+	$Errors = VerifyAccountCodeExists($CategoryDetails['purchpricevaract'], sizeof($Errors), $Errors);
+	$Errors = VerifyAccountCodeExists($CategoryDetails['materialuseagevarac'], sizeof($Errors), $Errors);
+	$Errors = VerifyAccountCodeExists($CategoryDetails['wipact'], sizeof($Errors), $Errors);
 	$FieldNames = '';
 	$FieldValues = '';
 	foreach ($CategoryDetails as $key => $value) {
@@ -65,8 +65,8 @@ function InsertStockCategory($CategoryDetails, $user, $password) {
 	$sql = "INSERT INTO stockcategory ('" . mb_substr($FieldNames, 0, -2) . "')
 				VALUES ('" . mb_substr($FieldValues, 0, -2) . "') ";
 	if (sizeof($Errors) == 0) {
-		$result = DB_Query($sql, $db);
-		if (DB_error_no($db) != 0) {
+		$result = DB_Query($sql);
+		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;
 		} else {
 			$Errors[0] = 0;
@@ -85,15 +85,15 @@ function ModifyStockCategory($CategoryDetails, $user, $password) {
 	foreach ($CategoryDetails as $key => $value) {
 		$CategoryDetails[$key] = DB_escape_string($value);
 	}
-	$Errors = VerifyStockCategoryExists($CategoryDetails['categoryid'], sizeof($Errors), $Errors, $db);
+	$Errors = VerifyStockCategoryExists($CategoryDetails['categoryid'], sizeof($Errors), $Errors);
 	$Errors = VerifyCategoryID($CategoryDetails['categoryid'], sizeof($Errors), $Errors);
 	$Errors = VerifyCategoryDescription($CategoryDetails['categorydescription'], sizeof($Errors), $Errors);
 	$Errors = VerifyStockType($CategoryDetails['stocktype'], sizeof($Errors), $Errors);
-	$Errors = VerifyAccountCodeExists($CategoryDetails['stockact'], sizeof($Errors), $Errors, $db);
-	$Errors = VerifyAccountCodeExists($CategoryDetails['adjglact'], sizeof($Errors), $Errors, $db);
-	$Errors = VerifyAccountCodeExists($CategoryDetails['purchpricevaract'], sizeof($Errors), $Errors, $db);
-	$Errors = VerifyAccountCodeExists($CategoryDetails['materialuseagevarac'], sizeof($Errors), $Errors, $db);
-	$Errors = VerifyAccountCodeExists($CategoryDetails['wipact'], sizeof($Errors), $Errors, $db);
+	$Errors = VerifyAccountCodeExists($CategoryDetails['stockact'], sizeof($Errors), $Errors);
+	$Errors = VerifyAccountCodeExists($CategoryDetails['adjglact'], sizeof($Errors), $Errors);
+	$Errors = VerifyAccountCodeExists($CategoryDetails['purchpricevaract'], sizeof($Errors), $Errors);
+	$Errors = VerifyAccountCodeExists($CategoryDetails['materialuseagevarac'], sizeof($Errors), $Errors);
+	$Errors = VerifyAccountCodeExists($CategoryDetails['wipact'], sizeof($Errors), $Errors);
 	$FieldNames = '';
 	$FieldValues = '';
 	foreach ($CategoryDetails as $key => $value) {
@@ -106,9 +106,9 @@ function ModifyStockCategory($CategoryDetails, $user, $password) {
 	}
 	$sql = mb_substr($sql, 0, -2) . " WHERE categoryid='" . $CategoryDetails['categoryid'] . "'";
 	if (sizeof($Errors) == 0) {
-		$result = DB_Query($sql, $db);
-		echo DB_error_no($db);
-		if (DB_error_no($db) != 0) {
+		$result = DB_Query($sql);
+		echo DB_error_no();
+		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;
 		} else {
 			$Errors[0] = 0;
@@ -128,12 +128,12 @@ function GetStockCategory($Categoryid, $user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	$Errors = VerifyStockCategoryExists($Categoryid, sizeof($Errors), $Errors, $db);
+	$Errors = VerifyStockCategoryExists($Categoryid, sizeof($Errors), $Errors);
 	if (sizeof($Errors) != 0) {
 		return $Errors;
 	}
 	$sql = "SELECT * FROM stockcategory WHERE categoryid='" . $Categoryid . "'";
-	$result = DB_Query($sql, $db);
+	$result = DB_Query($sql);
 	if (sizeof($Errors) == 0) {
 		return DB_fetch_array($result);
 	} else {
@@ -155,7 +155,7 @@ function SearchStockCategories($Field, $Criteria, $user, $password) {
 					categorydescription
 			FROM stockcategory
 			WHERE " . $Field . " " . LIKE . " '%" . $Criteria . "%'";
-	$result = DB_Query($sql, $db);
+	$result = DB_Query($sql);
 	$i = 0;
 	$CategoryList = array();
 	while ($myrow = DB_fetch_array($result)) {
@@ -182,7 +182,7 @@ function StockCatPropertyList($Label, $Category, $user, $password) {
 				  ON stockitemproperties.stockid=stockmaster.stockid
 				  WHERE stockitemproperties.value like '" . $Label . "'
 				AND stockcatproperties.categoryid='" . $Category . "'";
-	$result = DB_Query($sql, $db);
+	$result = DB_Query($sql);
 	$i = 0;
 	$ItemList = array();
 	$ItemList[0] = 0;
@@ -204,7 +204,7 @@ function GetStockCatProperty($Property, $StockID, $user, $password) {
 	$sql = "SELECT value FROM stockitemproperties
 					   WHERE stockid='" . $StockID . "'
 					   AND stkcatpropid='" . $Property . "'";
-	$result = DB_Query($sql, $db);
+	$result = DB_Query($sql);
 	$myrow = DB_fetch_array($result);
 	$Errors[0] = 0;
 	$Errors[1] = $myrow[0];
@@ -221,7 +221,7 @@ function GetStockCategoryList($user, $password) {
 		return $Errors;
 	}
 	$sql = "SELECT categoryid FROM stockcategory";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$i = 0;
 	while ($myrow = DB_fetch_array($result)) {
 		$StockCategoryList[$i] = $myrow[0];

@@ -12,7 +12,7 @@ function GetPaymentTermsList($user, $password) {
 		return $Errors;
 	}
 	$sql = 'SELECT termsindicator FROM paymentterms';
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$i = 0;
 	while ($myrow = DB_fetch_array($result)) {
 		$PaymentTermsList[$i] = $myrow[0];
@@ -36,7 +36,7 @@ function GetPaymentTermsDetails($paymentterms, $user, $password) {
 		}
 	}
 	$sql = "SELECT * FROM paymentterms WHERE termsindicator='" . $paymentterms . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	return DB_fetch_array($result);
 }
 /* This function returns a list of the payment methods
@@ -52,7 +52,7 @@ function GetPaymentMethodsList($User, $Password) {
 		}
 	}
 	$sql = "SELECT paymentid FROM paymentmethods";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	$i = 0;
 	while ($myrow = DB_fetch_array($result)) {
 		$PaymentMethodsList[$i] = $myrow[0];
@@ -76,7 +76,7 @@ function GetPaymentMethodDetails($PaymentMethod, $User, $Password) {
 		}
 	}
 	$sql = "SELECT * FROM paymentmethods WHERE paymentid='" . $PaymentMethod . "'";
-	$result = DB_query($sql, $db);
+	$result = DB_query($sql);
 	return DB_fetch_array($result);
 }
 

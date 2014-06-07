@@ -24,7 +24,6 @@ if (!isset($_POST['FromDate'])) {
 	}
 
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table class="selection">';
 	echo '<tr>
@@ -51,6 +50,12 @@ if (!isset($_POST['FromDate'])) {
 			</td>
 		</tr>';
 
+	$result = DB_query($sql);
+	$resultStkLocs = DB_query($sql);
+
+	echo '<tr>
+			<td>' . _('For Stock Location') . ':</td>
+			<td><select required="required" minlength="1" name="StockLocation">';
 	if ($_SESSION['RestrictLocations'] == 0) {
 		$sql = "SELECT locationname,
 						loccode
@@ -64,13 +69,6 @@ if (!isset($_POST['FromDate'])) {
 						ON locations.loccode=www_users.defaultlocation
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
-
-	$result = DB_query($sql);
-	$resultStkLocs = DB_query($sql);
-
-	echo '<tr>
-			<td>' . _('For Stock Location') . ':</td>
-			<td><select required="required" minlength="1" name="StockLocation">';
 
 	while ($myrow = DB_fetch_array($resultStkLocs)) {
 		if (isset($_POST['StockLocation']) and $_POST['StockLocation'] != 'All') {
@@ -89,12 +87,10 @@ if (!isset($_POST['FromDate'])) {
 	echo '</select></td></tr>';
 
 	echo '</table>
-			<br />
 			<div class="centre">
 				<input type="submit" name="Go" value="' . _('Create PDF') . '" />
 			</div>';
-	echo '</div>
-		  </form>';
+	echo '</form>';
 
 	include('includes/footer.inc');
 	exit;

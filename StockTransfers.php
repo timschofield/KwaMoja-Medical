@@ -109,16 +109,20 @@ if ($NewTransfer and isset($_POST['StockID'])) {
 	$_SESSION['Transfer' . $identifier] = new StockTransfer(0, $_POST['StockLocationFrom'], '', $_POST['StockLocationTo'], '', Date($_SESSION['DefaultDateFormat']));
 	$_SESSION['Transfer' . $identifier]->TrfID = $identifier;
 
-	$result = DB_query("SELECT description,
-							units,
-							mbflag,
-							materialcost+labourcost+overheadcost as standardcost,
-							controlled,
-							serialised,
-							perishable,
-							decimalplaces
-						FROM stockmaster
-						WHERE stockid='" . trim(mb_strtoupper($_POST['StockID'])) . "'");
+	$sql = "SELECT description,
+					units,
+					mbflag,
+					stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost as standardcost,
+					controlled,
+					serialised,
+					perishable,
+					decimalplaces
+				FROM stockmaster
+				INNER JOIN stockcosts
+					ON stockmaster.stockid=stockcosts.stockid
+					AND stockcosts.succeeded=0
+				WHERE stockcosts.stockid='" . trim(mb_strtoupper($_POST['StockID'])) . "'";
+	$result = DB_query($sql);
 
 	if (DB_num_rows($result) == 0) {
 		prnMsg(_('Unable to locate Stock Code') . ' ' . mb_strtoupper($_POST['StockID']), 'error');

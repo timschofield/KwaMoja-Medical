@@ -562,10 +562,13 @@ function CreateCreditNote($Header, $LineDetails, $User, $Password) {
 	foreach ($LineDetails as $CN_Line) {
 
 		$LineSQL = "SELECT taxcatid,
-								mbflag,
-								materialcost+labourcost+overheadcost AS standardcost
+							mbflag,
+							stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS standardcost
 						FROM stockmaster
-						WHERE stockid ='" . $CN_Line['stockid'] . "'";
+						INNER JOIN stockcosts
+							ON stockcosts.stockid=stockmaster.stockid
+							AND stockcosts.succeeded=0
+						WHERE stockcosts.stockid ='" . $CN_Line['stockid'] . "'";
 
 		$LineResult = api_DB_query($LineSQL);
 		if (DB_error_no() != 0 or DB_num_rows($LineResult) == 0) {
@@ -703,11 +706,13 @@ function CreateCreditNote($Header, $LineDetails, $User, $Password) {
 			$StandardCost = 0;
 			/*To start with - accumulate the cost of the comoponents for use in journals later on */
 			$SQL = "SELECT bom.component,
-								bom.quantity,
-								stockmaster.materialcost+stockmaster.labourcost+stockmaster.overheadcost AS standard
-							FROM bom INNER JOIN stockmaster
-							ON bom.component=stockmaster.stockid
-							WHERE bom.parent='" . $CN_Line['stockid'] . "'
+							bom.quantity,
+							stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS standard
+						FROM bom
+						INNER JOIN stockcosts
+							ON bom.component=stockcosts.stockid
+							AND succeeded=0
+						WHERE bom.parent='" . $CN_Line['stockid'] . "'
 							AND bom.effectiveto >= '" . Date('Y-m-d') . "'
 							AND bom.effectiveafter < '" . Date('Y-m-d') . "'";
 

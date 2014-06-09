@@ -51,29 +51,33 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
   						prices.startdate,
   						prices.enddate,
   						prices.price,
-  						stockmaster.materialcost+stockmaster.labourcost+stockmaster.overheadcost AS standardcost,
+  						stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS standardcost,
   						stockmaster.categoryid,
   						stockcategory.categorydescription,
   						prices.debtorno,
   						prices.branchcode,
   						custbranch.brname,
   						currencies.decimalplaces
-						FROM stockmaster INNER JOIN	stockcategory
+					FROM stockmaster
+					INNER JOIN	stockcategory
 						ON stockmaster.categoryid=stockcategory.categoryid
-						INNER JOIN prices
+					INNER JOIN stockcosts
+						ON stockcosts.stockid=stockmaster.stockid
+						AND stockcosts.succeeded=0
+					INNER JOIN prices
 						ON stockmaster.stockid=prices.stockid
-						INNER JOIN currencies
+					INNER JOIN currencies
 						ON prices.currabrev=currencies.currabrev
-			LEFT JOIN custbranch
+					LEFT JOIN custbranch
 						ON prices.debtorno=custbranch.debtorno
 						AND prices.branchcode=custbranch.branchcode
-						WHERE prices.typeabbrev = '" . $SalesType . "'
+					WHERE prices.typeabbrev = '" . $SalesType . "'
 						AND stockmaster.categoryid >= '" . $_POST['FromCriteria'] . "'
 						AND stockmaster.categoryid <= '" . $_POST['ToCriteria'] . "'
 						AND prices.debtorno='" . $_SESSION['CustomerID'] . "'
 						AND prices.startdate<='" . FormatDateForSQL($_POST['EffectiveDate']) . "'
 						AND (prices.enddate='0000-00-00' OR prices.enddate >'" . FormatDateForSQL($_POST['EffectiveDate']) . "')
-						ORDER BY prices.currabrev,
+					ORDER BY prices.currabrev,
 							stockmaster.categoryid,
 							stockmaster.stockid,
 							prices.startdate";
@@ -94,22 +98,26 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 					stockmaster.longdescription,
 					prices.currabrev,
 					prices.price,
-					stockmaster.materialcost+stockmaster.labourcost+stockmaster.overheadcost as standardcost,
+					stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost as standardcost,
 					stockmaster.categoryid,
 					stockcategory.categorydescription,
 					currencies.decimalplaces
-				FROM stockmaster INNER JOIN	stockcategory
+				FROM stockmaster
+				INNER JOIN stockcosts
+					ON stockcosts.stockid=stockmaster.stockid
+					AND stockcosts.succeeded=0
+				INNER JOIN	stockcategory
 	   				 ON stockmaster.categoryid=stockcategory.categoryid
 				INNER JOIN prices
 					ON stockmaster.stockid=prices.stockid
 				INNER JOIN currencies
 					ON prices.currabrev=currencies.currabrev
-		WHERE stockmaster.categoryid >= '" . $_POST['FromCriteria'] . "'
-				AND stockmaster.categoryid <= '" . $_POST['ToCriteria'] . "'
-				AND prices.typeabbrev='" . $_POST['SalesType'] . "'
-				AND prices.startdate<='" . FormatDateForSQL($_POST['EffectiveDate']) . "'
-				AND (prices.enddate='0000-00-00' OR prices.enddate>'" . FormatDateForSQL($_POST['EffectiveDate']) . "')
-				AND prices.debtorno=''
+				WHERE stockmaster.categoryid >= '" . $_POST['FromCriteria'] . "'
+					AND stockmaster.categoryid <= '" . $_POST['ToCriteria'] . "'
+					AND prices.typeabbrev='" . $_POST['SalesType'] . "'
+					AND prices.startdate<='" . FormatDateForSQL($_POST['EffectiveDate']) . "'
+					AND (prices.enddate='0000-00-00' OR prices.enddate>'" . FormatDateForSQL($_POST['EffectiveDate']) . "')
+					AND prices.debtorno=''
 				ORDER BY prices.currabrev,
 					stockmaster.categoryid,
 					stockmaster.stockid,

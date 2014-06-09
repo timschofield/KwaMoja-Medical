@@ -231,11 +231,12 @@ if (isset($_POST['Process'])) { //user hit the process the work order receipts e
 
 		//Recalculate the standard for the item if there were no items previously received against the work order
 		if ($WORow['qtyrecd'] == 0) {
-			$CostResult = DB_query("SELECT SUM((materialcost+labourcost+overheadcost)*bom.quantity) AS cost
-									FROM stockmaster INNER JOIN bom
-									ON stockmaster.stockid=bom.component
+			$CostResult = DB_query("SELECT SUM((stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost)*bom.quantity) AS cost
+									FROM stockcosts
+									INNER JOIN bom
+										ON stockcosts.stockid=bom.component
 									WHERE bom.parent='" . $_POST['StockID'] . "'
-									AND bom.loccode='" . $WORow['loccode'] . "'");
+										AND bom.loccode='" . $WORow['loccode'] . "'");
 			$CostRow = DB_fetch_row($CostResult);
 			if (is_null($CostRow[0]) or $CostRow[0] == 0) {
 				$Cost = 0;
@@ -251,16 +252,16 @@ if (isset($_POST['Process'])) { //user hit the process the work order receipts e
 			WoRealRequirements($_POST['WO'], $WORow['loccode'], $_POST['StockID']);
 
 			//Need to check this against the current standard cost and do a cost update if necessary
-			$sql = "SELECT materialcost+labourcost+overheadcost AS cost,
+			$sql = "SELECT stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS cost,
 						  sum(quantity) AS totalqoh,
-						  labourcost,
-						  overheadcost
-					FROM stockmaster INNER JOIN locstock
-						ON stockmaster.stockid=locstock.stockid
-					WHERE stockmaster.stockid='" . $_POST['StockID'] . "'
-					GROUP BY materialcost,
-							labourcost,
-							overheadcost";
+						  stockcosts.labourcost,
+						  stockcosts.overheadcost
+					FROM stockcosts INNER JOIN locstock
+						ON stockcosts.stockid=locstock.stockid
+					WHERE stockcosts.stockid='" . $_POST['StockID'] . "'
+					GROUP BY stockcosts.materialcost,
+							stockcosts.labourcost,
+							stockcosts.overheadcost";
 			$ItemResult = DB_query($sql);
 			$ItemCostRow = DB_fetch_array($ItemResult);
 
@@ -312,15 +313,22 @@ if (isset($_POST['Process'])) { //user hit the process the work order receipts e
 					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 				}
 
-				$SQL = "UPDATE stockmaster SET
-							lastcostupdate='" . Date('Y-m-d') . "',
-							materialcost='" . $Cost . "',
-							labourcost='" . $ItemCostRow['labourcost'] . "',
-							overheadcost='" . $ItemCostRow['overheadcost'] . "',
-							lastcost='" . $ItemCostRow['cost'] . "'
-						WHERE stockid='" . $_POST['StockID'] . "'";
+				/* Make the old cost record obsolete */
+				$SQL = "UPDATE stockcosts SET succeeded=1,
+						WHERE stockid='" . $_POST['StockID'] . "'
+							AND succeeded=0";
+				$ErrMsg = _('The old cost details for the stock item could not be updated because');
+				$DbgMsg = _('The SQL that failed was');
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
-				$ErrMsg = _('The cost details for the stock item could not be updated because');
+				/* Then create a new cost record */
+				$SQL = "INSERT INTO stockcosts VALUES('" . $_POST['StockID'] . "',
+													'" . $Cost . "',
+													'" . $ItemCostRow['labourcost'] . "',
+													'" . $ItemCostRow['overheadcost'] . "',
+													CURRENT_TIME,
+													0)";
+				$ErrMsg = _('The new cost details for the stock item could not be inserted because');
 				$DbgMsg = _('The SQL that failed was');
 				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 			} //cost as rolled up now <> current standard cost  so do adjustments
@@ -329,17 +337,20 @@ if (isset($_POST['Process'])) { //user hit the process the work order receipts e
 		//Do the issues for autoissue components in the worequirements table
 		$AutoIssueCompsResult = DB_query("SELECT worequirements.stockid,
 												 qtypu,
-												 materialcost+labourcost+overheadcost AS cost,
+												 stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS cost,
 												 stockcategory.stockact,
 												 stockcategory.stocktype
 										  FROM worequirements
 										  INNER JOIN stockmaster
-										  ON worequirements.stockid=stockmaster.stockid
+											ON worequirements.stockid=stockmaster.stockid
+										  INNER JOIN stockcosts
+											ON worequirements.stockid=stockcosts.stockid
 										  INNER JOIN stockcategory
-										  ON stockmaster.categoryid=stockcategory.categoryid
+											ON stockmaster.categoryid=stockcategory.categoryid
 										  WHERE wo='" . $_POST['WO'] . "'
-										  AND parentstockid='" . $_POST['StockID'] . "'
-										  AND autoissue=1");
+											AND parentstockid='" . $_POST['StockID'] . "'
+											AND autoissue=1
+											AND succeeded=0");
 
 		$WOIssueNo = GetNextTransNo(28);
 		while ($AutoIssueCompRow = DB_fetch_array($AutoIssueCompsResult)) {

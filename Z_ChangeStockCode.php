@@ -50,9 +50,6 @@ if (isset($_POST['ProcessStockChange'])) {
 										mbflag,
 										actualcost,
 										lastcost,
-										materialcost,
-										labourcost,
-										overheadcost,
 										lowestlevel,
 										discontinued,
 										controlled,
@@ -76,9 +73,6 @@ if (isset($_POST['ProcessStockChange'])) {
 					mbflag,
 					actualcost,
 					lastcost,
-					materialcost,
-					labourcost,
-					overheadcost,
 					lowestlevel,
 					discontinued,
 					controlled,
@@ -99,6 +93,20 @@ if (isset($_POST['ProcessStockChange'])) {
 
 		$DbgMsg = _('The SQL statement that failed was');
 		$ErrMsg = _('The SQL to insert the new stock master record failed');
+		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+		echo ' ... ' . _('completed');
+		echo '<br />' . _('Copying over the costs');
+		$sql = "INSERT INTO stockcosts SELECT '" . $_POST['NewStockID'] . "',
+									stockcosts.materialcost,
+									stockcosts.labourcost,
+									stockcosts.overheadcost,
+									stockcosts.costfrom,
+									stockcosts.succeeded
+								FROM stockcosts
+								WHERE stockid='" . $_POST['OldStockID'] . "'";
+
+		$DbgMsg = _('The SQL statement that failed was');
+		$ErrMsg = _('The SQL to insert the new stock costs record failed');
 		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
 		echo ' ... ' . _('completed');
 

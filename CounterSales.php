@@ -1237,11 +1237,13 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 											'" . Date('Y-m-d') . "',
 											'" . Date('Y-m-d') . "')", $ErrMsg, $DbgMsg, true);
 					//Need to get the latest BOM to roll up cost
-					$CostResult = DB_query("SELECT SUM((materialcost+labourcost+overheadcost)*bom.quantity) AS cost
-																	FROM stockmaster INNER JOIN bom
-																	ON stockmaster.stockid=bom.component
-																	WHERE bom.parent='" . $StockItem->StockID . "'
-																	AND bom.loccode='" . $_SESSION['DefaultFactoryLocation'] . "'");
+					$CostResult = DB_query("SELECT SUM((stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost)*bom.quantity) AS cost
+													FROM stockcosts
+													INNER JOIN bom
+														ON stockcosts.stockid=bom.component
+														AND stockcosts.succeeded=0
+													WHERE bom.parent='" . $StockItem->StockID . "'
+														AND bom.loccode='" . $_SESSION['DefaultFactoryLocation'] . "'");
 					$CostRow = DB_fetch_row($CostResult);
 					if (is_null($CostRow[0]) or $CostRow[0] == 0) {
 						$Cost = 0;
@@ -1439,14 +1441,15 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 				$StandardCost = 0;
 				/*To start with - accumulate the cost of the comoponents for use in journals later on */
 				$SQL = "SELECT bom.component,
-						bom.quantity,
-						stockmaster.materialcost+stockmaster.labourcost+stockmaster.overheadcost AS standard
-						FROM bom,
-							stockmaster
-						WHERE bom.component=stockmaster.stockid
-						AND bom.parent='" . $OrderLine->StockID . "'
-						AND bom.effectiveto > '" . Date('Y-m-d') . "'
-						AND bom.effectiveafter < '" . Date('Y-m-d') . "'";
+								bom.quantity,
+								stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS standard
+							FROM bom
+							INNER JOIN stockcosts
+								ON bom.component=stockcosts.stockid
+								AND SUCCEEDED=0
+							WHERE bom.parent='" . $OrderLine->StockID . "'
+								AND bom.effectiveto > '" . Date('Y-m-d') . "'
+								AND bom.effectiveafter < '" . Date('Y-m-d') . "'";
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('Could not retrieve assembly components from the database for') . ' ' . $OrderLine->StockID . _('because') . ' ';
 				$DbgMsg = _('The SQL that failed was');

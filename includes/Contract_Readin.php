@@ -60,9 +60,13 @@ if (DB_num_rows($ContractHdrResult) == 1 and !isset($_SESSION['Contract' . $iden
 							contractbom.quantity,
 							stockmaster.units,
 							stockmaster.decimalplaces,
-							stockmaster.materialcost+stockmaster.labourcost+stockmaster.overheadcost AS cost
-						FROM contractbom INNER JOIN stockmaster
-						ON contractbom.stockid=stockmaster.stockid
+							stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS cost
+						FROM contractbom
+						INNER JOIN stockmaster
+							ON contractbom.stockid=stockmaster.stockid
+						INNER JOIN stockcosts
+							ON stockmaster.stockid=stockcosts.stockid
+							AND stockcosts.succeeded=0
 						WHERE contractref ='" . $ContractRef . "'";
 
 	$ErrMsg = _('The bill of material cannot be retrieved because');

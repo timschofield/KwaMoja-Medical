@@ -78,20 +78,22 @@ if (isset($_POST['PrintPDF'])) {
 	// show demand for the lower level parts that the upper level part generates. See MRP.php for
 	// more notes - Decided not to exclude derived demand so using $sql, not $sqlexclude
 	$sqlexclude = "SELECT stockmaster.stockid,
-					   stockmaster.description,
-					   stockmaster.mbflag,
-					   stockmaster.actualcost,
-					   stockmaster.decimalplaces,
-					   (stockmaster.materialcost + stockmaster.labourcost +
-						stockmaster.overheadcost ) as computedcost,
-					   demandtotal.demand,
-					   supplytotal.supply,
-					   (demandtotal.demand - supplytotal.supply) *
-					   (stockmaster.materialcost + stockmaster.labourcost +
-						stockmaster.overheadcost ) as extcost
-					FROM stockmaster
-						LEFT JOIN demandtotal ON stockmaster.stockid = demandtotal.part
-						LEFT JOIN supplytotal ON stockmaster.stockid = supplytotal.part
+							stockmaster.description,
+							stockmaster.mbflag,
+							stockmaster.actualcost,
+							stockmaster.decimalplaces,
+							(stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost ) as computedcost,
+							demandtotal.demand,
+							supplytotal.supply,
+							(demandtotal.demand - supplytotal.supply) * (stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost ) as extcost
+						FROM stockmaster
+						INNER JOIN stockcosts
+							ON stockcosts.stockid=stockmaster.stockid
+							AND stockcosts.succeeded=0
+						LEFT JOIN demandtotal
+							ON stockmaster.stockid = demandtotal.part
+						LEFT JOIN supplytotal
+							ON stockmaster.stockid = supplytotal.part
 					  GROUP BY stockmaster.stockid,
 							   stockmaster.description,
 							   stockmaster.mbflag,
@@ -116,30 +118,34 @@ if (isset($_POST['PrintPDF'])) {
 	}
 
 	$sql = "SELECT stockmaster.stockid,
-		stockmaster.description,
-		stockmaster.mbflag,
-		stockmaster.actualcost,
-		stockmaster.decimalplaces,
-		(stockmaster.materialcost + stockmaster.labourcost +
-		 stockmaster.overheadcost ) as computedcost,
-		demandtotal.demand,
-		supplytotal.supply,
-	   (demandtotal.demand - supplytotal.supply) *
-	   (stockmaster.materialcost + stockmaster.labourcost +
-		stockmaster.overheadcost ) as extcost
-		   FROM stockmaster
-			 LEFT JOIN demandtotal ON stockmaster.stockid = demandtotal.part
-			 LEFT JOIN supplytotal ON stockmaster.stockid = supplytotal.part " . $SQLCategory . "GROUP BY stockmaster.stockid,
-			   stockmaster.description,
-			   stockmaster.mbflag,
-			   stockmaster.actualcost,
-			   stockmaster.decimalplaces,
-			   stockmaster.materialcost,
-			   stockmaster.labourcost,
-			   stockmaster.overheadcost,
-			   computedcost,
-			   supplytotal.supply,
-			   demandtotal.demand " . $SQLHaving . " ORDER BY '" . $_POST['Sort'] . "'";
+					stockmaster.description,
+					stockmaster.mbflag,
+					stockmaster.actualcost,
+					stockmaster.decimalplaces,
+					(stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost ) as computedcost,
+					demandtotal.demand,
+					supplytotal.supply,
+					(demandtotal.demand - supplytotal.supply) * (stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost ) as extcost
+				FROM stockmaster
+				INNER JOIN stockcosts
+					ON stockcosts.stockid=stockmaster.stockid
+					AND stockcosts.succeeded=0
+				LEFT JOIN demandtotal
+					ON stockmaster.stockid = demandtotal.part
+				LEFT JOIN supplytotal
+					ON stockmaster.stockid = supplytotal.part " . $SQLCategory . "
+				GROUP BY stockmaster.stockid,
+						stockmaster.description,
+						stockmaster.mbflag,
+						stockmaster.actualcost,
+						stockmaster.decimalplaces,
+						stockcosts.materialcost,
+						stockcosts.labourcost,
+						stockcosts.overheadcost,
+						computedcost,
+						supplytotal.supply,
+						demandtotal.demand " . $SQLHaving . "
+				ORDER BY '" . $_POST['Sort'] . "'";
 	$result = DB_query($sql, '', '', false, true);
 
 	if (DB_error_no() != 0) {

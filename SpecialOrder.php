@@ -409,18 +409,23 @@ if (isset($_POST['Commit'])) {
 			$sql = "INSERT INTO stockmaster (stockid,
 							categoryid,
 							description,
-							longdescription,
-							materialcost)
+							longdescription)
 					VALUES ('" . $PartCode . "',
 						'" . $SPLLine->StkCat . "',
 						'" . $SPLLine->ItemDescription . "',
-						'" . $SPLLine->ItemDescription . "',
-						'" . $SPLLine->Cost . "')";
-
-
+						'" . $SPLLine->ItemDescription . "')";
 			$ErrMsg = _('The item record for line') . ' ' . $SPLLine->LineNo . ' ' . _('could not be created because');
 			$DbgMsg = _('The SQL statement used to insert the item and failed was');
+			$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
 
+			$sql = "INSERT INTO stockcosts ('" . $PartCode . "',
+											'" . $SPLLine->Cost . "',
+											0,
+											0,
+											CURRENT_TIME,
+											0)";
+			$ErrMsg = _('The cost record for line') . ' ' . $SPLLine->LineNo . ' ' . _('could not be created because');
+			$DbgMsg = _('The SQL statement used to insert the item and failed was');
 			$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
 
 			$sql = "INSERT INTO locstock (loccode, stockid)

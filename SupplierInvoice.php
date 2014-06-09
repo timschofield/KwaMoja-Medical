@@ -179,9 +179,10 @@ if (isset($_GET['ReceivePO']) and $_GET['ReceivePO'] != '') {
 					if ($OrderLine->StockID != '') { //Its a stock item line
 
 						/*Need to get the current standard cost as it is now so we can process GL jorunals later*/
-						$SQL = "SELECT materialcost + labourcost + overheadcost as stdcost
-									FROM stockmaster
-									WHERE stockid='" . $OrderLine->StockID . "'";
+						$SQL = "SELECT stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost as stdcost
+									FROM stockcosts
+									WHERE stockid='" . $OrderLine->StockID . "'
+										AND succeeded=0";
 						$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The standard cost of the item being received cannot be retrieved because');
 						$DbgMsg = _('The following SQL to retrieve the standard cost was used');
 						$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
@@ -1680,21 +1681,47 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 							$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The cost could not be updated because');
 							$DbgMsg = _('The following SQL to update the cost was used');
 
+							/* Get the old cost information */
+							$sql = "SELECT stockcosts.materialcost,
+											stockcosts.labourcost,
+											stockcosts.overheadcosts
+										FROM stockcosts
+										WHERE stockid='" . $EnteredGRN->ItemCode . "'
+											AND succeeded=0";
+							$result = DB_query($sql);
+							$myrow = DB_fetch_array($result);
+							$OldMaterialCost = $myrow['materialcost'];
+							$OldLabourCost = $myrow['labourcost'];
+							$OldOverheadCost = $myrow['overheadcost'];
+
 							if ($TotalQuantityOnHand > 0) {
 								$CostIncrement = ($PurchPriceVar - $WriteOffToVariances) / $TotalQuantityOnHand;
 
-								$sql = "UPDATE stockmaster
-										SET lastcost=materialcost+overheadcost+labourcost,
-										materialcost=materialcost+" . $CostIncrement . "
-										WHERE stockid='" . $EnteredGRN->ItemCode . "'";
+								$sql = "UPDATE stockcosts SET succeeded=1
+															WHERE stockid='" . $EnteredGRN->ItemCode . "'
+																AND succeeded=0;";
+								$Result = DB_query($sql, $ErrMsg, $DbgMsg, True);
+
+								$sql = "INSERT INTO stockcosts VALUES('" . $EnteredGRN->ItemCode . "',
+																'" . ($OldMaterialCost + $CostIncrement) . "',
+																'" . $OldLabourCost . "',
+																'" . $OldOverheadCost . "',
+																CURRENT_TIME,
+																0)";
 								$Result = DB_query($sql, $ErrMsg, $DbgMsg, True);
 							} //$TotalQuantityOnHand > 0
 							else {
-								/* if stock is negative then update the cost to this cost */
-								$sql = "UPDATE stockmaster
-										SET lastcost=materialcost+overheadcost+labourcost,
-											materialcost='" . $ActualCost . "'
-										WHERE stockid='" . $EnteredGRN->ItemCode . "'";
+								$sql = "UPDATE stockcosts SET succeeded=1
+															WHERE stockid='" . $EnteredGRN->ItemCode . "'
+																AND succeeded=0;";
+								$Result = DB_query($sql, $ErrMsg, $DbgMsg, True);
+
+								$sql = "INSERT INTO stockcosts VALUES('" . $EnteredGRN->ItemCode . "',
+																	'" . $ActualCost . "',
+																	'" . $OldLabourCost . "',
+																	'" . $OldOverheadCost . "',
+																	CURRENT_TIME,
+																	0)";
 								$Result = DB_query($sql, $ErrMsg, $DbgMsg, True);
 							}
 						} //$_SESSION['WeightedAverageCosting'] == 1

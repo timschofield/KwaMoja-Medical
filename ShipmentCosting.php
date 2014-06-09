@@ -327,26 +327,48 @@ if (DB_num_rows($LineItemsResult) > 0) {
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The cost could not be updated because');
 				$DbgMsg = _('The following SQL to update the cost was used');
 
+				/* Get the old cost information */
+				$sql = "SELECT stockcosts.materialcost,
+								stockcosts.labourcost,
+								stockcosts.overheadcosts
+							FROM stockcosts
+							WHERE stockid='" . $EnteredGRN->ItemCode . "'
+								AND succeeded=0";
+				$result = DB_query($sql);
+				$myrow = DB_fetch_array($result);
+				$OldMaterialCost = $myrow['materialcost'];
+				$OldLabourCost = $myrow['labourcost'];
+				$OldOverheadCost = $myrow['overheadcost'];
 				if ($TotalQuantityOnHand > 0) {
 
 					$CostIncrement = ($myrow['totqtyinvoiced'] * ($ItemShipmentCost - $StdCostUnit) - $WriteOffToVariances) / $TotalQuantityOnHand;
 
-					$sql = "UPDATE stockmaster
-								SET lastcost=materialcost+overheadcost+labourcost,
-									materialcost=materialcost+" . $CostIncrement . ",
-									lastcostupdate='" . Date('Y-m-d') . "'
-							WHERE stockid='" . $myrow['itemcode'] . "'";
+					$sql = "UPDATE stockcosts SET succeeded=1
+												WHERE stockid='" . $myrow['itemcode'] . "'
+													AND succeeded=0;";
+					$Result = DB_query($sql, $ErrMsg, $DbgMsg, True);
 
-					$Result = DB_query($sql, $ErrMsg, $DbgMsg, '', TRUE);
+					$sql = "INSERT INTO stockcosts VALUES('" . $myrow['itemcode'] . "',
+													'" . ($OldMaterialCost + $CostIncrement) . "',
+													'" . $OldLabourCost . "',
+													'" . $OldOverheadCost . "',
+													CURRENT_TIME,
+													0)";
 
 				} else {
-					$sql = "UPDATE stockmaster
-								SET lastcost=materialcost+overheadcost+labourcost,
-									materialcost='" . $ItemShipmentCost . "',
-									lastcostupdate='" . Date('Y-m-d') . "'
-								WHERE stockid='" . $myrow['itemcode'] . "'";
 
-					$Result = DB_query($sql, $ErrMsg, $DbgMsg, '', TRUE);
+					$sql = "UPDATE stockcosts SET succeeded=1
+												WHERE stockid='" . $myrow['itemcode'] . "'
+													AND succeeded=0;";
+					$Result = DB_query($sql, $ErrMsg, $DbgMsg, True);
+
+					$sql = "INSERT INTO stockcosts VALUES('" . $myrow['itemcode'] . "',
+														'" . $ItemShipmentCost . "',
+														'" . $OldLabourCost . "',
+														'" . $OldOverheadCost . "',
+														CURRENT_TIME,
+														0)";
+					$Result = DB_query($sql, $ErrMsg, $DbgMsg, True);
 
 				}
 				/* End of Weighted Average Costing Code */
@@ -457,17 +479,20 @@ if (DB_num_rows($LineItemsResult) > 0) {
 				}
 				/*end of GL entries for a standard cost update */
 
-				/* Only the material cost is important for imported items */
-				$sql = "UPDATE stockmaster SET materialcost=" . $ItemShipmentCost . ",
-												labourcost=0,
-												overheadcost=0,
-												lastcost='" . $StdCostUnit . "',
-												lastcostupdate='" . Date('Y-m-d') . "'
-										WHERE stockid='" . $myrow['itemcode'] . "'";
-
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The shipment cost details for the stock item could not be updated because') . ': ' . DB_error_msg();
 
-				$result = DB_query($sql, $ErrMsg, '', TRUE);
+				$sql = "UPDATE stockcosts SET succeeded=1
+											WHERE stockid='" . $myrow['itemcode'] . "'
+												AND succeeded=0;";
+				$Result = DB_query($sql, $ErrMsg, $DbgMsg, True);
+
+				$sql = "INSERT INTO stockcosts VALUES('" . $myrow['itemcode'] . "',
+													'" . $ItemShipmentCost . "',
+													'0',
+													'0',
+													CURRENT_TIME,
+													0)";
+				$Result = DB_query($sql, $ErrMsg, $DbgMsg, True);
 
 			} // end of update cost code
 		} // end of Close shipment item updates

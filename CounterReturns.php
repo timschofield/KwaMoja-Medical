@@ -1022,14 +1022,15 @@ if (isset($_POST['ProcessReturn']) and $_POST['ProcessReturn'] != '') {
 				$StandardCost = 0;
 				/*To start with - accumulate the cost of the comoponents for use in journals later on */
 				$SQL = "SELECT bom.component,
-						bom.quantity,
-						stockmaster.materialcost+stockmaster.labourcost+stockmaster.overheadcost AS standard
-						FROM bom,
-							stockmaster
-						WHERE bom.component=stockmaster.stockid
-						AND bom.parent='" . $ReturnItemLine->StockID . "'
-						AND bom.effectiveto > '" . Date('Y-m-d') . "'
-						AND bom.effectiveafter < '" . Date('Y-m-d') . "'";
+								bom.quantity,
+								stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS standard
+							FROM bom
+							INNER JOIN stockcosts
+								ON bom.component=stockcosts.stockid
+								AND stockcosts.succeeded=0
+							WHERE bom.parent='" . $ReturnItemLine->StockID . "'
+								AND bom.effectiveto > '" . Date('Y-m-d') . "'
+								AND bom.effectiveafter < '" . Date('Y-m-d') . "'";
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('Could not retrieve assembly components from the database for') . ' ' . $ReturnItemLine->StockID . _('because') . ' ';
 				$DbgMsg = _('The SQL that failed was');

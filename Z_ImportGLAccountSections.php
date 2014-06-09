@@ -12,8 +12,8 @@ $result = DB_query($sql);
 $myrow = DB_fetch_array($result);
 $password = $myrow[0];
 
-$ServerURL = 'http://' . $_SERVER['HTTP_HOST'] . $RootPath . '/api/api_xml-rpc.php';
-$DebugLevel = 0; //Set to 0,1, or 2 with 2 being the highest level of debug info
+$ServerURL = 'http://www.weberp.org/weberp/api/api_xml-rpc.php';
+$DebugLevel = 2; //Set to 0,1, or 2 with 2 being the highest level of debug info
 
 
 if (isset($_POST['update'])) {

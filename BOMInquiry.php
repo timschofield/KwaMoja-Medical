@@ -154,14 +154,18 @@ if (isset($StockID) and $StockID != "") {
 					bom.component,
 					stockmaster.description,
 					stockmaster.decimalplaces,
-					stockmaster.materialcost+ stockmaster.labourcost+stockmaster.overheadcost as standardcost,
+					stockcosts.materialcost+ stockcosts.labourcost+stockcosts.overheadcost as standardcost,
 					bom.quantity,
-					bom.quantity * (stockmaster.materialcost+ stockmaster.labourcost+ stockmaster.overheadcost) AS componentcost
-			FROM bom INNER JOIN stockmaster
-			ON bom.component = stockmaster.stockid
-			WHERE bom.parent = '" . $StockID . "'
-			AND bom.effectiveafter < Now()
-			AND bom.effectiveto > Now()";
+					bom.quantity * (stockcosts.materialcost+ stockcosts.labourcost+ stockcosts.overheadcost) AS componentcost
+				FROM bom
+				INNER JOIN stockmaster
+					ON bom.component = stockmaster.stockid
+				INNER JOIN stockcosts
+					ON stockmaster.stockid=stockcosts.stockid
+					AND stockcosts.succeeded=0
+				WHERE bom.parent = '" . $StockID . "'
+					AND bom.effectiveafter < CURRENT_DATE
+					AND bom.effectiveto > CURRENT_DATE";
 
 	$ErrMsg = _('The bill of material could not be retrieved because');
 	$BOMResult = DB_query($sql, $ErrMsg);

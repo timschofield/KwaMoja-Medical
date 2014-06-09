@@ -257,12 +257,15 @@ if (isset($_POST['submit'])) {
 			$sql = "SELECT mbflag,
 							controlled,
 							serialised,
-							materialcost+labourcost+overheadcost AS itemcost,
+							stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS itemcost,
 							stockcategory.stockact,
 							stockcategory.wipact
 					FROM stockmaster
 					INNER JOIN stockcategory
-					ON stockmaster.categoryid=stockcategory.categoryid
+						ON stockmaster.categoryid=stockcategory.categoryid
+					INNER JOIN stockcosts
+						ON stockmaster.stockid=stockcosts.stockid
+							AND succeeded=0
 					WHERE stockid = '" . $StockID . "'";
 			$MBFlagResult = DB_query($sql);
 			$myrow = DB_fetch_row($MBFlagResult);

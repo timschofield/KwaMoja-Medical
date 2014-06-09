@@ -362,12 +362,23 @@ if (isset($_POST['CommitContract']) or isset($_POST['CreateQuotation'])) {
 
 			$sql = "UPDATE stockmaster SET description='" . $_SESSION['Contract' . $identifier]->ContractDescription . "',
 											longdescription='" . $_SESSION['Contract' . $identifier]->ContractDescription . "',
-											categoryid = '" . $_SESSION['Contract' . $identifier]->CategoryID . "',
-											materialcost= '" . $ContractCost . "'
+											categoryid = '" . $_SESSION['Contract' . $identifier]->CategoryID . "'
 										WHERE stockid ='" . $_SESSION['Contract' . $identifier]->ContractRef . "'";
 			$ErrMsg = _('The contract item could not be updated because');
 			$DbgMsg = _('The SQL that was used to update the contract item failed was');
 			$InsertNewItemResult = DB_query($sql, $ErrMsg, $DbgMsg);
+
+			$sql = "UPDATE stockcosts SET succeeded=1
+									WHERE stockid='" . $_SESSION['Contract' . $identifier]->ContractRef . "'
+										AND succeeded=0";
+			$result = DB_query($sql);
+			$sql = "INSERT INTO stockcosts VALUES ('" . $_SESSION['Contract' . $identifier]->ContractRef . "',
+												'" . $ContractCost . "',
+												0,
+												0,
+												CURRENT_TIME,
+												0)";
+			$result = DB_query($sql);
 
 			//update the quotation
 			$sql = "UPDATE salesorderdetails
@@ -475,18 +486,27 @@ if (isset($_POST['CreateQuotation']) and !$InputError) {
 										longdescription,
 										categoryid,
 										mbflag,
-										taxcatid,
-										materialcost)
+										taxcatid)
 							VALUES ('" . $_SESSION['Contract' . $identifier]->ContractRef . "',
 									'" . $_SESSION['Contract' . $identifier]->ContractDescription . "',
 									'" . $_SESSION['Contract' . $identifier]->ContractDescription . "',
 									'" . $_SESSION['Contract' . $identifier]->CategoryID . "',
 									'M',
-									'" . $_SESSION['DefaultTaxCategory'] . "',
-									'" . $ContractCost . "')";
+									'" . $_SESSION['DefaultTaxCategory'] . "')";
 		$ErrMsg = _('The new contract item could not be added because');
 		$DbgMsg = _('The SQL that was used to insert the contract item failed was');
 		$InsertNewItemResult = DB_query($sql, $ErrMsg, $DbgMsg);
+
+		$sql = "INSERT INTO stockcosts VALUES ( '" . $_SESSION['Contract' . $identifier]->ContractRef . "',
+												'" . $ContractCost . "',
+												0,
+												0,
+												CURRENT_TIME,
+												0)";
+		$ErrMsg = _('The new contract costs could not be added because');
+		$DbgMsg = _('The SQL that was used to insert the contract costs failed was');
+		$InsertItemCostResult = DB_query($sql, $ErrMsg, $DbgMsg);
+
 		$sql = "INSERT INTO locstock (loccode,
 										stockid)
 						SELECT locations.loccode,

@@ -466,25 +466,26 @@ if (isset($_POST['submit'])) {
 					}
 					//What about cost data?
 					//get any existing cost data
-					$sql = "SELECT materialcost,
-									labourcost,
-									overheadcost,
-									lastcost
-							FROM stockmaster
-							WHERE stockmaster.stockid='" . $_POST['OldStockID'] . "'";
+					$sql = "SELECT stockcosts.materialcost,
+									stockcosts.labourcost,
+									stockcosts.overheadcost
+							FROM stockcosts
+							WHERE stockcosts.stockid='" . $_POST['OldStockID'] . "'
+								AND succeeded=0";
 					$ErrMsg = _('The entered item code does not exist');
 					$OldResult = DB_query($sql, $ErrMsg);
 					$OldRow = DB_fetch_array($OldResult);
 
 					//now update cloned item costs
 					$Result = DB_Txn_Begin();
-					$SQL = "UPDATE stockmaster SET	materialcost='" . $OldRow['materialcost'] . "',
-										labourcost     ='" . $OldRow['labourcost'] . "',
-										overheadcost   ='" . $OldRow['overheadcost'] . "',
-										lastcost       ='" . $OldRow['lastcost'] . "',
-										lastcostupdate ='" . Date('Y-m-d') . "'
-								WHERE stockid='" . $_POST['StockID'] . "'";
-					$ErrMsg = _('The cost details for the cloned stock item could not be updated because');
+
+					$SQL = "INSERT INTO stockcosts VALUES ('" . $_POST['StockID'] . "',
+															'" . $OldRow['materialcost'] . "',
+															'" . $OldRow['labourcost'] . "',
+															'" . $OldRow['overheadcost'] . "',
+															CURRENT_TIME,
+															0)";
+					$ErrMsg = _('The cost details for the cloned stock item could not be inserted because');
 					$DbgMsg = _('The SQL that failed was');
 					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 					$Result = DB_Txn_Commit();

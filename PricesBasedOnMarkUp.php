@@ -250,8 +250,11 @@ if (isset($_POST['UpdatePrices'])) {
 			$SQLEndDate = '0000-00-00';
 		}
 		$sql = "SELECT stockid,
-						materialcost+labourcost+overheadcost AS cost
+						stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS cost
 				FROM stockmaster
+				INNER JOIN stockcosts
+					ON stockmaster.stockid=stockcosts.stockid
+					AND stockcosts.succeeded=0
 				WHERE categoryid>='" . $_POST['StkCatFrom'] . "'
 				AND categoryid <='" . $_POST['StkCatTo'] . "'";
 		$PartsResult = DB_query($sql);

@@ -496,11 +496,13 @@ if (isset($OK_to_PROCESS) and $OK_to_PROCESS == 1 and $_SESSION['ExistingOrder' 
 										'" . Date('Y-m-d') . "',
 										'" . Date('Y-m-d') . "')", $ErrMsg, $DbgMsg, true);
 				//Need to get the latest BOM to roll up cost
-				$CostResult = DB_query("SELECT SUM((materialcost+labourcost+overheadcost)*bom.quantity) AS cost
-													FROM stockmaster INNER JOIN bom
-													ON stockmaster.stockid=bom.component
+				$CostResult = DB_query("SELECT SUM((stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost)*bom.quantity) AS cost
+													FROM stockcosts
+													INNER JOIN bom
+														ON stockcosts.stockid=bom.component
+														AND stockcosts.succeeded=0
 													WHERE bom.parent='" . $StockItem->StockID . "'
-													AND bom.loccode='" . $_SESSION['DefaultFactoryLocation'] . "'");
+														AND bom.loccode='" . $_SESSION['DefaultFactoryLocation'] . "'");
 				$CostRow = DB_fetch_row($CostResult);
 				if (is_null($CostRow[0]) or $CostRow[0] == 0) {
 					$Cost = 0;
@@ -692,9 +694,11 @@ elseif (isset($OK_to_PROCESS) and ($OK_to_PROCESS == 1 and $_SESSION['ExistingOr
 													'" . $ContractRow['requireddate'] . "',
 													'" . Date('Y-m-d') . "')", $ErrMsg, $DbgMsg);
 			//Need to get the latest BOM to roll up cost but also add the contract other requirements
-			$CostResult = DB_query("SELECT SUM((materialcost+labourcost+overheadcost)*contractbom.quantity) AS cost
-									FROM stockmaster INNER JOIN contractbom
-									ON stockmaster.stockid=contractbom.stockid
+			$CostResult = DB_query("SELECT SUM((stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost)*contractbom.quantity) AS cost
+									FROM stockcosts
+									INNER JOIN contractbom
+										ON stockcosts.stockid=contractbom.stockid
+										AND stockcosts.succeeded=0
 									WHERE contractbom.contractref='" . $ContractRow['contractref'] . "'");
 			$CostRow = DB_fetch_row($CostResult);
 			if (is_null($CostRow[0]) or $CostRow[0] == 0) {

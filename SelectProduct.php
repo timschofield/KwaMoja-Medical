@@ -61,16 +61,20 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 								stockmaster.decimalplaces,
 								stockmaster.controlled,
 								stockmaster.serialised,
-								stockmaster.materialcost+stockmaster.labourcost+stockmaster.overheadcost AS cost,
+								stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS cost,
 								stockmaster.discontinued,
 								stockmaster.eoq,
 								stockmaster.volume,
 								stockmaster.grossweight,
 								stockcategory.categorydescription,
 								stockmaster.categoryid
-						FROM stockmaster INNER JOIN stockcategory
-						ON stockmaster.categoryid=stockcategory.categoryid
-						WHERE stockid='" . $StockID . "'");
+						FROM stockmaster
+						INNER JOIN stockcategory
+							ON stockmaster.categoryid=stockcategory.categoryid
+						INNER JOIN stockcosts
+							ON stockmaster.stockid=stockcosts.stockid
+							AND stockcosts.succeeded=0
+						WHERE stockcosts.stockid='" . $StockID . "'");
 	$myrow = DB_fetch_array($result);
 	$Its_A_Kitset_Assembly_Or_Dummy = false;
 	$Its_A_Dummy = false;
@@ -156,12 +160,14 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 									AND startdate <= '" . Date('Y-m-d') . "' AND ( enddate >= '" . Date('Y-m-d') . "' OR enddate = '0000-00-00')
 									AND stockid='" . $StockID . "'");
 		if ($myrow['mbflag'] == 'K' or $myrow['mbflag'] == 'A') {
-			$CostResult = DB_query("SELECT SUM(bom.quantity * (stockmaster.materialcost+stockmaster.labourcost+stockmaster.overheadcost)) AS cost
-									FROM bom INNER JOIN stockmaster
-									ON bom.component=stockmaster.stockid
+			$CostResult = DB_query("SELECT SUM(bom.quantity * (stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost)) AS cost
+									FROM bom
+									INNER JOIN stockcosts
+										ON bom.component=stockcosts.stockid
+										AND stockcosts.succeeded=0
 									WHERE bom.parent='" . $StockID . "'
-									AND bom.effectiveto > '" . Date('Y-m-d') . "'
-									AND bom.effectiveafter < '" . Date('Y-m-d') . "'");
+										AND bom.effectiveto > CURRENT_DATE
+										AND bom.effectiveafter < CURRENT_DATE");
 			$CostRow = DB_fetch_row($CostResult);
 			$Cost = $CostRow[0];
 		} else {
@@ -190,13 +196,14 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 			}
 		}
 		if ($myrow['mbflag'] == 'K' or $myrow['mbflag'] == 'A') {
-			$CostResult = DB_query("SELECT SUM(bom.quantity * (stockmaster.materialcost+stockmaster.labourcost+stockmaster.overheadcost)) AS cost
-									FROM bom INNER JOIN
-										stockmaster
-									ON bom.component=stockmaster.stockid
+			$CostResult = DB_query("SELECT SUM(bom.quantity * (stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost)) AS cost
+									FROM bom
+									INNER JOIN stockcosts
+										ON bom.component=stockcosts.stockid
+										AND stockcosts.succeeded=0
 									WHERE bom.parent='" . $StockID . "'
-									AND bom.effectiveto > '" . Date('Y-m-d') . "'
-									AND bom.effectiveafter < '" . Date('Y-m-d') . "'");
+										AND bom.effectiveto > CURRENT_DATE
+										AND bom.effectiveafter < CURRENT_DATE");
 			$CostRow = DB_fetch_row($CostResult);
 			$Cost = $CostRow[0];
 		} else {

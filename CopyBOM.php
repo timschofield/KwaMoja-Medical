@@ -41,9 +41,6 @@ if (isset($_POST['Submit'])) {
 									mbflag,
 									actualcost,
 									lastcost,
-									materialcost,
-									labourcost,
-									overheadcost,
 									lowestlevel,
 									discontinued,
 									controlled,
@@ -69,9 +66,6 @@ if (isset($_POST['Submit'])) {
 									mbflag,
 									actualcost,
 									lastcost,
-									materialcost,
-									labourcost,
-									overheadcost,
 									lowestlevel,
 									discontinued,
 									controlled,
@@ -92,29 +86,34 @@ if (isset($_POST['Submit'])) {
 							FROM stockmaster
 							WHERE stockid='" . $StockID . "';";
 			$result = DB_query($sql);
-		} else {
-			$sql = "SELECT lastcostupdate,
-							actualcost,
-							lastcost,
-							materialcost,
-							labourcost,
-							overheadcost,
-							lowestlevel
-						FROM stockmaster
-						WHERE stockid='" . $StockID . "';";
+			/* duplicate rows into stockcosts */
+			$sql = "INSERT INTO stockcosts VALUES ( SELECT  '" . $NewStockID . "',
+															stockcosts.materialcost,
+															stockcosts.labourcost,
+															stockcosts.overheadcost,
+															CURRENT_TIME,
+															0
+														FROM stockcosts
+														WHERE  stockcosts.stockid='" . $StockID . "'
+															AND stockcosts.succeeded=0)";
 			$result = DB_query($sql);
 
-			$myrow = DB_fetch_row($result);
+		} else {
 
-			$sql = "UPDATE stockmaster set
-					lastcostupdate  = " . $myrow[0] . ",
-					actualcost      = " . $myrow[1] . ",
-					lastcost        = " . $myrow[2] . ",
-					materialcost    = " . $myrow[3] . ",
-					labourcost      = " . $myrow[4] . ",
-					overheadcost    = " . $myrow[5] . ",
-					lowestlevel     = " . $myrow[6] . "
-					WHERE stockid='" . $NewStockID . "';";
+			$sql = "UPDATE stockcosts SET succeded=1
+									WHERE stockid='" . $NewStockID . "'
+										AND succeeded=0";
+			$result = DB_query($sql);
+
+			$sql = "INSERT INTO stockcosts VALUES ( SELECT  '" . $NewStockID . "',
+															stockcosts.materialcost,
+															stockcosts.labourcost,
+															stockcosts.overheadcost,
+															CURRENT_TIME,
+															0
+														FROM stockcosts
+														WHERE  stockcosts.stockid='" . $StockID . "'
+															AND stockcosts.succeeded=0)";
 			$result = DB_query($sql);
 		}
 
@@ -204,7 +203,7 @@ if (isset($_POST['Submit'])) {
 		echo '</select></td></tr>';
 	}
 	echo '</table>';
-	echo '<br /><div class="centre"><input type="submit" name="Submit" value="Submit" /></div>
+	echo '<div class="centre"><input type="submit" name="Submit" value="Submit" /></div>
 		  </form>';
 
 	include('includes/footer.inc');

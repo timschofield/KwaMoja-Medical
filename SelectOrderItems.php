@@ -218,12 +218,16 @@ if (isset($_GET['ModifyOrderNumber']) and $_GET['ModifyOrderNumber'] != '') {
 								stockmaster.mbflag,
 								stockmaster.discountcategory,
 								stockmaster.decimalplaces,
-								stockmaster.materialcost+stockmaster.labourcost+stockmaster.overheadcost AS standardcost,
+								stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS standardcost,
 								salesorderdetails.completed
 							FROM salesorderdetails
 							INNER JOIN stockmaster
 								ON salesorderdetails.stkcode = stockmaster.stockid
-							INNER JOIN locstock ON locstock.stockid = stockmaster.stockid
+							INNER JOIN stockcosts
+								ON stockcosts.stockid = stockmaster.stockid
+								AND stockcosts.succeeded=0
+							INNER JOIN locstock
+								ON locstock.stockid = stockmaster.stockid
 							WHERE  locstock.loccode = '" . $myrow['fromstkloc'] . "'
 								AND salesorderdetails.orderno ='" . $_GET['ModifyOrderNumber'] . "'
 							ORDER BY salesorderdetails.orderlineno";
@@ -887,15 +891,14 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $id
 				$NBV = $AssetRow['nbv'];
 			}
 			/*OK now we can insert the item for this asset */
-			$InsertAssetAsStockItemResult = DB_query("INSERT INTO stockmaster ( stockid,
+			$InsertAssetAsStockItemSQL = "INSERT INTO stockmaster ( stockid,
 																				description,
 																				longdescription,
 																				categoryid,
 																				mbflag,
 																				controlled,
 																				serialised,
-																				taxcatid,
-																				materialcost)
+																				taxcatid)
 										VALUES ('" . $AssetStockID . "',
 												'" . DB_escape_string($AssetRow['description']) . "',
 												'" . DB_escape_string($AssetRow['longdescription']) . "',
@@ -903,8 +906,17 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $id
 												'D',
 												'0',
 												'0',
-												'" . $_SESSION['DefaultTaxCategory'] . "',
-												'" . $NBV . "')");
+												'" . $_SESSION['DefaultTaxCategory'] . "')";
+			$InsertAssetAsStockItemResult = DB_query($InsertAssetAsStockItemSQL);
+
+			$InserAssetCostsSQL = "INSERT INTO stockcosts VALUES('" . $AssetStockID . "',
+																'" . $NBV . "',
+																0,
+																0,
+																CURRENT_TIME,
+																0)";
+			$InsertAssetCostsResult = DB_query($InserAssetCostsSQL);
+
 			/*not forgetting the location records too */
 			$InsertStkLocRecsResult = DB_query("INSERT INTO locstock (loccode,
 																	stockid)

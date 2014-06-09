@@ -131,11 +131,14 @@ if (isset($_POST['Process'])) { //user hit the process the work order issues ent
 	} //end batch/lot controlled item
 
 	//Need to get the current standard cost for the item being issued
-	$SQL = "SELECT materialcost+labourcost+overheadcost AS cost,
-					controlled,
-					serialised,
-					mbflag
+	$SQL = "SELECT stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS cost,
+					stockmaster.controlled,
+					stockmaster.serialised,
+					stockmaster.mbflag
 			FROM stockmaster
+			INNER JOIN stockcosts
+				ON stockcosts.stockid=stockmaster.stockid
+					AND stockcosts.succeeded=0
 			WHERE stockid='" . $_POST['IssueItem'] . "'";
 	$Result = DB_query($SQL);
 	$IssueItemRow = DB_fetch_array($Result);

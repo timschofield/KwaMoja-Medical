@@ -20,9 +20,13 @@ if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 		$sql = "SELECT stockcheckfreeze.stockid,
 						stockcheckfreeze.loccode,
 						qoh,
-						materialcost+labourcost+overheadcost AS standardcost
-				FROM stockmaster INNER JOIN stockcheckfreeze
-				ON stockcheckfreeze.stockid=stockmaster.stockid
+						stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS standardcost
+				FROM stockmaster
+				INNER JOIN stockcheckfreeze
+					ON stockcheckfreeze.stockid=stockmaster.stockid
+				INNER JOIN stockcosts
+					ON stockcosts.stockid=stockmaster.stockid
+					AND stockcosts.succeeded=0
 				ORDER BY stockcheckfreeze.loccode,
 						stockcheckfreeze.stockid";
 

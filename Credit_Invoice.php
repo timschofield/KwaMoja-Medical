@@ -128,15 +128,17 @@ if (!isset($_GET['InvoiceNumber']) and !$_SESSION['ProcessingCredit']) {
 								stockmoves.qty as quantity,
 								stockmoves.discountpercent,
 								stockmoves.trandate,
-								stockmaster.materialcost
-									+ stockmaster.labourcost
-									+ stockmaster.overheadcost AS standardcost,
+								stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost AS standardcost,
 								stockmoves.narrative
-							FROM stockmoves, stockmaster
-							WHERE stockmoves.stockid = stockmaster.stockid
-							AND stockmoves.transno ='" . $_GET['InvoiceNumber'] . "'
-							AND stockmoves.type=10
-							AND stockmoves.show_on_inv_crds=1";
+							FROM stockmoves
+							INNER JOIN stockmaster
+								ON stockmoves.stockid = stockmaster.stockid
+							INNER JOIN stockcosts
+								ON stockcosts.stockid=stockmaster.stockid
+								AND stockcosts.succeeded=0
+							WHERE stockmoves.transno ='" . $_GET['InvoiceNumber'] . "'
+								AND stockmoves.type=10
+								AND stockmoves.show_on_inv_crds=1";
 
 		$ErrMsg = _('This invoice can not be credited using this program') . '. ' . _('A manual credit note will need to be prepared') . '. ' . _('The line items of the order cannot be retrieved because');
 		$Dbgmsg = _('The SQL used to get the transaction header was');
@@ -723,15 +725,14 @@ if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 					/*To start with - accumulate the cost of the comoponents for use in journals later on */
 					$sql = "SELECT	bom.component,
 									bom.quantity,
-								stockmaster.materialcost
-									+ stockmaster.labourcost
-									+ stockmaster.overheadcost AS standard
-								FROM bom,
-									stockmaster
-								WHERE bom.component=stockmaster.stockid
-								AND bom.parent='" . $CreditLine->StockID . "'
-								AND bom.effectiveto > '" . Date('Y-m-d') . "'
-								AND bom.effectiveafter < '" . Date('Y-m-d') . "'";
+									stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost AS standard
+								FROM bom
+								INNER JOIN stockcosts
+									ON stockcosts.stockid=bom.component
+									AND stockcosts.succeeded=0
+								WHERE bom.parent='" . $CreditLine->StockID . "'
+									AND bom.effectiveto > CURRENT_DATE
+									AND bom.effectiveafter < CURRENT_DATE";
 
 					$ErrMsg = _('Could not retrieve assembly components from the database for') . ' ' . $CreditLine->StockID . ' ' . _('because');
 					$DbgMsg = _('The SQL that failed was');

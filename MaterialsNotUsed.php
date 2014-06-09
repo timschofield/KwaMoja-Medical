@@ -11,14 +11,17 @@ include('includes/header.inc');
 $SQL = "SELECT stockmaster.stockid,
 				stockmaster.description,
 				stockmaster.decimalplaces,
-				(stockmaster.materialcost + stockmaster.labourcost + stockmaster.overheadcost) AS stdcost,
+				(stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost) AS stdcost,
 				(SELECT SUM(quantity)
 				FROM locstock
 				WHERE locstock.stockid = stockmaster.stockid) AS qoh
-		FROM stockmaster,
-			stockcategory
-		WHERE stockmaster.categoryid = stockcategory.categoryid
-			AND stockcategory.stocktype = 'M'
+		FROM stockmaster
+		INNER JOIN stockcosts
+			ON stockcosts.stockid=stockmater.stockid
+			AND stockcosts.succeeded=0
+		INNER JOIN stockcategory
+			ON stockmaster.categoryid = stockcategory.categoryid
+		WHERE stockcategory.stocktype = 'M'
 			AND stockmaster.discontinued = 0
 			AND NOT EXISTS(
 				SELECT *

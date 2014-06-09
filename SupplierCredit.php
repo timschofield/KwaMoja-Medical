@@ -943,19 +943,47 @@ if (isset($_POST['PostCreditNote'])) {
 								$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The cost could not be updated because');
 								$DbgMsg = _('The following SQL to update the cost was used');
 
+								/* Get the old cost information */
+								$sql = "SELECT stockcosts.materialcost,
+												stockcosts.labourcost,
+												stockcosts.overheadcosts
+											FROM stockcosts
+											WHERE stockid='" . $EnteredGRN->ItemCode . "'
+												AND succeeded=0";
+								$result = DB_query($sql);
+								$myrow = DB_fetch_array($result);
+								$OldMaterialCost = $myrow['materialcost'];
+								$OldLabourCost = $myrow['labourcost'];
+								$OldOverheadCost = $myrow['overheadcost'];
+
 								if ($TotalQuantityOnHand > 0) {
 
 									$CostIncrement = ($PurchPriceVar - $WriteOffToVariances) / $TotalQuantityOnHand;
 
-									$sql = "UPDATE stockmaster SET lastcost=materialcost+overheadcost+labourcost,
+									$sql = "UPDATE stockcosts SET succeeded=1
+																WHERE stockid='" . $EnteredGRN->ItemCode . "'
+																	AND succeeded=0;";
+									$Result = DB_query($sql, $ErrMsg, $DbgMsg, True);
 
-									materialcost=materialcost+" . $CostIncrement . "
-									WHERE stockid='" . $EnteredGRN->ItemCode . "'";
-
+									$sql = "INSERT INTO stockcosts VALUES('" . $EnteredGRN->ItemCode . "',
+																	'" . ($OldMaterialCost + $CostIncrement) . "',
+																	'" . $OldLabourCost . "',
+																	'" . $OldOverheadCost . "',
+																	CURRENT_TIME,
+																	0)";
 									$Result = DB_query($sql, $ErrMsg, $DbgMsg, True);
 								} else {
-									$sql = "UPDATE stockmaster SET lastcost=materialcost+overheadcost+labourcost,
-																	materialcost=" . ($EnteredGRN->ChgPrice / $_SESSION['SuppTrans']->ExRate) . " WHERE stockid='" . $EnteredGRN->ItemCode . "'";
+									$sql = "UPDATE stockcosts SET succeeded=1
+																WHERE stockid='" . $EnteredGRN->ItemCode . "'
+																	AND succeeded=0;";
+									$Result = DB_query($sql, $ErrMsg, $DbgMsg, True);
+
+									$sql = "INSERT INTO stockcosts VALUES('" . $EnteredGRN->ItemCode . "',
+																	'" . ($EnteredGRN->ChgPrice / $_SESSION['SuppTrans']->ExRate) . "',
+																	'" . $OldLabourCost . "',
+																	'" . $OldOverheadCost . "',
+																	CURRENT_TIME,
+																	0)";
 									$Result = DB_query($sql, $ErrMsg, $DbgMsg, True);
 								}
 								/* End of Weighted Average Costing Code */

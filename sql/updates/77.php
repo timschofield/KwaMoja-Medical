@@ -7,7 +7,7 @@ CreateTable('bankaccountusers',
   PRIMARY KEY (accountcode,userid)
 )");
 
-$sql = "INSERT INTO bankaccountusers (SELECT bankaccounts.accountcode, www_users.userid FROM bankaccounts, www_users)";
+$sql = "INSERT IGNORE INTO bankaccountusers (SELECT bankaccounts.accountcode, www_users.userid FROM bankaccounts, www_users)";
 $result = DB_query($sql);
 
 NewScript('BankAccountUsers.php', 15);

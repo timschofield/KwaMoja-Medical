@@ -149,7 +149,7 @@ Class WOItem {
 
 	function WOItem($StockID, $Comments, $QuantityRequired, $QuantityReceived, $NextLotSerialNumber, $LocationCode, $NumberOfItems) {
 
-		$StockResult = DB_query("SELECT materialcost+labourcost+overheadcost AS cost,
+		$StockResult = DB_query("SELECT stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS cost,
 										stockmaster.description,
 										stockmaster.decimalplaces,
 										stockmaster.controlled,
@@ -157,6 +157,9 @@ Class WOItem {
 									FROM stockmaster
 									INNER JOIN bom
 										ON stockmaster.stockid=bom.parent
+									INNER JOIN stockcosts
+										ON stockmaster.stockid=stockcosts.stockid
+										AND stockcosts.succeeded=0
 									WHERE bom.parent='" . $StockID . "'");
 		$StockRow = DB_fetch_array($StockResult);
 		$StandardCost = $StockRow['cost'] * $QuantityRequired;
@@ -184,12 +187,15 @@ Class WOItem {
 										bom.autoissue,
 										description,
 										decimalplaces,
-										materialcost,
-										labourcost,
-										overheadcost
+										stockcosts.materialcost,
+										stockcosts.labourcost,
+										stockcosts.overheadcost
 									FROM bom
 									INNER JOIN stockmaster
 										ON stockmaster.stockid=bom.component
+									INNER JOIN stockcosts
+										ON stockmaster.stockid=stockcosts.stockid
+										AND stockcosts.succeeded=0
 									WHERE bom.parent='" . $StockID . "'
 										AND bom.loccode='" . $LocationCode . "'");
 		while ($BOMRow = DB_fetch_array($BOMResult)) {
@@ -253,12 +259,15 @@ Class WOItem {
 										bom.autoissue,
 										description,
 										decimalplaces,
-										materialcost,
-										labourcost,
-										overheadcost
+										stockcosts.materialcost,
+										stockcosts.labourcost,
+										stockcosts.overheadcost
 									FROM bom
 									INNER JOIN stockmaster
 										ON stockmaster.stockid=bom.component
+									INNER JOIN stockcosts
+										ON stockmaster.stockid=stockcosts.stockid
+										AND stockcosts.succeeded=0
 									WHERE bom.parent='" . $this->StockID . "'
 										AND bom.loccode='" . $LocationCode . "'");
 		while ($BOMRow = DB_fetch_array($BOMResult)) {

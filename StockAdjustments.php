@@ -46,10 +46,13 @@ if ($NewAdjustment == true) {
 							serialised,
 							decimalplaces,
 							perishable,
-							materialcost+labourcost+overheadcost AS totalcost,
+							stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS totalcost,
 							units
 						FROM stockmaster
-						WHERE stockid='" . $_SESSION['Adjustment' . $identifier]->StockID . "'");
+						INNER JOIN stockcosts
+							ON stockmaster.stockid=stockcosts.stockid
+							AND stockcosts.succeeded=0
+						WHERE stockcosts.stockid='" . $_SESSION['Adjustment' . $identifier]->StockID . "'");
 	$myrow = DB_fetch_array($result);
 	$_SESSION['Adjustment' . $identifier]->ItemDescription = $myrow['description'];
 	$_SESSION['Adjustment' . $identifier]->Controlled = $myrow['controlled'];
@@ -412,13 +415,16 @@ if (!isset($_SESSION['Adjustment' . $identifier])) {
 	$StockID = $_SESSION['Adjustment' . $identifier]->StockID;
 	$Controlled = $_SESSION['Adjustment' . $identifier]->Controlled;
 	$Quantity = $_SESSION['Adjustment' . $identifier]->Quantity;
-	$sql = "SELECT materialcost,
-				labourcost,
-				overheadcost,
+	$sql = "SELECT stockcosts.materialcost,
+				stockcosts.labourcost,
+				stockcosts.overheadcost,
 				units,
 				decimalplaces
 			FROM stockmaster
-			WHERE stockid='" . $StockID . "'";
+			INNER JOIN stockcosts
+				ON stockmaster.stockid=stockcosts.stockid
+				AND stockcosts.succeeded=0
+			WHERE stockcosts.stockid='" . $StockID . "'";
 
 	$result = DB_query($sql);
 	$myrow = DB_fetch_array($result);
@@ -426,11 +432,10 @@ if (!isset($_SESSION['Adjustment' . $identifier])) {
 	$_SESSION['Adjustment' . $identifier]->StandardCost = $myrow['materialcost'] + $myrow['labourcost'] + $myrow['overheadcost'];
 	$DecimalPlaces = $myrow['decimalplaces'];
 }
-echo '<br />
-	<table class="selection">
-	<tr>
-		<th colspan="4"><h3>' . _('Adjustment Details') . '</h3></th>
-	</tr>';
+echo '<table class="selection">
+		<tr>
+			<th colspan="4"><h3>' . _('Adjustment Details') . '</h3></th>
+		</tr>';
 if (!isset($_GET['Description'])) {
 	$_GET['Description'] = '';
 }

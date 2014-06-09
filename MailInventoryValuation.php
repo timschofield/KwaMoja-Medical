@@ -82,13 +82,16 @@ if ($Location == 'All') {
 				stockmaster.stockid,
 				stockmaster.description,
 				SUM(locstock.quantity) as qtyonhand,
-				stockmaster.materialcost + stockmaster.labourcost + stockmaster.overheadcost AS unitcost,
-				SUM(locstock.quantity) *(stockmaster.materialcost + stockmaster.labourcost + stockmaster.overheadcost) AS itemtotal
-			FROM stockmaster,
-				stockcategory,
-				locstock
-			WHERE stockmaster.stockid=locstock.stockid
-			AND stockmaster.categoryid=stockcategory.categoryid
+				stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost AS unitcost,
+				SUM(locstock.quantity) *(stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost) AS itemtotal
+			FROM stockmaster
+			INNER JOIN stockcosts
+				ON stockcosts.stockid=stockmaster.stockid
+				AND stockcosts.succeeded=0
+			INNER JOIN stockcategory
+				ON stockmaster.categoryid=stockcategory.categoryid
+			INNER JOIN locstock
+				ON stockmaster.stockid=locstock.stockid
 			GROUP BY stockmaster.categoryid,
 				stockcategory.categorydescription,
 				unitcost,
@@ -107,17 +110,20 @@ if ($Location == 'All') {
 				stockmaster.stockid,
 				stockmaster.description,
 				locstock.quantity as qtyonhand,
-				stockmaster.materialcost + stockmaster.labourcost + stockmaster.overheadcost AS unitcost,
-				locstock.quantity *(stockmaster.materialcost + stockmaster.labourcost + stockmaster.overheadcost) AS itemtotal
-			FROM stockmaster,
-				stockcategory,
-				locstock
-			WHERE stockmaster.stockid=locstock.stockid
-			AND stockmaster.categoryid=stockcategory.categoryid
-			AND locstock.quantity!=0
-			AND stockmaster.categoryid >= '" . $FromCriteria . "'
-			AND stockmaster.categoryid <= '" . $ToCriteria . "'
-			AND locstock.loccode = '" . $Location . "'
+				stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost AS unitcost,
+				locstock.quantity *(stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost) AS itemtotal
+			FROM stockmaster
+			INNER JOIN stockcosts
+				ON stockcosts.stockid=stockmaster.stockid
+				AND stockcosts.succeeded=0
+			INNER JOIN stockcategory
+				ON stockmaster.categoryid=stockcategory.categoryid
+			INNER JOIN locstock
+				ON stockmaster.stockid=locstock.stockid
+			WHERE locstock.quantity!=0
+				AND stockmaster.categoryid >= '" . $FromCriteria . "'
+				AND stockmaster.categoryid <= '" . $ToCriteria . "'
+				AND locstock.loccode = '" . $Location . "'
 			ORDER BY stockmaster.categoryid,
 				stockmaster.stockid";
 

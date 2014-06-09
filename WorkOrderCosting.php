@@ -86,7 +86,7 @@ $WOItemsResult = DB_query("SELECT woitems.stockid,
 									stockmaster.description,
 									stockmaster.decimalplaces,
 									stockmaster.units,
-									stockmaster.materialcost+stockmaster.labourcost+stockmaster.overheadcost AS currcost,
+									stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS currcost,
 									woitems.qtyreqd,
 									woitems.qtyrecd,
 									woitems.stdcost,
@@ -94,10 +94,14 @@ $WOItemsResult = DB_query("SELECT woitems.stockid,
 									stockcategory.purchpricevaract,
 									stockcategory.wipact,
 									stockcategory.stockact
-							FROM woitems INNER JOIN stockmaster
-							ON woitems.stockid=stockmaster.stockid
+							FROM woitems
+							INNER JOIN stockmaster
+								ON woitems.stockid=stockmaster.stockid
 							INNER JOIN stockcategory
-							ON stockmaster.categoryid=stockcategory.categoryid
+								ON stockmaster.categoryid=stockcategory.categoryid
+							INNER JOIN stockcosts
+								ON stockmaster.stockid=stockcosts.stockid
+								AND stockcosts.succeeded=0
 							WHERE woitems.wo='" . $_POST['WO'] . "'", $ErrMsg);
 
 echo '<table class="selection">
@@ -326,7 +330,7 @@ if (isset($_POST['Close'])) {
 									stockmaster.description,
 									stockmaster.decimalplaces,
 									stockmaster.units,
-									stockmaster.materialcost+stockmaster.labourcost+stockmaster.overheadcost AS currcost,
+									stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS currcost,
 									woitems.qtyreqd,
 									woitems.qtyrecd,
 									woitems.stdcost,
@@ -334,10 +338,14 @@ if (isset($_POST['Close'])) {
 									stockcategory.purchpricevaract,
 									stockcategory.wipact,
 									stockcategory.stockact
-							FROM woitems INNER JOIN stockmaster
-							ON woitems.stockid=stockmaster.stockid
+							FROM woitems
+							INNER JOIN stockmaster
+								ON woitems.stockid=stockmaster.stockid
 							INNER JOIN stockcategory
-							ON stockmaster.categoryid=stockcategory.categoryid
+								ON stockmaster.categoryid=stockcategory.categoryid
+							INNER JOIN stockcosts
+								ON stockmaster.stockid=stockcosts.categoryid
+								AND stockcosts.succeeded=0
 							WHERE woitems.wo='" . $_POST['WO'] . "'", $ErrMsg);
 	$NoItemsOnWO = DB_num_rows($WOItemsResult);
 	$TotalVariance = $TotalUsageVar + $TotalCostVar;
@@ -440,14 +448,23 @@ if (isset($_POST['Close'])) {
 
 			$NewCost = $WORow['currcost'] + (-$TotalVariance * $ShareProportion * $ProportionOnHand) / $TotalOnHand;
 
-			$SQL = "UPDATE stockmaster SET
-						materialcost='" . $NewCost . "',
-						labourcost=0,
-						overheadcost=0,
-						lastcost='" . $WORow['currcost'] . "'
-					WHERE stockid='" . $WORow['stockid'] . "'";
+			/* Make the old cost record obsolete */
+			$SQL = "UPDATE stockcosts SET succeeded=1
+					WHERE stockid='" . $WORow['stockid'] . "'
+						AND succeeded=0";
 
-			$ErrMsg = _('The cost details for the stock item could not be updated because');
+			$ErrMsg = _('The old cost details for the stock item could not be updated because');
+			$DbgMsg = _('The SQL that failed was');
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+
+			/* Then create a new cost record */
+			$SQL = "INSERT INTO stockcosts VALUES('" . $_POST['StockID'] . "',
+												'" . $NewCost . "',
+												'" . 0 . "',
+												'" . 0 . "',
+												CURRENT_TIME,
+												0)";
+			$ErrMsg = _('The new cost details for the stock item could not be inserted because');
 			$DbgMsg = _('The SQL that failed was');
 			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 

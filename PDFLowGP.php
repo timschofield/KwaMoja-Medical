@@ -30,22 +30,26 @@ if (isset($_POST['PrintPDF'])) {
 					stockmoves.transno,
 					stockmoves.trandate,
 					systypes.typename,
-					stockmaster.materialcost + stockmaster.labourcost + stockmaster.overheadcost as unitcost,
+					stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost as unitcost,
 					stockmoves.qty,
 					stockmoves.debtorno,
 					stockmoves.branchcode,
 					stockmoves.price*(1-stockmoves.discountpercent) as sellingprice,
-					(stockmoves.price*(1-stockmoves.discountpercent)) - (stockmaster.materialcost + stockmaster.labourcost + stockmaster.overheadcost) AS gp,
+					(stockmoves.price*(1-stockmoves.discountpercent)) - (stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost) AS gp,
 					debtorsmaster.name
-				FROM stockmaster INNER JOIN stockmoves
+				FROM stockmaster
+				INNER JOIN stockcosts
+					ON stockcosts.stockid=stockmaster.stockid
+					AND stockcosts.succeeded=0
+				INNER JOIN stockmoves
 					ON stockmaster.stockid=stockmoves.stockid
 				INNER JOIN systypes
 					ON stockmoves.type=systypes.typeid
 				INNER JOIN debtorsmaster
 					ON stockmoves.debtorno=debtorsmaster.debtorno
 				WHERE stockmoves.trandate >= '" . FormatDateForSQL($_POST['FromDate']) . "'
-				AND stockmoves.trandate <= '" . FormatDateForSQL($_POST['ToDate']) . "'
-				AND ((stockmoves.price*(1-stockmoves.discountpercent)) - (stockmaster.materialcost + stockmaster.labourcost + stockmaster.overheadcost))/(stockmoves.price*(1-stockmoves.discountpercent)) <=" . $_POST['GPMin'] / 100 . "
+					AND stockmoves.trandate <= '" . FormatDateForSQL($_POST['ToDate']) . "'
+					AND ((stockmoves.price*(1-stockmoves.discountpercent)) - (stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost))/(stockmoves.price*(1-stockmoves.discountpercent)) <=" . $_POST['GPMin'] / 100 . "
 				ORDER BY stockmaster.stockid";
 
 	$LowGPSalesResult = DB_query($SQL, '', '', false, false);

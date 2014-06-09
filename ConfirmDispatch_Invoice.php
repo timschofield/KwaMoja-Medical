@@ -204,12 +204,16 @@ if (!isset($_GET['OrderNumber']) and !isset($_SESSION['ProcessingOrder'])) {
 								salesorderdetails.orderlineno,
 								salesorderdetails.poline,
 								salesorderdetails.itemdue,
-								stockmaster.materialcost + stockmaster.labourcost + stockmaster.overheadcost AS standardcost
-							FROM salesorderdetails INNER JOIN stockmaster
+								stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost AS standardcost
+							FROM salesorderdetails
+							INNER JOIN stockmaster
 							 	ON salesorderdetails.stkcode = stockmaster.stockid
+							INNER JOIN stockcosts
+								ON stockcosts.stockid=stockmaster.stockid
+								AND succeeded=0
 							WHERE salesorderdetails.orderno ='" . $_GET['OrderNumber'] . "'
-							AND salesorderdetails.quantity - salesorderdetails.qtyinvoiced >0
-							ORDER BY salesorderdetails.orderlineno";
+								AND salesorderdetails.quantity - salesorderdetails.qtyinvoiced >0
+								ORDER BY salesorderdetails.orderlineno";
 
 		$ErrMsg = _('The line items of the order cannot be retrieved because');
 		$DbgMsg = _('The SQL that failed was');
@@ -1015,12 +1019,14 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 				/*To start with - accumulate the cost of the comoponents for use in journals later on */
 				$SQL = "SELECT bom.component,
 								bom.quantity,
-								stockmaster.materialcost+stockmaster.labourcost+stockmaster.overheadcost AS standard
-							FROM bom INNER JOIN stockmaster
-							ON bom.component=stockmaster.stockid
+								stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS standard
+							FROM bom
+							INNER JOIN stockcosts
+								ON bom.component=stockcosts.stockid
+								AND stockcosts.succeeeded=0
 							WHERE bom.parent='" . $OrderLine->StockID . "'
-							AND bom.effectiveto >= '" . Date('Y-m-d') . "'
-							AND bom.effectiveafter < '" . Date('Y-m-d') . "'";
+								AND bom.effectiveto >= CURRENT_DATE
+								AND bom.effectiveafter < CURRENT_DATE";
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('Could not retrieve assembly components from the database for') . ' ' . $OrderLine->StockID . _('because') . ' ';
 				$DbgMsg = _('The SQL that failed was');

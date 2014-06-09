@@ -27,7 +27,7 @@ if (isset($_POST['submit']) or isset($_POST['update'])) {
 					stockmaster.description,
 					prices.debtorno,
 					prices.branchcode,
-					(stockmaster.materialcost + stockmaster.labourcost + stockmaster.overheadcost) as cost,
+					(stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost) as cost,
 					prices.price as price,
 					prices.debtorno AS customer,
 					prices.branchcode AS branch,
@@ -35,13 +35,17 @@ if (isset($_POST['submit']) or isset($_POST['update'])) {
 					prices.enddate,
 					currencies.decimalplaces,
 					currencies.rate
-				FROM stockmaster INNER JOIN prices
-				ON stockmaster.stockid=prices.stockid
+				FROM stockmaster
+				INNER JOIN prices
+					ON stockmaster.stockid=prices.stockid
+				INNER JOIN stoccosts
+					ON stockmaster.stockid=stockcosts.stockid
+					AND stockcosts.succeeded=0
 				INNER JOIN currencies
-				ON prices.currabrev=currencies.currabrev
+					ON prices.currabrev=currencies.currabrev
 				WHERE stockmaster.discontinued = 0
 				" . $Category . "
-				AND   prices.price" . $Comparator . "(stockmaster.materialcost + stockmaster.labourcost + stockmaster.overheadcost) * '" . filter_number_format($_POST['Margin']) . "'
+				AND   prices.price" . $Comparator . "(stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost) * '" . filter_number_format($_POST['Margin']) . "'
 				AND prices.typeabbrev ='" . $_POST['SalesType'] . "'
 				AND prices.currabrev ='" . $_POST['CurrCode'] . "'
 				AND (prices.enddate>='" . Date('Y-m-d') . "' OR prices.enddate='0000-00-00')";

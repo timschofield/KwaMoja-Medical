@@ -21,21 +21,25 @@ echo '<p class="page_title_text noPrint" >
 
 if (isset($_POST['UpdateData'])) {
 
-	$sql = "SELECT materialcost,
-					labourcost,
-					overheadcost,
+	$sql = "SELECT stockcosts.materialcost,
+					stockcosts.labourcost,
+					stockcosts.overheadcost,
 					mbflag,
 					sum(quantity) as totalqoh
-			FROM stockmaster INNER JOIN locstock
-			ON stockmaster.stockid=locstock.stockid
+			FROM stockmaster
+			INNER JOIN locstock
+				ON stockmaster.stockid=locstock.stockid
+			INNER JOIN stockcosts
+				ON stockmaster.stockid=stockcosts.stockid
+				AND stockcosts.succeeded=0
 			WHERE stockmaster.stockid='" . $StockID . "'
 			GROUP BY description,
 					units,
 					lastcost,
 					actualcost,
-					materialcost,
-					labourcost,
-					overheadcost,
+					stockcosts.materialcost,
+					stockcosts.labourcost,
+					stockcosts.overheadcost,
 					mbflag";
 	$ErrMsg = _('The entered item code does not exist');
 	$OldResult = DB_query($sql, $ErrMsg);
@@ -65,18 +69,23 @@ if (isset($_POST['UpdateData'])) {
 		$Result = DB_Txn_Begin();
 		ItemCostUpdateGL($StockID, $NewCost, $OldCost, $_POST['QOH']);
 
-		$SQL = "UPDATE stockmaster SET	materialcost='" . filter_number_format($_POST['MaterialCost']) . "',
-										labourcost='" . filter_number_format($_POST['LabourCost']) . "',
-										overheadcost='" . filter_number_format($_POST['OverheadCost']) . "',
-										lastcost='" . $OldCost . "',
-										lastcostupdate ='" . Date('Y-m-d') . "'
-								WHERE stockid='" . $StockID . "'";
+		$ErrMsg = _('The old cost details for the stock item could not be updated because');
+		$DbgMsg = _('The SQL that failed was');
+		$SQL = "UPDATE stockcosts SET succeeded=1 WHERE stockid='" . $StockID . "'";
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
-		$ErrMsg = _('The cost details for the stock item could not be updated because');
+		$SQL = "INSERT INTO stockcosts VALUES('" . $StockID . "',
+										'" . filter_number_format($_POST['MaterialCost']) . "',
+										'" . filter_number_format($_POST['LabourCost']) . "',
+										'" . filter_number_format($_POST['OverheadCost']) . "',
+										CURRENT_TIME,
+										0)";
+		$ErrMsg = _('The new cost details for the stock item could not be inserted because');
 		$DbgMsg = _('The SQL that failed was');
 		$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 		$Result = DB_Txn_Commit();
+
 		UpdateCost($StockID); //Update any affected BOMs
 
 	}
@@ -85,32 +94,36 @@ if (isset($_POST['UpdateData'])) {
 $ErrMsg = _('The cost details for the stock item could not be retrieved because');
 $DbgMsg = _('The SQL that failed was');
 
-$result = DB_query("SELECT description,
-							units,
-							lastcost,
-							actualcost,
-							materialcost,
-							labourcost,
-							overheadcost,
-							mbflag,
-							stocktype,
-							lastcostupdate,
-							sum(quantity) as totalqoh
-						FROM stockmaster INNER JOIN locstock
-							ON stockmaster.stockid=locstock.stockid
-							INNER JOIN stockcategory
-							ON stockmaster.categoryid = stockcategory.categoryid
-						WHERE stockmaster.stockid='" . $StockID . "'
-						GROUP BY description,
-							units,
-							lastcost,
-							actualcost,
-							materialcost,
-							labourcost,
-							overheadcost,
-							mbflag,
-							stocktype", $ErrMsg, $DbgMsg);
-
+$SQL = "SELECT description,
+				units,
+				lastcost,
+				actualcost,
+				stockcosts.materialcost,
+				stockcosts.labourcost,
+				stockcosts.overheadcost,
+				mbflag,
+				stocktype,
+				lastcostupdate,
+				sum(quantity) as totalqoh
+			FROM stockmaster
+			INNER JOIN locstock
+				ON stockmaster.stockid=locstock.stockid
+			INNER JOIN stockcategory
+				ON stockmaster.categoryid = stockcategory.categoryid
+			INNER JOIN stockcosts
+				ON stockmaster.stockid = stockcosts.stockid
+				AND stockcosts.succeeded=0
+			WHERE stockmaster.stockid='" . $StockID . "'
+			GROUP BY description,
+					units,
+					lastcost,
+					actualcost,
+					stockcosts.materialcost,
+					stockcosts.labourcost,
+					stockcosts.overheadcost,
+					mbflag,
+					stocktype";
+$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 $myrow = DB_fetch_array($result);
 
@@ -132,7 +145,8 @@ echo '<table cellpadding="2" class="selection">
 		</tr>
 		<tr>
 			<th colspan="2">' . _('Last Cost update on') . ': ' . ConvertSQLDate($myrow['lastcostupdate']) . '</th>
-		</tr>';
+		</tr>
+	</table>';
 
 if (($myrow['mbflag'] == 'D' and $myrow['stocktype'] != 'L') or $myrow['mbflag'] == 'A' or $myrow['mbflag'] == 'K') {
 	echo '</div>
@@ -149,23 +163,45 @@ if (($myrow['mbflag'] == 'D' and $myrow['stocktype'] != 'L') or $myrow['mbflag']
 	exit;
 }
 
-echo '<tr><td>';
-echo '<input type="hidden" name="OldMaterialCost" value="' . $myrow['materialcost'] . '" />';
-echo '<input type="hidden" name="OldLabourCost" value="' . $myrow['labourcost'] . '" />';
-echo '<input type="hidden" name="OldOverheadCost" value="' . $myrow['overheadcost'] . '" />';
-echo '<input type="hidden" name="QOH" value="' . $myrow['totalqoh'] . '" />';
+$HistorySQL = "SELECT stockcosts.materialcost,
+					stockcosts.labourcost,
+					stockcosts.overheadcost,
+					stockcosts.costfrom,
+					stockcosts.succeeded
+				FROM stockcosts
+				WHERE stockid='" . $StockID . "'
+				ORDER BY costfrom DESC
+				LIMIT 10";
+$HistoryResult = DB_query($HistorySQL);
+echo '<table cellpadding="2" class="selection">
+		<tr>
+			<th>' . _('Cost From') . '</th>
+			<th>' . _('Material Cost') . '</th>
+			<th>' . _('Labour Cost') . '</th>
+			<th>' . _('Overhead Cost') . '</th>
+		</tr>';
+while ($HistoryRow = DB_fetch_array($HistoryResult)) {
+	echo '<tr>
+			<td>' . ConvertSQLDate($HistoryRow['costfrom']) . '</td>
+			<td class="number">' . locale_number_format($HistoryRow['materialcost'], $_SESSION['StandardCostDecimalPlaces']) . '</td>
+			<td class="number">' . locale_number_format($HistoryRow['labourcost'], $_SESSION['StandardCostDecimalPlaces']) . '</td>
+			<td class="number">' . locale_number_format($HistoryRow['overheadcost'], $_SESSION['StandardCostDecimalPlaces']) . '</td>
+		</tr>';
+}
+echo '</table>';
 
-echo _('Last Cost') . ':</td>
-		<td class="number">' . locale_number_format($myrow['lastcost'], $_SESSION['StandardCostDecimalPlaces']) . '</td></tr>';
 if (!in_array($UpdateSecurity, $_SESSION['AllowedPageSecurityTokens'])) {
-	echo '<tr><td>' . _('Cost') . ':</td>
-			<td class="number">' . locale_number_format($myrow['materialcost'] + $myrow['labourcost'] + $myrow['overheadcost'], $_SESSION['StandardCostDecimalPlaces']) . '</td>
-		</tr>
+	echo '<table cellpadding="2" class="selection">
+			<tr>
+				<td>' . _('Cost') . ':</td>
+				<td class="number">' . locale_number_format($myrow['materialcost'] + $myrow['labourcost'] + $myrow['overheadcost'], $_SESSION['StandardCostDecimalPlaces']) . '</td>
+			</tr>
 		</table>';
 } else {
 
 	if ($myrow['mbflag'] == 'M') {
 		echo '<input type="hidden" name="MaterialCost" value="' . $myrow['materialcost'] . '" />';
+		echo '<table cellpadding="2" class="selection">';
 		echo '<tr>
 				<td>' . _('Standard Material Cost Per Unit') . ':</td>
 				<td class="number">' . locale_number_format($myrow['materialcost'], $_SESSION['StandardCostDecimalPlaces']) . '</td>

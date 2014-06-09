@@ -10,7 +10,7 @@ include('includes/header.inc');
 
 echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/money_add.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p><br />';
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/money_add.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
 
 if (isset($_GET['Account'])) {
 	$_POST['BankAccount'] = $_GET['Account'];
@@ -32,8 +32,9 @@ if (isset($_POST['PostExchangeDifference']) and is_numeric(filter_number_format(
 		$SQL = "SELECT rate,
 						bankaccountname,
 						decimalplaces AS currdecimalplaces
-				FROM bankaccounts INNER JOIN currencies
-				ON bankaccounts.currcode=currencies.currabrev
+				FROM bankaccounts
+				INNER JOIN currencies
+					ON bankaccounts.currcode=currencies.currabrev
 				WHERE bankaccounts.accountcode = '" . $_POST['BankAccount'] . "'";
 
 		$ErrMsg = _('Could not retrieve the exchange rate for the selected bank account');
@@ -106,14 +107,15 @@ $ErrMsg = _('The bank accounts could not be retrieved by the SQL because');
 $DbgMsg = _('The SQL used to retrieve the bank accounts was');
 $AccountsResults = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-echo '<tr><td>' . _('Bank Account') . ':</td>
+echo '<tr>
+		<td>' . _('Bank Account') . ':</td>
 		<td><select minlength="0" tabindex="1" name="BankAccount">';
 
 if (DB_num_rows($AccountsResults) == 0) {
 	echo '</select></td>
 			</tr>
-			</table>
-			<p>' . _('Bank Accounts have not yet been defined') . '. ' . _('You must first') . '<a href="' . $RootPath . '/BankAccounts.php">' . _('define the bank accounts') . '</a>' . ' ' . _('and general ledger accounts to be affected') . '.';
+			</table>';
+	prnMsg( _('Bank Accounts have not yet been defined') . '. ' . _('You must first') . '<a href="' . $RootPath . '/BankAccounts.php">' . _('define the bank accounts') . '</a>' . ' ' . _('and general ledger accounts to be affected') . '.', 'warn');
 	include('includes/footer.inc');
 	exit;
 } else {
@@ -129,34 +131,32 @@ if (DB_num_rows($AccountsResults) == 0) {
 		</tr>';
 }
 
+if (!isset($_POST['StatementDate'])) {
+	$_POST['StatementDate'] = date($_SESSION['DefaultDateFormat']);
+}
+
+echo '<tr>
+		<td>' . _('Bank Statement Date') . '</td>
+		<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="StatementDate" value="' . $_POST['StatementDate'] . '" size="10" /></td>
+	</tr>';
 /*Now do the posting while the user is thinking about the bank account to select */
 
 include('includes/GLPostings.inc');
 
 echo '</table>
-	<br />
 	<div class="centre">
 		<input type="submit" tabindex="2" name="ShowRec" value="' . _('Show bank reconciliation statement') . '" />
-	</div>
-	<br />';
+	</div>';
 
 
 if (isset($_POST['ShowRec']) or isset($_POST['DoExchangeDifference'])) {
 
 	/*Get the balance of the bank account concerned */
 
-	$sql = "SELECT MAX(period)
-			FROM chartdetails
-			WHERE accountcode='" . $_POST['BankAccount'] . "'";
-	$PrdResult = DB_query($sql);
-	$myrow = DB_fetch_row($PrdResult);
-	$LastPeriod = $myrow[0];
-
-	$SQL = "SELECT bfwd+actual AS balance
-			FROM chartdetails
-			WHERE period='" . $LastPeriod . "'
-			AND accountcode='" . $_POST['BankAccount'] . "'";
-
+	$SQL = "SELECT SUM(amount)
+				FROM banktrans
+				WHERE transdate<='" . FormatDateForSQL($_POST['StatementDate']) . "'
+				AND bankact='" . $_POST['BankAccount'] . "'";
 	$ErrMsg = _('The bank account balance could not be returned by the SQL because');
 	$BalanceResult = DB_query($SQL, $ErrMsg);
 
@@ -178,7 +178,7 @@ if (isset($_POST['ShowRec']) or isset($_POST['DoExchangeDifference'])) {
 
 	echo '<table class="selection">
 			<tr class="EvenTableRows">
-				<td colspan="6"><b>' . $CurrencyRow['bankaccountname'] . ' ' . _('Balance as at') . ' ' . Date($_SESSION['DefaultDateFormat']);
+				<td colspan="6"><b>' . $CurrencyRow['bankaccountname'] . ' ' . _('Balance as at') . ' ' . $_POST['StatementDate'];
 
 	if ($_SESSION['CompanyRecord']['currencydefault'] != $CurrencyRow['currcode']) {
 		echo ' (' . $CurrencyRow['currcode'] . ' @ ' . $CurrencyRow['rate'] . ')';
@@ -193,14 +193,18 @@ if (isset($_POST['ShowRec']) or isset($_POST['DoExchangeDifference'])) {
 					transdate,
 					systypes.typename,
 					transno
-				FROM banktrans,
-					systypes
-				WHERE banktrans.type = systypes.typeid
-				AND banktrans.bankact='" . $_POST['BankAccount'] . "'
-				AND amount < 0
-				AND ABS((amount/exrate)-amountcleared)>0.009 ORDER BY transdate";
+				FROM banktrans
+				INNER JOIN systypes
+					ON banktrans.type = systypes.typeid
+				WHERE banktrans.bankact='" . $_POST['BankAccount'] . "'
+					AND amount < 0
+					AND ABS((amount/exrate)-amountcleared)>0.009
+					AND transdate<='" . FormatDateForSQL($_POST['StatementDate']) . "'
+				ORDER BY transdate";
 
-	echo '<tr><td><br /></td></tr>';
+	echo '<tr>
+			<td></td>
+		</tr>';
 	/*Bang in a blank line */
 
 	$ErrMsg = _('The unpresented cheques could not be retrieved by the SQL because');
@@ -244,7 +248,7 @@ if (isset($_POST['ShowRec']) or isset($_POST['DoExchangeDifference'])) {
 	//end of while loop
 
 	echo '<tr>
-			 <td><br /></td>
+			 <td></td>
 		  </tr>
 			<tr class="EvenTableRows">
 				<td colspan="6">' . _('Total of all unpresented cheques') . '</td>
@@ -258,13 +262,16 @@ if (isset($_POST['ShowRec']) or isset($_POST['DoExchangeDifference'])) {
 				transdate,
 				systypes.typename,
 				transno
-			FROM banktrans INNER JOIN systypes
-			ON banktrans.type = systypes.typeid
+			FROM banktrans
+			INNER JOIN systypes
+				ON banktrans.type = systypes.typeid
 			WHERE banktrans.bankact='" . $_POST['BankAccount'] . "'
-			AND amount > 0
-			AND ABS((amount/exrate)-amountcleared)>0.009 ORDER BY transdate";
+				AND amount > 0
+				AND ABS((amount/exrate)-amountcleared)>0.009
+				AND transdate<='" . FormatDateForSQL($_POST['StatementDate']) . "'
+			ORDER BY transdate";
 
-	echo '<tr><td><br /></td></tr>';
+	echo '<tr><td></td></tr>';
 	/*Bang in a blank line */
 
 	$ErrMsg = _('The uncleared deposits could not be retrieved by the SQL because');
@@ -308,7 +315,7 @@ if (isset($_POST['ShowRec']) or isset($_POST['DoExchangeDifference'])) {
 	}
 	//end of while loop
 	echo '<tr>
-			<td><br /></td>
+			<td></td>
 		</tr>
 		<tr class="EvenTableRows">
 			<td colspan="6">' . _('Total of all uncleared deposits') . '</td>
@@ -316,7 +323,7 @@ if (isset($_POST['ShowRec']) or isset($_POST['DoExchangeDifference'])) {
 		</tr>';
 	$FXStatementBalance = ($Balance * $CurrencyRow['rate'] - $TotalUnpresentedCheques - $TotalUnclearedDeposits);
 	echo '<tr>
-			<td><br /></td>
+			<td></td>
 		</tr>
 		<tr class="EvenTableRows">
 			<td colspan="6"><b>' . _('Bank statement balance should be') . ' (' . $CurrencyRow['currcode'] . ')</b></td>
@@ -355,18 +362,12 @@ if (isset($_POST['ShowRec']) or isset($_POST['DoExchangeDifference'])) {
 
 if (isset($_POST['BankAccount'])) {
 	echo '<div class="centre">
-			<p>
 			<a tabindex="4" href="' . $RootPath . '/BankMatching.php?Type=Payments&amp;Account=' . $_POST['BankAccount'] . '">' . _('Match off cleared payments') . '</a>
-			</p>
-			<br />
 			<a tabindex="5" href="' . $RootPath . '/BankMatching.php?Type=Receipts&amp;Account=' . $_POST['BankAccount'] . '">' . _('Match off cleared deposits') . '</a>
 		</div>';
 } else {
 	echo '<div class="centre">
-			<p>
 			<a tabindex="4" href="' . $RootPath . '/BankMatching.php?Type=Payments">' . _('Match off cleared payments') . '</a>
-			</p>
-			<br />
 			<a tabindex="5" href="' . $RootPath . '/BankMatching.php?Type=Receipts">' . _('Match off cleared deposits') . '</a>
 		</div>';
 }

@@ -22,21 +22,24 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['CSV'])) and isset($_POST['FromCr
 					stockmaster.decimalplaces,
 					SUM(locstock.quantity) AS qtyonhand,
 					stockmaster.units,
-					stockmaster.materialcost + stockmaster.labourcost + stockmaster.overheadcost AS unitcost,
-					SUM(locstock.quantity) *(stockmaster.materialcost + stockmaster.labourcost + stockmaster.overheadcost) AS itemtotal
-				FROM stockmaster,
-					stockcategory,
-					locstock
-				WHERE stockmaster.stockid=locstock.stockid
-				AND stockmaster.categoryid=stockcategory.categoryid
+					stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost AS unitcost,
+					SUM(locstock.quantity) *(stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost) AS itemtotal
+				FROM stockmaster
+				INNER JOIN stockcosts
+					ON stockcosts.stockid=stockmaster.stockid
+					AND stockcosts.succeeded=0
+				INNER JOIN stockcategory
+					ON stockmaster.categoryid=stockcategory.categoryid
+				INNER JOIN locstock
+					ON stockmaster.stockid=locstock.stockid
 				GROUP BY stockmaster.categoryid,
 					stockcategory.categorydescription,
 					unitcost,
 					stockmaster.units,
 					stockmaster.decimalplaces,
-					stockmaster.materialcost,
-					stockmaster.labourcost,
-					stockmaster.overheadcost,
+					stockcosts.materialcost,
+					stockcosts.labourcost,
+					stockcosts.overheadcost,
 					stockmaster.stockid,
 					stockmaster.description
 				HAVING SUM(locstock.quantity)!=0
@@ -52,8 +55,8 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['CSV'])) and isset($_POST['FromCr
 					stockmaster.units,
 					stockmaster.decimalplaces,
 					locstock.quantity AS qtyonhand,
-					stockmaster.materialcost + stockmaster.labourcost + stockmaster.overheadcost AS unitcost,
-					locstock.quantity *(stockmaster.materialcost + stockmaster.labourcost + stockmaster.overheadcost) AS itemtotal
+					stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost AS unitcost,
+					locstock.quantity *(stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost) AS itemtotal
 				FROM stockmaster,
 					stockcategory,
 					locstock

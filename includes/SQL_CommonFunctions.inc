@@ -205,7 +205,7 @@ function ItemCostUpdateGL($StockID, $NewCost, $OldCost, $QOH) {
 /* Calculates the material cost of a bill of materials, given parent code*/
 function BomMaterialCost($Parent) {
 
-	$SQL = "SELECT materialcost from stockmaster where stockid='" . $Parent . "'";
+	$SQL = "SELECT materialcost from stockcosts where stockid='" . $Parent . "'";
 	$result1 = DB_query($SQL);
 	$MyRow1 = DB_fetch_row($result1);
 	$OldCost = $MyRow1[0];
@@ -213,10 +213,12 @@ function BomMaterialCost($Parent) {
 	$result1 = DB_query($SQL);
 	$MyRow1 = DB_fetch_row($result1);
 	$QOH = $MyRow1[0];
-	$SQL = "SELECT Sum(stockmaster.materialcost*bom.quantity) AS SumOfmaterialcost
-	   					FROM bom LEFT JOIN stockmaster
-							 ON bom.component = stockmaster.stockid
-							 WHERE bom.parent='" . $Parent . "'";
+	$SQL = "SELECT Sum(stockcosts.materialcost*bom.quantity) AS SumOfmaterialcost
+	   		FROM bom
+	   		LEFT JOIN stockcosts
+				ON bom.component = stockcosts.stockid
+				AND stockcosts.succeeded=0
+			WHERE bom.parent='" . $Parent . "'";
 	$result = DB_query($SQL);
 	$MyRow = DB_fetch_row($result);
 	$MaterialCost = $MyRow[0];
@@ -229,12 +231,17 @@ function BomMaterialCost($Parent) {
 /*Iterates through the levels of the bom, recalculating each bom it meets*/
 function UpdateCost($Item) {
 
-	$SQL = "SELECT parent FROM bom where component = '" . $Item . "'";
+	$SQL = "SELECT parent FROM bom WHERE component = '" . $Item . "'";
 	$Result = DB_query($SQL);
 	while ($MyRow = DB_fetch_array($Result)) {
 		$NewParent = $MyRow['parent'];
 		$MaterialCost = BomMaterialCost($NewParent);
-		$SQL = "UPDATE stockmaster SET materialcost=" . $MaterialCost . " WHERE stockid='" . $NewParent . "'";
+		$SQL = "INSERT INTO stockcosts VALUES ( '" . $NewParent . "',
+												'" . $MaterialCost . "',
+												0,
+												0,
+												CURRENT_TIME,
+												0)";
 		$result1 = DB_query($SQL);
 		if (DB_error_no() != 0) {
 			return 1;
@@ -265,19 +272,23 @@ function WoRealRequirements($WO, $LocCode, $StockID, $Qty = 1, $ParentID = '') {
 				'" . $ParentID . "',
 				bom.component,
 				bom.quantity*" . $Qty . ",
-				materialcost+labourcost+overheadcost,
+				stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost,
 				bom.autoissue
-			FROM bom INNER JOIN stockmaster
-			ON bom.component=stockmaster.stockid
+			FROM bom
+			INNER JOIN stockmaster
+				ON bom.component=stockmaster.stockid
+			INNER JOIN stockcosts
+				ON stockcosts.stockid=stockmaster.stockid
+				AND stockcosts.succeeded=0
 			WHERE bom.parent='" . $StockID . "'
-			AND bom.loccode ='" . $LocCode . "'
-			AND stockmaster.mbflag<>'G'
-			AND bom.component NOT IN (
-				SELECT stockid
-				FROM worequirements
-				WHERE wo = '" . $WO . "'
-				AND parentstockid = '" . $ParentID . "'
-			)";
+				AND bom.loccode ='" . $LocCode . "'
+				AND stockmaster.mbflag<>'G'
+				AND bom.component NOT IN (
+					SELECT stockid
+					FROM worequirements
+					WHERE wo = '" . $WO . "'
+					AND parentstockid = '" . $ParentID . "'
+					)";
 	$result = DB_query($sql);
 
 	// combine real immediate components of this item with other occurrences in this work order
@@ -291,19 +302,23 @@ function WoRealRequirements($WO, $LocCode, $StockID, $Qty = 1, $ParentID = '') {
 							CAST('NODE-1' AS CHAR) as parentstockid,
 							bom.component AS stockid,
 							bom.quantity*1 AS qtypu,
-							materialcost+labourcost+overheadcost AS stdcost,
+							stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS stdcost,
 							bom.autoissue
-						FROM bom INNER JOIN stockmaster
-						ON bom.component=stockmaster.stockid
+						FROM bom
+						INNER JOIN stockmaster
+							ON bom.component=stockmaster.stockid
+						INNER JOIN stockcosts
+							ON stockcosts.stockid=stockmaster.stockid
+							AND stockcosts.succeeded=0
 						WHERE bom.parent='" . $StockID . "'
-						AND bom.loccode ='" . $LocCode . "'
-						AND stockmaster.mbflag<>'G'
-						AND bom.component IN (
-							SELECT stockid
-							FROM worequirements
-							WHERE wo = '" . $WO . "'
-							AND parentstockid = '" . $ParentID . "'
-						)
+							AND bom.loccode ='" . $LocCode . "'
+							AND stockmaster.mbflag<>'G'
+							AND bom.component IN (
+								SELECT stockid
+								FROM worequirements
+								WHERE wo = '" . $WO . "'
+								AND parentstockid = '" . $ParentID . "'
+							)
 					) AS g ON g.wo=worequirements.wo
 						AND g.parentstockid=worequirements.parentstockid
 						AND g.stockid=worequirements.stockid

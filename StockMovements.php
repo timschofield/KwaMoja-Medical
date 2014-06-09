@@ -112,7 +112,7 @@ echo '<tr>
 		<th>' . _('Branch') . '</th>
 		<th>' . _('Quantity') . '</th>
 		<th>' . _('Reference') . '</th>
-		<th>' . _('Price') . '</th>
+		<th>' . _('Cost') . '</th>
 		<th>' . _('Discount') . '</th>
 		<th>' . _('New Qty') . '</th>
 	</tr>';

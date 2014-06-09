@@ -39,10 +39,14 @@ if (isset($_POST['PrintPDF'])) {
 					   stockmaster.mbflag,
 					   stockmaster.decimalplaces,
 					   stockmaster.actualcost,
-					   (stockmaster.materialcost + stockmaster.labourcost +
-						stockmaster.overheadcost ) as computedcost
-				FROM mrpplannedorders, stockmaster
-				WHERE mrpplannedorders.part = stockmaster.stockid " . $WhereDate . "
+					   (stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost ) as computedcost
+				FROM mrpplannedorders
+				INNER JOIN stockcosts
+					ON stockmaster.stockid=stockcosts.stockid
+					AND stockcosts.succeeded=0
+				INNER JOIN stockmaster
+					ON mrpplannedorders.part = stockmaster.stockid
+				WHERE stockmaster.mbflag = 'M' " . $WhereDate . "
 				 AND stockmaster.mbflag IN ('B','P')
 				ORDER BY mrpplannedorders.part,mrpplannedorders.duedate";
 	} elseif ($_POST['Consolidation'] == 'Weekly') {
@@ -57,11 +61,14 @@ if (isset($_POST['PrintPDF'])) {
 					   stockmaster.mbflag,
 					   stockmaster.decimalplaces,
 					   stockmaster.actualcost,
-					   (stockmaster.materialcost + stockmaster.labourcost +
-						stockmaster.overheadcost ) as computedcost
-				FROM mrpplannedorders, stockmaster
-				WHERE mrpplannedorders.part = stockmaster.stockid " . $WhereDate . "
-				AND stockmaster.mbflag IN ('B','P')
+					   (stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost ) as computedcost
+				FROM mrpplannedorders
+				INNER JOIN stockcosts
+					ON stockmaster.stockid=stockcosts.stockid
+					AND stockcosts.succeeded=0
+				INNER JOIN stockmaster
+					ON mrpplannedorders.part = stockmaster.stockid
+				WHERE stockmaster.mbflag = 'M' " . $WhereDate . "
 				GROUP BY mrpplannedorders.part,
 						 weekindex,
 						 stockmaster.stockid,
@@ -69,9 +76,9 @@ if (isset($_POST['PrintPDF'])) {
 						 stockmaster.mbflag,
 						 stockmaster.decimalplaces,
 						 stockmaster.actualcost,
-					   stockmaster.materialcost,
-					   stockmaster.labourcost,
-					   stockmaster.overheadcost,
+					   stockcosts.materialcost,
+					   stockcosts.labourcost,
+					   stockcosts.overheadcost,
 					   computedcost
 				ORDER BY mrpplannedorders.part,weekindex";
 	} else { // This else consolidates by month
@@ -86,11 +93,14 @@ if (isset($_POST['PrintPDF'])) {
 					   stockmaster.mbflag,
 					   stockmaster.decimalplaces,
 					   stockmaster.actualcost,
-					   (stockmaster.materialcost + stockmaster.labourcost +
-						stockmaster.overheadcost ) as computedcost
-				FROM mrpplannedorders, stockmaster
-				WHERE mrpplannedorders.part = stockmaster.stockid  " . $WhereDate . "
-				AND stockmaster.mbflag IN ('B','P')
+					   (stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost ) as computedcost
+				FROM mrpplannedorders
+				INNER JOIN stockcosts
+					ON stockmaster.stockid=stockcosts.stockid
+					AND stockcosts.succeeded=0
+				INNER JOIN stockmaster
+					ON mrpplannedorders.part = stockmaster.stockid
+				WHERE stockmaster.mbflag = 'M' " . $WhereDate . "
 				GROUP BY mrpplannedorders.part,
 						 yearmonth,
 						 stockmaster.stockid,
@@ -98,9 +108,9 @@ if (isset($_POST['PrintPDF'])) {
 						 stockmaster.mbflag,
 						 stockmaster.decimalplaces,
 						 stockmaster.actualcost,
-					   stockmaster.materialcost,
-					   stockmaster.labourcost,
-					   stockmaster.overheadcost,
+					   stockcosts.materialcost,
+					   stockcosts.labourcost,
+					   stockcosts.overheadcost,
 					   computedcost
 				ORDER BY mrpplannedorders.part,yearmonth ";
 	}

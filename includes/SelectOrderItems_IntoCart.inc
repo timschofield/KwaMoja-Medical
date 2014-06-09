@@ -35,7 +35,7 @@ if ($AlreadyOnThisOrder != 1) {
 				stockmaster.units,
 				stockmaster.volume,
 				stockmaster.grossweight,
-				(materialcost+labourcost+overheadcost) AS standardcost,
+				(stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost) AS standardcost,
 				locstock.quantity,
 				stockmaster.mbflag,
 				stockmaster.discountcategory,
@@ -45,10 +45,14 @@ if ($AlreadyOnThisOrder != 1) {
 				stockmaster.eoq,
 				stockmaster.nextserialno,
 				stockmaster.taxcatid
-			FROM stockmaster INNER JOIN locstock
-			ON stockmaster.stockid=locstock.stockid
+			FROM stockmaster
+			INNER JOIN locstock
+				ON stockmaster.stockid=locstock.stockid
+			INNER JOIN stockcosts
+				ON stockcosts.stockid=stockmaster.stockid
+				AND stockcosts.succeeded=0
 			WHERE locstock.loccode='" . $_SESSION['Items' . $identifier]->Location . "'
-			AND stockmaster.stockid = '" . $NewItem . "'";
+				AND stockmaster.stockid = '" . $NewItem . "'";
 
 	$ErrMsg = _('The details for') . ' ' . $NewItem . ' ' . _('could not be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve the pricing details but failed was');

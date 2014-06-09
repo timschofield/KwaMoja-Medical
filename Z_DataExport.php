@@ -41,8 +41,7 @@ if (isset($_POST['pricelist'])) {
 				stockmaster.description,
 				prices.currabrev,
 				prices.price,
-				stockmaster.materialcost + stockmaster.labourcost + stockmaster.overheadcost
-					as standardcost,
+				stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost as standardcost,
 				stockmaster.categoryid,
 				stockcategory.categorydescription,
 				stockmaster.barcode,
@@ -50,13 +49,16 @@ if (isset($_POST['pricelist'])) {
 				stockmaster.mbflag,
 				stockmaster.taxcatid,
 				stockmaster.discontinued
-			FROM prices,
-				stockmaster,
-				stockcategory
-			WHERE stockmaster.stockid=prices.stockid
-			AND stockmaster.categoryid=stockcategory.categoryid
-			AND prices.typeabbrev='" . $_POST['SalesType'] . "'
-			AND ( (prices.debtorno='') OR (prices.debtorno IS NULL))
+			FROM prices
+			INNER JOIN stockmaster
+				ON stockmaster.stockid=prices.stockid
+			INNER JOIN stockcategory
+				ON stockmaster.categoryid=stockcategory.categoryid
+			INNER JOIN stockcosts
+				ON stockmaster.stockid=stockcosts.stockid
+			WHERE prices.typeabbrev='" . $_POST['SalesType'] . "'
+				AND ( (prices.debtorno='') OR (prices.debtorno IS NULL))
+				AND stockcosts.succeeded=1
 			ORDER BY prices.currabrev,
 				stockmaster.categoryid,
 				stockmaster.stockid";
@@ -416,9 +418,7 @@ if (isset($_POST['pricelist'])) {
 
 	// SELECT EXPORT FOR PRICE LIST
 
-	echo '<br />';
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table>
 			<tr>
@@ -444,14 +444,10 @@ if (isset($_POST['pricelist'])) {
 	}
 	echo '</select></td></tr>';
 	echo '</table>';
-	echo "<div class='centre'><input type='submit' name='pricelist' value='" . _('Export') . "' /></div>";
-	echo '</div>
-		  </form><br />';
+	echo '<div class="centre"><input type="submit" name="pricelist" value="' . _('Export') . '" /></div>';
+	echo '</form>';
 
 	// SELECT EXPORT FOR CUSTOMER LIST
-
-
-	echo "<br />";
 	// Export Stock For Location
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -471,11 +467,9 @@ if (isset($_POST['pricelist'])) {
 	echo '</select></td></tr>';
 	echo '</table>';
 	echo "<div class='centre'><input type='submit' name='custlist' value='" . _('Export') . "' /></div>";
-	echo '</form><br />';
+	echo '</form>';
 
 	// SELECT EXPORT FOR SALES MAN
-
-	echo "<br />";
 	// Export Stock For Location
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -485,7 +479,7 @@ if (isset($_POST['pricelist'])) {
 			</tr>
 		</table>';
 	echo "<div class='centre'><input type='submit' name='salesmanlist' value='" . _('Export') . "' /></div>";
-	echo '</form><br />';
+	echo '</form>';
 
 	// SELECT EXPORT FOR IMAGES
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
@@ -496,7 +490,7 @@ if (isset($_POST['pricelist'])) {
 			</tr>
 		</table>';
 	echo '<div class="centre"><input type="submit" name="imagelist" value="' . _('Export') . '" /></div>';
-	echo '</form><br />';
+	echo '</form>';
 
 	// SELECT EXPORT SECURITY TOKENS
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
@@ -507,7 +501,7 @@ if (isset($_POST['pricelist'])) {
 			</tr>
 		</table>';
 	echo "<div class='centre'><input type='submit' name='sectokenlist' value='" . _('Export') . "' /></div>";
-	echo '</form><br />';
+	echo '</form>';
 
 	// SELECT EXPORT SECURITY ROLES
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
@@ -518,7 +512,7 @@ if (isset($_POST['pricelist'])) {
 			</tr>
 		</table>';
 	echo "<div class='centre'><input type='submit' name='secrolelist' value='" . _('Export') . "' /></div>";
-	echo '</form><br />';
+	echo '</form>';
 
 	// SELECT EXPORT SECURITY GROUPS
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
@@ -529,7 +523,7 @@ if (isset($_POST['pricelist'])) {
 			</tr>
 		</table>';
 	echo "<div class='centre'><input type='submit' name='secgrouplist' value='" . _('Export') . "' /></div>";
-	echo '</form><br />';
+	echo '</form>';
 
 	// SELECT EXPORT SECURITY USERS
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
@@ -540,7 +534,7 @@ if (isset($_POST['pricelist'])) {
 			</tr>
 		</table>';
 	echo '<div class="centre"><input type="submit" name="secuserlist" value="' . _('Export') . '" /></div>';
-	echo '</form><br />';
+	echo '</form>';
 
 
 	include('includes/footer.inc');

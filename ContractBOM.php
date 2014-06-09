@@ -186,8 +186,11 @@ if (isset($_POST['NewItem'])) {
 								stockmaster.stockid,
 								stockmaster.units,
 								stockmaster.decimalplaces,
-								stockmaster.materialcost+labourcost+overheadcost AS unitcost
+								stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS unitcost
 							FROM stockmaster
+							INNER JOIN stockcosts
+								ON stockcosts.stockid=stockmaster.stockid
+									AND succeeded=0
 							WHERE stockmaster.stockid = '" . trim($_POST['StockID' . $i]) . "'";
 
 				$ErrMsg = _('The item details could not be retrieved');
@@ -216,7 +219,6 @@ if (isset($_POST['NewItem'])) {
 /* This is where the order as selected should be displayed  reflecting any deletions or insertions*/
 
 echo '<form onSubmit="return VerifyForm(this);" id="ContractBOMForm" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $identifier . '" method="post" class="noPrint">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 if (count($_SESSION['Contract' . $identifier]->ContractBOM) > 0) {
@@ -274,9 +276,10 @@ if (count($_SESSION['Contract' . $identifier]->ContractBOM) > 0) {
 			<td class="number"><b>' . $DisplayTotal . '</b></td>
 		</tr>
 		</table>';
-	echo '<br />
-			<div class="centre"><input type="submit" name="UpdateLines" value="' . _('Update Lines') . '" />';
-	echo '<input type="submit" name="BackToHeader" value="' . _('Back To Contract Header') . '" /></div>';
+	echo '<div class="centre">
+			<input type="submit" name="UpdateLines" value="' . _('Update Lines') . '" />
+			<input type="submit" name="BackToHeader" value="' . _('Back To Contract Header') . '" />
+		</div>';
 
 }
 /*Only display the contract BOM lines if there are any !! */
@@ -332,11 +335,9 @@ if (!isset($_GET['Edit'])) {
 			<td><b>' . _('OR') . ' </b><a target="_blank" href="' . $RootPath . '/Stocks.php">' . _('Create a New Stock Item') . '</a></td>
 		</tr>
 		</table>
-		<br />
 		<div class="centre">
 			<input type="submit" name="Search" value="' . _('Search Now') . '" />
-		</div>
-		<br />';
+		</div>';
 
 }
 
@@ -390,13 +391,11 @@ if (isset($SearchResult)) {
 
 		prnMsg(_('Only the first') . ' ' . $_SESSION['DisplayRecordsMax'] . ' ' . _('can be displayed') . '. ' . _('Please restrict your search to only the parts required'), 'info');
 	}
-	echo '<br />
-		<div class="centre">
+	echo '<div class="centre">
 			<input type="submit" name="NewItem" value="' . _('Add to Contract Bill Of Material') . '" />
 		</div>';
 } #end if SearchResults to show
 
-echo '</div>
-	</form>';
+echo '</form>';
 include('includes/footer.inc');
 ?>

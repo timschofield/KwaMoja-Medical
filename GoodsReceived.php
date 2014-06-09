@@ -399,9 +399,9 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 
 			if ($OrderLine->StockID != '') { //Its a stock item line
 				/*Need to get the current standard cost as it is now so we can process GL jorunals later*/
-				$SQL = "SELECT materialcost + labourcost + overheadcost as stdcost
-							FROM stockmaster
-							WHERE stockid='" . $OrderLine->StockID . "'";
+				$SQL = "SELECT stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost as stdcost
+							FROM stockcosts
+							WHERE stockcosts.stockid='" . $OrderLine->StockID . "'";
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The standard cost of the item being received cannot be retrieved because');
 				$DbgMsg = _('The following SQL to retrieve the standard cost was used');
 				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);

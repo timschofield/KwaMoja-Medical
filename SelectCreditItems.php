@@ -427,7 +427,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 								stockmaster.units,
 								stockmaster.volume,
 								stockmaster.grossweight,
-								(materialcost+labourcost+overheadcost) AS standardcost,
+								(stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost) AS standardcost,
 								stockmaster.mbflag,
 								stockmaster.decimalplaces,
 								stockmaster.controlled,
@@ -435,6 +435,9 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 								stockmaster.discountcategory,
 								stockmaster.taxcatid
 							FROM stockmaster
+							INNER JOIN stockcosts
+								ON stockcosts.stockid=stockmaster.stockid
+								AND stockcosts.succeeded=0
 							WHERE  stockmaster.stockid = '" . $_POST['NewItem'] . "'";
 
 				$ErrMsg = _('There is a problem selecting the part because');
@@ -568,9 +571,12 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 								stockmaster.controlled,
 								stockmaster.decimalplaces,
 								stockmaster.serialised,
-								(materialcost+labourcost+overheadcost) AS standardcost,
+								(stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost) AS standardcost,
 								stockmaster.taxcatid
 							FROM stockmaster
+							INNER JOIN stockcosts
+								ON stockcosts.stockid=stockmaster.stockid
+								AND stockcosts.succeeded=0
 							WHERE stockmaster.stockid = '" . $_POST['NewItem'] . "'";
 
 				$ErrMsg = _('The item details could not be retrieved because');
@@ -1365,12 +1371,14 @@ if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 
 					$SQL = "SELECT bom.component,
 									bom.quantity,
-									stockmaster.materialcost+stockmaster.labourcost+stockmaster.overheadcost AS standard
-							FROM bom INNER JOIN stockmaster
-							ON bom.component=stockmaster.stockid
+									stockcosts.materialcost+stockcosts.labourcoststockcosts.overheadcost AS standard
+							FROM bom
+							INNER JOIN stockcosts
+								ON stockcosts.stockid=bom.component
+								AND stockcosts.succeeded=0
 							WHERE bom.parent='" . $CreditLine->StockID . "'
-							AND bom.effectiveto > '" . Date('Y-m-d') . "'
-							AND bom.effectiveafter < '" . Date('Y-m-d') . "'";
+								AND bom.effectiveto > CURRENT_DATE
+								AND bom.effectiveafter < CURRENT_DATE";
 
 					$ErrMsg = _('Could not retrieve assembly components from the database for') . ' ' . $CreditLine->StockID . ' ' . _('because');
 					$DbgMsg = _('The SQL that failed was');

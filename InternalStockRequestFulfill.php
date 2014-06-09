@@ -28,7 +28,15 @@ if (isset($_POST['UpdateAll'])) {
 				$Completed = False;
 			}
 
-			$sql = "SELECT materialcost, labourcost, overheadcost, decimalplaces FROM stockmaster WHERE stockid='" . $StockID . "'";
+			$sql = "SELECT stockcosts.materialcost,
+							stockcosts.labourcost,
+							stockcosts.overheadcost,
+							stockmaster.decimalplaces
+						FROM stockmaster
+						INNER JOIN stockcosts
+							ON stockcosts.stockid=stockmaster.stockid
+							AND stockcosts.succeeded=0
+						WHERE stockcosts.stockid='" . $StockID . "'";
 			$result = DB_query($sql);
 			$myrow = DB_fetch_array($result);
 			$StandardCost = $myrow['materialcost'] + $myrow['labourcost'] + $myrow['overheadcost'];

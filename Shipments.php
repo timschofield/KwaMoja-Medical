@@ -90,10 +90,14 @@ if (isset($_GET['SelectedShipment'])) {
 									purchorderdetails.quantityord,
 									purchorderdetails.quantityrecd,
 									purchorderdetails.stdcostunit,
-									stockmaster.materialcost+stockmaster.labourcost+stockmaster.overheadcost as stdcost,
+									stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost as stdcost,
 									purchorders.intostocklocation
-							FROM purchorderdetails INNER JOIN stockmaster
+							FROM purchorderdetails
+							INNER JOIN stockmaster
 								ON purchorderdetails.itemcode=stockmaster.stockid
+							INNER JOIN stockcosts
+								ON stockcosts.stockid=stockmaster.stockid
+								AND stockcosts.succeeded=0
 							INNER JOIN purchorders
 								ON purchorderdetails.orderno=purchorders.orderno
 							WHERE purchorderdetails.shiptref='" . $_GET['SelectedShipment'] . "'";
@@ -246,15 +250,19 @@ if (isset($_GET['Add']) and $_SESSION['Shipment']->Closed == 0 and $InputError =
 					purchorderdetails.itemdescription,
 					purchorderdetails.unitprice,
 					purchorderdetails.stdcostunit,
-					stockmaster.materialcost+stockmaster.labourcost+stockmaster.overheadcost as stdcost,
+					stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost as stdcost,
 					purchorderdetails.quantityord,
 					purchorderdetails.quantityrecd,
 					purchorderdetails.deliverydate,
 					stockmaster.units,
 					stockmaster.decimalplaces,
 					purchorderdetails.qtyinvoiced
-			FROM purchorderdetails INNER JOIN stockmaster
-			ON purchorderdetails.itemcode=stockmaster.stockid
+			FROM purchorderdetails
+			INNER JOIN stockmaster
+				ON purchorderdetails.itemcode=stockmaster.stockid
+			INNER JOIN stockcosts
+				ON stockcosts.stockid=stockmaster.stockid
+				AND stockcosts.succeeded=0
 			WHERE purchorderdetails.podetailitem='" . $_GET['Add'] . "'";
 
 	$result = DB_query($sql);

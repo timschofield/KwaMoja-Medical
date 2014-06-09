@@ -6,7 +6,7 @@ $UpdateSecurity = $_SESSION['PageSecurityArray']['PurchData.php'];
 $Title = _('Stock Cost Update');
 include('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');
-
+echo '<script src="javascripts/Chart.js"></script>';
 if (isset($_GET['StockID'])) {
 	$StockID = trim(mb_strtoupper($_GET['StockID']));
 } elseif (isset($_POST['StockID'])) {
@@ -126,9 +126,12 @@ $SQL = "SELECT description,
 $result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 $myrow = DB_fetch_array($result);
-
+$ItemDescription = $myrow['description'];
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
+echo '<table widthe="98%">
+		<tr>
+			<td style="vertical-align:top; width:50%">';
 
 echo '<table cellpadding="2" class="selection">
 		<tr>
@@ -149,8 +152,7 @@ echo '<table cellpadding="2" class="selection">
 	</table>';
 
 if (($myrow['mbflag'] == 'D' and $myrow['stocktype'] != 'L') or $myrow['mbflag'] == 'A' or $myrow['mbflag'] == 'K') {
-	echo '</div>
-		  </form>'; // Close the form
+	echo '</form>'; // Close the form
 	if ($myrow['mbflag'] == 'D') {
 		echo '<br />' . $StockID . ' ' . _('is a service item');
 	} else if ($myrow['mbflag'] == 'A') {
@@ -187,6 +189,11 @@ while ($HistoryRow = DB_fetch_array($HistoryResult)) {
 			<td class="number">' . locale_number_format($HistoryRow['labourcost'], $_SESSION['StandardCostDecimalPlaces']) . '</td>
 			<td class="number">' . locale_number_format($HistoryRow['overheadcost'], $_SESSION['StandardCostDecimalPlaces']) . '</td>
 		</tr>';
+	$Dates[] = '"' . ConvertSQLDate($HistoryRow['costfrom']) . '"';
+	$MaterialCosts[] = $HistoryRow['materialcost'];
+	$LabourCosts[] = $HistoryRow['labourcost'];
+	$OverheadCosts[] = $HistoryRow['overheadcost'];
+	$AllCosts[] = $HistoryRow['materialcost'] + $HistoryRow['labourcost'] + $HistoryRow['overheadcost'];
 }
 echo '</table>';
 
@@ -228,6 +235,61 @@ if (!in_array($UpdateSecurity, $_SESSION['AllowedPageSecurityTokens'])) {
 				  <input type="submit" name="UpdateData" value="' . _('Update') . '" />
 			 </div>';
 }
+echo '</td>'; //box1
+echo '<td>';
+echo '<canvas id="canvas" height="450" width="600"></canvas>';
+echo '<script>
+
+var lineChartData = {
+labels : [' . implode(',', array_reverse($Dates)) . '],
+datasets : [
+{
+fillColor : "rgba(128,0,128,0.5)",
+strokeColor : "rgba(128,0,128,1)",
+pointColor : "rgba(128,0,128,1)",
+pointStrokeColor : "#fff",
+data : [' . implode(',', array_reverse($AllCosts)) . ']
+},
+{
+fillColor : "rgba(30,144,255,0.5)",
+strokeColor : "rgba(30,144,255,1)",
+pointColor : "rgba(30,144,255,1)",
+pointStrokeColor : "#fff",
+data : [' . implode(',', array_reverse($MaterialCosts)) . ']
+},
+{
+fillColor : "rgba(255,255,0,0.5)",
+strokeColor : "rgba(255,255,0,1)",
+pointColor : "rgba(255,255,0,1)",
+pointStrokeColor : "#fff",
+data : [' . implode(',', array_reverse($LabourCosts)) . ']
+},
+{
+fillColor : "rgba(139,105,20,0.5)",
+strokeColor : "rgba(139,105,20,1)",
+pointColor : "rgba(139,105,20,1)",
+pointStrokeColor : "#fff",
+data : [' . implode(',', array_reverse($OverheadCosts)) . ']
+}
+]
+
+}
+
+var myLine = new Chart(document.getElementById("canvas").getContext("2d")).Line(lineChartData);
+
+</script>';
+echo '</td>
+		<td>
+			<ul style="border-radius:4px;border:#7F7F7F solid 1px; padding:15px">
+				<li style="color:#800080">Total</li>
+				<li style="color:#1E90FF">Materials</li>
+				<li style="color:#FFFF00">Labour</li>
+				<li style="color:#8B6914">Overheads</li>
+			</ul>
+		</td>
+	</tr>'; //Box
+
+echo '</table>'; //Container
 if ($myrow['mbflag'] != 'D') {
 	echo '<div class="centre">
 			<a href="' . $RootPath . '/StockStatus.php?StockID=' . urlencode($StockID) . '">' . _('Show Stock Status') . '</a>

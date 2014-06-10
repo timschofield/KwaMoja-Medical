@@ -875,7 +875,7 @@ $WikiApplications = array(
 echo '<tr style="outline: 1px solid"><td>' . _('Wiki application') . ':</td>
 	<td><select required="required" minlength="1" name="X_WikiApp">';
 for ($i = 0; $i < sizeof($WikiApplications); $i++) {
-	echo '<option ' . ($_SESSION['WikiApp'] == $WikiApplications[$i] ? 'selected="selected" ' : '') . 'value="' . $WikiApplications[$i] . '">' . $WikiApplications[$i] . '</option>';
+	echo '<option '.($_SESSION['WikiApp'] == $i ? 'selected="selected" ' : '').'value="'. $i .'">' . $WikiApplications[$i]  . '</option>';
 }
 echo '</select></td>
 	<td>' . _('This feature makes') . ' ' . $ProjectName . ' ' . _('show links to a free form company knowledge base using a wiki. This allows sharing of important company information - about customers, suppliers and products and the set up of work flow menus and/or company procedures documentation') . '</td></tr>';

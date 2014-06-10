@@ -394,7 +394,7 @@ if (isset($_POST['Close'])) {
 										amount)
 									VALUES (29,
 										'" . $WOCloseNo . "',
-										'" . Date('Y-m-d') . "',
+										CURRENT_DATE,
 										'" . $PeriodNo . "',
 										'" . $WORow['materialuseagevarac'] . "',
 										'" . $_POST['WO'] . ' - ' . $WORow['stockid'] . ' ' . _('share of variance') . "',
@@ -415,7 +415,7 @@ if (isset($_POST['Close'])) {
 							amount)
 						VALUES (29,
 							'" . $WOCloseNo . "',
-							'" . Date('Y-m-d') . "',
+							CURRENT_DATE,
 							'" . $PeriodNo . "',
 							'" . $WORow['stockact'] . "',
 							'" . $_POST['WO'] . ' - ' . $WORow['stockid'] . ' ' . _('share of variance') . "',
@@ -434,7 +434,7 @@ if (isset($_POST['Close'])) {
 							amount)
 						VALUES (29,
 							'" . $WOCloseNo . "',
-							'" . Date('Y-m-d') . "',
+							CURRENT_DATE,
 							'" . $PeriodNo . "',
 							'" . $WORow['wipact'] . "',
 							'" . $_POST['WO'] . ' - ' . $WORow['stockid'] . ' ' . _('share of variance') . "',
@@ -480,7 +480,7 @@ if (isset($_POST['Close'])) {
 											amount)
 						VALUES (29,
 							'" . $WOCloseNo . "',
-							'" . Date('Y-m-d') . "',
+							CURRENT_DATE,
 							'" . $PeriodNo . "',
 							'" . $WORow['materialuseagevarac'] . "',
 							'" . $_POST['WO'] . ' - ' . $WORow['stockid'] . ' ' . _('share of usage variance') . "',
@@ -499,7 +499,7 @@ if (isset($_POST['Close'])) {
 											amount)
 						VALUES (29,
 							'" . $WOCloseNo . "',
-							'" . Date('Y-m-d') . "',
+							CURRENT_DATE,
 							'" . $PeriodNo . "',
 							'" . $WORow['wipact'] . "',
 							'" . $_POST['WO'] . ' - ' . $WORow['stockid'] . ' ' . _('share of usage variance') . "',
@@ -522,7 +522,7 @@ if (isset($_POST['Close'])) {
 							amount)
 						VALUES (29,
 							'" . $WOCloseNo . "',
-							'" . Date('Y-m-d') . "',
+							CURRENT_DATE,
 							'" . $PeriodNo . "',
 							'" . $WORow['purchpricevaract'] . "',
 							'" . $_POST['WO'] . ' - ' . $WORow['stockid'] . ' ' . _('share of cost variance') . "',
@@ -541,7 +541,7 @@ if (isset($_POST['Close'])) {
 											amount)
 						VALUES (29,
 							'" . $WOCloseNo . "',
-							'" . Date('Y-m-d') . "',
+							CURRENT_DATE,
 							'" . $PeriodNo . "',
 							'" . $WORow['wipact'] . "',
 							'" . $_POST['WO'] . ' - ' . $WORow['stockid'] . ' ' . _('share of cost variance') . "',

@@ -645,7 +645,7 @@ if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 			VALUES ('" . $Allocate_amount . "',
 				'" . $CreditTransID . "',
 				'" . $_SESSION['CreditItems' . $identifier]->TransID . "',
-				'" . Date('Y-m-d') . "')";
+				CURRENT_DATE)";
 
 		$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The allocation record for the credit note could not be added to the database because');
 		$DbgMsg = _('The following SQL to insert the allocation record for the credit note was used');

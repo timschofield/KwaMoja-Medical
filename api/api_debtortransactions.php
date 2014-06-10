@@ -713,8 +713,8 @@ function CreateCreditNote($Header, $LineDetails, $User, $Password) {
 							ON bom.component=stockcosts.stockid
 							AND succeeded=0
 						WHERE bom.parent='" . $CN_Line['stockid'] . "'
-							AND bom.effectiveto >= '" . Date('Y-m-d') . "'
-							AND bom.effectiveafter < '" . Date('Y-m-d') . "'";
+							AND bom.effectiveto >= CURRENT_DATE
+							AND bom.effectiveafter < CURRENT_DATE";
 
 			$AssResult = api_DB_query($SQL);
 
@@ -1397,7 +1397,7 @@ function AllocateTrans($AllocDetails, $User, $Password) {
 												transid_allocfrom,
 												transid_allocto)
 									VALUE('" . $AllocateAmount . "',
-										'" . Date('Y-m-d') . "',
+										CURRENT_DATE,
 										'" . $LeftToAllocRow['id'] . "',
 										'" . $OSInvRow['id'] . "')";
 			$Result = api_DB_query($SQL, $db, '', '', true);
@@ -1463,7 +1463,7 @@ function AllocateTrans($AllocDetails, $User, $Password) {
 													transid_allocfrom,
 													transid_allocto)
 										VALUE('" . $AllocateAmount . "',
-											'" . Date('Y-m-d') . "',
+											CURRENT_DATE,
 											'" . $OSCreditRow['id'] . "',
 											'" . $LeftToAllocRow['id'] . "')";
 				$Result = api_DB_query($SQL, $db, '', '', true);

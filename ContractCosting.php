@@ -247,7 +247,7 @@ if (isset($_POST['CloseContract']) and $_SESSION['Contract' . $identifier]->Stat
 								amount)
 					VALUES ( 32,
 							'" . $ContractCloseNo . "',
-							'" . Date('Y-m-d') . "',
+							CURRENT_DATE,
 							'" . $PeriodNo . "',
 							'" . $GLCodes['wipact'] . "',
 							'" . _('Variance on contract') . ' ' . $_SESSION['Contract' . $identifier]->ContractRef . "',
@@ -265,7 +265,7 @@ if (isset($_POST['CloseContract']) and $_SESSION['Contract' . $identifier]->Stat
 								amount)
 					VALUES ( 32,
 							'" . $ContractCloseNo . "',
-							'" . Date('Y-m-d') . "',
+							CURRENT_DATE,
 							'" . $PeriodNo . "',
 							'" . $GLCodes['materialuseagevarac'] . "',
 							'" . _('Variance on contract') . ' ' . $_SESSION['Contract' . $identifier]->ContractRef . "',
@@ -350,7 +350,7 @@ if (isset($_POST['CloseContract']) and $_SESSION['Contract' . $identifier]->Stat
 									26,
 									'" . $WOReceiptNo . "',
 									'" . $_SESSION['Contract' . $identifier]->LocCode . "',
-									'" . Date('Y-m-d') . "',
+									CURRENT_DATE,
 									'" . ($OtherReqtsBudget + $ContractBOMBudget) . "',
 									'" . $PeriodNo . "',
 									'" . $_SESSION['Contract' . $identifier]->WO . "',
@@ -381,7 +381,7 @@ if (isset($_POST['CloseContract']) and $_SESSION['Contract' . $identifier]->Stat
 												amount)
 									VALUES (26,
 											'" . $WOReceiptNo . "',
-											'" . Date('Y-m-d') . "',
+											CURRENT_DATE,
 											'" . $PeriodNo . "',
 											'" . $GLCodes['stockact'] . "',
 											'" . $_SESSION['Contract' . $identifier]->WO . ' ' . $_SESSION['Contract' . $identifier]->ContractRef . ' -  x 1 @ ' . locale_number_format(($OtherReqtsBudget + $ContractBOMBudget), 2) . "',
@@ -401,7 +401,7 @@ if (isset($_POST['CloseContract']) and $_SESSION['Contract' . $identifier]->Stat
 												amount)
 										VALUES (26,
 											'" . $WOReceiptNo . "',
-											'" . Date('Y-m-d') . "',
+											CURRENT_DATE,
 											'" . $PeriodNo . "',
 											'" . $GLCodes['wipact'] . "',
 											'" . $_SESSION['Contract' . $identifier]->WO . ' ' . $_SESSION['Contract' . $identifier]->ContractRef . ' -  x 1 @ ' . locale_number_format(($OtherReqtsBudget + $ContractBOMBudget), 2) . "',

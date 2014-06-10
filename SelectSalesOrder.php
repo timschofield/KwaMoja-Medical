@@ -61,7 +61,7 @@ if (isset($_POST['PlacePO'])) {
 				INNER JOIN stockcategory ON
 				stockmaster.categoryid = stockcategory.categoryid
 				WHERE purchdata.preferred=1
-				AND purchdata.effectivefrom <='" . Date('Y-m-d') . "'
+				AND purchdata.effectivefrom <=CURRENT_DATE
 				AND (" . $OrdersToPlacePOFor . ")
 				GROUP BY purchdata.supplierno,
 					purchdata.stockid,
@@ -112,9 +112,9 @@ if (isset($_POST['PlacePO'])) {
 				WHERE purchdata.preferred=1
 				AND stockmaster2.mbflag='A'
 				AND bom.loccode ='" . $_SESSION['UserStockLocation'] . "'
-				AND purchdata.effectivefrom <='" . Date('Y-m-d') . "'
-				AND bom.effectiveafter <='" . Date('Y-m-d') . "'
-				AND bom.effectiveto > '" . Date('Y-m-d') . "'
+				AND purchdata.effectivefrom <=CURRENT_DATE
+				AND bom.effectiveafter <=CURRENT_DATE
+				AND bom.effectiveto > CURRENT_DATE
 				AND (" . $OrdersToPlacePOFor . ")
 				GROUP BY purchdata.supplierno,
 					purchdata.stockid,
@@ -285,7 +285,7 @@ if (isset($_POST['PlacePO'])) {
 													  allowprint)
 													VALUES(	'" . $PO_OrderNo . "',
 														'" . $SupplierID . "',
-														'" . Date('Y-m-d') . "',
+														CURRENT_DATE,
 														'" . $SuppRow['rate'] . "',
 														'" . $_SESSION['UserID'] . "',
 														'" . $_SESSION['UserStockLocation'] . "',
@@ -304,11 +304,11 @@ if (isset($_POST['PlacePO'])) {
 														'" . $SuppRow['address6'] . "',
 														'" . $SuppRow['telephone'] . "',
 														'1.0',
-														'" . Date('Y-m-d') . "',
+														CURRENT_DATE,
 														'" . $_SESSION['Default_Shipper'] . "',
 														'Pending',
 														'" . $StatusComment . "',
-														'" . Date('Y-m-d') . "',
+														CURRENT_DATE,
 														'" . $SuppRow['paymentterms'] . "',
 														0)";
 

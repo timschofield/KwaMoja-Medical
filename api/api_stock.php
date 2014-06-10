@@ -731,8 +731,8 @@ function GetStockPrice($StockID, $Currency, $SalesType, $user, $password) {
 				 WHERE stockid='" . $StockID . "'
 				 AND typeabbrev='" . $SalesType . "'
 				 AND currabrev='" . $Currency . "'
-				 AND startdate<='" . Date('Y-m-d') . "'
-				 AND (enddate>'" . Date('Y-m-d') . "' OR enddate='0000-00-00')";
+				 AND startdate<=CURRENT_DATE
+				 AND (enddate>CURRENT_DATE OR enddate='0000-00-00')";
 	$result = DB_Query($sql);
 	$myrow = DB_fetch_row($result);
 	if ($myrow[0] == 0) {
@@ -743,8 +743,8 @@ function GetStockPrice($StockID, $Currency, $SalesType, $user, $password) {
 							WHERE stockid='" . $StockID . "'
 							 AND typeabbrev='" . $SalesType . "'
 							 AND currabrev='" . $Currency . "'
-							 AND startdate<='" . Date('Y-m-d') . "'
-							 AND (enddate>'" . Date('Y-m-d') . "' OR enddate='0000-00-00')";
+							 AND startdate<=CURRENT_DATE
+							 AND (enddate>CURRENT_DATE OR enddate='0000-00-00')";
 	}
 	$result = DB_Query($sql);
 	$myrow = DB_fetch_row($result);

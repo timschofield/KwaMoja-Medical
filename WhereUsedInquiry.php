@@ -52,8 +52,8 @@ if (isset($StockID)) {
 			FROM bom INNER JOIN stockmaster
 			ON bom.parent = stockmaster.stockid
 			WHERE component='" . $StockID . "'
-			AND bom.effectiveafter<='" . Date('Y-m-d') . "'
-			AND bom.effectiveto >='" . Date('Y-m-d') . "'";
+			AND bom.effectiveafter<=CURRENT_DATE
+			AND bom.effectiveto >=CURRENT_DATE";
 
 	$ErrMsg = _('The parents for the selected part could not be retrieved because');
 	$result = DB_query($SQL, $ErrMsg);

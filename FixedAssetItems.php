@@ -156,7 +156,7 @@ if (isset($_POST['submit'])) {
 											amount)
 							VALUES ('42',
 								'" . $TransNo . "',
-								'" . Date('Y-m-d') . "',
+								CURRENT_DATE,
 								'" . $PeriodNo . "',
 								'" . $OldDetails['costact'] . "',
 								'" . $AssetID . ' ' . _('change category') . ' ' . $OldDetails['assetcategoryid'] . ' - ' . $_POST['AssetCategoryID'] . "',
@@ -176,7 +176,7 @@ if (isset($_POST['submit'])) {
 											amount)
 							VALUES ('42',
 								'" . $TransNo . "',
-								'" . Date('Y-m-d') . "',
+								CURRENT_DATE,
 								'" . $PeriodNo . "',
 								'" . $NewAccounts['costact'] . "',
 								'" . $AssetID . ' ' . _('change category') . ' ' . $OldDetails['assetcategoryid'] . ' - ' . $_POST['AssetCategoryID'] . "',
@@ -196,7 +196,7 @@ if (isset($_POST['submit'])) {
 												amount)
 								VALUES ('42',
 									'" . $TransNo . "',
-									'" . Date('Y-m-d') . "',
+									CURRENT_DATE,
 									'" . $PeriodNo . "',
 									'" . $OldDetails['accumdepnact'] . "',
 									'" . $AssetID . ' ' . _('change category') . ' ' . $OldDetails['assetcategoryid'] . ' - ' . $_POST['AssetCategoryID'] . "',
@@ -216,7 +216,7 @@ if (isset($_POST['submit'])) {
 												amount)
 								VALUES ('42',
 									'" . $TransNo . "',
-									'" . Date('Y-m-d') . "',
+									CURRENT_DATE,
 									'" . $PeriodNo . "',
 									'" . $NewAccounts['accumdepnact'] . "',
 									'" . $AssetID . ' ' . _('change category') . ' ' . $OldDetails['assetcategoryid'] . ' - ' . $_POST['AssetCategoryID'] . "',
@@ -331,7 +331,7 @@ if (isset($_POST['submit'])) {
 										amount)
 						VALUES ('43',
 							'" . $TransNo . "',
-							'" . Date('Y-m-d') . "',
+							CURRENT_DATE,
 							'" . $PeriodNo . "',
 							'" . $AssetRow['costact'] . "',
 							'" . _('Delete asset') . ' ' . $AssetID . "',
@@ -351,7 +351,7 @@ if (isset($_POST['submit'])) {
 										amount)
 						VALUES ('43',
 							'" . $TransNo . "',
-							'" . Date('Y-m-d') . "',
+							CURRENT_DATE,
 							'" . $PeriodNo . "',
 							'" . $AssetRow['accumdepnact'] . "',
 							'" . _('Delete asset') . ' ' . $AssetID . "',

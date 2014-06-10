@@ -168,7 +168,7 @@ if (isset($_GET['GRNNo']) and isset($_POST['SupplierID'])) {
 								'" . $_GET['GRNNo'] . "',
 								'" . $GRN['deliverydate'] . "',
 								'" . $PeriodNo . "',
-								'" . Date('Y-m-d') . "',
+								CURRENT_DATE,
 								'" . (-$GRN['stdcostunit'] * $QtyToReverse) . "')";
 		$ErrMsg = _('CRITICAL ERROR! NOTE DOWN THIS ERROR AND SEEK ASSISTANCE The fixed asset transaction could not be inserted because');
 		$DbgMsg = _('The following SQL to insert the fixed asset transaction record was used');

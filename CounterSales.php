@@ -457,8 +457,8 @@ if (isset($_POST['SelectingOrderItems']) or isset($_POST['QuickEntry']) or isset
 							bom.quantity
 						FROM bom
 						WHERE bom.parent='" . $NewItem . "'
-						AND bom.effectiveto > '" . Date('Y-m-d') . "'
-						AND bom.effectiveafter < '" . Date('Y-m-d') . "'";
+						AND bom.effectiveto > CURRENT_DATE
+						AND bom.effectiveafter < CURRENT_DATE";
 
 				$ErrMsg = _('Could not retrieve kitset components from the database because') . ' ';
 				$KitResult = DB_query($sql, $ErrMsg, $DbgMsg);
@@ -558,8 +558,8 @@ if (isset($_POST['Recalculate'])) {
 								bom.quantity
 							FROM bom
 							WHERE bom.parent='" . $OrderLine->StockID . "'
-							AND bom.effectiveto > '" . Date('Y-m-d') . "'
-							AND bom.effectiveafter < '" . Date('Y-m-d') . "'";
+							AND bom.effectiveto > CURRENT_DATE
+							AND bom.effectiveafter < CURRENT_DATE";
 
 				$ErrMsg = _('Could not retrieve kitset components from the database because');
 				$KitResult = DB_query($sql, $ErrMsg);
@@ -613,8 +613,8 @@ if (isset($NewItem)) {
 						bom.quantity
 					FROM bom
 					WHERE bom.parent='" . $NewItem . "'
-					AND bom.effectiveto > '" . Date('Y-m-d') . "'
-					AND bom.effectiveafter < '" . Date('Y-m-d') . "'";
+					AND bom.effectiveto > CURRENT_DATE
+					AND bom.effectiveafter < CURRENT_DATE";
 
 			$ErrMsg = _('Could not retrieve kitset components from the database because');
 			$KitResult = DB_query($sql, $ErrMsg);
@@ -670,8 +670,8 @@ if (isset($NewItemArray) and isset($_POST['SelectingOrderItems'])) {
 								bom.quantity
 				  			FROM bom
 							WHERE bom.parent='" . $NewItem . "'
-							AND bom.effectiveto > '" . Date('Y-m-d') . "'
-							AND bom.effectiveafter < '" . Date('Y-m-d') . "'";
+							AND bom.effectiveto > CURRENT_DATE
+							AND bom.effectiveafter < CURRENT_DATE";
 
 					$ErrMsg = _('Could not retrieve kitset components from the database because');
 					$KitResult = DB_query($sql, $ErrMsg);
@@ -1027,8 +1027,8 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 						ON stockmaster.stockid=bom.component
 						WHERE bom.parent='" . $OrderLine->StockID . "'
 						AND locstock.loccode='" . $_SESSION['Items' . $identifier]->Location . "'
-						AND effectiveafter <'" . Date('Y-m-d') . "'
-						AND effectiveto >='" . Date('Y-m-d') . "'";
+						AND effectiveafter <CURRENT_DATE
+						AND effectiveto >=CURRENT_DATE";
 
 				$ErrMsg = _('Could not retrieve the component quantity left at the location once the assembly item on this order is invoiced (for the purposes of checking that stock will not go negative because)');
 				$Result = DB_query($SQL, $ErrMsg);
@@ -1116,8 +1116,8 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 												'" . $_SESSION['Items' . $identifier]->PhoneNo . "',
 												'" . $_SESSION['Items' . $identifier]->Email . "',
 												'" . $_SESSION['Items' . $identifier]->Location . "',
-												'" . Date('Y-m-d') . "',
-												'" . Date('Y-m-d') . "',
+												CURRENT_DATE,
+												CURRENT_DATE,
 												0,
 												'" . $_SESSION['Items' . $identifier]->SalesPerson . "')";
 
@@ -1148,8 +1148,8 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 					'" . $StockItem->Quantity . "',
 					'" . floatval($StockItem->DiscountPercent) . "',
 					'" . $StockItem->Narrative . "',
-					'" . Date('Y-m-d') . "',
-					'" . Date('Y-m-d') . "',
+					CURRENT_DATE,
+					CURRENT_DATE,
 					'" . $StockItem->Quantity . "',
 					1)";
 
@@ -1234,8 +1234,8 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 													 startdate)
 									 VALUES ('" . $WONo . "',
 											'" . $_SESSION['DefaultFactoryLocation'] . "',
-											'" . Date('Y-m-d') . "',
-											'" . Date('Y-m-d') . "')", $ErrMsg, $DbgMsg, true);
+											CURRENT_DATE,
+											CURRENT_DATE)", $ErrMsg, $DbgMsg, true);
 					//Need to get the latest BOM to roll up cost
 					$CostResult = DB_query("SELECT SUM((stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost)*bom.quantity) AS cost
 													FROM stockcosts
@@ -1448,8 +1448,8 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 								ON bom.component=stockcosts.stockid
 								AND SUCCEEDED=0
 							WHERE bom.parent='" . $OrderLine->StockID . "'
-								AND bom.effectiveto > '" . Date('Y-m-d') . "'
-								AND bom.effectiveafter < '" . Date('Y-m-d') . "'";
+								AND bom.effectiveto > CURRENT_DATE
+								AND bom.effectiveafter < CURRENT_DATE";
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('Could not retrieve assembly components from the database for') . ' ' . $OrderLine->StockID . _('because') . ' ';
 				$DbgMsg = _('The SQL that failed was');

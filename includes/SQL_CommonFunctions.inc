@@ -171,7 +171,7 @@ function ItemCostUpdateGL($StockID, $NewCost, $OldCost, $QOH) {
 										amount)
 							VALUES ('35',
 							'" . $CostUpdateNo . "',
-							'" . Date('Y-m-d') . "',
+							CURRENT_DATE,
 							'" . $PeriodNo . "',
 							'" . $StockGLCode['adjglact'] . "',
 							'" . $StockID . ' ' . _('cost was') . ' ' . $OldCost . ' ' . _('changed to') . ' ' . $NewCost . ' x ' . _('Quantity on hand of') . ' ' . $QOH . "',
@@ -190,7 +190,7 @@ function ItemCostUpdateGL($StockID, $NewCost, $OldCost, $QOH) {
 							amount)
 						VALUES ('35',
 							'" . $CostUpdateNo . "',
-							'" . Date('Y-m-d') . "',
+							CURRENT_DATE,
 							'" . $PeriodNo . "',
 							'" . $StockGLCode['stockact'] . "',
 							'" . $StockID . ' ' . _('cost was') . ' ' . $OldCost . ' ' . _('changed to') . ' ' . $NewCost . ' x ' . _('Quantity on hand of') . ' ' . $QOH . "',

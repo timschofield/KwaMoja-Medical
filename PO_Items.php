@@ -166,7 +166,7 @@ if (isset($_POST['Commit'])) {
 							VALUES(	'" . $_SESSION['PO' . $identifier]->OrderNo . "',
 									'" . $_SESSION['PO' . $identifier]->SupplierID . "',
 									'" . $_SESSION['PO' . $identifier]->Comments . "',
-									'" . Date('Y-m-d') . "',
+									CURRENT_DATE,
 									'" . $_SESSION['PO' . $identifier]->ExRate . "',
 									'" . $_SESSION['PO' . $identifier]->Initiator . "',
 									'" . $_SESSION['PO' . $identifier]->Authoriser . "',
@@ -189,7 +189,7 @@ if (isset($_POST['Commit'])) {
 									'" . $_SESSION['PO' . $identifier]->SuppTel . "',
 									'" . $_SESSION['PO' . $identifier]->Contact . "',
 									'" . $_SESSION['PO' . $identifier]->Version . "',
-									'" . Date('Y-m-d') . "',
+									CURRENT_DATE,
 									'" . $_SESSION['PO' . $identifier]->DeliveryBy . "',
 									'" . $_SESSION['PO' . $identifier]->Status . "',
 									'" . htmlspecialchars($StatusComment, ENT_QUOTES, 'UTF-8') . "',
@@ -271,7 +271,7 @@ if (isset($_POST['Commit'])) {
 										version= '" . $_SESSION['PO' . $identifier]->Version . "',
 										deliveryby='" . $_SESSION['PO' . $identifier]->DeliveryBy . "',
 										deliverydate='" . FormatDateForSQL($_SESSION['PO' . $identifier]->DeliveryDate) . "',
-										revised= '" . Date('Y-m-d') . "',
+										revised= CURRENT_DATE,
 										intostocklocation='" . $_SESSION['PO' . $identifier]->Location . "',
 										deladd1='" . $_SESSION['PO' . $identifier]->DelAdd1 . "',
 										deladd2='" . $_SESSION['PO' . $identifier]->DelAdd2 . "',
@@ -587,7 +587,7 @@ if (isset($_POST['NewItem']) and !empty($_POST['PO_ItemsResubmitFormValue']) and
 								MAX(purchdata.effectivefrom) AS latesteffectivefrom
 							FROM purchdata
 							WHERE purchdata.supplierno = '" . $_SESSION['PO' . $identifier]->SupplierID . "'
-							AND purchdata.effectivefrom <='" . Date('Y-m-d') . "'
+							AND purchdata.effectivefrom <=CURRENT_DATE
 							AND purchdata.stockid = '" . $ItemCode . "'
 							GROUP BY purchdata.price,
 									purchdata.conversionfactor,
@@ -607,8 +607,8 @@ if (isset($_POST['NewItem']) and !empty($_POST['PO_ItemsResubmitFormValue']) and
 										discountamount
 								FROM supplierdiscounts
 								WHERE supplierno= '" . $_SESSION['PO' . $identifier]->SupplierID . "'
-								AND effectivefrom <='" . Date('Y-m-d') . "'
-								AND effectiveto >='" . Date('Y-m-d') . "'
+								AND effectivefrom <=CURRENT_DATE
+								AND effectiveto >=CURRENT_DATE
 								AND stockid = '" . $ItemCode . "'";
 
 						$ItemDiscountPercent = 0;

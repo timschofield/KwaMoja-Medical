@@ -224,7 +224,7 @@ if ($_FILES['SelectedAssetFile']['name']) { //start file processing
 											'" . $TransNo . "',
 											'" . $_POST['DateToEnter'] . "',
 											'" . $PeriodNo . "',
-											'" . Date('Y-m-d') . "',
+											CURRENT_DATE,
 											'cost',
 											'" . $Cost . "')";
 
@@ -245,7 +245,7 @@ if ($_FILES['SelectedAssetFile']['name']) { //start file processing
 											'" . $TransNo . "',
 											'" . $_POST['DateToEnter'] . "',
 											'" . $PeriodNo . "',
-											'" . Date('Y-m-d') . "',
+											CURRENT_DATE,
 											'depn',
 											'" . $AccumDepn . "')";
 

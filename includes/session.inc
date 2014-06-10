@@ -173,7 +173,7 @@ if (isset($_SESSION['UpdateCurrencyRatesDaily'])) {
 				} //$CurrencyRow = DB_fetch_row($CurrenciesResult)
 			}
 			$_SESSION['UpdateCurrencyRatesDaily'] = Date('Y-m-d');
-			$UpdateConfigResult = DB_query("UPDATE config SET confvalue = '" . Date('Y-m-d') . "' WHERE confname='UpdateCurrencyRatesDaily'");
+			$UpdateConfigResult = DB_query("UPDATE config SET confvalue = CURRENT_DATE WHERE confname='UpdateCurrencyRatesDaily'");
 		} //DateDiff(Date($_SESSION['DefaultDateFormat']), ConvertSQLDate($_SESSION['UpdateCurrencyRatesDaily']), 'd') > 0
 	} //$_SESSION['UpdateCurrencyRatesDaily'] != 0
 } //isset($_SESSION['UpdateCurrencyRatesDaily'])

@@ -271,7 +271,7 @@ if (isset($_POST['submit'])) {
 		}
 		if ($_SESSION['UpdateCurrencyRatesDaily'] != $_POST['X_UpdateCurrencyRatesDaily']) {
 			if ($_POST['X_UpdateCurrencyRatesDaily'] == 1) {
-				$sql[] = "UPDATE config SET confvalue='" . Date('Y-m-d') . "' WHERE confname='UpdateCurrencyRatesDaily'";
+				$sql[] = "UPDATE config SET confvalue=CURRENT_DATE WHERE confname='UpdateCurrencyRatesDaily'";
 			} else {
 				$sql[] = "UPDATE config SET confvalue='0' WHERE confname='UpdateCurrencyRatesDaily'";
 			}

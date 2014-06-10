@@ -487,7 +487,7 @@ if (isset($_POST['submit'])) {
 												amount)
 										VALUES ( 0,
 												'" . $JournalNo . "',
-												'" . Date('Y-m-d') . "',
+												CURRENT_DATE,
 												'" . GetPeriod(Date($_SESSION['DefaultDateFormat']), true) . "',
 												'" . $NewStockAct . "',
 												'" . $StockID . ' ' . _('Change stock category') . "',
@@ -504,7 +504,7 @@ if (isset($_POST['submit'])) {
 												amount)
 										VALUES ( 0,
 												'" . $JournalNo . "',
-												'" . Date('Y-m-d') . "',
+												CURRENT_DATE,
 												'" . GetPeriod(Date($_SESSION['DefaultDateFormat']), true) . "',
 												'" . $OldStockAccount . "',
 												'" . $StockID . ' ' . _('Change stock category') . "',
@@ -541,7 +541,7 @@ if (isset($_POST['submit'])) {
 													amount)
 											VALUES ( 0,
 													'" . $JournalNo . "',
-													'" . Date('Y-m-d') . "',
+													CURRENT_DATE,
 													'" . GetPeriod(Date($_SESSION['DefaultDateFormat']), true) . "',
 													'" . $NewWIPAct . "',
 													'" . $StockID . ' ' . _('Change stock category') . "',
@@ -558,7 +558,7 @@ if (isset($_POST['submit'])) {
 													amount)
 											VALUES ( 0,
 													'" . $JournalNo . "',
-													'" . Date('Y-m-d') . "',
+													CURRENT_DATE,
 													'" . GetPeriod(Date($_SESSION['DefaultDateFormat']), true) . "',
 													'" . $OldWIPAccount . "',
 													'" . $StockID . ' ' . _('Change stock category') . "',

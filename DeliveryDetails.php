@@ -493,8 +493,8 @@ if (isset($OK_to_PROCESS) and $OK_to_PROCESS == 1 and $_SESSION['ExistingOrder' 
 												 startdate)
 								 VALUES ('" . $WONo . "',
 										'" . $_SESSION['DefaultFactoryLocation'] . "',
-										'" . Date('Y-m-d') . "',
-										'" . Date('Y-m-d') . "')", $ErrMsg, $DbgMsg, true);
+										CURRENT_DATE,
+										CURRENT_DATE)", $ErrMsg, $DbgMsg, true);
 				//Need to get the latest BOM to roll up cost
 				$CostResult = DB_query("SELECT SUM((stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost)*bom.quantity) AS cost
 													FROM stockcosts
@@ -678,7 +678,7 @@ elseif (isset($OK_to_PROCESS) and ($OK_to_PROCESS == 1 and $_SESSION['ExistingOr
 													stockid,
 													workcentreadded,
 													'" . $_SESSION['Items' . $identifier]->Location . "',
-													'" . Date('Y-m-d') . "',
+													CURRENT_DATE,
 													'2099-12-31',
 													quantity
 											FROM contractbom
@@ -692,7 +692,7 @@ elseif (isset($OK_to_PROCESS) and ($OK_to_PROCESS == 1 and $_SESSION['ExistingOr
 											 VALUES ('" . $WONo . "',
 													'" . $_SESSION['Items' . $identifier]->Location . "',
 													'" . $ContractRow['requireddate'] . "',
-													'" . Date('Y-m-d') . "')", $ErrMsg, $DbgMsg);
+													CURRENT_DATE)", $ErrMsg, $DbgMsg);
 			//Need to get the latest BOM to roll up cost but also add the contract other requirements
 			$CostResult = DB_query("SELECT SUM((stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost)*contractbom.quantity) AS cost
 									FROM stockcosts

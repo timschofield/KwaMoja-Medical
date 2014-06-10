@@ -199,7 +199,7 @@ function DB_Maintenance() {
 	}
 
 	$Result = DB_query("UPDATE config
-				SET confvalue='" . Date('Y-m-d') . "'
+				SET confvalue=CURRENT_DATE
 				WHERE confname='DB_Maintenance_LastRun'");
 }
 

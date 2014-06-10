@@ -222,7 +222,7 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 			}
 
 			$sql = "UPDATE pcashdetails
-					SET authorized = '" . Date('Y-m-d') . "',
+					SET authorized = CURRENT_DATE,
 					posted = 1
 					WHERE counterindex = '" . $myrow['counterindex'] . "'";
 			$resultupdate = DB_query($sql, '', '', true);

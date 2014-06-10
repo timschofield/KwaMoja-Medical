@@ -269,7 +269,7 @@ if ($ListCount == 0) {
 	$pdf->OutputD($_SESSION['DatabaseName'] . '_PackingSlip_' . date('Y-m-d') . '.pdf');
 	$pdf->__destruct();
 	$sql = "UPDATE salesorders SET printedpackingslip=1,
-									datepackingslipprinted='" . Date('Y-m-d') . "'
+									datepackingslipprinted=CURRENT_DATE
 				WHERE salesorders.orderno='" . $_GET['TransNo'] . "'";
 	$result = DB_query($sql);
 }

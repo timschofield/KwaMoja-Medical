@@ -59,8 +59,8 @@ if (isset($_POST['UpdateSalesAnalysis']) and $_POST['PeriodNo'] != 0) {
 					INNER JOIN BOM
 						ON stockcosts.stockid = bom.component
 					WHERE bom.parent = '" . $ItemsToUpdate['stockid'] . "'
-						AND bom.effectiveto > '" . Date('Y-m-d') . "'
-						AND bom.effectiveafter < '" . Date('Y-m-d') . "'
+						AND bom.effectiveto > CURRENT_DATE
+						AND bom.effectiveafter < CURRENT_DATE
 						AND stockcosts.succeeded=0";
 
 			$ErrMsg = _('Could not recalculate the current cost of the assembly item') . $ItemsToUpdate['stockid'] . ' ' . _('because');

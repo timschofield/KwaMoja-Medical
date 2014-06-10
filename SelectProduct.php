@@ -157,7 +157,7 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 								WHERE currabrev ='" . $_SESSION['CompanyRecord']['currencydefault'] . "'
 									AND debtorno=''
 									AND branchcode=''
-									AND startdate <= '" . Date('Y-m-d') . "' AND ( enddate >= '" . Date('Y-m-d') . "' OR enddate = '0000-00-00')
+									AND startdate <= CURRENT_DATE AND ( enddate >= CURRENT_DATE OR enddate = '0000-00-00')
 									AND stockid='" . $StockID . "'");
 		if ($myrow['mbflag'] == 'K' or $myrow['mbflag'] == 'A') {
 			$CostResult = DB_query("SELECT SUM(bom.quantity * (stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost)) AS cost

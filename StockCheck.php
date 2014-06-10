@@ -22,7 +22,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 					   SELECT locstock.stockid,
 							  locstock.loccode,
 							  locstock.quantity,
-							  '" . Date('Y-m-d') . "'
+							  CURRENT_DATE
 					   FROM locstock,
 							stockmaster
 					   WHERE locstock.stockid=stockmaster.stockid AND					   locstock.loccode='" . $_POST['Location'] . "' AND
@@ -74,7 +74,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				SELECT locstock.stockid,
 					loccode ,
 					locstock.quantity,
-					'" . Date('Y-m-d') . "'
+					CURRENT_DATE
 				FROM locstock INNER JOIN stockmaster
 				ON locstock.stockid=stockmaster.stockid
 				WHERE locstock.loccode='" . $_POST['Location'] . "'

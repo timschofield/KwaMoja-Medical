@@ -283,7 +283,7 @@ if (DB_num_rows($LineItemsResult) > 0) {
 											amount)
 				  					VALUES (31,
 				   					'" . $_GET['SelectedShipment'] . "',
-									'" . Date('Y-m-d') . "',
+									CURRENT_DATE,
 									'" . $PeriodNo . "',
 							 		'" . $StockGLCodes['purchpricevaract'] . "',
 								 	'" . $myrow['itemcode'] . ' ' . _('shipment cost') . ' ' . locale_number_format($ItemShipmentCost, $_SESSION['CompanyRecord']['deicmalplaces']) . _('shipment quantity is greater than stock held - variance write off') . "',
@@ -303,7 +303,7 @@ if (DB_num_rows($LineItemsResult) > 0) {
 											amount)
 											VALUES (31,
 							   					'" . $_GET['SelectedShipment'] . "',
-												'" . Date('Y-m-d') . "',
+												CURRENT_DATE,
 												'" . $PeriodNo . "',
 										 		'" . $StockGLCodes['stockact'] . "',
 											 	'" . $myrow['itemcode'] . ' ' . _('shipment avg cost adjt') . "',
@@ -387,7 +387,7 @@ if (DB_num_rows($LineItemsResult) > 0) {
 												amount)
 									VALUES (31,
 										'" . $_GET['SelectedShipment'] . "',
-										'" . Date('Y-m-d') . "',
+										CURRENT_DATE,
 										'" . $PeriodNo . "',
 										'" . $StockGLCodes['purchpricevaract'] . "',
 										'" . $myrow['itemcode'] . ' ' . _('shipment cost') . ' ' . locale_number_format($ItemShipmentCost, $_SESSION['CompanyRecord']['decimalplaces']) . ' x ' . _('Qty recd') . ' ' . $myrow['totqtyrecd'] . "',
@@ -411,7 +411,7 @@ if (DB_num_rows($LineItemsResult) > 0) {
 										amount)
 							VALUES (31,
 								'" . $_GET['SelectedShipment'] . "',
-								'" . Date('Y-m-d') . "',
+								CURRENT_DATE,
 								'" . $PeriodNo . "',
 								'" . $_SESSION['CompanyRecord']['grnact'] . "',
 								'" . $myrow['itemcode'] . ' ' . _('shipment cost') . ' ' . locale_number_format($ItemShipmentCost, $_SESSION['CompanyRecord']['decimalplaces']) . ' x ' . _('Qty invoiced') . ' ' . $myrow['totqtyinvoiced'] . "',
@@ -447,7 +447,7 @@ if (DB_num_rows($LineItemsResult) > 0) {
 												amount)
 										VALUES (35,
 											'" . $CostUpdateNo . "',
-											'" . Date('Y-m-d') . "',
+											CURRENT_DATE,
 											'" . $PeriodNo . "',
 											'" . $StockGLCodes['adjglact'] . "',
 											'" . _('Shipment of') . ' ' . $myrow['itemcode'] . " " . _('cost was') . ' ' . $StdCostUnit . ' ' . _('changed to') . ' ' . locale_number_format($ItemShipmentCost, $_SESSION['CompanyRecord']['decimalplaces']) . ' x ' . _('QOH of') . ' ' . $QOH . "',
@@ -466,7 +466,7 @@ if (DB_num_rows($LineItemsResult) > 0) {
 										amount)
 								VALUES (35,
 									'" . $CostUpdateNo . "',
-									'" . Date('Y-m-d') . "',
+									CURRENT_DATE,
 									'" . $PeriodNo . "',
 									'" . $StockGLCodes['stockact'] . "',
 									'" . _('Shipment of') . ' ' . $myrow['itemcode'] . ' ' . _('cost was') . ' ' . $StdCostUnit . ' ' . _('changed to') . ' ' . locale_number_format($ItemShipmentCost, $_SESSION['CompanyRecord']['decimalplaces']) . ' x ' . _('QOH of') . ' ' . $QOH . "',

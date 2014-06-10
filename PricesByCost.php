@@ -48,7 +48,7 @@ if (isset($_POST['submit']) or isset($_POST['update'])) {
 				AND   prices.price" . $Comparator . "(stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost) * '" . filter_number_format($_POST['Margin']) . "'
 				AND prices.typeabbrev ='" . $_POST['SalesType'] . "'
 				AND prices.currabrev ='" . $_POST['CurrCode'] . "'
-				AND (prices.enddate>='" . Date('Y-m-d') . "' OR prices.enddate='0000-00-00')";
+				AND (prices.enddate>=CURRENT_DATE OR prices.enddate='0000-00-00')";
 	$result = DB_query($sql);
 	$numrow = DB_num_rows($result);
 

@@ -659,8 +659,8 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 							ON stockmaster.stockid=bom.component
 						WHERE bom.parent='" . $OrderLine->StockID . "'
 							AND locstock.loccode='" . $_SESSION['Items' . $identifier]->Location . "'
-							AND effectiveafter <'" . Date('Y-m-d') . "'
-							AND effectiveto >='" . Date('Y-m-d') . "'";
+							AND effectiveafter <CURRENT_DATE
+							AND effectiveto >=CURRENT_DATE";
 
 				$ErrMsg = _('Could not retrieve the component quantity left at the location once the assembly item on this order is invoiced (for the purposes of checking that stock will not go negative because)');
 				$Result = DB_query($SQL, $ErrMsg);
@@ -1573,7 +1573,7 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 												10,
 												'" . $InvoiceNo . "',
 												'" . $PeriodNo . "',
-												'" . Date('Y-m-d') . "',
+												CURRENT_DATE,
 												'disposal',
 												'" . round(($OrderLine->Price * $OrderLine->QtyDispatched * (1 - $OrderLine->DiscountPercent) / $_SESSION['CurrencyRate']), $_SESSION['CompanyRecord']['decimalplaces']) . "',
 												'" . $DefaultDispatchDate . "')";

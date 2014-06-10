@@ -205,11 +205,11 @@ function ItemCostUpdateGL($StockID, $NewCost, $OldCost, $QOH) {
 /* Calculates the material cost of a bill of materials, given parent code*/
 function BomMaterialCost($Parent) {
 
-	$SQL = "SELECT materialcost from stockcosts where stockid='" . $Parent . "'";
+	$SQL = "SELECT materialcost FROM stockcosts WHERE stockid='" . $Parent . "'";
 	$result1 = DB_query($SQL);
 	$MyRow1 = DB_fetch_row($result1);
 	$OldCost = $MyRow1[0];
-	$SQL = "SELECT sum(quantity) as qoh from locstock where stockid='" . $Parent . "'";
+	$SQL = "SELECT sum(quantity) AS qoh FROM locstock WHERE stockid='" . $Parent . "'";
 	$result1 = DB_query($SQL);
 	$MyRow1 = DB_fetch_row($result1);
 	$QOH = $MyRow1[0];
@@ -218,7 +218,9 @@ function BomMaterialCost($Parent) {
 	   		LEFT JOIN stockcosts
 				ON bom.component = stockcosts.stockid
 				AND stockcosts.succeeded=0
-			WHERE bom.parent='" . $Parent . "'";
+			WHERE bom.parent='" . $Parent . "'
+				AND bom.effectiveafter<=CURRENT_DATE
+				AND bom.effectiveto>=CURRENT_DATE";
 	$result = DB_query($SQL);
 	$MyRow = DB_fetch_row($result);
 	$MaterialCost = $MyRow[0];
@@ -282,6 +284,8 @@ function WoRealRequirements($WO, $LocCode, $StockID, $Qty = 1, $ParentID = '') {
 				AND stockcosts.succeeded=0
 			WHERE bom.parent='" . $StockID . "'
 				AND bom.loccode ='" . $LocCode . "'
+				AND bom.effectiveafter<=CURRENT_DATE
+				AND bom.effectiveto>=CURRENT_DATE
 				AND stockmaster.mbflag<>'G'
 				AND bom.component NOT IN (
 					SELECT stockid
@@ -312,6 +316,8 @@ function WoRealRequirements($WO, $LocCode, $StockID, $Qty = 1, $ParentID = '') {
 							AND stockcosts.succeeded=0
 						WHERE bom.parent='" . $StockID . "'
 							AND bom.loccode ='" . $LocCode . "'
+							AND bom.effectiveafter<=CURRENT_DATE
+							AND bom.effectiveto>=CURRENT_DATE
 							AND stockmaster.mbflag<>'G'
 							AND bom.component IN (
 								SELECT stockid

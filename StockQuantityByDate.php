@@ -9,7 +9,6 @@ echo '<p class="page_title_text noPrint" >
 	</p>';
 
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 $sql = "SELECT categoryid, categorydescription FROM stockcategory";
@@ -81,7 +80,6 @@ echo '<tr>
 		</div></td>
 	</tr>
 	</table>
-	</div>
 	</form>';
 
 $TotalQuantity = 0;
@@ -109,23 +107,24 @@ if (isset($_POST['ShowStatus']) and Is_Date($_POST['OnHandDate'])) {
 
 	$SQLOnHandDate = FormatDateForSQL($_POST['OnHandDate']);
 
-	echo '<br />
-		<table class="selection">
+	echo '<table class="selection">
 			<tr>
 				<th>' . _('Item Code') . '</th>
 				<th>' . _('Description') . '</th>
 				<th>' . _('Quantity On Hand') . '</th>
+				<th>' . _('Cost per Unit') . '</th>
+				<th>' . _('Total Value') . '</th>
 			</tr>';
 
 	while ($myrows = DB_fetch_array($StockResult)) {
 
 		$sql = "SELECT stockid,
-				newqoh
-				FROM stockmoves
-				WHERE stockmoves.trandate <= '" . $SQLOnHandDate . "'
-				AND stockid = '" . $myrows['stockid'] . "'
-				AND loccode = '" . $_POST['StockLocation'] . "'
-				ORDER BY stkmoveno DESC LIMIT 1";
+						newqoh
+					FROM stockmoves
+					WHERE stockmoves.trandate <= '" . $SQLOnHandDate . "'
+						AND stockid = '" . $myrows['stockid'] . "'
+						AND loccode = '" . $_POST['StockLocation'] . "'
+					ORDER BY stkmoveno DESC LIMIT 1";
 
 		$ErrMsg = _('The stock held as at') . ' ' . $_POST['OnHandDate'] . ' ' . _('could not be retrieved because');
 
@@ -145,14 +144,36 @@ if (isset($_POST['ShowStatus']) and Is_Date($_POST['OnHandDate'])) {
 				$k = 1;
 			}
 
+			$CostSQL = "SELECT stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS cost
+							FROM stockcosts
+							WHERE stockcosts.costfrom<='" . $SQLOnHandDate . "'
+								AND stockid = '" . $myrows['stockid'] . "'
+							ORDER BY costfrom DESC
+							LIMIT 1";
+			$CostResult = DB_query($CostSQL);
+			if (DB_num_rows($CostResult) == 0) {
+				$CostSQL = "SELECT stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS cost
+								FROM stockcosts
+								WHERE stockid = '" . $myrows['stockid'] . "'
+								ORDER BY costfrom DESC
+								LIMIT 1";
+				$CostResult = DB_query($CostSQL);
+				$CostRow = DB_fetch_array($CostResult);
+			} else {
+				$CostRow = DB_fetch_array($CostResult);
+			}
 			if ($NumRows == 0) {
 				printf('<td><a target="_blank" href="' . $RootPath . '/StockStatus.php?%s">%s</a></td>
 						<td>%s</td>
-						<td class="number">%s</td></tr>', 'StockID=' . mb_strtoupper($myrows['stockid']), mb_strtoupper($myrows['stockid']), $myrows['description'], 0);
+						<td class="number">%s</td>
+						<td class="number">%s</td>
+						<td class="number">%s</td></tr>', 'StockID=' . mb_strtoupper($myrows['stockid']), mb_strtoupper($myrows['stockid']), $myrows['description'], 0, locale_number_format($CostRow['cost'], $_SESSION['CompanyRecord']['decimalplaces']), 0);
 			} else {
 				printf('<td><a target="_blank" href="' . $RootPath . '/StockStatus.php?%s">%s</a></td>
-					<td>%s</td>
-					<td class="number">%s</td></tr>', 'StockID=' . mb_strtoupper($myrows['stockid']), mb_strtoupper($myrows['stockid']), $myrows['description'], locale_number_format($LocQtyRow['newqoh'], $myrows['decimalplaces']));
+						<td>%s</td>
+						<td class="number">%s</td>
+						<td class="number">%s</td>
+						<td class="number">%s</td></tr>', 'StockID=' . mb_strtoupper($myrows['stockid']), mb_strtoupper($myrows['stockid']), $myrows['description'], locale_number_format($LocQtyRow['newqoh'], $myrows['decimalplaces']), locale_number_format($CostRow['cost'], $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format(($CostRow['cost'] * $LocQtyRow['newqoh']), $_SESSION['CompanyRecord']['decimalplaces']));
 
 				$TotalQuantity += $LocQtyRow['newqoh'];
 			}

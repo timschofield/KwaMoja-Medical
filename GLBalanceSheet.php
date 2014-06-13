@@ -271,7 +271,7 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 		$CheckTotal += $AccountBalance;
 
 		if ($_POST['Detail']=='Detailed') {
-			if (isset($_POST['ShowZeroBalances']) or (!isset($_POST['ShowZeroBalances']) and ($AccountBalance <> 0 or $LYAccountBalance <> 0))) {
+			if (isset($_POST['ShowZeroBalances']) or (!isset($_POST['ShowZeroBalances']) and (round($AccountBalance, $_SESSION['CompanyRecord']['decimalplaces']) <> 0 or round($LYAccountBalance, $_SESSION['CompanyRecord']['decimalplaces']) <> 0))) {
 				$FontSize = 8;
 				$pdf->setFont('', '');
 				$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 50, $FontSize, $myrow['accountcode']);

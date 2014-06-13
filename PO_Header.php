@@ -92,7 +92,6 @@ if ((isset($_POST['UpdateStatus']) and $_POST['UpdateStatus'] != '')) {
 			if ($AuthorityLevel > $OrderTotal) {
 				$_SESSION['PO' . $identifier]->StatusComments = date($_SESSION['DefaultDateFormat']) . ' - ' . _('Authorised by') . $UserChangedStatus . $_POST['StatusComments'] . '<br />' . html_entity_decode($_POST['StatusCommentsComplete'], ENT_QUOTES, 'UTF-8');
 				$_SESSION['PO' . $identifier]->AllowPrintPO = 1;
-				$_SESSION['PO' . $identifier]->Authoriser = $_SESSION['UserID'];
 			} //$AuthorityLevel > $OrderTotal
 			else {
 				$OKToUpdateStatus = 0;
@@ -150,7 +149,6 @@ if ((isset($_POST['UpdateStatus']) and $_POST['UpdateStatus'] != '')) {
 			}
 			$SQL = "UPDATE purchorders SET status='" . $_POST['Status'] . "',
 							stat_comment='" . $_SESSION['PO' . $identifier]->StatusComments . "',
-							authoriser='" . $_SESSION['PO' . $identifier]->Authoriser . "'
 							allowprint='" . $AllowPrint . "'
 					WHERE purchorders.orderno ='" . $_SESSION['ExistingOrder'] . "'";
 
@@ -390,9 +388,7 @@ if ((!isset($_POST['SearchSuppliers']) or $_POST['SearchSuppliers'] == '') and (
 	$_POST['SuppDelAdd4'] = $_SESSION['PO' . $identifier]->SuppDelAdd4;
 	$_POST['SuppDelAdd5'] = $_SESSION['PO' . $identifier]->SuppDelAdd5;
 	$_POST['SuppDelAdd6'] = $_SESSION['PO' . $identifier]->SuppDelAdd6;
-	if(!isset($_POST['DeliveryDate'])) {
-		$_POST['DeliveryDate'] = $_SESSION['PO' . $identifier]->DeliveryDate;
-	}
+	$_POST['DeliveryDate'] = $_SESSION['PO' . $identifier]->DeliveryDate;
 
 } //(!isset($_POST['SearchSuppliers']) or $_POST['SearchSuppliers'] == '') and (isset($_SESSION['PO' . $identifier]->SupplierID) and $_SESSION['PO' . $identifier]->SupplierID != '')
 
@@ -1172,7 +1168,7 @@ else {
 	echo ':</h3></th>
 			</tr>
 			<tr>
-				<td colspan="4"><textarea name="Comments" style="width:100%" rows="5" cols="200">' . $_POST['Comments'] . '</textarea></td>
+				<td colspan="4"><textarea name="Comments" style="width:100%" rows="5" cols="200">' . stripcslashes($_POST['Comments']) . '</textarea></td>
 			</tr>
 			</table>
 			<br />';

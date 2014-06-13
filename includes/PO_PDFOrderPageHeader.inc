@@ -60,7 +60,7 @@ if ($OrderNo != 'Preview') {
 	$pdf->addText($FormDesign->PaymentTerms->x, $Page_Height - $FormDesign->PaymentTerms->y, $FormDesign->PaymentTerms->FontSize, _('Payment Terms') . ': ' . 'XXXXXXXX');
 }
 /*Now the Comments split over two lines if necessary */
-$LeftOvers = $pdf->addTextWrap($FormDesign->Comments->x, $Page_Height - $FormDesign->Comments->y, $FormDesign->Comments->Length, $FormDesign->Comments->FontSize, _('Comments') . ':' . $POHeader['comments'], 'left');
+$LeftOvers = $pdf->addTextWrap($FormDesign->Comments->x, $Page_Height - $FormDesign->Comments->y, $FormDesign->Comments->Length, $FormDesign->Comments->FontSize, _('Comments') . ':' . stripcslashes($POHeader['comments']), 'left');
 if (mb_strlen($LeftOvers) > 0) {
 	$LeftOvers = $pdf->addTextWrap($FormDesign->Comments->x, $Page_Height - $FormDesign->Comments->y - $line_height, $FormDesign->Comments->Length, $FormDesign->Comments->FontSize, $LeftOvers, 'left');
 }

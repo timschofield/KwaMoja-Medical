@@ -507,6 +507,7 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 		}
 		echo '<a href="' . $RootPath . '/DiscountCategories.php?StockID=' . urlencode($StockID) . '">' . _('Maintain Discount Category') . '</a>';
 		echo '<a href="' . $RootPath . '/StockClone.php?OldStockID=' . urlencode($StockID) . '">' . _('Clone This Item') . '</a>';
+		echo '<a href="' . $RootPath . '/RelatedItemsUpdate.php?Item=' . urlencode($StockID) . '">' . _('Maintain Related Items') . '</a>';
 		echo '<a href="' . $RootPath . '/PriceMatrix.php?StockID=' . urlencode($StockID) . '">' . _('Mantain prices by quantity break and sales types') . '</a>';
 	}
 	echo '</td></tr></table>';

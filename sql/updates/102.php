@@ -1,7 +1,7 @@
 <?php
 
 CreateTable('relateditems',
-"+CREATE TABLE IF NOT EXISTS `relateditems` (
+"CREATE TABLE IF NOT EXISTS `relateditems` (
   `stockid` varchar(20) CHARACTER SET utf8 NOT NULL,
   `related` varchar(20) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`stockid`,`related`),

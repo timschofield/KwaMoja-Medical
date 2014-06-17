@@ -628,16 +628,11 @@ if (isset($_POST['NewItem']) and !empty($_POST['PO_ItemsResubmitFormValue']) and
 						}
 						$PurchPrice = ($PurchRow['price'] * (1 - $ItemDiscountPercent) - $ItemDiscountAmount) / $PurchRow['conversionfactor'];
 						$ConversionFactor = $PurchRow['conversionfactor'];
-						if ($PurchRow['suppliers_partno'] != $ItemCode) { //only show supplier's part code if not the same as our item code
-							$SupplierDescription = $PurchRow['suppliers_partno'] . ' - ';
-						} else {
-							$SupplierDescription = '';
-						}
 						if (mb_strlen($PurchRow['supplierdescription']) > 2) {
-							$SupplierDescription .= $PurchRow['supplierdescription'];
+							$SupplierDescription = $PurchRow['supplierdescription'];
 						} //mb_strlen($PurchRow['supplierdescription']) > 2
 						else {
-							$SupplierDescription .= $ItemRow['description'];
+							$SupplierDescription = $ItemRow['description'];
 						}
 						$SuppliersUnitOfMeasure = $PurchRow['suppliersuom'];
 						$SuppliersPartNo = $PurchRow['suppliers_partno'];

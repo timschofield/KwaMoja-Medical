@@ -77,6 +77,11 @@ if (isset($_POST['submit'])) {
 		$InputError = 1;
 	}
 
+	if ($_POST['Related'] == $Item) {
+		prnMsg(_('An item can not be related to itself'), 'warn');
+		$InputError = 1;
+	}
+
 	if ($InputError != 1) {
 		$sql = "INSERT INTO relateditems (stockid,
 									related)

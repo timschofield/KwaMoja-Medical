@@ -107,7 +107,7 @@ function assignComboToInput(e, t) {
 
 function inArray(e, t, n) {
 	for (i = 0; i < t.length; i++) {
-		if (e == t[i].value) {
+		if (e.value == t[i].value) {
 			return true
 		}
 	}

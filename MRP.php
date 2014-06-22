@@ -512,7 +512,7 @@ if (isset($_POST['submit'])) {
 									usemrpdemands,
 									leeway)
 								VALUES (
-									CURRENT_DATE,
+									CURRENT_TIMESTAMP,
 									'" . $locparm . "',
 									'" . $_POST['PanSizeFlag'] . "',
 									'" . $_POST['ShrinkageFlag'] . "',

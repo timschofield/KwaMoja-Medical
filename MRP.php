@@ -533,9 +533,9 @@ if (isset($_POST['submit'])) {
 		$myrow = DB_fetch_array($result);
 
 		$Leeway = $myrow['leeway'];
-		$UserMRPDemands = _('No');
+		$UseMRPDemands = _('No');
 		if ($myrow['usemrpdemands'] == 'y') {
-			$UserMRPDemands = _('Yes');
+			$UseMRPDemands = _('Yes');
 		}
 		$useeoq = _('No');
 		if ($myrow['eoqflag'] == 'y') {
@@ -566,7 +566,7 @@ if (isset($_POST['submit'])) {
 				</tr>
 				<tr>
 					<td>' . _('Use MRP Demands') . ':</td>
-					<td>' . $UserMRPDemands . '</td>
+					<td>' . $UseMRPDemands . '</td>
 				</tr>
 				<tr>
 					<td>' . _('Use EOQ') . ':</td>
@@ -688,9 +688,21 @@ function LevelNetting($Part, $eoq, $PanSize, $ShrinkFactor, $LeadTime) {
 	$TotalSupply = 0;
 
 	if ($RequirementCount > 0 and $SupplyCount > 0) {
-		$TotalRequirement += $Requirements[$reqi]['quantity'];
-		$TotalSupply += $Supplies[$supi]['supplyquantity'];
+		$TotalRequirement = 0;
+		foreach ($Requirements as $Req) {
+			$TotalRequirement += $Req['quantity'];
+		}
+		$TotalSupply = 0;
+		foreach ($Supplies as $Sup) {
+			$TotalSupply += $Sup['supplyquantity'];
+		}
+		$init_totals_for_first_run = 1;
 		while ($TotalRequirement > 0 and $TotalSupply > 0) {
+			if($init_totals_for_first_run) {
+					$TotalRequirement = $Requirements[$reqi]['quantity'];
+					$TotalSupply = $Supplies[$supi]['supplyquantity'];
+					$init_totals_for_first_run = 0;
+			}
 			$Supplies[$supi]['updateflag'] = 1;
 			// ******** Put leeway calculation in here ********
 			$DueDate = ConvertSQLDate($Supplies[$supi]['duedate']);
@@ -797,8 +809,14 @@ function LevelNetting($Part, $eoq, $PanSize, $ShrinkFactor, $LeadTime) {
 							AND cal2.manufacturingflag='1'
 							GROUP BY cal2.calendardate";
 				$ResultDate = DB_query($CalendarSQL);
-				$myrowdate = DB_fetch_array($ResultDate);
-				$NewDate = $myrowdate[1];
+				$MyRowDate = DB_fetch_array($ResultDate);
+				if ($MyRowDate[0] > 0){
+					$NewDate = $MyRowDate[1];
+				} else {//No calendar date available, so use $PartRequiredDate
+						$ConvertDate = ConvertSQLDate($PartRequiredDate);
+						$DateAdd = DateAdd($ConvertDate, 'd', ($LeadTime * -1));
+						$NewDate = FormatDateForSQL($DateAdd);
+				}
 				// If can't find date based on manufacturing calendar, use $PartRequiredDate
 			} else {
 				// Convert $PartRequiredDate from mysql format to system date format, use that to subtract leadtime
@@ -834,7 +852,7 @@ function LevelNetting($Part, $eoq, $PanSize, $ShrinkFactor, $LeadTime) {
 			$result = DB_query($sql);
 			$myrow = DB_fetch_row($result);
 			if ($myrow[0] > 0) {
-				CreateLowerLevelRequirement($Requirement['part'], $Requirement['daterequired'], $PlannedQty, $Requirement['mrpdemandtype'], $Requirement['orderno'], $Requirement['whererequired']);
+				CreateLowerLevelRequirement($Requirement['part'], $NewDate, $PlannedQty, $Requirement['mrpdemandtype'], $Requirement['orderno'], $Requirement['whererequired']);
 			}
 		} // End of if $PlannedQty > 0
 	} // End of foreach $Requirements

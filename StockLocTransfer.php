@@ -2,6 +2,8 @@
 
 include('includes/session.inc');
 $Title = _('Inventory Location Transfer Shipment');
+$BookMark = "LocationTransfers";
+$ViewTopic = "Inventory";
 include('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');
 

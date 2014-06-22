@@ -186,13 +186,17 @@ $SQL = "SELECT systypes.typename,
 				debtortrans.reference,
 				debtortrans.invtext,
 				debtortrans.order_,
+				salesorders.customerref,
 				debtortrans.rate,
 				(debtortrans.ovamount + debtortrans.ovgst + debtortrans.ovfreight + debtortrans.ovdiscount) AS totalamount,
 				debtortrans.alloc AS allocated
-		FROM debtortrans INNER JOIN systypes
-		ON debtortrans.type = systypes.typeid
-		WHERE debtortrans.debtorno = '" . $CustomerID . "'
-		AND debtortrans.trandate >= '" . $DateAfterCriteria . "'";
+			FROM debtortrans
+			INNER JOIN systypes
+				ON debtortrans.type = systypes.typeid
+			LEFT JOIN salesorders
+				ON salesorders.orderno=debtortrans.order_
+			WHERE debtortrans.debtorno = '" . $CustomerID . "'
+				AND debtortrans.trandate >= '" . $DateAfterCriteria . "'";
 
 if ($_SESSION['SalesmanLogin'] != '') {
 	$SQL .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
@@ -217,6 +221,7 @@ echo '<table class="selection">
 			<th>' . _('Date') . '</th>
 			<th>' . _('Branch') . '</th>
 			<th>' . _('Reference') . '</th>
+			<th>' . _('Cust Order') . '</th>
 			<th>' . _('Comments') . '</th>
 			<th>' . _('Order') . '</th>
 			<th>' . _('Total') . '</th>
@@ -253,6 +258,7 @@ while ($myrow = DB_fetch_array($TransResult)) {
 						<td>%s</td>
 						<td>%s</td>
 						<td>%s</td>
+						<td>%s</td>
 						<td style="width:200px">%s</td>
 						<td>%s</td>
 						<td class="number">%s</td>
@@ -262,13 +268,25 @@ while ($myrow = DB_fetch_array($TransResult)) {
 
 	$CreditInvoiceFormatString = '<td><a href="%s/Credit_Invoice.php?InvoiceNumber=%s">' . _('Credit ') . '<img src="%s/credit.png" title="' . _('Click to credit the invoice') . '" alt="" /></a></td>';
 
-	$PreviewInvoiceFormatString = '<td><a href="%s/PrintCustTrans.php?FromTransNo=%s&amp;InvOrCredit=Invoice">' . _('HTML ') . '<img src="%s/preview.gif" title="' . _('Click to preview the invoice') . '" alt="" /></a></td>
-	<td><a href="%s/%s?FromTransNo=%s&amp;InvOrCredit=Invoice&amp;PrintPDF=True">' . _('PDF ') . '<img src="%s/css/' . $Theme . '/images/pdf.png" title="' . _('Click for PDF') . '" alt="" /></a></td>
-		<td><a href="%s/EmailCustTrans.php?FromTransNo=%s&amp;InvOrCredit=Invoice">' . _('Email ') . '<img src="%s/email.png" title="' . _('Click to email the invoice') . '" alt="" /></a></td>';
+	$PreviewInvoiceFormatString = '<td>
+										<a href="%s/PrintCustTrans.php?FromTransNo=%s&amp;InvOrCredit=Invoice">' . _('HTML ') . '<img src="%s/preview.gif" title="' . _('Click to preview the invoice') . '" alt="" /></a>
+									</td>
+									<td>
+										<a href="%s/%s?FromTransNo=%s&amp;InvOrCredit=Invoice&amp;PrintPDF=True">' . _('PDF ') . '<img src="%s/css/' . $Theme . '/images/pdf.png" title="' . _('Click for PDF') . '" alt="" /></a>
+									</td>
+									<td>
+										<a href="%s/EmailCustTrans.php?FromTransNo=%s&amp;InvOrCredit=Invoice">' . _('Email ') . '<img src="%s/email.png" title="' . _('Click to email the invoice') . '" alt="" /></a>
+									</td>';
 
-	$PreviewCreditFormatString = '<td><a href="%s/PrintCustTrans.php?FromTransNo=%s&amp;InvOrCredit=Credit">' . _('HTML ') . ' <IMG SRC="%s/preview.gif" title="' . _('Click to preview the credit note') . '" /></a></td>
-	<td><a href="%s/%s?FromTransNo=%s&amp;InvOrCredit=Credit&amp;PrintPDF=True">' . _('PDF ') . '<img src="%s/css/' . $Theme . '/images/pdf.png" title="' . _('Click for PDF') . '" alt="" /></a></td>
-	<td><a href="%s/EmailCustTrans.php?FromTransNo=%s&amp;InvOrCredit=Credit">' . _('Email') . ' <img src="%s/email.png" title="' . _('Click to email the credit note') . '" alt="" /></a></td>';
+	$PreviewCreditFormatString = '<td>
+										<a href="%s/PrintCustTrans.php?FromTransNo=%s&amp;InvOrCredit=Credit">' . _('HTML ') . ' <IMG SRC="%s/preview.gif" title="' . _('Click to preview the credit note') . '" /></a>
+									</td>
+									<td>
+										<a href="%s/%s?FromTransNo=%s&amp;InvOrCredit=Credit&amp;PrintPDF=True">' . _('PDF ') . '<img src="%s/css/' . $Theme . '/images/pdf.png" title="' . _('Click for PDF') . '" alt="" /></a>
+									/td>
+									<td>
+										<a href="%s/EmailCustTrans.php?FromTransNo=%s&amp;InvOrCredit=Credit">' . _('Email') . ' <img src="%s/email.png" title="' . _('Click to email the credit note') . '" alt="" /></a>
+									</td>';
 
 	/* assumed allowed page security token 3 allows the user to create credits for invoices */
 	if (in_array($_SESSION['PageSecurityArray']['Credit_Invoice.php'], $_SESSION['AllowedPageSecurityTokens']) and $myrow['type'] == 10) {
@@ -279,83 +297,307 @@ while ($myrow = DB_fetch_array($TransResult)) {
 
 			/* format string with GL inquiry options and for invoice to be credited */
 
-			printf($BaseFormatString . $CreditInvoiceFormatString . $PreviewInvoiceFormatString . '<td><a href="%s/GLTransInquiry.php?TypeID=%s&amp;TransNo=%s">' . _('View GL Entries') . '
-					<img src="' . $RootPath . '/css/' . $Theme . '/images/gl.png" title="' . _('View the GL Entries') . '" alt="" /></a></td>
+			printf($BaseFormatString .
+					$CreditInvoiceFormatString .
+					$PreviewInvoiceFormatString . '
+					<td>
+						<a href="%s/GLTransInquiry.php?TypeID=%s&amp;TransNo=%s">' . _('View GL Entries') . '<img src="' . $RootPath . '/css/' . $Theme . '/images/gl.png" title="' . _('View the GL Entries') . '" alt="" /></a>
+					</td>
 				</tr>',
 			//$BaseFormatString parameters
-				$myrow['typename'], $myrow['transno'], ConvertSQLDate($myrow['trandate']), $myrow['branchcode'], $myrow['reference'], $myrow['invtext'], $myrow['order_'], locale_number_format($myrow['totalamount'], $CustomerRecord['decimalplaces']), locale_number_format($myrow['allocated'], $CustomerRecord['decimalplaces']), locale_number_format($myrow['totalamount'] - $myrow['allocated'], $CustomerRecord['decimalplaces']),
+				$myrow['typename'],
+				$myrow['transno'],
+				ConvertSQLDate($myrow['trandate']),
+				$myrow['branchcode'],
+				$myrow['reference'],
+				$myrow['customerref'],
+				$myrow['invtext'],
+				$myrow['order_'],
+				locale_number_format($myrow['totalamount'],
+				$CustomerRecord['decimalplaces']),
+				locale_number_format($myrow['allocated'],
+				$CustomerRecord['decimalplaces']),
+				locale_number_format($myrow['totalamount'] - $myrow['allocated'], $CustomerRecord['decimalplaces']),
 			//$CreditInvoiceFormatString parameters
-				$RootPath, $myrow['transno'], $RootPath . '/css/' . $Theme . '/images',
+				$RootPath,
+				$myrow['transno'],
+				$RootPath . '/css/' . $Theme . '/images',
 			//$PreviewInvoiceFormatString parameters
-				$RootPath, $myrow['transno'], $RootPath . '/css/' . $Theme . '/images', $RootPath, $PrintCustomerTransactionScript, $myrow['transno'], $RootPath, $RootPath, $myrow['transno'], $RootPath . '/css/' . $Theme . '/images',
+				$RootPath,
+				$myrow['transno'],
+				$RootPath . '/css/' . $Theme . '/images',
+				$RootPath,
+				$PrintCustomerTransactionScript,
+				$myrow['transno'],
+				$RootPath,
+				$RootPath,
+				$myrow['transno'],
+				$RootPath . '/css/' . $Theme . '/images',
 			//Parameter for string for GL Trans Inquiries
-				$RootPath, $myrow['type'], $myrow['transno']);
+				$RootPath,
+				$myrow['type'],
+				$myrow['transno']);
 		} else { //user does not have privileges to see GL inquiry stuff
 
-			printf($BaseFormatString . $CreditInvoiceFormatString . $PreviewInvoiceFormatString . '</tr>',
+			printf($BaseFormatString .
+					$CreditInvoiceFormatString .
+					$PreviewInvoiceFormatString . '
+				</tr>',
 			//BaseFormatString parameters
-				$myrow['typename'], $myrow['transno'], ConvertSQLDate($myrow['trandate']), $myrow['branchcode'], $myrow['reference'], $myrow['invtext'], $myrow['order_'], locale_number_format($myrow['totalamount'], $CustomerRecord['decimalplaces']), locale_number_format($myrow['allocated'], $CustomerRecord['decimalplaces']), locale_number_format($myrow['totalamount'] - $myrow['allocated'], $CustomerRecord['decimalplaces']),
+				$myrow['typename'],
+				$myrow['transno'],
+				ConvertSQLDate($myrow['trandate']),
+				$myrow['branchcode'],
+				$myrow['reference'],
+				$myrow['customerref'],
+				$myrow['invtext'],
+				$myrow['order_'],
+				locale_number_format($myrow['totalamount'], $CustomerRecord['decimalplaces']),
+				locale_number_format($myrow['allocated'], $CustomerRecord['decimalplaces']),
+				locale_number_format($myrow['totalamount'] - $myrow['allocated'], $CustomerRecord['decimalplaces']),
 			//CreditInvoiceFormatString parameters
-				$RootPath, $myrow['transno'], $RootPath . '/css/' . $Theme . '/images',
+				$RootPath,
+				$myrow['transno'],
+				$RootPath . '/css/' . $Theme . '/images',
 			//$PreviewInvoiceFormatString parameters
-				$RootPath, $myrow['transno'], $RootPath . '/css/' . $Theme . '/images', $RootPath, $PrintCustomerTransactionScript, $myrow['transno'], $RootPath, $RootPath, $myrow['transno'], $RootPath . '/css/' . $Theme . '/images');
+				$RootPath,
+				$myrow['transno'],
+				$RootPath . '/css/' . $Theme . '/images',
+				$RootPath,
+				$PrintCustomerTransactionScript,
+				$myrow['transno'],
+				$RootPath,
+				$RootPath,
+				$myrow['transno'],
+				$RootPath . '/css/' . $Theme . '/images');
 		}
 
 	} elseif ($myrow['type'] == 10) {
 		/*its an invoice but not high enough priveliges to credit it */
 
-		printf($BaseFormatString . $PreviewInvoiceFormatString . '</tr>',
+		printf($BaseFormatString .
+				$PreviewInvoiceFormatString . '
+			</tr>',
 		//$BaseFormatString parameters
-			$myrow['typename'], $myrow['transno'], ConvertSQLDate($myrow['trandate']), $myrow['branchcode'], $myrow['reference'], $myrow['invtext'], $myrow['order_'], locale_number_format($myrow['totalamount'], $CustomerRecord['decimalplaces']), locale_number_format($myrow['allocated'], $CustomerRecord['decimalplaces']), locale_number_format($myrow['totalamount'] - $myrow['allocated'], $CustomerRecord['decimalplaces']),
+			$myrow['typename'],
+			$myrow['transno'],
+			ConvertSQLDate($myrow['trandate']),
+			$myrow['branchcode'],
+			$myrow['reference'],
+			$myrow['customeref'],
+			$myrow['invtext'],
+			$myrow['order_'],
+			locale_number_format($myrow['totalamount'], $CustomerRecord['decimalplaces']),
+			locale_number_format($myrow['allocated'], $CustomerRecord['decimalplaces']),
+			locale_number_format($myrow['totalamount'] - $myrow['allocated'], $CustomerRecord['decimalplaces']),
 		//$PreviewInvoiceFormatString parameters
-			$RootPath, $myrow['transno'], $RootPath . '/css/' . $Theme . '/images', $RootPath, $PrintCustomerTransactionScript, $myrow['transno'], $RootPath, $RootPath, $myrow['transno'], $RootPath . '/css/' . $Theme . '/images');
+			$RootPath,
+			$myrow['transno'],
+			$RootPath . '/css/' . $Theme . '/images',
+			$RootPath,
+			$PrintCustomerTransactionScript,
+			$myrow['transno'],
+			$RootPath,
+			$RootPath,
+			$myrow['transno'],
+			$RootPath . '/css/' . $Theme . '/images');
 
 	} elseif ($myrow['type'] == 11) {
 		/*its a credit note */
 		if ($_SESSION['CompanyRecord']['gllink_debtors'] == 1 and in_array(8, $_SESSION['AllowedPageSecurityTokens'])) {
-			printf($BaseFormatString . $PreviewCreditFormatString . '<td><a href="%s/CustomerAllocations.php?AllocTrans=%s">' . _('Allocation') . '<img src="' . $RootPath . '/css/' . $Theme . '/images/allocation.png" title="' . _('Click to allocate funds') . '" alt="" /></a></td>
-				<td><a href="%s/GLTransInquiry.php?TypeID=%s&amp;TransNo=%s">' . _('View GL Entries') . ' <a><img src="' . $RootPath . '/css/' . $Theme . '/images/gl.png" title="' . _('View the GL Entries') . '" alt="" /></a></td></tr>',
+			printf($BaseFormatString .
+					$PreviewCreditFormatString . '
+					<td>
+						<a href="%s/CustomerAllocations.php?AllocTrans=%s">' . _('Allocation') . '<img src="' . $RootPath . '/css/' . $Theme . '/images/allocation.png" title="' . _('Click to allocate funds') . '" alt="" /></a>
+					</td>
+					<td>
+						<a href="%s/GLTransInquiry.php?TypeID=%s&amp;TransNo=%s">' . _('View GL Entries') . ' <a><img src="' . $RootPath . '/css/' . $Theme . '/images/gl.png" title="' . _('View the GL Entries') . '" alt="" /></a>
+					</td>
+				</tr>',
 			//$BaseFormatString parameters
-				$myrow['typename'], $myrow['transno'], ConvertSQLDate($myrow['trandate']), $myrow['branchcode'], $myrow['reference'], $myrow['invtext'], $myrow['order_'], locale_number_format($myrow['totalamount'], $CustomerRecord['decimalplaces']), locale_number_format($myrow['allocated'], $CustomerRecord['decimalplaces']), locale_number_format($myrow['totalamount'] - $myrow['allocated'], $CustomerRecord['decimalplaces']),
+				$myrow['typename'],
+				$myrow['transno'],
+				ConvertSQLDate($myrow['trandate']),
+				$myrow['branchcode'],
+				$myrow['reference'],
+				$myrow['customerref'],
+				$myrow['invtext'],
+				$myrow['order_'],
+				locale_number_format($myrow['totalamount'], $CustomerRecord['decimalplaces']),
+				locale_number_format($myrow['allocated'], $CustomerRecord['decimalplaces']),
+				locale_number_format($myrow['totalamount'] - $myrow['allocated'], $CustomerRecord['decimalplaces']),
 			//$PreviewCreditFormatString parameters
-				$RootPath, $myrow['transno'], $RootPath . '/css/' . $Theme . '/images', $RootPath, $PrintCustomerTransactionScript, $myrow['transno'], $RootPath, $RootPath, $myrow['transno'], $RootPath . '/css/' . $Theme . '/images',
+				$RootPath,
+				$myrow['transno'],
+				$RootPath . '/css/' . $Theme . '/images',
+				$RootPath,
+				$PrintCustomerTransactionScript,
+				$myrow['transno'],
+				$RootPath,
+				$RootPath,
+				$myrow['transno'],
+				$RootPath . '/css/' . $Theme . '/images',
 			// hand coded format string for Allocations and GLTrans Inquiry parameters
-				$RootPath, $myrow['id'], $RootPath, $myrow['type'], $myrow['transno']);
+				$RootPath,
+				$myrow['id'],
+				$RootPath,
+				$myrow['type'],
+				$myrow['transno']);
 		} else {
-			printf($BaseFormatString . $PreviewCreditFormatString . '<td><a href="%s/CustomerAllocations.php?AllocTrans=%s">' . _('Allocation') . '<img src="%s/allocation.png" title="' . _('Click to allocate funds') . '" alt="" /></a></td>
-				</tr>', $myrow['typename'], $myrow['transno'], ConvertSQLDate($myrow['trandate']), $myrow['branchcode'], $myrow['reference'], $myrow['invtext'], $myrow['order_'], locale_number_format($myrow['totalamount'], $CustomerRecord['decimalplaces']), locale_number_format($myrow['allocated'], $CustomerRecord['decimalplaces']), locale_number_format($myrow['totalamount'] - $myrow['allocated'], $CustomerRecord['decimalplaces']),
+			printf($BaseFormatString .
+					$PreviewCreditFormatString . '
+					<td>
+						<a href="%s/CustomerAllocations.php?AllocTrans=%s">' . _('Allocation') . '<img src="%s/allocation.png" title="' . _('Click to allocate funds') . '" alt="" /></a>
+					</td>
+				</tr>',
+				$myrow['typename'],
+				$myrow['transno'],
+				ConvertSQLDate($myrow['trandate']),
+				$myrow['branchcode'],
+				$myrow['reference'],
+				$myrow['customerref'],
+				$myrow['invtext'],
+				$myrow['order_'],
+				locale_number_format($myrow['totalamount'], $CustomerRecord['decimalplaces']),
+				locale_number_format($myrow['allocated'], $CustomerRecord['decimalplaces']),
+				locale_number_format($myrow['totalamount'] - $myrow['allocated'], $CustomerRecord['decimalplaces']),
 			//$PreviewCreditFormatString parameters
-				$RootPath, $myrow['transno'], $RootPath . '/css/' . $Theme . '/images', $RootPath, $PrintCustomerTransactionScript, $myrow['transno'], $RootPath, $RootPath, $myrow['transno'], $RootPath . '/css/' . $Theme . '/images',
+				$RootPath,
+				$myrow['transno'],
+				$RootPath . '/css/' . $Theme . '/images',
+				$RootPath,
+				$PrintCustomerTransactionScript,
+				$myrow['transno'],
+				$RootPath,
+				$RootPath,
+				$myrow['transno'],
+				$RootPath . '/css/' . $Theme . '/images',
 			//Parameters for hand coded string to show allocations
-				$RootPath, $myrow['id'], $RootPath . '/css/' . $Theme . '/images');
+				$RootPath,
+				$myrow['id'],
+				$RootPath . '/css/' . $Theme . '/images');
 		}
 	} elseif ($myrow['type'] == 12 and $myrow['totalamount'] < 0) {
 		/*its a receipt  which could have an allocation*/
 
 		//If security token 8 in the allowed page security tokens then assumed ok for GL trans inquiries
 		if ($_SESSION['CompanyRecord']['gllink_debtors'] == 1 and in_array(8, $_SESSION['AllowedPageSecurityTokens'])) {
-			printf($BaseFormatString . '<td><a href="%s/CustomerAllocations.php?AllocTrans=%s">' . _('Allocation') . '<img src="' . $RootPath . '/css/' . $Theme . '/images/allocation.png" title="' . _('Click to allocate funds') . '" alt="" /></a></td>
-				<td><a href="%s/GLTransInquiry.php?TypeID=%s&amp;TransNo=%s">' . _('View GL Entries') . ' <img src="' . $RootPath . '/css/' . $Theme . '/images/gl.png" title="' . _('View the GL Entries') . '" alt="" /></a></td>
-				</tr>', $myrow['typename'], $myrow['transno'], ConvertSQLDate($myrow['trandate']), $myrow['branchcode'], $myrow['reference'], $myrow['invtext'], $myrow['order_'], locale_number_format($myrow['totalamount'], $CustomerRecord['decimalplaces']), locale_number_format($myrow['allocated'], $CustomerRecord['decimalplaces']), locale_number_format($myrow['totalamount'] - $myrow['allocated'], $CustomerRecord['decimalplaces']), $RootPath, $myrow['id'], $RootPath, $myrow['type'], $myrow['transno']);
+			printf($BaseFormatString . '
+					<td>
+						<a href="%s/CustomerAllocations.php?AllocTrans=%s">' . _('Allocation') . '<img src="' . $RootPath . '/css/' . $Theme . '/images/allocation.png" title="' . _('Click to allocate funds') . '" alt="" /></a>
+					</td>
+					<td>
+						<a href="%s/GLTransInquiry.php?TypeID=%s&amp;TransNo=%s">' . _('View GL Entries') . ' <img src="' . $RootPath . '/css/' . $Theme . '/images/gl.png" title="' . _('View the GL Entries') . '" alt="" /></a>
+					</td>
+				</tr>',
+					$myrow['typename'],
+					$myrow['transno'],
+					ConvertSQLDate($myrow['trandate']),
+					$myrow['branchcode'],
+					$myrow['reference'],
+					$myrow['customerref'],
+					$myrow['invtext'],
+					$myrow['order_'],
+					locale_number_format($myrow['totalamount'], $CustomerRecord['decimalplaces']),
+					locale_number_format($myrow['allocated'], $CustomerRecord['decimalplaces']),
+					locale_number_format($myrow['totalamount'] - $myrow['allocated'], $CustomerRecord['decimalplaces']),
+					$RootPath,
+					$myrow['id'],
+					$RootPath,
+					$myrow['type'],
+					$myrow['transno']);
 		} else { //no permission for GLTrans Inquiries
-			printf($BaseFormatString . '<td><a href="%s/CustomerAllocations.php?AllocTrans=%s">' . _('Allocation') . '<img src="' . $RootPath . '/css/' . $Theme . '/images/allocation.png" title="' . _('Click to allocate funds') . '" alt="" /></a></td>
-				</tr>', $myrow['typename'], $myrow['transno'], ConvertSQLDate($myrow['trandate']), $myrow['branchcode'], $myrow['reference'], $myrow['invtext'], $myrow['order_'], locale_number_format($myrow['totalamount'], $CustomerRecord['decimalplaces']), locale_number_format($myrow['allocated'], $CustomerRecord['decimalplaces']), locale_number_format($myrow['totalamount'] - $myrow['allocated'], $CustomerRecord['decimalplaces']), $RootPath, $myrow['id']);
+			printf($BaseFormatString . '
+					<td>
+						<a href="%s/CustomerAllocations.php?AllocTrans=%s">' . _('Allocation') . '<img src="' . $RootPath . '/css/' . $Theme . '/images/allocation.png" title="' . _('Click to allocate funds') . '" alt="" /></a>
+					</td>
+				</tr>',
+					$myrow['typename'],
+					$myrow['transno'],
+					ConvertSQLDate($myrow['trandate']),
+					$myrow['branchcode'],
+					$myrow['reference'],
+					$myrow['invtext'],
+					$myrow['order_'],
+					locale_number_format($myrow['totalamount'], $CustomerRecord['decimalplaces']),
+					locale_number_format($myrow['allocated'], $CustomerRecord['decimalplaces']),
+					locale_number_format($myrow['totalamount'] - $myrow['allocated'], $CustomerRecord['decimalplaces']),
+					$RootPath,
+					$myrow['id']);
 		}
 	} elseif ($myrow['type'] == 12 and $myrow['totalamount'] > 0) {
 		/*its a negative receipt */
 
 		//If security token 8 in the allowed page security tokens then assumed ok for GL trans inquiries
 		if ($_SESSION['CompanyRecord']['gllink_debtors'] == 1 and in_array(8, $_SESSION['AllowedPageSecurityTokens'])) {
-			printf($BaseFormatString . '<td><a href="%s/GLTransInquiry.php?TypeID=%s&amp;TransNo=%s">' . _('View GL Entries') . ' <a></td></tr>', $myrow['typename'], $myrow['transno'], ConvertSQLDate($myrow['trandate']), $myrow['branchcode'], $myrow['reference'], $myrow['invtext'], $myrow['order_'], locale_number_format($myrow['totalamount'], $CustomerRecord['decimalplaces']), locale_number_format($myrow['allocated'], $CustomerRecord['decimalplaces']), locale_number_format($myrow['totalamount'] - $myrow['allocated'], $CustomerRecord['decimalplaces']), $RootPath, $myrow['type'], $myrow['transno']);
+			printf($BaseFormatString . '
+					<td>
+						<a href="%s/GLTransInquiry.php?TypeID=%s&amp;TransNo=%s">' . _('View GL Entries') . ' </a>
+					</td>
+				</tr>',
+					$myrow['typename'],
+					$myrow['transno'],
+					ConvertSQLDate($myrow['trandate']),
+					$myrow['branchcode'],
+					$myrow['reference'],
+					$myrow['customerref'],
+					$myrow['invtext'],
+					$myrow['order_'],
+					locale_number_format($myrow['totalamount'], $CustomerRecord['decimalplaces']),
+					locale_number_format($myrow['allocated'], $CustomerRecord['decimalplaces']),
+					locale_number_format($myrow['totalamount'] - $myrow['allocated'], $CustomerRecord['decimalplaces']),
+					$RootPath,
+					$myrow['type'],
+					$myrow['transno']);
 		} else { //no permission for GLTrans Inquiries
-			printf($BaseFormatString . '<td></tr>', $myrow['typename'], $myrow['transno'], ConvertSQLDate($myrow['trandate']), $myrow['branchcode'], $myrow['reference'], $myrow['invtext'], $myrow['order_'], locale_number_format($myrow['totalamount'], $CustomerRecord['decimalplaces']), locale_number_format($myrow['allocated'], $CustomerRecord['decimalplaces']), locale_number_format($myrow['totalamount'] - $myrow['allocated'], $CustomerRecord['decimalplaces']));
+			printf($BaseFormatString . '</td></tr>',
+					$myrow['typename'],
+					$myrow['transno'],
+					ConvertSQLDate($myrow['trandate']),
+					$myrow['branchcode'],
+					$myrow['reference'],
+					$myrow['customerref'],
+					$myrow['invtext'],
+					$myrow['order_'],
+					locale_number_format($myrow['totalamount'], $CustomerRecord['decimalplaces']),
+					locale_number_format($myrow['allocated'], $CustomerRecord['decimalplaces']),
+					locale_number_format($myrow['totalamount'] - $myrow['allocated'], $CustomerRecord['decimalplaces']));
 		}
 	} else {
 		//If security token 8 in the allowed page security tokens then assumed ok for GL trans inquiries
 		if ($_SESSION['CompanyRecord']['gllink_debtors'] == 1 and in_array(8, $_SESSION['AllowedPageSecurityTokens'])) {
-			printf($BaseFormatString . '<td><a href="%s/GLTransInquiry.php?TypeID=%s&amp;TransNo=%s">' . _('View GL Entries') . ' <a></td></tr>', $myrow['typename'], $myrow['transno'], ConvertSQLDate($myrow['trandate']), $myrow['branchcode'], $myrow['reference'], $myrow['invtext'], $myrow['order_'], locale_number_format($myrow['totalamount'], $CustomerRecord['decimalplaces']), locale_number_format($myrow['allocated'], $CustomerRecord['decimalplaces']), locale_number_format($myrow['totalamount'] - $myrow['allocated'], $CustomerRecord['decimalplaces']), $RootPath, $myrow['type'], $myrow['transno']);
+			printf($BaseFormatString . '
+					<td>
+						<a href="%s/GLTransInquiry.php?TypeID=%s&amp;TransNo=%s">' . _('View GL Entries') . ' </a>
+					</td>
+				</tr>',
+					$myrow['typename'],
+					$myrow['transno'],
+					ConvertSQLDate($myrow['trandate']),
+					$myrow['branchcode'],
+					$myrow['reference'],
+					$myrow['customerref'],
+					$myrow['invtext'],
+					$myrow['order_'],
+					locale_number_format($myrow['totalamount'], $CustomerRecord['decimalplaces']),
+					locale_number_format($myrow['allocated'], $CustomerRecord['decimalplaces']),
+					locale_number_format($myrow['totalamount'] - $myrow['allocated'], $CustomerRecord['decimalplaces']),
+					$RootPath,
+					$myrow['type'],
+					$myrow['transno']);
 		} else {
-			printf($BaseFormatString . '</tr>', $myrow['typename'], $myrow['transno'], ConvertSQLDate($myrow['trandate']), $myrow['branchcode'], $myrow['reference'], $myrow['invtext'], $myrow['order_'], locale_number_format($myrow['totalamount'], $CustomerRecord['decimalplaces']), locale_number_format($myrow['allocated'], $CustomerRecord['decimalplaces']), locale_number_format($myrow['totalamount'] - $myrow['allocated'], $CustomerRecord['decimalplaces']));
+			printf($BaseFormatString . '</tr>',
+					$myrow['typename'],
+					$myrow['transno'],
+					ConvertSQLDate($myrow['trandate']),
+					$myrow['branchcode'],
+					$myrow['reference'],
+					$myrow['customerref'],
+					$myrow['invtext'],
+					$myrow['order_'],
+					locale_number_format($myrow['totalamount'], $CustomerRecord['decimalplaces']),
+					locale_number_format($myrow['allocated'], $CustomerRecord['decimalplaces']),
+					locale_number_format($myrow['totalamount'] - $myrow['allocated'], $CustomerRecord['decimalplaces']));
 		}
 	}
 

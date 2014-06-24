@@ -4,18 +4,24 @@
 
 include('includes/session.inc');
 
-$Title = _('Edit Header');
-
+$Title = _('Edit Header');// _('Edit a Language File Header')
+$ViewTopic = 'SpecialUtilities';
+$BookMark = 'Z_poEditLangHeader';// Anchor's id in the manual's html document.
 include('includes/header.inc');
 
-/* Your webserver user MUST have read/write access to here,
-otherwise you'll be wasting your time */
+echo '<div class ="toplink"><a href="' . $RootPath . '/Z_poAdmin.php">' . _('Back to the translation menu') . '</a></div>';
 
-echo '<br />&nbsp;<a href="' . $RootPath . '/Z_poAdmin.php">' . _('Back to the translation menu') . '</a>';
-echo '<br /><br />&nbsp;' . _('Utility to edit a language file header');
-echo '<br />&nbsp;' . _('Current language is') . ' ' . $_SESSION['Language'];
+echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Edit a Language File Header') . '" />' . ' ' . _('Edit a Language File Header') . '</p>';
 
-$PathToLanguage = './locale/' . $_SESSION['Language'] . '/LC_MESSAGES/messages.po';
+/* Your webserver user MUST have read/write access to here, otherwise you'll be wasting your time */
+
+echo '<div class="page_help_text noPrint">' . _('Utility to edit a language file header') . ' - ' . _('Current language is') . ' ' . $_SESSION['Language'] . '</div>';
+
+if ($_SESSION['Language'] == 'en_GB.utf8') {
+	$PathToLanguage = './locale/' . $_SESSION['Language'] . '/LC_MESSAGES/messages.pot';
+} else {
+	$PathToLanguage = './locale/' . $_SESSION['Language'] . '/LC_MESSAGES/messages.po';
+}
 $PathToNewLanguage = './locale/' . $_SESSION['Language'] . '/LC_MESSAGES/messages.po.new';
 
 $fpIn = fopen($PathToLanguage, 'r');

@@ -6,21 +6,28 @@
 
 include('includes/session.inc');
 
-$Title = _('Edit Module');
+$Title = _('Edit Module');// _('Edit a Language File Module')
+$ViewTopic = 'SpecialUtilities';
+$BookMark = 'Z_poEditLangModule';// Anchor's id in the manual's html document.
 
 include('includes/header.inc');
 
-/* Your webserver user MUST have read/write access to here,
-otherwise you'll be wasting your time */
+/* Your webserver user MUST have read/write access to here,	otherwise you'll be wasting your time */
 
-$PathToLanguage = './locale/' . $_SESSION['Language'] . '/LC_MESSAGES/messages.po';
+echo '<div class="toplink">
+		<a href="' . $RootPath . '/Z_poAdmin.php">' . _('Back to the translation menu') . '</a>
+	</div>';
+
+echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Edit a Language File Module') . '" />' . ' ' . _('Edit a Language File Module') . '</p>';
+
+echo '<div class="page_help_text noPrint">' . _('Utility to edit a language file module') . '. '. _('Current language is') . ' ' . $_SESSION['Language'] . '. ' . _('To change language click on the user name at the top left, change to language desired and click Modify') . '. ' . _('Make sure you have selected the correct language to translate!') . '. ' . '</div>';
+
+if ($_SESSION['Language'] == 'en_GB.utf8') {
+	$PathToLanguage = './locale/' . $_SESSION['Language'] . '/LC_MESSAGES/messages.pot';
+} else {
+	$PathToLanguage = './locale/' . $_SESSION['Language'] . '/LC_MESSAGES/messages.po';
+}
 $PathToNewLanguage = './locale/' . $_SESSION['Language'] . '/LC_MESSAGES/messages.po.new';
-
-echo '<br />&nbsp;<a href="' . $RootPath . '/Z_poAdmin.php">' . _('Back to the translation menu') . '</a>';
-echo '<br /><br />&nbsp;' . _('Utility to edit a language file module');
-echo '<br />&nbsp;' . _('Current language is') . ' ' . $_SESSION['Language'];
-echo '<br /><br />&nbsp;' . _('To change language click on the user name at the top left, change to language desired and click Modify');
-echo '<br />&nbsp;' . _('Make sure you have selected the correct language to translate!');
 
 if (isset($_POST['ReMergePO'])) {
 
@@ -55,7 +62,6 @@ if (isset($_POST['module'])) {
 	if (isset($_POST['submit'])) {
 		// save the modifications
 
-		echo '<br /><table><tr><td>';
 		echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
@@ -93,7 +99,6 @@ if (isset($_POST['module'])) {
 		prnMsg(_('Done') . '<br />', 'info', ' ');
 
 		echo '</form>';
-		echo '</td></tr></table>';
 
 		/* End of Submit block */
 	} else {
@@ -101,7 +106,7 @@ if (isset($_POST['module'])) {
 		/* now we need to parse the resulting array into something we can show the user */
 
 		$j = 1;
-
+		$AlsoIn = array();
 		for ($i = 17; $i <= $LangFileEntries; $i++) {
 			/* start at line 18 to skip the header */
 			if (mb_substr($LangFile[$i], 0, 2) == '#:') {
@@ -120,13 +125,9 @@ if (isset($_POST['module'])) {
 		/* stick it on the screen */
 
 		echo '<br />&nbsp;' . _('When finished modifying you must click on Modify at the bottom in order to save changes');
-		echo '<div class="centre">';
-		echo '<br />';
 		prnMsg(_('Your existing translation file (messages.po) will be saved as messages.po.old') . '<br />', 'info', _('PLEASE NOTE'));
-		echo '<br />';
 		echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-		echo '</div';
 		echo '<table>
 				<tr>
 					<th align="center">' . _('Language File for') . ' "' . $_POST['language'] . '"</th>
@@ -168,14 +169,12 @@ if (isset($_POST['module'])) {
 
 		echo '</table>';
 
-		echo '</td></tr>';
-		echo '</table>';
-		echo '<br /><div class="centre">';
-		echo '<input type="submit" name="submit" value="' . _('Modify') . '" />&nbsp;&nbsp;';
-		echo '<input type="hidden" name="module" value="' . $_POST['module'] . '" />';
+		echo '<div class="centre">
+				<input type="submit" name="submit" value="' . _('Modify') . '" />
+				<input type="hidden" name="module" value="' . $_POST['module'] . '" />
+			</div>';
 
 		echo '</form>';
-		echo '</div>';
 	}
 
 } else {
@@ -217,10 +216,6 @@ if (isset($_POST['module'])) {
 	if (!is_writable('./locale/' . $_SESSION['Language'])) {
 		prnMsg(_('You do not have write access to the required files please contact your system administrator'), 'error');
 	} else {
-		echo '<br />
-		<table>
-		<tr>
-			<td>';
 		echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" >';
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
@@ -234,15 +229,11 @@ if (isset($_POST['module'])) {
 		echo '</select></td>';
 
 		echo '</tr></table>';
-		echo '<br />';
 		echo '<div class="centre">
-			<input type="submit" name="proceed" value="' . _('Proceed') . '" />&nbsp;&nbsp;
-			<br />
-			<br />
+			<input type="submit" name="proceed" value="' . _('Proceed') . '" />
 			<input type="submit" name="ReMergePO" value="' . _('Refresh messages with latest strings') . '" />
 		</div>
 		</form>';
-		echo '</td></tr></table>';
 	}
 }
 

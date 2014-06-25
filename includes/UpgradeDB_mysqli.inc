@@ -13,6 +13,23 @@ function CharacterSet($table) {
 	return $myrow['TABLE_COLLATION'];
 }
 
+function NewSysType($TypeID, $TypeDescription) {
+	/* Does type already exist */
+	$sql = "SELECT typeid FROM systypes WHERE typeid='" . $TypeID . "'";
+	$result = DB_query($sql);
+	if (DB_num_rows($result) == 0) {
+		$sql = "INSERT INTO `systypes` (`typeid`, `typename`) VALUES ('" . $TypeID . "', '" . $TypeDescription . "')";
+		$response = executeSQL($sql, False);
+		if ($response == 0) {
+			OutputResult(_('The type') . ' ' . $TypeDescription . ' ' . _('has been inserted'), 'success');
+		} else {
+			OutputResult(_('The type') . ' ' . $TypeDescription . ' ' . _('could not be inserted') . '<br />' . $sql, 'error');
+		}
+	} else {
+		OutputResult(_('The script') . ' ' . $TypeDescription . ' ' . _('already exists'), 'info');
+	}
+}
+
 function NewScript($ScriptName, $PageSecurity) {
 	/*Is page already in table */
 	$sql = "SELECT script FROM scripts WHERE script='" . $ScriptName . "'";

@@ -12,7 +12,7 @@ echo '<p class="page_title_text noPrint" >
 	</p>';
 
 echo '<div class="page_help_text noPrint">' .
-		_('You have reached this page because you have successfuly installed KwaMoja, but there are still some pages that need to be setup.') . '<br />' .
+		_('You have reached this page because you have successfuly installed ') . $ProjectName . _(', but there are still some pages that need to be setup.') . '<br />' .
 		_('Click on the link below and you will be taken to the next page you need to complete.') . '<br />' .
 		_('Once you have completed the page, click on the main menu icon and if there are more pages to be completed you will be brought back here.') . '
 	</div>';

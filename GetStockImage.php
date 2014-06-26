@@ -3,7 +3,7 @@
 include('includes/session.inc');
 
 /*
- * http:///KwaMoja/GetStockImage.php?automake=1&width=81&height=74&stockid=&textcolor=FFFFF0&bevel=3&text=aa&bgcolor=007F00
+ * /GetStockImage.php?automake=1&width=81&height=74&stockid=&textcolor=FFFFF0&bevel=3&text=aa&bgcolor=007F00
  *
  * automake - if specified allows autocreate images
  * stockid - if not specified it produces a blank image if set to empty string uses default stock image

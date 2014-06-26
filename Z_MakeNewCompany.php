@@ -161,7 +161,7 @@ if (isset($_POST['submit']) and isset($_POST['NewCompany'])) {
 		$ForceConfigReload = true;
 		include('includes/GetConfig.php');
 
-		prnMsg(_('The new company database has been created for' . ' ' . $_POST['NewCompany'] . '. ' . _('The company details and parameters should now be set up for the new company. NB: Only a single user "demo" is defined with the password "kwamoja" in the new company database. A new system administrator user should be defined for the new company and this account deleted immediately.')), 'info');
+		prnMsg(_('The new company database has been created for' . ' ' . $_POST['NewCompany'] . '. ' . _('The company details and parameters should now be set up for the new company. NB: Only a single user "demo" is defined with the password "') . $DefaultDatabase . _('" in the new company database. A new system administrator user should be defined for the new company and this account deleted immediately.')), 'info');
 
 		echo '<p><a href="' . $RootPath . '/CompanyPreferences.php">' . _('Set Up New Company Details') . '</a>';
 		echo '<p><a href="' . $RootPath . '/SystemParameters.php">' . _('Set Up Configuration Details') . '</a>';
@@ -172,33 +172,30 @@ if (isset($_POST['submit']) and isset($_POST['NewCompany'])) {
 		include('includes/footer.inc');
 		exit;
 	}
-
 }
-
 
 echo '<div class="centre">';
 echo '<br />';
 prnMsg(_('This utility will create a new company') . '<br /><br />' . _('If the company name already exists then you cannot recreate it'), 'info', _('PLEASE NOTE'));
 echo '<br /></div>';
 echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" enctype="multipart/form-data">';
-echo '<div class="centre">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
-echo '<table><tr>';
-echo '<td>' . _('Enter up to 32 character lower case character abbreviation for the company') . '</td>
-	<td><input type="text" size="33" minlength="0" maxlength="32" name="NewCompany" /></td>
-	</tr>
-	<tr>
-		<td>' . _('Logo Image File (.jpg)') . ':</td><td><input type="file" required="required" id="LogoFile" name="LogoFile" /></td>
-	</tr>
-	<tr>
-		<td>' . _('Create Database?') . '</td>
-		<td><input type="checkbox" name="CreateDB" /></td>
-	</tr>
+echo '<table>
+		<tr>
+			<td>' . _('Enter up to 32 character lower case character abbreviation for the company') . '</td>
+			<td><input type="text" size="33" minlength="0" maxlength="32" name="NewCompany" /></td>
+		</tr>
+		<tr>
+			<td>' . _('Logo Image File (.jpg)') . ':</td><td><input type="file" required="required" id="LogoFile" name="LogoFile" /></td>
+		</tr>
+		<tr>
+			<td>' . _('Create Database?') . '</td>
+			<td><input type="checkbox" name="CreateDB" /></td>
+		</tr>
 	</table>';
 
-echo '<br /><input type="submit" name="submit" value="' . _('Proceed') . '" />';
-echo '</div>';
+echo '<input type="submit" name="submit" value="' . _('Proceed') . '" />';
 echo '</form>';
 
 include('includes/footer.inc');

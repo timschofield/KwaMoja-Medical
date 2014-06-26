@@ -45,8 +45,8 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 
 
 	$pdf = new Cpdf('L', 'pt', 'A4');
-	$pdf->addInfo('Creator', 'KwaMoja http://www.kwamoja.com');
-	$pdf->addInfo('Author', 'KwaMoja ' . $_SESSION['VersionNumber']);
+	$pdf->addInfo('Author', $ProjectName . ' ' . $_SESSION['VersionNumber']);
+	$pdf->addInfo('Creator', $ProjectName . ' ' . $HomePage);
 
 	if ($InvOrCredit == 'Invoice') {
 		$pdf->addInfo('Title', _('Sales Invoice') . ' ' . $FromTransNo . ' to ' . $_POST['ToTransNo']);

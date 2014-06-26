@@ -181,11 +181,11 @@ if (isset($_POST['Process'])) { //user hit submit a new entry to the receipt bat
 		$AllowThisPosting = true;
 		if ($_SESSION['ProhibitJournalsToControlAccounts'] == 1) {
 			if ($_SESSION['CompanyRecord']['gllink_debtors'] == '1' and $_POST['GLCode'] == $_SESSION['CompanyRecord']['debtorsact']) {
-				prnMsg(_('Receipts involving the debtors control account cannot be entered. The general ledger debtors ledger (AR) integration is enabled so control accounts are automatically maintained by KwaMoja. This setting can be disabled in System Configuration'), 'warn');
+				prnMsg(_('Receipts involving the debtors control account cannot be entered. The general ledger debtors ledger (AR) integration is enabled so control accounts are automatically maintained. This setting can be disabled in System Configuration'), 'warn');
 				$AllowThisPosting = false;
 			}
 			if ($_SESSION['CompanyRecord']['gllink_creditors'] == '1' and $_POST['GLCode'] == $_SESSION['CompanyRecord']['creditorsact']) {
-				prnMsg(_('Receipts involving the creditors control account cannot be entered. The general ledger creditors ledger (AP) integration is enabled so control accounts are automatically maintained by KwaMoja. This setting can be disabled in System Configuration'), 'warn');
+				prnMsg(_('Receipts involving the creditors control account cannot be entered. The general ledger creditors ledger (AP) integration is enabled so control accounts are automatically maintained. This setting can be disabled in System Configuration'), 'warn');
 				$AllowThisPosting = false;
 			}
  			if ($_POST['GLCode'] == $_SESSION['CompanyRecord']['retainedearnings']) {

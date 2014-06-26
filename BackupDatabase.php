@@ -3,7 +3,7 @@
 $PageSecurity = 15; //hard coded in case database is old and PageSecurity stuff cannot be retrieved
 
 include('includes/session.inc');
-$Title = _('Backup KwaMoja Database');
+$Title = _('Backup Database');
 include('includes/header.inc');
 
 if (isset($_GET['BackupFile'])) {
@@ -52,7 +52,7 @@ if (isset($_GET['BackupFile'])) {
 include('includes/htmlMimeMail.php');
 $mail = new htmlMimeMail();
 $attachment = $mail->getFile( $BackupFile);
-$mail->setText(_('KwaMoja backup file attached'));
+$mail->setText(_('Backup file attached'));
 $mail->addAttachment($attachment, $BackupFile, 'application/gz');
 $mail->setSubject(_('Database Backup'));
 $mail->setFrom($_SESSION['CompanyRecord']['coyname'] . '<' . $_SESSION['CompanyRecord']['email'] . '>');

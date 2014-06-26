@@ -147,7 +147,7 @@ if (!isset($_FILES['ImportFile']) AND !isset($_SESSION['Statement'])) {
 	}
 	/*end while get next line of message */
 
-	/* Look to match up the account for which transactions are being imported with a bank account in KwaMoja */
+	/* Look to match up the account for which transactions are being imported with a bank account */
 	$sql = "SELECT accountcode,
 					bankaccountname,
 					decimalplaces,

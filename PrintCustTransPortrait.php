@@ -43,8 +43,8 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 	$Right_Margin = 30;
 
 	$pdf = new Cpdf('P', 'pt', 'A4');
-	$pdf->addInfo('Author', 'KwaMoja ' . $_SESSION['VersionNumber']);
-	$pdf->addInfo('Creator', 'KwaMoja http://www.kwamoja.com');
+	$pdf->addInfo('Author', $ProjectName . ' ' . $_SESSION['VersionNumber']);
+	$pdf->addInfo('Creator', $ProjectName . ' ' . $HomePage);
 
 	if ($InvOrCredit == 'Invoice') {
 		$pdf->addInfo('Title', _('Sales Invoice') . ' ' . $FromTransNo . ' to ' . $_POST['ToTransNo']);

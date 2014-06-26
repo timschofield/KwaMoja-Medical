@@ -7,11 +7,11 @@ $_SESSION['Updates']['Successes'] = 0;
 $_SESSION['Updates']['Warnings'] = 0;
 
 include('includes/UpgradeDB_' . $DBType . '.inc');
-$Title = _('Install a KwaMoja plugin');
+$Title = _('Install a Plugin');
 
 include('includes/header.inc');
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/plugin.png" width="24px" title="' . _('Install Plugin') . '" alt="" />' . _('Install KwaMoja Plugin') . '</p>';
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/plugin.png" width="24px" title="' . _('Install Plugin') . '" alt="" />' . _('Install Plugin') . '</p>';
 
 if (isset($_POST['Install'])) {
 	$ZipFile = zip_open('plugins/' . $_POST['Available']);
@@ -89,7 +89,7 @@ if (isset($_POST['Install'])) {
 				fwrite($handle, $Code);
 				rename($TempName, $Script->name);
 				NewScript($Script->name, $Script->pagesecurity);
-				prnMsg($Script->name . ' ' . _('has been successfully added to KwaMoja'), 'success');
+				prnMsg($Script->name . ' ' . _('has been successfully added'), 'success');
 			}
 		}
 		zip_close($ZipFile);

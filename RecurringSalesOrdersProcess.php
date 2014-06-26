@@ -1,6 +1,5 @@
 <?php
 
-/* Get this puppy to run from cron (cd KwaMoja and php -f RecurringSalesOrdersProcess.php "kwamojademo") or direct URL (RecurringSalesOrdersProcess.php?Database=kwamojademo) */
 if (isset($_GET['Database'])) {
 	$_SESSION['DatabaseName'] = $_GET['Database'];
 	$DatabaseName = $_GET['Database'];

@@ -36,12 +36,12 @@ $DBType = 'mysqli';
 //$DBType = 'mysqli'; for PHP 5 and mysql > 4.1
 
 // sql user & password
-$DBUser = 'kwamoja_db_user';
-$DBPassword = 'kwamoja_db_pwd';
+$DBUser = 'db_user';
+$DBPassword = 'db_pwd';
 
 // It would probably be inappropraite to allow selection of the company in a hosted envionment so this option can be switched to 'ShowInputBox' or 'Hide'
 // depending if you allow the user to select the name of the company or must use the default one described at $DefaultCompany
-// If set to 'ShowSelectionBox' KwaMoja examines each of the directories under the companies directory to determine all the companies that can be logged into
+// If set to 'ShowSelectionBox' each directory under the companies directory is examined to determine all the companies that can be logged into
 // a new company directory together with the necessary subdirectories is created each time a new company is created by Z_MakeNewCompany.php
 // It would also be inappropiate in some environments to show the name of the company (database name) --> Choose 'Hide'.
 // Options:
@@ -52,7 +52,7 @@ $AllowCompanySelectionBox = 'ShowSelectionBox';
 
 //If $AllowCompanySelectionBox is not 'ShowSelectionBox' above then the $DefaultCompany string is entered in the login screen as a default
 //otherwise the user is expected to know the name of the company to log into.
-$DefaultCompany = 'kwamoja';
+$DefaultCompany = $DefaultDatabase;
 
 //The maximum time that a login session can be idle before automatic logout
 //time is in seconds  3600 seconds in an hour
@@ -83,8 +83,6 @@ $DefaultClock = 12;
 /*The $RootPath is used in most scripts to tell the script the installation details of the files.
  * NOTE: In some windows installation this command doesn't work and the administrator must set
  * this to the path of the installation manually:
- * eg. if the files are under the webserver root directory then rootpath =''; if they are under
- * KwaMoja then KwaMoja is the rootpath - notice no additional slashes are necessary.
  */
 
 $RootPath = dirname(htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'));

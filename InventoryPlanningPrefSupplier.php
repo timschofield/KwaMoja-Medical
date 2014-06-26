@@ -108,8 +108,8 @@ if (isset($_POST['PrintPDF'])) {
 	//	$pdf = & new Cpdf($PageSize);
 	$pdf = new Cpdf('L', 'pt', 'A4');
 
-	$pdf->addInfo('Author', 'KwaMoja ' . $_SESSION['VersionNumber']);
-	$pdf->addInfo('Creator', 'KwaMoja http://www.kwamoja.com');
+	$pdf->addInfo('Author', $ProjectName . ' ' . $_SESSION['VersionNumber']);
+	$pdf->addInfo('Creator', $ProjectName . ' ' . $HomePage);
 	$pdf->addInfo('Title', _('Inventory Planning Based On Lead Time Of Preferred Supplier') . ' ' . Date($_SESSION['DefaultDateFormat']));
 	//	$PageNumber = 0;
 	$pdf->addInfo('Subject', _('Inventory Planning Based On Lead Time Of Preferred Supplier'));

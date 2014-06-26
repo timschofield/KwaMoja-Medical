@@ -7,11 +7,11 @@ $_SESSION['Updates']['Successes'] = 0;
 $_SESSION['Updates']['Warnings'] = 0;
 
 include('includes/UpgradeDB_' . $DBType . '.inc');
-$Title = _('Uninstall a KwaMoja plugin');
+$Title = _('Uninstall a Plugin');
 
 include('includes/header.inc');
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/plugin.png" width="24px" title="' . _('Uninstall Plugin') . '" alt="" />' . _('Uninstall KwaMoja Plugin') . '</p>';
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/plugin.png" width="24px" title="' . _('Uninstall Plugin') . '" alt="" />' . _('Uninstall Plugin') . '</p>';
 
 if (isset($_POST['UnInstall'])) {
 	$ZipFile = zip_open('plugins/' . $_POST['Available']);
@@ -93,7 +93,7 @@ if (isset($_POST['UnInstall'])) {
 			if ($Entry == $Script->name) {
 				unlink($Script->name);
 				RemoveScript($Script->name);
-				prnMsg($Script->name . ' ' . _('has been successfully removed from KwaMoja'), 'success');
+				prnMsg($Script->name . ' ' . _('has been successfully removed'), 'success');
 			}
 		}
 		zip_close($ZipFile);

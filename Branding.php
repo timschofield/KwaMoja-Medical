@@ -4,6 +4,7 @@ $ProjectName = 'KwaMoja';
 $DefaultDatabase = 'kwamoja';
 $APIServer = 'kwamoja';
 $SubmissionsEmail = 'submissions@kwamoja.com';
+$InfoEmail = 'info@kwamoja.com';
 $HomePage = 'http://www.kwamoja.com';
 $SourceforgeSite = 'https://sourceforge.net/projects/kwamoja';
 $LaunchpadSite = 'https://launchpad.net/kwamoja';
@@ -17,6 +18,7 @@ $LinkedInGroup = 'http://www.linkedin.com/groups/KwaMoja-4833235?trk=myg_ugrp_ov
 //$DefaultDatabase = 'weberpdemo';
 //$APIServer = 'weberp';
 //$SubmissionsEmail = 'submissions@web-erp.com';
+//$InfoEmail = 'info@web-erp.com';
 //$HomePage = 'http://www.web-erp.com';
 //$SourceforgeSite = 'https://sourceforge.net/projects/weberp';
 //$LaunchpadSite = 'https://launchpad.net/weberp';

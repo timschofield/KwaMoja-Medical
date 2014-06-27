@@ -329,7 +329,7 @@ $result = DB_query($sql);
 echo '<td><select minlength="0" name="GLCode" onchange="return assignComboToInput(this,' . 'GLManualCode' . ')">';
 echo '<option value="">' . _('Select a general ledger account code') . '</option>';
 while ($myrow = DB_fetch_array($result)) {
-	if (isset($_POST['tag']) and $_POST['tag'] == $myrow['accountcode']) {
+	if (isset($_POST['GLCode']) and $_POST['GLCode'] == $myrow['accountcode']) {
 		echo '<option selected="selected" value="' . $myrow['accountcode'] . '">' . $myrow['accountcode'] . ' - ' . htmlspecialchars($myrow['accountname'], ENT_QUOTES, 'UTF-8', false) . '</option>';
 	} else {
 		echo '<option value="' . $myrow['accountcode'] . '">' . $myrow['accountcode'] . ' - ' . htmlspecialchars($myrow['accountname'], ENT_QUOTES, 'UTF-8', false) . '</option>';

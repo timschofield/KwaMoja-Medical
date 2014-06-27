@@ -1,15 +1,20 @@
 <?php
 
 include('includes/session.inc');
+
 $Title = _('Search Customers');
+
 include('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');
+
 if (isset($_GET['Select'])) {
 	$_SESSION['CustomerID'] = $_GET['Select'];
 } //isset($_GET['Select'])
+
 if (!isset($_SESSION['CustomerID'])) { //initialise if not already done
 	$_SESSION['CustomerID'] = '';
 } //!isset($_SESSION['CustomerID'])
+
 if (isset($_GET['Area'])) {
 	$_POST['Area'] = $_GET['Area'];
 	$_POST['Search'] = 'Search';
@@ -19,10 +24,13 @@ if (isset($_GET['Area'])) {
 	$_POST['CustAdd'] = '';
 	$_POST['CustType'] = '';
 } //isset($_GET['Area'])
+
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/customer.png" title="' . _('Customer') . '" alt="" />' . ' ' . _('Customers') . '</p>';
+
 if (!isset($_SESSION['CustomerType'])) { //initialise if not already done
 	$_SESSION['CustomerType'] = '';
 } //!isset($_SESSION['CustomerType'])
+
 // only run geocode if integration is turned on and customer has been selected
 if ($_SESSION['geocode_integration'] == 1 and $_SESSION['CustomerID'] != "") {
 	$sql = "SELECT * FROM geocode_param WHERE 1";
@@ -70,20 +78,23 @@ if ($_SESSION['geocode_integration'] == 1 and $_SESSION['CustomerID'] != "") {
 		</script>';
 	echo '<body onload="load()" onunload="GUnload()">';
 } //$_SESSION['geocode_integration'] == 1 and $_SESSION['CustomerID'] != ""
+
 unset($result);
 $msg = '';
+
 if (isset($_POST['Go1']) or isset($_POST['Go2'])) {
 	$_POST['PageOffset'] = (isset($_POST['Go1']) ? $_POST['PageOffset1'] : $_POST['PageOffset2']);
 	$_POST['Go'] = '';
 } //isset($_POST['Go1']) or isset($_POST['Go2'])
+
 if (!isset($_POST['PageOffset'])) {
 	$_POST['PageOffset'] = 1;
-} //!isset($_POST['PageOffset'])
-else {
+} else {
 	if ($_POST['PageOffset'] == 0) {
 		$_POST['PageOffset'] = 1;
 	} //$_POST['PageOffset'] == 0
 }
+
 if (isset($_POST['Search']) or isset($_POST['CSV']) or isset($_POST['Go']) or isset($_POST['Next']) or isset($_POST['Previous'])) {
 	unset($_POST['JustSelectedACustomer']);
 	if (isset($_POST['Search'])) {
@@ -109,8 +120,7 @@ if (isset($_POST['Search']) or isset($_POST['CSV']) or isset($_POST['Go']) or is
 				ON debtorsmaster.debtorno = custbranch.debtorno
 				INNER JOIN debtortype
 				ON debtorsmaster.typeid = debtortype.typeid";
-	} //($_POST['Keywords'] == '') and ($_POST['CustCode'] == '') and ($_POST['CustPhone'] == '') and ($_POST['CustType'] == 'ALL') and ($_POST['Area'] == 'ALL') and ($_POST['CustAdd'] == '')
-	else {
+	} else {
 		$SearchKeywords = mb_strtoupper(trim(str_replace(' ', '%', $_POST['Keywords'])));
 		$_POST['CustCode'] = mb_strtoupper(trim($_POST['CustCode']));
 		$_POST['CustPhone'] = trim($_POST['CustPhone']);
@@ -134,22 +144,26 @@ if (isset($_POST['Search']) or isset($_POST['CSV']) or isset($_POST['Go']) or is
 						ON debtorsmaster.debtorno = custbranch.debtorno
 					WHERE debtorsmaster.name " . LIKE . " '%" . $SearchKeywords . "%'
 					AND debtorsmaster.debtorno " . LIKE . " '%" . $_POST['CustCode'] . "%'
-					AND custbranch.phoneno " . LIKE . " '%" . $_POST['CustPhone'] . "%'
+					AND (custbranch.phoneno " . LIKE . " '%" . $_POST['CustPhone'] . "%' OR custbranch.phoneno IS NULL)
 					AND (debtorsmaster.address1 " . LIKE . " '%" . $_POST['CustAdd'] . "%'
 						OR debtorsmaster.address2 " . LIKE . " '%" . $_POST['CustAdd'] . "%'
 						OR debtorsmaster.address3 " . LIKE . " '%" . $_POST['CustAdd'] . "%'
-						OR debtorsmaster.address4 " . LIKE . " '%" . $_POST['CustAdd'] . "%')";
+						OR debtorsmaster.address4 " . LIKE . " '%" . $_POST['CustAdd'] . "%')";//If there is no custbranch set, the phoneno in custbranch will be null, so we add IS NULL condition otherwise those debtors without custbranches setting will be no searchable and it will make a inconsistence with customer receipt interface.
 
 		if (mb_strlen($_POST['CustType']) > 0 and $_POST['CustType'] != 'ALL') {
 			$SQL .= " AND debtortype.typename = '" . $_POST['CustType'] . "'";
 		} //mb_strlen($_POST['CustType']) > 0 and $_POST['CustType'] != 'ALL'
+
 		if (mb_strlen($_POST['Area']) > 0 and $_POST['Area'] != 'ALL') {
 			$SQL .= " AND custbranch.area = '" . $_POST['Area'] . "'";
 		} //mb_strlen($_POST['Area']) > 0 and $_POST['Area'] != 'ALL'
+
 	} //one of keywords or custcode or custphone was more than a zero length string
+
 	if ($_SESSION['SalesmanLogin'] != '') {
 		$SQL .= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
 	} //$_SESSION['SalesmanLogin'] != ''
+
 	$SQL .= " ORDER BY debtorsmaster.name";
 	$ErrMsg = _('The searched customer records requested cannot be retrieved because');
 
@@ -160,8 +174,7 @@ if (isset($_POST['Search']) or isset($_POST['CSV']) or isset($_POST['Go']) or is
 		$_SESSION['BranchCode'] = $myrow['branchcode'];
 		unset($result);
 		unset($_POST['Search']);
-	} //DB_num_rows($result) == 1
-	elseif (DB_num_rows($result) == 0) {
+	} elseif (DB_num_rows($result) == 0) {
 		prnMsg(_('No customer records contain the selected text') . ' - ' . _('please alter your search criteria and try again'), 'info');
 		echo '<br />';
 	} //DB_num_rows($result) == 0
@@ -243,7 +256,7 @@ if ($_SESSION['CustomerID'] != '' and !isset($_POST['Search']) and !isset($_POST
 	echo '<a href="' . $RootPath . '/AddCustomerContacts.php?DebtorNo=' . urlencode($_SESSION['CustomerID']) . '">' . _('Add a customer contact') . '</a>';
 	echo '<a href="' . $RootPath . '/AddCustomerNotes.php?DebtorNo=' . urlencode($_SESSION['CustomerID']) . '">' . _('Add a note on this customer') . '</a>';
 	echo '</td>';
-	echo '</tr></table><br />';
+	echo '</tr></table>';
 } //$_SESSION['CustomerID'] != '' and !isset($_POST['Search']) and !isset($_POST['CSV'])
 else {
 	echo '<table width="90%">
@@ -262,7 +275,6 @@ else {
 	echo '</td></tr></table>';
 }
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 if (mb_strlen($msg) > 1) {
 	prnMsg($msg, 'info');
@@ -384,7 +396,7 @@ else {
 	echo '</select></td></tr>';
 }
 
-echo '</table><br />';
+echo '</table>';
 echo '<div class="centre">
 		<input type="submit" name="Search" value="' . _('Search Now') . '" />
 		<input type="submit" name="CSV" value="' . _('CSV Format') . '" />
@@ -489,7 +501,7 @@ if (isset($result)) {
 //end if results to show
 if (!isset($_POST['CSV'])) {
 	if (isset($ListPageMax) and $ListPageMax > 1) {
-		echo '<br /><div class="centre">&nbsp;&nbsp;' . $_POST['PageOffset'] . ' ' . _('of') . ' ' . $ListPageMax . ' ' . _('pages') . '. ' . _('Go to Page') . ': ';
+		echo '<div class="centre">&nbsp;&nbsp;' . $_POST['PageOffset'] . ' ' . _('of') . ' ' . $ListPageMax . ' ' . _('pages') . '. ' . _('Go to Page') . ': ';
 		echo '<select minlength="0" name="PageOffset2">';
 		$ListPage = 1;
 		while ($ListPage <= $ListPageMax) {
@@ -509,8 +521,7 @@ if (!isset($_POST['CSV'])) {
 	} //isset($ListPageMax) and $ListPageMax > 1
 	//end if results to show
 } //!isset($_POST['CSV'])
-echo '</div>
-	  </form>';
+echo '</form>';
 // Only display the geocode map if the integration is turned on, and there is a latitude/longitude to display
 if (isset($_SESSION['CustomerID']) and $_SESSION['CustomerID'] != '') {
 	if ($_SESSION['geocode_integration'] == 1) {

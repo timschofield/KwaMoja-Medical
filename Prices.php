@@ -5,11 +5,20 @@ include('includes/session.inc');
 $Title = _('Item Prices');
 
 include('includes/header.inc');
+
+$ViewTopic = 'Prices';
+/*$BookMark = '';// Anchor's id in the manual's html document.*/
+
 include('includes/SQL_CommonFunctions.inc');
+
+echo '<div class="toplink">
+		<a href="' . $RootPath . '/SelectProduct.php">' . _('Back to Items') . '</a>
+	</div>';
+
+echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/money_add.png" title="' . _('Search') . '" />' . ' ' . $Title . '</p>';
 
 //initialise no input errors assumed initially before we test
 $InputError = 0;
-
 
 if (isset($_GET['Item'])) {
 	$Item = trim(mb_strtoupper($_GET['Item']));
@@ -24,10 +33,6 @@ if (!isset($_POST['TypeAbbrev']) or $_POST['TypeAbbrev'] == '') {
 if (!isset($_POST['CurrAbrev'])) {
 	$_POST['CurrAbrev'] = $_SESSION['CompanyRecord']['currencydefault'];
 }
-
-echo '<div class="toplink"><a href="' . $RootPath . '/SelectProduct.php">' . _('Back to Items') . '</a></div>';
-
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/money_add.png" title="' . _('Search') . '" alt="" />' . $Title . '</p>';
 
 $result = DB_query("SELECT stockmaster.description,
 							stockmaster.mbflag
@@ -257,7 +262,6 @@ if (DB_num_rows($result) > 0) {
 }
 
 echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 if (isset($_GET['Edit'])) {
 	echo '<input type="hidden" name="OldTypeAbbrev" value="' . $_GET['TypeAbbrev'] . '" />';
@@ -299,7 +303,9 @@ while ($myrow = DB_fetch_array($result)) {
 
 DB_free_result($result);
 
-echo '</select>	</td></tr>
+echo '</select>
+			</td>
+		</tr>
 		<tr>
 			<td>' . _('Sales Type Price List') . ':</td>
 			<td><select required="required" minlength="1" name="TypeAbbrev">';
@@ -335,24 +341,22 @@ echo '<tr>
 		<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="EndDate" size="10" minlength="0" maxlength="10" value="' . $_POST['EndDate'] . '" /></td>
 	</tr>';
 echo '<input type="hidden" name="Item" value="' . $Item . '" />';
-echo '<tr><td>' . _('Price') . ':</td>
-		  <td>
-		  <input type="text" class="number" name="Price" size="12" required="required" minlength="1" maxlength="11" value="';
-if (isset($_POST['Price'])) {
-	echo $_POST['Price'];
+if (!isset($_POST['Price'])) {
+	$_POST['Price'] = 0;
 }
-echo '" />
-	 </td></tr>
+echo '<tr>
+		<td>' . _('Price') . ':</td>
+		<td>
+			<input type="text" class="number" name="Price" size="12" required="required" minlength="1" maxlength="11" value="' . $_POST['Price'] . '" />
+		</td>
+	</tr>
 </table>
 <div class="centre">
-<input type="submit" name="submit" value="' . _('Enter') . '/' . _('Amend Price') . '" />
+	<input type="submit" name="submit" value="' . _('Enter') . '/' . _('Amend Price') . '" />
 </div>';
 
-
-echo '</div>
-	  </form>';
+echo '</form>';
 include('includes/footer.inc');
-
 
 function ReSequenceEffectiveDates($Item, $PriceList, $CurrAbbrev) {
 

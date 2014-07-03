@@ -1,8 +1,18 @@
 <?php
 
+/*	This script is an utility to change an inventory item code.
+ *	It uses function ChangeFieldInTable($TableName, $FieldName, $OldValue,
+ *	$NewValue, $db) from .../includes/MiscFunctions.php.
+ */
+
 include('includes/session.inc');
-$Title = _('UTILITY PAGE Change A Stock Code');
+$Title = _('UTILITY PAGE Change A Stock Code');// _('Change An Inventory Item Code')
+$ViewTopic = 'SpecialUtilities';
+$BookMark = 'Z_ChangeStockCode';// Anchor's id in the manual's html document.
 include('includes/header.inc');
+
+echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Change An Inventory Item Code') . '" />' . ' ' . _('Change An Inventory Item Code') . '</p>';
+
 include('includes/SQL_CommonFunctions.inc');
 
 if (isset($_POST['ProcessStockChange'])) {
@@ -148,6 +158,7 @@ if (isset($_POST['ProcessStockChange'])) {
 		ChangeFieldInTable("contractbom", "stockid", $_POST['OldStockID'], $_POST['NewStockID']);
 		ChangeFieldInTable("bom", "component", $_POST['OldStockID'], $_POST['NewStockID']);
 		ChangeFieldInTable("bom", "parent", $_POST['OldStockID'], $_POST['NewStockID']);
+ 		ChangeFieldInTable("stockrequestitems", "stockid", $_POST['OldStockID'], $_POST['NewStockID']);
 
 		echo '<br />' . _('Changing any image files');
 		if (file_exists($_SESSION['part_pics_dir'] . '/' . $_POST['OldStockID'] . '.jpg')) {
@@ -168,7 +179,8 @@ if (isset($_POST['ProcessStockChange'])) {
 		ChangeFieldInTable("stockserialmoves", "stockid", $_POST['OldStockID'], $_POST['NewStockID']);
 		ChangeFieldInTable("offers", "stockid", $_POST['OldStockID'], $_POST['NewStockID']);
 		ChangeFieldInTable("tenderitems", "stockid", $_POST['OldStockID'], $_POST['NewStockID']);
-		ChangeFieldInTable("stockdescriptiontranslations", "stockid", $_POST['OldStockID'], $_POST['NewStockID']);
+		ChangeFieldInTable("stockdescriptiontranslations", "stockid", $_POST['OldStockID'], $_POST['NewStockID']);// Updates the translated item titles (StockTitles)
+/*		ChangeFieldInTable("Stockdescriptions", "stockid", $_POST['OldStockID'], $_POST['NewStockID']);// Updates the translated item descriptions (StockDescriptions)*/
 
 		DB_ReinstateForeignKeys();
 
@@ -182,6 +194,12 @@ if (isset($_POST['ProcessStockChange'])) {
 
 
 		echo '<p>' . _('Stock Code') . ': ' . $_POST['OldStockID'] . ' ' . _('was successfully changed to') . ' : ' . $_POST['NewStockID'];
+
+		// If the current SelectedStockItem is the same as the OldStockID, it updates to the NewStockID:
+		if ($_SESSION['SelectedStockItem'] == $_POST['OldStockID']) {
+			$_SESSION['SelectedStockItem'] = $_POST['NewStockID'];
+		}
+
 	} //only do the stuff above if  $InputError==0
 
 }

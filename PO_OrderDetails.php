@@ -28,13 +28,15 @@ if (isset($_GET['FromGRNNo'])) {
 
 if (!isset($_GET['OrderNo'])) {
 
-	echo '<br /><br />';
 	prnMsg(_('This page must be called with a purchase order number to review'), 'error');
 
 	echo '<table class="table_index">
-		<tr><td class="menu_group_item">
-		<li><a href="' . $RootPath . '/PO_SelectPurchOrder.php">' . _('Outstanding Purchase Orders') . '</a></li>
-		</td></tr></table>';
+			<tr>
+				<td class="menu_group_item">
+					<li><a href="' . $RootPath . '/PO_SelectPurchOrder.php">' . _('Outstanding Purchase Orders') . '</a></li>
+				</td>
+			</tr>
+		</table>';
 	include('includes/footer.inc');
 	exit;
 }
@@ -80,7 +82,6 @@ if ($_SESSION['RestrictLocations'] == 0) {
 $GetOrdHdrResult = DB_query($OrderHeaderSQL, $ErrMsg);
 
 if (DB_num_rows($GetOrdHdrResult) != 1) {
-	echo '<br /><br />';
 	if (DB_num_rows($GetOrdHdrResult) == 0) {
 		prnMsg(_('Unable to locate this PO Number') . ' ' . $_GET['OrderNo'] . '. ' . _('Please look up another one') . '. ' . _('The order requested could not be retrieved') . ' - ' . _('the SQL returned either 0 or several purchase orders'), 'error');
 	} else {
@@ -106,6 +107,9 @@ if (!isset($myrow['realname'])) {
 }
 
 /* SHOW ALL THE ORDER INFO IN ONE PLACE */
+echo '<div class="toplink">
+		<a href="' . $RootPath . '/PO_SelectPurchOrder.php">' . _('Outstanding Sales Orders') . '</a>
+	</div>';
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" title="' . _('Purchase Order') . '" alt="" />' . ' ' . $Title . '</p>';
 
 echo '<table class="selection" cellpadding="2">
@@ -160,10 +164,10 @@ echo '<table class="selection" cellpadding="2">
 
 if ($myrow['dateprinted'] == '') {
 	echo '<i>' . _('Not yet printed') . '</i> &nbsp; &nbsp; ';
-	echo '[<a href="PO_PDFPurchOrder.php?OrderNo=' . urlencode($_GET['OrderNo']) . '">' . _('Print') . '</a>]';
+	echo '[<a class="ButtonLink" href="PO_PDFPurchOrder.php?OrderNo=' . urlencode($_GET['OrderNo']) . '">' . _('Print') . '</a>]';
 } else {
 	echo _('Printed on') . ' ' . ConvertSQLDate($myrow['dateprinted']) . '&nbsp; &nbsp;';
-	echo '[<a href="PO_PDFPurchOrder.php?OrderNo=' . urlencode($_GET['OrderNo']) . '">' . _('Print a Copy') . '</a>]';
+	echo '[<a class="ButtonLink" href="PO_PDFPurchOrder.php?OrderNo=' . urlencode($_GET['OrderNo']) . '">' . _('Print a Copy') . '</a>]';
 }
 
 echo '</td></tr>';
@@ -174,7 +178,11 @@ echo '<tr>
 	<tr>
 		<td style="text-align:left">' . _('Comments') . '</td>
 		<td colspan="3">' . $myrow['comments'] . '</td>
-	</tr>';
+	</tr>
+	<tr>
+		<td>' . _('Status Coments') . '</td>
+		<td colspan="5" style="display:table">' . str_replace('<br />', '', html_entity_decode($myrow['stat_comment'])) . '</td>
+ 	</tr>';
 
 echo '</table>';
 
@@ -200,14 +208,14 @@ echo '<tr>
 		<th colspan="8"><b>' . _('Order Line Details') . '</b></th>
 	</tr>';
 echo '<tr>
-		<td>' . _('Item Code') . '</td>
-		<td>' . _('Item Description') . '</td>
-		<td>' . _('Ord Qty') . '</td>
-		<td>' . _('Qty Recd') . '</td>
-		<td>' . _('Qty Inv') . '</td>
-		<td>' . _('Ord Price') . '</td>
-		<td>' . _('Chg Price') . '</td>
-		<td>' . _('Reqd Date') . '</td>
+		<th>' . _('Item Code') . '</th>
+		<th>' . _('Item Description') . '</th>
+		<th>' . _('Ord Qty') . '</th>
+		<th>' . _('Qty Recd') . '</th>
+		<th>' . _('Qty Inv') . '</th>
+		<th>' . _('Ord Price') . '</th>
+		<th>' . _('Chg Price') . '</th>
+		<th>' . _('Reqd Date') . '</th>
 	</tr>';
 
 $k = 0; //row colour counter

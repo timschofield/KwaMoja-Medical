@@ -57,15 +57,15 @@ if (isset($_POST['PrintPDF']) and $_POST['Part'] != '') {
 	$FutureReq = 0;
 	$GrossReq = 0;
 
-	while ($myrow = DB_fetch_array($result)) {
-		array_push($Requirements, $myrow);
-		$GrossReq += $myrow['quantity'];
-		if ($myrow['datediff'] < 0) {
-			$PastDueReq += $myrow['quantity'];
-		} elseif ($myrow['weekindex'] > 27) {
-			$FutureReq += $myrow['quantity'];
+	while ($MyRow = DB_fetch_array($result)) {
+		array_push($Requirements, $MyRow);
+		$GrossReq += $MyRow['quantity'];
+		if ($MyRow['datediff'] < 0) {
+			$PastDueReq += $MyRow['quantity'];
+		} elseif ($MyRow['weekindex'] > 27) {
+			$FutureReq += $MyRow['quantity'];
 		} else {
-			$WeeklyReq[$myrow['weekindex']] += $myrow['quantity'];
+			$WeeklyReq[$MyRow['weekindex']] += $MyRow['quantity'];
 		}
 	} //end of while loop
 
@@ -89,20 +89,20 @@ if (isset($_POST['PrintPDF']) and $_POST['Part'] != '') {
 	$FutureSup = 0;
 	$qoh = 0; // Get quantity on Hand to display
 	$OpenOrd = 0;
-	while ($myrow = DB_fetch_array($result)) {
-		if ($myrow['ordertype'] == 'QOH') {
-			$qoh += $myrow['supplyquantity'];
+	while ($MyRow = DB_fetch_array($result)) {
+		if ($MyRow['ordertype'] == 'QOH') {
+			$qoh += $MyRow['supplyquantity'];
 		} else {
-			$OpenOrd += $myrow['supplyquantity'];
-			if ($myrow['datediff'] < 0) {
-				$PastDueSup += $myrow['supplyquantity'];
-			} elseif ($myrow['weekindex'] > 27) {
-				$FutureSup += $myrow['supplyquantity'];
+			$OpenOrd += $MyRow['supplyquantity'];
+			if ($MyRow['datediff'] < 0) {
+				$PastDueSup += $MyRow['supplyquantity'];
+			} elseif ($MyRow['weekindex'] > 27) {
+				$FutureSup += $MyRow['supplyquantity'];
 			} else {
-				$WeeklySup[$myrow['weekindex']] += $myrow['supplyquantity'];
+				$WeeklySup[$MyRow['weekindex']] += $MyRow['supplyquantity'];
 			}
 		}
-		array_push($Supplies, $myrow);
+		array_push($Supplies, $MyRow);
 	} //end of while loop
 
 	$sql = "SELECT mrpplannedorders.*,
@@ -121,17 +121,17 @@ if (isset($_POST['PrintPDF']) and $_POST['Part'] != '') {
 	}
 	$pastdueplan = 0;
 	$futureplan = 0;
-	while ($myrow = DB_fetch_array($result)) {
-		array_push($Supplies, $myrow);
-		if ($myrow['datediff'] < 0) {
-			$pastdueplan += $myrow['supplyquantity'];
-		} elseif ($myrow['weekindex'] > 27) {
-			$futureplan += $myrow['supplyquantity'];
+	while ($MyRow = DB_fetch_array($result)) {
+		array_push($Supplies, $MyRow);
+		if ($MyRow['datediff'] < 0) {
+			$pastdueplan += $MyRow['supplyquantity'];
+		} elseif ($MyRow['weekindex'] > 27) {
+			$futureplan += $MyRow['supplyquantity'];
 		} else {
-			if (isset($weeklyplan[$myrow['weekindex']])) {
-				$weeklyplan[$myrow['weekindex']] += $myrow['supplyquantity'];
+			if (isset($weeklyplan[$MyRow['weekindex']])) {
+				$weeklyplan[$MyRow['weekindex']] += $MyRow['supplyquantity'];
 			} else {
-				$weeklyplan[$myrow['weekindex']] = $myrow['supplyquantity'];
+				$weeklyplan[$MyRow['weekindex']] = $MyRow['supplyquantity'];
 			}
 		}
 	} //end of while loop
@@ -172,32 +172,32 @@ if (isset($_POST['PrintPDF']) and $_POST['Part'] != '') {
 			ON levels.part = stockmaster.stockid
 			WHERE part = '" . $_POST['Part'] . "'";
 	$result = DB_query($sql, '', '', false, true);
-	$myrow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($result);
 	$pdf->addTextWrap($Left_Margin, $YPos, 35, $FontSize, _('Part') . ': ', '');
-	$pdf->addTextWrap(70, $YPos, 100, $FontSize, $myrow['part'], '');
+	$pdf->addTextWrap(70, $YPos, 100, $FontSize, $MyRow['part'], '');
 	$pdf->addTextWrap(245, $YPos, 40, $FontSize, _('EOQ') . ': ', 'right');
-	$pdf->addTextWrap(285, $YPos, 45, $FontSize, locale_number_format($myrow['eoq'], $myrow['decimalplaces']), 'right');
+	$pdf->addTextWrap(285, $YPos, 45, $FontSize, locale_number_format($MyRow['eoq'], $MyRow['decimalplaces']), 'right');
 	$pdf->addTextWrap(360, $YPos, 50, $FontSize, _('On Hand') . ': ', 'right');
-	$pdf->addTextWrap(410, $YPos, 50, $FontSize, locale_number_format($qoh, $myrow['decimalplaces']), 'right');
+	$pdf->addTextWrap(410, $YPos, 50, $FontSize, locale_number_format($qoh, $MyRow['decimalplaces']), 'right');
 	$YPos -= $line_height;
 	$pdf->addTextWrap($Left_Margin, $YPos, 30, $FontSize, _('Desc') . ': ', '');
-	$pdf->addTextWrap(70, $YPos, 150, $FontSize, $myrow['description'], '');
+	$pdf->addTextWrap(70, $YPos, 150, $FontSize, $MyRow['description'], '');
 	$pdf->addTextWrap(245, $YPos, 40, $FontSize, _('Pan Size') . ': ', 'right');
-	$pdf->addTextWrap(285, $YPos, 45, $FontSize, locale_number_format($myrow['pansize'], $myrow['decimalplaces']), 'right');
+	$pdf->addTextWrap(285, $YPos, 45, $FontSize, locale_number_format($MyRow['pansize'], $MyRow['decimalplaces']), 'right');
 	$pdf->addTextWrap(360, $YPos, 50, $FontSize, _('On Order') . ': ', 'right');
-	$pdf->addTextWrap(410, $YPos, 50, $FontSize, locale_number_format($OpenOrd, $myrow['decimalplaces']), 'right');
+	$pdf->addTextWrap(410, $YPos, 50, $FontSize, locale_number_format($OpenOrd, $MyRow['decimalplaces']), 'right');
 	$YPos -= $line_height;
 	$pdf->addTextWrap($Left_Margin, $YPos, 30, $FontSize, 'M/B:', '');
-	$pdf->addTextWrap(70, $YPos, 150, $FontSize, $myrow['mbflag'], '');
+	$pdf->addTextWrap(70, $YPos, 150, $FontSize, $MyRow['mbflag'], '');
 	$pdf->addTextWrap(225, $YPos, 60, $FontSize, _('Shrinkage') . ': ', 'right');
-	$pdf->addTextWrap(300, $YPos, 30, $FontSize, locale_number_format($myrow['shrinkfactor'], $myrow['decimalplaces']), 'right');
+	$pdf->addTextWrap(300, $YPos, 30, $FontSize, locale_number_format($MyRow['shrinkfactor'], $MyRow['decimalplaces']), 'right');
 	$pdf->addTextWrap(360, $YPos, 50, $FontSize, _('Gross Req') . ': ', 'right');
-	$pdf->addTextWrap(410, $YPos, 50, $FontSize, locale_number_format($GrossReq, $myrow['decimalplaces']), 'right');
+	$pdf->addTextWrap(410, $YPos, 50, $FontSize, locale_number_format($GrossReq, $MyRow['decimalplaces']), 'right');
 	$YPos -= $line_height;
 	$pdf->addTextWrap(225, $YPos, 60, $FontSize, _('Lead Time') . ': ', 'right');
-	$pdf->addTextWrap(300, $YPos, 30, $FontSize, $myrow['leadtime'], 'right');
+	$pdf->addTextWrap(300, $YPos, 30, $FontSize, $MyRow['leadtime'], 'right');
 	$pdf->addTextWrap(360, $YPos, 50, $FontSize, _('Last Cost') . ': ', 'right');
-	$pdf->addTextWrap(410, $YPos, 50, $FontSize, locale_number_format($myrow['lastcost'], 2), 'right');
+	$pdf->addTextWrap(410, $YPos, 50, $FontSize, locale_number_format($MyRow['lastcost'], 2), 'right');
 	$YPos -= (2 * $line_height);
 
 	// Calculate fields for prjected available weekly buckets
@@ -438,7 +438,7 @@ if (isset($_POST['PrintPDF']) and $_POST['Part'] != '') {
 			$pdf->addTextWrap($Left_Margin, $YPos, 55, $FontSize, $Requirements[$i]['mrpdemandtype'], '');
 			$pdf->addTextWrap(80, $YPos, 90, $FontSize, $Requirements[$i]['whererequired'], '');
 			$pdf->addTextWrap(170, $YPos, 30, $FontSize, $Requirements[$i]['orderno'], '');
-			$pdf->addTextWrap(200, $YPos, 40, $FontSize, locale_number_format($Requirements[$i]['quantity'], $myrow['decimalplaces']), 'right');
+			$pdf->addTextWrap(200, $YPos, 40, $FontSize, locale_number_format($Requirements[$i]['quantity'], $MyRow['decimalplaces']), 'right');
 			$pdf->addTextWrap(240, $YPos, 50, $FontSize, $FormatedReqDueDate, 'right');
 		}
 		if (mb_strlen($Supplies[$i]['part']) > 1) {
@@ -462,7 +462,7 @@ if (isset($_POST['PrintPDF']) and $_POST['Part'] != '') {
 			}
 			$pdf->addTextWrap(355, $YPos, 35, $FontSize, $displaytype, '');
 			$pdf->addTextWrap(390, $YPos, 25, $FontSize, $fortype, '');
-			$pdf->addTextWrap(415, $YPos, 40, $FontSize, locale_number_format($Supplies[$i]['supplyquantity'], $myrow['decimalplaces']), 'right');
+			$pdf->addTextWrap(415, $YPos, 40, $FontSize, locale_number_format($Supplies[$i]['supplyquantity'], $MyRow['decimalplaces']), 'right');
 			$pdf->addTextWrap(455, $YPos, 50, $FontSize, $FormatedSupDueDate, 'right');
 			$pdf->addTextWrap(505, $YPos, 50, $FontSize, $FormatedSupMRPDate, 'right');
 		}
@@ -519,11 +519,11 @@ if (isset($_POST['PrintPDF']) and $_POST['Part'] != '') {
 	} else {
 		echo '<option value="All">' . _('All') . '</option>';
 	}
-	while ($myrow1 = DB_fetch_array($result1)) {
-		if ($myrow1['categoryid'] == $_POST['StockCat']) {
-			echo '<option selected="selected" value="' . $myrow1['categoryid'] . '">' . $myrow1['categorydescription'] . '</option>';
+	while ($MyRow1 = DB_fetch_array($result1)) {
+		if ($MyRow1['categoryid'] == $_POST['StockCat']) {
+			echo '<option selected="selected" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow1['categoryid'] . '">' . $myrow1['categorydescription'] . '</option>';
+			echo '<option value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 		}
 	}
 	echo '</select></td>';
@@ -749,7 +749,7 @@ if (isset($searchresult) and !isset($_POST['Select'])) {
 		if (DB_num_rows($searchresult) <> 0) {
 			DB_data_seek($searchresult, ($_POST['PageOffset'] - 1) * $_SESSION['DisplayRecordsMax']);
 		}
-		while (($myrow = DB_fetch_array($searchresult)) and ($RowIndex <> $_SESSION['DisplayRecordsMax'])) {
+		while (($MyRow = DB_fetch_array($searchresult)) and ($RowIndex <> $_SESSION['DisplayRecordsMax'])) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;
@@ -757,16 +757,16 @@ if (isset($searchresult) and !isset($_POST['Select'])) {
 				echo '<tr class="OddTableRows">';
 				$k++;
 			}
-			if ($myrow['mbflag'] == 'D') {
+			if ($MyRow['mbflag'] == 'D') {
 				$qoh = 'N/A';
 			} else {
-				$qoh = locale_number_format($myrow['qoh'], $myrow['decimalplaces']);
+				$qoh = locale_number_format($MyRow['qoh'], $MyRow['decimalplaces']);
 			}
-			echo '<td><input type="submit" name="Select" value="' . $myrow['stockid'] . '" /></td>
-					<td>' . $myrow['description'] . '</td>
+			echo '<td><input type="submit" name="Select" value="' . $MyRow['stockid'] . '" /></td>
+					<td>' . $MyRow['description'] . '</td>
 					<td class="number">' . $qoh . '</td>
-					<td>' . $myrow['units'] . '</td>
-					<td><a target="_blank" href="' . $RootPath . '/StockStatus.php?StockID=' . $myrow['stockid'] . '">' . _('View') . '</a></td>
+					<td>' . $MyRow['units'] . '</td>
+					<td><a target="_blank" href="' . $RootPath . '/StockStatus.php?StockID=' . $MyRow['stockid'] . '">' . _('View') . '</a></td>
 				</tr>';
 		}
 		//end of while loop

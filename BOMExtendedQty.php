@@ -142,8 +142,8 @@ if (isset($_POST['PrintPDF'])) {
 					GROUP BY passbom.part";
 		$result = DB_query($sql);
 
-		$myrow = DB_fetch_array($result);
-		$ComponentCounter = $myrow['components'];
+		$MyRow = DB_fetch_array($result);
+		$ComponentCounter = $MyRow['components'];
 
 	} // End of while $ComponentCounter > 0
 
@@ -196,13 +196,13 @@ if (isset($_POST['PrintPDF'])) {
 					   stockmaster.mbflag";
 	$result = DB_query($sql);
 	$ListCount = DB_num_rows($result);
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 
 		// Parameters for addTextWrap are defined in /includes/class.pdf.php
 		// 1) X position 2) Y position 3) Width
 		// 4) Height 5) Text 6) Alignment 7) Border 8) Fill - True to use SetFillColor
 		// and False to set to transparent
-		$Difference = $myrow['quantity'] - ($myrow['qoh'] + $myrow['poqty'] + $myrow['woqty']);
+		$Difference = $MyRow['quantity'] - ($MyRow['qoh'] + $MyRow['poqty'] + $MyRow['woqty']);
 		if (($_POST['Select'] == 'All') or ($Difference > 0)) {
 			$YPos -= $line_height;
 			$FontSize = 8;
@@ -210,14 +210,14 @@ if (isset($_POST['PrintPDF'])) {
 			if ($_POST['Fill'] == 'yes') {
 				$fill = !$fill;
 			}
-			$pdf->addTextWrap($Left_Margin + 1, $YPos, 90, $FontSize, $myrow['component'], '', 0, $fill);
-			$pdf->addTextWrap(140, $YPos, 30, $FontSize, $myrow['mbflag'], '', 0, $fill);
-			$pdf->addTextWrap(170, $YPos, 140, $FontSize, $myrow['description'], '', 0, $fill);
-			$pdf->addTextWrap(310, $YPos, 50, $FontSize, locale_number_format($myrow['quantity'], $myrow['decimalplaces']), 'right', 0, $fill);
-			$pdf->addTextWrap(360, $YPos, 40, $FontSize, locale_number_format($myrow['qoh'], $myrow['decimalplaces']), 'right', 0, $fill);
-			$pdf->addTextWrap(400, $YPos, 40, $FontSize, locale_number_format($myrow['poqty'], $myrow['decimalplaces']), 'right', 0, $fill);
-			$pdf->addTextWrap(440, $YPos, 40, $FontSize, locale_number_format($myrow['woqty'], $myrow['decimalplaces']), 'right', 0, $fill);
-			$pdf->addTextWrap(480, $YPos, 50, $FontSize, locale_number_format($Difference, $myrow['decimalplaces']), 'right', 0, $fill);
+			$pdf->addTextWrap($Left_Margin + 1, $YPos, 90, $FontSize, $MyRow['component'], '', 0, $fill);
+			$pdf->addTextWrap(140, $YPos, 30, $FontSize, $MyRow['mbflag'], '', 0, $fill);
+			$pdf->addTextWrap(170, $YPos, 140, $FontSize, $MyRow['description'], '', 0, $fill);
+			$pdf->addTextWrap(310, $YPos, 50, $FontSize, locale_number_format($MyRow['quantity'], $MyRow['decimalplaces']), 'right', 0, $fill);
+			$pdf->addTextWrap(360, $YPos, 40, $FontSize, locale_number_format($MyRow['qoh'], $MyRow['decimalplaces']), 'right', 0, $fill);
+			$pdf->addTextWrap(400, $YPos, 40, $FontSize, locale_number_format($MyRow['poqty'], $MyRow['decimalplaces']), 'right', 0, $fill);
+			$pdf->addTextWrap(440, $YPos, 40, $FontSize, locale_number_format($MyRow['woqty'], $MyRow['decimalplaces']), 'right', 0, $fill);
+			$pdf->addTextWrap(480, $YPos, 50, $FontSize, locale_number_format($Difference, $MyRow['decimalplaces']), 'right', 0, $fill);
 		}
 		if ($YPos < $Bottom_Margin + $line_height) {
 			PrintHeader($pdf, $YPos, $PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin);

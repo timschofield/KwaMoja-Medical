@@ -111,11 +111,11 @@ $ErrMsg = _('The stock categories could not be retrieved because');
 $DbgMsg = _('The SQL used to retrieve stock categories and failed was');
 $result = DB_query($sql, $ErrMsg, $DbgMsg);
 
-while ($myrow = DB_fetch_array($result)) {
-	if (isset($_POST['StkCatFrom']) and $myrow['categoryid'] == $_POST['StkCatFrom']) {
-		echo '<option selected="selected" value="' . $myrow['categoryid'] . '">' . $myrow['categoryid'] . ' - ' . $myrow['categorydescription'] . '</option>';
+while ($MyRow = DB_fetch_array($result)) {
+	if (isset($_POST['StkCatFrom']) and $MyRow['categoryid'] == $_POST['StkCatFrom']) {
+		echo '<option selected="selected" value="' . $MyRow['categoryid'] . '">' . $MyRow['categoryid'] . ' - ' . $MyRow['categorydescription'] . '</option>';
 	} else {
-		echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categoryid'] . ' - ' . $myrow['categorydescription'] . '</option>';
+		echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categoryid'] . ' - ' . $MyRow['categorydescription'] . '</option>';
 	}
 }
 echo '</select></td></tr>';
@@ -126,11 +126,11 @@ echo '<tr>
 		<td>' . _('Stock Category To') . ':</td>
 		<td><select required="required" minlength="1" name="StkCatTo">';
 
-while ($myrow = DB_fetch_array($result)) {
-	if (isset($_POST['StkCatFrom']) and $myrow['categoryid'] == $_POST['StkCatTo']) {
-		echo '<option selected="selected" value="' . $myrow['categoryid'] . '">' . $myrow['categoryid'] . ' - ' . $myrow['categorydescription'] . '</option>';
+while ($MyRow = DB_fetch_array($result)) {
+	if (isset($_POST['StkCatFrom']) and $MyRow['categoryid'] == $_POST['StkCatTo']) {
+		echo '<option selected="selected" value="' . $MyRow['categoryid'] . '">' . $MyRow['categoryid'] . ' - ' . $MyRow['categorydescription'] . '</option>';
 	} else {
-		echo '<option  value="' . $myrow['categoryid'] . '">' . $myrow['categoryid'] . ' - ' . $myrow['categorydescription'] . '</option>';
+		echo '<option  value="' . $MyRow['categoryid'] . '">' . $MyRow['categoryid'] . ' - ' . $MyRow['categorydescription'] . '</option>';
 	}
 }
 echo '</select></td></tr>';
@@ -265,7 +265,7 @@ if (isset($_POST['UpdatePrices'])) {
 		$CurrencyRow = DB_fetch_row($CurrenciesResult);
 		$CurrencyRate = $CurrencyRow[0];
 
-		while ($myrow = DB_fetch_array($PartsResult)) {
+		while ($MyRow = DB_fetch_array($PartsResult)) {
 
 			//Figure out the cost to use
 			if ($_POST['CostType'] == 'PreferredSupplier') {
@@ -274,14 +274,14 @@ if (isset($_POST['UpdatePrices'])) {
 								ON purchdata.supplierno=suppliers.supplierid
 								INNER JOIN currencies
 								ON suppliers.currcode=currencies.currabrev
-							WHERE purchdata.preferred=1 AND purchdata.stockid='" . $myrow['stockid'] . "'";
-				$ErrMsg = _('Could not get the supplier purchasing information for a preferred supplier for the item') . ' ' . $myrow['stockid'];
+							WHERE purchdata.preferred=1 AND purchdata.stockid='" . $MyRow['stockid'] . "'";
+				$ErrMsg = _('Could not get the supplier purchasing information for a preferred supplier for the item') . ' ' . $MyRow['stockid'];
 				$PrefSuppResult = DB_query($sql, $ErrMsg);
 				if (DB_num_rows($PrefSuppResult) == 0) {
-					prnMsg(_('There is no preferred supplier data for the item') . ' ' . $myrow['stockid'] . ' ' . _('prices will not be updated for this item'), 'warn');
+					prnMsg(_('There is no preferred supplier data for the item') . ' ' . $MyRow['stockid'] . ' ' . _('prices will not be updated for this item'), 'warn');
 					$Cost = 0;
 				} elseif (DB_num_rows($PrefSuppResult) > 1) {
-					prnMsg(_('There is more than a single preferred supplier data for the item') . ' ' . $myrow['stockid'] . ' ' . _('prices will not be updated for this item'), 'warn');
+					prnMsg(_('There is more than a single preferred supplier data for the item') . ' ' . $MyRow['stockid'] . ' ' . _('prices will not be updated for this item'), 'warn');
 					$Cost = 0;
 				} else {
 					$PrefSuppRow = DB_fetch_row($PrefSuppResult);
@@ -295,21 +295,21 @@ if (isset($_POST['UpdatePrices'])) {
 								AND debtorno=''
 								AND startdate <=CURRENT_DATE
 								AND (enddate >= CURRENT_DATE OR enddate='0000-00-00')
-								AND stockid='" . $myrow['stockid'] . "'
+								AND stockid='" . $MyRow['stockid'] . "'
 							ORDER BY startdate DESC";
-				$ErrMsg = _('Could not get the base price for the item') . ' ' . $myrow['stockid'] . _('from the price list') . ' ' . $_POST['BasePriceList'];
+				$ErrMsg = _('Could not get the base price for the item') . ' ' . $MyRow['stockid'] . _('from the price list') . ' ' . $_POST['BasePriceList'];
 				$BasePriceResult = DB_query($sql, $ErrMsg);
 				if (DB_num_rows($BasePriceResult) == 0) {
-					prnMsg(_('There is no default price defined in the base price list for the item') . ' ' . $myrow['stockid'] . ' ' . _('prices will not be updated for this item'), 'warn');
+					prnMsg(_('There is no default price defined in the base price list for the item') . ' ' . $MyRow['stockid'] . ' ' . _('prices will not be updated for this item'), 'warn');
 					$Cost = 0;
 				} else {
 					$BasePriceRow = DB_fetch_row($BasePriceResult);
 					$Cost = $BasePriceRow[0];
 				}
 			} else { //Must be using standard/weighted average costs
-				$Cost = $myrow['cost'];
+				$Cost = $MyRow['cost'];
 				if ($Cost <= 0) {
-					prnMsg(_('The cost for this item is not set up or is set up as less than or equal to zero - no price changes will be made based on zero cost items. The item concerned is') . ': ' . $myrow['stockid'], 'warn');
+					prnMsg(_('The cost for this item is not set up or is set up as less than or equal to zero - no price changes will be made based on zero cost items. The item concerned is') . ': ' . $MyRow['stockid'], 'warn');
 				}
 			}
 			$_POST['RoundingFactor'] = filter_number_format($_POST['RoundingFactor']);
@@ -335,7 +335,7 @@ if (isset($_POST['UpdatePrices'])) {
 													AND currabrev='" . $_POST['CurrCode'] . "'
 													AND startdate <=CURRENT_DATE
 													AND (enddate>=CURRENT_DATE OR enddate='0000-00-00')
-													AND stockid='" . $myrow['stockid'] . "'");
+													AND stockid='" . $MyRow['stockid'] . "'");
 				if (DB_num_rows($CurrentPriceResult) == 1) {
 					$DayPriorToNewPrice = DateAdd($_POST['PriceStartDate'], 'd', -1);
 					$CurrentPriceRow = DB_fetch_array($CurrentPriceResult);
@@ -345,8 +345,8 @@ if (isset($_POST['UpdatePrices'])) {
 												AND debtorno=''
 												AND startdate ='" . $CurrentPriceRow['startdate'] . "'
 												AND enddate ='" . $CurrentPriceRow['enddate'] . "'
-												AND stockid='" . $myrow['stockid'] . "'";
-					$ErrMsg = _('Error updating prices for') . ' ' . $myrow['stockid'] . ' ' . _('because');
+												AND stockid='" . $MyRow['stockid'] . "'";
+					$ErrMsg = _('Error updating prices for') . ' ' . $MyRow['stockid'] . ' ' . _('because');
 					$result = DB_query($UpdateSQL, $ErrMsg);
 
 				}
@@ -356,15 +356,15 @@ if (isset($_POST['UpdatePrices'])) {
 												startdate,
 												enddate,
 												price)
-								VALUES ('" . $myrow['stockid'] . "',
+								VALUES ('" . $MyRow['stockid'] . "',
 										'" . $_POST['PriceList'] . "',
 										'" . $_POST['CurrCode'] . "',
 										'" . FormatDateForSQL($_POST['PriceStartDate']) . "',
 										'" . $SQLEndDate . "',
 								 		'" . filter_number_format($RoundedPrice) . "')";
-				$ErrMsg = _('Error inserting new price for') . ' ' . $myrow['stockid'] . ' ' . _('because');
+				$ErrMsg = _('Error inserting new price for') . ' ' . $MyRow['stockid'] . ' ' . _('because');
 				$result = DB_query($sql, $ErrMsg);
-				prnMsg(_('Inserting new price for') . ' ' . $myrow['stockid'] . ' ' . _('to') . ' ' . $RoundedPrice, 'info');
+				prnMsg(_('Inserting new price for') . ' ' . $MyRow['stockid'] . ' ' . _('to') . ' ' . $RoundedPrice, 'info');
 
 			} // end if cost > 0
 		} //end while loop around items in the category

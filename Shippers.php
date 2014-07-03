@@ -73,22 +73,22 @@ if (isset($_POST['submit'])) {
 
 	$sql = "SELECT COUNT(*) FROM salesorders WHERE salesorders.shipvia='" . $SelectedShipper . "'";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_row($result);
-	if ($myrow[0] > 0) {
+	$MyRow = DB_fetch_row($result);
+	if ($MyRow[0] > 0) {
 		$CancelDelete = 1;
 		echo '<br />';
-		prnMsg(_('Cannot delete this shipper because sales orders have been created using this shipper') . '. ' . _('There are') . ' ' . $myrow[0] . ' ' . _('sales orders using this shipper code'), 'error');
+		prnMsg(_('Cannot delete this shipper because sales orders have been created using this shipper') . '. ' . _('There are') . ' ' . $MyRow[0] . ' ' . _('sales orders using this shipper code'), 'error');
 
 	} else {
 		// PREVENT DELETES IF DEPENDENT RECORDS IN 'DebtorTrans'
 
 		$sql = "SELECT COUNT(*) FROM debtortrans WHERE debtortrans.shipvia='" . $SelectedShipper . "'";
 		$result = DB_query($sql);
-		$myrow = DB_fetch_row($result);
-		if ($myrow[0] > 0) {
+		$MyRow = DB_fetch_row($result);
+		if ($MyRow[0] > 0) {
 			$CancelDelete = 1;
 			echo '<br />';
-			prnMsg(_('Cannot delete this shipper because invoices have been created using this shipping company') . '. ' . _('There are') . ' ' . $myrow[0] . ' ' . _('invoices created using this shipping company'), 'error');
+			prnMsg(_('Cannot delete this shipper because invoices have been created using this shipping company') . '. ' . _('There are') . ' ' . $MyRow[0] . ' ' . _('invoices created using this shipping company'), 'error');
 		} else {
 			// Prevent deletion if the selected shipping company is the current default shipping company in config.php !!
 			if ($_SESSION['Default_Shipper'] == $SelectedShipper) {
@@ -130,7 +130,7 @@ if (!isset($SelectedShipper)) {
 
 	$k = 0; //row colour counter
 
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -141,7 +141,7 @@ if (!isset($SelectedShipper)) {
 		printf('<td>%s</td>
 				<td>%s</td>
 				<td><a href="%sSelectedShipper=%s">' . _('Edit') . '</a></td>
-				<td><a href="%sSelectedShipper=%s&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this shipper?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td></tr>', $myrow[0], $myrow[1], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow[0], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow[0]);
+				<td><a href="%sSelectedShipper=%s&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this shipper?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td></tr>', $MyRow[0], $MyRow[1], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow[0], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow[0]);
 	}
 	//END WHILE LIST LOOP
 	echo '</table>';
@@ -166,10 +166,10 @@ if (!isset($_GET['delete'])) {
 		$sql = "SELECT shipper_id, shippername FROM shippers WHERE shipper_id='" . $SelectedShipper . "'";
 
 		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($result);
 
-		$_POST['Shipper_ID'] = $myrow['shipper_id'];
-		$_POST['ShipperName'] = $myrow['shippername'];
+		$_POST['Shipper_ID'] = $MyRow['shipper_id'];
+		$_POST['ShipperName'] = $MyRow['shippername'];
 
 		echo '<input type="hidden" name="SelectedShipper" value="' . $SelectedShipper . '" />';
 		echo '<input type="hidden" name="Shipper_ID" value="' . $_POST['Shipper_ID'] . '" />';

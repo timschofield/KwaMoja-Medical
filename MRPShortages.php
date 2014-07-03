@@ -178,12 +178,12 @@ if (isset($_POST['PrintPDF'])) {
 	$Partctr = 0;
 	$fill = false;
 	$pdf->SetFillColor(224, 235, 255); // Defines color to make alternating lines highlighted
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 
 		if ($_POST['ReportType'] == 'Shortage') {
-			$LineToPrint = ($myrow['demand'] > $myrow['supply']);
+			$LineToPrint = ($MyRow['demand'] > $MyRow['supply']);
 		} else {
-			$LineToPrint = ($myrow['demand'] <= $myrow['supply']);
+			$LineToPrint = ($MyRow['demand'] <= $MyRow['supply']);
 		}
 
 		if ($LineToPrint) {
@@ -199,18 +199,18 @@ if (isset($_POST['PrintPDF'])) {
 			// 1) X position 2) Y position 3) Width
 			// 4) Height 5) Text 6) Alignment 7) Border 8) Fill - True to use SetFillColor
 			// and False to set to transparent
-			$shortage = ($myrow['demand'] - $myrow['supply']) * -1;
-			$extcost = $shortage * $myrow['computedcost'];
-			$pdf->addTextWrap($Left_Margin, $YPos, 90, $FontSize, $myrow['stockid'], '', 0, $fill);
-			$pdf->addTextWrap(130, $YPos, 150, $FontSize, $myrow['description'], '', 0, $fill);
-			$pdf->addTextWrap(280, $YPos, 25, $FontSize, $myrow['mbflag'], 'right', 0, $fill);
-			$pdf->addTextWrap(305, $YPos, 55, $FontSize, locale_number_format($myrow['computedcost'], 2), 'right', 0, $fill);
-			$pdf->addTextWrap(360, $YPos, 50, $FontSize, locale_number_format($myrow['supply'], $myrow['decimalplaces']), 'right', 0, $fill);
-			$pdf->addTextWrap(410, $YPos, 50, $FontSize, locale_number_format($myrow['demand'], $myrow['decimalplaces']), 'right', 0, $fill);
-			$pdf->addTextWrap(460, $YPos, 50, $FontSize, locale_number_format($shortage, $myrow['decimalplaces']), 'right', 0, $fill);
-			$pdf->addTextWrap(510, $YPos, 60, $FontSize, locale_number_format($myrow['extcost'], 2), 'right', 0, $fill);
+			$shortage = ($MyRow['demand'] - $MyRow['supply']) * -1;
+			$extcost = $shortage * $MyRow['computedcost'];
+			$pdf->addTextWrap($Left_Margin, $YPos, 90, $FontSize, $MyRow['stockid'], '', 0, $fill);
+			$pdf->addTextWrap(130, $YPos, 150, $FontSize, $MyRow['description'], '', 0, $fill);
+			$pdf->addTextWrap(280, $YPos, 25, $FontSize, $MyRow['mbflag'], 'right', 0, $fill);
+			$pdf->addTextWrap(305, $YPos, 55, $FontSize, locale_number_format($MyRow['computedcost'], 2), 'right', 0, $fill);
+			$pdf->addTextWrap(360, $YPos, 50, $FontSize, locale_number_format($MyRow['supply'], $MyRow['decimalplaces']), 'right', 0, $fill);
+			$pdf->addTextWrap(410, $YPos, 50, $FontSize, locale_number_format($MyRow['demand'], $MyRow['decimalplaces']), 'right', 0, $fill);
+			$pdf->addTextWrap(460, $YPos, 50, $FontSize, locale_number_format($shortage, $MyRow['decimalplaces']), 'right', 0, $fill);
+			$pdf->addTextWrap(510, $YPos, 60, $FontSize, locale_number_format($MyRow['extcost'], 2), 'right', 0, $fill);
 
-			$Total_Shortage += $myrow['extcost'];
+			$Total_Shortage += $MyRow['extcost'];
 			$Partctr++;
 
 			if ($YPos < $Bottom_Margin + $line_height) {
@@ -262,8 +262,8 @@ if (isset($_POST['PrintPDF'])) {
 			categorydescription
 			FROM stockcategory";
 	$result = DB_query($sql);
-	while ($myrow = DB_fetch_array($result)) {
-		echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categoryid'] . ' - ' . $myrow['categorydescription'] . '</option>';
+	while ($MyRow = DB_fetch_array($result)) {
+		echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categoryid'] . ' - ' . $MyRow['categorydescription'] . '</option>';
 	} //end while loop
 	echo '</select></td></tr>';
 	echo '<tr><td>' . _('Sort') . ':</td>

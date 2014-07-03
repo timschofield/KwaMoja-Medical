@@ -66,14 +66,14 @@ if (isset($_POST['PrintPDF'])) {
 	$Tot_Val = 0;
 	$fill = false;
 	$pdf->SetFillColor(224, 235, 255);
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 
 		$YPos -= $line_height;
 		$FontSize = 8;
 
-		$FormatedDueDate = ConvertSQLDate($myrow['duedate']);
-		$FormatedMRPDate = ConvertSQLDate($myrow['mrpdate']);
-		if ($myrow['mrpdate'] == '2050-12-31') {
+		$FormatedDueDate = ConvertSQLDate($MyRow['duedate']);
+		$FormatedMRPDate = ConvertSQLDate($MyRow['mrpdate']);
+		if ($MyRow['mrpdate'] == '2050-12-31') {
 			$FormatedMRPDate = 'Cancel';
 		}
 
@@ -86,11 +86,11 @@ if (isset($_POST['PrintPDF'])) {
 		// 1) X position 2) Y position 3) Width
 		// 4) Height 5) Text 6) Alignment 7) Border 8) Fill - True to use SetFillColor
 		// and False to set to transparent
-		$pdf->addTextWrap($Left_Margin, $YPos, 90, $FontSize, $myrow['part'], '', 0, $fill);
-		$pdf->addTextWrap(130, $YPos, 200, $FontSize, $myrow['description'], '', 0, $fill);
-		$pdf->addTextWrap(330, $YPos, 50, $FontSize, $myrow['orderno'], 'right', 0, $fill);
-		$pdf->addTextWrap(380, $YPos, 30, $FontSize, $myrow['ordertype'], 'right', 0, $fill);
-		$pdf->addTextWrap(410, $YPos, 50, $FontSize, locale_number_format($myrow['supplyquantity'], $myrow['decimalplaces']), 'right', 0, $fill);
+		$pdf->addTextWrap($Left_Margin, $YPos, 90, $FontSize, $MyRow['part'], '', 0, $fill);
+		$pdf->addTextWrap(130, $YPos, 200, $FontSize, $MyRow['description'], '', 0, $fill);
+		$pdf->addTextWrap(330, $YPos, 50, $FontSize, $MyRow['orderno'], 'right', 0, $fill);
+		$pdf->addTextWrap(380, $YPos, 30, $FontSize, $MyRow['ordertype'], 'right', 0, $fill);
+		$pdf->addTextWrap(410, $YPos, 50, $FontSize, locale_number_format($MyRow['supplyquantity'], $MyRow['decimalplaces']), 'right', 0, $fill);
 		$pdf->addTextWrap(460, $YPos, 55, $FontSize, $FormatedDueDate, 'right', 0, $fill);
 		$pdf->addTextWrap(515, $YPos, 50, $FontSize, $FormatedMRPDate, 'right', 0, $fill);
 

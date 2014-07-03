@@ -53,19 +53,19 @@ if ($NewAdjustment == true) {
 							ON stockmaster.stockid=stockcosts.stockid
 							AND stockcosts.succeeded=0
 						WHERE stockcosts.stockid='" . $_SESSION['Adjustment' . $identifier]->StockID . "'");
-	$myrow = DB_fetch_array($result);
-	$_SESSION['Adjustment' . $identifier]->ItemDescription = $myrow['description'];
-	$_SESSION['Adjustment' . $identifier]->Controlled = $myrow['controlled'];
-	$_SESSION['Adjustment' . $identifier]->Serialised = $myrow['serialised'];
-	$_SESSION['Adjustment' . $identifier]->DecimalPlaces = $myrow['decimalplaces'];
+	$MyRow = DB_fetch_array($result);
+	$_SESSION['Adjustment' . $identifier]->ItemDescription = $MyRow['description'];
+	$_SESSION['Adjustment' . $identifier]->Controlled = $MyRow['controlled'];
+	$_SESSION['Adjustment' . $identifier]->Serialised = $MyRow['serialised'];
+	$_SESSION['Adjustment' . $identifier]->DecimalPlaces = $MyRow['decimalplaces'];
 	$_SESSION['Adjustment' . $identifier]->SerialItems = array();
 	if (!isset($_SESSION['Adjustment' . $identifier]->Quantity) or !is_numeric($_SESSION['Adjustment' . $identifier]->Quantity)) {
 		$_SESSION['Adjustment' . $identifier]->Quantity = 0;
 	}
 
-	$_SESSION['Adjustment' . $identifier]->PartUnit = $myrow['units'];
-	$_SESSION['Adjustment' . $identifier]->StandardCost = $myrow['totalcost'];
-	$DecimalPlaces = $myrow['decimalplaces'];
+	$_SESSION['Adjustment' . $identifier]->PartUnit = $MyRow['units'];
+	$_SESSION['Adjustment' . $identifier]->StandardCost = $MyRow['totalcost'];
+	$DecimalPlaces = $MyRow['decimalplaces'];
 	DB_free_result($result);
 
 
@@ -91,8 +91,8 @@ if ($_SESSION['RestrictLocations'] == 0) {
 }
 $resultStkLocs = DB_query($sql);
 $LocationList = array();
-while ($myrow = DB_fetch_array($resultStkLocs)) {
-	$LocationList[$myrow['loccode']] = $myrow['locationname'];
+while ($MyRow = DB_fetch_array($resultStkLocs)) {
+	$LocationList[$MyRow['loccode']] = $MyRow['locationname'];
 }
 
 if (isset($_POST['StockLocation'])) {
@@ -152,11 +152,11 @@ if (isset($_POST['CheckCode'])) {
 				<th class="SortableColumn">' . _('Stock Code') . '</th>
 				<th class="SortableColumn">' . _('Stock Description') . '</th>
 			</tr>';
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		echo '<tr>
-				<td>' . $myrow['stockid'] . '</td>
-				<td>' . $myrow['description'] . '</td>
-				<td><a href="StockAdjustments.php?StockID=' . urlencode($myrow[0]) . '&amp;Description=' . urlencode($myrow[1]) . '&amp;OldIdentifier=' . urlencode($identifier) . '">' . _('Adjust') . '</a>
+				<td>' . $MyRow['stockid'] . '</td>
+				<td>' . $MyRow['description'] . '</td>
+				<td><a href="StockAdjustments.php?StockID=' . urlencode($MyRow[0]) . '&amp;Description=' . urlencode($MyRow[1]) . '&amp;OldIdentifier=' . urlencode($identifier) . '">' . _('Adjust') . '</a>
 			</tr>';
 	}
 	echo '</table>';
@@ -169,7 +169,7 @@ if (isset($_POST['EnterAdjustment']) and $_POST['EnterAdjustment'] != '') {
 	$InputError = false;
 	/*Start by hoping for the best */
 	$result = DB_query("SELECT * FROM stockmaster WHERE stockid='" . $_SESSION['Adjustment' . $identifier]->StockID . "'");
-	$myrow = DB_fetch_row($result);
+	$MyRow = DB_fetch_row($result);
 	if (DB_num_rows($result) == 0) {
 		prnMsg(_('The entered item code does not exist'), 'error');
 		$InputError = true;
@@ -433,10 +433,10 @@ if (!isset($_SESSION['Adjustment' . $identifier])) {
 			WHERE stockcosts.stockid='" . $StockID . "'";
 
 	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
-	$_SESSION['Adjustment' . $identifier]->PartUnit = $myrow['units'];
-	$_SESSION['Adjustment' . $identifier]->StandardCost = $myrow['materialcost'] + $myrow['labourcost'] + $myrow['overheadcost'];
-	$DecimalPlaces = $myrow['decimalplaces'];
+	$MyRow = DB_fetch_array($result);
+	$_SESSION['Adjustment' . $identifier]->PartUnit = $MyRow['units'];
+	$_SESSION['Adjustment' . $identifier]->StandardCost = $MyRow['materialcost'] + $MyRow['labourcost'] + $MyRow['overheadcost'];
+	$DecimalPlaces = $MyRow['decimalplaces'];
 }
 echo '<table class="selection">
 		<tr>
@@ -523,11 +523,11 @@ $SQL = "SELECT tagref,
 
 $result = DB_query($SQL);
 echo '<option value="0">0 - ' . _('None') . '</option>';
-while ($myrow = DB_fetch_array($result)) {
-	if (isset($_SESSION['Adjustment' . $identifier]->tag) and $_SESSION['Adjustment' . $identifier]->tag == $myrow['tagref']) {
-		echo '<option selected="selected" value="' . $myrow['tagref'] . '">' . $myrow['tagref'] . ' - ' . $myrow['tagdescription'] . '</option>';
+while ($MyRow = DB_fetch_array($result)) {
+	if (isset($_SESSION['Adjustment' . $identifier]->tag) and $_SESSION['Adjustment' . $identifier]->tag == $MyRow['tagref']) {
+		echo '<option selected="selected" value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
 	} else {
-		echo '<option value="' . $myrow['tagref'] . '">' . $myrow['tagref'] . ' - ' . $myrow['tagdescription'] . '</option>';
+		echo '<option value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
 	}
 }
 echo '</select></td></tr>';

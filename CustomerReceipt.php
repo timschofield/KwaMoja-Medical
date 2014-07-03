@@ -65,10 +65,10 @@ if (!isset($_GET['Delete']) and isset($_SESSION['ReceiptBatch'])) {
 	$result = DB_query($SQL, $ErrMsg);
 
 	if (DB_num_rows($result) == 1) {
-		$myrow = DB_fetch_array($result);
-		$_SESSION['ReceiptBatch']->BankAccountName = $myrow['bankaccountname'];
-		$_SESSION['ReceiptBatch']->AccountCurrency = $myrow['currcode'];
-		$_SESSION['ReceiptBatch']->CurrDecimalPlaces = $myrow['decimalplaces'];
+		$MyRow = DB_fetch_array($result);
+		$_SESSION['ReceiptBatch']->BankAccountName = $MyRow['bankaccountname'];
+		$_SESSION['ReceiptBatch']->AccountCurrency = $MyRow['currcode'];
+		$_SESSION['ReceiptBatch']->CurrDecimalPlaces = $MyRow['decimalplaces'];
 		unset($result);
 	} elseif (DB_num_rows($result) == 0 and !$BankAccountEmpty) {
 		prnMsg(_('The bank account number') . ' ' . $_POST['BankAccount'] . ' ' . _('is not set up as a bank account'), 'error');
@@ -114,8 +114,8 @@ if (!isset($_GET['Delete']) and isset($_SESSION['ReceiptBatch'])) {
 
 	/*Get the exchange rate between the functional currency and the receipt currency*/
 	$result = DB_query("SELECT rate FROM currencies WHERE currabrev='" . $_SESSION['ReceiptBatch']->Currency . "'");
-	$myrow = DB_fetch_row($result);
-	$tableExRate = $myrow[0]; //this is the rate of exchange between the functional currency and the receipt currency
+	$MyRow = DB_fetch_row($result);
+	$tableExRate = $MyRow[0]; //this is the rate of exchange between the functional currency and the receipt currency
 
 	if ($_POST['Currency'] == $_SESSION['ReceiptBatch']->AccountCurrency) {
 		$_SESSION['ReceiptBatch']->ExRate = 1; //ex rate between receipt currency and account currency
@@ -138,13 +138,13 @@ if (!isset($_GET['Delete']) and isset($_SESSION['ReceiptBatch'])) {
 
 		/*Get suggested FunctionalExRate */
 		$result = DB_query("SELECT rate, decimalplaces FROM currencies WHERE currabrev='" . $_SESSION['ReceiptBatch']->AccountCurrency . "'");
-		$myrow = DB_fetch_array($result);
-		$SuggestedFunctionalExRate = $myrow['rate'];
-		$_SESSION['ReceiptBatch']->CurrDecimalPlaces = $myrow['decimalplaces'];
+		$MyRow = DB_fetch_array($result);
+		$SuggestedFunctionalExRate = $MyRow['rate'];
+		$_SESSION['ReceiptBatch']->CurrDecimalPlaces = $MyRow['decimalplaces'];
 		/*Get the exchange rate between the functional currency and the receipt currency*/
 		$result = DB_query("SELECT rate FROM currencies WHERE currabrev='" . $_SESSION['ReceiptBatch']->Currency . "'");
-		$myrow = DB_fetch_array($result);
-		$tableExRate = $myrow['rate']; //this is the rate of exchange between the functional currency and the receipt currency
+		$MyRow = DB_fetch_array($result);
+		$tableExRate = $MyRow['rate']; //this is the rate of exchange between the functional currency and the receipt currency
 		/*Calculate cross rate to suggest appropriate exchange rate between receipt currency and account currency */
 		$SuggestedExRate = $tableExRate / $SuggestedFunctionalExRate;
 	} //end else account currency != functional currency
@@ -284,12 +284,12 @@ if (isset($_POST['CommitBatch'])) {
 
 		$SQL = "SELECT accountname FROM chartmaster WHERE accountcode='" . $ReceiptItem->GLCode . "'";
 		$Result = DB_query($SQL);
-		$myrow = DB_fetch_array($Result);
+		$MyRow = DB_fetch_array($Result);
 
 		echo '<td>' . $_SESSION['ReceiptBatch']->BatchNo . '</td>
 				<td>' . $_SESSION['ReceiptBatch']->DateBanked . '</td>
 				<td>' . $ReceiptItem->CustomerName . '</td>
-				<td>' . $ReceiptItem->GLCode . ' - ' . $myrow['accountname'] . '</td>
+				<td>' . $ReceiptItem->GLCode . ' - ' . $MyRow['accountname'] . '</td>
 				<td class="number">' . locale_number_format($ReceiptItem->Amount / $_SESSION['ReceiptBatch']->ExRate / $_SESSION['ReceiptBatch']->FunctionalExRate, $_SESSION['ReceiptBatch']->CurrDecimalPlaces) . '</td>';
 
 		if ($ReceiptItem->GLCode == '') {
@@ -614,8 +614,8 @@ if (isset($_POST['Search'])) {
 				prnMsg(_('SQL used to retrieve the customer details was') . '<br />' . $sql, 'error');
 			}
 		} elseif (DB_num_rows($CustomerSearchResult) == 1) {
-			$myrow = DB_fetch_array($CustomerSearchResult);
-			$Select = $myrow['debtorno'];
+			$MyRow = DB_fetch_array($CustomerSearchResult);
+			$Select = $MyRow['debtorno'];
 			unset($CustomerSearchResult);
 		} elseif (DB_num_rows($CustomerSearchResult) == 0) {
 			prnMsg(_('No customer records contain the selected text') . ' - ' . _('please alter your search criteria and try again'), 'info');
@@ -797,12 +797,12 @@ if (DB_num_rows($AccountsResults) == 0) {
 	exit;
 } else {
 	echo '<option value=""></option>';
-	while ($myrow = DB_fetch_array($AccountsResults)) {
+	while ($MyRow = DB_fetch_array($AccountsResults)) {
 		/*list the bank account names */
-		if ($_SESSION['ReceiptBatch']->Account == $myrow['accountcode']) {
-			echo '<option selected="selected" value="' . $myrow['accountcode'] . '">' . $myrow['bankaccountname'] . ' - ' . $myrow['currcode'] . '</option>';
+		if ($_SESSION['ReceiptBatch']->Account == $MyRow['accountcode']) {
+			echo '<option selected="selected" value="' . $MyRow['accountcode'] . '">' . $MyRow['bankaccountname'] . ' - ' . $MyRow['currcode'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['accountcode'] . '">' . $myrow['bankaccountname'] . ' - ' . $myrow['currcode'] . '</option>';
+			echo '<option value="' . $MyRow['accountcode'] . '">' . $MyRow['bankaccountname'] . ' - ' . $MyRow['currcode'] . '</option>';
 		}
 	}
 	echo '</select></td>
@@ -832,11 +832,11 @@ if (DB_num_rows($result) == 0) {
 	prnMsg(_('No currencies are defined yet') . '. ' . _('Receipts cannot be entered until a currency is defined'), 'warn');
 
 } else {
-	while ($myrow = DB_fetch_array($result)) {
-		if ($_SESSION['ReceiptBatch']->Currency == $myrow['currabrev']) {
-			echo '<option selected="selected" value="' . $myrow['currabrev'] . '">' . _($myrow['currency']) . '</option>';
+	while ($MyRow = DB_fetch_array($result)) {
+		if ($_SESSION['ReceiptBatch']->Currency == $MyRow['currabrev']) {
+			echo '<option selected="selected" value="' . $MyRow['currabrev'] . '">' . _($MyRow['currency']) . '</option>';
 		} else {
-			echo '<option value="' . $myrow['currabrev'] . '">' . _($myrow['currency']) . '</option>';
+			echo '<option value="' . $MyRow['currabrev'] . '">' . _($MyRow['currency']) . '</option>';
 		}
 	}
 	echo '</select></td>
@@ -1057,11 +1057,11 @@ if (isset($_POST['GLEntry']) and isset($_SESSION['ReceiptBatch'])) {
 
 	$result = DB_query($SQL);
 	echo '<option value="0"></option>';
-	while ($myrow = DB_fetch_array($result)) {
-		if (isset($_POST['tag']) and $_POST['tag'] == $myrow['tagref']) {
-			echo '<option selected="selected" value="' . $myrow['tagref'] . '">' . $myrow['tagref'] . ' - ' . $myrow['tagdescription'] . '</option>';
+	while ($MyRow = DB_fetch_array($result)) {
+		if (isset($_POST['tag']) and $_POST['tag'] == $MyRow['tagref']) {
+			echo '<option selected="selected" value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['tagref'] . '">' . $myrow['tagref'] . ' - ' . $myrow['tagdescription'] . '</option>';
+			echo '<option value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
 		}
 	}
 	echo '</select></td>
@@ -1080,11 +1080,11 @@ if (isset($_POST['GLEntry']) and isset($_SESSION['ReceiptBatch'])) {
 			</tr>';
 	} else {
 		echo '<option value=""></option>';
-		while ($myrow = DB_fetch_array($result)) {
-			if (isset($_POST['GLCode']) and $_POST['GLCode'] == $myrow['accountcode']) {
-				echo '<option selected="selected" value="' . $myrow['accountcode'] . '">' . $myrow['accountcode'] . ' - ' . $myrow['accountname'] . '</option>';
+		while ($MyRow = DB_fetch_array($result)) {
+			if (isset($_POST['GLCode']) and $_POST['GLCode'] == $MyRow['accountcode']) {
+				echo '<option selected="selected" value="' . $MyRow['accountcode'] . '">' . $MyRow['accountcode'] . ' - ' . $MyRow['accountname'] . '</option>';
 			} else {
-				echo '<option value="' . $myrow['accountcode'] . '">' . $myrow['accountcode'] . ' - ' . $myrow['accountname'] . '</option>';
+				echo '<option value="' . $MyRow['accountcode'] . '">' . $MyRow['accountcode'] . ' - ' . $MyRow['accountname'] . '</option>';
 			}
 		}
 		echo '</select></td>
@@ -1171,7 +1171,7 @@ if (((isset($_SESSION['CustomerRecord']) and isset($_POST['CustomerID']) and $_P
 				</tr>';
 		$k = 0; //row counter to determine background colour
 
-		while ($myrow = DB_fetch_array($CustomerSearchResult)) {
+		while ($MyRow = DB_fetch_array($CustomerSearchResult)) {
 
 			if ($k == 1) {
 				echo '<tr class="OddTableRows">';
@@ -1182,7 +1182,7 @@ if (((isset($_SESSION['CustomerRecord']) and isset($_POST['CustomerID']) and $_P
 			}
 			printf('<td><input type="submit" name="Select" value="%s" /></td>
 					<td>%s</td>
-					</tr>', $myrow['debtorno'], $myrow['name']);
+					</tr>', $MyRow['debtorno'], $MyRow['name']);
 
 		}
 		//end of while loop

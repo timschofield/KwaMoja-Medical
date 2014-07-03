@@ -139,13 +139,13 @@ $sql = "SELECT contractref, name
 
 $result = DB_query($sql);
 
-while ($myrow = DB_fetch_array($result)) {
-	if (isset($_POST['ContractSelection']) and $myrow['contractref'] == $_POST['ContractSelection']) {
+while ($MyRow = DB_fetch_array($result)) {
+	if (isset($_POST['ContractSelection']) and $MyRow['contractref'] == $_POST['ContractSelection']) {
 		echo '<option selected="selected" value="';
 	} else {
 		echo '<option value="';
 	}
-	echo $myrow['contractref'] . '">' . $myrow['contractref'] . ' - ' . $myrow['name'];
+	echo $MyRow['contractref'] . '">' . $MyRow['contractref'] . ' - ' . $MyRow['name'];
 }
 
 echo '</select></td></tr>';

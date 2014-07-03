@@ -37,8 +37,8 @@ if (isset($_POST['Submit'])) {
 				WHERE unitid <> '" . $SelectedMeasureID . "'
 				AND unitname " . LIKE . " '" . $_POST['MeasureName'] . "'";
 		$result = DB_query($sql);
-		$myrow = DB_fetch_row($result);
-		if ($myrow[0] > 0) {
+		$MyRow = DB_fetch_row($result);
+		if ($MyRow[0] > 0) {
 			$InputError = 1;
 			prnMsg(_('The unit of measure can not be renamed because another with the same name already exist.'), 'error');
 		} else {
@@ -50,8 +50,8 @@ if (isset($_POST['Submit'])) {
 			$result = DB_query($sql);
 			if (DB_num_rows($result) != 0) {
 				// This is probably the safest way there is
-				$myrow = DB_fetch_row($result);
-				$OldMeasureName = $myrow[0];
+				$MyRow = DB_fetch_row($result);
+				$OldMeasureName = $MyRow[0];
 				$sql = array();
 				$sql[] = "UPDATE unitsofmeasure
 					SET unitname='" . $_POST['MeasureName'] . "'
@@ -70,8 +70,8 @@ if (isset($_POST['Submit'])) {
 		$sql = "SELECT count(*) FROM unitsofmeasure
 				WHERE unitname " . LIKE . " '" . $_POST['MeasureName'] . "'";
 		$result = DB_query($sql);
-		$myrow = DB_fetch_row($result);
-		if ($myrow[0] > 0) {
+		$MyRow = DB_fetch_row($result);
+		if ($MyRow[0] > 0) {
 			$InputError = 1;
 			prnMsg(_('The unit of measure can not be created because another with the same name already exists.'), 'error');
 		} else {
@@ -119,14 +119,14 @@ if (isset($_POST['Submit'])) {
 		// This is probably the safest way there is
 		prnMsg(_('Cannot delete this unit of measure because it no longer exist'), 'warn');
 	} else {
-		$myrow = DB_fetch_row($result);
-		$OldMeasureName = $myrow[0];
+		$MyRow = DB_fetch_row($result);
+		$OldMeasureName = $MyRow[0];
 		$sql = "SELECT COUNT(*) FROM stockmaster WHERE units " . LIKE . " '" . DB_escape_string($OldMeasureName) . "'";
 		$result = DB_query($sql);
-		$myrow = DB_fetch_row($result);
-		if ($myrow[0] > 0) {
+		$MyRow = DB_fetch_row($result);
+		if ($MyRow[0] > 0) {
 			prnMsg(_('Cannot delete this unit of measure because inventory items have been created using this unit of measure'), 'warn');
-			echo '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('inventory items that refer to this unit of measure') . '</font>';
+			echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('inventory items that refer to this unit of measure') . '</font>';
 		} else {
 			$sql = "DELETE FROM unitsofmeasure WHERE unitname " . LIKE . "'" . DB_escape_string($OldMeasureName) . "'";
 			$result = DB_query($sql);
@@ -165,7 +165,7 @@ if (!isset($SelectedMeasureID)) {
 			</tr>';
 
 	$k = 0; //row colour counter
-	while ($myrow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($result)) {
 
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -175,9 +175,9 @@ if (!isset($SelectedMeasureID)) {
 			$k++;
 		}
 
-		echo '<td>' . $myrow[1] . '</td>';
-		echo '<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedMeasureID=' . urlencode($myrow[0]) . '">' . _('Edit') . '</a></td>';
-		echo '<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedMeasureID=' . urlencode($myrow[0]) . '&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this unit of measure?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>';
+		echo '<td>' . $MyRow[1] . '</td>';
+		echo '<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedMeasureID=' . urlencode($MyRow[0]) . '">' . _('Edit') . '</a></td>';
+		echo '<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedMeasureID=' . urlencode($MyRow[0]) . '&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this unit of measure?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>';
 		echo '</tr>';
 
 	} //END WHILE LIST LOOP
@@ -209,10 +209,10 @@ if (!isset($_GET['delete'])) {
 			prnMsg(_('Could not retrieve the requested unit of measure, please try again.'), 'warn');
 			unset($SelectedMeasureID);
 		} else {
-			$myrow = DB_fetch_array($result);
+			$MyRow = DB_fetch_array($result);
 
-			$_POST['MeasureID'] = $myrow['unitid'];
-			$_POST['MeasureName'] = $myrow['unitname'];
+			$_POST['MeasureID'] = $MyRow['unitid'];
+			$_POST['MeasureName'] = $MyRow['unitname'];
 
 			echo '<input type="hidden" name="SelectedMeasureID" value="' . $_POST['MeasureID'] . '" />';
 			echo '<table class="selection">';

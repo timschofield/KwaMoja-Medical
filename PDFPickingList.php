@@ -43,8 +43,8 @@ if ((!isset($_GET['TransNo']) or $_GET['TransNo'] == '') and !isset($_POST['Tran
 		</tr>';
 	echo '<tr><td>' . _('From Warehouse') . ' : ' . '</td>
 			<td><select required="required" minlength="1" name="loccode">';
-	while ($myrow = DB_fetch_array($result)) {
-		echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+	while ($MyRow = DB_fetch_array($result)) {
+		echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 	}
 	echo '</select></td>
 		</tr>
@@ -161,8 +161,8 @@ if (isset($_POST['TransDate']) or (isset($_GET['TransNo']) and $_GET['TransNo'] 
 
 	/*retrieve the order details from the database and place them in an array */
 	$i = 0;
-	while ($myrow = DB_fetch_array($result)) {
-		$OrdersToPick[$i] = $myrow;
+	while ($MyRow = DB_fetch_array($result)) {
+		$OrdersToPick[$i] = $MyRow;
 		$i++;
 	}
 } else {
@@ -294,36 +294,36 @@ for ($i = 0; $i < sizeof($OrdersToPick); $i++) {
 
 		while ($Lines < $LinesToShow) {
 			if (isset($_GET['TransNo']) and $_GET['TransNo'] == 'Preview') {
-				$myrow2['stkcode'] = str_pad('', 10, 'x');
-				$myrow2['decimalplaces'] = 2;
+				$MyRow2['stkcode'] = str_pad('', 10, 'x');
+				$MyRow2['decimalplaces'] = 2;
 				$DisplayQty = 'XXXX.XX';
 				$DisplayPrevDel = 'XXXX.XX';
 				$DisplayQtySupplied = 'XXXX.XX';
-				$myrow2['description'] = str_pad('', 18, 'x');
-				$myrow2['narrative'] = str_pad('', 18, 'x');
-				$itemdesc = $myrow2['description'] . ' - ' . $myrow2['narrative'];
+				$MyRow2['description'] = str_pad('', 18, 'x');
+				$MyRow2['narrative'] = str_pad('', 18, 'x');
+				$itemdesc = $MyRow2['description'] . ' - ' . $MyRow2['narrative'];
 			} else {
-				$myrow2 = DB_fetch_array($LineResult);
+				$MyRow2 = DB_fetch_array($LineResult);
 				if ($Count[0] == 0) {
-					$myrow2['qtyexpected'] = 0;
-					$myrow2['qtypicked'] = 0;
+					$MyRow2['qtyexpected'] = 0;
+					$MyRow2['qtypicked'] = 0;
 				}
-				$DisplayQty = locale_number_format($myrow2['quantity'], $myrow2['decimalplaces']);
-				$DisplayPrevDel = locale_number_format($myrow2['qtyinvoiced'], $myrow2['decimalplaces']);
-				$DisplayQtySupplied = locale_number_format($myrow2['quantity'] - $myrow2['qtyinvoiced'] - $myrow2['qtyexpected'] - $myrow2['qtypicked'], $myrow2['decimalplaces']);
-				$itemdesc = $myrow2['description'] . ' - ' . $myrow2['narrative'];
+				$DisplayQty = locale_number_format($MyRow2['quantity'], $MyRow2['decimalplaces']);
+				$DisplayPrevDel = locale_number_format($MyRow2['qtyinvoiced'], $MyRow2['decimalplaces']);
+				$DisplayQtySupplied = locale_number_format($MyRow2['quantity'] - $MyRow2['qtyinvoiced'] - $MyRow2['qtyexpected'] - $MyRow2['qtypicked'], $MyRow2['decimalplaces']);
+				$itemdesc = $MyRow2['description'] . ' - ' . $MyRow2['narrative'];
 				$sql = "INSERT INTO pickinglistdetails
 					VALUES(
 					'" . $PickingListNo . "',
 					'" . $Lines . "',
-					'" . $myrow2['orderlineno'] . "',
+					'" . $MyRow2['orderlineno'] . "',
 					'" . $DisplayQtySupplied . "',
 					0)";
 				$Result = DB_query($sql);
 			}
 			$ListCount++;
 
-			$LeftOvers = $pdf->addTextWrap($FormDesign->Headings->Column1->x, $Page_Height - $YPos, $FormDesign->Headings->Column1->Length, $FormDesign->Headings->Column1->FontSize, $myrow2['stkcode'], 'left');
+			$LeftOvers = $pdf->addTextWrap($FormDesign->Headings->Column1->x, $Page_Height - $YPos, $FormDesign->Headings->Column1->Length, $FormDesign->Headings->Column1->FontSize, $MyRow2['stkcode'], 'left');
 			$LeftOvers = $pdf->addTextWrap($FormDesign->Headings->Column2->x, $Page_Height - $YPos, $FormDesign->Headings->Column2->Length, $FormDesign->Headings->Column2->FontSize, $itemdesc);
 			$LeftOvers = $pdf->addTextWrap($FormDesign->Headings->Column3->x, $Page_Height - $YPos, $FormDesign->Headings->Column3->Length, $FormDesign->Headings->Column3->FontSize, $DisplayQty, 'right');
 			$LeftOvers = $pdf->addTextWrap($FormDesign->Headings->Column4->x, $Page_Height - $YPos, $FormDesign->Headings->Column4->Length, $FormDesign->Headings->Column4->FontSize, $DisplayQtySupplied, 'right');

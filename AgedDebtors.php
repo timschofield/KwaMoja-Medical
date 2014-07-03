@@ -16,13 +16,13 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				FROM debtorsmaster";
 
 	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($result);
 
 	if ($_POST['FromCriteria']=='') {
-		$_POST['FromCriteria'] = $myrow['fromcriteria'];
+		$_POST['FromCriteria'] = $MyRow['fromcriteria'];
 	}
 	if ($_POST['ToCriteria']=='') {
-		$_POST['Toriteria'] = $myrow['tocriteria'];
+		$_POST['Toriteria'] = $MyRow['tocriteria'];
 	}
 
 	/*Now figure out the aged analysis for the customer range under review */
@@ -475,18 +475,18 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 					FROM debtorsmaster";
 
 		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($result);
 
 		echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">
 			<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
 			<table class="selection">
 			<tr>
 				<td>' . _('From Customer Code') . ':' . '</td>
-				<td><input tabindex="1" type="text" autofocus="autofocus" required="required" minlength="1" maxlength="6" size="7" name="FromCriteria" value="' . $myrow['fromcriteria'] . '" /></td>
+				<td><input tabindex="1" type="text" autofocus="autofocus" required="required" minlength="1" maxlength="6" size="7" name="FromCriteria" value="' . $MyRow['fromcriteria'] . '" /></td>
 			</tr>
 			<tr>
 				<td>' . _('To Customer Code') . ':' . '</td>
-				<td><input tabindex="2" type="text" required="required" minlength="1" maxlength="6" size="7" name="ToCriteria" value="' . $myrow['tocriteria'] . '" /></td>
+				<td><input tabindex="2" type="text" required="required" minlength="1" maxlength="6" size="7" name="ToCriteria" value="' . $MyRow['tocriteria'] . '" /></td>
 			</tr>
 			<tr>
 				<td>' . _('All balances or overdues only') . ':' . '</td>
@@ -510,8 +510,8 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 
 			$result = DB_query($sql);
 			echo '<option value="">' . _('All Sales people') . '</option>';
-			while ($myrow = DB_fetch_array($result)){
-					echo '<option value="' . $myrow['salesmancode'] . '">' . $myrow['salesmanname'] . '</option>';
+			while ($MyRow = DB_fetch_array($result)){
+					echo '<option value="' . $MyRow['salesmancode'] . '">' . $MyRow['salesmanname'] . '</option>';
 			}
 			echo '</select></td>
 			</tr>';
@@ -523,11 +523,11 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 		$sql = "SELECT currency, currabrev FROM currencies";
 
 		$result = DB_query($sql);
-		while ($myrow = DB_fetch_array($result)) {
-			if ($myrow['currabrev'] == $_SESSION['CompanyRecord']['currencydefault']) {
-				echo '<option selected="selected" value="' . $myrow['currabrev'] . '">' . $myrow['currency'] . '</option>';
+		while ($MyRow = DB_fetch_array($result)) {
+			if ($MyRow['currabrev'] == $_SESSION['CompanyRecord']['currencydefault']) {
+				echo '<option selected="selected" value="' . $MyRow['currabrev'] . '">' . $MyRow['currency'] . '</option>';
 			} else {
-				echo '<option value="' . $myrow['currabrev'] . '">' . $myrow['currency'] . '</option>';
+				echo '<option value="' . $MyRow['currabrev'] . '">' . $MyRow['currency'] . '</option>';
 			}
 		}
 		echo '</select></td>

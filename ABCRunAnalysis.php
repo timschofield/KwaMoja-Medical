@@ -57,8 +57,8 @@ if (isset($_POST['Submit'])) {
 
 	$sql = "SELECT COUNT(stockid) AS numofitems FROM tempabc WHERE consumption<>0";
 	$result = DB_query($sql, _('Problem counting items'));
-	$myrow = DB_fetch_array($result);
-	$NumberOfItems = $myrow['numofitems'];
+	$MyRow = DB_fetch_array($result);
+	$NumberOfItems = $MyRow['numofitems'];
 	$AItems = round($NumberOfItems * $Parameters['apercentage'] / 100, 0);
 	$BItems = round($NumberOfItems * $Parameters['bpercentage'] / 100, 0);
 	$CItems = $NumberOfItems - $AItems - $BItems;
@@ -71,12 +71,12 @@ if (isset($_POST['Submit'])) {
 	$result = DB_query($sql);
 
 	$i = 1;
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		switch ($i) {
 			case ($i <= $AItems):
 				$InsertSQL = "INSERT INTO abcstock VALUES(
 															'" . $_POST['GroupID'] . "',
-															'" . $myrow['stockid'] . "',
+															'" . $MyRow['stockid'] . "',
 															'A'
 														)";
 				$InsertResult = DB_query($InsertSQL);
@@ -84,7 +84,7 @@ if (isset($_POST['Submit'])) {
 			case ($i > $AItems and $i <= ($AItems + $BItems)):
 				$InsertSQL = "INSERT INTO abcstock VALUES(
 															'" . $_POST['GroupID'] . "',
-															'" . $myrow['stockid'] . "',
+															'" . $MyRow['stockid'] . "',
 															'B'
 														)";
 				$InsertResult = DB_query($InsertSQL);
@@ -92,7 +92,7 @@ if (isset($_POST['Submit'])) {
 			default:
 				$InsertSQL = "INSERT INTO abcstock VALUES(
 															'" . $_POST['GroupID'] . "',
-															'" . $myrow['stockid'] . "',
+															'" . $MyRow['stockid'] . "',
 															'C'
 														)";
 				$InsertResult = DB_query($InsertSQL);
@@ -139,8 +139,8 @@ if (isset($_POST['Submit'])) {
 	$result = DB_query($sql);
 
 	echo '<option value=""></option>';
-	while ($myrow = DB_fetch_array($result)) {
-		echo '<option value="' . $myrow['groupid'] . '">' . $myrow['groupname'] . '</option>';
+	while ($MyRow = DB_fetch_array($result)) {
+		echo '<option value="' . $MyRow['groupid'] . '">' . $MyRow['groupname'] . '</option>';
 	}
 
 	echo '</select>

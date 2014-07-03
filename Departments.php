@@ -37,8 +37,8 @@ if (isset($_POST['Submit'])) {
 				WHERE departmentid <> '" . $SelectedDepartmentID . "'
 				AND description " . LIKE . " '" . $_POST['DepartmentName'] . "'";
 		$result = DB_query($sql);
-		$myrow = DB_fetch_row($result);
-		if ($myrow[0] > 0) {
+		$MyRow = DB_fetch_row($result);
+		if ($MyRow[0] > 0) {
 			$InputError = 1;
 			prnMsg(_('This department name already exists.'), 'error');
 		} else {
@@ -50,8 +50,8 @@ if (isset($_POST['Submit'])) {
 			$result = DB_query($sql);
 			if (DB_num_rows($result) != 0) {
 				// This is probably the safest way there is
-				$myrow = DB_fetch_array($result);
-				$OldDepartmentName = $myrow['description'];
+				$MyRow = DB_fetch_array($result);
+				$OldDepartmentName = $MyRow['description'];
 				$sql = array();
 				$sql[] = "UPDATE departments
 							SET description='" . $_POST['DepartmentName'] . "',
@@ -68,8 +68,8 @@ if (isset($_POST['Submit'])) {
 		$sql = "SELECT count(*) FROM departments
 				WHERE description " . LIKE . " '" . $_POST['DepartmentName'] . "'";
 		$result = DB_query($sql);
-		$myrow = DB_fetch_row($result);
-		if ($myrow[0] > 0) {
+		$MyRow = DB_fetch_row($result);
+		if ($MyRow[0] > 0) {
 			$InputError = 1;
 			prnMsg(_('There is already a department with the specified name.'), 'error');
 		} else {
@@ -120,17 +120,17 @@ if (isset($_POST['Submit'])) {
 	if (DB_num_rows($result) == 0) {
 		prnMsg(_('You cannot delete this Department'), 'warn');
 	} else {
-		$myrow = DB_fetch_row($result);
-		$OldDepartmentName = $myrow[0];
+		$MyRow = DB_fetch_row($result);
+		$OldDepartmentName = $MyRow[0];
 		$sql = "SELECT COUNT(*)
 				FROM stockrequest INNER JOIN departments
 				ON stockrequest.departmentid=departments.departmentid
 				WHERE description " . LIKE . " '" . $OldDepartmentName . "'";
 		$result = DB_query($sql);
-		$myrow = DB_fetch_row($result);
-		if ($myrow[0] > 0) {
+		$MyRow = DB_fetch_row($result);
+		if ($MyRow[0] > 0) {
 			prnMsg(_('You cannot delete this Department'), 'warn');
-			echo '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('There are items related to this department');
+			echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('There are items related to this department');
 		} else {
 			$sql = "DELETE FROM departments WHERE description " . LIKE . "'" . $OldDepartmentName . "'";
 			$result = DB_query($sql);
@@ -163,7 +163,7 @@ if (!isset($SelectedDepartmentID)) {
 			</tr>';
 
 	$k = 0; //row colour counter
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -173,10 +173,10 @@ if (!isset($SelectedDepartmentID)) {
 			$k++;
 		}
 
-		echo '<td>' . $myrow['description'] . '</td>
-				<td>' . $myrow['authoriser'] . '</td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedDepartmentID=' . urlencode($myrow['departmentid']) . '">' . _('Edit') . '</a></td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedDepartmentID=' . urlencode($myrow['departmentid']) . '&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this department?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+		echo '<td>' . $MyRow['description'] . '</td>
+				<td>' . $MyRow['authoriser'] . '</td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedDepartmentID=' . urlencode($MyRow['departmentid']) . '">' . _('Edit') . '</a></td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedDepartmentID=' . urlencode($MyRow['departmentid']) . '&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this department?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
 			</tr>';
 
 	} //END WHILE LIST LOOP
@@ -209,11 +209,11 @@ if (!isset($_GET['delete'])) {
 			prnMsg(_('The selected departemnt could not be found.'), 'warn');
 			unset($SelectedDepartmentID);
 		} else {
-			$myrow = DB_fetch_array($result);
+			$MyRow = DB_fetch_array($result);
 
-			$_POST['DepartmentID'] = $myrow['departmentid'];
-			$_POST['DepartmentName'] = $myrow['description'];
-			$AuthoriserID = $myrow['authoriser'];
+			$_POST['DepartmentID'] = $MyRow['departmentid'];
+			$_POST['DepartmentName'] = $MyRow['description'];
+			$AuthoriserID = $MyRow['authoriser'];
 
 			echo '<input type="hidden" name="SelectedDepartmentID" value="' . $_POST['DepartmentID'] . '" />';
 			echo '<table class="selection">';
@@ -233,11 +233,11 @@ if (!isset($_GET['delete'])) {
 			<td><select minlength="0" name="Authoriser">';
 	$UserSQL = "SELECT userid FROM www_users";
 	$UserResult = DB_query($UserSQL);
-	while ($myrow = DB_fetch_array($UserResult)) {
-		if ($myrow['userid'] == $AuthoriserID) {
-			echo '<option selected="True" value="' . $myrow['userid'] . '">' . $myrow['userid'] . '</option>';
+	while ($MyRow = DB_fetch_array($UserResult)) {
+		if ($MyRow['userid'] == $AuthoriserID) {
+			echo '<option selected="True" value="' . $MyRow['userid'] . '">' . $MyRow['userid'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['userid'] . '">' . $myrow['userid'] . '</option>';
+			echo '<option value="' . $MyRow['userid'] . '">' . $MyRow['userid'] . '</option>';
 		}
 	}
 	echo '</select></td>

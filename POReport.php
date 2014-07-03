@@ -553,7 +553,7 @@ function submit($PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $Supplie
 
 				$linectr = 0;
 				$k = 0;
-				while ($myrow = DB_fetch_array($result)) {
+				while ($MyRow = DB_fetch_array($result)) {
 					if ($k == 1) {
 						echo '<tr class="EvenTableRows">';
 						$k = 0;
@@ -563,24 +563,24 @@ function submit($PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $Supplie
 					}
 					$linectr++;
 					// Detail for both DateType of Order
-					echo '<td><a href="' . $RootPath . '/PO_OrderDetails.php?OrderNo=' . urlencode($myrow['orderno']) . '">' . $myrow['orderno'] . '</a></td>
-							<td>' . $myrow['itemcode'] . '</td>
-							<td>' . ConvertSQLDate($myrow['orddate']) . '</td>
-							<td>' . $myrow['supplierno'] . '</td>
-							<td>' . $myrow['suppname'] . '</td>
-							<td class="number">' . locale_number_format($myrow['quantityord'], $myrow['decimalplaces']) . '</td>
-							<td class="number">' . locale_number_format($myrow['extcost'], 2) . '</td>
-							<td class="number">' . locale_number_format($myrow['extprice'], 2) . '</td>
-							<td class="number">' . locale_number_format($myrow['qtyinvoiced'], $myrow['decimalplaces']) . '</td>
-							<td>' . $myrow['linestatus'] . '</td>
-							<td>' . ConvertSQLDate($myrow['deliverydate']) . '</td>
-							<td>' . $myrow['description'] . '</td>
+					echo '<td><a href="' . $RootPath . '/PO_OrderDetails.php?OrderNo=' . urlencode($MyRow['orderno']) . '">' . $MyRow['orderno'] . '</a></td>
+							<td>' . $MyRow['itemcode'] . '</td>
+							<td>' . ConvertSQLDate($MyRow['orddate']) . '</td>
+							<td>' . $MyRow['supplierno'] . '</td>
+							<td>' . $MyRow['suppname'] . '</td>
+							<td class="number">' . locale_number_format($MyRow['quantityord'], $MyRow['decimalplaces']) . '</td>
+							<td class="number">' . locale_number_format($MyRow['extcost'], 2) . '</td>
+							<td class="number">' . locale_number_format($MyRow['extprice'], 2) . '</td>
+							<td class="number">' . locale_number_format($MyRow['qtyinvoiced'], $MyRow['decimalplaces']) . '</td>
+							<td>' . $MyRow['linestatus'] . '</td>
+							<td>' . ConvertSQLDate($MyRow['deliverydate']) . '</td>
+							<td>' . $MyRow['description'] . '</td>
 							</tr>';
-					$LastDecimalPlaces = $myrow['decimalplaces'];
-					$TotalQty += $myrow['quantityord'];
-					$TotalExtCost += $myrow['extcost'];
-					$TotalExtPrice += $myrow['extprice'];
-					$TotalInvQty += $myrow['qtyinvoiced'];
+					$LastDecimalPlaces = $MyRow['decimalplaces'];
+					$TotalQty += $MyRow['quantityord'];
+					$TotalExtCost += $MyRow['extcost'];
+					$TotalExtPrice += $MyRow['extprice'];
+					$TotalInvQty += $MyRow['qtyinvoiced'];
 				} //END WHILE LIST LOOP
 				// Print totals
 				echo '<tr>
@@ -615,7 +615,7 @@ function submit($PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $Supplie
 
 				$linectr = 0;
 				$k = 0;
-				while ($myrow = DB_fetch_array($result)) {
+				while ($MyRow = DB_fetch_array($result)) {
 					if ($k == 1) {
 						echo '<tr class="EvenTableRows">';
 						$k = 0;
@@ -638,13 +638,13 @@ function submit($PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $Supplie
 							<td>%s</td>
 							<td>%s</td>
 							<td>%s</td>
-							</tr>', $myrow['orderno'], $myrow['itemcode'], ConvertSQLDate($myrow['orddate']), $myrow['supplierno'], $myrow['suppname'], locale_number_format($myrow['quantityord'], $myrow['decimalplaces']), locale_number_format($myrow['extcost'], 2), locale_number_format($myrow['extprice'], 2), locale_number_format($myrow['qtyinvoiced'], $myrow['decimalplaces']), $myrow['linestatus'], ConvertSQLDate($myrow['deliverydate']), $myrow['description']);
+							</tr>', $MyRow['orderno'], $MyRow['itemcode'], ConvertSQLDate($MyRow['orddate']), $MyRow['supplierno'], $MyRow['suppname'], locale_number_format($MyRow['quantityord'], $MyRow['decimalplaces']), locale_number_format($MyRow['extcost'], 2), locale_number_format($MyRow['extprice'], 2), locale_number_format($MyRow['qtyinvoiced'], $MyRow['decimalplaces']), $MyRow['linestatus'], ConvertSQLDate($MyRow['deliverydate']), $MyRow['description']);
 
-					$LastDecimalPlaces = $myrow['decimalplaces'];
-					$TotalQty += $myrow['quantityord'];
-					$TotalExtCost += $myrow['extcost'];
-					$TotalExtPrice += $myrow['extprice'];
-					$TotalInvQty += $myrow['qtyinvoiced'];
+					$LastDecimalPlaces = $MyRow['decimalplaces'];
+					$TotalQty += $MyRow['quantityord'];
+					$TotalExtCost += $MyRow['extcost'];
+					$TotalExtPrice += $MyRow['extprice'];
+					$TotalInvQty += $MyRow['qtyinvoiced'];
 				} //END WHILE LIST LOOP
 				// Print totals
 				printf('<tr>
@@ -667,7 +667,7 @@ function submit($PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $Supplie
 			echo '<br /><table class="selection" width="98%">';
 			$summarytype = $_POST['SummaryType'];
 			// For SummaryType 'suppname' had to add supplierid to it for the GROUP BY in the sql,
-			// but have to take it away for $myrow[$summarytype] to be valid
+			// but have to take it away for $MyRow[$summarytype] to be valid
 			// Set up description based on the Summary Type
 			if ($summarytype == "suppname,suppliers.supplierid") {
 				$summarytype = "suppname";
@@ -716,10 +716,10 @@ function submit($PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $Supplie
 			$suppname = ' ';
 			$linectr = 0;
 			$k = 0;
-			while ($myrow = DB_fetch_array($result)) {
+			while ($MyRow = DB_fetch_array($result)) {
 				$linectr++;
 				if ($summarytype == 'orderno') {
-					$suppname = $myrow['suppname'];
+					$suppname = $MyRow['suppname'];
 				}
 				if ($k == 1) {
 					echo '<tr class="EvenTableRows">';
@@ -734,11 +734,11 @@ function submit($PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $Supplie
 						<td class="number">%s</td>
 						<td class="number">%s</td>
 						<td class="number">%s</td>
-						</tr>', $myrow[$summarytype], $myrow[$description], $myrow['quantityord'], locale_number_format($myrow['extcost'], 2), locale_number_format($myrow['extprice'], 2), $myrow['qtyinvoiced'], $suppname);
-				$TotalQty += $myrow['quantityord'];
-				$TotalExtCost += $myrow['extcost'];
-				$TotalExtPrice += $myrow['extprice'];
-				$TotalInvQty += $myrow['qtyinvoiced'];
+						</tr>', $MyRow[$summarytype], $MyRow[$description], $MyRow['quantityord'], locale_number_format($MyRow['extcost'], 2), locale_number_format($MyRow['extprice'], 2), $MyRow['qtyinvoiced'], $suppname);
+				$TotalQty += $MyRow['quantityord'];
+				$TotalExtCost += $MyRow['extcost'];
+				$TotalExtPrice += $MyRow['extprice'];
+				$TotalInvQty += $MyRow['qtyinvoiced'];
 			} //END WHILE LIST LOOP
 			// Print totals
 			printf('<tr>
@@ -1218,15 +1218,15 @@ function submitcsv($PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $Supp
 			if ($_POST['DateType'] == 'Order') {
 				fprintf($FileHandle, '"%s","%s","%s","%s","%s","%s","%s","%s","%s","%s","%s","%s"' . "\n", _('Order No'), _('Part Number'), _('Order Date'), _('Supplier No'), _('Supplier Name'), _('Order Qty'), _('Extended Cost'), _('Extended Price'), _('Invoiced Qty'), _('Line Status'), _('Item Due'), _('Part Description'));
 				$linectr = 0;
-				while ($myrow = DB_fetch_array($result)) {
+				while ($MyRow = DB_fetch_array($result)) {
 					$linectr++;
 					// Detail for both DateType of Order
-					fprintf($FileHandle, '"%s","%s","%s","%s","%s",%s,%s,%s,%s,"%s","%s","%s"' . "\n", $myrow['orderno'], $myrow['itemcode'], ConvertSQLDate($myrow['orddate']), $myrow['supplierno'], $myrow['suppname'], locale_number_format($myrow['quantityord'], $myrow['decimalplaces']), locale_number_format($myrow['extcost'], 2), locale_number_format($myrow['extprice'], 2), locale_number_format($myrow['qtyinvoiced'], $myrow['decimalplaces']), $myrow['linestatus'], ConvertSQLDate($myrow['deliverydate']), $myrow['description']);
-					$LastDecimalPlaces = $myrow['decimalplaces'];
-					$TotalQty += $myrow['quantityord'];
-					$TotalExtCost += $myrow['extcost'];
-					$TotalExtPrice += $myrow['extprice'];
-					$TotalInvQty += $myrow['qtyinvoiced'];
+					fprintf($FileHandle, '"%s","%s","%s","%s","%s",%s,%s,%s,%s,"%s","%s","%s"' . "\n", $MyRow['orderno'], $MyRow['itemcode'], ConvertSQLDate($MyRow['orddate']), $MyRow['supplierno'], $MyRow['suppname'], locale_number_format($MyRow['quantityord'], $MyRow['decimalplaces']), locale_number_format($MyRow['extcost'], 2), locale_number_format($MyRow['extprice'], 2), locale_number_format($MyRow['qtyinvoiced'], $MyRow['decimalplaces']), $MyRow['linestatus'], ConvertSQLDate($MyRow['deliverydate']), $MyRow['description']);
+					$LastDecimalPlaces = $MyRow['decimalplaces'];
+					$TotalQty += $MyRow['quantityord'];
+					$TotalExtCost += $MyRow['extcost'];
+					$TotalExtPrice += $MyRow['extprice'];
+					$TotalInvQty += $MyRow['qtyinvoiced'];
 				} //END WHILE LIST LOOP
 				// Print totals
 				fprintf($FileHandle, '"%s","%s","%s","%s","%s",%s,%s,%s,%s,"%s","%s"' . "\n", 'Totals', _('Lines - ') . $linectr, ' ', ' ', ' ', locale_number_format($TotalQty, 2), locale_number_format($TotalExtCost, 2), locale_number_format($TotalExtPrice, 2), locale_number_format($TotalInvQty, 2), ' ', ' ');
@@ -1234,16 +1234,16 @@ function submitcsv($PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $Supp
 				// Header for Date Type of Delivery Date
 				fprintf($FileHandle, '"%s","%s","%s","%s","%s","%s","%s","%s","%s","%s","%s","%s"' . "\n", _('Order No'), _('Part Number'), _('Order Date'), _('Supplier No'), _('Supplier Name'), _('Received'), _('Extended Cost'), _('Extended Price'), _('Invoiced Qty'), _('Line Status'), _('Delivered'), _('Part Description'));
 				$linectr = 0;
-				while ($myrow = DB_fetch_array($result)) {
+				while ($MyRow = DB_fetch_array($result)) {
 					$linectr++;
 					// Detail for both DateType of Ship
 					// In sql, had to alias grns.qtyrecd as quantityord so could use same name here
-					fprintf($FileHandle, '"%s","%s","%s","%s","%s",%s,%s,%s,%s,"%s","%s","%s"' . "\n", $myrow['orderno'], $myrow['itemcode'], ConvertSQLDate($myrow['orddate']), $myrow['supplierno'], $myrow['suppname'], locale_number_format($myrow['quantityord'], $myrow['decimalplaces']), locale_number_format($myrow['extcost'], 2), locale_number_format($myrow['extprice'], 2), locale_number_format($myrow['qtyinvoiced'], $myrow['decimalplaces']), $myrow['linestatus'], ConvertSQLDate($myrow['deliverydate']), $myrow['description']);
-					$LastDecimalPlaces = $myrow['decimalplaces'];
-					$TotalQty += $myrow['quantityord'];
-					$TotalExtCost += $myrow['extcost'];
-					$TotalExtPrice += $myrow['extprice'];
-					$TotalInvQty += $myrow['qtyinvoiced'];
+					fprintf($FileHandle, '"%s","%s","%s","%s","%s",%s,%s,%s,%s,"%s","%s","%s"' . "\n", $MyRow['orderno'], $MyRow['itemcode'], ConvertSQLDate($MyRow['orddate']), $MyRow['supplierno'], $MyRow['suppname'], locale_number_format($MyRow['quantityord'], $MyRow['decimalplaces']), locale_number_format($MyRow['extcost'], 2), locale_number_format($MyRow['extprice'], 2), locale_number_format($MyRow['qtyinvoiced'], $MyRow['decimalplaces']), $MyRow['linestatus'], ConvertSQLDate($MyRow['deliverydate']), $MyRow['description']);
+					$LastDecimalPlaces = $MyRow['decimalplaces'];
+					$TotalQty += $MyRow['quantityord'];
+					$TotalExtCost += $MyRow['extcost'];
+					$TotalExtPrice += $MyRow['extprice'];
+					$TotalInvQty += $MyRow['qtyinvoiced'];
 				} //END WHILE LIST LOOP
 				// Print totals
 				fprintf($FileHandle, '"%s","%s","%s","%s","%s",%s,%s,%s,%s,"%s","%s"' . "\n", 'Totals', _('Lines - ') . $linectr, ' ', ' ', ' ', locale_number_format($TotalQty, $LastDecimalPlaces), locale_number_format($TotalExtCost, 2), locale_number_format($TotalExtPrice, 2), locale_number_format($TotalInvQty, $LastDecimalPlaces), " ", " ");
@@ -1252,7 +1252,7 @@ function submitcsv($PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $Supp
 			// Print summary stuff
 			$summarytype = $_POST['SummaryType'];
 			// For SummaryType 'suppname' had to add supplierid to it for the GROUP BY in the sql,
-			// but have to take it away for $myrow[$summarytype] to be valid
+			// but have to take it away for $MyRow[$summarytype] to be valid
 			// Set up description based on the Summary Type
 			if ($summarytype == 'suppname,suppliers.supplierid') {
 				$summarytype = 'suppname';
@@ -1293,18 +1293,18 @@ function submitcsv($PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $Supp
 
 			$suppname = ' ';
 			$linectr = 0;
-			while ($myrow = DB_fetch_array($result)) {
+			while ($MyRow = DB_fetch_array($result)) {
 				$linectr++;
 				if ($summarytype == 'orderno') {
-					$suppname = $myrow['suppname'];
+					$suppname = $MyRow['suppname'];
 				}
-				fprintf($FileHandle, '"%s","%s",%s,%s,%s,%s,"%s"' . "\n", $myrow[$summarytype], $myrow[$description], locale_number_format($myrow['quantityord'], $myrow['decimalplaces']), locale_number_format($myrow['extcost'], 2), locale_number_format($myrow['extprice'], 2), locale_number_format($myrow['qtyinvoiced'], $myrow['decimalplaces']), $suppname);
+				fprintf($FileHandle, '"%s","%s",%s,%s,%s,%s,"%s"' . "\n", $MyRow[$summarytype], $MyRow[$description], locale_number_format($MyRow['quantityord'], $MyRow['decimalplaces']), locale_number_format($MyRow['extcost'], 2), locale_number_format($MyRow['extprice'], 2), locale_number_format($MyRow['qtyinvoiced'], $MyRow['decimalplaces']), $suppname);
 				print '<br/>';
-				$LastDecimalPlaces = $myrow['decimalplaces'];
-				$TotalQty += $myrow['quantityord'];
-				$TotalExtCost += $myrow['extcost'];
-				$TotalExtPrice += $myrow['extprice'];
-				$TotalInvQty += $myrow['qtyinvoiced'];
+				$LastDecimalPlaces = $MyRow['decimalplaces'];
+				$TotalQty += $MyRow['quantityord'];
+				$TotalExtCost += $MyRow['extcost'];
+				$TotalExtPrice += $MyRow['extprice'];
+				$TotalInvQty += $MyRow['qtyinvoiced'];
 			} //END WHILE LIST LOOP
 			// Print totals
 			fprintf($FileHandle, '"%s","%s",%s,%s,%s,%s,"%s"' . "\n", 'Totals', _('Lines - ') . $linectr, locale_number_format($TotalQty, $LastDecimalPlaces), locale_number_format($TotalExtCost, 2), locale_number_format($TotalExtPrice, 2), locale_number_format($TotalInvQty, $LastDecimalPlaces), ' ');
@@ -1421,8 +1421,8 @@ function display() //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
 	$sql = "SELECT categoryid, categorydescription FROM stockcategory";
 	$CategoryResult = DB_query($sql);
 	echo '<option selected="selected" value="All">' . _('All Categories') . '</option>';
-	while ($myrow = DB_fetch_array($CategoryResult)) {
-		echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . '</option>';
+	while ($MyRow = DB_fetch_array($CategoryResult)) {
+		echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 	}
 	echo '</select></td></tr>';
 

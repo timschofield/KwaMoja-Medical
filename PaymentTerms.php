@@ -137,17 +137,17 @@ if (isset($_POST['submit'])) {
 
 	$sql = "SELECT COUNT(*) FROM debtorsmaster WHERE debtorsmaster.paymentterms = '" . $SelectedTerms . "'";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_row($result);
-	if ($myrow[0] > 0) {
+	$MyRow = DB_fetch_row($result);
+	if ($MyRow[0] > 0) {
 		prnMsg(_('Cannot delete this payment term because customer accounts have been created referring to this term'), 'warn');
-		echo '<br /> ' . _('There are') . ' ' . $myrow[0] . ' ' . _('customer accounts that refer to this payment term');
+		echo '<br /> ' . _('There are') . ' ' . $MyRow[0] . ' ' . _('customer accounts that refer to this payment term');
 	} else {
 		$sql = "SELECT COUNT(*) FROM suppliers WHERE suppliers.paymentterms = '" . $SelectedTerms . "'";
 		$result = DB_query($sql);
-		$myrow = DB_fetch_row($result);
-		if ($myrow[0] > 0) {
+		$MyRow = DB_fetch_row($result);
+		if ($MyRow[0] > 0) {
 			prnMsg(_('Cannot delete this payment term because supplier accounts have been created referring to this term'), 'warn');
-			echo '<br /> ' . _('There are') . ' ' . $myrow[0] . ' ' . _('supplier accounts that refer to this payment term');
+			echo '<br /> ' . _('There are') . ' ' . $MyRow[0] . ' ' . _('supplier accounts that refer to this payment term');
 		} else {
 			//only delete if used in neither customer or supplier accounts
 
@@ -181,27 +181,27 @@ if (!isset($SelectedTerms)) {
 			<th>' . _('Due After (Days)') . '</th>
 		</tr>';
 
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 
-		if ($myrow['dayinfollowingmonth'] == 0) {
+		if ($MyRow['dayinfollowingmonth'] == 0) {
 			$FollMthText = _('N/A');
 		} else {
-			$FollMthText = $myrow['dayinfollowingmonth'] . _('th');
+			$FollMthText = $MyRow['dayinfollowingmonth'] . _('th');
 		}
 
-		if ($myrow['daysbeforedue'] == 0) {
+		if ($MyRow['daysbeforedue'] == 0) {
 			$DueAfterText = _('N/A');
 		} else {
-			$DueAfterText = $myrow['daysbeforedue'] . ' ' . _('days');
+			$DueAfterText = $MyRow['daysbeforedue'] . ' ' . _('days');
 		}
 
 		echo '<tr>
-				<td>' . $myrow['termsindicator'] . '</td>
-				<td>' . $myrow['terms'] . '</td>
+				<td>' . $MyRow['termsindicator'] . '</td>
+				<td>' . $MyRow['terms'] . '</td>
 				<td>' . $FollMthText . '</td>
 				<td>' . $DueAfterText . '</td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedTerms=' . urlencode($myrow[0]) . '">' . _('Edit') . '</a></td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedTerms=' . urlencode($myrow[0]) . '&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this payment term?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedTerms=' . urlencode($MyRow[0]) . '">' . _('Edit') . '</a></td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedTerms=' . urlencode($MyRow[0]) . '&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this payment term?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
 			</tr>';
 
 	} //END WHILE LIST LOOP
@@ -230,12 +230,12 @@ if (!isset($_GET['delete'])) {
 					WHERE termsindicator='" . $SelectedTerms . "'";
 
 		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($result);
 
-		$_POST['TermsIndicator'] = $myrow['termsindicator'];
-		$_POST['Terms'] = $myrow['terms'];
-		$DaysBeforeDue = $myrow['daysbeforedue'];
-		$DayInFollowingMonth = $myrow['dayinfollowingmonth'];
+		$_POST['TermsIndicator'] = $MyRow['termsindicator'];
+		$_POST['Terms'] = $MyRow['terms'];
+		$DaysBeforeDue = $MyRow['daysbeforedue'];
+		$DayInFollowingMonth = $MyRow['dayinfollowingmonth'];
 
 		echo '<input type="hidden" name="SelectedTerms" value="' . $SelectedTerms . '" />';
 		echo '<input type="hidden" name="TermsIndicator" value="' . $_POST['TermsIndicator'] . '" />';

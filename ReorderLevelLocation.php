@@ -74,7 +74,7 @@ if (isset($_POST['submit']) or isset($_POST['Update'])) {
 		</tr>';
 
 	$i = 1;
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows"><td>';
@@ -94,7 +94,7 @@ if (isset($_POST['submit']) or isset($_POST['Update'])) {
 
 		$SqlInv = "SELECT SUM(-qty) AS qtyinvoiced
 				FROM stockmoves
-				WHERE stockid='" . $myrow['stockid'] . "'
+				WHERE stockid='" . $MyRow['stockid'] . "'
 				AND (type=10 OR type=11)
 				AND loccode='" . $_POST['StockLocation'] . "'
 				AND trandate >= '" . FormatDateForSQL(DateAdd(Date($_SESSION['DefaultDateFormat']), 'd', -filter_number_format($_POST['NumberOfDays']))) . "'";
@@ -107,18 +107,18 @@ if (isset($_POST['submit']) or isset($_POST['Update'])) {
 		//find the quantity onhand item
 		$SqlOH = "SELECT SUM(quantity) AS qty
 				FROM locstock
-				WHERE stockid='" . $myrow['stockid'] . "'";
+				WHERE stockid='" . $MyRow['stockid'] . "'";
 		$TotQtyResult = DB_query($SqlOH);
 		$TotQtyRow = DB_fetch_array($TotQtyResult);
 
-		echo $myrow['stockid'] . '</td>
-			<td>' . $myrow['description'] . '</td>
-			<td class="number">' . locale_number_format($SalesRow['qtyinvoiced'], $myrow['decimalplaces']) . '</td>
-			<td class="number">' . locale_number_format($TotQtyRow['qty'], $myrow['decimalplaces']) . '</td>
-			<td class="number">' . locale_number_format($myrow['quantity'], $myrow['decimalplaces']) . '</td>
-			<td><input type="text" class="number" name="ReorderLevel' . $i . '" required="required" minlength="1" maxlength="10" size="10" value="' . locale_number_format($myrow['reorderlevel'], 0) . '" />
-			<input type="hidden" name="StockID' . $i . '" value="' . $myrow['stockid'] . '" /></td>
-			<td><input type="text" name="BinLocation' . $i . '" minlength="0" maxlength="10" size="10" value="' . $myrow['bin'] . '" /></td>
+		echo $MyRow['stockid'] . '</td>
+			<td>' . $MyRow['description'] . '</td>
+			<td class="number">' . locale_number_format($SalesRow['qtyinvoiced'], $MyRow['decimalplaces']) . '</td>
+			<td class="number">' . locale_number_format($TotQtyRow['qty'], $MyRow['decimalplaces']) . '</td>
+			<td class="number">' . locale_number_format($MyRow['quantity'], $MyRow['decimalplaces']) . '</td>
+			<td><input type="text" class="number" name="ReorderLevel' . $i . '" required="required" minlength="1" maxlength="10" size="10" value="' . locale_number_format($MyRow['reorderlevel'], 0) . '" />
+			<input type="hidden" name="StockID' . $i . '" value="' . $MyRow['stockid'] . '" /></td>
+			<td><input type="text" name="BinLocation' . $i . '" minlength="0" maxlength="10" size="10" value="' . $MyRow['bin'] . '" /></td>
 			</tr> ';
 		$i++;
 	} //end of looping
@@ -161,8 +161,8 @@ if (isset($_POST['submit']) or isset($_POST['Update'])) {
 				<td>' . _('Location') . ':</td>
 				<td><select minlength="0" name="StockLocation"> ';
 
-	while ($myrow = DB_fetch_array($resultStkLocs)) {
-		echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+	while ($MyRow = DB_fetch_array($resultStkLocs)) {
+		echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 	}
 	echo '</select></td></tr>';
 
@@ -176,8 +176,8 @@ if (isset($_POST['submit']) or isset($_POST['Update'])) {
 	echo '<tr><td>' . _('Category') . ':</td>
 				<td><select required="required" minlength="1" name="StockCat">';
 
-	while ($myrow1 = DB_fetch_array($result1)) {
-		echo '<option value="' . $myrow1['categoryid'] . '">' . $myrow1['categorydescription'] . '</option>';
+	while ($MyRow1 = DB_fetch_array($result1)) {
+		echo '<option value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 	}
 
 	echo '</select></td></tr>';

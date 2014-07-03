@@ -13,8 +13,8 @@ if (!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) {
 	$sql = "SELECT periodno, lastdate_in_period FROM periods ORDER BY periodno ASC";
 	$Periods = DB_query($sql);
 
-	while ($myrow = DB_fetch_array($Periods)) {
-		$PeriodsArray[$myrow['periodno']] = MonthAndYearFromSQLDate($myrow['lastdate_in_period']);
+	while ($MyRow = DB_fetch_array($Periods)) {
+		$PeriodsArray[$MyRow['periodno']] = MonthAndYearFromSQLDate($MyRow['lastdate_in_period']);
 	}
 
 	$DefaultFromPeriod = min(array_keys($PeriodsArray));
@@ -80,17 +80,17 @@ if (!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) {
 		$ErrMsg = _('Could not retrieve the ChartDetail records because');
 		$result = DB_query($sql, $ErrMsg);
 
-		while ($myrow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($result)) {
 
-			$CFwd = $myrow['bfwd'] + $myrow['actual'];
-			$CFwdBudget = $myrow['bfwdbudget'] + $myrow['budget'];
+			$CFwd = $MyRow['bfwd'] + $MyRow['actual'];
+			$CFwdBudget = $MyRow['bfwdbudget'] + $MyRow['budget'];
 
-			echo '<br />' . _('Account Code') . ': ' . $myrow['accountcode'] . ' ' . _('Period') . ': ' . $myrow['period'];
+			echo '<br />' . _('Account Code') . ': ' . $MyRow['accountcode'] . ' ' . _('Period') . ': ' . $MyRow['period'];
 
 			$sql = "UPDATE chartdetails SET bfwd='" . $CFwd . "',
 										bfwdbudget='" . $CFwdBudget . "'
-					WHERE period='" . ($myrow['period'] + 1) . "'
-					AND  accountcode = '" . $myrow['accountcode'] . "'";
+					WHERE period='" . ($MyRow['period'] + 1) . "'
+					AND  accountcode = '" . $MyRow['accountcode'] . "'";
 
 			$ErrMsg = _('Could not update the chartdetails record because');
 			$updresult = DB_query($sql, $ErrMsg);

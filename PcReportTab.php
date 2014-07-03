@@ -40,13 +40,13 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 		ORDER BY tabcode";
 	$result = DB_query($SQL);
 
-	while ($myrow = DB_fetch_array($result)) {
-		if (isset($_POST['SelectedTabs']) and $myrow['tabcode'] == $_POST['SelectedTabs']) {
+	while ($MyRow = DB_fetch_array($result)) {
+		if (isset($_POST['SelectedTabs']) and $MyRow['tabcode'] == $_POST['SelectedTabs']) {
 			echo '<option selected="selected" value="';
 		} else {
 			echo '<option value="';
 		}
-		echo $myrow['tabcode'] . '">' . $myrow['tabcode'] . '</option>';
+		echo $MyRow['tabcode'] . '">' . $MyRow['tabcode'] . '</option>';
 
 	} //end while loop get type of tab
 
@@ -175,11 +175,11 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 	$LeftOvers = $pdf->addTextWrap($Left_Margin + 420, $YPos, 100, $FontSize, _('Date Authorised'));
 	$YPos -= (2 * $line_height);
 
-	while ($myrow = DB_fetch_array($TabDetail)) {
+	while ($MyRow = DB_fetch_array($TabDetail)) {
 
 		$sqldes = "SELECT description
 					FROM pcexpenses
-					WHERE codeexpense='" . $myrow[3] . "'";
+					WHERE codeexpense='" . $MyRow[3] . "'";
 
 		$ResultDes = DB_query($sqldes);
 		$Description = DB_fetch_array($ResultDes);
@@ -189,12 +189,12 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 		}
 
 		// Print total for each account
-		$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 70, $FontSize, ConvertSQLDate($myrow['date']));
+		$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 70, $FontSize, ConvertSQLDate($MyRow['date']));
 		$LeftOvers = $pdf->addTextWrap($Left_Margin + 70, $YPos, 130, $FontSize, $Description[0]);
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 180, $YPos, 50, $FontSize, locale_number_format($myrow['amount'], $_SESSION['CompanyRecord']['decimalplaces']), 'right');
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 250, $YPos, 100, $FontSize, $myrow['notes']);
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 350, $YPos, 70, $FontSize, $myrow['receipt']);
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 430, $YPos, 70, $FontSize, ConvertSQLDate($myrow['authorized']));
+		$LeftOvers = $pdf->addTextWrap($Left_Margin + 180, $YPos, 50, $FontSize, locale_number_format($MyRow['amount'], $_SESSION['CompanyRecord']['decimalplaces']), 'right');
+		$LeftOvers = $pdf->addTextWrap($Left_Margin + 250, $YPos, 100, $FontSize, $MyRow['notes']);
+		$LeftOvers = $pdf->addTextWrap($Left_Margin + 350, $YPos, 70, $FontSize, $MyRow['receipt']);
+		$LeftOvers = $pdf->addTextWrap($Left_Margin + 430, $YPos, 70, $FontSize, ConvertSQLDate($MyRow['authorized']));
 		$YPos -= $line_height;
 
 	} //end of while loop
@@ -337,7 +337,7 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 	$j = 1;
 	$k = 0; //row colour counter
 
-	while ($myrow = DB_fetch_row($TabDetail)) {
+	while ($MyRow = DB_fetch_row($TabDetail)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -349,7 +349,7 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 
 		$sqldes = "SELECT description
 				FROM pcexpenses
-				WHERE codeexpense='" . $myrow['3'] . "'";
+				WHERE codeexpense='" . $MyRow['3'] . "'";
 
 		$ResultDes = DB_query($sqldes);
 		$Description = DB_fetch_array($ResultDes);
@@ -357,14 +357,14 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 		if (!isset($Description['0'])) {
 			$Description['0'] = 'ASSIGNCASH';
 		}
-		if ($myrow['5'] != '0000-00-00') {
+		if ($MyRow['5'] != '0000-00-00') {
 			printf("<td>%s</td>
 					<td>%s</td>
 					<td class='number'>%s</td>
 					<td>%s</td>
 					<td>%s</td>
 					<td>%s</td>
-				</tr>", ConvertSQLDate($myrow['2']), $Description['0'], locale_number_format($myrow['4'], $_SESSION['CompanyRecord']['decimalplaces']), $myrow['7'], $myrow['8'], ConvertSQLDate($myrow['5']));
+				</tr>", ConvertSQLDate($MyRow['2']), $Description['0'], locale_number_format($MyRow['4'], $_SESSION['CompanyRecord']['decimalplaces']), $MyRow['7'], $MyRow['8'], ConvertSQLDate($MyRow['5']));
 		} else {
 			printf("<td>%s</td>
 					<td>%s</td>
@@ -372,7 +372,7 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 					<td>%s</td>
 					<td>%s</td>
 					<td>%s</td>
-				</tr>", ConvertSQLDate($myrow['2']), $Description['0'], locale_number_format($myrow['4'], $_SESSION['CompanyRecord']['decimalplaces']), $myrow['7'], $myrow['8'], '		  ');
+				</tr>", ConvertSQLDate($MyRow['2']), $Description['0'], locale_number_format($MyRow['4'], $_SESSION['CompanyRecord']['decimalplaces']), $MyRow['7'], $MyRow['8'], '		  ');
 		}
 
 	}

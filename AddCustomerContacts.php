@@ -130,7 +130,7 @@ if (!isset($Id)) {
 
 	$k = 0; //row colour counter
 
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		if ($k == 1) {
 			echo '<tr class="OddTableRows">';
 			$k = 0;
@@ -144,7 +144,7 @@ if (!isset($Id)) {
 				<td><a href="mailto:%s">%s</a></td>
 				<td>%s</td>
 				<td><a href="%sId=%s&amp;DebtorNo=%s">' . _('Edit') . '</a></td>
-				<td><a href="%sId=%s&amp;DebtorNo=%s&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this contact?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td></tr>', $myrow['contactname'], $myrow['role'], $myrow['phoneno'], $myrow['email'], $myrow['email'], $myrow['notes'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['contid'], $myrow['debtorno'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['contid'], $myrow['debtorno']);
+				<td><a href="%sId=%s&amp;DebtorNo=%s&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this contact?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td></tr>', $MyRow['contactname'], $MyRow['role'], $MyRow['phoneno'], $MyRow['email'], $MyRow['email'], $MyRow['notes'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['contid'], $MyRow['debtorno'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['contid'], $MyRow['debtorno']);
 
 	}
 	//END WHILE LIST LOOP
@@ -173,15 +173,15 @@ if (!isset($_GET['delete'])) {
 						AND debtorno='" . $DebtorNo . "'";
 
 		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($result);
 
-		$_POST['Con_ID'] = $myrow['contid'];
-		$_POST['ContactName'] = $myrow['contactname'];
-		$_POST['ContactRole'] = $myrow['role'];
-		$_POST['ContactPhone'] = $myrow['phoneno'];
-		$_POST['ContactEmail'] = $myrow['email'];
-		$_POST['ContactNotes'] = $myrow['notes'];
-		$_POST['DebtorNo'] = $myrow['debtorno'];
+		$_POST['Con_ID'] = $MyRow['contid'];
+		$_POST['ContactName'] = $MyRow['contactname'];
+		$_POST['ContactRole'] = $MyRow['role'];
+		$_POST['ContactPhone'] = $MyRow['phoneno'];
+		$_POST['ContactEmail'] = $MyRow['email'];
+		$_POST['ContactNotes'] = $MyRow['notes'];
+		$_POST['DebtorNo'] = $MyRow['debtorno'];
 		echo '<input type="hidden" name="Id" value="' . $Id . '" />';
 		echo '<input type="hidden" name="Con_ID" value="' . $_POST['Con_ID'] . '" />';
 		echo '<input type="hidden" name="DebtorNo" value="' . $_POST['DebtorNo'] . '" />';

@@ -304,21 +304,21 @@ if (isset($_GET['Edit'])) {
 }
 
 if (DB_num_rows($result) != 0) {
-	$myrow = DB_fetch_array($result);
-	$_POST['ID'] = $myrow['id'];
-	$_POST['Description'] = $myrow['name'];
-	$_POST['Parent'] = $myrow['parentid'];
-	$_POST['X'] = $myrow['xcoord'];
-	$_POST['Y'] = $myrow['ycoord'];
-	$_POST['Z'] = $myrow['zcoord'];
-	$_POST['Width'] = $myrow['width'];
-	$_POST['Length'] = $myrow['length'];
-	$_POST['Height'] = $myrow['height'];
-	$_POST['Sequence'] = $myrow['sequence'];
-	$_POST['Putaway'] = $myrow['putaway'];
-	$_POST['Picking'] = $myrow['picking'];
-	$_POST['Replenishment'] = $myrow['replenishment'];
-	$_POST['Quarantine'] = $myrow['quarantine'];
+	$MyRow = DB_fetch_array($result);
+	$_POST['ID'] = $MyRow['id'];
+	$_POST['Description'] = $MyRow['name'];
+	$_POST['Parent'] = $MyRow['parentid'];
+	$_POST['X'] = $MyRow['xcoord'];
+	$_POST['Y'] = $MyRow['ycoord'];
+	$_POST['Z'] = $MyRow['zcoord'];
+	$_POST['Width'] = $MyRow['width'];
+	$_POST['Length'] = $MyRow['length'];
+	$_POST['Height'] = $MyRow['height'];
+	$_POST['Sequence'] = $MyRow['sequence'];
+	$_POST['Putaway'] = $MyRow['putaway'];
+	$_POST['Picking'] = $MyRow['picking'];
+	$_POST['Replenishment'] = $MyRow['replenishment'];
+	$_POST['Quarantine'] = $MyRow['quarantine'];
 } else {
 	$_POST['ID'] = '';
 	$_POST['Description'] = '';

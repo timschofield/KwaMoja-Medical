@@ -48,13 +48,13 @@ if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 		$SQLAdjustmentDate = FormatDateForSQL(Date($_SESSION['DefaultDateFormat']));
 		$AdjustmentNumber = GetNextTransNo(17);
 
-		while ($myrow = DB_fetch_array($StockChecks)) {
+		while ($MyRow = DB_fetch_array($StockChecks)) {
 
 			$sql = "SELECT SUM(stockcounts.qtycounted) AS totcounted,
 					COUNT(stockcounts.stockid) AS noofcounts
 					FROM stockcounts
-					WHERE stockcounts.stockid='" . $myrow['stockid'] . "'
-					AND stockcounts.loccode='" . $myrow['loccode'] . "'";
+					WHERE stockcounts.stockid='" . $MyRow['stockid'] . "'
+					AND stockcounts.loccode='" . $MyRow['loccode'] . "'";
 
 			$StockCounts = DB_query($sql);
 			if (DB_error_no() != 0) {
@@ -73,7 +73,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 			$StkCountResult = DB_query($sql);
 			$StkCountRow = DB_fetch_array($StkCountResult);
 
-			$StockQtyDifference = $StkCountRow['totcounted'] - $myrow['qoh'];
+			$StockQtyDifference = $StkCountRow['totcounted'] - $MyRow['qoh'];
 
 			if ($_POST['ZeroCounts'] == 'Leave' and $StkCountRow['noofcounts'] == 0) {
 				$StockQtyDifference = 0;
@@ -86,8 +86,8 @@ if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 				// Need to get the current location quantity will need it later for the stock movement
 				$SQL = "SELECT locstock.quantity
 						FROM locstock
-					WHERE locstock.stockid='" . $myrow['stockid'] . "'
-					AND loccode= '" . $myrow['loccode'] . "'";
+					WHERE locstock.stockid='" . $MyRow['stockid'] . "'
+					AND loccode= '" . $MyRow['loccode'] . "'";
 
 				$Result = DB_query($SQL);
 				if (DB_num_rows($Result) == 1) {
@@ -107,10 +107,10 @@ if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 								reference,
 								qty,
 								newqoh)
-						VALUES ('" . $myrow['stockid'] . "',
+						VALUES ('" . $MyRow['stockid'] . "',
 							17,
 							'" . $AdjustmentNumber . "',
-							'" . $myrow['loccode'] . "',
+							'" . $MyRow['loccode'] . "',
 							'" . $SQLAdjustmentDate . "',
 							'" . $PeriodNo . "',
 							'" . _('Inventory Check') . "',
@@ -124,15 +124,15 @@ if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 
 				$SQL = "UPDATE locstock
 						SET quantity = quantity + '" . $StockQtyDifference . "'
-						WHERE stockid='" . $myrow['stockid'] . "'
-						AND loccode='" . $myrow['loccode'] . "'";
+						WHERE stockid='" . $MyRow['stockid'] . "'
+						AND loccode='" . $MyRow['loccode'] . "'";
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The location stock record could not be updated because');
 				$DbgMsg = _('The following SQL to update the stock record was used');
 				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
-				if ($_SESSION['CompanyRecord']['gllink_stock'] == 1 and $myrow['standardcost'] > 0) {
+				if ($_SESSION['CompanyRecord']['gllink_stock'] == 1 and $MyRow['standardcost'] > 0) {
 
-					$StockGLCodes = GetStockGLCode($myrow['stockid']);
+					$StockGLCodes = GetStockGLCode($MyRow['stockid']);
 					$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The general ledger transaction entries could not be added because');
 					$DbgMsg = _('The following SQL to insert the GL entries was used');
 
@@ -148,8 +148,8 @@ if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 												'" . $SQLAdjustmentDate . "',
 												'" . $PeriodNo . "',
 												'" . $StockGLCodes['adjglact'] . "',
-												'" . ($myrow['standardcost'] * -($StockQtyDifference)) . "',
-												'" . $myrow['stockid'] . " x " . $StockQtyDifference . " @ " . $myrow['standardcost'] . " - " . _('Inventory Check') . "')";
+												'" . ($MyRow['standardcost'] * -($StockQtyDifference)) . "',
+												'" . $MyRow['stockid'] . " x " . $StockQtyDifference . " @ " . $MyRow['standardcost'] . " - " . _('Inventory Check') . "')";
 					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 					$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The general ledger transaction entries could not be added because');
@@ -167,8 +167,8 @@ if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 												'" . $SQLAdjustmentDate . "',
 												'" . $PeriodNo . "',
 												'" . $StockGLCodes['stockact'] . "',
-												'" . ($myrow['standardcost'] * $StockQtyDifference) . "',
-												'" . $myrow['stockid'] . " x " . $StockQtyDifference . " @ " . $myrow['standardcost'] . " - " . _('Inventory Check') . "')";
+												'" . ($MyRow['standardcost'] * $StockQtyDifference) . "',
+												'" . $MyRow['stockid'] . " x " . $StockQtyDifference . " @ " . $MyRow['standardcost'] . " - " . _('Inventory Check') . "')";
 					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 				} //END INSERT GL TRANS

@@ -487,8 +487,8 @@ if (isset($_POST['PrintPDF'])) {
 
 	echo '<option value="All">' . _('All Locations') . '</option>';
 
-	while ($myrow = DB_fetch_array($LocnResult)) {
-		echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+	while ($MyRow = DB_fetch_array($LocnResult)) {
+		echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 	}
 	echo '</select></td></tr>';
 

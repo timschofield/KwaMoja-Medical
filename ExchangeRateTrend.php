@@ -34,12 +34,12 @@ echo '<tr>
 		<td>
 			<select minlength="0" name="CurrencyToShow" onchange="ReloadForm(update.submit)">';
 
-while ($myrow = DB_fetch_array($result)) {
-	if ($myrow['currabrev'] != $_SESSION['CompanyRecord']['currencydefault']) {
-		if ($CurrencyToShow == $myrow['currabrev']) {
-			echo '<option selected="selected" value="' . $myrow['currabrev'] . '">' . _($myrow['currency']) . '&nbsp;(' . $myrow['currabrev'] . ')' . '</option>';
+while ($MyRow = DB_fetch_array($result)) {
+	if ($MyRow['currabrev'] != $_SESSION['CompanyRecord']['currencydefault']) {
+		if ($CurrencyToShow == $MyRow['currabrev']) {
+			echo '<option selected="selected" value="' . $MyRow['currabrev'] . '">' . _($MyRow['currency']) . '&nbsp;(' . $MyRow['currabrev'] . ')' . '</option>';
 		} else {
-			echo '<option value="' . $myrow['currabrev'] . '">' . _($myrow['currency']) . '&nbsp;(' . $myrow['currabrev'] . ')' . '</option>';
+			echo '<option value="' . $MyRow['currabrev'] . '">' . _($MyRow['currency']) . '&nbsp;(' . $MyRow['currabrev'] . ')' . '</option>';
 		}
 	}
 }

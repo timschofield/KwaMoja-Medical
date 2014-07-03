@@ -19,8 +19,8 @@ if (!isset($_POST['Show'])) {
 
 	$sql = "SELECT typeno FROM systypes WHERE typeid=0";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
-	$MaxJournalNumberUsed = $myrow['typeno'];
+	$MyRow = DB_fetch_array($result);
+	$MaxJournalNumberUsed = $MyRow['typeno'];
 
 	echo '<tr>
 			<td>' . _('Journal Number Range') . ' (' . _('Between') . ' 1 ' . _('and') . ' ' . $MaxJournalNumberUsed . ')</td>
@@ -31,10 +31,10 @@ if (!isset($_POST['Show'])) {
 	$sql = "SELECT MIN(trandate) AS fromdate,
 					MAX(trandate) AS todate FROM gltrans WHERE type=0";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
-	if (isset($myrow['fromdate']) and $myrow['fromdate'] != '') {
-		$FromDate = $myrow['fromdate'];
-		$ToDate = $myrow['todate'];
+	$MyRow = DB_fetch_array($result);
+	if (isset($MyRow['fromdate']) and $MyRow['fromdate'] != '') {
+		$FromDate = $MyRow['fromdate'];
+		$ToDate = $MyRow['todate'];
 	} else {
 		$FromDate = date('Y-m-d');
 		$ToDate = date('Y-m-d');
@@ -95,31 +95,31 @@ if (!isset($_POST['Show'])) {
 
 		$LastJournal = 0;
 
-		while ($myrow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($result)) {
 
-			if ($myrow['tag'] == 0) {
-				$myrow['tagdescription'] = 'None';
+			if ($MyRow['tag'] == 0) {
+				$MyRow['tagdescription'] = 'None';
 			}
 
-			if ($myrow['typeno'] != $LastJournal) {
+			if ($MyRow['typeno'] != $LastJournal) {
 				echo '<tr><td colspan="8"</td></tr><tr>
-					<td>' . ConvertSQLDate($myrow['trandate']) . '</td>
-					<td class="number">' . $myrow['typeno'] . '</td>';
+					<td>' . ConvertSQLDate($MyRow['trandate']) . '</td>
+					<td class="number">' . $MyRow['typeno'] . '</td>';
 
 			} else {
 				echo '<tr><td colspan="2"></td>';
 			}
 
-			echo '<td>' . $myrow['account'] . '</td>
-					<td>' . $myrow['accountname'] . '</td>
-					<td>' . $myrow['narrative'] . '</td>
-					<td class="number">' . locale_number_format($myrow['amount'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
-					<td class="number">' . $myrow['tag'] . ' - ' . $myrow['tagdescription'] . '</td>';
+			echo '<td>' . $MyRow['account'] . '</td>
+					<td>' . $MyRow['accountname'] . '</td>
+					<td>' . $MyRow['narrative'] . '</td>
+					<td class="number">' . locale_number_format($MyRow['amount'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
+					<td class="number">' . $MyRow['tag'] . ' - ' . $MyRow['tagdescription'] . '</td>';
 
-			if ($myrow['typeno'] != $LastJournal) {
-				echo '<td class="number"><a href="PDFGLJournal.php?JournalNo=' . urlencode($myrow['typeno']) . '">' . _('Print') . '</a></td></tr>';
+			if ($MyRow['typeno'] != $LastJournal) {
+				echo '<td class="number"><a href="PDFGLJournal.php?JournalNo=' . urlencode($MyRow['typeno']) . '">' . _('Print') . '</a></td></tr>';
 
-				$LastJournal = $myrow['typeno'];
+				$LastJournal = $MyRow['typeno'];
 			} else {
 				echo '<td colspan="1"></td></tr>';
 			}

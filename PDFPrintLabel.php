@@ -292,8 +292,8 @@ if (isset($_POST['PrintLabels']) and $NoOfLabels > 0) {
 				<td><select required="required" minlength="1" name="FromCriteria">';
 
 		$CatResult = DB_query("SELECT categoryid, categorydescription FROM stockcategory ORDER BY categoryid");
-		while ($myrow = DB_fetch_array($CatResult)) {
-			echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categoryid'] . ' - ' . $myrow['categorydescription'] . '</option>';
+		while ($MyRow = DB_fetch_array($CatResult)) {
+			echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categoryid'] . ' - ' . $MyRow['categorydescription'] . '</option>';
 		}
 		echo '</select>
 				</td>
@@ -306,8 +306,8 @@ if (isset($_POST['PrintLabels']) and $NoOfLabels > 0) {
 		/*Set the index for the categories result set back to 0 */
 		DB_data_seek($CatResult, 0);
 
-		while ($myrow = DB_fetch_array($CatResult)) {
-			echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categoryid'] . ' - ' . $myrow['categorydescription'] . '</option>';
+		while ($MyRow = DB_fetch_array($CatResult)) {
+			echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categoryid'] . ' - ' . $MyRow['categorydescription'] . '</option>';
 		}
 		echo '</select>
 				</td>
@@ -319,11 +319,11 @@ if (isset($_POST['PrintLabels']) and $NoOfLabels > 0) {
 		$sql = "SELECT sales_type, typeabbrev FROM salestypes";
 		$SalesTypesResult = DB_query($sql);
 
-		while ($myrow = DB_fetch_array($SalesTypesResult)) {
-			if ($_SESSION['DefaultPriceList'] == $myrow['typeabbrev']) {
-				echo '<option selected="selected" value="' . $myrow['typeabbrev'] . '">' . $myrow['sales_type'] . '</option>';
+		while ($MyRow = DB_fetch_array($SalesTypesResult)) {
+			if ($_SESSION['DefaultPriceList'] == $MyRow['typeabbrev']) {
+				echo '<option selected="selected" value="' . $MyRow['typeabbrev'] . '">' . $MyRow['sales_type'] . '</option>';
 			} else {
-				echo '<option value="' . $myrow['typeabbrev'] . '">' . $myrow['sales_type'] . '</option>';
+				echo '<option value="' . $MyRow['typeabbrev'] . '">' . $MyRow['sales_type'] . '</option>';
 			}
 		}
 		echo '</select></td></tr>';
@@ -334,11 +334,11 @@ if (isset($_POST['PrintLabels']) and $NoOfLabels > 0) {
 		$sql = "SELECT currabrev, country, currency FROM currencies";
 		$CurrenciesResult = DB_query($sql);
 
-		while ($myrow = DB_fetch_array($CurrenciesResult)) {
-			if ($_SESSION['CompanyRecord']['currencydefault'] == $myrow['currabrev']) {
-				echo '<option selected="selected" value="' . $myrow['currabrev'] . '">' . $myrow['country'] . ' - ' . $myrow['currency'] . '</option>';
+		while ($MyRow = DB_fetch_array($CurrenciesResult)) {
+			if ($_SESSION['CompanyRecord']['currencydefault'] == $MyRow['currabrev']) {
+				echo '<option selected="selected" value="' . $MyRow['currabrev'] . '">' . $MyRow['country'] . ' - ' . $MyRow['currency'] . '</option>';
 			} else {
-				echo '<option value="' . $myrow['currabrev'] . '">' . $myrow['country'] . ' - ' . $myrow['currency'] . '</option>';
+				echo '<option value="' . $MyRow['currabrev'] . '">' . $MyRow['country'] . ' - ' . $MyRow['currency'] . '</option>';
 			}
 		}
 		echo '</select></td></tr>';

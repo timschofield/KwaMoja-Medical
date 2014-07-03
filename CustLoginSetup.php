@@ -23,8 +23,8 @@ $sql = "SELECT name
 		WHERE debtorno='" . $_SESSION['CustomerID'] . "'";
 
 $result = DB_query($sql);
-$myrow = DB_fetch_array($result);
-$CustomerName = $myrow['name'];
+$MyRow = DB_fetch_array($result);
+$CustomerName = $MyRow['name'];
 
 echo '<p class="page_title_text noPrint" >
 		<img src="' . $RootPath . '/css/' . $Theme . '/images/customer.png" title="' . _('Customer') . '" alt="" />' . ' ' . _('Customer') . ' : ' . $_SESSION['CustomerID'] . ' - ' . $CustomerName . _(' has been selected') . '</p>
@@ -74,8 +74,8 @@ if (isset($_POST['submit'])) {
 			prnMsg(_('The entered Branch Code is not valid for the entered Customer Code'), 'error');
 			$InputError = 1;
 		} else {
-			$myrow = DB_fetch_row($result);
-			$InventoryLocation = $myrow[0];
+			$MyRow = DB_fetch_row($result);
+			$InventoryLocation = $MyRow[0];
 		}
 
 		if ($InputError != 1) {
@@ -167,17 +167,17 @@ echo '<tr>
 $sql = "SELECT branchcode FROM custbranch WHERE debtorno = '" . $_SESSION['CustomerID'] . "'";
 $result = DB_query($sql);
 
-while ($myrow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($result)) {
 
 	//Set the first available branch as default value when nothing is selected
 	if (!isset($_POST['BranchCode'])) {
-		$_POST['BranchCode'] = $myrow['branchcode'];
+		$_POST['BranchCode'] = $MyRow['branchcode'];
 	}
 
-	if (isset($_POST['BranchCode']) and $myrow['branchcode'] == $_POST['BranchCode']) {
-		echo '<option selected="selected" value="' . $myrow['branchcode'] . '">' . $myrow['branchcode'] . '</option>';
+	if (isset($_POST['BranchCode']) and $MyRow['branchcode'] == $_POST['BranchCode']) {
+		echo '<option selected="selected" value="' . $MyRow['branchcode'] . '">' . $MyRow['branchcode'] . '</option>';
 	} else {
-		echo '<option value="' . $myrow['branchcode'] . '">' . $myrow['branchcode'] . '</option>';
+		echo '<option value="' . $MyRow['branchcode'] . '">' . $MyRow['branchcode'] . '</option>';
 	}
 }
 echo '</select></td></tr>';

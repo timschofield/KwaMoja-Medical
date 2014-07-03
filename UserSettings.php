@@ -188,9 +188,9 @@ echo '</select></td></tr>
 
 $sql = "SELECT email from www_users WHERE userid = '" . $_SESSION['UserID'] . "'";
 $result = DB_query($sql);
-$myrow = DB_fetch_array($result);
+$MyRow = DB_fetch_array($result);
 if (!isset($_POST['email'])) {
-	$_POST['email'] = $myrow['email'];
+	$_POST['email'] = $MyRow['email'];
 }
 
 echo '<td><input type="email" name="email" size="40" value="' . $_POST['email'] . '" /></td>

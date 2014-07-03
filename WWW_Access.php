@@ -78,10 +78,10 @@ if (isset($_POST['submit']) or isset($_GET['remove']) or isset($_GET['add'])) {
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'www_users'
 	$sql = "SELECT COUNT(*) FROM www_users WHERE fullaccess='" . $_GET['SelectedRole'] . "'";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_row($result);
-	if ($myrow[0] > 0) {
+	$MyRow = DB_fetch_row($result);
+	if ($MyRow[0] > 0) {
 		prnMsg(_('Cannot delete this role because user accounts are setup using it'), 'warn');
-		echo '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('user accounts that have this security role setting') . '</font>';
+		echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('user accounts that have this security role setting') . '</font>';
 	} else {
 		$sql = "DELETE FROM securitygroups WHERE secroleid='" . $_GET['SelectedRole'] . "'";
 		$result = DB_query($sql);
@@ -111,7 +111,7 @@ if (!isset($SelectedRole)) {
 
 	$k = 0; //row colour counter
 
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -125,7 +125,7 @@ if (!isset($SelectedRole)) {
 		printf('<td>%s</td>
 				<td><a href="%s&amp;SelectedRole=%s">' . _('Edit') . '</a></td>
 				<td><a href="%s&amp;SelectedRole=%s&amp;delete=1&amp;SecRoleName=%s" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this role?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-			</tr>', $myrow['secrolename'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['secroleid'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['secroleid'], urlencode($myrow['secrolename']));
+			</tr>', $MyRow['secrolename'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['secroleid'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['secroleid'], urlencode($MyRow['secrolename']));
 
 	} //END WHILE LIST LOOP
 	echo '</table>';
@@ -147,9 +147,9 @@ if (isset($SelectedRole)) {
 	if (DB_num_rows($result) == 0) {
 		prnMsg(_('The selected role is no longer available.'), 'warn');
 	} else {
-		$myrow = DB_fetch_array($result);
-		$_POST['SelectedRole'] = $myrow['secroleid'];
-		$_POST['SecRoleName'] = $myrow['secrolename'];
+		$MyRow = DB_fetch_array($result);
+		$_POST['SelectedRole'] = $MyRow['secroleid'];
+		$_POST['SecRoleName'] = $MyRow['secrolename'];
 	}
 }
 echo '<br />';
@@ -188,8 +188,8 @@ if (isset($SelectedRole)) {
 	$UsedResult = DB_query($sqlUsed);
 	$TokensUsed = array();
 	$i = 0;
-	while ($myrow = DB_fetch_row($UsedResult)) {
-		$TokensUsed[$i] = $myrow[0];
+	while ($MyRow = DB_fetch_row($UsedResult)) {
+		$TokensUsed[$i] = $MyRow[0];
 		$i++;
 	}
 

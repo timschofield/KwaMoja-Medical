@@ -91,7 +91,7 @@ if (DB_num_rows($result) == 0) {
 } elseif (DB_num_rows($result) == 1) {
 	/*There is only one order header returned - thats good! */
 
-	$myrow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($result);
 }
 
 /*retrieve the order details from the database to print */
@@ -136,31 +136,31 @@ if (DB_num_rows($result) > 0) {
 	$QuotationTotalEx = 0;
 	$TaxTotal = 0;
 
-	while ($myrow2 = DB_fetch_array($result)) {
+	while ($MyRow2 = DB_fetch_array($result)) {
 
 		$ListCount++;
 
-		if ((mb_strlen($myrow2['narrative']) > 200 and $YPos - $line_height <= 75) or (mb_strlen($myrow2['narrative']) > 1 and $YPos - $line_height <= 62) or $YPos - $line_height <= 50) {
+		if ((mb_strlen($MyRow2['narrative']) > 200 and $YPos - $line_height <= 75) or (mb_strlen($MyRow2['narrative']) > 1 and $YPos - $line_height <= 62) or $YPos - $line_height <= 50) {
 			/* We reached the end of the page so finsih off the page and start a newy */
 			include('includes/PDFQuotationPageHeader.inc');
 
 		} //end if need a new page headed up
 
-		$DisplayQty = locale_number_format($myrow2['quantity'], $myrow2['decimalplaces']);
-		$DisplayPrevDel = locale_number_format($myrow2['qtyinvoiced'], $myrow2['decimalplaces']);
-		$DisplayPrice = locale_number_format($myrow2['unitprice'], $myrow['currdecimalplaces']);
-		$DisplayDiscount = locale_number_format($myrow2['discountpercent'] * 100, 2) . '%';
-		$SubTot = $myrow2['unitprice'] * $myrow2['quantity'] * (1 - $myrow2['discountpercent']);
-		$TaxProv = $myrow['taxprovinceid'];
-		$TaxCat = $myrow2['taxcatid'];
-		$Branch = $myrow['branchcode'];
+		$DisplayQty = locale_number_format($MyRow2['quantity'], $MyRow2['decimalplaces']);
+		$DisplayPrevDel = locale_number_format($MyRow2['qtyinvoiced'], $MyRow2['decimalplaces']);
+		$DisplayPrice = locale_number_format($MyRow2['unitprice'], $MyRow['currdecimalplaces']);
+		$DisplayDiscount = locale_number_format($MyRow2['discountpercent'] * 100, 2) . '%';
+		$SubTot = $MyRow2['unitprice'] * $MyRow2['quantity'] * (1 - $MyRow2['discountpercent']);
+		$TaxProv = $MyRow['taxprovinceid'];
+		$TaxCat = $MyRow2['taxcatid'];
+		$Branch = $MyRow['branchcode'];
 		$sql3 = "SELECT taxgrouptaxes.taxauthid
 					FROM taxgrouptaxes INNER JOIN custbranch
 					ON taxgrouptaxes.taxgroupid=custbranch.taxgroupid
 					WHERE custbranch.branchcode='" . $Branch . "'";
 		$result3 = DB_query($sql3, $ErrMsg);
-		while ($myrow3 = DB_fetch_array($result3)) {
-			$TaxAuth = $myrow3['taxauthid'];
+		while ($MyRow3 = DB_fetch_array($result3)) {
+			$TaxAuth = $MyRow3['taxauthid'];
 		}
 
 		$sql4 = "SELECT * FROM taxauthrates
@@ -168,21 +168,21 @@ if (DB_num_rows($result) > 0) {
 					AND taxcatid='" . $TaxCat . "'
 					AND taxauthority='" . $TaxAuth . "'";
 		$result4 = DB_query($sql4, $ErrMsg);
-		while ($myrow4 = DB_fetch_array($result4)) {
-			$TaxClass = 100 * $myrow4['taxrate'];
+		while ($MyRow4 = DB_fetch_array($result4)) {
+			$TaxClass = 100 * $MyRow4['taxrate'];
 		}
 
 		$DisplayTaxClass = $TaxClass . '%';
 		$TaxAmount = (($SubTot / 100) * (100 + $TaxClass)) - $SubTot;
-		$DisplayTaxAmount = locale_number_format($TaxAmount, $myrow['currdecimalplaces']);
+		$DisplayTaxAmount = locale_number_format($TaxAmount, $MyRow['currdecimalplaces']);
 
 		$LineTotal = $SubTot + $TaxAmount;
-		$DisplayTotal = locale_number_format($LineTotal, $myrow['currdecimalplaces']);
+		$DisplayTotal = locale_number_format($LineTotal, $MyRow['currdecimalplaces']);
 
 		$FontSize = 10;
 
-		$LeftOvers = $pdf->addTextWrap($XPos + 1, $YPos, 100, $FontSize, $myrow2['stkcode']);
-		$LeftOvers = $pdf->addTextWrap(145, $YPos, 295, $FontSize, $myrow2['description']);
+		$LeftOvers = $pdf->addTextWrap($XPos + 1, $YPos, 100, $FontSize, $MyRow2['stkcode']);
+		$LeftOvers = $pdf->addTextWrap(145, $YPos, 295, $FontSize, $MyRow2['description']);
 		$LeftOvers = $pdf->addTextWrap(420, $YPos, 85, $FontSize, $DisplayQty, 'right');
 		$LeftOvers = $pdf->addTextWrap(485, $YPos, 85, $FontSize, $DisplayPrice, 'right');
 		if ($DisplayDiscount > 0) {
@@ -194,7 +194,7 @@ if (DB_num_rows($result) > 0) {
 
 		// Print salesorderdetails.narrative
 		$line_height = 10;// Line height to print salesorderdetails.narrative
-		$LeftOvers = str_replace('\n', ' ', $myrow2['narrative']);// Get salesorders.comments and replace line feed character. '<br />' works?
+		$LeftOvers = str_replace('\n', ' ', $MyRow2['narrative']);// Get salesorders.comments and replace line feed character. '<br />' works?
 		$LeftOvers = str_replace('\r', '', $LeftOvers);// Delete carriage return character
 		$LeftOvers = str_replace('\t', '', $LeftOvers);// Delete tabulator character
 		while (mb_strlen($LeftOvers) > 0) {
@@ -215,26 +215,26 @@ if (DB_num_rows($result) > 0) {
 
 	} //end while there are line items to print out
 
-	if ((mb_strlen($myrow['comments']) > 200 and $YPos - $line_height <= 75) or (mb_strlen($myrow['comments']) > 1 and $YPos - $line_height <= 62) or $YPos - $line_height <= 50) {
+	if ((mb_strlen($MyRow['comments']) > 200 and $YPos - $line_height <= 75) or (mb_strlen($MyRow['comments']) > 1 and $YPos - $line_height <= 62) or $YPos - $line_height <= 50) {
 		/* We reached the end of the page so finish off the page and start a newy */
 		include('includes/PDFQuotationPageHeader.inc');
 	} //end if need a new page headed up
 
 	$YPos -= ($line_height);
 	$LeftOvers = $pdf->addTextWrap($Page_Width-$Right_Margin - 90 - 655, $YPos, 655, $FontSize, _('Quotation Excluding Tax'),'right');
-	$LeftOvers = $pdf->addTextWrap($Page_Width-$Right_Margin - 90, $YPos, 90, $FontSize, locale_number_format($QuotationTotalEx,$myrow['currdecimalplaces']), 'right');
+	$LeftOvers = $pdf->addTextWrap($Page_Width-$Right_Margin - 90, $YPos, 90, $FontSize, locale_number_format($QuotationTotalEx,$MyRow['currdecimalplaces']), 'right');
 	$YPos -= 12;
 	$LeftOvers = $pdf->addTextWrap($Page_Width-$Right_Margin - 90 - 655, $YPos, 655, $FontSize, _('Total Tax'), 'right');
-	$LeftOvers = $pdf->addTextWrap($Page_Width-$Right_Margin - 90, $YPos, 90, $FontSize, locale_number_format($TaxTotal,$myrow['currdecimalplaces']), 'right');
+	$LeftOvers = $pdf->addTextWrap($Page_Width-$Right_Margin - 90, $YPos, 90, $FontSize, locale_number_format($TaxTotal,$MyRow['currdecimalplaces']), 'right');
 	$YPos -= 12;
 	$LeftOvers = $pdf->addTextWrap($Page_Width-$Right_Margin - 90 - 655, $YPos, 655, $FontSize, _('Quotation Including Tax'),'right');
-	$LeftOvers = $pdf->addTextWrap($Page_Width-$Right_Margin - 90, $YPos, 90, $FontSize, locale_number_format($QuotationTotal,$myrow['currdecimalplaces']), 'right');
+	$LeftOvers = $pdf->addTextWrap($Page_Width-$Right_Margin - 90, $YPos, 90, $FontSize, locale_number_format($QuotationTotal,$MyRow['currdecimalplaces']), 'right');
 
 	// Print salesorders.comments
 	$line_height = 10;// Line height to print salesorders.comments
 	$YPos -= $line_height;
 	$pdf->addText($XPos, $YPos + 10, $FontSize, _('Notes') . ': ');// Comment: addText Y-Coordinate is to top left corner (add a FontSize mesure to equal addTextWrap Y-Coordinate)
-	$LeftOvers = str_replace('\n', ' ', $myrow['comments']);// Get salesorders.comments and replace line feed character. '<br />' works?
+	$LeftOvers = str_replace('\n', ' ', $MyRow['comments']);// Get salesorders.comments and replace line feed character. '<br />' works?
 	$LeftOvers = str_replace('\r', '', $LeftOvers);// Delete carriage return character
 	$LeftOvers = str_replace('\t', '', $LeftOvers);// Delete tabulator character
 	while (mb_strlen($LeftOvers) > 0) {

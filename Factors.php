@@ -124,11 +124,11 @@ if (isset($_POST['Delete'])) {
 
 	$sql = "SELECT COUNT(*) FROM suppliers WHERE factorcompanyid='" . $FactorID . "'";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_row($result);
-	if ($myrow[0] > 0) {
+	$MyRow = DB_fetch_row($result);
+	if ($MyRow[0] > 0) {
 		$CancelDelete = 1;
 		prnMsg(_('Cannot delete this factor because there are suppliers using them'), 'warn');
-		echo '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('suppliers using this factor company');
+		echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('suppliers using this factor company');
 	}
 
 	if ($CancelDelete == 0) {
@@ -163,19 +163,19 @@ if (isset($FactorID) and isset($_POST['Amend'])) {
 			WHERE id = '" . $FactorID . "'";
 
 	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($result);
 
-	$_POST['FactorName'] = $myrow['coyname'];
-	$_POST['Address1'] = $myrow['address1'];
-	$_POST['Address2'] = $myrow['address2'];
-	$_POST['Address3'] = $myrow['address3'];
-	$_POST['Address4'] = $myrow['address4'];
-	$_POST['Address5'] = $myrow['address5'];
-	$_POST['Address6'] = $myrow['address6'];
-	$_POST['ContactName'] = $myrow['contact'];
-	$_POST['Telephone'] = $myrow['telephone'];
-	$_POST['Fax'] = $myrow['fax'];
-	$_POST['Email'] = $myrow['email'];
+	$_POST['FactorName'] = $MyRow['coyname'];
+	$_POST['Address1'] = $MyRow['address1'];
+	$_POST['Address2'] = $MyRow['address2'];
+	$_POST['Address3'] = $MyRow['address3'];
+	$_POST['Address4'] = $MyRow['address4'];
+	$_POST['Address5'] = $MyRow['address5'];
+	$_POST['Address6'] = $MyRow['address6'];
+	$_POST['ContactName'] = $MyRow['contact'];
+	$_POST['Telephone'] = $MyRow['telephone'];
+	$_POST['Fax'] = $MyRow['fax'];
+	$_POST['Email'] = $MyRow['email'];
 
 } else {
 	$_POST['FactorName'] = '';
@@ -301,7 +301,7 @@ if (empty($FactorID) and !isset($_POST['Create']) and !isset($_POST['Amend'])) {
 			FROM factorcompanies";
 	$result = DB_query($sql);
 	$j = 1;
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		if ($j == 1) {
 			echo '<tr class="OddTableRows">';
 			$j = 0;
@@ -309,19 +309,19 @@ if (empty($FactorID) and !isset($_POST['Create']) and !isset($_POST['Amend'])) {
 			echo '<tr class="EvenTableRows">';
 			$j++;
 		}
-		echo '<td>' . $myrow['id'] . '</td>
-			<td>' . $myrow['coyname'] . '</td>
-			<td>' . $myrow['address1'] . '</td>
-			<td>' . $myrow['address2'] . '</td>
-			<td>' . $myrow['address3'] . '</td>
-			<td>' . $myrow['address4'] . '</td>
-			<td>' . $myrow['address5'] . '</td>
-			<td>' . $myrow['address6'] . '</td>
-			<td>' . $myrow['contact'] . '</td>
-			<td>' . $myrow['telephone'] . '</td>
-			<td>' . $myrow['fax'] . '</td>
-			<td>' . $myrow['email'] . '</td>
-			<td><a href="' . $RootPath . '/Factors.php?FactorID=' . urlencode($myrow['id']) . '">' . _('Edit') . '</a></td>
+		echo '<td>' . $MyRow['id'] . '</td>
+			<td>' . $MyRow['coyname'] . '</td>
+			<td>' . $MyRow['address1'] . '</td>
+			<td>' . $MyRow['address2'] . '</td>
+			<td>' . $MyRow['address3'] . '</td>
+			<td>' . $MyRow['address4'] . '</td>
+			<td>' . $MyRow['address5'] . '</td>
+			<td>' . $MyRow['address6'] . '</td>
+			<td>' . $MyRow['contact'] . '</td>
+			<td>' . $MyRow['telephone'] . '</td>
+			<td>' . $MyRow['fax'] . '</td>
+			<td>' . $MyRow['email'] . '</td>
+			<td><a href="' . $RootPath . '/Factors.php?FactorID=' . urlencode($MyRow['id']) . '">' . _('Edit') . '</a></td>
 			</tr>';
 	} //end while loop
 	echo '</table>

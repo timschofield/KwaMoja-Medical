@@ -36,7 +36,7 @@ if (DB_num_rows($result) > 0) {
 		</tr>';
 
 	$RowCounter = 0;
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 
 
 		printf('<tr>
@@ -44,7 +44,7 @@ if (DB_num_rows($result) > 0) {
 				<td>%s<td class="number">%s</td>
 				<td class="number">%s</td>
 				<td class="number">%s</td>
-				</tr>', $myrow['type'], $myrow['transno'], locale_number_format($myrow['ovamount'], $myrow['currdecimalplaces']), locale_number_format($myrow['alloc'], $myrow['currdecimalplaces']), locale_number_format($myrow['totallocfrom'], $myrow['currdecimalplaces']));
+				</tr>', $MyRow['type'], $MyRow['transno'], locale_number_format($MyRow['ovamount'], $MyRow['currdecimalplaces']), locale_number_format($MyRow['alloc'], $MyRow['currdecimalplaces']), locale_number_format($MyRow['totallocfrom'], $MyRow['currdecimalplaces']));
 
 		$RowCounter++;
 		if ($RowCounter == 20) {

@@ -25,7 +25,7 @@ if ($_POST['TransType'] == 10) {
 	echo '<option selected="selected" value="10">' . _('Invoices') . '</option>
 			<option value="12">' . _('Negative Receipts (Payments)') . '</option>';
 } else {
-	echo '<option value="' . $myrow['typeid'] . '">' . $myrow['typename'] . '</option>';
+	echo '<option value="' . $MyRow['typeid'] . '">' . $MyRow['typename'] . '</option>';
 	echo '<option selected="selected" value="12">' . _('Negative Receipts (Payments)') . '</option>
 			<option selected="selected" value="10">' . _('Invoices') . '</option>';
 }
@@ -68,10 +68,10 @@ if (isset($_POST['ShowResults']) and $_POST['TransNo'] != '') {
 	$result = DB_query($sql);
 
 	if (DB_num_rows($result) == 1) {
-		$myrow = DB_fetch_array($result);
-		$AllocToID = $myrow['id'];
-		$CurrCode = $myrow['currcode'];
-		$CurrDecimalPlaces = $myrow['currdecimalplaces'];
+		$MyRow = DB_fetch_array($result);
+		$AllocToID = $MyRow['id'];
+		$CurrCode = $MyRow['currcode'];
+		$CurrDecimalPlaces = $MyRow['currdecimalplaces'];
 
 		$sql = "SELECT type,
 					transno,
@@ -92,7 +92,7 @@ if (isset($_POST['ShowResults']) and $_POST['TransNo'] != '') {
 		if (DB_num_rows($TransResult) == 0) {
 			prnMsg(_('There are no allocations made against this transaction'), 'info');
 
-			if ($myrow['totamt'] < 0 and $_POST['TransType'] == 12){
+			if ($MyRow['totamt'] < 0 and $_POST['TransType'] == 12){
 					prnMsg(_('This transaction was a receipt of funds and there can be no allocations of receipts or credits to a receipt. This inquiry is meant to be used to see how a payment which is entered as a negative receipt is settled against credit notes or receipts'),'info');
 			} else {
 				prnMsg(_('There are no allocations made against this transaction'),'info');
@@ -104,7 +104,7 @@ if (isset($_POST['ShowResults']) and $_POST['TransNo'] != '') {
 			echo '<tr>
 					<th colspan="6">
 					<div class="centre">
-						<b>' . _('Allocations made against invoice number') . ' ' . $_POST['TransNo'] . '<br />' . _('Transaction Total') . ': ' . locale_number_format($myrow['totamt'], $CurrDecimalPlaces) . ' ' . $CurrCode . '</b>
+						<b>' . _('Allocations made against invoice number') . ' ' . $_POST['TransNo'] . '<br />' . _('Transaction Total') . ': ' . locale_number_format($MyRow['totamt'], $CurrDecimalPlaces) . ' ' . $CurrCode . '</b>
 						<img src="' . $RootPath . '/css/' . $Theme . '/images/printer.png" class="PrintIcon noPrint" title="' . _('Print') . '" alt="' . _('Print') . '" onclick="window.print();" />
 					</div>
 					</th>
@@ -121,7 +121,7 @@ if (isset($_POST['ShowResults']) and $_POST['TransNo'] != '') {
 			$k = 0; //row colour counter
 			$AllocsTotal = 0;
 
-			while ($myrow = DB_fetch_array($TransResult)) {
+			while ($MyRow = DB_fetch_array($TransResult)) {
 				if ($k == 1) {
 					echo '<tr class="EvenTableRows">';
 					$k = 0;
@@ -130,20 +130,20 @@ if (isset($_POST['ShowResults']) and $_POST['TransNo'] != '') {
 					$k++;
 				}
 
-				if ($myrow['type'] == 11) {
+				if ($MyRow['type'] == 11) {
 					$TransType = _('Credit Note');
 				} else {
 					$TransType = _('Receipt');
 				}
 				echo '<td>' . $TransType . '</td>
-					<td>' . $myrow['transno'] . '</td>
-					<td>' . $myrow['reference'] . '</td>
-					<td>' . $myrow['rate'] . '</td>
-					<td class="number">' . locale_number_format($myrow['totalamt'], $CurrDecimalPlaces) . '</td>
-					<td class="number">' . locale_number_format($myrow['amt'], $CurrDecimalPlaces) . '</td>
+					<td>' . $MyRow['transno'] . '</td>
+					<td>' . $MyRow['reference'] . '</td>
+					<td>' . $MyRow['rate'] . '</td>
+					<td class="number">' . locale_number_format($MyRow['totalamt'], $CurrDecimalPlaces) . '</td>
+					<td class="number">' . locale_number_format($MyRow['amt'], $CurrDecimalPlaces) . '</td>
 					</tr>';
 
-				$AllocsTotal += $myrow['amt'];
+				$AllocsTotal += $MyRow['amt'];
 			}
 			//end of while loop
 			echo '<tr>

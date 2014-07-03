@@ -37,8 +37,8 @@ if (isset($_POST['Show'])) {
 				FROM purchorders
 				WHERE orderno='" . $_POST['PONumber'] . "'";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_row($result);
-	if ($myrow[0] == 0) {
+	$MyRow = DB_fetch_row($result);
+	if ($MyRow[0] == 0) {
 		echo '<br />';
 		prnMsg(_('This purchase order does not exist on the system. Please try again.'), 'warn');
 		include('includes/footer.inc');
@@ -82,7 +82,7 @@ if (isset($_POST['Show'])) {
 				<th>' . _('Quantity Received') . '</th>
 			</tr>';
 
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -90,15 +90,15 @@ if (isset($_POST['Show'])) {
 			echo '<tr class="OddTableRows">';
 			$k = 1;
 		}
-		echo '<td>' . $myrow['suppname'] . '</td>
-			<td class="number">' . $myrow['podetailitem'] . '</td>
-			<td class="number">' . $myrow['grnbatch'] . '</td>
-			<td>' . $myrow['itemcode'] . '</td>
-			<td>' . $myrow['itemdescription'] . '</td>
-			<td>' . $myrow['deliverydate'] . '</td>
-			<td class="number">' . locale_number_format($myrow['qtyrecd'], $myrow['decimalplaces']) . '</td>
-			<td><a href="PDFGrn.php?GRNNo=' . urlencode($myrow['grnbatch']) . '&PONo=' . urlencode($_POST['PONumber']) . '">' . _('Reprint GRN ') . '</a></td>
-			<td><a href="PDFQALabel.php?GRNNo=' . urlencode($myrow['grnbatch']) .'&PONo=' . urlencode($_POST['PONumber']) . '">' . _('Reprint QA Label') . '</a></td>
+		echo '<td>' . $MyRow['suppname'] . '</td>
+			<td class="number">' . $MyRow['podetailitem'] . '</td>
+			<td class="number">' . $MyRow['grnbatch'] . '</td>
+			<td>' . $MyRow['itemcode'] . '</td>
+			<td>' . $MyRow['itemdescription'] . '</td>
+			<td>' . $MyRow['deliverydate'] . '</td>
+			<td class="number">' . locale_number_format($MyRow['qtyrecd'], $MyRow['decimalplaces']) . '</td>
+			<td><a href="PDFGrn.php?GRNNo=' . urlencode($MyRow['grnbatch']) . '&PONo=' . urlencode($_POST['PONumber']) . '">' . _('Reprint GRN ') . '</a></td>
+			<td><a href="PDFQALabel.php?GRNNo=' . urlencode($MyRow['grnbatch']) .'&PONo=' . urlencode($_POST['PONumber']) . '">' . _('Reprint QA Label') . '</a></td>
 		</tr>';
 	}
 	echo '</table>';

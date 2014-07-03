@@ -114,10 +114,10 @@ if (isset($_POST['submit'])) {
 						AND cal2.manufacturingflag='1'
 						GROUP BY cal2.calendardate";
 	$resultdate = DB_query($calendarsql);
-	$myrowdate = DB_fetch_array($resultdate);
+	$MyRowdate = DB_fetch_array($resultdate);
 	// If find date based on manufacturing calendar, change date in array
-	if ($myrowdate[0] != 0) {
-		$datearray[0] = $myrowdate[1];
+	if ($MyRowdate[0] != 0) {
+		$datearray[0] = $MyRowdate[1];
 	}
 
 	$date = date('Y-m-d', mktime(0, 0, 0, $mm, $dd, $yyyy));
@@ -140,20 +140,20 @@ if (isset($_POST['submit'])) {
 							AND cal2.manufacturingflag='1'
 							GROUP BY cal2.calendardate";
 		$resultdate = DB_query($calendarsql);
-		$myrowdate = DB_fetch_array($resultdate);
+		$MyRowdate = DB_fetch_array($resultdate);
 		// If find date based on manufacturing calendar, change date in array
-		if ($myrowdate[0] != 0) {
-			$datearray[$i] = $myrowdate[1];
+		if ($MyRowdate[0] != 0) {
+			$datearray[$i] = $MyRowdate[1];
 		}
 		$date = date('Y-m-d', $date);
 	}
 
 	$TotalRecords = 0;
-	while ($myrow = DB_fetch_array($result)) {
-		if (($myrow['totqty'] >= $ExcludeQty) and ($myrow['totextqty'] >= $ExcludeAmount)) {
+	while ($MyRow = DB_fetch_array($result)) {
+		if (($MyRow['totqty'] >= $ExcludeQty) and ($MyRow['totextqty'] >= $ExcludeAmount)) {
 			unset($PeriodQty);
 			$PeriodQty[] = ' ';
-			$TotalQty = $myrow['totqtyinvoiced'] * $Multiplier;
+			$TotalQty = $MyRow['totqtyinvoiced'] * $Multiplier;
 			$WholeNumber = floor($TotalQty / $_POST['PeriodNumber']);
 			$Remainder = ($TotalQty % $_POST['PeriodNumber']);
 			if ($WholeNumber > 0) {
@@ -173,7 +173,7 @@ if (isset($_POST['submit'])) {
 									mrpdemandtype,
 									quantity,
 									duedate)
-								VALUES ('" . $myrow['stkcode'] . "',
+								VALUES ('" . $MyRow['stkcode'] . "',
 									'" . $_POST['MRPDemandtype'] . "',
 									'" . $demandqty . "',
 									'" . $datearray[$i] . "')";
@@ -202,8 +202,8 @@ $sql = "SELECT mrpdemandtype,
 				description
 		FROM mrpdemandtypes";
 $result = DB_query($sql);
-while ($myrow = DB_fetch_array($result)) {
-	echo '<option value="' . $myrow['mrpdemandtype'] . '">' . $myrow['mrpdemandtype'] . ' - ' . $myrow['description'] . '</option>';
+while ($MyRow = DB_fetch_array($result)) {
+	echo '<option value="' . $MyRow['mrpdemandtype'] . '">' . $MyRow['mrpdemandtype'] . ' - ' . $MyRow['description'] . '</option>';
 } //end while loop
 echo '</select></td></tr>';
 echo '<tr><td>' . _('Inventory Category') . ':</td>
@@ -213,8 +213,8 @@ $sql = "SELECT categoryid,
 			   categorydescription
 		FROM stockcategory";
 $result = DB_query($sql);
-while ($myrow = DB_fetch_array($result)) {
-	echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categoryid'] . ' - ' . $myrow['categorydescription'] . '</option>';
+while ($MyRow = DB_fetch_array($result)) {
+	echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categoryid'] . ' - ' . $MyRow['categorydescription'] . '</option>';
 } //end while loop
 echo '</select></td>
 		</tr>';
@@ -235,8 +235,8 @@ if ($_SESSION['RestrictLocations'] == 0) {
 				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 }
 $result = DB_query($sql);
-while ($myrow = DB_fetch_array($result)) {
-	echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+while ($MyRow = DB_fetch_array($result)) {
+	echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 }
 echo '</select></td></tr>';
 if (!isset($_POST['FromDate'])) {

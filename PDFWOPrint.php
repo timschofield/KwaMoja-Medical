@@ -322,13 +322,13 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 					FROM stockmaster WHERE stockid IN ('" . $AdditionalStocks . "')";
 			$RequirementsResult = DB_query($RequirementsSQL);
 			$AdditionalStocks = array();
-			while ($myrow = DB_fetch_array($RequirementsResult)) {
+			while ($MyRow = DB_fetch_array($RequirementsResult)) {
 				$WOLine[$i]['action'] = 'Additional Issue';
-				$WOLine[$i]['item'] = $myrow['stockid'];
-				$WOLine[$i]['description'] = $myrow['description'];
-				$WOLine[$i]['controlled'] = $myrow['controlled'];
+				$WOLine[$i]['item'] = $MyRow['stockid'];
+				$WOLine[$i]['description'] = $MyRow['description'];
+				$WOLine[$i]['controlled'] = $MyRow['controlled'];
 				$WOLine[$i]['qtyreqd'] = 0;
-				$WOLine[$i]['issued'] = $IssuedAlreadyRow[$myrow['stockid']];
+				$WOLine[$i]['issued'] = $IssuedAlreadyRow[$MyRow['stockid']];
 				$WOLine[$i]['decimalplaces'] = $RequirementsRow['decimalplaces'];
 				$i += 1;
 			}

@@ -21,7 +21,7 @@ echo '<p class="page_title_text noPrint" >
 	</p>';
 
 $result = DB_query("SELECT description, units FROM stockmaster WHERE stockid='" . $StockID . "'");
-$myrow = DB_fetch_row($result);
+$MyRow = DB_fetch_row($result);
 
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -67,7 +67,7 @@ echo '<tr>
 		<th colspan="3">' . _('Stock Code') . ':<input type="text" name="StockID" size="21" value="' . $StockID . '" required="required" minlength="1" maxlength="20" /><input type="submit" name="Show" value="' . _('Show Re-Order Levels') . '" /></th>
 	</tr>';
 echo '<tr>
-		<th colspan="3"><h3><b>' . $StockID . ' - ' . $myrow[0] . '</b>  (' . _('In Units of') . ' ' . $myrow[1] . ')</h3></th>
+		<th colspan="3"><h3><b>' . $StockID . ' - ' . $MyRow[0] . '</b>  (' . _('In Units of') . ' ' . $MyRow[1] . ')</h3></th>
 	</tr>
 <tbody>
 	<tr>
@@ -78,7 +78,7 @@ echo '<tr>
 
 $k = 0; //row colour counter
 
-while ($myrow = DB_fetch_array($LocStockResult)) {
+while ($MyRow = DB_fetch_array($LocStockResult)) {
 
 	if ($k == 1) {
 		echo '<tr class="EvenTableRows">';
@@ -88,12 +88,12 @@ while ($myrow = DB_fetch_array($LocStockResult)) {
 		$k = 1;
 	}
 
-	if (isset($_POST['UpdateData']) AND $_POST['Old_' . $myrow['loccode']] != filter_number_format($_POST[$myrow['loccode']]) AND is_numeric(filter_number_format($_POST[$myrow['loccode']])) AND filter_number_format($_POST[$myrow['loccode']]) >= 0) {
+	if (isset($_POST['UpdateData']) AND $_POST['Old_' . $MyRow['loccode']] != filter_number_format($_POST[$MyRow['loccode']]) AND is_numeric(filter_number_format($_POST[$MyRow['loccode']])) AND filter_number_format($_POST[$MyRow['loccode']]) >= 0) {
 
-		$myrow['reorderlevel'] = filter_number_format($_POST[$myrow['loccode']]);
-		$sql = "UPDATE locstock SET reorderlevel = '" . filter_number_format($_POST[$myrow['loccode']]) . "'
+		$MyRow['reorderlevel'] = filter_number_format($_POST[$MyRow['loccode']]);
+		$sql = "UPDATE locstock SET reorderlevel = '" . filter_number_format($_POST[$MyRow['loccode']]) . "'
 	   		WHERE stockid = '" . $StockID . "'
-			AND loccode = '" . $myrow['loccode'] . "'";
+			AND loccode = '" . $MyRow['loccode'] . "'";
 		$UpdateReorderLevel = DB_query($sql);
 
 	}
@@ -101,7 +101,7 @@ while ($myrow = DB_fetch_array($LocStockResult)) {
 	printf('<td>%s</td>
 			<td class="number">%s</td>
 			<td><input type="text" class="number" name="%s" required="required" minlength="1" maxlength="10" size="10" value="%s" />
-			<input type="hidden" name="Old_%s" value="%s" /></td></tr>', $myrow['locationname'], locale_number_format($myrow['quantity'], $myrow['decimalplaces']), $myrow['loccode'], $myrow['reorderlevel'], $myrow['loccode'], $myrow['reorderlevel']);
+			<input type="hidden" name="Old_%s" value="%s" /></td></tr>', $MyRow['locationname'], locale_number_format($MyRow['quantity'], $MyRow['decimalplaces']), $MyRow['loccode'], $MyRow['reorderlevel'], $MyRow['loccode'], $MyRow['reorderlevel']);
 	//end of page full new headings if
 }
 //end of while loop

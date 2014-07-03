@@ -103,17 +103,17 @@ $TotalCheques = 0;
 
 include('includes/PDFSuppTransListingPageHeader.inc');
 
-while ($myrow = DB_fetch_array($result)) {
-	$CurrDecimalPlaces = $myrow['currdecimalplaces'];
-	$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 160, $FontSize, $myrow['suppname'], 'left');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 162, $YPos, 80, $FontSize, $myrow['suppreference'], 'left');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 242, $YPos, 70, $FontSize, ConvertSQLDate($myrow['trandate']), 'left');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 312, $YPos, 70, $FontSize, locale_number_format($myrow['ovamount'], $CurrDecimalPlaces), 'right');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 382, $YPos, 70, $FontSize, locale_number_format($myrow['ovgst'], $CurrDecimalPlaces), 'right');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 452, $YPos, 70, $FontSize, locale_number_format($myrow['ovamount'] + $myrow['ovgst'], $CurrDecimalPlaces), 'right');
+while ($MyRow = DB_fetch_array($result)) {
+	$CurrDecimalPlaces = $MyRow['currdecimalplaces'];
+	$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 160, $FontSize, $MyRow['suppname'], 'left');
+	$LeftOvers = $pdf->addTextWrap($Left_Margin + 162, $YPos, 80, $FontSize, $MyRow['suppreference'], 'left');
+	$LeftOvers = $pdf->addTextWrap($Left_Margin + 242, $YPos, 70, $FontSize, ConvertSQLDate($MyRow['trandate']), 'left');
+	$LeftOvers = $pdf->addTextWrap($Left_Margin + 312, $YPos, 70, $FontSize, locale_number_format($MyRow['ovamount'], $CurrDecimalPlaces), 'right');
+	$LeftOvers = $pdf->addTextWrap($Left_Margin + 382, $YPos, 70, $FontSize, locale_number_format($MyRow['ovgst'], $CurrDecimalPlaces), 'right');
+	$LeftOvers = $pdf->addTextWrap($Left_Margin + 452, $YPos, 70, $FontSize, locale_number_format($MyRow['ovamount'] + $MyRow['ovgst'], $CurrDecimalPlaces), 'right');
 
 	$YPos -= ($line_height);
-	$TotalCheques = $TotalCheques - $myrow['ovamount'];
+	$TotalCheques = $TotalCheques - $MyRow['ovamount'];
 
 	if ($YPos - (2 * $line_height) < $Bottom_Margin) {
 		/*Then set up a new page */

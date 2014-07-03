@@ -65,7 +65,7 @@ echo '<table cellpadding="2" width="80%" class="selection">
 		</tr>';
 
 $k = 0; //row colour counter
-while ($myrow = DB_fetch_array($Result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	if ($k == 1) {
 		echo '<tr class="EvenTableRows">';
 		$k = 0;
@@ -74,10 +74,10 @@ while ($myrow = DB_fetch_array($Result)) {
 		$k++;
 	}
 
-	echo '<td>' . $myrow['supplierno'] . '</td>
-			<td>' . $myrow['suppreference'] . '</td>
-			<td>' . ConvertSQLDate($myrow['trandate']) . '</td>
-			<td class="number">' . locale_number_format($myrow['alloc'], $myrow['currdecimalplaces']) . '</td>
+	echo '<td>' . $MyRow['supplierno'] . '</td>
+			<td>' . $MyRow['suppreference'] . '</td>
+			<td>' . ConvertSQLDate($MyRow['trandate']) . '</td>
+			<td class="number">' . locale_number_format($MyRow['alloc'], $MyRow['currdecimalplaces']) . '</td>
 		</tr>';
 
 }

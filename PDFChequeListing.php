@@ -50,8 +50,8 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate'])) {
 
 	echo '<select minlength="0" name="BankAccount">';
 
-	while ($myrow = DB_fetch_array($result)) {
-		echo '<option value="' . $myrow['accountcode'] . '">' . $myrow['bankaccountname'] . '</option>';
+	while ($MyRow = DB_fetch_array($result)) {
+		echo '<option value="' . $MyRow['accountcode'] . '">' . $MyRow['bankaccountname'] . '</option>';
 	}
 
 
@@ -86,10 +86,10 @@ $sql = "SELECT bankaccountname,
 				ON bankaccounts.currcode=currencies.currabrev
 			WHERE accountcode = '" . $_POST['BankAccount'] . "'";
 $BankActResult = DB_query($sql);
-$myrow = DB_fetch_array($BankActResult);
-$BankAccountName = $myrow['bankaccountname'];
-$Currency = $myrow['currcode'];
-$BankCurrDecimalPlaces = $myrow['bankcurrdecimalplaces'];
+$MyRow = DB_fetch_array($BankActResult);
+$BankAccountName = $MyRow['bankaccountname'];
+$Currency = $MyRow['currcode'];
+$BankCurrDecimalPlaces = $MyRow['bankcurrdecimalplaces'];
 
 $sql = "SELECT amount,
 				ref,
@@ -133,10 +133,10 @@ $TotalCheques = 0;
 
 include('includes/PDFChequeListingPageHeader.inc');
 
-while ($myrow = DB_fetch_array($Result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 
-	$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 60, $FontSize, locale_number_format(-$myrow['amount'], $BankCurrDecimalPlaces), 'right');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 65, $YPos, 90, $FontSize, $myrow['ref'], 'left');
+	$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 60, $FontSize, locale_number_format(-$MyRow['amount'], $BankCurrDecimalPlaces), 'right');
+	$LeftOvers = $pdf->addTextWrap($Left_Margin + 65, $YPos, 90, $FontSize, $MyRow['ref'], 'left');
 
 	$sql = "SELECT accountname,
 					amount,
@@ -144,8 +144,8 @@ while ($myrow = DB_fetch_array($Result)) {
 				FROM gltrans
 				INNER JOIN chartmaster
 					ON chartmaster.accountcode=gltrans.account
-				WHERE gltrans.typeno ='" . $myrow['transno'] . "'
-					AND gltrans.type='" . $myrow['type'] . "'";
+				WHERE gltrans.typeno ='" . $MyRow['transno'] . "'
+					AND gltrans.type='" . $MyRow['type'] . "'";
 
 	$GLTransResult = DB_query($sql, '', '', false, false);
 	if (DB_error_no() != 0) {
@@ -173,7 +173,7 @@ while ($myrow = DB_fetch_array($Result)) {
 	DB_free_result($GLTransResult);
 
 	$YPos -= ($line_height);
-	$TotalCheques = $TotalCheques - $myrow['amount'];
+	$TotalCheques = $TotalCheques - $MyRow['amount'];
 
 	if ($YPos - (2 * $line_height) < $Bottom_Margin) {
 		/*Then set up a new page */

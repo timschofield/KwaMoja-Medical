@@ -145,8 +145,8 @@ if (isset($_POST['Search'])) {
 		prnMsg(_('There are no products to display matching the criteria provided'), 'warn');
 	}
 	if (DB_num_rows($SearchResult) == 1) {
-		$myrow = DB_fetch_array($SearchResult);
-		$_GET['NewItem'] = $myrow['stockid'];
+		$MyRow = DB_fetch_array($SearchResult);
+		$_GET['NewItem'] = $MyRow['stockid'];
 		DB_data_seek($SearchResult, 0);
 	}
 
@@ -197,9 +197,9 @@ if (isset($_POST['NewItem'])) {
 				$DbgMsg = _('The SQL used to retrieve the item details but failed was');
 				$result1 = DB_query($sql, $ErrMsg, $DbgMsg);
 
-				if ($myrow = DB_fetch_array($result1)) {
+				if ($MyRow = DB_fetch_array($result1)) {
 
-					$_SESSION['Contract' . $identifier]->Add_To_ContractBOM(trim($_POST['StockID' . $i]), $myrow['description'], '', filter_number_format($_POST['Qty' . $i]), /* Qty */ $myrow['unitcost'], $myrow['units'], $myrow['decimalplaces']);
+					$_SESSION['Contract' . $identifier]->Add_To_ContractBOM(trim($_POST['StockID' . $i]), $MyRow['description'], '', filter_number_format($_POST['Qty' . $i]), /* Qty */ $MyRow['unitcost'], $MyRow['units'], $MyRow['decimalplaces']);
 				} else {
 					prnMsg(_('The item code') . ' ' . trim($_POST['StockID' . $i]) . ' ' . _('does not exist in the database and therefore cannot be added to the contract BOM'), 'error');
 					if ($debug == 1) {
@@ -302,11 +302,11 @@ if (!isset($_GET['Edit'])) {
 				<td><select minlength="0" name="StockCat">';
 
 	echo '<option selected="selected" value="All">' . _('All') . '</option>';
-	while ($myrow1 = DB_fetch_array($result1)) {
-		if (isset($_POST['StockCat']) and $_POST['StockCat'] == $myrow1['categoryid']) {
-			echo '<option selected="selected" value="' . $myrow1['categoryid'] . '">' . $myrow1['categorydescription'] . '</option>';
+	while ($MyRow1 = DB_fetch_array($result1)) {
+		if (isset($_POST['StockCat']) and $_POST['StockCat'] == $MyRow1['categoryid']) {
+			echo '<option selected="selected" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow1['categoryid'] . '">' . $myrow1['categorydescription'] . '</option>';
+			echo '<option value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 		}
 	}
 
@@ -353,7 +353,7 @@ if (isset($SearchResult)) {
 			</tr>';
 
 	$k = 0; //row colour counter
-	while ($myrow = DB_fetch_array($SearchResult)) {
+	while ($MyRow = DB_fetch_array($SearchResult)) {
 
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -363,18 +363,18 @@ if (isset($SearchResult)) {
 			$k = 1;
 		}
 
-		if (file_exists($_SESSION['part_pics_dir'] . '/' . $myrow['stockid'] . '.jpg')) {
-			$ImageSource = '<img src="GetStockImage.php?automake=1&amp;textcolor=FFFFFF&amp;bgcolor=CCCCCC&amp;StockID=' . $myrow['stockid'] . '&amp;text=&amp;width=50&amp;height=50" />';
+		if (file_exists($_SESSION['part_pics_dir'] . '/' . $MyRow['stockid'] . '.jpg')) {
+			$ImageSource = '<img src="GetStockImage.php?automake=1&amp;textcolor=FFFFFF&amp;bgcolor=CCCCCC&amp;StockID=' . $MyRow['stockid'] . '&amp;text=&amp;width=50&amp;height=50" />';
 		} else {
 			$ImageSource = '<i>' . _('No Image') . '</i>';
 		}
 
-		echo '<td>' . $myrow['stockid'] . '</td>
-				<td>' . $myrow['description'] . '</td>
-				<td>' . $myrow['units'] . '</td>
+		echo '<td>' . $MyRow['stockid'] . '</td>
+				<td>' . $MyRow['description'] . '</td>
+				<td>' . $MyRow['units'] . '</td>
 				<td>' . $ImageSource . '</td>
 				<td><input class="number" type="text" size="6" value="0" name="Qty' . $i . '" />
-				<input type="hidden" name="StockID' . $i . '" value="' . $myrow['stockid'] . '" />
+				<input type="hidden" name="StockID' . $i . '" value="' . $MyRow['stockid'] . '" />
 				</td>
 			</tr>';
 		$i++;

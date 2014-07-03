@@ -304,8 +304,8 @@ if (isset($_POST['CloseContract']) and $_SESSION['Contract' . $identifier]->Stat
 							WHERE stockid='" . $_SESSION['Contract' . $identifier]->ContractRef . "'
 							AND wo='" . $_SESSION['Contract' . $identifier]->WO . "'");
 		if (DB_num_rows($result) == 1) {
-			$myrow = DB_fetch_row($result);
-			if ($myrow[0] == 0) { //then the contract wo has not been received (it will only ever be for 1 item)
+			$MyRow = DB_fetch_row($result);
+			if ($MyRow[0] == 0) { //then the contract wo has not been received (it will only ever be for 1 item)
 
 				$WOReceiptNo = GetNextTransNo(26);
 

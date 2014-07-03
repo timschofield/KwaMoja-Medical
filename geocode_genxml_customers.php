@@ -26,14 +26,14 @@ header("Content-type: text/xml");
 // Iterate through the rows, printing XML nodes for each
 echo '<markers>';
 
-while ($myrow = DB_fetch_array($result)){
+while ($MyRow = DB_fetch_array($result)){
     // ADD TO XML DOCUMENT NODE
     echo '<marker ';
-    echo 'name="' . parseToXML($myrow['brname']) . '" ';
-    echo 'address="' . parseToXML($myrow["braddress1"] . ", " . $myrow["braddress2"] . ", " . $myrow["braddress3"] . ", " . $myrow["braddress4"]) . '" ';
-    echo 'lat="' . $myrow['lat'] . '" ';
-    echo 'lng="' . $myrow['lng'] . '" ';
-    echo 'type="' . $myrow['area'] . '" ';
+    echo 'name="' . parseToXML($MyRow['brname']) . '" ';
+    echo 'address="' . parseToXML($MyRow["braddress1"] . ", " . $MyRow["braddress2"] . ", " . $MyRow["braddress3"] . ", " . $MyRow["braddress4"]) . '" ';
+    echo 'lat="' . $MyRow['lat'] . '" ';
+    echo 'lng="' . $MyRow['lng'] . '" ';
+    echo 'type="' . $MyRow['area'] . '" ';
     echo '/>';
 }
 

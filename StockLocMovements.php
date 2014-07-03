@@ -36,15 +36,15 @@ if ($_SESSION['RestrictLocations'] == 0) {
 }
 
 $resultStkLocs = DB_query($sql);
-while ($myrow = DB_fetch_array($resultStkLocs)) {
+while ($MyRow = DB_fetch_array($resultStkLocs)) {
 	if (isset($_POST['StockLocation']) and $_POST['StockLocation'] != 'All') {
-		if ($myrow['loccode'] == $_POST['StockLocation']) {
-			echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+		if ($MyRow['loccode'] == $_POST['StockLocation']) {
+			echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+			echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 		}
 	} else {
-		echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+		echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 	}
 }
 
@@ -112,7 +112,7 @@ echo '<table cellpadding="5" cellspacing="4 "class="selection">
 
 $k = 0; //row colour counter
 
-while ($myrow = DB_fetch_array($MovtsResult)) {
+while ($MyRow = DB_fetch_array($MovtsResult)) {
 
 	if ($k == 1) {
 		echo '<tr class="OddTableRows">';
@@ -122,7 +122,7 @@ while ($myrow = DB_fetch_array($MovtsResult)) {
 		$k = 1;
 	}
 
-	$DisplayTranDate = ConvertSQLDate($myrow['trandate']);
+	$DisplayTranDate = ConvertSQLDate($MyRow['trandate']);
 
 
 	printf('<td><a target="_blank" href="' . $RootPath . '/StockStatus.php?StockID=%s">%s</a></td>
@@ -135,7 +135,7 @@ while ($myrow = DB_fetch_array($MovtsResult)) {
 				<td class="number">%s</td>
 				<td class="number">%s</td>
 				<td class="number">%s</td>
-				</tr>', mb_strtoupper($myrow['stockid']), mb_strtoupper($myrow['stockid']), $myrow['typename'], $myrow['transno'], $DisplayTranDate, $myrow['debtorno'], locale_number_format($myrow['qty'], $myrow['decimalplaces']), $myrow['reference'], locale_number_format($myrow['price'], $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($myrow['discountpercent'] * 100, 2), locale_number_format($myrow['newqoh'], $myrow['decimalplaces']));
+				</tr>', mb_strtoupper($MyRow['stockid']), mb_strtoupper($MyRow['stockid']), $MyRow['typename'], $MyRow['transno'], $DisplayTranDate, $MyRow['debtorno'], locale_number_format($MyRow['qty'], $MyRow['decimalplaces']), $MyRow['reference'], locale_number_format($MyRow['price'], $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($MyRow['discountpercent'] * 100, 2), locale_number_format($MyRow['newqoh'], $MyRow['decimalplaces']));
 }
 //end of while loop
 

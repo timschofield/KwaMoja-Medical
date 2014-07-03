@@ -37,15 +37,15 @@ if (!isset($_POST['Show'])) {
 		include('includes/footer.inc');
 		exit;
 	} else {
-		while ($myrow = DB_fetch_array($AccountsResults)) {
+		while ($MyRow = DB_fetch_array($AccountsResults)) {
 			/*list the bank account names */
-			if (!isset($_POST['BankAccount']) and $myrow['currcode'] == $_SESSION['CompanyRecord']['currencydefault']) {
-				$_POST['BankAccount'] = $myrow['accountcode'];
+			if (!isset($_POST['BankAccount']) and $MyRow['currcode'] == $_SESSION['CompanyRecord']['currencydefault']) {
+				$_POST['BankAccount'] = $MyRow['accountcode'];
 			}
-			if (isset($_POST['BankAccount']) and $_POST['BankAccount'] == $myrow['accountcode']) {
-				echo '<option selected="selected" value="' . $myrow['accountcode'] . '">' . $myrow['bankaccountname'] . ' - ' . $myrow['currcode'] . '</option>';
+			if (isset($_POST['BankAccount']) and $_POST['BankAccount'] == $MyRow['accountcode']) {
+				echo '<option selected="selected" value="' . $MyRow['accountcode'] . '">' . $MyRow['bankaccountname'] . ' - ' . $MyRow['currcode'] . '</option>';
 			} else {
-				echo '<option value="' . $myrow['accountcode'] . '">' . $myrow['bankaccountname'] . ' - ' . $myrow['currcode'] . '</option>';
+				echo '<option value="' . $MyRow['accountcode'] . '">' . $MyRow['bankaccountname'] . ' - ' . $MyRow['currcode'] . '</option>';
 			}
 		}
 		echo '</select></td></tr>';
@@ -61,11 +61,11 @@ if (!isset($_POST['Show'])) {
 	echo '<tr>
 				<td>' . _('Select Period') . ':</td>
 				<td><select minlength="0" name="FromPeriod">';
-	while ($myrow = DB_fetch_array($Periods)) {
-		if (isset($_POST['FromPeriod']) and $_POST['FromPeriod'] == $myrow['periodno']) {
-			echo '<option selected="selected" value="' . $myrow['periodno'] . '">' . MonthAndYearFromSQLDate($myrow['lastdate_in_period']) . '</option>';
+	while ($MyRow = DB_fetch_array($Periods)) {
+		if (isset($_POST['FromPeriod']) and $_POST['FromPeriod'] == $MyRow['periodno']) {
+			echo '<option selected="selected" value="' . $MyRow['periodno'] . '">' . MonthAndYearFromSQLDate($MyRow['lastdate_in_period']) . '</option>';
 		} else {
-			echo '<option value="' . $myrow['periodno'] . '">' . MonthAndYearFromSQLDate($myrow['lastdate_in_period']) . '</option>';
+			echo '<option value="' . $MyRow['periodno'] . '">' . MonthAndYearFromSQLDate($MyRow['lastdate_in_period']) . '</option>';
 		}
 	}
 
@@ -160,20 +160,20 @@ if (!isset($_POST['Show'])) {
 		$PaymentsTotal = 0;
 		$LastType = 12;
 
-		while ($myrow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($result)) {
 
-			if ($myrow['typeid'] == 12 or $myrow['typeid'] == 2) {
-				$ReceiptsTotal += $myrow['amount'];
+			if ($MyRow['typeid'] == 12 or $MyRow['typeid'] == 2) {
+				$ReceiptsTotal += $MyRow['amount'];
 			} else {
-				$PaymentsTotal += $myrow['amount'];
+				$PaymentsTotal += $MyRow['amount'];
 			}
 
-			if ($myrow['amount'] == $myrow['amountcleared']) {
+			if ($MyRow['amount'] == $MyRow['amountcleared']) {
 				$Matched = _('Yes');
 			} else {
 				$Matched = _('No');
 			}
-			if (($LastType == 12 or $LastType == 2) and ($myrow['typeid'] == 22 or $myrow['typeid'] == 1)) {
+			if (($LastType == 12 or $LastType == 2) and ($MyRow['typeid'] == 22 or $MyRow['typeid'] == 1)) {
 				echo '<tr>
 					<td colspan="3"></td>
 					<td>' . _('Total Receipts') . '</td>
@@ -182,14 +182,14 @@ if (!isset($_POST['Show'])) {
 			}
 
 			echo '<tr>
-					<td>' . ConvertSQLDate($myrow['transdate']) . '</td>
-					<td>' . $myrow['typename'] . '</td>
-					<td>' . $myrow['banktranstype'] . '</td>
-					<td>' . $myrow['ref'] . '</td>
-					<td class="number">' . locale_number_format($myrow['amount'], $BankDetailRow['decimalplaces']) . '</td>
+					<td>' . ConvertSQLDate($MyRow['transdate']) . '</td>
+					<td>' . $MyRow['typename'] . '</td>
+					<td>' . $MyRow['banktranstype'] . '</td>
+					<td>' . $MyRow['ref'] . '</td>
+					<td class="number">' . locale_number_format($MyRow['amount'], $BankDetailRow['decimalplaces']) . '</td>
 					<td class="number">' . $Matched . '</td>
 				</tr>';
-			$LastType = $myrow['typeid'];
+			$LastType = $MyRow['typeid'];
 		}
 		echo '<tr>
 				<td colspan="3"></td>

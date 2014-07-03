@@ -44,11 +44,11 @@ if (isset($_GET['AssetID'])) {
 		$_POST['AssetCat'] = '';
 	}
 
-	while ($myrow = DB_fetch_array($result)) {
-		if ($myrow['categoryid'] == $_POST['AssetCat']) {
-			echo '<option selected="selected" value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . '</option>';
+	while ($MyRow = DB_fetch_array($result)) {
+		if ($MyRow['categoryid'] == $_POST['AssetCat']) {
+			echo '<option selected="selected" value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . '</option>';
+			echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 		}
 	}
 
@@ -77,11 +77,11 @@ if (isset($_GET['AssetID'])) {
 	}
 	$result = DB_query("SELECT locationid, locationdescription FROM fixedassetlocations");
 
-	while ($myrow = DB_fetch_array($result)) {
-		if ($myrow['locationid'] == $_POST['AssetLocation']) {
-			echo '<option selected="selected" value="' . $myrow['locationid'] . '">' . $myrow['locationdescription'] . '</option>';
+	while ($MyRow = DB_fetch_array($result)) {
+		if ($MyRow['locationid'] == $_POST['AssetLocation']) {
+			echo '<option selected="selected" value="' . $MyRow['locationid'] . '">' . $MyRow['locationdescription'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['locationid'] . '">' . $myrow['locationdescription'] . '</option>';
+			echo '<option value="' . $MyRow['locationid'] . '">' . $MyRow['locationdescription'] . '</option>';
 		}
 	}
 	echo '</select>';
@@ -164,22 +164,22 @@ if (isset($_POST['Search'])) {
 	$locationsql = "SELECT locationid, locationdescription from fixedassetlocations";
 	$LocationResult = DB_query($locationsql);
 
-	while ($myrow = DB_fetch_array($Result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 
 		echo '<tr>
-				<td>' . $myrow['assetid'] . '</td>
-				<td>' . $myrow['description'] . '</td>
-				<td>' . $myrow['serialno'] . '</td>
-				<td class="number">' . locale_number_format($myrow['cost'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
-				<td class="number">' . locale_number_format($myrow['accumdepn'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
-				<td>' . $myrow['ItemAssetLocation'] . '</td>';
-		echo '<td><select minlength="0" name="Location' . $myrow['assetid'] . '" onchange="ReloadForm(Move' . $myrow['assetid'] . ')">';
-		$ThisDropDownName = 'Location' . $myrow['assetid'];
+				<td>' . $MyRow['assetid'] . '</td>
+				<td>' . $MyRow['description'] . '</td>
+				<td>' . $MyRow['serialno'] . '</td>
+				<td class="number">' . locale_number_format($MyRow['cost'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
+				<td class="number">' . locale_number_format($MyRow['accumdepn'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
+				<td>' . $MyRow['ItemAssetLocation'] . '</td>';
+		echo '<td><select minlength="0" name="Location' . $MyRow['assetid'] . '" onchange="ReloadForm(Move' . $MyRow['assetid'] . ')">';
+		$ThisDropDownName = 'Location' . $MyRow['assetid'];
 		while ($LocationRow = DB_fetch_array($LocationResult)) {
 
 			if (isset($_POST[$ThisDropDownName]) and ($_POST[$ThisDropDownName] == $LocationRow['locationid'])) {
 				echo '<option selected="selected" value="' . $LocationRow['locationid'] . '">' . $LocationRow['locationdescription'] . '</option>';
-			} elseif ($LocationRow['locationid'] == $myrow['ItemAssetLocation']) {
+			} elseif ($LocationRow['locationid'] == $MyRow['ItemAssetLocation']) {
 				echo '<option selected="selected" value="' . $LocationRow['locationid'] . '">' . $LocationRow['locationdescription'] . '</option>';
 			} else {
 				echo '<option value="' . $LocationRow['locationid'] . '">' . $LocationRow['locationdescription'] . '</option>';
@@ -192,7 +192,7 @@ if (isset($_POST['Search'])) {
 		echo '<input type="hidden" name="Keywords" value="' . $_POST['Keywords'] . '" />';
 		echo '<input type="hidden" name="AssetID" value="' . $_POST['AssetID'] . '" />';
 		echo '<input type="hidden" name="Search" value="' . $_POST['Search'] . '" />';
-		echo '<td><input type="submit" name="Move' . $myrow['assetid'] . '" value="Move" /></td>';
+		echo '<td><input type="submit" name="Move' . $MyRow['assetid'] . '" value="Move" /></td>';
 		echo '</tr>';
 	}
 	echo '</table>

@@ -109,20 +109,20 @@ if (isset($_POST['submit'])) {
 
 	$sql = "SELECT COUNT(branchcode) AS branches FROM custbranch WHERE custbranch.area='$SelectedArea'";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
-	if ($myrow['branches'] > 0) {
+	$MyRow = DB_fetch_array($result);
+	if ($MyRow['branches'] > 0) {
 		$CancelDelete = 1;
 		prnMsg(_('Cannot delete this area because customer branches have been created using this area'), 'warn');
-		echo '<br />' . _('There are') . ' ' . $myrow['branches'] . ' ' . _('branches using this area code');
+		echo '<br />' . _('There are') . ' ' . $MyRow['branches'] . ' ' . _('branches using this area code');
 
 	} else {
 		$sql = "SELECT COUNT(area) AS records FROM salesanalysis WHERE salesanalysis.area ='$SelectedArea'";
 		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
-		if ($myrow['records'] > 0) {
+		$MyRow = DB_fetch_array($result);
+		if ($MyRow['records'] > 0) {
 			$CancelDelete = 1;
 			prnMsg(_('Cannot delete this area because sales analysis records exist that use this area'), 'warn');
-			echo '<br />' . _('There are') . ' ' . $myrow['records'] . ' ' . _('sales analysis records referring this area code');
+			echo '<br />' . _('There are') . ' ' . $MyRow['records'] . ' ' . _('sales analysis records referring this area code');
 		}
 	}
 
@@ -154,7 +154,7 @@ if (!isset($SelectedArea)) {
 
 	$k = 0; //row colour counter
 
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -162,15 +162,15 @@ if (!isset($SelectedArea)) {
 			echo '<tr class="OddTableRows">';
 			$k++;
 		}
-		$sql = "SELECT areadescription FROM areas WHERE areacode='" . $myrow['parentarea'] . "'";
+		$sql = "SELECT areadescription FROM areas WHERE areacode='" . $MyRow['parentarea'] . "'";
 		$ParentResult = DB_query($sql);
 		$ParentRow = DB_fetch_array($ParentResult);
-		echo '<td>' . $myrow['areacode'] . '</td>
+		echo '<td>' . $MyRow['areacode'] . '</td>
 				<td>' . $ParentRow['areadescription'] . '</td>
-				<td>' . $myrow['areadescription'] . '</td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedArea=' . urlencode($myrow['areacode']) . '">' . _('Edit') . '</a></td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedArea=' . urlencode($myrow['areacode']) . '&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this area?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-				<td><a href="SelectCustomer.php?Area=' . urlencode($myrow['areacode']) . '">' . _('View Customers from this Area') . '</a></td>
+				<td>' . $MyRow['areadescription'] . '</td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedArea=' . urlencode($MyRow['areacode']) . '">' . _('Edit') . '</a></td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedArea=' . urlencode($MyRow['areacode']) . '&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this area?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+				<td><a href="SelectCustomer.php?Area=' . urlencode($MyRow['areacode']) . '">' . _('View Customers from this Area') . '</a></td>
 			</tr>';
 	}
 	//END WHILE LIST LOOP
@@ -199,10 +199,10 @@ if (!isset($_GET['delete'])) {
 					WHERE areacode='" . $SelectedArea . "'";
 
 		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($result);
 
-		$_POST['AreaCode'] = $myrow['areacode'];
-		$_POST['AreaDescription'] = $myrow['areadescription'];
+		$_POST['AreaCode'] = $MyRow['areacode'];
+		$_POST['AreaDescription'] = $MyRow['areadescription'];
 
 		echo '<input type="hidden" name="SelectedArea" value="' . $SelectedArea . '" />';
 		echo '<input type="hidden" name="AreaCode" value="' . $_POST['AreaCode'] . '" />';
@@ -236,7 +236,7 @@ if (!isset($_GET['delete'])) {
 	$ParentResult = DB_query($sql, $ErrMsg, $DbgMsg);
 	echo '<option value=""></option>';
 	while ($ParentRow = DB_fetch_array($ParentResult)) {
-		if ($myrow['parentarea'] == $ParentRow['areacode']) {
+		if ($MyRow['parentarea'] == $ParentRow['areacode']) {
 			echo '<option selected="selected" value="' . $ParentRow['areacode'] . '">' . $ParentRow['areadescription'] . ' (' . $ParentRow['areacode'] . ')</option>';
 		} //$_POST['SectionInAccounts'] == $secrow['sectionid']
 		else {

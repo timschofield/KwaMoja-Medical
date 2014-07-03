@@ -47,8 +47,8 @@ $PageNumber++;
 
 $sql = "SELECT MIN(id) as start FROM debtortrans WHERE type=12 AND transno='" . $_GET['BatchNumber'] . "'";
 $result = DB_query($sql);
-$myrow = DB_fetch_array($result);
-$StartReceiptNumber = $myrow['start'];
+$MyRow = DB_fetch_array($result);
+$StartReceiptNumber = $MyRow['start'];
 
 $sql = "SELECT debtorno,
 			ovamount,
@@ -58,10 +58,10 @@ $sql = "SELECT debtorno,
 		AND transno='" . $_GET['BatchNumber'] . "'
 		AND id='" . ($StartReceiptNumber - 1 + $_GET['ReceiptNumber']) . "'";
 $result = DB_query($sql);
-$myrow = DB_fetch_array($result);
-$DebtorNo = $myrow['debtorno'];
-$Amount = $myrow['ovamount'];
-$Narrative = $myrow['invtext'];
+$MyRow = DB_fetch_array($result);
+$DebtorNo = $MyRow['debtorno'];
+$Amount = $MyRow['ovamount'];
+$Narrative = $MyRow['invtext'];
 
 $sql = "SELECT currency,
 			 decimalplaces
@@ -71,9 +71,9 @@ $sql = "SELECT currency,
 		WHERE type=12
 		AND transno='" . $_GET['BatchNumber'] . "')";
 $result = DB_query($sql);
-$myrow = DB_fetch_array($result);
-$Currency = $myrow['currency'];
-$DecimalPlaces = $myrow['decimalplaces'];
+$MyRow = DB_fetch_array($result);
+$Currency = $MyRow['currency'];
+$DecimalPlaces = $MyRow['decimalplaces'];
 
 $sql = "SELECT name,
 			 address1,
@@ -86,17 +86,17 @@ $sql = "SELECT name,
 		WHERE debtorno='" . $DebtorNo . "'";
 
 $result = DB_query($sql);
-$myrow = DB_fetch_array($result);
+$MyRow = DB_fetch_array($result);
 
 $LeftOvers = $pdf->addTextWrap(50, $YPos, 300, $FontSize, _('Received From') . ' : ');
 
-$LeftOvers = $pdf->addTextWrap(150, $YPos, 300, $FontSize, htmlspecialchars_decode($myrow['name']));
-$LeftOvers = $pdf->addTextWrap(150, $YPos - ($line_height * 1), 300, $FontSize, htmlspecialchars_decode($myrow['address1']));
-$LeftOvers = $pdf->addTextWrap(150, $YPos - ($line_height * 2), 300, $FontSize, htmlspecialchars_decode($myrow['address2']));
-$LeftOvers = $pdf->addTextWrap(150, $YPos - ($line_height * 3), 300, $FontSize, htmlspecialchars_decode($myrow['address3']));
-$LeftOvers = $pdf->addTextWrap(150, $YPos - ($line_height * 4), 300, $FontSize, htmlspecialchars_decode($myrow['address4']));
-$LeftOvers = $pdf->addTextWrap(150, $YPos - ($line_height * 5), 300, $FontSize, htmlspecialchars_decode($myrow['address5']));
-$LeftOvers = $pdf->addTextWrap(150, $YPos - ($line_height * 6), 300, $FontSize, htmlspecialchars_decode($myrow['address6']));
+$LeftOvers = $pdf->addTextWrap(150, $YPos, 300, $FontSize, htmlspecialchars_decode($MyRow['name']));
+$LeftOvers = $pdf->addTextWrap(150, $YPos - ($line_height * 1), 300, $FontSize, htmlspecialchars_decode($MyRow['address1']));
+$LeftOvers = $pdf->addTextWrap(150, $YPos - ($line_height * 2), 300, $FontSize, htmlspecialchars_decode($MyRow['address2']));
+$LeftOvers = $pdf->addTextWrap(150, $YPos - ($line_height * 3), 300, $FontSize, htmlspecialchars_decode($MyRow['address3']));
+$LeftOvers = $pdf->addTextWrap(150, $YPos - ($line_height * 4), 300, $FontSize, htmlspecialchars_decode($MyRow['address4']));
+$LeftOvers = $pdf->addTextWrap(150, $YPos - ($line_height * 5), 300, $FontSize, htmlspecialchars_decode($MyRow['address5']));
+$LeftOvers = $pdf->addTextWrap(150, $YPos - ($line_height * 6), 300, $FontSize, htmlspecialchars_decode($MyRow['address6']));
 
 $YPos = $YPos - ($line_height * 8);
 

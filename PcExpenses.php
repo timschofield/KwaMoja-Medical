@@ -153,9 +153,9 @@ if (isset($_POST['submit'])) {
 	$ErrMsg = _('The number of type of tabs using this expense code could not be retrieved');
 	$result = DB_query($sql, $ErrMsg);
 
-	$myrow = DB_fetch_row($result);
-	if ($myrow[0] > 0) {
-		prnMsg(_('Cannot delete this petty cash expense because it is used in some tab types') . '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('tab types using this expense code'), 'error');
+	$MyRow = DB_fetch_row($result);
+	if ($MyRow[0] > 0) {
+		prnMsg(_('Cannot delete this petty cash expense because it is used in some tab types') . '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('tab types using this expense code'), 'error');
 
 	} else {
 
@@ -192,7 +192,7 @@ if (!isset($SelectedExpense)) {
 
 	$k = 0; //row colour counter
 
-	while ($myrow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -203,14 +203,14 @@ if (!isset($SelectedExpense)) {
 
 		$sqldesc = "SELECT accountname
 					FROM chartmaster
-					WHERE accountcode='" . $myrow[2] . "'";
+					WHERE accountcode='" . $MyRow[2] . "'";
 
 		$ResultDes = DB_query($sqldesc);
 		$Description = DB_fetch_array($ResultDes);
 
 		$SqlDescTag = "SELECT tagdescription
 					FROM tags
-					WHERE tagref='" . $myrow[3] . "'";
+					WHERE tagref='" . $MyRow[3] . "'";
 
 		$ResultDesTag = DB_query($SqlDescTag);
 		$DescriptionTag = DB_fetch_array($ResultDesTag);
@@ -222,7 +222,7 @@ if (!isset($SelectedExpense)) {
 				<td>%s</td>
 				<td><a href="%sSelectedExpense=%s">' . _('Edit') . '</a></td>
 				<td><a href="%sSelectedExpense=%s&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this expense code and all the details it may have set up?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-				</tr>', $myrow[0], $myrow[1], $myrow[2], $Description['accountname'], $DescriptionTag['tagdescription'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow[0], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow[0]);
+				</tr>', $MyRow[0], $MyRow[1], $MyRow[2], $Description['accountname'], $DescriptionTag['tagdescription'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow[0], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow[0]);
 	}
 	//END WHILE LIST LOOP
 	echo '</table>';
@@ -251,12 +251,12 @@ if (!isset($_GET['delete'])) {
 				WHERE codeexpense='" . $SelectedExpense . "'";
 
 		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($result);
 
-		$_POST['CodeExpense'] = $myrow['codeexpense'];
-		$_POST['Description'] = $myrow['description'];
-		$_POST['GLAccount'] = $myrow['glaccount'];
-		$_POST['Tag'] = $myrow['tag'];
+		$_POST['CodeExpense'] = $MyRow['codeexpense'];
+		$_POST['Description'] = $MyRow['description'];
+		$_POST['GLAccount'] = $MyRow['glaccount'];
+		$_POST['Tag'] = $MyRow['tag'];
 
 		echo '<input type="hidden" name="SelectedExpense" value="' . $SelectedExpense . '" />';
 		echo '<input type="hidden" name="CodeExpense" value="' . $_POST['CodeExpense'] . '" />';
@@ -298,13 +298,13 @@ if (!isset($_GET['delete'])) {
 			ORDER BY accountcode";
 	$result = DB_query($SQL);
 	echo '<option value="">' . _('Not Yet Selected') . '</option>';
-	while ($myrow = DB_fetch_array($result)) {
-		if (isset($_POST['GLAccount']) and $myrow['accountcode'] == $_POST['GLAccount']) {
+	while ($MyRow = DB_fetch_array($result)) {
+		if (isset($_POST['GLAccount']) and $MyRow['accountcode'] == $_POST['GLAccount']) {
 			echo '<option selected="selected" value="';
 		} else {
 			echo '<option value="';
 		}
-		echo $myrow['accountcode'] . '">' . $myrow['accountcode'] . ' - ' . htmlspecialchars($myrow['accountname'], ENT_QUOTES, 'UTF-8', false) . '</option>';
+		echo $MyRow['accountcode'] . '">' . $MyRow['accountcode'] . ' - ' . htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false) . '</option>';
 
 	} //end while loop
 
@@ -322,11 +322,11 @@ if (!isset($_GET['delete'])) {
 
 	$result = DB_query($SQL);
 	echo '<option value="0">0 - ' . _('None') . '</option>';
-	while ($myrow = DB_fetch_array($result)) {
-		if (isset($_POST['Tag']) and $_POST['Tag'] == $myrow['tagref']) {
-			echo '<option selected="selected" value="' . $myrow['tagref'] . '">' . $myrow['tagref'] . ' - ' . $myrow['tagdescription'] . '</option>';
+	while ($MyRow = DB_fetch_array($result)) {
+		if (isset($_POST['Tag']) and $_POST['Tag'] == $MyRow['tagref']) {
+			echo '<option selected="selected" value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['tagref'] . '">' . $myrow['tagref'] . ' - ' . $myrow['tagdescription'] . '</option>';
+			echo '<option value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
 		}
 	}
 	echo '</select></td></tr>';

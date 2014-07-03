@@ -139,45 +139,45 @@ if (!isset($_GET['OrderNumber']) and !isset($_SESSION['ProcessingOrder'])) {
 
 	if (DB_num_rows($GetOrdHdrResult) == 1) {
 
-		$myrow = DB_fetch_array($GetOrdHdrResult);
+		$MyRow = DB_fetch_array($GetOrdHdrResult);
 
-		$_SESSION['Items' . $identifier]->DebtorNo = $myrow['debtorno'];
-		$_SESSION['Items' . $identifier]->OrderNo = $myrow['orderno'];
-		$_SESSION['Items' . $identifier]->Branch = $myrow['branchcode'];
-		$_SESSION['Items' . $identifier]->CustomerName = $myrow['name'];
-		$_SESSION['Items' . $identifier]->CustRef = $myrow['customerref'];
-		$_SESSION['Items' . $identifier]->Comments = $myrow['comments'];
-		$_SESSION['Items' . $identifier]->DefaultSalesType = $myrow['ordertype'];
-		$_SESSION['Items' . $identifier]->DefaultCurrency = $myrow['currcode'];
-		$_SESSION['Items' . $identifier]->CurrDecimalPlaces = $myrow['decimalplaces'];
-		$BestShipper = $myrow['shipvia'];
-		$_SESSION['Items' . $identifier]->ShipVia = $myrow['shipvia'];
+		$_SESSION['Items' . $identifier]->DebtorNo = $MyRow['debtorno'];
+		$_SESSION['Items' . $identifier]->OrderNo = $MyRow['orderno'];
+		$_SESSION['Items' . $identifier]->Branch = $MyRow['branchcode'];
+		$_SESSION['Items' . $identifier]->CustomerName = $MyRow['name'];
+		$_SESSION['Items' . $identifier]->CustRef = $MyRow['customerref'];
+		$_SESSION['Items' . $identifier]->Comments = $MyRow['comments'];
+		$_SESSION['Items' . $identifier]->DefaultSalesType = $MyRow['ordertype'];
+		$_SESSION['Items' . $identifier]->DefaultCurrency = $MyRow['currcode'];
+		$_SESSION['Items' . $identifier]->CurrDecimalPlaces = $MyRow['decimalplaces'];
+		$BestShipper = $MyRow['shipvia'];
+		$_SESSION['Items' . $identifier]->ShipVia = $MyRow['shipvia'];
 
 		if (is_null($BestShipper)) {
 			$BestShipper = 0;
 		}
-		$_SESSION['Items' . $identifier]->DeliverTo = $myrow['deliverto'];
-		$_SESSION['Items' . $identifier]->DeliveryDate = ConvertSQLDate($myrow['deliverydate']);
-		$_SESSION['Items' . $identifier]->BrAdd1 = $myrow['deladd1'];
-		$_SESSION['Items' . $identifier]->BrAdd2 = $myrow['deladd2'];
-		$_SESSION['Items' . $identifier]->BrAdd3 = $myrow['deladd3'];
-		$_SESSION['Items' . $identifier]->BrAdd4 = $myrow['deladd4'];
-		$_SESSION['Items' . $identifier]->BrAdd5 = $myrow['deladd5'];
-		$_SESSION['Items' . $identifier]->BrAdd6 = $myrow['deladd6'];
-		$_SESSION['Items' . $identifier]->PhoneNo = $myrow['contactphone'];
-		$_SESSION['Items' . $identifier]->Email = $myrow['contactemail'];
-		$_SESSION['Items' . $identifier]->SalesPerson = $myrow['salesperson'];
+		$_SESSION['Items' . $identifier]->DeliverTo = $MyRow['deliverto'];
+		$_SESSION['Items' . $identifier]->DeliveryDate = ConvertSQLDate($MyRow['deliverydate']);
+		$_SESSION['Items' . $identifier]->BrAdd1 = $MyRow['deladd1'];
+		$_SESSION['Items' . $identifier]->BrAdd2 = $MyRow['deladd2'];
+		$_SESSION['Items' . $identifier]->BrAdd3 = $MyRow['deladd3'];
+		$_SESSION['Items' . $identifier]->BrAdd4 = $MyRow['deladd4'];
+		$_SESSION['Items' . $identifier]->BrAdd5 = $MyRow['deladd5'];
+		$_SESSION['Items' . $identifier]->BrAdd6 = $MyRow['deladd6'];
+		$_SESSION['Items' . $identifier]->PhoneNo = $MyRow['contactphone'];
+		$_SESSION['Items' . $identifier]->Email = $MyRow['contactemail'];
+		$_SESSION['Items' . $identifier]->SalesPerson = $MyRow['salesperson'];
 
-		$_SESSION['Items' . $identifier]->Location = $myrow['fromstkloc'];
-		$_SESSION['Items' . $identifier]->FreightCost = $myrow['freightcost'];
-		$_SESSION['Old_FreightCost'] = $myrow['freightcost'];
+		$_SESSION['Items' . $identifier]->Location = $MyRow['fromstkloc'];
+		$_SESSION['Items' . $identifier]->FreightCost = $MyRow['freightcost'];
+		$_SESSION['Old_FreightCost'] = $MyRow['freightcost'];
 		//		$_POST['ChargeFreightCost'] = $_SESSION['Old_FreightCost'];
-		$_SESSION['Items' . $identifier]->Orig_OrderDate = $myrow['orddate'];
-		$_SESSION['CurrencyRate'] = $myrow['currency_rate'];
-		$_SESSION['Items' . $identifier]->TaxGroup = $myrow['taxgroupid'];
-		$_SESSION['Items' . $identifier]->DispatchTaxProvince = $myrow['taxprovinceid'];
+		$_SESSION['Items' . $identifier]->Orig_OrderDate = $MyRow['orddate'];
+		$_SESSION['CurrencyRate'] = $MyRow['currency_rate'];
+		$_SESSION['Items' . $identifier]->TaxGroup = $MyRow['taxgroupid'];
+		$_SESSION['Items' . $identifier]->DispatchTaxProvince = $MyRow['taxprovinceid'];
 		$_SESSION['Items' . $identifier]->GetFreightTaxes();
-		$_SESSION['Items' . $identifier]->SpecialInstructions = $myrow['specialinstructions'];
+		$_SESSION['Items' . $identifier]->SpecialInstructions = $MyRow['specialinstructions'];
 
 		DB_free_result($GetOrdHdrResult);
 
@@ -221,14 +221,14 @@ if (!isset($_GET['OrderNumber']) and !isset($_SESSION['ProcessingOrder'])) {
 
 		if (DB_num_rows($LineItemsResult) > 0) {
 
-			while ($myrow = DB_fetch_array($LineItemsResult)) {
+			while ($MyRow = DB_fetch_array($LineItemsResult)) {
 
-				$_SESSION['Items' . $identifier]->add_to_cart($myrow['stkcode'], $myrow['quantity'], $myrow['description'], $myrow['longdescription'], $myrow['unitprice'], $myrow['discountpercent'], $myrow['units'], $myrow['volume'], $myrow['grossweight'], 0, $myrow['mbflag'], $myrow['actualdispatchdate'], $myrow['qtyinvoiced'], $myrow['discountcategory'], $myrow['controlled'], $myrow['serialised'], $myrow['decimalplaces'], htmlspecialchars_decode($myrow['narrative']), 'No', $myrow['orderlineno'], $myrow['taxcatid'], '', $myrow['itemdue'], $myrow['poline'], $myrow['standardcost']);
+				$_SESSION['Items' . $identifier]->add_to_cart($MyRow['stkcode'], $MyRow['quantity'], $MyRow['description'], $MyRow['longdescription'], $MyRow['unitprice'], $MyRow['discountpercent'], $MyRow['units'], $MyRow['volume'], $MyRow['grossweight'], 0, $MyRow['mbflag'], $MyRow['actualdispatchdate'], $MyRow['qtyinvoiced'], $MyRow['discountcategory'], $MyRow['controlled'], $MyRow['serialised'], $MyRow['decimalplaces'], htmlspecialchars_decode($MyRow['narrative']), 'No', $MyRow['orderlineno'], $MyRow['taxcatid'], '', $MyRow['itemdue'], $MyRow['poline'], $MyRow['standardcost']);
 				/*NB NO Updates to DB */
 
 				/*Calculate the taxes applicable to this line item from the customer branch Tax Group and Item Tax Category */
 
-				$_SESSION['Items' . $identifier]->GetTaxes($myrow['orderlineno']);
+				$_SESSION['Items' . $identifier]->GetTaxes($MyRow['orderlineno']);
 
 			}
 			/* line items from sales order details */
@@ -696,9 +696,9 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 
 	$ErrMsg = _('We were unable to load Area where the Sale is to from the BRANCHES table') . '. ' . _('Please remedy this');
 	$Result = DB_query($SQL, $ErrMsg);
-	$myrow = DB_fetch_row($Result);
-	$Area = $myrow[0];
-	$DefaultShipVia = $myrow[1];
+	$MyRow = DB_fetch_row($Result);
+	$Area = $MyRow[0];
+	$DefaultShipVia = $MyRow[1];
 	DB_free_result($Result);
 
 	/*company record read in on login with info on GL Links and debtors GL account*/
@@ -744,11 +744,11 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 
 	$Changes = 0;
 
-	while ($myrow = DB_fetch_array($Result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 
-		if ($_SESSION['Items' . $identifier]->LineItems[$myrow['orderlineno']]->Quantity != $myrow['quantity'] OR $_SESSION['Items' . $identifier]->LineItems[$myrow['orderlineno']]->QtyInv != $myrow['qtyinvoiced']) {
+		if ($_SESSION['Items' . $identifier]->LineItems[$MyRow['orderlineno']]->Quantity != $MyRow['quantity'] OR $_SESSION['Items' . $identifier]->LineItems[$MyRow['orderlineno']]->QtyInv != $MyRow['qtyinvoiced']) {
 
-			echo '<br />' . _('Orig order for') . ' ' . $myrow['orderlineno'] . ' ' . _('has a quantity of') . ' ' . $myrow['quantity'] . ' ' . _('and an invoiced qty of') . ' ' . $myrow['qtyinvoiced'] . ' ' . _('the session shows quantity of') . ' ' . $_SESSION['Items' . $identifier]->LineItems[$myrow['orderlineno']]->Quantity . ' ' . _('and quantity invoice of') . ' ' . $_SESSION['Items' . $identifier]->LineItems[$myrow['orderlineno']]->QtyInv;
+			echo '<br />' . _('Orig order for') . ' ' . $MyRow['orderlineno'] . ' ' . _('has a quantity of') . ' ' . $MyRow['quantity'] . ' ' . _('and an invoiced qty of') . ' ' . $MyRow['qtyinvoiced'] . ' ' . _('the session shows quantity of') . ' ' . $_SESSION['Items' . $identifier]->LineItems[$MyRow['orderlineno']]->Quantity . ' ' . _('and quantity invoice of') . ' ' . $_SESSION['Items' . $identifier]->LineItems[$MyRow['orderlineno']]->QtyInv;
 
 			prnMsg(_('This order has been changed or invoiced since this delivery was started to be confirmed') . ' ' . _('Processing halted.') . ' ' . _('To enter and confirm this dispatch, it must be re-selected and re-read again to update the changes made by the other user'), 'error');
 
@@ -978,8 +978,8 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 								FROM stockmaster
 								WHERE stockid = '" . $OrderLine->StockID . "'", _('Cannot retrieve the mbflag'));
 
-			$myrow = DB_fetch_row($Result);
-			$MBFlag = $myrow[0];
+			$MyRow = DB_fetch_row($Result);
+			$MBFlag = $MyRow[0];
 
 			if ($MBFlag == 'B' or $MBFlag == 'M') {
 				$Assembly = False;
@@ -1282,23 +1282,23 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 			$DbgMsg = '<br />' . _('SQL to count the no of sales analysis records');
 			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
-			$myrow = DB_fetch_row($Result);
+			$MyRow = DB_fetch_row($Result);
 
-			if ($myrow[0] > 0) {
+			if ($MyRow[0] > 0) {
 				/*Update the existing record that already exists */
 
 				$SQL = "UPDATE salesanalysis SET amt=amt+" . round(($SalesValue), $_SESSION['CompanyRecord']['decimalplaces']) . ",
 												cost=cost+" . round(($OrderLine->StandardCost * $OrderLine->QtyDispatched), $_SESSION['CompanyRecord']['decimalplaces']) . ",
 												qty=qty+" . $OrderLine->QtyDispatched . ",
 												disc=disc+" . round(($OrderLine->DiscountPercent * $SalesValue), $_SESSION['CompanyRecord']['decimalplaces']) . "
-								WHERE salesanalysis.area='" . $myrow[5] . "'
-								AND salesanalysis.salesperson='" . $myrow[8] . "'
+								WHERE salesanalysis.area='" . $MyRow[5] . "'
+								AND salesanalysis.salesperson='" . $MyRow[8] . "'
 								AND typeabbrev ='" . $_SESSION['Items' . $identifier]->DefaultSalesType . "'
 								AND periodno = '" . $PeriodNo . "'
 								AND cust " . LIKE . " '" . $_SESSION['Items' . $identifier]->DebtorNo . "'
 								AND custbranch " . LIKE . " '" . $_SESSION['Items' . $identifier]->Branch . "'
 								AND stockid " . LIKE . " '" . $OrderLine->StockID . "'
-								AND salesanalysis.stkcategory ='" . $myrow[2] . "'
+								AND salesanalysis.stkcategory ='" . $MyRow[2] . "'
 								AND budgetoractual=1";
 
 			} else {

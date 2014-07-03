@@ -113,8 +113,8 @@ if (isset($_POST['SearchParts']) and $_POST['SearchParts'] != '') {
 	$StockItemsResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	if (DB_num_rows($StockItemsResult) == 1) {
-		$myrow = DB_fetch_row($StockItemsResult);
-		$SelectedStockItem = $myrow[0];
+		$MyRow = DB_fetch_row($StockItemsResult);
+		$SelectedStockItem = $MyRow[0];
 		$_POST['SearchOrders'] = 'True';
 		unset($StockItemsResult);
 		echo '<br />' . _('For the part') . ': ' . $SelectedStockItem . ' ' . _('and') . ' <input type="hidden" name="SelectedStockItem" value="' . $SelectedStockItem . '" />';
@@ -351,11 +351,11 @@ if (!isset($SelectedStockItem)) {
 	echo '<tr><td>' . _('Select a stock category') . ':';
 	echo '<select minlength="0" name="StockCat">';
 
-	while ($myrow1 = DB_fetch_array($result1)) {
-		if (isset($_POST['StockCat']) and $myrow1['categoryid'] == $_POST['StockCat']) {
-			echo '<option selected="selected" value="' . $myrow1['categoryid'] . '">' . $myrow1['categorydescription'] . '</option>';
+	while ($MyRow1 = DB_fetch_array($result1)) {
+		if (isset($_POST['StockCat']) and $MyRow1['categoryid'] == $_POST['StockCat']) {
+			echo '<option selected="selected" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow1['categoryid'] . '">' . $myrow1['categorydescription'] . '</option>';
+			echo '<option value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 		}
 	}
 
@@ -393,7 +393,7 @@ if (isset($StockItemsResult)) {
 	$j = 1;
 	$k = 0; //row colour counter
 
-	while ($myrow = DB_fetch_array($StockItemsResult)) {
+	while ($MyRow = DB_fetch_array($StockItemsResult)) {
 
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -406,7 +406,7 @@ if (isset($StockItemsResult)) {
 		printf('<td><input type="submit" name="SelectedStockItem" value="%s" /></td>
 				<td>%s</td>
 				<td class="number">%s</td>
-				<td>%s</td></tr>', $myrow['stockid'], $myrow['description'], locale_number_format($myrow['qoh'], $myrow['decimalplaces']), $myrow['units']);
+				<td>%s</td></tr>', $MyRow['stockid'], $MyRow['description'], locale_number_format($MyRow['qoh'], $MyRow['decimalplaces']), $MyRow['units']);
 
 		//end of page full new headings if
 	}
@@ -443,7 +443,7 @@ if (isset($SalesOrdersResult)) {
 
 	$j = 1;
 	$k = 0; //row colour counter
-	while ($myrow = DB_fetch_array($SalesOrdersResult)) {
+	while ($MyRow = DB_fetch_array($SalesOrdersResult)) {
 
 
 		if ($k == 1) {
@@ -454,10 +454,10 @@ if (isset($SalesOrdersResult)) {
 			$k = 1;
 		}
 
-		$ViewPage = $RootPath . '/OrderDetails.php?OrderNumber=' . $myrow['orderno'];
-		$FormatedDelDate = ConvertSQLDate($myrow['deliverydate']);
-		$FormatedOrderDate = ConvertSQLDate($myrow['orddate']);
-		$FormatedOrderValue = locale_number_format($myrow['ordervalue'], $myrow['currdecimalplaces']);
+		$ViewPage = $RootPath . '/OrderDetails.php?OrderNumber=' . $MyRow['orderno'];
+		$FormatedDelDate = ConvertSQLDate($MyRow['deliverydate']);
+		$FormatedOrderDate = ConvertSQLDate($MyRow['orddate']);
+		$FormatedOrderValue = locale_number_format($MyRow['ordervalue'], $MyRow['currdecimalplaces']);
 
 		printf('<td><a href="%s">%s</a></td>
 				<td>%s</td>
@@ -467,7 +467,7 @@ if (isset($SalesOrdersResult)) {
 				<td>%s</td>
 				<td>%s</td>
 				<td class="number">%s</td>
-				</tr>', $ViewPage, $myrow['orderno'], $myrow['name'], $myrow['brname'], $myrow['customerref'], $FormatedOrderDate, $FormatedDelDate, $myrow['deliverto'], $FormatedOrderValue);
+				</tr>', $ViewPage, $MyRow['orderno'], $MyRow['name'], $MyRow['brname'], $MyRow['customerref'], $FormatedOrderDate, $FormatedDelDate, $MyRow['deliverto'], $FormatedOrderValue);
 
 		//end of page full new headings if
 	}

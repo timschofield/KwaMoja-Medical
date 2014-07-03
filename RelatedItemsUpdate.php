@@ -30,7 +30,7 @@ echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/
 $result = DB_query("SELECT stockmaster.description
 					FROM stockmaster
 					WHERE stockmaster.stockid='" . $Item . "'");
-$myrow = DB_fetch_row($result);
+$MyRow = DB_fetch_row($result);
 
 if (DB_num_rows($result) == 0) {
 	prnMsg(_('The part code entered does not exist in the database') . ': ' . $Item . _('Only valid parts can have related items entered against them'), 'error');
@@ -44,7 +44,7 @@ if (!isset($Item)) {
 	exit;
 }
 
-$PartDescription = $myrow[0];
+$PartDescription = $MyRow[0];
 
 if (isset($_POST['submit'])) {
 
@@ -58,7 +58,7 @@ if (isset($_POST['submit'])) {
 										stockmaster.mbflag
 									FROM stockmaster
 								WHERE stockmaster.stockid='" . $_POST['Related'] . "'");
-	$myrow_related = DB_fetch_row($result_related);
+	$MyRow_related = DB_fetch_row($result_related);
 
 	if (DB_num_rows($result_related) == 0) {
 		prnMsg(_('The part code entered as related item does not exist in the database') . ': ' . $_POST['Related'] . _('Only valid parts can be related items'), 'error');
@@ -70,7 +70,7 @@ if (isset($_POST['submit'])) {
 			WHERE stockid='" . $Item . "'
 				AND related = '" . $_POST['Related'] . "'";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_row($result);
+	$MyRow = DB_fetch_row($result);
 
 	if (DB_num_rows($result) != 0) {
 		prnMsg(_('This related item has already been entered.'), 'warn');
@@ -98,7 +98,7 @@ if (isset($_POST['submit'])) {
 				WHERE stockid='" . $_POST['Related'] . "'
 					AND related = '" . $Item . "'";
 		$result_reverse = DB_query($sql_reverse);
-		$myrow_reverse = DB_fetch_row($result_reverse);
+		$MyRow_reverse = DB_fetch_row($result_reverse);
 
 		if (DB_num_rows($result_reverse) == 0) {
 			$sql = "INSERT INTO relateditems (stockid,
@@ -155,7 +155,7 @@ if (DB_num_rows($result) > 0) {
 			</tr>';
 
 	$k = 0; //row colour counter
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -164,9 +164,9 @@ if (DB_num_rows($result) > 0) {
 			$k = 1;
 		}
 
-		echo '<td>' . $myrow['stockid'] . '</td>
-				<td>' . $myrow['description'] . '</td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Item=' . $Item . '&amp;Related=' . $myrow['stockid'] . '&amp;delete=yes" onclick="return confirm(\'' . _('Are you sure you wish to delete this relationship?') . '\');">' . _('Delete') . '</a></td>
+		echo '<td>' . $MyRow['stockid'] . '</td>
+				<td>' . $MyRow['description'] . '</td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Item=' . $Item . '&amp;Related=' . $MyRow['stockid'] . '&amp;delete=yes" onclick="return confirm(\'' . _('Are you sure you wish to delete this relationship?') . '\');">' . _('Delete') . '</a></td>
 			</tr>';
 
 	}

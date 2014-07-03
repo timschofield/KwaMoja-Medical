@@ -29,8 +29,8 @@ else {
 if (!isset($_SESSION['SuppTrans']->SupplierName)) {
 	$sql = "SELECT suppname FROM suppliers WHERE supplierid='" . $_GET['SupplierID'] . "'";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_row($result);
-	$SupplierName = $myrow[0];
+	$MyRow = DB_fetch_row($result);
+	$SupplierName = $MyRow[0];
 } //!isset($_SESSION['SuppTrans']->SupplierName)
 else {
 	$SupplierName = $_SESSION['SuppTrans']->SupplierName;
@@ -80,22 +80,22 @@ if (isset($_GET['SupplierID']) and $_GET['SupplierID'] != '') {
 
 	$result = DB_query($sql, $ErrMsg, $DbgMsg);
 
-	$myrow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($result);
 
-	$_SESSION['SuppTrans']->SupplierName = $myrow['suppname'];
-	$_SESSION['SuppTrans']->TermsDescription = $myrow['terms'];
-	$_SESSION['SuppTrans']->CurrCode = $myrow['currcode'];
-	$_SESSION['SuppTrans']->ExRate = $myrow['exrate'];
-	$_SESSION['SuppTrans']->CurrDecimalPlaces = $myrow['decimalplaces'];
-	$_SESSION['SuppTrans']->TaxGroup = $myrow['taxgroupid'];
-	$_SESSION['SuppTrans']->TaxGroupDescription = $myrow['taxgroupdescription'];
-	$_SESSION['SuppTrans']->SupplierID = $myrow['supplierid'];
+	$_SESSION['SuppTrans']->SupplierName = $MyRow['suppname'];
+	$_SESSION['SuppTrans']->TermsDescription = $MyRow['terms'];
+	$_SESSION['SuppTrans']->CurrCode = $MyRow['currcode'];
+	$_SESSION['SuppTrans']->ExRate = $MyRow['exrate'];
+	$_SESSION['SuppTrans']->CurrDecimalPlaces = $MyRow['decimalplaces'];
+	$_SESSION['SuppTrans']->TaxGroup = $MyRow['taxgroupid'];
+	$_SESSION['SuppTrans']->TaxGroupDescription = $MyRow['taxgroupdescription'];
+	$_SESSION['SuppTrans']->SupplierID = $MyRow['supplierid'];
 
-	if ($myrow['daysbeforedue'] == 0) {
-		$_SESSION['SuppTrans']->Terms = '1' . $myrow['dayinfollowingmonth'];
-	} //$myrow['daysbeforedue'] == 0
+	if ($MyRow['daysbeforedue'] == 0) {
+		$_SESSION['SuppTrans']->Terms = '1' . $MyRow['dayinfollowingmonth'];
+	} //$MyRow['daysbeforedue'] == 0
 	else {
-		$_SESSION['SuppTrans']->Terms = '0' . $myrow['daysbeforedue'];
+		$_SESSION['SuppTrans']->Terms = '0' . $MyRow['daysbeforedue'];
 	}
 	$_SESSION['SuppTrans']->SupplierID = $_GET['SupplierID'];
 
@@ -187,8 +187,8 @@ if (isset($_GET['ReceivePO']) and $_GET['ReceivePO'] != '') {
 						$DbgMsg = _('The following SQL to retrieve the standard cost was used');
 						$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
-						$myrow = DB_fetch_row($Result);
-						$CurrentStandardCost = $myrow[0];
+						$MyRow = DB_fetch_row($Result);
+						$CurrentStandardCost = $MyRow[0];
 
 						if ($OrderLine->QtyReceived == 0) { //its the first receipt against this line
 							$_SESSION['PO' . $identifier]->LineItems[$OrderLine->LineNo]->StandardCost = $CurrentStandardCost;
@@ -476,12 +476,12 @@ if (isset($_GET['ReceivePO']) and $_GET['ReceivePO'] != '') {
 						ORDER BY grns.grnno";
 				$GRNResults = DB_query($SQL);
 
-				while ($myrow = DB_fetch_array($GRNResults)) {
-					if ($myrow['decimalplaces'] == '') {
-						$myrow['decimalplaces'] = 2;
-					} //$myrow['decimalplaces'] == ''
-					$_SESSION['SuppTrans']->Add_GRN_To_Trans($myrow['grnno'], $myrow['podetailitem'], $myrow['itemcode'], $myrow['itemdescription'], $myrow['qtyrecd'], $myrow['quantityinv'], $myrow['qtyrecd'] - $myrow['quantityinv'], $myrow['unitprice'], $myrow['unitprice'], true, $myrow['stdcostunit'], $myrow['shiptref'], $myrow['jobref'], $myrow['glcode'], $myrow['orderno'], $myrow['assetid'], 0, $myrow['decimalplaces'], $myrow['grnbatch']);
-				} //$myrow = DB_fetch_array($GRNResults)
+				while ($MyRow = DB_fetch_array($GRNResults)) {
+					if ($MyRow['decimalplaces'] == '') {
+						$MyRow['decimalplaces'] = 2;
+					} //$MyRow['decimalplaces'] == ''
+					$_SESSION['SuppTrans']->Add_GRN_To_Trans($MyRow['grnno'], $MyRow['podetailitem'], $MyRow['itemcode'], $MyRow['itemdescription'], $MyRow['qtyrecd'], $MyRow['quantityinv'], $MyRow['qtyrecd'] - $MyRow['quantityinv'], $MyRow['unitprice'], $MyRow['unitprice'], true, $MyRow['stdcostunit'], $MyRow['shiptref'], $MyRow['jobref'], $MyRow['glcode'], $MyRow['orderno'], $MyRow['assetid'], 0, $MyRow['decimalplaces'], $MyRow['grnbatch']);
+				} //$MyRow = DB_fetch_array($GRNResults)
 			} //end if the order has no controlled items on it
 		} //only allow auto receiving of all lines if the PO is authorised
 	} //only allow auto receiving if the user has permission to receive goods
@@ -1002,12 +1002,12 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 		$DbgMsg = _('The following SQL to test for a previous invoice with the same reference from the same supplier was used');
 		$result = DB_query($sql, $ErrMsg, $DbgMsg, True);
 
-		$myrow = DB_fetch_row($result);
-		if ($myrow[0] == 1) {
+		$MyRow = DB_fetch_row($result);
+		if ($MyRow[0] == 1) {
 			/*Transaction reference already entered */
 			prnMsg(_('The invoice number') . ' : ' . $_POST['SuppReference'] . ' ' . _('has already been entered') . '. ' . _('It cannot be entered again'), 'error');
 			$InputError = True;
-		} //$myrow[0] == 1
+		} //$MyRow[0] == 1
 	}
 
 	if ($InputError == False) {
@@ -1689,10 +1689,10 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 										WHERE stockid='" . $EnteredGRN->ItemCode . "'
 											AND succeeded=0";
 							$result = DB_query($sql);
-							$myrow = DB_fetch_array($result);
-							$OldMaterialCost = $myrow['materialcost'];
-							$OldLabourCost = $myrow['labourcost'];
-							$OldOverheadCost = $myrow['overheadcost'];
+							$MyRow = DB_fetch_array($result);
+							$OldMaterialCost = $MyRow['materialcost'];
+							$OldLabourCost = $MyRow['labourcost'];
+							$OldOverheadCost = $MyRow['overheadcost'];
 
 							if ($TotalQuantityOnHand > 0) {
 								$CostIncrement = ($PurchPriceVar - $WriteOffToVariances) / $TotalQuantityOnHand;

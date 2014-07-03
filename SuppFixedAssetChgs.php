@@ -133,15 +133,15 @@ $sql = "SELECT assetid,
 
 $result = DB_query($sql);
 
-while ($myrow = DB_fetch_array($result)) {
-	if (isset($_POST['AssetSelection']) and $myrow['AssetID'] == $_POST['AssetSelection']) {
+while ($MyRow = DB_fetch_array($result)) {
+	if (isset($_POST['AssetSelection']) and $MyRow['AssetID'] == $_POST['AssetSelection']) {
 		echo '<option selected="selected" value="';
-	} //isset($_POST['AssetSelection']) and $myrow['AssetID'] == $_POST['AssetSelection']
+	} //isset($_POST['AssetSelection']) and $MyRow['AssetID'] == $_POST['AssetSelection']
 	else {
 		echo '<option value="';
 	}
-	echo $myrow['assetid'] . '">' . $myrow['assetid'] . ' - ' . $myrow['description'] . '</option>';
-} //$myrow = DB_fetch_array($result)
+	echo $MyRow['assetid'] . '">' . $MyRow['assetid'] . ' - ' . $MyRow['description'] . '</option>';
+} //$MyRow = DB_fetch_array($result)
 
 echo '</select></td>
 	</tr>';

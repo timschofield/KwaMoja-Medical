@@ -31,10 +31,10 @@ if (isset($_GET['SelectedLocation'])) {
 	$sql = "SELECT * FROM fixedassetlocations
 		WHERE locationid='" . $_GET['SelectedLocation'] . "'";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
-	$LocationID = $myrow['locationid'];
-	$LocationDescription = $myrow['locationdescription'];
-	$ParentLocationID = $myrow['parentlocationid'];
+	$MyRow = DB_fetch_array($result);
+	$LocationID = $MyRow['locationid'];
+	$LocationDescription = $MyRow['locationdescription'];
+	$ParentLocationID = $MyRow['parentlocationid'];
 
 } else {
 	$LocationID = '';
@@ -65,15 +65,15 @@ if (isset($_POST['update']) and !isset($_POST['delete'])) {
 
 		$sql = "SELECT COUNT(locationid) FROM fixedassetlocations WHERE parentlocationid='" . $_POST['LocationID'] . "'";
 		$result = DB_query($sql);
-		$myrow = DB_fetch_row($result);
-		if ($myrow[0] > 0) {
+		$MyRow = DB_fetch_row($result);
+		if ($MyRow[0] > 0) {
 			prnMsg(_('This location has child locations so cannot be removed'), 'warning');
 			$InputError = 1;
 		}
 		$sql = "SELECT COUNT(assetid) FROM fixedassets WHERE assetlocation='" . $_POST['LocationID'] . "'";
 		$result = DB_query($sql);
-		$myrow = DB_fetch_row($result);
-		if ($myrow[0] > 0) {
+		$MyRow = DB_fetch_row($result);
+		if ($MyRow[0] > 0) {
 			prnMsg(_('You have assets in this location so it cannot be removed'), 'warn');
 			$InputError = 1;
 		}
@@ -96,15 +96,15 @@ if (DB_num_rows($result) > 0) {
 			<th>' . _('Parent Location') . '</th>
 		</tr>';
 }
-while ($myrow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($result)) {
 	echo '<tr>
-			<td>' . $myrow['locationid'] . '</td>
-			<td>' . $myrow['locationdescription'] . '</td>';
-	$ParentSql = "SELECT locationdescription FROM fixedassetlocations WHERE locationid='" . $myrow['parentlocationid'] . "'";
+			<td>' . $MyRow['locationid'] . '</td>
+			<td>' . $MyRow['locationdescription'] . '</td>';
+	$ParentSql = "SELECT locationdescription FROM fixedassetlocations WHERE locationid='" . $MyRow['parentlocationid'] . "'";
 	$ParentResult = DB_query($ParentSql);
 	$ParentRow = DB_fetch_array($ParentResult);
 	echo '<td>' . $ParentRow['locationdescription'] . '</td>
-		<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedLocation=' . $myrow['locationid'] . '">' . _('Edit') . '</a></td></tr>';
+		<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedLocation=' . $MyRow['locationid'] . '">' . _('Edit') . '</a></td></tr>';
 }
 
 echo '</table>
@@ -135,11 +135,11 @@ $sql = "SELECT locationid, locationdescription FROM fixedassetlocations";
 $result = DB_query($sql);
 
 echo '<option value=""></option>';
-while ($myrow = DB_fetch_array($result)) {
-	if ($myrow['locationid'] == $ParentLocationID) {
-		echo '<option selected="selected" value="' . $myrow['locationid'] . '">' . $myrow['locationdescription'] . '</option>';
+while ($MyRow = DB_fetch_array($result)) {
+	if ($MyRow['locationid'] == $ParentLocationID) {
+		echo '<option selected="selected" value="' . $MyRow['locationid'] . '">' . $MyRow['locationdescription'] . '</option>';
 	} else {
-		echo '<option value="' . $myrow['locationid'] . '">' . $myrow['locationdescription'] . '</option>';
+		echo '<option value="' . $MyRow['locationid'] . '">' . $MyRow['locationdescription'] . '</option>';
 	}
 }
 echo '</select></td>

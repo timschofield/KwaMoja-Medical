@@ -44,8 +44,8 @@ if (isset($_POST['AddGLCodeToTrans']) and $_POST['AddGLCodeToTrans'] == _('Enter
 		prnMsg(_('The account code entered is not a valid code') . '. ' . _('This line cannot be added to the transaction') . '.<br />' . _('You can use the selection box to select the account you want'), 'error');
 		$InputError = True;
 	} else if ($_POST['GLCode'] != '') {
-		$myrow = DB_fetch_row($result);
-		$GLActName = $myrow[1];
+		$MyRow = DB_fetch_row($result);
+		$GLActName = $MyRow[1];
 		if (!is_numeric(filter_number_format($_POST['Amount']))) {
 			prnMsg(_('The amount entered is not numeric') . '. ' . _('This line cannot be added to the transaction'), 'error');
 			$InputError = True;
@@ -161,11 +161,11 @@ $SQL = "SELECT tagref,
 
 $result = DB_query($SQL);
 echo '<option value="0"></option>';
-while ($myrow = DB_fetch_array($result)) {
-	if (isset($_POST['Tag']) and $_POST['Tag'] == $myrow['tagref']) {
-		echo '<option selected="selected" value="' . $myrow['tagref'] . '">' . $myrow['tagref'] . ' - ' . $myrow['tagdescription'] . '</option>';
+while ($MyRow = DB_fetch_array($result)) {
+	if (isset($_POST['Tag']) and $_POST['Tag'] == $MyRow['tagref']) {
+		echo '<option selected="selected" value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
 	} else {
-		echo '<option value="' . $myrow['tagref'] . '">' . $myrow['tagref'] . ' - ' . $myrow['tagdescription'] . '</option>';
+		echo '<option value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
 	}
 }
 echo '</select></td>
@@ -186,13 +186,13 @@ $sql = "SELECT accountcode, accountname FROM chartmaster ORDER BY accountcode";
 
 $result = DB_query($sql);
 echo '<option value=""></option>';
-while ($myrow = DB_fetch_array($result)) {
-	if (isset($_POST['AcctSelection']) and $myrow['accountcode'] == $_POST['AcctSelection']) {
+while ($MyRow = DB_fetch_array($result)) {
+	if (isset($_POST['AcctSelection']) and $MyRow['accountcode'] == $_POST['AcctSelection']) {
 		echo '<option selected="selected" value="';
 	} else {
 		echo '<option value="';
 	}
-	echo $myrow['accountcode'] . '">' . $myrow['accountcode'] . ' - ' . htmlspecialchars($myrow['accountname'], ENT_QUOTES, 'UTF-8', false) . '</option>';
+	echo $MyRow['accountcode'] . '">' . $MyRow['accountcode'] . ' - ' . htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false) . '</option>';
 }
 
 echo '</select>

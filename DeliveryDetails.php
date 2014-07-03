@@ -171,22 +171,22 @@ if (isset($_POST['Update']) or isset($_POST['BackToLineDetails']) or isset($_POS
 			$_POST['DeliveryDays'] = 0;
 		} //!isset($_POST['DeliveryDays'])
 		if (!isset($_SESSION['Items' . $identifier])) {
-			$myrow = DB_fetch_row($result);
-			$_SESSION['Items' . $identifier]->DeliverTo = $myrow[0];
-			$_SESSION['Items' . $identifier]->DelAdd1 = $myrow[1];
-			$_SESSION['Items' . $identifier]->DelAdd2 = $myrow[2];
-			$_SESSION['Items' . $identifier]->DelAdd3 = $myrow[3];
-			$_SESSION['Items' . $identifier]->DelAdd4 = $myrow[4];
-			$_SESSION['Items' . $identifier]->DelAdd5 = $myrow[5];
-			$_SESSION['Items' . $identifier]->DelAdd6 = $myrow[6];
-			$_SESSION['Items' . $identifier]->PhoneNo = $myrow[7];
-			$_SESSION['Items' . $identifier]->Email = $myrow[8];
-			$_SESSION['Items' . $identifier]->Location = $myrow[9];
-			$_SESSION['Items' . $identifier]->ShipVia = $myrow[10];
-			$_SESSION['Items' . $identifier]->DeliverBlind = $myrow[11];
-			$_SESSION['Items' . $identifier]->SpecialInstructions = $myrow[12];
-			$_SESSION['Items' . $identifier]->DeliveryDays = $myrow[13];
-			$_SESSION['Items' . $identifier]->SalesPerson = $myrow[14];
+			$MyRow = DB_fetch_row($result);
+			$_SESSION['Items' . $identifier]->DeliverTo = $MyRow[0];
+			$_SESSION['Items' . $identifier]->DelAdd1 = $MyRow[1];
+			$_SESSION['Items' . $identifier]->DelAdd2 = $MyRow[2];
+			$_SESSION['Items' . $identifier]->DelAdd3 = $MyRow[3];
+			$_SESSION['Items' . $identifier]->DelAdd4 = $MyRow[4];
+			$_SESSION['Items' . $identifier]->DelAdd5 = $MyRow[5];
+			$_SESSION['Items' . $identifier]->DelAdd6 = $MyRow[6];
+			$_SESSION['Items' . $identifier]->PhoneNo = $MyRow[7];
+			$_SESSION['Items' . $identifier]->Email = $MyRow[8];
+			$_SESSION['Items' . $identifier]->Location = $MyRow[9];
+			$_SESSION['Items' . $identifier]->ShipVia = $MyRow[10];
+			$_SESSION['Items' . $identifier]->DeliverBlind = $MyRow[11];
+			$_SESSION['Items' . $identifier]->SpecialInstructions = $MyRow[12];
+			$_SESSION['Items' . $identifier]->DeliveryDays = $MyRow[13];
+			$_SESSION['Items' . $identifier]->SalesPerson = $MyRow[14];
 			$_SESSION['Items' . $identifier]->DeliveryDate = $_POST['DeliveryDate'];
 			$_SESSION['Items' . $identifier]->QuoteDate = $_POST['QuoteDate'];
 			$_SESSION['Items' . $identifier]->ConfirmedDate = $_POST['ConfirmedDate'];
@@ -304,8 +304,8 @@ if (isset($_POST['ProcessOrder'])) {
 		$TermsResult = DB_query($sql, $ErrMsg, $DbgMsg);
 
 
-		$myrow = DB_fetch_array($TermsResult);
-		if ($myrow['daysbeforedue'] == 0 and $myrow['dayinfollowingmonth'] == 0) {
+		$MyRow = DB_fetch_array($TermsResult);
+		if ($MyRow['daysbeforedue'] == 0 and $MyRow['dayinfollowingmonth'] == 0) {
 			/* THIS IS A CASH SALE NEED TO GO OFF TO 3RD PARTY SITE SENDING MERCHANT ACCOUNT DETAILS AND CHECK FOR APPROVAL FROM 3RD PARTY SITE BEFORE CONTINUING TO PROCESS THE ORDER
 
 			UNTIL ONLINE CREDIT CARD PROCESSING IS PERFORMED ASSUME OK TO PROCESS
@@ -1027,14 +1027,14 @@ if ($_SESSION['RestrictLocations'] == 0) {
 }
 $StkLocsResult = DB_query($sql, $ErrMsg, $DbgMsg);
 
-while ($myrow = DB_fetch_array($StkLocsResult)) {
-	if ($_SESSION['Items' . $identifier]->Location == $myrow['loccode']) {
-		echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
-	} //$_SESSION['Items' . $identifier]->Location == $myrow['loccode']
+while ($MyRow = DB_fetch_array($StkLocsResult)) {
+	if ($_SESSION['Items' . $identifier]->Location == $MyRow['loccode']) {
+		echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
+	} //$_SESSION['Items' . $identifier]->Location == $MyRow['loccode']
 	else {
-		echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+		echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 	}
-} //$myrow = DB_fetch_array($StkLocsResult)
+} //$MyRow = DB_fetch_array($StkLocsResult)
 
 echo '</select></td></tr>';
 
@@ -1193,14 +1193,14 @@ $DbgMsg = _('SQL used to retrieve the shipper details was') . ':';
 
 $sql = "SELECT shipper_id, shippername FROM shippers";
 $ShipperResults = DB_query($sql, $ErrMsg, $DbgMsg);
-while ($myrow = DB_fetch_array($ShipperResults)) {
-	if ($myrow['shipper_id'] == $_POST['ShipVia']) {
-		echo '<option selected="selected" value="' . $myrow['shipper_id'] . '">' . $myrow['shippername'] . '</option>';
-	} //$myrow['shipper_id'] == $_POST['ShipVia']
+while ($MyRow = DB_fetch_array($ShipperResults)) {
+	if ($MyRow['shipper_id'] == $_POST['ShipVia']) {
+		echo '<option selected="selected" value="' . $MyRow['shipper_id'] . '">' . $MyRow['shippername'] . '</option>';
+	} //$MyRow['shipper_id'] == $_POST['ShipVia']
 	else {
-		echo '<option value="' . $myrow['shipper_id'] . '">' . $myrow['shippername'] . '</option>';
+		echo '<option value="' . $MyRow['shipper_id'] . '">' . $MyRow['shippername'] . '</option>';
 	}
-} //$myrow = DB_fetch_array($ShipperResults)
+} //$MyRow = DB_fetch_array($ShipperResults)
 
 echo '</select></td></tr>';
 

@@ -316,11 +316,11 @@ $SuppResult = DB_query($sql);
 
 echo '<option value="">' . _('Not Yet Selected') . '</option>';
 
-while ($myrow = DB_fetch_array($SuppResult)) {
-	if (isset($_POST['Supplier']) and $_POST['Supplier'] == $myrow['supplierid']) {
-		echo '<option selected="selected" value="' . $myrow['supplierid'] . '">' . $myrow['suppname'] . '</option>';
+while ($MyRow = DB_fetch_array($SuppResult)) {
+	if (isset($_POST['Supplier']) and $_POST['Supplier'] == $MyRow['supplierid']) {
+		echo '<option selected="selected" value="' . $MyRow['supplierid'] . '">' . $MyRow['suppname'] . '</option>';
 	} else {
-		echo '<option value="' . $myrow['supplierid'] . '">' . $myrow['suppname'] . '</option>';
+		echo '<option value="' . $MyRow['supplierid'] . '">' . $MyRow['suppname'] . '</option>';
 	}
 }
 echo '</select></td></tr>';

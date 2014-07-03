@@ -43,8 +43,8 @@ if (isset($_POST['submit'])) {
 				AND salestype='" . $_POST['SalesType'] . "'";
 
 		$result = DB_query($sql);
-		$myrow = DB_fetch_row($result);
-		if ($myrow[0] == 0) {
+		$MyRow = DB_fetch_row($result);
+		if ($MyRow[0] == 0) {
 			$sql = "INSERT INTO salesglpostings (
 						salesglcode,
 						discountglcode,
@@ -119,7 +119,7 @@ if (!isset($SelectedSalesPostingID)) {
 			</tr>';
 		$k = 0; //row colour counter
 
-		while ($myrow = DB_fetch_row($result)) {
+		while ($MyRow = DB_fetch_row($result)) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;
@@ -135,7 +135,7 @@ if (!isset($SelectedSalesPostingID)) {
 					<td>%s</td>
 					<td><a href="%sSelectedSalesPostingID=%s">' . _('Edit') . '</a></td>
 					<td><a href="%sSelectedSalesPostingID=%s&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this sales GL posting record?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-				</tr>', $myrow[1], $myrow[2], $myrow[3], htmlspecialchars($myrow[4], ENT_QUOTES, 'UTF-8'), $myrow[5], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow[0], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow[0]);
+				</tr>', $MyRow[1], $MyRow[2], $MyRow[3], htmlspecialchars($MyRow[4], ENT_QUOTES, 'UTF-8'), $MyRow[5], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow[0], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow[0]);
 		}
 	}
 
@@ -227,7 +227,7 @@ if (!isset($SelectedSalesPostingID)) {
 
 		$k = 0; //row colour counter
 
-		while ($myrow = DB_fetch_row($result)) {
+		while ($MyRow = DB_fetch_row($result)) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;
@@ -242,7 +242,7 @@ if (!isset($SelectedSalesPostingID)) {
 				<td>%s</td>
 				<td>%s</td>
 				<td><a href="%sSelectedSalesPostingID=%s">' . _('Edit') . '</a></td>
-				<td><a href="%sSelectedSalesPostingID=%s&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this sales GL posting record?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td></tr>', $myrow[1], $myrow[2], $myrow[3], htmlspecialchars($myrow[4], ENT_QUOTES, 'UTF-8'), $myrow[5], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow[0], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow[0]);
+				<td><a href="%sSelectedSalesPostingID=%s&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this sales GL posting record?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td></tr>', $MyRow[1], $MyRow[2], $MyRow[3], htmlspecialchars($MyRow[4], ENT_QUOTES, 'UTF-8'), $MyRow[5], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow[0], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow[0]);
 		}
 		//END WHILE LIST LOOP
 		echo '</table>';
@@ -274,13 +274,13 @@ if (!isset($_GET['delete'])) {
 			WHERE salesglpostings.id='" . $SelectedSalesPostingID . "'";
 
 		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($result);
 
-		$_POST['SalesGLCode'] = $myrow['salesglcode'];
-		$_POST['DiscountGLCode'] = $myrow['discountglcode'];
-		$_POST['Area'] = $myrow['area'];
-		$_POST['StkCat'] = $myrow['stkcat'];
-		$_POST['SalesType'] = $myrow['salestype'];
+		$_POST['SalesGLCode'] = $MyRow['salesglcode'];
+		$_POST['DiscountGLCode'] = $MyRow['discountglcode'];
+		$_POST['Area'] = $MyRow['area'];
+		$_POST['StkCat'] = $MyRow['stkcat'];
+		$_POST['SalesType'] = $MyRow['salestype'];
 		DB_free_result($result);
 
 		echo '<input type="hidden" name="SelectedSalesPostingID" value="' . $SelectedSalesPostingID . '" />';
@@ -299,13 +299,13 @@ if (!isset($_GET['delete'])) {
 				<select required="required" minlength="1" name="Area">
 					<option value="AN">' . _('Any Other') . '</option>';
 
-	while ($myrow = DB_fetch_array($result)) {
-		if (isset($_POST['Area']) and $myrow['areacode'] == $_POST['Area']) {
+	while ($MyRow = DB_fetch_array($result)) {
+		if (isset($_POST['Area']) and $MyRow['areacode'] == $_POST['Area']) {
 			echo '<option selected="selected" value="';
 		} else {
 			echo '<option value="';
 		}
-		echo $myrow['areacode'] . '">' . $myrow['areadescription'] . '</option>';
+		echo $MyRow['areacode'] . '">' . $MyRow['areadescription'] . '</option>';
 
 	} //end while loop
 
@@ -323,14 +323,14 @@ if (!isset($_GET['delete'])) {
 				<select required="required" minlength="1" name="StkCat">
 					<option value="ANY">' . _('Any Other') . '</option>';
 
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 
-		if (isset($_POST['StkCat']) and $myrow['categoryid'] == $_POST['StkCat']) {
+		if (isset($_POST['StkCat']) and $MyRow['categoryid'] == $_POST['StkCat']) {
 			echo '<option selected="selected" value="';
 		} else {
 			echo '<option value="';
 		}
-		echo $myrow['categoryid'] . '">' . $myrow['categorydescription'] . '</option>';
+		echo $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 
 	} //end while loop
 
@@ -350,13 +350,13 @@ if (!isset($_GET['delete'])) {
 			<td><select required="required" minlength="1" name="SalesType">';
 	echo '<option value="AN">' . _('Any Other') . '</option>';
 
-	while ($myrow = DB_fetch_array($result)) {
-		if (isset($_POST['SalesType']) and $myrow['typeabbrev'] == $_POST['SalesType']) {
+	while ($MyRow = DB_fetch_array($result)) {
+		if (isset($_POST['SalesType']) and $MyRow['typeabbrev'] == $_POST['SalesType']) {
 			echo '<option selected="selected" value="';
 		} else {
 			echo '<option value="';
 		}
-		echo $myrow['typeabbrev'] . '">' . $myrow['sales_type'] . '</option>';
+		echo $MyRow['typeabbrev'] . '">' . $MyRow['sales_type'] . '</option>';
 
 	} //end while loop
 
@@ -379,13 +379,13 @@ if (!isset($_GET['delete'])) {
 
 	$result = DB_query($SQL);
 
-	while ($myrow = DB_fetch_array($result)) {
-		if (isset($_POST['SalesGLCode']) and $myrow['accountcode'] == $_POST['SalesGLCode']) {
+	while ($MyRow = DB_fetch_array($result)) {
+		if (isset($_POST['SalesGLCode']) and $MyRow['accountcode'] == $_POST['SalesGLCode']) {
 			echo '<option selected="selected" value="';
 		} else {
 			echo '<option value="';
 		}
-		echo $myrow['accountcode'] . '">' . $myrow['accountcode'] . ' - ' . htmlspecialchars($myrow['accountname'], ENT_QUOTES, 'UTF-8', false) . '</option>';
+		echo $MyRow['accountcode'] . '">' . $MyRow['accountcode'] . ' - ' . htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false) . '</option>';
 
 	} //end while loop
 
@@ -397,13 +397,13 @@ if (!isset($_GET['delete'])) {
 			<td>
 				<select required="required" minlength="1" name="DiscountGLCode">';
 
-	while ($myrow = DB_fetch_array($result)) {
-		if (isset($_POST['DiscountGLCode']) and $myrow['accountcode'] == $_POST['DiscountGLCode']) {
+	while ($MyRow = DB_fetch_array($result)) {
+		if (isset($_POST['DiscountGLCode']) and $MyRow['accountcode'] == $_POST['DiscountGLCode']) {
 			echo '<option selected="selected" value="';
 		} else {
 			echo '<option value="';
 		}
-		echo $myrow['accountcode'] . '">' . $myrow['accountcode'] . ' - ' . htmlspecialchars($myrow['accountname'], ENT_QUOTES, 'UTF-8', false) . '</option>';
+		echo $MyRow['accountcode'] . '">' . $MyRow['accountcode'] . ' - ' . htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false) . '</option>';
 
 	} //end while loop
 

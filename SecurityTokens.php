@@ -32,9 +32,9 @@ if (isset($_GET['SelectedToken'])) {
 				FROM securitytokens
 				WHERE tokenid='" . $_GET['SelectedToken'] . "'";
 		$Result = DB_query($sql);
-		$myrow = DB_fetch_array($Result);
-		$_POST['TokenID'] = $myrow['tokenid'];
-		$_POST['TokenDescription'] = $myrow['tokenname'];
+		$MyRow = DB_fetch_array($Result);
+		$_POST['TokenID'] = $MyRow['tokenid'];
+		$_POST['TokenDescription'] = $MyRow['tokenname'];
 	}
 }
 if (!isset($_POST['TokenID'])) {
@@ -124,12 +124,12 @@ echo '<tr>
 $sql = "SELECT tokenid, tokenname FROM securitytokens WHERE tokenid<1000 ORDER BY tokenid";
 $Result = DB_query($sql);
 
-while ($myrow = DB_fetch_array($Result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	echo '<tr>
-			<td>' . $myrow['tokenid'] . '</td>
-			<td>' . htmlspecialchars($myrow['tokenname'], ENT_QUOTES, 'UTF-8') . '</td>
-			<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedToken=' . $myrow['tokenid'] . '&amp;Action=edit">' . _('Edit') . '</a></td>
-			<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedToken=' . $myrow['tokenid'] . '&amp;Action=delete" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this security token?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+			<td>' . $MyRow['tokenid'] . '</td>
+			<td>' . htmlspecialchars($MyRow['tokenname'], ENT_QUOTES, 'UTF-8') . '</td>
+			<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedToken=' . $MyRow['tokenid'] . '&amp;Action=edit">' . _('Edit') . '</a></td>
+			<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedToken=' . $MyRow['tokenid'] . '&amp;Action=delete" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this security token?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
 		</tr>';
 }
 

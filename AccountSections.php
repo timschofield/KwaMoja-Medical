@@ -117,19 +117,19 @@ if (isset($_POST['submit'])) {
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'accountgroups'
 	$sql = "SELECT COUNT(sectioninaccounts) AS sections FROM accountgroups WHERE sectioninaccounts='" . $_GET['SelectedSectionID'] . "'";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
-	if ($myrow['sections'] > 0) {
+	$MyRow = DB_fetch_array($result);
+	if ($MyRow['sections'] > 0) {
 		prnMsg(_('Cannot delete this account section because general ledger accounts groups have been created using this section'), 'warn');
 		echo '<div>';
-		echo '<br />' . _('There are') . ' ' . $myrow['sections'] . ' ' . _('general ledger accounts groups that refer to this account section');
+		echo '<br />' . _('There are') . ' ' . $MyRow['sections'] . ' ' . _('general ledger accounts groups that refer to this account section');
 		echo '</div>';
 
 	} else {
 		//Fetch section name
 		$sql = "SELECT sectionname FROM accountsection WHERE sectionid='" . $_GET['SelectedSectionID'] . "'";
 		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
-		$SectionName = $myrow['sectionname'];
+		$MyRow = DB_fetch_array($result);
+		$SectionName = $MyRow['sectionname'];
 
 		$sql = "DELETE FROM accountsection WHERE sectionid='" . $_GET['SelectedSectionID'] . "'";
 		$result = DB_query($sql);
@@ -169,7 +169,7 @@ if (!isset($_GET['SelectedSectionID']) and !isset($_POST['SelectedSectionID'])) 
 			</tr>';
 
 	$k = 0; //row colour counter
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -179,12 +179,12 @@ if (!isset($_GET['SelectedSectionID']) and !isset($_POST['SelectedSectionID'])) 
 			$k++;
 		}
 
-		echo '<td class="number">' . $myrow['sectionid'] . '</td><td>' . $myrow['sectionname'] . '</td>';
-		echo '<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?SelectedSectionID=' . urlencode($myrow['sectionid']), ENT_QUOTES, 'UTF-8') . '">' . _('Edit') . '</a></td>';
-		if ($myrow['sectionid'] == '1' or $myrow['sectionid'] == '2') {
+		echo '<td class="number">' . $MyRow['sectionid'] . '</td><td>' . $MyRow['sectionname'] . '</td>';
+		echo '<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?SelectedSectionID=' . urlencode($MyRow['sectionid']), ENT_QUOTES, 'UTF-8') . '">' . _('Edit') . '</a></td>';
+		if ($MyRow['sectionid'] == '1' or $MyRow['sectionid'] == '2') {
 			echo '<td><b>' . _('Restricted') . '</b></td>';
 		} else {
-			echo '<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?SelectedSectionID=' . urlencode($myrow['sectionid']) . '&delete=1', ENT_QUOTES, 'UTF-8') . '">' . _('Delete') . '</a></td>';
+			echo '<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?SelectedSectionID=' . urlencode($MyRow['sectionid']) . '&delete=1', ENT_QUOTES, 'UTF-8') . '">' . _('Delete') . '</a></td>';
 		}
 		echo '</tr>';
 	} //END WHILE LIST LOOP
@@ -215,10 +215,10 @@ if (!isset($_GET['delete'])) {
 			prnMsg(_('Could not retrieve the requested section please try again.'), 'warn');
 			unset($_GET['SelectedSectionID']);
 		} else {
-			$myrow = DB_fetch_array($result);
+			$MyRow = DB_fetch_array($result);
 
-			$_POST['SectionID'] = $myrow['sectionid'];
-			$_POST['SectionName'] = $myrow['sectionname'];
+			$_POST['SectionID'] = $MyRow['sectionid'];
+			$_POST['SectionName'] = $MyRow['sectionname'];
 
 			echo '<input type="hidden" name="SelectedSectionID" value="' . $_POST['SectionID'] . '" />';
 			echo '<table class="selection">

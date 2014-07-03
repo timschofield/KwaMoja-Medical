@@ -46,8 +46,8 @@ if (isset($_POST['Update']) and $_POST['RowCounter'] > 1) {
 						WHERE banktransid='" . $_POST['BankTrans_' . $Counter] . "'";
 			$ErrMsg = _('Could not retrieve transaction information');
 			$result = DB_query($sql, $ErrMsg);
-			$myrow = DB_fetch_array($result);
-			$AmountCleared = round($myrow[0] / $myrow[1], 2);
+			$MyRow = DB_fetch_array($result);
+			$AmountCleared = round($MyRow[0] / $MyRow[1], 2);
 			/*Update the banktrans recoord to match it off */
 			$sql = "UPDATE banktrans SET amountcleared= " . $AmountCleared . "
 									WHERE banktransid='" . $_POST['BankTrans_' . $Counter] . "'";
@@ -96,12 +96,12 @@ $sql = "SELECT bankaccounts.accountcode,
 			WHERE bankaccountusers.userid = '" . $_SESSION['UserID'] . "'
 			ORDER BY bankaccounts.bankaccountname";
 $resultBankActs = DB_query($sql);
-while ($myrow = DB_fetch_array($resultBankActs)) {
-	if (isset($_POST['BankAccount']) and $myrow['accountcode'] == $_POST['BankAccount']) {
+while ($MyRow = DB_fetch_array($resultBankActs)) {
+	if (isset($_POST['BankAccount']) and $MyRow['accountcode'] == $_POST['BankAccount']) {
 
-		echo '<option selected="selected" value="' . $myrow['accountcode'] . '">' . $myrow['bankaccountname'] . '</option>';
+		echo '<option selected="selected" value="' . $MyRow['accountcode'] . '">' . $MyRow['bankaccountname'] . '</option>';
 	} else {
-		echo '<option value="' . $myrow['accountcode'] . '">' . $myrow['bankaccountname'] . '</option>';
+		echo '<option value="' . $MyRow['accountcode'] . '">' . $MyRow['bankaccountname'] . '</option>';
 	}
 }
 
@@ -270,12 +270,12 @@ if ($InputError != 1 and isset($_POST['BankAccount']) and $_POST['BankAccount'] 
 	$k = 0; //row colour counter
 	$i = 1; //no of rows counter
 
-	while ($myrow = DB_fetch_array($PaymentsResult)) {
+	while ($MyRow = DB_fetch_array($PaymentsResult)) {
 
-		$DisplayTranDate = ConvertSQLDate($myrow['transdate']);
-		$Outstanding = $myrow['amt'] - $myrow['amountcleared'];
-		if ($myrow['ref'] == '') {
-			$myrow['ref'] = _('N/A');
+		$DisplayTranDate = ConvertSQLDate($MyRow['transdate']);
+		$Outstanding = $MyRow['amt'] - $MyRow['amountcleared'];
+		if ($MyRow['ref'] == '') {
+			$MyRow['ref'] = _('N/A');
 		}
 		if (ABS($Outstanding) < 0.009) {
 			/*the payment is cleared dont show the check box*/
@@ -288,7 +288,7 @@ if ($InputError != 1 and isset($_POST['BankAccount']) and $_POST['BankAccount'] 
 						<td class="number">%s</td>
 						<td colspan="2">%s</td>
 						<td><input type="checkbox" name="Unclear_%s" /><input type="hidden" name="BankTrans_%s" value="%s" /></td>
-					</tr>', $myrow['ref'], $myrow['banktranstype'], $DisplayTranDate, locale_number_format($myrow['amt'], $CurrDecimalPlaces), locale_number_format($Outstanding, $CurrDecimalPlaces), _('Unclear'), $i, $i, $myrow['banktransid']);
+					</tr>', $MyRow['ref'], $MyRow['banktranstype'], $DisplayTranDate, locale_number_format($MyRow['amt'], $CurrDecimalPlaces), locale_number_format($Outstanding, $CurrDecimalPlaces), _('Unclear'), $i, $i, $MyRow['banktransid']);
 
 		} else {
 			if ($k == 1) {
@@ -305,7 +305,7 @@ if ($InputError != 1 and isset($_POST['BankAccount']) and $_POST['BankAccount'] 
 					<td class="number">%s</td>
 					<td><input type="checkbox" name="Clear_%s" /><input type="hidden" name="BankTrans_%s" value="%s" /></td>
 					<td colspan="2"><input type="text" minlength="0" maxlength="15" size="15" class="number" name="AmtClear_%s" /></td>
-				</tr>', $myrow['ref'], $myrow['banktranstype'], $DisplayTranDate, locale_number_format($myrow['amt'], $CurrDecimalPlaces), locale_number_format($Outstanding, $CurrDecimalPlaces), $i, $i, $myrow['banktransid'], $i);
+				</tr>', $MyRow['ref'], $MyRow['banktranstype'], $DisplayTranDate, locale_number_format($MyRow['amt'], $CurrDecimalPlaces), locale_number_format($Outstanding, $CurrDecimalPlaces), $i, $i, $MyRow['banktransid'], $i);
 		}
 		$i++;
 	}

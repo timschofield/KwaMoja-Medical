@@ -46,8 +46,8 @@ if (isset($_POST['submit'])) {
 				WHERE paymentid <> '" . $SelectedPaymentID . "'
 				AND paymentname " . LIKE . " '" . $_POST['MethodName'] . "'";
 		$result = DB_query($sql);
-		$myrow = DB_fetch_row($result);
-		if ($myrow[0] > 0) {
+		$MyRow = DB_fetch_row($result);
+		if ($MyRow[0] > 0) {
 			$InputError = 1;
 			prnMsg(_('The payment method can not be renamed because another with the same name already exists.'), 'error');
 		} else {
@@ -57,8 +57,8 @@ if (isset($_POST['submit'])) {
 					WHERE paymentid = '" . $SelectedPaymentID . "'";
 			$result = DB_query($sql);
 			if (DB_num_rows($result) != 0) {
-				$myrow = DB_fetch_row($result);
-				$OldName = $myrow[0];
+				$MyRow = DB_fetch_row($result);
+				$OldName = $MyRow[0];
 				$sql = "UPDATE paymentmethods
 						SET paymentname='" . $_POST['MethodName'] . "',
 							paymenttype = '" . $_POST['ForPayment'] . "',
@@ -79,8 +79,8 @@ if (isset($_POST['submit'])) {
 		$sql = "SELECT count(*) FROM paymentmethods
 				WHERE paymentname LIKE'" . $_POST['MethodName'] . "'";
 		$result = DB_query($sql);
-		$myrow = DB_fetch_row($result);
-		if ($myrow[0] > 0) {
+		$MyRow = DB_fetch_row($result);
+		if ($MyRow[0] > 0) {
 			$InputError = 1;
 			prnMsg(_('The payment method can not be created because another with the same name already exists.'), 'error');
 		} else {
@@ -123,15 +123,15 @@ if (isset($_POST['submit'])) {
 		// This is probably the safest way there is
 		prnMsg(_('Cannot delete this payment method because it no longer exist'), 'warn');
 	} else {
-		$myrow = DB_fetch_row($result);
-		$OldMeasureName = $myrow[0];
+		$MyRow = DB_fetch_row($result);
+		$OldMeasureName = $MyRow[0];
 		$sql = "SELECT COUNT(*) FROM banktrans
 				WHERE banktranstype LIKE '" . DB_escape_string($OldMeasureName) . "'";
 		$result = DB_query($sql);
-		$myrow = DB_fetch_row($result);
-		if ($myrow[0] > 0) {
+		$MyRow = DB_fetch_row($result);
+		if ($MyRow[0] > 0) {
 			prnMsg(_('Cannot delete this payment method because bank transactions have been created using this payment method'), 'warn');
-			echo '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('bank transactions that refer to this payment method') . '</font>';
+			echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('bank transactions that refer to this payment method') . '</font>';
 		} else {
 			$sql = "DELETE FROM paymentmethods WHERE paymentname " . LIKE . " '" . DB_escape_string($OldMeasureName) . "'";
 			$result = DB_query($sql);
@@ -182,7 +182,7 @@ if (!isset($SelectedPaymentID)) {
 		</tr>';
 
 	$k = 0; //row colour counter
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -192,13 +192,13 @@ if (!isset($SelectedPaymentID)) {
 			$k++;
 		}
 
-		echo '<td>' . $myrow['paymentname'] . '</td>
-				<td class="centre">' . ($myrow['paymenttype'] ? _('Yes') : _('No')) . '</td>
-				<td class="centre">' . ($myrow['receipttype'] ? _('Yes') : _('No')) . '</td>
-				<td class="centre">' . ($myrow['usepreprintedstationery'] ? _('Yes') : _('No')) . '</td>
-				<td class="centre">' . ($myrow['opencashdrawer'] ? _('Yes') : _('No')) . '</td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedPaymentID=' . urlencode($myrow['paymentid']) . '">' . _('Edit') . '</a></td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedPaymentID=' . urlencode($myrow['paymentid']) . '&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this payment method?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+		echo '<td>' . $MyRow['paymentname'] . '</td>
+				<td class="centre">' . ($MyRow['paymenttype'] ? _('Yes') : _('No')) . '</td>
+				<td class="centre">' . ($MyRow['receipttype'] ? _('Yes') : _('No')) . '</td>
+				<td class="centre">' . ($MyRow['usepreprintedstationery'] ? _('Yes') : _('No')) . '</td>
+				<td class="centre">' . ($MyRow['opencashdrawer'] ? _('Yes') : _('No')) . '</td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedPaymentID=' . urlencode($MyRow['paymentid']) . '">' . _('Edit') . '</a></td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedPaymentID=' . urlencode($MyRow['paymentid']) . '&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this payment method?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
 			</tr>';
 
 	} //END WHILE LIST LOOP
@@ -232,14 +232,14 @@ if (!isset($_GET['delete'])) {
 			prnMsg(_('Could not retrieve the requested payment method, please try again.'), 'warn');
 			unset($SelectedPaymentID);
 		} else {
-			$myrow = DB_fetch_array($result);
+			$MyRow = DB_fetch_array($result);
 
-			$_POST['MethodID'] = $myrow['paymentid'];
-			$_POST['MethodName'] = $myrow['paymentname'];
-			$_POST['ForPayment'] = $myrow['paymenttype'];
-			$_POST['ForReceipt'] = $myrow['receipttype'];
-			$_POST['UsePrePrintedStationery'] = $myrow['usepreprintedstationery'];
-			$_POST['OpenCashDrawer'] = $myrow['opencashdrawer'];
+			$_POST['MethodID'] = $MyRow['paymentid'];
+			$_POST['MethodName'] = $MyRow['paymentname'];
+			$_POST['ForPayment'] = $MyRow['paymenttype'];
+			$_POST['ForReceipt'] = $MyRow['receipttype'];
+			$_POST['UsePrePrintedStationery'] = $MyRow['usepreprintedstationery'];
+			$_POST['OpenCashDrawer'] = $MyRow['opencashdrawer'];
 
 			echo '<input type="hidden" name="SelectedPaymentID" value="' . $_POST['MethodID'] . '" />';
 			echo '<table class="selection">';

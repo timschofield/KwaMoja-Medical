@@ -26,15 +26,15 @@ $sql = "SELECT typeid,
 $resultTypes = DB_query($sql);
 
 echo '<option value="All">' . _('All') . '</option>';
-while ($myrow = DB_fetch_array($resultTypes)) {
+while ($MyRow = DB_fetch_array($resultTypes)) {
 	if (isset($_POST['TransType'])) {
-		if ($myrow['typeid'] == $_POST['TransType']) {
-			echo '<option selected="selected" value="' . $myrow['typeid'] . '">' . $myrow['typename'] . '</option>';
+		if ($MyRow['typeid'] == $_POST['TransType']) {
+			echo '<option selected="selected" value="' . $MyRow['typeid'] . '">' . $MyRow['typename'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['typeid'] . '">' . $myrow['typename'] . '</option>';
+			echo '<option value="' . $MyRow['typeid'] . '">' . $MyRow['typename'] . '</option>';
 		}
 	} else {
-		echo '<option value="' . $myrow['typeid'] . '">' . $myrow['typename'] . '</option>';
+		echo '<option value="' . $MyRow['typeid'] . '">' . $MyRow['typename'] . '</option>';
 	}
 }
 echo '</select></td>';
@@ -109,7 +109,7 @@ if (isset($_POST['ShowResults']) and $_POST['TransType'] != '') {
 
 	$k = 0; //row colour counter
 
-	while ($myrow = DB_fetch_array($TransResult)) {
+	while ($MyRow = DB_fetch_array($TransResult)) {
 
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -129,7 +129,7 @@ if (isset($_POST['ShowResults']) and $_POST['TransType'] != '') {
 				<td class="number">%s</td>
 				<td class="number">%s</td>
 				<td>%s</td>
-				</tr>', $myrow['typename'], $myrow['transno'], $myrow['suppreference'], ConvertSQLDate($myrow['trandate']), $myrow['supplierno'] . ' - ' . $myrow['suppname'], $myrow['transtext'], ConvertSQLDate($myrow['duedate']), locale_number_format($myrow['rate'], 'Variable'), locale_number_format($myrow['totalamt'], $myrow['currdecimalplaces']), $myrow['currcode']);
+				</tr>', $MyRow['typename'], $MyRow['transno'], $MyRow['suppreference'], ConvertSQLDate($MyRow['trandate']), $MyRow['supplierno'] . ' - ' . $MyRow['suppname'], $MyRow['transtext'], ConvertSQLDate($MyRow['duedate']), locale_number_format($MyRow['rate'], 'Variable'), locale_number_format($MyRow['totalamt'], $MyRow['currdecimalplaces']), $MyRow['currcode']);
 
 
 		$GLTransResult = DB_query("SELECT account,
@@ -138,8 +138,8 @@ if (isset($_POST['ShowResults']) and $_POST['TransType'] != '') {
 										amount
 									FROM gltrans INNER JOIN chartmaster
 									ON gltrans.account=chartmaster.accountcode
-									WHERE type='" . $myrow['type'] . "'
-									AND typeno='" . $myrow['transno'] . "'", _('Could not retrieve the GL transactions for this AP transaction'));
+									WHERE type='" . $MyRow['type'] . "'
+									AND typeno='" . $MyRow['transno'] . "'", _('Could not retrieve the GL transactions for this AP transaction'));
 
 		if (DB_num_rows($GLTransResult) == 0) {
 			echo '<tr>

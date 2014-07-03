@@ -235,7 +235,7 @@ echo '<table class="selection">
 		</tr>';
 
 $k = 0; //row colour counter
-while ($myrow = DB_fetch_array($TransResult)) {
+while ($MyRow = DB_fetch_array($TransResult)) {
 
 	if ($k == 1) {
 		echo '<tr class="EvenTableRows">';
@@ -245,7 +245,7 @@ while ($myrow = DB_fetch_array($TransResult)) {
 		$k = 1;
 	}
 
-	$FormatedTranDate = ConvertSQLDate($myrow['trandate']);
+	$FormatedTranDate = ConvertSQLDate($MyRow['trandate']);
 
 	if ($_SESSION['InvoicePortraitFormat'] == 1) { //Invoice/credits in portrait
 		$PrintCustomerTransactionScript = 'PrintCustTransPortrait.php';
@@ -289,7 +289,7 @@ while ($myrow = DB_fetch_array($TransResult)) {
 									</td>';
 
 	/* assumed allowed page security token 3 allows the user to create credits for invoices */
-	if (in_array($_SESSION['PageSecurityArray']['Credit_Invoice.php'], $_SESSION['AllowedPageSecurityTokens']) and $myrow['type'] == 10) {
+	if (in_array($_SESSION['PageSecurityArray']['Credit_Invoice.php'], $_SESSION['AllowedPageSecurityTokens']) and $MyRow['type'] == 10) {
 		/*Show a link to allow an invoice to be credited */
 
 		/* assumed allowed page security token 8 allows the user to see GL transaction information */
@@ -305,38 +305,38 @@ while ($myrow = DB_fetch_array($TransResult)) {
 					</td>
 				</tr>',
 			//$BaseFormatString parameters
-				$myrow['typename'],
-				$myrow['transno'],
-				ConvertSQLDate($myrow['trandate']),
-				$myrow['branchcode'],
-				$myrow['reference'],
-				$myrow['customerref'],
-				$myrow['invtext'],
-				$myrow['order_'],
-				locale_number_format($myrow['totalamount'],
+				$MyRow['typename'],
+				$MyRow['transno'],
+				ConvertSQLDate($MyRow['trandate']),
+				$MyRow['branchcode'],
+				$MyRow['reference'],
+				$MyRow['customerref'],
+				$MyRow['invtext'],
+				$MyRow['order_'],
+				locale_number_format($MyRow['totalamount'],
 				$CustomerRecord['decimalplaces']),
-				locale_number_format($myrow['allocated'],
+				locale_number_format($MyRow['allocated'],
 				$CustomerRecord['decimalplaces']),
-				locale_number_format($myrow['totalamount'] - $myrow['allocated'], $CustomerRecord['decimalplaces']),
+				locale_number_format($MyRow['totalamount'] - $MyRow['allocated'], $CustomerRecord['decimalplaces']),
 			//$CreditInvoiceFormatString parameters
 				$RootPath,
-				$myrow['transno'],
+				$MyRow['transno'],
 				$RootPath . '/css/' . $Theme . '/images',
 			//$PreviewInvoiceFormatString parameters
 				$RootPath,
-				$myrow['transno'],
+				$MyRow['transno'],
 				$RootPath . '/css/' . $Theme . '/images',
 				$RootPath,
 				$PrintCustomerTransactionScript,
-				$myrow['transno'],
+				$MyRow['transno'],
 				$RootPath,
 				$RootPath,
-				$myrow['transno'],
+				$MyRow['transno'],
 				$RootPath . '/css/' . $Theme . '/images',
 			//Parameter for string for GL Trans Inquiries
 				$RootPath,
-				$myrow['type'],
-				$myrow['transno']);
+				$MyRow['type'],
+				$MyRow['transno']);
 		} else { //user does not have privileges to see GL inquiry stuff
 
 			printf($BaseFormatString .
@@ -344,65 +344,65 @@ while ($myrow = DB_fetch_array($TransResult)) {
 					$PreviewInvoiceFormatString . '
 				</tr>',
 			//BaseFormatString parameters
-				$myrow['typename'],
-				$myrow['transno'],
-				ConvertSQLDate($myrow['trandate']),
-				$myrow['branchcode'],
-				$myrow['reference'],
-				$myrow['customerref'],
-				$myrow['invtext'],
-				$myrow['order_'],
-				locale_number_format($myrow['totalamount'], $CustomerRecord['decimalplaces']),
-				locale_number_format($myrow['allocated'], $CustomerRecord['decimalplaces']),
-				locale_number_format($myrow['totalamount'] - $myrow['allocated'], $CustomerRecord['decimalplaces']),
+				$MyRow['typename'],
+				$MyRow['transno'],
+				ConvertSQLDate($MyRow['trandate']),
+				$MyRow['branchcode'],
+				$MyRow['reference'],
+				$MyRow['customerref'],
+				$MyRow['invtext'],
+				$MyRow['order_'],
+				locale_number_format($MyRow['totalamount'], $CustomerRecord['decimalplaces']),
+				locale_number_format($MyRow['allocated'], $CustomerRecord['decimalplaces']),
+				locale_number_format($MyRow['totalamount'] - $MyRow['allocated'], $CustomerRecord['decimalplaces']),
 			//CreditInvoiceFormatString parameters
 				$RootPath,
-				$myrow['transno'],
+				$MyRow['transno'],
 				$RootPath . '/css/' . $Theme . '/images',
 			//$PreviewInvoiceFormatString parameters
 				$RootPath,
-				$myrow['transno'],
+				$MyRow['transno'],
 				$RootPath . '/css/' . $Theme . '/images',
 				$RootPath,
 				$PrintCustomerTransactionScript,
-				$myrow['transno'],
+				$MyRow['transno'],
 				$RootPath,
 				$RootPath,
-				$myrow['transno'],
+				$MyRow['transno'],
 				$RootPath . '/css/' . $Theme . '/images');
 		}
 
-	} elseif ($myrow['type'] == 10) {
+	} elseif ($MyRow['type'] == 10) {
 		/*its an invoice but not high enough priveliges to credit it */
 
 		printf($BaseFormatString .
 				$PreviewInvoiceFormatString . '
 			</tr>',
 		//$BaseFormatString parameters
-			$myrow['typename'],
-			$myrow['transno'],
-			ConvertSQLDate($myrow['trandate']),
-			$myrow['branchcode'],
-			$myrow['reference'],
-			$myrow['customeref'],
-			$myrow['invtext'],
-			$myrow['order_'],
-			locale_number_format($myrow['totalamount'], $CustomerRecord['decimalplaces']),
-			locale_number_format($myrow['allocated'], $CustomerRecord['decimalplaces']),
-			locale_number_format($myrow['totalamount'] - $myrow['allocated'], $CustomerRecord['decimalplaces']),
+			$MyRow['typename'],
+			$MyRow['transno'],
+			ConvertSQLDate($MyRow['trandate']),
+			$MyRow['branchcode'],
+			$MyRow['reference'],
+			$MyRow['customeref'],
+			$MyRow['invtext'],
+			$MyRow['order_'],
+			locale_number_format($MyRow['totalamount'], $CustomerRecord['decimalplaces']),
+			locale_number_format($MyRow['allocated'], $CustomerRecord['decimalplaces']),
+			locale_number_format($MyRow['totalamount'] - $MyRow['allocated'], $CustomerRecord['decimalplaces']),
 		//$PreviewInvoiceFormatString parameters
 			$RootPath,
-			$myrow['transno'],
+			$MyRow['transno'],
 			$RootPath . '/css/' . $Theme . '/images',
 			$RootPath,
 			$PrintCustomerTransactionScript,
-			$myrow['transno'],
+			$MyRow['transno'],
 			$RootPath,
 			$RootPath,
-			$myrow['transno'],
+			$MyRow['transno'],
 			$RootPath . '/css/' . $Theme . '/images');
 
-	} elseif ($myrow['type'] == 11) {
+	} elseif ($MyRow['type'] == 11) {
 		/*its a credit note */
 		if ($_SESSION['CompanyRecord']['gllink_debtors'] == 1 and in_array(8, $_SESSION['AllowedPageSecurityTokens'])) {
 			printf($BaseFormatString .
@@ -415,34 +415,34 @@ while ($myrow = DB_fetch_array($TransResult)) {
 					</td>
 				</tr>',
 			//$BaseFormatString parameters
-				$myrow['typename'],
-				$myrow['transno'],
-				ConvertSQLDate($myrow['trandate']),
-				$myrow['branchcode'],
-				$myrow['reference'],
-				$myrow['customerref'],
-				$myrow['invtext'],
-				$myrow['order_'],
-				locale_number_format($myrow['totalamount'], $CustomerRecord['decimalplaces']),
-				locale_number_format($myrow['allocated'], $CustomerRecord['decimalplaces']),
-				locale_number_format($myrow['totalamount'] - $myrow['allocated'], $CustomerRecord['decimalplaces']),
+				$MyRow['typename'],
+				$MyRow['transno'],
+				ConvertSQLDate($MyRow['trandate']),
+				$MyRow['branchcode'],
+				$MyRow['reference'],
+				$MyRow['customerref'],
+				$MyRow['invtext'],
+				$MyRow['order_'],
+				locale_number_format($MyRow['totalamount'], $CustomerRecord['decimalplaces']),
+				locale_number_format($MyRow['allocated'], $CustomerRecord['decimalplaces']),
+				locale_number_format($MyRow['totalamount'] - $MyRow['allocated'], $CustomerRecord['decimalplaces']),
 			//$PreviewCreditFormatString parameters
 				$RootPath,
-				$myrow['transno'],
+				$MyRow['transno'],
 				$RootPath . '/css/' . $Theme . '/images',
 				$RootPath,
 				$PrintCustomerTransactionScript,
-				$myrow['transno'],
+				$MyRow['transno'],
 				$RootPath,
 				$RootPath,
-				$myrow['transno'],
+				$MyRow['transno'],
 				$RootPath . '/css/' . $Theme . '/images',
 			// hand coded format string for Allocations and GLTrans Inquiry parameters
 				$RootPath,
-				$myrow['id'],
+				$MyRow['id'],
 				$RootPath,
-				$myrow['type'],
-				$myrow['transno']);
+				$MyRow['type'],
+				$MyRow['transno']);
 		} else {
 			printf($BaseFormatString .
 					$PreviewCreditFormatString . '
@@ -450,34 +450,34 @@ while ($myrow = DB_fetch_array($TransResult)) {
 						<a href="%s/CustomerAllocations.php?AllocTrans=%s">' . _('Allocation') . '<img src="%s/allocation.png" title="' . _('Click to allocate funds') . '" alt="" /></a>
 					</td>
 				</tr>',
-				$myrow['typename'],
-				$myrow['transno'],
-				ConvertSQLDate($myrow['trandate']),
-				$myrow['branchcode'],
-				$myrow['reference'],
-				$myrow['customerref'],
-				$myrow['invtext'],
-				$myrow['order_'],
-				locale_number_format($myrow['totalamount'], $CustomerRecord['decimalplaces']),
-				locale_number_format($myrow['allocated'], $CustomerRecord['decimalplaces']),
-				locale_number_format($myrow['totalamount'] - $myrow['allocated'], $CustomerRecord['decimalplaces']),
+				$MyRow['typename'],
+				$MyRow['transno'],
+				ConvertSQLDate($MyRow['trandate']),
+				$MyRow['branchcode'],
+				$MyRow['reference'],
+				$MyRow['customerref'],
+				$MyRow['invtext'],
+				$MyRow['order_'],
+				locale_number_format($MyRow['totalamount'], $CustomerRecord['decimalplaces']),
+				locale_number_format($MyRow['allocated'], $CustomerRecord['decimalplaces']),
+				locale_number_format($MyRow['totalamount'] - $MyRow['allocated'], $CustomerRecord['decimalplaces']),
 			//$PreviewCreditFormatString parameters
 				$RootPath,
-				$myrow['transno'],
+				$MyRow['transno'],
 				$RootPath . '/css/' . $Theme . '/images',
 				$RootPath,
 				$PrintCustomerTransactionScript,
-				$myrow['transno'],
+				$MyRow['transno'],
 				$RootPath,
 				$RootPath,
-				$myrow['transno'],
+				$MyRow['transno'],
 				$RootPath . '/css/' . $Theme . '/images',
 			//Parameters for hand coded string to show allocations
 				$RootPath,
-				$myrow['id'],
+				$MyRow['id'],
 				$RootPath . '/css/' . $Theme . '/images');
 		}
-	} elseif ($myrow['type'] == 12 and $myrow['totalamount'] < 0) {
+	} elseif ($MyRow['type'] == 12 and $MyRow['totalamount'] < 0) {
 		/*its a receipt  which could have an allocation*/
 
 		//If security token 8 in the allowed page security tokens then assumed ok for GL trans inquiries
@@ -490,42 +490,42 @@ while ($myrow = DB_fetch_array($TransResult)) {
 						<a href="%s/GLTransInquiry.php?TypeID=%s&amp;TransNo=%s">' . _('View GL Entries') . ' <img src="' . $RootPath . '/css/' . $Theme . '/images/gl.png" title="' . _('View the GL Entries') . '" alt="" /></a>
 					</td>
 				</tr>',
-					$myrow['typename'],
-					$myrow['transno'],
-					ConvertSQLDate($myrow['trandate']),
-					$myrow['branchcode'],
-					$myrow['reference'],
-					$myrow['customerref'],
-					$myrow['invtext'],
-					$myrow['order_'],
-					locale_number_format($myrow['totalamount'], $CustomerRecord['decimalplaces']),
-					locale_number_format($myrow['allocated'], $CustomerRecord['decimalplaces']),
-					locale_number_format($myrow['totalamount'] - $myrow['allocated'], $CustomerRecord['decimalplaces']),
+					$MyRow['typename'],
+					$MyRow['transno'],
+					ConvertSQLDate($MyRow['trandate']),
+					$MyRow['branchcode'],
+					$MyRow['reference'],
+					$MyRow['customerref'],
+					$MyRow['invtext'],
+					$MyRow['order_'],
+					locale_number_format($MyRow['totalamount'], $CustomerRecord['decimalplaces']),
+					locale_number_format($MyRow['allocated'], $CustomerRecord['decimalplaces']),
+					locale_number_format($MyRow['totalamount'] - $MyRow['allocated'], $CustomerRecord['decimalplaces']),
 					$RootPath,
-					$myrow['id'],
+					$MyRow['id'],
 					$RootPath,
-					$myrow['type'],
-					$myrow['transno']);
+					$MyRow['type'],
+					$MyRow['transno']);
 		} else { //no permission for GLTrans Inquiries
 			printf($BaseFormatString . '
 					<td>
 						<a href="%s/CustomerAllocations.php?AllocTrans=%s">' . _('Allocation') . '<img src="' . $RootPath . '/css/' . $Theme . '/images/allocation.png" title="' . _('Click to allocate funds') . '" alt="" /></a>
 					</td>
 				</tr>',
-					$myrow['typename'],
-					$myrow['transno'],
-					ConvertSQLDate($myrow['trandate']),
-					$myrow['branchcode'],
-					$myrow['reference'],
-					$myrow['invtext'],
-					$myrow['order_'],
-					locale_number_format($myrow['totalamount'], $CustomerRecord['decimalplaces']),
-					locale_number_format($myrow['allocated'], $CustomerRecord['decimalplaces']),
-					locale_number_format($myrow['totalamount'] - $myrow['allocated'], $CustomerRecord['decimalplaces']),
+					$MyRow['typename'],
+					$MyRow['transno'],
+					ConvertSQLDate($MyRow['trandate']),
+					$MyRow['branchcode'],
+					$MyRow['reference'],
+					$MyRow['invtext'],
+					$MyRow['order_'],
+					locale_number_format($MyRow['totalamount'], $CustomerRecord['decimalplaces']),
+					locale_number_format($MyRow['allocated'], $CustomerRecord['decimalplaces']),
+					locale_number_format($MyRow['totalamount'] - $MyRow['allocated'], $CustomerRecord['decimalplaces']),
 					$RootPath,
-					$myrow['id']);
+					$MyRow['id']);
 		}
-	} elseif ($myrow['type'] == 12 and $myrow['totalamount'] > 0) {
+	} elseif ($MyRow['type'] == 12 and $MyRow['totalamount'] > 0) {
 		/*its a negative receipt */
 
 		//If security token 8 in the allowed page security tokens then assumed ok for GL trans inquiries
@@ -535,33 +535,33 @@ while ($myrow = DB_fetch_array($TransResult)) {
 						<a href="%s/GLTransInquiry.php?TypeID=%s&amp;TransNo=%s">' . _('View GL Entries') . ' </a>
 					</td>
 				</tr>',
-					$myrow['typename'],
-					$myrow['transno'],
-					ConvertSQLDate($myrow['trandate']),
-					$myrow['branchcode'],
-					$myrow['reference'],
-					$myrow['customerref'],
-					$myrow['invtext'],
-					$myrow['order_'],
-					locale_number_format($myrow['totalamount'], $CustomerRecord['decimalplaces']),
-					locale_number_format($myrow['allocated'], $CustomerRecord['decimalplaces']),
-					locale_number_format($myrow['totalamount'] - $myrow['allocated'], $CustomerRecord['decimalplaces']),
+					$MyRow['typename'],
+					$MyRow['transno'],
+					ConvertSQLDate($MyRow['trandate']),
+					$MyRow['branchcode'],
+					$MyRow['reference'],
+					$MyRow['customerref'],
+					$MyRow['invtext'],
+					$MyRow['order_'],
+					locale_number_format($MyRow['totalamount'], $CustomerRecord['decimalplaces']),
+					locale_number_format($MyRow['allocated'], $CustomerRecord['decimalplaces']),
+					locale_number_format($MyRow['totalamount'] - $MyRow['allocated'], $CustomerRecord['decimalplaces']),
 					$RootPath,
-					$myrow['type'],
-					$myrow['transno']);
+					$MyRow['type'],
+					$MyRow['transno']);
 		} else { //no permission for GLTrans Inquiries
 			printf($BaseFormatString . '</td></tr>',
-					$myrow['typename'],
-					$myrow['transno'],
-					ConvertSQLDate($myrow['trandate']),
-					$myrow['branchcode'],
-					$myrow['reference'],
-					$myrow['customerref'],
-					$myrow['invtext'],
-					$myrow['order_'],
-					locale_number_format($myrow['totalamount'], $CustomerRecord['decimalplaces']),
-					locale_number_format($myrow['allocated'], $CustomerRecord['decimalplaces']),
-					locale_number_format($myrow['totalamount'] - $myrow['allocated'], $CustomerRecord['decimalplaces']));
+					$MyRow['typename'],
+					$MyRow['transno'],
+					ConvertSQLDate($MyRow['trandate']),
+					$MyRow['branchcode'],
+					$MyRow['reference'],
+					$MyRow['customerref'],
+					$MyRow['invtext'],
+					$MyRow['order_'],
+					locale_number_format($MyRow['totalamount'], $CustomerRecord['decimalplaces']),
+					locale_number_format($MyRow['allocated'], $CustomerRecord['decimalplaces']),
+					locale_number_format($MyRow['totalamount'] - $MyRow['allocated'], $CustomerRecord['decimalplaces']));
 		}
 	} else {
 		//If security token 8 in the allowed page security tokens then assumed ok for GL trans inquiries
@@ -571,33 +571,33 @@ while ($myrow = DB_fetch_array($TransResult)) {
 						<a href="%s/GLTransInquiry.php?TypeID=%s&amp;TransNo=%s">' . _('View GL Entries') . ' </a>
 					</td>
 				</tr>',
-					$myrow['typename'],
-					$myrow['transno'],
-					ConvertSQLDate($myrow['trandate']),
-					$myrow['branchcode'],
-					$myrow['reference'],
-					$myrow['customerref'],
-					$myrow['invtext'],
-					$myrow['order_'],
-					locale_number_format($myrow['totalamount'], $CustomerRecord['decimalplaces']),
-					locale_number_format($myrow['allocated'], $CustomerRecord['decimalplaces']),
-					locale_number_format($myrow['totalamount'] - $myrow['allocated'], $CustomerRecord['decimalplaces']),
+					$MyRow['typename'],
+					$MyRow['transno'],
+					ConvertSQLDate($MyRow['trandate']),
+					$MyRow['branchcode'],
+					$MyRow['reference'],
+					$MyRow['customerref'],
+					$MyRow['invtext'],
+					$MyRow['order_'],
+					locale_number_format($MyRow['totalamount'], $CustomerRecord['decimalplaces']),
+					locale_number_format($MyRow['allocated'], $CustomerRecord['decimalplaces']),
+					locale_number_format($MyRow['totalamount'] - $MyRow['allocated'], $CustomerRecord['decimalplaces']),
 					$RootPath,
-					$myrow['type'],
-					$myrow['transno']);
+					$MyRow['type'],
+					$MyRow['transno']);
 		} else {
 			printf($BaseFormatString . '</tr>',
-					$myrow['typename'],
-					$myrow['transno'],
-					ConvertSQLDate($myrow['trandate']),
-					$myrow['branchcode'],
-					$myrow['reference'],
-					$myrow['customerref'],
-					$myrow['invtext'],
-					$myrow['order_'],
-					locale_number_format($myrow['totalamount'], $CustomerRecord['decimalplaces']),
-					locale_number_format($myrow['allocated'], $CustomerRecord['decimalplaces']),
-					locale_number_format($myrow['totalamount'] - $myrow['allocated'], $CustomerRecord['decimalplaces']));
+					$MyRow['typename'],
+					$MyRow['transno'],
+					ConvertSQLDate($MyRow['trandate']),
+					$MyRow['branchcode'],
+					$MyRow['reference'],
+					$MyRow['customerref'],
+					$MyRow['invtext'],
+					$MyRow['order_'],
+					locale_number_format($MyRow['totalamount'], $CustomerRecord['decimalplaces']),
+					locale_number_format($MyRow['allocated'], $CustomerRecord['decimalplaces']),
+					locale_number_format($MyRow['totalamount'] - $MyRow['allocated'], $CustomerRecord['decimalplaces']));
 		}
 	}
 

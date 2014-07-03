@@ -179,8 +179,8 @@ if (!isset($_FILES['ImportFile']) AND !isset($_SESSION['Statement'])) {
 					AND bankact='" . $_SESSION['Statement']->BankGLAccount . "'";
 			$result = DB_query($SQL, _('There was a problem identifying a matching bank transaction'));
 			if (DB_num_rows($result) > 0) {
-				$myrow = DB_fetch_array($result);
-				$_SESSION['Trans'][$i]->BankTransID = $myrow['banktransid'];
+				$MyRow = DB_fetch_array($result);
+				$_SESSION['Trans'][$i]->BankTransID = $MyRow['banktransid'];
 			}
 		}
 	} //end if there is a matching bank account in the system

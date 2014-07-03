@@ -106,10 +106,10 @@ if (isset($_POST['submit']) or isset($_POST['pdf']) or isset($_POST['csv'])) {
 	$TotalDisposals = 0;
 	$TotalNBV = 0;
 
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		/*
 		 * $Ancestors = array();
-		 $Ancestors[0] = $myrow['locationdescription'];
+		 $Ancestors[0] = $MyRow['locationdescription'];
 		 $i = 0;
 		 while ($Ancestors[$i] != '') {
 		 $LocationSQL = "SELECT parentlocationid from fixedassetlocations where locationdescription='" . $Ancestors[$i] . "'";
@@ -122,22 +122,22 @@ if (isset($_POST['submit']) or isset($_POST['pdf']) or isset($_POST['csv'])) {
 		 $Ancestors[$i] = $ParentRow['locationdescription'];
 		 }
 		 */
-		if (Date1GreaterThanDate2(ConvertSQLDate($myrow['disposaldate']), $_POST['FromDate']) or $myrow['disposaldate'] = '0000-00-00') {
+		if (Date1GreaterThanDate2(ConvertSQLDate($MyRow['disposaldate']), $_POST['FromDate']) or $MyRow['disposaldate'] = '0000-00-00') {
 
-			if ($myrow['disposaldate'] != '0000-00-00' and Date1GreaterThanDate2($_POST['ToDate'], ConvertSQLDate($myrow['disposaldate']))) {
+			if ($MyRow['disposaldate'] != '0000-00-00' and Date1GreaterThanDate2($_POST['ToDate'], ConvertSQLDate($MyRow['disposaldate']))) {
 				/*The asset was disposed during the period */
 				$CostCfwd = 0;
 				$AccumDepnCfwd = 0;
 			} else {
-				$CostCfwd = $myrow['periodadditions'] + $myrow['costbfwd'];
-				$AccumDepnCfwd = $myrow['perioddepn'] + $myrow['depnbfwd'];
+				$CostCfwd = $MyRow['periodadditions'] + $MyRow['costbfwd'];
+				$AccumDepnCfwd = $MyRow['perioddepn'] + $MyRow['depnbfwd'];
 			}
 
 			if (isset($_POST['pdf'])) {
 
-				$LeftOvers = $pdf->addTextWrap($XPos, $YPos, 30 - $Left_Margin, $FontSize, $myrow['assetid']);
-				$LeftOvers = $pdf->addTextWrap($XPos + 30, $YPos, 150 - $Left_Margin, $FontSize, $myrow['description']);
-				$LeftOvers = $pdf->addTextWrap($XPos + 180, $YPos, 40 - $Left_Margin, $FontSize, $myrow['serialno']);
+				$LeftOvers = $pdf->addTextWrap($XPos, $YPos, 30 - $Left_Margin, $FontSize, $MyRow['assetid']);
+				$LeftOvers = $pdf->addTextWrap($XPos + 30, $YPos, 150 - $Left_Margin, $FontSize, $MyRow['description']);
+				$LeftOvers = $pdf->addTextWrap($XPos + 180, $YPos, 40 - $Left_Margin, $FontSize, $MyRow['serialno']);
 				/*
 				 * $TempYPos = $YPos;
 				 for ($i = 1;$i < sizeof($Ancestors) - 1;$i++) {
@@ -149,11 +149,11 @@ if (isset($_POST['submit']) or isset($_POST['pdf']) or isset($_POST['csv'])) {
 				 }
 				 * */
 
-				$LeftOvers = $pdf->addTextWrap($XPos + 220, $YPos, 50 - $Left_Margin, $FontSize, ConvertSQLDate($myrow['datepurchased']));
-				$LeftOvers = $pdf->addTextWrap($XPos + 270, $YPos, 70, $FontSize, locale_number_format($myrow['costbfwd'], 0), 'right');
-				$LeftOvers = $pdf->addTextWrap($XPos + 340, $YPos, 70, $FontSize, locale_number_format($myrow['depnbfwd'], 0), 'right');
-				$LeftOvers = $pdf->addTextWrap($XPos + 410, $YPos, 70, $FontSize, locale_number_format($myrow['periodadditions'], 0), 'right');
-				$LeftOvers = $pdf->addTextWrap($XPos + 480, $YPos, 70, $FontSize, locale_number_format($myrow['perioddepn'], 0), 'right');
+				$LeftOvers = $pdf->addTextWrap($XPos + 220, $YPos, 50 - $Left_Margin, $FontSize, ConvertSQLDate($MyRow['datepurchased']));
+				$LeftOvers = $pdf->addTextWrap($XPos + 270, $YPos, 70, $FontSize, locale_number_format($MyRow['costbfwd'], 0), 'right');
+				$LeftOvers = $pdf->addTextWrap($XPos + 340, $YPos, 70, $FontSize, locale_number_format($MyRow['depnbfwd'], 0), 'right');
+				$LeftOvers = $pdf->addTextWrap($XPos + 410, $YPos, 70, $FontSize, locale_number_format($MyRow['periodadditions'], 0), 'right');
+				$LeftOvers = $pdf->addTextWrap($XPos + 480, $YPos, 70, $FontSize, locale_number_format($MyRow['perioddepn'], 0), 'right');
 				$LeftOvers = $pdf->addTextWrap($XPos + 550, $YPos, 70, $FontSize, locale_number_format($CostCfwd, 0), 'right');
 				$LeftOvers = $pdf->addTextWrap($XPos + 620, $YPos, 70, $FontSize, locale_number_format($AccumDepnCfwd, 0), 'right');
 				$LeftOvers = $pdf->addTextWrap($XPos + 690, $YPos, 70, $FontSize, locale_number_format($CostCfwd - $AccumDepnCfwd, 0), 'right');
@@ -163,14 +163,14 @@ if (isset($_POST['submit']) or isset($_POST['pdf']) or isset($_POST['csv'])) {
 					PDFPageHeader();
 				}
 			} elseif (isset($_POST['csv'])) {
-				$csv_output .= $myrow['assetid'] . ',' . $myrow['longdescription'] . ',' . $myrow['serialno'] . ',' . $myrow['locationdescription'] . ',' . $myrow['datepurchased'] . ',' . $myrow['costbfwd'] . ',' . $myrow['periodadditions'] . ',' . $myrow['depnbfwd'] . ',' . $myrow['perioddepn'] . ',' . $CostCfwd . ',' . $AccumDepnCfwd . ',' . ($CostCfwd - $AccumDepnCfwd) . ',' . $myrow['perioddisposal'] . "\n";
+				$csv_output .= $MyRow['assetid'] . ',' . $MyRow['longdescription'] . ',' . $MyRow['serialno'] . ',' . $MyRow['locationdescription'] . ',' . $MyRow['datepurchased'] . ',' . $MyRow['costbfwd'] . ',' . $MyRow['periodadditions'] . ',' . $MyRow['depnbfwd'] . ',' . $MyRow['perioddepn'] . ',' . $CostCfwd . ',' . $AccumDepnCfwd . ',' . ($CostCfwd - $AccumDepnCfwd) . ',' . $MyRow['perioddisposal'] . "\n";
 
 			} else {
 				echo '<tr>
-						<td style="vertical-align:top">' . $myrow['assetid'] . '</td>
-						<td style="vertical-align:top">' . $myrow['longdescription'] . '</td>
-						<td style="vertical-align:top">' . $myrow['serialno'] . '</td>
-						<td>' . $myrow['locationdescription'] . '<br />';
+						<td style="vertical-align:top">' . $MyRow['assetid'] . '</td>
+						<td style="vertical-align:top">' . $MyRow['longdescription'] . '</td>
+						<td style="vertical-align:top">' . $MyRow['serialno'] . '</td>
+						<td>' . $MyRow['locationdescription'] . '<br />';
 				/*	Not reworked yet
 				 * for ($i = 1;$i < sizeOf($Ancestors) - 1;$i++) {
 				 for ($j = 0;$j < $i;$j++) {
@@ -180,25 +180,25 @@ if (isset($_POST['submit']) or isset($_POST['pdf']) or isset($_POST['csv'])) {
 				 }
 				 */
 				echo '</td>
-					<td style="vertical-align:top">' . ConvertSQLDate($myrow['datepurchased']) . '</td>
-					<td style="vertical-align:top" class="number">' . locale_number_format($myrow['costbfwd'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
-					<td style="vertical-align:top" class="number">' . locale_number_format($myrow['depnbfwd'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
-					<td style="vertical-align:top" class="number">' . locale_number_format($myrow['periodadditions'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
-					<td style="vertical-align:top" class="number">' . locale_number_format($myrow['perioddepn'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
+					<td style="vertical-align:top">' . ConvertSQLDate($MyRow['datepurchased']) . '</td>
+					<td style="vertical-align:top" class="number">' . locale_number_format($MyRow['costbfwd'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
+					<td style="vertical-align:top" class="number">' . locale_number_format($MyRow['depnbfwd'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
+					<td style="vertical-align:top" class="number">' . locale_number_format($MyRow['periodadditions'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
+					<td style="vertical-align:top" class="number">' . locale_number_format($MyRow['perioddepn'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
 					<td style="vertical-align:top" class="number">' . locale_number_format($CostCfwd, $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
 					<td style="vertical-align:top" class="number">' . locale_number_format($AccumDepnCfwd, $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
 					<td style="vertical-align:top" class="number">' . locale_number_format($CostCfwd - $AccumDepnCfwd, $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
-					<td style="vertical-align:top" class="number">' . locale_number_format($myrow['perioddisposal'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
+					<td style="vertical-align:top" class="number">' . locale_number_format($MyRow['perioddisposal'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
 				</tr>';
 			}
 		} // end of if the asset was either not disposed yet or disposed after the start date
-		$TotalCostBfwd += $myrow['costbfwd'];
-		$TotalCostCfwd += ($myrow['costbfwd'] + $myrow['periodadditions']);
-		$TotalDepnBfwd += $myrow['depnbfwd'];
-		$TotalDepnCfwd += ($myrow['depnbfwd'] + $myrow['perioddepn']);
-		$TotalAdditions += $myrow['periodadditions'];
-		$TotalDepn += $myrow['perioddepn'];
-		$TotalDisposals += $myrow['perioddisposal'];
+		$TotalCostBfwd += $MyRow['costbfwd'];
+		$TotalCostCfwd += ($MyRow['costbfwd'] + $MyRow['periodadditions']);
+		$TotalDepnBfwd += $MyRow['depnbfwd'];
+		$TotalDepnCfwd += ($MyRow['depnbfwd'] + $MyRow['perioddepn']);
+		$TotalAdditions += $MyRow['periodadditions'];
+		$TotalDepn += $MyRow['perioddepn'];
+		$TotalDisposals += $MyRow['perioddisposal'];
 
 		$TotalNBV += ($CostCfwd - $AccumDepnCfwd);
 	}
@@ -261,11 +261,11 @@ if (isset($_POST['submit']) or isset($_POST['pdf']) or isset($_POST['csv'])) {
 			<th>' . _('Asset Category') . '</th>
 			<td><select minlength="0" name="AssetCategory">
 				<option value="%">' . _('ALL') . '</option>';
-	while ($myrow = DB_fetch_array($result)) {
-		if (isset($_POST['AssetCategory']) and $myrow['categoryid'] == $_POST['AssetCategory']) {
-			echo '<option selected="selected" value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . '</option>';
+	while ($MyRow = DB_fetch_array($result)) {
+		if (isset($_POST['AssetCategory']) and $MyRow['categoryid'] == $_POST['AssetCategory']) {
+			echo '<option selected="selected" value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . '</option>';
+			echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 		}
 	}
 	echo '</select></td>
@@ -276,11 +276,11 @@ if (isset($_POST['submit']) or isset($_POST['pdf']) or isset($_POST['csv'])) {
 			<th>' . _('Asset Location') . '</th>
 			<td><select minlength="0" name="AssetLocation">
 				<option value="%">' . _('ALL') . '</option>';
-	while ($myrow = DB_fetch_array($result)) {
-		if (isset($_POST['AssetLocation']) and $myrow['locationid'] == $_POST['AssetLocation']) {
-			echo '<option selected="selected" value="' . $myrow['locationid'] . '">' . $myrow['locationdescription'] . '</option>';
+	while ($MyRow = DB_fetch_array($result)) {
+		if (isset($_POST['AssetLocation']) and $MyRow['locationid'] == $_POST['AssetLocation']) {
+			echo '<option selected="selected" value="' . $MyRow['locationid'] . '">' . $MyRow['locationdescription'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['locationid'] . '">' . $myrow['locationdescription'] . '</option>';
+			echo '<option value="' . $MyRow['locationid'] . '">' . $MyRow['locationdescription'] . '</option>';
 		}
 	}
 	echo '</select></td>
@@ -291,11 +291,11 @@ if (isset($_POST['submit']) or isset($_POST['pdf']) or isset($_POST['csv'])) {
 			<th>' . _('Asset') . '</th>
 			<td><select minlength="0" name="AssetID">
 				<option value="%">' . _('ALL') . '</option>';
-	while ($myrow = DB_fetch_array($result)) {
-		if (isset($_POST['AssetID']) and $myrow['assetid'] == $_POST['AssetID']) {
-			echo '<option selected="selected" value="' . $myrow['assetid'] . '">' . $myrow['assetid'] . ' - ' . $myrow['description'] . '</option>';
+	while ($MyRow = DB_fetch_array($result)) {
+		if (isset($_POST['AssetID']) and $MyRow['assetid'] == $_POST['AssetID']) {
+			echo '<option selected="selected" value="' . $MyRow['assetid'] . '">' . $MyRow['assetid'] . ' - ' . $MyRow['description'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['assetid'] . '">' . $myrow['assetid'] . ' - ' . $myrow['description'] . '</option>';
+			echo '<option value="' . $MyRow['assetid'] . '">' . $MyRow['assetid'] . ' - ' . $MyRow['description'] . '</option>';
 		}
 	}
 	echo '</select></td>

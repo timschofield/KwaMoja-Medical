@@ -152,7 +152,7 @@ if (isset($_POST['PrintPDF'])) {
 	$totalpartcost = 0;
 	$Total_Extcost = 0;
 
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		$YPos -= $line_height;
 
 		// Use to alternate between lines with transparent and painted background
@@ -161,7 +161,7 @@ if (isset($_POST['PrintPDF'])) {
 		}
 
 		// Print information on part break
-		if ($Partctr > 0 & $holdpart != $myrow['part']) {
+		if ($Partctr > 0 & $holdpart != $MyRow['part']) {
 			$pdf->addTextWrap(50, $YPos, 130, $FontSize, $holddescription, '', 0, $fill);
 			$pdf->addTextWrap(180, $YPos, 50, $FontSize, _('Unit Cost: '), 'center', 0, $fill);
 			$pdf->addTextWrap(230, $YPos, 40, $FontSize, locale_number_format($holdcost, $_SESSION['CompanyRecord']['decimalplaces']), 'right', 0, $fill);
@@ -191,27 +191,27 @@ if (isset($_POST['PrintPDF'])) {
 		// 1) X position 2) Y position 3) Width
 		// 4) Height 5) Text 6) Alignment 7) Border 8) Fill - True to use SetFillColor
 		// and False to set to transparent
-		$FormatedSupDueDate = ConvertSQLDate($myrow['duedate']);
-		$FormatedSupMRPDate = ConvertSQLDate($myrow['mrpdate']);
-		$extcost = $myrow['supplyquantity'] * $myrow['computedcost'];
-		$pdf->addTextWrap($Left_Margin, $YPos, 110, $FontSize, $myrow['part'], '', 0, $fill);
+		$FormatedSupDueDate = ConvertSQLDate($MyRow['duedate']);
+		$FormatedSupMRPDate = ConvertSQLDate($MyRow['mrpdate']);
+		$extcost = $MyRow['supplyquantity'] * $MyRow['computedcost'];
+		$pdf->addTextWrap($Left_Margin, $YPos, 110, $FontSize, $MyRow['part'], '', 0, $fill);
 		$pdf->addTextWrap(150, $YPos, 50, $FontSize, $FormatedSupDueDate, 'right', 0, $fill);
 		$pdf->addTextWrap(200, $YPos, 60, $FontSize, $FormatedSupMRPDate, 'right', 0, $fill);
-		$pdf->addTextWrap(260, $YPos, 50, $FontSize, locale_number_format($myrow['supplyquantity'], $myrow['decimalplaces']), 'right', 0, $fill);
+		$pdf->addTextWrap(260, $YPos, 50, $FontSize, locale_number_format($MyRow['supplyquantity'], $MyRow['decimalplaces']), 'right', 0, $fill);
 		$pdf->addTextWrap(310, $YPos, 60, $FontSize, locale_number_format($extcost, $_SESSION['CompanyRecord']['decimalplaces']), 'right', 0, $fill);
 		if ($_POST['Consolidation'] == 'None') {
-			$pdf->addTextWrap(370, $YPos, 80, $FontSize, $myrow['ordertype'], 'right', 0, $fill);
-			$pdf->addTextWrap(450, $YPos, 80, $FontSize, $myrow['orderno'], 'right', 0, $fill);
+			$pdf->addTextWrap(370, $YPos, 80, $FontSize, $MyRow['ordertype'], 'right', 0, $fill);
+			$pdf->addTextWrap(450, $YPos, 80, $FontSize, $MyRow['orderno'], 'right', 0, $fill);
 		} else {
-			$pdf->addTextWrap(370, $YPos, 100, $FontSize, $myrow['consolidatedcount'], 'right', 0, $fill);
+			$pdf->addTextWrap(370, $YPos, 100, $FontSize, $MyRow['consolidatedcount'], 'right', 0, $fill);
 		}
-		$holddescription = $myrow['description'];
-		$holdpart = $myrow['part'];
-		$holdmbflag = $myrow['mbflag'];
-		$holdcost = $myrow['computedcost'];
-		$holddecimalplaces = $myrow['decimalplaces'];
+		$holddescription = $MyRow['description'];
+		$holdpart = $MyRow['part'];
+		$holdmbflag = $MyRow['mbflag'];
+		$holdcost = $MyRow['computedcost'];
+		$holddecimalplaces = $MyRow['decimalplaces'];
 		$totalpartcost += $extcost;
-		$totalpartqty += $myrow['supplyquantity'];
+		$totalpartqty += $MyRow['supplyquantity'];
 
 		$Total_Extcost += $extcost;
 		$Partctr++;
@@ -369,22 +369,22 @@ function GetPartInfo($part) {
 			ORDER BY orddate DESC LIMIT 1";
 	$result = DB_query($sql);
 	if (DB_num_rows($result) > 0) {
-		$myrow = DB_fetch_array($result);
-		$PartInfo[] = ConvertSQLDate($myrow['maxdate']);
-		$OrderNo = $myrow['orderno'];
+		$MyRow = DB_fetch_array($result);
+		$PartInfo[] = ConvertSQLDate($MyRow['maxdate']);
+		$OrderNo = $MyRow['orderno'];
 		$sql = "SELECT supplierno
 				FROM purchorders
 				WHERE purchorders.orderno = '" . $OrderNo . "'";
 		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
-		$PartInfo[] = $myrow['supplierno'];
+		$MyRow = DB_fetch_array($result);
+		$PartInfo[] = $MyRow['supplierno'];
 		$sql = "SELECT supplierno
 				FROM purchdata
 				WHERE stockid = '" . $part . "'
 				AND preferred='1'";
 		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
-		$PartInfo[] = $myrow['supplierno'];
+		$MyRow = DB_fetch_array($result);
+		$PartInfo[] = $MyRow['supplierno'];
 		return $PartInfo;
 	} else {
 		return array(

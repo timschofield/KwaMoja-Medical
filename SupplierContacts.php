@@ -139,11 +139,11 @@ if (!isset($SelectedContact)) {
 
 	if (DB_num_rows($result) > 0) {
 
-		$myrow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($result);
 
 		echo '<table class="selection">
 				<tr>
-					<th colspan="7"><h3>' . _('Contacts Defined for') . ' - ' . $myrow['suppname'] . '</h3></th>
+					<th colspan="7"><h3>' . _('Contacts Defined for') . ' - ' . $MyRow['suppname'] . '</h3></th>
 				</tr>';
 
 		echo '<tbody>
@@ -162,8 +162,8 @@ if (!isset($SelectedContact)) {
 					<td>%s</td>
 					<td><a href="mailto:%s">%s</a></td>
 					<td><a href="%s&amp;SupplierID=%s&amp;SelectedContact=%s">' . _('Edit') . '</a></td>
-					<td><a href="%s&amp;SupplierID=%s&amp;SelectedContact=%s&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this contact?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td></tr>', $myrow['contact'], $myrow['position'], $myrow['tel'], $myrow['fax'], $myrow['email'], $myrow['email'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $SupplierID, $myrow['contact'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $SupplierID, $myrow['contact']);
-		} while ($myrow = DB_fetch_array($result));
+					<td><a href="%s&amp;SupplierID=%s&amp;SelectedContact=%s&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this contact?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td></tr>', $MyRow['contact'], $MyRow['position'], $MyRow['tel'], $MyRow['fax'], $MyRow['email'], $MyRow['email'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $SupplierID, $MyRow['contact'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $SupplierID, $MyRow['contact']);
+		} while ($MyRow = DB_fetch_array($result));
 		echo '</tbody>
 			</table><br />';
 	} else {
@@ -200,14 +200,14 @@ if (!isset($_GET['delete'])) {
 					AND supplierid='" . $SupplierID . "'";
 
 		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($result);
 
-		$_POST['Contact'] = $myrow['contact'];
-		$_POST['Position'] = $myrow['position'];
-		$_POST['Tel'] = $myrow['tel'];
-		$_POST['Fax'] = $myrow['fax'];
-		$_POST['Email'] = $myrow['email'];
-		$_POST['Mobile'] = $myrow['mobile'];
+		$_POST['Contact'] = $MyRow['contact'];
+		$_POST['Position'] = $MyRow['position'];
+		$_POST['Tel'] = $MyRow['tel'];
+		$_POST['Fax'] = $MyRow['fax'];
+		$_POST['Email'] = $MyRow['email'];
+		$_POST['Mobile'] = $MyRow['mobile'];
 		echo '<input type="hidden" name="SelectedContact" value="' . $_POST['Contact'] . '" />';
 		echo '<input type="hidden" name="Contact" value="' . $_POST['Contact'] . '" />';
 		echo '<table>

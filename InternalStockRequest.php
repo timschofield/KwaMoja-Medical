@@ -35,13 +35,13 @@ if (isset($_GET['Amend'])) {
 				FROM stockrequest
 				WHERE dispatchid='" . $_GET['Amend'] . "'";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
-	$_SESSION['Request']->DispatchDate = ConvertSQLDate($myrow['despatchdate']);
+	$MyRow = DB_fetch_array($result);
+	$_SESSION['Request']->DispatchDate = ConvertSQLDate($MyRow['despatchdate']);
 	$_SESSION['Request']->ID = $_GET['Amend'];
-	$_SESSION['Request']->UserID = $myrow['userid'];
-	$_SESSION['Request']->Location = $myrow['loccode'];
-	$_SESSION['Request']->Department = $myrow['departmentid'];
-	$_SESSION['Request']->Narrative = $myrow['narrative'];
+	$_SESSION['Request']->UserID = $MyRow['userid'];
+	$_SESSION['Request']->Location = $MyRow['loccode'];
+	$_SESSION['Request']->Department = $MyRow['departmentid'];
+	$_SESSION['Request']->Narrative = $MyRow['narrative'];
 	$_SESSION['Request']->NewRequest = 1;
 	$LineSQL = "SELECT dispatchitemsid,
 						stockrequestitems.stockid,
@@ -130,17 +130,17 @@ if (isset($_GET['Edit']) and $_GET['Edit'] == 'Yes') {
 			<th>' . _('Narrative') . '</th>
 		</tr>';
 
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 
 		echo '<tr>
-				<td>' . $myrow['dispatchid'] . '</td>
-				<td>' . $myrow['description'] . '</td>
-				<td>' . $myrow['initiator'] . '</td>
-				<td>' . $myrow['locationname'] . '</td>
-				<td>' . ConvertSQLDate($myrow['despatchdate']) . '</td>
-				<td>' . $myrow['narrative'] . '</td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Amend=' . $myrow['dispatchid'] . '">' . _('Amend') . '</a></td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Cancel=' . $myrow['dispatchid'] . '">' . _('Cancel') . '</a></td>
+				<td>' . $MyRow['dispatchid'] . '</td>
+				<td>' . $MyRow['description'] . '</td>
+				<td>' . $MyRow['initiator'] . '</td>
+				<td>' . $MyRow['locationname'] . '</td>
+				<td>' . ConvertSQLDate($MyRow['despatchdate']) . '</td>
+				<td>' . $MyRow['narrative'] . '</td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Amend=' . $MyRow['dispatchid'] . '">' . _('Amend') . '</a></td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Cancel=' . $MyRow['dispatchid'] . '">' . _('Cancel') . '</a></td>
 			</tr>';
 		$linesql = "SELECT stockrequestitems.dispatchitemsid,
 							stockrequestitems.stockid,
@@ -151,7 +151,7 @@ if (isset($_GET['Edit']) and $_GET['Edit'] == 'Yes') {
 					FROM stockrequestitems
 					INNER JOIN stockmaster
 						ON stockmaster.stockid=stockrequestitems.stockid
-					WHERE dispatchid='" . $myrow['dispatchid'] . "'";
+					WHERE dispatchid='" . $MyRow['dispatchid'] . "'";
 		$lineresult = DB_query($linesql);
 
 		echo '<tr>
@@ -238,8 +238,8 @@ if (isset($_POST['Submit'])) {
 			$sql = "SELECT COUNT(stockid) as total FROM stockrequestitems
 									WHERE dispatchid='" . $_SESSION['Request']->ID . "'
 										AND dispatchitemsid='" . $LineItems->LineNumber . "'";			$result = DB_query($sql);
-			$myrow = DB_fetch_array($result);
-			if ($myrow['total'] == 0) {
+			$MyRow = DB_fetch_array($result);
+			if ($MyRow['total'] == 0) {
 				$LineSQL = "INSERT INTO stockrequestitems (dispatchitemsid,
 															dispatchid,
 															stockid,
@@ -364,11 +364,11 @@ if ($_SESSION['AllowedDepartment'] == 0) {
 $result = DB_query($sql);
 echo '<td><select required="required" minlength="1" name="Department">
 		<option value="">' . _('Select a Department') . '</option>';
-while ($myrow = DB_fetch_array($result)) {
-	if (isset($_SESSION['Request']->Department) and $_SESSION['Request']->Department == $myrow['departmentid']) {
-		echo '<option selected="True" value="' . $myrow['departmentid'] . '">' . htmlspecialchars($myrow['description'], ENT_QUOTES, 'UTF-8') . '</option>';
+while ($MyRow = DB_fetch_array($result)) {
+	if (isset($_SESSION['Request']->Department) and $_SESSION['Request']->Department == $MyRow['departmentid']) {
+		echo '<option selected="True" value="' . $MyRow['departmentid'] . '">' . htmlspecialchars($MyRow['description'], ENT_QUOTES, 'UTF-8') . '</option>';
 	} else {
-		echo '<option value="' . $myrow['departmentid'] . '">' . htmlspecialchars($myrow['description'], ENT_QUOTES, 'UTF-8') . '</option>';
+		echo '<option value="' . $MyRow['departmentid'] . '">' . htmlspecialchars($MyRow['description'], ENT_QUOTES, 'UTF-8') . '</option>';
 	}
 }
 echo '</select></td>
@@ -396,11 +396,11 @@ if ($_SESSION['RestrictLocations'] == 0) {
 $result = DB_query($sql);
 echo '<td><select required="required" minlength="1" name="Location">
 		<option value="">' . _('Select a Location') . '</option>';
-while ($myrow = DB_fetch_array($result)) {
-	if (isset($_SESSION['Request']->Location) and $_SESSION['Request']->Location == $myrow['loccode']) {
-		echo '<option selected="True" value="' . $myrow['loccode'] . '">' . $myrow['loccode'] . ' - ' . htmlspecialchars($myrow['locationname'], ENT_QUOTES, 'UTF-8') . '</option>';
+while ($MyRow = DB_fetch_array($result)) {
+	if (isset($_SESSION['Request']->Location) and $_SESSION['Request']->Location == $MyRow['loccode']) {
+		echo '<option selected="True" value="' . $MyRow['loccode'] . '">' . $MyRow['loccode'] . ' - ' . htmlspecialchars($MyRow['locationname'], ENT_QUOTES, 'UTF-8') . '</option>';
 	} else {
-		echo '<option value="' . $myrow['loccode'] . '">' . $myrow['loccode'] . ' - ' . htmlspecialchars($myrow['locationname'], ENT_QUOTES, 'UTF-8') . '</option>';
+		echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['loccode'] . ' - ' . htmlspecialchars($MyRow['locationname'], ENT_QUOTES, 'UTF-8') . '</option>';
 	}
 }
 echo '</select></td>
@@ -501,11 +501,11 @@ if ($_POST['StockCat'] == 'All') {
 } else {
 	echo '<option value="All">' . _('All Categories') . '</option>';
 }
-while ($myrow1 = DB_fetch_array($result1)) {
-	if ($myrow1['categoryid'] == $_POST['StockCat']) {
-		echo '<option selected="True" value="' . $myrow1['categoryid'] . '">' . $myrow1['categorydescription'] . '</option>';
+while ($MyRow1 = DB_fetch_array($result1)) {
+	if ($MyRow1['categoryid'] == $_POST['StockCat']) {
+		echo '<option selected="True" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 	} else {
-		echo '<option value="' . $myrow1['categoryid'] . '">' . $myrow1['categorydescription'] . '</option>';
+		echo '<option value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 	}
 }
 echo '</select></td>
@@ -732,7 +732,7 @@ if (isset($searchresult) and !isset($_POST['Select'])) {
 		if (DB_num_rows($searchresult) <> 0) {
 			DB_data_seek($searchresult, ($_POST['PageOffset'] - 1) * $_SESSION['DisplayRecordsMax']);
 		}
-		while (($myrow = DB_fetch_array($searchresult)) and ($RowIndex <> $_SESSION['DisplayRecordsMax'])) {
+		while (($MyRow = DB_fetch_array($searchresult)) and ($RowIndex <> $_SESSION['DisplayRecordsMax'])) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;
@@ -740,22 +740,22 @@ if (isset($searchresult) and !isset($_POST['Select'])) {
 				echo '<tr class="OddTableRows">';
 				$k++;
 			}
-			if ($myrow['mbflag'] == 'D') {
+			if ($MyRow['mbflag'] == 'D') {
 				$qoh = _('N/A');
 			} else {
-				$qoh = locale_number_format($myrow['qoh'], $myrow['decimalplaces']);
+				$qoh = locale_number_format($MyRow['qoh'], $MyRow['decimalplaces']);
 			}
-			if ($myrow['discontinued'] == 1) {
+			if ($MyRow['discontinued'] == 1) {
 				$ItemStatus = '<p class="bad">' . _('Obsolete') . '</p>';
 			} else {
 				$ItemStatus = '';
 			}
 
-			echo '<td><input type="submit" name="Select" value="' . $myrow['stockid'] . '" /></td>
-					<td>' . $myrow['description'] . '</td>
+			echo '<td><input type="submit" name="Select" value="' . $MyRow['stockid'] . '" /></td>
+					<td>' . $MyRow['description'] . '</td>
 					<td class="number">' . $qoh . '</td>
-					<td>' . $myrow['units'] . '</td>
-					<td><a target="_blank" href="' . $RootPath . '/StockStatus.php?StockID=' . $myrow['stockid'] . '">' . _('View') . '</a></td>
+					<td>' . $MyRow['units'] . '</td>
+					<td><a target="_blank" href="' . $RootPath . '/StockStatus.php?StockID=' . $MyRow['stockid'] . '">' . _('View') . '</a></td>
 					<td>' . $ItemStatus . '</td>
 				</tr>';
 			//end of page full new headings if
@@ -799,21 +799,21 @@ if (isset($SearchResult)) {
 
 	$k = 0; //row colour counter
 	$i = 0;
-	while ($myrow = DB_fetch_array($SearchResult)) {
-		if ($myrow['decimalplaces'] == '') {
+	while ($MyRow = DB_fetch_array($SearchResult)) {
+		if ($MyRow['decimalplaces'] == '') {
 			$DecimalPlacesSQL = "SELECT decimalplaces
 								FROM stockmaster
-								WHERE stockid='" . $myrow['stockid'] . "'";
+								WHERE stockid='" . $MyRow['stockid'] . "'";
 			$DecimalPlacesResult = DB_query($DecimalPlacesSQL);
 			$DecimalPlacesRow = DB_fetch_array($DecimalPlacesResult);
 			$DecimalPlaces = $DecimalPlacesRow['decimalplaces'];
 		} else {
-			$DecimalPlaces = $myrow['decimalplaces'];
+			$DecimalPlaces = $MyRow['decimalplaces'];
 		}
 
 		$QOHSQL = "SELECT sum(locstock.quantity) AS qoh
 							   FROM locstock
-							   WHERE locstock.stockid='" . $myrow['stockid'] . "' AND
+							   WHERE locstock.stockid='" . $MyRow['stockid'] . "' AND
 							   loccode = '" . $_SESSION['Request']->Location . "'";
 		$QOHResult = DB_query($QOHSQL);
 		$QOHRow = DB_fetch_array($QOHResult);
@@ -826,7 +826,7 @@ if (isset($SearchResult)) {
 				 WHERE salesorders.fromstkloc='" . $_SESSION['Request']->Location . "'
 				 AND salesorderdetails.completed=0
 				 AND salesorders.quotation=0
-				 AND salesorderdetails.stkcode='" . $myrow['stockid'] . "'";
+				 AND salesorderdetails.stkcode='" . $MyRow['stockid'] . "'";
 		$ErrMsg = _('The demand for this product from') . ' ' . $_SESSION['Request']->Location . ' ' . _('cannot be retrieved because');
 		$DemandResult = DB_query($sql, $ErrMsg);
 
@@ -845,7 +845,7 @@ if (isset($SearchResult)) {
 				 AND purchorders.status<>'Cancelled'
 				 AND purchorders.status<>'Rejected'
 				 AND purchorders.status<>'Completed'
-				AND purchorderdetails.itemcode='" . $myrow['stockid'] . "'";
+				AND purchorderdetails.itemcode='" . $MyRow['stockid'] . "'";
 
 		$ErrMsg = _('The order details for this product cannot be retrieved because');
 		$PurchResult = DB_query($sql, $ErrMsg);
@@ -860,7 +860,7 @@ if (isset($SearchResult)) {
 		// Find the quantity on works orders
 		$sql = "SELECT SUM(woitems.qtyreqd - woitems.qtyrecd) AS dedm
 			   FROM woitems
-			   WHERE stockid='" . $myrow['stockid'] . "'";
+			   WHERE stockid='" . $MyRow['stockid'] . "'";
 		$ErrMsg = _('The order details for this product cannot be retrieved because');
 		$WoResult = DB_query($sql, $ErrMsg);
 
@@ -880,20 +880,20 @@ if (isset($SearchResult)) {
 		}
 		$OnOrder = $PurchQty + $WoQty;
 		$Available = $QOH - $DemandQty + $OnOrder;
-		echo '<td>' . $myrow['stockid'] . '</td>
-				<td>' . $myrow['description'] . '</td>
-				<td>' . $myrow['stockunits'] . '</td>
+		echo '<td>' . $MyRow['stockid'] . '</td>
+				<td>' . $MyRow['description'] . '</td>
+				<td>' . $MyRow['stockunits'] . '</td>
 				<td class="number">' . locale_number_format($QOH, $DecimalPlaces) . '</td>
 				<td class="number">' . locale_number_format($DemandQty, $DecimalPlaces) . '</td>
 				<td class="number">' . locale_number_format($OnOrder, $DecimalPlaces) . '</td>
 				<td class="number">' . locale_number_format($Available, $DecimalPlaces) . '</td>
 				<td><input class="number" autofocus="autofocus" tabindex="' . ($j + 7) . '" type="text" size="6" name="Quantity' . $i . '" value="0" />
-				<input type="hidden" name="StockID' . $i . '" value="' . $myrow['stockid'] . '" />
+				<input type="hidden" name="StockID' . $i . '" value="' . $MyRow['stockid'] . '" />
 				</td>
 			</tr>';
-		echo '<input type="hidden" name="DecimalPlaces' . $i . '" value="' . $myrow['decimalplaces'] . '" />';
-		echo '<input type="hidden" name="ItemDescription' . $i . '" value="' . $myrow['description'] . '" />';
-		echo '<input type="hidden" name="Units' . $i . '" value="' . $myrow['stockunits'] . '" />';
+		echo '<input type="hidden" name="DecimalPlaces' . $i . '" value="' . $MyRow['decimalplaces'] . '" />';
+		echo '<input type="hidden" name="ItemDescription' . $i . '" value="' . $MyRow['description'] . '" />';
+		echo '<input type="hidden" name="Units' . $i . '" value="' . $MyRow['stockunits'] . '" />';
 
 		$i++;
 		//end of page full new headings if

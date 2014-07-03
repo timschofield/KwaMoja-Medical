@@ -94,16 +94,16 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 
 	//loop through file rows
 	$row = 1;
-	while (($myrow = fgetcsv($FileHandle, 10000, ",")) !== FALSE) {
+	while (($MyRow = fgetcsv($FileHandle, 10000, ",")) !== FALSE) {
 
-		for ($i = 0; $i < sizeof($myrow); $i++) {
-			if ($myrow[$i] == '') {
-				$myrow[$i] = $Defaults[$i];
+		for ($i = 0; $i < sizeof($MyRow); $i++) {
+			if ($MyRow[$i] == '') {
+				$MyRow[$i] = $Defaults[$i];
 			}
 		}
 
 		//check for correct number of fields
-		$FieldCount = count($myrow);
+		$FieldCount = count($MyRow);
 		if ($FieldCount != $FieldTarget) {
 			prnMsg(_($FieldTarget . ' fields required, ' . $FieldCount . ' fields received'), 'error');
 			fclose($FileHandle);
@@ -112,8 +112,8 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 		}
 
 		// cleanup the data (csv files often import with empty strings and such)
-		$StockID = mb_strtoupper($myrow[0]);
-		foreach ($myrow as &$value) {
+		$StockID = mb_strtoupper($MyRow[0]);
+		foreach ($MyRow as &$value) {
 			$value = trim($value);
 		}
 
@@ -127,11 +127,11 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 		}
 
 		//next validate inputs are sensible
-		if (!$myrow[1] or mb_strlen($myrow[1]) > 50 or mb_strlen($myrow[1]) == 0) {
+		if (!$MyRow[1] or mb_strlen($MyRow[1]) > 50 or mb_strlen($MyRow[1]) == 0) {
 			$InputError = 1;
-			prnMsg(_('The stock item description must be entered and be fifty characters or less long') . '. ' . _('It cannot be a zero length string either') . ' - ' . _('a description is required') . ' ("' . implode('","', $myrow) . $stockid . '") ', 'error');
+			prnMsg(_('The stock item description must be entered and be fifty characters or less long') . '. ' . _('It cannot be a zero length string either') . ' - ' . _('a description is required') . ' ("' . implode('","', $MyRow) . $stockid . '") ', 'error');
 		}
-		if (mb_strlen($myrow[2]) == 0) {
+		if (mb_strlen($MyRow[2]) == 0) {
 			$InputError = 1;
 			prnMsg(_('The stock item description cannot be a zero length string') . ' - ' . _('a long description is required'), 'error');
 		}
@@ -144,69 +144,69 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 			prnMsg(_('The stock item code cannot contain any of the following characters') . " ' & + \" \\ " . _('or a space') . " (" . $StockID . ")", 'error');
 			$StockID = '';
 		}
-		if (mb_strlen($myrow[4]) > 20) {
+		if (mb_strlen($MyRow[4]) > 20) {
 			$InputError = 1;
 			prnMsg(_('The unit of measure must be 20 characters or less long'), 'error');
 		}
-		if (mb_strlen($myrow[13]) > 20) {
+		if (mb_strlen($MyRow[13]) > 20) {
 			$InputError = 1;
 			prnMsg(_('The barcode must be 20 characters or less long'), 'error');
 		}
-		if ($myrow[10] != 0 and $myrow[10] != 1) {
+		if ($MyRow[10] != 0 and $MyRow[10] != 1) {
 			$InputError = 1;
 			prnMsg(_('Values in the Perishable field must be either 0 (No) or 1 (Yes)'), 'error');
 		}
-		if (!is_numeric($myrow[11])) {
+		if (!is_numeric($MyRow[11])) {
 			$InputError = 1;
 			prnMsg(_('The volume of the packaged item in cubic metres must be numeric'), 'error');
 		}
-		if ($myrow[11] < 0) {
+		if ($MyRow[11] < 0) {
 			$InputError = 1;
 			prnMsg(_('The volume of the packaged item must be a positive number'), 'error');
 		}
-		if (!is_numeric($myrow[12])) {
+		if (!is_numeric($MyRow[12])) {
 			$InputError = 1;
 			prnMsg(_('The weight of the packaged item in KGs must be numeric'), 'error');
 		}
-		if ($myrow[12] < 0) {
+		if ($MyRow[12] < 0) {
 			$InputError = 1;
 			prnMsg(_('The weight of the packaged item must be a positive number'), 'error');
 		}
-		if (!is_numeric($myrow[6])) {
+		if (!is_numeric($MyRow[6])) {
 			$InputError = 1;
 			prnMsg(_('The economic order quantity must be numeric'), 'error');
 		}
-		if ($myrow[6] < 0) {
+		if ($MyRow[6] < 0) {
 			$InputError = 1;
 			prnMsg(_('The economic order quantity must be a positive number'), 'error');
 		}
-		if ($myrow[8] == 0 and $myrow[9] == 1) {
+		if ($MyRow[8] == 0 and $MyRow[9] == 1) {
 			$InputError = 1;
 			prnMsg(_('The item can only be serialised if there is lot control enabled already') . '. ' . _('Batch control') . ' - ' . _('with any number of items in a lot/bundle/roll is enabled when controlled is enabled') . '. ' . _('Serialised control requires that only one item is in the batch') . '. ' . _('For serialised control') . ', ' . _('both controlled and serialised must be enabled'), 'error');
 		}
 
-		$mbflag = $myrow[5];
+		$mbflag = $MyRow[5];
 		if ($mbflag != 'M' and $mbflag != 'K' and $mbflag != 'A' and $mbflag != 'B' and $mbflag != 'D' and $mbflag != 'G') {
 			$InputError = 1;
 			prnMsg(_('Items must be of MBFlag type Manufactured(M), Assembly(A), Kit-Set(K), Purchased(B), Dummy(D) or Phantom(G)'), 'error');
 		}
-		if (($mbflag == 'A' or $mbflag == 'K' or $mbflag == 'D' or $mbflag == 'G') and $myrow[8] == 1) {
+		if (($mbflag == 'A' or $mbflag == 'K' or $mbflag == 'D' or $mbflag == 'G') and $MyRow[8] == 1) {
 			$InputError = 1;
 			prnMsg(_('Assembly/Kitset/Phantom/Service items cannot also be controlled items') . '. ' . _('Assemblies, Dummies and Kitsets are not physical items and batch/serial control is therefore not appropriate'), 'error');
 		}
-		if ($myrow[3] == '') {
+		if ($MyRow[3] == '') {
 			$InputError = 1;
 			prnMsg(_('There are no inventory categories defined. All inventory items must belong to a valid inventory category,'), 'error');
 		}
-		if ($myrow[17] == '') {
+		if ($MyRow[17] == '') {
 			$InputError = 1;
 			prnMsg(_('ItemPDF must contain either a filename, or the keyword `none`'), 'error');
 		}
 
 		if ($InputError != 1) {
-			if ($myrow[9] == 1) {
+			if ($MyRow[9] == 1) {
 				/*Not appropriate to have several dp on serial items */
-				$myrow[16] = 0;
+				$MyRow[16] = 0;
 			}
 
 			//attempt to insert the stock item
@@ -230,23 +230,23 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 											appendfile
 										) VALUES (
 											'" . $StockID . "',
-											'" . $myrow[1] . "',
-											'" . $myrow[2] . "',
-											'" . $myrow[3] . "',
-											'" . $myrow[4] . "',
-											'" . $myrow[5] . "',
-											" . $myrow[6] . ",
-											" . $myrow[7] . ",
-											" . $myrow[8] . ",
-											" . $myrow[9] . ",
-											" . $myrow[10] . ",
-											" . $myrow[11] . ",
-											" . $myrow[12] . ",
-											'" . $myrow[13] . "',
-											'" . $myrow[14] . "',
-											" . $myrow[15] . ",
-											" . $myrow[16] . ",
-											'" . $myrow[17] . "'
+											'" . $MyRow[1] . "',
+											'" . $MyRow[2] . "',
+											'" . $MyRow[3] . "',
+											'" . $MyRow[4] . "',
+											'" . $MyRow[5] . "',
+											" . $MyRow[6] . ",
+											" . $MyRow[7] . ",
+											" . $MyRow[8] . ",
+											" . $MyRow[9] . ",
+											" . $MyRow[10] . ",
+											" . $MyRow[11] . ",
+											" . $MyRow[12] . ",
+											'" . $MyRow[13] . "',
+											'" . $MyRow[14] . "',
+											" . $MyRow[15] . ",
+											" . $MyRow[16] . ",
+											'" . $MyRow[17] . "'
 										)";
 
 			$ErrMsg = _('The item could not be added because');

@@ -11,14 +11,14 @@ include('includes/SQL_CommonFunctions.inc');
 $sql="SELECT * FROM geocode_param WHERE 1";
 $ErrMsg = _('An error occurred in retrieving the currency information');
 $result = DB_query($sql, $ErrMsg);
-$myrow = DB_fetch_array($result);
+$MyRow = DB_fetch_array($result);
 
-$Api_Key = $myrow['geocode_key'];
-$Center_Long = $myrow['center_long'];
-$Center_Lat = $myrow['center_lat'];
-$Map_Height = $myrow['map_height'];
-$Map_Width = $myrow['map_width'];
-$Map_Host = $myrow['map_host'];
+$Api_Key = $MyRow['geocode_key'];
+$Center_Long = $MyRow['center_long'];
+$Center_Lat = $MyRow['center_lat'];
+$Map_Height = $MyRow['map_height'];
+$Map_Width = $MyRow['map_width'];
+$Map_Host = $MyRow['map_host'];
 
 ?>
 

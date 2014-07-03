@@ -97,15 +97,15 @@ if (isset($_POST['submit']) or isset($_GET['remove']) or isset($_GET['add'])) {
 	$sql = "SELECT taxauthid FROM taxgrouptaxes WHERE taxgroupid='" . $SelectedGroup . "'";
 	$Result = DB_query($sql, _('Could not get tax authorities in the selected tax group'));
 
-	while ($myrow = DB_fetch_row($Result)) {
+	while ($MyRow = DB_fetch_row($Result)) {
 
-		if (is_numeric($_POST['CalcOrder_' . $myrow[0]]) and $_POST['CalcOrder_' . $myrow[0]] < 5) {
+		if (is_numeric($_POST['CalcOrder_' . $MyRow[0]]) and $_POST['CalcOrder_' . $MyRow[0]] < 5) {
 
 			$sql = "UPDATE taxgrouptaxes
-				SET calculationorder='" . $_POST['CalcOrder_' . $myrow[0]] . "',
-					taxontax='" . $_POST['TaxOnTax_' . $myrow[0]] . "'
+				SET calculationorder='" . $_POST['CalcOrder_' . $MyRow[0]] . "',
+					taxontax='" . $_POST['TaxOnTax_' . $MyRow[0]] . "'
 				WHERE taxgroupid='" . $SelectedGroup . "'
-				AND taxauthid='" . $myrow[0] . "'";
+				AND taxauthid='" . $MyRow[0] . "'";
 
 			$result = DB_query($sql);
 		}
@@ -121,12 +121,12 @@ if (isset($_POST['submit']) or isset($_GET['remove']) or isset($_GET['add'])) {
 	$Result = DB_query($sql, _('Could not get tax authorities in the selected tax group'));
 
 	if (DB_num_rows($Result) > 0) {
-		$myrow = DB_fetch_array($Result);
-		if ($myrow['taxontax'] == 1) {
+		$MyRow = DB_fetch_array($Result);
+		if ($MyRow['taxontax'] == 1) {
 			prnMsg(_('It is inappropriate to set tax on tax where the tax is the first in the calculation order. The system has changed it back to no tax on tax for this tax authority'), 'warning');
 			$Result = DB_query("UPDATE taxgrouptaxes SET taxontax=0
 								WHERE taxgroupid='" . $SelectedGroup . "'
-								AND taxauthid='" . $myrow['taxauthid'] . "'");
+								AND taxauthid='" . $MyRow['taxauthid'] . "'");
 		}
 	}
 } elseif (isset($_GET['Delete'])) {
@@ -135,18 +135,18 @@ if (isset($_POST['submit']) or isset($_GET['remove']) or isset($_GET['add'])) {
 
 	$sql = "SELECT COUNT(*) FROM custbranch WHERE taxgroupid='" . $_GET['SelectedGroup'] . "'";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_row($result);
-	if ($myrow[0] > 0) {
+	$MyRow = DB_fetch_row($result);
+	if ($MyRow[0] > 0) {
 		prnMsg(_('Cannot delete this tax group because some customer branches are setup using it'), 'warn');
-		echo '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('customer branches referring to this tax group');
+		echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('customer branches referring to this tax group');
 	} else {
 		$sql = "SELECT COUNT(*) FROM suppliers
 				WHERE taxgroupid='" . $_GET['SelectedGroup'] . "'";
 		$result = DB_query($sql);
-		$myrow = DB_fetch_row($result);
-		if ($myrow[0] > 0) {
+		$MyRow = DB_fetch_row($result);
+		if ($MyRow[0] > 0) {
 			prnMsg(_('Cannot delete this tax group because some suppliers are setup using it'), 'warn');
-			echo '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('suppliers referring to this tax group');
+			echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('suppliers referring to this tax group');
 		} else {
 
 			$sql = "DELETE FROM taxgrouptaxes
@@ -189,7 +189,7 @@ if (!isset($SelectedGroup)) {
 				</tr>';
 
 		$k = 0; //row colour counter
-		while ($myrow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($result)) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;
@@ -202,7 +202,7 @@ if (!isset($SelectedGroup)) {
 					<td>%s</td>
 					<td><a href="%s&amp;SelectedGroup=%s">' . _('Edit') . '</a></td>
 					<td><a href="%s&amp;SelectedGroup=%s&amp;Delete=1&amp;GroupID=%s" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this tax group?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-					</tr>', $myrow['taxgroupid'], $myrow['taxgroupdescription'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['taxgroupid'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['taxgroupid'], urlencode($myrow['taxgroupdescription']));
+					</tr>', $MyRow['taxgroupid'], $MyRow['taxgroupdescription'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['taxgroupid'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['taxgroupid'], urlencode($MyRow['taxgroupdescription']));
 
 		} //END WHILE LIST LOOP
 		echo '</table>';
@@ -227,9 +227,9 @@ if (isset($SelectedGroup)) {
 	if (DB_num_rows($result) == 0) {
 		prnMsg(_('The selected tax group is no longer available.'), 'warn');
 	} else {
-		$myrow = DB_fetch_array($result);
-		$_POST['SelectedGroup'] = $myrow['taxgroupid'];
-		$_POST['GroupName'] = $myrow['taxgroupdescription'];
+		$MyRow = DB_fetch_array($result);
+		$_POST['SelectedGroup'] = $MyRow['taxgroupid'];
+		$_POST['GroupName'] = $MyRow['taxgroupdescription'];
 	}
 }
 echo '<br />';
@@ -276,9 +276,9 @@ if (isset($SelectedGroup)) {
 	$TaxAuthsUsed = array(); //this array just holds the taxauthid of all authorities in the group
 	$TaxAuthRow = array(); //this array holds all the details of the tax authorities in the group
 	$i = 1;
-	while ($myrow = DB_fetch_array($UsedResult)) {
-		$TaxAuthsUsed[$i] = $myrow['taxauthid'];
-		$TaxAuthRow[$i] = $myrow;
+	while ($MyRow = DB_fetch_array($UsedResult)) {
+		$TaxAuthsUsed[$i] = $MyRow['taxauthid'];
+		$TaxAuthRow[$i] = $MyRow;
 		$i++;
 	}
 

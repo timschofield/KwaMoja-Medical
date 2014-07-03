@@ -52,18 +52,18 @@ if (DB_num_rows($result) == 0) {
 		</tr>';
 	prnMsg(_('No General ledger accounts have been set up yet') . ' - ' . _('budgets cannot be allocated until the GL accounts are set up'), 'warn');
 } else {
-	while ($myrow = DB_fetch_array($result)) {
-		$Account = $myrow['accountcode'] . ' - ' . htmlspecialchars($myrow['accountname'], ENT_QUOTES, 'UTF-8', false);
-		if (isset($SelectedAccount) and isset($LastCode) and $SelectedAccount == $myrow['accountcode']) {
-			echo '<option selected="selected" value="' . $myrow['accountcode'] . '">' . $Account . '</option>';
+	while ($MyRow = DB_fetch_array($result)) {
+		$Account = $MyRow['accountcode'] . ' - ' . htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false);
+		if (isset($SelectedAccount) and isset($LastCode) and $SelectedAccount == $MyRow['accountcode']) {
+			echo '<option selected="selected" value="' . $MyRow['accountcode'] . '">' . $Account . '</option>';
 			$PrevCode = $LastCode;
 		} else {
-			echo '<option value="' . $myrow['accountcode'] . '">' . $Account . '</option>';
+			echo '<option value="' . $MyRow['accountcode'] . '">' . $Account . '</option>';
 			if (isset($SelectedAccount) and isset($LastCode) and $SelectedAccount == $LastCode) {
-				$NextCode = $myrow['accountcode'];
+				$NextCode = $MyRow['accountcode'];
 			}
 		}
-		$LastCode = $myrow['accountcode'];
+		$LastCode = $MyRow['accountcode'];
 	}
 	echo '</select></td>
 		</tr>';
@@ -138,9 +138,9 @@ if (isset($SelectedAccount) and $SelectedAccount != '') {
 				WHERE accountcode='" . $SelectedAccount . "'";
 
 	$result = DB_query($SQL);
-	while ($myrow = DB_fetch_array($result)) {
-		$Budget[$myrow['period']] = $myrow['budget'];
-		$Actual[$myrow['period']] = $myrow['actual'];
+	while ($MyRow = DB_fetch_array($result)) {
+		$Budget[$MyRow['period']] = $MyRow['budget'];
+		$Actual[$MyRow['period']] = $MyRow['actual'];
 	}
 
 
@@ -273,12 +273,12 @@ if (isset($SelectedAccount) and $SelectedAccount != '') {
 		$ErrMsg = _('Could not retrieve the ChartDetail records because');
 		$result = DB_query($sql, $ErrMsg);
 
-		while ($myrow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($result)) {
 
-			$CFwdBudget = $myrow['bfwdbudget'] + $myrow['budget'];
+			$CFwdBudget = $MyRow['bfwdbudget'] + $MyRow['budget'];
 			$sql = "UPDATE chartdetails
 					SET bfwdbudget='" . $CFwdBudget . "'
-					WHERE period='" . ($myrow['period'] + 1) . "'
+					WHERE period='" . ($MyRow['period'] + 1) . "'
 					AND  accountcode = '" . $SelectedAccount . "'";
 
 			$ErrMsg = _('Could not update the chartdetails record because');

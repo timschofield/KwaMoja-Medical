@@ -29,9 +29,9 @@ if (isset($_POST['submit'])) {
 	$sql = "SELECT count(geocodeid)
 			FROM geocode_param WHERE geocodeid='" . $_POST['GeoCodeID'] . "'";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_row($result);
+	$MyRow = DB_fetch_row($result);
 
-	if ($myrow[0] != 0 and !isset($SelectedParam)) {
+	if ($MyRow[0] != 0 and !isset($SelectedParam)) {
 		$InputError = 1;
 		prnMsg(_('That geocode ID already exists in the database'), 'error');
 		$Errors[$i] = 'GeoCodeID';
@@ -148,7 +148,7 @@ if (!isset($SelectedParam)) {
 		</tr>';
 
 	$k = 0; //row colour counter
-	while ($myrow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($result)) {
 
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -167,7 +167,7 @@ if (!isset($SelectedParam)) {
 			<td>%s</td>
 			<td><a href=\'%s?SelectedParam=%s\'>' . _('Edit') . '</a></td>
 			<td><a href=\'%s?SelectedParam=%s&delete=%s\'>' . _('Delete') . '</a></td>
-			</tr>', $myrow[0], $myrow[1], $myrow[2], $myrow[3], $myrow[4], $myrow[5], $myrow[6], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $myrow[0], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $myrow[0], $myrow[0]);
+			</tr>', $MyRow[0], $MyRow[1], $MyRow[2], $MyRow[3], $MyRow[4], $MyRow[5], $MyRow[6], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $MyRow[0], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $MyRow[0], $MyRow[0]);
 
 	} //END WHILE LIST LOOP
 	echo '</table>';
@@ -198,15 +198,15 @@ if (!isset($_GET['delete'])) {
 				WHERE geocodeid='" . $SelectedParam . "'";
 
 		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($result);
 
-		$_POST['GeoCodeID'] = $myrow['geocodeid'];
-		$_POST['GeoCode_Key'] = $myrow['geocode_key'];
-		$_POST['Center_Long'] = $myrow['center_long'];
-		$_POST['Center_Lat'] = $myrow['center_lat'];
-		$_POST['Map_Height'] = $myrow['map_height'];
-		$_POST['Map_Width'] = $myrow['map_width'];
-		$_POST['Map_Host'] = $myrow['map_host'];
+		$_POST['GeoCodeID'] = $MyRow['geocodeid'];
+		$_POST['GeoCode_Key'] = $MyRow['geocode_key'];
+		$_POST['Center_Long'] = $MyRow['center_long'];
+		$_POST['Center_Lat'] = $MyRow['center_lat'];
+		$_POST['Map_Height'] = $MyRow['map_height'];
+		$_POST['Map_Width'] = $MyRow['map_width'];
+		$_POST['Map_Host'] = $MyRow['map_host'];
 
 		echo '<input type="hidden" name="SelectedParam" value="' . $SelectedParam . '" />';
 		echo '<input type="hidden" name="GeoCodeID" value="' . $_POST['GeoCodeID'] . '" />';

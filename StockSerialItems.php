@@ -31,16 +31,16 @@ $result = DB_query("SELECT description,
 						FROM stockmaster
 						WHERE stockid='" . $StockID . "'", _('Could not retrieve the requested item because'));
 
-$myrow = DB_fetch_array($result);
+$MyRow = DB_fetch_array($result);
 
-$Description = $myrow['description'];
-$UOM = $myrow['units'];
-$DecimalPlaces = $myrow['decimalplaces'];
-$Serialised = $myrow['serialised'];
-$Controlled = $myrow['controlled'];
-$Perishable = $myrow['perishable'];
+$Description = $MyRow['description'];
+$UOM = $MyRow['units'];
+$DecimalPlaces = $MyRow['decimalplaces'];
+$Serialised = $MyRow['serialised'];
+$Controlled = $MyRow['controlled'];
+$Perishable = $MyRow['perishable'];
 
-if ($myrow['mbflag'] == 'K' or $myrow['mbflag'] == 'A' or $myrow['mbflag'] == 'D') {
+if ($MyRow['mbflag'] == 'K' or $MyRow['mbflag'] == 'A' or $MyRow['mbflag'] == 'D') {
 
 	prnMsg(_('This item is either a kitset or assembly or a dummy part and cannot have a stock holding') . '. ' . _('This page cannot be displayed') . '. ' . _('Only serialised or controlled items can be displayed in this page'), 'error');
 	include('includes/footer.inc');
@@ -51,7 +51,7 @@ $result = DB_query("SELECT locationname
 						FROM locations
 						WHERE loccode='" . $_GET['Location'] . "'", _('Could not retrieve the stock location of the item because'), _('The SQL used to lookup the location was'));
 
-$myrow = DB_fetch_row($result);
+$MyRow = DB_fetch_row($result);
 
 $sql = "SELECT serialno,
 				quantity,
@@ -74,7 +74,7 @@ if ($Serialised == 1) {
 	echo '<tr>
 			<th colspan="11"><font color="navy" size="2">' . _('Controlled items in') . ' ';
 }
-echo $myrow[0] . '</font></th></tr>';
+echo $MyRow[0] . '</font></th></tr>';
 
 echo '<tr>
 		<th colspan="11"><font color="navy" size="2">' . $StockID . '-' . $Description . '</b>  (' . _('In units of') . ' ' . $UOM . ')</font></th>
@@ -127,7 +127,7 @@ $TotalQuantity = 0;
 $j = 1;
 $Col = 0;
 $BGColor = '#CCCCCC';
-while ($myrow = DB_fetch_array($LocStockResult)) {
+while ($MyRow = DB_fetch_array($LocStockResult)) {
 
 	if ($Col == 0 and $BGColor == '#EEEEEE') {
 		$BGColor = '#CCCCCC';
@@ -137,22 +137,22 @@ while ($myrow = DB_fetch_array($LocStockResult)) {
 		echo '<tr class="OddTableRows">';
 	}
 
-	$TotalQuantity += $myrow['quantity'];
+	$TotalQuantity += $MyRow['quantity'];
 
 	if ($Serialised == 1 and $Perishable == 0) {
-		echo '<td>' . $myrow['serialno'] . '</td>';
+		echo '<td>' . $MyRow['serialno'] . '</td>';
 		echo '<th></th>';
 	} else if ($Serialised == 1 and $Perishable == 1) {
-		echo '<td>' . $myrow['serialno'] . '</td>
-				<td>' . ConvertSQLDate($myrow['expirationdate']) . '</td>';
+		echo '<td>' . $MyRow['serialno'] . '</td>
+				<td>' . ConvertSQLDate($MyRow['expirationdate']) . '</td>';
 	} else if ($Serialised == 0 and $Perishable == 0) {
-		echo '<td>' . $myrow['serialno'] . '</td>
-			<td class="number">' . locale_number_format($myrow['quantity'], $DecimalPlaces) . '</td>';
+		echo '<td>' . $MyRow['serialno'] . '</td>
+			<td class="number">' . locale_number_format($MyRow['quantity'], $DecimalPlaces) . '</td>';
 		echo '<th></th>';
 	} else if ($Serialised == 0 and $Perishable == 1) {
-		echo '<td>' . $myrow['serialno'] . '</td>
-			<td class="number">' . locale_number_format($myrow['quantity'], $DecimalPlaces) . '</td>
-			<td>' . ConvertSQLDate($myrow['expirationdate']) . '</td>
+		echo '<td>' . $MyRow['serialno'] . '</td>
+			<td class="number">' . locale_number_format($MyRow['quantity'], $DecimalPlaces) . '</td>
+			<td>' . ConvertSQLDate($MyRow['expirationdate']) . '</td>
 			<th></th>';
 	}
 	//end of page full new headings if

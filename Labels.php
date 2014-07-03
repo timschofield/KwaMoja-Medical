@@ -187,7 +187,7 @@ if (!isset($SelectedLabelID)) {
 					<th>' . _('Column Width') . '</th>
 				</tr>';
 		$k = 0;
-		while ($myrow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($result)) {
 
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
@@ -196,19 +196,19 @@ if (!isset($SelectedLabelID)) {
 				echo '<tr class="OddTableRows">';
 				$k++;
 			}
-			if ($myrow['rowheight'] == 0 ) {
+			if ($MyRow['rowheight'] == 0 ) {
 				$NoOfRows = 0;
 			} else {
-				$NoOfRows = floor(($myrow['pageheight'] - $myrow['topmargin']) / $myrow['rowheight']);
+				$NoOfRows = floor(($MyRow['pageheight'] - $MyRow['topmargin']) / $MyRow['rowheight']);
 			}
-			if ($myrow['columnwidth'] == 0 ) {
+			if ($MyRow['columnwidth'] == 0 ) {
 				$NoOfCols = 0;
 			} else {
-				$NoOfCols = floor(($myrow['pagewidth'] - $myrow['leftmargin']) / $myrow['columnwidth']);
+				$NoOfCols = floor(($MyRow['pagewidth'] - $MyRow['leftmargin']) / $MyRow['columnwidth']);
 			}
 
 			foreach ($PaperSize as $PaperName => $PaperType) {
-				if ($PaperType['PageWidth'] == $myrow['pagewidth'] and $PaperType['PageHeight'] == $myrow['pageheight']) {
+				if ($PaperType['PageWidth'] == $MyRow['pagewidth'] and $PaperType['PageHeight'] == $MyRow['pageheight']) {
 					$Paper = $PaperName;
 				}
 			}
@@ -222,7 +222,7 @@ if (!isset($SelectedLabelID)) {
 						<td class="number">%s</td>
 						<td><a href="%sSelectedLabelID=%s">' . _('Edit') . '</a></td>
 						<td><a href="%sSelectedLabelID=%s&delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this label?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-						</tr>', $myrow['description'], $NoOfRows . ' x ' . $NoOfCols, $Paper, $myrow['height'], $myrow['width'], $myrow['rowheight'], $myrow['columnwidth'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['labelid'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['labelid'], $RootPath . '/LabelFields.php?', $myrow['labelid']);
+						</tr>', $MyRow['description'], $NoOfRows . ' x ' . $NoOfCols, $Paper, $MyRow['height'], $MyRow['width'], $MyRow['rowheight'], $MyRow['columnwidth'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['labelid'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['labelid'], $RootPath . '/LabelFields.php?', $MyRow['labelid']);
 			} else {
 				printf('<td>%s</td>
 						<td>%s</td>
@@ -234,7 +234,7 @@ if (!isset($SelectedLabelID)) {
 						<td class="number">%s</td>
 						<td><a href="%sSelectedLabelID=%s">' . _('Edit') . '</a></td>
 						<td><a href="%sSelectedLabelID=%s&delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this label?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-						</tr>', $myrow['description'], $NoOfRows . ' x ' . $NoOfCols, $myrow['pagewidth'], $myrow['pageheight'], $myrow['height'], $myrow['width'], $myrow['rowheight'], $myrow['columnwidth'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['labelid'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['labelid'], $RootPath . '/LabelFields.php?', $myrow['labelid']);
+						</tr>', $MyRow['description'], $NoOfRows . ' x ' . $NoOfCols, $MyRow['pagewidth'], $MyRow['pageheight'], $MyRow['height'], $MyRow['width'], $MyRow['rowheight'], $MyRow['columnwidth'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['labelid'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['labelid'], $RootPath . '/LabelFields.php?', $MyRow['labelid']);
 			}
 		}
 		//END WHILE LIST LOOP
@@ -270,20 +270,20 @@ if (isset($SelectedLabelID)) {
 			WHERE labelid='" . $SelectedLabelID . "'";
 
 	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($result);
 
-	$_POST['PageWidth'] = $myrow['pagewidth'];
-	$_POST['PageHeight'] = $myrow['pageheight'];
-	$_POST['Description'] = $myrow['description'];
-	$_POST['Height'] = $myrow['height'];
-	$_POST['TopMargin'] = $myrow['topmargin'];
-	$_POST['Width'] = $myrow['width'];
-	$_POST['LeftMargin'] = $myrow['leftmargin'];
-	$_POST['RowHeight'] = $myrow['rowheight'];
-	$_POST['ColumnWidth'] = $myrow['columnwidth'];
+	$_POST['PageWidth'] = $MyRow['pagewidth'];
+	$_POST['PageHeight'] = $MyRow['pageheight'];
+	$_POST['Description'] = $MyRow['description'];
+	$_POST['Height'] = $MyRow['height'];
+	$_POST['TopMargin'] = $MyRow['topmargin'];
+	$_POST['Width'] = $MyRow['width'];
+	$_POST['LeftMargin'] = $MyRow['leftmargin'];
+	$_POST['RowHeight'] = $MyRow['rowheight'];
+	$_POST['ColumnWidth'] = $MyRow['columnwidth'];
 
 	foreach ($PaperSize as $PaperName => $PaperType) {
-		if ($PaperType['PageWidth'] == $myrow['pagewidth'] and $PaperType['PageHeight'] == $myrow['pageheight']) {
+		if ($PaperType['PageWidth'] == $MyRow['pagewidth'] and $PaperType['PageHeight'] == $MyRow['pageheight']) {
 			$_POST['PaperSize'] = $PaperName;
 		}
 	}
@@ -422,7 +422,7 @@ if (isset($SelectedLabelID)) {
 					</tr>';
 	if (DB_num_rows($result) > 0) {
 		$k = 0;
-		while ($myrow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($result)) {
 
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
@@ -432,34 +432,34 @@ if (isset($SelectedLabelID)) {
 				$k++;
 			}
 
-			echo '<input type="hidden" name="LabelFieldID' . $i . '" value="' . $myrow['labelfieldid'] . '" />
+			echo '<input type="hidden" name="LabelFieldID' . $i . '" value="' . $MyRow['labelfieldid'] . '" />
 			<td><select minlength="0" name="FieldName' . $i . '" onchange="ReloadForm(submit)">';
-			if ($myrow['fieldvalue'] == 'itemcode') {
+			if ($MyRow['fieldvalue'] == 'itemcode') {
 				echo '<option selected="selected" value="itemcode">' . _('Item Code') . '</option>';
 			} else {
 				echo '<option value="itemcode">' . _('Item Code') . '</option>';
 			}
-			if ($myrow['fieldvalue'] == 'itemdescription') {
+			if ($MyRow['fieldvalue'] == 'itemdescription') {
 				echo '<option selected="selected" value="itemdescription">' . _('Item Description') . '</option>';
 			} else {
 				echo '<option value="itemdescription">' . _('Item Descrption') . '</option>';
 			}
-			if ($myrow['fieldvalue'] == 'barcode') {
+			if ($MyRow['fieldvalue'] == 'barcode') {
 				echo '<option selected="selected" value="barcode">' . _('Item Barcode') . '</option>';
 			} else {
 				echo '<option value="barcode">' . _('Item Barcode') . '</option>';
 			}
-			if ($myrow['fieldvalue'] == 'price') {
+			if ($MyRow['fieldvalue'] == 'price') {
 				echo '<option selected="selected" value="price">' . _('Price') . '</option>';
 			} else {
 				echo '<option value="price">' . _('Price') . '</option>';
 			}
 			echo '</select></td>
-				<td><input type="text" name="VPos' . $i . '" size="4" required="required" minlength="1" maxlength="4" value="' . $myrow['vpos'] . '" /></td>
-				<td><input type="text" name="HPos' . $i . '" size="4" required="required" minlength="1" maxlength="4" value="' . $myrow['hpos'] . '" /></td>
-				<td><input type="text" name="FontSize' . $i . '" size="4" required="required" minlength="1" maxlength="4" value="' . $myrow['fontsize'] . '" /></td>
+				<td><input type="text" name="VPos' . $i . '" size="4" required="required" minlength="1" maxlength="4" value="' . $MyRow['vpos'] . '" /></td>
+				<td><input type="text" name="HPos' . $i . '" size="4" required="required" minlength="1" maxlength="4" value="' . $MyRow['hpos'] . '" /></td>
+				<td><input type="text" name="FontSize' . $i . '" size="4" required="required" minlength="1" maxlength="4" value="' . $MyRow['fontsize'] . '" /></td>
 				<td><select minlength="0" name="Barcode' . $i . '" onchange="ReloadForm(submit)">';
-			if ($myrow['barcode'] == 0) {
+			if ($MyRow['barcode'] == 0) {
 				echo '<option selected="selected" value="0">' . _('No') . '</option>
 						<option value="1">' . _('Yes') . '</option>';
 			} else {
@@ -467,7 +467,7 @@ if (isset($SelectedLabelID)) {
 						<option value="0">' . _('No') . '</option>';
 			}
 			echo '</select></td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedLabelID=' . $SelectedLabelID . '&amp;DeleteField=' . $myrow['labelfieldid'] . ' onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this label field?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedLabelID=' . $SelectedLabelID . '&amp;DeleteField=' . $MyRow['labelfieldid'] . ' onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this label field?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
 				</tr>';
 			$i++;
 		}

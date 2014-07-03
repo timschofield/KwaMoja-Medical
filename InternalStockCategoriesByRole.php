@@ -113,13 +113,13 @@ if (!isset($SelectedRole)) {
 
 	$result = DB_query($SQL);
 	echo '<option value="">' . _('Not Yet Selected') . '</option>';
-	while ($myrow = DB_fetch_array($result)) {
-		if (isset($SelectedRole) and $myrow['secroleid'] == $SelectedRole) {
+	while ($MyRow = DB_fetch_array($result)) {
+		if (isset($SelectedRole) and $MyRow['secroleid'] == $SelectedRole) {
 			echo '<option selected="selected" value="';
 		} else {
 			echo '<option value="';
 		}
-		echo $myrow['secroleid'] . '">' . $myrow['secroleid'] . ' - ' . $myrow['secrolename'] . '</option>';
+		echo $MyRow['secroleid'] . '">' . $MyRow['secroleid'] . ' - ' . $MyRow['secrolename'] . '</option>';
 
 	} //end while loop
 
@@ -164,7 +164,7 @@ if (isset($_POST['process']) or isset($SelectedRole)) {
 
 	$k = 0; //row colour counter
 
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -173,9 +173,9 @@ if (isset($_POST['process']) or isset($SelectedRole)) {
 			$k = 1;
 		}
 
-		echo '<td>' . $myrow['categoryid'] . '</td>
-			<td>' . $myrow['categorydescription'] . '</td>
-			<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedType=' . urlencode($myrow['categoryid']) . '&amp;delete=yes&amp;SelectedRole=' . urlencode($SelectedRole) . '" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this internal stock category code?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+		echo '<td>' . $MyRow['categoryid'] . '</td>
+			<td>' . $MyRow['categorydescription'] . '</td>
+			<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedType=' . urlencode($MyRow['categoryid']) . '&amp;delete=yes&amp;SelectedRole=' . urlencode($SelectedRole) . '" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this internal stock category code?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
 			</tr>';
 	}
 	//END WHILE LIST LOOP
@@ -196,13 +196,13 @@ if (isset($_POST['process']) or isset($SelectedRole)) {
 		if (!isset($_POST['SelectedCategory'])) {
 			echo '<option selected="selected" value="">' . _('Not Yet Selected') . '</option>';
 		}
-		while ($myrow = DB_fetch_array($result)) {
-			if (isset($_POST['SelectedCategory']) and $myrow['categoryid'] == $_POST['SelectedCategory']) {
+		while ($MyRow = DB_fetch_array($result)) {
+			if (isset($_POST['SelectedCategory']) and $MyRow['categoryid'] == $_POST['SelectedCategory']) {
 				echo '<option selected="selected" value="';
 			} else {
 				echo '<option value="';
 			}
-			echo $myrow['categoryid'] . '">' . $myrow['categoryid'] . ' - ' . $myrow['categorydescription'] . '</option>';
+			echo $MyRow['categoryid'] . '">' . $MyRow['categoryid'] . ' - ' . $MyRow['categorydescription'] . '</option>';
 
 		} //end while loop
 

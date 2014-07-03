@@ -120,7 +120,7 @@ echo '<tr>
 if ($_SESSION['WorkOrder' . $identifier]->CostIssued > 0) {
 	echo '<tr>
 			<td class="label">' . _('Accumulated Costs') . ':</td>
-			<td class="number">' . locale_number_format($myrow['costissued'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
+			<td class="number">' . locale_number_format($MyRow['costissued'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
 		</tr>';
 }
 
@@ -244,12 +244,12 @@ if (!isset($_POST['StockCat'])) {
 	echo '<option value="All">' . _('All') . '</option>';
 }
 
-while ($myrow1 = DB_fetch_array($result1)) {
+while ($MyRow1 = DB_fetch_array($result1)) {
 
-	if ($_POST['StockCat'] == $myrow1['categoryid']) {
-		echo '<option selected="True" value=' . $myrow1['categoryid'] . '>' . $myrow1['categorydescription'] . '</option>';
+	if ($_POST['StockCat'] == $MyRow1['categoryid']) {
+		echo '<option selected="True" value=' . $MyRow1['categoryid'] . '>' . $MyRow1['categorydescription'] . '</option>';
 	} else {
-		echo '<option value=' . $myrow1['categoryid'] . '>' . $myrow1['categorydescription'] . '</option>';
+		echo '<option value=' . $MyRow1['categoryid'] . '>' . $MyRow1['categorydescription'] . '</option>';
 	}
 }
 
@@ -339,14 +339,14 @@ if (isset($SearchResult)) {
 		}
 
 		$LineNumber = 1;
-		while ($myrow = DB_fetch_array($SearchResult)) {
+		while ($MyRow = DB_fetch_array($SearchResult)) {
 
-			if (!in_array($myrow['stockid'], $ItemCodes)) {
+			if (!in_array($MyRow['stockid'], $ItemCodes)) {
 				if (function_exists('imagecreatefrompng')) {
-					$ImageSource = '<img title="' . $myrow['longdescription'] . '" src="GetStockImage.php?automake=1&textcolor=FFFFFF&bgcolor=CCCCCC&StockID=' . urlencode($myrow['stockid']) . '&text=&width=64&height=64" />';
+					$ImageSource = '<img title="' . $MyRow['longdescription'] . '" src="GetStockImage.php?automake=1&textcolor=FFFFFF&bgcolor=CCCCCC&StockID=' . urlencode($MyRow['stockid']) . '&text=&width=64&height=64" />';
 				} else {
-					if (file_exists($_SERVER['DOCUMENT_ROOT'] . $RootPath . '/' . $_SESSION['part_pics_dir'] . '/' . $myrow['stockid'] . '.jpg')) {
-						$ImageSource = '<img src="' . $_SERVER['DOCUMENT_ROOT'] . $RootPath . '/' . $_SESSION['part_pics_dir'] . '/' . $myrow['stockid'] . '.jpg" alt="' . _('No Image') . '" />';
+					if (file_exists($_SERVER['DOCUMENT_ROOT'] . $RootPath . '/' . $_SESSION['part_pics_dir'] . '/' . $MyRow['stockid'] . '.jpg')) {
+						$ImageSource = '<img src="' . $_SERVER['DOCUMENT_ROOT'] . $RootPath . '/' . $_SESSION['part_pics_dir'] . '/' . $MyRow['stockid'] . '.jpg" alt="' . _('No Image') . '" />';
 					} else {
 						$ImageSource = _('No Image');
 					}
@@ -366,7 +366,7 @@ if (isset($SearchResult)) {
 						<td>%s</td>
 						<input type="hidden" name="StockID' . $LineNumber . '" value="%s" />
 						<td><input type="text" required="required" minlength="1" maxlength="11" class="number" name="Quantity' . $LineNumber . '" value="0" /></td>
-						</tr>', $myrow['stockid'], $myrow['description'], $myrow['units'], $ImageSource, $myrow['stockid']);
+						</tr>', $MyRow['stockid'], $MyRow['description'], $MyRow['units'], $ImageSource, $MyRow['stockid']);
 			} //end if not already on work order
 			$LineNumber++;
 		} //end of while loop

@@ -85,11 +85,11 @@ if (isset($_POST['SelectChoice'])) {
 
 		echo '<td><select minlength="0" name="DiscCat" onchange="ReloadForm(update.select)">';
 
-		while ($myrow = DB_fetch_array($result)) {
-			if (isset($_POST['DiscCat']) and $myrow['discountcategory'] == $_POST['DiscCat']) {
-				echo '<option selected="selected" value="' . $myrow['discountcategory'] . '">' . $myrow['discountcategory'] . '</option>';
+		while ($MyRow = DB_fetch_array($result)) {
+			if (isset($_POST['DiscCat']) and $MyRow['discountcategory'] == $_POST['DiscCat']) {
+				echo '<option selected="selected" value="' . $MyRow['discountcategory'] . '">' . $MyRow['discountcategory'] . '</option>';
 			} else {
-				echo '<option value="' . $myrow['discountcategory'] . '">' . $myrow['discountcategory'] . '</option>';
+				echo '<option value="' . $MyRow['discountcategory'] . '">' . $MyRow['discountcategory'] . '</option>';
 			}
 		}
 
@@ -165,8 +165,8 @@ if (isset($_POST['SelectChoice'])) {
 			$result = DB_query($sql);
 			if (!isset($_POST['stockID'])) {
 				echo _('Select a part code') . ':<br />';
-				while ($myrow = DB_fetch_array($result)) {
-					echo '<input type="submit" name="stockID" value="' . $myrow['stockid'] . '" /><br />';
+				while ($MyRow = DB_fetch_array($result)) {
+					echo '<input type="submit" name="stockID" value="' . $MyRow['stockid'] . '" /><br />';
 				}
 			}
 		}
@@ -181,8 +181,8 @@ if (isset($_POST['SelectChoice'])) {
 				FROM stockcategory";
 		$result = DB_query($sql);
 		echo '<td><select minlength="0" name="stockcategory">';
-		while ($myrow = DB_fetch_array($result)) {
-			echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . '</option>';
+		while ($MyRow = DB_fetch_array($result)) {
+			echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 		}
 		echo '</select></td></tr></table>';
 		echo '<br /><div class="centre"><input type="submit" name="SubmitCategory" value="' . _('Update Items') . '" /></div>';
@@ -197,8 +197,8 @@ if (isset($_POST['SelectChoice'])) {
 		$result = DB_query($sql);
 		if (DB_num_rows($result) > 0) {
 			DB_data_seek($result, 0);
-			$myrow = DB_fetch_array($result);
-			$_POST['DiscCat'] = $myrow['discountcategory'];
+			$MyRow = DB_fetch_array($result);
+			$_POST['DiscCat'] = $MyRow['discountcategory'];
 		} else {
 			$_POST['DiscCat'] = '0';
 		}
@@ -224,7 +224,7 @@ if (isset($_POST['SelectChoice'])) {
 
 		$k = 0; //row colour counter
 
-		while ($myrow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($result)) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;
@@ -232,12 +232,12 @@ if (isset($_POST['SelectChoice'])) {
 				echo '<tr class="OddTableRows">';
 				$k = 1;
 			}
-			$DeleteURL = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Delete=yes&amp;StockID=' . $myrow['stockid'] . '&amp;DiscountCategory=' . $myrow['discountcategory'];
+			$DeleteURL = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Delete=yes&amp;StockID=' . $MyRow['stockid'] . '&amp;DiscountCategory=' . $MyRow['discountcategory'];
 
 			printf('<td>%s</td>
 					<td>%s - %s</td>
 					<td><a href="%s" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this discount category?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-					</tr>', $myrow['discountcategory'], $myrow['stockid'], $myrow['description'], $DeleteURL);
+					</tr>', $MyRow['discountcategory'], $MyRow['stockid'], $MyRow['description'], $DeleteURL);
 
 		}
 

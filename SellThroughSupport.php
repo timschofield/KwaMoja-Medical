@@ -166,7 +166,7 @@ if (isset($_POST['SearchSupplier'])) {
 					<th>' . _('Address 3') . '</th>
 				</tr>';
 	$k = 0;
-	while ($myrow = DB_fetch_array($SuppliersResult)) {
+	while ($MyRow = DB_fetch_array($SuppliersResult)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -180,7 +180,7 @@ if (isset($_POST['SearchSupplier'])) {
 				<td>%s</td>
 				<td>%s</td>
 				<td>%s</td>
-				</tr>', $myrow['supplierid'], $myrow['suppname'], $myrow['currcode'], $myrow['address1'], $myrow['address2'], $myrow['address3']);
+				</tr>', $MyRow['supplierid'], $MyRow['suppname'], $MyRow['currcode'], $MyRow['address1'], $MyRow['address2'], $MyRow['address3']);
 	} //end of while loop
 	echo '</table>
 			<br/>
@@ -265,7 +265,7 @@ if (isset($SupplierID) AND $Edit == false) {
 				</tr>';
 
 		$k = 0; //row colour counter
-		while ($myrow = DB_fetch_array($Result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;
@@ -273,15 +273,15 @@ if (isset($SupplierID) AND $Edit == false) {
 				echo '<tr class="OddTableRows">';
 				$k++;
 			}
-			if ($myrow['categoryid'] == '') {
-				$ItemDescription = $myrow['stockid'] . ' - ' . $myrow['description'];
+			if ($MyRow['categoryid'] == '') {
+				$ItemDescription = $MyRow['stockid'] . ' - ' . $MyRow['description'];
 			} else {
-				$ItemDescription = _('Any') . ' ' . $myrow['categorydescription'];
+				$ItemDescription = _('Any') . ' ' . $MyRow['categorydescription'];
 			}
-			if ($myrow['debtorno'] == '') {
+			if ($MyRow['debtorno'] == '') {
 				$Customer = _('All Customers');
 			} else {
-				$Customer = $myrow['debtorno'] . ' - ' . $myrow['name'];
+				$Customer = $MyRow['debtorno'] . ' - ' . $MyRow['name'];
 			}
 
 			printf('<td>%s</td>
@@ -293,7 +293,7 @@ if (isset($SupplierID) AND $Edit == false) {
 					<td>%s</td>
 					<td><a href="%s?SellSupportID=%s&amp;SupplierID=%s&amp;Edit=1">' . _('Edit') . '</a></td>
 					<td><a href="%s?SellSupportID=%s&amp;Delete=1&amp;SupplierID=%s" onclick=\'return MakeConfirm("' . _('Are you sure you wish to delete this sell through support record?') . '", \'Confirm Delete\', this);\'>' . _('Delete') . '</a></td>
-					</tr>', $ItemDescription, $Customer, locale_number_format($myrow['rebateamount'], $SuppRow['decimalplaces']), locale_number_format($myrow['rebatepercent'] * 100, 2), $myrow['narrative'], ConvertSQLDate($myrow['effectivefrom']), ConvertSQLDate($myrow['effectiveto']), htmlspecialchars($_SERVER['PHP_SELF']), $myrow['id'], $SupplierID, htmlspecialchars($_SERVER['PHP_SELF']), $myrow['id'], $SupplierID);
+					</tr>', $ItemDescription, $Customer, locale_number_format($MyRow['rebateamount'], $SuppRow['decimalplaces']), locale_number_format($MyRow['rebatepercent'] * 100, 2), $MyRow['narrative'], ConvertSQLDate($MyRow['effectivefrom']), ConvertSQLDate($MyRow['effectiveto']), htmlspecialchars($_SERVER['PHP_SELF']), $MyRow['id'], $SupplierID, htmlspecialchars($_SERVER['PHP_SELF']), $MyRow['id'], $SupplierID);
 		} //end of while loop
 		echo '</table><br/>';
 	} // end of there are sell through support rows to show
@@ -318,7 +318,7 @@ if (isset($SupplierID)) { //not selecting a supplier
 
 		$ErrMsg = _('The supplier sell through support could not be retrieved because');
 		$EditResult = DB_query($sql, $ErrMsg);
-		$myrow = DB_fetch_array($EditResult);
+		$MyRow = DB_fetch_array($EditResult);
 	}
 
 	$SuppName = $SuppRow['suppname'];
@@ -329,16 +329,16 @@ if (isset($SupplierID)) { //not selecting a supplier
 			<table class="selection">';
 
 	if ($Edit == true) {
-		$_POST['DebtorNo'] = $myrow['debtorno'];
-		$_POST['StockID'] = $myrow['stockid'];
-		$_POST['CategoryID'] = $myrow['categoryid'];
-		$_POST['Narrative'] = $myrow['narrative'];
-		$_POST['RebatePercent'] = locale_number_format($myrow['rebatepercent'] * 100, 2);
-		$_POST['RebateAmount'] = locale_number_format($myrow['rebateamount'], $SuppRow['decimalplaces']);
-		$_POST['EffectiveFrom'] = ConvertSQLDate($myrow['effectivefrom']);
-		$_POST['EffectiveTo'] = ConvertSQLDate($myrow['effectiveto']);
+		$_POST['DebtorNo'] = $MyRow['debtorno'];
+		$_POST['StockID'] = $MyRow['stockid'];
+		$_POST['CategoryID'] = $MyRow['categoryid'];
+		$_POST['Narrative'] = $MyRow['narrative'];
+		$_POST['RebatePercent'] = locale_number_format($MyRow['rebatepercent'] * 100, 2);
+		$_POST['RebateAmount'] = locale_number_format($MyRow['rebateamount'], $SuppRow['decimalplaces']);
+		$_POST['EffectiveFrom'] = ConvertSQLDate($MyRow['effectivefrom']);
+		$_POST['EffectiveTo'] = ConvertSQLDate($MyRow['effectiveto']);
 
-		echo '<input type="hidden" name="SellSupportID" value="' . $myrow['id'] . '" />';
+		echo '<input type="hidden" name="SellSupportID" value="' . $MyRow['id'] . '" />';
 	}
 	if (!isset($_POST['RebateAmount'])) {
 		$_POST['RebateAmount'] = 0;

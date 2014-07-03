@@ -158,26 +158,26 @@ if (isset($_POST['PrintPDF'])) {
 
 	$FontSize = 8;
 	$code = '';
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		$YPos -= $line_height;
 
-		$PriceDated = ConvertSQLDate($myrow[4]);
+		$PriceDated = ConvertSQLDate($MyRow[4]);
 
 		//if item has more than 1 price, write only price, date and supplier code for the old ones
-		if ($code == $myrow['stockid']) {
+		if ($code == $MyRow['stockid']) {
 
-			$pdf->addTextWrap(350, $YPos, 50, $FontSize, locale_number_format($myrow['price'], $CurrDecimalPlaces), 'right');
+			$pdf->addTextWrap(350, $YPos, 50, $FontSize, locale_number_format($MyRow['price'], $CurrDecimalPlaces), 'right');
 			$pdf->addTextWrap(410, $YPos, 50, $FontSize, $PriceDated, 'left');
-			$pdf->addTextWrap(470, $YPos, 90, $FontSize, $myrow['suppliers_partno'], 'left');
-			$code = $myrow['stockid'];
+			$pdf->addTextWrap(470, $YPos, 90, $FontSize, $MyRow['suppliers_partno'], 'left');
+			$code = $MyRow['stockid'];
 		} else {
-			$code = $myrow['stockid'];
-			$pdf->addTextWrap(30, $YPos, 100, $FontSize, $myrow['stockid'], 'left');
-			$pdf->addTextWrap(135, $YPos, 160, $FontSize, $myrow['description'], 'left');
-			$pdf->addTextWrap(300, $YPos, 50, $FontSize, locale_number_format($myrow['conversionfactor'], 'Variable'), 'right');
-			$pdf->addTextWrap(350, $YPos, 50, $FontSize, locale_number_format($myrow['price'], $CurrDecimalPlaces), 'right');
+			$code = $MyRow['stockid'];
+			$pdf->addTextWrap(30, $YPos, 100, $FontSize, $MyRow['stockid'], 'left');
+			$pdf->addTextWrap(135, $YPos, 160, $FontSize, $MyRow['description'], 'left');
+			$pdf->addTextWrap(300, $YPos, 50, $FontSize, locale_number_format($MyRow['conversionfactor'], 'Variable'), 'right');
+			$pdf->addTextWrap(350, $YPos, 50, $FontSize, locale_number_format($MyRow['price'], $CurrDecimalPlaces), 'right');
 			$pdf->addTextWrap(410, $YPos, 50, $FontSize, $PriceDated, 'left');
-			$pdf->addTextWrap(470, $YPos, 90, $FontSize, $myrow['suppliers_partno'], 'left');
+			$pdf->addTextWrap(470, $YPos, 90, $FontSize, $MyRow['suppliers_partno'], 'left');
 		}
 
 
@@ -218,11 +218,11 @@ if (isset($_POST['PrintPDF'])) {
 			<tr>
 				<td>' . _('Supplier') . ':</td>
 				<td><select required="required" minlength="1" name="supplier"> ';
-	while ($myrow = DB_fetch_array($result)) {
-		if (isset($_POST['supplierid']) and ($myrow['supplierid'] == $_POST['supplierid'])) {
-			echo '<option selected="selected" value="' . $myrow['supplierid'] . '">' . $myrow['supplierid'] . ' - ' . $myrow['suppname'] . '</option>';
+	while ($MyRow = DB_fetch_array($result)) {
+		if (isset($_POST['supplierid']) and ($MyRow['supplierid'] == $_POST['supplierid'])) {
+			echo '<option selected="selected" value="' . $MyRow['supplierid'] . '">' . $MyRow['supplierid'] . ' - ' . $MyRow['suppname'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['supplierid'] . '">' . $myrow['supplierid'] . ' - ' . $myrow['suppname'] . '</option>';
+			echo '<option value="' . $MyRow['supplierid'] . '">' . $MyRow['supplierid'] . ' - ' . $MyRow['suppname'] . '</option>';
 		}
 	}
 	echo '</select></td>
@@ -234,11 +234,11 @@ if (isset($_POST['PrintPDF'])) {
 			<td>' . _('Category') . ':</td>
 			<td><select required="required" minlength="1" name="category"> ';
 	echo '<option value="all">' . _('ALL') . '</option>';
-	while ($myrow = DB_fetch_array($result)) {
-		if (isset($_POST['categoryid']) and ($myrow['categoryid'] == $_POST['categoryid'])) {
-			echo '<option selected="selected" value="' . $myrow['categoryid'] . '">' . $myrow['categoryid'] - $myrow['categorydescription'] . '</option>';
+	while ($MyRow = DB_fetch_array($result)) {
+		if (isset($_POST['categoryid']) and ($MyRow['categoryid'] == $_POST['categoryid'])) {
+			echo '<option selected="selected" value="' . $MyRow['categoryid'] . '">' . $MyRow['categoryid'] - $MyRow['categorydescription'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categoryid'] . ' - ' . $myrow['categorydescription'] . '</option>';
+			echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categoryid'] . ' - ' . $MyRow['categorydescription'] . '</option>';
 		}
 	}
 	echo '</select></td>

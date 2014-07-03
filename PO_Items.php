@@ -477,8 +477,8 @@ if (isset($_POST['EnterLine'])) {
 			prnMsg(_('Cannot enter this order line') . ':<br />' . _('The general ledger code') . ' - ' . $_POST['GLCode'] . ' ' . _('is not a general ledger code that is defined in the chart of accounts') . ' . ' . _('Please use a code that is already defined') . '. ' . _('See the Chart list from the link below'), 'error');
 		} //DB_num_rows($GLValidResult) == 0
 		else {
-			$myrow = DB_fetch_row($GLValidResult);
-			$GLAccountName = $myrow[0];
+			$MyRow = DB_fetch_row($GLValidResult);
+			$GLAccountName = $MyRow[0];
 		}
 	} /* dont bother checking the GL Code if there is no GL code to check ie not linked to GL */
 	else {
@@ -786,9 +786,9 @@ if (isset($_POST['NonStockOrder'])) {
 				ORDER BY accountcode ASC";
 
 	$result = DB_query($sql);
-	while ($myrow = DB_fetch_array($result)) {
-		echo '<option value="' . $myrow['accountcode'] . '">' . $myrow['accountcode'] . ' - ' . $myrow['accountname'] . '</option>';
-	} //$myrow = DB_fetch_array($result)
+	while ($MyRow = DB_fetch_array($result)) {
+		echo '<option value="' . $MyRow['accountcode'] . '">' . $MyRow['accountcode'] . ' - ' . $MyRow['accountname'] . '</option>';
+	} //$MyRow = DB_fetch_array($result)
 	echo '</select></td></tr>';
 	echo '<tr>
 			<td>' . _('OR Asset ID') . '</td>
@@ -1075,8 +1075,8 @@ if (isset($_POST['Search'])) {
 		prnMsg(_('There are no products to display matching the criteria provided'), 'warn');
 	} //DB_num_rows($SearchResult) == 0 and $debug == 1
 	if (DB_num_rows($SearchResult) == 1) {
-		$myrow = DB_fetch_array($SearchResult);
-		$_GET['NewItem'] = $myrow['stockid'];
+		$MyRow = DB_fetch_array($SearchResult);
+		$_GET['NewItem'] = $MyRow['stockid'];
 		DB_data_seek($SearchResult, 0);
 	} //DB_num_rows($SearchResult) == 1
 
@@ -1102,14 +1102,14 @@ if (!isset($_GET['Edit'])) {
 
 	echo '<option selected="selected" value="All">' . _('All') . '</option>';
 
-	while ($myrow1 = DB_fetch_array($result1)) {
-		if (isset($_POST['StockCat']) and $_POST['StockCat'] == $myrow1['categoryid']) {
-			echo '<option selected="selected" value="' . $myrow1['categoryid'] . '">' . $myrow1['categorydescription'] . '</option>';
-		} //isset($_POST['StockCat']) and $_POST['StockCat'] == $myrow1['categoryid']
+	while ($MyRow1 = DB_fetch_array($result1)) {
+		if (isset($_POST['StockCat']) and $_POST['StockCat'] == $MyRow1['categoryid']) {
+			echo '<option selected="selected" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
+		} //isset($_POST['StockCat']) and $_POST['StockCat'] == $MyRow1['categoryid']
 		else {
-			echo '<option value="' . $myrow1['categoryid'] . '">' . $myrow1['categorydescription'] . '</option>';
+			echo '<option value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 		}
-	} //$myrow1 = DB_fetch_array($result1)
+	} //$MyRow1 = DB_fetch_array($result1)
 
 	unset($_POST['Keywords']);
 	unset($_POST['StockCode']);
@@ -1160,7 +1160,7 @@ if (isset($SearchResult)) {
 	$k = 0; //row colour counter
 	$j = 0;
 
-	while ($myrow = DB_fetch_array($SearchResult)) {
+	while ($MyRow = DB_fetch_array($SearchResult)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -1170,9 +1170,9 @@ if (isset($SearchResult)) {
 			$k = 1;
 		}
 
-		$FileName = $myrow['stockid'] . '.jpg';
+		$FileName = $MyRow['stockid'] . '.jpg';
 		if (file_exists($_SESSION['part_pics_dir'] . '/' . $FileName)) {
-			$ImageSource = '<img src="' . $RootPath . '/' . $_SESSION['part_pics_dir'] . '/' . $myrow['stockid'] . '.jpg" width="50" height="50" />';
+			$ImageSource = '<img src="' . $RootPath . '/' . $_SESSION['part_pics_dir'] . '/' . $MyRow['stockid'] . '.jpg" width="50" height="50" />';
 		} //file_exists($_SESSION['part_pics_dir'] . '/' . $FileName)
 		else {
 			$ImageSource = '<i>' . _('No Image') . '</i>';
@@ -1183,7 +1183,7 @@ if (isset($SearchResult)) {
 						purchdata.suppliersuom
 					FROM purchdata
 					WHERE purchdata.supplierno='" . $_SESSION['PO' . $identifier]->SupplierID . "'
-					AND purchdata.stockid='" . $myrow['stockid'] . "'";
+					AND purchdata.stockid='" . $MyRow['stockid'] . "'";
 		$ErrMsg = _('Could not retrieve the purchasing data for the item');
 		$PurchDataResult = DB_query($sql, $ErrMsg);
 
@@ -1193,22 +1193,22 @@ if (isset($SearchResult)) {
 			$ConversionFactor = locale_number_format($PurchDataRow['conversionfactor'], 'Variable');
 		} //DB_num_rows($PurchDataResult) > 0
 		else {
-			$OrderUnits = $myrow['units'];
+			$OrderUnits = $MyRow['units'];
 			$ConversionFactor = 1;
 		}
-		echo '<td>' . $myrow['stockid'] . '</td>
-			<td>' . $myrow['description'] . '</td>
-			<td>' . $myrow['units'] . '</td>
+		echo '<td>' . $MyRow['stockid'] . '</td>
+			<td>' . $MyRow['description'] . '</td>
+			<td>' . $MyRow['units'] . '</td>
 			<td class="number">' . $ConversionFactor . '</td>
 			<td>' . $OrderUnits . '</td>
 			<td>' . $ImageSource . '</td>
 			<td><input class="number" type="text" size="6" required="required" minlength="1" maxlength="11" value="0" name="NewQty' . $j . '" /></td>
-			<input type="hidden" name="StockID' . $j . '" . value="' . $myrow['stockid'] . '" />
+			<input type="hidden" name="StockID' . $j . '" . value="' . $MyRow['stockid'] . '" />
 			</tr>';
 		$j++;
 		$PartsDisplayed++;
 		//end of page full new headings if
-	} //$myrow = DB_fetch_array($SearchResult)
+	} //$MyRow = DB_fetch_array($SearchResult)
 	//end of while loop
 	echo '</table>';
 	echo '<input type="hidden" name="PO_ItemsResubmitFormValue" value="' . $_SESSION['PO_ItemsResubmitForm' . $identifier] . '" />';

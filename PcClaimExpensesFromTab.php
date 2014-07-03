@@ -152,13 +152,13 @@ if (!isset($SelectedTabs)) {
 
 	$result = DB_query($SQL);
 	echo '<option value="">' . _('Not Yet Selected') . '</option>';
-	while ($myrow = DB_fetch_array($result)) {
-		if (isset($_POST['SelectTabs']) and $myrow['tabcode'] == $_POST['SelectTabs']) {
+	while ($MyRow = DB_fetch_array($result)) {
+		if (isset($_POST['SelectTabs']) and $MyRow['tabcode'] == $_POST['SelectTabs']) {
 			echo '<option selected="selected" value="';
 		} else {
 			echo '<option value="';
 		}
-		echo $myrow['tabcode'] . '">' . $myrow['tabcode'] . '</option>';
+		echo $MyRow['tabcode'] . '">' . $MyRow['tabcode'] . '</option>';
 
 	} //end while loop
 
@@ -200,8 +200,8 @@ if (!isset($SelectedTabs)) {
 					WHERE currencies.currabrev = pctabs.currency
 						AND tabcode='" . $SelectedTabs . "'";
 		$result = DB_query($SqlDecimalPlaces);
-		$myrow = DB_fetch_array($result);
-		$CurrDecimalPlaces = $myrow['decimalplaces'];
+		$MyRow = DB_fetch_array($result);
+		$CurrDecimalPlaces = $MyRow['decimalplaces'];
 
 		echo '<input type="hidden" name="SelectedTabs" value="' . $SelectedTabs . '" />';
 		echo '<input type="text" class="number" name="Days" value="' . $Days . '" required="required" minlength="1" maxlength="3" size="4" /> ' . _('Days');
@@ -234,7 +234,7 @@ if (!isset($SelectedTabs)) {
 
 		$k = 0; //row colour counter
 
-		while ($myrow = DB_fetch_row($result)) {
+		while ($MyRow = DB_fetch_row($result)) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;
@@ -245,7 +245,7 @@ if (!isset($SelectedTabs)) {
 
 			$SQLDes = "SELECT description
 						FROM pcexpenses
-						WHERE codeexpense='" . $myrow['3'] . "'";
+						WHERE codeexpense='" . $MyRow['3'] . "'";
 
 			$ResultDes = DB_query($SQLDes);
 			$Description = DB_fetch_array($ResultDes);
@@ -253,12 +253,12 @@ if (!isset($SelectedTabs)) {
 			if (!isset($Description['0'])) {
 				$Description['0'] = 'ASSIGNCASH';
 			}
-			if ($myrow['5'] == '0000-00-00') {
+			if ($MyRow['5'] == '0000-00-00') {
 				$AuthorisedDate = _('Unauthorised');
 			} else {
-				$AuthorisedDate = ConvertSQLDate($myrow['5']);
+				$AuthorisedDate = ConvertSQLDate($MyRow['5']);
 			}
-			if (($myrow['5'] == '0000-00-00') and ($Description['0'] != 'ASSIGNCASH')) {
+			if (($MyRow['5'] == '0000-00-00') and ($Description['0'] != 'ASSIGNCASH')) {
 				// only movements NOT authorised can be modified or deleted
 				printf('<td>%s</td>
 						<td>%s</td>
@@ -268,7 +268,7 @@ if (!isset($SelectedTabs)) {
 						<td>%s</td>
 						<td><a href="%sSelectedIndex=%s&amp;SelectedTabs=' . $SelectedTabs . '&amp;Days=' . $Days . '&amp;edit=yes">' . _('Edit') . '</a></td>
 						<td><a href="%sSelectedIndex=%s&amp;SelectedTabs=' . $SelectedTabs . '&amp;Days=' . $Days . '&amp;delete=yes" onclick=\'return MakeConfirm("' . _('Are you sure you wish to delete this code and the expenses it may have set up?') . '", \'Confirm Delete\', this);\'>' . _('Delete') . '</a></td>
-					</tr>', ConvertSQLDate($myrow['2']), $Description['0'], locale_number_format($myrow['4'], $CurrDecimalPlaces), $AuthorisedDate, $myrow['7'], $myrow['8'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['0'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['0']);
+					</tr>', ConvertSQLDate($MyRow['2']), $Description['0'], locale_number_format($MyRow['4'], $CurrDecimalPlaces), $AuthorisedDate, $MyRow['7'], $MyRow['8'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['0'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['0']);
 			} else {
 				printf('<td>%s</td>
 						<td>%s</td>
@@ -276,7 +276,7 @@ if (!isset($SelectedTabs)) {
 						<td>%s</td>
 						<td>%s</td>
 						<td>%s</td>
-					</tr>', ConvertSQLDate($myrow['2']), $Description['0'], locale_number_format($myrow['4'], $CurrDecimalPlaces), $AuthorisedDate, $myrow['7'], $myrow['8']);
+					</tr>', ConvertSQLDate($MyRow['2']), $Description['0'], locale_number_format($MyRow['4'], $CurrDecimalPlaces), $AuthorisedDate, $MyRow['7'], $MyRow['8']);
 
 			}
 
@@ -315,13 +315,13 @@ if (!isset($SelectedTabs)) {
 				WHERE counterindex='" . $SelectedIndex . "'";
 
 			$result = DB_query($sql);
-			$myrow = DB_fetch_array($result);
+			$MyRow = DB_fetch_array($result);
 
-			$_POST['Date'] = ConvertSQLDate($myrow['date']);
-			$_POST['SelectedExpense'] = $myrow['codeexpense'];
-			$_POST['Amount'] = -$myrow['amount'];
-			$_POST['Notes'] = $myrow['notes'];
-			$_POST['Receipt'] = $myrow['receipt'];
+			$_POST['Date'] = ConvertSQLDate($MyRow['date']);
+			$_POST['SelectedExpense'] = $MyRow['codeexpense'];
+			$_POST['Amount'] = -$MyRow['amount'];
+			$_POST['Notes'] = $MyRow['notes'];
+			$_POST['Receipt'] = $MyRow['receipt'];
 
 			echo '<input type="hidden" name="SelectedTabs" value="' . $SelectedTabs . '" />';
 			echo '<input type="hidden" name="SelectedIndex" value="' . $SelectedIndex . '" />';
@@ -353,13 +353,13 @@ if (!isset($SelectedTabs)) {
 
 		$result = DB_query($SQL);
 		echo '<option value="">' . _('Not Yet Selected') . '</option>';
-		while ($myrow = DB_fetch_array($result)) {
-			if (isset($_POST['SelectedExpense']) and $myrow['codeexpense'] == $_POST['SelectedExpense']) {
+		while ($MyRow = DB_fetch_array($result)) {
+			if (isset($_POST['SelectedExpense']) and $MyRow['codeexpense'] == $_POST['SelectedExpense']) {
 				echo '<option selected="selected" value="';
 			} else {
 				echo '<option value="';
 			}
-			echo $myrow['codeexpense'] . '">' . $myrow['codeexpense'] . ' - ' . $myrow['description'] . '</option>';
+			echo $MyRow['codeexpense'] . '">' . $MyRow['codeexpense'] . ' - ' . $MyRow['description'] . '</option>';
 
 		} //end while loop
 
@@ -377,11 +377,11 @@ if (!isset($SelectedTabs)) {
 
 	$result = DB_query($SQL);
 	echo '<option value="0">0 - ' . _('None') . '</option>';
-	while ($myrow = DB_fetch_array($result)) {
-		if (isset($_POST['Tag']) and $_POST['Tag'] == $myrow['tagref']) {
-			echo '<option selected="selected" value="' . $myrow['tagref'] . '">' . $myrow['tagref'] . ' - ' . $myrow['tagdescription'] . '</option>';
+	while ($MyRow = DB_fetch_array($result)) {
+		if (isset($_POST['Tag']) and $_POST['Tag'] == $MyRow['tagref']) {
+			echo '<option selected="selected" value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['tagref'] . '">' . $myrow['tagref'] . ' - ' . $myrow['tagdescription'] . '</option>';
+			echo '<option value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
 		}
 	}
 	echo '</select></td></tr>';

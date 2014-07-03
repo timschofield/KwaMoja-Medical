@@ -31,12 +31,12 @@ echo '<table class="selection" summary="' . _('Criteria for report') . '">
 $sql = "SELECT accountcode, accountname FROM chartmaster ORDER BY accountcode";
 $AccountsResult = DB_query($sql);
 $i = 0;
-while ($myrow = DB_fetch_array($AccountsResult)) {
-	if (isset($_POST['Account'][$i]) and $myrow['accountcode'] == $_POST['Account'][$i]) {
-		echo '<option selected="selected" value="' . $myrow['accountcode'] . '">' . $myrow['accountcode'] . ' ' . htmlspecialchars($myrow['accountname'], ENT_QUOTES, 'UTF-8', false) . '</option>';
+while ($MyRow = DB_fetch_array($AccountsResult)) {
+	if (isset($_POST['Account'][$i]) and $MyRow['accountcode'] == $_POST['Account'][$i]) {
+		echo '<option selected="selected" value="' . $MyRow['accountcode'] . '">' . $MyRow['accountcode'] . ' ' . htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false) . '</option>';
 		$i++;
 	} else {
-		echo '<option value="' . $myrow['accountcode'] . '">' . $myrow['accountcode'] . ' ' . htmlspecialchars($myrow['accountname'], ENT_QUOTES, 'UTF-8', false) . '</option>';
+		echo '<option value="' . $MyRow['accountcode'] . '">' . $MyRow['accountcode'] . ' ' . htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false) . '</option>';
 	}
 }
 echo '</select></td>';
@@ -47,12 +47,12 @@ $sql = "SELECT periodno, lastdate_in_period FROM periods ORDER BY periodno DESC"
 $Periods = DB_query($sql);
 $id = 0;
 
-while ($myrow = DB_fetch_array($Periods)) {
-	if (isset($SelectedPeriod[$id]) and $myrow['periodno'] == $SelectedPeriod[$id]) {
-		echo '<option selected="selected" value="' . $myrow['periodno'] . '">' . _(MonthAndYearFromSQLDate($myrow['lastdate_in_period'])) . '</option>';
+while ($MyRow = DB_fetch_array($Periods)) {
+	if (isset($SelectedPeriod[$id]) and $MyRow['periodno'] == $SelectedPeriod[$id]) {
+		echo '<option selected="selected" value="' . $MyRow['periodno'] . '">' . _(MonthAndYearFromSQLDate($MyRow['lastdate_in_period'])) . '</option>';
 		$id++;
 	} else {
-		echo '<option value="' . $myrow['periodno'] . '">' . _(MonthAndYearFromSQLDate($myrow['lastdate_in_period'])) . '</option>';
+		echo '<option value="' . $MyRow['periodno'] . '">' . _(MonthAndYearFromSQLDate($MyRow['lastdate_in_period'])) . '</option>';
 	}
 }
 echo '</select></td></tr>';
@@ -67,11 +67,11 @@ $SQL = "SELECT tagref,
 
 $result = DB_query($SQL);
 echo '<option value="0">0 - ' . _('All tags') . '</option>';
-while ($myrow = DB_fetch_array($result)) {
-	if (isset($_POST['tag']) and $_POST['tag'] == $myrow['tagref']) {
-		echo '<option selected="selected" value="' . $myrow['tagref'] . '">' . $myrow['tagref'] . ' - ' . $myrow['tagdescription'] . '</option>';
+while ($MyRow = DB_fetch_array($result)) {
+	if (isset($_POST['tag']) and $_POST['tag'] == $MyRow['tagref']) {
+		echo '<option selected="selected" value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
 	} else {
-		echo '<option value="' . $myrow['tagref'] . '">' . $myrow['tagref'] . ' - ' . $myrow['tagdescription'] . '</option>';
+		echo '<option value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
 	}
 }
 echo '</select></td></tr>';
@@ -198,9 +198,9 @@ if (isset($_POST['MakeCSV'])) {
 		$j = 1;
 		$k = 0; //row colour counter
 
-		while ($myrow = DB_fetch_array($TransResult)) {
+		while ($MyRow = DB_fetch_array($TransResult)) {
 
-			if ($myrow['periodno'] != $PeriodNo) {
+			if ($MyRow['periodno'] != $PeriodNo) {
 				if ($PeriodNo != -9999) { //ie its not the first time around
 					/*Get the ChartDetails balance b/fwd and the actual movement in the account for the period as recorded in the chart details - need to ensure integrity of transactions to the chart detail movements. Also, for a balance sheet account it is the balance carried forward that is important, not just the transactions*/
 					$sql = "SELECT bfwd,
@@ -219,22 +219,22 @@ if (isset($_POST['MakeCSV'])) {
 						fwrite($fp, $SelectedAccount . ', ' . $PeriodNo . ', ' . _('Period Total') . ',,,' . $PeriodTotal . "\n");
 					}
 				}
-				$PeriodNo = $myrow['periodno'];
+				$PeriodNo = $MyRow['periodno'];
 				$PeriodTotal = 0;
 			}
 
-			$RunningTotal += $myrow['amount'];
-			$PeriodTotal += $myrow['amount'];
+			$RunningTotal += $MyRow['amount'];
+			$PeriodTotal += $MyRow['amount'];
 
-			$FormatedTranDate = ConvertSQLDate($myrow['trandate']);
+			$FormatedTranDate = ConvertSQLDate($MyRow['trandate']);
 
-			$tagsql = "SELECT tagdescription FROM tags WHERE tagref='" . $myrow['tag'] . "'";
+			$tagsql = "SELECT tagdescription FROM tags WHERE tagref='" . $MyRow['tag'] . "'";
 			$tagresult = DB_query($tagsql);
 			$tagrow = DB_fetch_array($tagresult);
-			if ($myrow['amount'] < 0) {
-				fwrite($fp, $SelectedAccount . ',' . $myrow['periodno'] . ', ' . $myrow['typename'] . ',' . $myrow['typeno'] . ',' . $FormatedTranDate . ',,' . -$myrow['amount'] . ',' . $myrow['narrative'] . ',' . $tagrow['tagdescription'] . "\n");
+			if ($MyRow['amount'] < 0) {
+				fwrite($fp, $SelectedAccount . ',' . $MyRow['periodno'] . ', ' . $MyRow['typename'] . ',' . $MyRow['typeno'] . ',' . $FormatedTranDate . ',,' . -$MyRow['amount'] . ',' . $MyRow['narrative'] . ',' . $tagrow['tagdescription'] . "\n");
 			} else {
-				fwrite($fp, $SelectedAccount . ',' . $myrow['periodno'] . ', ' . $myrow['typename'] . ',' . $myrow['typeno'] . ',' . $FormatedTranDate . ',' . $myrow['amount'] . ',,' . $myrow['narrative'] . ',' . $tagrow['tagdescription'] . "\n");
+				fwrite($fp, $SelectedAccount . ',' . $MyRow['periodno'] . ', ' . $MyRow['typename'] . ',' . $MyRow['typeno'] . ',' . $FormatedTranDate . ',' . $MyRow['amount'] . ',,' . $MyRow['narrative'] . ',' . $tagrow['tagdescription'] . "\n");
 			}
 		} //end loop around GLtrans
 		if ($PeriodTotal <> 0) {

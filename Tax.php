@@ -299,8 +299,8 @@ if (isset($_POST['TaxAuthority']) and isset($_POST['PrintPDF']) and isset($_POST
 			<td><select required="required" minlength="1" name="TaxAuthority">';
 
 	$result = DB_query("SELECT taxid, description FROM taxauthorities");
-	while ($myrow = DB_fetch_array($result)) {
-		echo '<option value="' . $myrow['taxid'] . '">' . $myrow['description'] . '</option>';
+	while ($MyRow = DB_fetch_array($result)) {
+		echo '<option value="' . $MyRow['taxid'] . '">' . $MyRow['description'] . '</option>';
 	}
 	echo '</select></td></tr>';
 	echo '<tr>
@@ -323,11 +323,11 @@ if (isset($_POST['TaxAuthority']) and isset($_POST['PrintPDF']) and isset($_POST
 	$ErrMsg = _('Could not retrieve the period data because');
 	$Periods = DB_query($sql, $ErrMsg);
 
-	while ($myrow = DB_fetch_array($Periods)) {
-		if ($myrow['periodno'] == $DefaultPeriod) {
-			echo '<option selected="selected" value="' . $myrow['periodno'] . '">' . ConvertSQLDate($myrow['lastdate_in_period']) . '</option>';
+	while ($MyRow = DB_fetch_array($Periods)) {
+		if ($MyRow['periodno'] == $DefaultPeriod) {
+			echo '<option selected="selected" value="' . $MyRow['periodno'] . '">' . ConvertSQLDate($MyRow['lastdate_in_period']) . '</option>';
 		} else {
-			echo '<option value="' . $myrow['periodno'] . '">' . ConvertSQLDate($myrow['lastdate_in_period']) . '</option>';
+			echo '<option value="' . $MyRow['periodno'] . '">' . ConvertSQLDate($MyRow['lastdate_in_period']) . '</option>';
 		}
 	}
 

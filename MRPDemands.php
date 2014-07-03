@@ -93,7 +93,7 @@ function search(&$StockID) { //####SEARCH_SEARCH_SEARCH_SEARCH_SEARCH_SEARCH_SEA
 
 		$k = 0; //row colour counter
 		$j = 0;
-		while ($myrow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($result)) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;
@@ -102,8 +102,8 @@ function search(&$StockID) { //####SEARCH_SEARCH_SEARCH_SEARCH_SEARCH_SEARCH_SEA
 				$k++;
 			}
 			$tabindex = $j + 4;
-			echo '<td><input tabindex="' . $tabindex . '" type="submit" name="StockID" value="' . $myrow['stockid'] . '" /></td>
-				<td>' . $myrow['description'] . '</td>
+			echo '<td><input tabindex="' . $tabindex . '" type="submit" name="StockID" value="' . $MyRow['stockid'] . '" /></td>
+				<td>' . $MyRow['description'] . '</td>
 				</tr>';
 			$j++;
 		} //end of while loop
@@ -186,10 +186,10 @@ function submit(&$StockID, &$DemandID) //####SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_
 				   WHERE demandid='" . $DemandID . "'
 				   GROUP BY demandid";
 		$result = DB_query($sql);
-		$myrow = DB_fetch_row($result);
+		$MyRow = DB_fetch_row($result);
 
-		if ($myrow[0] > 0) {
-			//If $myrow[0] > 0, it means this is an edit, so do an update
+		if ($MyRow[0] > 0) {
+			//If $MyRow[0] > 0, it means this is an edit, so do an update
 			$sql = "UPDATE mrpdemands SET quantity = '" . filter_number_format($_POST['Quantity']) . "',
 							mrpdemandtype = '" . trim(mb_strtoupper($_POST['MRPDemandtype'])) . "',
 							duedate = '" . $FormatedDuedate . "'
@@ -197,7 +197,7 @@ function submit(&$StockID, &$DemandID) //####SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_
 			$msg = _("The MRP demand record has been updated for") . ' ' . $StockID;
 		} else {
 
-			// if $myrow[0] from SELECT count(*) is zero, this is an entry of a new record
+			// if $MyRow[0] from SELECT count(*) is zero, this is an entry of a new record
 			$sql = "INSERT INTO mrpdemands (stockid,
 							mrpdemandtype,
 							quantity,
@@ -295,16 +295,16 @@ function listall($part, $DemandType) { //####LISTALL_LISTALL_LISTALL_LISTALL_LIS
 			<th>' . _('Due Date') . '</th>
 			</tr>';
 	$ctr = 0;
-	while ($myrow = DB_fetch_array($result)) {
-		$displaydate = ConvertSQLDate($myrow[4]);
+	while ($MyRow = DB_fetch_array($result)) {
+		$displaydate = ConvertSQLDate($MyRow[4]);
 		$ctr++;
-		echo '<tr><td>' . $myrow['stockid'] . '</td>
-				<td>' . $myrow['description'] . '</td>
-				<td>' . $myrow['mrpdemandtype'] . '</td>
-				<td>' . locale_number_format($myrow['quantity'], $myrow['decimalplaces']) . '</td>
+		echo '<tr><td>' . $MyRow['stockid'] . '</td>
+				<td>' . $MyRow['description'] . '</td>
+				<td>' . $MyRow['mrpdemandtype'] . '</td>
+				<td>' . locale_number_format($MyRow['quantity'], $MyRow['decimalplaces']) . '</td>
 				<td>' . $displaydate . '</td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?DemandID=' . $myrow['demandid'] . '&amp;StockID=' . $myrow['stockid'] . '">' . _('Edit') . '</a></td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?DemandID=' . $myrow['demandid'] . '&amp;StockID=' . $myrow['stockid'] . '&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this demand?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?DemandID=' . $MyRow['demandid'] . '&amp;StockID=' . $MyRow['stockid'] . '">' . _('Edit') . '</a></td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?DemandID=' . $MyRow['demandid'] . '&amp;StockID=' . $MyRow['stockid'] . '&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this demand?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
 				</tr>';
 	}
 
@@ -350,14 +350,14 @@ function display(&$StockID, &$DemandID) { //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_
 				FROM mrpdemands
 				WHERE demandid='" . $DemandID . "'";
 			$result = DB_query($sql);
-			$myrow = DB_fetch_array($result);
+			$MyRow = DB_fetch_array($result);
 
 			if (DB_num_rows($result) > 0) {
-				$_POST['DemandID'] = $myrow['demandid'];
-				$_POST['StockID'] = $myrow['stockid'];
-				$_POST['MRPDemandtype'] = $myrow['mrpdemandtype'];
-				$_POST['Quantity'] = locale_number_format($myrow['quantity'], 'Variable');
-				$_POST['Duedate'] = ConvertSQLDate($myrow['duedate']);
+				$_POST['DemandID'] = $MyRow['demandid'];
+				$_POST['StockID'] = $MyRow['stockid'];
+				$_POST['MRPDemandtype'] = $MyRow['mrpdemandtype'];
+				$_POST['Quantity'] = locale_number_format($MyRow['quantity'], 'Variable');
+				$_POST['Duedate'] = ConvertSQLDate($MyRow['duedate']);
 			}
 
 			echo '<input type="hidden" name="DemandID" value="' . $_POST['DemandID'] . '" />';
@@ -404,13 +404,13 @@ function display(&$StockID, &$DemandID) { //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_
 						description
 				FROM mrpdemandtypes";
 		$result = DB_query($sql);
-		while ($myrow = DB_fetch_array($result)) {
-			if (isset($_POST['MRPDemandtype']) and $myrow['mrpdemandtype'] == $_POST['MRPDemandtype']) {
+		while ($MyRow = DB_fetch_array($result)) {
+			if (isset($_POST['MRPDemandtype']) and $MyRow['mrpdemandtype'] == $_POST['MRPDemandtype']) {
 				echo '<option selected="selected" value="';
 			} else {
 				echo '<option value="';
 			}
-			echo $myrow['mrpdemandtype'] . '">' . $myrow['mrpdemandtype'] . ' - ' . $myrow['description'] . '</option>';
+			echo $MyRow['mrpdemandtype'] . '">' . $MyRow['mrpdemandtype'] . ' - ' . $MyRow['description'] . '</option>';
 		} //end while loop
 		echo '</select></td>
 			</tr>

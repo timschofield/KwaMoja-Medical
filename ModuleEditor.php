@@ -33,8 +33,8 @@ if (!isset($_POST['SecurityRole'])) {
 			<select name="SecurityRole" required="required">
 				<option value=""></option>';
 
-	while ($myrow = DB_fetch_array($result)) {
-		echo '<option value="' . $myrow['secroleid'] . '">' . $myrow['secrolename'] . '</option>';
+	while ($MyRow = DB_fetch_array($result)) {
+		echo '<option value="' . $MyRow['secroleid'] . '">' . $MyRow['secrolename'] . '</option>';
 	}
 
 	echo '</div>
@@ -68,10 +68,10 @@ if (!isset($_POST['SecurityRole'])) {
 				<th>' . _('Sequence') . '</th>
 			</tr>';
 
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		echo '<tr>
-				<td>' . $myrow['modulename'] . '</td>
-				<td><input type="text" required="required" minlength="1" maxlength="5" size="5" class="number" name="Sequence' . $myrow['reportlink'] . '" value="' . $myrow['sequence'] . '" /></td>
+				<td>' . $MyRow['modulename'] . '</td>
+				<td><input type="text" required="required" minlength="1" maxlength="5" size="5" class="number" name="Sequence' . $MyRow['reportlink'] . '" value="' . $MyRow['sequence'] . '" /></td>
 			</tr>';
 	}
 

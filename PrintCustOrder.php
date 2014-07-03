@@ -121,12 +121,12 @@ if (DB_num_rows($result) == 0) {
 	/* Javier */
 	$ListCount = 1;
 
-	$myrow = DB_fetch_array($result);
-	if ($myrow['printedpackingslip'] == 1 and ($_GET['Reprint'] != 'OK' or !isset($_GET['Reprint']))) {
+	$MyRow = DB_fetch_array($result);
+	if ($MyRow['printedpackingslip'] == 1 and ($_GET['Reprint'] != 'OK' or !isset($_GET['Reprint']))) {
 		$Title = _('Print Packing Slip Error');
 		include('includes/header.inc');
 		echo '<p>';
-		prnMsg(_('The packing slip for order number') . ' ' . $_GET['TransNo'] . ' ' . _('has previously been printed') . '. ' . _('It was printed on') . ' ' . ConvertSQLDate($myrow['datepackingslipprinted']) . '<br />' . _('This check is there to ensure that duplicate packing slips are not produced and dispatched more than once to the customer'), 'warn');
+		prnMsg(_('The packing slip for order number') . ' ' . $_GET['TransNo'] . ' ' . _('has previously been printed') . '. ' . _('It was printed on') . ' ' . ConvertSQLDate($MyRow['datepackingslipprinted']) . '<br />' . _('This check is there to ensure that duplicate packing slips are not produced and dispatched more than once to the customer'), 'warn');
 		echo '<a href="' . $RootPath . '/PrintCustOrder.php?TransNo=' . urlencode($_GET['TransNo']) . '&Reprint=OK">' . _('Do a Re-Print') . ' (' . _('On Pre-Printed Stationery') . ') ' . _('Even Though Previously Printed') . '</a><p>' . '<a href="' . $RootPath . '/PrintCustOrder_generic.php?TransNo=' . $_GET['TransNo'] . '&Reprint=OK">' . _('Do a Re-Print') . ' (' . _('Plain paper') . ' - ' . _('A4') . ' ' . _('landscape') . ') ' . _('Even Though Previously Printed') . '</a>';
 
 		echo _('Or select another Order Number to Print');
@@ -215,14 +215,14 @@ if (DB_num_rows($result) > 0) {
 
 	include('includes/PDFOrderPageHeader.inc');
 
-	while ($myrow2 = DB_fetch_array($result)) {
+	while ($MyRow2 = DB_fetch_array($result)) {
 
-		$DisplayQty = locale_number_format($myrow2['quantity'], $myrow2['decimalplaces']);
-		$DisplayPrevDel = locale_number_format($myrow2['qtyinvoiced'], $myrow2['decimalplaces']);
-		$DisplayQtySupplied = locale_number_format($myrow2['quantity'] - $myrow2['qtyinvoiced'], $myrow2['decimalplaces']);
+		$DisplayQty = locale_number_format($MyRow2['quantity'], $MyRow2['decimalplaces']);
+		$DisplayPrevDel = locale_number_format($MyRow2['qtyinvoiced'], $MyRow2['decimalplaces']);
+		$DisplayQtySupplied = locale_number_format($MyRow2['quantity'] - $MyRow2['qtyinvoiced'], $MyRow2['decimalplaces']);
 
-		$LeftOvers = $pdf->addTextWrap(13, $YPos, 135, $FontSize, $myrow2['stkcode']);
-		$LeftOvers = $pdf->addTextWrap(148, $YPos, 239, $FontSize, $myrow2['description']);
+		$LeftOvers = $pdf->addTextWrap(13, $YPos, 135, $FontSize, $MyRow2['stkcode']);
+		$LeftOvers = $pdf->addTextWrap(148, $YPos, 239, $FontSize, $MyRow2['description']);
 		$LeftOvers = $pdf->addTextWrap(387, $YPos, 90, $FontSize, $DisplayQty, 'right');
 		$LeftOvers = $pdf->addTextWrap(505, $YPos, 90, $FontSize, $DisplayQtySupplied, 'right');
 		$LeftOvers = $pdf->addTextWrap(604, $YPos, 90, $FontSize, $DisplayPrevDel, 'right');

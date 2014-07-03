@@ -20,8 +20,8 @@ if (empty($_GET['identifier'])) {
 
 if (!isset($_POST['SupplierID'])) {
 	$SQL = "SELECT supplierid FROM www_users WHERE userid='" . $_SESSION['UserID'] . "'";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 	if ($MyRow['supplierid'] == '') {
 		prnMsg(_('This functionality can only be accessed via a supplier login.'), 'warning');
 		include('includes/footer.inc');
@@ -41,8 +41,8 @@ $SQL = "SELECT suppname,
 			currcode
 		FROM suppliers
 		WHERE supplierid='" . $_POST['SupplierID'] . "'";
-$result = DB_query($SQL);
-$MyRow = DB_fetch_array($result);
+$Result = DB_query($SQL);
+$MyRow = DB_fetch_array($Result);
 $Supplier = $MyRow['suppname'];
 $Currency = $MyRow['currcode'];
 
@@ -53,7 +53,7 @@ if (isset($_POST['Confirm'])) {
 			SET responded=1
 			WHERE supplierid='" . $_SESSION['offer' . $identifier]->SupplierID . "'
 			AND tenderid='" . $_SESSION['offer' . $identifier]->TenderID . "'";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 }
 
 if (isset($_POST['Process'])) {
@@ -184,8 +184,8 @@ if (isset($_POST['NewItem']) and !isset($_POST['Refresh'])) {
 			$UOM = $_POST['uom' . $Index];
 			if (isset($UOM) and $Quantity > 0) {
 				$SQL = "SELECT description, decimalplaces FROM stockmaster WHERE stockid='" . $StockID . "'";
-				$result = DB_query($SQL);
-				$MyRow = DB_fetch_array($result);
+				$Result = DB_query($SQL);
+				$MyRow = DB_fetch_array($Result);
 				$_SESSION['offer' . $identifier]->add_to_offer($_SESSION['offer' . $identifier]->LinesOnOffer, $StockID, $Quantity, $MyRow['description'], $Price, $UOM, $MyRow['decimalplaces'], DateAdd(date($_SESSION['DefaultDateFormat']), 'm', 3));
 				unset($UOM);
 			}
@@ -274,10 +274,10 @@ if (isset($_POST['TenderType']) and $_POST['TenderType'] == 1 and !isset($_POST[
 			WHERE offers.supplierid='" . $_POST['SupplierID'] . "'
 				AND offers.expirydate>=CURRENT_DATE";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	$_SESSION['offer' . $identifier] = new Offer($_POST['SupplierID']);
 	$_SESSION['offer' . $identifier]->CurrCode = $Currency;
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		$_SESSION['offer' . $identifier]->add_to_offer($MyRow['offerid'], $MyRow['stockid'], $MyRow['quantity'], $MyRow['description'], $MyRow['price'], $MyRow['uom'], $MyRow['decimalplaces'], ConvertSQLDate($MyRow['expirydate']));
 	}
 }
@@ -354,9 +354,9 @@ if (isset($_POST['TenderType']) AND $_POST['TenderType'] == 2 AND !isset($_POST[
 				categorydescription
 			FROM stockcategory
 			ORDER BY categorydescription";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
-	if (DB_num_rows($result) == 0) {
+	if (DB_num_rows($Result) == 0) {
 		echo '<p><font size="4" color="red">' . _('Problem Report') . ':</font><br />' . _('There are no stock categories currently defined please use the link below to set them up');
 		echo '<br /><a href="' . $RootPath . '/StockCategories.php">' . _('Define Stock Categories') . '</a></p>';
 		exit;
@@ -372,7 +372,7 @@ if (isset($_POST['TenderType']) AND $_POST['TenderType'] == 2 AND !isset($_POST[
 	} else {
 		echo '<option value="All">' . _('All') . '</option>';
 	}
-	while ($MyRow1 = DB_fetch_array($result)) {
+	while ($MyRow1 = DB_fetch_array($Result)) {
 		if ($MyRow1['categoryid'] == $_POST['StockCat']) {
 			echo '<option selected="selected" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 		} else {
@@ -426,12 +426,12 @@ if (isset($_POST['TenderType']) and $_POST['TenderType'] == 3 and !isset($_POST[
 			AND tenders.closed=0
 			AND tendersuppliers.responded=0
 			ORDER BY tendersuppliers.tenderid";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	echo '<table class="selection">';
 	echo '<tr>
 			<th colspan="13"><font size="3" color="#616161">' . _('Outstanding Tenders Waiting For Offer') . '</font></th>
 		</tr>';
-	while ($MyRow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($Result)) {
 		echo '<form onSubmit="return VerifyForm(this);" action="' . $_SERVER['PHP_SELF'] . '" method="post" class="noPrint">';
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 		echo '<input type="hidden" name="TenderType" value="3" />';

@@ -415,14 +415,14 @@ if (isset($_POST['SearchSupplier'])) {
 
 if (isset($SuppliersResult)) {
 	if (isset($StockID)) {
-		$result = DB_query("SELECT stockmaster.description,
+		$Result = DB_query("SELECT stockmaster.description,
 								stockmaster.units,
 								stockmaster.mbflag
 						FROM stockmaster
 						WHERE stockmaster.stockid='" . $StockID . "'");
-		$MyRow = DB_fetch_row($result);
+		$MyRow = DB_fetch_row($Result);
 		$StockUOM = $MyRow[1];
-		if (DB_num_rows($result) == 1) {
+		if (DB_num_rows($Result) == 1) {
 			if ($MyRow[2] == 'D' or $MyRow[2] == 'A' or $MyRow[2] == 'K') {
 				prnMsg($StockID . ' - ' . $MyRow[0] . '<p> ' . _('The item selected is a dummy part or an assembly or kit set part') . ' - ' . _('it is not purchased') . '. ' . _('Entry of purchasing information is therefore inappropriate'), 'warn');
 				include('includes/footer.inc');

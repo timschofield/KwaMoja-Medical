@@ -39,7 +39,7 @@ if (isset($_POST['NewEDIInvMsg'])) {
 			AND messagetype='INVOIC'";
 
 	$ErrMsg = _('There was an error inserting the default template invoice message records for') . ' ' . $PartnerCode . ' ' . _('because');
-	$result = DB_query($SQL, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 }
 
 $InputError = 0;
@@ -56,7 +56,7 @@ if ($InputError != 1 and isset($_POST['update'])) {
 				sequenceno='" . $_POST['SequenceNo'] . "',
 				linetext='" . $_POST['LineText'] . "'
 			WHERE id = '" . $SelectedMessageLine . "'";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	$msg = _('Message line updated');
 	unset($SelectedMessageLine);
 
@@ -79,7 +79,7 @@ if ($InputError != 1 and isset($_POST['update'])) {
 				)";
 	$msg = _('Message line added');
 	//run the SQL from either of the above possibilites
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	unset($SelectedMessageLine);
 
 } elseif (isset($_GET['delete'])) {
@@ -87,7 +87,7 @@ if ($InputError != 1 and isset($_POST['update'])) {
 
 
 	$SQL = "DELETE FROM edimessageformat WHERE id='" . $_GET['delete'] . "'";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	$msg = _('The selected message line has been deleted');
 
 }
@@ -119,7 +119,7 @@ if (!isset($SelectedMessageLine)) {
 			AND messagetype='" . $MessageType . "'
 			ORDER BY sequenceno";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '<table class="selection">
 			<tr>
@@ -132,7 +132,7 @@ if (!isset($SelectedMessageLine)) {
 			</tr>';
 
 	$k = 0; //row colour counter
-	while ($MyRow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($Result)) {
 
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -152,7 +152,7 @@ if (!isset($SelectedMessageLine)) {
 
 	} //END WHILE LIST LOOP
 	echo '</table><br />';
-	if (DB_num_rows($result) == 0) {
+	if (DB_num_rows($Result) == 0) {
 		echo '<div class="centre">
 				<input tabindex="1" type="submit" name="NewEDIInvMsg" value="' . _('Create New EDI Invoice Message From Default Template') . '" />
 			</div>
@@ -174,8 +174,8 @@ if (isset($SelectedMessageLine)) {
 		FROM edimessageformat
 		WHERE id='" . $SelectedMessageLine . "'";
 
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 
 	$_POST['Section'] = $MyRow['section'];
 	$_POST['SequenceNo'] = $MyRow['sequenceno'];

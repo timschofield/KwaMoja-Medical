@@ -48,7 +48,7 @@ if (isset($_POST['submit']) or isset($_POST['Update'])) {
 			AND stockmaster.discontinued = 0
 			ORDER BY '" . $Sequence . "' ASC";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	$SqlLoc = "SELECT locationname
 		   FROM locations
@@ -74,7 +74,7 @@ if (isset($_POST['submit']) or isset($_POST['Update'])) {
 		</tr>';
 
 	$i = 1;
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows"><td>';
@@ -155,13 +155,13 @@ if (isset($_POST['submit']) or isset($_POST['Update'])) {
 						ON locations.loccode=www_users.defaultlocation
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
-	$resultStkLocs = DB_query($SQL);
+	$ResultStkLocs = DB_query($SQL);
 	echo '<table class="selection">
 			<tr>
 				<td>' . _('Location') . ':</td>
 				<td><select minlength="0" name="StockLocation"> ';
 
-	while ($MyRow = DB_fetch_array($resultStkLocs)) {
+	while ($MyRow = DB_fetch_array($ResultStkLocs)) {
 		echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 	}
 	echo '</select></td></tr>';
@@ -171,12 +171,12 @@ if (isset($_POST['submit']) or isset($_POST['Update'])) {
 			FROM stockcategory
 			ORDER BY categorydescription";
 
-	$result1 = DB_query($SQL);
+	$Result1 = DB_query($SQL);
 
 	echo '<tr><td>' . _('Category') . ':</td>
 				<td><select required="required" minlength="1" name="StockCat">';
 
-	while ($MyRow1 = DB_fetch_array($result1)) {
+	while ($MyRow1 = DB_fetch_array($Result1)) {
 		echo '<option value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 	}
 

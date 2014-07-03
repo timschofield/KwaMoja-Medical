@@ -15,7 +15,7 @@ function executeSQL($SQL, $TrapErrors = False) {
 	/* Run an sql statement and return an error code */
 	if (!isset($SQLFile)) {
 		DB_IgnoreForeignKeys();
-		$result = DB_query($SQL, '', '', false, $TrapErrors);
+		$Result = DB_query($SQL, '', '', false, $TrapErrors);
 		$ErrorNumber = DB_error_no();
 		DB_ReinstateForeignKeys();
 		return $ErrorNumber;
@@ -59,10 +59,10 @@ if (!isset($_POST['continue'])) {
 	for ($UpdateNumber = $StartingUpdate; $UpdateNumber <= $EndingUpdate; $UpdateNumber++) {
 		if (file_exists('sql/updates/' . $UpdateNumber . '.php')) {
 			$SQL = "SET FOREIGN_KEY_CHECKS=0";
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 			include('sql/updates/' . $UpdateNumber . '.php');
 			$SQL = "SET FOREIGN_KEY_CHECKS=1";
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 		}
 	}
 	echo '<table class="selection"><tr>';

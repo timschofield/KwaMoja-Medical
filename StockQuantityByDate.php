@@ -12,7 +12,7 @@ echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_S
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 $SQL = "SELECT categoryid, categorydescription FROM stockcategory";
-$resultStkLocs = DB_query($SQL);
+$ResultStkLocs = DB_query($SQL);
 
 echo '<table class="selection">
 	<tr>
@@ -21,7 +21,7 @@ echo '<table class="selection">
 			<select required="required" minlength="1" name="StockCategory">
 				<option value="All">' . _('All') . '</option>';
 
-while ($MyRow = DB_fetch_array($resultStkLocs)) {
+while ($MyRow = DB_fetch_array($ResultStkLocs)) {
 	if (isset($_POST['StockCategory']) and $_POST['StockCategory'] != 'All') {
 		if ($MyRow['categoryid'] == $_POST['StockCategory']) {
 			echo '<option selected="selected" value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
@@ -46,12 +46,12 @@ if ($_SESSION['RestrictLocations'] == 0) {
 					ON locations.loccode=www_users.defaultlocation
 				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 }
-$resultStkLocs = DB_query($SQL);
+$ResultStkLocs = DB_query($SQL);
 
 echo '<td>' . _('For Stock Location') . ':</td>
 	<td><select required="required" minlength="1" name="StockLocation"> ';
 
-while ($MyRow = DB_fetch_array($resultStkLocs)) {
+while ($MyRow = DB_fetch_array($ResultStkLocs)) {
 	if (isset($_POST['StockLocation']) and $_POST['StockLocation'] != 'All') {
 		if ($MyRow['loccode'] == $_POST['StockLocation']) {
 			echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';

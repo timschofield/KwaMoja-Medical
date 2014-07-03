@@ -77,7 +77,7 @@ if (isset($_POST['Commit'])) {
 	/*If all clear then proceed to update the database
 	 */
 	if ($InputError != 1) {
-		$result = DB_Txn_Begin();
+		$Result = DB_Txn_Begin();
 
 		/*figure out what status to set the order to */
 		if (IsEmailAddress($_SESSION['UserEmail'])) {
@@ -199,7 +199,7 @@ if (isset($_POST['Commit'])) {
 
 			$ErrMsg = _('The purchase order header record could not be inserted into the database because');
 			$DbgMsg = _('The SQL statement used to insert the purchase order header record and failed was');
-			$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 			/*Insert the purchase order detail records */
 			foreach ($_SESSION['PO' . $identifier]->LineItems as $POLine) {
@@ -233,7 +233,7 @@ if (isset($_POST['Commit'])) {
 					$ErrMsg = _('One of the purchase order detail records could not be inserted into the database because');
 					$DbgMsg = _('The SQL statement used to insert the purchase order detail record and failed was');
 
-					$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 				} //$POLine->Deleted == False
 			} //$_SESSION['PO' . $identifier]->LineItems as $POLine
 
@@ -297,7 +297,7 @@ if (isset($_POST['Commit'])) {
 
 			$ErrMsg = _('The purchase order could not be updated because');
 			$DbgMsg = _('The SQL statement used to update the purchase order header record, that failed was');
-			$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 			/*Now Update the purchase order detail records */
 			foreach ($_SESSION['PO' . $identifier]->LineItems as $POLine) {
@@ -306,7 +306,7 @@ if (isset($_POST['Commit'])) {
 						$SQL = "DELETE FROM purchorderdetails WHERE podetailitem='" . $POLine->PODetailRec . "'";
 						$ErrMsg = _('The purchase order detail line could not be deleted because');
 						$DbgMsg = _('The SQL statement used to delete the purchase order detail record, that failed was');
-						$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+						$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 					} //$POLine->PODetailRec != ''
 				} //$POLine->Deleted == true
 				else if ($POLine->PODetailRec == '') {
@@ -379,7 +379,7 @@ if (isset($_POST['Commit'])) {
 
 				$ErrMsg = _('One of the purchase order detail records could not be updated because');
 				$DbgMsg = _('The SQL statement used to update the purchase order detail record that failed was');
-				$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 			} //$_SESSION['PO' . $identifier]->LineItems as $POLine
 
@@ -785,10 +785,10 @@ if (isset($_POST['NonStockOrder'])) {
 				FROM chartmaster
 				ORDER BY accountcode ASC";
 
-	$result = DB_query($SQL);
-	while ($MyRow = DB_fetch_array($result)) {
+	$Result = DB_query($SQL);
+	while ($MyRow = DB_fetch_array($Result)) {
 		echo '<option value="' . $MyRow['accountcode'] . '">' . $MyRow['accountcode'] . ' - ' . $MyRow['accountname'] . '</option>';
-	} //$MyRow = DB_fetch_array($result)
+	} //$MyRow = DB_fetch_array($Result)
 	echo '</select></td></tr>';
 	echo '<tr>
 			<td>' . _('OR Asset ID') . '</td>
@@ -1091,7 +1091,7 @@ if (!isset($_GET['Edit'])) {
 			ORDER BY categorydescription";
 	$ErrMsg = _('The supplier category details could not be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve the category details but failed was');
-	$result1 = DB_query($SQL, $ErrMsg, $DbgMsg);
+	$Result1 = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	echo '<table class="selection">
 			<tr>
@@ -1102,14 +1102,14 @@ if (!isset($_GET['Edit'])) {
 
 	echo '<option selected="selected" value="All">' . _('All') . '</option>';
 
-	while ($MyRow1 = DB_fetch_array($result1)) {
+	while ($MyRow1 = DB_fetch_array($Result1)) {
 		if (isset($_POST['StockCat']) and $_POST['StockCat'] == $MyRow1['categoryid']) {
 			echo '<option selected="selected" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 		} //isset($_POST['StockCat']) and $_POST['StockCat'] == $MyRow1['categoryid']
 		else {
 			echo '<option value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 		}
-	} //$MyRow1 = DB_fetch_array($result1)
+	} //$MyRow1 = DB_fetch_array($Result1)
 
 	unset($_POST['Keywords']);
 	unset($_POST['StockCode']);

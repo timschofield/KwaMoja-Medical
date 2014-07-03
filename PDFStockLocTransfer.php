@@ -57,9 +57,9 @@ $SQL = "SELECT loctransfers.reference,
 		INNER JOIN locations AS locationsrec ON loctransfers.recloc = locationsrec.loccode
 		WHERE loctransfers.reference='" . $_GET['TransferNo'] . "'";
 
-$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-if (DB_num_rows($result) == 0) {
+if (DB_num_rows($Result) == 0) {
 
 	include('includes/header.inc');
 	prnMsg(_('The transfer reference selected does not appear to be set up') . ' - ' . _('enter the items to be transferred first'), 'error');
@@ -67,7 +67,7 @@ if (DB_num_rows($result) == 0) {
 	exit;
 }
 
-$TransferRow = DB_fetch_array($result);
+$TransferRow = DB_fetch_array($Result);
 
 include('includes/PDFStockLocTransferHeader.inc');
 $line_height = 30;
@@ -89,7 +89,7 @@ do {
 		include('includes/PDFStockLocTransferHeader.inc');
 	}
 
-} while ($TransferRow = DB_fetch_array($result));
+} while ($TransferRow = DB_fetch_array($Result));
 $pdf->OutputD($_SESSION['DatabaseName'] . '_StockLocTrfShipment_' . date('Y-m-d') . '.pdf');
 $pdf->__destruct();
 ?>

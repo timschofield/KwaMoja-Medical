@@ -43,18 +43,18 @@ if ($Counter > 0) {
 	$mail->addAttachment($attachment, 'SalesAnalysis_' . date('Y-m-d') . '.pdf', 'application/pdf');
 	if ($_SESSION['SmtpSetting'] == 0) {
 		$mail->setFrom($_SESSION['CompanyRecord']['coyname'] . '<' . $_SESSION['CompanyRecord']['email'] . '>');
-		$result = $mail->send($Recipients);
+		$Result = $mail->send($Recipients);
 	} else {
-		$result = SendmailBySmtp($mail, $Recipients);
+		$Result = SendmailBySmtp($mail, $Recipients);
 	}
 
 } else {
 	$mail->setText(_('Error running automated sales report number') . ' ' . $ReportID);
 	if ($_SESSION['SmtpSetting'] == 0) {
 		$mail->setFrom($_SESSION['CompanyRecord']['coyname'] . '<' . $_SESSION['CompanyRecord']['email'] . '>');
-		$result = $mail->send($Recipients);
+		$Result = $mail->send($Recipients);
 	} else {
-		$result = SendmailBySmtp($mail, $Recipients);
+		$Result = SendmailBySmtp($mail, $Recipients);
 	}
 
 }

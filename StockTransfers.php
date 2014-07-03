@@ -48,13 +48,13 @@ if (isset($_POST['CheckCode'])) {
 	}
 	$ErrMsg = _('The stock information cannot be retrieved because');
 	$DbgMsg = _('The SQL to get the stock description was');
-	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 	echo '<table class="selection">
 			<tr>
 				<th class="SortableColumn">' . _('Stock Code') . '</th>
 				<th class="SortableColumn">' . _('Stock Description') . '</th>
 			</tr>';
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		echo '<tr>
 				<td>' . $MyRow['stockid'] . '</td>
 				<td>' . $MyRow['description'] . '</td>
@@ -122,12 +122,12 @@ if ($NewTransfer and isset($_POST['StockID'])) {
 					ON stockmaster.stockid=stockcosts.stockid
 					AND stockcosts.succeeded=0
 				WHERE stockcosts.stockid='" . trim(mb_strtoupper($_POST['StockID'])) . "'";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
-	if (DB_num_rows($result) == 0) {
+	if (DB_num_rows($Result) == 0) {
 		prnMsg(_('Unable to locate Stock Code') . ' ' . mb_strtoupper($_POST['StockID']), 'error');
-	} elseif (DB_num_rows($result) > 0) {
-		$MyRow = DB_fetch_array($result);
+	} elseif (DB_num_rows($Result) > 0) {
+		$MyRow = DB_fetch_array($Result);
 		$_SESSION['Transfer' . $identifier]->TransferItem[0] = new LineItem(trim(mb_strtoupper($_POST['StockID'])), $MyRow['description'], filter_number_format($_POST['Quantity']), $MyRow['units'], $MyRow['controlled'], $MyRow['serialised'], $MyRow['perishable'], $MyRow['decimalplaces']);
 
 
@@ -163,10 +163,10 @@ if (isset($_POST['StockLocationTo'])) {
 
 if (isset($_POST['EnterTransfer'])) {
 
-	$result = DB_query("SELECT * FROM stockmaster WHERE stockid='" . $_SESSION['Transfer' . $identifier]->TransferItem[0]->StockID . "'");
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_query("SELECT * FROM stockmaster WHERE stockid='" . $_SESSION['Transfer' . $identifier]->TransferItem[0]->StockID . "'");
+	$MyRow = DB_fetch_row($Result);
 	$InputError = false;
-	if (DB_num_rows($result) == 0) {
+	if (DB_num_rows($Result) == 0) {
 		echo '<br />';
 		prnMsg(_('The entered item code does not exist'), 'error');
 		$InputError = true;
@@ -514,8 +514,8 @@ if ($_SESSION['RestrictLocations'] == 0) {
 					ON locations.loccode=www_users.defaultlocation
 				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 }
-$resultStkLocs = DB_query($SQL);
-while ($MyRow = DB_fetch_array($resultStkLocs)) {
+$ResultStkLocs = DB_query($SQL);
+while ($MyRow = DB_fetch_array($ResultStkLocs)) {
 	if (isset($_SESSION['Transfer' . $identifier]->StockLocationFrom)) {
 		if ($MyRow['loccode'] == $_SESSION['Transfer' . $identifier]->StockLocationFrom) {
 			echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
@@ -540,9 +540,9 @@ echo '<tr>
 $SQL = "SELECT locationname,
 				loccode
 			FROM locations";
-$resultStkLocs = DB_query($SQL);
+$ResultStkLocs = DB_query($SQL);
 
-while ($MyRow = DB_fetch_array($resultStkLocs)) {
+while ($MyRow = DB_fetch_array($ResultStkLocs)) {
 	if (isset($_SESSION['Transfer' . $identifier]) and isset($_SESSION['Transfer' . $identifier]->StockLocationTo)) {
 		if ($MyRow['loccode'] == $_SESSION['Transfer' . $identifier]->StockLocationTo) {
 			echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';

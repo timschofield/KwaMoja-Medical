@@ -76,14 +76,14 @@ if (isset($_POST['submit'])) {
 			$msg = _('Stock Category') . ': ' . stripslashes($_POST['SelectedCategory']) . ' ' . _('has been allowed to user role') . ' ' . $_POST['SelectedRole'] . ' ' . _('as internal');
 			$checkSql = "SELECT count(secroleid)
 							FROM securityroles";
-			$result = DB_query($checkSql);
-			$row = DB_fetch_row($result);
+			$Result = DB_query($checkSql);
+			$row = DB_fetch_row($Result);
 		}
 	}
 
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 		prnMsg($msg, 'success');
 		unset($_POST['SelectedCategory']);
 	}
@@ -94,7 +94,7 @@ if (isset($_POST['submit'])) {
 		AND categoryid='" . $SelectedType . "'";
 
 	$ErrMsg = _('The Stock Category by Role record could not be deleted because');
-	$result = DB_query($SQL, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 	prnMsg(_('Internal Stock Category') . ' ' . stripslashes($SelectedType) . ' ' . _('for user role') . ' ' . $SelectedRole . ' ' . _('has been deleted'), 'success');
 	unset($_GET['delete']);
 }
@@ -111,9 +111,9 @@ if (!isset($SelectedRole)) {
 					secrolename
 			FROM securityroles";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	echo '<option value="">' . _('Not Yet Selected') . '</option>';
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($SelectedRole) and $MyRow['secroleid'] == $SelectedRole) {
 			echo '<option selected="selected" value="';
 		} else {
@@ -126,7 +126,7 @@ if (!isset($SelectedRole)) {
 	echo '</select></td></tr>';
 
 	echo '</table>'; // close main table
-	DB_free_result($result);
+	DB_free_result($Result);
 
 	echo '<div class="centre"><input type="submit" name="Process" value="' . _('Accept') . '" />
 				<input type="submit" name="Cancel" value="' . _('Cancel') . '" /></div>';
@@ -151,7 +151,7 @@ if (isset($_POST['process']) or isset($SelectedRole)) {
 			WHERE internalstockcatrole.secroleid='" . $SelectedRole . "'
 			ORDER BY internalstockcatrole.categoryid ASC";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '<table class="selection">';
 	echo '<tr>
@@ -164,7 +164,7 @@ if (isset($_POST['process']) or isset($SelectedRole)) {
 
 	$k = 0; //row colour counter
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -192,11 +192,11 @@ if (isset($_POST['process']) or isset($SelectedRole)) {
 						categorydescription
 				FROM stockcategory";
 
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 		if (!isset($_POST['SelectedCategory'])) {
 			echo '<option selected="selected" value="">' . _('Not Yet Selected') . '</option>';
 		}
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			if (isset($_POST['SelectedCategory']) and $MyRow['categoryid'] == $_POST['SelectedCategory']) {
 				echo '<option selected="selected" value="';
 			} else {
@@ -209,7 +209,7 @@ if (isset($_POST['process']) or isset($SelectedRole)) {
 		echo '</select></td></tr>';
 
 		echo '</table>'; // close main table
-		DB_free_result($result);
+		DB_free_result($Result);
 
 		echo '<div class="centre"><input type="submit" name="submit" value="' . _('Accept') . '" />
 									<input type="submit" name="Cancel" value="' . _('Cancel') . '" /></div>';

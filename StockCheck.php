@@ -14,7 +14,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 	/*First off do the stock check file stuff */
 	if ($_POST['MakeStkChkData'] == 'New') {
 		$SQL = "TRUNCATE TABLE stockcheckfreeze";
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 		$SQL = "INSERT INTO stockcheckfreeze (stockid,
 										  loccode,
 										  qoh,
@@ -32,7 +32,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 					   stockmaster.mbflag!='K' AND
 					   stockmaster.mbflag!='D'";
 
-		$result = DB_query($SQL, '', '', false, false);
+		$Result = DB_query($SQL, '', '', false, false);
 		if (DB_error_no() != 0) {
 			$Title = _('Stock Count Sheets - Problem Report');
 			include('includes/header.inc');
@@ -54,7 +54,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				AND stockmaster.categoryid<='" . $_POST['ToCriteria'] . "'
 				AND stockcheckfreeze.loccode='" . $_POST['Location'] . "'";
 
-		$result = DB_query($SQL, '', '', false, false);
+		$Result = DB_query($SQL, '', '', false, false);
 		if (DB_error_no() != 0) {
 			$Title = _('Stock Freeze') . ' - ' . _('Problem Report') . '.... ';
 			include('includes/header.inc');
@@ -85,7 +85,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				AND stockmaster.mbflag!='G'
 				AND stockmaster.mbflag!='D'";
 
-		$result = DB_query($SQL, '', '', false, false);
+		$Result = DB_query($SQL, '', '', false, false);
 		if (DB_error_no() != 0) {
 			$Title = _('Stock Freeze - Problem Report');
 			include('includes/header.inc');

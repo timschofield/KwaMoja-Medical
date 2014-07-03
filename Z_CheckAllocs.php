@@ -22,13 +22,13 @@ $SQL = "SELECT debtortrans.id,
 		debtortrans.alloc
 	HAVING SUM(custallocns.amt) < debtortrans.alloc - 1";
 
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 
-if (DB_num_rows($result) == 0) {
+if (DB_num_rows($Result) == 0) {
 	prnMsg(_('There are no inconsistencies with allocations') . ' - ' . _('all is well'), 'info');
 }
 
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	$AllocToID = $MyRow['id'];
 
 	echo '<br />' . _('Allocations made against') . ' ' . $MyRow['debtorno'] . ' ' . _('Invoice Number') . ': ' . $MyRow['transno'];

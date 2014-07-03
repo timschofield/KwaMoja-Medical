@@ -30,8 +30,8 @@ if (isset($_POST['StockSearch'])) {
 				categorydescription
 			FROM stockcategory
 			ORDER BY categorydescription";
-	$result1 = DB_query($SQL);
-	while ($MyRow1 = DB_fetch_array($result1)) {
+	$Result1 = DB_query($SQL);
+	while ($MyRow1 = DB_fetch_array($Result1)) {
 		if ($MyRow1['categoryid'] == $_POST['StockCat']) {
 			echo '<option selected="True" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 		} else {
@@ -324,7 +324,7 @@ foreach ($_POST as $key => $value) {
 									minorderqty='" . $MinOrderQty . "'
 								WHERE supplierno='" . DB_escape_string($_POST['SupplierID']) . "'
 								AND stockid='" . $StockID . "'";
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 	}
 	if (mb_substr($key, 0, 6) == 'Insert') {
 		if (isset($_POST['Preferred0'])) {
@@ -356,7 +356,7 @@ foreach ($_POST as $key => $value) {
 									'" . $_POST['SupplierPartNo0'] . "',
 									'" . $_POST['MinOrderQty0'] . "'
 								)";
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 	}
 }
 
@@ -495,7 +495,7 @@ if (isset($_POST['SupplierID'])) {
 			WHERE supplierno='" . DB_escape_string($_POST['SupplierID']) . "'
 			ORDER BY purchdata.stockid, effectivefrom DESC";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	$UOMSQL = "SELECT unitid,
 						unitname
@@ -553,7 +553,7 @@ if (isset($_POST['SupplierID'])) {
 	}
 
 	$RowCounter = 1;
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		echo '<tr>
 				<td><input type="hidden" value="' . $MyRow['stockid'] . '" name="StockID' . $RowCounter . '" />' . $MyRow['stockid'] . '</td>
 				<td>' . $MyRow['description'] . '</td>

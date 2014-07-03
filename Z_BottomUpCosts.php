@@ -25,9 +25,9 @@ if (isset($Run)) { //start bom processing
 	$ErrMsg = _('An error occurred selecting all bottom level components');
 	$DbgMsg = _('The SQL that was used to select bottom level components and failed in the process was');
 
-	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-	while ($item = DB_fetch_array($result)) {
+	while ($item = DB_fetch_array($Result)) {
 		$inputerror = UpdateCost($item['component']);
 		if ($inputerror == 0) {
 			prnMsg(_('Component') . ' ' . $item['component'] . ' ' . _('has been processed'), 'success');

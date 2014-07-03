@@ -269,14 +269,14 @@ if (isset($_POST['Searchcustomer'])) {
 } //end of if search
 if (isset($debtorsmasterResult) and DB_num_rows($debtorsmasterResult) > 0) {
 	if (isset($StockID)) {
-		$result = DB_query("SELECT stockmaster.description,
+		$Result = DB_query("SELECT stockmaster.description,
 								stockmaster.units,
 								stockmaster.mbflag
 						FROM stockmaster
 						WHERE stockmaster.stockid='" . $StockID . "'");
-		$MyRow = DB_fetch_row($result);
+		$MyRow = DB_fetch_row($Result);
 		$StockUOM = $MyRow[1];
-		if (DB_num_rows($result) <> 1) {
+		if (DB_num_rows($Result) <> 1) {
 			prnMsg(_('Stock Item') . ' - ' . $StockID . ' ' . _('is not defined in the database'), 'warn');
 		}
 	} else {

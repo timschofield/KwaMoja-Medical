@@ -12,7 +12,7 @@ echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/
 
 
 if (isset($_GET['Complete'])) {
-	$result = DB_query("UPDATE fixedassettasks SET lastcompleted=CURRENT_DATE WHERE taskid='" . $_GET['TaskID'] . "'");
+	$Result = DB_query("UPDATE fixedassettasks SET lastcompleted=CURRENT_DATE WHERE taskid='" . $_GET['TaskID'] . "'");
 }
 
 

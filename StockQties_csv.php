@@ -15,7 +15,7 @@ echo '<div class="centre">' . _('Making a comma separated values file of the cur
 $ErrMsg = _('The SQL to get the stock quantities failed with the message');
 
 $SQL = "SELECT stockid, SUM(quantity) FROM locstock GROUP BY stockid HAVING SUM(quantity)<>0";
-$result = DB_query($SQL, $ErrMsg);
+$Result = DB_query($SQL, $ErrMsg);
 
 if (!file_exists($_SESSION['reports_dir'])) {
 	$Result = mkdir('./' . $_SESSION['reports_dir']);
@@ -32,7 +32,7 @@ if ($fp == FALSE) {
 	exit;
 }
 
-while ($MyRow = DB_fetch_row($result)) {
+while ($MyRow = DB_fetch_row($Result)) {
 	$line = stripcomma($MyRow[0]) . ', ' . stripcomma($MyRow[1]);
 	fputs($fp, "\xEF\xBB\xBF" . $line . "\n");
 }

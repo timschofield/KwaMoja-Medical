@@ -121,7 +121,7 @@ if (isset($_POST['submit'])) {
 	}
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 		prnMsg($msg, 'success');
 		unset($SelectedTerms);
 		unset($_POST['DaysOrFoll']);
@@ -136,15 +136,15 @@ if (isset($_POST['submit'])) {
 	// PREVENT DELETES IF DEPENDENT RECORDS IN DebtorsMaster
 
 	$SQL = "SELECT COUNT(*) FROM debtorsmaster WHERE debtorsmaster.paymentterms = '" . $SelectedTerms . "'";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
 	if ($MyRow[0] > 0) {
 		prnMsg(_('Cannot delete this payment term because customer accounts have been created referring to this term'), 'warn');
 		echo '<br /> ' . _('There are') . ' ' . $MyRow[0] . ' ' . _('customer accounts that refer to this payment term');
 	} else {
 		$SQL = "SELECT COUNT(*) FROM suppliers WHERE suppliers.paymentterms = '" . $SelectedTerms . "'";
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_row($Result);
 		if ($MyRow[0] > 0) {
 			prnMsg(_('Cannot delete this payment term because supplier accounts have been created referring to this term'), 'warn');
 			echo '<br /> ' . _('There are') . ' ' . $MyRow[0] . ' ' . _('supplier accounts that refer to this payment term');
@@ -152,7 +152,7 @@ if (isset($_POST['submit'])) {
 			//only delete if used in neither customer or supplier accounts
 
 			$SQL = "DELETE FROM paymentterms WHERE termsindicator='" . $SelectedTerms . "'";
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 			prnMsg(_('The payment term definition record has been deleted') . '!', 'success');
 		}
 	}
@@ -168,7 +168,7 @@ if (!isset($SelectedTerms)) {
 	or deletion of the records*/
 
 	$SQL = "SELECT termsindicator, terms, daysbeforedue, dayinfollowingmonth FROM paymentterms";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '<table class="selection">';
 	echo '<tr>
@@ -181,7 +181,7 @@ if (!isset($SelectedTerms)) {
 			<th>' . _('Due After (Days)') . '</th>
 		</tr>';
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 
 		if ($MyRow['dayinfollowingmonth'] == 0) {
 			$FollMthText = _('N/A');
@@ -229,8 +229,8 @@ if (!isset($_GET['delete'])) {
 					FROM paymentterms
 					WHERE termsindicator='" . $SelectedTerms . "'";
 
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
 
 		$_POST['TermsIndicator'] = $MyRow['termsindicator'];
 		$_POST['Terms'] = $MyRow['terms'];

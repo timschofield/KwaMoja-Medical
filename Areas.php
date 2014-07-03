@@ -31,14 +31,14 @@ if (isset($_POST['submit'])) {
 	//first off validate inputs sensible
 	$_POST['AreaCode'] = mb_strtoupper($_POST['AreaCode']);
 	$SQL = "SELECT areacode FROM areas WHERE areacode='" . $_POST['AreaCode'] . "'";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	// mod to handle 3 char area codes
 	if (mb_strlen(stripslashes($_POST['AreaCode'])) > 3) {
 		$InputError = 1;
 		prnMsg(_('The area code must be three characters or less long'), 'error');
 		$Errors[$i] = 'AreaCode';
 		$i++;
-	} elseif (DB_num_rows($result) > 0 and !isset($SelectedArea)) {
+	} elseif (DB_num_rows($Result) > 0 and !isset($SelectedArea)) {
 		$InputError = 1;
 		prnMsg(_('The area code entered already exists'), 'error');
 		$Errors[$i] = 'AreaCode';
@@ -93,7 +93,7 @@ if (isset($_POST['submit'])) {
 	if ($InputError != 1) {
 		$ErrMsg = _('The area could not be added or updated because');
 		$DbgMsg = _('The SQL that failed was');
-		$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 		unset($SelectedArea);
 		unset($_POST['AreaCode']);
 		unset($_POST['AreaDescription']);
@@ -108,8 +108,8 @@ if (isset($_POST['submit'])) {
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'DebtorsMaster'
 
 	$SQL = "SELECT COUNT(branchcode) AS branches FROM custbranch WHERE custbranch.area='$SelectedArea'";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 	if ($MyRow['branches'] > 0) {
 		$CancelDelete = 1;
 		prnMsg(_('Cannot delete this area because customer branches have been created using this area'), 'warn');
@@ -117,8 +117,8 @@ if (isset($_POST['submit'])) {
 
 	} else {
 		$SQL = "SELECT COUNT(area) AS records FROM salesanalysis WHERE salesanalysis.area ='$SelectedArea'";
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
 		if ($MyRow['records'] > 0) {
 			$CancelDelete = 1;
 			prnMsg(_('Cannot delete this area because sales analysis records exist that use this area'), 'warn');
@@ -128,7 +128,7 @@ if (isset($_POST['submit'])) {
 
 	if ($CancelDelete == 0) {
 		$SQL = "DELETE FROM areas WHERE areacode='" . $SelectedArea . "'";
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 		prnMsg(_('Area Code') . ' ' . stripslashes($SelectedArea) . ' ' . _('has been deleted') . ' !', 'success');
 	} //end if Delete area
 	unset($SelectedArea);
@@ -141,7 +141,7 @@ if (!isset($SelectedArea)) {
 					parentarea,
 					areadescription
 				FROM areas";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p><br />';
 
@@ -154,7 +154,7 @@ if (!isset($SelectedArea)) {
 
 	$k = 0; //row colour counter
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -198,8 +198,8 @@ if (!isset($_GET['delete'])) {
 					FROM areas
 					WHERE areacode='" . $SelectedArea . "'";
 
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
 
 		$_POST['AreaCode'] = $MyRow['areacode'];
 		$_POST['AreaDescription'] = $MyRow['areadescription'];

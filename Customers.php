@@ -37,8 +37,8 @@ if (isset($_POST['submit'])) {
 	$_POST['DebtorNo'] = mb_strtoupper($_POST['DebtorNo']);
 
 	$SQL = "SELECT COUNT(debtorno) FROM debtorsmaster WHERE debtorno='" . $_POST['DebtorNo'] . "'";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
 	if ($MyRow[0] > 0 and isset($_POST['New'])) {
 		$InputError = 1;
 		prnMsg(_('The customer number already exists in the database'), 'error');
@@ -137,8 +137,8 @@ if (isset($_POST['submit'])) {
 			$SQL = "SELECT count(id)
 					  FROM debtortrans
 					where debtorno = '" . $_POST['DebtorNo'] . "'";
-			$result = DB_query($SQL);
-			$MyRow = DB_fetch_array($result);
+			$Result = DB_query($SQL);
+			$MyRow = DB_fetch_array($Result);
 
 			if ($MyRow[0] == 0) {
 				$SQL = "UPDATE debtorsmaster SET	name='" . $_POST['CustName'] . "',
@@ -200,7 +200,7 @@ if (isset($_POST['submit'])) {
 			}
 
 			$ErrMsg = _('The customer could not be updated because');
-			$result = DB_query($SQL, $ErrMsg);
+			$Result = DB_query($SQL, $ErrMsg);
 			prnMsg(_('Customer updated'), 'success');
 			echo '<br />';
 
@@ -264,7 +264,7 @@ if (isset($_POST['submit'])) {
 					)";
 
 			$ErrMsg = _('This customer could not be added because');
-			$result = DB_query($SQL, $ErrMsg);
+			$Result = DB_query($SQL, $ErrMsg);
 
 			$BranchCode = mb_substr($_POST['DebtorNo'], 0, 4);
 
@@ -289,8 +289,8 @@ elseif (isset($_POST['delete'])) {
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'DebtorTrans'
 
 	$SQL = "SELECT COUNT(*) FROM debtortrans WHERE debtorno='" . $_POST['DebtorNo'] . "'";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
 	if ($MyRow[0] > 0) {
 		$CancelDelete = 1;
 		prnMsg(_('This customer cannot be deleted because there are transactions that refer to it'), 'warn');
@@ -299,8 +299,8 @@ elseif (isset($_POST['delete'])) {
 	} //$MyRow[0] > 0
 	else {
 		$SQL = "SELECT COUNT(*) FROM salesorders WHERE debtorno='" . $_POST['DebtorNo'] . "'";
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_row($Result);
 		if ($MyRow[0] > 0) {
 			$CancelDelete = 1;
 			prnMsg(_('Cannot delete the customer record because orders have been created against it'), 'warn');
@@ -308,8 +308,8 @@ elseif (isset($_POST['delete'])) {
 		} //$MyRow[0] > 0
 		else {
 			$SQL = "SELECT COUNT(*) FROM salesanalysis WHERE cust='" . $_POST['DebtorNo'] . "'";
-			$result = DB_query($SQL);
-			$MyRow = DB_fetch_row($result);
+			$Result = DB_query($SQL);
+			$MyRow = DB_fetch_row($Result);
 			if ($MyRow[0] > 0) {
 				$CancelDelete = 1;
 				prnMsg(_('Cannot delete this customer record because sales analysis records exist for it'), 'warn');
@@ -317,8 +317,8 @@ elseif (isset($_POST['delete'])) {
 			} else {
 				// Check if there are any users that refer to this CUSTOMER code
 				$SQL = "SELECT COUNT(*) FROM www_users WHERE www_users.customerid = '" . $_POST['DebtorNo'] . "'";
-				$result = DB_query($SQL);
-				$MyRow = DB_fetch_row($result);
+				$Result = DB_query($SQL);
+				$MyRow = DB_fetch_row($Result);
 				if ($MyRow[0] > 0) {
 					prnMsg(_('Cannot delete this customer because users exist that refer to it') . '. ' . _('Purge old users first'), 'warn');
 					echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('users referring to this Branch/customer');
@@ -326,8 +326,8 @@ elseif (isset($_POST['delete'])) {
 						// Check if there are any contract that refer to this branch code
 					$SQL = "SELECT COUNT(*) FROM contracts WHERE contracts.debtorno = '" . $_POST['DebtorNo'] . "'";
 
-					$result = DB_query($SQL);
-					$MyRow = DB_fetch_row($result);
+					$Result = DB_query($SQL);
+					$MyRow = DB_fetch_row($Result);
 
 					if ($MyRow[0] > 0) {
 						prnMsg(_('Cannot delete this customer because contracts have been created that refer to it') . '. ' . _('Purge old contracts first'), 'warn');
@@ -340,11 +340,11 @@ elseif (isset($_POST['delete'])) {
 	}
 	if ($CancelDelete == 0) { //ie not cancelled the delete as a result of above tests
 		$SQL = "DELETE FROM custbranch WHERE debtorno='" . $_POST['DebtorNo'] . "'";
-		$result = DB_query($SQL, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 		$SQL = "DELETE FROM custcontacts WHERE debtorno='" . $_POST['DebtorNo'] . "'";
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 		$SQL = "DELETE FROM debtorsmaster WHERE debtorno='" . $_POST['DebtorNo'] . "'";
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 		prnMsg( _('Customer') . ' ' . $_POST['DebtorNo'] . ' ' . _('has been deleted - together with all the associated branches and contacts'),'success');
 		include('includes/footer.inc');
 		unset($_SESSION['CustomerID']);
@@ -429,16 +429,16 @@ if (!isset($DebtorNo)) {
 	$SetupErrors = 0; //Count errors
 	$SQL = "SELECT COUNT(typeabbrev)
 				FROM salestypes";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
 	if ($MyRow[0] == 0) {
 		prnMsg(_('In order to create a new customer you must first set up at least one sales type/price list') . '<br />' . _('Click') . ' ' . '<a target="_blank" href="' . $RootPath . '/SalesTypes.php">' . _('here') . ' ' . '</a>' . _('to set up your price lists'), 'warning') . '<br />';
 		$SetupErrors += 1;
 	} //$MyRow[0] == 0
 	$SQL = "SELECT COUNT(typeid)
 				FROM debtortype";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
 	if ($MyRow[0] == 0) {
 		prnMsg(_('In order to create a new customer you must first set up at least one customer type') . '<br />' . _('Click') . ' ' . '<a target="_blank" href="' . $RootPath . '/CustomerTypes.php">' . _('here') . ' ' . '</a>' . _('to set up your customer types'), 'warning');
 		$SetupErrors += 1;
@@ -509,40 +509,40 @@ if (!isset($DebtorNo)) {
 		</tr>';
 
 	// Show Sales Type drop down list
-	$result = DB_query("SELECT typeabbrev, sales_type FROM salestypes ORDER BY sales_type");
-	if (DB_num_rows($result) == 0) {
+	$Result = DB_query("SELECT typeabbrev, sales_type FROM salestypes ORDER BY sales_type");
+	if (DB_num_rows($Result) == 0) {
 		$DataError = 1;
 		echo '<tr><td colspan="2">' . prnMsg(_('No sales types/price lists defined'), 'error') . '<br /><a href="SalesTypes.php" target="_parent">' . _('Setup Types') . '</a></td></tr>';
-	} //DB_num_rows($result) == 0
+	} //DB_num_rows($Result) == 0
 	else {
 		echo '<tr><td>' . _('Sales Type') . '/' . _('Price List') . ':</td>
 			   <td><select minlength="0" tabindex="9" name="SalesType">';
 
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			echo '<option value="' . $MyRow['typeabbrev'] . '">' . $MyRow['sales_type'] . '</option>';
 		} //end while loopre
-		DB_data_seek($result, 0);
+		DB_data_seek($Result, 0);
 		echo '</select></td></tr>';
 	}
 
 	// Show Customer Type drop down list
-	$result = DB_query("SELECT typeid, typename FROM debtortype ORDER BY typename");
-	if (DB_num_rows($result) == 0) {
+	$Result = DB_query("SELECT typeid, typename FROM debtortype ORDER BY typename");
+	if (DB_num_rows($Result) == 0) {
 		$DataError = 1;
 		echo '<a href="SalesTypes.php" target="_parent">' . _('Setup Types') . '</a>';
 		echo '<tr>
 				<td colspan="2">' . prnMsg(_('No Customer types/price lists defined'), 'error') . '</td>
 			</tr>';
-	} //DB_num_rows($result) == 0
+	} //DB_num_rows($Result) == 0
 	else {
 		echo '<tr>
 				<td>' . _('Customer Type') . ':</td>
 				<td><select minlength="0" tabindex="9" name="typeid">';
 
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			echo '<option value="' . $MyRow['typeid'] . '">' . $MyRow['typename'] . '</option>';
 		} //end while loop
-		DB_data_seek($result, 0);
+		DB_data_seek($Result, 0);
 		echo '</select></td></tr>';
 	}
 
@@ -574,20 +574,20 @@ if (!isset($DebtorNo)) {
 					<td><input tabindex="15" type="text" name="TaxRef" size="22" minlength="0" maxlength="20" /></td>
 				</tr>';
 
-	$result = DB_query("SELECT terms, termsindicator FROM paymentterms");
-	if (DB_num_rows($result) == 0) {
+	$Result = DB_query("SELECT terms, termsindicator FROM paymentterms");
+	if (DB_num_rows($Result) == 0) {
 		$DataError = 1;
 		echo '<tr><td colspan="2">' . prnMsg(_('There are no payment terms currently defined - go to the setup tab of the main menu and set at least one up first'), 'error') . '</td></tr>';
-	} //DB_num_rows($result) == 0
+	} //DB_num_rows($Result) == 0
 	else {
 		echo '<tr>
 				<td>' . _('Payment Terms') . ':</td>
 				<td><select minlength="0" tabindex="15" name="PaymentTerms">';
 
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			echo '<option value="' . $MyRow['termsindicator'] . '">' . $MyRow['terms'] . '</option>';
 		} //end while loop
-		DB_data_seek($result, 0);
+		DB_data_seek($Result, 0);
 
 		echo '</select></td></tr>';
 	}
@@ -595,28 +595,28 @@ if (!isset($DebtorNo)) {
 			<td>' . _('Credit Status') . ':</td>
 			<td><select minlength="0" tabindex="16" name="HoldReason">';
 
-	$result = DB_query("SELECT reasoncode, reasondescription FROM holdreasons");
-	if (DB_num_rows($result) == 0) {
+	$Result = DB_query("SELECT reasoncode, reasondescription FROM holdreasons");
+	if (DB_num_rows($Result) == 0) {
 		$DataError = 1;
 		echo '<tr>
 				<td colspan="2">' . prnMsg(_('There are no credit statuses currently defined - go to the setup tab of the main menu and set at least one up first'), 'error') . '</td>
 			</tr>';
-	} //DB_num_rows($result) == 0
+	} //DB_num_rows($Result) == 0
 	else {
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			echo '<option value="' . $MyRow['reasoncode'] . '">' . $MyRow['reasondescription'] . '</option>';
 		} //end while loop
-		DB_data_seek($result, 0);
+		DB_data_seek($Result, 0);
 		echo '</select></td></tr>';
 	}
 
-	$result = DB_query("SELECT currency, currabrev FROM currencies");
-	if (DB_num_rows($result) == 0) {
+	$Result = DB_query("SELECT currency, currabrev FROM currencies");
+	if (DB_num_rows($Result) == 0) {
 		$DataError = 1;
 		echo '<tr>
 				<td colspan="2">' . prnMsg(_('There are no currencies currently defined - go to the setup tab of the main menu and set at least one up first'), 'error') . '</td>
 			</tr>';
-	} //DB_num_rows($result) == 0
+	} //DB_num_rows($Result) == 0
 	else {
 		if (!isset($_POST['CurrCode'])) {
 			$_POST['CurrCode'] = $_SESSION['CompanyRecord']['currencydefault'];
@@ -624,7 +624,7 @@ if (!isset($DebtorNo)) {
 		echo '<tr>
 				<td>' . _('Customer Currency') . ':</td>
 				<td><select minlength="0" tabindex="17" name="CurrCode">';
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			if ($_POST['CurrCode'] == $MyRow['currabrev']) {
 				echo '<option selected="selected" value="' . $MyRow['currabrev'] . '">' . $MyRow['currency'] . '</option>';
 			} //$_POST['CurrCode'] == $MyRow['currabrev']
@@ -632,7 +632,7 @@ if (!isset($DebtorNo)) {
 				echo '<option value="' . $MyRow['currabrev'] . '">' . $MyRow['currency'] . '</option>';
 			}
 		} //end while loop
-		DB_data_seek($result, 0);
+		DB_data_seek($Result, 0);
 
 		echo '</select></td>
 			</tr>';
@@ -720,9 +720,9 @@ else {
 				WHERE debtorno = '" . $DebtorNo . "'";
 
 		$ErrMsg = _('The customer details could not be retrieved because');
-		$result = DB_query($SQL, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 
-		$MyRow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($Result);
 		/* if $AutoDebtorNo in config.php has not been set or if it has been set to a number less than one,
 		then display the DebtorNo */
 		$_POST['CustName'] = $MyRow['name'];
@@ -844,14 +844,14 @@ else {
 	}
 	// Select sales types for drop down list
 	if (isset($_GET['Modify'])) {
-		$result = DB_query("SELECT sales_type FROM salestypes WHERE typeabbrev='" . $_POST['SalesType'] . "'");
-		$MyRow = DB_fetch_array($result);
+		$Result = DB_query("SELECT sales_type FROM salestypes WHERE typeabbrev='" . $_POST['SalesType'] . "'");
+		$MyRow = DB_fetch_array($Result);
 		echo '<tr><td>' . _('Sales Type') . ':</td><td>' . $MyRow['sales_type'] . '</td></tr>';
 	} else {
-		$result = DB_query("SELECT typeabbrev, sales_type FROM salestypes");
+		$Result = DB_query("SELECT typeabbrev, sales_type FROM salestypes");
 		echo '<tr><td>' . _('Sales Type') . '/' . _('Price List') . ':</td>
 			<td><select minlength="0" name="SalesType">';
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			if ($_POST['SalesType'] == $MyRow['typeabbrev']) {
 				echo '<option selected="selected" value="' . $MyRow['typeabbrev'] . '">' . $MyRow['sales_type'] . '</option>';
 			} //$_POST['SalesType'] == $MyRow['typeabbrev']
@@ -859,24 +859,24 @@ else {
 				echo '<option value="' . $MyRow['typeabbrev'] . '">' . $MyRow['sales_type'] . '</option>';
 			}
 		} //end while loop
-		DB_data_seek($result, 0);
+		DB_data_seek($Result, 0);
 		echo '</select></td></tr>';
 	}
 
 	// Select Customer types for drop down list for SELECT/UPDATE
 	if (isset($_GET['Modify'])) {
-		$result = DB_query("SELECT typename FROM debtortype WHERE typeid='" . $_POST['typeid'] . "'");
-		$MyRow = DB_fetch_array($result);
+		$Result = DB_query("SELECT typename FROM debtortype WHERE typeid='" . $_POST['typeid'] . "'");
+		$MyRow = DB_fetch_array($Result);
 		echo '<tr>
 				<td>' . _('Customer Type') . ':</td>
 				<td>' . $MyRow['typename'] . '</td>
 			</tr>';
 	} else {
-		$result = DB_query("SELECT typeid, typename FROM debtortype ORDER BY typename");
+		$Result = DB_query("SELECT typeid, typename FROM debtortype ORDER BY typename");
 		echo '<tr>
 				<td>' . _('Customer Type') . ':</td>
 				<td><select minlength="0" name="typeid">';
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			if ($_POST['typeid'] == $MyRow['typeid']) {
 				echo '<option selected="selected" value="' . $MyRow['typeid'] . '">' . $MyRow['typename'] . '</option>';
 			} //$_POST['typeid'] == $MyRow['typeid']
@@ -884,7 +884,7 @@ else {
 				echo '<option value="' . $MyRow['typeid'] . '">' . $MyRow['typename'] . '</option>';
 			}
 		} //end while loop
-		DB_data_seek($result, 0);
+		DB_data_seek($Result, 0);
 	}
 
 	if (isset($_GET['Modify'])) {
@@ -949,19 +949,19 @@ else {
 	}
 
 	if (isset($_GET['Modify'])) {
-		$result = DB_query("SELECT terms FROM paymentterms WHERE termsindicator='" . $_POST['PaymentTerms'] . "'");
-		$MyRow = DB_fetch_array($result);
+		$Result = DB_query("SELECT terms FROM paymentterms WHERE termsindicator='" . $_POST['PaymentTerms'] . "'");
+		$MyRow = DB_fetch_array($Result);
 		echo '<tr>
 				<td>' . _('Payment Terms') . ':</td>
 				<td>' . $MyRow['terms'] . '</td>
 			</tr>';
 	} //isset($_GET['Modify'])
 	else {
-		$result = DB_query("SELECT terms, termsindicator FROM paymentterms");
+		$Result = DB_query("SELECT terms, termsindicator FROM paymentterms");
 		echo '<tr>
 				<td>' . _('Payment Terms') . ':</td>
 				<td><select minlength="0" name="PaymentTerms">';
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			if ($_POST['PaymentTerms'] == $MyRow['termsindicator']) {
 				echo '<option selected="selected" value="' . $MyRow['termsindicator'] . '">' . $MyRow['terms'] . '</option>';
 			} //$_POST['PaymentTerms'] == $MyRow['termsindicator']
@@ -969,25 +969,25 @@ else {
 				echo '<option value="' . $MyRow['termsindicator'] . '">' . $MyRow['terms'] . '</option>';
 			}
 		} //end while loop
-		DB_data_seek($result, 0);
+		DB_data_seek($Result, 0);
 		echo '</select></td>
 			</tr>';
 	}
 
 	if (isset($_GET['Modify'])) {
-		$result = DB_query("SELECT reasondescription FROM holdreasons WHERE reasoncode='" . $_POST['HoldReason'] . "'");
-		$MyRow = DB_fetch_array($result);
+		$Result = DB_query("SELECT reasondescription FROM holdreasons WHERE reasoncode='" . $_POST['HoldReason'] . "'");
+		$MyRow = DB_fetch_array($Result);
 		echo '<tr>
 				<td>' . _('Credit Status') . ':</td>
 				<td>' . $MyRow['reasondescription'] . '</td>
 			</tr>';
 	} //isset($_GET['Modify'])
 	else {
-		$result = DB_query("SELECT reasoncode, reasondescription FROM holdreasons");
+		$Result = DB_query("SELECT reasoncode, reasondescription FROM holdreasons");
 		echo '<tr>
 				<td>' . _('Credit Status') . ':</td>
 				<td><select minlength="0" name="HoldReason">';
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			if ($_POST['HoldReason'] == $MyRow['reasoncode']) {
 				echo '<option selected="selected" value="' . $MyRow['reasoncode'] . '">' . $MyRow['reasondescription'] . '</option>';
 			} //$_POST['HoldReason'] == $MyRow['reasoncode']
@@ -995,23 +995,23 @@ else {
 				echo '<option value="' . $MyRow['reasoncode'] . '">' . $MyRow['reasondescription'] . '</option>';
 			}
 		} //end while loop
-		DB_data_seek($result, 0);
+		DB_data_seek($Result, 0);
 		echo '</select></td>
 			</tr>';
 	}
 
 	if (isset($_GET['Modify'])) {
-		$result = DB_query("SELECT currency FROM currencies WHERE currabrev='" . $_POST['CurrCode'] . "'");
-		$MyRow = DB_fetch_array($result);
+		$Result = DB_query("SELECT currency FROM currencies WHERE currabrev='" . $_POST['CurrCode'] . "'");
+		$MyRow = DB_fetch_array($Result);
 		echo '<tr>
 				<td>' . _('Customer Currency') . ':</td>
 				<td>' . _($MyRow['currency']) . '</td></tr>';
 	} else {
-		$result = DB_query("SELECT currency, currabrev FROM currencies");
+		$Result = DB_query("SELECT currency, currabrev FROM currencies");
 		echo '<tr>
 				<td>' . _('Customer Currency') . ':</td>
 				<td><select minlength="0" name="CurrCode">';
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			if ($_POST['CurrCode'] == $MyRow['currabrev']) {
 				echo '<option selected="selected" value="' . $MyRow['currabrev'] . '">' . $MyRow['currency'] . '</option>';
 			} //$_POST['CurrCode'] == $MyRow['currabrev']
@@ -1019,7 +1019,7 @@ else {
 				echo '<option value="' . $MyRow['currabrev'] . '">' . $MyRow['currency'] . '</option>';
 			}
 		} //end while loop
-		DB_data_seek($result, 0);
+		DB_data_seek($Result, 0);
 		echo '</select></td>
 			</tr>';
 	}
@@ -1112,7 +1112,7 @@ else {
 	if (isset($_GET['delete'])) { //User hit delete link on customer contacts
 
 		/*Process this first before showing remaining contacts */
-		$resultupcc = DB_query("DELETE FROM custcontacts
+		$Resultupcc = DB_query("DELETE FROM custcontacts
 								WHERE debtorno='" . $DebtorNo . "'
 								AND contid='" . $ID . "'");
 		prnMsg(_('Contact Deleted'), 'success');
@@ -1128,7 +1128,7 @@ else {
 			FROM custcontacts
 			WHERE debtorno='" . $DebtorNo . "'
 			ORDER BY contid";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '<table class="selection">';
 	if (isset($_GET['Modify'])) {
@@ -1153,7 +1153,7 @@ else {
 	}
 	$k = 0; //row colour counter
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($k == 1) {
 			echo '<tr class="OddTableRows">';
 			$k = 0;

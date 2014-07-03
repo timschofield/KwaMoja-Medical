@@ -26,8 +26,8 @@ if (isset($_GET['SelectedTag'])) {
 				FROM tags
 				WHERE tagref='" . $_GET['SelectedTag'] . "'";
 
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
 		$ref = $MyRow['tagref'];
 		$Description = $MyRow['tagdescription'];
 	}
@@ -38,13 +38,13 @@ if (isset($_GET['SelectedTag'])) {
 
 if (isset($_POST['submit'])) {
 	$SQL = "INSERT INTO tags values(NULL, '" . $_POST['Description'] . "')";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 }
 
 if (isset($_POST['update'])) {
 	$SQL = "UPDATE tags SET tagdescription='" . $_POST['Description'] . "'
 		WHERE tagref='" . $_POST['reference'] . "'";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 }
 echo '<p class="page_title_text noPrint" >
 		<img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Print') . '" alt="' . $Title . '" />' . ' ' . $Title . '
@@ -83,9 +83,9 @@ $SQL = "SELECT tagref,
 		FROM tags
 		ORDER BY tagref";
 
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	echo '<tr>
 			<td>' . $MyRow['tagref'] . '</td>
 			<td>' . $MyRow['tagdescription'] . '</td>

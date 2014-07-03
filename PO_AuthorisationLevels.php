@@ -32,8 +32,8 @@ if (isset($_POST['Submit'])) {
 		FROM purchorderauth
 		WHERE userid='" . $_POST['UserID'] . "'
 		AND currabrev='" . $_POST['CurrCode'] . "'";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 	if ($MyRow[0] == 0) {
 		$SQL = "INSERT INTO purchorderauth ( userid,
 						currabrev,
@@ -92,8 +92,8 @@ if (isset($_GET['Edit'])) {
 			WHERE userid='" . $_GET['UserID'] . "'
 			AND currabrev='" . $_GET['Currency'] . "'";
 	$ErrMsg = _('The authentication details cannot be retrieved because');
-	$result = DB_query($SQL, $ErrMsg);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL, $ErrMsg);
+	$MyRow = DB_fetch_array($Result);
 	$UserID = $_GET['UserID'];
 	$Currency = $_GET['Currency'];
 	$CanCreate = $MyRow['CanCreate'];
@@ -194,8 +194,8 @@ if (isset($_GET['Edit'])) {
 			WHERE userid='" . $_GET['UserID'] . "'
 			AND purchorderauth.currabrev='" . $_GET['Currency'] . "'";
 	$ErrMsg = _('The authentication details cannot be retrieved because');
-	$result = DB_query($SQL, $ErrMsg);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL, $ErrMsg);
+	$MyRow = DB_fetch_array($Result);
 	$UserID = $_GET['UserID'];
 	$Currency = $_GET['Currency'];
 	$CanCreate = $MyRow['cancreate'];

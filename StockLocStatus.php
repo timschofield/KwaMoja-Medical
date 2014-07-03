@@ -41,8 +41,8 @@ if ($_SESSION['RestrictLocations'] == 0) {
 	}
 }
 
-$resultStkLocs = DB_query($SQL);
-while ($MyRow = DB_fetch_array($resultStkLocs)) {
+$ResultStkLocs = DB_query($SQL);
+while ($MyRow = DB_fetch_array($ResultStkLocs)) {
 	if (isset($_POST['StockLocation']) and $_POST['StockLocation'] != 'All') {
 		if ($MyRow['loccode'] == $_POST['StockLocation']) {
 			echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
@@ -60,8 +60,8 @@ $SQL = "SELECT categoryid,
 				categorydescription
 		FROM stockcategory
 		ORDER BY categorydescription";
-$result1 = DB_query($SQL);
-if (DB_num_rows($result1) == 0) {
+$Result1 = DB_query($SQL);
+if (DB_num_rows($Result1) == 0) {
 	echo '</table><p>';
 	prnMsg(_('There are no stock categories currently defined please use the link below to set them up'), 'warn');
 	echo '<br /><a href="' . $RootPath . '/StockCategories.php">' . _('Define Stock Categories') . '</a>';
@@ -80,7 +80,7 @@ if ($_POST['StockCat'] == 'All') {
 } else {
 	echo '<option value="All">' . _('All') . '</option>';
 }
-while ($MyRow1 = DB_fetch_array($result1)) {
+while ($MyRow1 = DB_fetch_array($Result1)) {
 	if ($MyRow1['categoryid'] == $_POST['StockCat']) {
 		echo '<option selected="selected" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 	} else {

@@ -21,7 +21,7 @@ if ((isset($_POST['submit']) or isset($_POST['reload'])) and $_POST['MailServerS
 				auth='" . $_POST['Auth'] . "'";
 	$ErrMsg = _('The email setting information failed to update');
 	$DbgMsg = _('The SQL failed to update is ');
-	$result1 = DB_query($SQL, $ErrMsg, $DbgMsg);
+	$Result1 = DB_query($SQL, $ErrMsg, $DbgMsg);
 	unset($_POST['MailServerSetting']);
 	if (isset($_POST['submit'])) {
 		prnMsg(_('The settings for the SMTP server have been successfully updated'), 'success');
@@ -46,7 +46,7 @@ if ((isset($_POST['submit']) or isset($_POST['reload'])) and $_POST['MailServerS
 					'" . $_POST['Auth'] . "')";
 	$ErrMsg = _('The email settings failed to be inserted');
 	$DbgMsg = _('The SQL failed to insert the email information is');
-	$result2 = DB_query($SQL);
+	$Result2 = DB_query($SQL);
 	unset($_POST['MailServerSetting']);
 	if (isset($_POST['submit'])) {
 		prnMsg(_('The settings for the SMTP server have been sucessfully inserted'), 'success');
@@ -68,12 +68,12 @@ $SQL = "SELECT id,
 $ErrMsg = _('The email settings information cannot be retrieved');
 $DbgMsg = _('The SQL that failed was');
 
-$result = DB_query($SQL, $ErrMsg, $DbgMsg);
-if (DB_num_rows($result) != 0) {
+$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
+if (DB_num_rows($Result) != 0) {
 	$MailServerSetting = 1;
-	$MyRow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($Result);
 } else {
-	DB_free_result($result);
+	DB_free_result($Result);
 	$MailServerSetting = 0;
 	$MyRow['host'] = '';
 	$MyRow['port'] = '';

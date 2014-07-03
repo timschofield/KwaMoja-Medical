@@ -20,8 +20,8 @@ echo '<p class="page_title_text noPrint" >
 		<img src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Inventory') . '" alt="" /><b>' . $Title . '</b>
 	</p>';
 
-$result = DB_query("SELECT description, units FROM stockmaster WHERE stockid='" . $StockID . "'");
-$MyRow = DB_fetch_row($result);
+$Result = DB_query("SELECT description, units FROM stockmaster WHERE stockid='" . $StockID . "'");
+$MyRow = DB_fetch_row($Result);
 
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';

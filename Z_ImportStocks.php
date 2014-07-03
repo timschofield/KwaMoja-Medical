@@ -119,8 +119,8 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 
 		//first off check if the item already exists
 		$SQL = "SELECT COUNT(stockid) FROM stockmaster WHERE stockid='" . $StockID . "'";
-		$result = DB_query($SQL);
-		$testrow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$testrow = DB_fetch_row($Result);
 		if ($testrow[0] != 0) {
 			$InputError = 1;
 			prnMsg(_('Stock item "' . $StockID . '" already exists'), 'error');
@@ -251,7 +251,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 
 			$ErrMsg = _('The item could not be added because');
 			$DbgMsg = _('The SQL that was used to add the item failed was');
-			$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 			if (DB_error_no() == 0) { //the insert of the new code worked so bang in the stock location records too
 

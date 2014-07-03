@@ -1,8 +1,8 @@
 <?php
 
 include('includes/session.inc');
-$result = DB_query("SELECT description FROM stockmaster WHERE stockid='" . trim(mb_strtoupper($_GET['StockID'])) . "'");
-$MyRow = DB_fetch_row($result);
+$Result = DB_query("SELECT description FROM stockmaster WHERE stockid='" . trim(mb_strtoupper($_GET['StockID'])) . "'");
+$MyRow = DB_fetch_row($Result);
 
 include('includes/phplot/phplot.php');
 $graph = new phplot(1000, 500);

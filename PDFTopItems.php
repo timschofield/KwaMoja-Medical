@@ -81,10 +81,10 @@ if (($_GET['Location'] == 'All') and ($_GET['Customers'] == 'All')) {
 		}
 	}
 }
-$result = DB_query($SQL);
-if (DB_num_rows($result) > 0) {
+$Result = DB_query($SQL);
+if (DB_num_rows($Result) > 0) {
 	$YPos = $YPos - 6;
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		//find the quantity onhand item
 		$SQLoh = "SELECT sum(quantity)as qty
 					FROM locstock

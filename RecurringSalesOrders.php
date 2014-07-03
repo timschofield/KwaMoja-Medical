@@ -152,11 +152,11 @@ if ((!isset($_SESSION['Items' . $identifier]) or $_SESSION['Items' . $identifier
 if (isset($_POST['DeleteRecurringOrder'])) {
 	$SQL = "DELETE FROM recurrsalesorderdetails WHERE recurrorderno='" . $_POST['ExistingRecurrOrderNo'] . "'";
 	$ErrMsg = _('Could not delete recurring sales order lines for the recurring order template') . ' ' . $_POST['ExistingRecurrOrderNo'];
-	$result = DB_query($SQL, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
 	$SQL = "DELETE FROM recurringsalesorders WHERE recurrorderno='" . $_POST['ExistingRecurrOrderNo'] . "'";
 	$ErrMsg = _('Could not delete the recurring sales order template number') . ' ' . $_POST['ExistingRecurrOrderNo'];
-	$result = DB_query($SQL, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
 	prnMsg(_('Successfully deleted recurring sales order template number') . ' ' . $_POST['ExistingRecurrOrderNo'], 'success');
 
@@ -270,7 +270,7 @@ if (isset($_POST['Process'])) {
 			}
 			/* inserted line items into sales order details */
 
-			$result = DB_Txn_Commit();
+			$Result = DB_Txn_Commit();
 			prnmsg(_('The new recurring order template has been added'), 'success');
 
 		} else {

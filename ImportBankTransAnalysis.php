@@ -65,12 +65,12 @@ if (isset($_POST['AddGLCodeToTrans']) AND $_POST['AddGLCodeToTrans'] == _('Enter
 					accountname
 				FROM chartmaster
 				WHERE accountcode='" . $_POST['GLCode'] . "'";
-	$result = DB_query($SQL);
-	if (DB_num_rows($result) == 0 AND $_POST['GLCode'] != '') {
+	$Result = DB_query($SQL);
+	if (DB_num_rows($Result) == 0 AND $_POST['GLCode'] != '') {
 		prnMsg(_('The account code entered is not a valid code') . '. ' . _('This line cannot be added to the transaction') . '.<br />' . _('You can use the selection box to select the account you want'), 'error');
 		$InputError = True;
 	} else if ($_POST['GLCode'] != '') {
-		$MyRow = DB_fetch_row($result);
+		$MyRow = DB_fetch_row($Result);
 		$GLActName = $MyRow[1];
 		if (!is_numeric($_POST['Amount'])) {
 			prnMsg(_('The amount entered is not numeric') . '. ' . _('This line cannot be added to the transaction'), 'error');
@@ -126,7 +126,7 @@ if ($_SESSION['Trans'][$TransID]->Amount < 0) { //its a payment
 			<td>' . _('Payment to Supplier Account') . ':</td>
 			<td><select minlength="0" name="SupplierID" onChange="ReloadForm(form1.Update)">';
 
-	$result = DB_query("SELECT supplierid,
+	$Result = DB_query("SELECT supplierid,
 								suppname
 						FROM suppliers
 						WHERE currcode='" . $_SESSION['Statement']->CurrCode . "'
@@ -136,7 +136,7 @@ if ($_SESSION['Trans'][$TransID]->Amount < 0) { //its a payment
 	} else {
 		echo '<option value="">' . _('GL Payment') . '</option>';
 	}
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($MyRow['supplierid'] == $_SESSION['Trans'][$TransID]->SupplierID) {
 			echo '<option selected value="' . $MyRow['supplierid'] . '">' . $MyRow['supplierid'] . ' - ' . $MyRow['suppname'] . '</option>';
 		} else {
@@ -157,7 +157,7 @@ if ($_SESSION['Trans'][$TransID]->Amount < 0) { //its a payment
 			<td>' . _('Receipt to Customer Account') . ':</td>
 			<td><select minlength="0" name="DebtorNo" onChange="ReloadForm(form1.Update)">';
 
-	$result = DB_query("SELECT debtorno,
+	$Result = DB_query("SELECT debtorno,
 								name
 						FROM debtorsmaster
 						WHERE currcode='" . $_SESSION['Statement']->CurrCode . "'
@@ -167,7 +167,7 @@ if ($_SESSION['Trans'][$TransID]->Amount < 0) { //its a payment
 	} else {
 		echo '<option value="">' . _('GL Receipt') . '</option>';
 	}
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($MyRow['debtorno'] == $_SESSION['Trans'][$TransID]->DebtorNo) {
 			echo '<option selected value="' . $MyRow['debtorno'] . '">' . $MyRow['debtorno'] . ' - ' . $MyRow['name'] . '</option>';
 		} else {
@@ -254,9 +254,9 @@ if ($AllowGLAnalysis == false) {
 			<td>' . _('Account Selection') . ':<br />(' . _('If you know the code enter it above') . '<br />' . _('otherwise select the account from the list') . ')</td>
 			<td><select required="required" minlength="1" name="AcctSelection">';
 
-	$result = DB_query("SELECT accountcode, accountname FROM chartmaster ORDER BY accountcode");
+	$Result = DB_query("SELECT accountcode, accountname FROM chartmaster ORDER BY accountcode");
 	echo '<option value=""></option>';
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($MyRow['accountcode'] == $_POST['AcctSelection']) {
 			echo '<option selected value="';
 		} else {
@@ -293,9 +293,9 @@ if ($AllowGLAnalysis == false) {
 			FROM tags
 			ORDER BY tagref";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	echo '<option value="0">0 - ' . _('None') . '</option>';
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['tag']) and $_POST['tag'] == $MyRow['tagref']) {
 			echo '<option selected value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
 		} else {

@@ -732,7 +732,7 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 				SET status='Completed',
 				stat_comment='" . $StatusComment . "'
 				WHERE orderno='" . $_SESSION['PO' . $identifier]->OrderNo . "'";
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 	}
 
 	if ($_SESSION['PO' . $identifier]->GLLink == 1) {

@@ -71,7 +71,7 @@ $SQL = "SELECT type,
 		WHERE type='" . $_POST['TransType'] . "'
 		AND trandate='" . FormatDateForSQL($_POST['Date']) . "'";
 
-$result = DB_query($SQL, '', '', false, false);
+$Result = DB_query($SQL, '', '', false, false);
 
 if (DB_error_no() != 0) {
 	$Title = _('Payment Listing');
@@ -82,7 +82,7 @@ if (DB_error_no() != 0) {
 	}
 	include('includes/footer.inc');
 	exit;
-} elseif (DB_num_rows($result) == 0) {
+} elseif (DB_num_rows($Result) == 0) {
 	$Title = _('Payment Listing');
 	include('includes/header.inc');
 	echo '<br />';
@@ -103,7 +103,7 @@ $TotalCheques = 0;
 
 include('includes/PDFSuppTransListingPageHeader.inc');
 
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	$CurrDecimalPlaces = $MyRow['currdecimalplaces'];
 	$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 160, $FontSize, $MyRow['suppname'], 'left');
 	$LeftOvers = $pdf->addTextWrap($Left_Margin + 162, $YPos, 80, $FontSize, $MyRow['suppreference'], 'left');

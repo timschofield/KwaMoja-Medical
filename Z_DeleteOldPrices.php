@@ -5,7 +5,7 @@ $Title = _('UTILITY PAGE To Delete All Old Prices');
 include('includes/header.inc');
 
 if (isset($_GET['DeleteOldPrices'])) {
-	$result = DB_query("DELETE FROM prices WHERE enddate<CURRENT_DATE AND enddate <>'0000-00-00'");
+	$Result = DB_query("DELETE FROM prices WHERE enddate<CURRENT_DATE AND enddate <>'0000-00-00'");
 	prnMsg(_('All old prices have been deleted'), 'success');
 }
 

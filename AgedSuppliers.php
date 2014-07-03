@@ -15,8 +15,8 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 					max(supplierid) AS tocriteria
 				FROM suppliers";
 
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 
 	if ($_POST['FromCriteria']=='') {
 		$_POST['FromCriteria'] = $MyRow['fromcriteria'];
@@ -297,8 +297,8 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 						max(supplierid) AS tocriteria
 					FROM suppliers";
 
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
 
 		echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">
 			<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
@@ -323,9 +323,9 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				<td><select minlength="0" tabindex="4" name="Currency">';
 
 		$SQL = "SELECT currency, currabrev FROM currencies";
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			if ($MyRow['currabrev'] == $_SESSION['CompanyRecord']['currencydefault']) {
 				echo '<option selected="selected" value="' . $MyRow['currabrev'] . '">' . $MyRow['currency'] . '</option>';
 			} else {

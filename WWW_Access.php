@@ -68,8 +68,8 @@ if (isset($_POST['submit']) or isset($_GET['remove']) or isset($_GET['add'])) {
 	}
 	// Need to exec the query
 	if (isset($SQL) and $InputError != 1) {
-		$result = DB_query($SQL, $ErrMsg);
-		if ($result) {
+		$Result = DB_query($SQL, $ErrMsg);
+		if ($Result) {
 			prnMsg($ResMsg, 'success');
 		}
 	}
@@ -77,16 +77,16 @@ if (isset($_POST['submit']) or isset($_GET['remove']) or isset($_GET['add'])) {
 	//the Security heading wants to be deleted but some checks need to be performed fist
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'www_users'
 	$SQL = "SELECT COUNT(*) FROM www_users WHERE fullaccess='" . $_GET['SelectedRole'] . "'";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
 	if ($MyRow[0] > 0) {
 		prnMsg(_('Cannot delete this role because user accounts are setup using it'), 'warn');
 		echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('user accounts that have this security role setting') . '</font>';
 	} else {
 		$SQL = "DELETE FROM securitygroups WHERE secroleid='" . $_GET['SelectedRole'] . "'";
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 		$SQL = "DELETE FROM securityroles WHERE secroleid='" . $_GET['SelectedRole'] . "'";
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 		prnMsg(stripslashes($_GET['SecRoleName']) . ' ' . _('security role has been deleted') . '!', 'success');
 
 	} //end if account group used in GL accounts
@@ -102,7 +102,7 @@ if (!isset($SelectedRole)) {
 			secrolename
 		FROM securityroles
 		ORDER BY secrolename";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '<table class="selection">';
 	echo '<tr>
@@ -111,7 +111,7 @@ if (!isset($SelectedRole)) {
 
 	$k = 0; //row colour counter
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -143,11 +143,11 @@ if (isset($SelectedRole)) {
 			secrolename
 		FROM securityroles
 		WHERE secroleid='" . $SelectedRole . "'";
-	$result = DB_query($SQL);
-	if (DB_num_rows($result) == 0) {
+	$Result = DB_query($SQL);
+	if (DB_num_rows($Result) == 0) {
 		prnMsg(_('The selected role is no longer available.'), 'warn');
 	} else {
-		$MyRow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($Result);
 		$_POST['SelectedRole'] = $MyRow['secroleid'];
 		$_POST['SecRoleName'] = $MyRow['secrolename'];
 	}

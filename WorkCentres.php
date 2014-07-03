@@ -65,7 +65,7 @@ if (isset($_POST['submit'])) {
 	//run the SQL from either of the above possibilites
 
 	if ($InputError != 1) {
-		$result = DB_query($SQL, _('The update/addition of the work centre failed because'));
+		$Result = DB_query($SQL, _('The update/addition of the work centre failed because'));
 		prnMsg($msg, 'success');
 		unset($_POST['Location']);
 		unset($_POST['Description']);
@@ -81,19 +81,19 @@ if (isset($_POST['submit'])) {
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'BOM'
 
 	$SQL = "SELECT COUNT(*) FROM bom WHERE bom.workcentreadded='" . $SelectedWC . "'";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
 	if ($MyRow[0] > 0) {
 		prnMsg(_('Cannot delete this work centre because bills of material have been created requiring components to be added at this work center') . '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('BOM items referring to this work centre code'), 'warn');
 	} else {
 		$SQL = "SELECT COUNT(*) FROM contractbom WHERE contractbom.workcentreadded='" . $SelectedWC . "'";
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_row($Result);
 		if ($MyRow[0] > 0) {
 			prnMsg(_('Cannot delete this work centre because contract bills of material have been created having components added at this work center') . '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('Contract BOM items referring to this work centre code'), 'warn');
 		} else {
 			$SQL = "DELETE FROM workcentres WHERE code='" . $SelectedWC . "'";
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 			prnMsg(_('The selected work centre record has been deleted'), 'succes');
 		} // end of Contract BOM test
 	} // end of BOM test
@@ -131,7 +131,7 @@ if (!isset($SelectedWC)) {
 						ON locations.loccode=www_users.defaultlocation
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	echo '<table class="selection">
 			<tr>
 				<th class="SortableColumn">' . _('WC Code') . '</th>
@@ -141,7 +141,7 @@ if (!isset($SelectedWC)) {
 				<th>' . _('Overhead Per Hour') . '</th>
 			</tr>';
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 
 		printf('<tr>
 					<td>%s</td>
@@ -180,8 +180,8 @@ if (isset($SelectedWC)) {
 			FROM workcentres
 			WHERE code='" . $SelectedWC . "'";
 
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 
 	$_POST['Code'] = $MyRow['code'];
 	$_POST['Location'] = $MyRow['location'];
@@ -220,7 +220,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 					ON locations.loccode=www_users.defaultlocation
 				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 }
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 
 if (!isset($_POST['Description'])) {
 	$_POST['Description'] = '';
@@ -232,7 +232,7 @@ echo '<tr>
 	<tr><td>' . _('Location') . ':</td>
 		<td><select required="required" minlength="1" name="Location">';
 
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	if (isset($_POST['Location']) and $MyRow['loccode'] == $_POST['Location']) {
 		echo '<option selected="selected" value="';
 	} else {
@@ -242,7 +242,7 @@ while ($MyRow = DB_fetch_array($result)) {
 
 } //end while loop
 
-DB_free_result($result);
+DB_free_result($Result);
 
 
 echo '</select></td>
@@ -259,9 +259,9 @@ $SQL = "SELECT accountcode,
 		WHERE accountgroups.pandl!=0
 		ORDER BY accountcode";
 
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	if (isset($_POST['OverheadRecoveryAct']) and $MyRow['accountcode'] == $_POST['OverheadRecoveryAct']) {
 		echo '<option selected="selected" value="';
 	} else {
@@ -270,7 +270,7 @@ while ($MyRow = DB_fetch_array($result)) {
 	echo $MyRow['accountcode'] . '">' . htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false) . '</option>';
 
 } //end while loop
-DB_free_result($result);
+DB_free_result($Result);
 
 if (!isset($_POST['OverheadPerHour'])) {
 	$_POST['OverheadPerHour'] = 0;

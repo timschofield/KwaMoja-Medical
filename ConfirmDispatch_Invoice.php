@@ -787,7 +787,7 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 				AND branchcode='" . $_SESSION['Items' . $identifier]->Branch . "'";
 		$ErrMsg = _('Could not update the default shipping carrier for this branch because');
 		$DbgMsg = _('The SQL used to update the branch default carrier was');
-		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 	}
 
 	$DefaultDispatchDate = FormatDateForSQL($DefaultDispatchDate);

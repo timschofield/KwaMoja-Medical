@@ -206,7 +206,7 @@ if (isset($_POST['PlacePO'])) {
 							$StatusComment = date($_SESSION['DefaultDateFormat']) . ' - ' . _('Order Created and Authorised by') . ' ' . $UserDetails . ' - ' . _('Auto created from sales orders') . '<br />';
 							$ErrMsg = _('Could not update purchase order status to Authorised');
 							$DbgMsg = _('The SQL that failed was');
-							$result = DB_query("UPDATE purchorders SET allowprint=1,
+							$Result = DB_query("UPDATE purchorders SET allowprint=1,
 												   status='Authorised',
 												   stat_comment='" . $StatusComment . "'
 												WHERE orderno='" . $PO_OrderNo . "'", $ErrMsg, $DbgMsg, true);
@@ -228,7 +228,7 @@ if (isset($_POST['PlacePO'])) {
 					}
 
 					/*Starting a new purchase order with a different supplier */
-					$result = DB_Txn_Begin();
+					$Result = DB_Txn_Begin();
 
 					$PO_OrderNo = GetNextTransNo(18); //get the next PO number
 
@@ -314,7 +314,7 @@ if (isset($_POST['PlacePO'])) {
 
 					$ErrMsg = _('The purchase order header record could not be inserted into the database because');
 					$DbgMsg = _('The SQL statement used to insert the purchase order header record and failed was');
-					$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 				} //end if it's a new supplier and PO to create
 
 				/*reminder we are in a loop of the total of each item to place a purchase order for based on a selection of sales orders */
@@ -342,7 +342,7 @@ if (isset($_POST['PlacePO'])) {
 				$ErrMsg = _('One of the purchase order detail records could not be inserted into the database because');
 				$DbgMsg = _('The SQL statement used to insert the purchase order detail record and failed was');
 
-				$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 				$Order_Value += ($ItemRow['price'] * $ItemRow['orderqty']);
 			}
 			/* end of the loop round the items on the sales order  that we wish to place purchase orders for */
@@ -367,7 +367,7 @@ if (isset($_POST['PlacePO'])) {
 					$StatusComment = date($_SESSION['DefaultDateFormat']) . ' - ' . _('Order Created and Authorised by') . $UserDetails . ' - ' . _('Auto created from sales orders') . '<br />';
 					$ErrMsg = _('Could not update purchase order status to Authorised');
 					$DbgMsg = _('The SQL that failed was');
-					$result = DB_query("UPDATE purchorders SET allowprint=1,
+					$Result = DB_query("UPDATE purchorders SET allowprint=1,
 															status='Authorised',
 															stat_comment='" . $StatusComment . "'
 														  WHERE orderno='" . $PO_OrderNo . "'", $ErrMsg, $DbgMsg, true);
@@ -387,7 +387,7 @@ if (isset($_POST['PlacePO'])) {
 				prnMsg(_('Purchase Order') . ' ' . $PO_OrderNo . ' ' . _('on') . ' ' . $SupplierID . ' ' . _('has been created'), 'success');
 				DB_Txn_Commit();
 			}
-			$result = DB_query("UPDATE salesorders SET poplaced=1 WHERE " . $OrdersToPlacePOFor);
+			$Result = DB_query("UPDATE salesorders SET poplaced=1 WHERE " . $OrdersToPlacePOFor);
 		}
 		/*There were items that had purchasing data set up to create POs for */
 	}
@@ -501,9 +501,9 @@ if (!isset($StockID)) {
 						WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 		}
 
-		$resultStkLocs = DB_query($SQL);
+		$ResultStkLocs = DB_query($SQL);
 
-		while ($MyRow = DB_fetch_array($resultStkLocs)) {
+		while ($MyRow = DB_fetch_array($ResultStkLocs)) {
 			if (isset($_POST['StockLocation'])) {
 				if ($MyRow['loccode'] == $_POST['StockLocation']) {
 					echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
@@ -544,7 +544,7 @@ if (!isset($StockID)) {
 		FROM stockcategory
 		ORDER BY categorydescription";
 
-	$result1 = DB_query($SQL);
+	$Result1 = DB_query($SQL);
 
 	if (!isset($_POST['Keywords'])) {
 		$_POST['Keywords'] = '';
@@ -561,7 +561,7 @@ if (!isset($StockID)) {
 				<td>' . _('Select a stock category') . ':
 					<select minlength="0" name="StockCat">';
 
-	while ($MyRow1 = DB_fetch_array($result1)) {
+	while ($MyRow1 = DB_fetch_array($Result1)) {
 		if (isset($_POST['StockCat']) and $_POST['StockCat'] == $MyRow1['categoryid']) {
 			echo '<option selected="selected" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 		} else {

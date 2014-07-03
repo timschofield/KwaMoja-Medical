@@ -34,8 +34,8 @@ if (isset($_GET['New'])) {
 
 if (!isset($_SESSION['SuppTrans']->SupplierName)) {
 	$SQL = "SELECT suppname FROM suppliers WHERE supplierid='" . $_GET['SupplierID'] . "'";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
 	$SupplierName = $MyRow[0];
 } else {
 	$SupplierName = $_SESSION['SuppTrans']->SupplierName;
@@ -84,9 +84,9 @@ if (isset($_GET['SupplierID']) and $_GET['SupplierID'] != '') {
 	$ErrMsg = _('The supplier record selected') . ': ' . $_GET['SupplierID'] . ' ' . _('cannot be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve the supplier details and failed was');
 
-	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-	$MyRow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($Result);
 
 	$_SESSION['SuppTrans']->SupplierName = $MyRow['suppname'];
 	$_SESSION['SuppTrans']->TermsDescription = $MyRow['terms'];
@@ -780,11 +780,11 @@ if (isset($_POST['PostCreditNote'])) {
 				/*contract postings need to get the WIP from the contract item's stock category record
 				 *  debit postings to this WIP account
 				 * the WIP account is tidied up when the contract is closed*/
-				$result = DB_query("SELECT wipact FROM stockcategory
+				$Result = DB_query("SELECT wipact FROM stockcategory
 									INNER JOIN stockmaster
 									ON stockcategory.categoryid=stockmaster.categoryid
 									WHERE stockmaster.stockid='" . $Contract->ContractRef . "'");
-				$WIPRow = DB_fetch_row($result);
+				$WIPRow = DB_fetch_row($Result);
 				$WIPAccount = $WIPRow[0];
 
 				$SQL = "INSERT INTO gltrans (type,
@@ -950,8 +950,8 @@ if (isset($_POST['PostCreditNote'])) {
 											FROM stockcosts
 											WHERE stockid='" . $EnteredGRN->ItemCode . "'
 												AND succeeded=0";
-								$result = DB_query($SQL);
-								$MyRow = DB_fetch_array($result);
+								$Result = DB_query($SQL);
+								$MyRow = DB_fetch_array($Result);
 								$OldMaterialCost = $MyRow['materialcost'];
 								$OldLabourCost = $MyRow['labourcost'];
 								$OldOverheadCost = $MyRow['overheadcost'];
@@ -1021,11 +1021,11 @@ if (isset($_POST['PostCreditNote'])) {
 							if ($EnteredGRN->AssetID != 0) { //then it is an asset
 
 								/*Need to get the asset details  for posting */
-								$result = DB_query("SELECT costact
+								$Result = DB_query("SELECT costact
 													FROM fixedassets INNER JOIN fixedassetcategories
 													ON fixedassets.assetcategoryid= fixedassetcategories.categoryid
 													WHERE assetid='" . $EnteredGRN->AssetID . "'");
-								$AssetRow = DB_fetch_array($result);
+								$AssetRow = DB_fetch_array($Result);
 								$GLCode = $AssetRow['costact'];
 							} //the item was an asset
 

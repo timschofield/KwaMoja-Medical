@@ -99,9 +99,9 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 				FROM tags
 				ORDER BY tagref";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	echo '<option value="0">0 - ' . _('None') . '</option>';
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['tag']) and $_POST['tag'] == $MyRow['tagref']) {
 			echo '<option selected="selected" value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
 		} else {
@@ -529,8 +529,8 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 
 	$AccountsResult = DB_query($SQL, _('No general ledger accounts were returned by the SQL because'), _('The SQL that failed was'));
 	$SQL = "SELECT tagdescription FROM tags WHERE tagref='" . $_POST['tag'] . "'";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
 
 	/*show a table of the accounts info returned by the SQL
 	Account Code ,   Account Name , Month Actual, Month Budget, Period Actual, Period Budget */

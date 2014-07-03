@@ -8,8 +8,8 @@ include('api/api_errorcodes.php');
 
 $user = $_SESSION['UserID'];
 $SQL = 'SELECT password FROM www_users WHERE userid="' . $user . '"';
-$result = DB_query($SQL);
-$MyRow = DB_fetch_array($result);
+$Result = DB_query($SQL);
+$MyRow = DB_fetch_array($Result);
 $password = $MyRow[0];
 
 $ServerURL = "http://" . $_SERVER['HTTP_HOST'] . $RootPath . "/api/api_xml-rpc.php";

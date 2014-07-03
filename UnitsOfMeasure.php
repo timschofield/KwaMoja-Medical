@@ -36,8 +36,8 @@ if (isset($_POST['Submit'])) {
 		$SQL = "SELECT count(*) FROM unitsofmeasure
 				WHERE unitid <> '" . $SelectedMeasureID . "'
 				AND unitname " . LIKE . " '" . $_POST['MeasureName'] . "'";
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_row($Result);
 		if ($MyRow[0] > 0) {
 			$InputError = 1;
 			prnMsg(_('The unit of measure can not be renamed because another with the same name already exist.'), 'error');
@@ -47,10 +47,10 @@ if (isset($_POST['Submit'])) {
 			// relavant
 			$SQL = "SELECT unitname FROM unitsofmeasure
 				WHERE unitid = '" . $SelectedMeasureID . "'";
-			$result = DB_query($SQL);
-			if (DB_num_rows($result) != 0) {
+			$Result = DB_query($SQL);
+			if (DB_num_rows($Result) != 0) {
 				// This is probably the safest way there is
-				$MyRow = DB_fetch_row($result);
+				$MyRow = DB_fetch_row($Result);
 				$OldMeasureName = $MyRow[0];
 				$SQL = array();
 				$SQL[] = "UPDATE unitsofmeasure
@@ -69,8 +69,8 @@ if (isset($_POST['Submit'])) {
 		/*SelectedMeasureID is null cos no item selected on first time round so must be adding a record*/
 		$SQL = "SELECT count(*) FROM unitsofmeasure
 				WHERE unitname " . LIKE . " '" . $_POST['MeasureName'] . "'";
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_row($Result);
 		if ($MyRow[0] > 0) {
 			$InputError = 1;
 			prnMsg(_('The unit of measure can not be created because another with the same name already exists.'), 'error');
@@ -84,23 +84,23 @@ if (isset($_POST['Submit'])) {
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
 		if (is_array($SQL)) {
-			$result = DB_Txn_Begin();
+			$Result = DB_Txn_Begin();
 			$tmpErr = _('Could not update unit of measure');
 			$tmpDbg = _('The sql that failed was') . ':';
 			foreach ($SQL as $stmt) {
-				$result = DB_query($stmt, $tmpErr, $tmpDbg, true);
-				if (!$result) {
+				$Result = DB_query($stmt, $tmpErr, $tmpDbg, true);
+				if (!$Result) {
 					$InputError = 1;
 					break;
 				}
 			}
 			if ($InputError != 1) {
-				$result = DB_Txn_Commit();
+				$Result = DB_Txn_Commit();
 			} else {
-				$result = DB_Txn_Rollback();
+				$Result = DB_Txn_Rollback();
 			}
 		} else {
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 		}
 		prnMsg($msg, 'success');
 	}
@@ -114,22 +114,22 @@ if (isset($_POST['Submit'])) {
 	// Get the original name of the unit of measure the ID is just a secure way to find the unit of measure
 	$SQL = "SELECT unitname FROM unitsofmeasure
 		WHERE unitid = '" . $SelectedMeasureID . "'";
-	$result = DB_query($SQL);
-	if (DB_num_rows($result) == 0) {
+	$Result = DB_query($SQL);
+	if (DB_num_rows($Result) == 0) {
 		// This is probably the safest way there is
 		prnMsg(_('Cannot delete this unit of measure because it no longer exist'), 'warn');
 	} else {
-		$MyRow = DB_fetch_row($result);
+		$MyRow = DB_fetch_row($Result);
 		$OldMeasureName = $MyRow[0];
 		$SQL = "SELECT COUNT(*) FROM stockmaster WHERE units " . LIKE . " '" . DB_escape_string($OldMeasureName) . "'";
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_row($Result);
 		if ($MyRow[0] > 0) {
 			prnMsg(_('Cannot delete this unit of measure because inventory items have been created using this unit of measure'), 'warn');
 			echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('inventory items that refer to this unit of measure') . '</font>';
 		} else {
 			$SQL = "DELETE FROM unitsofmeasure WHERE unitname " . LIKE . "'" . DB_escape_string($OldMeasureName) . "'";
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 			prnMsg($OldMeasureName . ' ' . _('unit of measure has been deleted') . '!', 'success');
 		}
 	} //end if account group used in GL accounts
@@ -157,7 +157,7 @@ if (!isset($SelectedMeasureID)) {
 			ORDER BY unitid";
 
 	$ErrMsg = _('Could not get unit of measures because');
-	$result = DB_query($SQL, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
 	echo '<table class="selection">
 			<tr>
@@ -165,7 +165,7 @@ if (!isset($SelectedMeasureID)) {
 			</tr>';
 
 	$k = 0; //row colour counter
-	while ($MyRow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($Result)) {
 
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -204,12 +204,12 @@ if (!isset($_GET['delete'])) {
 				FROM unitsofmeasure
 				WHERE unitid='" . $SelectedMeasureID . "'";
 
-		$result = DB_query($SQL);
-		if (DB_num_rows($result) == 0) {
+		$Result = DB_query($SQL);
+		if (DB_num_rows($Result) == 0) {
 			prnMsg(_('Could not retrieve the requested unit of measure, please try again.'), 'warn');
 			unset($SelectedMeasureID);
 		} else {
-			$MyRow = DB_fetch_array($result);
+			$MyRow = DB_fetch_array($Result);
 
 			$_POST['MeasureID'] = $MyRow['unitid'];
 			$_POST['MeasureName'] = $MyRow['unitname'];

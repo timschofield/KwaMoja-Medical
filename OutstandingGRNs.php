@@ -10,8 +10,8 @@ if (isset($_POST['FromCriteria']) and mb_strlen($_POST['FromCriteria']) >= 1 and
 					max(supplierid) AS tocriteria
 				FROM suppliers";
 
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 
 	if ($_POST['FromCriteria']=='') {
 		$_POST['FromCriteria'] = $MyRow['fromcriteria'];
@@ -233,8 +233,8 @@ if (isset($_POST['PrintPDF']) and DB_num_rows($GRNsResult) > 0) {
 					max(supplierid) AS tocriteria
 				FROM suppliers";
 
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 
 	$Title = _('Outstanding GRNs Report');
 	include('includes/header.inc');

@@ -50,8 +50,8 @@ if (!isset($_POST['FromDate'])) {
 			</td>
 		</tr>';
 
-	$result = DB_query($SQL);
-	$resultStkLocs = DB_query($SQL);
+	$Result = DB_query($SQL);
+	$ResultStkLocs = DB_query($SQL);
 
 	echo '<tr>
 			<td>' . _('For Stock Location') . ':</td>
@@ -70,7 +70,7 @@ if (!isset($_POST['FromDate'])) {
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
 
-	while ($MyRow = DB_fetch_array($resultStkLocs)) {
+	while ($MyRow = DB_fetch_array($ResultStkLocs)) {
 		if (isset($_POST['StockLocation']) and $_POST['StockLocation'] != 'All') {
 			if ($MyRow['loccode'] == $_POST['StockLocation']) {
 				echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
@@ -140,7 +140,7 @@ if ($_POST['StockLocation'] == 'All') {
 			AND date_format(trandate, '%Y-%m-%d')<='" . FormatDateForSQL($_POST['ToDate']) . "'
 			AND stockmoves.loccode='" . $_POST['StockLocation'] . "'";
 }
-$result = DB_query($SQL, '', '', false, false);
+$Result = DB_query($SQL, '', '', false, false);
 
 if (DB_error_no() != 0) {
 	$Title = _('Transaction Listing');
@@ -148,7 +148,7 @@ if (DB_error_no() != 0) {
 	prnMsg(_('An error occurred getting the transactions'), 'error');
 	include('includes/footer.inc');
 	exit;
-} elseif (DB_num_rows($result) == 0) {
+} elseif (DB_num_rows($Result) == 0) {
 	$Title = _('Transaction Listing');
 	include('includes/header.inc');
 	echo '<br />';
@@ -193,7 +193,7 @@ switch ($_POST['TransType']) {
 
 include('includes/PDFPeriodStockTransListingPageHeader.inc');
 
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 
 	$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 160, $FontSize, $MyRow['description'], 'left');
 	$LeftOvers = $pdf->addTextWrap($Left_Margin + 162, $YPos, 80, $FontSize, $MyRow['transno'], 'left');

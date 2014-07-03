@@ -58,7 +58,7 @@ if (isset($_POST['submit'])) {
 
 	//run the SQL from either of the above possibilites
 	if ($InputError != 1) {
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 		echo '<br />';
 		prnMsg($msg, 'success');
 		unset($SelectedShipper);
@@ -72,8 +72,8 @@ if (isset($_POST['submit'])) {
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'SalesOrders'
 
 	$SQL = "SELECT COUNT(*) FROM salesorders WHERE salesorders.shipvia='" . $SelectedShipper . "'";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
 	if ($MyRow[0] > 0) {
 		$CancelDelete = 1;
 		echo '<br />';
@@ -83,8 +83,8 @@ if (isset($_POST['submit'])) {
 		// PREVENT DELETES IF DEPENDENT RECORDS IN 'DebtorTrans'
 
 		$SQL = "SELECT COUNT(*) FROM debtortrans WHERE debtortrans.shipvia='" . $SelectedShipper . "'";
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_row($Result);
 		if ($MyRow[0] > 0) {
 			$CancelDelete = 1;
 			echo '<br />';
@@ -100,7 +100,7 @@ if (isset($_POST['submit'])) {
 			} else {
 
 				$SQL = "DELETE FROM shippers WHERE shipper_id='" . $SelectedShipper . "'";
-				$result = DB_query($SQL);
+				$Result = DB_query($SQL);
 				echo '<br />';
 				prnMsg(_('The shipper record has been deleted'), 'success');
 			}
@@ -120,7 +120,7 @@ if (!isset($SelectedShipper)) {
 			<img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
 
 	$SQL = "SELECT * FROM shippers ORDER BY shipper_id";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '<table class="selection">
 			<tr>
@@ -130,7 +130,7 @@ if (!isset($SelectedShipper)) {
 
 	$k = 0; //row colour counter
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -165,8 +165,8 @@ if (!isset($_GET['delete'])) {
 
 		$SQL = "SELECT shipper_id, shippername FROM shippers WHERE shipper_id='" . $SelectedShipper . "'";
 
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
 
 		$_POST['Shipper_ID'] = $MyRow['shipper_id'];
 		$_POST['ShipperName'] = $MyRow['shippername'];

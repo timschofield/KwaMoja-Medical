@@ -18,7 +18,7 @@ foreach ($_POST as $AssetToMove => $Value) { //Value is not used?
 						SET assetlocation='" . $_POST['Location' . $AssetID] . "'
 						WHERE assetid='" . $AssetID . "'";
 
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 			prnMsg(_('The Fixed Asset has been moved successfully'), 'success');
 			echo '<br />';
 		}
@@ -31,7 +31,7 @@ if (isset($_GET['AssetID'])) {
 	$AssetID = $_POST['AssetID'];
 } else {
 	$SQL = "SELECT categoryid, categorydescription FROM fixedassetcategories";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -44,7 +44,7 @@ if (isset($_GET['AssetID'])) {
 		$_POST['AssetCat'] = '';
 	}
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($MyRow['categoryid'] == $_POST['AssetCat']) {
 			echo '<option selected="selected" value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 		} else {
@@ -75,9 +75,9 @@ if (isset($_GET['AssetID'])) {
 	} else {
 		echo '<option value="ALL">' . _('Any asset location') . '</option>';
 	}
-	$result = DB_query("SELECT locationid, locationdescription FROM fixedassetlocations");
+	$Result = DB_query("SELECT locationid, locationdescription FROM fixedassetlocations");
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($MyRow['locationid'] == $_POST['AssetLocation']) {
 			echo '<option selected="selected" value="' . $MyRow['locationid'] . '">' . $MyRow['locationdescription'] . '</option>';
 		} else {

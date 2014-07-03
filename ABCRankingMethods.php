@@ -15,7 +15,7 @@ if (isset($_GET['Delete'])) {
 	$CheckResult = DB_query($CheckSQL);
 	if (DB_num_rows($CheckResult) == 0) {
 		$SQL = "DELETE FROM abcmethods WHERE methodid='" . $_GET['SelectedMethodID'] . "'";
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 		prnMsg(_('ABC Ranking method number') . ' ' . $_GET['SelectedMethodID'] . ' ' . _('has been deleted'), 'success');
 		echo '<div class="centre">
 				<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('View all the ranking methods') . '</a>
@@ -51,7 +51,7 @@ if (isset($_POST['Submit'])) {
 	$SQL = "SELECT methodid,
 					methodname
 				FROM abcmethods";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	echo '<table class="selection" summary="' . _('List of ABC Ranking Methods') . '">
 			<tr>
 				<th colspan="10">
@@ -65,7 +65,7 @@ if (isset($_POST['Submit'])) {
 				<th>' . _('Method name') . '</th>
 			</tr>';
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		echo '<tr class="OddTableRows">
 				<td>' . $MyRow['methodid'] . '</td>
 				<td>' . $MyRow['methodname'] . '</td>
@@ -83,8 +83,8 @@ if (isset($_POST['Submit'])) {
 							methodname
 						FROM abcmethods
 						WHERE methodid='" . $_GET['SelectedMethodID'] . "'";
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
 		echo '<input type="hidden" name="Mode" value="Edit" />';
 		$IDInput = '<input type="hidden" name="MethodID" value="' . $MyRow['methodid'] . '" />' . $MyRow['methodid'];
 		$Description = $MyRow['methodname'];

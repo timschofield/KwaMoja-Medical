@@ -9,9 +9,9 @@ include('includes/MainMenuLinksArray.php');
 
 $SQL = "SELECT scripts FROM dashboard_users WHERE userid = '".$_SESSION['UserID']."' ";
 
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 
-$MyRow = DB_fetch_array($result);
+$MyRow = DB_fetch_array($Result);
 $arr = explode(',',$MyRow["scripts"]);
 
 $UserSQL = "SELECT scripts FROM dashboard_users WHERE userid = '".$_SESSION['UserID']."' ";
@@ -42,15 +42,15 @@ $SQL = "SELECT id,
 				description
 			FROM dashboard_scripts";
 
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 
-while($MyRow = DB_fetch_array($result)) {
+while($MyRow = DB_fetch_array($Result)) {
 	if (in_array($MyRow['id'], $arr) and in_array($MyRow['pagesecurity'], $_SESSION['AllowedPageSecurityTokens'])) {
 		echo '<iframe src="dashboard/' . $MyRow['scripts'] . '"></iframe>';
 	}
 }
 
-DB_data_seek($result, 0);
+DB_data_seek($Result, 0);
 
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -59,7 +59,7 @@ echo '<div style="width:100%;font-size:120%;color:#2F4F4F;">' .
 		_('Add reports to your dashboard') . '&nbsp;&nbsp;&nbsp;
 		<select name="Reports" style="font-size:100%;margin-top:10px;margin-bottom:0px;color:#2F4F4F;" id="favourites" onchange="ReloadForm(submit)">';
 echo '<option value=""></option>';
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	if (!in_array($MyRow['id'], $arr) and in_array($MyRow['pagesecurity'], $_SESSION['AllowedPageSecurityTokens'])) {
 		echo '<option value="' . $MyRow['id'] . '">' . $MyRow['description'] . '</option>';
 	}

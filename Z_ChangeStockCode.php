@@ -22,8 +22,8 @@ if (isset($_POST['ProcessStockChange'])) {
 	$_POST['NewStockID'] = mb_strtoupper($_POST['NewStockID']);
 
 	/*First check the stock code exists */
-	$result = DB_query("SELECT stockid FROM stockmaster WHERE stockid='" . $_POST['OldStockID'] . "'");
-	if (DB_num_rows($result) == 0) {
+	$Result = DB_query("SELECT stockid FROM stockmaster WHERE stockid='" . $_POST['OldStockID'] . "'");
+	if (DB_num_rows($Result) == 0) {
 		prnMsg(_('The stock code') . ': ' . $_POST['OldStockID'] . ' ' . _('does not currently exist as a stock code in the system'), 'error');
 		$InputError = 1;
 	}
@@ -40,8 +40,8 @@ if (isset($_POST['ProcessStockChange'])) {
 
 
 	/*Now check that the new code doesn't already exist */
-	$result = DB_query("SELECT stockid FROM stockmaster WHERE stockid='" . $_POST['NewStockID'] . "'");
-	if (DB_num_rows($result) != 0) {
+	$Result = DB_query("SELECT stockid FROM stockmaster WHERE stockid='" . $_POST['NewStockID'] . "'");
+	if (DB_num_rows($Result) != 0) {
 		echo '<br /><br />';
 		prnMsg(_('The replacement stock code') . ': ' . $_POST['NewStockID'] . ' ' . _('already exists as a stock code in the system') . ' - ' . _('a unique stock code must be entered for the new code'), 'error');
 		$InputError = 1;
@@ -50,7 +50,7 @@ if (isset($_POST['ProcessStockChange'])) {
 
 	if ($InputError == 0) { // no input errors
 		DB_IgnoreForeignKeys();
-		$result = DB_Txn_Begin();
+		$Result = DB_Txn_Begin();
 		echo '<br />' . _('Adding the new stock master record');
 		$SQL = "INSERT INTO stockmaster (stockid,
 										categoryid,
@@ -103,7 +103,7 @@ if (isset($_POST['ProcessStockChange'])) {
 
 		$DbgMsg = _('The SQL statement that failed was');
 		$ErrMsg = _('The SQL to insert the new stock master record failed');
-		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		echo ' ... ' . _('completed');
 		echo '<br />' . _('Copying over the costs');
 		$SQL = "INSERT INTO stockcosts SELECT '" . $_POST['NewStockID'] . "',
@@ -117,7 +117,7 @@ if (isset($_POST['ProcessStockChange'])) {
 
 		$DbgMsg = _('The SQL statement that failed was');
 		$ErrMsg = _('The SQL to insert the new stock costs record failed');
-		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		echo ' ... ' . _('completed');
 
 		ChangeFieldInTable("locstock", "stockid", $_POST['OldStockID'], $_POST['NewStockID']);
@@ -128,18 +128,18 @@ if (isset($_POST['ProcessStockChange'])) {
 		//check if MRP tables exist before assuming
 
 		$SQL = "SELECT * FROM mrpparameters";
-		$result = DB_query($SQL, '', '', false, false);
+		$Result = DB_query($SQL, '', '', false, false);
 		if (DB_error_no() == 0) {
-			$result = DB_query("SELECT COUNT(*) FROM mrpplannedorders", '', '', false, false);
+			$Result = DB_query("SELECT COUNT(*) FROM mrpplannedorders", '', '', false, false);
 			if (DB_error_no() == 0) {
 				ChangeFieldInTable("mrpplannedorders", "part", $_POST['OldStockID'], $_POST['NewStockID']);
 			}
 
-			$result = DB_query("SELECT * FROM mrprequirements", '', '', false, false);
+			$Result = DB_query("SELECT * FROM mrprequirements", '', '', false, false);
 			if (DB_error_no() == 0) {
 				ChangeFieldInTable("mrprequirements", "part", $_POST['OldStockID'], $_POST['NewStockID']);
 			}
-			$result = DB_query("SELECT * FROM mrpsupplies", '', '', false, false);
+			$Result = DB_query("SELECT * FROM mrpsupplies", '', '', false, false);
 			if (DB_error_no() == 0) {
 				ChangeFieldInTable("mrpsupplies", "part", $_POST['OldStockID'], $_POST['NewStockID']);
 			}
@@ -184,12 +184,12 @@ if (isset($_POST['ProcessStockChange'])) {
 
 		DB_ReinstateForeignKeys();
 
-		$result = DB_Txn_Commit();
+		$Result = DB_Txn_Commit();
 
 		echo '<br />' . _('Deleting the old stock master record');
 		$SQL = "DELETE FROM stockmaster WHERE stockid='" . $_POST['OldStockID'] . "'";
 		$ErrMsg = _('The SQL to delete the old stock master record failed');
-		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		echo ' ... ' . _('completed');
 
 

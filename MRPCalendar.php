@@ -72,7 +72,7 @@ function submit(&$ChangeDate) {
 	}
 
 	$SQL = "DROP TABLE IF EXISTS mrpcalendar";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	$SQL = "CREATE TABLE mrpcalendar (
 				calendardate date NOT NULL,
@@ -81,7 +81,7 @@ function submit(&$ChangeDate) {
 				INDEX (daynumber),
 				PRIMARY KEY (calendardate)) DEFAULT CHARSET=utf8";
 	$ErrMsg = _('The SQL to create passbom failed with the message');
-	$result = DB_query($SQL, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
 	$i = 0;
 
@@ -127,7 +127,7 @@ function submit(&$ChangeDate) {
 				 VALUES ('" . $DateAdd . "',
 						'1',
 						'" . $ManuFlag . "')";
-		$result = DB_query($SQL, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 	}
 
 	// Update daynumber. Set it so non-manufacturing days will have the same daynumber as a valid
@@ -136,15 +136,15 @@ function submit(&$ChangeDate) {
 	$DayNumber = 1;
 	$SQL = "SELECT * FROM mrpcalendar
 			ORDER BY calendardate";
-	$result = DB_query($SQL, $ErrMsg);
-	while ($MyRow = DB_fetch_array($result)) {
+	$Result = DB_query($SQL, $ErrMsg);
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($MyRow['manufacturingflag'] == "1") {
 			$DayNumber++;
 		}
 		$CalDate = $MyRow['calendardate'];
 		$SQL = "UPDATE mrpcalendar SET daynumber = '" . $DayNumber . "'
 					WHERE calendardate = '" . $CalDate . "'";
-		$resultupdate = DB_query($SQL, $ErrMsg);
+		$Resultupdate = DB_query($SQL, $ErrMsg);
 	}
 	prnMsg(_('The MRP Calendar has been created'), 'success');
 	ShowInputForm($ChangeDate);
@@ -161,8 +161,8 @@ function update(&$ChangeDate) {
 	$SQL = "SELECT COUNT(*) FROM mrpcalendar
 		  WHERE calendardate='$CalDate'
 		  GROUP BY calendardate";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
 	if ($MyRow[0] < 1 or !Is_Date($ChangeDate)) {
 		$InputError = 1;
 		prnMsg(_('Invalid Change Date'), 'error');
@@ -174,8 +174,8 @@ function update(&$ChangeDate) {
 	}
 
 	$SQL = "SELECT mrpcalendar.* FROM mrpcalendar WHERE calendardate='$CalDate'";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
 	$newmanufacturingflag = 0;
 	if ($MyRow[2] == 0) {
 		$newmanufacturingflag = 1;
@@ -183,7 +183,7 @@ function update(&$ChangeDate) {
 	$SQL = "UPDATE mrpcalendar SET manufacturingflag = '" . $newmanufacturingflag . "'
 			WHERE calendardate = '" . $CalDate . "'";
 	$ErrMsg = _('Cannot update the MRP Calendar');
-	$resultupdate = DB_query($SQL, $ErrMsg);
+	$Resultupdate = DB_query($SQL, $ErrMsg);
 	prnMsg(_('The MRP calendar record for') . ' ' . $ChangeDate . ' ' . _('has been updated'), 'success');
 	unset($ChangeDate);
 	ShowInputForm($ChangeDate);
@@ -194,15 +194,15 @@ function update(&$ChangeDate) {
 	// subtract the leadtime from the daynumber, and find the valid manufacturing day with that daynumber.
 	$DayNumber = 1;
 	$SQL = "SELECT * FROM mrpcalendar ORDER BY calendardate";
-	$result = DB_query($SQL, $ErrMsg);
-	while ($MyRow = DB_fetch_array($result)) {
+	$Result = DB_query($SQL, $ErrMsg);
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($MyRow['manufacturingflag'] == '1') {
 			$DayNumber++;
 		}
 		$CalDate = $MyRow['calendardate'];
 		$SQL = "UPDATE mrpcalendar SET daynumber = '" . $DayNumber . "'
 					WHERE calendardate = '" . $CalDate . "'";
-		$resultupdate = DB_query($SQL, $ErrMsg);
+		$Resultupdate = DB_query($SQL, $ErrMsg);
 	} // End of while
 
 } // End of function update()
@@ -222,7 +222,7 @@ function ShowDays() { //####LISTALL_LISTALL_LISTALL_LISTALL_LISTALL_LISTALL_LIST
 			AND calendardate <='" . $ToDate . "'";
 
 	$ErrMsg = _('The SQL to find the parts selected failed with the message');
-	$result = DB_query($SQL, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
 	echo '<br />
 		<table class="selection">
@@ -231,7 +231,7 @@ function ShowDays() { //####LISTALL_LISTALL_LISTALL_LISTALL_LISTALL_LISTALL_LIST
 			<th>' . _('Manufacturing Date') . '</th>
 		</tr>';
 	$ctr = 0;
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		$flag = _('Yes');
 		if ($MyRow['manufacturingflag'] == 0) {
 			$flag = _('No');

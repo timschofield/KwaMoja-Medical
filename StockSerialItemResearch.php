@@ -104,9 +104,9 @@ if ($SerialNo != '') {
 						AND www_users.userid='" . $_SESSION['UserID'] . "'
 					ORDER BY stkmoveno";
 	}
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
-	if (DB_num_rows($result) == 0) {
+	if (DB_num_rows($Result) == 0) {
 		prnMsg(_('No History found for Serial Number') . ': <b>' . $SerialNo . '</b>', 'warn');
 	} else {
 		echo '<h4>' . _('Details for Serial Item') . ': <b>' . $SerialNo . '</b><br />' . _('Length') . '=' . mb_strlen($SerialNo) . '</h4>';
@@ -124,7 +124,7 @@ if ($SerialNo != '') {
 				<th>' . _('Move Ref') . '</th>
 				<th>' . _('Total Move Qty') . '</th>
 			</tr>';
-		while ($MyRow = DB_fetch_row($result)) {
+		while ($MyRow = DB_fetch_row($Result)) {
 			printf('<tr>
 					<td>%s<br />%s</td>
 					<td class="number">%s</td>

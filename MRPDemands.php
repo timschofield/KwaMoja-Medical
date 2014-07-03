@@ -76,12 +76,12 @@ function search(&$StockID) { //####SEARCH_SEARCH_SEARCH_SEARCH_SEARCH_SEARCH_SEA
 		}
 
 		$ErrMsg = _('The SQL to find the parts selected failed with the message');
-		$result = DB_query($SQL, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 
 	} //one of keywords or StockCode was more than a zero length string
 
 	// If the SELECT found records, display them
-	if (DB_num_rows($result) > 0) {
+	if (DB_num_rows($Result) > 0) {
 		echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 		echo '<div>';
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -93,7 +93,7 @@ function search(&$StockID) { //####SEARCH_SEARCH_SEARCH_SEARCH_SEARCH_SEARCH_SEA
 
 		$k = 0; //row colour counter
 		$j = 0;
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;
@@ -150,9 +150,9 @@ function submit(&$StockID, &$DemandID) //####SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_
 	}
 	$SQL = "SELECT * FROM mrpdemandtypes
 			WHERE mrpdemandtype='" . $_POST['MRPDemandtype'] . "'";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
-	if (DB_num_rows($result) == 0) {
+	if (DB_num_rows($Result) == 0) {
 		$InputError = 1;
 		prnMsg(_('Invalid demand type'), 'error');
 	}
@@ -160,9 +160,9 @@ function submit(&$StockID, &$DemandID) //####SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_
 	// even if there was no record.
 	$SQL = "SELECT * FROM stockmaster
 			WHERE stockid='" . $StockID . "'";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
-	if (DB_num_rows($result) == 0) {
+	if (DB_num_rows($Result) == 0) {
 		$InputError = 1;
 		prnMsg($StockID . ' ' . _('is not a valid item code'), 'error');
 		unset($_POST['StockID']);
@@ -174,9 +174,9 @@ function submit(&$StockID, &$DemandID) //####SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_
 			AND mrpdemandtype='" . $_POST['MRPDemandtype'] . "'
 			AND duedate='" . $FormatedDuedate . "'
 			AND demandid <> '" . $DemandID . "'";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
-	if (DB_num_rows($result) > 0) {
+	if (DB_num_rows($Result) > 0) {
 		$InputError = 1;
 		prnMsg(_('Record already exists for part number/demand type/date'), 'error');
 	}
@@ -185,8 +185,8 @@ function submit(&$StockID, &$DemandID) //####SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_
 		$SQL = "SELECT COUNT(*) FROM mrpdemands
 				   WHERE demandid='" . $DemandID . "'
 				   GROUP BY demandid";
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_row($Result);
 
 		if ($MyRow[0] > 0) {
 			//If $MyRow[0] > 0, it means this is an edit, so do an update
@@ -211,7 +211,7 @@ function submit(&$StockID, &$DemandID) //####SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_
 		}
 
 
-		$result = DB_query($SQL, _('The update/addition of the MRP demand record failed because'));
+		$Result = DB_query($SQL, _('The update/addition of the MRP demand record failed because'));
 		prnMsg($msg, 'success');
 		echo '<br />';
 		unset($_POST['MRPDemandtype']);
@@ -243,7 +243,7 @@ function delete($DemandID, $DemandType, $StockID) { //####DELETE_DELETE_DELETE_D
 	}
 	$SQL = "DELETE FROM mrpdemands
 		   $where";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	if ($DemandID) {
 		prnMsg(_('The MRP demand record for') . ' ' . $StockID . ' ' . _('has been deleted'), 'succes');
 	} else {
@@ -284,7 +284,7 @@ function listall($part, $DemandType) { //####LISTALL_LISTALL_LISTALL_LISTALL_LIS
 			LEFT JOIN stockmaster on mrpdemands.stockid = stockmaster.stockid" . $where . " ORDER BY mrpdemands.stockid, mrpdemands.duedate";
 
 	$ErrMsg = _('The SQL to find the parts selected failed with the message');
-	$result = DB_query($SQL, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
 	echo '<table class="selection">
 		<tr>
@@ -295,7 +295,7 @@ function listall($part, $DemandType) { //####LISTALL_LISTALL_LISTALL_LISTALL_LIS
 			<th>' . _('Due Date') . '</th>
 			</tr>';
 	$ctr = 0;
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		$displaydate = ConvertSQLDate($MyRow[4]);
 		$ctr++;
 		echo '<tr><td>' . $MyRow['stockid'] . '</td>
@@ -349,10 +349,10 @@ function display(&$StockID, &$DemandID) { //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_
 					duedate
 				FROM mrpdemands
 				WHERE demandid='" . $DemandID . "'";
-			$result = DB_query($SQL);
-			$MyRow = DB_fetch_array($result);
+			$Result = DB_query($SQL);
+			$MyRow = DB_fetch_array($Result);
 
-			if (DB_num_rows($result) > 0) {
+			if (DB_num_rows($Result) > 0) {
 				$_POST['DemandID'] = $MyRow['demandid'];
 				$_POST['StockID'] = $MyRow['stockid'];
 				$_POST['MRPDemandtype'] = $MyRow['mrpdemandtype'];
@@ -403,8 +403,8 @@ function display(&$StockID, &$DemandID) { //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_
 		$SQL = "SELECT mrpdemandtype,
 						description
 				FROM mrpdemandtypes";
-		$result = DB_query($SQL);
-		while ($MyRow = DB_fetch_array($result)) {
+		$Result = DB_query($SQL);
+		while ($MyRow = DB_fetch_array($Result)) {
 			if (isset($_POST['MRPDemandtype']) and $MyRow['mrpdemandtype'] == $_POST['MRPDemandtype']) {
 				echo '<option selected="selected" value="';
 			} else {
@@ -421,7 +421,7 @@ function display(&$StockID, &$DemandID) { //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_
 				<input type="submit" name="listsome" value="' . _('List Selection') . '" />&nbsp;&nbsp;
 				<input type="submit" name="deletesome" value="' . _('Delete Demand Type') . '" />';
 		// If mrpdemand record exists, display option to delete it
-		if ((isset($DemandID)) and (DB_num_rows($result) > 0)) {
+		if ((isset($DemandID)) and (DB_num_rows($Result) > 0)) {
 			echo '<br/><br/><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?delete=yes&amp;StockID=' . $StockID . '&amp;DemandID=' . $DemandID . '" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this demand?') . '\', \'Confirm Delete\', this);">' . _('Or Delete Record') . '</a>';
 		}
 		echo '</div>';

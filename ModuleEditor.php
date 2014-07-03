@@ -14,7 +14,7 @@ if (isset($_POST['Save'])) {
 			$SQL = "UPDATE modules SET sequence='" . $Value . "'
 									WHERE reportlink='" . $ReportLink . "'
 										AND secroleid='" . $_POST['SecurityRole'] . "'";
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 		}
 	}
 }
@@ -23,7 +23,7 @@ if (!isset($_POST['SecurityRole'])) {
 	$SQL = "SELECT secroleid,
 					secrolename
 				FROM securityroles";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p><br />';
 
@@ -33,7 +33,7 @@ if (!isset($_POST['SecurityRole'])) {
 			<select name="SecurityRole" required="required">
 				<option value=""></option>';
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		echo '<option value="' . $MyRow['secroleid'] . '">' . $MyRow['secrolename'] . '</option>';
 	}
 
@@ -60,7 +60,7 @@ if (!isset($_POST['SecurityRole'])) {
 				FROM modules
 				WHERE secroleid='" . $_POST['SecurityRole'] . "'
 				ORDER BY sequence";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '<table class="selection">
 			<tr>
@@ -68,7 +68,7 @@ if (!isset($_POST['SecurityRole'])) {
 				<th>' . _('Sequence') . '</th>
 			</tr>';
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		echo '<tr>
 				<td>' . $MyRow['modulename'] . '</td>
 				<td><input type="text" required="required" minlength="1" maxlength="5" size="5" class="number" name="Sequence' . $MyRow['reportlink'] . '" value="' . $MyRow['sequence'] . '" /></td>

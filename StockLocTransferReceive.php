@@ -364,7 +364,7 @@ if (isset($_POST['ProcessTransfer'])) {
 						$mail = new htmlMimeMail();
 						$mail->setSubject($EmailSubject);
 						$mail->setText($ConfirmationText);
-						$result = SendmailBySmtp($mail, array(
+						$Result = SendmailBySmtp($mail, array(
 							$_SESSION['InventoryManagerEmail']
 						));
 					}
@@ -413,15 +413,15 @@ if (isset($_GET['Trf_ID'])) {
 
 	$ErrMsg = _('The details of transfer number') . ' ' . $_GET['Trf_ID'] . ' ' . _('could not be retrieved because') . ' ';
 	$DbgMsg = _('The SQL to retrieve the transfer was');
-	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-	if (DB_num_rows($result) == 0) {
+	if (DB_num_rows($Result) == 0) {
 		echo '<h3>' . _('Transfer') . ' #' . $_GET['Trf_ID'] . ' ' . _('Does Not Exist') . '</h3><br />';
 		include('includes/footer.inc');
 		exit;
 	}
 
-	$MyRow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($Result);
 
 	$_SESSION['Transfer' . $identifier] = new StockTransfer($_GET['Trf_ID'], $MyRow['shiploc'], $MyRow['shiplocationname'], $MyRow['recloc'], $MyRow['reclocationname'], Date($_SESSION['DefaultDateFormat']));
 	/*Populate the StockTransfer TransferItem s array with the lines to be transferred */
@@ -434,7 +434,7 @@ if (isset($_GET['Trf_ID'])) {
 		$i++;
 		/*numerical index for the TransferItem[] array of LineItem s */
 
-	} while ($MyRow = DB_fetch_array($result));
+	} while ($MyRow = DB_fetch_array($Result));
 
 }
 /* $_GET['Trf_ID'] is set */

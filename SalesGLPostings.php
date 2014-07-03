@@ -42,8 +42,8 @@ if (isset($_POST['submit'])) {
 				AND stkcat='" . $_POST['StkCat'] . "'
 				AND salestype='" . $_POST['SalesType'] . "'";
 
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_row($Result);
 		if ($MyRow[0] == 0) {
 			$SQL = "INSERT INTO salesglpostings (
 						salesglcode,
@@ -66,7 +66,7 @@ if (isset($_POST['submit'])) {
 	}
 	//run the SQL from either of the above possibilites
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	if ($InputError == false) {
 		prnMsg($msg, 'success');
@@ -83,7 +83,7 @@ if (isset($_POST['submit'])) {
 
 	$SQL = "DELETE FROM salesglpostings WHERE id='" . $SelectedSalesPostingID . "'";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	prnMsg(_('Sales posting record has been deleted'), 'success');
 }
@@ -105,8 +105,8 @@ if (!isset($SelectedSalesPostingID)) {
 						salesglpostings.stkcat,
 						salesglpostings.salestype";
 
-	$result = DB_query($SQL);
-	if (DB_num_rows($result) > 0) {
+	$Result = DB_query($SQL);
+	if (DB_num_rows($Result) > 0) {
 		$ShowLivePostingRecords = false;
 		prnMsg(_('The following posting records that do not have valid general ledger code specified - these records must be amended.'), 'error');
 		echo '<table class="selection">';
@@ -119,7 +119,7 @@ if (!isset($SelectedSalesPostingID)) {
 			</tr>';
 		$k = 0; //row colour counter
 
-		while ($MyRow = DB_fetch_row($result)) {
+		while ($MyRow = DB_fetch_row($Result)) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;
@@ -145,14 +145,14 @@ if (!isset($SelectedSalesPostingID)) {
 			salesglpostings.salestype
 			FROM salesglpostings";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
-	if (DB_num_rows($result) == 0) {
+	if (DB_num_rows($Result) == 0) {
 		/* there is no default set up so need to check that account 1 is not already used */
 		/* First Check if we have at least a group_ caled Sales */
 		$SQL = "SELECT groupname FROM accountgroups WHERE groupname = 'Sales'";
-		$result = DB_query($SQL);
-		if (DB_num_rows($result) == 0) {
+		$Result = DB_query($SQL);
+		if (DB_num_rows($Result) == 0) {
 			/* The required group does not seem to exist so we create it */
 			$SQL = "INSERT INTO accountgroups (
 					groupname,
@@ -165,11 +165,11 @@ if (!isset($SelectedSalesPostingID)) {
 					1,
 					10)";
 
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 		}
 		$SQL = "SELECT accountcode FROM chartmaster WHERE accountcode ='1'";
-		$result = DB_query($SQL);
-		if (DB_num_rows($result) == 0) {
+		$Result = DB_query($SQL);
+		if (DB_num_rows($Result) == 0) {
 			/* account number 1 is not used, so insert a new account */
 			$SQL = "INSERT INTO chartmaster (
 						accountcode,
@@ -180,7 +180,7 @@ if (!isset($SelectedSalesPostingID)) {
 						'Default Sales/Discounts',
 						'Sales'
 						)";
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 		}
 
 		$SQL = "INSERT INTO salesglpostings (
@@ -194,7 +194,7 @@ if (!isset($SelectedSalesPostingID)) {
 					'AN',
 					1,
 					1)";
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 
 	}
 	if ($ShowLivePostingRecords) {
@@ -214,7 +214,7 @@ if (!isset($SelectedSalesPostingID)) {
 					salesglpostings.stkcat,
 					salesglpostings.salestype";
 
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 
 		echo '<table class="selection">
 			<tr>
@@ -227,7 +227,7 @@ if (!isset($SelectedSalesPostingID)) {
 
 		$k = 0; //row colour counter
 
-		while ($MyRow = DB_fetch_row($result)) {
+		while ($MyRow = DB_fetch_row($Result)) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;
@@ -273,15 +273,15 @@ if (!isset($_GET['delete'])) {
 			FROM salesglpostings
 			WHERE salesglpostings.id='" . $SelectedSalesPostingID . "'";
 
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
 
 		$_POST['SalesGLCode'] = $MyRow['salesglcode'];
 		$_POST['DiscountGLCode'] = $MyRow['discountglcode'];
 		$_POST['Area'] = $MyRow['area'];
 		$_POST['StkCat'] = $MyRow['stkcat'];
 		$_POST['SalesType'] = $MyRow['salestype'];
-		DB_free_result($result);
+		DB_free_result($Result);
 
 		echo '<input type="hidden" name="SelectedSalesPostingID" value="' . $SelectedSalesPostingID . '" />';
 
@@ -290,7 +290,7 @@ if (!isset($_GET['delete'])) {
 
 	$SQL = "SELECT areacode,
 			areadescription FROM areas";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '<br /><table class="selection">
 		<tr>
@@ -299,7 +299,7 @@ if (!isset($_GET['delete'])) {
 				<select required="required" minlength="1" name="Area">
 					<option value="AN">' . _('Any Other') . '</option>';
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['Area']) and $MyRow['areacode'] == $_POST['Area']) {
 			echo '<option selected="selected" value="';
 		} else {
@@ -309,10 +309,10 @@ if (!isset($_GET['delete'])) {
 
 	} //end while loop
 
-	DB_free_result($result);
+	DB_free_result($Result);
 
 	$SQL = "SELECT categoryid, categorydescription FROM stockcategory";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '</select></td></tr>';
 
@@ -323,7 +323,7 @@ if (!isset($_GET['delete'])) {
 				<select required="required" minlength="1" name="StkCat">
 					<option value="ANY">' . _('Any Other') . '</option>';
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 
 		if (isset($_POST['StkCat']) and $MyRow['categoryid'] == $_POST['StkCat']) {
 			echo '<option selected="selected" value="';
@@ -337,12 +337,12 @@ if (!isset($_GET['delete'])) {
 	echo '</select></td></tr>';
 
 
-	DB_free_result($result);
+	DB_free_result($Result);
 
 	$SQL = "SELECT typeabbrev,
 					sales_type
 			FROM salestypes";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 
 	echo '<tr>
@@ -350,7 +350,7 @@ if (!isset($_GET['delete'])) {
 			<td><select required="required" minlength="1" name="SalesType">';
 	echo '<option value="AN">' . _('Any Other') . '</option>';
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['SalesType']) and $MyRow['typeabbrev'] == $_POST['SalesType']) {
 			echo '<option selected="selected" value="';
 		} else {
@@ -367,7 +367,7 @@ if (!isset($_GET['delete'])) {
 			<td>' . _('Post Sales to GL Account') . ':</td>
 			<td><select required="required" minlength="1" name="SalesGLCode">';
 
-	DB_free_result($result);
+	DB_free_result($Result);
 	$SQL = "SELECT chartmaster.accountcode,
 			chartmaster.accountname
 		FROM chartmaster,
@@ -377,9 +377,9 @@ if (!isset($_GET['delete'])) {
 		ORDER BY accountgroups.sequenceintb,
 			chartmaster.accountcode";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['SalesGLCode']) and $MyRow['accountcode'] == $_POST['SalesGLCode']) {
 			echo '<option selected="selected" value="';
 		} else {
@@ -389,7 +389,7 @@ if (!isset($_GET['delete'])) {
 
 	} //end while loop
 
-	DB_data_seek($result, 0);
+	DB_data_seek($Result, 0);
 
 	echo '</select></td></tr>
 		<tr>
@@ -397,7 +397,7 @@ if (!isset($_GET['delete'])) {
 			<td>
 				<select required="required" minlength="1" name="DiscountGLCode">';
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['DiscountGLCode']) and $MyRow['accountcode'] == $_POST['DiscountGLCode']) {
 			echo '<option selected="selected" value="';
 		} else {

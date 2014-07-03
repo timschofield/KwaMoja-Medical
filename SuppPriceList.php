@@ -24,8 +24,8 @@ if (isset($_POST['PrintPDF'])) {
 				FROM suppliers INNER JOIN currencies
 				ON suppliers.currcode=currencies.currabrev
 				WHERE supplierid='" . $_POST['supplier'] . "'";
-	$resultsup = DB_query($SQLsup);
-	$RowSup = DB_fetch_array($resultsup);
+	$Resultsup = DB_query($SQLsup);
+	$RowSup = DB_fetch_array($Resultsup);
 	$SupplierName = $RowSup['suppname'];
 	$CurrCode = $RowSup['currcode'];
 	$CurrDecimalPlaces = $RowSup['currdecimalplaces'];
@@ -36,8 +36,8 @@ if (isset($_POST['PrintPDF'])) {
 				FROM `stockcategory`
 				WHERE categoryid ='" . $_POST['category'] . "'";
 
-		$resultcat = DB_query($SQLcat);
-		$RowCat = DB_fetch_row($resultcat);
+		$Resultcat = DB_query($SQLcat);
+		$RowCat = DB_fetch_row($Resultcat);
 		$Categoryname = $RowCat['0'];
 	} else {
 		$Categoryname = 'ALL';
@@ -130,7 +130,7 @@ if (isset($_POST['PrintPDF'])) {
 			}
 		}
 	}
-	$result = DB_query($SQL, '', '', false, true);
+	$Result = DB_query($SQL, '', '', false, true);
 
 	if (DB_error_no() != 0) {
 		$Title = _('Price List') . ' - ' . _('Problem Report');
@@ -145,7 +145,7 @@ if (isset($_POST['PrintPDF'])) {
 		exit;
 	}
 
-	if (DB_num_rows($result) == 0) {
+	if (DB_num_rows($Result) == 0) {
 
 		$Title = _('Supplier Price List') . '-' . _('Report');
 		include('includes/header.inc');
@@ -158,7 +158,7 @@ if (isset($_POST['PrintPDF'])) {
 
 	$FontSize = 8;
 	$code = '';
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		$YPos -= $line_height;
 
 		$PriceDated = ConvertSQLDate($MyRow[4]);
@@ -213,12 +213,12 @@ if (isset($_POST['PrintPDF'])) {
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	$SQL = "SELECT supplierid,suppname FROM `suppliers`";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	echo '<table class="selection">
 			<tr>
 				<td>' . _('Supplier') . ':</td>
 				<td><select required="required" minlength="1" name="supplier"> ';
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['supplierid']) and ($MyRow['supplierid'] == $_POST['supplierid'])) {
 			echo '<option selected="selected" value="' . $MyRow['supplierid'] . '">' . $MyRow['supplierid'] . ' - ' . $MyRow['suppname'] . '</option>';
 		} else {
@@ -229,12 +229,12 @@ if (isset($_POST['PrintPDF'])) {
 		</tr>';
 
 	$SQL = "SELECT categoryid, categorydescription FROM stockcategory";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	echo '<tr>
 			<td>' . _('Category') . ':</td>
 			<td><select required="required" minlength="1" name="category"> ';
 	echo '<option value="all">' . _('ALL') . '</option>';
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['categoryid']) and ($MyRow['categoryid'] == $_POST['categoryid'])) {
 			echo '<option selected="selected" value="' . $MyRow['categoryid'] . '">' . $MyRow['categoryid'] - $MyRow['categorydescription'] . '</option>';
 		} else {

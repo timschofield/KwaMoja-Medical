@@ -10,8 +10,8 @@ include('includes/SQL_CommonFunctions.inc');
 
 $SQL="SELECT * FROM geocode_param WHERE 1";
 $ErrMsg = _('An error occurred in retrieving the currency information');
-$result = DB_query($SQL, $ErrMsg);
-$MyRow = DB_fetch_array($result);
+$Result = DB_query($SQL, $ErrMsg);
+$MyRow = DB_fetch_array($Result);
 
 $Api_Key = $MyRow['geocode_key'];
 $Center_Long = $MyRow['center_long'];

@@ -61,7 +61,7 @@ if (isset($_POST['submit'])) {
 	}
 
 	if ($InputError != 1) {
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 
 		echo '<br />';
 		prnMsg($msg, 'success');
@@ -77,7 +77,7 @@ if (isset($_POST['submit'])) {
 	$SQL = "DELETE FROM debtortypenotes
 			WHERE noteid='" . $Id . "'
 			AND typeid='" . $DebtorType . "'";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '<br />';
 	prnMsg(_('The contact group note record has been deleted'), 'success');
@@ -88,8 +88,8 @@ if (isset($_POST['submit'])) {
 
 if (!isset($Id)) {
 	$SQLname = "SELECT typename from debtortype where typeid='" . $DebtorType . "'";
-	$result = DB_query($SQLname);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQLname);
+	$MyRow = DB_fetch_array($Result);
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/customer.png" title="' . _('Search') . '" alt="" />' . _('Notes for Customer Type') . ': <b>' . $MyRow['typename'] . '</b></p>
 		<br />';
 
@@ -102,7 +102,7 @@ if (!isset($Id)) {
 				FROM debtortypenotes
 				WHERE typeid='" . $DebtorType . "'
 				ORDER BY date DESC";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	//echo '<br />'.$SQL;
 
 	echo '<table class="selection">';
@@ -115,7 +115,7 @@ if (!isset($Id)) {
 
 	$k = 0; //row colour counter
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($k == 1) {
 			echo '<tr class="OddTableRows">';
 			$k = 0;
@@ -158,10 +158,10 @@ if (!isset($_GET['delete'])) {
 				WHERE noteid=" . $Id . "
 					AND typeid='" . $DebtorType . "'";
 
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 		//echo '<br />'.$SQL;
 
-		$MyRow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($Result);
 
 		$_POST['NoteID'] = $MyRow['noteid'];
 		$_POST['Note'] = $MyRow['note'];

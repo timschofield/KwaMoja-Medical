@@ -9,8 +9,8 @@ if ((isset($_POST['PrintPDF'])) and isset($_POST['FromCriteria']) and mb_strlen(
 					max(supplierid) AS tocriteria
 				FROM suppliers";
 
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 
 	if ($_POST['FromCriteria']=='') {
 		$_POST['FromCriteria'] = $MyRow['fromcriteria'];
@@ -154,8 +154,8 @@ if ((isset($_POST['PrintPDF'])) and isset($_POST['FromCriteria']) and mb_strlen(
 					max(supplierid) AS tocriteria
 				FROM suppliers";
 
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 
 	echo '<tr>
 			<td>' . _('From Supplier Code') . ':</td>

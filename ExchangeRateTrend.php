@@ -27,14 +27,14 @@ echo '<table>'; // First column
 $SQL = "SELECT currabrev,
 				currency
 			FROM currencies";
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 
 // CurrencyToShow Currency Picker
 echo '<tr>
 		<td>
 			<select minlength="0" name="CurrencyToShow" onchange="ReloadForm(update.submit)">';
 
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	if ($MyRow['currabrev'] != $_SESSION['CompanyRecord']['currencydefault']) {
 		if ($CurrencyToShow == $MyRow['currabrev']) {
 			echo '<option selected="selected" value="' . $MyRow['currabrev'] . '">' . _($MyRow['currency']) . '&nbsp;(' . $MyRow['currabrev'] . ')' . '</option>';

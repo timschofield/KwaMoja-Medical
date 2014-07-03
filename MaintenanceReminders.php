@@ -16,9 +16,9 @@ $SQL = "SELECT 	description,
 		WHERE ADDDATE(lastcompleted,frequencydays-10)> CURDATE()
 		ORDER BY userresponsible";
 
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 $LastUserResponsible = '';
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	if (!isset(${'Mail' . $MyRow['userresponsible']}) and IsEmailAddress($MyRow['email'])) {
 		if ($LastUserResponsible != '') {
 			${'Mail' . $MyRow['userresponsible']}->setText($MailText);
@@ -39,7 +39,7 @@ while ($MyRow = DB_fetch_array($result)) {
 	}
 	$MailText . "\n\n";
 }
-if (DB_num_rows($result) > 0) {
+if (DB_num_rows($Result) > 0) {
 	${'Mail' . $LastUserResponsible}->setText($MailText);
 	$SendResult = ${'Mail' . $LastUserResponsible}->send(array(
 		${'Mail' . $LastUserResponsible}
@@ -60,9 +60,9 @@ $SQL = "SELECT 	description,
 		WHERE ADDDATE(lastcompleted,frequencydays)> CURDATE()
 		ORDER BY manager";
 
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 $LastManager = '';
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	if (!isset(${'Mail' . $MyRow['userresponsible']})) {
 		if ($LastUserResponsible != '') {
 			${'Mail' . $MyRow['userresponsible']}->setText($MailText);
@@ -80,7 +80,7 @@ while ($MyRow = DB_fetch_array($result)) {
 	$MailText .= _('Asset') . ': ' . $MyRow['description'] . "\n" . _('Task') . ': ' . $MyRow['taskdescription'] . "\n" . _('Due') . ': ' . ConvertSQLDate($MyRow['duedate']);
 	$MailText . "\n\n";
 }
-if (DB_num_rows($result) > 0) {
+if (DB_num_rows($Result) > 0) {
 	${'Mail' . $LastManager}->setText($MailText);
 	$SendResult = ${'Mail' . $LastManager}->send(array(
 		$LastManagerEmail

@@ -49,13 +49,13 @@ if (isset($_POST['submit']) or isset($_POST['update'])) {
 				AND prices.typeabbrev ='" . $_POST['SalesType'] . "'
 				AND prices.currabrev ='" . $_POST['CurrCode'] . "'
 				AND (prices.enddate>=CURRENT_DATE OR prices.enddate='0000-00-00')";
-	$result = DB_query($SQL);
-	$numrow = DB_num_rows($result);
+	$Result = DB_query($SQL);
+	$numrow = DB_num_rows($Result);
 
 	if ($_POST['submit'] == 'Update') {
 		//Update Prices
 		$PriceCounter = 0;
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			/*The logic here goes like this:
 			 * 1. If the price at the same start and end date already exists then do nowt!!
 			 * 2. If not then check if a price with the start date of today already exists - then we should be updating it
@@ -126,9 +126,9 @@ if (isset($_POST['submit']) or isset($_POST['update'])) {
 			}
 			$PriceCounter++;
 		} //end while loop
-		DB_free_result($result); //clear the old result
-		$result = DB_query($SQL); //re-run the query with the updated prices
-		$numrow = DB_num_rows($result); // get the new number - should be the same!!
+		DB_free_result($Result); //clear the old result
+		$Result = DB_query($SQL); //re-run the query with the updated prices
+		$numrow = DB_num_rows($Result); // get the new number - should be the same!!
 	}
 
 	$SQLcat = "SELECT categorydescription
@@ -177,7 +177,7 @@ if (isset($_POST['submit']) or isset($_POST['update'])) {
 			<input type="hidden" value="' . $_POST['SalesType'] . '" name="SalesType" />';
 
 		$PriceCounter = 0;
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
@@ -248,12 +248,12 @@ if (isset($_POST['submit']) or isset($_POST['update'])) {
 	$SQL = "SELECT categoryid, categorydescription
 			  FROM stockcategory
 			  ORDER BY categorydescription";
-	$result1 = DB_query($SQL);
+	$Result1 = DB_query($SQL);
 	echo '<tr>
 			<td>' . _('Category') . ':</td>
 			<td><select required="required" minlength="1" name="StockCat">';
 	echo '<option value="all">' . _('All Categories') . '</option>';
-	while ($MyRow1 = DB_fetch_array($result1)) {
+	while ($MyRow1 = DB_fetch_array($Result1)) {
 		echo '<option value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 	}
 	echo '</select></td></tr>';
@@ -271,32 +271,32 @@ if (isset($_POST['submit']) or isset($_POST['update'])) {
 		$_POST['Margin'] = 1;
 	}
 	echo '<td><input type="text" class="number" name="Margin" required="required" minlength="1" maxlength="8" size="8" value="' . $_POST['Margin'] . '" /></td></tr>';
-	$result = DB_query("SELECT typeabbrev, sales_type FROM salestypes");
+	$Result = DB_query("SELECT typeabbrev, sales_type FROM salestypes");
 	echo '<tr>
 			<td>' . _('Sales Type') . '/' . _('Price List') . ':</td>
 			<td><select required="required" minlength="1" name="SalesType">';
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($_POST['SalesType'] == $MyRow['typeabbrev']) {
 			echo '<option selected="selected" value="' . $MyRow['typeabbrev'] . '">' . $MyRow['sales_type'] . '</option>';
 		} else {
 			echo '<option value="' . $MyRow['typeabbrev'] . '">' . $MyRow['sales_type'] . '</option>';
 		}
 	} //end while loop
-	DB_data_seek($result, 0);
-	$result = DB_query("SELECT currency, currabrev FROM currencies");
+	DB_data_seek($Result, 0);
+	$Result = DB_query("SELECT currency, currabrev FROM currencies");
 	echo '</select>
 			</td></tr>';
 	echo '<tr>
 			<td>' . _('Currency') . ':</td>
 			<td><select required="required" minlength="1" name="CurrCode">';
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['CurrCode']) and $_POST['CurrCode'] == $MyRow['currabrev']) {
 			echo '<option selected="selected" value="' . $MyRow['currabrev'] . '">' . $MyRow['currency'] . '</option>';
 		} else {
 			echo '<option value="' . $MyRow['currabrev'] . '">' . $MyRow['currency'] . '</option>';
 		}
 	} //end while loop
-	DB_data_seek($result, 0);
+	DB_data_seek($Result, 0);
 	echo '</select></td></tr>';
 	echo '</table>
 		<br /><div class="centre"><input type="submit" name="submit" value="' . _('Submit') . '" /></div>';

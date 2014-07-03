@@ -35,8 +35,8 @@ if (!isset($_SESSION['CustomerType'])) { //initialise if not already done
 if ($_SESSION['geocode_integration'] == 1 and $_SESSION['CustomerID'] != "") {
 	$SQL = "SELECT * FROM geocode_param WHERE 1";
 	$ErrMsg = _('An error occurred in retrieving the information');
-	$result = DB_query($SQL, $ErrMsg);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL, $ErrMsg);
+	$MyRow = DB_fetch_array($Result);
 	$SQL = "SELECT debtorsmaster.debtorno,
 					debtorsmaster.name,
 					custbranch.branchcode,
@@ -48,8 +48,8 @@ if ($_SESSION['geocode_integration'] == 1 and $_SESSION['CustomerID'] != "") {
 				WHERE debtorsmaster.debtorno = '" . $_SESSION['CustomerID'] . "'
 				ORDER BY debtorsmaster.debtorno";
 	$ErrMsg = _('An error occurred in retrieving the information');
-	$result2 = DB_query($SQL, $ErrMsg);
-	$MyRow2 = DB_fetch_array($result2);
+	$Result2 = DB_query($SQL, $ErrMsg);
+	$MyRow2 = DB_fetch_array($Result2);
 	$Lattitude = $MyRow2['lat'];
 	$Longitude = $MyRow2['lng'];
 	$API_Key = $MyRow['geocode_key'];
@@ -79,7 +79,7 @@ if ($_SESSION['geocode_integration'] == 1 and $_SESSION['CustomerID'] != "") {
 	echo '<body onload="load()" onunload="GUnload()">';
 } //$_SESSION['geocode_integration'] == 1 and $_SESSION['CustomerID'] != ""
 
-unset($result);
+unset($Result);
 $msg = '';
 
 if (isset($_POST['Go1']) or isset($_POST['Go2'])) {
@@ -167,17 +167,17 @@ if (isset($_POST['Search']) or isset($_POST['CSV']) or isset($_POST['Go']) or is
 	$SQL .= " ORDER BY debtorsmaster.name";
 	$ErrMsg = _('The searched customer records requested cannot be retrieved because');
 
-	$result = DB_query($SQL, $ErrMsg);
-	if (DB_num_rows($result) == 1) {
-		$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL, $ErrMsg);
+	if (DB_num_rows($Result) == 1) {
+		$MyRow = DB_fetch_array($Result);
 		$_SESSION['CustomerID'] = $MyRow['debtorno'];
 		$_SESSION['BranchCode'] = $MyRow['branchcode'];
-		unset($result);
+		unset($Result);
 		unset($_POST['Search']);
-	} elseif (DB_num_rows($result) == 0) {
+	} elseif (DB_num_rows($Result) == 0) {
 		prnMsg(_('No customer records contain the selected text') . ' - ' . _('please alter your search criteria and try again'), 'info');
 		echo '<br />';
-	} //DB_num_rows($result) == 0
+	} //DB_num_rows($Result) == 0
 } //end of if search
 
 if (isset($_POST['JustSelectedACustomer'])) {
@@ -214,12 +214,12 @@ if ($_SESSION['CustomerID'] != '' and !isset($_POST['Search']) and !isset($_POST
 			AND custbranch.branchcode='" . $_SESSION['BranchCode'] . "'";
 	}
 	$ErrMsg = _('The customer name requested cannot be retrieved because');
-	$result = DB_query($SQL, $ErrMsg);
-	if ($MyRow = DB_fetch_array($result)) {
+	$Result = DB_query($SQL, $ErrMsg);
+	if ($MyRow = DB_fetch_array($Result)) {
 		$CustomerName = htmlspecialchars($MyRow['name'], ENT_QUOTES, 'UTF-8', false);
 		$PhoneNo = $MyRow['phoneno'];
-	} //$MyRow = DB_fetch_array($result)
-	unset($result);
+	} //$MyRow = DB_fetch_array($Result)
+	unset($Result);
 
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/customer.png" title="' . _('Customer') . '" alt="" />' . ' ' . _('Customer') . ' : ' . stripslashes($_SESSION['CustomerID']) . ' - ' . $CustomerName . ' - ' . $PhoneNo . _(' has been selected') . '</p>';
 	echo '<div class="page_help_text noPrint">' . _('Select a menu option to operate using this customer') . '.</div><br />';
@@ -326,18 +326,18 @@ echo '<tr>
 		<td>';
 if (isset($_POST['CustType'])) {
 	// Show Customer Type drop down list
-	$result2 = DB_query("SELECT typeid, typename FROM debtortype ORDER BY typename");
+	$Result2 = DB_query("SELECT typeid, typename FROM debtortype ORDER BY typename");
 	// Error if no customer types setup
-	if (DB_num_rows($result2) == 0) {
+	if (DB_num_rows($Result2) == 0) {
 		$DataError = 1;
 		echo '<a href="CustomerTypes.php" target="_parent">' . _('Setup Types') . '</a>';
 		echo '<tr><td colspan="2">' . prnMsg(_('No Customer types defined'), 'error') . '</td></tr>';
-	} //DB_num_rows($result2) == 0
+	} //DB_num_rows($Result2) == 0
 	else {
 		// If OK show select box with option selected
 		echo '<select minlength="0" name="CustType">
 				<option value="ALL">' . _('Any') . '</option>';
-		while ($MyRow = DB_fetch_array($result2)) {
+		while ($MyRow = DB_fetch_array($Result2)) {
 			if ($_POST['CustType'] == $MyRow['typename']) {
 				echo '<option selected="selected" value="' . $MyRow['typename'] . '">' . $MyRow['typename'] . '</option>';
 			} //$_POST['CustType'] == $MyRow['typename']
@@ -345,27 +345,27 @@ if (isset($_POST['CustType'])) {
 				echo '<option value="' . $MyRow['typename'] . '">' . $MyRow['typename'] . '</option>';
 			}
 		} //end while loop
-		DB_data_seek($result2, 0);
+		DB_data_seek($Result2, 0);
 		echo '</select></td>';
 	}
 } //isset($_POST['CustType'])
 else {
 	// No option selected="selected" yet, so show Customer Type drop down list
-	$result2 = DB_query("SELECT typeid, typename FROM debtortype");
+	$Result2 = DB_query("SELECT typeid, typename FROM debtortype");
 	// Error if no customer types setup
-	if (DB_num_rows($result2) == 0) {
+	if (DB_num_rows($Result2) == 0) {
 		$DataError = 1;
 		echo '<a href="CustomerTypes.php" target="_parent">' . _('Setup Types') . '</a>';
 		echo '<tr><td colspan="2">' . prnMsg(_('No Customer types defined'), 'error') . '</td></tr>';
-	} //DB_num_rows($result2) == 0
+	} //DB_num_rows($Result2) == 0
 	else {
 		// if OK show select box with available options to choose
 		echo '<select minlength="0" name="CustType">
 				<option value="ALL">' . _('Any') . '</option>';
-		while ($MyRow = DB_fetch_array($result2)) {
+		while ($MyRow = DB_fetch_array($Result2)) {
 			echo '<option value="' . $MyRow['typename'] . '">' . $MyRow['typename'] . '</option>';
 		} //end while loop
-		DB_data_seek($result2, 0);
+		DB_data_seek($Result2, 0);
 		echo '</select></td>';
 	}
 }
@@ -373,18 +373,18 @@ else {
 /* Option to select a sales area */
 echo '<td><b>' . _('OR') . '</b></td>
 		<td>' . _('Choose an Area') . ':</td><td>';
-$result2 = DB_query("SELECT areacode, areadescription FROM areas");
+$Result2 = DB_query("SELECT areacode, areadescription FROM areas");
 // Error if no sales areas setup
-if (DB_num_rows($result2) == 0) {
+if (DB_num_rows($Result2) == 0) {
 	$DataError = 1;
 	echo '<a href="Areas.php" target="_parent">' . _('Setup Areas') . '</a>';
 	echo '<tr><td colspan="2">' . prnMsg(_('No Sales Areas defined'), 'error') . '</td></tr>';
-} //DB_num_rows($result2) == 0
+} //DB_num_rows($Result2) == 0
 else {
 	// if OK show select box with available options to choose
 	echo '<select minlength="0" name="Area">';
 	echo '<option value="ALL">' . _('Any') . '</option>';
-	while ($MyRow = DB_fetch_array($result2)) {
+	while ($MyRow = DB_fetch_array($Result2)) {
 		if (isset($_POST['Area']) and $_POST['Area'] == $MyRow['areacode']) {
 			echo '<option selected="selected" value="' . $MyRow['areacode'] . '">' . $MyRow['areadescription'] . '</option>';
 		} //isset($_POST['Area']) and $_POST['Area'] == $MyRow['areacode']
@@ -392,7 +392,7 @@ else {
 			echo '<option value="' . $MyRow['areacode'] . '">' . $MyRow['areadescription'] . '</option>';
 		}
 	} //end while loop
-	DB_data_seek($result2, 0);
+	DB_data_seek($Result2, 0);
 	echo '</select></td></tr>';
 }
 
@@ -404,9 +404,9 @@ echo '<div class="centre">
 if (isset($_SESSION['SalesmanLogin']) and $_SESSION['SalesmanLogin'] != '') {
 	prnMsg(_('Your account enables you to see only customers allocated to you'), 'warn', _('Note: Sales-person Login'));
 } //isset($_SESSION['SalesmanLogin']) and $_SESSION['SalesmanLogin'] != ''
-if (isset($result)) {
+if (isset($Result)) {
 	unset($_SESSION['CustomerID']);
-	$ListCount = DB_num_rows($result);
+	$ListCount = DB_num_rows($Result);
 	$ListPageMax = ceil($ListCount / $_SESSION['DisplayRecordsMax']);
 	if (!isset($_POST['CSV'])) {
 		if (isset($_POST['Next'])) {
@@ -442,7 +442,7 @@ if (isset($result)) {
 		$k = 0; //row counter to determine background colour
 		$RowIndex = 0;
 	} //!isset($_POST['CSV'])
-	if (DB_num_rows($result) <> 0) {
+	if (DB_num_rows($Result) <> 0) {
 		echo '<br />
 				<table cellpadding="2" class="selection">
 					<tr>
@@ -459,15 +459,15 @@ if (isset($result)) {
 			$FileName = $_SESSION['reports_dir'] . '/Customer_Listing_' . Date('Y-m-d') . '.csv';
 			echo '<br /><p class="page_title_text noPrint" ><a href="' . $FileName . '">' . _('Click to view the csv Search Result') . '</p>';
 			$fp = fopen($FileName, 'w');
-			while ($MyRow2 = DB_fetch_array($result)) {
+			while ($MyRow2 = DB_fetch_array($Result)) {
 				fwrite($fp, $MyRow2['debtorno'] . ',' . str_replace(',', '', $MyRow2['name']) . ',' . str_replace(',', '', $MyRow2['address1']) . ',' . str_replace(',', '', $MyRow2['address2']) . ',' . str_replace(',', '', $MyRow2['address3']) . ',' . str_replace(',', '', $MyRow2['address4']) . ',' . str_replace(',', '', $MyRow2['contactname']) . ',' . str_replace(',', '', $MyRow2['typename']) . ',' . $MyRow2['phoneno'] . ',' . $MyRow2['faxno'] . ',' . $MyRow2['email'] . "\n");
-			} //$MyRow2 = DB_fetch_array($result)
+			} //$MyRow2 = DB_fetch_array($Result)
 		} //isset($_POST['CSV'])
 		if (!isset($_POST['CSV'])) {
-			DB_data_seek($result, ($_POST['PageOffset'] - 1) * $_SESSION['DisplayRecordsMax']);
+			DB_data_seek($Result, ($_POST['PageOffset'] - 1) * $_SESSION['DisplayRecordsMax']);
 		} //!isset($_POST['CSV'])
 		$i = 0; //counter for input controls
-		while (($MyRow = DB_fetch_array($result)) and ($RowIndex <> $_SESSION['DisplayRecordsMax'])) {
+		while (($MyRow = DB_fetch_array($Result)) and ($RowIndex <> $_SESSION['DisplayRecordsMax'])) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;
@@ -490,14 +490,14 @@ if (isset($result)) {
 			$i++;
 			$RowIndex++;
 			//end of page full new headings if
-		} //($MyRow = DB_fetch_array($result)) and ($RowIndex <> $_SESSION['DisplayRecordsMax'])
+		} //($MyRow = DB_fetch_array($Result)) and ($RowIndex <> $_SESSION['DisplayRecordsMax'])
 		//end of while loop
 		echo '</table>';
 		echo '<input type="hidden" name="JustSelectedACustomer" value="Yes" />';
 		echo '</table>';
 		echo '<input type="hidden" name="JustSelectedACustomer" value="Yes" />';
-	} //DB_num_rows($result) <> 0
-} //isset($result)
+	} //DB_num_rows($Result) <> 0
+} //isset($Result)
 //end if results to show
 if (!isset($_POST['CSV'])) {
 	if (isset($ListPageMax) and $ListPageMax > 1) {
@@ -557,8 +557,8 @@ if (isset($_SESSION['CustomerID']) and $_SESSION['CustomerID'] != '') {
 					ON debtorsmaster.typeid = debtortype.typeid
 					WHERE debtorsmaster.debtorno = '" . $_SESSION['CustomerID'] . "'";
 			$ErrMsg = _('An error occurred in retrieving the information');
-			$result = DB_query($SQL, $ErrMsg);
-			$MyRow = DB_fetch_array($result);
+			$Result = DB_query($SQL, $ErrMsg);
+			$MyRow = DB_fetch_array($Result);
 			$CustomerType = $MyRow['typeid'];
 			$CustomerTypeName = $MyRow['typename'];
 			// Customer Data
@@ -636,8 +636,8 @@ if (isset($_SESSION['CustomerID']) and $_SESSION['CustomerID'] != '') {
 		$SQL = "SELECT * FROM custcontacts
 				WHERE debtorno='" . $_SESSION['CustomerID'] . "'
 				ORDER BY contid";
-		$result = DB_query($SQL);
-		if (DB_num_rows($result) <> 0) {
+		$Result = DB_query($SQL);
+		if (DB_num_rows($Result) <> 0) {
 			echo '<br /><div class="centre"><img src="' . $RootPath . '/css/' . $Theme . '/images/group_add.png" title="' . _('Customer Contacts') . '" alt="" />' . ' ' . _('Customer Contacts') . '</div>';
 			echo '<br /><table width="45%">';
 			echo '<tr>
@@ -651,7 +651,7 @@ if (isset($_SESSION['CustomerID']) and $_SESSION['CustomerID'] != '') {
 					<th> <a href="AddCustomerContacts.php?DebtorNo=' . urlencode($_SESSION['CustomerID']) . '">' . _('Add New Contact') . '</a> </th>
 				</tr>';
 			$k = 0; //row colour counter
-			while ($MyRow = DB_fetch_array($result)) {
+			while ($MyRow = DB_fetch_array($Result)) {
 				if ($k == 1) {
 					echo '<tr class="OddTableRows">';
 					$k = 0;
@@ -670,7 +670,7 @@ if (isset($_SESSION['CustomerID']) and $_SESSION['CustomerID'] != '') {
 					</tr>';
 			} //END WHILE LIST LOOP
 			echo '</table>';
-		} //DB_num_rows($result) <> 0
+		} //DB_num_rows($Result) <> 0
 		else {
 			if ($_SESSION['CustomerID'] != "") {
 				echo '<div class="centre">
@@ -689,8 +689,8 @@ if (isset($_SESSION['CustomerID']) and $_SESSION['CustomerID'] != '') {
 				FROM custnotes
 				WHERE debtorno='" . $_SESSION['CustomerID'] . "'
 				ORDER BY date DESC";
-		$result = DB_query($SQL);
-		if (DB_num_rows($result) <> 0) {
+		$Result = DB_query($SQL);
+		if (DB_num_rows($Result) <> 0) {
 			echo '<div class="centre"><img src="' . $RootPath . '/css/' . $Theme . '/images/note_add.png" title="' . _('Customer Notes') . '" alt="" />' . ' ' . _('Customer Notes') . '</div><br />';
 			echo '<table width="45%">';
 			echo '<tr>
@@ -703,7 +703,7 @@ if (isset($_SESSION['CustomerID']) and $_SESSION['CustomerID'] != '') {
 					<th> <a href="AddCustomerNotes.php?DebtorNo=' . urlencode($_SESSION['CustomerID']) . '">' . ' ' . _('Add New Note') . '</a> </th>
 				</tr>';
 			$k = 0; //row colour counter
-			while ($MyRow = DB_fetch_array($result)) {
+			while ($MyRow = DB_fetch_array($Result)) {
 				if ($k == 1) {
 					echo '<tr class="OddTableRows">';
 					$k = 0;
@@ -721,7 +721,7 @@ if (isset($_SESSION['CustomerID']) and $_SESSION['CustomerID'] != '') {
 					</tr>';
 			} //END WHILE LIST LOOP
 			echo '</table>';
-		} //DB_num_rows($result) <> 0
+		} //DB_num_rows($Result) <> 0
 		else {
 			if ($_SESSION['CustomerID'] != '') {
 				echo '<div class="centre">
@@ -734,8 +734,8 @@ if (isset($_SESSION['CustomerID']) and $_SESSION['CustomerID'] != '') {
 		$SQL = "SELECT * FROM debtortypenotes
 				WHERE typeid='" . $CustomerType . "'
 				ORDER BY date DESC";
-		$result = DB_query($SQL);
-		if (DB_num_rows($result) <> 0) {
+		$Result = DB_query($SQL);
+		if (DB_num_rows($Result) <> 0) {
 			echo '<div class="centre">
 					<img src="' . $RootPath . '/css/' . $Theme . '/images/folder_add.png" title="' . _('Customer Type (Group) Notes') . '" alt="" />' . ' ' . _('Customer Type (Group) Notes for') . ':<b> ' . $CustomerTypeName . '</b>' . '
 				</div>';
@@ -750,7 +750,7 @@ if (isset($_SESSION['CustomerID']) and $_SESSION['CustomerID'] != '') {
 				   	<th><a href="AddCustomerTypeNotes.php?DebtorType=' . urlencode($CustomerType) . '">' . _('Add New Group Note') . '</a></th>
 				  </tr>';
 			$k = 0; //row colour counter
-			while ($MyRow = DB_fetch_array($result)) {
+			while ($MyRow = DB_fetch_array($Result)) {
 				if ($k == 1) {
 					echo '<tr class="OddTableRows">';
 					$k = 0;
@@ -768,7 +768,7 @@ if (isset($_SESSION['CustomerID']) and $_SESSION['CustomerID'] != '') {
 				</tr>';
 			} //END WHILE LIST LOOP
 			echo '</table>';
-		} //DB_num_rows($result) <> 0
+		} //DB_num_rows($Result) <> 0
 		else {
 			if ($_SESSION['CustomerID'] != '') {
 				echo '<div class="centre"><img src="' . $RootPath . '/css/' . $Theme . '/images/folder_add.png" title="' . _('Customer Group Notes') . '" alt="" />

@@ -28,9 +28,9 @@ $SQL = "SELECT stockmaster.stockid,
 				FROM bom
 				WHERE bom.component = stockmaster.stockid )
 		ORDER BY stockmaster.stockid";
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 echo '<p class="page_title_text" align="center"><strong>' . _('Raw Materials Not Used in any BOM') . '</strong></p>';
-if (DB_num_rows($result) != 0) {
+if (DB_num_rows($Result) != 0) {
 	$TotalValue = 0;
 	echo '<div>';
 	echo '<table class="selection">
@@ -43,7 +43,7 @@ if (DB_num_rows($result) != 0) {
 				<th>' . _('Value') . '</th>
 			</tr>';
 	$k = 0; //row colour counter
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;

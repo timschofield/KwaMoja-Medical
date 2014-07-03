@@ -62,9 +62,9 @@ if (!isset($_SESSION['SPL' . $identifier]->SupplierID)) {
 				WHERE supplierid='" . $_SESSION['SupplierID'] . "'";
 	$ErrMsg = _('The supplier record of the supplier selected') . ": " . $_SESSION['SupplierID'] . ' ' . _('cannot be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve the supplier details and failed was');
-	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-	$MyRow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($Result);
 	$_SESSION['SPL' . $identifier]->SupplierID = $_SESSION['SupplierID'];
 	$_SESSION['SPL' . $identifier]->SupplierName = $MyRow['suppname'];
 	$_SESSION['SPL' . $identifier]->SuppCurrCode = $MyRow['currcode'];
@@ -86,9 +86,9 @@ if (!isset($_SESSION['SPL' . $identifier]->CustomerID)) {
 
 	$ErrMsg = _('The customer record for') . ' : ' . $_SESSION['CustomerID'] . ' ' . _('cannot be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve the customer details and failed was');
-	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-	$MyRow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($Result);
 	if ($MyRow['dissallowinvoices'] != 1) {
 		if ($MyRow['dissallowinvoices'] == 2) {
 			prnMsg(_('The') . ' ' . $MyRow['name'] . ' ' . _('account is currently flagged as an account that needs to be watched please contact the credit control personnel to discuss'), 'warn');
@@ -329,7 +329,7 @@ if (isset($_POST['Commit'])) {
 		$StkLocAddResult = DB_query($SQL);
 		$StkLocAddress = DB_fetch_array($StkLocAddResult);
 
-		$result = DB_Txn_Begin();
+		$Result = DB_Txn_Begin();
 
 		/*Insert to purchase order header record */
 		$SQL = "INSERT INTO purchorders (supplierno,
@@ -374,7 +374,7 @@ if (isset($_POST['Commit'])) {
 
 		$ErrMsg = _('The purchase order header record could not be inserted into the database because');
 		$DbgMsg = _('The SQL statement used to insert the purchase order header record and failed was');
-		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 		$_SESSION['SPL' . $identifier]->PurchOrderNo = GetNextTransNo(18);
 
@@ -416,7 +416,7 @@ if (isset($_POST['Commit'])) {
 						'" . $SPLLine->ItemDescription . "')";
 			$ErrMsg = _('The item record for line') . ' ' . $SPLLine->LineNo . ' ' . _('could not be created because');
 			$DbgMsg = _('The SQL statement used to insert the item and failed was');
-			$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 			$SQL = "INSERT INTO stockcosts ('" . $PartCode . "',
 											'" . $SPLLine->Cost . "',
@@ -426,21 +426,21 @@ if (isset($_POST['Commit'])) {
 											0)";
 			$ErrMsg = _('The cost record for line') . ' ' . $SPLLine->LineNo . ' ' . _('could not be created because');
 			$DbgMsg = _('The SQL statement used to insert the item and failed was');
-			$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 			$SQL = "INSERT INTO locstock (loccode, stockid)
 					SELECT loccode,'" . $PartCode . "' FROM locations";
 			$ErrMsg = _('The item stock locations for the special order line') . ' ' . $SPLLine->LineNo . ' ' . _('could not be created because');
 			$DbgMsg = _('The SQL statement used to insert the location stock records and failed was');
-			$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 			/*need to get the stock category GL information */
 			$SQL = "SELECT stockact FROM stockcategory WHERE categoryid = '" . $SPLLine->StkCat . "'";
 			$ErrMsg = _('The item stock category information for the special order line') . ' ' . $SPLLine->LineNo . ' ' . _('could not be retrieved because');
 			$DbgMsg = _('The SQL statement used to get the category information and that failed was');
-			$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
-			$StkCatGL = DB_fetch_row($result);
+			$StkCatGL = DB_fetch_row($Result);
 			$GLCode = $StkCatGL[0];
 
 			$OrderDate = FormatDateForSQL($SPLLine->ReqDelDate);
@@ -463,7 +463,7 @@ if (isset($_POST['Commit'])) {
 
 			$ErrMsg = _('One of the purchase order detail records could not be inserted into the database because');
 			$DbgMsg = _('The SQL statement used to insert the purchase order detail record and failed was');
-			$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 		}
 		/* end of the loop round the detail line items on the order */
@@ -492,9 +492,9 @@ if (isset($_POST['Commit'])) {
 
 		$ErrMsg = _('The delivery and sales type for the customer could not be retrieved for this special order') . ' ' . $SPLLine->LineNo . ' ' . _('because');
 		$DbgMsg = _('The SQL statement used to get the delivery details and that failed was');
-		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
-		$BranchDetails = DB_fetch_array($result);
+		$BranchDetails = DB_fetch_array($Result);
 		$SalesOrderNo = GetNextTransNo(30);
 		$HeaderSQL = "INSERT INTO salesorders (orderno,
 											debtorno,
@@ -706,9 +706,9 @@ echo '<tr>
 $SQL = "SELECT categoryid, categorydescription FROM stockcategory";
 $ErrMsg = _('The stock categories could not be retrieved because');
 $DbgMsg = _('The SQL used to retrieve stock categories and failed was');
-$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	if (isset($_POST['StkCat']) and $MyRow['categoryid'] == $_POST['StkCat']) {
 		echo '<option selected="selected" value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 	} else {

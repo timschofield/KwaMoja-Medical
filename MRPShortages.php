@@ -4,8 +4,8 @@
 
 include('includes/session.inc');
 
-$result = DB_show_tables('mrprequirements');
-if (DB_num_rows($result) == 0) {
+$Result = DB_show_tables('mrprequirements');
+if (DB_num_rows($Result) == 0) {
 	$Title = _('MRP error');
 	include('includes/header.inc');
 	echo '<br />';
@@ -36,7 +36,7 @@ if (isset($_POST['PrintPDF'])) {
 				part char(20),
 				demand double,
 				KEY `PART` (`part`)) DEFAULT CHARSET=utf8";
-	$result = DB_query($SQL, _('Create of demandtotal failed because'));
+	$Result = DB_query($SQL, _('Create of demandtotal failed because'));
 
 	$SQL = "INSERT INTO demandtotal
 						(part,
@@ -45,13 +45,13 @@ if (isset($_POST['PrintPDF'])) {
 					  SUM(quantity) as demand
 				FROM mrprequirements
 				GROUP BY part";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	$SQL = "CREATE TEMPORARY TABLE supplytotal (
 				part char(20),
 				supply double,
 				KEY `PART` (`part`)) DEFAULT CHARSET=utf8";
-	$result = DB_query($SQL, _('Create of supplytotal failed because'));
+	$Result = DB_query($SQL, _('Create of supplytotal failed because'));
 
 	/* 21/03/2010: Ricard modification to allow items with total supply = 0 be included in the report */
 
@@ -61,17 +61,17 @@ if (isset($_POST['PrintPDF'])) {
 			SELECT stockid,
 				  0
 			FROM stockmaster";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	$SQL = "UPDATE supplytotal
 			SET supply = (SELECT SUM(mrpsupplies.supplyquantity)
 							FROM mrpsupplies
 							WHERE supplytotal.part = mrpsupplies.part
 								AND mrpsupplies.supplyquantity > 0)";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	$SQL = "UPDATE supplytotal SET supply = 0 WHERE supply IS NULL";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 
 	// Only include directdemand mrprequirements so don't have demand for top level parts and also
@@ -146,7 +146,7 @@ if (isset($_POST['PrintPDF'])) {
 						supplytotal.supply,
 						demandtotal.demand " . $SQLHaving . "
 				ORDER BY '" . $_POST['Sort'] . "'";
-	$result = DB_query($SQL, '', '', false, true);
+	$Result = DB_query($SQL, '', '', false, true);
 
 	if (DB_error_no() != 0) {
 		$Title = _('MRP Shortages and Excesses') . ' - ' . _('Problem Report');
@@ -160,7 +160,7 @@ if (isset($_POST['PrintPDF'])) {
 		exit;
 	}
 
-	if (DB_num_rows($result) == 0) {
+	if (DB_num_rows($Result) == 0) {
 		$Title = _('MRP Shortages and Excesses') . ' - ' . _('Problem Report');
 		include('includes/header.inc');
 		prnMsg(_('No MRP shortages - Excess retrieved'), 'warn');
@@ -178,7 +178,7 @@ if (isset($_POST['PrintPDF'])) {
 	$Partctr = 0;
 	$fill = false;
 	$pdf->SetFillColor(224, 235, 255); // Defines color to make alternating lines highlighted
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 
 		if ($_POST['ReportType'] == 'Shortage') {
 			$LineToPrint = ($MyRow['demand'] > $MyRow['supply']);
@@ -261,8 +261,8 @@ if (isset($_POST['PrintPDF'])) {
 	$SQL = "SELECT categoryid,
 			categorydescription
 			FROM stockcategory";
-	$result = DB_query($SQL);
-	while ($MyRow = DB_fetch_array($result)) {
+	$Result = DB_query($SQL);
+	while ($MyRow = DB_fetch_array($Result)) {
 		echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categoryid'] . ' - ' . $MyRow['categorydescription'] . '</option>';
 	} //end while loop
 	echo '</select></td></tr>';

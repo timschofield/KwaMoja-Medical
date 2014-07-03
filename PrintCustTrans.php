@@ -215,7 +215,7 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 			}
 		} // end else
 
-		$result = DB_query($SQL, '', '', false, false);
+		$Result = DB_query($SQL, '', '', false, false);
 
 		if (DB_error_no() != 0) {
 			$Title = _('Transaction Print Error Report');
@@ -227,8 +227,8 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 			include('includes/footer.inc');
 			exit;
 		}
-		if (DB_num_rows($result) == 1) {
-			$MyRow = DB_fetch_array($result);
+		if (DB_num_rows($Result) == 1) {
+			$MyRow = DB_fetch_array($Result);
 			$ExchRate = $MyRow['rate'];
 
 			//Change the language to the customer's language
@@ -269,8 +269,8 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 							AND stockmoves.show_on_inv_crds=1";
 			} // end else
 
-			$result = DB_query($SQL);
-			if (DB_error_no() != 0 or DB_num_rows($result) == 0) {
+			$Result = DB_query($SQL);
+			if (DB_error_no() != 0 or DB_num_rows($Result) == 0) {
 				$Title = _('Transaction Print Error Report');
 				include('includes/header.inc');
 				echo '<br />' . _('There was a problem retrieving the invoice or credit note stock movement details for invoice number') . ' ' . $FromTransNo . ' ' . _('from the database');
@@ -287,7 +287,7 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 
 				include('includes/PDFTransPageHeader.inc');
 				$FirstPage = False;
-				while ($MyRow2 = DB_fetch_array($result)) {
+				while ($MyRow2 = DB_fetch_array($Result)) {
 
 					if ($MyRow2['discountpercent'] == 0) {
 						$DisplayDiscount = '';
@@ -499,11 +499,11 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 		$mail->addAttachment($Attachment, $FileName, 'application/pdf');
 		if ($_SESSION['SmtpSetting'] == 0) {
 			$mail->setFrom($_SESSION['CompanyRecord']['coyname'] . ' <' . $_SESSION['CompanyRecord']['email'] . '>');
-			$result = $mail->send(array(
+			$Result = $mail->send(array(
 				$_GET['Email']
 			));
 		} else {
-			$result = SendmailBySmtp($mail, array(
+			$Result = SendmailBySmtp($mail, array(
 				$_GET['Email']
 			));
 		}
@@ -585,9 +585,9 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 							ON locations.loccode=www_users.defaultlocation
 						WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 		}
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			if (isset($_POST['LocCode']) and $MyRow['loccode'] == $_POST['LocCode']) {
 				echo '<option selected="selected" value="';
 			} else {
@@ -610,15 +610,15 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 
 		$SQL = "SELECT typeno FROM systypes WHERE typeid=10";
 
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_row($Result);
 
 		echo '<div class="page_help_text noPrint"><b>' . _('The last invoice created was number') . ' ' . $MyRow[0] . '</b><br />' . _('If only a single invoice is required') . ', ' . _('enter the invoice number to print in the Start transaction number to print field and leave the End transaction number to print field blank') . '. ' . _('Only use the end invoice to print field if you wish to print a sequential range of invoices') . '';
 
 		$SQL = "SELECT typeno FROM systypes WHERE typeid=11";
 
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_row($Result);
 
 		echo '<br /><b>' . _('The last credit note created was number') . ' ' . $MyRow[0] . '</b>
 			  <br />' . _('A sequential range can be printed using the same method as for invoices above') . '. ' . _('A single credit note can be printed by only entering a start transaction number') . '</div>';
@@ -733,8 +733,8 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 							AND debtortrans.transno='" . $FromTransNo . "'";
 			}
 
-			$result = DB_query($SQL);
-			if (DB_num_rows($result) == 0 or DB_error_no() != 0) {
+			$Result = DB_query($SQL);
+			if (DB_num_rows($Result) == 0 or DB_error_no() != 0) {
 				echo '<p>' . _('There was a problem retrieving the invoice or credit note details for note number') . ' ' . $InvoiceToPrint . ' ' . _('from the database') . '. ' . _('To print an invoice, the sales order record, the customer transaction record and the branch record for the customer must not have been purged') . '. ' . _('To print a credit note only requires the customer, transaction, salesman and branch records be available');
 				if ($debug == 1) {
 					echo _('The SQL used to get this information that failed was') . '<br />' . $SQL;
@@ -742,9 +742,9 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 				break;
 				include('includes/footer.inc');
 				exit;
-			} elseif (DB_num_rows($result) == 1) {
+			} elseif (DB_num_rows($Result) == 1) {
 
-				$MyRow = DB_fetch_array($result);
+				$MyRow = DB_fetch_array($Result);
 				/* Then there's an invoice (or credit note) to print. So print out the invoice header and GST Number from the company record */
 				if (count($_SESSION['AllowedPageSecurityTokens']) == 1 and in_array(1, $_SESSION['AllowedPageSecurityTokens']) and $MyRow['debtorno'] != $_SESSION['CustomerID']) {
 
@@ -891,7 +891,7 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 				echo '<hr />';
 				echo '<div class="centre"><h4>' . _('All amounts stated in') . ' ' . $MyRow['currcode'] . '</h4></div>';
 
-				$result = DB_query($SQL);
+				$Result = DB_query($SQL);
 				if (DB_error_no() != 0) {
 					echo '<br />' . _('There was a problem retrieving the invoice or credit note stock movement details for invoice number') . ' ' . $FromTransNo . ' ' . _('from the database');
 					if ($debug == 1) {
@@ -900,7 +900,7 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 					exit;
 				}
 
-				if (DB_num_rows($result) > 0) {
+				if (DB_num_rows($Result) > 0) {
 					echo '<table class="table1">
 						<tr>
 							<th>' . _('Item Code') . '</th>
@@ -915,7 +915,7 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 					$LineCounter = 17;
 					$k = 0; //row colour counter
 
-					while ($MyRow2 = DB_fetch_array($result)) {
+					while ($MyRow2 = DB_fetch_array($Result)) {
 
 						if ($k == 1) {
 							$RowStarter = '<tr class="EvenTableRows">';

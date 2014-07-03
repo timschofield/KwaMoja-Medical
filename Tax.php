@@ -14,8 +14,8 @@ if (isset($_POST['TaxAuthority']) and isset($_POST['PrintPDF']) and isset($_POST
 	$PeriodEndRow = DB_fetch_row($PeriodEndResult);
 	$PeriodEnd = ConvertSQLDate($PeriodEndRow[0]);
 
-	$result = DB_query("SELECT description FROM taxauthorities WHERE taxid='" . $_POST['TaxAuthority'] . "'");
-	$TaxAuthDescription = DB_fetch_row($result);
+	$Result = DB_query("SELECT description FROM taxauthorities WHERE taxid='" . $_POST['TaxAuthority'] . "'");
+	$TaxAuthDescription = DB_fetch_row($Result);
 	$TaxAuthorityName = $TaxAuthDescription[0];
 
 	$pdf->addInfo('Title', _('Taxation Report'));
@@ -298,8 +298,8 @@ if (isset($_POST['TaxAuthority']) and isset($_POST['PrintPDF']) and isset($_POST
 			<td>' . _('Tax Authority To Report On') . ':</td>
 			<td><select required="required" minlength="1" name="TaxAuthority">';
 
-	$result = DB_query("SELECT taxid, description FROM taxauthorities");
-	while ($MyRow = DB_fetch_array($result)) {
+	$Result = DB_query("SELECT taxid, description FROM taxauthorities");
+	while ($MyRow = DB_fetch_array($Result)) {
 		echo '<option value="' . $MyRow['taxid'] . '">' . $MyRow['description'] . '</option>';
 	}
 	echo '</select></td></tr>';

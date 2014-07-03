@@ -6,8 +6,8 @@
 
 include('includes/session.inc');
 
-$result = DB_show_tables('mrprequirements');
-if (DB_num_rows($result) == 0) {
+$Result = DB_show_tables('mrprequirements');
+if (DB_num_rows($Result) == 0) {
 	$Title = _('MRP error');
 	include('includes/header.inc');
 	echo '<br />';
@@ -114,7 +114,7 @@ if (isset($_POST['PrintPDF'])) {
 					   computedcost
 				ORDER BY mrpplannedorders.part,yearmonth ";
 	}
-	$result = DB_query($SQL, '', '', false, true);
+	$Result = DB_query($SQL, '', '', false, true);
 
 	if (DB_error_no() != 0) {
 		$Title = _('MRP Planned Purchase Orders') . ' - ' . _('Problem Report');
@@ -127,7 +127,7 @@ if (isset($_POST['PrintPDF'])) {
 		include('includes/footer.inc');
 		exit;
 	}
-	if (DB_num_rows($result) == 0) { //then there is nothing to print
+	if (DB_num_rows($Result) == 0) { //then there is nothing to print
 		$Title = _('Print MRP Planned Purchase Orders Error');
 		include('includes/header.inc');
 		prnMsg(_('There were no items with planned purchase orders'), 'info');
@@ -152,7 +152,7 @@ if (isset($_POST['PrintPDF'])) {
 	$totalpartcost = 0;
 	$Total_Extcost = 0;
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		$YPos -= $line_height;
 
 		// Use to alternate between lines with transparent and painted background
@@ -367,23 +367,23 @@ function GetPartInfo($part) {
 			ON purchorders.orderno = purchorderdetails.orderno
 			WHERE purchorderdetails.itemcode = '" . $part . "'
 			ORDER BY orddate DESC LIMIT 1";
-	$result = DB_query($SQL);
-	if (DB_num_rows($result) > 0) {
-		$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	if (DB_num_rows($Result) > 0) {
+		$MyRow = DB_fetch_array($Result);
 		$PartInfo[] = ConvertSQLDate($MyRow['maxdate']);
 		$OrderNo = $MyRow['orderno'];
 		$SQL = "SELECT supplierno
 				FROM purchorders
 				WHERE purchorders.orderno = '" . $OrderNo . "'";
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
 		$PartInfo[] = $MyRow['supplierno'];
 		$SQL = "SELECT supplierno
 				FROM purchdata
 				WHERE stockid = '" . $part . "'
 				AND preferred='1'";
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
 		$PartInfo[] = $MyRow['supplierno'];
 		return $PartInfo;
 	} else {

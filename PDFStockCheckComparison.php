@@ -333,10 +333,10 @@ if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 	if ($_POST['ReportOrClose'] == 'ReportAndClose') {
 		//need to print the report first before this but don't risk re-adjusting all the stock!!
 		$SQL = "TRUNCATE TABLE stockcheckfreeze";
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 
 		$SQL = "TRUNCATE TABLE stockcounts";
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 	}
 
 } else {

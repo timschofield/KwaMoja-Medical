@@ -109,8 +109,8 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 					max(stockid) AS tocriteria
 				FROM stockmaster";
 
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/reports.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
 	if (!isset($_POST['FromCriteria']) or !isset($_POST['ToCriteria'])) {

@@ -110,8 +110,8 @@ if (!isset($_POST['Show'])) {
 					AND transdate>='" . FormatDateForSQL($_POST['FromTransDate']) . "'
 					AND transdate<='" . FormatDateForSQL($_POST['ToTransDate']) . "'
 				ORDER BY banktrans.transdate";
-	$result = DB_query($SQL);
-	if (DB_num_rows($result) == 0) {
+	$Result = DB_query($SQL);
+	if (DB_num_rows($Result) == 0) {
 		prnMsg(_('There are no transactions for this account in the date range selected'), 'info');
 	} else {
 		$BankDetailRow = DB_fetch_array($BankResult);
@@ -139,7 +139,7 @@ if (!isset($_POST['Show'])) {
 		$AccountCurrTotal = 0;
 		$LocalCurrTotal = 0;
 
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 
 			$AccountCurrTotal += $MyRow['amount'];
 			$LocalCurrTotal += $MyRow['amount'] / $MyRow['functionalexrate'] / $MyRow['exrate'];

@@ -86,14 +86,14 @@ if (isset($_POST['SearchCust']) and $_SESSION['RequireCustomerSelection'] == 1) 
 
 	$ErrMsg = _('Customer branch records requested cannot be retrieved because');
 	$DbgMsg = _('SQL used to retrieve the customer details was');
-	$result_CustSelect = DB_query($SQL, $ErrMsg, $DbgMsg);
+	$Result_CustSelect = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-	if (DB_num_rows($result_CustSelect) == 1) {
-		$MyRow = DB_fetch_array($result_CustSelect);
+	if (DB_num_rows($Result_CustSelect) == 1) {
+		$MyRow = DB_fetch_array($Result_CustSelect);
 		$SelectedCustomer = trim($MyRow['debtorno']);
 		$SelectedBranch = trim($MyRow['branchcode']);
 		$_POST['JustSelectedACustomer'] = 'Yes';
-	} elseif (DB_num_rows($result_CustSelect) == 0) {
+	} elseif (DB_num_rows($Result_CustSelect) == 0) {
 		prnMsg(_('Sorry') . ' ... ' . _('there are no customer branch records contain the selected text') . ' - ' . _('please alter your search criteria and try again'), 'info');
 	}
 
@@ -158,9 +158,9 @@ if (isset($SelectedCustomer) and isset($_POST['JustSelectedACustomer'])) {
 
 	$ErrMsg = _('The customer branch record of the customer selected') . ': ' . $SelectedCustomer . ' ' . _('cannot be retrieved because');
 	$DbgMsg = _('SQL used to retrieve the branch details was');
-	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-	$MyRow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($Result);
 
 	/* the sales type determines the price list to be used by default the customer of the user is
 	defaulted from the entry of the userid and password.  */
@@ -210,7 +210,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 			<input type="submit" name="SearchCust" value="' . _('Search Now') . '" />
 		</div>';
 
-	if (isset($result_CustSelect)) {
+	if (isset($Result_CustSelect)) {
 
 		echo '<br /><table cellpadding="2">
 						<tr>
@@ -224,7 +224,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 		$j = 1;
 		$k = 0; //row counter to determine background colour
 		$LastCustomer = '';
-		while ($MyRow = DB_fetch_array($result_CustSelect)) {
+		while ($MyRow = DB_fetch_array($Result_CustSelect)) {
 
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
@@ -441,9 +441,9 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 							WHERE  stockmaster.stockid = '" . $_POST['NewItem'] . "'";
 
 				$ErrMsg = _('There is a problem selecting the part because');
-				$result1 = DB_query($SQL, $ErrMsg);
+				$Result1 = DB_query($SQL, $ErrMsg);
 
-				if ($MyRow = DB_fetch_array($result1)) {
+				if ($MyRow = DB_fetch_array($Result1)) {
 
 					$LineNumber = $_SESSION['CreditItems' . $identifier]->LineCounter;
 
@@ -581,8 +581,8 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 
 				$ErrMsg = _('The item details could not be retrieved because');
 				$DbgMsg = _('The SQL used to retrieve the item details but failed was');
-				$result1 = DB_query($SQL, $ErrMsg, $DbgMsg);
-				$MyRow = DB_fetch_array($result1);
+				$Result1 = DB_query($SQL, $ErrMsg, $DbgMsg);
+				$MyRow = DB_fetch_array($Result1);
 
 				$LineNumber = $_SESSION['CreditItems' . $identifier]->LineCounter;
 				/*validate the data returned before adding to the items to credit */
@@ -911,7 +911,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 				WHERE stocktype='F'
 				ORDER BY categorydescription";
 
-		$result1 = DB_query($SQL);
+		$Result1 = DB_query($SQL);
 
 		echo '<br />
 				<table class="selection">
@@ -919,7 +919,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 					<td>' . _('Select a stock category') . ':&nbsp;<select minlength="0" name="StockCat">';
 
 		echo '<option selected="selected" value="All">' . _('All') . '</option>';
-		while ($MyRow1 = DB_fetch_array($result1)) {
+		while ($MyRow1 = DB_fetch_array($Result1)) {
 			if (isset($_POST['StockCat']) and $_POST['StockCat'] == $MyRow1['categoryid']) {
 				echo '<option selected="selected" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 			} else {

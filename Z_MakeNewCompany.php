@@ -37,7 +37,7 @@ if (isset($_POST['submit']) and isset($_POST['NewCompany'])) {
 		/* check for directory existence */
 		if (!file_exists('./companies/' . $_POST['NewCompany']) AND (isset($_FILES['LogoFile']) AND $_FILES['LogoFile']['name'] != '')) {
 
-			$result = $_FILES['LogoFile']['error'];
+			$Result = $_FILES['LogoFile']['error'];
 			$UploadTheLogo = 'Yes'; //Assume all is well to start off with
 			$filename = './companies/' . $_POST['NewCompany'] . '/logo.jpg';
 
@@ -53,8 +53,8 @@ if (isset($_POST['submit']) and isset($_POST['NewCompany'])) {
 				$UploadTheLogo = 'No';
 			} elseif (file_exists($filename)) {
 				prnMsg(_('Attempting to overwrite an existing item image'), 'warn');
-				$result = unlink($filename);
-				if (!$result) {
+				$Result = unlink($filename);
+				if (!$Result) {
 					prnMsg(_('The existing image could not be removed'), 'error');
 					$UploadTheLogo = 'No';
 				}
@@ -63,7 +63,7 @@ if (isset($_POST['submit']) and isset($_POST['NewCompany'])) {
 			if ($_POST['CreateDB'] == TRUE) {
 				/* Need to read in the sql script and process the queries to initate a new DB */
 
-				$result = DB_query('CREATE DATABASE ' . $_POST['NewCompany']);
+				$Result = DB_query('CREATE DATABASE ' . $_POST['NewCompany']);
 				DB_select_database($_POST['NewCompany']);
 
 				$ScriptFileEntries = sizeof($SQLScriptFile);
@@ -89,7 +89,7 @@ if (isset($_POST['submit']) and isset($_POST['NewCompany'])) {
 						}
 						if (mb_strpos($SQLScriptFile[$i], ';') > 0 and !$InAFunction) {
 							$SQL = mb_substr($SQL, 0, mb_strlen($SQL) - 1);
-							$result = DB_query($SQL, $ErrMsg);
+							$Result = DB_query($SQL, $ErrMsg);
 							$SQL = '';
 						}
 
@@ -116,8 +116,8 @@ if (isset($_POST['submit']) and isset($_POST['NewCompany'])) {
 
 			/*OK Now upload the logo */
 			if ($UploadTheLogo == 'Yes') {
-				$result = move_uploaded_file($_FILES['LogoFile']['tmp_name'], $filename);
-				$message = ($result) ? _('File url') . '<a href="' . $filename . '">' . $filename . '</a>' : _('Something is wrong with uploading a file');
+				$Result = move_uploaded_file($_FILES['LogoFile']['tmp_name'], $filename);
+				$message = ($Result) ? _('File url') . '<a href="' . $filename . '">' . $filename . '</a>' : _('Something is wrong with uploading a file');
 			}
 
 		} else {
@@ -148,15 +148,15 @@ if (isset($_POST['submit']) and isset($_POST['NewCompany'])) {
 		unset($_SESSION['CreditItems']);
 
 		$SQL = "UPDATE config SET confvalue='companies/" . $_POST['NewCompany'] . "/EDI__Sent' WHERE confname='EDI_MsgSent'";
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 		$SQL = "UPDATE config SET confvalue='companies/" . $_POST['NewCompany'] . "/EDI_Incoming_Orders' WHERE confname='EDI_Incoming_Orders'";
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 		$SQL = "UPDATE config SET confvalue='companies/" . $_POST['NewCompany'] . "/part_pics' WHERE confname='part_pics_dir'";
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 		$SQL = "UPDATE config SET confvalue='companies/" . $_POST['NewCompany'] . "/reports' WHERE confname='reports_dir'";
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 		$SQL = "UPDATE config SET confvalue='companies/" . $_POST['NewCompany'] . "/EDI_Pending' WHERE confname='EDI_MsgPending'";
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 
 		$ForceConfigReload = true;
 		include('includes/GetConfig.php');

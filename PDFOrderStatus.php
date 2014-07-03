@@ -44,13 +44,13 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate'])) {
 			<td>';
 
 	$SQL = "SELECT categorydescription, categoryid FROM stockcategory WHERE stocktype<>'D' AND stocktype<>'L'";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 
 	echo '<select required="required" minlength="1" name="CategoryID">';
 	echo '<option selected="selected" value="All">' . _('Over All Categories') . '</option>';
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 	}
 	echo '</select></td></tr>';
@@ -71,8 +71,8 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate'])) {
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
 
-	$result = DB_query($SQL);
-	while ($MyRow = DB_fetch_array($result)) {
+	$Result = DB_query($SQL);
+	while ($MyRow = DB_fetch_array($Result)) {
 		echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 	}
 	echo '</select></td></tr>';

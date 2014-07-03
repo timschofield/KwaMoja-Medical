@@ -141,8 +141,8 @@ if (isset($_GET['Edit'])) {
 			FROM fixedassettasks
 			WHERE taskid='" . $_GET['TaskID'] . "'";
 	$ErrMsg = _('The maintenance task details cannot be retrieved because');
-	$result = DB_query($SQL, $ErrMsg);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL, $ErrMsg);
+	$MyRow = DB_fetch_array($Result);
 	$_POST['TaskDescription'] = $MyRow['taskdescription'];
 	$_POST['FrequencyDays'] = $MyRow['frequencydays'];
 	$_POST['UserResponsible'] = $MyRow['userresponsible'];

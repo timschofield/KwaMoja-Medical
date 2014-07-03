@@ -28,8 +28,8 @@ else {
 
 if (!isset($_SESSION['SuppTrans']->SupplierName)) {
 	$SQL = "SELECT suppname FROM suppliers WHERE supplierid='" . $_GET['SupplierID'] . "'";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
 	$SupplierName = $MyRow[0];
 } //!isset($_SESSION['SuppTrans']->SupplierName)
 else {
@@ -78,9 +78,9 @@ if (isset($_GET['SupplierID']) and $_GET['SupplierID'] != '') {
 	$ErrMsg = _('The supplier record selected') . ': ' . $_GET['SupplierID'] . ' ' . _('cannot be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve the supplier details and failed was');
 
-	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-	$MyRow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($Result);
 
 	$_SESSION['SuppTrans']->SupplierName = $MyRow['suppname'];
 	$_SESSION['SuppTrans']->TermsDescription = $MyRow['terms'];
@@ -440,7 +440,7 @@ if (isset($_GET['ReceivePO']) and $_GET['ReceivePO'] != '') {
 						SET status='Completed',
 						stat_comment='" . $StatusComment . "'
 						WHERE orderno='" . $_SESSION['PO' . $identifier]->OrderNo . "'";
-				$result = DB_query($SQL);
+				$Result = DB_query($SQL);
 
 				if ($_SESSION['PO' . $identifier]->GLLink == 1) {
 					EnsureGLEntriesBalance(25, $GRN);
@@ -1000,9 +1000,9 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 
 		$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The sql to check for the previous entry of the same invoice failed');
 		$DbgMsg = _('The following SQL to test for a previous invoice with the same reference from the same supplier was used');
-		$result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
 
-		$MyRow = DB_fetch_row($result);
+		$MyRow = DB_fetch_row($Result);
 		if ($MyRow[0] == 1) {
 			/*Transaction reference already entered */
 			prnMsg(_('The invoice number') . ' : ' . $_POST['SuppReference'] . ' ' . _('has already been entered') . '. ' . _('It cannot be entered again'), 'error');
@@ -1136,11 +1136,11 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 				/*contract postings need to get the WIP from the contract items stock category record
 				 *  debit postings to this WIP account
 				 * the WIP account is tidied up when the contract is closed*/
-				$result = DB_query("SELECT wipact FROM stockcategory
+				$Result = DB_query("SELECT wipact FROM stockcategory
 									INNER JOIN stockmaster ON
 									stockcategory.categoryid=stockmaster.categoryid
 									WHERE stockmaster.stockid='" . $Contract->ContractRef . "'");
-				$WIPRow = DB_fetch_row($result);
+				$WIPRow = DB_fetch_row($Result);
 				$WIPAccount = $WIPRow[0];
 				$SQL = "INSERT INTO gltrans (type,
 											typeno,
@@ -1314,14 +1314,14 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 							if ($EnteredGRN->AssetID != 0) { //then it is an asset
 
 								/*Need to get the asset details  for posting */
-								$result = DB_query("SELECT costact
+								$Result = DB_query("SELECT costact
 													FROM fixedassets INNER JOIN fixedassetcategories
 													ON fixedassets.assetcategoryid= fixedassetcategories.categoryid
 													WHERE assetid='" . $EnteredGRN->AssetID . "'");
-								if (DB_num_rows($result) != 0) { // the asset exists
-									$AssetRow = DB_fetch_array($result);
+								if (DB_num_rows($Result) != 0) { // the asset exists
+									$AssetRow = DB_fetch_array($Result);
 									$GLCode = $AssetRow['costact'];
-								} //DB_num_rows($result) != 0
+								} //DB_num_rows($Result) != 0
 							} //the item was an asset received on a purchase order
 
 							$SQL = "INSERT INTO gltrans (type,
@@ -1537,10 +1537,10 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 						 * b) If a WeightedAverageCosting system and the stock quantity on hand now is negative then the cost that has gone to sales analysis and the cost of sales stock movement records will have been incorrect ... attempt to fix it retrospectively
 						 */
 						/*Get the location that the stock was booked into */
-						$result = DB_query("SELECT intostocklocation
+						$Result = DB_query("SELECT intostocklocation
 											FROM purchorders
 											WHERE orderno='" . $EnteredGRN->PONo . "'");
-						$LocRow = DB_fetch_array($result);
+						$LocRow = DB_fetch_array($Result);
 						$LocCode = $LocRow['intostocklocation'];
 
 						/* First update the stockmoves delivery cost */
@@ -1551,7 +1551,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 											AND loccode='" . $LocCode . "'
 											AND transno='" . $EnteredGRN->GRNBatchNo . "'";
 
-						$result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
+						$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
 
 						if ($_SESSION['WeightedAverageCosting'] == 1) {
 							/*
@@ -1637,7 +1637,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 								 * Only in the stock location where the purchase order was received
 								 * into - if the stock was transferred to another location then
 								 * we cannot adjust for this */
-								$result = DB_query("SELECT stkmoveno,
+								$Result = DB_query("SELECT stkmoveno,
 															type,
 															qty,
 															standardcost
@@ -1649,10 +1649,10 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 													ORDER BY stkmoveno DESC");
 								$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The stock movements for invoices cannot be updated for the cost variances on this purchase invoice');
 								$QuantityVarianceAllocated = $EnteredGRN->This_QuantityInv;
-								while ($StkMoveRow = DB_fetch_array($result) and $QuantityVarianceAllocated > 0) {
+								while ($StkMoveRow = DB_fetch_array($Result) and $QuantityVarianceAllocated > 0) {
 									if ($StkMoveRow['qty'] + $QuantityVarianceAllocated > 0) {
 										if ($StkMoveRow['type'] == 10) { //its a sales invoice
-											$result = DB_query("UPDATE stockmoves
+											$Result = DB_query("UPDATE stockmoves
 																SET standardcost = '" . $ActualCost . "'
 																WHERE stkmoveno = '" . $StkMoveRow['stkmoveno'] . "'", $ErrMsg, $DbgMsg, True);
 										} //$StkMoveRow['type'] == 10
@@ -1668,7 +1668,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 										} //$StkMoveRow['type'] == 10
 									}
 									$QuantityVarianceAllocated += $StkMoveRow['qty'];
-								} //$StkMoveRow = DB_fetch_array($result) and $QuantityVarianceAllocated > 0
+								} //$StkMoveRow = DB_fetch_array($Result) and $QuantityVarianceAllocated > 0
 							} // end if the quantity being invoiced here is greater than the current stock on hand
 
 							/*Now to update the stock cost with the new weighted average */
@@ -1688,8 +1688,8 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 										FROM stockcosts
 										WHERE stockid='" . $EnteredGRN->ItemCode . "'
 											AND succeeded=0";
-							$result = DB_query($SQL);
-							$MyRow = DB_fetch_array($result);
+							$Result = DB_query($SQL);
+							$MyRow = DB_fetch_array($Result);
 							$OldMaterialCost = $MyRow['materialcost'];
 							$OldLabourCost = $MyRow['labourcost'];
 							$OldOverheadCost = $MyRow['overheadcost'];
@@ -1846,10 +1846,10 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 			/*Now update the asset cost in fixedassets table */
-			$result = DB_query("SELECT datepurchased
+			$Result = DB_query("SELECT datepurchased
 								FROM fixedassets
 								WHERE assetid='" . $AssetAddition->AssetID . "'");
-			$AssetRow = DB_fetch_array($result);
+			$AssetRow = DB_fetch_array($Result);
 
 			$SQL = "UPDATE fixedassets SET cost = cost + " . ($AssetAddition->Amount / $_SESSION['SuppTrans']->ExRate);
 			if ($AssetRow['datepurchased'] == '0000-00-00') {

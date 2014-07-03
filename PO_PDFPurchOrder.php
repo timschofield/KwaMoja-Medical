@@ -103,8 +103,8 @@ if (isset($OrderNo) and $OrderNo != '' and $OrderNo > 0 and $OrderNo != 'Preview
 				INNER JOIN www_users users2
 					ON purchorders.authoriser=users2.userid
 				WHERE purchorders.orderno='" . $OrderNo . "'";
-	$result = DB_query($SQL, $ErrMsg);
-	if (DB_num_rows($result) == 0) {
+	$Result = DB_query($SQL, $ErrMsg);
+	if (DB_num_rows($Result) == 0) {
 		/*There is no order header returned */
 		$Title = _('Print Purchase Order Error');
 		include('includes/header.inc');
@@ -118,11 +118,11 @@ if (isset($OrderNo) and $OrderNo != '' and $OrderNo > 0 and $OrderNo != 'Preview
 			</table>';
 		include('includes/footer.inc');
 		exit();
-	} //DB_num_rows($result) == 0
-	elseif (DB_num_rows($result) == 1) {
+	} //DB_num_rows($Result) == 0
+	elseif (DB_num_rows($Result) == 1) {
 		/*There is only one order header returned  (as it should be!)*/
 
-		$POHeader = DB_fetch_array($result);
+		$POHeader = DB_fetch_array($Result);
 
 		if ($POHeader['status'] != 'Authorised' and $POHeader['status'] != 'Printed') {
 			include('includes/header.inc');
@@ -212,14 +212,14 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 				WHERE orderno ='" . $OrderNo . "'
 				ORDER BY itemcode";
 		/*- ADDED: Sort by our item code -*/
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 	} //$OrderNo != 'Preview'
-	if ($OrderNo == 'Preview' or DB_num_rows($result) > 0) {
+	if ($OrderNo == 'Preview' or DB_num_rows($Result) > 0) {
 		/*Yes there are line items to start the ball rolling with a page header */
 		include('includes/PO_PDFOrderPageHeader.inc');
 		$YPos = $Page_Height - $FormDesign->Data->y;
 		$OrderTotal = 0;
-		while ((isset($OrderNo) and $OrderNo == 'Preview') or (isset($result) and !is_bool($result) and $POLine = DB_fetch_array($result))) {
+		while ((isset($OrderNo) and $OrderNo == 'Preview') or (isset($Result) and !is_bool($Result) and $POLine = DB_fetch_array($Result))) {
 			/* If we are previewing the order then fill the
 			 * order line with dummy data */
 			if ($OrderNo == 'Preview') {
@@ -310,7 +310,7 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 		}
 		$pdf->addText($FormDesign->OrderTotalCaption->x, $Page_Height - $FormDesign->OrderTotalCaption->y, $FormDesign->OrderTotalCaption->FontSize, _('Order Total - excl tax') . ' ' . $POHeader['currcode']);
 		$LeftOvers = $pdf->addTextWrap($FormDesign->OrderTotal->x, $Page_Height - $FormDesign->OrderTotal->y, $FormDesign->OrderTotal->Length, $FormDesign->OrderTotal->FontSize, $DisplayOrderTotal, 'right');
-	} //$OrderNo == 'Preview' or DB_num_rows($result) > 0
+	} //$OrderNo == 'Preview' or DB_num_rows($Result) > 0
 
 	/*end if there are order details to show on the order - or its a preview*/
 
@@ -368,7 +368,7 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 										status = 'Printed',
 										stat_comment = '" . htmlspecialchars($StatusComment, ENT_QUOTES, 'UTF-8') . "'
 				WHERE purchorders.orderno = '" . $OrderNo . "'";
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 	} //$ViewingOnly == 0 and $Success == 1
 	include('includes/footer.inc');
 } //isset($MakePDFThenDisplayIt) OR isset($MakePDFThenEmailIt)

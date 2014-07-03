@@ -121,8 +121,8 @@ if (!isset($_POST['Show'])) {
 					AND periodno>='" . $_POST['FromPeriod'] . "'
 				ORDER BY banktrans.type,
 						banktrans.transdate";
-	$result = DB_query($SQL);
-	if (DB_num_rows($result) == 0) {
+	$Result = DB_query($SQL);
+	if (DB_num_rows($Result) == 0) {
 		prnMsg(_('There are no transactions for this account in the date range selected'), 'info');
 	} else {
 		$SQL = "SELECT lastdate_in_period
@@ -160,7 +160,7 @@ if (!isset($_POST['Show'])) {
 		$PaymentsTotal = 0;
 		$LastType = 12;
 
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 
 			if ($MyRow['typeid'] == 12 or $MyRow['typeid'] == 2) {
 				$ReceiptsTotal += $MyRow['amount'];

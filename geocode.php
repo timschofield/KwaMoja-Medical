@@ -10,8 +10,8 @@ include('includes/header.inc');
 
 $SQL = "SELECT * FROM geocode_param WHERE 1";
 $ErrMsg = _('An error occurred in retrieving the information');
-$resultgeo = DB_query($SQL, $ErrMsg);
-$row = DB_fetch_array($resultgeo);
+$Resultgeo = DB_query($SQL, $ErrMsg);
+$row = DB_fetch_array($Resultgeo);
 
 $api_key = $row['geocode_key'];
 $center_long = $row['center_long'];
@@ -28,12 +28,12 @@ echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/
 // select all the customer branches
 $SQL = "SELECT * FROM custbranch WHERE 1";
 $ErrMsg = _('An error occurred in retrieving the information');
-$result = DB_query($SQL, $ErrMsg);
+$Result = DB_query($SQL, $ErrMsg);
 
 // select all the suppliers
 $SQL = "SELECT * FROM suppliers WHERE 1";
 $ErrMsg = _('An error occurred in retrieving the information');
-$result2 = DB_query($SQL, $ErrMsg);
+$Result2 = DB_query($SQL, $ErrMsg);
 
 // Initialize delay in geocode speed
 $delay = 0;
@@ -42,7 +42,7 @@ $base_url = "http://" . MAPS_HOST . "/maps/api/geocode/xml?address=";
 // Iterate through the customer branch rows, geocoding each address
 
 
-while ($row = DB_fetch_array($result)) {
+while ($row = DB_fetch_array($Result)) {
 	$geocode_pending = true;
 
 	while ($geocode_pending) {
@@ -87,7 +87,7 @@ while ($row = DB_fetch_array($result)) {
 }
 
 // Iterate through the Supplier rows, geocoding each address
-while ($row2 = DB_fetch_array($result2)) {
+while ($row2 = DB_fetch_array($Result2)) {
 	$geocode_pending = true;
 
 	while ($geocode_pending) {

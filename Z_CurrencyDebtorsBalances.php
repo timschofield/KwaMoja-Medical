@@ -16,14 +16,14 @@ $SQL = "SELECT SUM(ovamount+ovgst+ovdiscount+ovfreight-alloc) AS currencybalance
 	ON debtorsmaster.currcode=currencies.currabrev
 	WHERE (ovamount+ovgst+ovdiscount+ovfreight-alloc)<>0 GROUP BY currcode";
 
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 
 
 $LocalTotal = 0;
 
 echo '<table>';
 
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 
 	echo '<tr>
 			<td>' . _('Total Debtor Balances in') . ' </td>

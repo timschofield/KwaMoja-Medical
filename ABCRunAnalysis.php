@@ -19,7 +19,7 @@ if (isset($_POST['Submit'])) {
 		exit;
 	}
 
-	$result = DB_query("DELETE FROM abcstock WHERE groupid='" . $_POST['GroupID'] . "'");
+	$Result = DB_query("DELETE FROM abcstock WHERE groupid='" . $_POST['GroupID'] . "'");
 
 	/*Firstly get the parameters needed */
 	$SQL = "SELECT groupid,
@@ -32,14 +32,14 @@ if (isset($_POST['Submit'])) {
 					months
 				FROM abcgroups
 				WHERE groupid='" . $_POST['GroupID'] . "'";
-	$result = DB_query($SQL);
-	$Parameters = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$Parameters = DB_fetch_array($Result);
 
-	$result = DB_query("DROP TABLE IF EXISTS tempabc");
+	$Result = DB_query("DROP TABLE IF EXISTS tempabc");
 	$SQL = "CREATE TEMPORARY TABLE tempabc (
 				stockid varchar(20),
 				consumption INT(11)) DEFAULT CHARSET=utf8";
-	$result = DB_query($SQL, _('Create of tempabc failed because'));
+	$Result = DB_query($SQL, _('Create of tempabc failed because'));
 
 	$CurrentPeriod = GetPeriod(date($_SESSION['DefaultDateFormat']));
 
@@ -53,11 +53,11 @@ if (isset($_POST['Submit'])) {
 				GROUP BY stockid
 				ORDER BY consumption)";
 	$ErrMsg = _('Problem populating tempabc table');
-	$result = DB_query($SQL, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
 	$SQL = "SELECT COUNT(stockid) AS numofitems FROM tempabc WHERE consumption<>0";
-	$result = DB_query($SQL, _('Problem counting items'));
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL, _('Problem counting items'));
+	$MyRow = DB_fetch_array($Result);
 	$NumberOfItems = $MyRow['numofitems'];
 	$AItems = round($NumberOfItems * $Parameters['apercentage'] / 100, 0);
 	$BItems = round($NumberOfItems * $Parameters['bpercentage'] / 100, 0);
@@ -68,10 +68,10 @@ if (isset($_POST['Submit'])) {
 				FROM tempabc
 				WHERE consumption<>0
 				ORDER BY consumption DESC";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	$i = 1;
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		switch ($i) {
 			case ($i <= $AItems):
 				$InsertSQL = "INSERT INTO abcstock VALUES(
@@ -104,7 +104,7 @@ if (isset($_POST['Submit'])) {
 										'" . $Parameters['zerousage'] . "'
 									FROM tempabc
 									WHERE consumption=0)";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	$SQL = "INSERT INTO abcstock (SELECT '" . $_POST['GroupID'] . "',
 										stockmaster.stockid,
@@ -113,9 +113,9 @@ if (isset($_POST['Submit'])) {
 									LEFT JOIN tempabc
 										ON stockmaster.stockid=tempabc.stockid
 									WHERE consumption is NULL)";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
-	$result = DB_query("DROP TABLE IF EXISTS tempabc");
+	$Result = DB_query("DROP TABLE IF EXISTS tempabc");
 
 	prnMsg(_('The ABC analysis has been successfully run'), 'success');
 } else {
@@ -136,10 +136,10 @@ if (isset($_POST['Submit'])) {
 	$SQL = "SELECT groupid,
 					groupname
 				FROM abcgroups";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '<option value=""></option>';
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		echo '<option value="' . $MyRow['groupid'] . '">' . $MyRow['groupname'] . '</option>';
 	}
 

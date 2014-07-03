@@ -15,7 +15,7 @@ if (isset($_GET['Cancel'])) {
 	$Title = _('Amend an Internal Materials Request');
 	$SQL = "UPDATE stockrequest SET closed=1
 				WHERE dispatchid='" . $_GET['Cancel'] . "'";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	$_GET['Edit'] = 'Yes';
 }
 
@@ -34,8 +34,8 @@ if (isset($_GET['Amend'])) {
 					narrative
 				FROM stockrequest
 				WHERE dispatchid='" . $_GET['Amend'] . "'";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 	$_SESSION['Request']->DispatchDate = ConvertSQLDate($MyRow['despatchdate']);
 	$_SESSION['Request']->ID = $_GET['Amend'];
 	$_SESSION['Request']->UserID = $MyRow['userid'];
@@ -114,7 +114,7 @@ if (isset($_GET['Edit']) and $_GET['Edit'] == 'Yes') {
 				WHERE stockrequest.closed=0
 					AND authorised=0
 					AND w2.userid='" . $_SESSION['UserID'] . "'";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -130,7 +130,7 @@ if (isset($_GET['Edit']) and $_GET['Edit'] == 'Yes') {
 			<th>' . _('Narrative') . '</th>
 		</tr>';
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 
 		echo '<tr>
 				<td>' . $MyRow['dispatchid'] . '</td>
@@ -237,8 +237,8 @@ if (isset($_POST['Submit'])) {
 		foreach ($_SESSION['Request']->LineItems as $LineItems) {
 			$SQL = "SELECT COUNT(stockid) as total FROM stockrequestitems
 									WHERE dispatchid='" . $_SESSION['Request']->ID . "'
-										AND dispatchitemsid='" . $LineItems->LineNumber . "'";			$result = DB_query($SQL);
-			$MyRow = DB_fetch_array($result);
+										AND dispatchitemsid='" . $LineItems->LineNumber . "'";			$Result = DB_query($SQL);
+			$MyRow = DB_fetch_array($Result);
 			if ($MyRow['total'] == 0) {
 				$LineSQL = "INSERT INTO stockrequestitems (dispatchitemsid,
 															dispatchid,
@@ -281,7 +281,7 @@ if (isset($_POST['Submit'])) {
 				$mail = new htmlMimeMail();
 				$mail->setSubject($EmailSubject);
 				$mail->setText($ConfirmationText);
-				$result = SendmailBySmtp($mail, array(
+				$Result = SendmailBySmtp($mail, array(
 					$myEmail['email']
 				));
 			}
@@ -361,10 +361,10 @@ if ($_SESSION['AllowedDepartment'] == 0) {
 			WHERE departmentid = '" . $_SESSION['AllowedDepartment'] . "'
 			ORDER BY description";
 }
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 echo '<td><select required="required" minlength="1" name="Department">
 		<option value="">' . _('Select a Department') . '</option>';
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	if (isset($_SESSION['Request']->Department) and $_SESSION['Request']->Department == $MyRow['departmentid']) {
 		echo '<option selected="True" value="' . $MyRow['departmentid'] . '">' . htmlspecialchars($MyRow['description'], ENT_QUOTES, 'UTF-8') . '</option>';
 	} else {
@@ -393,10 +393,10 @@ if ($_SESSION['RestrictLocations'] == 0) {
 				ORDER BY locationname";
 }
 
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 echo '<td><select required="required" minlength="1" name="Location">
 		<option value="">' . _('Select a Location') . '</option>';
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	if (isset($_SESSION['Request']->Location) and $_SESSION['Request']->Location == $MyRow['loccode']) {
 		echo '<option selected="True" value="' . $MyRow['loccode'] . '">' . $MyRow['loccode'] . ' - ' . htmlspecialchars($MyRow['locationname'], ENT_QUOTES, 'UTF-8') . '</option>';
 	} else {
@@ -482,8 +482,8 @@ $SQL = "SELECT stockcategory.categoryid,
 			WHERE stockcategory.categoryid = internalstockcatrole.categoryid
 				AND internalstockcatrole.secroleid= " . $_SESSION['AccessLevel'] . "
 			ORDER BY stockcategory.categorydescription";
-$result1 = DB_query($SQL);
-if (DB_num_rows($result1) == 0) {
+$Result1 = DB_query($SQL);
+if (DB_num_rows($Result1) == 0) {
 	echo '<p class="bad">' . _('Problem Report') . ':<br />' . _('There are no stock categories currently defined please use the link below to set them up') . '</p>';
 	echo '<br />
 		<a href="' . $RootPath . '/StockCategories.php">' . _('Define Stock Categories') . '</a>';
@@ -501,7 +501,7 @@ if ($_POST['StockCat'] == 'All') {
 } else {
 	echo '<option value="All">' . _('All Categories') . '</option>';
 }
-while ($MyRow1 = DB_fetch_array($result1)) {
+while ($MyRow1 = DB_fetch_array($Result1)) {
 	if ($MyRow1['categoryid'] == $_POST['StockCat']) {
 		echo '<option selected="True" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 	} else {

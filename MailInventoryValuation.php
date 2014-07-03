@@ -249,11 +249,11 @@ if ($ListCount == 0) {
 	$mail->addAttachment($attachment, 'InventoryReport.pdf', 'application/pdf');
 	if ($_SESSION['SmtpSetting'] == 0) {
 		$mail->setFrom($_SESSION['CompanyRecord']['coyname'] . '<' . $_SESSION['CompanyRecord']['email'] . '>');
-		$result = $mail->send($Recipients);
+		$Result = $mail->send($Recipients);
 	} else {
-		$result = SendmailBySmtp($mail, $Recipients);
+		$Result = SendmailBySmtp($mail, $Recipients);
 	}
-	if ($result) {
+	if ($Result) {
 		$Title = _('Print Inventory Valuation');
 		include('includes/header.inc');
 		prnMsg(_('The Inventory valuation report has been mailed'), 'success');

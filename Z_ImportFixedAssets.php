@@ -151,14 +151,14 @@ if ($_FILES['SelectedAssetFile']['name']) { //start file processing
 			echo '<br />' . _('Row') . ':' . $Row . ' - ' . _('Invalid depreciation type') . ': ' . $DepnType;
 			$InputError = true;
 		}
-		$result = DB_query("SELECT categoryid FROM fixedassetcategories WHERE categoryid='" . $AssetCategoryID . "'");
-		if (DB_num_rows($result) == 0) {
+		$Result = DB_query("SELECT categoryid FROM fixedassetcategories WHERE categoryid='" . $AssetCategoryID . "'");
+		if (DB_num_rows($Result) == 0) {
 			$InputError = true;
 			prnMsg(_('The asset category code entered must be exist in the assetcategories table'), 'error');
 			echo '<br />' . _('Row') . ':' . $Row . ' - ' . _('Invalid asset category') . ': ' . $AssetCategoryID;
 		}
-		$result = DB_query("SELECT locationid FROM fixedassetlocations WHERE locationid='" . $AssetLocationCode . "'");
-		if (DB_num_rows($result) == 0) {
+		$Result = DB_query("SELECT locationid FROM fixedassetlocations WHERE locationid='" . $AssetLocationCode . "'");
+		if (DB_num_rows($Result) == 0) {
 			$InputError = true;
 			prnMsg(_('The asset location code entered must be exist in the asset locations table'), 'error');
 			echo '<br />' . _('Row') . ':' . $Row . ' - ' . _('Invalid asset location code') . ': ' . $AssetLocationCode;
@@ -205,7 +205,7 @@ if ($_FILES['SelectedAssetFile']['name']) { //start file processing
 
 			$ErrMsg = _('The asset could not be added because');
 			$DbgMsg = _('The SQL that was used to add the asset and failed was');
-			$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 			if (DB_error_no() == 0) { //the insert of the new code worked so bang in the fixedassettrans records too
 

@@ -28,10 +28,10 @@ $SQL = "SELECT typeid,
 		WHERE typeid >= 10
 		AND typeid <= 14";
 
-$resultTypes = DB_query($SQL);
+$ResultTypes = DB_query($SQL);
 
 echo '<option value="All">' . _('All') . '</option>';
-while ($MyRow = DB_fetch_array($resultTypes)) {
+while ($MyRow = DB_fetch_array($ResultTypes)) {
 	if (isset($_POST['TransType'])) {
 		if ($MyRow['typeid'] == $_POST['TransType']) {
 			echo '<option selected="selected" value="' . $MyRow['typeid'] . '">' . $MyRow['typename'] . '</option>';

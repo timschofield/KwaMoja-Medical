@@ -68,7 +68,7 @@ if (isset($_POST['Modify'])) {
 			$ErrMsg = _('The user alterations could not be processed because');
 			$DbgMsg = _('The SQL that was used to update the user and failed was');
 
-			$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 			prnMsg(_('The user settings have been updated') . '. ' . _('Be sure to remember your password for the next time you login'), 'success');
 		} else {
@@ -85,7 +85,7 @@ if (isset($_POST['Modify'])) {
 			$ErrMsg = _('The user alterations could not be processed because');
 			$DbgMsg = _('The SQL that was used to update the user and failed was');
 
-			$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 			prnMsg(_('The user settings have been updated'), 'success');
 		}
@@ -187,8 +187,8 @@ echo '</select></td></tr>
 		<td>' . _('Email') . ':</td>';
 
 $SQL = "SELECT email from www_users WHERE userid = '" . $_SESSION['UserID'] . "'";
-$result = DB_query($SQL);
-$MyRow = DB_fetch_array($result);
+$Result = DB_query($SQL);
+$MyRow = DB_fetch_array($Result);
 if (!isset($_POST['email'])) {
 	$_POST['email'] = $MyRow['email'];
 }

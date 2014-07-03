@@ -339,7 +339,7 @@ echo '<tr>
 echo '</table></div>';
 
 if (!isset($SelectedStockItem)) {
-	$result1 = DB_query("SELECT categoryid,
+	$Result1 = DB_query("SELECT categoryid,
 							categorydescription
 						FROM stockcategory
 						ORDER BY categorydescription");
@@ -351,7 +351,7 @@ if (!isset($SelectedStockItem)) {
 	echo '<tr><td>' . _('Select a stock category') . ':';
 	echo '<select minlength="0" name="StockCat">';
 
-	while ($MyRow1 = DB_fetch_array($result1)) {
+	while ($MyRow1 = DB_fetch_array($Result1)) {
 		if (isset($_POST['StockCat']) and $MyRow1['categoryid'] == $_POST['StockCat']) {
 			echo '<option selected="selected" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 		} else {

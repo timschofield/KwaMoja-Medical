@@ -133,7 +133,7 @@ if (isset($_POST['PrintLabels']) and isset($_POST['NoOfLabels']) and $_POST['NoO
 }
 if (isset($_POST['PrintLabels']) and $NoOfLabels > 0) {
 
-	$result = DB_query("SELECT 	description,
+	$Result = DB_query("SELECT 	description,
 								pagewidth*" . $PtsPerMM . " as page_width,
 								pageheight*" . $PtsPerMM . " as page_height,
 								width*" . $PtsPerMM . " as label_width,
@@ -144,9 +144,9 @@ if (isset($_POST['PrintLabels']) and $NoOfLabels > 0) {
 								leftmargin*" . $PtsPerMM . " as label_leftmargin
 						FROM labels
 						WHERE labelid='" . $_POST['LabelID'] . "'");
-	$LabelDimensions = DB_fetch_array($result);
+	$LabelDimensions = DB_fetch_array($Result);
 
-	$result = DB_query("SELECT fieldvalue,
+	$Result = DB_query("SELECT fieldvalue,
 								vpos,
 								hpos,
 								fontsize,
@@ -155,7 +155,7 @@ if (isset($_POST['PrintLabels']) and $NoOfLabels > 0) {
 						WHERE labelid = '" . $_POST['LabelID'] . "'");
 	$LabelFields = array();
 	$i = 0;
-	while ($LabelFieldRow = DB_fetch_array($result)) {
+	while ($LabelFieldRow = DB_fetch_array($Result)) {
 		if ($LabelFieldRow['fieldvalue'] == 'itemcode') {
 			$LabelFields[$i]['FieldValue'] = 'stockid';
 		} elseif ($LabelFieldRow['fieldvalue'] == 'itemdescription') {

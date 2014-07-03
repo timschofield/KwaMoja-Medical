@@ -83,7 +83,7 @@ if (isset($_POST['submit'])) {
 
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 
 		prnMsg($msg, 'success');
 
@@ -101,9 +101,9 @@ if (isset($_POST['submit'])) {
 		   WHERE stocktype='" . $SelectedType . "'";
 
 	$ErrMsg = _('The number of stock categories using this stock type could not be retrieved');
-	$result = DB_query($SQL, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
-	$MyRow = DB_fetch_row($result);
+	$MyRow = DB_fetch_row($Result);
 	if ($MyRow[0] > 0) {
 		prnMsg(_('Cannot delete this stock type because stock categories exist using it') . '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('categories using this type'), 'error');
 
@@ -111,7 +111,7 @@ if (isset($_POST['submit'])) {
 
 		$SQL = "DELETE FROM stocktypes WHERE type='" . $SelectedType . "'";
 		$ErrMsg = _('The Stock Type record could not be deleted because');
-		$result = DB_query($SQL, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 		prnMsg(_('Stock type') . ' ' . $SelectedType . ' ' . _('has been deleted'), 'success');
 		unset($SelectedType);
 		unset($_GET['delete']);
@@ -139,7 +139,7 @@ if (!isset($SelectedType)) {
 					name,
 					physicalitem
 				FROM stocktypes";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '<table class="selection">
 			<tr>
@@ -150,7 +150,7 @@ if (!isset($SelectedType)) {
 
 	$k = 0; //row colour counter
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -200,8 +200,8 @@ if (!isset($_GET['delete'])) {
 				FROM stocktypes
 				WHERE type='" . $SelectedType . "'";
 
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
 
 		$_POST['TypeAbbrev'] = $MyRow['type'];
 		$_POST['StockType'] = $MyRow['name'];

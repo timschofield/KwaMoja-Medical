@@ -300,11 +300,11 @@ if (isset($_POST['CloseContract']) and $_SESSION['Contract' . $identifier]->Stat
 		 *  If work done on the contract is a write off then the user must also write off the stock of the contract item as a separate job
 		 */
 
-		$result = DB_query("SELECT qtyrecd FROM woitems
+		$Result = DB_query("SELECT qtyrecd FROM woitems
 							WHERE stockid='" . $_SESSION['Contract' . $identifier]->ContractRef . "'
 							AND wo='" . $_SESSION['Contract' . $identifier]->WO . "'");
-		if (DB_num_rows($result) == 1) {
-			$MyRow = DB_fetch_row($result);
+		if (DB_num_rows($Result) == 1) {
+			$MyRow = DB_fetch_row($Result);
 			if ($MyRow[0] == 0) { //then the contract wo has not been received (it will only ever be for 1 item)
 
 				$WOReceiptNo = GetNextTransNo(26);

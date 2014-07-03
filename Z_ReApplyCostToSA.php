@@ -14,11 +14,11 @@ $SQL = "SELECT MonthName(lastdate_in_period) AS mnth,
 				periodno
 			FROM periods";
 echo '<div class="centre">' . _('Select the Period to update the costs for') . ':<select minlength="0" name="PeriodNo">';
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 
 echo '<option selected="selected" value="0">' . _('No Period Selected') . '</option>';
 
-while ($PeriodInfo = DB_fetch_array($result)) {
+while ($PeriodInfo = DB_fetch_array($Result)) {
 
 	echo '<option value="' . $PeriodInfo['periodno'] . '">' . $PeriodInfo['mnth'] . ' ' . $PeriodInfo['yr'] . '</option>';
 
@@ -49,9 +49,9 @@ if (isset($_POST['UpdateSalesAnalysis']) and $_POST['PeriodNo'] != 0) {
 
 
 	$ErrMsg = _('Could not retrieve the sales analysis records to be updated because');
-	$result = DB_query($SQL, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
-	while ($ItemsToUpdate = DB_fetch_array($result)) {
+	while ($ItemsToUpdate = DB_fetch_array($Result)) {
 
 		if ($ItemsToUpdate['mbflag'] == 'A') {
 			$SQL = "SELECT SUM(stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost) AS standardcost

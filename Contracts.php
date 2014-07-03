@@ -107,7 +107,7 @@ echo '<div class="toplink"><a href="' . $RootPath . '/SelectContract.php">' . _(
 //attempting to upload the drawing image file
 if (isset($_FILES['Drawing']) and $_FILES['Drawing']['name'] != '' and $_SESSION['Contract' . $identifier]->ContractRef != '') {
 
-	$result = $_FILES['Drawing']['error'];
+	$Result = $_FILES['Drawing']['error'];
 	$UploadTheFile = 'Yes'; //Assume all is well to start off with
 	$filename = $_SESSION['part_pics_dir'] . '/' . $_SESSION['Contract' . $identifier]->ContractRef . '.jpg';
 
@@ -123,16 +123,16 @@ if (isset($_FILES['Drawing']) and $_FILES['Drawing']['name'] != '' and $_SESSION
 		$UploadTheFile = 'No';
 	} elseif (file_exists($filename)) {
 		prnMsg(_('Attempting to overwrite an existing item image'), 'warn');
-		$result = unlink($filename);
-		if (!$result) {
+		$Result = unlink($filename);
+		if (!$Result) {
 			prnMsg(_('The existing image could not be removed'), 'error');
 			$UploadTheFile = 'No';
 		}
 	}
 
 	if ($UploadTheFile == 'Yes') {
-		$result = move_uploaded_file($_FILES['Drawing']['tmp_name'], $filename);
-		$message = ($result) ? _('File url') . '<a href="' . $filename . '">' . $filename . '</a>' : _('Something is wrong with uploading the file');
+		$Result = move_uploaded_file($_FILES['Drawing']['tmp_name'], $filename);
+		$message = ($Result) ? _('File url') . '<a href="' . $filename . '">' . $filename . '</a>' : _('Something is wrong with uploading the file');
 	}
 }
 
@@ -234,8 +234,8 @@ if (isset($_POST['CommitContract']) or isset($_POST['CreateQuotation'])) {
 	}
 
 	//The contractRef cannot be the same as an existing stockid or contractref
-	$result = DB_query("SELECT stockid FROM stockmaster WHERE stockid='" . $_POST['ContractRef'] . "'");
-	if (DB_num_rows($result) == 1 and $_SESSION['Contract' . $identifier]->Status == 0) {
+	$Result = DB_query("SELECT stockid FROM stockmaster WHERE stockid='" . $_POST['ContractRef'] . "'");
+	if (DB_num_rows($Result) == 1 and $_SESSION['Contract' . $identifier]->Status == 0) {
 		prnMsg(_('The contract reference cannot be the same as a previously created stock item. Please modify the contract reference before continuing'), 'error');
 		$InputError = true;
 	}
@@ -264,12 +264,12 @@ if (isset($_POST['CommitContract']) or isset($_POST['CreateQuotation'])) {
 		$_SESSION['Contract' . $identifier]->ExRate = filter_number_format($_POST['ExRate']);
 
 		/*Get the first work centre for the users location - until we set this up properly */
-		$result = DB_query("SELECT code FROM workcentres WHERE location='" . $_SESSION['Contract' . $identifier]->LocCode . "'");
-		if (DB_num_rows($result) > 0) {
-			$WorkCentreRow = DB_fetch_row($result);
+		$Result = DB_query("SELECT code FROM workcentres WHERE location='" . $_SESSION['Contract' . $identifier]->LocCode . "'");
+		if (DB_num_rows($Result) > 0) {
+			$WorkCentreRow = DB_fetch_row($Result);
 			$WorkCentre = $WorkCentreRow[0];
 		} else { //need to add a default work centre for the location
-			$result = DB_query("INSERT INTO workcentres (code,
+			$Result = DB_query("INSERT INTO workcentres (code,
 														location,
 														description,
 														overheadrecoveryact)
@@ -295,9 +295,9 @@ if (isset($_POST['CommitContract']) or isset($_POST['CreateQuotation'])) {
 			FROM contracts
 			WHERE contractref='" . $_POST['ContractRef'] . "'";
 
-	$result = DB_query($SQL);
-	if (DB_num_rows($result) == 1) { // then we have an existing contract with this contractref
-		$ExistingContract = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	if (DB_num_rows($Result) == 1) { // then we have an existing contract with this contractref
+		$ExistingContract = DB_fetch_array($Result);
 		if ($ExistingContract['debtorno'] != $_SESSION['Contract' . $identifier]->DebtorNo) {
 			prnMsg(_('The contract reference cannot be the same as a previously created contract for another customer. Please modify the contract reference before continuing'), 'error');
 			$InputError = true;
@@ -313,9 +313,9 @@ if (isset($_POST['CommitContract']) or isset($_POST['CreateQuotation'])) {
 										exrate = '" . filter_number_format($_POST['ExRate']) . "'
 							WHERE contractref ='" . $_POST['ContractRef'] . "'";
 			$ErrMsg = _('Cannot update the contract because');
-			$result = DB_query($SQL, $ErrMsg);
+			$Result = DB_query($SQL, $ErrMsg);
 			/* also need to update the items on the contract BOM  - delete the existing contract BOM then add these items*/
-			$result = DB_query("DELETE FROM contractbom WHERE contractref='" . $_POST['ContractRef'] . "'");
+			$Result = DB_query("DELETE FROM contractbom WHERE contractref='" . $_POST['ContractRef'] . "'");
 			$ErrMsg = _('Could not add a component to the contract bill of material');
 			foreach ($_SESSION['Contract' . $identifier]->ContractBOM as $Component) {
 				$SQL = "INSERT INTO contractbom (contractref,
@@ -326,11 +326,11 @@ if (isset($_POST['CommitContract']) or isset($_POST['CreateQuotation'])) {
 												'" . $Component->StockID . "',
 												'" . $WorkCentre . "',
 												'" . $Component->Quantity . "')";
-				$result = DB_query($SQL, $ErrMsg);
+				$Result = DB_query($SQL, $ErrMsg);
 			}
 
 			/*also need to update the items on the contract requirements  - delete the existing database entries then add these */
-			$result = DB_query("DELETE FROM contractreqts WHERE contractref='" . $_POST['ContractRef'] . "'");
+			$Result = DB_query("DELETE FROM contractreqts WHERE contractref='" . $_POST['ContractRef'] . "'");
 			$ErrMsg = _('Could not add a requirement to the contract requirements');
 			foreach ($_SESSION['Contract' . $identifier]->ContractReqts as $Requirement) {
 				$SQL = "INSERT INTO contractreqts (contractref,
@@ -342,7 +342,7 @@ if (isset($_POST['CommitContract']) or isset($_POST['CreateQuotation'])) {
 													'" . $Requirement->Requirement . "',
 													'" . $Requirement->CostPerUnit . "',
 													'" . $Requirement->Quantity . "')";
-				$result = DB_query($SQL, $ErrMsg);
+				$Result = DB_query($SQL, $ErrMsg);
 			}
 
 			prnMsg(_('The changes to the contract have been committed to the database'), 'success');
@@ -371,14 +371,14 @@ if (isset($_POST['CommitContract']) or isset($_POST['CreateQuotation'])) {
 			$SQL = "UPDATE stockcosts SET succeeded=1
 									WHERE stockid='" . $_SESSION['Contract' . $identifier]->ContractRef . "'
 										AND succeeded=0";
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 			$SQL = "INSERT INTO stockcosts VALUES ('" . $_SESSION['Contract' . $identifier]->ContractRef . "',
 												'" . $ContractCost . "',
 												0,
 												0,
 												CURRENT_TIME,
 												0)";
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 
 			//update the quotation
 			$SQL = "UPDATE salesorderdetails
@@ -425,7 +425,7 @@ if (isset($_POST['CommitContract']) or isset($_POST['CreateQuotation'])) {
 							'" . filter_number_format($_POST['ExRate']) . "')";
 
 		$ErrMsg = _('The new contract could not be added because');
-		$result = DB_query($SQL, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 
 		/*Also need to add the reqts and contracbom*/
 		$ErrMsg = _('Could not add a component to the contract bill of material');
@@ -438,7 +438,7 @@ if (isset($_POST['CommitContract']) or isset($_POST['CreateQuotation'])) {
 									'" . $Component->StockID . "',
 									'" . $WorkCentre . "',
 									'" . $Component->Quantity . "')";
-			$result = DB_query($SQL, $ErrMsg);
+			$Result = DB_query($SQL, $ErrMsg);
 		}
 
 		$ErrMsg = _('Could not add a requirement to the contract requirements');
@@ -451,7 +451,7 @@ if (isset($_POST['CommitContract']) or isset($_POST['CreateQuotation'])) {
 									'" . $Requirement->Requirement . "',
 									'" . $Requirement->CostPerUnit . "',
 									'" . $Requirement->Quantity . "')";
-			$result = DB_query($SQL, $ErrMsg);
+			$Result = DB_query($SQL, $ErrMsg);
 		}
 		prnMsg(_('The new contract has been added to the database'), 'success');
 
@@ -478,8 +478,8 @@ if (isset($_POST['CreateQuotation']) and !$InputError) {
 	$SQL = "SELECT stockid FROM stockmaster WHERE stockid='" . $_SESSION['Contract' . $identifier]->ContractRef . "'";
 	$ErrMsg = _('The item could not be retrieved because');
 	$DbgMsg = _('The SQL that was used to find the item failed was');
-	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
-	if (DB_num_rows($result) == 0) { //then the item doesn't currently exist so add it
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
+	if (DB_num_rows($Result) == 0) { //then the item doesn't currently exist so add it
 
 		$SQL = "INSERT INTO stockmaster (stockid,
 										description,
@@ -697,9 +697,9 @@ if (isset($_POST['SearchCustomers'])) {
 	}
 
 	$ErrMsg = _('The searched customer records requested cannot be retrieved because');
-	$result_CustSelect = DB_query($SQL, $ErrMsg);
+	$Result_CustSelect = DB_query($SQL, $ErrMsg);
 
-	if (DB_num_rows($result_CustSelect) == 0) {
+	if (DB_num_rows($Result_CustSelect) == 0) {
 		prnMsg(_('No Customer Branch records contain the search criteria') . ' - ' . _('please try again') . ' - ' . _('Note a Customer Branch Name may be different to the Customer Name'), 'info');
 	}
 }
@@ -727,9 +727,9 @@ if (isset($_POST['SelectedCustomer'])) {
 
 	$ErrMsg = _('The customer record selected') . ': ' . $_SESSION['Contract' . $identifier]->DebtorNo . ' ' . _('cannot be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve the customer details and failed was');
-	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
-	$MyRow = DB_fetch_array($result);
-	if (DB_num_rows($result) == 0) {
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
+	$MyRow = DB_fetch_array($Result);
+	if (DB_num_rows($Result) == 0) {
 		prnMsg(_('The customer details were unable to be retrieved'), 'error');
 		if ($debug == 1) {
 			prnMsg(_('The SQL used that failed to get the customer details was') . ':<br />' . $SQL, 'error');
@@ -777,7 +777,7 @@ if (!isset($_SESSION['Contract' . $identifier]->DebtorNo) or $_SESSION['Contract
 		<br /><div class="centre"><input tabindex="4" type="submit" name="SearchCustomers" value="' . _('Search Now') . '" />
 		<input tabindex="5" type="submit" name="reset" value="' . _('Reset') . '" /></div>';
 
-	if (isset($result_CustSelect)) {
+	if (isset($Result_CustSelect)) {
 
 		echo '<br /><table cellpadding="2" class="selection">
 						<tr>
@@ -791,7 +791,7 @@ if (!isset($_SESSION['Contract' . $identifier]->DebtorNo) or $_SESSION['Contract
 		$k = 0; //row counter to determine background colour
 		$j = 0;
 		$LastCustomer = '';
-		while ($MyRow = DB_fetch_array($result_CustSelect)) {
+		while ($MyRow = DB_fetch_array($Result_CustSelect)) {
 
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
@@ -860,9 +860,9 @@ if (!isset($_SESSION['Contract' . $identifier]->DebtorNo) or $_SESSION['Contract
 	$SQL = "SELECT categoryid, categorydescription FROM stockcategory";
 	$ErrMsg = _('The stock categories could not be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve stock categories and failed was');
-	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (!isset($_SESSION['Contract' . $identifier]->CategoryID) or $MyRow['categoryid'] == $_SESSION['Contract' . $identifier]->CategoryID) {
 			echo '<option selected="selected" value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 		} else {
@@ -886,12 +886,12 @@ if (!isset($_SESSION['Contract' . $identifier]->DebtorNo) or $_SESSION['Contract
 	}
 	$ErrMsg = _('The stock locations could not be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve stock locations and failed was');
-	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	echo '<tr>
 			<td>' . _('Location') . ':</td>
 			<td><select minlength="0" name="LocCode" >';
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (!isset($_SESSION['Contract' . $identifier]->LocCode) or $MyRow['loccode'] == $_SESSION['Contract' . $identifier]->LocCode) {
 			echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 		} else {
@@ -912,9 +912,9 @@ if (!isset($_SESSION['Contract' . $identifier]->DebtorNo) or $_SESSION['Contract
 						ON workcentres.location=www_users.defaultlocation
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
-	if (DB_num_rows($result) == 0) {
+	if (DB_num_rows($Result) == 0) {
 		prnMsg(_('There are no work centres set up yet') . '. ' . _('Please use the link below to set up work centres'), 'warn');
 		echo '<br /><a href="' . $RootPath . '/WorkCentres.php">' . _('Work Centre Maintenance') . '</a>';
 		include('includes/footer.inc');
@@ -924,7 +924,7 @@ if (!isset($_SESSION['Contract' . $identifier]->DebtorNo) or $_SESSION['Contract
 
 	echo '<select minlength="0" name="DefaultWorkCentre">';
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['DefaultWorkCentre']) and $MyRow['code'] == $_POST['DefaultWorkCentre']) {
 			echo '<option selected="selected" value="' . $MyRow['code'] . '">' . $MyRow['description'] . '</option>';
 		} else {
@@ -932,7 +932,7 @@ if (!isset($_SESSION['Contract' . $identifier]->DebtorNo) or $_SESSION['Contract
 		}
 	} //end while loop
 
-	DB_free_result($result);
+	DB_free_result($Result);
 
 	echo '</select></td>
 		</tr>

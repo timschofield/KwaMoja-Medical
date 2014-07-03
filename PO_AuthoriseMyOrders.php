@@ -24,7 +24,7 @@ if (isset($_POST['UpdateAll'])) {
 						authoriser='" . $_SESSION['UserID'] . "',
 						allowprint=1
 					WHERE orderno='" . $OrderNo . "'";
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 		}
 	}
 }
@@ -44,7 +44,7 @@ $SQL = "SELECT purchorders.*,
 		INNER JOIN www_users
 			ON www_users.userid=purchorders.initiator
 	WHERE status='Pending'";
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 
 echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -60,7 +60,7 @@ echo '<tr>
 		<th>' . _('Status') . '</th>
 	</tr>';
 
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 
 	$AuthSQL = "SELECT authlevel FROM purchorderauth
 				WHERE userid='" . $_SESSION['UserID'] . "'

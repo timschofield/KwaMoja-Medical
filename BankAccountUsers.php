@@ -68,7 +68,7 @@ if (isset($_POST['submit'])) {
 												'" . $_POST['SelectedUser'] . "')";
 
 			$msg = _('User') . ': ' . $_POST['SelectedUser'] . ' ' . _('has been authorised to use') . ' ' . $_POST['SelectedBankAccount'] . ' ' . _('bank account');
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 			prnMsg($msg, 'success');
 			unset($_POST['SelectedUser']);
 		}
@@ -79,7 +79,7 @@ if (isset($_POST['submit'])) {
 		AND userid='" . $SelectedUser . "'";
 
 	$ErrMsg = _('The bank account user record could not be deleted because');
-	$result = DB_query($SQL, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 	prnMsg(_('User') . ' ' . $SelectedUser . ' ' . _('has been un-authorised to use') . ' ' . $SelectedBankAccount . ' ' . _('bank account'), 'success');
 	unset($_GET['delete']);
 }
@@ -98,9 +98,9 @@ if (!isset($SelectedBankAccount)) {
 					bankaccountname
 			FROM bankaccounts";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	echo '<option value="">' . _('Not Yet Selected') . '</option>';
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($SelectedBankAccount) and $MyRow['accountcode'] == $SelectedBankAccount) {
 			echo '<option selected="selected" value="';
 		} else {
@@ -113,7 +113,7 @@ if (!isset($SelectedBankAccount)) {
 	echo '</select></td></tr>';
 
 	echo '</table>'; // close main table
-	DB_free_result($result);
+	DB_free_result($Result);
 
 	echo '<div class="centre"><input type="submit" name="Process" value="' . _('Accept') . '" />
 				<input type="submit" name="Cancel" value="' . _('Cancel') . '" />
@@ -128,8 +128,8 @@ if (isset($_POST['process']) OR isset($SelectedBankAccount)) {
 	$SQLName = "SELECT bankaccountname
 			FROM bankaccounts
 			WHERE accountcode='" . $SelectedBankAccount . "'";
-	$result = DB_query($SQLName);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQLName);
+	$MyRow = DB_fetch_array($Result);
 	$SelectedBankName = $MyRow['bankaccountname'];
 
 	echo '<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Authorised users for') . ' ' . $SelectedBankName . ' ' . _('bank account') . '</a></div>';
@@ -145,7 +145,7 @@ if (isset($_POST['process']) OR isset($SelectedBankAccount)) {
 			WHERE bankaccountusers.accountcode='" . $SelectedBankAccount . "'
 			ORDER BY bankaccountusers.userid ASC";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '<table class="selection">';
 	echo '<tr>
@@ -158,7 +158,7 @@ if (isset($_POST['process']) OR isset($SelectedBankAccount)) {
 
 	$k = 0; //row colour counter
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -188,11 +188,11 @@ if (isset($_POST['process']) OR isset($SelectedBankAccount)) {
 						realname
 				FROM www_users";
 
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 		if (!isset($_POST['SelectedUser'])) {
 			echo '<option selected="selected" value="">' . _('Not Yet Selected') . '</option>';
 		}
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			if (isset($_POST['SelectedUser']) AND $MyRow['userid'] == $_POST['SelectedUser']) {
 				echo '<option selected="selected" value="';
 			} else {
@@ -205,7 +205,7 @@ if (isset($_POST['process']) OR isset($SelectedBankAccount)) {
 		echo '</select></td></tr>';
 
 		echo '</table>'; // close main table
-		DB_free_result($result);
+		DB_free_result($Result);
 
 		echo '<div class="centre">
 				<input type="submit" name="submit" value="' . _('Accept') . '" />

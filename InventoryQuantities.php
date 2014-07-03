@@ -23,8 +23,8 @@ if (isset($_POST['PrintPDF']) or isset($_POST['CSV'])) {
 					categorydescription
 				FROM stockcategory
 				WHERE categoryid='" . $_POST['StockCat'] . "' ";
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_row($Result);
 		$CatDescription = $MyRow[1];
 	}
 
@@ -76,7 +76,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['CSV'])) {
 	}
 
 
-	$result = DB_query($SQL, '', '', false, true);
+	$Result = DB_query($SQL, '', '', false, true);
 
 	if (DB_error_no() != 0) {
 		$Title = _('Inventory Quantities') . ' - ' . _('Problem Report');
@@ -89,7 +89,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['CSV'])) {
 		include('includes/footer.inc');
 		exit;
 	}
-	if (DB_num_rows($result) == 0) {
+	if (DB_num_rows($Result) == 0) {
 		$Title = _('Print Inventory Quantities Report');
 		include('includes/header.inc');
 		prnMsg(_('There were no items with inventory quantities'), 'error');
@@ -104,7 +104,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['CSV'])) {
 		$FontSize = 8;
 
 		$holdpart = " ";
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			if ($MyRow['stockid'] != $holdpart) {
 				$YPos -= (2 * $line_height);
 				$holdpart = $MyRow['stockid'];
@@ -138,7 +138,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['CSV'])) {
 		$pdf->__destruct();
 	} elseif (isset($_POST['CSV'])) {
 		$CSVListing = _('Stock ID') .','. _('Description') .','. _('Location Code') .','. _('Location') .','. _('Quantity') .','. _('Reorder Level') .','. _('Decimal Places') .','. _('Serialised') .','. _('Controlled') . "\n";
-		while ($InventoryQties = DB_fetch_row($result)) {
+		while ($InventoryQties = DB_fetch_row($Result)) {
 			$CSVListing .= implode(',', $InventoryQties) . "\n";
 		}
 		header('Content-Encoding: UTF-8');
@@ -174,8 +174,8 @@ if (isset($_POST['PrintPDF']) or isset($_POST['CSV'])) {
 				categorydescription
 			FROM stockcategory
 			ORDER BY categorydescription";
-	$result1 = DB_query($SQL);
-	if (DB_num_rows($result1) == 0) {
+	$Result1 = DB_query($SQL);
+	if (DB_num_rows($Result1) == 0) {
 		echo '</table>
 			<p />';
 		prnMsg(_('There are no stock categories currently defined please use the link below to set them up'), 'warn');
@@ -195,7 +195,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['CSV'])) {
 	} else {
 		echo '<option value="All">' . _('All') . '</option>';
 	}
-	while ($MyRow1 = DB_fetch_array($result1)) {
+	while ($MyRow1 = DB_fetch_array($Result1)) {
 		if ($MyRow1['categoryid'] == $_POST['StockCat']) {
 			echo '<option selected="selected" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 		} else {

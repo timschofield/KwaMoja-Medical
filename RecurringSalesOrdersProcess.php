@@ -132,7 +132,7 @@ while ($RecurrOrderRow = DB_fetch_array($RecurrOrdersDueResult)) {
 	$EmailText = '';
 	echo '<br />' . _('Recurring order') . ' ' . $RecurrOrderRow['recurrorderno'] . ' ' . _('for') . ' ' . $RecurrOrderRow['debtorno'] . ' - ' . $RecurrOrderRow['branchcode'] . ' ' . _('is being processed');
 
-	$result = DB_Txn_Begin();
+	$Result = DB_Txn_Begin();
 
 	/*the last recurrence was the date of the last time the order recurred
 	the frequency is the number of times per annum that the order should recurr
@@ -285,7 +285,7 @@ while ($RecurrOrderRow = DB_fetch_array($RecurrOrdersDueResult)) {
 		$PeriodNo = GetPeriod(Date($_SESSION['DefaultDateFormat']));
 
 		/*Start an SQL transaction */
-		$result = DB_Txn_Begin();
+		$Result = DB_Txn_Begin();
 
 		$TotalFXNetInvoice = 0;
 		$TotalFXTax = 0;
@@ -762,11 +762,11 @@ while ($RecurrOrderRow = DB_fetch_array($RecurrOrdersDueResult)) {
 		if ($_SESSION['SmtpSetting'] == 0) {
 			$mail->setFrom($_SESSION['CompanyRecord']['coyname'] . "<" . $_SESSION['CompanyRecord']['email'] . ">");
 
-			$result = $mail->send(array(
+			$Result = $mail->send(array(
 				$RecurrOrderRow['email']
 			));
 		} else {
-			$result = SendmailBySmtp($mail, array(
+			$Result = SendmailBySmtp($mail, array(
 				$RecurrOrderRow['email']
 			));
 

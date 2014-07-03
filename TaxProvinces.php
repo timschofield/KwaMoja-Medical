@@ -38,8 +38,8 @@ if (isset($_POST['submit'])) {
 		$SQL = "SELECT count(*) FROM taxprovinces
 				WHERE taxprovinceid <> '" . $SelectedTaxProvince . "'
 				AND taxprovincename " . LIKE . " '" . $_POST['TaxProvinceName'] . "'";
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_row($Result);
 		if ($MyRow[0] > 0) {
 			$InputError = 1;
 			prnMsg(_('The tax province cannot be renamed because another with the same name already exists.'), 'error');
@@ -47,17 +47,17 @@ if (isset($_POST['submit'])) {
 			// Get the old name and check that the record still exists
 			$SQL = "SELECT taxprovincename FROM taxprovinces
 						WHERE taxprovinceid = '" . $SelectedTaxProvince . "'";
-			$result = DB_query($SQL);
-			if (DB_num_rows($result) != 0) {
+			$Result = DB_query($SQL);
+			if (DB_num_rows($Result) != 0) {
 				// This is probably the safest way there is
-				$MyRow = DB_fetch_row($result);
+				$MyRow = DB_fetch_row($Result);
 				$OldTaxProvinceName = $MyRow[0];
 				$SQL = "UPDATE taxprovinces
 					SET taxprovincename='" . $_POST['TaxProvinceName'] . "'
 					WHERE taxprovincename " . LIKE . " '" . DB_escape_string($OldTaxProvinceName) . "'";
 				$ErrMsg = _('Could not update tax province');
-				$result = DB_query($SQL, $ErrMsg);
-				if (!$result) {
+				$Result = DB_query($SQL, $ErrMsg);
+				if (!$Result) {
 					prnMsg(_('Tax province name changed'), 'success');
 				}
 			} else {
@@ -69,8 +69,8 @@ if (isset($_POST['submit'])) {
 		/*SelectedTaxProvince is null cos no item selected on first time round so must be adding a record*/
 		$SQL = "SELECT count(*) FROM taxprovinces
 				WHERE taxprovincename " . LIKE . " '" . $_POST['TaxProvinceName'] . "'";
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_row($Result);
 
 		if ($MyRow[0] > 0) {
 
@@ -83,17 +83,17 @@ if (isset($_POST['submit'])) {
 					VALUES ('" . $_POST['TaxProvinceName'] . "')";
 
 			$ErrMsg = _('Could not add tax province');
-			$result = DB_query($SQL, $ErrMsg);
+			$Result = DB_query($SQL, $ErrMsg);
 
 			$TaxProvinceID = DB_Last_Insert_ID('taxprovinces', 'taxprovinceid');
 			$SQL = "INSERT INTO taxauthrates (taxauthority, dispatchtaxprovince, taxcatid)
 					SELECT taxauthorities.taxid, '" . $TaxProvinceID . "', taxcategories.taxcatid
 					FROM taxauthorities CROSS JOIN taxcategories";
 			$ErrMsg = _('Could not add tax authority rates for the new dispatch tax province. The rates of tax will not be able to be added - manual database interaction will be required to use this dispatch tax province');
-			$result = DB_query($SQL, $ErrMsg);
+			$Result = DB_query($SQL, $ErrMsg);
 		}
 
-		if (!$result) {
+		if (!$Result) {
 			prnMsg(_('Errors were encountered adding this tax province'), 'error');
 		} else {
 			prnMsg(_('New tax province added'), 'success');
@@ -109,24 +109,24 @@ if (isset($_POST['submit'])) {
 	// Get the original name of the tax province the ID is just a secure way to find the tax province
 	$SQL = "SELECT taxprovincename FROM taxprovinces
 		WHERE taxprovinceid = '" . $SelectedTaxProvince . "'";
-	$result = DB_query($SQL);
-	if (DB_num_rows($result) == 0) {
+	$Result = DB_query($SQL);
+	if (DB_num_rows($Result) == 0) {
 		// This is probably the safest way there is
 		prnMsg(_('Cannot delete this tax province because it no longer exists'), 'warn');
 	} else {
-		$MyRow = DB_fetch_row($result);
+		$MyRow = DB_fetch_row($Result);
 		$OldTaxProvinceName = $MyRow[0];
 		$SQL = "SELECT COUNT(*) FROM locations WHERE taxprovinceid = '" . $SelectedTaxProvince . "'";
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_row($Result);
 		if ($MyRow[0] > 0) {
 			prnMsg(_('Cannot delete this tax province because at least one stock location is defined to be inside this province'), 'warn');
 			echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('stock locations that refer to this tax province') . '</font>';
 		} else {
 			$SQL = "DELETE FROM taxauthrates WHERE dispatchtaxprovince = '" . $SelectedTaxProvince . "'";
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 			$SQL = "DELETE FROM taxprovinces WHERE taxprovinceid = '" . $SelectedTaxProvince . "'";
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 			prnMsg($OldTaxProvinceName . ' ' . _('tax province and any tax rates set for it have been deleted'), 'success');
 		}
 	} //end if
@@ -153,9 +153,9 @@ if (!isset($SelectedTaxProvince)) {
 			ORDER BY taxprovinceid";
 
 	$ErrMsg = _('Could not get tax categories because');
-	$result = DB_query($SQL, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
-	if (DB_num_rows($result) == 0) {
+	if (DB_num_rows($Result) == 0) {
 		echo '<div class="page_help_text">' . _('As this is the first time that the system has been used, you must first create a tax province.') .
 				'<br />' . _('For help, click on the help icon in the top right') .
 				'<br />' . _('Once you have filled in the details, click on the button at the bottom of the screen') . '</div>';
@@ -167,7 +167,7 @@ if (!isset($SelectedTaxProvince)) {
 			</tr>';
 
 	$k = 0; //row colour counter
-	while ($MyRow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($Result)) {
 
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -206,12 +206,12 @@ if (!isset($_GET['delete'])) {
 				FROM taxprovinces
 				WHERE taxprovinceid='" . $SelectedTaxProvince . "'";
 
-		$result = DB_query($SQL);
-		if (DB_num_rows($result) == 0) {
+		$Result = DB_query($SQL);
+		if (DB_num_rows($Result) == 0) {
 			prnMsg(_('Could not retrieve the requested tax province, please try again.'), 'warn');
 			unset($SelectedTaxProvince);
 		} else {
-			$MyRow = DB_fetch_array($result);
+			$MyRow = DB_fetch_array($Result);
 
 			$_POST['TaxProvinceName'] = $MyRow['taxprovincename'];
 

@@ -24,7 +24,7 @@ if (isset($_POST['Enter'])) { //user has input a new value
 	if ($InputError == 0) {
 		$SQL = "INSERT INTO mailgroups (groupname) VALUES ('" . $MailGroup . "')";
 		$ErrMsg = _('Failed to add new mail group');
-		$result = DB_query($SQL, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 		GetMailGroup();
 
 	}
@@ -57,7 +57,7 @@ if (isset($_GET['Add']) and isset($_GET['UserId'])) {
 	$SQL = "INSERT INTO mailgroupdetails (groupname, userid) VALUES ('" . $GroupName . "',
 									'" . $UserId . "')";
 	$ErrMsg = _('Failed to add users to mail group');
-	$result = DB_query($SQL, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 	GetUsers($GroupId, $GroupName);
 }
 
@@ -67,7 +67,7 @@ if (isset($_GET['Delete'])) {
 		$id = (int) $_GET['Id'];
 		$SQL = "DELETE FROM mailgroups WHERE id = '" . $id . "'";
 		$ErrMsg = _('Failed to delete the mail group which id is ' . $id);
-		$result = DB_query($SQL, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 		GetMailGroup();
 	} else {
 		prnMsg(_('The group id must be numeric'), 'error');
@@ -130,7 +130,7 @@ if (isset($_GET['Remove'])) {
 	}
 	$SQL = "DELETE FROM mailgroupdetails WHERE userid = '" . $UserId . "' AND groupname = '" . $GroupName . "'";
 	$ErrMsg = 'Failed to delete the userid ' . $UserId . ' from group ' . $GroupName;
-	$result = DB_query($SQL, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 	GetUsers($GroupId, $GroupName);
 }
 
@@ -149,13 +149,13 @@ function GetMailGroup() {
 	//GET the mailing group data if there are any
 	$SQL = "SELECT groupname, id FROM mailgroups ORDER BY groupname";
 	$ErrMsg = _('Failed to retrieve mail groups information');
-	$result = DB_query($SQL, $ErrMsg);
-	if (DB_num_rows($result) != 0) {
+	$Result = DB_query($SQL, $ErrMsg);
+	if (DB_num_rows($Result) != 0) {
 		echo '<table class="selection">
 				<tr>
 					<th>' . _('Mail Group') . '</th>
 				</tr>';
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			echo '<tr>
 					<td>' . $MyRow['groupname'] . '</td>
 					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?GroupId=' . urlencode($MyRow['id']) . '&amp;Edit=1&amp;GroupName=' . urlencode($MyRow['groupname']) . '" >' . _('Edit') . '</a></td>
@@ -169,12 +169,12 @@ function GetMailGroup() {
 function GetUsers($GroupId, $GroupName) {
 	$SQL = "SELECT userid FROM mailgroups INNER JOIN mailgroupdetails ON mailgroups.groupname=mailgroupdetails.groupname WHERE mailgroups.id = '" . $GroupId . "'";
 	$ErrMsg = _('Failed to retrieve userid');
-	$result = DB_query($SQL, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
 	$UsersAssigned = array();
-	if (DB_num_rows($result) != 0) {
+	if (DB_num_rows($Result) != 0) {
 		$i = 0;
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			$UsersAssigned[$i] = $MyRow['userid'];
 			$i++;
 		}
@@ -182,8 +182,8 @@ function GetUsers($GroupId, $GroupName) {
 
 	$SQL = "SELECT userid, realname, email FROM www_users ORDER BY realname";
 	$ErrMsg = _('Failed to retrieve user information');
-	$result = DB_query($SQL, $ErrMsg);
-	if (DB_num_rows($result) != 0) {
+	$Result = DB_query($SQL, $ErrMsg);
+	if (DB_num_rows($Result) != 0) {
 		echo '<div class="centre">' . _('Current Mail Group') . ' : ' . stripslashes($GroupName) . '</div>
 			<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('View All Groups') . '</a></div>';
 
@@ -193,7 +193,7 @@ function GetUsers($GroupId, $GroupName) {
 					<th colspan="3">' . _('Available Users') . '</th>
 				</tr>';
 		$k = 0;
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			if ($k == 0) {
 				echo '<tr class="EvenTableRows">';
 				$k = 1;

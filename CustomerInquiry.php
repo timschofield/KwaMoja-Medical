@@ -28,8 +28,8 @@ if (!isset($_POST['TransAfterDate'])) {
 			FROM `config`
 			WHERE confname ='NumberOfMonthMustBeShown'";
 	$ErrMsg = _('The config value NumberOfMonthMustBeShown cannot be retrieved');
-	$result = DB_query($SQL, $ErrMsg);
-	$row = DB_fetch_array($result);
+	$Result = DB_query($SQL, $ErrMsg);
+	$row = DB_fetch_array($Result);
 	$_POST['TransAfterDate'] = Date($_SESSION['DefaultDateFormat'], Mktime(0, 0, 0, Date('m') - $row['confvalue'], Date('d'), Date('Y')));
 }
 

@@ -445,9 +445,9 @@ if (isset($_POST['AllocTrans'])) {
 
 	$SQL .= " ORDER BY debtortrans.id";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
-	if (DB_num_rows($result) == 0) {
+	if (DB_num_rows($Result) == 0) {
 		prnMsg(_('No outstanding receipts or credits to be allocated for this customer'), 'info');
 		include('includes/footer.inc');
 		exit;
@@ -465,7 +465,7 @@ if (isset($_POST['AllocTrans'])) {
 					<th>' . _('Action') . '</th>
 				</tr>';
 	$k = 0;
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -518,8 +518,8 @@ if (isset($_POST['AllocTrans'])) {
 
 	$SQL .= " ORDER BY debtorsmaster.name";
 
-	$result = DB_query($SQL);
-	$NoOfUnallocatedTrans = DB_num_rows($result);
+	$Result = DB_query($SQL);
+	$NoOfUnallocatedTrans = DB_num_rows($Result);
 	$CurrentTransaction = 1;
 	$CurrentDebtor = '';
 	echo '<table class="selection">
@@ -536,7 +536,7 @@ if (isset($_POST['AllocTrans'])) {
 				</tr>';
 
 	$k = 0;
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 
 		$AllocateLink = '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?AllocTrans=' . $MyRow['id'] . '">' . _('Allocate') . '</a>';
 

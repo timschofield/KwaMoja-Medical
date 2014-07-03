@@ -461,7 +461,7 @@ function submit($PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $Supplie
 			}
 		} // End of if ($_POST['ReportType']
 		$ErrMsg = _('The SQL to find the parts selected failed with the message');
-		$result = DB_query($SQL, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 		$ctr = 0;
 		$TotalQty = 0;
 		$TotalExtCost = 0;
@@ -553,7 +553,7 @@ function submit($PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $Supplie
 
 				$linectr = 0;
 				$k = 0;
-				while ($MyRow = DB_fetch_array($result)) {
+				while ($MyRow = DB_fetch_array($Result)) {
 					if ($k == 1) {
 						echo '<tr class="EvenTableRows">';
 						$k = 0;
@@ -615,7 +615,7 @@ function submit($PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $Supplie
 
 				$linectr = 0;
 				$k = 0;
-				while ($MyRow = DB_fetch_array($result)) {
+				while ($MyRow = DB_fetch_array($Result)) {
 					if ($k == 1) {
 						echo '<tr class="EvenTableRows">';
 						$k = 0;
@@ -716,7 +716,7 @@ function submit($PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $Supplie
 			$suppname = ' ';
 			$linectr = 0;
 			$k = 0;
-			while ($MyRow = DB_fetch_array($result)) {
+			while ($MyRow = DB_fetch_array($Result)) {
 				$linectr++;
 				if ($summarytype == 'orderno') {
 					$suppname = $MyRow['suppname'];
@@ -1170,7 +1170,7 @@ function submitcsv($PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $Supp
 			}
 		} // End of if ($_POST['ReportType']
 		$ErrMsg = _('The SQL to find the parts selected failed with the message');
-		$result = DB_query($SQL, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 		$ctr = 0;
 		$TotalQty = 0;
 		$TotalExtCost = 0;
@@ -1218,7 +1218,7 @@ function submitcsv($PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $Supp
 			if ($_POST['DateType'] == 'Order') {
 				fprintf($FileHandle, '"%s","%s","%s","%s","%s","%s","%s","%s","%s","%s","%s","%s"' . "\n", _('Order No'), _('Part Number'), _('Order Date'), _('Supplier No'), _('Supplier Name'), _('Order Qty'), _('Extended Cost'), _('Extended Price'), _('Invoiced Qty'), _('Line Status'), _('Item Due'), _('Part Description'));
 				$linectr = 0;
-				while ($MyRow = DB_fetch_array($result)) {
+				while ($MyRow = DB_fetch_array($Result)) {
 					$linectr++;
 					// Detail for both DateType of Order
 					fprintf($FileHandle, '"%s","%s","%s","%s","%s",%s,%s,%s,%s,"%s","%s","%s"' . "\n", $MyRow['orderno'], $MyRow['itemcode'], ConvertSQLDate($MyRow['orddate']), $MyRow['supplierno'], $MyRow['suppname'], locale_number_format($MyRow['quantityord'], $MyRow['decimalplaces']), locale_number_format($MyRow['extcost'], 2), locale_number_format($MyRow['extprice'], 2), locale_number_format($MyRow['qtyinvoiced'], $MyRow['decimalplaces']), $MyRow['linestatus'], ConvertSQLDate($MyRow['deliverydate']), $MyRow['description']);
@@ -1234,7 +1234,7 @@ function submitcsv($PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $Supp
 				// Header for Date Type of Delivery Date
 				fprintf($FileHandle, '"%s","%s","%s","%s","%s","%s","%s","%s","%s","%s","%s","%s"' . "\n", _('Order No'), _('Part Number'), _('Order Date'), _('Supplier No'), _('Supplier Name'), _('Received'), _('Extended Cost'), _('Extended Price'), _('Invoiced Qty'), _('Line Status'), _('Delivered'), _('Part Description'));
 				$linectr = 0;
-				while ($MyRow = DB_fetch_array($result)) {
+				while ($MyRow = DB_fetch_array($Result)) {
 					$linectr++;
 					// Detail for both DateType of Ship
 					// In sql, had to alias grns.qtyrecd as quantityord so could use same name here
@@ -1293,7 +1293,7 @@ function submitcsv($PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $Supp
 
 			$suppname = ' ';
 			$linectr = 0;
-			while ($MyRow = DB_fetch_array($result)) {
+			while ($MyRow = DB_fetch_array($Result)) {
 				$linectr++;
 				if ($summarytype == 'orderno') {
 					$suppname = $MyRow['suppname'];

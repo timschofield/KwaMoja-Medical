@@ -60,9 +60,9 @@ if (isset($_POST['UpdateData'])) {
 	$OldCost = $_POST['OldMaterialCost'] + $_POST['OldLabourCost'] + $_POST['OldOverheadCost'];
 	$NewCost = filter_number_format($_POST['MaterialCost']) + filter_number_format($_POST['LabourCost']) + filter_number_format($_POST['OverheadCost']);
 
-	$result = DB_query("SELECT * FROM stockmaster WHERE stockid='" . $StockID . "'");
-	$MyRow = DB_fetch_row($result);
-	if (DB_num_rows($result) == 0) {
+	$Result = DB_query("SELECT * FROM stockmaster WHERE stockid='" . $StockID . "'");
+	$MyRow = DB_fetch_row($Result);
+	if (DB_num_rows($Result) == 0) {
 		prnMsg(_('The entered item code does not exist'), 'error', _('Non-existent Item'));
 	} elseif ($OldCost != $NewCost) {
 
@@ -123,9 +123,9 @@ $SQL = "SELECT description,
 					stockcosts.overheadcost,
 					mbflag,
 					stocktype";
-$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-$MyRow = DB_fetch_array($result);
+$MyRow = DB_fetch_array($Result);
 $ItemDescription = $MyRow['description'];
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';

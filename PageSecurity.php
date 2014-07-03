@@ -21,7 +21,7 @@ $SQL = "SELECT script,
 			description
 		FROM scripts";
 
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 
 echo '<br /><form onSubmit="return VerifyForm(this);" method="post" class="noPrint" id="PageSecurity" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 echo '<div>';
@@ -35,7 +35,7 @@ $TokenSql = "SELECT tokenid,
 			ORDER BY tokenname";
 $TokenResult = DB_query($TokenSql);
 
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	echo '<tr>
 			<td>' . $MyRow['script'] . '</td>
 			<td><select minlength="0" name="' . $MyRow['script'] . '">';

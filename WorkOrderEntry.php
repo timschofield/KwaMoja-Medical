@@ -231,7 +231,7 @@ $SQL = "SELECT categoryid,
 		FROM stockcategory
 		WHERE stocktype='F' OR stocktype='M'
 		ORDER BY categorydescription";
-$result1 = DB_query($SQL);
+$Result1 = DB_query($SQL);
 
 echo '<table class="search" id="ItemSelect">
 		<tr>
@@ -244,7 +244,7 @@ if (!isset($_POST['StockCat'])) {
 	echo '<option value="All">' . _('All') . '</option>';
 }
 
-while ($MyRow1 = DB_fetch_array($result1)) {
+while ($MyRow1 = DB_fetch_array($Result1)) {
 
 	if ($_POST['StockCat'] == $MyRow1['categoryid']) {
 		echo '<option selected="True" value=' . $MyRow1['categoryid'] . '>' . $MyRow1['categorydescription'] . '</option>';

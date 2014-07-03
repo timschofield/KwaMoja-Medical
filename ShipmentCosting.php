@@ -134,7 +134,7 @@ if (DB_num_rows($LineItemsResult) > 0) {
 
 	if (isset($_POST['Close'])) {
 		/*Set up a transaction to buffer all updates or none */
-		$result = DB_Txn_Begin();
+		$Result = DB_Txn_Begin();
 		$PeriodNo = GetPeriod(Date($_SESSION['DefaultDateFormat']));
 	}
 
@@ -290,7 +290,7 @@ if (DB_num_rows($LineItemsResult) > 0) {
 									 " . $WriteOffToVariances . ")";
 
 						$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The GL entry for the shipment variance posting for') . ' ' . $MyRow['itemcode'] . ' ' . _('could not be inserted into the database because');
-						$result = DB_query($SQL, $ErrMsg, '', TRUE);
+						$Result = DB_query($SQL, $ErrMsg, '', TRUE);
 
 					}
 					/*Now post any remaining price variance to stock rather than price variances */
@@ -310,7 +310,7 @@ if (DB_num_rows($LineItemsResult) > 0) {
 												'" . ($MyRow['totqtyinvoiced'] * ($ItemShipmentCost - $StdCostUnit) - $WriteOffToVariances) . "')";
 
 					$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The GL entry for the shipment average cost adjustment for') . ' ' . $MyRow['itemcode'] . ' ' . _('could not be inserted into the database because');
-					$result = DB_query($SQL, $ErrMsg, '', TRUE);
+					$Result = DB_query($SQL, $ErrMsg, '', TRUE);
 
 				}
 				/* end of average cost GL stuff */
@@ -334,8 +334,8 @@ if (DB_num_rows($LineItemsResult) > 0) {
 							FROM stockcosts
 							WHERE stockid='" . $EnteredGRN->ItemCode . "'
 								AND succeeded=0";
-				$result = DB_query($SQL);
-				$MyRow = DB_fetch_array($result);
+				$Result = DB_query($SQL);
+				$MyRow = DB_fetch_array($Result);
 				$OldMaterialCost = $MyRow['materialcost'];
 				$OldLabourCost = $MyRow['labourcost'];
 				$OldOverheadCost = $MyRow['overheadcost'];
@@ -394,7 +394,7 @@ if (DB_num_rows($LineItemsResult) > 0) {
 										" . -$Variance * $MyRow['totqtyrecd'] . ")";
 
 					$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The Positive GL entry for the shipment variance posting for') . ' ' . $MyRow['itemcode'] . ' ' . _('could not be inserted into the database because');
-					$result = DB_query($SQL, $ErrMsg, '', TRUE);
+					$Result = DB_query($SQL, $ErrMsg, '', TRUE);
 				}
 			}
 			/* end of the costing specific updates */
@@ -419,7 +419,7 @@ if (DB_num_rows($LineItemsResult) > 0) {
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The credit GL entry for the shipment variance posting for') . ' ' . $MyRow['itemcode'] . ' ' . _('could not be inserted because');
 
-				$result = DB_query($SQL, $ErrMsg, '', TRUE);
+				$Result = DB_query($SQL, $ErrMsg, '', TRUE);
 			}
 
 			if ($_POST['UpdateCost'] == 'Yes') {
@@ -708,13 +708,13 @@ if (isset($_POST['Close'])) {
 
 	/*also need to make sure the purchase order lines that were on this shipment are completed so no more can be received in against the order line */
 
-	$result = DB_query("UPDATE purchorderdetails
+	$Result = DB_query("UPDATE purchorderdetails
 								   SET quantityord=quantityrecd,
 									   completed=1
 							WHERE shiptref = '" . $_GET['SelectedShipment'] . "'", _('Could not complete the purchase order lines on this shipment'), '', TRUE);
 
-	$result = DB_query("UPDATE shipments SET closed=1 WHERE shiptref='" . $_GET['SelectedShipment'] . "'", _('Could not update the shipment to closed'), '', TRUE);
-	$result = DB_Txn_Commit();
+	$Result = DB_query("UPDATE shipments SET closed=1 WHERE shiptref='" . $_GET['SelectedShipment'] . "'", _('Could not update the shipment to closed'), '', TRUE);
+	$Result = DB_Txn_Commit();
 
 	prnMsg(_('Shipment') . ' ' . $_GET['SelectedShipment'] . ' ' . _('has been closed'));
 	if ($_SESSION['CompanyRecord']['gllink_stock'] == 1) {

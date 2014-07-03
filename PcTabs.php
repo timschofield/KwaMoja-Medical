@@ -147,7 +147,7 @@ if (isset($_POST['Submit'])) {
 
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 		prnMsg($msg, 'success');
 		unset($SelectedTab);
 		unset($_POST['SelectUser']);
@@ -165,7 +165,7 @@ if (isset($_POST['Submit'])) {
 
 	$SQL = "DELETE FROM pctabs WHERE tabcode='" . $SelectedTab . "'";
 	$ErrMsg = _('The Tab record could not be deleted because');
-	$result = DB_query($SQL, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 	prnMsg(_('The Petty Cash Tab') . ' ' . $SelectedTab . ' ' . _('has been deleted'), 'success');
 	unset($SelectedTab);
 	unset($_GET['delete']);
@@ -200,8 +200,8 @@ if (!isset($SelectedTab)) {
 				INNER JOIN chartmaster AS chartmaster2 ON
 				pctabs.glaccountpcash = chartmaster2.accountcode
 				ORDER BY tabcode";
-	$result = DB_query($SQL);
-	if (DB_num_rows($result) > 0) {
+	$Result = DB_query($SQL);
+	if (DB_num_rows($Result) > 0) {
 		echo '<br /><table class="selection">';
 		echo '<tr>
 				<th>' . _('Tab Code') . '</th>
@@ -218,7 +218,7 @@ if (!isset($SelectedTab)) {
 
 		$k = 0; //row colour counter
 
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;
@@ -262,8 +262,8 @@ if (!isset($_GET['delete'])) {
 		$SQL = "SELECT * FROM pctabs
 				WHERE tabcode='" . $SelectedTab . "'";
 
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
 
 		$_POST['TabCode'] = $MyRow['tabcode'];
 		$_POST['SelectUser'] = $MyRow['usercode'];
@@ -306,9 +306,9 @@ if (!isset($_GET['delete'])) {
 					realname
 			FROM www_users ORDER BY userid";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['SelectUser']) and $MyRow['userid'] == $_POST['SelectUser']) {
 			echo '<option selected="selected" value="';
 		} else {
@@ -319,7 +319,7 @@ if (!isset($_GET['delete'])) {
 	} //end while loop get user
 
 	echo '</select></td></tr>';
-	DB_free_result($result);
+	DB_free_result($Result);
 
 	echo '<tr>
 			<td>' . _('Type Of Tab') . ':</td>
@@ -330,9 +330,9 @@ if (!isset($_GET['delete'])) {
 			FROM pctypetabs
 			ORDER BY typetabcode";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['SelectTabs']) and $MyRow['typetabcode'] == $_POST['SelectTabs']) {
 			echo '<option selected="selected" value="';
 		} else {
@@ -343,7 +343,7 @@ if (!isset($_GET['delete'])) {
 	} //end while loop get type of tab
 
 	echo '</select></td></tr>';
-	DB_free_result($result);
+	DB_free_result($Result);
 
 	echo '<tr>
 			<td>' . _('Currency') . ':</td>
@@ -351,9 +351,9 @@ if (!isset($_GET['delete'])) {
 
 	$SQL = "SELECT currency, currabrev FROM currencies";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['SelectCurrency']) and $MyRow['currabrev'] == $_POST['SelectCurrency']) {
 			echo '<option selected="selected" value="';
 		} else {
@@ -364,7 +364,7 @@ if (!isset($_GET['delete'])) {
 	} //end while loop get type of tab
 
 	echo '</select></td></tr>';
-	DB_free_result($result);
+	DB_free_result($Result);
 
 	if (!isset($_POST['TabLimit'])) {
 		$_POST['TabLimit'] = 0;
@@ -386,9 +386,9 @@ if (!isset($_GET['delete'])) {
 			FROM www_users
 			ORDER BY userid";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['SelectAssigner']) and $MyRow['userid'] == $_POST['SelectAssigner']) {
 			echo '<option selected="selected" value="';
 		} else {
@@ -399,7 +399,7 @@ if (!isset($_GET['delete'])) {
 	} //end while loop get assigner
 
 	echo '</select></td></tr>';
-	DB_free_result($result);
+	DB_free_result($Result);
 
 	echo '<tr>
 			<td>' . _('Authoriser - Payment') . ':</td>
@@ -410,9 +410,9 @@ if (!isset($_GET['delete'])) {
 			FROM www_users
 			ORDER BY userid";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['SelectAuthoriser']) and $MyRow['userid'] == $_POST['SelectAuthoriser']) {
 			echo '<option selected="selected" value="';
 		} else {
@@ -433,9 +433,9 @@ if (!isset($_GET['delete'])) {
 			FROM www_users
 			ORDER BY userid";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['SelectAuthoriserExpenses']) and $MyRow['userid'] == $_POST['SelectAuthoriserExpenses']) {
 			echo '<option selected="selected" value="';
 		} else {
@@ -446,7 +446,7 @@ if (!isset($_GET['delete'])) {
 	} //end while loop get authoriser
 
 	echo '</select></td></tr>';
-	DB_free_result($result);
+	DB_free_result($Result);
 
 	echo '<tr>
 			<td>' . _('GL Account Cash Assignment') . ':</td>
@@ -458,9 +458,9 @@ if (!isset($_GET['delete'])) {
 			ON chartmaster.accountcode = bankaccounts.accountcode
 			ORDER BY chartmaster.accountcode";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['GLAccountCash']) and $MyRow['accountcode'] == $_POST['GLAccountCash']) {
 			echo '<option selected="selected" value="';
 		} else {
@@ -471,7 +471,7 @@ if (!isset($_GET['delete'])) {
 	} //end while loop
 
 	echo '</select></td></tr>';
-	DB_free_result($result);
+	DB_free_result($Result);
 
 	echo '<tr>
 			<td>' . _('GL Account Petty Cash Tab') . ':</td>
@@ -481,9 +481,9 @@ if (!isset($_GET['delete'])) {
 			FROM chartmaster
 			ORDER BY accountcode";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['GLAccountPcashTab']) and $MyRow['accountcode'] == $_POST['GLAccountPcashTab']) {
 			echo '<option selected="selected" value="';
 		} else {
@@ -495,7 +495,7 @@ if (!isset($_GET['delete'])) {
 
 	echo '</select></td></tr>';
 	echo '</table>'; // close main table
-	DB_free_result($result);
+	DB_free_result($Result);
 
 	echo '<br /><div class="centre">
 		<input type="submit" name="Submit" value="' . _('Accept') . '" />

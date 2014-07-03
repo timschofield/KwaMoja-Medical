@@ -37,8 +37,8 @@ $SQL = "SELECT categoryid,
 				categorydescription
 		FROM stockcategory
 		ORDER BY categorydescription";
-$result1 = DB_query($SQL);
-if (DB_num_rows($result1) == 0) {
+$Result1 = DB_query($SQL);
+if (DB_num_rows($Result1) == 0) {
 	echo '<p class="bad">' . _('Problem Report') . ':<br />' . _('There are no stock categories currently defined please use the link below to set them up') . '</p>';
 	echo '<br /><a href="' . $RootPath . '/StockCategories.php">' . _('Define Stock Categories') . '</a>';
 	exit;
@@ -53,7 +53,7 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 	} else {
 		$StockID = $_SESSION['SelectedStockItem'];
 	}
-	$result = DB_query("SELECT stockmaster.description,
+	$Result = DB_query("SELECT stockmaster.description,
 								stockmaster.longdescription,
 								stockmaster.mbflag,
 								stockcategory.stocktype,
@@ -75,7 +75,7 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 							ON stockmaster.stockid=stockcosts.stockid
 							AND stockcosts.succeeded=0
 						WHERE stockcosts.stockid='" . $StockID . "'");
-	$MyRow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($Result);
 	$Its_A_Kitset_Assembly_Or_Dummy = false;
 	$Its_A_Dummy = false;
 	$Its_A_Kitset = false;
@@ -405,7 +405,7 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 			echo '</tr>';
 		}
 		echo '</table>';
-		DB_data_seek($result, 0);
+		DB_data_seek($Result, 0);
 	}
 	echo '</td></tr></table>'; // end first item details table
 	echo '<table width="90%"><tr>
@@ -543,7 +543,7 @@ if ($_POST['StockCat'] == 'All') {
 } else {
 	echo '<option value="All">' . _('All') . '</option>';
 }
-while ($MyRow1 = DB_fetch_array($result1)) {
+while ($MyRow1 = DB_fetch_array($Result1)) {
 	if ($MyRow1['categoryid'] == $_POST['StockCat']) {
 		echo '<option selected="selected" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 	} else {

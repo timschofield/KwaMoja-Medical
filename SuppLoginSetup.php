@@ -91,7 +91,7 @@ if (isset($_POST['submit'])) {
 							'" . $_POST['UserLanguage'] . "')";
 		$ErrMsg = _('The user could not be added because');
 		$DbgMsg = _('The SQL that was used to insert the new user and failed was');
-		$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 		prnMsg(_('A new supplier login has been created'), 'success');
 		include('includes/footer.inc');
 		exit;
@@ -190,9 +190,9 @@ if ($_SESSION['RestrictLocations'] == 0) {
 					ON locations.loccode=www_users.defaultlocation
 				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 }
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 
 	if (isset($_POST['DefaultLocation']) AND $MyRow['loccode'] == $_POST['DefaultLocation']) {
 

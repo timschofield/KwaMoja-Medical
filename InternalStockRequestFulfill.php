@@ -37,8 +37,8 @@ if (isset($_POST['UpdateAll'])) {
 							ON stockcosts.stockid=stockmaster.stockid
 							AND stockcosts.succeeded=0
 						WHERE stockcosts.stockid='" . $StockID . "'";
-			$result = DB_query($SQL);
-			$MyRow = DB_fetch_array($result);
+			$Result = DB_query($SQL);
+			$MyRow = DB_fetch_array($Result);
 			$StandardCost = $MyRow['materialcost'] + $MyRow['labourcost'] + $MyRow['overheadcost'];
 			$DecimalPlaces = $MyRow['decimalplaces'];
 
@@ -187,7 +187,7 @@ if (isset($_POST['UpdateAll'])) {
 						$mail = new htmlMimeMail();
 						$mail->setSubject($EmailSubject);
 						$mail->setText($ConfirmationText);
-						$result = SendmailBySmtp($mail, array(
+						$Result = SendmailBySmtp($mail, array(
 							$_SESSION['InventoryManagerEmail']
 						));
 					}
@@ -241,8 +241,8 @@ if (!isset($_POST['Location'])) {
 						AND internalrequest = 1
 					ORDER BY locationname";
 	}
-	$resultStkLocs = DB_query($SQL);
-	while ($MyRow = DB_fetch_array($resultStkLocs)) {
+	$ResultStkLocs = DB_query($SQL);
+	while ($MyRow = DB_fetch_array($ResultStkLocs)) {
 		if (isset($_SESSION['Adjustment']->StockLocation)) {
 			if ($MyRow['loccode'] == $_SESSION['Adjustment']->StockLocation) {
 				echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
@@ -281,9 +281,9 @@ if (isset($_POST['Location'])) {
 	WHERE stockrequest.authorised=1
 		AND stockrequest.closed=0
 		AND stockrequest.loccode='" . $_POST['Location'] . "'";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
-	if (DB_num_rows($result) == 0) {
+	if (DB_num_rows($Result) == 0) {
 		prnMsg(_('There are no outstanding authorised requests for this location'), 'info');
 		echo '<br />';
 		echo '<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Select another location') . '</a></div>';
@@ -303,7 +303,7 @@ if (isset($_POST['Location'])) {
 				<th>' . _('Narrative') . '</th>
 			</tr>';
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 
 		echo '<tr>
 				<td>' . $MyRow['dispatchid'] . '</td>

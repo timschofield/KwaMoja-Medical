@@ -185,8 +185,8 @@ if (isset($SelectedWO) and $SelectedWO != '' and $SelectedWO > 0 and $SelectedWO
 						ON woitems.stockid=stockmaster.stockid
 						WHERE woitems.stockid='" . $StockID . "'
 						AND woitems.wo ='" . $SelectedWO . "'";
-	$result = DB_query($SQL, $ErrMsg);
-	if (DB_num_rows($result) == 0) {
+	$Result = DB_query($SQL, $ErrMsg);
+	if (DB_num_rows($Result) == 0) {
 		/*There is no order header returned */
 		$Title = _('Print Work Order Error');
 		include('includes/header.inc');
@@ -201,17 +201,17 @@ if (isset($SelectedWO) and $SelectedWO != '' and $SelectedWO > 0 and $SelectedWO
 			</div>';
 		include('includes/footer.inc');
 		exit();
-	} elseif (DB_num_rows($result) == 1) {
+	} elseif (DB_num_rows($Result) == 1) {
 		/*There is only one order header returned  (as it should be!)*/
-		$WOHeader = DB_fetch_array($result);
+		$WOHeader = DB_fetch_array($Result);
 		if ($WOHeader['controlled'] == 1) {
 			$SQL = "SELECT serialno
 							FROM woserialnos
 							WHERE woserialnos.stockid='" . $StockID . "'
 							AND woserialnos.wo ='" . $SelectedWO . "'";
-			$result = DB_query($SQL, $ErrMsg);
-			if (DB_num_rows($result) > 0) {
-				$SerialNoArray = DB_fetch_array($result);
+			$Result = DB_query($SQL, $ErrMsg);
+			if (DB_num_rows($Result) > 0) {
+				$SerialNoArray = DB_fetch_array($Result);
 				$SerialNo = $SerialNoArray[0];
 			} else {
 				$SerialNo = $WOHeader['nextlotsnref'];
@@ -224,8 +224,8 @@ if (isset($SelectedWO) and $SelectedWO != '' and $SelectedWO > 0 and $SelectedWO
 				ON stockcatproperties.stkcatpropid=stockitemproperties.stkcatpropid
 				WHERE stockid='" . $StockID . "'
 				AND label='PackQty'";
-		$result = DB_query($SQL, $ErrMsg);
-		$PackQtyArray = DB_fetch_array($result);
+		$Result = DB_query($SQL, $ErrMsg);
+		$PackQtyArray = DB_fetch_array($Result);
 		$PackQty = $PackQtyArray['value'];
 		if ($PackQty == 0) {
 			$PackQty = 1;
@@ -535,8 +535,8 @@ else {
 						WHERE woitems.stockid='" . $StockID . "'
                         AND woitems.wo ='" . $SelectedWO . "'";
 
-		$result = DB_query($SQL, $ErrMsg);
-		$Labels = DB_fetch_array($result);
+		$Result = DB_query($SQL, $ErrMsg);
+		$Labels = DB_fetch_array($Result);
 		$LabelItem = $Labels['stockid'];
 		$LabelDesc = $Labels['description'];
 		$QtyPerBox = 0;
@@ -546,8 +546,8 @@ else {
 				ON stockcatproperties.stkcatpropid=stockitemproperties.stkcatpropid
 				WHERE stockid='" . $StockID . "'
 				AND label='PackQty'";
-		$result = DB_query($SQL, $ErrMsg);
-		$PackQtyArray = DB_fetch_array($result);
+		$Result = DB_query($SQL, $ErrMsg);
+		$PackQtyArray = DB_fetch_array($Result);
 		$QtyPerBox = $PackQtyArray['value'];
 		if ($QtyPerBox == 0) {
 			$QtyPerBox = 1;
@@ -562,9 +562,9 @@ else {
 							FROM woserialnos
 							WHERE woserialnos.stockid='" . $StockID . "'
 							AND woserialnos.wo ='" . $SelectedWO . "'";
-			$result = DB_query($SQL, $ErrMsg);
-			if (DB_num_rows($result) > 0) {
-				$SerialNoArray = DB_fetch_array($result);
+			$Result = DB_query($SQL, $ErrMsg);
+			if (DB_num_rows($Result) > 0) {
+				$SerialNoArray = DB_fetch_array($Result);
 				$LabelLot = $SerialNoArray[0];
 			} else {
 				$LabelLot = $WOHeader['nextlotsnref'];

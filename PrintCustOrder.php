@@ -98,10 +98,10 @@ if ($_SESSION['RestrictLocations'] == 0) {
 if ($_SESSION['SalesmanLogin'] != '') {
        $SQL .= " AND salesorders.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
 }
-$result = DB_query($SQL, $ErrMsg);
+$Result = DB_query($SQL, $ErrMsg);
 
 //if there are no rows, there's a problem.
-if (DB_num_rows($result) == 0) {
+if (DB_num_rows($Result) == 0) {
 
 	$ListCount = 0;
 
@@ -115,13 +115,13 @@ if (DB_num_rows($result) == 0) {
 				</td></tr></table></div>';
 	include('includes/footer.inc');
 	exit();
-} elseif (DB_num_rows($result) == 1) {
+} elseif (DB_num_rows($Result) == 1) {
 	/*There is only one order header returned - thats good! */
 
 	/* Javier */
 	$ListCount = 1;
 
-	$MyRow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($Result);
 	if ($MyRow['printedpackingslip'] == 1 and ($_GET['Reprint'] != 'OK' or !isset($_GET['Reprint']))) {
 		$Title = _('Print Packing Slip Error');
 		include('includes/header.inc');
@@ -160,9 +160,9 @@ $SQL = "SELECT salesorderdetails.stkcode,
 		FROM salesorderdetails INNER JOIN stockmaster
 			ON salesorderdetails.stkcode=stockmaster.stockid
 		 WHERE salesorderdetails.orderno='" . $_GET['TransNo'] . "'";
-$result = DB_query($SQL, $ErrMsg);
+$Result = DB_query($SQL, $ErrMsg);
 
-if (DB_num_rows($result) > 0) {
+if (DB_num_rows($Result) > 0) {
 	/*Yes there are line items to start the ball rolling with a page header */
 
 	/*Set specifically for the stationery being used -needs to be modified for clients own
@@ -215,7 +215,7 @@ if (DB_num_rows($result) > 0) {
 
 	include('includes/PDFOrderPageHeader.inc');
 
-	while ($MyRow2 = DB_fetch_array($result)) {
+	while ($MyRow2 = DB_fetch_array($Result)) {
 
 		$DisplayQty = locale_number_format($MyRow2['quantity'], $MyRow2['decimalplaces']);
 		$DisplayPrevDel = locale_number_format($MyRow2['qtyinvoiced'], $MyRow2['decimalplaces']);
@@ -246,7 +246,7 @@ if (DB_num_rows($result) > 0) {
 	$SQL = "UPDATE salesorders SET printedpackingslip=1,
 									datepackingslipprinted=CURRENT_DATE
 			WHERE salesorders.orderno='" . $_GET['TransNo'] . "'";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 } else {
 	$Title = _('Print Packing Slip Error');
 	include('includes/header.inc');

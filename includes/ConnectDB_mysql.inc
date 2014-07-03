@@ -58,6 +58,7 @@ function DB_query($SQL, $ErrorMessage = '', $DebugMessage = '', $Transaction = f
 	global $debug;
 	global $PathPrefix;
 	global $RootPath;
+	global $Messages;
 
 	$result = mysql_query($SQL, $db);
 	$_SESSION['LastInsertId'] = mysql_insert_id($db);

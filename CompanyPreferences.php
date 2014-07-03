@@ -97,7 +97,7 @@ if (isset($_POST['submit'])) {
 		$CompanySQL = "SELECT coycode FROM companies";
 		$CompanyResult = DB_query($CompanySQL);
 		if (DB_num_rows($CompanyResult) == 0) {
-			$sql = "INSERT INTO companies (coycode,
+			$SQL = "INSERT INTO companies (coycode,
 											coyname,
 											companynumber,
 											gstno,
@@ -153,7 +153,7 @@ if (isset($_POST['submit'])) {
 										)";
 		} else {
 
-			$sql = "UPDATE companies SET coyname='" . $_POST['CoyName'] . "',
+			$SQL = "UPDATE companies SET coyname='" . $_POST['CoyName'] . "',
 										companynumber = '" . $_POST['CompanyNumber'] . "',
 										gstno='" . $_POST['GSTNo'] . "',
 										regoffice1='" . $_POST['RegOffice1'] . "',
@@ -182,21 +182,21 @@ if (isset($_POST['submit'])) {
 		}
 
 		$ErrMsg = _('The company preferences could not be updated because');
-		$result = DB_query($sql, $ErrMsg);
+		$result = DB_query($SQL, $ErrMsg);
 		prnMsg(_('Company preferences updated'), 'success');
 
 		/* Alter the exchange rates in the currencies table */
 
 		/* Get default currency rate */
-		$sql = "SELECT rate from currencies WHERE currabrev='" . $_POST['CurrencyDefault'] . "'";
-		$result = DB_query($sql);
+		$SQL = "SELECT rate from currencies WHERE currabrev='" . $_POST['CurrencyDefault'] . "'";
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_row($result);
 		$NewCurrencyRate = $MyRow[0];
 
 		/* Set new rates */
-		$sql = "UPDATE currencies SET rate=rate/" . $NewCurrencyRate;
+		$SQL = "UPDATE currencies SET rate=rate/" . $NewCurrencyRate;
 		$ErrMsg = _('Could not update the currency rates');
-		$result = DB_query($sql, $ErrMsg);
+		$result = DB_query($SQL, $ErrMsg);
 
 		/* End of update currencies */
 
@@ -218,7 +218,7 @@ echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />'
 echo '<table class="selection">';
 
 if ($InputError != 1) {
-	$sql = "SELECT coyname,
+	$SQL = "SELECT coyname,
 					gstno,
 					companynumber,
 					regoffice1,
@@ -247,7 +247,7 @@ if ($InputError != 1) {
 				WHERE coycode=1";
 
 	$ErrMsg = _('The company preferences could not be retrieved because');
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 
 	$MyRow = DB_fetch_array($result);
 

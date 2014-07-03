@@ -47,12 +47,12 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 				<td>' . _('Select Period From') . ':</td>
 				<td><select minlength="0" name="FromPeriod">';
 	$NextYear = date('Y-m-d', strtotime('+1 Year'));
-	$sql = "SELECT periodno,
+	$SQL = "SELECT periodno,
 					lastdate_in_period
 				FROM periods
 				WHERE lastdate_in_period < '" . $NextYear . "'
 				ORDER BY periodno DESC";
-	$Periods = DB_query($sql);
+	$Periods = DB_query($SQL);
 
 
 	while ($MyRow = DB_fetch_array($Periods)) {
@@ -120,10 +120,10 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 
 	$NumberOfMonths = $_POST['ToPeriod'] - $_POST['FromPeriod'] + 1;
 
-	$sql = "SELECT lastdate_in_period
+	$SQL = "SELECT lastdate_in_period
 			FROM periods
 			WHERE periodno='" . $_POST['ToPeriod'] . "'";
-	$PrdResult = DB_query($sql);
+	$PrdResult = DB_query($SQL);
 	$MyRow = DB_fetch_row($PrdResult);
 	$PeriodToDate = MonthAndYearFromSQLDate($MyRow[0]);
 
@@ -412,10 +412,10 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 
 	$NumberOfMonths = $_POST['ToPeriod'] - $_POST['FromPeriod'] + 1;
 
-	$sql = "SELECT lastdate_in_period
+	$SQL = "SELECT lastdate_in_period
 			FROM periods
 			WHERE periodno='" . $_POST['ToPeriod'] . "'";
-	$PrdResult = DB_query($sql);
+	$PrdResult = DB_query($SQL);
 	$MyRow = DB_fetch_row($PrdResult);
 	$PeriodToDate = MonthAndYearFromSQLDate($MyRow[0]);
 

@@ -43,7 +43,7 @@ if (isset($_POST['submit'])) {
 		would not run in this case cos submit is false of course  see the
 		delete code below*/
 
-		$sql = "UPDATE mrpdemandtypes SET description = '" . $_POST['Description'] . "'
+		$SQL = "UPDATE mrpdemandtypes SET description = '" . $_POST['Description'] . "'
 				WHERE mrpdemandtype = '" . $SelectedDT . "'";
 		$msg = _('The demand type record has been updated');
 	} elseif ($InputError != 1) {
@@ -51,7 +51,7 @@ if (isset($_POST['submit'])) {
 		//Selected demand type is null cos no item selected on first time round so must be adding a
 		//record must be submitting new entries in the new work centre form
 
-		$sql = "INSERT INTO mrpdemandtypes (mrpdemandtype,
+		$SQL = "INSERT INTO mrpdemandtypes (mrpdemandtype,
 						description)
 					VALUES ('" . trim(mb_strtoupper($_POST['MRPDemandType'])) . "',
 						'" . $_POST['Description'] . "'
@@ -61,7 +61,7 @@ if (isset($_POST['submit'])) {
 	//run the SQL from either of the above possibilites
 
 	if ($InputError != 1) {
-		$result = DB_query($sql, _('The update/addition of the demand type failed because'));
+		$result = DB_query($SQL, _('The update/addition of the demand type failed because'));
 		prnMsg($msg, 'success');
 		echo '<br />';
 		unset($_POST['Description']);
@@ -74,16 +74,16 @@ if (isset($_POST['submit'])) {
 
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'MRPDemands'
 
-	$sql = "SELECT COUNT(*) FROM mrpdemands
+	$SQL = "SELECT COUNT(*) FROM mrpdemands
 			 WHERE mrpdemands.mrpdemandtype='" . $SelectedDT . "'
 			 GROUP BY mrpdemandtype";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_row($result);
 	if ($MyRow[0] > 0) {
 		prnMsg(_('Cannot delete this demand type because MRP Demand records exist for this type') . '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('MRP Demands referring to this type'), 'warn');
 	} else {
-		$sql = "DELETE FROM mrpdemandtypes WHERE mrpdemandtype='" . $SelectedDT . "'";
-		$result = DB_query($sql);
+		$SQL = "DELETE FROM mrpdemandtypes WHERE mrpdemandtype='" . $SelectedDT . "'";
+		$result = DB_query($SQL);
 		prnMsg(_('The selected demand type record has been deleted'), 'succes');
 		echo '<br />';
 	} // end of MRPDemands test
@@ -98,11 +98,11 @@ if (!isset($SelectedDT) or isset($_GET['delete'])) {
 	//links to delete or edit each. These will call the same page again and allow update/input
 	//or deletion of the records
 
-	$sql = "SELECT mrpdemandtype,
+	$SQL = "SELECT mrpdemandtype,
 					description
 			FROM mrpdemandtypes";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	echo '<table class="selection">
 			<tr>
@@ -136,12 +136,12 @@ echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />'
 if (isset($SelectedDT) and !isset($_GET['delete'])) {
 	//editing an existing demand type
 
-	$sql = "SELECT mrpdemandtype,
+	$SQL = "SELECT mrpdemandtype,
 			description
 		FROM mrpdemandtypes
 		WHERE mrpdemandtype='" . $SelectedDT . "'";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 
 	$_POST['MRPDemandType'] = $MyRow['mrpdemandtype'];

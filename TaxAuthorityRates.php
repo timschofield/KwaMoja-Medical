@@ -31,11 +31,11 @@ if (isset($_POST['UpdateRates'])) {
 
 	while ($MyRow = DB_fetch_array($TaxRatesResult)) {
 
-		$sql = "UPDATE taxauthrates SET taxrate=" . (filter_number_format($_POST[$MyRow['dispatchtaxprovince'] . '_' . $MyRow['taxcatid']]) / 100) . "
+		$SQL = "UPDATE taxauthrates SET taxrate=" . (filter_number_format($_POST[$MyRow['dispatchtaxprovince'] . '_' . $MyRow['taxcatid']]) / 100) . "
 						WHERE taxcatid = '" . $MyRow['taxcatid'] . "'
 						AND dispatchtaxprovince = '" . $MyRow['dispatchtaxprovince'] . "'
 						AND taxauthority = '" . $TaxAuthority . "'";
-		DB_query($sql);
+		DB_query($SQL);
 	}
 	prnMsg(_('All rates updated successfully'), 'info');
 }

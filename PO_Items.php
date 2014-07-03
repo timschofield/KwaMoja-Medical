@@ -130,7 +130,7 @@ if (isset($_POST['Commit'])) {
 			$_SESSION['PO' . $identifier]->OrderNo = GetNextTransNo(18);
 
 			/*Insert to purchase order header record */
-			$sql = "INSERT INTO purchorders ( orderno,
+			$SQL = "INSERT INTO purchorders ( orderno,
 											supplierno,
 											comments,
 											orddate,
@@ -199,12 +199,12 @@ if (isset($_POST['Commit'])) {
 
 			$ErrMsg = _('The purchase order header record could not be inserted into the database because');
 			$DbgMsg = _('The SQL statement used to insert the purchase order header record and failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+			$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 			/*Insert the purchase order detail records */
 			foreach ($_SESSION['PO' . $identifier]->LineItems as $POLine) {
 				if ($POLine->Deleted == False) {
-					$sql = "INSERT INTO purchorderdetails (orderno,
+					$SQL = "INSERT INTO purchorderdetails (orderno,
 														itemcode,
 														deliverydate,
 														itemdescription,
@@ -233,7 +233,7 @@ if (isset($_POST['Commit'])) {
 					$ErrMsg = _('One of the purchase order detail records could not be inserted into the database because');
 					$DbgMsg = _('The SQL statement used to insert the purchase order detail record and failed was');
 
-					$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+					$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 				} //$POLine->Deleted == False
 			} //$_SESSION['PO' . $identifier]->LineItems as $POLine
 
@@ -263,7 +263,7 @@ if (isset($_POST['Commit'])) {
 			}
 			/*Update the purchase order header with any changes */
 
-			$sql = "UPDATE purchorders SET supplierno = '" . DB_escape_string($_SESSION['PO' . $identifier]->SupplierID) . "' ,
+			$SQL = "UPDATE purchorders SET supplierno = '" . DB_escape_string($_SESSION['PO' . $identifier]->SupplierID) . "' ,
 										comments='" . $_SESSION['PO' . $identifier]->Comments . "',
 										rate='" . $_SESSION['PO' . $identifier]->ExRate . "',
 										initiator='" . $_SESSION['PO' . $identifier]->Initiator . "',
@@ -297,16 +297,16 @@ if (isset($_POST['Commit'])) {
 
 			$ErrMsg = _('The purchase order could not be updated because');
 			$DbgMsg = _('The SQL statement used to update the purchase order header record, that failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+			$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 			/*Now Update the purchase order detail records */
 			foreach ($_SESSION['PO' . $identifier]->LineItems as $POLine) {
 				if ($POLine->Deleted == true) {
 					if ($POLine->PODetailRec != '') {
-						$sql = "DELETE FROM purchorderdetails WHERE podetailitem='" . $POLine->PODetailRec . "'";
+						$SQL = "DELETE FROM purchorderdetails WHERE podetailitem='" . $POLine->PODetailRec . "'";
 						$ErrMsg = _('The purchase order detail line could not be deleted because');
 						$DbgMsg = _('The SQL statement used to delete the purchase order detail record, that failed was');
-						$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+						$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 					} //$POLine->PODetailRec != ''
 				} //$POLine->Deleted == true
 				else if ($POLine->PODetailRec == '') {
@@ -314,7 +314,7 @@ if (isset($_POST['Commit'])) {
 					 * field PODetailRec is given to the session for that POLine
 					 * So it will only be a new POLine if PODetailRec is empty
 					 */
-					$sql = "INSERT INTO purchorderdetails ( orderno,
+					$SQL = "INSERT INTO purchorderdetails ( orderno,
 														itemcode,
 														deliverydate,
 														itemdescription,
@@ -345,7 +345,7 @@ if (isset($_POST['Commit'])) {
 				} //$POLine->PODetailRec == ''
 				else {
 					if ($POLine->Quantity == $POLine->QtyReceived) {
-						$sql = "UPDATE purchorderdetails SET itemcode='" . $POLine->StockID . "',
+						$SQL = "UPDATE purchorderdetails SET itemcode='" . $POLine->StockID . "',
 															deliverydate ='" . FormatDateForSQL($POLine->ReqDelDate) . "',
 															itemdescription='" . DB_escape_string($POLine->ItemDescription) . "',
 															glcode='" . $POLine->GLCode . "',
@@ -361,7 +361,7 @@ if (isset($_POST['Commit'])) {
 								WHERE podetailitem='" . $POLine->PODetailRec . "'";
 					} //$POLine->Quantity == $POLine->QtyReceived
 					else {
-						$sql = "UPDATE purchorderdetails SET itemcode='" . $POLine->StockID . "',
+						$SQL = "UPDATE purchorderdetails SET itemcode='" . $POLine->StockID . "',
 															deliverydate ='" . FormatDateForSQL($POLine->ReqDelDate) . "',
 															itemdescription='" . DB_escape_string($POLine->ItemDescription) . "',
 															glcode='" . $POLine->GLCode . "',
@@ -379,7 +379,7 @@ if (isset($_POST['Commit'])) {
 
 				$ErrMsg = _('One of the purchase order detail records could not be updated because');
 				$DbgMsg = _('The SQL statement used to update the purchase order detail record that failed was');
-				$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+				$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 			} //$_SESSION['PO' . $identifier]->LineItems as $POLine
 
@@ -456,17 +456,17 @@ if (isset($_POST['EnterLine'])) {
 	 * there will be an sql error  in SupplierInvoice.php without a valid GL Code
 	 */
 	if ($_SESSION['PO'.$identifier]->GLLink == 1 or $_SESSION['CompanyRecord']['gllink_creditors'] == 1) {
-		$sql = "SELECT accountname
+		$SQL = "SELECT accountname
 					FROM chartmaster
 					WHERE accountcode ='" . $_POST['GLCode'] . "'";
 		$ErrMsg = _('The account details for') . ' ' . $_POST['GLCode'] . ' ' . _('could not be retrieved because');
 		$DbgMsg = _('The SQL used to retrieve the details of the account, but failed was');
-		$GLValidResult = DB_query($sql, $ErrMsg, $DbgMsg, false, false);
+		$GLValidResult = DB_query($SQL, $ErrMsg, $DbgMsg, false, false);
 		if (DB_error_no() != 0) {
 			$AllowUpdate = false;
 			prnMsg(_('The validation process for the GL Code entered could not be executed because') . ' ' . DB_error_msg(), 'error');
 			if ($debug == 1) {
-				prnMsg(_('The SQL used to validate the code entered was') . ' ' . $sql, 'error');
+				prnMsg(_('The SQL used to validate the code entered was') . ' ' . $SQL, 'error');
 			} //$debug == 1
 			include('includes/footer.inc');
 			exit;
@@ -559,7 +559,7 @@ if (isset($_POST['NewItem']) and !empty($_POST['PO_ItemsResubmitFormValue']) and
 				} //count($_SESSION['PO' . $identifier]->LineItems) != 0
 			} //$_SESSION['PO_AllowSameItemMultipleTimes'] == false
 			if ($AlreadyOnThisOrder != 1 and filter_number_format($Quantity) > 0) {
-				$sql = "SELECT description,
+				$SQL = "SELECT description,
 							longdescription,
 							stockid,
 							units,
@@ -574,11 +574,11 @@ if (isset($_POST['NewItem']) and !empty($_POST['PO_ItemsResubmitFormValue']) and
 
 				$ErrMsg = _('The item details for') . ' ' . $ItemCode . ' ' . _('could not be retrieved because');
 				$DbgMsg = _('The SQL used to retrieve the item details but failed was');
-				$ItemResult = DB_query($sql, $ErrMsg, $DbgMsg);
+				$ItemResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 				if (DB_num_rows($ItemResult) == 1) {
 					$ItemRow = DB_fetch_array($ItemResult);
 
-					$sql = "SELECT price,
+					$SQL = "SELECT price,
 								conversionfactor,
 								supplierdescription,
 								suppliersuom,
@@ -599,11 +599,11 @@ if (isset($_POST['NewItem']) and !empty($_POST['PO_ItemsResubmitFormValue']) and
 
 					$ErrMsg = _('The purchasing data for') . ' ' . $ItemCode . ' ' . _('could not be retrieved because');
 					$DbgMsg = _('The SQL used to retrieve the purchasing data but failed was');
-					$PurchDataResult = DB_query($sql, $ErrMsg, $DbgMsg);
+					$PurchDataResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 					if (DB_num_rows($PurchDataResult) > 0) { //the purchasing data is set up
 						$PurchRow = DB_fetch_array($PurchDataResult);
 						/* Now to get the applicable discounts */
-						$sql = "SELECT discountpercent,
+						$SQL = "SELECT discountpercent,
 										discountamount
 								FROM supplierdiscounts
 								WHERE supplierno= '" . $_SESSION['PO' . $identifier]->SupplierID . "'
@@ -615,7 +615,7 @@ if (isset($_POST['NewItem']) and !empty($_POST['PO_ItemsResubmitFormValue']) and
 						$ItemDiscountAmount = 0;
 						$ErrMsg = _('Could not retrieve the supplier discounts applicable to the item');
 						$DbgMsg = _('The SQL used to retrive the supplier discounts that failed was');
-						$DiscountResult = DB_query($sql, $ErrMsg, $DbgMsg);
+						$DiscountResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 						while ($DiscountRow = DB_fetch_array($DiscountResult)) {
 							$ItemDiscountPercent += $DiscountRow['discountpercent'];
 							$ItemDiscountAmount += $DiscountRow['discountamount'];
@@ -660,7 +660,7 @@ if (isset($_POST['NewItem']) and !empty($_POST['PO_ItemsResubmitFormValue']) and
 				else { //no rows returned by the SQL to get the item
 					prnMsg(_('The item code') . ' ' . $ItemCode . ' ' . _('does not exist in the database and therefore cannot be added to the order'), 'error');
 					if ($debug == 1) {
-						echo '<br />' . $sql;
+						echo '<br />' . $SQL;
 					} //$debug == 1
 					include('includes/footer.inc');
 					exit;
@@ -780,12 +780,12 @@ if (isset($_POST['NonStockOrder'])) {
 	echo '<tr>
 			<td>' . _('General Ledger Code') . '</td>
 			<td><select minlength="0" name="GLCode">';
-	$sql = "SELECT accountcode,
+	$SQL = "SELECT accountcode,
 				  accountname
 				FROM chartmaster
 				ORDER BY accountcode ASC";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	while ($MyRow = DB_fetch_array($result)) {
 		echo '<option value="' . $MyRow['accountcode'] . '">' . $MyRow['accountcode'] . ' - ' . $MyRow['accountname'] . '</option>';
 	} //$MyRow = DB_fetch_array($result)
@@ -794,12 +794,12 @@ if (isset($_POST['NonStockOrder'])) {
 			<td>' . _('OR Asset ID') . '</td>
 			<td><select required="required" minlength="1" name="AssetID">';
 
-	$sql = "SELECT assetid,
+	$SQL = "SELECT assetid,
 					description,
 					datepurchased
 				FROM fixedassets
 				ORDER BY assetid DESC";
-	$AssetsResult = DB_query($sql);
+	$AssetsResult = DB_query($SQL);
 	echo '<option selected="selected" value="Not an Asset">' . _('Not an Asset') . '</option>';
 	while ($AssetRow = DB_fetch_array($AssetsResult)) {
 		if ($AssetRow['datepurchased'] == '0000-00-00') {
@@ -847,7 +847,7 @@ if (isset($_POST['Search'])) {
 
 		if ($_POST['StockCat'] == 'All') {
 			if ($_POST['SupplierItemsOnly'] == 'on') {
-				$sql = "SELECT stockmaster.stockid,
+				$SQL = "SELECT stockmaster.stockid,
 								stockmaster.description,
 								stockmaster.units
 						FROM stockmaster INNER JOIN stockcategory
@@ -866,7 +866,7 @@ if (isset($_POST['Search'])) {
 			} //$_POST['SupplierItemsOnly'] == 'on'
 			else { // not just supplier purchdata items
 
-				$sql = "SELECT stockmaster.stockid,
+				$SQL = "SELECT stockmaster.stockid,
 							stockmaster.description,
 							stockmaster.units
 					FROM stockmaster INNER JOIN stockcategory
@@ -883,7 +883,7 @@ if (isset($_POST['Search'])) {
 		} //$_POST['StockCat'] == 'All'
 		else { //for a specific stock category
 			if ($_POST['SupplierItemsOnly'] == 'on') {
-				$sql = "SELECT stockmaster.stockid,
+				$SQL = "SELECT stockmaster.stockid,
 								stockmaster.description,
 								stockmaster.units
 						FROM stockmaster INNER JOIN stockcategory
@@ -902,7 +902,7 @@ if (isset($_POST['Search'])) {
 						LIMIT " . $_SESSION['DisplayRecordsMax'];
 			} //$_POST['SupplierItemsOnly'] == 'on'
 			else {
-				$sql = "SELECT stockmaster.stockid,
+				$SQL = "SELECT stockmaster.stockid,
 								stockmaster.description,
 								stockmaster.units
 						FROM stockmaster INNER JOIN stockcategory
@@ -925,7 +925,7 @@ if (isset($_POST['Search'])) {
 
 		if ($_POST['StockCat'] == 'All') {
 			if ($_POST['SupplierItemsOnly'] == 'on') {
-				$sql = "SELECT stockmaster.stockid,
+				$SQL = "SELECT stockmaster.stockid,
 								stockmaster.description,
 								stockmaster.units
 						FROM stockmaster INNER JOIN stockcategory
@@ -943,7 +943,7 @@ if (isset($_POST['Search'])) {
 						LIMIT " . $_SESSION['DisplayRecordsMax'];
 			} //$_POST['SupplierItemsOnly'] == 'on'
 			else {
-				$sql = "SELECT stockmaster.stockid,
+				$SQL = "SELECT stockmaster.stockid,
 							stockmaster.description,
 							stockmaster.units
 					FROM stockmaster INNER JOIN stockcategory
@@ -960,7 +960,7 @@ if (isset($_POST['Search'])) {
 		} //$_POST['StockCat'] == 'All'
 		else { //for a specific stock category and LIKE stock code
 			if ($_POST['SupplierItemsOnly'] == 'on') {
-				$sql = "SELECT stockmaster.stockid,
+				$SQL = "SELECT stockmaster.stockid,
 								stockmaster.description,
 								stockmaster.units
 						FROM stockmaster INNER JOIN stockcategory
@@ -979,7 +979,7 @@ if (isset($_POST['Search'])) {
 						LIMIT " . $_SESSION['DisplayRecordsMax'];
 			} //$_POST['SupplierItemsOnly'] == 'on'
 			else {
-				$sql = "SELECT stockmaster.stockid,
+				$SQL = "SELECT stockmaster.stockid,
 							stockmaster.description,
 							stockmaster.units
 					FROM stockmaster INNER JOIN stockcategory
@@ -1000,7 +1000,7 @@ if (isset($_POST['Search'])) {
 	else {
 		if ($_POST['StockCat'] == 'All') {
 			if (isset($_POST['SupplierItemsOnly'])) {
-				$sql = "SELECT stockmaster.stockid,
+				$SQL = "SELECT stockmaster.stockid,
 								stockmaster.description,
 								stockmaster.units
 						FROM stockmaster INNER JOIN stockcategory
@@ -1017,7 +1017,7 @@ if (isset($_POST['Search'])) {
 						LIMIT " . $_SESSION['DisplayRecordsMax'];
 			} //isset($_POST['SupplierItemsOnly'])
 			else {
-				$sql = "SELECT stockmaster.stockid,
+				$SQL = "SELECT stockmaster.stockid,
 							stockmaster.description,
 							stockmaster.units
 					FROM stockmaster INNER JOIN stockcategory
@@ -1033,7 +1033,7 @@ if (isset($_POST['Search'])) {
 		} //$_POST['StockCat'] == 'All'
 		else { // for a specific stock category
 			if (isset($_POST['SupplierItemsOnly']) and $_POST['SupplierItemsOnly'] == 'on') {
-				$sql = "SELECT stockmaster.stockid,
+				$SQL = "SELECT stockmaster.stockid,
 								stockmaster.description,
 								stockmaster.units
 						FROM stockmaster INNER JOIN stockcategory
@@ -1050,7 +1050,7 @@ if (isset($_POST['Search'])) {
 						ORDER BY stockmaster.stockid
 						LIMIT " . $_SESSION['DisplayRecordsMax'];
 			} else {
-				$sql = "SELECT stockmaster.stockid,
+				$SQL = "SELECT stockmaster.stockid,
 							stockmaster.description,
 							stockmaster.units
 					FROM stockmaster INNER JOIN stockcategory
@@ -1069,7 +1069,7 @@ if (isset($_POST['Search'])) {
 
 	$ErrMsg = _('There is a problem selecting the part records to display because');
 	$DbgMsg = _('The SQL statement that failed was');
-	$SearchResult = DB_query($sql, $ErrMsg, $DbgMsg);
+	$SearchResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	if (DB_num_rows($SearchResult) == 0 and $debug == 1) {
 		prnMsg(_('There are no products to display matching the criteria provided'), 'warn');
@@ -1083,7 +1083,7 @@ if (isset($_POST['Search'])) {
 } //end of if search
 
 if (!isset($_GET['Edit'])) {
-	$sql = "SELECT categoryid,
+	$SQL = "SELECT categoryid,
 				categorydescription
 			FROM stockcategory
 			WHERE stocktype<>'L'
@@ -1091,7 +1091,7 @@ if (!isset($_GET['Edit'])) {
 			ORDER BY categorydescription";
 	$ErrMsg = _('The supplier category details could not be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve the category details but failed was');
-	$result1 = DB_query($sql, $ErrMsg, $DbgMsg);
+	$result1 = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	echo '<table class="selection">
 			<tr>
@@ -1179,13 +1179,13 @@ if (isset($SearchResult)) {
 		}
 
 		/*Get conversion factor and supplier units if any */
-		$sql = "SELECT purchdata.conversionfactor,
+		$SQL = "SELECT purchdata.conversionfactor,
 						purchdata.suppliersuom
 					FROM purchdata
 					WHERE purchdata.supplierno='" . $_SESSION['PO' . $identifier]->SupplierID . "'
 					AND purchdata.stockid='" . $MyRow['stockid'] . "'";
 		$ErrMsg = _('Could not retrieve the purchasing data for the item');
-		$PurchDataResult = DB_query($sql, $ErrMsg);
+		$PurchDataResult = DB_query($SQL, $ErrMsg);
 
 		if (DB_num_rows($PurchDataResult) > 0) {
 			$PurchDataRow = DB_fetch_array($PurchDataResult);

@@ -229,7 +229,7 @@ if (isset($_POST['submit'])) {
 				/*end if there was accumulated depreciation for the asset */
 			}
 			/* end if there is a change in asset category */
-			$sql = "UPDATE fixedassets
+			$SQL = "UPDATE fixedassets
 					SET longdescription='" . $_POST['LongDescription'] . "',
 						description='" . $_POST['Description'] . "',
 						assetcategoryid='" . $_POST['AssetCategoryID'] . "',
@@ -242,12 +242,12 @@ if (isset($_POST['submit'])) {
 
 			$ErrMsg = _('The asset could not be updated because');
 			$DbgMsg = _('The SQL that was used to update the asset and failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 			prnMsg(_('Asset') . ' ' . $AssetID . ' ' . _('has been updated'), 'success');
 			echo '<br />';
 		} else { //it is a NEW part
-			$sql = "INSERT INTO fixedassets (description,
+			$SQL = "INSERT INTO fixedassets (description,
 											longdescription,
 											assetcategoryid,
 											assetlocation,
@@ -266,7 +266,7 @@ if (isset($_POST['submit'])) {
 							'" . $_POST['SerialNo'] . "' )";
 			$ErrMsg = _('The asset could not be added because');
 			$DbgMsg = _('The SQL that was used to add the asset failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 			if (DB_error_no() == 0) {
 				$NewAssetID = DB_Last_Insert_ID('fixedassets', 'assetid');
@@ -363,8 +363,8 @@ if (isset($_POST['submit'])) {
 
 		} //end if cost > 0
 
-		$sql = "DELETE FROM fixedassets WHERE assetid='" . $AssetID . "'";
-		$result = DB_query($sql, _('Could not delete the asset record'), '', true);
+		$SQL = "DELETE FROM fixedassets WHERE assetid='" . $AssetID . "'";
+		$result = DB_query($SQL, _('Could not delete the asset record'), '', true);
 
 		$result = DB_Txn_Commit();
 
@@ -409,7 +409,7 @@ if (!isset($AssetID) or $AssetID == '') {
 
 } elseif ($InputError != 1) { // Must be modifying an existing item and no changes made yet - need to lookup the details
 
-	$sql = "SELECT assetid,
+	$SQL = "SELECT assetid,
 				description,
 				longdescription,
 				assetcategoryid,
@@ -426,7 +426,7 @@ if (!isset($AssetID) or $AssetID == '') {
 			FROM fixedassets
 			WHERE assetid='" . $AssetID . "'";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$AssetRow = DB_fetch_array($result);
 
 	$_POST['LongDescription'] = $AssetRow['longdescription'];
@@ -508,10 +508,10 @@ echo '<tr>
 		<td>' . _('Asset Category') . ':</td>
 		<td><select minlength="0" name="AssetCategoryID">';
 
-$sql = "SELECT categoryid, categorydescription FROM fixedassetcategories";
+$SQL = "SELECT categoryid, categorydescription FROM fixedassetcategories";
 $ErrMsg = _('The asset categories could not be retrieved because');
 $DbgMsg = _('The SQL used to retrieve stock categories and failed was');
-$result = DB_query($sql, $ErrMsg, $DbgMsg);
+$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 while ($MyRow = DB_fetch_array($result)) {
 	if (!isset($_POST['AssetCategoryID']) or $MyRow['categoryid'] == $_POST['AssetCategoryID']) {
@@ -533,10 +533,10 @@ if (isset($AssetRow) and ($AssetRow['datepurchased'] != '0000-00-00' and $AssetR
 		</tr>';
 }
 
-$sql = "SELECT locationid, locationdescription FROM fixedassetlocations";
+$SQL = "SELECT locationid, locationdescription FROM fixedassetlocations";
 $ErrMsg = _('The asset locations could not be retrieved because');
 $DbgMsg = _('The SQL used to retrieve asset locations and failed was');
-$result = DB_query($sql, $ErrMsg, $DbgMsg);
+$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 echo '<tr>
 		<td>' . _('Asset Location') . ':</td>

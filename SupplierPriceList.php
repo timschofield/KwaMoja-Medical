@@ -313,7 +313,7 @@ foreach ($_POST as $key => $value) {
 		$EffectiveFrom = $_POST['EffectiveFrom' . $Index];
 		$SupplierPartNo = $_POST['SupplierPartNo' . $Index];
 		$MinOrderQty = $_POST['MinOrderQty' . $Index];
-		$sql = "UPDATE purchdata SET price='" . $Price . "',
+		$SQL = "UPDATE purchdata SET price='" . $Price . "',
 									suppliersuom='" . $SuppUOM . "',
 									conversionfactor='" . $ConversionFactor . "',
 									supplierdescription='" . $SupplierDescription . "',
@@ -324,7 +324,7 @@ foreach ($_POST as $key => $value) {
 									minorderqty='" . $MinOrderQty . "'
 								WHERE supplierno='" . DB_escape_string($_POST['SupplierID']) . "'
 								AND stockid='" . $StockID . "'";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 	}
 	if (mb_substr($key, 0, 6) == 'Insert') {
 		if (isset($_POST['Preferred0'])) {
@@ -332,7 +332,7 @@ foreach ($_POST as $key => $value) {
 		} else {
 			$Preferred = 0;
 		}
-		$sql = "INSERT INTO purchdata (stockid,
+		$SQL = "INSERT INTO purchdata (stockid,
 									supplierno,
 									price,
 									suppliersuom,
@@ -356,7 +356,7 @@ foreach ($_POST as $key => $value) {
 									'" . $_POST['SupplierPartNo0'] . "',
 									'" . $_POST['MinOrderQty0'] . "'
 								)";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 	}
 }
 
@@ -368,10 +368,10 @@ if (isset($_GET['SupplierID'])) {
 
 if ((isset($SupplierID) and $SupplierID != '') and !isset($_POST['SearchSupplier'])) {
 	/*NOT EDITING AN EXISTING BUT SUPPLIER selected or ENTERED*/
-	$sql = "SELECT suppliers.suppname, suppliers.currcode FROM suppliers WHERE supplierid='" . DB_escape_string($SupplierID) . "'";
+	$SQL = "SELECT suppliers.suppname, suppliers.currcode FROM suppliers WHERE supplierid='" . DB_escape_string($SupplierID) . "'";
 	$ErrMsg = _('The supplier details for the selected supplier could not be retrieved because');
 	$DbgMsg = _('The SQL that failed was');
-	$SuppSelResult = DB_query($sql, $ErrMsg, $DbgMsg);
+	$SuppSelResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 	if (DB_num_rows($SuppSelResult) == 1) {
 		$MyRow = DB_fetch_array($SuppSelResult);
 		$SuppName = $MyRow['suppname'];

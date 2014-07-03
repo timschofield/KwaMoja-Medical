@@ -150,20 +150,20 @@ if (isset($_POST['View'])) {
 	}
 
 	if ($_POST['SelectedUser'] == 'ALL') {
-		$sql = "SELECT transactiondate,
+		$SQL = "SELECT transactiondate,
 				userid,
 				querystring
 			FROM audittrail
 			WHERE transactiondate BETWEEN '" . $FromDate . "' AND '" . $ToDate . "'" . $ContainingText;
 	} else {
-		$sql = "SELECT transactiondate,
+		$SQL = "SELECT transactiondate,
 				userid,
 				querystring
 			FROM audittrail
 			WHERE userid='" . $_POST['SelectedUser'] . "'
 			AND transactiondate BETWEEN '" . $FromDate . "' AND '" . $ToDate . "'" . $ContainingText;
 	}
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	echo '<table border="0" width="98%" class="selection">';
 	echo '<tr>

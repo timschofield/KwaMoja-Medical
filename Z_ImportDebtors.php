@@ -311,8 +311,8 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 
 
 		if ($InputError != 1) {
-			$sql = "SELECT 1 FROM debtorsmaster WHERE debtorno='" . $_POST['DebtorNo'] . "' LIMIT 1";
-			$result = DB_query($sql);
+			$SQL = "SELECT 1 FROM debtorsmaster WHERE debtorno='" . $_POST['DebtorNo'] . "' LIMIT 1";
+			$result = DB_query($SQL);
 			$DebtorExists = (DB_num_rows($result) > 0);
 			if ($DebtorExists and $_POST['UpdateIfExists'] != 1) {
 				$UpdatedNum++;
@@ -322,10 +322,10 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 
 				if ($DebtorExists) { //update
 					$UpdatedNum++;
-					$sql = "SELECT 1
+					$SQL = "SELECT 1
 							  FROM debtortrans
 							where debtorno = '" . $_POST['DebtorNo'] . "' LIMIT 1";
-					$result = DB_query($sql);
+					$result = DB_query($SQL);
 
 					$curr = false;
 					if (DB_num_rows($result) == 0) {
@@ -342,7 +342,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 						}
 					}
 
-					$sql = "UPDATE debtorsmaster SET
+					$SQL = "UPDATE debtorsmaster SET
 							name='" . $_POST['CustName'] . "',
 							address1='" . $_POST['Address1'] . "',
 							address2='" . $_POST['Address2'] . "',
@@ -352,9 +352,9 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 							address6='" . $_POST['Address6'] . "',";
 
 					if ($curr)
-						$sql .= "currcode='" . $_POST['CurrCode'] . "',";
+						$SQL .= "currcode='" . $_POST['CurrCode'] . "',";
 
-					$sql .= "clientsince='" . $SQL_ClientSince . "',
+					$SQL .= "clientsince='" . $SQL_ClientSince . "',
 							holdreason='" . $_POST['HoldReason'] . "',
 							paymentterms='" . $_POST['PaymentTerms'] . "',
 							discount='" . filter_number_format($_POST['Discount']) / 100 . "',
@@ -370,11 +370,11 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 						  WHERE debtorno = '" . $_POST['DebtorNo'] . "'";
 
 					$ErrMsg = _('The customer could not be updated because');
-					$result = DB_query($sql, $ErrMsg);
+					$result = DB_query($SQL, $ErrMsg);
 
 				} else { //insert
 					$InsertNum++;
-					$sql = "INSERT INTO debtorsmaster (
+					$SQL = "INSERT INTO debtorsmaster (
 							debtorno,
 							name,
 							address1,
@@ -421,7 +421,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 							'" . $_POST['LanguageID'] . "')";
 
 					$ErrMsg = _('This customer could not be added because');
-					$result = DB_query($sql, $ErrMsg);
+					$result = DB_query($SQL, $ErrMsg);
 				}
 			}
 
@@ -472,11 +472,11 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 		if ($InputError != 1) {
 			if (DB_error_no() == 0) {
 
-				$sql = "SELECT 1
+				$SQL = "SELECT 1
 				     FROM custbranch
            			 WHERE debtorno='" . $_POST['DebtorNo'] . "' AND
 				           branchcode='" . $_POST['BranchCode'] . "' LIMIT 1";
-				$result = DB_query($sql);
+				$result = DB_query($SQL);
 				$BranchExists = (DB_num_rows($result) > 0);
 				if ($BranchExists and $_POST['UpdateIfExists'] != 1) {
 					//do nothing
@@ -490,7 +490,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 						$Longitude = 0.0;
 					}
 					if ($BranchExists) {
-						$sql = "UPDATE custbranch SET brname = '" . $_POST['BrName'] . "',
+						$SQL = "UPDATE custbranch SET brname = '" . $_POST['BrName'] . "',
 									braddress1 = '" . $_POST['BrAddress1'] . "',
 									braddress2 = '" . $_POST['BrAddress2'] . "',
 									braddress3 = '" . $_POST['BrAddress3'] . "',
@@ -524,7 +524,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 
 					} else {
 
-						$sql = "INSERT INTO custbranch (branchcode,
+						$SQL = "INSERT INTO custbranch (branchcode,
 										debtorno,
 										brname,
 										braddress1,
@@ -591,7 +591,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 					//run the SQL from either of the above possibilites
 
 					$ErrMsg = _('The branch record could not be inserted or updated because');
-					$result = DB_query($sql, $ErrMsg);
+					$result = DB_query($SQL, $ErrMsg);
 
 
 					if (DB_error_no() == 0) {

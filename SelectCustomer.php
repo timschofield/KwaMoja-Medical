@@ -33,11 +33,11 @@ if (!isset($_SESSION['CustomerType'])) { //initialise if not already done
 
 // only run geocode if integration is turned on and customer has been selected
 if ($_SESSION['geocode_integration'] == 1 and $_SESSION['CustomerID'] != "") {
-	$sql = "SELECT * FROM geocode_param WHERE 1";
+	$SQL = "SELECT * FROM geocode_param WHERE 1";
 	$ErrMsg = _('An error occurred in retrieving the information');
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 	$MyRow = DB_fetch_array($result);
-	$sql = "SELECT debtorsmaster.debtorno,
+	$SQL = "SELECT debtorsmaster.debtorno,
 					debtorsmaster.name,
 					custbranch.branchcode,
 					custbranch.brname,
@@ -48,7 +48,7 @@ if ($_SESSION['geocode_integration'] == 1 and $_SESSION['CustomerID'] != "") {
 				WHERE debtorsmaster.debtorno = '" . $_SESSION['CustomerID'] . "'
 				ORDER BY debtorsmaster.debtorno";
 	$ErrMsg = _('An error occurred in retrieving the information');
-	$result2 = DB_query($sql, $ErrMsg);
+	$result2 = DB_query($SQL, $ErrMsg);
 	$MyRow2 = DB_fetch_array($result2);
 	$Lattitude = $MyRow2['lat'];
 	$Longitude = $MyRow2['lng'];
@@ -551,13 +551,13 @@ if (isset($_SESSION['CustomerID']) and $_SESSION['CustomerID'] != '') {
 	// Extended Customer Info only if selected in Configuration
 	if ($_SESSION['Extended_CustomerInfo'] == 1) {
 		if ($_SESSION['CustomerID'] != '') {
-			$sql = "SELECT debtortype.typeid,
+			$SQL = "SELECT debtortype.typeid,
 							debtortype.typename
 						FROM debtorsmaster INNER JOIN debtortype
 					ON debtorsmaster.typeid = debtortype.typeid
 					WHERE debtorsmaster.debtorno = '" . $_SESSION['CustomerID'] . "'";
 			$ErrMsg = _('An error occurred in retrieving the information');
-			$result = DB_query($sql, $ErrMsg);
+			$result = DB_query($SQL, $ErrMsg);
 			$MyRow = DB_fetch_array($result);
 			$CustomerType = $MyRow['typeid'];
 			$CustomerTypeName = $MyRow['typename'];
@@ -633,10 +633,10 @@ if (isset($_SESSION['CustomerID']) and $_SESSION['CustomerID'] != '') {
 			echo '</table>';
 		} //$_SESSION['CustomerID'] != ''
 		// Customer Contacts
-		$sql = "SELECT * FROM custcontacts
+		$SQL = "SELECT * FROM custcontacts
 				WHERE debtorno='" . $_SESSION['CustomerID'] . "'
 				ORDER BY contid";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		if (DB_num_rows($result) <> 0) {
 			echo '<br /><div class="centre"><img src="' . $RootPath . '/css/' . $Theme . '/images/group_add.png" title="' . _('Customer Contacts') . '" alt="" />' . ' ' . _('Customer Contacts') . '</div>';
 			echo '<br /><table width="45%">';
@@ -680,7 +680,7 @@ if (isset($_SESSION['CustomerID']) and $_SESSION['CustomerID'] != '') {
 			} //$_SESSION['CustomerID'] != ""
 		}
 		// Customer Notes
-		$sql = "SELECT noteid,
+		$SQL = "SELECT noteid,
 						debtorno,
 						href,
 						note,
@@ -689,7 +689,7 @@ if (isset($_SESSION['CustomerID']) and $_SESSION['CustomerID'] != '') {
 				FROM custnotes
 				WHERE debtorno='" . $_SESSION['CustomerID'] . "'
 				ORDER BY date DESC";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		if (DB_num_rows($result) <> 0) {
 			echo '<div class="centre"><img src="' . $RootPath . '/css/' . $Theme . '/images/note_add.png" title="' . _('Customer Notes') . '" alt="" />' . ' ' . _('Customer Notes') . '</div><br />';
 			echo '<table width="45%">';
@@ -731,10 +731,10 @@ if (isset($_SESSION['CustomerID']) and $_SESSION['CustomerID'] != '') {
 			} //$_SESSION['CustomerID'] != ''
 		}
 		// Custome Type Notes
-		$sql = "SELECT * FROM debtortypenotes
+		$SQL = "SELECT * FROM debtortypenotes
 				WHERE typeid='" . $CustomerType . "'
 				ORDER BY date DESC";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		if (DB_num_rows($result) <> 0) {
 			echo '<div class="centre">
 					<img src="' . $RootPath . '/css/' . $Theme . '/images/folder_add.png" title="' . _('Customer Type (Group) Notes') . '" alt="" />' . ' ' . _('Customer Type (Group) Notes for') . ':<b> ' . $CustomerTypeName . '</b>' . '

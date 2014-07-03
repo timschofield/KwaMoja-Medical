@@ -26,10 +26,10 @@ if (isset($_GET['Location'])) {
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
-	$sql = "SELECT loccode,
+	$SQL = "SELECT loccode,
 					locationname
 				FROM locations";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	echo '<table class="selection">
 			<tr>
 				<td><select name="Location">';
@@ -159,8 +159,8 @@ if (isset($_POST['Insert']) or isset($_POST['Update'])) {
 }
 
 /* Get the location name */
-$sql = "SELECT locationname FROM locations WHERE loccode='" . $LocationCode . "'";
-$result = DB_query($sql);
+$SQL = "SELECT locationname FROM locations WHERE loccode='" . $LocationCode . "'";
+$result = DB_query($SQL);
 $LocationRow = DB_fetch_array($result);
 
 $Title = _('Define Warehouse at') . ' ' . $LocationRow['locationname'];
@@ -284,7 +284,7 @@ display_children('', 0, $LocationCode);
 echo '</table>';
 }
 if (isset($_GET['Edit'])) {
-	$sql = "SELECT id,
+	$SQL = "SELECT id,
 					name,
 					parentid,
 					xcoord,
@@ -300,7 +300,7 @@ if (isset($_GET['Edit'])) {
 					quarantine
 				FROM container
 				WHERE id='" . $_GET['Edit'] . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 }
 
 if (DB_num_rows($result) != 0) {

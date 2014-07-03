@@ -16,7 +16,7 @@ echo '<table class="selection">
 		 <td>  ' . _('From Stock Location') . ':<select required="required" minlength="1" name="StockLocation"> ';
 
 if ($_SESSION['RestrictLocations'] == 0) {
-	$sql = "SELECT locationname,
+	$SQL = "SELECT locationname,
 					loccode
 				FROM locations";
 	echo '<option selected="selected" value="All">' . _('All Locations') . '</option>';
@@ -24,7 +24,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 		$_POST['StockLocation'] = 'All';
 	}
 } else {
-	$sql = "SELECT locationname,
+	$SQL = "SELECT locationname,
 					loccode
 				FROM locations
 				INNER JOIN www_users
@@ -35,7 +35,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 	}
 }
 
-$resultStkLocs = DB_query($sql);
+$resultStkLocs = DB_query($SQL);
 while ($MyRow = DB_fetch_array($resultStkLocs)) {
 	if (isset($_POST['StockLocation']) and $_POST['StockLocation'] != 'All') {
 		if ($MyRow['loccode'] == $_POST['StockLocation']) {
@@ -72,7 +72,7 @@ if ($_POST['StockLocation'] == 'All') {
 $SQLBeforeDate = FormatDateForSQL($_POST['BeforeDate']);
 $SQLAfterDate = FormatDateForSQL($_POST['AfterDate']);
 
-$sql = "SELECT stockmoves.stockid,
+$SQL = "SELECT stockmoves.stockid,
 				systypes.typename,
 				stockmoves.type,
 				stockmoves.transno,
@@ -94,7 +94,7 @@ $sql = "SELECT stockmoves.stockid,
 			AND hidemovt=0
 			ORDER BY stkmoveno DESC";
 $ErrMsg = _('The stock movements for the selected criteria could not be retrieved because');
-$MovtsResult = DB_query($sql, $ErrMsg);
+$MovtsResult = DB_query($SQL, $ErrMsg);
 
 echo '<table cellpadding="5" cellspacing="4 "class="selection">
 		<tr>

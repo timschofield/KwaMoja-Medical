@@ -6,11 +6,11 @@ if (isset($_POST['TaxAuthority']) and isset($_POST['PrintPDF']) and isset($_POST
 
 	include('includes/PDFStarter.php');
 
-	$sql = "SELECT lastdate_in_period
+	$SQL = "SELECT lastdate_in_period
 			FROM periods
 			WHERE periodno='" . $_POST['ToPeriod'] . "'";
 	$ErrMsg = _('Could not determine the last date of the period selected') . '. ' . _('The sql returned the following error');
-	$PeriodEndResult = DB_query($sql, $ErrMsg);
+	$PeriodEndResult = DB_query($SQL, $ErrMsg);
 	$PeriodEndRow = DB_fetch_row($PeriodEndResult);
 	$PeriodEnd = ConvertSQLDate($PeriodEndRow[0]);
 
@@ -316,12 +316,12 @@ if (isset($_POST['TaxAuthority']) and isset($_POST['PrintPDF']) and isset($_POST
 
 	$DefaultPeriod = GetPeriod(Date($_SESSION['DefaultDateFormat'], Mktime(0, 0, 0, Date('m'), 0, Date('Y'))));
 
-	$sql = "SELECT periodno,
+	$SQL = "SELECT periodno,
 			lastdate_in_period
 		FROM periods";
 
 	$ErrMsg = _('Could not retrieve the period data because');
-	$Periods = DB_query($sql, $ErrMsg);
+	$Periods = DB_query($SQL, $ErrMsg);
 
 	while ($MyRow = DB_fetch_array($Periods)) {
 		if ($MyRow['periodno'] == $DefaultPeriod) {

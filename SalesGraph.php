@@ -43,8 +43,8 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 	} else {
 		$DefaultFromDate = Date('Y-m-d', Mktime(0, 0, 0, $_SESSION['YearEnd'] + 2, 0, Date('Y') - 1));
 	}
-	$sql = "SELECT periodno, lastdate_in_period FROM periods ORDER BY periodno";
-	$Periods = DB_query($sql);
+	$SQL = "SELECT periodno, lastdate_in_period FROM periods ORDER BY periodno";
+	$Periods = DB_query($SQL);
 
 	while ($MyRow = DB_fetch_array($Periods)) {
 		if (isset($_POST['FromPeriod']) and $_POST['FromPeriod'] != '') {
@@ -133,9 +133,9 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 			<td>' . _('For Sales Person') . ':</td>
 			<td><select minlength="0" name="SalesmanCode">';
 
-	$sql = "SELECT salesmancode, salesmanname FROM salesman";
+	$SQL = "SELECT salesmancode, salesmanname FROM salesman";
 	if ($_SESSION['SalesmanLogin'] != '') {
-		$sql .= " WHERE salesmancode='" . $_SESSION['SalesmanLogin'] . "'";
+		$SQL .= " WHERE salesmancode='" . $_SESSION['SalesmanLogin'] . "'";
 		$_POST['Salesperson'] = $_SESSION['SalesmanLogin'];
 	} else if (!isset($_POST['SalesmanCode'])) {
 		$_POST['SalesmanCode'] = 'All';
@@ -143,7 +143,7 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 	} else {
 		echo '<option value="All">' . _('All') . '</option>';
 	}
-	$SalesFolkResult = DB_query($sql);
+	$SalesFolkResult = DB_query($SQL);
 	while ($MyRow = DB_fetch_array($SalesFolkResult)) {
 		if ($MyRow['salesmancode'] == $_POST['SalesmanCode']) {
 			echo '<option selected="selected" value="' . $MyRow['salesmancode'] . '">' . $MyRow['salesmanname'] . '</option>';

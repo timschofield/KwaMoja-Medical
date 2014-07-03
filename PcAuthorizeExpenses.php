@@ -60,7 +60,7 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 	echo '<input type="text" class="number" name="Days" value="' . $Days . '" minlength="0" maxlength="3" size="4" />' . _('Days');
 	echo '<input type="submit" name="Go" value="' . _('Go') . '" /></th></tr>';
 
-	$sql = "SELECT pcashdetails.counterindex,
+	$SQL = "SELECT pcashdetails.counterindex,
 				pcashdetails.tabcode,
 				pcashdetails.date,
 				pcashdetails.codeexpense,
@@ -83,7 +83,7 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 				AND pcashdetails.codeexpense<>'ASSIGNCASH'
 			ORDER BY pcashdetails.date, pcashdetails.counterindex ASC";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	echo '<tr>
 		<th>' . _('Date') . '</th>
@@ -137,7 +137,7 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 			//insert to gltrans
 			DB_Txn_Begin();
 
-			$sqlFrom = "INSERT INTO `gltrans` (`counterindex`,
+			$SQLFrom = "INSERT INTO `gltrans` (`counterindex`,
 											`type`,
 											`typeno`,
 											`chequeno`,
@@ -162,9 +162,9 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 											'',
 											'" . $TagTo . "')";
 
-			$ResultFrom = DB_Query($sqlFrom, '', '', true);
+			$ResultFrom = DB_Query($SQLFrom, '', '', true);
 
-			$sqlTo = "INSERT INTO `gltrans` (`counterindex`,
+			$SQLTo = "INSERT INTO `gltrans` (`counterindex`,
 										`type`,
 										`typeno`,
 										`chequeno`,
@@ -189,7 +189,7 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 										'',
 										'" . $TagTo . "')";
 
-			$ResultTo = DB_Query($sqlTo, '', '', true);
+			$ResultTo = DB_Query($SQLTo, '', '', true);
 
 			if ($MyRow['codeexpense'] == 'ASSIGNCASH') {
 				// if it's a cash assignation we need to updated banktrans table as well.
@@ -221,11 +221,11 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 
 			}
 
-			$sql = "UPDATE pcashdetails
+			$SQL = "UPDATE pcashdetails
 					SET authorized = CURRENT_DATE,
 					posted = 1
 					WHERE counterindex = '" . $MyRow['counterindex'] . "'";
-			$resultupdate = DB_query($sql, '', '', true);
+			$resultupdate = DB_query($SQL, '', '', true);
 			DB_Txn_Commit();
 		}
 
@@ -265,12 +265,12 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 
 	} //end of looping
 
-	$sqlamount = "SELECT sum(amount)
+	$SQLamount = "SELECT sum(amount)
 			FROM pcashdetails
 			WHERE tabcode='" . $SelectedTabs . "'
 				AND codeexpense<>'ASSIGNCASH'";
 
-	$ResultAmount = DB_query($sqlamount);
+	$ResultAmount = DB_query($SQLamount);
 	$Amount = DB_fetch_array($ResultAmount);
 
 	if (!isset($Amount['0'])) {

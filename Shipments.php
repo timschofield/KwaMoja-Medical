@@ -137,7 +137,7 @@ if (!isset($_SESSION['Shipment'])) {
 
 	$_SESSION['Shipment'] = new Shipment;
 
-	$sql = "SELECT suppname,
+	$SQL = "SELECT suppname,
 					currcode,
 					decimalplaces AS currdecimalplaces
 		FROM suppliers INNER JOIN currencies
@@ -145,7 +145,7 @@ if (!isset($_SESSION['Shipment'])) {
 		WHERE supplierid='" . $_SESSION['SupplierID'] . "'";
 
 	$ErrMsg = _('The supplier details for the shipment could not be retrieved because');
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 	$MyRow = DB_fetch_array($result);
 
 	$_SESSION['Shipment']->SupplierID = $_SESSION['SupplierID'];
@@ -193,10 +193,10 @@ if (isset($_POST['Update']) or (isset($_GET['Add']) and $_SESSION['Shipment']->C
 	/*The user hit the update the shipment button and there are some lines on the shipment*/
 	if ($InputError == 0 and (count($_SESSION['Shipment']->LineItems) > 0 or isset($_GET['Add']))) {
 
-		$sql = "SELECT shiptref FROM shipments WHERE shiptref =" . $_SESSION['Shipment']->ShiptRef;
-		$result = DB_query($sql);
+		$SQL = "SELECT shiptref FROM shipments WHERE shiptref =" . $_SESSION['Shipment']->ShiptRef;
+		$result = DB_query($SQL);
 		if (DB_num_rows($result) == 1) {
-			$sql = "UPDATE shipments SET vessel='" . $_SESSION['Shipment']->Vessel . "',
+			$SQL = "UPDATE shipments SET vessel='" . $_SESSION['Shipment']->Vessel . "',
 										voyageref='" . $_SESSION['Shipment']->VoyageRef . "',
 										shipmentdate='" . $_SESSION['Shipment']->ShipmentDate . "',
 										eta='" . $_SESSION['Shipment']->ETA . "'
@@ -204,7 +204,7 @@ if (isset($_POST['Update']) or (isset($_GET['Add']) and $_SESSION['Shipment']->C
 
 		} else {
 
-			$sql = "INSERT INTO shipments (shiptref,
+			$SQL = "INSERT INTO shipments (shiptref,
 											vessel,
 											voyageref,
 											shipmentdate,
@@ -221,18 +221,18 @@ if (isset($_POST['Update']) or (isset($_GET['Add']) and $_SESSION['Shipment']->C
 
 		}
 		/*now update or insert as necessary */
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 
 		/*now check that the delivery date of all PODetails are the same as the ETA as the shipment */
 		foreach ($_SESSION['Shipment']->LineItems as $LnItm) {
 
 			if (DateDiff(ConvertSQLDate($LnItm->DelDate), ConvertSQLDate($_SESSION['Shipment']->ETA), 'd') != 0) {
 
-				$sql = "UPDATE purchorderdetails
+				$SQL = "UPDATE purchorderdetails
 						SET deliverydate ='" . $_SESSION['Shipment']->ETA . "'
 						WHERE podetailitem='" . $LnItm->PODetailItem . "'";
 
-				$result = DB_query($sql);
+				$result = DB_query($SQL);
 
 				$_SESSION['Shipment']->LineItems[$LnItm->PODetailItem]->DelDate = $_SESSION['Shipment']->ETA;
 			}
@@ -245,7 +245,7 @@ if (isset($_POST['Update']) or (isset($_GET['Add']) and $_SESSION['Shipment']->C
 
 if (isset($_GET['Add']) and $_SESSION['Shipment']->Closed == 0 and $InputError == 0) {
 
-	$sql = "SELECT purchorderdetails.orderno,
+	$SQL = "SELECT purchorderdetails.orderno,
 					purchorderdetails.itemcode,
 					purchorderdetails.itemdescription,
 					purchorderdetails.unitprice,
@@ -265,7 +265,7 @@ if (isset($_GET['Add']) and $_SESSION['Shipment']->Closed == 0 and $InputError =
 				AND stockcosts.succeeded=0
 			WHERE purchorderdetails.podetailitem='" . $_GET['Add'] . "'";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 
 	/*The variable StdCostUnit gets set when the item is first received and stored for all future transactions with this purchase order line - subsequent changes to the standard cost will not therefore stuff up variances resulting from the line which may have several entries in GL for each delivery drop if it has already been set from a delivery then use it otherwise use the current system standard */
@@ -336,11 +336,11 @@ if (count($_SESSION['Shipment']->LineItems) > 0) {
 
 	if (!isset($_SESSION['Shipment']->StockLocation)) {
 
-		$sql = "SELECT purchorders.intostocklocation
+		$SQL = "SELECT purchorders.intostocklocation
 				FROM purchorders INNER JOIN purchorderdetails
 				ON purchorders.orderno=purchorderdetails.orderno AND podetailitem = '" . key($_SESSION['Shipment']->LineItems) . "'";
 
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_row($result);
 
 		$_SESSION['Shipment']->StockLocation = $MyRow[0];
@@ -360,11 +360,11 @@ if (!isset($_SESSION['Shipment']->StockLocation)) {
 				<select required="required" minlength="1" name="StockLocation">';
 
 	if ($_SESSION['RestrictLocations'] == 0) {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations";
 	} else {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations
 					INNER JOIN www_users
@@ -372,7 +372,7 @@ if (!isset($_SESSION['Shipment']->StockLocation)) {
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
 
-	$resultStkLocs = DB_query($sql);
+	$resultStkLocs = DB_query($SQL);
 
 	while ($MyRow = DB_fetch_array($resultStkLocs)) {
 
@@ -396,8 +396,8 @@ if (!isset($_SESSION['Shipment']->StockLocation)) {
 	echo '</select>';
 
 } else {
-	$sql = "SELECT locationname FROM locations WHERE loccode='" . $_SESSION['Shipment']->StockLocation . "'";
-	$resultStkLocs = DB_query($sql);
+	$SQL = "SELECT locationname FROM locations WHERE loccode='" . $_SESSION['Shipment']->StockLocation . "'";
+	$resultStkLocs = DB_query($SQL);
 	$MyRow = DB_fetch_array($resultStkLocs);
 	echo '<input type="hidden" name="StockLocation" value="' . $_SESSION['Shipment']->StockLocation . '" />';
 	echo $MyRow['locationname'];
@@ -459,7 +459,7 @@ if (!isset($_POST['StockLocation'])) {
 	$_POST['StockLocation'] = $_SESSION['UserStockLocation'];
 }
 
-$sql = "SELECT purchorderdetails.podetailitem,
+$SQL = "SELECT purchorderdetails.podetailitem,
 				purchorders.orderno,
 				purchorderdetails.itemcode,
 				purchorderdetails.itemdescription,
@@ -480,7 +480,7 @@ $sql = "SELECT purchorderdetails.podetailitem,
 			AND purchorderdetails.shiptref=0
 			AND purchorders.intostocklocation='" . $_POST['StockLocation'] . "'";
 
-$result = DB_query($sql);
+$result = DB_query($SQL);
 
 if (DB_num_rows($result) > 0) {
 

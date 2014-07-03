@@ -78,18 +78,18 @@ if (isset($_POST['Narrative'])) {
 }
 
 if ($_SESSION['RestrictLocations'] == 0) {
-	$sql = "SELECT locationname,
+	$SQL = "SELECT locationname,
 					loccode
 				FROM locations";
 } else {
-	$sql = "SELECT locationname,
+	$SQL = "SELECT locationname,
 					loccode
 				FROM locations
 				INNER JOIN www_users
 					ON locations.loccode=www_users.defaultlocation
 				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 }
-$resultStkLocs = DB_query($sql);
+$resultStkLocs = DB_query($SQL);
 $LocationList = array();
 while ($MyRow = DB_fetch_array($resultStkLocs)) {
 	$LocationList[$MyRow['loccode']] = $MyRow['locationname'];
@@ -134,19 +134,19 @@ if (isset($_POST['CheckCode'])) {
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Dispatch') . '" alt="" />' . ' ' . _('Select Item to Adjust') . '</p>';
 
 	if (mb_strlen($_POST['StockText']) > 0) {
-		$sql = "SELECT stockid,
+		$SQL = "SELECT stockid,
 					description
 				FROM stockmaster
 				WHERE description " . LIKE . " '%" . $_POST['StockText'] . "%'";
 	} else {
-		$sql = "SELECT stockid,
+		$SQL = "SELECT stockid,
 					description
 				FROM stockmaster
 				WHERE stockid " . LIKE . " '%" . $_POST['StockCode'] . "%'";
 	}
 	$ErrMsg = _('The stock information cannot be retrieved because');
 	$DbgMsg = _('The SQL to get the stock description was');
-	$result = DB_query($sql, $ErrMsg, $DbgMsg);
+	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 	echo '<table class="selection">
 			<tr>
 				<th class="SortableColumn">' . _('Stock Code') . '</th>
@@ -421,7 +421,7 @@ if (!isset($_SESSION['Adjustment' . $identifier])) {
 	$StockID = $_SESSION['Adjustment' . $identifier]->StockID;
 	$Controlled = $_SESSION['Adjustment' . $identifier]->Controlled;
 	$Quantity = $_SESSION['Adjustment' . $identifier]->Quantity;
-	$sql = "SELECT stockcosts.materialcost,
+	$SQL = "SELECT stockcosts.materialcost,
 				stockcosts.labourcost,
 				stockcosts.overheadcost,
 				units,
@@ -432,7 +432,7 @@ if (!isset($_SESSION['Adjustment' . $identifier])) {
 				AND stockcosts.succeeded=0
 			WHERE stockcosts.stockid='" . $StockID . "'";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 	$_SESSION['Adjustment' . $identifier]->PartUnit = $MyRow['units'];
 	$_SESSION['Adjustment' . $identifier]->StandardCost = $MyRow['materialcost'] + $MyRow['labourcost'] + $MyRow['overheadcost'];

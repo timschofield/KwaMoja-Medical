@@ -11,7 +11,7 @@ echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $T
 
 
 if ((isset($_POST['submit']) or isset($_POST['reload'])) and $_POST['MailServerSetting'] == 1) { //if there are already data setup, Update the table
-	$sql = "UPDATE emailsettings SET
+	$SQL = "UPDATE emailsettings SET
 				host='" . $_POST['Host'] . "',
 				port='" . $_POST['Port'] . "',
 				heloaddress='" . $_POST['HeloAddress'] . "',
@@ -21,7 +21,7 @@ if ((isset($_POST['submit']) or isset($_POST['reload'])) and $_POST['MailServerS
 				auth='" . $_POST['Auth'] . "'";
 	$ErrMsg = _('The email setting information failed to update');
 	$DbgMsg = _('The SQL failed to update is ');
-	$result1 = DB_query($sql, $ErrMsg, $DbgMsg);
+	$result1 = DB_query($SQL, $ErrMsg, $DbgMsg);
 	unset($_POST['MailServerSetting']);
 	if (isset($_POST['submit'])) {
 		prnMsg(_('The settings for the SMTP server have been successfully updated'), 'success');
@@ -29,7 +29,7 @@ if ((isset($_POST['submit']) or isset($_POST['reload'])) and $_POST['MailServerS
 	echo '<br />';
 
 } elseif ((isset($_POST['submit']) or isset($_POST['reload'])) and $_POST['MailServerSetting'] == 0) { //There is no data setup yet
-	$sql = "INSERT INTO emailsettings(host,
+	$SQL = "INSERT INTO emailsettings(host,
 		 				port,
 						heloaddress,
 						username,
@@ -46,7 +46,7 @@ if ((isset($_POST['submit']) or isset($_POST['reload'])) and $_POST['MailServerS
 					'" . $_POST['Auth'] . "')";
 	$ErrMsg = _('The email settings failed to be inserted');
 	$DbgMsg = _('The SQL failed to insert the email information is');
-	$result2 = DB_query($sql);
+	$result2 = DB_query($SQL);
 	unset($_POST['MailServerSetting']);
 	if (isset($_POST['submit'])) {
 		prnMsg(_('The settings for the SMTP server have been sucessfully inserted'), 'success');
@@ -56,7 +56,7 @@ if ((isset($_POST['submit']) or isset($_POST['reload'])) and $_POST['MailServerS
 
 // Check the mail server setting status
 
-$sql = "SELECT id,
+$SQL = "SELECT id,
 				host,
 				port,
 				heloaddress,
@@ -68,7 +68,7 @@ $sql = "SELECT id,
 $ErrMsg = _('The email settings information cannot be retrieved');
 $DbgMsg = _('The SQL that failed was');
 
-$result = DB_query($sql, $ErrMsg, $DbgMsg);
+$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 if (DB_num_rows($result) != 0) {
 	$MailServerSetting = 1;
 	$MyRow = DB_fetch_array($result);

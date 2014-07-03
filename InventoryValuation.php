@@ -226,12 +226,12 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['CSV'])) and isset($_POST['FromCr
 				<td>' . _('From Inventory Category Code') . ':</td>
 				<td><select minlength="0" name="FromCriteria">';
 
-		$sql = "SELECT categoryid,
+		$SQL = "SELECT categoryid,
 					categorydescription
 				FROM stockcategory
 				ORDER BY categorydescription";
 
-		$CatResult = DB_query($sql);
+		$CatResult = DB_query($SQL);
 		while ($MyRow = DB_fetch_array($CatResult)) {
 			echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . ' - ' . $MyRow['categoryid'] . '</option>';
 		}
@@ -256,12 +256,12 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['CSV'])) and isset($_POST['FromCr
 				<td><select minlength="0" name="Location">';
 
 		if ($_SESSION['RestrictLocations'] == 0) {
-			$sql = "SELECT locationname,
+			$SQL = "SELECT locationname,
 							loccode
 						FROM locations";
 			echo '<option value="All">' . _('All Locations') . '</option>';
 		} else {
-			$sql = "SELECT locationname,
+			$SQL = "SELECT locationname,
 							loccode
 						FROM locations
 						INNER JOIN www_users
@@ -269,7 +269,7 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['CSV'])) and isset($_POST['FromCr
 						WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 		}
 
-		$LocnResult = DB_query($sql);
+		$LocnResult = DB_query($SQL);
 
 
 		while ($MyRow = DB_fetch_array($LocnResult)) {

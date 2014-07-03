@@ -49,7 +49,7 @@ if (isset($_POST['Submit']) or isset($_POST['Update'])) {
 	if ($InputError == 0 and isset($_POST['Submit'])) {
 		//And if its not a new part then update existing one
 
-		$sql = "INSERT INTO factorcompanies (id,
+		$SQL = "INSERT INTO factorcompanies (id,
 						coyname,
 						address1,
 						address2,
@@ -77,12 +77,12 @@ if (isset($_POST['Submit']) or isset($_POST['Update'])) {
 		$ErrMsg = _('The factoring company') . ' ' . $_POST['FactorName'] . ' ' . _('could not be added because');
 		$DbgMsg = _('The SQL that was used to insert the factor but failed was');
 
-		$result = DB_query($sql, $ErrMsg, $DbgMsg);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 		prnMsg(_('A new factoring company for') . ' ' . $_POST['FactorName'] . ' ' . _('has been added to the database'), 'success');
 
 	} elseif ($InputError == 0 and isset($_POST['Update'])) {
-		$sql = "UPDATE factorcompanies SET coyname='" . $_POST['FactorName'] . "',
+		$SQL = "UPDATE factorcompanies SET coyname='" . $_POST['FactorName'] . "',
 				address1='" . $_POST['Address1'] . "',
 				address2='" . $_POST['Address2'] . "',
 				address3='" . $_POST['Address3'] . "',
@@ -97,7 +97,7 @@ if (isset($_POST['Submit']) or isset($_POST['Update'])) {
 
 		$ErrMsg = _('The factoring company could not be updated because');
 		$DbgMsg = _('The SQL that was used to update the factor but failed was');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 		prnMsg(_('The factoring company record for') . ' ' . $_POST['FactorName'] . ' ' . _('has been updated'), 'success');
 
@@ -122,8 +122,8 @@ if (isset($_POST['Delete'])) {
 
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'SuppTrans' , PurchOrders, SupplierContacts
 
-	$sql = "SELECT COUNT(*) FROM suppliers WHERE factorcompanyid='" . $FactorID . "'";
-	$result = DB_query($sql);
+	$SQL = "SELECT COUNT(*) FROM suppliers WHERE factorcompanyid='" . $FactorID . "'";
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_row($result);
 	if ($MyRow[0] > 0) {
 		$CancelDelete = 1;
@@ -132,8 +132,8 @@ if (isset($_POST['Delete'])) {
 	}
 
 	if ($CancelDelete == 0) {
-		$sql = "DELETE FROM factorcompanies WHERE id='" . $FactorID . "'";
-		$result = DB_query($sql);
+		$SQL = "DELETE FROM factorcompanies WHERE id='" . $FactorID . "'";
+		$result = DB_query($SQL);
 		prnMsg(_('Factoring company record record for') . ' ' . $_POST['FactorName'] . ' ' . _('has been deleted'), 'success');
 		echo '<br />';
 		unset($_SESSION['FactorID']);
@@ -147,7 +147,7 @@ if (isset($_POST['Delete'])) {
 
 if (isset($FactorID) and isset($_POST['Amend'])) {
 
-	$sql = "SELECT id,
+	$SQL = "SELECT id,
 					coyname,
 					address1,
 					address2,
@@ -162,7 +162,7 @@ if (isset($FactorID) and isset($_POST['Amend'])) {
 			FROM factorcompanies
 			WHERE id = '" . $FactorID . "'";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 
 	$_POST['FactorName'] = $MyRow['coyname'];
@@ -286,7 +286,7 @@ if (empty($FactorID) and !isset($_POST['Create']) and !isset($_POST['Amend'])) {
 				<th>' . _('Fax Number') . '</th>
 				<th>' . _('Email') . '</th>
 			</tr>';
-	$sql = "SELECT id,
+	$SQL = "SELECT id,
 					coyname,
 					address1,
 					address2,
@@ -299,7 +299,7 @@ if (empty($FactorID) and !isset($_POST['Create']) and !isset($_POST['Amend'])) {
 					fax,
 					email
 			FROM factorcompanies";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$j = 1;
 	while ($MyRow = DB_fetch_array($result)) {
 		if ($j == 1) {

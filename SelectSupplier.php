@@ -17,18 +17,18 @@ if (isset($_GET['SupplierID'])) {
 }
 // only get geocode information if integration is on, and supplier has been selected
 if ($_SESSION['geocode_integration'] == 1 and isset($_SESSION['SupplierID'])) {
-	$sql = "SELECT * FROM geocode_param WHERE 1";
+	$SQL = "SELECT * FROM geocode_param WHERE 1";
 	$ErrMsg = _('An error occurred in retrieving the information');
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 	$MyRow = DB_fetch_array($result);
-	$sql = "SELECT suppliers.supplierid,
+	$SQL = "SELECT suppliers.supplierid,
 					suppliers.lat,
 					suppliers.lng
 				FROM suppliers
 				WHERE suppliers.supplierid = '" . $_SESSION['SupplierID'] . "'
 				ORDER BY suppliers.supplierid";
 	$ErrMsg = _('An error occurred in retrieving the information');
-	$result2 = DB_query($sql, $ErrMsg);
+	$result2 = DB_query($SQL, $ErrMsg);
 	$MyRow2 = DB_fetch_array($result2);
 	$lat = $MyRow2['lat'];
 	$lng = $MyRow2['lng'];
@@ -324,7 +324,7 @@ if (isset($_SESSION['SupplierID']) and $_SESSION['SupplierID'] != '') {
 	// Extended Info only if selected in Configuration
 	if ($_SESSION['Extended_SupplierInfo'] == 1) {
 		if ($_SESSION['SupplierID'] != '') {
-			$sql = "SELECT suppliers.suppname,
+			$SQL = "SELECT suppliers.suppname,
 							suppliers.lastpaid,
 							suppliers.lastpaiddate,
 							suppliersince,
@@ -333,7 +333,7 @@ if (isset($_SESSION['SupplierID']) and $_SESSION['SupplierID'] != '') {
 					ON suppliers.currcode=currencies.currabrev
 					WHERE suppliers.supplierid ='" . $_SESSION['SupplierID'] . "'";
 			$ErrMsg = _('An error occurred in retrieving the information');
-			$DataResult = DB_query($sql, $ErrMsg);
+			$DataResult = DB_query($SQL, $ErrMsg);
 			$MyRow = DB_fetch_array($DataResult);
 			// Select some more data about the supplier
 			$SQL = "SELECT SUM(-ovamount) AS total FROM supptrans WHERE supplierno = '" . $_SESSION['SupplierID'] . "' and type != '20'";

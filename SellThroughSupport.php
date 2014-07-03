@@ -64,7 +64,7 @@ if ((isset($_POST['AddRecord']) OR isset($_POST['UpdateRecord'])) AND isset($Sup
 	}
 
 	if ($InputError == 0 AND isset($_POST['AddRecord'])) {
-		$sql = "INSERT INTO sellthroughsupport (supplierno,
+		$SQL = "INSERT INTO sellthroughsupport (supplierno,
 												debtorno,
 												categoryid,
 												stockid,
@@ -85,11 +85,11 @@ if ((isset($_POST['AddRecord']) OR isset($_POST['UpdateRecord'])) AND isset($Sup
 
 		$ErrMsg = _('The sell through support record could not be added to the database because');
 		$DbgMsg = _('The SQL that failed was');
-		$AddResult = DB_query($sql, $ErrMsg, $DbgMsg);
+		$AddResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 		prnMsg(_('This sell through support has been added to the database'), 'success');
 	}
 	if ($InputError == 0 AND isset($_POST['UpdateRecord'])) {
-		$sql = "UPDATE sellthroughsupport SET debtorno='" . $_POST['DebtorNo'] . "',
+		$SQL = "UPDATE sellthroughsupport SET debtorno='" . $_POST['DebtorNo'] . "',
 											categoryid='" . $_POST['CategoryID'] . "',
 											stockid='" . $_POST['StockID'] . "',
 											narrative='" . $_POST['Narrative'] . "',
@@ -101,7 +101,7 @@ if ((isset($_POST['AddRecord']) OR isset($_POST['UpdateRecord'])) AND isset($Sup
 
 		$ErrMsg = _('The sell through support record could not be updated because');
 		$DbgMsg = _('The SQL that failed was');
-		$UpdResult = DB_query($sql, $ErrMsg, $DbgMsg);
+		$UpdResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 		prnMsg(_('Sell Through Support record has been updated'), 'success');
 		$Edit = false;
 
@@ -228,7 +228,7 @@ if (isset($SupplierID)) {
 
 if (isset($SupplierID) AND $Edit == false) {
 
-	$sql = "SELECT	id,
+	$SQL = "SELECT	id,
 					sellthroughsupport.debtorno,
 					debtorsmaster.name,
 					rebateamount,
@@ -249,7 +249,7 @@ if (isset($SupplierID) AND $Edit == false) {
 			WHERE supplierno = '" . $SupplierID . "'
 			ORDER BY sellthroughsupport.effectivefrom DESC";
 	$ErrMsg = _('The supplier sell through support deals could not be retrieved because');
-	$Result = DB_query($sql, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 	if (DB_num_rows($Result) == 0) {
 		prnMsg(_('There are no sell through support deals entered for this supplier'), 'info');
 	} else {
@@ -304,7 +304,7 @@ if (isset($SupplierID) AND $Edit == false) {
 /*Show the input form for new supplier sell through support details */
 if (isset($SupplierID)) { //not selecting a supplier
 	if ($Edit == true) {
-		$sql = "SELECT id,
+		$SQL = "SELECT id,
 						debtorno,
 						rebateamount,
 						rebatepercent,
@@ -317,7 +317,7 @@ if (isset($SupplierID)) { //not selecting a supplier
 				WHERE id='" . floatval($_GET['SellSupportID']) . "'";
 
 		$ErrMsg = _('The supplier sell through support could not be retrieved because');
-		$EditResult = DB_query($sql, $ErrMsg);
+		$EditResult = DB_query($SQL, $ErrMsg);
 		$MyRow = DB_fetch_array($EditResult);
 	}
 

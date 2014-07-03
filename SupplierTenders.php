@@ -19,8 +19,8 @@ if (empty($_GET['identifier'])) {
 }
 
 if (!isset($_POST['SupplierID'])) {
-	$sql = "SELECT supplierid FROM www_users WHERE userid='" . $_SESSION['UserID'] . "'";
-	$result = DB_query($sql);
+	$SQL = "SELECT supplierid FROM www_users WHERE userid='" . $_SESSION['UserID'] . "'";
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 	if ($MyRow['supplierid'] == '') {
 		prnMsg(_('This functionality can only be accessed via a supplier login.'), 'warning');
@@ -37,11 +37,11 @@ if (isset($_GET['Delete'])) {
 	$_SESSION['offer' . $identifier]->remove_from_offer($_GET['Delete']);
 }
 
-$sql = "SELECT suppname,
+$SQL = "SELECT suppname,
 			currcode
 		FROM suppliers
 		WHERE supplierid='" . $_POST['SupplierID'] . "'";
-$result = DB_query($sql);
+$result = DB_query($SQL);
 $MyRow = DB_fetch_array($result);
 $Supplier = $MyRow['suppname'];
 $Currency = $MyRow['currcode'];
@@ -49,11 +49,11 @@ $Currency = $MyRow['currcode'];
 if (isset($_POST['Confirm'])) {
 	$_SESSION['offer' . $identifier]->Save();
 	$_SESSION['offer' . $identifier]->EmailOffer();
-	$sql = "UPDATE tendersuppliers
+	$SQL = "UPDATE tendersuppliers
 			SET responded=1
 			WHERE supplierid='" . $_SESSION['offer' . $identifier]->SupplierID . "'
 			AND tenderid='" . $_SESSION['offer' . $identifier]->TenderID . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 }
 
 if (isset($_POST['Process'])) {
@@ -183,8 +183,8 @@ if (isset($_POST['NewItem']) and !isset($_POST['Refresh'])) {
 			$Price = filter_number_format($_POST['Price' . $Index]);
 			$UOM = $_POST['uom' . $Index];
 			if (isset($UOM) and $Quantity > 0) {
-				$sql = "SELECT description, decimalplaces FROM stockmaster WHERE stockid='" . $StockID . "'";
-				$result = DB_query($sql);
+				$SQL = "SELECT description, decimalplaces FROM stockmaster WHERE stockid='" . $StockID . "'";
+				$result = DB_query($SQL);
 				$MyRow = DB_fetch_array($result);
 				$_SESSION['offer' . $identifier]->add_to_offer($_SESSION['offer' . $identifier]->LinesOnOffer, $StockID, $Quantity, $MyRow['description'], $Price, $UOM, $MyRow['decimalplaces'], DateAdd(date($_SESSION['DefaultDateFormat']), 'm', 3));
 				unset($UOM);
@@ -260,7 +260,7 @@ if (isset($_POST['Save'])) {
 /*The supplier has chosen option 1
  */
 if (isset($_POST['TenderType']) and $_POST['TenderType'] == 1 and !isset($_POST['Refresh']) and !isset($_GET['Delete'])) {
-	$sql = "SELECT offers.offerid,
+	$SQL = "SELECT offers.offerid,
 				offers.stockid,
 				stockmaster.description,
 				offers.quantity,
@@ -274,7 +274,7 @@ if (isset($_POST['TenderType']) and $_POST['TenderType'] == 1 and !isset($_POST[
 			WHERE offers.supplierid='" . $_POST['SupplierID'] . "'
 				AND offers.expirydate>=CURRENT_DATE";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$_SESSION['offer' . $identifier] = new Offer($_POST['SupplierID']);
 	$_SESSION['offer' . $identifier]->CurrCode = $Currency;
 	while ($MyRow = DB_fetch_array($result)) {
@@ -350,11 +350,11 @@ if (isset($_POST['TenderType']) AND $_POST['TenderType'] == 2 AND !isset($_POST[
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Search for Inventory Items') . '</p>';
 
-	$sql = "SELECT categoryid,
+	$SQL = "SELECT categoryid,
 				categorydescription
 			FROM stockcategory
 			ORDER BY categorydescription";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	if (DB_num_rows($result) == 0) {
 		echo '<p><font size="4" color="red">' . _('Problem Report') . ':</font><br />' . _('There are no stock categories currently defined please use the link below to set them up');
@@ -415,7 +415,7 @@ if (isset($_POST['TenderType']) AND $_POST['TenderType'] == 2 AND !isset($_POST[
 if (isset($_POST['TenderType']) and $_POST['TenderType'] == 3 and !isset($_POST['Search']) or isset($_GET['Delete'])) {
 
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" title="' . _('Tenders') . '" alt="" />' . ' ' . _('Tenders Waiting For Offers') . '</p>';
-	$sql = "SELECT DISTINCT tendersuppliers.tenderid,
+	$SQL = "SELECT DISTINCT tendersuppliers.tenderid,
 				suppliers.currcode
 			FROM tendersuppliers
 			LEFT JOIN suppliers
@@ -426,7 +426,7 @@ if (isset($_POST['TenderType']) and $_POST['TenderType'] == 3 and !isset($_POST[
 			AND tenders.closed=0
 			AND tendersuppliers.responded=0
 			ORDER BY tendersuppliers.tenderid";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	echo '<table class="selection">';
 	echo '<tr>
 			<th colspan="13"><font size="3" color="#616161">' . _('Outstanding Tenders Waiting For Offer') . '</font></th>
@@ -540,7 +540,7 @@ if (isset($_POST['Search'])) {
 		$SearchString = '%' . str_replace(' ', '%', $_POST['Keywords']) . '%';
 
 		if ($_POST['StockCat'] == 'All') {
-			$sql = "SELECT stockmaster.stockid,
+			$SQL = "SELECT stockmaster.stockid,
 						stockmaster.description,
 						stockmaster.units
 					FROM stockmaster INNER JOIN stockcategory
@@ -552,7 +552,7 @@ if (isset($_POST['Search'])) {
 					AND stockmaster.description " . LIKE . " '$SearchString'
 					ORDER BY stockmaster.stockid";
 		} else {
-			$sql = "SELECT stockmaster.stockid,
+			$SQL = "SELECT stockmaster.stockid,
 						stockmaster.description,
 						stockmaster.units
 					FROM stockmaster INNER JOIN stockcategory
@@ -571,7 +571,7 @@ if (isset($_POST['Search'])) {
 		$_POST['StockCode'] = '%' . $_POST['StockCode'] . '%';
 
 		if ($_POST['StockCat'] == 'All') {
-			$sql = "SELECT stockmaster.stockid,
+			$SQL = "SELECT stockmaster.stockid,
 						stockmaster.description,
 						stockmaster.units
 					FROM stockmaster INNER JOIN stockcategory
@@ -583,7 +583,7 @@ if (isset($_POST['Search'])) {
 					AND stockmaster.stockid " . LIKE . " '" . $_POST['StockCode'] . "'
 					ORDER BY stockmaster.stockid";
 		} else {
-			$sql = "SELECT stockmaster.stockid,
+			$SQL = "SELECT stockmaster.stockid,
 						stockmaster.description,
 						stockmaster.units
 					FROM stockmaster INNER JOIN stockcategory
@@ -599,7 +599,7 @@ if (isset($_POST['Search'])) {
 
 	} else {
 		if ($_POST['StockCat'] == 'All') {
-			$sql = "SELECT stockmaster.stockid,
+			$SQL = "SELECT stockmaster.stockid,
 						stockmaster.description,
 						stockmaster.units
 					FROM stockmaster INNER JOIN stockcategory
@@ -610,7 +610,7 @@ if (isset($_POST['Search'])) {
 					AND stockmaster.discontinued!=1
 					ORDER BY stockmaster.stockid";
 		} else {
-			$sql = "SELECT stockmaster.stockid,
+			$SQL = "SELECT stockmaster.stockid,
 						stockmaster.description,
 						stockmaster.units
 					FROM stockmaster INNER JOIN stockcategory
@@ -626,7 +626,7 @@ if (isset($_POST['Search'])) {
 
 	$ErrMsg = _('There is a problem selecting the part records to display because');
 	$DbgMsg = _('The SQL statement that failed was');
-	$SearchResult = DB_query($sql, $ErrMsg, $DbgMsg);
+	$SearchResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	if (DB_num_rows($SearchResult) == 0 and $debug == 1) {
 		prnMsg(_('There are no products to display matching the criteria provided'), 'warn');

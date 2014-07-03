@@ -32,7 +32,7 @@ if (!isset($_GET['QuotationNo']) or $_GET['QuotationNo'] == "") {
 /*retrieve the order details from the database to print */
 $ErrMsg = _('There was a problem retrieving the quotation header details for Order Number') . ' ' . $_GET['QuotationNo'] . ' ' . _('from the database');
 
-$sql = "SELECT salesorders.customerref,
+$SQL = "SELECT salesorders.customerref,
 				salesorders.comments,
 				salesorders.orddate,
 				salesorders.deliverto,
@@ -70,7 +70,7 @@ $sql = "SELECT salesorders.customerref,
 			WHERE salesorders.quotation=1
 			AND salesorders.orderno='" . $_GET['QuotationNo'] . "'";
 
-$result = DB_query($sql, $ErrMsg);
+$result = DB_query($SQL, $ErrMsg);
 
 //if there are no rows, there's a problem.
 if (DB_num_rows($result) == 0) {
@@ -111,7 +111,7 @@ $line_height = 15;
 
 $ErrMsg = _('There was a problem retrieving the quotation line details for quotation Number') . ' ' . $_GET['QuotationNo'] . ' ' . _('from the database');
 
-$sql = "SELECT salesorderdetails.stkcode,
+$SQL = "SELECT salesorderdetails.stkcode,
 		stockmaster.description,
 		salesorderdetails.quantity,
 		salesorderdetails.qtyinvoiced,
@@ -124,7 +124,7 @@ $sql = "SELECT salesorderdetails.stkcode,
 		ON salesorderdetails.stkcode=stockmaster.stockid
 	WHERE salesorderdetails.orderno='" . $_GET['QuotationNo'] . "'";
 
-$result = DB_query($sql, $ErrMsg);
+$result = DB_query($SQL, $ErrMsg);
 
 $ListCount = 0;
 
@@ -154,20 +154,20 @@ if (DB_num_rows($result) > 0) {
 		$TaxProv = $MyRow['taxprovinceid'];
 		$TaxCat = $MyRow2['taxcatid'];
 		$Branch = $MyRow['branchcode'];
-		$sql3 = "SELECT taxgrouptaxes.taxauthid
+		$SQL3 = "SELECT taxgrouptaxes.taxauthid
 					FROM taxgrouptaxes INNER JOIN custbranch
 					ON taxgrouptaxes.taxgroupid=custbranch.taxgroupid
 					WHERE custbranch.branchcode='" . $Branch . "'";
-		$result3 = DB_query($sql3, $ErrMsg);
+		$result3 = DB_query($SQL3, $ErrMsg);
 		while ($MyRow3 = DB_fetch_array($result3)) {
 			$TaxAuth = $MyRow3['taxauthid'];
 		}
 
-		$sql4 = "SELECT * FROM taxauthrates
+		$SQL4 = "SELECT * FROM taxauthrates
 					WHERE dispatchtaxprovince='" . $TaxProv . "'
 					AND taxcatid='" . $TaxCat . "'
 					AND taxauthority='" . $TaxAuth . "'";
-		$result4 = DB_query($sql4, $ErrMsg);
+		$result4 = DB_query($SQL4, $ErrMsg);
 		while ($MyRow4 = DB_fetch_array($result4)) {
 			$TaxClass = 100 * $MyRow4['taxrate'];
 		}

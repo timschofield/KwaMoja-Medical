@@ -90,7 +90,7 @@ if ((isset($_POST['AddRecord']) or isset($_POST['UpdateRecord'])) and isset($Sup
 		prnMsg (_('The date this purchase price is to take effect from must be entered in the format') . ' ' . $_SESSION['DefaultDateFormat'],'error');
 	}
 	if ($InputError == 0 and isset($_POST['AddRecord'])) {
-		$sql = "INSERT INTO purchdata (supplierno,
+		$SQL = "INSERT INTO purchdata (supplierno,
 										stockid,
 										price,
 										effectivefrom,
@@ -114,11 +114,11 @@ if ((isset($_POST['AddRecord']) or isset($_POST['UpdateRecord'])) and isset($Sup
 										'" . $_POST['Preferred'] . "')";
 		$ErrMsg = _('The supplier purchasing details could not be added to the database because');
 		$DbgMsg = _('The SQL that failed was');
-		$AddResult = DB_query($sql, $ErrMsg, $DbgMsg);
+		$AddResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 		prnMsg(_('This supplier purchasing data has been added to the database'), 'success');
 	}
 	if ($InputError == 0 and isset($_POST['UpdateRecord'])) {
-		$sql = "UPDATE purchdata SET price='" . filter_number_format($_POST['Price']) . "',
+		$SQL = "UPDATE purchdata SET price='" . filter_number_format($_POST['Price']) . "',
 									effectivefrom='" . FormatDateForSQL($_POST['EffectiveFrom']) . "',
 									suppliersuom='" . $_POST['SuppliersUOM'] . "',
 									conversionfactor='" . filter_number_format($_POST['ConversionFactor']) . "',
@@ -132,7 +132,7 @@ if ((isset($_POST['AddRecord']) or isset($_POST['UpdateRecord'])) and isset($Sup
 									AND purchdata.effectivefrom='" . $_POST['WasEffectiveFrom'] . "'";
 		$ErrMsg = _('The supplier purchasing details could not be updated because');
 		$DbgMsg = _('The SQL that failed was');
-		$UpdResult = DB_query($sql, $ErrMsg, $DbgMsg);
+		$UpdResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 		prnMsg(_('Supplier purchasing data has been updated'), 'success');
 		/*Now need to validate supplier purchasing discount records  and update/insert as necessary */
 		$ErrMsg = _('The supplier purchasing discount details could not be updated because');
@@ -152,13 +152,13 @@ if ((isset($_POST['AddRecord']) or isset($_POST['UpdateRecord'])) and isset($Sup
 				$DiscountInputError = true;
 			}
 			if ($DiscountInputError == false) {
-				$sql = "UPDATE supplierdiscounts SET discountnarrative ='" . $_POST['DiscountNarrative' . $i] . "',
+				$SQL = "UPDATE supplierdiscounts SET discountnarrative ='" . $_POST['DiscountNarrative' . $i] . "',
 													discountamount ='" . filter_number_format($_POST['DiscountAmount' . $i]) . "',
 													discountpercent = '" . filter_number_format($_POST['DiscountPercent' . $i]) / 100 . "',
 													effectivefrom = '" . FormatDateForSQL($_POST['DiscountEffectiveFrom' . $i]) . "',
 													effectiveto = '" . FormatDateForSQL($_POST['DiscountEffectiveTo' . $i]) . "'
 						WHERE id = " . intval($_POST['DiscountID' . $i]);
-				$UpdResult = DB_query($sql, $ErrMsg, $DbgMsg);
+				$UpdResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 			}
 		}
 		/*end loop through all supplier discounts */
@@ -176,7 +176,7 @@ if ((isset($_POST['AddRecord']) or isset($_POST['UpdateRecord'])) and isset($Sup
 			prnMsg(_('Some supplier discount narrative was entered but both the discount amount and the discount percent are zero. One of these must be none zero to create a valid supplier discount record. The supplier discount record was not added.'), 'error');
 		} else {
 			/*It looks like a valid new discount entry has been entered - need to insert it into DB */
-			$sql = "INSERT INTO supplierdiscounts ( supplierno,
+			$SQL = "INSERT INTO supplierdiscounts ( supplierno,
 													stockid,
 													discountnarrative,
 													discountamount,
@@ -192,7 +192,7 @@ if ((isset($_POST['AddRecord']) or isset($_POST['UpdateRecord'])) and isset($Sup
 								'" . FormatDateForSQL($_POST['DiscountEffectiveTo']) . "')";
 			$ErrMsg = _('Could not insert a new supplier discount entry because');
 			$DbgMsg = _('The SQL used to insert the supplier discount entry that failed was');
-			$InsertResult = DB_query($sql, $ErrMsg, $DbgMsg);
+			$InsertResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 			prnMsg(_('A new supplier purchasing discount record was entered successfully'), 'success');
 		}
 	}
@@ -225,19 +225,19 @@ if ((isset($_POST['AddRecord']) or isset($_POST['UpdateRecord'])) and isset($Sup
 }
 
 if (isset($_GET['Delete'])) {
-	$sql = "DELETE FROM purchdata
+	$SQL = "DELETE FROM purchdata
 	   				WHERE purchdata.supplierno='" . $SupplierID . "'
 	   				AND purchdata.stockid='" . $StockID . "'
 	   				AND purchdata.effectivefrom='" . $_GET['EffectiveFrom'] . "'";
 	$ErrMsg = _('The supplier purchasing details could not be deleted because');
-	$DelResult = DB_query($sql, $ErrMsg);
+	$DelResult = DB_query($SQL, $ErrMsg);
 	prnMsg(_('This purchasing data record has been successfully deleted'), 'success');
 	unset($SupplierID);
 }
 
 if (!isset($_GET['Edit'])) {
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . ' ' . _('For Stock Code') . ' - ' . $StockID . '</p><br />';
-	$sql = "SELECT purchdata.supplierno,
+	$SQL = "SELECT purchdata.supplierno,
 					suppliers.suppname,
 					purchdata.price,
 					suppliers.currcode,
@@ -259,7 +259,7 @@ if (!isset($_GET['Edit'])) {
 				ORDER BY supplierno,
 					purchdata.effectivefrom DESC";
 	$ErrMsg = _('The supplier purchasing details for the selected part could not be retrieved because');
-	$PurchDataResult = DB_query($sql, $ErrMsg);
+	$PurchDataResult = DB_query($SQL, $ErrMsg);
 	if (DB_num_rows($PurchDataResult) == 0 and $StockID != '') {
 		prnMsg(_('There is no purchasing data set up for the part selected'), 'info');
 		$NoPurchasingData = 1;
@@ -326,7 +326,7 @@ if (!isset($_GET['Edit'])) {
 if (isset($SupplierID) and $SupplierID != '' and !isset($_POST['SearchSupplier'])) {
 	/*NOT EDITING AN
 	EXISTING BUT SUPPLIER selected OR ENTERED*/
-	$sql = "SELECT suppliers.suppname,
+	$SQL = "SELECT suppliers.suppname,
 					suppliers.currcode,
 					currencies.decimalplaces AS currdecimalplaces
 				FROM suppliers
@@ -335,7 +335,7 @@ if (isset($SupplierID) and $SupplierID != '' and !isset($_POST['SearchSupplier']
 				WHERE supplierid='" . DB_escape_string($SupplierID) . "'";
 	$ErrMsg = _('The supplier details for the selected supplier could not be retrieved because');
 	$DbgMsg = _('The SQL that failed was');
-	$SuppSelResult = DB_query($sql, $ErrMsg, $DbgMsg);
+	$SuppSelResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 	if (DB_num_rows($SuppSelResult) == 1) {
 		$MyRow = DB_fetch_array($SuppSelResult);
 		$SuppName = $MyRow['suppname'];
@@ -480,7 +480,7 @@ if (isset($SuppliersResult)) {
 if (!isset($SuppliersResult)) {
 	if ($Edit == true or isset($_GET['Copy'])) {
 
-		$sql = "SELECT purchdata.supplierno,
+		$SQL = "SELECT purchdata.supplierno,
 						suppliers.suppname,
 						purchdata.price,
 						purchdata.effectivefrom,
@@ -506,7 +506,7 @@ if (!isset($SuppliersResult)) {
 						AND purchdata.effectivefrom='" . $_GET['EffectiveFrom'] . "'";
 
 		$ErrMsg = _('The supplier purchasing details for the selected supplier and item could not be retrieved because');
-		$EditResult = DB_query($sql, $ErrMsg);
+		$EditResult = DB_query($SQL, $ErrMsg);
 		$MyRow = DB_fetch_array($EditResult);
 		$SuppName = $MyRow['suppname'];
 		$UPriceDecimalPlaces = max($MyRow['currdecimalplaces'], $_SESSION['StandardCostDecimalPlaces']);
@@ -646,7 +646,7 @@ if (!isset($SuppliersResult)) {
 		/* A supplier purchase price is being edited - also show the discounts applicable to the supplier  for update/deletion*/
 
 		/*List the discount records for this supplier */
-		$sql = "SELECT id,
+		$SQL = "SELECT id,
 						discountnarrative,
 						discountpercent,
 						discountamount,
@@ -658,7 +658,7 @@ if (!isset($SuppliersResult)) {
 
 		$ErrMsg = _('The supplier discounts could not be retrieved because');
 		$DbgMsg = _('The SQL to retrieve supplier discounts for this item that failed was');
-		$DiscountsResult = DB_query($sql, $ErrMsg, $DbgMsg);
+		$DiscountsResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 		echo '<table cellpadding="2" colspan="7" class="selection">
 				<tr>

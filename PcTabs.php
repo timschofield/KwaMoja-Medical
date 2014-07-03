@@ -91,7 +91,7 @@ if (isset($_POST['Submit'])) {
 
 	if (isset($SelectedTab) and $InputError != 1) {
 
-		$sql = "UPDATE pctabs SET usercode = '" . $_POST['SelectUser'] . "',
+		$SQL = "UPDATE pctabs SET usercode = '" . $_POST['SelectUser'] . "',
 									typetabcode = '" . $_POST['SelectTabs'] . "',
 									currency = '" . $_POST['SelectCurrency'] . "',
 									tablimit = '" . filter_number_format($_POST['TabLimit']) . "',
@@ -121,7 +121,7 @@ if (isset($_POST['Submit'])) {
 
 			// Add new record on submit
 
-			$sql = "INSERT INTO pctabs	(tabcode,
+			$SQL = "INSERT INTO pctabs	(tabcode,
 							 			 usercode,
 										 typetabcode,
 										 currency,
@@ -147,7 +147,7 @@ if (isset($_POST['Submit'])) {
 
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		prnMsg($msg, 'success');
 		unset($SelectedTab);
 		unset($_POST['SelectUser']);
@@ -163,9 +163,9 @@ if (isset($_POST['Submit'])) {
 
 } elseif (isset($_GET['delete'])) {
 
-	$sql = "DELETE FROM pctabs WHERE tabcode='" . $SelectedTab . "'";
+	$SQL = "DELETE FROM pctabs WHERE tabcode='" . $SelectedTab . "'";
 	$ErrMsg = _('The Tab record could not be deleted because');
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 	prnMsg(_('The Petty Cash Tab') . ' ' . $SelectedTab . ' ' . _('has been deleted'), 'success');
 	unset($SelectedTab);
 	unset($_GET['delete']);
@@ -178,7 +178,7 @@ if (!isset($SelectedTab)) {
 	links to delete or edit each. These will call the same page again and allow update/input
 	or deletion of the records*/
 
-	$sql = "SELECT tabcode,
+	$SQL = "SELECT tabcode,
 					usercode,
 					typetabdescription,
 					currabrev,
@@ -200,7 +200,7 @@ if (!isset($SelectedTab)) {
 				INNER JOIN chartmaster AS chartmaster2 ON
 				pctabs.glaccountpcash = chartmaster2.accountcode
 				ORDER BY tabcode";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	if (DB_num_rows($result) > 0) {
 		echo '<br /><table class="selection">';
 		echo '<tr>
@@ -259,10 +259,10 @@ if (!isset($_GET['delete'])) {
 
 	if (isset($SelectedTab) and $SelectedTab != '') {
 
-		$sql = "SELECT * FROM pctabs
+		$SQL = "SELECT * FROM pctabs
 				WHERE tabcode='" . $SelectedTab . "'";
 
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_array($result);
 
 		$_POST['TabCode'] = $MyRow['tabcode'];

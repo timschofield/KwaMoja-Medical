@@ -117,7 +117,7 @@ echo '<tr>
 			<br />' . _('otherwise select the shipment from the list') . '</td>
 		<td><select required="required" minlength="1" name="ShiptSelection">';
 
-$sql = "SELECT shiptref,
+$SQL = "SELECT shiptref,
 				vessel,
 				eta,
 				suppname
@@ -125,7 +125,7 @@ $sql = "SELECT shiptref,
 				ON shipments.supplierid=suppliers.supplierid
 			WHERE closed='0'";
 
-$result = DB_query($sql);
+$result = DB_query($SQL);
 
 while ($MyRow = DB_fetch_array($result)) {
 	if (isset($_POST['ShiptSelection']) and $MyRow['shiptref'] == $_POST['ShiptSelection']) {

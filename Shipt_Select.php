@@ -103,18 +103,18 @@ if (!isset($ShiptRef) or $ShiptRef == "") {
 	echo '<table class="selection"><tr><td>';
 	echo _('Shipment Number') . ': <input type="text" name="ShiptRef" minlength="0" maxlength="10" size="10" /> ' . _('Into Stock Location') . ' :<select minlength="0" name="StockLocation"> ';
 	if ($_SESSION['RestrictLocations'] == 0) {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations";
 	} else {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations
 					INNER JOIN www_users
 						ON locations.loccode=www_users.defaultlocation
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
-	$resultStkLocs = DB_query($sql);
+	$resultStkLocs = DB_query($SQL);
 	while ($MyRow = DB_fetch_array($resultStkLocs)) {
 		if (isset($_POST['StockLocation'])) {
 			if ($MyRow['loccode'] == $_POST['StockLocation']) {

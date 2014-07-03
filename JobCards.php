@@ -18,8 +18,8 @@ include('includes/SQL_CommonFunctions.inc');
 include('includes/JobCards.inc');
 
 if (!isset($_POST['JobCPrint'])) {
-	$sql = "SELECT name FROM debtorsmaster WHERE debtorno='" . $_GET['DebtorNo'] . "'";
-	$result = DB_query($sql);
+	$SQL = "SELECT name FROM debtorsmaster WHERE debtorno='" . $_GET['DebtorNo'] . "'";
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 	$CustomerName = $MyRow['name'];
 	echo '<p class="page_title_text noPrint" >';
@@ -225,10 +225,10 @@ if (!isset($_POST['SaveUpdateJob'])) {
 
 			if (isset($_POST['UpdateJob'])) {
 				//Get Values
-				$sql = 'SELECT id,debtorno,description,task1,task2,task3,task4,task5,task6, DATE_FORMAT(CreateDate, "%d/%m/%Y") as CreateDate,
+				$SQL = 'SELECT id,debtorno,description,task1,task2,task3,task4,task5,task6, DATE_FORMAT(CreateDate, "%d/%m/%Y") as CreateDate,
 						DATE_FORMAT(CompleteDate, "%d/%m/%Y") as CompleteDate, Invoice from jobcards where debtorno="' . $_SESSION['CustomerID'] . '" and id=' . $_POST['JobCardNo'];
 				$ErrMsg = _('The job cards can not be retrieved!');
-				$job_update = DB_query($sql, $ErrMsg);
+				$job_update = DB_query($SQL, $ErrMsg);
 				$MyRow = DB_fetch_row($job_update);
 
 				//Set Values

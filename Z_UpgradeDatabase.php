@@ -10,25 +10,25 @@ $Title = _('Database Upgrade');
 
 include('includes/header.inc');
 
-function executeSQL($sql, $TrapErrors = False) {
+function executeSQL($SQL, $TrapErrors = False) {
 	global $SQLFile;
 	/* Run an sql statement and return an error code */
 	if (!isset($SQLFile)) {
 		DB_IgnoreForeignKeys();
-		$result = DB_query($sql, '', '', false, $TrapErrors);
+		$result = DB_query($SQL, '', '', false, $TrapErrors);
 		$ErrorNumber = DB_error_no();
 		DB_ReinstateForeignKeys();
 		return $ErrorNumber;
 	} else {
-		fwrite($SQLFile, $sql . ";\n");
+		fwrite($SQLFile, $SQL . ";\n");
 	}
 }
 
 function updateDBNo($NewNumber) {
 	global $SQLFile;
 	if (!isset($SQLFile)) {
-		$sql = "UPDATE config SET confvalue='" . $NewNumber . "' WHERE confname='DBUpdateNumber'";
-		executeSQL($sql);
+		$SQL = "UPDATE config SET confvalue='" . $NewNumber . "' WHERE confname='DBUpdateNumber'";
+		executeSQL($SQL);
 		$_SESSION['DBUpdateNumber'] = $NewNumber;
 	}
 }
@@ -58,11 +58,11 @@ if (!isset($_POST['continue'])) {
 	$_SESSION['Updates']['Warnings'] = 0;
 	for ($UpdateNumber = $StartingUpdate; $UpdateNumber <= $EndingUpdate; $UpdateNumber++) {
 		if (file_exists('sql/updates/' . $UpdateNumber . '.php')) {
-			$sql = "SET FOREIGN_KEY_CHECKS=0";
-			$result = DB_query($sql);
+			$SQL = "SET FOREIGN_KEY_CHECKS=0";
+			$result = DB_query($SQL);
 			include('sql/updates/' . $UpdateNumber . '.php');
-			$sql = "SET FOREIGN_KEY_CHECKS=1";
-			$result = DB_query($sql);
+			$SQL = "SET FOREIGN_KEY_CHECKS=1";
+			$result = DB_query($SQL);
 		}
 	}
 	echo '<table class="selection"><tr>';

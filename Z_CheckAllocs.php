@@ -7,7 +7,7 @@ $Title = _('Customer Allocations != DebtorTrans.Alloc');
 include('includes/header.inc');
 
 /*First off get the DebtorTransID of all invoices where allocations dont agree to the recorded allocation */
-$sql = "SELECT debtortrans.id,
+$SQL = "SELECT debtortrans.id,
 		debtortrans.debtorno,
 		debtortrans.transno,
 		ovamount+ovgst AS totamt,
@@ -22,7 +22,7 @@ $sql = "SELECT debtortrans.id,
 		debtortrans.alloc
 	HAVING SUM(custallocns.amt) < debtortrans.alloc - 1";
 
-$result = DB_query($sql);
+$result = DB_query($SQL);
 
 if (DB_num_rows($result) == 0) {
 	prnMsg(_('There are no inconsistencies with allocations') . ' - ' . _('all is well'), 'info');
@@ -36,7 +36,7 @@ while ($MyRow = DB_fetch_array($result)) {
 	echo '<br />' . _('Total amount recorded as allocated against it') . ': ' . $MyRow['alloc'];
 	echo '<br />' . _('Total of allocation records') . ': ' . $MyRow['totalalloc'];
 
-	$sql = "SELECT type,
+	$SQL = "SELECT type,
 				transno,
 				trandate,
 				debtortrans.debtorno,
@@ -54,7 +54,7 @@ while ($MyRow = DB_fetch_array($result)) {
 			WHERE custallocns.transid_allocto='" . $AllocToID . "'";
 
 	$ErrMsg = _('The customer transactions for the selected criteria could not be retrieved because');
-	$TransResult = DB_query($sql, $ErrMsg);
+	$TransResult = DB_query($SQL, $ErrMsg);
 
 	echo '<table class="selection">
 			<tr>

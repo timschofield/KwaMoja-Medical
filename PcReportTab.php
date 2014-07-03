@@ -177,11 +177,11 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 
 	while ($MyRow = DB_fetch_array($TabDetail)) {
 
-		$sqldes = "SELECT description
+		$SQLdes = "SELECT description
 					FROM pcexpenses
 					WHERE codeexpense='" . $MyRow[3] . "'";
 
-		$ResultDes = DB_query($sqldes);
+		$ResultDes = DB_query($SQLdes);
 		$Description = DB_fetch_array($ResultDes);
 
 		if (!isset($Description[0])) {
@@ -199,12 +199,12 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 
 	} //end of while loop
 
-	$sqlamount = "SELECT sum(amount)
+	$SQLamount = "SELECT sum(amount)
 				FROM pcashdetails
 				WHERE tabcode='" . $SelectedTabs . "'
 				AND date<='" . $SQL_ToDate . "'";
 
-	$ResultAmount = DB_query($sqlamount);
+	$ResultAmount = DB_query($SQLamount);
 	$Amount = DB_fetch_array($ResultAmount);
 
 	if (!isset($Amount[0])) {
@@ -347,11 +347,11 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 		}
 
 
-		$sqldes = "SELECT description
+		$SQLdes = "SELECT description
 				FROM pcexpenses
 				WHERE codeexpense='" . $MyRow['3'] . "'";
 
-		$ResultDes = DB_query($sqldes);
+		$ResultDes = DB_query($SQLdes);
 		$Description = DB_fetch_array($ResultDes);
 
 		if (!isset($Description['0'])) {
@@ -377,12 +377,12 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 
 	}
 
-	$sqlamount = "SELECT sum(amount)
+	$SQLamount = "SELECT sum(amount)
 				FROM pcashdetails
 				WHERE tabcode='" . $SelectedTabs . "'
 				AND date<='" . $SQL_ToDate . "'";
 
-	$ResultAmount = DB_query($sqlamount);
+	$ResultAmount = DB_query($SQLamount);
 	$Amount = DB_fetch_array($ResultAmount);
 
 	if (!isset($Amount[0])) {

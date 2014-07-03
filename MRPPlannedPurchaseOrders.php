@@ -33,7 +33,7 @@ if (isset($_POST['PrintPDF'])) {
 		$ReportDate = _(' Through  ') . Format_Date($_POST['cutoffdate']);
 	}
 	if ($_POST['Consolidation'] == 'None') {
-		$sql = "SELECT mrpplannedorders.*,
+		$SQL = "SELECT mrpplannedorders.*,
 					   stockmaster.stockid,
 					   stockmaster.description,
 					   stockmaster.mbflag,
@@ -50,7 +50,7 @@ if (isset($_POST['PrintPDF'])) {
 				 AND stockmaster.mbflag IN ('B','P')
 				ORDER BY mrpplannedorders.part,mrpplannedorders.duedate";
 	} elseif ($_POST['Consolidation'] == 'Weekly') {
-		$sql = "SELECT mrpplannedorders.part,
+		$SQL = "SELECT mrpplannedorders.part,
 					   SUM(mrpplannedorders.supplyquantity) as supplyquantity,
 					   TRUNCATE(((TO_DAYS(duedate) - TO_DAYS(CURRENT_DATE)) / 7),0) AS weekindex,
 					   MIN(mrpplannedorders.duedate) as duedate,
@@ -82,7 +82,7 @@ if (isset($_POST['PrintPDF'])) {
 					   computedcost
 				ORDER BY mrpplannedorders.part,weekindex";
 	} else { // This else consolidates by month
-		$sql = "SELECT mrpplannedorders.part,
+		$SQL = "SELECT mrpplannedorders.part,
 					   SUM(mrpplannedorders.supplyquantity) as supplyquantity,
 					   EXTRACT(YEAR_MONTH from duedate) AS yearmonth,
 					   MIN(mrpplannedorders.duedate) as duedate,
@@ -114,7 +114,7 @@ if (isset($_POST['PrintPDF'])) {
 					   computedcost
 				ORDER BY mrpplannedorders.part,yearmonth ";
 	}
-	$result = DB_query($sql, '', '', false, true);
+	$result = DB_query($SQL, '', '', false, true);
 
 	if (DB_error_no() != 0) {
 		$Title = _('MRP Planned Purchase Orders') . ' - ' . _('Problem Report');
@@ -122,7 +122,7 @@ if (isset($_POST['PrintPDF'])) {
 		prnMsg(_('The MRP planned purchase orders could not be retrieved by the SQL because') . ' ' . DB_error_msg(), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($debug == 1) {
-			echo '<br />' . $sql;
+			echo '<br />' . $SQL;
 		}
 		include('includes/footer.inc');
 		exit;
@@ -361,28 +361,28 @@ function PrintHeader(&$pdf, &$YPos, &$PageNumber, $Page_Height, $Top_Margin, $Le
 function GetPartInfo($part) {
 	// Get last purchase order date and supplier for part, and also preferred supplier
 	// Printed when there is a part break
-	$sql = "SELECT orddate as maxdate,
+	$SQL = "SELECT orddate as maxdate,
 				   purchorders.orderno
 			FROM purchorders INNER JOIN purchorderdetails
 			ON purchorders.orderno = purchorderdetails.orderno
 			WHERE purchorderdetails.itemcode = '" . $part . "'
 			ORDER BY orddate DESC LIMIT 1";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	if (DB_num_rows($result) > 0) {
 		$MyRow = DB_fetch_array($result);
 		$PartInfo[] = ConvertSQLDate($MyRow['maxdate']);
 		$OrderNo = $MyRow['orderno'];
-		$sql = "SELECT supplierno
+		$SQL = "SELECT supplierno
 				FROM purchorders
 				WHERE purchorders.orderno = '" . $OrderNo . "'";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_array($result);
 		$PartInfo[] = $MyRow['supplierno'];
-		$sql = "SELECT supplierno
+		$SQL = "SELECT supplierno
 				FROM purchdata
 				WHERE stockid = '" . $part . "'
 				AND preferred='1'";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_array($result);
 		$PartInfo[] = $MyRow['supplierno'];
 		return $PartInfo;

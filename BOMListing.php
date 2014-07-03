@@ -105,11 +105,11 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 	$Title = _('Bill Of Material Listing');
 	include('includes/header.inc');
 
-	$sql = "SELECT min(stockid) AS fromcriteria,
+	$SQL = "SELECT min(stockid) AS fromcriteria,
 					max(stockid) AS tocriteria
 				FROM stockmaster";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/reports.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';

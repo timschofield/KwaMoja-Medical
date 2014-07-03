@@ -59,19 +59,19 @@ echo '<tr>
 echo _('From Stock Location') . ':<select required="required" minlength="1" name="StockLocation">';
 
 if ($_SESSION['RestrictLocations'] == 0) {
-	$sql = "SELECT locationname,
+	$SQL = "SELECT locationname,
 					loccode
 				FROM locations";
 	echo '<option selected="selected" value="All">' . _('All Locations') . '</option>';
 } else {
-	$sql = "SELECT locationname,
+	$SQL = "SELECT locationname,
 					loccode
 				FROM locations
 				INNER JOIN www_users
 					ON locations.loccode=www_users.defaultlocation
 				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 }
-$resultStkLocs = DB_query($sql);
+$resultStkLocs = DB_query($SQL);
 while ($MyRow = DB_fetch_array($resultStkLocs)) {
 	if (isset($_POST['StockLocation'])) {
 		if ($MyRow['loccode'] == $_POST['StockLocation']) {
@@ -103,7 +103,7 @@ $CurrentPeriod = GetPeriod(Date($_SESSION['DefaultDateFormat']));
 
 if (isset($_POST['ShowUsage'])) {
 	if ($_POST['StockLocation'] == 'All') {
-		$sql = "SELECT periods.periodno,
+		$SQL = "SELECT periods.periodno,
 				periods.lastdate_in_period,
 				SUM(CASE WHEN (stockmoves.type=10 Or stockmoves.type=11 OR stockmoves.type=28)
 							AND stockmoves.hidemovt=0
@@ -116,7 +116,7 @@ if (isset($_POST['ShowUsage'])) {
 					periods.lastdate_in_period
 				ORDER BY periodno DESC LIMIT " . $_SESSION['NumberOfPeriodsOfStockUsage'];
 	} else {
-		$sql = "SELECT periods.periodno,
+		$SQL = "SELECT periods.periodno,
 				periods.lastdate_in_period,
 				SUM(CASE WHEN (stockmoves.type=10 Or stockmoves.type=11 OR stockmoves.type=28)
 								AND stockmoves.hidemovt=0
@@ -131,11 +131,11 @@ if (isset($_POST['ShowUsage'])) {
 				ORDER BY periodno DESC LIMIT " . $_SESSION['NumberOfPeriodsOfStockUsage'];
 
 	}
-	$MovtsResult = DB_query($sql);
+	$MovtsResult = DB_query($SQL);
 	if (DB_error_no() != 0) {
 		echo _('The stock usage for the selected criteria could not be retrieved because') . ' - ' . DB_error_msg();
 		if ($debug == 1) {
-			echo '<br />' . _('The SQL that failed was') . $sql;
+			echo '<br />' . _('The SQL that failed was') . $SQL;
 		}
 		exit;
 	}

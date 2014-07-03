@@ -11,11 +11,11 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 	$PageNumber = 0;
 	$line_height = 12;
 
-	$sql = "SELECT min(supplierid) AS fromcriteria,
+	$SQL = "SELECT min(supplierid) AS fromcriteria,
 					max(supplierid) AS tocriteria
 				FROM suppliers";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 
 	if ($_POST['FromCriteria']=='') {
@@ -169,7 +169,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 			/*draw a line under the Supplier aged analysis*/
 			$pdf->line($Page_Width - $Right_Margin, $YPos + 10, $Left_Margin, $YPos + 10);
 
-			$sql = "SELECT systypes.typename,
+			$SQL = "SELECT systypes.typename,
 							supptrans.suppreference,
 							supptrans.trandate,
 							(supptrans.ovamount + supptrans.ovgst - supptrans.alloc) as balance,
@@ -199,7 +199,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 							AND supptrans.settled = 0
 							AND supptrans.supplierno = '" . $AgedAnalysis["supplierid"] . "'";
 
-			$DetailResult = DB_query($sql, '', '', False, False);
+			$DetailResult = DB_query($SQL, '', '', False, False);
 			/*dont trap errors - trapped below*/
 			if (DB_error_no() != 0) {
 				$Title = _('Aged Supplier Account Analysis - Problem Report');
@@ -207,7 +207,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				prnMsg(_('The details of outstanding transactions for Supplier') . ' - ' . $AgedAnalysis['supplierid'] . ' ' . _('could not be retrieved because') . ' - ' . DB_error_msg(), 'error');
 				echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 				if ($debug == 1) {
-					echo '<br />' . _('The SQL that failed was') . '<br />' . $sql;
+					echo '<br />' . _('The SQL that failed was') . '<br />' . $SQL;
 				}
 				include('includes/footer.inc');
 				exit;
@@ -293,11 +293,11 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 
 		/*if $FromCriteria is not set then show a form to allow input	*/
 
-		$sql = "SELECT min(supplierid) AS fromcriteria,
+		$SQL = "SELECT min(supplierid) AS fromcriteria,
 						max(supplierid) AS tocriteria
 					FROM suppliers";
 
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_array($result);
 
 		echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">
@@ -322,8 +322,8 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				<td>' . _('For suppliers trading in') . ':' . '</td>
 				<td><select minlength="0" tabindex="4" name="Currency">';
 
-		$sql = "SELECT currency, currabrev FROM currencies";
-		$result = DB_query($sql);
+		$SQL = "SELECT currency, currabrev FROM currencies";
+		$result = DB_query($SQL);
 
 		while ($MyRow = DB_fetch_array($result)) {
 			if ($MyRow['currabrev'] == $_SESSION['CompanyRecord']['currencydefault']) {

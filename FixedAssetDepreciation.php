@@ -42,7 +42,7 @@ if (DB_num_rows($result) == 0) { //then depn has never been run yet?
 
 
 /* Get list of assets for journal */
-$sql = "SELECT fixedassets.assetid,
+$SQL = "SELECT fixedassets.assetid,
 			fixedassets.description,
 			fixedassets.depntype,
 			fixedassets.depnrate,
@@ -70,7 +70,7 @@ $sql = "SELECT fixedassets.assetid,
 			fixedassetcategories.categorydescription
 		ORDER BY assetcategoryid, assetid";
 
-$AssetsResult = DB_query($sql);
+$AssetsResult = DB_query($SQL);
 
 $InputError = false; //always hope for the best
 if (Date1GreaterThanDate2($_POST['ProcessDate'], Date($_SESSION['DefaultDateFormat']))) {

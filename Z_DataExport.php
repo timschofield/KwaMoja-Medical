@@ -80,12 +80,12 @@ if (isset($_POST['pricelist'])) {
 
 	while ($PriceList = DB_fetch_array($PricesResult)) {
 		$Qty = 0;
-		$sqlQty = "SELECT newqoh
+		$SQLQty = "SELECT newqoh
 			FROM stockmoves
 			WHERE stockid = '" . $PriceList['stockid'] . "'
 			AND loccode = '" . $_POST['Location'] . "'
 			ORDER BY stkmoveno DESC LIMIT 1";
-		$resultQty = DB_query($sqlQty, $ErrMsg);
+		$resultQty = DB_query($SQLQty, $ErrMsg);
 		if ($resultQty) {
 			if (DB_num_rows($resultQty) > 0) {
 				$Row = DB_fetch_row($resultQty);
@@ -424,8 +424,8 @@ if (isset($_POST['pricelist'])) {
 			<tr>
 				<th colspan="2">' . _('Price List Export') . '</th>
 			</tr>';
-	$sql = 'SELECT sales_type, typeabbrev FROM salestypes';
-	$SalesTypesResult = DB_query($sql);
+	$SQL = 'SELECT sales_type, typeabbrev FROM salestypes';
+	$SalesTypesResult = DB_query($SQL);
 	echo '<tr>
 			<td>' . _('For Sales Type/Price List') . ':</td>
 			<td><select minlength="0" name="SalesType">';
@@ -434,8 +434,8 @@ if (isset($_POST['pricelist'])) {
 	}
 	echo '</select></td></tr>';
 
-	$sql = 'SELECT loccode, locationname FROM locations';
-	$SalesTypesResult = DB_query($sql);
+	$SQL = 'SELECT loccode, locationname FROM locations';
+	$SalesTypesResult = DB_query($SQL);
 	echo '<tr>
 			<td>' . _('For Location') . ':</td>
 			<td><select minlength="0" name="Location">';
@@ -456,8 +456,8 @@ if (isset($_POST['pricelist'])) {
 				<th colspan="2">' . _('Customer List Export') . '</th>
 			</tr>';
 
-	$sql = 'SELECT loccode, locationname FROM locations';
-	$SalesTypesResult = DB_query($sql);
+	$SQL = 'SELECT loccode, locationname FROM locations';
+	$SalesTypesResult = DB_query($SQL);
 	echo '<tr>
 			<td>' . _('For Location') . ':</td>
 			<td><select minlength="0" name="Location">';

@@ -75,7 +75,7 @@ if (!isset($_GET['InvoiceNumber']) and !$_SESSION['ProcessingCredit']) {
 								AND stockmoves.type=10";
 
 	if ($_SESSION['SalesmanLogin'] != '') {
-		$sql .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
+		$SQL .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
 	}
 
 	$ErrMsg = _('A credit cannot be produced for the selected invoice') . '. ' . _('The invoice details cannot be retrieved because');
@@ -723,7 +723,7 @@ if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 
 					$StandardCost = 0;
 					/*To start with - accumulate the cost of the comoponents for use in journals later on */
-					$sql = "SELECT	bom.component,
+					$SQL = "SELECT	bom.component,
 									bom.quantity,
 									stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost AS standard
 								FROM bom
@@ -736,7 +736,7 @@ if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 
 					$ErrMsg = _('Could not retrieve assembly components from the database for') . ' ' . $CreditLine->StockID . ' ' . _('because');
 					$DbgMsg = _('The SQL that failed was');
-					$AssResult = DB_query($sql, $ErrMsg, $DbgMsg, true);
+					$AssResult = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 					while ($AssParts = DB_fetch_array($AssResult)) {
 
@@ -1519,18 +1519,18 @@ if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 		echo '<tr><td>' . _('Goods returned to location') . '</td><td><select minlength="0" tabindex="' . $j . '" name="Location">';
 
 		if ($_SESSION['RestrictLocations'] == 0) {
-			$sql = "SELECT locationname,
+			$SQL = "SELECT locationname,
 							loccode
 						FROM locations";
 		} else {
-			$sql = "SELECT locationname,
+			$SQL = "SELECT locationname,
 							loccode
 						FROM locations
 						INNER JOIN www_users
 							ON locations.loccode=www_users.defaultlocation
 						WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 		}
-		$Result = DB_query($sql);
+		$Result = DB_query($SQL);
 
 		if (!isset($_POST['Location'])) {
 			$_POST['Location'] = $_SESSION['CreditItems' . $identifier]->Location;

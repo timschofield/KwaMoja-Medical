@@ -75,13 +75,13 @@ if (!isset($_SESSION['Items' . $identifier])) {
 	$_SESSION['PrintedPackingSlip'] = 0;
 	/*Of course 'cos the order ain't even started !!*/
 	/*Get the default customer-branch combo from the user's default location record */
-	$sql = "SELECT cashsalecustomer,
+	$SQL = "SELECT cashsalecustomer,
 				cashsalebranch,
 				locationname,
 				taxprovinceid
 			FROM locations
 			WHERE loccode='" . $_SESSION['UserStockLocation'] . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	if (DB_num_rows($result) == 0) {
 		prnMsg(_('Your user account does not have a valid default inventory location set up. Please see the system administrator to modify your user account.'), 'error');
 		include('includes/footer.inc');
@@ -107,7 +107,7 @@ if (!isset($_SESSION['Items' . $identifier])) {
 		$_SESSION['Items' . $identifier]->DispatchTaxProvince = $MyRow['taxprovinceid'];
 
 		// Now check to ensure this account exists and set defaults */
-		$sql = "SELECT debtorsmaster.name,
+		$SQL = "SELECT debtorsmaster.name,
 					holdreasons.dissallowinvoices,
 					debtorsmaster.salestype,
 					salestypes.sales_type,
@@ -127,8 +127,8 @@ if (!isset($_SESSION['Items' . $identifier])) {
 
 		$ErrMsg = _('The details of the customer selected') . ': ' . $_SESSION['Items' . $identifier]->DebtorNo . ' ' . _('cannot be retrieved because');
 		$DbgMsg = _('The SQL used to retrieve the customer details and failed was') . ':';
-		// echo $sql;
-		$result = DB_query($sql, $ErrMsg, $DbgMsg);
+		// echo $SQL;
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 		$MyRow = DB_fetch_array($result);
 		if ($MyRow['dissallowinvoices'] != 1) {
@@ -147,7 +147,7 @@ if (!isset($_SESSION['Items' . $identifier])) {
 			$_SESSION['Items' . $identifier]->CurrDecimalPlaces = $MyRow['decimalplaces'];
 			/* now get the branch defaults from the customer branches table CustBranch. */
 
-			$sql = "SELECT custbranch.brname,
+			$SQL = "SELECT custbranch.brname,
 					   custbranch.braddress1,
 					   custbranch.defaultshipvia,
 					   custbranch.deliverblind,
@@ -162,14 +162,14 @@ if (!isset($_SESSION['Items' . $identifier])) {
 				AND custbranch.disabletrans = 0";
 			$ErrMsg = _('The customer branch record of the customer selected') . ': ' . $_SESSION['Items' . $identifier]->Branch . ' ' . _('cannot be retrieved because');
 			$DbgMsg = _('SQL used to retrieve the branch details was') . ':';
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 			if (DB_num_rows($result) == 0) {
 
 				prnMsg(_('The branch details for branch code') . ': ' . $_SESSION['Items' . $identifier]->Branch . ' ' . _('against customer code') . ': ' . $_SESSION['Items' . $identifier]->DebtorNo . ' ' . _('could not be retrieved') . '. ' . _('Check the set up of the customer and branch'), 'error');
 
 				if ($debug == 1) {
-					echo '<br />' . _('The SQL that failed to get the branch details was') . ':<br />' . $sql;
+					echo '<br />' . _('The SQL that failed to get the branch details was') . ':<br />' . $SQL;
 				}
 				include('includes/footer.inc');
 				exit;
@@ -438,14 +438,14 @@ if (isset($_POST['SelectingOrderItems']) or isset($_POST['QuickEntry']) or isset
 			$NewItemDue = DateAdd(Date($_SESSION['DefaultDateFormat']), 'd', $_SESSION['Items' . $identifier]->DeliveryDays);
 		}
 		/*Now figure out if the item is a kit set - the field MBFlag='K'*/
-		$sql = "SELECT stockmaster.mbflag,
+		$SQL = "SELECT stockmaster.mbflag,
 						stockmaster.controlled
 				FROM stockmaster
 				WHERE stockmaster.stockid='" . $NewItem . "'";
 
 		$ErrMsg = _('Could not determine if the part being ordered was a kitset or not because');
 		$DbgMsg = _('The sql that was used to determine if the part being ordered was a kitset or not was ');
-		$KitResult = DB_query($sql, $ErrMsg, $DbgMsg);
+		$KitResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 
 		if (DB_num_rows($KitResult) == 0) {
@@ -453,7 +453,7 @@ if (isset($_POST['SelectingOrderItems']) or isset($_POST['QuickEntry']) or isset
 		} elseif ($MyRow = DB_fetch_array($KitResult)) {
 			if ($MyRow['mbflag'] == 'K') {
 				/*It is a kit set item */
-				$sql = "SELECT bom.component,
+				$SQL = "SELECT bom.component,
 							bom.quantity
 						FROM bom
 						WHERE bom.parent='" . $NewItem . "'
@@ -461,7 +461,7 @@ if (isset($_POST['SelectingOrderItems']) or isset($_POST['QuickEntry']) or isset
 						AND bom.effectiveafter < CURRENT_DATE";
 
 				$ErrMsg = _('Could not retrieve kitset components from the database because') . ' ';
-				$KitResult = DB_query($sql, $ErrMsg, $DbgMsg);
+				$KitResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 				$ParentQty = $NewItemQty;
 				while ($KitParts = DB_fetch_array($KitResult)) {
@@ -543,18 +543,18 @@ if ((isset($_SESSION['Items' . $identifier])) or isset($NewItem)) {
 if (isset($_POST['Recalculate'])) {
 	foreach ($_SESSION['Items' . $identifier]->LineItems as $OrderLine) {
 		$NewItem = $OrderLine->StockID;
-		$sql = "SELECT stockmaster.mbflag,
+		$SQL = "SELECT stockmaster.mbflag,
 						stockmaster.controlled
 				FROM stockmaster
 				WHERE stockmaster.stockid='" . $OrderLine->StockID . "'";
 
 		$ErrMsg = _('Could not determine if the part being ordered was a kitset or not because');
 		$DbgMsg = _('The sql that was used to determine if the part being ordered was a kitset or not was ');
-		$KitResult = DB_query($sql, $ErrMsg, $DbgMsg);
+		$KitResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 		if ($MyRow = DB_fetch_array($KitResult)) {
 			if ($MyRow['mbflag'] == 'K') {
 				/*It is a kit set item */
-				$sql = "SELECT bom.component,
+				$SQL = "SELECT bom.component,
 								bom.quantity
 							FROM bom
 							WHERE bom.parent='" . $OrderLine->StockID . "'
@@ -562,7 +562,7 @@ if (isset($_POST['Recalculate'])) {
 							AND bom.effectiveafter < CURRENT_DATE";
 
 				$ErrMsg = _('Could not retrieve kitset components from the database because');
-				$KitResult = DB_query($sql, $ErrMsg);
+				$KitResult = DB_query($SQL, $ErrMsg);
 
 				$ParentQty = $NewItemQty;
 				while ($KitParts = DB_fetch_array($KitResult)) {
@@ -592,14 +592,14 @@ if (isset($NewItem)) {
 	* */
 	$AlreadyWarnedAboutCredit = false;
 
-	$sql = "SELECT stockmaster.mbflag,
+	$SQL = "SELECT stockmaster.mbflag,
 				stockmaster.taxcatid
 			FROM stockmaster
 			WHERE stockmaster.stockid='" . $NewItem . "'";
 
 	$ErrMsg = _('Could not determine if the part being ordered was a kitset or not because');
 
-	$KitResult = DB_query($sql, $ErrMsg);
+	$KitResult = DB_query($SQL, $ErrMsg);
 
 	$NewItemQty = 1;
 	/*By Default */
@@ -609,7 +609,7 @@ if (isset($NewItem)) {
 	if ($MyRow = DB_fetch_array($KitResult)) {
 		if ($MyRow['mbflag'] == 'K') {
 			/*It is a kit set item */
-			$sql = "SELECT bom.component,
+			$SQL = "SELECT bom.component,
 						bom.quantity
 					FROM bom
 					WHERE bom.parent='" . $NewItem . "'
@@ -617,7 +617,7 @@ if (isset($NewItem)) {
 					AND bom.effectiveafter < CURRENT_DATE";
 
 			$ErrMsg = _('Could not retrieve kitset components from the database because');
-			$KitResult = DB_query($sql, $ErrMsg);
+			$KitResult = DB_query($SQL, $ErrMsg);
 
 			$ParentQty = $NewItemQty;
 			while ($KitParts = DB_fetch_array($KitResult)) {
@@ -651,13 +651,13 @@ if (isset($NewItemArray) and isset($_POST['SelectingOrderItems'])) {
 
 	foreach ($NewItemArray as $NewItem => $NewItemQty) {
 		if ($NewItemQty > 0) {
-			$sql = "SELECT stockmaster.mbflag
+			$SQL = "SELECT stockmaster.mbflag
 					FROM stockmaster
 					WHERE stockmaster.stockid='" . $NewItem . "'";
 
 			$ErrMsg = _('Could not determine if the part being ordered was a kitset or not because');
 
-			$KitResult = DB_query($sql, $ErrMsg);
+			$KitResult = DB_query($SQL, $ErrMsg);
 
 			//$NewItemQty = 1; /*By Default */
 			$Discount = 0;
@@ -666,7 +666,7 @@ if (isset($NewItemArray) and isset($_POST['SelectingOrderItems'])) {
 			if ($MyRow = DB_fetch_array($KitResult)) {
 				if ($MyRow['mbflag'] == 'K') {
 					/*It is a kit set item */
-					$sql = "SELECT bom.component,
+					$SQL = "SELECT bom.component,
 								bom.quantity
 				  			FROM bom
 							WHERE bom.parent='" . $NewItem . "'
@@ -674,7 +674,7 @@ if (isset($NewItemArray) and isset($_POST['SelectingOrderItems'])) {
 							AND bom.effectiveafter < CURRENT_DATE";
 
 					$ErrMsg = _('Could not retrieve kitset components from the database because');
-					$KitResult = DB_query($sql, $ErrMsg);
+					$KitResult = DB_query($SQL, $ErrMsg);
 
 					$ParentQty = $NewItemQty;
 					while ($KitParts = DB_fetch_array($KitResult)) {
@@ -1253,7 +1253,7 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 					}
 
 					// insert parent item info
-					$sql = "INSERT INTO woitems (wo,
+					$SQL = "INSERT INTO woitems (wo,
 												 stockid,
 												 qtyreqd,
 												 stdcost)
@@ -1262,7 +1262,7 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 											 '" . $WOQuantity . "',
 											 '" . $Cost . "')";
 					$ErrMsg = _('The work order item could not be added');
-					$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+					$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 					//Recursively insert real component requirements - see includes/SQL_CommonFunctions.in for function WoRealRequirements
 					WoRealRequirements($WONo, $_SESSION['DefaultFactoryLocation'], $StockItem->StockID);
@@ -1282,14 +1282,14 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 								$WOQuantity++;
 								prnMsg(($StockItem->NextSerialNo + $i) . ': ' . _('This automatically generated serial number already exists - it cannot be added to the work order'), 'error');
 							} else {
-								$sql = "INSERT INTO woserialnos (wo,
+								$SQL = "INSERT INTO woserialnos (wo,
 																	stockid,
 																	serialno)
 														VALUES ('" . $WONo . "',
 																'" . $StockItem->StockID . "',
 																'" . ($StockItem->NextSerialNo + $i) . "')";
 								$ErrMsg = _('The serial number for the work order item could not be added');
-								$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+								$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 								$FactoryManagerEmail .= "\n" . ($StockItem->NextSerialNo + $i);
 							}
 						} //end loop around creation of woserialnos
@@ -2159,7 +2159,7 @@ if (!isset($_POST['ProcessSale'])) {
 				$QOH = $QohRow[0];
 
 				// Find the quantity on outstanding sales orders
-				$sql = "SELECT SUM(salesorderdetails.quantity-salesorderdetails.qtyinvoiced) AS dem
+				$SQL = "SELECT SUM(salesorderdetails.quantity-salesorderdetails.qtyinvoiced) AS dem
 						FROM salesorderdetails INNER JOIN salesorders
 						ON salesorders.orderno = salesorderdetails.orderno
 						WHERE  salesorders.fromstkloc='" . $_SESSION['Items' . $identifier]->Location . "'
@@ -2168,7 +2168,7 @@ if (!isset($_POST['ProcessSale'])) {
 						AND salesorderdetails.stkcode='" . $MyRow['stockid'] . "'";
 
 				$ErrMsg = _('The demand for this product from') . ' ' . $_SESSION['Items' . $identifier]->Location . ' ' . _('cannot be retrieved because');
-				$DemandResult = DB_query($sql, $ErrMsg);
+				$DemandResult = DB_query($SQL, $ErrMsg);
 
 				$DemandRow = DB_fetch_row($DemandResult);
 				if ($DemandRow[0] != null) {
@@ -2177,7 +2177,7 @@ if (!isset($_POST['ProcessSale'])) {
 					$DemandQty = 0;
 				}
 				// Find the quantity on purchase orders
-				$sql = "SELECT SUM(purchorderdetails.quantityord-purchorderdetails.quantityrecd) AS QOO
+				$SQL = "SELECT SUM(purchorderdetails.quantityord-purchorderdetails.quantityrecd) AS QOO
 						FROM purchorderdetails INNER JOIN purchorders
 						ON purchorderdetails.orderno=purchorders.orderno
 						WHERE purchorderdetails.completed=0
@@ -2186,7 +2186,7 @@ if (!isset($_POST['ProcessSale'])) {
 						AND purchorderdetails.itemcode='" . $MyRow['stockid'] . "'";
 
 				$ErrMsg = _('The order details for this product cannot be retrieved because');
-				$PurchResult = DB_query($sql, $ErrMsg);
+				$PurchResult = DB_query($SQL, $ErrMsg);
 
 				$PurchRow = DB_fetch_row($PurchResult);
 				if ($PurchRow[0] != null) {
@@ -2196,11 +2196,11 @@ if (!isset($_POST['ProcessSale'])) {
 				}
 
 				// Find the quantity on works orders
-				$sql = "SELECT SUM(woitems.qtyreqd - woitems.qtyrecd) AS dedm
+				$SQL = "SELECT SUM(woitems.qtyreqd - woitems.qtyrecd) AS dedm
 					   FROM woitems
 					   WHERE stockid='" . $MyRow['stockid'] . "'";
 				$ErrMsg = _('The order details for this product cannot be retrieved because');
-				$WoResult = DB_query($sql, $ErrMsg);
+				$WoResult = DB_query($SQL, $ErrMsg);
 				$WoRow = DB_fetch_row($WoResult);
 				if ($WoRow[0] != null) {
 					$WoQty = $WoRow[0];
@@ -2329,7 +2329,7 @@ if (!isset($_POST['ProcessSale'])) {
 				$QOH = $QOHRow['qoh'];
 
 				// Find the quantity on outstanding sales orders
-				$sql = "SELECT SUM(salesorderdetails.quantity-salesorderdetails.qtyinvoiced) AS dem
+				$SQL = "SELECT SUM(salesorderdetails.quantity-salesorderdetails.qtyinvoiced) AS dem
 						 FROM salesorderdetails INNER JOIN salesorders
 						 ON salesorders.orderno = salesorderdetails.orderno
 						 WHERE salesorders.fromstkloc='" . $_SESSION['Items' . $identifier]->Location . "'
@@ -2338,7 +2338,7 @@ if (!isset($_POST['ProcessSale'])) {
 						 AND salesorderdetails.stkcode='" . $MyRow['stockid'] . "'";
 
 				$ErrMsg = _('The demand for this product from') . ' ' . $_SESSION['Items' . $identifier]->Location . ' ' . _('cannot be retrieved because');
-				$DemandResult = DB_query($sql, $ErrMsg);
+				$DemandResult = DB_query($SQL, $ErrMsg);
 
 				$DemandRow = DB_fetch_row($DemandResult);
 				if ($DemandRow[0] != null) {
@@ -2348,7 +2348,7 @@ if (!isset($_POST['ProcessSale'])) {
 				}
 
 				// Find the quantity on purchase orders
-				$sql = "SELECT SUM(purchorderdetails.quantityord-purchorderdetails.quantityrecd) AS QOO
+				$SQL = "SELECT SUM(purchorderdetails.quantityord-purchorderdetails.quantityrecd) AS QOO
 						 FROM purchorderdetails INNER JOIN purchorders
 						 WHERE purchorderdetails.completed=0
 						 AND purchorders.status <>'Cancelled'
@@ -2357,7 +2357,7 @@ if (!isset($_POST['ProcessSale'])) {
 						AND purchorderdetails.itemcode='" . $MyRow['stockid'] . "'";
 
 				$ErrMsg = _('The order details for this product cannot be retrieved because');
-				$PurchResult = DB_query($sql, $ErrMsg);
+				$PurchResult = DB_query($SQL, $ErrMsg);
 
 				$PurchRow = DB_fetch_row($PurchResult);
 				if ($PurchRow[0] != null) {
@@ -2367,11 +2367,11 @@ if (!isset($_POST['ProcessSale'])) {
 				}
 
 				// Find the quantity on works orders
-				$sql = "SELECT SUM(woitems.qtyreqd - woitems.qtyrecd) AS dedm
+				$SQL = "SELECT SUM(woitems.qtyreqd - woitems.qtyrecd) AS dedm
 						   FROM woitems
 						   WHERE stockid='" . $MyRow['stockid'] . "'";
 				$ErrMsg = _('The order details for this product cannot be retrieved because');
-				$WoResult = DB_query($sql, $ErrMsg);
+				$WoResult = DB_query($SQL, $ErrMsg);
 
 				$WoRow = DB_fetch_row($WoResult);
 				if ($WoRow[0] != null) {

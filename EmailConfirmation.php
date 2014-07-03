@@ -31,7 +31,7 @@ $headers .= 'MIME-Version: 1.0\n' . 'Content-Type: text/html; charset="utf-8"\n'
 $ErrMsg = _('There was a problem retrieving the order header details for Order Number') . ' ' . $_GET['TransNo'] . ' ' . _('from the database');
 
 if ($_SESSION['RestrictLocations'] == 0) {
-	$sql = "SELECT salesorders.debtorno,
+	$SQL = "SELECT salesorders.debtorno,
 					salesorders.customerref,
 					salesorders.comments,
 					salesorders.orddate,
@@ -64,7 +64,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 					ON salesorders.fromstkloc=locations.loccode
 				WHERE salesorders.orderno='" . $_GET['TransNo'] . "'";
 } else {
-	$sql = "SELECT salesorders.debtorno,
+	$SQL = "SELECT salesorders.debtorno,
 					salesorders.customerref,
 					salesorders.comments,
 					salesorders.orddate,
@@ -100,7 +100,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 				WHERE salesorders.orderno='" . $_GET['TransNo'] . "'
 					AND www_users.userid='" . $_SESSION['UserID'] . "'";
 }
-$result = DB_query($sql, $ErrMsg);
+$result = DB_query($SQL, $ErrMsg);
 
 //if there are no rows, there's a problem.
 if (DB_num_rows($result) == 0) {
@@ -229,7 +229,7 @@ $MailMessage .= '<td>' . _('Stock Code') . '</td>
 					</tr>';
 
 
-$sql = "SELECT salesorderdetails.stkcode,
+$SQL = "SELECT salesorderdetails.stkcode,
 			stockmaster.description,
 			salesorderdetails.quantity,
 			salesorderdetails.qtyinvoiced,
@@ -241,7 +241,7 @@ $sql = "SELECT salesorderdetails.stkcode,
 			ON salesorderdetails.stkcode=stockmaster.stockid
 		WHERE salesorderdetails.orderno=" . $_GET['TransNo'] . "
 		ORDER BY poline";
-$result = DB_query($sql, $ErrMsg);
+$result = DB_query($SQL, $ErrMsg);
 $i = 0;
 if (DB_num_rows($result) > 0) {
 

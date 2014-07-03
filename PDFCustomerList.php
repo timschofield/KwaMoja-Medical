@@ -382,8 +382,8 @@ if (isset($_POST['PrintPDF'])) {
 			<td>' . _('For Sales Areas') . ':</td>
 			<td><select required="required" minlength="1" name="Areas[]" multiple="multiple">';
 
-	$sql = "SELECT areacode, areadescription FROM areas";
-	$AreasResult = DB_query($sql);
+	$SQL = "SELECT areacode, areadescription FROM areas";
+	$AreasResult = DB_query($SQL);
 
 	echo '<option selected="selected" value="All">' . _('All Areas') . '</option>';
 
@@ -395,13 +395,13 @@ if (isset($_POST['PrintPDF'])) {
 	echo '<tr><td>' . _('For Sales folk') . ':</td>
 			<td><select required="required" minlength="1" name="SalesPeople[]" multiple="multiple">';
 
-	$sql = "SELECT salesmancode, salesmanname FROM salesman";
+	$SQL = "SELECT salesmancode, salesmanname FROM salesman";
 	if ($_SESSION['SalesmanLogin'] != '') {
-		$sql .= " WHERE salesmancode='" . $_SESSION['SalesmanLogin'] . "'";
+		$SQL .= " WHERE salesmancode='" . $_SESSION['SalesmanLogin'] . "'";
 	} else {
 		echo '<option selected="selected" value="All">' . _('All sales folk') . '</option>';
 	}
-	$SalesFolkResult = DB_query($sql);
+	$SalesFolkResult = DB_query($SQL);
 
 	while ($MyRow = DB_fetch_array($SalesFolkResult)) {
 		echo '<option value="' . $MyRow['salesmancode'] . '">' . $MyRow['salesmanname'] . '</option>';

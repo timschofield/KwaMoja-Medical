@@ -49,7 +49,7 @@ if (isset($_POST['Process'])) { //user hit the process the work order receipts e
 	$InputError = false; //ie assume no problems for a start - ever the optimist
 	$ErrMsg = _('Could not retrieve the details of the selected work order item');
 	if ($_SESSION['RestrictLocations'] == 0) {
-		$sql = "SELECT workorders.loccode,
+		$SQL = "SELECT workorders.loccode,
 						locations.locationname,
 						workorders.requiredby,
 						workorders.startdate,
@@ -77,7 +77,7 @@ if (isset($_POST['Process'])) { //user hit the process the work order receipts e
 					WHERE woitems.stockid='" . $_POST['StockID'] . "'
 						AND workorders.wo='" . $_POST['WO'] . "'";
 	} else {
-		$sql = "SELECT workorders.loccode,
+		$SQL = "SELECT workorders.loccode,
 						locations.locationname,
 						workorders.requiredby,
 						workorders.startdate,
@@ -108,7 +108,7 @@ if (isset($_POST['Process'])) { //user hit the process the work order receipts e
 						AND workorders.wo='" . $_POST['WO'] . "'
 						AND www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
-	$WOResult = DB_query($sql, $ErrMsg);
+	$WOResult = DB_query($SQL, $ErrMsg);
 
 	if (DB_num_rows($WOResult) == 0) {
 		prnMsg(_('The selected work order item cannot be retrieved from the database'), 'info');
@@ -252,7 +252,7 @@ if (isset($_POST['Process'])) { //user hit the process the work order receipts e
 			WoRealRequirements($_POST['WO'], $WORow['loccode'], $_POST['StockID']);
 
 			//Need to check this against the current standard cost and do a cost update if necessary
-			$sql = "SELECT stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS cost,
+			$SQL = "SELECT stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS cost,
 						  sum(quantity) AS totalqoh,
 						  stockcosts.labourcost,
 						  stockcosts.overheadcost
@@ -262,7 +262,7 @@ if (isset($_POST['Process'])) { //user hit the process the work order receipts e
 					GROUP BY stockcosts.materialcost,
 							stockcosts.labourcost,
 							stockcosts.overheadcost";
-			$ItemResult = DB_query($sql);
+			$ItemResult = DB_query($SQL);
 			$ItemCostRow = DB_fetch_array($ItemResult);
 
 			if (($Cost + $ItemCostRow['labourcost'] + $ItemCostRow['overheadcost']) != $ItemCostRow['cost']) { //the cost roll-up cost <> standard cost
@@ -872,11 +872,11 @@ if (!isset($_POST['IntoLocation'])) {
 }
 
 if ($_SESSION['RestrictLocations'] == 0) {
-	$sql = "SELECT locationname,
+	$SQL = "SELECT locationname,
 					loccode
 				FROM locations";
 } else {
-	$sql = "SELECT locationname,
+	$SQL = "SELECT locationname,
 					loccode
 				FROM locations
 				INNER JOIN www_users
@@ -884,7 +884,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 }
 
-$LocResult = DB_query($sql);
+$LocResult = DB_query($SQL);
 while ($LocRow = DB_fetch_array($LocResult)) {
 	if ($_POST['IntoLocation'] == $LocRow['loccode']) {
 		echo '<option selected="selected" value="' . $LocRow['loccode'] . '">' . $LocRow['locationname'] . '</option>';

@@ -31,7 +31,7 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['PrintPDFAndProcess'])) and isset
 
 	include('includes/PDFPaymentRunPageHeader.inc');
 
-	$sql = "SELECT suppliers.supplierid,
+	$SQL = "SELECT suppliers.supplierid,
 					currencies.decimalplaces AS currdecimalplaces,
 					SUM(supptrans.ovamount + supptrans.ovgst - supptrans.alloc) AS balance
 			FROM suppliers INNER JOIN paymentterms
@@ -53,7 +53,7 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['PrintPDFAndProcess'])) and isset
 			HAVING SUM(supptrans.ovamount + supptrans.ovgst - supptrans.alloc) > 0
 			ORDER BY suppliers.supplierid";
 
-	$SuppliersResult = DB_query($sql);
+	$SuppliersResult = DB_query($SQL);
 
 	$SupplierID = '';
 	$TotalPayments = 0;
@@ -68,7 +68,7 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['PrintPDFAndProcess'])) and isset
 
 		$CurrDecimalPlaces = $SuppliersToPay['currdecimalplaces'];
 
-		$sql = "SELECT suppliers.supplierid,
+		$SQL = "SELECT suppliers.supplierid,
 					suppliers.suppname,
 					systypes.typename,
 					paymentterms.terms,
@@ -98,14 +98,14 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['PrintPDFAndProcess'])) and isset
 					supptrans.type,
 					supptrans.transno";
 
-		$TransResult = DB_query($sql, '', '', false, false);
+		$TransResult = DB_query($SQL, '', '', false, false);
 		if (DB_error_no() != 0) {
 			$Title = _('Payment Run - Problem Report');
 			include('includes/header.inc');
 			prnMsg(_('The details of supplier invoices due could not be retrieved because') . ' - ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 			if ($debug == 1) {
-				echo '<br />' . _('The SQL that failed was') . ' ' . $sql;
+				echo '<br />' . _('The SQL that failed was') . ' ' . $SQL;
 			}
 			include('includes/footer.inc');
 			exit;
@@ -238,11 +238,11 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['PrintPDFAndProcess'])) and isset
 	}
 
 	/* show form to allow input	*/
-	$sql = "SELECT min(supplierid) AS fromcriteria,
+	$SQL = "SELECT min(supplierid) AS fromcriteria,
 					max(supplierid) AS tocriteria
 				FROM suppliers";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 
 	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
@@ -274,8 +274,8 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['PrintPDFAndProcess'])) and isset
 			<td>' . _('For Suppliers Trading in') . ':</td>
 			<td><select required="required" minlength="1" name="Currency">';
 
-	$sql = "SELECT currency, currabrev FROM currencies";
-	$result = DB_query($sql);
+	$SQL = "SELECT currency, currabrev FROM currencies";
+	$result = DB_query($SQL);
 
 	while ($MyRow = DB_fetch_array($result)) {
 		if ($MyRow['currabrev'] == $_SESSION['CompanyRecord']['currencydefault']) {

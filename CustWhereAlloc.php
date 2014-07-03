@@ -54,7 +54,7 @@ if (isset($_POST['ShowResults']) and $_POST['TransNo'] != '') {
 
 
 	/*First off get the DebtorTransID of the transaction (invoice normally) selected */
-	$sql = "SELECT debtortrans.id,
+	$SQL = "SELECT debtortrans.id,
 				ovamount+ovgst AS totamt,
 				currencies.decimalplaces AS currdecimalplaces,
 				debtorsmaster.currcode
@@ -65,7 +65,7 @@ if (isset($_POST['ShowResults']) and $_POST['TransNo'] != '') {
 			WHERE type='" . $_POST['TransType'] . "'
 			AND transno = '" . $_POST['TransNo'] . "'";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	if (DB_num_rows($result) == 1) {
 		$MyRow = DB_fetch_array($result);
@@ -73,7 +73,7 @@ if (isset($_POST['ShowResults']) and $_POST['TransNo'] != '') {
 		$CurrCode = $MyRow['currcode'];
 		$CurrDecimalPlaces = $MyRow['currdecimalplaces'];
 
-		$sql = "SELECT type,
+		$SQL = "SELECT type,
 					transno,
 					trandate,
 					debtortrans.debtorno,
@@ -87,7 +87,7 @@ if (isset($_POST['ShowResults']) and $_POST['TransNo'] != '') {
 				WHERE custallocns.transid_allocto='" . $AllocToID . "'";
 
 		$ErrMsg = _('The customer transactions for the selected criteria could not be retrieved because');
-		$TransResult = DB_query($sql, $ErrMsg);
+		$TransResult = DB_query($SQL, $ErrMsg);
 
 		if (DB_num_rows($TransResult) == 0) {
 			prnMsg(_('There are no allocations made against this transaction'), 'info');

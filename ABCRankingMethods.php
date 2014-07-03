@@ -14,8 +14,8 @@ if (isset($_GET['Delete'])) {
 	$CheckSQL = "SELECT methodid FROM abcgroups WHERE methodid='" . $_GET['SelectedMethodID'] . "'";
 	$CheckResult = DB_query($CheckSQL);
 	if (DB_num_rows($CheckResult) == 0) {
-		$sql = "DELETE FROM abcmethods WHERE methodid='" . $_GET['SelectedMethodID'] . "'";
-		$result = DB_query($sql);
+		$SQL = "DELETE FROM abcmethods WHERE methodid='" . $_GET['SelectedMethodID'] . "'";
+		$result = DB_query($SQL);
 		prnMsg(_('ABC Ranking method number') . ' ' . $_GET['SelectedMethodID'] . ' ' . _('has been deleted'), 'success');
 		echo '<div class="centre">
 				<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('View all the ranking methods') . '</a>
@@ -29,17 +29,17 @@ if (isset($_GET['Delete'])) {
 
 if (isset($_POST['Submit'])) {
 	if ($_POST['Mode'] == 'New') {
-		$sql = "INSERT INTO abcmethods (methodid,
+		$SQL = "INSERT INTO abcmethods (methodid,
 										methodname
 									) VALUES (
 										'" . $_POST['MethodID'] . "',
 										'" . $_POST['MethodName'] . "'
 									)";
-		$InsertResult = DB_query($sql);
+		$InsertResult = DB_query($SQL);
 	} else {
-		$sql = "UPDATE abcmethods SET methodname='" . $_POST['MethodName'] . "'
+		$SQL = "UPDATE abcmethods SET methodname='" . $_POST['MethodName'] . "'
 							WHERE methodid='" . $_POST['MethodID'] . "'";
-		$UpdateResult = DB_query($sql);
+		$UpdateResult = DB_query($SQL);
 	}
 	prnMsg(_('The ranking method has been successfully saved to the database'), 'success');
 	echo '<div class="centre">
@@ -48,10 +48,10 @@ if (isset($_POST['Submit'])) {
 	include('includes/footer.inc');
 	exit;
 } else {
-	$sql = "SELECT methodid,
+	$SQL = "SELECT methodid,
 					methodname
 				FROM abcmethods";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	echo '<table class="selection" summary="' . _('List of ABC Ranking Methods') . '">
 			<tr>
 				<th colspan="10">
@@ -79,11 +79,11 @@ if (isset($_POST['Submit'])) {
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	if (isset($_GET['SelectedMethodID'])) {
-		$sql = "SELECT methodid,
+		$SQL = "SELECT methodid,
 							methodname
 						FROM abcmethods
 						WHERE methodid='" . $_GET['SelectedMethodID'] . "'";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_array($result);
 		echo '<input type="hidden" name="Mode" value="Edit" />';
 		$IDInput = '<input type="hidden" name="MethodID" value="' . $MyRow['methodid'] . '" />' . $MyRow['methodid'];

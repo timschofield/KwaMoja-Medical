@@ -6,7 +6,7 @@ include('includes/header.inc');
 
 echo '<div class="centre"><h3>' . _('Debtors Balances By Currency Totals') . '</h3></div>';
 
-$sql = "SELECT SUM(ovamount+ovgst+ovdiscount+ovfreight-alloc) AS currencybalance,
+$SQL = "SELECT SUM(ovamount+ovgst+ovdiscount+ovfreight-alloc) AS currencybalance,
 		currcode,
 		decimalplaces AS currdecimalplaces,
 		SUM((ovamount+ovgst+ovdiscount+ovfreight-alloc)/debtortrans.rate) AS localbalance
@@ -16,7 +16,7 @@ $sql = "SELECT SUM(ovamount+ovgst+ovdiscount+ovfreight-alloc) AS currencybalance
 	ON debtorsmaster.currcode=currencies.currabrev
 	WHERE (ovamount+ovgst+ovdiscount+ovfreight-alloc)<>0 GROUP BY currcode";
 
-$result = DB_query($sql);
+$result = DB_query($SQL);
 
 
 $LocalTotal = 0;

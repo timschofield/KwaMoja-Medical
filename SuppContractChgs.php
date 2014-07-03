@@ -132,12 +132,12 @@ echo '<tr>
 		<td>' . _('Contract Selection') . ':<br />' . _('If you know the code enter it above') . '<br />' . _('otherwise select the contract from the list') . '</td>
 		<td><select required="required" minlength="1" name="ContractSelection">';
 
-$sql = "SELECT contractref, name
+$SQL = "SELECT contractref, name
 		FROM contracts INNER JOIN debtorsmaster
 		ON contracts.debtorno=debtorsmaster.debtorno
 		WHERE status=2"; //only show customer ordered contracts not quotes or contracts that are finished with
 
-$result = DB_query($sql);
+$result = DB_query($SQL);
 
 while ($MyRow = DB_fetch_array($result)) {
 	if (isset($_POST['ContractSelection']) and $MyRow['contractref'] == $_POST['ContractSelection']) {

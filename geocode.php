@@ -8,9 +8,9 @@ include('includes/session.inc');
 include('includes/header.inc');
 //include ('includes/SQL_CommonFunctions.inc');
 
-$sql = "SELECT * FROM geocode_param WHERE 1";
+$SQL = "SELECT * FROM geocode_param WHERE 1";
 $ErrMsg = _('An error occurred in retrieving the information');
-$resultgeo = DB_query($sql, $ErrMsg);
+$resultgeo = DB_query($SQL, $ErrMsg);
 $row = DB_fetch_array($resultgeo);
 
 $api_key = $row['geocode_key'];
@@ -26,14 +26,14 @@ define("KEY", $api_key);
 echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Geocode Setup') . '" alt="" />' . ' ' . _('Geocoding of Customers and Suppliers') . '</p>';
 
 // select all the customer branches
-$sql = "SELECT * FROM custbranch WHERE 1";
+$SQL = "SELECT * FROM custbranch WHERE 1";
 $ErrMsg = _('An error occurred in retrieving the information');
-$result = DB_query($sql, $ErrMsg);
+$result = DB_query($SQL, $ErrMsg);
 
 // select all the suppliers
-$sql = "SELECT * FROM suppliers WHERE 1";
+$SQL = "SELECT * FROM suppliers WHERE 1";
 $ErrMsg = _('An error occurred in retrieving the information');
-$result2 = DB_query($sql, $ErrMsg);
+$result2 = DB_query($SQL, $ErrMsg);
 
 // Initialize delay in geocode speed
 $delay = 0;

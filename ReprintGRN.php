@@ -33,10 +33,10 @@ if (isset($_POST['Show'])) {
 		include('includes/footer.inc');
 		exit;
 	}
-	$sql = "SELECT count(orderno)
+	$SQL = "SELECT count(orderno)
 				FROM purchorders
 				WHERE orderno='" . $_POST['PONumber'] . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_row($result);
 	if ($MyRow[0] == 0) {
 		echo '<br />';
@@ -44,7 +44,7 @@ if (isset($_POST['Show'])) {
 		include('includes/footer.inc');
 		exit;
 	}
-	$sql = "SELECT grnbatch,
+	$SQL = "SELECT grnbatch,
 				grnno,
 				grns.podetailitem,
 				grns.itemcode,
@@ -60,7 +60,7 @@ if (isset($_POST['Show'])) {
 			LEFT JOIN stockmaster
 			ON grns.itemcode=stockmaster.stockid
 			WHERE orderno='" . $_POST['PONumber'] . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	if (DB_num_rows($result) == 0) {
 		echo '<br />';
 		prnMsg(_('There are no GRNs for this purchase order that can be reprinted.'), 'warn');

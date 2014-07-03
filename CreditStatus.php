@@ -29,9 +29,9 @@ if (isset($_POST['submit'])) {
 
 	//first off validate inputs are sensible
 
-	$sql = "SELECT count(reasoncode)
+	$SQL = "SELECT count(reasoncode)
 			FROM holdreasons WHERE reasoncode='" . $_POST['ReasonCode'] . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_row($result);
 
 	if ($MyRow[0] != 0 and !isset($SelectedReason)) {
@@ -64,12 +64,12 @@ if (isset($_POST['submit'])) {
 		/*SelectedReason could also exist if submit had not been clicked this code would not run in this case cos submit is false of course	see the delete code below*/
 
 		if (isset($_POST['DisallowInvoices']) and $_POST['DisallowInvoices'] == 'on') {
-			$sql = "UPDATE holdreasons SET
+			$SQL = "UPDATE holdreasons SET
 							reasondescription='" . $_POST['ReasonDescription'] . "',
 							dissallowinvoices=1
 							WHERE reasoncode = '" . $SelectedReason . "'";
 		} else {
-			$sql = "UPDATE holdreasons SET
+			$SQL = "UPDATE holdreasons SET
 							reasondescription='" . $_POST['ReasonDescription'] . "',
 							dissallowinvoices=0
 							WHERE reasoncode = '" . $SelectedReason . "'";
@@ -82,14 +82,14 @@ if (isset($_POST['submit'])) {
 
 		if (isset($_POST['DisallowInvoices']) and $_POST['DisallowInvoices'] == 'on') {
 
-			$sql = "INSERT INTO holdreasons (reasoncode,
+			$SQL = "INSERT INTO holdreasons (reasoncode,
 											reasondescription,
 											dissallowinvoices)
 									VALUES ('" . $_POST['ReasonCode'] . "',
 											'" . $_POST['ReasonDescription'] . "',
 											1)";
 		} else {
-			$sql = "INSERT INTO holdreasons (reasoncode,
+			$SQL = "INSERT INTO holdreasons (reasoncode,
 											reasondescription,
 											dissallowinvoices)
 									VALUES ('" . $_POST['ReasonCode'] . "',
@@ -102,7 +102,7 @@ if (isset($_POST['submit'])) {
 		unset($_POST['ReasonDescription']);
 	}
 	//run the SQL from either of the above possibilites
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	if ($msg != '') {
 		prnMsg($msg, 'success');
 	}
@@ -111,11 +111,11 @@ if (isset($_POST['submit'])) {
 
 	// PREVENT DELETES IF DEPENDENT RECORDS IN DebtorsMaster
 
-	$sql = "SELECT COUNT(*)
+	$SQL = "SELECT COUNT(*)
 			FROM debtorsmaster
 			WHERE debtorsmaster.holdreason='" . $SelectedReason . "'";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_row($result);
 	if ($MyRow[0] > 0) {
 		prnMsg(_('Cannot delete this credit status code because customer accounts have been created referring to it'), 'warn');
@@ -123,8 +123,8 @@ if (isset($_POST['submit'])) {
 	} else {
 		//only delete if used in neither customer or supplier accounts
 
-		$sql = "DELETE FROM holdreasons WHERE reasoncode='" . $SelectedReason . "'";
-		$result = DB_query($sql);
+		$SQL = "DELETE FROM holdreasons WHERE reasoncode='" . $SelectedReason . "'";
+		$result = DB_query($SQL);
 		prnMsg(_('This credit status code has been deleted'), 'success');
 	}
 	//end if status code used in customer or supplier accounts
@@ -140,8 +140,8 @@ if (!isset($SelectedReason)) {
 	links to delete or edit each. These will call the same page again and allow update/input
 	or deletion of the records*/
 
-	$sql = "SELECT reasoncode, reasondescription, dissallowinvoices FROM holdreasons";
-	$result = DB_query($sql);
+	$SQL = "SELECT reasoncode, reasondescription, dissallowinvoices FROM holdreasons";
+	$result = DB_query($SQL);
 
 	echo '<table class="selection">
 		<tr>
@@ -192,13 +192,13 @@ if (!isset($_GET['delete'])) {
 	if (isset($SelectedReason) and ($InputError != 1)) {
 		//editing an existing status code
 
-		$sql = "SELECT reasoncode,
+		$SQL = "SELECT reasoncode,
 					reasondescription,
 					dissallowinvoices
 				FROM holdreasons
 				WHERE reasoncode='" . $SelectedReason . "'";
 
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_array($result);
 
 		$_POST['ReasonCode'] = $MyRow['reasoncode'];

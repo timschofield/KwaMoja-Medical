@@ -318,10 +318,10 @@ if (isset($_POST['CommitBatch'])) {
 
 	$PeriodNo = GetPeriod($_SESSION['PaymentDetail' . $identifier]->DatePaid);
 
-	$sql = "SELECT usepreprintedstationery
+	$SQL = "SELECT usepreprintedstationery
 			FROM paymentmethods
 			WHERE paymentname='" . $_SESSION['PaymentDetail' . $identifier]->Paymenttype . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 
 	// first time through commit if supplier cheque then print it first
@@ -991,10 +991,10 @@ foreach ($PaytTypes as $PaytID => $PaytType) {
 echo '</select></td>
 	</tr>';
 
-$sql = "SELECT usepreprintedstationery
+$SQL = "SELECT usepreprintedstationery
 		FROM paymentmethods
 		WHERE paymentid='" . $_SESSION['PaymentDetail' . $identifier]->Paymenttype . "'";
-$result = DB_query($sql);
+$result = DB_query($SQL);
 $MyRow = DB_fetch_array($result);
 
 if ($MyRow['usepreprintedstationery'] == 1) {

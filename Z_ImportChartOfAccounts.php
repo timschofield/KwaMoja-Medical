@@ -7,8 +7,8 @@ include('xmlrpc/lib/xmlrpc.inc');
 include('api/api_errorcodes.php');
 
 $user = $_SESSION['UserID'];
-$sql = 'SELECT password FROM www_users WHERE userid="' . $user . '"';
-$result = DB_query($sql);
+$SQL = 'SELECT password FROM www_users WHERE userid="' . $user . '"';
+$result = DB_query($SQL);
 $MyRow = DB_fetch_array($result);
 $password = $MyRow[0];
 

@@ -268,8 +268,8 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 					<td>' . _('From Inventory Category Code') . ':</td>
 					<td><select autofocus="autofocus" required="required" minlength="1" name="FromCriteria">';
 
-		$sql = 'SELECT categoryid, categorydescription FROM stockcategory ORDER BY categoryid';
-		$CatResult = DB_query($sql);
+		$SQL = 'SELECT categoryid, categorydescription FROM stockcategory ORDER BY categoryid';
+		$CatResult = DB_query($SQL);
 		while ($MyRow = DB_fetch_array($CatResult)) {
 			echo "<option value='" . $MyRow['categoryid'] . "'>" . $MyRow['categoryid'] . ' - ' . $MyRow['categorydescription'] . '</option>';
 		}
@@ -289,8 +289,8 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 		echo '<tr>
 				<td>' . _('For Sales Type/Price List') . ':</td>
 				<td><select minlength="0" name="SalesType">';
-		$sql = "SELECT sales_type, typeabbrev FROM salestypes";
-		$SalesTypesResult = DB_query($sql);
+		$SQL = "SELECT sales_type, typeabbrev FROM salestypes";
+		$SalesTypesResult = DB_query($SQL);
 
 		while ($MyRow = DB_fetch_array($SalesTypesResult)) {
 			echo '<option value="' . $MyRow['typeabbrev'] . '">' . $MyRow['sales_type'] . '</option>';

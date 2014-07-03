@@ -6,11 +6,11 @@ if (isset($_POST['FromCriteria']) and mb_strlen($_POST['FromCriteria']) >= 1 and
 
 	/*Now figure out the data to report for the criteria under review */
 
-	$sql = "SELECT min(supplierid) AS fromcriteria,
+	$SQL = "SELECT min(supplierid) AS fromcriteria,
 					max(supplierid) AS tocriteria
 				FROM suppliers";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 
 	if ($_POST['FromCriteria']=='') {
@@ -229,11 +229,11 @@ if (isset($_POST['PrintPDF']) and DB_num_rows($GRNsResult) > 0) {
 } else {
 	/*Neither the print PDF nor show on scrren option was hit */
 
-	$sql = "SELECT min(supplierid) AS fromcriteria,
+	$SQL = "SELECT min(supplierid) AS fromcriteria,
 					max(supplierid) AS tocriteria
 				FROM suppliers";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 
 	$Title = _('Outstanding GRNs Report');

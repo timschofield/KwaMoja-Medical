@@ -16,7 +16,7 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 				$StockID = $_POST['StockID' . mb_substr($FormVariable, 8)];
 				$PurchItems[$StockID]['Quantity'] = filter_number_format($Quantity);
 
-				$sql = "SELECT description,
+				$SQL = "SELECT description,
 							units,
 							stockact
 						FROM stockmaster
@@ -26,11 +26,11 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 
 				$ErrMsg = _('The item details for') . ' ' . $StockID . ' ' . _('could not be retrieved because');
 				$DbgMsg = _('The SQL used to retrieve the item details but failed was');
-				$ItemResult = DB_query($sql, $ErrMsg, $DbgMsg);
+				$ItemResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 				if (DB_num_rows($ItemResult) == 1) {
 					$ItemRow = DB_fetch_array($ItemResult);
 
-					$sql = "SELECT price,
+					$SQL = "SELECT price,
 								conversionfactor,
 								supplierdescription,
 								suppliersuom,
@@ -51,12 +51,12 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 
 					$ErrMsg = _('The purchasing data for') . ' ' . $StockID . ' ' . _('could not be retrieved because');
 					$DbgMsg = _('The SQL used to retrieve the purchasing data but failed was');
-					$PurchDataResult = DB_query($sql, $ErrMsg, $DbgMsg);
+					$PurchDataResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 					if (DB_num_rows($PurchDataResult) > 0) { //the purchasing data is set up
 						$PurchRow = DB_fetch_array($PurchDataResult);
 
 						/* Now to get the applicable discounts */
-						$sql = "SELECT discountpercent,
+						$SQL = "SELECT discountpercent,
 										discountamount
 								FROM supplierdiscounts
 								WHERE supplierno= '" . $_POST['Supplier'] . "'
@@ -68,7 +68,7 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 						$ItemDiscountAmount = 0;
 						$ErrMsg = _('Could not retrieve the supplier discounts applicable to the item');
 						$DbgMsg = _('The SQL used to retrive the supplier discounts that failed was');
-						$DiscountResult = DB_query($sql, $ErrMsg, $DbgMsg);
+						$DiscountResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 						while ($DiscountRow = DB_fetch_array($DiscountResult)) {
 							$ItemDiscountPercent += $DiscountRow['discountpercent'];
 							$ItemDiscountAmount += $DiscountRow['discountamount'];
@@ -111,7 +111,7 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 
 	if ($InputError == 0) { //only if all continues smoothly
 
-		$sql = "SELECT suppliers.suppname,
+		$SQL = "SELECT suppliers.suppname,
 						suppliers.currcode,
 						currencies.decimalplaces,
 						currencies.rate,
@@ -127,10 +127,10 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 				INNER JOIN currencies
 					ON suppliers.currcode=currencies.currabrev
 				WHERE supplierid='" . $_POST['Supplier'] . "'";
-		$SupplierResult = DB_query($sql);
+		$SupplierResult = DB_query($SQL);
 		$SupplierRow = DB_fetch_array($SupplierResult);
 
-		$sql = "SELECT deladd1,
+		$SQL = "SELECT deladd1,
 						deladd2,
 						deladd3,
 						deladd4,
@@ -140,7 +140,7 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 						contact
 					FROM locations
 					WHERE loccode='" . $_SESSION['UserStockLocation'] . "'";
-		$LocnAddrResult = DB_query($sql);
+		$LocnAddrResult = DB_query($SQL);
 		if (DB_num_rows($LocnAddrResult) == 1) {
 			$LocnRow = DB_fetch_array($LocnAddrResult);
 		} else {
@@ -191,7 +191,7 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 		$OrderNo = GetNextTransNo(18);
 
 		/*Insert to purchase order header record */
-		$sql = "INSERT INTO purchorders ( orderno,
+		$SQL = "INSERT INTO purchorders ( orderno,
 										supplierno,
 										orddate,
 										rate,
@@ -251,14 +251,14 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 								'" . $AllowPrintPO . "' )";
 		$ErrMsg = _('The purchase order header record could not be inserted into the database because');
 		$DbgMsg = _('The SQL statement used to insert the purchase order header record and failed was');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 		/*Insert the purchase order detail records */
 		foreach ($PurchItems as $StockID => $POLine) {
 
 			//print_r($POLine);
 
-			$sql = "INSERT INTO purchorderdetails (orderno,
+			$SQL = "INSERT INTO purchorderdetails (orderno,
 													itemcode,
 													deliverydate,
 													itemdescription,
@@ -288,7 +288,7 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 			$ErrMsg = _('One of the purchase order detail records could not be inserted into the database because');
 			$DbgMsg = _('The SQL statement used to insert the purchase order detail record and failed was');
 
-			$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+			$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		}
 		/* end of the loop round the detail line items on the order */
 		echo '<p />';
@@ -311,8 +311,8 @@ echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/
 		<td>' . _('For Supplier') . ':</td>
 		<td><select name="Supplier">';
 
-$sql = "SELECT supplierid, suppname FROM suppliers WHERE supptype<>7 ORDER BY suppname";
-$SuppResult = DB_query($sql);
+$SQL = "SELECT supplierid, suppname FROM suppliers WHERE supptype<>7 ORDER BY suppname";
+$SuppResult = DB_query($SQL);
 
 echo '<option value="">' . _('Not Yet Selected') . '</option>';
 

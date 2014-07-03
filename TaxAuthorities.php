@@ -32,7 +32,7 @@ if (isset($_POST['submit'])) {
 		would not run in this case cos submit is false of course  see the
 		delete code below*/
 
-		$sql = "UPDATE taxauthorities
+		$SQL = "UPDATE taxauthorities
 					SET taxglcode ='" . $_POST['TaxGLCode'] . "',
 					purchtaxglaccount ='" . $_POST['PurchTaxGLCode'] . "',
 					description = '" . $_POST['Description'] . "',
@@ -43,7 +43,7 @@ if (isset($_POST['submit'])) {
 				WHERE taxid = '" . $SelectedTaxAuthID . "'";
 
 		$ErrMsg = _('The update of this tax authority failed because');
-		$result = DB_query($sql, $ErrMsg);
+		$result = DB_query($SQL, $ErrMsg);
 
 		$msg = _('The tax authority for record has been updated');
 
@@ -51,7 +51,7 @@ if (isset($_POST['submit'])) {
 
 		/*Selected tax authority is null cos no item selected on first time round so must be adding a	record must be submitting new entries in the new tax authority form */
 
-		$sql = "INSERT INTO taxauthorities (
+		$SQL = "INSERT INTO taxauthorities (
 						taxglcode,
 						purchtaxglaccount,
 						description,
@@ -70,13 +70,13 @@ if (isset($_POST['submit'])) {
 				)";
 
 		$ErrMsg = _('The addition of this tax authority failed because');
-		$result = DB_query($sql, $ErrMsg);
+		$result = DB_query($SQL, $ErrMsg);
 
 		$msg = _('The new tax authority record has been added to the database');
 
 		$NewTaxID = DB_Last_Insert_ID('taxauthorities', 'taxid');
 
-		$sql = "INSERT INTO taxauthrates (
+		$SQL = "INSERT INTO taxauthrates (
 					taxauthority,
 					dispatchtaxprovince,
 					taxcatid
@@ -88,7 +88,7 @@ if (isset($_POST['submit'])) {
 				FROM taxprovinces,
 					taxcategories";
 
-		$InsertResult = DB_query($sql);
+		$InsertResult = DB_query($SQL);
 	}
 	//run the SQL from either of the above possibilites
 	if (isset($InputError) and $InputError != 1) {
@@ -105,11 +105,11 @@ if (isset($_POST['submit'])) {
 
 	// PREVENT DELETES IF DEPENDENT RECORDS IN OTHER TABLES
 
-	$sql = "SELECT COUNT(*)
+	$SQL = "SELECT COUNT(*)
 			FROM taxgrouptaxes
 		WHERE taxauthid='" . $SelectedTaxAuthID . "'";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_row($result);
 	if ($MyRow[0] > 0) {
 		prnmsg(_('Cannot delete this tax authority because there are tax groups defined that use it'), 'warn');
@@ -126,7 +126,7 @@ if (!isset($SelectedTaxAuthID)) {
 
 	/* It could still be the second time the page has been run and a record has been selected for modification - SelectedTaxAuthID will exist because it was sent with the new call. If its the first time the page has been displayed with no parameters then none of the above are true and the list of tax authorities will be displayed with links to delete or edit each. These will call the same page again and allow update/input or deletion of the records*/
 
-	$sql = "SELECT taxid,
+	$SQL = "SELECT taxid,
 					description,
 					taxglcode,
 					purchtaxglaccount,
@@ -138,7 +138,7 @@ if (!isset($SelectedTaxAuthID)) {
 
 	$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The defined tax authorities could not be retrieved because');
 	$DbgMsg = _('The following SQL to retrieve the tax authorities was used');
-	$result = DB_query($sql, $ErrMsg, $DbgMsg);
+	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	if (DB_num_rows($result) == 0) {
 		echo '<div class="page_help_text">' . _('As this is the first time that the system has been used, you must first create a tax authority.') .
@@ -204,7 +204,7 @@ echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />'
 if (isset($SelectedTaxAuthID)) {
 	//editing an existing tax authority
 
-	$sql = "SELECT taxglcode,
+	$SQL = "SELECT taxglcode,
 				purchtaxglaccount,
 				description,
 				bank,
@@ -214,7 +214,7 @@ if (isset($SelectedTaxAuthID)) {
 			FROM taxauthorities
 			WHERE taxid='" . $SelectedTaxAuthID . "'";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 
 	$_POST['TaxGLCode'] = $MyRow['taxglcode'];

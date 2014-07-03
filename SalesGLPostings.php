@@ -25,7 +25,7 @@ if (isset($_POST['submit'])) {
 
 		/*SelectedSalesPostingID could also exist if submit had not been clicked this		code would not run in this case cos submit is false of course	see the delete code below*/
 
-		$sql = "UPDATE salesglpostings SET salesglcode = '" . $_POST['SalesGLCode'] . "',
+		$SQL = "UPDATE salesglpostings SET salesglcode = '" . $_POST['SalesGLCode'] . "',
 										discountglcode = '" . $_POST['DiscountGLCode'] . "',
 										area = '" . $_POST['Area'] . "',
 										stkcat = '" . $_POST['StkCat'] . "',
@@ -37,15 +37,15 @@ if (isset($_POST['submit'])) {
 		/*Selected Sales GL Posting is null cos no item selected on first time round so must be	adding a record must be submitting new entries in the new SalesGLPosting form */
 
 		/* Verify if item doesn't exists to insert it, otherwise just refreshes the page. */
-		$sql = "SELECT count(*) FROM salesglpostings
+		$SQL = "SELECT count(*) FROM salesglpostings
 				WHERE area='" . $_POST['Area'] . "'
 				AND stkcat='" . $_POST['StkCat'] . "'
 				AND salestype='" . $_POST['SalesType'] . "'";
 
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_row($result);
 		if ($MyRow[0] == 0) {
-			$sql = "INSERT INTO salesglpostings (
+			$SQL = "INSERT INTO salesglpostings (
 						salesglcode,
 						discountglcode,
 						area,
@@ -66,7 +66,7 @@ if (isset($_POST['submit'])) {
 	}
 	//run the SQL from either of the above possibilites
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	if ($InputError == false) {
 		prnMsg($msg, 'success');
@@ -81,9 +81,9 @@ if (isset($_POST['submit'])) {
 } elseif (isset($_GET['delete'])) {
 	//the link to delete a selected record was clicked instead of the submit button
 
-	$sql = "DELETE FROM salesglpostings WHERE id='" . $SelectedSalesPostingID . "'";
+	$SQL = "DELETE FROM salesglpostings WHERE id='" . $SelectedSalesPostingID . "'";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	prnMsg(_('Sales posting record has been deleted'), 'success');
 }
@@ -265,7 +265,7 @@ if (!isset($_GET['delete'])) {
 	if (isset($SelectedSalesPostingID)) {
 		//editing an existing sales posting record
 
-		$sql = "SELECT salesglpostings.stkcat,
+		$SQL = "SELECT salesglpostings.stkcat,
 				salesglpostings.salesglcode,
 				salesglpostings.discountglcode,
 				salesglpostings.area,
@@ -273,7 +273,7 @@ if (!isset($_GET['delete'])) {
 			FROM salesglpostings
 			WHERE salesglpostings.id='" . $SelectedSalesPostingID . "'";
 
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_array($result);
 
 		$_POST['SalesGLCode'] = $MyRow['salesglcode'];

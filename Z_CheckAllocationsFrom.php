@@ -4,7 +4,7 @@ include('includes/session.inc');
 $Title = _('Identify Allocation Stuff Ups');
 include('includes/header.inc');
 
-$sql = "SELECT debtortrans.type,
+$SQL = "SELECT debtortrans.type,
 		debtortrans.transno,
 		debtortrans.ovamount,
 		debtortrans.alloc,
@@ -23,7 +23,7 @@ $sql = "SELECT debtortrans.type,
 		currencies.decimalplaces
 	HAVING SUM(custallocns.amt) < -alloc";
 
-$result = DB_query($sql);
+$result = DB_query($SQL);
 
 if (DB_num_rows($result) > 0) {
 	echo '<table>

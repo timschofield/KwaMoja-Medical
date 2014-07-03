@@ -39,7 +39,7 @@ if (isset($_POST['submit'])) {
 		would not run in this case cos submit is false of course  see the
 		delete code below*/
 
-		$sql = "UPDATE workcentres SET location = '" . $_POST['Location'] . "',
+		$SQL = "UPDATE workcentres SET location = '" . $_POST['Location'] . "',
 						description = '" . $_POST['Description'] . "',
 						overheadrecoveryact ='" . $_POST['OverheadRecoveryAct'] . "',
 						overheadperhour = '" . $_POST['OverheadPerHour'] . "'
@@ -49,7 +49,7 @@ if (isset($_POST['submit'])) {
 
 		/*Selected work centre is null cos no item selected on first time round so must be adding a	record must be submitting new entries in the new work centre form */
 
-		$sql = "INSERT INTO workcentres (code,
+		$SQL = "INSERT INTO workcentres (code,
 										location,
 										description,
 										overheadrecoveryact,
@@ -65,7 +65,7 @@ if (isset($_POST['submit'])) {
 	//run the SQL from either of the above possibilites
 
 	if ($InputError != 1) {
-		$result = DB_query($sql, _('The update/addition of the work centre failed because'));
+		$result = DB_query($SQL, _('The update/addition of the work centre failed because'));
 		prnMsg($msg, 'success');
 		unset($_POST['Location']);
 		unset($_POST['Description']);
@@ -80,20 +80,20 @@ if (isset($_POST['submit'])) {
 
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'BOM'
 
-	$sql = "SELECT COUNT(*) FROM bom WHERE bom.workcentreadded='" . $SelectedWC . "'";
-	$result = DB_query($sql);
+	$SQL = "SELECT COUNT(*) FROM bom WHERE bom.workcentreadded='" . $SelectedWC . "'";
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_row($result);
 	if ($MyRow[0] > 0) {
 		prnMsg(_('Cannot delete this work centre because bills of material have been created requiring components to be added at this work center') . '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('BOM items referring to this work centre code'), 'warn');
 	} else {
-		$sql = "SELECT COUNT(*) FROM contractbom WHERE contractbom.workcentreadded='" . $SelectedWC . "'";
-		$result = DB_query($sql);
+		$SQL = "SELECT COUNT(*) FROM contractbom WHERE contractbom.workcentreadded='" . $SelectedWC . "'";
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_row($result);
 		if ($MyRow[0] > 0) {
 			prnMsg(_('Cannot delete this work centre because contract bills of material have been created having components added at this work center') . '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('Contract BOM items referring to this work centre code'), 'warn');
 		} else {
-			$sql = "DELETE FROM workcentres WHERE code='" . $SelectedWC . "'";
-			$result = DB_query($sql);
+			$SQL = "DELETE FROM workcentres WHERE code='" . $SelectedWC . "'";
+			$result = DB_query($SQL);
 			prnMsg(_('The selected work centre record has been deleted'), 'succes');
 		} // end of Contract BOM test
 	} // end of BOM test
@@ -110,7 +110,7 @@ if (!isset($SelectedWC)) {
 		</p>';
 
 	if ($_SESSION['RestrictLocations'] == 0) {
-		$sql = "SELECT workcentres.code,
+		$SQL = "SELECT workcentres.code,
 						workcentres.description,
 						locations.locationname,
 						workcentres.overheadrecoveryact,
@@ -119,7 +119,7 @@ if (!isset($SelectedWC)) {
 					INNER JOIN locations
 						ON workcentres.location = locations.loccode";
 	} else {
-		$sql = "SELECT workcentres.code,
+		$SQL = "SELECT workcentres.code,
 						workcentres.description,
 						locations.locationname,
 						workcentres.overheadrecoveryact,
@@ -131,7 +131,7 @@ if (!isset($SelectedWC)) {
 						ON locations.loccode=www_users.defaultlocation
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	echo '<table class="selection">
 			<tr>
 				<th class="SortableColumn">' . _('WC Code') . '</th>
@@ -172,7 +172,7 @@ echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />'
 if (isset($SelectedWC)) {
 	//editing an existing work centre
 
-	$sql = "SELECT code,
+	$SQL = "SELECT code,
 					location,
 					description,
 					overheadrecoveryact,
@@ -180,7 +180,7 @@ if (isset($SelectedWC)) {
 			FROM workcentres
 			WHERE code='" . $SelectedWC . "'";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 
 	$_POST['Code'] = $MyRow['code'];
@@ -209,18 +209,18 @@ if (isset($SelectedWC)) {
 }
 
 if ($_SESSION['RestrictLocations'] == 0) {
-	$sql = "SELECT locationname,
+	$SQL = "SELECT locationname,
 					loccode
 				FROM locations";
 } else {
-	$sql = "SELECT locationname,
+	$SQL = "SELECT locationname,
 					loccode
 				FROM locations
 				INNER JOIN www_users
 					ON locations.loccode=www_users.defaultlocation
 				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 }
-$result = DB_query($sql);
+$result = DB_query($SQL);
 
 if (!isset($_POST['Description'])) {
 	$_POST['Description'] = '';

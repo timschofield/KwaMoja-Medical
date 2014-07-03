@@ -316,8 +316,8 @@ if (isset($_POST['PrintLabels']) and $NoOfLabels > 0) {
 		echo '<tr>
 				<td>' . _('For Sales Type/Price List') . ':</td>
 				<td><select required="required" minlength="1" name="SalesType">';
-		$sql = "SELECT sales_type, typeabbrev FROM salestypes";
-		$SalesTypesResult = DB_query($sql);
+		$SQL = "SELECT sales_type, typeabbrev FROM salestypes";
+		$SalesTypesResult = DB_query($SQL);
 
 		while ($MyRow = DB_fetch_array($SalesTypesResult)) {
 			if ($_SESSION['DefaultPriceList'] == $MyRow['typeabbrev']) {
@@ -331,8 +331,8 @@ if (isset($_POST['PrintLabels']) and $NoOfLabels > 0) {
 		echo '<tr>
 				<td>' . _('For Currency') . ':</td>
 				<td><select minlength="0" name="Currency">';
-		$sql = "SELECT currabrev, country, currency FROM currencies";
-		$CurrenciesResult = DB_query($sql);
+		$SQL = "SELECT currabrev, country, currency FROM currencies";
+		$CurrenciesResult = DB_query($SQL);
 
 		while ($MyRow = DB_fetch_array($CurrenciesResult)) {
 			if ($_SESSION['CompanyRecord']['currencydefault'] == $MyRow['currabrev']) {

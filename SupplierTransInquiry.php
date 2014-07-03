@@ -17,13 +17,13 @@ echo '<table class="selection">
 			<td>' . _('Type') . ':</td>
 			<td><select minlength="0" name="TransType">';
 
-$sql = "SELECT typeid,
+$SQL = "SELECT typeid,
 				typename
 		FROM systypes
 		WHERE typeid >= 20
 		AND typeid <= 23";
 
-$resultTypes = DB_query($sql);
+$resultTypes = DB_query($SQL);
 
 echo '<option value="All">' . _('All') . '</option>';
 while ($MyRow = DB_fetch_array($resultTypes)) {
@@ -62,7 +62,7 @@ echo '<td>' . _('From') . ':</td>
 if (isset($_POST['ShowResults']) and $_POST['TransType'] != '') {
 	$SQL_FromDate = FormatDateForSQL($_POST['FromDate']);
 	$SQL_ToDate = FormatDateForSQL($_POST['ToDate']);
-	$sql = "SELECT type,
+	$SQL = "SELECT type,
 				transno,
 		   		trandate,
 				duedate,
@@ -83,13 +83,13 @@ if (isset($_POST['ShowResults']) and $_POST['TransType'] != '') {
 			INNER JOIN currencies ON suppliers.currcode=currencies.currabrev
 			WHERE ";
 
-	$sql = $sql . "trandate >='" . $SQL_FromDate . "' AND trandate <= '" . $SQL_ToDate . "'";
+	$SQL = $SQL . "trandate >='" . $SQL_FromDate . "' AND trandate <= '" . $SQL_ToDate . "'";
 	if ($_POST['TransType'] != 'All') {
-		$sql .= " AND type = " . $_POST['TransType'];
+		$SQL .= " AND type = " . $_POST['TransType'];
 	}
-	$sql .= " ORDER BY id";
+	$SQL .= " ORDER BY id";
 
-	$TransResult = DB_query($sql);
+	$TransResult = DB_query($SQL);
 	$ErrMsg = _('The supplier transactions for the selected criteria could not be retrieved because') . ' - ' . DB_error_msg();
 	$DbgMsg = _('The SQL that failed was');
 

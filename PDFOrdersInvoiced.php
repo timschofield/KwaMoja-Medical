@@ -45,8 +45,8 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate']) or $InputError == 1) 
 			<td>' . _('Inventory Category') . '</td>
 			<td>';
 
-	$sql = "SELECT categorydescription, categoryid FROM stockcategory WHERE stocktype<>'D' AND stocktype<>'L'";
-	$result = DB_query($sql);
+	$SQL = "SELECT categorydescription, categoryid FROM stockcategory WHERE stocktype<>'D' AND stocktype<>'L'";
+	$result = DB_query($SQL);
 
 
 	echo '<select required="required" minlength="1" name="CategoryID">
@@ -61,12 +61,12 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate']) or $InputError == 1) 
 			<td>' . _('Inventory Location') . ':</td>
 			<td><select required+"required" minlength="1" name="Location">';
 	if ($_SESSION['RestrictLocations'] == 0) {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations";
 		echo '<option selected="selected" value="All">' . _('All Locations') . '</option>';
 	} else {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations
 					INNER JOIN www_users
@@ -74,7 +74,7 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate']) or $InputError == 1) 
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	while ($MyRow = DB_fetch_array($result)) {
 		echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 	}
@@ -98,7 +98,7 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate']) or $InputError == 1) 
 }
 
 if ($_POST['CategoryID'] == 'All' and $_POST['Location'] == 'All') {
-	$sql = "SELECT salesorders.orderno,
+	$SQL = "SELECT salesorders.orderno,
 				  salesorders.debtorno,
 				  salesorders.branchcode,
 				  salesorders.customerref,
@@ -131,7 +131,7 @@ if ($_POST['CategoryID'] == 'All' and $_POST['Location'] == 'All') {
 				AND orddate <='" . FormatDateForSQL($_POST['ToDate']) . "'";
 
 } elseif ($_POST['CategoryID'] != 'All' and $_POST['Location'] == 'All') {
-	$sql = "SELECT salesorders.orderno,
+	$SQL = "SELECT salesorders.orderno,
 				  salesorders.debtorno,
 				  salesorders.branchcode,
 				  salesorders.customerref,
@@ -165,7 +165,7 @@ if ($_POST['CategoryID'] == 'All' and $_POST['Location'] == 'All') {
 				  AND orddate <='" . FormatDateForSQL($_POST['ToDate']) . "'";
 
 } elseif ($_POST['CategoryID'] == 'All' and $_POST['Location'] != 'All') {
-	$sql = "SELECT salesorders.orderno,
+	$SQL = "SELECT salesorders.orderno,
 				  salesorders.debtorno,
 				  salesorders.branchcode,
 				  salesorders.customerref,
@@ -200,7 +200,7 @@ if ($_POST['CategoryID'] == 'All' and $_POST['Location'] == 'All') {
 
 } elseif ($_POST['CategoryID'] != 'All' and $_POST['location'] != 'All') {
 
-	$sql = "SELECT salesorders.orderno,
+	$SQL = "SELECT salesorders.orderno,
 				  salesorders.debtorno,
 				  salesorders.branchcode,
 				  salesorders.customerref,
@@ -234,10 +234,10 @@ if ($_POST['CategoryID'] == 'All' and $_POST['Location'] == 'All') {
 }
 
 if ($_SESSION['SalesmanLogin'] != '') {
-	$sql .= " AND salesorders.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
+	$SQL .= " AND salesorders.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
 }
 
-$sql .= " GROUP BY salesorders.orderno,
+$SQL .= " GROUP BY salesorders.orderno,
 					salesorders.debtorno,
 					salesorders.branchcode,
 					salesorders.customerref,
@@ -249,13 +249,13 @@ $sql .= " GROUP BY salesorders.orderno,
 					stockmaster.decimalplaces
 			ORDER BY salesorders.orderno";
 
-$Result = DB_query($sql, '', '', false, false); //dont trap errors here
+$Result = DB_query($SQL, '', '', false, false); //dont trap errors here
 
 if (DB_error_no() != 0) {
 	include('includes/header.inc');
 	prnMsg(_('An error occurred getting the orders details'), '', _('Database Error'));
 	if ($debug == 1) {
-		prnMsg(_('The SQL used to get the orders that failed was') . '<br />' . $sql, '', _('Database Error'));
+		prnMsg(_('The SQL used to get the orders that failed was') . '<br />' . $SQL, '', _('Database Error'));
 	}
 	include('includes/footer.inc');
 	exit;
@@ -263,7 +263,7 @@ if (DB_error_no() != 0) {
 	include('includes/header.inc');
 	prnMsg(_('There were no orders found in the database within the period from') . ' ' . $_POST['FromDate'] . ' ' . _('to') . ' ' . $_POST['ToDate'] . '. ' . _('Please try again selecting a different date range'), 'warn');
 	if ($debug == 1) {
-		prnMsg(_('The SQL that returned no rows was') . '<br />' . $sql, '', _('Database Error'));
+		prnMsg(_('The SQL that returned no rows was') . '<br />' . $SQL, '', _('Database Error'));
 	}
 	include('includes/footer.inc');
 	exit;
@@ -365,7 +365,7 @@ while ($MyRow = DB_fetch_array($Result)) {
 
 
 	/*OK now get the invoices where the item was charged */
-	$sql = "SELECT debtortrans.order_,
+	$SQL = "SELECT debtortrans.order_,
 					systypes.typename,
 					debtortrans.transno,
 			 		stockmoves.price *(1-stockmoves.discountpercent) AS netprice,
@@ -377,7 +377,7 @@ while ($MyRow = DB_fetch_array($Result)) {
 				WHERE debtortrans.order_ ='" . $OrderNo . "'
 				AND stockmoves.stockid ='" . $MyRow['stkcode'] . "'";
 
-	$InvoicesResult = DB_query($sql);
+	$InvoicesResult = DB_query($SQL);
 	if (DB_num_rows($InvoicesResult) > 0) {
 		$LeftOvers = $pdf->addTextWrap($Left_Margin + 150, $YPos, 90, $FontSize, _('Transaction Number'), 'center');
 		$LeftOvers = $pdf->addTextWrap($Left_Margin + 240, $YPos, 60, $FontSize, _('Quantity'), 'center');

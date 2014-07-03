@@ -346,7 +346,7 @@ if (isset($SelectedCustomer)) {
 	$_SESSION['Items' . $identifier]->Branch = trim($SelectedBranch);
 
 	// Now check to ensure this account is not on hold */
-	$sql = "SELECT debtorsmaster.name,
+	$SQL = "SELECT debtorsmaster.name,
 					holdreasons.dissallowinvoices,
 					debtorsmaster.salestype,
 					salestypes.sales_type,
@@ -366,7 +366,7 @@ if (isset($SelectedCustomer)) {
 
 	$ErrMsg = _('The details of the customer selected') . ': ' . $_SESSION['Items' . $identifier]->DebtorNo . ' ' . _('cannot be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve the customer details and failed was') . ':';
-	$result = DB_query($sql, $ErrMsg, $DbgMsg);
+	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	$MyRow = DB_fetch_array($result);
 	if ($MyRow['dissallowinvoices'] != 1) {
@@ -447,7 +447,7 @@ if (isset($SelectedCustomer)) {
 	//if the customer is placing own order, if this is the case then
 	//DefaultSalesType will not have been set as above
 
-	$sql = "SELECT debtorsmaster.name,
+	$SQL = "SELECT debtorsmaster.name,
 					holdreasons.dissallowinvoices,
 					debtorsmaster.salestype,
 					debtorsmaster.currcode,
@@ -461,8 +461,8 @@ if (isset($SelectedCustomer)) {
 			WHERE debtorsmaster.debtorno = '" . $_SESSION['Items' . $identifier]->DebtorNo . "'";
 
 	$ErrMsg = _('The details for the customer selected') . ': ' . $_SESSION['Items' . $identifier]->DebtorNo . ' ' . _('cannot be retrieved because');
-	$DbgMsg = _('SQL used to retrieve the customer details was') . ':<br />' . $sql;
-	$result = DB_query($sql, $ErrMsg, $DbgMsg);
+	$DbgMsg = _('SQL used to retrieve the customer details was') . ':<br />' . $SQL;
+	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	$MyRow = DB_fetch_array($result);
 	if ($MyRow[1] == 0) {
@@ -588,12 +588,12 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $id
 
 		if ($_SESSION['ExistingOrder' . $identifier] != 0) { //need to check that not already dispatched
 
-			$sql = "SELECT qtyinvoiced
+			$SQL = "SELECT qtyinvoiced
 					FROM salesorderdetails
 					WHERE orderno='" . $_SESSION['ExistingOrder' . $identifier] . "'
 					AND qtyinvoiced>0";
 
-			$InvQties = DB_query($sql);
+			$InvQties = DB_query($SQL);
 
 			if (DB_num_rows($InvQties) > 0) {
 				$OK_to_delete = 0;
@@ -783,13 +783,13 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $id
 			} //!Is_Date($NewItemDue)
 
 			/*Now figure out if the item is a kit set - the field MBFlag='K'*/
-			$sql = "SELECT stockmaster.mbflag
+			$SQL = "SELECT stockmaster.mbflag
 					FROM stockmaster
 					WHERE stockmaster.stockid='" . $NewItem . "'";
 
 			$ErrMsg = _('Could not determine if the part being ordered was a kitset or not because');
 			$DbgMsg = _('The sql that was used to determine if the part being ordered was a kitset or not was ');
-			$KitResult = DB_query($sql, $ErrMsg, $DbgMsg);
+			$KitResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 
 			if (DB_num_rows($KitResult) == 0) {
@@ -798,7 +798,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $id
 			elseif ($MyRow = DB_fetch_array($KitResult)) {
 				if ($MyRow['mbflag'] == 'K') {
 					/*It is a kit set item */
-					$sql = "SELECT bom.component,
+					$SQL = "SELECT bom.component,
 							bom.quantity
 							FROM bom
 							WHERE bom.parent='" . $NewItem . "'
@@ -806,7 +806,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $id
 							AND bom.effectiveafter < CURRENT_DATE";
 
 					$ErrMsg = _('Could not retrieve kitset components from the database because') . ' ';
-					$KitResult = DB_query($sql, $ErrMsg, $DbgMsg);
+					$KitResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 					$ParentQty = $NewItemQty;
 					while ($KitParts = DB_fetch_array($KitResult)) {
@@ -1088,13 +1088,13 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $id
 	if (isset($NewItem)) {
 		/* get the item details from the database and hold them in the cart object make the quantity 1 by default then add it to the cart */
 		/*Now figure out if the item is a kit set - the field MBFlag='K'*/
-		$sql = "SELECT stockmaster.mbflag
+		$SQL = "SELECT stockmaster.mbflag
 		   		FROM stockmaster
 				WHERE stockmaster.stockid='" . $NewItem . "'";
 
 		$ErrMsg = _('Could not determine if the part being ordered was a kitset or not because');
 
-		$KitResult = DB_query($sql, $ErrMsg);
+		$KitResult = DB_query($SQL, $ErrMsg);
 
 		$NewItemQty = 1;
 		/*By Default */
@@ -1104,7 +1104,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $id
 		if ($MyRow = DB_fetch_array($KitResult)) {
 			if ($MyRow['mbflag'] == 'K') {
 				/*It is a kit set item */
-				$sql = "SELECT bom.component,
+				$SQL = "SELECT bom.component,
 							bom.quantity
 						FROM bom
 						WHERE bom.parent='" . $NewItem . "'
@@ -1112,7 +1112,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $id
 						AND bom.effectiveafter < CURRENT_DATE";
 
 				$ErrMsg = _('Could not retrieve kitset components from the database because');
-				$KitResult = DB_query($sql, $ErrMsg);
+				$KitResult = DB_query($SQL, $ErrMsg);
 
 				$ParentQty = $NewItemQty;
 				while ($KitParts = DB_fetch_array($KitResult)) {
@@ -1145,13 +1145,13 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $id
 		$AlreadyWarnedAboutCredit = false;
 		foreach ($NewItemArray as $NewItem => $NewItemQty) {
 			if ($NewItemQty > 0) {
-				$sql = "SELECT stockmaster.mbflag
+				$SQL = "SELECT stockmaster.mbflag
 						FROM stockmaster
 						WHERE stockmaster.stockid='" . $NewItem . "'";
 
 				$ErrMsg = _('Could not determine if the part being ordered was a kitset or not because');
 
-				$KitResult = DB_query($sql, $ErrMsg);
+				$KitResult = DB_query($SQL, $ErrMsg);
 
 				//$NewItemQty = 1; /*By Default */
 				$Discount = 0;
@@ -1160,7 +1160,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $id
 				if ($MyRow = DB_fetch_array($KitResult)) {
 					if ($MyRow['mbflag'] == 'K') {
 						/*It is a kit set item */
-						$sql = "SELECT bom.component,
+						$SQL = "SELECT bom.component,
 										bom.quantity
 								FROM bom
 								WHERE bom.parent='" . $NewItem . "'
@@ -1168,7 +1168,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $id
 								AND bom.effectiveafter < CURRENT_DATE";
 
 						$ErrMsg = _('Could not retrieve kitset components from the database because');
-						$KitResult = DB_query($sql, $ErrMsg);
+						$KitResult = DB_query($SQL, $ErrMsg);
 
 						$ParentQty = $NewItemQty;
 						while ($KitParts = DB_fetch_array($KitResult)) {
@@ -1436,7 +1436,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $id
 				$QOH = $QOHRow['qoh'];
 
 				// Find the quantity on outstanding sales orders
-				$sql = "SELECT SUM(salesorderdetails.quantity-salesorderdetails.qtyinvoiced) AS dem
+				$SQL = "SELECT SUM(salesorderdetails.quantity-salesorderdetails.qtyinvoiced) AS dem
 						FROM salesorderdetails INNER JOIN salesorders
 						ON salesorders.orderno = salesorderdetails.orderno
 						WHERE salesorders.fromstkloc='" . $_SESSION['Items' . $identifier]->Location . "'
@@ -1445,7 +1445,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $id
 						AND salesorderdetails.stkcode='" . $MyRow['stockid'] . "'";
 
 				$ErrMsg = _('The demand for this product from') . ' ' . $_SESSION['Items' . $identifier]->Location . ' ' . _('cannot be retrieved because');
-				$DemandResult = DB_query($sql, $ErrMsg);
+				$DemandResult = DB_query($SQL, $ErrMsg);
 
 				$DemandRow = DB_fetch_row($DemandResult);
 				if ($DemandRow[0] != null) {
@@ -1455,7 +1455,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $id
 					$DemandQty = 0;
 				}
 				// Find the quantity on purchase orders
-				$sql = "SELECT SUM(purchorderdetails.quantityord-purchorderdetails.quantityrecd) AS qoo
+				$SQL = "SELECT SUM(purchorderdetails.quantityord-purchorderdetails.quantityrecd) AS qoo
 						FROM purchorderdetails INNER JOIN purchorders
 						ON purchorderdetails.orderno=purchorders.orderno
 						WHERE purchorderdetails.completed=0
@@ -1465,7 +1465,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $id
 						AND purchorderdetails.itemcode='" . $MyRow['stockid'] . "'";
 
 				$ErrMsg = _('The order details for this product cannot be retrieved because');
-				$PurchResult = DB_query($sql, $ErrMsg);
+				$PurchResult = DB_query($SQL, $ErrMsg);
 
 				$PurchRow = DB_fetch_row($PurchResult);
 				if ($PurchRow[0] != null) {
@@ -1476,11 +1476,11 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $id
 				}
 
 				// Find the quantity on works orders
-				$sql = "SELECT SUM(woitems.qtyreqd - woitems.qtyrecd) AS qwo
+				$SQL = "SELECT SUM(woitems.qtyreqd - woitems.qtyrecd) AS qwo
 						   FROM woitems
 						   WHERE stockid='" . $MyRow['stockid'] . "'";
 				$ErrMsg = _('The order details for this product cannot be retrieved because');
-				$WoResult = DB_query($sql, $ErrMsg);
+				$WoResult = DB_query($SQL, $ErrMsg);
 				$WoRow = DB_fetch_row($WoResult);
 				if ($WoRow[0] != null) {
 					$WoQty = $WoRow[0];
@@ -1608,7 +1608,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $id
 				$QOH = $QOHRow['qoh'];
 
 				// Find the quantity on outstanding sales orders
-				$sql = "SELECT SUM(salesorderdetails.quantity-salesorderdetails.qtyinvoiced) AS dem
+				$SQL = "SELECT SUM(salesorderdetails.quantity-salesorderdetails.qtyinvoiced) AS dem
 						FROM salesorderdetails INNER JOIN salesorders
 						ON salesorders.orderno = salesorderdetails.orderno
 						 WHERE  salesorders.fromstkloc='" . $_SESSION['Items' . $identifier]->Location . "'
@@ -1617,7 +1617,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $id
 						 AND salesorderdetails.stkcode='" . $MyRow['stockid'] . "'";
 
 				$ErrMsg = _('The demand for this product from') . ' ' . $_SESSION['Items' . $identifier]->Location . ' ' . _('cannot be retrieved because');
-				$DemandResult = DB_query($sql, $ErrMsg);
+				$DemandResult = DB_query($SQL, $ErrMsg);
 
 				$DemandRow = DB_fetch_row($DemandResult);
 				if ($DemandRow[0] != null) {
@@ -1628,7 +1628,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $id
 				}
 
 				// Find the quantity on purchase orders
-				$sql = "SELECT SUM(purchorderdetails.quantityord-purchorderdetails.quantityrecd) AS qoo
+				$SQL = "SELECT SUM(purchorderdetails.quantityord-purchorderdetails.quantityrecd) AS qoo
 						 FROM purchorderdetails INNER JOIN purchorders
 						 ON purchorderdetails.orderno=purchorders.orderno
 						 WHERE purchorderdetails.completed=0
@@ -1639,7 +1639,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $id
 						AND purchorderdetails.itemcode='" . $MyRow['stockid'] . "'";
 
 				$ErrMsg = _('The order details for this product cannot be retrieved because');
-				$PurchResult = DB_query($sql, $ErrMsg);
+				$PurchResult = DB_query($SQL, $ErrMsg);
 
 				$PurchRow = DB_fetch_row($PurchResult);
 				if ($PurchRow[0] != null) {
@@ -1650,11 +1650,11 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $id
 				}
 
 				// Find the quantity on works orders
-				$sql = "SELECT SUM(woitems.qtyreqd - woitems.qtyrecd) AS dedm
+				$SQL = "SELECT SUM(woitems.qtyreqd - woitems.qtyrecd) AS dedm
 					   FROM woitems
 					   WHERE stockid='" . $MyRow['stockid'] . "'";
 				$ErrMsg = _('The order details for this product cannot be retrieved because');
-				$WoResult = DB_query($sql, $ErrMsg);
+				$WoResult = DB_query($SQL, $ErrMsg);
 
 				$WoRow = DB_fetch_row($WoResult);
 				if ($WoRow[0] != null) {
@@ -1772,7 +1772,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $id
 include('includes/footer.inc');
 
 function GetCustBranchDetails($identifier) {
-		$sql = "SELECT custbranch.brname,
+		$SQL = "SELECT custbranch.brname,
 						custbranch.branchcode,
 						custbranch.braddress1,
 						custbranch.braddress2,
@@ -1797,7 +1797,7 @@ function GetCustBranchDetails($identifier) {
 
 		$ErrMsg = _('The customer branch record of the customer selected') . ': ' . $_SESSION['Items'.$identifier]->DebtorNo . ' ' . _('cannot be retrieved because');
 		$DbgMsg = _('SQL used to retrieve the branch details was') . ':';
-		$result = DB_query($sql, $ErrMsg, $DbgMsg);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 		return $result;
 }
 ?>

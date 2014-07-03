@@ -84,7 +84,7 @@ if (isset($_POST['submit']) and isset($EditName)) { // Creating or updating a ca
 		would not run in this case cos submit is false of course  see the
 		delete code below*/
 
-		$sql = "UPDATE salescat SET salescatname = '" . $_POST['SalesCatName'] . "',
+		$SQL = "UPDATE salescat SET salescatname = '" . $_POST['SalesCatName'] . "',
 								active  = '" . $_POST['Active'] . "'
 							WHERE salescatid = '" . $SelectedCategory . "'";
 		$msg = _('The Sales category record has been updated');
@@ -92,7 +92,7 @@ if (isset($_POST['submit']) and isset($EditName)) { // Creating or updating a ca
 
 		/*Selected category is null cos no item selected on first time round so must be adding a	record must be submitting new entries in the new stock category form */
 
-		$sql = "INSERT INTO salescat (salescatname,
+		$SQL = "INSERT INTO salescat (salescatname,
 									  parentcatid,
 									  active)
 									  VALUES (
@@ -104,7 +104,7 @@ if (isset($_POST['submit']) and isset($EditName)) { // Creating or updating a ca
 
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		prnMsg($msg, 'success');
 	}
 
@@ -118,21 +118,21 @@ if (isset($_POST['submit']) and isset($EditName)) { // Creating or updating a ca
 
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'salescatprod'
 
-	$sql = "SELECT COUNT(*) FROM salescatprod WHERE salescatid='" . $SelectedCategory . "'";
-	$result = DB_query($sql);
+	$SQL = "SELECT COUNT(*) FROM salescatprod WHERE salescatid='" . $SelectedCategory . "'";
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_row($result);
 	if ($MyRow[0] > 0) {
 		prnMsg(_('Cannot delete this sales category because stock items have been added to this category') . '<br /> ' . _('There are') . ' ' . $MyRow[0] . ' ' . _('items under to this category'), 'warn');
 
 	} else {
-		$sql = "SELECT COUNT(*) FROM salescat WHERE parentcatid='" . $SelectedCategory . "'";
-		$result = DB_query($sql);
+		$SQL = "SELECT COUNT(*) FROM salescat WHERE parentcatid='" . $SelectedCategory . "'";
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_row($result);
 		if ($MyRow[0] > 0) {
 			prnMsg(_('Cannot delete this sales category because sub categories have been added to this category') . '<br /> ' . _('There are') . ' ' . $MyRow[0] . ' ' . _('sub categories'), 'warn');
 		} else {
-			$sql = "DELETE FROM salescat WHERE salescatid='" . $SelectedCategory . "'";
-			$result = DB_query($sql);
+			$SQL = "DELETE FROM salescat WHERE salescatid='" . $SelectedCategory . "'";
+			$result = DB_query($SQL);
 			prnMsg(_('The sales category') . ' ' . $SelectedCategory . ' ' . _('has been deleted') . ' !', 'success');
 			if (file_exists($_SESSION['part_pics_dir'] . '/SALESCAT_' . $SelectedCategory . '.jpg')) {
 				unlink($_SESSION['part_pics_dir'] . '/SALESCAT_' . $SelectedCategory . '.jpg');
@@ -143,20 +143,20 @@ if (isset($_POST['submit']) and isset($EditName)) { // Creating or updating a ca
 	unset($_GET['Delete']);
 	unset($EditName);
 } elseif (isset($_POST['submit']) and isset($_POST['AddStockID']) and $_POST['Brand'] != '') {
-	$sql = "INSERT INTO salescatprod (stockid,
+	$SQL = "INSERT INTO salescatprod (stockid,
 									salescatid,
 									manufacturers_id)
 							VALUES ('" . $_POST['AddStockID'] . "',
 									'" . (isset($ParentCategory) ? ($ParentCategory) : ('NULL')) . "',
 									'" . $_POST['Brand'] . "')";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	prnMsg(_('Item') . ' ' . $_POST['AddStockID'] . ' ' . _('has been added'), 'success');
 	unset($_POST['AddStockID']);
 } elseif (isset($_GET['DelStockID'])) {
-	$sql = "DELETE FROM salescatprod WHERE
+	$SQL = "DELETE FROM salescatprod WHERE
 				stockid='" . $_GET['DelStockID'] . "'
 				AND salescatid" . (isset($ParentCategory) ? ('=' . $ParentCategory) : (' IS NULL'));
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	prnMsg(_('Stock item') . ' ' . $_GET['DelStockID'] . ' ' . _('has been removed') . ' !', 'success');
 	unset($_GET['DelStockID']);
 } elseif (isset($_GET['AddFeature'])) {
@@ -181,8 +181,8 @@ if (isset($ParentCategory)) {
 
 $LastParentName = '';
 for ($Busy = (isset($TmpParentID) AND ($TmpParentID != 0)); $Busy == true; $Busy = (isset($TmpParentID) AND ($TmpParentID != 0))) {
-	$sql = "SELECT parentcatid, salescatname FROM salescat WHERE salescatid='" . $TmpParentID . "'";
-	$result = DB_query($sql);
+	$SQL = "SELECT parentcatid, salescatname FROM salescat WHERE salescatid='" . $TmpParentID . "'";
+	$result = DB_query($SQL);
 	if ($result) {
 		if (DB_num_rows($result) > 0) {
 			$row = DB_fetch_array($result);
@@ -219,13 +219,13 @@ then none of the above are true and the list of stock categorys will be displaye
 links to delete or edit each. These will call the same page again and allow update/input
 or deletion of the records*/
 
-$sql = "SELECT salescatid,
+$SQL = "SELECT salescatid,
 				salescatname,
 				active
 			FROM salescat
 			WHERE parentcatid" . (isset($ParentCategory) ? ('=' . $ParentCategory) : ' =0') . "
 			ORDER BY salescatname";
-$result = DB_query($sql);
+$result = DB_query($SQL);
 
 
 echo '<br />';
@@ -288,14 +288,14 @@ echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />'
 if (isset($SelectedCategory)) {
 	//editing an existing stock category
 
-	$sql = "SELECT salescatid,
+	$SQL = "SELECT salescatid,
 					parentcatid,
 					salescatname,
 					active
 				FROM salescat
 				WHERE salescatid='" . $SelectedCategory . "'";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 
 	$_POST['SalesCatId'] = $MyRow['salescatid'];
@@ -361,9 +361,9 @@ echo '</table>
 // ----------------------------------------------------------------------------------------
 // Always display Stock Select screen
 
-// $sql = "SELECT stockid, description FROM stockmaster ORDER BY stockid";
+// $SQL = "SELECT stockid, description FROM stockmaster ORDER BY stockid";
 /*
-$sql = "SELECT sm.stockid, sm.description FROM stockmaster as sm
+$SQL = "SELECT sm.stockid, sm.description FROM stockmaster as sm
 WHERE NOT EXISTS
 ( SELECT scp.stockid FROM salescatprod as scp
 WHERE
@@ -375,12 +375,12 @@ scp.stockid = sm.stockid
 
 // Now add this stockid to the array
 $StockIDs = array();
-$sql = "SELECT stockid,
+$SQL = "SELECT stockid,
 				manufacturers_id
 		FROM salescatprod
 		WHERE salescatid" . (isset($ParentCategory) ? ('=' . $ParentCategory) : ' is NULL') . "
 		ORDER BY stockid";
-$result = DB_query($sql);
+$result = DB_query($SQL);
 if ($result and DB_num_rows($result)) {
 	while ($MyRow = DB_fetch_array($result)) {
 		$StockIDs[] = $MyRow['stockid']; // Add Stock
@@ -389,7 +389,7 @@ if ($result and DB_num_rows($result)) {
 }
 
 // This query will return the stock that is available
-$sql = "SELECT stockid,
+$SQL = "SELECT stockid,
 				description
 		FROM stockmaster INNER JOIN stockcategory
 		ON stockmaster.categoryid=stockcategory.categoryid
@@ -397,7 +397,7 @@ $sql = "SELECT stockid,
 		AND mbflag<>'G'
 		AND stocktype<>'M'
 		ORDER BY stockid";
-$result = DB_query($sql);
+$result = DB_query($SQL);
 if ($result and DB_num_rows($result)) {
 	// continue id stock id in the stockid array
 	echo '<br />
@@ -463,7 +463,7 @@ if (isset($ParentCategory)) {
 } else {
 	$ShowSalesCategory = ' IS NULL';
 }
-$sql = "SELECT salescatprod.stockid,
+$SQL = "SELECT salescatprod.stockid,
 				salescatprod.featured,
 				stockmaster.description,
 				manufacturers_name
@@ -475,7 +475,7 @@ $sql = "SELECT salescatprod.stockid,
 		WHERE salescatprod.salescatid" . $ShowSalesCategory . "
 		ORDER BY salescatprod.stockid";
 
-$result = DB_query($sql);
+$result = DB_query($SQL);
 if ($result) {
 	if (DB_num_rows($result)) {
 		echo '<table class="selection">';

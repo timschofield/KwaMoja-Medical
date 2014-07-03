@@ -26,7 +26,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['Review'])) {
 	}
 
 	if ($_POST['Consolidation'] == 'None') {
-		$sql = "SELECT mrpplannedorders.*,
+		$SQL = "SELECT mrpplannedorders.*,
 					   stockmaster.stockid,
 					   stockmaster.description,
 					   stockmaster.mbflag,
@@ -42,7 +42,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['Review'])) {
 				WHERE stockmaster.mbflag = 'M' " . $WhereDate . "
 				ORDER BY mrpplannedorders.part,mrpplannedorders.duedate";
 	} elseif ($_POST['Consolidation'] == 'Weekly') {
-		$sql = "SELECT mrpplannedorders.part,
+		$SQL = "SELECT mrpplannedorders.part,
 					   SUM(mrpplannedorders.supplyquantity) as supplyquantity,
 					   TRUNCATE(((TO_DAYS(duedate) - TO_DAYS(CURRENT_DATE)) / 7),0) AS weekindex,
 					   MIN(mrpplannedorders.duedate) as duedate,
@@ -74,7 +74,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['Review'])) {
 						 computedcost
 				ORDER BY mrpplannedorders.part,weekindex";
 	} else {
-		$sql = "SELECT mrpplannedorders.part,
+		$SQL = "SELECT mrpplannedorders.part,
 					   SUM(mrpplannedorders.supplyquantity) as supplyquantity,
 					   EXTRACT(YEAR_MONTH from duedate) AS yearmonth,
 					   MIN(mrpplannedorders.duedate) as duedate,
@@ -106,7 +106,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['Review'])) {
 						 computedcost
 				ORDER BY mrpplannedorders.part,yearmonth";
 	}
-	$result = DB_query($sql, '', '', false, true);
+	$result = DB_query($SQL, '', '', false, true);
 
 	if (DB_error_no() != 0) {
 		$Title = _('MRP Planned Work Orders') . ' - ' . _('Problem Report');
@@ -114,7 +114,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['Review'])) {
 		prnMsg(_('The MRP planned work orders could not be retrieved by the SQL because') . ' ' . DB_error_msg(), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($debug == 1) {
-			echo '<br />' . $sql;
+			echo '<br />' . $SQL;
 		}
 		include('includes/footer.inc');
 		exit;

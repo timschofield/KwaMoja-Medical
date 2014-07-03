@@ -68,7 +68,7 @@ if (isset($_POST['submit'])) {
 			prnMsg(_('The Stock Category') . ' ' . $_POST['categoryid'] . ' ' . _('already allowed as internal for this security role'), 'error');
 		} else {
 			// Add new record on submit
-			$sql = "INSERT INTO internalstockcatrole (secroleid,
+			$SQL = "INSERT INTO internalstockcatrole (secroleid,
 												categoryid)
 										VALUES ('" . $_POST['SelectedRole'] . "',
 												'" . $_POST['SelectedCategory'] . "')";
@@ -83,18 +83,18 @@ if (isset($_POST['submit'])) {
 
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		prnMsg($msg, 'success');
 		unset($_POST['SelectedCategory']);
 	}
 
 } elseif (isset($_GET['delete'])) {
-	$sql = "DELETE FROM internalstockcatrole
+	$SQL = "DELETE FROM internalstockcatrole
 		WHERE secroleid='" . $SelectedRole . "'
 		AND categoryid='" . $SelectedType . "'";
 
 	$ErrMsg = _('The Stock Category by Role record could not be deleted because');
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 	prnMsg(_('Internal Stock Category') . ' ' . stripslashes($SelectedType) . ' ' . _('for user role') . ' ' . $SelectedRole . ' ' . _('has been deleted'), 'success');
 	unset($_GET['delete']);
 }
@@ -144,14 +144,14 @@ if (isset($_POST['process']) or isset($SelectedRole)) {
 
 	echo '<input type="hidden" name="SelectedRole" value="' . $SelectedRole . '" />';
 
-	$sql = "SELECT internalstockcatrole.categoryid,
+	$SQL = "SELECT internalstockcatrole.categoryid,
 					stockcategory.categorydescription
 			FROM internalstockcatrole INNER JOIN stockcategory
 			ON internalstockcatrole.categoryid=stockcategory.categoryid
 			WHERE internalstockcatrole.secroleid='" . $SelectedRole . "'
 			ORDER BY internalstockcatrole.categoryid ASC";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	echo '<table class="selection">';
 	echo '<tr>

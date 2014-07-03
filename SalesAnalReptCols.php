@@ -104,7 +104,7 @@ if (isset($_POST['submit'])) {
 	if (isset($SelectedCol) and $InputError != 1) {
 
 
-		$sql = "UPDATE reportcolumns SET heading1='" . $_POST['Heading1'] . "',
+		$SQL = "UPDATE reportcolumns SET heading1='" . $_POST['Heading1'] . "',
 									 heading2='" . $_POST['Heading2'] . "',
 									 calculation='" . $_POST['Calculation'] . "',
 									 periodfrom='" . $_POST['PeriodFrom'] . "',
@@ -122,7 +122,7 @@ if (isset($_POST['submit'])) {
 		$ErrMsg = _('The report column could not be updated because');
 		$DbgMsg = _('The SQL used to update the report column was');
 
-		$result = DB_query($sql, $ErrMsg, $DbgMsg);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 		prnMsg(_('Column') . ' ' . $SelectedCol . ' ' . _('has been updated'), 'info');
 		unset($SelectedCol);
@@ -144,7 +144,7 @@ if (isset($_POST['submit'])) {
 
 		/*SelectedReport is null cos no item selected on first time round so must be adding a new column to the report */
 
-		$sql = "INSERT INTO reportcolumns (reportid,
+		$SQL = "INSERT INTO reportcolumns (reportid,
 									   colno,
 									   heading1,
 									   heading2,
@@ -176,7 +176,7 @@ if (isset($_POST['submit'])) {
 
 		$ErrMsg = _('The column could not be added to the report because');
 		$DbgMsg = _('The SQL used to add the column to the report was');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 		prnMsg(_('Column') . ' ' . $_POST['ColID'] . ' ' . _('has been added to the database'), 'info');
 
@@ -201,11 +201,11 @@ if (isset($_POST['submit'])) {
 } elseif (isset($_GET['delete'])) {
 	//the link to delete a selected record was clicked instead of the submit button
 
-	$sql = "DELETE FROM reportcolumns WHERE reportid='" . $ReportID . "' AND colno='" . $SelectedCol . "'";
+	$SQL = "DELETE FROM reportcolumns WHERE reportid='" . $ReportID . "' AND colno='" . $SelectedCol . "'";
 
 	$ErrMsg = _('The deletion of the column failed because');
 	$DbgMsg = _('The SQL used to delete this report column was');
-	$result = DB_query($sql, $ErrMsg, $DbgMsg);
+	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	prnMsg(_('Column') . ' ' . $SelectedCol . ' ' . _('has been deleted'), 'info');
 
@@ -214,7 +214,7 @@ if (isset($_POST['submit'])) {
 /* List of Columns will be displayed with links to delete or edit each.
 These will call the same page again and allow update/input or deletion of the records*/
 
-$sql = "SELECT reportheaders.reportheading,
+$SQL = "SELECT reportheaders.reportheading,
 			   reportcolumns.colno,
 			   reportcolumns.heading1,
 			   reportcolumns.heading2,
@@ -236,7 +236,7 @@ $sql = "SELECT reportheaders.reportheading,
 
 $ErrMsg = _('The column definitions could not be retrieved from the database because');
 $DbgMsg = _('The SQL used to retrieve the columns for the report was');
-$result = DB_query($sql, $ErrMsg, $DbgMsg);
+$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 if (DB_num_rows($result) != 0) {
 
@@ -307,8 +307,8 @@ if (DB_num_rows($result) > 10) {
 
 if (!isset($_GET['delete'])) {
 
-	$sql = "SELECT reportheading FROM reportheaders WHERE reportid='" . $ReportID . "'";
-	$result = DB_query($sql);
+	$SQL = "SELECT reportheading FROM reportheaders WHERE reportid='" . $ReportID . "'";
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 	$ReportHeading = $MyRow['reportheading'];
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
@@ -319,7 +319,7 @@ if (!isset($_GET['delete'])) {
 	if (isset($SelectedCol)) {
 		//editing an existing Column
 
-		$sql = "SELECT reportid,
+		$SQL = "SELECT reportid,
 				   	colno,
 				   	heading1,
 				   	heading2,
@@ -343,7 +343,7 @@ if (!isset($_GET['delete'])) {
 		$ErrMsg = _('The column') . ' ' . $SelectedCol . ' ' . _('could not be retrieved because');
 		$DbgMsg = _('The SQL used to retrieve the this column was');
 
-		$result = DB_query($sql, $ErrMsg, $DbgMsg);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 		$MyRow = DB_fetch_array($result);
 
@@ -409,9 +409,9 @@ if (!isset($_GET['delete'])) {
 		echo '<tr>
 				<td>' . _('From Period') . ':</td>
 				<td><select minlength="0" name="PeriodFrom">';
-		$sql = "SELECT periodno, lastdate_in_period FROM periods ORDER BY periodno DESC";
+		$SQL = "SELECT periodno, lastdate_in_period FROM periods ORDER BY periodno DESC";
 		$ErrMsg = _('Could not load periods table');
-		$result = DB_query($sql, $ErrMsg);
+		$result = DB_query($SQL, $ErrMsg);
 		while ($PeriodRow = DB_fetch_row($result)) {
 			if ($_POST['PeriodFrom'] == $PeriodRow[0]) {
 				echo '<option selected="selected" value="' . $PeriodRow[0] . '">' . ConvertSQLDate($PeriodRow[1]) . '</option>';
@@ -425,9 +425,9 @@ if (!isset($_GET['delete'])) {
 		echo '<tr>
 				<td>' . _('ToPeriod') . ':</td>
 				<td><select minlength="0" name="PeriodTo">';
-		$sql = "SELECT periodno, lastdate_in_period FROM periods ORDER BY periodno DESC";
+		$SQL = "SELECT periodno, lastdate_in_period FROM periods ORDER BY periodno DESC";
 		$ErrMsg = _('Could not load periods table');
-		$result = DB_query($sql, $ErrMsg);
+		$result = DB_query($SQL, $ErrMsg);
 		while ($PeriodRow = DB_fetch_row($result)) {
 			if ($_POST['PeriodTo'] == $PeriodRow[0]) {
 				echo '<option selected="selected" value="' . $PeriodRow[0] . '">' . ConvertSQLDate($PeriodRow[1]) . '</option>';

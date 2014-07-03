@@ -19,8 +19,8 @@ if (!isset($_POST['SupplierID']) or $_POST['SupplierID'] == "") {
 	echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/SelectSupplier.php">';
 	exit;
 } elseif (!isset($_POST['SuppName']) or $_POST['SuppName'] == "") {
-	$sql = "SELECT suppname FROM suppliers WHERE supplierid='" . $_SESSION['SupplierID'] . "'";
-	$SuppResult = DB_query($sql, _('Could not retrieve the supplier name for') . ' ' . $_SESSION['SupplierID']);
+	$SQL = "SELECT suppname FROM suppliers WHERE supplierid='" . $_SESSION['SupplierID'] . "'";
+	$SuppResult = DB_query($SQL, _('Could not retrieve the supplier name for') . ' ' . $_SESSION['SupplierID']);
 	$SuppRow = DB_fetch_row($SuppResult);
 	$_POST['SuppName'] = $SuppRow[0];
 }
@@ -361,7 +361,7 @@ if (isset($_GET['GRNNo']) and isset($_POST['SupplierID'])) {
 	if (isset($_POST['ShowGRNS'])) {
 
 		if ($_SESSION['RestrictLocations'] == 0) {
-			$sql = "SELECT grnno,
+			$SQL = "SELECT grnno,
 							grnbatch,
 							itemcode,
 							itemdescription,
@@ -374,7 +374,7 @@ if (isset($_GET['GRNNo']) and isset($_POST['SupplierID'])) {
 							AND (grns.qtyrecd-grns.quantityinv) >0
 							AND deliverydate>='" . FormatDateForSQL($_POST['RecdAfterDate']) . "'";
 		} else {
-			$sql = "SELECT grnno,
+			$SQL = "SELECT grnno,
 							grnbatch,
 							itemcode,
 							itemdescription,
@@ -398,7 +398,7 @@ if (isset($_GET['GRNNo']) and isset($_POST['SupplierID'])) {
 
 		$ErrMsg = _('An error occurred in the attempt to get the outstanding GRNs for') . ' ' . $_POST['SuppName'] . '. ' . _('The message was') . ':';
 		$DbgMsg = _('The SQL that failed was') . ':';
-		$result = DB_query($sql, $ErrMsg, $DbgMsg);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 		if (DB_num_rows($result) == 0) {
 			prnMsg(_('There are no outstanding goods received yet to be invoiced for') . ' ' . $_POST['SuppName'] . '.<br />' . _('To reverse a GRN that has been invoiced first it must be credited'), 'warn');

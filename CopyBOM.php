@@ -33,7 +33,7 @@ if (isset($_POST['Submit'])) {
 
 		if ($NewOrExisting == 'N') {
 			/* duplicate rows into stockmaster */
-			$sql = "INSERT INTO stockmaster( stockid,
+			$SQL = "INSERT INTO stockmaster( stockid,
 									categoryid,
 									description,
 									longdescription,
@@ -85,9 +85,9 @@ if (isset($_POST['Submit'])) {
 									netweight
 							FROM stockmaster
 							WHERE stockid='" . $StockID . "';";
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 			/* duplicate rows into stockcosts */
-			$sql = "INSERT INTO stockcosts VALUES ( SELECT  '" . $NewStockID . "',
+			$SQL = "INSERT INTO stockcosts VALUES ( SELECT  '" . $NewStockID . "',
 															stockcosts.materialcost,
 															stockcosts.labourcost,
 															stockcosts.overheadcost,
@@ -96,16 +96,16 @@ if (isset($_POST['Submit'])) {
 														FROM stockcosts
 														WHERE  stockcosts.stockid='" . $StockID . "'
 															AND stockcosts.succeeded=0)";
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 
 		} else {
 
-			$sql = "UPDATE stockcosts SET succeded=1
+			$SQL = "UPDATE stockcosts SET succeded=1
 									WHERE stockid='" . $NewStockID . "'
 										AND succeeded=0";
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 
-			$sql = "INSERT INTO stockcosts VALUES ( SELECT  '" . $NewStockID . "',
+			$SQL = "INSERT INTO stockcosts VALUES ( SELECT  '" . $NewStockID . "',
 															stockcosts.materialcost,
 															stockcosts.labourcost,
 															stockcosts.overheadcost,
@@ -114,10 +114,10 @@ if (isset($_POST['Submit'])) {
 														FROM stockcosts
 														WHERE  stockcosts.stockid='" . $StockID . "'
 															AND stockcosts.succeeded=0)";
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 		}
 
-		$sql = "INSERT INTO bom
+		$SQL = "INSERT INTO bom
 					SELECT '" . $NewStockID . "' AS parent,
 							sequence,
 							component,
@@ -129,10 +129,10 @@ if (isset($_POST['Submit'])) {
 							autoissue
 					FROM bom
 					WHERE parent='" . $StockID . "';";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 
 		if ($NewOrExisting == 'N') {
-			$sql = "INSERT INTO locstock (
+			$SQL = "INSERT INTO locstock (
 			            loccode,
 			            stockid,
 			            quantity,
@@ -145,7 +145,7 @@ if (isset($_POST['Submit'])) {
 				FROM locstock
 				WHERE stockid='" . $StockID . "'";
 
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 		}
 
 		$result = DB_Txn_Commit();
@@ -162,12 +162,12 @@ if (isset($_POST['Submit'])) {
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
-	$sql = "SELECT stockid,
+	$SQL = "SELECT stockid,
 					description
 				FROM stockmaster
 				WHERE stockid IN (SELECT DISTINCT parent FROM bom)
 				AND  mbflag IN ('M', 'A', 'K', 'G');";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	echo '<table class="selection">
 			<tr>
@@ -186,12 +186,12 @@ if (isset($_POST['Submit'])) {
 			<td><input type="radio" name="NewOrExisting" value="N" />' . _(' To New Stock ID') . '</td>';
 	echo '<td><input type="text" required="required" minlength="1" maxlength="20" name="ToStockID" /></td></tr>';
 
-	$sql = "SELECT stockid,
+	$SQL = "SELECT stockid,
 					description
 				FROM stockmaster
 				WHERE stockid NOT IN (SELECT DISTINCT parent FROM bom)
 				AND mbflag IN ('M', 'A', 'K', 'G');";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	if (DB_num_rows($result) > 0) {
 		echo '<tr>

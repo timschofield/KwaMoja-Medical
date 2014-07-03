@@ -38,7 +38,7 @@ if (isset($_POST['submit'])) {
 
 	if ($Id and $InputError != 1) {
 
-		$sql = "UPDATE debtortypenotes SET note='" . $_POST['Note'] . "',
+		$SQL = "UPDATE debtortypenotes SET note='" . $_POST['Note'] . "',
 											date='" . FormatDateForSQL($_POST['NoteDate']) . "',
 											href='" . $_POST['Href'] . "',
 											priority='" . $_POST['Priority'] . "'
@@ -47,7 +47,7 @@ if (isset($_POST['submit'])) {
 		$msg = _('Customer Group Notes') . ' ' . $DebtorType . ' ' . _('has been updated');
 	} elseif ($InputError != 1) {
 
-		$sql = "INSERT INTO debtortypenotes (typeid,
+		$SQL = "INSERT INTO debtortypenotes (typeid,
 											href,
 											note,
 											date,
@@ -61,7 +61,7 @@ if (isset($_POST['submit'])) {
 	}
 
 	if ($InputError != 1) {
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 
 		echo '<br />';
 		prnMsg($msg, 'success');
@@ -74,10 +74,10 @@ if (isset($_POST['submit'])) {
 
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'SalesOrders'
 
-	$sql = "DELETE FROM debtortypenotes
+	$SQL = "DELETE FROM debtortypenotes
 			WHERE noteid='" . $Id . "'
 			AND typeid='" . $DebtorType . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	echo '<br />';
 	prnMsg(_('The contact group note record has been deleted'), 'success');
@@ -93,7 +93,7 @@ if (!isset($Id)) {
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/customer.png" title="' . _('Search') . '" alt="" />' . _('Notes for Customer Type') . ': <b>' . $MyRow['typename'] . '</b></p>
 		<br />';
 
-	$sql = "SELECT noteid,
+	$SQL = "SELECT noteid,
 					typeid,
 					href,
 					note,
@@ -102,8 +102,8 @@ if (!isset($Id)) {
 				FROM debtortypenotes
 				WHERE typeid='" . $DebtorType . "'
 				ORDER BY date DESC";
-	$result = DB_query($sql);
-	//echo '<br />'.$sql;
+	$result = DB_query($SQL);
+	//echo '<br />'.$SQL;
 
 	echo '<table class="selection">';
 	echo '<tr>
@@ -148,7 +148,7 @@ if (!isset($_GET['delete'])) {
 	if (isset($Id)) {
 		//editing an existing
 
-		$sql = "SELECT noteid,
+		$SQL = "SELECT noteid,
 					typeid,
 					href,
 					note,
@@ -158,8 +158,8 @@ if (!isset($_GET['delete'])) {
 				WHERE noteid=" . $Id . "
 					AND typeid='" . $DebtorType . "'";
 
-		$result = DB_query($sql);
-		//echo '<br />'.$sql;
+		$result = DB_query($SQL);
+		//echo '<br />'.$SQL;
 
 		$MyRow = DB_fetch_array($result);
 

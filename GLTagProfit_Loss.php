@@ -38,11 +38,11 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 				<td>' . _('Select Period From') . ':</td>
 				<td><select minlength="0" name="FromPeriod">';
 
-	$sql = "SELECT periodno,
+	$SQL = "SELECT periodno,
 					lastdate_in_period
 			FROM periods
 			ORDER BY periodno DESC";
-	$Periods = DB_query($sql);
+	$Periods = DB_query($SQL);
 
 
 	while ($MyRow = DB_fetch_array($Periods)) {
@@ -65,8 +65,8 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 		</tr>';
 	if (!isset($_POST['ToPeriod']) or $_POST['ToPeriod'] == '') {
 		$LastDate = date('Y-m-d', mktime(0, 0, 0, Date('m') + 1, 0, Date('Y')));
-		$sql = "SELECT periodno FROM periods where lastdate_in_period = '" . $LastDate . "'";
-		$MaxPrd = DB_query($sql);
+		$SQL = "SELECT periodno FROM periods where lastdate_in_period = '" . $LastDate . "'";
+		$MaxPrd = DB_query($SQL);
 		$MaxPrdrow = DB_fetch_row($MaxPrd);
 		$DefaultToPeriod = (int) ($MaxPrdrow[0]);
 
@@ -154,10 +154,10 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 		exit;
 	}
 
-	$sql = "SELECT lastdate_in_period
+	$SQL = "SELECT lastdate_in_period
 			FROM periods
 			WHERE periodno='" . $_POST['ToPeriod'] . "'";
-	$PrdResult = DB_query($sql);
+	$PrdResult = DB_query($SQL);
 	$MyRow = DB_fetch_row($PrdResult);
 	$PeriodToDate = MonthAndYearFromSQLDate($MyRow[0]);
 
@@ -496,10 +496,10 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 		exit;
 	}
 
-	$sql = "SELECT lastdate_in_period
+	$SQL = "SELECT lastdate_in_period
 			FROM periods
 			WHERE periodno='" . $_POST['ToPeriod'] . "'";
-	$PrdResult = DB_query($sql);
+	$PrdResult = DB_query($SQL);
 	$MyRow = DB_fetch_row($PrdResult);
 	$PeriodToDate = MonthAndYearFromSQLDate($MyRow[0]);
 
@@ -528,8 +528,8 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 
 
 	$AccountsResult = DB_query($SQL, _('No general ledger accounts were returned by the SQL because'), _('The SQL that failed was'));
-	$sql = "SELECT tagdescription FROM tags WHERE tagref='" . $_POST['tag'] . "'";
-	$result = DB_query($sql);
+	$SQL = "SELECT tagdescription FROM tags WHERE tagref='" . $_POST['tag'] . "'";
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_row($result);
 
 	/*show a table of the accounts info returned by the SQL

@@ -58,8 +58,8 @@ $DefaultPeriodDate = Date('Y-m-d', Mktime(0, 0, 0, Date('m'), 0, Date('Y')));
 echo '<table class="selection" summary="' . _('Inquiry Selection Criteria') . '">
 		<tr>
 			<td>' . _('Account') . ':</td><td><select minlength="0" name="Account">';
-$sql = "SELECT accountcode, accountname FROM chartmaster ORDER BY accountcode";
-$Account = DB_query($sql);
+$SQL = "SELECT accountcode, accountname FROM chartmaster ORDER BY accountcode";
+$Account = DB_query($SQL);
 while ($MyRow = DB_fetch_array($Account)) {
 	if (isset($SelectedAccount) and $MyRow['accountcode'] == $SelectedAccount) {
 		echo '<option selected="selected" value="' . $MyRow['accountcode'] . '">' . $MyRow['accountcode'] . ' ' . htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false) . '</option>';
@@ -91,8 +91,8 @@ while ($MyRow = DB_fetch_array($result)) {
 	}
 }
 echo '</select></td></tr><tr> <td>' . _('For Period range') . ':</td><td><select minlength="0" name="Period[]" size="12" multiple="multiple">';
-$sql = "SELECT periodno, lastdate_in_period FROM periods ORDER BY periodno DESC";
-$Periods = DB_query($sql);
+$SQL = "SELECT periodno, lastdate_in_period FROM periods ORDER BY periodno DESC";
+$Periods = DB_query($SQL);
 $id = 0;
 while ($MyRow = DB_fetch_array($Periods)) {
 	if (isset($FirstPeriodSelected) and $MyRow['periodno'] >= $FirstPeriodSelected and $MyRow['periodno'] <= $LastPeriodSelected) {
@@ -132,7 +132,7 @@ if (isset($_POST['Show'])) {
 		/*its a balance sheet account */
 	}
 
-	$sql= "SELECT counterindex,
+	$SQL= "SELECT counterindex,
 				type,
 				typename,
 				gltrans.typeno,
@@ -153,17 +153,17 @@ if (isset($_POST['Show'])) {
 			AND periodno<='" . $LastPeriodSelected . "'";
 
 	if ($_POST['tag']!=0) {
-		$sql = $sql . " AND tag='" . $_POST['tag'] . "'";
+		$SQL = $SQL . " AND tag='" . $_POST['tag'] . "'";
 	}
 
-	$sql = $sql . " ORDER BY periodno, gltrans.trandate, counterindex";
+	$SQL = $SQL . " ORDER BY periodno, gltrans.trandate, counterindex";
 
 	$NameSQL = "SELECT accountname FROM chartmaster WHERE accountcode='" . $SelectedAccount . "'";
 	$NameResult = DB_query($NameSQL);
 	$NameRow = DB_fetch_array($NameResult);
 	$SelectedAccountName = $NameRow['accountname'];
 	$ErrMsg = _('The transactions for account') . ' ' . $SelectedAccount . ' ' . _('could not be retrieved because');
-	$TransResult = DB_query($sql, $ErrMsg);
+	$TransResult = DB_query($SQL, $ErrMsg);
 
 	echo '<table class="selection" summary="' . _('General Ledger account inquiry details') . '">
 			<tr>
@@ -188,7 +188,7 @@ if (isset($_POST['Show'])) {
 		$RunningTotal = 0;
 	} else {
 		// added to fix bug with Brought Forward Balance always being zero
-		$sql = "SELECT bfwd,
+		$SQL = "SELECT bfwd,
 						actual,
 						period
 					FROM chartdetails
@@ -196,7 +196,7 @@ if (isset($_POST['Show'])) {
 					AND chartdetails.period='" . $FirstPeriodSelected . "'";
 
 		$ErrMsg = _('The chart details for account') . ' ' . $SelectedAccount . ' ' . _('could not be retrieved');
-		$ChartDetailsResult = DB_query($sql, $ErrMsg);
+		$ChartDetailsResult = DB_query($SQL, $ErrMsg);
 		$ChartDetailRow = DB_fetch_array($ChartDetailsResult);
 
 		if ($_POST['tag'] == 0) {
@@ -234,7 +234,7 @@ if (isset($_POST['Show'])) {
 			if ($PeriodNo != -9999) { //ie its not the first time around
 				/*Get the ChartDetails balance b/fwd and the actual movement in the account for the period as recorded in the chart details - need to ensure integrity of transactions to the chart detail movements. Also, for a balance sheet account it is the balance carried forward that is important, not just the transactions*/
 
-				$sql = "SELECT bfwd,
+				$SQL = "SELECT bfwd,
 								actual,
 								period
 							FROM chartdetails
@@ -242,7 +242,7 @@ if (isset($_POST['Show'])) {
 								AND chartdetails.period='" . $PeriodNo . "'";
 
 				$ErrMsg = _('The chart details for account') . ' ' . $SelectedAccount . ' ' . _('could not be retrieved');
-				$ChartDetailsResult = DB_query($sql, $ErrMsg);
+				$ChartDetailsResult = DB_query($SQL, $ErrMsg);
 				$ChartDetailRow = DB_fetch_array($ChartDetailsResult);
 
 				echo '<tr>

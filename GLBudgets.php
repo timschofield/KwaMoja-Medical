@@ -260,7 +260,7 @@ if (isset($SelectedAccount) and $SelectedAccount != '') {
 	$LastPeriod = $MyRow[0];
 
 	for ($i = $FirstPeriod; $i <= $LastPeriod; $i++) {
-		$sql = "SELECT accountcode,
+		$SQL = "SELECT accountcode,
 					period,
 					budget,
 					actual,
@@ -271,18 +271,18 @@ if (isset($SelectedAccount) and $SelectedAccount != '') {
 				AND  accountcode = '" . $SelectedAccount . "'";
 
 		$ErrMsg = _('Could not retrieve the ChartDetail records because');
-		$result = DB_query($sql, $ErrMsg);
+		$result = DB_query($SQL, $ErrMsg);
 
 		while ($MyRow = DB_fetch_array($result)) {
 
 			$CFwdBudget = $MyRow['bfwdbudget'] + $MyRow['budget'];
-			$sql = "UPDATE chartdetails
+			$SQL = "UPDATE chartdetails
 					SET bfwdbudget='" . $CFwdBudget . "'
 					WHERE period='" . ($MyRow['period'] + 1) . "'
 					AND  accountcode = '" . $SelectedAccount . "'";
 
 			$ErrMsg = _('Could not update the chartdetails record because');
-			$updresult = DB_query($sql, $ErrMsg);
+			$updresult = DB_query($SQL, $ErrMsg);
 		}
 	}
 	/* end of for loop */

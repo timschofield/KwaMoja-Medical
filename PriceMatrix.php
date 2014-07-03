@@ -66,7 +66,7 @@ if (isset($_POST['submit'])) {
 	if (Is_Date($_POST['StartDate'])) {
 		$SQLStartDate = FormatDateForSQL($_POST['StartDate']);
 	}
-	$sql = "SELECT COUNT(salestype)
+	$SQL = "SELECT COUNT(salestype)
 				FROM pricematrix
 			WHERE stockid='" . $StockID . "'
 				AND startdate='" . $SQLStartDate . "'
@@ -74,7 +74,7 @@ if (isset($_POST['submit'])) {
 				AND salestype='" . $_POST['TypeAbbrev'] . "'
 				AND currabrev='" . $_POST['currabrev'] . "'
 			AND quantitybreak='" . $_POST['quantitybreak'] . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_row($result);
 	if ($MyRow[0] != 0 and !isset($_POST['OldTypeAbbrev']) and !isset($_POST['OldCurrAbrev'])) {
 		prnMsg(_('This price has already been entered. To change it you should edit it'), 'warn');
@@ -84,7 +84,7 @@ if (isset($_POST['submit'])) {
 	if (isset($_POST['OldTypeAbbrev']) and isset($_POST['OldCurrAbrev']) and mb_strlen($StockID)  > 1 and $InputError != 1) {
 
 		/* Update existing prices */
-		$sql = "UPDATE pricematrix SET
+		$SQL = "UPDATE pricematrix SET
 					salestype='" . $_POST['SalesType'] . "',
 					currabrev='" . $_POST['CurrAbrev'] . "',
 					price='" . filter_number_format($_POST['Price']) . "',
@@ -99,7 +99,7 @@ if (isset($_POST['submit'])) {
 					AND quantitybreak='" . filter_number_format($_POST['OldQuantityBreak']) . "'";
 
 		$ErrMsg = _('Could not be update the existing prices');
-		$result = DB_query($sql, $ErrMsg);
+		$result = DB_query($SQL, $ErrMsg);
 
 		ReSequenceEffectiveDates($StockID, $_POST['SalesType'], $_POST['CurrAbrev'], $_POST['QuantityBreak']);
 
@@ -109,7 +109,7 @@ if (isset($_POST['submit'])) {
 	/* actions to take once the user has clicked the submit button
 	ie the page has called itself with some user input */
 
-		$sql = "INSERT INTO pricematrix (salestype,
+		$SQL = "INSERT INTO pricematrix (salestype,
 							stockid,
 							quantitybreak,
 							price,
@@ -125,7 +125,7 @@ if (isset($_POST['submit'])) {
 						'" . $SQLEndDate . "')";
 
 		$ErrMsg = _('Failed to insert price data');
-		$result = DB_query($sql, $ErrMsg);
+		$result = DB_query($SQL, $ErrMsg);
 		prnMsg(_('The price matrix record has been added'), 'success');
 		unset($_POST['QuantityBreak']);
 		unset($_POST['Price']);
@@ -138,7 +138,7 @@ if (isset($_POST['submit'])) {
 } elseif (isset($_GET['Delete']) and $_GET['Delete'] == 'yes') {
 	/*the link to delete a selected record was clicked instead of the submit button */
 
-	$sql = "DELETE FROM pricematrix
+	$SQL = "DELETE FROM pricematrix
 				WHERE stockid='" . $StockID . "'
 					AND salestype='" . $_GET['SalesType'] . "'
 					AND quantitybreak='" . $_GET['QuantityBreak'] . "'
@@ -146,7 +146,7 @@ if (isset($_POST['submit'])) {
 					AND startdate='" . $_GET['StartDate'] . "'
 					AND enddate='" . $_GET['EndDate'] . "'";
 	$ErrMsg = _('Failed to delete price data');
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 	prnMsg(_('The price matrix record has been deleted'), 'success');
 	echo '<br />';
 }
@@ -189,11 +189,11 @@ while ($MyRow = DB_fetch_array($result)) {
 echo '</select>
 		</td>';
 
-$sql = "SELECT typeabbrev,
+$SQL = "SELECT typeabbrev,
 				sales_type
 			FROM salestypes";
 
-$result = DB_query($sql);
+$result = DB_query($SQL);
 
 echo '<tr>
 		<td>' . _('Customer Price List') . ' (' . _('Sales Type') . '):</td>
@@ -250,7 +250,7 @@ echo '<tr>
 		<input tabindex="5" type="submit" name="submit" value="' . _('Enter Information') . '" />
 	</div>';
 
-$sql = "SELECT sales_type,
+$SQL = "SELECT sales_type,
 				salestype,
 				stockid,
 				startdate,
@@ -271,7 +271,7 @@ $sql = "SELECT sales_type,
 					stockid,
 					quantitybreak";
 
-$result = DB_query($sql);
+$result = DB_query($SQL);
 
 echo '<table class="selection">
 		<tr>

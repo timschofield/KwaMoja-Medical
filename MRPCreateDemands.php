@@ -54,7 +54,7 @@ if (isset($_POST['submit'])) {
 		$WhereLocation = " AND salesorders.fromstkloc ='" . $_POST['Location'] . "' ";
 	}
 
-	$sql = "SELECT salesorderdetails.stkcode,
+	$SQL = "SELECT salesorderdetails.stkcode,
 				  SUM(salesorderdetails.quantity) AS totqty,
 				  SUM(salesorderdetails.qtyinvoiced) AS totqtyinvoiced,
 				  SUM(salesorderdetails.quantity * salesorderdetails.unitprice ) AS totextqty
@@ -68,8 +68,8 @@ if (isset($_POST['submit'])) {
 			" . $WhereCategory . "
 			AND salesorders.quotation=0
 			GROUP BY salesorderdetails.stkcode";
-	//echo "<br />$sql<br />";
-	$result = DB_query($sql);
+	//echo "<br />$SQL<br />";
+	$result = DB_query($SQL);
 	// To get the quantity per period, get the whole number amount of the total quantity divided
 	// by the number of periods and also get the remainder from that calculation. Put the whole
 	// number quantity into each entry of the periodqty array, and add 1 to the periodqty array
@@ -169,7 +169,7 @@ if (isset($_POST['submit'])) {
 
 			$i = 0;
 			foreach ($PeriodQty as $demandqty) {
-				$sql = "INSERT INTO mrpdemands (stockid,
+				$SQL = "INSERT INTO mrpdemands (stockid,
 									mrpdemandtype,
 									quantity,
 									duedate)
@@ -177,7 +177,7 @@ if (isset($_POST['submit'])) {
 									'" . $_POST['MRPDemandtype'] . "',
 									'" . $demandqty . "',
 									'" . $datearray[$i] . "')";
-				$insertresult = DB_query($sql);
+				$insertresult = DB_query($SQL);
 				$i++;
 				$TotalRecords++;
 
@@ -198,10 +198,10 @@ echo '<table class="selection">
 	<tr>
 		<td>' . _('Demand Type') . ':</td>
 		<td><select minlength="0" name="MRPDemandtype">';
-$sql = "SELECT mrpdemandtype,
+$SQL = "SELECT mrpdemandtype,
 				description
 		FROM mrpdemandtypes";
-$result = DB_query($sql);
+$result = DB_query($SQL);
 while ($MyRow = DB_fetch_array($result)) {
 	echo '<option value="' . $MyRow['mrpdemandtype'] . '">' . $MyRow['mrpdemandtype'] . ' - ' . $MyRow['description'] . '</option>';
 } //end while loop
@@ -209,10 +209,10 @@ echo '</select></td></tr>';
 echo '<tr><td>' . _('Inventory Category') . ':</td>
 		<td><select minlength="0" name="CategoryID">';
 echo '<option selected="selected" value="All">' . _('All Stock Categories') . '</option>';
-$sql = "SELECT categoryid,
+$SQL = "SELECT categoryid,
 			   categorydescription
 		FROM stockcategory";
-$result = DB_query($sql);
+$result = DB_query($SQL);
 while ($MyRow = DB_fetch_array($result)) {
 	echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categoryid'] . ' - ' . $MyRow['categorydescription'] . '</option>';
 } //end while loop
@@ -222,19 +222,19 @@ echo '<tr><td>' . _('Inventory Location') . ':</td>
 		<td><select minlength="0" name="Location">';
 
 if ($_SESSION['RestrictLocations'] == 0) {
-	$sql = "SELECT locationname,
+	$SQL = "SELECT locationname,
 					loccode
 				FROM locations";
 	echo '<option selected="selected" value="All">' . _('All Locations') . '</option>';
 } else {
-	$sql = "SELECT locationname,
+	$SQL = "SELECT locationname,
 					loccode
 				FROM locations
 				INNER JOIN www_users
 					ON locations.loccode=www_users.defaultlocation
 				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 }
-$result = DB_query($sql);
+$result = DB_query($SQL);
 while ($MyRow = DB_fetch_array($result)) {
 	echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 }

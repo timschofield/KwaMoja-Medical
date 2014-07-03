@@ -330,29 +330,29 @@ if (isset($_POST['ProcessTransfer'])) {
 				prnMsg(_('A stock transfer for item code') . ' - ' . $TrfLine->StockID . ' ' . $TrfLine->ItemDescription . ' ' . _('has been created from') . ' ' . $_SESSION['Transfer' . $identifier]->StockLocationFromName . ' ' . _('to') . ' ' . $_SESSION['Transfer' . $identifier]->StockLocationToName . ' ' . _('for a quantity of') . ' ' . $TrfLine->Quantity, 'success');
 
 				if ($TrfLine->CancelBalance == 1) {
-					$sql = "UPDATE loctransfers SET recqty = recqty + '" . round($TrfLine->Quantity, $TrfLine->DecimalPlaces) . "',
+					$SQL = "UPDATE loctransfers SET recqty = recqty + '" . round($TrfLine->Quantity, $TrfLine->DecimalPlaces) . "',
 						shipqty = recqty + '" . round($TrfLine->Quantity, $TrfLine->DecimalPlaces) . "',
 								recdate = '" . Date('Y-m-d H:i:s') . "'
 						WHERE reference = '" . $_SESSION['Transfer' . $identifier]->TrfID . "'
 						AND stockid = '" . $TrfLine->StockID . "'";
 				} else {
-					$sql = "UPDATE loctransfers SET recqty = recqty + '" . round($TrfLine->Quantity, $TrfLine->DecimalPlaces) . "',
+					$SQL = "UPDATE loctransfers SET recqty = recqty + '" . round($TrfLine->Quantity, $TrfLine->DecimalPlaces) . "',
 								recdate = '" . Date('Y-m-d H:i:s') . "'
 							WHERE reference = '" . $_SESSION['Transfer' . $identifier]->TrfID . "'
 								AND stockid = '" . $TrfLine->StockID . "'";
 				}
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('Unable to update the Location Transfer Record');
-				$Result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 				unset($_SESSION['Transfer' . $identifier]->LineItem[$i]);
 				unset($_POST['Qty' . $i]);
 			}
 			/*end if Quantity > 0 */
 			if ($TrfLine->CancelBalance == 1) {
-				$sql = "UPDATE loctransfers SET shipqty = recqty
+				$SQL = "UPDATE loctransfers SET shipqty = recqty
 						WHERE reference = '" . $_SESSION['Transfer' . $identifier]->TrfID . "'
 						AND stockid = '" . $TrfLine->StockID . "'";
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('Unable to set the quantity received to the quantity shipped to cancel the balance on this transfer line');
-				$Result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 				// send an email to the inventory manager about this cancellation (as can lead to employee fraud)
 				if ($_SESSION['InventoryManagerEmail'] != '') {
 					$ConfirmationText = _('Cancelled balance at transfer') . ': ' . $_SESSION['Transfer' . $identifier]->TrfID . "\r\n" . _('From Location') . ': ' . $_SESSION['Transfer' . $identifier]->StockLocationFrom . "\r\n" . _('To Location') . ': ' . $_SESSION['Transfer' . $identifier]->StockLocationTo . "\r\n" . _('Stock code') . ': ' . $TrfLine->StockID . "\r\n" . _('Qty received') . ': ' . round($TrfLine->Quantity, $TrfLine->DecimalPlaces) . "\r\n" . _('By user') . ': ' . $_SESSION['UserID'] . "\r\n" . _('At') . ': ' . Date('Y-m-d H:i:s');
@@ -389,7 +389,7 @@ if (isset($_GET['Trf_ID'])) {
 
 	unset($_SESSION['Transfer' . $identifier]);
 
-	$sql = "SELECT loctransfers.stockid,
+	$SQL = "SELECT loctransfers.stockid,
 				stockmaster.description,
 				stockmaster.units,
 				stockmaster.controlled,
@@ -413,7 +413,7 @@ if (isset($_GET['Trf_ID'])) {
 
 	$ErrMsg = _('The details of transfer number') . ' ' . $_GET['Trf_ID'] . ' ' . _('could not be retrieved because') . ' ';
 	$DbgMsg = _('The SQL to retrieve the transfer was');
-	$result = DB_query($sql, $ErrMsg, $DbgMsg);
+	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	if (DB_num_rows($result) == 0) {
 		echo '<h3>' . _('Transfer') . ' #' . $_GET['Trf_ID'] . ' ' . _('Does Not Exist') . '</h3><br />';
@@ -542,18 +542,18 @@ if (isset($_SESSION['Transfer' . $identifier])) {
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	if ($_SESSION['RestrictLocations'] == 0) {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations";
 	} else {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations
 					INNER JOIN www_users
 						ON locations.loccode=www_users.defaultlocation
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
-	$LocResult = DB_query($sql);
+	$LocResult = DB_query($SQL);
 
 	echo '<table class="selection">';
 	echo '<tr>
@@ -575,7 +575,7 @@ if (isset($_SESSION['Transfer' . $identifier])) {
 		</tr>
 		</table>';
 
-	$sql = "SELECT DISTINCT reference,
+	$SQL = "SELECT DISTINCT reference,
 				locations.locationname as trffromloc,
 				shipdate
 			FROM loctransfers INNER JOIN locations
@@ -583,7 +583,7 @@ if (isset($_SESSION['Transfer' . $identifier])) {
 			WHERE recloc='" . $_POST['RecLocation'] . "'
 			AND recqty < shipqty";
 
-	$TrfResult = DB_query($sql);
+	$TrfResult = DB_query($SQL);
 	if (DB_num_rows($TrfResult) > 0) {
 		$LocSql = "SELECT locationname FROM locations WHERE loccode='" . $_POST['RecLocation'] . "'";
 		$LocResult = DB_query($LocSql);

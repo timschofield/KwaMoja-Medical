@@ -68,7 +68,7 @@ if (isset($_POST['submit'])) {
 			prnMsg(_('The Expense') . ' ' . $_POST['codeexpense'] . ' ' . _('already exists in this Type of Tab'), 'error');
 		} else {
 			// Add new record on submit
-			$sql = "INSERT INTO pctabexpenses (typetabcode,
+			$SQL = "INSERT INTO pctabexpenses (typetabcode,
 												codeexpense)
 										VALUES ('" . $_POST['SelectedTab'] . "',
 												'" . $_POST['SelectedExpense'] . "')";
@@ -83,18 +83,18 @@ if (isset($_POST['submit'])) {
 
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		prnMsg($msg, 'success');
 		unset($_POST['SelectedExpense']);
 	}
 
 } elseif (isset($_GET['delete'])) {
-	$sql = "DELETE FROM pctabexpenses
+	$SQL = "DELETE FROM pctabexpenses
 		WHERE typetabcode='" . $SelectedTab . "'
 		AND codeexpense='" . $SelectedType . "'";
 
 	$ErrMsg = _('The Tab Type record could not be deleted because');
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 	prnMsg(_('Expense code') . ' ' . $SelectedType . ' ' . _('for type of tab') . ' ' . $SelectedTab . ' ' . _('has been deleted'), 'success');
 	unset($_GET['delete']);
 }
@@ -153,14 +153,14 @@ if (isset($_POST['process']) or isset($SelectedTab)) {
 
 	echo '<input type="hidden" name="SelectedTab" value="' . $SelectedTab . '" />';
 
-	$sql = "SELECT pctabexpenses.codeexpense,
+	$SQL = "SELECT pctabexpenses.codeexpense,
 					pcexpenses.description
 			FROM pctabexpenses INNER JOIN pcexpenses
 			ON pctabexpenses.codeexpense=pcexpenses.codeexpense
 			WHERE pctabexpenses.typetabcode='" . $SelectedTab . "'
 			ORDER BY pctabexpenses.codeexpense ASC";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	echo '<br />
 			<table class="selection">';

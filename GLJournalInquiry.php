@@ -17,8 +17,8 @@ if (!isset($_POST['Show'])) {
 				<th colspan="3">' . _('Selection Criteria') . '</th>
 			</tr>';
 
-	$sql = "SELECT typeno FROM systypes WHERE typeid=0";
-	$result = DB_query($sql);
+	$SQL = "SELECT typeno FROM systypes WHERE typeid=0";
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 	$MaxJournalNumberUsed = $MyRow['typeno'];
 
@@ -28,9 +28,9 @@ if (!isset($_POST['Show'])) {
 			<td>' . _('To') . ':' . '&nbsp;&nbsp;&nbsp;<input type="text" class="number" name="NumberTo" size="10" required="required" minlength="1" maxlength="11" value="' . $MaxJournalNumberUsed . '" />' . '</td>
 		</tr>';
 
-	$sql = "SELECT MIN(trandate) AS fromdate,
+	$SQL = "SELECT MIN(trandate) AS fromdate,
 					MAX(trandate) AS todate FROM gltrans WHERE type=0";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 	if (isset($MyRow['fromdate']) and $MyRow['fromdate'] != '') {
 		$FromDate = $MyRow['fromdate'];
@@ -51,7 +51,7 @@ if (!isset($_POST['Show'])) {
 	echo '</form>';
 } else {
 
-	$sql = "SELECT gltrans.typeno,
+	$SQL = "SELECT gltrans.typeno,
 				gltrans.trandate,
 				gltrans.account,
 				chartmaster.accountname,
@@ -72,7 +72,7 @@ if (!isset($_POST['Show'])) {
 				AND gltrans.typeno<='" . $_POST['NumberTo'] . "'
 			ORDER BY gltrans.typeno";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	if (DB_num_rows($result) == 0) {
 		prnMsg(_('There are no transactions for this account in the date range selected'), 'info');
 	} else {

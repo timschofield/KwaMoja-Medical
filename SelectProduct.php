@@ -92,8 +92,8 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 			<tr>
 			<td style="width:45%" valign="top">
 			<table>'; //nested table
-	$sql = "SELECT abccategory FROM abcstock WHERE stockid='" . $StockID . "'";
-	$ABCResult = DB_query($sql);
+	$SQL = "SELECT abccategory FROM abcstock WHERE stockid='" . $StockID . "'";
+	$ABCResult = DB_query($SQL);
 	$ABCRow = DB_fetch_array($ABCResult);
 	echo '<tr>
 			<th class="number">' . _('Category') . ':</th>
@@ -217,7 +217,7 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 	echo '</table>'; //end of first nested table
 	// Item Category Property mod: display the item properties
 	echo '<table>';
-	$sql = "SELECT stkcatpropid,
+	$SQL = "SELECT stkcatpropid,
 					label,
 					controltype,
 					defaultvalue
@@ -225,7 +225,7 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 				WHERE categoryid ='" . $MyRow['categoryid'] . "'
 				AND reqatsalesorder =0
 				ORDER BY stkcatpropid";
-	$PropertiesResult = DB_query($sql);
+	$PropertiesResult = DB_query($SQL);
 	$PropertyCounter = 0;
 	$PropertyWidth = array();
 	while ($PropertyRow = DB_fetch_array($PropertiesResult)) {
@@ -294,13 +294,13 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 				$QOO = $QOORow[0];
 			}
 			//Also the on work order quantities
-			$sql = "SELECT SUM(woitems.qtyreqd-woitems.qtyrecd) AS qtywo
+			$SQL = "SELECT SUM(woitems.qtyreqd-woitems.qtyrecd) AS qtywo
 				FROM woitems INNER JOIN workorders
 				ON woitems.wo=workorders.wo
 				WHERE workorders.closed=0
 				AND woitems.stockid='" . $StockID . "'";
 			$ErrMsg = _('The quantity on work orders for this product cannot be retrieved because');
-			$QOOResult = DB_query($sql, $ErrMsg);
+			$QOOResult = DB_query($SQL, $ErrMsg);
 			if (DB_num_rows($QOOResult) == 1) {
 				$QOORow = DB_fetch_row($QOOResult);
 				$QOO += $QOORow[0];
@@ -329,7 +329,7 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 	$DemAsComponentRow = DB_fetch_row($DemAsComponentResult);
 	$Demand += $DemAsComponentRow[0];
 	//Also the demand for the item as a component of works orders
-	$sql = "SELECT SUM(qtypu*(woitems.qtyreqd - woitems.qtyrecd)) AS woqtydemo
+	$SQL = "SELECT SUM(qtypu*(woitems.qtyreqd - woitems.qtyrecd)) AS woqtydemo
 		FROM woitems INNER JOIN worequirements
 		ON woitems.stockid=worequirements.parentstockid
 		INNER JOIN workorders
@@ -338,7 +338,7 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 		WHERE  worequirements.stockid='" . $StockID . "'
 		AND workorders.closed=0";
 	$ErrMsg = _('The workorder component demand for this product cannot be retrieved because');
-	$DemandResult = DB_query($sql, $ErrMsg);
+	$DemandResult = DB_query($SQL, $ErrMsg);
 	if (DB_num_rows($DemandResult) == 1) {
 		$DemandRow = DB_fetch_row($DemandResult);
 		$Demand += $DemandRow[0];

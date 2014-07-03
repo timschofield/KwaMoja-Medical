@@ -18,20 +18,20 @@ if (isset($_POST['UpdateAll'])) {
 			$OrderNo = mb_substr($key, 6);
 			$Status = $_POST['Status' . $OrderNo];
 			$Comment = date($_SESSION['DefaultDateFormat']) . ' - ' . _('Authorised by') . ' <a href="mailto:' . $EmailRow['email'] . '">' . $_SESSION['UserID'] . '</a><br />' . html_entity_decode($_POST['comment'], ENT_QUOTES, 'UTF-8');
-			$sql = "UPDATE purchorders
+			$SQL = "UPDATE purchorders
 					SET status='" . $Status . "',
 						stat_comment='" . $Comment . "',
 						authoriser='" . $_SESSION['UserID'] . "',
 						allowprint=1
 					WHERE orderno='" . $OrderNo . "'";
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 		}
 	}
 }
 
 /* Retrieve the purchase order header information
  */
-$sql = "SELECT purchorders.*,
+$SQL = "SELECT purchorders.*,
 			suppliers.suppname,
 			suppliers.currcode,
 			www_users.realname,
@@ -44,7 +44,7 @@ $sql = "SELECT purchorders.*,
 		INNER JOIN www_users
 			ON www_users.userid=purchorders.initiator
 	WHERE status='Pending'";
-$result = DB_query($sql);
+$result = DB_query($SQL);
 
 echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';

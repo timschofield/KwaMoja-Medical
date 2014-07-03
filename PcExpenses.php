@@ -86,7 +86,7 @@ if (isset($_POST['submit'])) {
 
 	if (isset($SelectedExpense) and $InputError != 1) {
 
-		$sql = "UPDATE pcexpenses
+		$SQL = "UPDATE pcexpenses
 				SET description = '" . $_POST['Description'] . "',
 					glaccount = '" . $_POST['GLAccount'] . "',
 					tag = '" . $_POST['Tag'] . "'
@@ -111,7 +111,7 @@ if (isset($_POST['submit'])) {
 
 			// Add new record on submit
 
-			$sql = "INSERT INTO pcexpenses
+			$SQL = "INSERT INTO pcexpenses
 						(codeexpense,
 			 			 description,
 			 			 glaccount,
@@ -132,7 +132,7 @@ if (isset($_POST['submit'])) {
 
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		prnMsg($msg, 'success');
 		echo '<br />';
 		unset($SelectedExpense);
@@ -146,12 +146,12 @@ if (isset($_POST['submit'])) {
 
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'PcTabExpenses'
 
-	$sql = "SELECT COUNT(*)
+	$SQL = "SELECT COUNT(*)
 		   FROM pctabexpenses
 		   WHERE codeexpense='" . $SelectedExpense . "'";
 
 	$ErrMsg = _('The number of type of tabs using this expense code could not be retrieved');
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 
 	$MyRow = DB_fetch_row($result);
 	if ($MyRow[0] > 0) {
@@ -159,10 +159,10 @@ if (isset($_POST['submit'])) {
 
 	} else {
 
-		$sql = "DELETE FROM pcexpenses
+		$SQL = "DELETE FROM pcexpenses
 				  WHERE codeexpense='" . $SelectedExpense . "'";
 		$ErrMsg = _('The expense type record could not be deleted because');
-		$result = DB_query($sql, $ErrMsg);
+		$result = DB_query($SQL, $ErrMsg);
 		prnMsg(_('Expense type') . ' ' . $SelectedExpense . ' ' . _('has been deleted'), 'success');
 		echo '<br />';
 		unset($SelectedExpense);
@@ -177,9 +177,9 @@ if (!isset($SelectedExpense)) {
 	links to delete or edit each. These will call the same page again and allow update/input
 	or deletion of the records*/
 
-	$sql = "SELECT *
+	$SQL = "SELECT *
 			FROM pcexpenses";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	echo '<table class="selection">';
 	echo '<tr>
@@ -201,11 +201,11 @@ if (!isset($SelectedExpense)) {
 			$k = 1;
 		}
 
-		$sqldesc = "SELECT accountname
+		$SQLdesc = "SELECT accountname
 					FROM chartmaster
 					WHERE accountcode='" . $MyRow[2] . "'";
 
-		$ResultDes = DB_query($sqldesc);
+		$ResultDes = DB_query($SQLdesc);
 		$Description = DB_fetch_array($ResultDes);
 
 		$SqlDescTag = "SELECT tagdescription
@@ -243,14 +243,14 @@ if (!isset($_GET['delete'])) {
 	// The user wish to EDIT an existing type
 	if (isset($SelectedExpense) and $SelectedExpense != '') {
 
-		$sql = "SELECT codeexpense,
+		$SQL = "SELECT codeexpense,
 				   description,
 				   glaccount,
 				   tag
 				FROM pcexpenses
 				WHERE codeexpense='" . $SelectedExpense . "'";
 
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_array($result);
 
 		$_POST['CodeExpense'] = $MyRow['codeexpense'];

@@ -54,7 +54,7 @@ if (!isset($_POST['Date'])) {
 	include('includes/ConnectDB.inc');
 }
 
-$sql = "SELECT type,
+$SQL = "SELECT type,
 			supplierno,
 			suppreference,
 			trandate,
@@ -71,14 +71,14 @@ $sql = "SELECT type,
 		WHERE type='" . $_POST['TransType'] . "'
 		AND trandate='" . FormatDateForSQL($_POST['Date']) . "'";
 
-$result = DB_query($sql, '', '', false, false);
+$result = DB_query($SQL, '', '', false, false);
 
 if (DB_error_no() != 0) {
 	$Title = _('Payment Listing');
 	include('includes/header.inc');
 	prnMsg(_('An error occurred getting the payments'), 'error');
 	if ($debug == 1) {
-		prnMsg(_('The SQL used to get the receipt header information that failed was') . ':<br />' . $sql, 'error');
+		prnMsg(_('The SQL used to get the receipt header information that failed was') . ':<br />' . $SQL, 'error');
 	}
 	include('includes/footer.inc');
 	exit;

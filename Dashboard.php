@@ -7,9 +7,9 @@ $Title = _('Dashboard');
 include('includes/header.inc');
 include('includes/MainMenuLinksArray.php');
 
-$sql = "SELECT scripts FROM dashboard_users WHERE userid = '".$_SESSION['UserID']."' ";
+$SQL = "SELECT scripts FROM dashboard_users WHERE userid = '".$_SESSION['UserID']."' ";
 
-$result = DB_query($sql);
+$result = DB_query($SQL);
 
 $MyRow = DB_fetch_array($result);
 $arr = explode(',',$MyRow["scripts"]);
@@ -36,13 +36,13 @@ if (isset($_POST['Reports'])) {
 	$UpdateResult = DB_query($UpdateSQL);
 }
 
-$sql = "SELECT id,
+$SQL = "SELECT id,
 				scripts,
 				pagesecurity,
 				description
 			FROM dashboard_scripts";
 
-$result = DB_query($sql);
+$result = DB_query($SQL);
 
 while($MyRow = DB_fetch_array($result)) {
 	if (in_array($MyRow['id'], $arr) and in_array($MyRow['pagesecurity'], $_SESSION['AllowedPageSecurityTokens'])) {

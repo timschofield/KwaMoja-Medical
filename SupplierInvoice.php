@@ -27,8 +27,8 @@ else {
 }
 
 if (!isset($_SESSION['SuppTrans']->SupplierName)) {
-	$sql = "SELECT suppname FROM suppliers WHERE supplierid='" . $_GET['SupplierID'] . "'";
-	$result = DB_query($sql);
+	$SQL = "SELECT suppname FROM suppliers WHERE supplierid='" . $_GET['SupplierID'] . "'";
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_row($result);
 	$SupplierName = $MyRow[0];
 } //!isset($_SESSION['SuppTrans']->SupplierName)
@@ -55,7 +55,7 @@ if (isset($_GET['SupplierID']) and $_GET['SupplierID'] != '') {
 
 	/*Now retrieve supplier information - name, currency, default ex rate, terms, tax rate etc */
 
-	$sql = "SELECT suppliers.suppname,
+	$SQL = "SELECT suppliers.suppname,
 					suppliers.supplierid,
 					paymentterms.terms,
 					paymentterms.daysbeforedue,
@@ -78,7 +78,7 @@ if (isset($_GET['SupplierID']) and $_GET['SupplierID'] != '') {
 	$ErrMsg = _('The supplier record selected') . ': ' . $_GET['SupplierID'] . ' ' . _('cannot be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve the supplier details and failed was');
 
-	$result = DB_query($sql, $ErrMsg, $DbgMsg);
+	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	$MyRow = DB_fetch_array($result);
 
@@ -436,11 +436,11 @@ if (isset($_GET['ReceivePO']) and $_GET['ReceivePO'] != '') {
 				/*end of OrderLine loop */
 
 				$StatusComment = date($_SESSION['DefaultDateFormat']) . ' - ' . _('Order Completed on entry of GRN') . '<br />' . $_SESSION['PO' . $identifier]->StatusComments;
-				$sql = "UPDATE purchorders
+				$SQL = "UPDATE purchorders
 						SET status='Completed',
 						stat_comment='" . $StatusComment . "'
 						WHERE orderno='" . $_SESSION['PO' . $identifier]->OrderNo . "'";
-				$result = DB_query($sql);
+				$result = DB_query($SQL);
 
 				if ($_SESSION['PO' . $identifier]->GLLink == 1) {
 					EnsureGLEntriesBalance(25, $GRN);
@@ -993,14 +993,14 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 
 	} //$_SESSION['SuppTrans']->OvAmount < round($_SESSION['SuppTrans']->Total_Shipts_Value() + $_SESSION['SuppTrans']->Total_GL_Value() + $_SESSION['SuppTrans']->Total_Contracts_Value() + $_SESSION['SuppTrans']->Total_Assets_Value() + $_SESSION['SuppTrans']->Total_GRN_Value(), $_SESSION['SuppTrans']->CurrDecimalPlaces)
 	else {
-		$sql = "SELECT count(*)
+		$SQL = "SELECT count(*)
 				FROM supptrans
 				WHERE supplierno='" . $_SESSION['SuppTrans']->SupplierID . "'
 				AND supptrans.suppreference='" . $_POST['SuppReference'] . "'";
 
 		$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The sql to check for the previous entry of the same invoice failed');
 		$DbgMsg = _('The following SQL to test for a previous invoice with the same reference from the same supplier was used');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg, True);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
 
 		$MyRow = DB_fetch_row($result);
 		if ($MyRow[0] == 1) {
@@ -1218,10 +1218,10 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 								The cost of these items - $EnteredGRN->ChgPrice  / $_SESSION['SuppTrans']->ExRate
 								*/
 
-								$sql = "SELECT SUM(quantity) FROM locstock WHERE stockid='" . $EnteredGRN->ItemCode . "'";
+								$SQL = "SELECT SUM(quantity) FROM locstock WHERE stockid='" . $EnteredGRN->ItemCode . "'";
 								$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The quantity on hand could not be retrieved from the database');
 								$DbgMsg = _('The following SQL to retrieve the total stock quantity was used');
-								$Result = DB_query($sql, $ErrMsg, $DbgMsg, True);
+								$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
 								$QtyRow = DB_fetch_row($Result);
 								$TotalQuantityOnHand = $QtyRow[0];
 
@@ -1562,12 +1562,12 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 							 * The cost of these items = $ActualCost
 							 */
 
-							$sql = "SELECT sum(quantity)
+							$SQL = "SELECT sum(quantity)
 									FROM locstock
 									WHERE stockid='" . $EnteredGRN->ItemCode . "'";
 							$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The quantity on hand could not be retrieved from the database');
 							$DbgMsg = _('The following SQL to retrieve the total stock quantity was used');
-							$Result = DB_query($sql, $ErrMsg, $DbgMsg);
+							$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 							$QtyRow = DB_fetch_row($Result);
 							$TotalQuantityOnHand = $QtyRow[0];
 
@@ -1682,13 +1682,13 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 							$DbgMsg = _('The following SQL to update the cost was used');
 
 							/* Get the old cost information */
-							$sql = "SELECT stockcosts.materialcost,
+							$SQL = "SELECT stockcosts.materialcost,
 											stockcosts.labourcost,
 											stockcosts.overheadcosts
 										FROM stockcosts
 										WHERE stockid='" . $EnteredGRN->ItemCode . "'
 											AND succeeded=0";
-							$result = DB_query($sql);
+							$result = DB_query($SQL);
 							$MyRow = DB_fetch_array($result);
 							$OldMaterialCost = $MyRow['materialcost'];
 							$OldLabourCost = $MyRow['labourcost'];
@@ -1697,32 +1697,32 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 							if ($TotalQuantityOnHand > 0) {
 								$CostIncrement = ($PurchPriceVar - $WriteOffToVariances) / $TotalQuantityOnHand;
 
-								$sql = "UPDATE stockcosts SET succeeded=1
+								$SQL = "UPDATE stockcosts SET succeeded=1
 															WHERE stockid='" . $EnteredGRN->ItemCode . "'
 																AND succeeded=0;";
-								$Result = DB_query($sql, $ErrMsg, $DbgMsg, True);
+								$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
 
-								$sql = "INSERT INTO stockcosts VALUES('" . $EnteredGRN->ItemCode . "',
+								$SQL = "INSERT INTO stockcosts VALUES('" . $EnteredGRN->ItemCode . "',
 																'" . ($OldMaterialCost + $CostIncrement) . "',
 																'" . $OldLabourCost . "',
 																'" . $OldOverheadCost . "',
 																CURRENT_TIME,
 																0)";
-								$Result = DB_query($sql, $ErrMsg, $DbgMsg, True);
+								$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
 							} //$TotalQuantityOnHand > 0
 							else {
-								$sql = "UPDATE stockcosts SET succeeded=1
+								$SQL = "UPDATE stockcosts SET succeeded=1
 															WHERE stockid='" . $EnteredGRN->ItemCode . "'
 																AND succeeded=0;";
-								$Result = DB_query($sql, $ErrMsg, $DbgMsg, True);
+								$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
 
-								$sql = "INSERT INTO stockcosts VALUES('" . $EnteredGRN->ItemCode . "',
+								$SQL = "INSERT INTO stockcosts VALUES('" . $EnteredGRN->ItemCode . "',
 																	'" . $ActualCost . "',
 																	'" . $OldLabourCost . "',
 																	'" . $OldOverheadCost . "',
 																	CURRENT_TIME,
 																	0)";
-								$Result = DB_query($sql, $ErrMsg, $DbgMsg, True);
+								$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
 							}
 						} //$_SESSION['WeightedAverageCosting'] == 1
 

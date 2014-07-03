@@ -29,13 +29,13 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 				<td><select minlength="0" name="BalancePeriodEnd">';
 
 	$periodno = GetPeriod(Date($_SESSION['DefaultDateFormat']));
-	$sql = "SELECT lastdate_in_period FROM periods WHERE periodno='" . $periodno . "'";
-	$result = DB_query($sql);
+	$SQL = "SELECT lastdate_in_period FROM periods WHERE periodno='" . $periodno . "'";
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 	$lastdate_in_period = $MyRow[0];
 
-	$sql = "SELECT periodno, lastdate_in_period FROM periods ORDER BY periodno DESC";
-	$Periods = DB_query($sql);
+	$SQL = "SELECT periodno, lastdate_in_period FROM periods ORDER BY periodno DESC";
+	$Periods = DB_query($SQL);
 
 	while ($MyRow = DB_fetch_array($Periods)) {
 		if ($MyRow['periodno'] == $periodno) {
@@ -85,8 +85,8 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 
 	$RetainedEarningsAct = $_SESSION['CompanyRecord']['retainedearnings'];
 
-	$sql = "SELECT lastdate_in_period FROM periods WHERE periodno='" . $_POST['BalancePeriodEnd'] . "'";
-	$PrdResult = DB_query($sql);
+	$SQL = "SELECT lastdate_in_period FROM periods WHERE periodno='" . $_POST['BalancePeriodEnd'] . "'";
+	$PrdResult = DB_query($SQL);
 	$MyRow = DB_fetch_row($PrdResult);
 	$BalanceDate = ConvertSQLDate($MyRow[0]);
 
@@ -340,8 +340,8 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 
 	$RetainedEarningsAct = $_SESSION['CompanyRecord']['retainedearnings'];
 
-	$sql = "SELECT lastdate_in_period FROM periods WHERE periodno='" . $_POST['BalancePeriodEnd'] . "'";
-	$PrdResult = DB_query($sql);
+	$SQL = "SELECT lastdate_in_period FROM periods WHERE periodno='" . $_POST['BalancePeriodEnd'] . "'";
+	$PrdResult = DB_query($SQL);
 	$MyRow = DB_fetch_row($PrdResult);
 	$BalanceDate = ConvertSQLDate($MyRow[0]);
 

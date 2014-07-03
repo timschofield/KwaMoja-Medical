@@ -60,14 +60,14 @@ function search(&$StockID) { //####SEARCH_SEARCH_SEARCH_SEARCH_SEARCH_SEARCH_SEA
 			//insert wildcard characters in spaces
 			$SearchString = '%' . str_replace(' ', '%', $_POST['Keywords']) . '%';
 
-			$sql = "SELECT stockmaster.stockid,
+			$SQL = "SELECT stockmaster.stockid,
 						stockmaster.description
 					FROM stockmaster
 					WHERE  stockmaster.description " . LIKE . " '" . $SearchString . "'
 					ORDER BY stockmaster.stockid";
 
 		} elseif (mb_strlen($_POST['StockCode']) > 0) {
-			$sql = "SELECT stockmaster.stockid,
+			$SQL = "SELECT stockmaster.stockid,
 						stockmaster.description
 					FROM stockmaster
 					WHERE  stockmaster.stockid " . LIKE . "'%" . $_POST['StockCode'] . "%'
@@ -76,7 +76,7 @@ function search(&$StockID) { //####SEARCH_SEARCH_SEARCH_SEARCH_SEARCH_SEARCH_SEA
 		}
 
 		$ErrMsg = _('The SQL to find the parts selected failed with the message');
-		$result = DB_query($sql, $ErrMsg);
+		$result = DB_query($SQL, $ErrMsg);
 
 	} //one of keywords or StockCode was more than a zero length string
 
@@ -148,9 +148,9 @@ function submit(&$StockID, &$DemandID) //####SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_
 		$InputError = 1;
 		prnMsg(_('Invalid due date'), 'error');
 	}
-	$sql = "SELECT * FROM mrpdemandtypes
+	$SQL = "SELECT * FROM mrpdemandtypes
 			WHERE mrpdemandtype='" . $_POST['MRPDemandtype'] . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	if (DB_num_rows($result) == 0) {
 		$InputError = 1;
@@ -158,9 +158,9 @@ function submit(&$StockID, &$DemandID) //####SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_
 	}
 	// Check if valid part number - Had done a Select Count(*), but that returned a 1 in DB_num_rows
 	// even if there was no record.
-	$sql = "SELECT * FROM stockmaster
+	$SQL = "SELECT * FROM stockmaster
 			WHERE stockid='" . $StockID . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	if (DB_num_rows($result) == 0) {
 		$InputError = 1;
@@ -169,12 +169,12 @@ function submit(&$StockID, &$DemandID) //####SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_
 		unset($StockID);
 	}
 	// Check if part number/demand type/due date combination already exists
-	$sql = "SELECT * FROM mrpdemands
+	$SQL = "SELECT * FROM mrpdemands
 			WHERE stockid='" . $StockID . "'
 			AND mrpdemandtype='" . $_POST['MRPDemandtype'] . "'
 			AND duedate='" . $FormatedDuedate . "'
 			AND demandid <> '" . $DemandID . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	if (DB_num_rows($result) > 0) {
 		$InputError = 1;
@@ -182,15 +182,15 @@ function submit(&$StockID, &$DemandID) //####SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_
 	}
 
 	if ($InputError != 1) {
-		$sql = "SELECT COUNT(*) FROM mrpdemands
+		$SQL = "SELECT COUNT(*) FROM mrpdemands
 				   WHERE demandid='" . $DemandID . "'
 				   GROUP BY demandid";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_row($result);
 
 		if ($MyRow[0] > 0) {
 			//If $MyRow[0] > 0, it means this is an edit, so do an update
-			$sql = "UPDATE mrpdemands SET quantity = '" . filter_number_format($_POST['Quantity']) . "',
+			$SQL = "UPDATE mrpdemands SET quantity = '" . filter_number_format($_POST['Quantity']) . "',
 							mrpdemandtype = '" . trim(mb_strtoupper($_POST['MRPDemandtype'])) . "',
 							duedate = '" . $FormatedDuedate . "'
 					WHERE demandid = '" . $DemandID . "'";
@@ -198,7 +198,7 @@ function submit(&$StockID, &$DemandID) //####SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_
 		} else {
 
 			// if $MyRow[0] from SELECT count(*) is zero, this is an entry of a new record
-			$sql = "INSERT INTO mrpdemands (stockid,
+			$SQL = "INSERT INTO mrpdemands (stockid,
 							mrpdemandtype,
 							quantity,
 							duedate)
@@ -211,7 +211,7 @@ function submit(&$StockID, &$DemandID) //####SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_
 		}
 
 
-		$result = DB_query($sql, _('The update/addition of the MRP demand record failed because'));
+		$result = DB_query($SQL, _('The update/addition of the MRP demand record failed because'));
 		prnMsg($msg, 'success');
 		echo '<br />';
 		unset($_POST['MRPDemandtype']);
@@ -241,9 +241,9 @@ function delete($DemandID, $DemandType, $StockID) { //####DELETE_DELETE_DELETE_D
 	if ($DemandID) {
 		$where = " WHERE demandid ='" . $DemandID . "'";
 	}
-	$sql = "DELETE FROM mrpdemands
+	$SQL = "DELETE FROM mrpdemands
 		   $where";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	if ($DemandID) {
 		prnMsg(_('The MRP demand record for') . ' ' . $StockID . ' ' . _('has been deleted'), 'succes');
 	} else {
@@ -273,7 +273,7 @@ function listall($part, $DemandType) { //####LISTALL_LISTALL_LISTALL_LISTALL_LIS
 		$where = " WHERE mrpdemands.stockid ='" . $part . "'";
 	}
 	// If part is entered, it overrides demandtype
-	$sql = "SELECT mrpdemands.demandid,
+	$SQL = "SELECT mrpdemands.demandid,
 				   mrpdemands.stockid,
 				   mrpdemands.mrpdemandtype,
 				   mrpdemands.quantity,
@@ -284,7 +284,7 @@ function listall($part, $DemandType) { //####LISTALL_LISTALL_LISTALL_LISTALL_LIS
 			LEFT JOIN stockmaster on mrpdemands.stockid = stockmaster.stockid" . $where . " ORDER BY mrpdemands.stockid, mrpdemands.duedate";
 
 	$ErrMsg = _('The SQL to find the parts selected failed with the message');
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 
 	echo '<table class="selection">
 		<tr>
@@ -342,14 +342,14 @@ function display(&$StockID, &$DemandID) { //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_
 		if (isset($DemandID)) {
 			//editing an existing MRP demand
 
-			$sql = "SELECT demandid,
+			$SQL = "SELECT demandid,
 					stockid,
 					mrpdemandtype,
 					quantity,
 					duedate
 				FROM mrpdemands
 				WHERE demandid='" . $DemandID . "'";
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 			$MyRow = DB_fetch_array($result);
 
 			if (DB_num_rows($result) > 0) {
@@ -400,10 +400,10 @@ function display(&$StockID, &$DemandID) { //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_
 				<td>' . _('Demand Type') . '</td>
 				<td><select minlength="0" name="MRPDemandtype">';
 
-		$sql = "SELECT mrpdemandtype,
+		$SQL = "SELECT mrpdemandtype,
 						description
 				FROM mrpdemandtypes";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		while ($MyRow = DB_fetch_array($result)) {
 			if (isset($_POST['MRPDemandtype']) and $MyRow['mrpdemandtype'] == $_POST['MRPDemandtype']) {
 				echo '<option selected="selected" value="';

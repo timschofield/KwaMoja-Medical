@@ -49,7 +49,7 @@ if (isset($_POST['submit'])) {
 		if (!isset($_POST['EDIServerPwd'])) {
 			$_POST['EDIServerPwd'] = '';
 		}
-		$sql = "UPDATE debtorsmaster SET ediinvoices ='" . $_POST['EDIInvoices'] . "',
+		$SQL = "UPDATE debtorsmaster SET ediinvoices ='" . $_POST['EDIInvoices'] . "',
 					ediorders ='" . $_POST['EDIOrders'] . "',
 					edireference='" . $_POST['EDIReference'] . "',
 					editransport='" . $_POST['EDITransport'] . "',
@@ -59,7 +59,7 @@ if (isset($_POST['submit'])) {
 			WHERE debtorno = '" . $_SESSION['CustomerID'] . "'";
 
 		$ErrMsg = _('The customer EDI setup data could not be updated because');
-		$result = DB_query($sql, $ErrMsg);
+		$result = DB_query($SQL, $ErrMsg);
 		prnMsg(_('Customer EDI configuration updated'), 'success');
 	} else {
 		prnMsg(_('Customer EDI configuration failed'), 'error');
@@ -71,7 +71,7 @@ echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 echo '<br /><table class="selection">';
 
-$sql = "SELECT debtorno,
+$SQL = "SELECT debtorno,
 		name,
 		ediinvoices,
 		ediorders,
@@ -84,7 +84,7 @@ $sql = "SELECT debtorno,
 	WHERE debtorno = '" . $_SESSION['CustomerID'] . "'";
 
 $ErrMsg = _('The customer EDI configuration details could not be retrieved because');
-$result = DB_query($sql, $ErrMsg);
+$result = DB_query($SQL, $ErrMsg);
 
 $MyRow = DB_fetch_array($result);
 

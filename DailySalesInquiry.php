@@ -79,7 +79,7 @@ if (mb_strlen($Date_Array[2]) > 4) {
 
 $StartDateSQL = date('Y-m-d', mktime(0, 0, 0, (int) $Date_Array[1], 1, (int) $Date_Array[0]));
 
-$sql = "SELECT 	trandate,
+$SQL = "SELECT 	trandate,
 				SUM(price*(1-discountpercent)* (-qty)) as salesvalue,
 				SUM(CASE WHEN mbflag='A' THEN 0 ELSE (standardcost * -qty) END) as cost
 			FROM stockmoves
@@ -93,14 +93,14 @@ $sql = "SELECT 	trandate,
 			AND trandate<='" . $EndDateSQL . "'";
 
 if ($_SESSION['SalesmanLogin'] != '') {
-	$sql .= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
+	$SQL .= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
 } elseif ($_POST['Salesperson'] != 'All') {
-	$sql .= " AND custbranch.salesman='" . $_POST['Salesperson'] . "'";
+	$SQL .= " AND custbranch.salesman='" . $_POST['Salesperson'] . "'";
 }
 
-$sql .= " GROUP BY stockmoves.trandate ORDER BY stockmoves.trandate";
+$SQL .= " GROUP BY stockmoves.trandate ORDER BY stockmoves.trandate";
 $ErrMsg = _('The sales data could not be retrieved because') . ' - ' . DB_error_msg();
-$SalesResult = DB_query($sql, $ErrMsg);
+$SalesResult = DB_query($SQL, $ErrMsg);
 $MonthName = date("F", mktime(0, 0, 0, (int) $Date_Array[1], 10));
 echo '<table class="selection">
 		<tr>

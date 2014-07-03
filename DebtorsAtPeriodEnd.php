@@ -11,11 +11,11 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 	$PageNumber = 0;
 	$line_height = 12;
 
-	$sql = "SELECT min(debtorno) AS fromcriteria,
+	$SQL = "SELECT min(debtorno) AS fromcriteria,
 					max(debtorno) AS tocriteria
 				FROM debtorsmaster";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 
 	if ($_POST['FromCriteria']=='') {
@@ -136,11 +136,11 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 	include('includes/header.inc');
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/customer.png" title="' . _('Debtor Balances') . '" alt="' . _('Debtor Balances') . '" />' . ' ' . $Title . '</p><br />';
 
-	$sql = "SELECT min(debtorno) AS fromcriteria,
+	$SQL = "SELECT min(debtorno) AS fromcriteria,
 					max(debtorno) AS tocriteria
 				FROM debtorsmaster";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 
 	if (!isset($_POST['FromCriteria']) or !isset($_POST['ToCriteria'])) {
@@ -164,8 +164,8 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				<td>' . _('Balances As At') . ':</td>
 				<td><select minlength="0" tabindex="3" name="PeriodEnd">';
 
-		$sql = "SELECT periodno, lastdate_in_period FROM periods ORDER BY periodno DESC";
-		$Periods = DB_query($sql, _('Could not retrieve period data because'), _('The SQL that failed to get the period data was'));
+		$SQL = "SELECT periodno, lastdate_in_period FROM periods ORDER BY periodno DESC";
+		$Periods = DB_query($SQL, _('Could not retrieve period data because'), _('The SQL that failed to get the period data was'));
 
 		while ($MyRow = DB_fetch_array($Periods)) {
 

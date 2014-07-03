@@ -116,18 +116,18 @@ if (!isset($OrderNumber) or $OrderNumber == '') {
 	}
 
 	if ($_SESSION['RestrictLocations'] == 0) {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations";
 	} else {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations
 					INNER JOIN www_users
 						ON locations.loccode=www_users.defaultlocation
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
-	$resultStkLocs = DB_query($sql);
+	$resultStkLocs = DB_query($SQL);
 	while ($MyRow = DB_fetch_array($resultStkLocs)) {
 		if (isset($_POST['StockLocation'])) {
 			if ($MyRow['loccode'] == $_POST['StockLocation']) {
@@ -385,8 +385,8 @@ if (isset($StockItemsResult)) {
 		$FormatedOrderDate = ConvertSQLDate($MyRow['orddate']);
 		$FormatedDeliveryDate = ConvertSQLDate($MyRow['deliverydate']);
 		$FormatedOrderValue = locale_number_format($MyRow['ordervalue'], $MyRow['currdecimalplaces']);
-		$sql = "SELECT realname FROM www_users WHERE userid='" . $MyRow['initiator'] . "'";
-		$UserResult = DB_query($sql);
+		$SQL = "SELECT realname FROM www_users WHERE userid='" . $MyRow['initiator'] . "'";
+		$UserResult = DB_query($SQL);
 		$MyUserRow = DB_fetch_array($UserResult);
 		$InitiatorName = $MyUserRow['realname'];
 

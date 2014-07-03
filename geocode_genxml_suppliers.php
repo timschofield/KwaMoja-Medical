@@ -17,9 +17,9 @@ $xmlStr=str_replace("&",'&amp;',$xmlStr);
 return $xmlStr;
 }
 
-$sql = "SELECT * FROM suppliers WHERE 1";
+$SQL = "SELECT * FROM suppliers WHERE 1";
 $ErrMsg = _('An error occurred in retrieving the information');;
-$result = DB_query($sql, $ErrMsg);
+$result = DB_query($SQL, $ErrMsg);
 
 header("Content-type: text/xml");
 

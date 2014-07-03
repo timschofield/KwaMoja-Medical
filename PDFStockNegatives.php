@@ -14,7 +14,7 @@ $ErrMsg = _('An error occurred retrieving the negative quantities.');
 $DbgMsg = _('The sql that failed to retrieve the negative quantities was');
 
 if ($_SESSION['RestrictLocations'] == 0) {
-	$sql = "SELECT stockmaster.stockid,
+	$SQL = "SELECT stockmaster.stockid,
 					stockmaster.description,
 					stockmaster.categoryid,
 					stockmaster.decimalplaces,
@@ -32,7 +32,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 						stockmaster.stockid,
 						stockmaster.decimalplaces";
 } else {
-	$sql = "SELECT stockmaster.stockid,
+	$SQL = "SELECT stockmaster.stockid,
 					stockmaster.description,
 					stockmaster.categoryid,
 					stockmaster.decimalplaces,
@@ -54,7 +54,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 						stockmaster.decimalplaces";
 }
 
-$result = DB_query($sql, $ErrMsg, $DbgMsg);
+$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 if (DB_num_rows($result) == 0) {
 	include('includes/header.inc');

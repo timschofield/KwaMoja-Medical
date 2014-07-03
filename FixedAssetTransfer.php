@@ -14,11 +14,11 @@ foreach ($_POST as $AssetToMove => $Value) { //Value is not used?
 	if (mb_substr($AssetToMove, 0, 4) == 'Move') { // the form variable is of the format MoveAssetID so need to strip the move bit off
 		$AssetID = mb_substr($AssetToMove, 4);
 		if (isset($_POST['Location' . $AssetID]) and $_POST['Location' . $AssetID] != '') {
-			$sql = "UPDATE fixedassets
+			$SQL = "UPDATE fixedassets
 						SET assetlocation='" . $_POST['Location' . $AssetID] . "'
 						WHERE assetid='" . $AssetID . "'";
 
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 			prnMsg(_('The Fixed Asset has been moved successfully'), 'success');
 			echo '<br />';
 		}
@@ -30,8 +30,8 @@ if (isset($_GET['AssetID'])) {
 } else if (isset($_POST['AssetID'])) {
 	$AssetID = $_POST['AssetID'];
 } else {
-	$sql = "SELECT categoryid, categorydescription FROM fixedassetcategories";
-	$result = DB_query($sql);
+	$SQL = "SELECT categoryid, categorydescription FROM fixedassetcategories";
+	$result = DB_query($SQL);
 	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -126,7 +126,7 @@ if (isset($_POST['Search'])) {
 	}
 
 
-	$sql = "SELECT fixedassets.assetid,
+	$SQL = "SELECT fixedassets.assetid,
 				fixedassets.cost,
 				fixedassets.accumdepn,
 				fixedassets.description,
@@ -145,7 +145,7 @@ if (isset($_POST['Search'])) {
 			ORDER BY fixedassets.assetid";
 
 
-	$Result = DB_query($sql);
+	$Result = DB_query($SQL);
 	echo '<br />';
 	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">
 		  <div>';

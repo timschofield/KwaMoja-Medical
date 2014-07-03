@@ -6,7 +6,7 @@ include('includes/header.inc');
 
 echo '<div class="centre"><h3>' . _('Suppliers Balances By Currency Totals') . '</h3></div>';
 
-$sql = "SELECT SUM(ovamount+ovgst-alloc) AS currencybalance,
+$SQL = "SELECT SUM(ovamount+ovgst-alloc) AS currencybalance,
 		currcode,
 		decimalplaces AS currdecimalplaces,
 		SUM((ovamount+ovgst-alloc)/supptrans.rate) AS localbalance
@@ -15,7 +15,7 @@ $sql = "SELECT SUM(ovamount+ovgst-alloc) AS currencybalance,
 		WHERE (ovamount+ovgst-alloc)<>0
 		GROUP BY currcode";
 
-$result = DB_query($sql);
+$result = DB_query($SQL);
 
 $LocalTotal = 0;
 

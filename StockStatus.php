@@ -17,8 +17,8 @@ if (isset($_GET['StockID'])) {
 if (isset($_POST['UpdateBinLocations'])) {
 	foreach ($_POST as $PostVariableName => $Bin) {
 		if (mb_substr($PostVariableName, 0, 11) == 'BinLocation') {
-			$sql = "UPDATE locstock SET bin='" . strtoupper($Bin) . "' WHERE loccode='" . mb_substr($PostVariableName, 11) . "' AND stockid='" . $StockID . "'";
-			$result = DB_query($sql);
+			$SQL = "UPDATE locstock SET bin='" . strtoupper($Bin) . "' WHERE loccode='" . mb_substr($PostVariableName, 11) . "' AND stockid='" . $StockID . "'";
+			$result = DB_query($SQL);
 		}
 	}
 }
@@ -59,7 +59,7 @@ echo _('Stock Code') . ':<input type="text" name="StockID" size="21" value="' . 
 echo ' <input type="submit" name="ShowStatus" value="' . _('Show Stock Status') . '" />';
 
 if ($_SESSION['RestrictLocations'] == 0) {
-	$sql = "SELECT locstock.loccode,
+	$SQL = "SELECT locstock.loccode,
 					locations.locationname,
 					locstock.quantity,
 					locstock.reorderlevel,
@@ -71,7 +71,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 			WHERE locstock.stockid = '" . $StockID . "'
 			ORDER BY locations.locationname";
 } else {
-	$sql = "SELECT locstock.loccode,
+	$SQL = "SELECT locstock.loccode,
 					locations.locationname,
 					locstock.quantity,
 					locstock.reorderlevel,
@@ -89,7 +89,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 
 $ErrMsg = _('The stock held at each location cannot be retrieved because');
 $DbgMsg = _('The SQL that was used to fetch the location details and failed was');
-$LocStockResult = DB_query($sql, $ErrMsg, $DbgMsg);
+$LocStockResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 echo '<table class="selection">
 			<tbody>';
@@ -124,7 +124,7 @@ while ($MyRow = DB_fetch_array($LocStockResult)) {
 		$k = 1;
 	}
 
-	$sql = "SELECT SUM(salesorderdetails.quantity-salesorderdetails.qtyinvoiced) AS dem
+	$SQL = "SELECT SUM(salesorderdetails.quantity-salesorderdetails.qtyinvoiced) AS dem
 			FROM salesorderdetails INNER JOIN salesorders
 			ON salesorders.orderno = salesorderdetails.orderno
 			WHERE salesorders.fromstkloc='" . $MyRow['loccode'] . "'
@@ -133,7 +133,7 @@ while ($MyRow = DB_fetch_array($LocStockResult)) {
 			AND salesorderdetails.stkcode='" . $StockID . "'";
 
 	$ErrMsg = _('The demand for this product from') . ' ' . $MyRow['loccode'] . ' ' . _('cannot be retrieved because');
-	$DemandResult = DB_query($sql, $ErrMsg, $DbgMsg);
+	$DemandResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	if (DB_num_rows($DemandResult) == 1) {
 		$DemandRow = DB_fetch_row($DemandResult);
@@ -143,7 +143,7 @@ while ($MyRow = DB_fetch_array($LocStockResult)) {
 	}
 
 	//Also need to add in the demand as a component of an assembly items if this items has any assembly parents.
-	$sql = "SELECT SUM((salesorderdetails.quantity-salesorderdetails.qtyinvoiced)*bom.quantity) AS dem
+	$SQL = "SELECT SUM((salesorderdetails.quantity-salesorderdetails.qtyinvoiced)*bom.quantity) AS dem
 			FROM salesorderdetails INNER JOIN salesorders
 			ON salesorders.orderno = salesorderdetails.orderno
 			INNER JOIN bom
@@ -157,7 +157,7 @@ while ($MyRow = DB_fetch_array($LocStockResult)) {
 			AND salesorders.quotation=0";
 
 	$ErrMsg = _('The demand for this product from') . ' ' . $MyRow['loccode'] . ' ' . _('cannot be retrieved because');
-	$DemandResult = DB_query($sql, $ErrMsg, $DbgMsg);
+	$DemandResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	if (DB_num_rows($DemandResult) == 1) {
 		$DemandRow = DB_fetch_row($DemandResult);
@@ -166,7 +166,7 @@ while ($MyRow = DB_fetch_array($LocStockResult)) {
 
 	//Also the demand for the item as a component of works orders
 
-	$sql = "SELECT SUM(qtypu*(woitems.qtyreqd - woitems.qtyrecd)) AS woqtydemo
+	$SQL = "SELECT SUM(qtypu*(woitems.qtyreqd - woitems.qtyrecd)) AS woqtydemo
 			FROM woitems INNER JOIN worequirements
 			ON woitems.stockid=worequirements.parentstockid
 			INNER JOIN workorders
@@ -177,7 +177,7 @@ while ($MyRow = DB_fetch_array($LocStockResult)) {
 			AND workorders.closed=0";
 
 	$ErrMsg = _('The workorder component demand for this product from') . ' ' . $MyRow['loccode'] . ' ' . _('cannot be retrieved because');
-	$DemandResult = DB_query($sql, $ErrMsg, $DbgMsg);
+	$DemandResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	if (DB_num_rows($DemandResult) == 1) {
 		$DemandRow = DB_fetch_row($DemandResult);
@@ -186,7 +186,7 @@ while ($MyRow = DB_fetch_array($LocStockResult)) {
 
 	if ($Its_A_KitSet_Assembly_Or_Dummy == False) {
 
-		$sql = "SELECT SUM(purchorderdetails.quantityord*(CASE WHEN purchdata.conversionfactor IS NULL THEN 1 ELSE purchdata.conversionfactor END) -
+		$SQL = "SELECT SUM(purchorderdetails.quantityord*(CASE WHEN purchdata.conversionfactor IS NULL THEN 1 ELSE purchdata.conversionfactor END) -
 							purchorderdetails.quantityrecd*(CASE WHEN purchdata.conversionfactor IS NULL THEN 1 ELSE purchdata.conversionfactor END))
 			FROM purchorders LEFT JOIN purchorderdetails
 			ON purchorders.orderno=purchorderdetails.orderno
@@ -199,7 +199,7 @@ while ($MyRow = DB_fetch_array($LocStockResult)) {
 			AND purchorders.status<>'Rejected'
 			AND purchorders.status<>'Completed')";
 		$ErrMsg = _('The quantity on order for this product to be received into') . ' ' . $MyRow['loccode'] . ' ' . _('cannot be retrieved because');
-		$QOOResult = DB_query($sql, $ErrMsg, $DbgMsg);
+		$QOOResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 		if (DB_num_rows($QOOResult) == 1) {
 			$QOORow = DB_fetch_row($QOOResult);
@@ -209,14 +209,14 @@ while ($MyRow = DB_fetch_array($LocStockResult)) {
 		}
 
 		//Also the on work order quantities
-		$sql = "SELECT SUM(woitems.qtyreqd-woitems.qtyrecd) AS qtywo
+		$SQL = "SELECT SUM(woitems.qtyreqd-woitems.qtyrecd) AS qtywo
 				FROM woitems INNER JOIN workorders
 				ON woitems.wo=workorders.wo
 				WHERE workorders.closed=0
 				AND workorders.loccode='" . $MyRow['loccode'] . "'
 				AND woitems.stockid='" . $StockID . "'";
 		$ErrMsg = _('The quantity on work orders for this product to be received into') . ' ' . $MyRow['loccode'] . ' ' . _('cannot be retrieved because');
-		$QOOResult = DB_query($sql, $ErrMsg, $DbgMsg);
+		$QOOResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 		if (DB_num_rows($QOOResult) == 1) {
 			$QOORow = DB_fetch_row($QOOResult);
@@ -301,7 +301,7 @@ if (isset($_GET['DebtorNo'])) {
 if ($DebtorNo) {
 	/* display recent pricing history for this debtor and this stock item */
 
-	$sql = "SELECT stockmoves.trandate,
+	$SQL = "SELECT stockmoves.trandate,
 				stockmoves.qty,
 				stockmoves.price,
 				stockmoves.discountpercent
@@ -317,7 +317,7 @@ if ($DebtorNo) {
 	$ErrMsg = _('The stock movements for the selected criteria could not be retrieved because') . ' - ';
 	$DbgMsg = _('The SQL that failed was');
 
-	$MovtsResult = DB_query($sql, $ErrMsg, $DbgMsg);
+	$MovtsResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	$k = 1;
 	$LastPrice = 0;

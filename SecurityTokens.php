@@ -27,11 +27,11 @@ if (isset($_GET['SelectedToken'])) {
 			$Result = DB_query("DELETE FROM securitytokens WHERE tokenid='" . $_GET['SelectedToken'] . "'");
 		}
 	} else { // it must be an edit
-		$sql = "SELECT tokenid,
+		$SQL = "SELECT tokenid,
 					tokenname
 				FROM securitytokens
 				WHERE tokenid='" . $_GET['SelectedToken'] . "'";
-		$Result = DB_query($sql);
+		$Result = DB_query($SQL);
 		$MyRow = DB_fetch_array($Result);
 		$_POST['TokenID'] = $MyRow['tokenid'];
 		$_POST['TokenDescription'] = $MyRow['tokenname'];
@@ -68,18 +68,18 @@ if (isset($_POST['Submit'])) {
 		$InputError = 1;
 	}
 	if ($InputError == 0) {
-		$sql = "INSERT INTO securitytokens values('" . $_POST['TokenID'] . "', '" . $_POST['TokenDescription'] . "')";
-		$Result = DB_query($sql);
+		$SQL = "INSERT INTO securitytokens values('" . $_POST['TokenID'] . "', '" . $_POST['TokenDescription'] . "')";
+		$Result = DB_query($SQL);
 		$_POST['TokenID'] = '';
 		$_POST['TokenDescription'] = '';
 	}
 }
 
 if (isset($_POST['Update']) and $InputError == 0) {
-	$sql = "UPDATE securitytokens
+	$SQL = "UPDATE securitytokens
 				SET tokenname='" . $_POST['TokenDescription'] . "'
 			WHERE tokenid='" . $_POST['TokenID'] . "'";
-	$Result = DB_query($sql);
+	$Result = DB_query($SQL);
 	$_POST['TokenDescription'] = '';
 	$_POST['TokenID'] = '';
 }
@@ -121,8 +121,8 @@ echo '<tr>
 		<th>' . _('Description') . '</th>
 	</tr>';
 
-$sql = "SELECT tokenid, tokenname FROM securitytokens WHERE tokenid<1000 ORDER BY tokenid";
-$Result = DB_query($sql);
+$SQL = "SELECT tokenid, tokenname FROM securitytokens WHERE tokenid<1000 ORDER BY tokenid";
+$Result = DB_query($SQL);
 
 while ($MyRow = DB_fetch_array($Result)) {
 	echo '<tr>

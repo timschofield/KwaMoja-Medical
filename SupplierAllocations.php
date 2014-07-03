@@ -494,7 +494,7 @@ if (isset($_POST['AllocTrans'])) {
 
 	unset($_SESSION['Alloc']);
 
-	$sql = "SELECT id,
+	$SQL = "SELECT id,
 		  		transno,
 				typename,
 				type,
@@ -517,7 +517,7 @@ if (isset($_POST['AllocTrans'])) {
 			AND settled=0
 			ORDER BY id";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	if (DB_num_rows($result) == 0) {
 		prnMsg(_('There are no outstanding payments or credits yet to be allocated for this supplier'), 'info');
 		include('includes/footer.inc');
@@ -566,7 +566,7 @@ if (isset($_POST['AllocTrans'])) {
 	unset($_SESSION['Alloc']->Allocs);
 	unset($_SESSION['Alloc']);
 
-	$sql = "SELECT id,
+	$SQL = "SELECT id,
 		  		transno,
 				typename,
 				type,
@@ -588,7 +588,7 @@ if (isset($_POST['AllocTrans'])) {
 			AND settled=0
 			ORDER BY id";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	echo '<table class="selection">
 			<tr>

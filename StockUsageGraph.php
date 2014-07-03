@@ -18,7 +18,7 @@ $graph->SetMarginsPixels(40, 40, 40, 40);
 $graph->SetDataType('text-data');
 
 if ($_GET['StockLocation'] == 'All') {
-	$sql = "SELECT periods.periodno,
+	$SQL = "SELECT periods.periodno,
 			periods.lastdate_in_period,
 			SUM(-stockmoves.qty) AS qtyused
 		FROM stockmoves INNER JOIN periods
@@ -30,7 +30,7 @@ if ($_GET['StockLocation'] == 'All') {
 			periods.lastdate_in_period
 		ORDER BY periodno  LIMIT 24";
 } else {
-	$sql = "SELECT periods.periodno,
+	$SQL = "SELECT periods.periodno,
 			periods.lastdate_in_period,
 			SUM(-stockmoves.qty) AS qtyused
 		FROM stockmoves INNER JOIN periods
@@ -43,13 +43,13 @@ if ($_GET['StockLocation'] == 'All') {
 			periods.lastdate_in_period
 		ORDER BY periodno  LIMIT 24";
 }
-$MovtsResult = DB_query($sql);
+$MovtsResult = DB_query($SQL);
 if (DB_error_no() != 0) {
 	$Title = _('Stock Usage Graph Problem');
 	include('includes/header.inc');
 	echo _('The stock usage for the selected criteria could not be retrieved because') . ' - ' . DB_error_msg();
 	if ($debug == 1) {
-		echo '<br />' . _('The SQL that failed was') . $sql;
+		echo '<br />' . _('The SQL that failed was') . $SQL;
 	}
 	include('includes/footer.inc');
 	exit;

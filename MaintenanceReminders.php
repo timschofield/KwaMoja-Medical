@@ -3,7 +3,7 @@
 include('includes/session.inc');
 include('includes/htmlMimeMail.php');
 
-$sql = "SELECT 	description,
+$SQL = "SELECT 	description,
 				taskdescription,
 				ADDDATE(lastcompleted,frequencydays) AS duedate,
 				userresponsible,
@@ -16,7 +16,7 @@ $sql = "SELECT 	description,
 		WHERE ADDDATE(lastcompleted,frequencydays-10)> CURDATE()
 		ORDER BY userresponsible";
 
-$result = DB_query($sql);
+$result = DB_query($SQL);
 $LastUserResponsible = '';
 while ($MyRow = DB_fetch_array($result)) {
 	if (!isset(${'Mail' . $MyRow['userresponsible']}) and IsEmailAddress($MyRow['email'])) {
@@ -47,7 +47,7 @@ if (DB_num_rows($result) > 0) {
 }
 
 /* Now do manager emails for overdue jobs */
-$sql = "SELECT 	description,
+$SQL = "SELECT 	description,
 				taskdescription,
 				ADDDATE(lastcompleted,frequencydays) AS duedate,
 				realname,
@@ -60,7 +60,7 @@ $sql = "SELECT 	description,
 		WHERE ADDDATE(lastcompleted,frequencydays)> CURDATE()
 		ORDER BY manager";
 
-$result = DB_query($sql);
+$result = DB_query($SQL);
 $LastManager = '';
 while ($MyRow = DB_fetch_array($result)) {
 	if (!isset(${'Mail' . $MyRow['userresponsible']})) {

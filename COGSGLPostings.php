@@ -25,7 +25,7 @@ if (isset($_POST['submit'])) {
 
 		/*SelectedCOGSPostingID could also exist if submit had not been clicked this 		code would not run in this case cos submit is false of course	see the delete code below*/
 
-		$sql = "UPDATE cogsglpostings SET
+		$SQL = "UPDATE cogsglpostings SET
 						glcode = '" . $_POST['GLCode'] . "',
 						area = '" . $_POST['Area'] . "',
 						stkcat = '" . $_POST['StkCat'] . "',
@@ -37,7 +37,7 @@ if (isset($_POST['submit'])) {
 
 		/*Selected Sales GL Posting is null cos no item selected on first time round so must be	adding a record must be submitting new entries in the new SalesGLPosting form */
 
-		$sql = "INSERT INTO cogsglpostings (
+		$SQL = "INSERT INTO cogsglpostings (
 						glcode,
 						area,
 						stkcat,
@@ -52,15 +52,15 @@ if (isset($_POST['submit'])) {
 	}
 	//run the SQL from either of the above possibilites
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	prnMsg($msg, 'info');
 	unset($SelectedCOGSPostingID);
 
 } elseif (isset($_GET['delete'])) {
 	//the link to delete a selected record was clicked instead of the submit button
 
-	$sql = "DELETE FROM cogsglpostings WHERE id='" . $SelectedCOGSPostingID . "'";
-	$result = DB_query($sql);
+	$SQL = "DELETE FROM cogsglpostings WHERE id='" . $SelectedCOGSPostingID . "'";
+	$result = DB_query($SQL);
 	prnMsg(_('The cost of sales posting code record has been deleted'), 'info');
 	unset($SelectedCOGSPostingID);
 }
@@ -69,7 +69,7 @@ if (!isset($SelectedCOGSPostingID)) {
 
 	$ShowLivePostingRecords = true;
 
-	$sql = "SELECT cogsglpostings.id,
+	$SQL = "SELECT cogsglpostings.id,
 				cogsglpostings.area,
 				cogsglpostings.stkcat,
 				cogsglpostings.salestype,
@@ -81,7 +81,7 @@ if (!isset($SelectedCOGSPostingID)) {
 				cogsglpostings.stkcat,
 				cogsglpostings.salestype";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	if (DB_num_rows($result) > 0) {
 		$ShowLivePostingRecords = false;
 		prnMsg(_('The following cost of sales posting records that do not have valid general ledger code specified - these records must be amended.'), 'error');
@@ -113,7 +113,7 @@ if (!isset($SelectedCOGSPostingID)) {
 		echo '</table>';
 	}
 
-	$sql = "SELECT cogsglpostings.id,
+	$SQL = "SELECT cogsglpostings.id,
 				cogsglpostings.area,
 				cogsglpostings.stkcat,
 				cogsglpostings.salestype
@@ -122,16 +122,16 @@ if (!isset($SelectedCOGSPostingID)) {
 				cogsglpostings.stkcat,
 				cogsglpostings.salestype";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	if (DB_num_rows($result) == 0) {
 		/* there is no default set up so need to check that account 1 is not already used */
 		/* First Check if we have at least a group_ caled Sales */
-		$sql = "SELECT groupname FROM accountgroups WHERE groupname = 'Sales'";
-		$result = DB_query($sql);
+		$SQL = "SELECT groupname FROM accountgroups WHERE groupname = 'Sales'";
+		$result = DB_query($SQL);
 		if (DB_num_rows($result) == 0) {
 			/* The required group does not seem to exist so we create it */
-			$sql = "INSERT INTO accountgroups (	groupname,
+			$SQL = "INSERT INTO accountgroups (	groupname,
 												sectioninaccounts,
 												pandl,
 												sequenceintb )
@@ -140,23 +140,23 @@ if (!isset($SelectedCOGSPostingID)) {
 												'1',
 												'10')";
 
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 		}
-		$sql = "SELECT accountcode FROM chartmaster WHERE accountcode ='1'";
-		$result = DB_query($sql);
+		$SQL = "SELECT accountcode FROM chartmaster WHERE accountcode ='1'";
+		$result = DB_query($SQL);
 		if (DB_num_rows($result) == 0) {
 			/* account number 1 is not used, so insert a new account */
-			$sql = "INSERT INTO chartmaster (accountcode,
+			$SQL = "INSERT INTO chartmaster (accountcode,
 											accountname,
 											group_)
 									VALUES ('1',
 											'Default Sales/Discounts',
 											'Sales'
 											)";
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 		}
 
-		$sql = "INSERT INTO cogsglpostings (	area,
+		$SQL = "INSERT INTO cogsglpostings (	area,
 											stkcat,
 											salestype,
 											glcode)
@@ -164,11 +164,11 @@ if (!isset($SelectedCOGSPostingID)) {
 											'ANY',
 											'AN',
 											'1')";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 	}
 
 	if ($ShowLivePostingRecords) {
-		$sql = "SELECT cogsglpostings.id,
+		$SQL = "SELECT cogsglpostings.id,
 					cogsglpostings.area,
 					cogsglpostings.stkcat,
 					cogsglpostings.salestype,
@@ -180,7 +180,7 @@ if (!isset($SelectedCOGSPostingID)) {
 						cogsglpostings.stkcat,
 						cogsglpostings.salestype";
 
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 
 		echo '<table class="selection">
 			<tr>
@@ -226,14 +226,14 @@ echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />'
 if (isset($SelectedCOGSPostingID)) {
 	//editing an existing cost of sales posting record
 
-	$sql = "SELECT stkcat,
+	$SQL = "SELECT stkcat,
 				glcode,
 				area,
 				salestype
 			FROM cogsglpostings
 			WHERE id='" . $SelectedCOGSPostingID . "'";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 
 	$_POST['GLCode'] = $MyRow['glcode'];
@@ -246,10 +246,10 @@ if (isset($SelectedCOGSPostingID)) {
 } //end of if $SelectedCOGSPostingID only do the else when a new record is being entered
 
 
-$sql = "SELECT areacode,
+$SQL = "SELECT areacode,
 		areadescription
 		FROM areas";
-$result = DB_query($sql);
+$result = DB_query($SQL);
 
 echo '<table class="selection">
 		<tr><td>' . _('Area') . ':</td>
@@ -267,8 +267,8 @@ while ($MyRow = DB_fetch_array($result)) {
 } //end while loop
 DB_free_result($result);
 
-$sql = "SELECT categoryid, categorydescription FROM stockcategory";
-$result = DB_query($sql);
+$SQL = "SELECT categoryid, categorydescription FROM stockcategory";
+$result = DB_query($SQL);
 
 echo '</select></td>
 	</tr>
@@ -289,8 +289,8 @@ while ($MyRow = DB_fetch_array($result)) {
 
 DB_free_result($result);
 
-$sql = "SELECT typeabbrev, sales_type FROM salestypes";
-$result = DB_query($sql);
+$SQL = "SELECT typeabbrev, sales_type FROM salestypes";
+$result = DB_query($SQL);
 
 echo '</select></td>
 	</tr>
@@ -316,7 +316,7 @@ echo '</select></td>
 		<td><select required="required" minlength="1" tabindex="4" name="GLCode">';
 
 DB_free_result($result);
-$sql = "SELECT chartmaster.accountcode,
+$SQL = "SELECT chartmaster.accountcode,
 			chartmaster.accountname
 		FROM chartmaster,
 			accountgroups
@@ -325,7 +325,7 @@ $sql = "SELECT chartmaster.accountcode,
 		ORDER BY accountgroups.sequenceintb,
 			chartmaster.accountcode,
 			chartmaster.accountname";
-$result = DB_query($sql);
+$result = DB_query($SQL);
 
 echo '<option value=""></option>';
 while ($MyRow = DB_fetch_array($result)) {

@@ -23,7 +23,7 @@ if (isset($_GET['StockID'])) {
 $ErrMsg = _('Could not retrieve the details of the selected work order item');
 
 if ($_SESSION['RestrictLocations'] == 0) {
-	$sql = "SELECT workorders.loccode,
+	$SQL = "SELECT workorders.loccode,
 					locations.locationname,
 					workorders.requiredby,
 					workorders.startdate,
@@ -43,7 +43,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 				WHERE woitems.stockid='" . $StockID . "'
 					AND woitems.wo ='" . $SelectedWO . "'";
 } else {
-	$sql = "SELECT workorders.loccode,
+	$SQL = "SELECT workorders.loccode,
 					locations.locationname,
 					workorders.requiredby,
 					workorders.startdate,
@@ -67,7 +67,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 					AND www_users.userid='" . $_SESSION['UserID'] . "'";
 }
 
-$WOResult = DB_query($sql, $ErrMsg);
+$WOResult = DB_query($SQL, $ErrMsg);
 
 if (DB_num_rows($WOResult) == 0) {
 	prnMsg(_('The selected work order item cannot be retrieved from the database'), 'info');

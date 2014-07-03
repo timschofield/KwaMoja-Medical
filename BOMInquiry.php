@@ -50,7 +50,7 @@ if (isset($_POST['Search'])) {
 			//insert wildcard characters in spaces
 			$SearchString = '%' . str_replace(' ', '%', $_POST['Keywords']) . '%';
 
-			$sql = "SELECT stockmaster.stockid,
+			$SQL = "SELECT stockmaster.stockid,
 							stockmaster.description,
 							stockmaster.units,
 							stockmaster.mbflag,
@@ -69,7 +69,7 @@ if (isset($_POST['Search'])) {
 					ORDER BY stockmaster.stockid";
 
 		} elseif (mb_strlen($_POST['StockCode']) > 0) {
-			$sql = "SELECT stockmaster.stockid,
+			$SQL = "SELECT stockmaster.stockid,
 							stockmaster.description,
 							stockmaster.units,
 							stockmaster.mbflag,
@@ -90,7 +90,7 @@ if (isset($_POST['Search'])) {
 		}
 
 		$ErrMsg = _('The SQL to find the parts selected failed with the message');
-		$result = DB_query($sql, $ErrMsg);
+		$result = DB_query($SQL, $ErrMsg);
 
 	} //one of keywords or StockCode was more than a zero length string
 } //end of if search
@@ -150,7 +150,7 @@ if (isset($StockID) and $StockID != "") {
 	$ParentLabourCost = $MyRow['labourcost'];
 	$ParentOverheadCost = $MyRow['overheadcost'];
 
-	$sql = "SELECT bom.parent,
+	$SQL = "SELECT bom.parent,
 					bom.component,
 					stockmaster.description,
 					stockmaster.decimalplaces,
@@ -168,7 +168,7 @@ if (isset($StockID) and $StockID != "") {
 					AND bom.effectiveto > CURRENT_DATE";
 
 	$ErrMsg = _('The bill of material could not be retrieved because');
-	$BOMResult = DB_query($sql, $ErrMsg);
+	$BOMResult = DB_query($SQL, $ErrMsg);
 
 	if (DB_num_rows($BOMResult) == 0) {
 		prnMsg(_('The bill of material for this part is not set up') . ' - ' . _('there are no components defined for it'), 'warn');

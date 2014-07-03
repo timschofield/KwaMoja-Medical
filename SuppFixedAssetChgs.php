@@ -125,13 +125,13 @@ echo '<tr>
 		<td><b>' . _('OR') . ' </b>' . _('Select from list') . ':</td>
 		<td><select minlength="0" name="AssetSelection">';
 
-$sql = "SELECT assetid,
+$SQL = "SELECT assetid,
 			description
 		FROM fixedassets
 		WHERE cost=0
 		ORDER BY assetid DESC";
 
-$result = DB_query($sql);
+$result = DB_query($SQL);
 
 while ($MyRow = DB_fetch_array($result)) {
 	if (isset($_POST['AssetSelection']) and $MyRow['AssetID'] == $_POST['AssetSelection']) {

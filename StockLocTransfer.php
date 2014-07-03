@@ -197,7 +197,7 @@ if (isset($_POST['Submit']) and $InputError == False) {
 							WHERE stockid='" . $_POST['StockID' . $i] . "'";
 			$DecimalResult = DB_Query($DecimalsSql);
 			$DecimalRow = DB_fetch_array($DecimalResult);
-			$sql = "INSERT INTO loctransfers (reference,
+			$SQL = "INSERT INTO loctransfers (reference,
 								stockid,
 								shipqty,
 								shipdate,
@@ -210,7 +210,7 @@ if (isset($_POST['Submit']) and $InputError == False) {
 							'" . $_POST['FromStockLocation'] . "',
 							'" . $_POST['ToStockLocation'] . "')";
 			$ErrMsg = _('CRITICAL ERROR') . '! ' . _('Unable to enter Location Transfer record for') . ' ' . $_POST['StockID' . $i];
-			$resultLocShip = DB_query($sql, $ErrMsg);
+			$resultLocShip = DB_query($SQL, $ErrMsg);
 		}
 	}
 	$ErrMsg = _('CRITICAL ERROR') . '! ' . _('Unable to COMMIT Location Transfer transaction');
@@ -251,18 +251,18 @@ if (isset($_POST['Submit']) and $InputError == False) {
 		</tr>';
 
 	if ($_SESSION['RestrictLocations'] == 0) {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations";
 	} else {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations
 					INNER JOIN www_users
 						ON locations.loccode=www_users.defaultlocation
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
-	$resultStkLocs = DB_query($sql);
+	$resultStkLocs = DB_query($SQL);
 
 	echo '<tr>
 			<td>' . _('From Stock Location') . ':</td>
@@ -284,10 +284,10 @@ if (isset($_POST['Submit']) and $InputError == False) {
 	}
 	echo '</select></td>';
 
-	$sql = "SELECT locationname,
+	$SQL = "SELECT locationname,
 					loccode
 				FROM locations";
-	$resultStkLocs = DB_query($sql);
+	$resultStkLocs = DB_query($SQL);
 	echo '<td>' . _('To Stock Location') . ':</td>
 			<td><select required="required" minlength="1" name="ToStockLocation">';
 	while ($MyRow = DB_fetch_array($resultStkLocs)) {

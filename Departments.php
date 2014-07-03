@@ -33,10 +33,10 @@ if (isset($_POST['Submit'])) {
 
 		/*SelectedDepartmentID could also exist if submit had not been clicked this code would not run in this case cos submit is false of course  see the delete code below*/
 		// Check the name does not clash
-		$sql = "SELECT count(*) FROM departments
+		$SQL = "SELECT count(*) FROM departments
 				WHERE departmentid <> '" . $SelectedDepartmentID . "'
 				AND description " . LIKE . " '" . $_POST['DepartmentName'] . "'";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_row($result);
 		if ($MyRow[0] > 0) {
 			$InputError = 1;
@@ -44,16 +44,16 @@ if (isset($_POST['Submit'])) {
 		} else {
 			// Get the old name and check that the record still exist neet to be very careful here
 
-			$sql = "SELECT description
+			$SQL = "SELECT description
 					FROM departments
 					WHERE departmentid = '" . $SelectedDepartmentID . "'";
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 			if (DB_num_rows($result) != 0) {
 				// This is probably the safest way there is
 				$MyRow = DB_fetch_array($result);
 				$OldDepartmentName = $MyRow['description'];
-				$sql = array();
-				$sql[] = "UPDATE departments
+				$SQL = array();
+				$SQL[] = "UPDATE departments
 							SET description='" . $_POST['DepartmentName'] . "',
 								authoriser='" . $_POST['Authoriser'] . "'
 							WHERE description " . LIKE . " '" . $OldDepartmentName . "'";
@@ -65,15 +65,15 @@ if (isset($_POST['Submit'])) {
 		$msg = _('The department has been modified');
 	} elseif ($InputError != 1) {
 		/*SelectedDepartmentID is null cos no item selected on first time round so must be adding a record*/
-		$sql = "SELECT count(*) FROM departments
+		$SQL = "SELECT count(*) FROM departments
 				WHERE description " . LIKE . " '" . $_POST['DepartmentName'] . "'";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_row($result);
 		if ($MyRow[0] > 0) {
 			$InputError = 1;
 			prnMsg(_('There is already a department with the specified name.'), 'error');
 		} else {
-			$sql = "INSERT INTO departments (description,
+			$SQL = "INSERT INTO departments (description,
 											 authoriser )
 					VALUES ('" . $_POST['DepartmentName'] . "',
 							'" . $_POST['Authoriser'] . "')";
@@ -83,11 +83,11 @@ if (isset($_POST['Submit'])) {
 
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
-		if (is_array($sql)) {
+		if (is_array($SQL)) {
 			$result = DB_Txn_Begin();
 			$ErrMsg = _('The department could not be inserted');
 			$DbgMsg = _('The sql that failed was') . ':';
-			foreach ($sql as $SQLStatement) {
+			foreach ($SQL as $SQLStatement) {
 				$result = DB_query($SQLStatement, $ErrMsg, $DbgMsg, true);
 				if (!$result) {
 					$InputError = 1;
@@ -100,7 +100,7 @@ if (isset($_POST['Submit'])) {
 				$result = DB_Txn_Rollback();
 			}
 		} else {
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 		}
 		prnMsg($msg, 'success');
 		echo '<br />';
@@ -113,27 +113,27 @@ if (isset($_POST['Submit'])) {
 	//the link to delete a selected record was clicked instead of the submit button
 
 
-	$sql = "SELECT description
+	$SQL = "SELECT description
 			FROM departments
 			WHERE departmentid = '" . $SelectedDepartmentID . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	if (DB_num_rows($result) == 0) {
 		prnMsg(_('You cannot delete this Department'), 'warn');
 	} else {
 		$MyRow = DB_fetch_row($result);
 		$OldDepartmentName = $MyRow[0];
-		$sql = "SELECT COUNT(*)
+		$SQL = "SELECT COUNT(*)
 				FROM stockrequest INNER JOIN departments
 				ON stockrequest.departmentid=departments.departmentid
 				WHERE description " . LIKE . " '" . $OldDepartmentName . "'";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_row($result);
 		if ($MyRow[0] > 0) {
 			prnMsg(_('You cannot delete this Department'), 'warn');
 			echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('There are items related to this department');
 		} else {
-			$sql = "DELETE FROM departments WHERE description " . LIKE . "'" . $OldDepartmentName . "'";
-			$result = DB_query($sql);
+			$SQL = "DELETE FROM departments WHERE description " . LIKE . "'" . $OldDepartmentName . "'";
+			$result = DB_query($SQL);
 			prnMsg($OldDepartmentName . ' ' . _('The department has been removed') . '!', 'success');
 		}
 	} //end if account group used in GL accounts
@@ -147,14 +147,14 @@ if (isset($_POST['Submit'])) {
 
 if (!isset($SelectedDepartmentID)) {
 
-	$sql = "SELECT departmentid,
+	$SQL = "SELECT departmentid,
 					description,
 					authoriser
 			FROM departments
 			ORDER BY departmentid";
 
 	$ErrMsg = _('There are no departments created');
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 
 	echo '<table class="selection">
 			<tr>
@@ -198,13 +198,13 @@ if (!isset($_GET['delete'])) {
 	if (isset($SelectedDepartmentID)) {
 		//editing an existing section
 
-		$sql = "SELECT departmentid,
+		$SQL = "SELECT departmentid,
 						description,
 						authoriser
 				FROM departments
 				WHERE departmentid='" . $SelectedDepartmentID . "'";
 
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		if (DB_num_rows($result) == 0) {
 			prnMsg(_('The selected departemnt could not be found.'), 'warn');
 			unset($SelectedDepartmentID);

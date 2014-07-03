@@ -43,7 +43,7 @@ if (isset($_POST['Close'])) {
 $ShowTender = 0;
 
 if (isset($_GET['ID'])) {
-	$sql = "SELECT tenderid,
+	$SQL = "SELECT tenderid,
 					location,
 					address1,
 					address2,
@@ -55,7 +55,7 @@ if (isset($_GET['ID'])) {
 					requiredbydate
 				FROM tenders
 				WHERE tenderid='" . $_GET['ID'] . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 	if (isset($_SESSION['tender' . $identifier])) {
 		unset($_SESSION['tender' . $identifier]);
@@ -71,7 +71,7 @@ if (isset($_GET['ID'])) {
 	$_SESSION['tender' . $identifier]->DelAdd6 = $MyRow['address6'];
 	$_SESSION['tender' . $identifier]->RequiredByDate = $MyRow['requiredbydate'];
 
-	$sql = "SELECT tenderid,
+	$SQL = "SELECT tenderid,
 					tendersuppliers.supplierid,
 					suppliers.suppname,
 					tendersuppliers.email
@@ -79,12 +79,12 @@ if (isset($_GET['ID'])) {
 				LEFT JOIN suppliers
 					ON tendersuppliers.supplierid=suppliers.supplierid
 				WHERE tenderid='" . $_GET['ID'] . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	while ($MyRow = DB_fetch_array($result)) {
 		$_SESSION['tender' . $identifier]->add_supplier_to_tender($MyRow['supplierid'], $MyRow['suppname'], $MyRow['email']);
 	}
 
-	$sql = "SELECT tenderid,
+	$SQL = "SELECT tenderid,
 					tenderitems.stockid,
 					tenderitems.quantity,
 					stockmaster.description,
@@ -94,7 +94,7 @@ if (isset($_GET['ID'])) {
 				LEFT JOIN stockmaster
 					ON tenderitems.stockid=stockmaster.stockid
 				WHERE tenderid='" . $_GET['ID'] . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	while ($MyRow = DB_fetch_array($result)) {
 		$_SESSION['tender' . $identifier]->add_item_to_tender($_SESSION['tender' . $identifier]->LinesOnTender, $MyRow['stockid'], $MyRow['quantity'], $MyRow['description'], $MyRow['units'], $MyRow['decimalplaces'], DateAdd(date($_SESSION['DefaultDateFormat']), 'm', 3));
 	}
@@ -105,7 +105,7 @@ if (isset($_GET['Edit'])) {
 	$Title = _('Edit an Existing Supplier Tender Request');
 	include('includes/header.inc');
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" title="' . _('Purchase Order Tendering') . '" alt="" />  ' . $Title . '</p>';
-	$sql = "SELECT tenderid,
+	$SQL = "SELECT tenderid,
 					location,
 					address1,
 					address2,
@@ -117,7 +117,7 @@ if (isset($_GET['Edit'])) {
 				FROM tenders
 				WHERE closed=0
 					AND requiredbydate >= CURRENT_DATE";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	echo '<table class="selection">';
 	echo '<tr>
 			<th class="SortableColumn">' . _('Tender ID') . '</th>
@@ -177,11 +177,11 @@ if (isset($_GET['DeleteItem'])) {
 }
 
 if (isset($_POST['SelectedSupplier'])) {
-	$sql = "SELECT suppname,
+	$SQL = "SELECT suppname,
 					email
 				FROM suppliers
 				WHERE supplierid='" . $_POST['SelectedSupplier'] . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 	if (mb_strlen($MyRow['email']) > 0) {
 		$_SESSION['tender' . $identifier]->add_supplier_to_tender($_POST['SelectedSupplier'], $MyRow['suppname'], $MyRow['email']);
@@ -198,11 +198,11 @@ if (isset($_POST['NewItem']) and !isset($_POST['Refresh'])) {
 			$StockID = $value;
 			$Quantity = filter_number_format($_POST['Qty' . $Index]);
 			$UOM = $_POST['UOM' . $Index];
-			$sql = "SELECT description,
+			$SQL = "SELECT description,
 							decimalplaces
 						FROM stockmaster
 						WHERE stockid='" . $StockID . "'";
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 			$MyRow = DB_fetch_array($result);
 			$_SESSION['tender' . $identifier]->add_item_to_tender($_SESSION['tender' . $identifier]->LinesOnTender, $StockID, $Quantity, $MyRow['description'], $UOM, $MyRow['decimalplaces'], DateAdd(date($_SESSION['DefaultDateFormat']), 'm', 3));
 			unset($UOM);
@@ -237,7 +237,7 @@ if (!isset($_SESSION['tender' . $identifier]) or isset($_POST['LookupDeliveryAdd
 
 		$_POST['StkLocation'] = $_SESSION['UserStockLocation'];
 
-		$sql = "SELECT deladd1,
+		$SQL = "SELECT deladd1,
 						deladd2,
 						deladd3,
 						deladd4,
@@ -248,7 +248,7 @@ if (!isset($_SESSION['tender' . $identifier]) or isset($_POST['LookupDeliveryAdd
 					FROM locations
 					WHERE loccode='" . $_POST['StkLocation'] . "'";
 
-		$LocnAddrResult = DB_query($sql);
+		$LocnAddrResult = DB_query($SQL);
 		if (DB_num_rows($LocnAddrResult) == 1) {
 			$LocnRow = DB_fetch_array($LocnAddrResult);
 			$_POST['DelAdd1'] = $LocnRow['deladd1'];
@@ -278,7 +278,7 @@ if (!isset($_SESSION['tender' . $identifier]) or isset($_POST['LookupDeliveryAdd
 
 	} elseif (isset($_POST['LookupDeliveryAddress'])) {
 
-		$sql = "SELECT deladd1,
+		$SQL = "SELECT deladd1,
 						deladd2,
 						deladd3,
 						deladd4,
@@ -289,7 +289,7 @@ if (!isset($_SESSION['tender' . $identifier]) or isset($_POST['LookupDeliveryAdd
 					FROM locations
 					WHERE loccode='" . $_POST['StkLocation'] . "'";
 
-		$LocnAddrResult = DB_query($sql);
+		$LocnAddrResult = DB_query($SQL);
 		if (DB_num_rows($LocnAddrResult) == 1) {
 			$LocnRow = DB_fetch_array($LocnAddrResult);
 			$_POST['DelAdd1'] = $LocnRow['deladd1'];
@@ -317,18 +317,18 @@ if (!isset($_SESSION['tender' . $identifier]) or isset($_POST['LookupDeliveryAdd
 			<td><select required="required" minlength="1" name="StkLocation" onchange="ReloadForm(form1.LookupDeliveryAddress)">';
 
 	if ($_SESSION['RestrictLocations'] == 0) {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations";
 	} else {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations
 					INNER JOIN www_users
 						ON locations.loccode=www_users.defaultlocation
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
-	$LocnResult = DB_query($sql);
+	$LocnResult = DB_query($SQL);
 
 	while ($LocnRow = DB_fetch_array($LocnResult)) {
 		if ((isset($_SESSION['tender' . $identifier]->Location) and $_SESSION['tender' . $identifier]->Location == $LocnRow['loccode'])) {
@@ -592,11 +592,11 @@ if (isset($_POST['Items'])) {
 	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?identifier=' . $identifier, ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Search for Inventory Items') . '</p>';
-	$sql = "SELECT categoryid,
+	$SQL = "SELECT categoryid,
 				categorydescription
 			FROM stockcategory
 			ORDER BY categorydescription";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	if (DB_num_rows($result) == 0) {
 		echo '<br /><p class="bad">' . _('Problem Report') . ':</p><br />' . _('There are no stock categories currently defined please use the link below to set them up');
 		echo '<br /><a href="' . $RootPath . '/StockCategories.php">' . _('Define Stock Categories') . '</a>';
@@ -666,7 +666,7 @@ if (isset($_POST['Search'])) {
 		$CategoryString = $_POST['StockCat'];
 	}
 	$_POST['StockCode'] = '%' . $_POST['StockCode'] . '%';
-	$sql = "SELECT stockmaster.stockid,
+	$SQL = "SELECT stockmaster.stockid,
 					stockmaster.description,
 					stockmaster.units
 				FROM stockmaster
@@ -685,7 +685,7 @@ if (isset($_POST['Search'])) {
 
 	$ErrMsg = _('There is a problem selecting the part records to display because');
 	$DbgMsg = _('The SQL statement that failed was');
-	$SearchResult = DB_query($sql, $ErrMsg, $DbgMsg);
+	$SearchResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	if (isset($SearchResult)) {
 

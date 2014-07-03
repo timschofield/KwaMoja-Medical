@@ -14,25 +14,25 @@ if (isset($_POST['UpdateAll'])) {
 	foreach ($_POST as $key => $value) {
 		if (mb_substr($key, 0, 6) == 'status') {
 			$RequestNo = mb_substr($key, 6);
-			$sql = "UPDATE stockrequest
+			$SQL = "UPDATE stockrequest
 					SET authorised='1'
 					WHERE dispatchid='" . $RequestNo . "'";
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 		}
 		if (strpos($key, 'cancel')) {
 			$CancelItems = explode('cancel', $key);
-			$sql = "UPDATE stockrequestitems
+			$SQL = "UPDATE stockrequestitems
 						SET completed=1
 						WHERE dispatchid='" . $CancelItems[0] . "'
 							AND dispatchitemsid='" . $CancelItems[1] . "'";
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 		}
 	}
 }
 
 /* Retrieve the requisition header information
  */
-$sql = "SELECT stockrequest.dispatchid,
+$SQL = "SELECT stockrequest.dispatchid,
 				locations.locationname,
 				stockrequest.despatchdate,
 				stockrequest.narrative,
@@ -52,7 +52,7 @@ $sql = "SELECT stockrequest.dispatchid,
 			WHERE stockrequest.authorised=0
 				AND stockrequest.closed=0
 				AND w1.userid='" . $_SESSION['UserID'] . "'";
-$result = DB_query($sql);
+$result = DB_query($SQL);
 
 echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';

@@ -156,7 +156,7 @@ if (isset($_POST['DoIt']) and ($_POST['PrintOrEmail'] == 'Print' or $ViewingOnly
 if (isset($SelectedWO) and $SelectedWO != '' and $SelectedWO > 0 and $SelectedWO != 'Preview') {
 	/*retrieve the order details from the database to print */
 	$ErrMsg = _('There was a problem retrieving the Work order header details for Order Number') . ' ' . $SelectedWO . ' ' . _('from the database');
-	$sql = "SELECT workorders.wo,
+	$SQL = "SELECT workorders.wo,
 							 workorders.loccode,
 							 locations.locationname,
 							 locations.deladd1,
@@ -185,7 +185,7 @@ if (isset($SelectedWO) and $SelectedWO != '' and $SelectedWO > 0 and $SelectedWO
 						ON woitems.stockid=stockmaster.stockid
 						WHERE woitems.stockid='" . $StockID . "'
 						AND woitems.wo ='" . $SelectedWO . "'";
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 	if (DB_num_rows($result) == 0) {
 		/*There is no order header returned */
 		$Title = _('Print Work Order Error');
@@ -205,11 +205,11 @@ if (isset($SelectedWO) and $SelectedWO != '' and $SelectedWO > 0 and $SelectedWO
 		/*There is only one order header returned  (as it should be!)*/
 		$WOHeader = DB_fetch_array($result);
 		if ($WOHeader['controlled'] == 1) {
-			$sql = "SELECT serialno
+			$SQL = "SELECT serialno
 							FROM woserialnos
 							WHERE woserialnos.stockid='" . $StockID . "'
 							AND woserialnos.wo ='" . $SelectedWO . "'";
-			$result = DB_query($sql, $ErrMsg);
+			$result = DB_query($SQL, $ErrMsg);
 			if (DB_num_rows($result) > 0) {
 				$SerialNoArray = DB_fetch_array($result);
 				$SerialNo = $SerialNoArray[0];
@@ -218,13 +218,13 @@ if (isset($SelectedWO) and $SelectedWO != '' and $SelectedWO > 0 and $SelectedWO
 			}
 		} //controlled
 		$PackQty = 0;
-		$sql = "SELECT value
+		$SQL = "SELECT value
 				FROM stockitemproperties
 				INNER JOIN stockcatproperties
 				ON stockcatproperties.stkcatpropid=stockitemproperties.stkcatpropid
 				WHERE stockid='" . $StockID . "'
 				AND label='PackQty'";
-		$result = DB_query($sql, $ErrMsg);
+		$result = DB_query($SQL, $ErrMsg);
 		$PackQtyArray = DB_fetch_array($result);
 		$PackQty = $PackQtyArray['value'];
 		if ($PackQty == 0) {
@@ -520,7 +520,7 @@ else {
 	include('includes/header.inc');
 
 	if (!isset($LabelItem)) {
-		$sql = "SELECT workorders.wo,
+		$SQL = "SELECT workorders.wo,
 						stockmaster.description,
 						stockmaster.decimalplaces,
 						stockmaster.units,
@@ -535,18 +535,18 @@ else {
 						WHERE woitems.stockid='" . $StockID . "'
                         AND woitems.wo ='" . $SelectedWO . "'";
 
-		$result = DB_query($sql, $ErrMsg);
+		$result = DB_query($SQL, $ErrMsg);
 		$Labels = DB_fetch_array($result);
 		$LabelItem = $Labels['stockid'];
 		$LabelDesc = $Labels['description'];
 		$QtyPerBox = 0;
-		$sql = "SELECT value
+		$SQL = "SELECT value
 				FROM stockitemproperties
 				INNER JOIN stockcatproperties
 				ON stockcatproperties.stkcatpropid=stockitemproperties.stkcatpropid
 				WHERE stockid='" . $StockID . "'
 				AND label='PackQty'";
-		$result = DB_query($sql, $ErrMsg);
+		$result = DB_query($SQL, $ErrMsg);
 		$PackQtyArray = DB_fetch_array($result);
 		$QtyPerBox = $PackQtyArray['value'];
 		if ($QtyPerBox == 0) {
@@ -558,11 +558,11 @@ else {
 		$QtyPerBox = locale_number_format($QtyPerBox, $Labels['decimalplaces']);
 		$LeftOverQty = locale_number_format($LeftOverQty, $Labels['decimalplaces']);
 		if ($Labels['controlled'] == 1) {
-			$sql = "SELECT serialno
+			$SQL = "SELECT serialno
 							FROM woserialnos
 							WHERE woserialnos.stockid='" . $StockID . "'
 							AND woserialnos.wo ='" . $SelectedWO . "'";
-			$result = DB_query($sql, $ErrMsg);
+			$result = DB_query($SQL, $ErrMsg);
 			if (DB_num_rows($result) > 0) {
 				$SerialNoArray = DB_fetch_array($result);
 				$LabelLot = $SerialNoArray[0];

@@ -42,7 +42,7 @@ if (isset($_POST['PlacePO'])) {
 		prnMsg(_('There were no sales orders checked to place purchase orders for. No purchase orders will be created.'), 'info');
 	} else {
 		/*  Now build SQL of items to purchase with purchasing data and preferred suppliers - sorted by preferred supplier */
-		$sql = "SELECT purchdata.supplierno,
+		$SQL = "SELECT purchdata.supplierno,
 						purchdata.stockid,
 						purchdata.price,
 						purchdata.suppliers_partno,
@@ -78,7 +78,7 @@ if (isset($_POST['PlacePO'])) {
 					 purchdata.stockid";
 
 		$ErrMsg = _('Unable to retrieve the items on the selected orders for creating purchase orders for');
-		$ItemResult = DB_query($sql, $ErrMsg);
+		$ItemResult = DB_query($SQL, $ErrMsg);
 
 		$ItemArray = array();
 
@@ -87,7 +87,7 @@ if (isset($_POST['PlacePO'])) {
 		}
 
 		/* Now figure out if there are any components of Assembly items that  need to be ordered too */
-		$sql = "SELECT purchdata.supplierno,
+		$SQL = "SELECT purchdata.supplierno,
 						purchdata.stockid,
 						purchdata.price,
 						purchdata.suppliers_partno,
@@ -130,7 +130,7 @@ if (isset($_POST['PlacePO'])) {
 				ORDER BY purchdata.supplierno,
 					 purchdata.stockid";
 		$ErrMsg = _('Unable to retrieve the items on the selected orders for creating purchase orders for');
-		$ItemResult = DB_query($sql, $ErrMsg);
+		$ItemResult = DB_query($SQL, $ErrMsg);
 
 		/* add any assembly item components from salesorders to the ItemArray */
 		while ($MyRow = DB_fetch_array($ItemResult)) {
@@ -160,7 +160,7 @@ if (isset($_POST['PlacePO'])) {
 			prnMsg(_('There might be no supplier purchasing data set up for any items on the selected sales order(s). No purchase orders have been created'), 'warn');
 		} else {
 			/*Now get the default delivery address details from the users default stock location */
-			$sql = "SELECT locationname,
+			$SQL = "SELECT locationname,
 							deladd1,
 							deladd2,
 							deladd3,
@@ -172,7 +172,7 @@ if (isset($_POST['PlacePO'])) {
 						FROM locations
 						WHERE loccode = '" . $_SESSION['UserStockLocation'] . "'";
 			$ErrMsg = _('The delivery address for the order could not be obtained from the user default stock location');
-			$DelAddResult = DB_query($sql, $ErrMsg);
+			$DelAddResult = DB_query($SQL, $ErrMsg);
 			$DelAddRow = DB_fetch_array($DelAddResult);
 
 			$SupplierID = '';
@@ -235,7 +235,7 @@ if (isset($_POST['PlacePO'])) {
 					$SupplierID = $ItemRow['supplierno'];
 					$Order_Value = 0;
 					/*Now get all the required details for the supplier */
-					$sql = "SELECT address1,
+					$SQL = "SELECT address1,
 									address2,
 									address3,
 									address4,
@@ -250,12 +250,12 @@ if (isset($_POST['PlacePO'])) {
 							WHERE supplierid='" . $SupplierID . "'";
 
 					$ErrMsg = _('Could not get the supplier information for the order');
-					$SuppResult = DB_query($sql, $ErrMsg);
+					$SuppResult = DB_query($SQL, $ErrMsg);
 					$SuppRow = DB_fetch_array($SuppResult);
 
 					$StatusComment = date($_SESSION['DefaultDateFormat']) . ' - ' . _('Order Created by') . ' ' . $UserDetails . ' - ' . _('Auto created from sales orders') . '<br />';
 					/*Insert to purchase order header record */
-					$sql = "INSERT INTO purchorders ( orderno,
+					$SQL = "INSERT INTO purchorders ( orderno,
 													  supplierno,
 													  orddate,
 													  rate,
@@ -314,12 +314,12 @@ if (isset($_POST['PlacePO'])) {
 
 					$ErrMsg = _('The purchase order header record could not be inserted into the database because');
 					$DbgMsg = _('The SQL statement used to insert the purchase order header record and failed was');
-					$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+					$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 				} //end if it's a new supplier and PO to create
 
 				/*reminder we are in a loop of the total of each item to place a purchase order for based on a selection of sales orders */
 				$DeliveryDate = DateAdd(Date($_SESSION['DefaultDateFormat']), 'd', $ItemRow['leadtime']);
-				$sql = "INSERT INTO purchorderdetails ( orderno,
+				$SQL = "INSERT INTO purchorderdetails ( orderno,
 														itemcode,
 														deliverydate,
 														itemdescription,
@@ -342,7 +342,7 @@ if (isset($_POST['PlacePO'])) {
 				$ErrMsg = _('One of the purchase order detail records could not be inserted into the database because');
 				$DbgMsg = _('The SQL statement used to insert the purchase order detail record and failed was');
 
-				$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+				$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 				$Order_Value += ($ItemRow['price'] * $ItemRow['orderqty']);
 			}
 			/* end of the loop round the items on the sales order  that we wish to place purchase orders for */
@@ -489,11 +489,11 @@ if (!isset($StockID)) {
 				<td><select minlength="0" name="StockLocation"> ';
 
 		if ($_SESSION['RestrictLocations'] == 0) {
-			$sql = "SELECT locationname,
+			$SQL = "SELECT locationname,
 							loccode
 						FROM locations";
 		} else {
-			$sql = "SELECT locationname,
+			$SQL = "SELECT locationname,
 							loccode
 						FROM locations
 						INNER JOIN www_users
@@ -501,7 +501,7 @@ if (!isset($StockID)) {
 						WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 		}
 
-		$resultStkLocs = DB_query($sql);
+		$resultStkLocs = DB_query($SQL);
 
 		while ($MyRow = DB_fetch_array($resultStkLocs)) {
 			if (isset($_POST['StockLocation'])) {

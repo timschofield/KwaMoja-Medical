@@ -71,16 +71,16 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 		}
 
 		//first off check that the item actually exists
-		$sql = "SELECT COUNT(stockid) FROM stockmaster WHERE stockid='" . $MyRow[0] . "'";
-		$result = DB_query($sql);
+		$SQL = "SELECT COUNT(stockid) FROM stockmaster WHERE stockid='" . $MyRow[0] . "'";
+		$result = DB_query($SQL);
 		$testrow = DB_fetch_row($result);
 		if ($testrow[0] == 0) {
 			$InputError = 1;
 			prnMsg(_('Stock item "' . $MyRow[0] . '" does not exist'), 'error');
 		}
 		//Then check that the price list actually exists
-		$sql = "SELECT COUNT(typeabbrev) FROM salestypes WHERE typeabbrev='" . $MyRow[1] . "'";
-		$result = DB_query($sql);
+		$SQL = "SELECT COUNT(typeabbrev) FROM salestypes WHERE typeabbrev='" . $MyRow[1] . "'";
+		$result = DB_query($SQL);
 		$testrow = DB_fetch_row($result);
 		if ($testrow[0] == 0) {
 			$InputError = 1;
@@ -88,8 +88,8 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 		}
 
 		//Then check that the currency code actually exists
-		$sql = "SELECT COUNT(currabrev) FROM currencies WHERE currabrev='" . $MyRow[2] . "'";
-		$result = DB_query($sql);
+		$SQL = "SELECT COUNT(currabrev) FROM currencies WHERE currabrev='" . $MyRow[2] . "'";
+		$result = DB_query($SQL);
 		$testrow = DB_fetch_row($result);
 		if ($testrow[0] == 0) {
 			$InputError = 1;
@@ -101,15 +101,15 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 		if ($InputError != 1) {
 
 			//Firstly close any open prices for this item
-			$sql = "UPDATE prices
+			$SQL = "UPDATE prices
 						SET enddate='" . FormatDateForSQL($_POST['StartDate']) . "'
 						WHERE stockid='" . $MyRow[0] . "'
 							AND enddate>CURRENT_DATE
 							AND typeabbrev='" . $MyRow[1] . "'";
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 
 			//Insert the price
-			$sql = "INSERT INTO prices (stockid,
+			$SQL = "INSERT INTO prices (stockid,
 										typeabbrev,
 										currabrev,
 										price,
@@ -124,7 +124,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 
 			$ErrMsg = _('The price could not be added because');
 			$DbgMsg = _('The SQL that was used to add the price failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 
 		}

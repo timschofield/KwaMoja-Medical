@@ -21,7 +21,7 @@ echo '<p class="page_title_text noPrint" >
 
 if (isset($_POST['UpdateData'])) {
 
-	$sql = "SELECT stockcosts.materialcost,
+	$SQL = "SELECT stockcosts.materialcost,
 					stockcosts.labourcost,
 					stockcosts.overheadcost,
 					mbflag,
@@ -42,7 +42,7 @@ if (isset($_POST['UpdateData'])) {
 					stockcosts.overheadcost,
 					mbflag";
 	$ErrMsg = _('The entered item code does not exist');
-	$OldResult = DB_query($sql, $ErrMsg);
+	$OldResult = DB_query($SQL, $ErrMsg);
 	$OldRow = DB_fetch_array($OldResult);
 	$_POST['QOH'] = $OldRow['totalqoh'];
 	$_POST['OldMaterialCost'] = $OldRow['materialcost'];

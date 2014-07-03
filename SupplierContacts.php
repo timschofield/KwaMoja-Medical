@@ -60,7 +60,7 @@ if (isset($_POST['submit'])) {
 
 		/*SelectedContact could also exist if submit had not been clicked this code would not run in this case 'cos submit is false of course see the delete code below*/
 
-		$sql = "UPDATE suppliercontacts SET position='" . $_POST['Position'] . "',
+		$SQL = "UPDATE suppliercontacts SET position='" . $_POST['Position'] . "',
 											tel='" . $_POST['Tel'] . "',
 											fax='" . $_POST['Fax'] . "',
 											email='" . $_POST['Email'] . "',
@@ -74,7 +74,7 @@ if (isset($_POST['submit'])) {
 
 		/*Selected contact is null cos no item selected on first time round so must be adding a	record must be submitting new entries in the new supplier  contacts form */
 
-		$sql = "INSERT INTO suppliercontacts (supplierid,
+		$SQL = "INSERT INTO suppliercontacts (supplierid,
 											contact,
 											position,
 											tel,
@@ -95,7 +95,7 @@ if (isset($_POST['submit'])) {
 		$ErrMsg = _('The supplier contact could not be inserted or updated because');
 		$DbgMsg = _('The SQL that was used but failed was');
 
-		$result = DB_query($sql, $ErrMsg, $DbgMsg);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 		prnMsg($msg, 'success');
 
@@ -109,14 +109,14 @@ if (isset($_POST['submit'])) {
 	}
 } elseif (isset($_GET['delete'])) {
 
-	$sql = "DELETE FROM suppliercontacts
+	$SQL = "DELETE FROM suppliercontacts
 			WHERE contact='" . $SelectedContact . "'
 			AND supplierid = '" . $SupplierID . "'";
 
 	$ErrMsg = _('The supplier contact could not be deleted because');
 	$DbgMsg = _('The SQL that was used but failed was');
 
-	$result = DB_query($sql, $ErrMsg, $DbgMsg);
+	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	echo '<br />' . _('Supplier contact has been deleted') . '<p />';
 
@@ -124,7 +124,7 @@ if (isset($_POST['submit'])) {
 
 
 if (!isset($SelectedContact)) {
-	$sql = "SELECT suppliers.suppname,
+	$SQL = "SELECT suppliers.suppname,
 					contact,
 					position,
 					tel,
@@ -135,7 +135,7 @@ if (!isset($SelectedContact)) {
 				WHERE suppliercontacts.supplierid=suppliers.supplierid
 				AND suppliercontacts.supplierid = '" . $SupplierID . "'";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	if (DB_num_rows($result) > 0) {
 
@@ -189,7 +189,7 @@ if (!isset($_GET['delete'])) {
 	if (isset($SelectedContact)) {
 		//editing an existing contact
 
-		$sql = "SELECT contact,
+		$SQL = "SELECT contact,
 						position,
 						tel,
 						fax,
@@ -199,7 +199,7 @@ if (!isset($_GET['delete'])) {
 					WHERE contact='" . $SelectedContact . "'
 					AND supplierid='" . $SupplierID . "'";
 
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_array($result);
 
 		$_POST['Contact'] = $MyRow['contact'];

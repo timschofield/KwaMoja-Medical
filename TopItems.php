@@ -21,19 +21,19 @@ if (!(isset($_POST['Search']))) {
 			<td>:</td>
 			<td><select minlength="0" name="Location">';
 	if ($_SESSION['RestrictLocations'] == 0) {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations";
 		echo '<option selected="selected" value="All">' . _('All Locations') . '</option>';
 	} else {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations
 					INNER JOIN www_users
 						ON locations.loccode=www_users.defaultlocation
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	while ($MyRow = DB_fetch_array($result)) {
 		echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['loccode'] . ' - ' . $MyRow['locationname'] . '</option>';
 	}
@@ -45,10 +45,10 @@ if (!(isset($_POST['Search']))) {
 			<td>:</td>
 			<td><select required="required" minlength="1" name="Customers">';
 
-	$sql = "SELECT typename,
+	$SQL = "SELECT typename,
 					typeid
 				FROM debtortype";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	echo '<option value="All">' . _('All') . '</option>';
 	while ($MyRow = DB_fetch_array($result)) {
 		echo '<option value="' . $MyRow['typeid'] . '">' . $MyRow['typename'] . '</option>';
@@ -216,13 +216,13 @@ if (!(isset($_POST['Search']))) {
 					$QOO = $QOORow[0];
 				}
 				//Also the on work order quantities
-				$sql = "SELECT SUM(woitems.qtyreqd-woitems.qtyrecd) AS qtywo
+				$SQL = "SELECT SUM(woitems.qtyreqd-woitems.qtyrecd) AS qtywo
 						FROM woitems INNER JOIN workorders
 						ON woitems.wo=workorders.wo
 						WHERE workorders.closed=0
 						AND woitems.stockid='" . DB_escape_string($MyRow['stkcode']) . "'";
 				$ErrMsg = _('The quantity on work orders for this product cannot be retrieved because');
-				$QOOResult = DB_query($sql, $ErrMsg);
+				$QOOResult = DB_query($SQL, $ErrMsg);
 				if (DB_num_rows($QOOResult) == 1) {
 					$QOORow = DB_fetch_row($QOOResult);
 					$QOO += $QOORow[0];

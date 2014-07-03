@@ -13,11 +13,11 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 	$PageNumber = 0;
 	$line_height = 12;
 
-	$sql = "SELECT min(supplierid) AS fromcriteria,
+	$SQL = "SELECT min(supplierid) AS fromcriteria,
 					max(supplierid) AS tocriteria
 				FROM suppliers";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 
 	if ($_POST['FromCriteria']=='') {
@@ -123,11 +123,11 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 	$Title = _('Supplier Balances At A Period End');
 	include('includes/header.inc');
 
-	$sql = "SELECT min(supplierid) AS fromcriteria,
+	$SQL = "SELECT min(supplierid) AS fromcriteria,
 					max(supplierid) AS tocriteria
 				FROM suppliers";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . _('Supplier Allocations') . '" alt="" />' . ' ' . $Title . '</p>';
@@ -156,13 +156,13 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 			<td>' . _('Balances As At') . ':</td>
 			<td><select required="required" minlength="1" name="PeriodEnd">';
 
-	$sql = "SELECT periodno,
+	$SQL = "SELECT periodno,
 					lastdate_in_period
 			FROM periods
 			ORDER BY periodno DESC";
 
 	$ErrMsg = _('Could not retrieve period data because');
-	$Periods = DB_query($sql, $ErrMsg);
+	$Periods = DB_query($SQL, $ErrMsg);
 
 	while ($MyRow = DB_fetch_array($Periods)) {
 		echo '<option value="' . $MyRow['lastdate_in_period'] . '" selected="selected" >' . MonthAndYearFromSQLDate($MyRow['lastdate_in_period'], 'M', -1) . '</option>';

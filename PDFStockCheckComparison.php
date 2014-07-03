@@ -17,7 +17,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 	/*First off do the Inventory Comparison file stuff */
 	if ($_POST['ReportOrClose'] == 'ReportAndClose') {
 
-		$sql = "SELECT stockcheckfreeze.stockid,
+		$SQL = "SELECT stockcheckfreeze.stockid,
 						stockcheckfreeze.loccode,
 						qoh,
 						stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS standardcost
@@ -30,7 +30,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 				ORDER BY stockcheckfreeze.loccode,
 						stockcheckfreeze.stockid";
 
-		$StockChecks = DB_query($sql, '', '', false, false);
+		$StockChecks = DB_query($SQL, '', '', false, false);
 		if (DB_error_no() != 0) {
 			$Title = _('Stock Freeze') . ' - ' . _('Problem Report') . '....';
 			include('includes/header.inc');
@@ -38,7 +38,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 			prnMsg(_('The inventory check file could not be retrieved because') . ' - ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 			if ($debug == 1) {
-				echo '<br />' . $sql;
+				echo '<br />' . $SQL;
 			}
 			include('includes/footer.inc');
 			exit;
@@ -50,13 +50,13 @@ if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 
 		while ($MyRow = DB_fetch_array($StockChecks)) {
 
-			$sql = "SELECT SUM(stockcounts.qtycounted) AS totcounted,
+			$SQL = "SELECT SUM(stockcounts.qtycounted) AS totcounted,
 					COUNT(stockcounts.stockid) AS noofcounts
 					FROM stockcounts
 					WHERE stockcounts.stockid='" . $MyRow['stockid'] . "'
 					AND stockcounts.loccode='" . $MyRow['loccode'] . "'";
 
-			$StockCounts = DB_query($sql);
+			$StockCounts = DB_query($SQL);
 			if (DB_error_no() != 0) {
 				$Title = _('Stock Count Comparison') . ' - ' . _('Problem Report') . '....';
 				include('includes/header.inc');
@@ -64,13 +64,13 @@ if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 				prnMsg(_('The inventory counts file could not be retrieved because') . ' - ' . DB_error_msg() . 'error');
 				echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 				if ($debug == 1) {
-					echo '<br />' . $sql;
+					echo '<br />' . $SQL;
 				}
 				include('includes/footer.inc');
 				exit;
 			}
 
-			$StkCountResult = DB_query($sql);
+			$StkCountResult = DB_query($SQL);
 			$StkCountRow = DB_fetch_array($StkCountResult);
 
 			$StockQtyDifference = $StkCountRow['totcounted'] - $MyRow['qoh'];
@@ -183,7 +183,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 	// now do the report
 	$ErrMsg = _('The Inventory Comparison data could not be retrieved because');
 	$DbgMsg = _('The following SQL to retrieve the Inventory Comparison data was used');
-	$sql = "SELECT stockcheckfreeze.stockid,
+	$SQL = "SELECT stockcheckfreeze.stockid,
 					description,
 					stockmaster.categoryid,
 					stockcategory.categorydescription,
@@ -206,7 +206,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 						stockmaster.categoryid,
 						stockcheckfreeze.stockid";
 
-	$CheckedItems = DB_query($sql, $ErrMsg, $DbgMsg);
+	$CheckedItems = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	if (DB_num_rows($CheckedItems) == 0) {
 		$Title = _('Inventory Comparison Comparison Report');
@@ -332,11 +332,11 @@ if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 
 	if ($_POST['ReportOrClose'] == 'ReportAndClose') {
 		//need to print the report first before this but don't risk re-adjusting all the stock!!
-		$sql = "TRUNCATE TABLE stockcheckfreeze";
-		$result = DB_query($sql);
+		$SQL = "TRUNCATE TABLE stockcheckfreeze";
+		$result = DB_query($SQL);
 
-		$sql = "TRUNCATE TABLE stockcounts";
-		$result = DB_query($sql);
+		$SQL = "TRUNCATE TABLE stockcounts";
+		$result = DB_query($SQL);
 	}
 
 } else {

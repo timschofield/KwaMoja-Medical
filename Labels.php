@@ -86,7 +86,7 @@ if (isset($_POST['submit'])) {
 		would not run in this case cos submit is false of course  see the
 		delete code below*/
 
-		$sql = "UPDATE labels SET 	description = '" . $_POST['Description'] . "',
+		$SQL = "UPDATE labels SET 	description = '" . $_POST['Description'] . "',
 									height = '" . $_POST['Height'] . "',
 									topmargin = '" . $_POST['TopMargin'] . "',
 									width = '" . $_POST['Width'] . "',
@@ -98,7 +98,7 @@ if (isset($_POST['submit'])) {
 				WHERE labelid = '" . $SelectedLabelID . "'";
 
 		$ErrMsg = _('The update of this label template failed because');
-		$result = DB_query($sql, $ErrMsg);
+		$result = DB_query($SQL, $ErrMsg);
 
 		$Message = _('The label template has been updated');
 
@@ -106,7 +106,7 @@ if (isset($_POST['submit'])) {
 
 		/*Selected label is null cos no item selected on first time round so must be adding a	record must be submitting new entries in the new label form */
 
-		$sql = "INSERT INTO labels (description,
+		$SQL = "INSERT INTO labels (description,
 									height,
 									topmargin,
 									width,
@@ -126,7 +126,7 @@ if (isset($_POST['submit'])) {
 					'" . $_POST['PageHeight'] . "')";
 
 		$ErrMsg = _('The addition of this label failed because');
-		$result = DB_query($sql, $ErrMsg);
+		$result = DB_query($SQL, $ErrMsg);
 		$Message = _('The new label template has been added to the database');
 	}
 	//run the SQL from either of the above possibilites
@@ -158,7 +158,7 @@ if (!isset($SelectedLabelID)) {
 
 	/* It could still be the second time the page has been run and a record has been selected for modification - SelectedLabelID will exist because it was sent with the new call. If its the first time the page has been displayed with no parameters then none of the above are true and the list of label templates will be displayed with links to delete or edit each. These will call the same page again and allow update/input or deletion of the records*/
 
-	$sql = "SELECT labelid,
+	$SQL = "SELECT labelid,
 				description,
 				pagewidth,
 				pageheight,
@@ -172,7 +172,7 @@ if (!isset($SelectedLabelID)) {
 
 	$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The defined label templates could not be retrieved because');
 	$DbgMsg = _('The following SQL to retrieve the label templates was used');
-	$result = DB_query($sql, $ErrMsg, $DbgMsg);
+	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	if (DB_num_rows($result) > 0) {
 		echo '<table class="selection" summary="' . _('List of all currently setup Label dimensions') . '">
@@ -257,7 +257,7 @@ echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />'
 if (isset($SelectedLabelID)) {
 	//editing an existing label
 
-	$sql = "SELECT pagewidth,
+	$SQL = "SELECT pagewidth,
 					pageheight,
 					description,
 					height,
@@ -269,7 +269,7 @@ if (isset($SelectedLabelID)) {
 			FROM labels
 			WHERE labelid='" . $SelectedLabelID . "'";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 
 	$_POST['PageWidth'] = $MyRow['pagewidth'];

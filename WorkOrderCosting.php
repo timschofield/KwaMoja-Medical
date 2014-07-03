@@ -36,7 +36,7 @@ if (!isset($SelectedWO)) {
 
 $ErrMsg = _('Could not retrieve the details of the selected work order');
 if ($_SESSION['RestrictLocations'] == 0) {
-	$sql = "SELECT workorders.loccode,
+	$SQL = "SELECT workorders.loccode,
 				locations.locationname,
 				workorders.requiredby,
 				workorders.startdate,
@@ -47,7 +47,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 				ON workorders.loccode=locations.loccode
 			WHERE workorders.wo='" . $_POST['WO'] . "'";
 } else {
-	$sql = "SELECT workorders.loccode,
+	$SQL = "SELECT workorders.loccode,
 				locations.locationname,
 				workorders.requiredby,
 				workorders.startdate,
@@ -61,7 +61,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 			WHERE workorders.wo='" . $_POST['WO'] . "'
 				AND www_users.userid='" . $_SESSION['UserID'] . "'";
 }
-$WOResult = DB_query($sql, $ErrMsg);
+$WOResult = DB_query($SQL, $ErrMsg);
 
 if (DB_num_rows($WOResult) == 0) {
 	prnMsg(_('The selected work order item cannot be retrieved from the database'), 'info');
@@ -258,7 +258,7 @@ while ($RequirementsRow = DB_fetch_array($RequirementsResult)) {
 
 //Now need to run through the issues to the work order that weren't in the requirements
 
-$sql = "SELECT stockmoves.stockid,
+$SQL = "SELECT stockmoves.stockid,
 				stockmaster.description,
 				stockmaster.decimalplaces,
 				trandate,
@@ -273,7 +273,7 @@ $sql = "SELECT stockmoves.stockid,
 						FROM worequirements
 					WHERE worequirements.wo='" . $_POST['WO'] . "')";
 
-$WOIssuesResult = DB_query($sql, _('Could not get issues that were not required by the BOM because'));
+$WOIssuesResult = DB_query($SQL, _('Could not get issues that were not required by the BOM because'));
 
 if (DB_num_rows($WOIssuesResult) > 0) {
 	while ($WOIssuesRow = DB_fetch_array($WOIssuesResult)) {

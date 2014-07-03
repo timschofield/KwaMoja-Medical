@@ -33,10 +33,10 @@ if (isset($_POST['Submit'])) {
 
 		/*SelectedMeasureID could also exist if submit had not been clicked this code would not run in this case cos submit is false of course  see the delete code below*/
 		// Check the name does not clash
-		$sql = "SELECT count(*) FROM unitsofmeasure
+		$SQL = "SELECT count(*) FROM unitsofmeasure
 				WHERE unitid <> '" . $SelectedMeasureID . "'
 				AND unitname " . LIKE . " '" . $_POST['MeasureName'] . "'";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_row($result);
 		if ($MyRow[0] > 0) {
 			$InputError = 1;
@@ -45,18 +45,18 @@ if (isset($_POST['Submit'])) {
 			// Get the old name and check that the record still exist neet to be very carefull here
 			// idealy this is one of those sets that should be in a stored procedure simce even the checks are
 			// relavant
-			$sql = "SELECT unitname FROM unitsofmeasure
+			$SQL = "SELECT unitname FROM unitsofmeasure
 				WHERE unitid = '" . $SelectedMeasureID . "'";
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 			if (DB_num_rows($result) != 0) {
 				// This is probably the safest way there is
 				$MyRow = DB_fetch_row($result);
 				$OldMeasureName = $MyRow[0];
-				$sql = array();
-				$sql[] = "UPDATE unitsofmeasure
+				$SQL = array();
+				$SQL[] = "UPDATE unitsofmeasure
 					SET unitname='" . $_POST['MeasureName'] . "'
 					WHERE unitname " . LIKE . " '" . DB_escape_string($OldMeasureName) . "'";
-				$sql[] = "UPDATE stockmaster
+				$SQL[] = "UPDATE stockmaster
 					SET units='" . $_POST['MeasureName'] . "'
 					WHERE units " . LIKE . " '" . DB_escape_string($OldMeasureName) . "'";
 			} else {
@@ -67,15 +67,15 @@ if (isset($_POST['Submit'])) {
 		$msg = _('Unit of measure changed');
 	} elseif ($InputError != 1) {
 		/*SelectedMeasureID is null cos no item selected on first time round so must be adding a record*/
-		$sql = "SELECT count(*) FROM unitsofmeasure
+		$SQL = "SELECT count(*) FROM unitsofmeasure
 				WHERE unitname " . LIKE . " '" . $_POST['MeasureName'] . "'";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_row($result);
 		if ($MyRow[0] > 0) {
 			$InputError = 1;
 			prnMsg(_('The unit of measure can not be created because another with the same name already exists.'), 'error');
 		} else {
-			$sql = "INSERT INTO unitsofmeasure (unitname )
+			$SQL = "INSERT INTO unitsofmeasure (unitname )
 					VALUES ('" . $_POST['MeasureName'] . "')";
 		}
 		$msg = _('New unit of measure added');
@@ -83,11 +83,11 @@ if (isset($_POST['Submit'])) {
 
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
-		if (is_array($sql)) {
+		if (is_array($SQL)) {
 			$result = DB_Txn_Begin();
 			$tmpErr = _('Could not update unit of measure');
 			$tmpDbg = _('The sql that failed was') . ':';
-			foreach ($sql as $stmt) {
+			foreach ($SQL as $stmt) {
 				$result = DB_query($stmt, $tmpErr, $tmpDbg, true);
 				if (!$result) {
 					$InputError = 1;
@@ -100,7 +100,7 @@ if (isset($_POST['Submit'])) {
 				$result = DB_Txn_Rollback();
 			}
 		} else {
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 		}
 		prnMsg($msg, 'success');
 	}
@@ -112,24 +112,24 @@ if (isset($_POST['Submit'])) {
 	//the link to delete a selected record was clicked instead of the submit button
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'stockmaster'
 	// Get the original name of the unit of measure the ID is just a secure way to find the unit of measure
-	$sql = "SELECT unitname FROM unitsofmeasure
+	$SQL = "SELECT unitname FROM unitsofmeasure
 		WHERE unitid = '" . $SelectedMeasureID . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	if (DB_num_rows($result) == 0) {
 		// This is probably the safest way there is
 		prnMsg(_('Cannot delete this unit of measure because it no longer exist'), 'warn');
 	} else {
 		$MyRow = DB_fetch_row($result);
 		$OldMeasureName = $MyRow[0];
-		$sql = "SELECT COUNT(*) FROM stockmaster WHERE units " . LIKE . " '" . DB_escape_string($OldMeasureName) . "'";
-		$result = DB_query($sql);
+		$SQL = "SELECT COUNT(*) FROM stockmaster WHERE units " . LIKE . " '" . DB_escape_string($OldMeasureName) . "'";
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_row($result);
 		if ($MyRow[0] > 0) {
 			prnMsg(_('Cannot delete this unit of measure because inventory items have been created using this unit of measure'), 'warn');
 			echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('inventory items that refer to this unit of measure') . '</font>';
 		} else {
-			$sql = "DELETE FROM unitsofmeasure WHERE unitname " . LIKE . "'" . DB_escape_string($OldMeasureName) . "'";
-			$result = DB_query($sql);
+			$SQL = "DELETE FROM unitsofmeasure WHERE unitname " . LIKE . "'" . DB_escape_string($OldMeasureName) . "'";
+			$result = DB_query($SQL);
 			prnMsg($OldMeasureName . ' ' . _('unit of measure has been deleted') . '!', 'success');
 		}
 	} //end if account group used in GL accounts
@@ -151,13 +151,13 @@ if (!isset($SelectedMeasureID)) {
 	links to delete or edit each. These will call the same page again and allow update/input
 	or deletion of the records*/
 
-	$sql = "SELECT unitid,
+	$SQL = "SELECT unitid,
 			unitname
 			FROM unitsofmeasure
 			ORDER BY unitid";
 
 	$ErrMsg = _('Could not get unit of measures because');
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 
 	echo '<table class="selection">
 			<tr>
@@ -199,12 +199,12 @@ if (!isset($_GET['delete'])) {
 	if (isset($SelectedMeasureID)) {
 		//editing an existing section
 
-		$sql = "SELECT unitid,
+		$SQL = "SELECT unitid,
 				unitname
 				FROM unitsofmeasure
 				WHERE unitid='" . $SelectedMeasureID . "'";
 
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		if (DB_num_rows($result) == 0) {
 			prnMsg(_('Could not retrieve the requested unit of measure, please try again.'), 'warn');
 			unset($SelectedMeasureID);

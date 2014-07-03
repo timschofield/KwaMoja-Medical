@@ -49,7 +49,7 @@ if (isset($_POST['submit'])) {
 
 	if ($InputError != 1) {
 
-		$sql = "INSERT INTO discountmatrix (salestype,
+		$SQL = "INSERT INTO discountmatrix (salestype,
 							discountcategory,
 							quantitybreak,
 							discountrate)
@@ -58,7 +58,7 @@ if (isset($_POST['submit'])) {
 						'" . filter_number_format($_POST['QuantityBreak']) . "',
 						'" . (filter_number_format($_POST['DiscountRate']) / 100) . "')";
 
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		prnMsg(_('The discount matrix record has been added'), 'success');
 		echo '<br />';
 		unset($_POST['DiscountCategory']);
@@ -69,12 +69,12 @@ if (isset($_POST['submit'])) {
 } elseif (isset($_GET['Delete']) and $_GET['Delete'] == 'yes') {
 	/*the link to delete a selected record was clicked instead of the submit button */
 
-	$sql = "DELETE FROM discountmatrix
+	$SQL = "DELETE FROM discountmatrix
 		WHERE discountcategory='" . $_GET['DiscountCategory'] . "'
 		AND salestype='" . $_GET['SalesType'] . "'
 		AND quantitybreak='" . $_GET['QuantityBreak'] . "'";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	prnMsg(_('The discount matrix record has been deleted'), 'success');
 	echo '<br />';
 }
@@ -86,11 +86,11 @@ echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />'
 
 echo '<table class="selection">';
 
-$sql = "SELECT typeabbrev,
+$SQL = "SELECT typeabbrev,
 		sales_type
 		FROM salestypes";
 
-$result = DB_query($sql);
+$result = DB_query($SQL);
 
 echo '<tr><td>' . _('Customer Price List') . ' (' . _('Sales Type') . '):</td><td>';
 
@@ -107,8 +107,8 @@ while ($MyRow = DB_fetch_array($result)) {
 echo '</select></td></tr>';
 
 
-$sql = "SELECT DISTINCT discountcategory FROM stockmaster WHERE discountcategory <>''";
-$result = DB_query($sql);
+$SQL = "SELECT DISTINCT discountcategory FROM stockmaster WHERE discountcategory <>''";
+$result = DB_query($SQL);
 if (DB_num_rows($result) > 0) {
 	echo '<tr>
 			<td>' . _('Discount Category Code') . ': </td>
@@ -141,7 +141,7 @@ echo '<tr>
 	</div>
 	<br />';
 
-$sql = "SELECT sales_type,
+$SQL = "SELECT sales_type,
 			salestype,
 			discountcategory,
 			quantitybreak,
@@ -152,7 +152,7 @@ $sql = "SELECT sales_type,
 			discountcategory,
 			quantitybreak";
 
-$result = DB_query($sql);
+$result = DB_query($SQL);
 
 echo '<table class="selection">';
 echo '<tr>

@@ -23,7 +23,7 @@ if (isset($_POST['submit']) or isset($_POST['update'])) {
 	}
 	/*end of else StockCat */
 
-	$sql = "SELECT 	stockmaster.stockid,
+	$SQL = "SELECT 	stockmaster.stockid,
 					stockmaster.description,
 					prices.debtorno,
 					prices.branchcode,
@@ -49,7 +49,7 @@ if (isset($_POST['submit']) or isset($_POST['update'])) {
 				AND prices.typeabbrev ='" . $_POST['SalesType'] . "'
 				AND prices.currabrev ='" . $_POST['CurrCode'] . "'
 				AND (prices.enddate>=CURRENT_DATE OR prices.enddate='0000-00-00')";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$numrow = DB_num_rows($result);
 
 	if ($_POST['submit'] == 'Update') {
@@ -127,20 +127,20 @@ if (isset($_POST['submit']) or isset($_POST['update'])) {
 			$PriceCounter++;
 		} //end while loop
 		DB_free_result($result); //clear the old result
-		$result = DB_query($sql); //re-run the query with the updated prices
+		$result = DB_query($SQL); //re-run the query with the updated prices
 		$numrow = DB_num_rows($result); // get the new number - should be the same!!
 	}
 
-	$sqlcat = "SELECT categorydescription
+	$SQLcat = "SELECT categorydescription
 				FROM stockcategory
 				WHERE categoryid='" . $_POST['StockCat'] . "'";
-	$ResultCat = DB_query($sqlcat);
+	$ResultCat = DB_query($SQLcat);
 	$CategoryRow = DB_fetch_array($ResultCat);
 
-	$sqltype = "SELECT sales_type
+	$SQLtype = "SELECT sales_type
 				FROM salestypes
 				WHERE typeabbrev='" . $_POST['SalesType'] . "'";
-	$ResultType = DB_query($sqltype);
+	$ResultType = DB_query($SQLtype);
 	$SalesTypeRow = DB_fetch_array($ResultType);
 
 	if (isset($CategoryRow['categorgdescription'])) {

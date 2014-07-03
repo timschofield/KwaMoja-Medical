@@ -21,14 +21,14 @@ if (isset($_POST['PrintPDF'])) {
 	$result = DB_query("DROP TABLE IF EXISTS tempbom");
 	$result = DB_query("DROP TABLE IF EXISTS passbom");
 	$result = DB_query("DROP TABLE IF EXISTS passbom2");
-	$sql = "CREATE TEMPORARY TABLE passbom (
+	$SQL = "CREATE TEMPORARY TABLE passbom (
 				part char(20),
 				extendedqpa double,
 				sortpart text) DEFAULT CHARSET=utf8";
 	$ErrMsg = _('The SQL to create passbom failed with the message');
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 
-	$sql = "CREATE TEMPORARY TABLE tempbom (
+	$SQL = "CREATE TEMPORARY TABLE tempbom (
 				parent char(20),
 				component char(20),
 				sortpart text,
@@ -38,14 +38,14 @@ if (isset($_POST['PrintPDF'])) {
 				effectiveafter date,
 				effectiveto date,
 				quantity double) DEFAULT CHARSET=utf8";
-	$result = DB_query($sql, _('Create of tempbom failed because'));
+	$result = DB_query($SQL, _('Create of tempbom failed because'));
 	// First, find first level of components below requested assembly
 	// Put those first level parts in passbom, use COMPONENT in passbom
 	// to link to PARENT in bom to find next lower level and accumulate
 	// those parts into tempbom
 
 	// This finds the top level
-	$sql = "INSERT INTO passbom (part, extendedqpa, sortpart)
+	$SQL = "INSERT INTO passbom (part, extendedqpa, sortpart)
 			   SELECT bom.component AS part,
 					  (" . filter_number_format($_POST['Quantity']) . " * bom.quantity) as extendedqpa,
 					   CONCAT(bom.parent,bom.component) AS sortpart
@@ -53,11 +53,11 @@ if (isset($_POST['PrintPDF'])) {
 			  WHERE bom.parent ='" . $_POST['Part'] . "'
 			  AND bom.effectiveto >= CURRENT_DATE
 			  AND bom.effectiveafter <= CURRENT_DATE";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	$LevelCounter = 2;
 	// $LevelCounter is the level counter
-	$sql = "INSERT INTO tempbom (
+	$SQL = "INSERT INTO tempbom (
 				parent,
 				component,
 				sortpart,
@@ -79,8 +79,8 @@ if (isset($_POST['PrintPDF'])) {
 			WHERE bom.parent ='" . $_POST['Part'] . "'
 			AND bom.effectiveto >= CURRENT_DATE
 			AND bom.effectiveafter <= CURRENT_DATE";
-	$result = DB_query($sql);
-	//echo "<br />sql is $sql<br />";
+	$result = DB_query($SQL);
+	//echo "<br />sql is $SQL<br />";
 	// This while routine finds the other levels as long as $ComponentCounter - the
 	// component counter finds there are more components that are used as
 	// assemblies at lower levels
@@ -88,7 +88,7 @@ if (isset($_POST['PrintPDF'])) {
 	$ComponentCounter = 1;
 	while ($ComponentCounter > 0) {
 		$LevelCounter++;
-		$sql = "INSERT INTO tempbom (
+		$SQL = "INSERT INTO tempbom (
 				parent,
 				component,
 				sortpart,
@@ -111,18 +111,18 @@ if (isset($_POST['PrintPDF'])) {
 			 WHERE bom.parent = passbom.part
 			  AND bom.effectiveto >= CURRENT_DATE
 			  AND bom.effectiveafter <= CURRENT_DATE";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 
 		$result = DB_query("DROP TABLE IF EXISTS passbom2");
 		$result = DB_query("ALTER TABLE passbom RENAME AS passbom2");
 		$result = DB_query("DROP TABLE IF EXISTS passbom");
 
-		$sql = "CREATE TEMPORARY TABLE passbom (part char(20),
+		$SQL = "CREATE TEMPORARY TABLE passbom (part char(20),
 												extendedqpa decimal(10,3),
 												sortpart text) DEFAULT CHARSET=utf8";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 
-		$sql = "INSERT INTO passbom (part,
+		$SQL = "INSERT INTO passbom (part,
 									extendedqpa,
 									sortpart)
 									SELECT bom.component AS part,
@@ -133,14 +133,14 @@ if (isset($_POST['PrintPDF'])) {
 									ON bom.parent = passbom2.part
 									WHERE bom.effectiveto >= CURRENT_DATE
 										AND bom.effectiveafter <= CURRENT_DATE";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 
-		$sql = "SELECT COUNT(bom.parent) AS components
+		$SQL = "SELECT COUNT(bom.parent) AS components
 					FROM bom
 					INNER JOIN passbom
 					ON bom.parent = passbom.part
 					GROUP BY passbom.part";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 
 		$MyRow = DB_fetch_array($result);
 		$ComponentCounter = $MyRow['components'];
@@ -153,7 +153,7 @@ if (isset($_POST['PrintPDF'])) {
 		prnMsg(_('The Quantiy Extended BOM Listing could not be retrieved by the SQL because') . ' ' . DB_error_msg(), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($debug == 1) {
-			echo '<br />' . $sql;
+			echo '<br />' . $SQL;
 		}
 		include('includes/footer.inc');
 		exit;
@@ -162,7 +162,7 @@ if (isset($_POST['PrintPDF'])) {
 	$Tot_Val = 0;
 	$fill = false;
 	$pdf->SetFillColor(224, 235, 255);
-	$sql = "SELECT tempbom.component,
+	$SQL = "SELECT tempbom.component,
 				   SUM(tempbom.quantity) as quantity,
 				   stockmaster.description,
 				   stockmaster.decimalplaces,
@@ -194,7 +194,7 @@ if (isset($_POST['PrintPDF'])) {
 					   stockmaster.description,
 					   stockmaster.decimalplaces,
 					   stockmaster.mbflag";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$ListCount = DB_num_rows($result);
 	while ($MyRow = DB_fetch_array($result)) {
 

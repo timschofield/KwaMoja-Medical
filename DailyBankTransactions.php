@@ -89,7 +89,7 @@ if (!isset($_POST['Show'])) {
 	$BankResult = DB_query($SQL, _('Could not retrieve the bank account details'));
 
 
-	$sql = "SELECT 	banktrans.currcode,
+	$SQL = "SELECT 	banktrans.currcode,
 					banktrans.amount,
 					banktrans.amountcleared,
 					banktrans.functionalexrate,
@@ -110,7 +110,7 @@ if (!isset($_POST['Show'])) {
 					AND transdate>='" . FormatDateForSQL($_POST['FromTransDate']) . "'
 					AND transdate<='" . FormatDateForSQL($_POST['ToTransDate']) . "'
 				ORDER BY banktrans.transdate";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	if (DB_num_rows($result) == 0) {
 		prnMsg(_('There are no transactions for this account in the date range selected'), 'info');
 	} else {

@@ -24,7 +24,7 @@ if (isset($_GET['SelectedMessageLine'])) {
 
 
 if (isset($_POST['NewEDIInvMsg'])) {
-	$sql = "INSERT INTO edimessageformat (partnercode,
+	$SQL = "INSERT INTO edimessageformat (partnercode,
 						messagetype,
 						sequenceno,
 						section,
@@ -39,7 +39,7 @@ if (isset($_POST['NewEDIInvMsg'])) {
 			AND messagetype='INVOIC'";
 
 	$ErrMsg = _('There was an error inserting the default template invoice message records for') . ' ' . $PartnerCode . ' ' . _('because');
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 }
 
 $InputError = 0;
@@ -49,14 +49,14 @@ if ($InputError != 1 and isset($_POST['update'])) {
 	if (!isset($SelectedMessageLine)) {
 		$SelectedMessageLine = '';
 	}
-	$sql = "UPDATE edimessageformat
+	$SQL = "UPDATE edimessageformat
 			SET partnercode='" . $PartnerCode . "',
 				messagetype='" . $MessageType . "',
 				section='" . $_POST['Section'] . "',
 				sequenceno='" . $_POST['SequenceNo'] . "',
 				linetext='" . $_POST['LineText'] . "'
 			WHERE id = '" . $SelectedMessageLine . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$msg = _('Message line updated');
 	unset($SelectedMessageLine);
 
@@ -64,7 +64,7 @@ if ($InputError != 1 and isset($_POST['update'])) {
 
 	/*Selected group is null cos no item selected on first time round so must be adding a record must be submitting new entries in the new message line form */
 
-	$sql = "INSERT INTO edimessageformat (
+	$SQL = "INSERT INTO edimessageformat (
 				partnercode,
 				messagetype,
 				section,
@@ -79,15 +79,15 @@ if ($InputError != 1 and isset($_POST['update'])) {
 				)";
 	$msg = _('Message line added');
 	//run the SQL from either of the above possibilites
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	unset($SelectedMessageLine);
 
 } elseif (isset($_GET['delete'])) {
 	//the link to delete a selected record was clicked instead of the submit button
 
 
-	$sql = "DELETE FROM edimessageformat WHERE id='" . $_GET['delete'] . "'";
-	$result = DB_query($sql);
+	$SQL = "DELETE FROM edimessageformat WHERE id='" . $_GET['delete'] . "'";
+	$result = DB_query($SQL);
 	$msg = _('The selected message line has been deleted');
 
 }
@@ -110,7 +110,7 @@ if (!isset($SelectedMessageLine)) {
 	links to delete or edit each. These will call the same page again and allow update/input
 	or deletion of the records*/
 
-	$sql = "SELECT id,
+	$SQL = "SELECT id,
 				section,
 				sequenceno,
 				linetext
@@ -119,7 +119,7 @@ if (!isset($SelectedMessageLine)) {
 			AND messagetype='" . $MessageType . "'
 			ORDER BY sequenceno";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	echo '<table class="selection">
 			<tr>
@@ -166,7 +166,7 @@ if (!isset($SelectedMessageLine)) {
 if (isset($SelectedMessageLine)) {
 	//editing an existing message line
 
-	$sql = "SELECT messagetype,
+	$SQL = "SELECT messagetype,
 			partnercode,
 			section,
 			sequenceno,
@@ -174,7 +174,7 @@ if (isset($SelectedMessageLine)) {
 		FROM edimessageformat
 		WHERE id='" . $SelectedMessageLine . "'";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 
 	$_POST['Section'] = $MyRow['section'];

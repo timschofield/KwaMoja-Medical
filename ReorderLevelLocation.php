@@ -35,7 +35,7 @@ if (isset($_POST['submit']) or isset($_POST['Update'])) {
 		$Sequence = "locstock.stockid";
 	}
 
-	$sql = "SELECT locstock.stockid,
+	$SQL = "SELECT locstock.stockid,
 				description,
 				reorderlevel,
 				bin,
@@ -48,7 +48,7 @@ if (isset($_POST['submit']) or isset($_POST['Update'])) {
 			AND stockmaster.discontinued = 0
 			ORDER BY '" . $Sequence . "' ASC";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	$SqlLoc = "SELECT locationname
 		   FROM locations
@@ -144,18 +144,18 @@ if (isset($_POST['submit']) or isset($_POST['Update'])) {
 		<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	if ($_SESSION['RestrictLocations'] == 0) {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations";
 	} else {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations
 					INNER JOIN www_users
 						ON locations.loccode=www_users.defaultlocation
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
-	$resultStkLocs = DB_query($sql);
+	$resultStkLocs = DB_query($SQL);
 	echo '<table class="selection">
 			<tr>
 				<td>' . _('Location') . ':</td>

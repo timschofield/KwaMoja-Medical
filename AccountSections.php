@@ -9,26 +9,26 @@ $BookMark = 'AccountSections';
 include('includes/header.inc');
 
 // SOME TEST TO ENSURE THAT AT LEAST INCOME AND COST OF SALES ARE THERE
-$sql = "SELECT sectionid FROM accountsection WHERE sectionid=1";
-$result = DB_query($sql);
+$SQL = "SELECT sectionid FROM accountsection WHERE sectionid=1";
+$result = DB_query($SQL);
 
 if (DB_num_rows($result) == 0) {
-	$sql = "INSERT INTO accountsection (sectionid,
+	$SQL = "INSERT INTO accountsection (sectionid,
 										sectionname)
 									VALUES (1,
 											'Income')";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 }
 
-$sql = "SELECT sectionid FROM accountsection WHERE sectionid=2";
-$result = DB_query($sql);
+$SQL = "SELECT sectionid FROM accountsection WHERE sectionid=2";
+$result = DB_query($SQL);
 
 if (DB_num_rows($result) == 0) {
-	$sql = "INSERT INTO accountsection (sectionid,
+	$SQL = "INSERT INTO accountsection (sectionid,
 										sectionname)
 									VALUES (2,
 											'Cost Of Sales')";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 }
 // DONE WITH MINIMUM TESTS
 
@@ -51,10 +51,10 @@ if (isset($_POST['submit'])) {
 
 	//first off validate inputs sensible
 	if (isset($_POST['SectionID'])) {
-		$sql = "SELECT sectionid
+		$SQL = "SELECT sectionid
 					FROM accountsection
 					WHERE sectionid='" . $_POST['SectionID'] . "'";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 
 		if ((DB_num_rows($result) != 0 and !isset($_POST['SelectedSectionID']))) {
 			$InputError = 1;
@@ -86,7 +86,7 @@ if (isset($_POST['submit'])) {
 
 		/*SelectedSectionID could also exist if submit had not been clicked this code would not run in this case cos submit is false of course see the delete code below*/
 
-		$sql = "UPDATE accountsection SET sectionname='" . $_POST['SectionName'] . "'
+		$SQL = "UPDATE accountsection SET sectionname='" . $_POST['SectionName'] . "'
 				WHERE sectionid = '" . $_POST['SelectedSectionID'] . "'";
 
 		$msg = _('Record Updated');
@@ -94,7 +94,7 @@ if (isset($_POST['submit'])) {
 
 		/*SelectedSectionID is null cos no item selected on first time round so must be adding a record must be submitting new entries in the new account section form */
 
-		$sql = "INSERT INTO accountsection (sectionid,
+		$SQL = "INSERT INTO accountsection (sectionid,
 											sectionname
 										) VALUES (
 											'" . $_POST['SectionID'] . "',
@@ -104,7 +104,7 @@ if (isset($_POST['submit'])) {
 
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		prnMsg($msg, 'success');
 		unset($_POST['SelectedSectionID']);
 		unset($_POST['SectionID']);
@@ -115,8 +115,8 @@ if (isset($_POST['submit'])) {
 	//the link to delete a selected record was clicked instead of the submit button
 
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'accountgroups'
-	$sql = "SELECT COUNT(sectioninaccounts) AS sections FROM accountgroups WHERE sectioninaccounts='" . $_GET['SelectedSectionID'] . "'";
-	$result = DB_query($sql);
+	$SQL = "SELECT COUNT(sectioninaccounts) AS sections FROM accountgroups WHERE sectioninaccounts='" . $_GET['SelectedSectionID'] . "'";
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 	if ($MyRow['sections'] > 0) {
 		prnMsg(_('Cannot delete this account section because general ledger accounts groups have been created using this section'), 'warn');
@@ -126,13 +126,13 @@ if (isset($_POST['submit'])) {
 
 	} else {
 		//Fetch section name
-		$sql = "SELECT sectionname FROM accountsection WHERE sectionid='" . $_GET['SelectedSectionID'] . "'";
-		$result = DB_query($sql);
+		$SQL = "SELECT sectionname FROM accountsection WHERE sectionid='" . $_GET['SelectedSectionID'] . "'";
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_array($result);
 		$SectionName = $MyRow['sectionname'];
 
-		$sql = "DELETE FROM accountsection WHERE sectionid='" . $_GET['SelectedSectionID'] . "'";
-		$result = DB_query($sql);
+		$SQL = "DELETE FROM accountsection WHERE sectionid='" . $_GET['SelectedSectionID'] . "'";
+		$result = DB_query($SQL);
 		prnMsg($SectionName . ' ' . _('section has been deleted') . '!', 'success');
 
 	} //end if account group used in GL accounts
@@ -153,13 +153,13 @@ if (!isset($_GET['SelectedSectionID']) and !isset($_POST['SelectedSectionID'])) 
 	links to delete or edit each. These will call the same page again and allow update/input
 	or deletion of the records*/
 
-	$sql = "SELECT sectionid,
+	$SQL = "SELECT sectionid,
 			sectionname
 		FROM accountsection
 		ORDER BY sectionid";
 
 	$ErrMsg = _('Could not get account group sections because');
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '<br /></p>';
 
 	echo '<table class="selection">
@@ -205,12 +205,12 @@ if (!isset($_GET['delete'])) {
 		//editing an existing section
 		echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '<br /></p>';
 
-		$sql = "SELECT sectionid,
+		$SQL = "SELECT sectionid,
 				sectionname
 			FROM accountsection
 			WHERE sectionid='" . $_GET['SelectedSectionID'] . "'";
 
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		if (DB_num_rows($result) == 0) {
 			prnMsg(_('Could not retrieve the requested section please try again.'), 'warn');
 			unset($_GET['SelectedSectionID']);

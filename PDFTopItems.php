@@ -86,10 +86,10 @@ if (DB_num_rows($result) > 0) {
 	$YPos = $YPos - 6;
 	while ($MyRow = DB_fetch_array($result)) {
 		//find the quantity onhand item
-		$sqloh = "SELECT sum(quantity)as qty
+		$SQLoh = "SELECT sum(quantity)as qty
 					FROM locstock
 					WHERE stockid='" . DB_escape_string($MyRow['stkcode']) . "'";
-		$oh = DB_query($sqloh);
+		$oh = DB_query($SQLoh);
 		$ohRow = DB_fetch_row($oh);
 		$LeftOvers = $pdf->addTextWrap($Left_Margin + 1, $YPos, 80, $FontSize, $MyRow['stkcode']);
 		$LeftOvers = $pdf->addTextWrap($Left_Margin + 100, $YPos, 100, $FontSize, $MyRow['description']);

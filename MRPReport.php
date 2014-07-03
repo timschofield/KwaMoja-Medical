@@ -20,14 +20,14 @@ if (isset($_POST['PrintPDF']) and $_POST['Part'] != '') {
 
 	// Load mrprequirements into $Requirements array
 	// Use weekindex to assign supplies, requirements, and planned orders to weekly buckets
-	$sql = "SELECT mrprequirements.*,
+	$SQL = "SELECT mrprequirements.*,
 				TRUNCATE(((TO_DAYS(daterequired) - TO_DAYS(CURRENT_DATE)) / 7),0) AS weekindex,
 				TO_DAYS(daterequired) - TO_DAYS(CURRENT_DATE) AS datediff
 			FROM mrprequirements
 			WHERE part = '" . $_POST['Part'] . "'
 			ORDER BY daterequired,whererequired";
 
-	$result = DB_query($sql, '', '', False, False);
+	$result = DB_query($SQL, '', '', False, False);
 	if (DB_error_no() != 0) {
 		$errors = 1;
 		$Title = _('Print MRP Report Error');
@@ -70,13 +70,13 @@ if (isset($_POST['PrintPDF']) and $_POST['Part'] != '') {
 	} //end of while loop
 
 	// Load mrpsupplies into $Supplies array
-	$sql = "SELECT mrpsupplies.*,
+	$SQL = "SELECT mrpsupplies.*,
 				   TRUNCATE(((TO_DAYS(duedate) - TO_DAYS(CURRENT_DATE)) / 7),0) AS weekindex,
 				   TO_DAYS(duedate) - TO_DAYS(CURRENT_DATE) AS datediff
 			 FROM mrpsupplies
 			 WHERE part = '" . $_POST['Part'] . "'
 			 ORDER BY mrpdate";
-	$result = DB_query($sql, '', '', false, true);
+	$result = DB_query($SQL, '', '', false, true);
 	if (DB_error_no() != 0) {
 		$errors = 1;
 	}
@@ -105,11 +105,11 @@ if (isset($_POST['PrintPDF']) and $_POST['Part'] != '') {
 		array_push($Supplies, $MyRow);
 	} //end of while loop
 
-	$sql = "SELECT mrpplannedorders.*,
+	$SQL = "SELECT mrpplannedorders.*,
 				   TRUNCATE(((TO_DAYS(duedate) - TO_DAYS(CURRENT_DATE)) / 7),0) AS weekindex,
 				   TO_DAYS(duedate) - TO_DAYS(CURRENT_DATE) AS datediff
 				FROM mrpplannedorders WHERE part = '" . $_POST['Part'] . "' ORDER BY mrpdate";
-	$result = DB_query($sql, '', '', false, true);
+	$result = DB_query($SQL, '', '', false, true);
 	if (DB_error_no() != 0) {
 		$errors = 1;
 	}
@@ -147,7 +147,7 @@ if (isset($_POST['PrintPDF']) and $_POST['Part'] != '') {
 		prnMsg(_('The MRP Report could not be retrieved by the SQL because') . ' ' . DB_error_msg(), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($debug == 1) {
-			echo '<br />' . $sql;
+			echo '<br />' . $SQL;
 		}
 		include('includes/footer.inc');
 		exit;
@@ -162,7 +162,7 @@ if (isset($_POST['PrintPDF']) and $_POST['Part'] != '') {
 	$pdf->SetFillColor(224, 235, 255); // Defines color to make alternating lines highlighted
 
 	// Get and display part information
-	$sql = "SELECT levels.*,
+	$SQL = "SELECT levels.*,
 				   stockmaster.description,
 				   stockmaster.lastcost,
 				   stockmaster.decimalplaces,
@@ -171,7 +171,7 @@ if (isset($_POST['PrintPDF']) and $_POST['Part'] != '') {
 			LEFT JOIN stockmaster
 			ON levels.part = stockmaster.stockid
 			WHERE part = '" . $_POST['Part'] . "'";
-	$result = DB_query($sql, '', '', false, true);
+	$result = DB_query($SQL, '', '', false, true);
 	$MyRow = DB_fetch_array($result);
 	$pdf->addTextWrap($Left_Margin, $YPos, 35, $FontSize, _('Part') . ': ', '');
 	$pdf->addTextWrap(70, $YPos, 100, $FontSize, $MyRow['part'], '');

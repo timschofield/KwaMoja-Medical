@@ -61,7 +61,7 @@ if (isset($_POST['submit'])) {
 
 	if ($InputError != 1) {
 
-		$sql = "INSERT INTO www_users (userid,
+		$SQL = "INSERT INTO www_users (userid,
 										realname,
 										supplierid,
 										password,
@@ -91,7 +91,7 @@ if (isset($_POST['submit'])) {
 							'" . $_POST['UserLanguage'] . "')";
 		$ErrMsg = _('The user could not be added because');
 		$DbgMsg = _('The SQL that was used to insert the new user and failed was');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 		prnMsg(_('A new supplier login has been created'), 'success');
 		include('includes/footer.inc');
 		exit;
@@ -179,18 +179,18 @@ echo '<tr>
 		<td><select required="required" minlength="1" name="DefaultLocation">';
 
 if ($_SESSION['RestrictLocations'] == 0) {
-	$sql = "SELECT locationname,
+	$SQL = "SELECT locationname,
 					loccode
 				FROM locations";
 } else {
-	$sql = "SELECT locationname,
+	$SQL = "SELECT locationname,
 					loccode
 				FROM locations
 				INNER JOIN www_users
 					ON locations.loccode=www_users.defaultlocation
 				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 }
-$result = DB_query($sql);
+$result = DB_query($SQL);
 
 while ($MyRow = DB_fetch_array($result)) {
 

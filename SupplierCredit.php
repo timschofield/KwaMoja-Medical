@@ -33,8 +33,8 @@ if (isset($_GET['New'])) {
 }
 
 if (!isset($_SESSION['SuppTrans']->SupplierName)) {
-	$sql = "SELECT suppname FROM suppliers WHERE supplierid='" . $_GET['SupplierID'] . "'";
-	$result = DB_query($sql);
+	$SQL = "SELECT suppname FROM suppliers WHERE supplierid='" . $_GET['SupplierID'] . "'";
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_row($result);
 	$SupplierName = $MyRow[0];
 } else {
@@ -63,7 +63,7 @@ if (isset($_GET['SupplierID']) and $_GET['SupplierID'] != '') {
 
 	/*Now retrieve supplier information - name, currency, default ex rate, terms, tax rate etc */
 
-	$sql = "SELECT suppliers.suppname,
+	$SQL = "SELECT suppliers.suppname,
 					suppliers.supplierid,
 					paymentterms.terms,
 					paymentterms.daysbeforedue,
@@ -84,7 +84,7 @@ if (isset($_GET['SupplierID']) and $_GET['SupplierID'] != '') {
 	$ErrMsg = _('The supplier record selected') . ': ' . $_GET['SupplierID'] . ' ' . _('cannot be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve the supplier details and failed was');
 
-	$result = DB_query($sql, $ErrMsg, $DbgMsg);
+	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	$MyRow = DB_fetch_array($result);
 
@@ -869,10 +869,10 @@ if (isset($_POST['PostCreditNote'])) {
 								The cost of these items - $EnteredGRN->ChgPrice  / $_SESSION['SuppTrans']->ExRate
 								*/
 
-								$sql = "SELECT SUM(quantity) FROM locstock WHERE stockid='" . $EnteredGRN->ItemCode . "'";
+								$SQL = "SELECT SUM(quantity) FROM locstock WHERE stockid='" . $EnteredGRN->ItemCode . "'";
 								$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The quantity on hand could not be retrieved from the database');
 								$DbgMsg = _('The following SQL to retrieve the total stock quantity was used');
-								$Result = DB_query($sql, $ErrMsg, $DbgMsg, True);
+								$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
 								$QtyRow = DB_fetch_row($Result);
 								$TotalQuantityOnHand = $QtyRow[0];
 
@@ -944,13 +944,13 @@ if (isset($_POST['PostCreditNote'])) {
 								$DbgMsg = _('The following SQL to update the cost was used');
 
 								/* Get the old cost information */
-								$sql = "SELECT stockcosts.materialcost,
+								$SQL = "SELECT stockcosts.materialcost,
 												stockcosts.labourcost,
 												stockcosts.overheadcosts
 											FROM stockcosts
 											WHERE stockid='" . $EnteredGRN->ItemCode . "'
 												AND succeeded=0";
-								$result = DB_query($sql);
+								$result = DB_query($SQL);
 								$MyRow = DB_fetch_array($result);
 								$OldMaterialCost = $MyRow['materialcost'];
 								$OldLabourCost = $MyRow['labourcost'];
@@ -960,31 +960,31 @@ if (isset($_POST['PostCreditNote'])) {
 
 									$CostIncrement = ($PurchPriceVar - $WriteOffToVariances) / $TotalQuantityOnHand;
 
-									$sql = "UPDATE stockcosts SET succeeded=1
+									$SQL = "UPDATE stockcosts SET succeeded=1
 																WHERE stockid='" . $EnteredGRN->ItemCode . "'
 																	AND succeeded=0;";
-									$Result = DB_query($sql, $ErrMsg, $DbgMsg, True);
+									$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
 
-									$sql = "INSERT INTO stockcosts VALUES('" . $EnteredGRN->ItemCode . "',
+									$SQL = "INSERT INTO stockcosts VALUES('" . $EnteredGRN->ItemCode . "',
 																	'" . ($OldMaterialCost + $CostIncrement) . "',
 																	'" . $OldLabourCost . "',
 																	'" . $OldOverheadCost . "',
 																	CURRENT_TIME,
 																	0)";
-									$Result = DB_query($sql, $ErrMsg, $DbgMsg, True);
+									$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
 								} else {
-									$sql = "UPDATE stockcosts SET succeeded=1
+									$SQL = "UPDATE stockcosts SET succeeded=1
 																WHERE stockid='" . $EnteredGRN->ItemCode . "'
 																	AND succeeded=0;";
-									$Result = DB_query($sql, $ErrMsg, $DbgMsg, True);
+									$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
 
-									$sql = "INSERT INTO stockcosts VALUES('" . $EnteredGRN->ItemCode . "',
+									$SQL = "INSERT INTO stockcosts VALUES('" . $EnteredGRN->ItemCode . "',
 																	'" . ($EnteredGRN->ChgPrice / $_SESSION['SuppTrans']->ExRate) . "',
 																	'" . $OldLabourCost . "',
 																	'" . $OldOverheadCost . "',
 																	CURRENT_TIME,
 																	0)";
-									$Result = DB_query($sql, $ErrMsg, $DbgMsg, True);
+									$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
 								}
 								/* End of Weighted Average Costing Code */
 

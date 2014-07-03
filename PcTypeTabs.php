@@ -54,7 +54,7 @@ if (isset($_POST['submit'])) {
 
 	if (isset($SelectedTab) and $InputError != 1) {
 
-		$sql = "UPDATE pctypetabs
+		$SQL = "UPDATE pctypetabs
 			SET typetabdescription = '" . $_POST['TypeTabDescription'] . "'
 			WHERE typetabcode = '" . $SelectedTab . "'";
 
@@ -77,7 +77,7 @@ if (isset($_POST['submit'])) {
 
 			// Add new record on submit
 
-			$sql = "INSERT INTO pctypetabs
+			$SQL = "INSERT INTO pctypetabs
 						(typetabcode,
 			 			 typetabdescription)
 				VALUES ('" . $_POST['TypeTabCode'] . "',
@@ -90,7 +90,7 @@ if (isset($_POST['submit'])) {
 
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		prnMsg($msg, 'success');
 		echo '<br />';
 		unset($SelectedTab);
@@ -132,9 +132,9 @@ if (isset($_POST['submit'])) {
 		exit;
 	} else {
 
-		$sql = "DELETE FROM pctypetabs WHERE typetabcode='" . $SelectedTab . "'";
+		$SQL = "DELETE FROM pctypetabs WHERE typetabcode='" . $SelectedTab . "'";
 		$ErrMsg = _('The Tab Type record could not be deleted because');
-		$result = DB_query($sql, $ErrMsg);
+		$result = DB_query($SQL, $ErrMsg);
 		prnMsg(_('Tab type') . ' ' . $SelectedTab . ' ' . _('has been deleted'), 'success');
 		unset($SelectedTab);
 		unset($_GET['delete']);
@@ -150,8 +150,8 @@ if (!isset($SelectedTab)) {
 	links to delete or edit each. These will call the same page again and allow update/input
 	or deletion of the records*/
 
-	$sql = 'SELECT * FROM pctypetabs';
-	$result = DB_query($sql);
+	$SQL = 'SELECT * FROM pctypetabs';
+	$result = DB_query($SQL);
 
 	echo '<table class="selection">';
 	echo '<tr>
@@ -193,12 +193,12 @@ if (!isset($_GET['delete'])) {
 
 	if (isset($SelectedTab) and $SelectedTab != '') {
 
-		$sql = "SELECT typetabcode,
+		$SQL = "SELECT typetabcode,
 						typetabdescription
 				FROM pctypetabs
 				WHERE typetabcode='" . $SelectedTab . "'";
 
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_array($result);
 
 		$_POST['TypeTabCode'] = $MyRow['typetabcode'];

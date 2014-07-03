@@ -11,8 +11,8 @@ echo '<p class="page_title_text noPrint" >
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
-$sql = "SELECT categoryid, categorydescription FROM stockcategory";
-$resultStkLocs = DB_query($sql);
+$SQL = "SELECT categoryid, categorydescription FROM stockcategory";
+$resultStkLocs = DB_query($SQL);
 
 echo '<table class="selection">
 	<tr>
@@ -35,18 +35,18 @@ while ($MyRow = DB_fetch_array($resultStkLocs)) {
 echo '</select></td>';
 
 if ($_SESSION['RestrictLocations'] == 0) {
-	$sql = "SELECT locationname,
+	$SQL = "SELECT locationname,
 					loccode
 				FROM locations";
 } else {
-	$sql = "SELECT locationname,
+	$SQL = "SELECT locationname,
 					loccode
 				FROM locations
 				INNER JOIN www_users
 					ON locations.loccode=www_users.defaultlocation
 				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 }
-$resultStkLocs = DB_query($sql);
+$resultStkLocs = DB_query($SQL);
 
 echo '<td>' . _('For Stock Location') . ':</td>
 	<td><select required="required" minlength="1" name="StockLocation"> ';
@@ -86,13 +86,13 @@ $TotalQuantity = 0;
 
 if (isset($_POST['ShowStatus']) and Is_Date($_POST['OnHandDate'])) {
 	if ($_POST['StockCategory'] == 'All') {
-		$sql = "SELECT stockid,
+		$SQL = "SELECT stockid,
 						 description,
 						 decimalplaces
 					 FROM stockmaster
 					 WHERE (mbflag='M' OR mbflag='B')";
 	} else {
-		$sql = "SELECT stockid,
+		$SQL = "SELECT stockid,
 						description,
 						decimalplaces
 					 FROM stockmaster
@@ -103,7 +103,7 @@ if (isset($_POST['ShowStatus']) and Is_Date($_POST['OnHandDate'])) {
 	$ErrMsg = _('The stock items in the category selected cannot be retrieved because');
 	$DbgMsg = _('The SQL that failed was');
 
-	$StockResult = DB_query($sql, $ErrMsg, $DbgMsg);
+	$StockResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	$SQLOnHandDate = FormatDateForSQL($_POST['OnHandDate']);
 
@@ -118,7 +118,7 @@ if (isset($_POST['ShowStatus']) and Is_Date($_POST['OnHandDate'])) {
 
 	while ($MyRows = DB_fetch_array($StockResult)) {
 
-		$sql = "SELECT stockid,
+		$SQL = "SELECT stockid,
 						newqoh
 					FROM stockmoves
 					WHERE stockmoves.trandate <= '" . $SQLOnHandDate . "'
@@ -128,7 +128,7 @@ if (isset($_POST['ShowStatus']) and Is_Date($_POST['OnHandDate'])) {
 
 		$ErrMsg = _('The stock held as at') . ' ' . $_POST['OnHandDate'] . ' ' . _('could not be retrieved because');
 
-		$LocStockResult = DB_query($sql, $ErrMsg);
+		$LocStockResult = DB_query($SQL, $ErrMsg);
 
 		$NumRows = DB_num_rows($LocStockResult);
 

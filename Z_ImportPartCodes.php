@@ -7,8 +7,8 @@ include('xmlrpc/lib/xmlrpc.inc');
 include('api/api_errorcodes.php');
 
 $User = $_SESSION['UserID'];
-$sql = "SELECT password FROM www_users WHERE userid='" . $User . "'";
-$result = DB_query($sql);
+$SQL = "SELECT password FROM www_users WHERE userid='" . $User . "'";
+$result = DB_query($SQL);
 $MyRow = DB_fetch_array($result);
 $password = $MyRow[0];
 
@@ -71,8 +71,8 @@ if (isset($_POST['update'])) {
 	echo '</table>';
 	fclose($fp);
 } else {
-	$sql = "SELECT * FROM locations";
-	$result = DB_query($sql);
+	$SQL = "SELECT * FROM locations";
+	$result = DB_query($SQL);
 	if (DB_num_rows($result) == 0) {
 		prnMsg(_('No locations have been set up. At least one location should be set up first'), "error");
 	} else {

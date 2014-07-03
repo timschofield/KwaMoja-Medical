@@ -44,7 +44,7 @@ if (isset($_POST['submit'])) {
 
 	if (isset($SelectedType) and $InputError != 1) {
 
-		$sql = "UPDATE stocktypes
+		$SQL = "UPDATE stocktypes
 				SET name = '" . $_POST['StockType'] . "',
 					physicalitem =  '" . $PhysicalItem . "'
 			WHERE type = '" . $SelectedType . "'";
@@ -68,7 +68,7 @@ if (isset($_POST['submit'])) {
 
 			// Add new record on submit
 
-			$sql = "INSERT INTO stocktypes (type,
+			$SQL = "INSERT INTO stocktypes (type,
 											name,
 											physicalitem
 										) VALUES (
@@ -83,7 +83,7 @@ if (isset($_POST['submit'])) {
 
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 
 		prnMsg($msg, 'success');
 
@@ -96,12 +96,12 @@ if (isset($_POST['submit'])) {
 
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'stockcategories'
 
-	$sql = "SELECT COUNT(categoryid)
+	$SQL = "SELECT COUNT(categoryid)
 		   FROM stockcategory
 		   WHERE stocktype='" . $SelectedType . "'";
 
 	$ErrMsg = _('The number of stock categories using this stock type could not be retrieved');
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 
 	$MyRow = DB_fetch_row($result);
 	if ($MyRow[0] > 0) {
@@ -109,9 +109,9 @@ if (isset($_POST['submit'])) {
 
 	} else {
 
-		$sql = "DELETE FROM stocktypes WHERE type='" . $SelectedType . "'";
+		$SQL = "DELETE FROM stocktypes WHERE type='" . $SelectedType . "'";
 		$ErrMsg = _('The Stock Type record could not be deleted because');
-		$result = DB_query($sql, $ErrMsg);
+		$result = DB_query($SQL, $ErrMsg);
 		prnMsg(_('Stock type') . ' ' . $SelectedType . ' ' . _('has been deleted'), 'success');
 		unset($SelectedType);
 		unset($_GET['delete']);
@@ -135,11 +135,11 @@ if (!isset($SelectedType)) {
 	 * of the records
 	 */
 
-	$sql = "SELECT type,
+	$SQL = "SELECT type,
 					name,
 					physicalitem
 				FROM stocktypes";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	echo '<table class="selection">
 			<tr>
@@ -194,13 +194,13 @@ if (!isset($_GET['delete'])) {
 	// The user wish to EDIT an existing type
 	if (isset($SelectedType) and $SelectedType != '') {
 
-		$sql = "SELECT type,
+		$SQL = "SELECT type,
 						name,
 						physicalitem
 				FROM stocktypes
 				WHERE type='" . $SelectedType . "'";
 
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_array($result);
 
 		$_POST['TypeAbbrev'] = $MyRow['type'];

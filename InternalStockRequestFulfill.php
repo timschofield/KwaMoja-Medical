@@ -28,7 +28,7 @@ if (isset($_POST['UpdateAll'])) {
 				$Completed = False;
 			}
 
-			$sql = "SELECT stockcosts.materialcost,
+			$SQL = "SELECT stockcosts.materialcost,
 							stockcosts.labourcost,
 							stockcosts.overheadcost,
 							stockmaster.decimalplaces
@@ -37,7 +37,7 @@ if (isset($_POST['UpdateAll'])) {
 							ON stockcosts.stockid=stockmaster.stockid
 							AND stockcosts.succeeded=0
 						WHERE stockcosts.stockid='" . $StockID . "'";
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 			$MyRow = DB_fetch_array($result);
 			$StandardCost = $MyRow['materialcost'] + $MyRow['labourcost'] + $MyRow['overheadcost'];
 			$DecimalPlaces = $MyRow['decimalplaces'];
@@ -226,13 +226,13 @@ if (!isset($_POST['Location'])) {
 				<td><select required="required" minlength="1" name="Location">
 					<option value="">' . _('Select a Location') . '</option>';
 	if ($_SESSION['RestrictLocations'] == 0) {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations
 						WHERE internalrequest = 1
 					ORDER BY locationname";
 	} else {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations
 					INNER JOIN www_users
@@ -241,7 +241,7 @@ if (!isset($_POST['Location'])) {
 						AND internalrequest = 1
 					ORDER BY locationname";
 	}
-	$resultStkLocs = DB_query($sql);
+	$resultStkLocs = DB_query($SQL);
 	while ($MyRow = DB_fetch_array($resultStkLocs)) {
 		if (isset($_SESSION['Adjustment']->StockLocation)) {
 			if ($MyRow['loccode'] == $_SESSION['Adjustment']->StockLocation) {
@@ -264,7 +264,7 @@ if (!isset($_POST['Location'])) {
 /* Retrieve the requisition header information
  */
 if (isset($_POST['Location'])) {
-	$sql = "SELECT stockrequest.dispatchid,
+	$SQL = "SELECT stockrequest.dispatchid,
 			locations.locationname,
 			stockrequest.despatchdate,
 			stockrequest.narrative,
@@ -281,7 +281,7 @@ if (isset($_POST['Location'])) {
 	WHERE stockrequest.authorised=1
 		AND stockrequest.closed=0
 		AND stockrequest.loccode='" . $_POST['Location'] . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	if (DB_num_rows($result) == 0) {
 		prnMsg(_('There are no outstanding authorised requests for this location'), 'info');

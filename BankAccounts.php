@@ -33,9 +33,9 @@ if (isset($_POST['submit'])) {
 	//first off validate inputs sensible
 	$i = 1;
 
-	$sql = "SELECT count(accountcode)
+	$SQL = "SELECT count(accountcode)
 			FROM bankaccounts WHERE accountcode='" . $_POST['AccountCode'] . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_row($result);
 
 	if ($MyRow[0] != 0 and !isset($SelectedBankAccount)) {
@@ -73,10 +73,10 @@ if (isset($_POST['submit'])) {
 
 		/*Check if there are already transactions against this account - cant allow change currency if there are*/
 
-		$sql = "SELECT banktransid FROM banktrans WHERE bankact='" . $SelectedBankAccount . "'";
-		$BankTransResult = DB_query($sql);
+		$SQL = "SELECT banktransid FROM banktrans WHERE bankact='" . $SelectedBankAccount . "'";
+		$BankTransResult = DB_query($SQL);
 		if (DB_num_rows($BankTransResult) > 0) {
-			$sql = "UPDATE bankaccounts SET bankaccountname='" . $_POST['BankAccountName'] . "',
+			$SQL = "UPDATE bankaccounts SET bankaccountname='" . $_POST['BankAccountName'] . "',
 											bankaccountcode='" . $_POST['BankAccountCode'] . "',
 											bankaccountnumber='" . $_POST['BankAccountNumber'] . "',
 											bankaddress='" . $_POST['BankAddress'] . "',
@@ -85,7 +85,7 @@ if (isset($_POST['submit'])) {
 			prnMsg(_('Note that it is not possible to change the currency of the account once there are transactions against it'), 'warn');
 			echo '<br />';
 		} else {
-			$sql = "UPDATE bankaccounts SET bankaccountname='" . $_POST['BankAccountName'] . "',
+			$SQL = "UPDATE bankaccounts SET bankaccountname='" . $_POST['BankAccountName'] . "',
 											bankaccountcode='" . $_POST['BankAccountCode'] . "',
 											bankaccountnumber='" . $_POST['BankAccountNumber'] . "',
 											bankaddress='" . $_POST['BankAddress'] . "',
@@ -99,7 +99,7 @@ if (isset($_POST['submit'])) {
 
 		/*Selectedbank account is null cos no item selected on first time round so must be adding a    record must be submitting new entries in the new bank account form */
 
-		$sql = "INSERT INTO bankaccounts (accountcode,
+		$SQL = "INSERT INTO bankaccounts (accountcode,
 										bankaccountname,
 										bankaccountcode,
 										bankaccountnumber,
@@ -120,7 +120,7 @@ if (isset($_POST['submit'])) {
 	if ($InputError != 1) {
 		$ErrMsg = _('The bank account could not be inserted or modified because');
 		$DbgMsg = _('The SQL used to insert/modify the bank account details was');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 		prnMsg($msg, 'success');
 		echo '<br />';
@@ -142,8 +142,8 @@ if (isset($_POST['submit'])) {
 
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'BankTrans'
 
-	$sql = "SELECT COUNT(bankact) AS accounts FROM banktrans WHERE banktrans.bankact='" . $SelectedBankAccount . "'";
-	$result = DB_query($sql);
+	$SQL = "SELECT COUNT(bankact) AS accounts FROM banktrans WHERE banktrans.bankact='" . $SelectedBankAccount . "'";
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 	if ($MyRow['accounts'] > 0) {
 		$CancelDelete = 1;
@@ -152,8 +152,8 @@ if (isset($_POST['submit'])) {
 
 	}
 	if (!$CancelDelete) {
-		$sql = "DELETE FROM bankaccounts WHERE accountcode='" . $SelectedBankAccount . "'";
-		$result = DB_query($sql);
+		$SQL = "DELETE FROM bankaccounts WHERE accountcode='" . $SelectedBankAccount . "'";
+		$result = DB_query($SQL);
 		prnMsg(_('Bank account deleted'), 'success');
 	} //end if Delete bank account
 
@@ -163,7 +163,7 @@ if (isset($_POST['submit'])) {
 
 /* Always show the list of accounts */
 if (!isset($SelectedBankAccount)) {
-	$sql = "SELECT bankaccounts.accountcode,
+	$SQL = "SELECT bankaccounts.accountcode,
 					bankaccounts.bankaccountcode,
 					chartmaster.accountname,
 					bankaccountname,
@@ -175,8 +175,8 @@ if (!isset($SelectedBankAccount)) {
 			ON bankaccounts.accountcode = chartmaster.accountcode";
 
 	$ErrMsg = _('The bank accounts set up could not be retrieved because');
-	$DbgMsg = _('The SQL used to retrieve the bank account details was') . '<br />' . $sql;
-	$result = DB_query($sql, $ErrMsg, $DbgMsg);
+	$DbgMsg = _('The SQL used to retrieve the bank account details was') . '<br />' . $SQL;
+	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	echo '<table class="selection">
 			<tr>
@@ -235,7 +235,7 @@ echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />'
 if (isset($SelectedBankAccount) and !isset($_GET['delete'])) {
 	//editing an existing bank account  - not deleting
 
-	$sql = "SELECT accountcode,
+	$SQL = "SELECT accountcode,
 					bankaccountname,
 					bankaccountcode,
 					bankaccountnumber,
@@ -245,7 +245,7 @@ if (isset($SelectedBankAccount) and !isset($_GET['delete'])) {
 			FROM bankaccounts
 			WHERE bankaccounts.accountcode='" . $SelectedBankAccount . "'";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 
 	$_POST['AccountCode'] = $MyRow['accountcode'];
@@ -269,14 +269,14 @@ if (isset($SelectedBankAccount) and !isset($_GET['delete'])) {
 				<td>' . _('Bank Account GL Code') . ':</td>
 				<td><select required="required" minlength="1" tabindex="1" name="AccountCode">';
 
-	$sql = "SELECT accountcode,
+	$SQL = "SELECT accountcode,
 					accountname
 			FROM chartmaster LEFT JOIN accountgroups
 			ON chartmaster.group_ = accountgroups.groupname
 			WHERE accountgroups.pandl = 0
 			ORDER BY accountcode";
 	echo '<option value=""></option>';
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	while ($MyRow = DB_fetch_array($result)) {
 		if (isset($_POST['AccountCode']) and $MyRow['accountcode'] == $_POST['AccountCode']) {
 			echo '<option selected="selected" value="' . $MyRow['accountcode'] . '">' . htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false) . '</option>';

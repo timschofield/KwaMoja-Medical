@@ -25,7 +25,7 @@ include('includes/GetSalesTransGLCodes.inc');
 include('includes/htmlMimeMail.php');
 
 if ($_SESSION['RestrictLocations'] == 0) {
-	$sql = "SELECT recurringsalesorders.recurrorderno,
+	$SQL = "SELECT recurringsalesorders.recurrorderno,
 					recurringsalesorders.debtorno,
 					recurringsalesorders.branchcode,
 					recurringsalesorders.customerref,
@@ -69,7 +69,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 				WHERE (TO_DAYS(CURRENT_DATE) - TO_DAYS(recurringsalesorders.lastrecurrence)) > (365/recurringsalesorders.frequency)
 					AND DATE_ADD(recurringsalesorders.lastrecurrence, " . INTERVAL('365/recurringsalesorders.frequency', 'DAY') . ") <= recurringsalesorders.stopdate";
 } else {
-	$sql = "SELECT recurringsalesorders.recurrorderno,
+	$SQL = "SELECT recurringsalesorders.recurrorderno,
 					recurringsalesorders.debtorno,
 					recurringsalesorders.branchcode,
 					recurringsalesorders.customerref,
@@ -117,7 +117,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 					AND www_users.userid='" . $_SESSION['UserID'] . "'";
 }
 
-$RecurrOrdersDueResult = DB_query($sql, _('There was a problem retrieving the recurring sales order templates. The database reported') . ': ');
+$RecurrOrdersDueResult = DB_query($SQL, _('There was a problem retrieving the recurring sales order templates. The database reported') . ': ');
 
 if (DB_num_rows($RecurrOrdersDueResult) == 0) {
 	prnMsg(_('There are no recurring order templates that are due to have another recurring order created'), 'warn');
@@ -236,10 +236,10 @@ while ($RecurrOrderRow = DB_fetch_array($RecurrOrdersDueResult)) {
 		/* line items from recurring sales order details */
 	} //end if there are line items on the recurring order
 
-	$sql = "UPDATE recurringsalesorders SET lastrecurrence = '" . $DelDate . "'
+	$SQL = "UPDATE recurringsalesorders SET lastrecurrence = '" . $DelDate . "'
 			WHERE recurrorderno='" . $RecurrOrderRow['recurrorderno'] . "'";
 	$ErrMsg = _('Could not update the last recurrence of the recurring order template. The database reported the error') . ':';
-	$Result = DB_query($sql, $ErrMsg, true);
+	$Result = DB_query($SQL, $ErrMsg, true);
 
 	$Result = DB_Txn_Commit();
 

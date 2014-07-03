@@ -52,7 +52,7 @@ if (isset($_POST['ProcessStockChange'])) {
 		DB_IgnoreForeignKeys();
 		$result = DB_Txn_Begin();
 		echo '<br />' . _('Adding the new stock master record');
-		$sql = "INSERT INTO stockmaster (stockid,
+		$SQL = "INSERT INTO stockmaster (stockid,
 										categoryid,
 										description,
 										longdescription,
@@ -103,10 +103,10 @@ if (isset($_POST['ProcessStockChange'])) {
 
 		$DbgMsg = _('The SQL statement that failed was');
 		$ErrMsg = _('The SQL to insert the new stock master record failed');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		echo ' ... ' . _('completed');
 		echo '<br />' . _('Copying over the costs');
-		$sql = "INSERT INTO stockcosts SELECT '" . $_POST['NewStockID'] . "',
+		$SQL = "INSERT INTO stockcosts SELECT '" . $_POST['NewStockID'] . "',
 									stockcosts.materialcost,
 									stockcosts.labourcost,
 									stockcosts.overheadcost,
@@ -117,7 +117,7 @@ if (isset($_POST['ProcessStockChange'])) {
 
 		$DbgMsg = _('The SQL statement that failed was');
 		$ErrMsg = _('The SQL to insert the new stock costs record failed');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		echo ' ... ' . _('completed');
 
 		ChangeFieldInTable("locstock", "stockid", $_POST['OldStockID'], $_POST['NewStockID']);
@@ -127,8 +127,8 @@ if (isset($_POST['ProcessStockChange'])) {
 
 		//check if MRP tables exist before assuming
 
-		$sql = "SELECT * FROM mrpparameters";
-		$result = DB_query($sql, '', '', false, false);
+		$SQL = "SELECT * FROM mrpparameters";
+		$result = DB_query($SQL, '', '', false, false);
 		if (DB_error_no() == 0) {
 			$result = DB_query("SELECT COUNT(*) FROM mrpplannedorders", '', '', false, false);
 			if (DB_error_no() == 0) {
@@ -187,9 +187,9 @@ if (isset($_POST['ProcessStockChange'])) {
 		$result = DB_Txn_Commit();
 
 		echo '<br />' . _('Deleting the old stock master record');
-		$sql = "DELETE FROM stockmaster WHERE stockid='" . $_POST['OldStockID'] . "'";
+		$SQL = "DELETE FROM stockmaster WHERE stockid='" . $_POST['OldStockID'] . "'";
 		$ErrMsg = _('The SQL to delete the old stock master record failed');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		echo ' ... ' . _('completed');
 
 

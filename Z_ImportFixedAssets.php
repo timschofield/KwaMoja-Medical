@@ -180,7 +180,7 @@ if ($_FILES['SelectedAssetFile']['name']) { //start file processing
 			$PeriodNo = GetPeriod(ConvertSQLDate($_POST['DateToEnter']));
 
 			//attempt to insert the stock item
-			$sql = "INSERT INTO fixedassets (description,
+			$SQL = "INSERT INTO fixedassets (description,
 											longdescription,
 											assetcategoryid,
 											serialno,
@@ -205,13 +205,13 @@ if ($_FILES['SelectedAssetFile']['name']) { //start file processing
 
 			$ErrMsg = _('The asset could not be added because');
 			$DbgMsg = _('The SQL that was used to add the asset and failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 			if (DB_error_no() == 0) { //the insert of the new code worked so bang in the fixedassettrans records too
 
 
 				$AssetID = DB_Last_Insert_ID('fixedassets', 'assetid');
-				$sql = "INSERT INTO fixedassettrans ( assetid,
+				$SQL = "INSERT INTO fixedassettrans ( assetid,
 												transtype,
 												transno,
 												transdate,
@@ -230,9 +230,9 @@ if ($_FILES['SelectedAssetFile']['name']) { //start file processing
 
 				$ErrMsg = _('The transaction for the cost of the asset could not be added because');
 				$DbgMsg = _('The SQL that was used to add the fixedasset trans record that failed was');
-				$InsResult = DB_query($sql, $ErrMsg, $DbgMsg);
+				$InsResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-				$sql = "INSERT INTO fixedassettrans ( assetid,
+				$SQL = "INSERT INTO fixedassettrans ( assetid,
 													transtype,
 													transno,
 													transdate,
@@ -251,7 +251,7 @@ if ($_FILES['SelectedAssetFile']['name']) { //start file processing
 
 				$ErrMsg = _('The transaction for the cost of the asset could not be added because');
 				$DbgMsg = _('The SQL that was used to add the fixedasset trans record that failed was');
-				$InsResult = DB_query($sql, $ErrMsg, $DbgMsg);
+				$InsResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 				if (DB_error_no() == 0) {
 					prnMsg(_('Inserted the new asset') . ': ' . $Description, 'info');

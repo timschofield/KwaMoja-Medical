@@ -69,7 +69,7 @@ if (isset($_POST['submit'])) {
 	}
 
 	if (isset($SelectedIndex) and $InputError != 1) {
-		$sql = "UPDATE pcashdetails
+		$SQL = "UPDATE pcashdetails
 			SET date = '" . FormatDateForSQL($_POST['Date']) . "',
 			codeexpense = '" . $_POST['SelectedExpense'] . "',
 			amount = '" . -filter_number_format($_POST['Amount']) . "',
@@ -84,7 +84,7 @@ if (isset($_POST['submit'])) {
 		// First check the type is not being duplicated
 		// Add new record on submit
 
-		$sql = "INSERT INTO pcashdetails (counterindex,
+		$SQL = "INSERT INTO pcashdetails (counterindex,
 										tabcode,
 										date,
 										codeexpense,
@@ -109,7 +109,7 @@ if (isset($_POST['submit'])) {
 
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		prnMsg($msg, 'success');
 
 		unset($_POST['SelectedExpense']);
@@ -121,10 +121,10 @@ if (isset($_POST['submit'])) {
 
 } elseif (isset($_GET['delete'])) {
 
-	$sql = "DELETE FROM pcashdetails
+	$SQL = "DELETE FROM pcashdetails
 			WHERE counterindex='" . $SelectedIndex . "'";
 	$ErrMsg = _('Petty Cash Expense record could not be deleted because');
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 	prnMsg(_('Petty cash Expense record') . ' ' . $SelectedTabs . ' ' . _('has been deleted'), 'success');
 
 	unset($_GET['delete']);
@@ -216,12 +216,12 @@ if (!isset($SelectedTabs)) {
 			unset($_POST['Receipt']);
 		}
 
-		$sql = "SELECT * FROM pcashdetails
+		$SQL = "SELECT * FROM pcashdetails
 				WHERE tabcode='" . $SelectedTabs . "'
 					AND date >=DATE_SUB(CURDATE(), INTERVAL " . $Days . " DAY)
 				ORDER BY date, counterindex ASC";
 
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 
 		echo '<tr>
 				<th>' . _('Date Of Expense') . '</th>
@@ -310,11 +310,11 @@ if (!isset($SelectedTabs)) {
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 		if (isset($_GET['edit'])) {
-			$sql = "SELECT *
+			$SQL = "SELECT *
 				FROM pcashdetails
 				WHERE counterindex='" . $SelectedIndex . "'";
 
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 			$MyRow = DB_fetch_array($result);
 
 			$_POST['Date'] = ConvertSQLDate($MyRow['date']);

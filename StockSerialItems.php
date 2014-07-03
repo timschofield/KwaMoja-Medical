@@ -53,7 +53,7 @@ $result = DB_query("SELECT locationname
 
 $MyRow = DB_fetch_row($result);
 
-$sql = "SELECT serialno,
+$SQL = "SELECT serialno,
 				quantity,
 				expirationdate
 			FROM stockserialitems
@@ -63,7 +63,7 @@ $sql = "SELECT serialno,
 
 
 $ErrMsg = _('The serial numbers/batches held cannot be retrieved because');
-$LocStockResult = DB_query($sql, $ErrMsg);
+$LocStockResult = DB_query($SQL, $ErrMsg);
 
 echo '<table class="selection">';
 

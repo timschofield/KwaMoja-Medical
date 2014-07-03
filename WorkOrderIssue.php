@@ -45,7 +45,7 @@ if (isset($_POST['Process'])) { //user hit the process the work order issues ent
 	$InputError = false; //ie assume no problems for a start - ever the optomist
 	$ErrMsg = _('Could not retrieve the details of the selected work order item');
 	if ($_SESSION['RestrictLocations'] == 0) {
-		$sql = "SELECT workorders.loccode,
+		$SQL = "SELECT workorders.loccode,
 						locations.locationname,
 						workorders.closed,
 						stockcategory.wipact,
@@ -62,7 +62,7 @@ if (isset($_POST['Process'])) { //user hit the process the work order issues ent
 					WHERE woitems.stockid='" . $_POST['StockID'] . "'
 						AND woitems.wo='" . $_POST['WO'] . "'";
 	} else {
-		$sql = "SELECT workorders.loccode,
+		$SQL = "SELECT workorders.loccode,
 						locations.locationname,
 						workorders.closed,
 						stockcategory.wipact,
@@ -82,7 +82,7 @@ if (isset($_POST['Process'])) { //user hit the process the work order issues ent
 						AND woitems.wo='" . $_POST['WO'] . "'
 						AND www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
-	$WOResult = DB_query($sql, $ErrMsg);
+	$WOResult = DB_query($SQL, $ErrMsg);
 
 	if (DB_num_rows($WOResult) == 0) {
 		prnMsg(_('The selected work order item cannot be retrieved from the database'), 'info');
@@ -539,18 +539,18 @@ echo '<tr>
 
 if (!isset($_POST['IssueItem'])) {
 	if ($_SESSION['RestrictLocations'] == 0) {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations";
 	} else {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations
 					INNER JOIN www_users
 						ON locations.loccode=www_users.defaultlocation
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
-	$LocResult = DB_query($sql);
+	$LocResult = DB_query($SQL);
 
 	echo '<select minlength="0" name="FromLocation">';
 
@@ -756,7 +756,7 @@ if (!isset($_POST['IssueItem'])) { //no item selected to issue yet
 } else { //There is an item selected to issue
 
 	//need to get some details about the item to issue
-	$sql = "SELECT description,
+	$SQL = "SELECT description,
 				decimalplaces,
 				units,
 				controlled,
@@ -764,7 +764,7 @@ if (!isset($_POST['IssueItem'])) { //no item selected to issue yet
 			FROM stockmaster
 			WHERE stockid='" . $_POST['IssueItem'] . "'";
 	$ErrMsg = _('Could not get the detail of the item being issued because');
-	$IssueItemResult = DB_query($sql, $ErrMsg);
+	$IssueItemResult = DB_query($SQL, $ErrMsg);
 	$IssueItemRow = DB_fetch_array($IssueItemResult);
 
 	echo '<table class="selection">

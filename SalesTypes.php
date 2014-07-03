@@ -56,7 +56,7 @@ if (isset($_POST['submit'])) {
 
 	if (isset($SelectedType) and $InputError != 1) {
 
-		$sql = "UPDATE salestypes
+		$SQL = "UPDATE salestypes
 			SET sales_type = '" . $_POST['Sales_Type'] . "'
 			WHERE typeabbrev = '" . stripslashes($SelectedType) . "'";
 
@@ -79,7 +79,7 @@ if (isset($_POST['submit'])) {
 
 			// Add new record on submit
 
-			$sql = "INSERT INTO salestypes (typeabbrev,
+			$SQL = "INSERT INTO salestypes (typeabbrev,
 											sales_type)
 							VALUES ('" . str_replace(' ', '', $_POST['TypeAbbrev']) . "',
 									'" . $_POST['Sales_Type'] . "')";
@@ -95,7 +95,7 @@ if (isset($_POST['submit'])) {
 
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 
 		// Check the default price list exists
 		$checkSql = "SELECT count(*)
@@ -106,10 +106,10 @@ if (isset($_POST['submit'])) {
 
 		// If it doesnt then update config with newly created one.
 		if ($CheckRow[0] == 0) {
-			$sql = "UPDATE config
+			$SQL = "UPDATE config
 					SET confvalue='" . $_POST['TypeAbbrev'] . "'
 					WHERE confname='DefaultPriceList'";
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 			$_SESSION['DefaultPriceList'] = $_POST['TypeAbbrev'];
 		}
 
@@ -125,12 +125,12 @@ if (isset($_POST['submit'])) {
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'DebtorTrans'
 	// Prevent delete if saletype exist in customer transactions
 
-	$sql = "SELECT COUNT(*)
+	$SQL = "SELECT COUNT(*)
 		   FROM debtortrans
 		   WHERE debtortrans.tpe='" . $SelectedType . "'";
 
 	$ErrMsg = _('The number of transactions using this customer/sales/pricelist type could not be retrieved');
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 
 	$MyRow = DB_fetch_row($result);
 	if ($MyRow[0] > 0) {
@@ -138,23 +138,23 @@ if (isset($_POST['submit'])) {
 
 	} else {
 
-		$sql = "SELECT COUNT(*) FROM debtorsmaster WHERE salestype='" . $SelectedType . "'";
+		$SQL = "SELECT COUNT(*) FROM debtorsmaster WHERE salestype='" . $SelectedType . "'";
 
 		$ErrMsg = _('The number of transactions using this Sales Type record could not be retrieved because');
-		$result = DB_query($sql, $ErrMsg);
+		$result = DB_query($SQL, $ErrMsg);
 		$MyRow = DB_fetch_row($result);
 		if ($MyRow[0] > 0) {
 			prnMsg(_('Cannot delete this sale type because customers are currently set up to use this sales type') . '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('customers with this sales type code'));
 		} else {
 
-			$sql = "DELETE FROM salestypes WHERE typeabbrev='" . $SelectedType . "'";
+			$SQL = "DELETE FROM salestypes WHERE typeabbrev='" . $SelectedType . "'";
 			$ErrMsg = _('The Sales Type record could not be deleted because');
-			$result = DB_query($sql, $ErrMsg);
+			$result = DB_query($SQL, $ErrMsg);
 			prnMsg(_('Sales type') . ' / ' . _('price list') . ' ' . stripslashes($SelectedType) . ' ' . _('has been deleted'), 'success');
 
-			$sql = "DELETE FROM prices WHERE prices.typeabbrev='" . $SelectedType . "'";
+			$SQL = "DELETE FROM prices WHERE prices.typeabbrev='" . $SelectedType . "'";
 			$ErrMsg = _('The Sales Type prices could not be deleted because');
-			$result = DB_query($sql, $ErrMsg);
+			$result = DB_query($SQL, $ErrMsg);
 
 			prnMsg(' ...  ' . _('and any prices for this sales type / price list were also deleted'), 'success');
 			unset($SelectedType);
@@ -180,8 +180,8 @@ if (!isset($SelectedType)) {
 
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
 
-	$sql = "SELECT * FROM salestypes";
-	$result = DB_query($sql);
+	$SQL = "SELECT * FROM salestypes";
+	$result = DB_query($SQL);
 
 	if (DB_num_rows($result) == 0) {
 		echo '<div class="page_help_text">' . _('As this is the first time that the system has been used, you must first create a sales type.') .
@@ -231,7 +231,7 @@ if (!isset($_GET['delete'])) {
 	// The user wish to EDIT an existing type
 	if (isset($SelectedType) and $SelectedType != '') {
 
-		$sql = "SELECT typeabbrev,
+		$SQL = "SELECT typeabbrev,
 				   sales_type
 				FROM salestypes
 				WHERE typeabbrev='" . $SelectedType . "'";
@@ -241,7 +241,7 @@ if (!isset($_GET['delete'])) {
 					'<br />' . _('Once you have filled in all the details, click on the button at the bottom of the screen') . '</div>';
 		}
 
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_array($result);
 
 		$_POST['TypeAbbrev'] = $MyRow['typeabbrev'];

@@ -14,8 +14,8 @@ if (isset($_GET['Delete'])) {
 	$CheckSQL = "SELECT groupid FROM abcstock WHERE groupid='" . $_GET['SelectedGroupID'] . "'";
 	$CheckResult = DB_query($CheckSQL);
 	if (DB_num_rows($CheckResult) == 0) {
-		$sql = "DELETE FROM abcgroups WHERE groupid='" . $_GET['SelectedGroupID'] . "'";
-		$result = DB_query($sql);
+		$SQL = "DELETE FROM abcgroups WHERE groupid='" . $_GET['SelectedGroupID'] . "'";
+		$result = DB_query($SQL);
 		prnMsg(_('ABC Ranking group number') . ' ' . $_GET['SelectedGroupID'] . ' ' . _('has been deleted'), 'success');
 		echo '<div class="centre">
 				<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('View all the ranking groups') . '</a>
@@ -73,7 +73,7 @@ if (isset($_POST['Submit'])) {
 	}
 
 	if ($InputError == 0) {
-		$sql = "INSERT INTO abcgroups ( groupid,
+		$SQL = "INSERT INTO abcgroups ( groupid,
 										groupname,
 										methodid,
 										apercentage,
@@ -91,7 +91,7 @@ if (isset($_POST['Submit'])) {
 										'" . $_POST['ZeroUsage'] . "',
 										'" . $_POST['Months'] . "'
 									)";
-		$InputResult = DB_query($sql);
+		$InputResult = DB_query($SQL);
 		prnMsg(_('The ranking group has been successfully saved to the database'), 'success');
 		echo '<div class="centre">
 				<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('View all the ranking groups') . '</a>
@@ -101,7 +101,7 @@ if (isset($_POST['Submit'])) {
 	}
 
 } else {
-	$sql = "SELECT groupid,
+	$SQL = "SELECT groupid,
 					groupname,
 					methodname,
 					apercentage,
@@ -112,7 +112,7 @@ if (isset($_POST['Submit'])) {
 				FROM abcgroups
 				INNER JOIN abcmethods
 					ON abcgroups.methodid=abcmethods.methodid";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	echo '<table class="selection" summary="' . _('List of ABC Ranking Methods') . '">
 			<tr>
 				<th colspan="10">
@@ -168,10 +168,10 @@ if (isset($_POST['Submit'])) {
 				<td>' . _('Ranking method') . '</td>
 				<td><select required="required" minlength="1" name="MethodID">';
 
-	$sql = "SELECT methodid,
+	$SQL = "SELECT methodid,
 					methodname
 				FROM abcmethods";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	echo '<option value=""></option>';
 	while ($MyRow = DB_fetch_array($result)) {

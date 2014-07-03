@@ -75,7 +75,7 @@ if (isset($_POST['submit'])) {
 		would not run in this case cos submit is false of course  see the
 		delete code below*/
 
-		$sql = "UPDATE fixedassetcategories
+		$SQL = "UPDATE fixedassetcategories
 					SET categorydescription = '" . $_POST['CategoryDescription'] . "',
 						costact = '" . $_POST['CostAct'] . "',
 						depnact = '" . $_POST['DepnAct'] . "',
@@ -84,13 +84,13 @@ if (isset($_POST['submit'])) {
 				WHERE categoryid = '" . $SelectedCategory . "'";
 
 		$ErrMsg = _('Could not update the fixed asset category') . $_POST['CategoryDescription'] . _('because');
-		$result = DB_query($sql, $ErrMsg);
+		$result = DB_query($SQL, $ErrMsg);
 
 		prnMsg(_('Updated the fixed asset category record for') . ' ' . $_POST['CategoryDescription'], 'success');
 
 	} elseif ($InputError != 1) {
 
-		$sql = "INSERT INTO fixedassetcategories (categoryid,
+		$SQL = "INSERT INTO fixedassetcategories (categoryid,
 												categorydescription,
 												costact,
 												depnact,
@@ -103,7 +103,7 @@ if (isset($_POST['submit'])) {
 										'" . $_POST['DisposalAct'] . "',
 										'" . $_POST['AccumDepnAct'] . "')";
 		$ErrMsg = _('Could not insert the new fixed asset category') . $_POST['CategoryDescription'] . _('because');
-		$result = DB_query($sql, $ErrMsg);
+		$result = DB_query($SQL, $ErrMsg);
 		prnMsg(_('A new fixed asset category record has been added for') . ' ' . $_POST['CategoryDescription'], 'success');
 
 	}
@@ -121,15 +121,15 @@ if (isset($_POST['submit'])) {
 
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'fixedassets'
 
-	$sql = "SELECT COUNT(*) FROM fixedassets WHERE fixedassets.assetcategoryid='" . $SelectedCategory . "'";
-	$result = DB_query($sql);
+	$SQL = "SELECT COUNT(*) FROM fixedassets WHERE fixedassets.assetcategoryid='" . $SelectedCategory . "'";
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_row($result);
 	if ($MyRow[0] > 0) {
 		prnMsg(_('Cannot delete this fixed asset category because fixed assets have been created using this category') . '<br /> ' . _('There are') . ' ' . $MyRow[0] . ' ' . _('fixed assets referring to this category code'), 'warn');
 
 	} else {
-		$sql = "DELETE FROM fixedassetcategories WHERE categoryid='" . $SelectedCategory . "'";
-		$result = DB_query($sql);
+		$SQL = "DELETE FROM fixedassetcategories WHERE categoryid='" . $SelectedCategory . "'";
+		$result = DB_query($SQL);
 		prnMsg(_('The fixed asset category') . ' ' . $SelectedCategory . ' ' . _('has been deleted'), 'success');
 		unset($SelectedCategory);
 	} //end if stock category used in debtor transactions
@@ -142,14 +142,14 @@ if (!isset($SelectedCategory) or isset($_POST['submit'])) {
 	links to delete or edit each. These will call the same page again and allow update/input
 	or deletion of the records*/
 
-	$sql = "SELECT categoryid,
+	$SQL = "SELECT categoryid,
 				categorydescription,
 				costact,
 				depnact,
 				disposalact,
 				accumdepnact
 			FROM fixedassetcategories";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	echo '<br />
 			<table class="selection">';
@@ -199,7 +199,7 @@ echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />'
 
 if (isset($SelectedCategory) and !isset($_POST['submit'])) {
 	//editing an existing fixed asset category
-	$sql = "SELECT categoryid,
+	$SQL = "SELECT categoryid,
 					categorydescription,
 					costact,
 					depnact,
@@ -208,7 +208,7 @@ if (isset($SelectedCategory) and !isset($_POST['submit'])) {
 				FROM fixedassetcategories
 				WHERE categoryid='" . $SelectedCategory . "'";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 
 	$_POST['CategoryID'] = $MyRow['categoryid'];
@@ -238,7 +238,7 @@ if (isset($SelectedCategory) and !isset($_POST['submit'])) {
 }
 
 //SQL to poulate account selection boxes
-$sql = "SELECT chartmaster.accountcode,
+$SQL = "SELECT chartmaster.accountcode,
 				chartmaster.accountname
 		FROM chartmaster
 		INNER JOIN accountgroups
@@ -249,16 +249,16 @@ $sql = "SELECT chartmaster.accountcode,
 			AND bankaccounts.currcode IS NULL
 		ORDER BY accountcode";
 
-$BSAccountsResult = DB_query($sql);
+$BSAccountsResult = DB_query($SQL);
 
-$sql = "SELECT accountcode,
+$SQL = "SELECT accountcode,
 				 accountname
 		FROM chartmaster INNER JOIN accountgroups
 		ON chartmaster.group_=accountgroups.groupname
 		WHERE accountgroups.pandl!=0
 		ORDER BY accountcode";
 
-$PnLAccountsResult = DB_query($sql);
+$PnLAccountsResult = DB_query($SQL);
 
 if (!isset($_POST['CategoryDescription'])) {
 	$_POST['CategoryDescription'] = '';

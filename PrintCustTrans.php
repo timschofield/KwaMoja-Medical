@@ -80,7 +80,7 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 		}
 
 		if ($InvOrCredit == 'Invoice') {
-			$sql = "SELECT debtortrans.trandate,
+			$SQL = "SELECT debtortrans.trandate,
 							debtortrans.ovamount,
 							debtortrans.ovdiscount,
 							debtortrans.ovfreight,
@@ -153,10 +153,10 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 							AND locations.loccode" . LIKE . "'" . $_POST['LocCode'] . "'";
 
 			if (isset($_POST['PrintEDI']) and $_POST['PrintEDI'] == 'No') {
-				$sql = $sql . " AND debtorsmaster.ediinvoices=0";
+				$SQL = $SQL . " AND debtorsmaster.ediinvoices=0";
 			}
 		} else {
-			$sql = "SELECT debtortrans.trandate,
+			$SQL = "SELECT debtortrans.trandate,
 							debtortrans.ovamount,
 							debtortrans.ovdiscount,
 							debtortrans.ovfreight,
@@ -211,18 +211,18 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 							AND locations.loccode" . LIKE . "'" . $_POST['LocCode'] . "'";
 
 			if (isset($_POST['PrintEDI']) and $_POST['PrintEDI'] == 'No') {
-				$sql = $sql . " AND debtorsmaster.ediinvoices=0";
+				$SQL = $SQL . " AND debtorsmaster.ediinvoices=0";
 			}
 		} // end else
 
-		$result = DB_query($sql, '', '', false, false);
+		$result = DB_query($SQL, '', '', false, false);
 
 		if (DB_error_no() != 0) {
 			$Title = _('Transaction Print Error Report');
 			include('includes/header.inc');
 			prnMsg(_('There was a problem retrieving the invoice or credit note details for note number') . ' ' . $InvoiceToPrint . ' ' . _('from the database') . '. ' . _('To print an invoice, the sales order record, the customer transaction record and the branch record for the customer must not have been purged') . '. ' . _('To print a credit note only requires the customer, transaction, salesman and branch records be available'), 'error');
 			if ($debug == 1) {
-				prnMsg(_('The SQL used to get this information that failed was') . '<br />' . $sql, 'error');
+				prnMsg(_('The SQL used to get this information that failed was') . '<br />' . $SQL, 'error');
 			}
 			include('includes/footer.inc');
 			exit;
@@ -237,7 +237,7 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 
 			if ($InvOrCredit == 'Invoice') {
 
-				$sql = "SELECT stockmoves.stockid,
+				$SQL = "SELECT stockmoves.stockid,
 								stockmaster.description,
 								-stockmoves.qty as quantity,
 								stockmoves.discountpercent,
@@ -253,7 +253,7 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 							AND stockmoves.show_on_inv_crds=1";
 			} else {
 				/* only credit notes to be retrieved */
-				$sql = "SELECT stockmoves.stockid,
+				$SQL = "SELECT stockmoves.stockid,
 								stockmaster.description,
 								stockmoves.qty as quantity,
 								stockmoves.discountpercent,
@@ -269,13 +269,13 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 							AND stockmoves.show_on_inv_crds=1";
 			} // end else
 
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 			if (DB_error_no() != 0 or DB_num_rows($result) == 0) {
 				$Title = _('Transaction Print Error Report');
 				include('includes/header.inc');
 				echo '<br />' . _('There was a problem retrieving the invoice or credit note stock movement details for invoice number') . ' ' . $FromTransNo . ' ' . _('from the database');
 				if ($debug == 1) {
-					echo '<br />' . _('The SQL used to get this information that failed was') . '<br />' . $sql;
+					echo '<br />' . _('The SQL used to get this information that failed was') . '<br />' . $SQL;
 				}
 				include('includes/footer.inc');
 				exit;
@@ -573,19 +573,19 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 				<td><select minlength="0" tabindex="2" name="LocCode">';
 
 		if ($_SESSION['RestrictLocations'] == 0) {
-			$sql = "SELECT locationname,
+			$SQL = "SELECT locationname,
 							loccode
 						FROM locations";
 			echo '<option selected="selected" value="All">' . _('All Locations') . '</option>';
 		} else {
-			$sql = "SELECT locationname,
+			$SQL = "SELECT locationname,
 							loccode
 						FROM locations
 						INNER JOIN www_users
 							ON locations.loccode=www_users.defaultlocation
 						WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 		}
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 
 		while ($MyRow = DB_fetch_array($result)) {
 			if (isset($_POST['LocCode']) and $MyRow['loccode'] == $_POST['LocCode']) {
@@ -608,16 +608,16 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 		echo '<div class="centre"><input type="submit" name="Print" value="' . _('Print') . '" /><br />';
 		echo '<input type="submit" name="PrintPDF" value="' . _('Print PDF') . '" /></div>';
 
-		$sql = "SELECT typeno FROM systypes WHERE typeid=10";
+		$SQL = "SELECT typeno FROM systypes WHERE typeid=10";
 
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_row($result);
 
 		echo '<div class="page_help_text noPrint"><b>' . _('The last invoice created was number') . ' ' . $MyRow[0] . '</b><br />' . _('If only a single invoice is required') . ', ' . _('enter the invoice number to print in the Start transaction number to print field and leave the End transaction number to print field blank') . '. ' . _('Only use the end invoice to print field if you wish to print a sequential range of invoices') . '';
 
-		$sql = "SELECT typeno FROM systypes WHERE typeid=11";
+		$SQL = "SELECT typeno FROM systypes WHERE typeid=11";
 
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_row($result);
 
 		echo '<br /><b>' . _('The last credit note created was number') . ' ' . $MyRow[0] . '</b>
@@ -635,7 +635,7 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 
 			if ($InvOrCredit == 'Invoice') {
 
-				$sql = "SELECT debtortrans.trandate,
+				$SQL = "SELECT debtortrans.trandate,
 								debtortrans.ovamount,
 								debtortrans.ovdiscount,
 								debtortrans.ovfreight,
@@ -693,7 +693,7 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 							AND debtortrans.transno='" . $FromTransNo . "'";
 			} else {
 
-				$sql = "SELECT debtortrans.trandate,
+				$SQL = "SELECT debtortrans.trandate,
 								debtortrans.ovamount,
 								debtortrans.ovdiscount,
 								debtortrans.ovfreight,
@@ -733,11 +733,11 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 							AND debtortrans.transno='" . $FromTransNo . "'";
 			}
 
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 			if (DB_num_rows($result) == 0 or DB_error_no() != 0) {
 				echo '<p>' . _('There was a problem retrieving the invoice or credit note details for note number') . ' ' . $InvoiceToPrint . ' ' . _('from the database') . '. ' . _('To print an invoice, the sales order record, the customer transaction record and the branch record for the customer must not have been purged') . '. ' . _('To print a credit note only requires the customer, transaction, salesman and branch records be available');
 				if ($debug == 1) {
-					echo _('The SQL used to get this information that failed was') . '<br />' . $sql;
+					echo _('The SQL used to get this information that failed was') . '<br />' . $SQL;
 				}
 				break;
 				include('includes/footer.inc');
@@ -838,7 +838,7 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 						</tr>
 					</table>';
 
-					$sql = "SELECT stockmoves.stockid,
+					$SQL = "SELECT stockmoves.stockid,
 						   		stockmaster.description,
 								-stockmoves.qty as quantity,
 								stockmoves.discountpercent,
@@ -872,7 +872,7 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 						<td style="background-color:#EEEEEE">' . $MyRow['salesmanname'] . '</td>
 					</tr></table>';
 
-					$sql = "SELECT stockmoves.stockid,
+					$SQL = "SELECT stockmoves.stockid,
 						   		stockmaster.description,
 								stockmoves.qty as quantity,
 								stockmoves.discountpercent, ((1 - stockmoves.discountpercent) * stockmoves.price * " . $ExchRate . " * stockmoves.qty) AS fxnet,
@@ -891,11 +891,11 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 				echo '<hr />';
 				echo '<div class="centre"><h4>' . _('All amounts stated in') . ' ' . $MyRow['currcode'] . '</h4></div>';
 
-				$result = DB_query($sql);
+				$result = DB_query($SQL);
 				if (DB_error_no() != 0) {
 					echo '<br />' . _('There was a problem retrieving the invoice or credit note stock movement details for invoice number') . ' ' . $FromTransNo . ' ' . _('from the database');
 					if ($debug == 1) {
-						echo '<br />' . _('The SQL used to get this information that failed was') . '<br />' . $sql;
+						echo '<br />' . _('The SQL used to get this information that failed was') . '<br />' . $SQL;
 					}
 					exit;
 				}

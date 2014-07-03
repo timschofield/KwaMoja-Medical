@@ -50,13 +50,13 @@ if ($_GET['Action'] == 'Enter') {
 			$Reference = 'Ref_' . $i;
 
 			if (strlen($_POST[$BarCode]) > 0) {
-				$sql = "SELECT stockmaster.stockid
+				$SQL = "SELECT stockmaster.stockid
 								FROM stockmaster
 								WHERE stockmaster.barcode='" . $_POST[$BarCode] . "'";
 
 				$ErrMsg = _('Could not determine if the part being ordered was a kitset or not because');
 				$DbgMsg = _('The sql that was used to determine if the part being ordered was a kitset or not was ');
-				$KitResult = DB_query($sql, $ErrMsg, $DbgMsg);
+				$KitResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 				$MyRow = DB_fetch_array($KitResult);
 
 				$_POST[$StockID] = strtoupper($MyRow['stockid']);
@@ -76,7 +76,7 @@ if ($_GET['Action'] == 'Enter') {
 
 				if ($InputError == False) {
 					$Added++;
-					$sql = "INSERT INTO stockcounts (stockid,
+					$SQL = "INSERT INTO stockcounts (stockid,
 									loccode,
 									qtycounted,
 									reference)
@@ -86,7 +86,7 @@ if ($_GET['Action'] == 'Enter') {
 									'" . $_POST[$Reference] . "')";
 
 					$ErrMsg = _('The stock count line number') . ' ' . $i . ' ' . _('could not be entered because');
-					$EnterResult = DB_query($sql, $ErrMsg);
+					$EnterResult = DB_query($SQL, $ErrMsg);
 				}
 			}
 		} // end of loop
@@ -109,11 +109,11 @@ if ($_GET['Action'] == 'Enter') {
 				<tr>
 					<th colspan="3">' . _('Stock Check Counts at Location') . ':<select name="Location">';
 		if ($_SESSION['RestrictLocations'] == 0) {
-			$sql = "SELECT locationname,
+			$SQL = "SELECT locationname,
 							loccode
 						FROM locations";
 		} else {
-			$sql = "SELECT locationname,
+			$SQL = "SELECT locationname,
 							loccode
 						FROM locations
 						INNER JOIN www_users
@@ -121,7 +121,7 @@ if ($_GET['Action'] == 'Enter') {
 						WHERE www_users.userid='" . $_SESSION['UserID'] . "'
 							AND loccode='" . $_POST['Location'] . "'";
 		}
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		while ($MyRow = DB_fetch_array($result)) {
 
 			if (isset($_POST['Location']) and $MyRow['loccode'] == $_POST['Location']) {
@@ -211,9 +211,9 @@ if ($_GET['Action'] == 'Enter') {
 	if (isset($_POST['DEL']) and is_array($_POST['DEL'])) {
 		foreach ($_POST['DEL'] as $id => $val) {
 			if ($val == 'on') {
-				$sql = "DELETE FROM stockcounts WHERE id='" . $id . "'";
+				$SQL = "DELETE FROM stockcounts WHERE id='" . $id . "'";
 				$ErrMsg = _('Failed to delete StockCount ID #') . ' ' . $i;
-				$EnterResult = DB_query($sql, $ErrMsg);
+				$EnterResult = DB_query($SQL, $ErrMsg);
 				prnMsg(_('Deleted Id #') . ' ' . $id, 'success');
 			}
 		}

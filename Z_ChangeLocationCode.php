@@ -50,7 +50,7 @@ if (isset($_POST['ProcessLocationChange'])) {
 		DB_IgnoreForeignKeys();
 
 		echo '<br />' . _('Adding the new location record');
-		$sql = "INSERT INTO locations (loccode,
+		$SQL = "INSERT INTO locations (loccode,
 										locationname,
 										deladd1,
 										deladd2,
@@ -87,55 +87,55 @@ if (isset($_POST['ProcessLocationChange'])) {
 
 		$DbgMsg = _('The SQL statement that failed was');
 		$ErrMsg = _('The SQL to insert the new location record failed');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		echo ' ... ' . _('completed');
 
 		echo '<br />' . _('Changing the BOM table records');
-		$sql = "UPDATE bom SET loccode='" . $_POST['NewLocationID'] . "' WHERE loccode='" . $_POST['OldLocationID'] . "'";
+		$SQL = "UPDATE bom SET loccode='" . $_POST['NewLocationID'] . "' WHERE loccode='" . $_POST['OldLocationID'] . "'";
 		$ErrMsg = _('The SQL to update the BOM records failed');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		echo ' ... ' . _('completed');
 
 		echo '<br />' . _('Changing the config table records');
-		$sql = "UPDATE config SET confvalue='" . $_POST['NewLocationID'] . "' WHERE confvalue='" . $_POST['OldLocationID'] . "'";
+		$SQL = "UPDATE config SET confvalue='" . $_POST['NewLocationID'] . "' WHERE confvalue='" . $_POST['OldLocationID'] . "'";
 		$ErrMsg = _('The SQL to update the BOM records failed');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		echo ' ... ' . _('completed');
 
 		echo '<br />' . _('Changing the contracts table records');
-		$sql = "UPDATE contracts SET loccode='" . $_POST['NewLocationID'] . "' WHERE loccode='" . $_POST['OldLocationID'] . "'";
+		$SQL = "UPDATE contracts SET loccode='" . $_POST['NewLocationID'] . "' WHERE loccode='" . $_POST['OldLocationID'] . "'";
 		$ErrMsg = _('The SQL to update the contracts records failed');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		echo ' ... ' . _('completed');
 
 		echo '<br />' . _('Changing the custbranch table records');
-		$sql = "UPDATE custbranch SET defaultlocation='" . $_POST['NewLocationID'] . "' WHERE defaultlocation='" . $_POST['OldLocationID'] . "'";
+		$SQL = "UPDATE custbranch SET defaultlocation='" . $_POST['NewLocationID'] . "' WHERE defaultlocation='" . $_POST['OldLocationID'] . "'";
 		$ErrMsg = _('The SQL to update the custbranch records failed');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		echo ' ... ' . _('completed');
 
 		echo '<br />' . _('Changing the freightcosts table records');
-		$sql = "UPDATE freightcosts SET locationfrom='" . $_POST['NewLocationID'] . "' WHERE locationfrom='" . $_POST['OldLocationID'] . "'";
+		$SQL = "UPDATE freightcosts SET locationfrom='" . $_POST['NewLocationID'] . "' WHERE locationfrom='" . $_POST['OldLocationID'] . "'";
 		$ErrMsg = _('The SQL to update the freightcosts records failed');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		echo ' ... ' . _('completed');
 
 		echo '<br />' . _('Changing stock location records');
-		$sql = "UPDATE locstock SET loccode='" . $_POST['NewLocationID'] . "' WHERE loccode='" . $_POST['OldLocationID'] . "'";
+		$SQL = "UPDATE locstock SET loccode='" . $_POST['NewLocationID'] . "' WHERE loccode='" . $_POST['OldLocationID'] . "'";
 		$ErrMsg = _('The SQL to update stock location records failed');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		echo ' ... ' . _('completed');
 
 		echo '<br />' . _('Changing location transfer information (Shipping location)');
-		$sql = "UPDATE loctransfers SET shiploc='" . $_POST['NewLocationID'] . "' WHERE shiploc='" . $_POST['OldLocationID'] . "'";
+		$SQL = "UPDATE loctransfers SET shiploc='" . $_POST['NewLocationID'] . "' WHERE shiploc='" . $_POST['OldLocationID'] . "'";
 		$ErrMsg = _('The SQL to update the loctransfers records failed');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		echo ' ... ' . _('completed');
 
 		echo '<br />' . _('Changing location transfer information (Receiving location)');
-		$sql = "UPDATE loctransfers SET recloc='" . $_POST['NewLocationID'] . "' WHERE recloc='" . $_POST['OldLocationID'] . "'";
+		$SQL = "UPDATE loctransfers SET recloc='" . $_POST['NewLocationID'] . "' WHERE recloc='" . $_POST['OldLocationID'] . "'";
 		$ErrMsg = _('The SQL to update the loctransfers records failed');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		echo ' ... ' . _('completed');
 
 		//check if MRP tables exist before assuming
@@ -143,82 +143,82 @@ if (isset($_POST['ProcessLocationChange'])) {
 		$result = DB_query("SELECT COUNT(*) FROM mrpparameters", '', '', false, false);
 		if (DB_error_no() == 0) {
 			echo '<br />' . _('Changing MRP parameters information');
-			$sql = "UPDATE mrpparameters SET location='" . $_POST['NewLocationID'] . "' WHERE location='" . $_POST['OldLocationID'] . "'";
+			$SQL = "UPDATE mrpparameters SET location='" . $_POST['NewLocationID'] . "' WHERE location='" . $_POST['OldLocationID'] . "'";
 			$ErrMsg = _('The SQL to update the mrpparameters records failed');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+			$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 			echo ' ... ' . _('completed');
 		}
 
 		echo '<br />' . _('Changing purchase orders information');
-		$sql = "UPDATE purchorders SET intostocklocation='" . $_POST['NewLocationID'] . "' WHERE intostocklocation='" . $_POST['OldLocationID'] . "'";
+		$SQL = "UPDATE purchorders SET intostocklocation='" . $_POST['NewLocationID'] . "' WHERE intostocklocation='" . $_POST['OldLocationID'] . "'";
 		$ErrMsg = _('The SQL to update the purchase orders records failed');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		echo ' ... ' . _('completed');
 
 		echo '<br />' . _('Changing recurring sales orders information');
-		$sql = "UPDATE recurringsalesorders SET fromstkloc='" . $_POST['NewLocationID'] . "' WHERE fromstkloc='" . $_POST['OldLocationID'] . "'";
+		$SQL = "UPDATE recurringsalesorders SET fromstkloc='" . $_POST['NewLocationID'] . "' WHERE fromstkloc='" . $_POST['OldLocationID'] . "'";
 		$ErrMsg = _('The SQL to update the recurring sales orders records failed');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		echo ' ... ' . _('completed');
 
 		echo '<br />' . _('Changing  sales orders information');
-		$sql = "UPDATE salesorders SET fromstkloc='" . $_POST['NewLocationID'] . "' WHERE fromstkloc='" . $_POST['OldLocationID'] . "'";
+		$SQL = "UPDATE salesorders SET fromstkloc='" . $_POST['NewLocationID'] . "' WHERE fromstkloc='" . $_POST['OldLocationID'] . "'";
 		$ErrMsg = _('The SQL to update the  sales orders records failed');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		echo ' ... ' . _('completed');
 
 		echo '<br />' . _('Changing stock check freeze records');
-		$sql = "UPDATE stockcheckfreeze SET loccode='" . $_POST['NewLocationID'] . "' WHERE loccode='" . $_POST['OldLocationID'] . "'";
+		$SQL = "UPDATE stockcheckfreeze SET loccode='" . $_POST['NewLocationID'] . "' WHERE loccode='" . $_POST['OldLocationID'] . "'";
 		$ErrMsg = _('The SQL to update stock check freeze records failed');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		echo ' ... ' . _('completed');
 
 		echo '<br />' . _('Changing stockcounts records');
-		$sql = "UPDATE stockcounts SET loccode='" . $_POST['NewLocationID'] . "' WHERE loccode='" . $_POST['OldLocationID'] . "'";
+		$SQL = "UPDATE stockcounts SET loccode='" . $_POST['NewLocationID'] . "' WHERE loccode='" . $_POST['OldLocationID'] . "'";
 		$ErrMsg = _('The SQL to update stockcounts records failed');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		echo ' ... ' . _('completed');
 
 		echo '<br />' . _('Changing stockmoves records');
-		$sql = "UPDATE stockmoves SET loccode='" . $_POST['NewLocationID'] . "' WHERE loccode='" . $_POST['OldLocationID'] . "'";
+		$SQL = "UPDATE stockmoves SET loccode='" . $_POST['NewLocationID'] . "' WHERE loccode='" . $_POST['OldLocationID'] . "'";
 		$ErrMsg = _('The SQL to update stockmoves records failed');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		echo ' ... ' . _('completed');
 
 		echo '<br />' . _('Changing stockrequest records');
-		$sql = "UPDATE stockrequest SET loccode='" . $_POST['NewLocationID'] . "' WHERE loccode='" . $_POST['OldLocationID'] . "'";
+		$SQL = "UPDATE stockrequest SET loccode='" . $_POST['NewLocationID'] . "' WHERE loccode='" . $_POST['OldLocationID'] . "'";
 		$ErrMsg = _('The SQL to update stockrequest records failed');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		echo ' ... ' . _('completed');
 
 		echo '<br />' . _('Changing stockserialitems records');
-		$sql = "UPDATE stockserialitems SET loccode='" . $_POST['NewLocationID'] . "' WHERE loccode='" . $_POST['OldLocationID'] . "'";
+		$SQL = "UPDATE stockserialitems SET loccode='" . $_POST['NewLocationID'] . "' WHERE loccode='" . $_POST['OldLocationID'] . "'";
 		$ErrMsg = _('The SQL to update stockserialitems records failed');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		echo ' ... ' . _('completed');
 
 		echo '<br />' . _('Changing tenders records');
-		$sql = "UPDATE tenders SET location='" . $_POST['NewLocationID'] . "' WHERE location='" . $_POST['OldLocationID'] . "'";
+		$SQL = "UPDATE tenders SET location='" . $_POST['NewLocationID'] . "' WHERE location='" . $_POST['OldLocationID'] . "'";
 		$ErrMsg = _('The SQL to update tenders records failed');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		echo ' ... ' . _('completed');
 
 		echo '<br />' . _('Changing workcentres records');
-		$sql = "UPDATE workcentres SET location='" . $_POST['NewLocationID'] . "' WHERE location='" . $_POST['OldLocationID'] . "'";
+		$SQL = "UPDATE workcentres SET location='" . $_POST['NewLocationID'] . "' WHERE location='" . $_POST['OldLocationID'] . "'";
 		$ErrMsg = _('The SQL to update workcentres records failed');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		echo ' ... ' . _('completed');
 
 		echo '<br />' . _('Changing workorders records');
-		$sql = "UPDATE workorders SET loccode='" . $_POST['NewLocationID'] . "' WHERE loccode='" . $_POST['OldLocationID'] . "'";
+		$SQL = "UPDATE workorders SET loccode='" . $_POST['NewLocationID'] . "' WHERE loccode='" . $_POST['OldLocationID'] . "'";
 		$ErrMsg = _('The SQL to update workorders records failed');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		echo ' ... ' . _('completed');
 
 		echo '<br />' . _('Changing users records');
-		$sql = "UPDATE www_users SET defaultlocation='" . $_POST['NewLocationID'] . "' WHERE defaultlocation='" . $_POST['OldLocationID'] . "'";
+		$SQL = "UPDATE www_users SET defaultlocation='" . $_POST['NewLocationID'] . "' WHERE defaultlocation='" . $_POST['OldLocationID'] . "'";
 		$ErrMsg = _('The SQL to update users records failed');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		echo ' ... ' . _('completed');
 
 		DB_ReinstateForeignKeys();
@@ -226,9 +226,9 @@ if (isset($_POST['ProcessLocationChange'])) {
 		$result = DB_Txn_Commit();
 
 		echo '<br />' . _('Deleting the old location record');
-		$sql = "DELETE FROM locations WHERE loccode='" . $_POST['OldLocationID'] . "'";
+		$SQL = "DELETE FROM locations WHERE loccode='" . $_POST['OldLocationID'] . "'";
 		$ErrMsg = _('The SQL to delete the old location record failed');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		echo ' ... ' . _('completed');
 
 

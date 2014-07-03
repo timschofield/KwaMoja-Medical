@@ -37,13 +37,13 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate']) or $InputError == 1) 
 			<td>' . _('Inventory Category') . '</td>
 			<td>';
 
-	$sql = "SELECT categorydescription,
+	$SQL = "SELECT categorydescription,
 					categoryid
 			FROM stockcategory
 			WHERE stocktype<>'D'
 			AND stocktype<>'L'";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 
 	echo '<select required="required" minlength="1" name="CategoryID">
@@ -61,12 +61,12 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate']) or $InputError == 1) 
 			<td><select required="required" minlength="1" name="Location">';
 
 	if ($_SESSION['RestrictLocations'] == 0) {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 							loccode
 						FROM locations";
 		echo '<option selected="selected" value="All">' . _('All Locations') . '</option>';
 	} else {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 							loccode
 						FROM locations
 						INNER JOIN www_users
@@ -74,7 +74,7 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate']) or $InputError == 1) 
 						WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	while ($MyRow = DB_fetch_array($result)) {
 		echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 	}
@@ -105,7 +105,7 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate']) or $InputError == 1) 
 }
 
 if ($_POST['CategoryID'] == 'All' and $_POST['Location'] == 'All') {
-	$sql = "SELECT invoiceno,
+	$SQL = "SELECT invoiceno,
 			orderdeliverydifferenceslog.orderno,
 			orderdeliverydifferenceslog.stockid,
 			stockmaster.description,
@@ -122,7 +122,7 @@ if ($_POST['CategoryID'] == 'All' and $_POST['Location'] == 'All') {
 			AND trandate <='" . FormatDateForSQL($_POST['ToDate']) . "'";
 
 } elseif ($_POST['CategoryID'] != 'All' and $_POST['Location'] == 'All') {
-	$sql = "SELECT invoiceno,
+	$SQL = "SELECT invoiceno,
 			orderdeliverydifferenceslog.orderno,
 			orderdeliverydifferenceslog.stockid,
 			stockmaster.description,
@@ -140,7 +140,7 @@ if ($_POST['CategoryID'] == 'All' and $_POST['Location'] == 'All') {
 			AND categoryid='" . $_POST['CategoryID'] . "'";
 
 } elseif ($_POST['CategoryID'] == 'All' and $_POST['Location'] != 'All') {
-	$sql = "SELECT invoiceno,
+	$SQL = "SELECT invoiceno,
 			orderdeliverydifferenceslog.orderno,
 			orderdeliverydifferenceslog.stockid,
 			stockmaster.description,
@@ -162,7 +162,7 @@ if ($_POST['CategoryID'] == 'All' and $_POST['Location'] == 'All') {
 
 } elseif ($_POST['CategoryID'] != 'All' and $_POST['location'] != 'All') {
 
-	$sql = "SELECT invoiceno,
+	$SQL = "SELECT invoiceno,
 			orderdeliverydifferenceslog.orderno,
 			orderdeliverydifferenceslog.stockid,
 			stockmaster.description,
@@ -185,10 +185,10 @@ if ($_POST['CategoryID'] == 'All' and $_POST['Location'] == 'All') {
 }
 
 if ($_SESSION['SalesmanLogin'] != '') {
-	$sql .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
+	$SQL .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
 }
 
-$Result = DB_query($sql, '', '', false, false); //dont error check - see below
+$Result = DB_query($SQL, '', '', false, false); //dont error check - see below
 
 if (DB_error_no() != 0) {
 	$Title = _('Delivery Differences Log Report Error');
@@ -204,7 +204,7 @@ if (DB_error_no() != 0) {
 	include('includes/header.inc');
 	prnMsg(_('There were no variances between deliveries and orders found in the database within the period from') . ' ' . $_POST['FromDate'] . ' ' . _('to') . ' ' . $_POST['ToDate'] . '. ' . _('Please try again selecting a different date range'), 'info');
 	if ($debug == 1) {
-		prnMsg(_('The SQL that returned no rows was') . '<br />' . $sql, 'error');
+		prnMsg(_('The SQL that returned no rows was') . '<br />' . $SQL, 'error');
 	}
 	include('includes/footer.inc');
 	exit;
@@ -250,14 +250,14 @@ $YPos -= $line_height;
 $LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 200, $FontSize, _('Total number of differences') . ' ' . locale_number_format($TotalDiffs), 'left');
 
 if ($_POST['CategoryID'] == 'All' and $_POST['Location'] == 'All') {
-	$sql = "SELECT COUNT(salesorderdetails.orderno)
+	$SQL = "SELECT COUNT(salesorderdetails.orderno)
 			FROM salesorderdetails INNER JOIN debtortrans
 				ON salesorderdetails.orderno=debtortrans.order_
 			WHERE debtortrans.trandate>='" . FormatDateForSQL($_POST['FromDate']) . "'
 			AND debtortrans.trandate <='" . FormatDateForSQL($_POST['ToDate']) . "'";
 
 } elseif ($_POST['CategoryID'] != 'All' and $_POST['Location'] == 'All') {
-	$sql = "SELECT COUNT(salesorderdetails.orderno)
+	$SQL = "SELECT COUNT(salesorderdetails.orderno)
 		FROM salesorderdetails INNER JOIN debtortrans
 			ON salesorderdetails.orderno=debtortrans.order_ INNER JOIN stockmaster
 			ON salesorderdetails.stkcode=stockmaster.stockid
@@ -267,7 +267,7 @@ if ($_POST['CategoryID'] == 'All' and $_POST['Location'] == 'All') {
 
 } elseif ($_POST['CategoryID'] == 'All' and $_POST['Location'] != 'All') {
 
-	$sql = "SELECT COUNT(salesorderdetails.orderno)
+	$SQL = "SELECT COUNT(salesorderdetails.orderno)
 		FROM salesorderdetails INNER JOIN debtortrans
 			ON salesorderdetails.orderno=debtortrans.order_ INNER JOIN salesorders
 			ON salesorderdetails.orderno = salesorders.orderno
@@ -277,7 +277,7 @@ if ($_POST['CategoryID'] == 'All' and $_POST['Location'] == 'All') {
 
 } elseif ($_POST['CategoryID'] != 'All' and $_POST['Location'] != 'All') {
 
-	$sql = "SELECT COUNT(salesorderdetails.orderno)
+	$SQL = "SELECT COUNT(salesorderdetails.orderno)
 		FROM salesorderdetails INNER JOIN debtortrans ON salesorderdetails.orderno=debtortrans.order_
 			INNER JOIN salesorders ON salesorderdetails.orderno = salesorders.orderno
 			INNER JOIN stockmaster ON salesorderdetails.stkcode = stockmaster.stockid
@@ -289,11 +289,11 @@ if ($_POST['CategoryID'] == 'All' and $_POST['Location'] == 'All') {
 }
 
 if ($_SESSION['SalesmanLogin'] != '') {
-	$sql .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
+	$SQL .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
 }
 
 $ErrMsg = _('Could not retrieve the count of sales order lines in the period under review');
-$result = DB_query($sql, $ErrMsg);
+$result = DB_query($SQL, $ErrMsg);
 
 
 $MyRow = DB_fetch_row($result);

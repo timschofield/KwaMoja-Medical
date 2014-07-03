@@ -95,7 +95,7 @@ if (isset($_POST['submit'])) {
 
 		/*SelectedSalesPerson could also exist if submit had not been clicked this code would not run in this case cos submit is false of course  see the delete code below*/
 
-		$sql = "UPDATE salesman SET salesmanname='" . $_POST['SalesmanName'] . "',
+		$SQL = "UPDATE salesman SET salesmanname='" . $_POST['SalesmanName'] . "',
 									salesarea='" . $_POST['SalesArea'] . "',
 									commissionrate1='" . filter_number_format($_POST['CommissionRate1']) . "',
 									smantel='" . $_POST['SManTel'] . "',
@@ -111,7 +111,7 @@ if (isset($_POST['submit'])) {
 
 		/*Selected group is null cos no item selected on first time round so must be adding a record must be submitting new entries in the new Sales-person form */
 
-		$sql = "INSERT INTO salesman (salesmancode,
+		$SQL = "INSERT INTO salesman (salesmancode,
 						salesmanname,
 						salesarea,
 						manager,
@@ -148,7 +148,7 @@ if (isset($_POST['submit'])) {
 		//run the SQL from either of the above possibilites
 		$ErrMsg = _('The insert or update of the salesperson failed because');
 		$DbgMsg = _('The SQL that was used and failed was');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 		prnMsg($msg, 'success');
 
@@ -170,29 +170,29 @@ if (isset($_POST['submit'])) {
 
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'DebtorsMaster'
 
-	$sql = "SELECT COUNT(*) FROM custbranch WHERE  custbranch.salesman='" . $SelectedSalesPerson . "'";
-	$result = DB_query($sql);
+	$SQL = "SELECT COUNT(*) FROM custbranch WHERE  custbranch.salesman='" . $SelectedSalesPerson . "'";
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_row($result);
 	if ($MyRow[0] > 0) {
 		prnMsg(_('Cannot delete this salesperson because branches are set up referring to them') . ' - ' . _('first alter the branches concerned') . '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('branches that refer to this salesperson'), 'error');
 
 	} else {
-		$sql = "SELECT COUNT(*) FROM salesanalysis WHERE salesanalysis.salesperson='" . $SelectedSalesPerson . "'";
-		$result = DB_query($sql);
+		$SQL = "SELECT COUNT(*) FROM salesanalysis WHERE salesanalysis.salesperson='" . $SelectedSalesPerson . "'";
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_row($result);
 		if ($MyRow[0] > 0) {
 			prnMsg(_('Cannot delete this salesperson because sales analysis records refer to them'), '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('sales analysis records that refer to this salesperson'), 'error');
 		} else {
-			$sql = "SELECT COUNT(*) FROM www_users WHERE salesman='" . $SelectedSalesPerson . "'";
-			$result = DB_query($sql);
+			$SQL = "SELECT COUNT(*) FROM www_users WHERE salesman='" . $SelectedSalesPerson . "'";
+			$result = DB_query($SQL);
 			$MyRow = DB_fetch_row($result);
 			if ($MyRow[0] > 0) {
 				prnMsg(_('Cannot delete this salesperson because'), '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('user records that refer to this salesperson') . '.' . _('First delete any users that refer to this sales person'), 'error');
 			} else {
 
-				$sql = "DELETE FROM salesman WHERE salesmancode='" . $SelectedSalesPerson . "'";
+				$SQL = "DELETE FROM salesman WHERE salesmancode='" . $SelectedSalesPerson . "'";
 				$ErrMsg = _('The salesperson could not be deleted because');
-				$result = DB_query($sql, $ErrMsg);
+				$result = DB_query($SQL, $ErrMsg);
 
 				prnMsg(_('Salesperson') . ' ' . stripslashes($SelectedSalesPerson) . ' ' . _('has been deleted from the database'), 'success');
 				unset($SelectedSalesPerson);
@@ -210,7 +210,7 @@ if (!isset($SelectedSalesPerson)) {
 	links to delete or edit each. These will call the same page again and allow update/input
 	or deletion of the records*/
 
-	$sql = "SELECT salesmancode,
+	$SQL = "SELECT salesmancode,
 				salesmanname,
 				salesarea,
 				manager,
@@ -221,7 +221,7 @@ if (!isset($SelectedSalesPerson)) {
 				commissionrate2,
 				current
 			FROM salesman";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	echo '<table class="selection">';
 	echo '<tr>
@@ -257,8 +257,8 @@ if (!isset($SelectedSalesPerson)) {
 			$ManagerText = _('No');
 		}
 
-		$sql = "SELECT areadescription FROM areas WHERE areacode='" . $MyRow['salesarea'] . "'";
-		$AreaResult = DB_query($sql);
+		$SQL = "SELECT areadescription FROM areas WHERE areacode='" . $MyRow['salesarea'] . "'";
+		$AreaResult = DB_query($SQL);
 		$AreaRow = DB_fetch_array($AreaResult);
 
 		echo '<td>' . $MyRow['salesmancode'] . '</td>
@@ -291,7 +291,7 @@ if (!isset($_GET['delete'])) {
 	if (isset($SelectedSalesPerson)) {
 		//editing an existing Sales-person
 
-		$sql = "SELECT salesmancode,
+		$SQL = "SELECT salesmancode,
 					salesmanname,
 					salesarea,
 					manager,
@@ -304,7 +304,7 @@ if (!isset($_GET['delete'])) {
 				FROM salesman
 				WHERE salesmancode='" . $SelectedSalesPerson . "'";
 
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_array($result);
 
 		$_POST['SalesmanCode'] = $MyRow['salesmancode'];
@@ -370,10 +370,10 @@ if (!isset($_GET['delete'])) {
 	echo '<tr>
 			<td>' . _('Sales Area') . ':' . '</td>
 			<td><select required="required" minlength="1" tabindex="2" name="SalesArea">';
-	$sql = "SELECT areacode, areadescription FROM areas ORDER BY areadescription";
+	$SQL = "SELECT areacode, areadescription FROM areas ORDER BY areadescription";
 	$ErrMsg = _('An error occurred in retrieving the areas from the database');
 	$DbgMsg = _('The SQL that was used to retrieve the area information and that failed in the process was');
-	$AreaResult = DB_query($sql, $ErrMsg, $DbgMsg);
+	$AreaResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 	echo '<option value=""></option>';
 	while ($AreaRow = DB_fetch_array($AreaResult)) {
 		if ($_POST['SalesArea'] == $AreaRow['areacode']) {

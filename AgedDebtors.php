@@ -11,11 +11,11 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 	$PageNumber = 0;
 	$line_height = 12;
 
-	$sql = "SELECT min(debtorno) AS fromcriteria,
+	$SQL = "SELECT min(debtorno) AS fromcriteria,
 					max(debtorno) AS tocriteria
 				FROM debtorsmaster";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 
 	if ($_POST['FromCriteria']=='') {
@@ -327,7 +327,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 			/*draw a line under the customer aged analysis*/
 			$pdf->line($Page_Width - $Right_Margin, $YPos + 10, $Left_Margin, $YPos + 10);
 
-			$sql = "SELECT systypes.typename,
+			$SQL = "SELECT systypes.typename,
 						debtortrans.transno,
 						debtortrans.trandate,
 						(debtortrans.ovamount + debtortrans.ovgst + debtortrans.ovfreight + debtortrans.ovdiscount - debtortrans.alloc) as balance,
@@ -370,10 +370,10 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 						AND ABS(debtortrans.ovamount + debtortrans.ovgst + debtortrans.ovfreight + debtortrans.ovdiscount - debtortrans.alloc)>0.004";
 
 			if ($_SESSION['SalesmanLogin'] != '') {
-				$sql .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
+				$SQL .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
 			}
 
-			$DetailResult = DB_query($sql, '', '', False, False);
+			$DetailResult = DB_query($SQL, '', '', False, False);
 			/*Dont trap errors */
 			if (DB_error_no() != 0) {
 				$Title = _('Aged Customer Account Analysis') . ' - ' . _('Problem Report') . '....';
@@ -381,7 +381,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				prnMsg(_('The details of outstanding transactions for customer') . ' - ' . $AgedAnalysis['debtorno'] . ' ' . _('could not be retrieved because') . ' - ' . DB_error_msg(), 'error');
 				echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 				if ($debug == 1) {
-					echo '<br />' . _('The SQL that failed was') . '<br />' . $sql;
+					echo '<br />' . _('The SQL that failed was') . '<br />' . $SQL;
 				}
 				include('includes/footer.inc');
 				exit;
@@ -470,11 +470,11 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 
 		/*if $FromCriteria is not set then show a form to allow input	*/
 
-		$sql = "SELECT min(debtorno) AS fromcriteria,
+		$SQL = "SELECT min(debtorno) AS fromcriteria,
 						max(debtorno) AS tocriteria
 					FROM debtorsmaster";
 
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_array($result);
 
 		echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">
@@ -506,9 +506,9 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 		} else {
 			echo '<td><select tabindex="4" name="Salesman">';
 
-			$sql = "SELECT salesmancode, salesmanname FROM salesman";
+			$SQL = "SELECT salesmancode, salesmanname FROM salesman";
 
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 			echo '<option value="">' . _('All Sales people') . '</option>';
 			while ($MyRow = DB_fetch_array($result)){
 					echo '<option value="' . $MyRow['salesmancode'] . '">' . $MyRow['salesmanname'] . '</option>';
@@ -520,9 +520,9 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				<td>' . _('Only show customers trading in') . ':' . '</td>
 				<td><select minlength="0" tabindex="5" name="Currency">';
 
-		$sql = "SELECT currency, currabrev FROM currencies";
+		$SQL = "SELECT currency, currabrev FROM currencies";
 
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		while ($MyRow = DB_fetch_array($result)) {
 			if ($MyRow['currabrev'] == $_SESSION['CompanyRecord']['currencydefault']) {
 				echo '<option selected="selected" value="' . $MyRow['currabrev'] . '">' . $MyRow['currency'] . '</option>';

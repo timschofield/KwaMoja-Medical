@@ -17,10 +17,10 @@ if (!isset($_POST['FromPeriod'])) {
 				 <td>' . _('Select Period From') . ':</td>
 				 <td><select minlength="0" name="FromPeriod">';
 
-	$sql = "SELECT periodno,
+	$SQL = "SELECT periodno,
 				   lastdate_in_period
 				FROM periods ORDER BY periodno";
-	$Periods = DB_query($sql);
+	$Periods = DB_query($SQL);
 
 	while ($MyRow = DB_fetch_array($Periods)) {
 		echo '<option value="' . $MyRow['periodno'] . '">' . MonthAndYearFromSQLDate($MyRow['lastdate_in_period']) . '</option>';
@@ -38,17 +38,17 @@ if (!isset($_POST['FromPeriod'])) {
 	/*OK do the updates */
 
 	/* Make the posted flag on all GL entries including and after the period selected = 0 */
-	$sql = "UPDATE gltrans SET posted=0 WHERE periodno >='" . $_POST['FromPeriod'] . "'";
-	$UpdGLTransPostedFlag = DB_query($sql);
+	$SQL = "UPDATE gltrans SET posted=0 WHERE periodno >='" . $_POST['FromPeriod'] . "'";
+	$UpdGLTransPostedFlag = DB_query($SQL);
 
 	/* Now make all the actuals 0 for all periods including and after the period from */
-	$sql = "UPDATE chartdetails SET actual =0 WHERE period >= '" . $_POST['FromPeriod'] . "'";
-	$UpdActualChartDetails = DB_query($sql);
+	$SQL = "UPDATE chartdetails SET actual =0 WHERE period >= '" . $_POST['FromPeriod'] . "'";
+	$UpdActualChartDetails = DB_query($SQL);
 
 	$ChartDetailBFwdResult = DB_query("SELECT accountcode, bfwd FROM chartdetails WHERE period='" . $_POST['FromPeriod'] . "'");
 	while ($ChartRow = DB_fetch_array($ChartDetailBFwdResult)) {
-		$sql = "UPDATE chartdetails SET bfwd ='" . $ChartRow['bfwd'] . "' WHERE period > '" . $_POST['FromPeriod'] . "' AND accountcode='" . $ChartRow['accountcode'] . "'";
-		$UpdActualChartDetails = DB_query($sql);
+		$SQL = "UPDATE chartdetails SET bfwd ='" . $ChartRow['bfwd'] . "' WHERE period > '" . $_POST['FromPeriod'] . "' AND accountcode='" . $ChartRow['accountcode'] . "'";
+		$UpdActualChartDetails = DB_query($SQL);
 	}
 
 	/*Now repost the lot */

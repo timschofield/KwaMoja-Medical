@@ -5,11 +5,11 @@ include('includes/session.inc');
 if ((isset($_POST['PrintPDF'])) and isset($_POST['FromCriteria']) and mb_strlen($_POST['FromCriteria']) >= 1 and isset($_POST['ToCriteria']) and mb_strlen($_POST['ToCriteria']) >= 1) {
 	/*Now figure out the invoice less credits due for the Supplier range under review */
 
-	$sql = "SELECT min(supplierid) AS fromcriteria,
+	$SQL = "SELECT min(supplierid) AS fromcriteria,
 					max(supplierid) AS tocriteria
 				FROM suppliers";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 
 	if ($_POST['FromCriteria']=='') {
@@ -19,7 +19,7 @@ if ((isset($_POST['PrintPDF'])) and isset($_POST['FromCriteria']) and mb_strlen(
 		$_POST['Toriteria'] = $MyRow['tocriteria'];
 	}
 
-	$sql = "SELECT suppliers.supplierid,
+	$SQL = "SELECT suppliers.supplierid,
 					suppliers.suppname,
 					suppliers.address1,
 					suppliers.address2,
@@ -40,7 +40,7 @@ if ((isset($_POST['PrintPDF'])) and isset($_POST['FromCriteria']) and mb_strlen(
 			AND suppliers.remittance=1
 			ORDER BY supplierno";
 
-	$SuppliersResult = DB_query($sql);
+	$SuppliersResult = DB_query($SQL);
 	if (DB_num_rows($SuppliersResult) == 0) {
 		//then there aint awt to print
 		$Title = _('Print Remittance Advices Error');
@@ -70,7 +70,7 @@ if ((isset($_POST['PrintPDF'])) and isset($_POST['FromCriteria']) and mb_strlen(
 		$AccumBalance = 0;
 
 		/* Now get the transactions and amounts that the payment was allocated to */
-		$sql = "SELECT systypes.typename,
+		$SQL = "SELECT systypes.typename,
 						supptrans.suppreference,
 						supptrans.trandate,
 						supptrans.transno,
@@ -84,14 +84,14 @@ if ((isset($_POST['PrintPDF'])) and isset($_POST['FromCriteria']) and mb_strlen(
 						 supptrans.transno";
 
 
-		$TransResult = DB_query($sql, '', '', false, false);
+		$TransResult = DB_query($SQL, '', '', false, false);
 		if (DB_error_no() != 0) {
 			$Title = _('Remittance Advice Problem Report');
 			include('includes/header.inc');
 			prnMsg(_('The details of the payment to the supplier could not be retrieved because') . ' - ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 			if ($debug == 1) {
-				echo '<br />' . _('The SQL that failed was') . ' ' . $sql;
+				echo '<br />' . _('The SQL that failed was') . ' ' . $SQL;
 			}
 			include('includes/footer.inc');
 			exit;
@@ -150,11 +150,11 @@ if ((isset($_POST['PrintPDF'])) and isset($_POST['FromCriteria']) and mb_strlen(
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table>';
 
-	$sql = "SELECT min(supplierid) AS fromcriteria,
+	$SQL = "SELECT min(supplierid) AS fromcriteria,
 					max(supplierid) AS tocriteria
 				FROM suppliers";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 
 	echo '<tr>

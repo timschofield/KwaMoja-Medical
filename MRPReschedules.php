@@ -29,14 +29,14 @@ if (isset($_POST['PrintPDF'])) {
 	if ($_POST['Selection'] != 'All') {
 		$selecttype = " AND ordertype = '" . $_POST['Selection'] . "'";
 	}
-	$sql = "SELECT mrpsupplies.*,
+	$SQL = "SELECT mrpsupplies.*,
 				   stockmaster.description,
 				   stockmaster.decimalplaces
 			  FROM mrpsupplies,stockmaster
 			  WHERE mrpsupplies.part = stockmaster.stockid AND duedate <> mrpdate
 				 $selecttype
 			  ORDER BY mrpsupplies.part";
-	$result = DB_query($sql, '', '', false, true);
+	$result = DB_query($SQL, '', '', false, true);
 
 	if (DB_error_no() != 0) {
 		$Title = _('MRP Reschedules') . ' - ' . _('Problem Report');
@@ -44,7 +44,7 @@ if (isset($_POST['PrintPDF'])) {
 		prnMsg(_('The MRP reschedules could not be retrieved by the SQL because') . ' ' . DB_error_msg(), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($debug == 1) {
-			echo '<br />' . $sql;
+			echo '<br />' . $SQL;
 		}
 		include('includes/footer.inc');
 		exit;
@@ -56,7 +56,7 @@ if (isset($_POST['PrintPDF'])) {
 		prnMsg(_('No MRP reschedule retrieved'), 'warn');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($debug == 1) {
-			echo '<br />' . $sql;
+			echo '<br />' . $SQL;
 		}
 		include('includes/footer.inc');
 		exit;

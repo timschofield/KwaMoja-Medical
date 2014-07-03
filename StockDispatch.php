@@ -37,18 +37,18 @@ if (isset($_POST['PrintPDF'])) {
 
 	// from location
 	$ErrMsg = _('Could not retrieve location name from the database');
-	$sqlfrom = "SELECT locationname FROM `locations` WHERE loccode='" . $_POST['FromLocation'] . "'";
-	$result = DB_query($sqlfrom, $ErrMsg);
+	$SQLfrom = "SELECT locationname FROM `locations` WHERE loccode='" . $_POST['FromLocation'] . "'";
+	$result = DB_query($SQLfrom, $ErrMsg);
 	$Row = DB_fetch_row($result);
 	$FromLocation = $Row['0'];
 
 	// to location
-	$sqlto = "SELECT locationname,
+	$SQLto = "SELECT locationname,
 					cashsalecustomer,
 					cashsalebranch
 				FROM `locations`
 				WHERE loccode='" . $_POST['ToLocation'] . "'";
-	$resultto = DB_query($sqlto, $ErrMsg);
+	$resultto = DB_query($SQLto, $ErrMsg);
 	$RowTo = DB_fetch_row($resultto);
 	$ToLocation = $RowTo['0'];
 	$ToCustomer = $RowTo['1'];
@@ -87,7 +87,7 @@ if (isset($_POST['PrintPDF'])) {
 		$WhereCategory = $WhereCategory . " AND locstock.reorderlevel > locstock.quantity ";
 	}
 
-	$sql = "SELECT locstock.stockid,
+	$SQL = "SELECT locstock.stockid,
 				stockmaster.description,
 				locstock.loccode,
 				locstock.quantity,
@@ -115,7 +115,7 @@ if (isset($_POST['PrintPDF'])) {
 			AND stockcategory.stocktype<>'A'
 			AND (stockmaster.mbflag='B' OR stockmaster.mbflag='M') " . $WhereCategory . " ORDER BY locstock.loccode,locstock.stockid";
 
-	$result = DB_query($sql, '', '', false, true);
+	$result = DB_query($SQL, '', '', false, true);
 
 	if (DB_error_no() != 0) {
 		$Title = _('Stock Dispatch - Problem Report');
@@ -124,7 +124,7 @@ if (isset($_POST['PrintPDF'])) {
 		echo '<br />
 				<a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($debug == 1) {
-			echo '<br />' . $sql;
+			echo '<br />' . $SQL;
 		}
 		include('includes/footer.inc');
 		exit;
@@ -248,7 +248,7 @@ if (isset($_POST['PrintPDF'])) {
 			}
 
 			// Create loctransfers records for each record
-			$sql2 = "INSERT INTO loctransfers (reference,
+			$SQL2 = "INSERT INTO loctransfers (reference,
 												stockid,
 												shipqty,
 												shipdate,
@@ -262,7 +262,7 @@ if (isset($_POST['PrintPDF'])) {
 												'" . $_POST['ToLocation'] . "')";
 			$ErrMsg = _('CRITICAL ERROR') . '! ' . _('Unable to enter Location Transfer record for') . ' ' . $MyRow['stockid'];
 			if ($_POST['ReportType'] == 'Batch') {
-				$resultLocShip = DB_query($sql2, $ErrMsg);
+				$resultLocShip = DB_query($SQL2, $ErrMsg);
 			}
 		}
 	}
@@ -316,8 +316,8 @@ if (isset($_POST['PrintPDF'])) {
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Inventory') . '" alt="" />' . ' ' . _('Inventory Stock Dispatch Report') . '</p>';
 	echo '<div class="page_help_text noPrint">' . _('Create a transfer batch of overstock from one location to another location that is below reorder level.') . '<br/>' . _('Quantity to ship is based on reorder level minus the quantity on hand at the To Location; if there is a') . '<br/>' . _('dispatch percentage entered, that needed quantity is inflated by the percentage entered.') . '<br/>' . _('You need access to both locations to do the transfer.') . '<br/>' . _('Use Bulk Inventory Transfer - Receive to process the batch') . '</div>';
 
-	$sql = "SELECT defaultlocation FROM www_users WHERE userid='" . $_SESSION['UserID'] . "'";
-	$result = DB_query($sql);
+	$SQL = "SELECT defaultlocation FROM www_users WHERE userid='" . $_SESSION['UserID'] . "'";
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 	$DefaultLocation = $MyRow['defaultlocation'];
 	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
@@ -325,18 +325,18 @@ if (isset($_POST['PrintPDF'])) {
 		  <br />';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	if ($_SESSION['RestrictLocations'] == 0) {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations";
 	} else {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations
 					INNER JOIN www_users
 						ON locations.loccode=www_users.defaultlocation
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
-	$resultStkLocs = DB_query($sql);
+	$resultStkLocs = DB_query($SQL);
 	if (!isset($_POST['FromLocation'])) {
 		$_POST['FromLocation'] = $DefaultLocation;
 	}
@@ -357,8 +357,8 @@ if (isset($_POST['PrintPDF'])) {
 	}
 	echo '</select></td>
 		</tr>';
-	$sql = "SELECT locationname, loccode FROM locations";
-	$resultStkLocs = DB_query($sql);
+	$SQL = "SELECT locationname, loccode FROM locations";
+	$resultStkLocs = DB_query($SQL);
 	if (!isset($_POST['ToLocation'])) {
 		$_POST['ToLocation'] = $DefaultLocation;
 	}

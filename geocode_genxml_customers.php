@@ -17,9 +17,9 @@ function parseToXML($htmlStr)
     return $xmlStr;
 }
 
-$sql = "SELECT * FROM custbranch WHERE 1";
+$SQL = "SELECT * FROM custbranch WHERE 1";
 $ErrMsg = _('An error occurred in retrieving the information');;
-$result = DB_query($sql, $ErrMsg);
+$result = DB_query($SQL, $ErrMsg);
 
 header("Content-type: text/xml");
 

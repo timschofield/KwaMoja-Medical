@@ -16,7 +16,7 @@ if (isset($_POST['UpdateSalesAnalysis'])){
 
 	/* Loop around each customer/branch combo */
 
-	$sql = "SELECT debtorsmaster.debtorno,
+	$SQL = "SELECT debtorsmaster.debtorno,
 					branchcode,
 					salestype,
 					area,
@@ -25,7 +25,7 @@ if (isset($_POST['UpdateSalesAnalysis'])){
 			ON debtorsmaster.debtorno=custbranch.debtorno";
 
 	$ErrMsg = _('Could not retrieve the customer records to be updated because');
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 
 	while ($CustomerRow = DB_fetch_array($result)){
 

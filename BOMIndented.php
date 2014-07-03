@@ -13,19 +13,19 @@ if (isset($_POST['PrintPDF'])) {
 	$PageNumber = 1;
 	$line_height = 12;
 
-	$sql = "DROP TABLE IF EXISTS tempbom";
-	$result = DB_query($sql);
-	$sql = "DROP TABLE IF EXISTS passbom";
-	$result = DB_query($sql);
-	$sql = "DROP TABLE IF EXISTS passbom2";
-	$result = DB_query($sql);
-	$sql = "CREATE TEMPORARY TABLE passbom (
+	$SQL = "DROP TABLE IF EXISTS tempbom";
+	$result = DB_query($SQL);
+	$SQL = "DROP TABLE IF EXISTS passbom";
+	$result = DB_query($SQL);
+	$SQL = "DROP TABLE IF EXISTS passbom2";
+	$result = DB_query($SQL);
+	$SQL = "CREATE TEMPORARY TABLE passbom (
 				part char(20),
 				sortpart text) DEFAULT CHARSET=utf8";
 	$ErrMsg = _('The SQL to create passbom failed with the message');
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 
-	$sql = "CREATE TEMPORARY TABLE tempbom (
+	$SQL = "CREATE TEMPORARY TABLE tempbom (
 				parent char(20),
 				component char(20),
 				sortpart text,
@@ -35,25 +35,25 @@ if (isset($_POST['PrintPDF'])) {
 				effectiveafter date,
 				effectiveto date,
 				quantity double) DEFAULT CHARSET=utf8";
-	$result = DB_query($sql, _('Create of tempbom failed because'));
+	$result = DB_query($SQL, _('Create of tempbom failed because'));
 	// First, find first level of components below requested assembly
 	// Put those first level parts in passbom, use COMPONENT in passbom
 	// to link to PARENT in bom to find next lower level and accumulate
 	// those parts into tempbom
 
 	// This finds the top level
-	$sql = "INSERT INTO passbom (part, sortpart)
+	$SQL = "INSERT INTO passbom (part, sortpart)
 				SELECT bom.component AS part,
 					CONCAT(bom.parent,bom.component) AS sortpart
 				FROM bom
 				WHERE bom.parent ='" . $_POST['Part'] . "'
 					AND bom.effectiveto >= CURRENT_DATE
 					AND bom.effectiveafter <= CURRENT_DATE";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	$LevelCounter = 2;
 	// $LevelCounter is the level counter
-	$sql = "INSERT INTO tempbom (
+	$SQL = "INSERT INTO tempbom (
 				parent,
 				component,
 				sortpart,
@@ -76,8 +76,8 @@ if (isset($_POST['PrintPDF'])) {
 				WHERE bom.parent ='" . $_POST['Part'] . "'
 					AND bom.effectiveto >= CURRENT_DATE
 					AND bom.effectiveafter <= CURRENT_DATE";
-	$result = DB_query($sql);
-	//echo "<br />sql is $sql<br />";
+	$result = DB_query($SQL);
+	//echo "<br />sql is $SQL<br />";
 	// This while routine finds the other levels as long as $ComponentCounter - the
 	// component counter - finds there are more components that are used as
 	// assemblies at lower levels
@@ -86,7 +86,7 @@ if (isset($_POST['PrintPDF'])) {
 	if ($_POST['Levels'] == 'All') {
 		while ($ComponentCounter > 0) {
 			$LevelCounter++;
-			$sql = "INSERT INTO tempbom (
+			$SQL = "INSERT INTO tempbom (
 					parent,
 					component,
 					sortpart,
@@ -109,35 +109,35 @@ if (isset($_POST['PrintPDF'])) {
 				WHERE bom.parent = passbom.part
 					AND bom.effectiveto >= CURRENT_DATE
 					AND bom.effectiveafter <= CURRENT_DATE";
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 
-			$sql = "DROP TABLE IF EXISTS passbom2";
-			$result = DB_query($sql);
+			$SQL = "DROP TABLE IF EXISTS passbom2";
+			$result = DB_query($SQL);
 
-			$sql = "ALTER TABLE passbom RENAME AS passbom2";
-			$result = DB_query($sql);
+			$SQL = "ALTER TABLE passbom RENAME AS passbom2";
+			$result = DB_query($SQL);
 
-			$sql = "DROP TABLE IF EXISTS passbom";
-			$result = DB_query($sql);
+			$SQL = "DROP TABLE IF EXISTS passbom";
+			$result = DB_query($SQL);
 
-			$sql = "CREATE TEMPORARY TABLE passbom (
+			$SQL = "CREATE TEMPORARY TABLE passbom (
 								part char(20),
 								sortpart text) DEFAULT CHARSET=utf8";
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 
 
-			$sql = "INSERT INTO passbom (part, sortpart)
+			$SQL = "INSERT INTO passbom (part, sortpart)
 						SELECT bom.component AS part,
 							CONCAT(passbom2.sortpart,bom.component) AS sortpart
 						FROM bom,passbom2
 						WHERE bom.parent = passbom2.part
 							AND bom.effectiveto >= CURRENT_DATE
 							AND bom.effectiveafter <= CURRENT_DATE";
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 
 
-			$sql = "SELECT COUNT(*) FROM bom,passbom WHERE bom.parent = passbom.part";
-			$result = DB_query($sql);
+			$SQL = "SELECT COUNT(*) FROM bom,passbom WHERE bom.parent = passbom.part";
+			$result = DB_query($SQL);
 
 			$MyRow = DB_fetch_row($result);
 			$ComponentCounter = $MyRow[0];
@@ -151,18 +151,18 @@ if (isset($_POST['PrintPDF'])) {
 		prnMsg(_('The Indented BOM Listing could not be retrieved by the SQL because') . ' ' . DB_error_msg(), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($debug == 1) {
-			echo '<br />' . $sql;
+			echo '<br />' . $SQL;
 		}
 		include('includes/footer.inc');
 		exit;
 	}
 
 
-	$sql = "SELECT stockmaster.stockid,
+	$SQL = "SELECT stockmaster.stockid,
 					stockmaster.description
 				FROM stockmaster
 				WHERE stockid = " . "'" . $_POST['Part'] . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 	$assembly = $_POST['Part'];
 	$assemblydesc = $MyRow['description'];
@@ -170,13 +170,13 @@ if (isset($_POST['PrintPDF'])) {
 	PrintHeader($pdf, $YPos, $PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin, $assemblydesc);
 
 	$Tot_Val = 0;
-	$sql = "SELECT tempbom.*,
+	$SQL = "SELECT tempbom.*,
 				stockmaster.description,
 				stockmaster.mbflag
 			FROM tempbom,stockmaster
 			WHERE tempbom.component = stockmaster.stockid
 			ORDER BY sortpart";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	// $fill is used to alternate between lines with transparent and painted background
 	$fill = false;

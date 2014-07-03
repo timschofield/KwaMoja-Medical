@@ -40,36 +40,36 @@ if (isset($_POST['Update']) and $_POST['RowCounter'] > 1) {
 	for ($Counter = 1; $Counter <= $_POST['RowCounter']; $Counter++) {
 		if (isset($_POST['Clear_' . $Counter]) and $_POST['Clear_' . $Counter] == True) {
 			/*Get amount to be cleared */
-			$sql = "SELECT amount,
+			$SQL = "SELECT amount,
 							exrate
 						FROM banktrans
 						WHERE banktransid='" . $_POST['BankTrans_' . $Counter] . "'";
 			$ErrMsg = _('Could not retrieve transaction information');
-			$result = DB_query($sql, $ErrMsg);
+			$result = DB_query($SQL, $ErrMsg);
 			$MyRow = DB_fetch_array($result);
 			$AmountCleared = round($MyRow[0] / $MyRow[1], 2);
 			/*Update the banktrans recoord to match it off */
-			$sql = "UPDATE banktrans SET amountcleared= " . $AmountCleared . "
+			$SQL = "UPDATE banktrans SET amountcleared= " . $AmountCleared . "
 									WHERE banktransid='" . $_POST['BankTrans_' . $Counter] . "'";
 			$ErrMsg = _('Could not match off this payment because');
-			$result = DB_query($sql, $ErrMsg);
+			$result = DB_query($SQL, $ErrMsg);
 
 		} elseif ((isset($_POST['AmtClear_' . $Counter]) and filter_number_format($_POST['AmtClear_' . $Counter]) < 0 and $Type == 'Payments') or ($Type == 'Receipts' and isset($_POST['AmtClear_' . $Counter]) and filter_number_format($_POST['AmtClear_' . $Counter]) > 0)) {
 
 			/*if the amount entered was numeric and negative for a payment or positive for a receipt */
 
-			$sql = "UPDATE banktrans SET amountcleared=" . filter_number_format($_POST['AmtClear_' . $Counter]) . "
+			$SQL = "UPDATE banktrans SET amountcleared=" . filter_number_format($_POST['AmtClear_' . $Counter]) . "
 					 WHERE banktransid='" . $_POST['BankTrans_' . $Counter] . "'";
 
 			$ErrMsg = _('Could not update the amount matched off this bank transaction because');
-			$result = DB_query($sql, $ErrMsg);
+			$result = DB_query($SQL, $ErrMsg);
 
 		} elseif (isset($_POST['Unclear_' . $Counter]) and $_POST['Unclear_' . $Counter] == True) {
 
-			$sql = "UPDATE banktrans SET amountcleared = 0
+			$SQL = "UPDATE banktrans SET amountcleared = 0
 					 WHERE banktransid='" . $_POST['BankTrans_' . $Counter] . "'";
 			$ErrMsg = _('Could not unclear this bank transaction because');
-			$result = DB_query($sql, $ErrMsg);
+			$result = DB_query($SQL, $ErrMsg);
 		}
 	}
 	/*Show the updated position with the same criteria as previously entered*/
@@ -88,14 +88,14 @@ echo '<table class="selection" summary="' . _('Selection Criteria for inquiry') 
 			<td>' . _('Bank Account') . ':</td>
 			<td colspan="3"><select autofocus="autofocus" minlength="1" tabindex="1" name="BankAccount">';
 
-$sql = "SELECT bankaccounts.accountcode,
+$SQL = "SELECT bankaccounts.accountcode,
 				bankaccounts.bankaccountname
 			FROM bankaccounts
 			INNER JOIN bankaccountusers
 				ON bankaccounts.accountcode=bankaccountusers.accountcode
 			WHERE bankaccountusers.userid = '" . $_SESSION['UserID'] . "'
 			ORDER BY bankaccounts.bankaccountname";
-$resultBankActs = DB_query($sql);
+$resultBankActs = DB_query($SQL);
 while ($MyRow = DB_fetch_array($resultBankActs)) {
 	if (isset($_POST['BankAccount']) and $MyRow['accountcode'] == $_POST['BankAccount']) {
 
@@ -189,7 +189,7 @@ if ($InputError != 1 and isset($_POST['BankAccount']) and $_POST['BankAccount'] 
 
 	if ($_POST['Ostg_or_All'] == 'All') {
 		if ($Type == 'Payments') {
-			$sql = "SELECT banktransid,
+			$SQL = "SELECT banktransid,
 							ref,
 							amountcleared,
 							transdate,
@@ -204,7 +204,7 @@ if ($InputError != 1 and isset($_POST['BankAccount']) and $_POST['BankAccount'] 
 
 		} else {
 			/* Type must == Receipts */
-			$sql = "SELECT banktransid,
+			$SQL = "SELECT banktransid,
 							ref,
 							amountcleared,
 							transdate,
@@ -220,7 +220,7 @@ if ($InputError != 1 and isset($_POST['BankAccount']) and $_POST['BankAccount'] 
 	} else {
 		/*it must be only the outstanding bank trans required */
 		if ($Type == 'Payments') {
-			$sql = "SELECT banktransid,
+			$SQL = "SELECT banktransid,
 							ref,
 							amountcleared,
 							transdate,
@@ -235,7 +235,7 @@ if ($InputError != 1 and isset($_POST['BankAccount']) and $_POST['BankAccount'] 
 						ORDER BY transdate";
 		} else {
 			/* Type must == Receipts */
-			$sql = "SELECT banktransid,
+			$SQL = "SELECT banktransid,
 							ref,
 							amountcleared,
 							transdate,
@@ -251,11 +251,11 @@ if ($InputError != 1 and isset($_POST['BankAccount']) and $_POST['BankAccount'] 
 		}
 	}
 	if ($_POST['First20_or_All'] != 'All') {
-		$sql = $sql . " LIMIT 20";
+		$SQL = $SQL . " LIMIT 20";
 	}
 
 	$ErrMsg = _('The payments with the selected criteria could not be retrieved because');
-	$PaymentsResult = DB_query($sql, $ErrMsg);
+	$PaymentsResult = DB_query($SQL, $ErrMsg);
 
 	echo '<table cellpadding="2" class="selection" summary="' . _('Payments to be matched') . '">
 			<tr>

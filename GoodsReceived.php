@@ -728,11 +728,11 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 
 	if ($_SESSION['PO' . $identifier]->AllLinesReceived() == 1 or $OrderCompleted) { //all lines on the purchase order are now completed
 		$StatusComment = date($_SESSION['DefaultDateFormat']) . ' - ' . _('Order Completed on entry of GRN') . '<br />' . $_SESSION['PO' . $identifier]->StatusComments;
-		$sql = "UPDATE purchorders
+		$SQL = "UPDATE purchorders
 				SET status='Completed',
 				stat_comment='" . $StatusComment . "'
 				WHERE orderno='" . $_SESSION['PO' . $identifier]->OrderNo . "'";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 	}
 
 	if ($_SESSION['PO' . $identifier]->GLLink == 1) {

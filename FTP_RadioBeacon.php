@@ -114,7 +114,7 @@ if (isset($_GET['OrderNo'])) {
 
 	/*Now get the order header info */
 
-	$sql = "SELECT salesorders.debtorno,
+	$SQL = "SELECT salesorders.debtorno,
 					customerref,
 					comments,
 					orddate,
@@ -145,7 +145,7 @@ if (isset($_GET['OrderNo'])) {
 
 
 	$ErrMsg = _('There was a problem retrieving the order header details for Order Number') . ' ' . $_GET['OrderNo'] . ' ' . _('from the database');
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 
 	if (DB_num_rows($result) == 1) {
 		/*There is ony one order header returned */
@@ -160,7 +160,7 @@ if (isset($_GET['OrderNo'])) {
 		}
 
 		/*Now get the line items */
-		$sql = "SELECT stkcode,
+		$SQL = "SELECT stkcode,
 						description,
 						quantity,
 						units,
@@ -172,7 +172,7 @@ if (isset($_GET['OrderNo'])) {
 					AND salesorderdetails.orderno=" . $_GET['OrderNo'];
 
 		$ErrMsg = _('There was a problem retrieving the line details for order number') . ' ' . $_GET['OrderNo'] . ' ' . _('from the database because');
-		$result = DB_query($sql, $ErrMsg);
+		$result = DB_query($SQL, $ErrMsg);
 
 		if (DB_num_rows($result) > 0) {
 			/*Yes there are line items to start the ball rolling creating the Header record - the PHRecord*/
@@ -252,8 +252,8 @@ if (isset($_GET['OrderNo'])) {
 			ftp_quit($conn_id);
 
 			/* Update the order printed flag to prevent double sendings */
-			$sql = "UPDATE salesorders SET printedpackingslip=1, datepackingslipprinted=CURRENT_DATE WHERE salesorders.orderno=" . $_GET['OrderNo'];
-			$result = DB_query($sql);
+			$SQL = "UPDATE salesorders SET printedpackingslip=1, datepackingslipprinted=CURRENT_DATE WHERE salesorders.orderno=" . $_GET['OrderNo'];
+			$result = DB_query($SQL);
 
 			echo '<p>' . _('Order Number') . ' ' . $_GET['OrderNo'] . ' ' . _('has been sent via FTP to Radio Beacon a copy of the file that was sent is held on the server at') . '<br />' . $FileName;
 

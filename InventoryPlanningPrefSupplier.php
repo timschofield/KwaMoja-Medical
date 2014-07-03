@@ -472,18 +472,18 @@ if (isset($_POST['PrintPDF'])) {
 	echo '<tr><td>' . _('For Inventory in Location') . ':</td>
 			<td><select minlength="0" name="Location">';
 	if ($_SESSION['RestrictLocations'] == 0) {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations";
 	} else {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations
 					INNER JOIN www_users
 						ON locations.loccode=www_users.defaultlocation
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
-	$LocnResult = DB_query($sql);
+	$LocnResult = DB_query($SQL);
 
 	echo '<option value="All">' . _('All Locations') . '</option>';
 

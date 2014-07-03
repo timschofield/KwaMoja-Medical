@@ -30,8 +30,8 @@ if (isset($_POST['submit'])) {
 
 	//first off validate inputs sensible
 	$_POST['AreaCode'] = mb_strtoupper($_POST['AreaCode']);
-	$sql = "SELECT areacode FROM areas WHERE areacode='" . $_POST['AreaCode'] . "'";
-	$result = DB_query($sql);
+	$SQL = "SELECT areacode FROM areas WHERE areacode='" . $_POST['AreaCode'] . "'";
+	$result = DB_query($SQL);
 	// mod to handle 3 char area codes
 	if (mb_strlen(stripslashes($_POST['AreaCode'])) > 3) {
 		$InputError = 1;
@@ -64,7 +64,7 @@ if (isset($_POST['submit'])) {
 
 		/*SelectedArea could also exist if submit had not been clicked this code would not run in this case cos submit is false of course see the delete code below*/
 
-		$sql = "UPDATE areas SET areadescription='" . $_POST['AreaDescription'] . "',
+		$SQL = "UPDATE areas SET areadescription='" . $_POST['AreaDescription'] . "',
 								parentarea='" . $_POST['ParentArea'] . "'
 								WHERE areacode = '" . stripslashes($SelectedArea) . "'";
 
@@ -74,7 +74,7 @@ if (isset($_POST['submit'])) {
 
 		/*Selectedarea is null cos no item selected on first time round so must be adding a record must be submitting new entries in the new area form */
 
-		$sql = "INSERT INTO areas (areacode,
+		$SQL = "INSERT INTO areas (areacode,
 									parentarea,
 									areadescription
 								) VALUES (
@@ -93,7 +93,7 @@ if (isset($_POST['submit'])) {
 	if ($InputError != 1) {
 		$ErrMsg = _('The area could not be added or updated because');
 		$DbgMsg = _('The SQL that failed was');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 		unset($SelectedArea);
 		unset($_POST['AreaCode']);
 		unset($_POST['AreaDescription']);
@@ -107,8 +107,8 @@ if (isset($_POST['submit'])) {
 
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'DebtorsMaster'
 
-	$sql = "SELECT COUNT(branchcode) AS branches FROM custbranch WHERE custbranch.area='$SelectedArea'";
-	$result = DB_query($sql);
+	$SQL = "SELECT COUNT(branchcode) AS branches FROM custbranch WHERE custbranch.area='$SelectedArea'";
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 	if ($MyRow['branches'] > 0) {
 		$CancelDelete = 1;
@@ -116,8 +116,8 @@ if (isset($_POST['submit'])) {
 		echo '<br />' . _('There are') . ' ' . $MyRow['branches'] . ' ' . _('branches using this area code');
 
 	} else {
-		$sql = "SELECT COUNT(area) AS records FROM salesanalysis WHERE salesanalysis.area ='$SelectedArea'";
-		$result = DB_query($sql);
+		$SQL = "SELECT COUNT(area) AS records FROM salesanalysis WHERE salesanalysis.area ='$SelectedArea'";
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_array($result);
 		if ($MyRow['records'] > 0) {
 			$CancelDelete = 1;
@@ -127,8 +127,8 @@ if (isset($_POST['submit'])) {
 	}
 
 	if ($CancelDelete == 0) {
-		$sql = "DELETE FROM areas WHERE areacode='" . $SelectedArea . "'";
-		$result = DB_query($sql);
+		$SQL = "DELETE FROM areas WHERE areacode='" . $SelectedArea . "'";
+		$result = DB_query($SQL);
 		prnMsg(_('Area Code') . ' ' . stripslashes($SelectedArea) . ' ' . _('has been deleted') . ' !', 'success');
 	} //end if Delete area
 	unset($SelectedArea);
@@ -137,11 +137,11 @@ if (isset($_POST['submit'])) {
 
 if (!isset($SelectedArea)) {
 
-	$sql = "SELECT areacode,
+	$SQL = "SELECT areacode,
 					parentarea,
 					areadescription
 				FROM areas";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p><br />';
 
@@ -162,8 +162,8 @@ if (!isset($SelectedArea)) {
 			echo '<tr class="OddTableRows">';
 			$k++;
 		}
-		$sql = "SELECT areadescription FROM areas WHERE areacode='" . $MyRow['parentarea'] . "'";
-		$ParentResult = DB_query($sql);
+		$SQL = "SELECT areadescription FROM areas WHERE areacode='" . $MyRow['parentarea'] . "'";
+		$ParentResult = DB_query($SQL);
 		$ParentRow = DB_fetch_array($ParentResult);
 		echo '<td>' . $MyRow['areacode'] . '</td>
 				<td>' . $ParentRow['areadescription'] . '</td>
@@ -192,13 +192,13 @@ if (!isset($_GET['delete'])) {
 	if (isset($SelectedArea)) {
 		//editing an existing area
 
-		$sql = "SELECT areacode,
+		$SQL = "SELECT areacode,
 						parentarea,
 						areadescription
 					FROM areas
 					WHERE areacode='" . $SelectedArea . "'";
 
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_array($result);
 
 		$_POST['AreaCode'] = $MyRow['areacode'];
@@ -230,10 +230,10 @@ if (!isset($_GET['delete'])) {
 			<td>' . _('Parent Area') . ':' . '</td>
 			<td><select minlength="0" tabindex="2" name="ParentArea">';
 
-	$sql = "SELECT areacode, areadescription FROM areas ORDER BY areadescription";
+	$SQL = "SELECT areacode, areadescription FROM areas ORDER BY areadescription";
 	$ErrMsg = _('An error occurred in retrieving the areas from the database');
 	$DbgMsg = _('The SQL that was used to retrieve the area information and that failed in the process was');
-	$ParentResult = DB_query($sql, $ErrMsg, $DbgMsg);
+	$ParentResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 	echo '<option value=""></option>';
 	while ($ParentRow = DB_fetch_array($ParentResult)) {
 		if ($MyRow['parentarea'] == $ParentRow['areacode']) {

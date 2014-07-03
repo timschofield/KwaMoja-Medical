@@ -45,12 +45,12 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 	$FirstStatement = True;
 
 	// check if the user has set a default bank account for invoices, if not leave it blank
-	$sql = "SELECT bankaccounts.invoice,
+	$SQL = "SELECT bankaccounts.invoice,
 				bankaccounts.bankaccountnumber,
 				bankaccounts.bankaccountcode
 			FROM bankaccounts
 			WHERE bankaccounts.invoice = '1'";
-	$result = DB_query($sql, '', '', false, false);
+	$result = DB_query($SQL, '', '', false, false);
 	if (DB_error_no() != 1) {
 		if (DB_num_rows($result) == 1){
 			$MyRow = DB_fetch_array($result);
@@ -65,13 +65,13 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 	/* Do a quick tidy up to settle any transactions that should have been settled at the time of allocation but for whatever reason weren't */
 	$ErrMsg = _('There was a problem settling the old transactions.');
 	$DbgMsg = _('The SQL used to settle outstanding transactions was');
-	$sql = "UPDATE debtortrans SET settled=1
+	$SQL = "UPDATE debtortrans SET settled=1
 			WHERE ABS(debtortrans.ovamount+debtortrans.ovdiscount+debtortrans.ovfreight+debtortrans.ovgst-debtortrans.alloc)<0.009";
-	$SettleAsNec = DB_query($sql, $ErrMsg, $DbgMsg);
+	$SettleAsNec = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	/*Figure out who all the customers in this range are */
 	$ErrMsg = _('There was a problem retrieving the customer information for the statements from the database');
-	$sql = "SELECT debtorsmaster.debtorno,
+	$SQL = "SELECT debtorsmaster.debtorno,
 				debtorsmaster.name,
 				debtorsmaster.address1,
 				debtorsmaster.address2,
@@ -91,7 +91,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 			WHERE debtorsmaster.debtorno >='" . stripslashes($_POST['FromCust']) . "'
 			AND debtorsmaster.debtorno <='" . stripslashes($_POST['ToCust']) . "'
 			ORDER BY debtorsmaster.debtorno";
-	$StatementResults = DB_query($sql, $ErrMsg);
+	$StatementResults = DB_query($SQL, $ErrMsg);
 
 	if (DB_Num_Rows($StatementResults) == 0) {
 		$Title = _('Print Statements') . ' - ' . _('No Customers Found');
@@ -108,7 +108,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 
 		/*now get all the outstanding transaction ie Settled=0 */
 		$ErrMsg = _('There was a problem retrieving the outstanding transactions for') . ' ' . $StmtHeader['name'] . ' ' . _('from the database') . '.';
-		$sql = "SELECT systypes.typename,
+		$SQL = "SELECT systypes.typename,
 					debtortrans.transno,
 					debtortrans.trandate,
 					debtortrans.ovamount+debtortrans.ovdiscount+debtortrans.ovfreight+debtortrans.ovgst as total,
@@ -120,19 +120,19 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 				AND debtortrans.settled=0";
 
 		if ($_SESSION['SalesmanLogin'] != '') {
-			$sql .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
+			$SQL .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
 		}
 
-		$sql .= " ORDER BY debtortrans.id";
+		$SQL .= " ORDER BY debtortrans.id";
 
-		$OstdgTrans = DB_query($sql, $ErrMsg);
+		$OstdgTrans = DB_query($SQL, $ErrMsg);
 
 		$NumberOfRecordsReturned = DB_num_rows($OstdgTrans);
 
 		/*now get all the settled transactions which were allocated this month */
 		$ErrMsg = _('There was a problem retrieving the transactions that were settled over the course of the last month for') . ' ' . $StmtHeader['name'] . ' ' . _('from the database');
 		if ($_SESSION['Show_Settled_LastMonth'] == 1) {
-			$sql = "SELECT DISTINCT debtortrans.id,
+			$SQL = "SELECT DISTINCT debtortrans.id,
 								systypes.typename,
 								debtortrans.transno,
 								debtortrans.trandate,
@@ -149,12 +149,12 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 						AND debtortrans.settled=1";
 
 			if ($_SESSION['SalesmanLogin'] != '') {
-				$sql .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
+				$SQL .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
 			}
 
-			$sql .= " ORDER BY debtortrans.id";
+			$SQL .= " ORDER BY debtortrans.id";
 
-			$SetldTrans = DB_query($sql, $ErrMsg);
+			$SetldTrans = DB_query($SQL, $ErrMsg);
 			$NumberOfRecordsReturned += DB_num_rows($SetldTrans);
 
 		}
@@ -291,7 +291,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 			}
 			/*Now figure out the aged analysis for the customer under review */
 
-			$sql = "SELECT debtorsmaster.name,
+			$SQL = "SELECT debtorsmaster.name,
 						currencies.currency,
 						paymentterms.terms,
 						debtorsmaster.creditlimit,
@@ -350,10 +350,10 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 						debtorsmaster.debtorno = '" . $StmtHeader['debtorno'] . "'";
 
 			if ($_SESSION['SalesmanLogin'] != '') {
-				$sql .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
+				$SQL .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
 			}
 
-			$sql .= " GROUP BY
+			$SQL .= " GROUP BY
  						debtorsmaster.name,
 						currencies.currency,
 						paymentterms.terms,
@@ -454,11 +454,11 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 
 		/*if FromTransNo is not set then show a form to allow input of either a single statement number or a range of statements to be printed. Also get the last statement number created to show the user where the current range is up to */
 
-		$sql = "SELECT min(debtorno) AS fromcriteria,
+		$SQL = "SELECT min(debtorno) AS fromcriteria,
 						max(debtorno) AS tocriteria
 					FROM debtorsmaster";
 
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_array($result);
 
 		echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';

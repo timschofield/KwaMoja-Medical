@@ -320,12 +320,12 @@ if (!isset($_GET['NewJournal']) or $_GET['NewJournal'] == '') {
 	echo '<td><input class="number" type="text" name="GLManualCode" minlength="0" maxlength="12" size="12" onchange="inArray(this.value, GLCode.options,' . "'" . 'The account code ' . "'" . '+ this.value+ ' . "'" . ' doesnt exist' . "'" . ')" value="' . $_POST['GLManualCode'] . '"  /></td>';
 }
 
-$sql = "SELECT accountcode,
+$SQL = "SELECT accountcode,
 			accountname
 		FROM chartmaster
 		ORDER BY accountcode";
 
-$result = DB_query($sql);
+$result = DB_query($SQL);
 echo '<td><select minlength="0" name="GLCode" onchange="return assignComboToInput(this,' . 'GLManualCode' . ')">';
 echo '<option value="">' . _('Select a general ledger account code') . '</option>';
 while ($MyRow = DB_fetch_array($result)) {
@@ -399,10 +399,10 @@ foreach ($_SESSION['JournalDetail']->GLEntries as $JournalItem) {
 		echo '<tr class="EvenTableRows">';
 		$j++;
 	}
-	$sql = "SELECT tagdescription
+	$SQL = "SELECT tagdescription
 			FROM tags
 			WHERE tagref='" . $JournalItem->tag . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_row($result);
 	if ($JournalItem->tag == 0) {
 		$TagDescription = _('None');

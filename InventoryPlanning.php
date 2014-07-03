@@ -387,8 +387,8 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				<td>' . _('From Inventory Category Code') . ':</td>
 				<td><select minlength="0" name="FromCriteria">';
 
-		$sql = "SELECT categoryid, categorydescription FROM stockcategory ORDER BY categorydescription";
-		$CatResult = DB_query($sql);
+		$SQL = "SELECT categoryid, categorydescription FROM stockcategory ORDER BY categorydescription";
+		$CatResult = DB_query($SQL);
 		while ($MyRow = DB_fetch_array($CatResult)) {
 			echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . ' - ' . $MyRow['categoryid'] . '</option>';
 		}
@@ -412,18 +412,18 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				<td><select minlength="0" name="Location">';
 
 		if ($_SESSION['RestrictLocations'] == 0) {
-			$sql = "SELECT locationname,
+			$SQL = "SELECT locationname,
 							loccode
 						FROM locations";
 		} else {
-			$sql = "SELECT locationname,
+			$SQL = "SELECT locationname,
 							loccode
 						FROM locations
 						INNER JOIN www_users
 							ON locations.loccode=www_users.defaultlocation
 						WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 		}
-		$LocnResult = DB_query($sql);
+		$LocnResult = DB_query($SQL);
 
 		echo '<option value="All">' . _('All Locations') . '</option>';
 

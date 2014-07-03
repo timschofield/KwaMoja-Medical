@@ -28,14 +28,14 @@ if (isset($_POST['Submit'])) {
 	if ($_POST['AuthLevel'] == '') {
 		$_POST['AuthLevel'] = 0;
 	}
-	$sql = "SELECT COUNT(*)
+	$SQL = "SELECT COUNT(*)
 		FROM purchorderauth
 		WHERE userid='" . $_POST['UserID'] . "'
 		AND currabrev='" . $_POST['CurrCode'] . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 	if ($MyRow[0] == 0) {
-		$sql = "INSERT INTO purchorderauth ( userid,
+		$SQL = "INSERT INTO purchorderauth ( userid,
 						currabrev,
 						cancreate,
 						offhold,
@@ -46,7 +46,7 @@ if (isset($_POST['Submit'])) {
 						'" . $OffHold . "',
 						'" . filter_number_format($_POST['AuthLevel']) . "')";
 		$ErrMsg = _('The authentication details cannot be inserted because');
-		$Result = DB_query($sql, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 	} else {
 		prnMsg(_('There already exists an entry for this user/currency combination'), 'error');
 		echo '<br />';
@@ -64,7 +64,7 @@ if (isset($_POST['Update'])) {
 	} else {
 		$OffHold = 1;
 	}
-	$sql = "UPDATE purchorderauth SET
+	$SQL = "UPDATE purchorderauth SET
 			cancreate='" . $CanCreate . "',
 			offhold='" . $OffHold . "',
 			authlevel='" . filter_number_format($_POST['AuthLevel']) . "'
@@ -72,27 +72,27 @@ if (isset($_POST['Update'])) {
 			AND currabrev='" . $_POST['CurrCode'] . "'";
 
 	$ErrMsg = _('The authentication details cannot be updated because');
-	$Result = DB_query($sql, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 }
 
 if (isset($_GET['Delete'])) {
-	$sql = "DELETE FROM purchorderauth
+	$SQL = "DELETE FROM purchorderauth
 		WHERE userid='" . $_GET['UserID'] . "'
 		AND currabrev='" . $_GET['Currency'] . "'";
 
 	$ErrMsg = _('The authentication details cannot be deleted because');
-	$Result = DB_query($sql, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 }
 
 if (isset($_GET['Edit'])) {
-	$sql = "SELECT cancreate,
+	$SQL = "SELECT cancreate,
 				offhold,
 				authlevel
 			FROM purchorderauth
 			WHERE userid='" . $_GET['UserID'] . "'
 			AND currabrev='" . $_GET['Currency'] . "'";
 	$ErrMsg = _('The authentication details cannot be retrieved because');
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 	$MyRow = DB_fetch_array($result);
 	$UserID = $_GET['UserID'];
 	$Currency = $_GET['Currency'];
@@ -101,7 +101,7 @@ if (isset($_GET['Edit'])) {
 	$AuthLevel = $MyRow['authlevel'];
 }
 
-$sql = "SELECT purchorderauth.userid,
+$SQL = "SELECT purchorderauth.userid,
 			www_users.realname,
 			currencies.currabrev,
 			currencies.currency,
@@ -115,7 +115,7 @@ $sql = "SELECT purchorderauth.userid,
 		ON purchorderauth.currabrev=currencies.currabrev";
 
 $ErrMsg = _('The authentication details cannot be retrieved because');
-$Result = DB_query($sql, $ErrMsg);
+$Result = DB_query($SQL, $ErrMsg);
 
 echo '<table class="selection">
 	 <tr>
@@ -184,7 +184,7 @@ if (isset($_GET['Edit'])) {
 }
 
 if (isset($_GET['Edit'])) {
-	$sql = "SELECT cancreate,
+	$SQL = "SELECT cancreate,
 				offhold,
 				authlevel,
 				currency,
@@ -194,7 +194,7 @@ if (isset($_GET['Edit'])) {
 			WHERE userid='" . $_GET['UserID'] . "'
 			AND purchorderauth.currabrev='" . $_GET['Currency'] . "'";
 	$ErrMsg = _('The authentication details cannot be retrieved because');
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 	$MyRow = DB_fetch_array($result);
 	$UserID = $_GET['UserID'];
 	$Currency = $_GET['Currency'];

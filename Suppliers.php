@@ -321,8 +321,8 @@ if (isset($_POST['submit'])) {
 	ie the page has called itself with some user input */
 
 	//first off validate inputs sensible
-	$sql = "SELECT COUNT(supplierid) FROM suppliers WHERE supplierid='" . DB_escape_string($SupplierID) . "'";
-	$result = DB_query($sql);
+	$SQL = "SELECT COUNT(supplierid) FROM suppliers WHERE supplierid='" . DB_escape_string($SupplierID) . "'";
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_row($result);
 	if ($MyRow[0] > 0 and isset($_POST['New'])) {
 		$InputError = 1;
@@ -407,9 +407,9 @@ if (isset($_POST['submit'])) {
 		$longitude = 0;
 		if ($_SESSION['geocode_integration'] == 1) {
 			// Get the lat/long from our geocoding host
-			$sql = "SELECT * FROM geocode_param WHERE 1";
+			$SQL = "SELECT * FROM geocode_param WHERE 1";
 			$ErrMsg = _('An error occurred in retrieving the information');
-			$resultgeo = DB_query($sql, $ErrMsg);
+			$resultgeo = DB_query($SQL, $ErrMsg);
 			$row = DB_fetch_array($resultgeo);
 			$api_key = $row['geocode_key'];
 			$map_host = $row['map_host'];
@@ -465,7 +465,7 @@ if (isset($_POST['submit'])) {
 			$suppcurr = DB_fetch_row($currresult);
 
 			if ($supptrans == 0) {
-				$sql = "UPDATE suppliers SET suppname='" . $_POST['SuppName'] . "',
+				$SQL = "UPDATE suppliers SET suppname='" . $_POST['SuppName'] . "',
 							address1='" . $_POST['Address1'] . "',
 							address2='" . $_POST['Address2'] . "',
 							address3='" . $_POST['Address3'] . "',
@@ -494,7 +494,7 @@ if (isset($_POST['submit'])) {
 				if ($suppcurr[0] != $_POST['CurrCode']) {
 					prnMsg(_('Cannot change currency code as transactions already exist'), 'info');
 				}
-				$sql = "UPDATE suppliers SET suppname='" . $_POST['SuppName'] . "',
+				$SQL = "UPDATE suppliers SET suppname='" . $_POST['SuppName'] . "',
 							address1='" . $_POST['Address1'] . "',
 							address2='" . $_POST['Address2'] . "',
 							address3='" . $_POST['Address3'] . "',
@@ -522,7 +522,7 @@ if (isset($_POST['submit'])) {
 
 			$ErrMsg = _('The supplier could not be updated because');
 			$DbgMsg = _('The SQL that was used to update the supplier but failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 			prnMsg(_('The supplier master record for') . ' ' . $SupplierID . ' ' . _('has been updated'), 'success');
 
@@ -533,7 +533,7 @@ if (isset($_POST['submit'])) {
 				$SupplierID = GetNextTransNo(600);
 			}
 
-			$sql = "INSERT INTO suppliers (supplierid,
+			$SQL = "INSERT INTO suppliers (supplierid,
 										suppname,
 										address1,
 										address2,
@@ -587,7 +587,7 @@ if (isset($_POST['submit'])) {
 			$ErrMsg = _('The supplier') . ' ' . $_POST['SuppName'] . ' ' . _('could not be added because');
 			$DbgMsg = _('The SQL that was used to insert the supplier but failed was');
 
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 			prnMsg(_('A new supplier for') . ' ' . $_POST['SuppName'] . ' ' . _('has been added to the database'), 'success');
 
@@ -635,8 +635,8 @@ if (isset($_POST['submit'])) {
 
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'SuppTrans' , PurchOrders, SupplierContacts
 
-	$sql = "SELECT COUNT(*) FROM supptrans WHERE supplierno='" . $SupplierID . "'";
-	$result = DB_query($sql);
+	$SQL = "SELECT COUNT(*) FROM supptrans WHERE supplierno='" . $SupplierID . "'";
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_row($result);
 	if ($MyRow[0] > 0) {
 		$CancelDelete = 1;
@@ -644,16 +644,16 @@ if (isset($_POST['submit'])) {
 		echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('transactions against this supplier');
 
 	} else {
-		$sql = "SELECT COUNT(*) FROM purchorders WHERE supplierno='" . $SupplierID . "'";
-		$result = DB_query($sql);
+		$SQL = "SELECT COUNT(*) FROM purchorders WHERE supplierno='" . $SupplierID . "'";
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_row($result);
 		if ($MyRow[0] > 0) {
 			$CancelDelete = 1;
 			prnMsg(_('Cannot delete the supplier record because purchase orders have been created against this supplier'), 'warn');
 			echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('orders against this supplier');
 		} else {
-			$sql = "SELECT COUNT(*) FROM suppliercontacts WHERE supplierid='" . $SupplierID . "'";
-			$result = DB_query($sql);
+			$SQL = "SELECT COUNT(*) FROM suppliercontacts WHERE supplierid='" . $SupplierID . "'";
+			$result = DB_query($SQL);
 			$MyRow = DB_fetch_row($result);
 			if ($MyRow[0] > 0) {
 				$CancelDelete = 1;
@@ -665,8 +665,8 @@ if (isset($_POST['submit'])) {
 
 	}
 	if ($CancelDelete == 0) {
-		$sql = "DELETE FROM suppliers WHERE supplierid='" . $SupplierID . "'";
-		$result = DB_query($sql);
+		$SQL = "DELETE FROM suppliers WHERE supplierid='" . $SupplierID . "'";
+		$result = DB_query($SQL);
 		prnMsg(_('Supplier record for') . ' ' . $SupplierID . ' ' . _('has been deleted'), 'success');
 		unset($SupplierID);
 		unset($_SESSION['SupplierID']);
@@ -836,8 +836,8 @@ if (!isset($SupplierID)) {
 			<td><select required="required" minlength="1" name="TaxGroup">';
 
 
-	$sql = "SELECT taxgroupid, taxgroupdescription FROM taxgroups";
-	$result = DB_query($sql);
+	$SQL = "SELECT taxgroupid, taxgroupdescription FROM taxgroups";
+	$result = DB_query($SQL);
 
 	while ($MyRow = DB_fetch_array($result)) {
 		if (isset($_POST['TaxGroup']) and $_POST['TaxGroup'] == $MyRow['taxgroupid']) {
@@ -861,7 +861,7 @@ if (!isset($SupplierID)) {
 	echo '<table class="selection">';
 
 	if (!isset($_POST['New'])) {
-		$sql = "SELECT supplierid,
+		$SQL = "SELECT supplierid,
 						suppname,
 						address1,
 						address2,
@@ -887,7 +887,7 @@ if (!isset($SupplierID)) {
 					FROM suppliers
 					WHERE supplierid = '" . DB_escape_string($SupplierID) . "'";
 
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_array($result);
 
 		$_POST['SuppName'] = stripcslashes($MyRow['suppname']);
@@ -1080,8 +1080,8 @@ if (!isset($SupplierID)) {
 			<td>' . _('Tax Group') . ':</td>
 			<td><select minlength="0" name="TaxGroup">';
 
-	$sql = "SELECT taxgroupid, taxgroupdescription FROM taxgroups";
-	$result = DB_query($sql);
+	$SQL = "SELECT taxgroupid, taxgroupdescription FROM taxgroups";
+	$result = DB_query($SQL);
 
 	while ($MyRow = DB_fetch_array($result)) {
 		if ($MyRow['taxgroupid'] == $_POST['TaxGroup']) {

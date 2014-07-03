@@ -43,8 +43,8 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate'])) {
 			<td>' . _('Inventory Category') . '</td>
 			<td>';
 
-	$sql = "SELECT categorydescription, categoryid FROM stockcategory WHERE stocktype<>'D' AND stocktype<>'L'";
-	$result = DB_query($sql);
+	$SQL = "SELECT categorydescription, categoryid FROM stockcategory WHERE stocktype<>'D' AND stocktype<>'L'";
+	$result = DB_query($SQL);
 
 
 	echo '<select required="required" minlength="1" name="CategoryID">';
@@ -58,12 +58,12 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate'])) {
 	echo '<tr>
 			<td>' . _('Inventory Location') . ':</td><td><select required="required" minlength="1" name="Location">';
 	if ($_SESSION['RestrictLocations'] == 0) {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations";
 		echo '<option selected="selected" value="All">' . _('All Locations') . '</option>';
 	} else {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations
 					INNER JOIN www_users
@@ -71,7 +71,7 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate'])) {
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	while ($MyRow = DB_fetch_array($result)) {
 		echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 	}
@@ -107,7 +107,7 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate'])) {
 
 
 if ($_POST['CategoryID'] == 'All' and $_POST['Location'] == 'All') {
-	$sql = "SELECT salesorders.orderno,
+	$SQL = "SELECT salesorders.orderno,
 				  salesorders.debtorno,
 				  salesorders.branchcode,
 				  salesorders.customerref,
@@ -142,7 +142,7 @@ if ($_POST['CategoryID'] == 'All' and $_POST['Location'] == 'All') {
 			 AND salesorders.quotation=0";
 
 } elseif ($_POST['CategoryID'] != 'All' and $_POST['Location'] == 'All') {
-	$sql = "SELECT salesorders.orderno,
+	$SQL = "SELECT salesorders.orderno,
 				  salesorders.debtorno,
 				  salesorders.branchcode,
 				  salesorders.customerref,
@@ -179,7 +179,7 @@ if ($_POST['CategoryID'] == 'All' and $_POST['Location'] == 'All') {
 
 
 } elseif ($_POST['CategoryID'] == 'All' and $_POST['Location'] != 'All') {
-	$sql = "SELECT salesorders.orderno,
+	$SQL = "SELECT salesorders.orderno,
 				  salesorders.debtorno,
 				  salesorders.branchcode,
 				  salesorders.customerref,
@@ -217,7 +217,7 @@ if ($_POST['CategoryID'] == 'All' and $_POST['Location'] == 'All') {
 
 } elseif ($_POST['CategoryID'] != 'All' and $_POST['location'] != 'All') {
 
-	$sql = "SELECT salesorders.orderno,
+	$SQL = "SELECT salesorders.orderno,
 				  salesorders.debtorno,
 				  salesorders.branchcode,
 				  salesorders.customerref,
@@ -255,23 +255,23 @@ if ($_POST['CategoryID'] == 'All' and $_POST['Location'] == 'All') {
 }
 
 if ($_POST['BackOrders'] == 'Yes') {
-	$sql .= " AND salesorderdetails.quantity-salesorderdetails.qtyinvoiced >0";
+	$SQL .= " AND salesorderdetails.quantity-salesorderdetails.qtyinvoiced >0";
 }
 
 //Add salesman role control
 if ($_SESSION['SalesmanLogin'] != '') {
-	$sql .= " AND salesorders.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
+	$SQL .= " AND salesorders.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
 }
 
-$sql .= " ORDER BY salesorders.orderno";
+$SQL .= " ORDER BY salesorders.orderno";
 
-$Result = DB_query($sql, '', '', false, false); //dont trap errors here
+$Result = DB_query($SQL, '', '', false, false); //dont trap errors here
 
 if (DB_error_no() != 0) {
 	include('includes/header.inc');
 	echo '<br />' . _('An error occurred getting the orders details');
 	if ($debug == 1) {
-		echo '<br />' . _('The SQL used to get the orders that failed was') . '<br />' . $sql;
+		echo '<br />' . _('The SQL used to get the orders that failed was') . '<br />' . $SQL;
 	}
 	include('includes/footer.inc');
 	exit;

@@ -47,11 +47,11 @@ if (isset($_GET['NewOrder']) and isset($_SESSION['PO' . $identifier])) {
 } //isset($_GET['NewOrder']) and isset($_SESSION['PO' . $identifier])
 
 if (isset($_POST['Select']) and empty($_POST['SupplierContact'])) {
-	$sql = "SELECT contact
+	$SQL = "SELECT contact
 				FROM suppliercontacts
 				WHERE supplierid='" . $_POST['Select'] . "'";
 
-	$SuppCoResult = DB_query($sql);
+	$SuppCoResult = DB_query($SQL);
 	if (DB_num_rows($SuppCoResult) > 0) {
 		$MyRow = DB_fetch_row($SuppCoResult);
 		$_POST['SupplierContact'] = $MyRow[0];
@@ -228,12 +228,12 @@ if (isset($_POST['EnterLines']) or isset($_POST['AllowRePrint'])) {
 	if (isset($_POST['RePrint']) and $_POST['RePrint'] == 1) {
 		$_SESSION['PO' . $identifier]->AllowPrintPO = 1;
 
-		$sql = "UPDATE purchorders
+		$SQL = "UPDATE purchorders
 				SET purchorders.allowprint='1'
 				WHERE purchorders.orderno='" . $_SESSION['PO' . $identifier]->OrderNo . "'";
 
 		$ErrMsg = _('An error occurred updating the purchase order to allow reprints') . '. ' . _('The error says');
-		$UpdateResult = DB_query($sql, $ErrMsg);
+		$UpdateResult = DB_query($SQL, $ErrMsg);
 	} //end if change to allow reprint
 	else {
 		$_POST['RePrint'] = 0;
@@ -397,7 +397,7 @@ if (isset($_POST['Select'])) {
 	 * or set because only one supplier record returned from a search
 	 */
 
-	$sql = "SELECT suppliers.suppname,
+	$SQL = "SELECT suppliers.suppname,
 					suppliers.currcode,
 					currencies.rate,
 					currencies.decimalplaces,
@@ -416,7 +416,7 @@ if (isset($_POST['Select'])) {
 
 	$ErrMsg = _('The supplier record of the supplier selected') . ': ' . $_POST['Select'] . ' ' . _('cannot be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve the supplier details and failed was');
-	$result = DB_query($sql, $ErrMsg, $DbgMsg);
+	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 	$MyRow = DB_fetch_array($result);
 	// added for suppliers lookup fields
 
@@ -474,7 +474,7 @@ if (isset($_POST['Select'])) {
  */
 else {
 	$_POST['Select'] = DB_escape_string($_SESSION['PO' . $identifier]->SupplierID);
-	$sql = "SELECT suppliers.suppname,
+	$SQL = "SELECT suppliers.suppname,
 					suppliers.currcode,
 					currencies.decimalplaces,
 					suppliers.paymentterms,
@@ -492,7 +492,7 @@ else {
 
 	$ErrMsg = _('The supplier record of the supplier selected') . ': ' . $_POST['Select'] . ' ' . _('cannot be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve the supplier details and failed was');
-	$result = DB_query($sql, $ErrMsg, $DbgMsg);
+	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	$MyRow = DB_fetch_array($result);
 
@@ -643,7 +643,7 @@ else {
 			$Qty = 1;
 		}
 
-		$sql = "SELECT stockmaster.controlled,
+		$SQL = "SELECT stockmaster.controlled,
 						stockmaster.serialised,
 						stockmaster.description,
 						stockmaster.units ,
@@ -660,7 +660,7 @@ else {
 					ON stockmaster.stockid = purchdata.stockid
 				WHERE stockmaster.stockid='" . $Purch_Item . "'
 				AND purchdata.supplierno ='" . $_GET['SelectedSupplier'] . "'";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$PurchItemRow = DB_fetch_array($result);
 
 		if (!isset($PurchItemRow['conversionfactor'])) {
@@ -699,8 +699,8 @@ else {
 		$_POST['Comments'] = $_SESSION['PO' . $identifier]->Comments;
 		$_POST['DeliveryBy'] = $_SESSION['PO' . $identifier]->DeliveryBy;
 		$_POST['PaymentTerms'] = $_SESSION['PO' . $identifier]->PaymentTerms;
-		$sql = "SELECT realname FROM www_users WHERE userid='" . $_POST['Initiator'] . "'";
-		$result = DB_query($sql);
+		$SQL = "SELECT realname FROM www_users WHERE userid='" . $_POST['Initiator'] . "'";
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_array($result);
 		$_POST['InitiatorName'] = $MyRow['realname'];
 	} //!isset($_POST['LookupDeliveryAddress']) and (!isset($_POST['StkLocation']) or $_POST['StkLocation']) and (isset($_SESSION['PO' . $identifier]->Location) and $_SESSION['PO' . $identifier]->Location != '')
@@ -782,8 +782,8 @@ else {
 	}
 
 	if (isset($_POST['AllowRePrint'])) {
-		$sql = "UPDATE purchorders SET allowprint=1 WHERE orderno='" . $_SESSION['PO' . $identifier]->OrderNo . "'";
-		$result = DB_query($sql);
+		$SQL = "UPDATE purchorders SET allowprint=1 WHERE orderno='" . $_SESSION['PO' . $identifier]->OrderNo . "'";
+		$result = DB_query($SQL);
 	} //isset($_POST['AllowRePrint'])
 
 	if ($_SESSION['PO' . $identifier]->AllowPrintPO == 0 and empty($_POST['RePrint'])) {
@@ -884,18 +884,18 @@ else {
 				<td><select required="required" minlength="1" name="StkLocation" onchange="ReloadForm(form1.LookupDeliveryAddress)">';
 
 	if ($_SESSION['RestrictLocations'] == 0) {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations";
 	} else {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations
 					INNER JOIN www_users
 						ON locations.loccode=www_users.defaultlocation
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
-	$LocnResult = DB_query($sql);
+	$LocnResult = DB_query($SQL);
 
 	while ($LocnRow = DB_fetch_array($LocnResult)) {
 		if (isset($_POST['StkLocation']) and ($_POST['StkLocation'] == $LocnRow['loccode']) or (empty($_POST['StkLocation']) and $LocnRow['loccode'] == $_SESSION['UserStockLocation'])) {
@@ -916,7 +916,7 @@ else {
 	if (!isset($_POST['StkLocation']) or $_POST['StkLocation'] == '') {
 		$_POST['StkLocation'] = $_SESSION['UserStockLocation'];
 
-		$sql = "SELECT deladd1,
+		$SQL = "SELECT deladd1,
 			 			deladd2,
 						deladd3,
 						deladd4,
@@ -927,7 +927,7 @@ else {
 					FROM locations
 					WHERE loccode='" . $_POST['StkLocation'] . "'";
 
-		$LocnAddrResult = DB_query($sql);
+		$LocnAddrResult = DB_query($SQL);
 		if (DB_num_rows($LocnAddrResult) == 1) {
 			$LocnRow = DB_fetch_array($LocnAddrResult);
 			$_POST['DelAdd1'] = $LocnRow['deladd1'];
@@ -958,7 +958,7 @@ else {
 
 	} //end StkLocation was not set
 	elseif (isset($_POST['LookupDeliveryAddress'])) {
-		$sql = "SELECT deladd1,
+		$SQL = "SELECT deladd1,
 						deladd2,
 						deladd3,
 						deladd4,
@@ -969,7 +969,7 @@ else {
 					FROM locations
 					WHERE loccode='" . $_POST['StkLocation'] . "'";
 
-		$LocnAddrResult = DB_query($sql);
+		$LocnAddrResult = DB_query($SQL);
 		if (DB_num_rows($LocnAddrResult) == 1) {
 			$LocnRow = DB_fetch_array($LocnAddrResult);
 			$_POST['DelAdd1'] = $LocnRow['deladd1'];
@@ -1071,8 +1071,8 @@ else {
 				<td>' . _('Supplier Contact') . ':</td>
 				<td><select minlength="0" name="SupplierContact">';
 
-	$sql = "SELECT contact FROM suppliercontacts WHERE supplierid='" . $_POST['Select'] . "'";
-	$SuppCoResult = DB_query($sql);
+	$SQL = "SELECT contact FROM suppliercontacts WHERE supplierid='" . $_POST['Select'] . "'";
+	$SuppCoResult = DB_query($SQL);
 
 	while ($SuppCoRow = DB_fetch_array($SuppCoResult)) {
 		if ($_POST['SupplierContact'] == $SuppCoRow['contact'] or ($_POST['SupplierContact'] == '' and $SuppCoRow['contact'] == $_SESSION['PO' . $identifier]->SupplierContact)) {

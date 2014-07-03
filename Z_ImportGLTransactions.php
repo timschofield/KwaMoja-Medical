@@ -54,8 +54,8 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 	$TransNo = GetNextTransNo($_POST['TransactionType']);
 
 	//Get the exchange rate to use between the transaction currency and the functional currency
-	$sql = "SELECT rate FROM currencies WHERE currabrev='" . $_POST['Currency'] . "'";
-	$result = DB_query($sql);
+	$SQL = "SELECT rate FROM currencies WHERE currabrev='" . $_POST['Currency'] . "'";
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 	$ExRate = $MyRow['rate'];
 
@@ -85,8 +85,8 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 		}
 
 		//first off check that the account code actually exists
-		$sql = "SELECT COUNT(accountcode) FROM chartmaster WHERE accountcode='" . $MyRow[1] . "'";
-		$result = DB_query($sql);
+		$SQL = "SELECT COUNT(accountcode) FROM chartmaster WHERE accountcode='" . $MyRow[1] . "'";
+		$result = DB_query($SQL);
 		$testrow = DB_fetch_row($result);
 		if ($testrow[0] == 0) {
 			$InputError = 1;
@@ -101,8 +101,8 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 
 		//Then check that the tag ref is either zero, or exists in the tags table
 		if ($MyRow[5] != 0) {
-			$sql = "SELECT COUNT(tagref) FROM tags WHERE tagref='" . $MyRow[5] . "'";
-			$result = DB_query($sql);
+			$SQL = "SELECT COUNT(tagref) FROM tags WHERE tagref='" . $MyRow[5] . "'";
+			$result = DB_query($SQL);
 			$testrow = DB_fetch_row($result);
 			if ($testrow[0] == 0) {
 				$InputError = 1;
@@ -124,7 +124,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 		if ($InputError != 1) {
 
 			//Firstly add the line to the gltrans table
-			$sql = "INSERT INTO gltrans (type,
+			$SQL = "INSERT INTO gltrans (type,
 										typeno,
 										chequeno,
 										trandate,
@@ -145,20 +145,20 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 										'" . $MyRow[5] . "'
 									)";
 
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 
 			if ($_POST['TransactionType'] != 0 and IsBankAccount($MyRow[1])) {
 
 				//Get the exchange rate to use between the transaction currency and the bank account currency
-				$sql = "SELECT rate
+				$SQL = "SELECT rate
 							FROM currencies
 							INNER JOIN bankaccounts
 								ON currencies.currabrev=bankaccounts.currcode
 							WHERE bankaccounts.accountcode='" . $MyRow[1] . "'";
-				$result = DB_query($sql);
+				$result = DB_query($SQL);
 				$MyRateRow = DB_fetch_array($result);
 				$FuncExRate = $MyRateRow['rate'];
-				$sql = "INSERT INTO banktrans (transno,
+				$SQL = "INSERT INTO banktrans (transno,
 												type,
 												bankact,
 												ref,
@@ -182,7 +182,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 												'" . round($MyRow[3], 2) . "',
 												'" . $_POST['Currency'] . "'
 											)";
-				$result = DB_query($sql);
+				$result = DB_query($SQL);
 			}
 			$PreviousPeriod = $Period;
 			$TransactionTotal = $TransactionTotal + $MyRow[3];
@@ -254,8 +254,8 @@ include('includes/footer.inc');
 
 function IsBankAccount($Account) {
 
-	$sql = "SELECT accountcode FROM bankaccounts WHERE accountcode='" . $Account . "'";
-	$result = DB_query($sql);
+	$SQL = "SELECT accountcode FROM bankaccounts WHERE accountcode='" . $Account . "'";
+	$result = DB_query($SQL);
 	if (DB_num_rows($result) == 0) {
 		return false;
 	} else {

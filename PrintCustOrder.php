@@ -26,7 +26,7 @@ if (!isset($_GET['TransNo']) or $_GET['TransNo'] == '') {
 /*retrieve the order details from the database to print */
 $ErrMsg = _('There was a problem retrieving the order header details for Order Number') . ' ' . $_GET['TransNo'] . ' ' . _('from the database');
 if ($_SESSION['RestrictLocations'] == 0) {
-	$sql = "SELECT salesorders.debtorno,
+	$SQL = "SELECT salesorders.debtorno,
 					salesorders.customerref,
 					salesorders.comments,
 					salesorders.orddate,
@@ -59,7 +59,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 					ON salesorders.fromstkloc=locations.loccode
 				WHERE salesorders.orderno='" . $_GET['TransNo'] . "'";
 } else {
-	$sql = "SELECT salesorders.debtorno,
+	$SQL = "SELECT salesorders.debtorno,
 					salesorders.customerref,
 					salesorders.comments,
 					salesorders.orddate,
@@ -96,9 +96,9 @@ if ($_SESSION['RestrictLocations'] == 0) {
 					AND www_users.userid='" . $_SESSION['UserID'] . "'";
 }
 if ($_SESSION['SalesmanLogin'] != '') {
-       $sql .= " AND salesorders.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
+       $SQL .= " AND salesorders.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
 }
-$result = DB_query($sql, $ErrMsg);
+$result = DB_query($SQL, $ErrMsg);
 
 //if there are no rows, there's a problem.
 if (DB_num_rows($result) == 0) {
@@ -151,7 +151,7 @@ LETS GO */
 
 $PageNumber = 1;
 $ErrMsg = _('There was a problem retrieving the details for Order Number') . ' ' . $_GET['TransNo'] . ' ' . _('from the database');
-$sql = "SELECT salesorderdetails.stkcode,
+$SQL = "SELECT salesorderdetails.stkcode,
 			stockmaster.description,
 			salesorderdetails.quantity,
 			salesorderdetails.qtyinvoiced,
@@ -160,7 +160,7 @@ $sql = "SELECT salesorderdetails.stkcode,
 		FROM salesorderdetails INNER JOIN stockmaster
 			ON salesorderdetails.stkcode=stockmaster.stockid
 		 WHERE salesorderdetails.orderno='" . $_GET['TransNo'] . "'";
-$result = DB_query($sql, $ErrMsg);
+$result = DB_query($SQL, $ErrMsg);
 
 if (DB_num_rows($result) > 0) {
 	/*Yes there are line items to start the ball rolling with a page header */
@@ -243,10 +243,10 @@ if (DB_num_rows($result) > 0) {
 	$pdf->OutputD($_SESSION['DatabaseName'] . '_Customer_Order_' . $_GET['TransNo'] . '_' . Date('Y-m-d') . '.pdf');
 	$pdf->__destruct();
 
-	$sql = "UPDATE salesorders SET printedpackingslip=1,
+	$SQL = "UPDATE salesorders SET printedpackingslip=1,
 									datepackingslipprinted=CURRENT_DATE
 			WHERE salesorders.orderno='" . $_GET['TransNo'] . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 } else {
 	$Title = _('Print Packing Slip Error');
 	include('includes/header.inc');

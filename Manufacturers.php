@@ -67,17 +67,17 @@ if (isset($_POST['submit'])) {
 			}
 		}
 
-		$sql = "UPDATE manufacturers SET manufacturers_name='" . $_POST['ManufacturersName'] . "',
+		$SQL = "UPDATE manufacturers SET manufacturers_name='" . $_POST['ManufacturersName'] . "',
 									manufacturers_url='" . $_POST['ManufacturersURL'] . "'";
 		if (isset($_POST['ManufacturersImage'])) {
-			$sql .= ", manufacturers_image='" . $_POST['ManufacturersImage'] . "'";
+			$SQL .= ", manufacturers_image='" . $_POST['ManufacturersImage'] . "'";
 		}
-		$sql .= " WHERE manufacturers_id = '" . $SelectedManufacturer . "'";
+		$SQL .= " WHERE manufacturers_id = '" . $SelectedManufacturer . "'";
 
 		$ErrMsg = _('An error occurred updating the') . ' ' . $SelectedManufacturer . ' ' . _('manufacturer record because');
 		$DbgMsg = _('The SQL used to update the manufacturer record was');
 
-		$result = DB_query($sql, $ErrMsg, $DbgMsg);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 		prnMsg(_('The manufacturer record has been updated'), 'success');
 		unset($_POST['ManufacturersName']);
@@ -89,14 +89,14 @@ if (isset($_POST['submit'])) {
 
 		/*SelectedManufacturer is null cos no item selected on first time round so must be adding a	record must be submitting new entries in the new Location form */
 
-		$sql = "INSERT INTO manufacturers (manufacturers_name,
+		$SQL = "INSERT INTO manufacturers (manufacturers_name,
 										manufacturers_url)
 						VALUES ('" . $_POST['ManufacturersName'] . "',
 								'" . $_POST['ManufacturersURL'] . "')";
 
 		$ErrMsg = _('An error occurred inserting the new manufacturer record because');
 		$DbgMsg = _('The SQL used to insert the manufacturer record was');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 		if (isset($_FILES['BrandPicture']) and $_FILES['BrandPicture']['name'] != '') {
 
@@ -145,8 +145,8 @@ if (isset($_POST['submit'])) {
 	$CancelDelete = false;
 
 	// PREVENT DELETES IF DEPENDENT RECORDS
-	$sql = "SELECT COUNT(*) FROM salescatprod WHERE manufacturers_id='" . $SelectedManufacturer . "'";
-	$result = DB_query($sql);
+	$SQL = "SELECT COUNT(*) FROM salescatprod WHERE manufacturers_id='" . $SelectedManufacturer . "'";
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_row($result);
 	if ($MyRow[0] > 0) {
 		$CancelDelete = true;
@@ -174,12 +174,12 @@ if (!isset($SelectedManufacturer)) {
 	links to delete or edit each. These will call the same page again and allow update/input
 	or deletion of the records*/
 
-	$sql = "SELECT manufacturers_id,
+	$SQL = "SELECT manufacturers_id,
 				manufacturers_name,
 				manufacturers_url,
 				manufacturers_image
 			FROM manufacturers";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	echo '<p class="page_Title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" Title="' . _('Manufacturers') . '" alt="" />' . ' ' . $Title . '</p>';
 
@@ -244,14 +244,14 @@ if (!isset($_GET['delete'])) {
 		//editing an existing Brand
 		echo '<p class="page_Title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" Title="' . _('Brand') . '" alt="" />' . ' ' . $Title . '</p>';
 
-		$sql = "SELECT manufacturers_id,
+		$SQL = "SELECT manufacturers_id,
 					manufacturers_name,
 					manufacturers_url,
 					manufacturers_image
 				FROM manufacturers
 				WHERE manufacturers_id='" . $SelectedManufacturer . "'";
 
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_array($result);
 
 		$_POST['ManufacturersName'] = $MyRow['manufacturers_name'];

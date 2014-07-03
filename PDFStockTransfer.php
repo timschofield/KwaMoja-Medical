@@ -48,7 +48,7 @@ include('includes/PDFStockTransferHeader.inc');
 
 /*Print out the category totals */
 if ($_SESSION['RestrictLocations'] == 0) {
-	$sql = "SELECT stockmoves.stockid,
+	$SQL = "SELECT stockmoves.stockid,
 				description,
 				transno,
 				stockmoves.loccode,
@@ -65,7 +65,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 				AND qty < 0
 				AND type=16";
 } else {
-	$sql = "SELECT stockmoves.stockid,
+	$SQL = "SELECT stockmoves.stockid,
 				description,
 				transno,
 				stockmoves.loccode,
@@ -86,7 +86,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 				AND type=16";
 }
 
-$result = DB_query($sql);
+$result = DB_query($SQL);
 if (DB_num_rows($result) == 0) {
 	$Title = _('Print Stock Transfer - Error');
 	include('includes/header.inc');

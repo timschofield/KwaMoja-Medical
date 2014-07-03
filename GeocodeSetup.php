@@ -26,9 +26,9 @@ if (isset($_POST['submit'])) {
 
 	//first off validate inputs are sensible
 
-	$sql = "SELECT count(geocodeid)
+	$SQL = "SELECT count(geocodeid)
 			FROM geocode_param WHERE geocodeid='" . $_POST['GeoCodeID'] . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_row($result);
 
 	if ($MyRow[0] != 0 and !isset($SelectedParam)) {
@@ -45,7 +45,7 @@ if (isset($_POST['submit'])) {
 		/*SelectedParam could also exist if submit had not been clicked this code would not run in this case cos submit is false of course see the delete code below*/
 
 		if (isset($_POST['GeoCode_Key']) and isset($_POST['GeoCode_Key'])) {
-			$sql = "UPDATE geocode_param SET
+			$SQL = "UPDATE geocode_param SET
 					geocode_key='" . $_POST['GeoCode_Key'] . "',
 					center_long='" . $_POST['Center_Long'] . "',
 					center_lat='" . $_POST['Center_Lat'] . "',
@@ -62,7 +62,7 @@ if (isset($_POST['submit'])) {
 
 		if (isset($_POST['GeoCode_Key']) and $_POST['GeoCode_Key'] > 0) {
 
-			$sql = "INSERT INTO geocode_param (geocodeid,
+			$SQL = "INSERT INTO geocode_param (geocodeid,
 												geocode_key,
 												center_long,
 												center_lat,
@@ -77,7 +77,7 @@ if (isset($_POST['submit'])) {
 							'" . $_POST['Map_Width'] . "',
 							'" . $_POST['Map_Host'] . "')";
 		} else {
-			$sql = "INSERT INTO geocode_param (geocodeid,
+			$SQL = "INSERT INTO geocode_param (geocodeid,
 												geocode_key,
 												center_long,
 												center_lat,
@@ -98,14 +98,14 @@ if (isset($_POST['submit'])) {
 		unset($_POST['GeoCode_Key']);
 	}
 	//run the SQL from either of the above possibilites
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	if ($msg != '') {
 		prnMsg($msg, 'success');
 	}
 } elseif (isset($_GET['delete'])) {
 	//the link to delete a selected record was clicked instead of the submit button
-	$sql = "DELETE FROM geocode_param WHERE geocodeid = '" . $_GET['delete'] . "' LIMIT 1";
-	$result = DB_query($sql);
+	$SQL = "DELETE FROM geocode_param WHERE geocodeid = '" . $_GET['delete'] . "' LIMIT 1";
+	$result = DB_query($SQL);
 	prnMsg(_('Geocode deleted'), 'success');
 	//end if status code used in customer or supplier accounts
 	unset($_GET['delete']);
@@ -120,7 +120,7 @@ if (!isset($SelectedParam)) {
 	links to delete or edit each. These will call the same page again and allow update/input
 	or deletion of the records*/
 
-	$sql = "SELECT geocodeid,
+	$SQL = "SELECT geocodeid,
 					geocode_key,
 					center_long,
 					center_lat,
@@ -128,7 +128,7 @@ if (!isset($SelectedParam)) {
 					map_width,
 					map_host
 			FROM geocode_param";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Geocode Setup') . '" alt="" />' . _('Setup configuration for Geocoding of Customers and Suppliers') . '</p>';
 	echo '<div class="page_help_text noPrint">' . _('Get a google API key at ') . '<a href="http://code.google.com/apis/maps/signup.html" target="_blank"> http://code.google.com/apis/maps/signup.html</a></div>';
@@ -187,7 +187,7 @@ if (!isset($_GET['delete'])) {
 	if (isset($SelectedParam) and ($InputError != 1)) {
 		//editing an existing status code
 
-		$sql = "SELECT geocodeid,
+		$SQL = "SELECT geocodeid,
 					geocode_key,
 					center_long,
 					center_lat,
@@ -197,7 +197,7 @@ if (!isset($_GET['delete'])) {
 				FROM geocode_param
 				WHERE geocodeid='" . $SelectedParam . "'";
 
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_array($result);
 
 		$_POST['GeoCodeID'] = $MyRow['geocodeid'];

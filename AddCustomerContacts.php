@@ -47,7 +47,7 @@ if (isset($_POST['submit'])) {
 	}
 
 	if (isset($Id) and ($Id and $InputError != 1)) {
-		$sql = "UPDATE custcontacts SET contactname='" . $_POST['ContactName'] . "',
+		$SQL = "UPDATE custcontacts SET contactname='" . $_POST['ContactName'] . "',
 										role='" . $_POST['ContactRole'] . "',
 										phoneno='" . $_POST['ContactPhone'] . "',
 										notes='" . $_POST['ContactNotes'] . "',
@@ -57,7 +57,7 @@ if (isset($_POST['submit'])) {
 		$msg = _('Customer Contacts') . ' ' . $DebtorNo . ' ' . _('has been updated');
 	} elseif ($InputError != 1) {
 
-		$sql = "INSERT INTO custcontacts (debtorno,
+		$SQL = "INSERT INTO custcontacts (debtorno,
 										contactname,
 										role,
 										phoneno,
@@ -73,8 +73,8 @@ if (isset($_POST['submit'])) {
 	}
 
 	if ($InputError != 1) {
-		$result = DB_query($sql);
-		//echo '<br />'.$sql;
+		$result = DB_query($SQL);
+		//echo '<br />'.$SQL;
 
 		echo '<br />';
 		prnMsg($msg, 'success');
@@ -92,10 +92,10 @@ if (isset($_POST['submit'])) {
 
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'SalesOrders'
 
-	$sql = "DELETE FROM custcontacts
+	$SQL = "DELETE FROM custcontacts
 			WHERE contid='" . $Id . "'
 			AND debtorno='" . $DebtorNo . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	echo '<br />';
 	prnMsg(_('The contact record has been deleted'), 'success');
@@ -106,7 +106,7 @@ if (isset($_POST['submit'])) {
 
 if (!isset($Id)) {
 
-	$sql = "SELECT contid,
+	$SQL = "SELECT contid,
 					debtorno,
 					contactname,
 					role,
@@ -116,8 +116,8 @@ if (!isset($Id)) {
 			FROM custcontacts
 			WHERE debtorno='" . $DebtorNo . "'
 			ORDER BY contid";
-	$result = DB_query($sql);
-	//echo '<br />'.$sql;
+	$result = DB_query($SQL);
+	//echo '<br />'.$SQL;
 
 	echo '<table class="selection">';
 	echo '<tr>
@@ -161,7 +161,7 @@ if (!isset($_GET['delete'])) {
 
 	if (isset($Id)) {
 
-		$sql = "SELECT contid,
+		$SQL = "SELECT contid,
 						debtorno,
 						contactname,
 						role,
@@ -172,7 +172,7 @@ if (!isset($_GET['delete'])) {
 					WHERE contid='" . $Id . "'
 						AND debtorno='" . $DebtorNo . "'";
 
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_array($result);
 
 		$_POST['Con_ID'] = $MyRow['contid'];

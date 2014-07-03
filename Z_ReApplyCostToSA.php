@@ -30,7 +30,7 @@ echo '<input type="submit" name="UpdateSalesAnalysis" value="' . _('Update Sales
 echo '</form>';
 
 if (isset($_POST['UpdateSalesAnalysis']) and $_POST['PeriodNo'] != 0) {
-	$sql = "SELECT stockmaster.stockid,
+	$SQL = "SELECT stockmaster.stockid,
 					stockcosts.materialcost+stockcosts.overheadcost+stockcosts.labourcost AS standardcost,
 					stockmaster.mbflag
 				FROM salesanalysis
@@ -49,7 +49,7 @@ if (isset($_POST['UpdateSalesAnalysis']) and $_POST['PeriodNo'] != 0) {
 
 
 	$ErrMsg = _('Could not retrieve the sales analysis records to be updated because');
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 
 	while ($ItemsToUpdate = DB_fetch_array($result)) {
 

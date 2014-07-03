@@ -65,11 +65,11 @@ if (isset($_POST['submit'])) {
 		$InputError = 1;
 	}
 
-	$sql = "SELECT related
+	$SQL = "SELECT related
 				FROM relateditems
 			WHERE stockid='" . $Item . "'
 				AND related = '" . $_POST['Related'] . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_row($result);
 
 	if (DB_num_rows($result) != 0) {
@@ -83,30 +83,30 @@ if (isset($_POST['submit'])) {
 	}
 
 	if ($InputError != 1) {
-		$sql = "INSERT INTO relateditems (stockid,
+		$SQL = "INSERT INTO relateditems (stockid,
 									related)
 							VALUES ('" . $Item . "',
 								'" . $_POST['Related'] . "')";
 		$ErrMsg = _('The new related item could not be added');
-		$result = DB_query($sql, $ErrMsg);
+		$result = DB_query($SQL, $ErrMsg);
 
 		prnMsg($_POST['Related'] . ' ' . _('is now related to') . ' ' . $Item, 'success');
 
 		/* It is safe to assume that, if A is related to B, B is related to A */
-		$sql_reverse = "SELECT related
+		$SQL_reverse = "SELECT related
 					FROM relateditems
 				WHERE stockid='" . $_POST['Related'] . "'
 					AND related = '" . $Item . "'";
-		$result_reverse = DB_query($sql_reverse);
+		$result_reverse = DB_query($SQL_reverse);
 		$MyRow_reverse = DB_fetch_row($result_reverse);
 
 		if (DB_num_rows($result_reverse) == 0) {
-			$sql = "INSERT INTO relateditems (stockid,
+			$SQL = "INSERT INTO relateditems (stockid,
 										related)
 								VALUES ('" . $_POST['Related'] . "',
 									'" . $Item . "')";
 			$ErrMsg = _('The new related item could not be added');
-			$result = DB_query($sql, $ErrMsg);
+			$result = DB_query($SQL, $ErrMsg);
 			prnMsg($Item . ' ' . _('is now related to') . ' ' . $_POST['Related'], 'success');
 		}
 	}
@@ -118,24 +118,24 @@ if (isset($_POST['submit'])) {
 
 	/* Again it is safe to assume that we have to delete both relations A to B and B to A */
 
-	$sql = "DELETE FROM relateditems
+	$SQL = "DELETE FROM relateditems
 			WHERE (stockid = '" . $Item . "' AND related ='" . $_GET['Related'] . "')
 			OR (stockid = '" . $_GET['Related'] . "' AND related ='" . $Item . "')";
 	$ErrMsg = _('Could not delete this relationshop');
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 	prnMsg(_('This relationship has been deleted'), 'success');
 
 }
 
 //Always do this stuff
 
-$sql = "SELECT stockmaster.stockid,
+$SQL = "SELECT stockmaster.stockid,
 			stockmaster.description
 		FROM stockmaster, relateditems
 		WHERE stockmaster.stockid = relateditems.related
 			AND relateditems.stockid='" . $Item . "'";
 
-$result = DB_query($sql);
+$result = DB_query($SQL);
 
 if (DB_num_rows($result) > 0) {
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';

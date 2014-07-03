@@ -131,7 +131,7 @@ if (isset($SelectedCustomer) and isset($_POST['JustSelectedACustomer'])) {
 	/*  default the branch information from the customer branches table CustBranch -particularly where the stock
 	will be booked back into. */
 
-	$sql = "SELECT debtorsmaster.name,
+	$SQL = "SELECT debtorsmaster.name,
 					debtorsmaster.salestype,
 					debtorsmaster.currcode,
 					currencies.rate,
@@ -158,7 +158,7 @@ if (isset($SelectedCustomer) and isset($_POST['JustSelectedACustomer'])) {
 
 	$ErrMsg = _('The customer branch record of the customer selected') . ': ' . $SelectedCustomer . ' ' . _('cannot be retrieved because');
 	$DbgMsg = _('SQL used to retrieve the branch details was');
-	$result = DB_query($sql, $ErrMsg, $DbgMsg);
+	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	$MyRow = DB_fetch_array($result);
 
@@ -421,7 +421,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 
 			if ($AlreadyOnThisCredit != 1) {
 
-				$sql = "SELECT stockmaster.description,
+				$SQL = "SELECT stockmaster.description,
 								stockmaster.longdescription,
 					    		stockmaster.stockid,
 								stockmaster.units,
@@ -441,7 +441,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 							WHERE  stockmaster.stockid = '" . $_POST['NewItem'] . "'";
 
 				$ErrMsg = _('There is a problem selecting the part because');
-				$result1 = DB_query($sql, $ErrMsg);
+				$result1 = DB_query($SQL, $ErrMsg);
 
 				if ($MyRow = DB_fetch_array($result1)) {
 
@@ -560,7 +560,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 
 			if ($AlreadyOnThisCredit != 1) {
 
-				$sql = "SELECT stockmaster.description,
+				$SQL = "SELECT stockmaster.description,
 								stockmaster.longdescription,
 								stockmaster.stockid,
 								stockmaster.units,
@@ -581,7 +581,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 
 				$ErrMsg = _('The item details could not be retrieved because');
 				$DbgMsg = _('The SQL used to retrieve the item details but failed was');
-				$result1 = DB_query($sql, $ErrMsg, $DbgMsg);
+				$result1 = DB_query($SQL, $ErrMsg, $DbgMsg);
 				$MyRow = DB_fetch_array($result1);
 
 				$LineNumber = $_SESSION['CreditItems' . $identifier]->LineCounter;
@@ -804,18 +804,18 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 					<td><select required="required" minlength="1" name="Location">';
 
 			if ($_SESSION['RestrictLocations'] == 0) {
-				$sql = "SELECT locationname,
+				$SQL = "SELECT locationname,
 								loccode
 							FROM locations";
 			} else {
-				$sql = "SELECT locationname,
+				$SQL = "SELECT locationname,
 								loccode
 							FROM locations
 							INNER JOIN www_users
 								ON locations.loccode=www_users.defaultlocation
 							WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 			}
-			$Result = DB_query($sql);
+			$Result = DB_query($SQL);
 
 			if (!isset($_POST['Location'])) {
 				$_POST['Location'] = $_SESSION['CreditItems' . $identifier]->Location;

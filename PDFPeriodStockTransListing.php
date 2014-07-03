@@ -50,19 +50,19 @@ if (!isset($_POST['FromDate'])) {
 			</td>
 		</tr>';
 
-	$result = DB_query($sql);
-	$resultStkLocs = DB_query($sql);
+	$result = DB_query($SQL);
+	$resultStkLocs = DB_query($SQL);
 
 	echo '<tr>
 			<td>' . _('For Stock Location') . ':</td>
 			<td><select required="required" minlength="1" name="StockLocation">';
 	if ($_SESSION['RestrictLocations'] == 0) {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations";
 		echo '<option selected="selected" value="All">' . _('All Locations') . '</option>';
 	} else {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations
 					INNER JOIN www_users
@@ -101,7 +101,7 @@ if (!isset($_POST['FromDate'])) {
 
 
 if ($_POST['StockLocation'] == 'All') {
-	$sql = "SELECT stockmoves.type,
+	$SQL = "SELECT stockmoves.type,
 				stockmoves.stockid,
 				stockmaster.description,
 				stockmaster.decimalplaces,
@@ -120,7 +120,7 @@ if ($_POST['StockLocation'] == 'All') {
 			AND date_format(trandate, '%Y-%m-%d')>='" . FormatDateForSQL($_POST['FromDate']) . "'
 			AND date_format(trandate, '%Y-%m-%d')<='" . FormatDateForSQL($_POST['ToDate']) . "'";
 } else {
-	$sql = "SELECT stockmoves.type,
+	$SQL = "SELECT stockmoves.type,
 				stockmoves.stockid,
 				stockmaster.description,
 				stockmaster.decimalplaces,
@@ -140,7 +140,7 @@ if ($_POST['StockLocation'] == 'All') {
 			AND date_format(trandate, '%Y-%m-%d')<='" . FormatDateForSQL($_POST['ToDate']) . "'
 			AND stockmoves.loccode='" . $_POST['StockLocation'] . "'";
 }
-$result = DB_query($sql, '', '', false, false);
+$result = DB_query($SQL, '', '', false, false);
 
 if (DB_error_no() != 0) {
 	$Title = _('Transaction Listing');

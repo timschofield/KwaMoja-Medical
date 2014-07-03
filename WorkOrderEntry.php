@@ -75,18 +75,18 @@ echo '<tr>
 		<td><select minlength="0" name="StockLocation" onChange="ReloadForm(Refresh)">';
 
 if ($_SESSION['RestrictLocations'] == 0) {
-	$sql = "SELECT locationname,
+	$SQL = "SELECT locationname,
 					loccode
 				FROM locations";
 } else {
-	$sql = "SELECT locationname,
+	$SQL = "SELECT locationname,
 				loccode
 				FROM locations
 				INNER JOIN www_users
 					ON locations.loccode=www_users.defaultlocation
 				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 }
-$LocResult = DB_query($sql);
+$LocResult = DB_query($SQL);
 
 while ($LocRow = DB_fetch_array($LocResult)) {
 	if ($_SESSION['WorkOrder' . $identifier]->LocationCode == $LocRow['loccode']) {

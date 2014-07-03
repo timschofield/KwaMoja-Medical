@@ -214,10 +214,10 @@ function RemoveLine($FileName) {
 	fclose($fp);
 }
 
-function executeSQL($sql, $TrapErrors = False) {
+function executeSQL($SQL, $TrapErrors = False) {
 	/* Run an sql statement and return an error code */
 	DB_IgnoreForeignKeys();
-	$result = DB_query($sql, '', '', false, $TrapErrors);
+	$result = DB_query($SQL, '', '', false, $TrapErrors);
 	$ErrorNumber = DB_error_no();
 	DB_ReinstateForeignKeys();
 	return $ErrorNumber;

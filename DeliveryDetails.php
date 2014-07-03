@@ -133,7 +133,7 @@ if (isset($_POST['Update']) or isset($_POST['BackToLineDetails']) or isset($_POS
 				prnMsg(_($_POST['FreightCost']), 'warn');
 			}
 		} //$_SESSION['DoFreightCalc'] == True
-		$sql = "SELECT custbranch.brname,
+		$SQL = "SELECT custbranch.brname,
 						custbranch.braddress1,
 						custbranch.braddress2,
 						custbranch.braddress3,
@@ -154,12 +154,12 @@ if (isset($_POST['Update']) or isset($_POST['BackToLineDetails']) or isset($_POS
 
 		$ErrMsg = _('The customer branch record of the customer selected') . ': ' . $_SESSION['Items' . $identifier]->CustomerName . ' ' . _('cannot be retrieved because');
 		$DbgMsg = _('SQL used to retrieve the branch details was') . ':';
-		$result = DB_query($sql, $ErrMsg, $DbgMsg);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 		if (DB_num_rows($result) == 0) {
 			prnMsg(_('The branch details for branch code') . ': ' . $_SESSION['Items' . $identifier]->Branch . ' ' . _('against customer code') . ': ' . $_POST['Select'] . ' ' . _('could not be retrieved') . '. ' . _('Check the set up of the customer and branch'), 'error');
 
 			if ($debug == 1) {
-				echo '<br />' . _('The SQL that failed to get the branch details was') . ':<br />' . $sql;
+				echo '<br />' . _('The SQL that failed to get the branch details was') . ':<br />' . $SQL;
 			} //$debug == 1
 			include('includes/footer.inc');
 			exit;
@@ -230,21 +230,21 @@ if (isset($_POST['Update']) or isset($_POST['BackToLineDetails']) or isset($_POS
 		- if shippers defined but the default shipper is bogus then use the first shipper defined
 		*/
 		if ((isset($BestShipper) and $BestShipper == '') and ($_POST['ShipVia'] == '' or !isset($_POST['ShipVia']))) {
-			$sql = "SELECT shipper_id
+			$SQL = "SELECT shipper_id
 						FROM shippers
 						WHERE shipper_id='" . $_SESSION['Default_Shipper'] . "'";
 			$ErrMsg = _('There was a problem testing for the default shipper');
 			$DbgMsg = _('SQL used to test for the default shipper') . ':';
-			$TestShipperExists = DB_query($sql, $ErrMsg, $DbgMsg);
+			$TestShipperExists = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 			if (DB_num_rows($TestShipperExists) == 1) {
 				$BestShipper = $_SESSION['Default_Shipper'];
 
 			} //DB_num_rows($TestShipperExists) == 1
 			else {
-				$sql = "SELECT shipper_id
+				$SQL = "SELECT shipper_id
 							FROM shippers";
-				$TestShipperExists = DB_query($sql, $ErrMsg, $DbgMsg);
+				$TestShipperExists = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 				if (DB_num_rows($TestShipperExists) >= 1) {
 					$ShipperReturned = DB_fetch_row($TestShipperExists);
@@ -292,7 +292,7 @@ if (isset($_POST['ProcessOrder'])) {
 	} //$_POST['FreightCost'] != $OldFreightCost and $_SESSION['DoFreightCalc'] == True
 	else {
 		/*check the customer's payment terms */
-		$sql = "SELECT daysbeforedue,
+		$SQL = "SELECT daysbeforedue,
 				dayinfollowingmonth
 			FROM debtorsmaster,
 				paymentterms
@@ -301,7 +301,7 @@ if (isset($_POST['ProcessOrder'])) {
 
 		$ErrMsg = _('The customer terms cannot be determined') . '. ' . _('This order cannot be processed because');
 		$DbgMsg = _('SQL used to find the customer terms') . ':';
-		$TermsResult = DB_query($sql, $ErrMsg, $DbgMsg);
+		$TermsResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 
 		$MyRow = DB_fetch_array($TermsResult);
@@ -513,7 +513,7 @@ if (isset($OK_to_PROCESS) and $OK_to_PROCESS == 1 and $_SESSION['ExistingOrder' 
 				}
 
 				// insert parent item info
-				$sql = "INSERT INTO woitems (wo,
+				$SQL = "INSERT INTO woitems (wo,
 											 stockid,
 											 qtyreqd,
 											 stdcost)
@@ -522,7 +522,7 @@ if (isset($OK_to_PROCESS) and $OK_to_PROCESS == 1 and $_SESSION['ExistingOrder' 
 										 '" . $WOQuantity . "',
 										 '" . $Cost . "')";
 				$ErrMsg = _('The work order item could not be added');
-				$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+				$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 				//Recursively insert real component requirements - see includes/SQL_CommonFunctions.in for function WoRealRequirements
 				WoRealRequirements($WONo, $_SESSION['DefaultFactoryLocation'], $StockItem->StockID);
@@ -542,14 +542,14 @@ if (isset($OK_to_PROCESS) and $OK_to_PROCESS == 1 and $_SESSION['ExistingOrder' 
 							prnMsg(($StockItem->NextSerialNo + $i) . ': ' . _('This automatically generated serial number already exists - it cannot be added to the work order'), 'error');
 						} //DB_num_rows($result) != 0
 						else {
-							$sql = "INSERT INTO woserialnos (wo,
+							$SQL = "INSERT INTO woserialnos (wo,
 																stockid,
 																serialno)
 													VALUES ('" . $WONo . "',
 															'" . $StockItem->StockID . "',
 															'" . ($StockItem->NextSerialNo + $i) . "')";
 							$ErrMsg = _('The serial number for the work order item could not be added');
-							$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+							$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 							$FactoryManagerEmail .= "\n" . ($StockItem->NextSerialNo + $i);
 						}
 					} //end loop around creation of woserialnos
@@ -716,7 +716,7 @@ elseif (isset($OK_to_PROCESS) and ($OK_to_PROCESS == 1 and $_SESSION['ExistingOr
 			$Cost += $CostRow[0];
 
 			// insert parent item info
-			$sql = "INSERT INTO woitems (wo,
+			$SQL = "INSERT INTO woitems (wo,
 										 stockid,
 										 qtyreqd,
 										 stdcost)
@@ -725,7 +725,7 @@ elseif (isset($OK_to_PROCESS) and ($OK_to_PROCESS == 1 and $_SESSION['ExistingOr
 									 '1',
 									 '" . $Cost . "')";
 			$ErrMsg = _('The work order item could not be added');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+			$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 			//Recursively insert real component requirements - see includes/SQL_CommonFunctions.in for function WoRealRequirements
 			WoRealRequirements($WONo, $_SESSION['Items' . $identifier]->Location, $ContractRow['contractref']);
@@ -1014,18 +1014,18 @@ if ($_SESSION['Items' . $identifier]->Location == '' or !isset($_SESSION['Items'
 $ErrMsg = _('The stock locations could not be retrieved');
 $DbgMsg = _('SQL used to retrieve the stock locations was') . ':';
 if ($_SESSION['RestrictLocations'] == 0) {
-	$sql = "SELECT locationname,
+	$SQL = "SELECT locationname,
 					loccode
 				FROM locations";
 } else {
-	$sql = "SELECT locationname,
+	$SQL = "SELECT locationname,
 					loccode
 				FROM locations
 				INNER JOIN www_users
 					ON locations.loccode=www_users.defaultlocation
 				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 }
-$StkLocsResult = DB_query($sql, $ErrMsg, $DbgMsg);
+$StkLocsResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 while ($MyRow = DB_fetch_array($StkLocsResult)) {
 	if ($_SESSION['Items' . $identifier]->Location == $MyRow['loccode']) {
@@ -1191,8 +1191,8 @@ echo '<tr>
 $ErrMsg = _('The shipper details could not be retrieved');
 $DbgMsg = _('SQL used to retrieve the shipper details was') . ':';
 
-$sql = "SELECT shipper_id, shippername FROM shippers";
-$ShipperResults = DB_query($sql, $ErrMsg, $DbgMsg);
+$SQL = "SELECT shipper_id, shippername FROM shippers";
+$ShipperResults = DB_query($SQL, $ErrMsg, $DbgMsg);
 while ($MyRow = DB_fetch_array($ShipperResults)) {
 	if ($MyRow['shipper_id'] == $_POST['ShipVia']) {
 		echo '<option selected="selected" value="' . $MyRow['shipper_id'] . '">' . $MyRow['shippername'] . '</option>';

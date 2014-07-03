@@ -10,8 +10,8 @@ echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />'
 
 if (!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) {
 
-	$sql = "SELECT periodno, lastdate_in_period FROM periods ORDER BY periodno ASC";
-	$Periods = DB_query($sql);
+	$SQL = "SELECT periodno, lastdate_in_period FROM periods ORDER BY periodno ASC";
+	$Periods = DB_query($SQL);
 
 	while ($MyRow = DB_fetch_array($Periods)) {
 		$PeriodsArray[$MyRow['periodno']] = MonthAndYearFromSQLDate($MyRow['lastdate_in_period']);
@@ -68,7 +68,7 @@ if (!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) {
 
 	for ($i = $_POST['FromPeriod']; $i <= $_POST['ToPeriod']; $i++) {
 
-		$sql = "SELECT accountcode,
+		$SQL = "SELECT accountcode,
 					period,
 					budget,
 					actual,
@@ -78,7 +78,7 @@ if (!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) {
 				WHERE period ='" . $i . "'";
 
 		$ErrMsg = _('Could not retrieve the ChartDetail records because');
-		$result = DB_query($sql, $ErrMsg);
+		$result = DB_query($SQL, $ErrMsg);
 
 		while ($MyRow = DB_fetch_array($result)) {
 
@@ -87,13 +87,13 @@ if (!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) {
 
 			echo '<br />' . _('Account Code') . ': ' . $MyRow['accountcode'] . ' ' . _('Period') . ': ' . $MyRow['period'];
 
-			$sql = "UPDATE chartdetails SET bfwd='" . $CFwd . "',
+			$SQL = "UPDATE chartdetails SET bfwd='" . $CFwd . "',
 										bfwdbudget='" . $CFwdBudget . "'
 					WHERE period='" . ($MyRow['period'] + 1) . "'
 					AND  accountcode = '" . $MyRow['accountcode'] . "'";
 
 			$ErrMsg = _('Could not update the chartdetails record because');
-			$updresult = DB_query($sql, $ErrMsg);
+			$updresult = DB_query($SQL, $ErrMsg);
 		}
 	}
 	/* end of for loop */

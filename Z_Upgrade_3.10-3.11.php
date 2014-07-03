@@ -23,7 +23,7 @@ if ($_POST['DoUpgrade'] == _('Perform Upgrade')) {
 
 	$ScriptFileEntries = sizeof($SQLScriptFile);
 	$ErrMsg = _('The script to upgrade the database failed because');
-	$sql = '';
+	$SQL = '';
 	$InAFunction = false;
 	echo '<br /><table>';
 	for ($i = 0; $i <= $ScriptFileEntries; $i++) {
@@ -36,7 +36,7 @@ if ($_POST['DoUpgrade'] == _('Perform Upgrade')) {
 
 		if (mb_substr($SQLScriptFile[$i], 0, 2) != '--' and mb_substr($SQLScriptFile[$i], 0, 3) != 'USE' and mb_strstr($SQLScriptFile[$i], '/*') == FALSE and mb_strlen($SQLScriptFile[$i]) > 1) {
 
-			$sql .= ' ' . $SQLScriptFile[$i];
+			$SQL .= ' ' . $SQLScriptFile[$i];
 
 			//check if this line kicks off a function definition - pg chokes otherwise
 			if (mb_substr($SQLScriptFile[$i], 0, 15) == 'CREATE FUNCTION') {
@@ -47,8 +47,8 @@ if ($_POST['DoUpgrade'] == _('Perform Upgrade')) {
 				$InAFunction = false;
 			}
 			if (mb_strpos($SQLScriptFile[$i], ';') > 0 and !$InAFunction) {
-				$sql = mb_substr($sql, 0, mb_strlen($sql) - 1);
-				$result = DB_query($sql, $ErrMsg, $DBMsg, false, false);
+				$SQL = mb_substr($SQL, 0, mb_strlen($SQL) - 1);
+				$result = DB_query($SQL, $ErrMsg, $DBMsg, false, false);
 				switch (DB_error_no()) {
 					case 0:
 						echo '<tr><td>' . $comment . '</td><td style="background-color:green">' . _('Success') . '</td></tr>';
@@ -72,7 +72,7 @@ if ($_POST['DoUpgrade'] == _('Perform Upgrade')) {
 						echo '<tr><td>' . $comment . '</td><td style="background-color:red">' . _('Failure') . ' - ' . _('Error number') . ' - ' . DB_error_no() . '</td></tr>';
 						break;
 				}
-				unset($sql);
+				unset($SQL);
 			}
 
 		} //end if its a valid sql line not a comment

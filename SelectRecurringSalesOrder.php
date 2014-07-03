@@ -19,11 +19,11 @@ echo '<table class="selection">
 			<td>' . '<select required="required" minlength="1" name="StockLocation">';
 
 if ($_SESSION['RestrictLocations'] == 0) {
-	$sql = "SELECT locationname,
+	$SQL = "SELECT locationname,
 					loccode
 				FROM locations";
 } else {
-	$sql = "SELECT locationname,
+	$SQL = "SELECT locationname,
 					loccode
 				FROM locations
 				INNER JOIN www_users
@@ -31,7 +31,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 }
 
-$resultStkLocs = DB_query($sql);
+$resultStkLocs = DB_query($SQL);
 
 while ($MyRow = DB_fetch_array($resultStkLocs)) {
 	if (isset($_POST['StockLocation'])) {

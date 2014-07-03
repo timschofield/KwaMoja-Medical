@@ -18,11 +18,11 @@ if (!isset($_SESSION['CustomerID'])) {
 
 echo '<a href="' . $RootPath . '/SelectCustomer.php">' . _('Back to Customers') . '</a><br />';
 
-$sql = "SELECT name
+$SQL = "SELECT name
 		FROM debtorsmaster
 		WHERE debtorno='" . $_SESSION['CustomerID'] . "'";
 
-$result = DB_query($sql);
+$result = DB_query($SQL);
 $MyRow = DB_fetch_array($result);
 $CustomerName = $MyRow['name'];
 
@@ -61,14 +61,14 @@ if (isset($_POST['submit'])) {
 
 	if ((mb_strlen($_POST['BranchCode']) > 0) and ($InputError != 1)) {
 		// check that the entered branch is valid for the customer code
-		$sql = "SELECT defaultlocation
+		$SQL = "SELECT defaultlocation
 				FROM custbranch
 				WHERE debtorno='" . $_SESSION['CustomerID'] . "'
 				AND branchcode='" . $_POST['BranchCode'] . "'";
 
 		$ErrMsg = _('The check on validity of the customer code and branch failed because');
 		$DbgMsg = _('The SQL that was used to check the customer code and branch was');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 		if (DB_num_rows($result) == 0) {
 			prnMsg(_('The entered Branch Code is not valid for the entered Customer Code'), 'error');
@@ -80,7 +80,7 @@ if (isset($_POST['submit'])) {
 
 		if ($InputError != 1) {
 
-			$sql = "INSERT INTO www_users (userid,
+			$SQL = "INSERT INTO www_users (userid,
 										realname,
 										customerid,
 										branchcode,
@@ -111,7 +111,7 @@ if (isset($_POST['submit'])) {
 
 			$ErrMsg = _('The user could not be added because');
 			$DbgMsg = _('The SQL that was used to insert the new user and failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 			prnMsg(_('A new customer login has been created'), 'success');
 			include('includes/footer.inc');
 			exit;
@@ -164,8 +164,8 @@ echo '<tr>
 			' . _('Branch Code') . ':</td>
 			<td><select minlength="0" name="BranchCode">';
 
-$sql = "SELECT branchcode FROM custbranch WHERE debtorno = '" . $_SESSION['CustomerID'] . "'";
-$result = DB_query($sql);
+$SQL = "SELECT branchcode FROM custbranch WHERE debtorno = '" . $_SESSION['CustomerID'] . "'";
+$result = DB_query($SQL);
 
 while ($MyRow = DB_fetch_array($result)) {
 

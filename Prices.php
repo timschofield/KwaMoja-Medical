@@ -97,7 +97,7 @@ if (isset($_POST['submit'])) {
 		$SQLEndDate = '0000-00-00';
 	}
 
-	$sql = "SELECT COUNT(typeabbrev)
+	$SQL = "SELECT COUNT(typeabbrev)
 				FROM prices
 			WHERE prices.stockid='" . $Item . "'
 			AND startdate='" . FormatDateForSQL($_POST['StartDate']) . "'
@@ -105,7 +105,7 @@ if (isset($_POST['submit'])) {
 			AND prices.typeabbrev='" . $_POST['TypeAbbrev'] . "'
 			AND prices.currabrev='" . $_POST['CurrAbrev'] . "'";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_row($result);
 
 	if ($MyRow[0] != 0 and !isset($_POST['OldTypeAbbrev']) and !isset($_POST['OldCurrAbrev'])) {
@@ -118,7 +118,7 @@ if (isset($_POST['submit'])) {
 		/* Need to see if there is also a price entered that has an end date after the start date of this price and if so we will need to update it so there is no ambiguity as to which price will be used*/
 
 		//editing an existing price
-		$sql = "UPDATE prices SET
+		$SQL = "UPDATE prices SET
 					typeabbrev='" . $_POST['TypeAbbrev'] . "',
 					currabrev='" . $_POST['CurrAbrev'] . "',
 					price='" . filter_number_format($_POST['Price']) . "',
@@ -132,7 +132,7 @@ if (isset($_POST['submit'])) {
 				AND prices.debtorno=''";
 
 		$ErrMsg = _('Could not be update the existing prices');
-		$result = DB_query($sql, $ErrMsg);
+		$result = DB_query($SQL, $ErrMsg);
 
 		ReSequenceEffectiveDates($Item, $_POST['TypeAbbrev'], $_POST['CurrAbrev']);
 
@@ -142,7 +142,7 @@ if (isset($_POST['submit'])) {
 
 		/*Selected price is null cos no item selected on first time round so must be adding a	record must be submitting new entries in the new price form */
 
-		$sql = "INSERT INTO prices (stockid,
+		$SQL = "INSERT INTO prices (stockid,
 									typeabbrev,
 									currabrev,
 									startdate,
@@ -155,7 +155,7 @@ if (isset($_POST['submit'])) {
 								'" . $SQLEndDate . "',
 								'" . filter_number_format($_POST['Price']) . "')";
 		$ErrMsg = _('The new price could not be added');
-		$result = DB_query($sql, $ErrMsg);
+		$result = DB_query($SQL, $ErrMsg);
 
 		ReSequenceEffectiveDates($Item, $_POST['TypeAbbrev'], $_POST['CurrAbrev']);
 		prnMsg(_('The new price has been inserted'), 'success');
@@ -168,7 +168,7 @@ if (isset($_POST['submit'])) {
 } elseif (isset($_GET['delete'])) {
 	//the link to delete a selected record was clicked instead of the submit button
 
-	$sql = "DELETE FROM prices
+	$SQL = "DELETE FROM prices
 			WHERE prices.stockid = '" . $Item . "'
 			AND prices.typeabbrev='" . $_GET['TypeAbbrev'] . "'
 			AND prices.currabrev ='" . $_GET['CurrAbrev'] . "'
@@ -176,14 +176,14 @@ if (isset($_POST['submit'])) {
 			AND  prices.enddate = '" . $_GET['EndDate'] . "'
 			AND prices.debtorno=''";
 	$ErrMsg = _('Could not delete this price');
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 	prnMsg(_('The selected price has been deleted'), 'success');
 
 }
 
 //Always do this stuff
 
-$sql = "SELECT currencies.currency,
+$SQL = "SELECT currencies.currency,
 			salestypes.sales_type,
 		prices.price,
 		prices.stockid,
@@ -203,7 +203,7 @@ $sql = "SELECT currencies.currency,
 		prices.typeabbrev,
 		prices.startdate";
 
-$result = DB_query($sql);
+$result = DB_query($SQL);
 
 if (DB_num_rows($result) > 0) {
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';

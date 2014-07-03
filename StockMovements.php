@@ -35,18 +35,18 @@ echo '<table class="selection">
 echo '  ' . _('From Stock Location') . ':<select required="required" minlength="1" name="StockLocation"> ';
 
 if ($_SESSION['RestrictLocations'] == 0) {
-	$sql = "SELECT locationname,
+	$SQL = "SELECT locationname,
 					loccode
 				FROM locations";
 } else {
-	$sql = "SELECT locationname,
+	$SQL = "SELECT locationname,
 					loccode
 				FROM locations
 				INNER JOIN www_users
 					ON locations.loccode=www_users.defaultlocation
 				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 }
-$resultStkLocs = DB_query($sql);
+$resultStkLocs = DB_query($SQL);
 
 while ($MyRow = DB_fetch_array($resultStkLocs)) {
 	if (isset($_POST['StockLocation']) and $_POST['StockLocation'] != 'All') {
@@ -76,7 +76,7 @@ echo '<tr>
 $SQLBeforeDate = FormatDateForSQL($_POST['BeforeDate']);
 $SQLAfterDate = FormatDateForSQL($_POST['AfterDate']);
 
-$sql = "SELECT stockmoves.stockid,
+$SQL = "SELECT stockmoves.stockid,
 				systypes.typename,
 				stockmoves.type,
 				stockmoves.transno,
@@ -102,7 +102,7 @@ $sql = "SELECT stockmoves.stockid,
 $ErrMsg = _('The stock movements for the selected criteria could not be retrieved because') . ' - ';
 $DbgMsg = _('The SQL that failed was') . ' ';
 
-$MovtsResult = DB_query($sql, $ErrMsg, $DbgMsg);
+$MovtsResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 echo '<tr>
 		<th>' . _('Type') . '</th>

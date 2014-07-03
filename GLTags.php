@@ -21,12 +21,12 @@ if (isset($_GET['SelectedTag'])) {
 		}
 		$Description = '';
 	} else {
-		$sql = "SELECT tagref,
+		$SQL = "SELECT tagref,
 					tagdescription
 				FROM tags
 				WHERE tagref='" . $_GET['SelectedTag'] . "'";
 
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_array($result);
 		$ref = $MyRow['tagref'];
 		$Description = $MyRow['tagdescription'];
@@ -37,14 +37,14 @@ if (isset($_GET['SelectedTag'])) {
 }
 
 if (isset($_POST['submit'])) {
-	$sql = "INSERT INTO tags values(NULL, '" . $_POST['Description'] . "')";
-	$result = DB_query($sql);
+	$SQL = "INSERT INTO tags values(NULL, '" . $_POST['Description'] . "')";
+	$result = DB_query($SQL);
 }
 
 if (isset($_POST['update'])) {
-	$sql = "UPDATE tags SET tagdescription='" . $_POST['Description'] . "'
+	$SQL = "UPDATE tags SET tagdescription='" . $_POST['Description'] . "'
 		WHERE tagref='" . $_POST['reference'] . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 }
 echo '<p class="page_title_text noPrint" >
 		<img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Print') . '" alt="' . $Title . '" />' . ' ' . $Title . '
@@ -78,12 +78,12 @@ echo '</td>
 		<th>' . _('Description') . '</th>
 	</tr>';
 
-$sql = "SELECT tagref,
+$SQL = "SELECT tagref,
 			tagdescription
 		FROM tags
 		ORDER BY tagref";
 
-$result = DB_query($sql);
+$result = DB_query($SQL);
 
 while ($MyRow = DB_fetch_array($result)) {
 	echo '<tr>

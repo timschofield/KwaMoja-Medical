@@ -36,8 +36,8 @@ if (isset($_POST['submit'])) {
 
 	$_POST['DebtorNo'] = mb_strtoupper($_POST['DebtorNo']);
 
-	$sql = "SELECT COUNT(debtorno) FROM debtorsmaster WHERE debtorno='" . $_POST['DebtorNo'] . "'";
-	$result = DB_query($sql);
+	$SQL = "SELECT COUNT(debtorno) FROM debtorsmaster WHERE debtorno='" . $_POST['DebtorNo'] . "'";
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_row($result);
 	if ($MyRow[0] > 0 and isset($_POST['New'])) {
 		$InputError = 1;
@@ -134,14 +134,14 @@ if (isset($_POST['submit'])) {
 		$SQL_ClientSince = FormatDateForSQL($_POST['ClientSince']);
 
 		if (!isset($_POST['New'])) {
-			$sql = "SELECT count(id)
+			$SQL = "SELECT count(id)
 					  FROM debtortrans
 					where debtorno = '" . $_POST['DebtorNo'] . "'";
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 			$MyRow = DB_fetch_array($result);
 
 			if ($MyRow[0] == 0) {
-				$sql = "UPDATE debtorsmaster SET	name='" . $_POST['CustName'] . "',
+				$SQL = "UPDATE debtorsmaster SET	name='" . $_POST['CustName'] . "',
 												address1='" . $_POST['Address1'] . "',
 												address2='" . $_POST['Address2'] . "',
 												address3='" . $_POST['Address3'] . "',
@@ -172,7 +172,7 @@ if (isset($_POST['submit'])) {
 				$CurrRow = DB_fetch_array($CurrResult);
 				$OldCurrency = $CurrRow[0];
 
-				$sql = "UPDATE debtorsmaster SET	name='" . $_POST['CustName'] . "',
+				$SQL = "UPDATE debtorsmaster SET	name='" . $_POST['CustName'] . "',
 												address1='" . $_POST['Address1'] . "',
 												address2='" . $_POST['Address2'] . "',
 												address3='" . $_POST['Address3'] . "',
@@ -200,7 +200,7 @@ if (isset($_POST['submit'])) {
 			}
 
 			$ErrMsg = _('The customer could not be updated because');
-			$result = DB_query($sql, $ErrMsg);
+			$result = DB_query($SQL, $ErrMsg);
 			prnMsg(_('Customer updated'), 'success');
 			echo '<br />';
 
@@ -216,7 +216,7 @@ if (isset($_POST['submit'])) {
 				} //$_SESSION['AutoDebtorNo'] == 1
 			} //$_SESSION['AutoDebtorNo'] > 0
 
-			$sql = "INSERT INTO debtorsmaster (
+			$SQL = "INSERT INTO debtorsmaster (
 							debtorno,
 							name,
 							address1,
@@ -264,7 +264,7 @@ if (isset($_POST['submit'])) {
 					)";
 
 			$ErrMsg = _('This customer could not be added because');
-			$result = DB_query($sql, $ErrMsg);
+			$result = DB_query($SQL, $ErrMsg);
 
 			$BranchCode = mb_substr($_POST['DebtorNo'], 0, 4);
 
@@ -288,8 +288,8 @@ elseif (isset($_POST['delete'])) {
 
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'DebtorTrans'
 
-	$sql = "SELECT COUNT(*) FROM debtortrans WHERE debtorno='" . $_POST['DebtorNo'] . "'";
-	$result = DB_query($sql);
+	$SQL = "SELECT COUNT(*) FROM debtortrans WHERE debtorno='" . $_POST['DebtorNo'] . "'";
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_row($result);
 	if ($MyRow[0] > 0) {
 		$CancelDelete = 1;
@@ -298,8 +298,8 @@ elseif (isset($_POST['delete'])) {
 
 	} //$MyRow[0] > 0
 	else {
-		$sql = "SELECT COUNT(*) FROM salesorders WHERE debtorno='" . $_POST['DebtorNo'] . "'";
-		$result = DB_query($sql);
+		$SQL = "SELECT COUNT(*) FROM salesorders WHERE debtorno='" . $_POST['DebtorNo'] . "'";
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_row($result);
 		if ($MyRow[0] > 0) {
 			$CancelDelete = 1;
@@ -307,8 +307,8 @@ elseif (isset($_POST['delete'])) {
 			echo '<br /> ' . _('There are') . ' ' . $MyRow[0] . ' ' . _('orders against this customer');
 		} //$MyRow[0] > 0
 		else {
-			$sql = "SELECT COUNT(*) FROM salesanalysis WHERE cust='" . $_POST['DebtorNo'] . "'";
-			$result = DB_query($sql);
+			$SQL = "SELECT COUNT(*) FROM salesanalysis WHERE cust='" . $_POST['DebtorNo'] . "'";
+			$result = DB_query($SQL);
 			$MyRow = DB_fetch_row($result);
 			if ($MyRow[0] > 0) {
 				$CancelDelete = 1;
@@ -341,10 +341,10 @@ elseif (isset($_POST['delete'])) {
 	if ($CancelDelete == 0) { //ie not cancelled the delete as a result of above tests
 		$SQL = "DELETE FROM custbranch WHERE debtorno='" . $_POST['DebtorNo'] . "'";
 		$result = DB_query($SQL, $ErrMsg);
-		$sql = "DELETE FROM custcontacts WHERE debtorno='" . $_POST['DebtorNo'] . "'";
-		$result = DB_query($sql);
-		$sql = "DELETE FROM debtorsmaster WHERE debtorno='" . $_POST['DebtorNo'] . "'";
-		$result = DB_query($sql);
+		$SQL = "DELETE FROM custcontacts WHERE debtorno='" . $_POST['DebtorNo'] . "'";
+		$result = DB_query($SQL);
+		$SQL = "DELETE FROM debtorsmaster WHERE debtorno='" . $_POST['DebtorNo'] . "'";
+		$result = DB_query($SQL);
 		prnMsg( _('Customer') . ' ' . $_POST['DebtorNo'] . ' ' . _('has been deleted - together with all the associated branches and contacts'),'success');
 		include('includes/footer.inc');
 		unset($_SESSION['CustomerID']);
@@ -427,17 +427,17 @@ if (!isset($DebtorNo)) {
 	/* First check that all the necessary items have been setup */
 
 	$SetupErrors = 0; //Count errors
-	$sql = "SELECT COUNT(typeabbrev)
+	$SQL = "SELECT COUNT(typeabbrev)
 				FROM salestypes";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_row($result);
 	if ($MyRow[0] == 0) {
 		prnMsg(_('In order to create a new customer you must first set up at least one sales type/price list') . '<br />' . _('Click') . ' ' . '<a target="_blank" href="' . $RootPath . '/SalesTypes.php">' . _('here') . ' ' . '</a>' . _('to set up your price lists'), 'warning') . '<br />';
 		$SetupErrors += 1;
 	} //$MyRow[0] == 0
-	$sql = "SELECT COUNT(typeid)
+	$SQL = "SELECT COUNT(typeid)
 				FROM debtortype";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_row($result);
 	if ($MyRow[0] == 0) {
 		prnMsg(_('In order to create a new customer you must first set up at least one customer type') . '<br />' . _('Click') . ' ' . '<a target="_blank" href="' . $RootPath . '/CustomerTypes.php">' . _('here') . ' ' . '</a>' . _('to set up your customer types'), 'warning');
@@ -694,7 +694,7 @@ else {
 			<tr><td valign="top">';
 
 	if (!isset($_POST['New'])) {
-		$sql = "SELECT debtorno,
+		$SQL = "SELECT debtorno,
 						name,
 						address1,
 						address2,
@@ -720,7 +720,7 @@ else {
 				WHERE debtorno = '" . $DebtorNo . "'";
 
 		$ErrMsg = _('The customer details could not be retrieved because');
-		$result = DB_query($sql, $ErrMsg);
+		$result = DB_query($SQL, $ErrMsg);
 
 		$MyRow = DB_fetch_array($result);
 		/* if $AutoDebtorNo in config.php has not been set or if it has been set to a number less than one,
@@ -1118,7 +1118,7 @@ else {
 		prnMsg(_('Contact Deleted'), 'success');
 	} //isset($_GET['delete'])
 
-	$sql = "SELECT contid,
+	$SQL = "SELECT contid,
 					debtorno,
 					contactname,
 					role,
@@ -1128,7 +1128,7 @@ else {
 			FROM custcontacts
 			WHERE debtorno='" . $DebtorNo . "'
 			ORDER BY contid";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	echo '<table class="selection">';
 	if (isset($_GET['Modify'])) {

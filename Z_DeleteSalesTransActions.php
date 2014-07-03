@@ -12,9 +12,9 @@ if (isset($_POST['ProcessDeletions'])) {
 
 		prnMsg(_('Deleting sales analysis records'), 'info');
 
-		$sql = "TRUNCATE TABLE salesanalysis";
+		$SQL = "TRUNCATE TABLE salesanalysis";
 		$ErrMsg = _('The SQL to delete Sales Analysis records failed because');
-		$Result = DB_query($sql, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 	}
 	if ($_POST['DebtorTrans'] == 'on') {
 
@@ -30,12 +30,12 @@ if (isset($_POST['ProcessDeletions'])) {
 		$Result = DB_query("DELETE FROM stockmoves WHERE type=10 OR type=11", $ErrMsg);
 
 		$ErrMsg = _('The SQL to update the transaction numbers for all sales transactions because');
-		$sql = "UPDATE systypes SET typeno =0
+		$SQL = "UPDATE systypes SET typeno =0
 						WHERE typeid =10
 						OR typeid=11
 						OR typeid=15
 						OR typeid=12";
-		$Result = DB_query($sql, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 
 	}
 	if ($_POST['SalesOrders'] == 'on') {
@@ -51,9 +51,9 @@ if (isset($_POST['ProcessDeletions'])) {
 		$Result = DB_query('DELETE FROM salesorders', $ErrMsg);
 
 
-		$sql = 'UPDATE systypes SET typeno =0 WHERE typeid =30';
+		$SQL = 'UPDATE systypes SET typeno =0 WHERE typeid =30';
 		$ErrMsg = _('The SQL to update the transaction number of sales orders has failed') . ', ' . _('the SQL statement was');
-		$Result = DB_query($sql, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 
 	}
 	if ($_POST['ZeroStock'] == 'on') {
@@ -71,35 +71,35 @@ if (isset($_POST['ProcessDeletions'])) {
 
 		prnMsg(_('Making the quantity invoiced zero on all orders'), 'info');
 
-		$sql = "UPDATE salesorderdetails SET qtyinvoiced=0, completed=0";
+		$SQL = "UPDATE salesorderdetails SET qtyinvoiced=0, completed=0";
 		$ErrMsg = _('The SQL to un-invoice all sales orders failed');
-		$Result = DB_query($sql, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 
 	}
 	if ($_POST['SalesGL'] == 'on') {
 
 		prnMsg(_('Deleting all sales related GL Transactions'), 'info');
-		$sql = "DELETE FROM gltrans WHERE type>=10 AND type <=15";
+		$SQL = "DELETE FROM gltrans WHERE type>=10 AND type <=15";
 		$ErrMsg = _('The SQL to delete sales related GL Transactions failed');
-		$Result = DB_query($sql, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 	}
 
 	if ($_POST['StockGL'] == 'on') {
 
 		prnMsg(_('Deleting all stock related GL Transactions'), 'info');
 
-		$sql = "DELETE FROM gltrans WHERE type=25 OR type=17 OR type=26 OR type=28";
+		$SQL = "DELETE FROM gltrans WHERE type=25 OR type=17 OR type=26 OR type=28";
 		$ErrMsg = _('The SQL to delete stock related GL Transactions failed');
-		$Result = DB_query($sql, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 
 	}
 	if ($_POST['ZeroPurchOrders'] == 'on') {
 
 		prnMsg(_('Zeroing all purchase order quantities received and uncompleting all purchase orders'), 'info');
 
-		$sql = 'UPDATE purchorderdetails SET quantityrecd=0, completed=0';
+		$SQL = 'UPDATE purchorderdetails SET quantityrecd=0, completed=0';
 		$ErrMsg = _('The SQL to zero quantity received for all purchase orders line items and uncompleted all purchase order line items because');
-		$Result = DB_query($sql, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 
 	}
 	if ($_POST['GRNs'] == 'on') {

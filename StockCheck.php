@@ -13,9 +13,9 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 
 	/*First off do the stock check file stuff */
 	if ($_POST['MakeStkChkData'] == 'New') {
-		$sql = "TRUNCATE TABLE stockcheckfreeze";
-		$result = DB_query($sql);
-		$sql = "INSERT INTO stockcheckfreeze (stockid,
+		$SQL = "TRUNCATE TABLE stockcheckfreeze";
+		$result = DB_query($SQL);
+		$SQL = "INSERT INTO stockcheckfreeze (stockid,
 										  loccode,
 										  qoh,
 										  stockcheckdate)
@@ -32,14 +32,14 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 					   stockmaster.mbflag!='K' AND
 					   stockmaster.mbflag!='D'";
 
-		$result = DB_query($sql, '', '', false, false);
+		$result = DB_query($SQL, '', '', false, false);
 		if (DB_error_no() != 0) {
 			$Title = _('Stock Count Sheets - Problem Report');
 			include('includes/header.inc');
 			prnMsg(_('The inventory quantities could not be added to the freeze file because') . ' ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 			if ($debug == 1) {
-				echo '<br />' . $sql;
+				echo '<br />' . $SQL;
 			}
 			include('includes/footer.inc');
 			exit;
@@ -47,27 +47,27 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 	}
 
 	if ($_POST['MakeStkChkData'] == 'AddUpdate') {
-		$sql = "DELETE stockcheckfreeze
+		$SQL = "DELETE stockcheckfreeze
 				FROM stockcheckfreeze
 				INNER JOIN stockmaster ON stockcheckfreeze.stockid=stockmaster.stockid
 				WHERE stockmaster.categoryid >='" . $_POST['FromCriteria'] . "'
 				AND stockmaster.categoryid<='" . $_POST['ToCriteria'] . "'
 				AND stockcheckfreeze.loccode='" . $_POST['Location'] . "'";
 
-		$result = DB_query($sql, '', '', false, false);
+		$result = DB_query($SQL, '', '', false, false);
 		if (DB_error_no() != 0) {
 			$Title = _('Stock Freeze') . ' - ' . _('Problem Report') . '.... ';
 			include('includes/header.inc');
 			prnMsg(_('The old quantities could not be deleted from the freeze file because') . ' ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 			if ($debug == 1) {
-				echo '<br />' . $sql;
+				echo '<br />' . $SQL;
 			}
 			include('includes/footer.inc');
 			exit;
 		}
 
-		$sql = "INSERT INTO stockcheckfreeze (stockid,
+		$SQL = "INSERT INTO stockcheckfreeze (stockid,
 										  loccode,
 										  qoh,
 										  stockcheckdate)
@@ -85,14 +85,14 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				AND stockmaster.mbflag!='G'
 				AND stockmaster.mbflag!='D'";
 
-		$result = DB_query($sql, '', '', false, false);
+		$result = DB_query($SQL, '', '', false, false);
 		if (DB_error_no() != 0) {
 			$Title = _('Stock Freeze - Problem Report');
 			include('includes/header.inc');
 			prnMsg(_('The inventory quantities could not be added to the freeze file because') . ' ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 			if ($debug == 1) {
-				echo '<br />' . $sql;
+				echo '<br />' . $SQL;
 			}
 			include('includes/footer.inc');
 			exit;
@@ -199,7 +199,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 			$DemandQty = $DemandRow['qtydemand'];
 
 			//Also need to add in the demand for components of assembly items
-			$sql = "SELECT SUM((salesorderdetails.quantity-salesorderdetails.qtyinvoiced)*bom.quantity) AS dem
+			$SQL = "SELECT SUM((salesorderdetails.quantity-salesorderdetails.qtyinvoiced)*bom.quantity) AS dem
 						   FROM salesorderdetails INNER JOIN salesorders
 						   ON salesorders.orderno = salesorderdetails.orderno
 						   INNER JOIN bom
@@ -212,11 +212,11 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 						   AND stockmaster.mbflag='A'
 						   AND salesorders.quotation=0";
 
-			$DemandResult = DB_query($sql, '', '', false, false);
+			$DemandResult = DB_query($SQL, '', '', false, false);
 			if (DB_error_no() != 0) {
 				prnMsg(_('The demand for this product from') . ' ' . $MyRow['loccode'] . ' ' . _('cannot be retrieved because') . ' - ' . DB_error_msg(), 'error');
 				if ($debug == 1) {
-					echo '<br />' . _('The SQL that failed was') . ' ' . $sql;
+					echo '<br />' . _('The SQL that failed was') . ' ' . $SQL;
 				}
 				exit;
 			}
@@ -269,8 +269,8 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				<td>' . _('From Inventory Category Code') . ':</td>
 				<td><select required="required" minlength="1" name="FromCriteria">';
 
-		$sql = "SELECT categoryid, categorydescription FROM stockcategory ORDER BY categorydescription";
-		$CatResult = DB_query($sql);
+		$SQL = "SELECT categoryid, categorydescription FROM stockcategory ORDER BY categorydescription";
+		$CatResult = DB_query($SQL);
 		while ($MyRow = DB_fetch_array($CatResult)) {
 			echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . ' - ' . $MyRow['categoryid'] . '</option>';
 		}
@@ -281,8 +281,8 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				<td><select required="required" minlength="1" name="ToCriteria">';
 
 		/*Set the index for the categories result set back to 0 */
-		$sql = "SELECT categoryid, categorydescription FROM stockcategory ORDER BY categorydescription";
-		$CatResult = DB_query($sql);
+		$SQL = "SELECT categoryid, categorydescription FROM stockcategory ORDER BY categorydescription";
+		$CatResult = DB_query($SQL);
 
 		while ($MyRow = DB_fetch_array($CatResult)) {
 			echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . ' - ' . $MyRow['categoryid'] . '</option>';
@@ -293,12 +293,12 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				<td>' . _('For Inventory in Location') . ':</td>
 				<td><select minlength="0" name="Location">';
 		if ($_SESSION['RestrictLocations'] == 0) {
-			$sql = "SELECT locationname,
+			$SQL = "SELECT locationname,
 							loccode
 						FROM locations
 						ORDER BY locationname";
 		} else {
-			$sql = "SELECT locationname,
+			$SQL = "SELECT locationname,
 							loccode
 						FROM locations
 						INNER JOIN www_users
@@ -306,7 +306,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 						WHERE www_users.userid='" . $_SESSION['UserID'] . "'
 						ORDER BY locationname";
 		}
-		$LocnResult = DB_query($sql);
+		$LocnResult = DB_query($SQL);
 
 		while ($MyRow = DB_fetch_array($LocnResult)) {
 			echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';

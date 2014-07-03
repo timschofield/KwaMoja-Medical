@@ -66,7 +66,7 @@ elseif (isset($_POST['DoIt']) and $_POST['PrintOrEmail'] == 'Email' and isset($_
 if (isset($OrderNo) and $OrderNo != '' and $OrderNo > 0 and $OrderNo != 'Preview') {
 	/*retrieve the order details from the database to print */
 	$ErrMsg = _('There was a problem retrieving the purchase order header details for Order Number') . ' ' . $OrderNo . ' ' . _('from the database');
-	$sql = "SELECT	purchorders.supplierno,
+	$SQL = "SELECT	purchorders.supplierno,
 					suppliers.suppname,
 					suppliers.address1,
 					suppliers.address2,
@@ -103,7 +103,7 @@ if (isset($OrderNo) and $OrderNo != '' and $OrderNo > 0 and $OrderNo != 'Preview
 				INNER JOIN www_users users2
 					ON purchorders.authoriser=users2.userid
 				WHERE purchorders.orderno='" . $OrderNo . "'";
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 	if (DB_num_rows($result) == 0) {
 		/*There is no order header returned */
 		$Title = _('Print Purchase Order Error');
@@ -198,7 +198,7 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 	Now ... Has it got any line items */
 	if ($OrderNo != 'Preview') { // It is a real order
 		$ErrMsg = _('There was a problem retrieving the line details for order number') . ' ' . $OrderNo . ' ' . _('from the database');
-		$sql = "SELECT itemcode,
+		$SQL = "SELECT itemcode,
 						deliverydate,
 						itemdescription,
 						unitprice,
@@ -212,7 +212,7 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 				WHERE orderno ='" . $OrderNo . "'
 				ORDER BY itemcode";
 		/*- ADDED: Sort by our item code -*/
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 	} //$OrderNo != 'Preview'
 	if ($OrderNo == 'Preview' or DB_num_rows($result) > 0) {
 		/*Yes there are line items to start the ball rolling with a page header */
@@ -363,12 +363,12 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 	if ($ViewingOnly == 0 and $Success == 1) {
 		$StatusComment = date($_SESSION['DefaultDateFormat']) . ' - ' . _('Printed by') . ' <a href="mailto:' . $_SESSION['UserEmail'] . '">' . $_SESSION['UsersRealName'] . '</a><br />' . html_entity_decode($POHeader['stat_comment'], ENT_QUOTES, 'UTF-8');
 
-		$sql = "UPDATE purchorders	SET	allowprint =  0,
+		$SQL = "UPDATE purchorders	SET	allowprint =  0,
 										dateprinted  = CURRENT_DATE,
 										status = 'Printed',
 										stat_comment = '" . htmlspecialchars($StatusComment, ENT_QUOTES, 'UTF-8') . "'
 				WHERE purchorders.orderno = '" . $OrderNo . "'";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 	} //$ViewingOnly == 0 and $Success == 1
 	include('includes/footer.inc');
 } //isset($MakePDFThenDisplayIt) OR isset($MakePDFThenEmailIt)

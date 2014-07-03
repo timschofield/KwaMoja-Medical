@@ -18,13 +18,13 @@ if (isset($_POST['PrintPDF'])) {
 	$line_height = 12;
 
 	//get supplier
-	$sqlsup = "SELECT suppname,
+	$SQLsup = "SELECT suppname,
 					  currcode,
 					  decimalplaces AS currdecimalplaces
 				FROM suppliers INNER JOIN currencies
 				ON suppliers.currcode=currencies.currabrev
 				WHERE supplierid='" . $_POST['supplier'] . "'";
-	$resultsup = DB_query($sqlsup);
+	$resultsup = DB_query($SQLsup);
 	$RowSup = DB_fetch_array($resultsup);
 	$SupplierName = $RowSup['suppname'];
 	$CurrCode = $RowSup['currcode'];
@@ -32,11 +32,11 @@ if (isset($_POST['PrintPDF'])) {
 
 	//get category
 	if ($_POST['category'] != 'all') {
-		$sqlcat = "SELECT categorydescription
+		$SQLcat = "SELECT categorydescription
 				FROM `stockcategory`
 				WHERE categoryid ='" . $_POST['category'] . "'";
 
-		$resultcat = DB_query($sqlcat);
+		$resultcat = DB_query($SQLcat);
 		$RowCat = DB_fetch_row($resultcat);
 		$Categoryname = $RowCat['0'];
 	} else {
@@ -53,7 +53,7 @@ if (isset($_POST['PrintPDF'])) {
 
 	//price and category = all
 	if (($_POST['price'] == 'all') and ($_POST['category'] == 'all')) {
-		$sql = "SELECT 	purchdata.stockid,
+		$SQL = "SELECT 	purchdata.stockid,
 					stockmaster.description,
 					purchdata.price,
 					purchdata.conversionfactor,
@@ -68,7 +68,7 @@ if (isset($_POST['PrintPDF'])) {
 		//category=all and price != all
 		if (($_POST['price'] != 'all') and ($_POST['category'] == 'all')) {
 
-			$sql = "SELECT purchdata.stockid,
+			$SQL = "SELECT purchdata.stockid,
 							stockmaster.description,
 							(SELECT purchdata.price
 							 FROM purchdata
@@ -92,7 +92,7 @@ if (isset($_POST['PrintPDF'])) {
 			//price = all category !=all
 			if (($_POST['price'] == 'all') and ($_POST['category'] != 'all')) {
 
-				$sql = "SELECT 	purchdata.stockid,
+				$SQL = "SELECT 	purchdata.stockid,
 								stockmaster.description,
 								purchdata.price,
 								purchdata.conversionfactor,
@@ -106,7 +106,7 @@ if (isset($_POST['PrintPDF'])) {
 						ORDER BY stockid ASC ,dateprice DESC";
 			} else {
 				//price != all category !=all
-				$sql = "SELECT 	purchdata.stockid,
+				$SQL = "SELECT 	purchdata.stockid,
 								stockmaster.description,
 								(SELECT purchdata.price
 								 FROM purchdata
@@ -130,7 +130,7 @@ if (isset($_POST['PrintPDF'])) {
 			}
 		}
 	}
-	$result = DB_query($sql, '', '', false, true);
+	$result = DB_query($SQL, '', '', false, true);
 
 	if (DB_error_no() != 0) {
 		$Title = _('Price List') . ' - ' . _('Problem Report');
@@ -139,7 +139,7 @@ if (isset($_POST['PrintPDF'])) {
 		echo '<br />
 				<a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($debug == 1) {
-			echo '<br />' . $sql;
+			echo '<br />' . $SQL;
 		}
 		include('includes/footer.inc');
 		exit;
@@ -212,8 +212,8 @@ if (isset($_POST['PrintPDF'])) {
 	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
-	$sql = "SELECT supplierid,suppname FROM `suppliers`";
-	$result = DB_query($sql);
+	$SQL = "SELECT supplierid,suppname FROM `suppliers`";
+	$result = DB_query($SQL);
 	echo '<table class="selection">
 			<tr>
 				<td>' . _('Supplier') . ':</td>
@@ -228,8 +228,8 @@ if (isset($_POST['PrintPDF'])) {
 	echo '</select></td>
 		</tr>';
 
-	$sql = "SELECT categoryid, categorydescription FROM stockcategory";
-	$result = DB_query($sql);
+	$SQL = "SELECT categoryid, categorydescription FROM stockcategory";
+	$result = DB_query($SQL);
 	echo '<tr>
 			<td>' . _('Category') . ':</td>
 			<td><select required="required" minlength="1" name="category"> ';

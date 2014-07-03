@@ -17,14 +17,14 @@ if (isset($_POST['PrintPDF'])) {
 	$result = DB_query("DROP TABLE IF EXISTS tempbom");
 	$result = DB_query("DROP TABLE IF EXISTS passbom");
 	$result = DB_query("DROP TABLE IF EXISTS passbom2");
-	$sql = "CREATE TEMPORARY TABLE passbom (
+	$SQL = "CREATE TEMPORARY TABLE passbom (
 				part char(20),
 				sortpart text) DEFAULT CHARSET=utf8";
 
 	$ErrMsg = _('The SQL to create passbom failed with the message');
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 
-	$sql = "CREATE TEMPORARY TABLE tempbom (
+	$SQL = "CREATE TEMPORARY TABLE tempbom (
 				parent char(20),
 				component char(20),
 				sortpart text,
@@ -34,25 +34,25 @@ if (isset($_POST['PrintPDF'])) {
 				effectiveafter date,
 				effectiveto date,
 				quantity double) DEFAULT CHARSET=utf8";
-	$result = DB_query($sql, _('Create of tempbom failed because'));
+	$result = DB_query($SQL, _('Create of tempbom failed because'));
 	// First, find first level of components below requested assembly
 	// Put those first level parts in passbom, use COMPONENT in passbom
 	// to link to PARENT in bom to find next lower level and accumulate
 	// those parts into tempbom
 
 	// This finds the top level
-	$sql = "INSERT INTO passbom (part, sortpart)
+	$SQL = "INSERT INTO passbom (part, sortpart)
 			   SELECT bom.parent AS part,
 					  CONCAT(bom.component,bom.parent) AS sortpart
 					  FROM bom
 			  WHERE bom.component ='" . $_POST['Part'] . "'
 			  AND bom.effectiveto >= CURRENT_DATE
 			  AND bom.effectiveafter <= CURRENT_DATE";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	$LevelCounter = 2;
 	// $LevelCounter is the level counter
-	$sql = "INSERT INTO tempbom (
+	$SQL = "INSERT INTO tempbom (
 				parent,
 				component,
 				sortpart,
@@ -75,7 +75,7 @@ if (isset($_POST['PrintPDF'])) {
 			  WHERE bom.component ='" . $_POST['Part'] . "'
 			  AND bom.effectiveto >= CURRENT_DATE
 			  AND bom.effectiveafter <= CURRENT_DATE";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	// This while routine finds the other levels as long as $ComponentCounter - the
 	// component counter finds there are more components that are used as
@@ -84,7 +84,7 @@ if (isset($_POST['PrintPDF'])) {
 	$ComponentCounter = 1;
 	while ($ComponentCounter > 0) {
 		$LevelCounter++;
-		$sql = "INSERT INTO tempbom (parent,
+		$SQL = "INSERT INTO tempbom (parent,
 									component,
 									sortpart,
 									level,
@@ -106,27 +106,27 @@ if (isset($_POST['PrintPDF'])) {
 				WHERE bom.component = passbom.part
 				AND bom.effectiveto >= CURRENT_DATE
 				AND bom.effectiveafter <= CURRENT_DATE";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 
 		$result = DB_query("DROP TABLE IF EXISTS passbom2");
 
 		$result = DB_query("ALTER TABLE passbom RENAME AS passbom2");
 		$result = DB_query("DROP TABLE IF EXISTS passbom");
 
-		$sql = "CREATE TEMPORARY TABLE passbom (
+		$SQL = "CREATE TEMPORARY TABLE passbom (
 						part char(20),
 						sortpart text) DEFAULT CHARSET=utf8";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 
 
-		$sql = "INSERT INTO passbom (part, sortpart)
+		$SQL = "INSERT INTO passbom (part, sortpart)
 				   SELECT bom.parent AS part,
 						  CONCAT(passbom2.sortpart,bom.parent) AS sortpart
 				   FROM bom,passbom2
 				   WHERE bom.component = passbom2.part
 					AND bom.effectiveto >= CURRENT_DATE
 					AND bom.effectiveafter <= CURRENT_DATE";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$result = DB_query("SELECT COUNT(*) FROM bom,passbom WHERE bom.component = passbom.part");
 
 		$MyRow = DB_fetch_row($result);
@@ -141,18 +141,18 @@ if (isset($_POST['PrintPDF'])) {
 		echo '<br />
 			<a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($debug == 1) {
-			echo '<br />' . $sql;
+			echo '<br />' . $SQL;
 		}
 		include('includes/footer.inc');
 		exit;
 	}
 
 
-	$sql = "SELECT stockmaster.stockid,
+	$SQL = "SELECT stockmaster.stockid,
 				   stockmaster.description
 			  FROM stockmaster
 			  WHERE stockid = '" . $_POST['Part'] . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 	$Assembly = $_POST['Part'];
 	$AssemblyDesc = $MyRow['description'];
@@ -162,13 +162,13 @@ if (isset($_POST['PrintPDF'])) {
 	$Tot_Val = 0;
 	$fill = false;
 	$pdf->SetFillColor(224, 235, 255);
-	$sql = "SELECT tempbom.*,
+	$SQL = "SELECT tempbom.*,
 				   stockmaster.description,
 				   stockmaster.mbflag
 			  FROM tempbom INNER JOIN stockmaster
 			  ON tempbom.parent = stockmaster.stockid
 			  ORDER BY sortpart";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	$ListCount = DB_num_rows($result);
 

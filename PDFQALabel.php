@@ -30,7 +30,7 @@ if ($GRNNo == 'Preview') {
 	$NoOfGRNs = 1;
 } else { //NOT PREVIEW
 
-	$sql = "SELECT grns.itemcode,
+	$SQL = "SELECT grns.itemcode,
 				grns.grnno,
 				grns.deliverydate,
 				grns.itemdescription,
@@ -42,15 +42,15 @@ if ($GRNNo == 'Preview') {
 			ON grns.itemcode=stockmaster.stockid
 			WHERE grnbatch='" . $GRNNo . "'";
 
-	$GRNResult = DB_query($sql);
+	$GRNResult = DB_query($SQL);
 	$NoOfGRNs = DB_num_rows($GRNResult);
 	if ($NoOfGRNs > 0) { //there are GRNs to print
 
-		$sql = "SELECT suppliers.suppname
+		$SQL = "SELECT suppliers.suppname
 				FROM grns INNER JOIN suppliers
 				ON grns.supplierid=suppliers.supplierid
 				WHERE grnbatch='" . $GRNNo . "'";
-		$SuppResult = DB_query($sql, _('Could not get the supplier of the selected GRN'));
+		$SuppResult = DB_query($SQL, _('Could not get the supplier of the selected GRN'));
 		$SuppRow = DB_fetch_array($SuppResult);
 	}
 } // get data to print

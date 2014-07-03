@@ -148,7 +148,7 @@ if (!isset($_FILES['ImportFile']) AND !isset($_SESSION['Statement'])) {
 	/*end while get next line of message */
 
 	/* Look to match up the account for which transactions are being imported with a bank account */
-	$sql = "SELECT accountcode,
+	$SQL = "SELECT accountcode,
 					bankaccountname,
 					decimalplaces,
 					rate
@@ -159,7 +159,7 @@ if (!isset($_FILES['ImportFile']) AND !isset($_SESSION['Statement'])) {
 
 	$ErrMsg = _('Could not retrieve bank accounts that match with the statement being imported');
 
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 	if (DB_num_rows($result) == 0) { //but check for the worst!
 		//there is no bank account set up for the bank account being imported
 		prnMsg(_('The account') . ' ' . $_SESSION['Statement']->AccountNumber . ' ' . _('is not defined as a bank account of the business. No imports can be processed'), 'warn');

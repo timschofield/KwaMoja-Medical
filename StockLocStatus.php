@@ -22,7 +22,7 @@ echo '<table class="selection">
 		 <td>' . _('From Stock Location') . ':</td><td><select minlength="0" name="StockLocation">';
 
 if ($_SESSION['RestrictLocations'] == 0) {
-	$sql = "SELECT locationname,
+	$SQL = "SELECT locationname,
 					loccode
 				FROM locations";
 	echo '<option selected="selected" value="All">' . _('All Locations') . '</option>';
@@ -30,7 +30,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 		$_POST['StockLocation'] = 'All';
 	}
 } else {
-	$sql = "SELECT locationname,
+	$SQL = "SELECT locationname,
 					loccode
 				FROM locations
 				INNER JOIN www_users
@@ -41,7 +41,7 @@ if ($_SESSION['RestrictLocations'] == 0) {
 	}
 }
 
-$resultStkLocs = DB_query($sql);
+$resultStkLocs = DB_query($SQL);
 while ($MyRow = DB_fetch_array($resultStkLocs)) {
 	if (isset($_POST['StockLocation']) and $_POST['StockLocation'] != 'All') {
 		if ($MyRow['loccode'] == $_POST['StockLocation']) {
@@ -133,7 +133,7 @@ if (isset($_POST['ShowStatus'])) {
 	if ($_POST['StockLocation'] == 'All') {
 		$_POST['StockLocation'] = '%';
 	}
-	$sql = "SELECT locstock.stockid,
+	$SQL = "SELECT locstock.stockid,
 					stockmaster.description,
 					locstock.loccode,
 					locstock.bin,
@@ -155,7 +155,7 @@ if (isset($_POST['ShowStatus'])) {
 
 	$ErrMsg = _('The stock held at each location cannot be retrieved because');
 	$DbgMsg = _('The SQL that failed was');
-	$LocStockResult = DB_query($sql, $ErrMsg, $DbgMsg);
+	$LocStockResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	echo '<table cellpadding="5" cellspacing="4" class="selection">
 		 	<tr>
@@ -175,7 +175,7 @@ if (isset($_POST['ShowStatus'])) {
 
 		$StockID = $MyRow['stockid'];
 
-		$sql = "SELECT SUM(salesorderdetails.quantity-salesorderdetails.qtyinvoiced) AS dem
+		$SQL = "SELECT SUM(salesorderdetails.quantity-salesorderdetails.qtyinvoiced) AS dem
 					FROM salesorderdetails INNER JOIN salesorders
 					ON salesorders.orderno = salesorderdetails.orderno
 					WHERE salesorders.fromstkloc='" . $MyRow['loccode'] . "'
@@ -184,7 +184,7 @@ if (isset($_POST['ShowStatus'])) {
 					AND salesorders.quotation=0";
 
 		$ErrMsg = _('The demand for this product from') . ' ' . $MyRow['loccode'] . ' ' . _('cannot be retrieved because');
-		$DemandResult = DB_query($sql, $ErrMsg);
+		$DemandResult = DB_query($SQL, $ErrMsg);
 
 		if (DB_num_rows($DemandResult) == 1) {
 			$DemandRow = DB_fetch_row($DemandResult);
@@ -194,7 +194,7 @@ if (isset($_POST['ShowStatus'])) {
 		}
 
 		//Also need to add in the demand as a component of an assembly items if this items has any assembly parents.
-		$sql = "SELECT SUM((salesorderdetails.quantity-salesorderdetails.qtyinvoiced)*bom.quantity) AS dem
+		$SQL = "SELECT SUM((salesorderdetails.quantity-salesorderdetails.qtyinvoiced)*bom.quantity) AS dem
 				FROM salesorderdetails INNER JOIN salesorders
 					 ON salesorders.orderno = salesorderdetails.orderno
 				INNER JOIN bom
@@ -208,13 +208,13 @@ if (isset($_POST['ShowStatus'])) {
 				AND salesorders.quotation=0";
 
 		$ErrMsg = _('The demand for this product from') . ' ' . $MyRow['loccode'] . ' ' . _('cannot be retrieved because');
-		$DemandResult = DB_query($sql, $ErrMsg);
+		$DemandResult = DB_query($SQL, $ErrMsg);
 
 		if (DB_num_rows($DemandResult) == 1) {
 			$DemandRow = DB_fetch_row($DemandResult);
 			$DemandQty += $DemandRow[0];
 		}
-		$sql = "SELECT SUM((woitems.qtyreqd-woitems.qtyrecd)*bom.quantity) AS dem
+		$SQL = "SELECT SUM((woitems.qtyreqd-woitems.qtyrecd)*bom.quantity) AS dem
 				FROM workorders INNER JOIN woitems
 					 ON woitems.wo = workorders.wo
 				INNER JOIN bom
@@ -222,7 +222,7 @@ if (isset($_POST['ShowStatus'])) {
 				WHERE workorders.closed=0
 				AND   bom.component = '" . $StockID . "'
 				AND   workorders.loccode='" . $MyRow['loccode'] . "'";
-		$DemandResult = DB_query($sql, $ErrMsg);
+		$DemandResult = DB_query($SQL, $ErrMsg);
 
 		if (DB_num_rows($DemandResult) == 1) {
 			$DemandRow = DB_fetch_row($DemandResult);
@@ -230,7 +230,7 @@ if (isset($_POST['ShowStatus'])) {
 		}
 
 
-		$sql = "SELECT SUM(purchorderdetails.quantityord - purchorderdetails.quantityrecd) AS qoo
+		$SQL = "SELECT SUM(purchorderdetails.quantityord - purchorderdetails.quantityrecd) AS qoo
 				FROM purchorderdetails
 				INNER JOIN purchorders
 					ON purchorderdetails.orderno=purchorders.orderno
@@ -239,7 +239,7 @@ if (isset($_POST['ShowStatus'])) {
 					AND (purchorders.status = 'Authorised' OR purchorders.status='Printed')";
 
 		$ErrMsg = _('The quantity on order for this product to be received into') . ' ' . $MyRow['loccode'] . ' ' . _('cannot be retrieved because');
-		$QOOResult = DB_query($sql, $ErrMsg);
+		$QOOResult = DB_query($SQL, $ErrMsg);
 
 		if (DB_num_rows($QOOResult) == 1) {
 			$QOORow = DB_fetch_row($QOOResult);

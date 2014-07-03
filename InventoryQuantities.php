@@ -19,17 +19,17 @@ if (isset($_POST['PrintPDF']) or isset($_POST['CSV'])) {
 	$CatDescription = ' ';
 	if ($_POST['StockCat'] != 'All') {
 		$WhereCategory = " AND stockmaster.categoryid='" . $_POST['StockCat'] . "'";
-		$sql = "SELECT categoryid,
+		$SQL = "SELECT categoryid,
 					categorydescription
 				FROM stockcategory
 				WHERE categoryid='" . $_POST['StockCat'] . "' ";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_row($result);
 		$CatDescription = $MyRow[1];
 	}
 
 	if ($_POST['Selection'] == 'All') {
-		$sql = "SELECT locstock.stockid,
+		$SQL = "SELECT locstock.stockid,
 					stockmaster.description,
 					locstock.loccode,
 					locations.locationname,
@@ -51,7 +51,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['CSV'])) {
 		// sql to only select parts in more than one location
 		// The SELECT statement at the beginning of the WHERE clause limits the selection to
 		// parts with quantity in more than one location
-		$sql = "SELECT locstock.stockid,
+		$SQL = "SELECT locstock.stockid,
 					stockmaster.description,
 					locstock.loccode,
 					locations.locationname,
@@ -76,7 +76,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['CSV'])) {
 	}
 
 
-	$result = DB_query($sql, '', '', false, true);
+	$result = DB_query($SQL, '', '', false, true);
 
 	if (DB_error_no() != 0) {
 		$Title = _('Inventory Quantities') . ' - ' . _('Problem Report');
@@ -84,7 +84,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['CSV'])) {
 		prnMsg(_('The Inventory Quantity report could not be retrieved by the SQL because') . ' ' . DB_error_msg(), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($debug == 1) {
-			echo '<br />' . $sql;
+			echo '<br />' . $SQL;
 		}
 		include('includes/footer.inc');
 		exit;

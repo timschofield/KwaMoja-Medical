@@ -10,18 +10,18 @@ if (isset($_POST['Update']) and $AlloDemoMode != true) {
 	foreach ($_POST as $ScriptName => $PageSecurityValue) {
 		if ($ScriptName != 'Update' and $ScriptName != 'FormID') {
 			$ScriptName = mb_substr($ScriptName, 0, mb_strlen($ScriptName) - 4) . '.php';
-			$sql = "UPDATE scripts SET pagesecurity='" . $PageSecurityValue . "' WHERE script='" . $ScriptName . "'";
-			$UpdateResult = DB_query($sql, _('Could not update the page security value for the script because'));
+			$SQL = "UPDATE scripts SET pagesecurity='" . $PageSecurityValue . "' WHERE script='" . $ScriptName . "'";
+			$UpdateResult = DB_query($SQL, _('Could not update the page security value for the script because'));
 		}
 	}
 }
 
-$sql = "SELECT script,
+$SQL = "SELECT script,
 			pagesecurity,
 			description
 		FROM scripts";
 
-$result = DB_query($sql);
+$result = DB_query($SQL);
 
 echo '<br /><form onSubmit="return VerifyForm(this);" method="post" class="noPrint" id="PageSecurity" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 echo '<div>';

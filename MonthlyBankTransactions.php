@@ -51,12 +51,12 @@ if (!isset($_POST['Show'])) {
 		echo '</select></td></tr>';
 	}
 	$NextYear = date('Y-m-d', strtotime('+1 Year'));
-	$sql = "SELECT periodno,
+	$SQL = "SELECT periodno,
 					lastdate_in_period
 				FROM periods
 				WHERE lastdate_in_period < '" . $NextYear . "'
 				ORDER BY periodno DESC";
-	$Periods = DB_query($sql);
+	$Periods = DB_query($SQL);
 
 	echo '<tr>
 				<td>' . _('Select Period') . ':</td>
@@ -97,7 +97,7 @@ if (!isset($_POST['Show'])) {
 	$BankResult = DB_query($SQL, _('Could not retrieve the bank account details'));
 
 
-	$sql = "SELECT 	banktrans.currcode,
+	$SQL = "SELECT 	banktrans.currcode,
 					banktrans.amount,
 					banktrans.amountcleared,
 					banktrans.functionalexrate,
@@ -121,14 +121,14 @@ if (!isset($_POST['Show'])) {
 					AND periodno>='" . $_POST['FromPeriod'] . "'
 				ORDER BY banktrans.type,
 						banktrans.transdate";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	if (DB_num_rows($result) == 0) {
 		prnMsg(_('There are no transactions for this account in the date range selected'), 'info');
 	} else {
-		$sql = "SELECT lastdate_in_period
+		$SQL = "SELECT lastdate_in_period
 					FROM periods
 					WHERE periodno = '" . $_POST['FromPeriod'] . "'";
-		$Periods = DB_query($sql);
+		$Periods = DB_query($SQL);
 		$PeriodRow = DB_fetch_array($Periods);
 		$EndDate = ConvertSQLDate($PeriodRow['lastdate_in_period']);
 

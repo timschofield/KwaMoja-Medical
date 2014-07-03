@@ -61,11 +61,11 @@ if (isset($_POST['AddGLCodeToTrans']) AND $_POST['AddGLCodeToTrans'] == _('Enter
 		$InputError = True;
 	}
 
-	$sql = "SELECT accountcode,
+	$SQL = "SELECT accountcode,
 					accountname
 				FROM chartmaster
 				WHERE accountcode='" . $_POST['GLCode'] . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	if (DB_num_rows($result) == 0 AND $_POST['GLCode'] != '') {
 		prnMsg(_('The account code entered is not a valid code') . '. ' . _('This line cannot be added to the transaction') . '.<br />' . _('You can use the selection box to select the account you want'), 'error');
 		$InputError = True;

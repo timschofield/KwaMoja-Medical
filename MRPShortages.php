@@ -32,52 +32,52 @@ if (isset($_POST['PrintPDF'])) {
 	// total for either supply or demand. Did this to simplify main sql where used
 	// several subqueries.
 
-	$sql = "CREATE TEMPORARY TABLE demandtotal (
+	$SQL = "CREATE TEMPORARY TABLE demandtotal (
 				part char(20),
 				demand double,
 				KEY `PART` (`part`)) DEFAULT CHARSET=utf8";
-	$result = DB_query($sql, _('Create of demandtotal failed because'));
+	$result = DB_query($SQL, _('Create of demandtotal failed because'));
 
-	$sql = "INSERT INTO demandtotal
+	$SQL = "INSERT INTO demandtotal
 						(part,
 						 demand)
 			   SELECT part,
 					  SUM(quantity) as demand
 				FROM mrprequirements
 				GROUP BY part";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
-	$sql = "CREATE TEMPORARY TABLE supplytotal (
+	$SQL = "CREATE TEMPORARY TABLE supplytotal (
 				part char(20),
 				supply double,
 				KEY `PART` (`part`)) DEFAULT CHARSET=utf8";
-	$result = DB_query($sql, _('Create of supplytotal failed because'));
+	$result = DB_query($SQL, _('Create of supplytotal failed because'));
 
 	/* 21/03/2010: Ricard modification to allow items with total supply = 0 be included in the report */
 
-	$sql = "INSERT INTO supplytotal
+	$SQL = "INSERT INTO supplytotal
 						(part,
 						 supply)
 			SELECT stockid,
 				  0
 			FROM stockmaster";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
-	$sql = "UPDATE supplytotal
+	$SQL = "UPDATE supplytotal
 			SET supply = (SELECT SUM(mrpsupplies.supplyquantity)
 							FROM mrpsupplies
 							WHERE supplytotal.part = mrpsupplies.part
 								AND mrpsupplies.supplyquantity > 0)";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
-	$sql = "UPDATE supplytotal SET supply = 0 WHERE supply IS NULL";
-	$result = DB_query($sql);
+	$SQL = "UPDATE supplytotal SET supply = 0 WHERE supply IS NULL";
+	$result = DB_query($SQL);
 
 
 	// Only include directdemand mrprequirements so don't have demand for top level parts and also
 	// show demand for the lower level parts that the upper level part generates. See MRP.php for
-	// more notes - Decided not to exclude derived demand so using $sql, not $sqlexclude
-	$sqlexclude = "SELECT stockmaster.stockid,
+	// more notes - Decided not to exclude derived demand so using $SQL, not $SQLexclude
+	$SQLexclude = "SELECT stockmaster.stockid,
 							stockmaster.description,
 							stockmaster.mbflag,
 							stockmaster.actualcost,
@@ -117,7 +117,7 @@ if (isset($_POST['PrintPDF'])) {
 		$SQLHaving = " HAVING demandtotal.demand <= supplytotal.supply ";
 	}
 
-	$sql = "SELECT stockmaster.stockid,
+	$SQL = "SELECT stockmaster.stockid,
 					stockmaster.description,
 					stockmaster.mbflag,
 					stockmaster.actualcost,
@@ -146,7 +146,7 @@ if (isset($_POST['PrintPDF'])) {
 						supplytotal.supply,
 						demandtotal.demand " . $SQLHaving . "
 				ORDER BY '" . $_POST['Sort'] . "'";
-	$result = DB_query($sql, '', '', false, true);
+	$result = DB_query($SQL, '', '', false, true);
 
 	if (DB_error_no() != 0) {
 		$Title = _('MRP Shortages and Excesses') . ' - ' . _('Problem Report');
@@ -154,7 +154,7 @@ if (isset($_POST['PrintPDF'])) {
 		prnMsg(_('The MRP shortages and excesses could not be retrieved by the SQL because') . ' ' . DB_error_msg(), 'error');
 		echo '<br/><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($debug == 1) {
-			echo '<br/>' . $sql;
+			echo '<br/>' . $SQL;
 		}
 		include('includes/footer.inc');
 		exit;
@@ -166,7 +166,7 @@ if (isset($_POST['PrintPDF'])) {
 		prnMsg(_('No MRP shortages - Excess retrieved'), 'warn');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($debug == 1) {
-			echo '<br />' . $sql;
+			echo '<br />' . $SQL;
 		}
 		include('includes/footer.inc');
 		exit;
@@ -258,10 +258,10 @@ if (isset($_POST['PrintPDF'])) {
 	echo '<table class="selection">';
 	echo '<tr><td>' . _('Inventory Category') . ':</td><td><select minlength="0" name="CategoryID">';
 	echo '<option selected="selected" value="All">' . _('All Stock Categories') . '</option>';
-	$sql = "SELECT categoryid,
+	$SQL = "SELECT categoryid,
 			categorydescription
 			FROM stockcategory";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	while ($MyRow = DB_fetch_array($result)) {
 		echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categoryid'] . ' - ' . $MyRow['categorydescription'] . '</option>';
 	} //end while loop

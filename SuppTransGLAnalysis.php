@@ -35,11 +35,11 @@ if (isset($_POST['AddGLCodeToTrans']) and $_POST['AddGLCodeToTrans'] == _('Enter
 		$InputError = True;
 	}
 
-	$sql = "SELECT accountcode,
+	$SQL = "SELECT accountcode,
 			accountname
 		FROM chartmaster
 		WHERE accountcode='" . $_POST['GLCode'] . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	if (DB_num_rows($result) == 0 and $_POST['GLCode'] != '') {
 		prnMsg(_('The account code entered is not a valid code') . '. ' . _('This line cannot be added to the transaction') . '.<br />' . _('You can use the selection box to select the account you want'), 'error');
 		$InputError = True;
@@ -50,8 +50,8 @@ if (isset($_POST['AddGLCodeToTrans']) and $_POST['AddGLCodeToTrans'] == _('Enter
 			prnMsg(_('The amount entered is not numeric') . '. ' . _('This line cannot be added to the transaction'), 'error');
 			$InputError = True;
 		} elseif ($_POST['JobRef'] != '') {
-			$sql = "SELECT contractref FROM contracts WHERE contractref='" . $_POST['JobRef'] . "'";
-			$result = DB_query($sql);
+			$SQL = "SELECT contractref FROM contracts WHERE contractref='" . $_POST['JobRef'] . "'";
+			$result = DB_query($SQL);
 			if (DB_num_rows($result) == 0) {
 				prnMsg(_('The contract reference entered is not a valid contract, this line cannot be added to the transaction'), 'error');
 				$InputError = True;
@@ -182,9 +182,9 @@ echo '<tr>
 		<br />' . _('otherwise select the account from the list') . ')</td>
 	<td><select minlength="0" name="AcctSelection" onchange="return assignComboToInput(this,' . 'GLCode' . ')">';
 
-$sql = "SELECT accountcode, accountname FROM chartmaster ORDER BY accountcode";
+$SQL = "SELECT accountcode, accountname FROM chartmaster ORDER BY accountcode";
 
-$result = DB_query($sql);
+$result = DB_query($SQL);
 echo '<option value=""></option>';
 while ($MyRow = DB_fetch_array($result)) {
 	if (isset($_POST['AcctSelection']) and $MyRow['accountcode'] == $_POST['AcctSelection']) {

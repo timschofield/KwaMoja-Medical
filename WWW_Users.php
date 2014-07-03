@@ -27,12 +27,12 @@ echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $T
 	<br />';
 
 // Make an array of the security roles
-$sql = "SELECT secroleid,
+$SQL = "SELECT secroleid,
 				secrolename
 		FROM securityroles
 		ORDER BY secrolename";
 
-$Sec_Result = DB_query($sql);
+$Sec_Result = DB_query($SQL);
 $SecurityRoles = array();
 // Now load it into an a ray using Key/Value pairs
 while ($Sec_row = DB_fetch_row($Sec_Result)) {
@@ -91,14 +91,14 @@ if (isset($_POST['submit'])) {
 
 	if ((mb_strlen($_POST['BranchCode']) > 0) and ($InputError != 1)) {
 		// check that the entered branch is valid for the customer code
-		$sql = "SELECT custbranch.debtorno
+		$SQL = "SELECT custbranch.debtorno
 				FROM custbranch
 				WHERE custbranch.debtorno='" . $_POST['Cust'] . "'
 				AND custbranch.branchcode='" . $_POST['BranchCode'] . "'";
 
 		$ErrMsg = _('The check on validity of the customer code and branch failed because');
 		$DbgMsg = _('The SQL that was used to check the customer code and branch was');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 		if (DB_num_rows($result) == 0) {
 			prnMsg(_('The entered Branch Code is not valid for the entered Customer Code'), 'error');
@@ -133,7 +133,7 @@ if (isset($_POST['submit'])) {
 		if ($SelectedUser == $_SESSION['UserID']) {
 			$_SESSION['ScreenFontSize'] = $_POST['FontSize'];
 		}
-		$sql = "UPDATE www_users SET realname='" . $_POST['RealName'] . "',
+		$SQL = "UPDATE www_users SET realname='" . $_POST['RealName'] . "',
 						customerid='" . $_POST['Cust'] . "',
 						phone='" . $_POST['Phone'] . "',
 						email='" . $_POST['Email'] . "',
@@ -158,7 +158,7 @@ if (isset($_POST['submit'])) {
 		prnMsg(_('The selected user record has been updated'), 'success');
 	} elseif ($InputError != 1) {
 
-		$sql = "INSERT INTO www_users (userid,
+		$SQL = "INSERT INTO www_users (userid,
 						realname,
 						customerid,
 						branchcode,
@@ -209,7 +209,7 @@ if (isset($_POST['submit'])) {
 		//run the SQL from either of the above possibilites
 		$ErrMsg = _('The user alterations could not be processed because');
 		$DbgMsg = _('The SQL that was used to update the user and failed was');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 		unset($_POST['UserID']);
 		unset($_POST['RealName']);
@@ -244,15 +244,15 @@ if (isset($_POST['submit'])) {
 		prnMsg(_('The demonstration user called demo cannot be deleted'), 'error');
 	} else {
 
-		$sql = "SELECT userid FROM audittrail where userid='" . $SelectedUser . "'";
-		$result = DB_query($sql);
+		$SQL = "SELECT userid FROM audittrail where userid='" . $SelectedUser . "'";
+		$result = DB_query($SQL);
 		if (DB_num_rows($result) != 0) {
 			prnMsg(_('Cannot delete user as entries already exist in the audit trail'), 'warn');
 		} else {
 
-			$sql = "DELETE FROM www_users WHERE userid='" . $SelectedUser . "'";
+			$SQL = "DELETE FROM www_users WHERE userid='" . $SelectedUser . "'";
 			$ErrMsg = _('The User could not be deleted because');
-			$result = DB_query($sql, $ErrMsg);
+			$result = DB_query($SQL, $ErrMsg);
 			prnMsg(_('User Deleted'), 'info');
 		}
 		unset($SelectedUser);
@@ -264,7 +264,7 @@ if (!isset($SelectedUser)) {
 
 	/* If its the first time the page has been displayed with no parameters then none of the above are true and the list of Users will be displayed with links to delete or edit each. These will call the same page again and allow update/input or deletion of the records*/
 
-	$sql = "SELECT userid,
+	$SQL = "SELECT userid,
 					realname,
 					phone,
 					email,
@@ -280,7 +280,7 @@ if (!isset($SelectedUser)) {
 					language,
 					fontsize
 				FROM www_users";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	echo '<table class="selection">
 			<tr>
@@ -368,7 +368,7 @@ echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />'
 if (isset($SelectedUser)) {
 	//editing an existing User
 
-	$sql = "SELECT userid,
+	$SQL = "SELECT userid,
 			realname,
 			phone,
 			email,
@@ -392,7 +392,7 @@ if (isset($SelectedUser)) {
 		FROM www_users
 		WHERE userid='" . $SelectedUser . "'";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_array($result);
 
 	$_POST['UserID'] = $MyRow['userid'];
@@ -509,8 +509,8 @@ echo '<tr>
 		<td>' . _('Default Location') . ':</td>
 		<td><select minlength="0" name="DefaultLocation">';
 
-$sql = "SELECT loccode, locationname FROM locations";
-$result = DB_query($sql);
+$SQL = "SELECT loccode, locationname FROM locations";
+$result = DB_query($SQL);
 
 while ($MyRow = DB_fetch_array($result)) {
 	if (isset($_POST['DefaultLocation']) and $MyRow['loccode'] == $_POST['DefaultLocation']) {
@@ -564,8 +564,8 @@ echo '<tr>
 		<td>' . _('Restrict to Sales Person') . ':</td>
 		<td><select minlength="0" name="Salesman">';
 
-$sql = "SELECT salesmancode, salesmanname FROM salesman WHERE current = 1 ORDER BY salesmanname";
-$result = DB_query($sql);
+$SQL = "SELECT salesmancode, salesmanname FROM salesman WHERE current = 1 ORDER BY salesmanname";
+$result = DB_query($SQL);
 if ((isset($_POST['Salesman']) and $_POST['Salesman'] == '') or !isset($_POST['Salesman'])) {
 	echo '<option selected="selected" value="">' . _('Not a salesperson only login') . '</option>';
 } else {
@@ -712,12 +712,12 @@ echo '</select></td>
 echo '<tr>
 		<td>' . _('Allowed Department for Internal Requests') . ':</td>';
 
-$sql = "SELECT departmentid,
+$SQL = "SELECT departmentid,
 			description
 		FROM departments
 		ORDER BY description";
 
-$result = DB_query($sql);
+$result = DB_query($SQL);
 echo '<td><select minlength="0" name="Department">';
 if ((isset($_POST['Department']) and $_POST['Department'] == '0') or !isset($_POST['Department'])) {
 	echo '<option selected="selected" value="0">' . _('Any Internal Department') . '</option>';

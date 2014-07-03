@@ -42,10 +42,10 @@ if (isset($_POST['submit'])) {
 
 		/*SelectedPaymentID could also exist if submit had not been clicked this code would not run in this case cos submit is false of course  see the delete code below*/
 		// Check the name does not clash
-		$sql = "SELECT count(*) FROM paymentmethods
+		$SQL = "SELECT count(*) FROM paymentmethods
 				WHERE paymentid <> '" . $SelectedPaymentID . "'
 				AND paymentname " . LIKE . " '" . $_POST['MethodName'] . "'";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_row($result);
 		if ($MyRow[0] > 0) {
 			$InputError = 1;
@@ -53,13 +53,13 @@ if (isset($_POST['submit'])) {
 		} else {
 			// Get the old name and check that the record still exists need to be very careful here
 
-			$sql = "SELECT paymentname FROM paymentmethods
+			$SQL = "SELECT paymentname FROM paymentmethods
 					WHERE paymentid = '" . $SelectedPaymentID . "'";
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 			if (DB_num_rows($result) != 0) {
 				$MyRow = DB_fetch_row($result);
 				$OldName = $MyRow[0];
-				$sql = "UPDATE paymentmethods
+				$SQL = "UPDATE paymentmethods
 						SET paymentname='" . $_POST['MethodName'] . "',
 							paymenttype = '" . $_POST['ForPayment'] . "',
 							receipttype = '" . $_POST['ForReceipt'] . "',
@@ -76,15 +76,15 @@ if (isset($_POST['submit'])) {
 		$ErrMsg = _('Could not update payment method');
 	} elseif ($InputError != 1) {
 		/*SelectedPaymentID is null cos no item selected on first time round so must be adding a record*/
-		$sql = "SELECT count(*) FROM paymentmethods
+		$SQL = "SELECT count(*) FROM paymentmethods
 				WHERE paymentname LIKE'" . $_POST['MethodName'] . "'";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_row($result);
 		if ($MyRow[0] > 0) {
 			$InputError = 1;
 			prnMsg(_('The payment method can not be created because another with the same name already exists.'), 'error');
 		} else {
-			$sql = "INSERT INTO paymentmethods (paymentname,
+			$SQL = "INSERT INTO paymentmethods (paymentname,
 												paymenttype,
 												receipttype,
 												usepreprintedstationery,
@@ -100,7 +100,7 @@ if (isset($_POST['submit'])) {
 	}
 
 	if ($InputError != 1) {
-		$result = DB_query($sql, $ErrMsg);
+		$result = DB_query($SQL, $ErrMsg);
 		prnMsg($msg, 'success');
 		echo '<br />';
 	}
@@ -116,25 +116,25 @@ if (isset($_POST['submit'])) {
 	//the link to delete a selected record was clicked instead of the submit button
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'stockmaster'
 	// Get the original name of the payment method the ID is just a secure way to find the payment method
-	$sql = "SELECT paymentname FROM paymentmethods
+	$SQL = "SELECT paymentname FROM paymentmethods
 			WHERE paymentid = '" . $SelectedPaymentID . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	if (DB_num_rows($result) == 0) {
 		// This is probably the safest way there is
 		prnMsg(_('Cannot delete this payment method because it no longer exist'), 'warn');
 	} else {
 		$MyRow = DB_fetch_row($result);
 		$OldMeasureName = $MyRow[0];
-		$sql = "SELECT COUNT(*) FROM banktrans
+		$SQL = "SELECT COUNT(*) FROM banktrans
 				WHERE banktranstype LIKE '" . DB_escape_string($OldMeasureName) . "'";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_row($result);
 		if ($MyRow[0] > 0) {
 			prnMsg(_('Cannot delete this payment method because bank transactions have been created using this payment method'), 'warn');
 			echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('bank transactions that refer to this payment method') . '</font>';
 		} else {
-			$sql = "DELETE FROM paymentmethods WHERE paymentname " . LIKE . " '" . DB_escape_string($OldMeasureName) . "'";
-			$result = DB_query($sql);
+			$SQL = "DELETE FROM paymentmethods WHERE paymentname " . LIKE . " '" . DB_escape_string($OldMeasureName) . "'";
+			$result = DB_query($SQL);
 			prnMsg($OldMeasureName . ' ' . _('payment method has been deleted') . '!', 'success');
 			echo '<br />';
 		} //end if not used
@@ -160,7 +160,7 @@ if (!isset($SelectedPaymentID)) {
 	links to delete or edit each. These will call the same page again and allow update/input
 	or deletion of the records*/
 
-	$sql = "SELECT paymentid,
+	$SQL = "SELECT paymentid,
 					paymentname,
 					paymenttype,
 					receipttype,
@@ -170,7 +170,7 @@ if (!isset($SelectedPaymentID)) {
 			ORDER BY paymentid";
 
 	$ErrMsg = _('Could not get payment methods because');
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 
 	echo '<table class="selection">
 		<tr>
@@ -218,7 +218,7 @@ if (!isset($_GET['delete'])) {
 	if (isset($SelectedPaymentID)) {
 		//editing an existing section
 
-		$sql = "SELECT paymentid,
+		$SQL = "SELECT paymentid,
 						paymentname,
 						paymenttype,
 						receipttype,
@@ -227,7 +227,7 @@ if (!isset($_GET['delete'])) {
 				FROM paymentmethods
 				WHERE paymentid='" . $SelectedPaymentID . "'";
 
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		if (DB_num_rows($result) == 0) {
 			prnMsg(_('Could not retrieve the requested payment method, please try again.'), 'warn');
 			unset($SelectedPaymentID);

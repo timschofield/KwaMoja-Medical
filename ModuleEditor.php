@@ -11,19 +11,19 @@ if (isset($_POST['Save'])) {
 	foreach ($_POST as $Key=>$Value) {
 		if (mb_substr($Key, 0, 8) == 'Sequence') {
 			$ReportLink = mb_substr($Key, 8, mb_strlen($Key) - 8);
-			$sql = "UPDATE modules SET sequence='" . $Value . "'
+			$SQL = "UPDATE modules SET sequence='" . $Value . "'
 									WHERE reportlink='" . $ReportLink . "'
 										AND secroleid='" . $_POST['SecurityRole'] . "'";
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 		}
 	}
 }
 
 if (!isset($_POST['SecurityRole'])) {
-	$sql = "SELECT secroleid,
+	$SQL = "SELECT secroleid,
 					secrolename
 				FROM securityroles";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p><br />';
 
@@ -53,14 +53,14 @@ if (!isset($_POST['SecurityRole'])) {
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<input type="hidden" name="SecurityRole" value="' . $_POST['SecurityRole'] . '" />';
 
-	$sql = "SELECT modulelink,
+	$SQL = "SELECT modulelink,
 					reportlink,
 					modulename,
 					sequence
 				FROM modules
 				WHERE secroleid='" . $_POST['SecurityRole'] . "'
 				ORDER BY sequence";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	echo '<table class="selection">
 			<tr>

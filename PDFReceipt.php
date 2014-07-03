@@ -45,37 +45,37 @@ $YPos -= (1.5 * $line_height);
 
 $PageNumber++;
 
-$sql = "SELECT MIN(id) as start FROM debtortrans WHERE type=12 AND transno='" . $_GET['BatchNumber'] . "'";
-$result = DB_query($sql);
+$SQL = "SELECT MIN(id) as start FROM debtortrans WHERE type=12 AND transno='" . $_GET['BatchNumber'] . "'";
+$result = DB_query($SQL);
 $MyRow = DB_fetch_array($result);
 $StartReceiptNumber = $MyRow['start'];
 
-$sql = "SELECT debtorno,
+$SQL = "SELECT debtorno,
 			ovamount,
 			invtext
 		FROM debtortrans
 		WHERE type=12
 		AND transno='" . $_GET['BatchNumber'] . "'
 		AND id='" . ($StartReceiptNumber - 1 + $_GET['ReceiptNumber']) . "'";
-$result = DB_query($sql);
+$result = DB_query($SQL);
 $MyRow = DB_fetch_array($result);
 $DebtorNo = $MyRow['debtorno'];
 $Amount = $MyRow['ovamount'];
 $Narrative = $MyRow['invtext'];
 
-$sql = "SELECT currency,
+$SQL = "SELECT currency,
 			 decimalplaces
 		FROM currencies
 		WHERE currabrev=(SELECT currcode
 		FROM banktrans
 		WHERE type=12
 		AND transno='" . $_GET['BatchNumber'] . "')";
-$result = DB_query($sql);
+$result = DB_query($SQL);
 $MyRow = DB_fetch_array($result);
 $Currency = $MyRow['currency'];
 $DecimalPlaces = $MyRow['decimalplaces'];
 
-$sql = "SELECT name,
+$SQL = "SELECT name,
 			 address1,
 			 address2,
 			 address3,
@@ -85,7 +85,7 @@ $sql = "SELECT name,
 		FROM debtorsmaster
 		WHERE debtorno='" . $DebtorNo . "'";
 
-$result = DB_query($sql);
+$result = DB_query($SQL);
 $MyRow = DB_fetch_array($result);
 
 $LeftOvers = $pdf->addTextWrap(50, $YPos, 300, $FontSize, _('Received From') . ' : ');

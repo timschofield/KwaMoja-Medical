@@ -26,7 +26,7 @@ $pdf->addInfo('Title', _('General Ledger Journal'));
 if ($JournalNo == 'Preview') {
 	$LineCount = 2; // UldisN
 } else {
-	$sql = "SELECT gltrans.typeno,
+	$SQL = "SELECT gltrans.typeno,
 				gltrans.trandate,
 				gltrans.account,
 				chartmaster.accountname,
@@ -42,7 +42,7 @@ if ($JournalNo == 'Preview') {
 				ON gltrans.tag=tags.tagref
 			WHERE gltrans.type='0'
 				AND gltrans.typeno='" . $JournalNo . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	$LineCount = DB_num_rows($result); // UldisN
 	$MyRow = DB_fetch_array($result);
 	$JournalDate = $MyRow['trandate'];

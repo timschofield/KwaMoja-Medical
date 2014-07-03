@@ -16,7 +16,7 @@ if (isset($_POST['Submit'])) {
 	if (!is_numeric(filter_number_format($_POST['FrequencyDays'])) OR filter_number_format($_POST['FrequencyDays']) < 0) {
 		prnMsg(_('The days before a task falls due is expected to be a postive'), 'error');
 	} else {
-		$sql = "INSERT INTO fixedassettasks (assetid,
+		$SQL = "INSERT INTO fixedassettasks (assetid,
 											taskdescription,
 											frequencydays,
 											userresponsible,
@@ -29,7 +29,7 @@ if (isset($_POST['Submit'])) {
 								'" . $_POST['Manager'] . "',
 								CURRENT_DATE )";
 		$ErrMsg = _('The authentication details cannot be inserted because');
-		$Result = DB_query($sql, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 		unset($_POST['AssetID']);
 		unset($_POST['TaskDescription']);
 		unset($_POST['FrequencyDays']);
@@ -42,7 +42,7 @@ if (isset($_POST['Update'])) {
 	if (!is_numeric(filter_number_format($_POST['FrequencyDays'])) OR filter_number_format($_POST['FrequencyDays']) < 0) {
 		prnMsg(_('The days before a task falls due is expected to be a postive'), 'error');
 	} else {
-		$sql = "UPDATE fixedassettasks SET
+		$SQL = "UPDATE fixedassettasks SET
 				assetid = '" . $_POST['AssetID'] . "',
 				taskdescription='" . $_POST['TaskDescription'] . "',
 				frequencydays='" . filter_number_format($_POST['FrequencyDays']) . "',
@@ -51,7 +51,7 @@ if (isset($_POST['Update'])) {
 				WHERE taskid='" . $_POST['TaskID'] . "'";
 
 		$ErrMsg = _('The task details cannot be updated because');
-		$Result = DB_query($sql, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 		unset($_POST['AssetID']);
 		unset($_POST['TaskDescription']);
 		unset($_POST['FrequencyDays']);
@@ -61,14 +61,14 @@ if (isset($_POST['Update'])) {
 }
 
 if (isset($_GET['Delete'])) {
-	$sql = "DELETE FROM fixedassettasks
+	$SQL = "DELETE FROM fixedassettasks
 		WHERE taskid='" . $_GET['TaskID'] . "'";
 
 	$ErrMsg = _('The maintenance task cannot be deleted because');
-	$Result = DB_query($sql, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 }
 
-$sql = "SELECT taskid,
+$SQL = "SELECT taskid,
 				fixedassettasks.assetid,
 				description,
 				taskdescription,
@@ -84,7 +84,7 @@ $sql = "SELECT taskid,
 		ON fixedassettasks.userresponsible=www_users.userid";
 
 $ErrMsg = _('The maintenance task details cannot be retrieved because');
-$Result = DB_query($sql, $ErrMsg);
+$Result = DB_query($SQL, $ErrMsg);
 
 echo '<table class="selection">
 	 <tr>
@@ -132,7 +132,7 @@ if (isset($_GET['Edit'])) {
 			<td>' . $_GET['TaskID'] . '</td>
 		</tr>';
 	echo '<input type="hidden" name="TaskID" value="' . $_GET['TaskID'] . '" />';
-	$sql = "SELECT assetid,
+	$SQL = "SELECT assetid,
 				taskdescription,
 				frequencydays,
 				lastcompleted,
@@ -141,7 +141,7 @@ if (isset($_GET['Edit'])) {
 			FROM fixedassettasks
 			WHERE taskid='" . $_GET['TaskID'] . "'";
 	$ErrMsg = _('The maintenance task details cannot be retrieved because');
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 	$MyRow = DB_fetch_array($result);
 	$_POST['TaskDescription'] = $MyRow['taskdescription'];
 	$_POST['FrequencyDays'] = $MyRow['frequencydays'];

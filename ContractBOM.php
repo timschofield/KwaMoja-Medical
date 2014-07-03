@@ -53,7 +53,7 @@ if (isset($_POST['Search'])) {
 		$SearchString = '%' . str_replace(' ', '%', $_POST['Keywords']) . '%';
 
 		if ($_POST['StockCat'] == 'All') {
-			$sql = "SELECT stockmaster.stockid,
+			$SQL = "SELECT stockmaster.stockid,
 						stockmaster.description,
 						stockmaster.units
 					FROM stockmaster INNER JOIN stockcategory
@@ -65,7 +65,7 @@ if (isset($_POST['Search'])) {
 					AND stockmaster.description " . LIKE . " '$SearchString'
 					ORDER BY stockmaster.stockid";
 		} else {
-			$sql = "SELECT stockmaster.stockid,
+			$SQL = "SELECT stockmaster.stockid,
 						stockmaster.description,
 						stockmaster.units
 					FROM stockmaster INNER JOIN stockcategory
@@ -84,7 +84,7 @@ if (isset($_POST['Search'])) {
 		$_POST['StockCode'] = '%' . $_POST['StockCode'] . '%';
 
 		if ($_POST['StockCat'] == 'All') {
-			$sql = "SELECT stockmaster.stockid,
+			$SQL = "SELECT stockmaster.stockid,
 						stockmaster.description,
 						stockmaster.units
 					FROM stockmaster INNER JOIN stockcategory
@@ -96,7 +96,7 @@ if (isset($_POST['Search'])) {
 					AND stockmaster.stockid " . LIKE . " '" . $_POST['StockCode'] . "'
 					ORDER BY stockmaster.stockid";
 		} else {
-			$sql = "SELECT stockmaster.stockid,
+			$SQL = "SELECT stockmaster.stockid,
 						stockmaster.description,
 						stockmaster.units
 					FROM stockmaster INNER JOIN stockcategory
@@ -112,7 +112,7 @@ if (isset($_POST['Search'])) {
 
 	} else {
 		if ($_POST['StockCat'] == 'All') {
-			$sql = "SELECT stockmaster.stockid,
+			$SQL = "SELECT stockmaster.stockid,
 						stockmaster.description,
 						stockmaster.units
 					FROM stockmaster INNER JOIN stockcategory
@@ -123,7 +123,7 @@ if (isset($_POST['Search'])) {
 					AND stockmaster.discontinued!=1
 					ORDER BY stockmaster.stockid";
 		} else {
-			$sql = "SELECT stockmaster.stockid,
+			$SQL = "SELECT stockmaster.stockid,
 						stockmaster.description,
 						stockmaster.units
 					FROM stockmaster INNER JOIN stockcategory
@@ -139,7 +139,7 @@ if (isset($_POST['Search'])) {
 
 	$ErrMsg = _('There is a problem selecting the part records to display because');
 	$DbgMsg = _('The SQL statement that failed was');
-	$SearchResult = DB_query($sql, $ErrMsg, $DbgMsg);
+	$SearchResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	if (DB_num_rows($SearchResult) == 0 and $debug == 1) {
 		prnMsg(_('There are no products to display matching the criteria provided'), 'warn');
@@ -182,7 +182,7 @@ if (isset($_POST['NewItem'])) {
 
 			if ($AlreadyOnThisBOM != 1) {
 
-				$sql = "SELECT stockmaster.description,
+				$SQL = "SELECT stockmaster.description,
 								stockmaster.stockid,
 								stockmaster.units,
 								stockmaster.decimalplaces,
@@ -195,7 +195,7 @@ if (isset($_POST['NewItem'])) {
 
 				$ErrMsg = _('The item details could not be retrieved');
 				$DbgMsg = _('The SQL used to retrieve the item details but failed was');
-				$result1 = DB_query($sql, $ErrMsg, $DbgMsg);
+				$result1 = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 				if ($MyRow = DB_fetch_array($result1)) {
 
@@ -203,7 +203,7 @@ if (isset($_POST['NewItem'])) {
 				} else {
 					prnMsg(_('The item code') . ' ' . trim($_POST['StockID' . $i]) . ' ' . _('does not exist in the database and therefore cannot be added to the contract BOM'), 'error');
 					if ($debug == 1) {
-						echo '<br />' . $sql;
+						echo '<br />' . $SQL;
 					}
 					include('includes/footer.inc');
 					exit;
@@ -285,7 +285,7 @@ if (count($_SESSION['Contract' . $identifier]->ContractBOM) > 0) {
 /*Only display the contract BOM lines if there are any !! */
 
 if (!isset($_GET['Edit'])) {
-	$sql = "SELECT categoryid,
+	$SQL = "SELECT categoryid,
 				categorydescription
 			FROM stockcategory
 			WHERE stocktype<>'L'
@@ -293,7 +293,7 @@ if (!isset($_GET['Edit'])) {
 			ORDER BY categorydescription";
 	$ErrMsg = _('The supplier category details could not be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve the category details but failed was');
-	$result1 = DB_query($sql, $ErrMsg, $DbgMsg);
+	$result1 = DB_query($SQL, $ErrMsg, $DbgMsg);
 	echo '<p class="page_title_text noPrint" >
 			<img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Print') . '" alt="" />' . ' ' . _('Search For Stock Items') . '</p>';
 	echo '<table class="selection">

@@ -32,15 +32,15 @@ if (isset($_POST['submit']) or isset($_GET['remove']) or isset($_GET['add'])) {
 
 	// if $_POST['SecRoleName'] then it is a modifications on a SecRole
 	// else it is either an add or remove of a page token
-	unset($sql);
+	unset($SQL);
 	if (isset($_POST['SecRoleName'])) { // Update or Add Security Headings
 		if (isset($SelectedRole)) { // Update Security Heading
-			$sql = "UPDATE securityroles SET secrolename = '" . $_POST['SecRoleName'] . "'
+			$SQL = "UPDATE securityroles SET secrolename = '" . $_POST['SecRoleName'] . "'
 					WHERE secroleid = '" . $SelectedRole . "'";
 			$ErrMsg = _('The update of the security role description failed because');
 			$ResMsg = _('The Security role description was updated.');
 		} else { // Add Security Heading
-			$sql = "INSERT INTO securityroles (secrolename) VALUES ('" . $_POST['SecRoleName'] . "')";
+			$SQL = "INSERT INTO securityroles (secrolename) VALUES ('" . $_POST['SecRoleName'] . "')";
 			$ErrMsg = _('The update of the security role failed because');
 			$ResMsg = _('The Security role was created.');
 		}
@@ -49,14 +49,14 @@ if (isset($_POST['submit']) or isset($_GET['remove']) or isset($_GET['add'])) {
 	} elseif (isset($SelectedRole)) {
 		$PageTokenId = $_GET['PageToken'];
 		if (isset($_GET['add'])) { // updating Security Groups add a page token
-			$sql = "INSERT INTO securitygroups (secroleid,
+			$SQL = "INSERT INTO securitygroups (secroleid,
 											tokenid)
 									VALUES ('" . $SelectedRole . "',
 											'" . $PageTokenId . "' )";
 			$ErrMsg = _('The addition of the page group access failed because');
 			$ResMsg = _('The page group access was added.');
 		} elseif (isset($_GET['remove'])) { // updating Security Groups remove a page token
-			$sql = "DELETE FROM securitygroups
+			$SQL = "DELETE FROM securitygroups
 					WHERE secroleid = '" . $SelectedRole . "'
 					AND tokenid = '" . $PageTokenId . "'";
 			$ErrMsg = _('The removal of this page-group access failed because');
@@ -67,8 +67,8 @@ if (isset($_POST['submit']) or isset($_GET['remove']) or isset($_GET['add'])) {
 		unset($_GET['PageToken']);
 	}
 	// Need to exec the query
-	if (isset($sql) and $InputError != 1) {
-		$result = DB_query($sql, $ErrMsg);
+	if (isset($SQL) and $InputError != 1) {
+		$result = DB_query($SQL, $ErrMsg);
 		if ($result) {
 			prnMsg($ResMsg, 'success');
 		}
@@ -76,17 +76,17 @@ if (isset($_POST['submit']) or isset($_GET['remove']) or isset($_GET['add'])) {
 } elseif (isset($_GET['delete'])) {
 	//the Security heading wants to be deleted but some checks need to be performed fist
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'www_users'
-	$sql = "SELECT COUNT(*) FROM www_users WHERE fullaccess='" . $_GET['SelectedRole'] . "'";
-	$result = DB_query($sql);
+	$SQL = "SELECT COUNT(*) FROM www_users WHERE fullaccess='" . $_GET['SelectedRole'] . "'";
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_row($result);
 	if ($MyRow[0] > 0) {
 		prnMsg(_('Cannot delete this role because user accounts are setup using it'), 'warn');
 		echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('user accounts that have this security role setting') . '</font>';
 	} else {
-		$sql = "DELETE FROM securitygroups WHERE secroleid='" . $_GET['SelectedRole'] . "'";
-		$result = DB_query($sql);
-		$sql = "DELETE FROM securityroles WHERE secroleid='" . $_GET['SelectedRole'] . "'";
-		$result = DB_query($sql);
+		$SQL = "DELETE FROM securitygroups WHERE secroleid='" . $_GET['SelectedRole'] . "'";
+		$result = DB_query($SQL);
+		$SQL = "DELETE FROM securityroles WHERE secroleid='" . $_GET['SelectedRole'] . "'";
+		$result = DB_query($SQL);
 		prnMsg(stripslashes($_GET['SecRoleName']) . ' ' . _('security role has been deleted') . '!', 'success');
 
 	} //end if account group used in GL accounts
@@ -98,11 +98,11 @@ if (!isset($SelectedRole)) {
 
 	/* If its the first time the page has been displayed with no parameters then none of the above are true and the list of Users will be displayed with links to delete or edit each. These will call the same page again and allow update/input or deletion of the records*/
 
-	$sql = "SELECT secroleid,
+	$SQL = "SELECT secroleid,
 			secrolename
 		FROM securityroles
 		ORDER BY secrolename";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	echo '<table class="selection">';
 	echo '<tr>
@@ -139,11 +139,11 @@ if (isset($SelectedRole)) {
 if (isset($SelectedRole)) {
 	//editing an existing role
 
-	$sql = "SELECT secroleid,
+	$SQL = "SELECT secroleid,
 			secrolename
 		FROM securityroles
 		WHERE secroleid='" . $SelectedRole . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	if (DB_num_rows($result) == 0) {
 		prnMsg(_('The selected role is no longer available.'), 'warn');
 	} else {
@@ -176,16 +176,16 @@ echo '</table>
 	</form>';
 
 if (isset($SelectedRole)) {
-	$sql = "SELECT tokenid,
+	$SQL = "SELECT tokenid,
 					tokenname
 				FROM securitytokens";
 
-	$sqlUsed = "SELECT tokenid FROM securitygroups WHERE secroleid='" . $SelectedRole . "'";
+	$SQLUsed = "SELECT tokenid FROM securitygroups WHERE secroleid='" . $SelectedRole . "'";
 
-	$Result = DB_query($sql);
+	$Result = DB_query($SQL);
 
 	/*Make an array of the used tokens */
-	$UsedResult = DB_query($sqlUsed);
+	$UsedResult = DB_query($SQLUsed);
 	$TokensUsed = array();
 	$i = 0;
 	while ($MyRow = DB_fetch_row($UsedResult)) {

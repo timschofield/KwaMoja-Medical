@@ -44,8 +44,8 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate'])) {
 			<tr>
 				<td>' . _('Bank Account') . '</td><td>';
 
-	$sql = "SELECT bankaccountname, accountcode FROM bankaccounts";
-	$result = DB_query($sql);
+	$SQL = "SELECT bankaccountname, accountcode FROM bankaccounts";
+	$result = DB_query($SQL);
 
 
 	echo '<select minlength="0" name="BankAccount">';
@@ -78,20 +78,20 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate'])) {
 	include('includes/ConnectDB.inc');
 }
 
-$sql = "SELECT bankaccountname,
+$SQL = "SELECT bankaccountname,
 				currcode,
 				decimalplaces AS bankcurrdecimalplaces
 			FROM bankaccounts
 			INNER JOIN currencies
 				ON bankaccounts.currcode=currencies.currabrev
 			WHERE accountcode = '" . $_POST['BankAccount'] . "'";
-$BankActResult = DB_query($sql);
+$BankActResult = DB_query($SQL);
 $MyRow = DB_fetch_array($BankActResult);
 $BankAccountName = $MyRow['bankaccountname'];
 $Currency = $MyRow['currcode'];
 $BankCurrDecimalPlaces = $MyRow['bankcurrdecimalplaces'];
 
-$sql = "SELECT amount,
+$SQL = "SELECT amount,
 				ref,
 				transdate,
 				banktranstype,
@@ -103,13 +103,13 @@ $sql = "SELECT amount,
 				AND transdate >='" . FormatDateForSQL($_POST['FromDate']) . "'
 				AND transdate <='" . FormatDateForSQL($_POST['ToDate']) . "'";
 
-$Result = DB_query($sql, '', '', false, false);
+$Result = DB_query($SQL, '', '', false, false);
 if (DB_error_no() != 0) {
 	$Title = _('Payment Listing');
 	include('includes/header.inc');
 	prnMsg(_('An error occurred getting the payments'), 'error');
 	if ($debug == 1) {
-		prnMsg(_('The SQL used to get the receipt header information that failed was') . ':<br />' . $sql, 'error');
+		prnMsg(_('The SQL used to get the receipt header information that failed was') . ':<br />' . $SQL, 'error');
 	}
 	include('includes/footer.inc');
 	exit;
@@ -138,7 +138,7 @@ while ($MyRow = DB_fetch_array($Result)) {
 	$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 60, $FontSize, locale_number_format(-$MyRow['amount'], $BankCurrDecimalPlaces), 'right');
 	$LeftOvers = $pdf->addTextWrap($Left_Margin + 65, $YPos, 90, $FontSize, $MyRow['ref'], 'left');
 
-	$sql = "SELECT accountname,
+	$SQL = "SELECT accountname,
 					amount,
 					narrative
 				FROM gltrans
@@ -147,13 +147,13 @@ while ($MyRow = DB_fetch_array($Result)) {
 				WHERE gltrans.typeno ='" . $MyRow['transno'] . "'
 					AND gltrans.type='" . $MyRow['type'] . "'";
 
-	$GLTransResult = DB_query($sql, '', '', false, false);
+	$GLTransResult = DB_query($SQL, '', '', false, false);
 	if (DB_error_no() != 0) {
 		$Title = _('Payment Listing');
 		include('includes/header.inc');
 		prnMsg(_('An error occurred getting the GL transactions'), 'error');
 		if ($debug == 1) {
-			prnMsg(_('The SQL used to get the receipt header information that failed was') . ':<br />' . $sql, 'error');
+			prnMsg(_('The SQL used to get the receipt header information that failed was') . ':<br />' . $SQL, 'error');
 		}
 		include('includes/footer.inc');
 		exit;

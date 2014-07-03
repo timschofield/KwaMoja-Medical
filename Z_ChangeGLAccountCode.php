@@ -43,7 +43,7 @@ if (isset($_POST['ProcessGLAccountCode'])) {
 	if ($InputError == 0) { // no input errors
 		$result = DB_Txn_Begin();
 		echo '<br />' . _('Adding the new chartmaster record');
-		$sql = "INSERT INTO chartmaster (accountcode,
+		$SQL = "INSERT INTO chartmaster (accountcode,
 										accountname,
 										group_)
 				SELECT '" . $_POST['NewAccountCode'] . "',
@@ -54,7 +54,7 @@ if (isset($_POST['ProcessGLAccountCode'])) {
 
 		$DbgMsg = _('The SQL statement that failed was');
 		$ErrMsg = _('The SQL to insert the new chartmaster record failed');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		echo ' ... ' . _('completed');
 
 		DB_IgnoreForeignKeys();
@@ -115,9 +115,9 @@ if (isset($_POST['ProcessGLAccountCode'])) {
 		$result = DB_Txn_Commit();
 
 		echo '<br />' . _('Deleting the old chartmaster record');
-		$sql = "DELETE FROM chartmaster WHERE accountcode='" . $_POST['OldAccountCode'] . "'";
+		$SQL = "DELETE FROM chartmaster WHERE accountcode='" . $_POST['OldAccountCode'] . "'";
 		$ErrMsg = _('The SQL to delete the old chartmaster record failed');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		echo ' ... ' . _('completed');
 
 

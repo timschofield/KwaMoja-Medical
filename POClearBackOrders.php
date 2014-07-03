@@ -22,11 +22,11 @@ echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />'
 
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
 
-$sql = "SELECT min(supplierid) AS fromcriteria,
+$SQL = "SELECT min(supplierid) AS fromcriteria,
 				max(supplierid) AS tocriteria
 			FROM suppliers";
 
-$result = DB_query($sql);
+$result = DB_query($SQL);
 $MyRow = DB_fetch_array($result);
 
 echo '<table>

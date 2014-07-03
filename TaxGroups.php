@@ -28,13 +28,13 @@ if (isset($_POST['submit']) or isset($_GET['remove']) or isset($_GET['add'])) {
 
 	// if $_POST['GroupName'] then it is a modification of a tax group name
 	// else it is either an add or remove of taxgroup
-	unset($sql);
+	unset($SQL);
 	if (isset($_POST['GroupName'])) { // Update or Add a tax group
 		if (isset($SelectedGroup)) { // Update a tax group
-			$sql = "UPDATE taxgroups SET taxgroupdescription = '" . $_POST['GroupName'] . "'
+			$SQL = "UPDATE taxgroups SET taxgroupdescription = '" . $_POST['GroupName'] . "'
 					WHERE taxgroupid = '" . $SelectedGroup . "'";
 			$ErrMsg = _('The update of the tax group description failed because');
-			$result = DB_query($sql, $ErrMsg);
+			$result = DB_query($SQL, $ErrMsg);
 			if ($result) {
 				prnMsg(_('The tax group description was updated to') . ' ' . $_POST['GroupName'], 'success');
 			}
@@ -46,12 +46,12 @@ if (isset($_POST['submit']) or isset($_GET['remove']) or isset($_GET['add'])) {
 								WHERE taxgroupdescription='" . $_POST['GroupName'] . "'");
 			if (DB_num_rows($GroupResult) == 1) {
 				prnMsg(_('A new tax group could not be added because a tax group already exists for') . ' ' . $_POST['GroupName'], 'warn');
-				unset($sql);
+				unset($SQL);
 			} else {
-				$sql = "INSERT INTO taxgroups (taxgroupdescription)
+				$SQL = "INSERT INTO taxgroups (taxgroupdescription)
 						VALUES ('" . $_POST['GroupName'] . "')";
 				$ErrMsg = _('The addition of the group failed because');
-				$result = DB_query($sql, $ErrMsg);
+				$result = DB_query($SQL, $ErrMsg);
 				if ($result) {
 					prnMsg(_('Added the new tax group') . ' ' . $_POST['GroupName'], 'success');
 				}
@@ -66,7 +66,7 @@ if (isset($_POST['submit']) or isset($_GET['remove']) or isset($_GET['add'])) {
 	} elseif (isset($SelectedGroup) and isset($_GET['TaxAuthority'])) {
 		$TaxAuthority = $_GET['TaxAuthority'];
 		if (isset($_GET['add'])) { // adding a tax authority to a tax group
-			$sql = "INSERT INTO taxgrouptaxes ( taxgroupid,
+			$SQL = "INSERT INTO taxgrouptaxes ( taxgroupid,
 												taxauthid,
 												calculationorder)
 					VALUES ('" . $SelectedGroup . "',
@@ -74,16 +74,16 @@ if (isset($_POST['submit']) or isset($_GET['remove']) or isset($_GET['add'])) {
 							0)";
 
 			$ErrMsg = _('The addition of the tax failed because');
-			$result = DB_query($sql, $ErrMsg);
+			$result = DB_query($SQL, $ErrMsg);
 			if ($result) {
 				prnMsg(_('The tax was added.'), 'success');
 			}
 		} elseif (isset($_GET['remove'])) { // remove a taxauthority from a tax group
-			$sql = "DELETE FROM taxgrouptaxes
+			$SQL = "DELETE FROM taxgrouptaxes
 					WHERE taxgroupid = '" . $SelectedGroup . "'
 					AND taxauthid = '" . $TaxAuthority . "'";
 			$ErrMsg = _('The removal of this tax failed because');
-			$result = DB_query($sql, $ErrMsg);
+			$result = DB_query($SQL, $ErrMsg);
 			if ($result) {
 				prnMsg(_('This tax was removed.'), 'success');
 			}
@@ -94,31 +94,31 @@ if (isset($_POST['submit']) or isset($_GET['remove']) or isset($_GET['add'])) {
 	}
 } elseif (isset($_POST['UpdateOrder'])) {
 	//A calculation order update
-	$sql = "SELECT taxauthid FROM taxgrouptaxes WHERE taxgroupid='" . $SelectedGroup . "'";
-	$Result = DB_query($sql, _('Could not get tax authorities in the selected tax group'));
+	$SQL = "SELECT taxauthid FROM taxgrouptaxes WHERE taxgroupid='" . $SelectedGroup . "'";
+	$Result = DB_query($SQL, _('Could not get tax authorities in the selected tax group'));
 
 	while ($MyRow = DB_fetch_row($Result)) {
 
 		if (is_numeric($_POST['CalcOrder_' . $MyRow[0]]) and $_POST['CalcOrder_' . $MyRow[0]] < 5) {
 
-			$sql = "UPDATE taxgrouptaxes
+			$SQL = "UPDATE taxgrouptaxes
 				SET calculationorder='" . $_POST['CalcOrder_' . $MyRow[0]] . "',
 					taxontax='" . $_POST['TaxOnTax_' . $MyRow[0]] . "'
 				WHERE taxgroupid='" . $SelectedGroup . "'
 				AND taxauthid='" . $MyRow[0] . "'";
 
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 		}
 	}
 
 	//need to do a reality check to ensure that taxontax is relevant only for taxes after the first tax
-	$sql = "SELECT taxauthid,
+	$SQL = "SELECT taxauthid,
 					taxontax
 			FROM taxgrouptaxes
 			WHERE taxgroupid='" . $SelectedGroup . "'
 			ORDER BY calculationorder";
 
-	$Result = DB_query($sql, _('Could not get tax authorities in the selected tax group'));
+	$Result = DB_query($SQL, _('Could not get tax authorities in the selected tax group'));
 
 	if (DB_num_rows($Result) > 0) {
 		$MyRow = DB_fetch_array($Result);
@@ -133,28 +133,28 @@ if (isset($_POST['submit']) or isset($_GET['remove']) or isset($_GET['add'])) {
 
 	/* PREVENT DELETES IF DEPENDENT RECORDS IN 'custbranch, suppliers */
 
-	$sql = "SELECT COUNT(*) FROM custbranch WHERE taxgroupid='" . $_GET['SelectedGroup'] . "'";
-	$result = DB_query($sql);
+	$SQL = "SELECT COUNT(*) FROM custbranch WHERE taxgroupid='" . $_GET['SelectedGroup'] . "'";
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_row($result);
 	if ($MyRow[0] > 0) {
 		prnMsg(_('Cannot delete this tax group because some customer branches are setup using it'), 'warn');
 		echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('customer branches referring to this tax group');
 	} else {
-		$sql = "SELECT COUNT(*) FROM suppliers
+		$SQL = "SELECT COUNT(*) FROM suppliers
 				WHERE taxgroupid='" . $_GET['SelectedGroup'] . "'";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_row($result);
 		if ($MyRow[0] > 0) {
 			prnMsg(_('Cannot delete this tax group because some suppliers are setup using it'), 'warn');
 			echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('suppliers referring to this tax group');
 		} else {
 
-			$sql = "DELETE FROM taxgrouptaxes
+			$SQL = "DELETE FROM taxgrouptaxes
 					WHERE taxgroupid='" . $_GET['SelectedGroup'] . "'";
-			$result = DB_query($sql);
-			$sql = "DELETE FROM taxgroups
+			$result = DB_query($SQL);
+			$SQL = "DELETE FROM taxgroups
 					WHERE taxgroupid='" . $_GET['SelectedGroup'] . "'";
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 			prnMsg($_GET['GroupID'] . ' ' . _('tax group has been deleted') . '!', 'success');
 		}
 	} //end if taxgroup used in other tables
@@ -166,10 +166,10 @@ if (!isset($SelectedGroup)) {
 
 	/* If its the first time the page has been displayed with no parameters then none of the above are true and the list of tax groups will be displayed with links to delete or edit each. These will call the same page again and allow update/input or deletion of tax group taxes*/
 
-	$sql = "SELECT taxgroupid,
+	$SQL = "SELECT taxgroupid,
 					taxgroupdescription
 			FROM taxgroups";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	if (DB_num_rows($result) == 0) {
 		echo '<div class="page_help_text">' . _('As this is the first time that the system has been used, you must first create a tax group.') .
@@ -219,11 +219,11 @@ if (isset($SelectedGroup)) {
 if (isset($SelectedGroup)) {
 	//editing an existing role
 
-	$sql = "SELECT taxgroupid,
+	$SQL = "SELECT taxgroupid,
 					taxgroupdescription
 			FROM taxgroups
 			WHERE taxgroupid='" . $SelectedGroup . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	if (DB_num_rows($result) == 0) {
 		prnMsg(_('The selected tax group is no longer available.'), 'warn');
 	} else {
@@ -255,12 +255,12 @@ echo '<td><input type="submit" name="submit" value="' . _('Enter Group') . '" />
 
 if (isset($SelectedGroup)) {
 
-	$sql = "SELECT taxid,
+	$SQL = "SELECT taxid,
 			description as taxname
 			FROM taxauthorities
 			ORDER BY taxid";
 
-	$sqlUsed = "SELECT taxauthid,
+	$SQLUsed = "SELECT taxauthid,
 				description AS taxname,
 				calculationorder,
 				taxontax
@@ -269,10 +269,10 @@ if (isset($SelectedGroup)) {
 			WHERE taxgroupid='" . $SelectedGroup . "'
 			ORDER BY calculationorder";
 
-	$Result = DB_query($sql);
+	$Result = DB_query($SQL);
 
 	/*Make an array of the used tax authorities in calculation order */
-	$UsedResult = DB_query($sqlUsed);
+	$UsedResult = DB_query($SQLUsed);
 	$TaxAuthsUsed = array(); //this array just holds the taxauthid of all authorities in the group
 	$TaxAuthRow = array(); //this array holds all the details of the tax authorities in the group
 	$i = 1;

@@ -62,24 +62,24 @@ if (isset($_POST['submit'])) {
 			prnMsg(_('The user') . ' ' . $_POST['SelectedUser'] . ' ' . _('already authorised to use this bank account'), 'error');
 		} else {
 			// Add new record on submit
-			$sql = "INSERT INTO bankaccountusers (accountcode,
+			$SQL = "INSERT INTO bankaccountusers (accountcode,
 												userid)
 										VALUES ('" . $_POST['SelectedBankAccount'] . "',
 												'" . $_POST['SelectedUser'] . "')";
 
 			$msg = _('User') . ': ' . $_POST['SelectedUser'] . ' ' . _('has been authorised to use') . ' ' . $_POST['SelectedBankAccount'] . ' ' . _('bank account');
-			$result = DB_query($sql);
+			$result = DB_query($SQL);
 			prnMsg($msg, 'success');
 			unset($_POST['SelectedUser']);
 		}
 	}
 } elseif (isset($_GET['delete'])) {
-	$sql = "DELETE FROM bankaccountusers
+	$SQL = "DELETE FROM bankaccountusers
 		WHERE accountcode='" . $SelectedBankAccount . "'
 		AND userid='" . $SelectedUser . "'";
 
 	$ErrMsg = _('The bank account user record could not be deleted because');
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 	prnMsg(_('User') . ' ' . $SelectedUser . ' ' . _('has been un-authorised to use') . ' ' . $SelectedBankAccount . ' ' . _('bank account'), 'success');
 	unset($_GET['delete']);
 }
@@ -138,14 +138,14 @@ if (isset($_POST['process']) OR isset($SelectedBankAccount)) {
 
 	echo '<input type="hidden" name="SelectedBankAccount" value="' . $SelectedBankAccount . '" />';
 
-	$sql = "SELECT bankaccountusers.userid,
+	$SQL = "SELECT bankaccountusers.userid,
 					www_users.realname
 			FROM bankaccountusers INNER JOIN www_users
 			ON bankaccountusers.userid=www_users.userid
 			WHERE bankaccountusers.accountcode='" . $SelectedBankAccount . "'
 			ORDER BY bankaccountusers.userid ASC";
 
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	echo '<table class="selection">';
 	echo '<tr>

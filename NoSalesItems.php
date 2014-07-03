@@ -18,19 +18,19 @@ if (!(isset($_POST['Search']))) {
 			<td>
 				<select minlength="1" required="required" name="Location[]" multiple="multiple">';
 	if ($_SESSION['RestrictLocations'] == 0) {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations";
 		echo '<option value="All" selected="selected">' . _('All') . '</option>';
 	} else {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations
 					INNER JOIN www_users
 						ON locations.loccode=www_users.defaultlocation
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
-	$locationresult = DB_query($sql);
+	$locationresult = DB_query($SQL);
 	$i = 0;
 	while ($MyRow = DB_fetch_array($locationresult)) {
 		if (isset($_POST['Location'][$i]) and $MyRow['loccode'] == $_POST['Location'][$i]) {
@@ -49,10 +49,10 @@ if (!(isset($_POST['Search']))) {
 			<td>:</td>
 			<td><select minlength="0" name="Customers">';
 
-	$sql = "SELECT typename,
+	$SQL = "SELECT typename,
 					typeid
 				FROM debtortype";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	echo '<option value="All">' . _('All') . '</option>';
 	while ($MyRow = DB_fetch_array($result)) {
 		echo '<option value="' . $MyRow['typeid'] . '">' . $MyRow['typename'] . '</option>';

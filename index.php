@@ -212,7 +212,7 @@ function GetRptLinks($GroupID) {
 		_('Standard Reports and Forms')
 	);
 
-	$sql = "SELECT id,
+	$SQL = "SELECT id,
 					reporttype,
 					defaultreport,
 					groupname,
@@ -220,7 +220,7 @@ function GetRptLinks($GroupID) {
 				FROM reports
 				ORDER BY groupname,
 						reportname";
-	$Result = DB_query($sql, '', '', false, true);
+	$Result = DB_query($SQL, '', '', false, true);
 	$_SESSION['ReportList'] = array();
 	while ($Temp = DB_fetch_array($Result))
 		$_SESSION['ReportList'][] = $Temp;

@@ -45,20 +45,20 @@ if (isset($_POST['submit'])) {
 		would not run in this case cos submit is false of course  see the
 		delete code below*/
 
-		$sql = "UPDATE shippers SET shippername='" . $_POST['ShipperName'] . "'
+		$SQL = "UPDATE shippers SET shippername='" . $_POST['ShipperName'] . "'
 				WHERE shipper_id = '" . $SelectedShipper . "'";
 		$msg = _('The shipper record has been updated');
 	} elseif ($InputError != 1) {
 
 		/*SelectedShipper is null cos no item selected on first time round so must be adding a	record must be submitting new entries in the new Shipper form */
 
-		$sql = "INSERT INTO shippers (shippername) VALUES ('" . $_POST['ShipperName'] . "')";
+		$SQL = "INSERT INTO shippers (shippername) VALUES ('" . $_POST['ShipperName'] . "')";
 		$msg = _('The shipper record has been added');
 	}
 
 	//run the SQL from either of the above possibilites
 	if ($InputError != 1) {
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		echo '<br />';
 		prnMsg($msg, 'success');
 		unset($SelectedShipper);
@@ -71,8 +71,8 @@ if (isset($_POST['submit'])) {
 
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'SalesOrders'
 
-	$sql = "SELECT COUNT(*) FROM salesorders WHERE salesorders.shipvia='" . $SelectedShipper . "'";
-	$result = DB_query($sql);
+	$SQL = "SELECT COUNT(*) FROM salesorders WHERE salesorders.shipvia='" . $SelectedShipper . "'";
+	$result = DB_query($SQL);
 	$MyRow = DB_fetch_row($result);
 	if ($MyRow[0] > 0) {
 		$CancelDelete = 1;
@@ -82,8 +82,8 @@ if (isset($_POST['submit'])) {
 	} else {
 		// PREVENT DELETES IF DEPENDENT RECORDS IN 'DebtorTrans'
 
-		$sql = "SELECT COUNT(*) FROM debtortrans WHERE debtortrans.shipvia='" . $SelectedShipper . "'";
-		$result = DB_query($sql);
+		$SQL = "SELECT COUNT(*) FROM debtortrans WHERE debtortrans.shipvia='" . $SelectedShipper . "'";
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_row($result);
 		if ($MyRow[0] > 0) {
 			$CancelDelete = 1;
@@ -99,8 +99,8 @@ if (isset($_POST['submit'])) {
 
 			} else {
 
-				$sql = "DELETE FROM shippers WHERE shipper_id='" . $SelectedShipper . "'";
-				$result = DB_query($sql);
+				$SQL = "DELETE FROM shippers WHERE shipper_id='" . $SelectedShipper . "'";
+				$result = DB_query($SQL);
 				echo '<br />';
 				prnMsg(_('The shipper record has been deleted'), 'success');
 			}
@@ -119,8 +119,8 @@ if (!isset($SelectedShipper)) {
 	echo '<p class="page_title_text noPrint" >
 			<img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
 
-	$sql = "SELECT * FROM shippers ORDER BY shipper_id";
-	$result = DB_query($sql);
+	$SQL = "SELECT * FROM shippers ORDER BY shipper_id";
+	$result = DB_query($SQL);
 
 	echo '<table class="selection">
 			<tr>
@@ -163,9 +163,9 @@ if (!isset($_GET['delete'])) {
 	if (isset($SelectedShipper)) {
 		//editing an existing Shipper
 
-		$sql = "SELECT shipper_id, shippername FROM shippers WHERE shipper_id='" . $SelectedShipper . "'";
+		$SQL = "SELECT shipper_id, shippername FROM shippers WHERE shipper_id='" . $SelectedShipper . "'";
 
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_array($result);
 
 		$_POST['Shipper_ID'] = $MyRow['shipper_id'];

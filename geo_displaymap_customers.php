@@ -8,9 +8,9 @@ include ('includes/session.inc');
 include ('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');
 
-$sql="SELECT * FROM geocode_param WHERE 1";
+$SQL="SELECT * FROM geocode_param WHERE 1";
 $ErrMsg = _('An error occurred in retrieving the currency information');
-$result = DB_query($sql, $ErrMsg);
+$result = DB_query($SQL, $ErrMsg);
 $MyRow = DB_fetch_array($result);
 
 $Api_Key = $MyRow['geocode_key'];

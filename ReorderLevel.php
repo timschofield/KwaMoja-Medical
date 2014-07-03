@@ -18,11 +18,11 @@ if (isset($_POST['PrintPDF'])) {
 	$CategoryDescription = ' ';
 	if ($_POST['StockCat'] != 'All') {
 		$WhereCategory = " AND stockmaster.categoryid='" . $_POST['StockCat'] . "'";
-		$sql = "SELECT categoryid,
+		$SQL = "SELECT categoryid,
 					categorydescription
 				FROM stockcategory
 				WHERE categoryid='" . $_POST['StockCat'] . "'";
-		$result = DB_query($sql);
+		$result = DB_query($SQL);
 		$MyRow = DB_fetch_row($result);
 		$CategoryDescription = $MyRow[1];
 	}
@@ -31,7 +31,7 @@ if (isset($_POST['PrintPDF'])) {
 		$WhereLocation = " AND locstock.loccode='" . $_POST['StockLocation'] . "' ";
 	}
 
-	$sql = "SELECT locstock.stockid,
+	$SQL = "SELECT locstock.stockid,
 					stockmaster.description,
 					locstock.loccode,
 					locations.locationname,
@@ -49,7 +49,7 @@ if (isset($_POST['PrintPDF'])) {
 				AND locstock.reorderlevel > locstock.quantity
 				AND (stockmaster.mbflag='B' OR stockmaster.mbflag='M') " . $WhereCategory . " ORDER BY locstock.loccode,locstock.stockid";
 
-	$result = DB_query($sql, '', '', false, true);
+	$result = DB_query($SQL, '', '', false, true);
 
 	if (DB_error_no() != 0) {
 		$Title = _('Reorder Level') . ' - ' . _('Problem Report');
@@ -57,7 +57,7 @@ if (isset($_POST['PrintPDF'])) {
 		prnMsg(_('The Reorder Level report could not be retrieved by the SQL because') . ' ' . DB_error_msg(), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($debug == 1) {
-			echo '<br />' . $sql;
+			echo '<br />' . $SQL;
 		}
 		include('includes/footer.inc');
 		exit;
@@ -115,7 +115,7 @@ if (isset($_POST['PrintPDF'])) {
 		$OnOrderRow = DB_fetch_array($OnOrderResult);
 
 		// Print if stock for part in other locations
-		$sql2 = "SELECT locstock.quantity,
+		$SQL2 = "SELECT locstock.quantity,
 								locstock.loccode,
 								locstock.reorderlevel,
 								stockmaster.decimalplaces
@@ -124,7 +124,7 @@ if (isset($_POST['PrintPDF'])) {
 						 AND locstock.quantity > reorderlevel
 						 AND locstock.stockid = stockmaster.stockid
 						 AND locstock.stockid ='" . $MyRow['stockid'] . "' AND locstock.loccode !='" . $MyRow['loccode'] . "'";
-		$OtherResult = DB_query($sql2, '', '', false, true);
+		$OtherResult = DB_query($SQL2, '', '', false, true);
 		while ($MyRow2 = DB_fetch_array($OtherResult)) {
 			$YPos -= $line_height;
 
@@ -197,19 +197,19 @@ if (isset($_POST['PrintPDF'])) {
 				<td>' . _('From Stock Location') . ':</td>
 				<td><select required="required" minlength="1" name="StockLocation"> ';
 	if ($_SESSION['RestrictLocations'] == 0) {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations";
 		echo '<option selected="selected" value="All">' . _('All Locations') . '</option>';
 	} else {
-		$sql = "SELECT locationname,
+		$SQL = "SELECT locationname,
 						loccode
 					FROM locations
 					INNER JOIN www_users
 						ON locations.loccode=www_users.defaultlocation
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
-	$resultStkLocs = DB_query($sql);
+	$resultStkLocs = DB_query($SQL);
 	while ($MyRow = DB_fetch_array($resultStkLocs)) {
 		if (isset($_POST['StockLocation']) and $MyRow['loccode'] == $_POST['StockLocation']) {
 			echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';

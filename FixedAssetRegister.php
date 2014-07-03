@@ -16,7 +16,7 @@ if (isset($_POST['submit']) or isset($_POST['pdf']) or isset($_POST['csv'])) {
 	}
 	$DateFrom = FormatDateForSQL($_POST['FromDate']);
 	$DateTo = FormatDateForSQL($_POST['ToDate']);
-	$sql = "SELECT fixedassets.assetid,
+	$SQL = "SELECT fixedassets.assetid,
 					fixedassets.description,
 					fixedassets.longdescription,
 					fixedassets.assetcategoryid,
@@ -47,7 +47,7 @@ if (isset($_POST['submit']) or isset($_POST['pdf']) or isset($_POST['csv'])) {
 					fixedassets.datepurchased,
 					fixedassetlocations.parentlocationid,
 					fixedassets.assetlocation";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 	if (isset($_POST['pdf'])) {
 		$FontSize = 10;
 		$pdf->addInfo('Title', _('Fixed Asset Register'));
@@ -270,8 +270,8 @@ if (isset($_POST['submit']) or isset($_POST['pdf']) or isset($_POST['csv'])) {
 	}
 	echo '</select></td>
 		</tr>';
-	$sql = "SELECT  locationid, locationdescription FROM fixedassetlocations";
-	$result = DB_query($sql);
+	$SQL = "SELECT  locationid, locationdescription FROM fixedassetlocations";
+	$result = DB_query($SQL);
 	echo '<tr>
 			<th>' . _('Asset Location') . '</th>
 			<td><select minlength="0" name="AssetLocation">
@@ -285,8 +285,8 @@ if (isset($_POST['submit']) or isset($_POST['pdf']) or isset($_POST['csv'])) {
 	}
 	echo '</select></td>
 		</tr>';
-	$sql = "SELECT assetid, description FROM fixedassets";
-	$result = DB_query($sql);
+	$SQL = "SELECT assetid, description FROM fixedassets";
+	$result = DB_query($SQL);
 	echo '<tr>
 			<th>' . _('Asset') . '</th>
 			<td><select minlength="0" name="AssetID">

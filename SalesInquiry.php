@@ -58,7 +58,7 @@ else {
 }
 
 // Save $_POST['SummaryType'] in $SaveSummaryType because change $_POST['SummaryType'] when
-// create $sql
+// create $SQL
 if (isset($_POST['SummaryType'])) {
 	$SaveSummaryType = $_POST['SummaryType'];
 } //isset($_POST['SummaryType'])
@@ -197,7 +197,7 @@ function submit($PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $DebtorName,
 		$ToDate = FormatDateForSQL($_POST['ToDate']);
 		if ($_POST['ReportType'] == 'Detail') {
 			if ($_POST['DateType'] == 'Order') {
-				$sql = "SELECT salesorderdetails.orderno,
+				$SQL = "SELECT salesorderdetails.orderno,
 							   salesorderdetails.stkcode,
 							   salesorderdetails.itemdue,
 							   salesorders.debtorno,
@@ -227,7 +227,7 @@ function submit($PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $DebtorName,
 			} //$_POST['DateType'] == 'Order'
 			else {
 				// Selects by tempstockmoves.trandate not order date
-				$sql = "SELECT salesorderdetails.orderno,
+				$SQL = "SELECT salesorderdetails.orderno,
 							   salesorderdetails.stkcode,
 							   salesorderdetails.itemdue,
 							   salesorders.debtorno,
@@ -275,7 +275,7 @@ function submit($PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $DebtorName,
 			} //$_POST['SummaryType'] == 'extprice'
 			if ($_POST['DateType'] == 'Order') {
 				if ($_POST['SummaryType'] == 'extprice' or $_POST['SummaryType'] == 'stkcode') {
-					$sql = "SELECT salesorderdetails.stkcode,
+					$SQL = "SELECT salesorderdetails.stkcode,
 								   SUM(salesorderdetails.quantity) as quantity,
 								   SUM(salesorderdetails.qtyinvoiced) as qtyinvoiced,
 								   SUM(salesorderdetails.quantity * salesorderdetails.unitprice * (1 - salesorderdetails.discountpercent)) / currencies.rate as extprice,
@@ -299,7 +299,7 @@ function submit($PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $DebtorName,
 								   ORDER BY " . $orderby;
 				} //$_POST['SummaryType'] == 'extprice' or $_POST['SummaryType'] == 'stkcode'
 				elseif ($_POST['SummaryType'] == 'orderno') {
-					$sql = "SELECT salesorderdetails.orderno,
+					$SQL = "SELECT salesorderdetails.orderno,
 								   salesorders.debtorno,
 								   debtorsmaster.name,
 								   SUM(salesorderdetails.quantity) as quantity,
@@ -325,7 +325,7 @@ function submit($PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $DebtorName,
 					if ($_POST['SummaryType'] == 'name') {
 						$orderby = 'name';
 					} //$_POST['SummaryType'] == 'name'
-					$sql = "SELECT debtorsmaster.debtorno,
+					$SQL = "SELECT debtorsmaster.debtorno,
 								   debtorsmaster.name,
 								   SUM(salesorderdetails.quantity) as quantity,
 								   SUM(salesorderdetails.qtyinvoiced) as qtyinvoiced,
@@ -347,7 +347,7 @@ function submit($PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $DebtorName,
 							ORDER BY " . $orderby;
 				} //$_POST['SummaryType'] == 'debtorno' or $_POST['SummaryType'] == 'name'
 					elseif ($_POST['SummaryType'] == 'month') {
-					$sql = "SELECT EXTRACT(YEAR_MONTH from salesorders.orddate) as month,
+					$SQL = "SELECT EXTRACT(YEAR_MONTH from salesorders.orddate) as month,
 								   CONCAT(MONTHNAME(salesorders.orddate),' ',YEAR(salesorders.orddate)) as monthname,
 								   SUM(salesorderdetails.quantity) as quantity,
 								   SUM(salesorderdetails.qtyinvoiced) as qtyinvoiced,
@@ -368,7 +368,7 @@ function submit($PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $DebtorName,
 							ORDER BY " . $orderby;
 				} //$_POST['SummaryType'] == 'month'
 					elseif ($_POST['SummaryType'] == 'categoryid') {
-					$sql = "SELECT stockmaster.categoryid,
+					$SQL = "SELECT stockmaster.categoryid,
 								   stockcategory.categorydescription,
 								   SUM(salesorderdetails.quantity) as quantity,
 								   SUM(salesorderdetails.qtyinvoiced) as qtyinvoiced,
@@ -390,7 +390,7 @@ function submit($PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $DebtorName,
 							ORDER BY " . $orderby;
 				} //$_POST['SummaryType'] == 'categoryid'
 					elseif ($_POST['SummaryType'] == 'salesman') {
-					$sql = "SELECT custbranch.salesman,
+					$SQL = "SELECT custbranch.salesman,
 								   salesman.salesmanname,
 								   SUM(salesorderdetails.quantity) as quantity,
 								   SUM(salesorderdetails.qtyinvoiced) as qtyinvoiced,
@@ -411,7 +411,7 @@ function submit($PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $DebtorName,
 							ORDER BY " . $orderby;
 				} //$_POST['SummaryType'] == 'salesman'
 					elseif ($_POST['SummaryType'] == 'area') {
-					$sql = "SELECT custbranch.area,
+					$SQL = "SELECT custbranch.area,
 								   areas.areadescription,
 								   SUM(salesorderdetails.quantity) as quantity,
 								   SUM(salesorderdetails.qtyinvoiced) as qtyinvoiced,
@@ -435,7 +435,7 @@ function submit($PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $DebtorName,
 			else {
 				// Selects by tempstockmoves.trandate not order date
 				if ($_POST['SummaryType'] == 'extprice' or $_POST['SummaryType'] == 'stkcode') {
-					$sql = "SELECT salesorderdetails.stkcode,
+					$SQL = "SELECT salesorderdetails.stkcode,
 								   SUM(salesorderdetails.quantity) as quantity,
 								   SUM(salesorderdetails.qtyinvoiced) as qtyinvoiced,
 								   SUM(tempstockmoves.qty * tempstockmoves.price) * -1 as extprice,
@@ -460,7 +460,7 @@ function submit($PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $DebtorName,
 							ORDER BY " . $orderby;
 				} //$_POST['SummaryType'] == 'extprice' or $_POST['SummaryType'] == 'stkcode'
 				elseif ($_POST['SummaryType'] == 'orderno') {
-					$sql = "SELECT salesorderdetails.orderno,
+					$SQL = "SELECT salesorderdetails.orderno,
 								   salesorders.debtorno,
 								   debtorsmaster.name,
 								   SUM(salesorderdetails.quantity) as quantity,
@@ -490,7 +490,7 @@ function submit($PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $DebtorName,
 					if ($_POST['SummaryType'] == 'name') {
 						$orderby = 'name';
 					} //$_POST['SummaryType'] == 'name'
-					$sql = "SELECT debtorsmaster.debtorno,
+					$SQL = "SELECT debtorsmaster.debtorno,
 								   debtorsmaster.name,
 								   SUM(salesorderdetails.quantity) as quantity,
 								   SUM(salesorderdetails.qtyinvoiced) as qtyinvoiced,
@@ -515,7 +515,7 @@ function submit($PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $DebtorName,
 							ORDER BY " . $orderby;
 				} //$_POST['SummaryType'] == 'debtorno' or $_POST['SummaryType'] == 'name'
 					elseif ($_POST['SummaryType'] == 'month') {
-					$sql = "SELECT EXTRACT(YEAR_MONTH from salesorders.orddate) as month,
+					$SQL = "SELECT EXTRACT(YEAR_MONTH from salesorders.orddate) as month,
 								   CONCAT(MONTHNAME(salesorders.orddate),' ',YEAR(salesorders.orddate)) as monthname,
 								   SUM(salesorderdetails.quantity) as quantity,
 								   SUM(salesorderdetails.qtyinvoiced) as qtyinvoiced,
@@ -540,7 +540,7 @@ function submit($PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $DebtorName,
 							ORDER BY " . $orderby;
 				} //$_POST['SummaryType'] == 'month'
 					elseif ($_POST['SummaryType'] == 'categoryid') {
-					$sql = "SELECT stockmaster.categoryid,
+					$SQL = "SELECT stockmaster.categoryid,
 								   stockcategory.categorydescription,
 								   SUM(salesorderdetails.quantity) as quantity,
 								   SUM(salesorderdetails.qtyinvoiced) as qtyinvoiced,
@@ -565,7 +565,7 @@ function submit($PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $DebtorName,
 							ORDER BY " . $orderby;
 				} //$_POST['SummaryType'] == 'categoryid'
 					elseif ($_POST['SummaryType'] == 'salesman') {
-					$sql = "SELECT custbranch.salesman,
+					$SQL = "SELECT custbranch.salesman,
 								   salesman.salesmanname,
 								   SUM(salesorderdetails.quantity) as quantity,
 								   SUM(salesorderdetails.qtyinvoiced) as qtyinvoiced,
@@ -590,7 +590,7 @@ function submit($PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $DebtorName,
 							ORDER BY " . $orderby;
 				} //$_POST['SummaryType'] == 'salesman'
 					elseif ($_POST['SummaryType'] == 'area') {
-					$sql = "SELECT custbranch.area,
+					$SQL = "SELECT custbranch.area,
 								   areas.areadescription,
 								   SUM(salesorderdetails.quantity) as quantity,
 								   SUM(salesorderdetails.qtyinvoiced) as qtyinvoiced,
@@ -617,7 +617,7 @@ function submit($PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $DebtorName,
 			}
 		} // End of if ($_POST['ReportType']
 		$ErrMsg = _('The SQL to find the parts selected failed with the message');
-		$result = DB_query($sql, $ErrMsg);
+		$result = DB_query($SQL, $ErrMsg);
 		$ctr = 0;
 		$TotalQty = 0;
 		$TotalExtCost = 0;
@@ -1050,8 +1050,8 @@ function display() //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
 		echo '</td>';
 	} else {
 		echo '<td><select name="Salesman">';
-		$sql = "SELECT salesmancode, salesmanname FROM salesman";
-		$SalesmanResult = DB_query($sql);
+		$SQL = "SELECT salesmancode, salesmanname FROM salesman";
+		$SalesmanResult = DB_query($SQL);
 		echo '<option selected="selected" value="All">' . _('All Salesmen') . '</option>';
 		while ($MyRow = DB_fetch_array($SalesmanResult)) {
 			echo '<option value="' . $MyRow['salesmancode'] . '">' . $MyRow['salesmanname'] . '</option>';
@@ -1129,25 +1129,25 @@ function TempStockmoves() {
 	$FromDate = FormatDateForSQL($_POST['FromDate']);
 	$ToDate = FormatDateForSQL($_POST['ToDate']);
 
-	$sql = "CREATE TEMPORARY TABLE tempstockmoves LIKE stockmoves";
+	$SQL = "CREATE TEMPORARY TABLE tempstockmoves LIKE stockmoves";
 	$ErrMsg = _('The SQL to the create temp stock moves table failed with the message');
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 
-	$sql = "INSERT tempstockmoves
+	$SQL = "INSERT tempstockmoves
 			  SELECT * FROM stockmoves
 			  WHERE (stockmoves.type='10' OR stockmoves.type='11')
 			  AND stockmoves.trandate >='" . $FromDate . "' AND stockmoves.trandate <='" . $ToDate . "'";
 	$ErrMsg = _('The SQL to insert temporary stockmoves records failed with the message');
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 
-	$sql = "UPDATE tempstockmoves, stockmoves
+	$SQL = "UPDATE tempstockmoves, stockmoves
 			  SET tempstockmoves.reference = stockmoves.reference
 			  WHERE tempstockmoves.type='11'
 				AND SUBSTR(tempstockmoves.reference,10,10) = stockmoves.transno
 				AND tempstockmoves.stockid = stockmoves.stockid
 				AND stockmoves.type ='10'";
 	$ErrMsg = _('The SQL to update tempstockmoves failed with the message');
-	$result = DB_query($sql, $ErrMsg);
+	$result = DB_query($SQL, $ErrMsg);
 
 
 } // End of function TempStockmoves

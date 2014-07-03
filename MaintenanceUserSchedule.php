@@ -16,7 +16,7 @@ if (isset($_GET['Complete'])) {
 }
 
 
-$sql = "SELECT taskid,
+$SQL = "SELECT taskid,
 				fixedassettasks.assetid,
 				description,
 				taskdescription,
@@ -36,7 +36,7 @@ $sql = "SELECT taskid,
 		ORDER BY ADDDATE(lastcompleted,frequencydays) DESC";
 
 $ErrMsg = _('The maintenance schedule cannot be retrieved because');
-$Result = DB_query($sql, $ErrMsg);
+$Result = DB_query($SQL, $ErrMsg);
 
 echo '<table class="selection">
 	 <tr>

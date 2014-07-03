@@ -36,19 +36,19 @@ if (isset($_POST['CheckCode'])) {
 		  </p>';
 
 	if (mb_strlen($_POST['StockText']) > 0) {
-		$sql = "SELECT stockid,
+		$SQL = "SELECT stockid,
 					description
 			 FROM stockmaster
 			 WHERE description " . LIKE . " '%" . $_POST['StockText'] . "%'";
 	} else {
-		$sql = "SELECT stockid,
+		$SQL = "SELECT stockid,
 					description
 			  FROM stockmaster
 			  WHERE stockid " . LIKE . " '%" . $_POST['StockCode'] . "%'";
 	}
 	$ErrMsg = _('The stock information cannot be retrieved because');
 	$DbgMsg = _('The SQL to get the stock description was');
-	$result = DB_query($sql, $ErrMsg, $DbgMsg);
+	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
 	echo '<table class="selection">
 			<tr>
 				<th class="SortableColumn">' . _('Stock Code') . '</th>
@@ -109,7 +109,7 @@ if ($NewTransfer and isset($_POST['StockID'])) {
 	$_SESSION['Transfer' . $identifier] = new StockTransfer(0, $_POST['StockLocationFrom'], '', $_POST['StockLocationTo'], '', Date($_SESSION['DefaultDateFormat']));
 	$_SESSION['Transfer' . $identifier]->TrfID = $identifier;
 
-	$sql = "SELECT description,
+	$SQL = "SELECT description,
 					units,
 					mbflag,
 					stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost as standardcost,
@@ -122,7 +122,7 @@ if ($NewTransfer and isset($_POST['StockID'])) {
 					ON stockmaster.stockid=stockcosts.stockid
 					AND stockcosts.succeeded=0
 				WHERE stockcosts.stockid='" . trim(mb_strtoupper($_POST['StockID'])) . "'";
-	$result = DB_query($sql);
+	$result = DB_query($SQL);
 
 	if (DB_num_rows($result) == 0) {
 		prnMsg(_('Unable to locate Stock Code') . ' ' . mb_strtoupper($_POST['StockID']), 'error');
@@ -503,18 +503,18 @@ echo '<tr>
 		<td><select required="required" minlength="1" name="StockLocationFrom">';
 
 if ($_SESSION['RestrictLocations'] == 0) {
-	$sql = "SELECT locationname,
+	$SQL = "SELECT locationname,
 					loccode
 				FROM locations";
 } else {
-	$sql = "SELECT locationname,
+	$SQL = "SELECT locationname,
 					loccode
 				FROM locations
 				INNER JOIN www_users
 					ON locations.loccode=www_users.defaultlocation
 				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 }
-$resultStkLocs = DB_query($sql);
+$resultStkLocs = DB_query($SQL);
 while ($MyRow = DB_fetch_array($resultStkLocs)) {
 	if (isset($_SESSION['Transfer' . $identifier]->StockLocationFrom)) {
 		if ($MyRow['loccode'] == $_SESSION['Transfer' . $identifier]->StockLocationFrom) {
@@ -537,10 +537,10 @@ echo '<tr>
 		<td>' . _('To Stock Location') . ': </td>
 		<td><select required="required" minlength="1" name="StockLocationTo"> ';
 
-$sql = "SELECT locationname,
+$SQL = "SELECT locationname,
 				loccode
 			FROM locations";
-$resultStkLocs = DB_query($sql);
+$resultStkLocs = DB_query($SQL);
 
 while ($MyRow = DB_fetch_array($resultStkLocs)) {
 	if (isset($_SESSION['Transfer' . $identifier]) and isset($_SESSION['Transfer' . $identifier]->StockLocationTo)) {

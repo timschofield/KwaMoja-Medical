@@ -65,6 +65,7 @@ function DB_query($SQL, $ErrorMessage = '', $DebugMessage = '', $Transaction = f
 	global $debug;
 	global $db;
 	global $PathPrefix;
+	global $RootPath;
 
 	if (isset($_SESSION['MonthsAuditTrail']) and (DB_error_no($db) == 0 and $_SESSION['MonthsAuditTrail'] > 0) and (DB_affected_rows($result) > 0)) {
 

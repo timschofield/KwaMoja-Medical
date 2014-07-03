@@ -65,6 +65,7 @@ function DB_query($SQL, $ErrorMessage = '', $DebugMessage = '', $Transaction = f
 	global $db;
 	global $debug;
 	global $PathPrefix;
+	global $RootPath;
 
 	$result = mysqli_query($db, $SQL);
 

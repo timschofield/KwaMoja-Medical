@@ -49,10 +49,10 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate']) or $InputError == 1) 
 					<option selected="selected" value="All">' . _('Over All Categories') . '</option>';
 
 	$SQL = "SELECT categorydescription, categoryid FROM stockcategory WHERE stocktype<>'D' AND stocktype<>'L'";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 	}
 
@@ -76,8 +76,8 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate']) or $InputError == 1) 
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
 
-	$result = DB_query($SQL);
-	while ($MyRow = DB_fetch_array($result)) {
+	$Result = DB_query($SQL);
+	while ($MyRow = DB_fetch_array($Result)) {
 		echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 	}
 	echo '</select></td></tr>';
@@ -296,10 +296,10 @@ if ($_POST['CategoryID'] == 'All' and $_POST['Location'] == 'All') {
 
 }
 $ErrMsg = _('Could not retrieve the count of sales order lines in the period under review');
-$result = DB_query($SQL, $ErrMsg);
+$Result = DB_query($SQL, $ErrMsg);
 
 
-$MyRow = DB_fetch_row($result);
+$MyRow = DB_fetch_row($Result);
 $YPos -= $line_height;
 $LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 200, $FontSize, _('Total number of order lines') . ' ' . locale_number_format($MyRow[0]), 'left');
 
@@ -320,11 +320,11 @@ if ($_POST['Email'] == 'Yes') {
 
 	if ($_SESSION['SmtpSetting'] == 0) {
 		$mail->setFrom($_SESSION['CompanyRecord']['coyname'] . ' <' . $_SESSION['CompanyRecord']['email'] . '>');
-		$result = $mail->send(array(
+		$Result = $mail->send(array(
 			$_SESSION['FactoryManagerEmail']
 		));
 	} else {
-		$result = SendmailBySmtp($mail, array(
+		$Result = SendmailBySmtp($mail, array(
 			$_SESSION['FactoryManagerEmail']
 		));
 	}

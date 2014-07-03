@@ -29,7 +29,7 @@ if (isset($_POST['SelectedLabelID'])) {
 
 			if (ctype_digit($_POST['VPos' . $i]) and ctype_digit($_POST['HPos' . $i]) and ctype_digit($_POST['FontSize' . $i])) { // if all entries are integers
 
-				$result = DB_query("UPDATE labelfields SET fieldvalue='" . $_POST['FieldName' . $i] . "',
+				$Result = DB_query("UPDATE labelfields SET fieldvalue='" . $_POST['FieldName' . $i] . "',
 														vpos='" . $_POST['VPos' . $i] . "',
 														hpos='" . $_POST['HPos' . $i] . "',
 														fontsize='" . $_POST['FontSize' . $i] . "',
@@ -42,7 +42,7 @@ if (isset($_POST['SelectedLabelID'])) {
 	}
 	if (ctype_digit($_POST['VPos']) and ctype_digit($_POST['HPos']) and ctype_digit($_POST['FontSize'])) {
 		//insert the new label field entered
-		$result = DB_query("INSERT INTO labelfields (labelid,
+		$Result = DB_query("INSERT INTO labelfields (labelid,
 													fieldvalue,
 													vpos,
 													hpos,
@@ -58,7 +58,7 @@ if (isset($_POST['SelectedLabelID'])) {
 } elseif (isset($_GET['SelectedLabelID'])) {
 	$SelectedLabelID = $_GET['SelectedLabelID'];
 	if (isset($_GET['DeleteField'])) { //then process any deleted fields
-		$result = DB_query("DELETE FROM labelfields WHERE labelfieldid='" . $_GET['DeleteField'] . "'");
+		$Result = DB_query("DELETE FROM labelfields WHERE labelfieldid='" . $_GET['DeleteField'] . "'");
 	}
 }
 
@@ -98,7 +98,7 @@ if (isset($_POST['submit'])) {
 				WHERE labelid = '" . $SelectedLabelID . "'";
 
 		$ErrMsg = _('The update of this label template failed because');
-		$result = DB_query($SQL, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 
 		$Message = _('The label template has been updated');
 
@@ -126,7 +126,7 @@ if (isset($_POST['submit'])) {
 					'" . $_POST['PageHeight'] . "')";
 
 		$ErrMsg = _('The addition of this label failed because');
-		$result = DB_query($SQL, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 		$Message = _('The new label template has been added to the database');
 	}
 	//run the SQL from either of the above possibilites
@@ -148,8 +148,8 @@ if (isset($_POST['submit'])) {
 } elseif (isset($_GET['delete'])) {
 	//the link to delete a selected record was clicked instead of the submit button
 
-	$result = DB_query("DELETE FROM labelfields WHERE labelid= '" . $SelectedLabelID . "'");
-	$result = DB_query("DELETE FROM labels WHERE labelid= '" . $SelectedLabelID . "'");
+	$Result = DB_query("DELETE FROM labelfields WHERE labelid= '" . $SelectedLabelID . "'");
+	$Result = DB_query("DELETE FROM labels WHERE labelid= '" . $SelectedLabelID . "'");
 	prnMsg(_('The selected label template has been deleted'), 'success');
 	unset($SelectedLabelID);
 }
@@ -172,9 +172,9 @@ if (!isset($SelectedLabelID)) {
 
 	$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The defined label templates could not be retrieved because');
 	$DbgMsg = _('The following SQL to retrieve the label templates was used');
-	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-	if (DB_num_rows($result) > 0) {
+	if (DB_num_rows($Result) > 0) {
 		echo '<table class="selection" summary="' . _('List of all currently setup Label dimensions') . '">
 				<tr>
 					<th>' . _('Description') . '</th>
@@ -187,7 +187,7 @@ if (!isset($SelectedLabelID)) {
 					<th>' . _('Column Width') . '</th>
 				</tr>';
 		$k = 0;
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
@@ -269,8 +269,8 @@ if (isset($SelectedLabelID)) {
 			FROM labels
 			WHERE labelid='" . $SelectedLabelID . "'";
 
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 
 	$_POST['PageWidth'] = $MyRow['pagewidth'];
 	$_POST['PageHeight'] = $MyRow['pageheight'];
@@ -407,7 +407,7 @@ if (isset($SelectedLabelID)) {
 			WHERE labelid = '" . $SelectedLabelID . "'
 			ORDER BY vpos DESC";
 	$ErrMsg = _('Could not get the label fields because');
-	$result = DB_query($SQL, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 	$i = 0;
 	echo '<table class="selection" summary="' . _('Outside container for label diagram and info') . '">
 				<tr>
@@ -420,9 +420,9 @@ if (isset($SelectedLabelID)) {
 						<th>' . _('Font Size') . '</th>
 						<th>' . _('Bar-code') . '</th>
 					</tr>';
-	if (DB_num_rows($result) > 0) {
+	if (DB_num_rows($Result) > 0) {
 		$k = 0;
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';

@@ -90,12 +90,12 @@ if (isset($_POST['Search'])) {
 		}
 
 		$ErrMsg = _('The SQL to find the parts selected failed with the message');
-		$result = DB_query($SQL, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 
 	} //one of keywords or StockCode was more than a zero length string
 } //end of if search
 
-if (isset($_POST['Search']) and isset($result) and !isset($SelectedParent)) {
+if (isset($_POST['Search']) and isset($Result) and !isset($SelectedParent)) {
 
 	echo '<br />
 			<table class="selection">
@@ -108,7 +108,7 @@ if (isset($_POST['Search']) and isset($result) and !isset($SelectedParent)) {
 
 	$k = 0; //row colour counter
 	$j = 0;
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -140,13 +140,13 @@ if (!isset($_POST['StockID'])) {
 
 if (isset($StockID) and $StockID != "") {
 
-	$result = DB_query("SELECT description,
+	$Result = DB_query("SELECT description,
 								units,
 								labourcost,
 								overheadcost
 						FROM stockmaster
 						WHERE stockid='" . $StockID . "'");
-	$MyRow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($Result);
 	$ParentLabourCost = $MyRow['labourcost'];
 	$ParentOverheadCost = $MyRow['overheadcost'];
 

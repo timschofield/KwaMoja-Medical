@@ -15,8 +15,8 @@ if (isset($_GET['StockID'])) {
 	$StockID = '';
 }
 
-$result = DB_query("SELECT description, units FROM stockmaster WHERE stockid='" . $StockID . "'");
-$MyRow = DB_fetch_row($result);
+$Result = DB_query("SELECT description, units FROM stockmaster WHERE stockid='" . $StockID . "'");
+$MyRow = DB_fetch_row($Result);
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Inventory') . '" alt="" /><b>' . ' ' . $StockID . ' - ' . $MyRow['0'] . ' : ' . _('in units of') . ' : ' . $MyRow[1] . '</b></p>';
 
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
@@ -46,9 +46,9 @@ if ($_SESSION['RestrictLocations'] == 0) {
 					ON locations.loccode=www_users.defaultlocation
 				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 }
-$resultStkLocs = DB_query($SQL);
+$ResultStkLocs = DB_query($SQL);
 
-while ($MyRow = DB_fetch_array($resultStkLocs)) {
+while ($MyRow = DB_fetch_array($ResultStkLocs)) {
 	if (isset($_POST['StockLocation']) and $_POST['StockLocation'] != 'All') {
 		if ($MyRow['loccode'] == $_POST['StockLocation']) {
 			echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';

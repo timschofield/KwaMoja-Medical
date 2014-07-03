@@ -47,7 +47,7 @@ if (isset($_POST['submit']) or isset($_POST['pdf']) or isset($_POST['csv'])) {
 					fixedassets.datepurchased,
 					fixedassetlocations.parentlocationid,
 					fixedassets.assetlocation";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	if (isset($_POST['pdf'])) {
 		$FontSize = 10;
 		$pdf->addInfo('Title', _('Fixed Asset Register'));
@@ -106,7 +106,7 @@ if (isset($_POST['submit']) or isset($_POST['pdf']) or isset($_POST['csv'])) {
 	$TotalDisposals = 0;
 	$TotalNBV = 0;
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		/*
 		 * $Ancestors = array();
 		 $Ancestors[0] = $MyRow['locationdescription'];
@@ -252,7 +252,7 @@ if (isset($_POST['submit']) or isset($_POST['pdf']) or isset($_POST['csv'])) {
 	include('includes/header.inc');
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
 
-	$result = DB_query('SELECT categoryid,categorydescription FROM fixedassetcategories');
+	$Result = DB_query('SELECT categoryid,categorydescription FROM fixedassetcategories');
 	echo '<form onSubmit="return VerifyForm(this);" id="RegisterForm" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -261,7 +261,7 @@ if (isset($_POST['submit']) or isset($_POST['pdf']) or isset($_POST['csv'])) {
 			<th>' . _('Asset Category') . '</th>
 			<td><select minlength="0" name="AssetCategory">
 				<option value="%">' . _('ALL') . '</option>';
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['AssetCategory']) and $MyRow['categoryid'] == $_POST['AssetCategory']) {
 			echo '<option selected="selected" value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 		} else {
@@ -271,12 +271,12 @@ if (isset($_POST['submit']) or isset($_POST['pdf']) or isset($_POST['csv'])) {
 	echo '</select></td>
 		</tr>';
 	$SQL = "SELECT  locationid, locationdescription FROM fixedassetlocations";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	echo '<tr>
 			<th>' . _('Asset Location') . '</th>
 			<td><select minlength="0" name="AssetLocation">
 				<option value="%">' . _('ALL') . '</option>';
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['AssetLocation']) and $MyRow['locationid'] == $_POST['AssetLocation']) {
 			echo '<option selected="selected" value="' . $MyRow['locationid'] . '">' . $MyRow['locationdescription'] . '</option>';
 		} else {
@@ -286,12 +286,12 @@ if (isset($_POST['submit']) or isset($_POST['pdf']) or isset($_POST['csv'])) {
 	echo '</select></td>
 		</tr>';
 	$SQL = "SELECT assetid, description FROM fixedassets";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	echo '<tr>
 			<th>' . _('Asset') . '</th>
 			<td><select minlength="0" name="AssetID">
 				<option value="%">' . _('ALL') . '</option>';
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['AssetID']) and $MyRow['assetid'] == $_POST['AssetID']) {
 			echo '<option selected="selected" value="' . $MyRow['assetid'] . '">' . $MyRow['assetid'] . ' - ' . $MyRow['description'] . '</option>';
 		} else {

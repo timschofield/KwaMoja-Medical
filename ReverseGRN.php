@@ -145,7 +145,7 @@ if (isset($_GET['GRNNo']) and isset($_POST['SupplierID'])) {
 
 		$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The GRN record could not be deleted because');
 		$DbgMsg = _('The following SQL to delete the GRN record was used');
-		$result = DB_query("DELETE FROM grns WHERE grnno='" . $_GET['GRNNo'] . "'", $ErrMsg, $DbgMsg, true);
+		$Result = DB_query("DELETE FROM grns WHERE grnno='" . $_GET['GRNNo'] . "'", $ErrMsg, $DbgMsg, true);
 	} else {
 		$SQL = "UPDATE grns	SET qtyrecd = qtyrecd - " . $QtyToReverse . "
 				WHERE grns.grnno='" . $_GET['GRNNo'] . "'";
@@ -263,14 +263,14 @@ if (isset($_GET['GRNNo']) and isset($_POST['SupplierID'])) {
 						'" . $SerialStockMoves['serialno'] . "',
 						'" . -$SerialStockMoves['moveqty'] . "')";
 
-				$result = DB_query($SQL, _('Could not insert the reversing stock movements for the batch/serial numbers'), _('The SQL used but failed was') . ':', true);
+				$Result = DB_query($SQL, _('Could not insert the reversing stock movements for the batch/serial numbers'), _('The SQL used but failed was') . ':', true);
 
 				$SQL = "UPDATE stockserialitems
 					SET quantity=quantity - " . $SerialStockMoves['moveqty'] . "
 					WHERE stockserialitems.stockid='" . $GRN['itemcode'] . "'
 					AND stockserialitems.loccode ='" . $GRN['intostocklocation'] . "'
 					AND stockserialitems.serialno = '" . $SerialStockMoves['serialno'] . "'";
-				$result = DB_query($SQL, _('Could not update the batch/serial stock records'), _('The SQL used but failed was') . ':', true);
+				$Result = DB_query($SQL, _('Could not update the batch/serial stock records'), _('The SQL used but failed was') . ':', true);
 			}
 		}
 	}
@@ -398,9 +398,9 @@ if (isset($_GET['GRNNo']) and isset($_POST['SupplierID'])) {
 
 		$ErrMsg = _('An error occurred in the attempt to get the outstanding GRNs for') . ' ' . $_POST['SuppName'] . '. ' . _('The message was') . ':';
 		$DbgMsg = _('The SQL that failed was') . ':';
-		$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-		if (DB_num_rows($result) == 0) {
+		if (DB_num_rows($Result) == 0) {
 			prnMsg(_('There are no outstanding goods received yet to be invoiced for') . ' ' . $_POST['SuppName'] . '.<br />' . _('To reverse a GRN that has been invoiced first it must be credited'), 'warn');
 		} else { //there are GRNs to show
 
@@ -418,7 +418,7 @@ if (isset($_GET['GRNNo']) and isset($_POST['SupplierID'])) {
 
 			/* show the GRNs outstanding to be invoiced that could be reversed */
 			$k = 0;
-			while ($MyRow = DB_fetch_array($result)) {
+			while ($MyRow = DB_fetch_array($Result)) {
 				if ($k == 1) {
 					echo '<tr class="EvenTableRows">';
 					$k = 0;

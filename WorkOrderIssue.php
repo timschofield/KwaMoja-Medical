@@ -662,7 +662,7 @@ if (!isset($_POST['IssueItem'])) { //no item selected to issue yet
 			FROM stockcategory
 			WHERE stocktype='F' OR stocktype='D'
 			ORDER BY categorydescription";
-	$result1 = DB_query($SQL);
+	$Result1 = DB_query($SQL);
 
 	echo '<table class="selection">
 			<tr><td>' . _('Select a stock category') . ':<select minlength="0" name="StockCat">';
@@ -674,7 +674,7 @@ if (!isset($_POST['IssueItem'])) { //no item selected to issue yet
 		echo '<option value="All">' . _('All') . '</option>';
 	}
 
-	while ($MyRow1 = DB_fetch_array($result1)) {
+	while ($MyRow1 = DB_fetch_array($Result1)) {
 
 		if ($_POST['StockCat'] == $MyRow1['categoryid']) {
 			echo '<option selected="selected" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';

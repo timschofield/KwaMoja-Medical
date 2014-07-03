@@ -15,7 +15,7 @@ if (isset($_GET['Delete'])) {
 	$CheckResult = DB_query($CheckSQL);
 	if (DB_num_rows($CheckResult) == 0) {
 		$SQL = "DELETE FROM abcgroups WHERE groupid='" . $_GET['SelectedGroupID'] . "'";
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 		prnMsg(_('ABC Ranking group number') . ' ' . $_GET['SelectedGroupID'] . ' ' . _('has been deleted'), 'success');
 		echo '<div class="centre">
 				<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('View all the ranking groups') . '</a>
@@ -112,7 +112,7 @@ if (isset($_POST['Submit'])) {
 				FROM abcgroups
 				INNER JOIN abcmethods
 					ON abcgroups.methodid=abcmethods.methodid";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	echo '<table class="selection" summary="' . _('List of ABC Ranking Methods') . '">
 			<tr>
 				<th colspan="10">
@@ -132,7 +132,7 @@ if (isset($_POST['Submit'])) {
 				<th>' . _('Months in calculation') . '</th>
 			</tr>';
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		echo '<tr class="OddTableRows">
 				<td>' . $MyRow['groupid'] . '</td>
 				<td>' . $MyRow['groupname'] . '</td>
@@ -171,10 +171,10 @@ if (isset($_POST['Submit'])) {
 	$SQL = "SELECT methodid,
 					methodname
 				FROM abcmethods";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '<option value=""></option>';
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		echo '<option value="' . $MyRow['methodid'] . '">' . $MyRow['methodname'] . '</option>';
 	}
 

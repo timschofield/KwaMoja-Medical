@@ -163,7 +163,7 @@ if (isset($_POST['View'])) {
 			WHERE userid='" . $_POST['SelectedUser'] . "'
 			AND transactiondate BETWEEN '" . $FromDate . "' AND '" . $ToDate . "'" . $ContainingText;
 	}
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '<table border="0" width="98%" class="selection">';
 	echo '<tr>
@@ -174,7 +174,7 @@ if (isset($_POST['View'])) {
 			<th>' . _('Field Name') . '</th>
 			<th>' . _('Value') . '</th>
 		</tr>';
-	while ($MyRow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($Result)) {
 		if (Query_Type($MyRow[2]) == "INSERT") {
 			InsertQueryInfo(str_replace("INSERT INTO", '', $MyRow[2]));
 			$RowColour = '#a8ff90';

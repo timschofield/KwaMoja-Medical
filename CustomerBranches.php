@@ -92,8 +92,8 @@ if (isset($_POST['submit'])) {
 		// Get the lat/long from our geocoding host
 		$SQL = "SELECT * FROM geocode_param WHERE 1";
 		$ErrMsg = _('An error occurred in retrieving the information');
-		$resultgeo = DB_query($SQL, $ErrMsg);
-		$row = DB_fetch_array($resultgeo);
+		$Resultgeo = DB_query($SQL, $ErrMsg);
+		$row = DB_fetch_array($Resultgeo);
 		$api_key = $row['geocode_key'];
 		$map_host = $row['map_host'];
 		define('MAPS_HOST', $map_host);
@@ -245,7 +245,7 @@ if (isset($_POST['submit'])) {
 
 	$ErrMsg = _('The branch record could not be inserted or updated because');
 	if ($InputError == 0) {
-		$result = DB_query($SQL, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 	}
 
 	if (DB_error_no() == 0 and $InputError == 0) {
@@ -286,17 +286,17 @@ if (isset($_POST['submit'])) {
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'DebtorTrans'
 
 	$SQL = "SELECT COUNT(*) FROM debtortrans WHERE debtortrans.branchcode='" . $SelectedBranch . "' AND debtorno = '" . $DebtorNo . "'";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
 	if ($MyRow[0] > 0) {
 		prnMsg(_('Cannot delete this branch because customer transactions have been created to this branch') . '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('transactions with this Branch Code'), 'error');
 
 	} else {
 		$SQL = "SELECT COUNT(*) FROM salesanalysis WHERE salesanalysis.custbranch='" . $SelectedBranch . "' AND salesanalysis.cust = '" . $DebtorNo . "'";
 
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 
-		$MyRow = DB_fetch_row($result);
+		$MyRow = DB_fetch_row($Result);
 		if ($MyRow[0] > 0) {
 			prnMsg(_('Cannot delete this branch because sales analysis records exist for it'), 'error');
 			echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('sales analysis records with this Branch Code/customer');
@@ -304,9 +304,9 @@ if (isset($_POST['submit'])) {
 		} else {
 
 			$SQL = "SELECT COUNT(*) FROM salesorders WHERE salesorders.branchcode='" . $SelectedBranch . "' AND salesorders.debtorno = '" . $DebtorNo . "'";
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 
-			$MyRow = DB_fetch_row($result);
+			$MyRow = DB_fetch_row($Result);
 			if ($MyRow[0] > 0) {
 				prnMsg(_('Cannot delete this branch because sales orders exist for it') . '. ' . _('Purge old sales orders first'), 'warn');
 				echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('sales orders for this Branch/customer');
@@ -314,8 +314,8 @@ if (isset($_POST['submit'])) {
 				// Check if there are any users that refer to this branch code
 				$SQL = "SELECT COUNT(*) FROM www_users WHERE www_users.branchcode='" . $SelectedBranch . "' AND www_users.customerid = '" . $DebtorNo . "'";
 
-				$result = DB_query($SQL);
-				$MyRow = DB_fetch_row($result);
+				$Result = DB_query($SQL);
+				$MyRow = DB_fetch_row($Result);
 
 				if ($MyRow[0] > 0) {
 					prnMsg(_('Cannot delete this branch because users exist that refer to it') . '. ' . _('Purge old users first'), 'warn');
@@ -324,8 +324,8 @@ if (isset($_POST['submit'])) {
 					// Check if there are any contract that refer to this branch code
 					$SQL = "SELECT COUNT(*) FROM contracts WHERE contracts.branchcode='" . $SelectedBranch . "' AND contracts.debtorno = '" . $DebtorNo . "'";
 
-					$result = DB_query($SQL);
-					$MyRow = DB_fetch_row($result);
+					$Result = DB_query($SQL);
+					$MyRow = DB_fetch_row($Result);
 
 					if ($MyRow[0] > 0) {
 						prnMsg(_('Cannot delete this branch because contract have been created that refer to it') . '. ' . _('Purge old contracts first'), 'warn');
@@ -334,8 +334,8 @@ if (isset($_POST['submit'])) {
 						//check if this it the last customer branch - don't allow deletion of the last branch
 						$SQL = "SELECT COUNT(*) FROM custbranch WHERE debtorno='" . $DebtorNo . "'";
 
-						$result = DB_query($SQL);
-						$MyRow = DB_fetch_row($result);
+						$Result = DB_query($SQL);
+						$MyRow = DB_fetch_row($Result);
 
 						if ($MyRow[0] == 1) {
 							prnMsg(_('Cannot delete this branch because it is the only branch defined for this customer.'), 'warn');
@@ -345,7 +345,7 @@ if (isset($_POST['submit'])) {
 								$SQL .= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
 							}
 							$ErrMsg = _('The branch record could not be deleted') . ' - ' . _('the SQL server returned the following message');
-							$result = DB_query($SQL, $ErrMsg);
+							$Result = DB_query($SQL, $ErrMsg);
 							if (DB_error_no() == 0){
 								prnMsg(_('Branch Deleted'), 'success');
 							}
@@ -386,8 +386,8 @@ echo $SQL;
 		$SQL .= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
 	}
 
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
 	$TotalEnable = 0;
 	$TotalDisable = 0;
 	if ($MyRow) {
@@ -435,7 +435,7 @@ echo $SQL;
 				$TotalEnable++;
 			}
 
-		} while ($MyRow = DB_fetch_row($result));
+		} while ($MyRow = DB_fetch_row($Result));
 		//END WHILE LIST LOOP
 		echo '</table>
 			<br />
@@ -458,8 +458,8 @@ echo $SQL;
 					FROM debtorsmaster
 					WHERE debtorno = '" . $DebtorNo . "'";
 
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_row($Result);
 		echo '<div class="page_help_text noPrint">' . _('No Branches are defined for') . ' - ' . $MyRow[0] . '. ' . _('You must have a minimum of one branch for each Customer. Please add a branch now.') . '</div>';
 		$_POST['BranchCode'] = mb_substr($DebtorNo, 0, 10);
 		$_POST['BrName'] = $MyRow[0];
@@ -517,8 +517,8 @@ if (!isset($_GET['delete'])) {
 			$SQL .= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
 		}
 
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
 
 		if ($InputError == 0) {
 			$_POST['BranchCode'] = $MyRow['branchcode'];
@@ -587,8 +587,8 @@ if (!isset($_GET['delete'])) {
 					FROM
 					debtorsmaster
 					WHERE debtorno='" . $_GET['BranchCode'] . "'";
-			$result = DB_query($SQL);
-			$MyRow = DB_fetch_array($result);
+			$Result = DB_query($SQL);
+			$MyRow = DB_fetch_array($Result);
 			$_POST['BranchCode'] = $_GET['BranchCode'];
 			$_POST['BrName'] = $MyRow['name'];
 			$_POST['BrAddress1'] = $MyRow['addrsss1'];
@@ -703,11 +703,11 @@ if (!isset($_GET['delete'])) {
 	echo '<td><input tabindex="12" type="text" class="integer" name="FwdDate" size="4" minlength="0" maxlength="2" value="' . $_POST['FwdDate'] . '" /></td>
 		</tr>';
 
-	DB_data_seek($result, 0);
+	DB_data_seek($Result, 0);
 
 	$SQL = "SELECT areacode, areadescription FROM areas";
-	$result = DB_query($SQL);
-	if (DB_num_rows($result) == 0) {
+	$Result = DB_query($SQL);
+	if (DB_num_rows($Result) == 0) {
 		echo '</table>';
 		prnMsg(_('There are no areas defined as yet') . ' - ' . _('customer branches must be allocated to an area') . '. ' . _('Please use the link below to define at least one sales area'), 'error');
 		echo '<br /><a href="' . $RootPath . '/Areas.php">' . _('Define Sales Areas') . '</a>';
@@ -719,7 +719,7 @@ if (!isset($_GET['delete'])) {
 			<td>' . _('Sales Area') . ':</td>
 			<td><select required="required" minlength="1" tabindex="14" name="Area">
 					<option value=""></option>';
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['Area']) and $MyRow['areacode'] == $_POST['Area']) {
 			echo '<option selected="selected" value="';
 		} else {
@@ -732,7 +732,7 @@ if (!isset($_GET['delete'])) {
 
 	echo '</select></td>
 		</tr>';
-	DB_data_seek($result, 0);
+	DB_data_seek($Result, 0);
 	if ($_SESSION['SalesmanLogin'] != '') {
 		echo '<tr>
 				<td>' . _('Salesperson') . ':</td><td>';
@@ -747,9 +747,9 @@ if (!isset($_GET['delete'])) {
 				FROM salesman
 				WHERE current = 1";
 
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 
-		if (DB_num_rows($result) == 0) {
+		if (DB_num_rows($Result) == 0) {
 			echo '</table>';
 			prnMsg(_('There are no sales people defined as yet') . ' - ' . _('customer branches must be allocated to a sales person') . '. ' . _('Please use the link below to define at least one sales person'), 'error');
 			echo '<p align="center"><a href="' . $RootPath . '/SalesPeople.php">' . _('Define Sales People') . '</a>';
@@ -761,7 +761,7 @@ if (!isset($_GET['delete'])) {
 				<td>' . _('Salesperson') . ':</td>
 				<td><select tabindex="13" name="Salesman">';
 
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			if (isset($_POST['Salesman']) AND $MyRow['salesmancode'] == $_POST['Salesman']) {
 				echo '<option selected="selected" value="';
 			} else {
@@ -774,7 +774,7 @@ if (!isset($_GET['delete'])) {
 		echo '</select></td>
 			</tr>';
 
-		//	DB_data_seek($result,0); //by thumb
+		//	DB_data_seek($Result,0); //by thumb
 	}
 
 	if ($_SESSION['RestrictLocations'] == 0) {
@@ -789,9 +789,9 @@ if (!isset($_GET['delete'])) {
 						ON locations.loccode=www_users.defaultlocation
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
-	if (DB_num_rows($result) == 0) {
+	if (DB_num_rows($Result) == 0) {
 		echo '</table>';
 		prnMsg(_('There are no stock locations defined as yet') . ' - ' . _('customer branches must refer to a default location where stock is normally drawn from') . '. ' . _('Please use the link below to define at least one stock location'), 'error');
 		echo '<br /><a href="' . $RootPath . '/Locations.php">' . _('Define Stock Locations') . '</a>';
@@ -803,7 +803,7 @@ if (!isset($_GET['delete'])) {
 			<td>' . _('Draw Stock From') . ':</td>
 			<td><select minlength="0" tabindex="15" name="DefaultLocation">';
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['DefaultLocation']) and $MyRow['loccode'] == $_POST['DefaultLocation']) {
 			echo '<option selected="selected" value="';
 		} else {
@@ -840,7 +840,7 @@ if (!isset($_GET['delete'])) {
 	echo '<td><input tabindex="18" type="email" name="Email" size="56" minlength="0" maxlength="55" value="' . $_POST['Email'] . '" /></td>
 		</tr>';
 
-	DB_data_seek($result, 0);
+	DB_data_seek($Result, 0);
 
 	$SQL = "SELECT taxgroupid, taxgroupdescription FROM taxgroups";
 	$TaxGroupResults = DB_query($SQL);

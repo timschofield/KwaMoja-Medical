@@ -21,7 +21,7 @@ if (isset($_GET['StockID'])) {
 	exit;
 }
 
-$result = DB_query("SELECT description,
+$Result = DB_query("SELECT description,
 							units,
 							mbflag,
 							decimalplaces,
@@ -31,7 +31,7 @@ $result = DB_query("SELECT description,
 						FROM stockmaster
 						WHERE stockid='" . $StockID . "'", _('Could not retrieve the requested item because'));
 
-$MyRow = DB_fetch_array($result);
+$MyRow = DB_fetch_array($Result);
 
 $Description = $MyRow['description'];
 $UOM = $MyRow['units'];
@@ -47,11 +47,11 @@ if ($MyRow['mbflag'] == 'K' or $MyRow['mbflag'] == 'A' or $MyRow['mbflag'] == 'D
 	exit;
 }
 
-$result = DB_query("SELECT locationname
+$Result = DB_query("SELECT locationname
 						FROM locations
 						WHERE loccode='" . $_GET['Location'] . "'", _('Could not retrieve the stock location of the item because'), _('The SQL used to lookup the location was'));
 
-$MyRow = DB_fetch_row($result);
+$MyRow = DB_fetch_row($Result);
 
 $SQL = "SELECT serialno,
 				quantity,

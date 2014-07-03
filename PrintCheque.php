@@ -19,20 +19,20 @@ $FontSize = 10;
 $PageNumber = 1;
 $line_height = 12;
 
-$result = DB_query("SELECT hundredsname,
+$Result = DB_query("SELECT hundredsname,
 						   decimalplaces,
 						   currency
 					FROM currencies
 					WHERE currabrev='" . $_SESSION['PaymentDetail' . $identifier]->Currency . "'");
 
-if (DB_num_rows($result) == 0) {
+if (DB_num_rows($Result) == 0) {
 	include('includes/header.inc');
 	prnMsg(_('Can not get hundreds name'), 'warn');
 	include('includes/footer.inc');
 	exit;
 }
 
-$CurrencyRow = DB_fetch_array($result);
+$CurrencyRow = DB_fetch_array($Result);
 $HundredsName = $CurrencyRow['hundredsname'];
 $CurrDecimalPlaces = $CurrencyRow['decimalplaces'];
 $CurrencyName = mb_strtolower($CurrencyRow['currency']);

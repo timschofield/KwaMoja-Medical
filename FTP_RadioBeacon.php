@@ -145,12 +145,12 @@ if (isset($_GET['OrderNo'])) {
 
 
 	$ErrMsg = _('There was a problem retrieving the order header details for Order Number') . ' ' . $_GET['OrderNo'] . ' ' . _('from the database');
-	$result = DB_query($SQL, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
-	if (DB_num_rows($result) == 1) {
+	if (DB_num_rows($Result) == 1) {
 		/*There is ony one order header returned */
 
-		$MyRow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($Result);
 		if ($MyRow['printedpackingslip'] == 1) {
 			prnMsg(_('Order Number') . ' ' . $_GET['OrderNo'] . ' ' . _('has previously been sent to Radio Beacon') . '. ' . _('It was sent on') . ' ' . ConvertSQLDate($MyRow['datepackingslipprinted']) . '<br />' . _('To re-send the order with the balance not previously dispatched and invoiced the order must be modified to allow a reprint (or re-send)') . '.<br />' . _('This check is there to ensure that duplication of dispatches to the customer are avoided'), 'warn');
 			echo '<p><a href="' . $RootPath . '/SelectOrderItems.php?ModifyOrderNumber=' . urlencode($_GET['OrderNo']) . '">' . _('Modify the order to allow a re-send or reprint') . ' (' . _('Select Delivery Details') . ')' . '</a>';
@@ -172,9 +172,9 @@ if (isset($_GET['OrderNo'])) {
 					AND salesorderdetails.orderno=" . $_GET['OrderNo'];
 
 		$ErrMsg = _('There was a problem retrieving the line details for order number') . ' ' . $_GET['OrderNo'] . ' ' . _('from the database because');
-		$result = DB_query($SQL, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 
-		if (DB_num_rows($result) > 0) {
+		if (DB_num_rows($Result) > 0) {
 			/*Yes there are line items to start the ball rolling creating the Header record - the PHRecord*/
 
 			/*First get the unique send id for the file name held in a separate file */
@@ -207,7 +207,7 @@ if (isset($_GET['OrderNo'])) {
 			$PDRec = array();
 			$LineCounter = 0;
 
-			while ($MyRow2 = DB_fetch_array($result)) {
+			while ($MyRow2 = DB_fetch_array($Result)) {
 
 				$PickQty = $MyRow2['quantity'] - $MyRow2['qtyinvoiced'];
 				$PDRec[$LineCounter] = 'PD^^^' . $MyRow['debtorno'] . '^' . $_GET['OrderNo'] . '^' . $FileNumber . '^^^^^^^' . $MyRow2['stkcode'] . '^^' . $MyRow2['description'] . '^1^^^' . $MyRow2['quantity'] . '^' . $PickQty . '^^^^^^^^^^^^^^DX^^^^^^^^^^^^^^1000000000^' . $MyRow['customerref'] . '^^^^^^^^^^^^^^^^^^^^^^';
@@ -253,7 +253,7 @@ if (isset($_GET['OrderNo'])) {
 
 			/* Update the order printed flag to prevent double sendings */
 			$SQL = "UPDATE salesorders SET printedpackingslip=1, datepackingslipprinted=CURRENT_DATE WHERE salesorders.orderno=" . $_GET['OrderNo'];
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 
 			echo '<p>' . _('Order Number') . ' ' . $_GET['OrderNo'] . ' ' . _('has been sent via FTP to Radio Beacon a copy of the file that was sent is held on the server at') . '<br />' . $FileName;
 

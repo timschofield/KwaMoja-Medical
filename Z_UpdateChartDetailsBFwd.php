@@ -78,9 +78,9 @@ if (!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) {
 				WHERE period ='" . $i . "'";
 
 		$ErrMsg = _('Could not retrieve the ChartDetail records because');
-		$result = DB_query($SQL, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 
 			$CFwd = $MyRow['bfwd'] + $MyRow['actual'];
 			$CFwdBudget = $MyRow['bfwdbudget'] + $MyRow['budget'];

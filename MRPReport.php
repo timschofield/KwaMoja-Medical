@@ -27,7 +27,7 @@ if (isset($_POST['PrintPDF']) and $_POST['Part'] != '') {
 			WHERE part = '" . $_POST['Part'] . "'
 			ORDER BY daterequired,whererequired";
 
-	$result = DB_query($SQL, '', '', False, False);
+	$Result = DB_query($SQL, '', '', False, False);
 	if (DB_error_no() != 0) {
 		$errors = 1;
 		$Title = _('Print MRP Report Error');
@@ -38,7 +38,7 @@ if (isset($_POST['PrintPDF']) and $_POST['Part'] != '') {
 		exit;
 	}
 
-	if (DB_num_rows($result) == 0) {
+	if (DB_num_rows($Result) == 0) {
 		$errors = 1;
 		$Title = _('Print MRP Report Warning');
 		include('includes/header.inc');
@@ -57,7 +57,7 @@ if (isset($_POST['PrintPDF']) and $_POST['Part'] != '') {
 	$FutureReq = 0;
 	$GrossReq = 0;
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		array_push($Requirements, $MyRow);
 		$GrossReq += $MyRow['quantity'];
 		if ($MyRow['datediff'] < 0) {
@@ -76,7 +76,7 @@ if (isset($_POST['PrintPDF']) and $_POST['Part'] != '') {
 			 FROM mrpsupplies
 			 WHERE part = '" . $_POST['Part'] . "'
 			 ORDER BY mrpdate";
-	$result = DB_query($SQL, '', '', false, true);
+	$Result = DB_query($SQL, '', '', false, true);
 	if (DB_error_no() != 0) {
 		$errors = 1;
 	}
@@ -89,7 +89,7 @@ if (isset($_POST['PrintPDF']) and $_POST['Part'] != '') {
 	$FutureSup = 0;
 	$qoh = 0; // Get quantity on Hand to display
 	$OpenOrd = 0;
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($MyRow['ordertype'] == 'QOH') {
 			$qoh += $MyRow['supplyquantity'];
 		} else {
@@ -109,7 +109,7 @@ if (isset($_POST['PrintPDF']) and $_POST['Part'] != '') {
 				   TRUNCATE(((TO_DAYS(duedate) - TO_DAYS(CURRENT_DATE)) / 7),0) AS weekindex,
 				   TO_DAYS(duedate) - TO_DAYS(CURRENT_DATE) AS datediff
 				FROM mrpplannedorders WHERE part = '" . $_POST['Part'] . "' ORDER BY mrpdate";
-	$result = DB_query($SQL, '', '', false, true);
+	$Result = DB_query($SQL, '', '', false, true);
 	if (DB_error_no() != 0) {
 		$errors = 1;
 	}
@@ -121,7 +121,7 @@ if (isset($_POST['PrintPDF']) and $_POST['Part'] != '') {
 	}
 	$pastdueplan = 0;
 	$futureplan = 0;
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		array_push($Supplies, $MyRow);
 		if ($MyRow['datediff'] < 0) {
 			$pastdueplan += $MyRow['supplyquantity'];
@@ -171,8 +171,8 @@ if (isset($_POST['PrintPDF']) and $_POST['Part'] != '') {
 			LEFT JOIN stockmaster
 			ON levels.part = stockmaster.stockid
 			WHERE part = '" . $_POST['Part'] . "'";
-	$result = DB_query($SQL, '', '', false, true);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL, '', '', false, true);
+	$MyRow = DB_fetch_array($Result);
 	$pdf->addTextWrap($Left_Margin, $YPos, 35, $FontSize, _('Part') . ': ', '');
 	$pdf->addTextWrap(70, $YPos, 100, $FontSize, $MyRow['part'], '');
 	$pdf->addTextWrap(245, $YPos, 40, $FontSize, _('EOQ') . ': ', 'right');
@@ -498,8 +498,8 @@ if (isset($_POST['PrintPDF']) and $_POST['Part'] != '') {
 					categorydescription
 			FROM stockcategory
 			ORDER BY categorydescription";
-	$result1 = DB_query($SQL);
-	if (DB_num_rows($result1) == 0) {
+	$Result1 = DB_query($SQL);
+	if (DB_num_rows($Result1) == 0) {
 		echo '<p class="bad">' . _('Problem Report') . ':<br />' . _('There are no stock categories currently defined please use the link below to set them up');
 		echo '<br /><a href="' . $RootPath . '/StockCategories.php">' . _('Define Stock Categories') . '</a>';
 		exit;
@@ -519,7 +519,7 @@ if (isset($_POST['PrintPDF']) and $_POST['Part'] != '') {
 	} else {
 		echo '<option value="All">' . _('All') . '</option>';
 	}
-	while ($MyRow1 = DB_fetch_array($result1)) {
+	while ($MyRow1 = DB_fetch_array($Result1)) {
 		if ($MyRow1['categoryid'] == $_POST['StockCat']) {
 			echo '<option selected="selected" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 		} else {

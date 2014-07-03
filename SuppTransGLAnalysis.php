@@ -39,20 +39,20 @@ if (isset($_POST['AddGLCodeToTrans']) and $_POST['AddGLCodeToTrans'] == _('Enter
 			accountname
 		FROM chartmaster
 		WHERE accountcode='" . $_POST['GLCode'] . "'";
-	$result = DB_query($SQL);
-	if (DB_num_rows($result) == 0 and $_POST['GLCode'] != '') {
+	$Result = DB_query($SQL);
+	if (DB_num_rows($Result) == 0 and $_POST['GLCode'] != '') {
 		prnMsg(_('The account code entered is not a valid code') . '. ' . _('This line cannot be added to the transaction') . '.<br />' . _('You can use the selection box to select the account you want'), 'error');
 		$InputError = True;
 	} else if ($_POST['GLCode'] != '') {
-		$MyRow = DB_fetch_row($result);
+		$MyRow = DB_fetch_row($Result);
 		$GLActName = $MyRow[1];
 		if (!is_numeric(filter_number_format($_POST['Amount']))) {
 			prnMsg(_('The amount entered is not numeric') . '. ' . _('This line cannot be added to the transaction'), 'error');
 			$InputError = True;
 		} elseif ($_POST['JobRef'] != '') {
 			$SQL = "SELECT contractref FROM contracts WHERE contractref='" . $_POST['JobRef'] . "'";
-			$result = DB_query($SQL);
-			if (DB_num_rows($result) == 0) {
+			$Result = DB_query($SQL);
+			if (DB_num_rows($Result) == 0) {
 				prnMsg(_('The contract reference entered is not a valid contract, this line cannot be added to the transaction'), 'error');
 				$InputError = True;
 			}
@@ -159,9 +159,9 @@ $SQL = "SELECT tagref,
 		FROM tags
 		ORDER BY tagref";
 
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 echo '<option value="0"></option>';
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	if (isset($_POST['Tag']) and $_POST['Tag'] == $MyRow['tagref']) {
 		echo '<option selected="selected" value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
 	} else {
@@ -184,9 +184,9 @@ echo '<tr>
 
 $SQL = "SELECT accountcode, accountname FROM chartmaster ORDER BY accountcode";
 
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 echo '<option value=""></option>';
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	if (isset($_POST['AcctSelection']) and $MyRow['accountcode'] == $_POST['AcctSelection']) {
 		echo '<option selected="selected" value="';
 	} else {

@@ -39,8 +39,8 @@ if (isset($_POST['submit'])) {
 		$SQL = "SELECT count(*) FROM taxcategories
 				WHERE taxcatid <> '" . $SelectedTaxCategory . "'
 				AND taxcatname " . LIKE . " '" . $_POST['TaxCategoryName'] . "'";
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_row($Result);
 		if ($MyRow[0] > 0) {
 			$InputError = 1;
 			prnMsg(_('The tax category cannot be renamed because another with the same name already exists.'), 'error');
@@ -49,16 +49,16 @@ if (isset($_POST['submit'])) {
 
 			$SQL = "SELECT taxcatname FROM taxcategories
 					WHERE taxcatid = '" . $SelectedTaxCategory . "'";
-			$result = DB_query($SQL);
-			if (DB_num_rows($result) != 0) {
+			$Result = DB_query($SQL);
+			if (DB_num_rows($Result) != 0) {
 				// This is probably the safest way there is
-				$MyRow = DB_fetch_row($result);
+				$MyRow = DB_fetch_row($Result);
 				$OldTaxCategoryName = $MyRow[0];
 				$SQL = "UPDATE taxcategories
 						SET taxcatname='" . $_POST['TaxCategoryName'] . "'
 						WHERE taxcatname " . LIKE . " '" . DB_escape_string($OldTaxCategoryName) . "'";
 				$ErrMsg = _('The tax category could not be updated');
-				$result = DB_query($SQL, $ErrMsg);
+				$Result = DB_query($SQL, $ErrMsg);
 			} else {
 				$InputError = 1;
 				prnMsg(_('The tax category no longer exists'), 'error');
@@ -69,20 +69,20 @@ if (isset($_POST['submit'])) {
 		/*SelectedTaxCategory is null cos no item selected on first time round so must be adding a record*/
 		$SQL = "SELECT count(*) FROM taxcategories
 				WHERE taxcatname " . LIKE . " '" . $_POST['TaxCategoryName'] . "'";
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_row($Result);
 		if ($MyRow[0] > 0) {
 			$InputError = 1;
 			prnMsg(_('The tax category cannot be created because another with the same name already exists'), 'error');
 		} else {
-			$result = DB_Txn_Begin();
+			$Result = DB_Txn_Begin();
 			$SQL = "INSERT INTO taxcategories (
 						taxcatname )
 					VALUES (
 						'" . $_POST['TaxCategoryName'] . "'
 						)";
 			$ErrMsg = _('The new tax category could not be added');
-			$result = DB_query($SQL, $ErrMsg, true);
+			$Result = DB_query($SQL, $ErrMsg, true);
 
 			$LastTaxCatID = DB_Last_Insert_ID('taxcategories', 'taxcatid');
 
@@ -93,9 +93,9 @@ if (isset($_POST['submit'])) {
  					taxprovinces.taxprovinceid,
 					'" . $LastTaxCatID . "'
 				FROM taxauthorities CROSS JOIN taxprovinces";
-			$result = DB_query($SQL, $ErrMsg, true);
+			$Result = DB_query($SQL, $ErrMsg, true);
 
-			$result = DB_Txn_Commit();
+			$Result = DB_Txn_Commit();
 		}
 		$msg = _('New tax category added');
 	}
@@ -113,24 +113,24 @@ if (isset($_POST['submit'])) {
 	// Get the original name of the tax category the ID is just a secure way to find the tax category
 	$SQL = "SELECT taxcatname FROM taxcategories
 		WHERE taxcatid = '" . $SelectedTaxCategory . "'";
-	$result = DB_query($SQL);
-	if (DB_num_rows($result) == 0) {
+	$Result = DB_query($SQL);
+	if (DB_num_rows($Result) == 0) {
 		// This is probably the safest way there is
 		prnMsg(_('Cannot delete this tax category because it no longer exists'), 'warn');
 	} else {
-		$MyRow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($Result);
 		$TaxCatName = $MyRow['taxcatname'];
 		$SQL = "SELECT COUNT(*) FROM stockmaster WHERE taxcatid = '" . $SelectedTaxCategory . "'";
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_row($Result);
 		if ($MyRow[0] > 0) {
 			prnMsg(_('Cannot delete this tax category because inventory items have been created using this tax category'), 'warn');
 			echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('inventory items that refer to this tax category') . '</font>';
 		} else {
 			$SQL = "DELETE FROM taxauthrates WHERE taxcatid  = '" . $SelectedTaxCategory . "'";
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 			$SQL = "DELETE FROM taxcategories WHERE taxcatid = '" . $SelectedTaxCategory . "'";
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 			prnMsg($TaxCatName . ' ' . _('tax category and any tax rates set for it have been deleted'), 'success');
 		}
 	} //end if
@@ -157,7 +157,7 @@ if (!isset($SelectedTaxCategory)) {
 			ORDER BY taxcatid";
 
 	$ErrMsg = _('Could not get tax categories because');
-	$result = DB_query($SQL, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
 	echo '<table class="selection">
 			<tr>
@@ -167,7 +167,7 @@ if (!isset($SelectedTaxCategory)) {
 			</tr>';
 
 	$k = 0; //row colour counter
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -213,12 +213,12 @@ if (!isset($_GET['delete'])) {
 				FROM taxcategories
 				WHERE taxcatid='" . $SelectedTaxCategory . "'";
 
-		$result = DB_query($SQL);
-		if (DB_num_rows($result) == 0) {
+		$Result = DB_query($SQL);
+		if (DB_num_rows($Result) == 0) {
 			prnMsg(_('Could not retrieve the requested tax category, please try again.'), 'warn');
 			unset($SelectedTaxCategory);
 		} else {
-			$MyRow = DB_fetch_array($result);
+			$MyRow = DB_fetch_array($Result);
 
 			$_POST['TaxCategoryName'] = $MyRow['taxcatname'];
 

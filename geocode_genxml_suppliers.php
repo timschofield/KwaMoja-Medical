@@ -19,14 +19,14 @@ return $xmlStr;
 
 $SQL = "SELECT * FROM suppliers WHERE 1";
 $ErrMsg = _('An error occurred in retrieving the information');;
-$result = DB_query($SQL, $ErrMsg);
+$Result = DB_query($SQL, $ErrMsg);
 
 header("Content-type: text/xml");
 
 // Iterate through the rows, printing XML nodes for each
 echo '<markers>';
 
-while ($MyRow = DB_fetch_array($result)){
+while ($MyRow = DB_fetch_array($Result)){
   // ADD TO XML DOCUMENT NODE
   echo '<marker ';
   echo 'name="' . parseToXML($MyRow['suppname']) . '" ';

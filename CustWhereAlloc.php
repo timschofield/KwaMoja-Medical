@@ -65,10 +65,10 @@ if (isset($_POST['ShowResults']) and $_POST['TransNo'] != '') {
 			WHERE type='" . $_POST['TransType'] . "'
 			AND transno = '" . $_POST['TransNo'] . "'";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
-	if (DB_num_rows($result) == 1) {
-		$MyRow = DB_fetch_array($result);
+	if (DB_num_rows($Result) == 1) {
+		$MyRow = DB_fetch_array($Result);
 		$AllocToID = $MyRow['id'];
 		$CurrCode = $MyRow['currcode'];
 		$CurrDecimalPlaces = $MyRow['currdecimalplaces'];

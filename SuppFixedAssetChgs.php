@@ -35,12 +35,12 @@ if (isset($_POST['AddAssetToInvoice'])) {
 		}
 	} //$_POST['AssetID'] == ''
 	else {
-		$result = DB_query("SELECT assetid FROM fixedassets WHERE assetid='" . $_POST['AssetID'] . "'");
-		if (DB_num_rows($result) == 0) {
+		$Result = DB_query("SELECT assetid FROM fixedassets WHERE assetid='" . $_POST['AssetID'] . "'");
+		if (DB_num_rows($Result) == 0) {
 			prnMsg(_('The asset ID entered manually is not a valid fixed asset. If you do not know the asset reference, select it from the list'), 'error');
 			$InputError = True;
 			unset($_POST['AssetID']);
-		} //DB_num_rows($result) == 0
+		} //DB_num_rows($Result) == 0
 	}
 
 	if (!is_numeric(filter_number_format($_POST['Amount']))) {
@@ -131,9 +131,9 @@ $SQL = "SELECT assetid,
 		WHERE cost=0
 		ORDER BY assetid DESC";
 
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	if (isset($_POST['AssetSelection']) and $MyRow['AssetID'] == $_POST['AssetSelection']) {
 		echo '<option selected="selected" value="';
 	} //isset($_POST['AssetSelection']) and $MyRow['AssetID'] == $_POST['AssetSelection']
@@ -141,7 +141,7 @@ while ($MyRow = DB_fetch_array($result)) {
 		echo '<option value="';
 	}
 	echo $MyRow['assetid'] . '">' . $MyRow['assetid'] . ' - ' . $MyRow['description'] . '</option>';
-} //$MyRow = DB_fetch_array($result)
+} //$MyRow = DB_fetch_array($Result)
 
 echo '</select></td>
 	</tr>';

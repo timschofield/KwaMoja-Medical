@@ -28,8 +28,8 @@ if (isset($_POST['submit'])) {
 
 	$SQL = "SELECT count(geocodeid)
 			FROM geocode_param WHERE geocodeid='" . $_POST['GeoCodeID'] . "'";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
 
 	if ($MyRow[0] != 0 and !isset($SelectedParam)) {
 		$InputError = 1;
@@ -98,14 +98,14 @@ if (isset($_POST['submit'])) {
 		unset($_POST['GeoCode_Key']);
 	}
 	//run the SQL from either of the above possibilites
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	if ($msg != '') {
 		prnMsg($msg, 'success');
 	}
 } elseif (isset($_GET['delete'])) {
 	//the link to delete a selected record was clicked instead of the submit button
 	$SQL = "DELETE FROM geocode_param WHERE geocodeid = '" . $_GET['delete'] . "' LIMIT 1";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	prnMsg(_('Geocode deleted'), 'success');
 	//end if status code used in customer or supplier accounts
 	unset($_GET['delete']);
@@ -128,7 +128,7 @@ if (!isset($SelectedParam)) {
 					map_width,
 					map_host
 			FROM geocode_param";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Geocode Setup') . '" alt="" />' . _('Setup configuration for Geocoding of Customers and Suppliers') . '</p>';
 	echo '<div class="page_help_text noPrint">' . _('Get a google API key at ') . '<a href="http://code.google.com/apis/maps/signup.html" target="_blank"> http://code.google.com/apis/maps/signup.html</a></div>';
@@ -148,7 +148,7 @@ if (!isset($SelectedParam)) {
 		</tr>';
 
 	$k = 0; //row colour counter
-	while ($MyRow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($Result)) {
 
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -197,8 +197,8 @@ if (!isset($_GET['delete'])) {
 				FROM geocode_param
 				WHERE geocodeid='" . $SelectedParam . "'";
 
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
 
 		$_POST['GeoCodeID'] = $MyRow['geocodeid'];
 		$_POST['GeoCode_Key'] = $MyRow['geocode_key'];

@@ -14,15 +14,15 @@ if (isset($_POST['PrintPDF'])) {
 	$PageNumber = 1;
 	$line_height = 12;
 
-	$result = DB_query("DROP TABLE IF EXISTS tempbom");
-	$result = DB_query("DROP TABLE IF EXISTS passbom");
-	$result = DB_query("DROP TABLE IF EXISTS passbom2");
+	$Result = DB_query("DROP TABLE IF EXISTS tempbom");
+	$Result = DB_query("DROP TABLE IF EXISTS passbom");
+	$Result = DB_query("DROP TABLE IF EXISTS passbom2");
 	$SQL = "CREATE TEMPORARY TABLE passbom (
 				part char(20),
 				sortpart text) DEFAULT CHARSET=utf8";
 
 	$ErrMsg = _('The SQL to create passbom failed with the message');
-	$result = DB_query($SQL, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
 	$SQL = "CREATE TEMPORARY TABLE tempbom (
 				parent char(20),
@@ -34,7 +34,7 @@ if (isset($_POST['PrintPDF'])) {
 				effectiveafter date,
 				effectiveto date,
 				quantity double) DEFAULT CHARSET=utf8";
-	$result = DB_query($SQL, _('Create of tempbom failed because'));
+	$Result = DB_query($SQL, _('Create of tempbom failed because'));
 	// First, find first level of components below requested assembly
 	// Put those first level parts in passbom, use COMPONENT in passbom
 	// to link to PARENT in bom to find next lower level and accumulate
@@ -48,7 +48,7 @@ if (isset($_POST['PrintPDF'])) {
 			  WHERE bom.component ='" . $_POST['Part'] . "'
 			  AND bom.effectiveto >= CURRENT_DATE
 			  AND bom.effectiveafter <= CURRENT_DATE";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	$LevelCounter = 2;
 	// $LevelCounter is the level counter
@@ -75,7 +75,7 @@ if (isset($_POST['PrintPDF'])) {
 			  WHERE bom.component ='" . $_POST['Part'] . "'
 			  AND bom.effectiveto >= CURRENT_DATE
 			  AND bom.effectiveafter <= CURRENT_DATE";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	// This while routine finds the other levels as long as $ComponentCounter - the
 	// component counter finds there are more components that are used as
@@ -106,17 +106,17 @@ if (isset($_POST['PrintPDF'])) {
 				WHERE bom.component = passbom.part
 				AND bom.effectiveto >= CURRENT_DATE
 				AND bom.effectiveafter <= CURRENT_DATE";
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 
-		$result = DB_query("DROP TABLE IF EXISTS passbom2");
+		$Result = DB_query("DROP TABLE IF EXISTS passbom2");
 
-		$result = DB_query("ALTER TABLE passbom RENAME AS passbom2");
-		$result = DB_query("DROP TABLE IF EXISTS passbom");
+		$Result = DB_query("ALTER TABLE passbom RENAME AS passbom2");
+		$Result = DB_query("DROP TABLE IF EXISTS passbom");
 
 		$SQL = "CREATE TEMPORARY TABLE passbom (
 						part char(20),
 						sortpart text) DEFAULT CHARSET=utf8";
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 
 
 		$SQL = "INSERT INTO passbom (part, sortpart)
@@ -126,10 +126,10 @@ if (isset($_POST['PrintPDF'])) {
 				   WHERE bom.component = passbom2.part
 					AND bom.effectiveto >= CURRENT_DATE
 					AND bom.effectiveafter <= CURRENT_DATE";
-		$result = DB_query($SQL);
-		$result = DB_query("SELECT COUNT(*) FROM bom,passbom WHERE bom.component = passbom.part");
+		$Result = DB_query($SQL);
+		$Result = DB_query("SELECT COUNT(*) FROM bom,passbom WHERE bom.component = passbom.part");
 
-		$MyRow = DB_fetch_row($result);
+		$MyRow = DB_fetch_row($Result);
 		$ComponentCounter = $MyRow[0];
 
 	} // End of while $ComponentCounter > 0
@@ -152,8 +152,8 @@ if (isset($_POST['PrintPDF'])) {
 				   stockmaster.description
 			  FROM stockmaster
 			  WHERE stockid = '" . $_POST['Part'] . "'";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 	$Assembly = $_POST['Part'];
 	$AssemblyDesc = $MyRow['description'];
 
@@ -168,11 +168,11 @@ if (isset($_POST['PrintPDF'])) {
 			  FROM tempbom INNER JOIN stockmaster
 			  ON tempbom.parent = stockmaster.stockid
 			  ORDER BY sortpart";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
-	$ListCount = DB_num_rows($result);
+	$ListCount = DB_num_rows($Result);
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 
 		$YPos -= $line_height;
 		$FontSize = 8;

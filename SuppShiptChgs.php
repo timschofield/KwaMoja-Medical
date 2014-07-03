@@ -41,8 +41,8 @@ if (isset($_POST['AddShiptChgToInvoice'])) {
 			$_POST['ShiptRef'] = $_POST['ShiptSelection'];
 		}
 	} else {
-		$result = DB_query("SELECT shiptref FROM shipments WHERE shiptref='" . $_POST['ShiptRef'] . "'");
-		if (DB_num_rows($result) == 0) {
+		$Result = DB_query("SELECT shiptref FROM shipments WHERE shiptref='" . $_POST['ShiptRef'] . "'");
+		if (DB_num_rows($Result) == 0) {
 			prnMsg(_('The shipment entered manually is not a valid shipment reference. If you do not know the shipment reference, select it from the list'), 'error');
 			$InputError = True;
 		}
@@ -125,9 +125,9 @@ $SQL = "SELECT shiptref,
 				ON shipments.supplierid=suppliers.supplierid
 			WHERE closed='0'";
 
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	if (isset($_POST['ShiptSelection']) and $MyRow['shiptref'] == $_POST['ShiptSelection']) {
 		echo '<option selected="selected" value="';
 	} else {

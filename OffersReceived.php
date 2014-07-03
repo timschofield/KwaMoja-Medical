@@ -12,8 +12,8 @@ if (isset($_POST['supplierid'])) {
 				paymentterms
 			FROM suppliers
 			WHERE supplierid='" . $_POST['supplierid'] . "'";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 	$SupplierName = $MyRow['suppname'];
 	$Email = $MyRow['email'];
 	$CurrCode = $MyRow['currcode'];
@@ -32,8 +32,8 @@ if (!isset($_POST['supplierid'])) {
 		WHERE purchorderauth.userid='" . $_SESSION['UserID'] . "'
 			AND offers.expirydate>=CURRENT_DATE
 			AND purchorderauth.cancreate=0";
-	$result = DB_query($SQL);
-	if (DB_num_rows($result) == 0) {
+	$Result = DB_query($SQL);
+	if (DB_num_rows($Result) == 0) {
 		prnMsg(_('There are no offers outstanding that you are authorised to deal with'), 'information');
 	} else {
 		echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" title="' . _('Select Supplier') . '" alt="" />
@@ -45,7 +45,7 @@ if (!isset($_POST['supplierid'])) {
 			<tr>
 				<td>' . _('Select Supplier') . '</td>
 				<td><select minlength="0" name=supplierid>';
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			echo '<option value="' . $MyRow['supplierid'] . '">' . $MyRow['suppname'] . '</option>';
 		}
 		echo '</select></td>
@@ -88,7 +88,7 @@ if (!isset($_POST['submit']) and isset($_POST['supplierid'])) {
 				AND offers.supplierid='" . $_POST['supplierid'] . "'
 				AND  offers.expirydate>=CURRENT_DATE
 			ORDER BY offerid";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 	echo '<div>';
@@ -114,8 +114,8 @@ if (!isset($_POST['submit']) and isset($_POST['supplierid'])) {
 				<th>' . _('Defer') . '</th>
 			</tr>';
 	$k = 0;
-	echo 'The result has rows ' . DB_num_rows($result) . '<br/>';
-	while ($MyRow = DB_fetch_array($result)) {
+	echo 'The result has rows ' . DB_num_rows($Result) . '<br/>';
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -174,8 +174,8 @@ if (!isset($_POST['submit']) and isset($_POST['supplierid'])) {
 		$MailText .= _('The following offers you made have been accepted') . "\n";
 		$MailText .= _('An official order will be sent to you in due course') . "\n\n";
 		$SQL = "SELECT rate FROM currencies where currabrev='" . $CurrCode . "'";
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
 		$Rate = $MyRow['rate'];
 		$OrderNo = GetNextTransNo(18);
 		$SQL = "INSERT INTO purchorders (
@@ -211,8 +211,8 @@ if (!isset($_POST['submit']) and isset($_POST['supplierid'])) {
 						LEFT JOIN stockmaster
 							ON offers.stockid=stockmaster.stockid
 						WHERE offerid='" . $AcceptID . "'";
-			$result = DB_query($SQL);
-			$MyRow = DB_fetch_array($result);
+			$Result = DB_query($SQL);
+			$MyRow = DB_fetch_array($Result);
 			$MailText .= $MyRow['description'] . "\t" . _('Quantity') . ' ' . $MyRow['quantity'] . "\t" . _('Price') . ' ' . locale_number_format($MyRow['price']) . "\n";
 			$SQL = "INSERT INTO purchorderdetails (orderno,
 												itemcode,
@@ -230,9 +230,9 @@ if (!isset($_POST['submit']) and isset($_POST['supplierid'])) {
 											'" . $MyRow['price'] . "',
 											'" . $MyRow['quantity'] . "',
 											'" . $MyRow['uom'] . "')";
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 			$SQL = "DELETE FROM offers WHERE offerid='" . $AcceptID . "'";
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 		}
 		$mail = new htmlMimeMail();
 		$mail->setSubject(_('Your offer to') . ' ' . $_SESSION['CompanyRecord']['coyname'] . ' ' . _('has been accepted'));
@@ -248,11 +248,11 @@ if (!isset($_POST['submit']) and isset($_POST['supplierid'])) {
 		array_push($Recipients, $Email);
 		if ($_SESSION['SmtpSetting'] == 0) {
 			$mail->setFrom($_SESSION['CompanyRecord']['coyname'] . ' <' . $_SESSION['CompanyRecord']['email'] . '>');
-			$result = $mail->send($Recipients);
+			$Result = $mail->send($Recipients);
 		} else {
-			$result = SendMailBySmtp($mail, $Recipients);
+			$Result = SendMailBySmtp($mail, $Recipients);
 		}
-		if ($result) {
+		if ($Result) {
 			prnMsg(_('The accepted offers from') . ' ' . $SupplierName . ' ' . _('have been converted to purchase orders and an email sent to') . ' ' . $Email . "\n" . _('Please review the order contents') . ' ' . '<a href="' . $RootPath . '/PO_Header.php?ModifyOrderNumber=' . urlencode($OrderNo) . '">' . _('here') . '</a>', 'success');
 		} else {
 			prnMsg(_('The accepted offers from') . ' ' . $SupplierName . ' ' . _('have been converted to purcharse orders but failed to mail, you can view the order contents') . ' ' . '<a href="' . $RootPath . '/PO_Header.php?ModifyOrderNumber=' . urlencode($OrderNo) . '">' . _('here') . '</a>', 'warn');
@@ -269,11 +269,11 @@ if (!isset($_POST['submit']) and isset($_POST['supplierid'])) {
 						LEFT JOIN stockmaster
 							ON offers.stockid=stockmaster.stockid
 						WHERE offerid='" . $RejectID . "'";
-			$result = DB_query($SQL);
-			$MyRow = DB_fetch_array($result);
+			$Result = DB_query($SQL);
+			$MyRow = DB_fetch_array($Result);
 			$MailText .= $MyRow['description'] . "\t" . _('Quantity') . ' ' . $MyRow['quantity'] . "\t" . _('Price') . ' ' . locale_number_format($MyRow['price']) . "\n";
 			$SQL = "DELETE FROM offers WHERE offerid='" . $RejectID . "'";
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 		}
 		$mail = new htmlMimeMail();
 		$mail->setSubject(_('Your offer to') . ' ' . $_SESSION['CompanyRecord']['coyname'] . ' ' . _('has been rejected'));
@@ -290,11 +290,11 @@ if (!isset($_POST['submit']) and isset($_POST['supplierid'])) {
 		array_push($Recipients, $Email);
 		if ($_SESSION['SmtpSetting'] == 0) {
 			$mail->setFrom($_SESSION['CompanyRecord']['coyname'] . ' <' . $_SESSION['CompanyRecord']['email'] . '>');
-			$result = $mail->send($Recipients);
+			$Result = $mail->send($Recipients);
 		} else {
-			$result = SendmailBySmtp($mail, $Recipients);
+			$Result = SendmailBySmtp($mail, $Recipients);
 		}
-		if ($result) {
+		if ($Result) {
 			prnMsg(_('The rejected offers from') . ' ' . $SupplierName . ' ' . _('have been removed from the system and an email sent to') . ' ' . $Email, 'success');
 		} else {
 			prnMsg(_('The rejected offers from') . ' ' . $SupplierName . ' ' . _('have been removed from the system but the email has not been sent to') . ' ' . $Email, 'warn');

@@ -83,7 +83,7 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 				AND pcashdetails.codeexpense='ASSIGNCASH'
 			ORDER BY pcashdetails.date, pcashdetails.counterindex ASC";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '<tr>
 		<th>' . _('Date') . '</th>
@@ -97,7 +97,7 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 
 	$k = 0; //row colour counter
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		$CurrDecimalPlaces = $MyRow['decimalplaces'];
 		//update database if update pressed
 		if (isset($_POST['Submit']) and $_POST['Submit'] == _('Update') and isset($_POST[$MyRow['counterindex']])) {
@@ -217,7 +217,7 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 										)";
 				$ErrMsg = _('Cannot insert a bank transaction because');
 				$DbgMsg = _('Cannot insert a bank transaction with the SQL');
-				$resultBank = DB_query($SQLBank, $ErrMsg, $DbgMsg, true);
+				$ResultBank = DB_query($SQLBank, $ErrMsg, $DbgMsg, true);
 
 			}
 
@@ -225,7 +225,7 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 					SET authorized = CURRENT_DATE,
 					posted = 1
 					WHERE counterindex = '" . $MyRow['counterindex'] . "'";
-			$resultupdate = DB_query($SQL, '', '', true);
+			$Resultupdate = DB_query($SQL, '', '', true);
 			DB_Txn_Commit();
 		}
 
@@ -298,13 +298,13 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 		FROM pctabs
 		WHERE authorizer='" . $_SESSION['UserID'] . "'";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '<tr>
 			<td>' . _('Authorise expenses to Petty Cash Tab') . ':</td>
 			<td><select required="required" minlength="1" name="SelectedTabs">';
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['SelectTabs']) and $MyRow['tabcode'] == $_POST['SelectTabs']) {
 			echo '<option selected="selected" value="';
 		} else {
@@ -316,7 +316,7 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 
 	echo '</select></td></tr>';
 	echo '</table>'; // close main table
-	DB_free_result($result);
+	DB_free_result($Result);
 
 	echo '<br /><div class="centre"><input type="submit" name="Process" value="' . _('Accept') . '" />
 								<input type="submit" name="Cancel" value="' . _('Cancel') . '" /></div>';

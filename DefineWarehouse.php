@@ -29,11 +29,11 @@ if (isset($_GET['Location'])) {
 	$SQL = "SELECT loccode,
 					locationname
 				FROM locations";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	echo '<table class="selection">
 			<tr>
 				<td><select name="Location">';
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 	}
 	echo '</select></td>
@@ -129,7 +129,7 @@ if (isset($_POST['Insert']) or isset($_POST['Update'])) {
 
 				$ErrMsg = _('An error occurred inserting the container detaails');
 				$DbgMsg = _('The SQL used to insert the container record was');
-				$result = DB_query($InsertSQL, $ErrMsg, $DbgMsg);
+				$Result = DB_query($InsertSQL, $ErrMsg, $DbgMsg);
 				$k++;
 			}
 		}
@@ -154,14 +154,14 @@ if (isset($_POST['Insert']) or isset($_POST['Update'])) {
 
 		$ErrMsg = _('An error occurred updating the container detaails');
 		$DbgMsg = _('The SQL used to update the container record was');
-		$result = DB_query($UpdateSQL, $ErrMsg, $DbgMsg);
+		$Result = DB_query($UpdateSQL, $ErrMsg, $DbgMsg);
 	}
 }
 
 /* Get the location name */
 $SQL = "SELECT locationname FROM locations WHERE loccode='" . $LocationCode . "'";
-$result = DB_query($SQL);
-$LocationRow = DB_fetch_array($result);
+$Result = DB_query($SQL);
+$LocationRow = DB_fetch_array($Result);
 
 $Title = _('Define Warehouse at') . ' ' . $LocationRow['locationname'];
 
@@ -300,11 +300,11 @@ if (isset($_GET['Edit'])) {
 					quarantine
 				FROM container
 				WHERE id='" . $_GET['Edit'] . "'";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 }
 
-if (DB_num_rows($result) != 0) {
-	$MyRow = DB_fetch_array($result);
+if (DB_num_rows($Result) != 0) {
+	$MyRow = DB_fetch_array($Result);
 	$_POST['ID'] = $MyRow['id'];
 	$_POST['Description'] = $MyRow['name'];
 	$_POST['Parent'] = $MyRow['parentid'];

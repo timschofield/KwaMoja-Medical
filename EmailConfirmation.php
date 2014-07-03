@@ -100,10 +100,10 @@ if ($_SESSION['RestrictLocations'] == 0) {
 				WHERE salesorders.orderno='" . $_GET['TransNo'] . "'
 					AND www_users.userid='" . $_SESSION['UserID'] . "'";
 }
-$result = DB_query($SQL, $ErrMsg);
+$Result = DB_query($SQL, $ErrMsg);
 
 //if there are no rows, there's a problem.
-if (DB_num_rows($result) == 0) {
+if (DB_num_rows($Result) == 0) {
 	$Title = _('Print Packing Slip Error');
 	include('includes/header.inc');
 	echo '<div class="centre">';
@@ -120,10 +120,10 @@ if (DB_num_rows($result) == 0) {
 			</table>';
 	include('includes/footer.inc');
 	exit;
-} elseif (DB_num_rows($result) == 1) {
+} elseif (DB_num_rows($Result) == 1) {
 	/*There is only one order header returned - thats good! */
 
-	$MyRow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($Result);
 	/* Place the deliver blind variable into a hold variable to used when
 	producing the packlist */
 	$DeliverBlind = $MyRow['deliverblind'];
@@ -241,11 +241,11 @@ $SQL = "SELECT salesorderdetails.stkcode,
 			ON salesorderdetails.stkcode=stockmaster.stockid
 		WHERE salesorderdetails.orderno=" . $_GET['TransNo'] . "
 		ORDER BY poline";
-$result = DB_query($SQL, $ErrMsg);
+$Result = DB_query($SQL, $ErrMsg);
 $i = 0;
-if (DB_num_rows($result) > 0) {
+if (DB_num_rows($Result) > 0) {
 
-	while ($MyRow2 = DB_fetch_array($result)) {
+	while ($MyRow2 = DB_fetch_array($Result)) {
 
 		$DisplayQty = locale_number_format($MyRow2['quantity'], 0);
 		$DisplayPrevDel = locale_number_format($MyRow2['qtyinvoiced'], 0);
@@ -277,19 +277,19 @@ $MailMessage .= '</table>
 				</html>';
 // echo $MailMessage . "=mailMessage<br />";
 if ($_SESSION['SmtpSetting'] == 0) {
-	$result = mail($MailTo, $MailSubject, $MailMessage, $headers);
+	$Result = mail($MailTo, $MailSubject, $MailMessage, $headers);
 
 } else {
 	include('includes/htmlMimeMail.php');
 	$mail = new htmlMimeMail();
 	$mail->setSubject($mailSubject);
 	$mail->setHTML($MailMessage);
-	$result = SendmailBySmtp($mail, array(
+	$Result = SendmailBySmtp($mail, array(
 		$MailTo
 	));
 }
 
-if ($result) {
+if ($Result) {
 	echo ' ' . _('The following E-Mail was sent to') . ' ' . $MailTo . ' :';
 }
 

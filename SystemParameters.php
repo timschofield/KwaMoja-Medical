@@ -318,13 +318,13 @@ if (isset($_POST['submit'])) {
 		}
 		$ErrMsg = _('The system configuration could not be updated because');
 		if (sizeof($SQL) > 1) {
-			$result = DB_Txn_Begin();
+			$Result = DB_Txn_Begin();
 			foreach ($SQL as $line) {
-				$result = DB_query($line, $ErrMsg);
+				$Result = DB_query($line, $ErrMsg);
 			}
-			$result = DB_Txn_Commit();
+			$Result = DB_Txn_Commit();
 		} elseif (sizeof($SQL) == 1) {
-			$result = DB_query($SQL, $ErrMsg);
+			$Result = DB_query($SQL, $ErrMsg);
 		}
 
 		prnMsg(_('System configuration updated'), 'success');
@@ -546,13 +546,13 @@ echo '<tr style="outline: 1px solid"><td>' . _('Controlled Items Must Exist For 
 // DefaultPriceList
 $SQL = "SELECT typeabbrev, sales_type FROM salestypes orDER BY sales_type";
 $ErrMsg = _('Could not load price lists');
-$result = DB_query($SQL, $ErrMsg);
+$Result = DB_query($SQL, $ErrMsg);
 echo '<tr style="outline: 1px solid"><td>' . _('Default Price List') . ':</td>';
 echo '<td><select required="required" minlength="1" name="X_DefaultPriceList">';
-if (DB_num_rows($result) == 0) {
+if (DB_num_rows($Result) == 0) {
 	echo '<option selected="selected" value="">' . _('Unavailable');
 } else {
-	while ($row = DB_fetch_array($result)) {
+	while ($row = DB_fetch_array($Result)) {
 		echo '<option ' . ($_SESSION['DefaultPriceList'] == $row['typeabbrev'] ? 'selected="selected" ' : '') . 'value="' . $row['typeabbrev'] . '">' . $row['sales_type'] . '</option>';
 	}
 }
@@ -562,13 +562,13 @@ echo '</select></td>
 // Default_Shipper
 $SQL = "SELECT shipper_id, shippername FROM shippers orDER BY shippername";
 $ErrMsg = _('Could not load shippers');
-$result = DB_query($SQL, $ErrMsg);
+$Result = DB_query($SQL, $ErrMsg);
 echo '<tr style="outline: 1px solid"><td>' . _('Default Shipper') . ':</td>';
 echo '<td><select required="required" minlength="1" name="X_Default_Shipper">';
-if (DB_num_rows($result) == 0) {
+if (DB_num_rows($Result) == 0) {
 	echo '<option selected="selected" value="">' . _('Unavailable') . '</option>';
 } else {
-	while ($row = DB_fetch_array($result)) {
+	while ($row = DB_fetch_array($Result)) {
 		echo '<option ' . ($_SESSION['Default_Shipper'] == $row['shipper_id'] ? 'selected="selected" ' : '') . 'value="' . $row['shipper_id'] . '">' . $row['shippername'] . '</option>';
 	}
 }
@@ -621,13 +621,13 @@ echo '</select></td>
 //==HJ== drop down list for tax category
 $SQL = "SELECT taxcatid, taxcatname FROM taxcategories orDER BY taxcatname";
 $ErrMsg = _('Could not load tax categories table');
-$result = DB_query($SQL, $ErrMsg);
+$Result = DB_query($SQL, $ErrMsg);
 echo '<tr style="outline: 1px solid"><td>' . _('Default Tax Category') . ':</td>';
 echo '<td><select required="required" minlength="1" name="X_DefaultTaxCategory">';
-if (DB_num_rows($result) == 0) {
+if (DB_num_rows($Result) == 0) {
 	echo '<option selected="selected" value="">' . _('Unavailable') . '</option>';
 } else {
-	while ($row = DB_fetch_array($result)) {
+	while ($row = DB_fetch_array($Result)) {
 		echo '<option ' . ($_SESSION['DefaultTaxCategory'] == $row['taxcatid'] ? 'selected="selected" ' : '') . 'value="' . $row['taxcatid'] . '">' . $row['taxcatname'] . '</option>';
 	}
 }
@@ -938,11 +938,11 @@ echo '<tr style="outline: 1px solid">
 
 $SQL = "SELECT lastdate_in_period FROM periods orDER BY periodno DESC";
 $ErrMsg = _('Could not load periods table');
-$result = DB_query($SQL, $ErrMsg);
+$Result = DB_query($SQL, $ErrMsg);
 if ($_SESSION['ProhibitPostingsBefore'] == '' or $_SESSION['ProhibitPostingsBefore'] == '1900-01-01' or !isset($_SESSION['ProhibitPostingsBefore'])) {
 	echo '<option selected="selected" value="1900-01-01">' . ConvertSQLDate('1900-01-01') . '</option>';
 }
-while ($PeriodRow = DB_fetch_row($result)) {
+while ($PeriodRow = DB_fetch_row($Result)) {
 	if ($_SESSION['ProhibitPostingsBefore'] == $PeriodRow[0]) {
 		echo '<option selected="selected" value="' . $PeriodRow[0] . '">' . ConvertSQLDate($PeriodRow[0]) . '</option>';
 	} else {
@@ -1063,8 +1063,8 @@ echo '<tr style="outline: 1px solid"><td>' . _('Default Factory Location') . ':<
 
 $SQL = "SELECT loccode,locationname FROM locations";
 $ErrMsg = _('Could not load locations table');
-$result = DB_query($SQL, $ErrMsg);
-while ($LocationRow = DB_fetch_array($result)) {
+$Result = DB_query($SQL, $ErrMsg);
+while ($LocationRow = DB_fetch_array($Result)) {
 	if ($_SESSION['DefaultFactoryLocation'] == $LocationRow['loccode']) {
 		echo '<option selected="selected" value="' . $LocationRow['loccode'] . '">' . $LocationRow['locationname'] . '</option>';
 	} else {

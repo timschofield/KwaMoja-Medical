@@ -81,9 +81,9 @@ $SQL = "SELECT tagref,
 		FROM tags
 		ORDER BY tagdescription";
 
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 echo '<option value="0">0 - ' . _('All tags') . '</option>';
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	if (isset($_POST['tag']) and $_POST['tag'] == $MyRow['tagref']) {
 		echo '<option selected="selected" value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
 	} else {
@@ -120,11 +120,11 @@ if (isset($_POST['Show'])) {
 		exit;
 	}
 	/*Is the account a balance sheet or a profit and loss account */
-	$result = DB_query("SELECT pandl
+	$Result = DB_query("SELECT pandl
 				FROM accountgroups
 				INNER JOIN chartmaster ON accountgroups.groupname=chartmaster.group_
 				WHERE chartmaster.accountcode='" . $SelectedAccount . "'");
-	$PandLRow = DB_fetch_row($result);
+	$PandLRow = DB_fetch_row($Result);
 	if ($PandLRow[0] == 1) {
 		$PandLAccount = True;
 	} else {

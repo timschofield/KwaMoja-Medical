@@ -34,8 +34,8 @@ if (isset($_POST['StockID']) and !empty($_POST['StockID']) and !isset($_POST['Up
 			WHERE stockid='" . $_POST['StockID'] . "'
 			GROUP BY stockid";
 
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
 	if (($MyRow[0] == 0) and ($_POST['OldStockID'] != '')) {
 		$_POST['New'] = 1;
 	} else {
@@ -54,7 +54,7 @@ echo '<div class="page_help_text">' . _('Cloning will create a new item with the
 if (!empty($_POST['OldStockID'])) { //only show this if there is a valid call to this script
 	if (isset($_FILES['ItemPicture']) and $_FILES['ItemPicture']['name'] != '') { //we are uploading a new file
 		$newfilename = ($_POST['OldStockID'] == $_POST['StockID']) or $_POST['StockID'] == '' ? $_POST['OldStockID'] . '-TEMP' : $_POST['StockID']; //so we can add a new file but not remove an existing item file
-		$result = $_FILES['ItemPicture']['error'];
+		$Result = $_FILES['ItemPicture']['error'];
 		$UploadTheFile = 'Yes'; //Assume all is well to start off with
 		$filename = $_SESSION['part_pics_dir'] . '/' . $newfilename . '.jpg';
 
@@ -73,8 +73,8 @@ if (!empty($_POST['OldStockID'])) { //only show this if there is a valid call to
 			$UploadTheFile = 'No';
 		} elseif (file_exists($filename)) {
 			prnMsg(_('Attempting to overwrite an existing item image'), 'warn');
-			$result = unlink($filename);
-			if (!$result) {
+			$Result = unlink($filename);
+			if (!$Result) {
 				prnMsg(_('The existing image could not be removed'), 'error');
 				$UploadTheFile = 'No';
 			}
@@ -82,8 +82,8 @@ if (!empty($_POST['OldStockID'])) { //only show this if there is a valid call to
 		//first remove any temp file that ight be there
 		@unlink($filename);
 		if ($UploadTheFile == 'Yes') {
-			$result = move_uploaded_file($_FILES['ItemPicture']['tmp_name'], $filename);
-			$message = ($result) ? _('File url') . '<a href="' . $filename . '">' . $filename . '</a>' : _('Something is wrong with uploading a file');
+			$Result = move_uploaded_file($_FILES['ItemPicture']['tmp_name'], $filename);
+			$message = ($Result) ? _('File url') . '<a href="' . $filename . '">' . $filename . '</a>' : _('Something is wrong with uploading a file');
 		}
 	} elseif (!empty($_POST['StockID']) and ($_POST['StockID'] != $_POST['OldStockID']) and file_exists($_SESSION['part_pics_dir'] . '/' . $_POST['OldStockID'] . '-TEMP' . '.jpg')) {
 		//rename the temp one to the new name
@@ -259,10 +259,10 @@ if (isset($_POST['submit'])) {
 		}
 		if ($_POST['New'] != 0) { //it is a NEW CLONED part
 			//but lets be really sure here
-			$result = DB_query("SELECT stockid
+			$Result = DB_query("SELECT stockid
 								FROM stockmaster
 								WHERE stockid='" . $_POST['StockID'] . "'");
-			if (DB_num_rows($result) == 1) {
+			if (DB_num_rows($Result) == 1) {
 				prnMsg(_('The stock code entered is already in the database - duplicate stock codes are prohibited by the system. Try choosing an alternative stock code'), 'error');
 				$Errors[$i] = 'DuplicateStockID';
 			} else {
@@ -310,7 +310,7 @@ if (isset($_POST['submit'])) {
 
 				$ErrMsg = _('The item could not be added because');
 				$DbgMsg = _('The SQL that was used to add the item failed was');
-				$result = DB_query($SQL, $ErrMsg, $DbgMsg, '', true);
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, '', true);
 				if (DB_error_no() == 0) {
 					//now insert the language descriptions
 					$ErrMsg = _('Could not update the language description because');
@@ -318,7 +318,7 @@ if (isset($_POST['submit'])) {
 					if (count($ItemDescriptionLanguagesArray) > 0) {
 						foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
 							if ($LanguageId!=''){
-								$result = DB_query("INSERT INTO stockdescriptiontranslations VALUES('" . $_POST['StockID'] . "','" . $LanguageId . "', '" . $_POST['Description_' . str_replace('.', '_', $LanguageId)] . "')", $db, $ErrMsg, $DbgMsg, true);
+								$Result = DB_query("INSERT INTO stockdescriptiontranslations VALUES('" . $_POST['StockID'] . "','" . $LanguageId . "', '" . $_POST['Description_' . str_replace('.', '_', $LanguageId)] . "')", $db, $ErrMsg, $DbgMsg, true);
 							}
 						}
 					}
@@ -339,7 +339,7 @@ if (isset($_POST['submit'])) {
 							$_POST['PropValue' . $i] = $_POST['PropValue' . $i];
 						}
 
-						$result = DB_query("INSERT INTO stockitemproperties (stockid,
+						$Result = DB_query("INSERT INTO stockitemproperties (stockid,
 													stkcatpropid,
 													value)
 													VALUES ('" . $_POST['StockID'] . "',
@@ -461,7 +461,7 @@ if (isset($_POST['submit'])) {
 									'" . $MyRow['price'] . "')";
 							$ErrMsg = _('The cloned pricing could not be added');
 							$DbgMsg = _('The sql that failed to add the cloned pricing');
-							$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+							$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 						}
 					}
 					//What about cost data?
@@ -591,8 +591,8 @@ if ((!isset($_POST['UpdateCategories']) and ($InputError != 1)) or $_POST['New']
 			FROM stockmaster
 			WHERE stockid = '" . $selectedStockID . "'";
 
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 
 	$_POST['LongDescription'] = $MyRow['longdescription'];
 	$_POST['Description'] = $MyRow['description'];
@@ -620,8 +620,8 @@ if ((!isset($_POST['UpdateCategories']) and ($InputError != 1)) or $_POST['New']
 		$SQL .= "language_id='" . $LanguageId . "' OR ";
 	}
 	$SQL = mb_substr($SQL, 0, mb_strlen($SQL) - 3) . ')';
-	$result = DB_query($SQL);
-	while ($MyRow = DB_fetch_array($result)) {
+	$Result = DB_query($SQL);
+	while ($MyRow = DB_fetch_array($Result)) {
 		$_POST['Description_' . str_replace('.', '_', $MyRow['language_id'])] = $MyRow['descriptiontranslation'];
 	}
 
@@ -711,9 +711,9 @@ echo '<tr>
 $SQL = "SELECT categoryid, categorydescription FROM stockcategory";
 $ErrMsg = _('The stock categories could not be retrieved because');
 $DbgMsg = _('The SQL used to retrieve stock categories and failed was');
-$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	if (!isset($_POST['CategoryID']) or $MyRow['categoryid'] == $_POST['CategoryID']) {
 		echo '<option selected="selected" value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 	} else {
@@ -942,13 +942,13 @@ echo '<tr>
 			<td>' . _('Tax Category') . ':</td>
 			<td><select name="TaxCat">';
 $SQL = "SELECT taxcatid, taxcatname FROM taxcategories ORDER BY taxcatname";
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 
 if (!isset($_POST['TaxCat'])) {
 	$_POST['TaxCat'] = $_SESSION['DefaultTaxCategory'];
 }
 
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	if ($_POST['TaxCat'] == $MyRow['taxcatid']) {
 		echo '<option selected="selected" value="' . $MyRow['taxcatid'] . '">' . $MyRow['taxcatname'] . '</option>';
 	} else {

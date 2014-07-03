@@ -145,8 +145,8 @@ if (!isset($_SESSION['Shipment'])) {
 		WHERE supplierid='" . $_SESSION['SupplierID'] . "'";
 
 	$ErrMsg = _('The supplier details for the shipment could not be retrieved because');
-	$result = DB_query($SQL, $ErrMsg);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL, $ErrMsg);
+	$MyRow = DB_fetch_array($Result);
 
 	$_SESSION['Shipment']->SupplierID = $_SESSION['SupplierID'];
 	$_SESSION['Shipment']->SupplierName = $MyRow['suppname'];
@@ -194,8 +194,8 @@ if (isset($_POST['Update']) or (isset($_GET['Add']) and $_SESSION['Shipment']->C
 	if ($InputError == 0 and (count($_SESSION['Shipment']->LineItems) > 0 or isset($_GET['Add']))) {
 
 		$SQL = "SELECT shiptref FROM shipments WHERE shiptref =" . $_SESSION['Shipment']->ShiptRef;
-		$result = DB_query($SQL);
-		if (DB_num_rows($result) == 1) {
+		$Result = DB_query($SQL);
+		if (DB_num_rows($Result) == 1) {
 			$SQL = "UPDATE shipments SET vessel='" . $_SESSION['Shipment']->Vessel . "',
 										voyageref='" . $_SESSION['Shipment']->VoyageRef . "',
 										shipmentdate='" . $_SESSION['Shipment']->ShipmentDate . "',
@@ -221,7 +221,7 @@ if (isset($_POST['Update']) or (isset($_GET['Add']) and $_SESSION['Shipment']->C
 
 		}
 		/*now update or insert as necessary */
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 
 		/*now check that the delivery date of all PODetails are the same as the ETA as the shipment */
 		foreach ($_SESSION['Shipment']->LineItems as $LnItm) {
@@ -232,7 +232,7 @@ if (isset($_POST['Update']) or (isset($_GET['Add']) and $_SESSION['Shipment']->C
 						SET deliverydate ='" . $_SESSION['Shipment']->ETA . "'
 						WHERE podetailitem='" . $LnItm->PODetailItem . "'";
 
-				$result = DB_query($SQL);
+				$Result = DB_query($SQL);
 
 				$_SESSION['Shipment']->LineItems[$LnItm->PODetailItem]->DelDate = $_SESSION['Shipment']->ETA;
 			}
@@ -265,8 +265,8 @@ if (isset($_GET['Add']) and $_SESSION['Shipment']->Closed == 0 and $InputError =
 				AND stockcosts.succeeded=0
 			WHERE purchorderdetails.podetailitem='" . $_GET['Add'] . "'";
 
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 
 	/*The variable StdCostUnit gets set when the item is first received and stored for all future transactions with this purchase order line - subsequent changes to the standard cost will not therefore stuff up variances resulting from the line which may have several entries in GL for each delivery drop if it has already been set from a delivery then use it otherwise use the current system standard */
 
@@ -340,8 +340,8 @@ if (count($_SESSION['Shipment']->LineItems) > 0) {
 				FROM purchorders INNER JOIN purchorderdetails
 				ON purchorders.orderno=purchorderdetails.orderno AND podetailitem = '" . key($_SESSION['Shipment']->LineItems) . "'";
 
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_row($Result);
 
 		$_SESSION['Shipment']->StockLocation = $MyRow[0];
 		$_POST['StockLocation'] = $_SESSION['Shipment']->StockLocation;
@@ -372,9 +372,9 @@ if (!isset($_SESSION['Shipment']->StockLocation)) {
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
 
-	$resultStkLocs = DB_query($SQL);
+	$ResultStkLocs = DB_query($SQL);
 
-	while ($MyRow = DB_fetch_array($resultStkLocs)) {
+	while ($MyRow = DB_fetch_array($ResultStkLocs)) {
 
 		if (isset($_POST['StockLocation'])) {
 			if ($MyRow['loccode'] == $_POST['StockLocation']) {
@@ -397,8 +397,8 @@ if (!isset($_SESSION['Shipment']->StockLocation)) {
 
 } else {
 	$SQL = "SELECT locationname FROM locations WHERE loccode='" . $_SESSION['Shipment']->StockLocation . "'";
-	$resultStkLocs = DB_query($SQL);
-	$MyRow = DB_fetch_array($resultStkLocs);
+	$ResultStkLocs = DB_query($SQL);
+	$MyRow = DB_fetch_array($ResultStkLocs);
 	echo '<input type="hidden" name="StockLocation" value="' . $_SESSION['Shipment']->StockLocation . '" />';
 	echo $MyRow['locationname'];
 }
@@ -480,9 +480,9 @@ $SQL = "SELECT purchorderdetails.podetailitem,
 			AND purchorderdetails.shiptref=0
 			AND purchorders.intostocklocation='" . $_POST['StockLocation'] . "'";
 
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 
-if (DB_num_rows($result) > 0) {
+if (DB_num_rows($Result) > 0) {
 
 	echo '<table cellpadding="2" class="selection">';
 	echo '<tr>
@@ -501,7 +501,7 @@ if (DB_num_rows($result) > 0) {
 
 	$k = 0; //row colour counter
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';

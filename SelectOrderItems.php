@@ -309,16 +309,16 @@ if (isset($_POST['SearchCust']) and $_SESSION['RequireCustomerSelection'] == 1) 
 						custbranch.branchcode";
 
 	$ErrMsg = _('The searched customer records requested cannot be retrieved because');
-	$result_CustSelect = DB_query($SQL, $ErrMsg);
+	$Result_CustSelect = DB_query($SQL, $ErrMsg);
 
-	if (DB_num_rows($result_CustSelect) == 1) {
-		$MyRow = DB_fetch_array($result_CustSelect);
+	if (DB_num_rows($Result_CustSelect) == 1) {
+		$MyRow = DB_fetch_array($Result_CustSelect);
 		$SelectedCustomer = $MyRow['debtorno'];
 		$SelectedBranch = $MyRow['branchcode'];
-	} //DB_num_rows($result_CustSelect) == 1
-	elseif (DB_num_rows($result_CustSelect) == 0) {
+	} //DB_num_rows($Result_CustSelect) == 1
+	elseif (DB_num_rows($Result_CustSelect) == 0) {
 		prnMsg(_('No Customer Branch records contain the search criteria') . ' - ' . _('please try again') . ' - ' . _('Note a Customer Branch Name may be different to the Customer Name'), 'info');
-	} //DB_num_rows($result_CustSelect) == 0
+	} //DB_num_rows($Result_CustSelect) == 0
 } //isset($_POST['SearchCust']) and $_SESSION['RequireCustomerSelection'] == 1)
 
 /*end of if search for customer codes/names */
@@ -366,9 +366,9 @@ if (isset($SelectedCustomer)) {
 
 	$ErrMsg = _('The details of the customer selected') . ': ' . $_SESSION['Items' . $identifier]->DebtorNo . ' ' . _('cannot be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve the customer details and failed was') . ':';
-	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-	$MyRow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($Result);
 	if ($MyRow['dissallowinvoices'] != 1) {
 		if ($MyRow['dissallowinvoices'] == 2) {
 			prnMsg(_('The') . ' ' . htmlspecialchars($MyRow[0], ENT_QUOTES, 'UTF-8', false) . ' ' . _('account is currently flagged as an account that needs to be watched. Please contact the credit control personnel to discuss'), 'warn');
@@ -389,9 +389,9 @@ if (isset($SelectedCustomer)) {
 
 		// the branch was also selected from the customer selection so default the delivery details from the customer branches table CustBranch. The order process will ask for branch details later anyway
 
-		$result = GetCustBranchDetails($identifier);
+		$Result = GetCustBranchDetails($identifier);
 
-		$MyRow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($Result);
 
 		if ($_SESSION['SalesmanLogin'] != NULL and $_SESSION['SalesmanLogin'] != $MyRow['salesman']) {
 			prnMsg(_('Your login is only set up for a particular salesperson. This customer has a different salesperson.'), 'error');
@@ -462,9 +462,9 @@ if (isset($SelectedCustomer)) {
 
 	$ErrMsg = _('The details for the customer selected') . ': ' . $_SESSION['Items' . $identifier]->DebtorNo . ' ' . _('cannot be retrieved because');
 	$DbgMsg = _('SQL used to retrieve the customer details was') . ':<br />' . $SQL;
-	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-	$MyRow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($Result);
 	if ($MyRow[1] == 0) {
 		$_SESSION['Items' . $identifier]->CustomerName = $MyRow[0];
 
@@ -480,9 +480,9 @@ if (isset($SelectedCustomer)) {
 		// the branch would be set in the user data so default delivery details as necessary. However,
 		// the order process will ask for branch details later anyway
 
-		$result = GetCustBranchDetails($identifier);
+		$Result = GetCustBranchDetails($identifier);
 
-		$MyRow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($Result);
 
 		$_SESSION['Items' . $identifier]->DeliverTo = $MyRow['brname'];
 		$_SESSION['Items' . $identifier]->DelAdd1 = $MyRow['braddress1'];
@@ -532,7 +532,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $id
 				<input tabindex="5" type="submit" name="reset" value="' . _('Reset') . '" />
 			</div>';
 
-	if (isset($result_CustSelect)) {
+	if (isset($Result_CustSelect)) {
 		echo '<div>
 				<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
 				<input type="hidden" name="JustSelectedACustomer" value="Yes" />
@@ -548,7 +548,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $id
 		$j = 1;
 		$k = 0; //row counter to determine background colour
 		$LastCustomer = '';
-		while ($MyRow = DB_fetch_array($result_CustSelect)) {
+		while ($MyRow = DB_fetch_array($Result_CustSelect)) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;
@@ -573,7 +573,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $id
 			$LastCustomer = $MyRow['name'];
 			$j++;
 			//end of page full new headings if
-		} //$MyRow = DB_fetch_array($result_CustSelect)
+		} //$MyRow = DB_fetch_array($Result_CustSelect)
 		//end of while loop
 
 		echo '</table>';
@@ -1052,12 +1052,12 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $id
 						$QuantityOfDiscCat += $OrderLine_2->Quantity;
 					} //$OrderLine_2->DiscCat == $OrderLine->DiscCat
 				} //$_SESSION['Items' . $identifier]->LineItems as $OrderLine_2
-				$result = DB_query("SELECT MAX(discountrate) AS discount
+				$Result = DB_query("SELECT MAX(discountrate) AS discount
 									FROM discountmatrix
 									WHERE salestype='" . $_SESSION['Items' . $identifier]->DefaultSalesType . "'
 									AND discountcategory ='" . $OrderLine->DiscCat . "'
 									AND quantitybreak <= '" . $QuantityOfDiscCat . "'");
-				$MyRow = DB_fetch_row($result);
+				$MyRow = DB_fetch_row($Result);
 				if ($MyRow[0] == NULL) {
 					$DiscountMatrixRate = 0;
 				} //$MyRow[0] == NULL
@@ -1214,12 +1214,12 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $id
 					$QuantityOfDiscCat += $StkItems_2->Quantity;
 				} //$StkItems_2->DiscCat == $OrderLine->DiscCat
 			} //$_SESSION['Items' . $identifier]->LineItems as $StkItems_2
-			$result = DB_query("SELECT MAX(discountrate) AS discount
+			$Result = DB_query("SELECT MAX(discountrate) AS discount
 								FROM discountmatrix
 								WHERE salestype='" . $_SESSION['Items' . $identifier]->DefaultSalesType . "'
 								AND discountcategory ='" . $OrderLine->DiscCat . "'
 								AND quantitybreak <= '" . $QuantityOfDiscCat . "'");
-			$MyRow = DB_fetch_row($result);
+			$MyRow = DB_fetch_row($Result);
 			if ($MyRow[0] == NULL) {
 				$DiscountMatrixRate = 0;
 			} //$MyRow[0] == NULL
@@ -1404,7 +1404,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $id
 					ORDER BY salesqty DESC
 					LIMIT " . $_SESSION['FrequentlyOrderedItems'];
 
-			$result2 = DB_query($SQL);
+			$Result2 = DB_query($SQL);
 			echo '<p class="page_title_text noPrint" >
 					<img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Frequently Ordered Items') . '</p>
 					<div class="page_help_text noPrint">' . _('Frequently Ordered Items') . _(', shows the most frequently ordered items in the last 6 months.  You can choose from this list, or search further for other items') . '.</div>
@@ -1423,7 +1423,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $id
 			$j = 1;
 			$k = 0; //row colour counter
 
-			while ($MyRow = DB_fetch_array($result2)) {
+			while ($MyRow = DB_fetch_array($Result2)) {
 				// This code needs sorting out, but until then :
 				$ImageSource = _('No Image');
 				// Find the quantity in stock at location
@@ -1514,7 +1514,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $id
 						</tr>', $MyRow['stockid'], $MyRow['longdescription'], $MyRow['description'], $MyRow['units'], locale_number_format($QOH, $QOHRow['decimalplaces']), locale_number_format($DemandQty, $QOHRow['decimalplaces']), locale_number_format($OnOrder, $QOHRow['decimalplaces']), locale_number_format($Available, $QOHRow['decimalplaces']));
 				$i++;
 				//end of page full new headings if
-			} //$MyRow = DB_fetch_array($result2)
+			} //$MyRow = DB_fetch_array($Result2)
 			//end of while loop for Frequently Ordered Items
 			echo '<td style="text-align:center" colspan="8"><input type="hidden" name="SelectingOrderItems" value="1" /><input tabindex="' . strval($j + 8) . '" type="submit" value="' . _('Add to Sales Order') . '" /></td></tr>';
 			echo '</table>';
@@ -1540,15 +1540,15 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $id
 				WHERE stocktype='F' OR stocktype='D' OR stocktype='L'
 				ORDER BY categorydescription";
 
-		$result1 = DB_query($SQL);
-		while ($MyRow1 = DB_fetch_array($result1)) {
+		$Result1 = DB_query($SQL);
+		while ($MyRow1 = DB_fetch_array($Result1)) {
 			if ($_POST['StockCat'] == $MyRow1['categoryid']) {
 				echo '<option selected="selected" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 			} //$_POST['StockCat'] == $MyRow1['categoryid']
 			else {
 				echo '<option value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 			}
-		} //$MyRow1 = DB_fetch_array($result1)
+		} //$MyRow1 = DB_fetch_array($Result1)
 
 		echo '</select></td>
 
@@ -1797,7 +1797,7 @@ function GetCustBranchDetails($identifier) {
 
 		$ErrMsg = _('The customer branch record of the customer selected') . ': ' . $_SESSION['Items'.$identifier]->DebtorNo . ' ' . _('cannot be retrieved because');
 		$DbgMsg = _('SQL used to retrieve the branch details was') . ':';
-		$result = DB_query($SQL, $ErrMsg, $DbgMsg);
-		return $result;
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
+		return $Result;
 }
 ?>

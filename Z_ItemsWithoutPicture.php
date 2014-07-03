@@ -14,15 +14,15 @@ $SQL = "SELECT stockmaster.stockid,
 				AND stockcategory.stocktype != 'D'
 			ORDER BY stockcategory.categorydescription,
 					stockmaster.stockid";
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 $PrintHeader = TRUE;
-if (DB_num_rows($result) != 0) {
+if (DB_num_rows($Result) != 0) {
 	echo '<p class="page_title_text noPrint"  align="center"><strong>' . _('Current Items without picture') . '</strong></p>';
 	echo '<div>';
 	echo '<table class="selection">';
 	$k = 0; //row colour counter
 	$i = 1;
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (!file_exists($_SESSION['part_pics_dir'] . '/' . $MyRow['stockid'] . '.jpg')) {
 			if ($PrintHeader) {
 				echo '<tr>

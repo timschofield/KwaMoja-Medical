@@ -35,8 +35,8 @@ if ($_SESSION['RestrictLocations'] == 0) {
 	}
 }
 
-$resultStkLocs = DB_query($SQL);
-while ($MyRow = DB_fetch_array($resultStkLocs)) {
+$ResultStkLocs = DB_query($SQL);
+while ($MyRow = DB_fetch_array($ResultStkLocs)) {
 	if (isset($_POST['StockLocation']) and $_POST['StockLocation'] != 'All') {
 		if ($MyRow['loccode'] == $_POST['StockLocation']) {
 			echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';

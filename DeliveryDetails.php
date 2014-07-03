@@ -154,8 +154,8 @@ if (isset($_POST['Update']) or isset($_POST['BackToLineDetails']) or isset($_POS
 
 		$ErrMsg = _('The customer branch record of the customer selected') . ': ' . $_SESSION['Items' . $identifier]->CustomerName . ' ' . _('cannot be retrieved because');
 		$DbgMsg = _('SQL used to retrieve the branch details was') . ':';
-		$result = DB_query($SQL, $ErrMsg, $DbgMsg);
-		if (DB_num_rows($result) == 0) {
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
+		if (DB_num_rows($Result) == 0) {
 			prnMsg(_('The branch details for branch code') . ': ' . $_SESSION['Items' . $identifier]->Branch . ' ' . _('against customer code') . ': ' . $_POST['Select'] . ' ' . _('could not be retrieved') . '. ' . _('Check the set up of the customer and branch'), 'error');
 
 			if ($debug == 1) {
@@ -163,7 +163,7 @@ if (isset($_POST['Update']) or isset($_POST['BackToLineDetails']) or isset($_POS
 			} //$debug == 1
 			include('includes/footer.inc');
 			exit;
-		} //DB_num_rows($result) == 0
+		} //DB_num_rows($Result) == 0
 		if (!isset($_POST['SpecialInstructions'])) {
 			$_POST['SpecialInstructions'] = '';
 		} //!isset($_POST['SpecialInstructions'])
@@ -171,7 +171,7 @@ if (isset($_POST['Update']) or isset($_POST['BackToLineDetails']) or isset($_POS
 			$_POST['DeliveryDays'] = 0;
 		} //!isset($_POST['DeliveryDays'])
 		if (!isset($_SESSION['Items' . $identifier])) {
-			$MyRow = DB_fetch_row($result);
+			$MyRow = DB_fetch_row($Result);
 			$_SESSION['Items' . $identifier]->DeliverTo = $MyRow[0];
 			$_SESSION['Items' . $identifier]->DelAdd1 = $MyRow[1];
 			$_SESSION['Items' . $identifier]->DelAdd2 = $MyRow[2];
@@ -522,7 +522,7 @@ if (isset($OK_to_PROCESS) and $OK_to_PROCESS == 1 and $_SESSION['ExistingOrder' 
 										 '" . $WOQuantity . "',
 										 '" . $Cost . "')";
 				$ErrMsg = _('The work order item could not be added');
-				$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 				//Recursively insert real component requirements - see includes/SQL_CommonFunctions.in for function WoRealRequirements
 				WoRealRequirements($WONo, $_SESSION['DefaultFactoryLocation'], $StockItem->StockID);
@@ -534,13 +534,13 @@ if (isset($OK_to_PROCESS) and $OK_to_PROCESS == 1 and $_SESSION['ExistingOrder' 
 					$FactoryManagerEmail .= "\n" . _('The following serial numbers have been reserved for this work order') . ':';
 
 					for ($i = 0; $i < $WOQuantity; $i++) {
-						$result = DB_query("SELECT serialno FROM stockserialitems
+						$Result = DB_query("SELECT serialno FROM stockserialitems
 												WHERE serialno='" . ($StockItem->NextSerialNo + $i) . "'
 												AND stockid='" . $StockItem->StockID . "'");
-						if (DB_num_rows($result) != 0) {
+						if (DB_num_rows($Result) != 0) {
 							$WOQuantity++;
 							prnMsg(($StockItem->NextSerialNo + $i) . ': ' . _('This automatically generated serial number already exists - it cannot be added to the work order'), 'error');
-						} //DB_num_rows($result) != 0
+						} //DB_num_rows($Result) != 0
 						else {
 							$SQL = "INSERT INTO woserialnos (wo,
 																stockid,
@@ -549,7 +549,7 @@ if (isset($OK_to_PROCESS) and $OK_to_PROCESS == 1 and $_SESSION['ExistingOrder' 
 															'" . $StockItem->StockID . "',
 															'" . ($StockItem->NextSerialNo + $i) . "')";
 							$ErrMsg = _('The serial number for the work order item could not be added');
-							$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+							$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 							$FactoryManagerEmail .= "\n" . ($StockItem->NextSerialNo + $i);
 						}
 					} //end loop around creation of woserialnos
@@ -567,7 +567,7 @@ if (isset($OK_to_PROCESS) and $OK_to_PROCESS == 1 and $_SESSION['ExistingOrder' 
 					include('includes/htmlMimeMail.php');
 					$mail = new htmlMimeMail();
 					$mail->setSubject($EmailSubject);
-					$result = SendmailBySmtp($mail, array(
+					$Result = SendmailBySmtp($mail, array(
 						$_SESSION['FactoryManagerEmail']
 					));
 				}
@@ -578,7 +578,7 @@ if (isset($OK_to_PROCESS) and $OK_to_PROCESS == 1 and $_SESSION['ExistingOrder' 
 
 	/* end inserted line items into sales order details */
 
-	$result = DB_Txn_Commit();
+	$Result = DB_Txn_Commit();
 	echo '<br />';
 	if ($_SESSION['Items' . $identifier]->Quotation == 1) {
 		prnMsg(_('Quotation Number') . ' ' . $OrderNo . ' ' . _('has been entered'), 'success');
@@ -725,7 +725,7 @@ elseif (isset($OK_to_PROCESS) and ($OK_to_PROCESS == 1 and $_SESSION['ExistingOr
 									 '1',
 									 '" . $Cost . "')";
 			$ErrMsg = _('The work order item could not be added');
-			$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 			//Recursively insert real component requirements - see includes/SQL_CommonFunctions.in for function WoRealRequirements
 			WoRealRequirements($WONo, $_SESSION['Items' . $identifier]->Location, $ContractRow['contractref']);

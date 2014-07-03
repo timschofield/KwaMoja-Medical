@@ -22,8 +22,8 @@ $SQL = "SELECT name
 		FROM debtorsmaster
 		WHERE debtorno='" . $_SESSION['CustomerID'] . "'";
 
-$result = DB_query($SQL);
-$MyRow = DB_fetch_array($result);
+$Result = DB_query($SQL);
+$MyRow = DB_fetch_array($Result);
 $CustomerName = $MyRow['name'];
 
 echo '<p class="page_title_text noPrint" >
@@ -68,13 +68,13 @@ if (isset($_POST['submit'])) {
 
 		$ErrMsg = _('The check on validity of the customer code and branch failed because');
 		$DbgMsg = _('The SQL that was used to check the customer code and branch was');
-		$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-		if (DB_num_rows($result) == 0) {
+		if (DB_num_rows($Result) == 0) {
 			prnMsg(_('The entered Branch Code is not valid for the entered Customer Code'), 'error');
 			$InputError = 1;
 		} else {
-			$MyRow = DB_fetch_row($result);
+			$MyRow = DB_fetch_row($Result);
 			$InventoryLocation = $MyRow[0];
 		}
 
@@ -111,7 +111,7 @@ if (isset($_POST['submit'])) {
 
 			$ErrMsg = _('The user could not be added because');
 			$DbgMsg = _('The SQL that was used to insert the new user and failed was');
-			$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 			prnMsg(_('A new customer login has been created'), 'success');
 			include('includes/footer.inc');
 			exit;
@@ -165,9 +165,9 @@ echo '<tr>
 			<td><select minlength="0" name="BranchCode">';
 
 $SQL = "SELECT branchcode FROM custbranch WHERE debtorno = '" . $_SESSION['CustomerID'] . "'";
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 
 	//Set the first available branch as default value when nothing is selected
 	if (!isset($_POST['BranchCode'])) {

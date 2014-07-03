@@ -109,7 +109,7 @@ if (isset($_POST['submit'])) {
 
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 		prnMsg($msg, 'success');
 
 		unset($_POST['SelectedExpense']);
@@ -124,7 +124,7 @@ if (isset($_POST['submit'])) {
 	$SQL = "DELETE FROM pcashdetails
 			WHERE counterindex='" . $SelectedIndex . "'";
 	$ErrMsg = _('Petty Cash Expense record could not be deleted because');
-	$result = DB_query($SQL, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 	prnMsg(_('Petty cash Expense record') . ' ' . $SelectedTabs . ' ' . _('has been deleted'), 'success');
 
 	unset($_GET['delete']);
@@ -150,9 +150,9 @@ if (!isset($SelectedTabs)) {
 		FROM pctabs
 		WHERE usercode='" . $_SESSION['UserID'] . "'";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	echo '<option value="">' . _('Not Yet Selected') . '</option>';
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['SelectTabs']) and $MyRow['tabcode'] == $_POST['SelectTabs']) {
 			echo '<option selected="selected" value="';
 		} else {
@@ -164,7 +164,7 @@ if (!isset($SelectedTabs)) {
 
 	echo '</select></td></tr>';
 	echo '</table>'; // close main table
-	DB_free_result($result);
+	DB_free_result($Result);
 
 	echo '<div class="centre">
 			<input type="submit" name="Process" value="' . _('Accept') . '" />
@@ -199,8 +199,8 @@ if (!isset($SelectedTabs)) {
 					FROM currencies,pctabs
 					WHERE currencies.currabrev = pctabs.currency
 						AND tabcode='" . $SelectedTabs . "'";
-		$result = DB_query($SqlDecimalPlaces);
-		$MyRow = DB_fetch_array($result);
+		$Result = DB_query($SqlDecimalPlaces);
+		$MyRow = DB_fetch_array($Result);
 		$CurrDecimalPlaces = $MyRow['decimalplaces'];
 
 		echo '<input type="hidden" name="SelectedTabs" value="' . $SelectedTabs . '" />';
@@ -221,7 +221,7 @@ if (!isset($SelectedTabs)) {
 					AND date >=DATE_SUB(CURDATE(), INTERVAL " . $Days . " DAY)
 				ORDER BY date, counterindex ASC";
 
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 
 		echo '<tr>
 				<th>' . _('Date Of Expense') . '</th>
@@ -234,7 +234,7 @@ if (!isset($SelectedTabs)) {
 
 		$k = 0; //row colour counter
 
-		while ($MyRow = DB_fetch_row($result)) {
+		while ($MyRow = DB_fetch_row($Result)) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;
@@ -314,8 +314,8 @@ if (!isset($SelectedTabs)) {
 				FROM pcashdetails
 				WHERE counterindex='" . $SelectedIndex . "'";
 
-			$result = DB_query($SQL);
-			$MyRow = DB_fetch_array($result);
+			$Result = DB_query($SQL);
+			$MyRow = DB_fetch_array($Result);
 
 			$_POST['Date'] = ConvertSQLDate($MyRow['date']);
 			$_POST['SelectedExpense'] = $MyRow['codeexpense'];
@@ -341,7 +341,7 @@ if (!isset($SelectedTabs)) {
 		echo '<tr>
 				<td>' . _('Code Of Expense') . ':</td><td><select required="required" minlength="1" name="SelectedExpense">';
 
-		DB_free_result($result);
+		DB_free_result($Result);
 
 		$SQL = "SELECT pcexpenses.codeexpense,
 					pcexpenses.description
@@ -351,9 +351,9 @@ if (!isset($SelectedTabs)) {
 				AND pctabs.tabcode = '" . $SelectedTabs . "'
 			ORDER BY pcexpenses.codeexpense ASC";
 
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 		echo '<option value="">' . _('Not Yet Selected') . '</option>';
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			if (isset($_POST['SelectedExpense']) and $MyRow['codeexpense'] == $_POST['SelectedExpense']) {
 				echo '<option selected="selected" value="';
 			} else {
@@ -375,9 +375,9 @@ if (!isset($SelectedTabs)) {
 			FROM tags
 			ORDER BY tagref";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	echo '<option value="0">0 - ' . _('None') . '</option>';
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['Tag']) and $_POST['Tag'] == $MyRow['tagref']) {
 			echo '<option selected="selected" value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
 		} else {

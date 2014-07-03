@@ -31,8 +31,8 @@ if (isset($_POST['submit'])) {
 
 	$SQL = "SELECT count(reasoncode)
 			FROM holdreasons WHERE reasoncode='" . $_POST['ReasonCode'] . "'";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
 
 	if ($MyRow[0] != 0 and !isset($SelectedReason)) {
 		$InputError = 1;
@@ -102,7 +102,7 @@ if (isset($_POST['submit'])) {
 		unset($_POST['ReasonDescription']);
 	}
 	//run the SQL from either of the above possibilites
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	if ($msg != '') {
 		prnMsg($msg, 'success');
 	}
@@ -115,8 +115,8 @@ if (isset($_POST['submit'])) {
 			FROM debtorsmaster
 			WHERE debtorsmaster.holdreason='" . $SelectedReason . "'";
 
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
 	if ($MyRow[0] > 0) {
 		prnMsg(_('Cannot delete this credit status code because customer accounts have been created referring to it'), 'warn');
 		echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('customer accounts that refer to this credit status code');
@@ -124,7 +124,7 @@ if (isset($_POST['submit'])) {
 		//only delete if used in neither customer or supplier accounts
 
 		$SQL = "DELETE FROM holdreasons WHERE reasoncode='" . $SelectedReason . "'";
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 		prnMsg(_('This credit status code has been deleted'), 'success');
 	}
 	//end if status code used in customer or supplier accounts
@@ -141,7 +141,7 @@ if (!isset($SelectedReason)) {
 	or deletion of the records*/
 
 	$SQL = "SELECT reasoncode, reasondescription, dissallowinvoices FROM holdreasons";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '<table class="selection">
 		<tr>
@@ -151,7 +151,7 @@ if (!isset($SelectedReason)) {
 		</tr>';
 
 	$k = 0; //row colour counter
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 
 		if ($MyRow['dissallowinvoices'] == 0) {
 			$DissallowText = _('Invoice OK');
@@ -198,8 +198,8 @@ if (!isset($_GET['delete'])) {
 				FROM holdreasons
 				WHERE reasoncode='" . $SelectedReason . "'";
 
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
 
 		$_POST['ReasonCode'] = $MyRow['reasoncode'];
 		$_POST['ReasonDescription'] = $MyRow['reasondescription'];

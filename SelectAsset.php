@@ -33,8 +33,8 @@ $SQL = "SELECT categoryid,
 				categorydescription
 			FROM fixedassetcategories
 			ORDER BY categorydescription";
-$result = DB_query($SQL);
-if (DB_num_rows($result) == 0) {
+$Result = DB_query($SQL);
+if (DB_num_rows($Result) == 0) {
 	prnMsg( _('There are no asset categories currently defined please use the link below to set them up') . '<br /><a href="' . $RootPath . '/FixedAssetCategories.php">' . _('Define Asset Categories') . '</a>', 'warn');
 	include('includes/footer.inc');
 	exit;
@@ -59,7 +59,7 @@ if ($_POST['AssetCategory'] == 'ALL') {
 	echo '<option value="ALL">' . _('Any asset category') . '</option>';
 }
 
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	if ($MyRow['categoryid'] == $_POST['AssetCategory']) {
 		echo '<option selected="selected" value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 	} else {
@@ -88,9 +88,9 @@ if ($_POST['AssetLocation'] == 'ALL') {
 } else {
 	echo '<option value="ALL">' . _('Any asset location') . '</option>';
 }
-$result = DB_query("SELECT locationid, locationdescription FROM fixedassetlocations");
+$Result = DB_query("SELECT locationid, locationdescription FROM fixedassetlocations");
 
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	if ($MyRow['locationid'] == $_POST['AssetLocation']) {
 		echo '<option selected="selected" value="' . $MyRow['locationid'] . '">' . $MyRow['locationdescription'] . '</option>';
 	} else {

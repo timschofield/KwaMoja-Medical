@@ -182,21 +182,21 @@ if (isset($_POST['submit'])) {
 		}
 
 		$ErrMsg = _('The company preferences could not be updated because');
-		$result = DB_query($SQL, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 		prnMsg(_('Company preferences updated'), 'success');
 
 		/* Alter the exchange rates in the currencies table */
 
 		/* Get default currency rate */
 		$SQL = "SELECT rate from currencies WHERE currabrev='" . $_POST['CurrencyDefault'] . "'";
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_row($Result);
 		$NewCurrencyRate = $MyRow[0];
 
 		/* Set new rates */
 		$SQL = "UPDATE currencies SET rate=rate/" . $NewCurrencyRate;
 		$ErrMsg = _('Could not update the currency rates');
-		$result = DB_query($SQL, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 
 		/* End of update currencies */
 
@@ -247,9 +247,9 @@ if ($InputError != 1) {
 				WHERE coycode=1";
 
 	$ErrMsg = _('The company preferences could not be retrieved because');
-	$result = DB_query($SQL, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
-	$MyRow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($Result);
 
 	$_POST['CoyName'] = $MyRow['coyname'];
 	$_POST['GSTNo'] = $MyRow['gstno'];
@@ -278,7 +278,7 @@ if ($InputError != 1) {
 	$_POST['FreightAct'] = $MyRow['freightact'];
 }
 
-if (DB_num_rows($result) == 0) {
+if (DB_num_rows($Result) == 0) {
 	echo '<div class="page_help_text">' . _('As this is the first time that the system has been used, you must first fill out the company details.') .
 			'<br />' . _('Once you have filled in all the details, click on the button at the bottom of the screen') . '</div>';
 	include('companies/' . $_SESSION['DatabaseName'] . '/Companies.php');
@@ -346,13 +346,13 @@ echo '<tr>
 	</tr>';
 
 
-$result = DB_query("SELECT currabrev, currency FROM currencies");
+$Result = DB_query("SELECT currabrev, currency FROM currencies");
 
 echo '<tr>
 		<td>' . _('Home Currency') . ':</td>
 		<td><select minlength="0" tabindex="13" name="CurrencyDefault">';
 
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	if ($_POST['CurrencyDefault'] == $MyRow['currabrev']) {
 		echo '<option selected="selected" value="' . $MyRow['currabrev'] . '">' . _($MyRow['currency']) . '</option>';
 	} else {
@@ -360,12 +360,12 @@ while ($MyRow = DB_fetch_array($result)) {
 	}
 } //end while loop
 
-DB_free_result($result);
+DB_free_result($Result);
 
 echo '</select></td>
 	</tr>';
 
-$result = DB_query("SELECT accountcode,
+$Result = DB_query("SELECT accountcode,
 						accountname
 					FROM chartmaster INNER JOIN accountgroups
 					ON chartmaster.group_=accountgroups.groupname
@@ -376,7 +376,7 @@ echo '<tr>
 		<td>' . _('Debtors Control GL Account') . ':</td>
 		<td><select minlength="0" tabindex="14" name="DebtorsAct">';
 
-while ($MyRow = DB_fetch_row($result)) {
+while ($MyRow = DB_fetch_row($Result)) {
 	if ($_POST['DebtorsAct'] == $MyRow[0]) {
 		echo '<option selected="selected" value="' . $MyRow[0] . '">' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</option>';
 	} else {
@@ -384,7 +384,7 @@ while ($MyRow = DB_fetch_row($result)) {
 	}
 } //end while loop
 
-DB_data_seek($result, 0);
+DB_data_seek($Result, 0);
 
 echo '</select></td>
 	</tr>';
@@ -393,7 +393,7 @@ echo '<tr>
 		<td>' . _('Creditors Control GL Account') . ':</td>
 		<td><select minlength="0" tabindex="15" name="CreditorsAct">';
 
-while ($MyRow = DB_fetch_row($result)) {
+while ($MyRow = DB_fetch_row($Result)) {
 	if ($_POST['CreditorsAct'] == $MyRow[0]) {
 		echo '<option selected="selected" value="' . $MyRow[0] . '">' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</option>';
 	} else {
@@ -401,7 +401,7 @@ while ($MyRow = DB_fetch_row($result)) {
 	}
 } //end while loop
 
-DB_data_seek($result, 0);
+DB_data_seek($Result, 0);
 
 echo '</select></td>
 	</tr>';
@@ -410,7 +410,7 @@ echo '<tr>
 		<td>' . _('Payroll Net Pay Clearing GL Account') . ':</td>
 		<td><select minlength="0" tabindex="16" name="PayrollAct">';
 
-while ($MyRow = DB_fetch_row($result)) {
+while ($MyRow = DB_fetch_row($Result)) {
 	if ($_POST['PayrollAct'] == $MyRow[0]) {
 		echo '<option selected="selected" value="' . $MyRow[0] . '">' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</option>';
 	} else {
@@ -418,7 +418,7 @@ while ($MyRow = DB_fetch_row($result)) {
 	}
 } //end while loop
 
-DB_data_seek($result, 0);
+DB_data_seek($Result, 0);
 
 echo '</select></td>
 	</tr>';
@@ -427,7 +427,7 @@ echo '<tr>
 		<td>' . _('Goods Received Clearing GL Account') . ':</td>
 		<td><select minlength="0" tabindex="17" name="GRNAct">';
 
-while ($MyRow = DB_fetch_row($result)) {
+while ($MyRow = DB_fetch_row($Result)) {
 	if ($_POST['GRNAct'] == $MyRow[0]) {
 		echo '<option selected="selected" value="' . $MyRow[0] . '">' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</option>';
 	} else {
@@ -435,7 +435,7 @@ while ($MyRow = DB_fetch_row($result)) {
 	}
 } //end while loop
 
-DB_data_seek($result, 0);
+DB_data_seek($Result, 0);
 echo '</select></td>
 	</tr>';
 
@@ -443,7 +443,7 @@ echo '<tr>
 		<td>' . _('Retained Earning Clearing GL Account') . ':</td>
 		<td><select minlength="0" tabindex="18" name="RetainedEarnings">';
 
-while ($MyRow = DB_fetch_row($result)) {
+while ($MyRow = DB_fetch_row($Result)) {
 	if ($_POST['RetainedEarnings'] == $MyRow[0]) {
 		echo '<option selected="selected" value="' . $MyRow[0] . '">' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</option>';
 	} else {
@@ -451,7 +451,7 @@ while ($MyRow = DB_fetch_row($result)) {
 	}
 } //end while loop
 
-DB_free_result($result);
+DB_free_result($Result);
 
 echo '</select></td>
 	</tr>';
@@ -460,14 +460,14 @@ echo '<tr>
 		<td>' . _('Freight Re-charged GL Account') . ':</td>
 		<td><select minlength="0" tabindex="19" name="FreightAct">';
 
-$result = DB_query("SELECT accountcode,
+$Result = DB_query("SELECT accountcode,
 						accountname
 					FROM chartmaster INNER JOIN accountgroups
 					ON chartmaster.group_=accountgroups.groupname
 					WHERE accountgroups.pandl=1
 					ORDER BY chartmaster.accountcode");
 
-while ($MyRow = DB_fetch_row($result)) {
+while ($MyRow = DB_fetch_row($Result)) {
 	if ($_POST['FreightAct'] == $MyRow[0]) {
 		echo '<option selected="selected" value="' . $MyRow[0] . '">' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</option>';
 	} else {
@@ -475,7 +475,7 @@ while ($MyRow = DB_fetch_row($result)) {
 	}
 } //end while loop
 
-DB_data_seek($result, 0);
+DB_data_seek($Result, 0);
 
 echo '</select></td>
 	</tr>';
@@ -484,7 +484,7 @@ echo '<tr>
 		<td>' . _('Sales Exchange Variances GL Account') . ':</td>
 		<td><select minlength="0" tabindex="20" name="ExchangeDiffAct">';
 
-while ($MyRow = DB_fetch_row($result)) {
+while ($MyRow = DB_fetch_row($Result)) {
 	if ($_POST['ExchangeDiffAct'] == $MyRow[0]) {
 		echo '<option selected="selected" value="' . $MyRow[0] . '">' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</option>';
 	} else {
@@ -492,7 +492,7 @@ while ($MyRow = DB_fetch_row($result)) {
 	}
 } //end while loop
 
-DB_data_seek($result, 0);
+DB_data_seek($Result, 0);
 
 echo '</select></td>
 	</tr>';
@@ -501,7 +501,7 @@ echo '<tr>
 		<td>' . _('Purchases Exchange Variances GL Account') . ':</td>
 		<td><select minlength="0" tabindex="21" name="PurchasesExchangeDiffAct">';
 
-while ($MyRow = DB_fetch_row($result)) {
+while ($MyRow = DB_fetch_row($Result)) {
 	if ($_POST['PurchasesExchangeDiffAct'] == $MyRow[0]) {
 		echo '<option selected="selected" value="' . $MyRow[0] . '">' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</option>';
 	} else {
@@ -509,7 +509,7 @@ while ($MyRow = DB_fetch_row($result)) {
 	}
 } //end while loop
 
-DB_data_seek($result, 0);
+DB_data_seek($Result, 0);
 
 echo '</select></td>
 	</tr>';
@@ -518,7 +518,7 @@ echo '<tr>
 		<td>' . _('Payment Discount GL Account') . ':</td>
 		<td><select minlength="0" tabindex="22" name="PytDiscountAct">';
 
-while ($MyRow = DB_fetch_row($result)) {
+while ($MyRow = DB_fetch_row($Result)) {
 	if ($_POST['PytDiscountAct'] == $MyRow[0]) {
 		echo '<option selected="selected" value="' . $MyRow[0] . '">' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</option>';
 	} else {
@@ -526,7 +526,7 @@ while ($MyRow = DB_fetch_row($result)) {
 	}
 } //end while loop
 
-DB_data_seek($result, 0);
+DB_data_seek($Result, 0);
 
 echo '</select></td>
 	</tr>';

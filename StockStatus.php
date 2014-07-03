@@ -18,12 +18,12 @@ if (isset($_POST['UpdateBinLocations'])) {
 	foreach ($_POST as $PostVariableName => $Bin) {
 		if (mb_substr($PostVariableName, 0, 11) == 'BinLocation') {
 			$SQL = "UPDATE locstock SET bin='" . strtoupper($Bin) . "' WHERE loccode='" . mb_substr($PostVariableName, 11) . "' AND stockid='" . $StockID . "'";
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 		}
 	}
 }
 
-$result = DB_query("SELECT description,
+$Result = DB_query("SELECT description,
 						   units,
 						   mbflag,
 						   decimalplaces,
@@ -32,7 +32,7 @@ $result = DB_query("SELECT description,
 					FROM stockmaster
 					WHERE stockid='" . $StockID . "'", _('Could not retrieve the requested item'), _('The SQL used to retrieve the items was'));
 
-$MyRow = DB_fetch_array($result);
+$MyRow = DB_fetch_array($Result);
 
 $DecimalPlaces = $MyRow['decimalplaces'];
 $Serialised = $MyRow['serialised'];

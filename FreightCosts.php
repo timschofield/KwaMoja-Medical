@@ -174,7 +174,7 @@ if (isset($_POST['submit'])) {
 	}
 	//run the SQL from either of the above possibilites
 	$ErrMsg = _('The freight cost record could not be updated because');
-	$result = DB_query($SQL, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
 	prnMsg($msg, 'success');
 
@@ -191,7 +191,7 @@ if (isset($_POST['submit'])) {
 } elseif (isset($_GET['delete'])) {
 
 	$SQL = "DELETE FROM freightcosts WHERE shipcostfromid='" . $SelectedFreightCost . "'";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	prnMsg(_('Freight cost record deleted'), 'success');
 	unset($SelectedFreightCost);
 	unset($_GET['delete']);
@@ -217,7 +217,7 @@ if (!isset($SelectedFreightCost) and isset($LocationFrom) and isset($ShipperID))
 						maxkgs,
 						maxcub";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '<br /><table class="selection">
 					<tr>
@@ -233,7 +233,7 @@ if (!isset($SelectedFreightCost) and isset($LocationFrom) and isset($ShipperID))
 
 	$k = 0; //row counter to determine background colour
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -306,8 +306,8 @@ if (isset($LocationFrom) and isset($ShipperID)) {
 					FROM freightcosts
 					WHERE shipcostfromid='" . $SelectedFreightCost . "'";
 
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
 
 		$LocationFrom = $MyRow['locationfrom'];
 		$_POST['DestinationCountry'] = $MyRow['destinationcountry'];

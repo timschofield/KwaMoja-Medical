@@ -5,7 +5,7 @@ $Title = _('Database table details');
 include('includes/header.inc');
 
 $SQL = 'DESCRIBE ' . $_GET['table'];
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 
 echo '<table>
 		<tr>
@@ -14,7 +14,7 @@ echo '<table>
 			<th>' . _('Can field be null') . '</th>
 			<th>' . _('Default') . '</th>
 		</tr>';
-while ($MyRow = DB_fetch_row($result)) {
+while ($MyRow = DB_fetch_row($Result)) {
 	echo '<tr>
 			<td>' . $MyRow[0] . '</td>
 			<td>' . $MyRow[1] . '</td>

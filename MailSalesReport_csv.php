@@ -40,8 +40,8 @@ $mail->addAttachment($attachment, 'SalesAnalysis.csv', 'application/csv');
 $mail->setSubject(_('Sales Analysis') . ' - ' . _('CSV Format'));
 if ($_SESSION['SmtpSetting'] == 0) {
 	$mail->setFrom($_SESSION['CompanyRecord']['coyname'] . '<' . $_SESSION['CompanyRecord']['email'] . '>');
-	$result = $mail->send($Recipients);
+	$Result = $mail->send($Recipients);
 } else {
-	$result = SendmailBySmtp($mail, $Recipients);
+	$Result = SendmailBySmtp($mail, $Recipients);
 }
 ?>

@@ -195,9 +195,9 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 
 			//first off validate inputs sensible
 			$SQL = "SELECT COUNT(supplierid) FROM suppliers WHERE supplierid='" . $SupplierID . "'";
-			$result = DB_query($SQL);
-			$MyRow = DB_fetch_row($result);
-			$SuppExists = (DB_num_rows($result) > 0);
+			$Result = DB_query($SQL);
+			$MyRow = DB_fetch_row($Result);
+			$SuppExists = (DB_num_rows($Result) > 0);
 			if ($SuppExists and $_POST['UpdateIfExists'] != 1) {
 				$UpdatedNum++;
 			} elseif ($SuppExists) {
@@ -247,7 +247,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 				$ErrMsg = _('The supplier could not be updated because');
 				$DbgMsg = _('The SQL that was used to update the supplier but failed was');
 				// echo $SQL;
-				$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 			} else { //its a new supplier
 				$InsertNum++;
@@ -303,7 +303,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 				$ErrMsg = _('The supplier') . ' ' . $_POST['SuppName'] . ' ' . _('could not be added because');
 				$DbgMsg = _('The SQL that was used to insert the supplier but failed was');
 
-				$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 			}
 			if (DB_error_no() == 0) {

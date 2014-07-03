@@ -68,8 +68,8 @@ if ($_GET['Action'] == 'Enter') {
 					$InputError = True;
 				}
 				$SQL = "SELECT stockid FROM stockcheckfreeze WHERE stockid='" . $_POST[$StockID] . "'";
-				$result = DB_query($SQL);
-				if (DB_num_rows($result) == 0) {
+				$Result = DB_query($SQL);
+				if (DB_num_rows($Result) == 0) {
 					prnMsg(_('The stock code entered on line') . ' ' . $i . ' ' . _('is not a part code that has been added to the stock check file') . ' - ' . _('the code entered was') . ' ' . $_POST[$StockID] . '. ' . _('This line will have to be re-entered'), 'warn');
 					$InputError = True;
 				}
@@ -121,8 +121,8 @@ if ($_GET['Action'] == 'Enter') {
 						WHERE www_users.userid='" . $_SESSION['UserID'] . "'
 							AND loccode='" . $_POST['Location'] . "'";
 		}
-		$result = DB_query($SQL);
-		while ($MyRow = DB_fetch_array($result)) {
+		$Result = DB_query($SQL);
+		while ($MyRow = DB_fetch_array($Result)) {
 
 			if (isset($_POST['Location']) and $MyRow['loccode'] == $_POST['Location']) {
 				echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
@@ -221,7 +221,7 @@ if ($_GET['Action'] == 'Enter') {
 
 	//START OF action=VIEW
 	$SQL = "SELECT * FROM stockcounts";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	echo '<input type="hidden" name="Action" value="View" />';
 	echo '<table cellpadding="2" class="selection">
 			<tr>
@@ -231,7 +231,7 @@ if ($_GET['Action'] == 'Enter') {
 				<th>' . _('Reference') . '</th>
 				<th>' . _('Delete?') . '</th>
 			</tr>';
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		echo '<tr>
 				<td>' . $MyRow['stockid'] . '</td>
 				<td>' . $MyRow['loccode'] . '</td>

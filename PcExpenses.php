@@ -124,15 +124,15 @@ if (isset($_POST['submit'])) {
 			$msg = _('Expense ') . ' ' . $_POST['CodeExpense'] . ' ' . _('has been created');
 			$checkSql = "SELECT count(codeexpense)
 						FROM pcexpenses";
-			$result = DB_query($checkSql);
-			$row = DB_fetch_row($result);
+			$Result = DB_query($checkSql);
+			$row = DB_fetch_row($Result);
 
 		}
 	}
 
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 		prnMsg($msg, 'success');
 		echo '<br />';
 		unset($SelectedExpense);
@@ -151,9 +151,9 @@ if (isset($_POST['submit'])) {
 		   WHERE codeexpense='" . $SelectedExpense . "'";
 
 	$ErrMsg = _('The number of type of tabs using this expense code could not be retrieved');
-	$result = DB_query($SQL, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
-	$MyRow = DB_fetch_row($result);
+	$MyRow = DB_fetch_row($Result);
 	if ($MyRow[0] > 0) {
 		prnMsg(_('Cannot delete this petty cash expense because it is used in some tab types') . '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('tab types using this expense code'), 'error');
 
@@ -162,7 +162,7 @@ if (isset($_POST['submit'])) {
 		$SQL = "DELETE FROM pcexpenses
 				  WHERE codeexpense='" . $SelectedExpense . "'";
 		$ErrMsg = _('The expense type record could not be deleted because');
-		$result = DB_query($SQL, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 		prnMsg(_('Expense type') . ' ' . $SelectedExpense . ' ' . _('has been deleted'), 'success');
 		echo '<br />';
 		unset($SelectedExpense);
@@ -179,7 +179,7 @@ if (!isset($SelectedExpense)) {
 
 	$SQL = "SELECT *
 			FROM pcexpenses";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '<table class="selection">';
 	echo '<tr>
@@ -192,7 +192,7 @@ if (!isset($SelectedExpense)) {
 
 	$k = 0; //row colour counter
 
-	while ($MyRow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($Result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -250,8 +250,8 @@ if (!isset($_GET['delete'])) {
 				FROM pcexpenses
 				WHERE codeexpense='" . $SelectedExpense . "'";
 
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
 
 		$_POST['CodeExpense'] = $MyRow['codeexpense'];
 		$_POST['Description'] = $MyRow['description'];
@@ -291,14 +291,14 @@ if (!isset($_GET['delete'])) {
 			<td>' . _('Account Code') . ':</td>
 			<td><select required="required" minlength="1" name="GLAccount">';
 
-	DB_free_result($result);
+	DB_free_result($Result);
 	$SQL = "SELECT accountcode,
 				accountname
 			FROM chartmaster
 			ORDER BY accountcode";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	echo '<option value="">' . _('Not Yet Selected') . '</option>';
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['GLAccount']) and $MyRow['accountcode'] == $_POST['GLAccount']) {
 			echo '<option selected="selected" value="';
 		} else {
@@ -320,9 +320,9 @@ if (!isset($_GET['delete'])) {
 			FROM tags
 			ORDER BY tagref";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	echo '<option value="0">0 - ' . _('None') . '</option>';
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['Tag']) and $_POST['Tag'] == $MyRow['tagref']) {
 			echo '<option selected="selected" value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
 		} else {
@@ -333,7 +333,7 @@ if (!isset($_GET['delete'])) {
 	// End select tag
 
 	echo '</table>'; // close main table
-	DB_free_result($result);
+	DB_free_result($Result);
 
 	echo '<br />
 		<div class="centre">

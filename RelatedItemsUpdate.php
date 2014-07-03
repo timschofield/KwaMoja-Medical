@@ -27,12 +27,12 @@ echo '<div class="toplink">
 
 echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Search') . '" alt="" />' . $Title . '</p>';
 
-$result = DB_query("SELECT stockmaster.description
+$Result = DB_query("SELECT stockmaster.description
 					FROM stockmaster
 					WHERE stockmaster.stockid='" . $Item . "'");
-$MyRow = DB_fetch_row($result);
+$MyRow = DB_fetch_row($Result);
 
-if (DB_num_rows($result) == 0) {
+if (DB_num_rows($Result) == 0) {
 	prnMsg(_('The part code entered does not exist in the database') . ': ' . $Item . _('Only valid parts can have related items entered against them'), 'error');
 	$InputError = 1;
 }
@@ -54,13 +54,13 @@ if (isset($_POST['submit'])) {
 	//first off validate inputs sensible
 	// This gives some date in 1999?? $ZeroDate = Date($_SESSION['DefaultDateFormat'],Mktime(0,0,0,0,0,0));
 
-	$result_related = DB_query("SELECT stockmaster.description,
+	$Result_related = DB_query("SELECT stockmaster.description,
 										stockmaster.mbflag
 									FROM stockmaster
 								WHERE stockmaster.stockid='" . $_POST['Related'] . "'");
-	$MyRow_related = DB_fetch_row($result_related);
+	$MyRow_related = DB_fetch_row($Result_related);
 
-	if (DB_num_rows($result_related) == 0) {
+	if (DB_num_rows($Result_related) == 0) {
 		prnMsg(_('The part code entered as related item does not exist in the database') . ': ' . $_POST['Related'] . _('Only valid parts can be related items'), 'error');
 		$InputError = 1;
 	}
@@ -69,10 +69,10 @@ if (isset($_POST['submit'])) {
 				FROM relateditems
 			WHERE stockid='" . $Item . "'
 				AND related = '" . $_POST['Related'] . "'";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
 
-	if (DB_num_rows($result) != 0) {
+	if (DB_num_rows($Result) != 0) {
 		prnMsg(_('This related item has already been entered.'), 'warn');
 		$InputError = 1;
 	}
@@ -88,7 +88,7 @@ if (isset($_POST['submit'])) {
 							VALUES ('" . $Item . "',
 								'" . $_POST['Related'] . "')";
 		$ErrMsg = _('The new related item could not be added');
-		$result = DB_query($SQL, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 
 		prnMsg($_POST['Related'] . ' ' . _('is now related to') . ' ' . $Item, 'success');
 
@@ -97,16 +97,16 @@ if (isset($_POST['submit'])) {
 					FROM relateditems
 				WHERE stockid='" . $_POST['Related'] . "'
 					AND related = '" . $Item . "'";
-		$result_reverse = DB_query($SQL_reverse);
-		$MyRow_reverse = DB_fetch_row($result_reverse);
+		$Result_reverse = DB_query($SQL_reverse);
+		$MyRow_reverse = DB_fetch_row($Result_reverse);
 
-		if (DB_num_rows($result_reverse) == 0) {
+		if (DB_num_rows($Result_reverse) == 0) {
 			$SQL = "INSERT INTO relateditems (stockid,
 										related)
 								VALUES ('" . $_POST['Related'] . "',
 									'" . $Item . "')";
 			$ErrMsg = _('The new related item could not be added');
-			$result = DB_query($SQL, $ErrMsg);
+			$Result = DB_query($SQL, $ErrMsg);
 			prnMsg($Item . ' ' . _('is now related to') . ' ' . $_POST['Related'], 'success');
 		}
 	}
@@ -122,7 +122,7 @@ if (isset($_POST['submit'])) {
 			WHERE (stockid = '" . $Item . "' AND related ='" . $_GET['Related'] . "')
 			OR (stockid = '" . $_GET['Related'] . "' AND related ='" . $Item . "')";
 	$ErrMsg = _('Could not delete this relationshop');
-	$result = DB_query($SQL, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 	prnMsg(_('This relationship has been deleted'), 'success');
 
 }
@@ -135,9 +135,9 @@ $SQL = "SELECT stockmaster.stockid,
 		WHERE stockmaster.stockid = relateditems.related
 			AND relateditems.stockid='" . $Item . "'";
 
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 
-if (DB_num_rows($result) > 0) {
+if (DB_num_rows($Result) > 0) {
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 	echo '<table class="selection">
 			<tr>
@@ -155,7 +155,7 @@ if (DB_num_rows($result) > 0) {
 			</tr>';
 
 	$k = 0; //row colour counter
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;

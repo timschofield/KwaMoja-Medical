@@ -73,7 +73,7 @@ if (isset($_POST['submit'])) {
 	}
 
 	if ($InputError != 1) {
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 		//echo '<br />'.$SQL;
 
 		echo '<br />';
@@ -95,7 +95,7 @@ if (isset($_POST['submit'])) {
 	$SQL = "DELETE FROM custcontacts
 			WHERE contid='" . $Id . "'
 			AND debtorno='" . $DebtorNo . "'";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '<br />';
 	prnMsg(_('The contact record has been deleted'), 'success');
@@ -116,7 +116,7 @@ if (!isset($Id)) {
 			FROM custcontacts
 			WHERE debtorno='" . $DebtorNo . "'
 			ORDER BY contid";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	//echo '<br />'.$SQL;
 
 	echo '<table class="selection">';
@@ -130,7 +130,7 @@ if (!isset($Id)) {
 
 	$k = 0; //row colour counter
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($k == 1) {
 			echo '<tr class="OddTableRows">';
 			$k = 0;
@@ -172,8 +172,8 @@ if (!isset($_GET['delete'])) {
 					WHERE contid='" . $Id . "'
 						AND debtorno='" . $DebtorNo . "'";
 
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
 
 		$_POST['Con_ID'] = $MyRow['contid'];
 		$_POST['ContactName'] = $MyRow['contactname'];

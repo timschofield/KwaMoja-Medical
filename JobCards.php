@@ -19,8 +19,8 @@ include('includes/JobCards.inc');
 
 if (!isset($_POST['JobCPrint'])) {
 	$SQL = "SELECT name FROM debtorsmaster WHERE debtorno='" . $_GET['DebtorNo'] . "'";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 	$CustomerName = $MyRow['name'];
 	echo '<p class="page_title_text noPrint" >';
 	echo '<img src="' . $RootPath . '/css/' . $Theme . '/images/customer.png" title="' . _('Job Cards for Customer') . '" alt="" />' . ' ' . _('Job Cards for Customer') . ' : ' . $_SESSION['CustomerID'] . ' - ' . $CustomerName;
@@ -77,7 +77,7 @@ if (!isset($_POST['SaveUpdateJob'])) {
 											'" . $_POST['AddJobTask5'] . "',
 											'" . date('Y/m/d') . "'
 											)";
-			$result = DB_query($query, $ErrMsg);
+			$Result = DB_query($query, $ErrMsg);
 
 			echo '<div class="page_help_text noPrint">' . _('Record has been added.') . '<br />' . _('Please wait the browser will redirect you automatically ...') . '.</div><br />';
 
@@ -272,7 +272,7 @@ if (!isset($_POST['SaveUpdateJob'])) {
 	$DBValues = $DBValues . 'task5="' . $_POST["AddJobTask4"] . '",task6="' . $_POST["AddJobTask5"] . '"';
 
 	$query = "Update jobcards SET " . $DBValues . " where id=" . $_POST['JobCardNo'];
-	$result = DB_query($query, $ErrMsg);
+	$Result = DB_query($query, $ErrMsg);
 
 	echo '<div class="page_help_text noPrint">' . _('Record has been updated.') . '<br />' . _('Please wait the browser will redirect you automatically ...') . '.</div><br />';
 

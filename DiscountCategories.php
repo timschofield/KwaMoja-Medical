@@ -27,12 +27,12 @@ if (isset($_POST['submit']) and !isset($_POST['SubmitCategory'])) {
 
 	//first off validate inputs sensible
 
-	$result = DB_query("SELECT stockid
+	$Result = DB_query("SELECT stockid
 						FROM stockmaster
 						WHERE mbflag <>'K'
 						AND mbflag<>'D'
 						AND stockid='" . mb_strtoupper($_POST['StockID']) . "'");
-	if (DB_num_rows($result) == 0) {
+	if (DB_num_rows($Result) == 0) {
 		$InputError = 1;
 		prnMsg(_('The stock item entered must be set up as either a manufactured or purchased or assembly item'), 'warn');
 	}
@@ -42,7 +42,7 @@ if (isset($_POST['submit']) and !isset($_POST['SubmitCategory'])) {
 		$SQL = "UPDATE stockmaster SET discountcategory='" . $_POST['DiscountCategory'] . "'
 				WHERE stockid='" . mb_strtoupper($_POST['StockID']) . "'";
 
-		$result = DB_query($SQL, _('The discount category') . ' ' . $_POST['DiscountCategory'] . ' ' . _('record for') . ' ' . mb_strtoupper($_POST['StockID']) . ' ' . _('could not be updated because'));
+		$Result = DB_query($SQL, _('The discount category') . ' ' . $_POST['DiscountCategory'] . ' ' . _('record for') . ' ' . mb_strtoupper($_POST['StockID']) . ' ' . _('could not be updated because'));
 
 		prnMsg(_('The stock master has been updated with this discount category'), 'success');
 		unset($_POST['DiscountCategory']);
@@ -54,18 +54,18 @@ if (isset($_POST['submit']) and !isset($_POST['SubmitCategory'])) {
 	/*the link to delete a selected record was clicked instead of the submit button */
 
 	$SQL = "UPDATE stockmaster SET discountcategory='' WHERE stockid='" . trim(mb_strtoupper($_GET['StockID'])) . "'";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	prnMsg(_('The stock master record has been updated to no discount category'), 'success');
 	echo '<br />';
 } elseif (isset($_POST['SubmitCategory'])) {
 	$SQL = "SELECT stockid FROM stockmaster WHERE categoryid='".$_POST['stockcategory']."'";
 	$ErrMsg = _('Failed to retrieve stock category data');
-	$result = DB_query($SQL, $ErrMsg);
-	if (DB_num_rows($result) > 0){
+	$Result = DB_query($SQL, $ErrMsg);
+	if (DB_num_rows($Result) > 0){
 		$SQL = "UPDATE stockmaster
 				SET discountcategory='" . $_POST['DiscountCategory'] . "'
 				WHERE categoryid='" . $_POST['stockcategory'] . "'";
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 	} else {
 		prnMsg(_('There are no stock defined for this stock category, you must define stock for it first'), 'error');
 		include('includes/footer.inc');
@@ -79,13 +79,13 @@ if (isset($_POST['SelectChoice'])) {
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	$SQL = "SELECT DISTINCT discountcategory FROM stockmaster WHERE discountcategory <>''";
-	$result = DB_query($SQL);
-	if (DB_num_rows($result) > 0) {
+	$Result = DB_query($SQL);
+	if (DB_num_rows($Result) > 0) {
 		echo '<table class="selection"><tr><td>' . _('Discount Category Code') . ': </td>';
 
 		echo '<td><select minlength="0" name="DiscCat" onchange="ReloadForm(update.select)">';
 
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			if (isset($_POST['DiscCat']) and $MyRow['discountcategory'] == $_POST['DiscCat']) {
 				echo '<option selected="selected" value="' . $MyRow['discountcategory'] . '">' . $MyRow['discountcategory'] . '</option>';
 			} else {
@@ -162,10 +162,10 @@ if (isset($_POST['SelectChoice'])) {
 				$SQL = "SELECT stockid, description FROM stockmaster
 						WHERE stockid " . LIKE . " '%" . $_POST['PartID'] . "%'
 						AND description " . LIKE . " '%" . $_POST['PartDesc'] . "%'";
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 			if (!isset($_POST['stockID'])) {
 				echo _('Select a part code') . ':<br />';
-				while ($MyRow = DB_fetch_array($result)) {
+				while ($MyRow = DB_fetch_array($Result)) {
 					echo '<input type="submit" name="stockID" value="' . $MyRow['stockid'] . '" /><br />';
 				}
 			}
@@ -179,9 +179,9 @@ if (isset($_POST['SelectChoice'])) {
 		$SQL = "SELECT categoryid,
 				categorydescription
 				FROM stockcategory";
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 		echo '<td><select minlength="0" name="stockcategory">';
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 		}
 		echo '</select></td></tr></table>';
@@ -194,10 +194,10 @@ if (isset($_POST['SelectChoice'])) {
 		/*set DiscCat to something to show results for first cat defined */
 
 		$SQL = "SELECT DISTINCT discountcategory FROM stockmaster WHERE discountcategory <>''";
-		$result = DB_query($SQL);
-		if (DB_num_rows($result) > 0) {
-			DB_data_seek($result, 0);
-			$MyRow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		if (DB_num_rows($Result) > 0) {
+			DB_data_seek($Result, 0);
+			$MyRow = DB_fetch_array($Result);
 			$_POST['DiscCat'] = $MyRow['discountcategory'];
 		} else {
 			$_POST['DiscCat'] = '0';
@@ -213,7 +213,7 @@ if (isset($_POST['SelectChoice'])) {
 		WHERE discountcategory='" . DB_escape_string($_POST['DiscCat']) . "'
 		ORDER BY stockmaster.stockid";
 
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 
 		echo '<br />
 				<table class="selection">
@@ -224,7 +224,7 @@ if (isset($_POST['SelectChoice'])) {
 
 		$k = 0; //row colour counter
 
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;

@@ -86,8 +86,8 @@ if ($_SESSION['RestrictLocations'] == 0) {
 				AND type=16";
 }
 
-$result = DB_query($SQL);
-if (DB_num_rows($result) == 0) {
+$Result = DB_query($SQL);
+if (DB_num_rows($Result) == 0) {
 	$Title = _('Print Stock Transfer - Error');
 	include('includes/header.inc');
 	prnMsg(_('There was no transfer found at your location with number') . ': ' . $_GET['TransferNo'], 'error');
@@ -96,7 +96,7 @@ if (DB_num_rows($result) == 0) {
 	exit;
 }
 //get the first stock movement which will be the quantity taken from the initiating location
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	$StockID = $MyRow['stockid'];
 	$From = $MyRow['locationname'];
 	$Date = $MyRow['trandate'];

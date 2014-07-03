@@ -65,9 +65,9 @@ $SQL = "SELECT tagref,
 		FROM tags
 		ORDER BY tagref";
 
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 echo '<option value="0">0 - ' . _('All tags') . '</option>';
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	if (isset($_POST['tag']) and $_POST['tag'] == $MyRow['tagref']) {
 		echo '<option selected="selected" value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
 	} else {
@@ -118,8 +118,8 @@ if (isset($_POST['MakeCSV'])) {
 								FROM accountgroups
 								INNER JOIN chartmaster ON accountgroups.groupname=chartmaster.group_
 								WHERE chartmaster.accountcode='" . $SelectedAccount . "'";
-		$result = DB_query($SQL);
-		$AccountDetailRow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$AccountDetailRow = DB_fetch_row($Result);
 		$AccountName = $AccountDetailRow[1];
 		if ($AccountDetailRow[1] == 1) {
 			$PandLAccount = True;

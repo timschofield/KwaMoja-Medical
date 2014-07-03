@@ -52,9 +52,9 @@ if (!(isset($_POST['Search']))) {
 	$SQL = "SELECT typename,
 					typeid
 				FROM debtortype";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	echo '<option value="All">' . _('All') . '</option>';
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		echo '<option value="' . $MyRow['typeid'] . '">' . $MyRow['typename'] . '</option>';
 	}
 	echo '</select></td>
@@ -64,7 +64,7 @@ if (!(isset($_POST['Search']))) {
 	$SQL = "SELECT categoryid,categorydescription
 			FROM stockcategory
 			ORDER BY categorydescription";
-	$result1 = DB_query($SQL);
+	$Result1 = DB_query($SQL);
 	echo '<tr>
 			<td width="150">' . _('In Stock Category') . ' </td>
 			<td>:</td>
@@ -77,7 +77,7 @@ if (!(isset($_POST['Search']))) {
 	} else {
 		echo '<option value="All">' . _('All') . '</option>';
 	}
-	while ($MyRow1 = DB_fetch_array($result1)) {
+	while ($MyRow1 = DB_fetch_array($Result1)) {
 		if ($MyRow1['categoryid'] == $_POST['StockCat']) {
 			echo '<option selected="selected" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 		} else {
@@ -180,7 +180,7 @@ if (!(isset($_POST['Search']))) {
 										AND stockmoves.qty >0)
 				ORDER BY stockmaster.stockid";
 	}
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	echo '<p class="page_title_text noPrint"  align="center"><strong>' . _('No Sales Items') . '</strong></p>';
 	echo '<form onSubmit="return VerifyForm(this);" action="PDFNoSalesItems.php"  method="GET">
 		<table class="selection">';
@@ -198,7 +198,7 @@ if (!(isset($_POST['Search']))) {
 			<input type="hidden" value="' . filter_number_format($_POST['NumberOfDays']) . '" name="NumberOfDays" />
 			<input type="hidden" value="' . $_POST['Customers'] . '" name="Customers" />';
 	$k = 0; //row colour counter
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;

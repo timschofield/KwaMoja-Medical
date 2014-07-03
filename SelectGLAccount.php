@@ -8,7 +8,7 @@ $ViewTopic = 'GeneralLedger';
 $BookMark = 'GLAccountInquiry';
 include('includes/header.inc');
 
-unset($result);
+unset($Result);
 
 if (isset($_POST['Search'])) {
 
@@ -30,7 +30,7 @@ if (isset($_POST['Search'])) {
 				ORDER BY accountgroups.sequenceintb,
 					chartmaster.accountcode";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 }
 
@@ -72,7 +72,7 @@ echo '<div class="centre">
 		<input type="submit" name="reset" value="' . _('Reset') . '" />
 	</div></form>';
 
-if (isset($result) and DB_num_rows($result) > 0) {
+if (isset($Result) and DB_num_rows($Result) > 0) {
 
 	echo '<form onSubmit="return VerifyForm(this);" action="GLAccountInquiry.php" method="post" class="noPrint">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -85,7 +85,7 @@ if (isset($result) and DB_num_rows($result) > 0) {
 			<th class="SortableColumn">' . _('Account Type') . '</th>
 		</tr>';
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		echo '<tr>
 				<td>' . htmlspecialchars($MyRow['accountcode'],ENT_QUOTES,'UTF-8',false) . '</td>
 				<td>' . htmlspecialchars($MyRow['accountname'],ENT_QUOTES,'UTF-8',false) . '</td>

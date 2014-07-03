@@ -55,8 +55,8 @@ if (isset($_GET['ID'])) {
 					requiredbydate
 				FROM tenders
 				WHERE tenderid='" . $_GET['ID'] . "'";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 	if (isset($_SESSION['tender' . $identifier])) {
 		unset($_SESSION['tender' . $identifier]);
 	}
@@ -79,8 +79,8 @@ if (isset($_GET['ID'])) {
 				LEFT JOIN suppliers
 					ON tendersuppliers.supplierid=suppliers.supplierid
 				WHERE tenderid='" . $_GET['ID'] . "'";
-	$result = DB_query($SQL);
-	while ($MyRow = DB_fetch_array($result)) {
+	$Result = DB_query($SQL);
+	while ($MyRow = DB_fetch_array($Result)) {
 		$_SESSION['tender' . $identifier]->add_supplier_to_tender($MyRow['supplierid'], $MyRow['suppname'], $MyRow['email']);
 	}
 
@@ -94,8 +94,8 @@ if (isset($_GET['ID'])) {
 				LEFT JOIN stockmaster
 					ON tenderitems.stockid=stockmaster.stockid
 				WHERE tenderid='" . $_GET['ID'] . "'";
-	$result = DB_query($SQL);
-	while ($MyRow = DB_fetch_array($result)) {
+	$Result = DB_query($SQL);
+	while ($MyRow = DB_fetch_array($Result)) {
 		$_SESSION['tender' . $identifier]->add_item_to_tender($_SESSION['tender' . $identifier]->LinesOnTender, $MyRow['stockid'], $MyRow['quantity'], $MyRow['description'], $MyRow['units'], $MyRow['decimalplaces'], DateAdd(date($_SESSION['DefaultDateFormat']), 'm', 3));
 	}
 	$ShowTender = 1;
@@ -117,7 +117,7 @@ if (isset($_GET['Edit'])) {
 				FROM tenders
 				WHERE closed=0
 					AND requiredbydate >= CURRENT_DATE";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	echo '<table class="selection">';
 	echo '<tr>
 			<th class="SortableColumn">' . _('Tender ID') . '</th>
@@ -130,7 +130,7 @@ if (isset($_GET['Edit'])) {
 			<th>' . _('Address 6') . '</th>
 			<th>' . _('Telephone') . '</th>
 		</tr>';
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		echo '<tr>
 				<td>' . $MyRow['tenderid'] . '</td>
 				<td>' . $MyRow['location'] . '</td>
@@ -181,8 +181,8 @@ if (isset($_POST['SelectedSupplier'])) {
 					email
 				FROM suppliers
 				WHERE supplierid='" . $_POST['SelectedSupplier'] . "'";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 	if (mb_strlen($MyRow['email']) > 0) {
 		$_SESSION['tender' . $identifier]->add_supplier_to_tender($_POST['SelectedSupplier'], $MyRow['suppname'], $MyRow['email']);
 	} else {
@@ -202,8 +202,8 @@ if (isset($_POST['NewItem']) and !isset($_POST['Refresh'])) {
 							decimalplaces
 						FROM stockmaster
 						WHERE stockid='" . $StockID . "'";
-			$result = DB_query($SQL);
-			$MyRow = DB_fetch_array($result);
+			$Result = DB_query($SQL);
+			$MyRow = DB_fetch_array($Result);
 			$_SESSION['tender' . $identifier]->add_item_to_tender($_SESSION['tender' . $identifier]->LinesOnTender, $StockID, $Quantity, $MyRow['description'], $UOM, $MyRow['decimalplaces'], DateAdd(date($_SESSION['DefaultDateFormat']), 'm', 3));
 			unset($UOM);
 		}
@@ -510,9 +510,9 @@ if (isset($_POST['SearchSupplier']) or isset($_POST['Go']) or isset($_POST['Next
 				ORDER BY suppname
 				LIMIT " . ($_SESSION['DisplayRecordsMax'] * $_POST['PageOffset']) . ", " . ($_SESSION['DisplayRecordsMax']);
 
-	$result = DB_query($SQL);
-	if (DB_num_rows($result) == 1) {
-		$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	if (DB_num_rows($Result) == 1) {
+		$MyRow = DB_fetch_array($Result);
 		$SingleSupplierReturned = $MyRow['supplierid'];
 	}
 } //end of if search
@@ -524,7 +524,7 @@ if (isset($SingleSupplierReturned)) {
 }
 
 if (isset($_POST['SearchSupplier'])) {
-	$ListCount = DB_num_rows($result);
+	$ListCount = DB_num_rows($Result);
 	if ($ListCount == $_SESSION['DisplayRecordsMax']) {
 		$Next = 'Active';
 	} else {
@@ -562,7 +562,7 @@ if (isset($_POST['SearchSupplier'])) {
 	$k = 0; //row counter to determine background colour
 	$RowIndex = 0;
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -596,8 +596,8 @@ if (isset($_POST['Items'])) {
 				categorydescription
 			FROM stockcategory
 			ORDER BY categorydescription";
-	$result = DB_query($SQL);
-	if (DB_num_rows($result) == 0) {
+	$Result = DB_query($SQL);
+	if (DB_num_rows($Result) == 0) {
 		echo '<br /><p class="bad">' . _('Problem Report') . ':</p><br />' . _('There are no stock categories currently defined please use the link below to set them up');
 		echo '<br /><a href="' . $RootPath . '/StockCategories.php">' . _('Define Stock Categories') . '</a>';
 		exit;
@@ -613,7 +613,7 @@ if (isset($_POST['Items'])) {
 	} else {
 		echo '<option value="All">' . _('All') . '</option>';
 	}
-	while ($MyRow1 = DB_fetch_array($result)) {
+	while ($MyRow1 = DB_fetch_array($Result)) {
 		if ($MyRow1['categoryid'] == $_POST['StockCat']) {
 			echo '<option selected="selected" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 		} else {

@@ -87,15 +87,15 @@ if (isset($_POST['submit'])) {
 			$msg = _('Customer/sales/pricelist type') . ' ' . stripslashes($_POST['Sales_Type']) . ' ' . _('has been created');
 			$checkSql = "SELECT count(typeabbrev)
 						FROM salestypes";
-			$result = DB_query($checkSql);
-			$row = DB_fetch_row($result);
+			$Result = DB_query($checkSql);
+			$row = DB_fetch_row($Result);
 
 		}
 	}
 
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 
 		// Check the default price list exists
 		$checkSql = "SELECT count(*)
@@ -109,7 +109,7 @@ if (isset($_POST['submit'])) {
 			$SQL = "UPDATE config
 					SET confvalue='" . $_POST['TypeAbbrev'] . "'
 					WHERE confname='DefaultPriceList'";
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 			$_SESSION['DefaultPriceList'] = $_POST['TypeAbbrev'];
 		}
 
@@ -130,9 +130,9 @@ if (isset($_POST['submit'])) {
 		   WHERE debtortrans.tpe='" . $SelectedType . "'";
 
 	$ErrMsg = _('The number of transactions using this customer/sales/pricelist type could not be retrieved');
-	$result = DB_query($SQL, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
-	$MyRow = DB_fetch_row($result);
+	$MyRow = DB_fetch_row($Result);
 	if ($MyRow[0] > 0) {
 		prnMsg(_('Cannot delete this sale type because customer transactions have been created using this sales type') . '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('transactions using this sales type code'), 'error');
 
@@ -141,20 +141,20 @@ if (isset($_POST['submit'])) {
 		$SQL = "SELECT COUNT(*) FROM debtorsmaster WHERE salestype='" . $SelectedType . "'";
 
 		$ErrMsg = _('The number of transactions using this Sales Type record could not be retrieved because');
-		$result = DB_query($SQL, $ErrMsg);
-		$MyRow = DB_fetch_row($result);
+		$Result = DB_query($SQL, $ErrMsg);
+		$MyRow = DB_fetch_row($Result);
 		if ($MyRow[0] > 0) {
 			prnMsg(_('Cannot delete this sale type because customers are currently set up to use this sales type') . '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('customers with this sales type code'));
 		} else {
 
 			$SQL = "DELETE FROM salestypes WHERE typeabbrev='" . $SelectedType . "'";
 			$ErrMsg = _('The Sales Type record could not be deleted because');
-			$result = DB_query($SQL, $ErrMsg);
+			$Result = DB_query($SQL, $ErrMsg);
 			prnMsg(_('Sales type') . ' / ' . _('price list') . ' ' . stripslashes($SelectedType) . ' ' . _('has been deleted'), 'success');
 
 			$SQL = "DELETE FROM prices WHERE prices.typeabbrev='" . $SelectedType . "'";
 			$ErrMsg = _('The Sales Type prices could not be deleted because');
-			$result = DB_query($SQL, $ErrMsg);
+			$Result = DB_query($SQL, $ErrMsg);
 
 			prnMsg(' ...  ' . _('and any prices for this sales type / price list were also deleted'), 'success');
 			unset($SelectedType);
@@ -181,9 +181,9 @@ if (!isset($SelectedType)) {
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
 
 	$SQL = "SELECT * FROM salestypes";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
-	if (DB_num_rows($result) == 0) {
+	if (DB_num_rows($Result) == 0) {
 		echo '<div class="page_help_text">' . _('As this is the first time that the system has been used, you must first create a sales type.') .
 				'<br />' . _('Once you have filled in all the details, click on the button at the bottom of the screen') . '</div>';
 		$_SESSION['RestrictLocations'] = 0;
@@ -197,7 +197,7 @@ if (!isset($SelectedType)) {
 
 	$k = 0; //row colour counter
 
-	while ($MyRow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($Result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -236,13 +236,13 @@ if (!isset($_GET['delete'])) {
 				FROM salestypes
 				WHERE typeabbrev='" . $SelectedType . "'";
 
-		if (DB_num_rows($result) == 0) {
+		if (DB_num_rows($Result) == 0) {
 			echo '<div class="page_help_text">' . _('As this is the first time that the system has been used, you must first create a default price list.') .
 					'<br />' . _('Once you have filled in all the details, click on the button at the bottom of the screen') . '</div>';
 		}
 
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
 
 		$_POST['TypeAbbrev'] = $MyRow['typeabbrev'];
 		$_POST['Sales_Type'] = $MyRow['sales_type'];

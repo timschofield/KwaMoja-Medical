@@ -517,8 +517,8 @@ if (isset($_POST['AllocTrans'])) {
 			AND settled=0
 			ORDER BY id";
 
-	$result = DB_query($SQL);
-	if (DB_num_rows($result) == 0) {
+	$Result = DB_query($SQL);
+	if (DB_num_rows($Result) == 0) {
 		prnMsg(_('There are no outstanding payments or credits yet to be allocated for this supplier'), 'info');
 		include('includes/footer.inc');
 		exit;
@@ -538,7 +538,7 @@ if (isset($_POST['AllocTrans'])) {
 
 	$RowCounter = 0;
 	$k = 0; //row colour counter
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -588,7 +588,7 @@ if (isset($_POST['AllocTrans'])) {
 			AND settled=0
 			ORDER BY id";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '<table class="selection">
 			<tr>
@@ -605,7 +605,7 @@ if (isset($_POST['AllocTrans'])) {
 
 	$k = 0; //row colour counter
 	$RowCounter = 0;
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -628,7 +628,7 @@ if (isset($_POST['AllocTrans'])) {
 
 	echo '</table>';
 
-	if (DB_num_rows($result) == 0) {
+	if (DB_num_rows($Result) == 0) {
 		prnMsg(_('There are no allocations to be done'), 'info');
 	}
 

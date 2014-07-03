@@ -72,16 +72,16 @@ if (isset($_FILES['PriceListFile']) and $_FILES['PriceListFile']['name']) { //st
 
 		//first off check that the item actually exist
 		$SQL = "SELECT COUNT(stockid) FROM stockmaster WHERE stockid='" . $StockID . "'";
-		$result = DB_query($SQL);
-		$testrow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$testrow = DB_fetch_row($Result);
 		if ($testrow[0] == 0) {
 			$InputError = 1;
 			prnMsg(_('Stock item') . ' "' . $MyRow[0] . '" ' . _('does not exist'), 'error');
 		}
 		//Then check that the price list actually exists
 		$SQL = "SELECT COUNT(typeabbrev) FROM salestypes WHERE typeabbrev='" . $MyRow[1] . "'";
-		$result = DB_query($SQL);
-		$testrow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$testrow = DB_fetch_row($Result);
 		if ($testrow[0] == 0) {
 			$InputError = 1;
 			prnMsg(_('SalesType/Price List') . ' "' . $MyRow[1] . '" ' . _('does not exist'), 'error');
@@ -89,8 +89,8 @@ if (isset($_FILES['PriceListFile']) and $_FILES['PriceListFile']['name']) { //st
 
 		//Then check that the currency code actually exists
 		$SQL = "SELECT COUNT(currabrev) FROM currencies WHERE currabrev='" . $MyRow[2] . "'";
-		$result = DB_query($SQL);
-		$testrow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$testrow = DB_fetch_row($Result);
 		if ($testrow[0] == 0) {
 			$InputError = 1;
 			prnMsg(_('Currency') . ' "' . $MyRow[2] . '" ' . _('does not exist'), 'error');
@@ -106,7 +106,7 @@ if (isset($_FILES['PriceListFile']) and $_FILES['PriceListFile']['name']) { //st
 						WHERE stockid='" . $StockID . "'
 						AND enddate>'" . date('Y-m-d') . "'
 						AND typeabbrev='" . $MyRow[1] . "'";
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 
 			//Insert the price
 			$SQL = "INSERT INTO prices (stockid,
@@ -123,7 +123,7 @@ if (isset($_FILES['PriceListFile']) and $_FILES['PriceListFile']['name']) { //st
 
 			$ErrMsg = _('The price could not be added because');
 			$DbgMsg = _('The SQL that was used to add the price failed was');
-			$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 		}
 
 		if ($InputError == 1) { //this row failed so exit loop

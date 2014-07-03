@@ -45,8 +45,8 @@ if (isset($_POST['submit'])) {
 		$SQL = "SELECT count(*) FROM paymentmethods
 				WHERE paymentid <> '" . $SelectedPaymentID . "'
 				AND paymentname " . LIKE . " '" . $_POST['MethodName'] . "'";
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_row($Result);
 		if ($MyRow[0] > 0) {
 			$InputError = 1;
 			prnMsg(_('The payment method can not be renamed because another with the same name already exists.'), 'error');
@@ -55,9 +55,9 @@ if (isset($_POST['submit'])) {
 
 			$SQL = "SELECT paymentname FROM paymentmethods
 					WHERE paymentid = '" . $SelectedPaymentID . "'";
-			$result = DB_query($SQL);
-			if (DB_num_rows($result) != 0) {
-				$MyRow = DB_fetch_row($result);
+			$Result = DB_query($SQL);
+			if (DB_num_rows($Result) != 0) {
+				$MyRow = DB_fetch_row($Result);
 				$OldName = $MyRow[0];
 				$SQL = "UPDATE paymentmethods
 						SET paymentname='" . $_POST['MethodName'] . "',
@@ -78,8 +78,8 @@ if (isset($_POST['submit'])) {
 		/*SelectedPaymentID is null cos no item selected on first time round so must be adding a record*/
 		$SQL = "SELECT count(*) FROM paymentmethods
 				WHERE paymentname LIKE'" . $_POST['MethodName'] . "'";
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_row($Result);
 		if ($MyRow[0] > 0) {
 			$InputError = 1;
 			prnMsg(_('The payment method can not be created because another with the same name already exists.'), 'error');
@@ -100,7 +100,7 @@ if (isset($_POST['submit'])) {
 	}
 
 	if ($InputError != 1) {
-		$result = DB_query($SQL, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 		prnMsg($msg, 'success');
 		echo '<br />';
 	}
@@ -118,23 +118,23 @@ if (isset($_POST['submit'])) {
 	// Get the original name of the payment method the ID is just a secure way to find the payment method
 	$SQL = "SELECT paymentname FROM paymentmethods
 			WHERE paymentid = '" . $SelectedPaymentID . "'";
-	$result = DB_query($SQL);
-	if (DB_num_rows($result) == 0) {
+	$Result = DB_query($SQL);
+	if (DB_num_rows($Result) == 0) {
 		// This is probably the safest way there is
 		prnMsg(_('Cannot delete this payment method because it no longer exist'), 'warn');
 	} else {
-		$MyRow = DB_fetch_row($result);
+		$MyRow = DB_fetch_row($Result);
 		$OldMeasureName = $MyRow[0];
 		$SQL = "SELECT COUNT(*) FROM banktrans
 				WHERE banktranstype LIKE '" . DB_escape_string($OldMeasureName) . "'";
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_row($Result);
 		if ($MyRow[0] > 0) {
 			prnMsg(_('Cannot delete this payment method because bank transactions have been created using this payment method'), 'warn');
 			echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('bank transactions that refer to this payment method') . '</font>';
 		} else {
 			$SQL = "DELETE FROM paymentmethods WHERE paymentname " . LIKE . " '" . DB_escape_string($OldMeasureName) . "'";
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 			prnMsg($OldMeasureName . ' ' . _('payment method has been deleted') . '!', 'success');
 			echo '<br />';
 		} //end if not used
@@ -170,7 +170,7 @@ if (!isset($SelectedPaymentID)) {
 			ORDER BY paymentid";
 
 	$ErrMsg = _('Could not get payment methods because');
-	$result = DB_query($SQL, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
 	echo '<table class="selection">
 		<tr>
@@ -182,7 +182,7 @@ if (!isset($SelectedPaymentID)) {
 		</tr>';
 
 	$k = 0; //row colour counter
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -227,12 +227,12 @@ if (!isset($_GET['delete'])) {
 				FROM paymentmethods
 				WHERE paymentid='" . $SelectedPaymentID . "'";
 
-		$result = DB_query($SQL);
-		if (DB_num_rows($result) == 0) {
+		$Result = DB_query($SQL);
+		if (DB_num_rows($Result) == 0) {
 			prnMsg(_('Could not retrieve the requested payment method, please try again.'), 'warn');
 			unset($SelectedPaymentID);
 		} else {
-			$MyRow = DB_fetch_array($result);
+			$MyRow = DB_fetch_array($Result);
 
 			$_POST['MethodID'] = $MyRow['paymentid'];
 			$_POST['MethodName'] = $MyRow['paymentname'];

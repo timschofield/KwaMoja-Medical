@@ -38,9 +38,9 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 		FROM pctabs
 		WHERE ( authorizer='" . $_SESSION['UserID'] . "' OR usercode ='" . $_SESSION['UserID'] . "' OR assigner ='" . $_SESSION['UserID'] . "' )
 		ORDER BY tabcode";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['SelectedTabs']) and $MyRow['tabcode'] == $_POST['SelectedTabs']) {
 			echo '<option selected="selected" value="';
 		} else {
@@ -50,7 +50,7 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 
 	} //end while loop get type of tab
 
-	DB_free_result($result);
+	DB_free_result($Result);
 
 
 	echo '</select></td></tr>';

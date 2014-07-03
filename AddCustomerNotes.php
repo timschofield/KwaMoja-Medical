@@ -62,7 +62,7 @@ if (isset($_POST['submit'])) {
 	}
 
 	if ($InputError != 1) {
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 		//echo '<br />'.$SQL;
 
 		echo '<br />';
@@ -82,7 +82,7 @@ if (isset($_POST['submit'])) {
 	$SQL = "DELETE FROM custnotes
 			WHERE noteid='" . $Id . "'
 			AND debtorno='" . $DebtorNo . "'";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '<br />';
 	prnMsg(_('The contact note record has been deleted'), 'success');
@@ -107,7 +107,7 @@ if (!isset($Id)) {
 				FROM custnotes
 				WHERE debtorno='" . $DebtorNo . "'
 				ORDER BY date DESC";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '<table class="selection">
 		<tr>
@@ -119,7 +119,7 @@ if (!isset($Id)) {
 
 	$k = 0; //row colour counter
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($k == 1) {
 			echo '<tr class="OddTableRows">';
 			$k = 0;
@@ -163,9 +163,9 @@ if (!isset($_GET['delete'])) {
 					WHERE noteid='" . $Id . "'
 						AND debtorno='" . $DebtorNo . "'";
 
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 
-		$MyRow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($Result);
 
 		$_POST['Noteid'] = $MyRow['noteid'];
 		$_POST['Note'] = $MyRow['note'];

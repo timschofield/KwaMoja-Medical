@@ -59,7 +59,7 @@ if (isset($_POST['submit'])) {
 			WHERE debtorno = '" . $_SESSION['CustomerID'] . "'";
 
 		$ErrMsg = _('The customer EDI setup data could not be updated because');
-		$result = DB_query($SQL, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 		prnMsg(_('Customer EDI configuration updated'), 'success');
 	} else {
 		prnMsg(_('Customer EDI configuration failed'), 'error');
@@ -84,9 +84,9 @@ $SQL = "SELECT debtorno,
 	WHERE debtorno = '" . $_SESSION['CustomerID'] . "'";
 
 $ErrMsg = _('The customer EDI configuration details could not be retrieved because');
-$result = DB_query($SQL, $ErrMsg);
+$Result = DB_query($SQL, $ErrMsg);
 
-$MyRow = DB_fetch_array($result);
+$MyRow = DB_fetch_array($Result);
 
 echo '<tr><td>' . _('Customer Code') . ':</td>
 		<td>' . $_SESSION['CustomerID'] . '</td>

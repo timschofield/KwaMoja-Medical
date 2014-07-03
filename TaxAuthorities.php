@@ -43,7 +43,7 @@ if (isset($_POST['submit'])) {
 				WHERE taxid = '" . $SelectedTaxAuthID . "'";
 
 		$ErrMsg = _('The update of this tax authority failed because');
-		$result = DB_query($SQL, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 
 		$msg = _('The tax authority for record has been updated');
 
@@ -70,7 +70,7 @@ if (isset($_POST['submit'])) {
 				)";
 
 		$ErrMsg = _('The addition of this tax authority failed because');
-		$result = DB_query($SQL, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 
 		$msg = _('The new tax authority record has been added to the database');
 
@@ -109,14 +109,14 @@ if (isset($_POST['submit'])) {
 			FROM taxgrouptaxes
 		WHERE taxauthid='" . $SelectedTaxAuthID . "'";
 
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
 	if ($MyRow[0] > 0) {
 		prnmsg(_('Cannot delete this tax authority because there are tax groups defined that use it'), 'warn');
 	} else {
 		/*Cascade deletes in TaxAuthLevels */
-		$result = DB_query("DELETE FROM taxauthrates WHERE taxauthority= '" . $SelectedTaxAuthID . "'");
-		$result = DB_query("DELETE FROM taxauthorities WHERE taxid= '" . $SelectedTaxAuthID . "'");
+		$Result = DB_query("DELETE FROM taxauthrates WHERE taxauthority= '" . $SelectedTaxAuthID . "'");
+		$Result = DB_query("DELETE FROM taxauthorities WHERE taxid= '" . $SelectedTaxAuthID . "'");
 		prnMsg(_('The selected tax authority record has been deleted'), 'success');
 		unset($SelectedTaxAuthID);
 	} // end of related records testing
@@ -138,9 +138,9 @@ if (!isset($SelectedTaxAuthID)) {
 
 	$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The defined tax authorities could not be retrieved because');
 	$DbgMsg = _('The following SQL to retrieve the tax authorities was used');
-	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-	if (DB_num_rows($result) == 0) {
+	if (DB_num_rows($Result) == 0) {
 		echo '<div class="page_help_text">' . _('As this is the first time that the system has been used, you must first create a tax authority.') .
 				'<br />' . _('For help, click on the help icon in the top right') .
 				'<br />' . _('Once you have filled in all the details, click on the button at the bottom of the screen') . '</div>';
@@ -158,7 +158,7 @@ if (!isset($SelectedTaxAuthID)) {
 				<th>' . _('Bank Swift') . '</th>
 			</tr>';
 	$k = 0;
-	while ($MyRow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($Result)) {
 
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -214,8 +214,8 @@ if (isset($SelectedTaxAuthID)) {
 			FROM taxauthorities
 			WHERE taxid='" . $SelectedTaxAuthID . "'";
 
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 
 	$_POST['TaxGLCode'] = $MyRow['taxglcode'];
 	$_POST['PurchTaxGLCode'] = $MyRow['purchtaxglaccount'];
@@ -237,8 +237,8 @@ $SQL = "SELECT accountcode,
 		ON chartmaster.group_=accountgroups.groupname
 		WHERE accountgroups.pandl=0
 		ORDER BY accountcode";
-$result = DB_query($SQL);
-while ($MyRow = DB_fetch_array($result)) {
+$Result = DB_query($SQL);
+while ($MyRow = DB_fetch_array($Result)) {
 	$GLAccounts[$MyRow['accountcode']] =$MyRow['accountname'];
 }
 

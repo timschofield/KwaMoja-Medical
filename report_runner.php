@@ -102,24 +102,24 @@ if ($Counter > 0) {
 	$mail->addAttachment($attachment, $reportname, 'application/pdf');
 	if ($_SESSION['SmtpSetting'] == 0) {
 		$mail->setFrom("");
-		$result = $mail->send($Recipients);
+		$Result = $mail->send($Recipients);
 	} else {
-		$result = SendmailBySmtp($mail, $Recipients);
+		$Result = SendmailBySmtp($mail, $Recipients);
 	}
 
 } else {
 	$mail->setText("Error running automated sales report number $ReportID");
 	if ($_SESSION['SmtpSetting'] == 0) {
 		$mail->setFrom("Do_not_reply_" . $_SESSION['CompanyRecord']['coyname'] . "<" . $_SESSION['CompanyRecord']['email'] . ">");
-		$result = $mail->send($Recipients);
+		$Result = $mail->send($Recipients);
 	} else {
-		$result = SendmailBySmtp($mail, $Recipients);
+		$Result = SendmailBySmtp($mail, $Recipients);
 	}
 	if ($_SESSION['SmtpSetting'] == 0) {
 		$mail->setFrom("Do_not_reply_" . $_SESSION['CompanyRecord']['coyname'] . "<" . $_SESSION['CompanyRecord']['email'] . ">");
-		$result = $mail->send($Recipients);
+		$Result = $mail->send($Recipients);
 	} else {
-		$result = SendmailBySmtp($mail, $Recipients);
+		$Result = SendmailBySmtp($mail, $Recipients);
 	}
 }
 

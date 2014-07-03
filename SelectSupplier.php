@@ -19,8 +19,8 @@ if (isset($_GET['SupplierID'])) {
 if ($_SESSION['geocode_integration'] == 1 and isset($_SESSION['SupplierID'])) {
 	$SQL = "SELECT * FROM geocode_param WHERE 1";
 	$ErrMsg = _('An error occurred in retrieving the information');
-	$result = DB_query($SQL, $ErrMsg);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL, $ErrMsg);
+	$MyRow = DB_fetch_array($Result);
 	$SQL = "SELECT suppliers.supplierid,
 					suppliers.lat,
 					suppliers.lng
@@ -28,8 +28,8 @@ if ($_SESSION['geocode_integration'] == 1 and isset($_SESSION['SupplierID'])) {
 				WHERE suppliers.supplierid = '" . $_SESSION['SupplierID'] . "'
 				ORDER BY suppliers.supplierid";
 	$ErrMsg = _('An error occurred in retrieving the information');
-	$result2 = DB_query($SQL, $ErrMsg);
-	$MyRow2 = DB_fetch_array($result2);
+	$Result2 = DB_query($SQL, $ErrMsg);
+	$MyRow2 = DB_fetch_array($Result2);
 	$lat = $MyRow2['lat'];
 	$lng = $MyRow2['lng'];
 	$api_key = $MyRow['geocode_key'];
@@ -97,9 +97,9 @@ if (isset($_POST['Search']) OR isset($_POST['Go']) OR isset($_POST['Next']) OR i
 				WHERE suppname " . LIKE . " '" . $SearchString . "'
 					AND supplierid " . LIKE . " '%" . $_POST['SupplierCode'] . "%'
 				ORDER BY suppname";
-	$result = DB_query($SQL);
-	if (DB_num_rows($result) == 1) {
-		$MyRow = DB_fetch_row($result);
+	$Result = DB_query($SQL);
+	if (DB_num_rows($Result) == 1) {
+		$MyRow = DB_fetch_row($Result);
 		$SingleSupplierReturned = $MyRow[0];
 	}
 	if (isset($SingleSupplierReturned)) {
@@ -201,9 +201,9 @@ if (isset($_POST['SupplierCode'])) {
 echo '</td></tr>
 		</table>
 		<div class="centre"><input type="submit" name="Search" value="' . _('Search Now') . '" /></div>';
-//if (isset($result) and !isset($SingleSupplierReturned)) {
+//if (isset($Result) and !isset($SingleSupplierReturned)) {
 if (isset($_POST['Search'])) {
-	$ListCount = DB_num_rows($result);
+	$ListCount = DB_num_rows($Result);
 	$ListPageMax = ceil($ListCount / $_SESSION['DisplayRecordsMax']);
 	if (isset($_POST['Next'])) {
 		if ($_POST['PageOffset'] < $ListPageMax) {
@@ -236,8 +236,8 @@ if (isset($_POST['Search'])) {
 	echo '<input type="hidden" name="Search" value="' . _('Search Now') . '" />';
 	$k = 0; //row counter to determine background colour
 	$RowIndex = 0;
-	if (DB_num_rows($result) <> 0) {
-		DB_data_seek($result, ($_POST['PageOffset'] - 1) * $_SESSION['DisplayRecordsMax']);
+	if (DB_num_rows($Result) <> 0) {
+		DB_data_seek($Result, ($_POST['PageOffset'] - 1) * $_SESSION['DisplayRecordsMax']);
 		echo '<table cellpadding="2">
 				<tr>
 					<th class="SortableColumn">' . _('Code') . '</th>
@@ -251,7 +251,7 @@ if (isset($_POST['Search'])) {
 					<th>' . _('Email') . '</th>
 					<th>' . _('URL') . '</th>
 				</tr>';
-		while (($MyRow = DB_fetch_array($result)) and ($RowIndex <> $_SESSION['DisplayRecordsMax'])) {
+		while (($MyRow = DB_fetch_array($Result)) and ($RowIndex <> $_SESSION['DisplayRecordsMax'])) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;

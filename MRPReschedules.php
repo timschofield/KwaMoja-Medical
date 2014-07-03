@@ -6,8 +6,8 @@
 
 include('includes/session.inc');
 
-$result = DB_show_tables('mrprequirements');
-if (DB_num_rows($result) == 0) {
+$Result = DB_show_tables('mrprequirements');
+if (DB_num_rows($Result) == 0) {
 	$Title = 'MRP error';
 	include('includes/header.inc');
 	echo '<br />';
@@ -36,7 +36,7 @@ if (isset($_POST['PrintPDF'])) {
 			  WHERE mrpsupplies.part = stockmaster.stockid AND duedate <> mrpdate
 				 $selecttype
 			  ORDER BY mrpsupplies.part";
-	$result = DB_query($SQL, '', '', false, true);
+	$Result = DB_query($SQL, '', '', false, true);
 
 	if (DB_error_no() != 0) {
 		$Title = _('MRP Reschedules') . ' - ' . _('Problem Report');
@@ -50,7 +50,7 @@ if (isset($_POST['PrintPDF'])) {
 		exit;
 	}
 
-	if (DB_num_rows($result) == 0) {
+	if (DB_num_rows($Result) == 0) {
 		$Title = _('MRP Reschedules') . ' - ' . _('Problem Report');
 		include('includes/header.inc');
 		prnMsg(_('No MRP reschedule retrieved'), 'warn');
@@ -66,7 +66,7 @@ if (isset($_POST['PrintPDF'])) {
 	$Tot_Val = 0;
 	$fill = false;
 	$pdf->SetFillColor(224, 235, 255);
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 
 		$YPos -= $line_height;
 		$FontSize = 8;

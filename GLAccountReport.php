@@ -34,12 +34,12 @@ if (isset($_POST['RunReport'])) {
 
 	foreach ($_POST['Account'] as $SelectedAccount) {
 		/*Is the account a balance sheet or a profit and loss account */
-		$result = DB_query("SELECT chartmaster.accountname,
+		$Result = DB_query("SELECT chartmaster.accountname,
 								accountgroups.pandl
 							FROM accountgroups
 							INNER JOIN chartmaster ON accountgroups.groupname=chartmaster.group_
 							WHERE chartmaster.accountcode='" . $SelectedAccount . "'");
-		$AccountDetailRow = DB_fetch_row($result);
+		$AccountDetailRow = DB_fetch_row($Result);
 		$AccountName = $AccountDetailRow[0];
 		if ($AccountDetailRow[1] == 1) {
 			$PandLAccount = True;
@@ -276,9 +276,9 @@ else {
 				FROM tags
 				ORDER BY tagref";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	echo '<option value="0">0 - ' . _('All tags') . '</option>';
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['tag']) and $_POST['tag'] == $MyRow['tagref']) {
 			echo '<option selected="selected" value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
 		} else {

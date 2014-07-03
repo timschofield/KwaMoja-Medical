@@ -56,7 +56,7 @@ $mail->setText(_('Backup file attached'));
 $mail->addAttachment($attachment, $BackupFile, 'application/gz');
 $mail->setSubject(_('Database Backup'));
 $mail->setFrom($_SESSION['CompanyRecord']['coyname'] . '<' . $_SESSION['CompanyRecord']['email'] . '>');
-$result = $mail->send(array('"' . $_SESSION['UsersRealName'] . '" <' . $_SESSION['UserEmail'] . '>'));
+$Result = $mail->send(array('"' . $_SESSION['UsersRealName'] . '" <' . $_SESSION['UserEmail'] . '>'));
 
 prnMsg(_('A backup of the database has been taken and emailed to you'), 'info');
 unlink($BackupFile); // would be a security issue to leave it there for all to download/see

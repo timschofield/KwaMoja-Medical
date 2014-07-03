@@ -15,13 +15,13 @@ $SQL = "SELECT SUM(ovamount+ovgst-alloc) AS currencybalance,
 		WHERE (ovamount+ovgst-alloc)<>0
 		GROUP BY currcode";
 
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 
 $LocalTotal = 0;
 
 echo '<table>';
 
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 
 	echo '<tr>
 			<td>' . _('Total Supplier Balances in') . ' </td>

@@ -22,8 +22,8 @@ if (isset($_POST['PrintPDF'])) {
 					categorydescription
 				FROM stockcategory
 				WHERE categoryid='" . $_POST['StockCat'] . "'";
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_row($Result);
 		$CategoryDescription = $MyRow[1];
 	}
 	$WhereLocation = " ";
@@ -49,7 +49,7 @@ if (isset($_POST['PrintPDF'])) {
 				AND locstock.reorderlevel > locstock.quantity
 				AND (stockmaster.mbflag='B' OR stockmaster.mbflag='M') " . $WhereCategory . " ORDER BY locstock.loccode,locstock.stockid";
 
-	$result = DB_query($SQL, '', '', false, true);
+	$Result = DB_query($SQL, '', '', false, true);
 
 	if (DB_error_no() != 0) {
 		$Title = _('Reorder Level') . ' - ' . _('Problem Report');
@@ -69,7 +69,7 @@ if (isset($_POST['PrintPDF'])) {
 
 	$ListCount = 0; // UldisN
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		$YPos -= (2 * $line_height);
 
 		$ListCount++;
@@ -209,8 +209,8 @@ if (isset($_POST['PrintPDF'])) {
 						ON locations.loccode=www_users.defaultlocation
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
-	$resultStkLocs = DB_query($SQL);
-	while ($MyRow = DB_fetch_array($resultStkLocs)) {
+	$ResultStkLocs = DB_query($SQL);
+	while ($MyRow = DB_fetch_array($ResultStkLocs)) {
 		if (isset($_POST['StockLocation']) and $MyRow['loccode'] == $_POST['StockLocation']) {
 			echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 		} else {
@@ -220,8 +220,8 @@ if (isset($_POST['PrintPDF'])) {
 	echo '</select></td></tr>';
 
 	$SQL = "SELECT categoryid, categorydescription FROM stockcategory WHERE stocktype<>'A' ORDER BY categorydescription";
-	$result1 = DB_query($SQL);
-	if (DB_num_rows($result1) == 0) {
+	$Result1 = DB_query($SQL);
+	if (DB_num_rows($Result1) == 0) {
 		echo '</td></tr>
 			</table>
 			<br />';
@@ -242,7 +242,7 @@ if (isset($_POST['PrintPDF'])) {
 	} else {
 		echo '<option value="All">' . _('All') . '</option>';
 	}
-	while ($MyRow1 = DB_fetch_array($result1)) {
+	while ($MyRow1 = DB_fetch_array($Result1)) {
 		if ($MyRow1['categoryid'] == $_POST['StockCat']) {
 			echo '<option selected="selected" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 		} else {

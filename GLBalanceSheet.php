@@ -30,8 +30,8 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 
 	$periodno = GetPeriod(Date($_SESSION['DefaultDateFormat']));
 	$SQL = "SELECT lastdate_in_period FROM periods WHERE periodno='" . $periodno . "'";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 	$lastdate_in_period = $MyRow[0];
 
 	$SQL = "SELECT periodno, lastdate_in_period FROM periods ORDER BY periodno DESC";

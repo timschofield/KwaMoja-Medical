@@ -29,7 +29,7 @@ if (isset($_POST['Submit'])) {
 		$NewStockID = $_POST['ExStockID'];
 	}
 	if ($InputError == 0) {
-		$result = DB_Txn_Begin();
+		$Result = DB_Txn_Begin();
 
 		if ($NewOrExisting == 'N') {
 			/* duplicate rows into stockmaster */
@@ -85,7 +85,7 @@ if (isset($_POST['Submit'])) {
 									netweight
 							FROM stockmaster
 							WHERE stockid='" . $StockID . "';";
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 			/* duplicate rows into stockcosts */
 			$SQL = "INSERT INTO stockcosts VALUES ( SELECT  '" . $NewStockID . "',
 															stockcosts.materialcost,
@@ -96,14 +96,14 @@ if (isset($_POST['Submit'])) {
 														FROM stockcosts
 														WHERE  stockcosts.stockid='" . $StockID . "'
 															AND stockcosts.succeeded=0)";
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 
 		} else {
 
 			$SQL = "UPDATE stockcosts SET succeded=1
 									WHERE stockid='" . $NewStockID . "'
 										AND succeeded=0";
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 
 			$SQL = "INSERT INTO stockcosts VALUES ( SELECT  '" . $NewStockID . "',
 															stockcosts.materialcost,
@@ -114,7 +114,7 @@ if (isset($_POST['Submit'])) {
 														FROM stockcosts
 														WHERE  stockcosts.stockid='" . $StockID . "'
 															AND stockcosts.succeeded=0)";
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 		}
 
 		$SQL = "INSERT INTO bom
@@ -129,7 +129,7 @@ if (isset($_POST['Submit'])) {
 							autoissue
 					FROM bom
 					WHERE parent='" . $StockID . "';";
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 
 		if ($NewOrExisting == 'N') {
 			$SQL = "INSERT INTO locstock (
@@ -145,10 +145,10 @@ if (isset($_POST['Submit'])) {
 				FROM locstock
 				WHERE stockid='" . $StockID . "'";
 
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 		}
 
-		$result = DB_Txn_Commit();
+		$Result = DB_Txn_Commit();
 
 		UpdateCost($NewStockID);
 
@@ -167,13 +167,13 @@ if (isset($_POST['Submit'])) {
 				FROM stockmaster
 				WHERE stockid IN (SELECT DISTINCT parent FROM bom)
 				AND  mbflag IN ('M', 'A', 'K', 'G');";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '<table class="selection">
 			<tr>
 				<td>' . _('From Stock ID') . '</td>';
 	echo '<td><select minlength="0" name="StockID">';
-	while ($MyRow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($Result)) {
 		if (isset($_GET['Item']) and $MyRow[0] == $_GET['Item']) {
 			echo '<option selected="selected" value="' . $MyRow[0] . '">' . $MyRow[0] . ' -- ' . $MyRow[1] . '</option>';
 		} else {
@@ -191,13 +191,13 @@ if (isset($_POST['Submit'])) {
 				FROM stockmaster
 				WHERE stockid NOT IN (SELECT DISTINCT parent FROM bom)
 				AND mbflag IN ('M', 'A', 'K', 'G');";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
-	if (DB_num_rows($result) > 0) {
+	if (DB_num_rows($Result) > 0) {
 		echo '<tr>
 				<td><input type="radio" name="NewOrExisting" value="E" />' . _('To Existing Stock ID') . '</td><td>';
 		echo '<select minlength="0" name="ExStockID">';
-		while ($MyRow = DB_fetch_row($result)) {
+		while ($MyRow = DB_fetch_row($Result)) {
 			echo '<option value="' . $MyRow[0] . '">' . $MyRow[0] . ' -- ' . $MyRow[1] . '</option>';
 		}
 		echo '</select></td></tr>';

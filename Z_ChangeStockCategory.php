@@ -11,9 +11,9 @@ if (isset($_POST['ProcessStockChange'])) {
 	$_POST['NewStockCategory'] = mb_strtoupper($_POST['NewStockCategory']);
 
 	/*First check the stock code exists */
-	$result = DB_query("SELECT categoryid FROM stockcategory WHERE categoryid='" . $_POST['OldStockCategory'] . "'");
+	$Result = DB_query("SELECT categoryid FROM stockcategory WHERE categoryid='" . $_POST['OldStockCategory'] . "'");
 
-	if (DB_num_rows($result) == 0) {
+	if (DB_num_rows($Result) == 0) {
 		prnMsg(_('The stock Category') . ': ' . $_POST['OldStockCategory'] . ' ' . _('does not currently exist as a stock category in the system'), 'error');
 		include ('includes/footer.inc');
 		exit;
@@ -32,15 +32,15 @@ if (isset($_POST['ProcessStockChange'])) {
 	}
 
 	/*Now check that the new code doesn't already exist */
-	$result = DB_query("SELECT categoryid FROM stockcategory WHERE categoryid='" . $_POST['NewStockCategory'] . "'");
+	$Result = DB_query("SELECT categoryid FROM stockcategory WHERE categoryid='" . $_POST['NewStockCategory'] . "'");
 
-	if (DB_num_rows($result) != 0) {
+	if (DB_num_rows($Result) != 0) {
 		echo '<br /><br />';
 		prnMsg(_('The replacement stock category') . ': ' . $_POST['NewStockCategory'] . ' ' . _('already exists as a stock category in the system') . ' - ' . _('a unique stock category must be entered for the new stock category'), 'error');
 		include ('includes/footer.inc');
 		exit;
 	}
-	$result = DB_Txn_Begin();
+	$Result = DB_Txn_Begin();
 	echo '<br />' . _('Adding the new stock Category record');
 	$SQL = "INSERT INTO stockcategory (categoryid,
 						categorydescription,
@@ -66,37 +66,37 @@ if (isset($_POST['ProcessStockChange'])) {
 						WHERE categoryid='" . $_POST['OldStockCategory'] . "'";
 	$DbgMsg = _('The SQL statement that failed was');
 	$ErrMsg = _('The SQL to insert the new stock category record failed');
-	$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 	echo ' ... ' . _('completed');
 	echo '<br />' . _('Changing stock properties');
 	$SQL = "UPDATE stockcatproperties SET categoryid='" . $_POST['NewStockCategory'] . "' WHERE categoryid='" . $_POST['OldStockCategory'] . "'";
 	$ErrMsg = _('The SQL to update stock properties records failed');
-	$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 	echo ' ... ' . _('completed');
 	echo '<br />' . _('Changing stock master records');
 	$SQL = "UPDATE stockmaster SET categoryid='" . $_POST['NewStockCategory'] . "' WHERE categoryid='" . $_POST['OldStockCategory'] . "'";
 	$ErrMsg = _('The SQL to update stock master transaction records failed');
-	$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 	echo ' ... ' . _('completed');
 	echo '<br />' . _('Changing sales analysis records');
 	$SQL = "UPDATE salesanalysis SET stkcategory='" . $_POST['NewStockCategory'] . "' WHERE stkcategory='" . $_POST['OldStockCategory'] . "'";
 	$ErrMsg = _('The SQL to update Sales Analysis records failed');
-	$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 	echo ' ... ' . _('completed');
 
 	echo '<br />' . _('Changing internal stock category roles records');
 	$SQL = "UPDATE internalstockcatrole SET categoryid='" . $_POST['NewStockCategory'] . "' WHERE categoryid='" . $_POST['OldStockCategory'] . "'";
 	$ErrMsg = _('The SQL to update internal stock category role records failed');
-	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 	echo ' ... ' . _('completed');
 
 	$SQL = 'SET FOREIGN_KEY_CHECKS=1';
-	$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
-	$result = DB_Txn_Commit();
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+	$Result = DB_Txn_Commit();
 	echo '<br />' . _('Deleting the old stock category record');
 	$SQL = "DELETE FROM stockcategory WHERE categoryid='" . $_POST['OldStockCategory'] . "'";
 	$ErrMsg = _('The SQL to delete the old stock category record failed');
-	$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 	echo ' ... ' . _('completed');
 	echo '<p>' . _('Stock Category') . ': ' . $_POST['OldStockCategory'] . ' ' . _('was successfully changed to') . ' : ' . $_POST['NewStockCategory'];
 }

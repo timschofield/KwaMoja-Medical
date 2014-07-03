@@ -15,13 +15,13 @@ echo '<div class="toplink"><a href="' . $RootPath . '/SelectProduct.php">' . _('
 		<img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '
 	</p>';
 if (isset($StockID)) {
-	$result = DB_query("SELECT description,
+	$Result = DB_query("SELECT description,
 								units,
 								mbflag
 						FROM stockmaster
 						WHERE stockid='" . $StockID . "'");
-	$MyRow = DB_fetch_row($result);
-	if (DB_num_rows($result) == 0) {
+	$MyRow = DB_fetch_row($Result);
+	if (DB_num_rows($Result) == 0) {
 		prnMsg(_('The item code entered') . ' - ' . $StockID . ' ' . _('is not set up as an item in the system') . '. ' . _('Re-enter a valid item code or select from the Select Item link above'), 'error');
 		include('includes/footer.inc');
 		exit;
@@ -56,8 +56,8 @@ if (isset($StockID)) {
 			AND bom.effectiveto >=CURRENT_DATE";
 
 	$ErrMsg = _('The parents for the selected part could not be retrieved because');
-	$result = DB_query($SQL, $ErrMsg);
-	if (DB_num_rows($result) == 0) {
+	$Result = DB_query($SQL, $ErrMsg);
+	if (DB_num_rows($Result) == 0) {
 		prnMsg(_('The selected item') . ' ' . $StockID . ' ' . _('is not used as a component of any other parts'), 'error');
 	} else {
 
@@ -71,7 +71,7 @@ if (isset($StockID)) {
 					<th>' . _('Effective To') . '</th>
 				</tr>';
 		$k = 0;
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';

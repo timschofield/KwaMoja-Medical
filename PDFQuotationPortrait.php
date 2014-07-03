@@ -62,10 +62,10 @@ $SQL = "SELECT salesorders.customerref,
 			WHERE salesorders.quotation=1
 			AND salesorders.orderno='" . $_GET['QuotationNo'] . "'";
 
-$result = DB_query($SQL, $ErrMsg);
+$Result = DB_query($SQL, $ErrMsg);
 
 //if there are no rows, there's a problem.
-if (DB_num_rows($result) == 0) {
+if (DB_num_rows($Result) == 0) {
 	$Title = _('Print Quotation Error');
 	include('includes/header.inc');
 	echo '<div class="centre">
@@ -89,9 +89,9 @@ if (DB_num_rows($result) == 0) {
 			<br />';
 	include('includes/footer.inc');
 	exit;
-} elseif (DB_num_rows($result) == 1) {
+} elseif (DB_num_rows($Result) == 1) {
 	/*There is only one order header returned - thats good! */
-	$MyRow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($Result);
 }
 
 /*retrieve the order details from the database to print */
@@ -124,11 +124,11 @@ $SQL = "SELECT salesorderdetails.stkcode,
 		ON salesorderdetails.stkcode=stockmaster.stockid
 	WHERE salesorderdetails.orderno='" . $_GET['QuotationNo'] . "'";
 
-$result = DB_query($SQL, $ErrMsg);
+$Result = DB_query($SQL, $ErrMsg);
 
 $ListCount = 0;
 
-if (DB_num_rows($result) > 0) {
+if (DB_num_rows($Result) > 0) {
 	/*Yes there are line items to start the ball rolling with a page header */
 	include('includes/PDFQuotationPortraitPageHeader.inc');
 
@@ -136,7 +136,7 @@ if (DB_num_rows($result) > 0) {
 	$QuotationTotalEx = 0;
 	$TaxTotal = 0;
 
-	while ($MyRow2 = DB_fetch_array($result)) {
+	while ($MyRow2 = DB_fetch_array($Result)) {
 
 		$ListCount++;
 
@@ -159,8 +159,8 @@ if (DB_num_rows($result) > 0) {
 				FROM taxgrouptaxes INNER JOIN custbranch
 				ON taxgrouptaxes.taxgroupid=custbranch.taxgroupid
 				WHERE custbranch.branchcode='" . $Branch . "'";
-		$result3 = DB_query($SQL3, $ErrMsg);
-		while ($MyRow3 = DB_fetch_array($result3)) {
+		$Result3 = DB_query($SQL3, $ErrMsg);
+		while ($MyRow3 = DB_fetch_array($Result3)) {
 			$TaxAuth = $MyRow3['taxauthid'];
 		}
 
@@ -168,8 +168,8 @@ if (DB_num_rows($result) > 0) {
 				WHERE dispatchtaxprovince='" . $TaxProv . "'
 				AND taxcatid='" . $TaxCat . "'
 				AND taxauthority='" . $TaxAuth . "'";
-		$result4 = DB_query($SQL4, $ErrMsg);
-		while ($MyRow4 = DB_fetch_array($result4)) {
+		$Result4 = DB_query($SQL4, $ErrMsg);
+		while ($MyRow4 = DB_fetch_array($Result4)) {
 			$TaxClass = 100 * $MyRow4['taxrate'];
 		}
 

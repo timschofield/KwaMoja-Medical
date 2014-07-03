@@ -43,8 +43,8 @@ if (isset($StockID) AND !isset($_POST['UpdateCategories'])) {
 			WHERE stockid='" . $StockID . "'
 			GROUP BY stockid";
 
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
 	if ($MyRow[0] == 0) {
 		$New = 1;
 	} else {
@@ -65,7 +65,7 @@ echo '<div class="toplink">
 
 if (isset($_FILES['ItemPicture']) and $_FILES['ItemPicture']['name'] != '') {
 
-	$result = $_FILES['ItemPicture']['error'];
+	$Result = $_FILES['ItemPicture']['error'];
 	$UploadTheFile = 'Yes'; //Assume all is well to start off with
 	$filename = $_SESSION['part_pics_dir'] . '/' . $StockID . '.jpg';
 
@@ -84,16 +84,16 @@ if (isset($_FILES['ItemPicture']) and $_FILES['ItemPicture']['name'] != '') {
 		$UploadTheFile ='No';
 	} elseif (file_exists($filename)) {
 		prnMsg(_('Attempting to overwrite an existing item image'), 'warn');
-		$result = unlink($filename);
-		if (!$result) {
+		$Result = unlink($filename);
+		if (!$Result) {
 			prnMsg(_('The existing image could not be removed'), 'error');
 			$UploadTheFile = 'No';
 		}
 	}
 
 	if ($UploadTheFile == 'Yes') {
-		$result = move_uploaded_file($_FILES['ItemPicture']['tmp_name'], $filename);
-		$message = ($result) ? _('File url') . '<a href="' . $filename . '">' . $filename . '</a>' : _('Something is wrong with uploading a file');
+		$Result = move_uploaded_file($_FILES['ItemPicture']['tmp_name'], $filename);
+		$message = ($Result) ? _('File url') . '<a href="' . $filename . '">' . $filename . '</a>' : _('Something is wrong with uploading a file');
 	}
 }
 
@@ -281,16 +281,16 @@ if (isset($_POST['submit'])) {
 					FROM locstock
 					WHERE stockid='" . $StockID . "'
 					GROUP BY stockid";
-			$result = DB_query($SQL);
-			$StockQtyRow = DB_fetch_row($result);
+			$Result = DB_query($SQL);
+			$StockQtyRow = DB_fetch_row($Result);
 
 			/*Now check the GL account of the new category to see if it is different to the old stock gl account */
 
-			$result = DB_query("SELECT stockact,
+			$Result = DB_query("SELECT stockact,
 										wipact
 								FROM stockcategory
 								WHERE categoryid='" . $_POST['CategoryID'] . "'");
-			$NewStockActRow = DB_fetch_array($result);
+			$NewStockActRow = DB_fetch_array($Result);
 			$NewStockAct = $NewStockActRow['stockact'];
 			$NewWIPAct = $NewStockActRow['wipact'];
 
@@ -315,8 +315,8 @@ if (isset($_POST['submit'])) {
 							WHERE stkcode = '" . $StockID . "'
 							AND completed=0";
 
-					$result = DB_query($SQL);
-					$ChkSalesOrds = DB_fetch_row($result);
+					$Result = DB_query($SQL);
+					$ChkSalesOrds = DB_fetch_row($Result);
 					if ($ChkSalesOrds[0] != 0) {
 						$InputError = 1;
 						prnMsg(_('The make or buy flag cannot be changed to a kitset where there is a quantity outstanding to be delivered on sales orders') . '. ' . _('Currently there are') . ' ' . $ChkSalesOrds[0] . ' ' . _('outstanding'), 'error');
@@ -334,8 +334,8 @@ if (isset($_POST['submit'])) {
 							AND purchorders.status<>'Completed'
 							AND purchorders.status<>'Rejected'";
 
-					$result = DB_query($SQL);
-					$ChkPurchOrds = DB_fetch_row($result);
+					$Result = DB_query($SQL);
+					$ChkPurchOrds = DB_fetch_row($Result);
 					if ($ChkPurchOrds[0] != 0) {
 						$InputError = 1;
 						prnMsg(_('The make or buy flag cannot be changed to') . ' ' . $_POST['MBFlag'] . ' ' . _('where there is a quantity outstanding to be received on purchase orders') . '. ' . _('Currently there are') . ' ' . $ChkPurchOrds[0] . ' ' . _('yet to be received') . 'error');
@@ -348,8 +348,8 @@ if (isset($_POST['submit'])) {
 							FROM bom
 							WHERE parent = '" . $StockID . "'
 							GROUP BY parent";
-					$result = DB_query($SQL);
-					$ChkBOM = DB_fetch_row($result);
+					$Result = DB_query($SQL);
+					$ChkBOM = DB_fetch_row($Result);
 					if ($ChkBOM[0] != 0) {
 						$InputError = 1;
 						prnMsg(_('The make or buy flag cannot be changed from manufactured, kitset or assembly to') . ' ' . $_POST['MBFlag'] . ' ' . _('where there is a bill of material set up for the item') . '. ' . _('Bills of material are not appropriate for purchased or dummy items'), 'error');
@@ -362,8 +362,8 @@ if (isset($_POST['submit'])) {
 							FROM bom
 							WHERE component = '" . $StockID . "'
 							GROUP BY component";
-					$result = DB_query($SQL);
-					$ChkBOM = DB_fetch_row($result);
+					$Result = DB_query($SQL);
+					$ChkBOM = DB_fetch_row($Result);
 					if ($ChkBOM[0] != 0) {
 						$InputError = 1;
 						prnMsg(_('The make or buy flag cannot be changed from manufactured, purchased or dummy to a kitset or assembly where the item is a component in a bill of material') . '. ' . _('Assembly and kitset items are not appropriate as components in a bill of materials'), 'error');
@@ -423,7 +423,7 @@ if (isset($_POST['submit'])) {
 
 				$ErrMsg = _('The stock item could not be updated because');
 				$DbgMsg = _('The SQL that was used to update the stock item and failed was');
-				$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 				$ErrMsg = _('Could not update the language description because');
 				$DbgMsg = _('The SQL that was used to update the language description and failed was');
@@ -431,8 +431,8 @@ if (isset($_POST['submit'])) {
 				if (count($ItemDescriptionLanguagesArray) > 0) {
 					foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
 						if ($LanguageId != '') {
-							$result = DB_query("DELETE FROM stockdescriptiontranslations WHERE stockid='" . $StockID . "' AND language_id='" . $LanguageId . "'", $ErrMsg, $DbgMsg, true);
-							$result = DB_query("INSERT INTO stockdescriptiontranslations VALUES('" . $StockID . "','" . $LanguageId . "', '" . $_POST['Description_' . str_replace('.', '_', $LanguageId)] . "')", $db, $ErrMsg, $DbgMsg, true);
+							$Result = DB_query("DELETE FROM stockdescriptiontranslations WHERE stockid='" . $StockID . "' AND language_id='" . $LanguageId . "'", $ErrMsg, $DbgMsg, true);
+							$Result = DB_query("INSERT INTO stockdescriptiontranslations VALUES('" . $StockID . "','" . $LanguageId . "', '" . $_POST['Description_' . str_replace('.', '_', $LanguageId)] . "')", $db, $ErrMsg, $DbgMsg, true);
 						}
 					}
 					/*
@@ -442,14 +442,14 @@ if (isset($_POST['submit'])) {
 							$SQL = "UPDATE stockdescriptiontranslations " .
 									"SET descriptiontranslation='" . $DescriptionTranslation . "' " .
 									"WHERE stockid='" . $StockID . "' AND (language_id='" . $LanguageId. "')";
-							$result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+							$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
 					}
 					*/
 
 				}
 
 				//delete any properties for the item no longer relevant with the change of category
-				$result = DB_query("DELETE FROM stockitemproperties
+				$Result = DB_query("DELETE FROM stockitemproperties
 									WHERE stockid ='" . $StockID . "'", $ErrMsg, $DbgMsg, true);
 
 				//now insert any item properties
@@ -467,7 +467,7 @@ if (isset($_POST['submit'])) {
 					} else {
 						$_POST['PropValue' . $i] = $_POST['PropValue' . $i];
 					}
-					$result = DB_query("INSERT INTO stockitemproperties (stockid,
+					$Result = DB_query("INSERT INTO stockitemproperties (stockid,
 																		stkcatpropid,
 																		value)
 														VALUES ('" . $StockID . "',
@@ -494,7 +494,7 @@ if (isset($_POST['submit'])) {
 												'" . ($UnitCost * $StockQtyRow[0]) . "')";
 					$ErrMsg = _('The stock cost journal could not be inserted because');
 					$DbgMsg = _('The SQL that was used to create the stock cost journal and failed was');
-					$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 					$SQL = "INSERT INTO gltrans (type,
 												typeno,
 												trandate,
@@ -509,7 +509,7 @@ if (isset($_POST['submit'])) {
 												'" . $OldStockAccount . "',
 												'" . $StockID . ' ' . _('Change stock category') . "',
 												'" . (-$UnitCost * $StockQtyRow[0]) . "')";
-					$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 				}
 				/* end if the stock category changed and forced a change in stock cost account */
@@ -548,7 +548,7 @@ if (isset($_POST['submit'])) {
 													'" . $WIPValue . "')";
 						$ErrMsg = _('The WIP cost journal could not be inserted because');
 						$DbgMsg = _('The SQL that was used to create the WIP cost journal and failed was');
-						$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+						$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 						$SQL = "INSERT INTO gltrans (type,
 													typeno,
 													trandate,
@@ -563,7 +563,7 @@ if (isset($_POST['submit'])) {
 													'" . $OldWIPAccount . "',
 													'" . $StockID . ' ' . _('Change stock category') . "',
 													'" . (-$WIPValue) . "')";
-						$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+						$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 					}
 				}
 				/* end if the stock category changed and forced a change in WIP account */
@@ -571,15 +571,15 @@ if (isset($_POST['submit'])) {
 				prnMsg(_('Stock Item') . ' ' . $StockID . ' ' . _('has been updated'), 'success');
 			}
 			if (DB_error_no() != 0){
-				$result = DB_Txn_Rollback();
+				$Result = DB_Txn_Rollback();
 			}
 
 		} else { //it is a NEW part
 			//but lets be really sure here
-			$result = DB_query("SELECT stockid
+			$Result = DB_query("SELECT stockid
 								FROM stockmaster
 								WHERE stockid='" . $StockID . "'");
-			if (DB_num_rows($result) == 1) {
+			if (DB_num_rows($Result) == 1) {
 				prnMsg(_('The stock code entered is already in the database - duplicate stock codes are prohibited by the system. Try choosing an alternative stock code'), 'error');
 				$InputError = 1;
 				$Errors[$i] = 'StockID';
@@ -629,7 +629,7 @@ if (isset($_POST['submit'])) {
 
 				$ErrMsg = _('The item could not be added because');
 				$DbgMsg = _('The SQL that was used to add the item failed was');
-				$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 				if (DB_error_no() == 0) {
 					//now insert the language descriptions
 					$ErrMsg = _('Could not update the language description because');
@@ -638,7 +638,7 @@ if (isset($_POST['submit'])) {
 						foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
 							if ($LanguageId != ''){
 								$SQL = "INSERT INTO stockdescriptiontranslations VALUES('" . $StockID . "','" . $LanguageId . "', '" . $_POST['Description_' . str_replace('.', '_', $LanguageId)] . "')";
-								$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+								$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 							}
 						}
 					}
@@ -659,7 +659,7 @@ if (isset($_POST['submit'])) {
 							$_POST['PropValue' . $i] = $_POST['PropValue' . $i];
 						}
 
-						$result = DB_query("INSERT INTO stockitemproperties (stockid,
+						$Result = DB_query("INSERT INTO stockitemproperties (stockid,
 													stkcatpropid,
 													value)
 													VALUES ('" . $StockID . "',
@@ -731,8 +731,8 @@ if (isset($_POST['submit'])) {
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'StockMoves'
 
 	$SQL = "SELECT COUNT(*) FROM stockmoves WHERE stockid='" . $StockID . "' GROUP BY stockid";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
 	if ($MyRow[0] > 0) {
 		$CancelDelete = 1;
 		prnMsg(_('Cannot delete this stock item because there are stock movements that refer to this item'), 'warn');
@@ -740,56 +740,56 @@ if (isset($_POST['submit'])) {
 
 	} else {
 		$SQL = "SELECT COUNT(*) FROM bom WHERE component='" . $StockID . "' GROUP BY component";
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_row($Result);
 		if ($MyRow[0] > 0) {
 			$CancelDelete = 1;
 			prnMsg(_('Cannot delete this item record because there are bills of material that require this part as a component'), 'warn');
 			echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('bills of material that require this part as a component');
 		} else {
 			$SQL = "SELECT COUNT(*) FROM salesorderdetails WHERE stkcode='" . $StockID . "' GROUP BY stkcode";
-			$result = DB_query($SQL);
-			$MyRow = DB_fetch_row($result);
+			$Result = DB_query($SQL);
+			$MyRow = DB_fetch_row($Result);
 			if ($MyRow[0] > 0) {
 				$CancelDelete = 1;
 				prnMsg(_('Cannot delete this item record because there are existing sales orders for this part'), 'warn');
 				echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('sales order items against this part');
 			} else {
 				$SQL = "SELECT COUNT(*) FROM salesanalysis WHERE stockid='" . $StockID . "' GROUP BY stockid";
-				$result = DB_query($SQL);
-				$MyRow = DB_fetch_row($result);
+				$Result = DB_query($SQL);
+				$MyRow = DB_fetch_row($Result);
 				if ($MyRow[0] > 0) {
 					$CancelDelete = 1;
 					prnMsg(_('Cannot delete this item because sales analysis records exist for it'), 'warn');
 					echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('sales analysis records against this part');
 				} else {
 					$SQL = "SELECT COUNT(*) FROM purchorderdetails WHERE itemcode='" . $StockID . "' GROUP BY itemcode";
-					$result = DB_query($SQL);
-					$MyRow = DB_fetch_row($result);
+					$Result = DB_query($SQL);
+					$MyRow = DB_fetch_row($Result);
 					if ($MyRow[0] > 0) {
 						$CancelDelete = 1;
 						prnMsg(_('Cannot delete this item because there are existing purchase order items for it'), 'warn');
 						echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('purchase order item record relating to this part');
 					} else {
 						$SQL = "SELECT SUM(quantity) AS qoh FROM locstock WHERE stockid='" . $StockID . "' GROUP BY stockid";
-						$result = DB_query($SQL);
-						$MyRow = DB_fetch_row($result);
+						$Result = DB_query($SQL);
+						$MyRow = DB_fetch_row($Result);
 						if ($MyRow[0] != 0) {
 							$CancelDelete = 1;
 							prnMsg(_('Cannot delete this item because there is currently some stock on hand'), 'warn');
 							echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('on hand for this part');
 						} else {
 							$SQL = "SELECT COUNT(*) FROM offers WHERE stockid='" . $StockID . "' GROUP BY stockid";
-							$result = DB_query($SQL);
-							$MyRow = DB_fetch_row($result);
+							$Result = DB_query($SQL);
+							$MyRow = DB_fetch_row($Result);
 							if ($MyRow[0] != 0) {
 								$CancelDelete = 1;
 								prnMsg(_('Cannot delete this item because there are offers for this item'), 'warn');
 								echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('offers from suppliers for this part');
 							} else {
 								$SQL = "SELECT COUNT(*) FROM tenderitems WHERE stockid='" . $StockID . "' GROUP BY stockid";
-								$result = DB_query($SQL);
-								$MyRow = DB_fetch_row($result);
+								$Result = DB_query($SQL);
+								$MyRow = DB_fetch_row($Result);
 								if ($MyRow[0] != 0) {
 									$CancelDelete = 1;
 									prnMsg(_('Cannot delete this item because there are tenders for this item'), 'warn');
@@ -804,31 +804,31 @@ if (isset($_POST['submit'])) {
 
 	}
 	if ($CancelDelete == 0) {
-		$result = DB_Txn_Begin();
+		$Result = DB_Txn_Begin();
 
 		/*Deletes LocStock records*/
 		$SQL = "DELETE FROM locstock WHERE stockid='" . $StockID . "'";
-		$result = DB_query($SQL, _('Could not delete the location stock records because'), '', true);
+		$Result = DB_query($SQL, _('Could not delete the location stock records because'), '', true);
 		/*Deletes Price records*/
 		$SQL = "DELETE FROM prices WHERE stockid='" . $StockID . "'";
-		$result = DB_query($SQL, _('Could not delete the prices for this stock record because'), '', true);
+		$Result = DB_query($SQL, _('Could not delete the prices for this stock record because'), '', true);
 		/*and cascade deletes in PurchData */
 		$SQL = "DELETE FROM purchdata WHERE stockid='" . $StockID . "'";
-		$result = DB_query($SQL, _('Could not delete the purchasing data because'), '', true);
+		$Result = DB_query($SQL, _('Could not delete the purchasing data because'), '', true);
 		/*and cascade delete the bill of material if any */
 		$SQL = "DELETE FROM bom WHERE parent='" . $StockID . "'";
-		$result = DB_query($SQL, _('Could not delete the bill of material because'), '', true);
+		$Result = DB_query($SQL, _('Could not delete the bill of material because'), '', true);
 		//and cascade delete the item properties
 		$SQL = "DELETE FROM stockitemproperties WHERE stockid='" . $StockID . "'";
-		$result = DB_query($SQL, _('Could not delete the item properties'), '', true);
+		$Result = DB_query($SQL, _('Could not delete the item properties'), '', true);
 		//and cascade delete the item descriptions in other languages
 		$SQL = "DELETE FROM stockdescriptiontranslations WHERE stockid='" . $StockID . "'";
-		$result = DB_query($SQL, _('Could not delete the item language descriptions'), '', true);
+		$Result = DB_query($SQL, _('Could not delete the item language descriptions'), '', true);
 		//and finally remove the stockmaster
 		$SQL = "DELETE FROM stockmaster WHERE stockid='" . $StockID . "'";
-		$result = DB_query($SQL, _('Could not delete the item record'), '', true);
+		$Result = DB_query($SQL, _('Could not delete the item record'), '', true);
 
-		$result = DB_Txn_Commit();
+		$Result = DB_Txn_Commit();
 
 		prnMsg(_('Deleted the stock master record for') . ' ' . $StockID . '....' . '<br />. . ' . _('and all the location stock records set up for the part') . '<br />. . .' . _('and any bill of material that may have been set up for the part') . '<br /> . . . .' . _('and any purchasing data that may have been set up for the part') . '<br /> . . . . .' . _('and any prices that may have been set up for the part'), 'success');
 		echo '<br />';
@@ -923,8 +923,8 @@ if (!isset($StockID) or $StockID == '' or isset($_POST['UpdateCategories'])) {
 			FROM stockmaster
 			WHERE stockid = '" . $StockID . "'";
 
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 
 	$_POST['LongDescription'] = $MyRow['longdescription'];
 	$_POST['Description'] = $MyRow['description'];
@@ -952,8 +952,8 @@ if (!isset($StockID) or $StockID == '' or isset($_POST['UpdateCategories'])) {
 		$SQL .= "language_id='" . $LanguageId . "' OR ";
 	}
 	$SQL = mb_substr($SQL, 0, mb_strlen($SQL) - 3) . ')';
-	$result = DB_query($SQL);
-	while ($MyRow = DB_fetch_array($result)) {
+	$Result = DB_query($SQL);
+	while ($MyRow = DB_fetch_array($Result)) {
 		$_POST['Description_' . str_replace('.', '_', $MyRow['language_id'])] = $MyRow['descriptiontranslation'];
 	}
 
@@ -1039,9 +1039,9 @@ echo '<tr>
 $SQL = "SELECT categoryid, categorydescription FROM stockcategory";
 $ErrMsg = _('The stock categories could not be retrieved because');
 $DbgMsg = _('The SQL used to retrieve stock categories and failed was');
-$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	if (!isset($_POST['CategoryID']) or $MyRow['categoryid'] == $_POST['CategoryID']) {
 		echo '<option selected="selected" value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 	} else {
@@ -1270,13 +1270,13 @@ echo '<tr>
 		<td>' . _('Tax Category') . ':</td>
 		<td><select minlength="0" name="TaxCat">';
 $SQL = "SELECT taxcatid, taxcatname FROM taxcategories ORDER BY taxcatname";
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 
 if (!isset($_POST['TaxCat'])) {
 	$_POST['TaxCat'] = $_SESSION['DefaultTaxCategory'];
 }
 
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	if ($_POST['TaxCat'] == $MyRow['taxcatid']) {
 		echo '<option selected="selected" value="' . $MyRow['taxcatid'] . '">' . $MyRow['taxcatname'] . '</option>';
 	} else {

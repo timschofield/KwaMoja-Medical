@@ -76,14 +76,14 @@ if (isset($_POST['submit'])) {
 			$msg = _('Expense code') . ': ' . $_POST['SelectedExpense'] . ' ' . _('for Type of Tab') . ': ' . $_POST['SelectedTab'] . ' ' . _('has been created');
 			$checkSql = "SELECT count(typetabcode)
 							FROM pctypetabs";
-			$result = DB_query($checkSql);
-			$row = DB_fetch_row($result);
+			$Result = DB_query($checkSql);
+			$row = DB_fetch_row($Result);
 		}
 	}
 
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 		prnMsg($msg, 'success');
 		unset($_POST['SelectedExpense']);
 	}
@@ -94,7 +94,7 @@ if (isset($_POST['submit'])) {
 		AND codeexpense='" . $SelectedType . "'";
 
 	$ErrMsg = _('The Tab Type record could not be deleted because');
-	$result = DB_query($SQL, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 	prnMsg(_('Expense code') . ' ' . $SelectedType . ' ' . _('for type of tab') . ' ' . $SelectedTab . ' ' . _('has been deleted'), 'success');
 	unset($_GET['delete']);
 }
@@ -118,9 +118,9 @@ if (!isset($SelectedTab)) {
 					typetabdescription
 			FROM pctypetabs";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	echo '<option value="">' . _('Not Yet Selected') . '</option>';
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($SelectedTab) and $MyRow['typetabcode'] == $SelectedTab) {
 			echo '<option selected="selected" value="';
 		} else {
@@ -133,7 +133,7 @@ if (!isset($SelectedTab)) {
 	echo '</select></td></tr>';
 
 	echo '</table>'; // close main table
-	DB_free_result($result);
+	DB_free_result($Result);
 
 	echo '<br /><div class="centre"><input type="submit" name="Process" value="' . _('Accept') . '" />
 				<input type="submit" name="Cancel" value="' . _('Cancel') . '" /></div>';
@@ -160,7 +160,7 @@ if (isset($_POST['process']) or isset($SelectedTab)) {
 			WHERE pctabexpenses.typetabcode='" . $SelectedTab . "'
 			ORDER BY pctabexpenses.codeexpense ASC";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '<br />
 			<table class="selection">';
@@ -174,7 +174,7 @@ if (isset($_POST['process']) or isset($SelectedTab)) {
 
 	$k = 0; //row colour counter
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -204,11 +204,11 @@ if (isset($_POST['process']) or isset($SelectedTab)) {
 						description
 				FROM pcexpenses";
 
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 		if (!isset($_POST['SelectedExpense'])) {
 			echo '<option selected="selected" value="">' . _('Not Yet Selected') . '</option>';
 		}
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			if (isset($_POST['SelectedExpense']) and $MyRow['codeexpense'] == $_POST['SelectedExpense']) {
 				echo '<option selected="selected" value="';
 			} else {
@@ -221,7 +221,7 @@ if (isset($_POST['process']) or isset($SelectedTab)) {
 		echo '</select></td></tr>';
 
 		echo '</table>'; // close main table
-		DB_free_result($result);
+		DB_free_result($Result);
 
 		echo '<br /><div class="centre"><input type="submit" name="submit" value="' . _('Accept') . '" />
 									<input type="submit" name="Cancel" value="' . _('Cancel') . '" /></div>';

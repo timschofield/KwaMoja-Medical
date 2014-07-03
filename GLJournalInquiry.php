@@ -18,8 +18,8 @@ if (!isset($_POST['Show'])) {
 			</tr>';
 
 	$SQL = "SELECT typeno FROM systypes WHERE typeid=0";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 	$MaxJournalNumberUsed = $MyRow['typeno'];
 
 	echo '<tr>
@@ -30,8 +30,8 @@ if (!isset($_POST['Show'])) {
 
 	$SQL = "SELECT MIN(trandate) AS fromdate,
 					MAX(trandate) AS todate FROM gltrans WHERE type=0";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 	if (isset($MyRow['fromdate']) and $MyRow['fromdate'] != '') {
 		$FromDate = $MyRow['fromdate'];
 		$ToDate = $MyRow['todate'];
@@ -72,8 +72,8 @@ if (!isset($_POST['Show'])) {
 				AND gltrans.typeno<='" . $_POST['NumberTo'] . "'
 			ORDER BY gltrans.typeno";
 
-	$result = DB_query($SQL);
-	if (DB_num_rows($result) == 0) {
+	$Result = DB_query($SQL);
+	if (DB_num_rows($Result) == 0) {
 		prnMsg(_('There are no transactions for this account in the date range selected'), 'info');
 	} else {
 		echo '<table class="selection" summary="' . _('General ledger journal listing') . '">
@@ -95,7 +95,7 @@ if (!isset($_POST['Show'])) {
 
 		$LastJournal = 0;
 
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 
 			if ($MyRow['tag'] == 0) {
 				$MyRow['tagdescription'] = 'None';

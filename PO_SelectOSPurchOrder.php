@@ -127,8 +127,8 @@ if (!isset($OrderNumber) or $OrderNumber == '') {
 						ON locations.loccode=www_users.defaultlocation
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
-	$resultStkLocs = DB_query($SQL);
-	while ($MyRow = DB_fetch_array($resultStkLocs)) {
+	$ResultStkLocs = DB_query($SQL);
+	while ($MyRow = DB_fetch_array($ResultStkLocs)) {
 		if (isset($_POST['StockLocation'])) {
 			if ($MyRow['loccode'] == $_POST['StockLocation']) {
 				echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
@@ -143,7 +143,7 @@ if (!isset($OrderNumber) or $OrderNumber == '') {
 		else {
 			echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 		}
-	} //$MyRow = DB_fetch_array($resultStkLocs)
+	} //$MyRow = DB_fetch_array($ResultStkLocs)
 	echo '</select> ' . _('Order Status') . ':<select minlength="0" name="Status">';
 	if (!isset($_POST['Status']) or $_POST['Status'] == 'Pending_Authorised') {
 		echo '<option selected="selected" value="Pending_Authorised">' . _('Pending and Authorised') . '</option>';
@@ -185,7 +185,7 @@ if (!isset($OrderNumber) or $OrderNumber == '') {
 } //!isset($OrderNumber) or $OrderNumber == ''
 
 $SQL = "SELECT categoryid, categorydescription FROM stockcategory ORDER BY categorydescription";
-$result1 = DB_query($SQL);
+$Result1 = DB_query($SQL);
 
 echo '<div class="page_help_text noPrint">' . _('To search for purchase orders for a specific part use the part selection facilities below') . '</div>';
 
@@ -202,7 +202,7 @@ echo '<table class="selection">
 				<td>' . _('Select a stock category') . ':
 					<select minlength="0" name="StockCat">';
 
-while ($MyRow1 = DB_fetch_array($result1)) {
+while ($MyRow1 = DB_fetch_array($Result1)) {
 	if (isset($_POST['StockCat']) and $MyRow1['categoryid'] == $_POST['StockCat']) {
 		echo '<option selected="selected" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 	} //isset($_POST['StockCat']) and $MyRow1['categoryid'] == $_POST['StockCat']

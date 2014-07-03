@@ -45,12 +45,12 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate'])) {
 				<td>' . _('Bank Account') . '</td><td>';
 
 	$SQL = "SELECT bankaccountname, accountcode FROM bankaccounts";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 
 	echo '<select minlength="0" name="BankAccount">';
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		echo '<option value="' . $MyRow['accountcode'] . '">' . $MyRow['bankaccountname'] . '</option>';
 	}
 
@@ -213,9 +213,9 @@ if ($_POST['Email'] == 'Yes') {
 		$mail->setFrom(array(
 			'"' . $_SESSION['CompanyRecord']['coyname'] . '" <' . $_SESSION['CompanyRecord']['email'] . '>'
 		));
-		$result = $mail->send($ChkListingRecipients);
+		$Result = $mail->send($ChkListingRecipients);
 	} else {
-		$result = SendmailBySmtp($mail, $ChkListingRecipients);
+		$Result = SendmailBySmtp($mail, $ChkListingRecipients);
 	}
 }
 

@@ -251,7 +251,7 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 								'" . $AllowPrintPO . "' )";
 		$ErrMsg = _('The purchase order header record could not be inserted into the database because');
 		$DbgMsg = _('The SQL statement used to insert the purchase order header record and failed was');
-		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 		/*Insert the purchase order detail records */
 		foreach ($PurchItems as $StockID => $POLine) {
@@ -288,7 +288,7 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 			$ErrMsg = _('One of the purchase order detail records could not be inserted into the database because');
 			$DbgMsg = _('The SQL statement used to insert the purchase order detail record and failed was');
 
-			$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		}
 		/* end of the loop round the detail line items on the order */
 		echo '<p />';

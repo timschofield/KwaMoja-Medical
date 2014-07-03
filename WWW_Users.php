@@ -82,8 +82,8 @@ if (isset($_POST['submit'])) {
 	*/
 	if (!isset($SelectedUser)) {
 		/* check to ensure the user id is not already entered */
-		$result = DB_query("SELECT userid FROM www_users WHERE userid='" . $_POST['UserID'] . "'");
-		if (DB_num_rows($result) == 1) {
+		$Result = DB_query("SELECT userid FROM www_users WHERE userid='" . $_POST['UserID'] . "'");
+		if (DB_num_rows($Result) == 1) {
 			$InputError = 1;
 			prnMsg(_('The user ID') . ' ' . $_POST['UserID'] . ' ' . _('already exists and cannot be used again'), 'error');
 		}
@@ -98,9 +98,9 @@ if (isset($_POST['submit'])) {
 
 		$ErrMsg = _('The check on validity of the customer code and branch failed because');
 		$DbgMsg = _('The SQL that was used to check the customer code and branch was');
-		$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-		if (DB_num_rows($result) == 0) {
+		if (DB_num_rows($Result) == 0) {
 			prnMsg(_('The entered Branch Code is not valid for the entered Customer Code'), 'error');
 			$InputError = 1;
 		}
@@ -209,7 +209,7 @@ if (isset($_POST['submit'])) {
 		//run the SQL from either of the above possibilites
 		$ErrMsg = _('The user alterations could not be processed because');
 		$DbgMsg = _('The SQL that was used to update the user and failed was');
-		$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 		unset($_POST['UserID']);
 		unset($_POST['RealName']);
@@ -245,14 +245,14 @@ if (isset($_POST['submit'])) {
 	} else {
 
 		$SQL = "SELECT userid FROM audittrail where userid='" . $SelectedUser . "'";
-		$result = DB_query($SQL);
-		if (DB_num_rows($result) != 0) {
+		$Result = DB_query($SQL);
+		if (DB_num_rows($Result) != 0) {
 			prnMsg(_('Cannot delete user as entries already exist in the audit trail'), 'warn');
 		} else {
 
 			$SQL = "DELETE FROM www_users WHERE userid='" . $SelectedUser . "'";
 			$ErrMsg = _('The User could not be deleted because');
-			$result = DB_query($SQL, $ErrMsg);
+			$Result = DB_query($SQL, $ErrMsg);
 			prnMsg(_('User Deleted'), 'info');
 		}
 		unset($SelectedUser);
@@ -280,7 +280,7 @@ if (!isset($SelectedUser)) {
 					language,
 					fontsize
 				FROM www_users";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '<table class="selection">
 			<tr>
@@ -302,7 +302,7 @@ if (!isset($SelectedUser)) {
 
 	$k = 0; //row colour counter
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -392,8 +392,8 @@ if (isset($SelectedUser)) {
 		FROM www_users
 		WHERE userid='" . $SelectedUser . "'";
 
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 
 	$_POST['UserID'] = $MyRow['userid'];
 	$_POST['RealName'] = $MyRow['realname'];
@@ -510,9 +510,9 @@ echo '<tr>
 		<td><select minlength="0" name="DefaultLocation">';
 
 $SQL = "SELECT loccode, locationname FROM locations";
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	if (isset($_POST['DefaultLocation']) and $MyRow['loccode'] == $_POST['DefaultLocation']) {
 		echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 	} else {
@@ -565,13 +565,13 @@ echo '<tr>
 		<td><select minlength="0" name="Salesman">';
 
 $SQL = "SELECT salesmancode, salesmanname FROM salesman WHERE current = 1 ORDER BY salesmanname";
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 if ((isset($_POST['Salesman']) and $_POST['Salesman'] == '') or !isset($_POST['Salesman'])) {
 	echo '<option selected="selected" value="">' . _('Not a salesperson only login') . '</option>';
 } else {
 	echo '<option value="">' . _('Not a salesperson only login') . '</option>';
 }
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 
 	if (isset($_POST['Salesman']) and $MyRow['salesmancode'] == $_POST['Salesman']) {
 		echo '<option selected="selected" value="' . $MyRow['salesmancode'] . '">' . $MyRow['salesmanname'] . '</option>';
@@ -717,14 +717,14 @@ $SQL = "SELECT departmentid,
 		FROM departments
 		ORDER BY description";
 
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 echo '<td><select minlength="0" name="Department">';
 if ((isset($_POST['Department']) and $_POST['Department'] == '0') or !isset($_POST['Department'])) {
 	echo '<option selected="selected" value="0">' . _('Any Internal Department') . '</option>';
 } else {
 	echo '<option value="">' . _('Any Internal Department') . '</option>';
 }
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	if (isset($_POST['Department']) and $MyRow['departmentid'] == $_POST['Department']) {
 		echo '<option selected="selected" value="' . $MyRow['departmentid'] . '">' . $MyRow['description'] . '</option>';
 	} else {

@@ -143,9 +143,9 @@ if (!isset($StockID)) {
 						WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 		}
 
-		$resultStkLocs = DB_query($SQL);
+		$ResultStkLocs = DB_query($SQL);
 
-		while ($MyRow = DB_fetch_array($resultStkLocs)) {
+		while ($MyRow = DB_fetch_array($ResultStkLocs)) {
 			if (isset($_POST['StockLocation'])) {
 				if ($MyRow['loccode'] == $_POST['StockLocation']) {
 					echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
@@ -186,7 +186,7 @@ if (!isset($StockID)) {
 			FROM stockcategory
 			ORDER BY categorydescription";
 
-	$result1 = DB_query($SQL);
+	$Result1 = DB_query($SQL);
 
 	echo '<table class="selection">
 			<tr>
@@ -196,7 +196,7 @@ if (!isset($StockID)) {
 				<td>' . _('Select a stock category') . ':
 	  			<select minlength="0" name="StockCat">';
 
-	while ($MyRow1 = DB_fetch_array($result1)) {
+	while ($MyRow1 = DB_fetch_array($Result1)) {
 		echo '<option value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 	}
 

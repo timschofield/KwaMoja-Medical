@@ -37,7 +37,7 @@ echo '</select></td></tr>';
 
 $SQL = "SELECT currency, currabrev FROM currencies";
 
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 
 echo '<tr>
 		<td>' . _('Select the price list currency to update') . ':</td>
@@ -47,7 +47,7 @@ if (!isset($_POST['CurrCode'])) {
 	echo '<option selected="selected" value="0">' . _('No Price List Currency Selected') . '</option>';
 }
 
-while ($Currencies = DB_fetch_array($result)) {
+while ($Currencies = DB_fetch_array($Result)) {
 	if (isset($_POST['CurrCode']) and $_POST['CurrCode'] == $Currencies['currabrev']) {
 		echo '<option selected="selected" value="' . $Currencies['currabrev'] . '">' . $Currencies['currency'] . '</option>';
 	} else {
@@ -109,9 +109,9 @@ $SQL = "SELECT categoryid, categorydescription FROM stockcategory ORDER BY categ
 
 $ErrMsg = _('The stock categories could not be retrieved because');
 $DbgMsg = _('The SQL used to retrieve stock categories and failed was');
-$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	if (isset($_POST['StkCatFrom']) and $MyRow['categoryid'] == $_POST['StkCatFrom']) {
 		echo '<option selected="selected" value="' . $MyRow['categoryid'] . '">' . $MyRow['categoryid'] . ' - ' . $MyRow['categorydescription'] . '</option>';
 	} else {
@@ -120,13 +120,13 @@ while ($MyRow = DB_fetch_array($result)) {
 }
 echo '</select></td></tr>';
 
-DB_data_seek($result, 0);
+DB_data_seek($Result, 0);
 
 echo '<tr>
 		<td>' . _('Stock Category To') . ':</td>
 		<td><select required="required" minlength="1" name="StkCatTo">';
 
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	if (isset($_POST['StkCatFrom']) and $MyRow['categoryid'] == $_POST['StkCatTo']) {
 		echo '<option selected="selected" value="' . $MyRow['categoryid'] . '">' . $MyRow['categoryid'] . ' - ' . $MyRow['categorydescription'] . '</option>';
 	} else {
@@ -347,7 +347,7 @@ if (isset($_POST['UpdatePrices'])) {
 												AND enddate ='" . $CurrentPriceRow['enddate'] . "'
 												AND stockid='" . $MyRow['stockid'] . "'";
 					$ErrMsg = _('Error updating prices for') . ' ' . $MyRow['stockid'] . ' ' . _('because');
-					$result = DB_query($UpdateSQL, $ErrMsg);
+					$Result = DB_query($UpdateSQL, $ErrMsg);
 
 				}
 				$SQL = "INSERT INTO prices (stockid,
@@ -363,7 +363,7 @@ if (isset($_POST['UpdatePrices'])) {
 										'" . $SQLEndDate . "',
 								 		'" . filter_number_format($RoundedPrice) . "')";
 				$ErrMsg = _('Error inserting new price for') . ' ' . $MyRow['stockid'] . ' ' . _('because');
-				$result = DB_query($SQL, $ErrMsg);
+				$Result = DB_query($SQL, $ErrMsg);
 				prnMsg(_('Inserting new price for') . ' ' . $MyRow['stockid'] . ' ' . _('to') . ' ' . $RoundedPrice, 'info');
 
 			} // end if cost > 0

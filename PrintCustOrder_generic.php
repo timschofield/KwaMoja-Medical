@@ -99,10 +99,10 @@ if ($_SESSION['RestrictLocations'] == 0) {
 if ($_SESSION['SalesmanLogin'] != '') {
        $SQL .= " AND salesorders.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
 }
-$result = DB_query($SQL, $ErrMsg);
+$Result = DB_query($SQL, $ErrMsg);
 
 //if there are no rows, there's a problem.
-if (DB_num_rows($result) == 0) {
+if (DB_num_rows($Result) == 0) {
 	$Title = _('Print Packing Slip Error');
 	include('includes/header.inc');
 	prnMsg(_('Unable to Locate Order Number') . ' : ' . $_GET['TransNo'] . ' ', 'error');
@@ -117,10 +117,10 @@ if (DB_num_rows($result) == 0) {
 
 	include('includes/footer.inc');
 	exit();
-} elseif (DB_num_rows($result) == 1) {
+} elseif (DB_num_rows($Result) == 1) {
 	/*There is only one order header returned - thats good! */
 
-	$MyRow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($Result);
 	/* Place the deliver blind variable into a hold variable to used when
 	producing the packlist */
 	$DeliverBlind = $MyRow['deliverblind'];
@@ -188,13 +188,13 @@ for ($i = 1; $i <= 2; $i++) {
 					ON stockmaster.stockid = locstock.stockid
 				WHERE locstock.loccode = '" . $MyRow['fromstkloc'] . "'
 					AND salesorderdetails.orderno='" . $_GET['TransNo'] . "'";
-	$result = DB_query($SQL, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
-	if (DB_num_rows($result) > 0) {
+	if (DB_num_rows($Result) > 0) {
 		/*Yes there are line items to start the ball rolling with a page header */
 		include('includes/PDFOrderPageHeader_generic.inc');
 
-		while ($MyRow2 = DB_fetch_array($result)) {
+		while ($MyRow2 = DB_fetch_array($Result)) {
 
 			$ListCount++;
 
@@ -271,7 +271,7 @@ if ($ListCount == 0) {
 	$SQL = "UPDATE salesorders SET printedpackingslip=1,
 									datepackingslipprinted=CURRENT_DATE
 				WHERE salesorders.orderno='" . $_GET['TransNo'] . "'";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 }
 
 ?>

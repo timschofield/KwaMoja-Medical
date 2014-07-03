@@ -36,8 +36,8 @@ if (isset($_POST['Show'])) {
 	$SQL = "SELECT count(orderno)
 				FROM purchorders
 				WHERE orderno='" . $_POST['PONumber'] . "'";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
 	if ($MyRow[0] == 0) {
 		echo '<br />';
 		prnMsg(_('This purchase order does not exist on the system. Please try again.'), 'warn');
@@ -60,8 +60,8 @@ if (isset($_POST['Show'])) {
 			LEFT JOIN stockmaster
 			ON grns.itemcode=stockmaster.stockid
 			WHERE orderno='" . $_POST['PONumber'] . "'";
-	$result = DB_query($SQL);
-	if (DB_num_rows($result) == 0) {
+	$Result = DB_query($SQL);
+	if (DB_num_rows($Result) == 0) {
 		echo '<br />';
 		prnMsg(_('There are no GRNs for this purchase order that can be reprinted.'), 'warn');
 		include('includes/footer.inc');
@@ -82,7 +82,7 @@ if (isset($_POST['Show'])) {
 				<th>' . _('Quantity Received') . '</th>
 			</tr>';
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;

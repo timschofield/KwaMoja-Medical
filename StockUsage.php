@@ -24,13 +24,13 @@ echo '<p class="page_title_text noPrint" >
 		<img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Dispatch') . '" alt="" />' . ' ' . $Title . '
 	</p>';
 
-$result = DB_query("SELECT description,
+$Result = DB_query("SELECT description,
 						units,
 						mbflag,
 						decimalplaces
 					FROM stockmaster
 					WHERE stockid='" . $StockID . "'");
-$MyRow = DB_fetch_row($result);
+$MyRow = DB_fetch_row($Result);
 
 $DecimalPlaces = $MyRow[3];
 
@@ -71,8 +71,8 @@ if ($_SESSION['RestrictLocations'] == 0) {
 					ON locations.loccode=www_users.defaultlocation
 				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 }
-$resultStkLocs = DB_query($SQL);
-while ($MyRow = DB_fetch_array($resultStkLocs)) {
+$ResultStkLocs = DB_query($SQL);
+while ($MyRow = DB_fetch_array($ResultStkLocs)) {
 	if (isset($_POST['StockLocation'])) {
 		if ($MyRow['loccode'] == $_POST['StockLocation']) {
 			echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';

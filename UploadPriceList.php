@@ -72,16 +72,16 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 
 		//first off check that the item actually exists
 		$SQL = "SELECT COUNT(stockid) FROM stockmaster WHERE stockid='" . $MyRow[0] . "'";
-		$result = DB_query($SQL);
-		$testrow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$testrow = DB_fetch_row($Result);
 		if ($testrow[0] == 0) {
 			$InputError = 1;
 			prnMsg(_('Stock item "' . $MyRow[0] . '" does not exist'), 'error');
 		}
 		//Then check that the price list actually exists
 		$SQL = "SELECT COUNT(typeabbrev) FROM salestypes WHERE typeabbrev='" . $MyRow[1] . "'";
-		$result = DB_query($SQL);
-		$testrow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$testrow = DB_fetch_row($Result);
 		if ($testrow[0] == 0) {
 			$InputError = 1;
 			prnMsg(_('Price List "' . $MyRow[1] . '" does not exist'), 'error');
@@ -89,8 +89,8 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 
 		//Then check that the currency code actually exists
 		$SQL = "SELECT COUNT(currabrev) FROM currencies WHERE currabrev='" . $MyRow[2] . "'";
-		$result = DB_query($SQL);
-		$testrow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$testrow = DB_fetch_row($Result);
 		if ($testrow[0] == 0) {
 			$InputError = 1;
 			prnMsg(_('Price List "' . $MyRow[2] . '" does not exist'), 'error');
@@ -106,7 +106,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 						WHERE stockid='" . $MyRow[0] . "'
 							AND enddate>CURRENT_DATE
 							AND typeabbrev='" . $MyRow[1] . "'";
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 
 			//Insert the price
 			$SQL = "INSERT INTO prices (stockid,
@@ -124,7 +124,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 
 			$ErrMsg = _('The price could not be added because');
 			$DbgMsg = _('The SQL that was used to add the price failed was');
-			$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 
 		}

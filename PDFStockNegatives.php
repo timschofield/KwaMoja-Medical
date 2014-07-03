@@ -54,16 +54,16 @@ if ($_SESSION['RestrictLocations'] == 0) {
 						stockmaster.decimalplaces";
 }
 
-$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-if (DB_num_rows($result) == 0) {
+if (DB_num_rows($Result) == 0) {
 	include('includes/header.inc');
 	prnMsg(_('There are no negative stocks to list'), 'error');
 	include('includes/footer.inc');
 	exit;
 }
 
-$NegativesRow = DB_fetch_array($result);
+$NegativesRow = DB_fetch_array($Result);
 
 include('includes/PDFStockNegativesHeader.inc');
 $line_height = 15;
@@ -84,9 +84,9 @@ do {
 		include('includes/PDFStockNegativesHeader.inc');
 	}
 
-} while ($NegativesRow = DB_fetch_array($result));
+} while ($NegativesRow = DB_fetch_array($Result));
 
-if (DB_num_rows($result) > 0) {
+if (DB_num_rows($Result) > 0) {
 	$pdf->OutputD($_SESSION['DatabaseName'] . '_NegativeStocks_' . date('Y-m-d') . '.pdf');
 	$pdf->__destruct();
 } else {

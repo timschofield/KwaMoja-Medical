@@ -8,8 +8,8 @@ include('api/api_errorcodes.php');
 
 $User = $_SESSION['UserID'];
 $SQL = "SELECT password FROM www_users WHERE userid='" . $User . "'";
-$result = DB_query($SQL);
-$MyRow = DB_fetch_array($result);
+$Result = DB_query($SQL);
+$MyRow = DB_fetch_array($Result);
 $password = $MyRow[0];
 
 $ServerURL = 'http://www.weberp.org/weberp/api/api_xml-rpc.php';

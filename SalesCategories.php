@@ -32,7 +32,7 @@ if (isset($_GET['EditName'])) {
 
 if (isset($SelectedCategory) and isset($_FILES['CategoryPicture']) and $_FILES['CategoryPicture']['name'] != '') {
 
-	$result = $_FILES['CategoryPicture']['error'];
+	$Result = $_FILES['CategoryPicture']['error'];
 	$UploadTheFile = 'Yes'; //Assume all is well to start off with
 	// Stock is always capatalized so there is no confusion since "cat_" is lowercase
 	$FileName = $_SESSION['part_pics_dir'] . '/SALESCAT_' . $SelectedCategory . '.jpg';
@@ -49,16 +49,16 @@ if (isset($SelectedCategory) and isset($_FILES['CategoryPicture']) and $_FILES['
 		$UploadTheFile = 'No';
 	} elseif (file_exists($FileName)) {
 		prnMsg(_('Attempting to overwrite an existing item image'), 'warn');
-		$result = unlink($FileName);
-		if (!$result) {
+		$Result = unlink($FileName);
+		if (!$Result) {
 			prnMsg(_('The existing image could not be removed'), 'error');
 			$UploadTheFile = 'No';
 		}
 	}
 
 	if ($UploadTheFile == 'Yes') {
-		$result = move_uploaded_file($_FILES['CategoryPicture']['tmp_name'], $FileName);
-		$message = ($result) ? _('File url') . '<a href="' . $FileName . '">' . $FileName . '</a>' : _('Somthing is wrong with uploading a file');
+		$Result = move_uploaded_file($_FILES['CategoryPicture']['tmp_name'], $FileName);
+		$message = ($Result) ? _('File url') . '<a href="' . $FileName . '">' . $FileName . '</a>' : _('Somthing is wrong with uploading a file');
 	}
 	/* EOR Add Image upload for New Item  - by Ori */
 }
@@ -104,7 +104,7 @@ if (isset($_POST['submit']) and isset($EditName)) { // Creating or updating a ca
 
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 		prnMsg($msg, 'success');
 	}
 
@@ -119,20 +119,20 @@ if (isset($_POST['submit']) and isset($EditName)) { // Creating or updating a ca
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'salescatprod'
 
 	$SQL = "SELECT COUNT(*) FROM salescatprod WHERE salescatid='" . $SelectedCategory . "'";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
 	if ($MyRow[0] > 0) {
 		prnMsg(_('Cannot delete this sales category because stock items have been added to this category') . '<br /> ' . _('There are') . ' ' . $MyRow[0] . ' ' . _('items under to this category'), 'warn');
 
 	} else {
 		$SQL = "SELECT COUNT(*) FROM salescat WHERE parentcatid='" . $SelectedCategory . "'";
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_row($Result);
 		if ($MyRow[0] > 0) {
 			prnMsg(_('Cannot delete this sales category because sub categories have been added to this category') . '<br /> ' . _('There are') . ' ' . $MyRow[0] . ' ' . _('sub categories'), 'warn');
 		} else {
 			$SQL = "DELETE FROM salescat WHERE salescatid='" . $SelectedCategory . "'";
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 			prnMsg(_('The sales category') . ' ' . $SelectedCategory . ' ' . _('has been deleted') . ' !', 'success');
 			if (file_exists($_SESSION['part_pics_dir'] . '/SALESCAT_' . $SelectedCategory . '.jpg')) {
 				unlink($_SESSION['part_pics_dir'] . '/SALESCAT_' . $SelectedCategory . '.jpg');
@@ -149,20 +149,20 @@ if (isset($_POST['submit']) and isset($EditName)) { // Creating or updating a ca
 							VALUES ('" . $_POST['AddStockID'] . "',
 									'" . (isset($ParentCategory) ? ($ParentCategory) : ('NULL')) . "',
 									'" . $_POST['Brand'] . "')";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	prnMsg(_('Item') . ' ' . $_POST['AddStockID'] . ' ' . _('has been added'), 'success');
 	unset($_POST['AddStockID']);
 } elseif (isset($_GET['DelStockID'])) {
 	$SQL = "DELETE FROM salescatprod WHERE
 				stockid='" . $_GET['DelStockID'] . "'
 				AND salescatid" . (isset($ParentCategory) ? ('=' . $ParentCategory) : (' IS NULL'));
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	prnMsg(_('Stock item') . ' ' . $_GET['DelStockID'] . ' ' . _('has been removed') . ' !', 'success');
 	unset($_GET['DelStockID']);
 } elseif (isset($_GET['AddFeature'])) {
-	$result = DB_query("UPDATE salescatprod SET featured=1 WHERE stockid='" . $_GET['StockID'] . "'");
+	$Result = DB_query("UPDATE salescatprod SET featured=1 WHERE stockid='" . $_GET['StockID'] . "'");
 } elseif (isset($_GET['RemoveFeature'])) {
-	$result = DB_query("UPDATE salescatprod SET featured=0 WHERE stockid='" . $_GET['StockID'] . "'");
+	$Result = DB_query("UPDATE salescatprod SET featured=0 WHERE stockid='" . $_GET['StockID'] . "'");
 }
 
 
@@ -182,17 +182,17 @@ if (isset($ParentCategory)) {
 $LastParentName = '';
 for ($Busy = (isset($TmpParentID) AND ($TmpParentID != 0)); $Busy == true; $Busy = (isset($TmpParentID) AND ($TmpParentID != 0))) {
 	$SQL = "SELECT parentcatid, salescatname FROM salescat WHERE salescatid='" . $TmpParentID . "'";
-	$result = DB_query($SQL);
-	if ($result) {
-		if (DB_num_rows($result) > 0) {
-			$row = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	if ($Result) {
+		if (DB_num_rows($Result) > 0) {
+			$row = DB_fetch_array($Result);
 			$LastParentName = $row['salescatname'];
 			$TempPath = '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?ParentCategory=' . $TmpParentID . '">' . $LastParentName . '</a>' . '&nbsp;\\&nbsp;' . $TempPath;
 			$TmpParentID = $row['parentcatid']; // Set For Next Round
 		} else {
 			$Busy = false;
 		}
-		DB_free_result($result);
+		DB_free_result($Result);
 	}
 }
 
@@ -225,11 +225,11 @@ $SQL = "SELECT salescatid,
 			FROM salescat
 			WHERE parentcatid" . (isset($ParentCategory) ? ('=' . $ParentCategory) : ' =0') . "
 			ORDER BY salescatname";
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 
 
 echo '<br />';
-if (DB_num_rows($result) == 0) {
+if (DB_num_rows($Result) == 0) {
 	prnMsg(_('There are no categories defined at this level.'));
 } else {
 	echo '<table class="selection">';
@@ -240,7 +240,7 @@ if (DB_num_rows($result) == 0) {
 
 	$k = 0; //row colour counter
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -295,8 +295,8 @@ if (isset($SelectedCategory)) {
 				FROM salescat
 				WHERE salescatid='" . $SelectedCategory . "'";
 
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 
 	$_POST['SalesCatId'] = $MyRow['salescatid'];
 	$_POST['ParentCategory'] = $MyRow['parentcatid'];
@@ -380,12 +380,12 @@ $SQL = "SELECT stockid,
 		FROM salescatprod
 		WHERE salescatid" . (isset($ParentCategory) ? ('=' . $ParentCategory) : ' is NULL') . "
 		ORDER BY stockid";
-$result = DB_query($SQL);
-if ($result and DB_num_rows($result)) {
-	while ($MyRow = DB_fetch_array($result)) {
+$Result = DB_query($SQL);
+if ($Result and DB_num_rows($Result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		$StockIDs[] = $MyRow['stockid']; // Add Stock
 	}
-	DB_free_result($result);
+	DB_free_result($Result);
 }
 
 // This query will return the stock that is available
@@ -397,8 +397,8 @@ $SQL = "SELECT stockid,
 		AND mbflag<>'G'
 		AND stocktype<>'M'
 		ORDER BY stockid";
-$result = DB_query($SQL);
-if ($result and DB_num_rows($result)) {
+$Result = DB_query($SQL);
+if ($Result and DB_num_rows($Result)) {
 	// continue id stock id in the stockid array
 	echo '<br />
 			<form enctype="multipart/form-data" method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">
@@ -418,7 +418,7 @@ if ($result and DB_num_rows($result)) {
 				<td>' . _('Select Inv. Item') . ':</td>
 				<td><select required="required" minlength="1" name="AddStockID">';
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (!array_keys($StockIDs, $MyRow['stockid'])) {
 			// Only if the StockID is not already selected
 			echo '<option value="' . $MyRow['stockid'] . '">' . $MyRow['stockid'] . '&nbsp;-&nbsp;&quot;' . $MyRow['description'] . '&quot;</option>';
@@ -448,8 +448,8 @@ if ($result and DB_num_rows($result)) {
 	echo prnMsg(_('No more Inventory items to add'));
 	echo '</p>';
 }
-if ($result) {
-	DB_free_result($result);
+if ($Result) {
+	DB_free_result($Result);
 }
 unset($StockIDs);
 // END Always display Stock Select screen
@@ -475,9 +475,9 @@ $SQL = "SELECT salescatprod.stockid,
 		WHERE salescatprod.salescatid" . $ShowSalesCategory . "
 		ORDER BY salescatprod.stockid";
 
-$result = DB_query($SQL);
-if ($result) {
-	if (DB_num_rows($result)) {
+$Result = DB_query($SQL);
+if ($Result) {
+	if (DB_num_rows($Result)) {
 		echo '<table class="selection">';
 		echo '<tr>
 				<th colspan="4">' . _('Inventory items for') . ' ' . $CategoryPath . '</th>
@@ -491,7 +491,7 @@ if ($result) {
 
 		$k = 0; //row colour counter
 
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;
@@ -518,7 +518,7 @@ if ($result) {
 	} else {
 		prnMsg(_('No Inventory items in this category'));
 	}
-	DB_free_result($result);
+	DB_free_result($Result);
 }
 
 include('includes/footer.inc');

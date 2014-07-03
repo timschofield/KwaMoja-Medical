@@ -195,9 +195,9 @@ if (isset($_POST['NewItem'])) {
 
 				$ErrMsg = _('The item details could not be retrieved');
 				$DbgMsg = _('The SQL used to retrieve the item details but failed was');
-				$result1 = DB_query($SQL, $ErrMsg, $DbgMsg);
+				$Result1 = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-				if ($MyRow = DB_fetch_array($result1)) {
+				if ($MyRow = DB_fetch_array($Result1)) {
 
 					$_SESSION['Contract' . $identifier]->Add_To_ContractBOM(trim($_POST['StockID' . $i]), $MyRow['description'], '', filter_number_format($_POST['Qty' . $i]), /* Qty */ $MyRow['unitcost'], $MyRow['units'], $MyRow['decimalplaces']);
 				} else {
@@ -293,7 +293,7 @@ if (!isset($_GET['Edit'])) {
 			ORDER BY categorydescription";
 	$ErrMsg = _('The supplier category details could not be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve the category details but failed was');
-	$result1 = DB_query($SQL, $ErrMsg, $DbgMsg);
+	$Result1 = DB_query($SQL, $ErrMsg, $DbgMsg);
 	echo '<p class="page_title_text noPrint" >
 			<img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Print') . '" alt="" />' . ' ' . _('Search For Stock Items') . '</p>';
 	echo '<table class="selection">
@@ -302,7 +302,7 @@ if (!isset($_GET['Edit'])) {
 				<td><select minlength="0" name="StockCat">';
 
 	echo '<option selected="selected" value="All">' . _('All') . '</option>';
-	while ($MyRow1 = DB_fetch_array($result1)) {
+	while ($MyRow1 = DB_fetch_array($Result1)) {
 		if (isset($_POST['StockCat']) and $_POST['StockCat'] == $MyRow1['categoryid']) {
 			echo '<option selected="selected" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 		} else {

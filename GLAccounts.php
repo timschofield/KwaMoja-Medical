@@ -38,7 +38,7 @@ if (isset($_POST['submit'])) {
 				WHERE accountcode ='" . $SelectedAccount . "'";
 
 		$ErrMsg = _('Could not update the account because');
-		$result = DB_query($SQL, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 		prnMsg(_('The general ledger account has been updated'), 'success');
 	} elseif ($InputError != 1) {
 
@@ -51,7 +51,7 @@ if (isset($_POST['submit'])) {
 					VALUES ('" . $_POST['AccountCode'] . "',
 							'" . $_POST['AccountName'] . "',
 							'" . $_POST['Group'] . "')";
-		$result = DB_query($SQL, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 
 		prnMsg(_('The new general ledger account has been added'), 'success');
 	}
@@ -70,8 +70,8 @@ if (isset($_POST['submit'])) {
 			FROM chartdetails
 			WHERE chartdetails.accountcode ='" . $SelectedAccount . "'
 			AND chartdetails.actual <>0";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
 	if ($MyRow[0] > 0) {
 		$CancelDelete = 1;
 		prnMsg(_('Cannot delete this account because chart details have been created using this account and at least one period has postings to it'), 'warn');
@@ -85,9 +85,9 @@ if (isset($_POST['submit'])) {
 
 		$ErrMsg = _('Could not test for existing transactions because');
 
-		$result = DB_query($SQL, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 
-		$MyRow = DB_fetch_row($result);
+		$MyRow = DB_fetch_row($Result);
 		if ($MyRow[0] > 0) {
 			$CancelDelete = 1;
 			prnMsg(_('Cannot delete this account because transactions have been created using this account'), 'warn');
@@ -108,9 +108,9 @@ if (isset($_POST['submit'])) {
 
 			$ErrMsg = _('Could not test for default company GL codes because');
 
-			$result = DB_query($SQL, $ErrMsg);
+			$Result = DB_query($SQL, $ErrMsg);
 
-			$MyRow = DB_fetch_row($result);
+			$MyRow = DB_fetch_row($Result);
 			if ($MyRow[0] > 0) {
 				$CancelDelete = 1;
 				prnMsg(_('Cannot delete this account because it is used as one of the company default accounts'), 'warn');
@@ -122,9 +122,9 @@ if (isset($_POST['submit'])) {
 					OR purchtaxglaccount ='" . $SelectedAccount . "'";
 
 				$ErrMsg = _('Could not test for tax authority GL codes because');
-				$result = DB_query($SQL, $ErrMsg);
+				$Result = DB_query($SQL, $ErrMsg);
 
-				$MyRow = DB_fetch_row($result);
+				$MyRow = DB_fetch_row($Result);
 				if ($MyRow[0] > 0) {
 					$CancelDelete = 1;
 					prnMsg(_('Cannot delete this account because it is used as one of the tax authority accounts'), 'warn');
@@ -136,9 +136,9 @@ if (isset($_POST['submit'])) {
 
 					$ErrMsg = _('Could not test for existing sales interface GL codes because');
 
-					$result = DB_query($SQL, $ErrMsg);
+					$Result = DB_query($SQL, $ErrMsg);
 
-					$MyRow = DB_fetch_row($result);
+					$MyRow = DB_fetch_row($Result);
 					if ($MyRow[0] > 0) {
 						$CancelDelete = 1;
 						prnMsg(_('Cannot delete this account because it is used by one of the sales GL posting interface records'), 'warn');
@@ -150,9 +150,9 @@ if (isset($_POST['submit'])) {
 
 						$ErrMsg = _('Could not test for existing cost of sales interface codes because');
 
-						$result = DB_query($SQL, $ErrMsg);
+						$Result = DB_query($SQL, $ErrMsg);
 
-						$MyRow = DB_fetch_row($result);
+						$MyRow = DB_fetch_row($Result);
 						if ($MyRow[0] > 0) {
 							$CancelDelete = 1;
 							prnMsg(_('Cannot delete this account because it is used by one of the cost of sales GL posting interface records'), 'warn');
@@ -168,9 +168,9 @@ if (isset($_POST['submit'])) {
 
 							$Errmsg = _('Could not test for existing stock GL codes because');
 
-							$result = DB_query($SQL, $ErrMsg);
+							$Result = DB_query($SQL, $ErrMsg);
 
-							$MyRow = DB_fetch_row($result);
+							$MyRow = DB_fetch_row($Result);
 							if ($MyRow[0] > 0) {
 								$CancelDelete = 1;
 								prnMsg(_('Cannot delete this account because it is used by one of the stock GL posting interface records'), 'warn');
@@ -180,18 +180,18 @@ if (isset($_POST['submit'])) {
 								WHERE accountcode='" . $SelectedAccount . "'";
 								$ErrMsg = _('Could not test for existing bank account GL codes because');
 
-								$result = DB_query($SQL, $ErrMsg);
+								$Result = DB_query($SQL, $ErrMsg);
 
-								$MyRow = DB_fetch_row($result);
+								$MyRow = DB_fetch_row($Result);
 								if ($MyRow[0] > 0) {
 									$CancelDelete = 1;
 									prnMsg(_('Cannot delete this account because it is used by one the defined bank accounts'), 'warn');
 								} else {
 
 									$SQL = "DELETE FROM chartdetails WHERE accountcode='" . $SelectedAccount . "'";
-									$result = DB_query($SQL);
+									$Result = DB_query($SQL);
 									$SQL = "DELETE FROM chartmaster WHERE accountcode= '" . $SelectedAccount . "'";
-									$result = DB_query($SQL);
+									$Result = DB_query($SQL);
 									prnMsg(_('Account') . ' ' . $SelectedAccount . ' ' . _('has been deleted'), 'succes');
 								}
 							}
@@ -214,8 +214,8 @@ if (!isset($_GET['delete'])) {
 
 		$SQL = "SELECT accountcode, accountname, group_ FROM chartmaster WHERE accountcode='" . $SelectedAccount . "'";
 
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
 
 		$_POST['AccountCode'] = $MyRow['accountcode'];
 		$_POST['AccountName'] = $MyRow['accountname'];
@@ -252,13 +252,13 @@ if (!isset($_GET['delete'])) {
 	}
 
 	$SQL = "SELECT groupname FROM accountgroups ORDER BY sequenceintb";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '<tr>
 			<td>' . _('Account Group') . ':</td>
 			<td><select required="required" minlength="1" name="Group">';
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['Group']) and $MyRow[0] == $_POST['Group']) {
 			echo '<option selected="selected" value="';
 		} else {
@@ -294,7 +294,7 @@ if (!isset($SelectedAccount)) {
 
 	$ErrMsg = _('The chart accounts could not be retrieved because');
 
-	$result = DB_query($SQL, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
 	echo '<br /><table class="selection">';
 	echo '<tr>
@@ -306,7 +306,7 @@ if (!isset($SelectedAccount)) {
 
 	$k = 0; //row colour counter
 
-	while ($MyRow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($Result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;

@@ -354,15 +354,15 @@ if (isset($_POST['SearchSuppliers'])) {
 	}
 
 	$ErrMsg = _('The searched supplier records requested cannot be retrieved because');
-	$result_SuppSelect = DB_query($SQL, $ErrMsg);
-	$SuppliersReturned = DB_num_rows($result_SuppSelect);
-	if (DB_num_rows($result_SuppSelect) == 1) {
-		$MyRow = DB_fetch_array($result_SuppSelect);
+	$Result_SuppSelect = DB_query($SQL, $ErrMsg);
+	$SuppliersReturned = DB_num_rows($Result_SuppSelect);
+	if (DB_num_rows($Result_SuppSelect) == 1) {
+		$MyRow = DB_fetch_array($Result_SuppSelect);
 		$_POST['Select'] = $MyRow['supplierid'];
-	} //DB_num_rows($result_SuppSelect) == 1
-	elseif (DB_num_rows($result_SuppSelect) == 0) {
+	} //DB_num_rows($Result_SuppSelect) == 1
+	elseif (DB_num_rows($Result_SuppSelect) == 0) {
 		prnMsg(_('No supplier records contain the selected text') . ' - ' . _('please alter your search criteria and try again'), 'info');
-	} //DB_num_rows($result_SuppSelect) == 0
+	} //DB_num_rows($Result_SuppSelect) == 0
 } //isset($_POST['SearchSuppliers'])
 
 /*end of if search for supplier codes/names */
@@ -416,8 +416,8 @@ if (isset($_POST['Select'])) {
 
 	$ErrMsg = _('The supplier record of the supplier selected') . ': ' . $_POST['Select'] . ' ' . _('cannot be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve the supplier details and failed was');
-	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
+	$MyRow = DB_fetch_array($Result);
 	// added for suppliers lookup fields
 
 	$AuthSql = "SELECT cancreate
@@ -492,9 +492,9 @@ else {
 
 	$ErrMsg = _('The supplier record of the supplier selected') . ': ' . $_POST['Select'] . ' ' . _('cannot be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve the supplier details and failed was');
-	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-	$MyRow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($Result);
 
 	// added for suppliers lookup fields
 	if (!isset($_SESSION['PO' . $identifier])) {
@@ -557,7 +557,7 @@ if ($_SESSION['RequireSupplierSelection'] == 1 or !isset($_SESSION['PO' . $ident
 		<input type="submit" name="SearchSuppliers" value="' . _('Search Now') . '" />
 		<input type="submit" value="' . _('Reset') . '" /></div>';
 
-	if (isset($result_SuppSelect)) {
+	if (isset($Result_SuppSelect)) {
 		echo '<br /><table cellpadding="3" class="selection">
 						<tr>
 							<th class="SortableColumn">' . _('Code') . '</th>
@@ -569,7 +569,7 @@ if ($_SESSION['RequireSupplierSelection'] == 1 or !isset($_SESSION['PO' . $ident
 		$k = 0;
 		/*row counter to determine background colour */
 
-		while ($MyRow = DB_fetch_array($result_SuppSelect)) {
+		while ($MyRow = DB_fetch_array($Result_SuppSelect)) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;
@@ -596,7 +596,7 @@ if ($_SESSION['RequireSupplierSelection'] == 1 or !isset($_SESSION['PO' . $ident
 
 		echo '</table>';
 
-	} //isset($result_SuppSelect)
+	} //isset($Result_SuppSelect)
 	//end if results to show
 
 	//end if RequireSupplierSelection
@@ -660,8 +660,8 @@ else {
 					ON stockmaster.stockid = purchdata.stockid
 				WHERE stockmaster.stockid='" . $Purch_Item . "'
 				AND purchdata.supplierno ='" . $_GET['SelectedSupplier'] . "'";
-		$result = DB_query($SQL);
-		$PurchItemRow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$PurchItemRow = DB_fetch_array($Result);
 
 		if (!isset($PurchItemRow['conversionfactor'])) {
 			$PurchItemRow['conversionfactor'] = 1;
@@ -700,8 +700,8 @@ else {
 		$_POST['DeliveryBy'] = $_SESSION['PO' . $identifier]->DeliveryBy;
 		$_POST['PaymentTerms'] = $_SESSION['PO' . $identifier]->PaymentTerms;
 		$SQL = "SELECT realname FROM www_users WHERE userid='" . $_POST['Initiator'] . "'";
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
 		$_POST['InitiatorName'] = $MyRow['realname'];
 	} //!isset($_POST['LookupDeliveryAddress']) and (!isset($_POST['StkLocation']) or $_POST['StkLocation']) and (isset($_SESSION['PO' . $identifier]->Location) and $_SESSION['PO' . $identifier]->Location != '')
 
@@ -783,7 +783,7 @@ else {
 
 	if (isset($_POST['AllowRePrint'])) {
 		$SQL = "UPDATE purchorders SET allowprint=1 WHERE orderno='" . $_SESSION['PO' . $identifier]->OrderNo . "'";
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 	} //isset($_POST['AllowRePrint'])
 
 	if ($_SESSION['PO' . $identifier]->AllowPrintPO == 0 and empty($_POST['RePrint'])) {
@@ -1114,27 +1114,27 @@ else {
 			<td><input type="tel" name="SuppTel" size="31" minlength="0" maxlength="30" value="' . $_SESSION['PO' . $identifier]->SuppTel . '" /></td>
 		</tr>';
 
-	$result = DB_query("SELECT terms, termsindicator FROM paymentterms");
+	$Result = DB_query("SELECT terms, termsindicator FROM paymentterms");
 
 	echo '<tr>
 			<td>' . _('Payment Terms') . ':</td>
 			<td><select minlength="0" name="PaymentTerms">';
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($MyRow['termsindicator'] == $_SESSION['PO' . $identifier]->PaymentTerms) {
 			echo '<option selected="selected" value="' . $MyRow['termsindicator'] . '">' . $MyRow['terms'] . '</option>';
 		} //$MyRow['termsindicator'] == $_SESSION['PO' . $identifier]->PaymentTerms
 		else {
 			echo '<option value="' . $MyRow['termsindicator'] . '">' . $MyRow['terms'] . '</option>';
 		} //end while loop
-	} //$MyRow = DB_fetch_array($result)
-	DB_data_seek($result, 0);
+	} //$MyRow = DB_fetch_array($Result)
+	DB_data_seek($Result, 0);
 	echo '</select></td></tr>';
 
-	$result = DB_query("SELECT loccode,
+	$Result = DB_query("SELECT loccode,
 							locationname
 						FROM locations WHERE loccode='" . $_SESSION['PO' . $identifier]->Port . "'");
-	$MyRow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($Result);
 	$_POST['Port'] = $MyRow['locationname'];
 
 	echo '<tr>

@@ -95,7 +95,7 @@ if (isset($_POST['submit'])) {
 		$ErrMsg = _('The supplier contact could not be inserted or updated because');
 		$DbgMsg = _('The SQL that was used but failed was');
 
-		$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 		prnMsg($msg, 'success');
 
@@ -116,7 +116,7 @@ if (isset($_POST['submit'])) {
 	$ErrMsg = _('The supplier contact could not be deleted because');
 	$DbgMsg = _('The SQL that was used but failed was');
 
-	$result = DB_query($SQL, $ErrMsg, $DbgMsg);
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	echo '<br />' . _('Supplier contact has been deleted') . '<p />';
 
@@ -135,11 +135,11 @@ if (!isset($SelectedContact)) {
 				WHERE suppliercontacts.supplierid=suppliers.supplierid
 				AND suppliercontacts.supplierid = '" . $SupplierID . "'";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
-	if (DB_num_rows($result) > 0) {
+	if (DB_num_rows($Result) > 0) {
 
-		$MyRow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($Result);
 
 		echo '<table class="selection">
 				<tr>
@@ -163,7 +163,7 @@ if (!isset($SelectedContact)) {
 					<td><a href="mailto:%s">%s</a></td>
 					<td><a href="%s&amp;SupplierID=%s&amp;SelectedContact=%s">' . _('Edit') . '</a></td>
 					<td><a href="%s&amp;SupplierID=%s&amp;SelectedContact=%s&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this contact?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td></tr>', $MyRow['contact'], $MyRow['position'], $MyRow['tel'], $MyRow['fax'], $MyRow['email'], $MyRow['email'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $SupplierID, $MyRow['contact'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $SupplierID, $MyRow['contact']);
-		} while ($MyRow = DB_fetch_array($result));
+		} while ($MyRow = DB_fetch_array($Result));
 		echo '</tbody>
 			</table><br />';
 	} else {
@@ -199,8 +199,8 @@ if (!isset($_GET['delete'])) {
 					WHERE contact='" . $SelectedContact . "'
 					AND supplierid='" . $SupplierID . "'";
 
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
 
 		$_POST['Contact'] = $MyRow['contact'];
 		$_POST['Position'] = $MyRow['position'];

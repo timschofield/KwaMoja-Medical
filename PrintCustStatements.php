@@ -50,10 +50,10 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 				bankaccounts.bankaccountcode
 			FROM bankaccounts
 			WHERE bankaccounts.invoice = '1'";
-	$result = DB_query($SQL, '', '', false, false);
+	$Result = DB_query($SQL, '', '', false, false);
 	if (DB_error_no() != 1) {
-		if (DB_num_rows($result) == 1){
-			$MyRow = DB_fetch_array($result);
+		if (DB_num_rows($Result) == 1){
+			$MyRow = DB_fetch_array($Result);
 			$DefaultBankAccountNumber = $MyRow['bankaccountnumber'];
 		} else {
 			$DefaultBankAccountNumber = '';
@@ -458,8 +458,8 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 						max(debtorno) AS tocriteria
 					FROM debtorsmaster";
 
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
 
 		echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 		echo '<div>';

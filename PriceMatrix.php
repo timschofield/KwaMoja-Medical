@@ -74,8 +74,8 @@ if (isset($_POST['submit'])) {
 				AND salestype='" . $_POST['TypeAbbrev'] . "'
 				AND currabrev='" . $_POST['currabrev'] . "'
 			AND quantitybreak='" . $_POST['quantitybreak'] . "'";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
 	if ($MyRow[0] != 0 and !isset($_POST['OldTypeAbbrev']) and !isset($_POST['OldCurrAbrev'])) {
 		prnMsg(_('This price has already been entered. To change it you should edit it'), 'warn');
 		$InputError = 1;
@@ -99,7 +99,7 @@ if (isset($_POST['submit'])) {
 					AND quantitybreak='" . filter_number_format($_POST['OldQuantityBreak']) . "'";
 
 		$ErrMsg = _('Could not be update the existing prices');
-		$result = DB_query($SQL, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 
 		ReSequenceEffectiveDates($StockID, $_POST['SalesType'], $_POST['CurrAbrev'], $_POST['QuantityBreak']);
 
@@ -125,7 +125,7 @@ if (isset($_POST['submit'])) {
 						'" . $SQLEndDate . "')";
 
 		$ErrMsg = _('Failed to insert price data');
-		$result = DB_query($SQL, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 		prnMsg(_('The price matrix record has been added'), 'success');
 		unset($_POST['QuantityBreak']);
 		unset($_POST['Price']);
@@ -146,7 +146,7 @@ if (isset($_POST['submit'])) {
 					AND startdate='" . $_GET['StartDate'] . "'
 					AND enddate='" . $_GET['EndDate'] . "'";
 	$ErrMsg = _('Failed to delete price data');
-	$result = DB_query($SQL, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 	prnMsg(_('The price matrix record has been deleted'), 'success');
 	echo '<br />';
 }
@@ -170,7 +170,7 @@ if (isset($_GET['Edit'])) {
 }
 
 $SQL = "SELECT currabrev FROM currencies";
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 require_once('includes/CurrenciesArray.php');
 
 echo '<table class="selection">';
@@ -178,7 +178,7 @@ echo '<table class="selection">';
 echo '<tr>
 		<td>' . _('Currency') . ':</td>
 		<td><select name="CurrAbrev">';
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	if ($MyRow['currabrev'] == $_POST['CurrAbrev']) {
 		echo '<option selected="selected" value="' . $MyRow['currabrev'] . '">' . $CurrencyName[$MyRow['currabrev']] . '</option>';
 	} else {
@@ -193,7 +193,7 @@ $SQL = "SELECT typeabbrev,
 				sales_type
 			FROM salestypes";
 
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 
 echo '<tr>
 		<td>' . _('Customer Price List') . ' (' . _('Sales Type') . '):</td>
@@ -201,7 +201,7 @@ echo '<tr>
 
 echo '<select tabindex="1" name="SalesType">';
 
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	if (isset($_POST['SalesType']) and $MyRow['typeabbrev'] == $_POST['SalesType']) {
 		echo '<option selected="selected" value="' . $MyRow['typeabbrev'] . '">' . $MyRow['sales_type'] . '</option>';
 	} else {
@@ -271,7 +271,7 @@ $SQL = "SELECT sales_type,
 					stockid,
 					quantitybreak";
 
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 
 echo '<table class="selection">
 		<tr>
@@ -285,7 +285,7 @@ echo '<table class="selection">
 
 $k = 0; //row colour counter
 
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	if ($k == 1) {
 		echo '<tr class="EvenTableRows">';
 		$k = 0;
@@ -356,9 +356,9 @@ function ReSequenceEffectiveDates ($Item, $PriceList, $CurrAbbrev, $QuantityBrea
 					AND quantitybreak='".$QuantityBreak."'
 				ORDER BY startdate,
 						enddate";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($NextStartDate)) {
 			if (Date1GreaterThanDate2(ConvertSQLDate($MyRow['startdate']), $NextStartDate)) {
 				$NextStartDate = ConvertSQLDate($MyRow['startdate']);

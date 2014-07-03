@@ -58,7 +58,7 @@ if (isset($_POST['submit'])) {
 						'" . filter_number_format($_POST['QuantityBreak']) . "',
 						'" . (filter_number_format($_POST['DiscountRate']) / 100) . "')";
 
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 		prnMsg(_('The discount matrix record has been added'), 'success');
 		echo '<br />';
 		unset($_POST['DiscountCategory']);
@@ -74,7 +74,7 @@ if (isset($_POST['submit'])) {
 		AND salestype='" . $_GET['SalesType'] . "'
 		AND quantitybreak='" . $_GET['QuantityBreak'] . "'";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	prnMsg(_('The discount matrix record has been deleted'), 'success');
 	echo '<br />';
 }
@@ -90,13 +90,13 @@ $SQL = "SELECT typeabbrev,
 		sales_type
 		FROM salestypes";
 
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 
 echo '<tr><td>' . _('Customer Price List') . ' (' . _('Sales Type') . '):</td><td>';
 
 echo '<select minlength="0" tabindex="1" name="SalesType">';
 
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	if (isset($_POST['SalesType']) and $MyRow['typeabbrev'] == $_POST['SalesType']) {
 		echo '<option selected="selected" value="' . $MyRow['typeabbrev'] . '">' . $MyRow['sales_type'] . '</option>';
 	} else {
@@ -108,13 +108,13 @@ echo '</select></td></tr>';
 
 
 $SQL = "SELECT DISTINCT discountcategory FROM stockmaster WHERE discountcategory <>''";
-$result = DB_query($SQL);
-if (DB_num_rows($result) > 0) {
+$Result = DB_query($SQL);
+if (DB_num_rows($Result) > 0) {
 	echo '<tr>
 			<td>' . _('Discount Category Code') . ': </td>
 			<td><select minlength="0" name="DiscountCategory">';
 
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($MyRow['discountcategory'] == $_POST['DiscCat']) {
 			echo '<option selected="selected" value="' . $MyRow['discountcategory'] . '">' . $MyRow['discountcategory'] . '</option>';
 		} else {
@@ -152,7 +152,7 @@ $SQL = "SELECT sales_type,
 			discountcategory,
 			quantitybreak";
 
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 
 echo '<table class="selection">';
 echo '<tr>
@@ -164,7 +164,7 @@ echo '<tr>
 
 $k = 0; //row colour counter
 
-while ($MyRow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 	if ($k == 1) {
 		echo '<tr class="EvenTableRows">';
 		$k = 0;

@@ -42,11 +42,11 @@ if ($JournalNo == 'Preview') {
 				ON gltrans.tag=tags.tagref
 			WHERE gltrans.type='0'
 				AND gltrans.typeno='" . $JournalNo . "'";
-	$result = DB_query($SQL);
-	$LineCount = DB_num_rows($result); // UldisN
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$LineCount = DB_num_rows($Result); // UldisN
+	$MyRow = DB_fetch_array($Result);
 	$JournalDate = $MyRow['trandate'];
-	DB_data_seek($result, 0);
+	DB_data_seek($Result, 0);
 	include('includes/PDFGLJournalHeader.inc');
 }
 $counter = 1;
@@ -61,7 +61,7 @@ while ($counter <= $LineCount) {
 		$Tag = str_pad('', 25, 'x');
 		$JobRef = str_pad('', 25, 'x');
 	} else {
-		$MyRow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($Result);
 		if ($MyRow['tag'] == 0) {
 			$MyRow['tagdescription'] = 'None';
 		}

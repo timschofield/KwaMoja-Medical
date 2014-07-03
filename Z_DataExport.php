@@ -85,13 +85,13 @@ if (isset($_POST['pricelist'])) {
 			WHERE stockid = '" . $PriceList['stockid'] . "'
 			AND loccode = '" . $_POST['Location'] . "'
 			ORDER BY stkmoveno DESC LIMIT 1";
-		$resultQty = DB_query($SQLQty, $ErrMsg);
-		if ($resultQty) {
-			if (DB_num_rows($resultQty) > 0) {
-				$Row = DB_fetch_row($resultQty);
+		$ResultQty = DB_query($SQLQty, $ErrMsg);
+		if ($ResultQty) {
+			if (DB_num_rows($ResultQty) > 0) {
+				$Row = DB_fetch_row($ResultQty);
 				$Qty = $Row[0];
 			}
-			DB_free_result($resultQty);
+			DB_free_result($ResultQty);
 		}
 
 		$DisplayUnitPrice = $PriceList['price'];

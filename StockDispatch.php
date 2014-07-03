@@ -38,8 +38,8 @@ if (isset($_POST['PrintPDF'])) {
 	// from location
 	$ErrMsg = _('Could not retrieve location name from the database');
 	$SQLfrom = "SELECT locationname FROM `locations` WHERE loccode='" . $_POST['FromLocation'] . "'";
-	$result = DB_query($SQLfrom, $ErrMsg);
-	$Row = DB_fetch_row($result);
+	$Result = DB_query($SQLfrom, $ErrMsg);
+	$Row = DB_fetch_row($Result);
 	$FromLocation = $Row['0'];
 
 	// to location
@@ -48,8 +48,8 @@ if (isset($_POST['PrintPDF'])) {
 					cashsalebranch
 				FROM `locations`
 				WHERE loccode='" . $_POST['ToLocation'] . "'";
-	$resultto = DB_query($SQLto, $ErrMsg);
-	$RowTo = DB_fetch_row($resultto);
+	$Resultto = DB_query($SQLto, $ErrMsg);
+	$RowTo = DB_fetch_row($Resultto);
 	$ToLocation = $RowTo['0'];
 	$ToCustomer = $RowTo['1'];
 	$ToBranch = $RowTo['2'];
@@ -115,7 +115,7 @@ if (isset($_POST['PrintPDF'])) {
 			AND stockcategory.stocktype<>'A'
 			AND (stockmaster.mbflag='B' OR stockmaster.mbflag='M') " . $WhereCategory . " ORDER BY locstock.loccode,locstock.stockid";
 
-	$result = DB_query($SQL, '', '', false, true);
+	$Result = DB_query($SQL, '', '', false, true);
 
 	if (DB_error_no() != 0) {
 		$Title = _('Stock Dispatch - Problem Report');
@@ -129,7 +129,7 @@ if (isset($_POST['PrintPDF'])) {
 		include('includes/footer.inc');
 		exit;
 	}
-	if (DB_num_rows($result) == 0) {
+	if (DB_num_rows($Result) == 0) {
 		$Title = _('Stock Dispatch - Problem Report');
 		include('includes/header.inc');
 		echo '<br />';
@@ -144,7 +144,7 @@ if (isset($_POST['PrintPDF'])) {
 
 	$FontSize = 8;
 	$Now = Date('Y-m-d H-i-s');
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		// Check if there is any stock in transit already sent from FROM LOCATION
 		$InTransitQuantityAtFrom = 0;
 		if ($_SESSION['ProhibitNegativeStock'] == 1) {
@@ -262,7 +262,7 @@ if (isset($_POST['PrintPDF'])) {
 												'" . $_POST['ToLocation'] . "')";
 			$ErrMsg = _('CRITICAL ERROR') . '! ' . _('Unable to enter Location Transfer record for') . ' ' . $MyRow['stockid'];
 			if ($_POST['ReportType'] == 'Batch') {
-				$resultLocShip = DB_query($SQL2, $ErrMsg);
+				$ResultLocShip = DB_query($SQL2, $ErrMsg);
 			}
 		}
 	}
@@ -317,8 +317,8 @@ if (isset($_POST['PrintPDF'])) {
 	echo '<div class="page_help_text noPrint">' . _('Create a transfer batch of overstock from one location to another location that is below reorder level.') . '<br/>' . _('Quantity to ship is based on reorder level minus the quantity on hand at the To Location; if there is a') . '<br/>' . _('dispatch percentage entered, that needed quantity is inflated by the percentage entered.') . '<br/>' . _('You need access to both locations to do the transfer.') . '<br/>' . _('Use Bulk Inventory Transfer - Receive to process the batch') . '</div>';
 
 	$SQL = "SELECT defaultlocation FROM www_users WHERE userid='" . $_SESSION['UserID'] . "'";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 	$DefaultLocation = $MyRow['defaultlocation'];
 	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 	echo '<div>
@@ -336,7 +336,7 @@ if (isset($_POST['PrintPDF'])) {
 						ON locations.loccode=www_users.defaultlocation
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
-	$resultStkLocs = DB_query($SQL);
+	$ResultStkLocs = DB_query($SQL);
 	if (!isset($_POST['FromLocation'])) {
 		$_POST['FromLocation'] = $DefaultLocation;
 	}
@@ -348,7 +348,7 @@ if (isset($_POST['PrintPDF'])) {
 	echo '<tr>
 			  <td>' . _('From Stock Location') . ':</td>
 			  <td><select required="required" minlength="1" name="FromLocation"> ';
-	while ($MyRow = DB_fetch_array($resultStkLocs)) {
+	while ($MyRow = DB_fetch_array($ResultStkLocs)) {
 		if ($MyRow['loccode'] == $_POST['FromLocation']) {
 			echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 		} else {
@@ -358,14 +358,14 @@ if (isset($_POST['PrintPDF'])) {
 	echo '</select></td>
 		</tr>';
 	$SQL = "SELECT locationname, loccode FROM locations";
-	$resultStkLocs = DB_query($SQL);
+	$ResultStkLocs = DB_query($SQL);
 	if (!isset($_POST['ToLocation'])) {
 		$_POST['ToLocation'] = $DefaultLocation;
 	}
 	echo '<tr>
 			<td>' . _('To Stock Location') . ':</td>
 			<td><select required="required" minlength="1" name="ToLocation"> ';
-	while ($MyRow = DB_fetch_array($resultStkLocs)) {
+	while ($MyRow = DB_fetch_array($ResultStkLocs)) {
 		if ($MyRow['loccode'] == $_POST['ToLocation']) {
 			echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 		} else {
@@ -376,8 +376,8 @@ if (isset($_POST['PrintPDF'])) {
 		</tr>';
 
 	$SQL = "SELECT categoryid, categorydescription FROM stockcategory ORDER BY categorydescription";
-	$result1 = DB_query($SQL);
-	if (DB_num_rows($result1) == 0) {
+	$Result1 = DB_query($SQL);
+	if (DB_num_rows($Result1) == 0) {
 		echo '</table>';
 		prnMsg(_('There are no stock categories currently defined please use the link below to set them up'), 'warn');
 		echo '<br /><a href="' . $RootPath . '/StockCategories.php">' . _('Define Stock Categories') . '</a>';
@@ -398,7 +398,7 @@ if (isset($_POST['PrintPDF'])) {
 	} else {
 		echo '<option value="All">' . _('All') . '</option>';
 	}
-	while ($MyRow1 = DB_fetch_array($result1)) {
+	while ($MyRow1 = DB_fetch_array($Result1)) {
 		if ($MyRow1['categoryid'] == $_POST['StockCat']) {
 			echo '<option selected="selected" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 		} else {

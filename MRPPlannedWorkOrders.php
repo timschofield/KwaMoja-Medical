@@ -6,8 +6,8 @@
 
 include('includes/session.inc');
 
-$result = DB_show_tables('mrprequirements');
-if (DB_num_rows($result) == 0) {
+$Result = DB_show_tables('mrprequirements');
+if (DB_num_rows($Result) == 0) {
 	$Title = _('MRP error');
 	include('includes/header.inc');
 	echo '<br />';
@@ -106,7 +106,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['Review'])) {
 						 computedcost
 				ORDER BY mrpplannedorders.part,yearmonth";
 	}
-	$result = DB_query($SQL, '', '', false, true);
+	$Result = DB_query($SQL, '', '', false, true);
 
 	if (DB_error_no() != 0) {
 		$Title = _('MRP Planned Work Orders') . ' - ' . _('Problem Report');
@@ -119,7 +119,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['Review'])) {
 		include('includes/footer.inc');
 		exit;
 	}
-	if (DB_num_rows($result) == 0) { //then there's nothing to print
+	if (DB_num_rows($Result) == 0) { //then there's nothing to print
 		$Title = _('MRP Planned Work Orders');
 		include('includes/header.inc');
 		prnMsg(_('There were no items with demand greater than supply'), 'info');
@@ -155,7 +155,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['Review'])) {
 		$TotalPartCost = 0;
 		$Total_ExtCost = 0;
 
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			$YPos -= $line_height;
 
 			// Use to alternate between lines with transparent and painted background
@@ -272,7 +272,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['Review'])) {
 		$Total_ExtCost = 0;
 		$j = 1; //row ID
 		$k = 0; //row colour counter
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 
 			// Alternate row color
 			if ($k == 1) {

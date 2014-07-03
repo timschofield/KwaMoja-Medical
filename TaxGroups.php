@@ -34,8 +34,8 @@ if (isset($_POST['submit']) or isset($_GET['remove']) or isset($_GET['add'])) {
 			$SQL = "UPDATE taxgroups SET taxgroupdescription = '" . $_POST['GroupName'] . "'
 					WHERE taxgroupid = '" . $SelectedGroup . "'";
 			$ErrMsg = _('The update of the tax group description failed because');
-			$result = DB_query($SQL, $ErrMsg);
-			if ($result) {
+			$Result = DB_query($SQL, $ErrMsg);
+			if ($Result) {
 				prnMsg(_('The tax group description was updated to') . ' ' . $_POST['GroupName'], 'success');
 			}
 			unset($SelectedGroup);
@@ -51,8 +51,8 @@ if (isset($_POST['submit']) or isset($_GET['remove']) or isset($_GET['add'])) {
 				$SQL = "INSERT INTO taxgroups (taxgroupdescription)
 						VALUES ('" . $_POST['GroupName'] . "')";
 				$ErrMsg = _('The addition of the group failed because');
-				$result = DB_query($SQL, $ErrMsg);
-				if ($result) {
+				$Result = DB_query($SQL, $ErrMsg);
+				if ($Result) {
 					prnMsg(_('Added the new tax group') . ' ' . $_POST['GroupName'], 'success');
 				}
 				$GroupResult = DB_query("SELECT taxgroupid
@@ -74,8 +74,8 @@ if (isset($_POST['submit']) or isset($_GET['remove']) or isset($_GET['add'])) {
 							0)";
 
 			$ErrMsg = _('The addition of the tax failed because');
-			$result = DB_query($SQL, $ErrMsg);
-			if ($result) {
+			$Result = DB_query($SQL, $ErrMsg);
+			if ($Result) {
 				prnMsg(_('The tax was added.'), 'success');
 			}
 		} elseif (isset($_GET['remove'])) { // remove a taxauthority from a tax group
@@ -83,8 +83,8 @@ if (isset($_POST['submit']) or isset($_GET['remove']) or isset($_GET['add'])) {
 					WHERE taxgroupid = '" . $SelectedGroup . "'
 					AND taxauthid = '" . $TaxAuthority . "'";
 			$ErrMsg = _('The removal of this tax failed because');
-			$result = DB_query($SQL, $ErrMsg);
-			if ($result) {
+			$Result = DB_query($SQL, $ErrMsg);
+			if ($Result) {
 				prnMsg(_('This tax was removed.'), 'success');
 			}
 		}
@@ -107,7 +107,7 @@ if (isset($_POST['submit']) or isset($_GET['remove']) or isset($_GET['add'])) {
 				WHERE taxgroupid='" . $SelectedGroup . "'
 				AND taxauthid='" . $MyRow[0] . "'";
 
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 		}
 	}
 
@@ -134,16 +134,16 @@ if (isset($_POST['submit']) or isset($_GET['remove']) or isset($_GET['add'])) {
 	/* PREVENT DELETES IF DEPENDENT RECORDS IN 'custbranch, suppliers */
 
 	$SQL = "SELECT COUNT(*) FROM custbranch WHERE taxgroupid='" . $_GET['SelectedGroup'] . "'";
-	$result = DB_query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
 	if ($MyRow[0] > 0) {
 		prnMsg(_('Cannot delete this tax group because some customer branches are setup using it'), 'warn');
 		echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('customer branches referring to this tax group');
 	} else {
 		$SQL = "SELECT COUNT(*) FROM suppliers
 				WHERE taxgroupid='" . $_GET['SelectedGroup'] . "'";
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_row($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_row($Result);
 		if ($MyRow[0] > 0) {
 			prnMsg(_('Cannot delete this tax group because some suppliers are setup using it'), 'warn');
 			echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('suppliers referring to this tax group');
@@ -151,10 +151,10 @@ if (isset($_POST['submit']) or isset($_GET['remove']) or isset($_GET['add'])) {
 
 			$SQL = "DELETE FROM taxgrouptaxes
 					WHERE taxgroupid='" . $_GET['SelectedGroup'] . "'";
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 			$SQL = "DELETE FROM taxgroups
 					WHERE taxgroupid='" . $_GET['SelectedGroup'] . "'";
-			$result = DB_query($SQL);
+			$Result = DB_query($SQL);
 			prnMsg($_GET['GroupID'] . ' ' . _('tax group has been deleted') . '!', 'success');
 		}
 	} //end if taxgroup used in other tables
@@ -169,15 +169,15 @@ if (!isset($SelectedGroup)) {
 	$SQL = "SELECT taxgroupid,
 					taxgroupdescription
 			FROM taxgroups";
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
-	if (DB_num_rows($result) == 0) {
+	if (DB_num_rows($Result) == 0) {
 		echo '<div class="page_help_text">' . _('As this is the first time that the system has been used, you must first create a tax group.') .
 				'<br />' . _('For help, click on the help icon in the top right') .
 				'<br />' . _('Once you have filled in all the details, click on the button at the bottom of the screen') . '</div>';
 	}
 
-	if (DB_num_rows($result) == 0) {
+	if (DB_num_rows($Result) == 0) {
 		echo '<div class="centre">';
 		prnMsg(_('There are no tax groups configured.'), 'info');
 		echo '</div>';
@@ -189,7 +189,7 @@ if (!isset($SelectedGroup)) {
 				</tr>';
 
 		$k = 0; //row colour counter
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;
@@ -223,11 +223,11 @@ if (isset($SelectedGroup)) {
 					taxgroupdescription
 			FROM taxgroups
 			WHERE taxgroupid='" . $SelectedGroup . "'";
-	$result = DB_query($SQL);
-	if (DB_num_rows($result) == 0) {
+	$Result = DB_query($SQL);
+	if (DB_num_rows($Result) == 0) {
 		prnMsg(_('The selected tax group is no longer available.'), 'warn');
 	} else {
-		$MyRow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($Result);
 		$_POST['SelectedGroup'] = $MyRow['taxgroupid'];
 		$_POST['GroupName'] = $MyRow['taxgroupdescription'];
 	}

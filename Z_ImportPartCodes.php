@@ -8,8 +8,8 @@ include('api/api_errorcodes.php');
 
 $User = $_SESSION['UserID'];
 $SQL = "SELECT password FROM www_users WHERE userid='" . $User . "'";
-$result = DB_query($SQL);
-$MyRow = DB_fetch_array($result);
+$Result = DB_query($SQL);
+$MyRow = DB_fetch_array($Result);
 $password = $MyRow[0];
 
 $ServerURL = 'http://' . $_SERVER['HTTP_HOST'] . $RootPath . '/api/api_xml-rpc.php';
@@ -72,8 +72,8 @@ if (isset($_POST['update'])) {
 	fclose($fp);
 } else {
 	$SQL = "SELECT * FROM locations";
-	$result = DB_query($SQL);
-	if (DB_num_rows($result) == 0) {
+	$Result = DB_query($SQL);
+	if (DB_num_rows($Result) == 0) {
 		prnMsg(_('No locations have been set up. At least one location should be set up first'), "error");
 	} else {
 		prnMsg(_('Select a csv file containing the details of the parts that you wish to import') . '. ' . '<br />' . _('The first line must contain the field names that you wish to import. ') . '<a href ="Z_DescribeTable.php?table=stockmaster">' . _('The field names can be found here') . '</a>', 'info');

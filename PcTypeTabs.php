@@ -90,7 +90,7 @@ if (isset($_POST['submit'])) {
 
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
-		$result = DB_query($SQL);
+		$Result = DB_query($SQL);
 		prnMsg($msg, 'success');
 		echo '<br />';
 		unset($SelectedTab);
@@ -134,7 +134,7 @@ if (isset($_POST['submit'])) {
 
 		$SQL = "DELETE FROM pctypetabs WHERE typetabcode='" . $SelectedTab . "'";
 		$ErrMsg = _('The Tab Type record could not be deleted because');
-		$result = DB_query($SQL, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 		prnMsg(_('Tab type') . ' ' . $SelectedTab . ' ' . _('has been deleted'), 'success');
 		unset($SelectedTab);
 		unset($_GET['delete']);
@@ -151,7 +151,7 @@ if (!isset($SelectedTab)) {
 	or deletion of the records*/
 
 	$SQL = 'SELECT * FROM pctypetabs';
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 
 	echo '<table class="selection">';
 	echo '<tr>
@@ -161,7 +161,7 @@ if (!isset($SelectedTab)) {
 
 	$k = 0; //row colour counter
 
-	while ($MyRow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($Result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -198,8 +198,8 @@ if (!isset($_GET['delete'])) {
 				FROM pctypetabs
 				WHERE typetabcode='" . $SelectedTab . "'";
 
-		$result = DB_query($SQL);
-		$MyRow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
 
 		$_POST['TypeTabCode'] = $MyRow['typetabcode'];
 		$_POST['TypeTabDescription'] = $MyRow['typetabdescription'];

@@ -71,11 +71,11 @@ if (isset($_POST['submit'])) {
 			WHERE chartdetails.accountcode ='" . $SelectedAccount . "'
 			AND chartdetails.actual <>0";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_row($result);
-	if ($myrow[0] > 0) {
+	$MyRow = DB_fetch_row($result);
+	if ($MyRow[0] > 0) {
 		$CancelDelete = 1;
 		prnMsg(_('Cannot delete this account because chart details have been created using this account and at least one period has postings to it'), 'warn');
-		echo '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('chart details that require this account code');
+		echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('chart details that require this account code');
 
 	} else {
 		// PREVENT DELETES IF DEPENDENT RECORDS IN 'GLTrans'
@@ -87,11 +87,11 @@ if (isset($_POST['submit'])) {
 
 		$result = DB_query($sql, $ErrMsg);
 
-		$myrow = DB_fetch_row($result);
-		if ($myrow[0] > 0) {
+		$MyRow = DB_fetch_row($result);
+		if ($MyRow[0] > 0) {
 			$CancelDelete = 1;
 			prnMsg(_('Cannot delete this account because transactions have been created using this account'), 'warn');
-			echo '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('transactions that require this account code');
+			echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('transactions that require this account code');
 
 		} else {
 			//PREVENT DELETES IF Company default accounts set up to this account
@@ -110,8 +110,8 @@ if (isset($_POST['submit'])) {
 
 			$result = DB_query($sql, $ErrMsg);
 
-			$myrow = DB_fetch_row($result);
-			if ($myrow[0] > 0) {
+			$MyRow = DB_fetch_row($result);
+			if ($MyRow[0] > 0) {
 				$CancelDelete = 1;
 				prnMsg(_('Cannot delete this account because it is used as one of the company default accounts'), 'warn');
 
@@ -124,8 +124,8 @@ if (isset($_POST['submit'])) {
 				$ErrMsg = _('Could not test for tax authority GL codes because');
 				$result = DB_query($sql, $ErrMsg);
 
-				$myrow = DB_fetch_row($result);
-				if ($myrow[0] > 0) {
+				$MyRow = DB_fetch_row($result);
+				if ($MyRow[0] > 0) {
 					$CancelDelete = 1;
 					prnMsg(_('Cannot delete this account because it is used as one of the tax authority accounts'), 'warn');
 				} else {
@@ -138,8 +138,8 @@ if (isset($_POST['submit'])) {
 
 					$result = DB_query($sql, $ErrMsg);
 
-					$myrow = DB_fetch_row($result);
-					if ($myrow[0] > 0) {
+					$MyRow = DB_fetch_row($result);
+					if ($MyRow[0] > 0) {
 						$CancelDelete = 1;
 						prnMsg(_('Cannot delete this account because it is used by one of the sales GL posting interface records'), 'warn');
 					} else {
@@ -152,8 +152,8 @@ if (isset($_POST['submit'])) {
 
 						$result = DB_query($sql, $ErrMsg);
 
-						$myrow = DB_fetch_row($result);
-						if ($myrow[0] > 0) {
+						$MyRow = DB_fetch_row($result);
+						if ($MyRow[0] > 0) {
 							$CancelDelete = 1;
 							prnMsg(_('Cannot delete this account because it is used by one of the cost of sales GL posting interface records'), 'warn');
 
@@ -170,8 +170,8 @@ if (isset($_POST['submit'])) {
 
 							$result = DB_query($sql, $ErrMsg);
 
-							$myrow = DB_fetch_row($result);
-							if ($myrow[0] > 0) {
+							$MyRow = DB_fetch_row($result);
+							if ($MyRow[0] > 0) {
 								$CancelDelete = 1;
 								prnMsg(_('Cannot delete this account because it is used by one of the stock GL posting interface records'), 'warn');
 							} else {
@@ -182,8 +182,8 @@ if (isset($_POST['submit'])) {
 
 								$result = DB_query($sql, $ErrMsg);
 
-								$myrow = DB_fetch_row($result);
-								if ($myrow[0] > 0) {
+								$MyRow = DB_fetch_row($result);
+								if ($MyRow[0] > 0) {
 									$CancelDelete = 1;
 									prnMsg(_('Cannot delete this account because it is used by one the defined bank accounts'), 'warn');
 								} else {
@@ -215,11 +215,11 @@ if (!isset($_GET['delete'])) {
 		$sql = "SELECT accountcode, accountname, group_ FROM chartmaster WHERE accountcode='" . $SelectedAccount . "'";
 
 		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($result);
 
-		$_POST['AccountCode'] = $myrow['accountcode'];
-		$_POST['AccountName'] = $myrow['accountname'];
-		$_POST['Group'] = $myrow['group_'];
+		$_POST['AccountCode'] = $MyRow['accountcode'];
+		$_POST['AccountName'] = $MyRow['accountname'];
+		$_POST['Group'] = $MyRow['group_'];
 
 		echo '<input type="hidden" name="SelectedAccount" value="' . $SelectedAccount . '" />';
 		echo '<input type="hidden" name="AccountCode" value="' . $_POST['AccountCode'] . '" />';
@@ -258,13 +258,13 @@ if (!isset($_GET['delete'])) {
 			<td>' . _('Account Group') . ':</td>
 			<td><select required="required" minlength="1" name="Group">';
 
-	while ($myrow = DB_fetch_array($result)) {
-		if (isset($_POST['Group']) and $myrow[0] == $_POST['Group']) {
+	while ($MyRow = DB_fetch_array($result)) {
+		if (isset($_POST['Group']) and $MyRow[0] == $_POST['Group']) {
 			echo '<option selected="selected" value="';
 		} else {
 			echo '<option value="';
 		}
-		echo $myrow[0] . '">' . $myrow[0] . '</option>';
+		echo $MyRow[0] . '">' . $MyRow[0] . '</option>';
 	}
 	echo '</select></td>
 		</tr>
@@ -306,7 +306,7 @@ if (!isset($SelectedAccount)) {
 
 	$k = 0; //row colour counter
 
-	while ($myrow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -322,7 +322,7 @@ if (!isset($SelectedAccount)) {
 		<td>%s</td>
 		<td><a href=\"%s&amp;SelectedAccount=%s\">" . _('Edit') . "</a></td>
 		<td><a href=\"%s&amp;SelectedAccount=%s&amp;delete=1\" onclick=\"return MakeConfirm('" . _('Are you sure you wish to delete this account? Additional checks will be performed in any event to ensure data integrity is not compromised.') . "', \'Confirm Delete\', this);\">" . _('Delete') . "</a></td>
-		</tr>", $myrow[0], $myrow[1], $myrow[2], $myrow[3], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow[0], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow[0]);
+		</tr>", $MyRow[0], $MyRow[1], $MyRow[2], $MyRow[3], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow[0], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow[0]);
 
 	}
 	//END WHILE LIST LOOP

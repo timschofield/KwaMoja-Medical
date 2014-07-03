@@ -48,11 +48,11 @@ function CheckForRecursiveBOM($UltimateParent, $ComponentToCheck) {
 	$result = DB_query($sql, $ErrMsg, $DbgMsg);
 
 	if (DB_num_rows($result) != 0) {
-		while ($myrow = DB_fetch_array($result)) {
-			if ($myrow['component'] == $UltimateParent) {
+		while ($MyRow = DB_fetch_array($result)) {
+			if ($MyRow['component'] == $UltimateParent) {
 				return 1;
 			}
-			if (CheckForRecursiveBOM($UltimateParent, $myrow['component'])) {
+			if (CheckForRecursiveBOM($UltimateParent, $MyRow['component'])) {
 				return 1;
 			}
 		} //(while loop)
@@ -134,10 +134,10 @@ function DisplayBOMItems($UltimateParent, $Parent, $Component, $Level) {
 
 	$RowCounter = 0;
 
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 
 		$Level1 = str_repeat('-&nbsp;', $Level - 1) . $Level;
-		if ($myrow['mbflag'] == 'B' OR $myrow['mbflag'] == 'K' OR $myrow['mbflag'] == 'D') {
+		if ($MyRow['mbflag'] == 'B' OR $MyRow['mbflag'] == 'K' OR $MyRow['mbflag'] == 'D') {
 
 			$DrillText = '%s%s';
 			$DrillLink = '<div class="centre">' . _('No lower levels') . '</div>';
@@ -145,26 +145,26 @@ function DisplayBOMItems($UltimateParent, $Parent, $Component, $Level) {
 		} else {
 			$DrillText = '<a href="%s&amp;Select=%s">' . _('Drill Down') . '</a>';
 			$DrillLink = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?';
-			$DrillID = $myrow['component'];
+			$DrillID = $MyRow['component'];
 		}
 		if ($ParentMBflag != 'M' and $ParentMBflag != 'G') {
 			$AutoIssue = _('N/A');
-		} elseif ($myrow['controlled'] == 0 and $myrow['autoissue'] == 1) { //autoissue and not controlled
+		} elseif ($MyRow['controlled'] == 0 and $MyRow['autoissue'] == 1) { //autoissue and not controlled
 			$AutoIssue = _('Yes');
-		} elseif ($myrow['controlled'] == 1) {
+		} elseif ($MyRow['controlled'] == 1) {
 			$AutoIssue = _('No');
 		} else {
 			$AutoIssue = _('N/A');
 		}
 
-		if ($myrow['mbflag'] == 'D' //dummy orservice
-			or $myrow['mbflag'] == 'K' //kit-set
-			or $myrow['mbflag'] == 'A' // assembly
-			or $myrow['mbflag'] == 'G') /* ghost */ {
+		if ($MyRow['mbflag'] == 'D' //dummy orservice
+			or $MyRow['mbflag'] == 'K' //kit-set
+			or $MyRow['mbflag'] == 'A' // assembly
+			or $MyRow['mbflag'] == 'G') /* ghost */ {
 
 			$QuantityOnHand = _('N/A');
 		} else {
-			$QuantityOnHand = locale_number_format($myrow['qoh'], $myrow['decimalplaces']);
+			$QuantityOnHand = locale_number_format($MyRow['qoh'], $MyRow['decimalplaces']);
 		}
 
 		printf('<td>%s</td>
@@ -181,7 +181,7 @@ function DisplayBOMItems($UltimateParent, $Parent, $Component, $Level) {
 				<td><a href="%s&amp;Select=%s&amp;SelectedComponent=%s">' . _('Edit') . '</a></td>
 				<td>' . $DrillText . '</td>
 				<td><a href="%s&amp;Select=%s&amp;SelectedComponent=%s&amp;delete=1&amp;ReSelect=%s&amp;Location=%s&amp;WorkCentre=%s" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this component from the bill of material?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-			 </tr>', $Level1, $myrow['sequence'], $myrow['component'], $myrow['itemdescription'], $myrow['locationname'], $myrow['workcentrename'], locale_number_format($myrow['quantity'], 'Variable'), ConvertSQLDate($myrow['effectiveafter']), ConvertSQLDate($myrow['effectiveto']), $AutoIssue, $QuantityOnHand, htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $Parent, $myrow['component'], $DrillLink, $DrillID, htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $Parent, $myrow['component'], $UltimateParent, $myrow['loccode'], $myrow['workcentrecode']);
+			 </tr>', $Level1, $MyRow['sequence'], $MyRow['component'], $MyRow['itemdescription'], $MyRow['locationname'], $MyRow['workcentrename'], locale_number_format($MyRow['quantity'], 'Variable'), ConvertSQLDate($MyRow['effectiveafter']), ConvertSQLDate($MyRow['effectiveto']), $AutoIssue, $QuantityOnHand, htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $Parent, $MyRow['component'], $DrillLink, $DrillID, htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $Parent, $MyRow['component'], $UltimateParent, $MyRow['loccode'], $MyRow['workcentrecode']);
 
 	} //END WHILE LIST LOOP
 } //end of function DisplayBOMItems
@@ -426,9 +426,9 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 	$DbgMsg = _('The SQL used to retrieve description of the parent part was');
 	$result = DB_query($sql, $ErrMsg, $DbgMsg);
 
-	$myrow = DB_fetch_row($result);
+	$MyRow = DB_fetch_row($result);
 
-	$ParentMBflag = $myrow[1];
+	$ParentMBflag = $MyRow[1];
 
 	switch ($ParentMBflag) {
 		case 'A':
@@ -465,8 +465,8 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 	if (DB_num_rows($result) > 0) {
 		echo '<table class="selection">';
 		echo '<tr><td><div class="centre">' . _('Manufactured parent items') . ' : ';
-		while ($myrow = DB_fetch_array($result)) {
-			echo (($ix) ? ', ' : '') . '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Select=' . $myrow['parent'] . '">' . $myrow['description'] . '&nbsp;(' . $myrow['parent'] . ')</a>';
+		while ($MyRow = DB_fetch_array($result)) {
+			echo (($ix) ? ', ' : '') . '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Select=' . $MyRow['parent'] . '">' . $MyRow['description'] . '&nbsp;(' . $MyRow['parent'] . ')</a>';
 			$ix++;
 		} //end while loop
 		echo '</div></td></tr>';
@@ -488,8 +488,8 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 		echo '<table class="selection">';
 		echo '<tr><td><div class="centre">' . _('Assembly parent items') . ' : ';
 		$ix = 0;
-		while ($myrow = DB_fetch_array($result)) {
-			echo (($ix) ? ', ' : '') . '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Select=' . $myrow['parent'] . '">' . $myrow['description'] . '&nbsp;(' . $myrow['parent'] . ')</a>';
+		while ($MyRow = DB_fetch_array($result)) {
+			echo (($ix) ? ', ' : '') . '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Select=' . $MyRow['parent'] . '">' . $MyRow['description'] . '&nbsp;(' . $MyRow['parent'] . ')</a>';
 			$ix++;
 		} //end while loop
 		echo '</div></td></tr>';
@@ -511,8 +511,8 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 		echo '<table class="selection">';
 		echo '<tr><td><div class="centre">' . _('Kit sets') . ' : ';
 		$ix = 0;
-		while ($myrow = DB_fetch_array($result)) {
-			echo (($ix) ? ', ' : '') . '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Select=' . $myrow['parent'] . '">' . $myrow['description'] . '&nbsp;(' . $myrow['parent'] . ')</a>';
+		while ($MyRow = DB_fetch_array($result)) {
+			echo (($ix) ? ', ' : '') . '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Select=' . $MyRow['parent'] . '">' . $MyRow['description'] . '&nbsp;(' . $MyRow['parent'] . ')</a>';
 			$ix++;
 		} //end while loop
 		echo '</div></td>
@@ -536,8 +536,8 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 				<tr>
 					<td><div class="centre">' . _('Phantom') . ' : ';
 		$ix = 0;
-		while ($myrow = DB_fetch_array($result)) {
-			echo (($ix) ? ', ' : '') . '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Select=' . $myrow['parent'] . '">' . $myrow['description'] . '&nbsp;(' . $myrow['parent'] . ')</a>';
+		while ($MyRow = DB_fetch_array($result)) {
+			echo (($ix) ? ', ' : '') . '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Select=' . $MyRow['parent'] . '">' . $MyRow['description'] . '&nbsp;(' . $MyRow['parent'] . ')</a>';
 			$ix++;
 		} //end while loop
 		echo '</div></td></tr>';
@@ -546,7 +546,7 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 	echo '<br />
 			<table class="selection">';
 	echo '<tr>
-			<th colspan="13"><div class="centre"><b>' . $SelectedParent . ' - ' . $myrow[0] . ' (' . $MBdesc . ') </b></div></th>
+			<th colspan="13"><div class="centre"><b>' . $SelectedParent . ' - ' . $MyRow[0] . ' (' . $MBdesc . ') </b></div></th>
 		</tr>';
 
 	$BOMTree = array();
@@ -613,15 +613,15 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 					AND component='" . $SelectedComponent . "'";
 
 		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($result);
 
-		$_POST['LocCode'] = $myrow['loccode'];
-		$_POST['EffectiveAfter'] = ConvertSQLDate($myrow['effectiveafter']);
-		$_POST['EffectiveTo'] = ConvertSQLDate($myrow['effectiveto']);
-		$_POST['Sequence'] = $myrow['sequence'];
-		$_POST['WorkCentreAdded'] = $myrow['workcentreadded'];
-		$_POST['Quantity'] = locale_number_format($myrow['quantity'], 'Variable');
-		$_POST['AutoIssue'] = $myrow['autoissue'];
+		$_POST['LocCode'] = $MyRow['loccode'];
+		$_POST['EffectiveAfter'] = ConvertSQLDate($MyRow['effectiveafter']);
+		$_POST['EffectiveTo'] = ConvertSQLDate($MyRow['effectiveto']);
+		$_POST['Sequence'] = $MyRow['sequence'];
+		$_POST['WorkCentreAdded'] = $MyRow['workcentreadded'];
+		$_POST['Quantity'] = locale_number_format($MyRow['quantity'], 'Variable');
+		$_POST['AutoIssue'] = $MyRow['autoissue'];
 
 		prnMsg(_('Edit the details of the selected component in the fields below') . '. <br />' . _('Click on the Enter Information button to update the component details'), 'info');
 		echo '<br />
@@ -693,8 +693,8 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 		$result = DB_query($sql, $ErrMsg, $DbgMsg);
 
 
-		while ($myrow = DB_fetch_array($result)) {
-			echo '<option value="' . $myrow['stockid'] . '">' . str_pad($myrow['stockid'], 21, '_', STR_PAD_RIGHT) . $myrow['description'] . '</option>';
+		while ($MyRow = DB_fetch_array($result)) {
+			echo '<option value="' . $MyRow['stockid'] . '">' . str_pad($MyRow['stockid'], 21, '_', STR_PAD_RIGHT) . $MyRow['description'] . '</option>';
 		} //end while loop
 
 		echo '</select></td>
@@ -721,13 +721,13 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 	}
 	$result = DB_query($sql);
 
-	while ($myrow = DB_fetch_array($result)) {
-		if (isset($_POST['LocCode']) and $myrow['loccode'] == $_POST['LocCode']) {
+	while ($MyRow = DB_fetch_array($result)) {
+		if (isset($_POST['LocCode']) and $MyRow['loccode'] == $_POST['LocCode']) {
 			echo '<option selected="selected" value="';
 		} else {
 			echo '<option value="';
 		}
-		echo $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+		echo $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 
 	} //end while loop
 
@@ -762,13 +762,13 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 
 	echo '<select required="required" minlength="1" tabindex="3" name="WorkCentreAdded">';
 
-	while ($myrow = DB_fetch_array($result)) {
-		if (isset($_POST['WorkCentreAdded']) and $myrow['code'] == $_POST['WorkCentreAdded']) {
+	while ($MyRow = DB_fetch_array($result)) {
+		if (isset($_POST['WorkCentreAdded']) and $MyRow['code'] == $_POST['WorkCentreAdded']) {
 			echo '<option selected="selected" value="';
 		} else {
 			echo '<option value="';
 		}
-		echo $myrow['code'] . '">' . $myrow['description'] . '</option>';
+		echo $MyRow['code'] . '">' . $MyRow['description'] . '</option>';
 	} //end while loop
 
 	DB_free_result($result);
@@ -924,7 +924,7 @@ if (!isset($SelectedParent)) {
 
 		$k = 0; //row colour counter
 		$j = 0;
-		while ($myrow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($result)) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;
@@ -932,17 +932,17 @@ if (!isset($SelectedParent)) {
 				echo '<tr class="OddTableRows">';
 				$k++;
 			}
-			if ($myrow['mbflag'] == 'A' or $myrow['mbflag'] == 'K' or $myrow['mbflag'] == 'G') {
+			if ($MyRow['mbflag'] == 'A' or $MyRow['mbflag'] == 'K' or $MyRow['mbflag'] == 'G') {
 				$StockOnHand = _('N/A');
 			} else {
-				$StockOnHand = locale_number_format($myrow['totalonhand'], $myrow['decimalplaces']);
+				$StockOnHand = locale_number_format($MyRow['totalonhand'], $MyRow['decimalplaces']);
 			}
 			$tab = $j + 3;
 			printf('<td><input tabindex="' . $tab . '" type="submit" name="Select" value="%s" /></td>
 					<td>%s</td>
 					<td class="number">%s</td>
 					<td>%s</td>
-					</tr>', $myrow['stockid'], $myrow['description'], $StockOnHand, $myrow['units']);
+					</tr>', $MyRow['stockid'], $MyRow['description'], $StockOnHand, $MyRow['units']);
 
 			$j++;
 			//end of page full new headings if

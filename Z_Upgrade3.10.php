@@ -20,8 +20,8 @@ if ($_POST['DoUpgrade'] == _('Perform Upgrade')) {
 			FROM debtortype
 			WHERE typeid=1';
 	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
-	if ($myrow[0] == 0) {
+	$MyRow = DB_fetch_array($result);
+	if ($MyRow[0] == 0) {
 		$sql = 'INSERT INTO `debtortype` ( `typeid` , `typename` ) VALUES (1, "Default")';
 		$result = DB_query($sql);
 		if (DB_error_no() == 0) {
@@ -37,8 +37,8 @@ if ($_POST['DoUpgrade'] == _('Perform Upgrade')) {
 			FROM factorcompanies
 			WHERE coyname='None'";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
-	if ($myrow[0] == 0) {
+	$MyRow = DB_fetch_array($result);
+	if ($MyRow[0] == 0) {
 		$sql = 'INSERT INTO `factorcompanies` ( `id` , `coyname` ) VALUES (null, "None")';
 		$result = DB_query($sql);
 		if (DB_error_no() == 0) {

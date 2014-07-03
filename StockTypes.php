@@ -103,9 +103,9 @@ if (isset($_POST['submit'])) {
 	$ErrMsg = _('The number of stock categories using this stock type could not be retrieved');
 	$result = DB_query($sql, $ErrMsg);
 
-	$myrow = DB_fetch_row($result);
-	if ($myrow[0] > 0) {
-		prnMsg(_('Cannot delete this stock type because stock categories exist using it') . '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('categories using this type'), 'error');
+	$MyRow = DB_fetch_row($result);
+	if ($MyRow[0] > 0) {
+		prnMsg(_('Cannot delete this stock type because stock categories exist using it') . '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('categories using this type'), 'error');
 
 	} else {
 
@@ -150,7 +150,7 @@ if (!isset($SelectedType)) {
 
 	$k = 0; //row colour counter
 
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -159,7 +159,7 @@ if (!isset($SelectedType)) {
 			$k = 1;
 		}
 
-		if ($myrow['physicalitem'] == 0) {
+		if ($MyRow['physicalitem'] == 0) {
 			$PhysicalItem = _('No');
 		} else {
 			$PhysicalItem = _('Yes');
@@ -171,11 +171,11 @@ if (!isset($SelectedType)) {
 				<td><a href="%sSelectedType=%s">' . _('Edit') . '</a></td>
 				<td><a href="%sSelectedType=%s&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this price list and all the prices it may have set up?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
 			</tr>',
-				$myrow['type'],
-				$myrow['name'],
+				$MyRow['type'],
+				$MyRow['name'],
 				$PhysicalItem,
-				htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['type'],
-				htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['type']);
+				htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['type'],
+				htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['type']);
 	}
 	//END WHILE LIST LOOP
 	echo '</table>';
@@ -201,11 +201,11 @@ if (!isset($_GET['delete'])) {
 				WHERE type='" . $SelectedType . "'";
 
 		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($result);
 
-		$_POST['TypeAbbrev'] = $myrow['type'];
-		$_POST['StockType'] = $myrow['name'];
-		$_POST['PhysicalItem'] = $myrow['physicalitem'];
+		$_POST['TypeAbbrev'] = $MyRow['type'];
+		$_POST['StockType'] = $MyRow['name'];
+		$_POST['PhysicalItem'] = $MyRow['physicalitem'];
 
 		echo '<input type="hidden" name="SelectedType" value="' . $SelectedType . '" />';
 		echo '<input type="hidden" name="TypeAbbrev" value="' . $_POST['TypeAbbrev'] . '" />';

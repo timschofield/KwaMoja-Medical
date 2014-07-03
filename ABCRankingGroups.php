@@ -132,17 +132,17 @@ if (isset($_POST['Submit'])) {
 				<th>' . _('Months in calculation') . '</th>
 			</tr>';
 
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		echo '<tr class="OddTableRows">
-				<td>' . $myrow['groupid'] . '</td>
-				<td>' . $myrow['groupname'] . '</td>
-				<td>' . $myrow['methodname'] . '</td>
-				<td>' . $myrow['apercentage'] . '</td>
-				<td>' . $myrow['bpercentage'] . '</td>
-				<td>' . $myrow['cpercentage'] . '</td>
-				<td>' . $myrow['zerousage'] . '</td>
-				<td>' . $myrow['months'] . '</td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedGroupID=' . $myrow['groupid'] . '&amp;Delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this ranking group?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+				<td>' . $MyRow['groupid'] . '</td>
+				<td>' . $MyRow['groupname'] . '</td>
+				<td>' . $MyRow['methodname'] . '</td>
+				<td>' . $MyRow['apercentage'] . '</td>
+				<td>' . $MyRow['bpercentage'] . '</td>
+				<td>' . $MyRow['cpercentage'] . '</td>
+				<td>' . $MyRow['zerousage'] . '</td>
+				<td>' . $MyRow['months'] . '</td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedGroupID=' . $MyRow['groupid'] . '&amp;Delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this ranking group?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
 			</tr>';
 	}
 	echo '</table>';
@@ -174,8 +174,8 @@ if (isset($_POST['Submit'])) {
 	$result = DB_query($sql);
 
 	echo '<option value=""></option>';
-	while ($myrow = DB_fetch_array($result)) {
-		echo '<option value="' . $myrow['methodid'] . '">' . $myrow['methodname'] . '</option>';
+	while ($MyRow = DB_fetch_array($result)) {
+		echo '<option value="' . $MyRow['methodid'] . '">' . $MyRow['methodname'] . '</option>';
 	}
 
 	echo '</select>

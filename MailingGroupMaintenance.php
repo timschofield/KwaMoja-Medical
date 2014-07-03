@@ -155,11 +155,11 @@ function GetMailGroup() {
 				<tr>
 					<th>' . _('Mail Group') . '</th>
 				</tr>';
-		while ($myrow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($result)) {
 			echo '<tr>
-					<td>' . $myrow['groupname'] . '</td>
-					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?GroupId=' . urlencode($myrow['id']) . '&amp;Edit=1&amp;GroupName=' . urlencode($myrow['groupname']) . '" >' . _('Edit') . '</a></td>
-					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Id=' . urlencode($myrow['id']) . '&amp;Delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this group?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+					<td>' . $MyRow['groupname'] . '</td>
+					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?GroupId=' . urlencode($MyRow['id']) . '&amp;Edit=1&amp;GroupName=' . urlencode($MyRow['groupname']) . '" >' . _('Edit') . '</a></td>
+					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Id=' . urlencode($MyRow['id']) . '&amp;Delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this group?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
 				</tr>';
 		}
 		echo '</table>';
@@ -174,8 +174,8 @@ function GetUsers($GroupId, $GroupName) {
 	$UsersAssigned = array();
 	if (DB_num_rows($result) != 0) {
 		$i = 0;
-		while ($myrow = DB_fetch_array($result)) {
-			$UsersAssigned[$i] = $myrow['userid'];
+		while ($MyRow = DB_fetch_array($result)) {
+			$UsersAssigned[$i] = $MyRow['userid'];
 			$i++;
 		}
 	}
@@ -193,7 +193,7 @@ function GetUsers($GroupId, $GroupName) {
 					<th colspan="3">' . _('Available Users') . '</th>
 				</tr>';
 		$k = 0;
-		while ($myrow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($result)) {
 			if ($k == 0) {
 				echo '<tr class="EvenTableRows">';
 				$k = 1;
@@ -202,10 +202,10 @@ function GetUsers($GroupId, $GroupName) {
 				$k = 0;
 			}
 
-			if (in_array($myrow['userid'], $UsersAssigned)) {
-				echo '<td>' . $myrow['userid'] . '</td>
-					<td>' . $myrow['realname'] . '</td>
-					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?UserId=' . urlencode(stripslashes($myrow['userid'])) . '&amp;GroupName=' . urlencode(stripslashes($GroupName)) . '&amp;Remove=1&amp;GroupId=' . urlencode(stripslashes($GroupId)) . '" onclick="return MakeConfirm(\'Are you sure you want to remove this user?\', \'Confirm Delete\', this); ">' . _('Remove') . '</a></td>
+			if (in_array($MyRow['userid'], $UsersAssigned)) {
+				echo '<td>' . $MyRow['userid'] . '</td>
+					<td>' . $MyRow['realname'] . '</td>
+					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?UserId=' . urlencode(stripslashes($MyRow['userid'])) . '&amp;GroupName=' . urlencode(stripslashes($GroupName)) . '&amp;Remove=1&amp;GroupId=' . urlencode(stripslashes($GroupId)) . '" onclick="return MakeConfirm(\'Are you sure you want to remove this user?\', \'Confirm Delete\', this); ">' . _('Remove') . '</a></td>
 					<td>&nbsp;</td>
 					<td>&nbsp;</td>
 					<td>&nbsp;</td>';
@@ -213,9 +213,9 @@ function GetUsers($GroupId, $GroupName) {
 				echo '<td>&nbsp;</td>
 					<td>&nbsp;</td>
 					<td>&nbsp;</td>
-					<td>' . $myrow['userid'] . '</td>
-					<td>' . $myrow['realname'] . '</td>
-					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?UserId=' . urlencode(stripslashes($myrow['userid'])) . '&amp;Add=1&amp;GroupName=' . urlencode(stripslashes($GroupName)) . '&amp;GroupId=' . urlencode(stripslashes($GroupId)) . '">' . _('Add') . '</a></td>';
+					<td>' . $MyRow['userid'] . '</td>
+					<td>' . $MyRow['realname'] . '</td>
+					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?UserId=' . urlencode(stripslashes($MyRow['userid'])) . '&amp;Add=1&amp;GroupName=' . urlencode(stripslashes($GroupName)) . '&amp;GroupId=' . urlencode(stripslashes($GroupId)) . '">' . _('Add') . '</a></td>';
 			}
 
 			echo '</tr>';

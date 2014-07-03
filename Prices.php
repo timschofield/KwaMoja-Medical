@@ -38,7 +38,7 @@ $result = DB_query("SELECT stockmaster.description,
 							stockmaster.mbflag
 					FROM stockmaster
 					WHERE stockmaster.stockid='" . $Item . "'");
-$myrow = DB_fetch_row($result);
+$MyRow = DB_fetch_row($result);
 
 if (DB_num_rows($result) == 0) {
 	prnMsg(_('The part code entered does not exist in the database') . '. ' . _('Only valid parts can have prices entered against them'), 'error');
@@ -52,9 +52,9 @@ if (!isset($Item)) {
 	exit;
 }
 
-$PartDescription = $myrow[0];
+$PartDescription = $MyRow[0];
 
-if ($myrow[1] == 'K') {
+if ($MyRow[1] == 'K') {
 	prnMsg(_('The part selected is a kit set item') . ', ' . _('these items explode into their components when selected on an order') . ', ' . _('prices must be set up for the components and no price can be set for the whole kit'), 'error');
 	exit;
 }
@@ -106,9 +106,9 @@ if (isset($_POST['submit'])) {
 			AND prices.currabrev='" . $_POST['CurrAbrev'] . "'";
 
 	$result = DB_query($sql);
-	$myrow = DB_fetch_row($result);
+	$MyRow = DB_fetch_row($result);
 
-	if ($myrow[0] != 0 and !isset($_POST['OldTypeAbbrev']) and !isset($_POST['OldCurrAbrev'])) {
+	if ($MyRow[0] != 0 and !isset($_POST['OldTypeAbbrev']) and !isset($_POST['OldCurrAbrev'])) {
 		prnMsg(_('This price has already been entered. To change it you should edit it'), 'warn');
 		$InputError = 1;
 	}
@@ -228,7 +228,7 @@ if (DB_num_rows($result) > 0) {
 
 	$k = 0; //row colour counter
 
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -236,21 +236,21 @@ if (DB_num_rows($result) > 0) {
 			echo '<tr class="OddTableRows">';
 			$k = 1;
 		}
-		if ($myrow['enddate'] == '0000-00-00') {
+		if ($MyRow['enddate'] == '0000-00-00') {
 			$EndDateDisplay = _('No End Date');
 		} else {
-			$EndDateDisplay = ConvertSQLDate($myrow['enddate']);
+			$EndDateDisplay = ConvertSQLDate($MyRow['enddate']);
 		}
 
-		echo   '<td>' . $myrow['currency'] . '</td>
-				<td>' . $myrow['sales_type'] . '</td>
-				<td class="number">' . locale_number_format($myrow['price'], $myrow['currdecimalplaces'] + 2) . '</td>
-				<td>' . ConvertSQLDate($myrow['startdate']) . '</td>
+		echo   '<td>' . $MyRow['currency'] . '</td>
+				<td>' . $MyRow['sales_type'] . '</td>
+				<td class="number">' . locale_number_format($MyRow['price'], $MyRow['currdecimalplaces'] + 2) . '</td>
+				<td>' . ConvertSQLDate($MyRow['startdate']) . '</td>
 				<td>' . $EndDateDisplay . '</td>';
 		/*Only allow access to modify prices if securiy token 1000 is allowed */
 		if (in_array(5, $_SESSION['AllowedPageSecurityTokens'])) {
-			echo '<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?Item=' . $myrow['stockid'] . '&amp;TypeAbbrev=' . $myrow['typeabbrev'] . '&amp;CurrAbrev=' . $myrow['currabrev'] . '&amp;Price=' . locale_number_format($myrow['price'],$myrow['currdecimalplaces']) . '&amp;StartDate=' . $myrow['startdate'] . '&amp;EndDate=' . $myrow['enddate'] . '&amp;Edit=1">' . _('Edit') . '</a></td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?Item=' . $myrow['stockid'] . '&amp;TypeAbbrev=' . $myrow['typeabbrev'] . '&amp;CurrAbrev=' . $myrow['currabrev'] . '&amp;StartDate=' . $myrow['startdate'] . '&amp;EndDate=' . $myrow['enddate'] . '&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this price?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>';
+			echo '<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?Item=' . $MyRow['stockid'] . '&amp;TypeAbbrev=' . $MyRow['typeabbrev'] . '&amp;CurrAbrev=' . $MyRow['currabrev'] . '&amp;Price=' . locale_number_format($MyRow['price'],$MyRow['currdecimalplaces']) . '&amp;StartDate=' . $MyRow['startdate'] . '&amp;EndDate=' . $MyRow['enddate'] . '&amp;Edit=1">' . _('Edit') . '</a></td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?Item=' . $MyRow['stockid'] . '&amp;TypeAbbrev=' . $MyRow['typeabbrev'] . '&amp;CurrAbrev=' . $MyRow['currabrev'] . '&amp;StartDate=' . $MyRow['startdate'] . '&amp;EndDate=' . $MyRow['enddate'] . '&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this price?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>';
  		}
 		echo '</tr>';
 	}
@@ -292,13 +292,13 @@ echo '<table class="selection">
 echo '<tr>
 		<td>' . _('Currency') . ':</td>
 		<td><select required="required" minlength="1" name="CurrAbrev">';
-while ($myrow = DB_fetch_array($result)) {
-	if ($myrow['currabrev'] == $_POST['CurrAbrev']) {
+while ($MyRow = DB_fetch_array($result)) {
+	if ($MyRow['currabrev'] == $_POST['CurrAbrev']) {
 		echo '<option selected="selected" value="';
 	} else {
 		echo '<option value="';
 	}
-	echo $myrow['currabrev'] . '">' . $myrow['currency'] . '</option>';
+	echo $MyRow['currabrev'] . '">' . $MyRow['currency'] . '</option>';
 } //end while loop
 
 DB_free_result($result);
@@ -313,13 +313,13 @@ echo '</select>
 $SQL = "SELECT typeabbrev, sales_type FROM salestypes";
 $result = DB_query($SQL);
 
-while ($myrow = DB_fetch_array($result)) {
-	if ($myrow['typeabbrev'] == $_POST['TypeAbbrev']) {
+while ($MyRow = DB_fetch_array($result)) {
+	if ($MyRow['typeabbrev'] == $_POST['TypeAbbrev']) {
 		echo '<option selected="selected" value="';
 	} else {
 		echo '<option value="';
 	}
-	echo $myrow['typeabbrev'] . '">' . $myrow['sales_type'] . '</option>';
+	echo $MyRow['typeabbrev'] . '">' . $MyRow['sales_type'] . '</option>';
 
 } //end while loop
 echo '</select></td></tr>';
@@ -378,12 +378,12 @@ function ReSequenceEffectiveDates($Item, $PriceList, $CurrAbbrev) {
 				ORDER BY startdate, enddate";
 	$result = DB_query($SQL);
 
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		if (isset($NextStartDate)) {
-			if (Date1GreaterThanDate2(ConvertSQLDate($myrow['startdate']), $NextStartDate)) {
-				$NextStartDate = ConvertSQLDate($myrow['startdate']);
+			if (Date1GreaterThanDate2(ConvertSQLDate($MyRow['startdate']), $NextStartDate)) {
+				$NextStartDate = ConvertSQLDate($MyRow['startdate']);
 				//Only if the previous enddate is after the new start date do we need to look at updates
-				if (Date1GreaterThanDate2(ConvertSQLDate($EndDate), ConvertSQLDate($myrow['startdate']))) {
+				if (Date1GreaterThanDate2(ConvertSQLDate($EndDate), ConvertSQLDate($MyRow['startdate']))) {
 					/*Need to make the end date the new start date less 1 day */
 					$SQL = "UPDATE prices SET enddate = '" . FormatDateForSQL(DateAdd($NextStartDate, 'd', -1)) . "'
 										WHERE stockid ='" . $Item . "'
@@ -397,11 +397,11 @@ function ReSequenceEffectiveDates($Item, $PriceList, $CurrAbbrev) {
 			} //end of if startdate  after NextStartDate - we have a new NextStartDate
 		} //end of if set NextStartDate
 		else {
-			$NextStartDate = ConvertSQLDate($myrow['startdate']);
+			$NextStartDate = ConvertSQLDate($MyRow['startdate']);
 		}
-		$StartDate = $myrow['startdate'];
-		$EndDate = $myrow['enddate'];
-		$Price = $myrow['price'];
+		$StartDate = $MyRow['startdate'];
+		$EndDate = $MyRow['enddate'];
+		$Price = $MyRow['price'];
 	} // end of loop around all prices
 
 	//Now look for duplicate prices with no end
@@ -417,10 +417,10 @@ function ReSequenceEffectiveDates($Item, $PriceList, $CurrAbbrev) {
 					ORDER BY startdate";
 	$result = DB_query($SQL);
 
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		if (isset($OldStartDate)) {
 			/*Need to make the end date the new start date less 1 day */
-			$NewEndDate = FormatDateForSQL(DateAdd(ConvertSQLDate($myrow['startdate']), 'd', -1));
+			$NewEndDate = FormatDateForSQL(DateAdd(ConvertSQLDate($MyRow['startdate']), 'd', -1));
 			$SQL = "UPDATE prices SET enddate = '" . $NewEndDate . "'
 							WHERE stockid ='" . $Item . "'
 							AND currabrev='" . $CurrAbbrev . "'
@@ -430,7 +430,7 @@ function ReSequenceEffectiveDates($Item, $PriceList, $CurrAbbrev) {
 							AND debtorno =''";
 			$UpdateResult = DB_query($SQL);
 		}
-		$OldStartDate = $myrow['startdate'];
+		$OldStartDate = $MyRow['startdate'];
 	} // end of loop around duplicate no end date prices
 
 } // end function ReSequenceEffectiveDates

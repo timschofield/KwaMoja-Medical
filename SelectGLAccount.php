@@ -85,19 +85,19 @@ if (isset($result) and DB_num_rows($result) > 0) {
 			<th class="SortableColumn">' . _('Account Type') . '</th>
 		</tr>';
 
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		echo '<tr>
-				<td>' . htmlspecialchars($myrow['accountcode'],ENT_QUOTES,'UTF-8',false) . '</td>
-				<td>' . htmlspecialchars($myrow['accountname'],ENT_QUOTES,'UTF-8',false) . '</td>
-				<td>' . $myrow['group_'] . '</td>
-				<td>' . $myrow['pl'] . '</td>
+				<td>' . htmlspecialchars($MyRow['accountcode'],ENT_QUOTES,'UTF-8',false) . '</td>
+				<td>' . htmlspecialchars($MyRow['accountname'],ENT_QUOTES,'UTF-8',false) . '</td>
+				<td>' . $MyRow['group_'] . '</td>
+				<td>' . $MyRow['pl'] . '</td>
 				<td>
-					<a href="' . $RootPath . '/GLAccountInquiry.php?Account=' . urlencode($myrow['accountcode']) . '&amp;Show=Yes">
+					<a href="' . $RootPath . '/GLAccountInquiry.php?Account=' . urlencode($MyRow['accountcode']) . '&amp;Show=Yes">
 						<img width="24px" src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Inquiry') . '" alt="' . _('Inquiry') . '" />
 					</a>
 				</td>
 				<td>
-					<a href="' . $RootPath . '/GLAccounts.php?SelectedAccount=' . urlencode($myrow['accountcode']) . '">
+					<a href="' . $RootPath . '/GLAccounts.php?SelectedAccount=' . urlencode($MyRow['accountcode']) . '">
 						<img width="24px" src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Edit') . '" alt="' . _('Edit') . '" />
 					</a>
 			</tr>';

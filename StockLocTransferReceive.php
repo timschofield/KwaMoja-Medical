@@ -421,20 +421,20 @@ if (isset($_GET['Trf_ID'])) {
 		exit;
 	}
 
-	$myrow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($result);
 
-	$_SESSION['Transfer' . $identifier] = new StockTransfer($_GET['Trf_ID'], $myrow['shiploc'], $myrow['shiplocationname'], $myrow['recloc'], $myrow['reclocationname'], Date($_SESSION['DefaultDateFormat']));
+	$_SESSION['Transfer' . $identifier] = new StockTransfer($_GET['Trf_ID'], $MyRow['shiploc'], $MyRow['shiplocationname'], $MyRow['recloc'], $MyRow['reclocationname'], Date($_SESSION['DefaultDateFormat']));
 	/*Populate the StockTransfer TransferItem s array with the lines to be transferred */
 	$i = 0;
 	do {
-		$_SESSION['Transfer' . $identifier]->TransferItem[$i] = new LineItem($myrow['stockid'], $myrow['description'], $myrow['shipqty'], $myrow['units'], $myrow['controlled'], $myrow['serialised'], $myrow['perishable'], $myrow['decimalplaces']);
-		$_SESSION['Transfer' . $identifier]->TransferItem[$i]->PrevRecvQty = $myrow['recqty'];
-		$_SESSION['Transfer' . $identifier]->TransferItem[$i]->Quantity = $myrow['shipqty'] - $myrow['recqty'];
+		$_SESSION['Transfer' . $identifier]->TransferItem[$i] = new LineItem($MyRow['stockid'], $MyRow['description'], $MyRow['shipqty'], $MyRow['units'], $MyRow['controlled'], $MyRow['serialised'], $MyRow['perishable'], $MyRow['decimalplaces']);
+		$_SESSION['Transfer' . $identifier]->TransferItem[$i]->PrevRecvQty = $MyRow['recqty'];
+		$_SESSION['Transfer' . $identifier]->TransferItem[$i]->Quantity = $MyRow['shipqty'] - $MyRow['recqty'];
 
 		$i++;
 		/*numerical index for the TransferItem[] array of LineItem s */
 
-	} while ($myrow = DB_fetch_array($result));
+	} while ($MyRow = DB_fetch_array($result));
 
 }
 /* $_GET['Trf_ID'] is set */
@@ -563,11 +563,11 @@ if (isset($_SESSION['Transfer' . $identifier])) {
 	if (!isset($_POST['RecLocation'])) {
 		$_POST['RecLocation'] = $_SESSION['UserStockLocation'];
 	}
-	while ($myrow = DB_fetch_array($LocResult)) {
-		if ($myrow['loccode'] == $_POST['RecLocation']) {
-			echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+	while ($MyRow = DB_fetch_array($LocResult)) {
+		if ($MyRow['loccode'] == $_POST['RecLocation']) {
+			echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+			echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 		}
 	}
 	echo '</select>
@@ -598,7 +598,7 @@ if (isset($_SESSION['Transfer' . $identifier])) {
 				<th>' . _('Dispatch Date') . '</th>
 			</tr>';
 		$k = 0;
-		while ($myrow = DB_fetch_array($TrfResult)) {
+		while ($MyRow = DB_fetch_array($TrfResult)) {
 
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
@@ -607,10 +607,10 @@ if (isset($_SESSION['Transfer' . $identifier])) {
 				echo '<tr class="OddTableRows">';
 				$k++;
 			}
-			echo '<td class="number">' . $myrow['reference'] . '</td>
-					<td>' . $myrow['trffromloc'] . '</td>
-					<td>' . ConvertSQLDateTime($myrow['shipdate']) . '</td>
-					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Trf_ID=' . $myrow['reference'] . '">' . _('Receive') . '</a></td>
+			echo '<td class="number">' . $MyRow['reference'] . '</td>
+					<td>' . $MyRow['trffromloc'] . '</td>
+					<td>' . ConvertSQLDateTime($MyRow['shipdate']) . '</td>
+					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Trf_ID=' . $MyRow['reference'] . '">' . _('Receive') . '</a></td>
 					</tr>';
 		}
 		echo '</table>';

@@ -75,8 +75,8 @@ if (isset($_POST['submit'])) {
 				AND currabrev='" . $_POST['currabrev'] . "'
 			AND quantitybreak='" . $_POST['quantitybreak'] . "'";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_row($result);
-	if ($myrow[0] != 0 and !isset($_POST['OldTypeAbbrev']) and !isset($_POST['OldCurrAbrev'])) {
+	$MyRow = DB_fetch_row($result);
+	if ($MyRow[0] != 0 and !isset($_POST['OldTypeAbbrev']) and !isset($_POST['OldCurrAbrev'])) {
 		prnMsg(_('This price has already been entered. To change it you should edit it'), 'warn');
 		$InputError = 1;
 	}
@@ -178,11 +178,11 @@ echo '<table class="selection">';
 echo '<tr>
 		<td>' . _('Currency') . ':</td>
 		<td><select name="CurrAbrev">';
-while ($myrow = DB_fetch_array($result)) {
-	if ($myrow['currabrev'] == $_POST['CurrAbrev']) {
-		echo '<option selected="selected" value="' . $myrow['currabrev'] . '">' . $CurrencyName[$myrow['currabrev']] . '</option>';
+while ($MyRow = DB_fetch_array($result)) {
+	if ($MyRow['currabrev'] == $_POST['CurrAbrev']) {
+		echo '<option selected="selected" value="' . $MyRow['currabrev'] . '">' . $CurrencyName[$MyRow['currabrev']] . '</option>';
 	} else {
-		echo '<option value="' . $myrow['currabrev'] . '">' . $CurrencyName[$myrow['currabrev']] . '</option>';
+		echo '<option value="' . $MyRow['currabrev'] . '">' . $CurrencyName[$MyRow['currabrev']] . '</option>';
 	}
 } // End while loop
 
@@ -201,11 +201,11 @@ echo '<tr>
 
 echo '<select tabindex="1" name="SalesType">';
 
-while ($myrow = DB_fetch_array($result)) {
-	if (isset($_POST['SalesType']) and $myrow['typeabbrev'] == $_POST['SalesType']) {
-		echo '<option selected="selected" value="' . $myrow['typeabbrev'] . '">' . $myrow['sales_type'] . '</option>';
+while ($MyRow = DB_fetch_array($result)) {
+	if (isset($_POST['SalesType']) and $MyRow['typeabbrev'] == $_POST['SalesType']) {
+		echo '<option selected="selected" value="' . $MyRow['typeabbrev'] . '">' . $MyRow['sales_type'] . '</option>';
 	} else {
-		echo '<option value="' . $myrow['typeabbrev'] . '">' . $myrow['sales_type'] . '</option>';
+		echo '<option value="' . $MyRow['typeabbrev'] . '">' . $MyRow['sales_type'] . '</option>';
 	}
 }
 
@@ -285,7 +285,7 @@ echo '<table class="selection">
 
 $k = 0; //row colour counter
 
-while ($myrow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($result)) {
 	if ($k == 1) {
 		echo '<tr class="EvenTableRows">';
 		$k = 0;
@@ -293,8 +293,8 @@ while ($myrow = DB_fetch_array($result)) {
 		echo '<tr class="OddTableRows">';
 		$k = 1;
 	}
-	$DeleteURL = htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?Delete=yes&amp;SalesType=' . urlencode($myrow['salestype']) . '&amp;StockID=' . urlencode($myrow['stockid']) . '&amp;QuantityBreak=' . urlencode($myrow['quantitybreak']) . '&amp;Price=' . urlencode($myrow['price']) . '&amp;currabrev=' . urlencode($myrow['currabrev']) . '&amp;StartDate=' . urlencode($myrow['startdate']) . '&amp;EndDate=' . urlencode($myrow['enddate']);
-	$EditURL = htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?Edit=yes&amp;StockID=' . urlencode($myrow['stockid']) . '&amp;TypeAbbrev=' . urlencode($myrow['salestype']) . '&amp;CurrAbrev=' . urlencode($myrow['currabrev']) . '&amp;Price=' . urlencode(locale_number_format($myrow['price'], $myrow['currdecimalplaces'])) . '&amp;StartDate=' . urlencode($myrow['startdate']) . '&amp;EndDate=' . urlencode($myrow['enddate']) . '&amp;QuantityBreak=' . urlencode($myrow['quantitybreak']);
+	$DeleteURL = htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?Delete=yes&amp;SalesType=' . urlencode($MyRow['salestype']) . '&amp;StockID=' . urlencode($MyRow['stockid']) . '&amp;QuantityBreak=' . urlencode($MyRow['quantitybreak']) . '&amp;Price=' . urlencode($MyRow['price']) . '&amp;currabrev=' . urlencode($MyRow['currabrev']) . '&amp;StartDate=' . urlencode($MyRow['startdate']) . '&amp;EndDate=' . urlencode($MyRow['enddate']);
+	$EditURL = htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?Edit=yes&amp;StockID=' . urlencode($MyRow['stockid']) . '&amp;TypeAbbrev=' . urlencode($MyRow['salestype']) . '&amp;CurrAbrev=' . urlencode($MyRow['currabrev']) . '&amp;Price=' . urlencode(locale_number_format($MyRow['price'], $MyRow['currdecimalplaces'])) . '&amp;StartDate=' . urlencode($MyRow['startdate']) . '&amp;EndDate=' . urlencode($MyRow['enddate']) . '&amp;QuantityBreak=' . urlencode($MyRow['quantitybreak']);
 
     if (in_array(5, $_SESSION['AllowedPageSecurityTokens'])) {
 	    printf('<td>%s</td>
@@ -305,7 +305,7 @@ while ($myrow = DB_fetch_array($result)) {
 				<td class="number">%s</td>
 				<td><a href="%s" onclick="return confirm(\'' . _('Are you sure you wish to delete this discount matrix record?') . '\');">' . _('Delete') . '</a></td>
 				<td><a href="%s">' . _('Edit') . '</a></td>
-				</tr>', $myrow['currency'], $myrow['sales_type'], ConvertSQLDate($myrow['startdate']), ConvertSQLDate($myrow['enddate']), $myrow['quantitybreak'], $myrow['price'], $EditURL, $DeleteURL);
+				</tr>', $MyRow['currency'], $MyRow['sales_type'], ConvertSQLDate($MyRow['startdate']), ConvertSQLDate($MyRow['enddate']), $MyRow['quantitybreak'], $MyRow['price'], $EditURL, $DeleteURL);
 	} else {
 	    printf('<td>%s</td>
 		    	<td>%s</td>
@@ -313,7 +313,7 @@ while ($myrow = DB_fetch_array($result)) {
 				<td>%s</td>
 				<td class="number">%s</td>
 				<td class="number">%s</td>
-				</tr>', $myrow['currency'], $myrow['sales_type'], ConvertSQLDate($myrow['startdate']), ConvertSQLDate($myrow['enddate']), $myrow['quantitybreak'], $myrow['price']);
+				</tr>', $MyRow['currency'], $MyRow['sales_type'], ConvertSQLDate($MyRow['startdate']), ConvertSQLDate($MyRow['enddate']), $MyRow['quantitybreak'], $MyRow['price']);
 	}
 
 }
@@ -358,12 +358,12 @@ function ReSequenceEffectiveDates ($Item, $PriceList, $CurrAbbrev, $QuantityBrea
 						enddate";
 	$result = DB_query($SQL);
 
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		if (isset($NextStartDate)) {
-			if (Date1GreaterThanDate2(ConvertSQLDate($myrow['startdate']), $NextStartDate)) {
-				$NextStartDate = ConvertSQLDate($myrow['startdate']);
+			if (Date1GreaterThanDate2(ConvertSQLDate($MyRow['startdate']), $NextStartDate)) {
+				$NextStartDate = ConvertSQLDate($MyRow['startdate']);
 				//Only if the previous enddate is after the new start date do we need to look at updates
-				if (Date1GreaterThanDate2(ConvertSQLDate($EndDate), ConvertSQLDate($myrow['startdate']))) {
+				if (Date1GreaterThanDate2(ConvertSQLDate($EndDate), ConvertSQLDate($MyRow['startdate']))) {
 					/*Need to make the end date the new start date less 1 day */
 					$SQL = "UPDATE pricematrix SET enddate = '" . FormatDateForSQL(DateAdd($NextStartDate, 'd' ,-1))  . "'
 									WHERE stockid ='" . $Item . "'
@@ -376,11 +376,11 @@ function ReSequenceEffectiveDates ($Item, $PriceList, $CurrAbbrev, $QuantityBrea
 				}
 			} //end of if startdate  after NextStartDate - we have a new NextStartDate
 		} else {
-				$NextStartDate = ConvertSQLDate($myrow['startdate']);
+				$NextStartDate = ConvertSQLDate($MyRow['startdate']);
 		}
-		$StartDate = $myrow['startdate'];
-		$EndDate = $myrow['enddate'];
-		$Price = $myrow['price'];
+		$StartDate = $MyRow['startdate'];
+		$EndDate = $MyRow['enddate'];
+		$Price = $MyRow['price'];
 	} // end of loop around all prices
 } // end function ReSequenceEffectiveDates
 

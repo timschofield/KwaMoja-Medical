@@ -22,8 +22,8 @@ if (DB_num_rows($result) != 0) {
 	echo '<table class="selection">';
 	$k = 0; //row colour counter
 	$i = 1;
-	while ($myrow = DB_fetch_array($result)) {
-		if (!file_exists($_SESSION['part_pics_dir'] . '/' . $myrow['stockid'] . '.jpg')) {
+	while ($MyRow = DB_fetch_array($result)) {
+		if (!file_exists($_SESSION['part_pics_dir'] . '/' . $MyRow['stockid'] . '.jpg')) {
 			if ($PrintHeader) {
 				echo '<tr>
 									<th>' . '#' . '</th>
@@ -40,12 +40,12 @@ if (DB_num_rows($result) != 0) {
 				echo '<tr class="OddTableRows">';
 				$k = 1;
 			}
-			$CodeLink = '<a href="' . $RootPath . '/SelectProduct.php?StockID=' . urlencode($myrow['stockid']) . '">' . $myrow['stockid'] . '</a>';
+			$CodeLink = '<a href="' . $RootPath . '/SelectProduct.php?StockID=' . urlencode($MyRow['stockid']) . '">' . $MyRow['stockid'] . '</a>';
 			printf('<td class="number">%s</td>
 					<td>%s</td>
 					<td>%s</td>
 					<td>%s</td>
-				</tr>', $i, $myrow['categorydescription'], $CodeLink, $myrow['description']);
+				</tr>', $i, $MyRow['categorydescription'], $CodeLink, $MyRow['description']);
 			$i++;
 		}
 	}

@@ -120,15 +120,15 @@ if (DB_num_rows($result) == 0) {
 } elseif (DB_num_rows($result) == 1) {
 	/*There is only one order header returned - thats good! */
 
-	$myrow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($result);
 	/* Place the deliver blind variable into a hold variable to used when
 	producing the packlist */
-	$DeliverBlind = $myrow['deliverblind'];
-	if ($myrow['printedpackingslip'] == 1 and ($_GET['Reprint'] != 'OK' or !isset($_GET['Reprint']))) {
+	$DeliverBlind = $MyRow['deliverblind'];
+	if ($MyRow['printedpackingslip'] == 1 and ($_GET['Reprint'] != 'OK' or !isset($_GET['Reprint']))) {
 		$Title = _('Print Packing Slip Error');
 		include('includes/header.inc');
 		echo '<p>';
-		prnMsg(_('The packing slip for order number') . ' ' . $_GET['TransNo'] . ' ' . _('has previously been printed') . '. ' . _('It was printed on') . ' ' . ConvertSQLDate($myrow['datepackingslipprinted']) . '<br />' . _('This check is there to ensure that duplicate packing slips are not produced and dispatched more than once to the customer'), 'warn');
+		prnMsg(_('The packing slip for order number') . ' ' . $_GET['TransNo'] . ' ' . _('has previously been printed') . '. ' . _('It was printed on') . ' ' . ConvertSQLDate($MyRow['datepackingslipprinted']) . '<br />' . _('This check is there to ensure that duplicate packing slips are not produced and dispatched more than once to the customer'), 'warn');
 		echo '<p><a href="' . $RootPath . '/PrintCustOrder.php?TransNo=' . urlencode($_GET['TransNo']) . '&Reprint=OK">' . _('Do a Re-Print') . ' (' . _('On Pre-Printed Stationery') . ') ' . _('Even Though Previously Printed') . '</a><p>' . '<a href="' . $RootPath . '/PrintCustOrder_generic.php?TransNo=' . urlencode($_GET['TransNo']) . '&Reprint=OK">' . _('Do a Re-Print') . ' (' . _('Plain paper') . ' - ' . _('A4') . ' ' . _('landscape') . ') ' . _('Even Though Previously Printed') . '</a>';
 
 		echo _('Or select another Order Number to Print');
@@ -186,7 +186,7 @@ for ($i = 1; $i <= 2; $i++) {
 					ON salesorderdetails.stkcode=stockmaster.stockid
 				INNER JOIN locstock
 					ON stockmaster.stockid = locstock.stockid
-				WHERE locstock.loccode = '" . $myrow['fromstkloc'] . "'
+				WHERE locstock.loccode = '" . $MyRow['fromstkloc'] . "'
 					AND salesorderdetails.orderno='" . $_GET['TransNo'] . "'";
 	$result = DB_query($sql, $ErrMsg);
 
@@ -194,18 +194,18 @@ for ($i = 1; $i <= 2; $i++) {
 		/*Yes there are line items to start the ball rolling with a page header */
 		include('includes/PDFOrderPageHeader_generic.inc');
 
-		while ($myrow2 = DB_fetch_array($result)) {
+		while ($MyRow2 = DB_fetch_array($result)) {
 
 			$ListCount++;
 
-			$DisplayQty = locale_number_format($myrow2['quantity'], $myrow2['decimalplaces']);
-			$DisplayPrevDel = locale_number_format($myrow2['qtyinvoiced'], $myrow2['decimalplaces']);
-			$DisplayQtySupplied = locale_number_format($myrow2['quantity'] - $myrow2['qtyinvoiced'], $myrow2['decimalplaces']);
+			$DisplayQty = locale_number_format($MyRow2['quantity'], $MyRow2['decimalplaces']);
+			$DisplayPrevDel = locale_number_format($MyRow2['qtyinvoiced'], $MyRow2['decimalplaces']);
+			$DisplayQtySupplied = locale_number_format($MyRow2['quantity'] - $MyRow2['qtyinvoiced'], $MyRow2['decimalplaces']);
 
-			$LeftOvers = $pdf->addTextWrap($XPos, $YPos, 127, $FontSize, $myrow2['stkcode']);
-			$LeftOvers = $pdf->addTextWrap(147, $YPos, 255, $FontSize, $myrow2['description']);
+			$LeftOvers = $pdf->addTextWrap($XPos, $YPos, 127, $FontSize, $MyRow2['stkcode']);
+			$LeftOvers = $pdf->addTextWrap(147, $YPos, 255, $FontSize, $MyRow2['description']);
 			$LeftOvers = $pdf->addTextWrap(400, $YPos, 85, $FontSize, $DisplayQty, 'right');
-			$LeftOvers = $pdf->addTextWrap(487, $YPos, 70, $FontSize, $myrow2['bin'], 'left');
+			$LeftOvers = $pdf->addTextWrap(487, $YPos, 70, $FontSize, $MyRow2['bin'], 'left');
 			$LeftOvers = $pdf->addTextWrap(573, $YPos, 85, $FontSize, $DisplayQtySupplied, 'right');
 			$LeftOvers = $pdf->addTextWrap(672, $YPos, 85, $FontSize, $DisplayPrevDel, 'right');
 
@@ -218,7 +218,7 @@ for ($i = 1; $i <= 2; $i++) {
 				/*increment a line down for the next line item */
 				$YPos -= ($line_height);
 			}
-			if ($myrow2['mbflag'] == 'A') {
+			if ($MyRow2['mbflag'] == 'A') {
 				/*Then its an assembly item - need to explode into it's components for packing list purposes */
 				$sql = "SELECT bom.component,
 								bom.quantity,
@@ -226,14 +226,14 @@ for ($i = 1; $i <= 2; $i++) {
 								stockmaster.decimalplaces
 						FROM bom INNER JOIN stockmaster
 						ON bom.component=stockmaster.stockid
-						WHERE bom.parent='" . $myrow2['stkcode'] . "'";
+						WHERE bom.parent='" . $MyRow2['stkcode'] . "'";
 				$ErrMsg = _('Could not retrieve the components of the ordered assembly item');
 				$AssemblyResult = DB_query($sql, $ErrMsg);
 				$LeftOvers = $pdf->addTextWrap($XPos, $YPos, 150, $FontSize, _('Assembly Components:-'));
 				$YPos -= ($line_height);
 				/*Loop around all the components of the assembly and list the quantity supplied */
 				while ($ComponentRow = DB_fetch_array($AssemblyResult)) {
-					$DisplayQtySupplied = locale_number_format($ComponentRow['quantity'] * ($myrow2['quantity'] - $myrow2['qtyinvoiced']), $ComponentRow['decimalplaces']);
+					$DisplayQtySupplied = locale_number_format($ComponentRow['quantity'] * ($MyRow2['quantity'] - $MyRow2['qtyinvoiced']), $ComponentRow['decimalplaces']);
 					$LeftOvers = $pdf->addTextWrap($XPos, $YPos, 127, $FontSize, $ComponentRow['component']);
 					$LeftOvers = $pdf->addTextWrap(147, $YPos, 255, $FontSize, $ComponentRow['description']);
 					$LeftOvers = $pdf->addTextWrap(503, $YPos, 85, $FontSize, $DisplayQtySupplied, 'right');

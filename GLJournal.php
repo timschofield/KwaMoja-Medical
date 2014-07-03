@@ -169,8 +169,8 @@ if (isset($_POST['CommitBatch']) and $_POST['CommitBatch'] == _('Accept and Proc
 				prnMsg(_('The manual GL code entered does not exist in the database') . ' - ' . _('so this GL analysis item could not be added'), 'warn');
 				unset($_POST['GLManualCode']);
 			} else {
-				$myrow = DB_fetch_array($Result);
-				$_SESSION['JournalDetail']->add_to_glanalysis(filter_number_format($_POST['GLAmount']), $_POST['GLNarrative'], $_POST['GLManualCode'], $myrow['accountname'], $_POST['tag']);
+				$MyRow = DB_fetch_array($Result);
+				$_SESSION['JournalDetail']->add_to_glanalysis(filter_number_format($_POST['GLAmount']), $_POST['GLNarrative'], $_POST['GLManualCode'], $MyRow['accountname'], $_POST['tag']);
 			}
 		}
 	} else {
@@ -203,8 +203,8 @@ if (isset($_POST['CommitBatch']) and $_POST['CommitBatch'] == _('Accept and Proc
 			}
 			$SQL = "SELECT accountname FROM chartmaster WHERE accountcode='" . $_POST['GLCode'] . "'";
 			$Result = DB_query($SQL);
-			$myrow = DB_fetch_array($Result);
-			$_SESSION['JournalDetail']->add_to_glanalysis(filter_number_format($_POST['GLAmount']), $_POST['GLNarrative'], $_POST['GLCode'], $myrow['accountname'], $_POST['tag']);
+			$MyRow = DB_fetch_array($Result);
+			$_SESSION['JournalDetail']->add_to_glanalysis(filter_number_format($_POST['GLAmount']), $_POST['GLNarrative'], $_POST['GLCode'], $MyRow['accountname'], $_POST['tag']);
 		}
 	}
 
@@ -300,11 +300,11 @@ $SQL = "SELECT tagref,
 
 $result = DB_query($SQL);
 echo '<option value="0">0 - ' . _('None') . '</option>';
-while ($myrow = DB_fetch_array($result)) {
-	if (isset($_POST['tag']) and $_POST['tag'] == $myrow['tagref']) {
-		echo '<option selected="selected" value="' . $myrow['tagref'] . '">' . $myrow['tagref'] . ' - ' . $myrow['tagdescription'] . '</option>';
+while ($MyRow = DB_fetch_array($result)) {
+	if (isset($_POST['tag']) and $_POST['tag'] == $MyRow['tagref']) {
+		echo '<option selected="selected" value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
 	} else {
-		echo '<option value="' . $myrow['tagref'] . '">' . $myrow['tagref'] . ' - ' . $myrow['tagdescription'] . '</option>';
+		echo '<option value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
 	}
 }
 echo '</select></td>';
@@ -328,11 +328,11 @@ $sql = "SELECT accountcode,
 $result = DB_query($sql);
 echo '<td><select minlength="0" name="GLCode" onchange="return assignComboToInput(this,' . 'GLManualCode' . ')">';
 echo '<option value="">' . _('Select a general ledger account code') . '</option>';
-while ($myrow = DB_fetch_array($result)) {
-	if (isset($_POST['GLCode']) and $_POST['GLCode'] == $myrow['accountcode']) {
-		echo '<option selected="selected" value="' . $myrow['accountcode'] . '">' . $myrow['accountcode'] . ' - ' . htmlspecialchars($myrow['accountname'], ENT_QUOTES, 'UTF-8', false) . '</option>';
+while ($MyRow = DB_fetch_array($result)) {
+	if (isset($_POST['GLCode']) and $_POST['GLCode'] == $MyRow['accountcode']) {
+		echo '<option selected="selected" value="' . $MyRow['accountcode'] . '">' . $MyRow['accountcode'] . ' - ' . htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false) . '</option>';
 	} else {
-		echo '<option value="' . $myrow['accountcode'] . '">' . $myrow['accountcode'] . ' - ' . htmlspecialchars($myrow['accountname'], ENT_QUOTES, 'UTF-8', false) . '</option>';
+		echo '<option value="' . $MyRow['accountcode'] . '">' . $MyRow['accountcode'] . ' - ' . htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false) . '</option>';
 	}
 }
 echo '</select></td>';
@@ -403,11 +403,11 @@ foreach ($_SESSION['JournalDetail']->GLEntries as $JournalItem) {
 			FROM tags
 			WHERE tagref='" . $JournalItem->tag . "'";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_row($result);
+	$MyRow = DB_fetch_row($result);
 	if ($JournalItem->tag == 0) {
 		$TagDescription = _('None');
 	} else {
-		$TagDescription = $myrow[0];
+		$TagDescription = $MyRow[0];
 	}
 	echo '<td>' . $JournalItem->tag . ' - ' . $TagDescription . '</td>
 		<td>' . $JournalItem->GLCode . ' - ' . $JournalItem->GLActName . '</td>';

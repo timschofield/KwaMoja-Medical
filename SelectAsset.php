@@ -59,11 +59,11 @@ if ($_POST['AssetCategory'] == 'ALL') {
 	echo '<option value="ALL">' . _('Any asset category') . '</option>';
 }
 
-while ($myrow = DB_fetch_array($result)) {
-	if ($myrow['categoryid'] == $_POST['AssetCategory']) {
-		echo '<option selected="selected" value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . '</option>';
+while ($MyRow = DB_fetch_array($result)) {
+	if ($MyRow['categoryid'] == $_POST['AssetCategory']) {
+		echo '<option selected="selected" value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 	} else {
-		echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . '</option>';
+		echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 	}
 }
 echo '</select></td>
@@ -90,11 +90,11 @@ if ($_POST['AssetLocation'] == 'ALL') {
 }
 $result = DB_query("SELECT locationid, locationdescription FROM fixedassetlocations");
 
-while ($myrow = DB_fetch_array($result)) {
-	if ($myrow['locationid'] == $_POST['AssetLocation']) {
-		echo '<option selected="selected" value="' . $myrow['locationid'] . '">' . $myrow['locationdescription'] . '</option>';
+while ($MyRow = DB_fetch_array($result)) {
+	if ($MyRow['locationid'] == $_POST['AssetLocation']) {
+		echo '<option selected="selected" value="' . $MyRow['locationid'] . '">' . $MyRow['locationdescription'] . '</option>';
 	} else {
-		echo '<option value="' . $myrow['locationid'] . '">' . $myrow['locationdescription'] . '</option>';
+		echo '<option value="' . $MyRow['locationid'] . '">' . $MyRow['locationdescription'] . '</option>';
 	}
 }
 echo '</select>';
@@ -268,7 +268,7 @@ if (isset($SearchResult) and !isset($_POST['Select'])) {
 		if (DB_num_rows($SearchResult) <> 0) {
 			DB_data_seek($SearchResult, ($_POST['PageOffset'] - 1) * $_SESSION['DisplayRecordsMax']);
 		}
-		while (($myrow = DB_fetch_array($SearchResult)) and ($RowIndex <> $_SESSION['DisplayRecordsMax'])) {
+		while (($MyRow = DB_fetch_array($SearchResult)) and ($RowIndex <> $_SESSION['DisplayRecordsMax'])) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;
@@ -276,10 +276,10 @@ if (isset($SearchResult) and !isset($_POST['Select'])) {
 				echo '<tr class="OddTableRows">';
 				$k++;
 			}
-			echo '<td><input type="submit" name="Select" value="' . $myrow['assetid'] . '" /></td>
-					<td>' . $myrow['description'] . '</td>
-					<td>' . $myrow['locationdescription'] . '</td>
-					<td>' . ConvertSQLDate($myrow['datepurchased']) . '</td>
+			echo '<td><input type="submit" name="Select" value="' . $MyRow['assetid'] . '" /></td>
+					<td>' . $MyRow['description'] . '</td>
+					<td>' . $MyRow['locationdescription'] . '</td>
+					<td>' . ConvertSQLDate($MyRow['datepurchased']) . '</td>
 				</tr>';
 		}
 		//end of while loop

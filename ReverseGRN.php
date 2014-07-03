@@ -418,7 +418,7 @@ if (isset($_GET['GRNNo']) and isset($_POST['SupplierID'])) {
 
 			/* show the GRNs outstanding to be invoiced that could be reversed */
 			$k = 0;
-			while ($myrow = DB_fetch_array($result)) {
+			while ($MyRow = DB_fetch_array($result)) {
 				if ($k == 1) {
 					echo '<tr class="EvenTableRows">';
 					$k = 0;
@@ -427,11 +427,11 @@ if (isset($_GET['GRNNo']) and isset($_POST['SupplierID'])) {
 					$k = 1;
 				}
 
-				$DisplayQtyRecd = locale_number_format($myrow['qtyrecd'], 'Variable');
-				$DisplayQtyInv = locale_number_format($myrow['quantityinv'], 'Variable');
-				$DisplayQtyRev = locale_number_format($myrow['qtytoreverse'], 'Variable');
-				$DisplayDateDel = ConvertSQLDate($myrow['deliverydate']);
-				$LinkToRevGRN = '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?GRNNo=' . $myrow['grnno'] . '">' . _('Reverse') . '</a>';
+				$DisplayQtyRecd = locale_number_format($MyRow['qtyrecd'], 'Variable');
+				$DisplayQtyInv = locale_number_format($MyRow['quantityinv'], 'Variable');
+				$DisplayQtyRev = locale_number_format($MyRow['qtytoreverse'], 'Variable');
+				$DisplayDateDel = ConvertSQLDate($MyRow['deliverydate']);
+				$LinkToRevGRN = '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?GRNNo=' . $MyRow['grnno'] . '">' . _('Reverse') . '</a>';
 
 				printf('<td>%s</td>
 						<td>%s</td>
@@ -442,7 +442,7 @@ if (isset($_GET['GRNNo']) and isset($_POST['SupplierID'])) {
 						<td class="number">%s</td>
 						<td class="number">%s</td>
 						<td>%s</td>
-						</tr>', $myrow['grnno'], $myrow['grnbatch'], $myrow['itemcode'], $myrow['itemdescription'], $DisplayDateDel, $DisplayQtyRecd, $DisplayQtyInv, $DisplayQtyRev, $LinkToRevGRN);
+						</tr>', $MyRow['grnno'], $MyRow['grnbatch'], $MyRow['itemcode'], $MyRow['itemdescription'], $DisplayDateDel, $DisplayQtyRecd, $DisplayQtyInv, $DisplayQtyRev, $LinkToRevGRN);
 
 			}
 

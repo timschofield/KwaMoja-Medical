@@ -190,8 +190,8 @@ if (isset($_POST['submit'])) {
 		/* Get default currency rate */
 		$sql = "SELECT rate from currencies WHERE currabrev='" . $_POST['CurrencyDefault'] . "'";
 		$result = DB_query($sql);
-		$myrow = DB_fetch_row($result);
-		$NewCurrencyRate = $myrow[0];
+		$MyRow = DB_fetch_row($result);
+		$NewCurrencyRate = $MyRow[0];
 
 		/* Set new rates */
 		$sql = "UPDATE currencies SET rate=rate/" . $NewCurrencyRate;
@@ -249,33 +249,33 @@ if ($InputError != 1) {
 	$ErrMsg = _('The company preferences could not be retrieved because');
 	$result = DB_query($sql, $ErrMsg);
 
-	$myrow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($result);
 
-	$_POST['CoyName'] = $myrow['coyname'];
-	$_POST['GSTNo'] = $myrow['gstno'];
-	$_POST['CompanyNumber'] = $myrow['companynumber'];
-	$_POST['RegOffice1'] = $myrow['regoffice1'];
-	$_POST['RegOffice2'] = $myrow['regoffice2'];
-	$_POST['RegOffice3'] = $myrow['regoffice3'];
-	$_POST['RegOffice4'] = $myrow['regoffice4'];
-	$_POST['RegOffice5'] = $myrow['regoffice5'];
-	$_POST['RegOffice6'] = $myrow['regoffice6'];
-	$_POST['Telephone'] = $myrow['telephone'];
-	$_POST['Fax'] = $myrow['fax'];
-	$_POST['Email'] = $myrow['email'];
-	$_POST['CurrencyDefault'] = $myrow['currencydefault'];
-	$_POST['DebtorsAct'] = $myrow['debtorsact'];
-	$_POST['PytDiscountAct'] = $myrow['pytdiscountact'];
-	$_POST['CreditorsAct'] = $myrow['creditorsact'];
-	$_POST['PayrollAct'] = $myrow['payrollact'];
-	$_POST['GRNAct'] = $myrow['grnact'];
-	$_POST['ExchangeDiffAct'] = $myrow['exchangediffact'];
-	$_POST['PurchasesExchangeDiffAct'] = $myrow['purchasesexchangediffact'];
-	$_POST['RetainedEarnings'] = $myrow['retainedearnings'];
-	$_POST['GLLink_Debtors'] = $myrow['gllink_debtors'];
-	$_POST['GLLink_Creditors'] = $myrow['gllink_creditors'];
-	$_POST['GLLink_Stock'] = $myrow['gllink_stock'];
-	$_POST['FreightAct'] = $myrow['freightact'];
+	$_POST['CoyName'] = $MyRow['coyname'];
+	$_POST['GSTNo'] = $MyRow['gstno'];
+	$_POST['CompanyNumber'] = $MyRow['companynumber'];
+	$_POST['RegOffice1'] = $MyRow['regoffice1'];
+	$_POST['RegOffice2'] = $MyRow['regoffice2'];
+	$_POST['RegOffice3'] = $MyRow['regoffice3'];
+	$_POST['RegOffice4'] = $MyRow['regoffice4'];
+	$_POST['RegOffice5'] = $MyRow['regoffice5'];
+	$_POST['RegOffice6'] = $MyRow['regoffice6'];
+	$_POST['Telephone'] = $MyRow['telephone'];
+	$_POST['Fax'] = $MyRow['fax'];
+	$_POST['Email'] = $MyRow['email'];
+	$_POST['CurrencyDefault'] = $MyRow['currencydefault'];
+	$_POST['DebtorsAct'] = $MyRow['debtorsact'];
+	$_POST['PytDiscountAct'] = $MyRow['pytdiscountact'];
+	$_POST['CreditorsAct'] = $MyRow['creditorsact'];
+	$_POST['PayrollAct'] = $MyRow['payrollact'];
+	$_POST['GRNAct'] = $MyRow['grnact'];
+	$_POST['ExchangeDiffAct'] = $MyRow['exchangediffact'];
+	$_POST['PurchasesExchangeDiffAct'] = $MyRow['purchasesexchangediffact'];
+	$_POST['RetainedEarnings'] = $MyRow['retainedearnings'];
+	$_POST['GLLink_Debtors'] = $MyRow['gllink_debtors'];
+	$_POST['GLLink_Creditors'] = $MyRow['gllink_creditors'];
+	$_POST['GLLink_Stock'] = $MyRow['gllink_stock'];
+	$_POST['FreightAct'] = $MyRow['freightact'];
 }
 
 if (DB_num_rows($result) == 0) {
@@ -352,11 +352,11 @@ echo '<tr>
 		<td>' . _('Home Currency') . ':</td>
 		<td><select minlength="0" tabindex="13" name="CurrencyDefault">';
 
-while ($myrow = DB_fetch_array($result)) {
-	if ($_POST['CurrencyDefault'] == $myrow['currabrev']) {
-		echo '<option selected="selected" value="' . $myrow['currabrev'] . '">' . _($myrow['currency']) . '</option>';
+while ($MyRow = DB_fetch_array($result)) {
+	if ($_POST['CurrencyDefault'] == $MyRow['currabrev']) {
+		echo '<option selected="selected" value="' . $MyRow['currabrev'] . '">' . _($MyRow['currency']) . '</option>';
 	} else {
-		echo '<option value="' . $myrow['currabrev'] . '">' . _($myrow['currency']) . '</option>';
+		echo '<option value="' . $MyRow['currabrev'] . '">' . _($MyRow['currency']) . '</option>';
 	}
 } //end while loop
 
@@ -376,11 +376,11 @@ echo '<tr>
 		<td>' . _('Debtors Control GL Account') . ':</td>
 		<td><select minlength="0" tabindex="14" name="DebtorsAct">';
 
-while ($myrow = DB_fetch_row($result)) {
-	if ($_POST['DebtorsAct'] == $myrow[0]) {
-		echo '<option selected="selected" value="' . $myrow[0] . '">' . htmlspecialchars($myrow[1], ENT_QUOTES, 'UTF-8') . ' (' . $myrow[0] . ')</option>';
+while ($MyRow = DB_fetch_row($result)) {
+	if ($_POST['DebtorsAct'] == $MyRow[0]) {
+		echo '<option selected="selected" value="' . $MyRow[0] . '">' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</option>';
 	} else {
-		echo '<option value="' . $myrow[0] . '">' . htmlspecialchars($myrow[1], ENT_QUOTES, 'UTF-8') . ' (' . $myrow[0] . ')</option>';
+		echo '<option value="' . $MyRow[0] . '">' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</option>';
 	}
 } //end while loop
 
@@ -393,11 +393,11 @@ echo '<tr>
 		<td>' . _('Creditors Control GL Account') . ':</td>
 		<td><select minlength="0" tabindex="15" name="CreditorsAct">';
 
-while ($myrow = DB_fetch_row($result)) {
-	if ($_POST['CreditorsAct'] == $myrow[0]) {
-		echo '<option selected="selected" value="' . $myrow[0] . '">' . htmlspecialchars($myrow[1], ENT_QUOTES, 'UTF-8') . ' (' . $myrow[0] . ')</option>';
+while ($MyRow = DB_fetch_row($result)) {
+	if ($_POST['CreditorsAct'] == $MyRow[0]) {
+		echo '<option selected="selected" value="' . $MyRow[0] . '">' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</option>';
 	} else {
-		echo '<option value="' . $myrow[0] . '">' . htmlspecialchars($myrow[1], ENT_QUOTES, 'UTF-8') . ' (' . $myrow[0] . ')</option>';
+		echo '<option value="' . $MyRow[0] . '">' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</option>';
 	}
 } //end while loop
 
@@ -410,11 +410,11 @@ echo '<tr>
 		<td>' . _('Payroll Net Pay Clearing GL Account') . ':</td>
 		<td><select minlength="0" tabindex="16" name="PayrollAct">';
 
-while ($myrow = DB_fetch_row($result)) {
-	if ($_POST['PayrollAct'] == $myrow[0]) {
-		echo '<option selected="selected" value="' . $myrow[0] . '">' . htmlspecialchars($myrow[1], ENT_QUOTES, 'UTF-8') . ' (' . $myrow[0] . ')</option>';
+while ($MyRow = DB_fetch_row($result)) {
+	if ($_POST['PayrollAct'] == $MyRow[0]) {
+		echo '<option selected="selected" value="' . $MyRow[0] . '">' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</option>';
 	} else {
-		echo '<option value="' . $myrow[0] . '">' . htmlspecialchars($myrow[1], ENT_QUOTES, 'UTF-8') . ' (' . $myrow[0] . ')</option>';
+		echo '<option value="' . $MyRow[0] . '">' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</option>';
 	}
 } //end while loop
 
@@ -427,11 +427,11 @@ echo '<tr>
 		<td>' . _('Goods Received Clearing GL Account') . ':</td>
 		<td><select minlength="0" tabindex="17" name="GRNAct">';
 
-while ($myrow = DB_fetch_row($result)) {
-	if ($_POST['GRNAct'] == $myrow[0]) {
-		echo '<option selected="selected" value="' . $myrow[0] . '">' . htmlspecialchars($myrow[1], ENT_QUOTES, 'UTF-8') . ' (' . $myrow[0] . ')</option>';
+while ($MyRow = DB_fetch_row($result)) {
+	if ($_POST['GRNAct'] == $MyRow[0]) {
+		echo '<option selected="selected" value="' . $MyRow[0] . '">' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</option>';
 	} else {
-		echo '<option value="' . $myrow[0] . '">' . htmlspecialchars($myrow[1], ENT_QUOTES, 'UTF-8') . ' (' . $myrow[0] . ')</option>';
+		echo '<option value="' . $MyRow[0] . '">' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</option>';
 	}
 } //end while loop
 
@@ -443,11 +443,11 @@ echo '<tr>
 		<td>' . _('Retained Earning Clearing GL Account') . ':</td>
 		<td><select minlength="0" tabindex="18" name="RetainedEarnings">';
 
-while ($myrow = DB_fetch_row($result)) {
-	if ($_POST['RetainedEarnings'] == $myrow[0]) {
-		echo '<option selected="selected" value="' . $myrow[0] . '">' . htmlspecialchars($myrow[1], ENT_QUOTES, 'UTF-8') . ' (' . $myrow[0] . ')</option>';
+while ($MyRow = DB_fetch_row($result)) {
+	if ($_POST['RetainedEarnings'] == $MyRow[0]) {
+		echo '<option selected="selected" value="' . $MyRow[0] . '">' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</option>';
 	} else {
-		echo '<option value="' . $myrow[0] . '">' . htmlspecialchars($myrow[1], ENT_QUOTES, 'UTF-8') . ' (' . $myrow[0] . ')</option>';
+		echo '<option value="' . $MyRow[0] . '">' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</option>';
 	}
 } //end while loop
 
@@ -467,11 +467,11 @@ $result = DB_query("SELECT accountcode,
 					WHERE accountgroups.pandl=1
 					ORDER BY chartmaster.accountcode");
 
-while ($myrow = DB_fetch_row($result)) {
-	if ($_POST['FreightAct'] == $myrow[0]) {
-		echo '<option selected="selected" value="' . $myrow[0] . '">' . htmlspecialchars($myrow[1], ENT_QUOTES, 'UTF-8') . ' (' . $myrow[0] . ')</option>';
+while ($MyRow = DB_fetch_row($result)) {
+	if ($_POST['FreightAct'] == $MyRow[0]) {
+		echo '<option selected="selected" value="' . $MyRow[0] . '">' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</option>';
 	} else {
-		echo '<option value="' . $myrow[0] . '">' . htmlspecialchars($myrow[1], ENT_QUOTES, 'UTF-8') . ' (' . $myrow[0] . ')</option>';
+		echo '<option value="' . $MyRow[0] . '">' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</option>';
 	}
 } //end while loop
 
@@ -484,11 +484,11 @@ echo '<tr>
 		<td>' . _('Sales Exchange Variances GL Account') . ':</td>
 		<td><select minlength="0" tabindex="20" name="ExchangeDiffAct">';
 
-while ($myrow = DB_fetch_row($result)) {
-	if ($_POST['ExchangeDiffAct'] == $myrow[0]) {
-		echo '<option selected="selected" value="' . $myrow[0] . '">' . htmlspecialchars($myrow[1], ENT_QUOTES, 'UTF-8') . ' (' . $myrow[0] . ')</option>';
+while ($MyRow = DB_fetch_row($result)) {
+	if ($_POST['ExchangeDiffAct'] == $MyRow[0]) {
+		echo '<option selected="selected" value="' . $MyRow[0] . '">' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</option>';
 	} else {
-		echo '<option value="' . $myrow[0] . '">' . htmlspecialchars($myrow[1], ENT_QUOTES, 'UTF-8') . ' (' . $myrow[0] . ')</option>';
+		echo '<option value="' . $MyRow[0] . '">' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</option>';
 	}
 } //end while loop
 
@@ -501,11 +501,11 @@ echo '<tr>
 		<td>' . _('Purchases Exchange Variances GL Account') . ':</td>
 		<td><select minlength="0" tabindex="21" name="PurchasesExchangeDiffAct">';
 
-while ($myrow = DB_fetch_row($result)) {
-	if ($_POST['PurchasesExchangeDiffAct'] == $myrow[0]) {
-		echo '<option selected="selected" value="' . $myrow[0] . '">' . htmlspecialchars($myrow[1], ENT_QUOTES, 'UTF-8') . ' (' . $myrow[0] . ')</option>';
+while ($MyRow = DB_fetch_row($result)) {
+	if ($_POST['PurchasesExchangeDiffAct'] == $MyRow[0]) {
+		echo '<option selected="selected" value="' . $MyRow[0] . '">' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</option>';
 	} else {
-		echo '<option  value="' . $myrow[0] . '">' . htmlspecialchars($myrow[1], ENT_QUOTES, 'UTF-8') . ' (' . $myrow[0] . ')</option>';
+		echo '<option  value="' . $MyRow[0] . '">' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</option>';
 	}
 } //end while loop
 
@@ -518,11 +518,11 @@ echo '<tr>
 		<td>' . _('Payment Discount GL Account') . ':</td>
 		<td><select minlength="0" tabindex="22" name="PytDiscountAct">';
 
-while ($myrow = DB_fetch_row($result)) {
-	if ($_POST['PytDiscountAct'] == $myrow[0]) {
-		echo '<option selected="selected" value="' . $myrow[0] . '">' . htmlspecialchars($myrow[1], ENT_QUOTES, 'UTF-8') . ' (' . $myrow[0] . ')</option>';
+while ($MyRow = DB_fetch_row($result)) {
+	if ($_POST['PytDiscountAct'] == $MyRow[0]) {
+		echo '<option selected="selected" value="' . $MyRow[0] . '">' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</option>';
 	} else {
-		echo '<option value="' . $myrow[0] . '">' . htmlspecialchars($myrow[1], ENT_QUOTES, 'UTF-8') . ' (' . $myrow[0] . ')</option>';
+		echo '<option value="' . $MyRow[0] . '">' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</option>';
 	}
 } //end while loop
 

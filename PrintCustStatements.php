@@ -53,8 +53,8 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 	$result = DB_query($sql, '', '', false, false);
 	if (DB_error_no() != 1) {
 		if (DB_num_rows($result) == 1){
-			$myrow = DB_fetch_array($result);
-			$DefaultBankAccountNumber = $myrow['bankaccountnumber'];
+			$MyRow = DB_fetch_array($result);
+			$DefaultBankAccountNumber = $MyRow['bankaccountnumber'];
 		} else {
 			$DefaultBankAccountNumber = '';
 		}
@@ -185,23 +185,23 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 
 					$FontSize = 10;
 
-					while ($myrow = DB_fetch_array($SetldTrans)) {
+					while ($MyRow = DB_fetch_array($SetldTrans)) {
 
-						$DisplayAlloc = locale_number_format($myrow['alloc'], $StmtHeader['currdecimalplaces']);
-						$DisplayOutstanding = locale_number_format($myrow['ostdg'], $StmtHeader['currdecimalplaces']);
+						$DisplayAlloc = locale_number_format($MyRow['alloc'], $StmtHeader['currdecimalplaces']);
+						$DisplayOutstanding = locale_number_format($MyRow['ostdg'], $StmtHeader['currdecimalplaces']);
 
 						$FontSize = 9;
 
-						$LeftOvers = $pdf->addTextWrap($Left_Margin + 1, $YPos, 60, $FontSize, $myrow['typename'], 'left');
-						$LeftOvers = $pdf->addTextWrap($Left_Margin + 110, $YPos, 50, $FontSize, $myrow['transno'], 'left');
-						$LeftOvers = $pdf->addTextWrap($Left_Margin + 211, $YPos, 50, $FontSize, ConvertSQLDate($myrow['trandate']), 'left');
+						$LeftOvers = $pdf->addTextWrap($Left_Margin + 1, $YPos, 60, $FontSize, $MyRow['typename'], 'left');
+						$LeftOvers = $pdf->addTextWrap($Left_Margin + 110, $YPos, 50, $FontSize, $MyRow['transno'], 'left');
+						$LeftOvers = $pdf->addTextWrap($Left_Margin + 211, $YPos, 50, $FontSize, ConvertSQLDate($MyRow['trandate']), 'left');
 
 						$FontSize = 10;
-						if ($myrow['total'] > 0) {
-							$DisplayTotal = locale_number_format($myrow['total'], $StmtHeader['currdecimalplaces']);
+						if ($MyRow['total'] > 0) {
+							$DisplayTotal = locale_number_format($MyRow['total'], $StmtHeader['currdecimalplaces']);
 							$LeftOvers = $pdf->addTextWrap($Left_Margin + 300, $YPos, 60, $FontSize, $DisplayTotal, 'right');
 						} else {
-							$DisplayTotal = locale_number_format(-$myrow['total'], $StmtHeader['currdecimalplaces']);
+							$DisplayTotal = locale_number_format(-$MyRow['total'], $StmtHeader['currdecimalplaces']);
 							$LeftOvers = $pdf->addTextWrap($Left_Margin + 382, $YPos, 60, $FontSize, $DisplayTotal, 'right');
 						}
 						$LeftOvers = $pdf->addTextWrap($Left_Margin + 459, $YPos, 60, $FontSize, $DisplayAlloc, 'right');
@@ -236,22 +236,22 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 				$pdf->addText($Left_Margin + 1, $YPos + 20, $FontSize, _('Outstanding Transactions'));
 				$YPos -= $line_height;
 
-				while ($myrow = DB_fetch_array($OstdgTrans)) {
+				while ($MyRow = DB_fetch_array($OstdgTrans)) {
 
-					$DisplayAlloc = locale_number_format($myrow['alloc'], $StmtHeader['currdecimalplaces']);
-					$DisplayOutstanding = locale_number_format($myrow['ostdg'], $StmtHeader['currdecimalplaces']);
+					$DisplayAlloc = locale_number_format($MyRow['alloc'], $StmtHeader['currdecimalplaces']);
+					$DisplayOutstanding = locale_number_format($MyRow['ostdg'], $StmtHeader['currdecimalplaces']);
 
 					$FontSize = 9;
-					$LeftOvers = $pdf->addTextWrap($Left_Margin + 1, $YPos, 60, $FontSize, $myrow['typename'], 'left');
-					$LeftOvers = $pdf->addTextWrap($Left_Margin + 110, $YPos, 50, $FontSize, $myrow['transno'], 'left');
-					$LeftOvers = $pdf->addTextWrap($Left_Margin + 211, $YPos, 50, $FontSize, ConvertSQLDate($myrow['trandate']), 'left');
+					$LeftOvers = $pdf->addTextWrap($Left_Margin + 1, $YPos, 60, $FontSize, $MyRow['typename'], 'left');
+					$LeftOvers = $pdf->addTextWrap($Left_Margin + 110, $YPos, 50, $FontSize, $MyRow['transno'], 'left');
+					$LeftOvers = $pdf->addTextWrap($Left_Margin + 211, $YPos, 50, $FontSize, ConvertSQLDate($MyRow['trandate']), 'left');
 
 					$FontSize = 10;
-					if ($myrow['total'] > 0) {
-						$DisplayTotal = locale_number_format($myrow['total'], $StmtHeader['currdecimalplaces']);
+					if ($MyRow['total'] > 0) {
+						$DisplayTotal = locale_number_format($MyRow['total'], $StmtHeader['currdecimalplaces']);
 						$LeftOvers = $pdf->addTextWrap($Left_Margin + 300, $YPos, 55, $FontSize, $DisplayTotal, 'right');
 					} else {
-						$DisplayTotal = locale_number_format(-$myrow['total'], $StmtHeader['currdecimalplaces']);
+						$DisplayTotal = locale_number_format(-$MyRow['total'], $StmtHeader['currdecimalplaces']);
 						$LeftOvers = $pdf->addTextWrap($Left_Margin + 382, $YPos, 55, $FontSize, $DisplayTotal, 'right');
 					}
 
@@ -260,8 +260,8 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 
 					/*Now show also in the remittance advice sectin */
 					$FontSize = 8;
-					$LeftOvers = $pdf->addTextWrap($Perforation + 10, $YPos, 30, $FontSize, $myrow['typename'], 'left');
-					$LeftOvers = $pdf->addTextWrap($Perforation + 75, $YPos, 30, $FontSize, $myrow['transno'], 'left');
+					$LeftOvers = $pdf->addTextWrap($Perforation + 10, $YPos, 30, $FontSize, $MyRow['typename'], 'left');
+					$LeftOvers = $pdf->addTextWrap($Perforation + 75, $YPos, 30, $FontSize, $MyRow['transno'], 'left');
 					$LeftOvers = $pdf->addTextWrap($Perforation + 90, $YPos, 60, $FontSize, $DisplayOutstanding, 'right');
 
 					if ($YPos - $line_height <= $Bottom_Margin) {
@@ -459,7 +459,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 					FROM debtorsmaster";
 
 		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($result);
 
 		echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 		echo '<div>';
@@ -468,11 +468,11 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 		echo '<table class="selection">';
 		echo '<tr>
 				<td>' . _('Starting Customer statement to print (Customer code)') . ' </td>
-				<td><input type="text" required="required" minlength="1" maxlength="10" size="7" name="FromCust" value="' . $myrow['fromcriteria'] . '" /></td>
+				<td><input type="text" required="required" minlength="1" maxlength="10" size="7" name="FromCust" value="' . $MyRow['fromcriteria'] . '" /></td>
 			</tr>
 			<tr>
 				<td>' . _('Ending Customer statement to print (Customer code)') . '</td>
-				<td><input type="text" required="required" minlength="1" maxlength="10" size="7" name="ToCust" value="' . $myrow['tocriteria'] . '" /></td>
+				<td><input type="text" required="required" minlength="1" maxlength="10" size="7" name="ToCust" value="' . $MyRow['tocriteria'] . '" /></td>
 			</tr>
 		</table>';
 		echo '<br /><div class="centre">

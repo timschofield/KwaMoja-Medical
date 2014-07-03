@@ -27,9 +27,9 @@ if (isset($_GET['SelectedTag'])) {
 				WHERE tagref='" . $_GET['SelectedTag'] . "'";
 
 		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
-		$ref = $myrow['tagref'];
-		$Description = $myrow['tagdescription'];
+		$MyRow = DB_fetch_array($result);
+		$ref = $MyRow['tagref'];
+		$Description = $MyRow['tagdescription'];
 	}
 } else {
 	$Description = '';
@@ -85,12 +85,12 @@ $sql = "SELECT tagref,
 
 $result = DB_query($sql);
 
-while ($myrow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($result)) {
 	echo '<tr>
-			<td>' . $myrow['tagref'] . '</td>
-			<td>' . $myrow['tagdescription'] . '</td>
-			<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedTag=' . $myrow['tagref'] . '&amp;Action=edit">' . _('Edit') . '</a></td>
-			<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedTag=' . $myrow['tagref'] . '&amp;Action=delete" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this GL tag?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+			<td>' . $MyRow['tagref'] . '</td>
+			<td>' . $MyRow['tagdescription'] . '</td>
+			<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedTag=' . $MyRow['tagref'] . '&amp;Action=edit">' . _('Edit') . '</a></td>
+			<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedTag=' . $MyRow['tagref'] . '&amp;Action=delete" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this GL tag?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
 		</tr>';
 }
 

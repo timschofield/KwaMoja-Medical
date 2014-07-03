@@ -259,10 +259,10 @@ while ($RecurrOrderRow = DB_fetch_array($RecurrOrdersDueResult)) {
 
 		$ErrMsg = _('Unable to determine the area where the sale is to, from the customer branches table, please select an area for this branch');
 		$Result = DB_query($SQL, $ErrMsg);
-		$myrow = DB_fetch_row($Result);
-		$Area = $myrow[0];
-		$DefaultShipVia = $myrow[1];
-		//		$CustTaxAuth = $myrow[2];
+		$MyRow = DB_fetch_row($Result);
+		$Area = $MyRow[0];
+		$DefaultShipVia = $MyRow[1];
+		//		$CustTaxAuth = $MyRow[2];
 		DB_free_result($Result);
 
 		$SQL = "SELECT rate
@@ -271,14 +271,14 @@ while ($RecurrOrderRow = DB_fetch_array($RecurrOrdersDueResult)) {
 				WHERE debtorno='" . $RecurrOrderRow['debtorno'] . "'";
 		$ErrMsg = _('The exchange rate for the customer currency could not be retrieved from the currency table because') . ':';
 		$Result = DB_query($SQL, $ErrMsg);
-		$myrow = DB_fetch_row($Result);
-		$CurrencyRate = $myrow[0];
+		$MyRow = DB_fetch_row($Result);
+		$CurrencyRate = $MyRow[0];
 
 		$SQL = "SELECT taxprovinceid FROM locations WHERE loccode='" . $RecurrOrderRow['fromstkloc'] . "'";
 		$ErrMsg = _('Could not retrieve the tax province of the location from where the order was fulfilled because') . ':';
 		$Result = DB_query($SQL, $ErrMsg);
-		$myrow = DB_fetch_row($Result);
-		$DispTaxProvinceID = $myrow[0];
+		$MyRow = DB_fetch_row($Result);
+		$DispTaxProvinceID = $MyRow[0];
 
 		/*Now Get the next invoice number - function in SQL_CommonFunctions*/
 		$InvoiceNo = GetNextTransNo(10);
@@ -322,31 +322,31 @@ while ($RecurrOrderRow = DB_fetch_array($RecurrOrdersDueResult)) {
 			$LineTaxAmount = 0;
 			$TaxTotals = array();
 
-			while ($myrow = DB_fetch_array($GetTaxRatesResult)) {
-				if (!isset($TaxTotals[$myrow['taxauthid']]['FXAmount'])) {
-					$TaxTotals[$myrow['taxauthid']]['FXAmount'] = 0;
+			while ($MyRow = DB_fetch_array($GetTaxRatesResult)) {
+				if (!isset($TaxTotals[$MyRow['taxauthid']]['FXAmount'])) {
+					$TaxTotals[$MyRow['taxauthid']]['FXAmount'] = 0;
 				}
-				$TaxAuthID = $myrow['taxauthid'];
-				$TaxTotals[$myrow['taxauthid']]['GLCode'] = $myrow['taxglcode'];
-				$TaxTotals[$myrow['taxauthid']]['TaxRate'] = $myrow['taxrate'];
-				$TaxTotals[$myrow['taxauthid']]['TaxAuthDescription'] = $myrow['description'];
+				$TaxAuthID = $MyRow['taxauthid'];
+				$TaxTotals[$MyRow['taxauthid']]['GLCode'] = $MyRow['taxglcode'];
+				$TaxTotals[$MyRow['taxauthid']]['TaxRate'] = $MyRow['taxrate'];
+				$TaxTotals[$MyRow['taxauthid']]['TaxAuthDescription'] = $MyRow['description'];
 
-				if ($myrow['taxontax'] == 1) {
-					$TaxAuthAmount = ($LineNetAmount + $LineTaxAmount) * $myrow['taxrate'];
-					$TaxTotals[$myrow['taxauthid']]['FXAmount'] += ($LineNetAmount + $LineTaxAmount) * $myrow['taxrate'];
+				if ($MyRow['taxontax'] == 1) {
+					$TaxAuthAmount = ($LineNetAmount + $LineTaxAmount) * $MyRow['taxrate'];
+					$TaxTotals[$MyRow['taxauthid']]['FXAmount'] += ($LineNetAmount + $LineTaxAmount) * $MyRow['taxrate'];
 				} else {
-					$TaxAuthAmount = $LineNetAmount * $myrow['taxrate'];
-					$TaxTotals[$myrow['taxauthid']]['FXAmount'] += $LineNetAmount * $myrow['taxrate'];
+					$TaxAuthAmount = $LineNetAmount * $MyRow['taxrate'];
+					$TaxTotals[$MyRow['taxauthid']]['FXAmount'] += $LineNetAmount * $MyRow['taxrate'];
 				}
 
 				/*Make an array of the taxes and amounts including GLcodes for later posting - need debtortransid
 				so can only post once the debtor trans is posted - can only post debtor trans when all tax is calculated */
-				$LineTaxes[$LineCounter][$myrow['calculationorder']] = array(
-					'TaxCalculationOrder' => $myrow['calculationorder'],
-					'TaxAuthID' => $myrow['taxauthid'],
-					'TaxAuthDescription' => $myrow['description'],
-					'TaxRate' => $myrow['taxrate'],
-					'TaxOnTax' => $myrow['taxontax'],
+				$LineTaxes[$LineCounter][$MyRow['calculationorder']] = array(
+					'TaxCalculationOrder' => $MyRow['calculationorder'],
+					'TaxAuthID' => $MyRow['taxauthid'],
+					'TaxAuthDescription' => $MyRow['description'],
+					'TaxRate' => $MyRow['taxrate'],
+					'TaxOnTax' => $MyRow['taxontax'],
 					'TaxAuthAmount' => $TaxAuthAmount
 				);
 				$LineTaxAmount += $TaxAuthAmount;
@@ -470,23 +470,23 @@ while ($RecurrOrderRow = DB_fetch_array($RecurrOrdersDueResult)) {
 			$DbgMsg = _('SQL to count the no of sales analysis records');
 			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
-			$myrow = DB_fetch_row($Result);
+			$MyRow = DB_fetch_row($Result);
 
-			if ($myrow[0] > 0) {
+			if ($MyRow[0] > 0) {
 				/*Update the existing record that already exists */
 
 				$SQL = "UPDATE salesanalysis
 					SET amt=amt+" . filter_number_format($RecurrOrderLineRow['unitprice'] * $RecurrOrderLineRow['quantity'] / $CurrencyRate) . ",
 					qty=qty +" . $RecurrOrderLineRow['quantity'] . ",
 					disc=disc+" . filter_number_format($RecurrOrderLineRow['discountpercent'] * $RecurrOrderLineRow['unitprice'] * $RecurrOrderLineRow['quantity'] / $CurrencyRate) . "
-					WHERE salesanalysis.area='" . $myrow[2] . "'
-					AND salesanalysis.salesperson='" . $myrow[3] . "'
+					WHERE salesanalysis.area='" . $MyRow[2] . "'
+					AND salesanalysis.salesperson='" . $MyRow[3] . "'
 					AND typeabbrev ='" . $RecurrOrderRow['ordertype'] . "'
 					AND periodno = '" . $PeriodNo . "'
 					AND cust  " . LIKE . " '" . $RecurrOrderRow['debtorno'] . "'
 					AND custbranch  " . LIKE . "  '" . $RecurrOrderRow['branchcode'] . "'
 					AND stockid  " . LIKE . " '" . $RecurrOrderLineRow['stkcode'] . "'
-					AND salesanalysis.stkcategory ='" . $myrow[1] . "'
+					AND salesanalysis.stkcategory ='" . $MyRow[1] . "'
 					AND budgetoractual='1'";
 
 			} else {

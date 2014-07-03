@@ -132,7 +132,7 @@ if (!isset($SelectedMessageLine)) {
 			</tr>';
 
 	$k = 0; //row colour counter
-	while ($myrow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($result)) {
 
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -148,7 +148,7 @@ if (!isset($SelectedMessageLine)) {
 				<td>%s</td>
 				<td><a href="%s&amp;SelectedMessageLine=%s">' . _('Edit') . '</a></td>
 				<td><a href="%s&amp;delete=%s">' . _('Delete') . '</a></td>
-				</tr>', $myrow[1], $myrow[2], $myrow[3], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $myrow[0], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $myrow[0]);
+				</tr>', $MyRow[1], $MyRow[2], $MyRow[3], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $MyRow[0], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $MyRow[0]);
 
 	} //END WHILE LIST LOOP
 	echo '</table><br />';
@@ -175,17 +175,17 @@ if (isset($SelectedMessageLine)) {
 		WHERE id='" . $SelectedMessageLine . "'";
 
 	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($result);
 
-	$_POST['Section'] = $myrow['section'];
-	$_POST['SequenceNo'] = $myrow['sequenceno'];
-	$_POST['LineText'] = $myrow['linetext'];
+	$_POST['Section'] = $MyRow['section'];
+	$_POST['SequenceNo'] = $MyRow['sequenceno'];
+	$_POST['LineText'] = $MyRow['linetext'];
 
-	echo '<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?MessageType=INVOIC&amp;PartnerCode=' . $myrow['partnercode'] . '">' . _('Review Message Lines') . '</a></div>';
+	echo '<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?MessageType=INVOIC&amp;PartnerCode=' . $MyRow['partnercode'] . '">' . _('Review Message Lines') . '</a></div>';
 
 	echo '<input type="hidden" name="SelectedMessageLine" value="' . $SelectedMessageLine . '" />';
-	echo '<input type="hidden" name="MessageType" value="' . $myrow['messagetype'] . '" />';
-	echo '<input type="hidden" name="PartnerCode" value="' . $myrow['partnercode'] . '" />';
+	echo '<input type="hidden" name="MessageType" value="' . $MyRow['messagetype'] . '" />';
+	echo '<input type="hidden" name="PartnerCode" value="' . $MyRow['partnercode'] . '" />';
 } else { //end of if $SelectedMessageLine only do the else when a new record is being entered
 	echo '<input type="hidden" name="MessageType" value="' . $MessageType . '" />';
 	echo '<input type="hidden" name="PartnerCode" value="' . $PartnerCode . '" />';
@@ -193,9 +193,9 @@ if (isset($SelectedMessageLine)) {
 
 echo '<table class="selection">';
 
-if ($myrow['messagetype'] != '') {
+if ($MyRow['messagetype'] != '') {
 	echo '<tr>
-			<th colspan="2">' . _('Definition of') . ' ' . $myrow['messagetype'] . ' ' . _('for') . ' ' . $myrow['partnercode'] . '</th>
+			<th colspan="2">' . _('Definition of') . ' ' . $MyRow['messagetype'] . ' ' . _('for') . ' ' . $MyRow['partnercode'] . '</th>
 		</tr>';
 }
 

@@ -284,7 +284,7 @@ if (!isset($SelectedReport)) {
 
 	$k = 0; //row colour counter
 
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -294,13 +294,13 @@ if (!isset($SelectedReport)) {
 		}
 
 
-		echo '<td>' . $myrow[0] . '</td>
-				<td>' . $myrow[1] . '</td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?&amp;SelectedReport=' . urlencode($myrow[0]) . '">' . _('Design') . '</a></td>
-				<td><a href="' . $RootPath . '/SalesAnalReptCols.php?ReportID=' . urlencode($myrow[0]) . '">' . _('Define Columns') . '</a></td>
-				<td><a href="' . $RootPath . '/SalesAnalysis_UserDefined.php?ReportID=' . urlencode($myrow[0]) . '&amp;ProducePDF=True">' . _('Make PDF Report') . '</a></td>
-				<td><a href="' . $RootPath . '/SalesAnalysis_UserDefined.php?ReportID=' . urlencode($myrow[0]) . '&amp;ProduceCVSFile=True">' . _('Make CSV File') . '</a></td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?amp;SelectedReport=' . urlencode($myrow[0]) . '&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to remove this report design?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+		echo '<td>' . $MyRow[0] . '</td>
+				<td>' . $MyRow[1] . '</td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?&amp;SelectedReport=' . urlencode($MyRow[0]) . '">' . _('Design') . '</a></td>
+				<td><a href="' . $RootPath . '/SalesAnalReptCols.php?ReportID=' . urlencode($MyRow[0]) . '">' . _('Define Columns') . '</a></td>
+				<td><a href="' . $RootPath . '/SalesAnalysis_UserDefined.php?ReportID=' . urlencode($MyRow[0]) . '&amp;ProducePDF=True">' . _('Make PDF Report') . '</a></td>
+				<td><a href="' . $RootPath . '/SalesAnalysis_UserDefined.php?ReportID=' . urlencode($MyRow[0]) . '&amp;ProduceCVSFile=True">' . _('Make CSV File') . '</a></td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?amp;SelectedReport=' . urlencode($MyRow[0]) . '&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to remove this report design?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
 			</tr>';
 
 	}
@@ -347,24 +347,24 @@ if (!isset($_GET['delete'])) {
 		$DbgMsg = _('The SQL used to retrieve the report headers was');
 		$result = DB_query($sql, $ErrMsg, $DbgMsg);
 
-		$myrow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($result);
 
-		$ReportID = $myrow['reportid'];
-		$_POST['ReportHeading'] = $myrow['reportheading'];
-		$_POST['GroupByData1'] = $myrow['groupbydata1'];
-		$_POST['NewPageAfter1'] = $myrow['newpageafter1'];
-		$_POST['Upper1'] = $myrow['upper1'];
-		$_POST['Lower1'] = $myrow['lower1'];
-		$_POST['GroupByData2'] = $myrow['groupbydata2'];
-		$_POST['NewPageAfter2'] = $myrow['newpageafter2'];
-		$_POST['Upper2'] = $myrow['upper2'];
-		$_POST['Lower2'] = $myrow['lower2'];
-		$_POST['GroupByData3'] = $myrow['groupbydata3'];
-		$_POST['Upper3'] = $myrow['upper3'];
-		$_POST['Lower3'] = $myrow['lower3'];
-		$_POST['GroupByData4'] = $myrow['groupbydata4'];
-		$_POST['Upper4'] = $myrow['upper4'];
-		$_POST['Lower4'] = $myrow['lower4'];
+		$ReportID = $MyRow['reportid'];
+		$_POST['ReportHeading'] = $MyRow['reportheading'];
+		$_POST['GroupByData1'] = $MyRow['groupbydata1'];
+		$_POST['NewPageAfter1'] = $MyRow['newpageafter1'];
+		$_POST['Upper1'] = $MyRow['upper1'];
+		$_POST['Lower1'] = $MyRow['lower1'];
+		$_POST['GroupByData2'] = $MyRow['groupbydata2'];
+		$_POST['NewPageAfter2'] = $MyRow['newpageafter2'];
+		$_POST['Upper2'] = $MyRow['upper2'];
+		$_POST['Lower2'] = $MyRow['lower2'];
+		$_POST['GroupByData3'] = $MyRow['groupbydata3'];
+		$_POST['Upper3'] = $MyRow['upper3'];
+		$_POST['Lower3'] = $MyRow['lower3'];
+		$_POST['GroupByData4'] = $MyRow['groupbydata4'];
+		$_POST['Upper4'] = $MyRow['upper4'];
+		$_POST['Lower4'] = $MyRow['lower4'];
 
 		echo '<input type="hidden" name="SelectedReport" value="' . $SelectedReport . '" />';
 		echo '<input type="hidden" name="ReportID" value="' . $ReportID . '" />';

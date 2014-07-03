@@ -69,16 +69,16 @@ echo '<tr>
 		<th>' . _('Authorise') . '</th>
 	</tr>';
 
-while ($myrow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($result)) {
 
 	echo '<tr>
-			<td>' . $myrow['dispatchid'] . '</td>
-			<td>' . $myrow['description'] . '</td>
-			<td>' . $myrow['initiator'] . '</td>
-			<td>' . $myrow['locationname'] . '</td>
-			<td>' . ConvertSQLDate($myrow['despatchdate']) . '</td>
-			<td>' . $myrow['narrative'] . '</td>
-			<td><input type="checkbox" name="status' . $myrow['dispatchid'] . '" /></td>
+			<td>' . $MyRow['dispatchid'] . '</td>
+			<td>' . $MyRow['description'] . '</td>
+			<td>' . $MyRow['initiator'] . '</td>
+			<td>' . $MyRow['locationname'] . '</td>
+			<td>' . ConvertSQLDate($MyRow['despatchdate']) . '</td>
+			<td>' . $MyRow['narrative'] . '</td>
+			<td><input type="checkbox" name="status' . $MyRow['dispatchid'] . '" /></td>
 		</tr>';
 	$linesql = "SELECT stockrequestitems.dispatchitemsid,
 						stockrequestitems.stockid,
@@ -89,7 +89,7 @@ while ($myrow = DB_fetch_array($result)) {
 				FROM stockrequestitems
 				INNER JOIN stockmaster
 					ON stockmaster.stockid=stockrequestitems.stockid
-				WHERE dispatchid='" . $myrow['dispatchid'] . "'
+				WHERE dispatchid='" . $MyRow['dispatchid'] . "'
 					AND completed=0";
 	$lineresult = DB_query($linesql);
 
@@ -109,7 +109,7 @@ while ($myrow = DB_fetch_array($result)) {
 				<td>' . $linerow['description'] . '</td>
 				<td class="number">' . locale_number_format($linerow['quantity'], $linerow['decimalplaces']) . '</td>
 				<td>' . $linerow['uom'] . '</td>
-				<td><input type="checkbox" name="' . $myrow['dispatchid'] . 'cancel' . $linerow['dispatchitemsid'] . '" /></td>
+				<td><input type="checkbox" name="' . $MyRow['dispatchid'] . 'cancel' . $linerow['dispatchitemsid'] . '" /></td>
 			</tr>';
 	} // end while order line detail
 	echo '</table>

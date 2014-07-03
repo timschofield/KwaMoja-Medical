@@ -29,11 +29,11 @@ if (isset($_POST['UpdateRates'])) {
 								FROM taxauthrates
 								WHERE taxauthrates.taxauthority='" . $TaxAuthority . "'");
 
-	while ($myrow = DB_fetch_array($TaxRatesResult)) {
+	while ($MyRow = DB_fetch_array($TaxRatesResult)) {
 
-		$sql = "UPDATE taxauthrates SET taxrate=" . (filter_number_format($_POST[$myrow['dispatchtaxprovince'] . '_' . $myrow['taxcatid']]) / 100) . "
-						WHERE taxcatid = '" . $myrow['taxcatid'] . "'
-						AND dispatchtaxprovince = '" . $myrow['dispatchtaxprovince'] . "'
+		$sql = "UPDATE taxauthrates SET taxrate=" . (filter_number_format($_POST[$MyRow['dispatchtaxprovince'] . '_' . $MyRow['taxcatid']]) / 100) . "
+						WHERE taxcatid = '" . $MyRow['taxcatid'] . "'
+						AND dispatchtaxprovince = '" . $MyRow['dispatchtaxprovince'] . "'
 						AND taxauthority = '" . $TaxAuthority . "'";
 		DB_query($sql);
 	}
@@ -48,7 +48,7 @@ if (isset($_POST['UpdateRates'])) {
 
 $TaxAuthDetail = DB_query("SELECT description
 							FROM taxauthorities WHERE taxid='" . $TaxAuthority . "'");
-$myrow = DB_fetch_row($TaxAuthDetail);
+$MyRow = DB_fetch_row($TaxAuthDetail);
 
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -80,7 +80,7 @@ if (DB_num_rows($TaxRatesResult) > 0) {
 
 	echo '<table class="selection">';
 	echo '<tr>
-			<th colspan="3"><h3>' . _('Update') . ' ' . $myrow[0] . ' ' . _('Rates') . '</h3></th>
+			<th colspan="3"><h3>' . _('Update') . ' ' . $MyRow[0] . ' ' . _('Rates') . '</h3></th>
 		</tr>
 		<tr>
 			<th class="SortableColumn">' . _('Deliveries From') . '<br />' . _('Tax Province') . '</th>
@@ -90,9 +90,9 @@ if (DB_num_rows($TaxRatesResult) > 0) {
 	$k = 0; //row counter to determine background colour
 	$OldProvince = '';
 
-	while ($myrow = DB_fetch_array($TaxRatesResult)) {
+	while ($MyRow = DB_fetch_array($TaxRatesResult)) {
 
-		if ($OldProvince != $myrow['dispatchtaxprovince'] and $OldProvince != '') {
+		if ($OldProvince != $MyRow['dispatchtaxprovince'] and $OldProvince != '') {
 			echo '<tr style="background-color:#555555"><td colspan="3"></td></tr>';
 		}
 
@@ -107,9 +107,9 @@ if (DB_num_rows($TaxRatesResult) > 0) {
 		printf('<td>%s</td>
 				<td>%s</td>
 				<td><input type="text" class="number" name="%s" required="required" minlength="1" maxlength="5" size="5" value="%s" /></td>
-				</tr>', $myrow['taxprovincename'], $myrow['taxcatname'], $myrow['dispatchtaxprovince'] . '_' . $myrow['taxcatid'], locale_number_format($myrow['taxrate'] * 100, 2));
+				</tr>', $MyRow['taxprovincename'], $MyRow['taxcatname'], $MyRow['dispatchtaxprovince'] . '_' . $MyRow['taxcatid'], locale_number_format($MyRow['taxrate'] * 100, 2));
 
-		$OldProvince = $myrow['dispatchtaxprovince'];
+		$OldProvince = $MyRow['dispatchtaxprovince'];
 
 	}
 	//end of while loop

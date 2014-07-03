@@ -137,11 +137,11 @@ function submit(&$ChangeDate) {
 	$sql = "SELECT * FROM mrpcalendar
 			ORDER BY calendardate";
 	$result = DB_query($sql, $ErrMsg);
-	while ($myrow = DB_fetch_array($result)) {
-		if ($myrow['manufacturingflag'] == "1") {
+	while ($MyRow = DB_fetch_array($result)) {
+		if ($MyRow['manufacturingflag'] == "1") {
 			$DayNumber++;
 		}
-		$CalDate = $myrow['calendardate'];
+		$CalDate = $MyRow['calendardate'];
 		$sql = "UPDATE mrpcalendar SET daynumber = '" . $DayNumber . "'
 					WHERE calendardate = '" . $CalDate . "'";
 		$resultupdate = DB_query($sql, $ErrMsg);
@@ -162,8 +162,8 @@ function update(&$ChangeDate) {
 		  WHERE calendardate='$CalDate'
 		  GROUP BY calendardate";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_row($result);
-	if ($myrow[0] < 1 or !Is_Date($ChangeDate)) {
+	$MyRow = DB_fetch_row($result);
+	if ($MyRow[0] < 1 or !Is_Date($ChangeDate)) {
 		$InputError = 1;
 		prnMsg(_('Invalid Change Date'), 'error');
 	}
@@ -175,9 +175,9 @@ function update(&$ChangeDate) {
 
 	$sql = "SELECT mrpcalendar.* FROM mrpcalendar WHERE calendardate='$CalDate'";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_row($result);
+	$MyRow = DB_fetch_row($result);
 	$newmanufacturingflag = 0;
-	if ($myrow[2] == 0) {
+	if ($MyRow[2] == 0) {
 		$newmanufacturingflag = 1;
 	}
 	$sql = "UPDATE mrpcalendar SET manufacturingflag = '" . $newmanufacturingflag . "'
@@ -195,11 +195,11 @@ function update(&$ChangeDate) {
 	$DayNumber = 1;
 	$sql = "SELECT * FROM mrpcalendar ORDER BY calendardate";
 	$result = DB_query($sql, $ErrMsg);
-	while ($myrow = DB_fetch_array($result)) {
-		if ($myrow['manufacturingflag'] == '1') {
+	while ($MyRow = DB_fetch_array($result)) {
+		if ($MyRow['manufacturingflag'] == '1') {
 			$DayNumber++;
 		}
-		$CalDate = $myrow['calendardate'];
+		$CalDate = $MyRow['calendardate'];
 		$sql = "UPDATE mrpcalendar SET daynumber = '" . $DayNumber . "'
 					WHERE calendardate = '" . $CalDate . "'";
 		$resultupdate = DB_query($sql, $ErrMsg);
@@ -231,16 +231,16 @@ function ShowDays() { //####LISTALL_LISTALL_LISTALL_LISTALL_LISTALL_LISTALL_LIST
 			<th>' . _('Manufacturing Date') . '</th>
 		</tr>';
 	$ctr = 0;
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		$flag = _('Yes');
-		if ($myrow['manufacturingflag'] == 0) {
+		if ($MyRow['manufacturingflag'] == 0) {
 			$flag = _('No');
 		}
 		printf('<tr>
 					<td>%s</td>
 					<td>%s</td>
 					<td>%s</td>
-				</tr>', ConvertSQLDate($myrow[0]), _($myrow[3]), $flag);
+				</tr>', ConvertSQLDate($MyRow[0]), _($MyRow[3]), $flag);
 	} //END WHILE LIST LOOP
 
 	echo '</table>';

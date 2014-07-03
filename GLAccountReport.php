@@ -132,9 +132,9 @@ if (isset($_POST['RunReport'])) {
 		$j = 1;
 		$k = 0; //row colour counter
 
-		while ($myrow = DB_fetch_array($TransResult)) {
+		while ($MyRow = DB_fetch_array($TransResult)) {
 
-			if ($myrow['periodno'] != $PeriodNo) {
+			if ($MyRow['periodno'] != $PeriodNo) {
 				if ($PeriodNo != -9999) { //ie its not the first time around
 					$YPos -= $line_height;
 					$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 150, $FontSize, _('Period Total'));
@@ -144,24 +144,24 @@ if (isset($_POST['RunReport'])) {
 						$LeftOvers = $pdf->addTextWrap(160, $YPos, 50, $FontSize, locale_number_format($PeriodTotal, $_SESSION['CompanyRecord']['decimalplaces']), 'right');
 					}
 				}
-				$PeriodNo = $myrow['periodno'];
+				$PeriodNo = $MyRow['periodno'];
 				$PeriodTotal = 0;
 			}
 
-			$RunningTotal += $myrow['amount'];
-			$PeriodTotal += $myrow['amount'];
+			$RunningTotal += $MyRow['amount'];
+			$PeriodTotal += $MyRow['amount'];
 
-			if ($myrow['amount'] >= 0) {
-				$DebitAmount = locale_number_format($myrow['amount'], $_SESSION['CompanyRecord']['decimalplaces']);
+			if ($MyRow['amount'] >= 0) {
+				$DebitAmount = locale_number_format($MyRow['amount'], $_SESSION['CompanyRecord']['decimalplaces']);
 				$CreditAmount = '';
-			} elseif ($myrow['amount'] < 0) {
-				$CreditAmount = locale_number_format(-$myrow['amount'], $_SESSION['CompanyRecord']['decimalplaces']);
+			} elseif ($MyRow['amount'] < 0) {
+				$CreditAmount = locale_number_format(-$MyRow['amount'], $_SESSION['CompanyRecord']['decimalplaces']);
 				$DebitAmount = '';
 			}
 
-			$FormatedTranDate = ConvertSQLDate($myrow['trandate']);
+			$FormatedTranDate = ConvertSQLDate($MyRow['trandate']);
 
-			$tagsql = "SELECT tagdescription FROM tags WHERE tagref='" . $myrow['tag'] . "'";
+			$tagsql = "SELECT tagdescription FROM tags WHERE tagref='" . $MyRow['tag'] . "'";
 			$tagresult = DB_query($tagsql);
 			$tagrow = DB_fetch_array($tagresult);
 
@@ -169,12 +169,12 @@ if (isset($_POST['RunReport'])) {
 			$YPos -= $line_height;
 			$FontSize = 8;
 
-			$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 30, $FontSize, $myrow['typename']);
-			$LeftOvers = $pdf->addTextWrap(80, $YPos, 30, $FontSize, $myrow['typeno'], 'right');
+			$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 30, $FontSize, $MyRow['typename']);
+			$LeftOvers = $pdf->addTextWrap(80, $YPos, 30, $FontSize, $MyRow['typeno'], 'right');
 			$LeftOvers = $pdf->addTextWrap(110, $YPos, 50, $FontSize, $FormatedTranDate);
 			$LeftOvers = $pdf->addTextWrap(160, $YPos, 50, $FontSize, $DebitAmount, 'right');
 			$LeftOvers = $pdf->addTextWrap(210, $YPos, 50, $FontSize, $CreditAmount, 'right');
-			$LeftOvers = $pdf->addTextWrap(320, $YPos, 150, $FontSize, $myrow['narrative']);
+			$LeftOvers = $pdf->addTextWrap(320, $YPos, 150, $FontSize, $MyRow['narrative']);
 			$LeftOvers = $pdf->addTextWrap(470, $YPos, 80, $FontSize, $tagrow['tagdescription']);
 
 			if ($YPos < ($Bottom_Margin + (5 * $line_height))) {
@@ -240,12 +240,12 @@ else {
 	$sql = "SELECT accountcode, accountname FROM chartmaster ORDER BY accountcode";
 	$AccountsResult = DB_query($sql);
 	$i = 0;
-	while ($myrow = DB_fetch_array($AccountsResult)) {
-		if (isset($_POST['Account'][$i]) and $myrow['accountcode'] == $_POST['Account'][$i]) {
-			echo '<option selected="selected" value="' . $myrow['accountcode'] . '">' . $myrow['accountcode'] . ' ' . $myrow['accountname'] . '</option>';
+	while ($MyRow = DB_fetch_array($AccountsResult)) {
+		if (isset($_POST['Account'][$i]) and $MyRow['accountcode'] == $_POST['Account'][$i]) {
+			echo '<option selected="selected" value="' . $MyRow['accountcode'] . '">' . $MyRow['accountcode'] . ' ' . $MyRow['accountname'] . '</option>';
 			$i++;
 		} else {
-			echo '<option value="' . $myrow['accountcode'] . '">' . $myrow['accountcode'] . ' ' . $myrow['accountname'] . '</option>';
+			echo '<option value="' . $MyRow['accountcode'] . '">' . $MyRow['accountcode'] . ' ' . $MyRow['accountname'] . '</option>';
 		}
 	}
 	echo '</select></td>';
@@ -256,12 +256,12 @@ else {
 	$Periods = DB_query($sql);
 	$id = 0;
 
-	while ($myrow = DB_fetch_array($Periods)) {
-		if (isset($SelectedPeriod[$id]) and $myrow['periodno'] == $SelectedPeriod[$id]) {
-			echo '<option selected="selected" value="' . $myrow['periodno'] . '">' . _(MonthAndYearFromSQLDate($myrow['lastdate_in_period'])) . '</option>';
+	while ($MyRow = DB_fetch_array($Periods)) {
+		if (isset($SelectedPeriod[$id]) and $MyRow['periodno'] == $SelectedPeriod[$id]) {
+			echo '<option selected="selected" value="' . $MyRow['periodno'] . '">' . _(MonthAndYearFromSQLDate($MyRow['lastdate_in_period'])) . '</option>';
 			$id++;
 		} else {
-			echo '<option value="' . $myrow['periodno'] . '">' . _(MonthAndYearFromSQLDate($myrow['lastdate_in_period'])) . '</option>';
+			echo '<option value="' . $MyRow['periodno'] . '">' . _(MonthAndYearFromSQLDate($MyRow['lastdate_in_period'])) . '</option>';
 		}
 	}
 	echo '</select></td></tr>';
@@ -278,11 +278,11 @@ else {
 
 	$result = DB_query($SQL);
 	echo '<option value="0">0 - ' . _('All tags') . '</option>';
-	while ($myrow = DB_fetch_array($result)) {
-		if (isset($_POST['tag']) and $_POST['tag'] == $myrow['tagref']) {
-			echo '<option selected="selected" value="' . $myrow['tagref'] . '">' . $myrow['tagref'] . ' - ' . $myrow['tagdescription'] . '</option>';
+	while ($MyRow = DB_fetch_array($result)) {
+		if (isset($_POST['tag']) and $_POST['tag'] == $MyRow['tagref']) {
+			echo '<option selected="selected" value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['tagref'] . '">' . $myrow['tagref'] . ' - ' . $myrow['tagdescription'] . '</option>';
+			echo '<option value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
 		}
 	}
 	echo '</select></td></tr>';

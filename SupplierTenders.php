@@ -21,13 +21,13 @@ if (empty($_GET['identifier'])) {
 if (!isset($_POST['SupplierID'])) {
 	$sql = "SELECT supplierid FROM www_users WHERE userid='" . $_SESSION['UserID'] . "'";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
-	if ($myrow['supplierid'] == '') {
+	$MyRow = DB_fetch_array($result);
+	if ($MyRow['supplierid'] == '') {
 		prnMsg(_('This functionality can only be accessed via a supplier login.'), 'warning');
 		include('includes/footer.inc');
 		exit;
 	} else {
-		$_POST['SupplierID'] = $myrow['supplierid'];
+		$_POST['SupplierID'] = $MyRow['supplierid'];
 	}
 }
 
@@ -42,9 +42,9 @@ $sql = "SELECT suppname,
 		FROM suppliers
 		WHERE supplierid='" . $_POST['SupplierID'] . "'";
 $result = DB_query($sql);
-$myrow = DB_fetch_array($result);
-$Supplier = $myrow['suppname'];
-$Currency = $myrow['currcode'];
+$MyRow = DB_fetch_array($result);
+$Supplier = $MyRow['suppname'];
+$Currency = $MyRow['currcode'];
 
 if (isset($_POST['Confirm'])) {
 	$_SESSION['offer' . $identifier]->Save();
@@ -185,8 +185,8 @@ if (isset($_POST['NewItem']) and !isset($_POST['Refresh'])) {
 			if (isset($UOM) and $Quantity > 0) {
 				$sql = "SELECT description, decimalplaces FROM stockmaster WHERE stockid='" . $StockID . "'";
 				$result = DB_query($sql);
-				$myrow = DB_fetch_array($result);
-				$_SESSION['offer' . $identifier]->add_to_offer($_SESSION['offer' . $identifier]->LinesOnOffer, $StockID, $Quantity, $myrow['description'], $Price, $UOM, $myrow['decimalplaces'], DateAdd(date($_SESSION['DefaultDateFormat']), 'm', 3));
+				$MyRow = DB_fetch_array($result);
+				$_SESSION['offer' . $identifier]->add_to_offer($_SESSION['offer' . $identifier]->LinesOnOffer, $StockID, $Quantity, $MyRow['description'], $Price, $UOM, $MyRow['decimalplaces'], DateAdd(date($_SESSION['DefaultDateFormat']), 'm', 3));
 				unset($UOM);
 			}
 		}
@@ -277,8 +277,8 @@ if (isset($_POST['TenderType']) and $_POST['TenderType'] == 1 and !isset($_POST[
 	$result = DB_query($sql);
 	$_SESSION['offer' . $identifier] = new Offer($_POST['SupplierID']);
 	$_SESSION['offer' . $identifier]->CurrCode = $Currency;
-	while ($myrow = DB_fetch_array($result)) {
-		$_SESSION['offer' . $identifier]->add_to_offer($myrow['offerid'], $myrow['stockid'], $myrow['quantity'], $myrow['description'], $myrow['price'], $myrow['uom'], $myrow['decimalplaces'], ConvertSQLDate($myrow['expirydate']));
+	while ($MyRow = DB_fetch_array($result)) {
+		$_SESSION['offer' . $identifier]->add_to_offer($MyRow['offerid'], $MyRow['stockid'], $MyRow['quantity'], $MyRow['description'], $MyRow['price'], $MyRow['uom'], $MyRow['decimalplaces'], ConvertSQLDate($MyRow['expirydate']));
 	}
 }
 
@@ -372,11 +372,11 @@ if (isset($_POST['TenderType']) AND $_POST['TenderType'] == 2 AND !isset($_POST[
 	} else {
 		echo '<option value="All">' . _('All') . '</option>';
 	}
-	while ($myrow1 = DB_fetch_array($result)) {
-		if ($myrow1['categoryid'] == $_POST['StockCat']) {
-			echo '<option selected="selected" value="' . $myrow1['categoryid'] . '">' . $myrow1['categorydescription'] . '</option>';
+	while ($MyRow1 = DB_fetch_array($result)) {
+		if ($MyRow1['categoryid'] == $_POST['StockCat']) {
+			echo '<option selected="selected" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow1['categoryid'] . '">' . $myrow1['categorydescription'] . '</option>';
+			echo '<option value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 		}
 	}
 	echo '</select>';
@@ -431,7 +431,7 @@ if (isset($_POST['TenderType']) and $_POST['TenderType'] == 3 and !isset($_POST[
 	echo '<tr>
 			<th colspan="13"><font size="3" color="#616161">' . _('Outstanding Tenders Waiting For Offer') . '</font></th>
 		</tr>';
-	while ($myrow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($result)) {
 		echo '<form onSubmit="return VerifyForm(this);" action="' . $_SERVER['PHP_SELF'] . '" method="post" class="noPrint">';
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 		echo '<input type="hidden" name="TenderType" value="3" />';
@@ -448,7 +448,7 @@ if (isset($_POST['TenderType']) and $_POST['TenderType'] == 3 and !isset($_POST[
 						INNER JOIN locations
 						ON tenders.location=locations.loccode
 						WHERE closed=0
-						AND tenderid='" . $myrow[0] . "'";
+						AND tenderid='" . $MyRow[0] . "'";
 		$LocationResult = DB_query($LocationSQL);
 		$MyLocationRow = DB_fetch_row($LocationResult);
 		echo '<tr>
@@ -460,8 +460,8 @@ if (isset($_POST['TenderType']) and $_POST['TenderType'] == 3 and !isset($_POST[
 			}
 		}
 		echo '</td>';
-		echo '<th colspan="8" style="vertical-align:top"><font size="2" color="#616161">' . _('Tender Number') . ': ' . $myrow[0] . '</font></th>';
-		echo '<input type="hidden" value="' . $myrow[0] . '" name="Tender" />';
+		echo '<th colspan="8" style="vertical-align:top"><font size="2" color="#616161">' . _('Tender Number') . ': ' . $MyRow[0] . '</font></th>';
+		echo '<input type="hidden" value="' . $MyRow[0] . '" name="Tender" />';
 		echo '<th><input type="submit" value="' . _('Process') . "\n" . _('Tender') . '" name="Process" /></th>
 			</tr>';
 		$ItemSQL = "SELECT tenderitems.tenderid,
@@ -481,7 +481,7 @@ if (isset($_POST['TenderType']) and $_POST['TenderType'] == 3 and !isset($_POST[
 					AND purchdata.supplierno='" . $_POST['SupplierID'] . "'
 					LEFT JOIN tenders
 					ON tenders.tenderid=tenderitems.tenderid
-					WHERE tenderitems.tenderid='" . $myrow[0] . "'";
+					WHERE tenderitems.tenderid='" . $MyRow[0] . "'";
 		$ItemResult = DB_query($ItemSQL);
 		echo '<tr>
 				<th>' . stripslashes($_SESSION['CompanyRecord']['coyname']) . '<br />' . _('Item Code') . '</th>
@@ -515,7 +515,7 @@ if (isset($_POST['TenderType']) and $_POST['TenderType'] == 3 and !isset($_POST[
 				<input type="hidden" name="UOM' . $i . '" value="' . $MyItemRow['units'] . '" />
 				<input type="hidden" name="DecimalPlaces' . $i . '" value="' . $MyItemRow['decimalplaces'] . '" />
 				<td>' . $MyItemRow['suppliersuom'] . '</td>
-				<td>' . $myrow[1] . '</td>
+				<td>' . $MyRow[1] . '</td>
 				<td><input type="text" class="number" required="required" minlength="1" maxlength="10" size="10" name="Price' . $i . '" value="0.00" /></td>
 				<td><input type="text" class="date" required="required" minlength="1" maxlength="10" alt="' . $_SESSION['DefaultDateFormat'] . '" name="RequiredByDate' . $i . '" size="11" value="' . ConvertSQLDate($MyItemRow['requiredbydate']) . '" /></td>
 				</tr>';
@@ -633,8 +633,8 @@ if (isset($_POST['Search'])) {
 	}
 	if (DB_num_rows($SearchResult) == 1) {
 
-		$myrow = DB_fetch_array($SearchResult);
-		$_GET['NewItem'] = $myrow['stockid'];
+		$MyRow = DB_fetch_array($SearchResult);
+		$_GET['NewItem'] = $MyRow['stockid'];
 	}
 
 	if (isset($SearchResult)) {
@@ -652,7 +652,7 @@ if (isset($_POST['Search'])) {
 		$i = 0;
 		$k = 0; //row colour counter
 		$PartsDisplayed = 0;
-		while ($myrow = DB_fetch_array($SearchResult)) {
+		while ($MyRow = DB_fetch_array($SearchResult)) {
 
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
@@ -662,10 +662,10 @@ if (isset($_POST['Search'])) {
 				$k = 1;
 			}
 
-			$FileName = $myrow['stockid'] . '.jpg';
+			$FileName = $MyRow['stockid'] . '.jpg';
 			if (file_exists($_SESSION['part_pics_dir'] . '/' . $FileName)) {
 
-				$ImageSource = '<img src="' . $RootPath . '/' . $_SESSION['part_pics_dir'] . '/' . $myrow['stockid'] . '.jpg" width="50" height="50" />';
+				$ImageSource = '<img src="' . $RootPath . '/' . $_SESSION['part_pics_dir'] . '/' . $MyRow['stockid'] . '.jpg" width="50" height="50" />';
 
 			} else {
 				$ImageSource = '<i>' . _('No Image') . '</i>';
@@ -678,7 +678,7 @@ if (isset($_POST['Search'])) {
 					LEFT JOIN unitsofmeasure
 					ON purchdata.suppliersuom=unitsofmeasure.unitid
 					WHERE supplierno='" . $_POST['SupplierID'] . "'
-					AND stockid='" . $myrow['stockid'] . "'";
+					AND stockid='" . $MyRow['stockid'] . "'";
 
 			$UOMresult = DB_query($UOMsql);
 			if (DB_num_rows($UOMresult) > 0) {
@@ -686,18 +686,18 @@ if (isset($_POST['Search'])) {
 				if (mb_strlen($UOMrow['suppliersuom']) > 0) {
 					$UOM = $UOMrow['unitname'];
 				} else {
-					$UOM = $myrow['units'];
+					$UOM = $MyRow['units'];
 				}
 			} else {
-				$UOM = $myrow['units'];
+				$UOM = $MyRow['units'];
 			}
-			echo '<td>' . $myrow['stockid'] . '</td>
-					<td>' . $myrow['description'] . '</td>
+			echo '<td>' . $MyRow['stockid'] . '</td>
+					<td>' . $MyRow['description'] . '</td>
 					<td>' . $UOM . '</td>
 					<td>' . $ImageSource . '</td>
 					<td><input class="number" type="text" size="6" value="0" name="Qty' . $i . '" /></td>
 					<td><input class="number" type="text" size="12" value="0" name="Price' . $i . '" /></td>
-					<input type="hidden" size="12" value="' . $myrow['stockid'] . '" name="StockID' . $i . '" />
+					<input type="hidden" size="12" value="' . $MyRow['stockid'] . '" name="StockID' . $i . '" />
 					<input type="hidden" value="' . $UOM . '" name="uom' . $i . '" />
 					</tr>';
 			$i++;

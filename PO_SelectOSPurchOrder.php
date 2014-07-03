@@ -128,22 +128,22 @@ if (!isset($OrderNumber) or $OrderNumber == '') {
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
 	$resultStkLocs = DB_query($sql);
-	while ($myrow = DB_fetch_array($resultStkLocs)) {
+	while ($MyRow = DB_fetch_array($resultStkLocs)) {
 		if (isset($_POST['StockLocation'])) {
-			if ($myrow['loccode'] == $_POST['StockLocation']) {
-				echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
-			} //$myrow['loccode'] == $_POST['StockLocation']
+			if ($MyRow['loccode'] == $_POST['StockLocation']) {
+				echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
+			} //$MyRow['loccode'] == $_POST['StockLocation']
 			else {
-				echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+				echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 			}
 		} //isset($_POST['StockLocation'])
-		elseif ($myrow['loccode'] == $_SESSION['UserStockLocation']) {
-			echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
-		} //$myrow['loccode'] == $_SESSION['UserStockLocation']
+		elseif ($MyRow['loccode'] == $_SESSION['UserStockLocation']) {
+			echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
+		} //$MyRow['loccode'] == $_SESSION['UserStockLocation']
 		else {
-			echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+			echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 		}
-	} //$myrow = DB_fetch_array($resultStkLocs)
+	} //$MyRow = DB_fetch_array($resultStkLocs)
 	echo '</select> ' . _('Order Status') . ':<select minlength="0" name="Status">';
 	if (!isset($_POST['Status']) or $_POST['Status'] == 'Pending_Authorised') {
 		echo '<option selected="selected" value="Pending_Authorised">' . _('Pending and Authorised') . '</option>';
@@ -202,12 +202,12 @@ echo '<table class="selection">
 				<td>' . _('Select a stock category') . ':
 					<select minlength="0" name="StockCat">';
 
-while ($myrow1 = DB_fetch_array($result1)) {
-	if (isset($_POST['StockCat']) and $myrow1['categoryid'] == $_POST['StockCat']) {
-		echo '<option selected="selected" value="' . $myrow1['categoryid'] . '">' . $myrow1['categorydescription'] . '</option>';
-	} //isset($_POST['StockCat']) and $myrow1['categoryid'] == $_POST['StockCat']
+while ($MyRow1 = DB_fetch_array($result1)) {
+	if (isset($_POST['StockCat']) and $MyRow1['categoryid'] == $_POST['StockCat']) {
+		echo '<option selected="selected" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
+	} //isset($_POST['StockCat']) and $MyRow1['categoryid'] == $_POST['StockCat']
 	else {
-		echo '<option value="' . $myrow1['categoryid'] . '">' . $myrow1['categorydescription'] . '</option>';
+		echo '<option value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 	}
 } //end loop through categories
 echo '</select></td>
@@ -238,7 +238,7 @@ if (isset($StockItemsResult)) {
 			</tr>';
 	$k = 0; //row colour counter
 
-	while ($myrow = DB_fetch_array($StockItemsResult)) {
+	while ($MyRow = DB_fetch_array($StockItemsResult)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -252,7 +252,7 @@ if (isset($StockItemsResult)) {
 				<td>%s</td>
 				<td class="number">%s</td>
 				<td class="number">%s</td>
-				<td>%s</td></tr>', $myrow['stockid'], $myrow['description'], $myrow['qoh'], $myrow['qord'], $myrow['units']);
+				<td>%s</td></tr>', $MyRow['stockid'], $MyRow['description'], $MyRow['qoh'], $MyRow['qord'], $MyRow['units']);
 
 	} //end of while loop through search items
 
@@ -355,7 +355,7 @@ if (isset($StockItemsResult)) {
 		</tr>';
 
 	$k = 0; //row colour counter
-	while ($myrow = DB_fetch_array($PurchOrdersResult)) {
+	while ($MyRow = DB_fetch_array($PurchOrdersResult)) {
 		if ($k == 1) {
 			/*alternate bgcolour of row for highlighting */
 			echo '<tr class="EvenTableRows">';
@@ -365,41 +365,41 @@ if (isset($StockItemsResult)) {
 			$k++;
 		}
 
-		$ModifyPage = $RootPath . '/PO_Header.php?ModifyOrderNumber=' . urlencode($myrow['orderno']);
-		if ($myrow['status'] == 'Printed') {
-			$ReceiveOrder = '<a href="' . $RootPath . '/GoodsReceived.php?PONumber=' . urlencode($myrow['orderno']) . '">' . _('Receive') . '</a>';
+		$ModifyPage = $RootPath . '/PO_Header.php?ModifyOrderNumber=' . urlencode($MyRow['orderno']);
+		if ($MyRow['status'] == 'Printed') {
+			$ReceiveOrder = '<a href="' . $RootPath . '/GoodsReceived.php?PONumber=' . urlencode($MyRow['orderno']) . '">' . _('Receive') . '</a>';
 		} else {
 			$ReceiveOrder = '';
 		}
-		if ($myrow['status'] == 'Authorised' and $myrow['allowprint'] == 1) {
-			$PrintPurchOrder = '<a target="_blank" href="' . $RootPath . '/PO_PDFPurchOrder.php?OrderNo=' . urlencode($myrow['orderno']) . '">' . _('Print') . '</a>';
-		} elseif ($myrow['status'] == 'Authorisied' and $myrow['allowprint'] == 0) {
+		if ($MyRow['status'] == 'Authorised' and $MyRow['allowprint'] == 1) {
+			$PrintPurchOrder = '<a target="_blank" href="' . $RootPath . '/PO_PDFPurchOrder.php?OrderNo=' . urlencode($MyRow['orderno']) . '">' . _('Print') . '</a>';
+		} elseif ($MyRow['status'] == 'Authorisied' and $MyRow['allowprint'] == 0) {
 			$PrintPurchOrder = _('Printed');
-		} elseif ($myrow['status'] == 'Printed') {
-			$PrintPurchOrder = '<a target="_blank" href="' . $RootPath . '/PO_PDFPurchOrder.php?OrderNo=' . urlencode($myrow['orderno']) . '&amp;realorderno=' . urlencode($myrow['realorderno']) . '&amp;ViewingOnly=2">
+		} elseif ($MyRow['status'] == 'Printed') {
+			$PrintPurchOrder = '<a target="_blank" href="' . $RootPath . '/PO_PDFPurchOrder.php?OrderNo=' . urlencode($MyRow['orderno']) . '&amp;realorderno=' . urlencode($MyRow['realorderno']) . '&amp;ViewingOnly=2">
 				' . _('Print Copy') . '</a>';
 		} else {
 			$PrintPurchOrder = _('N/A');
 		}
 
-		$FormatedOrderDate = ConvertSQLDate($myrow['orddate']);
-		$FormatedDeliveryDate = ConvertSQLDate($myrow['deliverydate']);
-		$FormatedOrderValue = locale_number_format($myrow['ordervalue'], $myrow['currdecimalplaces']);
-		$sql = "SELECT realname FROM www_users WHERE userid='" . $myrow['initiator'] . "'";
+		$FormatedOrderDate = ConvertSQLDate($MyRow['orddate']);
+		$FormatedDeliveryDate = ConvertSQLDate($MyRow['deliverydate']);
+		$FormatedOrderValue = locale_number_format($MyRow['ordervalue'], $MyRow['currdecimalplaces']);
+		$sql = "SELECT realname FROM www_users WHERE userid='" . $MyRow['initiator'] . "'";
 		$UserResult = DB_query($sql);
 		$MyUserRow = DB_fetch_array($UserResult);
 		$InitiatorName = $MyUserRow['realname'];
 
-		echo '<td><a href="' . $ModifyPage . '">' . $myrow['orderno'] . '</a></td>
+		echo '<td><a href="' . $ModifyPage . '">' . $MyRow['orderno'] . '</a></td>
 			<td>' . $FormatedOrderDate . '</td>
 			<td>' . $FormatedDeliveryDate . '</td>
 			<td>' . $InitiatorName . '</td>
-			<td>' . $myrow['suppname'] . '</td>
-			<td>' . $myrow['currcode'] . '</td>';
+			<td>' . $MyRow['suppname'] . '</td>
+			<td>' . $MyRow['currcode'] . '</td>';
 		if (in_array($PricesSecurity, $_SESSION['AllowedPageSecurityTokens']) or !isset($PricesSecurity)) {
 			echo '<td class="number">' . $FormatedOrderValue . '</td>';
 		} //in_array($PricesSecurity, $_SESSION['AllowedPageSecurityTokens']) or !isset($PricesSecurity)
-		echo '<td>' . _($myrow['status']) . '</td>
+		echo '<td>' . _($MyRow['status']) . '</td>
 					<td>' . $PrintPurchOrder . '</td>
 					<td>' . $ReceiveOrder . '</td>
 				</tr>';

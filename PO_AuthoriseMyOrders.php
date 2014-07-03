@@ -60,11 +60,11 @@ echo '<tr>
 		<th>' . _('Status') . '</th>
 	</tr>';
 
-while ($myrow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($result)) {
 
 	$AuthSQL = "SELECT authlevel FROM purchorderauth
 				WHERE userid='" . $_SESSION['UserID'] . "'
-				AND currabrev='" . $myrow['currcode'] . "'";
+				AND currabrev='" . $MyRow['currcode'] . "'";
 
 	$AuthResult = DB_query($AuthSQL);
 	$myauthrow = DB_fetch_array($AuthResult);
@@ -72,7 +72,7 @@ while ($myrow = DB_fetch_array($result)) {
 
 	$OrderValueSQL = "SELECT sum(unitprice*quantityord) as ordervalue
 				   	FROM purchorderdetails
-					WHERE orderno='" . $myrow['orderno'] . "'";
+					WHERE orderno='" . $MyRow['orderno'] . "'";
 
 	$OrderValueResult = DB_query($OrderValueSQL);
 	$MyOrderValueRow = DB_fetch_array($OrderValueResult);
@@ -80,13 +80,13 @@ while ($myrow = DB_fetch_array($result)) {
 
 	if ($AuthLevel >= $OrderValue) {
 		echo '<tr>
-				<td>' . $myrow['orderno'] . '</td>
-				<td>' . $myrow['suppname'] . '</td>
-				<td>' . ConvertSQLDate($myrow['orddate']) . '</td>
-				<td><a href="mailto:' . $myrow['email'] . '">' . $myrow['realname'] . '</td>
-				<td>' . ConvertSQLDate($myrow['deliverydate']) . '</td>
+				<td>' . $MyRow['orderno'] . '</td>
+				<td>' . $MyRow['suppname'] . '</td>
+				<td>' . ConvertSQLDate($MyRow['orddate']) . '</td>
+				<td><a href="mailto:' . $MyRow['email'] . '">' . $MyRow['realname'] . '</td>
+				<td>' . ConvertSQLDate($MyRow['deliverydate']) . '</td>
 				<td>
-					<select required="required" minlength="1" name="Status' . $myrow['orderno'] . '">
+					<select required="required" minlength="1" name="Status' . $MyRow['orderno'] . '">
 						<option selected="selected" value="Pending">' . _('Pending') . '</option>
 						<option value="Authorised">' . _('Authorised') . '</option>
 						<option value="Rejected">' . _('Rejected') . '</option>
@@ -94,14 +94,14 @@ while ($myrow = DB_fetch_array($result)) {
 					</select>
 				</td>
 			</tr>';
-		echo '<input type="hidden" name="comment" value="' . htmlspecialchars($myrow['stat_comment'], ENT_QUOTES, 'UTF-8') . '" />';
+		echo '<input type="hidden" name="comment" value="' . htmlspecialchars($MyRow['stat_comment'], ENT_QUOTES, 'UTF-8') . '" />';
 		$LineSQL = "SELECT purchorderdetails.*,
 					stockmaster.description,
 					stockmaster.decimalplaces
 				FROM purchorderdetails
 				LEFT JOIN stockmaster
 				ON stockmaster.stockid=purchorderdetails.itemcode
-			WHERE orderno='" . $myrow['orderno'] . "'";
+			WHERE orderno='" . $MyRow['orderno'] . "'";
 		$LineResult = DB_query($LineSQL);
 
 		echo '<tr>
@@ -125,9 +125,9 @@ while ($myrow = DB_fetch_array($result)) {
 			echo '<tr>
 					<td>' . $LineRow['description'] . '</td>
 					<td class="number">' . locale_number_format($LineRow['quantityord'], $DecimalPlaces) . '</td>
-					<td>' . $myrow['currcode'] . '</td>
-					<td class="number">' . locale_number_format($LineRow['unitprice'], $myrow['currdecimalplaces']) . '</td>
-					<td class="number">' . locale_number_format($LineRow['unitprice'] * $LineRow['quantityord'], $myrow['currdecimalplaces']) . '</td>
+					<td>' . $MyRow['currcode'] . '</td>
+					<td class="number">' . locale_number_format($LineRow['unitprice'], $MyRow['currdecimalplaces']) . '</td>
+					<td class="number">' . locale_number_format($LineRow['unitprice'] * $LineRow['quantityord'], $MyRow['currdecimalplaces']) . '</td>
 				</tr>';
 		} // end while order line detail
 		echo '</table>

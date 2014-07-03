@@ -147,11 +147,11 @@ if (isset($_POST['submit'])) {
 	// PREVENT DELETES IF DEPENDENT RECORDS
 	$sql = "SELECT COUNT(*) FROM salescatprod WHERE manufacturers_id='" . $SelectedManufacturer . "'";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_row($result);
-	if ($myrow[0] > 0) {
+	$MyRow = DB_fetch_row($result);
+	if ($MyRow[0] > 0) {
 		$CancelDelete = true;
 		prnMsg(_('Cannot delete this manufacturer because products have been defined as from this manufacturer'), 'warn');
-		echo _('There are') . ' ' . $myrow[0] . ' ' . _('items with this manufacturer code');
+		echo _('There are') . ' ' . $MyRow[0] . ' ' . _('items with this manufacturer code');
 	}
 
 	if (!$CancelDelete) {
@@ -194,7 +194,7 @@ if (!isset($SelectedManufacturer)) {
 			</tr>';
 
 		$k = 0; //row colour counter
-		while ($myrow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($result)) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;
@@ -203,8 +203,8 @@ if (!isset($SelectedManufacturer)) {
 				$k = 1;
 			}
 
-			if (file_exists($_SESSION['part_pics_dir'] . '/BRAND-' . $myrow['manufacturers_id'] . '.jpg')) {
-				$BrandImgLink = '<img width="120" height="120" src="' . $_SESSION['part_pics_dir'] . '/BRAND-' . $myrow['manufacturers_id'] . '.jpg"  />';
+			if (file_exists($_SESSION['part_pics_dir'] . '/BRAND-' . $MyRow['manufacturers_id'] . '.jpg')) {
+				$BrandImgLink = '<img width="120" height="120" src="' . $_SESSION['part_pics_dir'] . '/BRAND-' . $MyRow['manufacturers_id'] . '.jpg"  />';
 			} else {
 				$BrandImgLink = _('No Image');
 			}
@@ -215,13 +215,13 @@ if (!isset($SelectedManufacturer)) {
 					<td><a href="%sSelectedManufacturer=%s">' . _('Edit') . '</a></td>
 					<td><a href="%sSelectedManufacturer=%s&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this brand?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
 				</tr>',
-					$myrow['manufacturers_id'],
-					$myrow['manufacturers_name'],
-					$myrow['manufacturers_url'],
-					$myrow['manufacturers_url'],
+					$MyRow['manufacturers_id'],
+					$MyRow['manufacturers_name'],
+					$MyRow['manufacturers_url'],
+					$MyRow['manufacturers_url'],
 					$BrandImgLink,
-					htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['manufacturers_id'],
-					htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['manufacturers_id']);
+					htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['manufacturers_id'],
+					htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['manufacturers_id']);
 
 		}
 		//END WHILE LIST LOOP
@@ -252,11 +252,11 @@ if (!isset($_GET['delete'])) {
 				WHERE manufacturers_id='" . $SelectedManufacturer . "'";
 
 		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($result);
 
-		$_POST['ManufacturersName'] = $myrow['manufacturers_name'];
-		$_POST['ManufacturersURL'] = $myrow['manufacturers_url'];
-		$_POST['ManufacturersImage'] = $myrow['manufacturers_image'];
+		$_POST['ManufacturersName'] = $MyRow['manufacturers_name'];
+		$_POST['ManufacturersURL'] = $MyRow['manufacturers_url'];
+		$_POST['ManufacturersImage'] = $MyRow['manufacturers_image'];
 
 
 		echo '<input type="hidden" name="SelectedManufacturer" value="' . $SelectedManufacturer . '" />';

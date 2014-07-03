@@ -127,13 +127,13 @@ $sql = "SELECT shiptref,
 
 $result = DB_query($sql);
 
-while ($myrow = DB_fetch_array($result)) {
-	if (isset($_POST['ShiptSelection']) and $myrow['shiptref'] == $_POST['ShiptSelection']) {
+while ($MyRow = DB_fetch_array($result)) {
+	if (isset($_POST['ShiptSelection']) and $MyRow['shiptref'] == $_POST['ShiptSelection']) {
 		echo '<option selected="selected" value="';
 	} else {
 		echo '<option value="';
 	}
-	echo $myrow['shiptref'] . '">' . $myrow['shiptref'] . ' - ' . $myrow['vessel'] . ' ' . _('ETA') . ' ' . ConvertSQLDate($myrow['eta']) . ' ' . _('from') . ' ' . $myrow['suppname'] . '</option>';
+	echo $MyRow['shiptref'] . '">' . $MyRow['shiptref'] . ' - ' . $MyRow['vessel'] . ' ' . _('ETA') . ' ' . ConvertSQLDate($MyRow['eta']) . ' ' . _('from') . ' ' . $MyRow['suppname'] . '</option>';
 }
 
 echo '</select></td>

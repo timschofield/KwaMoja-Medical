@@ -387,8 +387,8 @@ if (isset($_POST['PrintPDF'])) {
 
 	echo '<option selected="selected" value="All">' . _('All Areas') . '</option>';
 
-	while ($myrow = DB_fetch_array($AreasResult)) {
-		echo '<option value="' . $myrow['areacode'] . '">' . $myrow['areadescription'] . '</option>';
+	while ($MyRow = DB_fetch_array($AreasResult)) {
+		echo '<option value="' . $MyRow['areacode'] . '">' . $MyRow['areadescription'] . '</option>';
 	}
 	echo '</select></td></tr>';
 
@@ -403,8 +403,8 @@ if (isset($_POST['PrintPDF'])) {
 	}
 	$SalesFolkResult = DB_query($sql);
 
-	while ($myrow = DB_fetch_array($SalesFolkResult)) {
-		echo '<option value="' . $myrow['salesmancode'] . '">' . $myrow['salesmanname'] . '</option>';
+	while ($MyRow = DB_fetch_array($SalesFolkResult)) {
+		echo '<option value="' . $MyRow['salesmancode'] . '">' . $MyRow['salesmanname'] . '</option>';
 	}
 	echo '</select></td></tr>';
 

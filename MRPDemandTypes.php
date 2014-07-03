@@ -78,9 +78,9 @@ if (isset($_POST['submit'])) {
 			 WHERE mrpdemands.mrpdemandtype='" . $SelectedDT . "'
 			 GROUP BY mrpdemandtype";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_row($result);
-	if ($myrow[0] > 0) {
-		prnMsg(_('Cannot delete this demand type because MRP Demand records exist for this type') . '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('MRP Demands referring to this type'), 'warn');
+	$MyRow = DB_fetch_row($result);
+	if ($MyRow[0] > 0) {
+		prnMsg(_('Cannot delete this demand type because MRP Demand records exist for this type') . '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('MRP Demands referring to this type'), 'warn');
 	} else {
 		$sql = "DELETE FROM mrpdemandtypes WHERE mrpdemandtype='" . $SelectedDT . "'";
 		$result = DB_query($sql);
@@ -110,13 +110,13 @@ if (!isset($SelectedDT) or isset($_GET['delete'])) {
 				<th>' . _('Description') . '</th>
 			</tr>';
 
-	while ($myrow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($result)) {
 
 		echo '<tr>
-					<td>' . $myrow[0] . '</td>
-					<td>' . $myrow[1] . '</td>
-					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedDT=' . urlencode($myrow[0]) . '">' . _('Edit') . '</a></td>
-					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedDT=' . urlencode($myrow[0]) . '&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this account group?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+					<td>' . $MyRow[0] . '</td>
+					<td>' . $MyRow[1] . '</td>
+					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedDT=' . urlencode($MyRow[0]) . '">' . _('Edit') . '</a></td>
+					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedDT=' . urlencode($MyRow[0]) . '&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this account group?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
 				</tr>';
 	}
 
@@ -142,10 +142,10 @@ if (isset($SelectedDT) and !isset($_GET['delete'])) {
 		WHERE mrpdemandtype='" . $SelectedDT . "'";
 
 	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($result);
 
-	$_POST['MRPDemandType'] = $myrow['mrpdemandtype'];
-	$_POST['Description'] = $myrow['description'];
+	$_POST['MRPDemandType'] = $MyRow['mrpdemandtype'];
+	$_POST['Description'] = $MyRow['description'];
 
 	echo '<input type="hidden" name="SelectedDT" value="' . $SelectedDT . '" />';
 	echo '<input type="hidden" name="MRPDemandType" value="' . $_POST['MRPDemandType'] . '" />';

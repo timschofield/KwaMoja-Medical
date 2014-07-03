@@ -123,9 +123,9 @@ if (isset($_POST['submit'])) {
 
 	$sql = "SELECT COUNT(*) FROM fixedassets WHERE fixedassets.assetcategoryid='" . $SelectedCategory . "'";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_row($result);
-	if ($myrow[0] > 0) {
-		prnMsg(_('Cannot delete this fixed asset category because fixed assets have been created using this category') . '<br /> ' . _('There are') . ' ' . $myrow[0] . ' ' . _('fixed assets referring to this category code'), 'warn');
+	$MyRow = DB_fetch_row($result);
+	if ($MyRow[0] > 0) {
+		prnMsg(_('Cannot delete this fixed asset category because fixed assets have been created using this category') . '<br /> ' . _('There are') . ' ' . $MyRow[0] . ' ' . _('fixed assets referring to this category code'), 'warn');
 
 	} else {
 		$sql = "DELETE FROM fixedassetcategories WHERE categoryid='" . $SelectedCategory . "'";
@@ -164,7 +164,7 @@ if (!isset($SelectedCategory) or isset($_POST['submit'])) {
 
 	$k = 0; //row colour counter
 
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -180,7 +180,7 @@ if (!isset($SelectedCategory) or isset($_POST['submit'])) {
 					<td class="number">%s</td>
 					<td><a href="%sSelectedCategory=%s">' . _('Edit') . '</a></td>
 					<td><a href="%sSelectedCategory=%s&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this fixed asset category? Additional checks will be performed before actual deletion to ensure data integrity is not compromised.') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-					</tr>', $myrow['categoryid'], $myrow['categorydescription'], $myrow['costact'], $myrow['depnact'], $myrow['disposalact'], $myrow['accumdepnact'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['categoryid'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['categoryid']);
+					</tr>', $MyRow['categoryid'], $MyRow['categorydescription'], $MyRow['costact'], $MyRow['depnact'], $MyRow['disposalact'], $MyRow['accumdepnact'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['categoryid'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['categoryid']);
 	}
 	//END WHILE LIST LOOP
 	echo '</table>
@@ -209,14 +209,14 @@ if (isset($SelectedCategory) and !isset($_POST['submit'])) {
 				WHERE categoryid='" . $SelectedCategory . "'";
 
 	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($result);
 
-	$_POST['CategoryID'] = $myrow['categoryid'];
-	$_POST['CategoryDescription'] = $myrow['categorydescription'];
-	$_POST['CostAct'] = $myrow['costact'];
-	$_POST['DepnAct'] = $myrow['depnact'];
-	$_POST['DisposalAct'] = $myrow['disposalact'];
-	$_POST['AccumDepnAct'] = $myrow['accumdepnact'];
+	$_POST['CategoryID'] = $MyRow['categoryid'];
+	$_POST['CategoryDescription'] = $MyRow['categorydescription'];
+	$_POST['CostAct'] = $MyRow['costact'];
+	$_POST['DepnAct'] = $MyRow['depnact'];
+	$_POST['DisposalAct'] = $MyRow['disposalact'];
+	$_POST['AccumDepnAct'] = $MyRow['accumdepnact'];
 
 	echo '<input type="hidden" name="SelectedCategory" value="' . $SelectedCategory . '" />';
 	echo '<input type="hidden" name="CategoryID" value="' . $_POST['CategoryID'] . '" />';
@@ -272,12 +272,12 @@ echo '<tr>
 		<td>' . _('Fixed Asset Cost GL Code') . ':</td>
 		<td><select required="required" minlength="0" name="CostAct">';
 
-while ($myrow = DB_fetch_array($BSAccountsResult)) {
+while ($MyRow = DB_fetch_array($BSAccountsResult)) {
 
-	if (isset($_POST['CostAct']) and $myrow['accountcode'] == $_POST['CostAct']) {
-		echo '<option selected="selected" value="' . $myrow['accountcode'] . '">' . htmlspecialchars($myrow['accountname'], ENT_QUOTES, 'UTF-8', false) . ' (' . $myrow['accountcode'] . ')</option>';
+	if (isset($_POST['CostAct']) and $MyRow['accountcode'] == $_POST['CostAct']) {
+		echo '<option selected="selected" value="' . $MyRow['accountcode'] . '">' . htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false) . ' (' . $MyRow['accountcode'] . ')</option>';
 	} else {
-		echo '<option value="' . $myrow['accountcode'] . '">' . htmlspecialchars($myrow['accountname'], ENT_QUOTES, 'UTF-8', false) . ' (' . $myrow['accountcode'] . ')</option>';
+		echo '<option value="' . $MyRow['accountcode'] . '">' . htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false) . ' (' . $MyRow['accountcode'] . ')</option>';
 	}
 } //end while loop
 echo '</select></td>
@@ -286,11 +286,11 @@ echo '</select></td>
 		<td>' . _('Profit and Loss Depreciation GL Code') . ':</td>
 		<td><select required="required" minlength="0" name="DepnAct">';
 
-while ($myrow = DB_fetch_array($PnLAccountsResult)) {
-	if (isset($_POST['DepnAct']) and $myrow['accountcode'] == $_POST['DepnAct']) {
-		echo '<option selected="selected" value="' . $myrow['accountcode'] . '">' . htmlspecialchars($myrow['accountname'], ENT_QUOTES, 'UTF-8', false) . ' (' . $myrow['accountcode'] . ')</option>';
+while ($MyRow = DB_fetch_array($PnLAccountsResult)) {
+	if (isset($_POST['DepnAct']) and $MyRow['accountcode'] == $_POST['DepnAct']) {
+		echo '<option selected="selected" value="' . $MyRow['accountcode'] . '">' . htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false) . ' (' . $MyRow['accountcode'] . ')</option>';
 	} else {
-		echo '<option value="' . $myrow['accountcode'] . '">' . htmlspecialchars($myrow['accountname'], ENT_QUOTES, 'UTF-8', false) . ' (' . $myrow['accountcode'] . ')</option>';
+		echo '<option value="' . $MyRow['accountcode'] . '">' . htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false) . ' (' . $MyRow['accountcode'] . ')</option>';
 	}
 } //end while loop
 echo '</select></td>
@@ -300,11 +300,11 @@ DB_data_seek($PnLAccountsResult, 0);
 echo '<tr>
 		<td>' . _('Profit or Loss on Disposal GL Code') . ':</td>
 		<td><select required="required" minlength="0" name="DisposalAct">';
-while ($myrow = DB_fetch_array($PnLAccountsResult)) {
-	if (isset($_POST['DisposalAct']) and $myrow['accountcode'] == $_POST['DisposalAct']) {
-		echo '<option selected="selected" value="' . $myrow['accountcode'] . '">' . htmlspecialchars($myrow['accountname'], ENT_QUOTES, 'UTF-8', false) . ' (' . $myrow['accountcode'] . ')' . '</option>';
+while ($MyRow = DB_fetch_array($PnLAccountsResult)) {
+	if (isset($_POST['DisposalAct']) and $MyRow['accountcode'] == $_POST['DisposalAct']) {
+		echo '<option selected="selected" value="' . $MyRow['accountcode'] . '">' . htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false) . ' (' . $MyRow['accountcode'] . ')' . '</option>';
 	} else {
-		echo '<option value="' . $myrow['accountcode'] . '">' . htmlspecialchars($myrow['accountname'], ENT_QUOTES, 'UTF-8', false) . ' (' . $myrow['accountcode'] . ')' . '</option>';
+		echo '<option value="' . $MyRow['accountcode'] . '">' . htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false) . ' (' . $MyRow['accountcode'] . ')' . '</option>';
 	}
 } //end while loop
 echo '</select></td>
@@ -315,12 +315,12 @@ echo '<tr>
 		<td>' . _('Balance Sheet Accumulated Depreciation GL Code') . ':</td>
 		<td><select required="required" minlength="0" name="AccumDepnAct">';
 
-while ($myrow = DB_fetch_array($BSAccountsResult)) {
+while ($MyRow = DB_fetch_array($BSAccountsResult)) {
 
-	if (isset($_POST['AccumDepnAct']) and $myrow['accountcode'] == $_POST['AccumDepnAct']) {
-		echo '<option selected="selected" value="' . $myrow['accountcode'] . '">' . htmlspecialchars($myrow['accountname'], ENT_QUOTES, 'UTF-8', false) . ' (' . $myrow['accountcode'] . ')' . '</option>';
+	if (isset($_POST['AccumDepnAct']) and $MyRow['accountcode'] == $_POST['AccumDepnAct']) {
+		echo '<option selected="selected" value="' . $MyRow['accountcode'] . '">' . htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false) . ' (' . $MyRow['accountcode'] . ')' . '</option>';
 	} else {
-		echo '<option value="' . $myrow['accountcode'] . '">' . htmlspecialchars($myrow['accountname'], ENT_QUOTES, 'UTF-8', false) . ' (' . $myrow['accountcode'] . ')' . '</option>';
+		echo '<option value="' . $MyRow['accountcode'] . '">' . htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false) . ' (' . $MyRow['accountcode'] . ')' . '</option>';
 	}
 
 } //end while loop

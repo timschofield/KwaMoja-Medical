@@ -33,17 +33,17 @@ if ($_SESSION['RestrictLocations'] == 0) {
 
 $resultStkLocs = DB_query($sql);
 
-while ($myrow = DB_fetch_array($resultStkLocs)) {
+while ($MyRow = DB_fetch_array($resultStkLocs)) {
 	if (isset($_POST['StockLocation'])) {
-		if ($myrow['loccode'] == $_POST['StockLocation']) {
-			echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+		if ($MyRow['loccode'] == $_POST['StockLocation']) {
+			echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+			echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 		}
-	} elseif ($myrow['loccode'] == $_SESSION['UserStockLocation']) {
-		echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+	} elseif ($MyRow['loccode'] == $_SESSION['UserStockLocation']) {
+		echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 	} else {
-		echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+		echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 	}
 }
 
@@ -106,7 +106,7 @@ SUM(recurrsalesorderdetails.unitprice*recurrsalesorderdetails.quantity*(1-recurr
 			</tr>';
 
 	$k = 0; //row colour counter
-	while ($myrow = DB_fetch_array($SalesOrdersResult)) {
+	while ($MyRow = DB_fetch_array($SalesOrdersResult)) {
 
 
 		if ($k == 1) {
@@ -117,10 +117,10 @@ SUM(recurrsalesorderdetails.unitprice*recurrsalesorderdetails.quantity*(1-recurr
 			$k++;
 		}
 
-		$ModifyPage = $RootPath . '/RecurringSalesOrders.php?ModifyRecurringSalesOrder=' . $myrow['recurrorderno'];
-		$FormatedLastRecurrence = ConvertSQLDate($myrow['lastrecurrence']);
-		$FormatedStopDate = ConvertSQLDate($myrow['stopdate']);
-		$FormatedOrderValue = locale_number_format($myrow['ordervalue'], $myrow['currdecimalplaces']);
+		$ModifyPage = $RootPath . '/RecurringSalesOrders.php?ModifyRecurringSalesOrder=' . $MyRow['recurrorderno'];
+		$FormatedLastRecurrence = ConvertSQLDate($MyRow['lastrecurrence']);
+		$FormatedStopDate = ConvertSQLDate($MyRow['stopdate']);
+		$FormatedOrderValue = locale_number_format($MyRow['ordervalue'], $MyRow['currdecimalplaces']);
 
 		printf('<td><a href="%s">%s</a></td>
 				<td>%s</td>
@@ -130,7 +130,7 @@ SUM(recurrsalesorderdetails.unitprice*recurrsalesorderdetails.quantity*(1-recurr
 				<td>%s</td>
 				<td>%s</td>
 				<td class="number">%s</td>
-				</tr>', $ModifyPage, $myrow['recurrorderno'], $myrow['name'], $myrow['brname'], $myrow['customerref'], $FormatedLastRecurrence, $FormatedStopDate, $myrow['frequency'], $FormatedOrderValue);
+				</tr>', $ModifyPage, $MyRow['recurrorderno'], $MyRow['name'], $MyRow['brname'], $MyRow['customerref'], $FormatedLastRecurrence, $FormatedStopDate, $MyRow['frequency'], $FormatedOrderValue);
 
 		//end of page full new headings if
 	}

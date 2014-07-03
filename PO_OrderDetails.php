@@ -100,10 +100,10 @@ if (DB_num_rows($GetOrdHdrResult) != 1) {
 }
 // the checks all good get the order now
 
-$myrow = DB_fetch_array($GetOrdHdrResult);
+$MyRow = DB_fetch_array($GetOrdHdrResult);
 
-if (!isset($myrow['realname'])) {
-	$myrow['realname'] = $_SESSION['UsersRealName'];
+if (!isset($MyRow['realname'])) {
+	$MyRow['realname'] = $_SESSION['UsersRealName'];
 }
 
 /* SHOW ALL THE ORDER INFO IN ONE PLACE */
@@ -118,75 +118,75 @@ echo '<table class="selection" cellpadding="2">
 		</tr>
 		<tr>
 			<td style="text-align:left">' . _('Supplier Code') . '</td>
-			<td><a href="SelectSupplier.php?SupplierID=' . urlencode(stripslashes($myrow['supplierid'])) . '">' . $myrow['supplierid'] . '</a></td>
+			<td><a href="SelectSupplier.php?SupplierID=' . urlencode(stripslashes($MyRow['supplierid'])) . '">' . $MyRow['supplierid'] . '</a></td>
 			<td style="text-align:left">' . _('Supplier Name') . '</td>
-			<td><a href="SelectSupplier.php?SupplierID=' . urlencode(stripslashes($myrow['supplierid'])) . '">' . $myrow['suppname'] . '</a></td>
+			<td><a href="SelectSupplier.php?SupplierID=' . urlencode(stripslashes($MyRow['supplierid'])) . '">' . $MyRow['suppname'] . '</a></td>
 		</tr>
 		<tr>
 			<td style="text-align:left">' . _('Ordered On') . '</td>
-			<td>' . ConvertSQLDate($myrow['orddate']) . '</td>
+			<td>' . ConvertSQLDate($MyRow['orddate']) . '</td>
 			<td style="text-align:left">' . _('Delivery Address 1') . '</td>
-			<td>' . $myrow['deladd1'] . '</td>
+			<td>' . $MyRow['deladd1'] . '</td>
 		</tr>
 		<tr>
 			<td style="text-align:left">' . _('Order Currency') . '</td>
-			<td>' . $myrow['currcode'] . '</td>
+			<td>' . $MyRow['currcode'] . '</td>
 			<td style="text-align:left">' . _('Delivery Address 2') . '</td>
-			<td>' . $myrow['deladd2'] . '</td>
+			<td>' . $MyRow['deladd2'] . '</td>
 		</tr>
 		<tr>
 			<td style="text-align:left">' . _('Exchange Rate') . '</td>
-			<td>' . $myrow['rate'] . '</td>
+			<td>' . $MyRow['rate'] . '</td>
 			<td style="text-align:left">' . _('Delivery Address 3') . '</td>
-			<td>' . $myrow['deladd3'] . '</td>
+			<td>' . $MyRow['deladd3'] . '</td>
 		</tr>
 		<tr>
 			<td style="text-align:left">' . _('Deliver Into Location') . '</td>
-			<td>' . $myrow['locationname'] . '</td>
+			<td>' . $MyRow['locationname'] . '</td>
 			<td style="text-align:left">' . _('Delivery Address 4') . '</td>
-			<td>' . $myrow['deladd4'] . '</td>
+			<td>' . $MyRow['deladd4'] . '</td>
 		</tr>
 		<tr>
 			<td style="text-align:left">' . _('Initiator') . '</td>
-			<td>' . $myrow['realname'] . '</td>
+			<td>' . $MyRow['realname'] . '</td>
 			<td style="text-align:left">' . _('Delivery Address 5') . '</td>
-			<td>' . $myrow['deladd5'] . '</td>
+			<td>' . $MyRow['deladd5'] . '</td>
 		</tr>
 		<tr>
 			<td style="text-align:left">' . _('Requisition Ref') . '.</td>
-			<td>' . $myrow['requisitionno'] . '</td>
+			<td>' . $MyRow['requisitionno'] . '</td>
 			<td style="text-align:left">' . _('Delivery Address 6') . '</td>
-			<td>' . $myrow['deladd6'] . '</td>
+			<td>' . $MyRow['deladd6'] . '</td>
 		</tr>
 		<tr>
 			<td style="text-align:left">' . _('Printing') . '</td>
 			<td colspan="3">';
 
-if ($myrow['dateprinted'] == '') {
+if ($MyRow['dateprinted'] == '') {
 	echo '<i>' . _('Not yet printed') . '</i> &nbsp; &nbsp; ';
 	echo '[<a class="ButtonLink" href="PO_PDFPurchOrder.php?OrderNo=' . urlencode($_GET['OrderNo']) . '">' . _('Print') . '</a>]';
 } else {
-	echo _('Printed on') . ' ' . ConvertSQLDate($myrow['dateprinted']) . '&nbsp; &nbsp;';
+	echo _('Printed on') . ' ' . ConvertSQLDate($MyRow['dateprinted']) . '&nbsp; &nbsp;';
 	echo '[<a class="ButtonLink" href="PO_PDFPurchOrder.php?OrderNo=' . urlencode($_GET['OrderNo']) . '">' . _('Print a Copy') . '</a>]';
 }
 
 echo '</td></tr>';
 echo '<tr>
 		<td style="text-align:left">' . _('Status') . '</td>
-		<td>' . _($myrow['status']) . '</td>
+		<td>' . _($MyRow['status']) . '</td>
 	</tr>
 	<tr>
 		<td style="text-align:left">' . _('Comments') . '</td>
-		<td colspan="3">' . $myrow['comments'] . '</td>
+		<td colspan="3">' . $MyRow['comments'] . '</td>
 	</tr>
 	<tr>
 		<td>' . _('Status Coments') . '</td>
-		<td colspan="5" style="display:table">' . str_replace('<br />', '', html_entity_decode($myrow['stat_comment'])) . '</td>
+		<td colspan="5" style="display:table">' . str_replace('<br />', '', html_entity_decode($MyRow['stat_comment'])) . '</td>
  	</tr>';
 
 echo '</table>';
 
-$CurrDecimalPlaces = $myrow['currdecimalplaces'];
+$CurrDecimalPlaces = $MyRow['currdecimalplaces'];
 
 echo '<br />';
 /*Now get the line items */
@@ -222,19 +222,19 @@ $k = 0; //row colour counter
 $OrderTotal = 0;
 $RecdTotal = 0;
 
-while ($myrow = DB_fetch_array($LineItemsResult)) {
+while ($MyRow = DB_fetch_array($LineItemsResult)) {
 
-	$OrderTotal += ($myrow['quantityord'] * $myrow['unitprice']);
-	$RecdTotal += ($myrow['quantityrecd'] * $myrow['unitprice']);
+	$OrderTotal += ($MyRow['quantityord'] * $MyRow['unitprice']);
+	$RecdTotal += ($MyRow['quantityrecd'] * $MyRow['unitprice']);
 
-	$DisplayReqdDate = ConvertSQLDate($myrow['deliverydate']);
-	if ($myrow['decimalplaces'] != NULL) {
-		$DecimalPlaces = $myrow['decimalplaces'];
+	$DisplayReqdDate = ConvertSQLDate($MyRow['deliverydate']);
+	if ($MyRow['decimalplaces'] != NULL) {
+		$DecimalPlaces = $MyRow['decimalplaces'];
 	} else {
 		$DecimalPlaces = 2;
 	}
 	// if overdue and outstanding quantities, then highlight as so
-	if (($myrow['quantityord'] - $myrow['quantityrecd'] > 0) AND Date1GreaterThanDate2(Date($_SESSION['DefaultDateFormat']), $DisplayReqdDate)) {
+	if (($MyRow['quantityord'] - $MyRow['quantityrecd'] > 0) AND Date1GreaterThanDate2(Date($_SESSION['DefaultDateFormat']), $DisplayReqdDate)) {
 		echo '<tr class="OsRow">';
 	} else {
 		if ($k == 1) {
@@ -254,7 +254,7 @@ while ($myrow = DB_fetch_array($LineItemsResult)) {
 			<td class="number">%s</td>
 			<td class="number">%s</td>
 			<td>%s</td>
-		</tr>', $myrow['itemcode'], stripslashes($myrow['itemdescription']), locale_number_format($myrow['quantityord'], $DecimalPlaces), locale_number_format($myrow['quantityrecd'], $DecimalPlaces), locale_number_format($myrow['qtyinvoiced'], $DecimalPlaces), locale_number_format($myrow['unitprice'], $CurrDecimalPlaces), locale_number_format($myrow['actprice'], $CurrDecimalPlaces), $DisplayReqdDate);
+		</tr>', $MyRow['itemcode'], stripslashes($MyRow['itemdescription']), locale_number_format($MyRow['quantityord'], $DecimalPlaces), locale_number_format($MyRow['quantityrecd'], $DecimalPlaces), locale_number_format($MyRow['qtyinvoiced'], $DecimalPlaces), locale_number_format($MyRow['unitprice'], $CurrDecimalPlaces), locale_number_format($MyRow['actprice'], $CurrDecimalPlaces), $DisplayReqdDate);
 
 }
 

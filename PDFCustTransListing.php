@@ -105,21 +105,21 @@ $TotalAmount = 0;
 
 include('includes/PDFCustTransListingPageHeader.inc');
 
-while ($myrow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($result)) {
 
-	$sql = "SELECT name FROM debtorsmaster WHERE debtorno='" . $myrow['debtorno'] . "'";
+	$sql = "SELECT name FROM debtorsmaster WHERE debtorno='" . $MyRow['debtorno'] . "'";
 	$CustomerResult = DB_query($sql);
 	$CustomerRow = DB_fetch_array($CustomerResult);
 
 	$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 160, $FontSize, $CustomerRow['name'], 'left');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 162, $YPos, 80, $FontSize, $myrow['transno'], 'left');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 242, $YPos, 70, $FontSize, ConvertSQLDate($myrow['trandate']), 'left');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 312, $YPos, 70, $FontSize, locale_number_format($myrow['ovamount'], $myrow['decimalplaces']), 'right');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 382, $YPos, 70, $FontSize, locale_number_format($myrow['ovgst'], $myrow['decimalplaces']), 'right');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 452, $YPos, 70, $FontSize, locale_number_format($myrow['ovamount'] + $myrow['ovgst'], $myrow['decimalplaces']), 'right');
+	$LeftOvers = $pdf->addTextWrap($Left_Margin + 162, $YPos, 80, $FontSize, $MyRow['transno'], 'left');
+	$LeftOvers = $pdf->addTextWrap($Left_Margin + 242, $YPos, 70, $FontSize, ConvertSQLDate($MyRow['trandate']), 'left');
+	$LeftOvers = $pdf->addTextWrap($Left_Margin + 312, $YPos, 70, $FontSize, locale_number_format($MyRow['ovamount'], $MyRow['decimalplaces']), 'right');
+	$LeftOvers = $pdf->addTextWrap($Left_Margin + 382, $YPos, 70, $FontSize, locale_number_format($MyRow['ovgst'], $MyRow['decimalplaces']), 'right');
+	$LeftOvers = $pdf->addTextWrap($Left_Margin + 452, $YPos, 70, $FontSize, locale_number_format($MyRow['ovamount'] + $MyRow['ovgst'], $MyRow['decimalplaces']), 'right');
 
 	$YPos -= ($line_height);
-	$TotalAmount = $TotalAmount + ($myrow['ovamount'] / $myrow['rate']);
+	$TotalAmount = $TotalAmount + ($MyRow['ovamount'] / $MyRow['rate']);
 
 	if ($YPos - (2 * $line_height) < $Bottom_Margin) {
 		/*Then set up a new page */

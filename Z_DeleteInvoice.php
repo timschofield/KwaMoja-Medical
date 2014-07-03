@@ -26,10 +26,10 @@ $SQL = "SELECT order_, id
 		AND transno = '" . $_GET['InvoiceNo'] . "'";
 
 $Result = DB_query($SQL);
-$myrow = DB_fetch_row($Result);
+$MyRow = DB_fetch_row($Result);
 
-$ProcessingOrder = $myrow[0];
-$IDDebtorTrans = $myrow[1];
+$ProcessingOrder = $MyRow[0];
+$IDDebtorTrans = $MyRow[1];
 
 /*Now get the stock movements that were invoiced into an array */
 
@@ -49,8 +49,8 @@ $Result = DB_query($SQL);
 
 $i = 0;
 
-while ($myrow = DB_fetch_array($Result)) {
-	$StockMovement[$i] = $myrow;
+while ($MyRow = DB_fetch_array($Result)) {
+	$StockMovement[$i] = $MyRow;
 	$i++;
 }
 

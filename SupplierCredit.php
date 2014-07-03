@@ -35,8 +35,8 @@ if (isset($_GET['New'])) {
 if (!isset($_SESSION['SuppTrans']->SupplierName)) {
 	$sql = "SELECT suppname FROM suppliers WHERE supplierid='" . $_GET['SupplierID'] . "'";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_row($result);
-	$SupplierName = $myrow[0];
+	$MyRow = DB_fetch_row($result);
+	$SupplierName = $MyRow[0];
 } else {
 	$SupplierName = $_SESSION['SuppTrans']->SupplierName;
 }
@@ -86,21 +86,21 @@ if (isset($_GET['SupplierID']) and $_GET['SupplierID'] != '') {
 
 	$result = DB_query($sql, $ErrMsg, $DbgMsg);
 
-	$myrow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($result);
 
-	$_SESSION['SuppTrans']->SupplierName = $myrow['suppname'];
-	$_SESSION['SuppTrans']->TermsDescription = $myrow['terms'];
-	$_SESSION['SuppTrans']->CurrCode = $myrow['currcode'];
-	$_SESSION['SuppTrans']->ExRate = $myrow['exrate'];
-	$_SESSION['SuppTrans']->TaxGroup = $myrow['taxgroupid'];
-	$_SESSION['SuppTrans']->TaxGroupDescription = $myrow['taxgroupdescription'];
-	$_SESSION['SuppTrans']->SupplierID = $myrow['supplierid'];
-	$_SESSION['SuppTrans']->CurrDecimalPlaces = $myrow['currdecimalplaces'];
+	$_SESSION['SuppTrans']->SupplierName = $MyRow['suppname'];
+	$_SESSION['SuppTrans']->TermsDescription = $MyRow['terms'];
+	$_SESSION['SuppTrans']->CurrCode = $MyRow['currcode'];
+	$_SESSION['SuppTrans']->ExRate = $MyRow['exrate'];
+	$_SESSION['SuppTrans']->TaxGroup = $MyRow['taxgroupid'];
+	$_SESSION['SuppTrans']->TaxGroupDescription = $MyRow['taxgroupdescription'];
+	$_SESSION['SuppTrans']->SupplierID = $MyRow['supplierid'];
+	$_SESSION['SuppTrans']->CurrDecimalPlaces = $MyRow['currdecimalplaces'];
 
-	if ($myrow['daysbeforedue'] == 0) {
-		$_SESSION['SuppTrans']->Terms = '1' . $myrow['dayinfollowingmonth'];
+	if ($MyRow['daysbeforedue'] == 0) {
+		$_SESSION['SuppTrans']->Terms = '1' . $MyRow['dayinfollowingmonth'];
 	} else {
-		$_SESSION['SuppTrans']->Terms = '0' . $myrow['daysbeforedue'];
+		$_SESSION['SuppTrans']->Terms = '0' . $MyRow['daysbeforedue'];
 	}
 	$_SESSION['SuppTrans']->SupplierID = $_GET['SupplierID'];
 
@@ -951,10 +951,10 @@ if (isset($_POST['PostCreditNote'])) {
 											WHERE stockid='" . $EnteredGRN->ItemCode . "'
 												AND succeeded=0";
 								$result = DB_query($sql);
-								$myrow = DB_fetch_array($result);
-								$OldMaterialCost = $myrow['materialcost'];
-								$OldLabourCost = $myrow['labourcost'];
-								$OldOverheadCost = $myrow['overheadcost'];
+								$MyRow = DB_fetch_array($result);
+								$OldMaterialCost = $MyRow['materialcost'];
+								$OldLabourCost = $MyRow['labourcost'];
+								$OldOverheadCost = $MyRow['overheadcost'];
 
 								if ($TotalQuantityOnHand > 0) {
 

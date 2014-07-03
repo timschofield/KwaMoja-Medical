@@ -55,18 +55,18 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 	$Periods = DB_query($sql);
 
 
-	while ($myrow = DB_fetch_array($Periods)) {
+	while ($MyRow = DB_fetch_array($Periods)) {
 		if (isset($_POST['FromPeriod']) and $_POST['FromPeriod'] != '') {
-			if ($_POST['FromPeriod'] == $myrow['periodno']) {
-				echo '<option selected="selected" value="' . $myrow['periodno'] . '">' . MonthAndYearFromSQLDate($myrow['lastdate_in_period']) . '</option>';
+			if ($_POST['FromPeriod'] == $MyRow['periodno']) {
+				echo '<option selected="selected" value="' . $MyRow['periodno'] . '">' . MonthAndYearFromSQLDate($MyRow['lastdate_in_period']) . '</option>';
 			} else {
-				echo '<option value="' . $myrow['periodno'] . '">' . MonthAndYearFromSQLDate($myrow['lastdate_in_period']) . '</option>';
+				echo '<option value="' . $MyRow['periodno'] . '">' . MonthAndYearFromSQLDate($MyRow['lastdate_in_period']) . '</option>';
 			}
 		} else {
-			if ($myrow['lastdate_in_period'] == $DefaultFromDate) {
-				echo '<option selected="selected" value="' . $myrow['periodno'] . '">' . MonthAndYearFromSQLDate($myrow['lastdate_in_period']) . '</option>';
+			if ($MyRow['lastdate_in_period'] == $DefaultFromDate) {
+				echo '<option selected="selected" value="' . $MyRow['periodno'] . '">' . MonthAndYearFromSQLDate($MyRow['lastdate_in_period']) . '</option>';
 			} else {
-				echo '<option value="' . $myrow['periodno'] . '">' . MonthAndYearFromSQLDate($myrow['lastdate_in_period']) . '</option>';
+				echo '<option value="' . $MyRow['periodno'] . '">' . MonthAndYearFromSQLDate($MyRow['lastdate_in_period']) . '</option>';
 			}
 		}
 	}
@@ -85,12 +85,12 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 
 	$RetResult = DB_data_seek($Periods, 0);
 
-	while ($myrow = DB_fetch_array($Periods)) {
+	while ($MyRow = DB_fetch_array($Periods)) {
 
-		if ($myrow['periodno'] == $DefaultToPeriod) {
-			echo '<option selected="selected" value="' . $myrow['periodno'] . '">' . MonthAndYearFromSQLDate($myrow['lastdate_in_period']) . '</option>';
+		if ($MyRow['periodno'] == $DefaultToPeriod) {
+			echo '<option selected="selected" value="' . $MyRow['periodno'] . '">' . MonthAndYearFromSQLDate($MyRow['lastdate_in_period']) . '</option>';
 		} else {
-			echo '<option value ="' . $myrow['periodno'] . '">' . MonthAndYearFromSQLDate($myrow['lastdate_in_period']) . '</option>';
+			echo '<option value ="' . $MyRow['periodno'] . '">' . MonthAndYearFromSQLDate($MyRow['lastdate_in_period']) . '</option>';
 		}
 	}
 	echo '</select></td>
@@ -124,8 +124,8 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 			FROM periods
 			WHERE periodno='" . $_POST['ToPeriod'] . "'";
 	$PrdResult = DB_query($sql);
-	$myrow = DB_fetch_row($PrdResult);
-	$PeriodToDate = MonthAndYearFromSQLDate($myrow[0]);
+	$MyRow = DB_fetch_row($PrdResult);
+	$PeriodToDate = MonthAndYearFromSQLDate($MyRow[0]);
 
 	$RetainedEarningsAct = $_SESSION['CompanyRecord']['retainedearnings'];
 
@@ -208,9 +208,9 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 	$CheckPeriodActual = 0;
 	$CheckPeriodBudget = 0;
 
-	while ($myrow = DB_fetch_array($AccountsResult)) {
+	while ($MyRow = DB_fetch_array($AccountsResult)) {
 
-		if ($myrow['groupname'] != $ActGrp) {
+		if ($MyRow['groupname'] != $ActGrp) {
 
 			if ($ActGrp != '') {
 
@@ -218,10 +218,10 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 				if ($YPos < ($Bottom_Margin + (2 * $line_height))) {
 					include('includes/PDFTrialBalancePageHeader.inc');
 				}
-				if ($myrow['parentgroupname'] == $ActGrp) {
+				if ($MyRow['parentgroupname'] == $ActGrp) {
 					$Level++;
-					$ParentGroups[$Level] = $myrow['groupname'];
-				} elseif ($myrow['parentgroupname'] == $ParentGroups[$Level]) {
+					$ParentGroups[$Level] = $MyRow['groupname'];
+				} elseif ($MyRow['parentgroupname'] == $ParentGroups[$Level]) {
 					$YPos -= (.5 * $line_height);
 					$pdf->line($Left_Margin + 250, $YPos + $line_height, $Left_Margin + 500, $YPos + $line_height);
 					$pdf->setFont('', 'B');
@@ -235,7 +235,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 					/*Draw the bottom line */
 					$YPos -= (2 * $line_height);
 					$pdf->setFont('', '');
-					$ParentGroups[$Level] = $myrow['groupname'];
+					$ParentGroups[$Level] = $MyRow['groupname'];
 					$GrpActual[$Level] = 0;
 					$GrpBudget[$Level] = 0;
 					$GrpPrdActual[$Level] = 0;
@@ -262,7 +262,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 						$GrpPrdActual[$Level] = 0;
 						$GrpPrdBduget[$Level] = 0;
 						$Level--;
-					} while ($Level > 0 and $myrow['parentgroupname'] != $ParentGroups[$Level]);
+					} while ($Level > 0 and $MyRow['parentgroupname'] != $ParentGroups[$Level]);
 
 					if ($Level > 0) {
 						$YPos -= $line_height;
@@ -290,33 +290,33 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 			$YPos -= (2 * $line_height);
 			// Print account group name
 			$pdf->setFont('', 'B');
-			$ActGrp = $myrow['groupname'];
-			$ParentGroups[$Level] = $myrow['groupname'];
+			$ActGrp = $MyRow['groupname'];
+			$ParentGroups[$Level] = $MyRow['groupname'];
 			$FontSize = 10;
-			$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 200, $FontSize, $myrow['groupname']);
+			$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 200, $FontSize, $MyRow['groupname']);
 			$FontSize = 8;
 			$pdf->setFont('', '');
 			$YPos -= (2 * $line_height);
 		}
 
-		if ($myrow['pandl'] == 1) {
+		if ($MyRow['pandl'] == 1) {
 
-			$AccountPeriodActual = $myrow['lastprdcfwd'] - $myrow['firstprdbfwd'];
-			$AccountPeriodBudget = $myrow['lastprdbudgetcfwd'] - $myrow['firstprdbudgetbfwd'];
+			$AccountPeriodActual = $MyRow['lastprdcfwd'] - $MyRow['firstprdbfwd'];
+			$AccountPeriodBudget = $MyRow['lastprdbudgetcfwd'] - $MyRow['firstprdbudgetbfwd'];
 
 			$PeriodProfitLoss += $AccountPeriodActual;
 			$PeriodBudgetProfitLoss += $AccountPeriodBudget;
-			$MonthProfitLoss += $myrow['monthactual'];
-			$MonthBudgetProfitLoss += $myrow['monthbudget'];
-			$BFwdProfitLoss += $myrow['firstprdbfwd'];
+			$MonthProfitLoss += $MyRow['monthactual'];
+			$MonthBudgetProfitLoss += $MyRow['monthbudget'];
+			$BFwdProfitLoss += $MyRow['firstprdbfwd'];
 		} else {
 			/*PandL ==0 its a balance sheet account */
-			if ($myrow['accountcode'] == $RetainedEarningsAct) {
-				$AccountPeriodActual = $BFwdProfitLoss + $myrow['lastprdcfwd'];
-				$AccountPeriodBudget = $BFwdProfitLoss + $myrow['lastprdbudgetcfwd'] - $myrow['firstprdbudgetbfwd'];
+			if ($MyRow['accountcode'] == $RetainedEarningsAct) {
+				$AccountPeriodActual = $BFwdProfitLoss + $MyRow['lastprdcfwd'];
+				$AccountPeriodBudget = $BFwdProfitLoss + $MyRow['lastprdbudgetcfwd'] - $MyRow['firstprdbudgetbfwd'];
 			} else {
-				$AccountPeriodActual = $myrow['lastprdcfwd'];
-				$AccountPeriodBudget = $myrow['firstprdbfwd'] + $myrow['lastprdbudgetcfwd'] - $myrow['firstprdbudgetbfwd'];
+				$AccountPeriodActual = $MyRow['lastprdcfwd'];
+				$AccountPeriodBudget = $MyRow['firstprdbfwd'] + $MyRow['lastprdbudgetcfwd'] - $MyRow['firstprdbudgetbfwd'];
 			}
 
 		}
@@ -324,11 +324,11 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 			if (!isset($GrpActual[$i])) {
 				$GrpActual[$i] = 0;
 			}
-			$GrpActual[$i] += $myrow['monthactual'];
+			$GrpActual[$i] += $MyRow['monthactual'];
 			if (!isset($GrpBudget[$i])) {
 				$GrpBudget[$i] = 0;
 			}
-			$GrpBudget[$i] += $myrow['monthbudget'];
+			$GrpBudget[$i] += $MyRow['monthbudget'];
 			if (!isset($GrpPrdActual[$i])) {
 				$GrpPrdActual[$i] = 0;
 			}
@@ -339,8 +339,8 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 			$GrpPrdBudget[$i] += $AccountPeriodBudget;
 		}
 
-		$CheckMonth += $myrow['monthactual'];
-		$CheckBudgetMonth += $myrow['monthbudget'];
+		$CheckMonth += $MyRow['monthactual'];
+		$CheckBudgetMonth += $MyRow['monthbudget'];
 		$CheckPeriodActual += $AccountPeriodActual;
 		$CheckPeriodBudget += $AccountPeriodBudget;
 
@@ -350,10 +350,10 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 		}
 
 		// Print total for each account
-		$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 60, $FontSize, $myrow['accountcode']);
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 60, $YPos, 190, $FontSize, $myrow['accountname']);
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 250, $YPos, 70, $FontSize, locale_number_format($myrow['monthactual'], $_SESSION['CompanyRecord']['decimalplaces']), 'right');
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 310, $YPos, 70, $FontSize, locale_number_format($myrow['monthbudget'], $_SESSION['CompanyRecord']['decimalplaces']), 'right');
+		$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 60, $FontSize, $MyRow['accountcode']);
+		$LeftOvers = $pdf->addTextWrap($Left_Margin + 60, $YPos, 190, $FontSize, $MyRow['accountname']);
+		$LeftOvers = $pdf->addTextWrap($Left_Margin + 250, $YPos, 70, $FontSize, locale_number_format($MyRow['monthactual'], $_SESSION['CompanyRecord']['decimalplaces']), 'right');
+		$LeftOvers = $pdf->addTextWrap($Left_Margin + 310, $YPos, 70, $FontSize, locale_number_format($MyRow['monthbudget'], $_SESSION['CompanyRecord']['decimalplaces']), 'right');
 		$LeftOvers = $pdf->addTextWrap($Left_Margin + 370, $YPos, 70, $FontSize, locale_number_format($AccountPeriodActual, $_SESSION['CompanyRecord']['decimalplaces']), 'right');
 		$LeftOvers = $pdf->addTextWrap($Left_Margin + 430, $YPos, 70, $FontSize, locale_number_format($AccountPeriodBudget, $_SESSION['CompanyRecord']['decimalplaces']), 'right');
 		$YPos -= $line_height;
@@ -361,7 +361,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 	} //end of while loop
 
 
-	while ($Level > 0 and $myrow['parentgroupname'] != $ParentGroups[$Level]) {
+	while ($Level > 0 and $MyRow['parentgroupname'] != $ParentGroups[$Level]) {
 
 		$YPos -= (.5 * $line_height);
 		$pdf->line($Left_Margin + 250, $YPos + $line_height, $Left_Margin + 500, $YPos + $line_height);
@@ -416,8 +416,8 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 			FROM periods
 			WHERE periodno='" . $_POST['ToPeriod'] . "'";
 	$PrdResult = DB_query($sql);
-	$myrow = DB_fetch_row($PrdResult);
-	$PeriodToDate = MonthAndYearFromSQLDate($myrow[0]);
+	$MyRow = DB_fetch_row($PrdResult);
+	$PeriodToDate = MonthAndYearFromSQLDate($MyRow[0]);
 
 	$RetainedEarningsAct = $_SESSION['CompanyRecord']['retainedearnings'];
 
@@ -499,19 +499,19 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 
 	$j = 0;
 
-	while ($myrow = DB_fetch_array($AccountsResult)) {
+	while ($MyRow = DB_fetch_array($AccountsResult)) {
 
-		if ($myrow['groupname'] != $ActGrp) {
+		if ($MyRow['groupname'] != $ActGrp) {
 			if ($ActGrp != '') { //so its not the first account group of the first account displayed
-				if ($myrow['parentgroupname'] == $ActGrp) {
+				if ($MyRow['parentgroupname'] == $ActGrp) {
 					$Level++;
-					$ParentGroups[$Level] = $myrow['groupname'];
+					$ParentGroups[$Level] = $MyRow['groupname'];
 					$GrpActual[$Level] = 0;
 					$GrpBudget[$Level] = 0;
 					$GrpPrdActual[$Level] = 0;
 					$GrpPrdBudget[$Level] = 0;
 					$ParentGroups[$Level] = '';
-				} elseif ($ParentGroups[$Level] == $myrow['parentgroupname']) {
+				} elseif ($ParentGroups[$Level] == $MyRow['parentgroupname']) {
 					printf('<tr>
 						<td colspan="2"><i>%s ' . _('Total') . ' </i></td>
 						<td class="number"><i>%s</i></td>
@@ -524,7 +524,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 					$GrpBudget[$Level] = 0;
 					$GrpPrdActual[$Level] = 0;
 					$GrpPrdBudget[$Level] = 0;
-					$ParentGroups[$Level] = $myrow['groupname'];
+					$ParentGroups[$Level] = $MyRow['groupname'];
 				} else {
 					do {
 						printf('<tr>
@@ -543,7 +543,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 						$Level--;
 
 						$j++;
-					} while ($Level > 0 and $myrow['groupname'] != $ParentGroups[$Level]);
+					} while ($Level > 0 and $MyRow['groupname'] != $ParentGroups[$Level]);
 
 					if ($Level > 0) {
 						printf('<tr>
@@ -564,11 +564,11 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 					}
 				}
 			}
-			$ParentGroups[$Level] = $myrow['groupname'];
-			$ActGrp = $myrow['groupname'];
+			$ParentGroups[$Level] = $MyRow['groupname'];
+			$ActGrp = $MyRow['groupname'];
 			printf('<tr>
 						<td colspan="6"><h2>%s</h2></td>
-					</tr>', $myrow['groupname']);
+					</tr>', $MyRow['groupname']);
 		}
 
 		if ($k == 1) {
@@ -581,24 +581,24 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 		/*MonthActual, MonthBudget, FirstPrdBFwd, FirstPrdBudgetBFwd, LastPrdBudgetCFwd, LastPrdCFwd */
 
 
-		if ($myrow['pandl'] == 1) {
+		if ($MyRow['pandl'] == 1) {
 
-			$AccountPeriodActual = $myrow['lastprdcfwd'] - $myrow['firstprdbfwd'];
-			$AccountPeriodBudget = $myrow['lastprdbudgetcfwd'] - $myrow['firstprdbudgetbfwd'];
+			$AccountPeriodActual = $MyRow['lastprdcfwd'] - $MyRow['firstprdbfwd'];
+			$AccountPeriodBudget = $MyRow['lastprdbudgetcfwd'] - $MyRow['firstprdbudgetbfwd'];
 
 			$PeriodProfitLoss += $AccountPeriodActual;
 			$PeriodBudgetProfitLoss += $AccountPeriodBudget;
-			$MonthProfitLoss += $myrow['monthactual'];
-			$MonthBudgetProfitLoss += $myrow['monthbudget'];
-			$BFwdProfitLoss += $myrow['firstprdbfwd'];
+			$MonthProfitLoss += $MyRow['monthactual'];
+			$MonthBudgetProfitLoss += $MyRow['monthbudget'];
+			$BFwdProfitLoss += $MyRow['firstprdbfwd'];
 		} else {
 			/*PandL ==0 its a balance sheet account */
-			if ($myrow['accountcode'] == $RetainedEarningsAct) {
-				$AccountPeriodActual = $BFwdProfitLoss + $myrow['lastprdcfwd'];
-				$AccountPeriodBudget = $BFwdProfitLoss + $myrow['lastprdbudgetcfwd'] - $myrow['firstprdbudgetbfwd'];
+			if ($MyRow['accountcode'] == $RetainedEarningsAct) {
+				$AccountPeriodActual = $BFwdProfitLoss + $MyRow['lastprdcfwd'];
+				$AccountPeriodBudget = $BFwdProfitLoss + $MyRow['lastprdbudgetcfwd'] - $MyRow['firstprdbudgetbfwd'];
 			} else {
-				$AccountPeriodActual = $myrow['lastprdcfwd'];
-				$AccountPeriodBudget = $myrow['firstprdbfwd'] + $myrow['lastprdbudgetcfwd'] - $myrow['firstprdbudgetbfwd'];
+				$AccountPeriodActual = $MyRow['lastprdcfwd'];
+				$AccountPeriodBudget = $MyRow['firstprdbfwd'] + $MyRow['lastprdbudgetcfwd'] - $MyRow['firstprdbudgetbfwd'];
 			}
 
 		}
@@ -615,17 +615,17 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 		if (!isset($GrpPrdBudget[$Level])) {
 			$GrpPrdBudget[$Level] = 0;
 		}
-		$GrpActual[$Level] += $myrow['monthactual'];
-		$GrpBudget[$Level] += $myrow['monthbudget'];
+		$GrpActual[$Level] += $MyRow['monthactual'];
+		$GrpBudget[$Level] += $MyRow['monthbudget'];
 		$GrpPrdActual[$Level] += $AccountPeriodActual;
 		$GrpPrdBudget[$Level] += $AccountPeriodBudget;
 
-		$CheckMonth += $myrow['monthactual'];
-		$CheckBudgetMonth += $myrow['monthbudget'];
+		$CheckMonth += $MyRow['monthactual'];
+		$CheckBudgetMonth += $MyRow['monthbudget'];
 		$CheckPeriodActual += $AccountPeriodActual;
 		$CheckPeriodBudget += $AccountPeriodBudget;
 
-		$ActEnquiryURL = '<a href="' . $RootPath . '/GLAccountInquiry.php?FromPeriod=' . $_POST['FromPeriod'] . '&amp;ToPeriod=' . $_POST['ToPeriod'] . '&amp;Account=' . $myrow['accountcode'] . '&amp;Show=Yes">' . $myrow['accountcode'] . '</a>';
+		$ActEnquiryURL = '<a href="' . $RootPath . '/GLAccountInquiry.php?FromPeriod=' . $_POST['FromPeriod'] . '&amp;ToPeriod=' . $_POST['ToPeriod'] . '&amp;Account=' . $MyRow['accountcode'] . '&amp;Show=Yes">' . $MyRow['accountcode'] . '</a>';
 
 		printf('<td>%s</td>
 				<td>%s</td>
@@ -633,7 +633,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 				<td class="number">%s</td>
 				<td class="number">%s</td>
 				<td class="number">%s</td>
-				</tr>', $ActEnquiryURL, htmlspecialchars($myrow['accountname'], ENT_QUOTES, 'UTF-8', false), locale_number_format($myrow['monthactual'], $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($myrow['monthbudget'], $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($AccountPeriodActual, $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($AccountPeriodBudget, $_SESSION['CompanyRecord']['decimalplaces']));
+				</tr>', $ActEnquiryURL, htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false), locale_number_format($MyRow['monthactual'], $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($MyRow['monthbudget'], $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($AccountPeriodActual, $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($AccountPeriodBudget, $_SESSION['CompanyRecord']['decimalplaces']));
 
 		$j++;
 	}
@@ -641,10 +641,10 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 
 
 	if ($ActGrp != '') { //so its not the first account group of the first account displayed
-		if ($myrow['parentgroupname'] == $ActGrp) {
+		if ($MyRow['parentgroupname'] == $ActGrp) {
 			$Level++;
-			$ParentGroups[$Level] = $myrow['groupname'];
-		} elseif ($ParentGroups[$Level] == $myrow['parentgroupname']) {
+			$ParentGroups[$Level] = $MyRow['groupname'];
+		} elseif ($ParentGroups[$Level] == $MyRow['parentgroupname']) {
 			printf('<tr>
 					<td colspan="2"><i>%s ' . _('Total') . ' </i></td>
 					<td class="number"><i>%s</i></td>
@@ -657,7 +657,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 			$GrpBudget[$Level] = 0;
 			$GrpPrdActual[$Level] = 0;
 			$GrpPrdBudget[$Level] = 0;
-			$ParentGroups[$Level] = $myrow['groupname'];
+			$ParentGroups[$Level] = $MyRow['groupname'];
 		} else {
 			do {
 				printf('<tr>
@@ -676,7 +676,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 				$Level--;
 
 				$j++;
-			} while (isset($ParentGroups[$Level]) and ($myrow['groupname'] != $ParentGroups[$Level] and $Level > 0));
+			} while (isset($ParentGroups[$Level]) and ($MyRow['groupname'] != $ParentGroups[$Level] and $Level > 0));
 
 			if ($Level > 0) {
 				printf('<tr>

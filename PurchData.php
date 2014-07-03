@@ -279,8 +279,8 @@ if (!isset($_GET['Edit'])) {
 				</tr>';
 		$CountPreferreds = 0;
 		$k = 0; //row colour counter
-		while ($myrow = DB_fetch_array($PurchDataResult)) {
-			if ($myrow['preferred'] == 1) {
+		while ($MyRow = DB_fetch_array($PurchDataResult)) {
+			if ($MyRow['preferred'] == 1) {
 				echo '<tr class="EvenTableRows">';
 			} elseif ($k == 1) {
 				echo '<tr class="EvenTableRows">';
@@ -289,14 +289,14 @@ if (!isset($_GET['Edit'])) {
 				echo '<tr class="OddTableRows">';
 				$k++;
 			}
-			if ($myrow['preferred'] == 1) {
+			if ($MyRow['preferred'] == 1) {
 				$DisplayPreferred = _('Yes');
 				$CountPreferreds++;
 
 			} else {
 				$DisplayPreferred = _('No');
 			}
-			$UPriceDecimalPlaces = max($myrow['currdecimalplaces'], $_SESSION['StandardCostDecimalPlaces']);
+			$UPriceDecimalPlaces = max($MyRow['currdecimalplaces'], $_SESSION['StandardCostDecimalPlaces']);
 			printf('<td>%s</td>
 					<td class="number">%s</td>
 					<td>%s</td>
@@ -310,7 +310,7 @@ if (!isset($_GET['Edit'])) {
 					<td><a href="%s?StockID=%s&SupplierID=%s&Edit=1&EffectiveFrom=%s">' . _('Edit') . '</a></td>
 					<td><a href="%s?StockID=%s&SupplierID=%s&Copy=1&EffectiveFrom=%s">' . _('Copy') . '</a></td>
 					<td><a href="%s?StockID=%s&SupplierID=%s&Delete=1&EffectiveFrom=%s" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this suppliers price?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-					</tr>', $myrow['suppname'], locale_number_format($myrow['price'], $UPriceDecimalPlaces), $myrow['suppliersuom'], locale_number_format($myrow['conversionfactor'], 'Variable'), locale_number_format($myrow['price'] / $myrow['conversionfactor'], $UPriceDecimalPlaces), $myrow['currcode'], ConvertSQLDate($myrow['effectivefrom']), locale_number_format($myrow['minorderqty'], 'Variable'), locale_number_format($myrow['leadtime'], 'Variable'), $DisplayPreferred, htmlspecialchars($_SERVER['PHP_SELF']), $StockID, $myrow['supplierno'], $myrow['effectivefrom'], htmlspecialchars($_SERVER['PHP_SELF']), $StockID, $myrow['supplierno'], $myrow['effectivefrom'], htmlspecialchars($_SERVER['PHP_SELF']), $StockID, $myrow['supplierno'], $myrow['effectivefrom']);
+					</tr>', $MyRow['suppname'], locale_number_format($MyRow['price'], $UPriceDecimalPlaces), $MyRow['suppliersuom'], locale_number_format($MyRow['conversionfactor'], 'Variable'), locale_number_format($MyRow['price'] / $MyRow['conversionfactor'], $UPriceDecimalPlaces), $MyRow['currcode'], ConvertSQLDate($MyRow['effectivefrom']), locale_number_format($MyRow['minorderqty'], 'Variable'), locale_number_format($MyRow['leadtime'], 'Variable'), $DisplayPreferred, htmlspecialchars($_SERVER['PHP_SELF']), $StockID, $MyRow['supplierno'], $MyRow['effectivefrom'], htmlspecialchars($_SERVER['PHP_SELF']), $StockID, $MyRow['supplierno'], $MyRow['effectivefrom'], htmlspecialchars($_SERVER['PHP_SELF']), $StockID, $MyRow['supplierno'], $MyRow['effectivefrom']);
 		} //end of while loop
 		echo '</table><br/>';
 		if ($CountPreferreds > 1) {
@@ -337,10 +337,10 @@ if (isset($SupplierID) and $SupplierID != '' and !isset($_POST['SearchSupplier']
 	$DbgMsg = _('The SQL that failed was');
 	$SuppSelResult = DB_query($sql, $ErrMsg, $DbgMsg);
 	if (DB_num_rows($SuppSelResult) == 1) {
-		$myrow = DB_fetch_array($SuppSelResult);
-		$SuppName = $myrow['suppname'];
-		$CurrCode = $myrow['currcode'];
-		$CurrDecimalPlaces = $myrow['currdecimalplaces'];
+		$MyRow = DB_fetch_array($SuppSelResult);
+		$SuppName = $MyRow['suppname'];
+		$CurrCode = $MyRow['currcode'];
+		$CurrDecimalPlaces = $MyRow['currdecimalplaces'];
 	} else {
 		prnMsg(_('The supplier code') . ' ' . $SupplierID . ' ' . _('is not an existing supplier in the database') . '. ' . _('You must enter an alternative supplier code or select a supplier using the search facility below'), 'error');
 		unset($SupplierID);
@@ -420,15 +420,15 @@ if (isset($SuppliersResult)) {
 								stockmaster.mbflag
 						FROM stockmaster
 						WHERE stockmaster.stockid='" . $StockID . "'");
-		$myrow = DB_fetch_row($result);
-		$StockUOM = $myrow[1];
+		$MyRow = DB_fetch_row($result);
+		$StockUOM = $MyRow[1];
 		if (DB_num_rows($result) == 1) {
-			if ($myrow[2] == 'D' or $myrow[2] == 'A' or $myrow[2] == 'K') {
-				prnMsg($StockID . ' - ' . $myrow[0] . '<p> ' . _('The item selected is a dummy part or an assembly or kit set part') . ' - ' . _('it is not purchased') . '. ' . _('Entry of purchasing information is therefore inappropriate'), 'warn');
+			if ($MyRow[2] == 'D' or $MyRow[2] == 'A' or $MyRow[2] == 'K') {
+				prnMsg($StockID . ' - ' . $MyRow[0] . '<p> ' . _('The item selected is a dummy part or an assembly or kit set part') . ' - ' . _('it is not purchased') . '. ' . _('Entry of purchasing information is therefore inappropriate'), 'warn');
 				include('includes/footer.inc');
 				exit;
 			} else {
-				//			   echo '<br /><b>' . $StockID . ' - ' . $myrow[0] . ' </b>  (' . _('In Units of') . ' ' . $myrow[1] . ' )';
+				//			   echo '<br /><b>' . $StockID . ' - ' . $MyRow[0] . ' </b>  (' . _('In Units of') . ' ' . $MyRow[1] . ' )';
 			}
 		} else {
 			prnMsg(_('Stock Item') . ' - ' . $StockID . ' ' . _('is not defined in the database'), 'warn');
@@ -449,7 +449,7 @@ if (isset($SuppliersResult)) {
 				<th>' . _('Address 3') . '</th>
 			</tr>';
 	$k = 0;
-	while ($myrow = DB_fetch_array($SuppliersResult)) {
+	while ($MyRow = DB_fetch_array($SuppliersResult)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -463,7 +463,7 @@ if (isset($SuppliersResult)) {
 				<td>%s</td>
 				<td>%s</td>
 				<td>%s</td>
-				</tr>', $myrow['supplierid'], $myrow['suppname'], $myrow['currcode'], $myrow['address1'], $myrow['address2'], $myrow['address3']);
+				</tr>', $MyRow['supplierid'], $MyRow['suppname'], $MyRow['currcode'], $MyRow['address1'], $MyRow['address2'], $MyRow['address3']);
 
 		echo '<input type="hidden" name="StockID" value="' . $StockID . '" />';
 		echo '<input type="hidden" name="StockUOM" value="' . $StockUOM . '" />';
@@ -507,27 +507,27 @@ if (!isset($SuppliersResult)) {
 
 		$ErrMsg = _('The supplier purchasing details for the selected supplier and item could not be retrieved because');
 		$EditResult = DB_query($sql, $ErrMsg);
-		$myrow = DB_fetch_array($EditResult);
-		$SuppName = $myrow['suppname'];
-		$UPriceDecimalPlaces = max($myrow['currdecimalplaces'], $_SESSION['StandardCostDecimalPlaces']);
+		$MyRow = DB_fetch_array($EditResult);
+		$SuppName = $MyRow['suppname'];
+		$UPriceDecimalPlaces = max($MyRow['currdecimalplaces'], $_SESSION['StandardCostDecimalPlaces']);
 		if ($Edit == true) {
-			$_POST['EffectiveFrom'] = ConvertSQLDate($myrow['effectivefrom']);
-			$_POST['Price'] = locale_number_format(round($myrow['price'], $UPriceDecimalPlaces), $UPriceDecimalPlaces);
+			$_POST['EffectiveFrom'] = ConvertSQLDate($MyRow['effectivefrom']);
+			$_POST['Price'] = locale_number_format(round($MyRow['price'], $UPriceDecimalPlaces), $UPriceDecimalPlaces);
 		} else {
 			$_POST['EffectiveFrom'] = Date($_SESSION['DefaultDateFormat']);
 			$_POST['Price'] = 0;
 		}
-		$CurrCode = $myrow['currcode'];
-		$CurrDecimalPlaces = $myrow['currdecimalplaces'];
-		$_POST['SuppliersUOM'] = $myrow['suppliersuom'];
-		$_POST['SupplierDescription'] = $myrow['supplierdescription'];
-		$_POST['LeadTime'] = locale_number_format($myrow['leadtime'], 'Variable');
+		$CurrCode = $MyRow['currcode'];
+		$CurrDecimalPlaces = $MyRow['currdecimalplaces'];
+		$_POST['SuppliersUOM'] = $MyRow['suppliersuom'];
+		$_POST['SupplierDescription'] = $MyRow['supplierdescription'];
+		$_POST['LeadTime'] = locale_number_format($MyRow['leadtime'], 'Variable');
 
-		$_POST['ConversionFactor'] = locale_number_format($myrow['conversionfactor'], 'Variable');
-		$_POST['Preferred'] = $myrow['preferred'];
-		$_POST['MinOrderQty'] = locale_number_format($myrow['minorderqty'], 'Variable');
-		$_POST['SupplierCode'] = $myrow['suppliers_partno'];
-		$StockUOM = $myrow['units'];
+		$_POST['ConversionFactor'] = locale_number_format($MyRow['conversionfactor'], 'Variable');
+		$_POST['Preferred'] = $MyRow['preferred'];
+		$_POST['MinOrderQty'] = locale_number_format($MyRow['minorderqty'], 'Variable');
+		$_POST['SupplierCode'] = $MyRow['suppliers_partno'];
+		$StockUOM = $MyRow['units'];
 	}
 	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF']) . '" method="post" class="noPrint">
 		<table class="selection">';
@@ -538,7 +538,7 @@ if (!isset($SuppliersResult)) {
 	if ($Edit == true) {
 		echo '<tr>
 				<td>' . _('Supplier Name') . ':</td>
-				<td><input type="hidden" name="SupplierID" value="' . $SupplierID . '" />' . $SupplierID . ' - ' . $SuppName . '<input type="hidden" name="WasEffectiveFrom" value="' . $myrow['effectivefrom'] . '" /></td>
+				<td><input type="hidden" name="SupplierID" value="' . $SupplierID . '" />' . $SupplierID . ' - ' . $SuppName . '<input type="hidden" name="WasEffectiveFrom" value="' . $MyRow['effectivefrom'] . '" /></td>
 			</tr>';
 	} else {
 		echo '<tr>
@@ -670,7 +670,7 @@ if (!isset($SuppliersResult)) {
 				</tr>';
 		$k = 0;
 		$i = 0; //DiscountCounter
-		while ($myrow = DB_fetch_array($DiscountsResult)) {
+		while ($MyRow = DB_fetch_array($DiscountsResult)) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;
@@ -685,7 +685,7 @@ if (!isset($SuppliersResult)) {
 					<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="DiscountEffectiveFrom%s" minlength="0" maxlength="10" size="11" value="%s" /></td>
 					<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="DiscountEffectiveTo%s" minlength="0" maxlength="10" size="11" value="%s" /></td>
 					<td><a href="%s?DeleteDiscountID=%s&amp;StockID=%s&amp;EffectiveFrom=%s&amp;SupplierID=%s&amp;Edit=1">' . _('Delete') . '</a></td>
-					</tr>', $i, $myrow['id'], $i, $myrow['discountnarrative'], $i, locale_number_format($myrow['discountamount'], $CurrDecimalPlaces), $i, locale_number_format($myrow['discountpercent'] * 100, 2), $i, ConvertSQLDate($myrow['effectivefrom']), $i, ConvertSQLDate($myrow['effectiveto']), htmlspecialchars($_SERVER['PHP_SELF']), $myrow['id'], $StockID, $EffectiveFrom, $SupplierID);
+					</tr>', $i, $MyRow['id'], $i, $MyRow['discountnarrative'], $i, locale_number_format($MyRow['discountamount'], $CurrDecimalPlaces), $i, locale_number_format($MyRow['discountpercent'] * 100, 2), $i, ConvertSQLDate($MyRow['effectivefrom']), $i, ConvertSQLDate($MyRow['effectiveto']), htmlspecialchars($_SERVER['PHP_SELF']), $MyRow['id'], $StockID, $EffectiveFrom, $SupplierID);
 
 			$i++;
 		} //end of while loop

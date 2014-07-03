@@ -101,17 +101,17 @@ if (!isset($OrderNumber) or $OrderNumber == "") {
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
 	$resultStkLocs = DB_query($sql);
-	while ($myrow = DB_fetch_array($resultStkLocs)) {
+	while ($MyRow = DB_fetch_array($resultStkLocs)) {
 		if (isset($_POST['StockLocation'])) {
-			if ($myrow['loccode'] == $_POST['StockLocation']) {
-				echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+			if ($MyRow['loccode'] == $_POST['StockLocation']) {
+				echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 			} else {
-				echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+				echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 			}
-		} elseif ($myrow['loccode'] == $_SESSION['UserStockLocation']) {
-			echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+		} elseif ($MyRow['loccode'] == $_SESSION['UserStockLocation']) {
+			echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+			echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 		}
 	}
 	echo '</select> ' . _('Order Status') . ':<select minlength="0" name="Status">';
@@ -164,11 +164,11 @@ echo '<table class="selection">
 		<tr>
 			<td><tr>
 		<td>' . _('Select a stock category') . ':<select minlength="0" name="StockCat">';
-while ($myrow1 = DB_fetch_array($result1)) {
-	if (isset($_POST['StockCat']) and $myrow1['categoryid'] == $_POST['StockCat']) {
-		echo '<option selected="selected" value="' . $myrow1['categoryid'] . '">' . $myrow1['categorydescription'] . '</option>';
+while ($MyRow1 = DB_fetch_array($result1)) {
+	if (isset($_POST['StockCat']) and $MyRow1['categoryid'] == $_POST['StockCat']) {
+		echo '<option selected="selected" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 	} else {
-		echo '<option value="' . $myrow1['categoryid'] . '">' . $myrow1['categorydescription'] . '</option>';
+		echo '<option value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 	}
 }
 echo '</select></td>
@@ -200,7 +200,7 @@ if (isset($StockItemsResult)) {
 				<th>' . _('Units') . '</th>
 			</tr>';
 	$k = 0; //row colour counter
-	while ($myrow = DB_fetch_array($StockItemsResult)) {
+	while ($MyRow = DB_fetch_array($StockItemsResult)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -208,11 +208,11 @@ if (isset($StockItemsResult)) {
 			echo '<tr class="OddTableRows">';
 			$k = 1;
 		}
-		echo '<td><input type="submit" name="SelectedStockItem" value="' . $myrow['stockid'] . '"</td>
-				<td>' . $myrow['description'] . '</td>
-				<td class="number">' . locale_number_format($myrow['qoh'], $myrow['decimalplaces']) . '</td>
-				<td class="number">' . locale_number_format($myrow['qord'], $myrow['decimalplaces']) . '</td>
-				<td>' . $myrow['units'] . '</td>
+		echo '<td><input type="submit" name="SelectedStockItem" value="' . $MyRow['stockid'] . '"</td>
+				<td>' . $MyRow['description'] . '</td>
+				<td class="number">' . locale_number_format($MyRow['qoh'], $MyRow['decimalplaces']) . '</td>
+				<td class="number">' . locale_number_format($MyRow['qord'], $MyRow['decimalplaces']) . '</td>
+				<td>' . $MyRow['units'] . '</td>
 			</tr>';
 	}
 	//end of while loop
@@ -311,7 +311,7 @@ if (isset($StockItemsResult)) {
 					<th>' . _('Status') . '</th>
 				</tr>';
 		$k = 0; //row colour counter
-		while ($myrow = DB_fetch_array($PurchOrdersResult)) {
+		while ($MyRow = DB_fetch_array($PurchOrdersResult)) {
 			if ($k == 1) {
 				/*alternate bgcolour of row for highlighting */
 				echo '<tr class="EvenTableRows">';
@@ -320,22 +320,22 @@ if (isset($StockItemsResult)) {
 				echo '<tr class="OddTableRows">';
 				$k++;
 			}
-			$ViewPurchOrder = $RootPath . '/PO_OrderDetails.php?OrderNo=' . $myrow['orderno'];
-			$FormatedOrderDate = ConvertSQLDate($myrow['orddate']);
-			$FormatedDeliveryDate = ConvertSQLDate($myrow['deliverydate']);
-			$FormatedOrderValue = locale_number_format($myrow['ordervalue'], $myrow['currdecimalplaces']);
+			$ViewPurchOrder = $RootPath . '/PO_OrderDetails.php?OrderNo=' . $MyRow['orderno'];
+			$FormatedOrderDate = ConvertSQLDate($MyRow['orddate']);
+			$FormatedDeliveryDate = ConvertSQLDate($MyRow['deliverydate']);
+			$FormatedOrderValue = locale_number_format($MyRow['ordervalue'], $MyRow['currdecimalplaces']);
 
-			echo '<td><a href="' . $ViewPurchOrder . '">' . $myrow['orderno'] . '</a></td>
-					<td>' . $myrow['suppname'] . '</td>
-					<td>' . $myrow['currcode'] . '</td>
-					<td>' . $myrow['requisitionno'] . '</td>
+			echo '<td><a href="' . $ViewPurchOrder . '">' . $MyRow['orderno'] . '</a></td>
+					<td>' . $MyRow['suppname'] . '</td>
+					<td>' . $MyRow['currcode'] . '</td>
+					<td>' . $MyRow['requisitionno'] . '</td>
 					<td>' . $FormatedOrderDate . '</td>
 					<td>' . $FormatedDeliveryDate . '</td>
-					<td>' . $myrow['initiator'] . '</td>
+					<td>' . $MyRow['initiator'] . '</td>
 					<td class="number">' . $FormatedOrderValue . '</td>
-					<td>' . _($myrow['status']) . '</td>
+					<td>' . _($MyRow['status']) . '</td>
 					</tr>';
-			//$myrow['status'] is a string which has gettext translations from PO_Header.php script
+			//$MyRow['status'] is a string which has gettext translations from PO_Header.php script
 
 		}
 		//end of while loop

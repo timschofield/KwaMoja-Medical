@@ -100,13 +100,13 @@ if (!isset($SelectedBankAccount)) {
 
 	$result = DB_query($SQL);
 	echo '<option value="">' . _('Not Yet Selected') . '</option>';
-	while ($myrow = DB_fetch_array($result)) {
-		if (isset($SelectedBankAccount) and $myrow['accountcode'] == $SelectedBankAccount) {
+	while ($MyRow = DB_fetch_array($result)) {
+		if (isset($SelectedBankAccount) and $MyRow['accountcode'] == $SelectedBankAccount) {
 			echo '<option selected="selected" value="';
 		} else {
 			echo '<option value="';
 		}
-		echo $myrow['accountcode'] . '">' . $myrow['accountcode'] . ' - ' . $myrow['bankaccountname'] . '</option>';
+		echo $MyRow['accountcode'] . '">' . $MyRow['accountcode'] . ' - ' . $MyRow['bankaccountname'] . '</option>';
 
 	} //end while loop
 
@@ -129,8 +129,8 @@ if (isset($_POST['process']) OR isset($SelectedBankAccount)) {
 			FROM bankaccounts
 			WHERE accountcode='" . $SelectedBankAccount . "'";
 	$result = DB_query($SQLName);
-	$myrow = DB_fetch_array($result);
-	$SelectedBankName = $myrow['bankaccountname'];
+	$MyRow = DB_fetch_array($result);
+	$SelectedBankName = $MyRow['bankaccountname'];
 
 	echo '<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Authorised users for') . ' ' . $SelectedBankName . ' ' . _('bank account') . '</a></div>';
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
@@ -158,7 +158,7 @@ if (isset($_POST['process']) OR isset($SelectedBankAccount)) {
 
 	$k = 0; //row colour counter
 
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -170,7 +170,7 @@ if (isset($_POST['process']) OR isset($SelectedBankAccount)) {
 		printf('<td>%s</td>
 			<td>%s</td>
 			<td><a href="%s?SelectedUser=%s&amp;delete=yes&amp;SelectedBankAccount=' . $SelectedBankAccount . '" onclick="return confirm(\'' . _('Are you sure you wish to un-authorize this user?') . '\');">' . _('Un-authorize') . '</a></td>
-			</tr>', $myrow['userid'], $myrow['realname'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $myrow['userid'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $myrow['userid']);
+			</tr>', $MyRow['userid'], $MyRow['realname'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $MyRow['userid'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $MyRow['userid']);
 	}
 	//END WHILE LIST LOOP
 	echo '</table>';
@@ -192,13 +192,13 @@ if (isset($_POST['process']) OR isset($SelectedBankAccount)) {
 		if (!isset($_POST['SelectedUser'])) {
 			echo '<option selected="selected" value="">' . _('Not Yet Selected') . '</option>';
 		}
-		while ($myrow = DB_fetch_array($result)) {
-			if (isset($_POST['SelectedUser']) AND $myrow['userid'] == $_POST['SelectedUser']) {
+		while ($MyRow = DB_fetch_array($result)) {
+			if (isset($_POST['SelectedUser']) AND $MyRow['userid'] == $_POST['SelectedUser']) {
 				echo '<option selected="selected" value="';
 			} else {
 				echo '<option value="';
 			}
-			echo $myrow['userid'] . '">' . $myrow['userid'] . ' - ' . $myrow['realname'] . '</option>';
+			echo $MyRow['userid'] . '">' . $MyRow['userid'] . ' - ' . $MyRow['realname'] . '</option>';
 
 		} //end while loop
 

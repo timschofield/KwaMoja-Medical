@@ -154,7 +154,7 @@ if ($Edit == false) {
 		echo $TableHeader;
 		$CountPreferreds = 0;
 		$k = 0; //row colour counter
-		while ($myrow = DB_fetch_array($custitemResult)) {
+		while ($MyRow = DB_fetch_array($custitemResult)) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;
@@ -170,7 +170,7 @@ if ($Edit == false) {
 					<td>%s</td>
 					<td><a href="%s?StockID=%s&amp;DebtorNo=%s&amp;Edit=1">' . _('Edit') . '</a></td>
 					<td><a href="%s?StockID=%s&amp;DebtorNo=%s&amp;Delete=1" onclick=\'return confirm("' . _('Are you sure you wish to delete this customer data?') . '");\'>' . _('Delete') . '</a></td>
-					</tr>', $myrow['name'], $myrow['customersUOM'], locale_number_format($myrow['conversionfactor'], 'Variable'), $myrow['cust_part'], $myrow['cust_description'], htmlspecialchars($_SERVER['PHP_SELF']), $StockID, $myrow['debtorno'], htmlspecialchars($_SERVER['PHP_SELF']), $StockID, $myrow['debtorno']);
+					</tr>', $MyRow['name'], $MyRow['customersUOM'], locale_number_format($MyRow['conversionfactor'], 'Variable'), $MyRow['cust_part'], $MyRow['cust_description'], htmlspecialchars($_SERVER['PHP_SELF']), $StockID, $MyRow['debtorno'], htmlspecialchars($_SERVER['PHP_SELF']), $StockID, $MyRow['debtorno']);
 		} //end of while loop
 		echo '</table>';
 	} // end of there are rows to show
@@ -191,10 +191,10 @@ if (isset($DebtorNo) and $DebtorNo != '' and !isset($_POST['Searchcustomer'])) {
 	$DbgMsg = _('The SQL that failed was');
 	$SuppSelResult = DB_query($sql, $ErrMsg, $DbgMsg);
 	if (DB_num_rows($SuppSelResult) == 1) {
-		$myrow = DB_fetch_array($SuppSelResult);
-		$name = $myrow['name'];
-		$CurrCode = $myrow['currcode'];
-		$CurrDecimalPlaces = $myrow['currdecimalplaces'];
+		$MyRow = DB_fetch_array($SuppSelResult);
+		$name = $MyRow['name'];
+		$CurrCode = $MyRow['currcode'];
+		$CurrDecimalPlaces = $MyRow['currdecimalplaces'];
 	} else {
 		prnMsg(_('The customer code') . ' ' . $DebtorNo . ' ' . _('is not an existing customer in the database') . '. ' . _('You must enter an alternative customer code or select a customer using the search facility below'), 'error');
 		unset($DebtorNo);
@@ -274,8 +274,8 @@ if (isset($debtorsmasterResult) and DB_num_rows($debtorsmasterResult) > 0) {
 								stockmaster.mbflag
 						FROM stockmaster
 						WHERE stockmaster.stockid='" . $StockID . "'");
-		$myrow = DB_fetch_row($result);
-		$StockUOM = $myrow[1];
+		$MyRow = DB_fetch_row($result);
+		$StockUOM = $MyRow[1];
 		if (DB_num_rows($result) <> 1) {
 			prnMsg(_('Stock Item') . ' - ' . $StockID . ' ' . _('is not defined in the database'), 'warn');
 		}
@@ -296,7 +296,7 @@ if (isset($debtorsmasterResult) and DB_num_rows($debtorsmasterResult) > 0) {
 					</tr>';
 	echo $TableHeader;
 	$k = 0;
-	while ($myrow = DB_fetch_array($debtorsmasterResult)) {
+	while ($MyRow = DB_fetch_array($debtorsmasterResult)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -310,7 +310,7 @@ if (isset($debtorsmasterResult) and DB_num_rows($debtorsmasterResult) > 0) {
 				<td>%s</td>
 				<td>%s</td>
 				<td>%s</td>
-				</tr>', $myrow['DebtorNo'], $myrow['name'], $myrow['currcode'], $myrow['address1'], $myrow['address2'], $myrow['address3']);
+				</tr>', $MyRow['DebtorNo'], $MyRow['name'], $MyRow['currcode'], $MyRow['address1'], $MyRow['address2'], $MyRow['address3']);
 
 		echo '<input type="hidden" name="StockID" value="' . $StockID . '" />';
 		echo '<input type="hidden" name="StockUOM" value="' . $StockUOM . '" />';
@@ -346,16 +346,16 @@ if (!isset($debtorsmasterResult)) {
 
 		$ErrMsg = _('The customer purchasing details for the selected customer and item could not be retrieved because');
 		$EditResult = DB_query($sql, $ErrMsg);
-		$myrow = DB_fetch_array($EditResult);
-		$name = $myrow['name'];
+		$MyRow = DB_fetch_array($EditResult);
+		$name = $MyRow['name'];
 
-		$CurrCode = $myrow['currcode'];
-		$CurrDecimalPlaces = $myrow['currdecimalplaces'];
-		$_POST['customersUOM'] = $myrow['customersUOM'];
-		$_POST['cust_description'] = $myrow['cust_description'];
-		$_POST['ConversionFactor'] = locale_number_format($myrow['conversionfactor'], 'Variable');
-		$_POST['cust_part'] = $myrow['cust_part'];
-		$StockUOM = $myrow['units'];
+		$CurrCode = $MyRow['currcode'];
+		$CurrDecimalPlaces = $MyRow['currdecimalplaces'];
+		$_POST['customersUOM'] = $MyRow['customersUOM'];
+		$_POST['cust_description'] = $MyRow['cust_description'];
+		$_POST['ConversionFactor'] = locale_number_format($MyRow['conversionfactor'], 'Variable');
+		$_POST['cust_part'] = $MyRow['cust_part'];
+		$StockUOM = $MyRow['units'];
 	}
 	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF']) . '" method="post">
 		<table class="selection">';

@@ -16,13 +16,13 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				FROM debtorsmaster";
 
 	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($result);
 
 	if ($_POST['FromCriteria']=='') {
-		$_POST['FromCriteria'] = $myrow['fromcriteria'];
+		$_POST['FromCriteria'] = $MyRow['fromcriteria'];
 	}
 	if ($_POST['ToCriteria']=='') {
-		$_POST['Toriteria'] = $myrow['tocriteria'];
+		$_POST['Toriteria'] = $MyRow['tocriteria'];
 	}
 
 	/*Get the date of the last day in the period selected */
@@ -141,7 +141,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				FROM debtorsmaster";
 
 	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($result);
 
 	if (!isset($_POST['FromCriteria']) or !isset($_POST['ToCriteria'])) {
 
@@ -154,11 +154,11 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 		echo '<table class="selection" summary="' . _('Input criteria for report') . '">';
 		echo '<tr>
 				<td>' . _('From Customer Code') . ':</td>
-				<td><input tabindex="1" type="text" autofocus="autofocus" required="required" minlength="1" maxlength="10" size="7" name="FromCriteria" value="' . $myrow['fromcriteria'] . '" /></td>
+				<td><input tabindex="1" type="text" autofocus="autofocus" required="required" minlength="1" maxlength="10" size="7" name="FromCriteria" value="' . $MyRow['fromcriteria'] . '" /></td>
 			</tr>
 			<tr>
 				<td>' . _('To Customer Code') . ':</td>
-				<td><input tabindex="2" type="text" required="required" minlength="1" maxlength="10" size="7" name="ToCriteria" value="' . $myrow['tocriteria'] . '" /></td>
+				<td><input tabindex="2" type="text" required="required" minlength="1" maxlength="10" size="7" name="ToCriteria" value="' . $MyRow['tocriteria'] . '" /></td>
 			</tr>
 			<tr>
 				<td>' . _('Balances As At') . ':</td>
@@ -167,9 +167,9 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 		$sql = "SELECT periodno, lastdate_in_period FROM periods ORDER BY periodno DESC";
 		$Periods = DB_query($sql, _('Could not retrieve period data because'), _('The SQL that failed to get the period data was'));
 
-		while ($myrow = DB_fetch_array($Periods)) {
+		while ($MyRow = DB_fetch_array($Periods)) {
 
-			echo '<option value="' . $myrow['periodno'] . '">' . MonthAndYearFromSQLDate($myrow['lastdate_in_period']) . '</option>';
+			echo '<option value="' . $MyRow['periodno'] . '">' . MonthAndYearFromSQLDate($MyRow['lastdate_in_period']) . '</option>';
 
 		}
 	}

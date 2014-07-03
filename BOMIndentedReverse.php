@@ -129,8 +129,8 @@ if (isset($_POST['PrintPDF'])) {
 		$result = DB_query($sql);
 		$result = DB_query("SELECT COUNT(*) FROM bom,passbom WHERE bom.component = passbom.part");
 
-		$myrow = DB_fetch_row($result);
-		$ComponentCounter = $myrow[0];
+		$MyRow = DB_fetch_row($result);
+		$ComponentCounter = $MyRow[0];
 
 	} // End of while $ComponentCounter > 0
 
@@ -153,9 +153,9 @@ if (isset($_POST['PrintPDF'])) {
 			  FROM stockmaster
 			  WHERE stockid = '" . $_POST['Part'] . "'";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($result);
 	$Assembly = $_POST['Part'];
-	$AssemblyDesc = $myrow['description'];
+	$AssemblyDesc = $MyRow['description'];
 
 	PrintHeader($pdf, $YPos, $PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin, $AssemblyDesc);
 
@@ -172,13 +172,13 @@ if (isset($_POST['PrintPDF'])) {
 
 	$ListCount = DB_num_rows($result);
 
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 
 		$YPos -= $line_height;
 		$FontSize = 8;
 
-		$FormatedEffectiveAfter = ConvertSQLDate($myrow['effectiveafter']);
-		$FormatedEffectiveTo = ConvertSQLDate($myrow['effectiveto']);
+		$FormatedEffectiveAfter = ConvertSQLDate($MyRow['effectiveafter']);
+		$FormatedEffectiveTo = ConvertSQLDate($MyRow['effectiveto']);
 
 		// Use to alternate between lines with transparent and painted background
 		if ($_POST['Fill'] == 'yes') {
@@ -189,12 +189,12 @@ if (isset($_POST['PrintPDF'])) {
 		// 1) X position 2) Y position 3) Width
 		// 4) Height 5) Text 6) Alignment 7) Border 8) Fill - True to use SetFillColor
 		// and False to set to transparent
-		$pdf->addTextWrap($Left_Margin + ($myrow['level'] * 5), $YPos, 90, $FontSize, $myrow['parent'], '', 0, $fill);
-		$pdf->addTextWrap(160, $YPos, 20, $FontSize, $myrow['mbflag'], '', 0, $fill);
-		$pdf->addTextWrap(180, $YPos, 180, $FontSize, $myrow['description'], '', 0, $fill);
-		$pdf->addTextWrap(360, $YPos, 30, $FontSize, $myrow['loccode'], 'right', 0, $fill);
-		$pdf->addTextWrap(390, $YPos, 25, $FontSize, $myrow['workcentreadded'], 'right', 0, $fill);
-		$pdf->addTextWrap(415, $YPos, 45, $FontSize, locale_number_format($myrow['quantity'], 'Variable'), 'right', 0, $fill);
+		$pdf->addTextWrap($Left_Margin + ($MyRow['level'] * 5), $YPos, 90, $FontSize, $MyRow['parent'], '', 0, $fill);
+		$pdf->addTextWrap(160, $YPos, 20, $FontSize, $MyRow['mbflag'], '', 0, $fill);
+		$pdf->addTextWrap(180, $YPos, 180, $FontSize, $MyRow['description'], '', 0, $fill);
+		$pdf->addTextWrap(360, $YPos, 30, $FontSize, $MyRow['loccode'], 'right', 0, $fill);
+		$pdf->addTextWrap(390, $YPos, 25, $FontSize, $MyRow['workcentreadded'], 'right', 0, $fill);
+		$pdf->addTextWrap(415, $YPos, 45, $FontSize, locale_number_format($MyRow['quantity'], 'Variable'), 'right', 0, $fill);
 		$pdf->addTextWrap(460, $YPos, 55, $FontSize, $FormatedEffectiveAfter, 'right', 0, $fill);
 		$pdf->addTextWrap(515, $YPos, 50, $FontSize, $FormatedEffectiveTo, 'right', 0, $fill);
 

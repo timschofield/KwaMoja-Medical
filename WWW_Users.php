@@ -302,7 +302,7 @@ if (!isset($SelectedUser)) {
 
 	$k = 0; //row colour counter
 
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -311,15 +311,15 @@ if (!isset($SelectedUser)) {
 			$k = 1;
 		}
 
-		if ($myrow[8] == '') {
+		if ($MyRow[8] == '') {
 			$LastVisitDate = Date($_SESSION['DefaultDateFormat']);
 		} else {
-			$LastVisitDate = ConvertSQLDate($myrow[8]);
+			$LastVisitDate = ConvertSQLDate($MyRow[8]);
 		}
 
 		/*The SecurityHeadings array is defined in config.php */
 
-		switch ($myrow['fontsize']) {
+		switch ($MyRow['fontsize']) {
 
 			case 0:
 				$FontSize = _('Small');
@@ -350,7 +350,7 @@ if (!isset($SelectedUser)) {
 				<td>%s</td>
 				<td><a href="%s&amp;SelectedUser=%s">' . _('Edit') . '</a></td>
 				<td><a href="%s&amp;SelectedUser=%s&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this user?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-			</tr>', $myrow['userid'], $myrow['realname'], $myrow['phone'], $myrow['email'], $myrow['customerid'], $myrow['branchcode'], $myrow['supplierid'], $myrow['salesman'], $LastVisitDate, $SecurityRoles[($myrow['fullaccess'])], $myrow['pagesize'], $myrow['theme'], $LanguagesArray[$myrow['language']]['LanguageName'], $FontSize, htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['userid'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['userid']);
+			</tr>', $MyRow['userid'], $MyRow['realname'], $MyRow['phone'], $MyRow['email'], $MyRow['customerid'], $MyRow['branchcode'], $MyRow['supplierid'], $MyRow['salesman'], $LastVisitDate, $SecurityRoles[($MyRow['fullaccess'])], $MyRow['pagesize'], $MyRow['theme'], $LanguagesArray[$MyRow['language']]['LanguageName'], $FontSize, htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['userid'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['userid']);
 
 	} //END WHILE LIST LOOP
 	echo '</table><br />';
@@ -393,28 +393,28 @@ if (isset($SelectedUser)) {
 		WHERE userid='" . $SelectedUser . "'";
 
 	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($result);
 
-	$_POST['UserID'] = $myrow['userid'];
-	$_POST['RealName'] = $myrow['realname'];
-	$_POST['Phone'] = $myrow['phone'];
-	$_POST['Email'] = $myrow['email'];
-	$_POST['Cust'] = $myrow['customerid'];
-	$_POST['BranchCode'] = $myrow['branchcode'];
-	$_POST['SupplierID'] = $myrow['supplierid'];
-	$_POST['Salesman'] = $myrow['salesman'];
-	$_POST['PageSize'] = $myrow['pagesize'];
-	$_POST['Access'] = $myrow['fullaccess'];
-	$_POST['CanCreateTender'] = $myrow['cancreatetender'];
-	$_POST['DefaultLocation'] = $myrow['defaultlocation'];
-	$_POST['RestrictLocations'] = $myrow['restrictlocations'];
-	$_POST['ModulesAllowed'] = $myrow['modulesallowed'];
-	$_POST['Theme'] = $myrow['theme'];
-	$_POST['UserLanguage'] = $myrow['language'];
-	$_POST['Blocked'] = $myrow['blocked'];
-	$_POST['PDFLanguage'] = $myrow['pdflanguage'];
-	$_POST['Department'] = $myrow['department'];
-	$_POST['FontSize'] = $myrow['fontsize'];
+	$_POST['UserID'] = $MyRow['userid'];
+	$_POST['RealName'] = $MyRow['realname'];
+	$_POST['Phone'] = $MyRow['phone'];
+	$_POST['Email'] = $MyRow['email'];
+	$_POST['Cust'] = $MyRow['customerid'];
+	$_POST['BranchCode'] = $MyRow['branchcode'];
+	$_POST['SupplierID'] = $MyRow['supplierid'];
+	$_POST['Salesman'] = $MyRow['salesman'];
+	$_POST['PageSize'] = $MyRow['pagesize'];
+	$_POST['Access'] = $MyRow['fullaccess'];
+	$_POST['CanCreateTender'] = $MyRow['cancreatetender'];
+	$_POST['DefaultLocation'] = $MyRow['defaultlocation'];
+	$_POST['RestrictLocations'] = $MyRow['restrictlocations'];
+	$_POST['ModulesAllowed'] = $MyRow['modulesallowed'];
+	$_POST['Theme'] = $MyRow['theme'];
+	$_POST['UserLanguage'] = $MyRow['language'];
+	$_POST['Blocked'] = $MyRow['blocked'];
+	$_POST['PDFLanguage'] = $MyRow['pdflanguage'];
+	$_POST['Department'] = $MyRow['department'];
+	$_POST['FontSize'] = $MyRow['fontsize'];
 
 	echo '<input type="hidden" name="SelectedUser" value="' . $SelectedUser . '" />';
 	echo '<input type="hidden" name="UserID" value="' . $_POST['UserID'] . '" />';
@@ -512,11 +512,11 @@ echo '<tr>
 $sql = "SELECT loccode, locationname FROM locations";
 $result = DB_query($sql);
 
-while ($myrow = DB_fetch_array($result)) {
-	if (isset($_POST['DefaultLocation']) and $myrow['loccode'] == $_POST['DefaultLocation']) {
-		echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+while ($MyRow = DB_fetch_array($result)) {
+	if (isset($_POST['DefaultLocation']) and $MyRow['loccode'] == $_POST['DefaultLocation']) {
+		echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 	} else {
-		echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+		echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 	}
 }
 
@@ -571,12 +571,12 @@ if ((isset($_POST['Salesman']) and $_POST['Salesman'] == '') or !isset($_POST['S
 } else {
 	echo '<option value="">' . _('Not a salesperson only login') . '</option>';
 }
-while ($myrow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($result)) {
 
-	if (isset($_POST['Salesman']) and $myrow['salesmancode'] == $_POST['Salesman']) {
-		echo '<option selected="selected" value="' . $myrow['salesmancode'] . '">' . $myrow['salesmanname'] . '</option>';
+	if (isset($_POST['Salesman']) and $MyRow['salesmancode'] == $_POST['Salesman']) {
+		echo '<option selected="selected" value="' . $MyRow['salesmancode'] . '">' . $MyRow['salesmanname'] . '</option>';
 	} else {
-		echo '<option value="' . $myrow['salesmancode'] . '">' . $myrow['salesmanname'] . '</option>';
+		echo '<option value="' . $MyRow['salesmancode'] . '">' . $MyRow['salesmanname'] . '</option>';
 	}
 
 }
@@ -724,11 +724,11 @@ if ((isset($_POST['Department']) and $_POST['Department'] == '0') or !isset($_PO
 } else {
 	echo '<option value="">' . _('Any Internal Department') . '</option>';
 }
-while ($myrow = DB_fetch_array($result)) {
-	if (isset($_POST['Department']) and $myrow['departmentid'] == $_POST['Department']) {
-		echo '<option selected="selected" value="' . $myrow['departmentid'] . '">' . $myrow['description'] . '</option>';
+while ($MyRow = DB_fetch_array($result)) {
+	if (isset($_POST['Department']) and $MyRow['departmentid'] == $_POST['Department']) {
+		echo '<option selected="selected" value="' . $MyRow['departmentid'] . '">' . $MyRow['description'] . '</option>';
 	} else {
-		echo '<option value="' . $myrow['departmentid'] . '">' . $myrow['description'] . '</option>';
+		echo '<option value="' . $MyRow['departmentid'] . '">' . $MyRow['description'] . '</option>';
 	}
 }
 echo '</select></td>

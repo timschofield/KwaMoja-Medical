@@ -44,8 +44,8 @@ if ($JournalNo == 'Preview') {
 				AND gltrans.typeno='" . $JournalNo . "'";
 	$result = DB_query($sql);
 	$LineCount = DB_num_rows($result); // UldisN
-	$myrow = DB_fetch_array($result);
-	$JournalDate = $myrow['trandate'];
+	$MyRow = DB_fetch_array($result);
+	$JournalDate = $MyRow['trandate'];
 	DB_data_seek($result, 0);
 	include('includes/PDFGLJournalHeader.inc');
 }
@@ -61,17 +61,17 @@ while ($counter <= $LineCount) {
 		$Tag = str_pad('', 25, 'x');
 		$JobRef = str_pad('', 25, 'x');
 	} else {
-		$myrow = DB_fetch_array($result);
-		if ($myrow['tag'] == 0) {
-			$myrow['tagdescription'] = 'None';
+		$MyRow = DB_fetch_array($result);
+		if ($MyRow['tag'] == 0) {
+			$MyRow['tagdescription'] = 'None';
 		}
-		$AccountCode = $myrow['account'];
-		$Description = $myrow['accountname'];
-		$Date = $myrow['trandate'];
-		$Narrative = $myrow['narrative'];
-		$Amount = $myrow['amount'];
-		$Tag = $myrow['tag'] . ' - ' . $myrow['tagdescription'];
-		$JobRef = $myrow['jobref'];
+		$AccountCode = $MyRow['account'];
+		$Description = $MyRow['accountname'];
+		$Date = $MyRow['trandate'];
+		$Narrative = $MyRow['narrative'];
+		$Amount = $MyRow['amount'];
+		$Tag = $MyRow['tag'] . ' - ' . $MyRow['tagdescription'];
+		$JobRef = $MyRow['jobref'];
 	}
 	$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column1->x, $Page_Height - $YPos, $FormDesign->Data->Column1->Length, $FormDesign->Data->Column1->FontSize, $AccountCode);
 	$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column2->x, $Page_Height - $YPos, $FormDesign->Data->Column2->Length, $FormDesign->Data->Column2->FontSize, $Description);

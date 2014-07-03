@@ -228,11 +228,11 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 			exit;
 		}
 		if (DB_num_rows($result) == 1) {
-			$myrow = DB_fetch_array($result);
-			$ExchRate = $myrow['rate'];
+			$MyRow = DB_fetch_array($result);
+			$ExchRate = $MyRow['rate'];
 
 			//Change the language to the customer's language
-			$_SESSION['Language'] = $myrow['language_id'];
+			$_SESSION['Language'] = $MyRow['language_id'];
 			include('includes/LanguageSetup.php');
 
 			if ($InvOrCredit == 'Invoice') {
@@ -287,40 +287,40 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 
 				include('includes/PDFTransPageHeader.inc');
 				$FirstPage = False;
-				while ($myrow2 = DB_fetch_array($result)) {
+				while ($MyRow2 = DB_fetch_array($result)) {
 
-					if ($myrow2['discountpercent'] == 0) {
+					if ($MyRow2['discountpercent'] == 0) {
 						$DisplayDiscount = '';
 					} else {
-						$DisplayDiscount = locale_number_format($myrow2['discountpercent'] * 100, 2) . '%';
-						$DiscountPrice = $myrow2['fxprice'] * (1 - $myrow2['discountpercent']);
+						$DisplayDiscount = locale_number_format($MyRow2['discountpercent'] * 100, 2) . '%';
+						$DiscountPrice = $MyRow2['fxprice'] * (1 - $MyRow2['discountpercent']);
 					}
-					$DisplayNet = locale_number_format($myrow2['fxnet'], $myrow['decimalplaces']);
-					$DisplayPrice = locale_number_format($myrow2['fxprice'], $myrow['decimalplaces']);
-					$DisplayQty = locale_number_format($myrow2['quantity'], $myrow2['decimalplaces']);
+					$DisplayNet = locale_number_format($MyRow2['fxnet'], $MyRow['decimalplaces']);
+					$DisplayPrice = locale_number_format($MyRow2['fxprice'], $MyRow['decimalplaces']);
+					$DisplayQty = locale_number_format($MyRow2['quantity'], $MyRow2['decimalplaces']);
 
-					$LeftOvers = $pdf->addTextWrap($Left_Margin + 3, $YPos, 95, $FontSize, $myrow2['stockid']);
+					$LeftOvers = $pdf->addTextWrap($Left_Margin + 3, $YPos, 95, $FontSize, $MyRow2['stockid']);
 					//Get translation if it exists
 					$TranslationResult = DB_query("SELECT descriptiontranslation
 													FROM stockdescriptiontranslations
-													WHERE stockid='" . $myrow2['stockid'] . "'
-													AND language_id='" . $myrow['language_id'] . "'");
+													WHERE stockid='" . $MyRow2['stockid'] . "'
+													AND language_id='" . $MyRow['language_id'] . "'");
 
 					if (DB_num_rows($TranslationResult) == 1) { //there is a translation
 						$TranslationRow = DB_fetch_array($TranslationResult);
 						$LeftOvers = $pdf->addTextWrap($Left_Margin + 100, $YPos, 251, $FontSize, $TranslationRow['descriptiontranslation']);
 					} else {
-						$LeftOvers = $pdf->addTextWrap($Left_Margin + 100, $YPos, 251, $FontSize, $myrow2['description']);
+						$LeftOvers = $pdf->addTextWrap($Left_Margin + 100, $YPos, 251, $FontSize, $MyRow2['description']);
 					}
 					$LeftOvers = $pdf->addTextWrap($Left_Margin + 353, $YPos, 96, $FontSize, $DisplayPrice, 'right');
 					$LeftOvers = $pdf->addTextWrap($Left_Margin + 453, $YPos, 95, $FontSize, $DisplayQty, 'right');
-					$LeftOvers = $pdf->addTextWrap($Left_Margin + 553, $YPos, 35, $FontSize, $myrow2['units'], 'centre');
+					$LeftOvers = $pdf->addTextWrap($Left_Margin + 553, $YPos, 35, $FontSize, $MyRow2['units'], 'centre');
 					$LeftOvers = $pdf->addTextWrap($Left_Margin + 590, $YPos, 50, $FontSize, $DisplayDiscount, 'right');
 					$LeftOvers = $pdf->addTextWrap($Left_Margin + 642, $YPos, 120, $FontSize, $DisplayNet, 'right');
 
 					$YPos -= ($line_height);
 
-					$lines = explode('\r\n', htmlspecialchars_decode($myrow2['narrative']));
+					$lines = explode('\r\n', htmlspecialchars_decode($MyRow2['narrative']));
 					for ($i = 0; $i < sizeOf($lines); $i++) {
 						while (mb_strlen($lines[$i]) > 1) {
 							if ($YPos - $line_height <= $Bottom_Margin) {
@@ -381,28 +381,28 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 
 			if ($InvOrCredit == 'Invoice') {
 
-				$DisplaySubTot = locale_number_format($myrow['ovamount'], $myrow['decimalplaces']);
-				$DisplayFreight = locale_number_format($myrow['ovfreight'], $myrow['decimalplaces']);
-				$DisplayTax = locale_number_format($myrow['ovgst'], $myrow['decimalplaces']);
-				$DisplayTotal = locale_number_format($myrow['ovfreight'] + $myrow['ovgst'] + $myrow['ovamount'], $myrow['decimalplaces']);
+				$DisplaySubTot = locale_number_format($MyRow['ovamount'], $MyRow['decimalplaces']);
+				$DisplayFreight = locale_number_format($MyRow['ovfreight'], $MyRow['decimalplaces']);
+				$DisplayTax = locale_number_format($MyRow['ovgst'], $MyRow['decimalplaces']);
+				$DisplayTotal = locale_number_format($MyRow['ovfreight'] + $MyRow['ovgst'] + $MyRow['ovamount'], $MyRow['decimalplaces']);
 
 			} else {
 
-				$DisplaySubTot = locale_number_format(-$myrow['ovamount'], $myrow['decimalplaces']);
-				$DisplayFreight = locale_number_format(-$myrow['ovfreight'], $myrow['decimalplaces']);
-				$DisplayTax = locale_number_format(-$myrow['ovgst'], $myrow['decimalplaces']);
-				$DisplayTotal = locale_number_format(-$myrow['ovfreight'] - $myrow['ovgst'] - $myrow['ovamount'], $myrow['decimalplaces']);
+				$DisplaySubTot = locale_number_format(-$MyRow['ovamount'], $MyRow['decimalplaces']);
+				$DisplayFreight = locale_number_format(-$MyRow['ovfreight'], $MyRow['decimalplaces']);
+				$DisplayTax = locale_number_format(-$MyRow['ovgst'], $MyRow['decimalplaces']);
+				$DisplayTotal = locale_number_format(-$MyRow['ovfreight'] - $MyRow['ovgst'] - $MyRow['ovamount'], $MyRow['decimalplaces']);
 			}
 			/* Print out the invoice text entered */
 			$YPos = $Bottom_Margin + (3 * $line_height);
 
 			/* Print out the payment terms */
-			$pdf->addTextWrap($Left_Margin + 5, $YPos + 3, 280, $FontSize, _('Payment Terms') . ': ' . $myrow['terms']);
+			$pdf->addTextWrap($Left_Margin + 5, $YPos + 3, 280, $FontSize, _('Payment Terms') . ': ' . $MyRow['terms']);
 			//      $pdf->addText($Page_Width-$Right_Margin-392, $YPos - ($line_height*3)+22,$FontSize, _('Bank Code:***** Bank Account:*****'));
 			//	$FontSize=10;
 
 			$FontSize = 8;
-			$LeftOvers = $pdf->addTextWrap($Left_Margin + 5, $YPos - 12, 280, $FontSize, $myrow['invtext']);
+			$LeftOvers = $pdf->addTextWrap($Left_Margin + 5, $YPos - 12, 280, $FontSize, $MyRow['invtext']);
 			if (mb_strlen($LeftOvers) > 0) {
 				$LeftOvers = $pdf->addTextWrap($Left_Margin + 5, $YPos - 24, 280, $FontSize, $LeftOvers);
 				if (mb_strlen($LeftOvers) > 0) {
@@ -445,7 +445,7 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 												bankaccountcode
 										FROM bankaccounts
 										WHERE invoice=2
-										AND currcode='" . $myrow['currcode'] . "'");
+										AND currcode='" . $MyRow['currcode'] . "'");
 				if (DB_num_rows($BankResult) == 0) {
 					/* If no currency default check the fall back default */
 					$BankResult = DB_query("SELECT bankaddress,
@@ -587,13 +587,13 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 		}
 		$result = DB_query($sql);
 
-		while ($myrow = DB_fetch_array($result)) {
-			if (isset($_POST['LocCode']) and $myrow['loccode'] == $_POST['LocCode']) {
+		while ($MyRow = DB_fetch_array($result)) {
+			if (isset($_POST['LocCode']) and $MyRow['loccode'] == $_POST['LocCode']) {
 				echo '<option selected="selected" value="';
 			} else {
 				echo '<option value="';
 			}
-			echo $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+			echo $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 
 		} //end while loop
 
@@ -611,16 +611,16 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 		$sql = "SELECT typeno FROM systypes WHERE typeid=10";
 
 		$result = DB_query($sql);
-		$myrow = DB_fetch_row($result);
+		$MyRow = DB_fetch_row($result);
 
-		echo '<div class="page_help_text noPrint"><b>' . _('The last invoice created was number') . ' ' . $myrow[0] . '</b><br />' . _('If only a single invoice is required') . ', ' . _('enter the invoice number to print in the Start transaction number to print field and leave the End transaction number to print field blank') . '. ' . _('Only use the end invoice to print field if you wish to print a sequential range of invoices') . '';
+		echo '<div class="page_help_text noPrint"><b>' . _('The last invoice created was number') . ' ' . $MyRow[0] . '</b><br />' . _('If only a single invoice is required') . ', ' . _('enter the invoice number to print in the Start transaction number to print field and leave the End transaction number to print field blank') . '. ' . _('Only use the end invoice to print field if you wish to print a sequential range of invoices') . '';
 
 		$sql = "SELECT typeno FROM systypes WHERE typeid=11";
 
 		$result = DB_query($sql);
-		$myrow = DB_fetch_row($result);
+		$MyRow = DB_fetch_row($result);
 
-		echo '<br /><b>' . _('The last credit note created was number') . ' ' . $myrow[0] . '</b>
+		echo '<br /><b>' . _('The last credit note created was number') . ' ' . $MyRow[0] . '</b>
 			  <br />' . _('A sequential range can be printed using the same method as for invoices above') . '. ' . _('A single credit note can be printed by only entering a start transaction number') . '</div>';
 		echo '</div>
 			  </form>';
@@ -744,15 +744,15 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 				exit;
 			} elseif (DB_num_rows($result) == 1) {
 
-				$myrow = DB_fetch_array($result);
+				$MyRow = DB_fetch_array($result);
 				/* Then there's an invoice (or credit note) to print. So print out the invoice header and GST Number from the company record */
-				if (count($_SESSION['AllowedPageSecurityTokens']) == 1 and in_array(1, $_SESSION['AllowedPageSecurityTokens']) and $myrow['debtorno'] != $_SESSION['CustomerID']) {
+				if (count($_SESSION['AllowedPageSecurityTokens']) == 1 and in_array(1, $_SESSION['AllowedPageSecurityTokens']) and $MyRow['debtorno'] != $_SESSION['CustomerID']) {
 
 					echo '<p class="bad">' . _('This transaction is addressed to another customer and cannot be displayed for privacy reasons') . '. ' . _('Please select only transactions relevant to your company');
 					exit;
 				}
 
-				$ExchRate = $myrow['rate'];
+				$ExchRate = $MyRow['rate'];
 				$PageNumber = 1;
 
 				echo '<table class="table1">
@@ -791,7 +791,7 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 						</tr>
 						<tr>
 							<td style="background-color:#EEEEEE">';
-				echo $myrow['name'] . '<br />' . $myrow['address1'] . '<br />' . $myrow['address2'] . '<br />' . $myrow['address3'] . '<br />' . $myrow['address4'] . '<br />' . $myrow['address5'] . '<br />' . $myrow['address6'];
+				echo $MyRow['name'] . '<br />' . $MyRow['address1'] . '<br />' . $MyRow['address2'] . '<br />' . $MyRow['address3'] . '<br />' . $MyRow['address4'] . '<br />' . $MyRow['address5'] . '<br />' . $MyRow['address6'];
 				echo '</td>
 					</tr>
 					</table>';
@@ -810,9 +810,9 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 								<td align="left" style="background-color:#BBBBBB"><b>' . _('Delivered To') . ':</b></td>
 							</tr>';
 					echo '<tr>
-				   		<td style="background-color:#EEEEEE">' . $myrow['brname'] . '<br />' . $myrow['braddress1'] . '<br />' . $myrow['braddress2'] . '<br />' . $myrow['braddress3'] . '<br />' . $myrow['braddress4'] . '<br />' . $myrow['braddress5'] . '<br />' . $myrow['braddress6'] . '</td>';
+				   		<td style="background-color:#EEEEEE">' . $MyRow['brname'] . '<br />' . $MyRow['braddress1'] . '<br />' . $MyRow['braddress2'] . '<br />' . $MyRow['braddress3'] . '<br />' . $MyRow['braddress4'] . '<br />' . $MyRow['braddress5'] . '<br />' . $MyRow['braddress6'] . '</td>';
 
-					echo '<td style="background-color:#EEEEEE">' . $myrow['deliverto'] . '<br />' . $myrow['deladd1'] . '<br />' . $myrow['deladd2'] . '<br />' . $myrow['deladd3'] . '<br />' . $myrow['deladd4'] . '<br />' . $myrow['deladd5'] . '<br />' . $myrow['deladd6'] . '</td>
+					echo '<td style="background-color:#EEEEEE">' . $MyRow['deliverto'] . '<br />' . $MyRow['deladd1'] . '<br />' . $MyRow['deladd2'] . '<br />' . $MyRow['deladd3'] . '<br />' . $MyRow['deladd4'] . '<br />' . $MyRow['deladd5'] . '<br />' . $MyRow['deladd6'] . '</td>
 							</tr>
 						</table>
 						<hr />';
@@ -828,13 +828,13 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 							<td align="left" style="background-color:#BBBBBB"><b>' . _('Consignment Ref') . '</b></td>
 						</tr>';
 					echo '<tr>
-							<td style="background-color:#EEEEEE">' . $myrow['customerref'] . '</td>
-							<td style="background-color:#EEEEEE">' . $myrow['orderno'] . '</td>
-							<td style="background-color:#EEEEEE">' . ConvertSQLDate($myrow['orddate']) . '</td>
-							<td style="background-color:#EEEEEE">' . ConvertSQLDate($myrow['trandate']) . '</td>
-							<td style="background-color:#EEEEEE">' . $myrow['salesmanname'] . '</td>
-							<td style="background-color:#EEEEEE">' . $myrow['shippername'] . '</td>
-							<td style="background-color:#EEEEEE">' . $myrow['consignment'] . '</td>
+							<td style="background-color:#EEEEEE">' . $MyRow['customerref'] . '</td>
+							<td style="background-color:#EEEEEE">' . $MyRow['orderno'] . '</td>
+							<td style="background-color:#EEEEEE">' . ConvertSQLDate($MyRow['orddate']) . '</td>
+							<td style="background-color:#EEEEEE">' . ConvertSQLDate($MyRow['trandate']) . '</td>
+							<td style="background-color:#EEEEEE">' . $MyRow['salesmanname'] . '</td>
+							<td style="background-color:#EEEEEE">' . $MyRow['shippername'] . '</td>
+							<td style="background-color:#EEEEEE">' . $MyRow['consignment'] . '</td>
 						</tr>
 					</table>';
 
@@ -861,15 +861,15 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 				   		<td align="left" style="background-color:#BBBBBB"><b>' . _('Branch') . ':</b></td>
 						</tr>';
 					echo '<tr>
-				   		<td style="background-color:#EEEEEE">' . $myrow['brname'] . '<br />' . $myrow['braddress1'] . '<br />' . $myrow['braddress2'] . '<br />' . $myrow['braddress3'] . '<br />' . $myrow['braddress4'] . '<br />' . $myrow['braddress5'] . '<br />' . $myrow['braddress6'] . '</td>
+				   		<td style="background-color:#EEEEEE">' . $MyRow['brname'] . '<br />' . $MyRow['braddress1'] . '<br />' . $MyRow['braddress2'] . '<br />' . $MyRow['braddress3'] . '<br />' . $MyRow['braddress4'] . '<br />' . $MyRow['braddress5'] . '<br />' . $MyRow['braddress6'] . '</td>
 					</tr></table>';
 					echo '<hr /><table class="table1"><tr>
 				   		<td align="left" style="background-color:#BBBBBB"><b>' . _('Date') . '</b></td>
 						<td align="left" style="background-color:#BBBBBB"><b>' . _('Sales Person') . '</b></td>
 					</tr>';
 					echo '<tr>
-				   		<td style="background-color:#EEEEEE">' . ConvertSQLDate($myrow['trandate']) . '</td>
-						<td style="background-color:#EEEEEE">' . $myrow['salesmanname'] . '</td>
+				   		<td style="background-color:#EEEEEE">' . ConvertSQLDate($MyRow['trandate']) . '</td>
+						<td style="background-color:#EEEEEE">' . $MyRow['salesmanname'] . '</td>
 					</tr></table>';
 
 					$sql = "SELECT stockmoves.stockid,
@@ -889,7 +889,7 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 				}
 
 				echo '<hr />';
-				echo '<div class="centre"><h4>' . _('All amounts stated in') . ' ' . $myrow['currcode'] . '</h4></div>';
+				echo '<div class="centre"><h4>' . _('All amounts stated in') . ' ' . $MyRow['currcode'] . '</h4></div>';
 
 				$result = DB_query($sql);
 				if (DB_error_no() != 0) {
@@ -915,7 +915,7 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 					$LineCounter = 17;
 					$k = 0; //row colour counter
 
-					while ($myrow2 = DB_fetch_array($result)) {
+					while ($MyRow2 = DB_fetch_array($result)) {
 
 						if ($k == 1) {
 							$RowStarter = '<tr class="EvenTableRows">';
@@ -927,14 +927,14 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 
 						echo $RowStarter;
 
-						$DisplayPrice = locale_number_format($myrow2['fxprice'], $myrow['decimalplaces']);
-						$DisplayQty = locale_number_format($myrow2['quantity'], $myrow2['decimalplaces']);
-						$DisplayNet = locale_number_format($myrow2['fxnet'], $myrow['decimalplaces']);
+						$DisplayPrice = locale_number_format($MyRow2['fxprice'], $MyRow['decimalplaces']);
+						$DisplayQty = locale_number_format($MyRow2['quantity'], $MyRow2['decimalplaces']);
+						$DisplayNet = locale_number_format($MyRow2['fxnet'], $MyRow['decimalplaces']);
 
-						if ($myrow2['discountpercent'] == 0) {
+						if ($MyRow2['discountpercent'] == 0) {
 							$DisplayDiscount = '';
 						} else {
-							$DisplayDiscount = locale_number_format($myrow2['discountpercent'] * 100, 2) . '%';
+							$DisplayDiscount = locale_number_format($MyRow2['discountpercent'] * 100, 2) . '%';
 						}
 
 						printf('<td>%s</td>
@@ -944,10 +944,10 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 									<td class="number">%s</td>
 									<td class="number">%s</td>
 									<td class="number">%s</td>
-									</tr>', $myrow2['stockid'], $myrow2['description'], $DisplayQty, $myrow2['units'], $DisplayPrice, $DisplayDiscount, $DisplayNet);
+									</tr>', $MyRow2['stockid'], $MyRow2['description'], $DisplayQty, $MyRow2['units'], $DisplayPrice, $DisplayDiscount, $DisplayNet);
 
-						if (mb_strlen($myrow2['narrative']) > 1) {
-							echo $RowStarter . '<td></td><td colspan="6">' . $myrow2['narrative'] . '</td></tr>';
+						if (mb_strlen($MyRow2['narrative']) > 1) {
+							echo $RowStarter . '<td></td><td colspan="6">' . $MyRow2['narrative'] . '</td></tr>';
 							$LineCounter++;
 						}
 
@@ -1003,7 +1003,7 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 				/*end if there are stock movements to show on the invoice or credit note*/
 
 				/* check to see enough space left to print the totals/footer */
-				$LinesRequiredForText = floor(mb_strlen($myrow['invtext']) / 140);
+				$LinesRequiredForText = floor(mb_strlen($MyRow['invtext']) / 140);
 
 				if ($LineCounter >= ($_SESSION['PageLength'] - 8 - $LinesRequiredForText)) {
 
@@ -1049,7 +1049,7 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 
 				/* Space out the footer to the bottom of the page */
 
-				echo '<br /><br />' . $myrow['invtext'];
+				echo '<br /><br />' . $MyRow['invtext'];
 
 				$LineCounter = $LineCounter + 2 + $LinesRequiredForText;
 				while ($LineCounter < ($_SESSION['PageLength'] - 6)) {
@@ -1061,15 +1061,15 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 
 				if ($InvOrCredit == 'Invoice') {
 
-					$DisplaySubTot = locale_number_format($myrow['ovamount'], $myrow['decimalplaces']);
-					$DisplayFreight = locale_number_format($myrow['ovfreight'], $myrow['decimalplaces']);
-					$DisplayTax = locale_number_format($myrow['ovgst'], $myrow['decimalplaces']);
-					$DisplayTotal = locale_number_format($myrow['ovfreight'] + $myrow['ovgst'] + $myrow['ovamount'], $myrow['decimalplaces']);
+					$DisplaySubTot = locale_number_format($MyRow['ovamount'], $MyRow['decimalplaces']);
+					$DisplayFreight = locale_number_format($MyRow['ovfreight'], $MyRow['decimalplaces']);
+					$DisplayTax = locale_number_format($MyRow['ovgst'], $MyRow['decimalplaces']);
+					$DisplayTotal = locale_number_format($MyRow['ovfreight'] + $MyRow['ovgst'] + $MyRow['ovamount'], $MyRow['decimalplaces']);
 				} else {
-					$DisplaySubTot = locale_number_format(-$myrow['ovamount'], $myrow['decimalplaces']);
-					$DisplayFreight = locale_number_format(-$myrow['ovfreight'], $myrow['decimalplaces']);
-					$DisplayTax = locale_number_format(-$myrow['ovgst'], $myrow['decimalplaces']);
-					$DisplayTotal = locale_number_format(-$myrow['ovfreight'] - $myrow['ovgst'] - $myrow['ovamount'], $myrow['decimalplaces']);
+					$DisplaySubTot = locale_number_format(-$MyRow['ovamount'], $MyRow['decimalplaces']);
+					$DisplayFreight = locale_number_format(-$MyRow['ovfreight'], $MyRow['decimalplaces']);
+					$DisplayTax = locale_number_format(-$MyRow['ovgst'], $MyRow['decimalplaces']);
+					$DisplayTotal = locale_number_format(-$MyRow['ovfreight'] - $MyRow['ovgst'] - $MyRow['ovamount'], $MyRow['decimalplaces']);
 				}
 
 				/*Print out the invoice text entered */

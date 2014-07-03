@@ -120,13 +120,13 @@ if (!isset($SelectedTab)) {
 
 	$result = DB_query($SQL);
 	echo '<option value="">' . _('Not Yet Selected') . '</option>';
-	while ($myrow = DB_fetch_array($result)) {
-		if (isset($SelectedTab) and $myrow['typetabcode'] == $SelectedTab) {
+	while ($MyRow = DB_fetch_array($result)) {
+		if (isset($SelectedTab) and $MyRow['typetabcode'] == $SelectedTab) {
 			echo '<option selected="selected" value="';
 		} else {
 			echo '<option value="';
 		}
-		echo $myrow['typetabcode'] . '">' . $myrow['typetabcode'] . ' - ' . $myrow['typetabdescription'] . '</option>';
+		echo $MyRow['typetabcode'] . '">' . $MyRow['typetabcode'] . ' - ' . $MyRow['typetabdescription'] . '</option>';
 
 	} //end while loop
 
@@ -174,7 +174,7 @@ if (isset($_POST['process']) or isset($SelectedTab)) {
 
 	$k = 0; //row colour counter
 
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -186,7 +186,7 @@ if (isset($_POST['process']) or isset($SelectedTab)) {
 		printf('<td>%s</td>
 			<td>%s</td>
 			<td><a href="%s?SelectedType=%s&amp;delete=yes&amp;SelectedTab=' . $SelectedTab . '" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this expense code?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-			</tr>', $myrow['codeexpense'], $myrow['description'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $myrow['codeexpense'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $myrow['codeexpense']);
+			</tr>', $MyRow['codeexpense'], $MyRow['description'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $MyRow['codeexpense'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $MyRow['codeexpense']);
 	}
 	//END WHILE LIST LOOP
 	echo '</table>';
@@ -208,13 +208,13 @@ if (isset($_POST['process']) or isset($SelectedTab)) {
 		if (!isset($_POST['SelectedExpense'])) {
 			echo '<option selected="selected" value="">' . _('Not Yet Selected') . '</option>';
 		}
-		while ($myrow = DB_fetch_array($result)) {
-			if (isset($_POST['SelectedExpense']) and $myrow['codeexpense'] == $_POST['SelectedExpense']) {
+		while ($MyRow = DB_fetch_array($result)) {
+			if (isset($_POST['SelectedExpense']) and $MyRow['codeexpense'] == $_POST['SelectedExpense']) {
 				echo '<option selected="selected" value="';
 			} else {
 				echo '<option value="';
 			}
-			echo $myrow['codeexpense'] . '">' . $myrow['codeexpense'] . ' - ' . $myrow['description'] . '</option>';
+			echo $MyRow['codeexpense'] . '">' . $MyRow['codeexpense'] . ' - ' . $MyRow['description'] . '</option>';
 
 		} //end while loop
 

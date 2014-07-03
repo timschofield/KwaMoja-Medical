@@ -214,7 +214,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 
 			$DemandResult = DB_query($sql, '', '', false, false);
 			if (DB_error_no() != 0) {
-				prnMsg(_('The demand for this product from') . ' ' . $myrow['loccode'] . ' ' . _('cannot be retrieved because') . ' - ' . DB_error_msg(), 'error');
+				prnMsg(_('The demand for this product from') . ' ' . $MyRow['loccode'] . ' ' . _('cannot be retrieved because') . ' - ' . DB_error_msg(), 'error');
 				if ($debug == 1) {
 					echo '<br />' . _('The SQL that failed was') . ' ' . $sql;
 				}
@@ -271,8 +271,8 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 
 		$sql = "SELECT categoryid, categorydescription FROM stockcategory ORDER BY categorydescription";
 		$CatResult = DB_query($sql);
-		while ($myrow = DB_fetch_array($CatResult)) {
-			echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . ' - ' . $myrow['categoryid'] . '</option>';
+		while ($MyRow = DB_fetch_array($CatResult)) {
+			echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . ' - ' . $MyRow['categoryid'] . '</option>';
 		}
 		echo '</select></td></tr>';
 
@@ -284,8 +284,8 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 		$sql = "SELECT categoryid, categorydescription FROM stockcategory ORDER BY categorydescription";
 		$CatResult = DB_query($sql);
 
-		while ($myrow = DB_fetch_array($CatResult)) {
-			echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . ' - ' . $myrow['categoryid'] . '</option>';
+		while ($MyRow = DB_fetch_array($CatResult)) {
+			echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . ' - ' . $MyRow['categoryid'] . '</option>';
 		}
 		echo '</select></td></tr>';
 
@@ -308,8 +308,8 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 		}
 		$LocnResult = DB_query($sql);
 
-		while ($myrow = DB_fetch_array($LocnResult)) {
-			echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+		while ($MyRow = DB_fetch_array($LocnResult)) {
+			echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 		}
 		echo '</select>
 			</td>

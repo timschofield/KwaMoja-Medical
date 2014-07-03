@@ -32,8 +32,8 @@ if ($fp == FALSE) {
 	exit;
 }
 
-while ($myrow = DB_fetch_row($result)) {
-	$line = stripcomma($myrow[0]) . ', ' . stripcomma($myrow[1]);
+while ($MyRow = DB_fetch_row($result)) {
+	$line = stripcomma($MyRow[0]) . ', ' . stripcomma($MyRow[1]);
 	fputs($fp, "\xEF\xBB\xBF" . $line . "\n");
 }
 

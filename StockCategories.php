@@ -268,7 +268,7 @@ if (isset($_POST['submit'])) {
 	$result = DB_query($sql);
 
 	if (DB_num_rows($result) > 0) {
-		prnMsg(_('Cannot delete this stock category because stock items have been created using this stock category') . '<br /> ' . _('There are') . ' ' . $myrow[0] . ' ' . _('items referring to this stock category code'), 'warn');
+		prnMsg(_('Cannot delete this stock category because stock items have been created using this stock category') . '<br /> ' . _('There are') . ' ' . $MyRow[0] . ' ' . _('items referring to this stock category code'), 'warn');
 
 	} else {
 		$sql = "SELECT stkcat FROM salesglpostings WHERE stkcat='" . $SelectedCategory . "'";
@@ -329,7 +329,7 @@ if (!isset($SelectedCategory)) {
 
 	$k = 0; //row colour counter
 
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -337,18 +337,18 @@ if (!isset($SelectedCategory)) {
 			echo '<tr class="OddTableRows">';
 			$k = 1;
 		}
-		echo '<td>' . $myrow['categoryid'] . '</td>
-				<td>' . $myrow['categorydescription'] . '</td>
-				<td>' . $StockTypeName[$myrow['stocktype']] . '</td>
-				<td>' . $TaxCategoryName[$myrow['defaulttaxcatid']] . '</td>
-				<td class="number">' . $myrow['stockact'] . '</td>
-				<td class="number">' . $myrow['adjglact'] . '</td>
-				<td class="number">' . $myrow['issueglact'] . '</td>
-				<td class="number">' . $myrow['purchpricevaract'] . '</td>
-				<td class="number">' . $myrow['materialuseagevarac'] . '</td>
-				<td class="number">' . $myrow['wipact'] . '</td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedCategory=' . urlencode($myrow['categoryid']) . '">' . _('Edit') . '</td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedCategory=' . urlencode($myrow['categoryid']) . '&delete=yes" onclick="return MakeConfirm("' . _('Are you sure you wish to delete this stock category? Additional checks will be performed before actual deletion to ensure data integrity is not compromised.') . '", \'Confirm Delete\', this);">' . _('Delete') . '</td>
+		echo '<td>' . $MyRow['categoryid'] . '</td>
+				<td>' . $MyRow['categorydescription'] . '</td>
+				<td>' . $StockTypeName[$MyRow['stocktype']] . '</td>
+				<td>' . $TaxCategoryName[$MyRow['defaulttaxcatid']] . '</td>
+				<td class="number">' . $MyRow['stockact'] . '</td>
+				<td class="number">' . $MyRow['adjglact'] . '</td>
+				<td class="number">' . $MyRow['issueglact'] . '</td>
+				<td class="number">' . $MyRow['purchpricevaract'] . '</td>
+				<td class="number">' . $MyRow['materialuseagevarac'] . '</td>
+				<td class="number">' . $MyRow['wipact'] . '</td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedCategory=' . urlencode($MyRow['categoryid']) . '">' . _('Edit') . '</td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedCategory=' . urlencode($MyRow['categoryid']) . '&delete=yes" onclick="return MakeConfirm("' . _('Are you sure you wish to delete this stock category? Additional checks will be performed before actual deletion to ensure data integrity is not compromised.') . '", \'Confirm Delete\', this);">' . _('Delete') . '</td>
 			</tr>';
 	}
 	//END WHILE LIST LOOP
@@ -377,18 +377,18 @@ if (isset($SelectedCategory)) {
 					WHERE categoryid='" . $SelectedCategory . "'";
 
 		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($result);
 
-		$_POST['CategoryID'] = $myrow['categoryid'];
-		$_POST['StockType'] = $myrow['stocktype'];
-		$_POST['CategoryDescription'] = $myrow['categorydescription'];
-		$_POST['StockAct'] = $myrow['stockact'];
-		$_POST['AdjGLAct'] = $myrow['adjglact'];
-		$_POST['IssueGLAct'] = $myrow['issueglact'];
-		$_POST['PurchPriceVarAct'] = $myrow['purchpricevaract'];
-		$_POST['MaterialUseageVarAc'] = $myrow['materialuseagevarac'];
-		$_POST['WIPAct'] = $myrow['wipact'];
-		$_POST['DefaultTaxCatID']  = $myrow['defaulttaxcatid'];
+		$_POST['CategoryID'] = $MyRow['categoryid'];
+		$_POST['StockType'] = $MyRow['stocktype'];
+		$_POST['CategoryDescription'] = $MyRow['categorydescription'];
+		$_POST['StockAct'] = $MyRow['stockact'];
+		$_POST['AdjGLAct'] = $MyRow['adjglact'];
+		$_POST['IssueGLAct'] = $MyRow['issueglact'];
+		$_POST['PurchPriceVarAct'] = $MyRow['purchpricevaract'];
+		$_POST['MaterialUseageVarAc'] = $MyRow['materialuseagevarac'];
+		$_POST['WIPAct'] = $MyRow['wipact'];
+		$_POST['DefaultTaxCatID']  = $MyRow['defaulttaxcatid'];
 	}
 	echo '<input type="hidden" name="SelectedCategory" value="' . $SelectedCategory . '" />';
 	echo '<input type="hidden" name="CategoryID" value="' . $_POST['CategoryID'] . '" />';
@@ -466,11 +466,11 @@ if (!isset($_POST['DefaultTaxCatID'])) {
 	$_POST['DefaultTaxCatID'] = $_SESSION['DefaultTaxCategory'];
 }
 
-while ($myrow = DB_fetch_array($result)) {
-	if ($_POST['DefaultTaxCatID'] == $myrow['taxcatid']) {
-		echo '<option selected="selected" value="' . $myrow['taxcatid'] . '">' . $myrow['taxcatname'] . '</option>';
+while ($MyRow = DB_fetch_array($result)) {
+	if ($_POST['DefaultTaxCatID'] == $MyRow['taxcatid']) {
+		echo '<option selected="selected" value="' . $MyRow['taxcatid'] . '">' . $MyRow['taxcatname'] . '</option>';
 	} else {
-		echo '<option value="' . $myrow['taxcatid'] . '">' . $myrow['taxcatname'] . '</option>';
+		echo '<option value="' . $MyRow['taxcatid'] . '">' . $MyRow['taxcatname'] . '</option>';
 	}
 } //end while loop
 
@@ -490,12 +490,12 @@ if (isset($_POST['StockType']) and $_POST['StockType'] == 'L') {
 echo ':</td>
 		<td><select required="required" minlength="1" name="StockAct">';
 
-while ($myrow = DB_fetch_array($Result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 
-	if (isset($_POST['StockAct']) and $myrow['accountcode'] == $_POST['StockAct']) {
-		echo '<option selected="selected" value="' . $myrow['accountcode'] . '">' . $myrow['accountname'] . ' (' . $myrow['accountcode'] . ')' . '</option>';
+	if (isset($_POST['StockAct']) and $MyRow['accountcode'] == $_POST['StockAct']) {
+		echo '<option selected="selected" value="' . $MyRow['accountcode'] . '">' . $MyRow['accountname'] . ' (' . $MyRow['accountcode'] . ')' . '</option>';
 	} else {
-		echo '<option value="' . $myrow['accountcode'] . '">' . $myrow['accountname'] . ' (' . $myrow['accountcode'] . ')' . '</option>';
+		echo '<option value="' . $MyRow['accountcode'] . '">' . $MyRow['accountname'] . ' (' . $MyRow['accountcode'] . ')' . '</option>';
 	}
 } //end while loop
 DB_data_seek($PnLAccountsResult, 0);
@@ -508,12 +508,12 @@ echo '<tr>
 		<td>' . _('WIP GL Code') . ':</td>
 		<td><select required="required" minlength="1" name="WIPAct">';
 
-while ($myrow = DB_fetch_array($BSAccountsResult)) {
+while ($MyRow = DB_fetch_array($BSAccountsResult)) {
 
-	if (isset($_POST['WIPAct']) and $myrow['accountcode'] == $_POST['WIPAct']) {
-		echo '<option selected="selected" value="' . $myrow['accountcode'] . '">' . $myrow['accountname'] . ' (' . $myrow['accountcode'] . ')' . '</option>';
+	if (isset($_POST['WIPAct']) and $MyRow['accountcode'] == $_POST['WIPAct']) {
+		echo '<option selected="selected" value="' . $MyRow['accountcode'] . '">' . $MyRow['accountname'] . ' (' . $MyRow['accountcode'] . ')' . '</option>';
 	} else {
-		echo '<option value="' . $myrow['accountcode'] . '">' . $myrow['accountname'] . ' (' . $myrow['accountcode'] . ')' . '</option>';
+		echo '<option value="' . $MyRow['accountcode'] . '">' . $MyRow['accountname'] . ' (' . $MyRow['accountcode'] . ')' . '</option>';
 	}
 
 } //end while loop
@@ -526,11 +526,11 @@ echo '<tr>
 		<td>' . _('Stock Adjustments GL Code') . ':</td>
 		<td><select required="required" minlength="1" name="AdjGLAct">';
 
-while ($myrow = DB_fetch_array($PnLAccountsResult)) {
-	if (isset($_POST['AdjGLAct']) and $myrow['accountcode'] == $_POST['AdjGLAct']) {
-		echo '<option selected="selected" value="' . $myrow['accountcode'] . '">' . $myrow['accountname'] . ' (' . $myrow['accountcode'] . ')' . '</option>';
+while ($MyRow = DB_fetch_array($PnLAccountsResult)) {
+	if (isset($_POST['AdjGLAct']) and $MyRow['accountcode'] == $_POST['AdjGLAct']) {
+		echo '<option selected="selected" value="' . $MyRow['accountcode'] . '">' . $MyRow['accountname'] . ' (' . $MyRow['accountcode'] . ')' . '</option>';
 	} else {
-		echo '<option value="' . $myrow['accountcode'] . '">' . $myrow['accountname'] . ' (' . $myrow['accountcode'] . ')' . '</option>';
+		echo '<option value="' . $MyRow['accountcode'] . '">' . $MyRow['accountname'] . ' (' . $MyRow['accountcode'] . ')' . '</option>';
 	}
 
 } //end while loop
@@ -543,11 +543,11 @@ echo '<tr>
 		<td>' . _('Internal Stock Issues GL Code') . ':</td>
 		<td><select required="required" minlength="1" name="IssueGLAct">';
 
-while ($myrow = DB_fetch_array($PnLAccountsResult)) {
-	if (isset($_POST['IssueGLAct']) and $myrow['accountcode'] == $_POST['IssueGLAct']) {
-		echo '<option selected="selected" value="' . $myrow['accountcode'] . '">' . $myrow['accountname'] . ' (' . $myrow['accountcode'] . ')' . '</option>';
+while ($MyRow = DB_fetch_array($PnLAccountsResult)) {
+	if (isset($_POST['IssueGLAct']) and $MyRow['accountcode'] == $_POST['IssueGLAct']) {
+		echo '<option selected="selected" value="' . $MyRow['accountcode'] . '">' . $MyRow['accountname'] . ' (' . $MyRow['accountcode'] . ')' . '</option>';
 	} else {
-		echo '<option value="' . $myrow['accountcode'] . '">' . $myrow['accountname'] . ' (' . $myrow['accountcode'] . ')' . '</option>';
+		echo '<option value="' . $MyRow['accountcode'] . '">' . $MyRow['accountname'] . ' (' . $MyRow['accountcode'] . ')' . '</option>';
 	}
 
 } //end while loop
@@ -560,11 +560,11 @@ echo '<tr>
 		<td>' . _('Price Variance GL Code') . ':</td>
 		<td><select required="required" minlength="1" name="PurchPriceVarAct">';
 
-while ($myrow = DB_fetch_array($PnLAccountsResult)) {
-	if (isset($_POST['PurchPriceVarAct']) and $myrow['accountcode'] == $_POST['PurchPriceVarAct']) {
-		echo '<option selected="selected" value="' . $myrow['accountcode'] . '">' . $myrow['accountname'] . ' (' . $myrow['accountcode'] . ')' . '</option>';
+while ($MyRow = DB_fetch_array($PnLAccountsResult)) {
+	if (isset($_POST['PurchPriceVarAct']) and $MyRow['accountcode'] == $_POST['PurchPriceVarAct']) {
+		echo '<option selected="selected" value="' . $MyRow['accountcode'] . '">' . $MyRow['accountname'] . ' (' . $MyRow['accountcode'] . ')' . '</option>';
 	} else {
-		echo '<option value="' . $myrow['accountcode'] . '">' . $myrow['accountname'] . ' (' . $myrow['accountcode'] . ')' . '</option>';
+		echo '<option value="' . $MyRow['accountcode'] . '">' . $MyRow['accountname'] . ' (' . $MyRow['accountcode'] . ')' . '</option>';
 	}
 
 } //end while loop
@@ -582,11 +582,11 @@ if (isset($_POST['StockType']) and $_POST['StockType'] == 'L') {
 echo ':</td>
 		<td><select required="required" minlength="1" name="MaterialUseageVarAc">';
 
-while ($myrow = DB_fetch_array($PnLAccountsResult)) {
-	if (isset($_POST['MaterialUseageVarAc']) and $myrow['accountcode'] == $_POST['MaterialUseageVarAc']) {
-		echo '<option selected="selected" value="' . $myrow['accountcode'] . '">' . $myrow['accountname'] . ' (' . $myrow['accountcode'] . ')' . '</option>';
+while ($MyRow = DB_fetch_array($PnLAccountsResult)) {
+	if (isset($_POST['MaterialUseageVarAc']) and $MyRow['accountcode'] == $_POST['MaterialUseageVarAc']) {
+		echo '<option selected="selected" value="' . $MyRow['accountcode'] . '">' . $MyRow['accountname'] . ' (' . $MyRow['accountcode'] . ')' . '</option>';
 	} else {
-		echo '<option value="' . $myrow['accountcode'] . '">' . $myrow['accountname'] . ' (' . $myrow['accountcode'] . ')' . '</option>';
+		echo '<option value="' . $MyRow['accountcode'] . '">' . $MyRow['accountname'] . ' (' . $MyRow['accountcode'] . ')' . '</option>';
 	}
 
 } //end while loop
@@ -626,50 +626,50 @@ if (isset($SelectedCategory)) {
 				<th>' . _('Require in SO') . '</th>
 			</tr>';
 	$PropertyCounter = 0;
-	while ($myrow = DB_fetch_array($result)) {
-		echo '<input type="hidden" name="PropID' . $PropertyCounter . '" value="' . $myrow['stkcatpropid'] . '" />';
+	while ($MyRow = DB_fetch_array($result)) {
+		echo '<input type="hidden" name="PropID' . $PropertyCounter . '" value="' . $MyRow['stkcatpropid'] . '" />';
 		echo '<tr>
-				<td><input type="text" name="PropLabel' . $PropertyCounter . '" size="50" minlength="0" maxlength="100" value="' . $myrow['label'] . '" /></td>
+				<td><input type="text" name="PropLabel' . $PropertyCounter . '" size="50" minlength="0" maxlength="100" value="' . $MyRow['label'] . '" /></td>
 				<td><select minlength="0" name="PropControlType' . $PropertyCounter . '">';
-		if ($myrow['controltype'] == 0) {
+		if ($MyRow['controltype'] == 0) {
 			echo '<option selected="selected" value="0">' . _('Text Box') . '</option>';
 		} else {
 			echo '<option value="0">' . _('Text Box') . '</option>';
 		}
-		if ($myrow['controltype'] == 1) {
+		if ($MyRow['controltype'] == 1) {
 			echo '<option selected="selected" value="1">' . _('Select Box') . '</option>';
 		} else {
 			echo '<option value="1">' . _('Select Box') . '</option>';
 		}
-		if ($myrow['controltype'] == 2) {
+		if ($MyRow['controltype'] == 2) {
 			echo '<option selected="selected" value="2">' . _('Check Box') . '</option>';
 		} else {
 			echo '<option value="2">' . _('Check Box') . '</option>';
 		}
-		if ($myrow['controltype'] == 3) {
+		if ($MyRow['controltype'] == 3) {
 			echo '<option selected="selected" value="3">' . _('Date Box') . '</option>';
 		} else {
 			echo '<option value="3">' . _('Date Box') . '</option>';
 		}
 		echo '</select></td>
-					<td><input type="text" name="PropDefault' . $PropertyCounter . '" value="' . $myrow['defaultvalue'] . '" /></td>';
+					<td><input type="text" name="PropDefault' . $PropertyCounter . '" value="' . $MyRow['defaultvalue'] . '" /></td>';
 
-		if ($myrow['numericvalue'] == 1) {
+		if ($MyRow['numericvalue'] == 1) {
 			echo '<td><input type="checkbox" name="PropNumeric' . $PropertyCounter . '" checked="checked" /></td>';
 		} else {
 			echo '<td><input type="checkbox" name="PropNumeric' . $PropertyCounter . '" /></td>';
 		}
 
-		echo '<td><input type="text" name="PropMinimum' . $PropertyCounter . '" value="' . $myrow['minimumvalue'] . '" /></td>
-				<td><input type="text" name="PropMaximum' . $PropertyCounter . '" value="' . $myrow['maximumvalue'] . '" /></td>';
+		echo '<td><input type="text" name="PropMinimum' . $PropertyCounter . '" value="' . $MyRow['minimumvalue'] . '" /></td>
+				<td><input type="text" name="PropMaximum' . $PropertyCounter . '" value="' . $MyRow['maximumvalue'] . '" /></td>';
 
-		if ($myrow['reqatsalesorder'] == 1) {
+		if ($MyRow['reqatsalesorder'] == 1) {
 			echo '<td align="center"><input type="checkbox" name="PropReqSO' . $PropertyCounter . '" checked="True" /></td>';
 		} else {
 			echo '<td align="center"><input type="checkbox" name="PropReqSO' . $PropertyCounter . '" /></td>';
 		}
 
-		echo '<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?DeleteProperty=' . $myrow['stkcatpropid'] . '&SelectedCategory=' . $SelectedCategory . '" onclick=\'return MakeConfirm("' . _('Are you sure you wish to delete this property? All properties of this type set up for stock items will also be deleted.') . '", \'Confirm Delete\', this);\'>' . _('Delete') . '</td>
+		echo '<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?DeleteProperty=' . $MyRow['stkcatpropid'] . '&SelectedCategory=' . $SelectedCategory . '" onclick=\'return MakeConfirm("' . _('Are you sure you wish to delete this property? All properties of this type set up for stock items will also be deleted.') . '", \'Confirm Delete\', this);\'>' . _('Delete') . '</td>
 			</tr>';
 
 		$PropertyCounter++;

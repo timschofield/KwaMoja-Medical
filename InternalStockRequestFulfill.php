@@ -38,9 +38,9 @@ if (isset($_POST['UpdateAll'])) {
 							AND stockcosts.succeeded=0
 						WHERE stockcosts.stockid='" . $StockID . "'";
 			$result = DB_query($sql);
-			$myrow = DB_fetch_array($result);
-			$StandardCost = $myrow['materialcost'] + $myrow['labourcost'] + $myrow['overheadcost'];
-			$DecimalPlaces = $myrow['decimalplaces'];
+			$MyRow = DB_fetch_array($result);
+			$StandardCost = $MyRow['materialcost'] + $MyRow['labourcost'] + $MyRow['overheadcost'];
+			$DecimalPlaces = $MyRow['decimalplaces'];
 
 			$Narrative = _('Issue') . ' ' . $Quantity . ' ' . _('of') . ' ' . $StockID . ' ' . _('to department') . ' ' . $Department . ' ' . _('from') . ' ' . $Location;
 
@@ -242,15 +242,15 @@ if (!isset($_POST['Location'])) {
 					ORDER BY locationname";
 	}
 	$resultStkLocs = DB_query($sql);
-	while ($myrow = DB_fetch_array($resultStkLocs)) {
+	while ($MyRow = DB_fetch_array($resultStkLocs)) {
 		if (isset($_SESSION['Adjustment']->StockLocation)) {
-			if ($myrow['loccode'] == $_SESSION['Adjustment']->StockLocation) {
-				echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+			if ($MyRow['loccode'] == $_SESSION['Adjustment']->StockLocation) {
+				echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 			} else {
-				echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+				echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 			}
 		} else {
-			echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+			echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 		}
 	}
 	echo '</select></td></tr>';
@@ -303,14 +303,14 @@ if (isset($_POST['Location'])) {
 				<th>' . _('Narrative') . '</th>
 			</tr>';
 
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 
 		echo '<tr>
-				<td>' . $myrow['dispatchid'] . '</td>
-				<td>' . $myrow['description'] . '</td>
-				<td>' . $myrow['locationname'] . '</td>
-				<td>' . ConvertSQLDate($myrow['despatchdate']) . '</td>
-				<td>' . $myrow['narrative'] . '</td>
+				<td>' . $MyRow['dispatchid'] . '</td>
+				<td>' . $MyRow['description'] . '</td>
+				<td>' . $MyRow['locationname'] . '</td>
+				<td>' . ConvertSQLDate($MyRow['despatchdate']) . '</td>
+				<td>' . $MyRow['narrative'] . '</td>
 			</tr>';
 		$LineSQL = "SELECT stockrequestitems.dispatchitemsid,
 						stockrequestitems.dispatchid,
@@ -323,7 +323,7 @@ if (isset($_POST['Location'])) {
 				FROM stockrequestitems
 				LEFT JOIN stockmaster
 				ON stockmaster.stockid=stockrequestitems.stockid
-			WHERE dispatchid='" . $myrow['dispatchid'] . "'
+			WHERE dispatchid='" . $MyRow['dispatchid'] . "'
 				AND completed=0";
 		$LineResult = DB_query($LineSQL);
 
@@ -358,7 +358,7 @@ if (isset($_POST['Location'])) {
 			echo '<option value=0>0 - None</option>';
 			while ($mytagrow = DB_fetch_array($TagResult)) {
 				if (isset($_SESSION['Adjustment']->tag) and $_SESSION['Adjustment']->tag == $mytagrow['tagref']) {
-					echo '<option selected="selected" value="' . $mytagrow['tagref'] . '">' . $mytagrow['tagref'] . ' - ' . $myrow['tagdescription'] . '</option>';
+					echo '<option selected="selected" value="' . $mytagrow['tagref'] . '">' . $mytagrow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
 				} else {
 					echo '<option value="' . $mytagrow['tagref'] . '">' . $mytagrow['tagref'] . ' - ' . $mytagrow['tagdescription'] . '</option>';
 				}
@@ -369,7 +369,7 @@ if (isset($_POST['Location'])) {
 			echo '<input type="hidden" class="number" name="' . $LineRow['dispatchid'] . 'StockID' . $LineRow['dispatchitemsid'] . '" value="' . $LineRow['stockid'] . '" />';
 			echo '<input type="hidden" class="number" name="' . $LineRow['dispatchid'] . 'Location' . $LineRow['dispatchitemsid'] . '" value="' . $_POST['Location'] . '" />';
 			echo '<input type="hidden" class="number" name="' . $LineRow['dispatchid'] . 'RequestedQuantity' . $LineRow['dispatchitemsid'] . '" value="' . locale_number_format($LineRow['quantity'] - $LineRow['qtydelivered'], $LineRow['decimalplaces']) . '" />';
-			echo '<input type="hidden" class="number" name="' . $LineRow['dispatchid'] . 'Department' . $LineRow['dispatchitemsid'] . '" value="' . $myrow['description'] . '" />';
+			echo '<input type="hidden" class="number" name="' . $LineRow['dispatchid'] . 'Department' . $LineRow['dispatchitemsid'] . '" value="' . $MyRow['description'] . '" />';
 		} // end while order line detail
 		echo '</table></td></tr>';
 	} //end while header loop

@@ -56,20 +56,20 @@ if (isset($_GET['ID'])) {
 				FROM tenders
 				WHERE tenderid='" . $_GET['ID'] . "'";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($result);
 	if (isset($_SESSION['tender' . $identifier])) {
 		unset($_SESSION['tender' . $identifier]);
 	}
 	$_SESSION['tender' . $identifier] = new Tender();
-	$_SESSION['tender' . $identifier]->TenderId = $myrow['tenderid'];
-	$_SESSION['tender' . $identifier]->Location = $myrow['location'];
-	$_SESSION['tender' . $identifier]->DelAdd1 = $myrow['address1'];
-	$_SESSION['tender' . $identifier]->DelAdd2 = $myrow['address2'];
-	$_SESSION['tender' . $identifier]->DelAdd3 = $myrow['address3'];
-	$_SESSION['tender' . $identifier]->DelAdd4 = $myrow['address4'];
-	$_SESSION['tender' . $identifier]->DelAdd5 = $myrow['address5'];
-	$_SESSION['tender' . $identifier]->DelAdd6 = $myrow['address6'];
-	$_SESSION['tender' . $identifier]->RequiredByDate = $myrow['requiredbydate'];
+	$_SESSION['tender' . $identifier]->TenderId = $MyRow['tenderid'];
+	$_SESSION['tender' . $identifier]->Location = $MyRow['location'];
+	$_SESSION['tender' . $identifier]->DelAdd1 = $MyRow['address1'];
+	$_SESSION['tender' . $identifier]->DelAdd2 = $MyRow['address2'];
+	$_SESSION['tender' . $identifier]->DelAdd3 = $MyRow['address3'];
+	$_SESSION['tender' . $identifier]->DelAdd4 = $MyRow['address4'];
+	$_SESSION['tender' . $identifier]->DelAdd5 = $MyRow['address5'];
+	$_SESSION['tender' . $identifier]->DelAdd6 = $MyRow['address6'];
+	$_SESSION['tender' . $identifier]->RequiredByDate = $MyRow['requiredbydate'];
 
 	$sql = "SELECT tenderid,
 					tendersuppliers.supplierid,
@@ -80,8 +80,8 @@ if (isset($_GET['ID'])) {
 					ON tendersuppliers.supplierid=suppliers.supplierid
 				WHERE tenderid='" . $_GET['ID'] . "'";
 	$result = DB_query($sql);
-	while ($myrow = DB_fetch_array($result)) {
-		$_SESSION['tender' . $identifier]->add_supplier_to_tender($myrow['supplierid'], $myrow['suppname'], $myrow['email']);
+	while ($MyRow = DB_fetch_array($result)) {
+		$_SESSION['tender' . $identifier]->add_supplier_to_tender($MyRow['supplierid'], $MyRow['suppname'], $MyRow['email']);
 	}
 
 	$sql = "SELECT tenderid,
@@ -95,8 +95,8 @@ if (isset($_GET['ID'])) {
 					ON tenderitems.stockid=stockmaster.stockid
 				WHERE tenderid='" . $_GET['ID'] . "'";
 	$result = DB_query($sql);
-	while ($myrow = DB_fetch_array($result)) {
-		$_SESSION['tender' . $identifier]->add_item_to_tender($_SESSION['tender' . $identifier]->LinesOnTender, $myrow['stockid'], $myrow['quantity'], $myrow['description'], $myrow['units'], $myrow['decimalplaces'], DateAdd(date($_SESSION['DefaultDateFormat']), 'm', 3));
+	while ($MyRow = DB_fetch_array($result)) {
+		$_SESSION['tender' . $identifier]->add_item_to_tender($_SESSION['tender' . $identifier]->LinesOnTender, $MyRow['stockid'], $MyRow['quantity'], $MyRow['description'], $MyRow['units'], $MyRow['decimalplaces'], DateAdd(date($_SESSION['DefaultDateFormat']), 'm', 3));
 	}
 	$ShowTender = 1;
 }
@@ -130,18 +130,18 @@ if (isset($_GET['Edit'])) {
 			<th>' . _('Address 6') . '</th>
 			<th>' . _('Telephone') . '</th>
 		</tr>';
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		echo '<tr>
-				<td>' . $myrow['tenderid'] . '</td>
-				<td>' . $myrow['location'] . '</td>
-				<td>' . $myrow['address1'] . '</td>
-				<td>' . $myrow['address2'] . '</td>
-				<td>' . $myrow['address3'] . '</td>
-				<td>' . $myrow['address4'] . '</td>
-				<td>' . $myrow['address5'] . '</td>
-				<td>' . $myrow['address6'] . '</td>
-				<td>' . $myrow['telephone'] . '</td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $identifier . '&amp;ID=' . $myrow['tenderid'] . '">' . _('Edit') . '</a></td>
+				<td>' . $MyRow['tenderid'] . '</td>
+				<td>' . $MyRow['location'] . '</td>
+				<td>' . $MyRow['address1'] . '</td>
+				<td>' . $MyRow['address2'] . '</td>
+				<td>' . $MyRow['address3'] . '</td>
+				<td>' . $MyRow['address4'] . '</td>
+				<td>' . $MyRow['address5'] . '</td>
+				<td>' . $MyRow['address6'] . '</td>
+				<td>' . $MyRow['telephone'] . '</td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $identifier . '&amp;ID=' . $MyRow['tenderid'] . '">' . _('Edit') . '</a></td>
 			</tr>';
 	}
 	echo '</table>';
@@ -182,9 +182,9 @@ if (isset($_POST['SelectedSupplier'])) {
 				FROM suppliers
 				WHERE supplierid='" . $_POST['SelectedSupplier'] . "'";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
-	if (mb_strlen($myrow['email']) > 0) {
-		$_SESSION['tender' . $identifier]->add_supplier_to_tender($_POST['SelectedSupplier'], $myrow['suppname'], $myrow['email']);
+	$MyRow = DB_fetch_array($result);
+	if (mb_strlen($MyRow['email']) > 0) {
+		$_SESSION['tender' . $identifier]->add_supplier_to_tender($_POST['SelectedSupplier'], $MyRow['suppname'], $MyRow['email']);
 	} else {
 		prnMsg(_('The supplier must have an email set up or they cannot be part of a tender'), 'warn');
 	}
@@ -203,8 +203,8 @@ if (isset($_POST['NewItem']) and !isset($_POST['Refresh'])) {
 						FROM stockmaster
 						WHERE stockid='" . $StockID . "'";
 			$result = DB_query($sql);
-			$myrow = DB_fetch_array($result);
-			$_SESSION['tender' . $identifier]->add_item_to_tender($_SESSION['tender' . $identifier]->LinesOnTender, $StockID, $Quantity, $myrow['description'], $UOM, $myrow['decimalplaces'], DateAdd(date($_SESSION['DefaultDateFormat']), 'm', 3));
+			$MyRow = DB_fetch_array($result);
+			$_SESSION['tender' . $identifier]->add_item_to_tender($_SESSION['tender' . $identifier]->LinesOnTender, $StockID, $Quantity, $MyRow['description'], $UOM, $MyRow['decimalplaces'], DateAdd(date($_SESSION['DefaultDateFormat']), 'm', 3));
 			unset($UOM);
 		}
 	}
@@ -512,8 +512,8 @@ if (isset($_POST['SearchSupplier']) or isset($_POST['Go']) or isset($_POST['Next
 
 	$result = DB_query($SQL);
 	if (DB_num_rows($result) == 1) {
-		$myrow = DB_fetch_array($result);
-		$SingleSupplierReturned = $myrow['supplierid'];
+		$MyRow = DB_fetch_array($result);
+		$SingleSupplierReturned = $MyRow['supplierid'];
 	}
 } //end of if search
 if (isset($SingleSupplierReturned)) {
@@ -562,7 +562,7 @@ if (isset($_POST['SearchSupplier'])) {
 	$k = 0; //row counter to determine background colour
 	$RowIndex = 0;
 
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -570,13 +570,13 @@ if (isset($_POST['SearchSupplier'])) {
 			echo '<tr class="OddTableRows">';
 			$k = 1;
 		}
-		echo '<td><input type="submit" name="SelectedSupplier" value="' . $myrow['supplierid'] . '" /></td>
-			<td>' . $myrow['suppname'] . '</td>
-			<td>' . $myrow['currcode'] . '</td>
-			<td>' . $myrow['address1'] . '</td>
-			<td>' . $myrow['address2'] . '</td>
-			<td>' . $myrow['address3'] . '</td>
-			<td>' . $myrow['address4'] . '</td>
+		echo '<td><input type="submit" name="SelectedSupplier" value="' . $MyRow['supplierid'] . '" /></td>
+			<td>' . $MyRow['suppname'] . '</td>
+			<td>' . $MyRow['currcode'] . '</td>
+			<td>' . $MyRow['address1'] . '</td>
+			<td>' . $MyRow['address2'] . '</td>
+			<td>' . $MyRow['address3'] . '</td>
+			<td>' . $MyRow['address4'] . '</td>
 			</tr>';
 		$RowIndex = $RowIndex + 1;
 		//end of page full new headings if
@@ -613,11 +613,11 @@ if (isset($_POST['Items'])) {
 	} else {
 		echo '<option value="All">' . _('All') . '</option>';
 	}
-	while ($myrow1 = DB_fetch_array($result)) {
-		if ($myrow1['categoryid'] == $_POST['StockCat']) {
-			echo '<option selected="selected" value="' . $myrow1['categoryid'] . '">' . $myrow1['categorydescription'] . '</option>';
+	while ($MyRow1 = DB_fetch_array($result)) {
+		if ($MyRow1['categoryid'] == $_POST['StockCat']) {
+			echo '<option selected="selected" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow1['categoryid'] . '">' . $myrow1['categorydescription'] . '</option>';
+			echo '<option value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 		}
 	}
 	echo '</select></td>
@@ -701,7 +701,7 @@ if (isset($_POST['Search'])) {
 		$i = 0;
 		$k = 0; //row colour counter
 		$PartsDisplayed = 0;
-		while ($myrow = DB_fetch_array($SearchResult)) {
+		while ($MyRow = DB_fetch_array($SearchResult)) {
 
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
@@ -711,7 +711,7 @@ if (isset($_POST['Search'])) {
 				$k = 1;
 			}
 
-			$FileName = $myrow['stockid'] . '.jpg';
+			$FileName = $MyRow['stockid'] . '.jpg';
 			if (file_exists($_SESSION['part_pics_dir'] . '/' . $FileName)) {
 
 				$ImageSource = '<img src="' . $RootPath . '/' . $_SESSION['part_pics_dir'] . '/' . $FileName . '" width="50" height="50" />';
@@ -720,13 +720,13 @@ if (isset($_POST['Search'])) {
 				$ImageSource = '<i>' . _('No Image') . '</i>';
 			}
 
-			echo '<td>' . $myrow['stockid'] . '</td>
-					<td>' . $myrow['description'] . '</td>
-					<td>' . $myrow['units'] . '</td>
+			echo '<td>' . $MyRow['stockid'] . '</td>
+					<td>' . $MyRow['description'] . '</td>
+					<td>' . $MyRow['units'] . '</td>
 					<td>' . $ImageSource . '</td>
 					<td><input class="number" type="text" required="required" minlength="1" maxlength="10" size="6" value="0" name="Qty' . $i . '" /></td>
-					<input type="hidden" value="' . $myrow['units'] . '" name="UOM' . $i . '" />
-					<input type="hidden" value="' . $myrow['stockid'] . '" name="StockID' . $i . '" />
+					<input type="hidden" value="' . $MyRow['units'] . '" name="UOM' . $i . '" />
+					<input type="hidden" value="' . $MyRow['stockid'] . '" name="StockID' . $i . '" />
 				</tr>';
 
 			$i++;

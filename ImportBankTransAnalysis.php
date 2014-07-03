@@ -70,8 +70,8 @@ if (isset($_POST['AddGLCodeToTrans']) AND $_POST['AddGLCodeToTrans'] == _('Enter
 		prnMsg(_('The account code entered is not a valid code') . '. ' . _('This line cannot be added to the transaction') . '.<br />' . _('You can use the selection box to select the account you want'), 'error');
 		$InputError = True;
 	} else if ($_POST['GLCode'] != '') {
-		$myrow = DB_fetch_row($result);
-		$GLActName = $myrow[1];
+		$MyRow = DB_fetch_row($result);
+		$GLActName = $MyRow[1];
 		if (!is_numeric($_POST['Amount'])) {
 			prnMsg(_('The amount entered is not numeric') . '. ' . _('This line cannot be added to the transaction'), 'error');
 			$InputError = True;
@@ -136,11 +136,11 @@ if ($_SESSION['Trans'][$TransID]->Amount < 0) { //its a payment
 	} else {
 		echo '<option value="">' . _('GL Payment') . '</option>';
 	}
-	while ($myrow = DB_fetch_array($result)) {
-		if ($myrow['supplierid'] == $_SESSION['Trans'][$TransID]->SupplierID) {
-			echo '<option selected value="' . $myrow['supplierid'] . '">' . $myrow['supplierid'] . ' - ' . $myrow['suppname'] . '</option>';
+	while ($MyRow = DB_fetch_array($result)) {
+		if ($MyRow['supplierid'] == $_SESSION['Trans'][$TransID]->SupplierID) {
+			echo '<option selected value="' . $MyRow['supplierid'] . '">' . $MyRow['supplierid'] . ' - ' . $MyRow['suppname'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['supplierid'] . '">' . $myrow['supplierid'] . ' - ' . $myrow['suppname'] . '</option>';
+			echo '<option value="' . $MyRow['supplierid'] . '">' . $MyRow['supplierid'] . ' - ' . $MyRow['suppname'] . '</option>';
 		}
 	}
 	echo '</select></td>
@@ -167,11 +167,11 @@ if ($_SESSION['Trans'][$TransID]->Amount < 0) { //its a payment
 	} else {
 		echo '<option value="">' . _('GL Receipt') . '</option>';
 	}
-	while ($myrow = DB_fetch_array($result)) {
-		if ($myrow['debtorno'] == $_SESSION['Trans'][$TransID]->DebtorNo) {
-			echo '<option selected value="' . $myrow['debtorno'] . '">' . $myrow['debtorno'] . ' - ' . $myrow['name'] . '</option>';
+	while ($MyRow = DB_fetch_array($result)) {
+		if ($MyRow['debtorno'] == $_SESSION['Trans'][$TransID]->DebtorNo) {
+			echo '<option selected value="' . $MyRow['debtorno'] . '">' . $MyRow['debtorno'] . ' - ' . $MyRow['name'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['debtorno'] . '">' . $myrow['debtorno'] . ' - ' . $myrow['name'] . '</option>';
+			echo '<option value="' . $MyRow['debtorno'] . '">' . $MyRow['debtorno'] . ' - ' . $MyRow['name'] . '</option>';
 		}
 	}
 	echo '</select></td>
@@ -256,13 +256,13 @@ if ($AllowGLAnalysis == false) {
 
 	$result = DB_query("SELECT accountcode, accountname FROM chartmaster ORDER BY accountcode");
 	echo '<option value=""></option>';
-	while ($myrow = DB_fetch_array($result)) {
-		if ($myrow['accountcode'] == $_POST['AcctSelection']) {
+	while ($MyRow = DB_fetch_array($result)) {
+		if ($MyRow['accountcode'] == $_POST['AcctSelection']) {
 			echo '<option selected value="';
 		} else {
 			echo '<option value="';
 		}
-		echo $myrow['accountcode'] . '">' . $myrow['accountcode'] . ' - ' . $myrow['accountname'] . '</option>';
+		echo $MyRow['accountcode'] . '">' . $MyRow['accountcode'] . ' - ' . $MyRow['accountname'] . '</option>';
 	}
 
 	echo '</select>
@@ -295,11 +295,11 @@ if ($AllowGLAnalysis == false) {
 
 	$result = DB_query($SQL);
 	echo '<option value="0">0 - ' . _('None') . '</option>';
-	while ($myrow = DB_fetch_array($result)) {
-		if (isset($_POST['tag']) and $_POST['tag'] == $myrow['tagref']) {
-			echo '<option selected value="' . $myrow['tagref'] . '">' . $myrow['tagref'] . ' - ' . $myrow['tagdescription'] . '</option>';
+	while ($MyRow = DB_fetch_array($result)) {
+		if (isset($_POST['tag']) and $_POST['tag'] == $MyRow['tagref']) {
+			echo '<option selected value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['tagref'] . '">' . $myrow['tagref'] . ' - ' . $myrow['tagdescription'] . '</option>';
+			echo '<option value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
 		}
 	}
 	echo '</select></td>

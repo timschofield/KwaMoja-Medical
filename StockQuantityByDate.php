@@ -21,15 +21,15 @@ echo '<table class="selection">
 			<select required="required" minlength="1" name="StockCategory">
 				<option value="All">' . _('All') . '</option>';
 
-while ($myrow = DB_fetch_array($resultStkLocs)) {
+while ($MyRow = DB_fetch_array($resultStkLocs)) {
 	if (isset($_POST['StockCategory']) and $_POST['StockCategory'] != 'All') {
-		if ($myrow['categoryid'] == $_POST['StockCategory']) {
-			echo '<option selected="selected" value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . '</option>';
+		if ($MyRow['categoryid'] == $_POST['StockCategory']) {
+			echo '<option selected="selected" value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . '</option>';
+			echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 		}
 	} else {
-		echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . '</option>';
+		echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 	}
 }
 echo '</select></td>';
@@ -51,18 +51,18 @@ $resultStkLocs = DB_query($sql);
 echo '<td>' . _('For Stock Location') . ':</td>
 	<td><select required="required" minlength="1" name="StockLocation"> ';
 
-while ($myrow = DB_fetch_array($resultStkLocs)) {
+while ($MyRow = DB_fetch_array($resultStkLocs)) {
 	if (isset($_POST['StockLocation']) and $_POST['StockLocation'] != 'All') {
-		if ($myrow['loccode'] == $_POST['StockLocation']) {
-			echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+		if ($MyRow['loccode'] == $_POST['StockLocation']) {
+			echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+			echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 		}
-	} elseif ($myrow['loccode'] == $_SESSION['UserStockLocation']) {
-		echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
-		$_POST['StockLocation'] = $myrow['loccode'];
+	} elseif ($MyRow['loccode'] == $_SESSION['UserStockLocation']) {
+		echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
+		$_POST['StockLocation'] = $MyRow['loccode'];
 	} else {
-		echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+		echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 	}
 }
 echo '</select></td>';
@@ -116,13 +116,13 @@ if (isset($_POST['ShowStatus']) and Is_Date($_POST['OnHandDate'])) {
 				<th>' . _('Total Value') . '</th>
 			</tr>';
 
-	while ($myrows = DB_fetch_array($StockResult)) {
+	while ($MyRows = DB_fetch_array($StockResult)) {
 
 		$sql = "SELECT stockid,
 						newqoh
 					FROM stockmoves
 					WHERE stockmoves.trandate <= '" . $SQLOnHandDate . "'
-						AND stockid = '" . $myrows['stockid'] . "'
+						AND stockid = '" . $MyRows['stockid'] . "'
 						AND loccode = '" . $_POST['StockLocation'] . "'
 					ORDER BY stkmoveno DESC LIMIT 1";
 
@@ -147,14 +147,14 @@ if (isset($_POST['ShowStatus']) and Is_Date($_POST['OnHandDate'])) {
 			$CostSQL = "SELECT stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS cost
 							FROM stockcosts
 							WHERE stockcosts.costfrom<='" . $SQLOnHandDate . "'
-								AND stockid = '" . $myrows['stockid'] . "'
+								AND stockid = '" . $MyRows['stockid'] . "'
 							ORDER BY costfrom DESC
 							LIMIT 1";
 			$CostResult = DB_query($CostSQL);
 			if (DB_num_rows($CostResult) == 0) {
 				$CostSQL = "SELECT stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS cost
 								FROM stockcosts
-								WHERE stockid = '" . $myrows['stockid'] . "'
+								WHERE stockid = '" . $MyRows['stockid'] . "'
 								ORDER BY costfrom DESC
 								LIMIT 1";
 				$CostResult = DB_query($CostSQL);
@@ -167,13 +167,13 @@ if (isset($_POST['ShowStatus']) and Is_Date($_POST['OnHandDate'])) {
 						<td>%s</td>
 						<td class="number">%s</td>
 						<td class="number">%s</td>
-						<td class="number">%s</td></tr>', 'StockID=' . mb_strtoupper($myrows['stockid']), mb_strtoupper($myrows['stockid']), $myrows['description'], 0, locale_number_format($CostRow['cost'], $_SESSION['CompanyRecord']['decimalplaces']), 0);
+						<td class="number">%s</td></tr>', 'StockID=' . mb_strtoupper($MyRows['stockid']), mb_strtoupper($MyRows['stockid']), $MyRows['description'], 0, locale_number_format($CostRow['cost'], $_SESSION['CompanyRecord']['decimalplaces']), 0);
 			} else {
 				printf('<td><a target="_blank" href="' . $RootPath . '/StockStatus.php?%s">%s</a></td>
 						<td>%s</td>
 						<td class="number">%s</td>
 						<td class="number">%s</td>
-						<td class="number">%s</td></tr>', 'StockID=' . mb_strtoupper($myrows['stockid']), mb_strtoupper($myrows['stockid']), $myrows['description'], locale_number_format($LocQtyRow['newqoh'], $myrows['decimalplaces']), locale_number_format($CostRow['cost'], $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format(($CostRow['cost'] * $LocQtyRow['newqoh']), $_SESSION['CompanyRecord']['decimalplaces']));
+						<td class="number">%s</td></tr>', 'StockID=' . mb_strtoupper($MyRows['stockid']), mb_strtoupper($MyRows['stockid']), $MyRows['description'], locale_number_format($LocQtyRow['newqoh'], $MyRows['decimalplaces']), locale_number_format($CostRow['cost'], $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format(($CostRow['cost'] * $LocQtyRow['newqoh']), $_SESSION['CompanyRecord']['decimalplaces']));
 
 				$TotalQuantity += $LocQtyRow['newqoh'];
 			}

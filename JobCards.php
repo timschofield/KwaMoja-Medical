@@ -20,8 +20,8 @@ include('includes/JobCards.inc');
 if (!isset($_POST['JobCPrint'])) {
 	$sql = "SELECT name FROM debtorsmaster WHERE debtorno='" . $_GET['DebtorNo'] . "'";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
-	$CustomerName = $myrow['name'];
+	$MyRow = DB_fetch_array($result);
+	$CustomerName = $MyRow['name'];
 	echo '<p class="page_title_text noPrint" >';
 	echo '<img src="' . $RootPath . '/css/' . $Theme . '/images/customer.png" title="' . _('Job Cards for Customer') . '" alt="" />' . ' ' . _('Job Cards for Customer') . ' : ' . $_SESSION['CustomerID'] . ' - ' . $CustomerName;
 	echo '</p>';
@@ -229,20 +229,20 @@ if (!isset($_POST['SaveUpdateJob'])) {
 						DATE_FORMAT(CompleteDate, "%d/%m/%Y") as CompleteDate, Invoice from jobcards where debtorno="' . $_SESSION['CustomerID'] . '" and id=' . $_POST['JobCardNo'];
 				$ErrMsg = _('The job cards can not be retrieved!');
 				$job_update = DB_query($sql, $ErrMsg);
-				$myrow = DB_fetch_row($job_update);
+				$MyRow = DB_fetch_row($job_update);
 
 				//Set Values
 				echo "<script type='text/javascript'>";
-				echo "document.getElementById('crdate').value ='" . $myrow[9] . "';";
-				echo "document.getElementById('codate').value = '" . $myrow[10] . "';";
-				echo "document.getElementById('inno').value = '" . $myrow[11] . "';";
-				echo "document.getElementById('JobDescription').value = '" . $myrow[2] . "';";
-				echo "document.getElementById('task0').value = '" . $myrow[3] . "';";
-				echo "document.getElementById('task1').value = '" . $myrow[4] . "';";
-				echo "document.getElementById('task2').value = '" . $myrow[5] . "';";
-				echo "document.getElementById('task3').value = '" . $myrow[6] . "';";
-				echo "document.getElementById('task4').value = '" . $myrow[7] . "';";
-				echo "document.getElementById('task5').value = '" . $myrow[8] . "';";
+				echo "document.getElementById('crdate').value ='" . $MyRow[9] . "';";
+				echo "document.getElementById('codate').value = '" . $MyRow[10] . "';";
+				echo "document.getElementById('inno').value = '" . $MyRow[11] . "';";
+				echo "document.getElementById('JobDescription').value = '" . $MyRow[2] . "';";
+				echo "document.getElementById('task0').value = '" . $MyRow[3] . "';";
+				echo "document.getElementById('task1').value = '" . $MyRow[4] . "';";
+				echo "document.getElementById('task2').value = '" . $MyRow[5] . "';";
+				echo "document.getElementById('task3').value = '" . $MyRow[6] . "';";
+				echo "document.getElementById('task4').value = '" . $MyRow[7] . "';";
+				echo "document.getElementById('task5').value = '" . $MyRow[8] . "';";
 				echo "</script>";
 
 				if (!isset($_POST['JobCPrint'])) {

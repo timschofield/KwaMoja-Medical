@@ -39,8 +39,8 @@ if (isset($_POST['submit'])) {
 				WHERE taxprovinceid <> '" . $SelectedTaxProvince . "'
 				AND taxprovincename " . LIKE . " '" . $_POST['TaxProvinceName'] . "'";
 		$result = DB_query($sql);
-		$myrow = DB_fetch_row($result);
-		if ($myrow[0] > 0) {
+		$MyRow = DB_fetch_row($result);
+		if ($MyRow[0] > 0) {
 			$InputError = 1;
 			prnMsg(_('The tax province cannot be renamed because another with the same name already exists.'), 'error');
 		} else {
@@ -50,8 +50,8 @@ if (isset($_POST['submit'])) {
 			$result = DB_query($sql);
 			if (DB_num_rows($result) != 0) {
 				// This is probably the safest way there is
-				$myrow = DB_fetch_row($result);
-				$OldTaxProvinceName = $myrow[0];
+				$MyRow = DB_fetch_row($result);
+				$OldTaxProvinceName = $MyRow[0];
 				$sql = "UPDATE taxprovinces
 					SET taxprovincename='" . $_POST['TaxProvinceName'] . "'
 					WHERE taxprovincename " . LIKE . " '" . DB_escape_string($OldTaxProvinceName) . "'";
@@ -70,9 +70,9 @@ if (isset($_POST['submit'])) {
 		$sql = "SELECT count(*) FROM taxprovinces
 				WHERE taxprovincename " . LIKE . " '" . $_POST['TaxProvinceName'] . "'";
 		$result = DB_query($sql);
-		$myrow = DB_fetch_row($result);
+		$MyRow = DB_fetch_row($result);
 
-		if ($myrow[0] > 0) {
+		if ($MyRow[0] > 0) {
 
 			$InputError = 1;
 			prnMsg(_('The tax province cannot be created because another with the same name already exists'), 'error');
@@ -114,14 +114,14 @@ if (isset($_POST['submit'])) {
 		// This is probably the safest way there is
 		prnMsg(_('Cannot delete this tax province because it no longer exists'), 'warn');
 	} else {
-		$myrow = DB_fetch_row($result);
-		$OldTaxProvinceName = $myrow[0];
+		$MyRow = DB_fetch_row($result);
+		$OldTaxProvinceName = $MyRow[0];
 		$sql = "SELECT COUNT(*) FROM locations WHERE taxprovinceid = '" . $SelectedTaxProvince . "'";
 		$result = DB_query($sql);
-		$myrow = DB_fetch_row($result);
-		if ($myrow[0] > 0) {
+		$MyRow = DB_fetch_row($result);
+		if ($MyRow[0] > 0) {
 			prnMsg(_('Cannot delete this tax province because at least one stock location is defined to be inside this province'), 'warn');
-			echo '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('stock locations that refer to this tax province') . '</font>';
+			echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('stock locations that refer to this tax province') . '</font>';
 		} else {
 			$sql = "DELETE FROM taxauthrates WHERE dispatchtaxprovince = '" . $SelectedTaxProvince . "'";
 			$result = DB_query($sql);
@@ -167,7 +167,7 @@ if (!isset($SelectedTaxProvince)) {
 			</tr>';
 
 	$k = 0; //row colour counter
-	while ($myrow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($result)) {
 
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -177,9 +177,9 @@ if (!isset($SelectedTaxProvince)) {
 			$k++;
 		}
 
-		echo '<td>' . $myrow[1] . '</td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedTaxProvince=' . $myrow[0] . '">' . _('Edit') . '</a></td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedTaxProvince=' . $myrow[0] . '&amp;delete=1">' . _('Delete') . '</a></td>
+		echo '<td>' . $MyRow[1] . '</td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedTaxProvince=' . $MyRow[0] . '">' . _('Edit') . '</a></td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedTaxProvince=' . $MyRow[0] . '&amp;delete=1">' . _('Delete') . '</a></td>
 			</tr>';
 
 	} //END WHILE LIST LOOP
@@ -211,11 +211,11 @@ if (!isset($_GET['delete'])) {
 			prnMsg(_('Could not retrieve the requested tax province, please try again.'), 'warn');
 			unset($SelectedTaxProvince);
 		} else {
-			$myrow = DB_fetch_array($result);
+			$MyRow = DB_fetch_array($result);
 
-			$_POST['TaxProvinceName'] = $myrow['taxprovincename'];
+			$_POST['TaxProvinceName'] = $MyRow['taxprovincename'];
 
-			echo '<input type="hidden" name="SelectedTaxProvince" value="' . $myrow['taxprovinceid'] . '" />';
+			echo '<input type="hidden" name="SelectedTaxProvince" value="' . $MyRow['taxprovinceid'] . '" />';
 			echo '<table class="selection">';
 		}
 

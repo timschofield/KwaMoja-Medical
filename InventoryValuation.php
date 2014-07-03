@@ -232,8 +232,8 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['CSV'])) and isset($_POST['FromCr
 				ORDER BY categorydescription";
 
 		$CatResult = DB_query($sql);
-		while ($myrow = DB_fetch_array($CatResult)) {
-			echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . ' - ' . $myrow['categoryid'] . '</option>';
+		while ($MyRow = DB_fetch_array($CatResult)) {
+			echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . ' - ' . $MyRow['categoryid'] . '</option>';
 		}
 		echo '</select></td>
 			</tr>';
@@ -245,8 +245,8 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['CSV'])) and isset($_POST['FromCr
 		/*Set the index for the categories result set back to 0 */
 		DB_data_seek($CatResult, 0);
 
-		while ($myrow = DB_fetch_array($CatResult)) {
-			echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . ' - ' . $myrow['categoryid'] . '</option>';
+		while ($MyRow = DB_fetch_array($CatResult)) {
+			echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . ' - ' . $MyRow['categoryid'] . '</option>';
 		}
 		echo '</select></td>
 			</tr>';
@@ -272,8 +272,8 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['CSV'])) and isset($_POST['FromCr
 		$LocnResult = DB_query($sql);
 
 
-		while ($myrow = DB_fetch_array($LocnResult)) {
-			echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+		while ($MyRow = DB_fetch_array($LocnResult)) {
+			echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 		}
 		echo '</select></td>
 			</tr>';

@@ -53,8 +53,8 @@ if (isset($_POST['Select']) and empty($_POST['SupplierContact'])) {
 
 	$SuppCoResult = DB_query($sql);
 	if (DB_num_rows($SuppCoResult) > 0) {
-		$myrow = DB_fetch_row($SuppCoResult);
-		$_POST['SupplierContact'] = $myrow[0];
+		$MyRow = DB_fetch_row($SuppCoResult);
+		$_POST['SupplierContact'] = $MyRow[0];
 	} //DB_num_rows($SuppCoResult) > 0
 	else {
 		$_POST['SupplierContact'] = '';
@@ -74,8 +74,8 @@ if ((isset($_POST['UpdateStatus']) and $_POST['UpdateStatus'] != '')) {
 					AND currabrev='" . $_SESSION['PO' . $identifier]->CurrCode . "'";
 
 		$AuthResult = DB_query($AuthSQL);
-		$myrow = DB_fetch_array($AuthResult);
-		$AuthorityLevel = $myrow['authlevel'];
+		$MyRow = DB_fetch_array($AuthResult);
+		$AuthorityLevel = $MyRow['authlevel'];
 		$OrderTotal = $_SESSION['PO' . $identifier]->Order_Value();
 
 		if ($_POST['StatusComments'] != '') {
@@ -357,8 +357,8 @@ if (isset($_POST['SearchSuppliers'])) {
 	$result_SuppSelect = DB_query($SQL, $ErrMsg);
 	$SuppliersReturned = DB_num_rows($result_SuppSelect);
 	if (DB_num_rows($result_SuppSelect) == 1) {
-		$myrow = DB_fetch_array($result_SuppSelect);
-		$_POST['Select'] = $myrow['supplierid'];
+		$MyRow = DB_fetch_array($result_SuppSelect);
+		$_POST['Select'] = $MyRow['supplierid'];
 	} //DB_num_rows($result_SuppSelect) == 1
 	elseif (DB_num_rows($result_SuppSelect) == 0) {
 		prnMsg(_('No supplier records contain the selected text') . ' - ' . _('please alter your search criteria and try again'), 'info');
@@ -417,30 +417,30 @@ if (isset($_POST['Select'])) {
 	$ErrMsg = _('The supplier record of the supplier selected') . ': ' . $_POST['Select'] . ' ' . _('cannot be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve the supplier details and failed was');
 	$result = DB_query($sql, $ErrMsg, $DbgMsg);
-	$myrow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($result);
 	// added for suppliers lookup fields
 
 	$AuthSql = "SELECT cancreate
 				FROM purchorderauth
 				WHERE userid='" . $_SESSION['UserID'] . "'
-				AND currabrev='" . $myrow['currcode'] . "'";
+				AND currabrev='" . $MyRow['currcode'] . "'";
 
 	$AuthResult = DB_query($AuthSql);
 
 	if (($AuthRow = DB_fetch_array($AuthResult) and $AuthRow['cancreate'] == 0)) {
-		$_POST['SupplierName'] = $myrow['suppname'];
-		$_POST['CurrCode'] = $myrow['currcode'];
-		$_POST['CurrDecimalPlaces'] = $myrow['decimalplaces'];
-		$_POST['ExRate'] = $myrow['rate'];
-		$_POST['PaymentTerms'] = $myrow['paymentterms'];
-		$_POST['SuppDelAdd1'] = $myrow['address1'];
-		$_POST['SuppDelAdd2'] = $myrow['address2'];
-		$_POST['SuppDelAdd3'] = $myrow['address3'];
-		$_POST['SuppDelAdd4'] = $myrow['address4'];
-		$_POST['SuppDelAdd5'] = $myrow['address5'];
-		$_POST['SuppDelAdd6'] = $myrow['address6'];
-		$_POST['SuppTel'] = $myrow['telephone'];
-		$_POST['Port'] = $myrow['port'];
+		$_POST['SupplierName'] = $MyRow['suppname'];
+		$_POST['CurrCode'] = $MyRow['currcode'];
+		$_POST['CurrDecimalPlaces'] = $MyRow['decimalplaces'];
+		$_POST['ExRate'] = $MyRow['rate'];
+		$_POST['PaymentTerms'] = $MyRow['paymentterms'];
+		$_POST['SuppDelAdd1'] = $MyRow['address1'];
+		$_POST['SuppDelAdd2'] = $MyRow['address2'];
+		$_POST['SuppDelAdd3'] = $MyRow['address3'];
+		$_POST['SuppDelAdd4'] = $MyRow['address4'];
+		$_POST['SuppDelAdd5'] = $MyRow['address5'];
+		$_POST['SuppDelAdd6'] = $MyRow['address6'];
+		$_POST['SuppTel'] = $MyRow['telephone'];
+		$_POST['Port'] = $MyRow['port'];
 
 		$_SESSION['PO' . $identifier]->SupplierID = $_POST['Select'];
 		$_SESSION['RequireSupplierSelection'] = 0;
@@ -460,7 +460,7 @@ if (isset($_POST['Select'])) {
 
 	} //($AuthRow = DB_fetch_array($AuthResult) and $AuthRow['cancreate'] == 0)
 	else {
-		prnMsg(_('You do not have the authority to raise Purchase Orders for') . ' ' . $myrow['suppname'] . '. ' . _('Please Consult your system administrator for more information.') . '<br />' . _('You can setup authorisations') . ' ' . '<a href="PO_AuthorisationLevels.php">' . _('here') . '</a>', 'warn');
+		prnMsg(_('You do not have the authority to raise Purchase Orders for') . ' ' . $MyRow['suppname'] . '. ' . _('Please Consult your system administrator for more information.') . '<br />' . _('You can setup authorisations') . ' ' . '<a href="PO_AuthorisationLevels.php">' . _('here') . '</a>', 'warn');
 		include('includes/footer.inc');
 		exit;
 	}
@@ -494,23 +494,23 @@ else {
 	$DbgMsg = _('The SQL used to retrieve the supplier details and failed was');
 	$result = DB_query($sql, $ErrMsg, $DbgMsg);
 
-	$myrow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($result);
 
 	// added for suppliers lookup fields
 	if (!isset($_SESSION['PO' . $identifier])) {
-		$_POST['SupplierName'] = $myrow['suppname'];
-		$_POST['CurrCode'] = $myrow['currcode'];
-		$_POST['CurrDecimalPlaces'] = $myrow['decimalplaces'];
-		$_POST['ExRate'] = $myrow['rate'];
-		$_POST['PaymentTerms'] = $myrow['paymentterms'];
-		$_POST['SuppDelAdd1'] = $myrow['address1'];
-		$_POST['SuppDelAdd2'] = $myrow['address2'];
-		$_POST['SuppDelAdd3'] = $myrow['address3'];
-		$_POST['SuppDelAdd4'] = $myrow['address4'];
-		$_POST['SuppDelAdd5'] = $myrow['address5'];
-		$_POST['SuppDelAdd6'] = $myrow['address6'];
-		$_POST['SuppTel'] = $myrow['telephone'];
-		$_POST['Port'] = $myrow['port'];
+		$_POST['SupplierName'] = $MyRow['suppname'];
+		$_POST['CurrCode'] = $MyRow['currcode'];
+		$_POST['CurrDecimalPlaces'] = $MyRow['decimalplaces'];
+		$_POST['ExRate'] = $MyRow['rate'];
+		$_POST['PaymentTerms'] = $MyRow['paymentterms'];
+		$_POST['SuppDelAdd1'] = $MyRow['address1'];
+		$_POST['SuppDelAdd2'] = $MyRow['address2'];
+		$_POST['SuppDelAdd3'] = $MyRow['address3'];
+		$_POST['SuppDelAdd4'] = $MyRow['address4'];
+		$_POST['SuppDelAdd5'] = $MyRow['address5'];
+		$_POST['SuppDelAdd6'] = $MyRow['address6'];
+		$_POST['SuppTel'] = $MyRow['telephone'];
+		$_POST['Port'] = $MyRow['port'];
 
 
 		$_SESSION['PO' . $identifier]->SupplierID = $_POST['Select'];
@@ -569,7 +569,7 @@ if ($_SESSION['RequireSupplierSelection'] == 1 or !isset($_SESSION['PO' . $ident
 		$k = 0;
 		/*row counter to determine background colour */
 
-		while ($myrow = DB_fetch_array($result_SuppSelect)) {
+		while ($MyRow = DB_fetch_array($result_SuppSelect)) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;
@@ -579,16 +579,16 @@ if ($_SESSION['RequireSupplierSelection'] == 1 or !isset($_SESSION['PO' . $ident
 				$k++;
 			}
 
-			echo '<td><input type="submit" style="width:100%" name="Select" value="' . $myrow['supplierid'] . '" /></td>
-				<td>' . $myrow['suppname'] . '</td><td>';
+			echo '<td><input type="submit" style="width:100%" name="Select" value="' . $MyRow['supplierid'] . '" /></td>
+				<td>' . $MyRow['suppname'] . '</td><td>';
 
 			for ($i = 1; $i <= 6; $i++) {
-				if ($myrow['address' . $i] != '') {
-					echo $myrow['address' . $i] . '<br />';
-				} //$myrow['address' . $i] != ''
+				if ($MyRow['address' . $i] != '') {
+					echo $MyRow['address' . $i] . '<br />';
+				} //$MyRow['address' . $i] != ''
 			} //$i = 1; $i <= 6; $i++
 			echo '</td>
-					<td>' . $myrow['currcode'] . '</td>
+					<td>' . $MyRow['currcode'] . '</td>
 				</tr>';
 
 			//end of page full new headings if
@@ -701,8 +701,8 @@ else {
 		$_POST['PaymentTerms'] = $_SESSION['PO' . $identifier]->PaymentTerms;
 		$sql = "SELECT realname FROM www_users WHERE userid='" . $_POST['Initiator'] . "'";
 		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
-		$_POST['InitiatorName'] = $myrow['realname'];
+		$MyRow = DB_fetch_array($result);
+		$_POST['InitiatorName'] = $MyRow['realname'];
 	} //!isset($_POST['LookupDeliveryAddress']) and (!isset($_POST['StkLocation']) or $_POST['StkLocation']) and (isset($_SESSION['PO' . $identifier]->Location) and $_SESSION['PO' . $identifier]->Location != '')
 
 	echo '<br />
@@ -1120,22 +1120,22 @@ else {
 			<td>' . _('Payment Terms') . ':</td>
 			<td><select minlength="0" name="PaymentTerms">';
 
-	while ($myrow = DB_fetch_array($result)) {
-		if ($myrow['termsindicator'] == $_SESSION['PO' . $identifier]->PaymentTerms) {
-			echo '<option selected="selected" value="' . $myrow['termsindicator'] . '">' . $myrow['terms'] . '</option>';
-		} //$myrow['termsindicator'] == $_SESSION['PO' . $identifier]->PaymentTerms
+	while ($MyRow = DB_fetch_array($result)) {
+		if ($MyRow['termsindicator'] == $_SESSION['PO' . $identifier]->PaymentTerms) {
+			echo '<option selected="selected" value="' . $MyRow['termsindicator'] . '">' . $MyRow['terms'] . '</option>';
+		} //$MyRow['termsindicator'] == $_SESSION['PO' . $identifier]->PaymentTerms
 		else {
-			echo '<option value="' . $myrow['termsindicator'] . '">' . $myrow['terms'] . '</option>';
+			echo '<option value="' . $MyRow['termsindicator'] . '">' . $MyRow['terms'] . '</option>';
 		} //end while loop
-	} //$myrow = DB_fetch_array($result)
+	} //$MyRow = DB_fetch_array($result)
 	DB_data_seek($result, 0);
 	echo '</select></td></tr>';
 
 	$result = DB_query("SELECT loccode,
 							locationname
 						FROM locations WHERE loccode='" . $_SESSION['PO' . $identifier]->Port . "'");
-	$myrow = DB_fetch_array($result);
-	$_POST['Port'] = $myrow['locationname'];
+	$MyRow = DB_fetch_array($result);
+	$_POST['Port'] = $MyRow['locationname'];
 
 	echo '<tr>
 			<td>' . _('Delivery To') . ':</td>

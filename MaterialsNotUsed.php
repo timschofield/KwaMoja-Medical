@@ -43,7 +43,7 @@ if (DB_num_rows($result) != 0) {
 				<th>' . _('Value') . '</th>
 			</tr>';
 	$k = 0; //row colour counter
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -51,8 +51,8 @@ if (DB_num_rows($result) != 0) {
 			echo '<tr class="OddTableRows">';
 			$k = 1;
 		}
-		$CodeLink = '<a href="' . $RootPath . '/SelectProduct.php?StockID=' . urlencode($myrow['stockid']) . '">' . $myrow['stockid'] . '</a>';
-		$LineValue = $myrow['qoh'] * $myrow['stdcost'];
+		$CodeLink = '<a href="' . $RootPath . '/SelectProduct.php?StockID=' . urlencode($MyRow['stockid']) . '">' . $MyRow['stockid'] . '</a>';
+		$LineValue = $MyRow['qoh'] * $MyRow['stdcost'];
 		$TotalValue = $TotalValue + $LineValue;
 
 		printf('<td class="number">%s</td>
@@ -61,7 +61,7 @@ if (DB_num_rows($result) != 0) {
 				<td class="number">%s</td>
 				<td class="number">%s</td>
 				<td class="number">%s</td>
-				</tr>', $i, $CodeLink, $myrow['description'], locale_number_format($myrow['qoh'], $myrow['decimalplaces']), locale_number_format($myrow['stdcost'], $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($LineValue, $_SESSION['CompanyRecord']['decimalplaces']));
+				</tr>', $i, $CodeLink, $MyRow['description'], locale_number_format($MyRow['qoh'], $MyRow['decimalplaces']), locale_number_format($MyRow['stdcost'], $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($LineValue, $_SESSION['CompanyRecord']['decimalplaces']));
 		$i++;
 	}
 

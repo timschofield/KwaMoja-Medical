@@ -119,12 +119,12 @@ if (DB_num_rows($AccountsResults) == 0) {
 	include('includes/footer.inc');
 	exit;
 } else {
-	while ($myrow = DB_fetch_array($AccountsResults)) {
+	while ($MyRow = DB_fetch_array($AccountsResults)) {
 		/*list the bank account names */
-		if (isset($_POST['BankAccount']) and $_POST['BankAccount'] == $myrow['accountcode']) {
-			echo '<option selected="selected" value="' . $myrow['accountcode'] . '">' . $myrow['bankaccountname'] . '</option>';
+		if (isset($_POST['BankAccount']) and $_POST['BankAccount'] == $MyRow['accountcode']) {
+			echo '<option selected="selected" value="' . $MyRow['accountcode'] . '">' . $MyRow['bankaccountname'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['accountcode'] . '">' . $myrow['bankaccountname'] . '</option>';
+			echo '<option value="' . $MyRow['accountcode'] . '">' . $MyRow['bankaccountname'] . '</option>';
 		}
 	}
 	echo '</select></td>
@@ -160,8 +160,8 @@ if (isset($_POST['ShowRec']) or isset($_POST['DoExchangeDifference'])) {
 	$ErrMsg = _('The bank account balance could not be returned by the SQL because');
 	$BalanceResult = DB_query($SQL, $ErrMsg);
 
-	$myrow = DB_fetch_row($BalanceResult);
-	$Balance = $myrow[0];
+	$MyRow = DB_fetch_row($BalanceResult);
+	$Balance = $MyRow[0];
 
 	/* Now need to get the currency of the account and the current table ex rate */
 	$SQL = "SELECT rate,
@@ -225,7 +225,7 @@ if (isset($_POST['ShowRec']) or isset($_POST['DoExchangeDifference'])) {
 	$k = 0; //row colour counter
 	$TotalUnpresentedCheques = 0;
 
-	while ($myrow = DB_fetch_array($UPChequesResult)) {
+	while ($MyRow = DB_fetch_array($UPChequesResult)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -240,9 +240,9 @@ if (isset($_POST['ShowRec']) or isset($_POST['DoExchangeDifference'])) {
 				<td>%s</td>
 				<td class="number">%s</td>
 				<td class="number">%s</td>
-				</tr>', ConvertSQLDate($myrow['transdate']), $myrow['typename'], $myrow['transno'], $myrow['ref'], locale_number_format($myrow['amt'], $CurrencyRow['currdecimalplaces']), locale_number_format($myrow['outstanding'], $CurrencyRow['currdecimalplaces']));
+				</tr>', ConvertSQLDate($MyRow['transdate']), $MyRow['typename'], $MyRow['transno'], $MyRow['ref'], locale_number_format($MyRow['amt'], $CurrencyRow['currdecimalplaces']), locale_number_format($MyRow['outstanding'], $CurrencyRow['currdecimalplaces']));
 
-		$TotalUnpresentedCheques += $myrow['outstanding'];
+		$TotalUnpresentedCheques += $MyRow['outstanding'];
 
 	}
 	//end of while loop
@@ -293,7 +293,7 @@ if (isset($_POST['ShowRec']) or isset($_POST['DoExchangeDifference'])) {
 	$k = 0; //row colour counter
 	$TotalUnclearedDeposits = 0;
 
-	while ($myrow = DB_fetch_array($UPChequesResult)) {
+	while ($MyRow = DB_fetch_array($UPChequesResult)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -308,9 +308,9 @@ if (isset($_POST['ShowRec']) or isset($_POST['DoExchangeDifference'])) {
 				<td>%s</td>
 				<td class="number">%s</td>
 				<td class="number">%s</td>
-				</tr>', ConvertSQLDate($myrow['transdate']), $myrow['typename'], $myrow['transno'], $myrow['ref'], locale_number_format($myrow['amt'], $CurrencyRow['currdecimalplaces']), locale_number_format($myrow['outstanding'], $CurrencyRow['currdecimalplaces']));
+				</tr>', ConvertSQLDate($MyRow['transdate']), $MyRow['typename'], $MyRow['transno'], $MyRow['ref'], locale_number_format($MyRow['amt'], $CurrencyRow['currdecimalplaces']), locale_number_format($MyRow['outstanding'], $CurrencyRow['currdecimalplaces']));
 
-		$TotalUnclearedDeposits += $myrow['outstanding'];
+		$TotalUnclearedDeposits += $MyRow['outstanding'];
 
 	}
 	//end of while loop

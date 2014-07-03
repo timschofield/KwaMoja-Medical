@@ -14,12 +14,12 @@ echo '<table>
 			<th>' . _('Can field be null') . '</th>
 			<th>' . _('Default') . '</th>
 		</tr>';
-while ($myrow = DB_fetch_row($result)) {
+while ($MyRow = DB_fetch_row($result)) {
 	echo '<tr>
-			<td>' . $myrow[0] . '</td>
-			<td>' . $myrow[1] . '</td>
-			<td>' . $myrow[2] . '</td>
-			<td>' . $myrow[4] . '</td><
+			<td>' . $MyRow[0] . '</td>
+			<td>' . $MyRow[1] . '</td>
+			<td>' . $MyRow[2] . '</td>
+			<td>' . $MyRow[4] . '</td><
 		/tr>';
 }
 echo '</table>';

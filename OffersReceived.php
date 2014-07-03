@@ -13,11 +13,11 @@ if (isset($_POST['supplierid'])) {
 			FROM suppliers
 			WHERE supplierid='" . $_POST['supplierid'] . "'";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
-	$SupplierName = $myrow['suppname'];
-	$Email = $myrow['email'];
-	$CurrCode = $myrow['currcode'];
-	$PaymentTerms = $myrow['paymentterms'];
+	$MyRow = DB_fetch_array($result);
+	$SupplierName = $MyRow['suppname'];
+	$Email = $MyRow['email'];
+	$CurrCode = $MyRow['currcode'];
+	$PaymentTerms = $MyRow['paymentterms'];
 }
 
 if (!isset($_POST['supplierid'])) {
@@ -45,8 +45,8 @@ if (!isset($_POST['supplierid'])) {
 			<tr>
 				<td>' . _('Select Supplier') . '</td>
 				<td><select minlength="0" name=supplierid>';
-		while ($myrow = DB_fetch_array($result)) {
-			echo '<option value="' . $myrow['supplierid'] . '">' . $myrow['suppname'] . '</option>';
+		while ($MyRow = DB_fetch_array($result)) {
+			echo '<option value="' . $MyRow['supplierid'] . '">' . $MyRow['suppname'] . '</option>';
 		}
 		echo '</select></td>
 			</tr>
@@ -115,7 +115,7 @@ if (!isset($_POST['submit']) and isset($_POST['supplierid'])) {
 			</tr>';
 	$k = 0;
 	echo 'The result has rows ' . DB_num_rows($result) . '<br/>';
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -123,19 +123,19 @@ if (!isset($_POST['submit']) and isset($_POST['supplierid'])) {
 			echo '<tr class="OddTableRows">';
 			$k++;
 		}
-		echo '<td>' . $myrow['offerid'] . '</td>
-			<td>' . $myrow['suppname'] . '</td>
-			<td>' . $myrow['description'] . '</td>
-			<td class="number">' . locale_number_format($myrow['quantity'], $myrow['decimalplaces']) . '</td>
-			<td>' . $myrow['uom'] . '</td>
-			<td class="number">' . locale_number_format($myrow['price'], $myrow['currdecimalplaces']) . '</td>
-			<td class="number">' . locale_number_format($myrow['price'] * $myrow['quantity'], $myrow['currdecimalplaces']) . '</td>
-			<td>' . $myrow['currcode'] . '</td>
-			<td>' . $myrow['expirydate'] . '</td>
-			<td><input type="radio" name="action' . $myrow['offerid'] . '" value="1" /></td>
-			<td><input type="radio" name="action' . $myrow['offerid'] . '" value="2" /></td>
-			<td><input type="radio" checked name="action' . $myrow['offerid'] . '" value="3" /></td>
-			<td><input type="hidden" name="supplierid" value="' . $myrow['supplierid'] . '" /></td>
+		echo '<td>' . $MyRow['offerid'] . '</td>
+			<td>' . $MyRow['suppname'] . '</td>
+			<td>' . $MyRow['description'] . '</td>
+			<td class="number">' . locale_number_format($MyRow['quantity'], $MyRow['decimalplaces']) . '</td>
+			<td>' . $MyRow['uom'] . '</td>
+			<td class="number">' . locale_number_format($MyRow['price'], $MyRow['currdecimalplaces']) . '</td>
+			<td class="number">' . locale_number_format($MyRow['price'] * $MyRow['quantity'], $MyRow['currdecimalplaces']) . '</td>
+			<td>' . $MyRow['currcode'] . '</td>
+			<td>' . $MyRow['expirydate'] . '</td>
+			<td><input type="radio" name="action' . $MyRow['offerid'] . '" value="1" /></td>
+			<td><input type="radio" name="action' . $MyRow['offerid'] . '" value="2" /></td>
+			<td><input type="radio" checked name="action' . $MyRow['offerid'] . '" value="3" /></td>
+			<td><input type="hidden" name="supplierid" value="' . $MyRow['supplierid'] . '" /></td>
 		</tr>';
 	}
 	echo '<tr>
@@ -175,8 +175,8 @@ if (!isset($_POST['submit']) and isset($_POST['supplierid'])) {
 		$MailText .= _('An official order will be sent to you in due course') . "\n\n";
 		$sql = "SELECT rate FROM currencies where currabrev='" . $CurrCode . "'";
 		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
-		$Rate = $myrow['rate'];
+		$MyRow = DB_fetch_array($result);
+		$Rate = $MyRow['rate'];
 		$OrderNo = GetNextTransNo(18);
 		$sql = "INSERT INTO purchorders (
 					orderno,
@@ -212,8 +212,8 @@ if (!isset($_POST['submit']) and isset($_POST['supplierid'])) {
 							ON offers.stockid=stockmaster.stockid
 						WHERE offerid='" . $AcceptID . "'";
 			$result = DB_query($sql);
-			$myrow = DB_fetch_array($result);
-			$MailText .= $myrow['description'] . "\t" . _('Quantity') . ' ' . $myrow['quantity'] . "\t" . _('Price') . ' ' . locale_number_format($myrow['price']) . "\n";
+			$MyRow = DB_fetch_array($result);
+			$MailText .= $MyRow['description'] . "\t" . _('Quantity') . ' ' . $MyRow['quantity'] . "\t" . _('Price') . ' ' . locale_number_format($MyRow['price']) . "\n";
 			$sql = "INSERT INTO purchorderdetails (orderno,
 												itemcode,
 												deliverydate,
@@ -223,13 +223,13 @@ if (!isset($_POST['submit']) and isset($_POST['supplierid'])) {
 												quantityord,
 												suppliersunit)
 									VALUES ('" . $OrderNo . "',
-											'" . $myrow['stockid'] . "',
+											'" . $MyRow['stockid'] . "',
 											'CURRENT_DATE',
-											'" . DB_escape_string($myrow['description']) . "',
-											'" . $myrow['price'] . "',
-											'" . $myrow['price'] . "',
-											'" . $myrow['quantity'] . "',
-											'" . $myrow['uom'] . "')";
+											'" . DB_escape_string($MyRow['description']) . "',
+											'" . $MyRow['price'] . "',
+											'" . $MyRow['price'] . "',
+											'" . $MyRow['quantity'] . "',
+											'" . $MyRow['uom'] . "')";
 			$result = DB_query($sql);
 			$sql = "DELETE FROM offers WHERE offerid='" . $AcceptID . "'";
 			$result = DB_query($sql);
@@ -270,8 +270,8 @@ if (!isset($_POST['submit']) and isset($_POST['supplierid'])) {
 							ON offers.stockid=stockmaster.stockid
 						WHERE offerid='" . $RejectID . "'";
 			$result = DB_query($sql);
-			$myrow = DB_fetch_array($result);
-			$MailText .= $myrow['description'] . "\t" . _('Quantity') . ' ' . $myrow['quantity'] . "\t" . _('Price') . ' ' . locale_number_format($myrow['price']) . "\n";
+			$MyRow = DB_fetch_array($result);
+			$MailText .= $MyRow['description'] . "\t" . _('Quantity') . ' ' . $MyRow['quantity'] . "\t" . _('Price') . ' ' . locale_number_format($MyRow['price']) . "\n";
 			$sql = "DELETE FROM offers WHERE offerid='" . $RejectID . "'";
 			$result = DB_query($sql);
 		}

@@ -108,7 +108,7 @@ if (isset($_POST['Search']) and isset($result) and !isset($SelectedParent)) {
 
 	$k = 0; //row colour counter
 	$j = 0;
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -116,17 +116,17 @@ if (isset($_POST['Search']) and isset($result) and !isset($SelectedParent)) {
 			echo '<tr class="OddTableRows">';
 			$k++;
 		}
-		if ($myrow['mbflag'] == 'A' or $myrow['mbflag'] == 'K') {
+		if ($MyRow['mbflag'] == 'A' or $MyRow['mbflag'] == 'K') {
 			$StockOnHand = 'N/A';
 		} else {
-			$StockOnHand = locale_number_format($myrow['totalonhand'], 2);
+			$StockOnHand = locale_number_format($MyRow['totalonhand'], 2);
 		}
 		$tabindex = $j + 4;
 		printf('<td><input tabindex="' . $tabindex . '" type="submit" name="StockID" value="%s" /></td>
 				<td>%s</td>
 				<td class="number">%s</td>
 				<td>%s</td>
-				</tr>', $myrow['stockid'], $myrow['description'], $StockOnHand, $myrow['units']);
+				</tr>', $MyRow['stockid'], $MyRow['description'], $StockOnHand, $MyRow['units']);
 		$j++;
 		//end of page full new headings if
 	}
@@ -146,9 +146,9 @@ if (isset($StockID) and $StockID != "") {
 								overheadcost
 						FROM stockmaster
 						WHERE stockid='" . $StockID . "'");
-	$myrow = DB_fetch_array($result);
-	$ParentLabourCost = $myrow['labourcost'];
-	$ParentOverheadCost = $myrow['overheadcost'];
+	$MyRow = DB_fetch_array($result);
+	$ParentLabourCost = $MyRow['labourcost'];
+	$ParentOverheadCost = $MyRow['overheadcost'];
 
 	$sql = "SELECT bom.parent,
 					bom.component,
@@ -182,7 +182,7 @@ if (isset($StockID) and $StockID != "") {
 		echo '<table class="selection">';
 		echo '<tr>
 				<th colspan="5">
-					<div class="centre"><b>' . $myrow[0] . ' : ' . _('per') . ' ' . $myrow[1] . '</b>
+					<div class="centre"><b>' . $MyRow[0] . ' : ' . _('per') . ' ' . $MyRow[1] . '</b>
 					</div></th>
 			</tr>
 			<tr>
@@ -198,7 +198,7 @@ if (isset($StockID) and $StockID != "") {
 
 		$TotalCost = 0;
 
-		while ($myrow = DB_fetch_array($BOMResult)) {
+		while ($MyRow = DB_fetch_array($BOMResult)) {
 
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
@@ -208,7 +208,7 @@ if (isset($StockID) and $StockID != "") {
 				$k++;
 			}
 
-			$ComponentLink = '<a href="' . $RootPath . '/SelectProduct.php?StockID=' . urlencode($myrow['component']) . '">' . $myrow['component'] . '</a>';
+			$ComponentLink = '<a href="' . $RootPath . '/SelectProduct.php?StockID=' . urlencode($MyRow['component']) . '">' . $MyRow['component'] . '</a>';
 
 			/* Component Code  Description  Quantity Std Cost  Total Cost */
 			printf('<td>%s</td>
@@ -216,9 +216,9 @@ if (isset($StockID) and $StockID != "") {
 					<td class="number">%s</td>
 					<td class="number">%.2f</td>
 					<td class="number">%.2f</td>
-					</tr>', $ComponentLink, $myrow['description'], locale_number_format($myrow['quantity'], $myrow['decimalplaces']), $myrow['standardcost'], $myrow['componentcost']);
+					</tr>', $ComponentLink, $MyRow['description'], locale_number_format($MyRow['quantity'], $MyRow['decimalplaces']), $MyRow['standardcost'], $MyRow['componentcost']);
 
-			$TotalCost += $myrow['componentcost'];
+			$TotalCost += $MyRow['componentcost'];
 
 			$j++;
 		}

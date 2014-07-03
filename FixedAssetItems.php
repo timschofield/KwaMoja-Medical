@@ -513,13 +513,13 @@ $ErrMsg = _('The asset categories could not be retrieved because');
 $DbgMsg = _('The SQL used to retrieve stock categories and failed was');
 $result = DB_query($sql, $ErrMsg, $DbgMsg);
 
-while ($myrow = DB_fetch_array($result)) {
-	if (!isset($_POST['AssetCategoryID']) or $myrow['categoryid'] == $_POST['AssetCategoryID']) {
-		echo '<option selected="selected" value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . '</option>';
+while ($MyRow = DB_fetch_array($result)) {
+	if (!isset($_POST['AssetCategoryID']) or $MyRow['categoryid'] == $_POST['AssetCategoryID']) {
+		echo '<option selected="selected" value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 	} else {
-		echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . '</option>';
+		echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 	}
-	$category = $myrow['categoryid'];
+	$category = $MyRow['categoryid'];
 }
 echo '</select><a target="_blank" href="' . $RootPath . '/FixedAssetCategories.php">' . ' ' . _('Add or Modify Asset Categories') . '</a></td></tr>';
 if (!isset($_POST['AssetCategoryID'])) {
@@ -542,11 +542,11 @@ echo '<tr>
 		<td>' . _('Asset Location') . ':</td>
 		<td><select minlength="0" name="AssetLocation">';
 
-while ($myrow = DB_fetch_array($result)) {
-	if ($_POST['AssetLocation'] == $myrow['locationid']) {
-		echo '<option selected="selected" value="' . $myrow['locationid'] . '">' . $myrow['locationdescription'] . '</option>';
+while ($MyRow = DB_fetch_array($result)) {
+	if ($_POST['AssetLocation'] == $MyRow['locationid']) {
+		echo '<option selected="selected" value="' . $MyRow['locationid'] . '">' . $MyRow['locationdescription'] . '</option>';
 	} else {
-		echo '<option value="' . $myrow['locationid'] . '">' . $myrow['locationdescription'] . '</option>';
+		echo '<option value="' . $MyRow['locationid'] . '">' . $MyRow['locationdescription'] . '</option>';
 	}
 }
 echo '</select>

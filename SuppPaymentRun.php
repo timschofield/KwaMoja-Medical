@@ -243,7 +243,7 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['PrintPDFAndProcess'])) and isset
 				FROM suppliers";
 
 	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($result);
 
 	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 	echo '<div>';
@@ -251,12 +251,12 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['PrintPDFAndProcess'])) and isset
 	echo '<table class="selection">';
 
 	if (!isset($_POST['FromCriteria']) or mb_strlen($_POST['FromCriteria']) < 1) {
-		$DefaultFromCriteria = $myrow['fromcriteria'];
+		$DefaultFromCriteria = $MyRow['fromcriteria'];
 	} else {
 		$DefaultFromCriteria = $_POST['FromCriteria'];
 	}
 	if (!isset($_POST['ToCriteria']) or mb_strlen($_POST['ToCriteria']) < 1) {
-		$DefaultToCriteria = $myrow['tocriteria'];
+		$DefaultToCriteria = $MyRow['tocriteria'];
 	} else {
 		$DefaultToCriteria = $_POST['ToCriteria'];
 	}
@@ -277,11 +277,11 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['PrintPDFAndProcess'])) and isset
 	$sql = "SELECT currency, currabrev FROM currencies";
 	$result = DB_query($sql);
 
-	while ($myrow = DB_fetch_array($result)) {
-		if ($myrow['currabrev'] == $_SESSION['CompanyRecord']['currencydefault']) {
-			echo '<option selected="selected" value="' . $myrow['currabrev'] . '">' . $myrow['currency'] . '</option>';
+	while ($MyRow = DB_fetch_array($result)) {
+		if ($MyRow['currabrev'] == $_SESSION['CompanyRecord']['currencydefault']) {
+			echo '<option selected="selected" value="' . $MyRow['currabrev'] . '">' . $MyRow['currency'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['currabrev'] . '">' . $myrow['currency'] . '</option>';
+			echo '<option value="' . $MyRow['currabrev'] . '">' . $MyRow['currency'] . '</option>';
 		}
 	}
 	echo '</select></td>
@@ -333,13 +333,13 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['PrintPDFAndProcess'])) and isset
 		include('includes/footer.inc');
 		exit;
 	} else {
-		while ($myrow = DB_fetch_array($AccountsResults)) {
+		while ($MyRow = DB_fetch_array($AccountsResults)) {
 			/*list the bank account names */
 
-			if (isset($_POST['BankAccount']) and $_POST['BankAccount'] == $myrow['accountcode']) {
-				echo '<option selected="selected" value="' . $myrow['accountcode'] . '">' . $myrow['bankaccountname'] . '</option>';
+			if (isset($_POST['BankAccount']) and $_POST['BankAccount'] == $MyRow['accountcode']) {
+				echo '<option selected="selected" value="' . $MyRow['accountcode'] . '">' . $MyRow['bankaccountname'] . '</option>';
 			} else {
-				echo '<option value="' . $myrow['accountcode'] . '">' . $myrow['bankaccountname'] . '</option>';
+				echo '<option value="' . $MyRow['accountcode'] . '">' . $MyRow['bankaccountname'] . '</option>';
 			}
 		}
 		echo '</select></td>

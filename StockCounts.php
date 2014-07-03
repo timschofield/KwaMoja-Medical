@@ -57,9 +57,9 @@ if ($_GET['Action'] == 'Enter') {
 				$ErrMsg = _('Could not determine if the part being ordered was a kitset or not because');
 				$DbgMsg = _('The sql that was used to determine if the part being ordered was a kitset or not was ');
 				$KitResult = DB_query($sql, $ErrMsg, $DbgMsg);
-				$myrow = DB_fetch_array($KitResult);
+				$MyRow = DB_fetch_array($KitResult);
 
-				$_POST[$StockID] = strtoupper($myrow['stockid']);
+				$_POST[$StockID] = strtoupper($MyRow['stockid']);
 			}
 
 			if (mb_strlen($_POST[$StockID]) > 0) {
@@ -122,23 +122,23 @@ if ($_GET['Action'] == 'Enter') {
 							AND loccode='" . $_POST['Location'] . "'";
 		}
 		$result = DB_query($sql);
-		while ($myrow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($result)) {
 
-			if (isset($_POST['Location']) and $myrow['loccode'] == $_POST['Location']) {
-				echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+			if (isset($_POST['Location']) and $MyRow['loccode'] == $_POST['Location']) {
+				echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 			} else {
-				echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+				echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 			}
 		}
 		echo '</select>&nbsp;<input type="submit" name="EnterByCat" value="' . _('Enter By Category') . '" /><select name="StkCat" onChange="ReloadForm(EnterCountsForm.EnterByCat)" >';
 
 		echo '<option value="">' . _('Not Yet Selected') . '</option>';
 
-		while ($myrow = DB_fetch_array($CatsResult)) {
-			if (isset($_POST['StkCat']) and $_POST['StkCat'] == $myrow['categoryid']) {
-				echo '<option selected="selected" value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . '</option>';
+		while ($MyRow = DB_fetch_array($CatsResult)) {
+			if (isset($_POST['StkCat']) and $_POST['StkCat'] == $MyRow['categoryid']) {
+				echo '<option selected="selected" value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 			} else {
-				echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . '</option>';
+				echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 			}
 		}
 		echo '</select>
@@ -231,14 +231,14 @@ if ($_GET['Action'] == 'Enter') {
 				<th>' . _('Reference') . '</th>
 				<th>' . _('Delete?') . '</th>
 			</tr>';
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		echo '<tr>
-				<td>' . $myrow['stockid'] . '</td>
-				<td>' . $myrow['loccode'] . '</td>
-				<td>' . $myrow['qtycounted'] . '</td>
-				<td>' . $myrow['reference'] . '</td>
+				<td>' . $MyRow['stockid'] . '</td>
+				<td>' . $MyRow['loccode'] . '</td>
+				<td>' . $MyRow['qtycounted'] . '</td>
+				<td>' . $MyRow['reference'] . '</td>
 				<td>';
-		echo '<input type="checkbox" name="DEL[' . $myrow['id'] . ']" minlength="0" maxlength="20" size="20" /></td></tr>';
+		echo '<input type="checkbox" name="DEL[' . $MyRow['id'] . ']" minlength="0" maxlength="20" size="20" /></td></tr>';
 
 	}
 	echo '</table>

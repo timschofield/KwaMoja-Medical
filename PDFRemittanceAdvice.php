@@ -10,13 +10,13 @@ if ((isset($_POST['PrintPDF'])) and isset($_POST['FromCriteria']) and mb_strlen(
 				FROM suppliers";
 
 	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($result);
 
 	if ($_POST['FromCriteria']=='') {
-		$_POST['FromCriteria'] = $myrow['fromcriteria'];
+		$_POST['FromCriteria'] = $MyRow['fromcriteria'];
 	}
 	if ($_POST['ToCriteria']=='') {
-		$_POST['Toriteria'] = $myrow['tocriteria'];
+		$_POST['Toriteria'] = $MyRow['tocriteria'];
 	}
 
 	$sql = "SELECT suppliers.supplierid,
@@ -155,15 +155,15 @@ if ((isset($_POST['PrintPDF'])) and isset($_POST['FromCriteria']) and mb_strlen(
 				FROM suppliers";
 
 	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($result);
 
 	echo '<tr>
 			<td>' . _('From Supplier Code') . ':</td>
-			<td><input type="text" required="required" minlength="1" maxlength="6" size="7" name="FromCriteria" value="' . $myrow['fromcriteria'] . '" /></td>
+			<td><input type="text" required="required" minlength="1" maxlength="6" size="7" name="FromCriteria" value="' . $MyRow['fromcriteria'] . '" /></td>
 		</tr>';
 	echo '<tr>
 			<td>' . _('To Supplier Code') . ':</td>
-			<td><input type="text" required="required" minlength="1" maxlength="6" size="7" name="ToCriteria" value="' . $myrow['tocriteria'] . '" /></td>
+			<td><input type="text" required="required" minlength="1" maxlength="6" size="7" name="ToCriteria" value="' . $MyRow['tocriteria'] . '" /></td>
 		</tr>';
 
 	if (!isset($_POST['PaymentDate'])) {

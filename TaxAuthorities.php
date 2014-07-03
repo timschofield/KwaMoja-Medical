@@ -110,8 +110,8 @@ if (isset($_POST['submit'])) {
 		WHERE taxauthid='" . $SelectedTaxAuthID . "'";
 
 	$result = DB_query($sql);
-	$myrow = DB_fetch_row($result);
-	if ($myrow[0] > 0) {
+	$MyRow = DB_fetch_row($result);
+	if ($MyRow[0] > 0) {
 		prnmsg(_('Cannot delete this tax authority because there are tax groups defined that use it'), 'warn');
 	} else {
 		/*Cascade deletes in TaxAuthLevels */
@@ -158,7 +158,7 @@ if (!isset($SelectedTaxAuthID)) {
 				<th>' . _('Bank Swift') . '</th>
 			</tr>';
 	$k = 0;
-	while ($myrow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($result)) {
 
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -168,17 +168,17 @@ if (!isset($SelectedTaxAuthID)) {
 			$k++;
 		}
 
-		echo '<td>' . $myrow[0] . '</td>
-				<td>' . $myrow[1]. '</td>
-				<td>' . $myrow[3] . '</td>
-				<td>' . $myrow[2] . '</td>
-				<td>' . $myrow[4] . '</td>
-				<td>' . $myrow[5] . '</td>
-				<td>' . $myrow[6] . '</td>
-				<td>' . $myrow[7] . '</td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedTaxAuthID=' . urlencode($myrow[0]) . '">' . _('Edit') . '</a></td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedTaxAuthID=' . urlencode($myrow[0]) . '&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this tax authority?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-				<td><a href="' . $RootPath . '/TaxAuthorityRates.php?TaxAuthority=' . urlencode($myrow[0]) . '">' . _('Edit Rates') . '</a></td>
+		echo '<td>' . $MyRow[0] . '</td>
+				<td>' . $MyRow[1]. '</td>
+				<td>' . $MyRow[3] . '</td>
+				<td>' . $MyRow[2] . '</td>
+				<td>' . $MyRow[4] . '</td>
+				<td>' . $MyRow[5] . '</td>
+				<td>' . $MyRow[6] . '</td>
+				<td>' . $MyRow[7] . '</td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedTaxAuthID=' . urlencode($MyRow[0]) . '">' . _('Edit') . '</a></td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedTaxAuthID=' . urlencode($MyRow[0]) . '&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this tax authority?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+				<td><a href="' . $RootPath . '/TaxAuthorityRates.php?TaxAuthority=' . urlencode($MyRow[0]) . '">' . _('Edit Rates') . '</a></td>
 				</tr>';
 
 	}
@@ -215,15 +215,15 @@ if (isset($SelectedTaxAuthID)) {
 			WHERE taxid='" . $SelectedTaxAuthID . "'";
 
 	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($result);
 
-	$_POST['TaxGLCode'] = $myrow['taxglcode'];
-	$_POST['PurchTaxGLCode'] = $myrow['purchtaxglaccount'];
-	$_POST['Description'] = $myrow['description'];
-	$_POST['Bank'] = $myrow['bank'];
-	$_POST['BankAccType'] = $myrow['bankacctype'];
-	$_POST['BankAcc'] = $myrow['bankacc'];
-	$_POST['BankSwift'] = $myrow['bankswift'];
+	$_POST['TaxGLCode'] = $MyRow['taxglcode'];
+	$_POST['PurchTaxGLCode'] = $MyRow['purchtaxglaccount'];
+	$_POST['Description'] = $MyRow['description'];
+	$_POST['Bank'] = $MyRow['bank'];
+	$_POST['BankAccType'] = $MyRow['bankacctype'];
+	$_POST['BankAcc'] = $MyRow['bankacc'];
+	$_POST['BankSwift'] = $MyRow['bankswift'];
 
 
 	echo '<input type="hidden" name="SelectedTaxAuthID" value="' . $SelectedTaxAuthID . '" />';
@@ -238,8 +238,8 @@ $SQL = "SELECT accountcode,
 		WHERE accountgroups.pandl=0
 		ORDER BY accountcode";
 $result = DB_query($SQL);
-while ($myrow = DB_fetch_array($result)) {
-	$GLAccounts[$myrow['accountcode']] =$myrow['accountname'];
+while ($MyRow = DB_fetch_array($result)) {
+	$GLAccounts[$MyRow['accountcode']] =$MyRow['accountname'];
 }
 
 if (!isset($_POST['Description'])) {

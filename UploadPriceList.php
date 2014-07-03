@@ -52,10 +52,10 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 
 	//loop through file rows
 	$row = 1;
-	while (($myrow = fgetcsv($FileHandle, 10000, ",")) !== FALSE) {
+	while (($MyRow = fgetcsv($FileHandle, 10000, ",")) !== FALSE) {
 
 		//check for correct number of fields
-		$FieldCount = count($myrow);
+		$FieldCount = count($MyRow);
 		if ($FieldCount != $FieldTarget) {
 			prnMsg(_($FieldTarget . ' fields required, ' . $FieldCount . ' fields received'), 'error');
 			fclose($FileHandle);
@@ -64,48 +64,48 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 		}
 
 		// cleanup the data (csv files often import with empty strings and such)
-		$StockID = mb_strtoupper($myrow[0]);
-		foreach ($myrow as &$value) {
+		$StockID = mb_strtoupper($MyRow[0]);
+		foreach ($MyRow as &$value) {
 			$value = trim($value);
 			$value = str_replace('"', '', $value);
 		}
 
 		//first off check that the item actually exists
-		$sql = "SELECT COUNT(stockid) FROM stockmaster WHERE stockid='" . $myrow[0] . "'";
+		$sql = "SELECT COUNT(stockid) FROM stockmaster WHERE stockid='" . $MyRow[0] . "'";
 		$result = DB_query($sql);
 		$testrow = DB_fetch_row($result);
 		if ($testrow[0] == 0) {
 			$InputError = 1;
-			prnMsg(_('Stock item "' . $myrow[0] . '" does not exist'), 'error');
+			prnMsg(_('Stock item "' . $MyRow[0] . '" does not exist'), 'error');
 		}
 		//Then check that the price list actually exists
-		$sql = "SELECT COUNT(typeabbrev) FROM salestypes WHERE typeabbrev='" . $myrow[1] . "'";
+		$sql = "SELECT COUNT(typeabbrev) FROM salestypes WHERE typeabbrev='" . $MyRow[1] . "'";
 		$result = DB_query($sql);
 		$testrow = DB_fetch_row($result);
 		if ($testrow[0] == 0) {
 			$InputError = 1;
-			prnMsg(_('Price List "' . $myrow[1] . '" does not exist'), 'error');
+			prnMsg(_('Price List "' . $MyRow[1] . '" does not exist'), 'error');
 		}
 
 		//Then check that the currency code actually exists
-		$sql = "SELECT COUNT(currabrev) FROM currencies WHERE currabrev='" . $myrow[2] . "'";
+		$sql = "SELECT COUNT(currabrev) FROM currencies WHERE currabrev='" . $MyRow[2] . "'";
 		$result = DB_query($sql);
 		$testrow = DB_fetch_row($result);
 		if ($testrow[0] == 0) {
 			$InputError = 1;
-			prnMsg(_('Price List "' . $myrow[2] . '" does not exist'), 'error');
+			prnMsg(_('Price List "' . $MyRow[2] . '" does not exist'), 'error');
 		}
 
 		//Finally force the price to be a double
-		$myrow[3] = (double) $myrow[3];
+		$MyRow[3] = (double) $MyRow[3];
 		if ($InputError != 1) {
 
 			//Firstly close any open prices for this item
 			$sql = "UPDATE prices
 						SET enddate='" . FormatDateForSQL($_POST['StartDate']) . "'
-						WHERE stockid='" . $myrow[0] . "'
+						WHERE stockid='" . $MyRow[0] . "'
 							AND enddate>CURRENT_DATE
-							AND typeabbrev='" . $myrow[1] . "'";
+							AND typeabbrev='" . $MyRow[1] . "'";
 			$result = DB_query($sql);
 
 			//Insert the price
@@ -115,10 +115,10 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 										price,
 										startdate
 									) VALUES (
-										'" . $myrow[0] . "',
-										'" . $myrow[1] . "',
-										'" . $myrow[2] . "',
-										'" . $myrow[3] . "',
+										'" . $MyRow[0] . "',
+										'" . $MyRow[1] . "',
+										'" . $MyRow[2] . "',
+										'" . $MyRow[3] . "',
 										'" . FormatDateForSQL($_POST['StartDate']) . "'
 										)";
 

@@ -732,7 +732,7 @@ function submit($PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $DebtorName,
 						</tr>', _('Order No'), _('Trans. No'), _('Stock Code'), _('Order Date'), _('Debtor No'), _('Debtor Name'), _('Branch Name'), _('Invoiced Qty'), _('Extended Cost'), _('Extended Price'), _('Line Status'), _('Invoiced'), _('Salesman'), _('Area'), _('Item Description'));
 			}
 			$linectr = 0;
-			while ($myrow = DB_fetch_array($result)) {
+			while ($MyRow = DB_fetch_array($result)) {
 				$linectr++;
 				if ($_POST['DateType'] == 'Order') {
 					printf('<tr>
@@ -751,9 +751,9 @@ function submit($PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $DebtorName,
 								<td class="select"> %-10s </td>
 								<td class="select"> %-10s </td>
 								<td class="select"> %-40s </td<
-							/tr>', $myrow['orderno'], $myrow['stkcode'], ConvertSQLDate($myrow['orddate']), $myrow['debtorno'], $myrow['name'], $myrow['brname'], locale_number_format($myrow['quantity'], $myrow['decimalplaces']), locale_number_format($myrow['extcost'], $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($myrow['extprice'], $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($myrow['qtyinvoiced'], $myrow['decimalplaces']), $myrow['linestatus'], ConvertSQLDate($myrow['itemdue']), $myrow['salesman'], $myrow['area'], $myrow['description']);
+							/tr>', $MyRow['orderno'], $MyRow['stkcode'], ConvertSQLDate($MyRow['orddate']), $MyRow['debtorno'], $MyRow['name'], $MyRow['brname'], locale_number_format($MyRow['quantity'], $MyRow['decimalplaces']), locale_number_format($MyRow['extcost'], $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($MyRow['extprice'], $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($MyRow['qtyinvoiced'], $MyRow['decimalplaces']), $MyRow['linestatus'], ConvertSQLDate($MyRow['itemdue']), $MyRow['salesman'], $MyRow['area'], $MyRow['description']);
 					print '<br/>';
-					$TotalQty += $myrow['quantity'];
+					$TotalQty += $MyRow['quantity'];
 				} //$_POST['DateType'] == 'Order'
 				else {
 					// Detail for Invoiced Date
@@ -773,14 +773,14 @@ function submit($PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $DebtorName,
 								<td class="select"> %-10s </td>
 								<td class="select"> %-10s </td>
 								<td class="select"> %-40s </td>
-							</tr>', $myrow['orderno'], $myrow['transno'], $myrow['stkcode'], ConvertSQLDate($myrow['orddate']), $myrow['debtorno'], $myrow['name'], $myrow['brname'], locale_number_format($myrow['qty'], $myrow['decimalplaces']), locale_number_format($myrow['extcost'], $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($myrow['extprice'], $_SESSION['CompanyRecord']['decimalplaces']), $myrow['linestatus'], ConvertSQLDate($myrow['trandate']), $myrow['salesman'], $myrow['area'], $myrow['description']);
+							</tr>', $MyRow['orderno'], $MyRow['transno'], $MyRow['stkcode'], ConvertSQLDate($MyRow['orddate']), $MyRow['debtorno'], $MyRow['name'], $MyRow['brname'], locale_number_format($MyRow['qty'], $MyRow['decimalplaces']), locale_number_format($MyRow['extcost'], $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($MyRow['extprice'], $_SESSION['CompanyRecord']['decimalplaces']), $MyRow['linestatus'], ConvertSQLDate($MyRow['trandate']), $MyRow['salesman'], $MyRow['area'], $MyRow['description']);
 					print '<br/>';
-					$TotalQty += $myrow['qty'];
+					$TotalQty += $MyRow['qty'];
 				}
-				$lastdecimalplaces = $myrow['decimalplaces'];
-				$TotalExtCost += $myrow['extcost'];
-				$TotalExtPrice += $myrow['extprice'];
-				$TotalInvQty += $myrow['qtyinvoiced'];
+				$lastdecimalplaces = $MyRow['decimalplaces'];
+				$TotalExtCost += $MyRow['extcost'];
+				$TotalExtPrice += $MyRow['extprice'];
+				$TotalInvQty += $MyRow['qtyinvoiced'];
 			} //END WHILE LIST LOOP
 			// Print totals
 			if ($_POST['DateType'] == 'Order') {
@@ -885,29 +885,29 @@ function submit($PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $DebtorName,
 
 			$column7 = ' ';
 			$linectr = 0;
-			while ($myrow = DB_fetch_array($result)) {
+			while ($MyRow = DB_fetch_array($result)) {
 				$linectr++;
 				if ($SummaryType == 'orderno') {
-					$column7 = $myrow['name'];
+					$column7 = $MyRow['name'];
 				} //$SummaryType == 'orderno'
 				if ($SummaryType == 'transno') {
-					$column7 = $myrow['orderno'];
+					$column7 = $MyRow['orderno'];
 				} //$SummaryType == 'transno'
 				if ($_POST['DateType'] == 'Order') {
 					// quantity is from salesorderdetails
-					$DisplayQty = $myrow['quantity'];
+					$DisplayQty = $MyRow['quantity'];
 				} //$_POST['DateType'] == 'Order'
 				else {
 					// qty is from stockmoves
-					$DisplayQty = $myrow['qty'];
+					$DisplayQty = $MyRow['qty'];
 				}
-				printf('	%-30s | %-40s | %12s | %14s | %14s | %14s |  %-40s', $myrow[$SummaryType], $myrow[$Description], locale_number_format($DisplayQty, 2), locale_number_format($myrow['extcost'], $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($myrow['extprice'], $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($myrow['qtyinvoiced'], 2), $column7);
+				printf('	%-30s | %-40s | %12s | %14s | %14s | %14s |  %-40s', $MyRow[$SummaryType], $MyRow[$Description], locale_number_format($DisplayQty, 2), locale_number_format($MyRow['extcost'], $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($MyRow['extprice'], $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($MyRow['qtyinvoiced'], 2), $column7);
 
 				print '<br/>';
 				$TotalQty += $DisplayQty;
-				$TotalExtCost += $myrow['extcost'];
-				$TotalExtPrice += $myrow['extprice'];
-				$TotalInvQty += $myrow['qtyinvoiced'];
+				$TotalExtCost += $MyRow['extcost'];
+				$TotalExtPrice += $MyRow['extprice'];
+				$TotalInvQty += $MyRow['qtyinvoiced'];
 			} //END WHILE LIST LOOP
 			// Print totals
 			printf('	%-30s | %-40s | %12s | %14s | %14s | %14s', _('Totals'), _('Lines - ') . $linectr, locale_number_format($TotalQty, 2), locale_number_format($TotalExtCost, $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($TotalExtPrice, $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($TotalInvQty, 2), ' ');
@@ -1036,9 +1036,9 @@ function display() //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
 
 	$CategoryResult = DB_query("SELECT categoryid, categorydescription FROM stockcategory");
 	echo '<option selected="selected" value="All">' . _('All Categories') . '</option>';
-	while ($myrow = DB_fetch_array($CategoryResult)) {
-		echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . '</option>';
-	} //$myrow = DB_fetch_array($CategoryResult)
+	while ($MyRow = DB_fetch_array($CategoryResult)) {
+		echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
+	} //$MyRow = DB_fetch_array($CategoryResult)
 	echo '</select></td>
 		</tr>';
 
@@ -1053,8 +1053,8 @@ function display() //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
 		$sql = "SELECT salesmancode, salesmanname FROM salesman";
 		$SalesmanResult = DB_query($sql);
 		echo '<option selected="selected" value="All">' . _('All Salesmen') . '</option>';
-		while ($myrow = DB_fetch_array($SalesmanResult)) {
-			echo '<option value="' . $myrow['salesmancode'] . '">' . $myrow['salesmanname'] . '</option>';
+		while ($MyRow = DB_fetch_array($SalesmanResult)) {
+			echo '<option value="' . $MyRow['salesmancode'] . '">' . $MyRow['salesmanname'] . '</option>';
 		}
 		echo '</select></td>';
 	}
@@ -1065,9 +1065,9 @@ function display() //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
 				<td><select minlength="0" name="Area">';
 	$AreasResult = DB_query("SELECT areacode, areadescription FROM areas");
 	echo '<option selected="selected" value="All">' . _('All Areas') . '</option>';
-	while ($myrow = DB_fetch_array($AreasResult)) {
-		echo '<option value="' . $myrow['areacode'] . '">' . $myrow['areadescription'] . '</option>';
-	} //$myrow = DB_fetch_array($AreasResult)
+	while ($MyRow = DB_fetch_array($AreasResult)) {
+		echo '<option value="' . $MyRow['areacode'] . '">' . $MyRow['areadescription'] . '</option>';
+	} //$MyRow = DB_fetch_array($AreasResult)
 	echo '</select></td></tr>';
 
 	echo '<tr><td>&nbsp;</td></tr>';

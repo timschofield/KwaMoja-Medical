@@ -24,8 +24,8 @@ if (isset($_POST['PrintPDF']) or isset($_POST['CSV'])) {
 				FROM stockcategory
 				WHERE categoryid='" . $_POST['StockCat'] . "' ";
 		$result = DB_query($sql);
-		$myrow = DB_fetch_row($result);
-		$CatDescription = $myrow[1];
+		$MyRow = DB_fetch_row($result);
+		$CatDescription = $MyRow[1];
 	}
 
 	if ($_POST['Selection'] == 'All') {
@@ -104,10 +104,10 @@ if (isset($_POST['PrintPDF']) or isset($_POST['CSV'])) {
 		$FontSize = 8;
 
 		$holdpart = " ";
-		while ($myrow = DB_fetch_array($result)) {
-			if ($myrow['stockid'] != $holdpart) {
+		while ($MyRow = DB_fetch_array($result)) {
+			if ($MyRow['stockid'] != $holdpart) {
 				$YPos -= (2 * $line_height);
-				$holdpart = $myrow['stockid'];
+				$holdpart = $MyRow['stockid'];
 			} else {
 				$YPos -= ($line_height);
 			}
@@ -117,11 +117,11 @@ if (isset($_POST['PrintPDF']) or isset($_POST['CSV'])) {
 			// 4) Height 5) Text 6) Alignment 7) Border 8) Fill - True to use SetFillColor
 			// and False to set to transparent
 
-			$pdf->addTextWrap(50, $YPos, 100, $FontSize, $myrow['stockid'], '', 0);
-			$pdf->addTextWrap(150, $YPos, 150, $FontSize, $myrow['description'], '', 0);
-			$pdf->addTextWrap(310, $YPos, 60, $FontSize, $myrow['loccode'], 'left', 0);
-			$pdf->addTextWrap(370, $YPos, 50, $FontSize, locale_number_format($myrow['quantity'], $myrow['decimalplaces']), 'right', 0);
-			$pdf->addTextWrap(420, $YPos, 50, $FontSize, locale_number_format($myrow['reorderlevel'], $myrow['decimalplaces']), 'right', 0);
+			$pdf->addTextWrap(50, $YPos, 100, $FontSize, $MyRow['stockid'], '', 0);
+			$pdf->addTextWrap(150, $YPos, 150, $FontSize, $MyRow['description'], '', 0);
+			$pdf->addTextWrap(310, $YPos, 60, $FontSize, $MyRow['loccode'], 'left', 0);
+			$pdf->addTextWrap(370, $YPos, 50, $FontSize, locale_number_format($MyRow['quantity'], $MyRow['decimalplaces']), 'right', 0);
+			$pdf->addTextWrap(420, $YPos, 50, $FontSize, locale_number_format($MyRow['reorderlevel'], $MyRow['decimalplaces']), 'right', 0);
 
 			if ($YPos < $Bottom_Margin + $line_height) {
 				PrintHeader($pdf, $YPos, $PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin, $CatDescription);
@@ -195,11 +195,11 @@ if (isset($_POST['PrintPDF']) or isset($_POST['CSV'])) {
 	} else {
 		echo '<option value="All">' . _('All') . '</option>';
 	}
-	while ($myrow1 = DB_fetch_array($result1)) {
-		if ($myrow1['categoryid'] == $_POST['StockCat']) {
-			echo '<option selected="selected" value="' . $myrow1['categoryid'] . '">' . $myrow1['categorydescription'] . '</option>';
+	while ($MyRow1 = DB_fetch_array($result1)) {
+		if ($MyRow1['categoryid'] == $_POST['StockCat']) {
+			echo '<option selected="selected" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow1['categoryid'] . '">' . $myrow1['categorydescription'] . '</option>';
+			echo '<option value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 		}
 	}
 	echo '</select></td>

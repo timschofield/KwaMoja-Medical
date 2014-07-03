@@ -109,7 +109,7 @@ if (isset($_POST['submit'])) {
 	$ErrMsg = _('The number of tabs using this Tab type could not be retrieved');
 	$ResultPcTabExpenses = DB_query($SQLPcTabExpenses, $ErrMsg);
 
-	$myrowPcTabExpenses = DB_fetch_row($ResultPcTabExpenses);
+	$MyRowPcTabExpenses = DB_fetch_row($ResultPcTabExpenses);
 
 	$SqlPcTabs = "SELECT COUNT(*)
 		FROM pctabs
@@ -118,8 +118,8 @@ if (isset($_POST['submit'])) {
 	$ErrMsg = _('The number of tabs using this Tab type could not be retrieved');
 	$ResultPcTabs = DB_query($SqlPcTabs, $ErrMsg);
 
-	$myrowPcTabs = DB_fetch_row($ResultPcTabs);
-	if ($myrowPcTabExpenses[0] > 0 or $myrowPcTabs[0] > 0) {
+	$MyRowPcTabs = DB_fetch_row($ResultPcTabs);
+	if ($MyRowPcTabExpenses[0] > 0 or $MyRowPcTabs[0] > 0) {
 		prnMsg(_('Cannot delete this tab type because tabs have been created using this tab type'), 'error');
 		echo '<br />';
 		echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
@@ -161,7 +161,7 @@ if (!isset($SelectedTab)) {
 
 	$k = 0; //row colour counter
 
-	while ($myrow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -174,7 +174,7 @@ if (!isset($SelectedTab)) {
 				<td>%s</td>
 				<td><a href='%sSelectedTab=%s'>" . _('Edit') . "</a></td>
 				<td><a href='%sSelectedTab=%s&amp;delete=yes' onclick=\"return MakeConfirm('" . _('Are you sure you wish to delete this code and all the description it may have set up?') . "', \'Confirm Delete\', this);\">" . _('Delete') . "</a></td>
-			</tr>", $myrow['0'], $myrow['1'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['0'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['0']);
+			</tr>", $MyRow['0'], $MyRow['1'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['0'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['0']);
 	}
 	//END WHILE LIST LOOP
 	echo '</table>';
@@ -199,10 +199,10 @@ if (!isset($_GET['delete'])) {
 				WHERE typetabcode='" . $SelectedTab . "'";
 
 		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($result);
 
-		$_POST['TypeTabCode'] = $myrow['typetabcode'];
-		$_POST['TypeTabDescription'] = $myrow['typetabdescription'];
+		$_POST['TypeTabCode'] = $MyRow['typetabcode'];
+		$_POST['TypeTabDescription'] = $MyRow['typetabdescription'];
 
 		echo '<input type="hidden" name="SelectedTab" value="' . $SelectedTab . '" />
 			  <input type="hidden" name="TypeTabCode" value="' . $_POST['TypeTabCode'] . '" />

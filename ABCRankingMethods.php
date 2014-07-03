@@ -65,12 +65,12 @@ if (isset($_POST['Submit'])) {
 				<th>' . _('Method name') . '</th>
 			</tr>';
 
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		echo '<tr class="OddTableRows">
-				<td>' . $myrow['methodid'] . '</td>
-				<td>' . $myrow['methodname'] . '</td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedMethodID=' . $myrow['methodid'] . '">' . _('Edit') . '</a></td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedMethodID=' . $myrow['methodid'] . '&amp;Delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this ranking method?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+				<td>' . $MyRow['methodid'] . '</td>
+				<td>' . $MyRow['methodname'] . '</td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedMethodID=' . $MyRow['methodid'] . '">' . _('Edit') . '</a></td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedMethodID=' . $MyRow['methodid'] . '&amp;Delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this ranking method?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
 			</tr>';
 	}
 	echo '</table>';
@@ -84,10 +84,10 @@ if (isset($_POST['Submit'])) {
 						FROM abcmethods
 						WHERE methodid='" . $_GET['SelectedMethodID'] . "'";
 		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($result);
 		echo '<input type="hidden" name="Mode" value="Edit" />';
-		$IDInput = '<input type="hidden" name="MethodID" value="' . $myrow['methodid'] . '" />' . $myrow['methodid'];
-		$Description = $myrow['methodname'];
+		$IDInput = '<input type="hidden" name="MethodID" value="' . $MyRow['methodid'] . '" />' . $MyRow['methodid'];
+		$Description = $MyRow['methodname'];
 	} else {
 		echo '<input type="hidden" name="Mode" value="New" />';
 		$IDInput = '<input type="text" required="required" minlength="1" size="3" class="number" name="MethodID" />';

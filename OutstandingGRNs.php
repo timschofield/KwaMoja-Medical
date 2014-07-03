@@ -11,13 +11,13 @@ if (isset($_POST['FromCriteria']) and mb_strlen($_POST['FromCriteria']) >= 1 and
 				FROM suppliers";
 
 	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($result);
 
 	if ($_POST['FromCriteria']=='') {
-		$_POST['FromCriteria'] = $myrow['fromcriteria'];
+		$_POST['FromCriteria'] = $MyRow['fromcriteria'];
 	}
 	if ($_POST['ToCriteria']=='') {
-		$_POST['Toriteria'] = $myrow['tocriteria'];
+		$_POST['Toriteria'] = $MyRow['tocriteria'];
 	}
 
 	$SQL = "SELECT grnno,
@@ -234,7 +234,7 @@ if (isset($_POST['PrintPDF']) and DB_num_rows($GRNsResult) > 0) {
 				FROM suppliers";
 
 	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($result);
 
 	$Title = _('Outstanding GRNs Report');
 	include('includes/header.inc');
@@ -250,11 +250,11 @@ if (isset($_POST['PrintPDF']) and DB_num_rows($GRNsResult) > 0) {
 
 	echo '<tr>
 			<td>' . _('From Supplier Code') . ':</td>
-			<td><input type="text" name="FromCriteria" autofocus="autofocus" required="required" minlength="1" maxlength="20" value="' . $myrow['fromcriteria'] . '" /></td>
+			<td><input type="text" name="FromCriteria" autofocus="autofocus" required="required" minlength="1" maxlength="20" value="' . $MyRow['fromcriteria'] . '" /></td>
 		</tr>
 		<tr>
 			<td>' . _('To Supplier Code') . ':</td>
-			<td><input type="text" name="ToCriteria" required="required" minlength="1" maxlength="20" value="' . $myrow['tocriteria'] . '" /></td>
+			<td><input type="text" name="ToCriteria" required="required" minlength="1" maxlength="20" value="' . $MyRow['tocriteria'] . '" /></td>
 		</tr>
 		</table>
 		<br />

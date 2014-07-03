@@ -174,17 +174,17 @@ if (isset($_POST['View'])) {
 			<th>' . _('Field Name') . '</th>
 			<th>' . _('Value') . '</th>
 		</tr>';
-	while ($myrow = DB_fetch_row($result)) {
-		if (Query_Type($myrow[2]) == "INSERT") {
-			InsertQueryInfo(str_replace("INSERT INTO", '', $myrow[2]));
+	while ($MyRow = DB_fetch_row($result)) {
+		if (Query_Type($MyRow[2]) == "INSERT") {
+			InsertQueryInfo(str_replace("INSERT INTO", '', $MyRow[2]));
 			$RowColour = '#a8ff90';
 		}
-		if (Query_Type($myrow[2]) == "UPDATE") {
-			UpdateQueryInfo(str_replace("UPDATE", '', $myrow[2]));
+		if (Query_Type($MyRow[2]) == "UPDATE") {
+			UpdateQueryInfo(str_replace("UPDATE", '', $MyRow[2]));
 			$RowColour = '#feff90';
 		}
-		if (Query_Type($myrow[2]) == "DELETE") {
-			DeleteQueryInfo(str_replace("DELETE FROM", '', $myrow[2]));
+		if (Query_Type($MyRow[2]) == "DELETE") {
+			DeleteQueryInfo(str_replace("DELETE FROM", '', $MyRow[2]));
 			$RowColour = '#fe90bf';
 		}
 
@@ -193,9 +193,9 @@ if (isset($_POST['View'])) {
 				$_SESSION['SQLString']['values'][0] = '';
 			}
 			echo '<tr style="background-color: ' . $RowColour . '">
-				<td>' . $myrow[0] . '</td>
-				<td>' . $myrow[1] . '</td>
-				<td>' . Query_Type($myrow[2]) . '</td>
+				<td>' . $MyRow[0] . '</td>
+				<td>' . $MyRow[1] . '</td>
+				<td>' . Query_Type($MyRow[2]) . '</td>
 				<td>' . $_SESSION['SQLString']['table'] . '</td>
 				<td>' . $_SESSION['SQLString']['fields'][0] . '</td>
 				<td>' . trim(str_replace("'", "", $_SESSION['SQLString']['values'][0])) . '</td></tr>';

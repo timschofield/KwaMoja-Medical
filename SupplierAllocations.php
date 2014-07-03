@@ -324,19 +324,19 @@ if (isset($_GET['AllocTrans'])) {
 		exit;
 	}
 
-	$myrow = DB_fetch_array($Result);
+	$MyRow = DB_fetch_array($Result);
 
 	$_SESSION['Alloc']->AllocTrans = $_SESSION['AllocTrans'];
-	$_SESSION['Alloc']->SupplierID = $myrow['supplierno'];
-	$_SESSION['Alloc']->SuppName = $myrow['suppname'];
-	$_SESSION['Alloc']->TransType = $myrow['type'];
-	$_SESSION['Alloc']->TransTypeName = $myrow['typename'];
-	$_SESSION['Alloc']->TransNo = $myrow['transno'];
-	$_SESSION['Alloc']->TransExRate = $myrow['rate'];
-	$_SESSION['Alloc']->TransAmt = $myrow['total'];
-	$_SESSION['Alloc']->PrevDiffOnExch = $myrow['diffonexch'];
-	$_SESSION['Alloc']->TransDate = ConvertSQLDate($myrow['trandate']);
-	$_SESSION['Alloc']->CurrDecimalPlaces = $myrow['decimalplaces'];
+	$_SESSION['Alloc']->SupplierID = $MyRow['supplierno'];
+	$_SESSION['Alloc']->SuppName = $MyRow['suppname'];
+	$_SESSION['Alloc']->TransType = $MyRow['type'];
+	$_SESSION['Alloc']->TransTypeName = $MyRow['typename'];
+	$_SESSION['Alloc']->TransNo = $MyRow['transno'];
+	$_SESSION['Alloc']->TransExRate = $MyRow['rate'];
+	$_SESSION['Alloc']->TransAmt = $MyRow['total'];
+	$_SESSION['Alloc']->PrevDiffOnExch = $MyRow['diffonexch'];
+	$_SESSION['Alloc']->TransDate = ConvertSQLDate($MyRow['trandate']);
+	$_SESSION['Alloc']->CurrDecimalPlaces = $MyRow['decimalplaces'];
 
 	/* Now populate the array of possible (and previous actual) allocations for this supplier */
 	/*First get the transactions that have outstanding balances ie Total-Alloc >0 */
@@ -362,8 +362,8 @@ if (isset($_GET['AllocTrans'])) {
 
 	$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-	while ($myrow = DB_fetch_array($Result)) {
-		$_SESSION['Alloc']->add_to_AllocsAllocn($myrow['id'], $myrow['typename'], $myrow['transno'], ConvertSQLDate($myrow['trandate']), $myrow['suppreference'], 0, $myrow['total'], $myrow['rate'], $myrow['diffonexch'], $myrow['diffonexch'], $myrow['alloc'], 'NA');
+	while ($MyRow = DB_fetch_array($Result)) {
+		$_SESSION['Alloc']->add_to_AllocsAllocn($MyRow['id'], $MyRow['typename'], $MyRow['transno'], ConvertSQLDate($MyRow['trandate']), $MyRow['suppreference'], 0, $MyRow['total'], $MyRow['rate'], $MyRow['diffonexch'], $MyRow['diffonexch'], $MyRow['alloc'], 'NA');
 	}
 
 	/* Now get trans that might have previously been allocated to by this trans
@@ -393,11 +393,11 @@ if (isset($_GET['AllocTrans'])) {
 
 	$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-	while ($myrow = DB_fetch_array($Result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 
-		$DiffOnExchThisOne = ($myrow['amt'] / $myrow['rate']) - ($myrow['amt'] / $_SESSION['Alloc']->TransExRate);
+		$DiffOnExchThisOne = ($MyRow['amt'] / $MyRow['rate']) - ($MyRow['amt'] / $_SESSION['Alloc']->TransExRate);
 
-		$_SESSION['Alloc']->add_to_AllocsAllocn($myrow['id'], $myrow['typename'], $myrow['transno'], ConvertSQLDate($myrow['trandate']), $myrow['suppreference'], $myrow['amt'], $myrow['total'], $myrow['rate'], $DiffOnExchThisOne, ($myrow['diffonexch'] - $DiffOnExchThisOne), $myrow['prevallocs'], $myrow['allocid']);
+		$_SESSION['Alloc']->add_to_AllocsAllocn($MyRow['id'], $MyRow['typename'], $MyRow['transno'], ConvertSQLDate($MyRow['trandate']), $MyRow['suppreference'], $MyRow['amt'], $MyRow['total'], $MyRow['rate'], $DiffOnExchThisOne, ($MyRow['diffonexch'] - $DiffOnExchThisOne), $MyRow['prevallocs'], $MyRow['allocid']);
 	}
 }
 
@@ -538,7 +538,7 @@ if (isset($_POST['AllocTrans'])) {
 
 	$RowCounter = 0;
 	$k = 0; //row colour counter
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -554,7 +554,7 @@ if (isset($_POST['AllocTrans'])) {
 			<td class="number">%s</td>
 			<td class="number">%s</td>
 			<td><a href="%sAllocTrans=%s">' . _('Allocate') . '</a></td>
-			</tr>', $myrow['typename'], $myrow['suppname'], $myrow['transno'], ConvertSQLDate($myrow['trandate']), locale_number_format($myrow['total'], $myrow['currdecimalplaces']), locale_number_format($myrow['total'] - $myrow['alloc'], $myrow['currdecimalplaces']), htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['id']);
+			</tr>', $MyRow['typename'], $MyRow['suppname'], $MyRow['transno'], ConvertSQLDate($MyRow['trandate']), locale_number_format($MyRow['total'], $MyRow['currdecimalplaces']), locale_number_format($MyRow['total'] - $MyRow['alloc'], $MyRow['currdecimalplaces']), htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['id']);
 
 	}
 
@@ -605,7 +605,7 @@ if (isset($_POST['AllocTrans'])) {
 
 	$k = 0; //row colour counter
 	$RowCounter = 0;
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -621,7 +621,7 @@ if (isset($_POST['AllocTrans'])) {
 			<td class="number">%s</td>
 			<td class="number">%s</td>
 			<td><a href="%sAllocTrans=%s">' . _('Allocate') . '</a></td>
-			</tr>', $myrow['typename'], $myrow['suppname'], $myrow['transno'], ConvertSQLDate($myrow['trandate']), locale_number_format($myrow['total'], $myrow['currdecimalplaces']), locale_number_format($myrow['total'] - $myrow['alloc'], $myrow['currdecimalplaces']), htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['id']);
+			</tr>', $MyRow['typename'], $MyRow['suppname'], $MyRow['transno'], ConvertSQLDate($MyRow['trandate']), locale_number_format($MyRow['total'], $MyRow['currdecimalplaces']), locale_number_format($MyRow['total'] - $MyRow['alloc'], $MyRow['currdecimalplaces']), htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['id']);
 
 
 	} //END WHILE LIST LOOP

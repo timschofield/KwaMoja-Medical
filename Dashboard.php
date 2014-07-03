@@ -11,8 +11,8 @@ $sql = "SELECT scripts FROM dashboard_users WHERE userid = '".$_SESSION['UserID'
 
 $result = DB_query($sql);
 
-$myrow = DB_fetch_array($result);
-$arr = explode(',',$myrow["scripts"]);
+$MyRow = DB_fetch_array($result);
+$arr = explode(',',$MyRow["scripts"]);
 
 $UserSQL = "SELECT scripts FROM dashboard_users WHERE userid = '".$_SESSION['UserID']."' ";
 $Result = DB_query($UserSQL);
@@ -44,9 +44,9 @@ $sql = "SELECT id,
 
 $result = DB_query($sql);
 
-while($myrow = DB_fetch_array($result)) {
-	if (in_array($myrow['id'], $arr) and in_array($myrow['pagesecurity'], $_SESSION['AllowedPageSecurityTokens'])) {
-		echo '<iframe src="dashboard/' . $myrow['scripts'] . '"></iframe>';
+while($MyRow = DB_fetch_array($result)) {
+	if (in_array($MyRow['id'], $arr) and in_array($MyRow['pagesecurity'], $_SESSION['AllowedPageSecurityTokens'])) {
+		echo '<iframe src="dashboard/' . $MyRow['scripts'] . '"></iframe>';
 	}
 }
 
@@ -59,9 +59,9 @@ echo '<div style="width:100%;font-size:120%;color:#2F4F4F;">' .
 		_('Add reports to your dashboard') . '&nbsp;&nbsp;&nbsp;
 		<select name="Reports" style="font-size:100%;margin-top:10px;margin-bottom:0px;color:#2F4F4F;" id="favourites" onchange="ReloadForm(submit)">';
 echo '<option value=""></option>';
-while ($myrow = DB_fetch_array($result)) {
-	if (!in_array($myrow['id'], $arr) and in_array($myrow['pagesecurity'], $_SESSION['AllowedPageSecurityTokens'])) {
-		echo '<option value="' . $myrow['id'] . '">' . $myrow['description'] . '</option>';
+while ($MyRow = DB_fetch_array($result)) {
+	if (!in_array($MyRow['id'], $arr) and in_array($MyRow['pagesecurity'], $_SESSION['AllowedPageSecurityTokens'])) {
+		echo '<option value="' . $MyRow['id'] . '">' . $MyRow['description'] . '</option>';
 	}
 }
 echo '</select></div>';

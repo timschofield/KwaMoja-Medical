@@ -230,19 +230,19 @@ if (isset($_GET['AllocTrans'])) {
 	}
 
 	$Result = DB_query($SQL);
-	$myrow = DB_fetch_array($Result);
+	$MyRow = DB_fetch_array($Result);
 
 	$_SESSION['Alloc']->AllocTrans = $_POST['AllocTrans'];
-	$_SESSION['Alloc']->DebtorNo = $myrow['debtorno'];
-	$_SESSION['Alloc']->CustomerName = $myrow['name'];
-	$_SESSION['Alloc']->TransType = $myrow['type'];
-	$_SESSION['Alloc']->TransTypeName = $myrow['typename'];
-	$_SESSION['Alloc']->TransNo = $myrow['transno'];
-	$_SESSION['Alloc']->TransExRate = $myrow['rate'];
-	$_SESSION['Alloc']->TransAmt = $myrow['total'];
-	$_SESSION['Alloc']->PrevDiffOnExch = $myrow['diffonexch'];
-	$_SESSION['Alloc']->TransDate = ConvertSQLDate($myrow['trandate']);
-	$_SESSION['Alloc']->CurrDecimalPlaces = $myrow['decimalplaces'];
+	$_SESSION['Alloc']->DebtorNo = $MyRow['debtorno'];
+	$_SESSION['Alloc']->CustomerName = $MyRow['name'];
+	$_SESSION['Alloc']->TransType = $MyRow['type'];
+	$_SESSION['Alloc']->TransTypeName = $MyRow['typename'];
+	$_SESSION['Alloc']->TransNo = $MyRow['transno'];
+	$_SESSION['Alloc']->TransExRate = $MyRow['rate'];
+	$_SESSION['Alloc']->TransAmt = $MyRow['total'];
+	$_SESSION['Alloc']->PrevDiffOnExch = $MyRow['diffonexch'];
+	$_SESSION['Alloc']->TransDate = ConvertSQLDate($MyRow['trandate']);
+	$_SESSION['Alloc']->CurrDecimalPlaces = $MyRow['decimalplaces'];
 
 	// First get transactions that have outstanding balances
 	$SQL = "SELECT debtortrans.id,
@@ -266,8 +266,8 @@ if (isset($_GET['AllocTrans'])) {
 
 	$Result = DB_query($SQL);
 
-	while ($myrow = DB_fetch_array($Result)) {
-		$_SESSION['Alloc']->add_to_AllocsAllocn($myrow['id'], $myrow['typename'], $myrow['transno'], ConvertSQLDate($myrow['trandate']), 0, $myrow['total'], $myrow['rate'], $myrow['diffonexch'], $myrow['diffonexch'], $myrow['alloc'], 'NA');
+	while ($MyRow = DB_fetch_array($Result)) {
+		$_SESSION['Alloc']->add_to_AllocsAllocn($MyRow['id'], $MyRow['typename'], $MyRow['transno'], ConvertSQLDate($MyRow['trandate']), 0, $MyRow['total'], $MyRow['rate'], $MyRow['diffonexch'], $MyRow['diffonexch'], $MyRow['alloc'], 'NA');
 	}
 	DB_free_result($Result);
 
@@ -297,9 +297,9 @@ if (isset($_GET['AllocTrans'])) {
 
 	$Result = DB_query($SQL);
 
-	while ($myrow = DB_fetch_array($Result)) {
-		$DiffOnExchThisOne = ($myrow['amt'] / $myrow['rate']) - ($myrow['amt'] / $_SESSION['Alloc']->TransExRate);
-		$_SESSION['Alloc']->add_to_AllocsAllocn($myrow['id'], $myrow['typename'], $myrow['transno'], ConvertSQLDate($myrow['trandate']), $myrow['amt'], $myrow['total'], $myrow['rate'], $DiffOnExchThisOne, ($myrow['diffonexch'] - $DiffOnExchThisOne), $myrow['prevallocs'], $myrow['allocid']);
+	while ($MyRow = DB_fetch_array($Result)) {
+		$DiffOnExchThisOne = ($MyRow['amt'] / $MyRow['rate']) - ($MyRow['amt'] / $_SESSION['Alloc']->TransExRate);
+		$_SESSION['Alloc']->add_to_AllocsAllocn($MyRow['id'], $MyRow['typename'], $MyRow['transno'], ConvertSQLDate($MyRow['trandate']), $MyRow['amt'], $MyRow['total'], $MyRow['rate'], $DiffOnExchThisOne, ($MyRow['diffonexch'] - $DiffOnExchThisOne), $MyRow['prevallocs'], $MyRow['allocid']);
 	}
 	DB_free_result($Result);
 }
@@ -465,7 +465,7 @@ if (isset($_POST['AllocTrans'])) {
 					<th>' . _('Action') . '</th>
 				</tr>';
 	$k = 0;
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -473,15 +473,15 @@ if (isset($_POST['AllocTrans'])) {
 			echo '<tr class="OddTableRows">';
 			$k++;
 		}
-		echo '<td>' . $myrow['typename'] . '</td>
-				<td>' . $myrow['name'] . '</td>
-				<td>' . $myrow['debtorno'] . '</td>
-				<td>' . $myrow['transno'] . '</td>
-				<td>' . ConvertSQLDate($myrow['trandate']) . '</td>
-				<td class="number">' . locale_number_format($myrow['total'], $myrow['currdecimalplaces']) . '</td>
-				<td class="number">' . locale_number_format($myrow['total'] - $myrow['alloc'], $myrow['currdecimalplaces']) . '</td>
-				<td>' . $myrow['currcode'] . '</td>';
-		echo '<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?AllocTrans=' . $myrow['id'] . '">' . _('Allocate') . '</a></td></tr>';
+		echo '<td>' . $MyRow['typename'] . '</td>
+				<td>' . $MyRow['name'] . '</td>
+				<td>' . $MyRow['debtorno'] . '</td>
+				<td>' . $MyRow['transno'] . '</td>
+				<td>' . ConvertSQLDate($MyRow['trandate']) . '</td>
+				<td class="number">' . locale_number_format($MyRow['total'], $MyRow['currdecimalplaces']) . '</td>
+				<td class="number">' . locale_number_format($MyRow['total'] - $MyRow['alloc'], $MyRow['currdecimalplaces']) . '</td>
+				<td>' . $MyRow['currcode'] . '</td>';
+		echo '<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?AllocTrans=' . $MyRow['id'] . '">' . _('Allocate') . '</a></td></tr>';
 	}
 	echo '</table>';
 } else {
@@ -536,11 +536,11 @@ if (isset($_POST['AllocTrans'])) {
 				</tr>';
 
 	$k = 0;
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 
-		$AllocateLink = '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?AllocTrans=' . $myrow['id'] . '">' . _('Allocate') . '</a>';
+		$AllocateLink = '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?AllocTrans=' . $MyRow['id'] . '">' . _('Allocate') . '</a>';
 
-		if ($CurrentDebtor != $myrow['debtorno']) {
+		if ($CurrentDebtor != $MyRow['debtorno']) {
 			if ($CurrentTransaction > 1) {
 				echo '<tr class="OddTableRows">
 						<td colspan="7" class="number"><b>' . locale_number_format($Balance, $CurrDecimalPlaces) . '</b></td>
@@ -550,19 +550,19 @@ if (isset($_POST['AllocTrans'])) {
 			}
 
 			$Balance = 0;
-			$CurrentDebtor = $myrow['debtorno'];
+			$CurrentDebtor = $MyRow['debtorno'];
 
 			$BalSQL = "SELECT SUM(ovamount+ovgst+ovfreight+ovdiscount-alloc) as total
 						FROM debtortrans
 						WHERE (type=12 OR type=11)
-						AND debtorno='" . $myrow['debtorno'] . "'";
+						AND debtorno='" . $MyRow['debtorno'] . "'";
 			$BalResult = DB_query($BalSQL);
 			$BalRow = DB_fetch_array($BalResult);
 			$Balance = $BalRow['total'];
 		}
 		$CurrentTransaction++;
-		$CurrCode = $myrow['currcode'];
-		$CurrDecimalPlaces = $myrow['currdecimalplaces'];
+		$CurrCode = $MyRow['currcode'];
+		$CurrDecimalPlaces = $MyRow['currdecimalplaces'];
 		if (isset($Balance) and abs($Balance) < -0.01) {
 			$AllocateLink = '&nbsp;';
 		}
@@ -575,13 +575,13 @@ if (isset($_POST['AllocTrans'])) {
 			$k++;
 		}
 
-		echo '<td>' . $myrow['typename'] . '</td>
-				<td>' . $myrow['name'] . '</td>
-				<td>' . $myrow['debtorno'] . '</td>
-				<td>' . $myrow['transno'] . '</td>
-				<td>' . ConvertSQLDate($myrow['trandate']) . '</td>
-				<td class="number">' . locale_number_format($myrow['total'], $CurrDecimalPlaces) . '</td>
-				<td class="number">' . locale_number_format($myrow['total'] - $myrow['alloc'], $CurrDecimalPlaces) . '</td>
+		echo '<td>' . $MyRow['typename'] . '</td>
+				<td>' . $MyRow['name'] . '</td>
+				<td>' . $MyRow['debtorno'] . '</td>
+				<td>' . $MyRow['transno'] . '</td>
+				<td>' . ConvertSQLDate($MyRow['trandate']) . '</td>
+				<td class="number">' . locale_number_format($MyRow['total'], $CurrDecimalPlaces) . '</td>
+				<td class="number">' . locale_number_format($MyRow['total'] - $MyRow['alloc'], $CurrDecimalPlaces) . '</td>
 				<td>' . $CurrCode . '</td>
 				<td>' . $AllocateLink . '</td>
 			</tr>';

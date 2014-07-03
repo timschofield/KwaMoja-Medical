@@ -49,8 +49,8 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate']) or $InputError == 1) 
 	echo '<select required="required" minlength="1" name="CategoryID">
 			<option selected="selected" value="All">' . _('Over All Categories') . '</option>';
 
-	while ($myrow = DB_fetch_array($result)) {
-		echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . '</option>';
+	while ($MyRow = DB_fetch_array($result)) {
+		echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 	}
 
 	echo '</select></td>
@@ -75,8 +75,8 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate']) or $InputError == 1) 
 	}
 
 	$result = DB_query($sql);
-	while ($myrow = DB_fetch_array($result)) {
-		echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+	while ($MyRow = DB_fetch_array($result)) {
+		echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 	}
 	echo '</select></td></tr>';
 
@@ -222,16 +222,16 @@ $TotalDiffs = 0;
 
 include('includes/PDFDeliveryDifferencesPageHeader.inc');
 
-while ($myrow = DB_fetch_array($Result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 
-	$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 40, $FontSize, $myrow['invoiceno'], 'left');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 40, $YPos, 40, $FontSize, $myrow['orderno'], 'left');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 80, $YPos, 200, $FontSize, $myrow['stockid'] . ' - ' . $myrow['description'], 'left');
+	$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 40, $FontSize, $MyRow['invoiceno'], 'left');
+	$LeftOvers = $pdf->addTextWrap($Left_Margin + 40, $YPos, 40, $FontSize, $MyRow['orderno'], 'left');
+	$LeftOvers = $pdf->addTextWrap($Left_Margin + 80, $YPos, 200, $FontSize, $MyRow['stockid'] . ' - ' . $MyRow['description'], 'left');
 
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 280, $YPos, 50, $FontSize, locale_number_format($myrow['quantitydiff'], $myrow['decimalplaces']), 'right');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 335, $YPos, 50, $FontSize, $myrow['debtorno'], 'left');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 385, $YPos, 50, $FontSize, $myrow['branch'], 'left');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 435, $YPos, 50, $FontSize, ConvertSQLDate($myrow['trandate']), 'left');
+	$LeftOvers = $pdf->addTextWrap($Left_Margin + 280, $YPos, 50, $FontSize, locale_number_format($MyRow['quantitydiff'], $MyRow['decimalplaces']), 'right');
+	$LeftOvers = $pdf->addTextWrap($Left_Margin + 335, $YPos, 50, $FontSize, $MyRow['debtorno'], 'left');
+	$LeftOvers = $pdf->addTextWrap($Left_Margin + 385, $YPos, 50, $FontSize, $MyRow['branch'], 'left');
+	$LeftOvers = $pdf->addTextWrap($Left_Margin + 435, $YPos, 50, $FontSize, ConvertSQLDate($MyRow['trandate']), 'left');
 
 	$YPos -= ($line_height);
 	$TotalDiffs++;
@@ -296,12 +296,12 @@ $ErrMsg = _('Could not retrieve the count of sales order lines in the period und
 $result = DB_query($sql, $ErrMsg);
 
 
-$myrow = DB_fetch_row($result);
+$MyRow = DB_fetch_row($result);
 $YPos -= $line_height;
-$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 200, $FontSize, _('Total number of order lines') . ' ' . locale_number_format($myrow[0]), 'left');
+$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 200, $FontSize, _('Total number of order lines') . ' ' . locale_number_format($MyRow[0]), 'left');
 
 $YPos -= $line_height;
-$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 200, $FontSize, _('DIFOT') . ' ' . locale_number_format((1 - ($TotalDiffs / $myrow[0])) * 100, 2) . '%', 'left');
+$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 200, $FontSize, _('DIFOT') . ' ' . locale_number_format((1 - ($TotalDiffs / $MyRow[0])) * 100, 2) . '%', 'left');
 
 $ReportFileName = $_SESSION['DatabaseName'] . '_DeliveryDifferences_' . date('Y-m-d') . '.pdf';
 $pdf->OutputD($ReportFileName);

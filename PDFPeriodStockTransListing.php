@@ -70,18 +70,18 @@ if (!isset($_POST['FromDate'])) {
 					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 	}
 
-	while ($myrow = DB_fetch_array($resultStkLocs)) {
+	while ($MyRow = DB_fetch_array($resultStkLocs)) {
 		if (isset($_POST['StockLocation']) and $_POST['StockLocation'] != 'All') {
-			if ($myrow['loccode'] == $_POST['StockLocation']) {
-				echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+			if ($MyRow['loccode'] == $_POST['StockLocation']) {
+				echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 			} else {
-				echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+				echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 			}
-		} elseif ($myrow['loccode'] == $_SESSION['UserStockLocation']) {
-			echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
-			$_POST['StockLocation'] = $myrow['loccode'];
+		} elseif ($MyRow['loccode'] == $_SESSION['UserStockLocation']) {
+			echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
+			$_POST['StockLocation'] = $MyRow['loccode'];
 		} else {
-			echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+			echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 		}
 	}
 	echo '</select></td></tr>';
@@ -193,14 +193,14 @@ switch ($_POST['TransType']) {
 
 include('includes/PDFPeriodStockTransListingPageHeader.inc');
 
-while ($myrow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($result)) {
 
-	$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 160, $FontSize, $myrow['description'], 'left');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 162, $YPos, 80, $FontSize, $myrow['transno'], 'left');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 242, $YPos, 70, $FontSize, ConvertSQLDate($myrow['trandate']), 'left');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 312, $YPos, 70, $FontSize, locale_number_format($myrow['qty'], $myrow['decimalplaces']), 'right');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 382, $YPos, 70, $FontSize, $myrow['locationname'], 'right');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 452, $YPos, 70, $FontSize, $myrow['reference'], 'right');
+	$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 160, $FontSize, $MyRow['description'], 'left');
+	$LeftOvers = $pdf->addTextWrap($Left_Margin + 162, $YPos, 80, $FontSize, $MyRow['transno'], 'left');
+	$LeftOvers = $pdf->addTextWrap($Left_Margin + 242, $YPos, 70, $FontSize, ConvertSQLDate($MyRow['trandate']), 'left');
+	$LeftOvers = $pdf->addTextWrap($Left_Margin + 312, $YPos, 70, $FontSize, locale_number_format($MyRow['qty'], $MyRow['decimalplaces']), 'right');
+	$LeftOvers = $pdf->addTextWrap($Left_Margin + 382, $YPos, 70, $FontSize, $MyRow['locationname'], 'right');
+	$LeftOvers = $pdf->addTextWrap($Left_Margin + 452, $YPos, 70, $FontSize, $MyRow['reference'], 'right');
 
 	$YPos -= ($line_height);
 

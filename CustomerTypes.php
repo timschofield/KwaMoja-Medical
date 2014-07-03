@@ -139,9 +139,9 @@ if (isset($_POST['submit'])) {
 	$ErrMsg = _('The number of transactions using this customer type could not be retrieved');
 	$result = DB_query($sql, $ErrMsg);
 
-	$myrow = DB_fetch_row($result);
-	if ($myrow[0] > 0) {
-		prnMsg(_('Cannot delete this type because customer transactions have been created using this type') . '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('transactions using this type'), 'error');
+	$MyRow = DB_fetch_row($result);
+	if ($MyRow[0] > 0) {
+		prnMsg(_('Cannot delete this type because customer transactions have been created using this type') . '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('transactions using this type'), 'error');
 
 	} else {
 
@@ -149,9 +149,9 @@ if (isset($_POST['submit'])) {
 
 		$ErrMsg = _('The number of transactions using this Type record could not be retrieved because');
 		$result = DB_query($sql, $ErrMsg);
-		$myrow = DB_fetch_row($result);
-		if ($myrow[0] > 0) {
-			prnMsg(_('Cannot delete this type because customers are currently set up to use this type') . '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('customers with this type code'));
+		$MyRow = DB_fetch_row($result);
+		if ($MyRow[0] > 0) {
+			prnMsg(_('Cannot delete this type because customers are currently set up to use this type') . '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('customers with this type code'));
 		} else {
 			$result = DB_query("SELECT TypeName FROM debtortype WHERE typeid='" . $SelectedType . "'");
 			if (DB_Num_Rows($result) > 0) {
@@ -189,7 +189,7 @@ if (!isset($SelectedType)) {
 
 	$k = 0; //row colour counter
 
-	while ($myrow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -202,7 +202,7 @@ if (!isset($SelectedType)) {
 				<td>%s</td>
 				<td><a href="%sSelectedType=%s">' . _('Edit') . '</a></td>
 				<td><a href="%sSelectedType=%s&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this Customer Type?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-			</tr>', $myrow[0], $myrow[1], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow[0], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow[0]);
+			</tr>', $MyRow[0], $MyRow[1], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow[0], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow[0]);
 	}
 	//END WHILE LIST LOOP
 	echo '</table>';
@@ -230,10 +230,10 @@ if (!isset($_GET['delete'])) {
 				WHERE typeid='" . $SelectedType . "'";
 
 		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($result);
 
-		$_POST['typeid'] = $myrow['typeid'];
-		$_POST['TypeName'] = $myrow['typename'];
+		$_POST['typeid'] = $MyRow['typeid'];
+		$_POST['TypeName'] = $MyRow['typename'];
 
 		echo '<input type="hidden" name="SelectedType" value="' . $SelectedType . '" />';
 		echo '<input type="hidden" name="typeid" value="' . $_POST['typeid'] . '" />';

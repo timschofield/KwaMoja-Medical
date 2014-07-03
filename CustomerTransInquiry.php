@@ -31,15 +31,15 @@ $sql = "SELECT typeid,
 $resultTypes = DB_query($sql);
 
 echo '<option value="All">' . _('All') . '</option>';
-while ($myrow = DB_fetch_array($resultTypes)) {
+while ($MyRow = DB_fetch_array($resultTypes)) {
 	if (isset($_POST['TransType'])) {
-		if ($myrow['typeid'] == $_POST['TransType']) {
-			echo '<option selected="selected" value="' . $myrow['typeid'] . '">' . $myrow['typename'] . '</option>';
+		if ($MyRow['typeid'] == $_POST['TransType']) {
+			echo '<option selected="selected" value="' . $MyRow['typeid'] . '">' . $MyRow['typename'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['typeid'] . '">' . $myrow['typename'] . '</option>';
+			echo '<option value="' . $MyRow['typeid'] . '">' . $MyRow['typename'] . '</option>';
 		}
 	} else {
-		echo '<option value="' . $myrow['typeid'] . '">' . $myrow['typename'] . '</option>';
+		echo '<option value="' . $MyRow['typeid'] . '">' . $MyRow['typename'] . '</option>';
 	}
 }
 echo '</select></td>';
@@ -112,7 +112,7 @@ if (isset($_POST['ShowResults']) and $_POST['TransType'] != '') {
 
 	$k = 0; //row colour counter
 
-	while ($myrow = DB_fetch_array($TransResult)) {
+	while ($MyRow = DB_fetch_array($TransResult)) {
 
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -138,15 +138,15 @@ if (isset($_POST['ShowResults']) and $_POST['TransType'] != '') {
 			/* invoices */
 
 			printf($format_base . '<td><a target="_blank" href="%s/PrintCustTrans.php?FromTransNo=%s&InvOrCredit=Invoice"><img src="%s" title="' . _('Click to preview the invoice') . '" /></a></td>
-					</tr>', $myrow['typename'], $myrow['transno'], ConvertSQLDate($myrow['trandate']), $myrow['debtorno'], $myrow['branchcode'], $myrow['reference'], $myrow['invtext'], $myrow['order_'], locale_number_format($myrow['rate'], 6), locale_number_format($myrow['totalamt'], $myrow['currdecimalplaces']), $myrow['currcode'], $RootPath, $myrow['transno'], $RootPath . '/css/' . $Theme . '/images/preview.gif');
+					</tr>', $MyRow['typename'], $MyRow['transno'], ConvertSQLDate($MyRow['trandate']), $MyRow['debtorno'], $MyRow['branchcode'], $MyRow['reference'], $MyRow['invtext'], $MyRow['order_'], locale_number_format($MyRow['rate'], 6), locale_number_format($MyRow['totalamt'], $MyRow['currdecimalplaces']), $MyRow['currcode'], $RootPath, $MyRow['transno'], $RootPath . '/css/' . $Theme . '/images/preview.gif');
 
 		} elseif ($_POST['TransType'] == 11) {
 			/* credit notes */
 			printf($format_base . '<td><a target="_blank" href="%s/PrintCustTrans.php?FromTransNo=%s&InvOrCredit=Credit"><img src="%s" title="' . _('Click to preview the credit') . '" /></a></td>
-					</tr>', $myrow['typename'], $myrow['transno'], ConvertSQLDate($myrow['trandate']), $myrow['debtorno'], $myrow['branchcode'], $myrow['reference'], $myrow['invtext'], $myrow['order_'], locale_number_format($myrow['rate'], 6), locale_number_format($myrow['totalamt'], $myrow['currdecimalplaces']), $myrow['currcode'], $RootPath, $myrow['transno'], $RootPath . '/css/' . $Theme . '/images/preview.gif');
+					</tr>', $MyRow['typename'], $MyRow['transno'], ConvertSQLDate($MyRow['trandate']), $MyRow['debtorno'], $MyRow['branchcode'], $MyRow['reference'], $MyRow['invtext'], $MyRow['order_'], locale_number_format($MyRow['rate'], 6), locale_number_format($MyRow['totalamt'], $MyRow['currdecimalplaces']), $MyRow['currcode'], $RootPath, $MyRow['transno'], $RootPath . '/css/' . $Theme . '/images/preview.gif');
 		} else {
 			/* otherwise */
-			printf($format_base . '</tr>', $myrow['typename'], $myrow['transno'], ConvertSQLDate($myrow['trandate']), $myrow['debtorno'], $myrow['branchcode'], $myrow['reference'], $myrow['invtext'], $myrow['order_'], locale_number_format($myrow['rate'], 6), locale_number_format($myrow['totalamt'], $myrow['currdecimalplaces']), $myrow['currcode']);
+			printf($format_base . '</tr>', $MyRow['typename'], $MyRow['transno'], ConvertSQLDate($MyRow['trandate']), $MyRow['debtorno'], $MyRow['branchcode'], $MyRow['reference'], $MyRow['invtext'], $MyRow['order_'], locale_number_format($MyRow['rate'], 6), locale_number_format($MyRow['totalamt'], $MyRow['currdecimalplaces']), $MyRow['currcode']);
 		}
 
 	}

@@ -172,22 +172,22 @@ if (isset($_POST['submit'])) {
 
 	$sql = "SELECT COUNT(*) FROM custbranch WHERE  custbranch.salesman='" . $SelectedSalesPerson . "'";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_row($result);
-	if ($myrow[0] > 0) {
-		prnMsg(_('Cannot delete this salesperson because branches are set up referring to them') . ' - ' . _('first alter the branches concerned') . '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('branches that refer to this salesperson'), 'error');
+	$MyRow = DB_fetch_row($result);
+	if ($MyRow[0] > 0) {
+		prnMsg(_('Cannot delete this salesperson because branches are set up referring to them') . ' - ' . _('first alter the branches concerned') . '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('branches that refer to this salesperson'), 'error');
 
 	} else {
 		$sql = "SELECT COUNT(*) FROM salesanalysis WHERE salesanalysis.salesperson='" . $SelectedSalesPerson . "'";
 		$result = DB_query($sql);
-		$myrow = DB_fetch_row($result);
-		if ($myrow[0] > 0) {
-			prnMsg(_('Cannot delete this salesperson because sales analysis records refer to them'), '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('sales analysis records that refer to this salesperson'), 'error');
+		$MyRow = DB_fetch_row($result);
+		if ($MyRow[0] > 0) {
+			prnMsg(_('Cannot delete this salesperson because sales analysis records refer to them'), '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('sales analysis records that refer to this salesperson'), 'error');
 		} else {
 			$sql = "SELECT COUNT(*) FROM www_users WHERE salesman='" . $SelectedSalesPerson . "'";
 			$result = DB_query($sql);
-			$myrow = DB_fetch_row($result);
-			if ($myrow[0] > 0) {
-				prnMsg(_('Cannot delete this salesperson because'), '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('user records that refer to this salesperson') . '.' . _('First delete any users that refer to this sales person'), 'error');
+			$MyRow = DB_fetch_row($result);
+			if ($MyRow[0] > 0) {
+				prnMsg(_('Cannot delete this salesperson because'), '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('user records that refer to this salesperson') . '.' . _('First delete any users that refer to this sales person'), 'error');
 			} else {
 
 				$sql = "DELETE FROM salesman WHERE salesmancode='" . $SelectedSalesPerson . "'";
@@ -237,7 +237,7 @@ if (!isset($SelectedSalesPerson)) {
 			<th class="SortableColumn">' . _('Current') . '</th>
 		</tr>';
 	$k = 0;
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -246,33 +246,33 @@ if (!isset($SelectedSalesPerson)) {
 			echo '<tr class="OddTableRows">';
 			$k++;
 		}
-		if ($myrow['current'] == 1) {
+		if ($MyRow['current'] == 1) {
 			$ActiveText = _('Yes');
 		} else {
 			$ActiveText = _('No');
 		}
-		if ($myrow['manager'] == 1) {
+		if ($MyRow['manager'] == 1) {
 			$ManagerText = _('Yes');
 		} else {
 			$ManagerText = _('No');
 		}
 
-		$sql = "SELECT areadescription FROM areas WHERE areacode='" . $myrow['salesarea'] . "'";
+		$sql = "SELECT areadescription FROM areas WHERE areacode='" . $MyRow['salesarea'] . "'";
 		$AreaResult = DB_query($sql);
 		$AreaRow = DB_fetch_array($AreaResult);
 
-		echo '<td>' . $myrow['salesmancode'] . '</td>
-				<td>' . $myrow['salesmanname'] . '</td>
+		echo '<td>' . $MyRow['salesmancode'] . '</td>
+				<td>' . $MyRow['salesmanname'] . '</td>
 				<td>' . $AreaRow['areadescription'] . '</td>
 				<td>' . $ManagerText . '</td>
-				<td>' . $myrow['smantel'] . '</td>
-				<td>' . $myrow['smanfax'] . '</td>
-				<td class="number">' . locale_number_format($myrow['commissionrate1'], 2) . '</td>
-				<td class="number">' . locale_number_format($myrow['breakpoint'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
-				<td class="number">' . locale_number_format($myrow['commissionrate2'], 2) . '</td>
+				<td>' . $MyRow['smantel'] . '</td>
+				<td>' . $MyRow['smanfax'] . '</td>
+				<td class="number">' . locale_number_format($MyRow['commissionrate1'], 2) . '</td>
+				<td class="number">' . locale_number_format($MyRow['breakpoint'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
+				<td class="number">' . locale_number_format($MyRow['commissionrate2'], 2) . '</td>
 				<td>' . $ActiveText . '</td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedSalesPerson=' . urlencode($myrow['salesmancode']) . '">' . _('Edit') . '</a></td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedSalesPerson=' . urlencode($myrow['salesmancode']) . '&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this sales person?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedSalesPerson=' . urlencode($MyRow['salesmancode']) . '">' . _('Edit') . '</a></td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedSalesPerson=' . urlencode($MyRow['salesmancode']) . '&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this sales person?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
 				</tr>';
 
 	} //END WHILE LIST LOOP
@@ -305,18 +305,18 @@ if (!isset($_GET['delete'])) {
 				WHERE salesmancode='" . $SelectedSalesPerson . "'";
 
 		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($result);
 
-		$_POST['SalesmanCode'] = $myrow['salesmancode'];
-		$_POST['SalesmanName'] = $myrow['salesmanname'];
-		$_POST['SalesArea'] = $myrow['salesarea'];
-		$_POST['Manager'] = $myrow['manager'];
-		$_POST['SManTel'] = $myrow['smantel'];
-		$_POST['SManFax'] = $myrow['smanfax'];
-		$_POST['CommissionRate1'] = locale_number_format($myrow['commissionrate1'], 'Variable');
-		$_POST['Breakpoint'] = locale_number_format($myrow['breakpoint'], $_SESSION['CompanyRecord']['decimalplaces']);
-		$_POST['CommissionRate2'] = locale_number_format($myrow['commissionrate2'], 'Variable');
-		$_POST['Current'] = $myrow['current'];
+		$_POST['SalesmanCode'] = $MyRow['salesmancode'];
+		$_POST['SalesmanName'] = $MyRow['salesmanname'];
+		$_POST['SalesArea'] = $MyRow['salesarea'];
+		$_POST['Manager'] = $MyRow['manager'];
+		$_POST['SManTel'] = $MyRow['smantel'];
+		$_POST['SManFax'] = $MyRow['smanfax'];
+		$_POST['CommissionRate1'] = locale_number_format($MyRow['commissionrate1'], 'Variable');
+		$_POST['Breakpoint'] = locale_number_format($MyRow['breakpoint'], $_SESSION['CompanyRecord']['decimalplaces']);
+		$_POST['CommissionRate2'] = locale_number_format($MyRow['commissionrate2'], 'Variable');
+		$_POST['Current'] = $MyRow['current'];
 
 
 		echo '<input type="hidden" name="SelectedSalesPerson" value="' . $SelectedSalesPerson . '" />';

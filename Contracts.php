@@ -728,18 +728,18 @@ if (isset($_POST['SelectedCustomer'])) {
 	$ErrMsg = _('The customer record selected') . ': ' . $_SESSION['Contract' . $identifier]->DebtorNo . ' ' . _('cannot be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve the customer details and failed was');
 	$result = DB_query($sql, $ErrMsg, $DbgMsg);
-	$myrow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($result);
 	if (DB_num_rows($result) == 0) {
 		prnMsg(_('The customer details were unable to be retrieved'), 'error');
 		if ($debug == 1) {
 			prnMsg(_('The SQL used that failed to get the customer details was') . ':<br />' . $sql, 'error');
 		}
 	} else {
-		$_SESSION['Contract' . $identifier]->BranchName = $myrow['brname'];
+		$_SESSION['Contract' . $identifier]->BranchName = $MyRow['brname'];
 		$_SESSION['RequireCustomerSelection'] = 0;
-		$_SESSION['Contract' . $identifier]->CustomerName = $myrow['name'];
-		$_SESSION['Contract' . $identifier]->CurrCode = $myrow['currcode'];
-		$_SESSION['Contract' . $identifier]->ExRate = $myrow['rate'];
+		$_SESSION['Contract' . $identifier]->CustomerName = $MyRow['name'];
+		$_SESSION['Contract' . $identifier]->CurrCode = $MyRow['currcode'];
+		$_SESSION['Contract' . $identifier]->ExRate = $MyRow['rate'];
 
 		if ($_SESSION['CheckCreditLimits'] > 0) {
 			/*Check credit limits is 1 for warn and 2 for prohibit contracts */
@@ -747,7 +747,7 @@ if (isset($_POST['SelectedCustomer'])) {
 			if ($_SESSION['CheckCreditLimits'] == 1 and $CreditAvailable <= 0) {
 				prnMsg(_('The') . ' ' . $_SESSION['Contract' . $identifier]->CustomerName . ' ' . _('account is currently at or over their credit limit'), 'warn');
 			} elseif ($_SESSION['CheckCreditLimits'] == 2 and $CreditAvailable <= 0) {
-				prnMsg(_('No more orders can be placed by') . ' ' . $myrow[0] . ' ' . _(' their account is currently at or over their credit limit'), 'warn');
+				prnMsg(_('No more orders can be placed by') . ' ' . $MyRow[0] . ' ' . _(' their account is currently at or over their credit limit'), 'warn');
 				include('includes/footer.inc');
 				exit;
 			}
@@ -791,7 +791,7 @@ if (!isset($_SESSION['Contract' . $identifier]->DebtorNo) or $_SESSION['Contract
 		$k = 0; //row counter to determine background colour
 		$j = 0;
 		$LastCustomer = '';
-		while ($myrow = DB_fetch_array($result_CustSelect)) {
+		while ($MyRow = DB_fetch_array($result_CustSelect)) {
 
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
@@ -800,19 +800,19 @@ if (!isset($_SESSION['Contract' . $identifier]->DebtorNo) or $_SESSION['Contract
 				echo '<tr class="OddTableRows">';
 				$k = 1;
 			}
-			if ($LastCustomer != $myrow['name']) {
-				echo '<td>' . htmlentities($myrow['name'], ENT_QUOTES, 'UTF-8') . '</td>';
+			if ($LastCustomer != $MyRow['name']) {
+				echo '<td>' . htmlentities($MyRow['name'], ENT_QUOTES, 'UTF-8') . '</td>';
 			} else {
 				echo '<td></td>';
 			}
-			echo '<td><input type="submit" name="Submit' . $j . '" value="' . htmlentities($myrow['brname'], ENT_QUOTES, 'UTF-8') . '" /></td>
-					<input type="hidden" name="SelectedCustomer' . $j . '" value="' . $myrow['debtorno'] . '" />
-					<input type="hidden" name="SelectedBranch' . $j . '" value="' . $myrow['branchcode'] . '" />
-					<td>' . htmlentities($myrow['contactname'], ENT_QUOTES, 'UTF-8') . '</td>
-					<td>' . $myrow['phoneno'] . '</td>
-					<td>' . $myrow['faxno'] . '</td>
+			echo '<td><input type="submit" name="Submit' . $j . '" value="' . htmlentities($MyRow['brname'], ENT_QUOTES, 'UTF-8') . '" /></td>
+					<input type="hidden" name="SelectedCustomer' . $j . '" value="' . $MyRow['debtorno'] . '" />
+					<input type="hidden" name="SelectedBranch' . $j . '" value="' . $MyRow['branchcode'] . '" />
+					<td>' . htmlentities($MyRow['contactname'], ENT_QUOTES, 'UTF-8') . '</td>
+					<td>' . $MyRow['phoneno'] . '</td>
+					<td>' . $MyRow['faxno'] . '</td>
 					</tr>';
-			$LastCustomer = $myrow['name'];
+			$LastCustomer = $MyRow['name'];
 			$j++;
 			//end of page full new headings if
 		}
@@ -862,11 +862,11 @@ if (!isset($_SESSION['Contract' . $identifier]->DebtorNo) or $_SESSION['Contract
 	$DbgMsg = _('The SQL used to retrieve stock categories and failed was');
 	$result = DB_query($sql, $ErrMsg, $DbgMsg);
 
-	while ($myrow = DB_fetch_array($result)) {
-		if (!isset($_SESSION['Contract' . $identifier]->CategoryID) or $myrow['categoryid'] == $_SESSION['Contract' . $identifier]->CategoryID) {
-			echo '<option selected="selected" value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . '</option>';
+	while ($MyRow = DB_fetch_array($result)) {
+		if (!isset($_SESSION['Contract' . $identifier]->CategoryID) or $MyRow['categoryid'] == $_SESSION['Contract' . $identifier]->CategoryID) {
+			echo '<option selected="selected" value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . '</option>';
+			echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 		}
 	}
 
@@ -891,11 +891,11 @@ if (!isset($_SESSION['Contract' . $identifier]->DebtorNo) or $_SESSION['Contract
 	echo '<tr>
 			<td>' . _('Location') . ':</td>
 			<td><select minlength="0" name="LocCode" >';
-	while ($myrow = DB_fetch_array($result)) {
-		if (!isset($_SESSION['Contract' . $identifier]->LocCode) or $myrow['loccode'] == $_SESSION['Contract' . $identifier]->LocCode) {
-			echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+	while ($MyRow = DB_fetch_array($result)) {
+		if (!isset($_SESSION['Contract' . $identifier]->LocCode) or $MyRow['loccode'] == $_SESSION['Contract' . $identifier]->LocCode) {
+			echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+			echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 		}
 	}
 
@@ -924,11 +924,11 @@ if (!isset($_SESSION['Contract' . $identifier]->DebtorNo) or $_SESSION['Contract
 
 	echo '<select minlength="0" name="DefaultWorkCentre">';
 
-	while ($myrow = DB_fetch_array($result)) {
-		if (isset($_POST['DefaultWorkCentre']) and $myrow['code'] == $_POST['DefaultWorkCentre']) {
-			echo '<option selected="selected" value="' . $myrow['code'] . '">' . $myrow['description'] . '</option>';
+	while ($MyRow = DB_fetch_array($result)) {
+		if (isset($_POST['DefaultWorkCentre']) and $MyRow['code'] == $_POST['DefaultWorkCentre']) {
+			echo '<option selected="selected" value="' . $MyRow['code'] . '">' . $MyRow['description'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['code'] . '">' . $myrow['description'] . '</option>';
+			echo '<option value="' . $MyRow['code'] . '">' . $MyRow['description'] . '</option>';
 		}
 	} //end while loop
 

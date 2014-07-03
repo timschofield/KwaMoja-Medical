@@ -33,10 +33,10 @@ if (isset($_POST['Submit']) or isset($_POST['EnterMoreItems'])) {
 			$FileHandle = fopen($_FILES['SelectedTransferFile']['tmp_name'], 'r');
 			$TotalItems = 0;
 			//loop through file rows
-			while (($myrow = fgetcsv($FileHandle, 10000, ',')) !== FALSE) {
+			while (($MyRow = fgetcsv($FileHandle, 10000, ',')) !== FALSE) {
 
-				if (count($myrow) != 2) {
-					prnMsg(_('File contains') . ' ' . count($myrow) . ' ' . _('columns, but only 2 columns are expected. The comma separated file should have just two columns the first for the item code and the second for the quantity to transfer'), 'error');
+				if (count($MyRow) != 2) {
+					prnMsg(_('File contains') . ' ' . count($MyRow) . ' ' . _('columns, but only 2 columns are expected. The comma separated file should have just two columns the first for the item code and the second for the quantity to transfer'), 'error');
 					fclose($FileHandle);
 					include('includes/footer.inc');
 					exit;
@@ -45,10 +45,10 @@ if (isset($_POST['Submit']) or isset($_POST['EnterMoreItems'])) {
 				// cleanup the data (csv files often import with empty strings and such)
 				$StockID = '';
 				$Quantity = 0;
-				for ($i = 0; $i < count($myrow); $i++) {
+				for ($i = 0; $i < count($MyRow); $i++) {
 					switch ($i) {
 						case 0:
-							$StockID = trim(mb_strtoupper($myrow[$i]));
+							$StockID = trim(mb_strtoupper($MyRow[$i]));
 							$result = DB_query("SELECT COUNT(stockid) FROM stockmaster WHERE stockid='" . $StockID . "'");
 							$StockIDCheck = DB_fetch_row($result);
 							if ($StockIDCheck[0] == 0) {
@@ -57,7 +57,7 @@ if (isset($_POST['Submit']) or isset($_POST['EnterMoreItems'])) {
 							}
 							break;
 						case 1:
-							$Quantity = filter_number_format($myrow[$i]);
+							$Quantity = filter_number_format($MyRow[$i]);
 							if (!is_numeric($Quantity)) {
 								$InputError = True;
 								$ErrorMessage .= _('The quantity entered for') . ' ' . $StockID . ' ' . _('of') . $Quantity . ' ' . _('is not numeric.') . _('The quantity entered for transfers is expected to be numeric');
@@ -114,8 +114,8 @@ if (isset($_POST['Submit']) or isset($_POST['EnterMoreItems'])) {
 				if (isset($_POST['StockID' . $i]) and $_POST['StockID' . $i] != '') {
 					$_POST['StockID' . $i] = trim(mb_strtoupper($_POST['StockID' . $i]));
 					$result = DB_query("SELECT COUNT(stockid) FROM stockmaster WHERE stockid='" . $_POST['StockID' . $i] . "'");
-					$myrow = DB_fetch_row($result);
-					if ($myrow[0] == 0) {
+					$MyRow = DB_fetch_row($result);
+					if ($MyRow[0] == 0) {
 						$InputError = True;
 						$ErrorMessage .= _('The part code entered of') . ' ' . $_POST['StockID' . $i] . ' ' . _('is not set up in the database') . '. ' . _('Only valid parts can be entered for transfers') . '<br />';
 						$_POST['LinesCounter'] -= 10;
@@ -146,8 +146,8 @@ if (isset($_POST['Submit']) or isset($_POST['EnterMoreItems'])) {
 											WHERE stockid='" . $_POST['StockID' . $i] . "'
 											AND loccode='" . $_POST['FromStockLocation'] . "'");
 
-						$myrow = DB_fetch_array($result);
-						if (($myrow['quantity'] - $InTransitQuantity) < filter_number_format($_POST['StockQTY' . $i])) {
+						$MyRow = DB_fetch_array($result);
+						if (($MyRow['quantity'] - $InTransitQuantity) < filter_number_format($_POST['StockQTY' . $i])) {
 							$InputError = True;
 							$ErrorMessage .= _('The part code entered of') . ' ' . $_POST['StockID' . $i] . ' ' . _('does not have enough stock available for transfer.') . '.<br />';
 							$_POST['LinesCounter'] -= 10;
@@ -156,7 +156,7 @@ if (isset($_POST['Submit']) or isset($_POST['EnterMoreItems'])) {
 					// Check the accumulated quantity for each item
 					if (isset($StockIDAccQty[$_POST['StockID' . $i]])) {
 						$StockIDAccQty[$_POST['StockID' . $i]] += filter_number_format($_POST['StockQTY' . $i]);
-						if ($myrow[0] < $StockIDAccQty[$_POST['StockID' . $i]]) {
+						if ($MyRow[0] < $StockIDAccQty[$_POST['StockID' . $i]]) {
 							$InputError = True;
 							$ErrorMessage .= _('The part code entered of') . ' ' . $_POST['StockID' . $i] . ' ' . _('does not have enough stock available for transter due to accumulated quantity is over quantity on hand.') . '<br />';
 							$_POST['LinesCounter'] -= 10;
@@ -268,18 +268,18 @@ if (isset($_POST['Submit']) and $InputError == False) {
 			<td>' . _('From Stock Location') . ':</td>
 			<td><select required="required" minlength="1" name="FromStockLocation">';
 
-	while ($myrow = DB_fetch_array($resultStkLocs)) {
+	while ($MyRow = DB_fetch_array($resultStkLocs)) {
 		if (isset($_POST['FromStockLocation'])) {
-			if ($myrow['loccode'] == $_POST['FromStockLocation']) {
-				echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+			if ($MyRow['loccode'] == $_POST['FromStockLocation']) {
+				echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 			} else {
-				echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+				echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 			}
-		} elseif ($myrow['loccode'] == $_SESSION['UserStockLocation']) {
-			echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
-			$_POST['FromStockLocation'] = $myrow['loccode'];
+		} elseif ($MyRow['loccode'] == $_SESSION['UserStockLocation']) {
+			echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
+			$_POST['FromStockLocation'] = $MyRow['loccode'];
 		} else {
-			echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+			echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 		}
 	}
 	echo '</select></td>';
@@ -290,18 +290,18 @@ if (isset($_POST['Submit']) and $InputError == False) {
 	$resultStkLocs = DB_query($sql);
 	echo '<td>' . _('To Stock Location') . ':</td>
 			<td><select required="required" minlength="1" name="ToStockLocation">';
-	while ($myrow = DB_fetch_array($resultStkLocs)) {
+	while ($MyRow = DB_fetch_array($resultStkLocs)) {
 		if (isset($_POST['ToStockLocation'])) {
-			if ($myrow['loccode'] == $_POST['ToStockLocation']) {
-				echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+			if ($MyRow['loccode'] == $_POST['ToStockLocation']) {
+				echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 			} else {
-				echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+				echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 			}
-		} elseif ($myrow['loccode'] == $_SESSION['UserStockLocation']) {
-			echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
-			$_POST['ToStockLocation'] = $myrow['loccode'];
+		} elseif ($MyRow['loccode'] == $_SESSION['UserStockLocation']) {
+			echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
+			$_POST['ToStockLocation'] = $MyRow['loccode'];
 		} else {
-			echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+			echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 		}
 	}
 	echo '</select></td></tr>';

@@ -82,8 +82,8 @@ if (isset($_POST['PlacePO'])) {
 
 		$ItemArray = array();
 
-		while ($myrow = DB_fetch_array($ItemResult)) {
-			$ItemArray[$myrow['stockid']] = $myrow;
+		while ($MyRow = DB_fetch_array($ItemResult)) {
+			$ItemArray[$MyRow['stockid']] = $MyRow;
 		}
 
 		/* Now figure out if there are any components of Assembly items that  need to be ordered too */
@@ -133,13 +133,13 @@ if (isset($_POST['PlacePO'])) {
 		$ItemResult = DB_query($sql, $ErrMsg);
 
 		/* add any assembly item components from salesorders to the ItemArray */
-		while ($myrow = DB_fetch_array($ItemResult)) {
-			if (isset($ItemArray[$myrow['stockid']])) {
+		while ($MyRow = DB_fetch_array($ItemResult)) {
+			if (isset($ItemArray[$MyRow['stockid']])) {
 				/* if the item is already in the ItemArray then just add the quantity to the existing item */
-				$ItemArray[$myrow['stockid']]['orderqty'] += $myrow['orderqty'];
+				$ItemArray[$MyRow['stockid']]['orderqty'] += $MyRow['orderqty'];
 			} else {
 				/*it is not already in the ItemArray so add it */
-				$ItemArray[$myrow['stockid']] = $myrow;
+				$ItemArray[$MyRow['stockid']] = $MyRow;
 			}
 		}
 
@@ -503,17 +503,17 @@ if (!isset($StockID)) {
 
 		$resultStkLocs = DB_query($sql);
 
-		while ($myrow = DB_fetch_array($resultStkLocs)) {
+		while ($MyRow = DB_fetch_array($resultStkLocs)) {
 			if (isset($_POST['StockLocation'])) {
-				if ($myrow['loccode'] == $_POST['StockLocation']) {
-					echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+				if ($MyRow['loccode'] == $_POST['StockLocation']) {
+					echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 				} else {
-					echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+					echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 				}
-			} elseif ($myrow['loccode'] == $_SESSION['UserStockLocation']) {
-				echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+			} elseif ($MyRow['loccode'] == $_SESSION['UserStockLocation']) {
+				echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 			} else {
-				echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+				echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 			}
 		}
 
@@ -561,11 +561,11 @@ if (!isset($StockID)) {
 				<td>' . _('Select a stock category') . ':
 					<select minlength="0" name="StockCat">';
 
-	while ($myrow1 = DB_fetch_array($result1)) {
-		if (isset($_POST['StockCat']) and $_POST['StockCat'] == $myrow1['categoryid']) {
-			echo '<option selected="selected" value="' . $myrow1['categoryid'] . '">' . $myrow1['categorydescription'] . '</option>';
+	while ($MyRow1 = DB_fetch_array($result1)) {
+		if (isset($_POST['StockCat']) and $_POST['StockCat'] == $MyRow1['categoryid']) {
+			echo '<option selected="selected" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow1['categoryid'] . '">' . $myrow1['categorydescription'] . '</option>';
+			echo '<option value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 		}
 	}
 
@@ -596,7 +596,7 @@ if (!isset($StockID)) {
 
 		$k = 0; //row colour counter
 
-		while ($myrow = DB_fetch_array($StockItemsResult)) {
+		while ($MyRow = DB_fetch_array($StockItemsResult)) {
 
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
@@ -610,7 +610,7 @@ if (!isset($StockID)) {
 				<td>%s</td>
 				<td class="number">%s</td>
 				<td>%s</td>
-				</tr>', $myrow['stockid'], $myrow['description'], locale_number_format($myrow['qoh'], $myrow['decimalplaces']), $myrow['units']);
+				</tr>', $MyRow['stockid'], $MyRow['description'], locale_number_format($MyRow['qoh'], $MyRow['decimalplaces']), $MyRow['units']);
 			//end of page full new headings if
 		}
 		//end of while loop
@@ -760,7 +760,7 @@ if (!isset($StockID)) {
 			$i = 0;
 			$k = 0; //row colour counter
 			$OrdersTotal = 0;
-			while ($myrow = DB_fetch_array($SalesOrdersResult)) {
+			while ($MyRow = DB_fetch_array($SalesOrdersResult)) {
 
 
 				if ($k == 1) {
@@ -771,23 +771,23 @@ if (!isset($StockID)) {
 					$k++;
 				}
 
-				$ModifyPage = $RootPath . '/SelectOrderItems.php?ModifyOrderNumber=' . $myrow['orderno'];
-				$Confirm_Invoice = $RootPath . '/ConfirmDispatch_Invoice.php?OrderNumber=' . $myrow['orderno'];
+				$ModifyPage = $RootPath . '/SelectOrderItems.php?ModifyOrderNumber=' . $MyRow['orderno'];
+				$Confirm_Invoice = $RootPath . '/ConfirmDispatch_Invoice.php?OrderNumber=' . $MyRow['orderno'];
 
 				if ($_SESSION['PackNoteFormat'] == 1) {
 					/*Laser printed A4 default */
-					$PrintDispatchNote = $RootPath . '/PrintCustOrder_generic.php?TransNo=' . $myrow['orderno'];
+					$PrintDispatchNote = $RootPath . '/PrintCustOrder_generic.php?TransNo=' . $MyRow['orderno'];
 				} else {
 					/*pre-printed stationery default */
-					$PrintDispatchNote = $RootPath . '/PrintCustOrder.php?TransNo=' . $myrow['orderno'];
+					$PrintDispatchNote = $RootPath . '/PrintCustOrder.php?TransNo=' . $MyRow['orderno'];
 				}
-				$PrintQuotation = $RootPath . '/PDFQuotation.php?QuotationNo=' . $myrow['orderno'];
-				$PrintQuotationPortrait = $RootPath . '/PDFQuotationPortrait.php?QuotationNo=' . $myrow['orderno'];
-				$FormatedDelDate = ConvertSQLDate($myrow['deliverydate']);
-				$FormatedOrderDate = ConvertSQLDate($myrow['orddate']);
-				$FormatedOrderValue = locale_number_format($myrow['ordervalue'], $_SESSION['CompanyRecord']['decimalplaces']);
-				$OrdersTotal += $myrow['ordervalue'];
-				if ($myrow['printedpackingslip'] == 0) {
+				$PrintQuotation = $RootPath . '/PDFQuotation.php?QuotationNo=' . $MyRow['orderno'];
+				$PrintQuotationPortrait = $RootPath . '/PDFQuotationPortrait.php?QuotationNo=' . $MyRow['orderno'];
+				$FormatedDelDate = ConvertSQLDate($MyRow['deliverydate']);
+				$FormatedOrderDate = ConvertSQLDate($MyRow['orddate']);
+				$FormatedOrderValue = locale_number_format($MyRow['ordervalue'], $_SESSION['CompanyRecord']['decimalplaces']);
+				$OrdersTotal += $MyRow['ordervalue'];
+				if ($MyRow['printedpackingslip'] == 0) {
 					$PrintText = _('Print');
 				} else {
 					$PrintText = _('Reprint');
@@ -796,7 +796,7 @@ if (!isset($StockID)) {
 				if ($_POST['Quotations'] == 'Orders_Only') {
 
 					/*Check authority to create POs if user has authority then show the check boxes to select sales orders to place POs for otherwise don't provide this option */
-					if ($AuthRow['cancreate'] == 0 and $myrow['poplaced'] == 0) { //cancreate==0 if the user can create POs and not already placed
+					if ($AuthRow['cancreate'] == 0 and $MyRow['poplaced'] == 0) { //cancreate==0 if the user can create POs and not already placed
 						printf('<td><a href="%s">%s</a></td>
 						<td><a href="%s">' . _('Invoice') . '</a></td>
 						<td><a target="_blank" href="%s">' . $PrintText . ' <img src="' . $RootPath . '/css/' . $Theme . '/images/pdf.png" title="' . _('Click for PDF') . '" alt="" /></a></td>
@@ -808,7 +808,7 @@ if (!isset($StockID)) {
 						<td>%s</td>
 						<td class="number">%s</td>
 						<td><input type="checkbox" name="PlacePO_%s" /><input type="hidden" name="OrderNo_PO_%s" value="%s" /></td>
-						</tr>', $ModifyPage, $myrow['orderno'], $Confirm_Invoice, $PrintDispatchNote, $myrow['name'], $myrow['brname'], $myrow['customerref'], $FormatedOrderDate, $FormatedDelDate, html_entity_decode($myrow['deliverto'], ENT_QUOTES, 'UTF-8'), $FormatedOrderValue, $i, $i, $myrow['orderno']);
+						</tr>', $ModifyPage, $MyRow['orderno'], $Confirm_Invoice, $PrintDispatchNote, $MyRow['name'], $MyRow['brname'], $MyRow['customerref'], $FormatedOrderDate, $FormatedDelDate, html_entity_decode($MyRow['deliverto'], ENT_QUOTES, 'UTF-8'), $FormatedOrderValue, $i, $i, $MyRow['orderno']);
 					} else {
 						/*User is not authorised to create POs so don't even show the option */
 						printf('<td><a href="%s">%s</a></td>
@@ -821,7 +821,7 @@ if (!isset($StockID)) {
 							<td>%s</td>
 							<td>%s</td>
 							<td class="number">%s</td>
-							</tr>', $ModifyPage, $myrow['orderno'], $Confirm_Invoice, $PrintDispatchNote, $myrow['name'], $myrow['brname'], $myrow['customerref'], $FormatedOrderDate, $FormatedDelDate, html_entity_decode($myrow['deliverto'], ENT_QUOTES, 'UTF-8'), $FormatedOrderValue);
+							</tr>', $ModifyPage, $MyRow['orderno'], $Confirm_Invoice, $PrintDispatchNote, $MyRow['name'], $MyRow['brname'], $MyRow['customerref'], $FormatedOrderDate, $FormatedDelDate, html_entity_decode($MyRow['deliverto'], ENT_QUOTES, 'UTF-8'), $FormatedOrderValue);
 					}
 
 				} else {
@@ -835,7 +835,7 @@ if (!isset($StockID)) {
 						<td>%s</td>
 						<td>%s</td>
 						<td class="number">%s</td>
-						</tr>', $ModifyPage, $myrow['orderno'], $PrintQuotation, $PrintQuotationPortrait, $myrow['name'], $myrow['brname'], $myrow['customerref'], $FormatedOrderDate, $FormatedDelDate, html_entity_decode($myrow['deliverto'], ENT_QUOTES, 'UTF-8'), $FormatedOrderValue);
+						</tr>', $ModifyPage, $MyRow['orderno'], $PrintQuotation, $PrintQuotationPortrait, $MyRow['name'], $MyRow['brname'], $MyRow['customerref'], $FormatedOrderDate, $FormatedDelDate, html_entity_decode($MyRow['deliverto'], ENT_QUOTES, 'UTF-8'), $FormatedOrderValue);
 				}
 				$i++;
 			} //end while loop through orders to display

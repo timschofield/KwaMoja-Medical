@@ -270,8 +270,8 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 
 		$sql = 'SELECT categoryid, categorydescription FROM stockcategory ORDER BY categoryid';
 		$CatResult = DB_query($sql);
-		while ($myrow = DB_fetch_array($CatResult)) {
-			echo "<option value='" . $myrow['categoryid'] . "'>" . $myrow['categoryid'] . ' - ' . $myrow['categorydescription'] . '</option>';
+		while ($MyRow = DB_fetch_array($CatResult)) {
+			echo "<option value='" . $MyRow['categoryid'] . "'>" . $MyRow['categoryid'] . ' - ' . $MyRow['categorydescription'] . '</option>';
 		}
 		echo '</select></td></tr>';
 
@@ -281,8 +281,8 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 		/*Set the index for the categories result set back to 0 */
 		DB_data_seek($CatResult, 0);
 
-		while ($myrow = DB_fetch_array($CatResult)) {
-			echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categoryid'] . ' - ' . $myrow['categorydescription'] . '</option>';
+		while ($MyRow = DB_fetch_array($CatResult)) {
+			echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categoryid'] . ' - ' . $MyRow['categorydescription'] . '</option>';
 		}
 		echo '</select></td></tr>';
 
@@ -292,8 +292,8 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 		$sql = "SELECT sales_type, typeabbrev FROM salestypes";
 		$SalesTypesResult = DB_query($sql);
 
-		while ($myrow = DB_fetch_array($SalesTypesResult)) {
-			echo '<option value="' . $myrow['typeabbrev'] . '">' . $myrow['sales_type'] . '</option>';
+		while ($MyRow = DB_fetch_array($SalesTypesResult)) {
+			echo '<option value="' . $MyRow['typeabbrev'] . '">' . $MyRow['sales_type'] . '</option>';
 		}
 		echo '</select></td></tr>';
 

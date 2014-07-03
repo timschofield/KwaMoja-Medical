@@ -96,11 +96,11 @@ echo '<tr><td>' . _('Customer Price List') . ' (' . _('Sales Type') . '):</td><t
 
 echo '<select minlength="0" tabindex="1" name="SalesType">';
 
-while ($myrow = DB_fetch_array($result)) {
-	if (isset($_POST['SalesType']) and $myrow['typeabbrev'] == $_POST['SalesType']) {
-		echo '<option selected="selected" value="' . $myrow['typeabbrev'] . '">' . $myrow['sales_type'] . '</option>';
+while ($MyRow = DB_fetch_array($result)) {
+	if (isset($_POST['SalesType']) and $MyRow['typeabbrev'] == $_POST['SalesType']) {
+		echo '<option selected="selected" value="' . $MyRow['typeabbrev'] . '">' . $MyRow['sales_type'] . '</option>';
 	} else {
-		echo '<option value="' . $myrow['typeabbrev'] . '">' . $myrow['sales_type'] . '</option>';
+		echo '<option value="' . $MyRow['typeabbrev'] . '">' . $MyRow['sales_type'] . '</option>';
 	}
 }
 
@@ -114,11 +114,11 @@ if (DB_num_rows($result) > 0) {
 			<td>' . _('Discount Category Code') . ': </td>
 			<td><select minlength="0" name="DiscountCategory">';
 
-	while ($myrow = DB_fetch_array($result)) {
-		if ($myrow['discountcategory'] == $_POST['DiscCat']) {
-			echo '<option selected="selected" value="' . $myrow['discountcategory'] . '">' . $myrow['discountcategory'] . '</option>';
+	while ($MyRow = DB_fetch_array($result)) {
+		if ($MyRow['discountcategory'] == $_POST['DiscCat']) {
+			echo '<option selected="selected" value="' . $MyRow['discountcategory'] . '">' . $MyRow['discountcategory'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['discountcategory'] . '">' . $myrow['discountcategory'] . '</option>';
+			echo '<option value="' . $MyRow['discountcategory'] . '">' . $MyRow['discountcategory'] . '</option>';
 		}
 	}
 	echo '</select></td></tr>';
@@ -164,7 +164,7 @@ echo '<tr>
 
 $k = 0; //row colour counter
 
-while ($myrow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($result)) {
 	if ($k == 1) {
 		echo '<tr class="EvenTableRows">';
 		$k = 0;
@@ -172,14 +172,14 @@ while ($myrow = DB_fetch_array($result)) {
 		echo '<tr class="OddTableRows">';
 		$k = 1;
 	}
-	$DeleteURL = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Delete=yes&amp;SalesType=' . urlencode($myrow['salestype']) . '&amp;DiscountCategory=' . urlencode($myrow['discountcategory']) . '&amp;QuantityBreak=' . urlencode($myrow['quantitybreak']);
+	$DeleteURL = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Delete=yes&amp;SalesType=' . urlencode($MyRow['salestype']) . '&amp;DiscountCategory=' . urlencode($MyRow['discountcategory']) . '&amp;QuantityBreak=' . urlencode($MyRow['quantitybreak']);
 
 	printf('<td>%s</td>
 			<td>%s</td>
 			<td class="number">%s</td>
 			<td class="number">%s</td>
 			<td><a href="%s" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this discount matrix record?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-			</tr>', $myrow['sales_type'], $myrow['discountcategory'], $myrow['quantitybreak'], $myrow['discountrate'] * 100, $DeleteURL);
+			</tr>', $MyRow['sales_type'], $MyRow['discountcategory'], $MyRow['quantitybreak'], $MyRow['discountrate'] * 100, $DeleteURL);
 
 }
 

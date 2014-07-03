@@ -119,7 +119,7 @@ if (!isset($Id)) {
 
 	$k = 0; //row colour counter
 
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		if ($k == 1) {
 			echo '<tr class="OddTableRows">';
 			$k = 0;
@@ -132,7 +132,7 @@ if (!isset($Id)) {
 				<td><a href="%s">%s</a></td>
 				<td>%s</td>
 				<td><a href="%sId=%s&DebtorNo=%s">' . _('Edit') . ' </td>
-				<td><a href="%sId=%s&DebtorNo=%s&delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this customer note?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</td></tr>', ConvertSQLDate($myrow['date']), $myrow['note'], $myrow['href'], $myrow['href'], $myrow['priority'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['noteid'], $myrow['debtorno'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['noteid'], $myrow['debtorno']);
+				<td><a href="%sId=%s&DebtorNo=%s&delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this customer note?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</td></tr>', ConvertSQLDate($MyRow['date']), $MyRow['note'], $MyRow['href'], $MyRow['href'], $MyRow['priority'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['noteid'], $MyRow['debtorno'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['noteid'], $MyRow['debtorno']);
 
 	}
 	//END WHILE LIST LOOP
@@ -165,14 +165,14 @@ if (!isset($_GET['delete'])) {
 
 		$result = DB_query($sql);
 
-		$myrow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($result);
 
-		$_POST['Noteid'] = $myrow['noteid'];
-		$_POST['Note'] = $myrow['note'];
-		$_POST['Href'] = $myrow['href'];
-		$_POST['NoteDate'] = $myrow['date'];
-		$_POST['Priority'] = $myrow['priority'];
-		$_POST['debtorno'] = $myrow['debtorno'];
+		$_POST['Noteid'] = $MyRow['noteid'];
+		$_POST['Note'] = $MyRow['note'];
+		$_POST['Href'] = $MyRow['href'];
+		$_POST['NoteDate'] = $MyRow['date'];
+		$_POST['Priority'] = $MyRow['priority'];
+		$_POST['debtorno'] = $MyRow['debtorno'];
 		echo '<input type="hidden" name="Id" value="' . $Id . '" />';
 		echo '<input type="hidden" name="Con_ID" value="' . $_POST['Noteid'] . '" />';
 		echo '<input type="hidden" name="DebtorNo" value="' . $_POST['debtorno'] . '" />';

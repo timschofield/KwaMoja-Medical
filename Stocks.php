@@ -44,8 +44,8 @@ if (isset($StockID) AND !isset($_POST['UpdateCategories'])) {
 			GROUP BY stockid";
 
 	$result = DB_query($sql);
-	$myrow = DB_fetch_row($result);
-	if ($myrow[0] == 0) {
+	$MyRow = DB_fetch_row($result);
+	if ($MyRow[0] == 0) {
 		$New = 1;
 	} else {
 		$New = 0;
@@ -268,13 +268,13 @@ if (isset($_POST['submit'])) {
 							AND succeeded=0
 					WHERE stockid = '" . $StockID . "'";
 			$MBFlagResult = DB_query($sql);
-			$myrow = DB_fetch_row($MBFlagResult);
-			$OldMBFlag = $myrow[0];
-			$OldControlled = $myrow[1];
-			$OldSerialised = $myrow[2];
-			$UnitCost = $myrow[3];
-			$OldStockAccount = $myrow[4];
-			$OldWIPAccount = $myrow[5];
+			$MyRow = DB_fetch_row($MBFlagResult);
+			$OldMBFlag = $MyRow[0];
+			$OldControlled = $MyRow[1];
+			$OldSerialised = $MyRow[2];
+			$UnitCost = $MyRow[3];
+			$OldStockAccount = $MyRow[4];
+			$OldWIPAccount = $MyRow[5];
 
 
 			$sql = "SELECT SUM(locstock.quantity)
@@ -732,68 +732,68 @@ if (isset($_POST['submit'])) {
 
 	$sql = "SELECT COUNT(*) FROM stockmoves WHERE stockid='" . $StockID . "' GROUP BY stockid";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_row($result);
-	if ($myrow[0] > 0) {
+	$MyRow = DB_fetch_row($result);
+	if ($MyRow[0] > 0) {
 		$CancelDelete = 1;
 		prnMsg(_('Cannot delete this stock item because there are stock movements that refer to this item'), 'warn');
-		echo '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('stock movements that refer to this item');
+		echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('stock movements that refer to this item');
 
 	} else {
 		$sql = "SELECT COUNT(*) FROM bom WHERE component='" . $StockID . "' GROUP BY component";
 		$result = DB_query($sql);
-		$myrow = DB_fetch_row($result);
-		if ($myrow[0] > 0) {
+		$MyRow = DB_fetch_row($result);
+		if ($MyRow[0] > 0) {
 			$CancelDelete = 1;
 			prnMsg(_('Cannot delete this item record because there are bills of material that require this part as a component'), 'warn');
-			echo '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('bills of material that require this part as a component');
+			echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('bills of material that require this part as a component');
 		} else {
 			$sql = "SELECT COUNT(*) FROM salesorderdetails WHERE stkcode='" . $StockID . "' GROUP BY stkcode";
 			$result = DB_query($sql);
-			$myrow = DB_fetch_row($result);
-			if ($myrow[0] > 0) {
+			$MyRow = DB_fetch_row($result);
+			if ($MyRow[0] > 0) {
 				$CancelDelete = 1;
 				prnMsg(_('Cannot delete this item record because there are existing sales orders for this part'), 'warn');
-				echo '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('sales order items against this part');
+				echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('sales order items against this part');
 			} else {
 				$sql = "SELECT COUNT(*) FROM salesanalysis WHERE stockid='" . $StockID . "' GROUP BY stockid";
 				$result = DB_query($sql);
-				$myrow = DB_fetch_row($result);
-				if ($myrow[0] > 0) {
+				$MyRow = DB_fetch_row($result);
+				if ($MyRow[0] > 0) {
 					$CancelDelete = 1;
 					prnMsg(_('Cannot delete this item because sales analysis records exist for it'), 'warn');
-					echo '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('sales analysis records against this part');
+					echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('sales analysis records against this part');
 				} else {
 					$sql = "SELECT COUNT(*) FROM purchorderdetails WHERE itemcode='" . $StockID . "' GROUP BY itemcode";
 					$result = DB_query($sql);
-					$myrow = DB_fetch_row($result);
-					if ($myrow[0] > 0) {
+					$MyRow = DB_fetch_row($result);
+					if ($MyRow[0] > 0) {
 						$CancelDelete = 1;
 						prnMsg(_('Cannot delete this item because there are existing purchase order items for it'), 'warn');
-						echo '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('purchase order item record relating to this part');
+						echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('purchase order item record relating to this part');
 					} else {
 						$sql = "SELECT SUM(quantity) AS qoh FROM locstock WHERE stockid='" . $StockID . "' GROUP BY stockid";
 						$result = DB_query($sql);
-						$myrow = DB_fetch_row($result);
-						if ($myrow[0] != 0) {
+						$MyRow = DB_fetch_row($result);
+						if ($MyRow[0] != 0) {
 							$CancelDelete = 1;
 							prnMsg(_('Cannot delete this item because there is currently some stock on hand'), 'warn');
-							echo '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('on hand for this part');
+							echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('on hand for this part');
 						} else {
 							$sql = "SELECT COUNT(*) FROM offers WHERE stockid='" . $StockID . "' GROUP BY stockid";
 							$result = DB_query($sql);
-							$myrow = DB_fetch_row($result);
-							if ($myrow[0] != 0) {
+							$MyRow = DB_fetch_row($result);
+							if ($MyRow[0] != 0) {
 								$CancelDelete = 1;
 								prnMsg(_('Cannot delete this item because there are offers for this item'), 'warn');
-								echo '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('offers from suppliers for this part');
+								echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('offers from suppliers for this part');
 							} else {
 								$sql = "SELECT COUNT(*) FROM tenderitems WHERE stockid='" . $StockID . "' GROUP BY stockid";
 								$result = DB_query($sql);
-								$myrow = DB_fetch_row($result);
-								if ($myrow[0] != 0) {
+								$MyRow = DB_fetch_row($result);
+								if ($MyRow[0] != 0) {
 									$CancelDelete = 1;
 									prnMsg(_('Cannot delete this item because there are tenders for this item'), 'warn');
-									echo '<br />' . _('There are') . ' ' . $myrow[0] . ' ' . _('tenders from suppliers for this part');
+									echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('tenders from suppliers for this part');
 								}
 							}
 						}
@@ -924,28 +924,28 @@ if (!isset($StockID) or $StockID == '' or isset($_POST['UpdateCategories'])) {
 			WHERE stockid = '" . $StockID . "'";
 
 	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($result);
 
-	$_POST['LongDescription'] = $myrow['longdescription'];
-	$_POST['Description'] = $myrow['description'];
-	$_POST['EOQ'] = $myrow['eoq'];
-	$_POST['CategoryID'] = $myrow['categoryid'];
-	$_POST['Units'] = $myrow['units'];
-	$_POST['MBFlag'] = $myrow['mbflag'];
-	$_POST['Discontinued'] = $myrow['discontinued'];
-	$_POST['Controlled'] = $myrow['controlled'];
-	$_POST['Serialised'] = $myrow['serialised'];
-	$_POST['Perishable'] = $myrow['perishable'];
-	$_POST['Volume'] = $myrow['volume'];
-	$_POST['GrossWeight'] = $myrow['grossweight'];
-	$_POST['NetWeight']  = $myrow['netweight'];
-	$_POST['BarCode'] = $myrow['barcode'];
-	$_POST['DiscountCategory'] = $myrow['discountcategory'];
-	$_POST['TaxCat'] = $myrow['taxcatid'];
-	$_POST['DecimalPlaces'] = $myrow['decimalplaces'];
-	$_POST['NextSerialNo'] = $myrow['nextserialno'];
-	$_POST['Pansize'] = $myrow['pansize'];
-	$_POST['ShrinkFactor'] = $myrow['shrinkfactor'];
+	$_POST['LongDescription'] = $MyRow['longdescription'];
+	$_POST['Description'] = $MyRow['description'];
+	$_POST['EOQ'] = $MyRow['eoq'];
+	$_POST['CategoryID'] = $MyRow['categoryid'];
+	$_POST['Units'] = $MyRow['units'];
+	$_POST['MBFlag'] = $MyRow['mbflag'];
+	$_POST['Discontinued'] = $MyRow['discontinued'];
+	$_POST['Controlled'] = $MyRow['controlled'];
+	$_POST['Serialised'] = $MyRow['serialised'];
+	$_POST['Perishable'] = $MyRow['perishable'];
+	$_POST['Volume'] = $MyRow['volume'];
+	$_POST['GrossWeight'] = $MyRow['grossweight'];
+	$_POST['NetWeight']  = $MyRow['netweight'];
+	$_POST['BarCode'] = $MyRow['barcode'];
+	$_POST['DiscountCategory'] = $MyRow['discountcategory'];
+	$_POST['TaxCat'] = $MyRow['taxcatid'];
+	$_POST['DecimalPlaces'] = $MyRow['decimalplaces'];
+	$_POST['NextSerialNo'] = $MyRow['nextserialno'];
+	$_POST['Pansize'] = $MyRow['pansize'];
+	$_POST['ShrinkFactor'] = $MyRow['shrinkfactor'];
 	$sql = "SELECT descriptiontranslation, language_id FROM stockdescriptiontranslations WHERE stockid='" . $StockID . "' AND (";
 
 	foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
@@ -953,8 +953,8 @@ if (!isset($StockID) or $StockID == '' or isset($_POST['UpdateCategories'])) {
 	}
 	$sql = mb_substr($sql, 0, mb_strlen($sql) - 3) . ')';
 	$result = DB_query($sql);
-	while ($myrow = DB_fetch_array($result)) {
-		$_POST['Description_' . str_replace('.', '_', $myrow['language_id'])] = $myrow['descriptiontranslation'];
+	while ($MyRow = DB_fetch_array($result)) {
+		$_POST['Description_' . str_replace('.', '_', $MyRow['language_id'])] = $MyRow['descriptiontranslation'];
 	}
 
 	echo '<tr>
@@ -1041,13 +1041,13 @@ $ErrMsg = _('The stock categories could not be retrieved because');
 $DbgMsg = _('The SQL used to retrieve stock categories and failed was');
 $result = DB_query($sql, $ErrMsg, $DbgMsg);
 
-while ($myrow = DB_fetch_array($result)) {
-	if (!isset($_POST['CategoryID']) or $myrow['categoryid'] == $_POST['CategoryID']) {
-		echo '<option selected="selected" value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . '</option>';
+while ($MyRow = DB_fetch_array($result)) {
+	if (!isset($_POST['CategoryID']) or $MyRow['categoryid'] == $_POST['CategoryID']) {
+		echo '<option selected="selected" value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 	} else {
-		echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . '</option>';
+		echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 	}
-	$Category = $myrow['categoryid'];
+	$Category = $MyRow['categoryid'];
 }
 
 if (!isset($_POST['CategoryID'])) {
@@ -1276,11 +1276,11 @@ if (!isset($_POST['TaxCat'])) {
 	$_POST['TaxCat'] = $_SESSION['DefaultTaxCategory'];
 }
 
-while ($myrow = DB_fetch_array($result)) {
-	if ($_POST['TaxCat'] == $myrow['taxcatid']) {
-		echo '<option selected="selected" value="' . $myrow['taxcatid'] . '">' . $myrow['taxcatname'] . '</option>';
+while ($MyRow = DB_fetch_array($result)) {
+	if ($_POST['TaxCat'] == $MyRow['taxcatid']) {
+		echo '<option selected="selected" value="' . $MyRow['taxcatid'] . '">' . $MyRow['taxcatname'] . '</option>';
 	} else {
-		echo '<option value="' . $myrow['taxcatid'] . '">' . $myrow['taxcatname'] . '</option>';
+		echo '<option value="' . $MyRow['taxcatid'] . '">' . $MyRow['taxcatname'] . '</option>';
 	}
 } //end while loop
 

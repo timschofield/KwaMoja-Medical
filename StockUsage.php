@@ -30,26 +30,26 @@ $result = DB_query("SELECT description,
 						decimalplaces
 					FROM stockmaster
 					WHERE stockid='" . $StockID . "'");
-$myrow = DB_fetch_row($result);
+$MyRow = DB_fetch_row($result);
 
-$DecimalPlaces = $myrow[3];
+$DecimalPlaces = $MyRow[3];
 
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 echo '<table class="selection">';
 
 $Its_A_KitSet_Assembly_Or_Dummy = False;
-if ($myrow[2] == 'K' OR $myrow[2] == 'A' OR $myrow[2] == 'D') {
+if ($MyRow[2] == 'K' OR $MyRow[2] == 'A' OR $MyRow[2] == 'D') {
 
 	$Its_A_KitSet_Assembly_Or_Dummy = True;
-	echo '<h3>' . $StockID . ' - ' . $myrow[0] . '</h3>';
+	echo '<h3>' . $StockID . ' - ' . $MyRow[0] . '</h3>';
 
 	prnMsg(_('The selected item is a dummy or assembly or kit-set item and cannot have a stock holding') . '. ' . _('Please select a different item'), 'warn');
 
 	$StockID = '';
 } else {
 	echo '<tr>
-			<th><h3>' . _('Item') . ' : ' . $StockID . ' - ' . $myrow[0] . '   (' . _('in units of') . ' : ' . $myrow[1] . ')</h3></th>
+			<th><h3>' . _('Item') . ' : ' . $StockID . ' - ' . $MyRow[0] . '   (' . _('in units of') . ' : ' . $MyRow[1] . ')</h3></th>
 		</tr>';
 }
 
@@ -72,19 +72,19 @@ if ($_SESSION['RestrictLocations'] == 0) {
 				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
 }
 $resultStkLocs = DB_query($sql);
-while ($myrow = DB_fetch_array($resultStkLocs)) {
+while ($MyRow = DB_fetch_array($resultStkLocs)) {
 	if (isset($_POST['StockLocation'])) {
-		if ($myrow['loccode'] == $_POST['StockLocation']) {
-			echo '<option selected="selected" value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+		if ($MyRow['loccode'] == $_POST['StockLocation']) {
+			echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+			echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 		}
 	} else {
-		echo '<option value="' . $myrow['loccode'] . '">' . $myrow['locationname'] . '</option>';
+		echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 		if ($_SESSION['RestrictLocations'] == 0) {
 			$_POST['StockLocation'] = 'All';
 		} else {
-			$_POST['StockLocation'] = $myrow['loccode'];
+			$_POST['StockLocation'] = $MyRow['loccode'];
 		}
 	}
 }
@@ -152,7 +152,7 @@ if (isset($_POST['ShowUsage'])) {
 	$TotalUsage = 0;
 	$PeriodsCounter = 0;
 
-	while ($myrow = DB_fetch_array($MovtsResult)) {
+	while ($MyRow = DB_fetch_array($MovtsResult)) {
 
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -162,13 +162,13 @@ if (isset($_POST['ShowUsage'])) {
 			$k++;
 		}
 
-		$DisplayDate = MonthAndYearFromSQLDate($myrow['lastdate_in_period']);
+		$DisplayDate = MonthAndYearFromSQLDate($MyRow['lastdate_in_period']);
 
-		$TotalUsage += $myrow['qtyused'];
+		$TotalUsage += $MyRow['qtyused'];
 		$PeriodsCounter++;
 		printf('<td>%s</td>
 				<td class="number">%s</td>
-				</tr>', $DisplayDate, locale_number_format($myrow['qtyused'], $DecimalPlaces));
+				</tr>', $DisplayDate, locale_number_format($MyRow['qtyused'], $DecimalPlaces));
 
 		//end of page full new headings if
 	}

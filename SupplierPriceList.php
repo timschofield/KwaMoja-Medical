@@ -31,11 +31,11 @@ if (isset($_POST['StockSearch'])) {
 			FROM stockcategory
 			ORDER BY categorydescription";
 	$result1 = DB_query($SQL);
-	while ($myrow1 = DB_fetch_array($result1)) {
-		if ($myrow1['categoryid'] == $_POST['StockCat']) {
-			echo '<option selected="True" value="' . $myrow1['categoryid'] . '">' . $myrow1['categorydescription'] . '</option>';
+	while ($MyRow1 = DB_fetch_array($result1)) {
+		if ($MyRow1['categoryid'] == $_POST['StockCat']) {
+			echo '<option selected="True" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow1['categoryid'] . '">' . $myrow1['categorydescription'] . '</option>';
+			echo '<option value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 		}
 	}
 	echo '</select></td>';
@@ -268,7 +268,7 @@ if (isset($searchresult) and !isset($_POST['Select'])) {
 		if (DB_num_rows($searchresult) <> 0) {
 			DB_data_seek($searchresult, ($_POST['PageOffset'] - 1) * $_SESSION['DisplayRecordsMax']);
 		}
-		while (($myrow = DB_fetch_array($searchresult)) and ($RowIndex <> $_SESSION['DisplayRecordsMax'])) {
+		while (($MyRow = DB_fetch_array($searchresult)) and ($RowIndex <> $_SESSION['DisplayRecordsMax'])) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;
@@ -277,9 +277,9 @@ if (isset($searchresult) and !isset($_POST['Select'])) {
 				$k++;
 			}
 
-			echo '<td><input type="submit" name="Select" value="' . $myrow['stockid'] . '" /></td>
-				<td>' . $myrow['description'] . '</td>
-				<td>' . $myrow['units'] . '</td>
+			echo '<td><input type="submit" name="Select" value="' . $MyRow['stockid'] . '" /></td>
+				<td>' . $MyRow['description'] . '</td>
+				<td>' . $MyRow['units'] . '</td>
 				</tr>';
 			$RowIndex = $RowIndex + 1;
 			//end of page full new headings if
@@ -373,9 +373,9 @@ if ((isset($SupplierID) and $SupplierID != '') and !isset($_POST['SearchSupplier
 	$DbgMsg = _('The SQL that failed was');
 	$SuppSelResult = DB_query($sql, $ErrMsg, $DbgMsg);
 	if (DB_num_rows($SuppSelResult) == 1) {
-		$myrow = DB_fetch_array($SuppSelResult);
-		$SuppName = $myrow['suppname'];
-		$CurrCode = $myrow['currcode'];
+		$MyRow = DB_fetch_array($SuppSelResult);
+		$SuppName = $MyRow['suppname'];
+		$CurrCode = $MyRow['currcode'];
 	} else {
 		prnMsg(_('The supplier code') . ' ' . $SupplierID . ' ' . _('is not an existing supplier in the database') . '. ' . _('You must enter an alternative supplier code or select a supplier using the search facility below'), 'error');
 		unset($SupplierID);
@@ -448,7 +448,7 @@ if (isset($SuppliersResult)) {
 				<th>' . _('Address 3') . '</th>
 			</tr>';
 	$k = 0;
-	while ($myrow = DB_fetch_array($SuppliersResult)) {
+	while ($MyRow = DB_fetch_array($SuppliersResult)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -462,7 +462,7 @@ if (isset($SuppliersResult)) {
 				<td>%s</td>
 				<td>%s</td>
 				<td>%s</td>
-			</tr>', $myrow['supplierid'], $myrow['suppname'], $myrow['currcode'], $myrow['address1'], $myrow['address2'], $myrow['address3']);
+			</tr>', $MyRow['supplierid'], $MyRow['suppname'], $MyRow['currcode'], $MyRow['address1'], $MyRow['address2'], $MyRow['address3']);
 
 	}
 	//end of while loop
@@ -553,32 +553,32 @@ if (isset($_POST['SupplierID'])) {
 	}
 
 	$RowCounter = 1;
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		echo '<tr>
-				<td><input type="hidden" value="' . $myrow['stockid'] . '" name="StockID' . $RowCounter . '" />' . $myrow['stockid'] . '</td>
-				<td>' . $myrow['description'] . '</td>
-				<td><input type="text" class="number" size="11" value="' . $myrow['price'] . '" name="Price' . $RowCounter . '" /></td>
+				<td><input type="hidden" value="' . $MyRow['stockid'] . '" name="StockID' . $RowCounter . '" />' . $MyRow['stockid'] . '</td>
+				<td>' . $MyRow['description'] . '</td>
+				<td><input type="text" class="number" size="11" value="' . $MyRow['price'] . '" name="Price' . $RowCounter . '" /></td>
 				<td><select minlength="0" name="SuppUOM' . $RowCounter . '">';
 		DB_data_seek($UOMResult, 0);
 		while ($UOMRow = DB_fetch_array($UOMResult)) {
-			if ($UOMRow['unitname'] == $myrow['suppliersuom']) {
+			if ($UOMRow['unitname'] == $MyRow['suppliersuom']) {
 				echo '<option selected="selected" value="' . $UOMRow['unitname'] . '">' . $UOMRow['unitname'] . '</option>';
 			} else {
 				echo '<option value="' . $UOMRow['unitname'] . '">' . $UOMRow['unitname'] . '</option>';
 			}
 		}
 		echo '</select></td>
-				<td><input type="text" class="number" size="11" value="' . $myrow['conversionfactor'] . '" name="ConversionFactor' . $RowCounter . '" /></td>
-				<td><input type="text" size="30" minlength="0" maxlength="50" value="' . $myrow['supplierdescription'] . '" name="SupplierDescription' . $RowCounter . '" /></td>
-				<td><input type="text" class="number" size="11" value="' . $myrow['leadtime'] . '" name="LeadTime' . $RowCounter . '" /></td>';
-		if ($myrow['preferred'] == 1) {
+				<td><input type="text" class="number" size="11" value="' . $MyRow['conversionfactor'] . '" name="ConversionFactor' . $RowCounter . '" /></td>
+				<td><input type="text" size="30" minlength="0" maxlength="50" value="' . $MyRow['supplierdescription'] . '" name="SupplierDescription' . $RowCounter . '" /></td>
+				<td><input type="text" class="number" size="11" value="' . $MyRow['leadtime'] . '" name="LeadTime' . $RowCounter . '" /></td>';
+		if ($MyRow['preferred'] == 1) {
 			echo '<td><input type="checkbox" checked="checked" name="Preferred' . $RowCounter . '" /></td>';
 		} else {
 			echo '<td><input type="checkbox" name="Preferred' . $RowCounter . '" /></td>';
 		}
-		echo '<td><input type="text" class="date" size="11" value="' . ConvertSQLDate($myrow['effectivefrom']) . '" alt="' . $_SESSION['DefaultDateFormat'] . '"  name="EffectiveFrom' . $RowCounter . '" /></td>
-				<td><input type="text" size="20" minlength="0" maxlength="50" value="' . $myrow['suppliers_partno'] . '" name="SupplierPartNo' . $RowCounter . '" /></td>
-				<td><input type="text" class="number" size="11" value="' . $myrow['minorderqty'] . '" name="MinOrderQty' . $RowCounter . '" /></td>
+		echo '<td><input type="text" class="date" size="11" value="' . ConvertSQLDate($MyRow['effectivefrom']) . '" alt="' . $_SESSION['DefaultDateFormat'] . '"  name="EffectiveFrom' . $RowCounter . '" /></td>
+				<td><input type="text" size="20" minlength="0" maxlength="50" value="' . $MyRow['suppliers_partno'] . '" name="SupplierPartNo' . $RowCounter . '" /></td>
+				<td><input type="text" class="number" size="11" value="' . $MyRow['minorderqty'] . '" name="MinOrderQty' . $RowCounter . '" /></td>
 				<td><button type="submit" style="width:100%;text-align:left" name="Update' . $RowCounter . '"><img width="15" src="' . $RootPath . '/css/' . $Theme . '/images/tick.png" alt="" /></button></td>
 			</tr>';
 		$RowCounter++;

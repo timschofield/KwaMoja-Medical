@@ -35,12 +35,12 @@ $TokenSql = "SELECT tokenid,
 			ORDER BY tokenname";
 $TokenResult = DB_query($TokenSql);
 
-while ($myrow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($result)) {
 	echo '<tr>
-			<td>' . $myrow['script'] . '</td>
-			<td><select minlength="0" name="' . $myrow['script'] . '">';
+			<td>' . $MyRow['script'] . '</td>
+			<td><select minlength="0" name="' . $MyRow['script'] . '">';
 	while ($myTokenRow = DB_fetch_array($TokenResult)) {
-		if ($myTokenRow['tokenid'] == $myrow['pagesecurity']) {
+		if ($myTokenRow['tokenid'] == $MyRow['pagesecurity']) {
 			echo '<option selected="selected" value="' . $myTokenRow['tokenid'] . '">' . $myTokenRow['tokenname'] . '</option>';
 		} else {
 			echo '<option value="' . $myTokenRow['tokenid'] . '">' . $myTokenRow['tokenname'] . '</option>';

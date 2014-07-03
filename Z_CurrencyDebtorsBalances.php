@@ -23,16 +23,16 @@ $LocalTotal = 0;
 
 echo '<table>';
 
-while ($myrow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($result)) {
 
 	echo '<tr>
 			<td>' . _('Total Debtor Balances in') . ' </td>
-			<td>' . $myrow['currcode'] . '</td>
-			<td class="number">' . locale_number_format($myrow['currencybalance'], $myrow['currdecimalplaces']) . '</td>
+			<td>' . $MyRow['currcode'] . '</td>
+			<td class="number">' . locale_number_format($MyRow['currencybalance'], $MyRow['currdecimalplaces']) . '</td>
 			<td>' . _('in') . ' ' . $_SESSION['CompanyRecord']['currencydefault'] . '</td>
-			<td class="number">' . locale_number_format($myrow['localbalance'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
+			<td class="number">' . locale_number_format($MyRow['localbalance'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
 		</tr>';
-	$LocalTotal += $myrow['localbalance'];
+	$LocalTotal += $MyRow['localbalance'];
 }
 
 echo '<tr>

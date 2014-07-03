@@ -64,12 +64,12 @@ if (!isset($_SESSION['SPL' . $identifier]->SupplierID)) {
 	$DbgMsg = _('The SQL used to retrieve the supplier details and failed was');
 	$result = DB_query($sql, $ErrMsg, $DbgMsg);
 
-	$myrow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($result);
 	$_SESSION['SPL' . $identifier]->SupplierID = $_SESSION['SupplierID'];
-	$_SESSION['SPL' . $identifier]->SupplierName = $myrow['suppname'];
-	$_SESSION['SPL' . $identifier]->SuppCurrCode = $myrow['currcode'];
-	$_SESSION['SPL' . $identifier]->SuppCurrExRate = $myrow['rate'];
-	$_SESSION['SPL' . $identifier]->SuppCurrDecimalPlaces = $myrow['decimalplaces'];
+	$_SESSION['SPL' . $identifier]->SupplierName = $MyRow['suppname'];
+	$_SESSION['SPL' . $identifier]->SuppCurrCode = $MyRow['currcode'];
+	$_SESSION['SPL' . $identifier]->SuppCurrExRate = $MyRow['rate'];
+	$_SESSION['SPL' . $identifier]->SuppCurrDecimalPlaces = $MyRow['decimalplaces'];
 }
 if (!isset($_SESSION['SPL' . $identifier]->CustomerID)) {
 	// Now check to ensure this account is not on hold */
@@ -88,17 +88,17 @@ if (!isset($_SESSION['SPL' . $identifier]->CustomerID)) {
 	$DbgMsg = _('The SQL used to retrieve the customer details and failed was');
 	$result = DB_query($sql, $ErrMsg, $DbgMsg);
 
-	$myrow = DB_fetch_array($result);
-	if ($myrow['dissallowinvoices'] != 1) {
-		if ($myrow['dissallowinvoices'] == 2) {
-			prnMsg(_('The') . ' ' . $myrow['name'] . ' ' . _('account is currently flagged as an account that needs to be watched please contact the credit control personnel to discuss'), 'warn');
+	$MyRow = DB_fetch_array($result);
+	if ($MyRow['dissallowinvoices'] != 1) {
+		if ($MyRow['dissallowinvoices'] == 2) {
+			prnMsg(_('The') . ' ' . $MyRow['name'] . ' ' . _('account is currently flagged as an account that needs to be watched please contact the credit control personnel to discuss'), 'warn');
 		}
 	}
 	$_SESSION['SPL' . $identifier]->CustomerID = $_SESSION['CustomerID'];
-	$_SESSION['SPL' . $identifier]->CustomerName = $myrow['name'];
-	$_SESSION['SPL' . $identifier]->CustCurrCode = $myrow['currcode'];
-	$_SESSION['SPL' . $identifier]->CustCurrExRate = $myrow['rate'];
-	$_SESSION['SPL' . $identifier]->CustCurrDecimalPlaces = $myrow['decimalplaces'];
+	$_SESSION['SPL' . $identifier]->CustomerName = $MyRow['name'];
+	$_SESSION['SPL' . $identifier]->CustCurrCode = $MyRow['currcode'];
+	$_SESSION['SPL' . $identifier]->CustCurrExRate = $MyRow['rate'];
+	$_SESSION['SPL' . $identifier]->CustCurrDecimalPlaces = $MyRow['decimalplaces'];
 }
 
 if (isset($_POST['SelectBranch'])) {
@@ -108,9 +108,9 @@ if (isset($_POST['SelectBranch'])) {
 			WHERE debtorno='" . $_SESSION['SPL' . $identifier]->CustomerID . "'
 			AND branchcode='" . $_POST['SelectBranch'] . "'";
 	$BranchResult = DB_query($sql);
-	$myrow = DB_fetch_array($BranchResult);
+	$MyRow = DB_fetch_array($BranchResult);
 	$_SESSION['SPL' . $identifier]->BranchCode = $_POST['SelectBranch'];
-	$_SESSION['SPL' . $identifier]->BranchName = $myrow['brname'];
+	$_SESSION['SPL' . $identifier]->BranchName = $MyRow['brname'];
 }
 echo '<div class="centre">';
 if (!isset($_SESSION['SPL' . $identifier]->BranchCode)) {
@@ -146,7 +146,7 @@ if (!isset($_SESSION['SPL' . $identifier]->BranchCode)) {
 
 		$k = 0; //row counter to determine background colour
 
-		while ($myrow = DB_fetch_array($BranchResult)) {
+		while ($MyRow = DB_fetch_array($BranchResult)) {
 
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
@@ -158,7 +158,7 @@ if (!isset($_SESSION['SPL' . $identifier]->BranchCode)) {
 
 			printf('<td><input type="submit" name="SelectBranch" value="%s" /></td>
 					<td>%s</td>
-					</tr>', $myrow['branchcode'], htmlspecialchars($myrow['brname'], ENT_QUOTES, 'UTF-8', false));
+					</tr>', $MyRow['branchcode'], htmlspecialchars($MyRow['brname'], ENT_QUOTES, 'UTF-8', false));
 
 		}
 		//end of while loop
@@ -708,11 +708,11 @@ $ErrMsg = _('The stock categories could not be retrieved because');
 $DbgMsg = _('The SQL used to retrieve stock categories and failed was');
 $result = DB_query($sql, $ErrMsg, $DbgMsg);
 
-while ($myrow = DB_fetch_array($result)) {
-	if (isset($_POST['StkCat']) and $myrow['categoryid'] == $_POST['StkCat']) {
-		echo '<option selected="selected" value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . '</option>';
+while ($MyRow = DB_fetch_array($result)) {
+	if (isset($_POST['StkCat']) and $MyRow['categoryid'] == $_POST['StkCat']) {
+		echo '<option selected="selected" value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 	} else {
-		echo '<option value="' . $myrow['categoryid'] . '">' . $myrow['categorydescription'] . '</option>';
+		echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 	}
 }
 echo '</select></td>

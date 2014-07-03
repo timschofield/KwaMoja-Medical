@@ -120,16 +120,16 @@ if (isset($_POST['submit']) and isset($EditName)) { // Creating or updating a ca
 
 	$sql = "SELECT COUNT(*) FROM salescatprod WHERE salescatid='" . $SelectedCategory . "'";
 	$result = DB_query($sql);
-	$myrow = DB_fetch_row($result);
-	if ($myrow[0] > 0) {
-		prnMsg(_('Cannot delete this sales category because stock items have been added to this category') . '<br /> ' . _('There are') . ' ' . $myrow[0] . ' ' . _('items under to this category'), 'warn');
+	$MyRow = DB_fetch_row($result);
+	if ($MyRow[0] > 0) {
+		prnMsg(_('Cannot delete this sales category because stock items have been added to this category') . '<br /> ' . _('There are') . ' ' . $MyRow[0] . ' ' . _('items under to this category'), 'warn');
 
 	} else {
 		$sql = "SELECT COUNT(*) FROM salescat WHERE parentcatid='" . $SelectedCategory . "'";
 		$result = DB_query($sql);
-		$myrow = DB_fetch_row($result);
-		if ($myrow[0] > 0) {
-			prnMsg(_('Cannot delete this sales category because sub categories have been added to this category') . '<br /> ' . _('There are') . ' ' . $myrow[0] . ' ' . _('sub categories'), 'warn');
+		$MyRow = DB_fetch_row($result);
+		if ($MyRow[0] > 0) {
+			prnMsg(_('Cannot delete this sales category because sub categories have been added to this category') . '<br /> ' . _('There are') . ' ' . $MyRow[0] . ' ' . _('sub categories'), 'warn');
 		} else {
 			$sql = "DELETE FROM salescat WHERE salescatid='" . $SelectedCategory . "'";
 			$result = DB_query($sql);
@@ -240,7 +240,7 @@ if (DB_num_rows($result) == 0) {
 
 	$k = 0; //row colour counter
 
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -249,12 +249,12 @@ if (DB_num_rows($result) == 0) {
 			$k = 1;
 		}
 
-		if (file_exists($_SESSION['part_pics_dir'] . '/SALESCAT_' . $myrow['salescatid'] . '.jpg')) {
-			$CatImgLink = '<img src="GetStockImage.php?automake=1&amp;textcolor=FFFFFF&amp;bgcolor=CCCCCC&amp;StockID=' . 'SALESCAT_' . $myrow['salescatid'] . '&amp;text=&amp;width=120&amp;height=120" alt="" />';
+		if (file_exists($_SESSION['part_pics_dir'] . '/SALESCAT_' . $MyRow['salescatid'] . '.jpg')) {
+			$CatImgLink = '<img src="GetStockImage.php?automake=1&amp;textcolor=FFFFFF&amp;bgcolor=CCCCCC&amp;StockID=' . 'SALESCAT_' . $MyRow['salescatid'] . '&amp;text=&amp;width=120&amp;height=120" alt="" />';
 		} else {
 			$CatImgLink = _('No Image');
 		}
-		if ($myrow['active'] == 1){
+		if ($MyRow['active'] == 1){
 			$Active = _('Yes');
 		}else{
 			$Active = _('No');
@@ -266,7 +266,7 @@ if (DB_num_rows($result) == 0) {
 				<td><a href="%sSelectedCategory=%s&amp;ParentCategory=%s">' . _('Edit') . '</td>
 				<td><a href="%sSelectedCategory=%s&amp;Delete=yes&amp;EditName=1&amp;ParentCategory=%s" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this sales category?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
 				<td>%s</td>
-				</tr>', $myrow['salescatname'], $Active, htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['salescatid'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['salescatid'], $ParentCategory, htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $myrow['salescatid'], $ParentCategory, $CatImgLink);
+				</tr>', $MyRow['salescatname'], $Active, htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['salescatid'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['salescatid'], $ParentCategory, htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['salescatid'], $ParentCategory, $CatImgLink);
 	}
 	//END WHILE LIST LOOP
 	echo '</table>';
@@ -296,12 +296,12 @@ if (isset($SelectedCategory)) {
 				WHERE salescatid='" . $SelectedCategory . "'";
 
 	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($result);
 
-	$_POST['SalesCatId'] = $myrow['salescatid'];
-	$_POST['ParentCategory'] = $myrow['parentcatid'];
-	$_POST['SalesCatName'] = $myrow['salescatname'];
-	$_POST['Active'] = $myrow['active'];
+	$_POST['SalesCatId'] = $MyRow['salescatid'];
+	$_POST['ParentCategory'] = $MyRow['parentcatid'];
+	$_POST['SalesCatName'] = $MyRow['salescatname'];
+	$_POST['Active'] = $MyRow['active'];
 
 	echo '<input type="hidden" name="SelectedCategory" value="' . $SelectedCategory . '" />';
 	echo '<input type="hidden" name="ParentCategory" value="' . (isset($_POST['ParentCatId']) ? ($_POST['ParentCategory']) : ('0')) . '" />';
@@ -382,8 +382,8 @@ $sql = "SELECT stockid,
 		ORDER BY stockid";
 $result = DB_query($sql);
 if ($result and DB_num_rows($result)) {
-	while ($myrow = DB_fetch_array($result)) {
-		$StockIDs[] = $myrow['stockid']; // Add Stock
+	while ($MyRow = DB_fetch_array($result)) {
+		$StockIDs[] = $MyRow['stockid']; // Add Stock
 	}
 	DB_free_result($result);
 }
@@ -418,10 +418,10 @@ if ($result and DB_num_rows($result)) {
 				<td>' . _('Select Inv. Item') . ':</td>
 				<td><select required="required" minlength="1" name="AddStockID">';
 
-	while ($myrow = DB_fetch_array($result)) {
-		if (!array_keys($StockIDs, $myrow['stockid'])) {
+	while ($MyRow = DB_fetch_array($result)) {
+		if (!array_keys($StockIDs, $MyRow['stockid'])) {
 			// Only if the StockID is not already selected
-			echo '<option value="' . $myrow['stockid'] . '">' . $myrow['stockid'] . '&nbsp;-&nbsp;&quot;' . $myrow['description'] . '&quot;</option>';
+			echo '<option value="' . $MyRow['stockid'] . '">' . $MyRow['stockid'] . '&nbsp;-&nbsp;&quot;' . $MyRow['description'] . '&quot;</option>';
 		}
 	}
 	echo '</select></td>
@@ -431,8 +431,8 @@ if ($result and DB_num_rows($result)) {
 			<td><select minlength="0" name="Brand">
 			 <option value="">' . _('Select Brand') . '</option>';
 	$BrandResult = DB_query("SELECT manufacturers_id, manufacturers_name FROM manufacturers");
-	while ($myrow = DB_fetch_array($BrandResult)) {
-		echo '<option value="' . $myrow['manufacturers_id'] . '">' . $myrow['manufacturers_name'] . '</option>';
+	while ($MyRow = DB_fetch_array($BrandResult)) {
+		echo '<option value="' . $MyRow['manufacturers_id'] . '">' . $MyRow['manufacturers_name'] . '</option>';
 	}
 
 	echo '</select></td>
@@ -491,7 +491,7 @@ if ($result) {
 
 		$k = 0; //row colour counter
 
-		while ($myrow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($result)) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;
@@ -500,18 +500,18 @@ if ($result) {
 				$k = 1;
 			}
 
-			echo '<td>' . $myrow['stockid'] . '</td>
-				<td>' . $myrow['description'] . '</td>
-				<td>' . $myrow['manufacturers_name'] . '</td>
+			echo '<td>' . $MyRow['stockid'] . '</td>
+				<td>' . $MyRow['description'] . '</td>
+				<td>' . $MyRow['manufacturers_name'] . '</td>
 				<td>';
-			if ($myrow['featured'] == 1) {
+			if ($MyRow['featured'] == 1) {
 				echo '<img src="css/' . $Theme . '/images/tick.png"></td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?RemoveFeature=Yes&amp;ParentCategory=' . $ParentCategory . '&amp;StockID=' . $myrow['stockid'] . '">' . _('Cancel Feature') . '</a></td>';
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?RemoveFeature=Yes&amp;ParentCategory=' . $ParentCategory . '&amp;StockID=' . $MyRow['stockid'] . '">' . _('Cancel Feature') . '</a></td>';
 			} else {
 				echo '</td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?AddFeature=Yes&amp;ParentCategory=' . $ParentCategory . '&amp;StockID=' . $myrow['stockid'] . '">' . _('Make Featured') . '</a></td>';
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?AddFeature=Yes&amp;ParentCategory=' . $ParentCategory . '&amp;StockID=' . $MyRow['stockid'] . '">' . _('Make Featured') . '</a></td>';
 			}
-			echo '<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?ParentCategory=' . $ParentCategory . '&amp;DelStockID=' . $myrow['stockid'] . '">' . _('Remove') . '</a></td>
+			echo '<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?ParentCategory=' . $ParentCategory . '&amp;DelStockID=' . $MyRow['stockid'] . '">' . _('Remove') . '</a></td>
 			</tr>';
 		}
 		echo '</table>';

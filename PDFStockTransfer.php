@@ -96,13 +96,13 @@ if (DB_num_rows($result) == 0) {
 	exit;
 }
 //get the first stock movement which will be the quantity taken from the initiating location
-while ($myrow = DB_fetch_array($result)) {
-	$StockID = $myrow['stockid'];
-	$From = $myrow['locationname'];
-	$Date = $myrow['trandate'];
-	$To = $myrow['reference'];
-	$Quantity = -$myrow['qty'];
-	$Description = $myrow['description'];
+while ($MyRow = DB_fetch_array($result)) {
+	$StockID = $MyRow['stockid'];
+	$From = $MyRow['locationname'];
+	$Date = $MyRow['trandate'];
+	$To = $MyRow['reference'];
+	$Quantity = -$MyRow['qty'];
+	$Description = $MyRow['description'];
 
 	$LeftOvers = $pdf->addTextWrap($Left_Margin + 1, $YPos - 10, 300 - $Left_Margin, $FontSize, $StockID);
 	/*resmoart mods*/

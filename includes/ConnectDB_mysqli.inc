@@ -13,7 +13,7 @@ if (!isset($DBPort)) {
 global $db; // Make sure it IS global, regardless of our context
 
 $db = mysqli_connect('p:'.$host, $DBUser, $DBPassword, $_SESSION['DatabaseName'], $DBPort);
-$result = DB_query('SET sql_mode = ANSI', $db);
+$Result = DB_query('SET sql_mode = ANSI', $db);
 
 
 //this statement sets the charset to be used for sending data to and from the db server
@@ -68,7 +68,7 @@ function DB_query($SQL, $ErrorMessage = '', $DebugMessage = '', $Transaction = f
 	global $RootPath;
 	global $Messages;
 
-	$result = mysqli_query($db, $SQL);
+	$Result = mysqli_query($db, $SQL);
 
 	$_SESSION['LastInsertId'] = mysqli_insert_id($db);
 
@@ -97,7 +97,7 @@ function DB_query($SQL, $ErrorMessage = '', $DebugMessage = '', $Transaction = f
 			include($PathPrefix . 'includes/footer.inc');
 			exit;
 		}
-	} elseif (isset($_SESSION['MonthsAuditTrail']) and (DB_error_no() == 0 and $_SESSION['MonthsAuditTrail'] > 0) and (DB_affected_rows($result) > 0)) {
+	} elseif (isset($_SESSION['MonthsAuditTrail']) and (DB_error_no() == 0 and $_SESSION['MonthsAuditTrail'] > 0) and (DB_affected_rows($Result) > 0)) {
 
 		$SQLArray = explode(' ', $SQL);
 
@@ -115,7 +115,7 @@ function DB_query($SQL, $ErrorMessage = '', $DebugMessage = '', $Transaction = f
 			}
 		}
 	}
-	return $result;
+	return $Result;
 
 }
 
@@ -209,8 +209,8 @@ function DB_Maintenance() {
 	prnMsg(_('The system has just run the regular database administration and optimisation routine.'), 'info');
 
 	$TablesResult = DB_query('SHOW TABLES');
-	while ($myrow = DB_fetch_row($TablesResult)) {
-		$Result = DB_query('OPTIMIZE TABLE ' . $myrow[0]);
+	while ($MyRow = DB_fetch_row($TablesResult)) {
+		$Result = DB_query('OPTIMIZE TABLE ' . $MyRow[0]);
 	}
 
 	$Result = DB_query("UPDATE config
@@ -245,8 +245,8 @@ function DB_ReinstateForeignKeys() {
 
 function DB_table_exists($TableName) {
 	$ShowSQL = "SHOW TABLES WHERE Tables_in_" . $_SESSION['DatabaseName'] . "='" . $TableName . "'";
-	$result = DB_query($ShowSQL);
-	if (DB_num_rows($result) > 0) {
+	$Result = DB_query($ShowSQL);
+	if (DB_num_rows($Result) > 0) {
 		return True;
 	} else {
 		return False;

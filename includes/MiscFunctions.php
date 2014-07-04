@@ -424,20 +424,20 @@ function SendMailBySmtp(&$mail, $To) {
 		$SendFrom = $_SESSION['SMTPSettings']['username'] . '@' . $Domain;
 	}
 	$mail->setFrom($SendFrom);
-	$result = $mail->send($To, 'smtp');
-	return $result;
+	$Result = $mail->send($To, 'smtp');
+	return $Result;
 }
 
 function GetMailList($Recipients) {
 	$ToList = array();
-	$sql = "SELECT email,realname FROM mailgroupdetails INNER JOIN www_users ON www_users.userid=mailgroupdetails.userid WHERE mailgroupdetails.groupname='" . $Recipients . "'";
+	$SQL = "SELECT email,realname FROM mailgroupdetails INNER JOIN www_users ON www_users.userid=mailgroupdetails.userid WHERE mailgroupdetails.groupname='" . $Recipients . "'";
 	$ErrMsg = _('Failed to retrieve mail lists');
-	$result = DB_query($sql, $ErrMsg);
-	if (DB_num_rows($result) != 0) {
+	$Result = DB_query($SQL, $ErrMsg);
+	if (DB_num_rows($Result) != 0) {
 
 		//Create the string which meets the Recipients requirements
-		while ($myrow = DB_fetch_array($result)) {
-			$ToList[] = $myrow['realname'] . '<' . $myrow['email'] . '>';
+		while ($MyRow = DB_fetch_array($Result)) {
+			$ToList[] = $MyRow['realname'] . '<' . $MyRow['email'] . '>';
 		}
 
 	}
@@ -448,10 +448,10 @@ function ChangeFieldInTable($TableName, $FieldName, $OldValue, $NewValue) {
 	/* Used in Z_ scripts to change one field across the table.
 	 */
 	echo '<br />' . _('Changing') . ' ' . $TableName . ' ' . _('records');
-	$sql = "UPDATE " . $TableName . " SET " . $FieldName . " ='" . $NewValue . "' WHERE " . $FieldName . "='" . $OldValue . "'";
+	$SQL = "UPDATE " . $TableName . " SET " . $FieldName . " ='" . $NewValue . "' WHERE " . $FieldName . "='" . $OldValue . "'";
 	$DbgMsg = _('The SQL statement that failed was');
 	$ErrMsg = _('The SQL to update' . ' ' . $TableName . ' ' . _('records failed'));
-	$result = DB_query($sql, $ErrMsg, $DbgMsg, true);
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 	echo ' ... ' . _('completed');
 }
 

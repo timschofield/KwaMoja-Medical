@@ -141,18 +141,18 @@ if (isset($_POST['AddSequence']) and $_POST['AddSequence'] != '') {
 	if ($BeginNo > $EndNo) {
 		prnMsg(_('To Add Items Sequentially, the Begin Number must be less than the End Number'), 'error');
 	} else {
-		$sql = "SELECT serialno
+		$SQL = "SELECT serialno
 				FROM stockserialitems
 				WHERE serialno BETWEEN '" . $BeginNo . "' AND '" . $EndNo . "'
 					AND stockid = '" . $StockID . "' AND loccode='" . $LocationOut . "'";
 		$Qty = ($InOutModifier > 0 ? 1 : 0);
 		if ($LineItem->Serialised == 1) {
-			$sql .= " AND quantity = " . $Qty;
+			$SQL .= " AND quantity = " . $Qty;
 		}
-		$SeqItems = DB_query($sql);
+		$SeqItems = DB_query($SQL);
 
-		while ($myrow = DB_fetch_array($SeqItems)) {
-			$LineItem->SerialItems[$myrow['serialno']] = new SerialItem($myrow['serialno'], ($InOutModifier > 0 ? 1 : -1));
+		while ($MyRow = DB_fetch_array($SeqItems)) {
+			$LineItem->SerialItems[$MyRow['serialno']] = new SerialItem($MyRow['serialno'], ($InOutModifier > 0 ? 1 : -1));
 			//force it to Keyed entry for cleanup & manual verification
 			$_POST['EntryType'] = 'KEYED';
 		}

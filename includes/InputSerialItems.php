@@ -10,14 +10,14 @@
  */
 
 //bring up perishable variable here otherwise we cannot get it in Add_SerialItems.php
-$sql = "SELECT perishable,
+$SQL = "SELECT perishable,
 				decimalplaces
 			FROM stockmaster
 			WHERE stockid='" . $StockID . "'";
-$result = DB_query($sql);
-$myrow = DB_fetch_array($result);
-$Perishable = $myrow['perishable'];
-$DecimalPlaces = $myrow['decimalplaces'];
+$Result = DB_query($SQL);
+$MyRow = DB_fetch_array($Result);
+$Perishable = $MyRow['perishable'];
+$DecimalPlaces = $MyRow['decimalplaces'];
 
 include('includes/Add_SerialItems.php');
 

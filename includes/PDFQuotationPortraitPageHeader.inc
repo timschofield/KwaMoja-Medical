@@ -25,20 +25,20 @@ $XPos = 46;
 $YPos = 770;
 
 $FontSize = 12;
-$myrow = array_map(html_entity_decode, $myrow);
+$MyRow = array_map(html_entity_decode, $MyRow);
 $pdf->addText($XPos, $YPos + 10, $FontSize, _('Delivery To') . ':');
-$pdf->addText($XPos, $YPos - 3, $FontSize, $myrow['deliverto']);
-$pdf->addText($XPos, $YPos - 15, $FontSize, $myrow['deladd1']);
-$pdf->addText($XPos, $YPos - 30, $FontSize, $myrow['deladd2']);
-$pdf->addText($XPos, $YPos - 45, $FontSize, $myrow['deladd3'] . ' ' . $myrow['deladd4'] . ' ' . $myrow['deladd5']);
+$pdf->addText($XPos, $YPos - 3, $FontSize, $MyRow['deliverto']);
+$pdf->addText($XPos, $YPos - 15, $FontSize, $MyRow['deladd1']);
+$pdf->addText($XPos, $YPos - 30, $FontSize, $MyRow['deladd2']);
+$pdf->addText($XPos, $YPos - 45, $FontSize, $MyRow['deladd3'] . ' ' . $MyRow['deladd4'] . ' ' . $MyRow['deladd5']);
 
 $YPos -= 80;
 
 $pdf->addText($XPos, $YPos, $FontSize, _('Quotation For') . ':');
-$pdf->addText($XPos, $YPos - 15, $FontSize, $myrow['name']);
-$pdf->addText($XPos, $YPos - 30, $FontSize, $myrow['address1']);
-$pdf->addText($XPos, $YPos - 45, $FontSize, $myrow['address2']);
-$pdf->addText($XPos, $YPos - 60, $FontSize, $myrow['address3'] . ' ' . $myrow['address4'] . ' ' . $myrow['address5']);
+$pdf->addText($XPos, $YPos - 15, $FontSize, $MyRow['name']);
+$pdf->addText($XPos, $YPos - 30, $FontSize, $MyRow['address1']);
+$pdf->addText($XPos, $YPos - 45, $FontSize, $MyRow['address2']);
+$pdf->addText($XPos, $YPos - 60, $FontSize, $MyRow['address3'] . ' ' . $MyRow['address4'] . ' ' . $MyRow['address5']);
 
 $XPos = 50;
 $YPos += 25;
@@ -81,11 +81,11 @@ $pdf->partEllipse($XPos + 200, $YPos, 270, 360, 10, 10);
 $pdf->line($XPos + 210, $YPos, $XPos + 210, $YPos + 60);
 
 $pdf->addTextWrap($Page_Width - $Right_Margin - 200, $Page_Height - $Top_Margin - $FontSize * 1, 200, $FontSize, _('Number') . ': ' . $_GET['QuotationNo'], 'right');
-$pdf->addTextWrap($Page_Width - $Right_Margin - 200, $Page_Height - $Top_Margin - $FontSize * 2, 200, $FontSize, _('Your Ref') . ': ' . $myrow['customerref'], 'right');
-$pdf->addTextWrap($Page_Width - $Right_Margin - 200, $Page_Height - $Top_Margin - $FontSize * 3, 200, $FontSize, _('Date') . ': ' . ConvertSQLDate($myrow['quotedate']), 'right');
+$pdf->addTextWrap($Page_Width - $Right_Margin - 200, $Page_Height - $Top_Margin - $FontSize * 2, 200, $FontSize, _('Your Ref') . ': ' . $MyRow['customerref'], 'right');
+$pdf->addTextWrap($Page_Width - $Right_Margin - 200, $Page_Height - $Top_Margin - $FontSize * 3, 200, $FontSize, _('Date') . ': ' . ConvertSQLDate($MyRow['quotedate']), 'right');
 $pdf->addTextWrap($Page_Width - $Right_Margin - 200, $Page_Height - $Top_Margin - $FontSize * 4, 200, $FontSize, _('Page') . ': ' . $PageNumber, 'right');
 
-$pdf->addText($Page_Width / 2 - 10, $YPos + 15, $FontSize, _('All amounts stated in') . ' - ' . $myrow['currcode']);
+$pdf->addText($Page_Width / 2 - 10, $YPos + 15, $FontSize, _('All amounts stated in') . ' - ' . $MyRow['currcode']);
 
 $YPos -= 45;
 $XPos = 40;

@@ -16,9 +16,9 @@ if ($_GET['Customers'] != 'All') {
 		  FROM `debtortype`
 		  WHERE typeid='" . $_GET['Customers'] . "'";
 
-	$result = DB_query($SQL);
-	$myrow = DB_fetch_array($result);
-	$Customers = $myrow["0"];
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
+	$Customers = $MyRow["0"];
 } else {
 	$Customers = 'All';
 }

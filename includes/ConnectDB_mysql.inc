@@ -7,7 +7,7 @@ if (!isset($DBPort)) {
 	$DBPort = 3306;
 }
 $db = mysql_pconnect($host . ':' . $DBPort, $DBUser, $DBPassword);
-$result = DB_query("SET sql_mode = 'ANSI'", $db);
+$Result = DB_query("SET sql_mode = 'ANSI'", $db);
 
 //this statement sets the charset to be used for sending data to and from the db server
 //if not set, both mysql server and mysql client/library may assume otherwise
@@ -60,7 +60,7 @@ function DB_query($SQL, $ErrorMessage = '', $DebugMessage = '', $Transaction = f
 	global $RootPath;
 	global $Messages;
 
-	$result = mysql_query($SQL, $db);
+	$Result = mysql_query($SQL, $db);
 	$_SESSION['LastInsertId'] = mysql_insert_id($db);
 
 	if ($DebugMessage == '') {
@@ -107,7 +107,7 @@ function DB_query($SQL, $ErrorMessage = '', $DebugMessage = '', $Transaction = f
 		}
 	}
 
-	return $result;
+	return $Result;
 
 }
 
@@ -196,8 +196,8 @@ function DB_Maintenance() {
 	prnMsg(_('The system has just run the regular database administration and optimisation routine.'), 'info');
 
 	$TablesResult = DB_query('SHOW TABLES');
-	while ($myrow = DB_fetch_row($TablesResult)) {
-		$Result = DB_query('OPTIMIZE TABLE ' . $myrow[0]);
+	while ($MyRow = DB_fetch_row($TablesResult)) {
+		$Result = DB_query('OPTIMIZE TABLE ' . $MyRow[0]);
 	}
 
 	$Result = DB_query("UPDATE config
@@ -234,8 +234,8 @@ function DB_ReinstateForeignKeys() {
 
 function DB_table_exists($TableName) {
 	$ShowSQL = "SHOW TABLES WHERE Tables_in_" . $_SESSION['DatabaseName'] . "='" . $TableName . "'";
-	$result = DB_query($ShowSQL);
-	if (DB_num_rows($result) > 0) {
+	$Result = DB_query($ShowSQL);
+	if (DB_num_rows($Result) > 0) {
 		return True;
 	} else {
 		return False;

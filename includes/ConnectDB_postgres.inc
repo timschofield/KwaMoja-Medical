@@ -69,12 +69,12 @@ function DB_query($SQL, $ErrorMessage = '', $DebugMessage = '', $Transaction = f
 	global $debug;
 	global $PathPrefix;
 
-	$result = pg_query($db, $SQL);
+	$Result = pg_query($db, $SQL);
 	if ($DebugMessage == '') {
 		$DebugMessage = _('The SQL that failed was:');
 	}
 	//if (DB_error_no($Conn) != 0){
-	if (!$result and $TrapErrors) {
+	if (!$Result and $TrapErrors) {
 		if ($TrapErrors) {
 			require_once($PathPrefix . 'includes/header.inc');
 		}
@@ -94,7 +94,7 @@ function DB_query($SQL, $ErrorMessage = '', $DebugMessage = '', $Transaction = f
 			exit;
 		}
 	}
-	return $result;
+	return $Result;
 
 }
 

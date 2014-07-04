@@ -49,7 +49,7 @@ for ($i = 0; $i <= 10; $i++) {
 	$AccumLvl4[$i] = 0;
 }
 
-While ($myrow = DB_fetch_array($result)) {
+While ($MyRow = DB_fetch_array($Result)) {
 
 	/*First off check that at least one of the columns of data has some none zero amounts */
 	DB_data_seek($ColsResult, 0);
@@ -58,13 +58,13 @@ While ($myrow = DB_fetch_array($result)) {
 	/*assume no output to start with */
 	while ($Cols = DB_fetch_array($ColsResult)) {
 		$ColumnNo = 'col' . ((int) $Cols['colno'] + 8);
-		if (abs($myrow[$ColumnNo]) > 0.5) {
+		if (abs($MyRow[$ColumnNo]) > 0.5) {
 			$ThisLineHasOutput = True;
 		}
 	}
 	if ($ThisLineHasOutput == True) {
 
-		if ($myrow['col5'] != $GrpData3 && $myrow['col5'] != '0' && $myrow['col7'] != '0') {
+		if ($MyRow['col5'] != $GrpData3 && $MyRow['col5'] != '0' && $MyRow['col7'] != '0') {
 			/*Totals only relevant to GrpByLevel 3 if GrpByLevel 4 also used */
 			if ($Counter > 0) {
 				/*Dont want to print totals if this is the first record */
@@ -121,7 +121,7 @@ While ($myrow = DB_fetch_array($result)) {
 			}
 		}
 
-		if ($myrow['col3'] != $GrpData2 and $myrow['col3'] != '0' and $myrow['col5'] != '0') {
+		if ($MyRow['col3'] != $GrpData2 and $MyRow['col3'] != '0' and $MyRow['col5'] != '0') {
 			/*Totals only relevant to GrpByLevel 2 if GrpByLevel 3 also used */
 			if ($Counter > 0) {
 				/*Dont want to print totals if this is the first record */
@@ -180,7 +180,7 @@ While ($myrow = DB_fetch_array($result)) {
 			/*end if Counter > 0 */
 		}
 
-		if ($myrow['col1'] != $GrpData1 && $myrow['col3'] != '0') {
+		if ($MyRow['col1'] != $GrpData1 && $MyRow['col3'] != '0') {
 			/*Totals only relevant to GrpByLevel 1 if GrpByLevel 2 also used */
 			if ($Counter > 0) {
 				/*Dont want to print totals if this is the first record */
@@ -242,50 +242,50 @@ While ($myrow = DB_fetch_array($result)) {
 
 		$NewHeading = 0;
 
-		if ($myrow['col1'] != $GrpData1) {
+		if ($MyRow['col1'] != $GrpData1) {
 			/*Need a new heading for Level 1 */
 			$NewHeading = 1;
 			if ($ReportSpec['newpageafter1'] == 1) {
 				include('includes/PDFSalesAnalPageHeader.inc');
 			}
-			$GroupHeadingText = mb_substr($myrow['col1'] . ' - ' . $myrow['col2'], 0, 50);
+			$GroupHeadingText = mb_substr($MyRow['col1'] . ' - ' . $MyRow['col2'], 0, 50);
 			$LeftOvers = $pdf->addTextWrap(15, $Ypos, 205, $FontSize, $GroupHeadingText);
 
-			if ($myrow['col3'] != '0') {
+			if ($MyRow['col3'] != '0') {
 				$Ypos -= $line_height;
 			}
 		}
 
-		if (($myrow['col3'] != $GrpData2 or $NewHeading == 1) and $myrow['col3'] != '0') {
+		if (($MyRow['col3'] != $GrpData2 or $NewHeading == 1) and $MyRow['col3'] != '0') {
 			/*Need a new heading for Level 2 */
 			$NewHeading = 1;
 			if ($ReportSpec['newpageafter2'] == 1) {
 				include('includes/PDFSalesAnalPageHeader.inc');
 			}
-			$GroupHeadingText = mb_substr($myrow['col3'] . ' - ' . $myrow['col4'], 0, 46);
+			$GroupHeadingText = mb_substr($MyRow['col3'] . ' - ' . $MyRow['col4'], 0, 46);
 			$LeftOvers = $pdf->addTextWrap(30, $Ypos, 190, $FontSize, $GroupHeadingText);
 
-			if ($myrow['col5'] != '0') {
+			if ($MyRow['col5'] != '0') {
 				$Ypos -= $line_height;
 			}
 		}
-		if (($myrow['col5'] != $GrpData3 or $NewHeading == 1) and $myrow['col5'] != '0') {
+		if (($MyRow['col5'] != $GrpData3 or $NewHeading == 1) and $MyRow['col5'] != '0') {
 			/*Need a new heading for Level 3 */
 
 			if ($ReportSpec['newpageafter3'] == 1) {
 				include('includes/PDFSalesAnalPageHeader.inc');
 			}
-			$GroupHeadingText = mb_substr($myrow['col5'] . ' - ' . $myrow['col6'], 0, 46);
+			$GroupHeadingText = mb_substr($MyRow['col5'] . ' - ' . $MyRow['col6'], 0, 46);
 			$LeftOvers = $pdf->addTextWrap(30, $Ypos, 190, $FontSize, $GroupHeadingText);
 
-			if ($myrow['col7'] != '0') {
+			if ($MyRow['col7'] != '0') {
 				$Ypos -= $line_height;
 			}
 		}
 
-		if ($myrow['col7'] != '0') {
+		if ($MyRow['col7'] != '0') {
 			/*show titles */
-			$GroupHeadingText = mb_substr($myrow['col7'] . ' - ' . $myrow['col8'], 0, 40);
+			$GroupHeadingText = mb_substr($MyRow['col7'] . ' - ' . $MyRow['col8'], 0, 40);
 			$LeftOvers = $pdf->addTextWrap(55, $Ypos, 135, $FontSize, $GroupHeadingText);
 
 		}
@@ -296,16 +296,16 @@ While ($myrow = DB_fetch_array($result)) {
 			$Xpos = 160 + ($Cols['colno'] * 60);
 			$ColumnNo = 'col' . (string) (($Cols['colno']) + 8);
 			if ($Cols['valformat'] == 'P') {
-				$DisplayValue = locale_number_format($myrow[$ColumnNo] * 100, 1) . '%';
+				$DisplayValue = locale_number_format($MyRow[$ColumnNo] * 100, 1) . '%';
 			} else {
-				$DisplayValue = locale_number_format($myrow[$ColumnNo], 0);
+				$DisplayValue = locale_number_format($MyRow[$ColumnNo], 0);
 			}
 			$LeftOvers = $pdf->addTextWrap($Xpos, $Ypos, 60, $FontSize, $DisplayValue, 'right');
 
-			$AccumLvl1[$Cols['colno']] += $myrow[$ColumnNo];
-			$AccumLvl2[$Cols['colno']] += $myrow[$ColumnNo];
-			$AccumLvl3[$Cols['colno']] += $myrow[$ColumnNo];
-			$AccumLvl4[$Cols['colno']] += $myrow[$ColumnNo];
+			$AccumLvl1[$Cols['colno']] += $MyRow[$ColumnNo];
+			$AccumLvl2[$Cols['colno']] += $MyRow[$ColumnNo];
+			$AccumLvl3[$Cols['colno']] += $MyRow[$ColumnNo];
+			$AccumLvl4[$Cols['colno']] += $MyRow[$ColumnNo];
 		}
 
 		$Ypos -= $line_height;
@@ -313,11 +313,11 @@ While ($myrow = DB_fetch_array($result)) {
 		if ($Ypos - (2 * $line_height) < $Bottom_Margin) {
 			include('includes/PDFSalesAnalPageHeader.inc');
 		} //end if need a new page headed up
-		$GrpData1 = $myrow['col1'];
-		$GrpData2 = $myrow['col3'];
-		$GrpData3 = $myrow['col5'];
+		$GrpData1 = $MyRow['col1'];
+		$GrpData2 = $MyRow['col3'];
+		$GrpData3 = $MyRow['col5'];
 		$Counter++;
-		$LastLine = $myrow;
+		$LastLine = $MyRow;
 		/*remember the last line that had some output in an array called last line*/
 	}
 	/*The line has some positive amount on it */
@@ -543,7 +543,7 @@ if (isset($_GET['ProduceCVSFile'])) {
 	$fp = fopen($_SESSION['reports_dir'] . '/SalesAnalysis.csv', 'w');
 
 
-	while ($myrow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($Result)) {
 
 		/*First off check that at least one of the columns of data has some none zero amounts */
 		$ThisLineHasOutput = False;
@@ -551,18 +551,18 @@ if (isset($_GET['ProduceCVSFile'])) {
 		$NumberOfFields = DB_num_rows($ColsResult);
 
 		for ($i = 3; $i <= $NumberOfFields + 7; $i++) {
-			if (abs($myrow[$i]) > 0.009) {
+			if (abs($MyRow[$i]) > 0.009) {
 				$ThisLineHasOutput = True;
 			}
 		}
 		if ($ThisLineHasOutput == True) {
 			$line = '';
 			for ($i = 0; $i <= $NumberOfFields + 7; $i++) {
-				if (isset($myrow[$i])) {
+				if (isset($MyRow[$i])) {
 					if ($i > 0) {
 						$line .= ',';
 					}
-					$line .= stripcomma($myrow[$i]);
+					$line .= stripcomma($MyRow[$i]);
 				}
 			}
 			fputs($fp, $line . "\n");

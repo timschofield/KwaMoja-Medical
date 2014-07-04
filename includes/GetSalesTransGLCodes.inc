@@ -14,8 +14,8 @@ function GetCOGSGLAccount($Area, $StockID, $SalesType) {
 
 	$SQL = "SELECT categoryid FROM stockmaster WHERE stockid='" . $StockID . "'";
 	$Result = DB_query($SQL);
-	$myrow = DB_fetch_row($Result);
-	$StockCategory = $myrow[0];
+	$MyRow = DB_fetch_row($Result);
+	$StockCategory = $MyRow[0];
 
 	/*Gets the GL Code for the COGS for a specific area and stock category. */
 
@@ -145,8 +145,8 @@ function GetCOGSGLAccount($Area, $StockID, $SalesType) {
 		return 1;
 	}
 
-	$myrow = DB_fetch_row($Result);
-	return $myrow[0];
+	$MyRow = DB_fetch_row($Result);
+	return $MyRow[0];
 }
 
 function GetSalesGLAccount($Area, $StockID, $SalesType) {
@@ -160,8 +160,8 @@ function GetSalesGLAccount($Area, $StockID, $SalesType) {
 	/*Get the StockCategory for this item */
 	$SQL = "SELECT categoryid FROM stockmaster WHERE stockid='" . $StockID . "'";
 	$Result = DB_query($SQL);
-	$myrow = DB_fetch_row($Result);
-	$StockCategory = $myrow[0];
+	$MyRow = DB_fetch_row($Result);
+	$StockCategory = $MyRow[0];
 
 
 	/*Need to determine if Sales GL codes set up for the stk cat, area and sales type of the item/customer branch and 	use the most appropriate GL Code.
@@ -299,8 +299,8 @@ function GetSalesGLAccount($Area, $StockID, $SalesType) {
 			'discountglcode' => 1
 		);
 	}
-	$myrow = DB_fetch_array($Result);
-	return $myrow;
+	$MyRow = DB_fetch_array($Result);
+	return $MyRow;
 }
 
 ?>

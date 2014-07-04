@@ -31,7 +31,7 @@ function CalcFreightCost($TotalValue, $BrAdd2, $BrAdd3, $BrAdd4, $BrAdd5, $BrAdd
 	// make an array of all the words that could be the name of the destination zone (city, state or ZIP)
 	$FindCity = array($BrAdd2, $BrAdd3, $BrAdd4, $BrAdd5);
 
-	$sql = "SELECT shipperid,
+	$SQL = "SELECT shipperid,
 					kgrate * " . $TotalWeight . " AS kgcost,
 					cubrate * " . $TotalVolume . " AS cubcost,
 					fixedprice,
@@ -45,47 +45,47 @@ function CalcFreightCost($TotalValue, $BrAdd2, $BrAdd3, $BrAdd4, $BrAdd5, $BrAdd
 	//ALL suburbs and cities are compared in upper case - so data in freight tables must be in upper case too
 	foreach ($FindCity as $City) {
 		if ($City != ''){
-			$sql .= " destination LIKE '" . $City . "%' OR";
+			$SQL .= " destination LIKE '" . $City . "%' OR";
 		}
 	}
 	if ($BrAddCountry != $CountriesArray[$_SESSION['CountryOfOperation']]) {
 		/* For international shipments empty destination (ANY) is allowed */
-		$sql .= " destination = '' OR";
+		$SQL .= " destination = '' OR";
 	}
-	$sql = mb_substr($sql, 0, mb_strrpos($sql,' OR')) . ')';
+	$SQL = mb_substr($SQL, 0, mb_strrpos($SQL,' OR')) . ')';
 
-	$CalcFreightCostResult = DB_query($sql);
+	$CalcFreightCostResult = DB_query($SQL);
 	if (DB_error_no() != 0) {
-		echo _('The freight calculation for the destination city cannot be performed because') . ' - ' . DB_error_msg() . ' - ' . $sql;
+		echo _('The freight calculation for the destination city cannot be performed because') . ' - ' . DB_error_msg() . ' - ' . $SQL;
 	} elseif (DB_num_rows($CalcFreightCostResult) > 0) {
 
 		$CalcFreightCost =9999999999;
 
-		while ($myrow = DB_fetch_array($CalcFreightCostResult)) {
+		while ($MyRow = DB_fetch_array($CalcFreightCostResult)) {
 
 			/**********      FREIGHT CALCULATION
 			IF FIXED PRICE TAKE IT IF BEST PRICE SO FAR OTHERWISE
 			TAKE HIGHER OF CUBE, KG OR MINIMUM CHARGE COST 	**********/
 
-			if ($myrow['fixedprice'] != 0) {
-				if ($myrow['fixedprice'] < $CalcFreightCost) {
-					$CalcFreightCost = $myrow['fixedprice'];
-					$CalcBestShipper = $myrow['shipperid'];
+			if ($MyRow['fixedprice'] != 0) {
+				if ($MyRow['fixedprice'] < $CalcFreightCost) {
+					$CalcFreightCost = $MyRow['fixedprice'];
+					$CalcBestShipper = $MyRow['shipperid'];
 				}
-			} elseif ($myrow['cubcost'] > $myrow['kgcost'] and $myrow['cubcost'] > $myrow['minimumchg'] and $myrow['cubcost'] <= $CalcFreightCost) {
+			} elseif ($MyRow['cubcost'] > $MyRow['kgcost'] and $MyRow['cubcost'] > $MyRow['minimumchg'] and $MyRow['cubcost'] <= $CalcFreightCost) {
 
-				$CalcFreightCost = $myrow['cubcost'];
-				$CalcBestShipper = $myrow['shipperid'];
+				$CalcFreightCost = $MyRow['cubcost'];
+				$CalcBestShipper = $MyRow['shipperid'];
 
-			} elseif ($myrow['kgcost'] > $myrow['cubcost'] and $myrow['kgcost'] > $myrow['minimumchg'] and $myrow['kgcost'] <= $CalcFreightCost) {
+			} elseif ($MyRow['kgcost'] > $MyRow['cubcost'] and $MyRow['kgcost'] > $MyRow['minimumchg'] and $MyRow['kgcost'] <= $CalcFreightCost) {
 
-				$CalcFreightCost = $myrow['kgcost'];
-				$CalcBestShipper = $myrow['shipperid'];
+				$CalcFreightCost = $MyRow['kgcost'];
+				$CalcBestShipper = $MyRow['shipperid'];
 
-			} elseif ($myrow['minimumchg'] < $CalcFreightCost) {
+			} elseif ($MyRow['minimumchg'] < $CalcFreightCost) {
 
-				$CalcFreightCost = $myrow['minimumchg'];
-				$CalcBestShipper = $myrow['shipperid'];
+				$CalcFreightCost = $MyRow['minimumchg'];
+				$CalcBestShipper = $MyRow['shipperid'];
 
 			}
 		}

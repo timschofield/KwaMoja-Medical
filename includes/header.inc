@@ -59,10 +59,10 @@ if ($debug == 1) {
 }
 
 if (isset($_GET['FontSize'])) {
-	$sql = "UPDATE www_users
+	$SQL = "UPDATE www_users
 						SET fontsize='" . $_GET['FontSize'] . "'
 						WHERE userid = '" . $_SESSION['UserID'] . "'";
-	$result = DB_query($sql);
+	$Result = DB_query($SQL);
 }
 
 if (isset($_POST['FontSize'])) {
@@ -133,10 +133,10 @@ if (isset($Title)) {
 
 		if (basename($_SERVER['PHP_SELF']) != 'index.php') {
 			if ($_SESSION['DBUpdateNumber'] >= 56) {
-				$sql = "SELECT caption, href FROM favourites WHERE href='" . basename($_SERVER['PHP_SELF']) . "' AND userid='" . $_SESSION['UserID'] . "'";
-				$result = DB_query($sql);
+				$SQL = "SELECT caption, href FROM favourites WHERE href='" . basename($_SERVER['PHP_SELF']) . "' AND userid='" . $_SESSION['UserID'] . "'";
+				$Result = DB_query($SQL);
 
-				if (DB_num_rows($result) == 0) {
+				if (DB_num_rows($Result) == 0) {
 					echo '<li><img src="' . $RootPath . '/css/' . $Theme . '/images/add.png" id="PlusMinus" onclick="AddScript(\'' . basename($_SERVER['PHP_SELF']) . '\',\'' . $Title . '\')" data-tooltip="' . _('Add this script to your list of commonly used') . '" alt="' . _('Add to commonly used') . '" /></li>';
 				} else {
 					echo '<li><img src="' . $RootPath . '/css/' . $Theme . '/images/subtract.png" id="PlusMinus" onclick="RemoveScript(\'' . basename($_SERVER['PHP_SELF']) . '\')" data-tooltip="' . _('Remove this script from your list of commonly used') . '" alt="' . _('Remove from commonly used') . '" /></li>';
@@ -145,13 +145,13 @@ if (isset($Title)) {
 		}
 
 		if ($_SESSION['DBUpdateNumber'] >= 56) {
-			$sql = "SELECT caption, href FROM favourites WHERE userid='" . $_SESSION['UserID'] . "'";
-			$result = DB_query($sql);
+			$SQL = "SELECT caption, href FROM favourites WHERE userid='" . $_SESSION['UserID'] . "'";
+			$Result = DB_query($SQL);
 
 			echo '<li><select name="Favourites" id="favourites" onchange="window.open (this.value,\'_self\',false)">';
 			echo '<option value=""><i><----' . _('Commonly used') . '----></i></option>';
-			while ($myrow = DB_fetch_array($result)) {
-				echo '<option value="' . $myrow['href'] . '">' . $myrow['caption'] . '</option>';
+			while ($MyRow = DB_fetch_array($Result)) {
+				echo '<option value="' . $MyRow['href'] . '">' . $MyRow['caption'] . '</option>';
 			}
 			echo '</select></li>';
 		}

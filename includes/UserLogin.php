@@ -38,77 +38,77 @@ function userLogin($Name, $Password, $SysAdminEmail = '') {
 		if (!isset($Name) or $Name == '') {
 			return UL_SHOWLOGIN;
 		}
-		$sql = "SELECT *
+		$SQL = "SELECT *
 				FROM www_users
 				WHERE www_users.userid='" . $Name . "'
 				AND (www_users.password='" . CryptPass($Password) . "'
 				OR  www_users.password='" . $Password . "')";
 		$ErrMsg = _('Could not retrieve user details on login because');
 		$debug = 1;
-		$Auth_Result = DB_query($sql, $ErrMsg);
+		$Auth_Result = DB_query($SQL, $ErrMsg);
 		// Populate session variables with data base results
 		if (DB_num_rows($Auth_Result) > 0) {
-			$myrow = DB_fetch_array($Auth_Result);
-			if ($myrow['blocked'] == 1) {
+			$MyRow = DB_fetch_array($Auth_Result);
+			if ($MyRow['blocked'] == 1) {
 				//the account is blocked
 				return UL_BLOCKED;
 			}
 			/*reset the attempts counter on successful login */
-			$_SESSION['UserID'] = $myrow['userid'];
+			$_SESSION['UserID'] = $MyRow['userid'];
 			$_SESSION['AttemptsCounter'] = 0;
-			$_SESSION['AccessLevel'] = $myrow['fullaccess'];
-			$_SESSION['CustomerID'] = $myrow['customerid'];
-			$_SESSION['UserBranch'] = $myrow['branchcode'];
-			$_SESSION['DefaultPageSize'] = $myrow['pagesize'];
-			$_SESSION['UserStockLocation'] = $myrow['defaultlocation'];
-			$_SESSION['RestrictLocations'] = $myrow['restrictlocations'];
-			$_SESSION['UserEmail'] = $myrow['email'];
-			$_SESSION['ModulesEnabled'] = explode(",", $myrow['modulesallowed']);
-			$_SESSION['UsersRealName'] = $myrow['realname'];
-			$_SESSION['Theme'] = $myrow['theme'];
-			$_SESSION['Language'] = $myrow['language'];
-			$_SESSION['SalesmanLogin'] = $myrow['salesman'];
-			$_SESSION['CanCreateTender'] = $myrow['cancreatetender'];
-			$_SESSION['AllowedDepartment'] = $myrow['department'];
-			$_SESSION['ScreenFontSize'] = $myrow['fontsize'];
+			$_SESSION['AccessLevel'] = $MyRow['fullaccess'];
+			$_SESSION['CustomerID'] = $MyRow['customerid'];
+			$_SESSION['UserBranch'] = $MyRow['branchcode'];
+			$_SESSION['DefaultPageSize'] = $MyRow['pagesize'];
+			$_SESSION['UserStockLocation'] = $MyRow['defaultlocation'];
+			$_SESSION['RestrictLocations'] = $MyRow['restrictlocations'];
+			$_SESSION['UserEmail'] = $MyRow['email'];
+			$_SESSION['ModulesEnabled'] = explode(",", $MyRow['modulesallowed']);
+			$_SESSION['UsersRealName'] = $MyRow['realname'];
+			$_SESSION['Theme'] = $MyRow['theme'];
+			$_SESSION['Language'] = $MyRow['language'];
+			$_SESSION['SalesmanLogin'] = $MyRow['salesman'];
+			$_SESSION['CanCreateTender'] = $MyRow['cancreatetender'];
+			$_SESSION['AllowedDepartment'] = $MyRow['department'];
+			$_SESSION['ScreenFontSize'] = $MyRow['fontsize'];
 
-			if (isset($myrow['pdflanguage'])) {
-				$_SESSION['PDFLanguage'] = $myrow['pdflanguage'];
+			if (isset($MyRow['pdflanguage'])) {
+				$_SESSION['PDFLanguage'] = $MyRow['pdflanguage'];
 			} else {
 				$_SESSION['PDFLanguage'] = '0'; //default to latin western languages
 			}
 
-			if ($myrow['displayrecordsmax'] > 0) {
-				$_SESSION['DisplayRecordsMax'] = $myrow['displayrecordsmax'];
+			if ($MyRow['displayrecordsmax'] > 0) {
+				$_SESSION['DisplayRecordsMax'] = $MyRow['displayrecordsmax'];
 			} else {
 				$_SESSION['DisplayRecordsMax'] = $_SESSION['DefaultDisplayRecordsMax']; // default comes from config.php
 			}
 
-			$sql = "UPDATE www_users SET lastvisitdate='" . date('Y-m-d H:i:s') . "'
+			$SQL = "UPDATE www_users SET lastvisitdate='" . date('Y-m-d H:i:s') . "'
 							WHERE www_users.userid='" . $Name . "'";
-			$Auth_Result = DB_query($sql);
+			$Auth_Result = DB_query($SQL);
 			/*get the security tokens that the user has access to */
-			$sql = "SELECT tokenid
+			$SQL = "SELECT tokenid
 						FROM securitygroups
 						WHERE secroleid =  '" . $_SESSION['AccessLevel'] . "'";
-			$Sec_Result = DB_query($sql);
+			$Sec_Result = DB_query($SQL);
 			$_SESSION['AllowedPageSecurityTokens'] = array();
 			if (DB_num_rows($Sec_Result) == 0) {
 				return UL_CONFIGERR;
 			} else {
 				$i = 0;
 				$UserIsSysAdmin = FALSE;
-				while ($myrow = DB_fetch_row($Sec_Result)) {
-					if ($myrow[0] == 15) {
+				while ($MyRow = DB_fetch_row($Sec_Result)) {
+					if ($MyRow[0] == 15) {
 						$UserIsSysAdmin = TRUE;
 					}
-					$_SESSION['AllowedPageSecurityTokens'][$i] = $myrow[0];
+					$_SESSION['AllowedPageSecurityTokens'][$i] = $MyRow[0];
 					$i++;
 				}
 			}
 			// check if only maintenance users can access KwaMoja
-			$sql = "SELECT confvalue FROM config WHERE confname = 'DB_Maintenance'";
-			$Maintenance_Result = DB_query($sql);
+			$SQL = "SELECT confvalue FROM config WHERE confname = 'DB_Maintenance'";
+			$Maintenance_Result = DB_query($SQL);
 			if (DB_num_rows($Maintenance_Result) == 0) {
 				return UL_CONFIGERR;
 			} else {
@@ -125,10 +125,10 @@ function userLogin($Name, $Password, $SysAdminEmail = '') {
 				$_SESSION['AttemptsCounter'] = 0;
 			} elseif ($_SESSION['AttemptsCounter'] >= 5 and isset($Name)) {
 				/*User blocked from future accesses until sysadmin releases */
-				$sql = "UPDATE www_users
+				$SQL = "UPDATE www_users
 							SET blocked=1
 							WHERE www_users.userid='" . $Name . "'";
-				$Auth_Result = DB_query($sql);
+				$Auth_Result = DB_query($SQL);
 				if ($SysAdminEmail != '') {
 					$EmailSubject = _('User access blocked') . ' ' . $Name;
 					$EmailText = _('User ID') . ' ' . $Name . ' - ' . $Password . ' - ' . _('has been blocked access at') . ' ' . Date('Y-m-d H:i:s') . ' ' . _('from IP') . ' ' . $_SERVER["REMOTE_ADDR"] . ' ' . _('due to too many failed attempts.');
@@ -140,7 +140,7 @@ function userLogin($Name, $Password, $SysAdminEmail = '') {
 						$mail = new htmlMimeMail();
 						$mail->setSubject($EmailSubject);
 						$mail->setText($EmailText);
-						$result = SendmailBySmtp($mail, array(
+						$Result = SendmailBySmtp($mail, array(
 							$SysAdminEmail
 						));
 					}

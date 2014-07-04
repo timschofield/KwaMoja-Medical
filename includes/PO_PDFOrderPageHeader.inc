@@ -52,10 +52,10 @@ $pdf->addText($FormDesign->Authoriser->x, $Page_Height - $FormDesign->Authoriser
 /*Find the description of the payment terms and display.
  * If it is a preview then just insert dummy data */
 if ($OrderNo != 'Preview') {
-	$sql = "SELECT terms FROM paymentterms where termsindicator='" . $POHeader['paymentterms'] . "'";
-	$termsresult = DB_query($sql);
-	$myrow = DB_fetch_array($termsresult);
-	$pdf->addText($FormDesign->PaymentTerms->x, $Page_Height - $FormDesign->PaymentTerms->y, $FormDesign->PaymentTerms->FontSize, _('Payment Terms') . ': ' . $myrow['terms']);
+	$SQL = "SELECT terms FROM paymentterms where termsindicator='" . $POHeader['paymentterms'] . "'";
+	$termsresult = DB_query($SQL);
+	$MyRow = DB_fetch_array($termsresult);
+	$pdf->addText($FormDesign->PaymentTerms->x, $Page_Height - $FormDesign->PaymentTerms->y, $FormDesign->PaymentTerms->FontSize, _('Payment Terms') . ': ' . $MyRow['terms']);
 } else {
 	$pdf->addText($FormDesign->PaymentTerms->x, $Page_Height - $FormDesign->PaymentTerms->y, $FormDesign->PaymentTerms->FontSize, _('Payment Terms') . ': ' . 'XXXXXXXX');
 }

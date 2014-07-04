@@ -33,7 +33,7 @@ $YPos -= $line_height;
 $XPos = $Left_Margin;
 
 
-$pdf->addText($XPos, $YPos, $FontSize, _('Date of Banking') . ': ' . ConvertSQLDate($myrow['transdate']));
+$pdf->addText($XPos, $YPos, $FontSize, _('Date of Banking') . ': ' . ConvertSQLDate($MyRow['transdate']));
 $YPos -= $line_height;
 $pdf->addText($XPos, $YPos, $FontSize, _('Banked into') . ': ' . $BankActName . ' - ' . _('Account Number') . ': ' . $BankActNumber);
 $YPos -= $line_height;

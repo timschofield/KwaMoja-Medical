@@ -101,7 +101,7 @@ class Cart {
 				being retrieved from the DB - dont want to add them again - would return
 				errors anyway */
 
-				$sql = "INSERT INTO salesorderdetails (orderlineno,
+				$SQL = "INSERT INTO salesorderdetails (orderlineno,
 														orderno,
 														stkcode,
 														quantity,
@@ -117,7 +117,7 @@ class Cart {
 														" . $Disc . ",'
 														" . FormatDateForSQL($ItemDue) . "',
 														" . $POLine . ")";
-				$result = DB_query($sql, _('The order line for') . ' ' . mb_strtoupper($StockID) . ' ' . _('could not be inserted'));
+				$Result = DB_query($SQL, _('The order line for') . ' ' . mb_strtoupper($StockID) . ' ' . _('could not be inserted'));
 			}
 
 			$this->LineCounter = $LineNumber + 1;
@@ -138,7 +138,7 @@ class Cart {
 		$this->LineItems[$UpdateLineNumber]->POLine = $POLine;
 		$this->LineItems[$UpdateLineNumber]->GPPercent = $GPPercent;
 		if ($UpdateDB == 'Yes') {
-			$result = DB_query("UPDATE salesorderdetails SET quantity=" . $Qty . ",
+			$Result = DB_query("UPDATE salesorderdetails SET quantity=" . $Qty . ",
 															unitprice=" . $Price . ",
 															discountpercent=" . $Disc . ",
 															narrative ='" . $Narrative . "',
@@ -159,13 +159,13 @@ class Cart {
 		if ($UpdateDB == 'Yes') {
 			if ($this->Some_Already_Delivered($LineNumber) == 0) {
 				/* nothing has been delivered, delete it. */
-				$result = DB_query("DELETE FROM salesorderdetails
+				$Result = DB_query("DELETE FROM salesorderdetails
 									WHERE orderno='" . $_SESSION['ExistingOrder' . $identifier] . "'
 									AND orderlineno='" . $LineNumber . "'", _('The order line could not be deleted because'));
 				prnMsg(_('Deleted Line Number') . ' ' . $LineNumber . ' ' . _('from existing Order Number') . ' ' . $_SESSION['ExistingOrder' . $identifier], 'success');
 			} else {
 				/* something has been delivered. Clear the remaining Qty and Mark Completed */
-				$result = DB_query("UPDATE salesorderdetails SET quantity=qtyinvoiced,
+				$Result = DB_query("UPDATE salesorderdetails SET quantity=qtyinvoiced,
 																completed=1
 									WHERE orderno='" . $_SESSION['ExistingOrder'] . "'
 									AND orderlineno='" . $LineNumber . "'", _('The order line could not be updated as completed because'));
@@ -228,7 +228,7 @@ class Cart {
 		/*Gets the Taxes and rates applicable to this line from the TaxGroup of the branch and TaxCategory of the item
 		and the taxprovince of the dispatch location */
 
-		$sql = "SELECT stockmovestaxes.taxauthid,
+		$SQL = "SELECT stockmovestaxes.taxauthid,
 						taxauthorities.description,
 						taxauthorities.taxglcode,
 						stockmovestaxes.taxcalculationorder,
@@ -241,11 +241,11 @@ class Cart {
 					ORDER BY taxcalculationorder";
 
 		$ErrMsg = _('The taxes and rates for this item could not be retrieved because');
-		$GetTaxRatesResult = DB_query($sql, $ErrMsg);
+		$GetTaxRatesResult = DB_query($SQL, $ErrMsg);
 
-		while ($myrow = DB_fetch_array($GetTaxRatesResult)) {
+		while ($MyRow = DB_fetch_array($GetTaxRatesResult)) {
 
-			$this->LineItems[$LineNumber]->Taxes[$myrow['taxcalculationorder']] = new Tax($myrow['taxcalculationorder'], $myrow['taxauthid'], $myrow['description'], $myrow['taxrate'], $myrow['taxontax'], $myrow['taxglcode']);
+			$this->LineItems[$LineNumber]->Taxes[$MyRow['taxcalculationorder']] = new Tax($MyRow['taxcalculationorder'], $MyRow['taxauthid'], $MyRow['description'], $MyRow['taxrate'], $MyRow['taxontax'], $MyRow['taxglcode']);
 		}
 	} //end method GetExistingTaxes
 
@@ -277,9 +277,9 @@ class Cart {
 			prnMsg(_('It appears that taxes are not defined correctly for this customer tax group'), 'error');
 		} else {
 
-			while ($myrow = DB_fetch_array($GetTaxRatesResult)) {
+			while ($MyRow = DB_fetch_array($GetTaxRatesResult)) {
 
-				$this->LineItems[$LineNumber]->Taxes[$myrow['calculationorder']] = new Tax($myrow['calculationorder'], $myrow['taxauthid'], $myrow['description'], $myrow['taxrate'], $myrow['taxontax'], $myrow['taxglcode']);
+				$this->LineItems[$LineNumber]->Taxes[$MyRow['calculationorder']] = new Tax($MyRow['calculationorder'], $MyRow['taxauthid'], $MyRow['description'], $MyRow['taxrate'], $MyRow['taxontax'], $MyRow['taxglcode']);
 			} //end loop around different taxes
 		} //end if there are some taxes defined
 	} //end method GetTaxes
@@ -289,8 +289,8 @@ class Cart {
 		/*Gets the Taxes and rates applicable to the freight based on the tax group of the branch combined with the tax category for this particular freight
 		and SESSION['FreightTaxCategory'] the taxprovince of the dispatch location */
 
-		$sql = "SELECT taxcatid FROM taxcategories WHERE taxcatname='Freight'";
-		$TaxCatQuery = DB_query($sql);
+		$SQL = "SELECT taxcatid FROM taxcategories WHERE taxcatname='Freight'";
+		$TaxCatQuery = DB_query($SQL);
 
 		if ($TaxCatRow = DB_fetch_array($TaxCatQuery)) {
 			$TaxCatID = $TaxCatRow['taxcatid'];
@@ -317,9 +317,9 @@ class Cart {
 		$ErrMsg = _('The taxes and rates for this item could not be retrieved because');
 		$GetTaxRatesResult = DB_query($SQL, $ErrMsg);
 
-		while ($myrow = DB_fetch_array($GetTaxRatesResult)) {
+		while ($MyRow = DB_fetch_array($GetTaxRatesResult)) {
 
-			$this->FreightTaxes[$myrow['calculationorder']] = new Tax($myrow['calculationorder'], $myrow['taxauthid'], $myrow['description'], $myrow['taxrate'], $myrow['taxontax'], $myrow['taxglcode']);
+			$this->FreightTaxes[$MyRow['calculationorder']] = new Tax($MyRow['calculationorder'], $MyRow['taxauthid'], $MyRow['description'], $MyRow['taxrate'], $MyRow['taxontax'], $MyRow['taxglcode']);
 		}
 	} //end method GetFreightTaxes()
 

@@ -159,9 +159,9 @@ class smtp {
 			$this->send_data($body);
 			$this->send_data('.');
 
-			$result = (substr(trim($this->get_data()), 0, 3) === '250');
+			$Result = (substr(trim($this->get_data()), 0, 3) === '250');
 			//$this->rset();
-			return $result;
+			return $Result;
 		} else {
 			$this->errors[] = 'Not connected!';
 			return FALSE;

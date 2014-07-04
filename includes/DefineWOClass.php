@@ -41,10 +41,10 @@ Class WorkOrder {
 		$this->Items[$LineNumber]->QuantityRequired = $this->Items[$LineNumber]->QuantityReceived;
 		$this->Items[$LineNumber]->RefreshRequirements($this->LocationCode);
 		if ($this->OrderNumber != 0) {
-			$sql = "DELETE FROM worequirements WHERE wo='" . $this->OrderNumber . "' AND parentstockid='" . $this->Items[$LineNumber]->StockID . "'";
-			$DeleteResult = DB_query($sql);
-			$sql = "DELETE FROM woitems WHERE wo='" . $this->OrderNumber . "' AND stockid='" . $this->Items[$LineNumber]->StockID . "'";
-			$DeleteResult = DB_query($sql, _('Error deleting the item'));
+			$SQL = "DELETE FROM worequirements WHERE wo='" . $this->OrderNumber . "' AND parentstockid='" . $this->Items[$LineNumber]->StockID . "'";
+			$DeleteResult = DB_query($SQL);
+			$SQL = "DELETE FROM woitems WHERE wo='" . $this->OrderNumber . "' AND stockid='" . $this->Items[$LineNumber]->StockID . "'";
+			$DeleteResult = DB_query($SQL, _('Error deleting the item'));
 		}
 		unset($this->Items[$LineNumber]);
 		$this->NumberOfItems--;
@@ -63,7 +63,7 @@ Class WorkOrder {
 
 		if ($this->OrderNumber == 0) {
 			$this->OrderNumber = GetNextTransNo(40);
-			$sql = "INSERT INTO workorders (wo,
+			$SQL = "INSERT INTO workorders (wo,
 											loccode,
 											requiredby,
 											startdate,
@@ -76,13 +76,13 @@ Class WorkOrder {
 											'" . $this->CostIssued . "'
 										)";
 		} else {
-			$sql = "UPDATE workorders SET   loccode='" . $this->LocationCode . "',
+			$SQL = "UPDATE workorders SET   loccode='" . $this->LocationCode . "',
 											requiredby='" . FormatDateForSQL($this->RequiredBy) . "',
 											startdate='" . FormatDateForSQL($this->StartDate) . "',
 											costissued='" . $this->CostIssued . "'
 										WHERE wo='" . $this->OrderNumber . "'";
 		}
-		$UpdateWOResult = DB_query($sql);
+		$UpdateWOResult = DB_query($SQL);
 		foreach ($this->Items as $i => $Item) {
 			$Item->Save($this->OrderNumber);
 		}
@@ -90,7 +90,7 @@ Class WorkOrder {
 
 	function Load($WONumber) {
 
-		$sql = "SELECT  loccode,
+		$SQL = "SELECT  loccode,
 						requiredby,
 						startdate,
 						costissued,
@@ -98,15 +98,15 @@ Class WorkOrder {
 					FROM workorders
 					WHERE workorders.wo='" . $WONumber . "'";
 
-		$WOResult = DB_query($sql);
+		$WOResult = DB_query($SQL);
 		if (DB_num_rows($WOResult) == 1) {
 
-			$myrow = DB_fetch_array($WOResult);
-			$this->StartDate = ConvertSQLDate($myrow['startdate']);
-			$this->CostIssued = $myrow['costissued'];
-			$this->Closed = $myrow['closed'];
-			$this->RequiredBy = ConvertSQLDate($myrow['requiredby']);
-			$this->LocationCode = $myrow['loccode'];
+			$MyRow = DB_fetch_array($WOResult);
+			$this->StartDate = ConvertSQLDate($MyRow['startdate']);
+			$this->CostIssued = $MyRow['costissued'];
+			$this->Closed = $MyRow['closed'];
+			$this->RequiredBy = ConvertSQLDate($MyRow['requiredby']);
+			$this->LocationCode = $MyRow['loccode'];
 			$this->OrderNumber = $WONumber;
 
 			$ErrMsg = _('Could not get the work order items');
@@ -213,7 +213,7 @@ Class WOItem {
 		$CheckResult = DB_query($CheckSQL);
 
 		if (DB_num_rows($CheckResult) == 0) {
-			$sql = "INSERT INTO woitems (wo,
+			$SQL = "INSERT INTO woitems (wo,
 										stockid,
 										comments,
 										qtyreqd,
@@ -230,7 +230,7 @@ Class WOItem {
 										'" . $this->NextLotSerialNumbers . "'
 									)";
 		} else {
-			$sql = "UPDATE woitems SET  qtyreqd='" . $this->QuantityRequired . "',
+			$SQL = "UPDATE woitems SET  qtyreqd='" . $this->QuantityRequired . "',
 										comments='" . $this->Comments . "',
 										qtyrecd='" . $this->QuantityReceived . "',
 										stdcost='" . $this->StandardCost . "',
@@ -238,7 +238,7 @@ Class WOItem {
 									WHERE wo='" . $OrderNumber . "'
 										AND stockid='" . $this->StockID . "'";
 		}
-		$UpdateItems = DB_query($sql);
+		$UpdateItems = DB_query($SQL);
 		foreach ($this->Requirements as $i => $Requirement) {
 			$Requirement->Save($OrderNumber);
 		}
@@ -317,7 +317,7 @@ Class WORequirement {
 		$CheckResult = DB_query($CheckSQL);
 
 		if (DB_num_rows($CheckResult) == 0) {
-			$sql = "INSERT INTO worequirements (wo,
+			$SQL = "INSERT INTO worequirements (wo,
 												parentstockid,
 												stockid,
 												qtypu,
@@ -332,14 +332,14 @@ Class WORequirement {
 												'" . $this->AutoIssue . "'
 											)";
 		} else {
-			$sql = "UPDATE worequirements SET   qtypu='" . $this->Quantity . "',
+			$SQL = "UPDATE worequirements SET   qtypu='" . $this->Quantity . "',
 												stdcost='" . $this->StandardCost . "',
 												autoissue='" . $this->AutoIssue . "'
 											WHERE wo='" . $OrderNumber . "'
 												AND parentstockid='" . $this->ParentStockID . "'
 												AND stockid='" . $this->StockID . "'";
 		}
-		$UpdateRequirements = DB_query($sql);
+		$UpdateRequirements = DB_query($SQL);
 	}
 
 }

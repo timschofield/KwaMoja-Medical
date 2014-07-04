@@ -15,8 +15,8 @@ $pdf->addText(361, 500, 18, _('Quotation'));
 
 // Print 'Quotation' info
 $pdf->addTextWrap($Page_Width - $Right_Margin - 200, $Page_Height - $Top_Margin - $FontSize * 1, 200, $FontSize, _('Number') . ': ' . $_GET['QuotationNo'], 'right');
-$pdf->addTextWrap($Page_Width - $Right_Margin - 200, $Page_Height - $Top_Margin - $FontSize * 2, 200, $FontSize, _('Your Ref') . ': ' . $myrow['customerref'], 'right');
-$pdf->addTextWrap($Page_Width - $Right_Margin - 200, $Page_Height - $Top_Margin - $FontSize * 3, 200, $FontSize, _('Date'). ': '.ConvertSQLDate($myrow['quotedate']), 'right');
+$pdf->addTextWrap($Page_Width - $Right_Margin - 200, $Page_Height - $Top_Margin - $FontSize * 2, 200, $FontSize, _('Your Ref') . ': ' . $MyRow['customerref'], 'right');
+$pdf->addTextWrap($Page_Width - $Right_Margin - 200, $Page_Height - $Top_Margin - $FontSize * 3, 200, $FontSize, _('Date'). ': '.ConvertSQLDate($MyRow['quotedate']), 'right');
 $pdf->addTextWrap($Page_Width - $Right_Margin - 200, $Page_Height - $Top_Margin - $FontSize * 4, 200, $FontSize, _('Page') . ': ' . $PageNumber, 'right');
 
 // Print company logo
@@ -38,22 +38,22 @@ $XPos = 46;
 $YPos = 566;
 
 $FontSize = 14;
-$myrow = array_map(html_entity_decode, $myrow);
+$MyRow = array_map(html_entity_decode, $MyRow);
 $pdf->addText($XPos, $YPos, $FontSize, _('Delivery To') . ':');
-$pdf->addText($XPos, $YPos - 15, $FontSize, $myrow['deliverto']);
-$pdf->addText($XPos, $YPos - 30, $FontSize, $myrow['deladd1']);
-$pdf->addText($XPos, $YPos - 45, $FontSize, $myrow['deladd2']);
-$pdf->addText($XPos, $YPos - 60, $FontSize, $myrow['deladd3'] . ' ' . $myrow['deladd4'] . ' ' . $myrow['deladd5']);
+$pdf->addText($XPos, $YPos - 15, $FontSize, $MyRow['deliverto']);
+$pdf->addText($XPos, $YPos - 30, $FontSize, $MyRow['deladd1']);
+$pdf->addText($XPos, $YPos - 45, $FontSize, $MyRow['deladd2']);
+$pdf->addText($XPos, $YPos - 60, $FontSize, $MyRow['deladd3'] . ' ' . $MyRow['deladd4'] . ' ' . $MyRow['deladd5']);
 
 // Prints 'Quotation For' info
 
 $YPos -= 80;
 
 $pdf->addText($XPos, $YPos, $FontSize, _('Quotation For') . ':');
-$pdf->addText($XPos, $YPos - 15, $FontSize, $myrow['name']);
-$pdf->addText($XPos, $YPos - 30, $FontSize, $myrow['address1']);
-$pdf->addText($XPos, $YPos - 45, $FontSize, $myrow['address2']);
-$pdf->addText($XPos, $YPos - 60, $FontSize, $myrow['address3'] . ' ' . $myrow['address4'] . ' ' . $myrow['address5']);
+$pdf->addText($XPos, $YPos - 15, $FontSize, $MyRow['name']);
+$pdf->addText($XPos, $YPos - 30, $FontSize, $MyRow['address1']);
+$pdf->addText($XPos, $YPos - 45, $FontSize, $MyRow['address2']);
+$pdf->addText($XPos, $YPos - 60, $FontSize, $MyRow['address3'] . ' ' . $MyRow['address4'] . ' ' . $MyRow['address5']);
 
 // Draw a rectangle with rounded corners around 'Delivery To' info
 $XPos = 50;
@@ -65,7 +65,7 @@ $YPos -= 82;
 $pdf->RoundRectangle($XPos - 10, $YPos + 60 + 10, 225 + 10 + 10, 60 + 10 + 10, 10, 10); // Function RoundRectangle from includes/class.pdf.php
 
 // Print the currency name
-$pdf->addText($Page_Width / 2 - 60, $YPos - 5, $FontSize, _('All amounts stated in') . ' - ' . $myrow['currcode'] . ' ' . _($myrow['currency']));
+$pdf->addText($Page_Width / 2 - 60, $YPos - 5, $FontSize, _('All amounts stated in') . ' - ' . $MyRow['currcode'] . ' ' . _($MyRow['currency']));
 // Print table header
 $XPos = 40;
 $YPos -= 37;

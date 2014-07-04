@@ -1063,27 +1063,27 @@ function GetPeriod($TransDate, $UseProhibit = true) {
 		}
 	}
 	/* Find the unix timestamp of the last period end date in periods table */
-	$sql = "SELECT MAX(lastdate_in_period), MAX(periodno) from periods";
-	$result = DB_query($sql);
-	$myrow = DB_fetch_row($result);
+	$SQL = "SELECT MAX(lastdate_in_period), MAX(periodno) from periods";
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
 
-	if (is_null($myrow[0])) {
+	if (is_null($MyRow[0])) {
 		$InsertFirstPeriodResult = DB_query("INSERT INTO periods VALUES (0,'" . Date('Y-m-d', mktime(0, 0, 0, Date('m') + 1, 0, Date('Y'))) . "')", _('Could not insert first period'));
 		$InsertFirstPeriodResult = DB_query("INSERT INTO periods VALUES (1,'" . Date('Y-m-d', mktime(0, 0, 0, Date('m') + 2, 0, Date('Y'))) . "')", _('Could not insert second period'));
 		$LastPeriod = 1;
 		$LastPeriodEnd = mktime(0, 0, 0, Date('m') + 2, 0, Date('Y'));
 	} else {
-		$Date_Array = explode('-', $myrow[0]);
+		$Date_Array = explode('-', $MyRow[0]);
 		$LastPeriodEnd = mktime(0, 0, 0, $Date_Array[1] + 1, 0, (int) $Date_Array[0]);
-		$LastPeriod = $myrow[1];
+		$LastPeriod = $MyRow[1];
 	}
 	/* Find the unix timestamp of the first period end date in periods table */
-	$sql = "SELECT MIN(lastdate_in_period), MIN(periodno) from periods";
-	$result = DB_query($sql);
-	$myrow = DB_fetch_row($result);
-	$Date_Array = explode('-', $myrow[0]);
+	$SQL = "SELECT MIN(lastdate_in_period), MIN(periodno) from periods";
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
+	$Date_Array = explode('-', $MyRow[0]);
 	$FirstPeriodEnd = mktime(0, 0, 0, $Date_Array[1], 0, (int) $Date_Array[0]);
-	$FirstPeriod = $myrow[1];
+	$FirstPeriod = $MyRow[1];
 
 	/* If the period number doesn't exist */
 	if (!PeriodExists($TransDate)) {
@@ -1118,12 +1118,12 @@ function GetPeriod($TransDate, $UseProhibit = true) {
 		}
 	} else if (!PeriodExists(mktime(0, 0, 0, Date('m', $TransDate) + 1, Date('d', $TransDate), Date('Y', $TransDate)))) {
 		/* Make sure the following months period exists */
-		$sql = "SELECT MAX(lastdate_in_period), MAX(periodno) from periods";
-		$result = DB_query($sql);
-		$myrow = DB_fetch_row($result);
-		$Date_Array = explode('-', $myrow[0]);
+		$SQL = "SELECT MAX(lastdate_in_period), MAX(periodno) from periods";
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_row($Result);
+		$Date_Array = explode('-', $MyRow[0]);
 		$LastPeriodEnd = mktime(0, 0, 0, $Date_Array[1] + 2, 0, (int) $Date_Array[0]);
-		$LastPeriod = $myrow[1];
+		$LastPeriod = $MyRow[1];
 		CreatePeriod($LastPeriod + 1, $LastPeriodEnd);
 	}
 
@@ -1137,9 +1137,9 @@ function GetPeriod($TransDate, $UseProhibit = true) {
 
 	$ErrMsg = _('An error occurred in retrieving the period number');
 	$GetPrdResult = DB_query($GetPrdSQL, $ErrMsg);
-	$myrow = DB_fetch_row($GetPrdResult);
+	$MyRow = DB_fetch_row($GetPrdResult);
 
-	return $myrow[0];
+	return $MyRow[0];
 }
 
 ?>

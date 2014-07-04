@@ -4,7 +4,7 @@ function GetPrice($StockID, $DebtorNo, $BranchCode, $OrderLineQty, $ReportZeroPr
 
 	$Price = 0;
 	/*Search by branch and customer for a date specified price */
-	$sql = "SELECT prices.price
+	$SQL = "SELECT prices.price
 			FROM prices
 			INNER JOIN debtorsmaster
 				ON debtorsmaster.salestype=prices.typeabbrev
@@ -17,10 +17,10 @@ function GetPrice($StockID, $DebtorNo, $BranchCode, $OrderLineQty, $ReportZeroPr
 				AND prices.enddate>=CURRENT_DATE";
 
 		$ErrMsg = _('There is a problem in retrieving the pricing information for part') . ' ' . $StockID . ' ' . _('and for Customer') . ' ' . $DebtorNo . ' ' . _('the error message returned by the SQL server was');
-		$result = DB_query($sql, $ErrMsg);
-	if (DB_num_rows($result) == 0) {
+		$Result = DB_query($SQL, $ErrMsg);
+	if (DB_num_rows($Result) == 0) {
 		/*Need to try same specific search but for a default price with a zero end date */
-		$sql = "SELECT prices.price,
+		$SQL = "SELECT prices.price,
 					prices.startdate
 				FROM prices
 				INNER JOIN debtorsmaster
@@ -34,12 +34,12 @@ function GetPrice($StockID, $DebtorNo, $BranchCode, $OrderLineQty, $ReportZeroPr
 					AND prices.enddate ='0000-00-00'
 				ORDER BY prices.startdate DESC";
 
-		$result = DB_query($sql, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 
-		if (DB_num_rows($result) == 0) {
+		if (DB_num_rows($Result) == 0) {
 
 			/* No result returned for customer and branch search try for just a customer match */
-			$sql = "SELECT prices.price
+			$SQL = "SELECT prices.price
 					FROM prices
 					INNER JOIN debtorsmaster
 						ON debtorsmaster.salestype=prices.typeabbrev
@@ -52,10 +52,10 @@ function GetPrice($StockID, $DebtorNo, $BranchCode, $OrderLineQty, $ReportZeroPr
 						AND prices.enddate >=CURRENT_DATE";
 
 
-			$result = DB_query($sql, $ErrMsg);
-			if (DB_num_rows($result) == 0) {
+			$Result = DB_query($SQL, $ErrMsg);
+			if (DB_num_rows($Result) == 0) {
 				//if no specific price between the dates maybe there is a default price with no end date specified
-				$sql = "SELECT prices.price,
+				$SQL = "SELECT prices.price,
 							   prices.startdate
 						FROM prices
 						INNER JOIN debtorsmaster
@@ -69,12 +69,12 @@ function GetPrice($StockID, $DebtorNo, $BranchCode, $OrderLineQty, $ReportZeroPr
 							AND prices.enddate >='0000-00-00'
 						ORDER BY prices.startdate DESC";
 
-				$result = DB_query($sql, $ErrMsg);
+				$Result = DB_query($SQL, $ErrMsg);
 
-				if (DB_num_rows($result) == 0) {
+				if (DB_num_rows($Result) == 0) {
 
 					/*No special customer specific pricing use the customers normal price list but look for special limited time prices with specific end date*/
-					$sql = "SELECT prices.price
+					$SQL = "SELECT prices.price
 							FROM prices
 							INNER JOIN debtorsmaster
 								ON debtorsmaster.salestype=prices.typeabbrev
@@ -85,11 +85,11 @@ function GetPrice($StockID, $DebtorNo, $BranchCode, $OrderLineQty, $ReportZeroPr
 								AND prices.startdate <=CURRENT_DATE
 								AND prices.enddate >=CURRENT_DATE";
 
-					$result = DB_query($sql, $ErrMsg);
+					$Result = DB_query($SQL, $ErrMsg);
 
-					if (DB_num_rows($result) == 0) {
+					if (DB_num_rows($Result) == 0) {
 						/*No special customer specific pricing use the customers normal price list but look for default price with 0000-00-00 end date*/
-						$sql = "SELECT prices.price,
+						$SQL = "SELECT prices.price,
 									   prices.startdate
 								FROM prices
 								INNER JOIN debtorsmaster
@@ -102,12 +102,12 @@ function GetPrice($StockID, $DebtorNo, $BranchCode, $OrderLineQty, $ReportZeroPr
 									AND prices.enddate ='0000-00-00'
 								ORDER BY prices.startdate DESC";
 
-						$result = DB_query($sql, $ErrMsg);
+						$Result = DB_query($SQL, $ErrMsg);
 
-						if (DB_num_rows($result) == 0) {
+						if (DB_num_rows($Result) == 0) {
 
 							/* Now use the default salestype/price list cos all else has failed */
-							$sql = "SELECT prices.price
+							$SQL = "SELECT prices.price
 									FROM prices
 									INNER JOIN debtorsmaster
 										ON prices.currabrev = debtorsmaster.currcode
@@ -118,12 +118,12 @@ function GetPrice($StockID, $DebtorNo, $BranchCode, $OrderLineQty, $ReportZeroPr
 										AND prices.startdate <=CURRENT_DATE
 										AND prices.enddate >=CURRENT_DATE";
 
-							$result = DB_query($sql, $ErrMsg);
+							$Result = DB_query($SQL, $ErrMsg);
 
-							if (DB_num_rows($result) == 0) {
+							if (DB_num_rows($Result) == 0) {
 
 								/* Now use the default salestype/price list cos all else has failed */
-								$sql = "SELECT prices.price,
+								$SQL = "SELECT prices.price,
 											 prices.startdate
 										FROM prices
 										INNER JOIN debtorsmaster
@@ -136,11 +136,11 @@ function GetPrice($StockID, $DebtorNo, $BranchCode, $OrderLineQty, $ReportZeroPr
 											AND prices.enddate ='0000-00-00'
 										ORDER BY prices.startdate DESC";
 
-								$result = DB_query($sql, $ErrMsg);
+								$Result = DB_query($SQL, $ErrMsg);
 
-								if (DB_num_rows($result) == 0) {
+								if (DB_num_rows($Result) == 0) {
 									/* Now check the price matrix */
-									$sql = "SELECT max(pricematrix.price)
+									$SQL = "SELECT max(pricematrix.price)
 											FROM pricematrix
 											INNER JOIN debtorsmaster
 												ON pricematrix.currabrev = debtorsmaster.currcode
@@ -150,8 +150,8 @@ function GetPrice($StockID, $DebtorNo, $BranchCode, $OrderLineQty, $ReportZeroPr
 												AND pricematrix.startdate <=CURRENT_DATE
 												AND pricematrix.enddate >=CURRENT_DATE";
 									$ErrMsg = _('There is an error to retrieving the price from the price matrix for stock '.$StockID.' and the error message returned by SQL server is ');
-									$result = DB_query($sql, $ErrMsg);
-									$MaxPriceRow = DB_fetch_row($result);
+									$Result = DB_query($SQL, $ErrMsg);
+									$MaxPriceRow = DB_fetch_row($Result);
 								}
 								if ($MaxPriceRow[0] == NULL) {
 									/*Not even a price set up in the default price list so return 0 */
@@ -168,10 +168,10 @@ function GetPrice($StockID, $DebtorNo, $BranchCode, $OrderLineQty, $ReportZeroPr
 		}
 	}
 
-	if (DB_num_rows($result) != 0) {
+	if (DB_num_rows($Result) != 0) {
 		/*There is a price from one of the above so return that */
-		$myrow = DB_fetch_row($result);
-		return $myrow[0];
+		$MyRow = DB_fetch_row($Result);
+		return $MyRow[0];
 	} else {
 		return 0;
 	}

@@ -51,24 +51,24 @@ $pdf->addText($Page_Width - 268, $YPos - $LineCount * $LineHeight, $FontSize, _(
 $pdf->addText($Page_Width - 180, $YPos - $LineCount * $LineHeight, $FontSize, $FromTransNo);
 $LineCount += 1;
 $pdf->addText($Page_Width - 268, $YPos - $LineCount * $LineHeight, $FontSize, _('Customer Code'));
-$pdf->addText($Page_Width - 180, $YPos - $LineCount * $LineHeight, $FontSize, $myrow['debtorno'] . ' ' . _('Branch') . ' ' . $myrow['branchcode']);
+$pdf->addText($Page_Width - 180, $YPos - $LineCount * $LineHeight, $FontSize, $MyRow['debtorno'] . ' ' . _('Branch') . ' ' . $MyRow['branchcode']);
 $LineCount += 1;
 $pdf->addText($Page_Width - 268, $YPos - $LineCount * $LineHeight, $FontSize, _('Date'));
-$pdf->addText($Page_Width - 180, $YPos - $LineCount * $LineHeight, $FontSize, ConvertSQLDate($myrow['trandate']));
+$pdf->addText($Page_Width - 180, $YPos - $LineCount * $LineHeight, $FontSize, ConvertSQLDate($MyRow['trandate']));
 
 if ($InvOrCredit == 'Invoice') {
 	$LineCount += 1;
 	$pdf->addText($Page_Width - 268, $YPos - $LineCount * $LineHeight, $FontSize, _('Order No'));
-	$pdf->addText($Page_Width - 180, $YPos - $LineCount * $LineHeight, $FontSize, $myrow['orderno']);
+	$pdf->addText($Page_Width - 180, $YPos - $LineCount * $LineHeight, $FontSize, $MyRow['orderno']);
 	$LineCount += 1;
 	$pdf->addText($Page_Width - 268, $YPos - $LineCount * $LineHeight, $FontSize, _('Order Date'));
-	$pdf->addText($Page_Width - 180, $YPos - $LineCount * $LineHeight, $FontSize, ConvertSQLDate($myrow['orddate']));
+	$pdf->addText($Page_Width - 180, $YPos - $LineCount * $LineHeight, $FontSize, ConvertSQLDate($MyRow['orddate']));
 	$LineCount += 1;
 	$pdf->addText($Page_Width - 268, $YPos - $LineCount * $LineHeight, $FontSize, _('Dispatch Detail'));
-	$pdf->addText($Page_Width - 180, $YPos - $LineCount * $LineHeight, $FontSize, $myrow['shippername'] . '-' . $myrow['consignment']);
+	$pdf->addText($Page_Width - 180, $YPos - $LineCount * $LineHeight, $FontSize, $MyRow['shippername'] . '-' . $MyRow['consignment']);
 	$LineCount += 1;
 	$pdf->addText($Page_Width - 268, $YPos - $LineCount * $LineHeight, $FontSize, _('Dispatched From'));
-	$pdf->addText($Page_Width - 180, $YPos - $LineCount * $LineHeight, $FontSize, $myrow['locationname']);
+	$pdf->addText($Page_Width - 180, $YPos - $LineCount * $LineHeight, $FontSize, $MyRow['locationname']);
 }
 
 /*End of the text in the right side box */
@@ -123,24 +123,24 @@ $XPos += 20;
 $FontSize = 10;
 $LineHeight = 13;
 
-if ($myrow['invaddrbranch'] == 0) {
+if ($MyRow['invaddrbranch'] == 0) {
 	$LineCount += 2;
-	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, html_entity_decode($myrow['name']));
+	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, html_entity_decode($MyRow['name']));
 	$LineCount += 1;
-	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, html_entity_decode($myrow['address1']));
+	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, html_entity_decode($MyRow['address1']));
 	$LineCount += 1;
-	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, html_entity_decode($myrow['address2']));
+	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, html_entity_decode($MyRow['address2']));
 	$LineCount += 1;
-	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, html_entity_decode($myrow['address3'] . ' ' . $myrow['address4'] . ' ' . $myrow['address5'] . ' ' . $myrow['address6']));
+	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, html_entity_decode($MyRow['address3'] . ' ' . $MyRow['address4'] . ' ' . $MyRow['address5'] . ' ' . $MyRow['address6']));
 } else {
 	$LineCount += 1;
-	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, html_entity_decode($myrow['name']));
+	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, html_entity_decode($MyRow['name']));
 	$LineCount += 1;
-	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, html_entity_decode($myrow['brpostaddr1']));
+	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, html_entity_decode($MyRow['brpostaddr1']));
 	$LineCount += 1;
-	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, html_entity_decode($myrow['brpostaddr2']));
+	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, html_entity_decode($MyRow['brpostaddr2']));
 	$LineCount += 1;
-	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, html_entity_decode($myrow['brpostaddr3'] . ' ' . $myrow['brpostaddr4'] . ' ' . $myrow['brpostaddr5'] . ' ' . $myrow['brpostaddr6']));
+	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, html_entity_decode($MyRow['brpostaddr3'] . ' ' . $MyRow['brpostaddr4'] . ' ' . $MyRow['brpostaddr5'] . ' ' . $MyRow['brpostaddr6']));
 }
 
 //$XPos = $Page_Width/2;
@@ -172,13 +172,13 @@ if ($InvOrCredit == 'Invoice') {
 			return $str;
 		}
 	}
-	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, $myrow['deliverto']);
+	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, $MyRow['deliverto']);
 	$LineCount += 1;
-	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, $myrow['deladd1']);
+	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, $MyRow['deladd1']);
 	$LineCount += 1;
-	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, $myrow['deladd2']);
+	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, $MyRow['deladd2']);
 	$LineCount += 1;
-	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, $myrow['deladd3'] . ' ' . $myrow['deladd4'] . ' ' . $myrow['deladd5'] . ' ' . $myrow['deladd6']);
+	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, $MyRow['deladd3'] . ' ' . $MyRow['deladd4'] . ' ' . $MyRow['deladd5'] . ' ' . $MyRow['deladd6']);
 	//$XPos -=80;
 }
 if ($InvOrCredit == 'Credit') {
@@ -188,13 +188,13 @@ if ($InvOrCredit == 'Credit') {
 	$LineHeight = 13;
 	$XPos += 20;
 	$LineCount += 1;
-	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, $myrow['brname']);
+	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, $MyRow['brname']);
 	$LineCount += 1;
-	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, $myrow['braddress1']);
+	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, $MyRow['braddress1']);
 	$LineCount += 1;
-	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, $myrow['braddress2']);
+	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, $MyRow['braddress2']);
 	$LineCount += 1;
-	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, $myrow['braddress3'] . ' ' . $myrow['braddress4'] . ' ' . $myrow['braddress5'] . ' ' . $myrow['braddress6']);
+	$pdf->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, $MyRow['braddress3'] . ' ' . $MyRow['braddress4'] . ' ' . $MyRow['braddress5'] . ' ' . $MyRow['braddress6']);
 	//$XPos -=80;
 }
 
@@ -204,7 +204,7 @@ $YPos = $Page_Height - $Top_Margin - 190;
 $XPos = $Left_Margin;
 $FontSize = 8;
 
-$pdf->addText($Left_Margin, $YPos-8, $FontSize, _('All amounts stated in') . ': ' . $myrow['currcode'] . ' ' . _($myrow['currency']));
+$pdf->addText($Left_Margin, $YPos-8, $FontSize, _('All amounts stated in') . ': ' . $MyRow['currcode'] . ' ' . _($MyRow['currency']));
 
 $BoxHeight = $Page_Height - 282;
 
@@ -241,11 +241,11 @@ $pdf->addText($Left_Margin + 180, ($YPos + $LineHeight) - $LineCount * $LineHeig
 $pdf->line($Left_Margin + 358, $YPos + $LineHeight, $Left_Margin + 358, $YPos - $LineHeight * 2 + 4);
 $pdf->addText($Left_Margin + 360, ($YPos + $LineHeight) - $LineCount * $LineHeight, $FontSize, _('Sales Person') . ':');
 $LineCount += 1;
-$pdf->addText($Left_Margin + 12, ($YPos + $LineHeight) - $LineCount * $LineHeight, $FontSize, $myrow['taxref']);
+$pdf->addText($Left_Margin + 12, ($YPos + $LineHeight) - $LineCount * $LineHeight, $FontSize, $MyRow['taxref']);
 if ($InvOrCredit == 'Invoice') {
-	$pdf->addText($Left_Margin + 190, ($YPos + $LineHeight) - $LineCount * $LineHeight, $FontSize, $myrow['customerref']);
+	$pdf->addText($Left_Margin + 190, ($YPos + $LineHeight) - $LineCount * $LineHeight, $FontSize, $MyRow['customerref']);
 }
-$pdf->addText($Left_Margin + 370, ($YPos + $LineHeight) - $LineCount * $LineHeight, $FontSize, $myrow['salesmanname']);
+$pdf->addText($Left_Margin + 370, ($YPos + $LineHeight) - $LineCount * $LineHeight, $FontSize, $MyRow['salesmanname']);
 
 $YPos -= 20;
 

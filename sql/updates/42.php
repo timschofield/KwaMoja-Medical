@@ -1,5 +1,7 @@
 <?php
 
+ChangeColumnSize('modulesallowed', 'www_users', 'VARCHAR(40)', 'NOT NULL', '', 40);
+
 CreateTable('modules',
 "CREATE TABLE `modules` (
 	`secroleid` INT(11) NOT NULL DEFAULT 8,

@@ -1,5 +1,5 @@
 <?php
-
+DB_IgnoreForeignKeys();
 CreateTable('stockcosts',
 "CREATE TABLE `stockcosts` (
   `stockid` varchar(20) NOT NULL DEFAULT '',
@@ -18,7 +18,7 @@ $Result = DB_query($SQL);
 DropColumn('materialcost', 'stockmaster');
 DropColumn('labourcost', 'stockmaster');
 DropColumn('overheadcost', 'stockmaster');
-
+DB_ReinstateForeignKeys();
 UpdateDBNo(basename(__FILE__, '.php'));
 
 ?>

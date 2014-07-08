@@ -203,18 +203,21 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 												transdate,
 												banktranstype,
 												amount,
-												currcode)
-										VALUES ('" . $ReceiptTransNo . "',
-											1,
-											'" . $AccountFrom . "',
-											'" . $Narrative . "',
-											1,
-											'" . $MyRow['rate'] . "',
-											'" . $MyRow['date'] . "',
-											'Cash',
-											'" . -$MyRow['amount'] . "',
-											'" . $MyRow['currency'] . "'
-										)";
+												currcode,
+												userid
+											) VALUES (
+												'" . $ReceiptTransNo . "',
+												1,
+												'" . $AccountFrom . "',
+												'" . $Narrative . "',
+												1,
+												'" . $MyRow['rate'] . "',
+												'" . $MyRow['date'] . "',
+												'Cash',
+												'" . -$MyRow['amount'] . "',
+												'" . $MyRow['currency'] . "',
+												'" . $_SESSION['UserID'] . "'
+											)";
 				$ErrMsg = _('Cannot insert a bank transaction because');
 				$DbgMsg = _('Cannot insert a bank transaction with the SQL');
 				$ResultBank = DB_query($SQLBank, $ErrMsg, $DbgMsg, true);

@@ -383,19 +383,21 @@ if (isset($_POST['CommitBatch'])) {
 											transdate,
 											banktranstype,
 											amount,
-											currcode)
-						VALUES (
-							'" . $PaymentTransNo . "',
-							1,
-							'" . $ReceiptItem->GLCode . "',
-							'" . _('Act Transfer') . " - " . $ReceiptItem->Narrative . "',
-							'" . (($_SESSION['ReceiptBatch']->ExRate * $_SESSION['ReceiptBatch']->FunctionalExRate) / $TrfFromBankExRate) . "',
-							'" . $TrfFromBankExRate . "',
-							'" . FormatDateForSQL($_SESSION['ReceiptBatch']->DateBanked) . "',
-							'" . $_SESSION['ReceiptBatch']->ReceiptType . "',
-							'" . -$ReceiptItem->Amount . "',
-							'" . $_SESSION['ReceiptBatch']->Currency . "'
-						)";
+											currcode,
+											userid)
+										VALUES (
+											'" . $PaymentTransNo . "',
+											1,
+											'" . $ReceiptItem->GLCode . "',
+											'" . _('Act Transfer') . " - " . $ReceiptItem->Narrative . "',
+											'" . (($_SESSION['ReceiptBatch']->ExRate * $_SESSION['ReceiptBatch']->FunctionalExRate) / $TrfFromBankExRate) . "',
+											'" . $TrfFromBankExRate . "',
+											'" . FormatDateForSQL($_SESSION['ReceiptBatch']->DateBanked) . "',
+											'" . $_SESSION['ReceiptBatch']->ReceiptType . "',
+											'" . -$ReceiptItem->Amount . "',
+											'" . $_SESSION['ReceiptBatch']->Currency . "',
+											'" . $_SESSION['UserID'] . "'
+										)";
 
 				$DbgMsg = _('The SQL that failed to insert the bank transaction was');
 				$ErrMsg = _('Cannot insert a bank transaction using the SQL');
@@ -483,28 +485,30 @@ if (isset($_POST['CommitBatch'])) {
 
 	/*now enter the BankTrans entry */
 
-	$SQL = "INSERT INTO banktrans (type,
-								transno,
-								bankact,
-								ref,
-								exrate,
-								functionalexrate,
-								transdate,
-								banktranstype,
-								amount,
-								currcode)
-		VALUES (
-			12,
-			'" . $_SESSION['ReceiptBatch']->BatchNo . "',
-			'" . $_SESSION['ReceiptBatch']->Account . "',
-			'" . $_SESSION['ReceiptBatch']->BankTransRef . "',
-			'" . $_SESSION['ReceiptBatch']->ExRate . "',
-			'" . $_SESSION['ReceiptBatch']->FunctionalExRate . "',
-			'" . FormatDateForSQL($_SESSION['ReceiptBatch']->DateBanked) . "',
-			'" . $_SESSION['ReceiptBatch']->ReceiptType . "',
-			'" . ($BatchReceiptsTotal * $_SESSION['ReceiptBatch']->FunctionalExRate * $_SESSION['ReceiptBatch']->ExRate) . "',
-			'" . $_SESSION['ReceiptBatch']->Currency . "'
-		)";
+	$SQL = "INSERT INTO banktrans ( type,
+									transno,
+									bankact,
+									ref,
+									exrate,
+									functionalexrate,
+									transdate,
+									banktranstype,
+									amount,
+									currcode,
+									userid
+								) VALUES (
+									12,
+									'" . $_SESSION['ReceiptBatch']->BatchNo . "',
+									'" . $_SESSION['ReceiptBatch']->Account . "',
+									'" . $_SESSION['ReceiptBatch']->BankTransRef . "',
+									'" . $_SESSION['ReceiptBatch']->ExRate . "',
+									'" . $_SESSION['ReceiptBatch']->FunctionalExRate . "',
+									'" . FormatDateForSQL($_SESSION['ReceiptBatch']->DateBanked) . "',
+									'" . $_SESSION['ReceiptBatch']->ReceiptType . "',
+									'" . ($BatchReceiptsTotal * $_SESSION['ReceiptBatch']->FunctionalExRate * $_SESSION['ReceiptBatch']->ExRate) . "',
+									'" . $_SESSION['ReceiptBatch']->Currency . "',
+									'" . $_SESSION['UserID'] . "'
+								)";
 	$DbgMsg = _('The SQL that failed to insert the bank account transaction was');
 	$ErrMsg = _('Cannot insert a bank transaction');
 	$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);

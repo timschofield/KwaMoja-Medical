@@ -71,6 +71,7 @@ function userLogin($Name, $Password, $SysAdminEmail = '') {
 			$_SESSION['CanCreateTender'] = $MyRow['cancreatetender'];
 			$_SESSION['AllowedDepartment'] = $MyRow['department'];
 			$_SESSION['ScreenFontSize'] = $MyRow['fontsize'];
+			$_SESSION['DefaultTag'] = $MyRow['defaulttag'];
 
 			if (isset($MyRow['pdflanguage'])) {
 				$_SESSION['PDFLanguage'] = $MyRow['pdflanguage'];

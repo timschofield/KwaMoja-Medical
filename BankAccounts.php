@@ -80,6 +80,7 @@ if (isset($_POST['submit'])) {
 											bankaccountcode='" . $_POST['BankAccountCode'] . "',
 											bankaccountnumber='" . $_POST['BankAccountNumber'] . "',
 											bankaddress='" . $_POST['BankAddress'] . "',
+											pettycash='" . $_POST['PettyCash'] . "',
 											invoice ='" . $_POST['DefAccount'] . "'
 										WHERE accountcode = '" . $SelectedBankAccount . "'";
 			prnMsg(_('Note that it is not possible to change the currency of the account once there are transactions against it'), 'warn');
@@ -89,6 +90,7 @@ if (isset($_POST['submit'])) {
 											bankaccountcode='" . $_POST['BankAccountCode'] . "',
 											bankaccountnumber='" . $_POST['BankAccountNumber'] . "',
 											bankaddress='" . $_POST['BankAddress'] . "',
+											pettycash='" . $_POST['PettyCash'] . "',
 											currcode ='" . $_POST['CurrCode'] . "',
 											invoice ='" . $_POST['DefAccount'] . "'
 										WHERE accountcode = '" . $SelectedBankAccount . "'";
@@ -105,14 +107,17 @@ if (isset($_POST['submit'])) {
 										bankaccountnumber,
 										bankaddress,
 										currcode,
-										invoice
+										invoice,
+										pettycash
 									) VALUES ('" . $_POST['AccountCode'] . "',
 										'" . $_POST['BankAccountName'] . "',
 										'" . $_POST['BankAccountCode'] . "',
 										'" . $_POST['BankAccountNumber'] . "',
 										'" . $_POST['BankAddress'] . "',
 										'" . $_POST['CurrCode'] . "',
-										'" . $_POST['DefAccount'] . "' )";
+										'" . $_POST['DefAccount'] . "',
+										'" . $_POST['PettyCash'] . "'
+									)";
 		$msg = _('The new bank account has been entered');
 	}
 
@@ -131,6 +136,7 @@ if (isset($_POST['submit'])) {
 		unset($_POST['BankAddress']);
 		unset($_POST['CurrCode']);
 		unset($_POST['DefAccount']);
+		unset($_POST['PettyCash']);
 		unset($SelectedBankAccount);
 	}
 
@@ -170,9 +176,11 @@ if (!isset($SelectedBankAccount)) {
 					bankaccountnumber,
 					bankaddress,
 					currcode,
-					invoice
-			FROM bankaccounts INNER JOIN chartmaster
-			ON bankaccounts.accountcode = chartmaster.accountcode";
+					invoice,
+					pettycash
+				FROM bankaccounts
+				INNER JOIN chartmaster
+					ON bankaccounts.accountcode = chartmaster.accountcode";
 
 	$ErrMsg = _('The bank accounts set up could not be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve the bank account details was') . '<br />' . $SQL;
@@ -187,6 +195,7 @@ if (!isset($SelectedBankAccount)) {
 				<th>' . _('Bank Address') . '</th>
 				<th>' . _('Currency') . '</th>
 				<th>' . _('Default for Invoices') . '</th>
+				<th>' . _('Bank or Cash Account') . '</th>
 			</tr>';
 
 	$k = 0; //row colour counter
@@ -205,7 +214,13 @@ if (!isset($SelectedBankAccount)) {
 		} elseif ($MyRow['invoice'] == 2) {
 			$DefaultBankAccount = _('Currency Default');
 		}
+		if ($MyRow['pettycash'] == 0) {
+			$PettyCash = _('Bank');
+		} else {
+			$PettyCash = _('Cash');
+		}
 		printf('<td>%s<br />%s</td>
+				<td>%s</td>
 				<td>%s</td>
 				<td>%s</td>
 				<td>%s</td>
@@ -214,19 +229,17 @@ if (!isset($SelectedBankAccount)) {
 				<td>%s</td>
 				<td><a href="%s?SelectedBankAccount=%s">' . _('Edit') . '</a></td>
 				<td><a href="%s?SelectedBankAccount=%s&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this bank account?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-			</tr>', $MyRow['accountcode'], $MyRow['accountname'], $MyRow['bankaccountname'], $MyRow['bankaccountcode'], $MyRow['bankaccountnumber'], $MyRow['bankaddress'], $MyRow['currcode'], $DefaultBankAccount, htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $MyRow['accountcode'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $MyRow['accountcode']);
+			</tr>', $MyRow['accountcode'], $MyRow['accountname'], $MyRow['bankaccountname'], $MyRow['bankaccountcode'], $MyRow['bankaccountnumber'], $MyRow['bankaddress'], $MyRow['currcode'], $DefaultBankAccount, $PettyCash, htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $MyRow['accountcode'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $MyRow['accountcode']);
 
 	}
 	//END WHILE LIST LOOP
 
 
-	echo '</table><br />';
+	echo '</table>';
 }
 
 if (isset($SelectedBankAccount)) {
-	echo '<br />';
-	echo '<div class="centre"><p><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Show All Bank Accounts Defined') . '</a></p></div>';
-	echo '<br />';
+	echo '<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Show All Bank Accounts Defined') . '</a></div>';
 }
 
 echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
@@ -241,7 +254,8 @@ if (isset($SelectedBankAccount) and !isset($_GET['delete'])) {
 					bankaccountnumber,
 					bankaddress,
 					currcode,
-					invoice
+					invoice,
+					pettycash
 			FROM bankaccounts
 			WHERE bankaccounts.accountcode='" . $SelectedBankAccount . "'";
 
@@ -255,6 +269,7 @@ if (isset($SelectedBankAccount) and !isset($_GET['delete'])) {
 	$_POST['BankAddress'] = $MyRow['bankaddress'];
 	$_POST['CurrCode'] = $MyRow['currcode'];
 	$_POST['DefAccount'] = $MyRow['invoice'];
+	$_POST['PettyCash'] = $MyRow['pettycash'];
 
 	echo '<input type="hidden" name="SelectedBankAccount" value="' . $SelectedBankAccount . '" />';
 	echo '<input type="hidden" name="AccountCode" value="' . $_POST['AccountCode'] . '" />';
@@ -372,10 +387,34 @@ if (isset($SelectedBankAccount)) {
 			<option value="0">' . _('No') . '</option>';
 }
 
-echo '</select></td>';
+echo '</select>
+		</td>
+	</tr>';
 
-echo '</tr></table><br />
-		<div class="centre"><input tabindex="7" type="submit" name="submit" value="' . _('Enter Information') . '" /></div>';
+
+if (!isset($_POST['PettyCash'])) {
+	$_POST['PettyCash'] = 0;
+}
+echo '<tr>
+		<td>' . _('Is Account for Cash or Bank') . '</td>
+		<td><select name="PettyCash">';
+$BankOrCash[0] = _('Bank');
+$BankOrCash[1] = _('Cash');
+foreach ($BankOrCash as $Code=>$Type) {
+	if ($Code == $_POST['PettyCash']) {
+		echo '<option value="' . $Code . '" selected="selected">' . $Type . '</option>';
+	} else {
+		echo '<option value="' . $Code . '">' . $Type . '</option>';
+	}
+}
+echo '</select>
+		</td>
+	</tr>';
+
+echo '</table>
+		<div class="centre">
+			<input tabindex="7" type="submit" name="submit" value="' . _('Enter Information') . '" />
+		</div>';
 echo '</form>';
 include('includes/footer.inc');
 ?>

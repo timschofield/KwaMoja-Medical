@@ -23,8 +23,7 @@ $BookMark = 'UserMaintenance';
 include('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/group_add.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>
-	<br />';
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/group_add.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
 
 // Make an array of the security roles
 $SQL = "SELECT secroleid,
@@ -152,7 +151,8 @@ if (isset($_POST['submit'])) {
 						blocked='" . $_POST['Blocked'] . "',
 						pdflanguage='" . $_POST['PDFLanguage'] . "',
 						department='" . $_POST['Department'] . "',
-						fontsize='" . $_POST['FontSize'] . "'
+						fontsize='" . $_POST['FontSize'] . "',
+						defaulttag='" . $_POST['DefaultTag'] . "'
 					WHERE userid = '" . $SelectedUser . "'";
 
 		prnMsg(_('The selected user record has been updated'), 'success');
@@ -178,7 +178,8 @@ if (isset($_POST['submit'])) {
 						language,
 						pdflanguage,
 						department,
-						fontsize)
+						fontsize,
+						defaulttag)
 					VALUES ('" . $_POST['UserID'] . "',
 						'" . $_POST['RealName'] . "',
 						'" . $_POST['Cust'] . "',
@@ -199,7 +200,9 @@ if (isset($_POST['submit'])) {
 						'" . $_POST['UserLanguage'] . "',
 						'" . $_POST['PDFLanguage'] . "',
 						'" . $_POST['Department'] . "',
-						'" . $_POST['FontSize'] . "')";
+						'" . $_POST['FontSize'] . "',
+						'" . $_POST['DefaultTag'] . "'
+						)";
 		prnMsg(_('A new user record has been inserted'), 'success');
 	}
 	if ($_SESSION['UserID'] == $_POST['UserID']) {
@@ -231,6 +234,7 @@ if (isset($_POST['submit'])) {
 		unset($_POST['PDFLanguage']);
 		unset($_POST['Department']);
 		unset($_POST['FontSize']);
+		unset($_POST['DefaultTag']);
 		unset($SelectedUser);
 	}
 
@@ -278,7 +282,8 @@ if (!isset($SelectedUser)) {
 					pagesize,
 					theme,
 					language,
-					fontsize
+					fontsize,
+					defaulttag
 				FROM www_users";
 	$Result = DB_query($SQL);
 
@@ -362,7 +367,6 @@ if (isset($SelectedUser)) {
 }
 
 echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 if (isset($SelectedUser)) {
@@ -388,7 +392,8 @@ if (isset($SelectedUser)) {
 			language,
 			pdflanguage,
 			department,
-			fontsize
+			fontsize,
+			defaulttag
 		FROM www_users
 		WHERE userid='" . $SelectedUser . "'";
 
@@ -415,6 +420,7 @@ if (isset($SelectedUser)) {
 	$_POST['PDFLanguage'] = $MyRow['pdflanguage'];
 	$_POST['Department'] = $MyRow['department'];
 	$_POST['FontSize'] = $MyRow['fontsize'];
+	$_POST['DefaultTag'] = $MyRow['defaulttag'];
 
 	echo '<input type="hidden" name="SelectedUser" value="' . $SelectedUser . '" />';
 	echo '<input type="hidden" name="UserID" value="' . $_POST['UserID'] . '" />';
@@ -770,11 +776,31 @@ if (isset($_POST['FontSize']) and $_POST['FontSize'] == 0) {
 echo '</select></td>
 	</tr>';
 
+//Select the tag
+echo '<tr>
+		<td>' . _('Default Tag For User') . '</td>
+		<td><select minlength="0" name="DefaultTag">';
+
+$SQL = "SELECT tagref,
+				tagdescription
+		FROM tags
+		ORDER BY tagref";
+
+$Result = DB_query($SQL);
+echo '<option value="0">0 - ' . _('None') . '</option>';
+while ($MyRow = DB_fetch_array($Result)) {
+	if (isset($_POST['DefaultTag']) and $_POST['DefaultTag'] == $MyRow['tagref']) {
+		echo '<option selected="selected" value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
+	} else {
+		echo '<option value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
+	}
+}
+echo '</select></td>';
+// End select tag
+
 echo '</table>
-	<br />
 	<div class="centre">
 		<input type="submit" name="submit" value="' . _('Enter Information') . '" />
-	</div>
 	</div>
 	</form>';
 

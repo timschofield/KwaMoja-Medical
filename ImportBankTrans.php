@@ -430,33 +430,38 @@ if (isset($_POST['ProcessBankTrans'])) {
 				/* Now insert the bank transaction if necessary */
 				/* it is not possible to import transaction that were originally in another currency converted to the currency of the bank account by the bank - these entries would need to be done through the usual method */
 
-				$Result = DB_query("INSERT INTO banktrans (transno,
-														type,
-														bankact,
-														ref,
-														exrate,
-														functionalexrate,
-														transdate,
-														banktranstype,
-														amount,
-														currcode,
-														amountcleared)
-								VALUES (
-									'" . $TransNo . "',
-									'" . $TransType . "',
-									'" . $_SESSION['Statement']->BankGLAccount . "',
-									'" . DB_escape_string($_SESSION['Trans'][$i]->Description) . "',
-									'1',
-									'" . $_POST['ExchangeRate'] . "',
-									'" . FormatDateForSQL($_SESSION['Trans'][$i]->ValueDate) . "',
-									'" . _('Imported') . "',
-									'" . $_SESSION['Trans'][$i]->Amount . "',
-									'" . $_SESSION['Statement']->CurrCode . "',
-									'" . $_SESSION['Trans'][$i]->Amount . "')", _('Could not insert the bank transaction'), _('The SQL that failed to insert the bank transaction was'), true);
+				$SQL = "INSERT INTO banktrans (transno,
+												type,
+												bankact,
+												ref,
+												exrate,
+												functionalexrate,
+												transdate,
+												banktranstype,
+												amount,
+												currcode,
+												amountcleared,
+												userid
+											) VALUES (
+												'" . $TransNo . "',
+												'" . $TransType . "',
+												'" . $_SESSION['Statement']->BankGLAccount . "',
+												'" . DB_escape_string($_SESSION['Trans'][$i]->Description) . "',
+												'1',
+												'" . $_POST['ExchangeRate'] . "',
+												'" . FormatDateForSQL($_SESSION['Trans'][$i]->ValueDate) . "',
+												'" . _('Imported') . "',
+												'" . $_SESSION['Trans'][$i]->Amount . "',
+												'" . $_SESSION['Statement']->CurrCode . "',
+												'" . $_SESSION['Trans'][$i]->Amount . "',
+												'" . $_SESSION['UserID'] . "'
+												)";
+				$DbgMsg = _('The SQL that failed to insert the bank account transaction was');
+				$ErrMsg = _('Could not insert the bank transaction');
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 			}
 			DB_Txn_Commit(); // complete this bank transactions posting
 		} //end loop around the transactions
-		echo '<p />';
 		prnMsg(_('Completed the importing of analysed bank transactions'), 'info');
 		unset($_SESSION['Trans']->GLEntries);
 		unset($_SESSION['Trans']);

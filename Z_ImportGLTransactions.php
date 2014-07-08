@@ -168,7 +168,8 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 												transdate,
 												banktranstype,
 												amount,
-												currcode
+												currcode,
+												userid
 											) VALUES (
 												'" . $TransNo . "',
 												'" . $_POST['TransactionType'] . "',
@@ -180,7 +181,8 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 												'" . FormatDateForSQL($MyRow[0]) . "',
 												'" . _('Cheque') . "',
 												'" . round($MyRow[3], 2) . "',
-												'" . $_POST['Currency'] . "'
+												'" . $_POST['Currency'] . "',
+												'" . $_SESSION['UserID'] . "'
 											)";
 				$Result = DB_query($SQL);
 			}

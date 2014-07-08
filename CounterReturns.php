@@ -1543,7 +1543,8 @@ if (isset($_POST['ProcessReturn']) and $_POST['ProcessReturn'] != '') {
 						transdate,
 						banktranstype,
 						amount,
-						currcode)
+						currcode,
+						userid)
 					VALUES (12,
 						'" . $PaymentNumber . "',
 						'" . $_POST['BankAccount'] . "',
@@ -1553,7 +1554,9 @@ if (isset($_POST['ProcessReturn']) and $_POST['ProcessReturn'] != '') {
 						'" . $ReturnDate . "',
 						'" . $_POST['PaymentMethod'] . "',
 						'" . -filter_number_format($_POST['AmountPaid']) * $BankAccountExRate . "',
-						'" . $_SESSION['Items' . $identifier]->DefaultCurrency . "')";
+						'" . $_SESSION['Items' . $identifier]->DefaultCurrency . "',
+						'" . $_SESSION['UserID'] . "'
+					)";
 
 			$DbgMsg = _('The SQL that failed to insert the bank account transaction was');
 			$ErrMsg = _('Cannot insert a bank transaction');

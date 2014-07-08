@@ -452,19 +452,22 @@ if (isset($_POST['CommitBatch'])) {
 													transdate,
 													banktranstype,
 													amount,
-													currcode)
-						VALUES ('" . $ReceiptTransNo . "',
-							2,
-							'" . $PaymentItem->GLCode . "',
-							'" . _('Act Transfer From ') . $_SESSION['PaymentDetail' . $identifier]->Account . ' - ' . $PaymentItem->Narrative . "',
-							'" . $PaymentItem->Cheque . "',
-							'" . (($_SESSION['PaymentDetail' . $identifier]->ExRate * $_SESSION['PaymentDetail' . $identifier]->FunctionalExRate) / $TrfToBankExRate) . "',
-							'" . $TrfToBankExRate . "',
-							'" . FormatDateForSQL($_SESSION['PaymentDetail' . $identifier]->DatePaid) . "',
-							'" . $_SESSION['PaymentDetail' . $identifier]->Paymenttype . "',
-							'" . $PaymentItem->Amount . "',
-							'" . $_SESSION['PaymentDetail' . $identifier]->Currency . "'
-						)";
+													currcode,
+													userid
+												) VALUES (
+													'" . $ReceiptTransNo . "',
+													2,
+													'" . $PaymentItem->GLCode . "',
+													'" . _('Act Transfer From ') . $_SESSION['PaymentDetail' . $identifier]->Account . ' - ' . $PaymentItem->Narrative . "',
+													'" . $PaymentItem->Cheque . "',
+													'" . (($_SESSION['PaymentDetail' . $identifier]->ExRate * $_SESSION['PaymentDetail' . $identifier]->FunctionalExRate) / $TrfToBankExRate) . "',
+													'" . $TrfToBankExRate . "',
+													'" . FormatDateForSQL($_SESSION['PaymentDetail' . $identifier]->DatePaid) . "',
+													'" . $_SESSION['PaymentDetail' . $identifier]->Paymenttype . "',
+													'" . $PaymentItem->Amount . "',
+													'" . $_SESSION['PaymentDetail' . $identifier]->Currency . "',
+													'" . $_SESSION['UserID'] . "'
+												)";
 					$ErrMsg = _('Cannot insert a bank transaction because');
 					$DbgMsg = _('Cannot insert a bank transaction with the SQL');
 					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
@@ -648,19 +651,22 @@ if (isset($_POST['CommitBatch'])) {
 										transdate,
 										banktranstype,
 										amount,
-										currcode)
-							VALUES ('" . $TransNo . "',
-									'" . $TransType . "',
-									'" . $_SESSION['PaymentDetail' . $identifier]->Account . "',
-									'" . $_SESSION['PaymentDetail' . $identifier]->BankTransRef . "',
-									'" . $_POST['Cheque'] . "',
-									'" . $_SESSION['PaymentDetail' . $identifier]->ExRate . "',
-									'" . $_SESSION['PaymentDetail' . $identifier]->FunctionalExRate . "',
-									'" . FormatDateForSQL($_SESSION['PaymentDetail' . $identifier]->DatePaid) . "',
-									'" . $_SESSION['PaymentDetail' . $identifier]->Paymenttype . "',
-									'" . -$_SESSION['PaymentDetail' . $identifier]->Amount . "',
-									'" . $_SESSION['PaymentDetail' . $identifier]->Currency . "'
-								)";
+										currcode,
+										userid
+									) VALUES (
+										'" . $TransNo . "',
+										'" . $TransType . "',
+										'" . $_SESSION['PaymentDetail' . $identifier]->Account . "',
+										'" . $_SESSION['PaymentDetail' . $identifier]->BankTransRef . "',
+										'" . $_POST['Cheque'] . "',
+										'" . $_SESSION['PaymentDetail' . $identifier]->ExRate . "',
+										'" . $_SESSION['PaymentDetail' . $identifier]->FunctionalExRate . "',
+										'" . FormatDateForSQL($_SESSION['PaymentDetail' . $identifier]->DatePaid) . "',
+										'" . $_SESSION['PaymentDetail' . $identifier]->Paymenttype . "',
+										'" . -$_SESSION['PaymentDetail' . $identifier]->Amount . "',
+										'" . $_SESSION['PaymentDetail' . $identifier]->Currency . "',
+										'" . $_SESSION['UserID'] . "'
+									)";
 
 			$ErrMsg = _('Cannot insert a bank transaction because');
 			$DbgMsg = _('Cannot insert a bank transaction using the SQL');
@@ -677,18 +683,22 @@ if (isset($_POST['CommitBatch'])) {
 										transdate,
 										banktranstype,
 										amount,
-										currcode)
-						VALUES ('" . $TransNo . "',
-								'" . $TransType . "',
-								'" . $_SESSION['PaymentDetail' . $identifier]->Account . "',
-								'" . $_SESSION['PaymentDetail' . $identifier]->BankTransRef . "',
-								'" . $PaymentItem->Cheque . "',
-								'" . $_SESSION['PaymentDetail' . $identifier]->ExRate . "',
-								'" . $_SESSION['PaymentDetail' . $identifier]->FunctionalExRate . "',
-								'" . FormatDateForSQL($_SESSION['PaymentDetail' . $identifier]->DatePaid) . "',
-								'" . $_SESSION['PaymentDetail' . $identifier]->Paymenttype . "',
-								'" . -$_SESSION['PaymentDetail' . $identifier]->Amount . "',
-								'" . $_SESSION['PaymentDetail' . $identifier]->Currency . "' )";
+										currcode,
+										userid
+									) VALUES (
+										'" . $TransNo . "',
+										'" . $TransType . "',
+										'" . $_SESSION['PaymentDetail' . $identifier]->Account . "',
+										'" . $_SESSION['PaymentDetail' . $identifier]->BankTransRef . "',
+										'" . $PaymentItem->Cheque . "',
+										'" . $_SESSION['PaymentDetail' . $identifier]->ExRate . "',
+										'" . $_SESSION['PaymentDetail' . $identifier]->FunctionalExRate . "',
+										'" . FormatDateForSQL($_SESSION['PaymentDetail' . $identifier]->DatePaid) . "',
+										'" . $_SESSION['PaymentDetail' . $identifier]->Paymenttype . "',
+										'" . -$_SESSION['PaymentDetail' . $identifier]->Amount . "',
+										'" . $_SESSION['PaymentDetail' . $identifier]->Currency . "',
+										'" . $_SESSION['UserID'] . "'
+									)";
 
 			$ErrMsg = _('Cannot insert a bank transaction because');
 			$DbgMsg = _('Cannot insert a bank transaction using the SQL');

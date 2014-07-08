@@ -108,15 +108,17 @@ if (isset($_POST['PrintPDFAndProcess'])) {
 					exrate,
 					transdate,
 					banktranstype,
-					amount)
-				VALUES (
+					amount,
+					userid
+				) VALUES (
 					'" . $_POST['BankAccount'] . "',
 					'" . $PaytReference . " " . $SupplierID . "',
 					'" . filter_number_format($_POST['ExRate']) . "',
 					'" . FormatDateForSQL($_POST['AmountsDueBy']) . "',
 					'" . $_POST['PaytType'] . "',
-					'" . -$AccumBalance . "'
-					)";
+					'" . -$AccumBalance . "',
+					'" . $_SESSION['UserID'] . "'
+				)";
 	$ProcessResult = DB_query($SQL, '', '', false, false);
 	if (DB_error_no()!= 0) {
 		$Title = _('Payment Processing - Problem Report');

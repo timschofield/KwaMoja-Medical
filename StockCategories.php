@@ -108,6 +108,9 @@ if (isset($_POST['submit'])) {
 
 	$_POST['CategoryID'] = mb_strtoupper($_POST['CategoryID']);
 
+	$SQL = "SELECT type FROM stocktypes WHERE type='" . $_POST['StockType'] . "'";
+	$Result = DB_query($SQL);
+
 	if (empty($_POST['PropertyCounter'])) {
 		$_POST['PropertyCounter'] = 0;
 	}
@@ -120,9 +123,9 @@ if (isset($_POST['submit'])) {
 	} elseif (mb_strlen(stripslashes($_POST['CategoryDescription'])) > 20) {
 		$InputError = 1;
 		prnMsg(_('The stock category description must be twenty characters or less long'), 'error');
-	} elseif ($_POST['StockType'] != 'D' and $_POST['StockType'] != 'L' and $_POST['StockType'] != 'F' and $_POST['StockType'] != 'M') {
+	} elseif (DB_num_rows($Result) == 0) {
 		$InputError = 1;
-		prnMsg(_('The stock type selected must be one of') . ' "D" - ' . _('Dummy item') . ', "L" - ' . _('Labour stock item') . ', "F" - ' . _('Finished product') . ' ' . _('or') . ' "M" - ' . _('Raw Materials'), 'error');
+		prnMsg(_('The stock type selected must exist'), 'error');
 	}
 	for ($i = 0; $i <= $_POST['PropertyCounter']; $i++) {
 		if (isset($_POST['PropNumeric' . $i]) and $_POST['PropNumeric' . $i] == true) {

@@ -178,7 +178,7 @@ if (!isset($SelectedType)) {
 	links to delete or edit each. These will call the same page again and allow update/input
 	or deletion of the records*/
 
-	$SQL = "SELECT typeid, TypeName FROM debtortype";
+	$SQL = "SELECT typeid, typename FROM debtortype";
 	$Result = DB_query($SQL);
 
 	echo '<br /><table class="selection">';
@@ -208,18 +208,10 @@ if (!isset($SelectedType)) {
 	echo '</table>';
 }
 
-//end of ifs and buts!
-if (isset($SelectedType)) {
-
-	echo '<div class="centre"><br /><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Show All Types Defined') . '</a></div>';
-}
 if (!isset($_GET['delete'])) {
 
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-	echo '<br />';
-
 
 	// The user wish to EDIT an existing type
 	if (isset($SelectedType) and $SelectedType != '') {
@@ -260,8 +252,9 @@ if (!isset($_GET['delete'])) {
 
 	echo '</table>'; // close main table
 
-	echo '<br /><div class="centre"><input type="submit" name="submit" value="' . _('Accept') . '" /></div>';
-	echo '</div>';
+	echo '<div class="centre">
+			<input type="submit" name="submit" value="' . _('Accept') . '" />
+		</div>';
 	echo '</form>';
 
 } // end if user wish to delete

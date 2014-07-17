@@ -231,19 +231,20 @@ if (isset($_POST['EnterAdjustment']) and $_POST['EnterAdjustment'] != '') {
 										prd,
 										reference,
 										qty,
-										newqoh)
-									VALUES (
+										newqoh,
+										standardcost
+									) VALUES (
 										'" . $_SESSION['Adjustment' . $identifier]->StockID . "',
 										17,
 										'" . $AdjustmentNumber . "',
 										'" . $_SESSION['Adjustment' . $identifier]->StockLocation . "',
 										'" . $SQLAdjustmentDate . "',
 										'" . $PeriodNo . "',
-										'" . $_SESSION['Adjustment' . $identifier]->Narrative . "',
+										'" . $_SESSION['Adjustment' . $identifier]->Narrative ."',
 										'" . $_SESSION['Adjustment' . $identifier]->Quantity . "',
-										'" . ($QtyOnHandPrior + $_SESSION['Adjustment' . $identifier]->Quantity) . "'
+										'" . ($QtyOnHandPrior + $_SESSION['Adjustment' . $identifier]->Quantity) . "',
+										'" . $_SESSION['Adjustment' . $identifier]->StandardCost . "'
 									)";
-
 
 		$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The stock movement record cannot be inserted because');
 		$DbgMsg = _('The following SQL to insert the stock movement record was used');

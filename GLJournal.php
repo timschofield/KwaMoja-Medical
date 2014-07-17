@@ -269,7 +269,6 @@ echo '</select></td>
 	</table>';
 /* close off the table in the first column  */
 
-echo '<br />';
 echo '<table class="selection" width="70%">';
 /* Set upthe form for the transaction entry for a GL Payment Analysis item */
 
@@ -365,14 +364,11 @@ echo '</tr>
 		<th>' . _('GL Narrative') . '</th>
 		<td><input type="text" name="GLNarrative" minlength="0" maxlength="100" size="100" value="' . $_POST['GLNarrative'] . '" /></td>
 	</tr>
-	</table>
-	<br />';
+	</table>';
 /*Close the main table */
 echo '<div class="centre">
 		<input type="submit" name="Process" value="' . _('Accept') . '" />
-	</div>
-	<br />
-	<br />';
+	</div>';
 
 echo '<table class="selection" width="85%">
 		<tr>

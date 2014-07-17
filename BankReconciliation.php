@@ -168,8 +168,9 @@ if (isset($_POST['ShowRec']) or isset($_POST['DoExchangeDifference'])) {
 					bankaccounts.currcode,
 					bankaccounts.bankaccountname,
 					currencies.decimalplaces AS currdecimalplaces
-			FROM bankaccounts INNER JOIN currencies
-			ON bankaccounts.currcode=currencies.currabrev
+			FROM bankaccounts
+			INNER JOIN currencies
+				ON bankaccounts.currcode=currencies.currabrev
 			WHERE bankaccounts.accountcode = '" . $_POST['BankAccount'] . "'";
 	$ErrMsg = _('Could not retrieve the currency and exchange rate for the selected bank account');
 	$CurrencyResult = DB_query($SQL);
@@ -190,6 +191,7 @@ if (isset($_POST['ShowRec']) or isset($_POST['DoExchangeDifference'])) {
 					amountcleared,
 					(amount/exrate)-amountcleared as outstanding,
 					ref,
+					chequeno,
 					transdate,
 					systypes.typename,
 					transno
@@ -217,6 +219,7 @@ if (isset($_POST['ShowRec']) or isset($_POST['DoExchangeDifference'])) {
 			<th>' . _('Date') . '</th>
 			<th>' . _('Type') . '</th>
 			<th>' . _('Number') . '</th>
+			<th>' . _('Cheque') . '</th>
 			<th>' . _('Reference') . '</th>
 			<th>' . _('Orig Amount') . '</th>
 			<th>' . _('Outstanding') . '</th>
@@ -238,9 +241,10 @@ if (isset($_POST['ShowRec']) or isset($_POST['DoExchangeDifference'])) {
 				<td>%s</td>
 				<td>%s</td>
 				<td>%s</td>
+				<td>%s</td>
 				<td class="number">%s</td>
 				<td class="number">%s</td>
-				</tr>', ConvertSQLDate($MyRow['transdate']), $MyRow['typename'], $MyRow['transno'], $MyRow['ref'], locale_number_format($MyRow['amt'], $CurrencyRow['currdecimalplaces']), locale_number_format($MyRow['outstanding'], $CurrencyRow['currdecimalplaces']));
+				</tr>', ConvertSQLDate($MyRow['transdate']), $MyRow['typename'], $MyRow['transno'], $MyRow['chequeno'], $MyRow['ref'], locale_number_format($MyRow['amt'], $CurrencyRow['currdecimalplaces']), locale_number_format($MyRow['outstanding'], $CurrencyRow['currdecimalplaces']));
 
 		$TotalUnpresentedCheques += $MyRow['outstanding'];
 
@@ -259,6 +263,7 @@ if (isset($_POST['ShowRec']) or isset($_POST['DoExchangeDifference'])) {
 				amountcleared,
 				(amount/exrate)-amountcleared AS outstanding,
 				ref,
+				chequeno,
 				transdate,
 				systypes.typename,
 				transno
@@ -285,6 +290,7 @@ if (isset($_POST['ShowRec']) or isset($_POST['DoExchangeDifference'])) {
 			<th>' . _('Date') . '</th>
 			<th>' . _('Type') . '</th>
 			<th>' . _('Number') . '</th>
+			<th>' . _('Cheque') . '</th>
 			<th>' . _('Reference') . '</th>
 			<th>' . _('Orig Amount') . '</th>
 			<th>' . _('Outstanding') . '</th>
@@ -306,9 +312,10 @@ if (isset($_POST['ShowRec']) or isset($_POST['DoExchangeDifference'])) {
 				<td>%s</td>
 				<td>%s</td>
 				<td>%s</td>
+				<td>%s</td>
 				<td class="number">%s</td>
 				<td class="number">%s</td>
-				</tr>', ConvertSQLDate($MyRow['transdate']), $MyRow['typename'], $MyRow['transno'], $MyRow['ref'], locale_number_format($MyRow['amt'], $CurrencyRow['currdecimalplaces']), locale_number_format($MyRow['outstanding'], $CurrencyRow['currdecimalplaces']));
+				</tr>', ConvertSQLDate($MyRow['transdate']), $MyRow['typename'], $MyRow['transno'], $MyRow['chequeno'], $MyRow['ref'], locale_number_format($MyRow['amt'], $CurrencyRow['currdecimalplaces']), locale_number_format($MyRow['outstanding'], $CurrencyRow['currdecimalplaces']));
 
 		$TotalUnclearedDeposits += $MyRow['outstanding'];
 

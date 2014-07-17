@@ -228,7 +228,6 @@ if (isset($Cancel)) {
 
 
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint" id="form">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 echo '<p class="page_title_text noPrint" >
@@ -446,18 +445,13 @@ echo '</table>
 	</table>';
 
 if (abs($_SESSION['JournalDetail']->JournalTotal) < 0.001 and $_SESSION['JournalDetail']->GLItemCounter > 0) {
-	echo '<br />
-			<br />
-			<div class="centre">
+	echo '<div class="centre">
 				<input type="submit" name="CommitBatch" value="' . _('Accept and Process Journal') . '" />
 			</div>';
 } elseif (count($_SESSION['JournalDetail']->GLEntries) > 0) {
-	echo '<br />
-		<br />';
 	prnMsg(_('The journal must balance ie debits equal to credits before it can be processed'), 'warn');
 }
 
-echo '</div>';
 echo '</form>';
 include('includes/footer.inc');
 ?>

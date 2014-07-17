@@ -31,28 +31,22 @@ if (isset($_POST['insert']) or isset($_POST['update'])) {
 	$i = 1;
 	if (mb_strlen($_POST['TypeName']) > 100) {
 		$InputError = 1;
-		echo prnMsg(_('The supplier type name description must be 100 characters or less long'), 'error');
-		$Errors[$i] = 'SupplierType';
-		$i++;
+		prnMsg(_('The supplier type name description must be 100 characters or less long'), 'error');
 	}
 
 	if (mb_strlen(trim($_POST['TypeName'])) == 0) {
 		$InputError = 1;
-		echo prnMsg(_('The supplier type name description must contain at least one character'), 'error');
-		$Errors[$i] = 'SupplierType';
-		$i++;
+		prnMsg(_('The supplier type name description must contain at least one character'), 'error');
 	}
 
-	$checksql = "SELECT count(*)
+	$CheckSql = "SELECT count(*)
 			 FROM suppliertype
 			 WHERE typename = '" . $_POST['TypeName'] . "'";
-	$checkresult = DB_query($checksql);
-	$checkrow = DB_fetch_row($checkresult);
-	if ($checkrow[0] > 0 and isset($_POST['insert'])) {
+	$CheckResult = DB_query($CheckSql);
+	$CheckRow = DB_fetch_row($CheckResult);
+	if ($CheckRow[0] > 0 and isset($_POST['insert'])) {
 		$InputError = 1;
-		echo prnMsg(_('You already have a supplier type called') . ' ' . $_POST['TypeName'], 'error');
-		$Errors[$i] = 'SupplierName';
-		$i++;
+		prnMsg(_('You already have a supplier type called') . ' ' . $_POST['TypeName'], 'error');
 	}
 
 	if (isset($_POST['update']) and $InputError != 1) {
@@ -71,10 +65,6 @@ if (isset($_POST['insert']) or isset($_POST['update'])) {
 				VALUES ('" . $_POST['TypeName'] . "')";
 
 		$msg = _('Supplier type') . ' ' . stripslashes($_POST['TypeName']) . ' ' . _('has been created');
-		$checkSql = "SELECT count(typeid)
-				 FROM suppliertype";
-		$Result = DB_query($checkSql);
-		$row = DB_fetch_row($Result);
 
 	}
 
@@ -83,7 +73,7 @@ if (isset($_POST['insert']) or isset($_POST['update'])) {
 		$Result = DB_query($SQL);
 
 
-		// Fetch the default price list.
+		// Fetch the default supplier type.
 		$SQL = "SELECT confvalue
 					FROM config
 					WHERE confname='DefaultSupplierType'";
@@ -92,23 +82,20 @@ if (isset($_POST['insert']) or isset($_POST['update'])) {
 		$DefaultSupplierType = $SupplierTypeRow[0];
 
 		// Does it exist
-		$checkSql = "SELECT count(*)
+		$CheckSql = "SELECT count(*)
 				 FROM suppliertype
 				 WHERE typeid = '" . $DefaultSupplierType . "'";
-		$checkresult = DB_query($checkSql);
-		$checkrow = DB_fetch_row($checkresult);
+		$CheckResult = DB_query($CheckSql);
+		$CheckRow = DB_fetch_row($CheckResult);
 
 		// If it doesnt then update config with newly created one.
-		if ($checkrow[0] == 0) {
+		if ($CheckRow[0] == 0) {
 			$SQL = "UPDATE config
 					SET confvalue='" . $_POST['TypeID'] . "'
 					WHERE confname='DefaultSupplierType'";
 			$Result = DB_query($SQL);
 			$_SESSION['DefaultSupplierType'] = $_POST['TypeID'];
 		}
-
-		prnMsg($msg, 'success');
-
 		unset($SelectedType);
 		unset($_POST['TypeID']);
 		unset($_POST['TypeName']);

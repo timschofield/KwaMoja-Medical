@@ -98,7 +98,6 @@ background-color:#C8FFA1;
 a {
 color:blue;
 text-decoration:none;
-display:block;
 }
 
 a.FontSize {
@@ -351,8 +350,6 @@ display:inline;
 }
 
 #QuickMenuDiv li a {
-background:#B4BB86;
-border:thin outset #5A5F00;
 color:#5A5F00;
 padding:8px;
 margin-right: 4px;

@@ -1,10 +1,12 @@
 <?php
 
-include('includes/SQL_CommonFunctions.inc');
-
 include('includes/session.inc');
 $Title = _('Supplier Inquiry');
+$ViewTopic = 'AccountsPayable'; /* RChacon: Is there any content for Supplier Inquiry? */
+$BookMark = 'AccountsPayable';// Anchor's id in the manual's html document.
 include('includes/header.inc');
+
+include('includes/SQL_CommonFunctions.inc');
 
 // always figure out the SQL required from the inputs available
 

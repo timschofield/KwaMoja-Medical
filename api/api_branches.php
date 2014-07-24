@@ -297,12 +297,16 @@ function InsertBranch($BranchDetails, $user, $password) {
 	}
 	if (isset($BranchDetails['defaultlocation'])) {
 		$Errors = VerifyDefaultLocation($BranchDetails['defaultlocation'], sizeof($Errors), $Errors);
+	} else {
+		$BranchDetails['defaultlocation'] = GetDefaultLocation($user, $password);
 	}
 	if (isset($BranchDetails['taxgroupid'])) {
 		$Errors = VerifyTaxGroupId($BranchDetails['taxgroupid'], sizeof($Errors), $Errors);
 	}
 	if (isset($BranchDetails['defaultshipvia'])) {
 		$Errors = VerifyDefaultShipVia($BranchDetails['defaultshipvia'], sizeof($Errors), $Errors);
+	} else {
+		$BranchDetails['defaultshipvia'] = GetDefaultShipper($user, $password);
 	}
 	if (isset($BranchDetails['deliverblind'])) {
 		$Errors = VerifyDeliverBlind($BranchDetails['deliverblind'], sizeof($Errors), $Errors);
@@ -419,12 +423,16 @@ function ModifyBranch($BranchDetails, $user, $password) {
 	}
 	if (isset($BranchDetails['defaultlocation'])) {
 		$Errors = VerifyDefaultLocation($BranchDetails['defaultlocation'], sizeof($Errors), $Errors);
+	} else {
+		$BranchDetails['defaultlocation'] = GetDefaultLocation($user, $password);
 	}
 	if (isset($BranchDetails['taxgroupid'])) {
 		$Errors = VerifyTaxGroupId($BranchDetails['taxgroupid'], sizeof($Errors), $Errors);
 	}
 	if (isset($BranchDetails['defaultshipvia'])) {
 		$Errors = VerifyDefaultShipVia($BranchDetails['defaultshipvia'], sizeof($Errors), $Errors);
+	} else {
+		$BranchDetails['defaultshipvia'] = GetDefaultShipper($user, $password);
 	}
 	if (isset($BranchDetails['deliverblind'])) {
 		$Errors = VerifyDeliverBlind($BranchDetails['deliverblind'], sizeof($Errors), $Errors);

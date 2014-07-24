@@ -251,17 +251,18 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 	/*The option to print PDF was not hit */
 
 	$Title = _('Price Listing');
+	$ViewTopic = 'SalesTypes';// Filename in ManualContents.php's TOC.
+	$BookMark = 'PDFPriceList';// Anchor's id in the manual's html document.
 	include('includes/header.inc');
 
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/customer.png" title="' . _('Price List') . '" alt="" />
-	 ' . ' ' . _('Print a price list') . '</p>';
+         ' . ' ' . _('Print a price list by inventory category') . '</p>';
 
 	if (!isset($_POST['FromCriteria']) or !isset($_POST['ToCriteria'])) {
 
 		/*if $FromCriteria is not set then show a form to allow input	*/
 
 		echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-		echo '<div>';
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 		echo '<table class="selection">
 				<tr>
@@ -323,9 +324,11 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				<td><input type="text" size="11" required="required" minlength="1" maxlength="10" class="date"	alt="' . $_SESSION['DefaultDateFormat'] . '" name="EffectiveDate" value="' . Date($_SESSION['DefaultDateFormat']) . '" /></td>
 			</tr>';
 
-		echo '</table><br /><div class="centre"><input type="submit" name="PrintPDF" value="' . _('Print PDF') . '" /></div>';
-		echo '</div>
-		  </form>';
+		echo '</table>';
+		echo '<div class="centre">
+				<input type="submit" name="PrintPDF" value="' . _('Print PDF') . '" />
+			</div>';
+		echo '</form>';
 	}
 	include('includes/footer.inc');
 

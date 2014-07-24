@@ -290,9 +290,13 @@ function InsertCustomer($CustomerDetails, $user = '', $password = '') {
 	}
 	if (isset($CustomerDetails['currcode'])) {
 		$Errors = VerifyCurrencyCode($CustomerDetails['currcode'], sizeof($Errors), $Errors);
+	} else {
+		$CustomerDetails['currcode'] = GetDefaultCurrency($user, $password);
 	}
 	if (isset($CustomerDetails['salestype'])) {
 		$Errors = VerifySalesType($CustomerDetails['salestype'], sizeof($Errors), $Errors);
+	} else {
+		$CustomerDetails['salestype'] = GetDefaultPriceList($user, $password);
 	}
 	if (isset($CustomerDetails['clientsince'])) {
 		$Errors = VerifyClientSince($CustomerDetails['clientsince'], sizeof($Errors), $Errors);
@@ -418,9 +422,13 @@ function ModifyCustomer($CustomerDetails, $user, $password) {
 	}
 	if (isset($CustomerDetails['currcode'])) {
 		$Errors = VerifyCurrencyCode($CustomerDetails['currcode'], sizeof($Errors), $Errors);
+	} else {
+		$CustomerDetails['currcode'] = GetDefaultCurrency($user, $password);
 	}
 	if (isset($CustomerDetails['salestype'])) {
 		$Errors = VerifySalesType($CustomerDetails['salestype'], sizeof($Errors), $Errors);
+	} else {
+		$CustomerDetails['salestype'] = GetDefaultPriceList($user, $password);
 	}
 	if (isset($CustomerDetails['clientsince'])) {
 		$Errors = VerifyClientSince($CustomerDetails['clientsince'], sizeof($Errors), $Errors);

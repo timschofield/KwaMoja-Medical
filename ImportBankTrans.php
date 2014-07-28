@@ -13,7 +13,7 @@ Read in the flat file one line at a time
 parse the data in the line of text from the flat file to read the bank transaction into an SESSION array of banktransactions objects
 */
 
-if (!isset($_FILES['ImportFile']) AND !isset($_SESSION['Statement'])) {
+if (!isset($_FILES['ImportFile']) and !isset($_SESSION['Statement'])) {
 	echo '<form name="ImportForm" enctype="multipart/form-data" method="post" action="' . $_SERVER['PHP_SELF'] . '">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<p class="page_title_text noPrint" >
@@ -21,10 +21,12 @@ if (!isset($_FILES['ImportFile']) AND !isset($_SESSION['Statement'])) {
 	echo '<table>
 			<tr>
 				<td>' . _('MT940 format Bank Statement File to import') . '</td>
-				<td><input type="file" id="ImportFile" autofocus="autofocus" required="required" title="' . _('Select the file that contains the bank transactions in MT940 format') . '" name="ImportFile"></td>
+				<td><input type="file" id="ImportFile" autofocus="autofocus" required="required" title="' . _('Select the file that contains the bank transactions in MT940 format') . '" name="ImportFile" /></td>
 			</tr>
 		</table>';
-	echo '<div class="centre"><input type="submit" name="Import" value="Process"></div>';
+	echo '<div class="centre">
+			<input type="submit" name="Import" value="Process" />
+		</div>';
 	echo '</form>';
 
 } elseif (isset($_POST['Import'])) {
@@ -126,7 +128,7 @@ if (!isset($_FILES['ImportFile']) AND !isset($_SESSION['Statement'])) {
 			}
 		}
 
-		if (substr($LineText, 0, 1) != ':' AND $TransactionLine) {
+		if (substr($LineText, 0, 1) != ':' and $TransactionLine) {
 			//then it is the continuation of an :86: line
 			$_SESSION['Trans'][$i]->Description .= $LineText;
 		}

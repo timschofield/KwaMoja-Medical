@@ -12,7 +12,7 @@ function GetSalesmanList($user, $password) {
 		return $Errors;
 	}
 	$sql = 'SELECT salesmancode FROM salesman';
-	$result = DB_query($sql);
+	$result = api_DB_query($sql);
 	$i = 0;
 	while ($myrow = DB_fetch_array($result)) {
 		$SalesmanList[$i] = $myrow[0];
@@ -34,7 +34,7 @@ function GetSalesmanDetails($salesman, $user, $password) {
 		return $Errors;
 	}
 	$sql = "SELECT * FROM salesman WHERE salesmancode='" . $salesman . "'";
-	$result = DB_query($sql);
+	$result = api_DB_query($sql);
 	if (DB_num_rows($result) == 0) {
 		$Errors[0] = NoSuchSalesMan;
 		return $Errors;
@@ -88,7 +88,7 @@ function GetSalesmanDetailsFromName($SalesmanName, $user, $password) {
 		return $Errors;
 	}
 	$sql = "SELECT * FROM salesman WHERE salesmanname='" . $SalesmanName . "'";
-	$result = DB_query($sql);
+	$result = api_DB_query($sql);
 	if (DB_num_rows($result) == 0) {
 		$Errors[0] = NoSuchSalesMan;
 		return $Errors;

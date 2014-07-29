@@ -12,7 +12,7 @@ function VerifyStockCategoryAlreadyExists($StockCategory, $i, $Errors) {
 	$Searchsql = "SELECT count(categoryid)
 					  FROM stockcategory
 					  WHERE categoryid='" . $StockCategory . "'";
-	$SearchResult = DB_query($Searchsql);
+	$SearchResult = api_DB_query($Searchsql);
 	$answer = DB_fetch_array($SearchResult);
 	if ($answer[0] > 0) {
 		$Errors[$i] = StockCategoryAlreadyExists;
@@ -221,7 +221,7 @@ function GetStockCategoryList($user, $password) {
 		return $Errors;
 	}
 	$sql = "SELECT categoryid FROM stockcategory";
-	$result = DB_query($sql);
+	$result = api_DB_query($sql);
 	$i = 0;
 	while ($myrow = DB_fetch_array($result)) {
 		$StockCategoryList[$i] = $myrow[0];

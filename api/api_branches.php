@@ -276,9 +276,23 @@ function InsertBranch($BranchDetails, $user, $password) {
 	}
 	if (isset($BranchDetails['area'])) {
 		$Errors = VerifyAreaCode($BranchDetails['area'], sizeof($Errors), $Errors);
+	} else {
+		$Answer = GetDefaultArea($user, $password);
+		if ($Answer[0] == 0) {
+			$BranchDetails['area'] = $Answer[1]['confvalue'];
+		} else {
+			$BranchDetails['area'] = 'DE';
+		}
 	}
 	if (isset($BranchDetails['salesman'])) {
 		$Errors = VerifySalesmanCode($BranchDetails['salesman'], sizeof($Errors), $Errors);
+	} else {
+		$Answer = GetDefaultSalesPerson($user, $password);
+		if ($Answer[0] == 0) {
+			$BranchDetails['salesman'] = $Answer[1]['confvalue'];
+		} else {
+			$BranchDetails['salesman'] = 'DE';
+		}
 	}
 	if (isset($BranchDetails['fwddate'])) {
 		$Errors = VerifyFwdDate($BranchDetails['fwddate'], sizeof($Errors), $Errors);
@@ -298,7 +312,12 @@ function InsertBranch($BranchDetails, $user, $password) {
 	if (isset($BranchDetails['defaultlocation'])) {
 		$Errors = VerifyDefaultLocation($BranchDetails['defaultlocation'], sizeof($Errors), $Errors);
 	} else {
-		$BranchDetails['defaultlocation'] = GetDefaultLocation($user, $password);
+		$Answer = GetDefaultLocation($user, $password);
+		if ($Answer[0] == 0) {
+			$BranchDetails['defaultlocation'] = $Answer[1]['defaultlocation'];
+		} else {
+			$BranchDetails['defaultlocation'] = 'DE';
+		}
 	}
 	if (isset($BranchDetails['taxgroupid'])) {
 		$Errors = VerifyTaxGroupId($BranchDetails['taxgroupid'], sizeof($Errors), $Errors);
@@ -306,7 +325,12 @@ function InsertBranch($BranchDetails, $user, $password) {
 	if (isset($BranchDetails['defaultshipvia'])) {
 		$Errors = VerifyDefaultShipVia($BranchDetails['defaultshipvia'], sizeof($Errors), $Errors);
 	} else {
-		$BranchDetails['defaultshipvia'] = GetDefaultShipper($user, $password);
+		$Answer = GetDefaultShipper($user, $password);
+		if ($Answer[0] == 0) {
+			$BranchDetails['defaultshipvia'] = $Answer[1]['confvalue'];
+		} else {
+			$BranchDetails['defaultshipvia'] = 'DE';
+		}
 	}
 	if (isset($BranchDetails['deliverblind'])) {
 		$Errors = VerifyDeliverBlind($BranchDetails['deliverblind'], sizeof($Errors), $Errors);
@@ -346,12 +370,13 @@ function InsertBranch($BranchDetails, $user, $password) {
 	$FieldValues = '';
 	foreach ($BranchDetails as $key => $value) {
 		$FieldNames .= $key . ', ';
-		$FieldValues .= '"' . $value . '", ';
+		$FieldValues .= "'" . $value . "', ";
 	}
-	$sql = 'INSERT INTO custbranch (' . mb_substr($FieldNames, 0, -2) . ') ' . 'VALUES (' . mb_substr($FieldValues, 0, -2) . ') ';
+	$sql = "INSERT INTO custbranch (" . mb_substr($FieldNames, 0, -2) . ") VALUES (" . mb_substr($FieldValues, 0, -2) . ") ";
 	if (sizeof($Errors) == 0) {
-		$result = DB_Query($sql);
-		if (DB_error_no() != 0) {
+		$result = api_DB_Query($sql, $db);
+		return $_SESSION['db_err_msg'];
+		if ($_SESSION['db_err_msg'] != '') {
 			$Errors[0] = DatabaseUpdateFailed;
 		} else {
 			$Errors[0] = 0;
@@ -477,7 +502,7 @@ function ModifyBranch($BranchDetails, $user, $password) {
 	$sql = mb_substr($sql, 0, -2) . " WHERE debtorno='" . $BranchDetails['debtorno'] . "'
 								   AND branchcode='" . $BranchDetails['branchcode'] . "'";
 	if (sizeof($Errors) == 0) {
-		$result = DB_Query($sql);
+		$result = api_DB_Query($sql);
 		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;
 		} else {

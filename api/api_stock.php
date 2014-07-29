@@ -5,7 +5,7 @@ function VerifyStockCode($StockCode, $i, $Errors) {
 	$Searchsql = "SELECT count(stockid)
 					  FROM stockmaster
 					  WHERE stockid='" . $StockCode . "'";
-	$SearchResult = DB_query($Searchsql);
+	$SearchResult = api_DB_query($Searchsql);
 	$answer = DB_fetch_array($SearchResult);
 	if ($answer[0] > 0) {
 		$Errors[$i] = StockCodeAlreadyExists;
@@ -18,7 +18,7 @@ function VerifyStockCodeExists($StockCode, $i, $Errors) {
 	$Searchsql = "SELECT count(stockid)
 					  FROM stockmaster
 					  WHERE stockid='" . $StockCode . "'";
-	$SearchResult = DB_query($Searchsql);
+	$SearchResult = api_DB_query($Searchsql);
 	$answer = DB_fetch_array($SearchResult);
 	if ($answer[0] == 0) {
 		$Errors[$i] = StockCodeDoesntExist;
@@ -31,7 +31,7 @@ function VerifyStockCategoryExists($StockCategory, $i, $Errors) {
 	$Searchsql = "SELECT count(categoryid)
 					  FROM stockcategory
 					  WHERE categoryid='" . $StockCategory . "'";
-	$SearchResult = DB_query($Searchsql);
+	$SearchResult = api_DB_query($Searchsql);
 	$answer = DB_fetch_array($SearchResult);
 	if ($answer[0] == 0) {
 		$Errors[$i] = StockCategoryDoesntExist;
@@ -76,7 +76,7 @@ function VerifyMBFlag($mbflag, $i, $Errors) {
  * target KwaMoja company */
 function VerifyLastCurCostDate($CurCostDate, $i, $Errors) {
 	$sql = "SELECT confvalue FROM config WHERE confname='DefaultDateFormat'";
-	$result = DB_query($sql);
+	$result = api_DB_query($sql);
 	$myrow = DB_fetch_array($result);
 	$DateFormat = $myrow[0];
 	if (mb_strstr('/', $PeriodEnd)) {
@@ -216,7 +216,7 @@ function VerifyTaxCatExists($TaxCat, $i, $Errors) {
 	$Searchsql = "SELECT count(taxcatid)
 					  FROM taxcategories
 					  WHERE taxcatid='" . $TaxCat . "'";
-	$SearchResult = DB_query($Searchsql);
+	$SearchResult = api_DB_query($Searchsql);
 	$answer = DB_fetch_array($SearchResult);
 	if ($answer[0] == 0) {
 		$Errors[$i] = TaxCategoriesDoesntExist;
@@ -562,7 +562,7 @@ function GetStockBalance($StockID, $user, $password) {
 	$sql = "SELECT quantity,
 					 loccode
 			   FROM locstock WHERE stockid='" . $StockID . "'";
-	$result = DB_query($sql);
+	$result = api_DB_query($sql);
 	if (sizeof($Errors) == 0) {
 		$i = 0;
 		while ($myrow = DB_fetch_array($result)) {
@@ -845,11 +845,11 @@ function StockAdjustment($StockID, $Location, $Quantity, $TranDate, $user, $pass
 	$systypessql = "UPDATE systypes set typeno='" . GetNextTransactionNo(17) . "' where typeid='17'";
 
 	DB_Txn_Begin();
-	DB_query($stockmovesql);
-	DB_query($locstocksql);
-	DB_query($glupdatesql1);
-	DB_query($glupdatesql2);
-	DB_query($systypessql);
+	api_DB_query($stockmovesql);
+	api_DB_query($locstocksql);
+	api_DB_query($glupdatesql1);
+	api_DB_query($glupdatesql2);
+	api_DB_query($systypessql);
 	DB_Txn_Commit();
 	if (DB_error_no() != 0) {
 		$Errors[0] = DatabaseUpdateFailed;

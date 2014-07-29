@@ -932,14 +932,14 @@ function InvoiceSalesOrder($OrderNo, $User, $Password) {
 												 0,
 												 '" . ($QtyOnHandPrior - $AssParts['quantity'] * $OrderLineRow['quantity']) . "'	)";
 
-				$Result = DB_query($SQL, $db, '', '', true);
+				$Result = api_DB_query($SQL, $db, '', '', true);
 
 				$SQL = "UPDATE locstock
 							SET quantity = locstock.quantity - " . ($AssParts['quantity'] * $OrderLineRow['quantity']) . "
 							WHERE locstock.stockid = '" . $AssParts['component'] . "'
 							AND loccode = '" . $OrderHeader['fromlocstk'] . "'";
 
-				$Result = DB_query($SQL, $db, '', '', true);
+				$Result = api_DB_query($SQL, $db, '', '', true);
 			}
 			/* end of assembly explosion and updates */
 		}
@@ -996,7 +996,7 @@ function InvoiceSalesOrder($OrderNo, $User, $Password) {
 							'" . $Tax['TaxCalculationOrder'] . "',
 							'" . $Tax['TaxOnTax'] . "')";
 
-			$Result = DB_query($SQL, $db, '', '', true);
+			$Result = api_DB_query($SQL, $db, '', '', true);
 		}
 
 		/*Insert Sales Analysis records */
@@ -1036,7 +1036,7 @@ function InvoiceSalesOrder($OrderNo, $User, $Password) {
 
 		$ErrMsg = _('The count of existing Sales analysis records could not run because');
 		$DbgMsg = _('SQL to count the no of sales analysis records');
-		$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+		$Result = api_DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
 
 		$myrow = DB_fetch_row($Result);
 
@@ -1178,7 +1178,7 @@ function InvoiceSalesOrder($OrderNo, $User, $Password) {
 								'" . $OrderHeader['debtorno'] . " - " . $OrderLineRow['stkcode'] . " @ " . ($OrderLineRow['discountpercent'] * 100) . "%',
 								'" . ($OrderLineRow['unitprice'] * $OrderLineRow['quantity'] * $OrderLineRow['discountpercent'] / $OrderHeader['rate']) . "')";
 
-				$Result = DB_query($SQL, $db, '', '', true);
+				$Result = api_DB_query($SQL, $db, '', '', true);
 			}
 			/*end of if discount !=0 */
 
@@ -1312,7 +1312,7 @@ function GetCurrentPeriod(&$db) {
 	$TransDate = time(); //The current date to find the period for
 	/* Find the unix timestamp of the last period end date in periods table */
 	$sql = "SELECT MAX(lastdate_in_period), MAX(periodno) from periods";
-	$result = DB_query($sql);
+	$result = api_DB_query($sql);
 	$myrow = DB_fetch_row($result);
 
 	if (is_null($myrow[0])) {
@@ -1366,7 +1366,7 @@ function GetCurrentPeriod(&$db) {
 	} else if (!PeriodExists(mktime(0, 0, 0, Date('m', $TransDate) + 1, Date('d', $TransDate), Date('Y', $TransDate)))) {
 		/* Make sure the following months period exists */
 		$sql = "SELECT MAX(lastdate_in_period), MAX(periodno) from periods";
-		$result = DB_query($sql);
+		$result = api_DB_query($sql);
 		$myrow = DB_fetch_row($result);
 		$Date_Array = explode('-', $myrow[0]);
 		$LastPeriodEnd = mktime(0, 0, 0, $Date_Array[1] + 2, 0, (int) $Date_Array[0]);
@@ -1383,7 +1383,7 @@ function GetCurrentPeriod(&$db) {
 						AND lastdate_in_period >= '" . Date('Y-m-d', $TransDate) . "'";
 
 	$ErrMsg = _('An error occurred in retrieving the period number');
-	$GetPrdResult = DB_query($GetPrdSQL, $db, $ErrMsg);
+	$GetPrdResult = api_DB_query($GetPrdSQL, $db, $ErrMsg);
 	$myrow = DB_fetch_row($GetPrdResult);
 
 	return $myrow[0];

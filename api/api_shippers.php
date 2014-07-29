@@ -12,7 +12,7 @@ function GetShipperList($User, $Password) {
 		return $Errors;
 	}
 	$sql = 'SELECT shipper_id FROM shippers';
-	$result = DB_query($sql);
+	$result = api_DB_query($sql);
 	$i = 0;
 	while ($myrow = DB_fetch_array($result)) {
 		$ShipperList[$i] = $myrow[0];
@@ -34,7 +34,7 @@ function GetShipperDetails($Shipper, $User, $Password) {
 		return $Errors;
 	}
 	$sql = "SELECT * FROM shippers WHERE shipper_id='" . $Shipper . "'";
-	$result = DB_query($sql);
+	$result = api_DB_query($sql);
 	return DB_fetch_array($result);
 }
 ?>

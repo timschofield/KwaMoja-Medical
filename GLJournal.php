@@ -313,9 +313,9 @@ if (!isset($_POST['GLManualCode'])) {
 }
 
 if (!isset($_GET['NewJournal']) or $_GET['NewJournal'] == '') {
-	echo '<td><input class="number" type="text" autofocus="autofocus" name="GLManualCode" minlength="0" maxlength="12" size="12" onchange="inArray(this.value, GLCode.options,' . "'" . 'The account code ' . "'" . '+ this.value+ ' . "'" . ' doesnt exist' . "'" . ')" value="' . $_POST['GLManualCode'] . '"  /></td>';
+	echo '<td><input type="text" autofocus="autofocus" name="GLManualCode" minlength="0" maxlength="12" size="12" onchange="inArray(this.value, GLCode.options,' . "'" . 'The account code ' . "'" . '+ this.value+ ' . "'" . ' doesnt exist' . "'" . ')" value="' . $_POST['GLManualCode'] . '"  /></td>';
 } else {
-	echo '<td><input class="number" type="text" name="GLManualCode" minlength="0" maxlength="12" size="12" onchange="inArray(this.value, GLCode.options,' . "'" . 'The account code ' . "'" . '+ this.value+ ' . "'" . ' doesnt exist' . "'" . ')" value="' . $_POST['GLManualCode'] . '"  /></td>';
+	echo '<td><input type="text" name="GLManualCode" minlength="0" maxlength="12" size="12" onchange="inArray(this.value, GLCode.options,' . "'" . 'The account code ' . "'" . '+ this.value+ ' . "'" . ' doesnt exist' . "'" . ')" value="' . $_POST['GLManualCode'] . '"  /></td>';
 }
 
 $SQL = "SELECT accountcode,

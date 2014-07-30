@@ -9,7 +9,7 @@ function VerifyDebtorNo($DebtorNumber, $i, $Errors) {
 	$Searchsql = "SELECT count(debtorno)
   					 FROM debtorsmaster
 					 WHERE debtorno='" . $DebtorNumber . "'";
-	$SearchResult = DB_query($Searchsql);
+	$SearchResult = api_DB_query($Searchsql);
 	$answer = DB_fetch_row($SearchResult);
 	if ($answer[0] != 0) {
 		$Errors[$i] = DebtorNoAlreadyExists;
@@ -22,7 +22,7 @@ function VerifyDebtorExists($DebtorNumber, $i, $Errors) {
 	$Searchsql = "SELECT count(debtorno)
 					 FROM debtorsmaster
 					 WHERE debtorno='" . $DebtorNumber . "'";
-	$SearchResult = DB_query($Searchsql);
+	$SearchResult = api_DB_query($Searchsql);
 	$answer = DB_fetch_array($SearchResult);
 	if ($answer[0] == 0) {
 		$Errors[$i] = DebtorDoesntExist;
@@ -51,7 +51,7 @@ function VerifyCurrencyCode($CurrCode, $i, $Errors) {
 	$Searchsql = "SELECT COUNT(currabrev)
 					  FROM currencies
 					  WHERE currabrev='" . $CurrCode . "'";
-	$SearchResult = DB_query($Searchsql);
+	$SearchResult = api_DB_query($Searchsql);
 	$answer = DB_fetch_row($SearchResult);
 	if ($answer[0] == 0) {
 		$Errors[$i] = CurrencyCodeNotSetup;
@@ -64,7 +64,7 @@ function VerifySalesType($SalesType, $i, $Errors) {
 	$Searchsql = "SELECT COUNT(typeabbrev)
 					 FROM salestypes
 					  WHERE typeabbrev='" . $SalesType . "'";
-	$SearchResult = DB_query($Searchsql);
+	$SearchResult = api_DB_query($Searchsql);
 	$answer = DB_fetch_row($SearchResult);
 	if ($answer[0] == 0) {
 		$Errors[$i] = SalesTypeNotSetup;
@@ -85,7 +85,7 @@ function VerifyHoldReason($HoldReason, $i, $Errors) {
 	$Searchsql = "SELECT COUNT(reasoncode)
 					 FROM holdreasons
 					  WHERE reasoncode='" . $HoldReason . "'";
-	$SearchResult = DB_query($Searchsql);
+	$SearchResult = api_DB_query($Searchsql);
 	$answer = DB_fetch_row($SearchResult);
 	if ($answer[0] == 0) {
 		$Errors[$i] = HoldReasonNotSetup;
@@ -98,7 +98,7 @@ function VerifyPaymentTerms($PaymentTerms, $i, $Errors) {
 	$Searchsql = "SELECT COUNT(termsindicator)
 					 FROM paymentterms
 					  WHERE termsindicator='" . $PaymentTerms . "'";
-	$SearchResult = DB_query($Searchsql);
+	$SearchResult = api_DB_query($Searchsql);
 	$answer = DB_fetch_row($SearchResult);
 	if ($answer[0] == 0) {
 		$Errors[$i] = PaymentTermsNotSetup;
@@ -232,7 +232,7 @@ function VerifyCustomerType($debtortype, $i, $Errors) {
 	$Searchsql = "SELECT COUNT(typeid)
 					 FROM debtortype
 					  WHERE typeid='" . $debtortype . "'";
-	$SearchResult = DB_query($Searchsql);
+	$SearchResult = api_DB_query($Searchsql);
 	$answer = DB_fetch_row($SearchResult);
 	if ($answer[0] == 0) {
 		$Errors[$i] = CustomerTypeNotSetup;
@@ -253,16 +253,16 @@ array of one to many error codes.
 function InsertCustomer($CustomerDetails, $user = '', $password = '') {
 	$Errors = array();
 	$db = db($user, $password);
-	if (gettype($db) == 'integer') {
-		$Errors[0] = NoAuthorisation;
-		return $Errors;
-	}
+//	if (gettype($db) == 'integer') {
+//		$Errors[0] = NoAuthorisation;
+//		return $Errors;
+//	}
 	foreach ($CustomerDetails as $key => $value) {
 		$CustomerDetails[$key] = DB_escape_string($value);
 	}
 	$autonumbersql = "SELECT confvalue FROM config
 						 WHERE confname='AutoDebtorNo'";
-	$autonumberresult = DB_query($autonumbersql);
+	$autonumberresult = api_DB_query($autonumbersql);
 	$autonumber = DB_fetch_row($autonumberresult);
 	if ($autonumber[0] == 0) {
 		$Errors = VerifyDebtorNo($CustomerDetails['debtorno'], sizeof($Errors), $Errors);
@@ -291,15 +291,27 @@ function InsertCustomer($CustomerDetails, $user = '', $password = '') {
 	if (isset($CustomerDetails['currcode'])) {
 		$Errors = VerifyCurrencyCode($CustomerDetails['currcode'], sizeof($Errors), $Errors);
 	} else {
-		$CustomerDetails['currcode'] = GetDefaultCurrency($user, $password);
+		$Answer = GetDefaultCurrency($user, $password);
+		if ($Answer[0] == 0) {
+			$CustomerDetails['currcode'] = $Answer[1]['currencydefault'];
+		} else {
+			$CustomerDetails['currcode'] = 'GBP';
+		}
 	}
 	if (isset($CustomerDetails['salestype'])) {
 		$Errors = VerifySalesType($CustomerDetails['salestype'], sizeof($Errors), $Errors);
 	} else {
-		$CustomerDetails['salestype'] = GetDefaultPriceList($user, $password);
+		$Answer = GetDefaultPriceList($user, $password);
+		if ($Answer[0] == 0) {
+			$CustomerDetails['salestype'] = $Answer[1]['confvalue'];
+		} else {
+			$CustomerDetails['salestype'] = 'DE';
+		}
 	}
 	if (isset($CustomerDetails['clientsince'])) {
 		$Errors = VerifyClientSince($CustomerDetails['clientsince'], sizeof($Errors), $Errors);
+	} else {
+		$CustomerDetails['clientsince'] = date('Y-m-d');
 	}
 	if (isset($CustomerDetails['holdreason'])) {
 		$Errors = VerifyHoldReason($CustomerDetails['holdreason'], sizeof($Errors), $Errors);
@@ -359,12 +371,12 @@ function InsertCustomer($CustomerDetails, $user = '', $password = '') {
 	$FieldValues = '';
 	foreach ($CustomerDetails as $key => $value) {
 		$FieldNames .= $key . ', ';
-		$FieldValues .= '"' . $value . '", ';
+		$FieldValues .= "'" . $value . "', ";
 	}
-	$sql = 'INSERT INTO debtorsmaster (' . mb_substr($FieldNames, 0, -2) . ') ' . 'VALUES (' . mb_substr($FieldValues, 0, -2) . ') ';
+	$sql = "INSERT INTO debtorsmaster (" . mb_substr($FieldNames, 0, -2) . ") VALUES (" . mb_substr($FieldValues, 0, -2) . ") ";
 	if (sizeof($Errors) == 0) {
-		$result = DB_Query($sql);
-		if (DB_error_no() != 0) {
+		$result = api_DB_Query($sql, $db);
+		if ($_SESSION['db_err_msg'] != '') {
 			$Errors[0] = DatabaseUpdateFailed;
 		} else {
 			$Errors[0] = 0;
@@ -423,15 +435,27 @@ function ModifyCustomer($CustomerDetails, $user, $password) {
 	if (isset($CustomerDetails['currcode'])) {
 		$Errors = VerifyCurrencyCode($CustomerDetails['currcode'], sizeof($Errors), $Errors);
 	} else {
-		$CustomerDetails['currcode'] = GetDefaultCurrency($user, $password);
+		$Answer = GetDefaultCurrency($user, $password);
+		if ($Answer[0] == 0) {
+			$CustomerDetails['currcode'] = $Answer[1]['currencydefault'];
+		} else {
+			$CustomerDetails['currcode'] = 'GBP';
+		}
 	}
 	if (isset($CustomerDetails['salestype'])) {
 		$Errors = VerifySalesType($CustomerDetails['salestype'], sizeof($Errors), $Errors);
 	} else {
-		$CustomerDetails['salestype'] = GetDefaultPriceList($user, $password);
+		$Answer = GetDefaultPriceList($user, $password);
+		if ($Answer[0] == 0) {
+			$CustomerDetails['salestype'] = $Answer[1]['confvalue'];
+		} else {
+			$CustomerDetails['salestype'] = 'DE';
+		}
 	}
 	if (isset($CustomerDetails['clientsince'])) {
 		$Errors = VerifyClientSince($CustomerDetails['clientsince'], sizeof($Errors), $Errors);
+	} else {
+		$CustomerDetails['clientsince'] = date('Y-m-d');
 	}
 	if (isset($CustomerDetails['holdreason'])) {
 		$Errors = VerifyHoldReason($CustomerDetails['holdreason'], sizeof($Errors), $Errors);
@@ -489,12 +513,12 @@ function ModifyCustomer($CustomerDetails, $user, $password) {
 	}
 	$sql = 'UPDATE debtorsmaster SET ';
 	foreach ($CustomerDetails as $key => $value) {
-		$sql .= $key . '="' . $value . '", ';
+		$sql .= $key . "='" . $value . "', ";
 	}
 	$sql = mb_substr($sql, 0, -2) . " WHERE debtorno='" . $CustomerDetails['debtorno'] . "'";
 	if (sizeof($Errors) == 0) {
-		$result = DB_Query($sql);
-		if (DB_error_no() != 0) {
+		$result = api_DB_Query($sql, $db);
+		if ($_SESSION['db_err_msg'] != '') {
 			$Errors[0] = DatabaseUpdateFailed;
 		} else {
 			$Errors[0] = 0;
@@ -519,7 +543,7 @@ function GetCustomer($DebtorNumber, $user, $password) {
 		return $Errors;
 	}
 	$sql = "SELECT * FROM debtorsmaster WHERE debtorno='" . $DebtorNumber . "'";
-	$result = DB_Query($sql);
+	$result = api_DB_Query($sql);
 	$Errors[0] = 0; // None found.
 	$Errors[1] = DB_fetch_array($result);
 
@@ -539,7 +563,7 @@ function SearchCustomers($Field, $Criteria, $user, $password) {
 	$sql = 'SELECT debtorno
 			FROM debtorsmaster
 			WHERE ' . $Field . " LIKE '%" . $Criteria . "%'";
-	$result = DB_Query($sql);
+	$result = api_DB_Query($sql);
 	$DebtorList = array(
 		0
 	); // First element: no errors

@@ -11,7 +11,7 @@ function GetDefaultCurrency($user, $password) {
 		return $Errors;
 	}
 	$sql = "SELECT currencydefault FROM companies WHERE coycode=1";
-	$result = DB_query($sql);
+	$result = api_DB_query($sql);
 	$answer = DB_fetch_array($result);
 	$ReturnValue[0] = 0;
 	$ReturnValue[1] = $answer;
@@ -29,7 +29,7 @@ function GetDefaultPriceList($user, $password) {
 		return $Errors;
 	}
 	$sql = "SELECT confvalue FROM config WHERE confname='DefaultPriceList'";
-	$result = DB_query($sql);
+	$result = api_DB_query($sql);
 	$answer = DB_fetch_array($result);
 	$ReturnValue[0] = 0;
 	$ReturnValue[1] = $answer;
@@ -47,7 +47,7 @@ function GetDefaultDateFormat($user, $password) {
 		return $Errors;
 	}
 	$sql = "SELECT confvalue FROM config WHERE confname='DefaultDateFormat'";
-	$result = DB_query($sql);
+	$result = api_DB_query($sql);
 	$answer = DB_fetch_array($result);
 	$ReturnValue[0] = 0;
 	$ReturnValue[1] = $answer;
@@ -64,7 +64,7 @@ function GetReportsDirectory($user, $password) {
 		return $Errors;
 	}
 	$sql = "SELECT confvalue FROM config WHERE confname='reports_dir'";
-	$result = DB_query($sql);
+	$result = api_DB_query($sql);
 	$answer = DB_fetch_array($result);
 	$ReturnValue[0] = 0;
 	$ReturnValue[1] = $answer;
@@ -81,7 +81,7 @@ function GetDefaultLocation($user, $password) {
 		return $Errors;
 	}
 	$sql = "select defaultlocation from www_users where userid='" . $user . "'";
-	$result = DB_query($sql);
+	$result = api_DB_query($sql);
 	$answer = DB_fetch_array($result);
 	$ReturnValue[0] = 0;
 	$ReturnValue[1] = $answer;
@@ -99,7 +99,43 @@ function GetDefaultShipper($user, $password) {
 		return $Errors;
 	}
 	$sql = "SELECT confvalue from config WHERE confname='Default_Shipper'";
-	$result = DB_query($sql);
+	$result = api_DB_query($sql);
+	$answer = DB_fetch_array($result);
+	$ReturnValue[0] = 0;
+	$ReturnValue[1] = $answer;
+	return $ReturnValue;
+}
+
+/* This function returns the default area for patients in KwaMoja.
+ */
+
+function GetDefaultArea($user, $password) {
+	$Errors = array();
+	$db = db($user, $password);
+	if (gettype($db) == 'integer') {
+		$Errors[0] = NoAuthorisation;
+		return $Errors;
+	}
+	$sql = "SELECT confvalue from config WHERE confname='DefaultArea'";
+	$result = api_DB_query($sql);
+	$answer = DB_fetch_array($result);
+	$ReturnValue[0] = 0;
+	$ReturnValue[1] = $answer;
+	return $ReturnValue;
+}
+
+/* This function returns the default sales person for patients in KwaMoja.
+ */
+
+function GetDefaultSalesPerson($user, $password) {
+	$Errors = array();
+	$db = db($user, $password);
+	if (gettype($db) == 'integer') {
+		$Errors[0] = NoAuthorisation;
+		return $Errors;
+	}
+	$sql = "SELECT confvalue from config WHERE confname='DefaultSalesPerson'";
+	$result = api_DB_query($sql);
 	$answer = DB_fetch_array($result);
 	$ReturnValue[0] = 0;
 	$ReturnValue[1] = $answer;

@@ -5,7 +5,7 @@ function VerifyWorkOrderExists($WorkOrder, $i, $Errors) {
 	$Searchsql = "SELECT count(wo)
 				FROM workorders
 				WHERE wo='" . $WorkOrder . "'";
-	$SearchResult = DB_query($Searchsql);
+	$SearchResult = api_DB_query($Searchsql);
 	$answer = DB_fetch_array($SearchResult);
 	if ($answer[0] == 0) {
 		$Errors[$i] = WorkOrderDoesntExist;
@@ -18,7 +18,7 @@ function VerifyStockLocation($location, $i, $Errors) {
 	$Searchsql = "SELECT COUNT(loccode)
 					 FROM locations
 					  WHERE loccode='" . $location . "'";
-	$SearchResult = DB_query($Searchsql);
+	$SearchResult = api_DB_query($Searchsql);
 	$answer = DB_fetch_row($SearchResult);
 	if ($answer[0] == 0) {
 		$Errors[$i] = LocationCodeNotSetup;
@@ -44,7 +44,7 @@ function VerifyReceivedQuantity($quantity, $i, $Errors) {
 
 function VerifyRequiredByDate($RequiredByDate, $i, $Errors) {
 	$sql = "SELECT confvalue FROM config WHERE confname='DefaultDateFormat'";
-	$result = DB_query($sql);
+	$result = api_DB_query($sql);
 	$myrow = DB_fetch_array($result);
 	$DateFormat = $myrow[0];
 	if (mb_strstr('/', $PeriodEnd)) {
@@ -77,7 +77,7 @@ function VerifyRequiredByDate($RequiredByDate, $i, $Errors) {
 
 function VerifyStartDate($StartDate, $i, $Errors) {
 	$sql = "SELECT confvalue FROM config WHERE confname='DefaultDateFormat'";
-	$result = DB_query($sql);
+	$result = api_DB_query($sql);
 	$myrow = DB_fetch_array($result);
 	$DateFormat = $myrow[0];
 	if (mb_strstr('/', $PeriodEnd)) {
@@ -145,7 +145,7 @@ function VerifyLotSerialNumber($nextlotsnref, $i, $Errors) {
 
 function VerifyBatch($batch, $stockid, $location, $i, $Errors) {
 	$sql = "SELECT controlled, serialised FROM stockmaster WHERE stockid='" . $stockid . "'";
-	$result = DB_query($sql);
+	$result = api_DB_query($sql);
 	$myrow = DB_fetch_row($result);
 	if ($myrow[0] != 1) {
 		$Errors[$i] = ItemNotControlled;
@@ -158,7 +158,7 @@ function VerifyBatch($batch, $stockid, $location, $i, $Errors) {
 			  WHERE stockid='" . $stockid . "'
 			  AND loccode='" . $location . "'
 			  AND serialno='" . $batch . "'";
-	$result = DB_query($sql);
+	$result = api_DB_query($sql);
 	if (DB_num_rows($result) == 0) {
 		$Errors[$i] = BatchNumberDoesntExist;
 		return $Errors;
@@ -344,12 +344,12 @@ function WorkOrderIssue($WONumber, $StockID, $Location, $Quantity, $TranDate, $B
 		$costsql = "UPDATE workorders SET costissued=costissued+" . $cost . " WHERE wo='" . $WONumber . "'";
 
 		DB_Txn_Begin();
-		DB_query($stockmovesql);
-		DB_query($locstocksql);
-		DB_query($glupdatesql1);
-		DB_query($glupdatesql2);
-		DB_query($systypessql);
-		DB_query($costsql);
+		api_DB_query($stockmovesql);
+		api_DB_query($locstocksql);
+		api_DB_query($glupdatesql1);
+		api_DB_query($glupdatesql2);
+		api_DB_query($systypessql);
+		api_DB_query($costsql);
 		if ($Batch != '') {
 			DB_Query($batchsql);
 		}
@@ -388,7 +388,7 @@ function WorkOrderReceive($WONumber, $StockID, $Location, $Quantity, $TranDate, 
 	$wipglact = GetCategoryGLCode($itemdetails['categoryid'], 'wipact');
 	$stockact = GetCategoryGLCode($itemdetails['categoryid'], 'stockact');
 	$costsql = "SELECT costissued FROM workorders WHERE wo='" . $WONumber . "'";
-	$costresult = DB_query($costsql);
+	$costresult = api_DB_query($costsql);
 	$myrow = DB_fetch_row($costresult);
 	$cost = $myrow[0];
 	$TransactionNo = GetNextTransactionNo(26);
@@ -446,11 +446,11 @@ function WorkOrderReceive($WONumber, $StockID, $Location, $Quantity, $TranDate, 
 											   '" . $StockID . ' x ' . $Quantity . ' @ ' . $cost . "')";
 	$systypessql = "UPDATE systypes set typeno='" . $TransactionNo . "' where typeid=26";
 	DB_Txn_Begin();
-	DB_query($stockmovesql);
-	DB_query($locstocksql);
-	DB_query($glupdatesql1);
-	DB_query($glupdatesql2);
-	DB_query($systypessql);
+	api_DB_query($stockmovesql);
+	api_DB_query($locstocksql);
+	api_DB_query($glupdatesql1);
+	api_DB_query($glupdatesql2);
+	api_DB_query($systypessql);
 	DB_Txn_Commit();
 	if (DB_error_no() != 0) {
 		$Errors[0] = DatabaseUpdateFailed;

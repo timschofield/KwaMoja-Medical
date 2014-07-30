@@ -325,8 +325,8 @@ if (!isset($StockID)) {
 					<tr>
 						<th>' . _('Modify') . '</th>
 						<th>' . _('Status') . '</th>
-						<th>' . _('Receive') . '</th>
 						<th>' . _('Issue To') . '</th>
+						<th>' . _('Receive') . '</th>
 						<th>' . _('Costing') . '</th>
 						<th>' . _('Paperwork') . '</th>
 						<th>' . _('Item') . '</th>
@@ -361,8 +361,8 @@ if (!isset($StockID)) {
 
 				printf('<td><a href="%s">%s</a></td>
 					<td><a href="%s">' . _('Status') . '</a></td>
-					<td><a href="%s">' . _('Receive') . '</a></td>
 					<td><a href="%s">' . _('Issue To') . '</a></td>
+					<td><a href="%s">' . _('Receive') . '</a></td>
 					<td><a href="%s">' . _('Costing') . '</a></td>
 					<td><a href="%s">' . _('Print W/O') . '</a></td>
 					<td>%s - %s</td>
@@ -371,7 +371,7 @@ if (!isset($StockID)) {
 					<td class="number">%s</td>
 					<td>%s</td>
 					<td>%s</td>
-					</tr>', $ModifyPage, $MyRow['wo'], $Status_WO, $Receive_WO, $Issue_WO, $Costing_WO, $Printing_WO, $MyRow['stockid'], $MyRow['description'], locale_number_format($MyRow['qtyreqd'], $MyRow['decimalplaces']), locale_number_format($MyRow['qtyrecd'], $MyRow['decimalplaces']), locale_number_format($MyRow['qtyreqd'] - $MyRow['qtyrecd'], $MyRow['decimalplaces']), $FormatedStartDate, $FormatedRequiredByDate);
+					</tr>', $ModifyPage, $MyRow['wo'], $Status_WO, $Issue_WO, $Receive_WO, $Costing_WO, $Printing_WO, $MyRow['stockid'], $MyRow['description'], locale_number_format($MyRow['qtyreqd'], $MyRow['decimalplaces']), locale_number_format($MyRow['qtyrecd'], $MyRow['decimalplaces']), locale_number_format($MyRow['qtyreqd'] - $MyRow['qtyrecd'], $MyRow['decimalplaces']), $FormatedStartDate, $FormatedRequiredByDate);
 
 			}
 			//end of while loop

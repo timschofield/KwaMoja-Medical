@@ -9,7 +9,7 @@ function VerifySupplierNo($SupplierNumber, $i, $Errors) {
 	$Searchsql = "SELECT count(supplierid)
   					  FROM suppliers
 					  WHERE supplierid='" . $SupplierNumber . "'";
-	$SearchResult = DB_query($Searchsql);
+	$SearchResult = api_DB_query($Searchsql);
 	$answer = DB_fetch_row($SearchResult);
 	if ($answer[0] != 0) {
 		$Errors[$i] = SupplierNoAlreadyExists;
@@ -26,7 +26,7 @@ function VerifySupplierNoExists($SupplierNumber, $i, $Errors) {
 	$Searchsql = "SELECT count(supplierid)
 					  FROM suppliers
 					  WHERE supplierid='" . $SupplierNumber . "'";
-	$SearchResult = DB_query($Searchsql);
+	$SearchResult = api_DB_query($Searchsql);
 	$answer = DB_fetch_row($SearchResult);
 	if ($answer[0] == 0) {
 		$Errors[$i] = SupplierNoDoesntExists;
@@ -47,7 +47,7 @@ function VerifySupplierName($SupplierName, $i, $Errors) {
  * target KwaMoja company */
 function VerifySupplierSinceDate($suppliersincedate, $i, $Errors) {
 	$sql = "SELECT confvalue FROM config where confname='DefaultDateFormat'";
-	$result = DB_query($sql);
+	$result = api_DB_query($sql);
 	$myrow = DB_fetch_array($result);
 	$DateFormat = $myrow[0];
 	if (mb_strstr('/', $PeriodEnd)) {
@@ -111,7 +111,7 @@ function VerifyFactorCompany($factorco, $i, $Errors) {
 	$Searchsql = "SELECT COUNT(id)
 					 FROM factorcompanies
 					  WHERE id='" . $factorco . "'";
-	$SearchResult = DB_query($Searchsql);
+	$SearchResult = api_DB_query($Searchsql);
 	$answer = DB_fetch_row($SearchResult);
 	if ($answer[0] == 0) {
 		$Errors[$i] = FactorCompanyNotSetup;

@@ -5,7 +5,7 @@ function VerifyAccountGroup($AccountGroup, $i, $Errors) {
 	$Searchsql = "SELECT count(groupname)
 				FROM accountgroups
 				WHERE groupname='" . $AccountGroup . "'";
-	$SearchResult = DB_query($Searchsql);
+	$SearchResult = api_DB_query($Searchsql);
 	$answer = DB_fetch_array($SearchResult);
 	if ($answer[0] > 0) {
 		$Errors[$i] = GLAccountGroupAlreadyExists;
@@ -18,7 +18,7 @@ function VerifyAccountSectionExists($AccountSection, $i, $Errors) {
 	$Searchsql = "SELECT count(sectionid)
 				FROM accountsection
 				WHERE sectionid='" . $AccountSection . "'";
-	$SearchResult = DB_query($Searchsql);
+	$SearchResult = api_DB_query($Searchsql);
 	$answer = DB_fetch_array($SearchResult);
 	if ($answer[0] == 0) {
 		$Errors[$i] = GLAccountSectionDoesntExist;
@@ -47,7 +47,7 @@ function VerifyParentGroupExists($AccountGroup, $i, $Errors) {
 	$Searchsql = "SELECT count(groupname)
 				FROM accountgroups
 				WHERE groupname='" . $AccountGroup . "'";
-	$SearchResult = DB_query($Searchsql);
+	$SearchResult = api_DB_query($Searchsql);
 	$answer = DB_fetch_array($SearchResult);
 	if ($answer[0] == 0 and $AccountGroup != '') {
 		$Errors[$i] = AccountGroupDoesntExist;

@@ -5,7 +5,7 @@ function VerifyAccountSection($AccountSection, $i, $Errors) {
 	$Searchsql = "SELECT count(sectionid)
 				FROM accountsection
 				WHERE sectionid='" . $AccountSection . "'";
-	$SearchResult = DB_query($Searchsql);
+	$SearchResult = api_DB_query($Searchsql);
 	$answer = DB_fetch_array($SearchResult);
 	if ($answer[0] > 0) {
 		$Errors[$i] = GLAccountSectionAlreadyExists;

@@ -117,7 +117,7 @@ function DoSetup() {
 					$sql = "DELETE FROM audittrail
 							WHERE  transactiondate <= '" . Date('Y-m-d', mktime(0, 0, 0, Date('m') - $_SESSION['MonthsAuditTrail'])) . "'";
 					$ErrMsg = _('There was a problem deleting expired audit-trail history');
-					$result = DB_query($sql);
+					$result = api_DB_query($sql);
 				}
 				$_SESSION['DB_Maintenance_LastRun'] = Date('Y-m-d');
 			}
@@ -131,16 +131,16 @@ function DoSetup() {
 
 				$CurrencyRates = GetECBCurrencyRates(); // gets rates from ECB see includes/MiscFunctions.php
 				/*Loop around the defined currencies and get the rate from ECB */
-				$CurrenciesResult = DB_query('SELECT currabrev FROM currencies');
+				$CurrenciesResult = api_DB_query('SELECT currabrev FROM currencies');
 				while ($CurrencyRow = DB_fetch_row($CurrenciesResult)) {
 					if ($CurrencyRow[0] != $_SESSION['CompanyRecord']['currencydefault']) {
-						$UpdateCurrRateResult = DB_query("UPDATE currencies SET
+						$UpdateCurrRateResult = api_DB_query("UPDATE currencies SET
 												rate='" . GetCurrencyRate($CurrencyRow[0], $CurrencyRates) . "'
 												WHERE currabrev='" . $CurrencyRow[0] . "'");
 					}
 				}
 				$_SESSION['UpdateCurrencyRatesDaily'] = Date('Y-m-d');
-				$UpdateConfigResult = DB_query("UPDATE config SET confvalue = CURRENT_DATE WHERE confname='UpdateCurrencyRatesDaily'");
+				$UpdateConfigResult = api_DB_query("UPDATE config SET confvalue = CURRENT_DATE WHERE confname='UpdateCurrencyRatesDaily'");
 			}
 		}
 	}

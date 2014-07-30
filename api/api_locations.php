@@ -10,7 +10,7 @@ function VerifyLocationCode($LocationCode, $i, $Errors) {
 	$Searchsql = "SELECT count(loccode)
 						FROM locations
 						WHERE loccode='" . $LocationCode . "'";
-	$SearchResult = DB_query($Searchsql);
+	$SearchResult = api_DB_query($Searchsql);
 	$answer = DB_fetch_row($SearchResult);
 	if ($answer[0] != 0) {
 		$Errors[$i] = LocationCodeAlreadyExists;
@@ -23,7 +23,7 @@ function VerifyLocationExists($LocationCode, $i, $Errors) {
 	$Searchsql = "SELECT count(loccode)
 						FROM locations
 						WHERE loccode='" . $LocationCode . "'";
-	$SearchResult = DB_query($Searchsql);
+	$SearchResult = api_DB_query($Searchsql);
 	$answer = DB_fetch_array($SearchResult);
 	if ($answer[0] == 0) {
 		$Errors[$i] = LocationCodeDoesntExist;
@@ -44,7 +44,7 @@ function VerifyTaxProvinceId($TaxProvinceId, $i, $Errors) {
 	$Searchsql = "SELECT COUNT(taxprovinceid)
 						FROM taxprovinces
 						WHERE taxprovinceid='" . $TaxProvinceId . "'";
-	$SearchResult = DB_query($Searchsql);
+	$SearchResult = api_DB_query($Searchsql);
 	$answer = DB_fetch_row($SearchResult);
 	if ($answer[0] == 0) {
 		$Errors[$i] = TaxProvinceIdNotSetup;
@@ -67,7 +67,7 @@ function GetLocationList($user, $password) {
 		$Errors[0] = 0;
 	}
 	$sql = "SELECT loccode FROM locations";
-	$result = DB_query($sql);
+	$result = api_DB_query($sql);
 	$i = 0;
 	while ($myrow = DB_fetch_array($result)) {
 		$LocationList[$i] = $myrow[0];
@@ -92,7 +92,7 @@ function GetLocationDetails($location, $user, $password) {
 		$Errors[0] = 0;
 	}
 	$sql = "SELECT * FROM locations WHERE loccode='" . $location . "'";
-	$result = DB_query($sql);
+	$result = api_DB_query($sql);
 	$Errors[1] = DB_fetch_array($result);
 	return $Errors;
 }

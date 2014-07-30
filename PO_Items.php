@@ -854,7 +854,7 @@ if (isset($_POST['Search'])) {
 						ON stockmaster.categoryid=stockcategory.categoryid
 						INNER JOIN purchdata
 						ON stockmaster.stockid=purchdata.stockid
-						WHERE stockmaster.mbflag<>'D'
+						WHERE (stockmaster.mbflag<>'D' OR stockcategory.stocktype='L')
 						AND stockmaster.mbflag<>'A'
 						AND stockmaster.mbflag<>'K'
 						AND stockmaster.mbflag<>'G'
@@ -871,7 +871,7 @@ if (isset($_POST['Search'])) {
 							stockmaster.units
 					FROM stockmaster INNER JOIN stockcategory
 					ON stockmaster.categoryid=stockcategory.categoryid
-					WHERE stockmaster.mbflag<>'D'
+					WHERE (stockmaster.mbflag<>'D' OR stockcategory.stocktype='L')
 					AND stockmaster.mbflag<>'A'
 					AND stockmaster.mbflag<>'K'
 					AND stockmaster.mbflag<>'G'
@@ -890,7 +890,7 @@ if (isset($_POST['Search'])) {
 						ON stockmaster.categoryid=stockcategory.categoryid
 						INNER JOIN purchdata
 						ON stockmaster.stockid=purchdata.stockid
-						WHERE stockmaster.mbflag<>'D'
+						WHERE (stockmaster.mbflag<>'D' OR stockcategory.stocktype='L')
 						AND stockmaster.mbflag<>'A'
 						AND stockmaster.mbflag<>'K'
 						AND stockmaster.mbflag<>'G'
@@ -907,7 +907,7 @@ if (isset($_POST['Search'])) {
 								stockmaster.units
 						FROM stockmaster INNER JOIN stockcategory
 						ON stockmaster.categoryid=stockcategory.categoryid
-						WHERE stockmaster.mbflag<>'D'
+						WHERE (stockmaster.mbflag<>'D' OR stockcategory.stocktype='L')
 						AND stockmaster.mbflag<>'A'
 						AND stockmaster.mbflag<>'K'
 						AND stockmaster.mbflag<>'G'
@@ -932,7 +932,7 @@ if (isset($_POST['Search'])) {
 						ON stockmaster.categoryid=stockcategory.categoryid
 						INNER JOIN purchdata
 						ON stockmaster.stockid=purchdata.stockid
-						WHERE stockmaster.mbflag<>'D'
+						WHERE (stockmaster.mbflag<>'D' OR stockcategory.stocktype='L')
 						AND stockmaster.mbflag<>'A'
 						AND stockmaster.mbflag<>'K'
 						AND stockmaster.mbflag<>'G'
@@ -948,7 +948,7 @@ if (isset($_POST['Search'])) {
 							stockmaster.units
 					FROM stockmaster INNER JOIN stockcategory
 					ON stockmaster.categoryid=stockcategory.categoryid
-					WHERE stockmaster.mbflag<>'D'
+					WHERE (stockmaster.mbflag<>'D' OR stockcategory.stocktype='L')
 					AND stockmaster.mbflag<>'A'
 					AND stockmaster.mbflag<>'K'
 					AND stockmaster.mbflag<>'G'
@@ -967,7 +967,7 @@ if (isset($_POST['Search'])) {
 						ON stockmaster.categoryid=stockcategory.categoryid
 						INNER JOIN purchdata
 						ON stockmaster.stockid=purchdata.stockid
-						WHERE stockmaster.mbflag<>'D'
+						WHERE (stockmaster.mbflag<>'D' OR stockcategory.stocktype='L')
 						AND stockmaster.mbflag<>'A'
 						AND stockmaster.mbflag<>'K'
 						AND stockmaster.mbflag<>'G'
@@ -984,7 +984,7 @@ if (isset($_POST['Search'])) {
 							stockmaster.units
 					FROM stockmaster INNER JOIN stockcategory
 					ON stockmaster.categoryid=stockcategory.categoryid
-					WHERE stockmaster.mbflag<>'D'
+					WHERE (stockmaster.mbflag<>'D' OR stockcategory.stocktype='L')
 					AND stockmaster.mbflag<>'A'
 					AND stockmaster.mbflag<>'K'
 					AND stockmaster.mbflag<>'G'
@@ -1007,7 +1007,7 @@ if (isset($_POST['Search'])) {
 						ON stockmaster.categoryid=stockcategory.categoryid
 						INNER JOIN purchdata
 						ON stockmaster.stockid=purchdata.stockid
-						WHERE stockmaster.mbflag<>'D'
+						WHERE (stockmaster.mbflag<>'D' OR stockcategory.stocktype='L')
 						AND stockmaster.mbflag<>'A'
 						AND stockmaster.mbflag<>'K'
 						AND stockmaster.mbflag<>'G'
@@ -1022,7 +1022,7 @@ if (isset($_POST['Search'])) {
 							stockmaster.units
 					FROM stockmaster INNER JOIN stockcategory
 					ON stockmaster.categoryid=stockcategory.categoryid
-					WHERE stockmaster.mbflag<>'D'
+					WHERE (stockmaster.mbflag<>'D' OR stockcategory.stocktype='L')
 					AND stockmaster.mbflag<>'A'
 					AND stockmaster.mbflag<>'K'
 					AND stockmaster.mbflag<>'G'
@@ -1040,7 +1040,7 @@ if (isset($_POST['Search'])) {
 						ON stockmaster.categoryid=stockcategory.categoryid
 						INNER JOIN purchdata
 						ON stockmaster.stockid=purchdata.stockid
-						WHERE stockmaster.mbflag<>'D'
+						WHERE (stockmaster.mbflag<>'D' OR stockcategory.stocktype='L')
 						AND stockmaster.mbflag<>'A'
 						AND stockmaster.mbflag<>'K'
 						AND stockmaster.mbflag<>'G'
@@ -1055,7 +1055,7 @@ if (isset($_POST['Search'])) {
 							stockmaster.units
 					FROM stockmaster INNER JOIN stockcategory
 					ON stockmaster.categoryid=stockcategory.categoryid
-					WHERE stockmaster.mbflag<>'D'
+					WHERE (stockmaster.mbflag<>'D' OR stockcategory.stocktype='L')
 					AND stockmaster.mbflag<>'A'
 					AND stockmaster.mbflag<>'K'
 					AND stockmaster.mbflag<>'G'
@@ -1086,8 +1086,7 @@ if (!isset($_GET['Edit'])) {
 	$SQL = "SELECT categoryid,
 				categorydescription
 			FROM stockcategory
-			WHERE stocktype<>'L'
-			AND stocktype<>'D'
+			WHERE stocktype<>'D'
 			ORDER BY categorydescription";
 	$ErrMsg = _('The supplier category details could not be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve the category details but failed was');

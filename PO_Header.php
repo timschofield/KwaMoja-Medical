@@ -761,6 +761,10 @@ else {
 		$_POST['Requisition'] = '';
 	} //!isset($_POST['Initiator'])
 
+	if (!isset($_POST['InitiatorName'])) {
+		$_POST['InitiatorName'] = $_SESSION['UsersRealName'];
+	}
+
 	echo '<tr>
 			<td>' . _('Initiated By') . ':</td>
 			<td><input type="hidden" name="Initiator" size="11" minlength="0" maxlength="10" value="' . $_POST['Initiator'] . '" />' . $_POST['InitiatorName'] . '</td>

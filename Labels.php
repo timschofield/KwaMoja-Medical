@@ -21,6 +21,10 @@ echo '<p class="page_title_text noPrint" >
 		<img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Label Template Maintenance') . '" alt="' . _('Label Template Maintenance') . '" />' . $Title . _('all measurements in PDF points') . '
 	</p>';
 
+if (!function_exists('gd_info')) {
+	prnMsg(_('The GD module for PHP is required to print barcode labels. Your PHP installation is not capable currently. You will most likely experience problems with this script until the GD module is enabled.'),'error');
+}
+
 if (isset($_POST['SelectedLabelID'])) {
 	$SelectedLabelID = $_POST['SelectedLabelID'];
 	if (ctype_digit($_POST['NoOfFieldsDefined'])) { //Now Process any field updates

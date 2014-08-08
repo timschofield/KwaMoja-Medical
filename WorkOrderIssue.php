@@ -44,44 +44,22 @@ if (isset($_POST['Process'])) { //user hit the process the work order issues ent
 
 	$InputError = false; //ie assume no problems for a start - ever the optomist
 	$ErrMsg = _('Could not retrieve the details of the selected work order item');
-	if ($_SESSION['RestrictLocations'] == 0) {
-		$SQL = "SELECT workorders.loccode,
-						locations.locationname,
-						workorders.closed,
-						stockcategory.wipact,
-						stockcategory.stockact
-					FROM workorders
-					INNER JOIN locations
-						ON workorders.loccode=locations.loccode
-					INNER JOIN woitems
-						ON workorders.wo=woitems.wo
-					INNER JOIN stockmaster
-						ON woitems.stockid=stockmaster.stockid
-					INNER JOIN stockcategory
-						ON stockmaster.categoryid=stockcategory.categoryid
-					WHERE woitems.stockid='" . $_POST['StockID'] . "'
-						AND woitems.wo='" . $_POST['WO'] . "'";
-	} else {
-		$SQL = "SELECT workorders.loccode,
-						locations.locationname,
-						workorders.closed,
-						stockcategory.wipact,
-						stockcategory.stockact
-					FROM workorders
-					INNER JOIN locations
-						ON workorders.loccode=locations.loccode
-					INNER JOIN www_users
-						ON locations.loccode=www_users.defaultlocation
-					INNER JOIN woitems
-						ON workorders.wo=woitems.wo
-					INNER JOIN stockmaster
-						ON woitems.stockid=stockmaster.stockid
-					INNER JOIN stockcategory
-						ON stockmaster.categoryid=stockcategory.categoryid
-					WHERE woitems.stockid='" . $_POST['StockID'] . "'
-						AND woitems.wo='" . $_POST['WO'] . "'
-						AND www_users.userid='" . $_SESSION['UserID'] . "'";
-	}
+	$SQL = "SELECT workorders.loccode,
+					locations.locationname,
+					workorders.closed,
+					stockcategory.wipact,
+					stockcategory.stockact
+				FROM workorders
+				INNER JOIN locations
+					ON workorders.loccode=locations.loccode
+				INNER JOIN woitems
+					ON workorders.wo=woitems.wo
+				INNER JOIN stockmaster
+					ON woitems.stockid=stockmaster.stockid
+				INNER JOIN stockcategory
+					ON stockmaster.categoryid=stockcategory.categoryid
+				WHERE woitems.stockid='" . $_POST['StockID'] . "'
+					AND woitems.wo='" . $_POST['WO'] . "'";
 	$WOResult = DB_query($SQL, $ErrMsg);
 
 	if (DB_num_rows($WOResult) == 0) {

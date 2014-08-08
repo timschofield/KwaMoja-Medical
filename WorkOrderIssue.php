@@ -139,7 +139,7 @@ if (isset($_POST['Process'])) { //user hit the process the work order issues ent
 			INNER JOIN stockcosts
 				ON stockcosts.stockid=stockmaster.stockid
 					AND stockcosts.succeeded=0
-			WHERE stockid='" . $_POST['IssueItem'] . "'";
+			WHERE stockcosts.stockid='" . $_POST['IssueItem'] . "'";
 	$Result = DB_query($SQL);
 	$IssueItemRow = DB_fetch_array($Result);
 
@@ -567,9 +567,15 @@ if (!isset($_POST['IssueItem'])) {
 	}
 	echo '</select>';
 } else {
-	$LocResult = DB_query("SELECT loccode, locationname
-						FROM locations
-						WHERE loccode='" . $_POST['FromLocation'] . "'");
+	$LocSql = "SELECT locations.loccode,
+					locationname
+				FROM locations
+				INNER JOIN locationusers
+					ON locationusers.loccode=locations.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canupd=1
+				WHERE locations.loccode='" . $_POST['FromLocation'] . "'";
+	$LocResult = DB_query($LocSql);
 	$LocRow = DB_fetch_array($LocResult);
 	echo '<input type="hidden" name="FromLocation" value="' . $_POST['FromLocation'] . '" />';
 	echo $LocRow['locationname'];

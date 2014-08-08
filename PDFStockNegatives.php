@@ -13,46 +13,27 @@ $Title = _('Negative Stock Listing Error');
 $ErrMsg = _('An error occurred retrieving the negative quantities.');
 $DbgMsg = _('The sql that failed to retrieve the negative quantities was');
 
-if ($_SESSION['RestrictLocations'] == 0) {
-	$SQL = "SELECT stockmaster.stockid,
-					stockmaster.description,
+$SQL = "SELECT stockmaster.stockid,
+				stockmaster.description,
+				stockmaster.categoryid,
+				stockmaster.decimalplaces,
+				locstock.loccode,
+				locations.locationname,
+				locstock.quantity
+			FROM stockmaster
+			INNER JOIN locstock
+				ON stockmaster.stockid=locstock.stockid
+			INNER JOIN locations
+				ON locstock.loccode = locations.loccode
+			INNER JOIN locationusers
+				ON locationusers.loccode=locations.loccode
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canview=1
+			WHERE locstock.quantity < 0
+			ORDER BY locstock.loccode,
 					stockmaster.categoryid,
-					stockmaster.decimalplaces,
-					locstock.loccode,
-					locations.locationname,
-					locstock.quantity
-				FROM stockmaster
-				INNER JOIN locstock
-					ON stockmaster.stockid=locstock.stockid
-				INNER JOIN locations
-					ON locstock.loccode = locations.loccode
-				WHERE locstock.quantity < 0
-				ORDER BY locstock.loccode,
-						stockmaster.categoryid,
-						stockmaster.stockid,
-						stockmaster.decimalplaces";
-} else {
-	$SQL = "SELECT stockmaster.stockid,
-					stockmaster.description,
-					stockmaster.categoryid,
-					stockmaster.decimalplaces,
-					locstock.loccode,
-					locations.locationname,
-					locstock.quantity
-				FROM stockmaster
-				INNER JOIN locstock
-					ON stockmaster.stockid=locstock.stockid
-				INNER JOIN locations
-					ON locstock.loccode = locations.loccode
-				INNER JOIN www_users
-					ON locations.loccode=www_users.defaultlocation
-				WHERE locstock.quantity < 0
-					AND www_users.userid='" . $_SESSION['UserID'] . "'
-				ORDER BY locstock.loccode,
-						stockmaster.categoryid,
-						stockmaster.stockid,
-						stockmaster.decimalplaces";
-}
+					stockmaster.stockid,
+					stockmaster.decimalplaces";
 
 $Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 

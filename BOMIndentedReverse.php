@@ -165,9 +165,14 @@ if (isset($_POST['PrintPDF'])) {
 	$SQL = "SELECT tempbom.*,
 				   stockmaster.description,
 				   stockmaster.mbflag
-			  FROM tempbom INNER JOIN stockmaster
-			  ON tempbom.parent = stockmaster.stockid
-			  ORDER BY sortpart";
+				FROM tempbom
+				INNER JOIN stockmaster
+					ON tempbom.parent = stockmaster.stockid
+				INNER JOIN locationusers
+					ON locationusers.loccode=tempbom.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canview=1
+				ORDER BY sortpart";
 	$Result = DB_query($SQL);
 
 	$ListCount = DB_num_rows($Result);

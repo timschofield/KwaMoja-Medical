@@ -43,10 +43,15 @@ if (isset($_GET['GRNNo']) and isset($_POST['SupplierID'])) {
 					purchorderdetails.stdcostunit,
 					purchorders.intostocklocation,
 					purchorders.orderno
-			FROM grns INNER JOIN purchorderdetails
-			ON grns.podetailitem=purchorderdetails.podetailitem
+			FROM grns
+			INNER JOIN purchorderdetails
+				ON grns.podetailitem=purchorderdetails.podetailitem
 			INNER JOIN purchorders
-			ON purchorderdetails.orderno = purchorders.orderno
+				ON purchorderdetails.orderno = purchorders.orderno
+			INNER JOIN locationusers
+				ON locationusers.loccode=purchorders.intostocklocation
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canupd=1
 			WHERE grnno='" . $_GET['GRNNo'] . "'";
 
 	$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('Could not get the details of the GRN selected for reversal because') . ' ';
@@ -360,41 +365,26 @@ if (isset($_GET['GRNNo']) and isset($_POST['SupplierID'])) {
 
 	if (isset($_POST['ShowGRNS'])) {
 
-		if ($_SESSION['RestrictLocations'] == 0) {
-			$SQL = "SELECT grnno,
-							grnbatch,
-							itemcode,
-							itemdescription,
-							deliverydate,
-							qtyrecd,
-							quantityinv,
-							qtyrecd-quantityinv AS qtytoreverse
-						FROM grns
-						WHERE grns.supplierid = '" . $_POST['SupplierID'] . "'
-							AND (grns.qtyrecd-grns.quantityinv) >0
-							AND deliverydate>='" . FormatDateForSQL($_POST['RecdAfterDate']) . "'";
-		} else {
-			$SQL = "SELECT grnno,
-							grnbatch,
-							itemcode,
-							itemdescription,
-							deliverydate,
-							qtyrecd,
-							quantityinv,
-							qtyrecd-quantityinv AS qtytoreverse
-						FROM grns
-						INNER JOIN stockmoves
-							ON grns.grnbatch=stockmoves.transno
-							AND stockmoves.type=25
-						INNER JOIN locations
-							ON stockmoves.loccode=locations.loccode
-						INNER JOIN www_users
-							ON locations.loccode=www_users.defaultlocation
-						WHERE grns.supplierid = '" . $_POST['SupplierID'] . "'
-							AND (grns.qtyrecd-grns.quantityinv) >0
-							AND deliverydate>='" . FormatDateForSQL($_POST['RecdAfterDate']) . "'
-							AND www_users.userid='" . $_SESSION['UserID'] . "'";
-		}
+		$SQL = "SELECT grnno,
+						grnbatch,
+						grns.itemcode,
+						grns.itemdescription,
+						grns.deliverydate,
+						qtyrecd,
+						quantityinv,
+						qtyrecd-quantityinv AS qtytoreverse
+					FROM grns
+					INNER JOIN purchorderdetails
+						ON purchorderdetails.podetailitem=grns.podetailitem
+					INNER JOIN purchorders
+						ON purchorders.orderno = purchorderdetails.orderno
+					INNER JOIN locationusers
+						ON locationusers.loccode=purchorders.intostocklocation
+						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.canupd=1
+					WHERE grns.supplierid = '" . $_POST['SupplierID'] . "'
+						AND (grns.qtyrecd-grns.quantityinv) >0
+						AND grns.deliverydate>='" . FormatDateForSQL($_POST['RecdAfterDate']) ."'";
 
 		$ErrMsg = _('An error occurred in the attempt to get the outstanding GRNs for') . ' ' . $_POST['SuppName'] . '. ' . _('The message was') . ':';
 		$DbgMsg = _('The SQL that failed was') . ':';

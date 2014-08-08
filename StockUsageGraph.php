@@ -21,11 +21,16 @@ if ($_GET['StockLocation'] == 'All') {
 	$SQL = "SELECT periods.periodno,
 			periods.lastdate_in_period,
 			SUM(-stockmoves.qty) AS qtyused
-		FROM stockmoves INNER JOIN periods
+		FROM stockmoves
+		INNER JOIN periods
 			ON stockmoves.prd=periods.periodno
+		INNER JOIN locationusers
+			ON locationusers.loccode=stockmoves.loccode
+			AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+			AND locationusers.canview=1
 		WHERE (stockmoves.type=10 OR stockmoves.type=11 OR stockmoves.type=28)
-		AND stockmoves.hidemovt=0
-		AND stockmoves.stockid = '" . trim(mb_strtoupper($_GET['StockID'])) . "'
+			AND stockmoves.hidemovt=0
+			AND stockmoves.stockid = '" . trim(mb_strtoupper($_GET['StockID'])) . "'
 		GROUP BY periods.periodno,
 			periods.lastdate_in_period
 		ORDER BY periodno  LIMIT 24";
@@ -33,12 +38,17 @@ if ($_GET['StockLocation'] == 'All') {
 	$SQL = "SELECT periods.periodno,
 			periods.lastdate_in_period,
 			SUM(-stockmoves.qty) AS qtyused
-		FROM stockmoves INNER JOIN periods
+		FROM stockmoves
+		INNER JOIN periods
 			ON stockmoves.prd=periods.periodno
+		INNER JOIN locationusers
+			ON locationusers.loccode=stockmoves.loccode
+			AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+			AND locationusers.canview=1
 		WHERE (stockmoves.type=10 Or stockmoves.type=11 OR stockmoves.type=28)
-		AND stockmoves.hidemovt=0
-		AND stockmoves.loccode='" . $_GET['StockLocation'] . "'
-		AND stockmoves.stockid = '" . trim(mb_strtoupper($_GET['StockID'])) . "'
+			AND stockmoves.hidemovt=0
+			AND stockmoves.loccode='" . $_GET['StockLocation'] . "'
+			AND stockmoves.stockid = '" . trim(mb_strtoupper($_GET['StockID'])) . "'
 		GROUP BY periods.periodno,
 			periods.lastdate_in_period
 		ORDER BY periodno  LIMIT 24";

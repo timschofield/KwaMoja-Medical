@@ -58,19 +58,14 @@ echo '<tr>
 
 echo _('From Stock Location') . ':<select required="required" minlength="1" name="StockLocation">';
 
-if ($_SESSION['RestrictLocations'] == 0) {
-	$SQL = "SELECT locationname,
-					loccode
-				FROM locations";
-	echo '<option selected="selected" value="All">' . _('All Locations') . '</option>';
-} else {
-	$SQL = "SELECT locationname,
-					loccode
-				FROM locations
-				INNER JOIN www_users
-					ON locations.loccode=www_users.defaultlocation
-				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-}
+$SQL = "SELECT locationname,
+				locations.loccode
+			FROM locations
+			INNER JOIN locationusers
+				ON locationusers.loccode=locations.loccode
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canview=1";
+echo '<option selected="selected" value="All">' . _('All Locations') . '</option>';
 $ResultStkLocs = DB_query($SQL);
 while ($MyRow = DB_fetch_array($ResultStkLocs)) {
 	if (isset($_POST['StockLocation'])) {
@@ -105,12 +100,18 @@ if (isset($_POST['ShowUsage'])) {
 	if ($_POST['StockLocation'] == 'All') {
 		$SQL = "SELECT periods.periodno,
 				periods.lastdate_in_period,
+				canview,
 				SUM(CASE WHEN (stockmoves.type=10 Or stockmoves.type=11 OR stockmoves.type=28)
 							AND stockmoves.hidemovt=0
 							AND stockmoves.stockid = '" . $StockID . "'
 						THEN -stockmoves.qty ELSE 0 END) AS qtyused
-				FROM periods LEFT JOIN stockmoves
+				FROM periods
+				LEFT JOIN stockmoves
 					ON periods.periodno=stockmoves.prd
+				INNER JOIN locationusers
+					ON locationusers.loccode=stockmoves.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canview=1
 				WHERE periods.periodno <='" . $CurrentPeriod . "'
 				GROUP BY periods.periodno,
 					periods.lastdate_in_period

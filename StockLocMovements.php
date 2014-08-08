@@ -15,24 +15,16 @@ echo '<table class="selection">
 	 <tr>
 		 <td>  ' . _('From Stock Location') . ':<select required="required" minlength="1" name="StockLocation"> ';
 
-if ($_SESSION['RestrictLocations'] == 0) {
-	$SQL = "SELECT locationname,
-					loccode
-				FROM locations";
-	echo '<option selected="selected" value="All">' . _('All Locations') . '</option>';
-	if (!isset($_POST['StockLocation'])) {
-		$_POST['StockLocation'] = 'All';
-	}
-} else {
-	$SQL = "SELECT locationname,
-					loccode
-				FROM locations
-				INNER JOIN www_users
-					ON locations.loccode=www_users.defaultlocation
-				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-	if (!isset($_POST['StockLocation'])) {
-		$_POST['StockLocation'] = $_SESSION['UserStockLocation'];
-	}
+$SQL = "SELECT locationname,
+				locations.loccode
+			FROM locations
+			INNER JOIN locationusers
+				ON locationusers.loccode=locations.loccode
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canview=1";
+echo '<option selected="selected" value="All">' . _('All Locations') . '</option>';
+if (!isset($_POST['StockLocation'])) {
+	$_POST['StockLocation'] = 'All';
 }
 
 $ResultStkLocs = DB_query($SQL);

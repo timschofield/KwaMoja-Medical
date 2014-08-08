@@ -58,34 +58,22 @@ echo _('Stock Code') . ':<input type="text" name="StockID" size="21" value="' . 
 
 echo ' <input type="submit" name="ShowStatus" value="' . _('Show Stock Status') . '" />';
 
-if ($_SESSION['RestrictLocations'] == 0) {
-	$SQL = "SELECT locstock.loccode,
-					locations.locationname,
-					locstock.quantity,
-					locstock.reorderlevel,
-					locstock.bin,
-					locations.managed
+$SQL = "SELECT locstock.loccode,
+				locations.locationname,
+				locstock.quantity,
+				locstock.reorderlevel,
+				locstock.bin,
+				locations.managed,
+				canupd
 			FROM locstock
 			INNER JOIN locations
 				ON locstock.loccode=locations.loccode
+			INNER JOIN locationusers
+				ON locationusers.loccode=locations.loccode
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canview=1
 			WHERE locstock.stockid = '" . $StockID . "'
 			ORDER BY locations.locationname";
-} else {
-	$SQL = "SELECT locstock.loccode,
-					locations.locationname,
-					locstock.quantity,
-					locstock.reorderlevel,
-					locstock.bin,
-					locations.managed
-			FROM locstock
-			INNER JOIN locations
-				ON locstock.loccode=locations.loccode
-			INNER JOIN www_users
-				ON locations.loccode=www_users.defaultlocation
-			WHERE locstock.stockid = '" . $StockID . "'
-				AND www_users.userid='" . $_SESSION['UserID'] . "'
-			ORDER BY locations.locationname";
-}
 
 $ErrMsg = _('The stock held at each location cannot be retrieved because');
 $DbgMsg = _('The SQL that was used to fetch the location details and failed was');
@@ -252,9 +240,13 @@ while ($MyRow = DB_fetch_array($LocStockResult)) {
 		} else {
 			$Available = $MyRow['quantity'] - $DemandQty;
 		}
-
-		echo '<td>' . $MyRow['locationname'] . '</td>
-			<td><input type="text" name="BinLocation' . $MyRow['loccode'] . '" value="' . $MyRow['bin'] . '" minlength="0" maxlength="10" size="11" onchange="ReloadForm(UpdateBinLocations)"/></td>';
+		if ($myrow['canupd']==1) {
+			echo '<td>' . $MyRow['locationname'] . '</td>
+				<td><input type="text" name="BinLocation' . $MyRow['loccode'] . '" value="' . $MyRow['bin'] . '" minlength="0" maxlength="10" size="11" onchange="ReloadForm(UpdateBinLocations)"/></td>';
+		} else {
+			echo '<td>' . $myrow['locationname'] . '</td>
+				<td> ' . $myrow['bin'] . '</td>';
+		}
 
 		printf('<td class="number">%s</td>
 				<td class="number">%s</td>

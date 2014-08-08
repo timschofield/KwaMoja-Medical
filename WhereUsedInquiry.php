@@ -49,11 +49,16 @@ if (isset($StockID)) {
 
 	$SQL = "SELECT bom.*,
 				stockmaster.description
-			FROM bom INNER JOIN stockmaster
-			ON bom.parent = stockmaster.stockid
+			FROM bom
+			INNER JOIN stockmaster
+				ON bom.parent = stockmaster.stockid
+			INNER JOIN locationusers
+				ON locationusers.loccode=bom.loccode
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canview=1
 			WHERE component='" . $StockID . "'
-			AND bom.effectiveafter<=CURRENT_DATE
-			AND bom.effectiveto >=CURRENT_DATE";
+				AND bom.effectiveafter<=CURRENT_DATE
+				AND bom.effectiveto >=CURRENT_DATE";
 
 	$ErrMsg = _('The parents for the selected part could not be retrieved because');
 	$Result = DB_query($SQL, $ErrMsg);

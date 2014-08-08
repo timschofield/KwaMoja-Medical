@@ -130,18 +130,13 @@ if (!isset($StockID)) {
 		}
 		echo _('Work Order number') . ': <input type="text" autofocus="autofocus" name="WO" minlength="0" maxlength="8" size="9" />&nbsp; ' . _('Processing at') . ':<select minlength="0" name="StockLocation"> ';
 
-		if ($_SESSION['RestrictLocations'] == 0) {
-			$SQL = "SELECT locationname,
-							loccode
-						FROM locations";
-		} else {
-			$SQL = "SELECT locationname,
-							loccode
-						FROM locations
-						INNER JOIN www_users
-							ON locations.loccode=www_users.defaultlocation
-						WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-		}
+		$SQL = "SELECT locationname,
+						locations.loccode
+					FROM locations
+					INNER JOIN locationusers
+						ON locationusers.loccode=locations.loccode
+						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.canview=1";
 
 		$ResultStkLocs = DB_query($SQL);
 
@@ -270,10 +265,16 @@ if (!isset($StockID)) {
 								workorders.requiredby,
 								workorders.startdate
 						FROM workorders
-						INNER JOIN woitems ON workorders.wo=woitems.wo
-						INNER JOIN stockmaster ON woitems.stockid=stockmaster.stockid
+						INNER JOIN woitems
+							ON workorders.wo=woitems.wo
+						INNER JOIN stockmaster
+							ON woitems.stockid=stockmaster.stockid
+						INNER JOIN locationusers
+							ON locationusers.loccode=workorders.loccode
+							AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+							AND locationusers.canview=1
 						WHERE workorders.closed='" . $ClosedOrOpen . "'
-						AND workorders.wo='" . $SelectedWO . "'
+							AND workorders.wo='" . $SelectedWO . "'
 						ORDER BY workorders.wo,
 								woitems.stockid";
 		} else {
@@ -289,8 +290,14 @@ if (!isset($StockID)) {
 									workorders.requiredby,
 									workorders.startdate
 							FROM workorders
-							INNER JOIN woitems ON workorders.wo=woitems.wo
-							INNER JOIN stockmaster ON woitems.stockid=stockmaster.stockid
+							INNER JOIN woitems
+								ON workorders.wo=woitems.wo
+							INNER JOIN stockmaster
+								ON woitems.stockid=stockmaster.stockid
+							INNER JOIN locationusers
+								ON locationusers.loccode=workorders.loccode
+								AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+								AND locationusers.canview=1
 							WHERE workorders.closed='" . $ClosedOrOpen . "'
 							AND woitems.stockid='" . $SelectedStockItem . "'
 							AND workorders.loccode='" . $_POST['StockLocation'] . "'
@@ -306,8 +313,14 @@ if (!isset($StockID)) {
 									workorders.requiredby,
 									workorders.startdate
 							FROM workorders
-							INNER JOIN woitems ON workorders.wo=woitems.wo
-							INNER JOIN stockmaster ON woitems.stockid=stockmaster.stockid
+							INNER JOIN woitems
+								ON workorders.wo=woitems.wo
+							INNER JOIN stockmaster
+								ON woitems.stockid=stockmaster.stockid
+							INNER JOIN locationusers
+								ON locationusers.loccode=workorders.loccode
+								AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+								AND locationusers.canview=1
 							WHERE workorders.closed='" . $ClosedOrOpen . "'
 							AND workorders.loccode='" . $_POST['StockLocation'] . "'
 							ORDER BY workorders.wo,

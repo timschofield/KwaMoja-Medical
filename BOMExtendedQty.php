@@ -170,13 +170,21 @@ if (isset($_POST['PrintPDF'])) {
 				   (SELECT
 					  SUM(locstock.quantity) as invqty
 					  FROM locstock
+					  INNER JOIN locationusers
+						ON locationusers.loccode=locstock.loccode
+						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.canview=1
 					  WHERE locstock.stockid = tempbom.component
 					  GROUP BY locstock.stockid) AS qoh,
 				   (SELECT
 					  SUM(purchorderdetails.quantityord - purchorderdetails.quantityrecd) as netqty
 					  FROM purchorderdetails
 					  INNER JOIN purchorders
-					  ON purchorderdetails.orderno=purchorders.orderno
+						ON purchorderdetails.orderno=purchorders.orderno
+					  INNER JOIN locationusers
+						ON locationusers.loccode=purchorders.intostocklocation
+						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.canview=1
 					  WHERE purchorderdetails.itemcode = tempbom.component
 					  AND completed = 0
 					  AND (purchorders.status = 'Authorised' OR purchorders.status='Printed')
@@ -184,12 +192,21 @@ if (isset($_POST['PrintPDF'])) {
 				   (SELECT
 					  SUM(woitems.qtyreqd - woitems.qtyrecd) as netwoqty
 					  FROM woitems INNER JOIN workorders
-					  ON woitems.wo = workorders.wo
+						ON woitems.wo = workorders.wo
+					  INNER JOIN locationusers
+						ON locationusers.loccode=workorders.loccode
+						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.canview=1
 					  WHERE woitems.stockid = tempbom.component
 					  AND workorders.closed=0
 					  GROUP BY woitems.stockid) AS woqty
-			  FROM tempbom INNER JOIN stockmaster
-			  ON tempbom.component = stockmaster.stockid
+			  FROM tempbom
+			  INNER JOIN stockmaster
+				ON tempbom.component = stockmaster.stockid
+			  INNER JOIN locationusers
+				ON locationusers.loccode=tempbom.loccode
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canview=1
 			  GROUP BY tempbom.component,
 					   stockmaster.description,
 					   stockmaster.decimalplaces,

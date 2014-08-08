@@ -158,6 +158,20 @@ if (isset($_POST['submit'])) {
 		prnMsg(_('The selected user record has been updated'), 'success');
 	} elseif ($InputError != 1) {
 
+		$LocationSql = "INSERT INTO locationusers (loccode,
+													userid,
+													canview,
+													canupd
+												) VALUES (
+													'" . $_POST['DefaultLocation'] . "',
+													'" . $_POST['UserID'] . "',
+													1,
+													1
+												)";
+		$ErrMsg = _('The default user locations could not be processed because');
+		$DbgMsg = _('The SQL that was used to update the user locations and failed was');
+		$Result = DB_query($LocationSql, $ErrMsg, $DbgMsg);
+
 		$SQL = "INSERT INTO www_users (userid,
 						realname,
 						customerid,

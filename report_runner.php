@@ -16,7 +16,7 @@
 //you must tell the script where you main installation is located
 //Rememeber this is different for each location
 
-$usage = "USAGE\n" . $argv[0] . ":\n" . "     -r reportnumber (the number of the report)\n" . "     -n reportname   (the name you want to give the report)\n" . "     -e emailaddress[;emailaddress;emailaddres...] (who you want to send it to)\n" . "     -d database name (the mysql db to use for the data for the report)\n" . "     [-t reporttext ]  (some words you want to send with the report-optional)\n" . "     [ -H HOMEDIR]  (the home directory for" .  $ProjectName " - or edit the php file)\n";
+$usage = "USAGE\n" . $argv[0] . ":\n" . "     -r reportnumber (the number of the report)\n" . "     -n reportname   (the name you want to give the report)\n" . "     -e emailaddress[;emailaddress;emailaddres...] (who you want to send it to)\n" . "     -d database name (the mysql db to use for the data for the report)\n" . "     [-t reporttext ]  (some words you want to send with the report-optional)\n" . "     [ -H HOMEDIR]  (the home directory for" .  $ProjectName . " - or edit the php file)\n";
 
 if ($argc < 7) {
 	echo $usage;

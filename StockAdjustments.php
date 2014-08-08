@@ -62,7 +62,6 @@ if ($NewAdjustment == true) {
 	if (!isset($_SESSION['Adjustment' . $identifier]->Quantity) or !is_numeric($_SESSION['Adjustment' . $identifier]->Quantity)) {
 		$_SESSION['Adjustment' . $identifier]->Quantity = 0;
 	}
-
 	$_SESSION['Adjustment' . $identifier]->PartUnit = $MyRow['units'];
 	$_SESSION['Adjustment' . $identifier]->StandardCost = $MyRow['totalcost'];
 	$DecimalPlaces = $MyRow['decimalplaces'];
@@ -77,18 +76,14 @@ if (isset($_POST['Narrative'])) {
 	$_SESSION['Adjustment' . $identifier]->Narrative = $_POST['Narrative'];
 }
 
-if ($_SESSION['RestrictLocations'] == 0) {
-	$SQL = "SELECT locationname,
-					loccode
-				FROM locations";
-} else {
-	$SQL = "SELECT locationname,
-					loccode
-				FROM locations
-				INNER JOIN www_users
-					ON locations.loccode=www_users.defaultlocation
-				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-}
+$SQL = "SELECT locationname,
+				locations.loccode
+			FROM locations
+			INNER JOIN locationusers
+				ON locationusers.loccode=locations.loccode
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canupd=1";
+
 $ResultStkLocs = DB_query($SQL);
 $LocationList = array();
 while ($MyRow = DB_fetch_array($ResultStkLocs)) {
@@ -500,6 +495,7 @@ echo '<tr>
 		<td>' . _('Adjustment Quantity') . ':</td>';
 
 echo '<td>';
+
 if ($Controlled == 1) {
 	if ($_SESSION['Adjustment' . $identifier]->StockLocation == '') {
 		$_SESSION['Adjustment' . $identifier]->StockLocation = $_SESSION['UserStockLocation'];

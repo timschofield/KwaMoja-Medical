@@ -14,7 +14,15 @@ echo '<div class="centre">' . _('Making a comma separated values file of the cur
 
 $ErrMsg = _('The SQL to get the stock quantities failed with the message');
 
-$SQL = "SELECT stockid, SUM(quantity) FROM locstock GROUP BY stockid HAVING SUM(quantity)<>0";
+$SQL = "SELECT stockid,
+				SUM(quantity)
+			FROM locstock
+			INNER JOIN locationusers
+				ON locationusers.loccode=locstock.loccode
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canview=1
+				GROUP BY stockid
+				HAVING SUM(quantity)<>0";
 $Result = DB_query($SQL, $ErrMsg);
 
 if (!file_exists($_SESSION['reports_dir'])) {

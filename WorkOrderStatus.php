@@ -22,50 +22,29 @@ if (isset($_GET['StockID'])) {
 
 $ErrMsg = _('Could not retrieve the details of the selected work order item');
 
-if ($_SESSION['RestrictLocations'] == 0) {
-	$SQL = "SELECT workorders.loccode,
-					locations.locationname,
-					workorders.requiredby,
-					workorders.startdate,
-					workorders.closed,
-					stockmaster.description,
-					stockmaster.decimalplaces,
-					stockmaster.units,
-					woitems.qtyreqd,
-					woitems.qtyrecd
-				FROM workorders
-				INNER JOIN locations
-					ON workorders.loccode=locations.loccode
-				INNER JOIN woitems
-					ON workorders.wo=woitems.wo
-				INNER JOIN stockmaster
-					ON woitems.stockid=stockmaster.stockid
-				WHERE woitems.stockid='" . $StockID . "'
-					AND woitems.wo ='" . $SelectedWO . "'";
-} else {
-	$SQL = "SELECT workorders.loccode,
-					locations.locationname,
-					workorders.requiredby,
-					workorders.startdate,
-					workorders.closed,
-					stockmaster.description,
-					stockmaster.decimalplaces,
-					stockmaster.units,
-					woitems.qtyreqd,
-					woitems.qtyrecd
-				FROM workorders
-				INNER JOIN locations
-					ON workorders.loccode=locations.loccode
-				INNER JOIN www_users
-					ON locations.loccode=www_users.defaultlocation
-				INNER JOIN woitems
-					ON workorders.wo=woitems.wo
-				INNER JOIN stockmaster
-					ON woitems.stockid=stockmaster.stockid
-				WHERE woitems.stockid='" . $StockID . "'
-					AND woitems.wo ='" . $SelectedWO . "'
-					AND www_users.userid='" . $_SESSION['UserID'] . "'";
-}
+$SQL = "SELECT workorders.loccode,
+				locations.locationname,
+				workorders.requiredby,
+				workorders.startdate,
+				workorders.closed,
+				stockmaster.description,
+				stockmaster.decimalplaces,
+				stockmaster.units,
+				woitems.qtyreqd,
+				woitems.qtyrecd
+			FROM workorders
+			INNER JOIN locations
+				ON workorders.loccode=locations.loccode
+			INNER JOIN woitems
+				ON workorders.wo=woitems.wo
+			INNER JOIN stockmaster
+				ON woitems.stockid=stockmaster.stockid
+			INNER JOIN locationusers
+				ON locationusers.loccode=locations.loccode
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canview=1
+			WHERE woitems.stockid='" . $StockID . "'
+				AND woitems.wo ='" . $SelectedWO . "'";
 
 $WOResult = DB_query($SQL, $ErrMsg);
 

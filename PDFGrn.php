@@ -48,8 +48,15 @@ if ($GRNNo == 'Preview') {
 				purchorderdetails.conversionfactor,
 				stockmaster.units,
 				stockmaster.decimalplaces
-			FROM grns INNER JOIN purchorderdetails
-			ON grns.podetailitem=purchorderdetails.podetailitem
+			FROM grns
+			INNER JOIN purchorderdetails
+				ON grns.podetailitem=purchorderdetails.podetailitem
+			INNER JOIN purchorders
+				ON purchorders.orderno = purchorderdetails.orderno
+			INNER JOIN locationusers
+				ON locationusers.loccode=purchorders.intostocklocation
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canview=1
 			LEFT JOIN stockmaster
 			ON grns.itemcode=stockmaster.stockid
 			WHERE grnbatch='" . $GRNNo . "'";

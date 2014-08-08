@@ -21,8 +21,13 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				bom.workcentreadded,
 				bom.effectiveto AS eff_to,
 				bom.effectiveafter AS eff_frm
-			FROM stockmaster INNER JOIN bom
+			FROM stockmaster
+			INNER JOIN bom
 				ON stockmaster.stockid=bom.component
+			INNER JOIN locationusers
+				ON locationusers.loccode=bom.loccode
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canview=1
 			WHERE bom.parent >= '" . $_POST['FromCriteria'] . "'
 				AND bom.parent <= '" . $_POST['ToCriteria'] . "'
 				AND bom.effectiveto >= CURRENT_DATE

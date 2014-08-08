@@ -45,6 +45,12 @@ elseif (isset($_POST['ViewingOnly']) and $_POST['ViewingOnly'] != '') {
 	$ViewingOnly = $_POST['ViewingOnly'];
 } //isset($_POST['ViewingOnly']) and $_POST['ViewingOnly'] != ''
 
+$PricesSecurity = 1000;//don't show pricing info unless security token 1000 available to user
+if (!in_array($PricesSecurity, $_SESSION['AllowedPageSecurityTokens']) or !isset($PricesSecurity)) {
+	$ViewingOnly = 1;
+	$_POST['ShowAmounts'] = _('No');
+}
+
 /* If we are previewing the order then we dont want to email it */
 if ($OrderNo == 'Preview') { //OrderNo is set to 'Preview' when just looking at the format of the printed order
 	$_POST['PrintOrEmail'] = 'Print';
@@ -94,7 +100,8 @@ if (isset($OrderNo) and $OrderNo != '' and $OrderNo > 0 and $OrderNo != 'Preview
 					purchorders.stat_comment,
 					currencies.currency,
 					currencies.decimalplaces AS currdecimalplaces
-				FROM purchorders INNER JOIN suppliers
+				FROM purchorders
+				INNER JOIN suppliers
 					ON purchorders.supplierno = suppliers.supplierid
 				INNER JOIN currencies
 					ON suppliers.currcode=currencies.currabrev
@@ -102,6 +109,10 @@ if (isset($OrderNo) and $OrderNo != '' and $OrderNo > 0 and $OrderNo != 'Preview
 					ON purchorders.initiator=users1.userid
 				INNER JOIN www_users users2
 					ON purchorders.authoriser=users2.userid
+				INNER JOIN locationusers
+					ON locationusers.loccode=purchorders.intostocklocation
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canview=1
 				WHERE purchorders.orderno='" . $OrderNo . "'";
 	$Result = DB_query($SQL, $ErrMsg);
 	if (DB_num_rows($Result) == 0) {

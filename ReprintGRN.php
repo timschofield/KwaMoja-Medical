@@ -53,13 +53,20 @@ if (isset($_POST['Show'])) {
 				grns.qtyrecd,
 				suppliers.suppname,
 				stockmaster.decimalplaces
-			FROM grns INNER JOIN suppliers
-			ON grns.supplierid=suppliers.supplierid
+			FROM grns
+			INNER JOIN suppliers
+				ON grns.supplierid=suppliers.supplierid
 			INNER JOIN purchorderdetails
-			ON grns.podetailitem=purchorderdetails.podetailitem
+				ON grns.podetailitem=purchorderdetails.podetailitem
+			INNER JOIN purchorders
+				ON purchorders.orderno=purchorderdetails.orderno
 			LEFT JOIN stockmaster
-			ON grns.itemcode=stockmaster.stockid
-			WHERE orderno='" . $_POST['PONumber'] . "'";
+				ON grns.itemcode=stockmaster.stockid
+			INNER JOIN locationusers
+				ON locationusers.loccode=purchorders.intostocklocation
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canview=1
+			WHERE purchorderdetails.orderno='" . $_POST['PONumber'] ."'";
 	$Result = DB_query($SQL);
 	if (DB_num_rows($Result) == 0) {
 		echo '<br />';

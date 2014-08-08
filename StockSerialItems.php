@@ -47,9 +47,16 @@ if ($MyRow['mbflag'] == 'K' or $MyRow['mbflag'] == 'A' or $MyRow['mbflag'] == 'D
 	exit;
 }
 
-$Result = DB_query("SELECT locationname
-						FROM locations
-						WHERE loccode='" . $_GET['Location'] . "'", _('Could not retrieve the stock location of the item because'), _('The SQL used to lookup the location was'));
+$LocationsSQL = "SELECT locationname
+					FROM locations
+					INNER JOIN locationusers
+						ON locationusers.loccode=locations.loccode
+						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.canview=1
+					WHERE locations.loccode='" . $_GET['Location'] . "'";
+$ErrMsg = _('Could not retrieve the stock location of the item because');
+$DbgMsg = _('The SQL used to lookup the location was');
+$Result = DB_query($LocationsSQL, $ErrMsg, $DbgMsg);
 
 $MyRow = DB_fetch_row($Result);
 
@@ -57,9 +64,13 @@ $SQL = "SELECT serialno,
 				quantity,
 				expirationdate
 			FROM stockserialitems
-			WHERE loccode='" . $_GET['Location'] . "'
-			AND stockid = '" . $StockID . "'
-			AND quantity <>0";
+			INNER JOIN locationusers
+				ON locationusers.loccode=stockserialitems.loccode
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canview=1
+			WHERE stockserialitems.loccode='" . $_GET['Location'] . "'
+				AND stockid = '" . $StockID . "'
+				AND quantity <>0";
 
 
 $ErrMsg = _('The serial numbers/batches held cannot be retrieved because');

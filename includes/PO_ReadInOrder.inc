@@ -15,102 +15,56 @@ $_SESSION['PO' . $identifier]->GLLink = $_SESSION['CompanyRecord']['gllink_stock
 
 /*read in all the guff from the selected order into the PO PurchOrder Class variable  */
 
-if ($_SESSION['RestrictLocations'] == 0) {
-	$OrderHeaderSQL = "SELECT purchorders.supplierno,
-								suppliers.suppname,
-								purchorders.comments,
-								purchorders.orddate,
-								purchorders.rate,
-								purchorders.dateprinted,
-								purchorders.deladd1,
-								purchorders.deladd2,
-								purchorders.deladd3,
-								purchorders.deladd4,
-								purchorders.deladd5,
-								purchorders.deladd6,
-								purchorders.tel,
-								purchorders.suppdeladdress1,
-								purchorders.suppdeladdress2,
-								purchorders.suppdeladdress3,
-								purchorders.suppdeladdress4,
-								purchorders.suppdeladdress5,
-								purchorders.suppdeladdress6,
-								purchorders.suppliercontact,
-								purchorders.supptel,
-								purchorders.contact,
-								purchorders.allowprint,
-								purchorders.requisitionno,
-								purchorders.intostocklocation,
-								purchorders.initiator,
-								purchorders.authoriser,
-								purchorders.version,
-								purchorders.status,
-								purchorders.stat_comment,
-								purchorders.deliverydate,
-								purchorders.deliveryby,
-								purchorders.port,
-								suppliers.currcode,
-								locations.managed,
-								purchorders.paymentterms,
-								currencies.decimalplaces
-							FROM purchorders
-							INNER JOIN locations
-								ON purchorders.intostocklocation=locations.loccode
-							INNER JOIN suppliers
-								ON purchorders.supplierno = suppliers.supplierid
-							INNER JOIN currencies
-								ON suppliers.currcode=currencies.currabrev
-							WHERE purchorders.orderno = '" . $_GET['ModifyOrderNumber'] . "'";
-} else {
-	$OrderHeaderSQL = "SELECT purchorders.supplierno,
-								suppliers.suppname,
-								purchorders.comments,
-								purchorders.orddate,
-								purchorders.rate,
-								purchorders.dateprinted,
-								purchorders.deladd1,
-								purchorders.deladd2,
-								purchorders.deladd3,
-								purchorders.deladd4,
-								purchorders.deladd5,
-								purchorders.deladd6,
-								purchorders.tel,
-								purchorders.suppdeladdress1,
-								purchorders.suppdeladdress2,
-								purchorders.suppdeladdress3,
-								purchorders.suppdeladdress4,
-								purchorders.suppdeladdress5,
-								purchorders.suppdeladdress6,
-								purchorders.suppliercontact,
-								purchorders.supptel,
-								purchorders.contact,
-								purchorders.allowprint,
-								purchorders.requisitionno,
-								purchorders.intostocklocation,
-								purchorders.initiator,
-								purchorders.authoriser,
-								purchorders.version,
-								purchorders.status,
-								purchorders.stat_comment,
-								purchorders.deliverydate,
-								purchorders.deliveryby,
-								purchorders.port,
-								suppliers.currcode,
-								locations.managed,
-								purchorders.paymentterms,
-								currencies.decimalplaces
-							FROM purchorders
-							INNER JOIN locations
-								ON purchorders.intostocklocation=locations.loccode
-							INNER JOIN www_users
-								ON locations.loccode=www_users.defaultlocation
-							INNER JOIN suppliers
-								ON purchorders.supplierno = suppliers.supplierid
-							INNER JOIN currencies
-								ON suppliers.currcode=currencies.currabrev
-							WHERE purchorders.orderno = '" . $_GET['ModifyOrderNumber'] . "'
-								AND www_users.userid='" . $_SESSION['UserID'] . "'";
-}
+$OrderHeaderSQL = "SELECT purchorders.supplierno,
+							suppliers.suppname,
+							purchorders.comments,
+							purchorders.orddate,
+							purchorders.rate,
+							purchorders.dateprinted,
+							purchorders.deladd1,
+							purchorders.deladd2,
+							purchorders.deladd3,
+							purchorders.deladd4,
+							purchorders.deladd5,
+							purchorders.deladd6,
+							purchorders.tel,
+							purchorders.suppdeladdress1,
+							purchorders.suppdeladdress2,
+							purchorders.suppdeladdress3,
+							purchorders.suppdeladdress4,
+							purchorders.suppdeladdress5,
+							purchorders.suppdeladdress6,
+							purchorders.suppliercontact,
+							purchorders.supptel,
+							purchorders.contact,
+							purchorders.allowprint,
+							purchorders.requisitionno,
+							purchorders.intostocklocation,
+							purchorders.initiator,
+							purchorders.authoriser,
+							purchorders.version,
+							purchorders.status,
+							purchorders.stat_comment,
+							purchorders.deliverydate,
+							purchorders.deliveryby,
+							purchorders.port,
+							suppliers.currcode,
+							locations.managed,
+							purchorders.paymentterms,
+							currencies.decimalplaces
+						FROM purchorders
+						INNER JOIN locations
+							ON purchorders.intostocklocation=locations.loccode
+						INNER JOIN suppliers
+							ON purchorders.supplierno = suppliers.supplierid
+						INNER JOIN currencies
+							ON suppliers.currcode=currencies.currabrev
+						INNER JOIN locationusers
+							ON locationusers.loccode=locations.loccode
+							AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+							AND locationusers.canupd=1
+						WHERE purchorders.orderno = '" . $_GET['ModifyOrderNumber'] . "'";
+
 $ErrMsg = _('The order cannot be retrieved because');
 $DbgMsg = _('The SQL statement that was used and failed was');
 $GetOrdHdrResult = DB_query($OrderHeaderSQL, $ErrMsg, $DbgMsg);

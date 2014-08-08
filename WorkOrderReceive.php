@@ -48,66 +48,37 @@ if (isset($_POST['Process'])) { //user hit the process the work order receipts e
 
 	$InputError = false; //ie assume no problems for a start - ever the optimist
 	$ErrMsg = _('Could not retrieve the details of the selected work order item');
-	if ($_SESSION['RestrictLocations'] == 0) {
-		$SQL = "SELECT workorders.loccode,
-						locations.locationname,
-						workorders.requiredby,
-						workorders.startdate,
-						workorders.closed,
-						stockmaster.description,
-						stockmaster.controlled,
-						stockmaster.serialised,
-						stockmaster.decimalplaces,
-						stockmaster.units,
-						stockmaster.perishable,
-						woitems.qtyreqd,
-						woitems.qtyrecd,
-						woitems.stdcost,
-						stockcategory.wipact,
-						stockcategory.stockact
-					FROM workorders
-					INNER JOIN locations
-						ON workorders.loccode=locations.loccode
-					INNER JOIN woitems
-						ON workorders.wo=woitems.wo
-					INNER JOIN stockmaster
-						ON woitems.stockid=stockmaster.stockid
-					INNER JOIN stockcategory
-						ON stockmaster.categoryid=stockcategory.categoryid
-					WHERE woitems.stockid='" . $_POST['StockID'] . "'
-						AND workorders.wo='" . $_POST['WO'] . "'";
-	} else {
-		$SQL = "SELECT workorders.loccode,
-						locations.locationname,
-						workorders.requiredby,
-						workorders.startdate,
-						workorders.closed,
-						stockmaster.description,
-						stockmaster.controlled,
-						stockmaster.serialised,
-						stockmaster.decimalplaces,
-						stockmaster.units,
-						stockmaster.perishable,
-						woitems.qtyreqd,
-						woitems.qtyrecd,
-						woitems.stdcost,
-						stockcategory.wipact,
-						stockcategory.stockact
-					FROM workorders
-					INNER JOIN locations
-						ON workorders.loccode=locations.loccode
-					INNER JOIN www_users
-						ON locations.loccode=www_users.defaultlocation
-					INNER JOIN woitems
-						ON workorders.wo=woitems.wo
-					INNER JOIN stockmaster
-						ON woitems.stockid=stockmaster.stockid
-					INNER JOIN stockcategory
-						ON stockmaster.categoryid=stockcategory.categoryid
-					WHERE woitems.stockid='" . $_POST['StockID'] . "'
-						AND workorders.wo='" . $_POST['WO'] . "'
-						AND www_users.userid='" . $_SESSION['UserID'] . "'";
-	}
+	$SQL = "SELECT workorders.loccode,
+					locations.locationname,
+					workorders.requiredby,
+					workorders.startdate,
+					workorders.closed,
+					stockmaster.description,
+					stockmaster.controlled,
+					stockmaster.serialised,
+					stockmaster.decimalplaces,
+					stockmaster.units,
+					stockmaster.perishable,
+					woitems.qtyreqd,
+					woitems.qtyrecd,
+					woitems.stdcost,
+					stockcategory.wipact,
+					stockcategory.stockact
+				FROM workorders
+				INNER JOIN locations
+					ON workorders.loccode=locations.loccode
+				INNER JOIN woitems
+					ON workorders.wo=woitems.wo
+				INNER JOIN stockmaster
+					ON woitems.stockid=stockmaster.stockid
+				INNER JOIN stockcategory
+					ON stockmaster.categoryid=stockcategory.categoryid
+				INNER JOIN locationusers
+					ON locationusers.loccode=locations.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canupd=1
+				WHERE woitems.stockid='" . $_POST['StockID'] . "'
+					AND workorders.wo='" . $_POST['WO'] . "'";
 	$WOResult = DB_query($SQL, $ErrMsg);
 
 	if (DB_num_rows($WOResult) == 0) {
@@ -198,10 +169,10 @@ if (isset($_POST['Process'])) { //user hit the process the work order receipts e
 				  INNER JOIN locstock
 					ON worequirements.stockid=locstock.stockid
 				  WHERE worequirements.wo='" . $_POST['WO'] . "'
-				  AND worequirements.parentstockid='" . $_POST['StockID'] . "'
-				  AND locstock.loccode='" . $WORow['loccode'] . "'
-				  AND stockmaster.mbflag <>'D'
-				  AND worequirements.autoissue=1";
+					AND worequirements.parentstockid='" . $_POST['StockID'] . "'
+					AND locstock.loccode='" . $WORow['loccode'] . "'
+					AND stockmaster.mbflag <>'D'
+					AND worequirements.autoissue=1";
 
 		$ErrMsg = _('Could not retrieve the component quantity left at the location once the component items are issued to the work order (for the purposes of checking that stock will not go negative) because');
 		$Result = DB_query($SQL, $ErrMsg);
@@ -236,7 +207,8 @@ if (isset($_POST['Process'])) { //user hit the process the work order receipts e
 									INNER JOIN bom
 										ON stockcosts.stockid=bom.component
 									WHERE bom.parent='" . $_POST['StockID'] . "'
-										AND bom.loccode='" . $WORow['loccode'] . "'");
+										AND bom.loccode='" . $WORow['loccode'] . "'
+										AND stockcosts.succeeded=0");
 			$CostRow = DB_fetch_row($CostResult);
 			if (is_null($CostRow[0]) or $CostRow[0] == 0) {
 				$Cost = 0;
@@ -256,9 +228,11 @@ if (isset($_POST['Process'])) { //user hit the process the work order receipts e
 						  sum(quantity) AS totalqoh,
 						  stockcosts.labourcost,
 						  stockcosts.overheadcost
-					FROM stockcosts INNER JOIN locstock
+					FROM stockcosts
+					INNER JOIN locstock
 						ON stockcosts.stockid=locstock.stockid
 					WHERE stockcosts.stockid='" . $_POST['StockID'] . "'
+						AND stockcosts.succeeded=0
 					GROUP BY stockcosts.materialcost,
 							stockcosts.labourcost,
 							stockcosts.overheadcost";
@@ -314,7 +288,7 @@ if (isset($_POST['Process'])) { //user hit the process the work order receipts e
 				}
 
 				/* Make the old cost record obsolete */
-				$SQL = "UPDATE stockcosts SET succeeded=1,
+				$SQL = "UPDATE stockcosts SET succeeded=1
 						WHERE stockid='" . $_POST['StockID'] . "'
 							AND succeeded=0";
 				$ErrMsg = _('The old cost details for the stock item could not be updated because');
@@ -792,27 +766,35 @@ if (isset($_POST['Process'])) { //user hit the process the work order receipts e
 
 $ErrMsg = _('Could not retrieve the details of the selected work order item');
 
-$WOResult = DB_query("SELECT workorders.loccode,
-							 locations.locationname,
-							 workorders.requiredby,
-							 workorders.startdate,
-							 workorders.closed,
-							 stockmaster.description,
-							 stockmaster.controlled,
-							 stockmaster.serialised,
-							 stockmaster.decimalplaces,
-							 stockmaster.units,
-							 woitems.qtyreqd,
-							 woitems.qtyrecd,
-							 woitems.stdcost,
-							 woitems.nextlotsnref
-					FROM workorders INNER JOIN locations
-					ON workorders.loccode=locations.loccode
-					INNER JOIN woitems
-					ON workorders.wo=woitems.wo
-					INNER JOIN stockmaster
-					ON woitems.stockid=stockmaster.stockid
-					WHERE woitems.stockid='" . $_POST['StockID'] . "' AND workorders.wo='" . $_POST['WO'] . "'", $ErrMsg);
+$WOSql = "SELECT workorders.loccode,
+				 locations.locationname,
+				 workorders.requiredby,
+				 workorders.startdate,
+				 workorders.closed,
+				 stockmaster.description,
+				 stockmaster.controlled,
+				 stockmaster.serialised,
+				 stockmaster.decimalplaces,
+				 stockmaster.units,
+				 stockmaster.perishable,
+				 woitems.qtyreqd,
+				 woitems.qtyrecd,
+				 woitems.stdcost,
+				 woitems.nextlotsnref
+			FROM workorders
+			INNER JOIN locations
+				ON workorders.loccode=locations.loccode
+			INNER JOIN woitems
+				ON workorders.wo=woitems.wo
+			INNER JOIN stockmaster
+				ON woitems.stockid=stockmaster.stockid
+			INNER JOIN locationusers
+				ON locationusers.loccode=locations.loccode
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canupd=1
+			WHERE woitems.stockid='" . $_POST['StockID'] . "'
+				AND workorders.wo='" . $_POST['WO'] . "'";
+$WOResult = DB_query($WOSql, $ErrMsg);
 
 if (DB_num_rows($WOResult) == 0) {
 	prnMsg(_('The selected work order item cannot be retrieved from the database'), 'info');
@@ -871,18 +853,13 @@ if (!isset($_POST['IntoLocation'])) {
 	$_POST['IntoLocation'] = $WORow['loccode'];
 }
 
-if ($_SESSION['RestrictLocations'] == 0) {
-	$SQL = "SELECT locationname,
-					loccode
-				FROM locations";
-} else {
-	$SQL = "SELECT locationname,
-					loccode
-				FROM locations
-				INNER JOIN www_users
-					ON locations.loccode=www_users.defaultlocation
-				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-}
+$SQL = "SELECT locationname,
+				locations.loccode
+			FROM locations
+			INNER JOIN locationusers
+				ON locationusers.loccode=locations.loccode
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canupd=1";
 
 $LocResult = DB_query($SQL);
 while ($LocRow = DB_fetch_array($LocResult)) {

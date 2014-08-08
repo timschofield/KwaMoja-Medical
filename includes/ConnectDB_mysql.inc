@@ -182,7 +182,7 @@ function DB_show_tables($TableName = '%') {
 }
 
 function DB_show_fields($TableName) {
-	$Result = DB_query("DESCRIBE $TableName"n);
+	$Result = DB_query("DESCRIBE $TableName");
 	return $Result;
 }
 
@@ -212,7 +212,7 @@ function DB_Txn_Begin() {
 	mysql_query("START TRANSACTION", $db);
 }
 
-function DB_Txn_Commit) {
+function DB_Txn_Commit() {
 	global $db;
 	mysql_query("COMMIT", $db);
 	mysql_query("SET autocommit=1", $db);

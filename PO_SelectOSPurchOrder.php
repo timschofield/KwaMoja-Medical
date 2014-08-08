@@ -115,18 +115,13 @@ if (!isset($OrderNumber) or $OrderNumber == '') {
 		$DateTo = FormatDateForSQL($_POST['DateTo']);
 	}
 
-	if ($_SESSION['RestrictLocations'] == 0) {
-		$SQL = "SELECT locationname,
-						loccode
-					FROM locations";
-	} else {
-		$SQL = "SELECT locationname,
-						loccode
-					FROM locations
-					INNER JOIN www_users
-						ON locations.loccode=www_users.defaultlocation
-					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-	}
+	$SQL = "SELECT locationname,
+					locations.loccode
+				FROM locations
+				INNER JOIN locationusers
+					ON locationusers.loccode=locations.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canview=1";
 	$ResultStkLocs = DB_query($SQL);
 	while ($MyRow = DB_fetch_array($ResultStkLocs)) {
 		if (isset($_POST['StockLocation'])) {
@@ -316,6 +311,10 @@ if (isset($StockItemsResult)) {
 					ON purchorders.supplierno = suppliers.supplierid
 				INNER JOIN currencies
 					ON suppliers.currcode=currencies.currabrev
+				INNER JOIN locationusers
+					ON locationusers.loccode=purchorders.intostocklocation
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canview=1
 				WHERE purchorderdetails.completed=0
 					" . $SupplierSearchString . "
 					" . $StockItemSearchString . "

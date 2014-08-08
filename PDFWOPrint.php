@@ -177,14 +177,19 @@ if (isset($SelectedWO) and $SelectedWO != '' and $SelectedWO > 0 and $SelectedWO
 							 woitems.qtyrecd,
 							 woitems.comments,
 							 woitems.nextlotsnref
-						FROM workorders INNER JOIN locations
-						ON workorders.loccode=locations.loccode
+						FROM workorders
+						INNER JOIN locations
+							ON workorders.loccode=locations.loccode
 						INNER JOIN woitems
-						ON workorders.wo=woitems.wo
+							ON workorders.wo=woitems.wo
+						INNER JOIN locationusers
+							ON locationusers.loccode=locations.loccode
+							AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+							AND locationusers.canview=1
 						INNER JOIN stockmaster
-						ON woitems.stockid=stockmaster.stockid
+							ON woitems.stockid=stockmaster.stockid
 						WHERE woitems.stockid='" . $StockID . "'
-						AND woitems.wo ='" . $SelectedWO . "'";
+							AND woitems.wo ='" . $SelectedWO . "'";
 	$Result = DB_query($SQL, $ErrMsg);
 	if (DB_num_rows($Result) == 0) {
 		/*There is no order header returned */
@@ -251,6 +256,8 @@ else if ($SelectedWO == 'Preview') { // We are previewing the order
 	$WOHeader['deladd6'] = str_pad('', 15, 'x');
 	$WOHeader['stockid'] = str_pad('', 15, 'x');
 	$WOHeader['description'] = str_pad('', 50, 'x');
+	$WOHeader['wo'] = '99999999';
+	$WOHeader['loccode'] = str_pad('',5,'x');
 
 } // end of If we are previewing the order
 

@@ -175,6 +175,23 @@ if (isset($_POST['submit'])) {
 
 		prnMsg('........ ' . _('and new stock locations inserted for all existing stock items for the new location'), 'success');
 
+		/* Also need to add locationuser records for all existing users*/
+		$SQL = "INSERT INTO locationusers (userid, loccode, canview, canupd)
+					SELECT www_users.userid,
+					locations.loccode,
+					1,
+					1
+					FROM www_users CROSS JOIN locations
+					LEFT JOIN locationusers
+					ON www_users.userid = locationusers.userid
+					AND locations.loccode = locationusers.loccode
+					WHERE locationusers.userid IS NULL
+					AND  locations.loccode='" . $_POST['LocCode'] . "'";
+
+		$ErrMsg = _('The users/locations that need user location records created cannot be retrieved because');
+		$Result = DB_query($SQL, $ErrMsg);
+		prnMsg(_('Existing users have been authorized for this location'),'success');
+
 		/* Also need to create a container for the whole of the warehouse */
 
 		$InsertSQL = "INSERT INTO container (id,
@@ -381,7 +398,7 @@ if (isset($_POST['submit'])) {
 
 		$Result = DB_query("DELETE FROM locstock WHERE loccode ='" . $SelectedLocation . "'");
 		$Result = DB_query("DELETE FROM locations WHERE loccode='" . $SelectedLocation . "'");
-
+		$Result = DB_query("DELETE FROM locationusers WHERE loccode='" . $SelectedLocation . "'");
 		prnMsg(_('Location') . ' ' . $SelectedLocation . ' ' . _('has been deleted') . '!', 'success');
 		unset($SelectedLocation);
 	} //end if Delete Location
@@ -396,26 +413,18 @@ if (!isset($SelectedLocation)) {
 	links to delete or edit each. These will call the same page again and allow update/input
 	or deletion of the records*/
 
-	if ($_SESSION['RestrictLocations'] == 0) {
-		$SQL = "SELECT loccode,
-						locationname,
-						taxprovinces.taxprovincename as description,
-						managed
-					FROM locations
-					INNER JOIN taxprovinces
-						ON locations.taxprovinceid=taxprovinces.taxprovinceid";
-	} else {
-		$SQL = "SELECT loccode,
-						locationname,
-						taxprovinces.taxprovincename as description,
-						managed
-					FROM locations
-					INNER JOIN taxprovinces
-						ON locations.taxprovinceid=taxprovinces.taxprovinceid
-					INNER JOIN www_users
-						ON locations.loccode=www_users.defaultlocation
-					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-	}
+	$SQL = "SELECT .locations.loccode,
+					locationname,
+					taxprovinces.taxprovincename as description,
+					managed
+				FROM locations
+				INNER JOIN locationusers
+					ON locationusers.loccode=locations.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canview=1
+					AND locationusers.canupd=1
+				INNER JOIN taxprovinces
+					ON locations.taxprovinceid=taxprovinces.taxprovinceid";
 	$Result = DB_query($SQL);
 
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" title="' . _('Inventory') . '" alt="" />' . ' ' . $Title . '</p>';
@@ -423,7 +432,6 @@ if (!isset($SelectedLocation)) {
 	if (DB_num_rows($Result) == 0) {
 		echo '<div class="page_help_text">' . _('As this is the first time that the system has been used, you must first create a location.') .
 				'<br />' . _('Once you have filled in all the details, click on the button at the bottom of the screen') . '</div>';
-		$_SESSION['RestrictLocations'] = 0;
 	}
 
 	if (DB_num_rows($Result) != 0) {

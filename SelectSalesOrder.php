@@ -170,7 +170,11 @@ if (isset($_POST['PlacePO'])) {
 							tel,
 							contact
 						FROM locations
-						WHERE loccode = '" . $_SESSION['UserStockLocation'] . "'";
+						INNER JOIN locationusers
+							ON locationusers.loccode=locations.loccode
+							AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+							AND locationusers.canupd=1
+						WHERE locations.loccode = '" . $_SESSION['UserStockLocation'] . "'";
 			$ErrMsg = _('The delivery address for the order could not be obtained from the user default stock location');
 			$DelAddResult = DB_query($SQL, $ErrMsg);
 			$DelAddRow = DB_fetch_array($DelAddResult);
@@ -488,18 +492,13 @@ if (!isset($StockID)) {
 				<td>' . _('From Stock Location') . ':</td>
 				<td><select minlength="0" name="StockLocation"> ';
 
-		if ($_SESSION['RestrictLocations'] == 0) {
-			$SQL = "SELECT locationname,
-							loccode
-						FROM locations";
-		} else {
-			$SQL = "SELECT locationname,
-							loccode
-						FROM locations
-						INNER JOIN www_users
-							ON locations.loccode=www_users.defaultlocation
-						WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-		}
+		$SQL = "SELECT locationname,
+						locations.loccode
+					FROM locations
+					INNER JOIN locationusers
+						ON locationusers.loccode=locations.loccode
+						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.canview=1";
 
 		$ResultStkLocs = DB_query($SQL);
 

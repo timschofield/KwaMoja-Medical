@@ -29,6 +29,22 @@ if (isset($_POST['NewItems'])) {
 		}
 	}
 }
+$LocSql = "SELECT locations.loccode
+				FROM locations
+				INNER JOIN locationusers
+					ON locationusers.loccode=locations.loccode
+					AND locationusers.userid='" . $_SESSION['UserID'] . "'
+					AND locationusers.canupd=1
+				WHERE locations.loccode='" . $LocCode . "'";
+$LocResult = DB_query($LocSql);
+$LocRow = DB_fetch_array($LocResult);
+
+if (is_null($LocRow['loccode']) or $LocRow['loccode'] == ''){
+	prnMsg(_('Your security settings do not allow you to create or update new Work Order at this location') . ' ' . $LocCode, 'error');
+	echo '<br /><a href="' . $RootPath . '/SelectWorkOrder.php">' . _('Select an existing work order') . '</a>';
+	include('includes/footer.inc');
+	exit;
+}
 
 if (isset($_POST['RequiredBy']) and !isset($_POST['NewItems'])) {
 	$_SESSION['WorkOrder' . $identifier]->RequiredBy = $_POST['RequiredBy'];
@@ -37,7 +53,7 @@ if (isset($_POST['RequiredBy']) and !isset($_POST['NewItems'])) {
 
 	if (isset($_POST['OutputItem1'])) {
 		foreach ($_SESSION['WorkOrder' . $identifier]->Items as $i => $Item) {
-			$_SESSION['WorkOrder' . $identifier]->UpdateItem($_POST['OutputItem' . $Item->LineNumber], $_POST['WOComments' . $Item->LineNumber], $_POST['OutputQty' . $Item->LineNumber]);
+			$_SESSION['WorkOrder' . $identifier]->UpdateItem($_POST['OutputItem' . $Item->LineNumber], $_POST['WOComments' . $Item->LineNumber], $_POST['OutputQty' . $Item->LineNumber], $_POST['NextLotSNRef' . $Item->LineNumber]);
 		}
 	}
 }
@@ -74,18 +90,13 @@ echo '<tr>
 		<td class="label">' . _('Location where items are to be received into') . ':</td>
 		<td><select minlength="0" name="StockLocation" onChange="ReloadForm(Refresh)">';
 
-if ($_SESSION['RestrictLocations'] == 0) {
-	$SQL = "SELECT locationname,
-					loccode
-				FROM locations";
-} else {
-	$SQL = "SELECT locationname,
-				loccode
-				FROM locations
-				INNER JOIN www_users
-					ON locations.loccode=www_users.defaultlocation
-				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-}
+$SQL = "SELECT locationname,
+				locations.loccode
+			FROM locations
+			INNER JOIN locationusers
+				ON locationusers.loccode=workorders.loccode
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canupd=1";
 $LocResult = DB_query($SQL);
 
 while ($LocRow = DB_fetch_array($LocResult)) {
@@ -165,7 +176,7 @@ if ($_SESSION['WorkOrder' . $identifier]->NumberOfItems > 0) {
 		echo '<td class="number"><input type="hidden" name="RecdQty' . $WOItem->LineNumber . '" value="' . locale_number_format($WOItem->QuantityReceived, $WOItem->DecimalPlaces) . '" />' . locale_number_format($WOItem->QuantityReceived, $WOItem->DecimalPlaces) . '</td>
 		  		<td class="number">' . locale_number_format($WOItem->QuantityRequired - $WOItem->QuantityReceived, $WOItem->DecimalPlaces) . '</td>';
 		if ($WOItem->Controlled == 1) {
-			echo '<td><input type="text" name="NextLotSNRef' . $WOItem->LineNumber . '" value="' . $_POST['NextLotSNRef' . $i] . '" /></td>';
+			echo '<td><input type="text" name="NextLotSNRef' . $WOItem->LineNumber . '" value="' . $WOItem->NextLotSerialNumbers . '" /></td>';
 			if ($_SESSION['DefineControlledOnWOEntry'] == 1) {
 				if ($_POST['Serialised' . $i] == 1) {
 					$LotOrSN = _('S/Ns');

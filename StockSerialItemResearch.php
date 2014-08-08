@@ -18,15 +18,10 @@ if (isset($_POST['serialno'])) {
 	$SerialNo = '';
 }
 
-echo '<div class="centre">
-<br />
-<form onSubmit="return VerifyForm(this);" id="SerialNoResearch" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-echo '<div>';
+echo '<form onSubmit="return VerifyForm(this);" id="SerialNoResearch" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 echo _('Serial Number') . ': <input id="serialno" type="text" name="serialno" size="21" required="required" minlength="1" maxlength="20" value="' . $SerialNo . '" /> &nbsp;<input type="submit" name="submit" value="' . _('Search') . '" />
-<br />
-</div>
 </form>';
 
 echo '<script  type="text/javascript">
@@ -44,66 +39,37 @@ if ($SerialNo != '') {
 			prnMsg('You can not use LIKE with short numbers. It has been removed.', 'warn');
 		}
 	}
-	if ($_SESSION['RestrictLocations'] == 0) {
-		$SQL = "SELECT stockserialitems.serialno,
-						stockserialitems.stockid,
-						stockserialitems.quantity AS CurInvQty,
-						stockserialmoves.moveqty,
-						stockmoves.type,
-						systypes.typename,
-						stockmoves.transno,
-						stockmoves.loccode,
-						locations.locationname,
-						stockmoves.trandate,
-						stockmoves.debtorno,
-						stockmoves.branchcode,
-						stockmoves.reference,
-						stockmoves.qty AS TotalMoveQty
-					FROM stockserialitems
-					INNER JOIN stockserialmoves
-						ON stockserialitems.serialno = stockserialmoves.serialno
-						AND stockserialitems.stockid=stockserialmoves.stockid
-					INNER JOIN stockmoves
-						ON stockserialmoves.stockmoveno = stockmoves.stkmoveno
-						AND stockserialitems.loccode=stockmoves.loccode
-					INNER JOIN systypes
-						ON stockmoves.type=systypes.typeid
-					INNER JOIN locations
-						on stockmoves.loccode = locations.loccode
-					WHERE stockserialitems.serialno " . LIKE . " '" . $SerialNo . "'
-					ORDER BY stkmoveno";
-	} else {
-		$SQL = "SELECT stockserialitems.serialno,
-						stockserialitems.stockid,
-						stockserialitems.quantity AS CurInvQty,
-						stockserialmoves.moveqty,
-						stockmoves.type,
-						systypes.typename,
-						stockmoves.transno,
-						stockmoves.loccode,
-						locations.locationname,
-						stockmoves.trandate,
-						stockmoves.debtorno,
-						stockmoves.branchcode,
-						stockmoves.reference,
-						stockmoves.qty AS TotalMoveQty
-					FROM stockserialitems
-					INNER JOIN stockserialmoves
-						ON stockserialitems.serialno = stockserialmoves.serialno
-						AND stockserialitems.stockid=stockserialmoves.stockid
-					INNER JOIN stockmoves
-						ON stockserialmoves.stockmoveno = stockmoves.stkmoveno
-						AND stockserialitems.loccode=stockmoves.loccode
-					INNER JOIN systypes
-						ON stockmoves.type=systypes.typeid
-					INNER JOIN locations
-						ON stockmoves.loccode = locations.loccode
-					INNER JOIN www_users
-						ON locations.loccode=www_users.defaultlocation
-					WHERE stockserialitems.serialno " . LIKE . " '" . $SerialNo . "'
-						AND www_users.userid='" . $_SESSION['UserID'] . "'
-					ORDER BY stkmoveno";
-	}
+	$SQL = "SELECT stockserialitems.serialno,
+					stockserialitems.stockid,
+					stockserialitems.quantity AS CurInvQty,
+					stockserialmoves.moveqty,
+					stockmoves.type,
+					systypes.typename,
+					stockmoves.transno,
+					stockmoves.loccode,
+					locations.locationname,
+					stockmoves.trandate,
+					stockmoves.debtorno,
+					stockmoves.branchcode,
+					stockmoves.reference,
+					stockmoves.qty AS TotalMoveQty
+				FROM stockserialitems
+				INNER JOIN stockserialmoves
+					ON stockserialitems.serialno = stockserialmoves.serialno
+					AND stockserialitems.stockid=stockserialmoves.stockid
+				INNER JOIN stockmoves
+					ON stockserialmoves.stockmoveno = stockmoves.stkmoveno
+					AND stockserialitems.loccode=stockmoves.loccode
+				INNER JOIN systypes
+					ON stockmoves.type=systypes.typeid
+				INNER JOIN locations
+					on stockmoves.loccode = locations.loccode
+				INNER JOIN locationusers
+					ON locationusers.loccode=l.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canview=1
+				WHERE stockserialitems.serialno " . LIKE . " '" . $SerialNo . "'
+				ORDER BY stkmoveno";
 	$Result = DB_query($SQL);
 
 	if (DB_num_rows($Result) == 0) {

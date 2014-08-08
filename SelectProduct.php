@@ -279,13 +279,18 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 			$QOHRow = DB_fetch_row($QOHResult);
 			$QOH = locale_number_format($QOHRow[0], $MyRow['decimalplaces']);
 			$QOOSQL = "SELECT SUM(purchorderdetails.quantityord -purchorderdetails.quantityrecd) AS QtyOnOrder
-					FROM purchorders INNER JOIN purchorderdetails
-					ON purchorders.orderno=purchorderdetails.orderno
-					WHERE purchorderdetails.itemcode='" . $StockID . "'
-					AND purchorderdetails.completed =0
-					AND purchorders.status<>'Cancelled'
-					AND purchorders.status<>'Pending'
-					AND purchorders.status<>'Rejected'";
+							FROM purchorders
+							INNER JOIN purchorderdetails
+								ON purchorders.orderno=purchorderdetails.orderno
+							INNER JOIN locationusers
+								ON locationusers.loccode=purchorders.intostocklocation
+								AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+								AND locationusers.canview=1
+							WHERE purchorderdetails.itemcode='" . $StockID . "'
+								AND purchorderdetails.completed =0
+								AND purchorders.status<>'Cancelled'
+								AND purchorders.status<>'Pending'
+								AND purchorders.status<>'Rejected'";
 			$QOOResult = DB_query($QOOSQL);
 			if (DB_num_rows($QOOResult) == 0) {
 				$QOO = 0;
@@ -295,10 +300,15 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 			}
 			//Also the on work order quantities
 			$SQL = "SELECT SUM(woitems.qtyreqd-woitems.qtyrecd) AS qtywo
-				FROM woitems INNER JOIN workorders
-				ON woitems.wo=workorders.wo
-				WHERE workorders.closed=0
-				AND woitems.stockid='" . $StockID . "'";
+						FROM woitems
+						INNER JOIN workorders
+							ON woitems.wo=workorders.wo
+						INNER JOIN locationusers
+							ON locationusers.loccode=workorders.loccode
+							AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+							AND locationusers.canview=1
+						WHERE workorders.closed=0
+							AND woitems.stockid='" . $StockID . "'";
 			$ErrMsg = _('The quantity on work orders for this product cannot be retrieved because');
 			$QOOResult = DB_query($SQL, $ErrMsg);
 			if (DB_num_rows($QOOResult) == 1) {
@@ -309,34 +319,53 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 			break;
 	}
 	$Demand = 0;
-	$DemResult = DB_query("SELECT SUM(salesorderdetails.quantity-salesorderdetails.qtyinvoiced) AS dem
-						FROM salesorderdetails INNER JOIN salesorders
+	$DemSql = "SELECT SUM(salesorderdetails.quantity-salesorderdetails.qtyinvoiced) AS dem
+					FROM salesorderdetails
+					INNER JOIN salesorders
 						ON salesorders.orderno = salesorderdetails.orderno
-						WHERE salesorderdetails.completed=0
+					INNER JOIN locationusers
+						ON locationusers.loccode=salesorders.fromstkloc
+						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.canview=1
+					WHERE salesorderdetails.completed=0
 						AND salesorders.quotation=0
-						AND salesorderdetails.stkcode='" . $StockID . "'");
+						AND salesorderdetails.stkcode='" . $StockID . "'";
+	$DemResult = DB_query($DemSql);
 	$DemRow = DB_fetch_row($DemResult);
 	$Demand = $DemRow[0];
-	$DemAsComponentResult = DB_query("SELECT  SUM((salesorderdetails.quantity-salesorderdetails.qtyinvoiced)*bom.quantity) AS dem
-									FROM salesorderdetails INNER JOIN salesorders
-									ON salesorders.orderno = salesorderdetails.orderno
-									INNER JOIN bom ON salesorderdetails.stkcode=bom.parent
-									INNER JOIN stockmaster ON stockmaster.stockid=bom.parent
-									WHERE salesorderdetails.quantity-salesorderdetails.qtyinvoiced > 0
-									AND bom.component='" . $StockID . "'
-									AND stockmaster.mbflag='A'
-									AND salesorders.quotation=0");
+	$DemAsComponentSql = "SELECT SUM((salesorderdetails.quantity-salesorderdetails.qtyinvoiced)*bom.quantity) AS dem
+							FROM salesorderdetails
+							INNER JOIN salesorders
+								ON salesorders.orderno = salesorderdetails.orderno
+							INNER JOIN bom
+								ON salesorderdetails.stkcode=bom.parent
+							INNER JOIN stockmaster
+								ON stockmaster.stockid=bom.parent
+							INNER JOIN locationusers
+								ON locationusers.loccode=salesorders.fromstkloc
+								AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+								AND locationusers.canview=1
+							WHERE salesorderdetails.quantity-salesorderdetails.qtyinvoiced > 0
+								AND bom.component='" . $StockID . "'
+								AND stockmaster.mbflag='A'
+								AND salesorders.quotation=0";
+	$DemAsComponentResult = DB_query($DemAsComponentSql);
 	$DemAsComponentRow = DB_fetch_row($DemAsComponentResult);
 	$Demand += $DemAsComponentRow[0];
 	//Also the demand for the item as a component of works orders
 	$SQL = "SELECT SUM(qtypu*(woitems.qtyreqd - woitems.qtyrecd)) AS woqtydemo
-		FROM woitems INNER JOIN worequirements
-		ON woitems.stockid=worequirements.parentstockid
-		INNER JOIN workorders
-		ON woitems.wo=workorders.wo
-		AND woitems.wo=worequirements.wo
-		WHERE  worequirements.stockid='" . $StockID . "'
-		AND workorders.closed=0";
+				FROM woitems
+				INNER JOIN worequirements
+					ON woitems.stockid=worequirements.parentstockid
+				INNER JOIN workorders
+					ON woitems.wo=workorders.wo
+					AND woitems.wo=worequirements.wo
+				INNER JOIN locationusers
+					ON locationusers.loccode=workorders.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canview=1
+				WHERE  worequirements.stockid='" . $StockID . "'
+					AND workorders.closed=0";
 	$ErrMsg = _('The workorder component demand for this product cannot be retrieved because');
 	$DemandResult = DB_query($SQL, $ErrMsg);
 	if (DB_num_rows($DemandResult) == 1) {

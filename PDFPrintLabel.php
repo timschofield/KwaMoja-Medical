@@ -120,8 +120,8 @@ if ((isset($_POST['ShowLabels']) or isset($_POST['SetAll'])) and isset($_POST['F
 	exit;
 }
 
+$NoOfLabels = 0;
 if (isset($_POST['PrintLabels']) and isset($_POST['NoOfLabels']) and $_POST['NoOfLabels'] > 0) {
-	$NoOfLabels = 0;
 	for ($i = 0; $i < $_POST['NoOfLabels']; $i++) {
 		if (isset($_POST['Qty' . $i])) {
 			$NoOfLabels++;
@@ -267,8 +267,11 @@ if (isset($_POST['PrintLabels']) and $NoOfLabels > 0) {
 	$Title = _('Price Labels');
 	include('includes/header.inc');
 
-	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/printer.png" title="' . _('Price Labels') . '" alt="' . _('Print Price Labels') . '" />
-		 ' . ' ' . _('Print Price Labels') . '</p>';
+	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/printer.png" title="' . _('Price Labels') . '" alt="' . _('Print Price Labels') . '" /> ' . ' ' . _('Print Price Labels') . '</p>';
+
+	if (!function_exists('gd_info')) {
+		prnMsg(_('The GD module for PHP is required to print barcode labels. Your PHP installation is not capable currently. You will most likely experience problems with this script until the GD module is enabled.'), 'error');
+	}
 
 	if (!isset($_POST['FromCriteria']) or !isset($_POST['ToCriteria'])) {
 

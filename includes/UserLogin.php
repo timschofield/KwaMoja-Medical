@@ -23,7 +23,7 @@ define('UL_MAINTENANCE', 5);
 function userLogin($Name, $Password, $SysAdminEmail = '') {
 
 	global $debug;
-
+	setcookie('Login', $_SESSION['DatabaseName'], time()+3600*24);
 	if (!isset($_SESSION['AccessLevel']) or $_SESSION['AccessLevel'] == '' or (isset($Name) and $Name != '')) {
 		/* if not logged in */
 		$_SESSION['AccessLevel'] = '';
@@ -41,8 +41,7 @@ function userLogin($Name, $Password, $SysAdminEmail = '') {
 		$SQL = "SELECT *
 				FROM www_users
 				WHERE www_users.userid='" . $Name . "'
-				AND (www_users.password='" . CryptPass($Password) . "'
-				OR  www_users.password='" . $Password . "')";
+				www_users.password='" . CryptPass($Password) . "'";
 		$ErrMsg = _('Could not retrieve user details on login because');
 		$debug = 1;
 		$Auth_Result = DB_query($SQL, $ErrMsg);

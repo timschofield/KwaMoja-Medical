@@ -63,6 +63,9 @@ echo _('Company');
 ?>:</label>
 
 					<?php
+if (isset($_COOKIE['Login'])) {
+	$DefaultCompany = $_COOKIE['Login'];
+}
 if ($AllowCompanySelectionBox === 'Hide') {
 	// do not show input or selection box
 	echo '<input type="hidden" name="CompanyNameField"  value="' . $DefaultCompany . '" />';

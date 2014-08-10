@@ -23,7 +23,7 @@ define('UL_MAINTENANCE', 5);
 function userLogin($Name, $Password, $SysAdminEmail = '') {
 
 	global $debug;
-
+	setcookie('Login', $_SESSION['DatabaseName'], time()+3600*24);
 	if (!isset($_SESSION['AccessLevel']) or $_SESSION['AccessLevel'] == '' or (isset($Name) and $Name != '')) {
 		/* if not logged in */
 		$_SESSION['AccessLevel'] = '';

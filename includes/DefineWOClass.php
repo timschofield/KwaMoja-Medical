@@ -30,9 +30,10 @@ Class WorkOrder {
 		$this->NumberOfItems++;
 	}
 
-	function UpdateItem($StockID, $Comments, $QuantityRequired) {
+	function UpdateItem($StockID, $Comments, $QuantityRequired, $NextLotSerialNumber = '') {
 		$this->Items[$this->ItemByStockID($StockID)]->QuantityRequired = $QuantityRequired;
 		$this->Items[$this->ItemByStockID($StockID)]->Comments = $Comments;
+		$this->Items[$this->ItemByStockID($StockID)]->NextLotSerialNumbers = $NextLotSerialNumber;
 		$this->Items[$this->ItemByStockID($StockID)]->RefreshRequirements($this->LocationCode);
 	}
 

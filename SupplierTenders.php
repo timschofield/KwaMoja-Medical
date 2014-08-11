@@ -628,7 +628,7 @@ if (isset($_POST['Search'])) {
 	$DbgMsg = _('The SQL statement that failed was');
 	$SearchResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-	if (DB_num_rows($SearchResult) == 0 and $debug == 1) {
+	if (DB_num_rows($SearchResult) == 0 and $Debug == 1) {
 		prnMsg(_('There are no products to display matching the criteria provided'), 'warn');
 	}
 	if (DB_num_rows($SearchResult) == 1) {

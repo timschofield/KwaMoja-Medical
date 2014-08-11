@@ -28,7 +28,7 @@ global $db; // Make sure it IS global, regardless of our context
 $db = pg_connect($PgConnStr);
 
 if (!$db) {
-	if ($debug == 1) {
+	if ($Debug == 1) {
 		echo '<br />' . $PgConnStr . '<br />';
 	}
 	echo '<br />' . _('The company name entered together with the configuration in the file config.php for the database user name and password do not provide the information required to connect to the database.') . '<br /><br />' . _(' Try logging in with an alternative company name.');
@@ -66,7 +66,7 @@ function DB_connect($host, $DBUser, $DBPassword, $DBPort) {
 function DB_query($SQL, $ErrorMessage = '', $DebugMessage = '', $Transaction = false, $TrapErrors = true) {
 
 	global $db;
-	global $debug;
+	global $Debug;
 	global $PathPrefix;
 
 	$Result = pg_query($db, $SQL);
@@ -79,7 +79,7 @@ function DB_query($SQL, $ErrorMessage = '', $DebugMessage = '', $Transaction = f
 			require_once($PathPrefix . 'includes/header.inc');
 		}
 		prnMsg($ErrorMessage . '<br />' . DB_error_msg($Conn), 'error', _('DB ERROR:'));
-		if ($debug == 1) {
+		if ($Debug == 1) {
 			echo '<br />' . $DebugMessage . "<br />$SQL<br />";
 		}
 		if ($Transaction) {

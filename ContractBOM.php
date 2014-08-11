@@ -141,7 +141,7 @@ if (isset($_POST['Search'])) {
 	$DbgMsg = _('The SQL statement that failed was');
 	$SearchResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-	if (DB_num_rows($SearchResult) == 0 and $debug == 1) {
+	if (DB_num_rows($SearchResult) == 0 and $Debug == 1) {
 		prnMsg(_('There are no products to display matching the criteria provided'), 'warn');
 	}
 	if (DB_num_rows($SearchResult) == 1) {
@@ -202,7 +202,7 @@ if (isset($_POST['NewItem'])) {
 					$_SESSION['Contract' . $identifier]->Add_To_ContractBOM(trim($_POST['StockID' . $i]), $MyRow['description'], '', filter_number_format($_POST['Qty' . $i]), /* Qty */ $MyRow['unitcost'], $MyRow['units'], $MyRow['decimalplaces']);
 				} else {
 					prnMsg(_('The item code') . ' ' . trim($_POST['StockID' . $i]) . ' ' . _('does not exist in the database and therefore cannot be added to the contract BOM'), 'error');
-					if ($debug == 1) {
+					if ($Debug == 1) {
 						echo '<br />' . $SQL;
 					}
 					include('includes/footer.inc');

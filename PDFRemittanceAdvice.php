@@ -90,7 +90,7 @@ if ((isset($_POST['PrintPDF'])) and isset($_POST['FromCriteria']) and mb_strlen(
 			include('includes/header.inc');
 			prnMsg(_('The details of the payment to the supplier could not be retrieved because') . ' - ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-			if ($debug == 1) {
+			if ($Debug == 1) {
 				echo '<br />' . _('The SQL that failed was') . ' ' . $SQL;
 			}
 			include('includes/footer.inc');

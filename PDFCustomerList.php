@@ -233,7 +233,7 @@ if (isset($_POST['PrintPDF'])) {
 		include('includes/header.inc');
 		prnMsg(_('The customer List could not be retrieved by the SQL because') . ' - ' . DB_error_msg());
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-		if ($debug == 1) {
+		if ($Debug == 1) {
 			echo '<br />' . $SQL;
 		}
 		include('includes/footer.inc');

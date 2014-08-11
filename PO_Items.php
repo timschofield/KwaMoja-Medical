@@ -465,9 +465,9 @@ if (isset($_POST['EnterLine'])) {
 		if (DB_error_no() != 0) {
 			$AllowUpdate = false;
 			prnMsg(_('The validation process for the GL Code entered could not be executed because') . ' ' . DB_error_msg(), 'error');
-			if ($debug == 1) {
+			if ($Debug == 1) {
 				prnMsg(_('The SQL used to validate the code entered was') . ' ' . $SQL, 'error');
-			} //$debug == 1
+			} //$Debug == 1
 			include('includes/footer.inc');
 			exit;
 		} //DB_error_no() != 0
@@ -659,9 +659,9 @@ if (isset($_POST['NewItem']) and !empty($_POST['PO_ItemsResubmitFormValue']) and
 				} //DB_num_rows($ItemResult) == 1
 				else { //no rows returned by the SQL to get the item
 					prnMsg(_('The item code') . ' ' . $ItemCode . ' ' . _('does not exist in the database and therefore cannot be added to the order'), 'error');
-					if ($debug == 1) {
+					if ($Debug == 1) {
 						echo '<br />' . $SQL;
-					} //$debug == 1
+					} //$Debug == 1
 					include('includes/footer.inc');
 					exit;
 				}
@@ -1071,9 +1071,9 @@ if (isset($_POST['Search'])) {
 	$DbgMsg = _('The SQL statement that failed was');
 	$SearchResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-	if (DB_num_rows($SearchResult) == 0 and $debug == 1) {
+	if (DB_num_rows($SearchResult) == 0 and $Debug == 1) {
 		prnMsg(_('There are no products to display matching the criteria provided'), 'warn');
-	} //DB_num_rows($SearchResult) == 0 and $debug == 1
+	} //DB_num_rows($SearchResult) == 0 and $Debug == 1
 	if (DB_num_rows($SearchResult) == 1) {
 		$MyRow = DB_fetch_array($SearchResult);
 		$_GET['NewItem'] = $MyRow['stockid'];

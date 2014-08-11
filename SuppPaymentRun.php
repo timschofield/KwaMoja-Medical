@@ -104,7 +104,7 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['PrintPDFAndProcess'])) and isset
 			include('includes/header.inc');
 			prnMsg(_('The details of supplier invoices due could not be retrieved because') . ' - ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-			if ($debug == 1) {
+			if ($Debug == 1) {
 				echo '<br />' . _('The SQL that failed was') . ' ' . $SQL;
 			}
 			include('includes/footer.inc');
@@ -175,7 +175,7 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['PrintPDFAndProcess'])) and isset
 					include('includes/header.inc');
 					prnMsg(_('None of the payments will be processed since updates to the transaction records for') . ' ' . $SupplierName . ' ' . _('could not be processed because') . ' - ' . DB_error_msg(), 'error');
 					echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-					if ($debug == 1) {
+					if ($Debug == 1) {
 						echo '<br />' . _('The SQL that failed was') . $SQL;
 					}
 					$ProcessResult = DB_Txn_Rollback();
@@ -208,7 +208,7 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['PrintPDFAndProcess'])) and isset
 			include('includes/header.inc');
 			prnMsg(_('None of the payments will be processed. Unfortunately, there was a problem committing the changes to the database because') . ' - ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-			if ($debug == 1) {
+			if ($Debug == 1) {
 				prnMsg(_('The SQL that failed was') . '<br />' . $SQL, 'error');
 			}
 			$ProcessResult = DB_Txn_Rollback();
@@ -314,7 +314,7 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['PrintPDFAndProcess'])) and isset
 
 	if (DB_error_no() != 0) {
 		echo '<br />' . _('The bank accounts could not be retrieved by the SQL because') . ' - ' . DB_error_msg();
-		if ($debug == 1) {
+		if ($Debug == 1) {
 			echo '<br />' . _('The SQL used to retrieve the bank accounts was') . ':<br />' . $SQL;
 		}
 		exit;

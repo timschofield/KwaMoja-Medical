@@ -42,7 +42,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 		include('includes/header.inc');
 		prnMsg(_('The Bill of Material listing could not be retrieved by the SQL because'), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-		if ($debug == 1) {
+		if ($Debug == 1) {
 			echo '<br />' . $SQL;
 		}
 		include('includes/footer.inc');

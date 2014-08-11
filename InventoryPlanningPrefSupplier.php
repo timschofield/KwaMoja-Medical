@@ -190,7 +190,7 @@ if (isset($_POST['PrintPDF'])) {
 		include('includes/header.inc');
 		prnMsg(_('The inventory quantities could not be retrieved by the SQL because') . ' - ' . DB_error_msg(), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-		if ($debug == 1) {
+		if ($Debug == 1) {
 			echo '<br />' . $SQL;
 		}
 		include('includes/footer.inc');
@@ -259,7 +259,7 @@ if (isset($_POST['PrintPDF'])) {
 			include('includes/header.inc');
 			prnMsg(_('The sales quantities could not be retrieved by the SQL because') . ' - ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-			if ($debug == 1) {
+			if ($Debug == 1) {
 				echo '<br />' . $SQL;
 			}
 			include('includes/footer.inc');
@@ -293,7 +293,7 @@ if (isset($_POST['PrintPDF'])) {
 			include('includes/header.inc');
 			prnMsg(_('The sales order demand quantities could not be retrieved by the SQL because') . ' - ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-			if ($debug == 1) {
+			if ($Debug == 1) {
 				echo '<br />' . $SQL;
 			}
 			include('includes/footer.inc');
@@ -338,7 +338,7 @@ if (isset($_POST['PrintPDF'])) {
 			include('includes/header.inc');
 			prnMsg(_('The sales order demand quantities from parent assemblies could not be retrieved by the SQL because') . ' - ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-			if ($debug == 1) {
+			if ($Debug == 1) {
 				echo '<br />' . $SQL;
 			}
 			include('includes/footer.inc');
@@ -386,7 +386,7 @@ if (isset($_POST['PrintPDF'])) {
 			include('includes/header.inc');
 			prnMsg(_('The purchase order quantities could not be retrieved by the SQL because') . ' - ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-			if ($debug == 1) {
+			if ($Debug == 1) {
 				echo '<br />' . $SQL;
 			}
 			include('includes/footer.inc');

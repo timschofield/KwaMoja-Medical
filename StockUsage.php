@@ -38,10 +38,10 @@ echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_S
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 echo '<table class="selection">';
 
-$Its_A_KitSet_Assembly_Or_Dummy = False;
+$ItsKitSetAssemblyOrDummy = False;
 if ($MyRow[2] == 'K' OR $MyRow[2] == 'A' OR $MyRow[2] == 'D') {
 
-	$Its_A_KitSet_Assembly_Or_Dummy = True;
+	$ItsKitSetAssemblyOrDummy = True;
 	echo '<h3>' . $StockID . ' - ' . $MyRow[0] . '</h3>';
 
 	prnMsg(_('The selected item is a dummy or assembly or kit-set item and cannot have a stock holding') . '. ' . _('Please select a different item'), 'warn');
@@ -85,7 +85,6 @@ echo ' <input type="submit" name="ShowUsage" value="' . _('Show Stock Usage') . 
 echo ' <input type="submit" name="ShowGraphUsage" value="' . _('Show Graph Of Stock Usage') . '" /></td>
 		</tr>
 		</table>';
-
 
 /*HideMovt ==1 if the movement was only created for the purpose of a transaction but is not a physical movement eg. A price credit will create a movement record for the purposes of display on a credit note
 but there is no physical stock movement - it makes sense honest ??? */
@@ -131,7 +130,7 @@ if (isset($_POST['ShowUsage'])) {
 	$MovtsResult = DB_query($SQL);
 	if (DB_error_no() != 0) {
 		echo _('The stock usage for the selected criteria could not be retrieved because') . ' - ' . DB_error_msg();
-		if ($debug == 1) {
+		if ($Debug == 1) {
 			echo '<br />' . _('The SQL that failed was') . $SQL;
 		}
 		exit;

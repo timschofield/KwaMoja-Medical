@@ -77,7 +77,7 @@ if (DB_error_no() != 0) {
 	$Title = _('Payment Listing');
 	include('includes/header.inc');
 	prnMsg(_('An error occurred getting the payments'), 'error');
-	if ($debug == 1) {
+	if ($Debug == 1) {
 		prnMsg(_('The SQL used to get the receipt header information that failed was') . ':<br />' . $SQL, 'error');
 	}
 	include('includes/footer.inc');

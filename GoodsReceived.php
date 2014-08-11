@@ -326,7 +326,7 @@ if ($_SESSION['PO' . $identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 
 			prnMsg(_('This order has been changed or invoiced since this delivery was started to be actioned') . '. ' . _('Processing halted') . '. ' . _('To enter a delivery against this purchase order') . ', ' . _('it must be re-selected and re-read again to update the changes made by the other user'), 'warn');
 
-			if ($debug == 1) {
+			if ($Debug == 1) {
 				echo '<table class="selection">
 					<tr>
 						<td>' . _('GL Code of the Line Item') . ':</td>

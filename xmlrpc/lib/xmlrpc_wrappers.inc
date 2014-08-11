@@ -605,7 +605,7 @@
 			$decode_fault = false;
 			$fault_response = '';
 		}
-		$debug = isset($extra_options['debug']) ? ($extra_options['debug']) : 0;
+		$Debug = isset($extra_options['debug']) ? ($extra_options['debug']) : 0;
 
 		$msgclass = $prefix.'msg';
 		$valclass = $prefix.'val';
@@ -613,7 +613,7 @@
 
 		$msg = new $msgclass('system.methodSignature');
 		$msg->addparam(new $valclass($methodname));
-		$client->setDebug($debug);
+		$client->setDebug($Debug);
 		$response =& $client->send($msg, $timeout, $protocol);
 		if($response->faultCode())
 		{
@@ -837,7 +837,7 @@
 		{
 			// client copy mode 0 or 1 == partial / full client copy in emitted code
 			$innercode = build_client_wrapper_code($client, $client_copy_mode, $prefix);
-			$innercode .= "\$client->setDebug(\$debug);\n";
+			$innercode .= "\$client->setDebug(\$Debug);\n";
 			$this_ = '';
 		}
 		else
@@ -887,8 +887,8 @@
 		}
 		if ($client_copy_mode < 2)
 		{
-			$plist[] = '$debug=0';
-			$mdesc .= "* @param int \$debug when 1 (or 2) will enable debugging of the underlying {$prefix} call (defaults to 0)\n";
+			$plist[] = '$Debug=0';
+			$mdesc .= "* @param int \$Debug when 1 (or 2) will enable debugging of the underlying {$prefix} call (defaults to 0)\n";
 		}
 		$plist = implode(', ', $plist);
 		$mdesc .= '* @return '.xmlrpc_2_php_type($msig[0])." (or an {$prefix}resp obj instance if call fails)\n*/\n";
@@ -949,7 +949,7 @@
 		}
 		// only make sure that client always returns the correct data type
 		$code .= "\$client->return_type = '{$prefix}vals';\n";
-		//$code .= "\$client->setDebug(\$debug);\n";
+		//$code .= "\$client->setDebug(\$Debug);\n";
 		return $code;
 	}
 ?>

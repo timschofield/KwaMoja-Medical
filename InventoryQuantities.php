@@ -83,7 +83,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['CSV'])) {
 		include('includes/header.inc');
 		prnMsg(_('The Inventory Quantity report could not be retrieved by the SQL because') . ' ' . DB_error_msg(), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-		if ($debug == 1) {
+		if ($Debug == 1) {
 			echo '<br />' . $SQL;
 		}
 		include('includes/footer.inc');

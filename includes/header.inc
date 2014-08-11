@@ -11,7 +11,7 @@ if (!isset($RootPath)) {
 		$RootPath = '';
 	}
 }
-$debug = 0;
+$Debug = 0;
 $ViewTopic = isset($ViewTopic) ? '?ViewTopic=' . $ViewTopic : '';
 $BookMark = isset($BookMark) ? '#' . $BookMark : '';
 $StrictXHTML = False;
@@ -38,7 +38,7 @@ if ($StrictXHTML) {
 }
 echo '<link href="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/default.css" rel="stylesheet" type="text/css" />';
 echo '<link href="' . $RootPath . '/css/tooltip.css" rel="stylesheet" type="text/css" />';
-if ($debug == 1) {
+if ($Debug == 1) {
 	echo '<link href="' . $RootPath . '/css/holmes.css" rel="stylesheet" type="text/css" />';
 }
 
@@ -52,7 +52,7 @@ echo '<style media="screen">
 			.yesPrint{ display: block !important; }
 		</style>';
 echo '</head>';
-if ($debug == 1) {
+if ($Debug == 1) {
 	echo '<body class="holmes-debug">';
 } else {
 	echo '<body>';

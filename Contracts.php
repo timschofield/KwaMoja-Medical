@@ -731,7 +731,7 @@ if (isset($_POST['SelectedCustomer'])) {
 	$MyRow = DB_fetch_array($Result);
 	if (DB_num_rows($Result) == 0) {
 		prnMsg(_('The customer details were unable to be retrieved'), 'error');
-		if ($debug == 1) {
+		if ($Debug == 1) {
 			prnMsg(_('The SQL used that failed to get the customer details was') . ':<br />' . $SQL, 'error');
 		}
 	} else {

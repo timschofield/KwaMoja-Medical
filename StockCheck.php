@@ -38,7 +38,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 			include('includes/header.inc');
 			prnMsg(_('The inventory quantities could not be added to the freeze file because') . ' ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-			if ($debug == 1) {
+			if ($Debug == 1) {
 				echo '<br />' . $SQL;
 			}
 			include('includes/footer.inc');
@@ -60,7 +60,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 			include('includes/header.inc');
 			prnMsg(_('The old quantities could not be deleted from the freeze file because') . ' ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-			if ($debug == 1) {
+			if ($Debug == 1) {
 				echo '<br />' . $SQL;
 			}
 			include('includes/footer.inc');
@@ -91,7 +91,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 			include('includes/header.inc');
 			prnMsg(_('The inventory quantities could not be added to the freeze file because') . ' ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-			if ($debug == 1) {
+			if ($Debug == 1) {
 				echo '<br />' . $SQL;
 			}
 			include('includes/footer.inc');
@@ -134,7 +134,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 		include('includes/header.inc');
 		prnMsg(_('The inventory quantities could not be retrieved by the SQL because') . ' ' . DB_error_msg(), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-		if ($debug == 1) {
+		if ($Debug == 1) {
 			echo '<br />' . $SQL;
 		}
 		include('includes/footer.inc');
@@ -188,7 +188,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				include('includes/header.inc');
 				prnMsg(_('The sales order demand quantities could not be retrieved by the SQL because') . ' ' . DB_error_msg(), 'error');
 				echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-				if ($debug == 1) {
+				if ($Debug == 1) {
 					echo '<br />' . $SQL;
 				}
 				include('includes/footer.inc');
@@ -215,7 +215,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 			$DemandResult = DB_query($SQL, '', '', false, false);
 			if (DB_error_no() != 0) {
 				prnMsg(_('The demand for this product from') . ' ' . $MyRow['loccode'] . ' ' . _('cannot be retrieved because') . ' - ' . DB_error_msg(), 'error');
-				if ($debug == 1) {
+				if ($Debug == 1) {
 					echo '<br />' . _('The SQL that failed was') . ' ' . $SQL;
 				}
 				exit;

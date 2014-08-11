@@ -101,7 +101,7 @@ if (isset($_POST['BatchNo']) and $_POST['BatchNo'] != '') {
 		$Title = _('Create PDF Print-out For A Batch Of Receipts');
 		include('includes/header.inc');
 		prnMsg(_('An error occurred getting the customer receipts for batch number') . ' ' . $_POST['BatchNo'], 'error');
-		if ($debug == 1) {
+		if ($Debug == 1) {
 			prnMsg(_('The SQL used to get the customer receipt information that failed was') . '<br />' . $SQL, 'error');
 		}
 		include('includes/footer.inc');
@@ -120,7 +120,7 @@ if (isset($_POST['BatchNo']) and $_POST['BatchNo'] != '') {
 		$Title = _('Create PDF Print-out For A Batch Of Receipts');
 		include('includes/header.inc');
 		prnMsg(_('An error occurred getting the GL receipts for batch number') . ' ' . $_POST['BatchNo'], 'error');
-		if ($debug == 1) {
+		if ($Debug == 1) {
 			prnMsg(_('The SQL used to get the GL receipt information that failed was') . ':<br />' . $SQL, 'error');
 		}
 		include('includes/footer.inc');

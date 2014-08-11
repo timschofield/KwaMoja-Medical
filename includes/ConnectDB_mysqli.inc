@@ -61,7 +61,7 @@ function DB_connect($host, $DBUser, $DBPassword, $DBPort) {
 function DB_query($SQL, $ErrorMessage = '', $DebugMessage = '', $Transaction = false, $TrapErrors = true) {
 
 	global $db;
-	global $debug;
+	global $Debug;
 	global $PathPrefix;
 	global $RootPath;
 	global $Messages;
@@ -79,7 +79,7 @@ function DB_query($SQL, $ErrorMessage = '', $DebugMessage = '', $Transaction = f
 			require_once($PathPrefix . 'includes/header.inc');
 		}
 		prnMsg($ErrorMessage . '<br />' . DB_error_msg(), 'error', _('Database Error') . ' ' . DB_error_no());
-		if ($debug == 1) {
+		if ($Debug == 1) {
 			prnMsg($DebugMessage . '<br />' . $SQL . '<br />', 'error', _('Database SQL Failure'));
 		}
 		if ($Transaction) {

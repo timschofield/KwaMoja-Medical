@@ -194,7 +194,7 @@ if (DB_error_no() != 0) {
 	$Title = _('Delivery Differences Log Report Error');
 	include('includes/header.inc');
 	prnMsg(_('An error occurred getting the variances between deliveries and orders'), 'error');
-	if ($debug == 1) {
+	if ($Debug == 1) {
 		prnMsg(_('The SQL used to get the variances between deliveries and orders that failed was') . '<br />' . $SQL, 'error');
 	}
 	include('includes/footer.inc');
@@ -203,7 +203,7 @@ if (DB_error_no() != 0) {
 	$Title = _('Delivery Differences Log Report Error');
 	include('includes/header.inc');
 	prnMsg(_('There were no variances between deliveries and orders found in the database within the period from') . ' ' . $_POST['FromDate'] . ' ' . _('to') . ' ' . $_POST['ToDate'] . '. ' . _('Please try again selecting a different date range'), 'info');
-	if ($debug == 1) {
+	if ($Debug == 1) {
 		prnMsg(_('The SQL that returned no rows was') . '<br />' . $SQL, 'error');
 	}
 	include('includes/footer.inc');

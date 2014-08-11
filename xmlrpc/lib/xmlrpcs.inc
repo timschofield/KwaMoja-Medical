@@ -452,7 +452,7 @@
 		*/
 		var $phpvals_encoding_options = array( 'auto_dates' );
 		/// controls wether the server is going to echo debugging messages back to the client as comments in response body. valid values: 0,1,2,3
-		var $debug = 1;
+		var $Debug = 1;
 		/**
 		* Controls behaviour of server when invoked user function throws an exception:
 		* 0 = catch it and return an 'internal error' xmlrpc response (default)
@@ -488,7 +488,7 @@
 		* Storage for internal debug info
 		* @access private
 		*/
-		var $debug_info = '';
+		var $Debug_info = '';
 		/**
 		* Extra data passed at runtime to method handling functions. Used only by EPI layer
 		*/

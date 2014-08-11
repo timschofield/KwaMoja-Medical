@@ -5,7 +5,7 @@ include('includes/session.inc');
 if (!isset($_POST['FromCat']) or $_POST['FromCat'] == '') {
 	$Title = _('Low Gross Profit Sales');
 }
-$debug = 0;
+$Debug = 0;
 if (isset($_POST['PrintPDF'])) {
 
 	include('includes/PDFStarter.php');
@@ -59,7 +59,7 @@ if (isset($_POST['PrintPDF'])) {
 		include('includes/header.inc');
 		prnMsg(_('The low GP items could not be retrieved by the SQL because') . ' - ' . DB_error_msg(), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-		if ($debug == 1) {
+		if ($Debug == 1) {
 			echo '<br />' . $SQL;
 		}
 		include('includes/footer.inc');
@@ -71,7 +71,7 @@ if (isset($_POST['PrintPDF'])) {
 		include('includes/header.inc');
 		prnMsg(_('No low GP items retrieved'), 'warn');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-		if ($debug == 1) {
+		if ($Debug == 1) {
 			echo '<br />' . $SQL;
 		}
 		include('includes/footer.inc');

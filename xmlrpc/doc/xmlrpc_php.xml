@@ -1338,9 +1338,9 @@ $myStruct = new xmlrpcval(
       array(
         "street" =&gt; new xmlrpcval("Fifht Ave", "string"),
         "city" =&gt; new xmlrpcval("NY", "string")
-      ), 
+      ),
       "struct")
-  ), 
+  ),
   "struct");
 </programlisting>
 
@@ -2180,7 +2180,7 @@ $client = new xmlrpc_client("/RPC2", "betty.userland.com", 80);
             <funcprototype>
               <funcdef><type>void</type><function>setDebug</function></funcdef>
 
-              <paramdef><type>int</type><parameter>$debugLvl</parameter></paramdef>
+              <paramdef><type>int</type><parameter>$DebugLvl</parameter></paramdef>
             </funcprototype>
           </funcsynopsis>
 
@@ -3781,11 +3781,11 @@ $srv = new xmlrpc_server($methods);
           <funcprototype>
             <funcdef><type>void</type><function>xmlrpc_debugmsg</function></funcdef>
 
-            <paramdef><type>string</type><parameter>$debugstring</parameter></paramdef>
+            <paramdef><type>string</type><parameter>$Debugstring</parameter></paramdef>
           </funcprototype>
         </funcsynopsis>
 
-        <para>Sends the contents of <parameter>$debugstring</parameter> in XML
+        <para>Sends the contents of <parameter>$Debugstring</parameter> in XML
         comments in the server return payload. If a PHP client has debugging
         turned on, the user will be able to see server debug
         information.</para>

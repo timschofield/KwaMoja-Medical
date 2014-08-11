@@ -93,7 +93,7 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 	if (DB_error_no() != 0) {
 		include('includes/header.inc');
 		prnMsg(_('An error occurred getting the orders details'), '', _('Database Error'));
-		if ($debug == 1) {
+		if ($Debug == 1) {
 			prnMsg(_('The SQL used to get the orders that failed was') . '<br />' . $SQL, '', _('Database Error'));
 		}
 		include('includes/footer.inc');
@@ -101,7 +101,7 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 	} elseif (DB_num_rows($TabDetail) == 0) {
 		include('includes/header.inc');
 		prnMsg(_('There were no expenses found in the database within the period from') . ' ' . $_POST['FromDate'] . ' ' . _('to') . ' ' . $_POST['ToDate'] . '. ' . _('Please try again selecting a different date range'), 'warn');
-		if ($debug == 1) {
+		if ($Debug == 1) {
 			prnMsg(_('The SQL that returned no rows was') . '<br />' . $SQL, '', _('Database Error'));
 		}
 		include('includes/footer.inc');

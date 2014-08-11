@@ -76,11 +76,7 @@ while ($MyRow = DB_fetch_array($ResultStkLocs)) {
 		}
 	} else {
 		echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
-		if ($_SESSION['RestrictLocations'] == 0) {
-			$_POST['StockLocation'] = 'All';
-		} else {
-			$_POST['StockLocation'] = $MyRow['loccode'];
-		}
+		$_POST['StockLocation'] = 'All';
 	}
 }
 echo '</select>';

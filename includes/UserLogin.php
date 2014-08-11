@@ -41,7 +41,7 @@ function userLogin($Name, $Password, $SysAdminEmail = '') {
 		$SQL = "SELECT *
 				FROM www_users
 				WHERE www_users.userid='" . $Name . "'
-				www_users.password='" . CryptPass($Password) . "'";
+				AND www_users.password='" . CryptPass($Password) . "'";
 		$ErrMsg = _('Could not retrieve user details on login because');
 		$debug = 1;
 		$Auth_Result = DB_query($SQL, $ErrMsg);

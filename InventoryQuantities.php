@@ -8,8 +8,8 @@ include('includes/session.inc');
 if (isset($_POST['PrintPDF']) or isset($_POST['CSV'])) {
 
 	include('includes/PDFStarter.php');
-	$pdf->addInfo('Title', _('Inventory Quantities Report'));
-	$pdf->addInfo('Subject', _('Parts With Quantities'));
+	$PDF->addInfo('Title', _('Inventory Quantities Report'));
+	$PDF->addInfo('Subject', _('Parts With Quantities'));
 	$FontSize = 9;
 	$PageNumber = 1;
 	$line_height = 12;
@@ -83,7 +83,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['CSV'])) {
 		include('includes/header.inc');
 		prnMsg(_('The Inventory Quantity report could not be retrieved by the SQL because') . ' ' . DB_error_msg(), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-		if ($debug == 1) {
+		if ($Debug == 1) {
 			echo '<br />' . $SQL;
 		}
 		include('includes/footer.inc');
@@ -99,7 +99,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['CSV'])) {
 	}
 
 	if (isset($_POST['PrintPDF'])) {
-		PrintHeader($pdf, $YPos, $PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin, $CatDescription);
+		PrintHeader($PDF, $YPos, $PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin, $CatDescription);
 
 		$FontSize = 8;
 
@@ -117,25 +117,25 @@ if (isset($_POST['PrintPDF']) or isset($_POST['CSV'])) {
 			// 4) Height 5) Text 6) Alignment 7) Border 8) Fill - True to use SetFillColor
 			// and False to set to transparent
 
-			$pdf->addTextWrap(50, $YPos, 100, $FontSize, $MyRow['stockid'], '', 0);
-			$pdf->addTextWrap(150, $YPos, 150, $FontSize, $MyRow['description'], '', 0);
-			$pdf->addTextWrap(310, $YPos, 60, $FontSize, $MyRow['loccode'], 'left', 0);
-			$pdf->addTextWrap(370, $YPos, 50, $FontSize, locale_number_format($MyRow['quantity'], $MyRow['decimalplaces']), 'right', 0);
-			$pdf->addTextWrap(420, $YPos, 50, $FontSize, locale_number_format($MyRow['reorderlevel'], $MyRow['decimalplaces']), 'right', 0);
+			$PDF->addTextWrap(50, $YPos, 100, $FontSize, $MyRow['stockid'], '', 0);
+			$PDF->addTextWrap(150, $YPos, 150, $FontSize, $MyRow['description'], '', 0);
+			$PDF->addTextWrap(310, $YPos, 60, $FontSize, $MyRow['loccode'], 'left', 0);
+			$PDF->addTextWrap(370, $YPos, 50, $FontSize, locale_number_format($MyRow['quantity'], $MyRow['decimalplaces']), 'right', 0);
+			$PDF->addTextWrap(420, $YPos, 50, $FontSize, locale_number_format($MyRow['reorderlevel'], $MyRow['decimalplaces']), 'right', 0);
 
 			if ($YPos < $Bottom_Margin + $line_height) {
-				PrintHeader($pdf, $YPos, $PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin, $CatDescription);
+				PrintHeader($PDF, $YPos, $PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin, $CatDescription);
 			}
 		}
 		/*end while loop */
 
 		if ($YPos < $Bottom_Margin + $line_height) {
-			PrintHeader($pdf, $YPos, $PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin, $CatDescription);
+			PrintHeader($PDF, $YPos, $PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin, $CatDescription);
 		}
 		/*Print out the grand totals */
 
-		$pdf->OutputD($_SESSION['DatabaseName'] . '_Inventory_Quantities_' . Date('Y-m-d') . '.pdf');
-		$pdf->__destruct();
+		$PDF->OutputD($_SESSION['DatabaseName'] . '_Inventory_Quantities_' . Date('Y-m-d') . '.pdf');
+		$PDF->__destruct();
 	} elseif (isset($_POST['CSV'])) {
 		$CSVListing = _('Stock ID') .','. _('Description') .','. _('Location Code') .','. _('Location') .','. _('Quantity') .','. _('Reorder Level') .','. _('Decimal Places') .','. _('Serialised') .','. _('Controlled') . "\n";
 		while ($InventoryQties = DB_fetch_row($Result)) {
@@ -215,38 +215,38 @@ if (isset($_POST['PrintPDF']) or isset($_POST['CSV'])) {
 }
 /*end of else not PrintPDF */
 
-function PrintHeader(&$pdf, &$YPos, &$PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin, $CatDescription) {
+function PrintHeader(&$PDF, &$YPos, &$PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin, $CatDescription) {
 
 	/*PDF page header for Reorder Level report */
 	if ($PageNumber > 1) {
-		$pdf->newPage();
+		$PDF->newPage();
 	}
 	$line_height = 12;
 	$FontSize = 9;
 	$YPos = $Page_Height - $Top_Margin;
 
-	$pdf->addTextWrap($Left_Margin, $YPos, 300, $FontSize, $_SESSION['CompanyRecord']['coyname']);
+	$PDF->addTextWrap($Left_Margin, $YPos, 300, $FontSize, $_SESSION['CompanyRecord']['coyname']);
 
 	$YPos -= $line_height;
 
-	$pdf->addTextWrap($Left_Margin, $YPos, 150, $FontSize, _('Inventory Quantities Report'));
-	$pdf->addTextWrap($Page_Width - $Right_Margin - 150, $YPos, 160, $FontSize, _('Printed') . ': ' . Date($_SESSION['DefaultDateFormat']) . '   ' . _('Page') . ' ' . $PageNumber, 'left');
+	$PDF->addTextWrap($Left_Margin, $YPos, 150, $FontSize, _('Inventory Quantities Report'));
+	$PDF->addTextWrap($Page_Width - $Right_Margin - 150, $YPos, 160, $FontSize, _('Printed') . ': ' . Date($_SESSION['DefaultDateFormat']) . '   ' . _('Page') . ' ' . $PageNumber, 'left');
 	$YPos -= $line_height;
-	$pdf->addTextWrap($Left_Margin, $YPos, 50, $FontSize, _('Category'));
-	$pdf->addTextWrap(95, $YPos, 50, $FontSize, $_POST['StockCat']);
-	$pdf->addTextWrap(160, $YPos, 150, $FontSize, $CatDescription, 'left');
+	$PDF->addTextWrap($Left_Margin, $YPos, 50, $FontSize, _('Category'));
+	$PDF->addTextWrap(95, $YPos, 50, $FontSize, $_POST['StockCat']);
+	$PDF->addTextWrap(160, $YPos, 150, $FontSize, $CatDescription, 'left');
 	$YPos -= (2 * $line_height);
 
 	/*set up the headings */
 	$Xpos = $Left_Margin + 1;
 
-	$pdf->addTextWrap(50, $YPos, 100, $FontSize, _('Part Number'), 'left');
-	$pdf->addTextWrap(150, $YPos, 150, $FontSize, _('Description'), 'left');
-	$pdf->addTextWrap(310, $YPos, 60, $FontSize, _('Location'), 'left');
-	$pdf->addTextWrap(370, $YPos, 50, $FontSize, _('Quantity'), 'right');
-	$pdf->addTextWrap(420, $YPos, 50, $FontSize, _('Reorder'), 'right');
+	$PDF->addTextWrap(50, $YPos, 100, $FontSize, _('Part Number'), 'left');
+	$PDF->addTextWrap(150, $YPos, 150, $FontSize, _('Description'), 'left');
+	$PDF->addTextWrap(310, $YPos, 60, $FontSize, _('Location'), 'left');
+	$PDF->addTextWrap(370, $YPos, 50, $FontSize, _('Quantity'), 'right');
+	$PDF->addTextWrap(420, $YPos, 50, $FontSize, _('Reorder'), 'right');
 	$YPos -= $line_height;
-	$pdf->addTextWrap(415, $YPos, 50, $FontSize, _('Level'), 'right');
+	$PDF->addTextWrap(415, $YPos, 50, $FontSize, _('Level'), 'right');
 
 
 	$FontSize = 8;

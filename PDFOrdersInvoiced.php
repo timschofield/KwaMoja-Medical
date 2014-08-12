@@ -90,8 +90,8 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate']) or $InputError == 1) 
 	exit;
 } else {
 	include('includes/PDFStarter.php');
-	$pdf->addInfo('Title', _('Orders Invoiced Report'));
-	$pdf->addInfo('Subject', _('Orders from') . ' ' . $_POST['FromDate'] . ' ' . _('to') . ' ' . $_POST['ToDate']);
+	$PDF->addInfo('Title', _('Orders Invoiced Report'));
+	$PDF->addInfo('Subject', _('Orders from') . ' ' . $_POST['FromDate'] . ' ' . _('to') . ' ' . $_POST['ToDate']);
 	$line_height = 12;
 	$PageNumber = 1;
 	$TotalDiffs = 0;
@@ -254,7 +254,7 @@ $Result = DB_query($SQL, '', '', false, false); //dont trap errors here
 if (DB_error_no() != 0) {
 	include('includes/header.inc');
 	prnMsg(_('An error occurred getting the orders details'), '', _('Database Error'));
-	if ($debug == 1) {
+	if ($Debug == 1) {
 		prnMsg(_('The SQL used to get the orders that failed was') . '<br />' . $SQL, '', _('Database Error'));
 	}
 	include('includes/footer.inc');
@@ -262,7 +262,7 @@ if (DB_error_no() != 0) {
 } elseif (DB_num_rows($Result) == 0) {
 	include('includes/header.inc');
 	prnMsg(_('There were no orders found in the database within the period from') . ' ' . $_POST['FromDate'] . ' ' . _('to') . ' ' . $_POST['ToDate'] . '. ' . _('Please try again selecting a different date range'), 'warn');
-	if ($debug == 1) {
+	if ($Debug == 1) {
 		prnMsg(_('The SQL that returned no rows was') . '<br />' . $SQL, '', _('Database Error'));
 	}
 	include('includes/footer.inc');
@@ -280,31 +280,31 @@ while ($MyRow = DB_fetch_array($Result)) {
 
 	if ($OrderNo != $MyRow['orderno']) {
 		if ($AccumOrderTotal != 0) {
-			$LeftOvers = $pdf->addTextWrap($Left_Margin + 250, $YPos, 120, $FontSize, _('Total Invoiced for order') . ' ' . $OrderNo, 'left');
-			$LeftOvers = $pdf->addTextWrap($Left_Margin + 360, $YPos, 80, $FontSize, locale_number_format($AccumOrderTotal, $_SESSION['CompanyRecord']['decimalplaces']), 'right');
+			$LeftOvers = $PDF->addTextWrap($Left_Margin + 250, $YPos, 120, $FontSize, _('Total Invoiced for order') . ' ' . $OrderNo, 'left');
+			$LeftOvers = $PDF->addTextWrap($Left_Margin + 360, $YPos, 80, $FontSize, locale_number_format($AccumOrderTotal, $_SESSION['CompanyRecord']['decimalplaces']), 'right');
 			$YPos -= ($line_height);
 			$AccumOrderTotal = 0;
 		}
 
-		$pdf->line($XPos, $YPos, $Page_Width - $Right_Margin, $YPos);
+		$PDF->line($XPos, $YPos, $Page_Width - $Right_Margin, $YPos);
 
 		$YPos -= $line_height;
 		/*Set up headings */
 		/*draw a line */
 
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 2, $YPos, 40, $FontSize, _('Order'), 'left');
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 40, $YPos, 150, $FontSize, _('Customer'), 'left');
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 190, $YPos, 110, $FontSize, _('Branch'), 'left');
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 300, $YPos, 60, $FontSize, _('Customer Ref'), 'left');
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 360, $YPos, 60, $FontSize, _('Ord Date'), 'left');
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 420, $YPos, 80, $FontSize, _('Location'), 'left');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 2, $YPos, 40, $FontSize, _('Order'), 'left');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 40, $YPos, 150, $FontSize, _('Customer'), 'left');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 190, $YPos, 110, $FontSize, _('Branch'), 'left');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 300, $YPos, 60, $FontSize, _('Customer Ref'), 'left');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 360, $YPos, 60, $FontSize, _('Ord Date'), 'left');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 420, $YPos, 80, $FontSize, _('Location'), 'left');
 
 		$YPos -= $line_height;
 
 		/*draw a line */
-		$pdf->line($XPos, $YPos, $Page_Width - $Right_Margin, $YPos);
-		$pdf->line($XPos, $YPos - $line_height * 2, $XPos, $YPos + $line_height * 2);
-		$pdf->line($Page_Width - $Right_Margin, $YPos - $line_height * 2, $Page_Width - $Right_Margin, $YPos + $line_height * 2);
+		$PDF->line($XPos, $YPos, $Page_Width - $Right_Margin, $YPos);
+		$PDF->line($XPos, $YPos - $line_height * 2, $XPos, $YPos + $line_height * 2);
+		$PDF->line($Page_Width - $Right_Margin, $YPos - $line_height * 2, $Page_Width - $Right_Margin, $YPos + $line_height * 2);
 
 		$YPos -= ($line_height);
 		if ($YPos - (2 * $line_height) < $Bottom_Margin) {
@@ -317,42 +317,42 @@ while ($MyRow = DB_fetch_array($Result)) {
 
 	if ($MyRow['orderno'] != $OrderNo or $NewPage) {
 
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 2, $YPos, 40, $FontSize, $MyRow['orderno'], 'left');
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 40, $YPos, 150, $FontSize, html_entity_decode($MyRow['name']), 'left');
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 190, $YPos, 110, $FontSize, $MyRow['brname'], 'left');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 2, $YPos, 40, $FontSize, $MyRow['orderno'], 'left');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 40, $YPos, 150, $FontSize, html_entity_decode($MyRow['name']), 'left');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 190, $YPos, 110, $FontSize, $MyRow['brname'], 'left');
 
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 300, $YPos, 60, $FontSize, $MyRow['customerref'], 'left');
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 360, $YPos, 60, $FontSize, ConvertSQLDate($MyRow['orddate']), 'left');
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 420, $YPos, 80, $FontSize, $MyRow['locationname'], 'left');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 300, $YPos, 60, $FontSize, $MyRow['customerref'], 'left');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 360, $YPos, 60, $FontSize, ConvertSQLDate($MyRow['orddate']), 'left');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 420, $YPos, 80, $FontSize, $MyRow['locationname'], 'left');
 
 		if (isset($PackingSlipPrinted)) {
-			$LeftOvers = $pdf->addTextWrap($Left_Margin + 400, $YPos, 100, $FontSize, $PackingSlipPrinted, 'left');
+			$LeftOvers = $PDF->addTextWrap($Left_Margin + 400, $YPos, 100, $FontSize, $PackingSlipPrinted, 'left');
 		}
 
 		$YPos -= ($line_height);
-		$pdf->line($XPos, $YPos, $Page_Width - $Right_Margin, $YPos);
+		$PDF->line($XPos, $YPos, $Page_Width - $Right_Margin, $YPos);
 		$YPos -= ($line_height);
 
 	}
 	$OrderNo = $MyRow['orderno'];
 	/*Set up the headings for the order */
-	$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 60, $FontSize, _('Code'), 'left');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 60, $YPos, 120, $FontSize, _('Description'), 'left');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 180, $YPos, 60, $FontSize, _('Ordered'), 'right');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 240, $YPos, 60, $FontSize, _('Invoiced'), 'right');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 320, $YPos, 60, $FontSize, _('Outstanding'), 'left');
+	$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 60, $FontSize, _('Code'), 'left');
+	$LeftOvers = $PDF->addTextWrap($Left_Margin + 60, $YPos, 120, $FontSize, _('Description'), 'left');
+	$LeftOvers = $PDF->addTextWrap($Left_Margin + 180, $YPos, 60, $FontSize, _('Ordered'), 'right');
+	$LeftOvers = $PDF->addTextWrap($Left_Margin + 240, $YPos, 60, $FontSize, _('Invoiced'), 'right');
+	$LeftOvers = $PDF->addTextWrap($Left_Margin + 320, $YPos, 60, $FontSize, _('Outstanding'), 'left');
 	$YPos -= ($line_height);
 	$NewPage = false;
 
-	$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 60, $FontSize, $MyRow['stkcode'], 'left');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 60, $YPos, 120, $FontSize, $MyRow['description'], 'left');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 180, $YPos, 60, $FontSize, locale_number_format($MyRow['totqty'], $MyRow['decimalplaces']), 'right');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 240, $YPos, 60, $FontSize, locale_number_format($MyRow['totqtyinvoiced'], $MyRow['decimalplaces']), 'right');
+	$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 60, $FontSize, $MyRow['stkcode'], 'left');
+	$LeftOvers = $PDF->addTextWrap($Left_Margin + 60, $YPos, 120, $FontSize, $MyRow['description'], 'left');
+	$LeftOvers = $PDF->addTextWrap($Left_Margin + 180, $YPos, 60, $FontSize, locale_number_format($MyRow['totqty'], $MyRow['decimalplaces']), 'right');
+	$LeftOvers = $PDF->addTextWrap($Left_Margin + 240, $YPos, 60, $FontSize, locale_number_format($MyRow['totqtyinvoiced'], $MyRow['decimalplaces']), 'right');
 
 	if ($MyRow['totqty'] > $MyRow['totqtyinvoiced']) {
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 320, $YPos, 60, $FontSize, locale_number_format($MyRow['totqty'] - $MyRow['totqtyinvoiced'], $MyRow['decimalplaces']), 'right');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 320, $YPos, 60, $FontSize, locale_number_format($MyRow['totqty'] - $MyRow['totqtyinvoiced'], $MyRow['decimalplaces']), 'right');
 	} else {
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 320, $YPos, 60, $FontSize, _('Complete'), 'left');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 320, $YPos, 60, $FontSize, _('Complete'), 'left');
 	}
 
 	$YPos -= ($line_height);
@@ -379,10 +379,10 @@ while ($MyRow = DB_fetch_array($Result)) {
 
 	$InvoicesResult = DB_query($SQL);
 	if (DB_num_rows($InvoicesResult) > 0) {
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 150, $YPos, 90, $FontSize, _('Transaction Number'), 'center');
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 240, $YPos, 60, $FontSize, _('Quantity'), 'center');
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 300, $YPos, 60, $FontSize, _('Price'), 'center');
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 380, $YPos, 60, $FontSize, _('Total'), 'centre');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 150, $YPos, 90, $FontSize, _('Transaction Number'), 'center');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 240, $YPos, 60, $FontSize, _('Quantity'), 'center');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 300, $YPos, 60, $FontSize, _('Price'), 'center');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 380, $YPos, 60, $FontSize, _('Total'), 'centre');
 		$YPos -= ($line_height);
 	}
 
@@ -390,10 +390,10 @@ while ($MyRow = DB_fetch_array($Result)) {
 
 		$ValueInvoiced = $InvRow['netprice'] * $InvRow['quantity'];
 
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 150, $YPos, 90, $FontSize, $InvRow['typename'] . ' ' . $InvRow['transno'], 'left');
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 240, $YPos, 60, $FontSize, locale_number_format($InvRow['quantity'], $MyRow['decimalplaces']), 'right');
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 300, $YPos, 60, $FontSize, locale_number_format($InvRow['netprice'], $_SESSION['CompanyRecord']['decimalplaces']), 'right');
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 360, $YPos, 80, $FontSize, locale_number_format($ValueInvoiced, $_SESSION['CompanyRecord']['decimalplaces']), 'right');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 150, $YPos, 90, $FontSize, $InvRow['typename'] . ' ' . $InvRow['transno'], 'left');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 240, $YPos, 60, $FontSize, locale_number_format($InvRow['quantity'], $MyRow['decimalplaces']), 'right');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 300, $YPos, 60, $FontSize, locale_number_format($InvRow['netprice'], $_SESSION['CompanyRecord']['decimalplaces']), 'right');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 360, $YPos, 80, $FontSize, locale_number_format($ValueInvoiced, $_SESSION['CompanyRecord']['decimalplaces']), 'right');
 
 		$YPos -= ($line_height);
 
@@ -419,10 +419,10 @@ while ($MyRow = DB_fetch_array($Result)) {
 /* end of while there are invoiced orders to print */
 
 $YPos -= ($line_height);
-$LeftOvers = $pdf->addTextWrap($Left_Margin + 260, $YPos, 100, $FontSize, _('GRAND TOTAL INVOICED'), 'right');
-$LeftOvers = $pdf->addTextWrap($Left_Margin + 360, $YPos, 80, $FontSize, locale_number_format($AccumTotalInv, $_SESSION['CompanyRecord']['decimalplaces']), 'right');
+$LeftOvers = $PDF->addTextWrap($Left_Margin + 260, $YPos, 100, $FontSize, _('GRAND TOTAL INVOICED'), 'right');
+$LeftOvers = $PDF->addTextWrap($Left_Margin + 360, $YPos, 80, $FontSize, locale_number_format($AccumTotalInv, $_SESSION['CompanyRecord']['decimalplaces']), 'right');
 $YPos -= ($line_height);
 
-$pdf->OutputD($_SESSION['DatabaseName'] . '_OrdersInvoiced_' . date('Y-m-d') . '.pdf');
-$pdf->__destruct();
+$PDF->OutputD($_SESSION['DatabaseName'] . '_OrdersInvoiced_' . date('Y-m-d') . '.pdf');
+$PDF->__destruct();
 ?>

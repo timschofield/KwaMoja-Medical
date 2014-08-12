@@ -8,8 +8,8 @@ include('includes/session.inc');
 if (isset($_POST['PrintPDF'])) {
 
 	include('includes/PDFStarter.php');
-	$pdf->addInfo('Title', _('Indented BOM Listing'));
-	$pdf->addInfo('Subject', _('Indented BOM Listing'));
+	$PDF->addInfo('Title', _('Indented BOM Listing'));
+	$PDF->addInfo('Subject', _('Indented BOM Listing'));
 	$FontSize = 9;
 	$PageNumber = 1;
 	$line_height = 12;
@@ -140,7 +140,7 @@ if (isset($_POST['PrintPDF'])) {
 		prnMsg(_('The Indented BOM Listing could not be retrieved by the SQL because') . ' ' . DB_error_msg(), 'error');
 		echo '<br />
 			<a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-		if ($debug == 1) {
+		if ($Debug == 1) {
 			echo '<br />' . $SQL;
 		}
 		include('includes/footer.inc');
@@ -157,11 +157,11 @@ if (isset($_POST['PrintPDF'])) {
 	$Assembly = $_POST['Part'];
 	$AssemblyDesc = $MyRow['description'];
 
-	PrintHeader($pdf, $YPos, $PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin, $AssemblyDesc);
+	PrintHeader($PDF, $YPos, $PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin, $AssemblyDesc);
 
 	$Tot_Val = 0;
 	$fill = false;
-	$pdf->SetFillColor(224, 235, 255);
+	$PDF->SetFillColor(224, 235, 255);
 	$SQL = "SELECT tempbom.*,
 				   stockmaster.description,
 				   stockmaster.mbflag
@@ -194,17 +194,17 @@ if (isset($_POST['PrintPDF'])) {
 		// 1) X position 2) Y position 3) Width
 		// 4) Height 5) Text 6) Alignment 7) Border 8) Fill - True to use SetFillColor
 		// and False to set to transparent
-		$pdf->addTextWrap($Left_Margin + ($MyRow['level'] * 5), $YPos, 90, $FontSize, $MyRow['parent'], '', 0, $fill);
-		$pdf->addTextWrap(160, $YPos, 20, $FontSize, $MyRow['mbflag'], '', 0, $fill);
-		$pdf->addTextWrap(180, $YPos, 180, $FontSize, $MyRow['description'], '', 0, $fill);
-		$pdf->addTextWrap(360, $YPos, 30, $FontSize, $MyRow['loccode'], 'right', 0, $fill);
-		$pdf->addTextWrap(390, $YPos, 25, $FontSize, $MyRow['workcentreadded'], 'right', 0, $fill);
-		$pdf->addTextWrap(415, $YPos, 45, $FontSize, locale_number_format($MyRow['quantity'], 'Variable'), 'right', 0, $fill);
-		$pdf->addTextWrap(460, $YPos, 55, $FontSize, $FormatedEffectiveAfter, 'right', 0, $fill);
-		$pdf->addTextWrap(515, $YPos, 50, $FontSize, $FormatedEffectiveTo, 'right', 0, $fill);
+		$PDF->addTextWrap($Left_Margin + ($MyRow['level'] * 5), $YPos, 90, $FontSize, $MyRow['parent'], '', 0, $fill);
+		$PDF->addTextWrap(160, $YPos, 20, $FontSize, $MyRow['mbflag'], '', 0, $fill);
+		$PDF->addTextWrap(180, $YPos, 180, $FontSize, $MyRow['description'], '', 0, $fill);
+		$PDF->addTextWrap(360, $YPos, 30, $FontSize, $MyRow['loccode'], 'right', 0, $fill);
+		$PDF->addTextWrap(390, $YPos, 25, $FontSize, $MyRow['workcentreadded'], 'right', 0, $fill);
+		$PDF->addTextWrap(415, $YPos, 45, $FontSize, locale_number_format($MyRow['quantity'], 'Variable'), 'right', 0, $fill);
+		$PDF->addTextWrap(460, $YPos, 55, $FontSize, $FormatedEffectiveAfter, 'right', 0, $fill);
+		$PDF->addTextWrap(515, $YPos, 50, $FontSize, $FormatedEffectiveTo, 'right', 0, $fill);
 
 		if ($YPos < $Bottom_Margin + $line_height) {
-			PrintHeader($pdf, $YPos, $PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin, $AssemblyDesc);
+			PrintHeader($PDF, $YPos, $PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin, $AssemblyDesc);
 		}
 
 	}
@@ -214,7 +214,7 @@ if (isset($_POST['PrintPDF'])) {
 	$YPos -= (2 * $line_height);
 
 	if ($YPos < $Bottom_Margin + $line_height) {
-		PrintHeader($pdf, $YPos, $PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin, $AssemblyDesc);
+		PrintHeader($PDF, $YPos, $PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin, $AssemblyDesc);
 	}
 	if ($ListCount == 0) {
 		$Title = _('Print Reverse Indented BOM Listing Error');
@@ -224,8 +224,8 @@ if (isset($_POST['PrintPDF'])) {
 		include('includes/footer.inc');
 		exit;
 	} else {
-		$pdf->OutputD($_SESSION['DatabaseName'] . '_Customer_trans_' . date('Y-m-d') . '.pdf');
-		$pdf->__destruct();
+		$PDF->OutputD($_SESSION['DatabaseName'] . '_Customer_trans_' . date('Y-m-d') . '.pdf');
+		$PDF->__destruct();
 	}
 
 } else {
@@ -261,47 +261,47 @@ if (isset($_POST['PrintPDF'])) {
 /*end of else not PrintPDF */
 
 
-function PrintHeader(&$pdf, &$YPos, &$PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin, $AssemblyDesc) {
+function PrintHeader(&$PDF, &$YPos, &$PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin, $AssemblyDesc) {
 
 
 	$line_height = 12;
 	/*PDF page header for Reverse Indented BOM Listing report */
 	if ($PageNumber > 1) {
-		$pdf->newPage();
+		$PDF->newPage();
 	}
 
 	$FontSize = 9;
 	$YPos = $Page_Height - $Top_Margin - 5;
 
-	$pdf->addTextWrap($Left_Margin, $YPos, 300, $FontSize, $_SESSION['CompanyRecord']['coyname']);
+	$PDF->addTextWrap($Left_Margin, $YPos, 300, $FontSize, $_SESSION['CompanyRecord']['coyname']);
 
 	$YPos -= $line_height;
 
-	$pdf->addTextWrap($Left_Margin, $YPos, 300, $FontSize, _('Reverse Indented BOM Listing'));
-	$pdf->addTextWrap($Page_Width - $Right_Margin - 115, $YPos, 160, $FontSize, _('Printed') . ': ' . Date($_SESSION['DefaultDateFormat']) . '   ' . _('Page') . ' ' . $PageNumber, 'left');
+	$PDF->addTextWrap($Left_Margin, $YPos, 300, $FontSize, _('Reverse Indented BOM Listing'));
+	$PDF->addTextWrap($Page_Width - $Right_Margin - 115, $YPos, 160, $FontSize, _('Printed') . ': ' . Date($_SESSION['DefaultDateFormat']) . '   ' . _('Page') . ' ' . $PageNumber, 'left');
 
 	$YPos -= (2 * $line_height);
 
 	/*set up the headings */
 	$Xpos = $Left_Margin + 1;
 
-	$pdf->addTextWrap($Xpos, $YPos, 90, $FontSize, _('Part Number'), 'left');
-	$pdf->addTextWrap(160, $YPos, 20, $FontSize, _('M/B'), 'left');
-	$pdf->addTextWrap(180, $YPos, 180, $FontSize, _('Description'), 'center');
-	$pdf->addTextWrap(360, $YPos, 30, $FontSize, _('Locn'), 'right');
-	$pdf->addTextWrap(390, $YPos, 25, $FontSize, _('WC'), 'right');
-	$pdf->addTextWrap(415, $YPos, 45, $FontSize, _('Quantity'), 'right');
-	$pdf->addTextWrap(460, $YPos, 55, $FontSize, _('From Date'), 'right');
-	$pdf->addTextWrap(515, $YPos, 50, $FontSize, _('To Date'), 'right');
+	$PDF->addTextWrap($Xpos, $YPos, 90, $FontSize, _('Part Number'), 'left');
+	$PDF->addTextWrap(160, $YPos, 20, $FontSize, _('M/B'), 'left');
+	$PDF->addTextWrap(180, $YPos, 180, $FontSize, _('Description'), 'center');
+	$PDF->addTextWrap(360, $YPos, 30, $FontSize, _('Locn'), 'right');
+	$PDF->addTextWrap(390, $YPos, 25, $FontSize, _('WC'), 'right');
+	$PDF->addTextWrap(415, $YPos, 45, $FontSize, _('Quantity'), 'right');
+	$PDF->addTextWrap(460, $YPos, 55, $FontSize, _('From Date'), 'right');
+	$PDF->addTextWrap(515, $YPos, 50, $FontSize, _('To Date'), 'right');
 	$YPos = $YPos - $line_height;
 
-	$pdf->addTextWrap($Left_Margin + 1, $YPos, 60, $FontSize, _('Component') . ': ', '', 0);
-	$pdf->addTextWrap(100, $YPos, 100, $FontSize, mb_strtoupper($_POST['Part']), '', 0);
-	$pdf->addTextWrap(200, $YPos, 150, $FontSize, $AssemblyDesc, '', 0);
+	$PDF->addTextWrap($Left_Margin + 1, $YPos, 60, $FontSize, _('Component') . ': ', '', 0);
+	$PDF->addTextWrap(100, $YPos, 100, $FontSize, mb_strtoupper($_POST['Part']), '', 0);
+	$PDF->addTextWrap(200, $YPos, 150, $FontSize, $AssemblyDesc, '', 0);
 	$YPos -= (2 * $line_height);
 	$Xpos = $Left_Margin + 5;
 	$FontSize = 8;
-	$pdf->addTextWrap($Xpos, $YPos, 90, $FontSize, _(' 12345678901234567890'), 'left');
+	$PDF->addTextWrap($Xpos, $YPos, 90, $FontSize, _(' 12345678901234567890'), 'left');
 
 	$YPos = $YPos - (2 * $line_height);
 	$PageNumber++;

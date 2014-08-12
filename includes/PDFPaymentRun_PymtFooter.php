@@ -6,15 +6,15 @@
  */
 
 $YPos -= (0.5 * $line_height);
-$pdf->line($Left_Margin, $YPos + $line_height, $Page_Width - $Right_Margin, $YPos + $line_height);
+$PDF->line($Left_Margin, $YPos + $line_height, $Page_Width - $Right_Margin, $YPos + $line_height);
 
-$LeftOvers = $pdf->addTextWrap($Left_Margin + 10, $YPos, 340 - $Left_Margin, $FontSize, _('Total Due For') . ' ' . $SupplierName, 'left');
+$LeftOvers = $PDF->addTextWrap($Left_Margin + 10, $YPos, 340 - $Left_Margin, $FontSize, _('Total Due For') . ' ' . $SupplierName, 'left');
 
 $TotalPayments += $AccumBalance;
 $TotalAccumDiffOnExch += $AccumDiffOnExch;
 
-$LeftOvers = $pdf->addTextWrap(340, $YPos, 60, $FontSize, locale_number_format($AccumBalance, $CurrDecimalPlaces), 'right');
-$LeftOvers = $pdf->addTextWrap(405, $YPos, 60, $FontSize, locale_number_format($AccumDiffOnExch, $CurrDecimalPlaces), 'right');
+$LeftOvers = $PDF->addTextWrap(340, $YPos, 60, $FontSize, locale_number_format($AccumBalance, $CurrDecimalPlaces), 'right');
+$LeftOvers = $PDF->addTextWrap(405, $YPos, 60, $FontSize, locale_number_format($AccumDiffOnExch, $CurrDecimalPlaces), 'right');
 
 
 if (isset($_POST['PrintPDFAndProcess'])) {
@@ -60,7 +60,7 @@ if (isset($_POST['PrintPDFAndProcess'])) {
 		prnMsg(_('None of the payments will be processed because the payment record for') . ' ' . $SupplierName . ' ' . _('could not be inserted because') . ' - ' . DB_error_msg(), 'error');
 		echo '<br>
 				<a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-		if ($debug == 1) {
+		if ($Debug == 1) {
 			prnMsg(_('The SQL that failed was') . ' ' . $SQL, 'error');
 		}
 		$ProcessResult = DB_Txn_Rollback();
@@ -91,7 +91,7 @@ if (isset($_POST['PrintPDFAndProcess'])) {
 			include('header.inc');
 			prnMsg(_('None of the payments will be processed since an allocation record for') . $SupplierName . _('could not be inserted because') . ' - ' . DB_error_msg(), 'error');
 			echo '<br><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-			if ($debug == 1) {
+			if ($Debug == 1) {
 				prnMsg(_('The SQL that failed was') . $SQL, 'error');
 			}
 			$ProcessResult = DB_Txn_Rollback();
@@ -126,7 +126,7 @@ if (isset($_POST['PrintPDFAndProcess'])) {
 		prnMsg(_('None of the payments will be processed because the bank account payment record for') . ' ' . $SupplierName . ' ' . _('could not be inserted because') . ' - ' . DB_error_msg(), 'error');
 		echo '<br />
 				<a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-		if ($debug == 1) {
+		if ($Debug == 1) {
 			prnMsg(_('The SQL that failed was') . ' ' . $SQL, 'error');
 		}
 		$ProcessResult = DB_Txn_Rollback();
@@ -163,7 +163,7 @@ if (isset($_POST['PrintPDFAndProcess'])) {
 			prnMsg(_('None of the payments will be processed since the general ledger posting for the payment to') . ' ' . $SupplierName . ' ' . _('could not be inserted because') . ' - ' . DB_error_msg(), 'error');
 			echo '<br />
 					<a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-			if ($debug == 1) {
+			if ($Debug == 1) {
 				prnMsg(_('The SQL that failed was') . ':<br />' . $SQL, 'error');
 			}
 			$ProcessResult = DB_Txn_Rollback();
@@ -194,7 +194,7 @@ if (isset($_POST['PrintPDFAndProcess'])) {
 			include('header.inc');
 			prnMsg(_('None of the payments will be processed since the general ledger posting for the payment to') . ' ' . $SupplierName . ' ' . _('could not be inserted because') . ' - ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-			if ($debug == 1) {
+			if ($Debug == 1) {
 				prnMsg(_('The SQL that failed was') . ':<BR>' . $SQL, 'error');
 			}
 			$ProcessResult = DB_Txn_Rollback();
@@ -225,7 +225,7 @@ if (isset($_POST['PrintPDFAndProcess'])) {
 				include('header.inc');
 				prnMsg(_('None of the payments will be processed since the general ledger posting for the exchange difference on') . ' ' . $SupplierName . ' ' . _('could not be inserted because') . ' - ' . DB_error_msg(), 'error');
 				echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-				if ($debug == 1) {
+				if ($Debug == 1) {
 					prnMsg(_('The SQL that failed was: ') . '<br />' . $SQL, 'error');
 				}
 				$ProcessResult = DB_Txn_Rollback();
@@ -241,7 +241,7 @@ if (isset($_POST['PrintPDFAndProcess'])) {
 
 $YPos -= (1.5 * $line_height);
 
-$pdf->line($Left_Margin, $YPos + $line_height, $Page_Width - $Right_Margin, $YPos + $line_height);
+$PDF->line($Left_Margin, $YPos + $line_height, $Page_Width - $Right_Margin, $YPos + $line_height);
 
 $YPos -= $line_height;
 

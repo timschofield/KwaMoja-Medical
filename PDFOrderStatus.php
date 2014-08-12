@@ -98,8 +98,8 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate'])) {
 } else {
 	include('includes/ConnectDB.inc');
 	include('includes/PDFStarter.php');
-	$pdf->addInfo('Title', _('Order Status Report'));
-	$pdf->addInfo('Subject', _('Orders from') . ' ' . $_POST['FromDate'] . ' ' . _('to') . ' ' . $_POST['ToDate']);
+	$PDF->addInfo('Title', _('Order Status Report'));
+	$PDF->addInfo('Subject', _('Orders from') . ' ' . $_POST['FromDate'] . ' ' . _('to') . ' ' . $_POST['ToDate']);
 	$line_height = 12;
 	$PageNumber = 1;
 	$TotalDiffs = 0;
@@ -270,7 +270,7 @@ $Result = DB_query($SQL, '', '', false, false); //dont trap errors here
 if (DB_error_no() != 0) {
 	include('includes/header.inc');
 	echo '<br />' . _('An error occurred getting the orders details');
-	if ($debug == 1) {
+	if ($Debug == 1) {
 		echo '<br />' . _('The SQL used to get the orders that failed was') . '<br />' . $SQL;
 	}
 	include('includes/footer.inc');
@@ -290,26 +290,26 @@ $OrderNo = 0;
 
 while ($MyRow = DB_fetch_array($Result)) {
 
-	$pdf->line($XPos, $YPos, $Page_Width - $Right_Margin, $YPos);
+	$PDF->line($XPos, $YPos, $Page_Width - $Right_Margin, $YPos);
 
 	$YPos -= $line_height;
 	/*Set up headings */
 	/*draw a line */
 
 	if ($MyRow['orderno'] != $OrderNo) {
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 2, $YPos, 40, $FontSize, _('Order'), 'left');
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 40, $YPos, 150, $FontSize, _('Customer'), 'left');
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 190, $YPos, 110, $FontSize, _('Branch'), 'left');
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 300, $YPos, 60, $FontSize, _('Ord Date'), 'left');
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 360, $YPos, 60, $FontSize, _('Location'), 'left');
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 420, $YPos, 80, $FontSize, _('Status'), 'left');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 2, $YPos, 40, $FontSize, _('Order'), 'left');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 40, $YPos, 150, $FontSize, _('Customer'), 'left');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 190, $YPos, 110, $FontSize, _('Branch'), 'left');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 300, $YPos, 60, $FontSize, _('Ord Date'), 'left');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 360, $YPos, 60, $FontSize, _('Location'), 'left');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 420, $YPos, 80, $FontSize, _('Status'), 'left');
 
 		$YPos -= $line_height;
 
 		/*draw a line */
-		$pdf->line($XPos, $YPos, $Page_Width - $Right_Margin, $YPos);
-		$pdf->line($XPos, $YPos - $line_height * 2, $XPos, $YPos + $line_height * 2);
-		$pdf->line($Page_Width - $Right_Margin, $YPos - $line_height * 2, $Page_Width - $Right_Margin, $YPos + $line_height * 2);
+		$PDF->line($XPos, $YPos, $Page_Width - $Right_Margin, $YPos);
+		$PDF->line($XPos, $YPos - $line_height * 2, $XPos, $YPos + $line_height * 2);
+		$PDF->line($Page_Width - $Right_Margin, $YPos - $line_height * 2, $Page_Width - $Right_Margin, $YPos + $line_height * 2);
 
 
 		if ($YPos - (2 * $line_height) < $Bottom_Margin) {
@@ -321,12 +321,12 @@ while ($MyRow = DB_fetch_array($Result)) {
 		/*end of new page header  */
 		$YPos -= $line_height;
 
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 2, $YPos, 40, $FontSize, $MyRow['orderno'], 'left');
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 40, $YPos, 150, $FontSize, html_entity_decode($MyRow['name'], ENT_QUOTES, 'UTF-8'), 'left');
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 190, $YPos, 110, $FontSize, $MyRow['brname'], 'left');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 2, $YPos, 40, $FontSize, $MyRow['orderno'], 'left');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 40, $YPos, 150, $FontSize, html_entity_decode($MyRow['name'], ENT_QUOTES, 'UTF-8'), 'left');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 190, $YPos, 110, $FontSize, $MyRow['brname'], 'left');
 
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 300, $YPos, 60, $FontSize, ConvertSQLDate($MyRow['orddate']), 'left');
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 360, $YPos, 80, $FontSize, $MyRow['locationname'], 'left');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 300, $YPos, 60, $FontSize, ConvertSQLDate($MyRow['orddate']), 'left');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 360, $YPos, 80, $FontSize, $MyRow['locationname'], 'left');
 
 		if ($MyRow['printedpackingslip'] == 1) {
 			$PackingSlipPrinted = _('Printed') . ' ' . ConvertSQLDate($MyRow['datepackingslipprinted']);
@@ -334,32 +334,32 @@ while ($MyRow = DB_fetch_array($Result)) {
 			$PackingSlipPrinted = _('Not yet printed');
 		}
 
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 420, $YPos, 100, $FontSize, $PackingSlipPrinted, 'left');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 420, $YPos, 100, $FontSize, $PackingSlipPrinted, 'left');
 		$YPos -= $line_height;
-		$pdf->line($XPos, $YPos, $Page_Width - $Right_Margin, $YPos);
+		$PDF->line($XPos, $YPos, $Page_Width - $Right_Margin, $YPos);
 
 		$YPos -= ($line_height);
 
 		/*Its not the first line */
 		$OrderNo = $MyRow['orderno'];
-		$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 60, $FontSize, _('Code'), 'left');
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 60, $YPos, 120, $FontSize, _('Description'), 'left');
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 180, $YPos, 60, $FontSize, _('Ordered'), 'right');
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 240, $YPos, 60, $FontSize, _('Invoiced'), 'right');
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 320, $YPos, 60, $FontSize, _('Outstanding'), 'center');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 60, $FontSize, _('Code'), 'left');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 60, $YPos, 120, $FontSize, _('Description'), 'left');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 180, $YPos, 60, $FontSize, _('Ordered'), 'right');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 240, $YPos, 60, $FontSize, _('Invoiced'), 'right');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 320, $YPos, 60, $FontSize, _('Outstanding'), 'center');
 		$YPos -= ($line_height);
 
 	}
 
-	$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 60, $FontSize, $MyRow['stkcode'], 'left');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 60, $YPos, 120, $FontSize, $MyRow['description'], 'left');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 180, $YPos, 60, $FontSize, locale_number_format($MyRow['quantity'], $MyRow['decimalplaces']), 'right');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 240, $YPos, 60, $FontSize, locale_number_format($MyRow['qtyinvoiced'], $MyRow['decimalplaces']), 'right');
+	$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 60, $FontSize, $MyRow['stkcode'], 'left');
+	$LeftOvers = $PDF->addTextWrap($Left_Margin + 60, $YPos, 120, $FontSize, $MyRow['description'], 'left');
+	$LeftOvers = $PDF->addTextWrap($Left_Margin + 180, $YPos, 60, $FontSize, locale_number_format($MyRow['quantity'], $MyRow['decimalplaces']), 'right');
+	$LeftOvers = $PDF->addTextWrap($Left_Margin + 240, $YPos, 60, $FontSize, locale_number_format($MyRow['qtyinvoiced'], $MyRow['decimalplaces']), 'right');
 
 	if ($MyRow['quantity'] > $MyRow['qtyinvoiced']) {
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 320, $YPos, 60, $FontSize, locale_number_format($MyRow['quantity'] - $MyRow['qtyinvoiced'], $MyRow['decimalplaces']), 'right');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 320, $YPos, 60, $FontSize, locale_number_format($MyRow['quantity'] - $MyRow['qtyinvoiced'], $MyRow['decimalplaces']), 'right');
 	} else {
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 320, $YPos, 60, $FontSize, _('Complete'), 'left');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 320, $YPos, 60, $FontSize, _('Complete'), 'left');
 	}
 
 	$YPos -= ($line_height);
@@ -372,6 +372,6 @@ while ($MyRow = DB_fetch_array($Result)) {
 	/*end of new page header  */
 }
 /* end of while there are delivery differences to print */
-$pdf->OutputD($_SESSION['DatabaseName'] . '_OrderStatus_' . date('Y-m-d') . '.pdf');
-$pdf->__destruct();
+$PDF->OutputD($_SESSION['DatabaseName'] . '_OrderStatus_' . date('Y-m-d') . '.pdf');
+$PDF->__destruct();
 ?>

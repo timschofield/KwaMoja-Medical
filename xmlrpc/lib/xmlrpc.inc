@@ -809,7 +809,7 @@
 		var $method='http';
 		var $errno;
 		var $errstr;
-		var $debug=0;
+		var $Debug=0;
 		var $username='';
 		var $password='';
 		var $authtype=1;
@@ -944,7 +944,7 @@
 
 		/**
 		* Enables/disables the echoing to screen of the xmlrpc responses received
-		* @param integer $debug values 0, 1 and 2 are supported (2 = echo sent msg too, before received response)
+		* @param integer $Debug values 0, 1 and 2 are supported (2 = echo sent msg too, before received response)
 		* @access public
 		*/
 		function setDebug($in)
@@ -2084,7 +2084,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 		var $payload;
 		var $methodname;
 		var $params=array();
-		var $debug=0;
+		var $Debug=0;
 		var $content_type = 'text/xml';
 
 		/**

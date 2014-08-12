@@ -103,6 +103,6 @@ if ($RootPath == "/" or $RootPath == "\\") {
 error_reporting(E_ALL && ~E_NOTICE);
 /* For Development Use */
 //error_reporting (-1);
-$debug = 0; // 1=debugging mode, 0=producation mode
+$Debug = 0; // 1=debugging mode, 0=producation mode
 /*Make sure there is nothing - not even spaces after this last ?> */
 ?>

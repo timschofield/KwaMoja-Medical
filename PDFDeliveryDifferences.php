@@ -194,7 +194,7 @@ if (DB_error_no() != 0) {
 	$Title = _('Delivery Differences Log Report Error');
 	include('includes/header.inc');
 	prnMsg(_('An error occurred getting the variances between deliveries and orders'), 'error');
-	if ($debug == 1) {
+	if ($Debug == 1) {
 		prnMsg(_('The SQL used to get the variances between deliveries and orders that failed was') . '<br />' . $SQL, 'error');
 	}
 	include('includes/footer.inc');
@@ -203,7 +203,7 @@ if (DB_error_no() != 0) {
 	$Title = _('Delivery Differences Log Report Error');
 	include('includes/header.inc');
 	prnMsg(_('There were no variances between deliveries and orders found in the database within the period from') . ' ' . $_POST['FromDate'] . ' ' . _('to') . ' ' . $_POST['ToDate'] . '. ' . _('Please try again selecting a different date range'), 'info');
-	if ($debug == 1) {
+	if ($Debug == 1) {
 		prnMsg(_('The SQL that returned no rows was') . '<br />' . $SQL, 'error');
 	}
 	include('includes/footer.inc');
@@ -214,8 +214,8 @@ include('includes/PDFStarter.php');
 
 /*PDFStarter.php has all the variables for page size and width set up depending on the users default preferences for paper size */
 
-$pdf->addInfo('Title', _('Variances Between Deliveries and Orders'));
-$pdf->addInfo('Subject', _('Variances Between Deliveries and Orders from') . ' ' . $_POST['FromDate'] . ' ' . _('to') . ' ' . $_POST['ToDate']);
+$PDF->addInfo('Title', _('Variances Between Deliveries and Orders'));
+$PDF->addInfo('Subject', _('Variances Between Deliveries and Orders from') . ' ' . $_POST['FromDate'] . ' ' . _('to') . ' ' . $_POST['ToDate']);
 $line_height = 12;
 $PageNumber = 1;
 $TotalDiffs = 0;
@@ -224,14 +224,14 @@ include('includes/PDFDeliveryDifferencesPageHeader.inc');
 
 while ($MyRow = DB_fetch_array($Result)) {
 
-	$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 40, $FontSize, $MyRow['invoiceno'], 'left');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 40, $YPos, 40, $FontSize, $MyRow['orderno'], 'left');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 80, $YPos, 200, $FontSize, $MyRow['stockid'] . ' - ' . $MyRow['description'], 'left');
+	$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 40, $FontSize, $MyRow['invoiceno'], 'left');
+	$LeftOvers = $PDF->addTextWrap($Left_Margin + 40, $YPos, 40, $FontSize, $MyRow['orderno'], 'left');
+	$LeftOvers = $PDF->addTextWrap($Left_Margin + 80, $YPos, 200, $FontSize, $MyRow['stockid'] . ' - ' . $MyRow['description'], 'left');
 
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 280, $YPos, 50, $FontSize, locale_number_format($MyRow['quantitydiff'], $MyRow['decimalplaces']), 'right');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 335, $YPos, 50, $FontSize, $MyRow['debtorno'], 'left');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 385, $YPos, 50, $FontSize, $MyRow['branch'], 'left');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 435, $YPos, 50, $FontSize, ConvertSQLDate($MyRow['trandate']), 'left');
+	$LeftOvers = $PDF->addTextWrap($Left_Margin + 280, $YPos, 50, $FontSize, locale_number_format($MyRow['quantitydiff'], $MyRow['decimalplaces']), 'right');
+	$LeftOvers = $PDF->addTextWrap($Left_Margin + 335, $YPos, 50, $FontSize, $MyRow['debtorno'], 'left');
+	$LeftOvers = $PDF->addTextWrap($Left_Margin + 385, $YPos, 50, $FontSize, $MyRow['branch'], 'left');
+	$LeftOvers = $PDF->addTextWrap($Left_Margin + 435, $YPos, 50, $FontSize, ConvertSQLDate($MyRow['trandate']), 'left');
 
 	$YPos -= ($line_height);
 	$TotalDiffs++;
@@ -247,7 +247,7 @@ while ($MyRow = DB_fetch_array($Result)) {
 
 
 $YPos -= $line_height;
-$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 200, $FontSize, _('Total number of differences') . ' ' . locale_number_format($TotalDiffs), 'left');
+$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 200, $FontSize, _('Total number of differences') . ' ' . locale_number_format($TotalDiffs), 'left');
 
 if ($_POST['CategoryID'] == 'All' and $_POST['Location'] == 'All') {
 	$SQL = "SELECT COUNT(salesorderdetails.orderno)
@@ -298,19 +298,19 @@ $Result = DB_query($SQL, $ErrMsg);
 
 $MyRow = DB_fetch_row($Result);
 $YPos -= $line_height;
-$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 200, $FontSize, _('Total number of order lines') . ' ' . locale_number_format($MyRow[0]), 'left');
+$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 200, $FontSize, _('Total number of order lines') . ' ' . locale_number_format($MyRow[0]), 'left');
 
 $YPos -= $line_height;
-$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 200, $FontSize, _('DIFOT') . ' ' . locale_number_format((1 - ($TotalDiffs / $MyRow[0])) * 100, 2) . '%', 'left');
+$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 200, $FontSize, _('DIFOT') . ' ' . locale_number_format((1 - ($TotalDiffs / $MyRow[0])) * 100, 2) . '%', 'left');
 
 $ReportFileName = $_SESSION['DatabaseName'] . '_DeliveryDifferences_' . date('Y-m-d') . '.pdf';
-$pdf->OutputD($ReportFileName);
+$PDF->OutputD($ReportFileName);
 
 if ($_POST['Email'] == 'Yes') {
 	if (file_exists($_SESSION['reports_dir'] . '/' . $ReportFileName)) {
 		unlink($_SESSION['reports_dir'] . '/' . $ReportFileName);
 	}
-	$pdf->Output($_SESSION['reports_dir'] . '/' . $ReportFileName, 'F');
+	$PDF->Output($_SESSION['reports_dir'] . '/' . $ReportFileName, 'F');
 
 	include('includes/htmlMimeMail.php');
 
@@ -330,5 +330,5 @@ if ($_POST['Email'] == 'Yes') {
 	}
 
 }
-$pdf->__destruct();
+$PDF->__destruct();
 ?>

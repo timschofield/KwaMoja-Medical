@@ -8,16 +8,16 @@ $BookMark = 'InventoryMovement';
 include('includes/header.inc');
 
 if (isset($_GET['StockID'])) {
-	$StockID = trim(mb_strtoupper($_GET['StockID']));
+	$StockId = trim(mb_strtoupper($_GET['StockID']));
 } elseif (isset($_POST['StockID'])) {
-	$StockID = trim(mb_strtoupper($_POST['StockID']));
+	$StockId = trim(mb_strtoupper($_POST['StockID']));
 } else {
-	$StockID = '';
+	$StockId = '';
 }
 
-$Result = DB_query("SELECT description, units FROM stockmaster WHERE stockid='" . $StockID . "'");
+$Result = DB_query("SELECT description, units FROM stockmaster WHERE stockid='" . $StockId . "'");
 $MyRow = DB_fetch_row($Result);
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Inventory') . '" alt="" /><b>' . ' ' . $StockID . ' - ' . $MyRow['0'] . ' : ' . _('in units of') . ' : ' . $MyRow[1] . '</b></p>';
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Inventory') . '" alt="" /><b>' . ' ' . $StockId . ' - ' . $MyRow['0'] . ' : ' . _('in units of') . ' : ' . $MyRow[1] . '</b></p>';
 
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -30,22 +30,18 @@ if (!isset($_POST['AfterDate']) or !Is_Date($_POST['AfterDate'])) {
 }
 echo '<table class="selection">
 			<tr>
-				<th colspan="10">' . _('Stock Code') . ':<input type="text" name="StockID" size="21" value="' . $StockID . '" required="required" minlength="1" maxlength="20" />';
+				<th colspan="10">' . _('Stock Code') . ':<input type="text" name="StockID" size="21" value="' . $StockId . '" required="required" minlength="1" maxlength="20" />';
 
 echo '  ' . _('From Stock Location') . ':<select required="required" minlength="1" name="StockLocation"> ';
 
-if ($_SESSION['RestrictLocations'] == 0) {
-	$SQL = "SELECT locationname,
-					loccode
-				FROM locations";
-} else {
-	$SQL = "SELECT locationname,
-					loccode
-				FROM locations
-				INNER JOIN www_users
-					ON locations.loccode=www_users.defaultlocation
-				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-}
+$SQL = "SELECT locations.loccode,
+				locationname
+			FROM locations
+			INNER JOIN locationusers
+				ON locationusers.loccode=locations.loccode
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canview=1";
+
 $ResultStkLocs = DB_query($SQL);
 
 while ($MyRow = DB_fetch_array($ResultStkLocs)) {
@@ -94,7 +90,7 @@ $SQL = "SELECT stockmoves.stockid,
 		INNER JOIN stockmaster ON stockmoves.stockid=stockmaster.stockid
 		WHERE  stockmoves.loccode='" . $_POST['StockLocation'] . "'
 		AND stockmoves.trandate >= '" . $SQLAfterDate . "'
-		AND stockmoves.stockid = '" . $StockID . "'
+		AND stockmoves.stockid = '" . $StockId . "'
 		AND stockmoves.trandate <= '" . $SQLBeforeDate . "'
 		AND hidemovt=0
 		ORDER BY stkmoveno DESC";
@@ -178,10 +174,10 @@ while ($MyRow = DB_fetch_array($MovtsResult)) {
 //end of while loop
 
 echo '</table>';
-echo '<div class="centre"><a href="' . $RootPath . '/StockStatus.php?StockID=' . urlencode($StockID) . '">' . _('Show Stock Status') . '</a>';
-echo '<a href="' . $RootPath . '/StockUsage.php?StockID=' . $StockID . '&amp;StockLocation=' . urlencode($_POST['StockLocation']) . '">' . _('Show Stock Usage') . '</a>';
-echo '<a href="' . $RootPath . '/SelectSalesOrder.php?SelectedStockItem=' . urlencode($StockID) . '&amp;StockLocation=' . $_POST['StockLocation'] . '">' . _('Search Outstanding Sales Orders') . '</a>';
-echo '<a href="' . $RootPath . '/SelectCompletedOrder.php?SelectedStockItem=' . urlencode($StockID) . '">' . _('Search Completed Sales Orders') . '</a>';
+echo '<div class="centre"><a href="' . $RootPath . '/StockStatus.php?StockID=' . urlencode($StockId) . '">' . _('Show Stock Status') . '</a>';
+echo '<a href="' . $RootPath . '/StockUsage.php?StockID=' . $StockId . '&amp;StockLocation=' . urlencode($_POST['StockLocation']) . '">' . _('Show Stock Usage') . '</a>';
+echo '<a href="' . $RootPath . '/SelectSalesOrder.php?SelectedStockItem=' . urlencode($StockId) . '&amp;StockLocation=' . $_POST['StockLocation'] . '">' . _('Search Outstanding Sales Orders') . '</a>';
+echo '<a href="' . $RootPath . '/SelectCompletedOrder.php?SelectedStockItem=' . urlencode($StockId) . '">' . _('Search Completed Sales Orders') . '</a>';
 
 echo '</div>
 	  </form>';

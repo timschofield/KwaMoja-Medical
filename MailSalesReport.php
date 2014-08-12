@@ -35,8 +35,8 @@ include('includes/htmlMimeMail.php');
 $mail = new htmlMimeMail();
 
 if ($Counter > 0) {
-	$pdf->Output($_SESSION['reports_dir'] . '/SalesAnalysis_' . date('Y-m-d') . '.pdf', 'F'); //save to file
-	$pdf->__destruct();
+	$PDF->Output($_SESSION['reports_dir'] . '/SalesAnalysis_' . date('Y-m-d') . '.pdf', 'F'); //save to file
+	$PDF->__destruct();
 	$attachment = $mail->getFile($_SESSION['reports_dir'] . '/SalesAnalysis_' . date('Y-m-d') . '.pdf');
 	$mail->setText(_('Please find herewith sales report'));
 	$mail->SetSubject(_('Sales Analysis Report'));

@@ -35,8 +35,7 @@ if (!isset($SelectedWO)) {
 
 
 $ErrMsg = _('Could not retrieve the details of the selected work order');
-if ($_SESSION['RestrictLocations'] == 0) {
-	$SQL = "SELECT workorders.loccode,
+$SQL = "SELECT workorders.loccode,
 				locations.locationname,
 				workorders.requiredby,
 				workorders.startdate,
@@ -45,22 +44,12 @@ if ($_SESSION['RestrictLocations'] == 0) {
 			FROM workorders
 			INNER JOIN locations
 				ON workorders.loccode=locations.loccode
+			INNER JOIN locationusers
+				ON locationusers.loccode=locations.loccode
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canupd=1
 			WHERE workorders.wo='" . $_POST['WO'] . "'";
-} else {
-	$SQL = "SELECT workorders.loccode,
-				locations.locationname,
-				workorders.requiredby,
-				workorders.startdate,
-				workorders.closed,
-				closecomments
-			FROM workorders
-			INNER JOIN locations
-				ON workorders.loccode=locations.loccode
-			INNER JOIN www_users
-				ON locations.loccode=www_users.defaultlocation
-			WHERE workorders.wo='" . $_POST['WO'] . "'
-				AND www_users.userid='" . $_SESSION['UserID'] . "'";
-}
+
 $WOResult = DB_query($SQL, $ErrMsg);
 
 if (DB_num_rows($WOResult) == 0) {

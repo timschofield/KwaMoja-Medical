@@ -150,15 +150,15 @@ echo '<tr>
 //First get all available security role ID's'
 $RolesResult = DB_query("SELECT secroleid FROM securityroles");
 $FoundTheSupplierRole = false;
-while ($myroles = DB_fetch_array($RolesResult)) {
+while ($MyRoles = DB_fetch_array($RolesResult)) {
 	//Now look to find the tokens for the role - we just wnat the role that has just one token i.e. token 9
 	$TokensResult = DB_query("SELECT tokenid
 								FROM securitygroups
-								WHERE secroleid = '" . $myroles['secroleid'] . "'");
+								WHERE secroleid = '" . $MyRoles['secroleid'] . "'");
 
-	while ($mytoken = DB_fetch_row($TokensResult)) {
-		if ($mytoken[0] == 9) {
-			echo '<input type="hidden" name="Access" value ="' . $myroles['secroleid'] . '" />';
+	while ($MyToken = DB_fetch_row($TokensResult)) {
+		if ($MyToken[0] == 9) {
+			echo '<input type="hidden" name="Access" value ="' . $MyRoles['secroleid'] . '" />';
 			$FoundTheSupplierRole = true;
 			break;
 		}
@@ -178,18 +178,13 @@ echo '<tr>
 		<td>' . _('Default Location') . ':</td>
 		<td><select required="required" minlength="1" name="DefaultLocation">';
 
-if ($_SESSION['RestrictLocations'] == 0) {
-	$SQL = "SELECT locationname,
-					loccode
-				FROM locations";
-} else {
-	$SQL = "SELECT locationname,
-					loccode
-				FROM locations
-				INNER JOIN www_users
-					ON locations.loccode=www_users.defaultlocation
-				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-}
+$SQL = "SELECT locations.loccode,
+				locationname
+			FROM locations
+			INNER JOIN locationusers
+				ON locationusers.loccode=locations.loccode
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canupd=1";
 $Result = DB_query($SQL);
 
 while ($MyRow = DB_fetch_array($Result)) {

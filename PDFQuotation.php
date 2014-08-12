@@ -101,8 +101,8 @@ if (DB_num_rows($Result) == 0) {
 LETS GO */
 $PaperSize = 'A4_Landscape';// PDFStarter.php: $Page_Width=842; $Page_Height=595; $Top_Margin=30; $Bottom_Margin=30; $Left_Margin=40; $Right_Margin=30;
 include('includes/PDFStarter.php');
-$pdf->addInfo('Title', _('Customer Quotation'));
-$pdf->addInfo('Subject', _('Quotation') . ' ' . $_GET['QuotationNo']);
+$PDF->addInfo('Title', _('Customer Quotation'));
+$PDF->addInfo('Subject', _('Quotation') . ' ' . $_GET['QuotationNo']);
 $FontSize = 12;
 $line_height = 15;
 
@@ -181,16 +181,16 @@ if (DB_num_rows($Result) > 0) {
 
 		$FontSize = 10;
 
-		$LeftOvers = $pdf->addTextWrap($XPos + 1, $YPos, 100, $FontSize, $MyRow2['stkcode']);
-		$LeftOvers = $pdf->addTextWrap(145, $YPos, 295, $FontSize, $MyRow2['description']);
-		$LeftOvers = $pdf->addTextWrap(420, $YPos, 85, $FontSize, $DisplayQty, 'right');
-		$LeftOvers = $pdf->addTextWrap(485, $YPos, 85, $FontSize, $DisplayPrice, 'right');
+		$LeftOvers = $PDF->addTextWrap($XPos + 1, $YPos, 100, $FontSize, $MyRow2['stkcode']);
+		$LeftOvers = $PDF->addTextWrap(145, $YPos, 295, $FontSize, $MyRow2['description']);
+		$LeftOvers = $PDF->addTextWrap(420, $YPos, 85, $FontSize, $DisplayQty, 'right');
+		$LeftOvers = $PDF->addTextWrap(485, $YPos, 85, $FontSize, $DisplayPrice, 'right');
 		if ($DisplayDiscount > 0) {
-			$LeftOvers = $pdf->addTextWrap(535, $YPos, 85, $FontSize, $DisplayDiscount, 'right');
+			$LeftOvers = $PDF->addTextWrap(535, $YPos, 85, $FontSize, $DisplayDiscount, 'right');
 		}
-		$LeftOvers = $pdf->addTextWrap(585, $YPos, 85, $FontSize, $DisplayTaxClass, 'right');
-		$LeftOvers = $pdf->addTextWrap(650, $YPos, 85, $FontSize, $DisplayTaxAmount, 'right');
-		$LeftOvers = $pdf->addTextWrap($Page_Width-$Right_Margin-90, $YPos, 90, $FontSize, $DisplayTotal,'right');
+		$LeftOvers = $PDF->addTextWrap(585, $YPos, 85, $FontSize, $DisplayTaxClass, 'right');
+		$LeftOvers = $PDF->addTextWrap(650, $YPos, 85, $FontSize, $DisplayTaxAmount, 'right');
+		$LeftOvers = $PDF->addTextWrap($Page_Width-$Right_Margin-90, $YPos, 90, $FontSize, $DisplayTotal,'right');
 
 		// Print salesorderdetails.narrative
 		$line_height = 10;// Line height to print salesorderdetails.narrative
@@ -202,7 +202,7 @@ if (DB_num_rows($Result) > 0) {
 			if ($YPos < ($Bottom_Margin)) {// Begin new page
 				include('includes/PDFQuotationPageHeader.inc');
 			}
-			$LeftOvers = $pdf->addTextWrap(40, $YPos, 772, $FontSize, $LeftOvers, 'left');
+			$LeftOvers = $PDF->addTextWrap(40, $YPos, 772, $FontSize, $LeftOvers, 'left');
 		}
 		$line_height = 15;// Back to the default line height
 
@@ -221,19 +221,19 @@ if (DB_num_rows($Result) > 0) {
 	} //end if need a new page headed up
 
 	$YPos -= ($line_height);
-	$LeftOvers = $pdf->addTextWrap($Page_Width-$Right_Margin - 90 - 655, $YPos, 655, $FontSize, _('Quotation Excluding Tax'),'right');
-	$LeftOvers = $pdf->addTextWrap($Page_Width-$Right_Margin - 90, $YPos, 90, $FontSize, locale_number_format($QuotationTotalEx,$MyRow['currdecimalplaces']), 'right');
+	$LeftOvers = $PDF->addTextWrap($Page_Width-$Right_Margin - 90 - 655, $YPos, 655, $FontSize, _('Quotation Excluding Tax'),'right');
+	$LeftOvers = $PDF->addTextWrap($Page_Width-$Right_Margin - 90, $YPos, 90, $FontSize, locale_number_format($QuotationTotalEx,$MyRow['currdecimalplaces']), 'right');
 	$YPos -= 12;
-	$LeftOvers = $pdf->addTextWrap($Page_Width-$Right_Margin - 90 - 655, $YPos, 655, $FontSize, _('Total Tax'), 'right');
-	$LeftOvers = $pdf->addTextWrap($Page_Width-$Right_Margin - 90, $YPos, 90, $FontSize, locale_number_format($TaxTotal,$MyRow['currdecimalplaces']), 'right');
+	$LeftOvers = $PDF->addTextWrap($Page_Width-$Right_Margin - 90 - 655, $YPos, 655, $FontSize, _('Total Tax'), 'right');
+	$LeftOvers = $PDF->addTextWrap($Page_Width-$Right_Margin - 90, $YPos, 90, $FontSize, locale_number_format($TaxTotal,$MyRow['currdecimalplaces']), 'right');
 	$YPos -= 12;
-	$LeftOvers = $pdf->addTextWrap($Page_Width-$Right_Margin - 90 - 655, $YPos, 655, $FontSize, _('Quotation Including Tax'),'right');
-	$LeftOvers = $pdf->addTextWrap($Page_Width-$Right_Margin - 90, $YPos, 90, $FontSize, locale_number_format($QuotationTotal,$MyRow['currdecimalplaces']), 'right');
+	$LeftOvers = $PDF->addTextWrap($Page_Width-$Right_Margin - 90 - 655, $YPos, 655, $FontSize, _('Quotation Including Tax'),'right');
+	$LeftOvers = $PDF->addTextWrap($Page_Width-$Right_Margin - 90, $YPos, 90, $FontSize, locale_number_format($QuotationTotal,$MyRow['currdecimalplaces']), 'right');
 
 	// Print salesorders.comments
 	$line_height = 10;// Line height to print salesorders.comments
 	$YPos -= $line_height;
-	$pdf->addText($XPos, $YPos + 10, $FontSize, _('Notes') . ': ');// Comment: addText Y-Coordinate is to top left corner (add a FontSize mesure to equal addTextWrap Y-Coordinate)
+	$PDF->addText($XPos, $YPos + 10, $FontSize, _('Notes') . ': ');// Comment: addText Y-Coordinate is to top left corner (add a FontSize mesure to equal addTextWrap Y-Coordinate)
 	$LeftOvers = str_replace('\n', ' ', $MyRow['comments']);// Get salesorders.comments and replace line feed character. '<br />' works?
 	$LeftOvers = str_replace('\r', '', $LeftOvers);// Delete carriage return character
 	$LeftOvers = str_replace('\t', '', $LeftOvers);// Delete tabulator character
@@ -242,7 +242,7 @@ if (DB_num_rows($Result) > 0) {
 		if ($YPos < ($Bottom_Margin)) {// Begin new page
 			include ('includes/PDFQuotationPageHeader.inc');
 		}
-		$LeftOvers = $pdf->addTextWrap(40, $YPos, 772, $FontSize, $LeftOvers, 'left');
+		$LeftOvers = $PDF->addTextWrap(40, $YPos, 772, $FontSize, $LeftOvers, 'left');
 	}
 	$line_height = 15;// Back to the default line height
 }
@@ -258,7 +258,7 @@ if ($ListCount == 0) {
 	include('includes/footer.inc');
 	exit;
 } else {
-    $pdf->OutputI($_SESSION['DatabaseName'] . '_Quotation_' . $_GET['QuotationNo'] . '_' . date('Y-m-d') . '.pdf');
-	$pdf->__destruct();
+    $PDF->OutputI($_SESSION['DatabaseName'] . '_Quotation_' . $_GET['QuotationNo'] . '_' . date('Y-m-d') . '.pdf');
+	$PDF->__destruct();
 }
 ?>

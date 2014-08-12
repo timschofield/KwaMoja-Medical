@@ -13,9 +13,9 @@ if (isset($_GET['Id'])) {
 if (isset($_POST['DebtorNo'])) {
 	$DebtorNo = $_POST['DebtorNo'];
 } elseif (isset($_GET['DebtorNo'])) {
-	$DebtorNo = $_GET['DebtorNo'];
+	$DebtorNo = stripslashes($_GET['DebtorNo']);
 }
-
+echo $DebtorNo;
 echo '<div class="toplink"><a href="' . $RootPath . '/SelectCustomer.php?DebtorNo=' . urlencode($DebtorNo) . '">' . _('Back to Select Customer') . '</a></div>';
 
 if (isset($_POST['submit'])) {
@@ -53,7 +53,7 @@ if (isset($_POST['submit'])) {
 										note,
 										date,
 										priority)
-				VALUES ('" . $DebtorNo . "',
+				VALUES ('" . $_POST['DebtorNo'] . "',
 						'" . $_POST['Href'] . "',
 						'" . $_POST['Note'] . "',
 						'" . FormatDateForSQL($_POST['NoteDate']) . "',
@@ -107,6 +107,7 @@ if (!isset($Id)) {
 				FROM custnotes
 				WHERE debtorno='" . $DebtorNo . "'
 				ORDER BY date DESC";
+echo $SQL;
 	$Result = DB_query($SQL);
 
 	echo '<table class="selection">
@@ -132,7 +133,7 @@ if (!isset($Id)) {
 				<td><a href="%s">%s</a></td>
 				<td>%s</td>
 				<td><a href="%sId=%s&DebtorNo=%s">' . _('Edit') . ' </td>
-				<td><a href="%sId=%s&DebtorNo=%s&delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this customer note?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</td></tr>', ConvertSQLDate($MyRow['date']), $MyRow['note'], $MyRow['href'], $MyRow['href'], $MyRow['priority'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['noteid'], $MyRow['debtorno'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['noteid'], $MyRow['debtorno']);
+				<td><a href="%sId=%s&DebtorNo=%s&delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this customer note?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</td></tr>', ConvertSQLDate($MyRow['date']), $MyRow['note'], $MyRow['href'], $MyRow['href'], $MyRow['priority'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['noteid'], urlencode($MyRow['debtorno']), htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['noteid'], urlencode($MyRow['debtorno']));
 
 	}
 	//END WHILE LIST LOOP
@@ -140,7 +141,7 @@ if (!isset($Id)) {
 }
 if (isset($Id)) {
 	echo '<div class="centre">
-			<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?DebtorNo=' . $DebtorNo . '">' . _('Review all notes for this Customer') . '</a>
+			<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?DebtorNo=' . urlencode($DebtorNo) . '">' . _('Review all notes for this Customer') . '</a>
 		</div>';
 }
 echo '<br />';
@@ -185,6 +186,7 @@ if (!isset($_GET['delete'])) {
 		echo '<table class="selection">';
 	}
 
+	echo '<input type="hidden" name="DebtorNo" value="' . stripslashes(stripslashes($DebtorNo)) . '" />';
 	echo '<tr>
 			<td>' . _('Contact Note') . '</td>';
 	if (isset($_POST['Note'])) {

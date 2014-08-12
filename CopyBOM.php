@@ -87,7 +87,7 @@ if (isset($_POST['Submit'])) {
 							WHERE stockid='" . $StockID . "';";
 			$Result = DB_query($SQL);
 			/* duplicate rows into stockcosts */
-			$SQL = "INSERT INTO stockcosts VALUES ( SELECT  '" . $NewStockID . "',
+			$SQL = "INSERT INTO stockcosts VALUES ( SELECT  '" . $NewStockID . "' AS stockid,
 															stockcosts.materialcost,
 															stockcosts.labourcost,
 															stockcosts.overheadcost,

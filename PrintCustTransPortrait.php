@@ -42,23 +42,23 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 	$Left_Margin = 40;
 	$Right_Margin = 30;
 
-	$pdf = new Cpdf('P', 'pt', 'A4');
-	$pdf->addInfo('Author', $ProjectName . ' ' . $_SESSION['VersionNumber']);
-	$pdf->addInfo('Creator', $ProjectName . ' ' . $HomePage);
+	$PDF = new Cpdf('P', 'pt', 'A4');
+	$PDF->addInfo('Author', $ProjectName . ' ' . $_SESSION['VersionNumber']);
+	$PDF->addInfo('Creator', $ProjectName . ' ' . $HomePage);
 
 	if ($InvOrCredit == 'Invoice') {
-		$pdf->addInfo('Title', _('Sales Invoice') . ' ' . $FromTransNo . ' to ' . $_POST['ToTransNo']);
-		$pdf->addInfo('Subject', _('Invoices from') . ' ' . $FromTransNo . ' ' . _('to') . ' ' . $_POST['ToTransNo']);
+		$PDF->addInfo('Title', _('Sales Invoice') . ' ' . $FromTransNo . ' to ' . $_POST['ToTransNo']);
+		$PDF->addInfo('Subject', _('Invoices from') . ' ' . $FromTransNo . ' ' . _('to') . ' ' . $_POST['ToTransNo']);
 	} else {
-		$pdf->addInfo('Title', _('Sales Credit Note'));
-		$pdf->addInfo('Subject', _('Credit Notes from') . ' ' . $FromTransNo . ' ' . _('to') . ' ' . $_POST['ToTransNo']);
+		$PDF->addInfo('Title', _('Sales Credit Note'));
+		$PDF->addInfo('Subject', _('Credit Notes from') . ' ' . $FromTransNo . ' ' . _('to') . ' ' . $_POST['ToTransNo']);
 	}
 
-	$pdf->setAutoPageBreak(0);
-	$pdf->setPrintHeader(false);
-	$pdf->setPrintFooter(false);
-	$pdf->AddPage();
-	$pdf->cMargin = 0;
+	$PDF->setAutoPageBreak(0);
+	$PDF->setPrintHeader(false);
+	$PDF->setPrintFooter(false);
+	$PDF->AddPage();
+	$PDF->cMargin = 0;
 
 	$FirstPage = true;
 	$line_height = 16;
@@ -238,7 +238,7 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 			include('includes/header.inc');
 
 			prnMsg(_('There was a problem retrieving the invoice or credit note details for note number') . ' ' . $InvoiceToPrint . ' ' . _('from the database') . '. ' . _('To print an invoice, the sales order record, the customer transaction record and the branch record for the customer must not have been purged') . '. ' . _('To print a credit note only requires the customer, transaction, salesman and branch records be available'), 'error');
-			if ($debug == 1) {
+			if ($Debug == 1) {
 				prnMsg(_('The SQL used to get this information that failed was') . '<br />' . $SQL, 'error');
 			}
 			include('includes/footer.inc');
@@ -296,7 +296,7 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 				$Title = _('Transaction Print Error Report');
 				include('includes/header.inc');
 				echo '<br />' . _('There was a problem retrieving the invoice or credit note stock movement details for invoice number') . ' ' . $FromTransNo . ' ' . _('from the database');
-				if ($debug == 1) {
+				if ($Debug == 1) {
 					echo '<br />' . _('The SQL used to get this information that failed was') . '<br />' . $SQL;
 				}
 				include('includes/footer.inc');
@@ -323,7 +323,7 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 					$DisplayPrice = locale_number_format($MyRow2['fxprice'], $MyRow['decimalplaces']);
 					$DisplayQty = locale_number_format($MyRow2['quantity'], $MyRow2['decimalplaces']);
 
-					$LeftOvers = $pdf->addTextWrap($Left_Margin + 5, $YPos, 71, $FontSize, $MyRow2['stockid']);
+					$LeftOvers = $PDF->addTextWrap($Left_Margin + 5, $YPos, 71, $FontSize, $MyRow2['stockid']);
 					//Get translation if it exists
 					$TranslationResult = DB_query("SELECT descriptiontranslation
 												FROM stockdescriptiontranslations
@@ -332,22 +332,22 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 
 					if (DB_num_rows($TranslationResult) == 1) { //there is a translation
 						$TranslationRow = DB_fetch_array($TranslationResult);
-						$LeftOvers = $pdf->addTextWrap($Left_Margin + 80, $YPos, 186, $FontSize, $TranslationRow['descriptiontranslation']);
+						$LeftOvers = $PDF->addTextWrap($Left_Margin + 80, $YPos, 186, $FontSize, $TranslationRow['descriptiontranslation']);
 					} else {
-						$LeftOvers = $pdf->addTextWrap($Left_Margin + 80, $YPos, 186, $FontSize, $MyRow2['description']);
+						$LeftOvers = $PDF->addTextWrap($Left_Margin + 80, $YPos, 186, $FontSize, $MyRow2['description']);
 					}
 					$lines = 1;
 
 					while ($LeftOvers != '') {
-						$LeftOvers = $pdf->addTextWrap($Left_Margin + 80, $YPos - (10 * $lines), 186, $FontSize, $LeftOvers);
+						$LeftOvers = $PDF->addTextWrap($Left_Margin + 80, $YPos - (10 * $lines), 186, $FontSize, $LeftOvers);
 						$lines++;
 					}
 
-					$LeftOvers = $pdf->addTextWrap($Left_Margin + 270, $YPos, 76, $FontSize, $DisplayPrice, 'right');
-					$LeftOvers = $pdf->addTextWrap($Left_Margin + 350, $YPos, 36, $FontSize, $DisplayQty, 'right');
-					$LeftOvers = $pdf->addTextWrap($Left_Margin + 390, $YPos, 26, $FontSize, $MyRow2['units'], 'center');
-					$LeftOvers = $pdf->addTextWrap($Left_Margin + 420, $YPos, 26, $FontSize, $DisplayDiscount, 'right');
-					$LeftOvers = $pdf->addTextWrap($Page_Width - $Left_Margin-72, $YPos, 72, $FontSize, $DisplayNet, 'right');
+					$LeftOvers = $PDF->addTextWrap($Left_Margin + 270, $YPos, 76, $FontSize, $DisplayPrice, 'right');
+					$LeftOvers = $PDF->addTextWrap($Left_Margin + 350, $YPos, 36, $FontSize, $DisplayQty, 'right');
+					$LeftOvers = $PDF->addTextWrap($Left_Margin + 390, $YPos, 26, $FontSize, $MyRow2['units'], 'center');
+					$LeftOvers = $PDF->addTextWrap($Left_Margin + 420, $YPos, 26, $FontSize, $DisplayDiscount, 'right');
+					$LeftOvers = $PDF->addTextWrap($Page_Width - $Left_Margin-72, $YPos, 72, $FontSize, $DisplayNet, 'right');
 
 					if ($MyRow2['controlled'] == 1) {
 
@@ -359,7 +359,7 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 						if ($MyRow2['serialised'] == 1) {
 							while ($ControlledMovtRow = DB_fetch_array($GetControlMovts)) {
 								$YPos -= (10 * $lines);
-								$LeftOvers = $pdf->addTextWrap($Left_Margin + 82, $YPos, 100, $FontSize, $ControlledMovtRow['serialno'], 'left');
+								$LeftOvers = $PDF->addTextWrap($Left_Margin + 82, $YPos, 100, $FontSize, $ControlledMovtRow['serialno'], 'left');
 								if ($YPos - $line_height <= $Bottom_Margin) {
 									/* head up a new invoice/credit note page */
 									/*draw the vertical column lines right to the bottom */
@@ -370,7 +370,7 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 						} else {
 							while ($ControlledMovtRow = DB_fetch_array($GetControlMovts)) {
 								$YPos -= (10 * $lines);
-								$LeftOvers = $pdf->addTextWrap($Left_Margin + 82, $YPos, 100, $FontSize, (-$ControlledMovtRow['moveqty']) . ' x ' . $ControlledMovtRow['serialno'], 'left');
+								$LeftOvers = $PDF->addTextWrap($Left_Margin + 82, $YPos, 100, $FontSize, (-$ControlledMovtRow['moveqty']) . ' x ' . $ControlledMovtRow['serialno'], 'left');
 								if ($YPos - $line_height <= $Bottom_Margin) {
 									/* head up a new invoice/credit note page */
 									/*draw the vertical column lines right to the bottom */
@@ -393,7 +393,7 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 							} //end if need a new page headed up
 							/*increment a line down for the next line item */
 							if (mb_strlen($lines[$i]) > 1) {
-								$lines[$i] = $pdf->addTextWrap($Left_Margin + 85, $YPos, 181, $FontSize, stripslashes($lines[$i]));
+								$lines[$i] = $PDF->addTextWrap($Left_Margin + 85, $YPos, 181, $FontSize, stripslashes($lines[$i]));
 							}
 							$YPos -= ($line_height);
 						}
@@ -421,24 +421,24 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 			/*Print a column vertical line  with enough space for the footer*/
 			/*draw the vertical column lines to 4 lines shy of the bottom
 			to leave space for invoice footer info ie totals etc*/
-			$pdf->line($Left_Margin + 78, $TopOfColHeadings + 12, $Left_Margin + 78, $Bottom_Margin + (4 * $line_height));
+			$PDF->line($Left_Margin + 78, $TopOfColHeadings + 12, $Left_Margin + 78, $Bottom_Margin + (4 * $line_height));
 
 			/*Print a column vertical line */
-			$pdf->line($Left_Margin + 268, $TopOfColHeadings + 12, $Left_Margin + 268, $Bottom_Margin + (4 * $line_height));
+			$PDF->line($Left_Margin + 268, $TopOfColHeadings + 12, $Left_Margin + 268, $Bottom_Margin + (4 * $line_height));
 
 			/*Print a column vertical line */
-			$pdf->line($Left_Margin + 348, $TopOfColHeadings + 12, $Left_Margin + 348, $Bottom_Margin + (4 * $line_height));
+			$PDF->line($Left_Margin + 348, $TopOfColHeadings + 12, $Left_Margin + 348, $Bottom_Margin + (4 * $line_height));
 
 			/*Print a column vertical line */
-			$pdf->line($Left_Margin + 388, $TopOfColHeadings + 12, $Left_Margin + 388, $Bottom_Margin + (4 * $line_height));
+			$PDF->line($Left_Margin + 388, $TopOfColHeadings + 12, $Left_Margin + 388, $Bottom_Margin + (4 * $line_height));
 
 			/*Print a column vertical line */
-			$pdf->line($Left_Margin + 418, $TopOfColHeadings + 12, $Left_Margin + 418, $Bottom_Margin + (4 * $line_height));
+			$PDF->line($Left_Margin + 418, $TopOfColHeadings + 12, $Left_Margin + 418, $Bottom_Margin + (4 * $line_height));
 
-			$pdf->line($Left_Margin + 448, $TopOfColHeadings + 12, $Left_Margin + 448, $Bottom_Margin + (4 * $line_height));
+			$PDF->line($Left_Margin + 448, $TopOfColHeadings + 12, $Left_Margin + 448, $Bottom_Margin + (4 * $line_height));
 
 			/*Rule off at bottom of the vertical lines */
-			$pdf->line($Left_Margin, $Bottom_Margin + (4 * $line_height), $Page_Width - $Right_Margin, $Bottom_Margin + (4 * $line_height));
+			$PDF->line($Left_Margin, $Bottom_Margin + (4 * $line_height), $Page_Width - $Right_Margin, $Bottom_Margin + (4 * $line_height));
 
 			/*Now print out the footer and totals */
 
@@ -458,50 +458,50 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 			$YPos = $Bottom_Margin + (3 * $line_height);
 			/* Print out the payment terms */
 
-			$pdf->addTextWrap($Left_Margin, $YPos + 3, 280, $FontSize,_('Payment Terms') . ': ' . $MyRow['terms']);
+			$PDF->addTextWrap($Left_Margin, $YPos + 3, 280, $FontSize,_('Payment Terms') . ': ' . $MyRow['terms']);
 
 			$FontSize = 8;
 			$LeftOvers = explode('\r\n', DB_escape_string($MyRow['invtext']));
 			for ($i = 0; $i < sizeOf($LeftOvers); $i++) {
-				$pdf->addText($Left_Margin, $YPos - 8 - ($i * 8), $FontSize, $LeftOvers[$i]);
+				$PDF->addText($Left_Margin, $YPos - 8 - ($i * 8), $FontSize, $LeftOvers[$i]);
 			}
 			$FontSize = 10;
 
-			$LeftOvers = $pdf->addTextWrap($Page_Width - $Right_Margin - 220, $YPos + 5, 72, $FontSize, _('Sub Total'));
-			$LeftOvers = $pdf->addTextWrap($Page_Width - $Left_Margin - 72, $YPos + 5, 72, $FontSize, $DisplaySubTot, 'right');
+			$LeftOvers = $PDF->addTextWrap($Page_Width - $Right_Margin - 220, $YPos + 5, 72, $FontSize, _('Sub Total'));
+			$LeftOvers = $PDF->addTextWrap($Page_Width - $Left_Margin - 72, $YPos + 5, 72, $FontSize, $DisplaySubTot, 'right');
 
-			$LeftOvers = $pdf->addTextWrap($Page_Width - $Right_Margin - 220, $YPos + 5 - $line_height, 72, $FontSize, _('Freight'));
-			$LeftOvers = $pdf->addTextWrap($Page_Width - $Left_Margin - 72, $YPos + 5 - $line_height, 72, $FontSize, $DisplayFreight, 'right');
+			$LeftOvers = $PDF->addTextWrap($Page_Width - $Right_Margin - 220, $YPos + 5 - $line_height, 72, $FontSize, _('Freight'));
+			$LeftOvers = $PDF->addTextWrap($Page_Width - $Left_Margin - 72, $YPos + 5 - $line_height, 72, $FontSize, $DisplayFreight, 'right');
 
-			$LeftOvers = $pdf->addTextWrap($Page_Width - $Right_Margin - 220, $YPos + 5 - $line_height * 2, 72, $FontSize, _('Tax'));
-			$LeftOvers = $pdf->addTextWrap($Page_Width - $Left_Margin - 72, $YPos + 5 - $line_height * 2, 72, $FontSize, $DisplayTax, 'right');
+			$LeftOvers = $PDF->addTextWrap($Page_Width - $Right_Margin - 220, $YPos + 5 - $line_height * 2, 72, $FontSize, _('Tax'));
+			$LeftOvers = $PDF->addTextWrap($Page_Width - $Left_Margin - 72, $YPos + 5 - $line_height * 2, 72, $FontSize, $DisplayTax, 'right');
 
 			/*rule off for total */
-			$pdf->line($Page_Width - $Right_Margin - 222, $YPos - (2 * $line_height), $Page_Width - $Right_Margin, $YPos - (2 * $line_height));
+			$PDF->line($Page_Width - $Right_Margin - 222, $YPos - (2 * $line_height), $Page_Width - $Right_Margin, $YPos - (2 * $line_height));
 
 			/*vertical to separate totals from comments and ROMALPA */
-			$pdf->line($Page_Width - $Right_Margin - 222, $YPos + $line_height, $Page_Width - $Right_Margin - 222, $Bottom_Margin);
+			$PDF->line($Page_Width - $Right_Margin - 222, $YPos + $line_height, $Page_Width - $Right_Margin - 222, $Bottom_Margin);
 
 			$YPos += 10;
 			if ($InvOrCredit == 'Invoice') {
-				$LeftOvers = $pdf->addTextWrap($Page_Width - $Right_Margin - 220, $Bottom_Margin + 5, 144, $FontSize, _('TOTAL INVOICE'));
+				$LeftOvers = $PDF->addTextWrap($Page_Width - $Right_Margin - 220, $Bottom_Margin + 5, 144, $FontSize, _('TOTAL INVOICE'));
 				$FontSize = 8;
-				$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos - 18, 280, $FontSize, $_SESSION['RomalpaClause']);
+				$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos - 18, 280, $FontSize, $_SESSION['RomalpaClause']);
 				while (mb_strlen($LeftOvers) > 0 and $YPos > $Bottom_Margin) {
 					$YPos -= 10;
-					$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos - 18, 280, $FontSize, $LeftOvers);
+					$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos - 18, 280, $FontSize, $LeftOvers);
 				}
 				/* Add Images for Visa / Mastercard / Paypal */
 				if (file_exists('companies/' . $_SESSION['DatabaseName'] . '/payment.jpg')) {
-					$pdf->addJpegFromFile('companies/' . $_SESSION['DatabaseName'] . '/payment.jpg', $Page_Width / 2 - 60, $YPos - 15, 0, 20);
+					$PDF->addJpegFromFile('companies/' . $_SESSION['DatabaseName'] . '/payment.jpg', $Page_Width / 2 - 60, $YPos - 15, 0, 20);
 				}
 				// Print Bank acount details if available and default for invoices is selected
-				$pdf->addText($Left_Margin, $YPos + 22 - $line_height * 3, $FontSize, $DefaultBankAccountCode . '  ' . $DefaultBankAccountNumber);
+				$PDF->addText($Left_Margin, $YPos + 22 - $line_height * 3, $FontSize, $DefaultBankAccountCode . '  ' . $DefaultBankAccountNumber);
 				$FontSize = 10;
 			} else {
-				$LeftOvers = $pdf->addTextWrap($Page_Width - $Right_Margin - 220, $Bottom_Margin + 5, 144, $FontSize, _('TOTAL CREDIT'));
+				$LeftOvers = $PDF->addTextWrap($Page_Width - $Right_Margin - 220, $Bottom_Margin + 5, 144, $FontSize, _('TOTAL CREDIT'));
 			}
-			$LeftOvers = $pdf->addTextWrap($Page_Width - $Left_Margin - 72, $Bottom_Margin + 5, 72, $FontSize, $DisplayTotal, 'right');
+			$LeftOvers = $PDF->addTextWrap($Page_Width - $Left_Margin - 72, $Bottom_Margin + 5, 72, $FontSize, $DisplayTotal, 'right');
 		}
 		/* end of check to see that there was an invoice record to print */
 
@@ -516,7 +516,7 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 		include('includes/htmlMimeMail.php');
 		$FromTransNo--; //reverse the increment to retain the correct transaction number
 		$FileName = $_SESSION['reports_dir'] . '/' . $_SESSION['DatabaseName'] . '_' . $InvOrCredit . '_' . $_GET['FromTransNo'] . '.pdf';
-		$pdf->Output($FileName, 'F');
+		$PDF->Output($FileName, 'F');
 		$mail = new htmlMimeMail();
 
 		$Attachment = $mail->getFile($FileName);
@@ -543,10 +543,10 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 		exit;
 
 	} else { //its not an email just print the invoice to PDF
-		$pdf->OutputD($_SESSION['DatabaseName'] . '_' . $InvOrCredit . '_' . $FromTransNo . '.pdf');
+		$PDF->OutputD($_SESSION['DatabaseName'] . '_' . $InvOrCredit . '_' . $FromTransNo . '.pdf');
 
 	}
-	$pdf->__destruct();
+	$PDF->__destruct();
 	//Change the language back to the user's language
 	$_SESSION['Language'] = $UserLanguage;
 	include('includes/LanguageSetup.php');
@@ -780,7 +780,7 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 			$Result = DB_query($SQL);
 			if (DB_num_rows($Result) == 0 or DB_error_no() != 0) {
 				echo '<p>' . _('There was a problem retrieving the invoice or credit note details for note number') . ' ' . $InvoiceToPrint . ' ' . _('from the database') . '. ' . _('To print an invoice, the sales order record, the customer transaction record and the branch record for the customer must not have been purged') . '. ' . _('To print a credit note only requires the customer, transaction, salesman and branch records be available');
-				if ($debug == 1) {
+				if ($Debug == 1) {
 					prnMsg(_('The SQL used to get this information that failed was') . '<br />' . $SQL, 'warn');
 				}
 				break;
@@ -945,7 +945,7 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 				$Result = DB_query($SQL);
 				if (DB_error_no() != 0) {
 					echo '<br />' . _('There was a problem retrieving the invoice or credit note stock movement details for invoice number') . ' ' . $FromTransNo . ' ' . _('from the database');
-					if ($debug == 1) {
+					if ($Debug == 1) {
 						echo '<br />' . _('The SQL used to get this information that failed was') . '<br />' . $SQL;
 					}
 					exit;
@@ -1170,7 +1170,7 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 
 function PrintLinesToBottom() {
 
-	global $pdf;
+	global $PDF;
 	global $PageNumber;
 	global $TopOfColHeadings;
 	global $Left_Margin;
@@ -1178,21 +1178,21 @@ function PrintLinesToBottom() {
 	global $line_height;
 
 	/*draw the vertical column lines right to the bottom */
-	$pdf->line($Left_Margin + 78, $TopOfColHeadings + 12, $Left_Margin + 78, $Bottom_Margin);
+	$PDF->line($Left_Margin + 78, $TopOfColHeadings + 12, $Left_Margin + 78, $Bottom_Margin);
 
 	/*Print a column vertical line */
-	$pdf->line($Left_Margin + 268, $TopOfColHeadings + 12, $Left_Margin + 268, $Bottom_Margin);
+	$PDF->line($Left_Margin + 268, $TopOfColHeadings + 12, $Left_Margin + 268, $Bottom_Margin);
 
 	/*Print a column vertical line */
-	$pdf->line($Left_Margin + 348, $TopOfColHeadings + 12, $Left_Margin + 348, $Bottom_Margin);
+	$PDF->line($Left_Margin + 348, $TopOfColHeadings + 12, $Left_Margin + 348, $Bottom_Margin);
 
 	/*Print a column vertical line */
-	$pdf->line($Left_Margin + 388, $TopOfColHeadings + 12, $Left_Margin + 388, $Bottom_Margin);
+	$PDF->line($Left_Margin + 388, $TopOfColHeadings + 12, $Left_Margin + 388, $Bottom_Margin);
 
 	/*Print a column vertical line */
-	$pdf->line($Left_Margin + 418, $TopOfColHeadings + 12, $Left_Margin + 418, $Bottom_Margin);
+	$PDF->line($Left_Margin + 418, $TopOfColHeadings + 12, $Left_Margin + 418, $Bottom_Margin);
 
-	$pdf->line($Left_Margin + 448, $TopOfColHeadings + 12, $Left_Margin + 448, $Bottom_Margin);
+	$PDF->line($Left_Margin + 448, $TopOfColHeadings + 12, $Left_Margin + 448, $Bottom_Margin);
 
 	$PageNumber++;
 

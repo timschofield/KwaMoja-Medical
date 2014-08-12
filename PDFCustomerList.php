@@ -5,8 +5,8 @@ include('includes/session.inc');
 if (isset($_POST['PrintPDF'])) {
 
 	include('includes/PDFStarter.php');
-	$pdf->addInfo('Title', _('Customer Listing'));
-	$pdf->addInfo('Subject', _('Customer Listing'));
+	$PDF->addInfo('Title', _('Customer Listing'));
+	$PDF->addInfo('Subject', _('Customer Listing'));
 	$line_height = 12;
 	$PageNumber = 0;
 	$FontSize = 10;
@@ -233,7 +233,7 @@ if (isset($_POST['PrintPDF'])) {
 		include('includes/header.inc');
 		prnMsg(_('The customer List could not be retrieved by the SQL because') . ' - ' . DB_error_msg());
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-		if ($debug == 1) {
+		if ($Debug == 1) {
 			echo '<br />' . $SQL;
 		}
 		include('includes/footer.inc');
@@ -297,10 +297,10 @@ if (isset($_POST['PrintPDF'])) {
 				if ($YPos < ($Bottom_Margin + 80)) {
 					include('includes/PDFCustomerListPageHeader.inc');
 				}
-				$pdf->setFont('', 'B');
-				$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 260 - $Left_Margin, $FontSize, _('Customers in') . ' ' . $Customers['areadescription']);
+				$PDF->setFont('', 'B');
+				$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 260 - $Left_Margin, $FontSize, _('Customers in') . ' ' . $Customers['areadescription']);
 				$Area = $Customers['area'];
-				$pdf->setFont('', '');
+				$PDF->setFont('', '');
 				$FontSize = 8;
 				$YPos -= $line_height;
 			}
@@ -311,9 +311,9 @@ if (isset($_POST['PrintPDF'])) {
 				if ($YPos < ($Bottom_Margin + 80)) {
 					include('includes/PDFCustomerListPageHeader.inc');
 				}
-				$pdf->setFont('', 'B');
-				$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 300 - $Left_Margin, $FontSize, $Customers['salesmanname']);
-				$pdf->setFont('', '');
+				$PDF->setFont('', 'B');
+				$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 300 - $Left_Margin, $FontSize, $Customers['salesmanname']);
+				$PDF->setFont('', '');
 				$SalesPerson = $Customers['salesman'];
 				$FontSize = 8;
 				$YPos -= $line_height;
@@ -321,36 +321,36 @@ if (isset($_POST['PrintPDF'])) {
 
 			$YPos -= $line_height;
 
-			$LeftOvers = $pdf->addTextWrap(20, $YPos, 60, $FontSize, $Customers['debtorno']);
-			$LeftOvers = $pdf->addTextWrap(80, $YPos, 150, $FontSize, $Customers['name']);
-			$LeftOvers = $pdf->addTextWrap(80, $YPos - 10, 150, $FontSize, $Customers['address1']);
-			$LeftOvers = $pdf->addTextWrap(80, $YPos - 20, 150, $FontSize, $Customers['address2']);
-			$LeftOvers = $pdf->addTextWrap(80, $YPos - 30, 150, $FontSize, $Customers['address3']);
-			$LeftOvers = $pdf->addTextWrap(140, $YPos - 30, 150, $FontSize, $Customers['address4']);
-			$LeftOvers = $pdf->addTextWrap(180, $YPos - 30, 150, $FontSize, $Customers['address5']);
-			$LeftOvers = $pdf->addTextWrap(210, $YPos - 30, 150, $FontSize, $Customers['address6']);
+			$LeftOvers = $PDF->addTextWrap(20, $YPos, 60, $FontSize, $Customers['debtorno']);
+			$LeftOvers = $PDF->addTextWrap(80, $YPos, 150, $FontSize, $Customers['name']);
+			$LeftOvers = $PDF->addTextWrap(80, $YPos - 10, 150, $FontSize, $Customers['address1']);
+			$LeftOvers = $PDF->addTextWrap(80, $YPos - 20, 150, $FontSize, $Customers['address2']);
+			$LeftOvers = $PDF->addTextWrap(80, $YPos - 30, 150, $FontSize, $Customers['address3']);
+			$LeftOvers = $PDF->addTextWrap(140, $YPos - 30, 150, $FontSize, $Customers['address4']);
+			$LeftOvers = $PDF->addTextWrap(180, $YPos - 30, 150, $FontSize, $Customers['address5']);
+			$LeftOvers = $PDF->addTextWrap(210, $YPos - 30, 150, $FontSize, $Customers['address6']);
 
-			$LeftOvers = $pdf->addTextWrap(230, $YPos, 60, $FontSize, $Customers['branchcode']);
-			$LeftOvers = $pdf->addTextWrap(230, $YPos - 10, 60, $FontSize, _('Price List') . ': ' . $Customers['salestype']);
+			$LeftOvers = $PDF->addTextWrap(230, $YPos, 60, $FontSize, $Customers['branchcode']);
+			$LeftOvers = $PDF->addTextWrap(230, $YPos - 10, 60, $FontSize, _('Price List') . ': ' . $Customers['salestype']);
 
 			if ($_POST['Activity'] != 'All') {
-				$LeftOvers = $pdf->addTextWrap(230, $YPos - 20, 60, $FontSize, _('Turnover'), 'right');
-				$LeftOvers = $pdf->addTextWrap(230, $YPos - 30, 60, $FontSize, locale_number_format($LocalCurrencyTurnover, 0), 'right');
+				$LeftOvers = $PDF->addTextWrap(230, $YPos - 20, 60, $FontSize, _('Turnover'), 'right');
+				$LeftOvers = $PDF->addTextWrap(230, $YPos - 30, 60, $FontSize, locale_number_format($LocalCurrencyTurnover, 0), 'right');
 			}
 
-			$LeftOvers = $pdf->addTextWrap(290, $YPos, 150, $FontSize, $Customers['brname']);
-			$LeftOvers = $pdf->addTextWrap(290, $YPos - 10, 150, $FontSize, $Customers['contactname']);
-			$LeftOvers = $pdf->addTextWrap(290, $YPos - 20, 150, $FontSize, _('Ph') . ': ' . $Customers['phoneno']);
-			$LeftOvers = $pdf->addTextWrap(290, $YPos - 30, 150, $FontSize, _('Fax') . ': ' . $Customers['faxno']);
-			$LeftOvers = $pdf->addTextWrap(440, $YPos, 150, $FontSize, $Customers['braddress1']);
-			$LeftOvers = $pdf->addTextWrap(440, $YPos - 10, 150, $FontSize, $Customers['braddress2']);
-			$LeftOvers = $pdf->addTextWrap(440, $YPos - 20, 150, $FontSize, $Customers['braddress3']);
-			$LeftOvers = $pdf->addTextWrap(500, $YPos - 20, 150, $FontSize, $Customers['braddress4']);
-			$LeftOvers = $pdf->addTextWrap(540, $YPos - 20, 150, $FontSize, $Customers['braddress5']);
-			$LeftOvers = $pdf->addTextWrap(570, $YPos - 20, 150, $FontSize, $Customers['braddress6']);
-			$LeftOvers = $pdf->addTextWrap(440, $YPos - 30, 150, $FontSize, $Customers['email']);
+			$LeftOvers = $PDF->addTextWrap(290, $YPos, 150, $FontSize, $Customers['brname']);
+			$LeftOvers = $PDF->addTextWrap(290, $YPos - 10, 150, $FontSize, $Customers['contactname']);
+			$LeftOvers = $PDF->addTextWrap(290, $YPos - 20, 150, $FontSize, _('Ph') . ': ' . $Customers['phoneno']);
+			$LeftOvers = $PDF->addTextWrap(290, $YPos - 30, 150, $FontSize, _('Fax') . ': ' . $Customers['faxno']);
+			$LeftOvers = $PDF->addTextWrap(440, $YPos, 150, $FontSize, $Customers['braddress1']);
+			$LeftOvers = $PDF->addTextWrap(440, $YPos - 10, 150, $FontSize, $Customers['braddress2']);
+			$LeftOvers = $PDF->addTextWrap(440, $YPos - 20, 150, $FontSize, $Customers['braddress3']);
+			$LeftOvers = $PDF->addTextWrap(500, $YPos - 20, 150, $FontSize, $Customers['braddress4']);
+			$LeftOvers = $PDF->addTextWrap(540, $YPos - 20, 150, $FontSize, $Customers['braddress5']);
+			$LeftOvers = $PDF->addTextWrap(570, $YPos - 20, 150, $FontSize, $Customers['braddress6']);
+			$LeftOvers = $PDF->addTextWrap(440, $YPos - 30, 150, $FontSize, $Customers['email']);
 
-			$pdf->line($Page_Width - $Right_Margin, $YPos - 32, $Left_Margin, $YPos - 32);
+			$PDF->line($Page_Width - $Right_Margin, $YPos - 32, $Left_Margin, $YPos - 32);
 
 			$YPos -= 40;
 			if ($YPos < ($Bottom_Margin + 30)) {
@@ -361,8 +361,8 @@ if (isset($_POST['PrintPDF'])) {
 	}
 	/*end while loop */
 
-	$pdf->OutputD($_SESSION['DatabaseName'] . '_CustomerList_' . date('Y-m-d') . '.pdf'); //UldisN
-	$pdf->__destruct();
+	$PDF->OutputD($_SESSION['DatabaseName'] . '_CustomerList_' . date('Y-m-d') . '.pdf'); //UldisN
+	$PDF->__destruct();
 	exit;
 
 } else {

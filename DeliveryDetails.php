@@ -158,9 +158,9 @@ if (isset($_POST['Update']) or isset($_POST['BackToLineDetails']) or isset($_POS
 		if (DB_num_rows($Result) == 0) {
 			prnMsg(_('The branch details for branch code') . ': ' . $_SESSION['Items' . $identifier]->Branch . ' ' . _('against customer code') . ': ' . $_POST['Select'] . ' ' . _('could not be retrieved') . '. ' . _('Check the set up of the customer and branch'), 'error');
 
-			if ($debug == 1) {
+			if ($Debug == 1) {
 				echo '<br />' . _('The SQL that failed to get the branch details was') . ':<br />' . $SQL;
-			} //$debug == 1
+			} //$Debug == 1
 			include('includes/footer.inc');
 			exit;
 		} //DB_num_rows($Result) == 0

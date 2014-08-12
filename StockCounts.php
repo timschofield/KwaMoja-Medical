@@ -46,7 +46,7 @@ if ($_GET['Action'] == 'Enter') {
 
 			$Quantity = 'Qty_' . $i;
 			$BarCode = 'BarCode_' . $i;
-			$StockID = 'StockID_' . $i;
+			$StockId = 'StockID_' . $i;
 			$Reference = 'Ref_' . $i;
 
 			if (strlen($_POST[$BarCode]) > 0) {
@@ -59,18 +59,18 @@ if ($_GET['Action'] == 'Enter') {
 				$KitResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 				$MyRow = DB_fetch_array($KitResult);
 
-				$_POST[$StockID] = strtoupper($MyRow['stockid']);
+				$_POST[$StockId] = strtoupper($MyRow['stockid']);
 			}
 
-			if (mb_strlen($_POST[$StockID]) > 0) {
+			if (mb_strlen($_POST[$StockId]) > 0) {
 				if (!is_numeric($_POST[$Quantity])) {
-					prnMsg(_('The quantity entered for line') . ' ' . $i . ' ' . _('is not numeric') . ' - ' . _('this line was for the part code') . ' ' . $_POST[$StockID] . '. ' . _('This line will have to be re-entered'), 'warn');
+					prnMsg(_('The quantity entered for line') . ' ' . $i . ' ' . _('is not numeric') . ' - ' . _('this line was for the part code') . ' ' . $_POST[$StockId] . '. ' . _('This line will have to be re-entered'), 'warn');
 					$InputError = True;
 				}
-				$SQL = "SELECT stockid FROM stockcheckfreeze WHERE stockid='" . $_POST[$StockID] . "'";
+				$SQL = "SELECT stockid FROM stockcheckfreeze WHERE stockid='" . $_POST[$StockId] . "'";
 				$Result = DB_query($SQL);
 				if (DB_num_rows($Result) == 0) {
-					prnMsg(_('The stock code entered on line') . ' ' . $i . ' ' . _('is not a part code that has been added to the stock check file') . ' - ' . _('the code entered was') . ' ' . $_POST[$StockID] . '. ' . _('This line will have to be re-entered'), 'warn');
+					prnMsg(_('The stock code entered on line') . ' ' . $i . ' ' . _('is not a part code that has been added to the stock check file') . ' - ' . _('the code entered was') . ' ' . $_POST[$StockId] . '. ' . _('This line will have to be re-entered'), 'warn');
 					$InputError = True;
 				}
 
@@ -80,7 +80,7 @@ if ($_GET['Action'] == 'Enter') {
 									loccode,
 									qtycounted,
 									reference)
-								VALUES ('" . $_POST[$StockID] . "',
+								VALUES ('" . $_POST[$StockId] . "',
 									'" . $_POST['Location'] . "',
 									'" . $_POST[$Quantity] . "',
 									'" . $_POST[$Reference] . "')";
@@ -108,19 +108,13 @@ if ($_GET['Action'] == 'Enter') {
 		echo '<table cellpadding="2" class="selection">
 				<tr>
 					<th colspan="3">' . _('Stock Check Counts at Location') . ':<select name="Location">';
-		if ($_SESSION['RestrictLocations'] == 0) {
-			$SQL = "SELECT locationname,
-							loccode
-						FROM locations";
-		} else {
-			$SQL = "SELECT locationname,
-							loccode
+		$SQL = "SELECT locationname,
+						locations.loccode
 						FROM locations
-						INNER JOIN www_users
-							ON locations.loccode=www_users.defaultlocation
-						WHERE www_users.userid='" . $_SESSION['UserID'] . "'
-							AND loccode='" . $_POST['Location'] . "'";
-		}
+						INNER JOIN locationusers
+							ON locationusers.loccode=locations.loccode
+							AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+							AND locationusers.canupd=1";
 		$Result = DB_query($SQL);
 		while ($MyRow = DB_fetch_array($Result)) {
 
@@ -220,7 +214,13 @@ if ($_GET['Action'] == 'Enter') {
 	}
 
 	//START OF action=VIEW
-	$SQL = "SELECT * FROM stockcounts";
+	$SQL = "SELECT stockcounts.*,
+					canupd
+				FROM stockcounts
+				INNER JOIN locationusers
+					ON locationusers.loccode=stockcounts.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canview=1";
 	$Result = DB_query($SQL);
 	echo '<input type="hidden" name="Action" value="View" />';
 	echo '<table cellpadding="2" class="selection">
@@ -238,7 +238,11 @@ if ($_GET['Action'] == 'Enter') {
 				<td>' . $MyRow['qtycounted'] . '</td>
 				<td>' . $MyRow['reference'] . '</td>
 				<td>';
-		echo '<input type="checkbox" name="DEL[' . $MyRow['id'] . ']" minlength="0" maxlength="20" size="20" /></td></tr>';
+		if ($myrow['canupd'] == 1) {
+			echo '<input type="checkbox" name="DEL[' . $MyRow['id'] . ']" maxlength="20" size="20" />';
+		}
+		echo '</td>
+			</tr>';
 
 	}
 	echo '</table>

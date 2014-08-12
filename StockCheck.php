@@ -5,8 +5,8 @@ include('includes/session.inc');
 if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_POST['FromCriteria']) >= 1 and isset($_POST['ToCriteria']) and mb_strlen($_POST['ToCriteria']) >= 1) {
 
 	include('includes/PDFStarter.php');
-	$pdf->addInfo('Title', _('Stock Count Sheets'));
-	$pdf->addInfo('Subject', _('Stock Count Sheets'));
+	$PDF->addInfo('Title', _('Stock Count Sheets'));
+	$PDF->addInfo('Subject', _('Stock Count Sheets'));
 	$FontSize = 10;
 	$PageNumber = 1;
 	$line_height = 30;
@@ -38,7 +38,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 			include('includes/header.inc');
 			prnMsg(_('The inventory quantities could not be added to the freeze file because') . ' ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-			if ($debug == 1) {
+			if ($Debug == 1) {
 				echo '<br />' . $SQL;
 			}
 			include('includes/footer.inc');
@@ -60,7 +60,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 			include('includes/header.inc');
 			prnMsg(_('The old quantities could not be deleted from the freeze file because') . ' ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-			if ($debug == 1) {
+			if ($Debug == 1) {
 				echo '<br />' . $SQL;
 			}
 			include('includes/footer.inc');
@@ -91,7 +91,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 			include('includes/header.inc');
 			prnMsg(_('The inventory quantities could not be added to the freeze file because') . ' ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-			if ($debug == 1) {
+			if ($Debug == 1) {
 				echo '<br />' . $SQL;
 			}
 			include('includes/footer.inc');
@@ -134,7 +134,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 		include('includes/header.inc');
 		prnMsg(_('The inventory quantities could not be retrieved by the SQL because') . ' ' . DB_error_msg(), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-		if ($debug == 1) {
+		if ($Debug == 1) {
 			echo '<br />' . $SQL;
 		}
 		include('includes/footer.inc');
@@ -160,11 +160,11 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 			if ($Category != '') {
 				/*Then it's NOT the first time round */
 				/*draw a line under the CATEGORY TOTAL*/
-				$pdf->line($Left_Margin, $YPos - 2, $Page_Width - $Right_Margin, $YPos - 2);
+				$PDF->line($Left_Margin, $YPos - 2, $Page_Width - $Right_Margin, $YPos - 2);
 				$YPos -= (2 * $line_height);
 			}
 
-			$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 260 - $Left_Margin, $FontSize, $InventoryCheckRow['categoryid'] . ' - ' . $InventoryCheckRow['categorydescription'], 'left');
+			$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 260 - $Left_Margin, $FontSize, $InventoryCheckRow['categoryid'] . ' - ' . $InventoryCheckRow['categorydescription'], 'left');
 			$Category = $InventoryCheckRow['categoryid'];
 		}
 
@@ -188,7 +188,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				include('includes/header.inc');
 				prnMsg(_('The sales order demand quantities could not be retrieved by the SQL because') . ' ' . DB_error_msg(), 'error');
 				echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-				if ($debug == 1) {
+				if ($Debug == 1) {
 					echo '<br />' . $SQL;
 				}
 				include('includes/footer.inc');
@@ -215,7 +215,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 			$DemandResult = DB_query($SQL, '', '', false, false);
 			if (DB_error_no() != 0) {
 				prnMsg(_('The demand for this product from') . ' ' . $MyRow['loccode'] . ' ' . _('cannot be retrieved because') . ' - ' . DB_error_msg(), 'error');
-				if ($debug == 1) {
+				if ($Debug == 1) {
 					echo '<br />' . _('The SQL that failed was') . ' ' . $SQL;
 				}
 				exit;
@@ -226,18 +226,18 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				$DemandQty += $DemandRow[0];
 			}
 
-			$LeftOvers = $pdf->addTextWrap(350, $YPos, 60, $FontSize, locale_number_format($InventoryCheckRow['qoh'], $InventoryCheckRow['decimalplaces']), 'right');
-			$LeftOvers = $pdf->addTextWrap(410, $YPos, 60, $FontSize, locale_number_format($DemandQty, $InventoryCheckRow['decimalplaces']), 'right');
-			$LeftOvers = $pdf->addTextWrap(470, $YPos, 60, $FontSize, locale_number_format($InventoryCheckRow['qoh'] - $DemandQty, $InventoryCheckRow['decimalplaces']), 'right');
+			$LeftOvers = $PDF->addTextWrap(350, $YPos, 60, $FontSize, locale_number_format($InventoryCheckRow['qoh'], $InventoryCheckRow['decimalplaces']), 'right');
+			$LeftOvers = $PDF->addTextWrap(410, $YPos, 60, $FontSize, locale_number_format($DemandQty, $InventoryCheckRow['decimalplaces']), 'right');
+			$LeftOvers = $PDF->addTextWrap(470, $YPos, 60, $FontSize, locale_number_format($InventoryCheckRow['qoh'] - $DemandQty, $InventoryCheckRow['decimalplaces']), 'right');
 
 		}
 
-		$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 150, $FontSize, $InventoryCheckRow['stockid'], 'left');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 150, $FontSize, $InventoryCheckRow['stockid'], 'left');
 
-		$LeftOvers = $pdf->addTextWrap(150, $YPos, 200, $FontSize, $InventoryCheckRow['description'], 'left');
+		$LeftOvers = $PDF->addTextWrap(150, $YPos, 200, $FontSize, $InventoryCheckRow['description'], 'left');
 
 
-		$pdf->line($Left_Margin, $YPos - 2, $Page_Width - $Right_Margin, $YPos - 2);
+		$PDF->line($Left_Margin, $YPos - 2, $Page_Width - $Right_Margin, $YPos - 2);
 
 		if ($YPos < $Bottom_Margin + $line_height) {
 			$PageNumber++;
@@ -247,7 +247,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 	}
 	/*end STOCK SHEETS while loop */
 
-	$pdf->OutputD($_SESSION['DatabaseName'] . '_Stock_Count_Sheets_' . Date('Y-m-d') . '.pdf');
+	$PDF->OutputD($_SESSION['DatabaseName'] . '_Stock_Count_Sheets_' . Date('Y-m-d') . '.pdf');
 
 } else {
 	/*The option to print PDF was not hit */
@@ -292,20 +292,15 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 		echo '<tr>
 				<td>' . _('For Inventory in Location') . ':</td>
 				<td><select minlength="0" name="Location">';
-		if ($_SESSION['RestrictLocations'] == 0) {
-			$SQL = "SELECT locationname,
-							loccode
-						FROM locations
-						ORDER BY locationname";
-		} else {
-			$SQL = "SELECT locationname,
-							loccode
-						FROM locations
-						INNER JOIN www_users
-							ON locations.loccode=www_users.defaultlocation
-						WHERE www_users.userid='" . $_SESSION['UserID'] . "'
-						ORDER BY locationname";
-		}
+
+		$SQL = "SELECT locations.loccode,
+						locationname
+					FROM locations
+					INNER JOIN locationusers
+						ON locationusers.loccode=locations.loccode
+						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.canupd=1
+					ORDER BY locationname";
 		$LocnResult = DB_query($SQL);
 
 		while ($MyRow = DB_fetch_array($LocnResult)) {

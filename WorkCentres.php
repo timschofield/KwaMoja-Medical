@@ -44,7 +44,7 @@ if (isset($_POST['submit'])) {
 						overheadrecoveryact ='" . $_POST['OverheadRecoveryAct'] . "',
 						overheadperhour = '" . $_POST['OverheadPerHour'] . "'
 				WHERE code = '" . $SelectedWC . "'";
-		$msg = _('The work centre record has been updated');
+		$Msg = _('The work centre record has been updated');
 	} elseif ($InputError != 1) {
 
 		/*Selected work centre is null cos no item selected on first time round so must be adding a	record must be submitting new entries in the new work centre form */
@@ -60,13 +60,13 @@ if (isset($_POST['submit'])) {
 						'" . $_POST['OverheadRecoveryAct'] . "',
 						'" . $_POST['OverheadPerHour'] . "'
 						)";
-		$msg = _('The new work centre has been added to the database');
+		$Msg = _('The new work centre has been added to the database');
 	}
 	//run the SQL from either of the above possibilites
 
 	if ($InputError != 1) {
 		$Result = DB_query($SQL, _('The update/addition of the work centre failed because'));
-		prnMsg($msg, 'success');
+		prnMsg($Msg, 'success');
 		unset($_POST['Location']);
 		unset($_POST['Description']);
 		unset($_POST['Code']);
@@ -109,28 +109,18 @@ if (!isset($SelectedWC)) {
 			<img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '
 		</p>';
 
-	if ($_SESSION['RestrictLocations'] == 0) {
-		$SQL = "SELECT workcentres.code,
-						workcentres.description,
-						locations.locationname,
-						workcentres.overheadrecoveryact,
-						workcentres.overheadperhour
-					FROM workcentres
-					INNER JOIN locations
-						ON workcentres.location = locations.loccode";
-	} else {
-		$SQL = "SELECT workcentres.code,
-						workcentres.description,
-						locations.locationname,
-						workcentres.overheadrecoveryact,
-						workcentres.overheadperhour
-					FROM workcentres
-					INNER JOIN locations
-						ON workcentres.location = locations.loccode
-					INNER JOIN  www_users
-						ON locations.loccode=www_users.defaultlocation
-					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-	}
+	$SQL = "SELECT workcentres.code,
+					workcentres.description,
+					locations.locationname,
+					workcentres.overheadrecoveryact,
+					workcentres.overheadperhour
+				FROM workcentres
+				INNER JOIN locations
+					ON workcentres.location = locations.loccode
+				INNER JOIN locationusers
+					ON locationusers.loccode=locations.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canview=1";
 	$Result = DB_query($SQL);
 	echo '<table class="selection">
 			<tr>
@@ -178,6 +168,10 @@ if (isset($SelectedWC)) {
 					overheadrecoveryact,
 					overheadperhour
 			FROM workcentres
+			INNER JOIN locationusers
+				ON locationusers.loccode=workcentres.location
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canupd=1
 			WHERE code='" . $SelectedWC . "'";
 
 	$Result = DB_query($SQL);
@@ -208,18 +202,13 @@ if (isset($SelectedWC)) {
 			</tr>';
 }
 
-if ($_SESSION['RestrictLocations'] == 0) {
-	$SQL = "SELECT locationname,
-					loccode
-				FROM locations";
-} else {
-	$SQL = "SELECT locationname,
-					loccode
-				FROM locations
-				INNER JOIN www_users
-					ON locations.loccode=www_users.defaultlocation
-				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-}
+$SQL = "SELECT locationname,
+				locations.loccode
+			FROM locations
+			INNER JOIN locationusers
+				ON locationusers.loccode=locations.loccode
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canupd=1";
 $Result = DB_query($SQL);
 
 if (!isset($_POST['Description'])) {

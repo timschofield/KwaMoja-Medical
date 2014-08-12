@@ -365,7 +365,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 
 		if (DB_num_rows($SearchResult) == 0) {
 			prnMsg(_('There are no products available that match the criteria specified'), 'info');
-			if ($debug == 1) {
+			if ($Debug == 1) {
 				prnMsg(_('The SQL statement used was') . ':<br />' . $SQL, 'info');
 			}
 		}

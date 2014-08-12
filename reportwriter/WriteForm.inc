@@ -588,7 +588,7 @@ function BuildPDF($ReportID, $Prefs) {
 		}
 	}
 	// Generate a form for each group element
-	$pdf = new PDF();
+	$PDF = new PDF();
 	foreach ($FormPageID as $formNum => $Fvalue) {
 		// find the single line data from the query for the current form page
 		if ($sqlCrit) {
@@ -620,8 +620,8 @@ function BuildPDF($ReportID, $Prefs) {
 				$FieldListings[$key]['params']['TextField'] = $TextField;
 			}
 		}
-		$pdf->PageCnt = $pdf->PageNo(); // reset the current page numbering for this new form
-		$pdf->AddPage();
+		$PDF->PageCnt = $PDF->PageNo(); // reset the current page numbering for this new form
+		$PDF->AddPage();
 		// Pre-load all total fields with 'Continued' label for multipage
 		foreach ($FieldListings as $key => $SingleObject) {
 			if ($SingleObject['params']['index'] == 'Ttl')
@@ -648,7 +648,7 @@ function BuildPDF($ReportID, $Prefs) {
 				$Result = DB_query($sql, '', '', false, true);
 				while ($Temp = DB_fetch_assoc($Result))
 					$SingleObject['params']['Data'][] = $Temp;
-				$pdf->FormTable($SingleObject['params']);
+				$PDF->FormTable($SingleObject['params']);
 			}
 		}
 		// Set the totals (need to be on last printed page) - Handled in the Footer function in FPDF
@@ -672,7 +672,7 @@ function BuildPDF($ReportID, $Prefs) {
 	// Add additional headers needed for MSIE and send page
 	header('Pragma: cache');
 	header('Cache-Control: public, must-revalidate, max-age=0');
-	$pdf->Output($Prefs['reportname'] . '.pdf', 'D');
+	$PDF->Output($Prefs['reportname'] . '.pdf', 'D');
 	exit(); // needs to be here to properly render the pdf file.
 }
 

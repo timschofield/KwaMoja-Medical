@@ -15,7 +15,7 @@ $PaperSize = $FormDesign->PaperSize;
 $line_height = $FormDesign->LineHeight;
 include('includes/PDFStarter.php');
 $PageNumber = 1;
-$pdf->addInfo('Title', _('Goods Received Note'));
+$PDF->addInfo('Title', _('Goods Received Note'));
 
 if ($GRNNo == 'Preview') {
 	$MyRow['itemcode'] = str_pad('', 15, 'x');
@@ -102,23 +102,23 @@ if ($NoOfGRNs > 0) {
 		$OurUnitsQuantity = locale_number_format($MyRow['qtyrecd'], $DecimalPlaces);
 		$DeliveryDate = ConvertSQLDate($MyRow['deliverydate']);
 
-		$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column1->x, $Page_Height - $YPos, $FormDesign->Data->Column1->Length, $FormDesign->Data->Column1->FontSize, $MyRow['itemcode']);
-		$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column2->x, $Page_Height - $YPos, $FormDesign->Data->Column2->Length, $FormDesign->Data->Column2->FontSize, $MyRow['itemdescription']);
+		$LeftOvers = $PDF->addTextWrap($FormDesign->Data->Column1->x, $Page_Height - $YPos, $FormDesign->Data->Column1->Length, $FormDesign->Data->Column1->FontSize, $MyRow['itemcode']);
+		$LeftOvers = $PDF->addTextWrap($FormDesign->Data->Column2->x, $Page_Height - $YPos, $FormDesign->Data->Column2->Length, $FormDesign->Data->Column2->FontSize, $MyRow['itemdescription']);
 		/*resmart mods */
-		/*$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column3->x,$Page_Height-$YPos,$FormDesign->Data->Column3->Length,$FormDesign->Data->Column3->FontSize, $DeliveryDate);*/
-		$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column3->x, $Page_Height - $YPos, $FormDesign->Data->Column3->Length, $FormDesign->Data->Column3->FontSize, $DeliveryDate, 'right');
+		/*$LeftOvers = $PDF->addTextWrap($FormDesign->Data->Column3->x,$Page_Height-$YPos,$FormDesign->Data->Column3->Length,$FormDesign->Data->Column3->FontSize, $DeliveryDate);*/
+		$LeftOvers = $PDF->addTextWrap($FormDesign->Data->Column3->x, $Page_Height - $YPos, $FormDesign->Data->Column3->Length, $FormDesign->Data->Column3->FontSize, $DeliveryDate, 'right');
 		/*resmart ends*/
-		$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column4->x, $Page_Height - $YPos, $FormDesign->Data->Column4->Length, $FormDesign->Data->Column4->FontSize, $SuppliersQuantity, 'right');
-		$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column5->x, $Page_Height - $YPos, $FormDesign->Data->Column5->Length, $FormDesign->Data->Column5->FontSize, $MyRow['suppliersunit'], 'left');
-		$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column6->x, $Page_Height - $YPos, $FormDesign->Data->Column6->Length, $FormDesign->Data->Column6->FontSize, $OurUnitsQuantity, 'right');
-		$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column7->x, $Page_Height - $YPos, $FormDesign->Data->Column7->Length, $FormDesign->Data->Column7->FontSize, $MyRow['units'], 'left');
+		$LeftOvers = $PDF->addTextWrap($FormDesign->Data->Column4->x, $Page_Height - $YPos, $FormDesign->Data->Column4->Length, $FormDesign->Data->Column4->FontSize, $SuppliersQuantity, 'right');
+		$LeftOvers = $PDF->addTextWrap($FormDesign->Data->Column5->x, $Page_Height - $YPos, $FormDesign->Data->Column5->Length, $FormDesign->Data->Column5->FontSize, $MyRow['suppliersunit'], 'left');
+		$LeftOvers = $PDF->addTextWrap($FormDesign->Data->Column6->x, $Page_Height - $YPos, $FormDesign->Data->Column6->Length, $FormDesign->Data->Column6->FontSize, $OurUnitsQuantity, 'right');
+		$LeftOvers = $PDF->addTextWrap($FormDesign->Data->Column7->x, $Page_Height - $YPos, $FormDesign->Data->Column7->Length, $FormDesign->Data->Column7->FontSize, $MyRow['units'], 'left');
 		$YPos += $line_height;
 
 		/*resmoart mods*/
 		/* move to after serial print
 		if($FooterPrintedInPage == 0){
-		$LeftOvers = $pdf->addText($FormDesign->ReceiptDate->x,$Page_Height-$FormDesign->ReceiptDate->y,$FormDesign->ReceiptDate->FontSize, _('Date of Receipt: ') . $DeliveryDate);
-		$LeftOvers = $pdf->addText($FormDesign->SignedFor->x,$Page_Height-$FormDesign->SignedFor->y,$FormDesign->SignedFor->FontSize, _('Signed for ').'______________________');
+		$LeftOvers = $PDF->addText($FormDesign->ReceiptDate->x,$Page_Height-$FormDesign->ReceiptDate->y,$FormDesign->ReceiptDate->FontSize, _('Date of Receipt: ') . $DeliveryDate);
+		$LeftOvers = $PDF->addText($FormDesign->SignedFor->x,$Page_Height-$FormDesign->SignedFor->y,$FormDesign->SignedFor->FontSize, _('Signed for ').'______________________');
 		$FooterPrintedInPage= 1;
 		}
 		*/
@@ -148,9 +148,9 @@ if ($NoOfGRNs > 0) {
 					AND stockmoves.transno='" . $GRNNo . "'";
 			$GetStockMoveResult = DB_query($SQL, _('Could not retrieve the stock movement reference number which is required in order to retrieve details of the serial items that came in with this GRN'));
 			while ($SerialStockMoves = DB_fetch_array($GetStockMoveResult)) {
-				$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column1->x - 20, $Page_Height - $YPos, $FormDesign->Data->Column1->Length, $FormDesign->Data->Column1->FontSize, _('Lot/Serial') . ': ', 'right');
-				$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column2->x, $Page_Height - $YPos, $FormDesign->Data->Column2->Length, $FormDesign->Data->Column2->FontSize, $SerialStockMoves['serialno']);
-				$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column2->x, $Page_Height - $YPos, $FormDesign->Data->Column2->Length, $FormDesign->Data->Column2->FontSize, $SerialStockMoves['moveqty'], 'right');
+				$LeftOvers = $PDF->addTextWrap($FormDesign->Data->Column1->x - 20, $Page_Height - $YPos, $FormDesign->Data->Column1->Length, $FormDesign->Data->Column1->FontSize, _('Lot/Serial') . ': ', 'right');
+				$LeftOvers = $PDF->addTextWrap($FormDesign->Data->Column2->x, $Page_Height - $YPos, $FormDesign->Data->Column2->Length, $FormDesign->Data->Column2->FontSize, $SerialStockMoves['serialno']);
+				$LeftOvers = $PDF->addTextWrap($FormDesign->Data->Column2->x, $Page_Height - $YPos, $FormDesign->Data->Column2->Length, $FormDesign->Data->Column2->FontSize, $SerialStockMoves['moveqty'], 'right');
 				$YPos += $line_height;
 
 				if ($YPos >= $FormDesign->LineAboveFooter->starty) {
@@ -159,7 +159,7 @@ if ($NoOfGRNs > 0) {
 					include('includes/PDFGrnHeader.inc');
 				} //end if need a new page headed up
 			} //while SerialStockMoves
-			$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column2->x, $Page_Height - $YPos, $FormDesign->Data->Column2->Length, $FormDesign->Data->Column2->FontSize, ' ');
+			$LeftOvers = $PDF->addTextWrap($FormDesign->Data->Column2->x, $Page_Height - $YPos, $FormDesign->Data->Column2->Length, $FormDesign->Data->Column2->FontSize, ' ');
 			$YPos += $line_height;
 			if ($YPos >= $FormDesign->LineAboveFooter->starty) {
 				$FooterPrintedInPage = 0;
@@ -169,14 +169,14 @@ if ($NoOfGRNs > 0) {
 		} //controlled item*/
 		/*resmart ends*/
 		if ($FooterPrintedInPage == 0) {
-			$LeftOvers = $pdf->addText($FormDesign->ReceiptDate->x, $Page_Height - $FormDesign->ReceiptDate->y, $FormDesign->ReceiptDate->FontSize, _('Date of Receipt: ') . $DeliveryDate);
-			$LeftOvers = $pdf->addText($FormDesign->SignedFor->x, $Page_Height - $FormDesign->SignedFor->y, $FormDesign->SignedFor->FontSize, _('Signed for ') . '______________________');
+			$LeftOvers = $PDF->addText($FormDesign->ReceiptDate->x, $Page_Height - $FormDesign->ReceiptDate->y, $FormDesign->ReceiptDate->FontSize, _('Date of Receipt: ') . $DeliveryDate);
+			$LeftOvers = $PDF->addText($FormDesign->SignedFor->x, $Page_Height - $FormDesign->SignedFor->y, $FormDesign->SignedFor->FontSize, _('Signed for ') . '______________________');
 			$FooterPrintedInPage = 1;
 		}
 	} //end of loop around GRNs to print
 
-	$pdf->OutputD($_SESSION['DatabaseName'] . '_GRN_' . $GRNNo . '_' . date('Y-m-d') . '.pdf');
-	$pdf->__destruct();
+	$PDF->OutputD($_SESSION['DatabaseName'] . '_GRN_' . $GRNNo . '_' . date('Y-m-d') . '.pdf');
+	$PDF->__destruct();
 } else { //there were not GRNs to print
 	$Title = _('GRN Error');
 	include('includes/header.inc');

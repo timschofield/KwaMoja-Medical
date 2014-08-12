@@ -59,9 +59,9 @@ function InsertSalesman($SalesmanDetails, $user, $password) {
 
 	$FieldNames = '';
 	$FieldValues = '';
-	foreach ($SalesmanDetails as $key => $value) {
-		$FieldNames .= $key . ', ';
-		$FieldValues .= '"' . $value . '", ';
+	foreach ($SalesmanDetails as $Key => $Value) {
+		$FieldNames .= $Key . ', ';
+		$FieldValues .= '"' . $Value . '", ';
 	}
 	$sql = 'INSERT INTO salesman (' . mb_substr($FieldNames, 0, -2) . ') ' . 'VALUES (' . mb_substr($FieldValues, 0, -2) . ') ';
 	if (sizeof($Errors) == 0) {

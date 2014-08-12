@@ -97,14 +97,14 @@ if (DB_num_rows($Result) == 0) {
 }
 //get the first stock movement which will be the quantity taken from the initiating location
 while ($MyRow = DB_fetch_array($Result)) {
-	$StockID = $MyRow['stockid'];
+	$StockId = $MyRow['stockid'];
 	$From = $MyRow['locationname'];
 	$Date = $MyRow['trandate'];
 	$To = $MyRow['reference'];
 	$Quantity = -$MyRow['qty'];
 	$Description = $MyRow['description'];
 
-	$LeftOvers = $PDF->addTextWrap($Left_Margin + 1, $YPos - 10, 300 - $Left_Margin, $FontSize, $StockID);
+	$LeftOvers = $PDF->addTextWrap($Left_Margin + 1, $YPos - 10, 300 - $Left_Margin, $FontSize, $StockId);
 	/*resmoart mods*/
 	/*$LeftOvers = $PDF->addTextWrap($Left_Margin+75,$YPos-10,300-$Left_Margin,$FontSize-2, $Description);*/
 	$LeftOvers = $PDF->addTextWrap($Left_Margin + 75, $YPos - 10, 300 - $Left_Margin, $FontSize, $Description);
@@ -120,7 +120,7 @@ while ($MyRow = DB_fetch_array($Result)) {
 	}
 	/*resmart mods*/
 	$SQL = "SELECT stockmaster.controlled
-			FROM stockmaster WHERE stockid ='" . $StockID . "'";
+			FROM stockmaster WHERE stockid ='" . $StockId . "'";
 	$CheckControlledResult = DB_query($SQL, '<br />' . _('Could not determine if the item was controlled or not because') . ' ');
 	$ControlledRow = DB_fetch_row($CheckControlledResult);
 
@@ -131,7 +131,7 @@ while ($MyRow = DB_fetch_array($Result)) {
 					FROM stockmoves
 					INNER JOIN stockserialmoves
 						ON stockmoves.stkmoveno= stockserialmoves.stockmoveno
-					WHERE stockmoves.stockid='" . $StockID . "'
+					WHERE stockmoves.stockid='" . $StockId . "'
 						AND stockmoves.type =16
 						AND qty > 0
 						AND stockmoves.transno='" . $_GET['TransferNo'] . "'";

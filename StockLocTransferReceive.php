@@ -361,10 +361,10 @@ if (isset($_POST['ProcessTransfer'])) {
 						mail($_SESSION['InventoryManagerEmail'], $EmailSubject, $ConfirmationText);
 					} else {
 						include('includes/htmlMimeMail.php');
-						$mail = new htmlMimeMail();
-						$mail->setSubject($EmailSubject);
-						$mail->setText($ConfirmationText);
-						$Result = SendmailBySmtp($mail, array(
+						$Mail = new htmlMimeMail();
+						$Mail->setSubject($EmailSubject);
+						$Mail->setText($ConfirmationText);
+						$Result = SendmailBySmtp($Mail, array(
 							$_SESSION['InventoryManagerEmail']
 						));
 					}

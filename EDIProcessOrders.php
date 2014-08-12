@@ -556,9 +556,9 @@ while (false !== ($OrderFile = readdir($dirhandle))) {
 	/*Thats the end of the message or had to abort */
 	if (mb_strlen($EmailText) > 10) {
 		/*Now send the email off to the appropriate person */
-		$mail = new htmlMimeMail();
-		$mail->setText($EmailText);
-		$mail->setFrom($_SESSION['CompanyRecord']['coyname'] . "<" . $_SESSION['CompanyRecord']['email'] . ">");
+		$Mail = new htmlMimeMail();
+		$Mail->setText($EmailText);
+		$Mail->setFrom($_SESSION['CompanyRecord']['coyname'] . "<" . $_SESSION['CompanyRecord']['email'] . ">");
 
 		if ($TryNextFile == True) {
 			/*had to abort this message */
@@ -583,10 +583,10 @@ while (false !== ($OrderFile = readdir($dirhandle))) {
 			}
 			$TryNextFile = False;
 			/*reset the abort to false before hit next file*/
-			$mail->setSubject(_('EDI Order Message Error'));
+			$Mail->setSubject(_('EDI Order Message Error'));
 		} else {
 
-			$mail->setSubject(_('EDI Order Message') . ' ' . $Order->CustRef);
+			$Mail->setSubject(_('EDI Order Message') . ' ' . $Order->CustRef);
 			$EDICustServPerson = $_SESSION['PurchasingManagerEmail'];
 			$Recipients = array(
 				$EDICustServPerson
@@ -594,9 +594,9 @@ while (false !== ($OrderFile = readdir($dirhandle))) {
 		}
 
 		if ($_SESSION['SmtpSetting'] == 0) {
-			$MessageSent = $mail->send($Recipients);
+			$MessageSent = $Mail->send($Recipients);
 		} else {
-			$MessageSent = SendmailBySmtp($mail, $Recipients);
+			$MessageSent = SendmailBySmtp($Mail, $Recipients);
 		}
 
 		echo $EmailText;

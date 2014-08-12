@@ -34,7 +34,7 @@ function GetNextTransNo($TransType) {
 }
 
 
-function GetStockGLCode($StockID) {
+function GetStockGLCode($StockId) {
 
 	/*Gets the GL Codes relevant to the stock item account from the stock category record */
 	$QuerySQL = "SELECT stockact,
@@ -45,7 +45,7 @@ function GetStockGLCode($StockID) {
 						wipact
 				FROM stockmaster INNER JOIN stockcategory
 				ON stockmaster.categoryid=stockcategory.categoryid
-				WHERE stockmaster.stockid = '" . $StockID . "'";
+				WHERE stockmaster.stockid = '" . $StockId . "'";
 
 	$ErrMsg = _('The stock GL codes could not be retrieved because');
 	$GetStkGLResult = DB_query($QuerySQL, $ErrMsg);
@@ -152,13 +152,13 @@ function GetCreditAvailable($DebtorNo) {
 	return $CreditAvailable;
 }
 
-function ItemCostUpdateGL($StockID, $NewCost, $OldCost, $QOH) {
+function ItemCostUpdateGL($StockId, $NewCost, $OldCost, $QOH) {
 
 	if ($_SESSION['CompanyRecord']['gllink_stock'] == 1 and $QOH != 0) {
 
 		$CostUpdateNo = GetNextTransNo(35);
 		$PeriodNo = GetPeriod(date($_SESSION['DefaultDateFormat']));
-		$StockGLCode = GetStockGLCode($StockID);
+		$StockGLCode = GetStockGLCode($StockId);
 
 		$ValueOfChange = $QOH * ($NewCost - $OldCost);
 
@@ -174,7 +174,7 @@ function ItemCostUpdateGL($StockID, $NewCost, $OldCost, $QOH) {
 							CURRENT_DATE,
 							'" . $PeriodNo . "',
 							'" . $StockGLCode['adjglact'] . "',
-							'" . $StockID . ' ' . _('cost was') . ' ' . $OldCost . ' ' . _('changed to') . ' ' . $NewCost . ' x ' . _('Quantity on hand of') . ' ' . $QOH . "',
+							'" . $StockId . ' ' . _('cost was') . ' ' . $OldCost . ' ' . _('changed to') . ' ' . $NewCost . ' x ' . _('Quantity on hand of') . ' ' . $QOH . "',
 							'" . -$ValueOfChange . "')";
 
 		$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The GL credit for the stock cost adjustment posting could not be inserted because');
@@ -193,7 +193,7 @@ function ItemCostUpdateGL($StockID, $NewCost, $OldCost, $QOH) {
 							CURRENT_DATE,
 							'" . $PeriodNo . "',
 							'" . $StockGLCode['stockact'] . "',
-							'" . $StockID . ' ' . _('cost was') . ' ' . $OldCost . ' ' . _('changed to') . ' ' . $NewCost . ' x ' . _('Quantity on hand of') . ' ' . $QOH . "',
+							'" . $StockId . ' ' . _('cost was') . ' ' . $OldCost . ' ' . _('changed to') . ' ' . $NewCost . ' x ' . _('Quantity on hand of') . ' ' . $QOH . "',
 							'" . $ValueOfChange . "')";
 
 		$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The GL debit for stock cost adjustment posting could not be inserted because');
@@ -254,13 +254,13 @@ function UpdateCost($Item) {
 }
 
 /* Accepts work order information and iterates through the bom, inserting real components (dissolving phantom assemblies) */
-function WoRealRequirements($WO, $LocCode, $StockID, $Qty = 1, $ParentID = '') {
+function WoRealRequirements($WO, $LocCode, $StockId, $Qty = 1, $ParentID = '') {
 
 	// remember, 'G' is for ghost (phantom part type)
 
 	// all components should be referenced to the initial parent
 	if ($ParentID == '') {
-		$ParentID = $StockID;
+		$ParentID = $StockId;
 	}
 
 	// insert new real immediate components of this item
@@ -282,7 +282,7 @@ function WoRealRequirements($WO, $LocCode, $StockID, $Qty = 1, $ParentID = '') {
 			INNER JOIN stockcosts
 				ON stockcosts.stockid=stockmaster.stockid
 				AND stockcosts.succeeded=0
-			WHERE bom.parent='" . $StockID . "'
+			WHERE bom.parent='" . $StockId . "'
 				AND bom.loccode ='" . $LocCode . "'
 				AND bom.effectiveafter<=CURRENT_DATE
 				AND bom.effectiveto>=CURRENT_DATE
@@ -299,7 +299,7 @@ function WoRealRequirements($WO, $LocCode, $StockID, $Qty = 1, $ParentID = '') {
 	// otherwise, we could encounter a uniqueness violation:
 	//     - the same component could occur in multiple dissolved phantom assemblies
 	//     - need to sum quantities of multiple component occurrences
-	if ($ParentID != $StockID) {
+	if ($ParentID != $StockId) {
 		$SQL = "UPDATE worequirements
 					INNER JOIN (
 						SELECT CAST('" . $WO . "' AS SIGNED) as wo,
@@ -314,7 +314,7 @@ function WoRealRequirements($WO, $LocCode, $StockID, $Qty = 1, $ParentID = '') {
 						INNER JOIN stockcosts
 							ON stockcosts.stockid=stockmaster.stockid
 							AND stockcosts.succeeded=0
-						WHERE bom.parent='" . $StockID . "'
+						WHERE bom.parent='" . $StockId . "'
 							AND bom.loccode ='" . $LocCode . "'
 							AND bom.effectiveafter<=CURRENT_DATE
 							AND bom.effectiveto>=CURRENT_DATE
@@ -338,7 +338,7 @@ function WoRealRequirements($WO, $LocCode, $StockID, $Qty = 1, $ParentID = '') {
 				bom.quantity
 			FROM bom INNER JOIN stockmaster
 			ON bom.component=stockmaster.stockid
-			WHERE parent='" . $StockID . "'
+			WHERE parent='" . $StockId . "'
 			AND loccode ='" . $LocCode . "'
 			AND stockmaster.mbflag='G'";
 	$Result = DB_query($SQL);

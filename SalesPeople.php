@@ -106,7 +106,7 @@ if (isset($_POST['submit'])) {
 									current='" . $_POST['Current'] . "'
 								WHERE salesmancode = '" . stripslashes($SelectedSalesPerson) . "'";
 
-		$msg = _('Salesperson record for') . ' ' . stripslashes($_POST['SalesmanName']) . ' ' . _('has been updated');
+		$Msg = _('Salesperson record for') . ' ' . stripslashes($_POST['SalesmanName']) . ' ' . _('has been updated');
 	} elseif ($InputError != 1) {
 
 		/*Selected group is null cos no item selected on first time round so must be adding a record must be submitting new entries in the new Sales-person form */
@@ -133,7 +133,7 @@ if (isset($_POST['submit'])) {
 						'" . $_POST['Current'] . "'
 					)";
 
-		$msg = _('A new salesperson record has been added for') . ' ' . stripslashes($_POST['SalesmanName']);
+		$Msg = _('A new salesperson record has been added for') . ' ' . stripslashes($_POST['SalesmanName']);
 	}
 	if ($InputError != 1) {
 
@@ -150,7 +150,7 @@ if (isset($_POST['submit'])) {
 		$DbgMsg = _('The SQL that was used and failed was');
 		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-		prnMsg($msg, 'success');
+		prnMsg($Msg, 'success');
 
 		unset($SelectedSalesPerson);
 		unset($_POST['SalesmanCode']);

@@ -4237,7 +4237,7 @@
 2012-02-13 05:19:51 +0000	Exson Qu <hexinfans@gmail.com>
 	* Srdjan: Report and fixed 'Settled Transactions' overlap with next row
 2012-02-12 10:53:55 +0000	Tim Schofield <tim@weberpafrica.com>
-	* Fix so that $identifier is created before anything else is done
+	* Fix so that $Identifier is created before anything else is done
 2012-02-12 03:51:25 +0000	Phil Daintree <phil@logicworks.co.nz>
 	* remove debug line
 2012-02-11 04:32:41 +0000	Phil Daintree <phil@logicworks.co.nz>
@@ -4315,7 +4315,7 @@
 2012-01-30 05:01:35 +0000	Exson Qu <hexinfans@gmail.com>
 	* Fixed for $_SESSION overwritten to print Cheque
 2012-01-30 01:15:22 +0000	Exson Qu <hexinfans@gmail.com>
-	* Fix for $_SESSION overwritten problem with $identifier variable and minor html modification
+	* Fix for $_SESSION overwritten problem with $Identifier variable and minor html modification
 2012-01-29 09:42:44 +0000	Phil Daintree <phil@logicworks.co.nz>
 	* extended API to  create invoices from salesorders
 2012-01-29 09:03:14 +0000	Tim Schofield <tim@weberpafrica.com>
@@ -4481,9 +4481,9 @@
 2011-12-13 07:28:55 +0000	Phil Daintree <phil@logicworks.co.nz>
 	* fix Exsons commit that was working on an older version of SelectOrderItems.php
 2011-12-13 01:34:17 +0000	Exson Qu <hexinfans@gmail.com>
-	* Bug fix for $_SESSION['ExistingOrder'] to $_SESSION['ExistingOrder'.$identifier] Solution from Tim
+	* Bug fix for $_SESSION['ExistingOrder'] to $_SESSION['ExistingOrder'.$Identifier] Solution from Tim
 2011-12-13 01:32:32 +0000	Exson Qu <hexinfans@gmail.com>
-	* bug fix for $_SESSION['ExistingOrder'] to $_SESSION['ExistingOrder'.$identifier] by Tim
+	* bug fix for $_SESSION['ExistingOrder'] to $_SESSION['ExistingOrder'.$Identifier] by Tim
 2011-12-11 09:52:20 +0000	Phil Daintree <phil@logicworks.co.nz>
 	* 1/12/11 Phil: SupplierInvoice.php attempts to post back any cost variances where there is no stock left to apportion the variances to - posting back to stockmoves (so the DailySales.php and other sales inquiry scripts reflect the appropriate GP) and the salesanalysis tables 11/12/11 Phil: DailySalesInquiry.php removed incorrect call to establish new cart object??
 2011-12-10 18:23:41 +0000	Tim Schofield <tim@weberpafrica.com>
@@ -6637,7 +6637,7 @@
 2010-08-10 08:27:14 +0000	Phil Daintree <phil@logicworks.co.nz>
 	* Russ fix for narrative box on SelectOrderItems - Phil Contracts Manual
 2010-08-09 13:35:12 +0000	Tim Schofield <tim@weberpafrica.com>
-	* Paul Thursby: SelectProduct.php - Variable $msg will never print. Elimnate to use function prnMsg() instead.
+	* Paul Thursby: SelectProduct.php - Variable $Msg will never print. Elimnate to use function prnMsg() instead.
 2010-08-08 07:43:13 +0000	Phil Daintree <phil@logicworks.co.nz>
 	* work on contracts
 2010-08-07 16:27:37 +0000	Tim Schofield <tim@weberpafrica.com>
@@ -7429,9 +7429,9 @@
 2010-01-07 20:41:53 +0000	Tim Schofield <tim@weberpafrica.com>
 	* Enforce numbers only in input boxes
 2010-01-07 20:24:45 +0000	Tim Schofield <tim@weberpafrica.com>
-	* Declare $identifier if not already declared before including PO_ReadInOrder.inc
+	* Declare $Identifier if not already declared before including PO_ReadInOrder.inc
 2010-01-07 20:14:28 +0000	Tim Schofield <tim@weberpafrica.com>
-	* Declare $identifier if not already declared before including PO_ReadInOrder.inc
+	* Declare $Identifier if not already declared before including PO_ReadInOrder.inc
 2010-01-07 19:47:45 +0000	Tim Schofield <tim@weberpafrica.com>
 	* Changes for new menu layout
 2010-01-07 15:42:08 +0000	Tim Schofield <tim@weberpafrica.com>

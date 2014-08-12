@@ -274,54 +274,54 @@ function LogBackTrace($dest = 0) {
 	//  Leave out our frame and the topmost - huge for xmlrpc!
 	for ($ii = 1; $ii < count($stack) - 3; $ii++) {
 		$frame = $stack[$ii];
-		$msg = "FRAME " . $ii . ": ";
+		$Msg = "FRAME " . $ii . ": ";
 		if (isset($frame['file'])) {
-			$msg .= "; file=" . $frame['file'];
+			$Msg .= "; file=" . $frame['file'];
 		}
 		if (isset($frame['line'])) {
-			$msg .= "; line=" . $frame['line'];
+			$Msg .= "; line=" . $frame['line'];
 		}
 		if (isset($frame['function'])) {
-			$msg .= "; function=" . $frame['function'];
+			$Msg .= "; function=" . $frame['function'];
 		}
 		if (isset($frame['args'])) {
 			// Either function args, or included file name(s)
-			$msg .= ' (';
+			$Msg .= ' (';
 			foreach ($frame['args'] as $val) {
 
 				$typ = gettype($val);
 				switch ($typ) {
 					case 'array':
-						$msg .= '[ ';
+						$Msg .= '[ ';
 						foreach ($val as $v2) {
 							if (gettype($v2) == 'array') {
-								$msg .= '[ ';
+								$Msg .= '[ ';
 								foreach ($v2 as $v3)
-									$msg .= $v3;
-								$msg .= ' ]';
+									$Msg .= $v3;
+								$Msg .= ' ]';
 							} else {
-								$msg .= $v2 . ', ';
+								$Msg .= $v2 . ', ';
 							}
-							$msg .= ' ]';
+							$Msg .= ' ]';
 							break;
 						}
 					case 'string':
-						$msg .= $val . ', ';
+						$Msg .= $val . ', ';
 						break;
 
 					case 'integer':
-						$msg .= sprintf("%d, ", $val);
+						$Msg .= sprintf("%d, ", $val);
 						break;
 
 					default:
-						$msg .= '<' . gettype($val) . '>, ';
+						$Msg .= '<' . gettype($val) . '>, ';
 						break;
 
 				}
-				$msg .= ' )';
+				$Msg .= ' )';
 			}
 		}
-		error_log($msg, $dest);
+		error_log($Msg, $dest);
 	}
 
 	error_log('++++END STACK BACKTRACE++++', $dest);
@@ -411,7 +411,7 @@ function indian_number_format($Number, $DecimalPlaces) {
 	}
 }
 
-function SendMailBySmtp(&$mail, $To) {
+function SendMailBySmtp(&$Mail, $To) {
 	if (IsEmailAddress($_SESSION['SMTPSettings']['username'])) { //user has set the fully mail address as user name
 		$SendFrom = $_SESSION['SMTPSettings']['username'];
 	} else { //user only set it's name instead of fully mail address
@@ -423,8 +423,8 @@ function SendMailBySmtp(&$mail, $To) {
 		$Domain = substr($_SESSION['SMTPSettings']['host'], strpos($_SESSION['SMTPSettings']['host'], $SubStr) + 5);
 		$SendFrom = $_SESSION['SMTPSettings']['username'] . '@' . $Domain;
 	}
-	$mail->setFrom($SendFrom);
-	$Result = $mail->send($To, 'smtp');
+	$Mail->setFrom($SendFrom);
+	$Result = $Mail->send($To, 'smtp');
 	return $Result;
 }
 

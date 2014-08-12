@@ -64,7 +64,7 @@ if (isset($_POST['submit'])) {
 				prnMsg(_('The tax category no longer exists'), 'error');
 			}
 		}
-		$msg = _('Tax category name changed');
+		$Msg = _('Tax category name changed');
 	} elseif ($InputError != 1) {
 		/*SelectedTaxCategory is null cos no item selected on first time round so must be adding a record*/
 		$SQL = "SELECT count(*) FROM taxcategories
@@ -97,11 +97,11 @@ if (isset($_POST['submit'])) {
 
 			$Result = DB_Txn_Commit();
 		}
-		$msg = _('New tax category added');
+		$Msg = _('New tax category added');
 	}
 
 	if ($InputError != 1) {
-		prnMsg($msg, 'success');
+		prnMsg($Msg, 'success');
 	}
 	unset($SelectedTaxCategory);
 	unset($_POST['SelectedTaxCategory']);

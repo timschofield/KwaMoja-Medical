@@ -85,7 +85,7 @@ echo '<tbody>
 		</tr>';
 $k = 0;
 while ($row = DB_fetch_array($searchresult)) {
-	$StockID = $row['stockid'];
+	$StockId = $row['stockid'];
 	if ($k == 1) {
 		echo '<tr class="EvenTableRows">';
 		$k = 0;
@@ -95,7 +95,7 @@ while ($row = DB_fetch_array($searchresult)) {
 	}
 	$qoh = locale_number_format($row['qoh'], $row['decimalplaces']);
 
-	echo '<td><a href="' . $RootPath . '/StockStatus.php?StockID=' . urlencode($StockID) . '" target="_blank">' . $row['stockid'] . '</td>
+	echo '<td><a href="' . $RootPath . '/StockStatus.php?StockID=' . urlencode($StockId) . '" target="_blank">' . $row['stockid'] . '</td>
 		<td>' . $row['description'] . '</td>
 		<td class="number">' . $qoh . '</td>
 		<td>' . $row['units'] . '</td>

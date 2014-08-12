@@ -21,7 +21,7 @@ class smtp {
 	var $status;
 	var $body;
 	var $from;
-	var $host;
+	var $Host;
 	var $port;
 	var $helo;
 	var $auth;
@@ -71,8 +71,8 @@ class smtp {
 
 		$this->errors = array();
 
-		foreach ($params as $key => $value) {
-			$this->$key = $value;
+		foreach ($params as $Key => $Value) {
+			$this->$Key = $Value;
 		}
 	}
 
@@ -127,8 +127,8 @@ class smtp {
 
 	function send($params = array()) {
 
-		foreach ($params as $key => $value) {
-			$this->set($key, $value);
+		foreach ($params as $Key => $Value) {
+			$this->set($Key, $Value);
 		}
 
 		if ($this->is_connected()) {
@@ -141,8 +141,8 @@ class smtp {
 
 			$this->mail($this->from);
 			if (is_array($this->recipients))
-				foreach ($this->recipients as $value)
-					$this->rcpt($value);
+				foreach ($this->recipients as $Value)
+					$this->rcpt($Value);
 			else
 				$this->rcpt($this->recipients);
 
@@ -342,9 +342,9 @@ class smtp {
 	 * Sets a variable
 	 */
 
-	function set($var, $value) {
+	function set($var, $Value) {
 
-		$this->$var = $value;
+		$this->$var = $Value;
 		return TRUE;
 	}
 

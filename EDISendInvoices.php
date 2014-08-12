@@ -173,7 +173,7 @@ while ($CustDetails = DB_fetch_array($EDIInvCusts)) {
 						/*now set up the variable values */
 
 						$LineNumber++;
-						$StockID = $TransLines['StockID'];
+						$StockId = $TransLines['StockID'];
 						$SQL = "SELECT partnerstockid
 								FROM ediitemmapping
 								WHERE supporcust='CUST'
@@ -215,18 +215,18 @@ while ($CustDetails = DB_fetch_array($EDIInvCusts)) {
 			/*Now send the file using the customer transport */
 			if ($CustDetails['editransport'] == 'email') {
 
-				$mail = new htmlMimeMail();
-				$attachment = $mail->getFile($_SESSION['EDI_MsgPending'] . "/EDI_INV_" . $EDITransNo);
-				$mail->SetSubject('EDI Invoice/Credit Note ' . $EDITransNo);
-				$mail->addAttachment($attachment, 'EDI_INV_' . $EDITransNo, 'application/txt');
-				$mail->setFrom($_SESSION['CompanyRecord']['coyname'] . '<' . $_SESSION['CompanyRecord']['email'] . '>');
+				$Mail = new htmlMimeMail();
+				$attachment = $Mail->getFile($_SESSION['EDI_MsgPending'] . "/EDI_INV_" . $EDITransNo);
+				$Mail->SetSubject('EDI Invoice/Credit Note ' . $EDITransNo);
+				$Mail->addAttachment($attachment, 'EDI_INV_' . $EDITransNo, 'application/txt');
+				$Mail->setFrom($_SESSION['CompanyRecord']['coyname'] . '<' . $_SESSION['CompanyRecord']['email'] . '>');
 				if ($_SESSION['SmtpSetting'] == 0) {
-					$mail->setFrom($_SESSION['CompanyRecord']['coyname'] . '<' . $_SESSION['CompanyRecord']['email'] . '>');
-					$MessageSent = $mail->send(array(
+					$Mail->setFrom($_SESSION['CompanyRecord']['coyname'] . '<' . $_SESSION['CompanyRecord']['email'] . '>');
+					$MessageSent = $Mail->send(array(
 						$CustDetails['ediaddress']
 					));
 				} else {
-					$MessageSent = SendmailBySmtp($mail, array(
+					$MessageSent = SendmailBySmtp($Mail, array(
 						$CustDetails['ediaddress']
 					));
 				}

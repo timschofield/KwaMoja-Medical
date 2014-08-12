@@ -60,7 +60,7 @@ if (isset($_POST['submit'])) {
 			SET sales_type = '" . $_POST['Sales_Type'] . "'
 			WHERE typeabbrev = '" . stripslashes($SelectedType) . "'";
 
-		$msg = _('The customer/sales/pricelist type') . ' ' . stripslashes($SelectedType) . ' ' . _('has been updated');
+		$Msg = _('The customer/sales/pricelist type') . ' ' . stripslashes($SelectedType) . ' ' . _('has been updated');
 	} elseif ($InputError != 1) {
 
 		// First check the type is not being duplicated
@@ -84,7 +84,7 @@ if (isset($_POST['submit'])) {
 							VALUES ('" . str_replace(' ', '', $_POST['TypeAbbrev']) . "',
 									'" . $_POST['Sales_Type'] . "')";
 
-			$msg = _('Customer/sales/pricelist type') . ' ' . stripslashes($_POST['Sales_Type']) . ' ' . _('has been created');
+			$Msg = _('Customer/sales/pricelist type') . ' ' . stripslashes($_POST['Sales_Type']) . ' ' . _('has been created');
 			$checkSql = "SELECT count(typeabbrev)
 						FROM salestypes";
 			$Result = DB_query($checkSql);
@@ -113,7 +113,7 @@ if (isset($_POST['submit'])) {
 			$_SESSION['DefaultPriceList'] = $_POST['TypeAbbrev'];
 		}
 
-		prnMsg($msg, 'success');
+		prnMsg($Msg, 'success');
 
 		unset($SelectedType);
 		unset($_POST['TypeAbbrev']);

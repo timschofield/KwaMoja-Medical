@@ -257,8 +257,8 @@ function InsertCustomer($CustomerDetails, $user = '', $password = '') {
 //		$Errors[0] = NoAuthorisation;
 //		return $Errors;
 //	}
-	foreach ($CustomerDetails as $key => $value) {
-		$CustomerDetails[$key] = DB_escape_string($value);
+	foreach ($CustomerDetails as $Key => $Value) {
+		$CustomerDetails[$Key] = DB_escape_string($Value);
 	}
 	$autonumbersql = "SELECT confvalue FROM config
 						 WHERE confname='AutoDebtorNo'";
@@ -369,9 +369,9 @@ function InsertCustomer($CustomerDetails, $user = '', $password = '') {
 	}
 	$FieldNames = '';
 	$FieldValues = '';
-	foreach ($CustomerDetails as $key => $value) {
-		$FieldNames .= $key . ', ';
-		$FieldValues .= "'" . $value . "', ";
+	foreach ($CustomerDetails as $Key => $Value) {
+		$FieldNames .= $Key . ', ';
+		$FieldValues .= "'" . $Value . "', ";
 	}
 	$sql = "INSERT INTO debtorsmaster (" . mb_substr($FieldNames, 0, -2) . ") VALUES (" . mb_substr($FieldValues, 0, -2) . ") ";
 	if (sizeof($Errors) == 0) {
@@ -400,8 +400,8 @@ function ModifyCustomer($CustomerDetails, $user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	foreach ($CustomerDetails as $key => $value) {
-		$CustomerDetails[$key] = DB_escape_string($value);
+	foreach ($CustomerDetails as $Key => $Value) {
+		$CustomerDetails[$Key] = DB_escape_string($Value);
 	}
 	if (!isset($CustomerDetails['debtorno'])) {
 		$Errors[sizeof($Errors)] = NoDebtorNumber;
@@ -512,8 +512,8 @@ function ModifyCustomer($CustomerDetails, $user, $password) {
 		$Errors = VerifyCustomerType($CustomerDetails['typeid'], sizeof($Errors), $Errors);
 	}
 	$sql = 'UPDATE debtorsmaster SET ';
-	foreach ($CustomerDetails as $key => $value) {
-		$sql .= $key . "='" . $value . "', ";
+	foreach ($CustomerDetails as $Key => $Value) {
+		$sql .= $Key . "='" . $Value . "', ";
 	}
 	$sql = mb_substr($sql, 0, -2) . " WHERE debtorno='" . $CustomerDetails['debtorno'] . "'";
 	if (sizeof($Errors) == 0) {

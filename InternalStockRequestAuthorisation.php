@@ -11,16 +11,16 @@ include('includes/header.inc');
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '</p>';
 
 if (isset($_POST['UpdateAll'])) {
-	foreach ($_POST as $key => $value) {
-		if (mb_substr($key, 0, 6) == 'status') {
-			$RequestNo = mb_substr($key, 6);
+	foreach ($_POST as $Key => $Value) {
+		if (mb_substr($Key, 0, 6) == 'status') {
+			$RequestNo = mb_substr($Key, 6);
 			$SQL = "UPDATE stockrequest
 					SET authorised='1'
 					WHERE dispatchid='" . $RequestNo . "'";
 			$Result = DB_query($SQL);
 		}
-		if (strpos($key, 'cancel')) {
-			$CancelItems = explode('cancel', $key);
+		if (strpos($Key, 'cancel')) {
+			$CancelItems = explode('cancel', $Key);
 			$SQL = "UPDATE stockrequestitems
 						SET completed=1
 						WHERE dispatchid='" . $CancelItems[0] . "'

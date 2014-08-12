@@ -32,7 +32,7 @@ if (isset($_POST['submit'])) {
 						salestype='" . $_POST['SalesType'] . "'
 				WHERE id ='" . $SelectedCOGSPostingID . "'";
 
-		$msg = _('Cost of sales GL posting code has been updated');
+		$Msg = _('Cost of sales GL posting code has been updated');
 	} else {
 
 		/*Selected Sales GL Posting is null cos no item selected on first time round so must be	adding a record must be submitting new entries in the new SalesGLPosting form */
@@ -48,12 +48,12 @@ if (isset($_POST['submit'])) {
 					'" . $_POST['StkCat'] . "',
 					'" . $_POST['SalesType'] . "'
 					)";
-		$msg = _('A new cost of sales posting code has been inserted') . '.';
+		$Msg = _('A new cost of sales posting code has been inserted') . '.';
 	}
 	//run the SQL from either of the above possibilites
 
 	$Result = DB_query($SQL);
-	prnMsg($msg, 'info');
+	prnMsg($Msg, 'info');
 	unset($SelectedCOGSPostingID);
 
 } elseif (isset($_GET['delete'])) {

@@ -14,7 +14,7 @@ if (isset($_GET['StockID'])) {
 		include('includes/footer.inc');
 		exit;
 	}
-	$StockID = trim(mb_strtoupper($_GET['StockID']));
+	$StockId = trim(mb_strtoupper($_GET['StockID']));
 } else {
 	prnMsg(_('This page must be called with parameters specifying the item to show the serial references and quantities') . '. ' . _('It cannot be displayed without the proper parameters being passed'), 'error');
 	include('includes/footer.inc');
@@ -29,7 +29,7 @@ $Result = DB_query("SELECT description,
 							controlled,
 							perishable
 						FROM stockmaster
-						WHERE stockid='" . $StockID . "'", _('Could not retrieve the requested item because'));
+						WHERE stockid='" . $StockId . "'", _('Could not retrieve the requested item because'));
 
 $MyRow = DB_fetch_array($Result);
 
@@ -69,7 +69,7 @@ $SQL = "SELECT serialno,
 				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
 				AND locationusers.canview=1
 			WHERE stockserialitems.loccode='" . $_GET['Location'] . "'
-				AND stockid = '" . $StockID . "'
+				AND stockid = '" . $StockId . "'
 				AND quantity <>0";
 
 
@@ -88,7 +88,7 @@ if ($Serialised == 1) {
 echo $MyRow[0] . '</font></th></tr>';
 
 echo '<tr>
-		<th colspan="11"><font color="navy" size="2">' . $StockID . '-' . $Description . '</b>  (' . _('In units of') . ' ' . $UOM . ')</font></th>
+		<th colspan="11"><font color="navy" size="2">' . $StockId . '-' . $Description . '</b>  (' . _('In units of') . ' ' . $UOM . ')</font></th>
 	</tr>';
 
 if ($Serialised == 1 and $Perishable == 0) {

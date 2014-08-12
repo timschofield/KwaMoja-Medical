@@ -27,7 +27,7 @@ class StockTransfer {
 }
 
 class LineItem {
-	var $StockID;
+	var $StockId;
 	var $ItemDescription;
 	var $ShipQty;
 	var $PrevRecvQty;
@@ -40,9 +40,9 @@ class LineItem {
 	var $SerialItems;
 	/*array to hold controlled items*/
 	//Constructor
-	function LineItem($StockID, $ItemDescription, $Quantity, $PartUnit, $Controlled, $Serialised, $Perishable, $DecimalPlaces) {
+	function LineItem($StockId, $ItemDescription, $Quantity, $PartUnit, $Controlled, $Serialised, $Perishable, $DecimalPlaces) {
 
-		$this->StockID = $StockID;
+		$this->StockID = $StockId;
 		$this->ItemDescription = $ItemDescription;
 		$this->PartUnit = $PartUnit;
 		$this->Controlled = $Controlled;

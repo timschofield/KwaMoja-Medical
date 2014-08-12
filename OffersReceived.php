@@ -153,10 +153,10 @@ if (!isset($_POST['submit']) and isset($_POST['supplierid'])) {
 	$Accepts = array();
 	$RejectsArray = array();
 	$Defers = array();
-	foreach ($_POST as $key => $value) {
-		if (mb_substr($key, 0, 6) == 'action') {
-			$OfferID = mb_substr($key, 6);
-			switch ($value) {
+	foreach ($_POST as $Key => $Value) {
+		if (mb_substr($Key, 0, 6) == 'action') {
+			$OfferID = mb_substr($Key, 6);
+			switch ($Value) {
 				case 1:
 					$Accepts[] = $OfferID;
 					break;
@@ -234,9 +234,9 @@ if (!isset($_POST['submit']) and isset($_POST['supplierid'])) {
 			$SQL = "DELETE FROM offers WHERE offerid='" . $AcceptID . "'";
 			$Result = DB_query($SQL);
 		}
-		$mail = new htmlMimeMail();
-		$mail->setSubject(_('Your offer to') . ' ' . $_SESSION['CompanyRecord']['coyname'] . ' ' . _('has been accepted'));
-		$mail->setText($MailText);
+		$Mail = new htmlMimeMail();
+		$Mail->setSubject(_('Your offer to') . ' ' . $_SESSION['CompanyRecord']['coyname'] . ' ' . _('has been accepted'));
+		$Mail->setText($MailText);
 		$Recipients = GetMailList('OffersReceivedResultRecipients');
 		if (sizeOf($Recipients) == 0) {
 			$Title = _('Inventory Valuation') . ' - ' . _('Problem Report');
@@ -247,10 +247,10 @@ if (!isset($_POST['submit']) and isset($_POST['supplierid'])) {
 		}
 		array_push($Recipients, $Email);
 		if ($_SESSION['SmtpSetting'] == 0) {
-			$mail->setFrom($_SESSION['CompanyRecord']['coyname'] . ' <' . $_SESSION['CompanyRecord']['email'] . '>');
-			$Result = $mail->send($Recipients);
+			$Mail->setFrom($_SESSION['CompanyRecord']['coyname'] . ' <' . $_SESSION['CompanyRecord']['email'] . '>');
+			$Result = $Mail->send($Recipients);
 		} else {
-			$Result = SendMailBySmtp($mail, $Recipients);
+			$Result = SendMailBySmtp($Mail, $Recipients);
 		}
 		if ($Result) {
 			prnMsg(_('The accepted offers from') . ' ' . $SupplierName . ' ' . _('have been converted to purchase orders and an email sent to') . ' ' . $Email . "\n" . _('Please review the order contents') . ' ' . '<a href="' . $RootPath . '/PO_Header.php?ModifyOrderNumber=' . urlencode($OrderNo) . '">' . _('here') . '</a>', 'success');
@@ -275,10 +275,10 @@ if (!isset($_POST['submit']) and isset($_POST['supplierid'])) {
 			$SQL = "DELETE FROM offers WHERE offerid='" . $RejectID . "'";
 			$Result = DB_query($SQL);
 		}
-		$mail = new htmlMimeMail();
-		$mail->setSubject(_('Your offer to') . ' ' . $_SESSION['CompanyRecord']['coyname'] . ' ' . _('has been rejected'));
-		$mail->setText($MailText);
-		$mail->setFrom($_SESSION['CompanyRecord']['coyname'] . ' <' . $_SESSION['CompanyRecord']['email'] . '>');
+		$Mail = new htmlMimeMail();
+		$Mail->setSubject(_('Your offer to') . ' ' . $_SESSION['CompanyRecord']['coyname'] . ' ' . _('has been rejected'));
+		$Mail->setText($MailText);
+		$Mail->setFrom($_SESSION['CompanyRecord']['coyname'] . ' <' . $_SESSION['CompanyRecord']['email'] . '>');
 		$Recipients = GetMailList('OffersReceivedResultRecipients');
 		if (sizeOf($Recipients) == 0) {
 			$Title = _('Inventory Valuation') . ' - ' . _('Problem Report');
@@ -289,10 +289,10 @@ if (!isset($_POST['submit']) and isset($_POST['supplierid'])) {
 		}
 		array_push($Recipients, $Email);
 		if ($_SESSION['SmtpSetting'] == 0) {
-			$mail->setFrom($_SESSION['CompanyRecord']['coyname'] . ' <' . $_SESSION['CompanyRecord']['email'] . '>');
-			$Result = $mail->send($Recipients);
+			$Mail->setFrom($_SESSION['CompanyRecord']['coyname'] . ' <' . $_SESSION['CompanyRecord']['email'] . '>');
+			$Result = $Mail->send($Recipients);
 		} else {
-			$Result = SendmailBySmtp($mail, $Recipients);
+			$Result = SendmailBySmtp($Mail, $Recipients);
 		}
 		if ($Result) {
 			prnMsg(_('The rejected offers from') . ' ' . $SupplierName . ' ' . _('have been removed from the system and an email sent to') . ' ' . $Email, 'success');

@@ -5,16 +5,16 @@ include('includes/session.inc');
 $Title = _('Stock Usage');
 
 if (isset($_GET['StockID'])) {
-	$StockID = trim(mb_strtoupper($_GET['StockID']));
+	$StockId = trim(mb_strtoupper($_GET['StockID']));
 } elseif (isset($_POST['StockID'])) {
-	$StockID = trim(mb_strtoupper($_POST['StockID']));
+	$StockId = trim(mb_strtoupper($_POST['StockID']));
 } else {
-	$StockID = '';
+	$StockId = '';
 }
 
 if (isset($_POST['ShowGraphUsage'])) {
-	echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/StockUsageGraph.php?StockLocation=' . $_POST['StockLocation'] . '&amp;StockID=' . $StockID . '">';
-	prnMsg(_('You should automatically be forwarded to the usage graph') . '. ' . _('If this does not happen') . ' (' . _('if the browser does not support META Refresh') . ') ' . '<a href="' . $RootPath . '/StockUsageGraph.php?StockLocation=' . urlencode($_POST['StockLocation']) . '&amp;StockID=' . urlencode($StockID) . '">' . _('click here') . '</a> ' . _('to continue'), 'info');
+	echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/StockUsageGraph.php?StockLocation=' . $_POST['StockLocation'] . '&amp;StockID=' . $StockId . '">';
+	prnMsg(_('You should automatically be forwarded to the usage graph') . '. ' . _('If this does not happen') . ' (' . _('if the browser does not support META Refresh') . ') ' . '<a href="' . $RootPath . '/StockUsageGraph.php?StockLocation=' . urlencode($_POST['StockLocation']) . '&amp;StockID=' . urlencode($StockId) . '">' . _('click here') . '</a> ' . _('to continue'), 'info');
 	exit;
 }
 
@@ -29,7 +29,7 @@ $Result = DB_query("SELECT description,
 						mbflag,
 						decimalplaces
 					FROM stockmaster
-					WHERE stockid='" . $StockID . "'");
+					WHERE stockid='" . $StockId . "'");
 $MyRow = DB_fetch_row($Result);
 
 $DecimalPlaces = $MyRow[3];
@@ -42,19 +42,19 @@ $ItsKitSetAssemblyOrDummy = False;
 if ($MyRow[2] == 'K' OR $MyRow[2] == 'A' OR $MyRow[2] == 'D') {
 
 	$ItsKitSetAssemblyOrDummy = True;
-	echo '<h3>' . $StockID . ' - ' . $MyRow[0] . '</h3>';
+	echo '<h3>' . $StockId . ' - ' . $MyRow[0] . '</h3>';
 
 	prnMsg(_('The selected item is a dummy or assembly or kit-set item and cannot have a stock holding') . '. ' . _('Please select a different item'), 'warn');
 
-	$StockID = '';
+	$StockId = '';
 } else {
 	echo '<tr>
-			<th><h3>' . _('Item') . ' : ' . $StockID . ' - ' . $MyRow[0] . '   (' . _('in units of') . ' : ' . $MyRow[1] . ')</h3></th>
+			<th><h3>' . _('Item') . ' : ' . $StockId . ' - ' . $MyRow[0] . '   (' . _('in units of') . ' : ' . $MyRow[1] . ')</h3></th>
 		</tr>';
 }
 
 echo '<tr>
-		<td>' . _('Stock Code') . ':<input type="text" name="StockID" size="21" required="required" minlength="1" maxlength="20" value="' . $StockID . '" />';
+		<td>' . _('Stock Code') . ':<input type="text" name="StockID" size="21" required="required" minlength="1" maxlength="20" value="' . $StockId . '" />';
 
 echo _('From Stock Location') . ':<select required="required" minlength="1" name="StockLocation">';
 
@@ -98,7 +98,7 @@ if (isset($_POST['ShowUsage'])) {
 				canview,
 				SUM(CASE WHEN (stockmoves.type=10 Or stockmoves.type=11 OR stockmoves.type=28)
 							AND stockmoves.hidemovt=0
-							AND stockmoves.stockid = '" . $StockID . "'
+							AND stockmoves.stockid = '" . $StockId . "'
 						THEN -stockmoves.qty ELSE 0 END) AS qtyused
 				FROM periods
 				LEFT JOIN stockmoves
@@ -116,7 +116,7 @@ if (isset($_POST['ShowUsage'])) {
 				periods.lastdate_in_period,
 				SUM(CASE WHEN (stockmoves.type=10 Or stockmoves.type=11 OR stockmoves.type=28)
 								AND stockmoves.hidemovt=0
-								AND stockmoves.stockid = '" . $StockID . "'
+								AND stockmoves.stockid = '" . $StockId . "'
 								AND stockmoves.loccode='" . $_POST['StockLocation'] . "'
 							THEN -stockmoves.qty ELSE 0 END) AS qtyused
 				FROM periods LEFT JOIN stockmoves
@@ -181,11 +181,11 @@ if (isset($_POST['ShowUsage'])) {
 /* end if Show Usage is clicked */
 
 echo '<div class="centre">
-		<a href="' . $RootPath . '/StockStatus.php?StockID=' . urlencode($StockID) . '">' . _('Show Stock Status') . '</a>
-		<a href="' . $RootPath . '/StockMovements.php?StockID=' . urlencode($StockID) . '&amp;StockLocation=' . urlencode($_POST['StockLocation']) . '">' . _('Show Stock Movements') . '</a>
-		<a href="' . $RootPath . '/SelectSalesOrder.php?SelectedStockItem=' . urlencode($StockID) . '&amp;StockLocation=' . $_POST['StockLocation'] . '">' . _('Search Outstanding Sales Orders') . '</a>
-		<a href="' . $RootPath . '/SelectCompletedOrder.php?SelectedStockItem=' . urlencode($StockID) . '">' . _('Search Completed Sales Orders') . '</a>
-		<a href="' . $RootPath . '/PO_SelectOSPurchOrder.php?SelectedStockItem=' . urlencode($StockID) . '">' . _('Search Outstanding Purchase Orders') . '</a>
+		<a href="' . $RootPath . '/StockStatus.php?StockID=' . urlencode($StockId) . '">' . _('Show Stock Status') . '</a>
+		<a href="' . $RootPath . '/StockMovements.php?StockID=' . urlencode($StockId) . '&amp;StockLocation=' . urlencode($_POST['StockLocation']) . '">' . _('Show Stock Movements') . '</a>
+		<a href="' . $RootPath . '/SelectSalesOrder.php?SelectedStockItem=' . urlencode($StockId) . '&amp;StockLocation=' . $_POST['StockLocation'] . '">' . _('Search Outstanding Sales Orders') . '</a>
+		<a href="' . $RootPath . '/SelectCompletedOrder.php?SelectedStockItem=' . urlencode($StockId) . '">' . _('Search Completed Sales Orders') . '</a>
+		<a href="' . $RootPath . '/PO_SelectOSPurchOrder.php?SelectedStockItem=' . urlencode($StockId) . '">' . _('Search Outstanding Purchase Orders') . '</a>
 	</div>';
 
 echo '</form>';

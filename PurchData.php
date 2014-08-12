@@ -13,9 +13,9 @@ if (isset($_GET['SupplierID'])) {
 }
 
 if (isset($_GET['StockID'])) {
-	$StockID = trim(mb_strtoupper($_GET['StockID']));
+	$StockId = trim(mb_strtoupper($_GET['StockID']));
 } elseif (isset($_POST['StockID'])) {
-	$StockID = trim(mb_strtoupper($_POST['StockID']));
+	$StockId = trim(mb_strtoupper($_POST['StockID']));
 }
 
 if (isset($_GET['Edit'])) {
@@ -57,7 +57,7 @@ if ((isset($_POST['AddRecord']) or isset($_POST['UpdateRecord'])) and isset($Sup
 	$InputError = 0;
 	/*Start assuming the best */
 
-	if ($StockID == '' or !isset($StockID)) {
+	if ($StockId == '' or !isset($StockId)) {
 		$InputError = 1;
 		prnMsg(_('There is no stock item set up enter the stock code or select a stock item using the search page'), 'error');
 	}
@@ -102,7 +102,7 @@ if ((isset($_POST['AddRecord']) or isset($_POST['UpdateRecord'])) and isset($Sup
 										minorderqty,
 										preferred)
 									VALUES ('" . DB_escape_string($SupplierID) . "',
-										'" . $StockID . "',
+										'" . $StockId . "',
 										'" . filter_number_format($_POST['Price']) . "',
 										'" . FormatDateForSQL($_POST['EffectiveFrom']) . "',
 										'" . $_POST['SuppliersUOM'] . "',
@@ -127,7 +127,7 @@ if ((isset($_POST['AddRecord']) or isset($_POST['UpdateRecord'])) and isset($Sup
 									leadtime='" . filter_number_format($_POST['LeadTime']) . "',
 									minorderqty='" . filter_number_format($_POST['MinOrderQty']) . "',
 									preferred='" . $_POST['Preferred'] . "'
-								WHERE purchdata.stockid='" . $StockID . "'
+								WHERE purchdata.stockid='" . $StockId . "'
 									AND purchdata.supplierno='" . DB_escape_string($SupplierID) . "'
 									AND purchdata.effectivefrom='" . $_POST['WasEffectiveFrom'] . "'";
 		$ErrMsg = _('The supplier purchasing details could not be updated because');
@@ -184,7 +184,7 @@ if ((isset($_POST['AddRecord']) or isset($_POST['UpdateRecord'])) and isset($Sup
 													effectivefrom,
 													effectiveto )
 						VALUES ('" . $SupplierID . "',
-								'" . $StockID . "',
+								'" . $StockId . "',
 								'" . $_POST['DiscountNarrative'] . "',
 								'" . floatval($_POST['DiscountAmount']) . "',
 								'" . floatval($_POST['DiscountPercent']) / 100 . "',
@@ -227,7 +227,7 @@ if ((isset($_POST['AddRecord']) or isset($_POST['UpdateRecord'])) and isset($Sup
 if (isset($_GET['Delete'])) {
 	$SQL = "DELETE FROM purchdata
 	   				WHERE purchdata.supplierno='" . $SupplierID . "'
-	   				AND purchdata.stockid='" . $StockID . "'
+	   				AND purchdata.stockid='" . $StockId . "'
 	   				AND purchdata.effectivefrom='" . $_GET['EffectiveFrom'] . "'";
 	$ErrMsg = _('The supplier purchasing details could not be deleted because');
 	$DelResult = DB_query($SQL, $ErrMsg);
@@ -236,7 +236,7 @@ if (isset($_GET['Delete'])) {
 }
 
 if (!isset($_GET['Edit'])) {
-	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . ' ' . _('For Stock Code') . ' - ' . $StockID . '</p><br />';
+	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . ' ' . _('For Stock Code') . ' - ' . $StockId . '</p><br />';
 	$SQL = "SELECT purchdata.supplierno,
 					suppliers.suppname,
 					purchdata.price,
@@ -255,15 +255,15 @@ if (!isset($_GET['Edit'])) {
 					ON purchdata.supplierno=suppliers.supplierid
 				INNER JOIN currencies
 					ON suppliers.currcode=currencies.currabrev
-				WHERE purchdata.stockid = '" . $StockID . "'
+				WHERE purchdata.stockid = '" . $StockId . "'
 				ORDER BY supplierno,
 					purchdata.effectivefrom DESC";
 	$ErrMsg = _('The supplier purchasing details for the selected part could not be retrieved because');
 	$PurchDataResult = DB_query($SQL, $ErrMsg);
-	if (DB_num_rows($PurchDataResult) == 0 and $StockID != '') {
+	if (DB_num_rows($PurchDataResult) == 0 and $StockId != '') {
 		prnMsg(_('There is no purchasing data set up for the part selected'), 'info');
 		$NoPurchasingData = 1;
-	} else if ($StockID != '') {
+	} else if ($StockId != '') {
 		echo '<table cellpadding="2" class="selection">
 				<tr>
 					<th class="SortableColumn">' . _('Supplier') . '</th>
@@ -310,13 +310,13 @@ if (!isset($_GET['Edit'])) {
 					<td><a href="%s?StockID=%s&SupplierID=%s&Edit=1&EffectiveFrom=%s">' . _('Edit') . '</a></td>
 					<td><a href="%s?StockID=%s&SupplierID=%s&Copy=1&EffectiveFrom=%s">' . _('Copy') . '</a></td>
 					<td><a href="%s?StockID=%s&SupplierID=%s&Delete=1&EffectiveFrom=%s" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this suppliers price?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-					</tr>', $MyRow['suppname'], locale_number_format($MyRow['price'], $UPriceDecimalPlaces), $MyRow['suppliersuom'], locale_number_format($MyRow['conversionfactor'], 'Variable'), locale_number_format($MyRow['price'] / $MyRow['conversionfactor'], $UPriceDecimalPlaces), $MyRow['currcode'], ConvertSQLDate($MyRow['effectivefrom']), locale_number_format($MyRow['minorderqty'], 'Variable'), locale_number_format($MyRow['leadtime'], 'Variable'), $DisplayPreferred, htmlspecialchars($_SERVER['PHP_SELF']), $StockID, $MyRow['supplierno'], $MyRow['effectivefrom'], htmlspecialchars($_SERVER['PHP_SELF']), $StockID, $MyRow['supplierno'], $MyRow['effectivefrom'], htmlspecialchars($_SERVER['PHP_SELF']), $StockID, $MyRow['supplierno'], $MyRow['effectivefrom']);
+					</tr>', $MyRow['suppname'], locale_number_format($MyRow['price'], $UPriceDecimalPlaces), $MyRow['suppliersuom'], locale_number_format($MyRow['conversionfactor'], 'Variable'), locale_number_format($MyRow['price'] / $MyRow['conversionfactor'], $UPriceDecimalPlaces), $MyRow['currcode'], ConvertSQLDate($MyRow['effectivefrom']), locale_number_format($MyRow['minorderqty'], 'Variable'), locale_number_format($MyRow['leadtime'], 'Variable'), $DisplayPreferred, htmlspecialchars($_SERVER['PHP_SELF']), $StockId, $MyRow['supplierno'], $MyRow['effectivefrom'], htmlspecialchars($_SERVER['PHP_SELF']), $StockId, $MyRow['supplierno'], $MyRow['effectivefrom'], htmlspecialchars($_SERVER['PHP_SELF']), $StockId, $MyRow['supplierno'], $MyRow['effectivefrom']);
 		} //end of while loop
 		echo '</table><br/>';
 		if ($CountPreferreds > 1) {
-			prnMsg(_('There are now') . ' ' . $CountPreferreds . ' ' . _('preferred suppliers set up for') . ' ' . $StockID . ' ' . _('you should edit the supplier purchasing data to make only one supplier the preferred supplier'), 'warn');
+			prnMsg(_('There are now') . ' ' . $CountPreferreds . ' ' . _('preferred suppliers set up for') . ' ' . $StockId . ' ' . _('you should edit the supplier purchasing data to make only one supplier the preferred supplier'), 'warn');
 		} elseif ($CountPreferreds == 0) {
-			prnMsg(_('There are NO preferred suppliers set up for') . ' ' . $StockID . ' ' . _('you should make one supplier only the preferred supplier'), 'warn');
+			prnMsg(_('There are NO preferred suppliers set up for') . ' ' . $StockId . ' ' . _('you should make one supplier only the preferred supplier'), 'warn');
 		}
 	} // end of there are purchsing data rows to show
 	echo '<br/>';
@@ -347,14 +347,14 @@ if (isset($SupplierID) and $SupplierID != '' and !isset($_POST['SearchSupplier']
 	}
 } else {
 	if ($NoPurchasingData == 0) {
-		echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . ' ' . _('For Stock Code') . ' - ' . $StockID . '</p><br />';
+		echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . ' ' . _('For Stock Code') . ' - ' . $StockId . '</p><br />';
 	}
 	if (!isset($_POST['SearchSupplier'])) {
 		echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF']) . '" method="post" class="noPrint">
 				<table cellpadding="3" colspan="4" class="selection">
 				<tr>
 					<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
-					<input type="hidden" name="StockID" value="' . $StockID . '" />
+					<input type="hidden" name="StockID" value="' . $StockId . '" />
 					<td>' . _('Text in the Supplier') . ' <b>' . _('NAME') . '</b>:</td>
 					<td><input type="text" name="Keywords" size="20" minlength="0" maxlength="25" /></td>
 					<td><b>' . _('OR') . '</b></td>
@@ -372,9 +372,9 @@ if (isset($SupplierID) and $SupplierID != '' and !isset($_POST['SearchSupplier']
 }
 
 if ($Edit == true) {
-	$ItemResult = DB_query("SELECT description FROM stockmaster WHERE stockid='" . $StockID . "'");
+	$ItemResult = DB_query("SELECT description FROM stockmaster WHERE stockid='" . $StockId . "'");
 	$DescriptionRow = DB_fetch_array($ItemResult);
-	echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . ' ' . _('For Stock Code') . ' - ' . $StockID . ' - ' . $DescriptionRow['description'] . '</p><br />';
+	echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . ' ' . _('For Stock Code') . ' - ' . $StockId . ' - ' . $DescriptionRow['description'] . '</p><br />';
 }
 if (isset($_POST['SearchSupplier'])) {
 	if (isset($_POST['Keywords']) and isset($_POST['SupplierCode'])) {
@@ -414,27 +414,27 @@ if (isset($_POST['SearchSupplier'])) {
 } //end of if search
 
 if (isset($SuppliersResult)) {
-	if (isset($StockID)) {
+	if (isset($StockId)) {
 		$Result = DB_query("SELECT stockmaster.description,
 								stockmaster.units,
 								stockmaster.mbflag
 						FROM stockmaster
-						WHERE stockmaster.stockid='" . $StockID . "'");
+						WHERE stockmaster.stockid='" . $StockId . "'");
 		$MyRow = DB_fetch_row($Result);
 		$StockUOM = $MyRow[1];
 		if (DB_num_rows($Result) == 1) {
 			if ($MyRow[2] == 'D' or $MyRow[2] == 'A' or $MyRow[2] == 'K') {
-				prnMsg($StockID . ' - ' . $MyRow[0] . '<p> ' . _('The item selected is a dummy part or an assembly or kit set part') . ' - ' . _('it is not purchased') . '. ' . _('Entry of purchasing information is therefore inappropriate'), 'warn');
+				prnMsg($StockId . ' - ' . $MyRow[0] . '<p> ' . _('The item selected is a dummy part or an assembly or kit set part') . ' - ' . _('it is not purchased') . '. ' . _('Entry of purchasing information is therefore inappropriate'), 'warn');
 				include('includes/footer.inc');
 				exit;
 			} else {
-				//			   echo '<br /><b>' . $StockID . ' - ' . $MyRow[0] . ' </b>  (' . _('In Units of') . ' ' . $MyRow[1] . ' )';
+				//			   echo '<br /><b>' . $StockId . ' - ' . $MyRow[0] . ' </b>  (' . _('In Units of') . ' ' . $MyRow[1] . ' )';
 			}
 		} else {
-			prnMsg(_('Stock Item') . ' - ' . $StockID . ' ' . _('is not defined in the database'), 'warn');
+			prnMsg(_('Stock Item') . ' - ' . $StockId . ' ' . _('is not defined in the database'), 'warn');
 		}
 	} else {
-		$StockID = '';
+		$StockId = '';
 		$StockUOM = 'each';
 	}
 	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF']) . '" method="post" class="noPrint">
@@ -465,7 +465,7 @@ if (isset($SuppliersResult)) {
 				<td>%s</td>
 				</tr>', $MyRow['supplierid'], $MyRow['suppname'], $MyRow['currcode'], $MyRow['address1'], $MyRow['address2'], $MyRow['address3']);
 
-		echo '<input type="hidden" name="StockID" value="' . $StockID . '" />';
+		echo '<input type="hidden" name="StockID" value="' . $StockId . '" />';
 		echo '<input type="hidden" name="StockUOM" value="' . $StockUOM . '" />';
 
 	}
@@ -502,7 +502,7 @@ if (!isset($SuppliersResult)) {
 					INNER JOIN currencies
 						ON suppliers.currcode = currencies.currabrev
 					WHERE purchdata.supplierno='" . DB_escape_string($SupplierID) . "'
-						AND purchdata.stockid='" . $StockID . "'
+						AND purchdata.stockid='" . $StockId . "'
 						AND purchdata.effectivefrom='" . $_GET['EffectiveFrom'] . "'";
 
 		$ErrMsg = _('The supplier purchasing details for the selected supplier and item could not be retrieved because');
@@ -555,7 +555,7 @@ if (!isset($SuppliersResult)) {
 		}
 		echo '</td></tr>';
 	}
-	echo '<td><input type="hidden" name="StockID" minlength="0" maxlength="10" size="11" value="' . $StockID . '" />';
+	echo '<td><input type="hidden" name="StockID" minlength="0" maxlength="10" size="11" value="' . $StockId . '" />';
 	if (!isset($CurrCode)) {
 		$CurrCode = '';
 	}
@@ -654,7 +654,7 @@ if (!isset($SuppliersResult)) {
 						effectiveto
 				FROM supplierdiscounts
 				WHERE supplierno = '" . DB_escape_string($SupplierID) . "'
-				AND stockid = '" . $StockID . "'";
+				AND stockid = '" . $StockId . "'";
 
 		$ErrMsg = _('The supplier discounts could not be retrieved because');
 		$DbgMsg = _('The SQL to retrieve supplier discounts for this item that failed was');
@@ -685,7 +685,7 @@ if (!isset($SuppliersResult)) {
 					<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="DiscountEffectiveFrom%s" minlength="0" maxlength="10" size="11" value="%s" /></td>
 					<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="DiscountEffectiveTo%s" minlength="0" maxlength="10" size="11" value="%s" /></td>
 					<td><a href="%s?DeleteDiscountID=%s&amp;StockID=%s&amp;EffectiveFrom=%s&amp;SupplierID=%s&amp;Edit=1">' . _('Delete') . '</a></td>
-					</tr>', $i, $MyRow['id'], $i, $MyRow['discountnarrative'], $i, locale_number_format($MyRow['discountamount'], $CurrDecimalPlaces), $i, locale_number_format($MyRow['discountpercent'] * 100, 2), $i, ConvertSQLDate($MyRow['effectivefrom']), $i, ConvertSQLDate($MyRow['effectiveto']), htmlspecialchars($_SERVER['PHP_SELF']), $MyRow['id'], $StockID, $EffectiveFrom, $SupplierID);
+					</tr>', $i, $MyRow['id'], $i, $MyRow['discountnarrative'], $i, locale_number_format($MyRow['discountamount'], $CurrDecimalPlaces), $i, locale_number_format($MyRow['discountpercent'] * 100, 2), $i, ConvertSQLDate($MyRow['effectivefrom']), $i, ConvertSQLDate($MyRow['effectiveto']), htmlspecialchars($_SERVER['PHP_SELF']), $MyRow['id'], $StockId, $EffectiveFrom, $SupplierID);
 
 			$i++;
 		} //end of while loop
@@ -712,11 +712,11 @@ if (!isset($SuppliersResult)) {
 	}
 	echo '<div class="centre">';
 
-	if (isset($StockLocation) and isset($StockID) and mb_strlen($StockID) != 0) {
-		echo '<a href="' . $RootPath . '/StockStatus.php?StockID=' . urlencode($StockID) . '">' . _('Show Stock Status') . '</a>';
-		echo '<a href="' . $RootPath . '/StockMovements.php?StockID=' . urlencode($StockID) . '&StockLocation=' . $StockLocation . '">' . _('Show Stock Movements') . '</a>';
-		echo '<a href="' . $RootPath . '/SelectSalesOrder.php?SelectedStockItem=' . urlencode($StockID) . '&StockLocation=' . $StockLocation . '">' . _('Search Outstanding Sales Orders') . '</a>';
-		echo '<a href="' . $RootPath . '/SelectCompletedOrder.php?SelectedStockItem=' . urlencode($StockID) . '">' . _('Search Completed Sales Orders') . '</a>';
+	if (isset($StockLocation) and isset($StockId) and mb_strlen($StockId) != 0) {
+		echo '<a href="' . $RootPath . '/StockStatus.php?StockID=' . urlencode($StockId) . '">' . _('Show Stock Status') . '</a>';
+		echo '<a href="' . $RootPath . '/StockMovements.php?StockID=' . urlencode($StockId) . '&StockLocation=' . $StockLocation . '">' . _('Show Stock Movements') . '</a>';
+		echo '<a href="' . $RootPath . '/SelectSalesOrder.php?SelectedStockItem=' . urlencode($StockId) . '&StockLocation=' . $StockLocation . '">' . _('Search Outstanding Sales Orders') . '</a>';
+		echo '<a href="' . $RootPath . '/SelectCompletedOrder.php?SelectedStockItem=' . urlencode($StockId) . '">' . _('Search Completed Sales Orders') . '</a>';
 	}
 	echo '</div></form>';
 }

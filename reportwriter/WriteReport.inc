@@ -82,16 +82,16 @@ class PDF extends Cpdf {
 		$maxY = $this->y0; // set to track the tallest column
 		$col = 1;
 		$LastY = $this->y0;
-		foreach ($Heading as $key => $value) {
+		foreach ($Heading as $Key => $Value) {
 			$this->SetLeftMargin($CellXPos[$col - 1]);
 			$this->SetX($CellXPos[$col - 1]);
 			$this->SetY($LastY);
 			// truncate data if selected
 			if ($trunc) {
-				$value = $this->TruncData($value, $Prefs['col' . $col . 'width']);
+				$Value = $this->TruncData($Value, $Prefs['col' . $col . 'width']);
 			}
-			$this->MultiCell($CellXPos[$col] - $CellXPos[$col - 1], $CellHeight, $value);
-			if ($ColBreak[$key]) {
+			$this->MultiCell($CellXPos[$col] - $CellXPos[$col - 1], $CellHeight, $Value);
+			if ($ColBreak[$Key]) {
 				$col++;
 				$LastY = $this->y0;
 			} else
@@ -229,15 +229,15 @@ class PDF extends Cpdf {
 					$maxY = $this->y0; // set to current top of row
 					$col = 1;
 					$LastY = $this->y0;
-					foreach ($myrow as $key => $value) {
+					foreach ($myrow as $Key => $Value) {
 						$this->SetLeftMargin($CellXPos[$col - 1]);
 						$this->SetX($CellXPos[$col - 1]);
 						$this->SetY($LastY);
 						// truncate data if necessary
 						if ($trunc)
-							$value = $this->TruncData($value, $Prefs['col' . $col . 'width']);
-						$this->MultiCell($CellXPos[$col] - $CellXPos[$col - 1], $CellHeight, $value, $Prefs['datafontalign'], 1);
-						if ($ColBreak[$key]) {
+							$Value = $this->TruncData($Value, $Prefs['col' . $col . 'width']);
+						$this->MultiCell($CellXPos[$col] - $CellXPos[$col - 1], $CellHeight, $Value, $Prefs['datafontalign'], 1);
+						if ($ColBreak[$Key]) {
 							$col++;
 							$LastY = $this->y0;
 						} else
@@ -572,13 +572,13 @@ function BuildDataArray($ReportID, $sql, $Prefs) {
 			$GrpWorking = $myrow[$GrpField]; // set to new grouping value
 		}
 		$OutputArray[$RowCnt][0] = 'd'; // let the display class know its a data element
-		foreach ($Seq as $key => $TableCtl) { //
+		foreach ($Seq as $Key => $TableCtl) { //
 			// insert data into output array and set to next column
-			$OutputArray[$RowCnt][$ColCnt] = $myrow[$key];
+			$OutputArray[$RowCnt][$ColCnt] = $myrow[$Key];
 			$ColCnt++;
 			if ($TableCtl['total']) { // add to the running total if need be
-				$Seq[$key]['grptotal'] += $myrow[$key];
-				$Seq[$key]['rpttotal'] += $myrow[$key];
+				$Seq[$Key]['grptotal'] += $myrow[$Key];
+				$Seq[$Key]['rpttotal'] += $myrow[$Key];
 			}
 		}
 		$RowCnt++;

@@ -137,10 +137,10 @@ function userLogin($Name, $Password, $SysAdminEmail = '') {
 
 					} else {
 						include('includes/htmlMimeMail.php');
-						$mail = new htmlMimeMail();
-						$mail->setSubject($EmailSubject);
-						$mail->setText($EmailText);
-						$Result = SendmailBySmtp($mail, array(
+						$Mail = new htmlMimeMail();
+						$Mail->setSubject($EmailSubject);
+						$Mail->setText($EmailText);
+						$Result = SendmailBySmtp($Mail, array(
 							$SysAdminEmail
 						));
 					}

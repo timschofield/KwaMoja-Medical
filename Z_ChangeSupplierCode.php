@@ -12,27 +12,27 @@ if (isset($_POST['ProcessSupplierChange']))
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
-echo '<div class="centre">
-		<table>
-			<tr>
-				<td>' . _('Existing Supplier Code') . ':</td>
-				<td><input type="text" name="OldSupplierNo" size="20" minlength="0" maxlength="20" /></td>
-			</tr>
-			<tr>
-				<td> ' . _('New Supplier Code') . ':</td>
-				<td><input type="text" name="NewSupplierNo" size="20" minlength="0" maxlength="20" /></td>
-			</tr>
-		</table>
-	<button type="submit" name="ProcessSupplierChange">' . _('Process') . '</button>
+echo '<table>
+		<tr>
+			<td>' . _('Existing Supplier Code') . ':</td>
+			<td><input type="text" name="OldSupplierNo" size="20" minlength="0" maxlength="20" /></td>
+		</tr>
+		<tr>
+			<td> ' . _('New Supplier Code') . ':</td>
+			<td><input type="text" name="NewSupplierNo" size="20" minlength="0" maxlength="20" /></td>
+		</tr>
+	</table>
+	<div class="centre">
+		<input type="submit" name="ProcessSupplierChange" value="' . _('Process') . '" />
 	<div>
-	</form>';
+</form>';
 
 include('includes/footer.inc');
 exit();
 
 
 function ProcessSupplier($oldCode, $newCode) {
-	$table_key = array(
+	$TableKey = array(
 		'grns' => 'supplierid',
 		'offers' => 'supplierid',
 		'purchdata' => 'supplierno',
@@ -82,10 +82,10 @@ function ProcessSupplier($oldCode, $newCode) {
 	$ErrMsg = _('The SQL to insert the new suppliers master record failed') . ', ' . _('the SQL statement was');
 	$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
-	foreach ($table_key as $table => $key) {
-		prnMsg(_('Changing') . ' ' . $table . ' ' . _('records'), 'info');
-		$SQL = "UPDATE " . $table . " SET $key='" . $newCode . "' WHERE $key='" . $oldCode . "'";
-		$ErrMsg = _('The SQL to update') . ' ' . $table . ' ' . _('records failed');
+	foreach ($TableKey as $Table => $Key) {
+		prnMsg(_('Changing') . ' ' . $Table . ' ' . _('records'), 'info');
+		$SQL = "UPDATE " . $Table . " SET $Key='" . $newCode . "' WHERE $Key='" . $oldCode . "'";
+		$ErrMsg = _('The SQL to update') . ' ' . $Table . ' ' . _('records failed');
 		$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 	}
 

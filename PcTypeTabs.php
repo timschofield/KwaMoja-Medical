@@ -58,7 +58,7 @@ if (isset($_POST['submit'])) {
 			SET typetabdescription = '" . $_POST['TypeTabDescription'] . "'
 			WHERE typetabcode = '" . $SelectedTab . "'";
 
-		$msg = _('The Tabs type') . ' ' . $SelectedTab . ' ' . _('has been updated');
+		$Msg = _('The Tabs type') . ' ' . $SelectedTab . ' ' . _('has been updated');
 	} elseif ($InputError != 1) {
 
 		// First check the type is not being duplicated
@@ -83,7 +83,7 @@ if (isset($_POST['submit'])) {
 				VALUES ('" . $_POST['TypeTabCode'] . "',
 					'" . $_POST['TypeTabDescription'] . "')";
 
-			$msg = _('Tabs type') . ' ' . $_POST['TypeTabCode'] . ' ' . _('has been created');
+			$Msg = _('Tabs type') . ' ' . $_POST['TypeTabCode'] . ' ' . _('has been created');
 
 		}
 	}
@@ -91,7 +91,7 @@ if (isset($_POST['submit'])) {
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
 		$Result = DB_query($SQL);
-		prnMsg($msg, 'success');
+		prnMsg($Msg, 'success');
 		echo '<br />';
 		unset($SelectedTab);
 		unset($_POST['TypeTabCode']);

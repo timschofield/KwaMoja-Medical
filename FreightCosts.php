@@ -140,7 +140,7 @@ if (isset($_POST['submit'])) {
 					minimumchg= '" . $_POST['MinimumChg'] . "'
 			WHERE shipcostfromid='" . $SelectedFreightCost . "'";
 
-		$msg = _('Freight cost record updated');
+		$Msg = _('Freight cost record updated');
 
 	} elseif ($InputError != 1) {
 
@@ -169,14 +169,14 @@ if (isset($_POST['submit'])) {
 											'" . $_POST['MinimumChg'] . "'
 										)";
 
-		$msg = _('Freight cost record inserted');
+		$Msg = _('Freight cost record inserted');
 
 	}
 	//run the SQL from either of the above possibilites
 	$ErrMsg = _('The freight cost record could not be updated because');
 	$Result = DB_query($SQL, $ErrMsg);
 
-	prnMsg($msg, 'success');
+	prnMsg($Msg, 'success');
 
 	unset($SelectedFreightCost);
 	unset($_POST['Destination']);

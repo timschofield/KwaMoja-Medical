@@ -489,8 +489,8 @@ switch ($_GET['action']) {
 			$FormParams['id'] = $myrow['id'];
 		} else {
 			// fetch the choices with the form post data
-			foreach ($_POST as $key => $value)
-				$Params[$key] = $value;
+			foreach ($_POST as $Key => $Value)
+				$Params[$Key] = $Value;
 			// check for what button or image was pressed
 			switch ($_POST['todo']) {
 				case RPT_BTN_CANCEL:

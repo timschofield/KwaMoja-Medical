@@ -28,7 +28,7 @@ if ((isset($_POST['AddBatches']) and $_POST['AddBatches'] != '')) {
 				unset($LineItem->SerialItems[$_POST['SerialNo' . $i]]);
 			}
 			if ($ItemMustExist) {
-				$ExistingBundleQty = ValidBundleRef($StockID, $LocationOut, $_POST['SerialNo' . $i]);
+				$ExistingBundleQty = ValidBundleRef($StockId, $LocationOut, $_POST['SerialNo' . $i]);
 				if ($ExistingBundleQty > 0 or ($ExistingBundleQty == 1 and $IsCredit = true)) {
 					if (!isset($AddThisBundle)) {
 						$AddThisBundle = true;
@@ -59,7 +59,7 @@ if ((isset($_POST['AddBatches']) and $_POST['AddBatches'] != '')) {
 						if ($Perishable != 1) {
 							$LineItem->SerialItems[$_POST['SerialNo' . $i]] = new SerialItem($_POST['SerialNo' . $i], ($InOutModifier > 0 ? 1 : 1) * filter_number_format($_POST['Qty' . $i]));
 						} else {
-							$ExpiryDate = GetExpiryDate($StockID, $LocationOut, $_POST['SerialNo' . $i]);
+							$ExpiryDate = GetExpiryDate($StockId, $LocationOut, $_POST['SerialNo' . $i]);
 							$LineItem->SerialItems[$_POST['SerialNo' . $i]] = new SerialItem($_POST['SerialNo' . $i], filter_number_format($_POST['Qty' . $i]), $ExpiryDate);
 						}
 					}
@@ -78,7 +78,7 @@ if ((isset($_POST['AddBatches']) and $_POST['AddBatches'] != '')) {
 				$NewSerialNo = $_POST['SerialNo' . $i];
 
 				if ($LineItem->Serialised) {
-					$ExistingQty = ValidBundleRef($StockID, $LocationOut, $NewSerialNo);
+					$ExistingQty = ValidBundleRef($StockId, $LocationOut, $NewSerialNo);
 					if ($NewQty == 1 and $ExistingQty != 0) {
 						prnMsg('<a href="' . $RootPath . '/StockSerialItemResearch.php?serialno=' . urlencode($NewSerialNo) . '" target=_blank>' . $NewSerialNo . '</a> : ' . _('The Serial Number being added exists with a Quantity that is not Zero (0)!'), 'error');
 						$SerialError = true;
@@ -112,7 +112,7 @@ if ((isset($_POST['AddBatches']) and $_POST['AddBatches'] != '')) {
 			if ($Perishable != 1) {
 				$LineItem->SerialItems[$_POST['Bundles'][$i]] = new SerialItem($_POST['Bundles'][$i], ($InOutModifier > 0 ? 1 : -1));
 			} else {
-				$ExpiryDate = GetExpiryDate($StockID, $LocationOut, $_POST['Bundles'][$i]);
+				$ExpiryDate = GetExpiryDate($StockId, $LocationOut, $_POST['Bundles'][$i]);
 				$LineItem->SerialItems[$_POST['Bundles'][$i]] = new SerialItem($_POST['Bundles'][$i], ($InOutModifier > 0 ? 1 : -1), $ExpiryDate);
 			}
 		} else {
@@ -121,7 +121,7 @@ if ((isset($_POST['AddBatches']) and $_POST['AddBatches'] != '')) {
 				if ($Perishable != 1) {
 					$LineItem->SerialItems[$SerialNo] = new SerialItem($SerialNo, $Qty * ($InOutModifier > 0 ? 1 : -1));
 				} else {
-					$ExpiryDate = GetExpiryDate($StockID, $LocationOut, $SerialNo);
+					$ExpiryDate = GetExpiryDate($StockId, $LocationOut, $SerialNo);
 					$LineItem->SerialItems[$SerialNo] = new SerialItem($SerialNo, $Qty * ($InOutModifier > 0 ? 1 : -1), $ExpiryDate);
 				}
 			}
@@ -144,7 +144,7 @@ if (isset($_POST['AddSequence']) and $_POST['AddSequence'] != '') {
 		$SQL = "SELECT serialno
 				FROM stockserialitems
 				WHERE serialno BETWEEN '" . $BeginNo . "' AND '" . $EndNo . "'
-					AND stockid = '" . $StockID . "' AND loccode='" . $LocationOut . "'";
+					AND stockid = '" . $StockId . "' AND loccode='" . $LocationOut . "'";
 		$Qty = ($InOutModifier > 0 ? 1 : 0);
 		if ($LineItem->Serialised == 1) {
 			$SQL .= " AND quantity = " . $Qty;
@@ -167,9 +167,9 @@ $valid = true;
 $invalid_imports = 0;
 if (isset($_POST['EntryType']) and $_POST['EntryType'] == 'FILE' and isset($_POST['ValidateFile'])) {
 
-	$filename = $_SESSION['CurImportFile']['tmp_name'];
+	$FileName = $_SESSION['CurImportFile']['tmp_name'];
 
-	$handle = fopen($filename, 'r');
+	$handle = fopen($FileName, 'r');
 	$TotalLines = 0;
 	$LineItem->SerialItemsValid = false;
 	while (!feof($handle)) {
@@ -208,7 +208,7 @@ if (isset($_POST['EntryType']) and $_POST['EntryType'] == 'FILE' and isset($_POS
 		}
 		$TotalLines++;
 		if ($ItemMustExist) {
-			$ExistingBundleQty = ValidBundleRef($StockID, $LocationOut, $NewSerialNo);
+			$ExistingBundleQty = ValidBundleRef($StockId, $LocationOut, $NewSerialNo);
 			if ($ExistingBundleQty > 0) {
 				$AddThisBundle = true;
 				/*If the user enters a duplicate serial number the later one over-writes the first entered one - no warning given though ? */
@@ -243,7 +243,7 @@ if (isset($_POST['EntryType']) and $_POST['EntryType'] == 'FILE' and isset($_POS
 			//Serialised items must exist w/ Qty = 1 if we have $NewQty of -1
 			$SerialError = false;
 			if ($LineItem->Serialised) {
-				$ExistingQty = ValidBundleRef($StockID, $LocationOut, $NewSerialNo);
+				$ExistingQty = ValidBundleRef($StockId, $LocationOut, $NewSerialNo);
 				if ($NewQty == 1 and $ExistingQty != 0) {
 					prnMsg('<a href="' . $RootPath . '/StockSerialItemResearch.php?serialno=' . urlencode($NewSerialNo) . '" target=_blank>' . $NewSerialNo . '</a>: ' . _('The Serial Number being added exists with a Quantity that is not Zero (0)!'), 'error');
 					$SerialError = true;
@@ -306,7 +306,7 @@ if (isset($_GET['REVALIDATE']) or isset($_POST['REVALIDATE'])) {
 		}
 		$TotalLines++;
 		if ($ItemMustExist) {
-			$ExistingBundleQty = ValidBundleRef($StockID, $LocationOut, $NewSerialNo);
+			$ExistingBundleQty = ValidBundleRef($StockId, $LocationOut, $NewSerialNo);
 			if ($ExistingBundleQty > 0) {
 				$AddThisBundle = true;
 				/*If the user enters a duplicate serial number the later one over-writes the first entered one - no warning given though ? */
@@ -341,7 +341,7 @@ if (isset($_GET['REVALIDATE']) or isset($_POST['REVALIDATE'])) {
 			//Serialised items must exist w/ Qty = 1 if we have $NewQty of -1
 			$SerialError = false;
 			if ($LineItem->Serialised) {
-				$ExistingQty = ValidBundleRef($StockID, $LocationOut, $NewSerialNo);
+				$ExistingQty = ValidBundleRef($StockId, $LocationOut, $NewSerialNo);
 				if ($NewQty == 1 and $ExistingQty != 0) {
 					prnMsg('<a href="' . $RootPath . '/StockSerialItemResearch.php?serialno=' . urlencode($NewSerialNo) . '" target=_blank>' . $NewSerialNo . '</a>: ' . _("The Serial Number being added exists with a Quantity that is not Zero (0)!"), 'error');
 					$SerialError = true;

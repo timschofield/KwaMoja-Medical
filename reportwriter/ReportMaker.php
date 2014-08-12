@@ -228,11 +228,11 @@ function GetReports($Default) {
 function build_dropdown_list($arraylist) {
 	global $ReportGroups;
 	$OptionList = '';
-	foreach ($ReportGroups as $key => $value) {
-		$OptionList .= '<optgroup label="' . $value . '" title="' . $key . '">';
+	foreach ($ReportGroups as $Key => $Value) {
+		$OptionList .= '<optgroup label="' . $Value . '" title="' . $Key . '">';
 		if (isset($arraylist)) {
 			foreach ($arraylist as $reportinfo) {
-				if ($reportinfo['groupname'] == $key) {
+				if ($reportinfo['groupname'] == $Key) {
 					$OptionList .= '<option value="' . $reportinfo['id'] . '">' . $reportinfo['reportname'] . '</option>';
 				}
 			}
@@ -246,8 +246,8 @@ function FetchReportDetails($ReportID) {
 	$sql = "SELECT *	FROM " . DBReports . " WHERE id = '" . $ReportID . "'";
 	$Result = DB_query($sql, '', '', false, true);
 	$myrow = DB_fetch_assoc($Result);
-	foreach ($myrow as $key => $value) {
-		$Prefs[$key] = $value;
+	foreach ($myrow as $Key => $Value) {
+		$Prefs[$Key] = $Value;
 	}
 	// Build drop down menus for selectable criteria; need $ReportID
 	$Temp = RetrieveFields($ReportID, 'dateselect');
@@ -326,12 +326,12 @@ function BuildCriteria($FieldListings) {
 				<td><input name="tovalue' . $SeqNum . '" type="text" value="' . $Params[2] . '" size="21" maxlength="20"></td>';
 	} // end switch array_shift($CritBlocks)
 	$CriteriaString .= '<td><select name="defcritsel' . $SeqNum . '">';
-	foreach ($CritBlocks as $value) {
-		if ($Params[0] == $value)
+	foreach ($CritBlocks as $Value) {
+		if ($Params[0] == $Value)
 			$Selected = ' selected';
 		else
 			$Selected = ''; // find the default
-		$CriteriaString .= '<option value="' . $value . '"' . $Selected . '>' . $value . '</option>';
+		$CriteriaString .= '<option value="' . $Value . '"' . $Selected . '>' . $Value . '</option>';
 	}
 	$CriteriaString .= '</select></td>';
 	$CriteriaString .= $EndString . '</tr>';
@@ -377,8 +377,8 @@ function ReadPostData($ReportID, $Prefs) {
 		$sql = "SELECT *	FROM " . DBReports . " WHERE id = '" . $ReportID . "'";
 		$Result = DB_query($sql, '', '', false, true);
 		$myrow = DB_fetch_assoc($Result);
-		foreach ($myrow as $key => $value)
-			$Prefs[$key] = $value;
+		foreach ($myrow as $Key => $Value)
+			$Prefs[$Key] = $Value;
 		return $Prefs;
 	}
 	// Since we are not at the page setup form, we read from the filter form, fetch user selections

@@ -181,16 +181,16 @@ if (isset($_GET['Edit']) and $_GET['Edit'] == 'Yes') {
 	exit;
 }
 
-foreach ($_POST as $key => $value) {
-	if (mb_strstr($key, 'StockID')) {
-		$Index = mb_substr($key, 7);
+foreach ($_POST as $Key => $Value) {
+	if (mb_strstr($Key, 'StockID')) {
+		$Index = mb_substr($Key, 7);
 		if (filter_number_format($_POST['Quantity' . $Index]) > 0) {
-			$StockID = $value;
+			$StockId = $Value;
 			$ItemDescription = $_POST['ItemDescription' . $Index];
 			$DecimalPlaces = $_POST['DecimalPlaces' . $Index];
-			$NewItem_array[$StockID] = filter_number_format($_POST['Quantity' . $Index]);
-			$_POST['Units' . $StockID] = $_POST['Units' . $Index];
-			$_SESSION['Request']->AddLine($StockID, $ItemDescription, $NewItem_array[$StockID], $_POST['Units' . $StockID], $DecimalPlaces);
+			$NewItem_array[$StockId] = filter_number_format($_POST['Quantity' . $Index]);
+			$_POST['Units' . $StockId] = $_POST['Units' . $Index];
+			$_SESSION['Request']->AddLine($StockId, $ItemDescription, $NewItem_array[$StockId], $_POST['Units' . $StockId], $DecimalPlaces);
 		}
 	}
 }
@@ -278,10 +278,10 @@ if (isset($_POST['Submit'])) {
 				mail($myEmail['email'], $EmailSubject, $ConfirmationText);
 			} else {
 				include('includes/htmlMimeMail.php');
-				$mail = new htmlMimeMail();
-				$mail->setSubject($EmailSubject);
-				$mail->setText($ConfirmationText);
-				$Result = SendmailBySmtp($mail, array(
+				$Mail = new htmlMimeMail();
+				$Mail->setSubject($EmailSubject);
+				$Mail->setText($ConfirmationText);
+				$Result = SendmailBySmtp($Mail, array(
 					$myEmail['email']
 				));
 			}

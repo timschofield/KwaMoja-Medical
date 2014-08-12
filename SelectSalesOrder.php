@@ -146,9 +146,9 @@ if (isset($_POST['PlacePO'])) {
 
 		/* We need the items to order to be in supplier order so that only a single order is created for a supplier - so need to sort the multi-dimensional array to ensure it is listed by supplier sequence. To use array_multisort we need to get arrays of supplier with the same keys as the main array of rows
 		 */
-		foreach ($ItemArray as $key => $row) {
+		foreach ($ItemArray as $Key => $row) {
 			//to make the Supplier array with the keys of the $ItemArray
-			$SupplierArray[$key] = $row['supplierno'];
+			$SupplierArray[$Key] = $row['supplierno'];
 		}
 
 		/* Use array_multisort to Sort the ItemArray with supplierno ascending
@@ -471,12 +471,12 @@ if (isset($_POST['SearchParts'])) {
 }
 
 if (isset($_POST['StockID'])) {
-	$StockID = trim(mb_strtoupper($_POST['StockID']));
+	$StockId = trim(mb_strtoupper($_POST['StockID']));
 } elseif (isset($_GET['StockID'])) {
-	$StockID = trim(mb_strtoupper($_GET['StockID']));
+	$StockId = trim(mb_strtoupper($_GET['StockID']));
 }
 
-if (!isset($StockID)) {
+if (!isset($StockId)) {
 
 	/* Not appropriate really to restrict search by date since may miss older
 	ouststanding orders

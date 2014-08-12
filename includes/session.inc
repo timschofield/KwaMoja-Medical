@@ -60,16 +60,16 @@ if (isset($_SESSION['DatabaseName'])) {
 				$_POST['name'] = stripslashes($_POST['name']);
 			} //get_magic_quotes_gpc()
 			$_POST[$PostVariableName] = DB_escape_string($PostVariableValue);
-		} //gettype($value) != 'array'
+		} //gettype($Value) != 'array'
 		else {
 			foreach ($PostVariableValue as $PostArrayKey => $PostArrayValue) {
 				if (get_magic_quotes_gpc()) {
-					$PostVariableValue[$PostArrayKey] = stripslashes($value[$PostArrayKey]);
+					$PostVariableValue[$PostArrayKey] = stripslashes($Value[$PostArrayKey]);
 				}
 				$PostVariableValue[$PostArrayKey] = DB_escape_string($PostArrayValue);
-			} //$value as $key1 => $value1
+			} //$Value as $Key1 => $Value1
 		}
-	} //$_POST as $key => $value
+	} //$_POST as $Key => $Value
 
 	/* iterate through all elements of the $_GET array and DB_escape_string them
 	to limit possibility for SQL injection attacks and cross scripting attacks
@@ -77,8 +77,8 @@ if (isset($_SESSION['DatabaseName'])) {
 	foreach ($_GET as $GetKey => $GetValue) {
 		if (gettype($GetValue) != 'array') {
 			$_GET[$GetKey] = DB_escape_string(urldecode($GetValue));
-		} //gettype($value) != 'array'
-	} //$_GET as $key => $value
+		} //gettype($Value) != 'array'
+	} //$_GET as $Key => $Value
 } //isset($_SESSION['DatabaseName'])
 else { //set SESSION['FormID'] before the a user has even logged in
 	$_SESSION['FormID'] = sha1(uniqid(mt_rand(), true));

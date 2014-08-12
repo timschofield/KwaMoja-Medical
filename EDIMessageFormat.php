@@ -57,7 +57,7 @@ if ($InputError != 1 and isset($_POST['update'])) {
 				linetext='" . $_POST['LineText'] . "'
 			WHERE id = '" . $SelectedMessageLine . "'";
 	$Result = DB_query($SQL);
-	$msg = _('Message line updated');
+	$Msg = _('Message line updated');
 	unset($SelectedMessageLine);
 
 } elseif ($InputError != 1 and isset($_POST['submit'])) {
@@ -77,7 +77,7 @@ if ($InputError != 1 and isset($_POST['update'])) {
 				'" . $_POST['SequenceNo'] . "',
 				'" . $_POST['LineText'] . "'
 				)";
-	$msg = _('Message line added');
+	$Msg = _('Message line added');
 	//run the SQL from either of the above possibilites
 	$Result = DB_query($SQL);
 	unset($SelectedMessageLine);
@@ -88,11 +88,11 @@ if ($InputError != 1 and isset($_POST['update'])) {
 
 	$SQL = "DELETE FROM edimessageformat WHERE id='" . $_GET['delete'] . "'";
 	$Result = DB_query($SQL);
-	$msg = _('The selected message line has been deleted');
+	$Msg = _('The selected message line has been deleted');
 
 }
-if (isset($msg)) {
-	prnMsg($msg, 'success');
+if (isset($Msg)) {
+	prnMsg($Msg, 'success');
 }
 
 echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';

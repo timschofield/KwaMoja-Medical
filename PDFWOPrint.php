@@ -12,11 +12,11 @@ if (isset($_GET['WO'])) {
 	unset($SelectedWO);
 }
 if (isset($_GET['StockID'])) {
-	$StockID = $_GET['StockID'];
+	$StockId = $_GET['StockID'];
 } elseif (isset($_POST['StockID'])) {
-	$StockID = $_POST['StockID'];
+	$StockId = $_POST['StockID'];
 } else {
-	unset($StockID);
+	unset($StockId);
 }
 
 if (isset($_GET['PrintLabels'])) {
@@ -188,7 +188,7 @@ if (isset($SelectedWO) and $SelectedWO != '' and $SelectedWO > 0 and $SelectedWO
 							AND locationusers.canview=1
 						INNER JOIN stockmaster
 							ON woitems.stockid=stockmaster.stockid
-						WHERE woitems.stockid='" . $StockID . "'
+						WHERE woitems.stockid='" . $StockId . "'
 							AND woitems.wo ='" . $SelectedWO . "'";
 	$Result = DB_query($SQL, $ErrMsg);
 	if (DB_num_rows($Result) == 0) {
@@ -212,7 +212,7 @@ if (isset($SelectedWO) and $SelectedWO != '' and $SelectedWO > 0 and $SelectedWO
 		if ($WOHeader['controlled'] == 1) {
 			$SQL = "SELECT serialno
 							FROM woserialnos
-							WHERE woserialnos.stockid='" . $StockID . "'
+							WHERE woserialnos.stockid='" . $StockId . "'
 							AND woserialnos.wo ='" . $SelectedWO . "'";
 			$Result = DB_query($SQL, $ErrMsg);
 			if (DB_num_rows($Result) > 0) {
@@ -227,7 +227,7 @@ if (isset($SelectedWO) and $SelectedWO != '' and $SelectedWO > 0 and $SelectedWO
 				FROM stockitemproperties
 				INNER JOIN stockcatproperties
 				ON stockcatproperties.stkcatpropid=stockitemproperties.stkcatpropid
-				WHERE stockid='" . $StockID . "'
+				WHERE stockid='" . $StockId . "'
 				AND label='PackQty'";
 		$Result = DB_query($SQL, $ErrMsg);
 		$PackQtyArray = DB_fetch_array($Result);
@@ -287,7 +287,7 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 									FROM worequirements INNER JOIN stockmaster
 									ON worequirements.stockid=stockmaster.stockid
 									WHERE wo='" . $SelectedWO . "'
-									AND worequirements.parentstockid='" . $StockID . "'");
+									AND worequirements.parentstockid='" . $StockId . "'");
 		$IssuedAlreadyResult = DB_query("SELECT stockid,
 						SUM(-qty) AS total
 					FROM stockmoves
@@ -485,19 +485,19 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 		$PDF->Output($_SESSION['reports_dir'] . '/' . $PdfFileName, 'F');
 		$PDF->__destruct();
 		include('includes/htmlMimeMail.php');
-		$mail = new htmlMimeMail();
-		$attachment = $mail->getFile($_SESSION['reports_dir'] . '/' . $PdfFileName);
-		$mail->setText(_('Please Process this Work order number') . ' ' . $SelectedWO);
-		$mail->setSubject(_('Work Order Number') . ' ' . $SelectedWO);
-		$mail->addAttachment($attachment, $PdfFileName, 'application/pdf');
+		$Mail = new htmlMimeMail();
+		$attachment = $Mail->getFile($_SESSION['reports_dir'] . '/' . $PdfFileName);
+		$Mail->setText(_('Please Process this Work order number') . ' ' . $SelectedWO);
+		$Mail->setSubject(_('Work Order Number') . ' ' . $SelectedWO);
+		$Mail->addAttachment($attachment, $PdfFileName, 'application/pdf');
 		//since sometime the mail server required to verify the users, so must set this information.
 		if ($_SESSION['SmtpSetting'] == 0) { //use the mail service provice by the server.
-			$mail->setFrom($_SESSION['CompanyRecord']['coyname'] . '<' . $_SESSION['CompanyRecord']['email'] . '>');
-			$Success = $mail->send(array(
+			$Mail->setFrom($_SESSION['CompanyRecord']['coyname'] . '<' . $_SESSION['CompanyRecord']['email'] . '>');
+			$Success = $Mail->send(array(
 				$_POST['EmailTo']
 			));
 		} else if ($_SESSION['SmtpSetting'] == 1) {
-			$Success = SendmailBySmtp($mail, array(
+			$Success = SendmailBySmtp($Mail, array(
 				$_POST['EmailTo']
 			));
 
@@ -539,7 +539,7 @@ else {
 						ON workorders.wo=woitems.wo
 						INNER JOIN stockmaster
 						ON woitems.stockid=stockmaster.stockid
-						WHERE woitems.stockid='" . $StockID . "'
+						WHERE woitems.stockid='" . $StockId . "'
                         AND woitems.wo ='" . $SelectedWO . "'";
 
 		$Result = DB_query($SQL, $ErrMsg);
@@ -551,7 +551,7 @@ else {
 				FROM stockitemproperties
 				INNER JOIN stockcatproperties
 				ON stockcatproperties.stkcatpropid=stockitemproperties.stkcatpropid
-				WHERE stockid='" . $StockID . "'
+				WHERE stockid='" . $StockId . "'
 				AND label='PackQty'";
 		$Result = DB_query($SQL, $ErrMsg);
 		$PackQtyArray = DB_fetch_array($Result);
@@ -567,7 +567,7 @@ else {
 		if ($Labels['controlled'] == 1) {
 			$SQL = "SELECT serialno
 							FROM woserialnos
-							WHERE woserialnos.stockid='" . $StockID . "'
+							WHERE woserialnos.stockid='" . $StockId . "'
 							AND woserialnos.wo ='" . $SelectedWO . "'";
 			$Result = DB_query($SQL, $ErrMsg);
 			if (DB_num_rows($Result) > 0) {
@@ -585,7 +585,7 @@ else {
 		echo '<input type="hidden" name="ViewingOnly" value="1" />';
 	} //$ViewingOnly == 1
 	echo '<input type="hidden" name="WO" value="' . $SelectedWO . '" />';
-	echo '<input type="hidden" name="StockID" value="' . $StockID . '" />';
+	echo '<input type="hidden" name="StockID" value="' . $StockId . '" />';
 	echo '<table>
          <tr>
              <td>' . _('Print or Email the Order') . '</td>
@@ -626,7 +626,7 @@ else {
 						ON workorders.loccode=locations.loccode
 						INNER JOIN woitems
 						ON workorders.wo=woitems.wo
-						WHERE woitems.stockid='" . $StockID . "'
+						WHERE woitems.stockid='" . $StockId . "'
 						AND woitems.wo ='" . $SelectedWO . "'";
 		$ContactsResult = DB_query($SQL, $ErrMsg);
 		if (DB_num_rows($ContactsResult) > 0) {
@@ -654,7 +654,7 @@ else {
 			echo '<input type="hidden" name="ViewingOnly" value="1" />';
 		} //$ViewingOnly == 1
 		echo '<input type="hidden" name="WO" value="' . $SelectedWO . '" />';
-		echo '<input type="hidden" name="StockID" value="' . $StockID . '" />';
+		echo '<input type="hidden" name="StockID" value="' . $StockId . '" />';
 		echo '<input type="hidden" name="EmailTo" value="' . $EmailTo . '" />';
 		echo '<input type="hidden" name="PrintOrEmail" value="' . $_POST['PrintOrEmail'] . '" />';
 		echo '<table>
@@ -714,7 +714,7 @@ else {
 						ON workorders.loccode=locations.loccode
 						INNER JOIN woitems
 						ON workorders.wo=woitems.wo
-						WHERE woitems.stockid='" . $StockID . "'
+						WHERE woitems.stockid='" . $StockId . "'
 						AND woitems.wo ='" . $SelectedWO . "'";
 		$ContactsResult = DB_query($SQL, $ErrMsg);
 		if (DB_num_rows($ContactsResult) > 0) {

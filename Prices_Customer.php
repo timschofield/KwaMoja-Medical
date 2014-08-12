@@ -65,7 +65,7 @@ if (isset($_POST['submit'])) {
 
 	if (!is_numeric(filter_number_format($_POST['Price'])) or $_POST['Price'] == '') {
 		$InputError = 1;
-		$msg = _('The price entered must be numeric');
+		$Msg = _('The price entered must be numeric');
 	}
 
 	if ($_POST['Branch'] != '') {
@@ -77,26 +77,26 @@ if (isset($_POST['submit'])) {
 		$Result = DB_query($SQL);
 		if (DB_num_rows($Result) == 0) {
 			$InputError = 1;
-			$msg = _('The branch code entered is not currently defined');
+			$Msg = _('The branch code entered is not currently defined');
 		}
 	}
 
 	if (!Is_Date($_POST['StartDate'])) {
 		$InputError = 1;
-		$msg = _('The date this price is to take effect from must be entered in the format') . ' ' . $_SESSION['DefaultDateFormat'];
+		$Msg = _('The date this price is to take effect from must be entered in the format') . ' ' . $_SESSION['DefaultDateFormat'];
 	}
 	if ($_POST['EndDate'] != '0000-00-00') {
 		if (!Is_Date($_POST['EndDate']) and $_POST['EndDate'] != '') { //EndDate can also be blank for default prices
 			$InputError = 1;
-			$msg = _('The date this price is be in effect to must be entered in the format') . ' ' . $_SESSION['DefaultDateFormat'];
+			$Msg = _('The date this price is be in effect to must be entered in the format') . ' ' . $_SESSION['DefaultDateFormat'];
 		}
 		if (Date1GreaterThanDate2($_POST['StartDate'], $_POST['EndDate']) and $_POST['EndDate'] != '') {
 			$InputError = 1;
-			$msg = _('The end date is expected to be after the start date, enter an end date after the start date for this price');
+			$Msg = _('The end date is expected to be after the start date, enter an end date after the start date for this price');
 		}
 		if (Date1GreaterThanDate2(Date($_SESSION['DefaultDateFormat']), $_POST['EndDate']) and $_POST['EndDate'] != '') {
 			$InputError = 1;
-			$msg = _('The end date is expected to be after today. There is no point entering a new price where the effective date is before today!');
+			$Msg = _('The end date is expected to be after today. There is no point entering a new price where the effective date is before today!');
 		}
 		if (trim($_POST['EndDate']) == '') {
 			$_POST['EndDate'] = '0000-00-00';
@@ -120,7 +120,7 @@ if (isset($_POST['submit'])) {
 				AND prices.enddate='" . $_POST['OldEndDate'] . "'
 				AND prices.debtorno='" . $_SESSION['CustomerID'] . "'";
 
-		$msg = _('Price Updated');
+		$Msg = _('Price Updated');
 	} elseif ($InputError != 1) {
 
 		/*Selected price is null cos no item selected on first time round so must be adding a	record must be submitting new entries in the new price form */
@@ -141,16 +141,16 @@ if (isset($_POST['submit'])) {
 								'" . FormatDateForSQL($_POST['StartDate']) . "',
 								'" . FormatDateForSQL($_POST['EndDate']) . "'
 							)";
-		$msg = _('Price added') . '.';
+		$Msg = _('Price added') . '.';
 	}
 	//run the SQL from either of the above possibilites
 	if ($InputError != 1) {
 		$Result = DB_query($SQL, '', '', false, false);
 		if (DB_error_no() != 0) {
-			if ($msg == _('Price Updated')) {
-				$msg = _('The price could not be updated because') . ' - ' . DB_error_msg();
+			if ($Msg == _('Price Updated')) {
+				$Msg = _('The price could not be updated because') . ' - ' . DB_error_msg();
 			} else {
-				$msg = _('The price could not be added because') . ' - ' . DB_error_msg();
+				$Msg = _('The price could not be added because') . ' - ' . DB_error_msg();
 			}
 		} else {
 			ReSequenceEffectiveDates($Item, $SalesType, $CurrCode, $_SESSION['CustomerID']);
@@ -160,7 +160,7 @@ if (isset($_POST['submit'])) {
 		}
 	}
 
-	prnMsg($msg);
+	prnMsg($Msg);
 
 } elseif (isset($_GET['delete'])) {
 	//the link to delete a selected record was clicked instead of the submit button

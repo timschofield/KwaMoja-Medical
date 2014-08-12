@@ -384,19 +384,19 @@ class gettext_reader {
     $select = $this->select_string($number);
 
     // this should contains all strings separated by NULLs
-    $key = $single . chr(0) . $plural;
+    $Key = $single . chr(0) . $plural;
 
 
     if ($this->enable_cache) {
-      if (! array_key_exists($key, $this->cache_translations)) {
+      if (! array_key_exists($Key, $this->cache_translations)) {
         return ($number != 1) ? $plural : $single;
       } else {
-        $result = $this->cache_translations[$key];
+        $result = $this->cache_translations[$Key];
         $list = explode(chr(0), $result);
         return $list[$select];
       }
     } else {
-      $num = $this->find_string($key);
+      $num = $this->find_string($Key);
       if ($num == -1) {
         return ($number != 1) ? $plural : $single;
       } else {
@@ -407,19 +407,19 @@ class gettext_reader {
     }
   }
 
-  function pgettext($context, $msgid) {
-    $key = $context . chr(4) . $msgid;
-    $ret = $this->translate($key);
+  function pgettext($context, $Msgid) {
+    $Key = $context . chr(4) . $Msgid;
+    $ret = $this->translate($Key);
     if (strpos($ret, "\004") !== FALSE) {
-      return $msgid;
+      return $Msgid;
     } else {
       return $ret;
     }
   }
 
   function npgettext($context, $singular, $plural, $number) {
-    $key = $context . chr(4) . $singular;
-    $ret = $this->ngettext($key, $plural, $number);
+    $Key = $context . chr(4) . $singular;
+    $ret = $this->ngettext($Key, $plural, $number);
     if (strpos($ret, "\004") !== FALSE) {
       return $singular;
     } else {

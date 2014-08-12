@@ -55,7 +55,7 @@ if (isset($_POST['insert']) or isset($_POST['update'])) {
 			SET typename = '" . $_POST['TypeName'] . "'
 			WHERE typeid = '" . $SelectedType . "'";
 
-		$msg = _('The supplier type') . ' ' . $SelectedType . ' ' . _('has been updated');
+		$Msg = _('The supplier type') . ' ' . $SelectedType . ' ' . _('has been updated');
 	} elseif ($InputError != 1) {
 
 		// Add new record on submit
@@ -64,7 +64,7 @@ if (isset($_POST['insert']) or isset($_POST['update'])) {
 					(typename)
 				VALUES ('" . $_POST['TypeName'] . "')";
 
-		$msg = _('Supplier type') . ' ' . stripslashes($_POST['TypeName']) . ' ' . _('has been created');
+		$Msg = _('Supplier type') . ' ' . stripslashes($_POST['TypeName']) . ' ' . _('has been created');
 
 	}
 

@@ -241,8 +241,8 @@ function InsertBranch($BranchDetails, $user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	foreach ($BranchDetails as $key => $value) {
-		$BranchDetails[$key] = DB_escape_string($value);
+	foreach ($BranchDetails as $Key => $Value) {
+		$BranchDetails[$Key] = DB_escape_string($Value);
 	}
 	$Errors = VerifyBranchDebtorExists($BranchDetails['debtorno'], sizeof($Errors), $Errors);
 	$Errors = VerifyBranchNo($BranchDetails['debtorno'], $BranchDetails['branchcode'], sizeof($Errors), $Errors);
@@ -368,9 +368,9 @@ function InsertBranch($BranchDetails, $user, $password) {
 	$BranchDetails['lng'] = 0;
 	$FieldNames = '';
 	$FieldValues = '';
-	foreach ($BranchDetails as $key => $value) {
-		$FieldNames .= $key . ', ';
-		$FieldValues .= "'" . $value . "', ";
+	foreach ($BranchDetails as $Key => $Value) {
+		$FieldNames .= $Key . ', ';
+		$FieldValues .= "'" . $Value . "', ";
 	}
 	$sql = "INSERT INTO custbranch (" . mb_substr($FieldNames, 0, -2) . ") VALUES (" . mb_substr($FieldValues, 0, -2) . ") ";
 	if (sizeof($Errors) == 0) {
@@ -393,8 +393,8 @@ function ModifyBranch($BranchDetails, $user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	foreach ($BranchDetails as $key => $value) {
-		$BranchDetails[$key] = DB_escape_string($value);
+	foreach ($BranchDetails as $Key => $Value) {
+		$BranchDetails[$Key] = DB_escape_string($Value);
 	}
 	$Errors = VerifyBranchNoExists($BranchDetails['debtorno'], $BranchDetails['branchcode'], sizeof($Errors), $Errors);
 	$Errors = VerifyBranchName($BranchDetails['brname'], sizeof($Errors), $Errors);
@@ -491,13 +491,13 @@ function ModifyBranch($BranchDetails, $user, $password) {
 	}
 	$FieldNames = '';
 	$FieldValues = '';
-	foreach ($BranchDetails as $key => $value) {
-		$FieldNames .= $key . ', ';
-		$FieldValues .= '"' . $value . '", ';
+	foreach ($BranchDetails as $Key => $Value) {
+		$FieldNames .= $Key . ', ';
+		$FieldValues .= '"' . $Value . '", ';
 	}
 	$sql = 'UPDATE custbranch SET ';
-	foreach ($BranchDetails as $key => $value) {
-		$sql .= $key . '="' . $value . '", ';
+	foreach ($BranchDetails as $Key => $Value) {
+		$sql .= $Key . '="' . $Value . '", ';
 	}
 	$sql = mb_substr($sql, 0, -2) . " WHERE debtorno='" . $BranchDetails['debtorno'] . "'
 								   AND branchcode='" . $BranchDetails['branchcode'] . "'";

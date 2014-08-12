@@ -14,7 +14,7 @@ include('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');
 
 if (isset($_POST['Submit'])) {
-	$StockID = $_POST['StockID'];
+	$StockId = $_POST['StockID'];
 	$NewOrExisting = $_POST['NewOrExisting'];
 	$NewStockID = '';
 	$InputError = 0; //assume the best
@@ -84,7 +84,7 @@ if (isset($_POST['Submit'])) {
 									shrinkfactor,
 									netweight
 							FROM stockmaster
-							WHERE stockid='" . $StockID . "';";
+							WHERE stockid='" . $StockId . "';";
 			$Result = DB_query($SQL);
 			/* duplicate rows into stockcosts */
 			$SQL = "INSERT INTO stockcosts VALUES ( SELECT  '" . $NewStockID . "' AS stockid,
@@ -94,7 +94,7 @@ if (isset($_POST['Submit'])) {
 															CURRENT_TIME,
 															0
 														FROM stockcosts
-														WHERE  stockcosts.stockid='" . $StockID . "'
+														WHERE  stockcosts.stockid='" . $StockId . "'
 															AND stockcosts.succeeded=0)";
 			$Result = DB_query($SQL);
 
@@ -112,7 +112,7 @@ if (isset($_POST['Submit'])) {
 															CURRENT_TIME,
 															0
 														FROM stockcosts
-														WHERE  stockcosts.stockid='" . $StockID . "'
+														WHERE  stockcosts.stockid='" . $StockId . "'
 															AND stockcosts.succeeded=0)";
 			$Result = DB_query($SQL);
 		}
@@ -128,7 +128,7 @@ if (isset($_POST['Submit'])) {
 							quantity,
 							autoissue
 					FROM bom
-					WHERE parent='" . $StockID . "';";
+					WHERE parent='" . $StockId . "';";
 		$Result = DB_query($SQL);
 
 		if ($NewOrExisting == 'N') {
@@ -143,7 +143,7 @@ if (isset($_POST['Submit'])) {
 					0 AS quantity,
 					reorderlevel
 				FROM locstock
-				WHERE stockid='" . $StockID . "'";
+				WHERE stockid='" . $StockId . "'";
 
 			$Result = DB_query($SQL);
 		}

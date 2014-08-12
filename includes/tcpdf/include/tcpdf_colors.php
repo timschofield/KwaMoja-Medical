@@ -322,15 +322,15 @@ class TCPDF_COLORS {
 			$codes = substr($color, 4);
 			$codes = str_replace(')', '', $codes);
 			$returncolor = explode(',', $codes);
-			foreach ($returncolor as $key => $val) {
+			foreach ($returncolor as $Key => $val) {
 				if (strpos($val, '%') > 0) {
 					// percentage
-					$returncolor[$key] = (255 * intval($val) / 100);
+					$returncolor[$Key] = (255 * intval($val) / 100);
 				} else {
-					$returncolor[$key] = intval($val);
+					$returncolor[$Key] = intval($val);
 				}
 				// normalize value
-				$returncolor[$key] = max(0, min(255, $returncolor[$key]));
+				$returncolor[$Key] = max(0, min(255, $returncolor[$Key]));
 			}
 			return $returncolor;
 		}
@@ -339,15 +339,15 @@ class TCPDF_COLORS {
 			$codes = substr($color, 5);
 			$codes = str_replace(')', '', $codes);
 			$returncolor = explode(',', $codes);
-			foreach ($returncolor as $key => $val) {
+			foreach ($returncolor as $Key => $val) {
 				if (strpos($val, '%') !== false) {
 					// percentage
-					$returncolor[$key] = (100 * intval($val) / 100);
+					$returncolor[$Key] = (100 * intval($val) / 100);
 				} else {
-					$returncolor[$key] = intval($val);
+					$returncolor[$Key] = intval($val);
 				}
 				// normalize value
-				$returncolor[$key] = max(0, min(100, $returncolor[$key]));
+				$returncolor[$Key] = max(0, min(100, $returncolor[$Key]));
 			}
 			return $returncolor;
 		}

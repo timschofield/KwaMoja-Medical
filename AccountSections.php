@@ -44,7 +44,6 @@ if (isset($_POST['submit'])) {
 	//initialise no input errors assumed initially before we test
 
 	$InputError = 0;
-	$i = 1;
 
 	/* actions to take once the user has clicked the submit button
 	ie the page has called itself with some user input */
@@ -59,27 +58,19 @@ if (isset($_POST['submit'])) {
 		if ((DB_num_rows($Result) != 0 and !isset($_POST['SelectedSectionID']))) {
 			$InputError = 1;
 			prnMsg(_('The account section already exists in the database'), 'error');
-			$Errors[$i] = 'SectionID';
-			$i++;
 		}
 	}
 	if (mb_strlen($_POST['SectionName']) == 0) {
 		$InputError = 1;
 		prnMsg(_('The account section name must contain at least three characters'), 'error');
-		$Errors[$i] = 'SectionName';
-		$i++;
 	}
 	if (isset($_POST['SectionID']) and (!is_numeric($_POST['SectionID']))) {
 		$InputError = 1;
 		prnMsg(_('The section number must be an integer'), 'error');
-		$Errors[$i] = 'SectionID';
-		$i++;
 	}
 	if (isset($_POST['SectionID']) and mb_strpos($_POST['SectionID'], ".") > 0) {
 		$InputError = 1;
 		prnMsg(_('The section number must be an integer'), 'error');
-		$Errors[$i] = 'SectionID';
-		$i++;
 	}
 
 	if (isset($_POST['SelectedSectionID']) and $_POST['SelectedSectionID'] != '' and $InputError != 1) {
@@ -89,7 +80,7 @@ if (isset($_POST['submit'])) {
 		$SQL = "UPDATE accountsection SET sectionname='" . $_POST['SectionName'] . "'
 				WHERE sectionid = '" . $_POST['SelectedSectionID'] . "'";
 
-		$msg = _('Record Updated');
+		$Msg = _('Record Updated');
 	} elseif ($InputError != 1) {
 
 		/*SelectedSectionID is null cos no item selected on first time round so must be adding a record must be submitting new entries in the new account section form */
@@ -99,13 +90,13 @@ if (isset($_POST['submit'])) {
 										) VALUES (
 											'" . $_POST['SectionID'] . "',
 											'" . $_POST['SectionName'] . "')";
-		$msg = _('Record inserted');
+		$Msg = _('Record inserted');
 	}
 
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
 		$Result = DB_query($SQL);
-		prnMsg($msg, 'success');
+		prnMsg($Msg, 'success');
 		unset($_POST['SelectedSectionID']);
 		unset($_POST['SectionID']);
 		unset($_POST['SectionName']);

@@ -1,18 +1,18 @@
 <?php
 
 /*Functions to get the GL codes for customer transactions based on
-$Area, $StockID to determine the stock category and the SalesType (Price List)
+$Area, $StockId to determine the stock category and the SalesType (Price List)
 
 function returns the relavent GL Code to post COGS entries to*/
 
-function GetCOGSGLAccount($Area, $StockID, $SalesType) {
+function GetCOGSGLAccount($Area, $StockId, $SalesType) {
 
 	$ErrMsg = _('Can not retrieve the cost of sales GL code because');
 	$DbgMsg = _('SQL to get the cost of sales GL Code');
 
 	/*Get the StockCategory for this item */
 
-	$SQL = "SELECT categoryid FROM stockmaster WHERE stockid='" . $StockID . "'";
+	$SQL = "SELECT categoryid FROM stockmaster WHERE stockid='" . $StockId . "'";
 	$Result = DB_query($SQL);
 	$MyRow = DB_fetch_row($Result);
 	$StockCategory = $MyRow[0];
@@ -149,7 +149,7 @@ function GetCOGSGLAccount($Area, $StockID, $SalesType) {
 	return $MyRow[0];
 }
 
-function GetSalesGLAccount($Area, $StockID, $SalesType) {
+function GetSalesGLAccount($Area, $StockId, $SalesType) {
 
 	/*Gets the  Sales GL Code for a specific area, sales type and stock category */
 
@@ -158,7 +158,7 @@ function GetSalesGLAccount($Area, $StockID, $SalesType) {
 
 
 	/*Get the StockCategory for this item */
-	$SQL = "SELECT categoryid FROM stockmaster WHERE stockid='" . $StockID . "'";
+	$SQL = "SELECT categoryid FROM stockmaster WHERE stockid='" . $StockId . "'";
 	$Result = DB_query($SQL);
 	$MyRow = DB_fetch_row($Result);
 	$StockCategory = $MyRow[0];

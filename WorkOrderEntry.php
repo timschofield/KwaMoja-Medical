@@ -6,17 +6,17 @@ include('includes/DefineWOClass.php');
 include('includes/session.inc');
 
 if (empty($_GET['identifier'])) {
-	$identifier = date('U');
+	$Identifier = date('U');
 } //empty($_GET['identifier'])
 else {
-	$identifier = $_GET['identifier'];
+	$Identifier = $_GET['identifier'];
 }
 
 $Title = _('Work Order Entry');
 include('includes/header.inc');
 
 if (isset($_GET['Delete'])) {
-	$_SESSION['WorkOrder' . $identifier]->RemoveItemFromOrder($_GET['Delete']);
+	$_SESSION['WorkOrder' . $Identifier]->RemoveItemFromOrder($_GET['Delete']);
 }
 
 if (isset($_POST['NewItems'])) {
@@ -24,7 +24,7 @@ if (isset($_POST['NewItems'])) {
 		if (substr($Key, 0, 7) == 'StockID') {
 			$Index = substr($Key, 7);
 			if ($_POST['Quantity' . $Index] > 0) {
-				$_SESSION['WorkOrder' . $identifier]->AddItemToOrder($_POST['StockID' . $Index], '', $_POST['Quantity' . $Index], 0, '');
+				$_SESSION['WorkOrder' . $Identifier]->AddItemToOrder($_POST['StockID' . $Index], '', $_POST['Quantity' . $Index], 0, '');
 			}
 		}
 	}
@@ -47,13 +47,13 @@ if (is_null($LocRow['loccode']) or $LocRow['loccode'] == ''){
 }
 
 if (isset($_POST['RequiredBy']) and !isset($_POST['NewItems'])) {
-	$_SESSION['WorkOrder' . $identifier]->RequiredBy = $_POST['RequiredBy'];
-	$_SESSION['WorkOrder' . $identifier]->StartDate = $_POST['StartDate'];
-	$_SESSION['WorkOrder' . $identifier]->LocationCode = $_POST['StockLocation'];
+	$_SESSION['WorkOrder' . $Identifier]->RequiredBy = $_POST['RequiredBy'];
+	$_SESSION['WorkOrder' . $Identifier]->StartDate = $_POST['StartDate'];
+	$_SESSION['WorkOrder' . $Identifier]->LocationCode = $_POST['StockLocation'];
 
 	if (isset($_POST['OutputItem1'])) {
-		foreach ($_SESSION['WorkOrder' . $identifier]->Items as $i => $Item) {
-			$_SESSION['WorkOrder' . $identifier]->UpdateItem($_POST['OutputItem' . $Item->LineNumber], $_POST['WOComments' . $Item->LineNumber], $_POST['OutputQty' . $Item->LineNumber], $_POST['NextLotSNRef' . $Item->LineNumber]);
+		foreach ($_SESSION['WorkOrder' . $Identifier]->Items as $i => $Item) {
+			$_SESSION['WorkOrder' . $Identifier]->UpdateItem($_POST['OutputItem' . $Item->LineNumber], $_POST['WOComments' . $Item->LineNumber], $_POST['OutputQty' . $Item->LineNumber], $_POST['NextLotSNRef' . $Item->LineNumber]);
 		}
 	}
 }
@@ -63,22 +63,22 @@ echo '<p class="page_title_text noPrint" >
 	</p>';
 
 if (isset($_POST['Save'])) {
-	$_SESSION['WorkOrder' . $identifier]->Save();
-	prnMsg(_('Works order number') . ' ' . $_SESSION['WorkOrder' . $identifier]->OrderNumber . ' ' . _('has been successfully saved to the database'), ('success'));
+	$_SESSION['WorkOrder' . $Identifier]->Save();
+	prnMsg(_('Works order number') . ' ' . $_SESSION['WorkOrder' . $Identifier]->OrderNumber . ' ' . _('has been successfully saved to the database'), ('success'));
 	include('includes/footer.inc');
 	exit;
 }
 
 if (isset($_GET['New'])) {
-	$_SESSION['WorkOrder' . $identifier] = new WorkOrder();
+	$_SESSION['WorkOrder' . $Identifier] = new WorkOrder();
 }
 
 if (isset($_GET['WO'])) {
-	$_SESSION['WorkOrder' . $identifier] = new WorkOrder();
-	$_SESSION['WorkOrder' . $identifier]->Load($_GET['WO']);
+	$_SESSION['WorkOrder' . $Identifier] = new WorkOrder();
+	$_SESSION['WorkOrder' . $Identifier]->Load($_GET['WO']);
 }
 
-echo '<form onSubmit="return VerifyForm(this);" method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $identifier . '" name="MainForm">';
+echo '<form onSubmit="return VerifyForm(this);" method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '" name="MainForm">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 echo '<table class="selection">
@@ -100,7 +100,7 @@ $SQL = "SELECT locationname,
 $LocResult = DB_query($SQL);
 
 while ($LocRow = DB_fetch_array($LocResult)) {
-	if ($_SESSION['WorkOrder' . $identifier]->LocationCode == $LocRow['loccode']) {
+	if ($_SESSION['WorkOrder' . $Identifier]->LocationCode == $LocRow['loccode']) {
 		echo '<option selected="True" value="' . $LocRow['loccode'] . '">' . $LocRow['locationname'] . '</option>';
 	} else {
 		echo '<option value="' . $LocRow['loccode'] . '">' . $LocRow['locationname'] . '</option>';
@@ -116,7 +116,7 @@ if (!isset($_POST['StartDate'])) {
 
 echo '<tr>
 		<td class="label">' . _('Start Date') . ':</td>
-		<td><input type="text" name="StartDate" size="12" minlength="0" maxlength="12" value="' . $_SESSION['WorkOrder' . $identifier]->StartDate . '" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" /></td>
+		<td><input type="text" name="StartDate" size="12" minlength="0" maxlength="12" value="' . $_SESSION['WorkOrder' . $Identifier]->StartDate . '" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" /></td>
 	</tr>';
 
 if (!isset($_POST['RequiredBy'])) {
@@ -125,10 +125,10 @@ if (!isset($_POST['RequiredBy'])) {
 
 echo '<tr>
 		<td class="label">' . _('Required By') . ':</td>
-		<td><input type="text" name="RequiredBy" size="12" minlength="0" maxlength="12" value="' . $_SESSION['WorkOrder' . $identifier]->RequiredBy . '" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" /></td>
+		<td><input type="text" name="RequiredBy" size="12" minlength="0" maxlength="12" value="' . $_SESSION['WorkOrder' . $Identifier]->RequiredBy . '" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" /></td>
 	</tr>';
 
-if ($_SESSION['WorkOrder' . $identifier]->CostIssued > 0) {
+if ($_SESSION['WorkOrder' . $Identifier]->CostIssued > 0) {
 	echo '<tr>
 			<td class="label">' . _('Accumulated Costs') . ':</td>
 			<td class="number">' . locale_number_format($MyRow['costissued'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
@@ -153,8 +153,8 @@ echo '<table class="selection">
 		</tr>';
 $j = 0;
 
-if ($_SESSION['WorkOrder' . $identifier]->NumberOfItems > 0) {
-	foreach ($_SESSION['WorkOrder' . $identifier]->Items as $i => $WOItem) {
+if ($_SESSION['WorkOrder' . $Identifier]->NumberOfItems > 0) {
+	foreach ($_SESSION['WorkOrder' . $Identifier]->Items as $i => $WOItem) {
 		if ($j == 1) {
 			echo '<tr class="OddTableRows">';
 			$j = 0;
@@ -183,16 +183,16 @@ if ($_SESSION['WorkOrder' . $identifier]->NumberOfItems > 0) {
 				} else {
 					$LotOrSN = _('Batches');
 				}
-				echo '<td><a href="' . $RootPath . '/WOSerialNos.php?WO=' . urlencode($_SESSION['WorkOrder' . $identifier]->OrderNumber) . '&StockID=' . urlencode($_POST['OutputItem' . $i]) . '&Description=' . urlencode($_POST['OutputItemDesc' . $i]) . '&Serialised=' . urlencode($_POST['Serialised' . $i]) . '&NextSerialNo=' . urlencode($_POST['NextLotSNRef' . $i]) . '">' . $LotOrSN . '</a></td>';
+				echo '<td><a href="' . $RootPath . '/WOSerialNos.php?WO=' . urlencode($_SESSION['WorkOrder' . $Identifier]->OrderNumber) . '&StockID=' . urlencode($_POST['OutputItem' . $i]) . '&Description=' . urlencode($_POST['OutputItemDesc' . $i]) . '&Serialised=' . urlencode($_POST['Serialised' . $i]) . '&NextSerialNo=' . urlencode($_POST['NextLotSNRef' . $i]) . '">' . $LotOrSN . '</a></td>';
 			}
 		}
 		echo '<td>';
-		if ($_SESSION['WorkOrder' . $identifier]->OrderNumber != 0) {
-			wikiLink('WorkOrder', $_SESSION['WorkOrder' . $identifier]->OrderNumber . $WOItem->StockID);
+		if ($_SESSION['WorkOrder' . $Identifier]->OrderNumber != 0) {
+			wikiLink('WorkOrder', $_SESSION['WorkOrder' . $Identifier]->OrderNumber . $WOItem->StockID);
 		}
 		echo '</td>
 				<td>
-					<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $identifier . '&Delete=' . $WOItem->LineNumber . '">' . _('Delete') . '</a>
+					<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '&Delete=' . $WOItem->LineNumber . '">' . _('Delete') . '</a>
 				</td>
 			</tr>';
 	}
@@ -214,8 +214,8 @@ echo '<table class="selection print">
 			<th>' . _('Auto Issue') . '</th>
 		</tr>';
 
-foreach ($_SESSION['WorkOrder' . $identifier]->Items as $i => $WOItem) {
-	$WOItem->RefreshRequirements($_SESSION['WorkOrder' . $identifier]->LocationCode);
+foreach ($_SESSION['WorkOrder' . $Identifier]->Items as $i => $WOItem) {
+	$WOItem->RefreshRequirements($_SESSION['WorkOrder' . $Identifier]->LocationCode);
 	foreach ($WOItem->Requirements as $j => $WORequirement) {
 		if ($WORequirement->AutoIssue == 0) {
 			$AutoIssue = _('No');
@@ -345,7 +345,7 @@ if (isset($SearchResult)) {
 				</tr>';
 		$k = 0; //row colour counter
 		$ItemCodes = array();
-		foreach ($_SESSION['WorkOrder' . $identifier]->Items as $WOItem) {
+		foreach ($_SESSION['WorkOrder' . $Identifier]->Items as $WOItem) {
 			$ItemCodes[] = $WOItem->StockID;
 		}
 

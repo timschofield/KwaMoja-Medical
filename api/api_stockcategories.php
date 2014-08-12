@@ -44,8 +44,8 @@ function InsertStockCategory($CategoryDetails, $user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	foreach ($CategoryDetails as $key => $value) {
-		$CategoryDetails[$key] = DB_escape_string($value);
+	foreach ($CategoryDetails as $Key => $Value) {
+		$CategoryDetails[$Key] = DB_escape_string($Value);
 	}
 	$Errors = VerifyStockCategoryAlreadyExists($CategoryDetails['categoryid'], sizeof($Errors), $Errors);
 	$Errors = VerifyCategoryID($CategoryDetails['categoryid'], sizeof($Errors), $Errors);
@@ -58,9 +58,9 @@ function InsertStockCategory($CategoryDetails, $user, $password) {
 	$Errors = VerifyAccountCodeExists($CategoryDetails['wipact'], sizeof($Errors), $Errors);
 	$FieldNames = '';
 	$FieldValues = '';
-	foreach ($CategoryDetails as $key => $value) {
-		$FieldNames .= $key . ', ';
-		$FieldValues .= '"' . $value . '", ';
+	foreach ($CategoryDetails as $Key => $Value) {
+		$FieldNames .= $Key . ', ';
+		$FieldValues .= '"' . $Value . '", ';
 	}
 	$sql = "INSERT INTO stockcategory ('" . mb_substr($FieldNames, 0, -2) . "')
 				VALUES ('" . mb_substr($FieldValues, 0, -2) . "') ";
@@ -82,8 +82,8 @@ function ModifyStockCategory($CategoryDetails, $user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	foreach ($CategoryDetails as $key => $value) {
-		$CategoryDetails[$key] = DB_escape_string($value);
+	foreach ($CategoryDetails as $Key => $Value) {
+		$CategoryDetails[$Key] = DB_escape_string($Value);
 	}
 	$Errors = VerifyStockCategoryExists($CategoryDetails['categoryid'], sizeof($Errors), $Errors);
 	$Errors = VerifyCategoryID($CategoryDetails['categoryid'], sizeof($Errors), $Errors);
@@ -96,13 +96,13 @@ function ModifyStockCategory($CategoryDetails, $user, $password) {
 	$Errors = VerifyAccountCodeExists($CategoryDetails['wipact'], sizeof($Errors), $Errors);
 	$FieldNames = '';
 	$FieldValues = '';
-	foreach ($CategoryDetails as $key => $value) {
-		$FieldNames .= $key . ', ';
-		$FieldValues .= '"' . $value . '", ';
+	foreach ($CategoryDetails as $Key => $Value) {
+		$FieldNames .= $Key . ', ';
+		$FieldValues .= '"' . $Value . '", ';
 	}
 	$sql = "UPDATE stockcategory SET ";
-	foreach ($CategoryDetails as $key => $value) {
-		$sql .= $key . "='" . $value . "', ";
+	foreach ($CategoryDetails as $Key => $Value) {
+		$sql .= $Key . "='" . $Value . "', ";
 	}
 	$sql = mb_substr($sql, 0, -2) . " WHERE categoryid='" . $CategoryDetails['categoryid'] . "'";
 	if (sizeof($Errors) == 0) {
@@ -194,7 +194,7 @@ function StockCatPropertyList($Label, $Category, $user, $password) {
 	return $ItemList;
 }
 
-function GetStockCatProperty($Property, $StockID, $user, $password) {
+function GetStockCatProperty($Property, $StockId, $user, $password) {
 	$Errors = array();
 	$db = db($user, $password);
 	if (gettype($db) == 'integer') {
@@ -202,7 +202,7 @@ function GetStockCatProperty($Property, $StockID, $user, $password) {
 		return $Errors;
 	}
 	$sql = "SELECT value FROM stockitemproperties
-					   WHERE stockid='" . $StockID . "'
+					   WHERE stockid='" . $StockId . "'
 					   AND stkcatpropid='" . $Property . "'";
 	$result = DB_Query($sql);
 	$myrow = DB_fetch_array($result);

@@ -54,8 +54,8 @@ function InsertGLAccount($AccountDetails, $user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	foreach ($AccountDetails as $key => $value) {
-		$AccountDetails[$key] = DB_escape_string($value);
+	foreach ($AccountDetails as $Key => $Value) {
+		$AccountDetails[$Key] = DB_escape_string($Value);
 	}
 	$Errors = VerifyAccountCode($AccountDetails['accountcode'], sizeof($Errors), $Errors);
 	if (isset($AccountDetails['accountname'])) {
@@ -64,9 +64,9 @@ function InsertGLAccount($AccountDetails, $user, $password) {
 	$Errors = VerifyAccountGroupExists($AccountDetails['group_'], sizeof($Errors), $Errors);
 	$FieldNames = '';
 	$FieldValues = '';
-	foreach ($AccountDetails as $key => $value) {
-		$FieldNames .= $key . ', ';
-		$FieldValues .= '"' . $value . '", ';
+	foreach ($AccountDetails as $Key => $Value) {
+		$FieldNames .= $Key . ', ';
+		$FieldValues .= '"' . $Value . '", ';
 	}
 	if (sizeof($Errors) == 0) {
 		$sql = 'INSERT INTO chartmaster (' . mb_substr($FieldNames, 0, -2) . ') ' . "VALUES ('" . mb_substr($FieldValues, 0, -2) . "') ";

@@ -56,7 +56,7 @@ if (!empty($_POST['OldStockID'])) { //only show this if there is a valid call to
 		$newfilename = ($_POST['OldStockID'] == $_POST['StockID']) or $_POST['StockID'] == '' ? $_POST['OldStockID'] . '-TEMP' : $_POST['StockID']; //so we can add a new file but not remove an existing item file
 		$Result = $_FILES['ItemPicture']['error'];
 		$UploadTheFile = 'Yes'; //Assume all is well to start off with
-		$filename = $_SESSION['part_pics_dir'] . '/' . $newfilename . '.jpg';
+		$FileName = $_SESSION['part_pics_dir'] . '/' . $newfilename . '.jpg';
 
 		//But check for the worst
 		if (mb_strtoupper(mb_substr(trim($_FILES['ItemPicture']['name']), mb_strlen($_FILES['ItemPicture']['name']) - 3)) != 'JPG') {
@@ -71,19 +71,19 @@ if (!empty($_POST['OldStockID'])) { //only show this if there is a valid call to
 		} elseif ($_FILES['ItemPicture']['error'] == 6) { //upload temp directory check
 			prnMsg(_('No tmp directory set. You must have a tmp directory set in your PHP for upload of files. '), 'warn');
 			$UploadTheFile = 'No';
-		} elseif (file_exists($filename)) {
+		} elseif (file_exists($FileName)) {
 			prnMsg(_('Attempting to overwrite an existing item image'), 'warn');
-			$Result = unlink($filename);
+			$Result = unlink($FileName);
 			if (!$Result) {
 				prnMsg(_('The existing image could not be removed'), 'error');
 				$UploadTheFile = 'No';
 			}
 		}
 		//first remove any temp file that ight be there
-		@unlink($filename);
+		@unlink($FileName);
 		if ($UploadTheFile == 'Yes') {
-			$Result = move_uploaded_file($_FILES['ItemPicture']['tmp_name'], $filename);
-			$message = ($Result) ? _('File url') . '<a href="' . $filename . '">' . $filename . '</a>' : _('Something is wrong with uploading a file');
+			$Result = move_uploaded_file($_FILES['ItemPicture']['tmp_name'], $FileName);
+			$message = ($Result) ? _('File url') . '<a href="' . $FileName . '">' . $FileName . '</a>' : _('Something is wrong with uploading a file');
 		}
 	} elseif (!empty($_POST['StockID']) and ($_POST['StockID'] != $_POST['OldStockID']) and file_exists($_SESSION['part_pics_dir'] . '/' . $_POST['OldStockID'] . '-TEMP' . '.jpg')) {
 		//rename the temp one to the new name
@@ -551,14 +551,14 @@ echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
 
 if ($_POST['StockID'] == '' or ($_POST['StockID'] == $_POST['OldStockID']) or isset($_POST['UpdateCategories'])) {
 
-	/*If the page was called without $StockID or empty $StockID  then a new cloned stock item is to be entered. Show a form with a part Code field,
+	/*If the page was called without $StockId or empty $StockId  then a new cloned stock item is to be entered. Show a form with a part Code field,
 	otherwise show form for editing with only a hidden OldStockID field. */
 
-	$StockIDStyle = (!empty($_POST['StockID']) and ($_POST['StockID'] != $_POST['OldStockID'])) ? '' : ' style="color:red;border: 2px solid red;background-color:#fddbdb;" ';
-	$StockID = !empty($_POST['StockID']) ? $_POST['StockID'] : $_POST['OldStockID'];
+	$StockIdStyle = (!empty($_POST['StockID']) and ($_POST['StockID'] != $_POST['OldStockID'])) ? '' : ' style="color:red;border: 2px solid red;background-color:#fddbdb;" ';
+	$StockId = !empty($_POST['StockID']) ? $_POST['StockID'] : $_POST['OldStockID'];
 	echo '<tr>
 			<td>' . _('Cloned Item Code') . ':</td>
-			<td><input type="text" ' . $StockIDStyle . '" autofocus="autofocus" required="required" value="' . $StockID . '" name="StockID" size="21" maxlength="20" />
+			<td><input type="text" ' . $StockIdStyle . '" autofocus="autofocus" required="required" value="' . $StockId . '" name="StockID" size="21" maxlength="20" />
 				<input type="hidden" name="OldStockID" value="' . $_POST['OldStockID'] . '" />  ' . _('Enter a unique item code for the new item.') . '
 			</td>
 		</tr>';
@@ -1053,7 +1053,7 @@ if (DB_num_rows($PropertiesResult) > 0) {
 		$PropertyCounter++;
 
 	} //end loop round properties for the item category
-	unset($StockID);
+	unset($StockId);
 	echo '</table>';
 }
 echo '<input type="hidden" name="PropertyCounter" value="' . $PropertyCounter . '" />';

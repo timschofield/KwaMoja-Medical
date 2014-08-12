@@ -77,7 +77,7 @@ if (isset($_POST['submit'])) {
 			receipt = '" . $_POST['Receipt'] . "'
 			WHERE counterindex = '" . $SelectedIndex . "'";
 
-		$msg = _('The Expense Claim on Tab') . ' ' . $SelectedTabs . ' ' . _('has been updated');
+		$Msg = _('The Expense Claim on Tab') . ' ' . $SelectedTabs . ' ' . _('has been updated');
 
 	} elseif ($InputError != 1) {
 
@@ -104,13 +104,13 @@ if (isset($_POST['submit'])) {
 										'" . $_POST['Receipt'] . "'
 										)";
 
-		$msg = _('The Expense Claim on Tab') . ' ' . $_POST['SelectedTabs'] . ' ' . _('has been created');
+		$Msg = _('The Expense Claim on Tab') . ' ' . $_POST['SelectedTabs'] . ' ' . _('has been created');
 	}
 
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
 		$Result = DB_query($SQL);
-		prnMsg($msg, 'success');
+		prnMsg($Msg, 'success');
 
 		unset($_POST['SelectedExpense']);
 		unset($_POST['Amount']);

@@ -756,22 +756,22 @@ while ($RecurrOrderRow = DB_fetch_array($RecurrOrdersDueResult)) {
 	/*end if the recurring order is set to auto invoice */
 
 	if (IsEmailAddress($RecurrOrderRow['email'])) {
-		$mail = new htmlMimeMail();
-		$mail->setText($EmailText);
-		$mail->setSubject(_('Recurring Order Created Advice'));
+		$Mail = new htmlMimeMail();
+		$Mail->setText($EmailText);
+		$Mail->setSubject(_('Recurring Order Created Advice'));
 		if ($_SESSION['SmtpSetting'] == 0) {
-			$mail->setFrom($_SESSION['CompanyRecord']['coyname'] . "<" . $_SESSION['CompanyRecord']['email'] . ">");
+			$Mail->setFrom($_SESSION['CompanyRecord']['coyname'] . "<" . $_SESSION['CompanyRecord']['email'] . ">");
 
-			$Result = $mail->send(array(
+			$Result = $Mail->send(array(
 				$RecurrOrderRow['email']
 			));
 		} else {
-			$Result = SendmailBySmtp($mail, array(
+			$Result = SendmailBySmtp($Mail, array(
 				$RecurrOrderRow['email']
 			));
 
 		}
-		unset($mail);
+		unset($Mail);
 	} else {
 		prnMsg(_('No email advice was sent for this order because the location has no email contact defined with a valid email address'), 'warn');
 	}

@@ -1245,9 +1245,9 @@ class TCPDF_FONTS {
 		while (!empty($new_sga)) {
 			$sga = $new_sga;
 			$new_sga = array();
-			foreach ($sga as $key => $val) {
-				if (isset($indexToLoc[$key])) {
-					$offset = ($table['glyf']['offset'] + $indexToLoc[$key]);
+			foreach ($sga as $Key => $val) {
+				if (isset($indexToLoc[$Key])) {
+					$offset = ($table['glyf']['offset'] + $indexToLoc[$Key]);
 					$numberOfContours = TCPDF_STATIC::_getSHORT($font, $offset);
 					$offset += 2;
 					if ($numberOfContours < 0) { // composite glyph
@@ -2476,9 +2476,9 @@ class TCPDF_FONTS {
 				}
 			}
 			// remove marked characters
-			foreach ($chardata2 as $key => $value) {
-				if ($value['char'] === false) {
-					unset($chardata2[$key]);
+			foreach ($chardata2 as $Key => $Value) {
+				if ($Value['char'] === false) {
+					unset($chardata2[$Key]);
 				}
 			}
 			$chardata = array_values($chardata2);

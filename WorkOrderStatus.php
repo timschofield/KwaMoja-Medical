@@ -12,11 +12,11 @@ if (isset($_GET['WO'])) {
 	unset($SelectedWO);
 }
 if (isset($_GET['StockID'])) {
-	$StockID = $_GET['StockID'];
+	$StockId = $_GET['StockID'];
 } elseif (isset($_POST['StockID'])) {
-	$StockID = $_POST['StockID'];
+	$StockId = $_POST['StockID'];
 } else {
-	unset($StockID);
+	unset($StockId);
 }
 
 
@@ -43,7 +43,7 @@ $SQL = "SELECT workorders.loccode,
 				ON locationusers.loccode=locations.loccode
 				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
 				AND locationusers.canview=1
-			WHERE woitems.stockid='" . $StockID . "'
+			WHERE woitems.stockid='" . $StockId . "'
 				AND woitems.wo ='" . $SelectedWO . "'";
 
 $WOResult = DB_query($SQL, $ErrMsg);
@@ -67,7 +67,7 @@ echo '<table cellpadding="2" class="selection">
 		<td class="label">' . _('Work order Number') . ':</td>
 		<td>' . $SelectedWO . '</td>
 		<td class="label">' . _('Item') . ':</td>
-		<td>' . $StockID . ' - ' . $WORow['description'] . '</td>
+		<td>' . $StockId . ' - ' . $WORow['description'] . '</td>
 	</tr>
  	<tr>
 		<td class="label">' . _('Manufactured at') . ':</td>
@@ -112,7 +112,7 @@ $RequirementsSQL = "SELECT worequirements.stockid,
 						INNER JOIN stockmaster
 							ON worequirements.stockid=stockmaster.stockid
 						WHERE wo='" . $SelectedWO . "'
-							AND worequirements.parentstockid='" . $StockID . "'";
+							AND worequirements.parentstockid='" . $StockId . "'";
 $RequirmentsResult = DB_query($RequirementsSQL);
 
 $IssuedAlreadyResult = DB_query("SELECT stockid,
@@ -147,16 +147,16 @@ while ($RequirementsRow = DB_fetch_array($RequirmentsResult)) {
 }
 
 /* Now do any additional issues of items not in the BOM */
-foreach ($IssuedAlreadyRow as $StockID=>$Issued) {
+foreach ($IssuedAlreadyRow as $StockId=>$Issued) {
 	$RequirementsSQL = "SELECT stockmaster.description,
 								stockmaster.decimalplaces
 						FROM stockmaster
-						WHERE stockid='" . $StockID . "'";
+						WHERE stockid='" . $StockId . "'";
 	$RequirmentsResult = DB_query($RequirementsSQL);
 	$RequirementsRow = DB_fetch_array($RequirmentsResult);
 	echo '<tr>
 			<td>' . _('Additional Issue') . '</td>
-			<td>' . $StockID . ' - ' . $RequirementsRow['description'] . '</td>';
+			<td>' . $StockId . ' - ' . $RequirementsRow['description'] . '</td>';
 	echo '<td class="number">0</td>
 			<td class="number">' . locale_number_format($Issued, $RequirementsRow['decimalplaces']) . '</td>
 		</tr>';

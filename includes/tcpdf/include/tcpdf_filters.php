@@ -466,12 +466,12 @@ class TCPDF_FILTERS {
 
 	/**
 	 * Throw an exception.
-	 * @param $msg (string) The error message
+	 * @param $Msg (string) The error message
 	 * @since 1.0.000 (2011-05-23)
 	 * @public static
 	 */
-	public static function Error($msg) {
-		throw new Exception('TCPDF_PARSER ERROR: '.$msg);
+	public static function Error($Msg) {
+		throw new Exception('TCPDF_PARSER ERROR: '.$Msg);
 	}
 
 } // END OF TCPDF_FILTERS CLASS

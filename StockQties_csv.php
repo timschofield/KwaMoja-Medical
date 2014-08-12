@@ -29,9 +29,9 @@ if (!file_exists($_SESSION['reports_dir'])) {
 	$Result = mkdir('./' . $_SESSION['reports_dir']);
 }
 
-$filename = $_SESSION['reports_dir'] . '/StockQties.csv';
+$FileName = $_SESSION['reports_dir'] . '/StockQties.csv';
 
-$fp = fopen($filename, 'w');
+$fp = fopen($FileName, 'w');
 
 if ($fp == FALSE) {
 

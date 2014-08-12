@@ -609,10 +609,10 @@ function RenameTable($OldName, $NewName) {
 	}
 }
 
-function OutputResult($msg, $status) {
+function OutputResult($Msg, $status) {
 	if ($status == 'error') {
 		$_SESSION['Updates']['Errors']++;
-		$_SESSION['Updates']['Messages'][] = $msg;
+		$_SESSION['Updates']['Messages'][] = $Msg;
 	} else if ($status == 'success') {
 		$_SESSION['Updates']['Successes']++;
 	} else {

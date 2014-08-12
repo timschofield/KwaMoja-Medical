@@ -12,7 +12,7 @@ if (!isset($DBPort)) {
 }
 global $db; // Make sure it IS global, regardless of our context
 
-$db = mysqli_connect('p:'.$host, $DBUser, $DBPassword, $_SESSION['DatabaseName'], $DBPort);
+$db = mysqli_connect('p:'.$Host, $DBUser, $DBPassword, $_SESSION['DatabaseName'], $DBPort);
 $Result = DB_query('SET sql_mode = ANSI');
 
 
@@ -56,8 +56,8 @@ require_once($PathPrefix . 'includes/MiscFunctions.php');
 
 //DB wrapper functions to change only once for whole application
 
-function DB_connect($host, $DBUser, $DBPassword, $DBPort) {
-	return mysqli_connect($host, $DBUser, $DBPassword, $_SESSION['DatabaseName'], $DBPort);
+function DB_connect($Host, $DBUser, $DBPassword, $DBPort) {
+	return mysqli_connect($Host, $DBUser, $DBPassword, $_SESSION['DatabaseName'], $DBPort);
 }
 
 function DB_query($SQL, $ErrorMessage = '', $DebugMessage = '', $Transaction = false, $TrapErrors = true) {

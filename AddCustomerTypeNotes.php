@@ -44,7 +44,7 @@ if (isset($_POST['submit'])) {
 											priority='" . $_POST['Priority'] . "'
 										WHERE typeid ='" . $DebtorType . "'
 										AND noteid='" . $Id . "'";
-		$msg = _('Customer Group Notes') . ' ' . $DebtorType . ' ' . _('has been updated');
+		$Msg = _('Customer Group Notes') . ' ' . $DebtorType . ' ' . _('has been updated');
 	} elseif ($InputError != 1) {
 
 		$SQL = "INSERT INTO debtortypenotes (typeid,
@@ -57,14 +57,14 @@ if (isset($_POST['submit'])) {
 											'" . $_POST['Note'] . "',
 											'" . FormatDateForSQL($_POST['NoteDate']) . "',
 											'" . $_POST['Priority'] . "')";
-		$msg = _('The contact group notes record has been added');
+		$Msg = _('The contact group notes record has been added');
 	}
 
 	if ($InputError != 1) {
 		$Result = DB_query($SQL);
 
 		echo '<br />';
-		prnMsg($msg, 'success');
+		prnMsg($Msg, 'success');
 		unset($Id);
 		unset($_POST['Note']);
 		unset($_POST['NoteID']);

@@ -61,9 +61,9 @@ function InsertSalesType($SalesTypeDetails, $user, $password) {
 
 	$FieldNames = '';
 	$FieldValues = '';
-	foreach ($SalesTypeDetails as $key => $value) {
-		$FieldNames .= $key . ', ';
-		$FieldValues .= '"' . $value . '", ';
+	foreach ($SalesTypeDetails as $Key => $Value) {
+		$FieldNames .= $Key . ', ';
+		$FieldValues .= '"' . $Value . '", ';
 	}
 	$sql = "INSERT INTO salestypes ('" . mb_substr($FieldNames, 0, -2) . "')
 				VALUES ('" . mb_substr($FieldValues, 0, -2) . "') ";

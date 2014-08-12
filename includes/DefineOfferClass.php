@@ -36,11 +36,11 @@ class Offer {
 		$this->CurrCode = $MyRow['currcode'];
 	}
 
-	function add_to_offer($LineNo, $StockID, $Qty, $ItemDescr, $Price, $UOM, $DecimalPlaces, $ExpiryDate) {
+	function add_to_offer($LineNo, $StockId, $Qty, $ItemDescr, $Price, $UOM, $DecimalPlaces, $ExpiryDate) {
 
 		if (isset($Qty) and $Qty != 0) {
 
-			$this->LineItems[$LineNo] = new LineDetails($LineNo, $StockID, $Qty, $ItemDescr, $Price, $UOM, $DecimalPlaces, $ExpiryDate);
+			$this->LineItems[$LineNo] = new LineDetails($LineNo, $StockId, $Qty, $ItemDescr, $Price, $UOM, $DecimalPlaces, $ExpiryDate);
 			$this->LinesOnOffer++;
 			return 1;
 		}
@@ -129,17 +129,17 @@ class Offer {
 		$Headers = 'From: ' . $this->GetSupplierEmail() . "\r\n" . 'Reply-To: ' . $this->GetSupplierEmail() . "\r\n" . 'X-Mailer: PHP/' . phpversion();
 		if ($_SESSION['SmtpSetting'] == 1) {
 			include('includes/htmlMimeMail.php');
-			$mail = new htmlMimeMail();
-			$mail->setText($Message);
-			$mail->setSubject($Subject);
-			$mail->setFrom($this->GetSupplierEmail());
-			$mail->setHeader('Reply-To', $this->GetSupplierEmail());
-			$mail->setCc($this->GetSupplierEmail());
+			$Mail = new htmlMimeMail();
+			$Mail->setText($Message);
+			$Mail->setSubject($Subject);
+			$Mail->setFrom($this->GetSupplierEmail());
+			$Mail->setHeader('Reply-To', $this->GetSupplierEmail());
+			$Mail->setCc($this->GetSupplierEmail());
 		}
 		if ($_SESSION['SmtpSetting'] == 0) {
 			$Result = mail($_SESSION['PurchasingManagerEmail'], $Subject, $Message, $Headers);
 		} else {
-			$Result = SendmailBySmtp($mail, array(
+			$Result = SendmailBySmtp($Mail, array(
 				$Supplier->EmailAddress,
 				$_SESSION['PurchasingManagerEmail']
 			));
@@ -172,7 +172,7 @@ class Offer {
 class LineDetails {
 	/* PurchOrderDetails */
 	var $LineNo;
-	var $StockID;
+	var $StockId;
 	var $ItemDescription;
 	var $Quantity;
 	var $Price;

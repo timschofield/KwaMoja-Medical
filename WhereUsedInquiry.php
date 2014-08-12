@@ -5,37 +5,37 @@ $Title = _('Where Used Inquiry');
 include('includes/header.inc');
 
 if (isset($_GET['StockID'])) {
-	$StockID = trim(mb_strtoupper($_GET['StockID']));
+	$StockId = trim(mb_strtoupper($_GET['StockID']));
 } elseif (isset($_POST['StockID'])) {
-	$StockID = trim(mb_strtoupper($_POST['StockID']));
+	$StockId = trim(mb_strtoupper($_POST['StockID']));
 }
 
 echo '<div class="toplink"><a href="' . $RootPath . '/SelectProduct.php">' . _('Back to Items') . '</a></div>
 	<p class="page_title_text noPrint" >
 		<img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '
 	</p>';
-if (isset($StockID)) {
+if (isset($StockId)) {
 	$Result = DB_query("SELECT description,
 								units,
 								mbflag
 						FROM stockmaster
-						WHERE stockid='" . $StockID . "'");
+						WHERE stockid='" . $StockId . "'");
 	$MyRow = DB_fetch_row($Result);
 	if (DB_num_rows($Result) == 0) {
-		prnMsg(_('The item code entered') . ' - ' . $StockID . ' ' . _('is not set up as an item in the system') . '. ' . _('Re-enter a valid item code or select from the Select Item link above'), 'error');
+		prnMsg(_('The item code entered') . ' - ' . $StockId . ' ' . _('is not set up as an item in the system') . '. ' . _('Re-enter a valid item code or select from the Select Item link above'), 'error');
 		include('includes/footer.inc');
 		exit;
 	}
 	echo '<br />
-		<div class="centre"><h3>' . $StockID . ' - ' . $MyRow[0] . '  (' . _('in units of') . ' ' . $MyRow[1] . ')</h3></div>';
+		<div class="centre"><h3>' . $StockId . ' - ' . $MyRow[0] . '  (' . _('in units of') . ' ' . $MyRow[1] . ')</h3></div>';
 }
 
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">
 	<div class="centre">
 		<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
-if (isset($StockID)) {
-	echo _('Enter an Item Code') . ': <input type="text" name="StockID" size="21" autofocus="autofocus" required="required" minlength="1" maxlength="20" value="' . $StockID . '" />';
+if (isset($StockId)) {
+	echo _('Enter an Item Code') . ': <input type="text" name="StockID" size="21" autofocus="autofocus" required="required" minlength="1" maxlength="20" value="' . $StockId . '" />';
 } else {
 	echo _('Enter an Item Code') . ': <input type="text" name="StockID" size="21" autofocus="autofocus" required="required" minlength="1" maxlength="20" />';
 }
@@ -45,7 +45,7 @@ echo '<input type="submit" name="ShowWhereUsed" value="' . _('Show Where Used') 
 echo '<br />
 	  </div>';
 
-if (isset($StockID)) {
+if (isset($StockId)) {
 
 	$SQL = "SELECT bom.*,
 				stockmaster.description
@@ -56,14 +56,14 @@ if (isset($StockID)) {
 				ON locationusers.loccode=bom.loccode
 				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
 				AND locationusers.canview=1
-			WHERE component='" . $StockID . "'
+			WHERE component='" . $StockId . "'
 				AND bom.effectiveafter<=CURRENT_DATE
 				AND bom.effectiveto >=CURRENT_DATE";
 
 	$ErrMsg = _('The parents for the selected part could not be retrieved because');
 	$Result = DB_query($SQL, $ErrMsg);
 	if (DB_num_rows($Result) == 0) {
-		prnMsg(_('The selected item') . ' ' . $StockID . ' ' . _('is not used as a component of any other parts'), 'error');
+		prnMsg(_('The selected item') . ' ' . $StockId . ' ' . _('is not used as a component of any other parts'), 'error');
 	} else {
 
 		echo '<table width="97%" class="selection">

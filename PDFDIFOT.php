@@ -6,11 +6,11 @@ include('includes/SQL_CommonFunctions.inc');
 $InputError = 0;
 
 if (isset($_POST['FromDate']) and !Is_Date($_POST['FromDate'])) {
-	$msg = _('The date from must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
+	$Msg = _('The date from must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
 	$InputError = 1;
 }
 if (isset($_POST['ToDate']) and !Is_Date($_POST['ToDate'])) {
-	$msg = _('The date to must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
+	$Msg = _('The date to must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
 	$InputError = 1;
 }
 
@@ -99,7 +99,7 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate']) or $InputError == 1) 
 		   </form>';
 
 	if ($InputError == 1) {
-		prnMsg($msg, 'error');
+		prnMsg($Msg, 'error');
 	}
 	include('includes/footer.inc');
 	exit;
@@ -312,19 +312,19 @@ $PDF->OutputD($ReportFileName);
 if ($_POST['Email'] == 'Yes') {
 	$PDF->Output($_SESSION['reports_dir'] . '/' . $ReportFileName, 'F');
 	include('includes/htmlMimeMail.php');
-	$mail = new htmlMimeMail();
-	$attachment = $mail->getFile($_SESSION['reports_dir'] . '/' . $ReportFileName);
-	$mail->setText(_('Please find herewith DIFOT report from') . ' ' . $_POST['FromDate'] . ' ' . _('to') . ' ' . $_POST['ToDate']);
-	$mail->addAttachment($attachment, 'DIFOT.pdf', 'application/pdf');
-	$mail->setFrom($_SESSION['CompanyRecord']['coyname'] . '<' . $_SESSION['CompanyRecord']['email'] . '>');
+	$Mail = new htmlMimeMail();
+	$attachment = $Mail->getFile($_SESSION['reports_dir'] . '/' . $ReportFileName);
+	$Mail->setText(_('Please find herewith DIFOT report from') . ' ' . $_POST['FromDate'] . ' ' . _('to') . ' ' . $_POST['ToDate']);
+	$Mail->addAttachment($attachment, 'DIFOT.pdf', 'application/pdf');
+	$Mail->setFrom($_SESSION['CompanyRecord']['coyname'] . '<' . $_SESSION['CompanyRecord']['email'] . '>');
 
 	if ($_SESSION['SmtpSetting'] == 0) {
-		$mail->setFrom($_SESSION['CompanyRecord']['coyname'] . ' <' . $_SESSION['CompanyRecord']['email'] . '>');
-		$Result = $mail->send(array(
+		$Mail->setFrom($_SESSION['CompanyRecord']['coyname'] . ' <' . $_SESSION['CompanyRecord']['email'] . '>');
+		$Result = $Mail->send(array(
 			$_SESSION['FactoryManagerEmail']
 		));
 	} else {
-		$Result = SendmailBySmtp($mail, array(
+		$Result = SendmailBySmtp($Mail, array(
 			$_SESSION['FactoryManagerEmail']
 		));
 	}

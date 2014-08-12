@@ -242,16 +242,16 @@ if ($ListCount == 0) {
 	$PDF->Output($_SESSION['reports_dir'] . '/InventoryReport.pdf', 'F');
 	$PDF->__destruct();
 
-	$mail = new htmlMimeMail();
-	$attachment = $mail->getFile($_SESSION['reports_dir'] . '/InventoryReport.pdf');
-	$mail->setText(_('Please find herewith the stock valuation report'));
-	$mail->setSubject(_('Inventory Valuation Report'));
-	$mail->addAttachment($attachment, 'InventoryReport.pdf', 'application/pdf');
+	$Mail = new htmlMimeMail();
+	$attachment = $Mail->getFile($_SESSION['reports_dir'] . '/InventoryReport.pdf');
+	$Mail->setText(_('Please find herewith the stock valuation report'));
+	$Mail->setSubject(_('Inventory Valuation Report'));
+	$Mail->addAttachment($attachment, 'InventoryReport.pdf', 'application/pdf');
 	if ($_SESSION['SmtpSetting'] == 0) {
-		$mail->setFrom($_SESSION['CompanyRecord']['coyname'] . '<' . $_SESSION['CompanyRecord']['email'] . '>');
-		$Result = $mail->send($Recipients);
+		$Mail->setFrom($_SESSION['CompanyRecord']['coyname'] . '<' . $_SESSION['CompanyRecord']['email'] . '>');
+		$Result = $Mail->send($Recipients);
 	} else {
-		$Result = SendmailBySmtp($mail, $Recipients);
+		$Result = SendmailBySmtp($Mail, $Recipients);
 	}
 	if ($Result) {
 		$Title = _('Print Inventory Valuation');

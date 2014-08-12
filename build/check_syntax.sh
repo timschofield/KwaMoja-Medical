@@ -6,8 +6,8 @@ for f in `find . -name "*.php" -o -name "*.inc"`
 do
     newname=`echo $f | cut -c3-`
     filename="$ROOT_DIR/$newname"
-    echo $filename
-    output=$((php -l $filename ) 2>&1)
+    echo $FileName
+    output=$((php -l $FileName ) 2>&1)
 
     if [ $? != 0 ]
     then

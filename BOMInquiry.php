@@ -5,9 +5,9 @@ $Title = _('Costed Bill Of Material');
 include('includes/header.inc');
 
 if (isset($_GET['StockID'])) {
-	$StockID = trim(mb_strtoupper($_GET['StockID']));
+	$StockId = trim(mb_strtoupper($_GET['StockID']));
 } elseif (isset($_POST['StockID'])) {
-	$StockID = trim(mb_strtoupper($_POST['StockID']));
+	$StockId = trim(mb_strtoupper($_POST['StockID']));
 }
 
 if (!isset($_POST['StockID'])) {
@@ -121,8 +121,8 @@ if (isset($_POST['Search']) and isset($Result) and !isset($SelectedParent)) {
 		} else {
 			$StockOnHand = locale_number_format($MyRow['totalonhand'], 2);
 		}
-		$tabindex = $j + 4;
-		printf('<td><input tabindex="' . $tabindex . '" type="submit" name="StockID" value="%s" /></td>
+		$TabIndex = $j + 4;
+		printf('<td><input tabindex="' . $TabIndex . '" type="submit" name="StockID" value="%s" /></td>
 				<td>%s</td>
 				<td class="number">%s</td>
 				<td>%s</td>
@@ -138,14 +138,14 @@ if (!isset($_POST['StockID'])) {
 	echo '</form>';
 }
 
-if (isset($StockID) and $StockID != "") {
+if (isset($StockId) and $StockId != "") {
 
 	$Result = DB_query("SELECT description,
 								units,
 								labourcost,
 								overheadcost
 						FROM stockmaster
-						WHERE stockid='" . $StockID . "'");
+						WHERE stockid='" . $StockId . "'");
 	$MyRow = DB_fetch_array($Result);
 	$ParentLabourCost = $MyRow['labourcost'];
 	$ParentOverheadCost = $MyRow['overheadcost'];
@@ -163,7 +163,7 @@ if (isset($StockID) and $StockID != "") {
 				INNER JOIN stockcosts
 					ON stockmaster.stockid=stockcosts.stockid
 					AND stockcosts.succeeded=0
-				WHERE bom.parent = '" . $StockID . "'
+				WHERE bom.parent = '" . $StockId . "'
 					AND bom.effectiveafter < CURRENT_DATE
 					AND bom.effectiveto > CURRENT_DATE";
 

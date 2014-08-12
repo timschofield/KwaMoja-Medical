@@ -23,11 +23,11 @@ if ($_POST['EntryType'] == 'KEYED') {
 					ON locationusers.loccode=stockserialitems.loccode
 					AND locationusers.userid='" . $_SESSION['UserID'] . "'
 					AND locationusers.canupd=1
-				WHERE stockid='" . $StockID . "'
+				WHERE stockid='" . $StockId . "'
 					AND stockserialitems.loccode ='" . $LocationOut . "'
 					AND quantity > 0";
 
-	$ErrMsg = '<br />' . _('Could not retrieve the items for') . ' ' . $StockID;
+	$ErrMsg = '<br />' . _('Could not retrieve the items for') . ' ' . $StockId;
 	$Bundles = DB_query($SQL, $ErrMsg);
 	echo '<table class="selection"><tr>';
 	if (DB_num_rows($Bundles) > 0) {
@@ -39,12 +39,12 @@ if ($_POST['EntryType'] == 'KEYED') {
 
 		echo '<td valign="top"><b>' . _('Select Existing Items') . '</b><br />';
 
-		echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $identifier . '" method="post" class="noPrint">';
+		echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '" method="post" class="noPrint">';
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 		echo '<input type="hidden" name="LineNo" value="' . $LineNo . '">
-			<input type="hidden" name="StockID" value="' . $StockID . '">
+			<input type="hidden" name="StockID" value="' . $StockId . '">
 			<input type="hidden" name="EntryType" value="KEYED">
-			<input type="hidden" name="identifier" value="' . $identifier . '">
+			<input type="hidden" name="identifier" value="' . $Identifier . '">
 			<input type="hidden" name="EditControlled" value="true">
 			<select name=Bundles[] multiple="multiple">';
 
@@ -77,7 +77,7 @@ if ($_POST['EntryType'] == 'KEYED') {
 		echo $ItemsAvailable . ' ' . _('items available');
 		echo '</td>';
 	} else {
-		echo '<td>' . prnMsg(_('There does not appear to be any of') . ' ' . $StockID . ' ' . _('left in') . ' ' . $LocationOut, 'warn') . '</td>';
+		echo '<td>' . prnMsg(_('There does not appear to be any of') . ' ' . $StockId . ' ' . _('left in') . ' ' . $LocationOut, 'warn') . '</td>';
 	}
 	echo '</tr></table>';
 }

@@ -12,16 +12,16 @@ include('includes/header.inc');
 
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Inventory') . '" alt="" /><b>' . $Title . '</b></p>';
 
-$identifier = $_GET['identifier'];
+$Identifier = $_GET['identifier'];
 
 if (isset($_GET['NewTransfer'])) {
-	unset($_SESSION['Transfer' . $identifier]);
+	unset($_SESSION['Transfer' . $Identifier]);
 }
-if (isset($_SESSION['Transfer' . $identifier]) and $_SESSION['Transfer' . $identifier]->TrfID == '') {
-	unset($_SESSION['Transfer' . $identifier]);
+if (isset($_SESSION['Transfer' . $Identifier]) and $_SESSION['Transfer' . $Identifier]->TrfID == '') {
+	unset($_SESSION['Transfer' . $Identifier]);
 }
 
-if (!isset($_SESSION['Transfer' . $identifier])) {
+if (!isset($_SESSION['Transfer' . $Identifier])) {
 	/* This page can only be called when a stock Transfer is pending */
 	echo '<div class="centre"><a href="' . $RootPath . '/StockTransfers.php?NewTransfer=Yes">' . _('Enter A Stock Transfer') . '</a><br />';
 	prnMsg(_('This page can only be opened if a Stock Transfer for a Controlled Item has been initiated'), 'error');
@@ -41,10 +41,10 @@ if (isset($_GET['TransferItem'])) {
 /*Save some typing by referring to the line item class object in short form */
 if (isset($TransferItem)) {
 	/*we are in a bulk transfer */
-	$LineItem =& $_SESSION['Transfer' . $identifier]->TransferItem[$TransferItem];
+	$LineItem =& $_SESSION['Transfer' . $Identifier]->TransferItem[$TransferItem];
 } else {
 	/*we are in an individual transfer */
-	$LineItem =& $_SESSION['Transfer' . $identifier]->TransferItem[0];
+	$LineItem =& $_SESSION['Transfer' . $Identifier]->TransferItem[0];
 }
 
 //Make sure this item is really controlled
@@ -65,18 +65,18 @@ if (isset($TransferItem)) {
 
 	echo _('Transfer Items is set equal to') . ' ' . $TransferItem;
 
-	echo '<a href="' . $RootPath . '/StockLocTransferReceive.php?identifier=' . urlencode($identifier) . '&StockID=' . urlencode($LineItem->StockID) . '">' . _('Back To Transfer Screen') . '</a>';
+	echo '<a href="' . $RootPath . '/StockLocTransferReceive.php?identifier=' . urlencode($Identifier) . '&StockID=' . urlencode($LineItem->StockID) . '">' . _('Back To Transfer Screen') . '</a>';
 } else {
-	echo '<a href="' . $RootPath . '/StockTransfers.php?identifier=' . urlencode($identifier) . '&StockID=' . urlencode($LineItem->StockID) . '">' . _('Back To Transfer Screen') . '</a>';
+	echo '<a href="' . $RootPath . '/StockTransfers.php?identifier=' . urlencode($Identifier) . '&StockID=' . urlencode($LineItem->StockID) . '">' . _('Back To Transfer Screen') . '</a>';
 }
 
 echo '<font size="2"><b>' . _('Transfer of controlled item') . ' ' . $LineItem->StockID . ' - ' . $LineItem->ItemDescription . '</b></font>
 	</div>';
 
 /** vars needed by InputSerialItem : **/
-$LocationOut = $_SESSION['Transfer' . $identifier]->StockLocationFrom;
+$LocationOut = $_SESSION['Transfer' . $Identifier]->StockLocationFrom;
 $ItemMustExist = true;
-$StockID = $LineItem->StockID;
+$StockId = $LineItem->StockID;
 $InOutModifier = 1;
 $ShowExisting = true;
 if (isset($TransferItem)) {

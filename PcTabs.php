@@ -102,7 +102,7 @@ if (isset($_POST['Submit'])) {
 									glaccountpcash = '" . $_POST['GLAccountPcashTab'] . "'
 				WHERE tabcode = '" . $SelectedTab . "'";
 
-		$msg = _('The Petty Cash Tab') . ' ' . $SelectedTab . ' ' . _('has been updated');
+		$Msg = _('The Petty Cash Tab') . ' ' . $SelectedTab . ' ' . _('has been updated');
 	} elseif ($InputError != 1) {
 
 		// First check the type is not being duplicated
@@ -140,7 +140,7 @@ if (isset($_POST['Submit'])) {
 									'" . $_POST['GLAccountCash'] . "',
 									'" . $_POST['GLAccountPcashTab'] . "')";
 
-			$msg = _('The Petty Cash Tab') . ' ' . $_POST['TabCode'] . ' ' . _('has been created');
+			$Msg = _('The Petty Cash Tab') . ' ' . $_POST['TabCode'] . ' ' . _('has been created');
 
 		}
 	}
@@ -148,7 +148,7 @@ if (isset($_POST['Submit'])) {
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
 		$Result = DB_query($SQL);
-		prnMsg($msg, 'success');
+		prnMsg($Msg, 'success');
 		unset($SelectedTab);
 		unset($_POST['SelectUser']);
 		unset($_POST['TabCode']);

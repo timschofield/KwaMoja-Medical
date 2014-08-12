@@ -53,12 +53,12 @@ class Tender {
 		$Headers = 'From: ' . $_SESSION['PurchasingManagerEmail'] . "\r\n" . 'Reply-To: ' . $_SESSION['PurchasingManagerEmail'] . "\r\n" . 'X-Mailer: PHP/' . phpversion();
 		if ($_SESSION['SmtpSetting'] == 1) {
 			include('includes/htmlMimeMail.php');
-			$mail = new htmlMimeMail();
-			$mail->setText($EmailText);
-			$mail->setSubject($Subject);
-			$mail->setFrom($_SESSION['PurchasingManagerEmail']);
-			$mail->setHeader('Reply-To', $_SESSION['PurchasingManagerEmail']);
-			$mail->setCc($_SESSION['PurchasingManagerEmail']); //Set this as a copy for filing purpose
+			$Mail = new htmlMimeMail();
+			$Mail->setText($EmailText);
+			$Mail->setSubject($Subject);
+			$Mail->setFrom($_SESSION['PurchasingManagerEmail']);
+			$Mail->setHeader('Reply-To', $_SESSION['PurchasingManagerEmail']);
+			$Mail->setCc($_SESSION['PurchasingManagerEmail']); //Set this as a copy for filing purpose
 
 		}
 		foreach ($this->Suppliers as $Supplier) {
@@ -66,7 +66,7 @@ class Tender {
 			if ($_SESSION['SmtpSetting'] == 0) {
 				$Result = mail($Supplier->EmailAddress, $Subject, $EmailText, $Headers);
 			} else {
-				$Result = SendmailBySmtp($mail, array(
+				$Result = SendmailBySmtp($Mail, array(
 					$Supplier->EmailAddress,
 					$_SESSION['PurchasingManagerEmail']
 				));
@@ -165,11 +165,11 @@ class Tender {
 		DB_Txn_Commit();
 	}
 
-	function add_item_to_tender($LineNo, $StockID, $Qty, $ItemDescr, $UOM, $DecimalPlaces, $ExpiryDate) {
+	function add_item_to_tender($LineNo, $StockId, $Qty, $ItemDescr, $UOM, $DecimalPlaces, $ExpiryDate) {
 
 		if (isset($Qty) and $Qty != 0) {
 
-			$this->LineItems[$LineNo] = new LineDetails($LineNo, $StockID, $Qty, $ItemDescr, $UOM, $DecimalPlaces, $ExpiryDate);
+			$this->LineItems[$LineNo] = new LineDetails($LineNo, $StockId, $Qty, $ItemDescr, $UOM, $DecimalPlaces, $ExpiryDate);
 			$this->LinesOnTender++;
 			return 1;
 		}
@@ -217,7 +217,7 @@ class Tender {
 class LineDetails {
 	/* PurchOrderDetails */
 	var $LineNo;
-	var $StockID;
+	var $StockId;
 	var $ItemDescription;
 	var $Quantity;
 	var $Price;

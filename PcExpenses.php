@@ -92,7 +92,7 @@ if (isset($_POST['submit'])) {
 					tag = '" . $_POST['Tag'] . "'
 				WHERE codeexpense = '" . $SelectedExpense . "'";
 
-		$msg = _('The Expenses type') . ' ' . $SelectedExpense . ' ' . _('has been updated');
+		$Msg = _('The Expenses type') . ' ' . $SelectedExpense . ' ' . _('has been updated');
 	} elseif ($InputError != 1) {
 
 		// First check the type is not being duplicated
@@ -121,7 +121,7 @@ if (isset($_POST['submit'])) {
 						'" . $_POST['GLAccount'] . "',
 						'" . $_POST['Tag'] . "')";
 
-			$msg = _('Expense ') . ' ' . $_POST['CodeExpense'] . ' ' . _('has been created');
+			$Msg = _('Expense ') . ' ' . $_POST['CodeExpense'] . ' ' . _('has been created');
 			$checkSql = "SELECT count(codeexpense)
 						FROM pcexpenses";
 			$Result = DB_query($checkSql);
@@ -133,7 +133,7 @@ if (isset($_POST['submit'])) {
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
 		$Result = DB_query($SQL);
-		prnMsg($msg, 'success');
+		prnMsg($Msg, 'success');
 		echo '<br />';
 		unset($SelectedExpense);
 		unset($_POST['CodeExpense']);

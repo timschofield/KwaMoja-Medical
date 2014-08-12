@@ -12,11 +12,11 @@ if (isset($_GET['WO'])) {
 	unset($SelectedWO);
 }
 if (isset($_GET['StockID'])) {
-	$StockID = $_GET['StockID'];
+	$StockId = $_GET['StockID'];
 } elseif (isset($_POST['StockID'])) {
-	$StockID = $_POST['StockID'];
+	$StockId = $_POST['StockID'];
 } else {
-	unset($StockID);
+	unset($StockId);
 }
 
 
@@ -178,19 +178,19 @@ if ($NoOfLabels > 0) {
 		$PDF->Output($_SESSION['reports_dir'] . '/' . $PdfFileName, 'F');
 		$PDF->__destruct();
 		include('includes/htmlMimeMail.php');
-		$mail = new htmlMimeMail();
-		$attachment = $mail->getFile($_SESSION['reports_dir'] . '/' . $PdfFileName);
-		$mail->setText(_('Please Process this Work order number') . ' ' . $SelectedWO);
-		$mail->setSubject(_('Work Order Number') . ' ' . $SelectedWO);
-		$mail->addAttachment($attachment, $PdfFileName, 'application/pdf');
+		$Mail = new htmlMimeMail();
+		$attachment = $Mail->getFile($_SESSION['reports_dir'] . '/' . $PdfFileName);
+		$Mail->setText(_('Please Process this Work order number') . ' ' . $SelectedWO);
+		$Mail->setSubject(_('Work Order Number') . ' ' . $SelectedWO);
+		$Mail->addAttachment($attachment, $PdfFileName, 'application/pdf');
 		//since sometime the mail server required to verify the users, so must set this information.
 		if ($_SESSION['SmtpSetting'] == 0) { //use the mail service provice by the server.
-			$mail->setFrom($_SESSION['CompanyRecord']['coyname'] . '<' . $_SESSION['CompanyRecord']['email'] . '>');
-			$Success = $mail->send(array(
+			$Mail->setFrom($_SESSION['CompanyRecord']['coyname'] . '<' . $_SESSION['CompanyRecord']['email'] . '>');
+			$Success = $Mail->send(array(
 				$_POST['EmailTo']
 			));
 		} else if ($_SESSION['SmtpSetting'] == 1) {
-			$Success = SendmailBySmtp($mail, array(
+			$Success = SendmailBySmtp($Mail, array(
 				$_POST['EmailTo']
 			));
 

@@ -75,9 +75,9 @@ function InsertSalesArea($AreaDetails, $User, $Password) {
 	}
 	$FieldNames = '';
 	$FieldValues = '';
-	foreach ($AreaDetails as $key => $value) {
-		$FieldNames .= $key . ', ';
-		$FieldValues .= '"' . $value . '", ';
+	foreach ($AreaDetails as $Key => $Value) {
+		$FieldNames .= $Key . ', ';
+		$FieldValues .= '"' . $Value . '", ';
 	}
 	$sql = 'INSERT INTO areas (' . mb_substr($FieldNames, 0, -2) . ")
 				VALUES ('" . mb_substr($FieldValues, 0, -2) . "') ";

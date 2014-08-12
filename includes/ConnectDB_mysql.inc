@@ -6,7 +6,7 @@ global $db; // Make sure it IS global, regardless of our context
 if (!isset($DBPort)) {
 	$DBPort = 3306;
 }
-$db = mysql_pconnect($host . ':' . $DBPort, $DBUser, $DBPassword);
+$db = mysql_pconnect($Host . ':' . $DBPort, $DBUser, $DBPassword);
 $Result = DB_query("SET sql_mode = 'ANSI'", $db);
 
 //this statement sets the charset to be used for sending data to and from the db server
@@ -48,8 +48,8 @@ require_once($PathPrefix . 'includes/MiscFunctions.php');
 
 //DB wrapper functions to change only once for whole application
 
-function DB_connect($host, $DBUser, $DBPassword, $DBPort) {
-	return mysql_connect($host, $DBUser, $DBPassword, $_SESSION['DatabaseName'], $DBPort);
+function DB_connect($Host, $DBUser, $DBPassword, $DBPort) {
+	return mysql_connect($Host, $DBUser, $DBPassword, $_SESSION['DatabaseName'], $DBPort);
 }
 
 function DB_query($SQL, $ErrorMessage = '', $DebugMessage = '', $Transaction = false, $TrapErrors = true) {

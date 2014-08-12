@@ -140,8 +140,8 @@ if (!(isset($_POST['Search']))) {
 		} else {
 			$WhereLocation = " AND locstock.loccode IN(";
 			$commactr = 0;
-			foreach ($_POST['Location'] as $key => $value) {
-				$WhereLocation .= "'" . $value . "'";
+			foreach ($_POST['Location'] as $Key => $Value) {
+				$WhereLocation .= "'" . $Value . "'";
 				$commactr++;
 				if ($commactr < sizeof($_POST['Location'])) {
 					$WhereLocation .= ",";

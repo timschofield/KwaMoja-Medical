@@ -87,7 +87,7 @@ echo '<tbody>
 		</tr>';
 $k = 0;
 while ($row = DB_fetch_array($WorkOrdersResult)) {
-	$StockID = $row['stockid'];
+	$StockId = $row['stockid'];
 	if ($k == 1) {
 		echo '<tr class="EvenTableRows">';
 		$k = 0;
@@ -100,7 +100,7 @@ while ($row = DB_fetch_array($WorkOrdersResult)) {
 	$qreq = locale_number_format($row['qtyreqd'], $row['decimalplaces']);
 	$qout = locale_number_format($row['qtyreqd'] - $row['qtyrecd'], $row['decimalplaces']);
 
-	echo '<td><a href="' . $RootPath . '/StockStatus.php?StockID=' . urlencode($StockID) . '" target="_blank">' . $row['stockid'] . ' -' . $row['description'] . '</td>
+	echo '<td><a href="' . $RootPath . '/StockStatus.php?StockID=' . urlencode($StockId) . '" target="_blank">' . $row['stockid'] . ' -' . $row['description'] . '</td>
 			<td class="number">' . $qreq . '</td>
 			<td class="number">' . $qout . '</td>
 		</tbody>';

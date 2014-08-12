@@ -62,8 +62,8 @@ function InsertGLAccountGroup($AccountGroupDetails, $user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	foreach ($AccountGroupDetails as $key => $value) {
-		$AccountGroupDetails[$key] = DB_escape_string($value);
+	foreach ($AccountGroupDetails as $Key => $Value) {
+		$AccountGroupDetails[$Key] = DB_escape_string($Value);
 	}
 	$Errors = VerifyAccountGroup($AccountGroupDetails['groupname'], sizeof($Errors), $Errors);
 	$Errors = VerifyAccountSectionExists($AccountGroupDetails['sectioninaccounts'], sizeof($Errors), $Errors);
@@ -73,9 +73,9 @@ function InsertGLAccountGroup($AccountGroupDetails, $user, $password) {
 	$Errors = VerifyParentGroupExists($AccountGroupDetails['parentgroupname'], sizeof($Errors), $Errors);
 	$FieldNames = '';
 	$FieldValues = '';
-	foreach ($AccountGroupDetails as $key => $value) {
-		$FieldNames .= $key . ', ';
-		$FieldValues .= '"' . $value . '", ';
+	foreach ($AccountGroupDetails as $Key => $Value) {
+		$FieldNames .= $Key . ', ';
+		$FieldValues .= '"' . $Value . '", ';
 	}
 	if (sizeof($Errors) == 0) {
 		$sql = "INSERT INTO accountgroups ('" . mb_substr($FieldNames, 0, -2) . "')

@@ -28,8 +28,8 @@ function InsertGLAccountSection($AccountSectionDetails, $user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	foreach ($AccountSectionDetails as $key => $value) {
-		$AccountSectionDetails[$key] = DB_escape_string($value);
+	foreach ($AccountSectionDetails as $Key => $Value) {
+		$AccountSectionDetails[$Key] = DB_escape_string($Value);
 	}
 	$Errors = VerifyAccountSection($AccountSectionDetails['sectionname'], sizeof($Errors), $Errors);
 	if (isset($AccountSectionDetails['accountname'])) {
@@ -37,9 +37,9 @@ function InsertGLAccountSection($AccountSectionDetails, $user, $password) {
 	}
 	$FieldNames = '';
 	$FieldValues = '';
-	foreach ($AccountSectionDetails as $key => $value) {
-		$FieldNames .= $key . ', ';
-		$FieldValues .= '"' . $value . '", ';
+	foreach ($AccountSectionDetails as $Key => $Value) {
+		$FieldNames .= $Key . ', ';
+		$FieldValues .= '"' . $Value . '", ';
 	}
 	if (sizeof($Errors) == 0) {
 		$sql = "INSERT INTO accountsection ('" . mb_substr($FieldNames, 0, -2) . "')

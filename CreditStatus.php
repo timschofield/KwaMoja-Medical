@@ -57,7 +57,7 @@ if (isset($_POST['submit'])) {
 		$i++;
 	}
 
-	$msg = '';
+	$Msg = '';
 
 	if (isset($SelectedReason) and $InputError != 1) {
 
@@ -74,7 +74,7 @@ if (isset($_POST['submit'])) {
 							dissallowinvoices=0
 							WHERE reasoncode = '" . $SelectedReason . "'";
 		}
-		$msg = _('The credit status record has been updated');
+		$Msg = _('The credit status record has been updated');
 
 	} else if ($InputError != 1) {
 
@@ -97,14 +97,14 @@ if (isset($_POST['submit'])) {
 											0)";
 		}
 
-		$msg = _('A new credit status record has been inserted');
+		$Msg = _('A new credit status record has been inserted');
 		unset($SelectedReason);
 		unset($_POST['ReasonDescription']);
 	}
 	//run the SQL from either of the above possibilites
 	$Result = DB_query($SQL);
-	if ($msg != '') {
-		prnMsg($msg, 'success');
+	if ($Msg != '') {
+		prnMsg($Msg, 'success');
 	}
 } elseif (isset($_GET['delete'])) {
 	//the link to delete a selected record was clicked instead of the submit button

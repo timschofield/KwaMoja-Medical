@@ -39,7 +39,7 @@ if (isset($_POST['submit']) and isset($_POST['NewCompany'])) {
 
 			$Result = $_FILES['LogoFile']['error'];
 			$UploadTheLogo = 'Yes'; //Assume all is well to start off with
-			$filename = './companies/' . $_POST['NewCompany'] . '/logo.jpg';
+			$FileName = './companies/' . $_POST['NewCompany'] . '/logo.jpg';
 
 			//But check for the worst
 			if (mb_strtoupper(mb_substr(trim($_FILES['LogoFile']['name']), mb_strlen($_FILES['LogoFile']['name']) - 3)) != 'JPG') {
@@ -51,9 +51,9 @@ if (isset($_POST['submit']) and isset($_POST['NewCompany'])) {
 			} elseif ($_FILES['LogoFile']['type'] == "text/plain") { //File Type Check
 				prnMsg(_('Only graphics files can be uploaded'), 'warn');
 				$UploadTheLogo = 'No';
-			} elseif (file_exists($filename)) {
+			} elseif (file_exists($FileName)) {
 				prnMsg(_('Attempting to overwrite an existing item image'), 'warn');
-				$Result = unlink($filename);
+				$Result = unlink($FileName);
 				if (!$Result) {
 					prnMsg(_('The existing image could not be removed'), 'error');
 					$UploadTheLogo = 'No';
@@ -116,8 +116,8 @@ if (isset($_POST['submit']) and isset($_POST['NewCompany'])) {
 
 			/*OK Now upload the logo */
 			if ($UploadTheLogo == 'Yes') {
-				$Result = move_uploaded_file($_FILES['LogoFile']['tmp_name'], $filename);
-				$message = ($Result) ? _('File url') . '<a href="' . $filename . '">' . $filename . '</a>' : _('Something is wrong with uploading a file');
+				$Result = move_uploaded_file($_FILES['LogoFile']['tmp_name'], $FileName);
+				$message = ($Result) ? _('File url') . '<a href="' . $FileName . '">' . $FileName . '</a>' : _('Something is wrong with uploading a file');
 			}
 
 		} else {

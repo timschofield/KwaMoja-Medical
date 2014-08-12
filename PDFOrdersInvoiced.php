@@ -6,17 +6,17 @@ $Title = _('Orders Invoiced Report');
 $InputError = 0;
 
 if (isset($_POST['FromDate']) and !Is_date($_POST['FromDate'])) {
-	$msg = _('The date from must be specified in the format') . ' ' . $DefaultDateFormat;
+	$Msg = _('The date from must be specified in the format') . ' ' . $DefaultDateFormat;
 	$InputError = 1;
 	unset($_POST['FromDate']);
 }
 if (isset($_POST['ToDate']) and !Is_date($_POST['ToDate'])) {
-	$msg = _('The date to must be specified in the format') . ' ' . $DefaultDateFormat;
+	$Msg = _('The date to must be specified in the format') . ' ' . $DefaultDateFormat;
 	$InputError = 1;
 	unset($_POST['ToDate']);
 }
 if (isset($_POST['FromDate']) and isset($_POST['ToDate']) and Date1GreaterThanDate2($_POST['FromDate'], $_POST['ToDate'])) {
-	$msg = _('The date to must be after the date from');
+	$Msg = _('The date to must be after the date from');
 	$InputError = 1;
 	unset($_POST['ToDate']);
 	unset($_POST['FromoDate']);
@@ -25,7 +25,7 @@ if (isset($_POST['FromDate']) and isset($_POST['ToDate']) and Date1GreaterThanDa
 if (!isset($_POST['FromDate']) or !isset($_POST['ToDate']) or $InputError == 1) {
 	include('includes/header.inc');
 	if ($InputError == 1) {
-		prnMsg($msg, 'error');
+		prnMsg($Msg, 'error');
 	}
 
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . $Title . '" alt="" />' . ' ' . _('Orders Invoiced Report') . '</p>';

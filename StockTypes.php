@@ -49,7 +49,7 @@ if (isset($_POST['submit'])) {
 					physicalitem =  '" . $PhysicalItem . "'
 			WHERE type = '" . $SelectedType . "'";
 
-		$msg = _('The stock type') . ' ' . $SelectedType . ' ' . _('has been updated');
+		$Msg = _('The stock type') . ' ' . $SelectedType . ' ' . _('has been updated');
 	} elseif ($InputError != 1) {
 
 		// First check the type is not being duplicated
@@ -77,7 +77,7 @@ if (isset($_POST['submit'])) {
 											'" . $PhysicalItem . "'
 										)";
 
-			$msg = _('Stock type') . ' ' . $_POST['StockType'] . ' ' . _('has been created');
+			$Msg = _('Stock type') . ' ' . $_POST['StockType'] . ' ' . _('has been created');
 		}
 	}
 
@@ -85,7 +85,7 @@ if (isset($_POST['submit'])) {
 		//run the SQL from either of the above possibilites
 		$Result = DB_query($SQL);
 
-		prnMsg($msg, 'success');
+		prnMsg($Msg, 'success');
 
 		unset($SelectedType);
 		unset($_POST['TypeAbbrev']);

@@ -142,7 +142,7 @@ if (isset($_POST['submit'])) {
 									WHERE groupname = '" . $_POST['SelectedAccountGroup'] . "'";
 		$ErrMsg = _('An error occurred in updating the account group');
 		$DbgMsg = _('The SQL that was used to update the account group was');
-		$msg = _('Record Updated');
+		$Msg = _('Record Updated');
 	} elseif ($InputError != 1) {
 		/*Selected group is null cos no item selected on first time round so must be adding a record must be submitting new entries in the new account group form */
 
@@ -159,13 +159,13 @@ if (isset($_POST['submit'])) {
 											'" . $_POST['ParentGroupName'] . "')";
 		$ErrMsg = _('An error occurred in inserting the account group');
 		$DbgMsg = _('The SQL that was used to insert the account group was');
-		$msg = _('Record inserted');
+		$Msg = _('Record inserted');
 	} //$InputError != 1
 
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
 		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
-		prnMsg($msg, 'success');
+		prnMsg($Msg, 'success');
 		unset($_POST['SelectedAccountGroup']);
 		unset($_POST['GroupName']);
 		unset($_POST['SequenceInTB']);
@@ -377,20 +377,20 @@ if (!isset($_GET['delete'])) {
 			<td><select minlength="0" tabindex="2" name="ParentGroupName">';
 
 	$SQL = "SELECT groupname FROM accountgroups";
-	$groupresult = DB_query($SQL, $ErrMsg, $DbgMsg);
+	$GroupResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 	if (!isset($_POST['ParentGroupName'])) {
 		echo '<option selected="selected" value="">' . _('Top Level Group') . '</option>';
 	} else {
 		echo '<option value="">' . _('Top Level Group') . '</option>';
 	}
 
-	while ($grouprow = DB_fetch_array($groupresult)) {
-		if (isset($_POST['ParentGroupName']) and $_POST['ParentGroupName'] == $grouprow['groupname']) {
-			echo '<option selected="selected" value="' . htmlspecialchars($grouprow['groupname'], ENT_QUOTES, 'UTF-8') . '">' . $grouprow['groupname'] . '</option>';
+	while ($GroupRow = DB_fetch_array($GroupResult)) {
+		if (isset($_POST['ParentGroupName']) and $_POST['ParentGroupName'] == $GroupRow['groupname']) {
+			echo '<option selected="selected" value="' . htmlspecialchars($GroupRow['groupname'], ENT_QUOTES, 'UTF-8') . '">' . $GroupRow['groupname'] . '</option>';
 		} else {
-			echo '<option value="' . htmlspecialchars($grouprow['groupname'], ENT_QUOTES, 'UTF-8') . '">' . $grouprow['groupname'] . '</option>';
+			echo '<option value="' . htmlspecialchars($GroupRow['groupname'], ENT_QUOTES, 'UTF-8') . '">' . $GroupRow['groupname'] . '</option>';
 		}
-	} //$grouprow = DB_fetch_array($groupresult)
+	} //$GroupRow = DB_fetch_array($GroupResult)
 	echo '</select>';
 	echo '</td></tr>';
 
@@ -399,15 +399,15 @@ if (!isset($_GET['delete'])) {
 			<td><select required="required" minlength="1" tabindex="3" name="SectionInAccounts">';
 
 	$SQL = "SELECT sectionid, sectionname FROM accountsection ORDER BY sectionid";
-	$secresult = DB_query($SQL, $ErrMsg, $DbgMsg);
+	$SecResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 	echo '<option value=""></option>';
-	while ($secrow = DB_fetch_array($secresult)) {
-		if ($_POST['SectionInAccounts'] == $secrow['sectionid']) {
-			echo '<option selected="selected" value="' . $secrow['sectionid'] . '">' . $secrow['sectionname'] . ' (' . $secrow['sectionid'] . ')</option>';
+	while ($SecRow = DB_fetch_array($SecResult)) {
+		if ($_POST['SectionInAccounts'] == $SecRow['sectionid']) {
+			echo '<option selected="selected" value="' . $SecRow['sectionid'] . '">' . $SecRow['sectionname'] . ' (' . $SecRow['sectionid'] . ')</option>';
 		} else {
-			echo '<option value="' . $secrow['sectionid'] . '">' . $secrow['sectionname'] . ' (' . $secrow['sectionid'] . ')</option>';
+			echo '<option value="' . $SecRow['sectionid'] . '">' . $SecRow['sectionname'] . ' (' . $SecRow['sectionid'] . ')</option>';
 		}
-	} //$secrow = DB_fetch_array($secresult)
+	} //$SecRow = DB_fetch_array($SecResult)
 	echo '</select>';
 	echo '</td></tr>';
 

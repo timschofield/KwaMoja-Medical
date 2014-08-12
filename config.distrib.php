@@ -25,9 +25,9 @@ $SysAdminEmail = 'admin@mydomain.com';
 //date_default_timezone_set('Pacific/Auckland');
 
 // Connection information for the database
-// $host is the computer ip address or name where the database is located
+// $Host is the computer ip address or name where the database is located
 // if the web server is also the database server then 'locahost'
-$host = 'localhost';
+$Host = 'localhost';
 $DBPort = 3306;
 //The type of db server being used
 $DBType = 'mysqli';

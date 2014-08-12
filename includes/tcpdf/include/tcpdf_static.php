@@ -1398,19 +1398,19 @@ class TCPDF_STATIC {
 	/**
 	 * Returns the input text exrypted using AES algorithm and the specified key.
 	 * This method requires mcrypt.
-	 * @param $key (string) encryption key
+	 * @param $Key (string) encryption key
 	 * @param $text (String) input text to be encrypted
 	 * @return String encrypted text
 	 * @author Nicola Asuni
 	 * @since 5.0.005 (2010-05-11)
 	 * @public static
 	 */
-	public static function _AES($key, $text) {
+	public static function _AES($Key, $text) {
 		// padding (RFC 2898, PKCS #5: Password-Based Cryptography Specification Version 2.0)
 		$padding = 16 - (strlen($text) % 16);
 		$text .= str_repeat(chr($padding), $padding);
 		$iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC), MCRYPT_RAND);
-		$text = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $key, $text, MCRYPT_MODE_CBC, $iv);
+		$text = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $Key, $text, MCRYPT_MODE_CBC, $iv);
 		$text = $iv.$text;
 		return $text;
 	}
@@ -1418,7 +1418,7 @@ class TCPDF_STATIC {
 	/**
 	 * Returns the input text encrypted using RC4 algorithm and the specified key.
 	 * RC4 is the standard encryption algorithm used in PDF format
-	 * @param $key (string) Encryption key.
+	 * @param $Key (string) Encryption key.
 	 * @param $text (String) Input text to be encrypted.
 	 * @param $last_enc_key (String) Reference to last RC4 key encrypted.
 	 * @param $last_enc_key_c (String) Reference to last RC4 computed key.
@@ -1427,13 +1427,13 @@ class TCPDF_STATIC {
 	 * @author Klemen Vodopivec, Nicola Asuni
 	 * @public static
 	 */
-	public static function _RC4($key, $text, &$last_enc_key, &$last_enc_key_c) {
-		if (function_exists('mcrypt_encrypt') AND ($out = @mcrypt_encrypt(MCRYPT_ARCFOUR, $key, $text, MCRYPT_MODE_STREAM, ''))) {
+	public static function _RC4($Key, $text, &$last_enc_key, &$last_enc_key_c) {
+		if (function_exists('mcrypt_encrypt') AND ($out = @mcrypt_encrypt(MCRYPT_ARCFOUR, $Key, $text, MCRYPT_MODE_STREAM, ''))) {
 			// try to use mcrypt function if exist
 			return $out;
 		}
-		if ($last_enc_key != $key) {
-			$k = str_repeat($key, ((256 / strlen($key)) + 1));
+		if ($last_enc_key != $Key) {
+			$k = str_repeat($Key, ((256 / strlen($Key)) + 1));
 			$rc4 = range(0, 255);
 			$j = 0;
 			for ($i = 0; $i < 256; ++$i) {
@@ -1442,7 +1442,7 @@ class TCPDF_STATIC {
 				$rc4[$i] = $rc4[$j];
 				$rc4[$j] = $t;
 			}
-			$last_enc_key = $key;
+			$last_enc_key = $Key;
 			$last_enc_key_c = $rc4;
 		} else {
 			$rc4 = $last_enc_key_c;
@@ -1885,12 +1885,12 @@ class TCPDF_STATIC {
 		if (isset($prop['value'])) {
 			if (is_array($prop['value'])) {
 				$opt['opt'] = array();
-				foreach ($prop['value'] AS $key => $optval) {
+				foreach ($prop['value'] AS $Key => $optval) {
 					// exportValues: An array of strings representing the export values for the field.
-					if (isset($prop['exportValues'][$key])) {
-						$opt['opt'][$key] = array($prop['exportValues'][$key], $prop['value'][$key]);
+					if (isset($prop['exportValues'][$Key])) {
+						$opt['opt'][$Key] = array($prop['exportValues'][$Key], $prop['value'][$Key]);
 					} else {
-						$opt['opt'][$key] = $prop['value'][$key];
+						$opt['opt'][$Key] = $prop['value'][$Key];
 					}
 				}
 			} else {
@@ -1999,8 +1999,8 @@ class TCPDF_STATIC {
 		$cssblocks = array();
 		$matches = array();
 		if (preg_match_all('/@media[\s]+([^\§]*)§([^§]*)§/i', $cssdata, $matches) > 0) {
-			foreach ($matches[1] as $key => $type) {
-				$cssblocks[$type] = $matches[2][$key];
+			foreach ($matches[1] as $Key => $type) {
+				$cssblocks[$type] = $matches[2][$Key];
 			}
 			// remove media blocks
 			$cssdata = preg_replace('/@media[\s]+([^\§]*)§([^§]*)§/i', '', $cssdata);
@@ -2021,22 +2021,22 @@ class TCPDF_STATIC {
 			$cssdata = substr($cssdata, 0, -1);
 		}
 		$matches = explode('}', $cssdata);
-		foreach ($matches as $key => $block) {
+		foreach ($matches as $Key => $block) {
 			// index 0 contains the CSS selector, index 1 contains CSS properties
-			$cssblocks[$key] = explode('{', $block);
-			if (!isset($cssblocks[$key][1])) {
+			$cssblocks[$Key] = explode('{', $block);
+			if (!isset($cssblocks[$Key][1])) {
 				// remove empty definitions
-				unset($cssblocks[$key]);
+				unset($cssblocks[$Key]);
 			}
 		}
 		// split groups of selectors (comma-separated list of selectors)
-		foreach ($cssblocks as $key => $block) {
+		foreach ($cssblocks as $Key => $block) {
 			if (strpos($block[0], ',') > 0) {
 				$selectors = explode(',', $block[0]);
 				foreach ($selectors as $sel) {
 					$cssblocks[] = array(0 => trim($sel), 1 => $block[1]);
 				}
-				unset($cssblocks[$key]);
+				unset($cssblocks[$Key]);
 			}
 		}
 		// covert array to selector => properties
@@ -2134,22 +2134,22 @@ class TCPDF_STATIC {
 	/**
 	 * Returns true if the CSS selector is valid for the selected HTML tag
 	 * @param $dom (array) array of HTML tags and properties
-	 * @param $key (int) key of the current HTML tag
+	 * @param $Key (int) key of the current HTML tag
 	 * @param $selector (string) CSS selector string
 	 * @return true if the selector is valid, false otherwise
 	 * @since 5.1.000 (2010-05-25)
 	 * @public static
 	 */
-	public static function isValidCSSSelectorForTag($dom, $key, $selector) {
+	public static function isValidCSSSelectorForTag($dom, $Key, $selector) {
 		$valid = false; // value to be returned
-		$tag = $dom[$key]['value'];
+		$tag = $dom[$Key]['value'];
 		$class = array();
-		if (isset($dom[$key]['attribute']['class']) AND !empty($dom[$key]['attribute']['class'])) {
-			$class = explode(' ', strtolower($dom[$key]['attribute']['class']));
+		if (isset($dom[$Key]['attribute']['class']) AND !empty($dom[$Key]['attribute']['class'])) {
+			$class = explode(' ', strtolower($dom[$Key]['attribute']['class']));
 		}
 		$id = '';
-		if (isset($dom[$key]['attribute']['id']) AND !empty($dom[$key]['attribute']['id'])) {
-			$id = strtolower($dom[$key]['attribute']['id']);
+		if (isset($dom[$Key]['attribute']['id']) AND !empty($dom[$Key]['attribute']['id'])) {
+			$id = strtolower($dom[$Key]['attribute']['id']);
 		}
 		$selector = preg_replace('/([\>\+\~\s]{1})([\.]{1})([^\>\+\~\s]*)/si', '\\1*.\\3', $selector);
 		$matches = array();
@@ -2183,42 +2183,42 @@ class TCPDF_STATIC {
 							if (preg_match('/\[([a-zA-Z0-9]*)[\s]*([\~\^\$\*\|\=]*)[\s]*["]?([^"\]]*)["]?\]/i', $attrib, $attrmatch) > 0) {
 								$att = strtolower($attrmatch[1]);
 								$val = $attrmatch[3];
-								if (isset($dom[$key]['attribute'][$att])) {
+								if (isset($dom[$Key]['attribute'][$att])) {
 									switch ($attrmatch[2]) {
 										case '=': {
-											if ($dom[$key]['attribute'][$att] == $val) {
+											if ($dom[$Key]['attribute'][$att] == $val) {
 												$valid = true;
 											}
 											break;
 										}
 										case '~=': {
-											if (in_array($val, explode(' ', $dom[$key]['attribute'][$att]))) {
+											if (in_array($val, explode(' ', $dom[$Key]['attribute'][$att]))) {
 												$valid = true;
 											}
 											break;
 										}
 										case '^=': {
-											if ($val == substr($dom[$key]['attribute'][$att], 0, strlen($val))) {
+											if ($val == substr($dom[$Key]['attribute'][$att], 0, strlen($val))) {
 												$valid = true;
 											}
 											break;
 										}
 										case '$=': {
-											if ($val == substr($dom[$key]['attribute'][$att], -strlen($val))) {
+											if ($val == substr($dom[$Key]['attribute'][$att], -strlen($val))) {
 												$valid = true;
 											}
 											break;
 										}
 										case '*=': {
-											if (strpos($dom[$key]['attribute'][$att], $val) !== false) {
+											if (strpos($dom[$Key]['attribute'][$att], $val) !== false) {
 												$valid = true;
 											}
 											break;
 										}
 										case '|=': {
-											if ($dom[$key]['attribute'][$att] == $val) {
+											if ($dom[$Key]['attribute'][$att] == $val) {
 												$valid = true;
-											} elseif (preg_match('/'.$val.'[\-]{1}/i', $dom[$key]['attribute'][$att]) > 0) {
+											} elseif (preg_match('/'.$val.'[\-]{1}/i', $dom[$Key]['attribute'][$att]) > 0) {
 												$valid = true;
 											}
 											break;
@@ -2251,22 +2251,22 @@ class TCPDF_STATIC {
 					$selector = substr($selector, 0, $offset);
 					switch ($operator) {
 						case ' ': { // descendant of an element
-							while ($dom[$key]['parent'] > 0) {
-								if (self::isValidCSSSelectorForTag($dom, $dom[$key]['parent'], $selector)) {
+							while ($dom[$Key]['parent'] > 0) {
+								if (self::isValidCSSSelectorForTag($dom, $dom[$Key]['parent'], $selector)) {
 									$valid = true;
 									break;
 								} else {
-									$key = $dom[$key]['parent'];
+									$Key = $dom[$Key]['parent'];
 								}
 							}
 							break;
 						}
 						case '>': { // child of an element
-							$valid = self::isValidCSSSelectorForTag($dom, $dom[$key]['parent'], $selector);
+							$valid = self::isValidCSSSelectorForTag($dom, $dom[$Key]['parent'], $selector);
 							break;
 						}
 						case '+': { // immediately preceded by an element
-							for ($i = ($key - 1); $i > $dom[$key]['parent']; --$i) {
+							for ($i = ($Key - 1); $i > $dom[$Key]['parent']; --$i) {
 								if ($dom[$i]['tag'] AND $dom[$i]['opening']) {
 									$valid = self::isValidCSSSelectorForTag($dom, $i, $selector);
 									break;
@@ -2275,7 +2275,7 @@ class TCPDF_STATIC {
 							break;
 						}
 						case '~': { // preceded by an element
-							for ($i = ($key - 1); $i > $dom[$key]['parent']; --$i) {
+							for ($i = ($Key - 1); $i > $dom[$Key]['parent']; --$i) {
 								if ($dom[$i]['tag'] AND $dom[$i]['opening']) {
 									if (self::isValidCSSSelectorForTag($dom, $i, $selector)) {
 										break;
@@ -2294,18 +2294,18 @@ class TCPDF_STATIC {
 	/**
 	 * Returns the styles array that apply for the selected HTML tag.
 	 * @param $dom (array) array of HTML tags and properties
-	 * @param $key (int) key of the current HTML tag
+	 * @param $Key (int) key of the current HTML tag
 	 * @param $css (array) array of CSS properties
 	 * @return array containing CSS properties
 	 * @since 5.1.000 (2010-05-25)
 	 * @public static
 	 */
-	public static function getCSSdataArray($dom, $key, $css) {
+	public static function getCSSdataArray($dom, $Key, $css) {
 		$cssarray = array(); // style to be returned
 		// get parent CSS selectors
 		$selectors = array();
-		if (isset($dom[($dom[$key]['parent'])]['csssel'])) {
-			$selectors = $dom[($dom[$key]['parent'])]['csssel'];
+		if (isset($dom[($dom[$Key]['parent'])]['csssel'])) {
+			$selectors = $dom[($dom[$Key]['parent'])]['csssel'];
 		}
 		// get all styles that apply
 		foreach($css as $selector => $style) {
@@ -2315,7 +2315,7 @@ class TCPDF_STATIC {
 			// remove specificity
 			$selector = substr($selector, $pos);
 			// check if this selector apply to current tag
-			if (self::isValidCSSSelectorForTag($dom, $key, $selector)) {
+			if (self::isValidCSSSelectorForTag($dom, $Key, $selector)) {
 				if (!in_array($selector, $selectors)) {
 					// add style if not already added on parent selector
 					$cssarray[] = array('k' => $selector, 's' => $specificity, 'c' => $style);
@@ -2323,14 +2323,14 @@ class TCPDF_STATIC {
 				}
 			}
 		}
-		if (isset($dom[$key]['attribute']['style'])) {
+		if (isset($dom[$Key]['attribute']['style'])) {
 			// attach inline style (latest properties have high priority)
-			$cssarray[] = array('k' => '', 's' => '1000', 'c' => $dom[$key]['attribute']['style']);
+			$cssarray[] = array('k' => '', 's' => '1000', 'c' => $dom[$Key]['attribute']['style']);
 		}
 		// order the css array to account for specificity
 		$cssordered = array();
-		foreach ($cssarray as $key => $val) {
-			$skey = sprintf('%04d', $key);
+		foreach ($cssarray as $Key => $val) {
+			$skey = sprintf('%04d', $Key);
 			$cssordered[$val['s'].'_'.$skey] = $val;
 		}
 		// sort selectors alphabetically to account for specificity
@@ -2486,8 +2486,8 @@ class TCPDF_STATIC {
 			if (!TCPDF_STATIC::empty_string($val)) {
 				$val = trim($val);
 				$val = str_replace('\'', '\\\'', $val);
-				$key = preg_replace('/[0-9]+/', '', $val);
-				$patterns[$key] = $val;
+				$Key = preg_replace('/[0-9]+/', '', $val);
+				$patterns[$Key] = $val;
 			}
 		}
 		return $patterns;
@@ -2617,7 +2617,7 @@ class TCPDF_STATIC {
 		$tm = array(1, 0, 0, 1, 0, 0);
 		$transform = array();
 		if (preg_match_all('/(matrix|translate|scale|rotate|skewX|skewY)[\s]*\(([^\)]+)\)/si', $attribute, $transform, PREG_SET_ORDER) > 0) {
-			foreach ($transform as $key => $data) {
+			foreach ($transform as $Key => $data) {
 				if (!empty($data[2])) {
 					$a = 1;
 					$b = 0;

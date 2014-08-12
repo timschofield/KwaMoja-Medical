@@ -111,12 +111,12 @@ if (isset($_POST['SearchParts'])) {
 }
 
 if (isset($_POST['StockID'])) {
-	$StockID = trim(mb_strtoupper($_POST['StockID']));
+	$StockId = trim(mb_strtoupper($_POST['StockID']));
 } elseif (isset($_GET['StockID'])) {
-	$StockID = trim(mb_strtoupper($_GET['StockID']));
+	$StockId = trim(mb_strtoupper($_GET['StockID']));
 }
 
-if (!isset($StockID)) {
+if (!isset($StockId)) {
 
 	/* Not appropriate really to restrict search by date since may miss older
 	ouststanding orders

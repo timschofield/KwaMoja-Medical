@@ -1489,7 +1489,7 @@ class TCPDF {
 	 * @protected
 	 * @since 5.0.000 (2010-04-22)
 	 */
-	protected $pdfunit = 'mm';
+	protected $PDFunit = 'mm';
 
 	/**
 	 * Boolean flag true when we are on TOC (Table Of Content) page.
@@ -1572,7 +1572,7 @@ class TCPDF {
 	 * @protected
 	 * @since 5.9.102 (2011-07-13)
 	 */
-	protected $pdflayers = array();
+	protected $PDFlayers = array();
 
 	/**
 	 * A dictionary of names and corresponding destinations (Dests key on document Catalog).
@@ -1762,7 +1762,7 @@ class TCPDF {
 	 * @protected
 	 * @since 5.9.121 (2011-09-27)
 	 */
-	protected $pdfa_mode = false;
+	protected $PDFa_mode = false;
 
 	/**
 	 * Document creation date-time
@@ -1838,11 +1838,11 @@ class TCPDF {
 	 * @param $unicode (boolean) TRUE means that the input text is unicode (default = true)
 	 * @param $encoding (string) Charset encoding (used only when converting back html entities); default is UTF-8.
 	 * @param $diskcache (boolean) If TRUE reduce the RAM memory usage by caching temporary data on filesystem (slower).
-	 * @param $pdfa (boolean) If TRUE set the document to PDF/A mode.
+	 * @param $PDFa (boolean) If TRUE set the document to PDF/A mode.
 	 * @public
 	 * @see getPageSizeFromFormat(), setPageFormat()
 	 */
-	public function __construct($orientation='P', $unit='mm', $format='A4', $unicode=true, $encoding='UTF-8', $diskcache=false, $pdfa=false) {
+	public function __construct($orientation='P', $unit='mm', $format='A4', $unicode=true, $encoding='UTF-8', $diskcache=false, $PDFa=false) {
 		/* Set internal character encoding to ASCII */
 		if (function_exists('mb_internal_encoding') AND mb_internal_encoding()) {
 			$this->internal_encoding = mb_internal_encoding();
@@ -1852,7 +1852,7 @@ class TCPDF {
 		$this->page_obj_id = array();
 		$this->form_obj_id = array();
 		// set pdf/a mode
-		$this->pdfa_mode = $pdfa;
+		$this->pdfa_mode = $PDFa;
 		$this->force_srgb = false;
 		// set disk caching
 		$this->diskcache = $diskcache ? true : false;
@@ -3741,36 +3741,36 @@ class TCPDF {
 			$this->Error('Undefined spot color: '.$name.', you must add it using the AddSpotColor() method.');
 		}
 		$tint = (max(0, min(100, $tint)) / 100);
-		$pdfcolor = sprintf('/CS%d ', $this->spot_colors[$name]['i']);
+		$PDFcolor = sprintf('/CS%d ', $this->spot_colors[$name]['i']);
 		switch ($type) {
 			case 'draw': {
-				$pdfcolor .= sprintf('CS %F SCN', $tint);
-				$this->DrawColor = $pdfcolor;
+				$PDFcolor .= sprintf('CS %F SCN', $tint);
+				$this->DrawColor = $PDFcolor;
 				$this->strokecolor = $spotcolor;
 				break;
 			}
 			case 'fill': {
-				$pdfcolor .= sprintf('cs %F scn', $tint);
-				$this->FillColor = $pdfcolor;
+				$PDFcolor .= sprintf('cs %F scn', $tint);
+				$this->FillColor = $PDFcolor;
 				$this->bgcolor = $spotcolor;
 				break;
 			}
 			case 'text': {
-				$pdfcolor .= sprintf('cs %F scn', $tint);
-				$this->TextColor = $pdfcolor;
+				$PDFcolor .= sprintf('cs %F scn', $tint);
+				$this->TextColor = $PDFcolor;
 				$this->fgcolor = $spotcolor;
 				break;
 			}
 		}
 		$this->ColorFlag = ($this->FillColor != $this->TextColor);
 		if ($this->state == 2) {
-			$this->_out($pdfcolor);
+			$this->_out($PDFcolor);
 		}
 		if ($this->inxobj) {
 			// we are inside an XObject template
 			$this->xobjects[$this->xobjid]['spot_colors'][$name] = $this->spot_colors[$name];
 		}
-		return $pdfcolor;
+		return $PDFcolor;
 	}
 
 	/**
@@ -3915,7 +3915,7 @@ class TCPDF {
 			// Grey scale
 			$col1 = max(0, min(255, $col1));
 			$intcolor = array('G' => $col1);
-			$pdfcolor = sprintf('%F ', ($col1 / 255));
+			$PDFcolor = sprintf('%F ', ($col1 / 255));
 			$suffix = 'g';
 		} elseif ($col4 == -1) {
 			// RGB
@@ -3923,7 +3923,7 @@ class TCPDF {
 			$col2 = max(0, min(255, $col2));
 			$col3 = max(0, min(255, $col3));
 			$intcolor = array('R' => $col1, 'G' => $col2, 'B' => $col3);
-			$pdfcolor = sprintf('%F %F %F ', ($col1 / 255), ($col2 / 255), ($col3 / 255));
+			$PDFcolor = sprintf('%F %F %F ', ($col1 / 255), ($col2 / 255), ($col3 / 255));
 			$suffix = 'rg';
 		} else {
 			$col1 = max(0, min(100, $col1));
@@ -3933,31 +3933,31 @@ class TCPDF {
 			if (empty($name)) {
 				// CMYK
 				$intcolor = array('C' => $col1, 'M' => $col2, 'Y' => $col3, 'K' => $col4);
-				$pdfcolor = sprintf('%F %F %F %F ', ($col1 / 100), ($col2 / 100), ($col3 / 100), ($col4 / 100));
+				$PDFcolor = sprintf('%F %F %F %F ', ($col1 / 100), ($col2 / 100), ($col3 / 100), ($col4 / 100));
 				$suffix = 'k';
 			} else {
 				// SPOT COLOR
 				$intcolor = array('C' => $col1, 'M' => $col2, 'Y' => $col3, 'K' => $col4, 'name' => $name);
 				$this->AddSpotColor($name, $col1, $col2, $col3, $col4);
-				$pdfcolor = $this->setSpotColor($type, $name, 100);
+				$PDFcolor = $this->setSpotColor($type, $name, 100);
 			}
 		}
 		switch ($type) {
 			case 'draw': {
-				$pdfcolor .= strtoupper($suffix);
-				$this->DrawColor = $pdfcolor;
+				$PDFcolor .= strtoupper($suffix);
+				$this->DrawColor = $PDFcolor;
 				$this->strokecolor = $intcolor;
 				break;
 			}
 			case 'fill': {
-				$pdfcolor .= $suffix;
-				$this->FillColor = $pdfcolor;
+				$PDFcolor .= $suffix;
+				$this->FillColor = $PDFcolor;
 				$this->bgcolor = $intcolor;
 				break;
 			}
 			case 'text': {
-				$pdfcolor .= $suffix;
-				$this->TextColor = $pdfcolor;
+				$PDFcolor .= $suffix;
+				$this->TextColor = $PDFcolor;
 				$this->fgcolor = $intcolor;
 				break;
 			}
@@ -3965,9 +3965,9 @@ class TCPDF {
 		$this->ColorFlag = ($this->FillColor != $this->TextColor);
 		if (($type != 'text') AND ($this->state == 2)) {
 			if (!$ret) {
-				$this->_out($pdfcolor);
+				$this->_out($PDFcolor);
 			}
-			return $pdfcolor;
+			return $PDFcolor;
 		}
 		return '';
 	}
@@ -6226,17 +6226,17 @@ class TCPDF {
 	 * Generally, if you want to know the exact height for a block of content you can use the following alternative technique:
 	 * @pre
 	 *  // store current object
-	 *  $pdf->startTransaction();
+	 *  $PDF->startTransaction();
 	 *  // store starting values
-	 *  $start_y = $pdf->GetY();
-	 *  $start_page = $pdf->getPage();
+	 *  $start_y = $PDF->GetY();
+	 *  $start_page = $PDF->getPage();
 	 *  // call your printing functions with your parameters
 	 *  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-	 *  $pdf->MultiCell($w=0, $h=0, $txt, $border=1, $align='L', $fill=false, $ln=1, $x='', $y='', $reseth=true, $stretch=0, $ishtml=false, $autopadding=true, $maxh=0);
+	 *  $PDF->MultiCell($w=0, $h=0, $txt, $border=1, $align='L', $fill=false, $ln=1, $x='', $y='', $reseth=true, $stretch=0, $ishtml=false, $autopadding=true, $maxh=0);
 	 *  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	 *  // get the new Y
-	 *  $end_y = $pdf->GetY();
-	 *  $end_page = $pdf->getPage();
+	 *  $end_y = $PDF->GetY();
+	 *  $end_page = $PDF->getPage();
 	 *  // calculate height
 	 *  $height = 0;
 	 *  if ($end_page == $start_page) {
@@ -6256,7 +6256,7 @@ class TCPDF {
 	 *  	}
 	 *  }
 	 *  // restore previous object
-	 *  $pdf = $pdf->rollbackTransaction();
+	 *  $PDF = $PDF->rollbackTransaction();
 	 *
 	 * @param $w (float) Width of cells. If 0, they extend up to the right margin of the page.
 	 * @param $txt (string) String for calculating his height
@@ -7600,9 +7600,9 @@ class TCPDF {
 		if ($this->sign) {
 			// *** apply digital signature to the document ***
 			// get the document content
-			$pdfdoc = $this->getBuffer();
+			$PDFdoc = $this->getBuffer();
 			// remove last newline
-			$pdfdoc = substr($pdfdoc, 0, -1);
+			$PDFdoc = substr($PDFdoc, 0, -1);
 			// Remove the original buffer
 			if (isset($this->diskcache) AND $this->diskcache) {
 				// remove buffer file from cache
@@ -7614,22 +7614,22 @@ class TCPDF {
 			// define the ByteRange
 			$byte_range = array();
 			$byte_range[0] = 0;
-			$byte_range[1] = strpos($pdfdoc, TCPDF_STATIC::$byterange_string) + $byterange_string_len + 10;
+			$byte_range[1] = strpos($PDFdoc, TCPDF_STATIC::$byterange_string) + $byterange_string_len + 10;
 			$byte_range[2] = $byte_range[1] + $this->signature_max_length + 2;
-			$byte_range[3] = strlen($pdfdoc) - $byte_range[2];
-			$pdfdoc = substr($pdfdoc, 0, $byte_range[1]).substr($pdfdoc, $byte_range[2]);
+			$byte_range[3] = strlen($PDFdoc) - $byte_range[2];
+			$PDFdoc = substr($PDFdoc, 0, $byte_range[1]).substr($PDFdoc, $byte_range[2]);
 			// replace the ByteRange
 			$byterange = sprintf('/ByteRange[0 %u %u %u]', $byte_range[1], $byte_range[2], $byte_range[3]);
 			$byterange .= str_repeat(' ', ($byterange_string_len - strlen($byterange)));
-			$pdfdoc = str_replace(TCPDF_STATIC::$byterange_string, $byterange, $pdfdoc);
+			$PDFdoc = str_replace(TCPDF_STATIC::$byterange_string, $byterange, $PDFdoc);
 			// write the document to a temporary folder
 			$tempdoc = TCPDF_STATIC::getObjFilename('doc');
 			$f = fopen($tempdoc, 'wb');
 			if (!$f) {
 				$this->Error('Unable to create temporary file: '.$tempdoc);
 			}
-			$pdfdoc_length = strlen($pdfdoc);
-			fwrite($f, $pdfdoc, $pdfdoc_length);
+			$PDFdoc_length = strlen($PDFdoc);
+			fwrite($f, $PDFdoc, $PDFdoc_length);
 			fclose($f);
 			// get digital signature via openssl library
 			$tempsign = TCPDF_STATIC::getObjFilename('sig');
@@ -7643,7 +7643,7 @@ class TCPDF {
 			$signature = file_get_contents($tempsign);
 			unlink($tempsign);
 			// extract signature
-			$signature = substr($signature, $pdfdoc_length);
+			$signature = substr($signature, $PDFdoc_length);
 			$signature = substr($signature, (strpos($signature, "%%EOF\n\n------") + 13));
 			$tmparr = explode("\n\n", $signature);
 			$signature = $tmparr[1];
@@ -7658,7 +7658,7 @@ class TCPDF {
 			// disable disk caching
 			$this->diskcache = false;
 			// Add signature to the document
-			$this->buffer = substr($pdfdoc, 0, $byte_range[1]).'<'.$signature.'>'.substr($pdfdoc, $byte_range[1]);
+			$this->buffer = substr($PDFdoc, 0, $byte_range[1]).'<'.$signature.'>'.substr($PDFdoc, $byte_range[1]);
 			$this->bufferlen = strlen($this->buffer);
 		}
 		switch($dest) {

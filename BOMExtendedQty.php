@@ -7,12 +7,12 @@ include('includes/session.inc');
 if (isset($_POST['PrintPDF'])) {
 
 	include('includes/PDFStarter.php');
-	$pdf->addInfo('Title', _('Quantity Extended BOM Listing'));
-	$pdf->addInfo('Subject', _('Quantity Extended BOM Listing'));
+	$PDF->addInfo('Title', _('Quantity Extended BOM Listing'));
+	$PDF->addInfo('Subject', _('Quantity Extended BOM Listing'));
 	$FontSize = 9;
 	$PageNumber = 1;
 	$line_height = 12;
-	PrintHeader($pdf, $YPos, $PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin);
+	PrintHeader($PDF, $YPos, $PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin);
 
 	if (!$_POST['Quantity'] or !is_numeric(filter_number_format($_POST['Quantity']))) {
 		$_POST['Quantity'] = 1;
@@ -161,7 +161,7 @@ if (isset($_POST['PrintPDF'])) {
 
 	$Tot_Val = 0;
 	$fill = false;
-	$pdf->SetFillColor(224, 235, 255);
+	$PDF->SetFillColor(224, 235, 255);
 	$SQL = "SELECT tempbom.component,
 				   SUM(tempbom.quantity) as quantity,
 				   stockmaster.description,
@@ -227,17 +227,17 @@ if (isset($_POST['PrintPDF'])) {
 			if ($_POST['Fill'] == 'yes') {
 				$fill = !$fill;
 			}
-			$pdf->addTextWrap($Left_Margin + 1, $YPos, 90, $FontSize, $MyRow['component'], '', 0, $fill);
-			$pdf->addTextWrap(140, $YPos, 30, $FontSize, $MyRow['mbflag'], '', 0, $fill);
-			$pdf->addTextWrap(170, $YPos, 140, $FontSize, $MyRow['description'], '', 0, $fill);
-			$pdf->addTextWrap(310, $YPos, 50, $FontSize, locale_number_format($MyRow['quantity'], $MyRow['decimalplaces']), 'right', 0, $fill);
-			$pdf->addTextWrap(360, $YPos, 40, $FontSize, locale_number_format($MyRow['qoh'], $MyRow['decimalplaces']), 'right', 0, $fill);
-			$pdf->addTextWrap(400, $YPos, 40, $FontSize, locale_number_format($MyRow['poqty'], $MyRow['decimalplaces']), 'right', 0, $fill);
-			$pdf->addTextWrap(440, $YPos, 40, $FontSize, locale_number_format($MyRow['woqty'], $MyRow['decimalplaces']), 'right', 0, $fill);
-			$pdf->addTextWrap(480, $YPos, 50, $FontSize, locale_number_format($Difference, $MyRow['decimalplaces']), 'right', 0, $fill);
+			$PDF->addTextWrap($Left_Margin + 1, $YPos, 90, $FontSize, $MyRow['component'], '', 0, $fill);
+			$PDF->addTextWrap(140, $YPos, 30, $FontSize, $MyRow['mbflag'], '', 0, $fill);
+			$PDF->addTextWrap(170, $YPos, 140, $FontSize, $MyRow['description'], '', 0, $fill);
+			$PDF->addTextWrap(310, $YPos, 50, $FontSize, locale_number_format($MyRow['quantity'], $MyRow['decimalplaces']), 'right', 0, $fill);
+			$PDF->addTextWrap(360, $YPos, 40, $FontSize, locale_number_format($MyRow['qoh'], $MyRow['decimalplaces']), 'right', 0, $fill);
+			$PDF->addTextWrap(400, $YPos, 40, $FontSize, locale_number_format($MyRow['poqty'], $MyRow['decimalplaces']), 'right', 0, $fill);
+			$PDF->addTextWrap(440, $YPos, 40, $FontSize, locale_number_format($MyRow['woqty'], $MyRow['decimalplaces']), 'right', 0, $fill);
+			$PDF->addTextWrap(480, $YPos, 50, $FontSize, locale_number_format($Difference, $MyRow['decimalplaces']), 'right', 0, $fill);
 		}
 		if ($YPos < $Bottom_Margin + $line_height) {
-			PrintHeader($pdf, $YPos, $PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin);
+			PrintHeader($PDF, $YPos, $PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin);
 		}
 
 	}
@@ -247,7 +247,7 @@ if (isset($_POST['PrintPDF'])) {
 	$YPos -= (2 * $line_height);
 
 	if ($YPos < $Bottom_Margin + $line_height) {
-		PrintHeader($pdf, $YPos, $PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin);
+		PrintHeader($PDF, $YPos, $PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin);
 	}
 	if ($ListCount == 0) {
 		$Title = _('Print Indented BOM Listing Error');
@@ -257,8 +257,8 @@ if (isset($_POST['PrintPDF'])) {
 		include('includes/footer.inc');
 		exit;
 	} else {
-		$pdf->OutputD($_SESSION['DatabaseName'] . '_BOM_Extended_Qty_' . date('Y-m-d') . '.pdf');
-		$pdf->__destruct();
+		$PDF->OutputD($_SESSION['DatabaseName'] . '_BOM_Extended_Qty_' . date('Y-m-d') . '.pdf');
+		$PDF->__destruct();
 	}
 
 } else {
@@ -309,43 +309,43 @@ if (isset($_POST['PrintPDF'])) {
 /*end of else not PrintPDF */
 
 
-function PrintHeader(&$pdf, &$YPos, &$PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin) {
+function PrintHeader(&$PDF, &$YPos, &$PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin) {
 
 	/*PDF page header for BOMExtendedQTY report */
 	if ($PageNumber > 1) {
-		$pdf->newPage();
+		$PDF->newPage();
 	}
 	$line_height = 12;
 	$FontSize = 9;
 	$YPos = $Page_Height - $Top_Margin - 5;
 
-	$pdf->addTextWrap($Left_Margin, $YPos, 300, $FontSize, $_SESSION['CompanyRecord']['coyname']);
+	$PDF->addTextWrap($Left_Margin, $YPos, 300, $FontSize, $_SESSION['CompanyRecord']['coyname']);
 
 	$YPos -= $line_height;
 
-	$pdf->addTextWrap($Left_Margin, $YPos, 300, $FontSize, _('Extended Quantity BOM Listing For	   ') . mb_strtoupper($_POST['Part']));
-	$pdf->addTextWrap($Page_Width - $Right_Margin - 140, $YPos, 160, $FontSize, _('Printed') . ': ' . Date($_SESSION['DefaultDateFormat']) . '   ' . _('Page') . ' ' . $PageNumber, 'left');
+	$PDF->addTextWrap($Left_Margin, $YPos, 300, $FontSize, _('Extended Quantity BOM Listing For	   ') . mb_strtoupper($_POST['Part']));
+	$PDF->addTextWrap($Page_Width - $Right_Margin - 140, $YPos, 160, $FontSize, _('Printed') . ': ' . Date($_SESSION['DefaultDateFormat']) . '   ' . _('Page') . ' ' . $PageNumber, 'left');
 	$YPos -= $line_height;
-	$pdf->addTextWrap($Left_Margin, $YPos, 300, $FontSize, _('Build Quantity:  ') . locale_number_format($_POST['Quantity'], 'Variable'), 'left');
+	$PDF->addTextWrap($Left_Margin, $YPos, 300, $FontSize, _('Build Quantity:  ') . locale_number_format($_POST['Quantity'], 'Variable'), 'left');
 
 	$YPos -= (2 * $line_height);
 
 	/*set up the headings */
 	$Xpos = $Left_Margin + 1;
 
-	$pdf->addTextWrap(310, $YPos, 50, $FontSize, _('Build'), 'center');
-	$pdf->addTextWrap(360, $YPos, 40, $FontSize, _('On Hand'), 'right');
-	$pdf->addTextWrap(400, $YPos, 40, $FontSize, _('P.O.'), 'right');
-	$pdf->addTextWrap(440, $YPos, 40, $FontSize, _('W.O.'), 'right');
+	$PDF->addTextWrap(310, $YPos, 50, $FontSize, _('Build'), 'center');
+	$PDF->addTextWrap(360, $YPos, 40, $FontSize, _('On Hand'), 'right');
+	$PDF->addTextWrap(400, $YPos, 40, $FontSize, _('P.O.'), 'right');
+	$PDF->addTextWrap(440, $YPos, 40, $FontSize, _('W.O.'), 'right');
 	$YPos -= $line_height;
-	$pdf->addTextWrap($Xpos, $YPos, 90, $FontSize, _('Part Number'), 'left');
-	$pdf->addTextWrap(140, $YPos, 30, $FontSize, _('M/B'), 'left');
-	$pdf->addTextWrap(170, $YPos, 140, $FontSize, _('Part Description'), 'left');
-	$pdf->addTextWrap(310, $YPos, 50, $FontSize, _('Quantity'), 'right');
-	$pdf->addTextWrap(360, $YPos, 40, $FontSize, _('Quantity'), 'right');
-	$pdf->addTextWrap(400, $YPos, 40, $FontSize, _('Quantity'), 'right');
-	$pdf->addTextWrap(440, $YPos, 40, $FontSize, _('Quantity'), 'right');
-	$pdf->addTextWrap(480, $YPos, 50, $FontSize, _('Shortage'), 'right');
+	$PDF->addTextWrap($Xpos, $YPos, 90, $FontSize, _('Part Number'), 'left');
+	$PDF->addTextWrap(140, $YPos, 30, $FontSize, _('M/B'), 'left');
+	$PDF->addTextWrap(170, $YPos, 140, $FontSize, _('Part Description'), 'left');
+	$PDF->addTextWrap(310, $YPos, 50, $FontSize, _('Quantity'), 'right');
+	$PDF->addTextWrap(360, $YPos, 40, $FontSize, _('Quantity'), 'right');
+	$PDF->addTextWrap(400, $YPos, 40, $FontSize, _('Quantity'), 'right');
+	$PDF->addTextWrap(440, $YPos, 40, $FontSize, _('Quantity'), 'right');
+	$PDF->addTextWrap(480, $YPos, 50, $FontSize, _('Shortage'), 'right');
 
 	$YPos = $YPos - (2 * $line_height);
 	$PageNumber++;

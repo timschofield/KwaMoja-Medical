@@ -3,7 +3,7 @@
 include('includes/session.inc');
 include('includes/PDFStarter.php');
 $FontSize = 10;
-$pdf->addInfo('Title', _('Top Items Search Result'));
+$PDF->addInfo('Title', _('Top Items Search Result'));
 $PageNumber = 1;
 $line_height = 12;
 include('includes/PDFTopItemsHeader.inc');
@@ -123,14 +123,14 @@ if (DB_num_rows($Result) > 0) {
 					WHERE stockid='" . DB_escape_string($MyRow['stkcode']) . "'";
 		$oh = DB_query($SQLoh);
 		$ohRow = DB_fetch_row($oh);
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 1, $YPos, 80, $FontSize, $MyRow['stkcode']);
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 100, $YPos, 100, $FontSize, $MyRow['description']);
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 330, $YPos, 30, $FontSize, locale_number_format($MyRow['totalinvoiced'], $MyRow['decimalplaces']), 'right');
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 370, $YPos, 300 - $Left_Margin, $FontSize, $MyRow['units'], 'left');
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 400, $YPos, 70, $FontSize, locale_number_format($MyRow['valuesales'], $_SESSION['CompanyRecord']['decimalplaces']), 'right');
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 490, $YPos, 30, $FontSize, locale_number_format($ohRow[0], $MyRow['decimalplaces']), 'right');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 1, $YPos, 80, $FontSize, $MyRow['stkcode']);
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 100, $YPos, 100, $FontSize, $MyRow['description']);
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 330, $YPos, 30, $FontSize, locale_number_format($MyRow['totalinvoiced'], $MyRow['decimalplaces']), 'right');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 370, $YPos, 300 - $Left_Margin, $FontSize, $MyRow['units'], 'left');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 400, $YPos, 70, $FontSize, locale_number_format($MyRow['valuesales'], $_SESSION['CompanyRecord']['decimalplaces']), 'right');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 490, $YPos, 30, $FontSize, locale_number_format($ohRow[0], $MyRow['decimalplaces']), 'right');
 		if (mb_strlen($LeftOvers) > 1) {
-			$LeftOvers = $pdf->addTextWrap($Left_Margin + 1 + 94, $YPos - $line_height, 270, $FontSize, $LeftOvers, 'left');
+			$LeftOvers = $PDF->addTextWrap($Left_Margin + 1 + 94, $YPos - $line_height, 270, $FontSize, $LeftOvers, 'left');
 			$YPos -= $line_height;
 		}
 		if ($YPos - $line_height <= $Bottom_Margin) {
@@ -143,8 +143,8 @@ if (DB_num_rows($Result) > 0) {
 		$YPos -= $line_height;
 	}
 
-	$pdf->OutputD($_SESSION['DatabaseName'] . '_TopItemsListing_' . date('Y-m-d') . '.pdf');
-	$pdf->__destruct();
+	$PDF->OutputD($_SESSION['DatabaseName'] . '_TopItemsListing_' . date('Y-m-d') . '.pdf');
+	$PDF->__destruct();
 }
 /*end of else not PrintPDF */
 ?>

@@ -12,18 +12,18 @@ $Bottom_Margin = 30;
 $Left_Margin = 40;
 $Right_Margin = 30;
 
-$pdf = new Cpdf($DocumentOrientation, 'pt', $DocumentPaper);
-$pdf->SetAutoPageBreak(true, 0);
-$pdf->SetPrintHeader(false);
-$pdf->AddPage();
-$pdf->cMargin = 0;
+$PDF = new Cpdf($DocumentOrientation, 'pt', $DocumentPaper);
+$PDF->SetAutoPageBreak(true, 0);
+$PDF->SetPrintHeader(false);
+$PDF->AddPage();
+$PDF->cMargin = 0;
 
 /* Standard PDF file creation header stuff */
 
-$pdf->addInfo('Author', 'KwaMoja ' . $Version);
-$pdf->addInfo('Creator', 'KwaMoja http://www.kwamoja.com');
-$pdf->addInfo('Title', $ReportSpec['reportheading']);
-$pdf->addInfo('Subject', _('Sales Analysis Report') . ' ' . $ReportSpec['reportheading']);
+$PDF->addInfo('Author', 'KwaMoja ' . $Version);
+$PDF->addInfo('Creator', 'KwaMoja http://www.kwamoja.com');
+$PDF->addInfo('Title', $ReportSpec['reportheading']);
+$PDF->addInfo('Subject', _('Sales Analysis Report') . ' ' . $ReportSpec['reportheading']);
 
 $PageNumber = 0;
 $line_height = 12;
@@ -69,13 +69,13 @@ While ($MyRow = DB_fetch_array($Result)) {
 			if ($Counter > 0) {
 				/*Dont want to print totals if this is the first record */
 				$TotalText = mb_substr(_('TOTAL') . ' ' . $LastLine['col5'] . ' - ' . $LastLine['col6'], 0, 33);
-				$LeftOvers = $pdf->addTextWrap(40, $Ypos, 180, $FontSize, $TotalText);
+				$LeftOvers = $PDF->addTextWrap(40, $Ypos, 180, $FontSize, $TotalText);
 
 				DB_data_seek($ColsResult, 0);
 				while ($Cols = DB_fetch_array($ColsResult)) {
 					$Xpos = 160 + $Cols['colno'] * 60;
 					if ($Cols['calculation'] == 0) {
-						$LeftOvers = $pdf->addTextWrap($Xpos, $Ypos, 60, $FontSize, locale_number_format($AccumLvl3[$Cols['colno']], 0), 'right');
+						$LeftOvers = $PDF->addTextWrap($Xpos, $Ypos, 60, $FontSize, locale_number_format($AccumLvl3[$Cols['colno']], 0), 'right');
 					} else {
 						/* its a calculation need to re-perform on the totals*/
 
@@ -110,7 +110,7 @@ While ($MyRow = DB_fetch_array($Result)) {
 						} else {
 							$TotalCalculation = locale_number_format($TotalCalculation, 0);
 						}
-						$LeftOvers = $pdf->addTextWrap($Xpos, $Ypos, 60, $FontSize, $TotalCalculation, 'right');
+						$LeftOvers = $PDF->addTextWrap($Xpos, $Ypos, 60, $FontSize, $TotalCalculation, 'right');
 					}
 				}
 				$Ypos -= (2 * $line_height);
@@ -126,12 +126,12 @@ While ($MyRow = DB_fetch_array($Result)) {
 			if ($Counter > 0) {
 				/*Dont want to print totals if this is the first record */
 				$TotalText = mb_substr(_('TOTAL') . ' ' . $LastLine['col3'] . ' - ' . $LastLine['col4'], 0, 43);
-				$LeftOvers = $pdf->addTextWrap(30, $Ypos, 190, $FontSize, $TotalText);
+				$LeftOvers = $PDF->addTextWrap(30, $Ypos, 190, $FontSize, $TotalText);
 				DB_data_seek($ColsResult, 0);
 				while ($Cols = DB_fetch_array($ColsResult)) {
 					$Xpos = 160 + $Cols['colno'] * 60;
 					if ($Cols['calculation'] == 0) {
-						$LeftOvers = $pdf->addTextWrap($Xpos, $Ypos, 60, $FontSize, locale_number_format($AccumLvl2[$Cols['colno']], 0), 'right');
+						$LeftOvers = $PDF->addTextWrap($Xpos, $Ypos, 60, $FontSize, locale_number_format($AccumLvl2[$Cols['colno']], 0), 'right');
 					} else {
 						/* its a calculation need to re-perform on the totals*/
 
@@ -166,7 +166,7 @@ While ($MyRow = DB_fetch_array($Result)) {
 						} else {
 							$TotalCalculation = locale_number_format($TotalCalculation, 0);
 						}
-						$LeftOvers = $pdf->addTextWrap($Xpos, $Ypos, 60, $FontSize, $TotalCalculation, 'right');
+						$LeftOvers = $PDF->addTextWrap($Xpos, $Ypos, 60, $FontSize, $TotalCalculation, 'right');
 					}
 					/*end if not a calculation column*/
 				}
@@ -185,12 +185,12 @@ While ($MyRow = DB_fetch_array($Result)) {
 			if ($Counter > 0) {
 				/*Dont want to print totals if this is the first record */
 				$TotalText = mb_substr(_('TOTAL') . ' ' . $LastLine['col1'] . ' - ' . $LastLine['col2'], 0, 46);
-				$LeftOvers = $pdf->addTextWrap(15, $Ypos, 205, $FontSize, $TotalText);
+				$LeftOvers = $PDF->addTextWrap(15, $Ypos, 205, $FontSize, $TotalText);
 				DB_data_seek($ColsResult, 0);
 				while ($Cols = DB_fetch_array($ColsResult)) {
 					$Xpos = 160 + $Cols['colno'] * 60;
 					if ($Cols['calculation'] == 0) {
-						$LeftOvers = $pdf->addTextWrap($Xpos, $Ypos, 60, $FontSize, locale_number_format($AccumLvl1[$Cols['colno']], 0), 'right');
+						$LeftOvers = $PDF->addTextWrap($Xpos, $Ypos, 60, $FontSize, locale_number_format($AccumLvl1[$Cols['colno']], 0), 'right');
 					} else {
 						/* its a calculation need to re-perform on the totals*/
 
@@ -225,7 +225,7 @@ While ($MyRow = DB_fetch_array($Result)) {
 						} else {
 							$TotalCalculation = locale_number_format($TotalCalculation, 0);
 						}
-						$LeftOvers = $pdf->addTextWrap($Xpos, $Ypos, 60, $FontSize, $TotalCalculation, 'right');
+						$LeftOvers = $PDF->addTextWrap($Xpos, $Ypos, 60, $FontSize, $TotalCalculation, 'right');
 					}
 					/*end if its not a calculation */
 				}
@@ -249,7 +249,7 @@ While ($MyRow = DB_fetch_array($Result)) {
 				include('includes/PDFSalesAnalPageHeader.inc');
 			}
 			$GroupHeadingText = mb_substr($MyRow['col1'] . ' - ' . $MyRow['col2'], 0, 50);
-			$LeftOvers = $pdf->addTextWrap(15, $Ypos, 205, $FontSize, $GroupHeadingText);
+			$LeftOvers = $PDF->addTextWrap(15, $Ypos, 205, $FontSize, $GroupHeadingText);
 
 			if ($MyRow['col3'] != '0') {
 				$Ypos -= $line_height;
@@ -263,7 +263,7 @@ While ($MyRow = DB_fetch_array($Result)) {
 				include('includes/PDFSalesAnalPageHeader.inc');
 			}
 			$GroupHeadingText = mb_substr($MyRow['col3'] . ' - ' . $MyRow['col4'], 0, 46);
-			$LeftOvers = $pdf->addTextWrap(30, $Ypos, 190, $FontSize, $GroupHeadingText);
+			$LeftOvers = $PDF->addTextWrap(30, $Ypos, 190, $FontSize, $GroupHeadingText);
 
 			if ($MyRow['col5'] != '0') {
 				$Ypos -= $line_height;
@@ -276,7 +276,7 @@ While ($MyRow = DB_fetch_array($Result)) {
 				include('includes/PDFSalesAnalPageHeader.inc');
 			}
 			$GroupHeadingText = mb_substr($MyRow['col5'] . ' - ' . $MyRow['col6'], 0, 46);
-			$LeftOvers = $pdf->addTextWrap(30, $Ypos, 190, $FontSize, $GroupHeadingText);
+			$LeftOvers = $PDF->addTextWrap(30, $Ypos, 190, $FontSize, $GroupHeadingText);
 
 			if ($MyRow['col7'] != '0') {
 				$Ypos -= $line_height;
@@ -286,7 +286,7 @@ While ($MyRow = DB_fetch_array($Result)) {
 		if ($MyRow['col7'] != '0') {
 			/*show titles */
 			$GroupHeadingText = mb_substr($MyRow['col7'] . ' - ' . $MyRow['col8'], 0, 40);
-			$LeftOvers = $pdf->addTextWrap(55, $Ypos, 135, $FontSize, $GroupHeadingText);
+			$LeftOvers = $PDF->addTextWrap(55, $Ypos, 135, $FontSize, $GroupHeadingText);
 
 		}
 
@@ -300,7 +300,7 @@ While ($MyRow = DB_fetch_array($Result)) {
 			} else {
 				$DisplayValue = locale_number_format($MyRow[$ColumnNo], 0);
 			}
-			$LeftOvers = $pdf->addTextWrap($Xpos, $Ypos, 60, $FontSize, $DisplayValue, 'right');
+			$LeftOvers = $PDF->addTextWrap($Xpos, $Ypos, 60, $FontSize, $DisplayValue, 'right');
 
 			$AccumLvl1[$Cols['colno']] += $MyRow[$ColumnNo];
 			$AccumLvl2[$Cols['colno']] += $MyRow[$ColumnNo];
@@ -329,13 +329,13 @@ if ($LastLine['col5'] != '0' && $LastLine['col7'] != '0') {
 	if ($Counter > 0) {
 		/*Dont want to print totals if this is the first record */
 		$TotalText = mb_substr(_('TOTAL') . ' ' . $LastLine['col5'] . ' - ' . $LastLine['col6'], 0, 33);
-		$LeftOvers = $pdf->addTextWrap(30, $Ypos, 190, $FontSize, $TotalText);
+		$LeftOvers = $PDF->addTextWrap(30, $Ypos, 190, $FontSize, $TotalText);
 
 		DB_data_seek($ColsResult, 0);
 		while ($Cols = DB_fetch_array($ColsResult)) {
 			$Xpos = 160 + $Cols['colno'] * 60;
 			if ($Cols['calculation'] == 0) {
-				$LeftOvers = $pdf->addTextWrap($Xpos, $Ypos, 60, $FontSize, locale_number_format($AccumLvl3[$Cols['colno']], 0), 'right');
+				$LeftOvers = $PDF->addTextWrap($Xpos, $Ypos, 60, $FontSize, locale_number_format($AccumLvl3[$Cols['colno']], 0), 'right');
 
 			} else {
 				/* its a calculation need to re-perform on the totals*/
@@ -371,7 +371,7 @@ if ($LastLine['col5'] != '0' && $LastLine['col7'] != '0') {
 				} else {
 					$TotalCalculation = locale_number_format($TotalCalculation, 0);
 				}
-				$LeftOvers = $pdf->addTextWrap($Xpos, $Ypos, 60, $FontSize, $TotalCalculation, 'right');
+				$LeftOvers = $PDF->addTextWrap($Xpos, $Ypos, 60, $FontSize, $TotalCalculation, 'right');
 			}
 
 		}
@@ -384,12 +384,12 @@ if ($LastLine['col3'] != '0' and $LastLine['col5'] != '0') {
 	if ($Counter > 0) {
 		/*Dont want to print totals if this is the first record */
 		$TotalText = mb_substr(_('TOTAL') . ' ' . $LastLine['col3'] . ' - ' . $LastLine['col4'], 0, 33);
-		$LeftOvers = $pdf->addTextWrap(30, $Ypos, 190, $FontSize, $TotalText);
+		$LeftOvers = $PDF->addTextWrap(30, $Ypos, 190, $FontSize, $TotalText);
 		DB_data_seek($ColsResult, 0);
 		while ($Cols = DB_fetch_array($ColsResult)) {
 			$Xpos = 160 + $Cols['colno'] * 60;
 			if ($Cols['calculation'] == 0) {
-				$LeftOvers = $pdf->addTextWrap($Xpos, $Ypos, 60, $FontSize, locale_number_format($AccumLvl2[$Cols['colno']], 0), 'right');
+				$LeftOvers = $PDF->addTextWrap($Xpos, $Ypos, 60, $FontSize, locale_number_format($AccumLvl2[$Cols['colno']], 0), 'right');
 
 			} else {
 				/* its a calculation need to re-perform on the totals*/
@@ -425,7 +425,7 @@ if ($LastLine['col3'] != '0' and $LastLine['col5'] != '0') {
 				} else {
 					$TotalCalculation = locale_number_format($TotalCalculation, 0);
 				}
-				$LeftOvers = $pdf->addTextWrap($Xpos, $Ypos, 60, $FontSize, $TotalCalculation, 'right');
+				$LeftOvers = $PDF->addTextWrap($Xpos, $Ypos, 60, $FontSize, $TotalCalculation, 'right');
 			}
 
 		}
@@ -437,12 +437,12 @@ if ($LastLine['col3'] != '0') {
 	if ($Counter > 1) {
 		/*Dont want to print totals if this is the first record */
 		$TotalText = mb_substr(_('TOTAL') . ' ' . $LastLine['col1'] . ' - ' . $LastLine['col2'], 0, 30);
-		$LeftOvers = $pdf->addTextWrap(15, $Ypos, 205, $FontSize, $TotalText);
+		$LeftOvers = $PDF->addTextWrap(15, $Ypos, 205, $FontSize, $TotalText);
 		DB_data_seek($ColsResult, 0);
 		while ($Cols = DB_fetch_array($ColsResult)) {
 			$Xpos = 160 + $Cols['colno'] * 60;
 			if ($Cols['calculation'] == 0) {
-				$LeftOvers = $pdf->addTextWrap($Xpos, $Ypos, 60, $FontSize, locale_number_format($AccumLvl1[$Cols['colno']], 0), 'right');
+				$LeftOvers = $PDF->addTextWrap($Xpos, $Ypos, 60, $FontSize, locale_number_format($AccumLvl1[$Cols['colno']], 0), 'right');
 			} else {
 				/* its a calculation need to re-perform on the totals*/
 
@@ -477,7 +477,7 @@ if ($LastLine['col3'] != '0') {
 				} else {
 					$TotalCalculation = locale_number_format($TotalCalculation, 0);
 				}
-				$LeftOvers = $pdf->addTextWrap($Xpos, $Ypos, 60, $FontSize, $TotalCalculation, 'right');
+				$LeftOvers = $PDF->addTextWrap($Xpos, $Ypos, 60, $FontSize, $TotalCalculation, 'right');
 			}
 
 		}
@@ -485,13 +485,13 @@ if ($LastLine['col3'] != '0') {
 	}
 }
 if ($Counter > 0) {
-	$LeftOvers = $pdf->addTextWrap(15, $Ypos, 205, $FontSize, _('GRAND TOTAL'));
+	$LeftOvers = $PDF->addTextWrap(15, $Ypos, 205, $FontSize, _('GRAND TOTAL'));
 
 	DB_data_seek($ColsResult, 0);
 	while ($Cols = DB_fetch_array($ColsResult)) {
 		$Xpos = 160 + $Cols['colno'] * 60;
 		if ($Cols['calculation'] == 0) {
-			$LeftOvers = $pdf->addTextWrap($Xpos, $Ypos, 60, $FontSize, locale_number_format($AccumLvl4[$Cols['colno']], 0), 'right');
+			$LeftOvers = $PDF->addTextWrap($Xpos, $Ypos, 60, $FontSize, locale_number_format($AccumLvl4[$Cols['colno']], 0), 'right');
 		} else {
 			/* its a calculation need to re-perform on the totals*/
 
@@ -526,7 +526,7 @@ if ($Counter > 0) {
 			} else {
 				$TotalCalculation = locale_number_format($TotalCalculation, 0);
 			}
-			$LeftOvers = $pdf->addTextWrap($Xpos, $Ypos, 60, $FontSize, $TotalCalculation, 'right');
+			$LeftOvers = $PDF->addTextWrap($Xpos, $Ypos, 60, $FontSize, $TotalCalculation, 'right');
 		}
 
 	}

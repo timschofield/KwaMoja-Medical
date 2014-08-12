@@ -5,8 +5,8 @@ include('includes/session.inc');
 if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_POST['FromCriteria']) >= 1 and isset($_POST['ToCriteria']) and mb_strlen($_POST['ToCriteria']) >= 1) {
 
 	include('includes/PDFStarter.php');
-	$pdf->addInfo('Title', _('Aged Supplier Listing'));
-	$pdf->addInfo('Subject', _('Aged Suppliers'));
+	$PDF->addInfo('Title', _('Aged Supplier Listing'));
+	$PDF->addInfo('Subject', _('Aged Suppliers'));
 	$FontSize = 12;
 	$PageNumber = 0;
 	$line_height = 12;
@@ -151,12 +151,12 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 		$TotOD1 += ($AgedAnalysis['overdue1'] - $AgedAnalysis['overdue2']);
 		$TotOD2 += $AgedAnalysis['overdue2'];
 
-		$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 220 - $Left_Margin, $FontSize, $AgedAnalysis['supplierid'] . ' - ' . $AgedAnalysis['suppname'], 'left');
-		$LeftOvers = $pdf->addTextWrap(220, $YPos, 60, $FontSize, $DisplayBalance, 'right');
-		$LeftOvers = $pdf->addTextWrap(280, $YPos, 60, $FontSize, $DisplayCurrent, 'right');
-		$LeftOvers = $pdf->addTextWrap(340, $YPos, 60, $FontSize, $DisplayDue, 'right');
-		$LeftOvers = $pdf->addTextWrap(400, $YPos, 60, $FontSize, $DisplayOverdue1, 'right');
-		$LeftOvers = $pdf->addTextWrap(460, $YPos, 60, $FontSize, $DisplayOverdue2, 'right');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 220 - $Left_Margin, $FontSize, $AgedAnalysis['supplierid'] . ' - ' . $AgedAnalysis['suppname'], 'left');
+		$LeftOvers = $PDF->addTextWrap(220, $YPos, 60, $FontSize, $DisplayBalance, 'right');
+		$LeftOvers = $PDF->addTextWrap(280, $YPos, 60, $FontSize, $DisplayCurrent, 'right');
+		$LeftOvers = $PDF->addTextWrap(340, $YPos, 60, $FontSize, $DisplayDue, 'right');
+		$LeftOvers = $PDF->addTextWrap(400, $YPos, 60, $FontSize, $DisplayOverdue1, 'right');
+		$LeftOvers = $PDF->addTextWrap(460, $YPos, 60, $FontSize, $DisplayOverdue2, 'right');
 
 		$YPos -= $line_height;
 		if ($YPos < $Bottom_Margin + $line_height) {
@@ -167,7 +167,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 
 			$FontSize = 6;
 			/*draw a line under the Supplier aged analysis*/
-			$pdf->line($Page_Width - $Right_Margin, $YPos + 10, $Left_Margin, $YPos + 10);
+			$PDF->line($Page_Width - $Right_Margin, $YPos + 10, $Left_Margin, $YPos + 10);
 
 			$SQL = "SELECT systypes.typename,
 							supptrans.suppreference,
@@ -215,10 +215,10 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 
 			while ($DetailTrans = DB_fetch_array($DetailResult)) {
 
-				$LeftOvers = $pdf->addTextWrap($Left_Margin + 5, $YPos, 60, $FontSize, $DetailTrans['typename'], 'left');
-				$LeftOvers = $pdf->addTextWrap($Left_Margin + 65, $YPos, 50, $FontSize, $DetailTrans['suppreference'], 'left');
+				$LeftOvers = $PDF->addTextWrap($Left_Margin + 5, $YPos, 60, $FontSize, $DetailTrans['typename'], 'left');
+				$LeftOvers = $PDF->addTextWrap($Left_Margin + 65, $YPos, 50, $FontSize, $DetailTrans['suppreference'], 'left');
 				$DisplayTranDate = ConvertSQLDate($DetailTrans['trandate']);
-				$LeftOvers = $pdf->addTextWrap($Left_Margin + 105, $YPos, 70, $FontSize, $DisplayTranDate, 'left');
+				$LeftOvers = $PDF->addTextWrap($Left_Margin + 105, $YPos, 70, $FontSize, $DisplayTranDate, 'left');
 
 				$DisplayDue = locale_number_format($DetailTrans['due'] - $DetailTrans['overdue1'], $CurrDecimalPlaces);
 				$DisplayCurrent = locale_number_format($DetailTrans['balance'] - $DetailTrans['due'], $CurrDecimalPlaces);
@@ -226,11 +226,11 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				$DisplayOverdue1 = locale_number_format($DetailTrans['overdue1'] - $DetailTrans['overdue2'], $CurrDecimalPlaces);
 				$DisplayOverdue2 = locale_number_format($DetailTrans['overdue2'], $CurrDecimalPlaces);
 
-				$LeftOvers = $pdf->addTextWrap(220, $YPos, 60, $FontSize, $DisplayBalance, 'right');
-				$LeftOvers = $pdf->addTextWrap(280, $YPos, 60, $FontSize, $DisplayCurrent, 'right');
-				$LeftOvers = $pdf->addTextWrap(340, $YPos, 60, $FontSize, $DisplayDue, 'right');
-				$LeftOvers = $pdf->addTextWrap(400, $YPos, 60, $FontSize, $DisplayOverdue1, 'right');
-				$LeftOvers = $pdf->addTextWrap(460, $YPos, 60, $FontSize, $DisplayOverdue2, 'right');
+				$LeftOvers = $PDF->addTextWrap(220, $YPos, 60, $FontSize, $DisplayBalance, 'right');
+				$LeftOvers = $PDF->addTextWrap(280, $YPos, 60, $FontSize, $DisplayCurrent, 'right');
+				$LeftOvers = $PDF->addTextWrap(340, $YPos, 60, $FontSize, $DisplayDue, 'right');
+				$LeftOvers = $PDF->addTextWrap(400, $YPos, 60, $FontSize, $DisplayOverdue1, 'right');
+				$LeftOvers = $PDF->addTextWrap(460, $YPos, 60, $FontSize, $DisplayOverdue2, 'right');
 
 				$YPos -= $line_height;
 				if ($YPos < $Bottom_Margin + $line_height) {
@@ -241,7 +241,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 			}
 			/*end while there are detail transactions to show */
 			/*draw a line under the detailed transactions before the next Supplier aged analysis*/
-			$pdf->line($Page_Width - $Right_Margin, $YPos + 10, $Left_Margin, $YPos + 10);
+			$PDF->line($Page_Width - $Right_Margin, $YPos + 10, $Left_Margin, $YPos + 10);
 			$FontSize = 8;
 		}
 		/*Its a detailed report */
@@ -254,7 +254,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 		include('includes/PDFAgedSuppliersPageHeader.inc');
 	} elseif ($_POST['DetailedReport'] == 'Yes') {
 		//dont do a line if the totals have to go on a new page
-		$pdf->line($Page_Width - $Right_Margin, $YPos + 10, 220, $YPos + 10);
+		$PDF->line($Page_Width - $Right_Margin, $YPos + 10, 220, $YPos + 10);
 	}
 
 	$DisplayTotBalance = locale_number_format($TotBal, $CurrDecimalPlaces);
@@ -263,14 +263,14 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 	$DisplayTotOverdue1 = locale_number_format($TotOD1, $CurrDecimalPlaces);
 	$DisplayTotOverdue2 = locale_number_format($TotOD2, $CurrDecimalPlaces);
 
-	$LeftOvers = $pdf->addTextWrap(220, $YPos, 60, $FontSize, $DisplayTotBalance, 'right');
-	$LeftOvers = $pdf->addTextWrap(280, $YPos, 60, $FontSize, $DisplayTotCurrent, 'right');
-	$LeftOvers = $pdf->addTextWrap(340, $YPos, 60, $FontSize, $DisplayTotDue, 'right');
-	$LeftOvers = $pdf->addTextWrap(400, $YPos, 60, $FontSize, $DisplayTotOverdue1, 'right');
-	$LeftOvers = $pdf->addTextWrap(460, $YPos, 60, $FontSize, $DisplayTotOverdue2, 'right');
+	$LeftOvers = $PDF->addTextWrap(220, $YPos, 60, $FontSize, $DisplayTotBalance, 'right');
+	$LeftOvers = $PDF->addTextWrap(280, $YPos, 60, $FontSize, $DisplayTotCurrent, 'right');
+	$LeftOvers = $PDF->addTextWrap(340, $YPos, 60, $FontSize, $DisplayTotDue, 'right');
+	$LeftOvers = $PDF->addTextWrap(400, $YPos, 60, $FontSize, $DisplayTotOverdue1, 'right');
+	$LeftOvers = $PDF->addTextWrap(460, $YPos, 60, $FontSize, $DisplayTotOverdue2, 'right');
 
 	$YPos -= $line_height;
-	$pdf->line($Page_Width - $Right_Margin, $YPos, 220, $YPos);
+	$PDF->line($Page_Width - $Right_Margin, $YPos, 220, $YPos);
 
 	if ($ListCount == 0) {
 		$Title = _('Aged Supplier Analysis');
@@ -278,9 +278,9 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 		prnMsg(_('There are no results so the PDF is empty'));
 		include('includes/footer.inc');
 	} else {
-		$pdf->OutputD($_SESSION['DatabaseName'] . '_AggedSupliers_' . date('Y-m-d') . '.pdf');
+		$PDF->OutputD($_SESSION['DatabaseName'] . '_AggedSupliers_' . date('Y-m-d') . '.pdf');
 	}
-	$pdf->__destruct();
+	$PDF->__destruct();
 } else {
 	/*The option to print PDF was not hit */
 

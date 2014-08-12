@@ -95,8 +95,8 @@ include('includes/PDFStarter.php');
 
 /*PDFStarter.php has all the variables for page size and width set up depending on the users default preferences for paper size */
 
-$pdf->addInfo('Title', _('Supplier Transaction Listing'));
-$pdf->addInfo('Subject', _('Supplier transaction listing from') . '  ' . $_POST['Date']);
+$PDF->addInfo('Title', _('Supplier Transaction Listing'));
+$PDF->addInfo('Subject', _('Supplier transaction listing from') . '  ' . $_POST['Date']);
 $line_height = 12;
 $PageNumber = 1;
 $TotalCheques = 0;
@@ -105,12 +105,12 @@ include('includes/PDFSuppTransListingPageHeader.inc');
 
 while ($MyRow = DB_fetch_array($Result)) {
 	$CurrDecimalPlaces = $MyRow['currdecimalplaces'];
-	$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 160, $FontSize, $MyRow['suppname'], 'left');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 162, $YPos, 80, $FontSize, $MyRow['suppreference'], 'left');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 242, $YPos, 70, $FontSize, ConvertSQLDate($MyRow['trandate']), 'left');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 312, $YPos, 70, $FontSize, locale_number_format($MyRow['ovamount'], $CurrDecimalPlaces), 'right');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 382, $YPos, 70, $FontSize, locale_number_format($MyRow['ovgst'], $CurrDecimalPlaces), 'right');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 452, $YPos, 70, $FontSize, locale_number_format($MyRow['ovamount'] + $MyRow['ovgst'], $CurrDecimalPlaces), 'right');
+	$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 160, $FontSize, $MyRow['suppname'], 'left');
+	$LeftOvers = $PDF->addTextWrap($Left_Margin + 162, $YPos, 80, $FontSize, $MyRow['suppreference'], 'left');
+	$LeftOvers = $PDF->addTextWrap($Left_Margin + 242, $YPos, 70, $FontSize, ConvertSQLDate($MyRow['trandate']), 'left');
+	$LeftOvers = $PDF->addTextWrap($Left_Margin + 312, $YPos, 70, $FontSize, locale_number_format($MyRow['ovamount'], $CurrDecimalPlaces), 'right');
+	$LeftOvers = $PDF->addTextWrap($Left_Margin + 382, $YPos, 70, $FontSize, locale_number_format($MyRow['ovgst'], $CurrDecimalPlaces), 'right');
+	$LeftOvers = $PDF->addTextWrap($Left_Margin + 452, $YPos, 70, $FontSize, locale_number_format($MyRow['ovamount'] + $MyRow['ovgst'], $CurrDecimalPlaces), 'right');
 
 	$YPos -= ($line_height);
 	$TotalCheques = $TotalCheques - $MyRow['ovamount'];
@@ -126,10 +126,10 @@ while ($MyRow = DB_fetch_array($Result)) {
 
 
 $YPos -= $line_height;
-$LeftOvers = $pdf->addTextWrap($Left_Margin + 452, $YPos, 70, $FontSize, locale_number_format(-$TotalCheques, $CurrDecimalPlaces), 'right');
-$LeftOvers = $pdf->addTextWrap($Left_Margin + 265, $YPos, 300, $FontSize, _('Total') . '  ' . _('Transactions'), 'left');
+$LeftOvers = $PDF->addTextWrap($Left_Margin + 452, $YPos, 70, $FontSize, locale_number_format(-$TotalCheques, $CurrDecimalPlaces), 'right');
+$LeftOvers = $PDF->addTextWrap($Left_Margin + 265, $YPos, 300, $FontSize, _('Total') . '  ' . _('Transactions'), 'left');
 
 $ReportFileName = $_SESSION['DatabaseName'] . '_SuppTransListing_' . date('Y-m-d') . '.pdf';
-$pdf->OutputD($ReportFileName);
-$pdf->__destruct();
+$PDF->OutputD($ReportFileName);
+$PDF->__destruct();
 ?>

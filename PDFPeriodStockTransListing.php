@@ -161,8 +161,8 @@ include('includes/PDFStarter.php');
 
 /*PDFStarter.php has all the variables for page size and width set up depending on the users default preferences for paper size */
 
-$pdf->addInfo('Title', _('Stock Transaction Listing'));
-$pdf->addInfo('Subject', _('Stock transaction listing from') . '  ' . $_POST['FromDate'] . ' ' . $_POST['ToDate']);
+$PDF->addInfo('Title', _('Stock Transaction Listing'));
+$PDF->addInfo('Subject', _('Stock transaction listing from') . '  ' . $_POST['FromDate'] . ' ' . $_POST['ToDate']);
 $line_height = 12;
 $PageNumber = 1;
 
@@ -195,12 +195,12 @@ include('includes/PDFPeriodStockTransListingPageHeader.inc');
 
 while ($MyRow = DB_fetch_array($Result)) {
 
-	$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 160, $FontSize, $MyRow['description'], 'left');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 162, $YPos, 80, $FontSize, $MyRow['transno'], 'left');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 242, $YPos, 70, $FontSize, ConvertSQLDate($MyRow['trandate']), 'left');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 312, $YPos, 70, $FontSize, locale_number_format($MyRow['qty'], $MyRow['decimalplaces']), 'right');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 382, $YPos, 70, $FontSize, $MyRow['locationname'], 'right');
-	$LeftOvers = $pdf->addTextWrap($Left_Margin + 452, $YPos, 70, $FontSize, $MyRow['reference'], 'right');
+	$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 160, $FontSize, $MyRow['description'], 'left');
+	$LeftOvers = $PDF->addTextWrap($Left_Margin + 162, $YPos, 80, $FontSize, $MyRow['transno'], 'left');
+	$LeftOvers = $PDF->addTextWrap($Left_Margin + 242, $YPos, 70, $FontSize, ConvertSQLDate($MyRow['trandate']), 'left');
+	$LeftOvers = $PDF->addTextWrap($Left_Margin + 312, $YPos, 70, $FontSize, locale_number_format($MyRow['qty'], $MyRow['decimalplaces']), 'right');
+	$LeftOvers = $PDF->addTextWrap($Left_Margin + 382, $YPos, 70, $FontSize, $MyRow['locationname'], 'right');
+	$LeftOvers = $PDF->addTextWrap($Left_Margin + 452, $YPos, 70, $FontSize, $MyRow['reference'], 'right');
 
 	$YPos -= ($line_height);
 
@@ -217,7 +217,7 @@ while ($MyRow = DB_fetch_array($Result)) {
 $YPos -= $line_height;
 
 $ReportFileName = $_SESSION['DatabaseName'] . '_StockTransListing_' . date('Y-m-d') . '.pdf';
-$pdf->OutputD($ReportFileName);
-$pdf->__destruct();
+$PDF->OutputD($ReportFileName);
+$PDF->__destruct();
 
 ?>

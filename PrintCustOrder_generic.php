@@ -119,9 +119,9 @@ LETS GO */
 
 $PaperSize = 'A4_Landscape';
 include('includes/PDFStarter.php');
-//$pdf->selectFont('./fonts/Helvetica.afm');
-$pdf->addInfo('Title', _('Customer Laser Packing Slip'));
-$pdf->addInfo('Subject', _('Laser Packing slip for order') . ' ' . $_GET['TransNo']);
+//$PDF->selectFont('./fonts/Helvetica.afm');
+$PDF->addInfo('Title', _('Customer Laser Packing Slip'));
+$PDF->addInfo('Subject', _('Laser Packing slip for order') . ' ' . $_GET['TransNo']);
 $FontSize = 12;
 $line_height = 24;
 $PageNumber = 1;
@@ -133,7 +133,7 @@ for ($i = 1; $i <= 2; $i++) {
 	/*Print it out twice one copy for customer and one for office */
 	if ($i == 2) {
 		$PageNumber = 1;
-		$pdf->newPage();
+		$PDF->newPage();
 	}
 	/* Now ... Has the order got any line items still outstanding to be invoiced */
 	$ErrMsg = _('There was a problem retrieving the order details for Order Number') . ' ' . $_GET['TransNo'] . ' ' . _('from the database');
@@ -168,12 +168,12 @@ for ($i = 1; $i <= 2; $i++) {
 			$DisplayPrevDel = locale_number_format($MyRow2['qtyinvoiced'], $MyRow2['decimalplaces']);
 			$DisplayQtySupplied = locale_number_format($MyRow2['quantity'] - $MyRow2['qtyinvoiced'], $MyRow2['decimalplaces']);
 
-			$LeftOvers = $pdf->addTextWrap($XPos, $YPos, 127, $FontSize, $MyRow2['stkcode']);
-			$LeftOvers = $pdf->addTextWrap(147, $YPos, 255, $FontSize, $MyRow2['description']);
-			$LeftOvers = $pdf->addTextWrap(400, $YPos, 85, $FontSize, $DisplayQty, 'right');
-			$LeftOvers = $pdf->addTextWrap(487, $YPos, 70, $FontSize, $MyRow2['bin'], 'left');
-			$LeftOvers = $pdf->addTextWrap(573, $YPos, 85, $FontSize, $DisplayQtySupplied, 'right');
-			$LeftOvers = $pdf->addTextWrap(672, $YPos, 85, $FontSize, $DisplayPrevDel, 'right');
+			$LeftOvers = $PDF->addTextWrap($XPos, $YPos, 127, $FontSize, $MyRow2['stkcode']);
+			$LeftOvers = $PDF->addTextWrap(147, $YPos, 255, $FontSize, $MyRow2['description']);
+			$LeftOvers = $PDF->addTextWrap(400, $YPos, 85, $FontSize, $DisplayQty, 'right');
+			$LeftOvers = $PDF->addTextWrap(487, $YPos, 70, $FontSize, $MyRow2['bin'], 'left');
+			$LeftOvers = $PDF->addTextWrap(573, $YPos, 85, $FontSize, $DisplayQtySupplied, 'right');
+			$LeftOvers = $PDF->addTextWrap(672, $YPos, 85, $FontSize, $DisplayPrevDel, 'right');
 
 			if ($YPos - $line_height <= 50) {
 				/* We reached the end of the page so finsih off the page and start a newy */
@@ -195,14 +195,14 @@ for ($i = 1; $i <= 2; $i++) {
 						WHERE bom.parent='" . $MyRow2['stkcode'] . "'";
 				$ErrMsg = _('Could not retrieve the components of the ordered assembly item');
 				$AssemblyResult = DB_query($SQL, $ErrMsg);
-				$LeftOvers = $pdf->addTextWrap($XPos, $YPos, 150, $FontSize, _('Assembly Components:-'));
+				$LeftOvers = $PDF->addTextWrap($XPos, $YPos, 150, $FontSize, _('Assembly Components:-'));
 				$YPos -= ($line_height);
 				/*Loop around all the components of the assembly and list the quantity supplied */
 				while ($ComponentRow = DB_fetch_array($AssemblyResult)) {
 					$DisplayQtySupplied = locale_number_format($ComponentRow['quantity'] * ($MyRow2['quantity'] - $MyRow2['qtyinvoiced']), $ComponentRow['decimalplaces']);
-					$LeftOvers = $pdf->addTextWrap($XPos, $YPos, 127, $FontSize, $ComponentRow['component']);
-					$LeftOvers = $pdf->addTextWrap(147, $YPos, 255, $FontSize, $ComponentRow['description']);
-					$LeftOvers = $pdf->addTextWrap(503, $YPos, 85, $FontSize, $DisplayQtySupplied, 'right');
+					$LeftOvers = $PDF->addTextWrap($XPos, $YPos, 127, $FontSize, $ComponentRow['component']);
+					$LeftOvers = $PDF->addTextWrap(147, $YPos, 255, $FontSize, $ComponentRow['description']);
+					$LeftOvers = $PDF->addTextWrap(503, $YPos, 85, $FontSize, $DisplayQtySupplied, 'right');
 					if ($YPos - $line_height <= 50) {
 						/* We reached the end of the page so finsih off the page and start a newy */
 						$PageNumber++;
@@ -232,8 +232,8 @@ if ($ListCount == 0) {
 	include('includes/footer.inc');
 	exit;
 } else {
-	$pdf->OutputD($_SESSION['DatabaseName'] . '_PackingSlip_' . date('Y-m-d') . '.pdf');
-	$pdf->__destruct();
+	$PDF->OutputD($_SESSION['DatabaseName'] . '_PackingSlip_' . date('Y-m-d') . '.pdf');
+	$PDF->__destruct();
 	$SQL = "UPDATE salesorders SET printedpackingslip=1,
 									datepackingslipprinted=CURRENT_DATE
 				WHERE salesorders.orderno='" . $_GET['TransNo'] . "'";

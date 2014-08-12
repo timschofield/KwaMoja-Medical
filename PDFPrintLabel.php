@@ -178,16 +178,16 @@ if (isset($_POST['PrintLabels']) and $NoOfLabels > 0) {
 	$Right_Margin = 0;
 	$Bottom_Margin = 0;
 
-	$pdf->addInfo('Title', $LabelDimensions['description'] . ' ' . _('Price Labels'));
-	$pdf->addInfo('Subject', $LabelDimensions['description'] . ' ' . _('Price Labels'));
-	$pdf->setPrintHeader(false);
-	$pdf->setPrintFooter(false);
+	$PDF->addInfo('Title', $LabelDimensions['description'] . ' ' . _('Price Labels'));
+	$PDF->addInfo('Subject', $LabelDimensions['description'] . ' ' . _('Price Labels'));
+	$PDF->setPrintHeader(false);
+	$PDF->setPrintFooter(false);
 
 
-	$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-	$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
-	$pdf->setPrintHeader(false);
-	$pdf->setPrintFooter(false);
+	$PDF->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+	$PDF->setImageScale(PDF_IMAGE_SCALE_RATIO);
+	$PDF->setPrintHeader(false);
+	$PDF->setPrintFooter(false);
 
 	$PageNumber = 1;
 	//go down first then accross
@@ -209,7 +209,7 @@ if (isset($_POST['PrintLabels']) and $NoOfLabels > 0) {
 						$Value = $_POST['Barcode' . $i];
 					}
 					if ($Field['FieldValue'] == 'price') { //need to format for the number of decimal places
-						$LeftOvers = $pdf->addTextWrap($XPos + $Field['HPos'], $YPos - $LabelDimensions['label_height'] + $Field['VPos'], $LabelDimensions['label_width'] - $Field['HPos'], $Field['FontSize'], $_POST['Price' . $i], 'center');
+						$LeftOvers = $PDF->addTextWrap($XPos + $Field['HPos'], $YPos - $LabelDimensions['label_height'] + $Field['VPos'], $LabelDimensions['label_width'] - $Field['HPos'], $Field['FontSize'], $_POST['Price' . $i], 'center');
 					} elseif ($Field['Barcode'] == 1) {
 
 						$BarcodeImage = new code128(str_replace('_', '', $Value));
@@ -219,10 +219,10 @@ if (isset($_POST['PrintLabels']) and $NoOfLabels > 0) {
 						$Image_String = ob_get_contents();
 						ob_end_clean();
 
-						$pdf->addJpegFromFile('@' . $Image_String, $XPos + $Field['HPos'], $YPos - $LabelDimensions['label_height'] + $Field['VPos'], '', $Field['FontSize']);
+						$PDF->addJpegFromFile('@' . $Image_String, $XPos + $Field['HPos'], $YPos - $LabelDimensions['label_height'] + $Field['VPos'], '', $Field['FontSize']);
 
 					} else {
-						$LeftOvers = $pdf->addTextWrap($XPos + $Field['HPos'], $YPos - $LabelDimensions['label_height'] + $Field['VPos'], $LabelDimensions['label_width'] - $Field['HPos'] - 20, $Field['FontSize'], $Value);
+						$LeftOvers = $PDF->addTextWrap($XPos + $Field['HPos'], $YPos - $LabelDimensions['label_height'] + $Field['VPos'], $LabelDimensions['label_width'] - $Field['HPos'] - 20, $Field['FontSize'], $Value);
 					}
 				} // end loop through label fields
 				if ($NoOfLabels > 0) {
@@ -235,7 +235,7 @@ if (isset($_POST['PrintLabels']) and $NoOfLabels > 0) {
 						if (($Page_Width - $XPos - $LabelDimensions['label_columnwidth']) < $LabelDimensions['label_width']) {
 							/* Not enough space to start a new column so we are into a new page
 							 */
-							$pdf->newPage();
+							$PDF->newPage();
 							$PageNumber++;
 							$YPos = $Page_Height - $Top_Margin; //top of next label
 							$XPos = $Left_Margin; // left of next label
@@ -258,8 +258,8 @@ if (isset($_POST['PrintLabels']) and $NoOfLabels > 0) {
 
 	$FileName = $_SESSION['DatabaseName'] . '_' . _('Price_Labels') . '_' . date('Y-m-d') . '.pdf';
 	//	ob_clean();
-	$pdf->OutputD($FileName);
-	$pdf->__destruct();
+	$PDF->OutputD($FileName);
+	$PDF->__destruct();
 
 } else {
 	/*The option to print PDF was not hit */

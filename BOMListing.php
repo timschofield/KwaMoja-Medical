@@ -5,8 +5,8 @@ include('includes/session.inc');
 if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_POST['FromCriteria']) >= 1 and isset($_POST['ToCriteria']) and mb_strlen($_POST['ToCriteria']) >= 1) {
 
 	include('includes/PDFStarter.php');
-	$pdf->addInfo('Title', _('Bill Of Material Listing'));
-	$pdf->addInfo('Subject', _('Bill Of Material Listing'));
+	$PDF->addInfo('Title', _('Bill Of Material Listing'));
+	$PDF->addInfo('Subject', _('Bill Of Material Listing'));
 	$FontSize = 12;
 	$PageNumber = 0;
 	$line_height = 12;
@@ -69,27 +69,27 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				/*Then it's NOT the first time round */
 				/* need to rule off from the previous parent listed */
 				$YPos -= $line_height;
-				$pdf->line($Page_Width - $Right_Margin, $YPos, $Left_Margin, $YPos);
+				$PDF->line($Page_Width - $Right_Margin, $YPos, $Left_Margin, $YPos);
 				$YPos -= $line_height;
 			}
 			$SQL = "SELECT description FROM stockmaster WHERE stockmaster.stockid = '" . $BOMList['parent'] . "'";
 			$ParentResult = DB_query($SQL);
 			$ParentRow = DB_fetch_row($ParentResult);
-			$LeftOvers = $pdf->addTextWrap($Left_Margin, $YPos, 400 - $Left_Margin, $FontSize, $BOMList['parent'] . ' - ' . $ParentRow[0], 'left');
+			$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 400 - $Left_Margin, $FontSize, $BOMList['parent'] . ' - ' . $ParentRow[0], 'left');
 			$ParentPart = $BOMList['parent'];
 		}
 
 		$YPos -= $line_height;
 		$FontSize = 8;
-		$LeftOvers = $pdf->addTextWrap($Left_Margin + 5, $YPos, 80, $FontSize, $BOMList['component'], 'left');
-		$LeftOvers = $pdf->addTextWrap(110, $YPos, 200, $FontSize, $BOMList['compdescription'], 'left');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 5, $YPos, 80, $FontSize, $BOMList['component'], 'left');
+		$LeftOvers = $PDF->addTextWrap(110, $YPos, 200, $FontSize, $BOMList['compdescription'], 'left');
 
 		$DisplayQuantity = locale_number_format($BOMList['quantity'], $BOMList['decimalplaces']);
-		$LeftOvers = $pdf->addTextWrap(320, $YPos, 50, $FontSize, ConvertSQLDate($BOMList['eff_frm']), 'left');
-		$LeftOvers = $pdf->addTextWrap(370, $YPos, 50, $FontSize, ConvertSQLDate($BOMList['eff_to']), 'left');
-		$LeftOvers = $pdf->addTextWrap(420, $YPos, 20, $FontSize, $BOMList['loccode'], 'left');
-		$LeftOvers = $pdf->addTextWrap(440, $YPos, 30, $FontSize, $BOMList['workcentreadded'], 'left');
-		$LeftOvers = $pdf->addTextWrap(480, $YPos, 60, $FontSize, $DisplayQuantity, 'right');
+		$LeftOvers = $PDF->addTextWrap(320, $YPos, 50, $FontSize, ConvertSQLDate($BOMList['eff_frm']), 'left');
+		$LeftOvers = $PDF->addTextWrap(370, $YPos, 50, $FontSize, ConvertSQLDate($BOMList['eff_to']), 'left');
+		$LeftOvers = $PDF->addTextWrap(420, $YPos, 20, $FontSize, $BOMList['loccode'], 'left');
+		$LeftOvers = $PDF->addTextWrap(440, $YPos, 30, $FontSize, $BOMList['workcentreadded'], 'left');
+		$LeftOvers = $PDF->addTextWrap(480, $YPos, 60, $FontSize, $DisplayQuantity, 'right');
 
 		if ($YPos < $Bottom_Margin + $line_height) {
 			include('includes/PDFBOMListingPageHeader.inc');
@@ -99,10 +99,10 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 	/*end BOM Listing while loop */
 
 	$YPos -= $line_height;
-	$pdf->line($Page_Width - $Right_Margin, $YPos, $Left_Margin, $YPos);
+	$PDF->line($Page_Width - $Right_Margin, $YPos, $Left_Margin, $YPos);
 
-	$pdf->OutputD($_SESSION['DatabaseName'] . '_BOMListing_' . date('Y-m-d') . '.pdf');
-	$pdf->__destruct();
+	$PDF->OutputD($_SESSION['DatabaseName'] . '_BOMListing_' . date('Y-m-d') . '.pdf');
+	$PDF->__destruct();
 
 } else {
 	/*The option to print PDF was not hit */

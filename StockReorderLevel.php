@@ -5,11 +5,11 @@ $Title = _('Stock Re-Order Level Maintenance');
 include('includes/header.inc');
 
 if (isset($_GET['StockID'])) {
-	$StockID = trim(mb_strtoupper($_GET['StockID']));
+	$StockId = trim(mb_strtoupper($_GET['StockID']));
 } elseif (isset($_POST['StockID'])) {
-	$StockID = trim(mb_strtoupper($_POST['StockID']));
+	$StockId = trim(mb_strtoupper($_POST['StockID']));
 } else {
-	$StockID = '';
+	$StockId = '';
 }
 
 echo '<div class="toplink">
@@ -20,42 +20,30 @@ echo '<p class="page_title_text noPrint" >
 		<img src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Inventory') . '" alt="" /><b>' . $Title . '</b>
 	</p>';
 
-$Result = DB_query("SELECT description, units FROM stockmaster WHERE stockid='" . $StockID . "'");
+$Result = DB_query("SELECT description, units FROM stockmaster WHERE stockid='" . $StockId . "'");
 $MyRow = DB_fetch_row($Result);
 
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
-if ($_SESSION['RestrictLocations'] == 0) {
-	$SQL = "SELECT locstock.loccode,
-					locations.locationname,
-					locstock.quantity,
-					locstock.reorderlevel,
-					stockmaster.decimalplaces
-				FROM locstock
-				INNER JOIN locations
-					ON locstock.loccode=locations.loccode
-				INNER JOIN stockmaster
-					ON locstock.stockid=stockmaster.stockid
-				WHERE locstock.stockid = '" . $StockID . "'
-				ORDER BY locations.locationname";
-} else {
-	$SQL = "SELECT locstock.loccode,
-					locations.locationname,
-					locstock.quantity,
-					locstock.reorderlevel,
-					stockmaster.decimalplaces
-				FROM locstock
-				INNER JOIN locations
-					ON locstock.loccode=locations.loccode
-				INNER JOIN www_users
-					ON locations.loccode=www_users.defaultlocation
-				INNER JOIN stockmaster
-					ON locstock.stockid=stockmaster.stockid
-				WHERE locstock.stockid = '" . $StockID . "'
-					AND www_users.userid='" . $_SESSION['UserID'] . "'
-				ORDER BY locations.locationname";
-}
+$SQL = "SELECT locstock.loccode,
+				locations.locationname,
+				locstock.quantity,
+				locstock.reorderlevel,
+				stockmaster.decimalplaces
+				stockmaster.decimalplaces,
+				canupd
+			FROM locstock
+			INNER JOIN locations
+				ON locstock.loccode=locations.loccode
+			INNER JOIN locationusers
+				ON locationusers.loccode=locstock.loccode
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canview=1
+			INNER JOIN stockmaster
+				ON locstock.stockid=stockmaster.stockid
+			WHERE locstock.stockid = '" . $StockId . "'
+			ORDER BY locations.locationname";
 
 $ErrMsg = _('The stock held at each location cannot be retrieved because');
 $DbgMsg = _('The SQL that failed was');
@@ -64,10 +52,10 @@ $LocStockResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 echo '<table class="selection">';
 echo '<tr>
-		<th colspan="3">' . _('Stock Code') . ':<input type="text" name="StockID" size="21" value="' . $StockID . '" required="required" minlength="1" maxlength="20" /><input type="submit" name="Show" value="' . _('Show Re-Order Levels') . '" /></th>
+		<th colspan="3">' . _('Stock Code') . ':<input type="text" name="StockID" size="21" value="' . $StockId . '" required="required" minlength="1" maxlength="20" /><input type="submit" name="Show" value="' . _('Show Re-Order Levels') . '" /></th>
 	</tr>';
 echo '<tr>
-		<th colspan="3"><h3><b>' . $StockID . ' - ' . $MyRow[0] . '</b>  (' . _('In Units of') . ' ' . $MyRow[1] . ')</h3></th>
+		<th colspan="3"><h3><b>' . $StockId . ' - ' . $MyRow[0] . '</b>  (' . _('In Units of') . ' ' . $MyRow[1] . ')</h3></th>
 	</tr>
 <tbody>
 	<tr>
@@ -92,16 +80,27 @@ while ($MyRow = DB_fetch_array($LocStockResult)) {
 
 		$MyRow['reorderlevel'] = filter_number_format($_POST[$MyRow['loccode']]);
 		$SQL = "UPDATE locstock SET reorderlevel = '" . filter_number_format($_POST[$MyRow['loccode']]) . "'
-	   		WHERE stockid = '" . $StockID . "'
+	   		WHERE stockid = '" . $StockId . "'
 			AND loccode = '" . $MyRow['loccode'] . "'";
 		$UpdateReorderLevel = DB_query($SQL);
 
 	}
 
+	if ($MyRow['canupd'] == 1) {
+		$UpdateCode = '<input title="' . _('Input safety stock quantity') . '" type="text" class="number" name="%s" maxlength="10" size="10" value="%s" /><input type="hidden" name="Old_%s" value="%s" />';
+	} else {
+		$UpdateCode = '<input type="hidden" name="%s">%s<input type="hidden" name="Old_%s" value="%s" />';
+	}
+
 	printf('<td>%s</td>
 			<td class="number">%s</td>
-			<td><input type="text" class="number" name="%s" required="required" minlength="1" maxlength="10" size="10" value="%s" />
-			<input type="hidden" name="Old_%s" value="%s" /></td></tr>', $MyRow['locationname'], locale_number_format($MyRow['quantity'], $MyRow['decimalplaces']), $MyRow['loccode'], $MyRow['reorderlevel'], $MyRow['loccode'], $MyRow['reorderlevel']);
+			<td class="number">' . $UpdateCode . '</td></tr>',
+			$MyRow['locationname'],
+			locale_number_format($MyRow['quantity'], $MyRow['decimalplaces']),
+			$MyRow['loccode'],
+			$MyRow['reorderlevel'],
+			$MyRow['loccode'],
+			$MyRow['reorderlevel']);
 	//end of page full new headings if
 }
 //end of while loop
@@ -111,10 +110,10 @@ echo '</tbody>
 	<div class="centre">
 		<input type="submit" name="UpdateData" value="' . _('Update') . '" />';
 
-echo '<a href="' . $RootPath . '/StockMovements.php?StockID=' . urlencode($StockID) . '">' . _('Show Stock Movements') . '</a>';
-echo '<a href="' . $RootPath . '/StockUsage.php?StockID=' . urlencode($StockID) . '">' . _('Show Stock Usage') . '</a>';
-echo '<a href="' . $RootPath . '/SelectSalesOrder.php?SelectedStockItem=' . urlencode($StockID) . '">' . _('Search Outstanding Sales Orders') . '</a>';
-echo '<a href="' . $RootPath . '/SelectCompletedOrder.php?SelectedStockItem=' . urlencode($StockID) . '">' . _('Search Completed Sales Orders') . '</a>';
+echo '<a href="' . $RootPath . '/StockMovements.php?StockID=' . urlencode($StockId) . '">' . _('Show Stock Movements') . '</a>';
+echo '<a href="' . $RootPath . '/StockUsage.php?StockID=' . urlencode($StockId) . '">' . _('Show Stock Usage') . '</a>';
+echo '<a href="' . $RootPath . '/SelectSalesOrder.php?SelectedStockItem=' . urlencode($StockId) . '">' . _('Search Outstanding Sales Orders') . '</a>';
+echo '<a href="' . $RootPath . '/SelectCompletedOrder.php?SelectedStockItem=' . urlencode($StockId) . '">' . _('Search Completed Sales Orders') . '</a>';
 
 echo '</div>
 	</form>';

@@ -12,67 +12,95 @@ $FromDate = FormatDateForSQL(DateAdd(Date($_SESSION['DefaultDateFormat']), 'd', 
 
 //the situation if the location and customer type selected "All"
 if (($_GET['Location'] == 'All') and ($_GET['Customers'] == 'All')) {
-	$SQL = "SELECT 	salesorderdetails.stkcode,
+	$SQL = "SELECT salesorderdetails.stkcode,
 				SUM(salesorderdetails.qtyinvoiced) totalinvoiced,
 				SUM(salesorderdetails.qtyinvoiced * salesorderdetails.unitprice ) AS valuesales,
 				stockmaster.description,
 				stockmaster.units,
 				stockmaster.decimalplaces
-			FROM 	salesorderdetails, salesorders, debtorsmaster,stockmaster
-			WHERE 	salesorderdetails.orderno = salesorders.orderno
-				AND salesorderdetails.stkcode = stockmaster.stockid
-				AND salesorders.debtorno = debtorsmaster.debtorno
-				AND salesorderdetails.actualdispatchdate >='" . $FromDate . "'
+			FROM salesorderdetails
+			INNER JOIN salesorders
+				ON salesorderdetails.orderno = salesorders.orderno
+			INNER JOIN debtorsmaster
+				ON salesorders.debtorno = debtorsmaster.debtorno
+			INNER JOIN stockmaster
+				ON salesorderdetails.stkcode = stockmaster.stockid
+			INNER JOIN locationusers
+				ON locationusers.loccode=salesorders.fromstkloc
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canview=1,
+			WHERE salesorderdetails.actualdispatchdate >='" . $FromDate . "'
 			GROUP BY salesorderdetails.stkcode
 			ORDER BY `" . $_GET['Sequence'] . "` DESC
 			LIMIT " . intval($_GET['NumberOfTopItems']);
 } else { //the situation if only location type selected "All"
 	if ($_GET['Location'] == 'All') {
-		$SQL = "SELECT 	salesorderdetails.stkcode,
+		$SQL = "SELECT salesorderdetails.stkcode,
 					SUM(salesorderdetails.qtyinvoiced) totalinvoiced,
 					SUM(salesorderdetails.qtyinvoiced * salesorderdetails.unitprice ) AS valuesales,
 					stockmaster.description,
 					stockmaster.units
-				FROM 	salesorderdetails, salesorders, debtorsmaster,stockmaster
-				WHERE 	salesorderdetails.orderno = salesorders.orderno
-						AND salesorderdetails.stkcode = stockmaster.stockid
-						AND salesorders.debtorno = debtorsmaster.debtorno
-						AND debtorsmaster.typeid = '" . $_GET['Customers'] . "'
-						AND salesorderdetails.ActualDispatchDate >= '" . $FromDate . "'
+				FROM salesorderdetails
+				INNER JOIN salesorders
+					ON salesorderdetails.orderno = salesorders.orderno
+				INNER JOIN debtorsmaster
+					ON salesorders.debtorno = debtorsmaster.debtorno
+				INNER JOIN stockmaster
+					ON salesorderdetails.stkcode = stockmaster.stockid
+				INNER JOIN locationusers
+					ON locationusers.loccode=salesorders.fromstkloc
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canview=1,
+				WHERE debtorsmaster.typeid = '" . $_GET['Customers'] . "'
+					AND salesorderdetails.ActualDispatchDate >= '" . $FromDate . "'
 				GROUP BY salesorderdetails.stkcode
 				ORDER BY `" . $_GET['Sequence'] . "` DESC
 				LIMIT " . intval($_GET['NumberOfTopItems']);
 	} else {
 		//the situation if the customer type selected "All"
 		if ($_GET['Customers'] == 'All') {
-			$SQL = "SELECT 	salesorderdetails.stkcode,
+			$SQL = "SELECT salesorderdetails.stkcode,
 						SUM(salesorderdetails.qtyinvoiced) totalinvoiced,
 						SUM(salesorderdetails.qtyinvoiced * salesorderdetails.unitprice ) AS valuesales,
 						stockmaster.description,
 						stockmaster.units,
 						stockmaster.decimalplaces
-					FROM 	salesorderdetails, salesorders, debtorsmaster,stockmaster
-					WHERE 	salesorderdetails.orderno = salesorders.orderno
-						AND salesorderdetails.stkcode = stockmaster.stockid
-						AND salesorders.debtorno = debtorsmaster.debtorno
-						AND salesorders.fromstkloc = '" . $_GET['Location'] . "'
+					FROM salesorderdetails
+					INNER JOIN salesorders
+						ON salesorderdetails.orderno = salesorders.orderno
+					INNER JOIN debtorsmaster
+						ON salesorders.debtorno = debtorsmaster.debtorno
+					INNER JOIN stockmaster
+						ON salesorderdetails.stkcode = stockmaster.stockid
+					INNER JOIN locationusers
+						ON locationusers.loccode=salesorders.fromstkloc
+						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.canview=1,
+					WHERE salesorders.fromstkloc = '" . $_GET['Location'] . "'
 						AND salesorderdetails.ActualDispatchDate >= '" . $FromDate . "'
 					GROUP BY salesorderdetails.stkcode
 					ORDER BY `" . $_GET['Sequence'] . "` DESC
 					LIMIT 0," . intval($_GET['NumberOfTopItems']);
 		} else {
 			//the situation if the location and customer type not selected "All"
-			$SQL = "SELECT 	salesorderdetails.stkcode,
+			$SQL = "SELECT salesorderdetails.stkcode,
 						SUM(salesorderdetails.qtyinvoiced) totalinvoiced,
 						SUM(salesorderdetails.qtyinvoiced * salesorderdetails.unitprice ) AS valuesales,
 						stockmaster.description,
 						stockmaster.units,
 						stockmaster.decimalplaces
-					FROM 	salesorderdetails, salesorders, debtorsmaster,stockmaster
-					WHERE 	salesorderdetails.orderno = salesorders.orderno
-						AND salesorderdetails.stkcode = stockmaster.stockid
-						AND salesorders.debtorno = debtorsmaster.debtorno
-						AND salesorders.fromstkloc = '" . $_GET['Location'] . "'
+					FROM salesorderdetails
+					INNER JOIN salesorders
+						ON salesorderdetails.orderno = salesorders.orderno
+					INNER JOIN debtorsmaster
+						ON salesorders.debtorno = debtorsmaster.debtorno
+					INNER JOIN stockmaster
+						ON salesorderdetails.stkcode = stockmaster.stockid
+					INNER JOIN locationusers
+						ON locationusers.loccode=salesorders.fromstkloc
+						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.canview=1,
+					WHERE salesorders.fromstkloc = '" . $_GET['Location'] . "'
 						AND debtorsmaster.typeid = '" . $_GET['Customers'] . "'
 						AND salesorderdetails.actualdispatchdate >= '" . $FromDate . "'
 					GROUP BY salesorderdetails.stkcode
@@ -88,6 +116,10 @@ if (DB_num_rows($Result) > 0) {
 		//find the quantity onhand item
 		$SQLoh = "SELECT sum(quantity)as qty
 					FROM locstock
+					INNER JOIN locationusers
+						ON locationusers.loccode=locstock.loccode
+						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.canview=1
 					WHERE stockid='" . DB_escape_string($MyRow['stkcode']) . "'";
 		$oh = DB_query($SQLoh);
 		$ohRow = DB_fetch_row($oh);

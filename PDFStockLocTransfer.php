@@ -14,7 +14,6 @@ if (!isset($_GET['TransferNo'])) {
 	include('includes/header.inc');
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Reprint transfer docket') . '</p><br />';
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table>
 			<tr>
@@ -22,12 +21,10 @@ if (!isset($_GET['TransferNo'])) {
 				<td><input type="text" class="integer" required="required" minlength="1" maxlength="10" size="10" name="TransferNo" /></td>
 			</tr>
 		</table>';
-	echo '<br />
-		  <div class="centre">
+	echo '<div class="centre">
 			<input type="submit" name="Print" value="' . _('Print') . '" />
 		  </div>';
-	echo '</div>
-		  </form>';
+	echo '</form>';
 	include('includes/footer.inc');
 	exit;
 }
@@ -52,9 +49,20 @@ $SQL = "SELECT loctransfers.reference,
 			   locationsrec.locationname as reclocname,
 			   stockmaster.decimalplaces
 		FROM loctransfers
-		INNER JOIN stockmaster ON loctransfers.stockid=stockmaster.stockid
-		INNER JOIN locations ON loctransfers.shiploc=locations.loccode
-		INNER JOIN locations AS locationsrec ON loctransfers.recloc = locationsrec.loccode
+		INNER JOIN stockmaster
+			ON loctransfers.stockid=stockmaster.stockid
+		INNER JOIN locations
+			ON loctransfers.shiploc=locations.loccode
+		INNER JOIN locations AS locationsrec
+			ON loctransfers.recloc = locationsrec.loccode
+		INNER JOIN locationusers
+			ON locationusers.loccode=locations.loccode
+			AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+			AND locationusers.canview=1
+		INNER JOIN locationusers AS locationusersrec
+			ON locationusersrec.loccode=locationsrec.loccode
+			AND locationusersrec.userid='" .  $_SESSION['UserID'] . "'
+			AND locationusersrec.canview=1
 		WHERE loctransfers.reference='" . $_GET['TransferNo'] . "'";
 
 $Result = DB_query($SQL, $ErrMsg, $DbgMsg);

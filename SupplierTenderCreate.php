@@ -6,13 +6,13 @@ include('includes/session.inc');
 
 if (empty($_GET['identifier'])) {
 	/*unique session identifier to ensure that there is no conflict with other supplier tender sessions on the same machine  */
-	$identifier = date('U');
+	$Identifier = date('U');
 } else {
-	$identifier = $_GET['identifier'];
+	$Identifier = $_GET['identifier'];
 }
 
-if (isset($_GET['New']) and isset($_SESSION['tender' . $identifier])) {
-	unset($_SESSION['tender' . $identifier]);
+if (isset($_GET['New']) and isset($_SESSION['tender' . $Identifier])) {
+	unset($_SESSION['tender' . $Identifier]);
 }
 
 if (isset($_GET['New']) and $_SESSION['CanCreateTender'] == 0) {
@@ -34,10 +34,10 @@ if (isset($_GET['Edit']) and $_SESSION['CanCreateTender'] == 0) {
 }
 
 if (isset($_POST['Close'])) {
-	$SQL = "UPDATE tenders SET closed=1 WHERE tenderid='" . $_SESSION['tender' . $identifier]->TenderId . "'";
+	$SQL = "UPDATE tenders SET closed=1 WHERE tenderid='" . $_SESSION['tender' . $Identifier]->TenderId . "'";
 	$Result = DB_query($SQL);
 	$_GET['Edit'] = 'Yes';
-	unset($_SESSION['tender' . $identifier]);
+	unset($_SESSION['tender' . $Identifier]);
 }
 
 $ShowTender = 0;
@@ -54,22 +54,26 @@ if (isset($_GET['ID'])) {
 					telephone,
 					requiredbydate
 				FROM tenders
+				INNER JOIN locationusers
+					ON locationusers.loccode=tenders.location
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canview=1
 				WHERE tenderid='" . $_GET['ID'] . "'";
 	$Result = DB_query($SQL);
 	$MyRow = DB_fetch_array($Result);
-	if (isset($_SESSION['tender' . $identifier])) {
-		unset($_SESSION['tender' . $identifier]);
+	if (isset($_SESSION['tender' . $Identifier])) {
+		unset($_SESSION['tender' . $Identifier]);
 	}
-	$_SESSION['tender' . $identifier] = new Tender();
-	$_SESSION['tender' . $identifier]->TenderId = $MyRow['tenderid'];
-	$_SESSION['tender' . $identifier]->Location = $MyRow['location'];
-	$_SESSION['tender' . $identifier]->DelAdd1 = $MyRow['address1'];
-	$_SESSION['tender' . $identifier]->DelAdd2 = $MyRow['address2'];
-	$_SESSION['tender' . $identifier]->DelAdd3 = $MyRow['address3'];
-	$_SESSION['tender' . $identifier]->DelAdd4 = $MyRow['address4'];
-	$_SESSION['tender' . $identifier]->DelAdd5 = $MyRow['address5'];
-	$_SESSION['tender' . $identifier]->DelAdd6 = $MyRow['address6'];
-	$_SESSION['tender' . $identifier]->RequiredByDate = $MyRow['requiredbydate'];
+	$_SESSION['tender' . $Identifier] = new Tender();
+	$_SESSION['tender' . $Identifier]->TenderId = $MyRow['tenderid'];
+	$_SESSION['tender' . $Identifier]->Location = $MyRow['location'];
+	$_SESSION['tender' . $Identifier]->DelAdd1 = $MyRow['address1'];
+	$_SESSION['tender' . $Identifier]->DelAdd2 = $MyRow['address2'];
+	$_SESSION['tender' . $Identifier]->DelAdd3 = $MyRow['address3'];
+	$_SESSION['tender' . $Identifier]->DelAdd4 = $MyRow['address4'];
+	$_SESSION['tender' . $Identifier]->DelAdd5 = $MyRow['address5'];
+	$_SESSION['tender' . $Identifier]->DelAdd6 = $MyRow['address6'];
+	$_SESSION['tender' . $Identifier]->RequiredByDate = $MyRow['requiredbydate'];
 
 	$SQL = "SELECT tenderid,
 					tendersuppliers.supplierid,
@@ -81,7 +85,7 @@ if (isset($_GET['ID'])) {
 				WHERE tenderid='" . $_GET['ID'] . "'";
 	$Result = DB_query($SQL);
 	while ($MyRow = DB_fetch_array($Result)) {
-		$_SESSION['tender' . $identifier]->add_supplier_to_tender($MyRow['supplierid'], $MyRow['suppname'], $MyRow['email']);
+		$_SESSION['tender' . $Identifier]->add_supplier_to_tender($MyRow['supplierid'], $MyRow['suppname'], $MyRow['email']);
 	}
 
 	$SQL = "SELECT tenderid,
@@ -96,7 +100,7 @@ if (isset($_GET['ID'])) {
 				WHERE tenderid='" . $_GET['ID'] . "'";
 	$Result = DB_query($SQL);
 	while ($MyRow = DB_fetch_array($Result)) {
-		$_SESSION['tender' . $identifier]->add_item_to_tender($_SESSION['tender' . $identifier]->LinesOnTender, $MyRow['stockid'], $MyRow['quantity'], $MyRow['description'], $MyRow['units'], $MyRow['decimalplaces'], DateAdd(date($_SESSION['DefaultDateFormat']), 'm', 3));
+		$_SESSION['tender' . $Identifier]->add_item_to_tender($_SESSION['tender' . $Identifier]->LinesOnTender, $MyRow['stockid'], $MyRow['quantity'], $MyRow['description'], $MyRow['units'], $MyRow['decimalplaces'], DateAdd(date($_SESSION['DefaultDateFormat']), 'm', 3));
 	}
 	$ShowTender = 1;
 }
@@ -115,6 +119,10 @@ if (isset($_GET['Edit'])) {
 					address6,
 					telephone
 				FROM tenders
+				INNER JOIN locationusers
+					ON locationusers.loccode=tenders.location
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canupd=1
 				WHERE closed=0
 					AND requiredbydate >= CURRENT_DATE";
 	$Result = DB_query($SQL);
@@ -141,13 +149,13 @@ if (isset($_GET['Edit'])) {
 				<td>' . $MyRow['address5'] . '</td>
 				<td>' . $MyRow['address6'] . '</td>
 				<td>' . $MyRow['telephone'] . '</td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $identifier . '&amp;ID=' . $MyRow['tenderid'] . '">' . _('Edit') . '</a></td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '&amp;ID=' . $MyRow['tenderid'] . '">' . _('Edit') . '</a></td>
 			</tr>';
 	}
 	echo '</table>';
 	include('includes/footer.inc');
 	exit;
-} else if (isset($_GET['ID']) or (isset($_SESSION['tender' . $identifier]->TenderId))) {
+} else if (isset($_GET['ID']) or (isset($_SESSION['tender' . $Identifier]->TenderId))) {
 	$Title = _('Edit an Existing Supplier Tender Request');
 	include('includes/header.inc');
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" title="' . _('Purchase Order Tendering') . '" alt="" />' . $Title . '</p>';
@@ -158,21 +166,21 @@ if (isset($_GET['Edit'])) {
 }
 
 if (isset($_POST['Save'])) {
-	$_SESSION['tender' . $identifier]->RequiredByDate = $_POST['RequiredByDate'];
-	$_SESSION['tender' . $identifier]->save();
-	$_SESSION['tender' . $identifier]->EmailSuppliers();
+	$_SESSION['tender' . $Identifier]->RequiredByDate = $_POST['RequiredByDate'];
+	$_SESSION['tender' . $Identifier]->save();
+	$_SESSION['tender' . $Identifier]->EmailSuppliers();
 	prnMsg(_('The tender has been successfully saved'), 'success');
 	include('includes/footer.inc');
 	exit;
 }
 
 if (isset($_GET['DeleteSupplier'])) {
-	$_SESSION['tender' . $identifier]->remove_supplier_from_tender($_GET['DeleteSupplier']);
+	$_SESSION['tender' . $Identifier]->remove_supplier_from_tender($_GET['DeleteSupplier']);
 	$ShowTender = 1;
 }
 
 if (isset($_GET['DeleteItem'])) {
-	$_SESSION['tender' . $identifier]->remove_item_from_tender($_GET['DeleteItem']);
+	$_SESSION['tender' . $Identifier]->remove_item_from_tender($_GET['DeleteItem']);
 	$ShowTender = 1;
 }
 
@@ -184,7 +192,7 @@ if (isset($_POST['SelectedSupplier'])) {
 	$Result = DB_query($SQL);
 	$MyRow = DB_fetch_array($Result);
 	if (mb_strlen($MyRow['email']) > 0) {
-		$_SESSION['tender' . $identifier]->add_supplier_to_tender($_POST['SelectedSupplier'], $MyRow['suppname'], $MyRow['email']);
+		$_SESSION['tender' . $Identifier]->add_supplier_to_tender($_POST['SelectedSupplier'], $MyRow['suppname'], $MyRow['email']);
 	} else {
 		prnMsg(_('The supplier must have an email set up or they cannot be part of a tender'), 'warn');
 	}
@@ -192,35 +200,35 @@ if (isset($_POST['SelectedSupplier'])) {
 }
 
 if (isset($_POST['NewItem']) and !isset($_POST['Refresh'])) {
-	foreach ($_POST as $key => $value) {
-		if (mb_substr($key, 0, 7) == 'StockID') {
-			$Index = mb_substr($key, 7, mb_strlen($key) - 7);
-			$StockID = $value;
+	foreach ($_POST as $Key => $Value) {
+		if (mb_substr($Key, 0, 7) == 'StockID') {
+			$Index = mb_substr($Key, 7, mb_strlen($Key) - 7);
+			$StockId = $Value;
 			$Quantity = filter_number_format($_POST['Qty' . $Index]);
 			$UOM = $_POST['UOM' . $Index];
 			$SQL = "SELECT description,
 							decimalplaces
 						FROM stockmaster
-						WHERE stockid='" . $StockID . "'";
+						WHERE stockid='" . $StockId . "'";
 			$Result = DB_query($SQL);
 			$MyRow = DB_fetch_array($Result);
-			$_SESSION['tender' . $identifier]->add_item_to_tender($_SESSION['tender' . $identifier]->LinesOnTender, $StockID, $Quantity, $MyRow['description'], $UOM, $MyRow['decimalplaces'], DateAdd(date($_SESSION['DefaultDateFormat']), 'm', 3));
+			$_SESSION['tender' . $Identifier]->add_item_to_tender($_SESSION['tender' . $Identifier]->LinesOnTender, $StockId, $Quantity, $MyRow['description'], $UOM, $MyRow['decimalplaces'], DateAdd(date($_SESSION['DefaultDateFormat']), 'm', 3));
 			unset($UOM);
 		}
 	}
 	$ShowTender = 1;
 }
 
-if (!isset($_SESSION['tender' . $identifier]) or isset($_POST['LookupDeliveryAddress']) or $ShowTender == 1) {
+if (!isset($_SESSION['tender' . $Identifier]) or isset($_POST['LookupDeliveryAddress']) or $ShowTender == 1) {
 
 	/* Show Tender header screen */
-	if (!isset($_SESSION['tender' . $identifier])) {
-		$_SESSION['tender' . $identifier] = new Tender();
+	if (!isset($_SESSION['tender' . $Identifier])) {
+		$_SESSION['tender' . $Identifier] = new Tender();
 	}
-	if (!isset($_SESSION['tender' . $identifier]->RequiredByDate)) {
-		$_SESSION['tender' . $identifier]->RequiredByDate = FormatDateForSQL(date($_SESSION['DefaultDateFormat']));
+	if (!isset($_SESSION['tender' . $Identifier]->RequiredByDate)) {
+		$_SESSION['tender' . $Identifier]->RequiredByDate = FormatDateForSQL(date($_SESSION['DefaultDateFormat']));
 	}
-	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $identifier . '" method="post" class="noPrint">';
+	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '" method="post" class="noPrint">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table class="selection">';
 	echo '<tr>
@@ -228,7 +236,7 @@ if (!isset($_SESSION['tender' . $identifier]) or isset($_POST['LookupDeliveryAdd
 		</tr>';
 	echo '<tr>
 			<td>' . _('Delivery Must Be Made Before') . '</td>
-			<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" required="required" minlength="1" maxlength="10" name="RequiredByDate" size="11" value="' . ConvertSQLDate($_SESSION['tender' . $identifier]->RequiredByDate) . '" /></td>
+			<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" required="required" minlength="1" maxlength="10" name="RequiredByDate" size="11" value="' . ConvertSQLDate($_SESSION['tender' . $Identifier]->RequiredByDate) . '" /></td>
 		</tr>';
 
 	if (!isset($_POST['StkLocation']) or $_POST['StkLocation'] == '') {
@@ -246,7 +254,11 @@ if (!isset($_SESSION['tender' . $identifier]) or isset($_POST['LookupDeliveryAdd
 						tel,
 						contact
 					FROM locations
-					WHERE loccode='" . $_POST['StkLocation'] . "'";
+					INNER JOIN locationusers
+						ON locationusers.loccode=.locations.loccode
+						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.canupd=1
+					WHERE locations.loccode='" . $_POST['StkLocation'] . "'";
 
 		$LocnAddrResult = DB_query($SQL);
 		if (DB_num_rows($LocnAddrResult) == 1) {
@@ -260,15 +272,15 @@ if (!isset($_SESSION['tender' . $identifier]) or isset($_POST['LookupDeliveryAdd
 			$_POST['Tel'] = $LocnRow['tel'];
 			$_POST['Contact'] = $LocnRow['contact'];
 
-			$_SESSION['tender' . $identifier]->Location = $_POST['StkLocation'];
-			$_SESSION['tender' . $identifier]->DelAdd1 = $_POST['DelAdd1'];
-			$_SESSION['tender' . $identifier]->DelAdd2 = $_POST['DelAdd2'];
-			$_SESSION['tender' . $identifier]->DelAdd3 = $_POST['DelAdd3'];
-			$_SESSION['tender' . $identifier]->DelAdd4 = $_POST['DelAdd4'];
-			$_SESSION['tender' . $identifier]->DelAdd5 = $_POST['DelAdd5'];
-			$_SESSION['tender' . $identifier]->DelAdd6 = $_POST['DelAdd6'];
-			$_SESSION['tender' . $identifier]->Telephone = $_POST['Tel'];
-			$_SESSION['tender' . $identifier]->Contact = $_POST['Contact'];
+			$_SESSION['tender' . $Identifier]->Location = $_POST['StkLocation'];
+			$_SESSION['tender' . $Identifier]->DelAdd1 = $_POST['DelAdd1'];
+			$_SESSION['tender' . $Identifier]->DelAdd2 = $_POST['DelAdd2'];
+			$_SESSION['tender' . $Identifier]->DelAdd3 = $_POST['DelAdd3'];
+			$_SESSION['tender' . $Identifier]->DelAdd4 = $_POST['DelAdd4'];
+			$_SESSION['tender' . $Identifier]->DelAdd5 = $_POST['DelAdd5'];
+			$_SESSION['tender' . $Identifier]->DelAdd6 = $_POST['DelAdd6'];
+			$_SESSION['tender' . $Identifier]->Telephone = $_POST['Tel'];
+			$_SESSION['tender' . $Identifier]->Contact = $_POST['Contact'];
 
 		} else {
 			/*The default location of the user is crook */
@@ -287,6 +299,10 @@ if (!isset($_SESSION['tender' . $identifier]) or isset($_POST['LookupDeliveryAdd
 						tel,
 						contact
 					FROM locations
+					INNER JOIN locationusers
+						ON locationusers.loccode=.locations.loccode
+						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.canupd=1
 					WHERE loccode='" . $_POST['StkLocation'] . "'";
 
 		$LocnAddrResult = DB_query($SQL);
@@ -301,37 +317,33 @@ if (!isset($_SESSION['tender' . $identifier]) or isset($_POST['LookupDeliveryAdd
 			$_POST['Tel'] = $LocnRow['tel'];
 			$_POST['Contact'] = $LocnRow['contact'];
 
-			$_SESSION['tender' . $identifier]->Location = stripslashes($_POST['StkLocation']);
-			$_SESSION['tender' . $identifier]->DelAdd1 = $_POST['DelAdd1'];
-			$_SESSION['tender' . $identifier]->DelAdd2 = $_POST['DelAdd2'];
-			$_SESSION['tender' . $identifier]->DelAdd3 = $_POST['DelAdd3'];
-			$_SESSION['tender' . $identifier]->DelAdd4 = $_POST['DelAdd4'];
-			$_SESSION['tender' . $identifier]->DelAdd5 = $_POST['DelAdd5'];
-			$_SESSION['tender' . $identifier]->DelAdd6 = $_POST['DelAdd6'];
-			$_SESSION['tender' . $identifier]->Telephone = $_POST['Tel'];
-			$_SESSION['tender' . $identifier]->Contact = $_POST['Contact'];
+			$_SESSION['tender' . $Identifier]->Location = stripslashes($_POST['StkLocation']);
+			$_SESSION['tender' . $Identifier]->DelAdd1 = $_POST['DelAdd1'];
+			$_SESSION['tender' . $Identifier]->DelAdd2 = $_POST['DelAdd2'];
+			$_SESSION['tender' . $Identifier]->DelAdd3 = $_POST['DelAdd3'];
+			$_SESSION['tender' . $Identifier]->DelAdd4 = $_POST['DelAdd4'];
+			$_SESSION['tender' . $Identifier]->DelAdd5 = $_POST['DelAdd5'];
+			$_SESSION['tender' . $Identifier]->DelAdd6 = $_POST['DelAdd6'];
+			$_SESSION['tender' . $Identifier]->Telephone = $_POST['Tel'];
+			$_SESSION['tender' . $Identifier]->Contact = $_POST['Contact'];
 		}
 	}
 	echo '<tr>
 			<td>' . _('Warehouse') . ':</td>
 			<td><select required="required" minlength="1" name="StkLocation" onchange="ReloadForm(form1.LookupDeliveryAddress)">';
 
-	if ($_SESSION['RestrictLocations'] == 0) {
-		$SQL = "SELECT locationname,
-						loccode
-					FROM locations";
-	} else {
-		$SQL = "SELECT locationname,
-						loccode
+	$SQL = "SELECT locationname,
+					locations.loccode
 					FROM locations
-					INNER JOIN www_users
-						ON locations.loccode=www_users.defaultlocation
-					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-	}
+					INNER JOIN locationusers
+						ON locationusers.loccode=.locations.loccode
+						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.canupd=1";
+
 	$LocnResult = DB_query($SQL);
 
 	while ($LocnRow = DB_fetch_array($LocnResult)) {
-		if ((isset($_SESSION['tender' . $identifier]->Location) and $_SESSION['tender' . $identifier]->Location == $LocnRow['loccode'])) {
+		if ((isset($_SESSION['tender' . $Identifier]->Location) and $_SESSION['tender' . $Identifier]->Location == $LocnRow['loccode'])) {
 			echo '<option selected="selected" value="' . $LocnRow['loccode'] . '">' . $LocnRow['locationname'] . '</option>';
 		} else {
 			echo '<option value="' . $LocnRow['loccode'] . '">' . $LocnRow['locationname'] . '</option>';
@@ -346,7 +358,7 @@ if (!isset($_SESSION['tender' . $identifier]) or isset($_POST['LookupDeliveryAdd
 	 */
 	echo '<tr>
 			<td>' . _('Delivery Contact') . ':</td>
-			<td><input type="text" name="Contact" size="41"  value="' . $_SESSION['tender' . $identifier]->Contact . '" /></td>
+			<td><input type="text" name="Contact" size="41"  value="' . $_SESSION['tender' . $Identifier]->Contact . '" /></td>
 		</tr>';
 	echo '<tr>
 			<td>' . _('Address') . ' 1 :</td>
@@ -374,7 +386,7 @@ if (!isset($_SESSION['tender' . $identifier]) or isset($_POST['LookupDeliveryAdd
 		</tr>';
 	echo '<tr>
 			<td>' . _('Phone') . ':</td>
-			<td><input type="tel" name="Tel" size="31" minlength="0" maxlength="30" value="' . $_SESSION['tender' . $identifier]->Telephone . '" /></td>
+			<td><input type="tel" name="Tel" size="31" minlength="0" maxlength="30" value="' . $_SESSION['tender' . $Identifier]->Telephone . '" /></td>
 		</tr>';
 	echo '</table>';
 
@@ -395,12 +407,12 @@ if (!isset($_SESSION['tender' . $identifier]) or isset($_POST['LookupDeliveryAdd
 			<th>' . _('Supplier Name') . '</th>
 			<th>' . _('Email Address') . '</th>
 		</tr>';
-	foreach ($_SESSION['tender' . $identifier]->Suppliers as $Supplier) {
+	foreach ($_SESSION['tender' . $Identifier]->Suppliers as $Supplier) {
 		echo '<tr>
 				<td>' . stripslashes($Supplier->SupplierCode) . '</td>
 				<td>' . $Supplier->SupplierName . '</td>
 				<td>' . $Supplier->EmailAddress . '</td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?identifier=' . $identifier, ENT_QUOTES, 'UTF-8') . '&amp;DeleteSupplier=' . $Supplier->SupplierCode . '">' . _('Delete') . '</a></td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?identifier=' . $Identifier, ENT_QUOTES, 'UTF-8') . '&amp;DeleteSupplier=' . $Supplier->SupplierCode . '">' . _('Delete') . '</a></td>
 			</tr>';
 	}
 	echo '</table></td>';
@@ -417,7 +429,7 @@ if (!isset($_SESSION['tender' . $identifier]) or isset($_POST['LookupDeliveryAdd
 			<th>' . _('UOM') . '</th>
 		</tr>';
 	$k = 0;
-	foreach ($_SESSION['tender' . $identifier]->LineItems as $LineItems) {
+	foreach ($_SESSION['tender' . $Identifier]->LineItems as $LineItems) {
 		if ($LineItems->Deleted == False) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
@@ -430,7 +442,7 @@ if (!isset($_SESSION['tender' . $identifier]) or isset($_POST['LookupDeliveryAdd
 				<td>' . $LineItems->ItemDescription . '</td>
 				<td class="number">' . locale_number_format($LineItems->Quantity, $LineItems->DecimalPlaces) . '</td>
 				<td>' . $LineItems->Units . '</td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?identifier=' . $identifier, ENT_QUOTES, 'UTF-8') . '&amp;DeleteItem=' . $LineItems->LineNo . '">' . _('Delete') . '</a></td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?identifier=' . $Identifier, ENT_QUOTES, 'UTF-8') . '&amp;DeleteItem=' . $LineItems->LineNo . '">' . _('Delete') . '</a></td>
 				</tr>';
 		}
 	}
@@ -441,10 +453,10 @@ if (!isset($_SESSION['tender' . $identifier]) or isset($_POST['LookupDeliveryAdd
 			<input type="submit" name="Items" value="' . _('Select Items For Tender') . '" />
 		</div>';
 	echo '<div class="centre">';
-	if ($_SESSION['tender' . $identifier]->LinesOnTender > 0 and $_SESSION['tender' . $identifier]->SuppliersOnTender > 0) {
+	if ($_SESSION['tender' . $Identifier]->LinesOnTender > 0 and $_SESSION['tender' . $Identifier]->SuppliersOnTender > 0) {
 		echo '<input type="submit" name="Close" value="' . _('Close This Tender') . '" />';
 	}
-	if ($_SESSION['tender' . $identifier]->LinesOnTender > 0 and $_SESSION['tender' . $identifier]->SuppliersOnTender > 0) {
+	if ($_SESSION['tender' . $Identifier]->LinesOnTender > 0 and $_SESSION['tender' . $Identifier]->SuppliersOnTender > 0) {
 
 		echo '<input type="submit" name="Save" value="' . _('Save Tender') . '" />
 			</div>';
@@ -455,7 +467,7 @@ if (!isset($_SESSION['tender' . $identifier]) or isset($_POST['LookupDeliveryAdd
 }
 
 if (isset($_POST['Suppliers'])) {
-	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?identifier=' . $identifier, ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
+	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?identifier=' . $Identifier, ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Search for Suppliers') . '</p>
 		<table cellpadding="3" class="selection">
@@ -478,7 +490,7 @@ if (isset($_POST['Suppliers'])) {
 }
 
 if (isset($_POST['SearchSupplier']) or isset($_POST['Go']) or isset($_POST['Next']) or isset($_POST['Previous'])) {
-	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?identifier=' . urlencode($identifier), ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
+	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?identifier=' . urlencode($Identifier), ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	if (!isset($_POST['PageOffset'])) {
 		$_POST['PageOffset'] = 0;
@@ -589,7 +601,7 @@ if (isset($_POST['SearchSupplier'])) {
 /*The supplier has chosen option 2
  */
 if (isset($_POST['Items'])) {
-	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?identifier=' . $identifier, ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
+	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?identifier=' . $Identifier, ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Search for Inventory Items') . '</p>';
 	$SQL = "SELECT categoryid,
@@ -650,7 +662,7 @@ if (isset($_POST['Items'])) {
 
 if (isset($_POST['Search'])) {
 	/*ie seach for stock items */
-	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?identifier=' . $identifier, ENT_QUOTES, 'UTF-8') . '">';
+	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?identifier=' . $Identifier, ENT_QUOTES, 'UTF-8') . '">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" title="' . _('Tenders') . '" alt="" />' . ' ' . _('Select items required on this tender') . '</p>';
 

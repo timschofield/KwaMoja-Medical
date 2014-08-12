@@ -324,18 +324,13 @@ if (isset($_POST['PrintPDF'])) {
 	echo '<div>
 		  <br />';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-	if ($_SESSION['RestrictLocations'] == 0) {
-		$SQL = "SELECT locationname,
-						loccode
-					FROM locations";
-	} else {
-		$SQL = "SELECT locationname,
-						loccode
-					FROM locations
-					INNER JOIN www_users
-						ON locations.loccode=www_users.defaultlocation
-					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-	}
+	$SQL = "SELECT locationname,
+					locations.loccode
+				FROM locations
+				INNER JOIN locationusers
+					ON locationusers.loccode=locations.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canupd=1";
 	$ResultStkLocs = DB_query($SQL);
 	if (!isset($_POST['FromLocation'])) {
 		$_POST['FromLocation'] = $DefaultLocation;

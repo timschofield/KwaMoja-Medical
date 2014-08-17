@@ -78,9 +78,9 @@ function InsertGLAccountGroup($AccountGroupDetails, $user, $password) {
 		$FieldValues .= '"' . $Value . '", ';
 	}
 	if (sizeof($Errors) == 0) {
-		$sql = "INSERT INTO accountgroups ('" . mb_substr($FieldNames, 0, -2) . "')
+		$SQL = "INSERT INTO accountgroups ('" . mb_substr($FieldNames, 0, -2) . "')
 					VALUES ('" . mb_substr($FieldValues, 0, -2) . "' ) ";
-		$result = DB_Query($sql);
+		$result = DB_Query($SQL);
 		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;
 		} else {

@@ -372,9 +372,9 @@ function InsertBranch($BranchDetails, $user, $password) {
 		$FieldNames .= $Key . ', ';
 		$FieldValues .= "'" . $Value . "', ";
 	}
-	$sql = "INSERT INTO custbranch (" . mb_substr($FieldNames, 0, -2) . ") VALUES (" . mb_substr($FieldValues, 0, -2) . ") ";
+	$SQL = "INSERT INTO custbranch (" . mb_substr($FieldNames, 0, -2) . ") VALUES (" . mb_substr($FieldValues, 0, -2) . ") ";
 	if (sizeof($Errors) == 0) {
-		$result = api_DB_Query($sql, $db);
+		$result = api_DB_Query($SQL, $db);
 		return $_SESSION['db_err_msg'];
 		if ($_SESSION['db_err_msg'] != '') {
 			$Errors[0] = DatabaseUpdateFailed;
@@ -495,14 +495,14 @@ function ModifyBranch($BranchDetails, $user, $password) {
 		$FieldNames .= $Key . ', ';
 		$FieldValues .= '"' . $Value . '", ';
 	}
-	$sql = 'UPDATE custbranch SET ';
+	$SQL = 'UPDATE custbranch SET ';
 	foreach ($BranchDetails as $Key => $Value) {
-		$sql .= $Key . '="' . $Value . '", ';
+		$SQL .= $Key . '="' . $Value . '", ';
 	}
-	$sql = mb_substr($sql, 0, -2) . " WHERE debtorno='" . $BranchDetails['debtorno'] . "'
+	$SQL = mb_substr($SQL, 0, -2) . " WHERE debtorno='" . $BranchDetails['debtorno'] . "'
 								   AND branchcode='" . $BranchDetails['branchcode'] . "'";
 	if (sizeof($Errors) == 0) {
-		$result = api_DB_Query($sql);
+		$result = api_DB_Query($SQL);
 		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;
 		} else {
@@ -525,9 +525,9 @@ function GetCustomerBranchCodes($DebtorNumber, $user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	$sql = "SELECT branchcode FROM custbranch
+	$SQL = "SELECT branchcode FROM custbranch
 				WHERE debtorno = '" . $DebtorNumber . "'";
-	$result = api_DB_query($sql);
+	$result = api_DB_query($SQL);
 	if (DB_error_no() != 0)
 		$Errors[0] = DatabaseUpdateFailed;
 	else {
@@ -554,10 +554,10 @@ function GetCustomerBranch($DebtorNumber, $BranchCode, $user, $password) {
 	if (sizeof($Errors) != 0) {
 		return $Errors;
 	}
-	$sql = "SELECT * FROM custbranch
+	$SQL = "SELECT * FROM custbranch
 					 WHERE debtorno='" . $DebtorNumber . "'
 					 AND branchcode='" . $BranchCode . "'";
-	$result = api_DB_Query($sql);
+	$result = api_DB_Query($SQL);
 	if (DB_error_no() != 0) {
 		$Errors[0] = DatabaseUpdateFailed;
 	} else {

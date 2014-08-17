@@ -44,8 +44,8 @@ if (!isset($_POST['ReportID'])) { // entered for the first time or created new r
 	if (isset($_POST['Type'])) { // then the type was passed from the previous form
 		$Type = $_POST['Type'];
 	} else { // we only have a reportid, we need to retrieve the type from thge db to set up the forms correctly
-		$sql = "SELECT reporttype FROM " . DBReports . " WHERE id='" . $ReportID . "'";
-		$Result = DB_query($sql, '', '', false, true);
+		$SQL = "SELECT reporttype FROM " . DBReports . " WHERE id='" . $ReportID . "'";
+		$Result = DB_query($SQL, '', '', false, true);
 		$myrow = DB_fetch_array($Result);
 		$Type = $myrow[0];
 	}
@@ -74,14 +74,14 @@ switch ($_GET['action']) {
 				$FormParams = PrepStep('2');
 				break;
 			case RPT_BTN_EDIT: // fetch the report information and go to the page setup screen
-				$sql = "SELECT * FROM " . DBReports . " WHERE id='" . $ReportID . "'";
-				$Result = DB_query($sql, '', '', false, true);
+				$SQL = "SELECT * FROM " . DBReports . " WHERE id='" . $ReportID . "'";
+				$Result = DB_query($SQL, '', '', false, true);
 				$myrow = DB_fetch_array($Result);
 				$FormParams = PrepStep('3');
 				break;
 			case RPT_BTN_RENAME: // Rename a report was selected, fetch the report name and show rename form
-				$sql = "SELECT reportname FROM " . DBReports . " WHERE id='" . $ReportID . "'";
-				$Result = DB_query($sql, '', '', false, true);
+				$SQL = "SELECT reportname FROM " . DBReports . " WHERE id='" . $ReportID . "'";
+				$Result = DB_query($SQL, '', '', false, true);
 				$myrow = DB_fetch_array($Result);
 				$_POST['ReportName'] = $myrow['reportname'];
 			// continue like copy was pushed
@@ -89,10 +89,10 @@ switch ($_GET['action']) {
 				$FormParams = PrepStep('2');
 				break;
 			case RPT_BTN_DEL: // after confirmation, delete the report and go to the main report admin menu
-				$sql = "DELETE FROM " . DBReports . " WHERE id = " . $ReportID . ";";
-				$Result = DB_query($sql, '', '', false, true);
-				$sql = "DELETE FROM " . DBRptFields . " WHERE reportid = " . $ReportID . ";";
-				$Result = DB_query($sql, '', '', false, true);
+				$SQL = "DELETE FROM " . DBReports . " WHERE id = " . $ReportID . ";";
+				$Result = DB_query($SQL, '', '', false, true);
+				$SQL = "DELETE FROM " . DBRptFields . " WHERE reportid = " . $ReportID . ";";
+				$Result = DB_query($SQL, '', '', false, true);
 			// reload main entry form
 			default:
 				$DropDownString = RetrieveReports();
@@ -112,10 +112,10 @@ switch ($_GET['action']) {
 		switch ($_POST['todo']) {
 			case RPT_BTN_REPLACE: // Erase the default report and copy a new one with the same name
 				if (isset($_POST['ReplaceReportID'])) { // then we need to delete the report to replace
-					$sql = "DELETE FROM " . DBReports . " WHERE id = " . $_POST['ReplaceReportID'] . ";";
-					$Result = DB_query($sql, '', '', false, true);
-					$sql = "DELETE FROM " . DBRptFields . " WHERE reportid = " . $_POST['ReplaceReportID'] . ";";
-					$Result = DB_query($sql, '', '', false, true);
+					$SQL = "DELETE FROM " . DBReports . " WHERE id = " . $_POST['ReplaceReportID'] . ";";
+					$Result = DB_query($SQL, '', '', false, true);
+					$SQL = "DELETE FROM " . DBRptFields . " WHERE reportid = " . $_POST['ReplaceReportID'] . ";";
+					$Result = DB_query($SQL, '', '', false, true);
 				}
 			// report has been deleted, continue to create or copy (in case 'Continue' below)
 			case RPT_BTN_CONT: // fetch the report information and go to the page setup screen
@@ -129,8 +129,8 @@ switch ($_GET['action']) {
 					break;
 				}
 				// check for duplicate report name
-				$sql = "SELECT id FROM " . DBReports . " WHERE reportname='" . addslashes($_POST['ReportName']) . "';";
-				$Result = DB_query($sql, '', '', false, true);
+				$SQL = "SELECT id FROM " . DBReports . " WHERE reportname='" . addslashes($_POST['ReportName']) . "';";
+				$Result = DB_query($SQL, '', '', false, true);
 				if (DB_num_rows($Result) > 0) { // then we have a duplicate report name, error and reload
 					$myrow = DB_fetch_array($Result);
 					$ReplaceReportID = $myrow['id']; // save the duplicate report id
@@ -161,57 +161,57 @@ switch ($_GET['action']) {
 						$GroupName = $_POST['FormGroup'];
 					}
 					$Type = $_POST['NewType'];
-					$sql = "INSERT INTO " . DBReports . " (reportname, reporttype, groupname, defaultreport)
+					$SQL = "INSERT INTO " . DBReports . " (reportname, reporttype, groupname, defaultreport)
 						VALUES ('" . addslashes($_POST['ReportName']) . "', '" . $Type . "', '" . $GroupName . "', '1')";
-					$Result = DB_query($sql, '', '', false, true);
+					$Result = DB_query($SQL, '', '', false, true);
 					$ReportID = DB_Last_Insert_ID(DBReports, 'id');
 					// Set some default report information: date display default choices to 'ALL'
 					if ($Type <> 'frm') { // set the truncate long descriptions default
-						$sql = "INSERT INTO " . DBRptFields . " (reportid, entrytype, params, displaydesc)
+						$SQL = "INSERT INTO " . DBRptFields . " (reportid, entrytype, params, displaydesc)
 							VALUES (" . $ReportID . ", 'trunclong', '0', '');";
-						$Result = DB_query($sql, '', '', false, true);
+						$Result = DB_query($SQL, '', '', false, true);
 					} else { // it's a form so write a default form break record
-						$sql = "INSERT INTO " . DBRptFields . " (reportid, entrytype, params, displaydesc)
+						$SQL = "INSERT INTO " . DBRptFields . " (reportid, entrytype, params, displaydesc)
 							VALUES (" . $ReportID . ", 'grouplist', '', '');";
-						$Result = DB_query($sql, '', '', false, true);
+						$Result = DB_query($SQL, '', '', false, true);
 					}
-					$sql = "INSERT INTO " . DBRptFields . " (reportid, entrytype, fieldname, displaydesc)
+					$SQL = "INSERT INTO " . DBRptFields . " (reportid, entrytype, fieldname, displaydesc)
 						VALUES (" . $ReportID . ", 'dateselect', '', 'a');";
-					$Result = DB_query($sql, '', '', false, true);
+					$Result = DB_query($SQL, '', '', false, true);
 				} else { // copy the report and all fields to the new report name
 					$OrigID = $ReportID;
 					// Set the report id to 0 to prepare to copy
-					$sql = "UPDATE " . DBReports . " SET id=0 WHERE id=" . $ReportID . ";";
-					$Result = DB_query($sql, '', '', false, true);
-					$sql = "INSERT INTO " . DBReports . " SELECT * FROM " . DBReports . " WHERE id = 0;";
-					$Result = DB_query($sql, '', '', false, true);
+					$SQL = "UPDATE " . DBReports . " SET id=0 WHERE id=" . $ReportID . ";";
+					$Result = DB_query($SQL, '', '', false, true);
+					$SQL = "INSERT INTO " . DBReports . " SELECT * FROM " . DBReports . " WHERE id = 0;";
+					$Result = DB_query($SQL, '', '', false, true);
 					// Fetch the id entered
 					$ReportID = DB_Last_Insert_ID(DBReports, 'id');
 					// Restore original report ID from 0
-					$sql = "UPDATE " . DBReports . " SET id=" . $OrigID . " WHERE id=0;";
-					$Result = DB_query($sql, '', '', false, true);
+					$SQL = "UPDATE " . DBReports . " SET id=" . $OrigID . " WHERE id=0;";
+					$Result = DB_query($SQL, '', '', false, true);
 					// Set the report name and group name per the form
-					$sql = "UPDATE " . DBReports . " SET
+					$SQL = "UPDATE " . DBReports . " SET
 							reportname = '" . DB_escape_string($_POST['ReportName']) . "'
 						WHERE id =" . $ReportID . ";";
-					$Result = DB_query($sql, '', '', false, true);
+					$Result = DB_query($SQL, '', '', false, true);
 					// fetch the fields and duplicate
-					$sql = "SELECT * FROM " . DBRptFields . " WHERE reportid=" . $OrigID . ";";
-					$Result = DB_query($sql, '', '', false, true);
+					$SQL = "SELECT * FROM " . DBRptFields . " WHERE reportid=" . $OrigID . ";";
+					$Result = DB_query($SQL, '', '', false, true);
 					while ($temp = DB_fetch_array($Result))
 						$field[] = $temp;
 					foreach ($field as $row) {
-						$sql = "INSERT INTO " . DBRptFields . " (reportid, entrytype, seqnum, fieldname,
+						$SQL = "INSERT INTO " . DBRptFields . " (reportid, entrytype, seqnum, fieldname,
 								displaydesc, visible, columnbreak, params)
 							VALUES (" . $ReportID . ", '" . $row['entrytype'] . "', " . $row['seqnum'] . ",
 								'" . $row['fieldname'] . "', '" . $row['displaydesc'] . "', '" . $row['visible'] . "',
 								'" . $row['columnbreak'] . "', '" . $row['params'] . "');";
-						$Result = DB_query($sql, '', '', false, true);
+						$Result = DB_query($SQL, '', '', false, true);
 					}
 				}
 				// read back in new data for next screen (will set defaults as defined in the db)
-				$sql = "SELECT * FROM " . DBReports . " WHERE id='" . $ReportID . "'";
-				$Result = DB_query($sql, '', '', false, true);
+				$SQL = "SELECT * FROM " . DBReports . " WHERE id='" . $ReportID . "'";
+				$Result = DB_query($SQL, '', '', false, true);
 				$myrow = DB_fetch_array($Result);
 				$FormParams = PrepStep('3');
 				break;
@@ -227,8 +227,8 @@ switch ($_GET['action']) {
 					break;
 				}
 				// check for duplicate report name
-				$sql = "SELECT id FROM " . DBReports . " WHERE reportname='" . addslashes($_POST['ReportName']) . "';";
-				$Result = DB_query($sql, '', '', false, true);
+				$SQL = "SELECT id FROM " . DBReports . " WHERE reportname='" . addslashes($_POST['ReportName']) . "';";
+				$Result = DB_query($SQL, '', '', false, true);
 				if (DB_num_rows($Result) > 0) { // then we have a duplicate report name, error and reload
 					$myrow = DB_fetch_array($Result);
 					if ($myrow['id'] <> $ReportID) { // then the report has a duplicate name to something other than itself, error
@@ -240,8 +240,8 @@ switch ($_GET['action']) {
 						break;
 					}
 				}
-				$sql = "UPDATE " . DBReports . " SET reportname='" . addslashes($_POST['ReportName']) . "' WHERE id=" . $ReportID . ";";
-				$Result = DB_query($sql, '', '', false, true);
+				$SQL = "UPDATE " . DBReports . " SET reportname='" . addslashes($_POST['ReportName']) . "' WHERE id=" . $ReportID . ";";
+				$Result = DB_query($SQL, '', '', false, true);
 				$usrMsg[] = array(
 					'message' => RPT_UPDATED,
 					'level' => 'success'
@@ -259,15 +259,15 @@ switch ($_GET['action']) {
 			case RPT_BTN_UPDATE:
 				$success = UpdatePageFields($ReportID);
 				// read back in new data for next screen (will set defaults as defined in the db)
-				$sql = "SELECT * FROM " . DBReports . " WHERE id='" . $ReportID . "'";
-				$Result = DB_query($sql, '', '', false, true);
+				$SQL = "SELECT * FROM " . DBReports . " WHERE id='" . $ReportID . "'";
+				$Result = DB_query($SQL, '', '', false, true);
 				$myrow = DB_fetch_array($Result);
 				$FormParams = PrepStep('3');
 				break;
 			case RPT_BTN_CONT: // fetch the report information and go to the page setup screen
 				$success = UpdatePageFields($ReportID);
 				// read in the data for the next form
-				$sql = "SELECT table1,
+				$SQL = "SELECT table1,
 						table2, table2criteria,
 						table3, table3criteria,
 						table4, table4criteria,
@@ -275,7 +275,7 @@ switch ($_GET['action']) {
 						table6, table6criteria,
 						reportname
 					FROM " . DBReports . " WHERE id='" . $ReportID . "'";
-				$Result = DB_query($sql, '', '', false, true);
+				$Result = DB_query($SQL, '', '', false, true);
 				$myrow = DB_fetch_array($Result);
 				$numrows = DB_num_rows($Result);
 				$FormParams = PrepStep('4');
@@ -290,16 +290,16 @@ switch ($_GET['action']) {
 	case "step5": // entered from dbsetup page
 		switch ($_POST['todo']) {
 			case RPT_BTN_BACK:
-				$sql = "SELECT * FROM " . DBReports . " WHERE id='" . $ReportID . "'";
-				$Result = DB_query($sql, '', '', false, true);
+				$SQL = "SELECT * FROM " . DBReports . " WHERE id='" . $ReportID . "'";
+				$Result = DB_query($SQL, '', '', false, true);
 				$myrow = DB_fetch_array($Result);
 				$FormParams = PrepStep('3');
 				break;
 			case RPT_BTN_UPDATE:
 			case RPT_BTN_CONT: // fetch the report information and go to the page setup screen
 				if ($_POST['Table1']) {
-					$sql = "SELECT table1 FROM " . DBReports . " WHERE id='" . $ReportID . "'";
-					$Result = DB_query($sql, '', '', false, true);
+					$SQL = "SELECT table1 FROM " . DBReports . " WHERE id='" . $ReportID . "'";
+					$Result = DB_query($SQL, '', '', false, true);
 					$myrow = DB_fetch_row($Result);
 					if ($myrow[0] != $_POST['Table1']) {
 						unset($_POST['Table2']);
@@ -323,7 +323,7 @@ switch ($_GET['action']) {
 							'level' => 'error'
 						);
 					// read back in new data for next screen (will set defaults as defined in the db)
-					$sql = "SELECT table1,
+					$SQL = "SELECT table1,
 							table2, table2criteria,
 							table3, table3criteria,
 							table4, table4criteria,
@@ -331,7 +331,7 @@ switch ($_GET['action']) {
 							table6, table6criteria,
 							reportname
 						FROM " . DBReports . " WHERE id='" . $ReportID . "'";
-					$Result = DB_query($sql, '', '', false, true);
+					$Result = DB_query($SQL, '', '', false, true);
 					$myrow = DB_fetch_array($Result);
 					$FormParams = PrepStep('4');
 					break;
@@ -355,17 +355,17 @@ switch ($_GET['action']) {
 					$success = ChangeSequence($SeqNum, 'fieldlist', 'up');
 				$FieldListings = RetrieveFields('fieldlist');
 			} elseif (isset($_POST['dn_x'])) { // the shift down button was pushed
-				$sql = "SELECT seqnum FROM " . DBRptFields . " WHERE reportid = " . $ReportID . " AND entrytype = 'fieldlist';";
-				$Result = DB_query($sql, '', '', false, true);
+				$SQL = "SELECT seqnum FROM " . DBRptFields . " WHERE reportid = " . $ReportID . " AND entrytype = 'fieldlist';";
+				$Result = DB_query($SQL, '', '', false, true);
 				if ($SeqNum < DB_num_rows($Result))
 					$success = ChangeSequence($SeqNum, 'fieldlist', 'down');
 				$FieldListings = RetrieveFields('fieldlist');
 			} elseif (isset($_POST['ed_x'])) { // the sequence edit button was pushed
 				// pre fill form with the field to edit and change button name
 				$FieldListings = RetrieveFields('fieldlist');
-				$sql = "SELECT * FROM " . DBRptFields . "
+				$SQL = "SELECT * FROM " . DBRptFields . "
 					WHERE reportid = " . $ReportID . " AND entrytype = 'fieldlist' AND seqnum=" . $SeqNum . ";";
-				$Result = DB_query($sql, '', '', false, true);
+				$Result = DB_query($SQL, '', '', false, true);
 				$FieldListings['defaults'] = DB_fetch_array($Result);
 				$FieldListings['defaults']['buttonvalue'] = RPT_BTN_CHANGE;
 			} elseif (isset($_POST['rm_x'])) { // the sequence remove button was pushed
@@ -377,7 +377,7 @@ switch ($_GET['action']) {
 		} else {
 			switch ($_POST['todo']) {
 				case RPT_BTN_BACK:
-					$sql = "SELECT table1,
+					$SQL = "SELECT table1,
 							table2, table2criteria,
 							table3, table3criteria,
 							table4, table4criteria,
@@ -385,7 +385,7 @@ switch ($_GET['action']) {
 							table6, table6criteria,
 							reportname
 						FROM " . DBReports . " WHERE id='" . $ReportID . "'";
-					$Result = DB_query($sql, '', '', false, true);
+					$Result = DB_query($SQL, '', '', false, true);
 					$myrow = DB_fetch_array($Result);
 					$FormParams = PrepStep('4');
 					break;
@@ -430,9 +430,9 @@ switch ($_GET['action']) {
 				case RPT_BTN_PROP: // Enter the properties of a given field
 					// see what form needs to be loaded and load based on index stored in params variable
 					$SeqNum = $_POST['SeqNum'];
-					$sql = "SELECT id, displaydesc, params FROM " . DBRptFields . "
+					$SQL = "SELECT id, displaydesc, params FROM " . DBRptFields . "
 						WHERE reportid = " . $ReportID . " AND entrytype='fieldlist' AND seqnum = " . $SeqNum . ";";
-					$Result = DB_query($sql, '', '', false, true);
+					$Result = DB_query($SQL, '', '', false, true);
 					$myrow = DB_fetch_assoc($Result);
 					$Params = unserialize($myrow['params']);
 					$reportname = $_POST['ReportName'];
@@ -465,9 +465,9 @@ switch ($_GET['action']) {
 		$reportname = $_POST['ReportName'];
 		$SeqNum = $_POST['SeqNum'];
 		// first fetch the original Params
-		$sql = "SELECT id, params FROM " . DBRptFields . "
+		$SQL = "SELECT id, params FROM " . DBRptFields . "
 			WHERE reportid = " . $ReportID . " AND entrytype='fieldlist' AND seqnum = " . $SeqNum . ";";
-		$Result = DB_query($sql, '', '', false, true);
+		$Result = DB_query($SQL, '', '', false, true);
 		$myrow = DB_fetch_assoc($Result);
 		$Params = unserialize($myrow['params']);
 		if (!isset($_POST['todo'])) { // then a sequence image button was pushed, we must be in form table entry
@@ -478,8 +478,8 @@ switch ($_GET['action']) {
 					'level' => 'error'
 				);
 			} else { // update the database
-				$sql = "UPDATE " . DBRptFields . " SET params='" . serialize($Params) . "' WHERE id = " . $_POST['ID'] . ";";
-				$Result = DB_query($sql, '', '', false, true);
+				$SQL = "UPDATE " . DBRptFields . " SET params='" . serialize($Params) . "' WHERE id = " . $_POST['ID'] . ";";
+				$Result = DB_query($SQL, '', '', false, true);
 				if ($success == 'edit') { // then the edit button was pressed, change button name from Add New to Change
 					$ButtonValue = RPT_BTN_CHANGE;
 				}
@@ -519,8 +519,8 @@ switch ($_GET['action']) {
 						$Params['Seq'][] = $_POST['TotalField'];
 					}
 					// Update field properties
-					$sql = "UPDATE " . DBRptFields . " SET params='" . serialize($Params) . "' WHERE id = " . $_POST['ID'] . ";";
-					$Result = DB_query($sql, '', '', false, true);
+					$SQL = "UPDATE " . DBRptFields . " SET params='" . serialize($Params) . "' WHERE id = " . $_POST['ID'] . ";";
+					$Result = DB_query($SQL, '', '', false, true);
 					$Params['TotalField'] = '';
 					$FormParams = PrepStep('prop');
 					$FormParams['id'] = $myrow['id'];
@@ -573,8 +573,8 @@ switch ($_GET['action']) {
 						$Params['Processing'] = '';
 					}
 					// Update field properties
-					$sql = "UPDATE " . DBRptFields . " SET params='" . serialize($Params) . "' WHERE id = " . $_POST['ID'] . ";";
-					$Result = DB_query($sql, '', '', false, true);
+					$SQL = "UPDATE " . DBRptFields . " SET params='" . serialize($Params) . "' WHERE id = " . $_POST['ID'] . ";";
+					$Result = DB_query($SQL, '', '', false, true);
 					// check for update errors and reload
 					if ($_POST['todo'] == RPT_BTN_FINISH) { // no errors and finished so return to field setup
 						$FieldListings = RetrieveFields('fieldlist');
@@ -602,16 +602,16 @@ switch ($_GET['action']) {
 				if ($SeqNum <> 1)
 					$success = ChangeSequence($_POST['SeqNum'], $EntryType, 'up');
 			} elseif (isset($_POST['dn_x'])) { // the shift down button was pushed
-				$sql = "SELECT seqnum FROM " . DBRptFields . " WHERE reportid = " . $ReportID . " AND entrytype = '" . $EntryType . "';";
-				$Result = DB_query($sql, '', '', false, true);
+				$SQL = "SELECT seqnum FROM " . DBRptFields . " WHERE reportid = " . $ReportID . " AND entrytype = '" . $EntryType . "';";
+				$Result = DB_query($SQL, '', '', false, true);
 				if ($SeqNum < DB_num_rows($Result))
 					$success = ChangeSequence($_POST['SeqNum'], $EntryType, 'down');
 			} elseif (isset($_POST['ed_x'])) { // the sequence edit button was pushed
 				$OverrideDefaults = true;
 				// pre fill form with the field to edit and change button name
-				$sql = "SELECT * FROM " . DBRptFields . "
+				$SQL = "SELECT * FROM " . DBRptFields . "
 					WHERE reportid = " . $ReportID . " AND entrytype = '" . $EntryType . "' AND seqnum=" . $SeqNum . ";";
-				$Result = DB_query($sql, '', '', false, true);
+				$Result = DB_query($SQL, '', '', false, true);
 				$NewDefaults['defaults'] = DB_fetch_array($Result);
 				$NewDefaults['defaults']['buttonvalue'] = RPT_BTN_CHANGE;
 			} elseif (isset($_POST['rm_x'])) { // the sequence remove button was pushed

@@ -69,14 +69,14 @@ function InsertGLAccount($AccountDetails, $user, $password) {
 		$FieldValues .= '"' . $Value . '", ';
 	}
 	if (sizeof($Errors) == 0) {
-		$sql = 'INSERT INTO chartmaster (' . mb_substr($FieldNames, 0, -2) . ') ' . "VALUES ('" . mb_substr($FieldValues, 0, -2) . "') ";
-		$result = DB_Query($sql);
-		$sql = 'INSERT INTO chartdetails (accountcode,
+		$SQL = 'INSERT INTO chartmaster (' . mb_substr($FieldNames, 0, -2) . ') ' . "VALUES ('" . mb_substr($FieldValues, 0, -2) . "') ";
+		$result = DB_Query($SQL);
+		$SQL = 'INSERT INTO chartdetails (accountcode,
 							period)
 				SELECT ' . $AccountDetails['accountcode'] . ',
 					periodno
 				FROM periods';
-		$result = api_DB_query($sql, $db, '', '', '', false);
+		$result = api_DB_query($SQL, $db, '', '', '', false);
 		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;
 		} else {
@@ -97,13 +97,13 @@ function GetGLAccountList($user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	$sql = 'SELECT chartmaster.accountcode,
+	$SQL = 'SELECT chartmaster.accountcode,
 					chartmaster.accountname,
 					accountgroups.pandl
 				FROM chartmaster INNER JOIN accountgroups
 				ON chartmaster.group_=accountgroups.groupname
 				ORDER BY accountcode';
-	$result = api_DB_query($sql);
+	$result = api_DB_query($SQL);
 	$i = 0;
 	while ($myrow = DB_fetch_array($result)) {
 		$GLAccountList[$i]['accountcode'] = $myrow[0];
@@ -126,8 +126,8 @@ function GetGLAccountDetails($AccountCode, $user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	$sql = "SELECT * FROM chartmaster WHERE accountcode='" . $AccountCode . "'";
-	$result = api_DB_query($sql);
+	$SQL = "SELECT * FROM chartmaster WHERE accountcode='" . $AccountCode . "'";
+	$result = api_DB_query($SQL);
 	return DB_fetch_array($result);
 }
 

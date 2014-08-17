@@ -142,8 +142,8 @@ for ($UpdateNumber = $StartingUpdate; $UpdateNumber <= $EndingUpdate; $UpdateNum
 						document.getElementById("information").innerHTML="' . $UpdateNumber . ' file(s) processed.";
 					</script>';
 		echo str_repeat(' ', 1024 * 4);
-		$sql = "SET foreign_key_checks=0";
-		$result = executeSQL($sql, $DB, False);
+		$SQL = "SET foreign_key_checks=0";
+		$result = executeSQL($SQL, $DB, False);
 		flush();
 		if ($result == 0) {
 			include($PathPrefix . 'sql/install/' . $UpdateNumber . '.php');
@@ -165,8 +165,8 @@ InsertRecord('www_users', array('userid'),
 						, $DB);
 /* Now we uploade the chosen chart of accounts */
 if (!isset($_POST['Demo'])) {
-	$sql = "SET foreign_key_checks=0";
-	$result = executeSQL($sql, $DB, False);
+	$SQL = "SET foreign_key_checks=0";
+	$result = executeSQL($SQL, $DB, False);
 	include($PathPrefix . 'install/coa/' . $_SESSION['Installer']['CoA']);
 	echo '<div class="success">' . _('Your chosen chart of accounts has been uploaded') . '</div>';
 	ob_flush();
@@ -184,25 +184,25 @@ function HighestFileName($PathPrefix) {
 	return basename(array_pop($files), ".php");
 }
 
-function executeSQL($sql, $TrapErrors = False) {
+function executeSQL($SQL, $TrapErrors = False) {
 	global $SQLFile;
 	/* Run an sql statement and return an error code */
 	if (!isset($SQLFile)) {
 		DB_IgnoreForeignKeys();
-		$result = DB_query($sql, '', '', false, $TrapErrors);
+		$result = DB_query($SQL, '', '', false, $TrapErrors);
 		$ErrorNumber = DB_error_no();
 		DB_ReinstateForeignKeys();
 		return $ErrorNumber;
 	} else {
-		fwrite($SQLFile, $sql . ";\n");
+		fwrite($SQLFile, $SQL . ";\n");
 	}
 }
 
 function updateDBNo($NewNumber) {
 	global $SQLFile;
 	if (!isset($SQLFile)) {
-		$sql = "UPDATE config SET confvalue='" . $NewNumber . "' WHERE confname='DBUpdateNumber'";
-		executeSQL($sql);
+		$SQL = "UPDATE config SET confvalue='" . $NewNumber . "' WHERE confname='DBUpdateNumber'";
+		executeSQL($SQL);
 		$_SESSION['DBUpdateNumber'] = $NewNumber;
 	}
 }

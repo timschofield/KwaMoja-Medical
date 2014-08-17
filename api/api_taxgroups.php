@@ -11,8 +11,8 @@ function GetTaxGroupList($user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	$sql = 'SELECT taxgroupid FROM taxgroups';
-	$result = api_DB_query($sql);
+	$SQL = 'SELECT taxgroupid FROM taxgroups';
+	$result = api_DB_query($SQL);
 	$i = 0;
 	while ($myrow = DB_fetch_array($result)) {
 		$TaxgroupList[$i] = $myrow[0];
@@ -33,8 +33,8 @@ function GetTaxGroupDetails($taxgroup, $user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	$sql = "SELECT * FROM taxgroups WHERE taxgroupid='" . $taxgroup . "'";
-	$result = api_DB_query($sql);
+	$SQL = "SELECT * FROM taxgroups WHERE taxgroupid='" . $taxgroup . "'";
+	$result = api_DB_query($SQL);
 	return DB_fetch_array($result);
 }
 
@@ -50,8 +50,8 @@ function GetTaxGroupTaxes($TaxGroup, $User, $Password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	$sql = "SELECT taxgroupid, taxauthid, calculationorder, taxontax FROM taxgrouptaxes WHERE taxgroupid='" . $TaxGroup . "'";
-	$result = api_DB_query($sql);
+	$SQL = "SELECT taxgroupid, taxauthid, calculationorder, taxontax FROM taxgrouptaxes WHERE taxgroupid='" . $TaxGroup . "'";
+	$result = api_DB_query($SQL);
 	$i = 0;
 	$Answer = array();
 	while ($myrow = DB_fetch_array($result)) {
@@ -76,8 +76,8 @@ function GetTaxAuthorityList($User, $Password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	$sql = 'SELECT taxid FROM taxauthorities';
-	$result = api_DB_query($sql);
+	$SQL = 'SELECT taxid FROM taxauthorities';
+	$result = api_DB_query($SQL);
 	$i = 0;
 	while ($myrow = DB_fetch_array($result)) {
 		$TaxAuthList[$i] = $myrow[0];
@@ -98,8 +98,8 @@ function GetTaxAuthorityDetails($TaxAuthority, $User, $Password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	$sql = "SELECT * FROM taxauthorities WHERE taxid='" . $TaxAuthority . "'";
-	$result = api_DB_query($sql);
+	$SQL = "SELECT * FROM taxauthorities WHERE taxid='" . $TaxAuthority . "'";
+	$result = api_DB_query($SQL);
 	return DB_fetch_array($result);
 }
 
@@ -115,8 +115,8 @@ function GetTaxAuthorityRates($TaxAuthority, $User, $Password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	$sql = "SELECT taxcatid, dispatchtaxprovince, taxrate FROM taxauthrates WHERE taxauthority='" . $TaxAuthority . "'";
-	$result = api_DB_query($sql);
+	$SQL = "SELECT taxcatid, dispatchtaxprovince, taxrate FROM taxauthrates WHERE taxauthority='" . $TaxAuthority . "'";
+	$result = api_DB_query($SQL);
 	$i = 0;
 	$Answer = array();
 	while ($myrow = DB_fetch_array($result)) {

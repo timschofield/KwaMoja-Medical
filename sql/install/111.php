@@ -26,7 +26,7 @@ InsertRecord('securitytokens', array('tokenid'), array(15), array('tokenid', 'to
 InsertRecord('securitytokens', array('tokenid'), array(1000), array('tokenid', 'tokenname'), array(1000, 'User can view and alter sales prices'));
 InsertRecord('securitytokens', array('tokenid'), array(1001), array('tokenid', 'tokenname'), array(1001, 'User can bypass purchasing security and go straight from order to invoice'));
 
-$sql ="INSERT INTO securitygroups SELECT secroleid, tokenid FROM securityroles,securitytokens)";
-executeSQL($sql);
+$SQL ="INSERT INTO securitygroups SELECT secroleid, tokenid FROM securityroles,securitytokens)";
+executeSQL($SQL);
 
 ?>

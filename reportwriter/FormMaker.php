@@ -152,7 +152,7 @@ function BuildFormList($GroupID) {
 		foreach ($ReportGroups as $Key => $GName) {
 			$OutputString .= '<tr style="background-color:#CCCCCC"><td colspan="3" align="center">' . $GName . '</td></tr>';
 			$OutputString .= '<tr><td colspan="3" width="250" valign="top">';
-			$sql = "SELECT id,
+			$SQL = "SELECT id,
 						groupname,
 						reportname
 					FROM " . DBReports . "
@@ -160,7 +160,7 @@ function BuildFormList($GroupID) {
 					AND reporttype='frm'
 					ORDER BY groupname,
 												reportname";
-			$Result = DB_query($sql, '', '', false, true);
+			$Result = DB_query($SQL, '', '', false, true);
 			$FormList = '';
 			while ($Temp = DB_fetch_array($Result))
 				$FormList[] = $Temp;
@@ -182,12 +182,12 @@ function BuildFormList($GroupID) {
 			$OutputString .= '</td></tr>';
 		}
 	} else { // fetch the forms specific to a group GroupID
-		$sql = "SELECT id,
+		$SQL = "SELECT id,
 					reportname
 				FROM " . DBReports . "
 				WHERE defaultreport='1' AND groupname='" . $GroupID . "'
 				ORDER BY reportname";
-		$Result = DB_query($sql, '', '', false, true);
+		$Result = DB_query($SQL, '', '', false, true);
 		$OutputString .= '<tr><td colspan="3" width="250" valign="top">';
 		while ($Forms = DB_fetch_array($Result)) {
 			$OutputString .= '<input type="radio" name="ReportID" value="' . $Forms['id'] . '">' . $Forms['reportname'] . '<br />';
@@ -198,7 +198,7 @@ function BuildFormList($GroupID) {
 }
 
 function FetchReportDetails($ReportID) {
-	$sql = "SELECT reportname,
+	$SQL = "SELECT reportname,
 					reporttype,
 					groupname,
 					papersize,
@@ -220,7 +220,7 @@ function FetchReportDetails($ReportID) {
 					table6criteria
 			FROM " . DBReports . "
 			WHERE id = '" . $ReportID . "'";
-	$Result = DB_query($sql, '', '', false, true);
+	$Result = DB_query($SQL, '', '', false, true);
 	$myrow = DB_fetch_assoc($Result);
 	foreach ($myrow as $Key => $Value) {
 		$Prefs[$Key] = $Value;
@@ -235,11 +235,11 @@ function FetchReportDetails($ReportID) {
 
 function RetrieveFields($ReportID, $EntryType) {
 	$FieldListings = '';
-	$sql = "SELECT *	FROM " . DBRptFields . "
+	$SQL = "SELECT *	FROM " . DBRptFields . "
 			WHERE reportid = '" . $ReportID . "'
 			AND entrytype = '" . $EntryType . "'
 			ORDER BY seqnum";
-	$Result = DB_query($sql, '', '', false, true);
+	$Result = DB_query($SQL, '', '', false, true);
 	while ($FieldValues = DB_fetch_assoc($Result)) {
 		$FieldListings[] = $FieldValues;
 	}

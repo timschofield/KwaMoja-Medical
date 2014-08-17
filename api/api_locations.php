@@ -66,8 +66,8 @@ function GetLocationList($user, $password) {
 	} else {
 		$Errors[0] = 0;
 	}
-	$sql = "SELECT loccode FROM locations";
-	$result = api_DB_query($sql);
+	$SQL = "SELECT loccode FROM locations";
+	$result = api_DB_query($SQL);
 	$i = 0;
 	while ($myrow = DB_fetch_array($result)) {
 		$LocationList[$i] = $myrow[0];
@@ -91,8 +91,8 @@ function GetLocationDetails($location, $user, $password) {
 	} else {
 		$Errors[0] = 0;
 	}
-	$sql = "SELECT * FROM locations WHERE loccode='" . $location . "'";
-	$result = api_DB_query($sql);
+	$SQL = "SELECT * FROM locations WHERE loccode='" . $location . "'";
+	$result = api_DB_query($SQL);
 	$Errors[1] = DB_fetch_array($result);
 	return $Errors;
 }
@@ -150,10 +150,10 @@ function InsertLocation($Location, $user, $password) {
 		$FieldValues .= '"' . $Value . '", ';
 	}
 	if (sizeof($Errors) == 0) {
-		$sql = "INSERT INTO locations (" . mb_substr($FieldNames, 0, -2) . ")
+		$SQL = "INSERT INTO locations (" . mb_substr($FieldNames, 0, -2) . ")
 						VALUES ('" . mb_substr($FieldValues, 0, -2) . "') ";
 
-		$result = DB_Query($sql);
+		$result = DB_Query($SQL);
 		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;
 		} else {
@@ -209,13 +209,13 @@ function ModifyLocation($Location, $user, $password) {
 	if (isset($Location['contact'])) {
 		$Errors = VerifyContactName($Location['contact'], sizeof($Errors), $Errors);
 	}
-	$sql = "UPDATE locations SET ";
+	$SQL = "UPDATE locations SET ";
 	foreach ($Location as $Key => $Value) {
-		$sql .= $Key . "='" . $Value . "', ";
+		$SQL .= $Key . "='" . $Value . "', ";
 	}
-	$sql = mb_substr($sql, 0, -2) . " WHERE loccode='" . $Location['loccode'] . "'";
+	$SQL = mb_substr($SQL, 0, -2) . " WHERE loccode='" . $Location['loccode'] . "'";
 	if (sizeof($Errors) == 0) {
-		$result = DB_Query($sql);
+		$result = DB_Query($SQL);
 		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;
 		} else {

@@ -6,13 +6,13 @@
  * 3. No parameters to show all outstanding credits and receipts yet to be allocated.
  */
 
-include('includes/DefineCustAllocsClass.php');
 include('includes/session.inc');
 $Title = _('Customer Receipt') . '/' . _('Credit Note Allocations');
 /* Manual links before header.inc */
 $ViewTopic = 'ARTransactions';
 $BookMark = 'CustomerAllocations';
 include('includes/header.inc');
+include('includes/DefineCustAllocsClass.php');
 include('includes/SQL_CommonFunctions.inc');
 
 if (isset($_POST['Cancel'])) {
@@ -313,7 +313,6 @@ echo '<p class="page_title_text noPrint" >
 if (isset($_POST['AllocTrans'])) {
 	// Page called with trans number
 	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<input type="hidden" name="AllocTrans" value="' . $_POST['AllocTrans'] . '" />';
 
@@ -359,8 +358,8 @@ if (isset($_POST['AllocTrans'])) {
 		}
 
 		echo '<td>' . $AllocnItem->TransType . '</td>
-			<td>' . $AllocnItem->TypeNo . '</td>
-			<td class="number">' . $AllocnItem->TransDate . '</td>
+			<td class="number">' . $AllocnItem->TypeNo . '</td>
+			<td>' . $AllocnItem->TransDate . '</td>
 			<td class="number">' . locale_number_format($AllocnItem->TransAmount, $_SESSION['Alloc']->CurrDecimalPlaces) . '</td>
 			<td class="number">' . locale_number_format($YetToAlloc, $_SESSION['Alloc']->CurrDecimalPlaces) . '</td>';
 		$j++;
@@ -402,12 +401,10 @@ if (isset($_POST['AllocTrans'])) {
 			<td class="number"><b>' . locale_number_format(-$_SESSION['Alloc']->TransAmt - $TotalAllocated, $_SESSION['Alloc']->CurrDecimalPlaces) . '</b></td>
 		</tr>
 		</table>
-		<br />
 		<input type="hidden" name="TotalNumberOfAllocs" value="' . $Counter . '" />
 		<div class="centre">
 			<input tabindex="' . $j . '" type="submit" name="UpdateDatabase" value="' . _('Process Allocations') . '" />
 			<input tabindex="' . $j . '" type="submit" name="Cancel" value="' . _('Cancel') . '" />
-		</div>
 		</div>
 		</form>';
 
@@ -473,7 +470,7 @@ if (isset($_POST['AllocTrans'])) {
 			echo '<tr class="OddTableRows">';
 			$k++;
 		}
-		echo '<td>' . $MyRow['typename'] . '</td>
+		echo '<td>' . _($MyRow['typename']) . '</td>
 				<td>' . $MyRow['name'] . '</td>
 				<td>' . $MyRow['debtorno'] . '</td>
 				<td>' . $MyRow['transno'] . '</td>
@@ -575,7 +572,7 @@ if (isset($_POST['AllocTrans'])) {
 			$k++;
 		}
 
-		echo '<td>' . $MyRow['typename'] . '</td>
+		echo '<td>' . _($MyRow['typename']) . '</td>
 				<td>' . $MyRow['name'] . '</td>
 				<td>' . $MyRow['debtorno'] . '</td>
 				<td>' . $MyRow['transno'] . '</td>
@@ -600,8 +597,7 @@ if (isset($_POST['AllocTrans'])) {
 				<td><b>' . _('Balance') . '</b></td>
 			</tr>';
 	}
-	echo '</table>
-		<br />';
+	echo '</table>';
 }
 
 include('includes/footer.inc');

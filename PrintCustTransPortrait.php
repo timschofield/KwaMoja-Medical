@@ -159,6 +159,10 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 							ON custbranch.salesman=salesman.salesmancode
 						INNER JOIN locations
 							ON salesorders.fromstkloc=locations.loccode
+						INNER JOIN locationusers
+							ON locationusers.loccode=locations.loccode
+							AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+							AND locationusers.canview=1
 						INNER JOIN paymentterms
 							ON debtorsmaster.paymentterms=paymentterms.termsindicator
 						INNER JOIN currencies
@@ -715,25 +719,30 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 							salesman.salesmanname,
 							debtortrans.debtorno,
 							currencies.decimalplaces
-						FROM debtortrans INNER JOIN debtorsmaster
-						ON debtortrans.debtorno=debtorsmaster.debtorno
+						FROM debtortrans
+						INNER JOIN debtorsmaster
+							ON debtortrans.debtorno=debtorsmaster.debtorno
 						INNER JOIN custbranch
-						ON debtortrans.debtorno=custbranch.debtorno
-						AND debtortrans.branchcode=custbranch.branchcode
+							ON debtortrans.debtorno=custbranch.debtorno
+							AND debtortrans.branchcode=custbranch.branchcode
 						INNER JOIN salesorders
-						ON debtortrans.order_ = salesorders.orderno
+							ON debtortrans.order_ = salesorders.orderno
 						INNER JOIN shippers
-						ON debtortrans.shipvia=shippers.shipper_id
+							ON debtortrans.shipvia=shippers.shipper_id
 						INNER JOIN salesman
-						ON custbranch.salesman=salesman.salesmancode
+							ON custbranch.salesman=salesman.salesmancode
 						INNER JOIN locations
-						ON salesorders.fromstkloc=locations.loccode
+							ON salesorders.fromstkloc=locations.loccode
+						INNER JOIN locationusers
+							ON locationusers.loccode=locations.loccode
+							AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+							AND locationusers.canview=1
 						INNER JOIN paymentterms
-						ON debtorsmaster.paymentterms=paymentterms.termsindicator
+							ON debtorsmaster.paymentterms=paymentterms.termsindicator
 						INNER JOIN currencies
-						ON debtorsmaster.currcode=currencies.currabrev
+							ON debtorsmaster.currcode=currencies.currabrev
 						WHERE debtortrans.type=10
-						AND debtortrans.transno='" . $FromTransNo . "'";
+							AND debtortrans.transno='" . $FromTransNo . "'";
 			} else { //its a credit note
 
 				$SQL = "SELECT debtortrans.trandate,

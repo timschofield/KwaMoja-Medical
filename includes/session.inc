@@ -271,15 +271,21 @@ else if (in_array(1, $_SESSION['AllowedPageSecurityTokens']) and count($_SESSION
 } //in_array(1, $_SESSION['AllowedPageSecurityTokens']) and $PageSecurity == 0 and count($_SESSION['AllowedPageSecurityTokens']) == 2
 
 function CryptPass($Password) {
-	global $CryptFunction;
-	if ($CryptFunction == 'sha1') {
-		return sha1($Password);
-	} //$CryptFunction == 'sha1'
-	elseif ($CryptFunction == 'md5') {
-		return md5($Password);
-	} //$CryptFunction == 'md5'
-	else {
-		return $Password;
+	if (PHP_VERSION_ID < 50500) {
+		$Salt = base64_encode(mcrypt_create_iv(22, MCRYPT_DEV_URANDOM));
+		$Salt = str_replace('+', '.', $Salt);
+		$Hash = crypt($Password, '$2y$10$' . $Salt . '$');
+	} else {
+		$Hash = password_hash($Password, PASSWORD_DEFAULT);
+	}
+	return $Hash;
+}
+
+function VerifyPass($Password, $Hash) {
+	if(PHP_VERSION_ID < 50500) {
+		return (crypt($Password, $Hash) == $Hash);
+	} else {
+		return password_verify($Password, $Hash);
 	}
 }
 

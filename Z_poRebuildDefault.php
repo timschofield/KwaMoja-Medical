@@ -5,14 +5,14 @@
 	extracted from the sources. The resultant system default language file
 	(.pot file) is saved in the .../locale/en_GB.utf8/LC_MESSAGES/messages.po
 	path. Note: Comments (starting with ///) placed directly before strings
-	thus marked are made available as hints to translators by helper programs. */
+	thus marked are made available as hints to translators by helper programs.*/
 
 /* Steve Kitchen */
 
 include('includes/session.inc');
 
-$Title = _('Rebuild');//_('Rebuild the System Default Language File')
-$ViewTopic = 'SpecialUtilities';
+$Title = _('Rebuild the System Default Language File');
+$ViewTopic = 'SpecialUtilities';// Filename in ManualContents.php's TOC.
 $BookMark = 'Z_poRebuildDefault';// Anchor's id in the manual's html document.
 include('includes/header.inc');
 
@@ -30,21 +30,16 @@ echo '<div class="page_help_text noPrint">' . _('Utility page to rebuild the sys
 otherwise you'll be wasting your time */
 
 $PathToDefault = './locale/en_GB.utf8/LC_MESSAGES/messages.pot';
-$FilesToInclude = '*.php includes/*.inc includes/*.php api/*.php reportwriter/languages/en_US/reports.php';
+$FilesToInclude = '*.php api/*.php includes/*.inc includes/*.php install/*.php reportwriter/languages/en_US/reports.php';
 $xgettextCmd = 'xgettext --no-wrap --from-code=utf-8 -L php -o ' . $PathToDefault . ' ' . $FilesToInclude;
 
 if (isset($_POST['submit'])) {
-
 	echo '<table><tr><td>';
 	echo '<form method="post" action=' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-
-	/* Run xgettext to recreate the default message.po language file */
-
 	prnMsg(_('Rebuilding the default language file ') . '.....<br />', 'info', ' ');
-
-	system($xgettextCmd, $return);
-
+	$Result = rename($PathToDefault, $PathToDefault . '.old');// Renames pot file to bak.
+	system($xgettextCmd);// Runs xgettext to recreate the default message.po language file.
 	prnMsg(_('Done') . '. ' . _('You should now edit the default language file header') . '<br />', 'info', ' ');
 
 	echo '<a class="toplink" href="' . $RootPath . '/Z_poAdmin.php">' . _('Back to the menu') . '</a></div>';

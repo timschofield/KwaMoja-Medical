@@ -6,7 +6,7 @@
 include('includes/session.inc');
 
 $Title = _('UTILITY PAGE') . ' ' . _('that helps maintain language files');// _('Maintain Language Files')
-$ViewTopic = 'SpecialUtilities';
+$ViewTopic = 'SpecialUtilities';// Filename in ManualContents.php's TOC.
 $BookMark = 'Z_poAdmin';// Anchor's id in the manual's html document.
 include('includes/header.inc');
 echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Maintain Language Files') . '" />' . ' ' . _('Maintain Language Files') . '</p>';

@@ -74,9 +74,9 @@ function userLogin($Name, $Password, $SysAdminEmail = '') {
 						}
 				}
 				if ($Continue) {
-					$sql = "UPDATE www_users SET password = '" . CryptPass($Password) . "'"
+					$SQL = "UPDATE www_users SET password = '" . CryptPass($Password) . "'"
 							. " WHERE userid = '" . $Name . "'";
-					DB_query($sql);
+					DB_query($SQL);
 				}
 
 		    }

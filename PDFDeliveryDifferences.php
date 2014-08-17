@@ -22,7 +22,6 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate']) or $InputError == 1) 
 	echo '<div class="centre"><p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . $Title . '" alt="" />' . ' ' . _('Delivery Differences Report') . '</p></div>';
 
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table class="selection">
 			<tr>
@@ -60,19 +59,14 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate']) or $InputError == 1) 
 			<td>' . _('Inventory Location') . ':</td>
 			<td><select required="required" minlength="1" name="Location">';
 
-	if ($_SESSION['RestrictLocations'] == 0) {
-		$SQL = "SELECT locationname,
-							loccode
-						FROM locations";
-		echo '<option selected="selected" value="All">' . _('All Locations') . '</option>';
-	} else {
-		$SQL = "SELECT locationname,
-							loccode
-						FROM locations
-						INNER JOIN www_users
-							ON locations.loccode=www_users.defaultlocation
-						WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-	}
+	$SQL = "SELECT locations.loccode,
+					locationname
+				FROM locations
+				INNER JOIN locationusers
+					ON locationusers.loccode=locations.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canview=1";
+	echo '<option selected="selected" value="All">' . _('All Locations') . '</option>';
 
 	$Result = DB_query($SQL);
 	while ($MyRow = DB_fetch_array($Result)) {
@@ -81,19 +75,19 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate']) or $InputError == 1) 
 	echo '</select></td></tr>';
 
 	echo '<tr>
-				<td>' . _('Email the report off') . ':</td>
-				<td><select required="required" minlength="1" name="Email">
+			<td>' . _('Email the report off') . ':</td>
+			<td>
+				<select required="required" minlength="1" name="Email">
 					<option selected="selected" value="No">' . _('No') . '</option>
 					<option value="Yes">' . _('Yes') . '</option>
-					</select></td>
-			</tr>
-			</table>
-			<br />
-			<div class="centre">
-				<input type="submit" name="Go" value="' . _('Create PDF') . '" />
-			</div>';
-	echo '</div>
-		   </form>';
+				</select>
+			</td>
+		</tr>
+		</table>
+		<div class="centre">
+			<input type="submit" name="Go" value="' . _('Create PDF') . '" />
+		</div>';
+	echo '</form>';
 
 	if ($InputError == 1) {
 		prnMsg($Msg, 'error');
@@ -106,82 +100,108 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate']) or $InputError == 1) 
 
 if ($_POST['CategoryID'] == 'All' and $_POST['Location'] == 'All') {
 	$SQL = "SELECT invoiceno,
-			orderdeliverydifferenceslog.orderno,
-			orderdeliverydifferenceslog.stockid,
-			stockmaster.description,
-			stockmaster.decimalplaces,
-			quantitydiff,
-			trandate,
-			orderdeliverydifferenceslog.debtorno,
-			orderdeliverydifferenceslog.branch
-		FROM orderdeliverydifferenceslog INNER JOIN stockmaster
-			ON orderdeliverydifferenceslog.stockid=stockmaster.stockid
-		INNER JOIN debtortrans ON orderdeliverydifferenceslog.invoiceno=debtortrans.transno
-			AND debtortrans.type=10
-			AND trandate >='" . FormatDateForSQL($_POST['FromDate']) . "'
-			AND trandate <='" . FormatDateForSQL($_POST['ToDate']) . "'";
+					orderdeliverydifferenceslog.orderno,
+					orderdeliverydifferenceslog.stockid,
+					stockmaster.description,
+					stockmaster.decimalplaces,
+					quantitydiff,
+					trandate,
+					orderdeliverydifferenceslog.debtorno,
+					orderdeliverydifferenceslog.branch
+				FROM orderdeliverydifferenceslog
+				INNER JOIN stockmaster
+					ON orderdeliverydifferenceslog.stockid=stockmaster.stockid
+				INNER JOIN salesorders
+					ON orderdeliverydifferenceslog.orderno = salesorders.orderno
+				INNER JOIN locationusers
+					ON locationusers.loccode=salesorders.fromstkloc
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canview=1
+				INNER JOIN debtortrans
+					ON orderdeliverydifferenceslog.invoiceno=debtortrans.transno
+				WHERE debtortrans.type=10
+					AND trandate >='" . FormatDateForSQL($_POST['FromDate']) . "'
+					AND trandate <='" . FormatDateForSQL($_POST['ToDate']) . "'";
 
 } elseif ($_POST['CategoryID'] != 'All' and $_POST['Location'] == 'All') {
 	$SQL = "SELECT invoiceno,
-			orderdeliverydifferenceslog.orderno,
-			orderdeliverydifferenceslog.stockid,
-			stockmaster.description,
-			stockmaster.decimalplaces,
-			quantitydiff,
-			trandate,
-			orderdeliverydifferenceslog.debtorno,
-			orderdeliverydifferenceslog.branch
-		FROM orderdeliverydifferenceslog INNER JOIN stockmaster
-			ON orderdeliverydifferenceslog.stockid=stockmaster.stockid
-			INNER JOIN debtortrans ON orderdeliverydifferenceslog.invoiceno=debtortrans.transno
-			AND debtortrans.type=10
-			AND trandate >='" . FormatDateForSQL($_POST['FromDate']) . "'
-			AND trandate <='" . FormatDateForSQL($_POST['ToDate']) . "'
-			AND categoryid='" . $_POST['CategoryID'] . "'";
+					orderdeliverydifferenceslog.orderno,
+					orderdeliverydifferenceslog.stockid,
+					stockmaster.description,
+					stockmaster.decimalplaces,
+					quantitydiff,
+					trandate,
+					orderdeliverydifferenceslog.debtorno,
+					orderdeliverydifferenceslog.branch
+				FROM orderdeliverydifferenceslog
+				INNER JOIN stockmaster
+					ON orderdeliverydifferenceslog.stockid=stockmaster.stockid
+				INNER JOIN salesorders
+					ON orderdeliverydifferenceslog.orderno = salesorders.orderno
+				INNER JOIN locationusers
+					ON locationusers.loccode=salesorders.fromstkloc
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canview=1
+				INNER JOIN debtortrans
+					ON orderdeliverydifferenceslog.invoiceno=debtortrans.transno
+				WHERE debtortrans.type=10
+					AND trandate >='" . FormatDateForSQL($_POST['FromDate']) . "'
+					AND trandate <='" . FormatDateForSQL($_POST['ToDate']) . "'
+					AND categoryid='" . $_POST['CategoryID'] . "'";
 
 } elseif ($_POST['CategoryID'] == 'All' and $_POST['Location'] != 'All') {
 	$SQL = "SELECT invoiceno,
-			orderdeliverydifferenceslog.orderno,
-			orderdeliverydifferenceslog.stockid,
-			stockmaster.description,
-			stockmaster.decimalplaces,
-			quantitydiff,
-			trandate,
-			orderdeliverydifferenceslog.debtorno,
-			orderdeliverydifferenceslog.branch
-		FROM orderdeliverydifferenceslog INNER JOIN stockmaster
-			ON orderdeliverydifferenceslog.stockid=stockmaster.stockid
-			INNER JOIN debtortrans
-				ON orderdeliverydifferenceslog.invoiceno=debtortrans.transno
+					orderdeliverydifferenceslog.orderno,
+					orderdeliverydifferenceslog.stockid,
+					stockmaster.description,
+					stockmaster.decimalplaces,
+					quantitydiff,
+					trandate,
+					orderdeliverydifferenceslog.debtorno,
+					orderdeliverydifferenceslog.branch
+				FROM orderdeliverydifferenceslog
+				INNER JOIN stockmaster
+					ON orderdeliverydifferenceslog.stockid=stockmaster.stockid
+				INNER JOIN debtortrans
+					ON orderdeliverydifferenceslog.invoiceno=debtortrans.transno
 				INNER JOIN salesorders
 					ON orderdeliverydifferenceslog.orderno=salesorders.orderno
-		WHERE debtortrans.type=10
-		AND salesorders.fromstkloc='" . $_POST['Location'] . "'
-		AND trandate >='" . FormatDateForSQL($_POST['FromDate']) . "'
-		AND trandate <='" . FormatDateForSQL($_POST['ToDate']) . "'";
+				INNER JOIN locationusers
+					ON locationusers.loccode=salesorders.fromstkloc
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canview=1
+				WHERE debtortrans.type=10
+					AND salesorders.fromstkloc='" . $_POST['Location'] . "'
+					AND trandate >='" . FormatDateForSQL($_POST['FromDate']) . "'
+					AND trandate <='" . FormatDateForSQL($_POST['ToDate']) . "'";
 
 } elseif ($_POST['CategoryID'] != 'All' and $_POST['location'] != 'All') {
 
 	$SQL = "SELECT invoiceno,
-			orderdeliverydifferenceslog.orderno,
-			orderdeliverydifferenceslog.stockid,
-			stockmaster.description,
-			stockmaster.decimalplaces,
-			quantitydiff,
-			trandate,
-			orderdeliverydifferenceslog.debtorno,
-			orderdeliverydifferenceslog.branch
-		FROM orderdeliverydifferenceslog INNER JOIN stockmaster
-			ON orderdeliverydifferenceslog.stockid=stockmaster.stockid
-			INNER JOIN debtortrans
-				ON orderdeliverydifferenceslog.invoiceno=debtortrans.transno
-				AND debtortrans.type=10
+					orderdeliverydifferenceslog.orderno,
+					orderdeliverydifferenceslog.stockid,
+					stockmaster.description,
+					stockmaster.decimalplaces,
+					quantitydiff,
+					trandate,
+					orderdeliverydifferenceslog.debtorno,
+					orderdeliverydifferenceslog.branch
+				FROM orderdeliverydifferenceslog
+				INNER JOIN stockmaster
+					ON orderdeliverydifferenceslog.stockid=stockmaster.stockid
+				INNER JOIN debtortrans
+					ON orderdeliverydifferenceslog.invoiceno=debtortrans.transno
+					AND debtortrans.type=10
 				INNER JOIN salesorders
 					ON orderdeliverydifferenceslog.orderno = salesorders.orderno
-		WHERE salesorders.fromstkloc='" . $_POST['Location'] . "'
-		AND categoryid='" . $_POST['CategoryID'] . "'
-		AND trandate >='" . FormatDateForSQL($_POST['FromDate']) . "'
-		AND trandate <= '" . FormatDateForSQL($_POST['ToDate']) . "'";
+				INNER JOIN locationusers
+					ON locationusers.loccode=salesorders.fromstkloc
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canview=1
+				WHERE salesorders.fromstkloc='" . $_POST['Location'] . "'
+					AND categoryid='" . $_POST['CategoryID'] . "'
+					AND trandate >='" . FormatDateForSQL($_POST['FromDate']) . "'
+					AND trandate <= '" . FormatDateForSQL($_POST['ToDate']) . "'";
 }
 
 if ($_SESSION['SalesmanLogin'] != '') {
@@ -251,41 +271,69 @@ $LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 200, $FontSize, _('Total num
 
 if ($_POST['CategoryID'] == 'All' and $_POST['Location'] == 'All') {
 	$SQL = "SELECT COUNT(salesorderdetails.orderno)
-			FROM salesorderdetails INNER JOIN debtortrans
+			FROM salesorderdetails
+			INNER JOIN debtortrans
 				ON salesorderdetails.orderno=debtortrans.order_
+			INNER JOIN salesorders
+				ON salesorderdetails.orderno = salesorders.orderno
+			INNER JOIN locationusers
+				ON locationusers.loccode=salesorders.fromstkloc
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canview=1
 			WHERE debtortrans.trandate>='" . FormatDateForSQL($_POST['FromDate']) . "'
-			AND debtortrans.trandate <='" . FormatDateForSQL($_POST['ToDate']) . "'";
+				AND debtortrans.trandate <='" . FormatDateForSQL($_POST['ToDate']) . "'";
 
 } elseif ($_POST['CategoryID'] != 'All' and $_POST['Location'] == 'All') {
 	$SQL = "SELECT COUNT(salesorderdetails.orderno)
-		FROM salesorderdetails INNER JOIN debtortrans
-			ON salesorderdetails.orderno=debtortrans.order_ INNER JOIN stockmaster
-			ON salesorderdetails.stkcode=stockmaster.stockid
-		WHERE debtortrans.trandate>='" . FormatDateForSQL($_POST['FromDate']) . "'
-		AND debtortrans.trandate <='" . FormatDateForSQL($_POST['ToDate']) . "'
-		AND stockmaster.categoryid='" . $_POST['CategoryID'] . "'";
+			FROM salesorderdetails
+			INNER JOIN debtortrans
+				ON salesorderdetails.orderno=debtortrans.order_
+			INNER JOIN stockmaster
+				ON salesorderdetails.stkcode=stockmaster.stockid
+			INNER JOIN salesorders
+				ON salesorderdetails.orderno = salesorders.orderno
+			INNER JOIN locationusers
+				ON locationusers.loccode=salesorders.fromstkloc
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canview=1
+			WHERE debtortrans.trandate>='" . FormatDateForSQL($_POST['FromDate']) . "'
+				AND debtortrans.trandate <='" . FormatDateForSQL($_POST['ToDate']) . "'
+				AND stockmaster.categoryid='" . $_POST['CategoryID'] . "'";
 
 } elseif ($_POST['CategoryID'] == 'All' and $_POST['Location'] != 'All') {
 
 	$SQL = "SELECT COUNT(salesorderdetails.orderno)
-		FROM salesorderdetails INNER JOIN debtortrans
-			ON salesorderdetails.orderno=debtortrans.order_ INNER JOIN salesorders
-			ON salesorderdetails.orderno = salesorders.orderno
-		WHERE debtortrans.trandate>='" . FormatDateForSQL($_POST['FromDate']) . "'
-		AND debtortrans.trandate <='" . FormatDateForSQL($_POST['ToDate']) . "'
-		AND salesorders.fromstkloc='" . $_POST['Location'] . "'";
+			FROM salesorderdetails
+			INNER JOIN debtortrans
+				ON salesorderdetails.orderno=debtortrans.order_
+			INNER JOIN salesorders
+				ON salesorderdetails.orderno = salesorders.orderno
+			INNER JOIN locationusers
+				ON locationusers.loccode=salesorders.fromstkloc
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canview=1
+			WHERE debtortrans.trandate>='". FormatDateForSQL($_POST['FromDate']) . "'
+				AND debtortrans.trandate <='" . FormatDateForSQL($_POST['ToDate']) . "'
+				AND salesorders.fromstkloc='" . $_POST['Location'] . "'";
 
 } elseif ($_POST['CategoryID'] != 'All' and $_POST['Location'] != 'All') {
 
 	$SQL = "SELECT COUNT(salesorderdetails.orderno)
-		FROM salesorderdetails INNER JOIN debtortrans ON salesorderdetails.orderno=debtortrans.order_
-			INNER JOIN salesorders ON salesorderdetails.orderno = salesorders.orderno
-			INNER JOIN stockmaster ON salesorderdetails.stkcode = stockmaster.stockid
-		WHERE salesorders.fromstkloc ='" . $_POST['Location'] . "'
-		AND categoryid='" . $_POST['CategoryID'] . "'
-		AND trandate >='" . FormatDateForSQL($_POST['FromDate']) . "'
-		AND trandate <= '" . FormatDateForSQL($_POST['ToDate']) . "'";
-
+			FROM salesorderdetails
+			INNER JOIN debtortrans
+				ON salesorderdetails.orderno=debtortrans.order_
+			INNER JOIN salesorders
+				ON salesorderdetails.orderno = salesorders.orderno
+			INNER JOIN locationusers
+				ON locationusers.loccode=salesorders.fromstkloc
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canview=1
+			INNER JOIN stockmaster
+				ON salesorderdetails.stkcode = stockmaster.stockid
+			WHERE salesorders.fromstkloc ='" . $_POST['Location'] . "'
+				AND categoryid='" . $_POST['CategoryID'] . "'
+				AND trandate >='" . FormatDateForSQL($_POST['FromDate']) . "'
+				AND trandate <= '" . FormatDateForSQL($_POST['ToDate']) . "'";
 }
 
 if ($_SESSION['SalesmanLogin'] != '') {

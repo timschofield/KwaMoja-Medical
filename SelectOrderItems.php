@@ -115,18 +115,22 @@ if (isset($_GET['ModifyOrderNumber']) and $_GET['ModifyOrderNumber'] != '') {
 							  custbranch.salesman
 						FROM salesorders
 						INNER JOIN debtorsmaster
-						ON salesorders.debtorno = debtorsmaster.debtorno
+							ON salesorders.debtorno = debtorsmaster.debtorno
 						INNER JOIN salestypes
-						ON salesorders.ordertype=salestypes.typeabbrev
+							ON salesorders.ordertype=salestypes.typeabbrev
 						INNER JOIN custbranch
-						ON salesorders.debtorno = custbranch.debtorno
-						AND salesorders.branchcode = custbranch.branchcode
+							ON salesorders.debtorno = custbranch.debtorno
+							AND salesorders.branchcode = custbranch.branchcode
 						INNER JOIN paymentterms
-						ON debtorsmaster.paymentterms=paymentterms.termsindicator
+							ON debtorsmaster.paymentterms=paymentterms.termsindicator
 						INNER JOIN locations
-						ON locations.loccode=salesorders.fromstkloc
+							ON locations.loccode=salesorders.fromstkloc
 						INNER JOIN currencies
-						ON debtorsmaster.currcode=currencies.currabrev
+							ON debtorsmaster.currcode=currencies.currabrev
+						INNER JOIN locationusers
+							ON locationusers.loccode=salesorders.fromstkloc
+							AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+							AND locationusers.canupd=1
 						WHERE salesorders.orderno = '" . $_GET['ModifyOrderNumber'] . "'";
 
 	$ErrMsg = _('The order cannot be retrieved because');

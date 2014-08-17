@@ -17,13 +17,18 @@ $ContractHeaderSQL = "SELECT contractdescription,
 							debtorsmaster.name,
 							custbranch.brname,
 							debtorsmaster.currcode
-						FROM contracts INNER JOIN debtorsmaster
-						ON contracts.debtorno=debtorsmaster.debtorno
+						FROM contracts
+						INNER JOIN debtorsmaster
+							ON contracts.debtorno=debtorsmaster.debtorno
 						INNER JOIN currencies
-						ON debtorsmaster.currcode=currencies.currabrev
+							ON debtorsmaster.currcode=currencies.currabrev
 						INNER JOIN custbranch
-						ON debtorsmaster.debtorno=custbranch.debtorno
-						AND contracts.branchcode=custbranch.branchcode
+							ON debtorsmaster.debtorno=custbranch.debtorno
+							AND contracts.branchcode=custbranch.branchcode
+						INNER JOIN locationusers
+							ON locationusers.loccode=contracts.loccode
+							AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+							AND locationusers.canupd=1
 						WHERE contractref= '" . $ContractRef . "'";
 
 $ErrMsg = _('The contract cannot be retrieved because');

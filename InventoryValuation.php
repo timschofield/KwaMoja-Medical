@@ -32,6 +32,10 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['CSV'])) and isset($_POST['FromCr
 					ON stockmaster.categoryid=stockcategory.categoryid
 				INNER JOIN locstock
 					ON stockmaster.stockid=locstock.stockid
+				INNER JOIN locationusers
+					ON locationusers.loccode=locstock.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canview=1
 				GROUP BY stockmaster.categoryid,
 					stockcategory.categorydescription,
 					unitcost,
@@ -57,15 +61,22 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['CSV'])) and isset($_POST['FromCr
 					locstock.quantity AS qtyonhand,
 					stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost AS unitcost,
 					locstock.quantity *(stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost) AS itemtotal
-				FROM stockmaster,
-					stockcategory,
-					locstock
-				WHERE stockmaster.stockid=locstock.stockid
-				AND stockmaster.categoryid=stockcategory.categoryid
-				AND locstock.quantity!=0
-				AND stockcategory.categoryid >= '" . $_POST['FromCriteria'] . "'
-				AND stockcategory.categoryid <= '" . $_POST['ToCriteria'] . "'
-				AND locstock.loccode = '" . $_POST['Location'] . "'
+				FROM stockmaster
+				INNER JOIN stockcosts
+					ON stockcosts.stockid=stockmaster.stockid
+					AND stockcosts.succeeded=0
+				INNER JOIN stockcategory
+					ON stockmaster.categoryid=stockcategory.categoryid
+				INNER JOIN locstock
+					ON stockmaster.stockid=locstock.stockid
+				INNER JOIN locationusers
+					ON locationusers.loccode=locstock.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canview=1
+				WHERE locstock.quantity!=0
+					AND stockcategory.categoryid >= '" . $_POST['FromCriteria'] . "'
+					AND stockcategory.categoryid <= '" . $_POST['ToCriteria'] . "'
+					AND locstock.loccode = '" . $_POST['Location'] . "'
 				ORDER BY stockcategory.categorydescription,
 					stockmaster.stockid";
 	}
@@ -255,19 +266,14 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['CSV'])) and isset($_POST['FromCr
 				<td>' . _('For Inventory in Location') . ':</td>
 				<td><select minlength="0" name="Location">';
 
-		if ($_SESSION['RestrictLocations'] == 0) {
-			$SQL = "SELECT locationname,
-							loccode
-						FROM locations";
-			echo '<option value="All">' . _('All Locations') . '</option>';
-		} else {
-			$SQL = "SELECT locationname,
-							loccode
+		$SQL = "SELECT locationname,
+						locations.loccode
 						FROM locations
-						INNER JOIN www_users
-							ON locations.loccode=www_users.defaultlocation
-						WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-		}
+						INNER JOIN locationusers
+							ON locationusers.loccode=locations.loccode
+							AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+							AND locationusers.canview=1";
+		echo '<option value="All">' . _('All Locations') . '</option>';
 
 		$LocnResult = DB_query($SQL);
 

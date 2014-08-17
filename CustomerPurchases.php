@@ -34,62 +34,35 @@ echo '<p class="page_title_text noPrint" >
 	</p>';
 
 $SQLWhere = '';
-if ($_SESSION['RestrictLocations'] == 0) {
-	$SQL = "SELECT stockmoves.stockid,
-					stockmaster.description,
-					systypes.typename,
-					transno,
-					locations.locationname,
-					trandate,
-					branchcode,
-					price,
-					reference,
-					qty,
-					narrative
-				FROM stockmoves
-				INNER JOIN stockmaster
-					ON stockmaster.stockid=stockmoves.stockid
-				INNER JOIN systypes
-					ON stockmoves.type=systypes.typeid
-				INNER JOIN locations
-					ON stockmoves.loccode=locations.loccode
-				WHERE debtorno='" . $DebtorNo . "'";
+$SQL = "SELECT stockmoves.stockid,
+				stockmaster.description,
+				systypes.typename,
+				transno,
+				locations.locationname,
+				trandate,
+				branchcode,
+				price,
+				reference,
+				qty,
+				narrative
+			FROM stockmoves
+			INNER JOIN stockmaster
+				ON stockmaster.stockid=stockmoves.stockid
+			INNER JOIN systypes
+				ON stockmoves.type=systypes.typeid
+			INNER JOIN locations
+				ON stockmoves.loccode=locations.loccode
+			INNER JOIN locationusers
+				ON locationusers.loccode=locations.loccode
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canview=1
+			WHERE debtorno='" . $DebtorNo . "'";
 	if ($_SESSION['SalesmanLogin'] != '') {
 		$SQL .= " INNER JOIN custbranch
 					ON stockmoves.branchcode=custbranch.branchcode";
 		$SQLWhere = " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
 	}
 	$SQL .= $SQLWhere . " ORDER BY trandate DESC";
-} else {
-	$SQL = "SELECT stockmoves.stockid,
-					stockmaster.description,
-					systypes.typename,
-					transno,
-					locations.locationname,
-					trandate,
-					stockmoves.branchcode,
-					price,
-					reference,
-					qty,
-					narrative
-				FROM stockmoves
-				INNER JOIN stockmaster
-					ON stockmaster.stockid=stockmoves.stockid
-				INNER JOIN systypes
-					ON stockmoves.type=systypes.typeid
-				INNER JOIN locations
-					ON stockmoves.loccode=locations.loccode
-				INNER JOIN www_users
-					ON locations.loccode=www_users.defaultlocation
-				WHERE debtorno='" . $DebtorNo . "'
-					AND www_users.userid='" . $_SESSION['UserID'] . "'";
-	if ($_SESSION['SalesmanLogin'] != '') {
-		$SQL .= " INNER JOIN custbranch
-					ON stockmoves.branchcode=custbranch.branchcode";
-		$SQLWhere = " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
-	}
-	$SQL .= $SQLWhere . " ORDER BY trandate DESC";
-}
 $ErrMsg = _('The stock movement details could not be retrieved by the SQL because');
 $StockMovesResult = DB_query($SQL, $ErrMsg);
 

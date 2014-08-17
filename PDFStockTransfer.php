@@ -47,8 +47,7 @@ $line_height = 12;
 include('includes/PDFStockTransferHeader.inc');
 
 /*Print out the category totals */
-if ($_SESSION['RestrictLocations'] == 0) {
-	$SQL = "SELECT stockmoves.stockid,
+$SQL = "SELECT stockmoves.stockid,
 				description,
 				transno,
 				stockmoves.loccode,
@@ -61,30 +60,13 @@ if ($_SESSION['RestrictLocations'] == 0) {
 				ON stockmoves.stockid=stockmaster.stockid
 			INNER JOIN locations
 				ON stockmoves.loccode=locations.loccode
+			INNER JOIN locationusers
+				ON locationusers.loccode=locations.loccode
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canview=1
 			WHERE transno='" . $_GET['TransferNo'] . "'
 				AND qty < 0
 				AND type=16";
-} else {
-	$SQL = "SELECT stockmoves.stockid,
-				description,
-				transno,
-				stockmoves.loccode,
-				locationname,
-				trandate,
-				qty,
-				reference
-			FROM stockmoves
-			INNER JOIN stockmaster
-				ON stockmoves.stockid=stockmaster.stockid
-			INNER JOIN locations
-				ON stockmoves.loccode=locations.loccode
-			INNER JOIN www_users
-				ON locations.loccode=www_users.defaultlocation
-			WHERE transno='" . $_GET['TransferNo'] . "'
-				AND qty < 0
-				AND www_users.userid='" . $_SESSION['UserID'] . "'
-				AND type=16";
-}
 
 $Result = DB_query($SQL);
 if (DB_num_rows($Result) == 0) {

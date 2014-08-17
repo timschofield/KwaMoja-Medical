@@ -7,7 +7,7 @@ if (!(isset($_POST['Search']))) {
 	echo '<div class="centre"><p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('No Sales Items') . '" alt="" />' . ' ' . _('No Sales Items') . '</p></div>';
 	echo '<div class="page_help_text noPrint">' . _('List of items with stock available during the last X days at the selected locations but did not sell any quantity during these X days.') . '<br />' . _('This list gets the no selling items, items at the location just wasting space, or need a price reduction, etc.') . '<br />' . _('Stock available during the last X days means there was a stock movement that produced that item into that location before that day, and no other positive stock movement has been created afterwards.  No sell any quantity means, there is no sales order for that item from that location.') . '</div>';
 	echo '<br />';
-	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?name="SelectCustomer" method="post" class="noPrint">';
+	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table class="selection">';
 
@@ -16,20 +16,16 @@ if (!(isset($_POST['Search']))) {
 			<td>' . _('Select Location') . '</td>
 			<td>:</td>
 			<td>
-				<select minlength="1" required="required" name="Location[]" multiple="multiple">';
-	if ($_SESSION['RestrictLocations'] == 0) {
-		$SQL = "SELECT locationname,
-						loccode
-					FROM locations";
-		echo '<option value="All" selected="selected">' . _('All') . '</option>';
-	} else {
-		$SQL = "SELECT locationname,
-						loccode
-					FROM locations
-					INNER JOIN www_users
-						ON locations.loccode=www_users.defaultlocation
-					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-	}
+				<select minlength="1" required="required" name="Location">';
+	$SQL = "SELECT locations.loccode,
+					locationname
+				FROM locations
+				INNER JOIN locationusers
+					ON locationusers.loccode=locations.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canview=1
+				ORDER BY locationname";
+	echo '<option value="All" selected="selected">' . _('All') . '</option>';
 	$locationresult = DB_query($SQL);
 	$i = 0;
 	while ($MyRow = DB_fetch_array($locationresult)) {
@@ -108,29 +104,48 @@ if (!(isset($_POST['Search']))) {
 	}
 
 	if ($_POST['Location'][0] == 'All') {
-		$SQL = "SELECT 	stockmaster.stockid,
-					stockmaster.description,
-					stockmaster.units
-				FROM 	stockmaster,locstock
-				WHERE 	stockmaster.stockid = locstock.stockid " . $WhereStockCat . "
-					AND (locstock.quantity > 0)
+		$SQL = "SELECT stockmaster.stockid,
+						stockmaster.description,
+						stockmaster.units
+					FROM stockmaster
+					INNER JOIN locstock
+						ON stockmaster.stockid = locstock.stockid
+					INNER JOIN locationusers
+						ON locationusers.loccode=locstock.loccode
+						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.canview=1
+				WHERE (locstock.quantity > 0)
+					" . $WhereStockCat . "
 					AND NOT EXISTS (
 							SELECT *
-							FROM 	salesorderdetails, salesorders
+							FROM salesorderdetails
+							INNER JOIN salesorders
+								ON salesorderdetails.orderno = salesorders.orderno
+							INNER JOIN locationusers
+								ON locationusers.loccode=salesorders.fromstkloc
+								AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+								AND locationusers.canview=1
 							WHERE 	stockmaster.stockid = salesorderdetails.stkcode
-									AND (salesorderdetails.orderno = salesorders.orderno)
 									AND salesorderdetails.actualdispatchdate > '" . $FromDate . "')
 					AND NOT EXISTS (
 							SELECT *
-							FROM 	stockmoves
-							WHERE 	stockmoves.stockid = stockmaster.stockid
-									AND stockmoves.trandate >= '" . $FromDate . "')
+							FROM stockmoves
+							INNER JOIN locationusers
+								ON locationusers.loccode=stockmoves.loccode
+								AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+								AND locationusers.canview=1
+							WHERE stockmoves.stockid = stockmaster.stockid
+								AND stockmoves.trandate >= '" . $FromDate . "')
 					AND EXISTS (
 							SELECT *
-							FROM 	stockmoves
-							WHERE 	stockmoves.stockid = stockmaster.stockid
-									AND stockmoves.trandate < '" . $FromDate . "'
-									AND stockmoves.qty >0)
+							FROM stockmoves
+							INNER JOIN locationusers
+								ON locationusers.loccode=stockmoves.loccode
+								AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+								AND locationusers.canview=1
+							WHERE stockmoves.stockid = stockmaster.stockid
+								AND stockmoves.trandate < '" . $FromDate . "'
+								AND stockmoves.qty >0)
 				GROUP BY stockmaster.stockid
 				ORDER BY stockmaster.stockid";
 	} else {
@@ -144,23 +159,30 @@ if (!(isset($_POST['Search']))) {
 				$WhereLocation .= "'" . $Value . "'";
 				$commactr++;
 				if ($commactr < sizeof($_POST['Location'])) {
-					$WhereLocation .= ",";
+					$WhereLocation .= " ";
 				} // End of if
 			} // End of foreach
 			$WhereLocation .= ')';
 		}
-		$SQL = "SELECT 	stockmaster.stockid,
+		$SQL = "SELECT stockmaster.stockid,
 						stockmaster.description,
 						stockmaster.units,
 						locstock.quantity,
 						locations.locationname
-				FROM 	stockmaster,locstock,locations
-				WHERE 	stockmaster.stockid = locstock.stockid
-						AND (locstock.loccode = locations.loccode)" . $WhereLocation . $WhereStockCat . "
-						AND (locstock.quantity > 0)
+				FROM stockmaster
+				INNER JOIN locstock
+					ON stockmaster.stockid = locstock.stockid
+				INNER JOIN locations
+					ON locstock.loccode = locations.loccode
+				INNER JOIN locationusers
+					ON locationusers.loccode=locations.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canview=1
+				WHERE (locstock.quantity > 0)
+						" . $WhereLocation . $WhereStockCat . "
 						AND NOT EXISTS (
 								SELECT *
-								FROM 	salesorderdetails, salesorders
+								FROM salesorderdetails, salesorders
 								WHERE 	stockmaster.stockid = salesorderdetails.stkcode
 										AND (salesorders.fromstkloc = locstock.loccode)
 										AND (salesorderdetails.orderno = salesorders.orderno)
@@ -208,7 +230,12 @@ if (!(isset($_POST['Search']))) {
 		}
 		$QOHResult = DB_query("SELECT sum(quantity)
 				FROM locstock
-				WHERE stockid = '" . $MyRow['stockid'] . "'");
+				INNER JOIN locationusers
+					ON locationusers.loccode=locstock.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canview=1
+				WHERE stockid = '" . $myrow['stockid'] . "'" .
+				$WhereLocation);
 		$QOHRow = DB_fetch_row($QOHResult);
 		$QOH = $QOHRow[0];
 
@@ -240,8 +267,7 @@ if (!(isset($_POST['Search']))) {
 		}
 	}
 	echo '</table>';
-	echo '<br />
-	</form>';
+	echo '</form>';
 }
 include('includes/footer.inc');
 ?>

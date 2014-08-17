@@ -88,18 +88,13 @@ if (isset($_POST['SearchParts'])) {
 if (!isset($OrderNumber) or $OrderNumber == "") {
 	echo '<table class="selection"><tr><td>';
 	echo _('Order Number') . ': <input type="text" class="integer" name="OrderNumber" autofocus="autofocus" minlength="0" maxlength="8" size="9" /> ' . _('Into Stock Location') . ':<select minlength="0" name="StockLocation"> ';
-	if ($_SESSION['RestrictLocations'] == 0) {
-		$SQL = "SELECT locationname,
-						loccode
-					FROM locations";
-	} else {
-		$SQL = "SELECT locationname,
-						loccode
-					FROM locations
-					INNER JOIN www_users
-						ON locations.loccode=www_users.defaultlocation
-					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-	}
+	$SQL = "SELECT locations.loccode,
+					locationname
+				FROM locations
+				INNER JOIN locationusers
+					ON locationusers.loccode=locations.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canview=1";
 	$ResultStkLocs = DB_query($SQL);
 	while ($MyRow = DB_fetch_array($ResultStkLocs)) {
 		if (isset($_POST['StockLocation'])) {

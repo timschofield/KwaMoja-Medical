@@ -57,6 +57,12 @@ if (isset($_POST['SearchParts'])) {
 					ON stockmaster.stockid = locstock.stockid
 				INNER JOIN purchorderdetails
 					ON stockmaster.stockid=purchorderdetails.itemcode
+				INNER JOIN purchorders
+					ON purchorders.orderno=purchorderdetails.orderno
+				INNER JOIN locationusers
+					ON locationusers.loccode=purchorders.intostocklocation
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canview=1
 				WHERE purchorderdetails.completed=0
 					AND stockmaster.description " . LIKE . " '" . $SearchString . "'
 					AND stockmaster.stockid " . LIKE . " '%" . $_POST['StockCode'] . "%'

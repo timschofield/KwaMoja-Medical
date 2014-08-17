@@ -376,23 +376,15 @@ echo '</select></td>
 	<tr>
 		<td>' . _('Location from which to request stock') . ':</td>';
 
-if ($_SESSION['RestrictLocations'] == 0) {
-	$SQL = "SELECT locationname,
-					loccode
-				FROM locations
-					WHERE internalrequest = 1
-				ORDER BY locationname";
-} else {
-	$SQL = "SELECT locationname,
-					loccode
-				FROM locations
-				INNER JOIN www_users
-					ON locations.loccode=www_users.defaultlocation
-				WHERE www_users.userid='" . $_SESSION['UserID'] . "'
-					AND internalrequest = 1
-				ORDER BY locationname";
-}
-
+$SQL = "SELECT locationname,
+				locations.loccode
+			FROM locations
+			INNER JOIN locationusers
+				ON locationusers.loccode=locations.loccode
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canupd=1
+			WHERE internalrequest = 1
+			ORDER BY locationname";
 $Result = DB_query($SQL);
 echo '<td><select required="required" minlength="1" name="Location">
 		<option value="">' . _('Select a Location') . '</option>';

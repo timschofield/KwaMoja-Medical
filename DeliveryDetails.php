@@ -1013,18 +1013,13 @@ if ($_SESSION['Items' . $Identifier]->Location == '' or !isset($_SESSION['Items'
 
 $ErrMsg = _('The stock locations could not be retrieved');
 $DbgMsg = _('SQL used to retrieve the stock locations was') . ':';
-if ($_SESSION['RestrictLocations'] == 0) {
-	$SQL = "SELECT locationname,
-					loccode
-				FROM locations";
-} else {
-	$SQL = "SELECT locationname,
-					loccode
-				FROM locations
-				INNER JOIN www_users
-					ON locations.loccode=www_users.defaultlocation
-				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-}
+$SQL = "SELECT locationname,
+				locations.loccode
+			FROM locations
+			INNER JOIN locationusers
+				ON locationusers.loccode=locations.loccode
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canupd=1";
 $StkLocsResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 while ($MyRow = DB_fetch_array($StkLocsResult)) {

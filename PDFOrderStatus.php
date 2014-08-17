@@ -28,7 +28,6 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate'])) {
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . $Title . '" alt="" />' . ' ' . _('Order Status Report') . '</p>';
 
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table class="selection">
 			<tr>
@@ -57,19 +56,14 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate'])) {
 
 	echo '<tr>
 			<td>' . _('Inventory Location') . ':</td><td><select required="required" minlength="1" name="Location">';
-	if ($_SESSION['RestrictLocations'] == 0) {
-		$SQL = "SELECT locationname,
-						loccode
-					FROM locations";
-		echo '<option selected="selected" value="All">' . _('All Locations') . '</option>';
-	} else {
-		$SQL = "SELECT locationname,
-						loccode
-					FROM locations
-					INNER JOIN www_users
-						ON locations.loccode=www_users.defaultlocation
-					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-	}
+	$SQL = "SELECT locations.loccode,
+					locationname
+				FROM locations
+				INNER JOIN locationusers
+					ON locationusers.loccode=locations.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canview=1";
+	echo '<option selected="selected" value="All">' . _('All Locations') . '</option>';
 
 	$Result = DB_query($SQL);
 	while ($MyRow = DB_fetch_array($Result)) {
@@ -86,12 +80,10 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate'])) {
 			</td>
 		</tr>
 		</table>
-		<br />
 		<div class="centre">
 			<input type="submit" name="Go" value="' . _('Create PDF') . '" />
 		</div>';
-	echo '</div>
-		  </form>';
+	echo '</form>';
 
 	include('includes/footer.inc');
 	exit;
@@ -108,150 +100,166 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate'])) {
 
 if ($_POST['CategoryID'] == 'All' and $_POST['Location'] == 'All') {
 	$SQL = "SELECT salesorders.orderno,
-				  salesorders.debtorno,
-				  salesorders.branchcode,
-				  salesorders.customerref,
-				  salesorders.orddate,
-				  salesorders.fromstkloc,
-				  salesorders.printedpackingslip,
-				  salesorders.datepackingslipprinted,
-				  salesorderdetails.stkcode,
-				  stockmaster.description,
-				  stockmaster.units,
-				  stockmaster.decimalplaces,
-				  salesorderdetails.quantity,
-				  salesorderdetails.qtyinvoiced,
-				  salesorderdetails.completed,
-				  debtorsmaster.name,
-				  custbranch.brname,
-				  locations.locationname
-			 FROM salesorders
-				 INNER JOIN salesorderdetails
-				 ON salesorders.orderno = salesorderdetails.orderno
-				 INNER JOIN stockmaster
-				 ON salesorderdetails.stkcode = stockmaster.stockid
-				 INNER JOIN debtorsmaster
-				 ON salesorders.debtorno=debtorsmaster.debtorno
-				 INNER JOIN custbranch
-				 ON custbranch.debtorno=salesorders.debtorno
-				 AND custbranch.branchcode=salesorders.branchcode
-				 INNER JOIN locations
-				 ON salesorders.fromstkloc=locations.loccode
-			 WHERE salesorders.orddate >='" . FormatDateForSQL($_POST['FromDate']) . "'
-				  AND salesorders.orddate <='" . FormatDateForSQL($_POST['ToDate']) . "'
-			 AND salesorders.quotation=0";
+					salesorders.debtorno,
+					salesorders.branchcode,
+					salesorders.customerref,
+					salesorders.orddate,
+					salesorders.fromstkloc,
+					salesorders.printedpackingslip,
+					salesorders.datepackingslipprinted,
+					salesorderdetails.stkcode,
+					stockmaster.description,
+					stockmaster.units,
+					stockmaster.decimalplaces,
+					salesorderdetails.quantity,
+					salesorderdetails.qtyinvoiced,
+					salesorderdetails.completed,
+					debtorsmaster.name,
+					custbranch.brname,
+					locations.locationname
+				FROM salesorders
+				INNER JOIN salesorderdetails
+					ON salesorders.orderno = salesorderdetails.orderno
+				INNER JOIN stockmaster
+					ON salesorderdetails.stkcode = stockmaster.stockid
+				INNER JOIN debtorsmaster
+					ON salesorders.debtorno=debtorsmaster.debtorno
+				INNER JOIN custbranch
+					ON custbranch.debtorno=salesorders.debtorno
+					AND custbranch.branchcode=salesorders.branchcode
+				INNER JOIN locations
+					ON salesorders.fromstkloc=locations.loccode
+				INNER JOIN locationusers
+					ON locationusers.loccode=locations.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canview=1
+				WHERE salesorders.orddate >='" . FormatDateForSQL($_POST['FromDate']) . "'
+					AND salesorders.orddate <='" . FormatDateForSQL($_POST['ToDate']) . "'
+					AND salesorders.quotation=0";
 
 } elseif ($_POST['CategoryID'] != 'All' and $_POST['Location'] == 'All') {
 	$SQL = "SELECT salesorders.orderno,
-				  salesorders.debtorno,
-				  salesorders.branchcode,
-				  salesorders.customerref,
-				  salesorders.orddate,
-				  salesorders.fromstkloc,
-				  salesorders.printedpackingslip,
-				  salesorders.datepackingslipprinted,
-				  salesorderdetails.stkcode,
-				  stockmaster.description,
-				  stockmaster.units,
-				  stockmaster.decimalplaces,
-				  salesorderdetails.quantity,
-				  salesorderdetails.qtyinvoiced,
-				  salesorderdetails.completed,
-				  debtorsmaster.name,
-				  custbranch.brname,
-				  locations.locationname
-			 FROM salesorders
-				 INNER JOIN salesorderdetails
-				 ON salesorders.orderno = salesorderdetails.orderno
-				 INNER JOIN stockmaster
-				 ON salesorderdetails.stkcode = stockmaster.stockid
-				 INNER JOIN debtorsmaster
-				 ON salesorders.debtorno=debtorsmaster.debtorno
-				 INNER JOIN custbranch
-				 ON custbranch.debtorno=salesorders.debtorno
-				 AND custbranch.branchcode=salesorders.branchcode
-				 INNER JOIN locations
-				 ON salesorders.fromstkloc=locations.loccode
-			 WHERE stockmaster.categoryid ='" . $_POST['CategoryID'] . "'
-				  AND orddate >='" . FormatDateForSQL($_POST['FromDate']) . "'
-				  AND orddate <='" . FormatDateForSQL($_POST['ToDate']) . "'
-			 AND salesorders.quotation=0";
+					salesorders.debtorno,
+					salesorders.branchcode,
+					salesorders.customerref,
+					salesorders.orddate,
+					salesorders.fromstkloc,
+					salesorders.printedpackingslip,
+					salesorders.datepackingslipprinted,
+					salesorderdetails.stkcode,
+					stockmaster.description,
+					stockmaster.units,
+					stockmaster.decimalplaces,
+					salesorderdetails.quantity,
+					salesorderdetails.qtyinvoiced,
+					salesorderdetails.completed,
+					debtorsmaster.name,
+					custbranch.brname,
+					locations.locationname
+				FROM salesorders
+				INNER JOIN salesorderdetails
+					ON salesorders.orderno = salesorderdetails.orderno
+				INNER JOIN stockmaster
+					ON salesorderdetails.stkcode = stockmaster.stockid
+				INNER JOIN debtorsmaster
+					ON salesorders.debtorno=debtorsmaster.debtorno
+				INNER JOIN custbranch
+					ON custbranch.debtorno=salesorders.debtorno
+					AND custbranch.branchcode=salesorders.branchcode
+				INNER JOIN locations
+					ON salesorders.fromstkloc=locations.loccode
+				INNER JOIN locationusers
+					ON locationusers.loccode=locations.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canview=1
+				WHERE stockmaster.categoryid ='" . $_POST['CategoryID'] . "'
+					AND orddate >='" . FormatDateForSQL($_POST['FromDate']) . "'
+					AND orddate <='" . FormatDateForSQL($_POST['ToDate']) . "'
+					AND salesorders.quotation=0";
 
 
 } elseif ($_POST['CategoryID'] == 'All' and $_POST['Location'] != 'All') {
 	$SQL = "SELECT salesorders.orderno,
-				  salesorders.debtorno,
-				  salesorders.branchcode,
-				  salesorders.customerref,
-				  salesorders.orddate,
-				  salesorders.fromstkloc,
-				  salesorders.printedpackingslip,
-				  salesorders.datepackingslipprinted,
-				  salesorderdetails.stkcode,
-				  stockmaster.description,
-				  stockmaster.units,
-				  stockmaster.decimalplaces,
-				  salesorderdetails.quantity,
-				  salesorderdetails.qtyinvoiced,
-				  salesorderdetails.completed,
-				  debtorsmaster.name,
-				  custbranch.brname,
-				  locations.locationname
-			 FROM salesorders
-				 INNER JOIN salesorderdetails
-				 ON salesorders.orderno = salesorderdetails.orderno
-				 INNER JOIN stockmaster
-				 ON salesorderdetails.stkcode = stockmaster.stockid
-				 INNER JOIN debtorsmaster
-				 ON salesorders.debtorno=debtorsmaster.debtorno
-				 INNER JOIN custbranch
-				 ON custbranch.debtorno=salesorders.debtorno
-				 AND custbranch.branchcode=salesorders.branchcode
-				 INNER JOIN locations
-				 ON salesorders.fromstkloc=locations.loccode
-			 WHERE salesorders.fromstkloc ='" . $_POST['Location'] . "'
-				  AND salesorders.orddate >='" . FormatDateForSQL($_POST['FromDate']) . "'
-				  AND salesorders.orddate <='" . FormatDateForSQL($_POST['ToDate']) . "'
-			 AND salesorders.quotation=0";
+					salesorders.debtorno,
+					salesorders.branchcode,
+					salesorders.customerref,
+					salesorders.orddate,
+					salesorders.fromstkloc,
+					salesorders.printedpackingslip,
+					salesorders.datepackingslipprinted,
+					salesorderdetails.stkcode,
+					stockmaster.description,
+					stockmaster.units,
+					stockmaster.decimalplaces,
+					salesorderdetails.quantity,
+					salesorderdetails.qtyinvoiced,
+					salesorderdetails.completed,
+					debtorsmaster.name,
+					custbranch.brname,
+					locations.locationname
+				FROM salesorders
+				INNER JOIN salesorderdetails
+					ON salesorders.orderno = salesorderdetails.orderno
+				INNER JOIN stockmaster
+					ON salesorderdetails.stkcode = stockmaster.stockid
+				INNER JOIN debtorsmaster
+					ON salesorders.debtorno=debtorsmaster.debtorno
+				INNER JOIN custbranch
+					ON custbranch.debtorno=salesorders.debtorno
+					AND custbranch.branchcode=salesorders.branchcode
+				INNER JOIN locations
+					ON salesorders.fromstkloc=locations.loccode
+				INNER JOIN locationusers
+					ON locationusers.loccode=locations.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canview=1
+				WHERE salesorders.fromstkloc ='" . $_POST['Location'] . "'
+					AND salesorders.orddate >='" . FormatDateForSQL($_POST['FromDate']) . "'
+					AND salesorders.orddate <='" . FormatDateForSQL($_POST['ToDate']) . "'
+					AND salesorders.quotation=0";
 
 
 } elseif ($_POST['CategoryID'] != 'All' and $_POST['location'] != 'All') {
 
 	$SQL = "SELECT salesorders.orderno,
-				  salesorders.debtorno,
-				  salesorders.branchcode,
-				  salesorders.customerref,
-				  salesorders.orddate,
-				  salesorders.fromstkloc,
-				  salesorders.printedpackingslip,
-				  salesorders.datepackingslipprinted,
-				  salesorderdetails.stkcode,
-				  stockmaster.description,
-				  stockmaster.units,
-				  stockmaster.decimalplaces,
-				  salesorderdetails.quantity,
-				  salesorderdetails.qtyinvoiced,
-				  salesorderdetails.completed,
-				  debtorsmaster.name,
-				  custbranch.brname,
-				  locations.locationname
-			 FROM salesorders
-				 INNER JOIN salesorderdetails
-				 ON salesorders.orderno = salesorderdetails.orderno
-				 INNER JOIN stockmaster
-				 ON salesorderdetails.stkcode = stockmaster.stockid
-				 INNER JOIN debtorsmaster
-				 ON salesorders.debtorno=debtorsmaster.debtorno
-				 INNER JOIN custbranch
-				 ON custbranch.debtorno=salesorders.debtorno
-				 AND custbranch.branchcode=salesorders.branchcode
-				 INNER JOIN locations
-				 ON salesorders.fromstkloc=locations.loccode
-			 WHERE stockmaster.categoryid ='" . $_POST['CategoryID'] . "'
-				  AND salesorders.fromstkloc ='" . $_POST['Location'] . "'
-				  AND salesorders.orddate >='" . FormatDateForSQL($_POST['FromDate']) . "'
-				  AND salesorders.orddate <='" . FormatDateForSQL($_POST['ToDate']) . "'
-			 AND salesorders.quotation=0";
+					salesorders.debtorno,
+					salesorders.branchcode,
+					salesorders.customerref,
+					salesorders.orddate,
+					salesorders.fromstkloc,
+					salesorders.printedpackingslip,
+					salesorders.datepackingslipprinted,
+					salesorderdetails.stkcode,
+					stockmaster.description,
+					stockmaster.units,
+					stockmaster.decimalplaces,
+					salesorderdetails.quantity,
+					salesorderdetails.qtyinvoiced,
+					salesorderdetails.completed,
+					debtorsmaster.name,
+					custbranch.brname,
+					locations.locationname
+				FROM salesorders
+				INNER JOIN salesorderdetails
+					ON salesorders.orderno = salesorderdetails.orderno
+				INNER JOIN stockmaster
+					ON salesorderdetails.stkcode = stockmaster.stockid
+				INNER JOIN debtorsmaster
+					ON salesorders.debtorno=debtorsmaster.debtorno
+				INNER JOIN custbranch
+					ON custbranch.debtorno=salesorders.debtorno
+					AND custbranch.branchcode=salesorders.branchcode
+				INNER JOIN locations
+					ON salesorders.fromstkloc=locations.loccode
+				INNER JOIN locationusers
+					ON locationusers.loccode=locations.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canview=1
+				WHERE stockmaster.categoryid ='" . $_POST['CategoryID'] . "'
+					AND salesorders.fromstkloc ='" . $_POST['Location'] . "'
+					AND salesorders.orddate >='" . FormatDateForSQL($_POST['FromDate']) . "'
+					AND salesorders.orddate <='" . FormatDateForSQL($_POST['ToDate']) . "'
+					AND salesorders.quotation=0";
 }
 
 if ($_POST['BackOrders'] == 'Yes') {

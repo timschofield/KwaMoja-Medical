@@ -42,8 +42,7 @@ if (!isset($_GET['OrderNumber']) and !isset($_SESSION['ProcessingOrder'])) {
 
 	/*read in all the guff from the selected order into the Items cart  */
 
-	if ($_SESSION['RestrictLocations'] == 0) {
-		$OrderHeaderSQL = "SELECT salesorders.orderno,
+	$OrderHeaderSQL = "SELECT salesorders.orderno,
 								salesorders.debtorno,
 								debtorsmaster.name,
 								salesorders.branchcode,
@@ -82,52 +81,11 @@ if (!isset($_GET['OrderNumber']) and !isset($_SESSION['ProcessingOrder'])) {
 							ON debtorsmaster.currcode = currencies.currabrev
 						INNER JOIN locations
 							ON locations.loccode=salesorders.fromstkloc
+						INNER JOIN locationusers
+							ON locationusers.loccode=salesorders.fromstkloc
+							AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+							AND locationusers.canupd=1
 						WHERE salesorders.orderno = '" . $_GET['OrderNumber'] . "'";
-	} else {
-		$OrderHeaderSQL = "SELECT salesorders.orderno,
-								salesorders.debtorno,
-								debtorsmaster.name,
-								salesorders.branchcode,
-								salesorders.customerref,
-								salesorders.comments,
-								salesorders.orddate,
-								salesorders.ordertype,
-								salesorders.shipvia,
-								salesorders.deliverto,
-								salesorders.deladd1,
-								salesorders.deladd2,
-								salesorders.deladd3,
-								salesorders.deladd4,
-								salesorders.deladd5,
-								salesorders.deladd6,
-								salesorders.contactphone,
-								salesorders.contactemail,
-								salesorders.salesperson,
-								salesorders.freightcost,
-								salesorders.deliverydate,
-								debtorsmaster.currcode,
-								salesorders.fromstkloc,
-								locations.taxprovinceid,
-								custbranch.taxgroupid,
-								currencies.rate as currency_rate,
-								currencies.decimalplaces,
-								custbranch.defaultshipvia,
-								custbranch.specialinstructions
-						FROM salesorders
-						INNER JOIN debtorsmaster
-							ON salesorders.debtorno = debtorsmaster.debtorno
-						INNER JOIN custbranch
-							ON salesorders.branchcode = custbranch.branchcode
-							AND salesorders.debtorno = custbranch.debtorno
-						INNER JOIN currencies
-							ON debtorsmaster.currcode = currencies.currabrev
-						INNER JOIN locations
-							ON locations.loccode=salesorders.fromstkloc
-						INNER JOIN www_users
-							ON locations.loccode=www_users.defaultlocation
-						WHERE salesorders.orderno = '" . $_GET['OrderNumber'] . "'
-							AND www_users.userid='" . $_SESSION['UserID'] . "'";
-	}
 
 	if ($_SESSION['SalesmanLogin'] != '') {
 		$OrderHeaderSQL .= " AND salesorders.salesperson='" . $_SESSION['SalesmanLogin'] . "'";

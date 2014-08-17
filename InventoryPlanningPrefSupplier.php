@@ -140,15 +140,19 @@ if (isset($_POST['PrintPDF'])) {
 						suppliers.suppname,
 						purchdata.leadtime/30 AS monthsleadtime,
 						SUM(locstock.quantity) AS qoh
-					FROM locstock,
-						stockmaster,
-						purchdata,
-						suppliers
-					WHERE locstock.stockid=stockmaster.stockid
-					AND purchdata.supplierno=suppliers.supplierid
-					AND (stockmaster.mbflag='B' OR stockmaster.mbflag='M')
-					AND purchdata.stockid=stockmaster.stockid
-					AND purchdata.preferred=1
+					FROM locstock
+					INNER JOIN locationusers
+						ON locationusers.loccode=locstock.loccode
+						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.canview=1
+					INNER JOIN stockmaster
+						ON locstock.stockid=stockmaster.stockid
+					INNER JOIN purchdata
+						ON purchdata.stockid=stockmaster.stockid
+						AND purchdata.preferred=1
+					INNER JOIN suppliers
+						ON purchdata.supplierno=suppliers.supplierid
+					WHERE (stockmaster.mbflag='B' OR stockmaster.mbflag='M')
 					GROUP BY
 						purchdata.supplierno,
 						stockmaster.description,
@@ -159,26 +163,29 @@ if (isset($_POST['PrintPDF'])) {
 
 	} else {
 
-		$SQL = "SELECT
-						stockmaster.description,
+		$SQL = "SELECT stockmaster.description,
 						stockmaster.eoq,
 						purchdata.supplierno,
 						suppliers.suppname,
 						locstock.stockid,
 						purchdata.leadtime/30 AS monthsleadtime,
 						locstock.quantity AS qoh
-					FROM locstock,
-						stockmaster,
-						purchdata,
-						suppliers
-					WHERE locstock.stockid=stockmaster.stockid
-					AND purchdata.supplierno=suppliers.supplierid
-					AND (stockmaster.mbflag='B' OR stockmaster.mbflag='M')
-					AND purchdata.stockid=stockmaster.stockid
-					AND locstock.loccode = '" . $_POST['Location'] . "'
-					AND purchdata.preferred=1
+					FROM locstock
+					INNER JOIN locationusers
+						ON locationusers.loccode=locstock.loccode
+						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.canview=1
+					INNER JOIN stockmaster
+						ON locstock.stockid=stockmaster.stockid
+					INNER JOIN purchdata
+						ON purchdata.stockid=stockmaster.stockid
+						AND purchdata.preferred=1
+					INNER JOIN suppliers
+						ON purchdata.supplierno=suppliers.supplierid
+					WHERE (stockmaster.mbflag='B' OR stockmaster.mbflag='M')
+						AND locstock.loccode = '" . $_POST['Location'] . "'
 					ORDER BY purchdata.supplierno,
-					stockmaster.stockid";
+							stockmaster.stockid";
 
 
 	}
@@ -235,9 +242,13 @@ if (isset($_POST['PrintPDF'])) {
 						SUM(CASE WHEN prd='" . $Period_3 . "' THEN -qty ELSE 0 END) AS prd3,
 						SUM(CASE WHEN prd='" . $Period_4 . "' THEN -qty ELSE 0 END) AS prd4
 						FROM stockmoves
+						INNER JOIN locationusers
+							ON locationusers.loccode=stockmoves.loccode
+							AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+							AND locationusers.canview=1
 						WHERE stockid='" . $InventoryPlan['stockid'] . "'
-						AND (type=10 OR type=11)
-						AND stockmoves.hidemovt=0";
+							AND (type=10 OR type=11)
+							AND stockmoves.hidemovt=0";
 		} else {
 			$SQL = "SELECT SUM(CASE WHEN (prd>='" . $Period_1 . "' OR
 									prd<='" . $Period_4 . "') THEN -qty ELSE 0 END) AS 4mthtotal,
@@ -246,10 +257,14 @@ if (isset($_POST['PrintPDF'])) {
 						SUM(CASE WHEN prd='" . $Period_3 . "' THEN -qty ELSE 0 END) AS prd3,
 						SUM(CASE WHEN prd='" . $Period_4 . "' THEN -qty ELSE 0 END) AS prd4
 						FROM stockmoves
+						INNER JOIN locationusers
+							ON locationusers.loccode=stockmoves.loccode
+							AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+							AND locationusers.canview=1
 						WHERE stockid='" . $InventoryPlan['stockid'] . "'
-						AND stockmoves.loccode ='" . $_POST['Location'] . "'
-						AND (stockmoves.type=10 OR stockmoves.type=11)
-						AND stockmoves.hidemovt=0";
+							AND stockmoves.loccode ='" . $_POST['Location'] . "'
+							AND (stockmoves.type=10 OR stockmoves.type=11)
+							AND stockmoves.hidemovt=0";
 		}
 
 		$SalesResult = DB_query($SQL, '', '', FALSE, FALSE);
@@ -270,19 +285,29 @@ if (isset($_POST['PrintPDF'])) {
 
 		if ($_POST['Location'] == 'All') {
 			$SQL = "SELECT SUM(salesorderdetails.quantity - salesorderdetails.qtyinvoiced) AS qtydemand
-					FROM salesorderdetails INNER JOIN salesorders
-					ON salesorderdetails.orderno=salesorders.orderno
+					FROM salesorderdetails
+					INNER JOIN salesorders
+						ON salesorderdetails.orderno=salesorders.orderno
+					INNER JOIN locationusers
+						ON locationusers.loccode=salesorders.fromstkloc
+						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.canview=1
 					WHERE salesorderdetails.stkcode = '" . $InventoryPlan['stockid'] . "'
-					AND salesorderdetails.completed = 0
-					AND salesorders.quotation=0";
+						AND salesorderdetails.completed = 0
+						AND salesorders.quotation=0";
 		} else {
 			$SQL = "SELECT SUM(salesorderdetails.quantity - salesorderdetails.qtyinvoiced) AS qtydemand
-					FROM salesorderdetails INNER JOIN salesorders
-					ON salesorderdetails.orderno=salesorders.orderno
+					FROM salesorderdetails
+					INNER JOIN salesorders
+						ON salesorderdetails.orderno=salesorders.orderno
+					INNER JOIN locationusers
+						ON locationusers.loccode=salesorders.fromstkloc
+						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.canview=1
 					WHERE salesorders.fromstkloc ='" . $_POST['Location'] . "'
-					AND salesorderdetails.stkcode = '" . $InventoryPlan['stockid'] . "'
-					AND salesorderdetails.completed = 0
-					AND salesorders.quotation=0";
+						AND salesorderdetails.stkcode = '" . $InventoryPlan['stockid'] . "'
+						AND salesorderdetails.completed = 0
+						AND salesorders.quotation=0";
 		}
 
 		$DemandResult = DB_query($SQL, '', '', false, false);
@@ -304,31 +329,41 @@ if (isset($_POST['PrintPDF'])) {
 
 		if ($_POST['Location'] == 'All') {
 			$SQL = "SELECT SUM((salesorderdetails.quantity-salesorderdetails.qtyinvoiced)*bom.quantity) AS dem
-					FROM salesorderdetails INNER JOIN bom
-					ON salesorderdetails.stkcode=bom.parent
+					FROM salesorderdetails
+					INNER JOIN bom
+						ON salesorderdetails.stkcode=bom.parent
 					INNER JOIN	stockmaster
-					ON stockmaster.stockid=bom.parent
+						ON stockmaster.stockid=bom.parent
 					INNER JOIN salesorders
-					ON salesorders.orderno = salesorderdetails.orderno
+						ON salesorders.orderno = salesorderdetails.orderno
+					INNER JOIN locationusers
+						ON locationusers.loccode=salesorders.fromstkloc
+						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.canview=1
 					WHERE  salesorderdetails.quantity-salesorderdetails.qtyinvoiced > 0
-					AND bom.component='" . $InventoryPlan['stockid'] . "'
-					AND stockmaster.mbflag='A'
-					AND salesorderdetails.completed=0
-					AND salesorders.quotation=0";
+						AND bom.component='" . $InventoryPlan['stockid'] . "'
+						AND stockmaster.mbflag='A'
+						AND salesorderdetails.completed=0
+						AND salesorders.quotation=0";
 		} else {
 			$SQL = "SELECT SUM((salesorderdetails.quantity-salesorderdetails.qtyinvoiced)*bom.quantity) AS dem
-					FROM salesorderdetails INNER JOIN bom
-					ON salesorderdetails.stkcode=bom.parent
+					FROM salesorderdetails
+					INNER JOIN bom
+						ON salesorderdetails.stkcode=bom.parent
 					INNER JOIN	stockmaster
-					ON stockmaster.stockid=bom.parent
+						ON stockmaster.stockid=bom.parent
 					INNER JOIN salesorders
-					ON salesorders.orderno = salesorderdetails.orderno
+						ON salesorders.orderno = salesorderdetails.orderno
+					INNER JOIN locationusers
+						ON locationusers.loccode=salesorders.fromstkloc
+						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.canview=1
 					WHERE salesorderdetails.quantity-salesorderdetails.qtyinvoiced > 0
-					AND bom.component='" . $InventoryPlan['stockid'] . "'
-					AND salesorders.fromstkloc ='" . $_POST['Location'] . "'
-					AND stockmaster.mbflag='A'
-					AND salesorderdetails.completed=0
-					AND salesorders.quotation=0";
+						AND bom.component='" . $InventoryPlan['stockid'] . "'
+						AND salesorders.fromstkloc ='" . $_POST['Location'] . "'
+						AND stockmaster.mbflag='A'
+						AND salesorderdetails.completed=0
+						AND salesorders.quotation=0";
 		}
 
 		$BOMDemandResult = DB_query($SQL, '', '', false, false);
@@ -347,33 +382,41 @@ if (isset($_POST['PrintPDF'])) {
 
 		if ($_POST['Location'] == 'All') {
 			$SQL = "SELECT SUM(purchorderdetails.quantityord- purchorderdetails.quantityrecd) as qtyonorder
-				FROM purchorderdetails
-				LEFT JOIN purchorders
-				ON purchorderdetails.orderno = purchorders.orderno
-				LEFT JOIN purchdata
-				ON purchorders.supplierno=purchdata.supplierno
-				AND purchorderdetails.itemcode=purchdata.stockid
-				WHERE  purchorderdetails.itemcode = '" . $InventoryPlan['stockid'] . "'
-				AND purchorderdetails.completed = 0
-				AND purchorders.status <> 'Cancelled'
-				AND purchorders.status <> 'Rejected'
-				AND purchorders.status <> 'Pending'
-				AND purchorders.status <> 'Completed'";
+					FROM purchorderdetails
+					LEFT JOIN purchorders
+						ON purchorderdetails.orderno = purchorders.orderno
+					LEFT JOIN purchdata
+						ON purchorders.supplierno=purchdata.supplierno
+						AND purchorderdetails.itemcode=purchdata.stockid
+					INNER JOIN locationusers
+						ON locationusers.loccode=purchorders.intostocklocation
+						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.canview=1
+					WHERE  purchorderdetails.itemcode = '" . $InventoryPlan['stockid'] . "'
+						AND purchorderdetails.completed = 0
+						AND purchorders.status <> 'Cancelled'
+						AND purchorders.status <> 'Rejected'
+						AND purchorders.status <> 'Pending'
+						AND purchorders.status <> 'Completed'";
 		} else {
 			$SQL = "SELECT SUM(purchorderdetails.quantityord - purchorderdetails.quantityrecd) as qtyonorder
-				FROM purchorderdetails
-				LEFT JOIN purchorders
-				ON purchorderdetails.orderno = purchorders.orderno
-				LEFT JOIN purchdata
-				ON purchorders.supplierno=purchdata.supplierno
-				AND purchorderdetails.itemcode=purchdata.stockid
-				WHERE purchorderdetails.itemcode = '" . $InventoryPlan['stockid'] . "'
-				AND purchorderdetails.completed = 0
-				AND purchorders.intostocklocation=  '" . $_POST['Location'] . "'
-				AND purchorders.status <> 'Cancelled'
-				AND purchorders.status <> 'Rejected'
-				AND purchorders.status <> 'Pending'
-				AND purchorders.status <> 'Completed'";
+					FROM purchorderdetails
+					LEFT JOIN purchorders
+						ON purchorderdetails.orderno = purchorders.orderno
+					LEFT JOIN purchdata
+						ON purchorders.supplierno=purchdata.supplierno
+						AND purchorderdetails.itemcode=purchdata.stockid
+					INNER JOIN locationusers
+						ON locationusers.loccode=purchorders.intostocklocation
+						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.canview=1
+					WHERE purchorderdetails.itemcode = '" . $InventoryPlan['stockid'] . "'
+						AND purchorderdetails.completed = 0
+						AND purchorders.intostocklocation=  '" . $_POST['Location'] . "'
+						AND purchorders.status <> 'Cancelled'
+						AND purchorders.status <> 'Rejected'
+						AND purchorders.status <> 'Pending'
+						AND purchorders.status <> 'Completed'";
 		}
 
 		$DemandRow = DB_fetch_array($DemandResult);
@@ -465,24 +508,18 @@ if (isset($_POST['PrintPDF'])) {
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p><br />';
 
 	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table class="selection">';
 
 	echo '<tr><td>' . _('For Inventory in Location') . ':</td>
 			<td><select minlength="0" name="Location">';
-	if ($_SESSION['RestrictLocations'] == 0) {
-		$SQL = "SELECT locationname,
-						loccode
-					FROM locations";
-	} else {
-		$SQL = "SELECT locationname,
-						loccode
-					FROM locations
-					INNER JOIN www_users
-						ON locations.loccode=www_users.defaultlocation
-					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-	}
+	$SQL = "SELECT locations.loccode,
+					locationname
+				FROM locations
+				INNER JOIN locationusers
+					ON locationusers.loccode=locations.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canview=1";
 	$LocnResult = DB_query($SQL);
 
 	echo '<option value="All">' . _('All Locations') . '</option>';
@@ -521,12 +558,10 @@ if (isset($_POST['PrintPDF'])) {
 	echo '</select></td></tr>';
 
 	echo '</table>
-			<br />
 			<div class="centre">
 				<input type="submit" name="PrintPDF" value="' . _('Print PDF') . '" />
 			</div>';
-	echo '</div>
-		  </form>';
+	echo '</form>';
 
 	include('includes/footer.inc');
 }

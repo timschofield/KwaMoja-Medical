@@ -7,9 +7,9 @@ $Title = _('All Stock Status By Location/Category');
 include('includes/header.inc');
 
 if (isset($_GET['StockID'])) {
-	$StockID = trim(mb_strtoupper($_GET['StockID']));
+	$StockId = trim(mb_strtoupper($_GET['StockID']));
 } elseif (isset($_POST['StockID'])) {
-	$StockID = trim(mb_strtoupper($_POST['StockID']));
+	$StockId = trim(mb_strtoupper($_POST['StockID']));
 }
 
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
@@ -165,14 +165,14 @@ if (isset($_POST['ShowStatus'])) {
 
 	while ($MyRow = DB_fetch_array($LocStockResult)) {
 
-		$StockID = $MyRow['stockid'];
+		$StockId = $MyRow['stockid'];
 
 		$SQL = "SELECT SUM(salesorderdetails.quantity-salesorderdetails.qtyinvoiced) AS dem
 					FROM salesorderdetails INNER JOIN salesorders
 					ON salesorders.orderno = salesorderdetails.orderno
 					WHERE salesorders.fromstkloc='" . $MyRow['loccode'] . "'
 					AND salesorderdetails.completed=0
-					AND salesorderdetails.stkcode='" . $StockID . "'
+					AND salesorderdetails.stkcode='" . $StockId . "'
 					AND salesorders.quotation=0";
 
 		$ErrMsg = _('The demand for this product from') . ' ' . $MyRow['loccode'] . ' ' . _('cannot be retrieved because');
@@ -195,7 +195,7 @@ if (isset($_POST['ShowStatus'])) {
 					  ON stockmaster.stockid=bom.parent
 				WHERE salesorders.fromstkloc='" . $MyRow['loccode'] . "'
 				AND salesorderdetails.quantity-salesorderdetails.qtyinvoiced > 0
-				AND bom.component='" . $StockID . "'
+				AND bom.component='" . $StockId . "'
 				AND stockmaster.mbflag='A'
 				AND salesorders.quotation=0";
 
@@ -212,7 +212,7 @@ if (isset($_POST['ShowStatus'])) {
 				INNER JOIN bom
 					  ON woitems.stockid =  bom.parent
 				WHERE workorders.closed=0
-				AND   bom.component = '" . $StockID . "'
+				AND   bom.component = '" . $StockId . "'
 				AND   workorders.loccode='" . $MyRow['loccode'] . "'";
 		$DemandResult = DB_query($SQL, $ErrMsg);
 
@@ -227,7 +227,7 @@ if (isset($_POST['ShowStatus'])) {
 				INNER JOIN purchorders
 					ON purchorderdetails.orderno=purchorders.orderno
 				WHERE purchorders.intostocklocation='" . $MyRow['loccode'] . "'
-					AND purchorderdetails.itemcode='" . $StockID . "'
+					AND purchorderdetails.itemcode='" . $StockId . "'
 					AND (purchorders.status = 'Authorised' OR purchorders.status='Printed')";
 
 		$ErrMsg = _('The quantity on order for this product to be received into') . ' ' . $MyRow['loccode'] . ' ' . _('cannot be retrieved because');
@@ -282,9 +282,9 @@ if (isset($_POST['ShowStatus'])) {
 				if ($MyRow['serialised'] == 1) {
 					/*The line is a serialised item*/
 
-					echo '<td><a target="_blank" href="' . $RootPath . '/StockSerialItems.php?Serialised=Yes&Location=' . $MyRow['loccode'] . '&StockID=' . $StockID . '">' . _('Serial Numbers') . '</a></td></tr>';
+					echo '<td><a target="_blank" href="' . $RootPath . '/StockSerialItems.php?Serialised=Yes&Location=' . $MyRow['loccode'] . '&StockID=' . $StockId . '">' . _('Serial Numbers') . '</a></td></tr>';
 				} elseif ($MyRow['controlled'] == 1) {
-					echo '<td><a target="_blank" href="' . $RootPath . '/StockSerialItems.php?Location=' . $MyRow['loccode'] . '&StockID=' . $StockID . '">' . _('Batches') . '</a></td></tr>';
+					echo '<td><a target="_blank" href="' . $RootPath . '/StockSerialItems.php?Location=' . $MyRow['loccode'] . '&StockID=' . $StockId . '">' . _('Batches') . '</a></td></tr>';
 				}
 			} else if ($_POST['BelowReorderQuantity'] != 'NotZero') {
 				if ($k == 1) {
@@ -317,9 +317,9 @@ if (isset($_POST['ShowStatus'])) {
 				if ($MyRow['serialised'] == 1) {
 					/*The line is a serialised item*/
 
-					echo '<td><a target="_blank" href="' . $RootPath . '/StockSerialItems.php?Serialised=Yes&Location=' . $MyRow['loccode'] . '&StockID=' . $StockID . '">' . _('Serial Numbers') . '</a></td></tr>';
+					echo '<td><a target="_blank" href="' . $RootPath . '/StockSerialItems.php?Serialised=Yes&Location=' . $MyRow['loccode'] . '&StockID=' . $StockId . '">' . _('Serial Numbers') . '</a></td></tr>';
 				} elseif ($MyRow['controlled'] == 1) {
-					echo '<td><a target="_blank" href="' . $RootPath . '/StockSerialItems.php?Location=' . $MyRow['loccode'] . '&StockID=' . $StockID . '">' . _('Batches') . '</a></td></tr>';
+					echo '<td><a target="_blank" href="' . $RootPath . '/StockSerialItems.php?Location=' . $MyRow['loccode'] . '&StockID=' . $StockId . '">' . _('Batches') . '</a></td></tr>';
 				}
 			} //end of page full new headings if
 		} //end of if BelowOrderQuantity or all items

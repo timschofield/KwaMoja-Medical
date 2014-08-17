@@ -7,18 +7,18 @@ $Title = _('Price break matrix Maintenance');
 include('includes/header.inc');
 
 if (isset($_GET['StockID'])) {
-	$StockID = trim(mb_strtoupper($_GET['StockID']));
+	$StockId = trim(mb_strtoupper($_GET['StockID']));
 } elseif (isset($_POST['StockID'])) {
-	$StockID = trim(mb_strtoupper($_POST['StockID']));
+	$StockId = trim(mb_strtoupper($_POST['StockID']));
 }
 
-if (!isset($StockID)) {
+if (!isset($StockId)) {
 	prnMsg( _('This page must be called with a stock code. Please select a stock item first'), 'warn');
 	include('includes/footer.inc');
 	exit;
 }
 
-$SQL = "SELECT description FROM stockmaster WHERE stockid='" . $StockID . "'";
+$SQL = "SELECT description FROM stockmaster WHERE stockid='" . $StockId . "'";
 $Result = DB_query($SQL);
 $MyRow = DB_fetch_array($Result);
 
@@ -30,7 +30,7 @@ if (isset($_POST['submit'])) {
 	//initialise no input errors assumed initially before we test
 	$InputError = 0;
 	if (isset($_POST['StockID'])) {
-		$StockID = trim(strtoupper($_POST['StockID']));
+		$StockId = trim(strtoupper($_POST['StockID']));
 	}
 
 	if (!is_numeric(filter_number_format($_POST['QuantityBreak']))) {
@@ -68,7 +68,7 @@ if (isset($_POST['submit'])) {
 	}
 	$SQL = "SELECT COUNT(salestype)
 				FROM pricematrix
-			WHERE stockid='" . $StockID . "'
+			WHERE stockid='" . $StockId . "'
 				AND startdate='" . $SQLStartDate . "'
 				AND enddate='" . $SQLEndDate . "'
 				AND salestype='" . $_POST['TypeAbbrev'] . "'
@@ -81,7 +81,7 @@ if (isset($_POST['submit'])) {
 		$InputError = 1;
 	}
 
-	if (isset($_POST['OldTypeAbbrev']) and isset($_POST['OldCurrAbrev']) and mb_strlen($StockID)  > 1 and $InputError != 1) {
+	if (isset($_POST['OldTypeAbbrev']) and isset($_POST['OldCurrAbrev']) and mb_strlen($StockId)  > 1 and $InputError != 1) {
 
 		/* Update existing prices */
 		$SQL = "UPDATE pricematrix SET
@@ -91,7 +91,7 @@ if (isset($_POST['submit'])) {
 					startdate='" . $SQLStartDate . "',
 					enddate='" . $SQLEndDate . "',
 					quantitybreak='" . filter_number_format($_POST['QuantityBreak']) . "'
-				WHERE stockid='" . $StockID . "'
+				WHERE stockid='" . $StockId . "'
 					AND startdate='" . $_POST['OldStartDate'] . "'
 					AND enddate='" . $_POST['OldEndDate'] . "'
 					AND salestype='" . $_POST['OldTypeAbbrev'] . "'
@@ -101,7 +101,7 @@ if (isset($_POST['submit'])) {
 		$ErrMsg = _('Could not be update the existing prices');
 		$Result = DB_query($SQL, $ErrMsg);
 
-		ReSequenceEffectiveDates($StockID, $_POST['SalesType'], $_POST['CurrAbrev'], $_POST['QuantityBreak']);
+		ReSequenceEffectiveDates($StockId, $_POST['SalesType'], $_POST['CurrAbrev'], $_POST['QuantityBreak']);
 
 		prnMsg(_('The price has been updated'),'success');
 	} elseif ($InputError != 1) {
@@ -117,7 +117,7 @@ if (isset($_POST['submit'])) {
 							startdate,
 							enddate)
 					VALUES( '" . $_POST['SalesType'] . "',
-							'" . $StockID . "',
+							'" . $StockId . "',
 							'" . filter_number_format($_POST['QuantityBreak']) . "',
 						'" . filter_number_format($_POST['Price']) . "',
 						'" . $_POST['CurrAbrev'] . "',
@@ -139,7 +139,7 @@ if (isset($_POST['submit'])) {
 	/*the link to delete a selected record was clicked instead of the submit button */
 
 	$SQL = "DELETE FROM pricematrix
-				WHERE stockid='" . $StockID . "'
+				WHERE stockid='" . $StockId . "'
 					AND salestype='" . $_GET['SalesType'] . "'
 					AND quantitybreak='" . $_GET['QuantityBreak'] . "'
 					AND price='" . $_GET['Price'] . "'
@@ -214,15 +214,15 @@ echo '</select>
 	</tr>';
 
 if (isset($_GET['StockID'])) {
-	$StockID = trim($_GET['StockID']);
+	$StockId = trim($_GET['StockID']);
 } elseif (isset($_POST['StockID'])) {
-	$StockID = trim(strtoupper($_POST['StockID']));
-} elseif (!isset($StockID)) {
+	$StockId = trim(strtoupper($_POST['StockID']));
+} elseif (!isset($StockId)) {
 	prnMsg(_('You must select a stock item first before set a price maxtrix'),'error');
 	include('includes/footer.inc');
 	exit;
 }
-echo '<input type="hidden" name="StockID" value="' . $StockID . '" />';
+echo '<input type="hidden" name="StockID" value="' . $StockId . '" />';
 if (!isset($_POST['StartDate'])){
 	$_POST['StartDate'] = Date($_SESSION['DefaultDateFormat']);
 }
@@ -265,7 +265,7 @@ $SQL = "SELECT sales_type,
 				ON pricematrix.salestype=salestypes.typeabbrev
 			INNER JOIN currencies
 				ON pricematrix.currabrev=currencies.currabrev
-			WHERE pricematrix.stockid='" . $StockID . "'
+			WHERE pricematrix.stockid='" . $StockId . "'
 			ORDER BY pricematrix.currabrev,
 					salestype,
 					stockid,

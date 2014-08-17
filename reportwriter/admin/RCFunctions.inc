@@ -55,18 +55,18 @@ function RetrieveReports() {
 	global $ReportGroups, $FormGroups;
 
 	$OutputString = '';
-	foreach ($ReportGroups as $key => $GName) {
+	foreach ($ReportGroups as $Key => $GName) {
 		$OutputString .= '<tr style="background-color:#CCCCCC"><td colspan="2" align="center">' . $GName . '</td></tr>';
 		$OutputString .= '<tr><td align="center">' . RPT_REPORTS . '</td><td align="center">' . RPT_FORMS . '</td></tr>';
 		$OutputString .= '<tr><td width="250" valign="top">';
 		$sql = "SELECT id, reportname FROM " . DBReports . "
-			WHERE defaultreport='1' AND reporttype='rpt' AND groupname='" . $key . "'
+			WHERE defaultreport='1' AND reporttype='rpt' AND groupname='" . $Key . "'
 			ORDER BY reportname";
 		$Result = DB_query($sql, '', '', false, true);
 		while ($Temp = DB_fetch_array($Result))
 			$OutputString .= '<input type="radio" name="ReportID" value="' . $Temp['id'] . '">' . $Temp['reportname'] . '<br />';
 		$sql = "SELECT id, reportname FROM " . DBReports . "
-			WHERE defaultreport='0' AND reporttype='rpt' AND groupname='" . $key . "'
+			WHERE defaultreport='0' AND reporttype='rpt' AND groupname='" . $Key . "'
 			ORDER BY reportname";
 		$Result = DB_query($sql, '', '', false, true);
 		if (DB_num_rows($Result) > 0)
@@ -81,14 +81,14 @@ function RetrieveReports() {
 		$FormList = '';
 		while ($Temp = DB_fetch_array($Result))
 			$FormList[] = $Temp;
-		foreach ($FormGroups as $index => $value) {
+		foreach ($FormGroups as $index => $Value) {
 			$Group = explode(':', $index); // break into main group and form group array
-			if ($Group[0] == $key and $FormList <> '') { // then it's a part of the group we're showing
+			if ($Group[0] == $Key and $FormList <> '') { // then it's a part of the group we're showing
 				$WriteOnce = true;
 				foreach ($FormList as $Entry) {
 					if ($Entry['groupname'] == $index) { // then it's part of this listing
 						if ($WriteOnce) {
-							$OutputString .= $value . '<br />';
+							$OutputString .= $Value . '<br />';
 							$WriteOnce = false;
 						}
 						$OutputString .= '&nbsp;&nbsp;<input type="radio" name="ReportID" value="' . $Entry['id'] . '">' . $Entry['reportname'] . '<br />';
@@ -646,9 +646,9 @@ function ExportReport($ReportID) {
 			$CSVOutput .= "FieldDesc" . $i . ":'" . DB_escape_string($FieldRows['displaydesc']) . "'" . $crlf;
 		}
 		$sql = 'FieldData' . $i . ':';
-		foreach ($FieldRows as $key => $value) {
-			if ($key <> 'id' and $key <> 'reportid')
-				$sql .= $key . "='" . DB_escape_string($value) . "', ";
+		foreach ($FieldRows as $Key => $Value) {
+			if ($Key <> 'id' and $Key <> 'reportid')
+				$sql .= $Key . "='" . DB_escape_string($Value) . "', ";
 		}
 		$sql = mb_substr($sql, 0, -2) . ";"; // Strip the last comma and space and add a semicolon
 		$FieldData[$i] = $sql;
@@ -659,9 +659,9 @@ function ExportReport($ReportID) {
 	$CSVOutput .= '/* SQL report data. */' . $crlf;
 	// Build the report sql string
 	$RptData = 'ReportData:';
-	foreach ($myrow as $key => $value)
-		if ($key <> 'id')
-			$RptData .= $key . "='" . DB_escape_string($value) . "', ";
+	foreach ($myrow as $Key => $Value)
+		if ($Key <> 'id')
+			$RptData .= $Key . "='" . DB_escape_string($Value) . "', ";
 	$RptData = mb_substr($RptData, 0, -2) . ";"; // Strip the last comma and space and add a semicolon
 	$CSVOutput .= $RptData . $crlf . $crlf;
 	$CSVOutput .= '/* SQL field data. */' . $crlf;

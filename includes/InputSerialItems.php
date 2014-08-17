@@ -13,7 +13,7 @@
 $SQL = "SELECT perishable,
 				decimalplaces
 			FROM stockmaster
-			WHERE stockid='" . $StockID . "'";
+			WHERE stockid='" . $StockId . "'";
 $Result = DB_query($SQL);
 $MyRow = DB_fetch_array($Result);
 $Perishable = $MyRow['perishable'];
@@ -58,10 +58,10 @@ if (!isset($_POST['EntryType']) or trim($_POST['EntryType']) == '') {
 $invalid_imports = 0;
 $valid = true;
 
-echo '<form method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $identifier . '" enctype="multipart/form-data" >';
+echo '<form method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '" enctype="multipart/form-data" >';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
 		<input type="hidden" name="LineNo" value="' . $LineNo . '" />
-		<input type="hidden" name="StockID" value="' . $StockID . '" />';
+		<input type="hidden" name="StockID" value="' . $StockId . '" />';
 
 if (isset($_GET['CreditInvoice']) or isset($_POST['CreditInvoice'])) {
 	$CreditInvoice = '&amp;CreditInvoice=Yes';
@@ -106,8 +106,8 @@ echo ' value="FILE" />' . _('File Upload') . '&nbsp; <input type="file" name="Im
 global $TableHeader;
 /* Link to clear the list and start from scratch */
 $EditLink = '<div class="centre">
-				<a class="FontSize" href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $identifier . '&amp;EditControlled=true&amp;StockID=' . $LineItem->StockID . '&amp;LineNo=' . $LineNo . $CreditInvoice . '">' . _('Edit') . '</a> | ';
-$RemoveLink = '<a class="FontSize" href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $identifier . '&amp;DELETEALL=YES&amp;StockID=' . $LineItem->StockID . '&amp;LineNo=' . $LineNo . $CreditInvoice . '">' . _('Remove All') . '</a>
+				<a class="FontSize" href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '&amp;EditControlled=true&amp;StockID=' . $LineItem->StockID . '&amp;LineNo=' . $LineNo . $CreditInvoice . '">' . _('Edit') . '</a> | ';
+$RemoveLink = '<a class="FontSize" href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '&amp;DELETEALL=YES&amp;StockID=' . $LineItem->StockID . '&amp;LineNo=' . $LineNo . $CreditInvoice . '">' . _('Remove All') . '</a>
 			</div>';
 
 if ($LineItem->Serialised == 1) {

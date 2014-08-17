@@ -19,7 +19,7 @@ $EditLink = '<br /><div class="centre"><a href="' . htmlspecialchars($_SERVER['P
 $RemoveLink = '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?DELETEALL=YES&StockID=' . $LineItem->StockID . '&LineNo=' . $LineNo . '">' . _('Remove All') . '</a><br /></div>';
 $SQL = "SELECT perishable
 		FROM stockmaster
-		WHERE stockid='" . $StockID . "'";
+		WHERE stockid='" . $StockId . "'";
 $Result = DB_query($SQL);
 $MyRow = DB_fetch_array($Result);
 $Perishable = $MyRow['perishable'];
@@ -124,7 +124,7 @@ echo $tableheader;
 
 echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" name="Ga6uF5Wa" method="post" class="noPrint">
 	  <input type="hidden" name="LineNo" value="' . $LineNo . '" />
-	  <input type="hidden" name="StockID" value="' . $StockID . '" />
+	  <input type="hidden" name="StockID" value="' . $StockId . '" />
 	  <input type="hidden" name="EntryType" value="KEYED" />';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 if (isset($_GET['EditControlled'])) {
@@ -173,7 +173,7 @@ $SQL = "SELECT serialno,
 			quantity,
 			expirationdate
 		FROM stockserialitems
-		WHERE stockid='" . $StockID . "'
+		WHERE stockid='" . $StockId . "'
 		AND loccode='" . $Location . "'";
 $Result = DB_query($SQL);
 

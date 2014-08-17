@@ -25,16 +25,16 @@ Class WorkOrder {
 		$this->NumberOfItems = 0;
 	}
 
-	function AddItemToOrder($StockID, $Comments, $QuantityRequired, $QuantityReceived, $NextLotSerialNumber) {
-		$this->Items[$this->NumberOfItems + 1] = new WOItem($StockID, $Comments, $QuantityRequired, $QuantityReceived, $NextLotSerialNumber, $this->LocationCode, $this->NumberOfItems + 1);
+	function AddItemToOrder($StockId, $Comments, $QuantityRequired, $QuantityReceived, $NextLotSerialNumber) {
+		$this->Items[$this->NumberOfItems + 1] = new WOItem($StockId, $Comments, $QuantityRequired, $QuantityReceived, $NextLotSerialNumber, $this->LocationCode, $this->NumberOfItems + 1);
 		$this->NumberOfItems++;
 	}
 
-	function UpdateItem($StockID, $Comments, $QuantityRequired, $NextLotSerialNumber = '') {
-		$this->Items[$this->ItemByStockID($StockID)]->QuantityRequired = $QuantityRequired;
-		$this->Items[$this->ItemByStockID($StockID)]->Comments = $Comments;
-		$this->Items[$this->ItemByStockID($StockID)]->NextLotSerialNumbers = $NextLotSerialNumber;
-		$this->Items[$this->ItemByStockID($StockID)]->RefreshRequirements($this->LocationCode);
+	function UpdateItem($StockId, $Comments, $QuantityRequired, $NextLotSerialNumber = '') {
+		$this->Items[$this->ItemByStockID($StockId)]->QuantityRequired = $QuantityRequired;
+		$this->Items[$this->ItemByStockID($StockId)]->Comments = $Comments;
+		$this->Items[$this->ItemByStockID($StockId)]->NextLotSerialNumbers = $NextLotSerialNumber;
+		$this->Items[$this->ItemByStockID($StockId)]->RefreshRequirements($this->LocationCode);
 	}
 
 	function RemoveItemFromOrder($LineNumber) {
@@ -51,9 +51,9 @@ Class WorkOrder {
 		$this->NumberOfItems--;
 	}
 
-	function ItemByStockID($StockID) {
+	function ItemByStockID($StockId) {
 		for ($i = 1; $i <= $this->NumberOfItems; $i++) {
-			if (isset($this->Items[$i]) and $this->Items[$i]->StockID == $StockID) {
+			if (isset($this->Items[$i]) and $this->Items[$i]->StockID == $StockId) {
 				return $i;
 			}
 		}
@@ -134,7 +134,7 @@ Class WorkOrder {
 
 Class WOItem {
 
-	var $StockID;
+	var $StockId;
 	var $Comments;
 	var $Description;
 	var $DecimalPlaces;
@@ -148,7 +148,7 @@ Class WOItem {
 	var $Requirements; // Array of WORequirement objects
 	var $NumberOfRequirements;
 
-	function WOItem($StockID, $Comments, $QuantityRequired, $QuantityReceived, $NextLotSerialNumber, $LocationCode, $NumberOfItems) {
+	function WOItem($StockId, $Comments, $QuantityRequired, $QuantityReceived, $NextLotSerialNumber, $LocationCode, $NumberOfItems) {
 
 		$StockResult = DB_query("SELECT stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS cost,
 										stockmaster.description,
@@ -161,7 +161,7 @@ Class WOItem {
 									INNER JOIN stockcosts
 										ON stockmaster.stockid=stockcosts.stockid
 										AND stockcosts.succeeded=0
-									WHERE bom.parent='" . $StockID . "'");
+									WHERE bom.parent='" . $StockId . "'");
 		$StockRow = DB_fetch_array($StockResult);
 		$StandardCost = $StockRow['cost'] * $QuantityRequired;
 		$Description = $StockRow['description'];
@@ -169,7 +169,7 @@ Class WOItem {
 		$Controlled = $StockRow['controlled'];
 		$Serialised = $StockRow['serialised'];
 
-		$this->StockID = $StockID;
+		$this->StockID = $StockId;
 		$this->Comments = $Comments;
 		$this->Description = $Description;
 		$this->DecimalPlaces = $DecimalPlaces;
@@ -197,7 +197,7 @@ Class WOItem {
 									INNER JOIN stockcosts
 										ON stockmaster.stockid=stockcosts.stockid
 										AND stockcosts.succeeded=0
-									WHERE bom.parent='" . $StockID . "'
+									WHERE bom.parent='" . $StockId . "'
 										AND bom.loccode='" . $LocationCode . "'");
 		while ($BOMRow = DB_fetch_array($BOMResult)) {
 			$this->AddRequirements($BOMRow['component'], $BOMRow['quantity'] * $QuantityRequired, $BOMRow['materialcost'] + $BOMRow['labourcost'] + $BOMRow['overheadcost'], $BOMRow['autoissue'], $BOMRow['description'], $BOMRow['decimalplaces']);
@@ -245,8 +245,8 @@ Class WOItem {
 		}
 	}
 
-	function AddRequirements($StockID, $Quantity, $StandardCost, $AutoIssue, $Description, $DecimalPlaces) {
-		$this->Requirements[$this->NumberOfRequirements + 1] = new WORequirement($this->StockID, $StockID, $Quantity, $StandardCost, $AutoIssue, $Description, $DecimalPlaces);
+	function AddRequirements($StockId, $Quantity, $StandardCost, $AutoIssue, $Description, $DecimalPlaces) {
+		$this->Requirements[$this->NumberOfRequirements + 1] = new WORequirement($this->StockID, $StockId, $Quantity, $StandardCost, $AutoIssue, $Description, $DecimalPlaces);
 		$this->NumberOfRequirements++;
 	}
 
@@ -276,9 +276,9 @@ Class WOItem {
 		}
 	}
 
-	function RequirementByStockID($Parent, $StockID) {
+	function RequirementByStockID($Parent, $StockId) {
 		for ($i = 1; $i <= $this->NumberOfRequirements; $i++) {
-			if ($this->Requirements[$i]->StockID == $StockID and $this->Requirements[$i]->ParentStockID == $Parent) {
+			if ($this->Requirements[$i]->StockID == $StockId and $this->Requirements[$i]->ParentStockID == $Parent) {
 				return $i;
 			}
 		}
@@ -289,16 +289,16 @@ Class WOItem {
 Class WORequirement {
 
 	var $ParentStockID;
-	var $StockID;
+	var $StockId;
 	var $Description;
 	var $DecimalPlaces;
 	var $Quantity;
 	var $StandardCost;
 	var $AutoIssue;
 
-	function WORequirement($ParentStockID, $StockID, $Quantity, $StandardCost, $AutoIssue, $Description, $DecimalPlaces) {
+	function WORequirement($ParentStockID, $StockId, $Quantity, $StandardCost, $AutoIssue, $Description, $DecimalPlaces) {
 		$this->ParentStockID = $ParentStockID;
-		$this->StockID = $StockID;
+		$this->StockID = $StockId;
 		$this->Quantity = $Quantity;
 		$this->StandardCost = $StandardCost;
 		$this->AutoIssue = $AutoIssue;

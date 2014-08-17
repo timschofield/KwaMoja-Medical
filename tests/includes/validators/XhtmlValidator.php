@@ -815,7 +815,7 @@ class XhtmlValidator
     function validateTagAttributes($tag, $attributes = array())
     {
         $possible_attributes = $this->getPossibleTagAttributes($tag);
-        foreach($attributes as $attribute => $value) {
+        foreach($attributes as $attribute => $Value) {
             if (!in_array($attribute, $possible_attributes)) {
                 $this->addError($this->translate("Attribute %attribute can't be used inside &lt;%tag> tags", array(
                 '%attribute' => $attribute,
@@ -827,7 +827,7 @@ class XhtmlValidator
                 )
                 ));
             } elseif ($this->doesAttributeNeedsValidation($tag, $attribute)) {
-                $this->validateAttribute($tag, $attribute, $value);
+                $this->validateAttribute($tag, $attribute, $Value);
             }
         }
     }
@@ -837,24 +837,24 @@ class XhtmlValidator
         return isset($this->_tags[$tag]['attributes'][$attribute]) or isset($this->_tags[$tag]['required']) and in_array($attribute, $this->_tags[$tag]['required']);
     }
 
-    function validateAttribute($tag, $attribute, $value = null)
+    function validateAttribute($tag, $attribute, $Value = null)
     {
-        if (isset($this->_tags[$tag]['attributes'][$attribute]) and (mb_strlen($value) > 0)) {
-            if (!preg_match($this->_tags[$tag]['attributes'][$attribute], $value)) {
+        if (isset($this->_tags[$tag]['attributes'][$attribute]) and (mb_strlen($Value) > 0)) {
+            if (!preg_match($this->_tags[$tag]['attributes'][$attribute], $Value)) {
                 $this->addError($this->translate("Invalid value on &lt;%tag %attribute=\"%value\"... Valid values must match the pattern \"%pattern\"", array(
                 '%tag' => $tag,
                 '%attribute' => $attribute,
-                '%value' => $value,
+                '%value' => $Value,
                 '%pattern' => htmlentities($this->_tags[$tag]['attributes'][$attribute])
                 )) , array(
                 array(
                 $attribute,
-                $value
+                $Value
                 )
                 ));
             }
         }
-        if (isset($this->_tags[$tag]['required']) and in_array($attribute, $this->_tags[$tag]['required']) and (mb_strlen($value) == 0)) {
+        if (isset($this->_tags[$tag]['required']) and in_array($attribute, $this->_tags[$tag]['required']) and (mb_strlen($Value) == 0)) {
             $this->addError($this->translate("Missing required attribute %attribute on &lt;%tag&gt;", array(
             '%tag' => $tag,
             '%attribute' => $attribute

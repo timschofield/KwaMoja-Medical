@@ -149,7 +149,7 @@ function BuildFormList($GroupID) {
 
 	$OutputString = '';
 	if ($GroupID == '') { // then fetchthe complete form list for all groups
-		foreach ($ReportGroups as $key => $GName) {
+		foreach ($ReportGroups as $Key => $GName) {
 			$OutputString .= '<tr style="background-color:#CCCCCC"><td colspan="3" align="center">' . $GName . '</td></tr>';
 			$OutputString .= '<tr><td colspan="3" width="250" valign="top">';
 			$sql = "SELECT id,
@@ -164,14 +164,14 @@ function BuildFormList($GroupID) {
 			$FormList = '';
 			while ($Temp = DB_fetch_array($Result))
 				$FormList[] = $Temp;
-			foreach ($FormGroups as $index => $value) {
+			foreach ($FormGroups as $index => $Value) {
 				$Group = explode(':', $index); // break into main group and form group array
-				if ($Group[0] == $key) { // then it's a part of the group we're showing
+				if ($Group[0] == $Key) { // then it's a part of the group we're showing
 					$WriteOnce = true;
 					foreach ($FormList as $Entry) {
 						if ($Entry['groupname'] == $index) { // then it's part of this listing
 							if ($WriteOnce) {
-								$OutputString .= $value . '<br />';
+								$OutputString .= $Value . '<br />';
 								$WriteOnce = false;
 							}
 							$OutputString .= '&nbsp;&nbsp;<input type="radio" name="ReportID" value="' . $Entry['id'] . '">' . $Entry['reportname'] . '<br />';
@@ -222,8 +222,8 @@ function FetchReportDetails($ReportID) {
 			WHERE id = '" . $ReportID . "'";
 	$Result = DB_query($sql, '', '', false, true);
 	$myrow = DB_fetch_assoc($Result);
-	foreach ($myrow as $key => $value) {
-		$Prefs[$key] = $value;
+	foreach ($myrow as $Key => $Value) {
+		$Prefs[$Key] = $Value;
 	}
 	// Build drop down menus for selectable criteria
 	$Temp = RetrieveFields($ReportID, 'dateselect');
@@ -276,13 +276,13 @@ function BuildCriteria($FieldListings) {
 				<td><input name="tovalue' . $SeqNum . '" type="text" value="' . $Params[2] . '" size="21" maxlength="20"></td>';
 	} // end switch array_shift($CritBlocks)
 	$CriteriaString .= '<td><select name="defcritsel' . $SeqNum . '">';
-	foreach ($CritBlocks as $value) {
-		if ($Params[0] == $value) {
+	foreach ($CritBlocks as $Value) {
+		if ($Params[0] == $Value) {
 			$Selected = ' selected';
 		} else {
 			$Selected = ''; // find the default
 		}
-		$CriteriaString .= '<option value="' . $value . '"' . $Selected . '>' . $value . '</option>';
+		$CriteriaString .= '<option value="' . $Value . '"' . $Selected . '>' . $Value . '</option>';
 	}
 	$CriteriaString .= '</select></td>';
 	$CriteriaString .= $EndString . '</tr>';

@@ -250,7 +250,7 @@ class PDF extends PDF_Language {
 		$maxY = $this->y0; // set to current top of row
 		$Col = 0;
 		$NextXPos = $Params['LineXStrt'];
-		foreach ($myrow as $key => $value) {
+		foreach ($myrow as $Key => $Value) {
 			if ($Params['Seq'][$Col]['TblShow']) {
 				$this->SetLeftMargin($NextXPos);
 				$this->SetXY($NextXPos, $this->y0);
@@ -258,15 +258,15 @@ class PDF extends PDF_Language {
 				$TC = explode(':', $Params['Seq'][$Col]['FontColor']);
 				$this->SetTextColor($TC[0], $TC[1], $TC[2]);
 				$CellHeight = ($Params['Seq'][$Col]['FontSize'] + RowSpace) * 0.35;
-				//				if ($trunc) $value=$this->TruncData($value, $Params['Seq'][$Col]['TblColWidth']);
+				//				if ($trunc) $Value=$this->TruncData($Value, $Params['Seq'][$Col]['TblColWidth']);
 				if ($Heading) { // center the heading
 					$FA = 'C';
 				} else {
 					$FA = $Params['Seq'][$Col]['FontAlign'];
 					if (isset($Params['Seq'][$Col]['Processing']))
-						$value = $this->ProcessData($value, $Params['Seq'][$Col]['Processing']);
+						$Value = $this->ProcessData($Value, $Params['Seq'][$Col]['Processing']);
 				}
-				$this->MultiCell($Params['Seq'][$Col]['TblColWidth'], $CellHeight, $value, 0, $FA);
+				$this->MultiCell($Params['Seq'][$Col]['TblColWidth'], $CellHeight, $Value, 0, $FA);
 				if ($this->GetY() > $maxY)
 					$maxY = $this->GetY();
 				$NextXPos += $Params['Seq'][$Col]['TblColWidth'];
@@ -296,9 +296,9 @@ class PDF extends PDF_Language {
 			return; // return if draw lines is turned off
 		$this->Rect($Params['LineXStrt'], $Params['LineYStrt'], $Params['BoxWidth'], $Params['BoxHeight']);
 		$NextXPos = $Params['LineXStrt'];
-		foreach ($Params['Seq'] as $index => $value) { // Draw the vertical lines
+		foreach ($Params['Seq'] as $index => $Value) { // Draw the vertical lines
 			$this->Line($NextXPos, $Params['LineYStrt'], $NextXPos, $Params['LineYStrt'] + $Params['BoxHeight']);
-			$NextXPos += $value['TblColWidth'];
+			$NextXPos += $Value['TblColWidth'];
 		}
 		return;
 	}
@@ -559,15 +559,15 @@ function BuildPDF($ReportID, $Prefs) {
 		$Result = DB_query($sql, '', '', false, true);
 		$CoyData = DB_fetch_row($Result);
 		$i = 0;
-		foreach ($FieldListings as $key => $SingleObject) {
+		foreach ($FieldListings as $Key => $SingleObject) {
 			if ($SingleObject['params']['index'] == 'CDta') {
-				$FieldListings[$key]['params']['TextField'] = $CoyData[$i];
+				$FieldListings[$Key]['params']['TextField'] = $CoyData[$i];
 				$i++;
 			}
 		}
 	}
 	// Now the Company Data Blocks
-	foreach ($FieldListings as $key => $SingleObject) {
+	foreach ($FieldListings as $Key => $SingleObject) {
 		if ($SingleObject['params']['index'] == 'CBlk') {
 			if (!$SingleObject['params']['Seq']) {
 				$usrMsg['message'] = RPT_EMPTYFIELD . $SingleObject['seqnum'];
@@ -584,7 +584,7 @@ function BuildPDF($ReportID, $Prefs) {
 			$TextField = '';
 			foreach ($TxtBlkValues as $t => $Temp)
 				$TextField .= $Temp . AddSep($SingleObject['params']['Seq'][$t]['Processing']);
-			$FieldListings[$key]['params']['TextField'] = $TextField;
+			$FieldListings[$Key]['params']['TextField'] = $TextField;
 		}
 	}
 	// Generate a form for each group element
@@ -600,7 +600,7 @@ function BuildPDF($ReportID, $Prefs) {
 		$Result = DB_query($sql, '', '', false, true);
 		$FieldValues = DB_fetch_row($Result);
 		// Build the text block strings
-		foreach ($FieldListings as $key => $SingleObject) {
+		foreach ($FieldListings as $Key => $SingleObject) {
 			if ($SingleObject['params']['index'] == 'TBlk') {
 				if (!$SingleObject['params']['Seq']) {
 					$usrMsg['message'] = RPT_EMPTYFIELD . $SingleObject['seqnum'];
@@ -617,15 +617,15 @@ function BuildPDF($ReportID, $Prefs) {
 				$TextField = '';
 				foreach ($TxtBlkValues as $t => $Temp)
 					$TextField .= $Temp . AddSep($SingleObject['params']['Seq'][$t]['Processing']);
-				$FieldListings[$key]['params']['TextField'] = $TextField;
+				$FieldListings[$Key]['params']['TextField'] = $TextField;
 			}
 		}
 		$PDF->PageCnt = $PDF->PageNo(); // reset the current page numbering for this new form
 		$PDF->AddPage();
 		// Pre-load all total fields with 'Continued' label for multipage
-		foreach ($FieldListings as $key => $SingleObject) {
+		foreach ($FieldListings as $Key => $SingleObject) {
 			if ($SingleObject['params']['index'] == 'Ttl')
-				$FieldListings[$key]['params']['TextField'] = 'Continued';
+				$FieldListings[$Key]['params']['TextField'] = 'Continued';
 		}
 		// Send the table
 		foreach ($FieldListings as $SingleObject) {
@@ -652,7 +652,7 @@ function BuildPDF($ReportID, $Prefs) {
 			}
 		}
 		// Set the totals (need to be on last printed page) - Handled in the Footer function in FPDF
-		foreach ($FieldListings as $key => $SingleObject) {
+		foreach ($FieldListings as $Key => $SingleObject) {
 			if ($SingleObject['params']['index'] == 'Ttl') {
 				if (!$SingleObject['params']['Seq']) {
 					$usrMsg['message'] = RPT_EMPTYFIELD . $SingleObject['seqnum'];
@@ -665,7 +665,7 @@ function BuildPDF($ReportID, $Prefs) {
 				$sql = "SELECT SUM(" . mb_substr($ttlField, 0, -1) . ")" . $TrailingSQL;
 				$Result = DB_query($sql, '', '', false, true);
 				$Temp = DB_fetch_row($Result);
-				$FieldListings[$key]['params']['TextField'] = $Temp[0];
+				$FieldListings[$Key]['params']['TextField'] = $Temp[0];
 			}
 		}
 	}

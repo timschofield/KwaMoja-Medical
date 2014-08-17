@@ -96,7 +96,7 @@ if (isset($_POST['submit'])) {
 										WHERE accountcode = '" . $SelectedBankAccount . "'";
 		}
 
-		$msg = _('The bank account details have been updated');
+		$Msg = _('The bank account details have been updated');
 	} elseif ($InputError != 1) {
 
 		/*Selectedbank account is null cos no item selected on first time round so must be adding a    record must be submitting new entries in the new bank account form */
@@ -118,7 +118,7 @@ if (isset($_POST['submit'])) {
 										'" . $_POST['DefAccount'] . "',
 										'" . $_POST['PettyCash'] . "'
 									)";
-		$msg = _('The new bank account has been entered');
+		$Msg = _('The new bank account has been entered');
 	}
 
 	//run the SQL from either of the above possibilites
@@ -127,7 +127,7 @@ if (isset($_POST['submit'])) {
 		$DbgMsg = _('The SQL used to insert/modify the bank account details was');
 		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-		prnMsg($msg, 'success');
+		prnMsg($Msg, 'success');
 		echo '<br />';
 		unset($_POST['AccountCode']);
 		unset($_POST['BankAccountName']);

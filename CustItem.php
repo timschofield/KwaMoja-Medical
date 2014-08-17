@@ -14,9 +14,9 @@ if (isset($_GET['DebtorNo'])) {
 }
 
 if (isset($_GET['StockID'])) {
-	$StockID = trim(mb_strtoupper($_GET['StockID']));
+	$StockId = trim(mb_strtoupper($_GET['StockID']));
 } elseif (isset($_POST['StockID'])) {
-	$StockID = trim(mb_strtoupper($_POST['StockID']));
+	$StockId = trim(mb_strtoupper($_POST['StockID']));
 }
 
 if (isset($_GET['Edit'])) {
@@ -49,7 +49,7 @@ if ((isset($_POST['AddRecord']) or isset($_POST['UpdateRecord'])) and isset($Deb
 	$InputError = 0;
 	/*Start assuming the best */
 
-	if ($StockID == '' or !isset($StockID)) {
+	if ($StockId == '' or !isset($StockId)) {
 		$InputError = 1;
 		prnMsg(_('There is no stock item set up enter the stock code or select a stock item using the search page'), 'error');
 	}
@@ -68,7 +68,7 @@ if ((isset($_POST['AddRecord']) or isset($_POST['UpdateRecord'])) and isset($Deb
 										cust_description,
 										cust_part)
 						VALUES ('" . $DebtorNo . "',
-							'" . $StockID . "',
+							'" . $StockId . "',
 							'" . $_POST['customersUOM'] . "',
 							'" . filter_number_format($_POST['ConversionFactor']) . "',
 							'" . $_POST['cust_description'] . "',
@@ -84,7 +84,7 @@ if ((isset($_POST['AddRecord']) or isset($_POST['UpdateRecord'])) and isset($Deb
 										conversionfactor='" . filter_number_format($_POST['ConversionFactor']) . "',
 										cust_description='" . $_POST['cust_description'] . "',
 										custitem.cust_part='" . $_POST['cust_part'] . "'
-							WHERE custitem.stockid='" . $StockID . "'
+							WHERE custitem.stockid='" . $StockId . "'
 							AND custitem.debtorno='" . $DebtorNo . "'";
 		$ErrMsg = _('The customer details could not be updated because');
 		$DbgMsg = _('The SQL that failed was');
@@ -108,7 +108,7 @@ if ((isset($_POST['AddRecord']) or isset($_POST['UpdateRecord'])) and isset($Deb
 if (isset($_GET['Delete'])) {
 	$SQL = "DELETE FROM custitem
 	   				WHERE custitem.debtorno='" . $DebtorNo . "'
-	   				AND custitem.stockid='" . $StockID . "'";
+	   				AND custitem.stockid='" . $StockId . "'";
 	$ErrMsg = _('The customer details could not be deleted because');
 	$DelResult = DB_query($SQL, $ErrMsg);
 	prnMsg(_('This customer data record has been successfully deleted'), 'success');
@@ -118,9 +118,9 @@ if (isset($_GET['Delete'])) {
 
 if ($Edit == false) {
 
-	$ItemResult = DB_query("SELECT description FROM stockmaster WHERE stockid='" . $StockID . "'");
+	$ItemResult = DB_query("SELECT description FROM stockmaster WHERE stockid='" . $StockId . "'");
 	$DescriptionRow = DB_fetch_array($ItemResult);
-	echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . ' ' . _('For Stock Code') . ' - ' . $StockID . ' - ' . $DescriptionRow['description'] . '</p><br />';
+	echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . ' ' . _('For Stock Code') . ' - ' . $StockId . ' - ' . $DescriptionRow['description'] . '</p><br />';
 
 	$SQL = "SELECT custitem.debtorno,
 				debtorsmaster.name,
@@ -134,13 +134,13 @@ if ($Edit == false) {
 				ON custitem.debtorno=debtorsmaster.DebtorNo
 			INNER JOIN currencies
 				ON debtorsmaster.currcode=currencies.currabrev
-			WHERE custitem.stockid = '" . $StockID . "'";
+			WHERE custitem.stockid = '" . $StockId . "'";
 	$ErrMsg = _('The customer details for the selected part could not be retrieved because');
 	$custitemResult = DB_query($SQL, $ErrMsg);
-	if (DB_num_rows($custitemResult) == 0 and $StockID != '') {
+	if (DB_num_rows($custitemResult) == 0 and $StockId != '') {
 		prnMsg(_('There is no customer data set up for the part selected'), 'info');
 		$NoCustItemData = 1;
-	} else if ($StockID != '') {
+	} else if ($StockId != '') {
 
 		echo '<table cellpadding="2" class="selection">';
 		$TableHeader = '<tr>
@@ -170,7 +170,7 @@ if ($Edit == false) {
 					<td>%s</td>
 					<td><a href="%s?StockID=%s&amp;DebtorNo=%s&amp;Edit=1">' . _('Edit') . '</a></td>
 					<td><a href="%s?StockID=%s&amp;DebtorNo=%s&amp;Delete=1" onclick=\'return confirm("' . _('Are you sure you wish to delete this customer data?') . '");\'>' . _('Delete') . '</a></td>
-					</tr>', $MyRow['name'], $MyRow['customersUOM'], locale_number_format($MyRow['conversionfactor'], 'Variable'), $MyRow['cust_part'], $MyRow['cust_description'], htmlspecialchars($_SERVER['PHP_SELF']), $StockID, $MyRow['debtorno'], htmlspecialchars($_SERVER['PHP_SELF']), $StockID, $MyRow['debtorno']);
+					</tr>', $MyRow['name'], $MyRow['customersUOM'], locale_number_format($MyRow['conversionfactor'], 'Variable'), $MyRow['cust_part'], $MyRow['cust_description'], htmlspecialchars($_SERVER['PHP_SELF']), $StockId, $MyRow['debtorno'], htmlspecialchars($_SERVER['PHP_SELF']), $StockId, $MyRow['debtorno']);
 		} //end of while loop
 		echo '</table>';
 	} // end of there are rows to show
@@ -192,7 +192,7 @@ if (isset($DebtorNo) and $DebtorNo != '' and !isset($_POST['Searchcustomer'])) {
 	$SuppSelResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 	if (DB_num_rows($SuppSelResult) == 1) {
 		$MyRow = DB_fetch_array($SuppSelResult);
-		$name = $MyRow['name'];
+		$Name = $MyRow['name'];
 		$CurrCode = $MyRow['currcode'];
 		$CurrDecimalPlaces = $MyRow['currdecimalplaces'];
 	} else {
@@ -201,14 +201,14 @@ if (isset($DebtorNo) and $DebtorNo != '' and !isset($_POST['Searchcustomer'])) {
 	}
 } else {
 	if ($NoCustItemData == 0) {
-		echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . ' ' . _('For Stock Code') . ' - ' . $StockID . '</p><br />';
+		echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . ' ' . _('For Stock Code') . ' - ' . $StockId . '</p><br />';
 	}
 	if (!isset($_POST['Searchcustomer'])) {
 		echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">
 				<table cellpadding="3" colspan="4" class="selection">
 				<tr>
 					<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
-					<input type="hidden" name="StockID" value="' . $StockID . '" />
+					<input type="hidden" name="StockID" value="' . $StockId . '" />
 					<td>' . _('Text in the customer') . ' <b>' . _('NAME') . '</b>:</td>
 					<td><input type="text" name="Keywords" size="20" maxlength="25" /></td>
 					<td><b>' . _('OR') . '</b></td>
@@ -226,9 +226,9 @@ if (isset($DebtorNo) and $DebtorNo != '' and !isset($_POST['Searchcustomer'])) {
 }
 
 if ($Edit == true) {
-	$ItemResult = DB_query("SELECT description FROM stockmaster WHERE stockid='" . $StockID . "'");
+	$ItemResult = DB_query("SELECT description FROM stockmaster WHERE stockid='" . $StockId . "'");
 	$DescriptionRow = DB_fetch_array($ItemResult);
-	echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . ' ' . _('For Stock Code') . ' - ' . $StockID . ' - ' . $DescriptionRow['description'] . '</p>';
+	echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . ' ' . _('For Stock Code') . ' - ' . $StockId . ' - ' . $DescriptionRow['description'] . '</p>';
 }
 
 if (isset($_POST['Searchcustomer'])) {
@@ -268,19 +268,19 @@ if (isset($_POST['Searchcustomer'])) {
 	$debtorsmasterResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 } //end of if search
 if (isset($debtorsmasterResult) and DB_num_rows($debtorsmasterResult) > 0) {
-	if (isset($StockID)) {
+	if (isset($StockId)) {
 		$Result = DB_query("SELECT stockmaster.description,
 								stockmaster.units,
 								stockmaster.mbflag
 						FROM stockmaster
-						WHERE stockmaster.stockid='" . $StockID . "'");
+						WHERE stockmaster.stockid='" . $StockId . "'");
 		$MyRow = DB_fetch_row($Result);
 		$StockUOM = $MyRow[1];
 		if (DB_num_rows($Result) <> 1) {
-			prnMsg(_('Stock Item') . ' - ' . $StockID . ' ' . _('is not defined in the database'), 'warn');
+			prnMsg(_('Stock Item') . ' - ' . $StockId . ' ' . _('is not defined in the database'), 'warn');
 		}
 	} else {
-		$StockID = '';
+		$StockId = '';
 		$StockUOM = 'each';
 	}
 	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF']) . '" method="post">
@@ -312,7 +312,7 @@ if (isset($debtorsmasterResult) and DB_num_rows($debtorsmasterResult) > 0) {
 				<td>%s</td>
 				</tr>', $MyRow['DebtorNo'], $MyRow['name'], $MyRow['currcode'], $MyRow['address1'], $MyRow['address2'], $MyRow['address3']);
 
-		echo '<input type="hidden" name="StockID" value="' . $StockID . '" />';
+		echo '<input type="hidden" name="StockID" value="' . $StockId . '" />';
 		echo '<input type="hidden" name="StockUOM" value="' . $StockUOM . '" />';
 
 	}
@@ -342,12 +342,12 @@ if (!isset($debtorsmasterResult)) {
 				INNER JOIN currencies
 					ON debtorsmaster.currcode = currencies.currabrev
 				WHERE custitem.debtorno='" . $DebtorNo . "'
-				AND custitem.stockid='" . $StockID . "'";
+				AND custitem.stockid='" . $StockId . "'";
 
 		$ErrMsg = _('The customer purchasing details for the selected customer and item could not be retrieved because');
 		$EditResult = DB_query($SQL, $ErrMsg);
 		$MyRow = DB_fetch_array($EditResult);
-		$name = $MyRow['name'];
+		$Name = $MyRow['name'];
 
 		$CurrCode = $MyRow['currcode'];
 		$CurrDecimalPlaces = $MyRow['currdecimalplaces'];
@@ -366,7 +366,7 @@ if (!isset($debtorsmasterResult)) {
 	if ($Edit == true) {
 		echo '<tr>
 				<td>' . _('Customer Name') . ':</td>
-				<td><input type="hidden" name="DebtorNo" value="' . $DebtorNo . '" />' . $DebtorNo . ' - ' . $name . '</td>
+				<td><input type="hidden" name="DebtorNo" value="' . $DebtorNo . '" />' . $DebtorNo . ' - ' . $Name . '</td>
 			</tr>';
 	} else {
 		echo '<tr>
@@ -374,16 +374,16 @@ if (!isset($debtorsmasterResult)) {
 				<input type="hidden" name="DebtorNo" maxlength="10" size="11" value="' . $DebtorNo . '" />';
 
 		if ($DebtorNo != '') {
-			echo '<td>' . $name;
+			echo '<td>' . $Name;
 		}
-		if (!isset($name) or $name = '') {
+		if (!isset($Name) or $Name = '') {
 			echo '(' . _('A search facility is available below if necessary') . ')';
 		} else {
-			echo '<td>' . $name;
+			echo '<td>' . $Name;
 		}
 		echo '</td></tr>';
 	}
-	echo '<td><input type="hidden" name="StockID" maxlength="10" size="11" value="' . $StockID . '" />';
+	echo '<td><input type="hidden" name="StockID" maxlength="10" size="11" value="' . $StockId . '" />';
 	if (!isset($CurrCode)) {
 		$CurrCode = '';
 	}
@@ -443,11 +443,11 @@ if (!isset($debtorsmasterResult)) {
 	echo '</div>
 		<div class="centre">';
 
-	if (isset($StockLocation) and isset($StockID) and mb_strlen($StockID) != 0) {
-		echo '<a href="' . $RootPath . '/StockStatus.php?StockID=' . $StockID . '">' . _('Show Stock Status') . '</a>';
-		echo '<a href="' . $RootPath . '/StockMovements.php?StockID=' . $StockID . '&StockLocation=' . $StockLocation . '">' . _('Show Stock Movements') . '</a>';
-		echo '<a href="' . $RootPath . '/SelectSalesOrder.php?SelectedStockItem=' . $StockID . '&StockLocation=' . $StockLocation . '">' . _('Search Outstanding Sales Orders') . '</a>';
-		echo '<a href="' . $RootPath . '/SelectCompletedOrder.php?SelectedStockItem=' . $StockID . '">' . _('Search Completed Sales Orders') . '</a>';
+	if (isset($StockLocation) and isset($StockId) and mb_strlen($StockId) != 0) {
+		echo '<a href="' . $RootPath . '/StockStatus.php?StockID=' . $StockId . '">' . _('Show Stock Status') . '</a>';
+		echo '<a href="' . $RootPath . '/StockMovements.php?StockID=' . $StockId . '&StockLocation=' . $StockLocation . '">' . _('Show Stock Movements') . '</a>';
+		echo '<a href="' . $RootPath . '/SelectSalesOrder.php?SelectedStockItem=' . $StockId . '&StockLocation=' . $StockLocation . '">' . _('Search Outstanding Sales Orders') . '</a>';
+		echo '<a href="' . $RootPath . '/SelectCompletedOrder.php?SelectedStockItem=' . $StockId . '">' . _('Search Completed Sales Orders') . '</a>';
 	}
 	echo '</div>
 		</form>';

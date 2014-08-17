@@ -33,15 +33,15 @@ include('includes/CSVSalesAnalysis.inc');
 
 include('includes/htmlMimeMail.php');
 
-$mail = new htmlMimeMail();
-$attachment = $mail->getFile($_SESSION['reports_dir'] . '/SalesAnalysis.csv');
-$mail->setText(_('Please find herewith the comma separated values sales report'));
-$mail->addAttachment($attachment, 'SalesAnalysis.csv', 'application/csv');
-$mail->setSubject(_('Sales Analysis') . ' - ' . _('CSV Format'));
+$Mail = new htmlMimeMail();
+$attachment = $Mail->getFile($_SESSION['reports_dir'] . '/SalesAnalysis.csv');
+$Mail->setText(_('Please find herewith the comma separated values sales report'));
+$Mail->addAttachment($attachment, 'SalesAnalysis.csv', 'application/csv');
+$Mail->setSubject(_('Sales Analysis') . ' - ' . _('CSV Format'));
 if ($_SESSION['SmtpSetting'] == 0) {
-	$mail->setFrom($_SESSION['CompanyRecord']['coyname'] . '<' . $_SESSION['CompanyRecord']['email'] . '>');
-	$Result = $mail->send($Recipients);
+	$Mail->setFrom($_SESSION['CompanyRecord']['coyname'] . '<' . $_SESSION['CompanyRecord']['email'] . '>');
+	$Result = $Mail->send($Recipients);
 } else {
-	$Result = SendmailBySmtp($mail, $Recipients);
+	$Result = SendmailBySmtp($Mail, $Recipients);
 }
 ?>

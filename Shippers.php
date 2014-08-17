@@ -47,20 +47,20 @@ if (isset($_POST['submit'])) {
 
 		$SQL = "UPDATE shippers SET shippername='" . $_POST['ShipperName'] . "'
 				WHERE shipper_id = '" . $SelectedShipper . "'";
-		$msg = _('The shipper record has been updated');
+		$Msg = _('The shipper record has been updated');
 	} elseif ($InputError != 1) {
 
 		/*SelectedShipper is null cos no item selected on first time round so must be adding a	record must be submitting new entries in the new Shipper form */
 
 		$SQL = "INSERT INTO shippers (shippername) VALUES ('" . $_POST['ShipperName'] . "')";
-		$msg = _('The shipper record has been added');
+		$Msg = _('The shipper record has been added');
 	}
 
 	//run the SQL from either of the above possibilites
 	if ($InputError != 1) {
 		$Result = DB_query($SQL);
 		echo '<br />';
-		prnMsg($msg, 'success');
+		prnMsg($Msg, 'success');
 		unset($SelectedShipper);
 		unset($_POST['ShipperName']);
 		unset($_POST['Shipper_ID']);

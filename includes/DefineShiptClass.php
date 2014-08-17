@@ -26,9 +26,9 @@ class Shipment {
 		$this->Closed = 0;
 	}
 
-	function Add_To_Shipment($PODetailItem, $OrderNo, $StockID, $ItemDescr, $QtyInvoiced, $UnitPrice, $UOM, $DelDate, $QuantityOrd, $QuantityRecd, $StdCostUnit, $DecimalPlaces) {
+	function Add_To_Shipment($PODetailItem, $OrderNo, $StockId, $ItemDescr, $QtyInvoiced, $UnitPrice, $UOM, $DelDate, $QuantityOrd, $QuantityRecd, $StdCostUnit, $DecimalPlaces) {
 
-		$this->LineItems[$PODetailItem] = new LineDetails($PODetailItem, $OrderNo, $StockID, $ItemDescr, $QtyInvoiced, $UnitPrice, $UOM, $DelDate, $QuantityOrd, $QuantityRecd, $StdCostUnit, $DecimalPlaces);
+		$this->LineItems[$PODetailItem] = new LineDetails($PODetailItem, $OrderNo, $StockId, $ItemDescr, $QtyInvoiced, $UnitPrice, $UOM, $DelDate, $QuantityOrd, $QuantityRecd, $StdCostUnit, $DecimalPlaces);
 
 		$SQL = "UPDATE purchorderdetails SET shiptref = '" . $this->ShiptRef . "'
 			WHERE podetailitem = '" . $PODetailItem . "'";
@@ -58,7 +58,7 @@ class LineDetails {
 
 	var $PODetailItem;
 	var $OrderNo;
-	var $StockID;
+	var $StockId;
 	var $ItemDescription;
 	var $QtyInvoiced;
 	var $UnitPrice;
@@ -70,12 +70,12 @@ class LineDetails {
 	var $DecimalPlaces;
 
 
-	function LineDetails($PODetailItem, $OrderNo, $StockID, $ItemDescr, $QtyInvoiced, $UnitPrice, $UOM, $DelDate, $QuantityOrd, $QuantityRecd, $StdCostUnit, $DecimalPlaces = 2) {
+	function LineDetails($PODetailItem, $OrderNo, $StockId, $ItemDescr, $QtyInvoiced, $UnitPrice, $UOM, $DelDate, $QuantityOrd, $QuantityRecd, $StdCostUnit, $DecimalPlaces = 2) {
 
 		/* Constructor function to add a new LineDetail object with passed params */
 		$this->PODetailItem = $PODetailItem;
 		$this->OrderNo = $OrderNo;
-		$this->StockID = $StockID;
+		$this->StockID = $StockId;
 		$this->ItemDescription = $ItemDescr;
 		$this->QtyInvoiced = $QtyInvoiced;
 		$this->DelDate = $DelDate;

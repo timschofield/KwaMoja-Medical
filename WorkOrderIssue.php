@@ -624,16 +624,16 @@ if (!isset($_POST['IssueItem'])) { //no item selected to issue yet
 	}
 
 	/* Now do any additional issues of items not in the BOM */
-	foreach ($IssuedAlreadyRow as $StockID => $Issued) {
+	foreach ($IssuedAlreadyRow as $StockId => $Issued) {
 		$RequirementsSQL = "SELECT stockmaster.description,
 									stockmaster.decimalplaces
 								FROM stockmaster
-							WHERE stockid='" . $StockID . "'";
+							WHERE stockid='" . $StockId . "'";
 		$RequirmentsResult = DB_query($RequirementsSQL);
 		$RequirementsRow = DB_fetch_array($RequirmentsResult);
 		echo '<tr>
 				<td>' . _('Additional Issue') . '</td>
-				<td>' . $StockID . ' - ' . $RequirementsRow['description'] . '</td>';
+				<td>' . $StockId . ' - ' . $RequirementsRow['description'] . '</td>';
 		echo '<td class="number">0</td>
 				<td class="number">' . locale_number_format($Issued, $RequirementsRow['decimalplaces']) . '</td>
 			</tr>';

@@ -43,31 +43,31 @@ if (isset($_POST['Submit']) or isset($_POST['EnterMoreItems'])) {
 				}
 
 				// cleanup the data (csv files often import with empty strings and such)
-				$StockID = '';
+				$StockId = '';
 				$Quantity = 0;
 				for ($i = 0; $i < count($MyRow); $i++) {
 					switch ($i) {
 						case 0:
-							$StockID = trim(mb_strtoupper($MyRow[$i]));
-							$Result = DB_query("SELECT COUNT(stockid) FROM stockmaster WHERE stockid='" . $StockID . "'");
-							$StockIDCheck = DB_fetch_row($Result);
-							if ($StockIDCheck[0] == 0) {
+							$StockId = trim(mb_strtoupper($MyRow[$i]));
+							$Result = DB_query("SELECT COUNT(stockid) FROM stockmaster WHERE stockid='" . $StockId . "'");
+							$StockIdCheck = DB_fetch_row($Result);
+							if ($StockIdCheck[0] == 0) {
 								$InputError = True;
-								$ErrorMessage .= _('The part code entered of') . ' ' . $StockID . ' ' . _('is not set up in the database') . '. ' . _('Only valid parts can be entered for transfers') . '<br />';
+								$ErrorMessage .= _('The part code entered of') . ' ' . $StockId . ' ' . _('is not set up in the database') . '. ' . _('Only valid parts can be entered for transfers') . '<br />';
 							}
 							break;
 						case 1:
 							$Quantity = filter_number_format($MyRow[$i]);
 							if (!is_numeric($Quantity)) {
 								$InputError = True;
-								$ErrorMessage .= _('The quantity entered for') . ' ' . $StockID . ' ' . _('of') . $Quantity . ' ' . _('is not numeric.') . _('The quantity entered for transfers is expected to be numeric');
+								$ErrorMessage .= _('The quantity entered for') . ' ' . $StockId . ' ' . _('of') . $Quantity . ' ' . _('is not numeric.') . _('The quantity entered for transfers is expected to be numeric');
 							}
 							break;
 					} // end switch statement
 					if ($_SESSION['ProhibitNegativeStock'] == 1) {
 						$InTransitSQL = "SELECT SUM(shipqty-recqty) as intransit
 									FROM loctransfers
-									WHERE stockid='" . $StockID . "'
+									WHERE stockid='" . $StockId . "'
 										AND shiploc='" . $_POST['FromStockLocation'] . "'
 										AND shipqty>recqty";
 						$InTransitResult = DB_query($InTransitSQL);
@@ -76,19 +76,19 @@ if (isset($_POST['Submit']) or isset($_POST['EnterMoreItems'])) {
 						// Only if stock exists at this location
 						$Result = DB_query("SELECT quantity
 										FROM locstock
-										WHERE stockid='" . $StockID . "'
+										WHERE stockid='" . $StockId . "'
 										AND loccode='" . $_POST['FromStockLocation'] . "'");
 						$CheckStockRow = DB_fetch_array($Result);
 						if (($CheckStockRow['quantity'] - $InTransitQuantity) < $Quantity) {
 							$InputError = True;
-							$ErrorMessage .= _('The item') . ' ' . $StockID . ' ' . _('does not have enough stock available (') . ' ' . $CheckStockRow['quantity'] . ')' . ' ' . _('The quantity required to transfer was') . ' ' . $Quantity . '.<br />';
+							$ErrorMessage .= _('The item') . ' ' . $StockId . ' ' . _('does not have enough stock available (') . ' ' . $CheckStockRow['quantity'] . ')' . ' ' . _('The quantity required to transfer was') . ' ' . $Quantity . '.<br />';
 						}
 					}
 				} // end for loop through the columns on the row being processed
-				if ($StockID != '' and $Quantity != 0) {
-					$_POST['StockID' . $TotalItems] = $StockID;
+				if ($StockId != '' and $Quantity != 0) {
+					$_POST['StockID' . $TotalItems] = $StockId;
 					$_POST['StockQTY' . $TotalItems] = $Quantity;
-					$StockID = '';
+					$StockId = '';
 					$Quantity = 0;
 					$TotalItems++;
 				}
@@ -105,7 +105,7 @@ if (isset($_POST['Submit']) or isset($_POST['EnterMoreItems'])) {
 					unset($_POST['StockQTY' . $i]);
 				}
 			}
-			$StockIDAccQty = array(); //set an array to hold all items' quantity
+			$StockIdAccQty = array(); //set an array to hold all items' quantity
 			for ($i = $_POST['LinesCounter'] - 10; $i < $_POST['LinesCounter']; $i++) {
 				if (isset($_POST['Delete' . $i])) { //check box to delete the item is set
 					unset($_POST['StockID' . $i]);
@@ -154,15 +154,15 @@ if (isset($_POST['Submit']) or isset($_POST['EnterMoreItems'])) {
 						}
 					}
 					// Check the accumulated quantity for each item
-					if (isset($StockIDAccQty[$_POST['StockID' . $i]])) {
-						$StockIDAccQty[$_POST['StockID' . $i]] += filter_number_format($_POST['StockQTY' . $i]);
-						if ($MyRow[0] < $StockIDAccQty[$_POST['StockID' . $i]]) {
+					if (isset($StockIdAccQty[$_POST['StockID' . $i]])) {
+						$StockIdAccQty[$_POST['StockID' . $i]] += filter_number_format($_POST['StockQTY' . $i]);
+						if ($MyRow[0] < $StockIdAccQty[$_POST['StockID' . $i]]) {
 							$InputError = True;
 							$ErrorMessage .= _('The part code entered of') . ' ' . $_POST['StockID' . $i] . ' ' . _('does not have enough stock available for transter due to accumulated quantity is over quantity on hand.') . '<br />';
 							$_POST['LinesCounter'] -= 10;
 						}
 					} else {
-						$StockIDAccQty[$_POST['StockID' . $i]] = filter_number_format($_POST['StockQTY' . $i]);
+						$StockIdAccQty[$_POST['StockID' . $i]] = filter_number_format($_POST['StockQTY' . $i]);
 					} //end of accumulated check
 
 					DB_free_result($Result);

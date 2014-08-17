@@ -74,8 +74,8 @@ if (isset($_POST['submit'])) {
 	}
 
 	/*now need to create the .mo file from the .po file */
-	$msgfmtCommand = 'msgfmt ' . $PathToLanguage . ' -o ' . $PathToLanguage_mo;
-	system($msgfmtCommand);
+	$MsgfmtCommand = 'msgfmt ' . $PathToLanguage . ' -o ' . $PathToLanguage_mo;
+	system($MsgfmtCommand);
 
 	prnMsg(_('Done') . '<br />', 'info', ' ');
 
@@ -99,7 +99,7 @@ if (isset($_POST['submit'])) {
 			$DefaultText[$j] = mb_substr($LangFile[$i], 7, mb_strlen($LangFile[$i]) - 9);
 		} elseif (mb_substr($LangFile[$i], 0, 6) == 'msgstr') {
 			$ModuleText[$j] = mb_substr($LangFile[$i], 8, mb_strlen($LangFile[$i]) - 10);
-			$msgstr[$j] = $i;
+			$Msgstr[$j] = $i;
 			$j++;
 		}
 	}
@@ -131,8 +131,8 @@ if (isset($_POST['submit'])) {
 		if ($ModuleText[$i] == "") {
 			echo '<tr>
 					<td valign="top"><i>' . $DefaultText[$i] . '</i></td>
-					<td valign="top"><input type="text" size="60" name="moduletext_' . $msgstr[$i] . '" value="' . $ModuleText[$i] . '" /></td>
-					<td valign="top">' . $AlsoIn[$i] . '<input type="hidden" name="msgstr_' . $msgstr[$i] . '" value="' . $msgstr[$i] . '" /></td>
+					<td valign="top"><input type="text" size="60" name="moduletext_' . $Msgstr[$i] . '" value="' . $ModuleText[$i] . '" /></td>
+					<td valign="top">' . $AlsoIn[$i] . '<input type="hidden" name="msgstr_' . $Msgstr[$i] . '" value="' . $Msgstr[$i] . '" /></td>
 				</tr>
 				<tr>
 					<th colspan="3"></th>

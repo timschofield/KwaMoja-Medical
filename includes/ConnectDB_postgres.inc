@@ -5,11 +5,11 @@ define('LIKE', 'ILIKE');
 if (!isset($DBPort)) {
 	$DBPort = 5432;
 }
-/* $PgConnStr = $PgConnStr = "host=".$host." dbname=".$_SESSION['DatabaseName']; */
+/* $PgConnStr = $PgConnStr = "host=".$Host." dbname=".$_SESSION['DatabaseName']; */
 $PgConnStr = 'dbname=' . $_SESSION['DatabaseName'];
 
-if (isset($host) and ($host != "")) {
-	$PgConnStr = 'host=' . $host . ' ' . $PgConnStr;
+if (isset($Host) and ($Host != "")) {
+	$PgConnStr = 'host=' . $Host . ' ' . $PgConnStr;
 }
 
 if (isset($DBPort) and ($DBPort != "")) {
@@ -41,12 +41,12 @@ require_once($PathPrefix . 'includes/MiscFunctions.php');
 
 //DB wrapper functions to change only once for whole application
 
-function DB_connect($host, $DBUser, $DBPassword, $DBPort) {
-	/* $PgConnStr = $PgConnStr = "host=".$host." dbname=".$_SESSION['DatabaseName']; */
+function DB_connect($Host, $DBUser, $DBPassword, $DBPort) {
+	/* $PgConnStr = $PgConnStr = "host=".$Host." dbname=".$_SESSION['DatabaseName']; */
 	$PgConnStr = 'dbname=' . $_SESSION['DatabaseName'];
 
-	if (isset($host) and ($host != "")) {
-		$PgConnStr = 'host=' . $host . ' ' . $PgConnStr;
+	if (isset($Host) and ($Host != "")) {
+		$PgConnStr = 'host=' . $Host . ' ' . $PgConnStr;
 	}
 
 	if (isset($DBPort) and ($DBPort != "")) {

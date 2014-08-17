@@ -1205,8 +1205,8 @@ function InsertSalesInvoice($InvoiceDetails, $user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	foreach ($InvoiceDetails as $key => $value) {
-		$InvoiceDetails[$key] = DB_escape_string($value);
+	foreach ($InvoiceDetails as $Key => $Value) {
+		$InvoiceDetails[$Key] = DB_escape_string($Value);
 	}
 	$PartCode = $InvoiceDetails['partcode'];
 	$Errors = VerifyStockCodeExists($PartCode, sizeof($Errors), $Errors);
@@ -1268,9 +1268,9 @@ function InsertSalesInvoice($InvoiceDetails, $user, $password) {
 	$FieldValues = '';
 	$InvoiceDetails['trandate'] = ConvertToSQLDate($InvoiceDetails['trandate']);
 	$InvoiceDetails['prd'] = GetPeriodFromTransactionDate($InvoiceDetails['trandate'], sizeof($Errors), $Errors);
-	foreach ($InvoiceDetails as $key => $value) {
-		$FieldNames .= $key . ', ';
-		$FieldValues .= '"' . $value . '", ';
+	foreach ($InvoiceDetails as $Key => $Value) {
+		$FieldNames .= $Key . ', ';
+		$FieldValues .= '"' . $Value . '", ';
 	}
 	if (sizeof($Errors) == 0) {
 		$result = DB_Txn_Begin();
@@ -1505,8 +1505,8 @@ function InsertSalesCredit($CreditDetails, $user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	foreach ($CreditDetails as $key => $value) {
-		$CreditDetails[$key] = DB_escape_string($value);
+	foreach ($CreditDetails as $Key => $Value) {
+		$CreditDetails[$Key] = DB_escape_string($Value);
 	}
 	$PartCode = $CreditDetails['partcode'];
 	$Errors = VerifyStockCodeExists($PartCode, sizeof($Errors), $Errors);
@@ -1568,9 +1568,9 @@ function InsertSalesCredit($CreditDetails, $user, $password) {
 	$FieldValues = '';
 	$CreditDetails['trandate'] = ConvertToSQLDate($CreditDetails['trandate']);
 	$CreditDetails['prd'] = GetPeriodFromTransactionDate($CreditDetails['trandate'], sizeof($Errors), $Errors);
-	foreach ($CreditDetails as $key => $value) {
-		$FieldNames .= $key . ', ';
-		$FieldValues .= '"' . $value . '", ';
+	foreach ($CreditDetails as $Key => $Value) {
+		$FieldNames .= $Key . ', ';
+		$FieldValues .= '"' . $Value . '", ';
 	}
 	if (sizeof($Errors) == 0) {
 		$result = DB_Txn_Begin();

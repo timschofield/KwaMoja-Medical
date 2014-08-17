@@ -12,37 +12,37 @@ if (isset($_POST['submit'])) {
 	$InputError = 0;
 
 	if (isset($_POST['FromDate']) and !Is_Date($_POST['FromDate'])) {
-		$msg = _('The date from must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
+		$Msg = _('The date from must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
 		$InputError = 1;
 		unset($_POST['FromDate']);
 	}
 	if (isset($_POST['ToDate']) and !Is_Date($_POST['ToDate'])) {
-		$msg = _('The date to must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
+		$Msg = _('The date to must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
 		$InputError = 1;
 		unset($_POST['ToDate']);
 	}
 	if (isset($_POST['FromDate']) and isset($_POST['ToDate']) and Date1GreaterThanDate2($_POST['FromDate'], $_POST['ToDate'])) {
-		$msg = _('The date to must be after the date from');
+		$Msg = _('The date to must be after the date from');
 		$InputError = 1;
 		unset($_POST['ToDate']);
 		unset($_POST['FromoDate']);
 	}
 	if (isset($_POST['DistDate']) and !Is_Date($_POST['DistDate'])) {
-		$msg = _('The distribution start date must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
+		$Msg = _('The distribution start date must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
 		$InputError = 1;
 		unset($_POST['DistDate']);
 	}
 	if (!is_numeric(filter_number_format($_POST['ExcludeQuantity']))) {
-		$msg = _('The quantity below which no demand will be created must be numeric');
+		$Msg = _('The quantity below which no demand will be created must be numeric');
 		$InputError = 1;
 	}
 	if (!is_numeric(filter_number_format($_POST['Multiplier']))) {
-		$msg = _('The multiplier is expected to be a positive number');
+		$Msg = _('The multiplier is expected to be a positive number');
 		$InputError = 1;
 	}
 
 	if ($InputError == 1) {
-		prnMsg($msg, 'error');
+		prnMsg($Msg, 'error');
 	}
 
 	$WhereCategory = " ";

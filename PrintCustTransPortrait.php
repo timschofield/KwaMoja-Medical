@@ -517,19 +517,19 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 		$FromTransNo--; //reverse the increment to retain the correct transaction number
 		$FileName = $_SESSION['reports_dir'] . '/' . $_SESSION['DatabaseName'] . '_' . $InvOrCredit . '_' . $_GET['FromTransNo'] . '.pdf';
 		$PDF->Output($FileName, 'F');
-		$mail = new htmlMimeMail();
+		$Mail = new htmlMimeMail();
 
-		$Attachment = $mail->getFile($FileName);
-		$mail->setText(_('Please find attached') . ' ' . $InvOrCredit . ' ' . $_GET['FromTransNo']);
-		$mail->SetSubject($InvOrCredit . ' ' . $_GET['FromTransNo']);
-		$mail->addAttachment($Attachment, $FileName, 'application/pdf');
+		$Attachment = $Mail->getFile($FileName);
+		$Mail->setText(_('Please find attached') . ' ' . $InvOrCredit . ' ' . $_GET['FromTransNo']);
+		$Mail->SetSubject($InvOrCredit . ' ' . $_GET['FromTransNo']);
+		$Mail->addAttachment($Attachment, $FileName, 'application/pdf');
 		if ($_SESSION['SmtpSetting'] == 0) {
-			$mail->setFrom($_SESSION['CompanyRecord']['coyname'] . ' <' . $_SESSION['CompanyRecord']['email'] . '>');
-			$Result = $mail->send(array(
+			$Mail->setFrom($_SESSION['CompanyRecord']['coyname'] . ' <' . $_SESSION['CompanyRecord']['email'] . '>');
+			$Result = $Mail->send(array(
 				$_GET['Email']
 			));
 		} else {
-			$Result = SendmailBySmtp($mail, array(
+			$Result = SendmailBySmtp($Mail, array(
 				$_GET['Email']
 			));
 		}

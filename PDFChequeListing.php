@@ -5,12 +5,12 @@ include('includes/session.inc');
 
 $InputError = 0;
 if (isset($_POST['FromDate']) and !Is_Date($_POST['FromDate'])) {
-	$msg = _('The date from must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
+	$Msg = _('The date from must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
 	$InputError = 1;
 	unset($_POST['FromDate']);
 }
 if (isset($_POST['ToDate']) and !Is_Date($_POST['ToDate'])) {
-	$msg = _('The date to must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
+	$Msg = _('The date to must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
 	$InputError = 1;
 	unset($_POST['ToDate']);
 }
@@ -26,7 +26,7 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate'])) {
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/money_add.png" title="' . $Title . '" alt="' . $Title . '" />' . $Title . '</p>';
 
 	if ($InputError == 1) {
-		prnMsg($msg, 'error');
+		prnMsg($Msg, 'error');
 	}
 
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
@@ -197,11 +197,11 @@ if ($_POST['Email'] == 'Yes') {
 
 	include('includes/htmlMimeMail.php');
 
-	$mail = new htmlMimeMail();
-	$attachment = $mail->getFile($_SESSION['reports_dir'] . '/' . $ReportFileName);
-	$mail->setSubject(_('Payments check list'));
-	$mail->setText(_('Please find herewith payments listing from') . ' ' . $_POST['FromDate'] . ' ' . _('to') . ' ' . $_POST['ToDate']);
-	$mail->addAttachment($attachment, 'PaymentListing.pdf', 'application/pdf');
+	$Mail = new htmlMimeMail();
+	$attachment = $Mail->getFile($_SESSION['reports_dir'] . '/' . $ReportFileName);
+	$Mail->setSubject(_('Payments check list'));
+	$Mail->setText(_('Please find herewith payments listing from') . ' ' . $_POST['FromDate'] . ' ' . _('to') . ' ' . $_POST['ToDate']);
+	$Mail->addAttachment($attachment, 'PaymentListing.pdf', 'application/pdf');
 	$ChkListingRecipients = GetMailList('ChkListingRecipients');
 	if (sizeOf($ChkListingRecipients) == 0) {
 		prnMsg(_('There are no member in Check Listing Recipients email group,  no mail will be sent'), 'error');
@@ -210,12 +210,12 @@ if ($_POST['Email'] == 'Yes') {
 	}
 
 	if ($_SESSION['SmtpSetting'] == 0) {
-		$mail->setFrom(array(
+		$Mail->setFrom(array(
 			'"' . $_SESSION['CompanyRecord']['coyname'] . '" <' . $_SESSION['CompanyRecord']['email'] . '>'
 		));
-		$Result = $mail->send($ChkListingRecipients);
+		$Result = $Mail->send($ChkListingRecipients);
 	} else {
-		$Result = SendmailBySmtp($mail, $ChkListingRecipients);
+		$Result = SendmailBySmtp($Mail, $ChkListingRecipients);
 	}
 }
 

@@ -131,8 +131,8 @@ function InsertSupplier($SupplierDetails, $user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	foreach ($SupplierDetails as $key => $value) {
-		$SupplierDetails[$key] = DB_escape_string($value);
+	foreach ($SupplierDetails as $Key => $Value) {
+		$SupplierDetails[$Key] = DB_escape_string($Value);
 	}
 	$Errors = VerifySupplierNo($SupplierDetails['supplierid'], sizeof($Errors), $Errors);
 	$Errors = VerifySupplierName($SupplierDetails['suppname'], sizeof($Errors), $Errors);
@@ -198,9 +198,9 @@ function InsertSupplier($SupplierDetails, $user, $password) {
 	}
 	$FieldNames = '';
 	$FieldValues = '';
-	foreach ($SupplierDetails as $key => $value) {
-		$FieldNames .= $key . ', ';
-		$FieldValues .= '"' . $value . '", ';
+	foreach ($SupplierDetails as $Key => $Value) {
+		$FieldNames .= $Key . ', ';
+		$FieldValues .= '"' . $Value . '", ';
 	}
 	$sql = 'INSERT INTO suppliers (' . mb_substr($FieldNames, 0, -2) . ') ' . 'VALUES (' . mb_substr($FieldValues, 0, -2) . ') ';
 	if (sizeof($Errors) == 0) {
@@ -221,8 +221,8 @@ function ModifySupplier($SupplierDetails, $user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	foreach ($SupplierDetails as $key => $value) {
-		$SupplierDetails[$key] = DB_escape_string($value);
+	foreach ($SupplierDetails as $Key => $Value) {
+		$SupplierDetails[$Key] = DB_escape_string($Value);
 	}
 	$Errors = VerifySupplierNoExists($SupplierDetails['supplierid'], sizeof($Errors), $Errors);
 	$Errors = VerifySupplierName($SupplierDetails['suppname'], sizeof($Errors), $Errors);
@@ -287,8 +287,8 @@ function ModifySupplier($SupplierDetails, $user, $password) {
 		$Errors = VerifyTaxRef($CustomerDetails['taxref'], sizeof($Errors), $Errors);
 	}
 	$sql = 'UPDATE suppliers SET ';
-	foreach ($SupplierDetails as $key => $value) {
-		$sql .= $key . '="' . $value . '", ';
+	foreach ($SupplierDetails as $Key => $Value) {
+		$sql .= $Key . '="' . $Value . '", ';
 	}
 	$sql = mb_substr($sql, 0, -2) . " WHERE supplierid='" . $SupplierDetails['supplierid'] . "'";
 	if (sizeof($Errors) == 0) {

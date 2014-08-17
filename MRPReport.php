@@ -137,8 +137,8 @@ if (isset($_POST['PrintPDF']) and $_POST['Part'] != '') {
 	} //end of while loop
 	// The following sorts the $Supplies array by mrpdate. Have to sort because are loading
 	// mrpsupplies and mrpplannedorders into same array
-	foreach ($Supplies as $key => $row) {
-		$mrpdate[$key] = $row['mrpdate'];
+	foreach ($Supplies as $Key => $row) {
+		$mrpdate[$Key] = $row['mrpdate'];
 	}
 
 	if (isset($errors)) {

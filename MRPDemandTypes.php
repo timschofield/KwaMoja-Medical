@@ -45,7 +45,7 @@ if (isset($_POST['submit'])) {
 
 		$SQL = "UPDATE mrpdemandtypes SET description = '" . $_POST['Description'] . "'
 				WHERE mrpdemandtype = '" . $SelectedDT . "'";
-		$msg = _('The demand type record has been updated');
+		$Msg = _('The demand type record has been updated');
 	} elseif ($InputError != 1) {
 
 		//Selected demand type is null cos no item selected on first time round so must be adding a
@@ -56,13 +56,13 @@ if (isset($_POST['submit'])) {
 					VALUES ('" . trim(mb_strtoupper($_POST['MRPDemandType'])) . "',
 						'" . $_POST['Description'] . "'
 						)";
-		$msg = _('The new demand type has been added to the database');
+		$Msg = _('The new demand type has been added to the database');
 	}
 	//run the SQL from either of the above possibilites
 
 	if ($InputError != 1) {
 		$Result = DB_query($SQL, _('The update/addition of the demand type failed because'));
-		prnMsg($msg, 'success');
+		prnMsg($Msg, 'success');
 		echo '<br />';
 		unset($_POST['Description']);
 		unset($_POST['MRPDemandType']);

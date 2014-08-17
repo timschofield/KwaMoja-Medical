@@ -5,7 +5,7 @@ include('includes/session.inc');
 
 $InputError = 0;
 if (isset($_POST['Date']) and !Is_Date($_POST['Date'])) {
-	$msg = _('The date must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
+	$Msg = _('The date must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
 	$InputError = 1;
 	unset($_POST['Date']);
 }
@@ -23,7 +23,7 @@ if (!isset($_POST['Date'])) {
 				<img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . $Title . '" alt="' . $Title . '" />' . ' ' . _('Customer Transaction Listing') . '</p>';
 
 	if ($InputError == 1) {
-		prnMsg($msg, 'error');
+		prnMsg($Msg, 'error');
 	}
 
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';

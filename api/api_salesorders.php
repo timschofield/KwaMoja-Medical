@@ -269,8 +269,8 @@ function InsertSalesOrderHeader($OrderHeader, $user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	foreach ($OrderHeader as $key => $value) {
-		$OrderHeader[$key] = DB_escape_string($value);
+	foreach ($OrderHeader as $Key => $Value) {
+		$OrderHeader[$Key] = DB_escape_string($Value);
 	}
 	$Errors = VerifyDebtorExists($OrderHeader['debtorno'], sizeof($Errors), $Errors);
 	$Errors = VerifyBranchNoExists($OrderHeader['debtorno'], $OrderHeader['branchcode'], sizeof($Errors), $Errors);
@@ -338,12 +338,12 @@ function InsertSalesOrderHeader($OrderHeader, $user, $password) {
 	$FieldValues = '';
 	global $SOH_DateFields;
 	$OrderHeader['orderno'] = GetNextTransNo(30);
-	foreach ($OrderHeader as $key => $value) {
-		$FieldNames .= $key . ', ';
-		if (in_array($key, $SOH_DateFields)) {
-			$value = FormatDateforSQL($value); // Fix dates
+	foreach ($OrderHeader as $Key => $Value) {
+		$FieldNames .= $Key . ', ';
+		if (in_array($Key, $SOH_DateFields)) {
+			$Value = FormatDateforSQL($Value); // Fix dates
 		}
-		$FieldValues .= "'" . $value . "', ";
+		$FieldValues .= "'" . $Value . "', ";
 	}
 	$sql = 'INSERT INTO salesorders (' . mb_substr($FieldNames, 0, -2) . ")
 					VALUES (" . mb_substr($FieldValues, 0, -2) . ")";
@@ -371,8 +371,8 @@ function ModifySalesOrderHeader($OrderHeader, $user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	foreach ($OrderHeader as $key => $value) {
-		$OrderHeader[$key] = DB_escape_string($value);
+	foreach ($OrderHeader as $Key => $Value) {
+		$OrderHeader[$Key] = DB_escape_string($Value);
 	}
 	$Errors = VerifyOrderHeaderExists($OrderHeader['orderno'], sizeof($Errors), $Errors);
 	$Errors = VerifyDebtorExists($OrderHeader['debtorno'], sizeof($Errors), $Errors);
@@ -439,11 +439,11 @@ function ModifySalesOrderHeader($OrderHeader, $user, $password) {
 	}
 	global $SOH_DateFields;
 	$sql = 'UPDATE salesorders SET ';
-	foreach ($OrderHeader as $key => $value) {
-		if (in_array($key, $SOH_DateFields)) {
-			$value = FormatDateforSQL($value); // Fix dates
+	foreach ($OrderHeader as $Key => $Value) {
+		if (in_array($Key, $SOH_DateFields)) {
+			$Value = FormatDateforSQL($Value); // Fix dates
 		}
-		$sql .= $key . '="' . $value . '", ';
+		$sql .= $Key . '="' . $Value . '", ';
 	}
 	$sql = mb_substr($sql, 0, -2) . " WHERE orderno='" . $OrderHeader['orderno'] . "'";
 	if (sizeof($Errors) == 0) {
@@ -469,8 +469,8 @@ function InsertSalesOrderLine($OrderLine, $user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	foreach ($OrderLine as $key => $value) {
-		$OrderLine[$key] = DB_escape_string($value);
+	foreach ($OrderLine as $Key => $Value) {
+		$OrderLine[$Key] = DB_escape_string($Value);
 	}
 	$OrderLine['orderlineno'] = GetOrderLineNumber($OrderLine['orderno'], sizeof($Errors), $Errors);
 	$Errors = VerifyOrderHeaderExists($OrderLine['orderno'], sizeof($Errors), $Errors);
@@ -500,14 +500,14 @@ function InsertSalesOrderLine($OrderLine, $user, $password) {
 	}
 	$FieldNames = '';
 	$FieldValues = '';
-	foreach ($OrderLine as $key => $value) {
-		$FieldNames .= $key . ', ';
-		if ($key == 'actualdispatchdate') {
-			$value = FormatDateWithTimeForSQL($value);
-		} elseif ($key == 'itemdue') {
-			$value = FormatDateForSQL($value);
+	foreach ($OrderLine as $Key => $Value) {
+		$FieldNames .= $Key . ', ';
+		if ($Key == 'actualdispatchdate') {
+			$Value = FormatDateWithTimeForSQL($Value);
+		} elseif ($Key == 'itemdue') {
+			$Value = FormatDateForSQL($Value);
 		}
-		$FieldValues .= "'" . $value . "', ";
+		$FieldValues .= "'" . $Value . "', ";
 	}
 
 	$sql = "INSERT INTO salesorderdetails (" . mb_substr($FieldNames, 0, -2) . ")
@@ -534,8 +534,8 @@ function ModifySalesOrderLine($OrderLine, $user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	foreach ($OrderLine as $key => $value) {
-		$OrderLine[$key] = DB_escape_string($value);
+	foreach ($OrderLine as $Key => $Value) {
+		$OrderLine[$Key] = DB_escape_string($Value);
 	}
 	$Errors = VerifyOrderHeaderExists($OrderLine['orderno'], sizeof($Errors), $Errors);
 	$Errors = VerifyStockCodeExists($OrderLine['stkcode'], sizeof($Errors), $Errors);
@@ -560,12 +560,12 @@ function ModifySalesOrderLine($OrderLine, $user, $password) {
 		$Errors = VerifyPOLine($OrderLine['poline'], sizeof($Errors), $Errors);
 	}
 	$sql = 'UPDATE salesorderdetails SET ';
-	foreach ($OrderLine as $key => $value) {
-		if ($key == 'actualdispatchdate') {
-			$value = FormatDateWithTimeForSQL($value);
-		} elseif ($key == 'itemdue')
-			$value = FormatDateForSQL($value);
-		$sql .= $key . '="' . $value . '", ';
+	foreach ($OrderLine as $Key => $Value) {
+		if ($Key == 'actualdispatchdate') {
+			$Value = FormatDateWithTimeForSQL($Value);
+		} elseif ($Key == 'itemdue')
+			$Value = FormatDateForSQL($Value);
+		$sql .= $Key . '="' . $Value . '", ';
 	}
 	//$sql = mb_substr($sql,0,-2).' WHERE orderno="'.$OrderLine['orderno'].'" and
 	//	" orderlineno='.$OrderLine['orderlineno'];

@@ -7,9 +7,9 @@ $Title = _('Contract Costing');
 include('includes/header.inc');
 
 if (empty($_GET['identifier'])) {
-	$identifier = date('U');
+	$Identifier = date('U');
 } else {
-	$identifier = $_GET['identifier'];
+	$Identifier = $_GET['identifier'];
 }
 
 if (!isset($_GET['SelectedContract'])) {
@@ -19,7 +19,7 @@ if (!isset($_GET['SelectedContract'])) {
 	exit;
 } else {
 	$ContractRef = $_GET['SelectedContract'];
-	$_SESSION['Contract' . $identifier] = new Contract;
+	$_SESSION['Contract' . $Identifier] = new Contract;
 	include('includes/Contract_Readin.php');
 }
 
@@ -33,7 +33,7 @@ $SQL = "SELECT stockmoves.stockid,
 		FROM stockmoves INNER JOIN stockmaster
 		ON stockmoves.stockid=stockmaster.stockid
 		WHERE stockmoves.type=28
-		AND stockmoves.reference='" . $_SESSION['Contract' . $identifier]->WO . "'
+		AND stockmoves.reference='" . $_SESSION['Contract' . $Identifier]->WO . "'
 		GROUP BY stockmoves.stockid,
 				stockmaster.description,
 				stockmaster.units,
@@ -54,14 +54,14 @@ while ($InventoryIssuesRow = DB_fetch_array($InventoryIssuesResult)) {
 
 echo '<p class="page_title_text noPrint" >
 			<img src="' . $RootPath . '/css/' . $Theme . '/images/contract.png" title="' . _('Contract') . '" alt="" />';
-if ($_SESSION['Contract' . $identifier]->Status == 3) {
+if ($_SESSION['Contract' . $Identifier]->Status == 3) {
 	echo _('Closed') . ' ';
-} elseif ($_SESSION['Contract' . $identifier]->Status == 2) {
+} elseif ($_SESSION['Contract' . $Identifier]->Status == 2) {
 	echo _('Current Confirmed') . ' ';
-} elseif ($_SESSION['Contract' . $identifier]->Status == 1) {
+} elseif ($_SESSION['Contract' . $Identifier]->Status == 1) {
 	echo _('Quoted') . ' ';
 }
-echo _('Contract') . '<br />' . $_SESSION['Contract' . $identifier]->CustomerName . '<br />' . $_SESSION['Contract' . $identifier]->ContractDescription . '</p>';
+echo _('Contract') . '<br />' . $_SESSION['Contract' . $Identifier]->CustomerName . '<br />' . $_SESSION['Contract' . $Identifier]->ContractDescription . '</p>';
 
 echo '<table class="selection">
 	<tr>
@@ -90,7 +90,7 @@ echo '<tr>
 
 $ContractBOMBudget = 0;
 $ContractBOMActual = 0;
-foreach ($_SESSION['Contract' . $identifier]->ContractBOM as $Component) {
+foreach ($_SESSION['Contract' . $Identifier]->ContractBOM as $Component) {
 	echo '<tr>
 			<td>' . $Component->StockID . '</td>
 			<td>' . $Component->ItemDescription . '</td>
@@ -152,7 +152,7 @@ echo '<tr>
 			<th>' . _('Total Cost') . '</th>
 		</tr>';
 
-foreach ($_SESSION['Contract' . $identifier]->ContractReqts as $Requirement) {
+foreach ($_SESSION['Contract' . $Identifier]->ContractReqts as $Requirement) {
 	echo '<tr><td>' . $Requirement->Requirement . '</td>
 			<td class="number">' . locale_number_format($Requirement->Quantity, 'Variable') . '</td>
 			<td class="number">' . locale_number_format($Requirement->CostPerUnit, $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
@@ -225,11 +225,11 @@ echo '</table>';
 
 
 //Do the processing here after the variances are all calculated above
-if (isset($_POST['CloseContract']) and $_SESSION['Contract' . $identifier]->Status == 2) {
+if (isset($_POST['CloseContract']) and $_SESSION['Contract' . $Identifier]->Status == 2) {
 
 	include('includes/SQL_CommonFunctions.inc');
 
-	$GLCodes = GetStockGLCode($_SESSION['Contract' . $identifier]->ContractRef);
+	$GLCodes = GetStockGLCode($_SESSION['Contract' . $Identifier]->ContractRef);
 	//Compare actual costs to original budgeted contract costs - if actual > budgeted - CR WIP and DR usage variance
 	$Variance = ($OtherReqtsBudget + $ContractBOMBudget) - ($OtherReqtsActual + $ContractBOMActual);
 
@@ -250,7 +250,7 @@ if (isset($_POST['CloseContract']) and $_SESSION['Contract' . $identifier]->Stat
 							CURRENT_DATE,
 							'" . $PeriodNo . "',
 							'" . $GLCodes['wipact'] . "',
-							'" . _('Variance on contract') . ' ' . $_SESSION['Contract' . $identifier]->ContractRef . "',
+							'" . _('Variance on contract') . ' ' . $_SESSION['Contract' . $Identifier]->ContractRef . "',
 							'" . -$Variance . "')";
 
 	$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The gl entry of WIP for the variance on closing the contract could not be inserted because');
@@ -268,7 +268,7 @@ if (isset($_POST['CloseContract']) and $_SESSION['Contract' . $identifier]->Stat
 							CURRENT_DATE,
 							'" . $PeriodNo . "',
 							'" . $GLCodes['materialuseagevarac'] . "',
-							'" . _('Variance on contract') . ' ' . $_SESSION['Contract' . $identifier]->ContractRef . "',
+							'" . _('Variance on contract') . ' ' . $_SESSION['Contract' . $Identifier]->ContractRef . "',
 							'" . $Variance . "')";
 
 	$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The gl entry of WIP for the variance on closing the contract could not be inserted because');
@@ -278,7 +278,7 @@ if (isset($_POST['CloseContract']) and $_SESSION['Contract' . $identifier]->Stat
 	//Now update the status of the contract to closed
 	$SQL = "UPDATE contracts
 				SET status=3
-				WHERE contractref='" . $_SESSION['Contract' . $identifier]->ContractRef . "'";
+				WHERE contractref='" . $_SESSION['Contract' . $Identifier]->ContractRef . "'";
 	$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The status of the contract could not be updated to closed because');
 	$DbgMsg = _('The following SQL to change the status of the contract was used');
 	$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
@@ -286,13 +286,13 @@ if (isset($_POST['CloseContract']) and $_SESSION['Contract' . $identifier]->Stat
 	/*Check if the contract work order is still open */
 	$CheckIfWOOpenResult = DB_query("SELECT closed
 									FROM workorders
-									WHERE wo='" . $_SESSION['Contract' . $identifier]->WO . "'");
+									WHERE wo='" . $_SESSION['Contract' . $Identifier]->WO . "'");
 	$CheckWORow = DB_fetch_row($CheckIfWOOpenResult);
 	if ($CheckWORow[0] == 0) {
 		//then close the work order
 		$CloseWOResult = DB_query("UPDATE workorders
 									SET closed=1
-									WHERE wo='" . $_SESSION['Contract' . $identifier]->WO . "'", _('Could not update the work order to closed because') . ': ', _('The SQL used to close the work order was') . ': ', true);
+									WHERE wo='" . $_SESSION['Contract' . $Identifier]->WO . "'", _('Could not update the work order to closed because') . ': ', _('The SQL used to close the work order was') . ': ', true);
 
 
 		/* Check if the contract BOM has received the contract item manually
@@ -301,8 +301,8 @@ if (isset($_POST['CloseContract']) and $_SESSION['Contract' . $identifier]->Stat
 		 */
 
 		$Result = DB_query("SELECT qtyrecd FROM woitems
-							WHERE stockid='" . $_SESSION['Contract' . $identifier]->ContractRef . "'
-							AND wo='" . $_SESSION['Contract' . $identifier]->WO . "'");
+							WHERE stockid='" . $_SESSION['Contract' . $Identifier]->ContractRef . "'
+							AND wo='" . $_SESSION['Contract' . $Identifier]->WO . "'");
 		if (DB_num_rows($Result) == 1) {
 			$MyRow = DB_fetch_row($Result);
 			if ($MyRow[0] == 0) { //then the contract wo has not been received (it will only ever be for 1 item)
@@ -312,8 +312,8 @@ if (isset($_POST['CloseContract']) and $_SESSION['Contract' . $identifier]->Stat
 				/* Need to get the current location quantity will need it later for the stock movement */
 				$SQL = "SELECT locstock.quantity
 						FROM locstock
-						WHERE locstock.stockid='" . $_SESSION['Contract' . $identifier]->ContractRef . "'
-						AND loccode= '" . $_SESSION['Contract' . $identifier]->LocCode . "'";
+						WHERE locstock.stockid='" . $_SESSION['Contract' . $Identifier]->ContractRef . "'
+						AND loccode= '" . $_SESSION['Contract' . $Identifier]->LocCode . "'";
 
 				$Result = DB_query($SQL);
 				if (DB_num_rows($Result) == 1) {
@@ -326,8 +326,8 @@ if (isset($_POST['CloseContract']) and $_SESSION['Contract' . $identifier]->Stat
 
 				$SQL = "UPDATE locstock
 						SET quantity = locstock.quantity + 1
-						WHERE locstock.stockid = '" . $_SESSION['Contract' . $identifier]->ContractRef . "'
-						AND loccode= '" . $_SESSION['Contract' . $identifier]->LocCode . "'";
+						WHERE locstock.stockid = '" . $_SESSION['Contract' . $Identifier]->ContractRef . "'
+						AND loccode= '" . $_SESSION['Contract' . $Identifier]->LocCode . "'";
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The location stock record could not be updated because');
 				$DbgMsg = _('The following SQL to update the location stock record was used');
@@ -346,14 +346,14 @@ if (isset($_POST['CloseContract']) and $_SESSION['Contract' . $identifier]->Stat
 												qty,
 												standardcost,
 												newqoh)
-							VALUES ('" . $_SESSION['Contract' . $identifier]->ContractRef . "',
+							VALUES ('" . $_SESSION['Contract' . $Identifier]->ContractRef . "',
 									26,
 									'" . $WOReceiptNo . "',
-									'" . $_SESSION['Contract' . $identifier]->LocCode . "',
+									'" . $_SESSION['Contract' . $Identifier]->LocCode . "',
 									CURRENT_DATE,
 									'" . ($OtherReqtsBudget + $ContractBOMBudget) . "',
 									'" . $PeriodNo . "',
-									'" . $_SESSION['Contract' . $identifier]->WO . "',
+									'" . $_SESSION['Contract' . $Identifier]->WO . "',
 									1,
 									'" . ($OtherReqtsBudget + $ContractBOMBudget) . "',
 									'" . ($QtyOnHandPrior + 1) . "')";
@@ -384,7 +384,7 @@ if (isset($_POST['CloseContract']) and $_SESSION['Contract' . $identifier]->Stat
 											CURRENT_DATE,
 											'" . $PeriodNo . "',
 											'" . $GLCodes['stockact'] . "',
-											'" . $_SESSION['Contract' . $identifier]->WO . ' ' . $_SESSION['Contract' . $identifier]->ContractRef . ' -  x 1 @ ' . locale_number_format(($OtherReqtsBudget + $ContractBOMBudget), 2) . "',
+											'" . $_SESSION['Contract' . $Identifier]->WO . ' ' . $_SESSION['Contract' . $Identifier]->ContractRef . ' -  x 1 @ ' . locale_number_format(($OtherReqtsBudget + $ContractBOMBudget), 2) . "',
 											'" . ($OtherReqtsBudget + $ContractBOMBudget) . "')";
 
 					$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The receipt of contract work order finished stock GL posting could not be inserted because');
@@ -404,7 +404,7 @@ if (isset($_POST['CloseContract']) and $_SESSION['Contract' . $identifier]->Stat
 											CURRENT_DATE,
 											'" . $PeriodNo . "',
 											'" . $GLCodes['wipact'] . "',
-											'" . $_SESSION['Contract' . $identifier]->WO . ' ' . $_SESSION['Contract' . $identifier]->ContractRef . ' -  x 1 @ ' . locale_number_format(($OtherReqtsBudget + $ContractBOMBudget), 2) . "',
+											'" . $_SESSION['Contract' . $Identifier]->WO . ' ' . $_SESSION['Contract' . $Identifier]->ContractRef . ' -  x 1 @ ' . locale_number_format(($OtherReqtsBudget + $ContractBOMBudget), 2) . "',
 											'" . -($OtherReqtsBudget + $ContractBOMBudget) . "')";
 
 					$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The WIP credit on receipt of finished items from a work order GL posting could not be inserted because');
@@ -419,22 +419,22 @@ if (isset($_POST['CloseContract']) and $_SESSION['Contract' . $identifier]->Stat
 				$DbgMsg = _('The following SQL was used to update the work order');
 				$UpdateWOResult = DB_query("UPDATE woitems
 										SET qtyrecd=qtyrecd+1
-										WHERE wo='" . $_SESSION['Contract' . $identifier]->WO . "'
-										AND stockid='" . $_SESSION['Contract' . $identifier]->ContractRef . "'", $ErrMsg, $DbgMsg, true);
+										WHERE wo='" . $_SESSION['Contract' . $Identifier]->WO . "'
+										AND stockid='" . $_SESSION['Contract' . $Identifier]->ContractRef . "'", $ErrMsg, $DbgMsg, true);
 			} //end if the contract wo was not received - work order item received/processed above if not
 		} //end if there was a row returned from the woitems query
 	} //end if the work order was still open (so end of closing it and processing receipt if necessary)
 
 	DB_Txn_Commit();
 
-	$_SESSION['Contract' . $identifier]->Status = 3;
+	$_SESSION['Contract' . $Identifier]->Status = 3;
 	prnMsg(_('The contract has been closed. No further charges can be posted against this contract.'), 'success');
 
 } //end if Closing the contract Close Contract button hit
 
-if ($_SESSION['Contract' . $identifier]->Status == 2) { //the contract is an order being processed now
+if ($_SESSION['Contract' . $Identifier]->Status == 2) { //the contract is an order being processed now
 
-	echo '<form onSubmit="return VerifyForm(this);"  method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedContract=' . $_SESSION['Contract' . $identifier]->ContractRef . '&amp;identifier=' . $identifier . '">';
+	echo '<form onSubmit="return VerifyForm(this);"  method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedContract=' . $_SESSION['Contract' . $Identifier]->ContractRef . '&amp;identifier=' . $Identifier . '">';
 	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<br />

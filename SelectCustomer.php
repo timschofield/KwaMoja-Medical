@@ -80,7 +80,7 @@ if ($_SESSION['geocode_integration'] == 1 and $_SESSION['CustomerID'] != "") {
 } //$_SESSION['geocode_integration'] == 1 and $_SESSION['CustomerID'] != ""
 
 unset($Result);
-$msg = '';
+$Msg = '';
 
 if (isset($_POST['Go1']) or isset($_POST['Go2'])) {
 	$_POST['PageOffset'] = (isset($_POST['Go1']) ? $_POST['PageOffset1'] : $_POST['PageOffset2']);
@@ -276,9 +276,9 @@ else {
 }
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-if (mb_strlen($msg) > 1) {
-	prnMsg($msg, 'info');
-} //mb_strlen($msg) > 1
+if (mb_strlen($Msg) > 1) {
+	prnMsg($Msg, 'info');
+} //mb_strlen($Msg) > 1
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Search for Customers') . '</p>';
 echo '<table cellpadding="3" class="selection">';
 echo '<tr><td colspan="2">' . _('Enter a partial Name') . ':</td><td>';

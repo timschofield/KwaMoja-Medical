@@ -73,7 +73,7 @@ if (isset($_POST['submit'])) {
 										VALUES ('" . $_POST['SelectedRole'] . "',
 												'" . $_POST['SelectedCategory'] . "')";
 
-			$msg = _('Stock Category') . ': ' . stripslashes($_POST['SelectedCategory']) . ' ' . _('has been allowed to user role') . ' ' . $_POST['SelectedRole'] . ' ' . _('as internal');
+			$Msg = _('Stock Category') . ': ' . stripslashes($_POST['SelectedCategory']) . ' ' . _('has been allowed to user role') . ' ' . $_POST['SelectedRole'] . ' ' . _('as internal');
 			$checkSql = "SELECT count(secroleid)
 							FROM securityroles";
 			$Result = DB_query($checkSql);
@@ -84,7 +84,7 @@ if (isset($_POST['submit'])) {
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
 		$Result = DB_query($SQL);
-		prnMsg($msg, 'success');
+		prnMsg($Msg, 'success');
 		unset($_POST['SelectedCategory']);
 	}
 

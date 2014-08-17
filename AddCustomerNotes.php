@@ -45,7 +45,7 @@ if (isset($_POST['submit'])) {
 									priority='" . $_POST['Priority'] . "'
 				WHERE debtorno ='" . $DebtorNo . "'
 				AND noteid='" . $Id . "'";
-		$msg = _('Customer Notes') . ' ' . $DebtorNo . ' ' . _('has been updated');
+		$Msg = _('Customer Notes') . ' ' . $DebtorNo . ' ' . _('has been updated');
 	} elseif ($InputError != 1) {
 
 		$SQL = "INSERT INTO custnotes (debtorno,
@@ -58,7 +58,7 @@ if (isset($_POST['submit'])) {
 						'" . $_POST['Note'] . "',
 						'" . FormatDateForSQL($_POST['NoteDate']) . "',
 						'" . $_POST['Priority'] . "')";
-		$msg = _('The contact notes record has been added');
+		$Msg = _('The contact notes record has been added');
 	}
 
 	if ($InputError != 1) {
@@ -66,7 +66,7 @@ if (isset($_POST['submit'])) {
 		//echo '<br />'.$SQL;
 
 		echo '<br />';
-		prnMsg($msg, 'success');
+		prnMsg($Msg, 'success');
 		unset($Id);
 		unset($_POST['Note']);
 		unset($_POST['Noteid']);
@@ -91,11 +91,11 @@ if (isset($_POST['submit'])) {
 }
 
 if (!isset($Id)) {
-	$SQLname = "SELECT * FROM debtorsmaster
+	$NameSql = "SELECT * FROM debtorsmaster
 				WHERE debtorno='" . $DebtorNo . "'";
-	$Result = DB_query($SQLname);
-	$row = DB_fetch_array($Result);
-	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . _('Notes for Customer') . ': <b>' . $row['name'] . '</b></p>
+	$Result = DB_query($NameSql);
+	$MyRow = DB_fetch_array($Result);
+	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . _('Notes for Customer') . ': <b>' . $MyRow['name'] . '</b></p>
 		<br />';
 
 	$SQL = "SELECT noteid,
@@ -107,7 +107,6 @@ if (!isset($Id)) {
 				FROM custnotes
 				WHERE debtorno='" . $DebtorNo . "'
 				ORDER BY date DESC";
-echo $SQL;
 	$Result = DB_query($SQL);
 
 	echo '<table class="selection">

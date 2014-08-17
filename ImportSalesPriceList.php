@@ -64,14 +64,14 @@ if (isset($_FILES['PriceListFile']) and $_FILES['PriceListFile']['name']) { //st
 		}
 
 		// cleanup the data (csv files often import with empty strings and such)
-		$StockID = mb_strtoupper($MyRow[0]);
-		foreach ($MyRow as &$value) {
-			$value = trim($value);
-			$value = str_replace('"', '', $value);
+		$StockId = mb_strtoupper($MyRow[0]);
+		foreach ($MyRow as &$Value) {
+			$Value = trim($Value);
+			$Value = str_replace('"', '', $Value);
 		}
 
 		//first off check that the item actually exist
-		$SQL = "SELECT COUNT(stockid) FROM stockmaster WHERE stockid='" . $StockID . "'";
+		$SQL = "SELECT COUNT(stockid) FROM stockmaster WHERE stockid='" . $StockId . "'";
 		$Result = DB_query($SQL);
 		$testrow = DB_fetch_row($Result);
 		if ($testrow[0] == 0) {
@@ -103,7 +103,7 @@ if (isset($_FILES['PriceListFile']) and $_FILES['PriceListFile']['name']) { //st
 			//Firstly close any open prices for this item
 			$SQL = "UPDATE prices
 						SET enddate='" . FormatDateForSQL($_POST['StartDate']) . "'
-						WHERE stockid='" . $StockID . "'
+						WHERE stockid='" . $StockId . "'
 						AND enddate>'" . date('Y-m-d') . "'
 						AND typeabbrev='" . $MyRow[1] . "'";
 			$Result = DB_query($SQL);

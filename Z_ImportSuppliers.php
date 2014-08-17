@@ -100,8 +100,8 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 		}
 
 		// cleanup the data (csv files often import with empty strings and such)
-		foreach ($filerow as &$value) {
-			$value = trim($value);
+		foreach ($filerow as &$Value) {
+			$Value = trim($Value);
 		}
 
 		$SupplierID = mb_strtoupper($filerow[0]);

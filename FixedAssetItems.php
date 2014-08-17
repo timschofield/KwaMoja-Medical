@@ -26,7 +26,7 @@ if (isset($_FILES['ItemPicture']) and $_FILES['ItemPicture']['name'] != '') {
 
 	$Result = $_FILES['ItemPicture']['error'];
 	$UploadTheFile = 'Yes'; //Assume all is well to start off with
-	$filename = $_SESSION['part_pics_dir'] . '/ASSET_' . $AssetID . '.jpg';
+	$FileName = $_SESSION['part_pics_dir'] . '/ASSET_' . $AssetID . '.jpg';
 
 	//But check for the worst
 	if (mb_strtoupper(mb_substr(trim($_FILES['ItemPicture']['name']), mb_strlen($_FILES['ItemPicture']['name']) - 3)) != 'JPG') {
@@ -38,9 +38,9 @@ if (isset($_FILES['ItemPicture']) and $_FILES['ItemPicture']['name'] != '') {
 	} elseif ($_FILES['ItemPicture']['type'] == 'text/plain') { //File Type Check
 		prnMsg(_('Only graphics files can be uploaded'), 'warn');
 		$UploadTheFile = 'No';
-	} elseif (file_exists($filename)) {
+	} elseif (file_exists($FileName)) {
 		prnMsg(_('Attempting to overwrite an existing item image'), 'warn');
-		$Result = unlink($filename);
+		$Result = unlink($FileName);
 		if (!$Result) {
 			prnMsg(_('The existing image could not be removed'), 'error');
 			$UploadTheFile = 'No';
@@ -48,8 +48,8 @@ if (isset($_FILES['ItemPicture']) and $_FILES['ItemPicture']['name'] != '') {
 	}
 
 	if ($UploadTheFile == 'Yes') {
-		$Result = move_uploaded_file($_FILES['ItemPicture']['tmp_name'], $filename);
-		$message = ($Result) ? _('File url') . '<a href="' . $filename . '">' . $filename . '</a>' : _('Something is wrong with uploading a file');
+		$Result = move_uploaded_file($_FILES['ItemPicture']['tmp_name'], $FileName);
+		$message = ($Result) ? _('File url') . '<a href="' . $FileName . '">' . $FileName . '</a>' : _('Something is wrong with uploading a file');
 	}
 	/* EOR Add Image upload for New Item  - by Ori */
 }

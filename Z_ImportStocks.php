@@ -112,18 +112,18 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 		}
 
 		// cleanup the data (csv files often import with empty strings and such)
-		$StockID = mb_strtoupper($MyRow[0]);
-		foreach ($MyRow as &$value) {
-			$value = trim($value);
+		$StockId = mb_strtoupper($MyRow[0]);
+		foreach ($MyRow as &$Value) {
+			$Value = trim($Value);
 		}
 
 		//first off check if the item already exists
-		$SQL = "SELECT COUNT(stockid) FROM stockmaster WHERE stockid='" . $StockID . "'";
+		$SQL = "SELECT COUNT(stockid) FROM stockmaster WHERE stockid='" . $StockId . "'";
 		$Result = DB_query($SQL);
 		$testrow = DB_fetch_row($Result);
 		if ($testrow[0] != 0) {
 			$InputError = 1;
-			prnMsg(_('Stock item "' . $StockID . '" already exists'), 'error');
+			prnMsg(_('Stock item "' . $StockId . '" already exists'), 'error');
 		}
 
 		//next validate inputs are sensible
@@ -135,14 +135,14 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 			$InputError = 1;
 			prnMsg(_('The stock item description cannot be a zero length string') . ' - ' . _('a long description is required'), 'error');
 		}
-		if (mb_strlen($StockID) == 0) {
+		if (mb_strlen($StockId) == 0) {
 			$InputError = 1;
 			prnMsg(_('The Stock Item code cannot be empty'), 'error');
 		}
-		if (ContainsIllegalCharacters($StockID) or mb_strstr($StockID, ' ')) {
+		if (ContainsIllegalCharacters($StockId) or mb_strstr($StockId, ' ')) {
 			$InputError = 1;
-			prnMsg(_('The stock item code cannot contain any of the following characters') . " ' & + \" \\ " . _('or a space') . " (" . $StockID . ")", 'error');
-			$StockID = '';
+			prnMsg(_('The stock item code cannot contain any of the following characters') . " ' & + \" \\ " . _('or a space') . " (" . $StockId . ")", 'error');
+			$StockId = '';
 		}
 		if (mb_strlen($MyRow[4]) > 20) {
 			$InputError = 1;
@@ -229,7 +229,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 											decimalplaces,
 											appendfile
 										) VALUES (
-											'" . $StockID . "',
+											'" . $StockId . "',
 											'" . $MyRow[1] . "',
 											'" . $MyRow[2] . "',
 											'" . $MyRow[3] . "',
@@ -258,15 +258,15 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 				$SQL = "INSERT INTO locstock (loccode,
 												stockid)
 									SELECT locations.loccode,
-									'" . $StockID . "'
+									'" . $StockId . "'
 									FROM locations";
 
-				$ErrMsg = _('The locations for the item') . ' ' . $StockID . ' ' . _('could not be added because');
+				$ErrMsg = _('The locations for the item') . ' ' . $StockId . ' ' . _('could not be added because');
 				$DbgMsg = _('NB Locations records can be added by opening the utility page') . ' <i>Z_MakeStockLocns.php</i> ' . _('The SQL that was used to add the location records that failed was');
 				$InsResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 				if (DB_error_no() == 0) {
-					prnMsg(_('New Item') . ' ' . $StockID . ' ' . _('has been added to the transaction'), 'info');
+					prnMsg(_('New Item') . ' ' . $StockId . ' ' . _('has been added to the transaction'), 'info');
 				} else { //location insert failed so set some useful error info
 					$InputError = 1;
 					prnMsg(_($InsResult), 'error');

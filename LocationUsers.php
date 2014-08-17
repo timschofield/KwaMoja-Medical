@@ -71,9 +71,9 @@ if (isset($_POST['submit'])) {
 												'1',
 												'1')";
 
-			$msg = _('User') . ': ' . $_POST['SelectedUser'] . ' ' . _('authorisation to use') . ' ' . $_POST['SelectedLocation'] . ' ' . _('Location has been changed');
+			$Msg = _('User') . ': ' . $_POST['SelectedUser'] . ' ' . _('authorisation to use') . ' ' . $_POST['SelectedLocation'] . ' ' . _('Location has been changed');
 			$Result = DB_query($SQL);
-			prnMsg($msg, 'success');
+			prnMsg($Msg, 'success');
 			unset($_POST['SelectedUser']);
 		}
 	}

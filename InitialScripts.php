@@ -116,14 +116,14 @@ echo '<div class="centre">
 
 include('includes/footer.inc');
 
-function ReadFirstLine($filename) {
-  $file = file($filename);
+function ReadFirstLine($FileName) {
+  $file = file($FileName);
   return $file[0];
 }
 
-function RemoveFirstLine($filename) {
-	$FileContents = file($filename);
-	if ($fp = fopen($filename, 'w')) {
+function RemoveFirstLine($FileName) {
+	$FileContents = file($FileName);
+	if ($fp = fopen($FileName, 'w')) {
 		for($i=1; $i < sizeof($FileContents); $i++) {
 			fwrite($fp,$FileContents[$i]);
 		}

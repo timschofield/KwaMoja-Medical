@@ -139,8 +139,8 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 		}
 
 		// cleanup the data (csv files often import with empty strings and such)
-		foreach ($filerow as &$value) {
-			$value = trim($value);
+		foreach ($filerow as &$Value) {
+			$Value = trim($Value);
 		}
 
 		$_POST['DebtorNo'] = $filerow[0];
@@ -595,7 +595,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 
 
 					if (DB_error_no() == 0) {
-						prnMsg(_('New Item') . ' ' . $StockID . ' ' . _('has been added to the transaction'), 'info');
+						prnMsg(_('New Item') . ' ' . $StockId . ' ' . _('has been added to the transaction'), 'info');
 					} else { //location insert failed so set some useful error info
 						$InputError = 1;
 						prnMsg(_($Result), 'error');

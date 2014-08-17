@@ -277,8 +277,8 @@ class URLDetails {
 	public function FetchPage($RootPath, $ServerPath, $ch) {
 		//url-ify the data for the POST
 		$fields_string='';
-		foreach($this->GetPostArray() as $key=>$value) {
-			$fields_string .= $key.'='.$value.'&';
+		foreach($this->GetPostArray() as $Key=>$Value) {
+			$fields_string .= $Key.'='.$Value.'&';
 		}
 		rtrim($fields_string,'&');
 		//set the url, number of POST vars, POST data

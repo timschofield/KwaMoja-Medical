@@ -62,7 +62,7 @@ if (isset($_POST['Submit'])) {
 				prnMsg(_('The department does not exist.'), 'error');
 			}
 		}
-		$msg = _('The department has been modified');
+		$Msg = _('The department has been modified');
 	} elseif ($InputError != 1) {
 		/*SelectedDepartmentID is null cos no item selected on first time round so must be adding a record*/
 		$SQL = "SELECT count(*) FROM departments
@@ -78,7 +78,7 @@ if (isset($_POST['Submit'])) {
 					VALUES ('" . $_POST['DepartmentName'] . "',
 							'" . $_POST['Authoriser'] . "')";
 		}
-		$msg = _('The new department has been created');
+		$Msg = _('The new department has been created');
 	}
 
 	if ($InputError != 1) {
@@ -102,7 +102,7 @@ if (isset($_POST['Submit'])) {
 		} else {
 			$Result = DB_query($SQL);
 		}
-		prnMsg($msg, 'success');
+		prnMsg($Msg, 'success');
 		echo '<br />';
 	}
 	unset($SelectedDepartmentID);

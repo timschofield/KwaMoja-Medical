@@ -359,7 +359,7 @@
 					$innercode .= "if (\$paramcount > $i) {\n";
 					$parsvariations[] = $pars;
 				}
-				$innercode .= "\$p$i = \$msg->getParam($i);\n";
+				$innercode .= "\$p$i = \$Msg->getParam($i);\n";
 				if ($decode_php_objects)
 				{
 					$innercode .= "if (\$p{$i}->kindOf() == 'scalar') \$p$i = \$p{$i}->scalarval(); else \$p$i = php_{$prefix}_decode(\$p$i, array('decode_php_objs'));\n";
@@ -399,12 +399,12 @@
 			{
 				// add to code the check for min params number
 				// NB: this check needs to be done BEFORE decoding param values
-				$innercode = "\$paramcount = \$msg->getNumParams();\n" .
+				$innercode = "\$paramcount = \$Msg->getNumParams();\n" .
 				"if (\$paramcount < $minpars) return new {$prefix}resp(0, {$GLOBALS['xmlrpcerr']['incorrect_params']}, '{$GLOBALS['xmlrpcstr']['incorrect_params']}');\n" . $innercode;
 			}
 			else
 			{
-				$innercode = "\$paramcount = \$msg->getNumParams();\n" . $innercode;
+				$innercode = "\$paramcount = \$Msg->getNumParams();\n" . $innercode;
 			}
 
 			$innercode .= "\$np = false;\n";
@@ -459,7 +459,7 @@
 			// shall we exclude functions returning by ref?
 			// if($func->returnsReference())
 			// 	return false;
-			$code = "function $xmlrpcfuncname(\$msg) {\n" . $innercode . "}\n}";
+			$code = "function $xmlrpcfuncname(\$Msg) {\n" . $innercode . "}\n}";
 			//print_r($code);
 			if ($buildit)
 			{
@@ -607,14 +607,14 @@
 		}
 		$Debug = isset($extra_options['debug']) ? ($extra_options['debug']) : 0;
 
-		$msgclass = $prefix.'msg';
+		$Msgclass = $prefix.'msg';
 		$valclass = $prefix.'val';
 		$decodefunc = 'php_'.$prefix.'_decode';
 
-		$msg = new $msgclass('system.methodSignature');
-		$msg->addparam(new $valclass($methodname));
+		$Msg = new $Msgclass('system.methodSignature');
+		$Msg->addparam(new $valclass($methodname));
 		$client->setDebug($Debug);
-		$response =& $client->send($msg, $timeout, $protocol);
+		$response =& $client->send($Msg, $timeout, $protocol);
 		if($response->faultCode())
 		{
 			error_log('XML-RPC: could not retrieve method signature from remote server for method '.$methodname);
@@ -657,9 +657,9 @@
 				// in online mode, favour speed of operation
 				if(!$buildit)
 				{
-					$msg = new $msgclass('system.methodHelp');
-					$msg->addparam(new $valclass($methodname));
-					$response =& $client->send($msg, $timeout, $protocol);
+					$Msg = new $Msgclass('system.methodHelp');
+					$Msg->addparam(new $valclass($methodname));
+					$response =& $client->send($Msg, $timeout, $protocol);
 					if (!$response->faultCode())
 					{
 						$mdesc = $response->value();
@@ -722,12 +722,12 @@
 		$buildit = isset($extra_options['return_source']) ? !($extra_options['return_source']) : true;
 		$prefix = isset($extra_options['prefix']) ? $extra_options['prefix'] : 'xmlrpc';
 
-		$msgclass = $prefix.'msg';
+		$Msgclass = $prefix.'msg';
 		//$valclass = $prefix.'val';
 		$decodefunc = 'php_'.$prefix.'_decode';
 
-		$msg = new $msgclass('system.listMethods');
-		$response =& $client->send($msg, $timeout, $protocol);
+		$Msg = new $Msgclass('system.listMethods');
+		$response =& $client->send($Msg, $timeout, $protocol);
 		if($response->faultCode())
 		{
 			error_log('XML-RPC: could not retrieve method list from remote server');
@@ -846,7 +846,7 @@
 			$innercode = '';
 			$this_ = 'this->';
 		}
-		$innercode .= "\$msg = new {$prefix}msg('$methodname');\n";
+		$innercode .= "\$Msg = new {$prefix}msg('$methodname');\n";
 
 		if ($mdesc != '')
 		{
@@ -882,7 +882,7 @@
 					$innercode .= "\$p$i =& php_{$prefix}_encode(\$p$i);\n";
 				}
 			}
-			$innercode .= "\$msg->addparam(\$p$i);\n";
+			$innercode .= "\$Msg->addparam(\$p$i);\n";
 			$mdesc .= '* @param '.xmlrpc_2_php_type($ptype)." \$p$i\n";
 		}
 		if ($client_copy_mode < 2)
@@ -893,7 +893,7 @@
 		$plist = implode(', ', $plist);
 		$mdesc .= '* @return '.xmlrpc_2_php_type($msig[0])." (or an {$prefix}resp obj instance if call fails)\n*/\n";
 
-		$innercode .= "\$res =& \${$this_}client->send(\$msg, $timeout, '$protocol');\n";
+		$innercode .= "\$res =& \${$this_}client->send(\$Msg, $timeout, '$protocol');\n";
 		if ($decode_fault)
 		{
 			if (is_string($fault_response) && ((mb_strpos($fault_response, '%faultCode%') !== false) || (mb_strpos($fault_response, '%faultString%') !== false)))

@@ -281,10 +281,10 @@ if ($_SESSION['SmtpSetting'] == 0) {
 
 } else {
 	include('includes/htmlMimeMail.php');
-	$mail = new htmlMimeMail();
-	$mail->setSubject($mailSubject);
-	$mail->setHTML($MailMessage);
-	$Result = SendmailBySmtp($mail, array(
+	$Mail = new htmlMimeMail();
+	$Mail->setSubject($MailSubject);
+	$Mail->setHTML($MailMessage);
+	$Result = SendmailBySmtp($Mail, array(
 		$MailTo
 	));
 }

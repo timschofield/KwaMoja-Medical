@@ -13,9 +13,9 @@ $EmailResult = DB_query($EmailSQL);
 $EmailRow = DB_fetch_array($EmailResult);
 
 if (isset($_POST['UpdateAll'])) {
-	foreach ($_POST as $key => $value) {
-		if (mb_substr($key, 0, 6) == 'Status') {
-			$OrderNo = mb_substr($key, 6);
+	foreach ($_POST as $Key => $Value) {
+		if (mb_substr($Key, 0, 6) == 'Status') {
+			$OrderNo = mb_substr($Key, 6);
 			$Status = $_POST['Status' . $OrderNo];
 			$Comment = date($_SESSION['DefaultDateFormat']) . ' - ' . _('Authorised by') . ' <a href="mailto:' . $EmailRow['email'] . '">' . $_SESSION['UserID'] . '</a><br />' . html_entity_decode($_POST['comment'], ENT_QUOTES, 'UTF-8');
 			$SQL = "UPDATE purchorders

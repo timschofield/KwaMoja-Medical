@@ -6,12 +6,12 @@ include('includes/SQL_CommonFunctions.inc');
 $InputError = 0;
 
 if (isset($_POST['FromDate']) and !Is_Date($_POST['FromDate'])) {
-	$msg = _('The date from must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
+	$Msg = _('The date from must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
 	$InputError = 1;
 	unset($_POST['FromDate']);
 }
 if (isset($_POST['ToDate']) and !Is_Date($_POST['ToDate'])) {
-	$msg = _('The date to must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
+	$Msg = _('The date to must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
 	$InputError = 1;
 	unset($_POST['ToDate']);
 }
@@ -22,7 +22,7 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate'])) {
 	include('includes/header.inc');
 
 	if ($InputError == 1) {
-		prnMsg($msg, 'error');
+		prnMsg($Msg, 'error');
 	}
 
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . $Title . '" alt="" />' . ' ' . _('Order Status Report') . '</p>';

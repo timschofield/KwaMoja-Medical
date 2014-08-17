@@ -46,7 +46,7 @@ for ($i = 1; $i < $argc; $i++) {
 			break;
 		case '-t':
 			$i++;
-			$mailtext = $argv[$i];
+			$Mailtext = $argv[$i];
 			break;
 		default:
 			echo "unknown option" . $argv[$i] . "\n";
@@ -87,7 +87,7 @@ include('includes/ConstructSQLForUserDefinedSalesReport.inc');
 include('includes/PDFSalesAnalysis.inc');
 
 include('includes/htmlMimeMail.php');
-$mail = new htmlMimeMail();
+$Mail = new htmlMimeMail();
 
 if ($Counter > 0) {
 	/* the number of lines of the sales report is more than 0  ie there is a report to send! */
@@ -96,30 +96,30 @@ if ($Counter > 0) {
 	fwrite($fp, $PDFcode);
 	fclose($fp);
 
-	$attachment = $mail->getFile($_SESSION['reports_dir'] . "/" . $reportname);
-	$mail->setText($mailtext . "\nPlease find herewith " . $reportname . "  report");
-	$mail->setSubject($reportname . " Report");
-	$mail->addAttachment($attachment, $reportname, 'application/pdf');
+	$attachment = $Mail->getFile($_SESSION['reports_dir'] . "/" . $reportname);
+	$Mail->setText($Mailtext . "\nPlease find herewith " . $reportname . "  report");
+	$Mail->setSubject($reportname . " Report");
+	$Mail->addAttachment($attachment, $reportname, 'application/pdf');
 	if ($_SESSION['SmtpSetting'] == 0) {
-		$mail->setFrom("");
-		$Result = $mail->send($Recipients);
+		$Mail->setFrom("");
+		$Result = $Mail->send($Recipients);
 	} else {
-		$Result = SendmailBySmtp($mail, $Recipients);
+		$Result = SendmailBySmtp($Mail, $Recipients);
 	}
 
 } else {
-	$mail->setText("Error running automated sales report number $ReportID");
+	$Mail->setText("Error running automated sales report number $ReportID");
 	if ($_SESSION['SmtpSetting'] == 0) {
-		$mail->setFrom("Do_not_reply_" . $_SESSION['CompanyRecord']['coyname'] . "<" . $_SESSION['CompanyRecord']['email'] . ">");
-		$Result = $mail->send($Recipients);
+		$Mail->setFrom("Do_not_reply_" . $_SESSION['CompanyRecord']['coyname'] . "<" . $_SESSION['CompanyRecord']['email'] . ">");
+		$Result = $Mail->send($Recipients);
 	} else {
-		$Result = SendmailBySmtp($mail, $Recipients);
+		$Result = SendmailBySmtp($Mail, $Recipients);
 	}
 	if ($_SESSION['SmtpSetting'] == 0) {
-		$mail->setFrom("Do_not_reply_" . $_SESSION['CompanyRecord']['coyname'] . "<" . $_SESSION['CompanyRecord']['email'] . ">");
-		$Result = $mail->send($Recipients);
+		$Mail->setFrom("Do_not_reply_" . $_SESSION['CompanyRecord']['coyname'] . "<" . $_SESSION['CompanyRecord']['email'] . ">");
+		$Result = $Mail->send($Recipients);
 	} else {
-		$Result = SendmailBySmtp($mail, $Recipients);
+		$Result = SendmailBySmtp($Mail, $Recipients);
 	}
 }
 

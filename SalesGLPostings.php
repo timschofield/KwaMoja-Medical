@@ -31,7 +31,7 @@ if (isset($_POST['submit'])) {
 										stkcat = '" . $_POST['StkCat'] . "',
 										salestype = '" . $_POST['SalesType'] . "'
 				WHERE salesglpostings.id = '" . $SelectedSalesPostingID . "'";
-		$msg = _('The sales GL posting record has been updated');
+		$Msg = _('The sales GL posting record has been updated');
 	} else {
 
 		/*Selected Sales GL Posting is null cos no item selected on first time round so must be	adding a record must be submitting new entries in the new SalesGLPosting form */
@@ -58,7 +58,7 @@ if (isset($_POST['submit'])) {
 						'" . $_POST['StkCat'] . "',
 						'" . $_POST['SalesType'] . "'
 						)";
-			$msg = _('The new sales GL posting record has been inserted');
+			$Msg = _('The new sales GL posting record has been inserted');
 		} else {
 			prnMsg(_('A sales gl posting account already exists for the selected area, stock category, salestype'), 'warn');
 			$InputError = true;
@@ -69,7 +69,7 @@ if (isset($_POST['submit'])) {
 	$Result = DB_query($SQL);
 
 	if ($InputError == false) {
-		prnMsg($msg, 'success');
+		prnMsg($Msg, 'success');
 	}
 	unset($SelectedSalesPostingID);
 	unset($_POST['SalesGLCode']);

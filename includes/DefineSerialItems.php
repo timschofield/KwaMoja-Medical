@@ -1,10 +1,10 @@
 <?php
 
-function ValidBundleRef($StockID, $LocCode, $BundleRef) {
+function ValidBundleRef($StockId, $LocCode, $BundleRef) {
 
 	$SQL = "SELECT quantity
 				FROM stockserialitems
-				WHERE stockid='" . $StockID . "'
+				WHERE stockid='" . $StockId . "'
 				AND loccode ='" . $LocCode . "'
 				AND serialno='" . $BundleRef . "'";
 	$Result = DB_query($SQL);
@@ -17,11 +17,11 @@ function ValidBundleRef($StockID, $LocCode, $BundleRef) {
 	}
 }
 
-function GetExpiryDate ($StockID, $LocCode, $BundleRef){
+function GetExpiryDate ($StockId, $LocCode, $BundleRef){
 
 	$SQL = "SELECT expirationdate
 				FROM stockserialitems
-				WHERE stockid = '" . $StockID . "'
+				WHERE stockid = '" . $StockId . "'
 				AND loccode = '" . $LocCode . "'
 				AND serialno = '" . $BundleRef . "'";
 	$Result = DB_query($SQL);

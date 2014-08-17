@@ -5,13 +5,13 @@ include('includes/DefineContractClass.php');
 include('includes/session.inc');
 $Title = _('Contract Bill of Materials');
 
-$identifier = $_GET['identifier'];
+$Identifier = $_GET['identifier'];
 
 /* If a contract header doesn't exist, then go to
  * Contracts.php to create one
  */
 
-if (!isset($_SESSION['Contract' . $identifier])) {
+if (!isset($_SESSION['Contract' . $Identifier])) {
 	header('Location:' . $RootPath . '/Contracts.php');
 	exit;
 }
@@ -20,13 +20,13 @@ $BookMark = 'AddToContract';
 include('includes/header.inc');
 
 if (isset($_POST['UpdateLines']) or isset($_POST['BackToHeader'])) {
-	if ($_SESSION['Contract' . $identifier]->Status != 2) { //dont do anything if the customer has committed to the contract
-		foreach ($_SESSION['Contract' . $identifier]->ContractBOM as $ContractComponent) {
+	if ($_SESSION['Contract' . $Identifier]->Status != 2) { //dont do anything if the customer has committed to the contract
+		foreach ($_SESSION['Contract' . $Identifier]->ContractBOM as $ContractComponent) {
 			if (filter_number_format($_POST['Qty' . $ContractComponent->ComponentID]) == 0) {
 				//this is the same as deleting the line - so delete it
-				$_SESSION['Contract' . $identifier]->Remove_ContractComponent($ContractComponent->ComponentID);
+				$_SESSION['Contract' . $Identifier]->Remove_ContractComponent($ContractComponent->ComponentID);
 			} else {
-				$_SESSION['Contract' . $identifier]->ContractBOM[$ContractComponent->ComponentID]->Quantity = filter_number_format($_POST['Qty' . $ContractComponent->ComponentID]);
+				$_SESSION['Contract' . $Identifier]->ContractBOM[$ContractComponent->ComponentID]->Quantity = filter_number_format($_POST['Qty' . $ContractComponent->ComponentID]);
 			}
 		} // end loop around the items on the contract BOM
 	} // end if the contract is not currently committed to by the customer
@@ -34,9 +34,9 @@ if (isset($_POST['UpdateLines']) or isset($_POST['BackToHeader'])) {
 
 
 if (isset($_POST['BackToHeader'])) {
-	echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/Contracts.php?identifier=' . $identifier . '" />';
+	echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/Contracts.php?identifier=' . $Identifier . '" />';
 	echo '<br />';
-	prnMsg(_('You should automatically be forwarded to the Contract page. If this does not happen perhaps the browser does not support META Refresh') . '<a href="' . $RootPath . '/Contracts.php?identifier=' . urlencode($identifier) . '">' . _('click here') . '</a> ' . _('to continue'), 'info');
+	prnMsg(_('You should automatically be forwarded to the Contract page. If this does not happen perhaps the browser does not support META Refresh') . '<a href="' . $RootPath . '/Contracts.php?identifier=' . urlencode($Identifier) . '">' . _('click here') . '</a> ' . _('to continue'), 'info');
 	include('includes/footer.inc');
 	exit;
 }
@@ -154,8 +154,8 @@ if (isset($_POST['Search'])) {
 
 
 if (isset($_GET['Delete'])) {
-	if ($_SESSION['Contract' . $identifier]->Status != 2) {
-		$_SESSION['Contract' . $identifier]->Remove_ContractComponent($_GET['Delete']);
+	if ($_SESSION['Contract' . $Identifier]->Status != 2) {
+		$_SESSION['Contract' . $Identifier]->Remove_ContractComponent($_GET['Delete']);
 	} else {
 		prnMsg(_('The contract BOM cannot be altered because the customer has already placed the order'), 'warn');
 	}
@@ -166,9 +166,9 @@ if (isset($_POST['NewItem'])) {
 	for ($i = 0; $i < $_POST['CountOfItems']; $i++) {
 		$AlreadyOnThisBOM = 0;
 		if (filter_number_format($_POST['Qty' . $i]) > 0) {
-			if (count($_SESSION['Contract' . $identifier]->ContractBOM) != 0) {
+			if (count($_SESSION['Contract' . $Identifier]->ContractBOM) != 0) {
 
-				foreach ($_SESSION['Contract' . $identifier]->ContractBOM as $Component) {
+				foreach ($_SESSION['Contract' . $Identifier]->ContractBOM as $Component) {
 
 					/* do a loop round the items on the order to see that the item
 					is not already on this order */
@@ -199,7 +199,7 @@ if (isset($_POST['NewItem'])) {
 
 				if ($MyRow = DB_fetch_array($Result1)) {
 
-					$_SESSION['Contract' . $identifier]->Add_To_ContractBOM(trim($_POST['StockID' . $i]), $MyRow['description'], '', filter_number_format($_POST['Qty' . $i]), /* Qty */ $MyRow['unitcost'], $MyRow['units'], $MyRow['decimalplaces']);
+					$_SESSION['Contract' . $Identifier]->Add_To_ContractBOM(trim($_POST['StockID' . $i]), $MyRow['description'], '', filter_number_format($_POST['Qty' . $i]), /* Qty */ $MyRow['unitcost'], $MyRow['units'], $MyRow['decimalplaces']);
 				} else {
 					prnMsg(_('The item code') . ' ' . trim($_POST['StockID' . $i]) . ' ' . _('does not exist in the database and therefore cannot be added to the contract BOM'), 'error');
 					if ($Debug == 1) {
@@ -218,19 +218,19 @@ if (isset($_POST['NewItem'])) {
 
 /* This is where the order as selected should be displayed  reflecting any deletions or insertions*/
 
-echo '<form onSubmit="return VerifyForm(this);" id="ContractBOMForm" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $identifier . '" method="post" class="noPrint">';
+echo '<form onSubmit="return VerifyForm(this);" id="ContractBOMForm" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '" method="post" class="noPrint">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
-if (count($_SESSION['Contract' . $identifier]->ContractBOM) > 0) {
+if (count($_SESSION['Contract' . $Identifier]->ContractBOM) > 0) {
 	echo '<p class="page_title_text noPrint" >
-			<img src="' . $RootPath . '/css/' . $Theme . '/images/contract.png" title="' . _('Contract Bill of Material') . '" alt="" />  ' . $_SESSION['Contract' . $identifier]->CustomerName . '
+			<img src="' . $RootPath . '/css/' . $Theme . '/images/contract.png" title="' . _('Contract Bill of Material') . '" alt="" />  ' . $_SESSION['Contract' . $Identifier]->CustomerName . '
 		</p>';
 
 	echo '<table class="selection">';
 
-	if (isset($_SESSION['Contract' . $identifier]->ContractRef)) {
+	if (isset($_SESSION['Contract' . $Identifier]->ContractRef)) {
 		echo '<tr>
-				<th colspan="7">' . _('Contract Reference') . ': ' . $_SESSION['Contract' . $identifier]->ContractRef . '</th>
+				<th colspan="7">' . _('Contract Reference') . ': ' . $_SESSION['Contract' . $Identifier]->ContractRef . '</th>
 			</tr>';
 	}
 
@@ -243,10 +243,10 @@ if (count($_SESSION['Contract' . $identifier]->ContractBOM) > 0) {
 			<th>' . _('Sub-total') . '</th>
 		</tr>';
 
-	$_SESSION['Contract' . $identifier]->total = 0;
+	$_SESSION['Contract' . $Identifier]->total = 0;
 	$k = 0; //row colour counter
 	$TotalCost = 0;
-	foreach ($_SESSION['Contract' . $identifier]->ContractBOM as $ContractComponent) {
+	foreach ($_SESSION['Contract' . $Identifier]->ContractBOM as $ContractComponent) {
 
 		$LineTotal = $ContractComponent->Quantity * $ContractComponent->ItemCost;
 
@@ -266,7 +266,7 @@ if (count($_SESSION['Contract' . $identifier]->ContractBOM) > 0) {
 			  <td>' . $ContractComponent->UOM . '</td>
 			  <td class="number">' . locale_number_format($ContractComponent->ItemCost, $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
 			  <td class="number">' . $DisplayLineTotal . '</td>
-			  <td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $identifier . '&amp;Delete=' . $ContractComponent->ComponentID . '" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this item from the contract BOM?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td></tr>';
+			  <td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '&amp;Delete=' . $ContractComponent->ComponentID . '" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this item from the contract BOM?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td></tr>';
 		$TotalCost += $LineTotal;
 	}
 

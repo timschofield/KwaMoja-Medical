@@ -204,17 +204,17 @@ if (isset($_POST['CreateTemplate'])) {
 		$Recipients = array(
 			'"Submissions" <' . $SubmissionsEmail . '>'
 		);
-		$mail = new htmlMimeMail();
+		$Mail = new htmlMimeMail();
 		$Host = $_SERVER['HTTP_HOST'];
-		$attachment = $mail->getFile('http://' . $Host . $RootPath . '/companies/' . $_SESSION['DatabaseName'] . '/reports/' . $_POST['TemplateName'] . '.sql');
-		$mail->setText('Please find company template ' . $_POST['TemplateName']);
-		$mail->addAttachment($attachment, 'CompanyTemplate.sql', 'application/txt');
-		$mail->setSubject('Company Template Submission');
+		$attachment = $Mail->getFile('http://' . $Host . $RootPath . '/companies/' . $_SESSION['DatabaseName'] . '/reports/' . $_POST['TemplateName'] . '.sql');
+		$Mail->setText('Please find company template ' . $_POST['TemplateName']);
+		$Mail->addAttachment($attachment, 'CompanyTemplate.sql', 'application/txt');
+		$Mail->setSubject('Company Template Submission');
 		if ($_SESSION['SmtpSetting'] == 0) {
-			$mail->setFrom($_SESSION['CompanyRecord']['coyname'] . '<' . $_SESSION['CompanyRecord']['email'] . '>');
-			$Result = $mail->send($Recipients);
+			$Mail->setFrom($_SESSION['CompanyRecord']['coyname'] . '<' . $_SESSION['CompanyRecord']['email'] . '>');
+			$Result = $Mail->send($Recipients);
 		} else {
-			$Result = SendmailBySmtp($mail, $Recipients);
+			$Result = SendmailBySmtp($Mail, $Recipients);
 		}
 		/*end of SQL Script creation */
 	}

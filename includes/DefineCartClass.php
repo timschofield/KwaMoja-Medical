@@ -76,9 +76,9 @@ class Cart {
 		$this->CurrDecimalPlaces = 2; //default
 	}
 
-	function add_to_cart($StockID, $Qty, $Descr, $LongDescr, $Price, $Disc = 0, $UOM, $Volume, $Weight, $QOHatLoc = 0, $MBflag = 'B', $ActDispatchDate = NULL, $QtyInvoiced = 0, $DiscCat = '', $Controlled = 0, $Serialised = 0, $DecimalPlaces = 0, $Narrative = '', $UpdateDB = 'No', $LineNumber = -1, $TaxCategory = 0, $vtigerProductID = '', $ItemDue = '', $POLine = '', $StandardCost = 0, $EOQ = 1, $NextSerialNo = 0, $ExRate = 1, $identifier = 0) {
+	function add_to_cart($StockId, $Qty, $Descr, $LongDescr, $Price, $Disc = 0, $UOM, $Volume, $Weight, $QOHatLoc = 0, $MBflag = 'B', $ActDispatchDate = NULL, $QtyInvoiced = 0, $DiscCat = '', $Controlled = 0, $Serialised = 0, $DecimalPlaces = 0, $Narrative = '', $UpdateDB = 'No', $LineNumber = -1, $TaxCategory = 0, $vtigerProductID = '', $ItemDue = '', $POLine = '', $StandardCost = 0, $EOQ = 1, $NextSerialNo = 0, $ExRate = 1, $Identifier = 0) {
 
-		if (isset($StockID) and $StockID != "" and $Qty > 0 and isset($Qty)) {
+		if (isset($StockId) and $StockId != "" and $Qty > 0 and isset($Qty)) {
 
 			if ($Price < 0) {
 				/*madness check - use a credit note to give money away!*/
@@ -89,7 +89,7 @@ class Cart {
 				$LineNumber = $this->LineCounter;
 			}
 
-			$this->LineItems[$LineNumber] = new LineDetails($LineNumber, $StockID, $Descr, $LongDescr, $Qty, $Price, $Disc, $UOM, $Volume, $Weight, $QOHatLoc, $MBflag, $ActDispatchDate, $QtyInvoiced, $DiscCat, $Controlled, $Serialised, $DecimalPlaces, $Narrative, $TaxCategory, $ItemDue, $POLine, $StandardCost, $EOQ, $NextSerialNo, $ExRate);
+			$this->LineItems[$LineNumber] = new LineDetails($LineNumber, $StockId, $Descr, $LongDescr, $Qty, $Price, $Disc, $UOM, $Volume, $Weight, $QOHatLoc, $MBflag, $ActDispatchDate, $QtyInvoiced, $DiscCat, $Controlled, $Serialised, $DecimalPlaces, $Narrative, $TaxCategory, $ItemDue, $POLine, $StandardCost, $EOQ, $NextSerialNo, $ExRate);
 			$this->ItemsOrdered++;
 
 			if ($UpdateDB == 'Yes') {
@@ -110,14 +110,14 @@ class Cart {
 														itemdue,
 														poline)
 													VALUES(" . $LineNumber . ",
-														" . $_SESSION['ExistingOrder' . $identifier] . ",
-														'" . trim(mb_strtoupper($StockID)) . "',
+														" . $_SESSION['ExistingOrder' . $Identifier] . ",
+														'" . trim(mb_strtoupper($StockId)) . "',
 														" . $Qty . ",
 														" . $Price . ",
 														" . $Disc . ",'
 														" . FormatDateForSQL($ItemDue) . "',
 														" . $POLine . ")";
-				$Result = DB_query($SQL, _('The order line for') . ' ' . mb_strtoupper($StockID) . ' ' . _('could not be inserted'));
+				$Result = DB_query($SQL, _('The order line for') . ' ' . mb_strtoupper($StockId) . ' ' . _('could not be inserted'));
 			}
 
 			$this->LineCounter = $LineNumber + 1;
@@ -126,7 +126,7 @@ class Cart {
 		return 0;
 	}
 
-	function update_cart_item($UpdateLineNumber, $Qty, $Price, $Disc, $Narrative, $UpdateDB = 'No', $ItemDue, $POLine, $GPPercent, $identifier) {
+	function update_cart_item($UpdateLineNumber, $Qty, $Price, $Disc, $Narrative, $UpdateDB = 'No', $ItemDue, $POLine, $GPPercent, $Identifier) {
 
 		if ($Qty > 0) {
 			$this->LineItems[$UpdateLineNumber]->Quantity = $Qty;
@@ -144,12 +144,12 @@ class Cart {
 															narrative ='" . $Narrative . "',
 															itemdue = '" . FormatDateForSQL($ItemDue) . "',
 															poline = '" . $POLine . "'
-								WHERE orderno=" . $_SESSION['ExistingOrder' . $identifier] . "
+								WHERE orderno=" . $_SESSION['ExistingOrder' . $Identifier] . "
 								AND orderlineno=" . $UpdateLineNumber, _('The order line number') . ' ' . $UpdateLineNumber . ' ' . _('could not be updated'));
 		}
 	}
 
-	function remove_from_cart($LineNumber, $UpdateDB = 'No', $identifier = 0) {
+	function remove_from_cart($LineNumber, $UpdateDB = 'No', $Identifier = 0) {
 
 		if (!isset($LineNumber) or $LineNumber == '' or $LineNumber < 0) {
 			/* over check it */
@@ -160,9 +160,9 @@ class Cart {
 			if ($this->Some_Already_Delivered($LineNumber) == 0) {
 				/* nothing has been delivered, delete it. */
 				$Result = DB_query("DELETE FROM salesorderdetails
-									WHERE orderno='" . $_SESSION['ExistingOrder' . $identifier] . "'
+									WHERE orderno='" . $_SESSION['ExistingOrder' . $Identifier] . "'
 									AND orderlineno='" . $LineNumber . "'", _('The order line could not be deleted because'));
-				prnMsg(_('Deleted Line Number') . ' ' . $LineNumber . ' ' . _('from existing Order Number') . ' ' . $_SESSION['ExistingOrder' . $identifier], 'success');
+				prnMsg(_('Deleted Line Number') . ' ' . $LineNumber . ' ' . _('from existing Order Number') . ' ' . $_SESSION['ExistingOrder' . $Identifier], 'success');
 			} else {
 				/* something has been delivered. Clear the remaining Qty and Mark Completed */
 				$Result = DB_query("UPDATE salesorderdetails SET quantity=qtyinvoiced,
@@ -183,12 +183,12 @@ class Cart {
 		/* Makes a comma seperated list of the stock items ordered
 		for use in SQL expressions */
 
-		$StockID_List = '';
+		$StockId_List = '';
 		foreach ($this->LineItems as $StockItem) {
-			$StockID_List .= ",'" . $StockItem->StockID . "'";
+			$StockId_List .= ",'" . $StockItem->StockID . "'";
 		}
 
-		return mb_substr($StockID_List, 1);
+		return mb_substr($StockId_List, 1);
 
 	}
 
@@ -328,7 +328,7 @@ class Cart {
 
 class LineDetails {
 	var $LineNumber;
-	var $StockID;
+	var $StockId;
 	var $ItemDescription;
 	var $LongDescription;
 	var $Quantity;

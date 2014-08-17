@@ -13,11 +13,11 @@ if (isset($_GET['WO'])) {
 	unset($SelectedWO);
 }
 if (isset($_GET['StockID'])) {
-	$StockID = $_GET['StockID'];
+	$StockId = $_GET['StockID'];
 } elseif (isset($_POST['StockID'])) {
-	$StockID = $_POST['StockID'];
+	$StockId = $_POST['StockID'];
 } else {
-	unset($StockID);
+	unset($StockId);
 }
 echo '<div class="toplink">
 		<a href="' . $RootPath . '/SelectWorkOrder.php">' . _('Back to Work Orders') . '</a>
@@ -29,7 +29,7 @@ echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $T
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
-if (!isset($SelectedWO) or !isset($StockID)) {
+if (!isset($SelectedWO) or !isset($StockId)) {
 	/* This page can only be called with a purchase order number for invoicing*/
 	echo '<div class="centre">
 			<a href="' . $RootPath . '/SelectWorkOrder.php">' . _('Select a work order to receive') . '</a>
@@ -40,8 +40,8 @@ if (!isset($SelectedWO) or !isset($StockID)) {
 } else {
 	echo '<input type="hidden" name="WO" value="' . $SelectedWO . '" />';
 	$_POST['WO'] = $SelectedWO;
-	echo '<input type="hidden" name="StockID" value="' . $StockID . '" />';
-	$_POST['StockID'] = $StockID;
+	echo '<input type="hidden" name="StockID" value="' . $StockId . '" />';
+	$_POST['StockID'] = $StockId;
 }
 
 if (isset($_POST['Process'])) { //user hit the process the work order receipts entered.

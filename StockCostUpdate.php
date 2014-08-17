@@ -8,9 +8,9 @@ include('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');
 echo '<script src="javascripts/Chart.js"></script>';
 if (isset($_GET['StockID'])) {
-	$StockID = trim(mb_strtoupper($_GET['StockID']));
+	$StockId = trim(mb_strtoupper($_GET['StockID']));
 } elseif (isset($_POST['StockID'])) {
-	$StockID = trim(mb_strtoupper($_POST['StockID']));
+	$StockId = trim(mb_strtoupper($_POST['StockID']));
 }
 
 echo '<div class="toplink"><a href="' . $RootPath . '/SelectProduct.php">' . _('Back to Items') . '</a></div>';
@@ -32,7 +32,7 @@ if (isset($_POST['UpdateData'])) {
 			INNER JOIN stockcosts
 				ON stockmaster.stockid=stockcosts.stockid
 				AND stockcosts.succeeded=0
-			WHERE stockmaster.stockid='" . $StockID . "'
+			WHERE stockmaster.stockid='" . $StockId . "'
 			GROUP BY description,
 					units,
 					lastcost,
@@ -60,21 +60,21 @@ if (isset($_POST['UpdateData'])) {
 	$OldCost = $_POST['OldMaterialCost'] + $_POST['OldLabourCost'] + $_POST['OldOverheadCost'];
 	$NewCost = filter_number_format($_POST['MaterialCost']) + filter_number_format($_POST['LabourCost']) + filter_number_format($_POST['OverheadCost']);
 
-	$Result = DB_query("SELECT * FROM stockmaster WHERE stockid='" . $StockID . "'");
+	$Result = DB_query("SELECT * FROM stockmaster WHERE stockid='" . $StockId . "'");
 	$MyRow = DB_fetch_row($Result);
 	if (DB_num_rows($Result) == 0) {
 		prnMsg(_('The entered item code does not exist'), 'error', _('Non-existent Item'));
 	} elseif ($OldCost != $NewCost) {
 
 		$Result = DB_Txn_Begin();
-		ItemCostUpdateGL($StockID, $NewCost, $OldCost, $_POST['QOH']);
+		ItemCostUpdateGL($StockId, $NewCost, $OldCost, $_POST['QOH']);
 
 		$ErrMsg = _('The old cost details for the stock item could not be updated because');
 		$DbgMsg = _('The SQL that failed was');
-		$SQL = "UPDATE stockcosts SET succeeded=1 WHERE stockid='" . $StockID . "'";
+		$SQL = "UPDATE stockcosts SET succeeded=1 WHERE stockid='" . $StockId . "'";
 		$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
-		$SQL = "INSERT INTO stockcosts VALUES('" . $StockID . "',
+		$SQL = "INSERT INTO stockcosts VALUES('" . $StockId . "',
 										'" . filter_number_format($_POST['MaterialCost']) . "',
 										'" . filter_number_format($_POST['LabourCost']) . "',
 										'" . filter_number_format($_POST['OverheadCost']) . "',
@@ -86,7 +86,7 @@ if (isset($_POST['UpdateData'])) {
 
 		$Result = DB_Txn_Commit();
 
-		UpdateCost($StockID); //Update any affected BOMs
+		UpdateCost($StockId); //Update any affected BOMs
 
 	}
 }
@@ -113,7 +113,7 @@ $SQL = "SELECT description,
 			INNER JOIN stockcosts
 				ON stockmaster.stockid = stockcosts.stockid
 				AND stockcosts.succeeded=0
-			WHERE stockmaster.stockid='" . $StockID . "'
+			WHERE stockmaster.stockid='" . $StockId . "'
 			GROUP BY description,
 					units,
 					lastcost,
@@ -136,12 +136,12 @@ echo '<table widthe="98%">
 echo '<table cellpadding="2" class="selection">
 		<tr>
 			<th colspan="2">' . _('Item Code') . ':
-				<input type="text" name="StockID" value="' . $StockID . '"  required="required" minlength="1" maxlength="20" />
+				<input type="text" name="StockID" value="' . $StockId . '"  required="required" minlength="1" maxlength="20" />
 				<input type="submit" name="Show" value="' . _('Show Cost Details') . '" />
 			</th>
 		</tr>
 		<tr>
-			<th colspan="2">' . $StockID . ' - ' . $MyRow['description'] . '</th>
+			<th colspan="2">' . $StockId . ' - ' . $MyRow['description'] . '</th>
 		</tr>
 		<tr>
 			<th colspan="2">' . _('Total Quantity On Hand') . ': ' . $MyRow['totalqoh'] . ' ' . $MyRow['units'] . '</th>
@@ -154,11 +154,11 @@ echo '<table cellpadding="2" class="selection">
 if (($MyRow['mbflag'] == 'D' and $MyRow['stocktype'] != 'L') or $MyRow['mbflag'] == 'A' or $MyRow['mbflag'] == 'K') {
 	echo '</form>'; // Close the form
 	if ($MyRow['mbflag'] == 'D') {
-		echo '<br />' . $StockID . ' ' . _('is a service item');
+		echo '<br />' . $StockId . ' ' . _('is a service item');
 	} else if ($MyRow['mbflag'] == 'A') {
-		echo '<br />' . $StockID . ' ' . _('is an assembly part');
+		echo '<br />' . $StockId . ' ' . _('is an assembly part');
 	} else if ($MyRow['mbflag'] == 'K') {
-		echo '<br />' . $StockID . ' ' . _('is a kit set part');
+		echo '<br />' . $StockId . ' ' . _('is a kit set part');
 	}
 	prnMsg(_('Cost information cannot be modified for kits assemblies or service items') . '. ' . _('Please select a different part'), 'warn');
 	include('includes/footer.inc');
@@ -171,7 +171,7 @@ $HistorySQL = "SELECT stockcosts.materialcost,
 					stockcosts.costfrom,
 					stockcosts.succeeded
 				FROM stockcosts
-				WHERE stockid='" . $StockID . "'
+				WHERE stockid='" . $StockId . "'
 				ORDER BY costfrom DESC
 				LIMIT 10";
 $HistoryResult = DB_query($HistorySQL);
@@ -292,11 +292,11 @@ echo '</td>
 echo '</table>'; //Container
 if ($MyRow['mbflag'] != 'D') {
 	echo '<div class="centre">
-			<a href="' . $RootPath . '/StockStatus.php?StockID=' . urlencode($StockID) . '">' . _('Show Stock Status') . '</a>
-			<a href="' . $RootPath . '/StockMovements.php?StockID=' . urlencode($StockID) . '">' . _('Show Stock Movements') . '</a>
-			<a href="' . $RootPath . '/StockUsage.php?StockID=' . urlencode($StockID) . '">' . _('Show Stock Usage') . '</a>
-			<a href="' . $RootPath . '/SelectSalesOrder.php?SelectedStockItem=' . urlencode($StockID) . '">' . _('Search Outstanding Sales Orders') . '</a>
-			<a href="' . $RootPath . '/SelectCompletedOrder.php?SelectedStockItem=' . urlencode($StockID) . '">' . _('Search Completed Sales Orders') . '</a>
+			<a href="' . $RootPath . '/StockStatus.php?StockID=' . urlencode($StockId) . '">' . _('Show Stock Status') . '</a>
+			<a href="' . $RootPath . '/StockMovements.php?StockID=' . urlencode($StockId) . '">' . _('Show Stock Movements') . '</a>
+			<a href="' . $RootPath . '/StockUsage.php?StockID=' . urlencode($StockId) . '">' . _('Show Stock Usage') . '</a>
+			<a href="' . $RootPath . '/SelectSalesOrder.php?SelectedStockItem=' . urlencode($StockId) . '">' . _('Search Outstanding Sales Orders') . '</a>
+			<a href="' . $RootPath . '/SelectCompletedOrder.php?SelectedStockItem=' . urlencode($StockId) . '">' . _('Search Completed Sales Orders') . '</a>
 		</div>';
 }
 echo '</form>';

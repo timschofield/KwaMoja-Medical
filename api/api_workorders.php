@@ -178,8 +178,8 @@ function InsertWorkOrder($WorkOrderDetails, $user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	foreach ($WorkOrderDetails as $key => $value) {
-		$WorkOrderDetails[$key] = DB_escape_string($value);
+	foreach ($WorkOrderDetails as $Key => $Value) {
+		$WorkOrderDetails[$Key] = DB_escape_string($Value);
 	}
 	$WorkOrder['wo'] = GetNextTransactionNo(40);
 	$WorkOrderItem['wo'] = $WorkOrder['wo'];
@@ -226,15 +226,15 @@ function InsertWorkOrder($WorkOrderDetails, $user, $password) {
 
 	$WOFieldNames = '';
 	$WOFieldValues = '';
-	foreach ($WorkOrder as $key => $value) {
-		$WOFieldNames .= $key . ', ';
-		$WOFieldValues .= '"' . $value . '", ';
+	foreach ($WorkOrder as $Key => $Value) {
+		$WOFieldNames .= $Key . ', ';
+		$WOFieldValues .= '"' . $Value . '", ';
 	}
 	$ItemFieldNames = '';
 	$ItemFieldValues = '';
-	foreach ($WorkOrderItem as $key => $value) {
-		$ItemFieldNames .= $key . ', ';
-		$ItemFieldValues .= '"' . $value . '", ';
+	foreach ($WorkOrderItem as $Key => $Value) {
+		$ItemFieldNames .= $Key . ', ';
+		$ItemFieldValues .= '"' . $Value . '", ';
 	}
 	if (sizeof($Errors) == 0) {
 		$wosql = 'INSERT INTO workorders (' . mb_substr($WOFieldNames, 0, -2) . ') ' . 'VALUES (' . mb_substr($WOFieldValues, 0, -2) . ') ';
@@ -255,31 +255,31 @@ function InsertWorkOrder($WorkOrderDetails, $user, $password) {
 	return $Errors;
 }
 
-function WorkOrderIssue($WONumber, $StockID, $Location, $Quantity, $TranDate, $Batch, $user, $password) {
+function WorkOrderIssue($WONumber, $StockId, $Location, $Quantity, $TranDate, $Batch, $user, $password) {
 	$Errors = array();
 	$db = db($user, $password);
 	if (gettype($db) == 'integer') {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	$Errors = VerifyStockCodeExists($StockID, sizeof($Errors), $Errors);
+	$Errors = VerifyStockCodeExists($StockId, sizeof($Errors), $Errors);
 	$Errors = VerifyWorkOrderExists($WONumber, sizeof($Errors), $Errors);
 	$Errors = VerifyStockLocation($Location, sizeof($Errors), $Errors);
 	$Errors = VerifyIssuedQuantity($Quantity, sizeof($Errors), $Errors);
 	//		$Errors = VerifyTransactionDate($TranDate, sizeof($Errors), $Errors);
 	if ($Batch != '') {
-		VerifyBatch($Batch, $StockID, $Location, sizeof($Errors), $Errors);
+		VerifyBatch($Batch, $StockId, $Location, sizeof($Errors), $Errors);
 	}
 	if (sizeof($Errors) != 0) {
 		return $Errors;
 	} else {
-		$balances = GetStockBalance($StockID, $user, $password);
+		$balances = GetStockBalance($StockId, $user, $password);
 		$balance = 0;
 		for ($i = 0; $i < sizeof($balances); $i++) {
 			$balance = $balance + $balances[$i]['quantity'];
 		}
 		$newqoh = $Quantity + $balance;
-		$itemdetails = GetStockItem($StockID, $user, $password);
+		$itemdetails = GetStockItem($StockId, $user, $password);
 		$wipglact = GetCategoryGLCode($itemdetails[1]['categoryid'], 'wipact');
 		$stockact = GetCategoryGLCode($itemdetails[1]['categoryid'], 'stockact');
 		$cost = $itemdetails[1]['materialcost'] + $itemdetails[1]['labourcost'] + $itemdetails[1]['overheadcost'];
@@ -296,7 +296,7 @@ function WorkOrderIssue($WONumber, $StockID, $Location, $Quantity, $TranDate, $B
 												   newqoh,
 												   price,
 												   standardcost)
-								   		VALUES ('" . $StockID . "',
+								   		VALUES ('" . $StockId . "',
 												28,
 												'" . $TransactionNo . "',
 												'" . $Location . "',
@@ -309,7 +309,7 @@ function WorkOrderIssue($WONumber, $StockID, $Location, $Quantity, $TranDate, $B
 												'" . $cost . "')";
 		$locstocksql = "UPDATE locstock SET quantity = quantity + " . $Quantity . "
 									   WHERE loccode='" . $Location . "'
-									   AND stockid='" . $StockID . "'";
+									   AND stockid='" . $StockId . "'";
 		$glupdatesql1 = "INSERT INTO gltrans (type,
 																	   typeno,
 																	   trandate,
@@ -323,7 +323,7 @@ function WorkOrderIssue($WONumber, $StockID, $Location, $Quantity, $TranDate, $B
 																	  '" . GetPeriodFromTransactionDate($TranDate, sizeof($Errors), $Errors) . "',
 																	  '" . $wipglact . "',
 																	  '" . $cost * -$Quantity . "',
-																	  '" . $StockID . ' x ' . $Quantity . ' @ ' . $cost . "')";
+																	  '" . $StockId . ' x ' . $Quantity . ' @ ' . $cost . "')";
 		$glupdatesql2 = "INSERT INTO gltrans (type,
 																		typeno,
 																		trandate,
@@ -337,9 +337,9 @@ function WorkOrderIssue($WONumber, $StockID, $Location, $Quantity, $TranDate, $B
 																'" . GetPeriodFromTransactionDate($TranDate, sizeof($Errors), $Errors) . "',
 																'" . $stockact . "',
 																'" . $cost * $Quantity . "',
-																'" . $StockID . ' x ' . $Quantity . ' @ ' . $cost . "')";
+																'" . $StockId . ' x ' . $Quantity . ' @ ' . $cost . "')";
 		$systypessql = "UPDATE systypes set typeno='" . $TransactionNo . "' where typeid=28";
-		$batchsql = "UPDATE stockserialitems SET quantity=quantity-" . $Quantity . " WHERE stockid='" . $StockID . "'
+		$batchsql = "UPDATE stockserialitems SET quantity=quantity-" . $Quantity . " WHERE stockid='" . $StockId . "'
 							  AND loccode='" . $Location . "' AND serialno='" . $Batch . "'";
 		$costsql = "UPDATE workorders SET costissued=costissued+" . $cost . " WHERE wo='" . $WONumber . "'";
 
@@ -363,14 +363,14 @@ function WorkOrderIssue($WONumber, $StockID, $Location, $Quantity, $TranDate, $B
 	}
 }
 
-function WorkOrderReceive($WONumber, $StockID, $Location, $Quantity, $TranDate, $user, $password) {
+function WorkOrderReceive($WONumber, $StockId, $Location, $Quantity, $TranDate, $user, $password) {
 	$Errors = array();
 	$db = db($user, $password);
 	if (gettype($db) == 'integer') {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	$Errors = VerifyStockCodeExists($StockID, sizeof($Errors), $Errors);
+	$Errors = VerifyStockCodeExists($StockId, sizeof($Errors), $Errors);
 	$Errors = VerifyWorkOrderExists($WONumber, sizeof($Errors), $Errors);
 	$Errors = VerifyStockLocation($Location, sizeof($Errors), $Errors);
 	$Errors = VerifyReceivedQuantity($Quantity, sizeof($Errors), $Errors);
@@ -378,8 +378,8 @@ function WorkOrderReceive($WONumber, $StockID, $Location, $Quantity, $TranDate, 
 	if (sizeof($Errors) != 0) {
 		return $Errors;
 	}
-	$itemdetails = GetStockItem($StockID, $user, $password);
-	$balances = GetStockBalance($StockID, $user, $password);
+	$itemdetails = GetStockItem($StockId, $user, $password);
+	$balances = GetStockBalance($StockId, $user, $password);
 	$balance = 0;
 	for ($i = 0; $i < sizeof($balances); $i++) {
 		$balance = $balance + $balances[$i]['quantity'];
@@ -403,7 +403,7 @@ function WorkOrderReceive($WONumber, $StockID, $Location, $Quantity, $TranDate, 
 												   newqoh,
 												   price,
 												   standardcost)
-									  	VALUES ('" . $StockID . "',
+									  	VALUES ('" . $StockId . "',
 												 '26',
 												'" . $TransactionNo . "',
 												'" . $Location . "',
@@ -416,7 +416,7 @@ function WorkOrderReceive($WONumber, $StockID, $Location, $Quantity, $TranDate, 
 												'" . $cost . "')";
 	$locstocksql = "UPDATE locstock SET quantity = quantity + " . $Quantity . "
 								 WHERE loccode='" . $Location . "'
-								 AND stockid='" . $StockID . "'";
+								 AND stockid='" . $StockId . "'";
 	$glupdatesql1 = "INSERT INTO gltrans (type,
 											   typeno,
 											   trandate,
@@ -430,7 +430,7 @@ function WorkOrderReceive($WONumber, $StockID, $Location, $Quantity, $TranDate, 
 											   '" . GetPeriodFromTransactionDate($TranDate, sizeof($Errors), $Errors) . "',
 											   '" . $wipglact . "',
 											   '" . $cost * $Quantity . "',
-											   '" . $StockID . ' x ' . $Quantity . ' @ ' . $cost . "')";
+											   '" . $StockId . ' x ' . $Quantity . ' @ ' . $cost . "')";
 	$glupdatesql2 = "INSERT INTO gltrans (type,
 												typeno,
 												trandate,
@@ -443,7 +443,7 @@ function WorkOrderReceive($WONumber, $StockID, $Location, $Quantity, $TranDate, 
 											   '" . $TranDate . "',
 											   '" . GetPeriodFromTransactionDate($TranDate, sizeof($Errors), $Errors) . "',
 											   '" . $stockact . ',' . $cost * -$Quantity . "',
-											   '" . $StockID . ' x ' . $Quantity . ' @ ' . $cost . "')";
+											   '" . $StockId . ' x ' . $Quantity . ' @ ' . $cost . "')";
 	$systypessql = "UPDATE systypes set typeno='" . $TransactionNo . "' where typeid=26";
 	DB_Txn_Begin();
 	api_DB_query($stockmovesql);

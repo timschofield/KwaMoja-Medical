@@ -13,8 +13,8 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 	foreach ($_POST as $FormVariable => $Quantity) {
 		if (mb_strpos($FormVariable, 'OrderQty') !== false) {
 			if ($Quantity > 0) {
-				$StockID = $_POST['StockID' . mb_substr($FormVariable, 8)];
-				$PurchItems[$StockID]['Quantity'] = filter_number_format($Quantity);
+				$StockId = $_POST['StockID' . mb_substr($FormVariable, 8)];
+				$PurchItems[$StockId]['Quantity'] = filter_number_format($Quantity);
 
 				$SQL = "SELECT description,
 							units,
@@ -22,9 +22,9 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 						FROM stockmaster
 						INNER JOIN stockcategory
 							ON stockcategory.categoryid = stockmaster.categoryid
-						WHERE stockmaster.stockid = '" . $StockID . "'";
+						WHERE stockmaster.stockid = '" . $StockId . "'";
 
-				$ErrMsg = _('The item details for') . ' ' . $StockID . ' ' . _('could not be retrieved because');
+				$ErrMsg = _('The item details for') . ' ' . $StockId . ' ' . _('could not be retrieved because');
 				$DbgMsg = _('The SQL used to retrieve the item details but failed was');
 				$ItemResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 				if (DB_num_rows($ItemResult) == 1) {
@@ -40,7 +40,7 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 							FROM purchdata
 							WHERE purchdata.supplierno = '" . $_POST['Supplier'] . "'
 								AND purchdata.effectivefrom <=CURRENT_DATE
-								AND purchdata.stockid = '" . $StockID . "'
+								AND purchdata.stockid = '" . $StockId . "'
 							GROUP BY purchdata.price,
 									purchdata.conversionfactor,
 									purchdata.supplierdescription,
@@ -49,7 +49,7 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 									purchdata.leadtime
 							ORDER BY latesteffectivefrom DESC";
 
-					$ErrMsg = _('The purchasing data for') . ' ' . $StockID . ' ' . _('could not be retrieved because');
+					$ErrMsg = _('The purchasing data for') . ' ' . $StockId . ' ' . _('could not be retrieved because');
 					$DbgMsg = _('The SQL used to retrieve the purchasing data but failed was');
 					$PurchDataResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 					if (DB_num_rows($PurchDataResult) > 0) { //the purchasing data is set up
@@ -62,7 +62,7 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 								WHERE supplierno= '" . $_POST['Supplier'] . "'
 									AND effectivefrom <=CURRENT_DATE
 									AND (effectiveto >=CURRENT_DATE OR effectiveto ='0000-00-00')
-									AND stockid = '" . $StockID . "'";
+									AND stockid = '" . $StockId . "'";
 
 						$ItemDiscountPercent = 0;
 						$ItemDiscountAmount = 0;
@@ -76,34 +76,34 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 						if ($ItemDiscountPercent != 0) {
 							prnMsg(_('Taken accumulated supplier percentage discounts of') . ' ' . locale_number_format($ItemDiscountPercent * 100, 2) . '%', 'info');
 						}
-						$PurchItems[$StockID]['Price'] = ($PurchRow['price'] * (1 - $ItemDiscountPercent) - $ItemDiscountAmount) / $PurchRow['conversionfactor'];
-						$PurchItems[$StockID]['ConversionFactor'] = $PurchRow['conversionfactor'];
-						$PurchItems[$StockID]['GLCode'] = $ItemRow['stockact'];
+						$PurchItems[$StockId]['Price'] = ($PurchRow['price'] * (1 - $ItemDiscountPercent) - $ItemDiscountAmount) / $PurchRow['conversionfactor'];
+						$PurchItems[$StockId]['ConversionFactor'] = $PurchRow['conversionfactor'];
+						$PurchItems[$StockId]['GLCode'] = $ItemRow['stockact'];
 
-						$PurchItems[$StockID]['SupplierDescription'] = $PurchRow['suppliers_partno'] . ' - ';
+						$PurchItems[$StockId]['SupplierDescription'] = $PurchRow['suppliers_partno'] . ' - ';
 						if (mb_strlen($PurchRow['supplierdescription']) > 2) {
-							$PurchItems[$StockID]['SupplierDescription'] .= $PurchRow['supplierdescription'];
+							$PurchItems[$StockId]['SupplierDescription'] .= $PurchRow['supplierdescription'];
 						} else {
-							$PurchItems[$StockID]['SupplierDescription'] .= $ItemRow['description'];
+							$PurchItems[$StockId]['SupplierDescription'] .= $ItemRow['description'];
 						}
-						$PurchItems[$StockID]['UnitOfMeasure'] = $PurchRow['suppliersuom'];
-						$PurchItems[$StockID]['SuppliersPartNo'] = $PurchRow['suppliers_partno'];
+						$PurchItems[$StockId]['UnitOfMeasure'] = $PurchRow['suppliersuom'];
+						$PurchItems[$StockId]['SuppliersPartNo'] = $PurchRow['suppliers_partno'];
 						$LeadTime = $PurchRow['leadtime'];
 						/* Work out the delivery date based on today + lead time */
-						$PurchItems[$StockID]['DeliveryDate'] = DateAdd(Date($_SESSION['DefaultDateFormat']), 'd', $LeadTime);
+						$PurchItems[$StockId]['DeliveryDate'] = DateAdd(Date($_SESSION['DefaultDateFormat']), 'd', $LeadTime);
 					} else { // no purchasing data setup
-						$PurchItems[$StockID]['Price'] = 0;
-						$PurchItems[$StockID]['ConversionFactor'] = 1;
-						$PurchItems[$StockID]['SupplierDescription'] = $ItemRow['description'];
-						$PurchItems[$StockID]['UnitOfMeasure'] = $ItemRow['units'];
-						$PurchItems[$StockID]['SuppliersPartNo'] = 'each';
+						$PurchItems[$StockId]['Price'] = 0;
+						$PurchItems[$StockId]['ConversionFactor'] = 1;
+						$PurchItems[$StockId]['SupplierDescription'] = $ItemRow['description'];
+						$PurchItems[$StockId]['UnitOfMeasure'] = $ItemRow['units'];
+						$PurchItems[$StockId]['SuppliersPartNo'] = 'each';
 						$LeadTime = 1;
-						$PurchItems[$StockID]['DeliveryDate'] = Date($_SESSION['DefaultDateFormat']);
+						$PurchItems[$StockId]['DeliveryDate'] = Date($_SESSION['DefaultDateFormat']);
 					}
-					$OrderValue += $PurchItems[$StockID]['Quantity'] * $PurchItems[$StockID]['Price'];
+					$OrderValue += $PurchItems[$StockId]['Quantity'] * $PurchItems[$StockId]['Price'];
 				} else { //item could not be found
 					$InputError = 1;
-					prnmsg(_('An item where a quantity was entered could not be retrieved from the database. The order cannot proceed. The item code was') . ': ' . $StockID, 'error');
+					prnmsg(_('An item where a quantity was entered could not be retrieved from the database. The order cannot proceed. The item code was') . ': ' . $StockId, 'error');
 				}
 			} //end if the quantity entered into the form is positive
 		} //end if the form variable name is OrderQtyXXX
@@ -254,7 +254,7 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 		$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 		/*Insert the purchase order detail records */
-		foreach ($PurchItems as $StockID => $POLine) {
+		foreach ($PurchItems as $StockId => $POLine) {
 
 			//print_r($POLine);
 
@@ -272,7 +272,7 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 													assetid,
 													conversionfactor )
 												VALUES ('" . $OrderNo . "',
-													'" . $StockID . "',
+													'" . $StockId . "',
 													'" . FormatDateForSQL($POLine['DeliveryDate']) . "',
 													'" . DB_escape_string($POLine['SupplierDescription']) . "',
 													'" . $POLine['GLCode'] . "',

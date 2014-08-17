@@ -1,7 +1,7 @@
 <?php
 
-function VerifyPurchDataLineExists($SupplierID, $StockID, $i, $Errors) {
-	if (VerifyStockCodeExists($StockID, $i, $Errors) != 0 and VerifySupplierNoExists($SupplierID, $i, $Errors) != 0) {
+function VerifyPurchDataLineExists($SupplierID, $StockId, $i, $Errors) {
+	if (VerifyStockCodeExists($StockId, $i, $Errors) != 0 and VerifySupplierNoExists($SupplierID, $i, $Errors) != 0) {
 		$Errors[$i] = StockSupplierLineDoesntExist;
 	}
 }
@@ -51,8 +51,8 @@ function InsertPurchData($PurchDataDetails, $user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	foreach ($PurchDataDetails as $key => $value) {
-		$PurchDataDetails[$key] = DB_escape_string($value);
+	foreach ($PurchDataDetails as $Key => $Value) {
+		$PurchDataDetails[$Key] = DB_escape_string($Value);
 	}
 	$Errors = VerifyStockCodeExists($PurchDataDetails['stockid'], sizeof($Errors), $Errors);
 	$Errors = VerifySupplierNoExists($PurchDataDetails['supplierno'], sizeof($Errors), $Errors);
@@ -76,9 +76,9 @@ function InsertPurchData($PurchDataDetails, $user, $password) {
 	}
 	$FieldNames = '';
 	$FieldValues = '';
-	foreach ($PurchDataDetails as $key => $value) {
-		$FieldNames .= $key . ', ';
-		$FieldValues .= '"' . $value . '", ';
+	foreach ($PurchDataDetails as $Key => $Value) {
+		$FieldNames .= $Key . ', ';
+		$FieldValues .= '"' . $Value . '", ';
 	}
 	if (sizeof($Errors) == 0) {
 		$sql = "INSERT INTO purchdata (" . mb_substr($FieldNames, 0, -2) . ")
@@ -102,8 +102,8 @@ function ModifyPurchData($PurchDataDetails, $user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	foreach ($PurchDataDetails as $key => $value) {
-		$PurchDataDetails[$key] = DB_escape_string($value);
+	foreach ($PurchDataDetails as $Key => $Value) {
+		$PurchDataDetails[$Key] = DB_escape_string($Value);
 	}
 	$Errors = VerifyPurchDataLineExists($PurchDataDetails['supplierno'], $PurchDataDetails['stockid'], sizeof($Errors), $Errors);
 	$Errors = VerifyStockCodeExists($PurchDataDetails['stockid'], sizeof($Errors), $Errors);
@@ -127,8 +127,8 @@ function ModifyPurchData($PurchDataDetails, $user, $password) {
 		$Errors = VerifyPreferredFlag($PurchDataDetails['preferred'], sizeof($Errors), $Errors);
 	}
 	$sql = "UPDATE purchdata SET ";
-	foreach ($PurchDataDetails as $key => $value) {
-		$sql .= $key . "='" . $value . "', ";
+	foreach ($PurchDataDetails as $Key => $Value) {
+		$sql .= $Key . "='" . $Value . "', ";
 	}
 	$sql = mb_substr($sql, 0, -2) . " WHERE stockid='" . $PurchDataDetails['stockid'] . "'
 								AND supplierno='" . $PurchDataDetails['supplierno'] . "'";

@@ -107,8 +107,8 @@ function InsertLocation($Location, $user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	foreach ($Location as $key => $value) {
-		$Location[$key] = DB_escape_string($value);
+	foreach ($Location as $Key => $Value) {
+		$Location[$Key] = DB_escape_string($Value);
 	}
 	$Errors = VerifyLocationCode($Location['loccode'], sizeof($Errors), $Errors);
 	$Errors = VerifyLocationName($Location['locationname'], sizeof($Errors), $Errors);
@@ -145,9 +145,9 @@ function InsertLocation($Location, $user, $password) {
 	}
 	$FieldNames = '';
 	$FieldValues = '';
-	foreach ($Location as $key => $value) {
-		$FieldNames .= $key . ', ';
-		$FieldValues .= '"' . $value . '", ';
+	foreach ($Location as $Key => $Value) {
+		$FieldNames .= $Key . ', ';
+		$FieldValues .= '"' . $Value . '", ';
 	}
 	if (sizeof($Errors) == 0) {
 		$sql = "INSERT INTO locations (" . mb_substr($FieldNames, 0, -2) . ")
@@ -173,8 +173,8 @@ function ModifyLocation($Location, $user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	foreach ($Location as $key => $value) {
-		$Location[$key] = DB_escape_string($value);
+	foreach ($Location as $Key => $Value) {
+		$Location[$Key] = DB_escape_string($Value);
 	}
 	$Errors = VerifyLocationExists($Location['loccode'], sizeof($Errors), $Errors);
 	$Errors = VerifyLocationName($Location['locationname'], sizeof($Errors), $Errors);
@@ -210,8 +210,8 @@ function ModifyLocation($Location, $user, $password) {
 		$Errors = VerifyContactName($Location['contact'], sizeof($Errors), $Errors);
 	}
 	$sql = "UPDATE locations SET ";
-	foreach ($Location as $key => $value) {
-		$sql .= $key . "='" . $value . "', ";
+	foreach ($Location as $Key => $Value) {
+		$sql .= $Key . "='" . $Value . "', ";
 	}
 	$sql = mb_substr($sql, 0, -2) . " WHERE loccode='" . $Location['loccode'] . "'";
 	if (sizeof($Errors) == 0) {

@@ -11,14 +11,14 @@ function display_children($Parent, $Level, &$BOMTree) {
 	global $i;
 
 	// retrive all children of parent
-	$c_result = DB_query("SELECT parent,
+	$ChildrenResult = DB_query("SELECT parent,
 								component
 						FROM bom WHERE parent='" . $Parent . "'
 						ORDER BY sequence");
-	if (DB_num_rows($c_result) > 0) {
+	if (DB_num_rows($ChildrenResult) > 0) {
 
-		while ($row = DB_fetch_array($c_result)) {
-			if ($Parent != $row['component']) {
+		while ($MyRow = DB_fetch_array($ChildrenResult)) {
+			if ($Parent != $MyRow['component']) {
 				// indent and display the title of this child
 				$BOMTree[$i]['Level'] = $Level; // Level
 				if ($Level > 15) {
@@ -26,11 +26,11 @@ function display_children($Parent, $Level, &$BOMTree) {
 					exit;
 				}
 				$BOMTree[$i]['Parent'] = $Parent; // Assemble
-				$BOMTree[$i]['Component'] = $row['component']; // Component
+				$BOMTree[$i]['Component'] = $MyRow['component']; // Component
 				// call this function again to display this
 				// child's children
 				$i++;
-				display_children($row['component'], $Level + 1, $BOMTree);
+				display_children($MyRow['component'], $Level + 1, $BOMTree);
 			}
 		}
 	}
@@ -222,14 +222,8 @@ if (isset($_GET['Select'])) {
 	$Select = $_POST['Select'];
 }
 
+$Msg = '';
 
-$msg = '';
-
-if (isset($Errors)) {
-	unset($Errors);
-}
-
-$Errors = array();
 $InputError = 0;
 
 if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Component
@@ -241,39 +235,25 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 
 		//editing a component need to do some validation of inputs
 
-		$i = 1;
-
 		if (!Is_Date($_POST['EffectiveAfter'])) {
 			$InputError = 1;
 			prnMsg(_('The effective after date field must be a date in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
-			$Errors[$i] = 'EffectiveAfter';
-			$i++;
 		}
 		if (!Is_Date($_POST['EffectiveTo'])) {
 			$InputError = 1;
 			prnMsg(_('The effective to date field must be a date in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
-			$Errors[$i] = 'EffectiveTo';
-			$i++;
 		}
 		if (!is_numeric(filter_number_format($_POST['Quantity']))) {
 			$InputError = 1;
 			prnMsg(_('The quantity entered must be numeric'), 'error');
-			$Errors[$i] = 'Quantity';
-			$i++;
 		}
 		if (filter_number_format($_POST['Quantity']) == 0) {
 			$InputError = 1;
 			prnMsg(_('The quantity entered cannot be zero'), 'error');
-			$Errors[$i] = 'Quantity';
-			$i++;
 		}
 		if (!Date1GreaterThanDate2($_POST['EffectiveTo'], $_POST['EffectiveAfter'])) {
 			$InputError = 1;
 			prnMsg(_('The effective to date must be a date after the effective after date') . '<br />' . _('The effective to date is') . ' ' . DateDiff($_POST['EffectiveTo'], $_POST['EffectiveAfter'], 'd') . ' ' . _('days before the effective after date') . '! ' . _('No updates have been performed') . '.<br />' . _('Effective after was') . ': ' . $_POST['EffectiveAfter'] . ' ' . _('and effective to was') . ': ' . $_POST['EffectiveTo'], 'error');
-			$Errors[$i] = 'EffectiveAfter';
-			$i++;
-			$Errors[$i] = 'EffectiveTo';
-			$i++;
 		}
 		if ($_POST['AutoIssue'] == 1 and isset($_POST['Component'])) {
 			$SQL = "SELECT controlled FROM stockmaster WHERE stockid='" . $_POST['Component'] . "'";
@@ -285,12 +265,8 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 			}
 		}
 
-		if (!in_array('EffectiveAfter', $Errors)) {
-			$EffectiveAfterSQL = FormatDateForSQL($_POST['EffectiveAfter']);
-		}
-		if (!in_array('EffectiveTo', $Errors)) {
-			$EffectiveToSQL = FormatDateForSQL($_POST['EffectiveTo']);
-		}
+		$EffectiveAfterSQL = FormatDateForSQL($_POST['EffectiveAfter']);
+		$EffectiveToSQL = FormatDateForSQL($_POST['EffectiveTo']);
 
 		if (isset($SelectedParent) and isset($SelectedComponent) and $InputError != 1) {
 
@@ -309,7 +285,7 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 			$DbgMsg = _('The SQL used to update the component was');
 
 			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
-			$msg = _('Details for') . ' - ' . $SelectedComponent . ' ' . _('have been updated') . '.';
+			$Msg = _('Details for') . ' - ' . $SelectedComponent . ' ' . _('have been updated') . '.';
 			UpdateCost($SelectedComponent);
 
 		} elseif ($InputError != 1 and !isset($SelectedComponent) and isset($SelectedParent)) {
@@ -360,14 +336,13 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 					$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 					UpdateCost($_POST['Component']);
-					$msg = _('A new component part') . ' ' . $_POST['Component'] . ' ' . _('has been added to the bill of material for part') . ' - ' . $SelectedParent . '.';
+					$Msg = _('A new component part') . ' ' . $_POST['Component'] . ' ' . _('has been added to the bill of material for part') . ' - ' . $SelectedParent . '.';
 
 				} else {
 
 					/*The component must already be on the BOM */
 
 					prnMsg(_('The component') . ' ' . $_POST['Component'] . ' ' . _('is already recorded as a component of') . ' ' . $SelectedParent . '.' . '<br />' . _('Whilst the quantity of the component required can be modified it is inappropriate for a component to appear more than once in a bill of material'), 'error');
-					$Errors[$i] = 'ComponentCode';
 				}
 
 
@@ -375,8 +350,8 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 
 		} //end of if no input errors
 
-		if ($msg != '') {
-			prnMsg($msg, 'success');
+		if ($Msg != '') {
+			prnMsg($Msg, 'success');
 		}
 
 	} elseif (isset($_GET['delete']) and isset($SelectedComponent) and isset($SelectedParent)) {
@@ -461,13 +436,13 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 	$ErrMsg = _('Could not retrieve the description of the parent part because');
 	$DbgMsg = _('The SQL used to retrieve description of the parent part was');
 	$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
-	$ix = 0;
+	$i = 0;
 	if (DB_num_rows($Result) > 0) {
 		echo '<table class="selection">';
 		echo '<tr><td><div class="centre">' . _('Manufactured parent items') . ' : ';
 		while ($MyRow = DB_fetch_array($Result)) {
-			echo (($ix) ? ', ' : '') . '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Select=' . $MyRow['parent'] . '">' . $MyRow['description'] . '&nbsp;(' . $MyRow['parent'] . ')</a>';
-			$ix++;
+			echo (($i) ? ', ' : '') . '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Select=' . $MyRow['parent'] . '">' . $MyRow['description'] . '&nbsp;(' . $MyRow['parent'] . ')</a>';
+			$i++;
 		} //end while loop
 		echo '</div></td></tr>';
 		echo '</table>';
@@ -487,10 +462,10 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 	if (DB_num_rows($Result) > 0) {
 		echo '<table class="selection">';
 		echo '<tr><td><div class="centre">' . _('Assembly parent items') . ' : ';
-		$ix = 0;
+		$i = 0;
 		while ($MyRow = DB_fetch_array($Result)) {
-			echo (($ix) ? ', ' : '') . '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Select=' . $MyRow['parent'] . '">' . $MyRow['description'] . '&nbsp;(' . $MyRow['parent'] . ')</a>';
-			$ix++;
+			echo (($i) ? ', ' : '') . '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Select=' . $MyRow['parent'] . '">' . $MyRow['description'] . '&nbsp;(' . $MyRow['parent'] . ')</a>';
+			$i++;
 		} //end while loop
 		echo '</div></td></tr>';
 		echo '</table>';
@@ -510,10 +485,10 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 	if (DB_num_rows($Result) > 0) {
 		echo '<table class="selection">';
 		echo '<tr><td><div class="centre">' . _('Kit sets') . ' : ';
-		$ix = 0;
+		$i = 0;
 		while ($MyRow = DB_fetch_array($Result)) {
-			echo (($ix) ? ', ' : '') . '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Select=' . $MyRow['parent'] . '">' . $MyRow['description'] . '&nbsp;(' . $MyRow['parent'] . ')</a>';
-			$ix++;
+			echo (($i) ? ', ' : '') . '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Select=' . $MyRow['parent'] . '">' . $MyRow['description'] . '&nbsp;(' . $MyRow['parent'] . ')</a>';
+			$i++;
 		} //end while loop
 		echo '</div></td>
 				</tr>
@@ -535,10 +510,10 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 		echo '<table class="selection">
 				<tr>
 					<td><div class="centre">' . _('Phantom') . ' : ';
-		$ix = 0;
+		$i = 0;
 		while ($MyRow = DB_fetch_array($Result)) {
-			echo (($ix) ? ', ' : '') . '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Select=' . $MyRow['parent'] . '">' . $MyRow['description'] . '&nbsp;(' . $MyRow['parent'] . ')</a>';
-			$ix++;
+			echo (($i) ? ', ' : '') . '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Select=' . $MyRow['parent'] . '">' . $MyRow['description'] . '&nbsp;(' . $MyRow['parent'] . ')</a>';
+			$i++;
 		} //end while loop
 		echo '</div></td></tr>';
 		echo '</table>';
@@ -937,8 +912,8 @@ if (!isset($SelectedParent)) {
 			} else {
 				$StockOnHand = locale_number_format($MyRow['totalonhand'], $MyRow['decimalplaces']);
 			}
-			$tab = $j + 3;
-			printf('<td><input tabindex="' . $tab . '" type="submit" name="Select" value="%s" /></td>
+			$TabIndex = $j + 3;
+			printf('<td><input tabindex="' . $TabIndex . '" type="submit" name="Select" value="%s" /></td>
 					<td>%s</td>
 					<td class="number">%s</td>
 					<td>%s</td>
@@ -958,28 +933,28 @@ if (!isset($SelectedParent)) {
 
 } //end StockID already selected
 // This function created by Dominik Jungowski on PHP developer blog
-function arrayUnique($array, $preserveKeys = false) {
+function arrayUnique($Array, $PreserveKeys = false) {
 	//Unique Array for return
-	$arrayRewrite = array();
+	$ArrayRewrite = array();
 	//Array with the md5 hashes
-	$arrayHashes = array();
-	foreach ($array as $key => $item) {
+	$ArrayHashes = array();
+	foreach ($Array as $Key => $Item) {
 		// Serialize the current element and create a md5 hash
-		$hash = md5(serialize($item));
+		$Hash = md5(serialize($Item));
 		// If the md5 didn't come up yet, add the element to
 		// arrayRewrite, otherwise drop it
-		if (!isset($arrayHashes[$hash])) {
+		if (!isset($ArrayHashes[$Hash])) {
 			// Save the current element hash
-			$arrayHashes[$hash] = $hash;
+			$ArrayHashes[$Hash] = $Hash;
 			//Add element to the unique Array
-			if ($preserveKeys) {
-				$arrayRewrite[$key] = $item;
+			if ($PreserveKeys) {
+				$ArrayRewrite[$Key] = $Item;
 			} else {
-				$arrayRewrite[] = $item;
+				$ArrayRewrite[] = $Item;
 			}
 		}
 	}
-	return $arrayRewrite;
+	return $ArrayRewrite;
 }
 
 include('includes/footer.inc');

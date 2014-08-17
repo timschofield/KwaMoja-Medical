@@ -16,13 +16,13 @@ if (isset($_POST['DebtorNo'])) {
 	$DebtorNo = $_GET['DebtorNo'];
 }
 echo '<div class="toplink"><a href="' . $RootPath . '/Customers.php?DebtorNo=' . urlencode($DebtorNo) . '">' . _('Back to Customers') . '</a></div>';
-$SQLname = "SELECT name FROM debtorsmaster WHERE debtorno='" . $DebtorNo . "'";
-$Result = DB_query($SQLname);
-$row = DB_fetch_array($Result);
+$NameSql = "SELECT name FROM debtorsmaster WHERE debtorno='" . $DebtorNo . "'";
+$Result = DB_query($NameSql);
+$MyRow = DB_fetch_array($Result);
 if (!isset($_GET['Id'])) {
-	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Contacts for Customer') . ': <b>' . htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8') . '</b></p><br />';
+	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Contacts for Customer') . ': <b>' . htmlspecialchars($MyRow['name'], ENT_QUOTES, 'UTF-8') . '</b></p><br />';
 } else {
-	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Edit contact for') . ': <b>' . htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8') . '</b></p><br />';
+	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Edit contact for') . ': <b>' . htmlspecialchars($MyRow['name'], ENT_QUOTES, 'UTF-8') . '</b></p><br />';
 }
 if (isset($_POST['submit'])) {
 
@@ -54,7 +54,7 @@ if (isset($_POST['submit'])) {
 										email='" . $_POST['ContactEmail'] . "'
 					WHERE debtorno ='" . $DebtorNo . "'
 					AND contid='" . $Id . "'";
-		$msg = _('Customer Contacts') . ' ' . $DebtorNo . ' ' . _('has been updated');
+		$Msg = _('Customer Contacts') . ' ' . $DebtorNo . ' ' . _('has been updated');
 	} elseif ($InputError != 1) {
 
 		$SQL = "INSERT INTO custcontacts (debtorno,
@@ -69,7 +69,7 @@ if (isset($_POST['submit'])) {
 						'" . $_POST['ContactPhone'] . "',
 						'" . $_POST['ContactNotes'] . "',
 						'" . $_POST['ContactEmail'] . "')";
-		$msg = _('The contact record has been added');
+		$Msg = _('The contact record has been added');
 	}
 
 	if ($InputError != 1) {
@@ -77,7 +77,7 @@ if (isset($_POST['submit'])) {
 		//echo '<br />'.$SQL;
 
 		echo '<br />';
-		prnMsg($msg, 'success');
+		prnMsg($Msg, 'success');
 		echo '<br />';
 		unset($Id);
 		unset($_POST['ContactName']);

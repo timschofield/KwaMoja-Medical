@@ -52,10 +52,10 @@ class Contract {
 		$this->Status = 0;
 	}
 
-	function Add_To_ContractBOM($StockID, $ItemDescription, $WorkCentre, $Quantity, $ItemCost, $UOM, $DecimalPlaces) {
+	function Add_To_ContractBOM($StockId, $ItemDescription, $WorkCentre, $Quantity, $ItemCost, $UOM, $DecimalPlaces) {
 
-		if (isset($StockID) and $Quantity != 0) {
-			$this->ContractBOM[$this->BOMComponentCounter] = new ContractComponent($this->BOMComponentCounter, $StockID, $ItemDescription, $WorkCentre, $Quantity, $ItemCost, $UOM, $DecimalPlaces);
+		if (isset($StockId) and $Quantity != 0) {
+			$this->ContractBOM[$this->BOMComponentCounter] = new ContractComponent($this->BOMComponentCounter, $StockId, $ItemDescription, $WorkCentre, $Quantity, $ItemCost, $UOM, $DecimalPlaces);
 			$this->BOMComponentCounter++;
 			return 1;
 		}
@@ -92,7 +92,7 @@ class Contract {
 
 class ContractComponent {
 	var $ComponentID;
-	var $StockID;
+	var $StockId;
 	var $ItemDescription;
 	var $WorkCentre;
 	var $Quantity;
@@ -100,11 +100,11 @@ class ContractComponent {
 	var $UOM;
 	var $DecimalPlaces;
 
-	function ContractComponent($ComponentID, $StockID, $ItemDescription, $WorkCentre, $Quantity, $ItemCost, $UOM, $DecimalPlaces = 0) {
+	function ContractComponent($ComponentID, $StockId, $ItemDescription, $WorkCentre, $Quantity, $ItemCost, $UOM, $DecimalPlaces = 0) {
 
 		/* Constructor function to add a new Contract Component object with passed params */
 		$this->ComponentID = $ComponentID;
-		$this->StockID = $StockID;
+		$this->StockID = $StockId;
 		$this->ItemDescription = $ItemDescription;
 		$this->WorkCentre = $WorkCentre;
 		$this->Quantity = $Quantity;

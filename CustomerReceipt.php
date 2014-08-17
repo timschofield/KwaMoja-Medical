@@ -16,7 +16,7 @@ if ($_GET['Type'] == 'GL') {
 include('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');
 
-$msg = '';
+$Msg = '';
 
 if (isset($_GET['NewReceipt'])) {
 	unset($_SESSION['ReceiptBatch']->Items);

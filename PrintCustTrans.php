@@ -491,19 +491,19 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 		include('includes/htmlMimeMail.php');
 		$FileName = $_SESSION['reports_dir'] . '/' . $_SESSION['DatabaseName'] . '_' . $InvOrCredit . '_' . $FromTransNo . '.pdf';
 		$PDF->Output($FileName, 'F');
-		$mail = new htmlMimeMail();
+		$Mail = new htmlMimeMail();
 
-		$Attachment = $mail->getFile($FileName);
-		$mail->setText(_('Please find attached') . ' ' . $InvOrCredit . ' ' . $FromTransNo);
-		$mail->SetSubject($InvOrCredit . ' ' . $FromTransNo);
-		$mail->addAttachment($Attachment, $FileName, 'application/pdf');
+		$Attachment = $Mail->getFile($FileName);
+		$Mail->setText(_('Please find attached') . ' ' . $InvOrCredit . ' ' . $FromTransNo);
+		$Mail->SetSubject($InvOrCredit . ' ' . $FromTransNo);
+		$Mail->addAttachment($Attachment, $FileName, 'application/pdf');
 		if ($_SESSION['SmtpSetting'] == 0) {
-			$mail->setFrom($_SESSION['CompanyRecord']['coyname'] . ' <' . $_SESSION['CompanyRecord']['email'] . '>');
-			$Result = $mail->send(array(
+			$Mail->setFrom($_SESSION['CompanyRecord']['coyname'] . ' <' . $_SESSION['CompanyRecord']['email'] . '>');
+			$Result = $Mail->send(array(
 				$_GET['Email']
 			));
 		} else {
-			$Result = SendmailBySmtp($mail, array(
+			$Result = SendmailBySmtp($Mail, array(
 				$_GET['Email']
 			));
 		}

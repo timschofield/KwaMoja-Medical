@@ -12,12 +12,12 @@ include('includes/SQL_CommonFunctions.inc');
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Contract') . '" alt="" />' . _('Fulfil Stock Requests') . '</p>';
 
 if (isset($_POST['UpdateAll'])) {
-	foreach ($_POST as $key => $value) {
-		if (mb_strpos($key, 'Qty')) {
-			$RequestID = mb_substr($key, 0, mb_strpos($key, 'Qty'));
-			$LineID = mb_substr($key, mb_strpos($key, 'Qty') + 3);
+	foreach ($_POST as $Key => $Value) {
+		if (mb_strpos($Key, 'Qty')) {
+			$RequestID = mb_substr($Key, 0, mb_strpos($Key, 'Qty'));
+			$LineID = mb_substr($Key, mb_strpos($Key, 'Qty') + 3);
 			$Quantity = filter_number_format($_POST[$RequestID . 'Qty' . $LineID]);
-			$StockID = $_POST[$RequestID . 'StockID' . $LineID];
+			$StockId = $_POST[$RequestID . 'StockID' . $LineID];
 			$Location = $_POST[$RequestID . 'Location' . $LineID];
 			$Department = $_POST[$RequestID . 'Department' . $LineID];
 			$Tag = $_POST[$RequestID . 'Tag' . $LineID];
@@ -36,13 +36,13 @@ if (isset($_POST['UpdateAll'])) {
 						INNER JOIN stockcosts
 							ON stockcosts.stockid=stockmaster.stockid
 							AND stockcosts.succeeded=0
-						WHERE stockcosts.stockid='" . $StockID . "'";
+						WHERE stockcosts.stockid='" . $StockId . "'";
 			$Result = DB_query($SQL);
 			$MyRow = DB_fetch_array($Result);
 			$StandardCost = $MyRow['materialcost'] + $MyRow['labourcost'] + $MyRow['overheadcost'];
 			$DecimalPlaces = $MyRow['decimalplaces'];
 
-			$Narrative = _('Issue') . ' ' . $Quantity . ' ' . _('of') . ' ' . $StockID . ' ' . _('to department') . ' ' . $Department . ' ' . _('from') . ' ' . $Location;
+			$Narrative = _('Issue') . ' ' . $Quantity . ' ' . _('of') . ' ' . $StockId . ' ' . _('to department') . ' ' . $Department . ' ' . _('from') . ' ' . $Location;
 
 			$AdjustmentNumber = GetNextTransNo(17);
 			$PeriodNo = GetPeriod(Date($_SESSION['DefaultDateFormat']));
@@ -53,7 +53,7 @@ if (isset($_POST['UpdateAll'])) {
 			// Need to get the current location quantity will need it later for the stock movement
 			$SQL = "SELECT locstock.quantity
 					FROM locstock
-					WHERE locstock.stockid='" . $StockID . "'
+					WHERE locstock.stockid='" . $StockId . "'
 						AND loccode= '" . $Location . "'";
 			$Result = DB_query($SQL);
 			if (DB_num_rows($Result) == 1) {
@@ -77,7 +77,7 @@ if (isset($_POST['UpdateAll'])) {
 									qty,
 									newqoh)
 								VALUES (
-									'" . $StockID . "',
+									'" . $StockId . "',
 									17,
 									'" . $AdjustmentNumber . "',
 									'" . $Location . "',
@@ -107,7 +107,7 @@ if (isset($_POST['UpdateAll'])) {
 				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 				$SQL = "UPDATE locstock SET quantity = quantity - '" . $Quantity . "'
-									WHERE stockid='" . $StockID . "'
+									WHERE stockid='" . $StockId . "'
 										AND loccode='" . $Location . "'";
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The location stock record could not be updated because');
@@ -117,7 +117,7 @@ if (isset($_POST['UpdateAll'])) {
 
 				if ($_SESSION['CompanyRecord']['gllink_stock'] == 1 and $StandardCost > 0) {
 
-					$StockGLCodes = GetStockGLCode($StockID);
+					$StockGLCodes = GetStockGLCode($StockId);
 
 					$SQL = "INSERT INTO gltrans (type,
 												typeno,
@@ -174,20 +174,20 @@ if (isset($_POST['UpdateAll'])) {
 
 				$Result = DB_Txn_Commit();
 
-				$ConfirmationText = _('An internal stock request for') . ' ' . $StockID . ' ' . _('has been fulfilled from location') . ' ' . $Location . ' ' . _('for a quantity of') . ' ' . locale_number_format($Quantity, $DecimalPlaces);
+				$ConfirmationText = _('An internal stock request for') . ' ' . $StockId . ' ' . _('has been fulfilled from location') . ' ' . $Location . ' ' . _('for a quantity of') . ' ' . locale_number_format($Quantity, $DecimalPlaces);
 				prnMsg($ConfirmationText, 'success');
 
 				if ($_SESSION['InventoryManagerEmail'] != '') {
 					$ConfirmationText = $ConfirmationText . ' ' . _('by user') . ' ' . $_SESSION['UserID'] . ' ' . _('at') . ' ' . Date('Y-m-d H:i:s');
-					$EmailSubject = _('Internal Stock Request Fulfillment for') . ' ' . $StockID;
+					$EmailSubject = _('Internal Stock Request Fulfillment for') . ' ' . $StockId;
 					if ($_SESSION['SmtpSetting'] == 0) {
 						mail($_SESSION['InventoryManagerEmail'], $EmailSubject, $ConfirmationText);
 					} else {
 						include('includes/htmlMimeMail.php');
-						$mail = new htmlMimeMail();
-						$mail->setSubject($EmailSubject);
-						$mail->setText($ConfirmationText);
-						$Result = SendmailBySmtp($mail, array(
+						$Mail = new htmlMimeMail();
+						$Mail->setSubject($EmailSubject);
+						$Mail->setText($ConfirmationText);
+						$Result = SendmailBySmtp($Mail, array(
 							$_SESSION['InventoryManagerEmail']
 						));
 					}
@@ -195,7 +195,7 @@ if (isset($_POST['UpdateAll'])) {
 
 				}
 			} else {
-				$ConfirmationText = _('An internal stock request for') . ' ' . $StockID . ' ' . _('has been fulfilled from location') . ' ' . $Location . ' ' . _('for a quantity of') . ' ' . locale_number_format($Quantity, $DecimalPlaces) . ' ' . _('cannot be created as there is insufficient stock and your system is configured to not allow negative stocks');
+				$ConfirmationText = _('An internal stock request for') . ' ' . $StockId . ' ' . _('has been fulfilled from location') . ' ' . $Location . ' ' . _('for a quantity of') . ' ' . locale_number_format($Quantity, $DecimalPlaces) . ' ' . _('cannot be created as there is insufficient stock and your system is configured to not allow negative stocks');
 				prnMsg($ConfirmationText, 'warn');
 			}
 

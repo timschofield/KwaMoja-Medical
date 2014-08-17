@@ -41,7 +41,7 @@ if (isset($_POST['update'])) {
 			$user = new xmlrpcval($User);
 			$password = new xmlrpcval($password);
 
-			$msg = new xmlrpcmsg($APIServer . ".xmlrpc_InsertStockItem", array(
+			$Msg = new xmlrpcmsg($APIServer . ".xmlrpc_InsertStockItem", array(
 				$stockitem,
 				$user,
 				$password
@@ -50,7 +50,7 @@ if (isset($_POST['update'])) {
 			$client = new xmlrpc_client($ServerURL);
 			$client->setDebug($DebugLevel);
 
-			$response = $client->send($msg);
+			$response = $client->send($Msg);
 			$answer = php_xmlrpc_decode($response->value());
 			if ($answer[0] == 0) {
 				echo '<tr ' . $SuccessStyle . '><td>' . $ItemDetails['stockid'] . '</td><td>' . 'Success' . '</td></tr>';

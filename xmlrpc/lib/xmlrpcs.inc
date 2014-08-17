@@ -83,15 +83,15 @@
 	{
 
 		$outAr=array();
-		foreach($server->dmap as $key => $val)
+		foreach($server->dmap as $Key => $val)
 		{
-			$outAr[]=new xmlrpcval($key, 'string');
+			$outAr[]=new xmlrpcval($Key, 'string');
 		}
 		if($server->allow_system_funcs)
 		{
-			foreach($GLOBALS['_xmlrpcs_dmap'] as $key => $val)
+			foreach($GLOBALS['_xmlrpcs_dmap'] as $Key => $val)
 			{
-				$outAr[]=new xmlrpcval($key, 'string');
+				$outAr[]=new xmlrpcval($Key, 'string');
 			}
 		}
 		return new xmlrpcresp(new xmlrpcval($outAr, 'array'));
@@ -243,10 +243,10 @@
 		}
 		$numParams = $params->arraysize();
 
-		$msg = new xmlrpcmsg($methName->scalarval());
+		$Msg = new xmlrpcmsg($methName->scalarval());
 		for($i = 0; $i < $numParams; $i++)
 		{
-			if(!$msg->addParam($params->arraymem($i)))
+			if(!$Msg->addParam($params->arraymem($i)))
 			{
 				$i++;
 				return _xmlrpcs_multicall_error(new xmlrpcresp(0,
@@ -255,7 +255,7 @@
 			}
 		}
 
-		$result = $server->execute($msg);
+		$result = $server->execute($Msg);
 
 		if($result->faultCode() != 0)
 		{
@@ -375,7 +375,7 @@
 	* NB: in fact a user defined error handler can only handle WARNING, NOTICE and USER_* errors.
 	*
 	*/
-	function _xmlrpcs_errorHandler($errcode, $errstring, $filename=null, $lineno=null, $context=null)
+	function _xmlrpcs_errorHandler($errcode, $errstring, $FileName=null, $lineno=null, $context=null)
 	{
 		// obey the @ protocol
 		if (error_reporting() == 0)
@@ -406,11 +406,11 @@
 				if(is_array($GLOBALS['_xmlrpcs_prev_ehandler']))
 				{
 					// the following works both with static class methods and plain object methods as error handler
-					call_user_func_array($GLOBALS['_xmlrpcs_prev_ehandler'], array($errcode, $errstring, $filename, $lineno, $context));
+					call_user_func_array($GLOBALS['_xmlrpcs_prev_ehandler'], array($errcode, $errstring, $FileName, $lineno, $context));
 				}
 				else
 				{
-					$GLOBALS['_xmlrpcs_prev_ehandler']($errcode, $errstring, $filename, $lineno, $context);
+					$GLOBALS['_xmlrpcs_prev_ehandler']($errcode, $errstring, $FileName, $lineno, $context);
 				}
 			}
 		}

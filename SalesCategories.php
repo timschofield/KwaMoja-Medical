@@ -87,7 +87,7 @@ if (isset($_POST['submit']) and isset($EditName)) { // Creating or updating a ca
 		$SQL = "UPDATE salescat SET salescatname = '" . $_POST['SalesCatName'] . "',
 								active  = '" . $_POST['Active'] . "'
 							WHERE salescatid = '" . $SelectedCategory . "'";
-		$msg = _('The Sales category record has been updated');
+		$Msg = _('The Sales category record has been updated');
 	} elseif ($InputError != 1) {
 
 		/*Selected category is null cos no item selected on first time round so must be adding a	record must be submitting new entries in the new stock category form */
@@ -99,13 +99,13 @@ if (isset($_POST['submit']) and isset($EditName)) { // Creating or updating a ca
 									  '" . $_POST['SalesCatName'] . "',
 									  '" . (isset($ParentCategory) ? ($ParentCategory) : ('NULL')) . "',
 									  '" . $_POST['Active'] . "')";
-		$msg = _('A new Sales category record has been added');
+		$Msg = _('A new Sales category record has been added');
 	}
 
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
 		$Result = DB_query($SQL);
-		prnMsg($msg, 'success');
+		prnMsg($Msg, 'success');
 	}
 
 	unset($SelectedCategory);
@@ -374,7 +374,7 @@ scp.stockid = sm.stockid
 */
 
 // Now add this stockid to the array
-$StockIDs = array();
+$StockIds = array();
 $SQL = "SELECT stockid,
 				manufacturers_id
 		FROM salescatprod
@@ -383,7 +383,7 @@ $SQL = "SELECT stockid,
 $Result = DB_query($SQL);
 if ($Result and DB_num_rows($Result)) {
 	while ($MyRow = DB_fetch_array($Result)) {
-		$StockIDs[] = $MyRow['stockid']; // Add Stock
+		$StockIds[] = $MyRow['stockid']; // Add Stock
 	}
 	DB_free_result($Result);
 }
@@ -419,7 +419,7 @@ if ($Result and DB_num_rows($Result)) {
 				<td><select required="required" minlength="1" name="AddStockID">';
 
 	while ($MyRow = DB_fetch_array($Result)) {
-		if (!array_keys($StockIDs, $MyRow['stockid'])) {
+		if (!array_keys($StockIds, $MyRow['stockid'])) {
 			// Only if the StockID is not already selected
 			echo '<option value="' . $MyRow['stockid'] . '">' . $MyRow['stockid'] . '&nbsp;-&nbsp;&quot;' . $MyRow['description'] . '&quot;</option>';
 		}
@@ -451,7 +451,7 @@ if ($Result and DB_num_rows($Result)) {
 if ($Result) {
 	DB_free_result($Result);
 }
-unset($StockIDs);
+unset($StockIds);
 // END Always display Stock Select screen
 // ----------------------------------------------------------------------------------------
 

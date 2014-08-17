@@ -68,7 +68,7 @@ if (isset($_POST['submit'])) {
 								parentarea='" . $_POST['ParentArea'] . "'
 								WHERE areacode = '" . stripslashes($SelectedArea) . "'";
 
-		$msg = _('Area code') . ' ' . stripslashes($SelectedArea) . ' ' . _('has been updated');
+		$Msg = _('Area code') . ' ' . stripslashes($SelectedArea) . ' ' . _('has been updated');
 
 	} elseif ($InputError != 1) {
 
@@ -84,9 +84,9 @@ if (isset($_POST['submit'])) {
 								)";
 
 		$SelectedArea = $_POST['AreaCode'];
-		$msg = _('New area code') . ' ' . stripslashes($_POST['AreaCode']) . ' ' . _('has been inserted');
+		$Msg = _('New area code') . ' ' . stripslashes($_POST['AreaCode']) . ' ' . _('has been inserted');
 	} else {
-		$msg = '';
+		$Msg = '';
 	}
 
 	//run the SQL from either of the above possibilites
@@ -97,7 +97,7 @@ if (isset($_POST['submit'])) {
 		unset($SelectedArea);
 		unset($_POST['AreaCode']);
 		unset($_POST['AreaDescription']);
-		prnMsg($msg, 'success');
+		prnMsg($Msg, 'success');
 	}
 
 } elseif (isset($_GET['delete'])) {

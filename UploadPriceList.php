@@ -64,10 +64,10 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 		}
 
 		// cleanup the data (csv files often import with empty strings and such)
-		$StockID = mb_strtoupper($MyRow[0]);
-		foreach ($MyRow as &$value) {
-			$value = trim($value);
-			$value = str_replace('"', '', $value);
+		$StockId = mb_strtoupper($MyRow[0]);
+		foreach ($MyRow as &$Value) {
+			$Value = trim($Value);
+			$Value = str_replace('"', '', $Value);
 		}
 
 		//first off check that the item actually exists

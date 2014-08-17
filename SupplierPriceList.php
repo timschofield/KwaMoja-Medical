@@ -293,10 +293,10 @@ if (isset($searchresult) and !isset($_POST['Select'])) {
 	}
 }
 
-foreach ($_POST as $key => $value) {
-	if (mb_substr($key, 0, 6) == 'Update') {
-		$Index = mb_substr($key, 6, mb_strlen($key) - 6);
-		$StockID = $_POST['StockID' . $Index];
+foreach ($_POST as $Key => $Value) {
+	if (mb_substr($Key, 0, 6) == 'Update') {
+		$Index = mb_substr($Key, 6, mb_strlen($Key) - 6);
+		$StockId = $_POST['StockID' . $Index];
 		$Price = $_POST['Price' . $Index];
 		$SuppUOM = $_POST['SuppUOM' . $Index];
 		$ConversionFactor = $_POST['ConversionFactor' . $Index];
@@ -305,7 +305,7 @@ foreach ($_POST as $key => $value) {
 		if (isset($_POST['Preferred' . $Index])) {
 			$Preferred = 1;
 			$PreferredSQL = "UPDATE purchdata SET preferred=0
-									WHERE stockid='" . $StockID . "'";
+									WHERE stockid='" . $StockId . "'";
 			$PreferredResult = DB_query($PreferredSQL);
 		} else {
 			$Preferred = 0;
@@ -323,10 +323,10 @@ foreach ($_POST as $key => $value) {
 									suppliers_partno='" . $SupplierPartNo . "',
 									minorderqty='" . $MinOrderQty . "'
 								WHERE supplierno='" . DB_escape_string($_POST['SupplierID']) . "'
-								AND stockid='" . $StockID . "'";
+								AND stockid='" . $StockId . "'";
 		$Result = DB_query($SQL);
 	}
-	if (mb_substr($key, 0, 6) == 'Insert') {
+	if (mb_substr($Key, 0, 6) == 'Insert') {
 		if (isset($_POST['Preferred0'])) {
 			$Preferred = 1;
 		} else {
@@ -382,7 +382,7 @@ if ((isset($SupplierID) and $SupplierID != '') and !isset($_POST['SearchSupplier
 	}
 } else {
 	if ($NoPurchasingData = 0) {
-		echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . ' ' . _('For Stock Code') . ' - ' . $StockID . '</p><br />';
+		echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . ' ' . _('For Stock Code') . ' - ' . $StockId . '</p><br />';
 	}
 	if (!isset($_POST['SearchSupplier'])) {
 		echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" title="' . _('Search') . '" alt="" />' . _('Search for a supplier') . '</p><br />';

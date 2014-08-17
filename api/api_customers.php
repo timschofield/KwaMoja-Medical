@@ -373,9 +373,9 @@ function InsertCustomer($CustomerDetails, $user = '', $password = '') {
 		$FieldNames .= $Key . ', ';
 		$FieldValues .= "'" . $Value . "', ";
 	}
-	$sql = "INSERT INTO debtorsmaster (" . mb_substr($FieldNames, 0, -2) . ") VALUES (" . mb_substr($FieldValues, 0, -2) . ") ";
+	$SQL = "INSERT INTO debtorsmaster (" . mb_substr($FieldNames, 0, -2) . ") VALUES (" . mb_substr($FieldValues, 0, -2) . ") ";
 	if (sizeof($Errors) == 0) {
-		$result = api_DB_Query($sql, $db);
+		$result = api_DB_Query($SQL, $db);
 		if ($_SESSION['db_err_msg'] != '') {
 			$Errors[0] = DatabaseUpdateFailed;
 		} else {
@@ -511,13 +511,13 @@ function ModifyCustomer($CustomerDetails, $user, $password) {
 	if (isset($CustomerDetails['typeid'])) {
 		$Errors = VerifyCustomerType($CustomerDetails['typeid'], sizeof($Errors), $Errors);
 	}
-	$sql = 'UPDATE debtorsmaster SET ';
+	$SQL = 'UPDATE debtorsmaster SET ';
 	foreach ($CustomerDetails as $Key => $Value) {
-		$sql .= $Key . "='" . $Value . "', ";
+		$SQL .= $Key . "='" . $Value . "', ";
 	}
-	$sql = mb_substr($sql, 0, -2) . " WHERE debtorno='" . $CustomerDetails['debtorno'] . "'";
+	$SQL = mb_substr($SQL, 0, -2) . " WHERE debtorno='" . $CustomerDetails['debtorno'] . "'";
 	if (sizeof($Errors) == 0) {
-		$result = api_DB_Query($sql, $db);
+		$result = api_DB_Query($SQL, $db);
 		if ($_SESSION['db_err_msg'] != '') {
 			$Errors[0] = DatabaseUpdateFailed;
 		} else {
@@ -542,8 +542,8 @@ function GetCustomer($DebtorNumber, $user, $password) {
 	if (sizeof($Errors) != 0) {
 		return $Errors;
 	}
-	$sql = "SELECT * FROM debtorsmaster WHERE debtorno='" . $DebtorNumber . "'";
-	$result = api_DB_Query($sql);
+	$SQL = "SELECT * FROM debtorsmaster WHERE debtorno='" . $DebtorNumber . "'";
+	$result = api_DB_Query($SQL);
 	$Errors[0] = 0; // None found.
 	$Errors[1] = DB_fetch_array($result);
 
@@ -560,10 +560,10 @@ function SearchCustomers($Field, $Criteria, $user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	$sql = 'SELECT debtorno
+	$SQL = 'SELECT debtorno
 			FROM debtorsmaster
 			WHERE ' . $Field . " LIKE '%" . $Criteria . "%'";
-	$result = api_DB_Query($sql);
+	$result = api_DB_Query($SQL);
 	$DebtorList = array(
 		0
 	); // First element: no errors

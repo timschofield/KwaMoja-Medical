@@ -62,10 +62,10 @@ function InsertStockCategory($CategoryDetails, $user, $password) {
 		$FieldNames .= $Key . ', ';
 		$FieldValues .= '"' . $Value . '", ';
 	}
-	$sql = "INSERT INTO stockcategory ('" . mb_substr($FieldNames, 0, -2) . "')
+	$SQL = "INSERT INTO stockcategory ('" . mb_substr($FieldNames, 0, -2) . "')
 				VALUES ('" . mb_substr($FieldValues, 0, -2) . "') ";
 	if (sizeof($Errors) == 0) {
-		$result = DB_Query($sql);
+		$result = DB_Query($SQL);
 		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;
 		} else {
@@ -100,13 +100,13 @@ function ModifyStockCategory($CategoryDetails, $user, $password) {
 		$FieldNames .= $Key . ', ';
 		$FieldValues .= '"' . $Value . '", ';
 	}
-	$sql = "UPDATE stockcategory SET ";
+	$SQL = "UPDATE stockcategory SET ";
 	foreach ($CategoryDetails as $Key => $Value) {
-		$sql .= $Key . "='" . $Value . "', ";
+		$SQL .= $Key . "='" . $Value . "', ";
 	}
-	$sql = mb_substr($sql, 0, -2) . " WHERE categoryid='" . $CategoryDetails['categoryid'] . "'";
+	$SQL = mb_substr($SQL, 0, -2) . " WHERE categoryid='" . $CategoryDetails['categoryid'] . "'";
 	if (sizeof($Errors) == 0) {
-		$result = DB_Query($sql);
+		$result = DB_Query($SQL);
 		echo DB_error_no();
 		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;
@@ -132,8 +132,8 @@ function GetStockCategory($Categoryid, $user, $password) {
 	if (sizeof($Errors) != 0) {
 		return $Errors;
 	}
-	$sql = "SELECT * FROM stockcategory WHERE categoryid='" . $Categoryid . "'";
-	$result = DB_Query($sql);
+	$SQL = "SELECT * FROM stockcategory WHERE categoryid='" . $Categoryid . "'";
+	$result = DB_Query($SQL);
 	if (sizeof($Errors) == 0) {
 		return DB_fetch_array($result);
 	} else {
@@ -151,11 +151,11 @@ function SearchStockCategories($Field, $Criteria, $user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	$sql = "SELECT categoryid,
+	$SQL = "SELECT categoryid,
 					categorydescription
 			FROM stockcategory
 			WHERE " . $Field . " " . LIKE . " '%" . $Criteria . "%'";
-	$result = DB_Query($sql);
+	$result = DB_Query($SQL);
 	$i = 0;
 	$CategoryList = array();
 	while ($myrow = DB_fetch_array($result)) {
@@ -173,7 +173,7 @@ function StockCatPropertyList($Label, $Category, $user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	$sql = "SELECT stockitemproperties.stockid,
+	$SQL = "SELECT stockitemproperties.stockid,
 					description
 			FROM stockitemproperties
 				  INNER JOIN stockcatproperties
@@ -182,7 +182,7 @@ function StockCatPropertyList($Label, $Category, $user, $password) {
 				  ON stockitemproperties.stockid=stockmaster.stockid
 				  WHERE stockitemproperties.value like '" . $Label . "'
 				AND stockcatproperties.categoryid='" . $Category . "'";
-	$result = DB_Query($sql);
+	$result = DB_Query($SQL);
 	$i = 0;
 	$ItemList = array();
 	$ItemList[0] = 0;
@@ -201,10 +201,10 @@ function GetStockCatProperty($Property, $StockId, $user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	$sql = "SELECT value FROM stockitemproperties
+	$SQL = "SELECT value FROM stockitemproperties
 					   WHERE stockid='" . $StockId . "'
 					   AND stkcatpropid='" . $Property . "'";
-	$result = DB_Query($sql);
+	$result = DB_Query($SQL);
 	$myrow = DB_fetch_array($result);
 	$Errors[0] = 0;
 	$Errors[1] = $myrow[0];
@@ -220,8 +220,8 @@ function GetStockCategoryList($user, $password) {
 		$Errors[0] = NoAuthorisation;
 		return $Errors;
 	}
-	$sql = "SELECT categoryid FROM stockcategory";
-	$result = api_DB_query($sql);
+	$SQL = "SELECT categoryid FROM stockcategory";
+	$result = api_DB_query($SQL);
 	$i = 0;
 	while ($myrow = DB_fetch_array($result)) {
 		$StockCategoryList[$i] = $myrow[0];

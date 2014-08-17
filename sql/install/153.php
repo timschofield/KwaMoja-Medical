@@ -31,8 +31,8 @@ CreateTable('www_users',
   CONSTRAINT `www_users_ibfk_1` FOREIGN KEY (`defaultlocation`) REFERENCES `locations` (`loccode`)
 )");
 
-$sql = "INSERT INTO securitygroups SELECT secroleid, tokenid FROM securityroles, securitytokens";
-executeSQL($sql);
+$SQL = "INSERT INTO securitygroups SELECT secroleid, tokenid FROM securityroles, securitytokens";
+executeSQL($SQL);
 
 if (is_writable($PathPrefix . 'companies/' . $_SESSION['DatabaseName'])) {
 	$FileHandle = fopen($PathPrefix . 'companies/' . $_SESSION['DatabaseName'] . '/Companies.php', 'w');

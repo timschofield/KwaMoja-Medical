@@ -49,8 +49,8 @@ function ConvertToSQLDate($DateEntry) {
  * must be in the same format as the date format specified in the
  * target KwaMoja company */
 function VerifyTransactionDate($TranDate, $i, $Errors) {
-	$sql = "SELECT confvalue FROM config WHERE confname='" . DefaultDateFormat . "'";
-	$result = api_DB_query($sql);
+	$SQL = "SELECT confvalue FROM config WHERE confname='" . DefaultDateFormat . "'";
+	$result = api_DB_query($SQL);
 	$myrow = DB_fetch_array($result);
 	$DateFormat = $myrow[0];
 	if (mb_strpos($TranDate, '/') > 0) {
@@ -85,8 +85,8 @@ function VerifyTransactionDate($TranDate, $i, $Errors) {
 /* Why use this function over GetPeriod we already have this function included in DateFunctions.inc
  * This function doesn't create periods if required so there is the danger of not being able to insert transactions*/
 function GetPeriodFromTransactionDate($TranDate, $i, $Errors) {
-	$sql = "SELECT confvalue FROM config WHERE confname='DefaultDateFormat'";
-	$result = api_DB_query($sql);
+	$SQL = "SELECT confvalue FROM config WHERE confname='DefaultDateFormat'";
+	$result = api_DB_query($SQL);
 	$myrow = DB_fetch_array($result);
 	$DateFormat = $myrow[0];
 	if (mb_strstr('/', $PeriodEnd)) {
@@ -116,8 +116,8 @@ function GetPeriodFromTransactionDate($TranDate, $i, $Errors) {
 	$Month = $DateArray[1];
 	$Year = $DateArray[0];
 	$Date = $Year . '-' . $Month . '-' . $Day;
-	$sql = "SELECT MAX(periodno) FROM periods WHERE lastdate_in_period<='" . $Date . "'";
-	$result = api_DB_query($sql);
+	$SQL = "SELECT MAX(periodno) FROM periods WHERE lastdate_in_period<='" . $Date . "'";
+	$result = api_DB_query($SQL);
 	$myrow = DB_fetch_array($result);
 	return $myrow[0];
 }
@@ -249,9 +249,9 @@ function VerifyConsignment($consignment, $i, $Errors) {
  * and not limited to stk='any'!!
  *
  function GetSalesGLCode($salesarea, $partnumber) {
- $sql="SELECT salesglcode FROM salesglpostings
+ $SQL="SELECT salesglcode FROM salesglpostings
  WHERE stkcat='any'";
- $result=api_DB_query($sql);
+ $result=api_DB_query($SQL);
  $myrow=DB_fetch_array($result);
  return $myrow[0];
  }
@@ -259,8 +259,8 @@ function VerifyConsignment($consignment, $i, $Errors) {
 
 /* Retrieves the default debtors code for KwaMoja */
 function GetDebtorsGLCode($db) {
-	$sql = "SELECT debtorsact FROM companies";
-	$result = api_DB_query($sql);
+	$SQL = "SELECT debtorsact FROM companies";
+	$result = api_DB_query($SQL);
 	$myrow = DB_fetch_array($result);
 	return $myrow[0];
 }
@@ -1274,14 +1274,14 @@ function InsertSalesInvoice($InvoiceDetails, $user, $password) {
 	}
 	if (sizeof($Errors) == 0) {
 		$result = DB_Txn_Begin();
-		$sql = "INSERT INTO debtortrans (" . mb_substr($FieldNames, 0, -2) . ")
+		$SQL = "INSERT INTO debtortrans (" . mb_substr($FieldNames, 0, -2) . ")
 									VALUES ('" . mb_substr($FieldValues, 0, -2) . "') ";
-		$result = api_DB_Query($sql);
-		$sql = "UPDATE systypes SET typeno='" . GetNextTransactionNo(10) . "' WHERE typeid=10";
-		$result = api_DB_Query($sql);
+		$result = api_DB_Query($SQL);
+		$SQL = "UPDATE systypes SET typeno='" . GetNextTransactionNo(10) . "' WHERE typeid=10";
+		$result = api_DB_Query($SQL);
 		$SalesGLCode = GetSalesGLCode($SalesArea, $PartCode);
 		$DebtorsGLCode = GetDebtorsGLCode($db);
-		$sql = "INSERT INTO gltrans VALUES(null,
+		$SQL = "INSERT INTO gltrans VALUES(null,
 											10,
 											'" . GetNextTransactionNo(10) . "',
 											0,
@@ -1293,8 +1293,8 @@ function InsertSalesInvoice($InvoiceDetails, $user, $password) {
 											0,
 											'" . $InvoiceDetails['jobref'] . "',
 											1)";
-		$result = api_DB_Query($sql);
-		$sql = "INSERT INTO gltrans VALUES(null,
+		$result = api_DB_Query($SQL);
+		$SQL = "INSERT INTO gltrans VALUES(null,
 											10,
 											'" . GetNextTransactionNo(10) . "',
 											0,
@@ -1306,7 +1306,7 @@ function InsertSalesInvoice($InvoiceDetails, $user, $password) {
 											0,
 											'" . $InvoiceDetails['jobref'] . "',
 											1)";
-		$result = api_DB_Query($sql);
+		$result = api_DB_Query($SQL);
 		$result = DB_Txn_Commit();
 		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;
@@ -1574,14 +1574,14 @@ function InsertSalesCredit($CreditDetails, $user, $password) {
 	}
 	if (sizeof($Errors) == 0) {
 		$result = DB_Txn_Begin();
-		$sql = "INSERT INTO debtortrans (" . mb_substr($FieldNames, 0, -2) . ")
+		$SQL = "INSERT INTO debtortrans (" . mb_substr($FieldNames, 0, -2) . ")
 						VALUES ('" . mb_substr($FieldValues, 0, -2) . "') ";
-		$result = api_DB_Query($sql);
-		$sql = "UPDATE systypes SET typeno='" . GetNextTransactionNo(11) . "' WHERE typeid=10";
-		$result = api_DB_Query($sql);
+		$result = api_DB_Query($SQL);
+		$SQL = "UPDATE systypes SET typeno='" . GetNextTransactionNo(11) . "' WHERE typeid=10";
+		$result = api_DB_Query($SQL);
 		$SalesGLCode = GetSalesGLCode($SalesArea, $PartCode);
 		$DebtorsGLCode = GetDebtorsGLCode($db);
-		$sql = "INSERT INTO gltrans VALUES(null,
+		$SQL = "INSERT INTO gltrans VALUES(null,
 											10,
 											'" . GetNextTransactionNo(11) . "',
 											0,
@@ -1592,8 +1592,8 @@ function InsertSalesCredit($CreditDetails, $user, $password) {
 											'" . $CreditDetails['ovamount'] . "',
 											0,
 											'" . $CreditDetails['jobref'] . "')";
-		$result = api_DB_Query($sql);
-		$sql = "INSERT INTO gltrans VALUES(null,
+		$result = api_DB_Query($SQL);
+		$SQL = "INSERT INTO gltrans VALUES(null,
 											10,
 											'" . GetNextTransactionNo(11) . "',
 											0,
@@ -1604,7 +1604,7 @@ function InsertSalesCredit($CreditDetails, $user, $password) {
 											'" . (-intval($CreditDetails['ovamount'])) . "',
 											0,
 											'" . $CreditDetails['jobref'] . "')";
-		$result = api_DB_Query($sql);
+		$result = api_DB_Query($SQL);
 		$result = DB_Txn_Commit();
 		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;

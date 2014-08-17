@@ -19,12 +19,12 @@ function GetRptLinks($GroupID) {
 							<div class="centre">' . $Title[$Def] . '</div>
 						</td>
 					</tr>';
-		$sql = "SELECT id,
+		$SQL = "SELECT id,
 						reportname
 					FROM reports
 					WHERE defaultreport='" . $Def . "' AND groupname='" . $GroupID . "'
 					ORDER BY reportname";
-		$Result = DB_query($sql, '' , '', false, true);
+		$Result = DB_query($SQL, '' , '', false, true);
 		if (DB_num_rows($Result) > 0) {
 			while ($Temp = DB_fetch_array($Result)) {
 				$RptLinks .= '<tr>

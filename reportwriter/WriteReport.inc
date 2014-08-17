@@ -505,29 +505,29 @@ function BuildSQL($Prefs) {
 	if ($Prefs['table6'])
 		$strTable .= ' INNER JOIN ' . $Prefs['table6'] . ' ON ' . $Prefs['table6criteria'];
 	// Build query string and execute
-	$sql = "SELECT " . $strField . " FROM " . $strTable;
+	$SQL = "SELECT " . $strField . " FROM " . $strTable;
 	if ($strCrit and $strDate) {
-		$sql .= ' WHERE ' . $strDate . ' AND ' . $strCrit;
+		$SQL .= ' WHERE ' . $strDate . ' AND ' . $strCrit;
 	}
 	if (!$strCrit and $strDate) {
-		$sql .= ' WHERE ' . $strDate;
+		$SQL .= ' WHERE ' . $strDate;
 	}
 	if ($strCrit and !$strDate) {
-		$sql .= ' WHERE ' . $strCrit;
+		$SQL .= ' WHERE ' . $strCrit;
 	}
 	if ($strSort)
-		$sql .= ' ORDER BY ' . $strSort;
+		$SQL .= ' ORDER BY ' . $strSort;
 	$usrMsg['level'] = 'success';
-	$usrMsg['data'] = $sql;
+	$usrMsg['data'] = $SQL;
 	$usrMsg['filterdesc'] = $Prefs['filterdesc'];
-	//echo '<br />sql='.$sql.'<br /><br />'; exit();
+	//echo '<br />sql='.$SQL.'<br /><br />'; exit();
 	return $usrMsg;
 }
 
-function BuildDataArray($ReportID, $sql, $Prefs) {
+function BuildDataArray($ReportID, $SQL, $Prefs) {
 	global $Heading, $Seq;
 	// first see if we have data
-	$Result = DB_query($sql, '', '', false, true);
+	$Result = DB_query($SQL, '', '', false, true);
 	if (DB_num_rows($Result) == 0)
 		return false; // No data so bail now
 

@@ -92,8 +92,8 @@ CreateTable('reportlinks',
  */
 
 if ($DBType=='mysql' or $DBType=='mysqli') {
-	$sql = "INSERT INTO reportlinks SELECT table_name, referenced_table_name, concat(table_name, '.', column_name, '=' , referenced_table_name, '.', referenced_column_name) FROM information_schema.key_column_usage WHERE referenced_table_name is not null and table_schema = '" . $_SESSION['DatabaseName'] . "'";
-	executeSQL($sql);
+	$SQL = "INSERT INTO reportlinks SELECT table_name, referenced_table_name, concat(table_name, '.', column_name, '=' , referenced_table_name, '.', referenced_column_name) FROM information_schema.key_column_usage WHERE referenced_table_name is not null and table_schema = '" . $_SESSION['DatabaseName'] . "'";
+	executeSQL($SQL);
 }
 
 NewConfigValue('WikiApp','Disabled');

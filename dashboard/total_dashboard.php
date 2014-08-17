@@ -40,8 +40,8 @@ echo '<style>
 
 echo '</head><body style="background:transparent;">';
 
-$sql = "SELECT id FROM dashboard_scripts WHERE scripts='" . basename($_SERVER['PHP_SELF']) . "'";
-$result = DB_query($sql);
+$SQL = "SELECT id FROM dashboard_scripts WHERE scripts='" . basename($_SERVER['PHP_SELF']) . "'";
+$result = DB_query($SQL);
 $myrow = DB_fetch_array($result);
 
 echo '<div class="centre">

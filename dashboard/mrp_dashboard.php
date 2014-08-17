@@ -47,8 +47,8 @@ echo '<style>
 				}
 			</style>';
 
-$sql = "SELECT id FROM dashboard_scripts WHERE scripts='" . basename($_SERVER['PHP_SELF']) . "'";
-$result = DB_query($sql);
+$SQL = "SELECT id FROM dashboard_scripts WHERE scripts='" . basename($_SERVER['PHP_SELF']) . "'";
+$result = DB_query($SQL);
 $myrow = DB_fetch_array($result);
 
 echo '<table border="0" cellspacing="0" cellpadding="2" style="max-width:100%;width:99%;">

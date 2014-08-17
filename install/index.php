@@ -102,36 +102,36 @@ if (isset($_POST['next']) and isset($_SESSION['Installer']['CurrentPage']) and $
 		if ($Privileges == 0) {
 			$Errors[] = _('The database does not exist, and this database user does not have privileges to create it');
 		} else { /* Then we can create the database */
-			$sql = "CREATE DATABASE " . $_SESSION['Installer']['Database'];
+			$SQL = "CREATE DATABASE " . $_SESSION['Installer']['Database'];
 			switch($_SESSION['Installer']['DBMS']) {
 				case 'mariadb':
-					$Result = @mysqli_query($DB, $sql);
+					$Result = @mysqli_query($DB, $SQL);
 					break;
 				case 'mysql':
-					$Result = @mysql_query($sql, $DB);
+					$Result = @mysql_query($SQL, $DB);
 					break;
 				case 'mysqli':
-					$Result = @mysqli_query($DB, $sql);
+					$Result = @mysqli_query($DB, $SQL);
 					break;
 				default:
-					$Result = @mysqli_query($DB, $sql);
+					$Result = @mysqli_query($DB, $SQL);
 					break;
 			}
 		}
 	} else { /* Need to make sure any data is removed from existing DB */
-		$sql = "SELECT 'TRUNCATE TABLE ' + table_name + ';' FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '" . $_SESSION['Installer']['Database'] . "'";
+		$SQL = "SELECT 'TRUNCATE TABLE ' + table_name + ';' FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '" . $_SESSION['Installer']['Database'] . "'";
 		switch($_SESSION['Installer']['DBMS']) {
 			case 'mariadb':
-				$Result = @mysqli_query($DB, $sql);
+				$Result = @mysqli_query($DB, $SQL);
 				break;
 			case 'mysql':
-				$Result = @mysql_query($sql, $DB);
+				$Result = @mysql_query($SQL, $DB);
 				break;
 			case 'mysqli':
-				$Result = @mysqli_query($DB, $sql);
+				$Result = @mysqli_query($DB, $SQL);
 				break;
 			default:
-				$Result = @mysqli_query($DB, $sql);
+				$Result = @mysqli_query($DB, $SQL);
 				break;
 		}
 	}

@@ -207,12 +207,12 @@ if (DB_num_rows($TransResult) == 0) {
 
 echo '<table class="selection">
 	<tr>
-		<th class="SortableColumn">&bull; ' . _('Date') . '</th>
-		<th class="SortableColumn">&bull; ' . _('Type') . '</th>
-		<th class="SortableColumn">&bull; ' . _('Number') . '</th>
-		<th class="SortableColumn">&bull; ' . _('Reference') . '</th>
-		<th>' . _('Branch') . '</th>
+		<th class="SortableColumn">' . _('Date') . '</th>
+		<th class="SortableColumn">' . _('Type') . '</th>
+		<th class="SortableColumn">' . _('Number') . '</th>
+		<th class="SortableColumn">' . _('Reference') . '</th>
 		<th>' . _('Comments') . '</th>
+		<th>' . _('Branch') . '</th>
 		<th>' . _('Order') . '</th>
 		<th>' . _('Total') . '</th>
 		<th>' . _('Allocated') . '</th>
@@ -249,26 +249,26 @@ while ($MyRow = DB_fetch_array($TransResult)) {
 		<td>' . _($MyRow['typename']) . '</td>
 		<td class="number">' . $MyRow['transno'] . '</td>
 		<td>' . $MyRow['reference'] . '</td>
+		<td>' . $MyRow['invtext'] . '</td>
 		<td>' . $MyRow['branchcode'] . '</td>
-		<td style="width:200px">' . $MyRow['invtext'] . '</td>
 		<td class="number">' . $MyRow['order_'] . '</td>
 		<td class="number">' . locale_number_format($MyRow['totalamount'], $CustomerRecord['decimalplaces']) . '</td>
 		<td class="number">' . locale_number_format($MyRow['allocated'], $CustomerRecord['decimalplaces']) . '</td>
 		<td class="number">' . locale_number_format($MyRow['totalamount'] - $MyRow['allocated'], $CustomerRecord['decimalplaces']) . '</td>';
 
-	$CreditInvoiceTD1 = '<td><a href="' . $RootPath . '/Credit_Invoice.php?InvoiceNumber=%s" title="' . _('Click to credit the invoice') . '"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/credit.gif" /> ' . _('Credit') . '</a></td>';
+	$CreditInvoiceTD1 = '<td><a href="' . $RootPath . '/Credit_Invoice.php?InvoiceNumber=%s" title="' . _('Click to credit the invoice') . '"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/credit.png" /> ' . _('Credit') . '</a></td>';
 
 	$AllocationTD1 = '<td><a href="' . $RootPath . '/CustomerAllocations.php?AllocTrans=%s" title="' . _('Click to allocate funds') . '"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/allocation.png" /> ' . _('Allocation') . '</a></td>';
 
-	$PreviewInvoiceTD3 = '<td><a href="' . $RootPath . '/PrintCustTrans.php?FromTransNo=%s&amp;InvOrCredit=Invoice" title="' . _('Click to preview the invoice') . '"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/preview.gif" /> ' . _('HTML') . '</a></td>
+	$PreviewInvoiceTD3 = '<td><a href="' . $RootPath . '/PrintCustTrans.php?FromTransNo=%s&amp;InvOrCredit=Invoice" title="' . _('Click to preview the invoice') . '"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/preview.png" /> ' . _('HTML') . '</a></td>
 		<td><a href="' . $RootPath . '/%s?FromTransNo=%s&amp;InvOrCredit=Invoice&amp;PrintPDF=True" title="' . _('Click for PDF') . '"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/pdf.png" /> ' . _('PDF') . ' </a></td>
-		<td><a href="' . $RootPath . '/EmailCustTrans.php?FromTransNo=%s&amp;InvOrCredit=Invoice" title="' . _('Click to email the invoice') . '"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/email.gif" /> ' . _('Email') . '</a></td>';
+		<td><a href="' . $RootPath . '/EmailCustTrans.php?FromTransNo=%s&amp;InvOrCredit=Invoice" title="' . _('Click to email the invoice') . '"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/email.png" /> ' . _('Email') . '</a></td>';
 
-	$PreviewCreditTD3 = '<td><a href="' . $RootPath . '/PrintCustTrans.php?FromTransNo=%s&amp;InvOrCredit=Credit" title="' . _('Click to preview the credit note') . '"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/preview.gif" /> ' . _('HTML') . '</a></td>
+	$PreviewCreditTD3 = '<td><a href="' . $RootPath . '/PrintCustTrans.php?FromTransNo=%s&amp;InvOrCredit=Credit" title="' . _('Click to preview the credit note') . '"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/preview.png" /> ' . _('HTML') . '</a></td>
 		<td><a href="' . $RootPath . '/%s?FromTransNo=%s&amp;InvOrCredit=Credit&amp;PrintPDF=True" title="' . _('Click for PDF') . '"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/pdf.png" /> ' . _('PDF') . ' </a></td>
-		<td><a href="' . $RootPath . '/EmailCustTrans.php?FromTransNo=%s&amp;InvOrCredit=Credit" title="' . _('Click to email the credit note') . '"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/email.gif" /> ' . _('Email') . '</a></td>';
+		<td><a href="' . $RootPath . '/EmailCustTrans.php?FromTransNo=%s&amp;InvOrCredit=Credit" title="' . _('Click to email the credit note') . '"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/email.png" /> ' . _('Email') . '</a></td>';
 
-	$GLEntriesTD1 = '<td><a href="' . $RootPath . '/GLTransInquiry.php?TypeID=%s&amp;TransNo=%s" title="' . _('Click to view the GL entries') . '"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/gl.png" width="16" /> ' . _('GL Entries') . '</a></td>';
+	$GLEntriesTD1 = '<td><a href="' . $RootPath . '/GLTransInquiry.php?TypeID=%s&amp;TransNo=%s" target="_blank" title="' . _('Click to view the GL entries') . '"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/gl.png" width="16" /> ' . _('GL Entries') . '</a></td>';
 
 	/* assumed allowed page security token 3 allows the user to create credits for invoices */
 	if (in_array($_SESSION['PageSecurityArray']['Credit_Invoice.php'], $_SESSION['AllowedPageSecurityTokens']) and $MyRow['type'] == 10) {

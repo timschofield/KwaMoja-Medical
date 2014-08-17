@@ -207,9 +207,9 @@ if (DB_num_rows($TransResult) == 0) {
 
 echo '<table width="90%" class="selection">
 		<tr>
-			<th class="SortableColumn">' . _('Trans') . ' #' . '</th>
 			<th class="SortableColumn">' . _('Type') . '</th>
-			<th class="SortableColumn">' . _('Supplier Ref') . '</th>
+			<th class="SortableColumn">' . _('Number') . '</th>
+			<th class="SortableColumn">' . _('Reference') . '</th>
 			<th class="SortableColumn">' . _('Date') . '</th>
 			<th>' . _('Total') . '</th>
 			<th>' . _('Allocated') . '</th>
@@ -249,8 +249,8 @@ while ($MyRow = DB_fetch_array($TransResult)) {
 
 				/*The trans is settled so don't show option to hold */
 
-				echo '<td>' . $MyRow['transno'] . '</td>
-					<td>' . $MyRow['typename'] . '</td>
+				echo '<td>' . _($MyRow['typename']) . '</td>
+					<td>' . $MyRow['transno'] . '</td>
 					<td>' . $MyRow['suppreference'] . '</td>
 					<td>' . ConvertSQLDate($MyRow['trandate']) . '</td>
 					<td class="number">' . locale_number_format($MyRow['totalamount'], $SupplierRecord['currdecimalplaces']) . '</td>
@@ -261,8 +261,8 @@ while ($MyRow = DB_fetch_array($TransResult)) {
 					<td><a href="' . $RootPath . '/PaymentAllocations.php?SuppID=' . urlencode($MyRow['supplierno']) . '&amp;InvID=' . urlencode($MyRow['suppreference']) . '">' . _('View Payments') . '</a></td>
 					</tr>';
 			} else {
-				echo '<td>' . $MyRow['transno'] . '</td>
-					<td>' . $MyRow['typename'] . '</td>
+				echo '<td>' . _($MyRow['typename']) . '</td>
+					<td>' . $MyRow['transno'] . '</td>
 					<td>' . $MyRow['suppreference'] . '</td>
 					<td>' . ConvertSQLDate($MyRow['trandate']) . '</td>
 					<td class="number">' . locale_number_format($MyRow['totalamount'], $SupplierRecord['currdecimalplaces']) . '</td>
@@ -296,8 +296,8 @@ while ($MyRow = DB_fetch_array($TransResult)) {
 
 				/*The trans is settled so don't show option to hold */
 
-				echo '<td>' . $MyRow['transno'] . '</td>
-						<td>' . $MyRow['typename'] . '</td>
+				echo '<td>' . _($MyRow['typename']) . '</td>
+						<td>' . $MyRow['transno'] . '</td>
 						<td>' . $MyRow['suppreference'] . '</td>
 						<td>' . ConvertSQLDate($MyRow['trandate']) . '</td>
 						<td class="number">' . locale_number_format($MyRow['totalamount'], $SupplierRecord['currdecimalplaces']) . '</td>
@@ -308,8 +308,8 @@ while ($MyRow = DB_fetch_array($TransResult)) {
 
 			} else {
 
-				echo '<td>' . $MyRow['transno'] . '</td>
-						<td>' . $MyRow['typename'] . '</td>
+				echo '<td>' . _($MyRow['typename']) . '</td>
+						<td>' . $MyRow['transno'] . '</td>
 						<td>' . $MyRow['suppreference'] . '</td>
 						<td>' . ConvertSQLDate($MyRow['trandate']) . '</td>
 						<td class="number">' . locale_number_format($MyRow['totalamount'], $SupplierRecord['currdecimalplaces']) . '</td>
@@ -327,8 +327,8 @@ while ($MyRow = DB_fetch_array($TransResult)) {
 
 		if ($_SESSION['CompanyRecord']['gllink_creditors'] == True) {
 
-			echo '<td>' . $MyRow['transno'] . '</td>
-					<td>' . $MyRow['typename'] . '</td>
+			echo '<td>' . _($MyRow['typename']) . '</td>
+					<td>' . $MyRow['transno'] . '</td>
 					<td>' . $MyRow['suppreference'] . '</td>
 					<td>' . ConvertSQLDate($MyRow['trandate']) . '</td>
 					<td class="number">' . locale_number_format($MyRow['totalamount'], $SupplierRecord['currdecimalplaces']) . '</td>
@@ -342,8 +342,8 @@ while ($MyRow = DB_fetch_array($TransResult)) {
 		} else {
 			/*Not linked to GL */
 
-			echo '<td>' . $MyRow['transno'] . '</td>
-					<td>' . $MyRow['typename'] . '</td>
+			echo '<td>' . _($MyRow['typename']) . '</td>
+					<td>' . $MyRow['transno'] . '</td>
 					<td>' . $MyRow['suppreference'] . '</td>
 					<td>' . ConvertSQLDate($MyRow['trandate']) . '</td>
 					<td class="number">' . locale_number_format($MyRow['totalamount'], $SupplierRecord['currdecimalplaces']) . '</td>

@@ -44,18 +44,13 @@ if (!isset($LocationFrom) or !isset($ShipperID)) {
 				<td>' . _('Select the warehouse') . ' (' . _('ship from location') . ')</td>
 				<td><select minlength="0" name="LocationFrom">';
 
-	if ($_SESSION['RestrictLocations'] == 0) {
-		$SQL = "SELECT locationname,
-						loccode
-					FROM locations";
-	} else {
-		$SQL = "SELECT locationname,
-						loccode
-					FROM locations
-					INNER JOIN www_users
-						ON locations.loccode=www_users.defaultlocation
-					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-	}
+	$SQL = "SELECT locationname,
+					loctions.loccode
+				FROM locations
+				INNER JOIN locationusers
+					ON locationusers.loccode=locations.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canupd=1";
 	$LocationResults = DB_query($SQL);
 
 	while ($MyRow = DB_fetch_array($LocationResults)) {

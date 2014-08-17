@@ -65,68 +65,38 @@ function CheckForRecursiveBOM($UltimateParent, $ComponentToCheck) {
 function DisplayBOMItems($UltimateParent, $Parent, $Component, $Level) {
 
 	global $ParentMBflag;
-	if ($_SESSION['RestrictLocations'] == 0) {
-		$SQL = "SELECT bom.component,
-							stockmaster.description as itemdescription,
-							locations.locationname,
-							locations.loccode,
-							workcentres.description as workcentrename,
-							workcentres.code as workcentrecode,
-							bom.quantity,
-							bom.effectiveafter,
-							bom.effectiveto,
-							bom.sequence,
-							stockmaster.mbflag,
-							bom.autoissue,
-							stockmaster.controlled,
-							locstock.quantity AS qoh,
-							stockmaster.decimalplaces
-						FROM bom
-						INNER JOIN stockmaster
-							ON bom.component=stockmaster.stockid
-						INNER JOIN locations
-							ON bom.loccode = locations.loccode
-						INNER JOIN workcentres
-							ON bom.workcentreadded=workcentres.code
-						INNER JOIN locstock
-							ON bom.loccode=locstock.loccode
-							AND bom.component = locstock.stockid
-						WHERE bom.component='" . $Component . "'
-							AND bom.parent = '" . $Parent . "'
-						ORDER BY bom.sequence ASC";
-	} else {
-		$SQL = "SELECT bom.component,
-							stockmaster.description as itemdescription,
-							locations.locationname,
-							locations.loccode,
-							workcentres.description as workcentrename,
-							workcentres.code as workcentrecode,
-							bom.quantity,
-							bom.effectiveafter,
-							bom.effectiveto,
-							bom.sequence,
-							stockmaster.mbflag,
-							bom.autoissue,
-							stockmaster.controlled,
-							locstock.quantity AS qoh,
-							stockmaster.decimalplaces
-						FROM bom
-						INNER JOIN stockmaster
-							ON bom.component=stockmaster.stockid
-						INNER JOIN locations
-							ON bom.loccode = locations.loccode
-						INNER JOIN workcentres
-							ON bom.workcentreadded=workcentres.code
-						INNER JOIN locstock
-							ON bom.loccode=locstock.loccode
-							AND bom.component = locstock.stockid
-						INNER JOIN www_users
-							ON locations.loccode=www_users.defaultlocation
-						WHERE bom.component='" . $Component . "'
-							AND bom.parent = '" . $Parent . "'
-							AND www_users.userid='" . $_SESSION['UserID'] . "'
-						ORDER BY bom.sequence ASC";
-	}
+	$SQL = "SELECT bom.component,
+					stockmaster.description as itemdescription,
+					locations.locationname,
+					locations.loccode,
+					workcentres.description as workcentrename,
+					workcentres.code as workcentrecode,
+					bom.quantity,
+					bom.effectiveafter,
+					bom.effectiveto,
+					bom.sequence,
+					stockmaster.mbflag,
+					bom.autoissue,
+					stockmaster.controlled,
+					locstock.quantity AS qoh,
+					stockmaster.decimalplaces
+				FROM bom
+				INNER JOIN stockmaster
+					ON bom.component=stockmaster.stockid
+				INNER JOIN locations
+					ON bom.loccode = locations.loccode
+				INNER JOIN workcentres
+					ON bom.workcentreadded=workcentres.code
+				INNER JOIN locstock
+					ON bom.loccode=locstock.loccode
+					AND bom.component = locstock.stockid
+				INNER JOIN locationusers
+					ON locationusers.loccode=locations.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canupd=1
+				WHERE bom.component='" . $Component . "'
+					AND bom.parent = '" . $Parent . "'
+				ORDER BY bom.sequence ASC";
 
 	$ErrMsg = _('Could not retrieve the BOM components because');
 	$DbgMsg = _('The SQL used to retrieve the components was');
@@ -229,7 +199,8 @@ $InputError = 0;
 if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Component
 	$SelectedParent = $Select;
 	unset($Select); // = NULL;
-	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p><br />';
+	echo '<div class="toplink"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Select a Different BOM') . '</a></div>';
+	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
 
 	if (isset($SelectedParent) and isset($_POST['Submit'])) {
 
@@ -423,7 +394,6 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 			break;
 	}
 
-	echo '<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Select a Different BOM') . '</a></div>';
 	// Display Manufatured Parent Items
 	$SQL = "SELECT bom.parent,
 				stockmaster.description,
@@ -472,10 +442,15 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 	}
 	// Display Kit Sets
 	$SQL = "SELECT bom.parent,
-				stockmaster.description,
-				stockmaster.mbflag
-			FROM bom INNER JOIN stockmaster
-			ON bom.parent=stockmaster.stockid
+					stockmaster.description,
+					stockmaster.mbflag
+				FROM bom
+				INNER JOIN stockmaster
+					ON bom.parent=stockmaster.stockid
+				INNER JOIN locationusers
+					ON locationusers.loccode=bom.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canupd=1
 			WHERE bom.component='" . $SelectedParent . "'
 			AND stockmaster.mbflag='K'";
 
@@ -496,12 +471,17 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 	}
 	// Display Phantom/Ghosts
 	$SQL = "SELECT bom.parent,
-				stockmaster.description,
-				stockmaster.mbflag
-			FROM bom INNER JOIN stockmaster
-			ON bom.parent=stockmaster.stockid
-			WHERE bom.component='" . $SelectedParent . "'
-			AND stockmaster.mbflag='G'";
+					stockmaster.description,
+					stockmaster.mbflag
+				FROM bom
+				INNER JOIN stockmaster
+					ON bom.parent=stockmaster.stockid
+				INNER JOIN locationusers
+					ON locationusers.loccode=bom.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canupd=1
+				WHERE bom.component='" . $SelectedParent . "'
+					AND stockmaster.mbflag='G'";
 
 	$ErrMsg = _('Could not retrieve the description of the parent part because');
 	$DbgMsg = _('The SQL used to retrieve description of the parent part was');
@@ -518,10 +498,9 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 		echo '</div></td></tr>';
 		echo '</table>';
 	}
-	echo '<br />
-			<table class="selection">';
+	echo '<table class="selection">';
 	echo '<tr>
-			<th colspan="13"><div class="centre"><b>' . $SelectedParent . ' - ' . $MyRow[0] . ' (' . $MBdesc . ') </b></div></th>
+			<th colspan="14"><div class="centre"><b>' . $SelectedParent . ' - ' . $MyRow[0] . ' (' . $MBdesc . ') </b></div></th>
 		</tr>';
 
 	$BOMTree = array();
@@ -566,8 +545,7 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 			DisplayBOMItems($UltimateParent, $Parent, $Component, $Level);
 		}
 	}
-	echo '</table>
-		<br />';
+	echo '</table>';
 
 	/* We do want to show the new component entry form in any case - it is a lot of work to get back to it otherwise if we need to add */
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Select=' . $SelectedParent . '">';
@@ -576,7 +554,7 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 	if (isset($_GET['SelectedComponent']) and $InputError != 1) {
 		//editing a selected component from the link to the line item
 
-		$SQL = "SELECT loccode,
+		$SQL = "SELECT bom.loccode,
 						effectiveafter,
 						effectiveto,
 						sequence,
@@ -584,6 +562,10 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 						quantity,
 						autoissue
 					FROM bom
+					INNER JOIN locationusers
+						ON locationusers.loccode=bom.loccode
+						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.canupd=1
 					WHERE parent='" . $SelectedParent . "'
 					AND component='" . $SelectedComponent . "'";
 
@@ -618,7 +600,9 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 
 	} else { //end of if $SelectedComponent
 
-		echo '<div class="centre"><a href="' . $RootPath . '/CopyBOM.php?Item=' . urlencode($SelectedParent) . '">' . _('Copy this BOM') . '</a></div>';
+		echo '<div class="centre">
+				<a href="' . $RootPath . '/CopyBOM.php?Item=' . urlencode($SelectedParent) . '">' . _('Copy this BOM') . '</a>
+			</div>';
 		echo '<input type="hidden" name="SelectedParent" value="' . $SelectedParent . '" />';
 		/* echo "Enter the details of a new component in the fields below. <br />Click on 'Enter Information' to add the new component, once all fields are completed.";
 		 */
@@ -682,18 +666,13 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 
 	DB_free_result($Result);
 
-	if ($_SESSION['RestrictLocations'] == 0) {
-		$SQL = "SELECT locationname,
-							loccode
-						FROM locations";
-	} else {
-		$SQL = "SELECT locationname,
-							loccode
-						FROM locations
-						INNER JOIN www_users
-							ON locations.loccode=www_users.defaultlocation
-						WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-	}
+	$SQL = "SELECT locationname,
+					locations.loccode
+				FROM locations
+				INNER JOIN locationusers
+					ON locationusers.loccode=locations.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canupd=1";
 	$Result = DB_query($SQL);
 
 	while ($MyRow = DB_fetch_array($Result)) {
@@ -713,18 +692,13 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 			<tr>
 				<td>' . _('Work Centre Added') . ': </td><td>';
 
-	if ($_SESSION['RestrictLocations'] == 0) {
-		$SQL = "SELECT code,
-							description
-						FROM workcentres";
-	} else {
-		$SQL = "SELECT code,
-							description
-						FROM workcentres
-						INNER JOIN www_users
-							ON workcentres.location=www_users.defaultlocation
-						WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-	}
+	$SQL = "SELECT code,
+					description
+				FROM workcentres
+				INNER JOIN locationusers
+					ON locationusers.loccode=workcentres.location
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canupd=1";
 
 	$Result = DB_query($SQL);
 
@@ -796,15 +770,18 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 		}
 
 
-		echo '</select></td></tr>';
+		echo '</select>
+				</td>
+			</tr>';
 	} else {
 		echo '<input type="hidden" name="AutoIssue" value="0" />';
 	}
 
 	echo '</table>
-			<br /><div class="centre"><input tabindex="8" type="submit" name="Submit" value="' . _('Enter Information') . '" />
+			<div class="centre">
+				<input tabindex="8" type="submit" name="Submit" value="' . _('Enter Information') . '" />
 			</div>
-			</form>';
+		</form>';
 
 	// end of BOM maintenance code - look at the parent selection form if not relevant
 	// ----------------------------------------------------------------------------------
@@ -882,14 +859,15 @@ if (!isset($SelectedParent)) {
 				<td>' . _('Enter extract of the') . ' <b>' . _('Stock Code') . '</b>:</td>
 				<td><input tabindex="2" type="text" autofocus="autofocus" name="StockCode" size="15" minlength="0" maxlength="18" /></td>
 			</tr>
-		</table>
-	<br /><div class="centre"><input tabindex="3" type="submit" name="Search" value="' . _('Search Now') . '" /></div>';
+		</table>';
+	echo '<div class="centre">
+			<input tabindex="3" type="submit" name="Search" value="' . _('Search Now') . '" />
+		</div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	if (isset($_POST['Search']) and isset($Result) and !isset($SelectedParent)) {
 
-		echo '<br />
-			<table cellpadding="2" class="selection">
+		echo '<table cellpadding="2" class="selection">
 				<tr>
 					<th>' . _('Code') . '</th>
 					<th>' . _('Description') . '</th>

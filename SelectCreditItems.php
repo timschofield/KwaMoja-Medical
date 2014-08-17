@@ -803,18 +803,13 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 					<td>' . _('Goods Returned to Location') . ' :</td>
 					<td><select required="required" minlength="1" name="Location">';
 
-			if ($_SESSION['RestrictLocations'] == 0) {
-				$SQL = "SELECT locationname,
-								loccode
-							FROM locations";
-			} else {
-				$SQL = "SELECT locationname,
-								loccode
-							FROM locations
-							INNER JOIN www_users
-								ON locations.loccode=www_users.defaultlocation
-							WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-			}
+			$SQL = "SELECT locations.loccode,
+							locationname
+						FROM locations
+						INNER JOIN locationusers
+							ON locationusers.loccode=locations.loccode
+							AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+							AND locationusers.canupd=1";
 			$Result = DB_query($SQL);
 
 			if (!isset($_POST['Location'])) {

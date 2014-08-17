@@ -500,7 +500,7 @@ class TCPDF {
 	protected $author = '';
 
 	/**
-	 * Document keywords.
+	 * Document Keywords.
 	 * @protected
 	 */
 	protected $Keywords = '';
@@ -2897,14 +2897,14 @@ class TCPDF {
 	}
 
 	/**
-	 * Associates keywords with the document, generally in the form 'keyword1 keyword2 ...'.
-	 * @param $Keywords (string) The list of keywords.
+	 * Associates Keywords with the document, generally in the form 'keyword1 keyword2 ...'.
+	 * @param $Keywords (string) The list of Keywords.
 	 * @public
 	 * @since 1.2
 	 * @see SetAuthor(), SetCreator(), SetSubject(), SetTitle()
 	 */
 	public function SetKeywords($Keywords) {
-		$this->keywords = $Keywords;
+		$this->Keywords = $Keywords;
 	}
 
 	/**
@@ -9532,9 +9532,9 @@ class TCPDF {
 			// The subject of the document.
 			$out .= ' /Subject '.$this->_textstring($this->subject, $oid);
 		}
-		if (!TCPDF_STATIC::empty_string($this->keywords)) {
+		if (!TCPDF_STATIC::empty_string($this->Keywords)) {
 			// Keywords associated with the document.
-			$out .= ' /Keywords '.$this->_textstring($this->keywords, $oid);
+			$out .= ' /Keywords '.$this->_textstring($this->Keywords, $oid);
 		}
 		if (!TCPDF_STATIC::empty_string($this->creator)) {
 			// If the document was converted to PDF from another format, the name of the conforming product that created the original document from which it was converted.
@@ -9603,7 +9603,7 @@ class TCPDF {
 		$xmp .= "\t\t\t".'</dc:description>'."\n";
 		$xmp .= "\t\t\t".'<dc:subject>'."\n";
 		$xmp .= "\t\t\t\t".'<rdf:Bag>'."\n";
-		$xmp .= "\t\t\t\t\t".'<rdf:li>'.TCPDF_STATIC::_escapeXML($this->keywords).'</rdf:li>'."\n";
+		$xmp .= "\t\t\t\t\t".'<rdf:li>'.TCPDF_STATIC::_escapeXML($this->Keywords).'</rdf:li>'."\n";
 		$xmp .= "\t\t\t\t".'</rdf:Bag>'."\n";
 		$xmp .= "\t\t\t".'</dc:subject>'."\n";
 		$xmp .= "\t\t".'</rdf:Description>'."\n";
@@ -9626,7 +9626,7 @@ class TCPDF {
 		$xmp .= "\t\t\t".'<xmp:MetadataDate>'.$doccreationdate.'</xmp:MetadataDate>'."\n";
 		$xmp .= "\t\t".'</rdf:Description>'."\n";
 		$xmp .= "\t\t".'<rdf:Description rdf:about="" xmlns:pdf="http://ns.adobe.com/pdf/1.3/">'."\n";
-		$xmp .= "\t\t\t".'<pdf:Keywords>'.TCPDF_STATIC::_escapeXML($this->keywords).'</pdf:Keywords>'."\n";
+		$xmp .= "\t\t\t".'<pdf:Keywords>'.TCPDF_STATIC::_escapeXML($this->Keywords).'</pdf:Keywords>'."\n";
 		$xmp .= "\t\t\t".'<pdf:Producer>'.TCPDF_STATIC::_escapeXML(TCPDF_STATIC::getTCPDFProducer()).'</pdf:Producer>'."\n";
 		$xmp .= "\t\t".'</rdf:Description>'."\n";
 		$xmp .= "\t\t".'<rdf:Description rdf:about="" xmlns:xmpMM="http://ns.adobe.com/xap/1.0/mm/">'."\n";

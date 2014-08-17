@@ -42,14 +42,17 @@ if (!isset($_GET['OrderNo'])) {
 }
 
 $ErrMsg = _('The order requested could not be retrieved') . ' - ' . _('the SQL returned the following error');
-if ($_SESSION['RestrictLocations'] == 0) {
-	$OrderHeaderSQL = "SELECT purchorders.*,
+$OrderHeaderSQL = "SELECT purchorders.*,
 							suppliers.supplierid,
 							suppliers.suppname,
 							suppliers.currcode,
 							locations.locationname,
 							currencies.decimalplaces AS currdecimalplaces
 						FROM purchorders
+						INNER JOIN locationusers
+							ON locationusers.loccode=purchorders.intostocklocation
+							AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+							AND locationusers.canview=1
 						INNER JOIN locations
 							ON locations.loccode=purchorders.intostocklocation
 						INNER JOIN suppliers
@@ -57,27 +60,6 @@ if ($_SESSION['RestrictLocations'] == 0) {
 						INNER JOIN currencies
 							ON suppliers.currcode = currencies.currabrev
 						WHERE purchorders.orderno = '" . $_GET['OrderNo'] . "'";
-} else {
-	$OrderHeaderSQL = "SELECT purchorders.*,
-							suppliers.supplierid,
-							suppliers.suppname,
-							suppliers.currcode,
-							www_users.realname,
-							locations.locationname,
-							currencies.decimalplaces AS currdecimalplaces
-						FROM purchorders
-						INNER JOIN locations
-							ON locations.loccode=purchorders.intostocklocation
-						INNER JOIN suppliers
-							ON purchorders.supplierno = suppliers.supplierid
-						INNER JOIN currencies
-							ON suppliers.currcode = currencies.currabrev
-						LEFT JOIN www_users
-							ON purchorders.initiator=www_users.userid
-							AND locations.loccode=www_users.defaultlocation
-						WHERE purchorders.orderno = '" . $_GET['OrderNo'] . "'
-							AND www_users.userid='" . $_SESSION['UserID'] . "'";
-}
 
 $GetOrdHdrResult = DB_query($OrderHeaderSQL, $ErrMsg);
 
@@ -90,7 +72,7 @@ if (DB_num_rows($GetOrdHdrResult) != 1) {
 	echo '<table class="table_index">
 			<tr>
 				<td class="menu_group_item">
-					<li><a href="' . $RootPath . '/PO_SelectPurchOrder.php">' . _('Outstanding Sales Orders') . '</a></li>
+					<li><a href="' . $RootPath . '/PO_SelectPurchOrder.php">' . _('Outstanding Purchase Orders') . '</a></li>
 				</td>
 			</tr>
 		</table>';

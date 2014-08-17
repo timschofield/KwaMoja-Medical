@@ -58,15 +58,20 @@ if (isset($_POST['submit'])) {
 				  SUM(salesorderdetails.quantity) AS totqty,
 				  SUM(salesorderdetails.qtyinvoiced) AS totqtyinvoiced,
 				  SUM(salesorderdetails.quantity * salesorderdetails.unitprice ) AS totextqty
-			FROM salesorders INNER JOIN salesorderdetails
+			FROM salesorders
+			INNER JOIN salesorderdetails
 				 ON salesorders.orderno = salesorderdetails.orderno
+			INNER JOIN locationusers
+				ON locationusers.loccode=salesorders.fromstkloc
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canupd=1
 			INNER JOIN stockmaster
-				 ON salesorderdetails.stkcode = stockmaster.stockid
+				ON salesorderdetails.stkcode = stockmaster.stockid
 			WHERE orddate >='" . FormatDateForSQL($_POST['FromDate']) . "'
-			AND orddate <='" . FormatDateForSQL($_POST['ToDate']) . "'
-			" . $WhereLocation . "
-			" . $WhereCategory . "
-			AND salesorders.quotation=0
+				AND orddate <='" . FormatDateForSQL($_POST['ToDate']) . "'
+				" . $WhereLocation . "
+				" . $WhereCategory . "
+				AND salesorders.quotation=0
 			GROUP BY salesorderdetails.stkcode";
 	//echo "<br />$SQL<br />";
 	$Result = DB_query($SQL);
@@ -221,19 +226,14 @@ echo '</select></td>
 echo '<tr><td>' . _('Inventory Location') . ':</td>
 		<td><select minlength="0" name="Location">';
 
-if ($_SESSION['RestrictLocations'] == 0) {
-	$SQL = "SELECT locationname,
-					loccode
-				FROM locations";
-	echo '<option selected="selected" value="All">' . _('All Locations') . '</option>';
-} else {
-	$SQL = "SELECT locationname,
-					loccode
-				FROM locations
-				INNER JOIN www_users
-					ON locations.loccode=www_users.defaultlocation
-				WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-}
+$SQL = "SELECT locationname,
+				locations.loccode
+			FROM locations
+			INNER JOIN locationusers
+				ON locationusers.loccode=locations.loccode
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canupd=1";
+echo '<option selected="selected" value="All">' . _('All Locations') . '</option>';
 $Result = DB_query($SQL);
 while ($MyRow = DB_fetch_array($Result)) {
 	echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';

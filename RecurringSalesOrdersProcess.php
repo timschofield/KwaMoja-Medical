@@ -24,98 +24,53 @@ include('includes/SQL_CommonFunctions.inc');
 include('includes/GetSalesTransGLCodes.inc');
 include('includes/htmlMimeMail.php');
 
-if ($_SESSION['RestrictLocations'] == 0) {
-	$SQL = "SELECT recurringsalesorders.recurrorderno,
-					recurringsalesorders.debtorno,
-					recurringsalesorders.branchcode,
-					recurringsalesorders.customerref,
-					recurringsalesorders.buyername,
-					recurringsalesorders.comments,
-					recurringsalesorders.orddate,
-					recurringsalesorders.ordertype,
-					recurringsalesorders.shipvia,
-					recurringsalesorders.deladd1,
-					recurringsalesorders.deladd2,
-					recurringsalesorders.deladd3,
-					recurringsalesorders.deladd4,
-					recurringsalesorders.deladd5,
-					recurringsalesorders.deladd6,
-					recurringsalesorders.contactphone,
-					recurringsalesorders.contactemail,
-					recurringsalesorders.deliverto,
-					recurringsalesorders.freightcost,
-					recurringsalesorders.fromstkloc,
-					recurringsalesorders.lastrecurrence,
-					recurringsalesorders.stopdate,
-					recurringsalesorders.frequency,
-					recurringsalesorders.autoinvoice,
-					debtorsmaster.name,
-					debtorsmaster.currcode,
-					salestypes.sales_type,
-					custbranch.area,
-					custbranch.taxgroupid,
-					locations.contact,
-					locations.email
-				FROM recurringsalesorders
-				INNER JOIN debtorsmaster
-					ON recurringsalesorders.debtorno = debtorsmaster.debtorno
-				INNER JOIN custbranch
-					ON recurringsalesorders.debtorno = custbranch.debtorno
-					AND recurringsalesorders.branchcode = custbranch.branchcode
-				INNER JOIN salestypes
-					ON recurringsalesorders.ordertype=salestypes.typeabbrev
-				INNER JOIN locations
-					ON recurringsalesorders.fromstkloc=locations.loccode
-				WHERE (TO_DAYS(CURRENT_DATE) - TO_DAYS(recurringsalesorders.lastrecurrence)) > (365/recurringsalesorders.frequency)
-					AND DATE_ADD(recurringsalesorders.lastrecurrence, " . INTERVAL('365/recurringsalesorders.frequency', 'DAY') . ") <= recurringsalesorders.stopdate";
-} else {
-	$SQL = "SELECT recurringsalesorders.recurrorderno,
-					recurringsalesorders.debtorno,
-					recurringsalesorders.branchcode,
-					recurringsalesorders.customerref,
-					recurringsalesorders.buyername,
-					recurringsalesorders.comments,
-					recurringsalesorders.orddate,
-					recurringsalesorders.ordertype,
-					recurringsalesorders.shipvia,
-					recurringsalesorders.deladd1,
-					recurringsalesorders.deladd2,
-					recurringsalesorders.deladd3,
-					recurringsalesorders.deladd4,
-					recurringsalesorders.deladd5,
-					recurringsalesorders.deladd6,
-					recurringsalesorders.contactphone,
-					recurringsalesorders.contactemail,
-					recurringsalesorders.deliverto,
-					recurringsalesorders.freightcost,
-					recurringsalesorders.fromstkloc,
-					recurringsalesorders.lastrecurrence,
-					recurringsalesorders.stopdate,
-					recurringsalesorders.frequency,
-					recurringsalesorders.autoinvoice,
-					debtorsmaster.name,
-					debtorsmaster.currcode,
-					salestypes.sales_type,
-					custbranch.area,
-					custbranch.taxgroupid,
-					locations.contact,
-					locations.email
-				FROM recurringsalesorders
-				INNER JOIN debtorsmaster
-					ON recurringsalesorders.debtorno = debtorsmaster.debtorno
-				INNER JOIN custbranch
-					ON recurringsalesorders.debtorno = custbranch.debtorno
-					AND recurringsalesorders.branchcode = custbranch.branchcode
-				INNER JOIN salestypes
-					ON recurringsalesorders.ordertype=salestypes.typeabbrev
-				INNER JOIN locations
-					ON recurringsalesorders.fromstkloc=locations.loccode
-				INNER JOIN www_users
-					ON locations.loccode=www_users.defaultlocation
-				WHERE (TO_DAYS(CURRENT_DATE) - TO_DAYS(recurringsalesorders.lastrecurrence)) > (365/recurringsalesorders.frequency)
-					AND DATE_ADD(recurringsalesorders.lastrecurrence, " . INTERVAL('365/recurringsalesorders.frequency', 'DAY') . ") <= recurringsalesorders.stopdate
-					AND www_users.userid='" . $_SESSION['UserID'] . "'";
-}
+$SQL = "SELECT recurringsalesorders.recurrorderno,
+				recurringsalesorders.debtorno,
+				recurringsalesorders.branchcode,
+				recurringsalesorders.customerref,
+				recurringsalesorders.buyername,
+				recurringsalesorders.comments,
+				recurringsalesorders.orddate,
+				recurringsalesorders.ordertype,
+				recurringsalesorders.shipvia,
+				recurringsalesorders.deladd1,
+				recurringsalesorders.deladd2,
+				recurringsalesorders.deladd3,
+				recurringsalesorders.deladd4,
+				recurringsalesorders.deladd5,
+				recurringsalesorders.deladd6,
+				recurringsalesorders.contactphone,
+				recurringsalesorders.contactemail,
+				recurringsalesorders.deliverto,
+				recurringsalesorders.freightcost,
+				recurringsalesorders.fromstkloc,
+				recurringsalesorders.lastrecurrence,
+				recurringsalesorders.stopdate,
+				recurringsalesorders.frequency,
+				recurringsalesorders.autoinvoice,
+				debtorsmaster.name,
+				debtorsmaster.currcode,
+				salestypes.sales_type,
+				custbranch.area,
+				custbranch.taxgroupid,
+				locations.contact,
+				locations.email
+			FROM recurringsalesorders
+			INNER JOIN debtorsmaster
+				ON recurringsalesorders.debtorno = debtorsmaster.debtorno
+			INNER JOIN custbranch
+				ON recurringsalesorders.debtorno = custbranch.debtorno
+				AND recurringsalesorders.branchcode = custbranch.branchcode
+			INNER JOIN salestypes
+				ON recurringsalesorders.ordertype=salestypes.typeabbrev
+			INNER JOIN locations
+				ON recurringsalesorders.fromstkloc=locations.loccode
+			INNER JOIN locationusers
+				ON locationusers.loccode=recurringsalesorders.fromstkloc
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canupd=1
+			WHERE (TO_DAYS(CURRENT_DATE) - TO_DAYS(recurringsalesorders.lastrecurrence)) > (365/recurringsalesorders.frequency)
+				AND DATE_ADD(recurringsalesorders.lastrecurrence, " . INTERVAL('365/recurringsalesorders.frequency', 'DAY') . ") <= recurringsalesorders.stopdate";
 
 $RecurrOrdersDueResult = DB_query($SQL, _('There was a problem retrieving the recurring sales order templates. The database reported') . ': ');
 

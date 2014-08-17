@@ -872,18 +872,13 @@ if (!isset($_SESSION['Contract' . $Identifier]->DebtorNo) or $_SESSION['Contract
 
 	echo '</select><a target="_blank" href="' . $RootPath . '/StockCategories.php">' . _('Add or Modify Contract Categories') . '</a></td></tr>';
 
-	if ($_SESSION['RestrictLocations'] == 0) {
-		$SQL = "SELECT locationname,
-						loccode
-					FROM locations";
-	} else {
-		$SQL = "SELECT locationname,
-						loccode
-					FROM locations
-					INNER JOIN www_users
-						ON locations.loccode=www_users.defaultlocation
-					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-	}
+	$SQL = "SELECT locations.loccode,
+					locationname
+				FROM locations
+				INNER JOIN locationusers
+					ON locationusers.loccode=locations.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canupd=1";
 	$ErrMsg = _('The stock locations could not be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve stock locations and failed was');
 	$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
@@ -899,19 +894,16 @@ if (!isset($_SESSION['Contract' . $Identifier]->DebtorNo) or $_SESSION['Contract
 		}
 	}
 
-	echo '</select></td></tr>';
-	if ($_SESSION['RestrictLocations'] == 0) {
-		$SQL = "SELECT code,
-						description
-					FROM workcentres";
-	} else {
-		$SQL = "SELECT code,
-						description
-					FROM workcentres
-					INNER JOIN www_users
-						ON workcentres.location=www_users.defaultlocation
-					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-	}
+	echo '</select>
+				</td>
+			</tr>';
+	$SQL = "SELECT code,
+					description
+				FROM workcentres
+				INNER JOIN locationusers
+					ON locationusers.loccode=workcentres.location
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canupd=1";
 	$Result = DB_query($SQL);
 
 	if (DB_num_rows($Result) == 0) {

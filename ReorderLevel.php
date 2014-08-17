@@ -40,14 +40,20 @@ if (isset($_POST['PrintPDF'])) {
 					stockmaster.decimalplaces,
 					stockmaster.serialised,
 					stockmaster.controlled
-				FROM locstock,
-					stockmaster
+				FROM locstock
+				INNER JOIN locationusers
+					ON locationusers.loccode=locstock.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canview=1
+				INNER JOIN stockmaster
+					ON locstock.stockid=stockmaster.stockid
 				LEFT JOIN stockcategory
-				ON stockmaster.categoryid=stockcategory.categoryid,
-					locations
-				WHERE locstock.stockid=stockmaster.stockid " . $WhereLocation . "AND locstock.loccode=locations.loccode
-				AND locstock.reorderlevel > locstock.quantity
-				AND (stockmaster.mbflag='B' OR stockmaster.mbflag='M') " . $WhereCategory . " ORDER BY locstock.loccode,locstock.stockid";
+					ON stockmaster.categoryid=stockcategory.categoryid
+				INNER JOIN locations
+					ON locstock.loccode=locations.loccode
+				WHERE  locstock.reorderlevel > locstock.quantity
+					" . $WhereLocation . "
+					AND (stockmaster.mbflag='B' OR stockmaster.mbflag='M') " . $WhereCategory . " ORDER BY locstock.loccode,locstock.stockid";
 
 	$Result = DB_query($SQL, '', '', false, true);
 
@@ -116,14 +122,19 @@ if (isset($_POST['PrintPDF'])) {
 
 		// Print if stock for part in other locations
 		$SQL2 = "SELECT locstock.quantity,
-								locstock.loccode,
-								locstock.reorderlevel,
-								stockmaster.decimalplaces
-						 FROM locstock, stockmaster
-						 WHERE locstock.quantity > 0
-						 AND locstock.quantity > reorderlevel
-						 AND locstock.stockid = stockmaster.stockid
-						 AND locstock.stockid ='" . $MyRow['stockid'] . "' AND locstock.loccode !='" . $MyRow['loccode'] . "'";
+						locstock.loccode,
+						locstock.reorderlevel,
+						stockmaster.decimalplaces
+					FROM locstock
+					INNER JOIN locationusers
+						ON locationusers.loccode=locstock.loccode
+						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.canview=1, stockmaster
+					INNER JOIN stockmaster
+						ON locstock.stockid = stockmaster.stockid
+					WHERE locstock.quantity > 0
+						AND locstock.quantity > reorderlevel
+						AND locstock.stockid ='" . $MyRow['stockid'] . "' AND locstock.loccode !='" . $MyRow['loccode'] . "'";
 		$OtherResult = DB_query($SQL2, '', '', false, true);
 		while ($MyRow2 = DB_fetch_array($OtherResult)) {
 			$YPos -= $line_height;
@@ -187,28 +198,22 @@ if (isset($_POST['PrintPDF'])) {
 	$Title = _('Reorder Level Reporting');
 	include('includes/header.inc');
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Inventory') . '" alt="" />' . ' ' . _('Inventory Reorder Level Report') . '</p>';
-	echo '<div class="page_help_text noPrint">' . _('Use this report to display the reorder levels for Inventory items in different categories.') . '</div><br />';
+	echo '<div class="page_help_text noPrint">' . _('Use this report to display the reorder levels for Inventory items in different categories.') . '</div>';
 
-	echo '<br /><form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-	echo '<div>';
+	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table class="selection">
 			<tr>
 				<td>' . _('From Stock Location') . ':</td>
 				<td><select required="required" minlength="1" name="StockLocation"> ';
-	if ($_SESSION['RestrictLocations'] == 0) {
-		$SQL = "SELECT locationname,
-						loccode
-					FROM locations";
-		echo '<option selected="selected" value="All">' . _('All Locations') . '</option>';
-	} else {
-		$SQL = "SELECT locationname,
-						loccode
-					FROM locations
-					INNER JOIN www_users
-						ON locations.loccode=www_users.defaultlocation
-					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-	}
+	$SQL = "SELECT locationname,
+					locations.loccode
+				FROM locations
+				INNER JOIN locationusers
+					ON locationusers.loccode=locations.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canview=1";
+	echo '<option selected="selected" value="All">' . _('All Locations') . '</option>';
 	$ResultStkLocs = DB_query($SQL);
 	while ($MyRow = DB_fetch_array($ResultStkLocs)) {
 		if (isset($_POST['StockLocation']) and $MyRow['loccode'] == $_POST['StockLocation']) {
@@ -217,16 +222,18 @@ if (isset($_POST['PrintPDF'])) {
 			echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 		}
 	}
-	echo '</select></td></tr>';
+	echo '</select>
+				</td>
+			</tr>';
 
 	$SQL = "SELECT categoryid, categorydescription FROM stockcategory WHERE stocktype<>'A' ORDER BY categorydescription";
 	$Result1 = DB_query($SQL);
 	if (DB_num_rows($Result1) == 0) {
-		echo '</td></tr>
-			</table>
-			<br />';
+		echo '</td>
+			</tr>
+		</table>';
 		prnMsg(_('There are no stock categories currently defined please use the link below to set them up'), 'warn');
-		echo '<br /><a href="' . $RootPath . '/StockCategories.php">' . _('Define Stock Categories') . '</a>';
+		echo '<a href="' . $RootPath . '/StockCategories.php">' . _('Define Stock Categories') . '</a>';
 		include('includes/footer.inc');
 		exit;
 	}
@@ -249,14 +256,14 @@ if (isset($_POST['PrintPDF'])) {
 			echo '<option value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
 		}
 	}
-	echo '</select></td></tr>';
+	echo '</select>
+				</td>
+			</tr>';
 	echo '</table>
-			<br />
 			<div class="centre">
 				<input type="submit" name="PrintPDF" value="' . _('Print PDF') . '" />
 			</div>';
-	echo '</div>
-		  </form>';
+	echo '</form>';
 	include('includes/footer.inc');
 
 }

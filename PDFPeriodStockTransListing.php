@@ -56,19 +56,14 @@ if (!isset($_POST['FromDate'])) {
 	echo '<tr>
 			<td>' . _('For Stock Location') . ':</td>
 			<td><select required="required" minlength="1" name="StockLocation">';
-	if ($_SESSION['RestrictLocations'] == 0) {
-		$SQL = "SELECT locationname,
-						loccode
-					FROM locations";
-		echo '<option selected="selected" value="All">' . _('All Locations') . '</option>';
-	} else {
-		$SQL = "SELECT locationname,
-						loccode
-					FROM locations
-					INNER JOIN www_users
-						ON locations.loccode=www_users.defaultlocation
-					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-	}
+	$SQL = "SELECT locationname,
+					locations.loccode
+				FROM locations
+				INNER JOIN locationusers
+					ON locationusers.loccode=locations.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canview=1";
+	echo '<option selected="selected" value="All">' . _('All Locations') . '</option>';
 
 	while ($MyRow = DB_fetch_array($ResultStkLocs)) {
 		if (isset($_POST['StockLocation']) and $_POST['StockLocation'] != 'All') {
@@ -113,9 +108,13 @@ if ($_POST['StockLocation'] == 'All') {
 				locations.locationname
 			FROM stockmoves
 			LEFT JOIN stockmaster
-			ON stockmoves.stockid=stockmaster.stockid
+				ON stockmoves.stockid=stockmaster.stockid
 			LEFT JOIN locations
-			ON stockmoves.loccode=locations.loccode
+				ON stockmoves.loccode=locations.loccode
+			INNER JOIN locationusers
+				ON locationusers.loccode=locations.loccode
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canview=1
 			WHERE type='" . $_POST['TransType'] . "'
 			AND date_format(trandate, '%Y-%m-%d')>='" . FormatDateForSQL($_POST['FromDate']) . "'
 			AND date_format(trandate, '%Y-%m-%d')<='" . FormatDateForSQL($_POST['ToDate']) . "'";
@@ -132,13 +131,17 @@ if ($_POST['StockLocation'] == 'All') {
 				locations.locationname
 			FROM stockmoves
 			LEFT JOIN stockmaster
-			ON stockmoves.stockid=stockmaster.stockid
+				ON stockmoves.stockid=stockmaster.stockid
 			LEFT JOIN locations
-			ON stockmoves.loccode=locations.loccode
+				ON stockmoves.loccode=locations.loccode
+			INNER JOIN locationusers
+				ON locationusers.loccode=locations.loccode
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canview=1
 			WHERE type='" . $_POST['TransType'] . "'
-			AND date_format(trandate, '%Y-%m-%d')>='" . FormatDateForSQL($_POST['FromDate']) . "'
-			AND date_format(trandate, '%Y-%m-%d')<='" . FormatDateForSQL($_POST['ToDate']) . "'
-			AND stockmoves.loccode='" . $_POST['StockLocation'] . "'";
+				AND date_format(trandate, '%Y-%m-%d')>='" . FormatDateForSQL($_POST['FromDate']) . "'
+				AND date_format(trandate, '%Y-%m-%d')<='" . FormatDateForSQL($_POST['ToDate']) . "'
+				AND stockmoves.loccode='" . $_POST['StockLocation'] . "'";
 }
 $Result = DB_query($SQL, '', '', false, false);
 

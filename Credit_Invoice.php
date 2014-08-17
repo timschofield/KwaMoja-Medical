@@ -71,6 +71,10 @@ if (!isset($_GET['InvoiceNumber']) and !$_SESSION['ProcessingCredit']) {
 								ON debtortrans.order_=salesorders.orderno
 							INNER JOIN locations
 								ON stockmoves.loccode = locations.loccode
+							INNER JOIN locationusers
+								ON locationusers.loccode=locations.loccode
+								AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+								AND locationusers.canupd=1
 							WHERE debtortrans.transno = '" . intval($_GET['InvoiceNumber']) . "'
 								AND stockmoves.type=10";
 
@@ -1518,18 +1522,13 @@ if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 
 		echo '<tr><td>' . _('Goods returned to location') . '</td><td><select minlength="0" tabindex="' . $j . '" name="Location">';
 
-		if ($_SESSION['RestrictLocations'] == 0) {
-			$SQL = "SELECT locationname,
-							loccode
-						FROM locations";
-		} else {
-			$SQL = "SELECT locationname,
-							loccode
-						FROM locations
-						INNER JOIN www_users
-							ON locations.loccode=www_users.defaultlocation
-						WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-		}
+		$SQL = "SELECT locations.loccode,
+						locationname
+					FROM locations
+					INNER JOIN locationusers
+						ON locationusers.loccode=locations.loccode
+						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.canupd=1";
 		$Result = DB_query($SQL);
 
 		if (!isset($_POST['Location'])) {

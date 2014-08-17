@@ -887,18 +887,13 @@ else {
 				<td>' . _('Warehouse') . ':</td>
 				<td><select required="required" minlength="1" name="StkLocation" onchange="ReloadForm(form1.LookupDeliveryAddress)">';
 
-	if ($_SESSION['RestrictLocations'] == 0) {
-		$SQL = "SELECT locationname,
-						loccode
-					FROM locations";
-	} else {
-		$SQL = "SELECT locationname,
-						loccode
-					FROM locations
-					INNER JOIN www_users
-						ON locations.loccode=www_users.defaultlocation
-					WHERE www_users.userid='" . $_SESSION['UserID'] . "'";
-	}
+	$SQL = "SELECT locationname,
+					locations.loccode
+				FROM locations
+				INNER JOIN locationusers
+					ON locationusers.loccode=locations.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.canupd=1";
 	$LocnResult = DB_query($SQL);
 
 	while ($LocnRow = DB_fetch_array($LocnResult)) {

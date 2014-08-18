@@ -1,4 +1,7 @@
 <?php
+/*	Please note that addTextWrap() prints a font-size-height further down than
+addText() and other functions. Use addText() instead of addTextWrap() to
+print left aligned elements.*/
 
 if (!$FirstPage) {
 	/* only initiate a new page if its not the first */
@@ -18,13 +21,15 @@ if ($InvOrCredit == 'Invoice') {
 	$PDF->addText($Page_Width / 2 - 60, $YPos, $FontSize, _('TAX CREDIT NOTE') . ' ');
 }
 
-// Prints page number
+// Prints page number:
 $FontSize = 10;
 $YPos -= $FontSize; //Downs one line height mesure (addText position is from left-bottom).
-$PDF->addTextWrap($Page_Width-$Left_Margin - 72, $YPos, 72, $FontSize, _('Page').' '.$PageNumber, 'right');
+$PDF->addTextWrap($Page_Width - $Left_Margin - 72, $YPos, 72, $FontSize, _('Page') . ' ' . $PageNumber, 'right');
+
+
 $XPos = $Page_Width - 265;
 $YPos -= 85;
-/*draw a nice curved corner box around the billing details */
+// Draws a nice curved corner box around the billing details:
 /*from the top right */
 $PDF->partEllipse($XPos + 225, $YPos + 67, 0, 90, 10, 10);
 /*line to the top left */
@@ -95,7 +100,7 @@ if ($_SESSION['CompanyRecord']['regoffice2'] <> '') {
 	$LineCount += 1;
 	$PDF->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, $_SESSION['CompanyRecord']['regoffice2']);
 }
-if (($_SESSION['CompanyRecord']['regoffice3'] <> '') or ($_SESSION['CompanyRecord']['regoffice4'] <> '') or ($_SESSION['CompanyRecord']['regoffice5'] <> '')) {
+if (($_SESSION['CompanyRecord']['regoffice3'] <> '') OR ($_SESSION['CompanyRecord']['regoffice4'] <> '') OR ($_SESSION['CompanyRecord']['regoffice5'] <> '')) {
 	$LineCount += 1;
 	$PDF->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, $_SESSION['CompanyRecord']['regoffice3'] . ' ' . $_SESSION['CompanyRecord']['regoffice4'] . ' ' . $_SESSION['CompanyRecord']['regoffice5']); // country in 6 not printed
 }
@@ -131,7 +136,7 @@ if ($MyRow['invaddrbranch'] == 0) {
 	$LineCount += 1;
 	$PDF->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, html_entity_decode($MyRow['address2']));
 	$LineCount += 1;
-	$PDF->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, html_entity_decode($MyRow['address3'] . ' ' . $MyRow['address4'] . ' ' . $MyRow['address5'] . ' ' . $MyRow['address6']));
+	$PDF->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, html_entity_decode($MyRow['address3']) . ' ' . html_entity_decode($MyRow['address4']) . ' ' . html_entity_decode($MyRow['address5']) . ' ' . html_entity_decode($MyRow['address6']));
 } else {
 	$LineCount += 1;
 	$PDF->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, html_entity_decode($MyRow['name']));
@@ -140,10 +145,9 @@ if ($MyRow['invaddrbranch'] == 0) {
 	$LineCount += 1;
 	$PDF->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, html_entity_decode($MyRow['brpostaddr2']));
 	$LineCount += 1;
-	$PDF->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, html_entity_decode($MyRow['brpostaddr3'] . ' ' . $MyRow['brpostaddr4'] . ' ' . $MyRow['brpostaddr5'] . ' ' . $MyRow['brpostaddr6']));
+	$PDF->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, html_entity_decode($MyRow['brpostaddr3']) . ' ' . html_entity_decode($MyRow['brpostaddr4']) . ' ' . html_entity_decode($MyRow['brpostaddr5']) . ' ' . html_entity_decode($MyRow['brpostaddr6']));
 }
 
-//$XPos = $Page_Width/2;
 $XPos = $Page_Width - 265;
 $YPos = $Page_Height - $Top_Margin - 120;
 
@@ -162,8 +166,8 @@ if ($InvOrCredit == 'Invoice') {
 		function htmlspecialchars_decode($str) {
 			$trans = get_html_translation_table(HTML_SPECIALCHARS);
 
-			$decode = array();
-			foreach ($trans as $char => $entity) {
+			$decode = ARRAY();
+			foreach ($trans AS $char => $entity) {
 				$decode[$entity] = $char;
 			}
 
@@ -172,13 +176,13 @@ if ($InvOrCredit == 'Invoice') {
 			return $str;
 		}
 	}
-	$PDF->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, $MyRow['deliverto']);
+	$PDF->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, html_entity_decode($MyRow['deliverto']));
 	$LineCount += 1;
-	$PDF->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, $MyRow['deladd1']);
+	$PDF->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, html_entity_decode($MyRow['deladd1']));
 	$LineCount += 1;
-	$PDF->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, $MyRow['deladd2']);
+	$PDF->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, html_entity_decode($MyRow['deladd2']));
 	$LineCount += 1;
-	$PDF->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, $MyRow['deladd3'] . ' ' . $MyRow['deladd4'] . ' ' . $MyRow['deladd5'] . ' ' . $MyRow['deladd6']);
+	$PDF->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, html_entity_decode($MyRow['deladd3']) . ' ' . html_entity_decode($MyRow['deladd4']) . ' ' . html_entity_decode($MyRow['deladd5']) . ' ' . html_entity_decode($MyRow['deladd6']));
 	//$XPos -=80;
 }
 if ($InvOrCredit == 'Credit') {
@@ -188,13 +192,13 @@ if ($InvOrCredit == 'Credit') {
 	$LineHeight = 13;
 	$XPos += 20;
 	$LineCount += 1;
-	$PDF->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, $MyRow['brname']);
+	$PDF->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, html_entity_decode($MyRow['brname']));
 	$LineCount += 1;
-	$PDF->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, $MyRow['braddress1']);
+	$PDF->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, html_entity_decode($MyRow['braddress1']));
 	$LineCount += 1;
-	$PDF->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, $MyRow['braddress2']);
+	$PDF->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, html_entity_decode($MyRow['braddress2']));
 	$LineCount += 1;
-	$PDF->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, $MyRow['braddress3'] . ' ' . $MyRow['braddress4'] . ' ' . $MyRow['braddress5'] . ' ' . $MyRow['braddress6']);
+	$PDF->addText($XPos, $YPos - $LineCount * $LineHeight, $FontSize, html_entity_decode($MyRow['braddress3']) . ' ' . html_entity_decode($MyRow['braddress4']) . ' ' . html_entity_decode($MyRow['braddress5']) . ' ' . html_entity_decode($MyRow['braddress6']));
 	//$XPos -=80;
 }
 
@@ -204,11 +208,11 @@ $YPos = $Page_Height - $Top_Margin - 190;
 $XPos = $Left_Margin;
 $FontSize = 8;
 
-$PDF->addText($Left_Margin, $YPos-8, $FontSize, _('All amounts stated in') . ': ' . $MyRow['currcode'] . ' ' . _($MyRow['currency']));
+$PDF->addText($Left_Margin, $YPos - 8, $FontSize, _('All amounts stated in') . ': ' . $MyRow['currcode']);
 
 $BoxHeight = $Page_Height - 282;
 
-/*draw a box with nice round corner for entering line items */
+// Draws a box with nice round corner for entering line items:
 /*90 degree arc at top right of box 0 degrees starts a bottom */
 $PDF->partEllipse($Page_Width - $Right_Margin - 10, $Bottom_Margin + $BoxHeight, 0, 90, 10, 10);
 /*line to the top left */

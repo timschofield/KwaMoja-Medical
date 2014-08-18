@@ -54,7 +54,6 @@ if (isset($_POST['PrintPDF'])) {
 				WHERE  locstock.reorderlevel > locstock.quantity
 					" . $WhereLocation . "
 					AND (stockmaster.mbflag='B' OR stockmaster.mbflag='M') " . $WhereCategory . " ORDER BY locstock.loccode,locstock.stockid";
-
 	$Result = DB_query($SQL, '', '', false, true);
 
 	if (DB_error_no() != 0) {
@@ -129,7 +128,7 @@ if (isset($_POST['PrintPDF'])) {
 					INNER JOIN locationusers
 						ON locationusers.loccode=locstock.loccode
 						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
-						AND locationusers.canview=1, stockmaster
+						AND locationusers.canview=1
 					INNER JOIN stockmaster
 						ON locstock.stockid = stockmaster.stockid
 					WHERE locstock.quantity > 0
@@ -146,12 +145,12 @@ if (isset($_POST['PrintPDF'])) {
 			$OnOrderSQL = "SELECT SUM(quantityord-quantityrecd) AS quantityonorder
 								FROM purchorders
 								LEFT JOIN purchorderdetails
-								ON purchorders.orderno=purchorderdetails.orderno
+									ON purchorders.orderno=purchorderdetails.orderno
 								WHERE purchorders.status !='Cancelled'
 									AND purchorders.status !='Rejected'
 									AND purchorders.status !='Pending'
-								  		  AND purchorderdetails.itemcode='" . $MyRow['stockid'] . "'
-									  AND purchorders.intostocklocation='" . $MyRow2['loccode'] . "'";
+								  	AND purchorderdetails.itemcode='" . $MyRow['stockid'] . "'
+									AND purchorders.intostocklocation='" . $MyRow2['loccode'] . "'";
 			$OnOrderResult = DB_query($OnOrderSQL);
 			$OnOrderRow = DB_fetch_array($OnOrderResult);
 

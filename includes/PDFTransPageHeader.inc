@@ -1,5 +1,9 @@
 <?php
 
+/*	Please note that addTextWrap() prints a font-size-height further down than
+addText() and other functions. Use addText() instead of addTextWrap() to
+print left aligned elements.*/
+
 if (!$FirstPage) {
 	/* only initiate a new page if its not the first */
 	$PDF->newPage();
@@ -94,12 +98,12 @@ if ($MyRow['invaddrbranch'] == 0) {
 	$PDF->addText($XPos, $YPos, $FontSize, html_entity_decode($MyRow['name']));
 	$PDF->addText($XPos, $YPos - 14, $FontSize, html_entity_decode($MyRow['address1']));
 	$PDF->addText($XPos, $YPos - 28, $FontSize, html_entity_decode($MyRow['address2']));
-	$PDF->addText($XPos, $YPos - 42, $FontSize, html_entity_decode($MyRow['address3'] . ' ' . $MyRow['address4']));
+	$PDF->addText($XPos, $YPos - 42, $FontSize, html_entity_decode($MyRow['address3']) . ' ' . html_entity_decode($MyRow['address4']));
 } else {
 	$PDF->addText($XPos, $YPos, $FontSize, html_entity_decode($MyRow['name']));
 	$PDF->addText($XPos, $YPos - 14, $FontSize, html_entity_decode($MyRow['brpostaddr1']));
 	$PDF->addText($XPos, $YPos - 28, $FontSize, html_entity_decode($MyRow['brpostaddr2']));
-	$PDF->addText($XPos, $YPos - 42, $FontSize, html_entity_decode($MyRow['brpostaddr3'] . ' ' . $MyRow['brpostaddr4'] . ' ' . $MyRow['brpostaddr5'] . ' ' . $MyRow['brpostaddr6']));
+	$PDF->addText($XPos, $YPos - 42, $FontSize, html_entity_decode($MyRow['brpostaddr3']) . ' ' . html_entity_decode($MyRow['brpostaddr4']) . ' ' . html_entity_decode($MyRow['brpostaddr5']) . ' ' . html_entity_decode($MyRow['brpostaddr6']));
 }
 
 
@@ -115,8 +119,8 @@ if ($InvOrCredit == 'Invoice') {
 		function htmlspecialchars_decode($str) {
 			$trans = get_html_translation_table(HTML_SPECIALCHARS);
 
-			$decode = array();
-			foreach ($trans as $char => $entity) {
+			$decode = ARRAY();
+			foreach ($trans AS $char => $entity) {
 				$decode[$entity] = $char;
 			}
 
@@ -125,10 +129,10 @@ if ($InvOrCredit == 'Invoice') {
 			return $str;
 		}
 	}
-	$PDF->addText($XPos, $YPos, $FontSize, $MyRow['deliverto']);
-	$PDF->addText($XPos, $YPos - 14, $FontSize, $MyRow['deladd1']);
-	$PDF->addText($XPos, $YPos - 28, $FontSize, $MyRow['deladd2']);
-	$PDF->addText($XPos, $YPos - 42, $FontSize, $MyRow['deladd3'] . ' ' . $MyRow['deladd4'] . ' ' . $MyRow['deladd5']);
+	$PDF->addText($XPos, $YPos, $FontSize, html_entity_decode($MyRow['deliverto']));
+	$PDF->addText($XPos, $YPos - 14, $FontSize, html_entity_decode($MyRow['deladd1']));
+	$PDF->addText($XPos, $YPos - 28, $FontSize, html_entity_decode($MyRow['deladd2']));
+	$PDF->addText($XPos, $YPos - 42, $FontSize, html_entity_decode($MyRow['deladd3']) . ' ' . html_entity_decode($MyRow['deladd4']) . ' ' . html_entity_decode($MyRow['deladd5']));
 	$XPos -= 80;
 }
 if ($InvOrCredit == 'Credit') {
@@ -136,10 +140,10 @@ if ($InvOrCredit == 'Credit') {
 
 	$PDF->addText($XPos, $YPos, $FontSize, _('Charge Branch') . ':');
 	$XPos += 80;
-	$PDF->addText($XPos, $YPos, $FontSize, $MyRow['brname']);
-	$PDF->addText($XPos, $YPos - 14, $FontSize, $MyRow['braddress1']);
-	$PDF->addText($XPos, $YPos - 28, $FontSize, $MyRow['braddress2']);
-	$PDF->addText($XPos, $YPos - 42, $FontSize, $MyRow['braddress3'] . ' ' . $MyRow['braddress4'] . ' ' . $MyRow['braddress5'] . ' ' . $MyRow['braddress6']);
+	$PDF->addText($XPos, $YPos, $FontSize, html_entity_decode($MyRow['brname']));
+	$PDF->addText($XPos, $YPos - 14, $FontSize, html_entity_decode($MyRow['braddress1']));
+	$PDF->addText($XPos, $YPos - 28, $FontSize, html_entity_decode($MyRow['braddress2']));
+	$PDF->addText($XPos, $YPos - 42, $FontSize, html_entity_decode($MyRow['braddress3']) . ' ' . html_entity_decode($MyRow['braddress4']) . ' ' . html_entity_decode($MyRow['braddress5']) . ' ' . html_entity_decode($MyRow['braddress6']));
 	$XPos -= 80;
 }
 
@@ -154,7 +158,7 @@ $XPos = $Page_Width / 2;
 $XPos = $Left_Margin;
 $YPos -= ($line_height * 2);
 
-$PDF->addText($Left_Margin, $YPos-8, $FontSize, _('All amounts stated in') . ': ' . $MyRow['currcode'] . ' ' . $MyRow['currency']);
+$PDF->addText($Left_Margin, $YPos - 8, $FontSize, _('All amounts stated in') . ': ' . $MyRow['currcode']);
 
 /*draw a box with nice round corner for entering line items */
 /*90 degree arc at top right of box 0 degrees starts a bottom */

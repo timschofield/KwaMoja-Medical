@@ -6,13 +6,14 @@
  * 3. No parameters to show all outstanding credits and receipts yet to be allocated.
  */
 
+include('includes/DefineCustAllocsClass.php');// Before includes/session.inc **********
+
 include('includes/session.inc');
 $Title = _('Customer Receipt') . '/' . _('Credit Note Allocations');
 /* Manual links before header.inc */
 $ViewTopic = 'ARTransactions';
 $BookMark = 'CustomerAllocations';
 include('includes/header.inc');
-include('includes/DefineCustAllocsClass.php');
 include('includes/SQL_CommonFunctions.inc');
 
 if (isset($_POST['Cancel'])) {

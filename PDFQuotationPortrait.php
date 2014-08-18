@@ -68,25 +68,14 @@ $Result = DB_query($SQL, $ErrMsg);
 if (DB_num_rows($Result) == 0) {
 	$Title = _('Print Quotation Error');
 	include('includes/header.inc');
-	echo '<div class="centre">
-			<br />
-			<br />
-			<br />';
 	prnMsg(_('Unable to Locate Quotation Number') . ' : ' . $_GET['QuotationNo'] . ' ', 'error');
-	echo '<br />
-			<br />
-			<br />
-			<table class="table_index">
+	echo '<table class="table_index">
 			<tr>
 				<td class="menu_group_item">
 					<ul><li><a href="' . $RootPath . '/SelectSalesOrder.php?Quotations=Quotes_Only">' . _('Outstanding Quotations') . '</a></li></ul>
 				</td>
 			</tr>
-			</table>
-			</div>
-			<br />
-			<br />
-			<br />';
+		</table>';
 	include('includes/footer.inc');
 	exit;
 } elseif (DB_num_rows($Result) == 1) {
@@ -101,11 +90,11 @@ if (DB_num_rows($Result) == 0) {
 LETS GO */
 $PaperSize = 'A4';
 include('includes/PDFStarter.php');
+/*$PageNumber = 1;// RChacon: PDFStarter.php sets $PageNumber = 0.*/
 $PDF->addInfo('Title', _('Customer Quotation'));
 $PDF->addInfo('Subject', _('Quotation') . ' ' . $_GET['QuotationNo']);
 $FontSize = 12;
-$PageNumber = 1;
-$line_height = 24;
+$line_height = 12;// Recommended: $line_height = $x * $FontSize.
 
 /* Now ... Has the order got any line items still outstanding to be invoiced */
 
@@ -139,12 +128,11 @@ if (DB_num_rows($Result) > 0) {
 	while ($MyRow2 = DB_fetch_array($Result)) {
 
 		$ListCount++;
+		$YPos -= $line_height;// Increment a line down for the next line item.
 
 		if ((mb_strlen($MyRow2['narrative']) > 200 and $YPos - $line_height <= 75) or (mb_strlen($MyRow2['narrative']) > 1 and $YPos - $line_height <= 62) or $YPos - $line_height <= 50) {
 			/* We reached the end of the page so finsih off the page and start a newy */
-			$PageNumber++;
-			include('includes/PDFQuotationPageHeader.inc');
-
+			include('includes/PDFQuotationPortraitPageHeader.inc');
 		} //end if need a new page headed up
 
 		$DisplayQty = locale_number_format($MyRow2['quantity'], $MyRow2['decimalplaces']);
@@ -180,72 +168,65 @@ if (DB_num_rows($Result) > 0) {
 		$LineTotal = $SubTot + $TaxAmount;
 		$DisplayTotal = locale_number_format($LineTotal, $MyRow['currdecimalplaces']);
 
-		$FontSize = 10;
+		$FontSize = 10;// Font size for the line item.
 
-		$LeftOvers = $PDF->addTextWrap($XPos + 1, $YPos, 100, $FontSize, $MyRow2['stkcode']);
-		$LeftOvers = $PDF->addTextWrap(120, $YPos, 295, $FontSize, $MyRow2['description']);
+		$LeftOvers = $PDF->addText($Left_Margin, $YPos + $FontSize, $FontSize, $MyRow2['stkcode']);
+		$LeftOvers = $PDF->addText(120, $YPos + $FontSize, $FontSize, $MyRow2['description']);
 		$LeftOvers = $PDF->addTextWrap(180, $YPos, 85, $FontSize, $DisplayQty, 'right');
 		$LeftOvers = $PDF->addTextWrap(230, $YPos, 85, $FontSize, $DisplayPrice, 'right');
 		if ($DisplayDiscount > 0) {
 			$LeftOvers = $PDF->addTextWrap(280, $YPos, 85, $FontSize, $DisplayDiscount, 'right');
 		}
 		$LeftOvers = $PDF->addTextWrap(330, $YPos, 85, $FontSize, $DisplayTaxClass, 'right');
-		$LeftOvers = $PDF->addTextWrap(410, $YPos, 85, $FontSize, $DisplayTaxAmount, 'center');
-		$LeftOvers = $PDF->addTextWrap($Page_Width-$Right_Margin-90, $YPos, 90, $FontSize, $DisplayTotal,'right');
+		$LeftOvers = $PDF->addTextWrap(410, $YPos, 85, $FontSize, $DisplayTaxAmount, 'center');// RChacon: To review align to right.**********
+		$LeftOvers = $PDF->addTextWrap($Page_Width - $Right_Margin - 90, $YPos, 90, $FontSize, $DisplayTotal,'right');
 
-		// Prints salesorderdetails.narrative
-		$Split = explode("\r\n", wordwrap($MyRow2['narrative'], 130, "\r\n"));
-		foreach ($Split as $TextLine) {
-			$YPos -= $line_height; // rchacon's suggestion: $YPos -= $FontSize;
-			if ($YPos < ($Bottom_Margin + $line_height)){ // Begins new page
-				$PageNumber++;
-				include ('includes/PDFQuotationPageHeader.inc');
+		// Prints salesorderdetails.narrative:
+		$FontSize2 = $FontSize * 0.8;// Font size to print salesorderdetails.narrative.
+		$Width2 = $Page_Width - $Right_Margin - 120;// Width to print salesorderdetails.narrative.
+		$LeftOvers = trim($myrow2['narrative']);
+		while(mb_strlen($LeftOvers) > 1) {
+			$YPos -= $FontSize2;
+			if ($YPos < ($Bottom_Margin)) {// Begins new page.
+				include('includes/PDFQuotationPortraitPageHeader.inc');
 			}
-			$LeftOvers = $PDF->addTextWrap($XPos+1, $YPos, 750, 10, $TextLine);
+			$LeftOvers = $pdf->addTextWrap(120, $YPos, $Width2, $FontSize2, $LeftOvers);
 		}
-		$YPos -= $line_height;
+
 		$QuotationTotal += $LineTotal;
 		$QuotationTotalEx += $SubTot;
 		$TaxTotal += $TaxAmount;
 
-		/*increment a line down for the next line item */
-		$YPos -= ($line_height);
+	}// Ends while there are line items to print out.
 
-	} //end while there are line items to print out
 	if ((mb_strlen($MyRow['comments']) > 200 and $YPos - $line_height <= 75) or (mb_strlen($MyRow['comments']) > 1 and $YPos - $line_height <= 62) or $YPos - $line_height <= 50) {
 		/* We reached the end of the page so finsih off the page and start a newy */
-		$PageNumber++;
-		include('includes/PDFQuotationPageHeader.inc');
+		include('includes/PDFQuotationPortraitPageHeader.inc');
 	} //end if need a new page headed up
 
-	$LeftOvers = $PDF->addTextWrap($XPos, $YPos - 80, 30, 10, _('Notes') . ': ');
-	$LeftOvers = $PDF->addText($XPos, $YPos - 95, 10, $MyRow['comments']);
+	$FontSize = 10;
+	$YPos -= $line_height;
+	$LeftOvers = $PDF->addTextWrap($Page_Width - $Right_Margin - 90 - 655, $YPos, 655, $FontSize, _('Quotation Excluding Tax'),'right');
+	$LeftOvers = $PDF->addTextWrap($Page_Width - $Right_Margin - 90, $YPos, 90, $FontSize, locale_number_format($QuotationTotalEx,$myrow['currdecimalplaces']), 'right');
+	$YPos -= $FontSize;
+	$LeftOvers = $PDF->addTextWrap($Page_Width - $Right_Margin - 90 - 655, $YPos, 655, $FontSize, _('Total Tax'), 'right');
+	$LeftOvers = $PDF->addTextWrap($Page_Width - $Right_Margin - 90, $YPos, 90, $FontSize, locale_number_format($TaxTotal,$MyRow['currdecimalplaces']), 'right');
+	$YPos -= $FontSize;
+	$LeftOvers = $PDF->addTextWrap($Page_Width - $Right_Margin - 90 - 655, $YPos, 655, $FontSize, _('Quotation Including Tax'),'right');
+	$LeftOvers = $PDF->addTextWrap($Page_Width - $Right_Margin - 90, $YPos, 90, $FontSize, locale_number_format($QuotationTotal,$MyRow['currdecimalplaces']), 'right');
 
-	if (mb_strlen($LeftOvers) > 1) {
-		$YPos -= 10;
-		$LeftOvers = $PDF->addTextWrap($XPos, $YPos, 700, 10, $LeftOvers);
-		if (mb_strlen($LeftOvers) > 1) {
-			$YPos -= 10;
-			$LeftOvers = $PDF->addTextWrap($XPos, $YPos, 700, 10, $LeftOvers);
-			if (mb_strlen($LeftOvers) > 1) {
-				$YPos -= 10;
-				$LeftOvers = $PDF->addTextWrap($XPos, $YPos, 700, 10, $LeftOvers);
-				if (mb_strlen($LeftOvers) > 1) {
-					$YPos -= 10;
-					$LeftOvers = $PDF->addTextWrap($XPos, $YPos, 10, $FontSize, $LeftOvers);
-				}
-			}
+	// Print salesorders.comments:
+	$YPos -= $FontSize * 2;
+	$PDF->addText($XPos, $YPos + $FontSize, $FontSize, _('Notes').':');
+	$Width2 = $Page_Width - $Right_Margin - 120;// Width to print salesorders.comments.
+	$LeftOvers = trim($myrow['comments']);
+	while(mb_strlen($LeftOvers) > 1) {
+		$YPos -= $FontSize;
+		if ($YPos < ($Bottom_Margin)) {// Begins new page.
+			include('includes/PDFQuotationPageHeader.inc');
 		}
+		$LeftOvers = $PDF->addTextWrap(40, $YPos, $Width2, $FontSize, $LeftOvers);
 	}
-	$YPos -= ($line_height);
-	$LeftOvers = $PDF->addTextWrap($Page_Width-$Right_Margin - 90 - 655, $YPos, 655, $FontSize, _('Quotation Excluding Tax'),'right');
-	$LeftOvers = $PDF->addTextWrap($Page_Width-$Right_Margin - 90, $YPos, 90, $FontSize, locale_number_format($QuotationTotalEx,$MyRow['currdecimalplaces']), 'right');
-	$YPos -= 12;
-	$LeftOvers = $PDF->addTextWrap($Page_Width-$Right_Margin - 90 - 655, $YPos, 655, $FontSize, _('Total Tax'), 'right');
-	$LeftOvers = $PDF->addTextWrap($Page_Width-$Right_Margin - 90, $YPos, 90, $FontSize, locale_number_format($TaxTotal,$MyRow['currdecimalplaces']), 'right');
-	$YPos -= 12;
-	$LeftOvers = $PDF->addTextWrap($Page_Width-$Right_Margin - 90 - 655, $YPos, 655, $FontSize, _('Quotation Including Tax'),'right');
-	$LeftOvers = $PDF->addTextWrap($Page_Width-$Right_Margin - 90, $YPos, 90, $FontSize, locale_number_format($QuotationTotal,$MyRow['currdecimalplaces']), 'right');
 
 }
 /*end if there are line details to show on the quotation*/

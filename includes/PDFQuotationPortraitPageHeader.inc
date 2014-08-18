@@ -1,6 +1,11 @@
 <?php
 
-if ($PageNumber > 1) {
+/*	Please note that addTextWrap prints a font-size-height further down than
+	addText and other functions.*/
+
+// $PageNumber is initialised in 0 by includes/PDFStarter.php.
+$PageNumber++;// Increments $PageNumber before printing.
+if ($PageNumber > 1) {// Inserts a page break if it is not the first page.
 	$PDF->newPage();
 }
 
@@ -85,12 +90,13 @@ $PDF->addTextWrap($Page_Width - $Right_Margin - 200, $Page_Height - $Top_Margin 
 $PDF->addTextWrap($Page_Width - $Right_Margin - 200, $Page_Height - $Top_Margin - $FontSize * 3, 200, $FontSize, _('Date') . ': ' . ConvertSQLDate($MyRow['quotedate']), 'right');
 $PDF->addTextWrap($Page_Width - $Right_Margin - 200, $Page_Height - $Top_Margin - $FontSize * 4, 200, $FontSize, _('Page') . ': ' . $PageNumber, 'right');
 
+$FontSize = 10;
+
 $PDF->addText($Page_Width / 2 - 10, $YPos + 15, $FontSize, _('All amounts stated in') . ' - ' . $MyRow['currcode']);
 
 $YPos -= 45;
 $XPos = 40;
 
-$FontSize = 10;
 $LeftOvers = $PDF->addTextWrap($XPos + 2, $YPos, 100, $FontSize, _('Item Code'), 'left');
 $LeftOvers = $PDF->addTextWrap(120, $YPos, 235, $FontSize, _('Item Description'), 'left');
 $LeftOvers = $PDF->addTextWrap(180, $YPos, 85, $FontSize, _('Quantity'), 'right');
@@ -100,32 +106,14 @@ $LeftOvers = $PDF->addTextWrap(330, $YPos, 85, $FontSize, _('Tax Class'), 'right
 $LeftOvers = $PDF->addTextWrap(400, $YPos, 85, $FontSize, _('Tax Amount'), 'right');
 $LeftOvers = $PDF->addTextWrap($Page_Width-$Right_Margin - 90, $YPos, 90, $FontSize, _('Total'), 'right');
 
-
-/*draw a box with nice round corner for entering line items */
-/*90 degree arc at top right of box 0 degrees starts a bottom */
-$PDF->partEllipse($Page_Width - $Right_Margin - 0, $Bottom_Margin + 560, 0, 90, 10, 10);
-/*line to the top left */
-$PDF->line($Page_Width - $Right_Margin - 0, $Bottom_Margin + 570, $Left_Margin + 10, $Bottom_Margin + 570);
-
-/*line under headings to top left */
-$PDF->line($Page_Width - $Right_Margin + 10, $Bottom_Margin + 538, $Left_Margin, $Bottom_Margin + 538);
-
-
-/*Dow top left corner */
-$PDF->partEllipse($Left_Margin + 10, $Bottom_Margin + 560, 90, 180, 10, 10);
-/*Do a line to the bottom left corner */
-$PDF->line($Left_Margin, $Bottom_Margin + 560, $Left_Margin, $Bottom_Margin + 10);
-/*Now do the bottom left corner 180 - 270 coming back west*/
-$PDF->partEllipse($Left_Margin + 10, $Bottom_Margin + 10, 180, 270, 10, 10);
-/*Now a line to the bottom right */
-$PDF->line($Left_Margin + 10, $Bottom_Margin, $Page_Width - $Right_Margin - 0, $Bottom_Margin);
-/*Now do the bottom right corner */
-$PDF->partEllipse($Page_Width - $Right_Margin - 0, $Bottom_Margin + 10, 270, 360, 10, 10);
-/*Finally join up to the top right corner where started */
-$PDF->line($Page_Width - $Right_Margin + 10, $Bottom_Margin + 10, $Page_Width - $Right_Margin + 10, $Bottom_Margin + 560);
-
-$YPos -= $line_height;
-
-$FontSize = 12;
+// Draws a box with round corners around line items:
+$pdf->RoundRectangle(
+	$Left_Margin,// RoundRectangle $XPos.
+	$YPos + $FontSize + 5,// RoundRectangle $YPos.
+	$Page_Width - $Left_Margin - $Right_Margin,// RoundRectangle $Width.
+	$YPos + $FontSize - $Bottom_Margin + 5,// RoundRectangle $Height.
+	10,// RoundRectangle $RadiusX.
+	10);// RoundRectangle $RadiusY.
+$YPos -= $FontSize;// This is to use addTextWrap's $YPos instead of normal $YPos.
 
 ?>

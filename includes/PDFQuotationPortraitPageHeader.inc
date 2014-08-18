@@ -9,23 +9,29 @@ if ($PageNumber > 1) {// Inserts a page break if it is not the first page.
 	$PDF->newPage();
 }
 
+// Prints company logo:
 $XPos = $Page_Width / 2 - 140;
 $PDF->addJpegFromFile($_SESSION['LogoFile'], $XPos + 90, 720, 0, 60);
 
-$XPos = $XPos + 130;
+// Prints 'Quotation' title:
+$PDF->addTextWrap(0, $Page_Height - $Top_Margin - 18, $Page_Width, 18, _('Quotation'), 'center');
 
-$FontSize = 18;
-$PDF->addText($XPos, 820, $FontSize, _('Quotation'));
-$FontSize = 12;
+// Prints company info:
+$XPos = $Page_Width / 2 + $Left_Margin;
 $YPos = 720;
+$FontSize = 12;
 $PDF->addText($XPos, $YPos, $FontSize, $_SESSION['CompanyRecord']['coyname']);
+$YPos -= $FontSize;
 $FontSize = 10;
-$PDF->addText($XPos, $YPos - 12, $FontSize, $_SESSION['CompanyRecord']['regoffice1']);
-$PDF->addText($XPos, $YPos - 21, $FontSize, $_SESSION['CompanyRecord']['regoffice2']);
-$PDF->addText($XPos, $YPos - 30, $FontSize, $_SESSION['CompanyRecord']['regoffice3'] . ' ' . $_SESSION['CompanyRecord']['regoffice4'] . ' ' . $_SESSION['CompanyRecord']['regoffice5']);
-$PDF->addText($XPos, $YPos - 39, $FontSize, _('Ph') . ': ' . $_SESSION['CompanyRecord']['telephone'] . ' ' . _('Fax') . ': ' . $_SESSION['CompanyRecord']['fax']);
-$PDF->addText($XPos, $YPos - 48, $FontSize, $_SESSION['CompanyRecord']['email']);
+$PDF->addText($XPos, $YPos, $FontSize, $_SESSION['CompanyRecord']['regoffice1']);
+$PDF->addText($XPos, $YPos - $FontSize * 1, $FontSize, $_SESSION['CompanyRecord']['regoffice2']);
+$PDF->addText($XPos, $YPos - $FontSize * 2, $FontSize, $_SESSION['CompanyRecord']['regoffice3']);
+$PDF->addText($XPos, $YPos - $FontSize * 3, $FontSize, $_SESSION['CompanyRecord']['regoffice4']);
+$PDF->addText($XPos, $YPos - $FontSize * 4, $FontSize, $_SESSION['CompanyRecord']['regoffice5'] . ' ' . $_SESSION['CompanyRecord']['regoffice6']);
+$PDF->addText($XPos, $YPos - $FontSize * 5, $FontSize,  _('Ph') . ': ' . $_SESSION['CompanyRecord']['telephone'] . ' ' . _('Fax'). ': ' . $_SESSION['CompanyRecord']['fax']);
+$PDF->addText($XPos, $YPos - $FontSize * 6, $FontSize, $_SESSION['CompanyRecord']['email']);
 
+// Prints 'Delivery To' info:
 $XPos = 46;
 $YPos = 770;
 
@@ -37,6 +43,7 @@ $PDF->addText($XPos, $YPos - 15, $FontSize, $MyRow['deladd1']);
 $PDF->addText($XPos, $YPos - 30, $FontSize, $MyRow['deladd2']);
 $PDF->addText($XPos, $YPos - 45, $FontSize, $MyRow['deladd3'] . ' ' . $MyRow['deladd4'] . ' ' . $MyRow['deladd5']);
 
+// Prints 'Quotation For' info:
 $YPos -= 80;
 
 $PDF->addText($XPos, $YPos, $FontSize, _('Quotation For') . ':');
@@ -45,45 +52,26 @@ $PDF->addText($XPos, $YPos - 30, $FontSize, $MyRow['address1']);
 $PDF->addText($XPos, $YPos - 45, $FontSize, $MyRow['address2']);
 $PDF->addText($XPos, $YPos - 60, $FontSize, $MyRow['address3'] . ' ' . $MyRow['address4'] . ' ' . $MyRow['address5']);
 
+// Draws a box with round corners around 'Delivery To' info:
 $XPos = 50;
 $YPos += 25;
-/*draw a nice curved corner box around the delivery details */
-/*from the top right */
-$PDF->partEllipse($XPos + 200, $YPos + 60, 0, 90, 10, 10);
-/*line to the top left */
-$PDF->line($XPos + 200, $YPos + 70, $XPos, $YPos + 70);
-/*Dow top left corner */
-$PDF->partEllipse($XPos, $YPos + 60, 90, 180, 10, 10);
-/*Do a line to the bottom left corner */
-$PDF->line($XPos - 10, $YPos + 60, $XPos - 10, $YPos);
-/*Now do the bottom left corner 180 - 270 coming back west*/
-$PDF->partEllipse($XPos, $YPos, 180, 270, 10, 10);
-/*Now a line to the bottom right */
-$PDF->line($XPos, $YPos - 10, $XPos + 200, $YPos - 10);
-/*Now do the bottom right corner */
-$PDF->partEllipse($XPos + 200, $YPos, 270, 360, 10, 10);
-/*Finally join up to the top right corner where started */
-$PDF->line($XPos + 210, $YPos, $XPos + 210, $YPos + 60);
+$PDF->RoundRectangle(
+	$XPos - 10,// RoundRectangle $XPos.
+	$YPos + 60 + 10,// RoundRectangle $YPos.
+	200 + 10 + 10,// RoundRectangle $Width.
+	60 + 10 + 10,// RoundRectangle $Height.
+	10,// RoundRectangle $RadiusX.
+	10);// RoundRectangle $RadiusY.
 
-
+// Draws a box with round corners around around 'Quotation For' info:
 $YPos -= 90;
-/*draw a nice curved corner box around the billing details */
-/*from the top right */
-$PDF->partEllipse($XPos + 200, $YPos + 60, 0, 90, 10, 10);
-/*line to the top left */
-$PDF->line($XPos + 200, $YPos + 70, $XPos, $YPos + 70);
-/*Dow top left corner */
-$PDF->partEllipse($XPos, $YPos + 60, 90, 180, 10, 10);
-/*Do a line to the bottom left corner */
-$PDF->line($XPos - 10, $YPos + 60, $XPos - 10, $YPos);
-/*Now do the bottom left corner 180 - 270 coming back west*/
-$PDF->partEllipse($XPos, $YPos, 180, 270, 10, 10);
-/*Now a line to the bottom right */
-$PDF->line($XPos, $YPos - 10, $XPos + 200, $YPos - 10);
-/*Now do the bottom right corner */
-$PDF->partEllipse($XPos + 200, $YPos, 270, 360, 10, 10);
-/*Finally join up to the top right corner where started */
-$PDF->line($XPos + 210, $YPos, $XPos + 210, $YPos + 60);
+$PDF->RoundRectangle(
+	$XPos - 10,// RoundRectangle $XPos.
+	$YPos + 60 + 10,// RoundRectangle $YPos.
+	200 + 10 + 10,// RoundRectangle $Width.
+	60 + 10 + 10,// RoundRectangle $Height.
+	10,// RoundRectangle $RadiusX.
+	10);// RoundRectangle $RadiusY.
 
 $PDF->addTextWrap($Page_Width - $Right_Margin - 200, $Page_Height - $Top_Margin - $FontSize * 1, 200, $FontSize, _('Number') . ': ' . $_GET['QuotationNo'], 'right');
 $PDF->addTextWrap($Page_Width - $Right_Margin - 200, $Page_Height - $Top_Margin - $FontSize * 2, 200, $FontSize, _('Your Ref') . ': ' . $MyRow['customerref'], 'right');
@@ -107,7 +95,7 @@ $LeftOvers = $PDF->addTextWrap(400, $YPos, 85, $FontSize, _('Tax Amount'), 'righ
 $LeftOvers = $PDF->addTextWrap($Page_Width-$Right_Margin - 90, $YPos, 90, $FontSize, _('Total'), 'right');
 
 // Draws a box with round corners around line items:
-$pdf->RoundRectangle(
+$PDF->RoundRectangle(
 	$Left_Margin,// RoundRectangle $XPos.
 	$YPos + $FontSize + 5,// RoundRectangle $YPos.
 	$Page_Width - $Left_Margin - $Right_Margin,// RoundRectangle $Width.

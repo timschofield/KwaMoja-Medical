@@ -201,7 +201,7 @@ if (DB_num_rows($Result) > 0) {
 			if ($YPos < ($Bottom_Margin)) {// Begins new page.
 				include('includes/PDFQuotationPageHeader.inc');
 			}
-			$LeftOvers = $pdf->addTextWrap(145, $YPos, $Width2, $FontSize2, $LeftOvers);
+			$LeftOvers = $PDF->addTextWrap(145, $YPos, $Width2, $FontSize2, $LeftOvers);
 		}
 
 		$QuotationTotal += $LineTotal;
@@ -218,7 +218,7 @@ if (DB_num_rows($Result) > 0) {
 	$FontSize = 10;
 	$YPos -= $line_height;
 	$LeftOvers = $PDF->addTextWrap($Page_Width - $Right_Margin - 90 - 655, $YPos, 655, $FontSize, _('Quotation Excluding Tax'),'right');
-	$LeftOvers = $pdf->addTextWrap($Page_Width - $Right_Margin - 90, $YPos, 90, $FontSize, locale_number_format($QuotationTotalEx,$myrow['currdecimalplaces']), 'right');
+	$LeftOvers = $PDF->addTextWrap($Page_Width - $Right_Margin - 90, $YPos, 90, $FontSize, locale_number_format($QuotationTotalEx,$myrow['currdecimalplaces']), 'right');
 	$YPos -= $FontSize;
 	$LeftOvers = $PDF->addTextWrap($Page_Width - $Right_Margin - 90 - 655, $YPos, 655, $FontSize, _('Total Tax'), 'right');
 	$LeftOvers = $PDF->addTextWrap($Page_Width - $Right_Margin - 90, $YPos, 90, $FontSize, locale_number_format($TaxTotal,$MyRow['currdecimalplaces']), 'right');
@@ -241,7 +241,7 @@ if (DB_num_rows($Result) > 0) {
 		if ($YPos < ($Bottom_Margin)) {// Begins new page.
 			include('includes/PDFQuotationPageHeader.inc');
 		}
-		$LeftOvers = $pdf->addTextWrap(40, $YPos, $Width2, $FontSize, $LeftOvers);
+		$LeftOvers = $PDF->addTextWrap(40, $YPos, $Width2, $FontSize, $LeftOvers);
 	}
 }
 /*end if there are line details to show on the quotation*/

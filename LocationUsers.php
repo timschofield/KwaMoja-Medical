@@ -2,6 +2,8 @@
 
 include('includes/session.inc');
 $Title = _('Maintenance Of Location Authorised Users');
+$ViewTopic = 'Inventory';// Filename in ManualContents.php's TOC.
+$BookMark = 'LocationUsers';// Anchor's id in the manual's html document.
 include('includes/header.inc');
 
 echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/money_add.png" title="' . _('Location Authorised Users') . '" alt="" />' . ' ' . $Title . '</p>';

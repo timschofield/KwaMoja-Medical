@@ -3,7 +3,8 @@
 include('includes/session.inc');
 
 $Title = _('Location Maintenance');
-
+$ViewTopic = 'Inventory';// Filename in ManualContents.php's TOC.
+$BookMark = 'Locations';// Anchor's id in the manual's html document.
 include('includes/header.inc');
 
 if (isset($_GET['SelectedLocation'])) {

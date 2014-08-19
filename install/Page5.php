@@ -77,7 +77,6 @@ if (isset($NewCompany)) {
 }
 $Msg .= "\$SessionLifeTime = 3600;\n";
 $Msg .= "\$MaximumExecutionTime = 120;\n";
-$Msg .= "\$CryptFunction = 'sha1';\n";
 $Msg .= "\$DefaultClock = 12;\n";
 $Msg .= "\$RootPath = dirname(htmlspecialchars(\$_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8'));\n";
 $Msg .= "if (isset(\$DirectoryLevelsDeep)){\n";

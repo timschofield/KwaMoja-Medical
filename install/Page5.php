@@ -157,10 +157,22 @@ if ($_SESSION['Updates']['Errors'] > 0) {
 	}
 	exit;
 }
+
+function CryptPass($Password ) {
+	if (PHP_VERSION_ID < 50500) {
+		$Salt = base64_encode(mcrypt_create_iv(22, MCRYPT_DEV_URANDOM));
+		$Salt = str_replace('+', '.', $Salt);
+		$Hash = crypt($Password, '$2y$10$'.$Salt.'$');
+	} else {
+		$Hash = password_hash($Password,PASSWORD_DEFAULT);
+	}
+	return $Hash;
+}
+
 InsertRecord('www_users', array('userid'),
 							array('admin'),
 							array('userid', 'password', 'realname', 'email', 'displayrecordsmax', 'fullaccess', 'cancreatetender', 'modulesallowed', 'blocked', 'theme', 'language', 'pdflanguage', 'fontsize'),
-							array($_SESSION['Installer']['AdminAccount'], sha1($_SESSION['Installer']['KwaMojaPassword']), $_SESSION['Installer']['AdminAccount'], $_SESSION['Installer']['Email'], 50, 1, 1, '1,1,1,1,1,1,1,1,1,1,1,1,', 0, 'aguapop', $_SESSION['Installer']['Language'], 0, 0)
+							array($_SESSION['Installer']['AdminAccount'], CryptPass($_SESSION['Installer']['KwaMojaPassword']), $_SESSION['Installer']['AdminAccount'], $_SESSION['Installer']['Email'], 50, 1, 1, '1,1,1,1,1,1,1,1,1,1,1,1,', 0, 'aguapop', $_SESSION['Installer']['Language'], 0, 0)
 						, $DB);
 /* Now we uploade the chosen chart of accounts */
 if (!isset($_POST['Demo'])) {

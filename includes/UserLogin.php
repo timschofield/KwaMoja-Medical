@@ -43,13 +43,13 @@ function userLogin($Name, $Password, $SysAdminEmail = '') {
 				WHERE www_users.userid='" . $Name . "'";
 		$ErrMsg = _('Could not retrieve user details on login because');
 		$Debug = 1;
-		$Continue = false;
+		$PasswordVerified = false;
 		$Auth_Result = DB_query($SQL, $ErrMsg);
 
 		if (DB_num_rows($Auth_Result) > 0) {
 			$MyRow = DB_fetch_array($Auth_Result);
 			if (VerifyPass($Password, $MyRow['password'])) {
-				$Continue = true;
+				$PasswordVerified = true;
 		    } elseif (isset($GLOBALS['CryptFunction'])) {
 				/*if the password stored in the DB was compiled the old way,
 				 * the previous comparison will fail,
@@ -60,20 +60,20 @@ function userLogin($Name, $Password, $SysAdminEmail = '') {
 				switch ($GLOBALS['CryptFunction']) {
 					case 'sha1':
 						if ($MyRow['password'] == sha1($Password)) {
-							$Continue = true;
+							$PasswordVerified = true;
 						}
 						break;
 					case 'md5':
 						if ($MyRow['password'] == md5($Password)) {
-							$Continue = true;
+							$PasswordVerified = true;
 						}
 						break;
 					default:
 						if ($MyRow['password'] == $Password) {
-							$Continue = true;
+							$PasswordVerified = true;
 						}
 				}
-				if ($Continue) {
+				if ($PasswordVerified) {
 					$SQL = "UPDATE www_users SET password = '" . CryptPass($Password) . "'"
 							. " WHERE userid = '" . $Name . "'";
 					DB_query($SQL);
@@ -83,7 +83,7 @@ function userLogin($Name, $Password, $SysAdminEmail = '') {
 		}
 
 		// Populate session variables with data base results
-		if ($Continue) {
+		if ($PasswordVerified) {
 			if ($MyRow['blocked'] == 1) {
 				//the account is blocked
 				return UL_BLOCKED;

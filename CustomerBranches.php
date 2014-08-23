@@ -381,7 +381,7 @@ if (!isset($SelectedBranch)) {
 				INNER JOIN taxgroups
 				ON custbranch.taxgroupid=taxgroups.taxgroupid
 				WHERE custbranch.debtorno = '" . $DebtorNo . "'";
-echo $SQL;
+
 	if ($_SESSION['SalesmanLogin'] != '') {
 		$SQL .= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
 	}

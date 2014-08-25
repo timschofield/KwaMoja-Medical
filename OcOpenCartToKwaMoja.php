@@ -9,12 +9,12 @@ $Title = _('OpenCart to KwaMoja Syncrhonizer '. VERSIONFILE);
 include ('includes/header.inc');
 
 //include ('includes/KLGeneralFunctions.php'); //contains some particular functions for Ricard's shop.
-include ('includes/KwaMojaOpenCartDefines.php');
-include ('includes/OpenCartGeneralFunctions.php');
-include ('includes/OpenCartToKwaMojaSync.php');
-include ('includes/OpenCartConnectDB.php');
+include ('includes/OcKwaMojaOpenCartDefines.php');
+include ('includes/OcOpenCartGeneralFunctions.php');
+include ('includes/OcOpenCartToKwaMojaSync.php');
+include ('includes/OcOpenCartConnectDB.php');
 
-OpenCartToKwaMojaSync(TRUE, $db_oc, $oc_tableprefix, '');
+OpenCartToKwaMojaSync(TRUE, $oc_tableprefix, '');
 
 include ('includes/footer.inc');
 

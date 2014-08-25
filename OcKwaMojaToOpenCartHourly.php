@@ -1,5 +1,5 @@
 <?php
-define("VERSIONFILE", "1.10"); 
+define("VERSIONFILE", "1.10");
 
 /* Session started in session.inc for password checking and authorisation level check
 config.php is in turn included in session.inc*/
@@ -10,12 +10,12 @@ include ('includes/header.inc');
 include('includes/GetPrice.inc');
 
 // include ('includes/KLGeneralFunctions.php');
-include ('includes/KwaMojaOpenCartDefines.php');
-include ('includes/OpenCartGeneralFunctions.php');
-include ('includes/KwaMojaToOpenCartSync.php');
-include ('includes/OpenCartConnectDB.php');
+include ('includes/OcKwaMojaOpenCartDefines.php');
+include ('includes/OcOpenCartGeneralFunctions.php');
+include ('includes/OcKwaMojaToOpenCartSync.php');
+include ('includes/OcOpenCartConnectDB.php');
 
-KwaMojaToOpenCartHourlySync(TRUE, $db, $db_oc, $oc_tableprefix, TRUE, '');
+KwaMojaToOpenCartHourlySync(TRUE, $oc_tableprefix, TRUE, '');
 
 include ('includes/footer.inc');
 

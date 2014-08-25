@@ -2,11 +2,11 @@
 
 /* $Revision: 0.01 $ */
 
-if (!file_exists('OpenCart_config.php')){
+if (!file_exists('OcOpenCart_config.php')){
 	echo '<P>' . _("KwaMoja - Opencart connector can't access the OpenCart_config.php file");
 	include ('includes/footer.php');
 } else {
-	include ('OpenCart_config.php');
+	include ('OcOpenCart_config.php');
 }
 
 if (!isset($mysqlport)){

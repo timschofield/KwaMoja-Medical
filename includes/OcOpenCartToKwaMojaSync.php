@@ -1,6 +1,6 @@
 <?php
 
-function OpenCartToKwaMojaSync($ShowMessages, $db_oc, $oc_tableprefix, $EmailText=''){
+function OpenCartToKwaMojaSync($ShowMessages, $oc_tableprefix, $EmailText=''){
 //	$begintime = time_start();
 
 	// connect to opencart DB
@@ -18,10 +18,10 @@ function OpenCartToKwaMojaSync($ShowMessages, $db_oc, $oc_tableprefix, $EmailTex
 					'Server time now: ' . GetServerTimeNow(SERVER_TO_LOCAL_TIME_DIFFERENCE) . "\n\n";
 	}
 	// update order information
-	$EmailText = SyncOrderInformation($ShowMessages, $LastTimeRun, $db_oc, $oc_tableprefix, $EmailText);
+	$EmailText = SyncOrderInformation($ShowMessages, $LastTimeRun, $oc_tableprefix, $EmailText);
 
 	// update payment information
-	$EmailText = SyncPaypalPaymentInformation($ShowMessages, $LastTimeRun, $db_oc, $oc_tableprefix, $EmailText);
+	$EmailText = SyncPaypalPaymentInformation($ShowMessages, $LastTimeRun, $oc_tableprefix, $EmailText);
 
 	// We are done!
 	SetLastTimeRun('OpenCartToKwaMoja');
@@ -32,7 +32,7 @@ function OpenCartToKwaMojaSync($ShowMessages, $db_oc, $oc_tableprefix, $EmailTex
 	return $EmailText;
 }
 
-function SyncOrderInformation($ShowMessages, $LastTimeRun, $db_oc, $oc_tableprefix, $EmailText=''){
+function SyncOrderInformation($ShowMessages, $LastTimeRun, $oc_tableprefix, $EmailText=''){
 	$ServerNow = GetServerTimeNow(SERVER_TO_LOCAL_TIME_DIFFERENCE);
 	$Today = date('Y-m-d');
 
@@ -81,7 +81,7 @@ function SyncOrderInformation($ShowMessages, $LastTimeRun, $db_oc, $oc_tablepref
 					OR " . $oc_tableprefix . "order.date_modified >= '" . $LastTimeRun . "')
 			ORDER BY " . $oc_tableprefix . "order.order_id";
 
-	$result = mysqli_query($db_oc, $SQL);
+	$result = DB_query_oc($SQL);
 	if (DB_num_rows($result) != 0){
 		if ($ShowMessages){
 			echo '<p class="page_title_text" align="center"><strong>' . _('Orders from OpenCart') .'</strong></p>';
@@ -247,7 +247,7 @@ function SyncOrderInformation($ShowMessages, $LastTimeRun, $db_oc, $oc_tablepref
 								FROM " . $oc_tableprefix . "order_product
 								WHERE " . $oc_tableprefix . "order_product.order_id = " . $myrow['order_id'] . "
 								ORDER BY " . $oc_tableprefix . "order_product.order_product_id";
-				$resultItemsOrder = mysqli_query($db_oc, $SQLItemsOrder);
+				$resultItemsOrder = DB_query_oc($SQLItemsOrder);
 				$ItemsOrder = 0;
 				if ($ShowMessages){
 					echo '<table class="selection">';
@@ -314,7 +314,7 @@ function SyncOrderInformation($ShowMessages, $LastTimeRun, $db_oc, $oc_tablepref
 				if ($CouponDiscount != 0){
 					$ItemsOrder++;
 					// we need to register the coupon use
-					$CouponCode = GetTotalTitleFromOrder("coupon", $myrow['order_id'], $db_oc, $oc_tableprefix);
+					$CouponCode = GetTotalTitleFromOrder("coupon", $myrow['order_id'], $oc_tableprefix);
 					$CouponStockId = OPENCART_ONLINE_COUPON_CODE;
 					$CouponQty = 1;
 					if ($Action == "Update"){
@@ -368,7 +368,7 @@ function SyncOrderInformation($ShowMessages, $LastTimeRun, $db_oc, $oc_tablepref
 				if ($OrderDiscount != 0){
 					$ItemsOrder++;
 					// we need to register the dco discount use (GENERAL ORDER DISCOUNT)
-					$DiscountCode = GetTotalTitleFromOrder("dco", $myrow['order_id'], $db_oc, $oc_tableprefix);
+					$DiscountCode = GetTotalTitleFromOrder("dco", $myrow['order_id'], $oc_tableprefix);
 					$DiscountStockId = OPENCART_ONLINE_ORDER_DISCOUNT_CODE;
 					$DiscountQty = 1;
 					if ($Action == "Update"){
@@ -445,7 +445,7 @@ function SyncOrderInformation($ShowMessages, $LastTimeRun, $db_oc, $oc_tablepref
 	return $EmailText;
 }
 
-function SyncPaypalPaymentInformation($ShowMessages, $LastTimeRun, $db_oc, $oc_tableprefix, $EmailText=''){
+function SyncPaypalPaymentInformation($ShowMessages, $LastTimeRun, $oc_tableprefix, $EmailText=''){
 	$ServerNow = GetServerTimeNow(SERVER_TO_LOCAL_TIME_DIFFERENCE);
 	$Today = date('Y-m-d');
 
@@ -484,10 +484,10 @@ function SyncPaypalPaymentInformation($ShowMessages, $LastTimeRun, $db_oc, $oc_t
 				AND ( " . $oc_tableprefix . "paypal_order.created >= '" . $LastTimeRun . "'
 					OR " . $oc_tableprefix . "paypal_order.modified >= '" . $LastTimeRun . "')
 		ORDER BY " . $oc_tableprefix . "paypal_order.paypal_order_id";
-	$result = mysqli_query($db_oc, $SQL);
+	$result = DB_query_oc($SQL);
 
 	$i = 0;
-	if (mysqli_num_rows($result) != 0){
+	if (DB_num_rows($result) != 0){
 		if ($ShowMessages){
 			echo '<p class="page_title_text" align="center"><strong>' . _('Paypal Payments from OpenCart') .'</strong></p>';
 			echo '<div>';

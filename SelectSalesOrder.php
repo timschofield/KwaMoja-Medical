@@ -636,8 +636,8 @@ if (!isset($StockId)) {
 			$SalesMan = ' LIKE \'%\'';
 		}
 
-	/*Harmonize the ordervalue with SUM function since webERP allowed
-	 * same items appeared several times in one sales orders. If there
+	/*Harmonize the ordervalue with SUM function since it is allowed to
+	 * have the same items appeared several times in one sales orders. If there
 	 * is no sum value, this situation not inclued.*/
 
 	$SQL = "SELECT salesorders.orderno,

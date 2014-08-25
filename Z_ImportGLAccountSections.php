@@ -12,7 +12,7 @@ $Result = DB_query($SQL);
 $MyRow = DB_fetch_array($Result);
 $password = $MyRow[0];
 
-$ServerURL = 'http://www.weberp.org/weberp/api/api_xml-rpc.php';
+$ServerURL = 'http://localhost/kwamoja/api/api_xml-rpc.php';
 $DebugLevel = 2; //Set to 0,1, or 2 with 2 being the highest level of debug info
 
 

@@ -16,7 +16,8 @@ function CharacterSet($table) {
 function CreateTrigger($Table, $TriggerName, $Event, $Row, $EventSql) {
 	$SQL = "SELECT TRIGGER_NAME
 		FROM information_schema.triggers
-		WHERE TRIGGER_NAME='" . $TriggerName . "'";
+		WHERE TRIGGER_NAME='" . $TriggerName . "'
+		AND TRIGGER_SCHEMA='" . $_SESSION['DatabaseName'] . "'";
 	$Result = DB_query($SQL);
 	if (DB_num_rows($Result) == 0) {
 		$SQL = "CREATE TRIGGER " . $TriggerName . " " . $Event . " ON " . $Table . " FOR EACH ROW SET " . $Row . "." . $EventSql;

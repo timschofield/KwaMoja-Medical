@@ -13,6 +13,24 @@ function CharacterSet($table) {
 	return $MyRow['TABLE_COLLATION'];
 }
 
+function CreateTrigger($Table, $TriggerName, $Event, $Row, $EventSql) {
+	$SQL = "SELECT TRIGGER_NAME
+		FROM information_schema.triggers
+		WHERE TRIGGER_NAME='" . $TriggerName . "'";
+	$Result = DB_query($SQL);
+	if (DB_num_rows($Result) == 0) {
+		$SQL = "CREATE TRIGGER " . $TriggerName . " " . $Event . " ON " . $Table . " FOR EACH ROW SET " . $Row . "." . $EventSql;
+		$response = executeSQL($SQL, False);
+		if ($response == 0) {
+			OutputResult(_('The trigger') . ' ' . $TriggerName . ' ' . _('has been created'), 'success');
+		} else {
+			OutputResult(_('The trigger') . ' ' . $TriggerName . ' ' . _('could not be created') . '<br />' . $SQL, 'error');
+		}
+	} else {
+		OutputResult(_('The trigger') . ' ' . $TriggerName . ' ' . _('already exists'), 'info');
+	}
+}
+
 function NewScript($ScriptName, $PageSecurity) {
 	/*Is page already in table */
 	$SQL = "SELECT script FROM scripts WHERE script='" . $ScriptName . "'";

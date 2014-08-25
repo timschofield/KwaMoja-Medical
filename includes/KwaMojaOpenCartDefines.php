@@ -19,7 +19,7 @@ define("GOOGLE_OOS_STATUS", 'Available for Order');
 define("GOOGLE_IDENTIFIER", 'TRUE');
 
 
-/*	From webERP to OpenCart */
+/*	From KwaMoja to OpenCart */
 define("PATH_OPENCART_IMAGES", 'data/part_pics/');
 define("ABSOLUTE_PATH_OPENCART_IMAGES", '/home/public_html/mysupercoolbrand.com/image/data/part_pics/');
 
@@ -28,7 +28,7 @@ define("ROUTE_TO_PRODUCT", 'index.php?route=product/product&');
 define("REDIRECT_RESPONSE_CODE", 301);
 
 
-/* From OpenCart to webERP CUSTOMERS */
+/* From OpenCart to KwaMoja CUSTOMERS */
 
 define("OPENCART_DEFAULT_CUSTOMER_HOLD_REASON", '1');
 define("OPENCART_DEFAULT_CUSTOMER_PAYMENT_TERMS", 'CW');

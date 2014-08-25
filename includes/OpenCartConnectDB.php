@@ -3,7 +3,7 @@
 /* $Revision: 0.01 $ */
 
 if (!file_exists('OpenCart_config.php')){
-	echo '<P>' . _("webERP - Opencart connector can't access the OpenCart_config.php file");
+	echo '<P>' . _("KwaMoja - Opencart connector can't access the OpenCart_config.php file");
 	include ('includes/footer.php');
 } else {
 	include ('OpenCart_config.php');

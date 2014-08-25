@@ -1,27 +1,27 @@
 <?php
 
-function WeberpToOpenCartDailySync($ShowMessages, $db, $db_oc, $oc_tableprefix, $EmailText=''){
+function KwaMojaToOpenCartDailySync($ShowMessages, $db, $db_oc, $oc_tableprefix, $EmailText=''){
 	$begintime = time_start();
 	DB_Txn_Begin($db);
 
-	// check last time we run this script, so we know which records need to update from OC to webERP
-	$LastTimeRun = CheckLastTimeRun('WeberpToOpenCartDaily', $db);
+	// check last time we run this script, so we know which records need to update from OC to KwaMoja
+	$LastTimeRun = CheckLastTimeRun('KwaMojaToOpenCartDaily', $db);
 	if ($ShowMessages){
 		prnMsg('This script was last run on: ' . $LastTimeRun . ' Server time difference: ' . SERVER_TO_LOCAL_TIME_DIFFERENCE,'success');
 		prnMsg('Server time now: ' . GetServerTimeNow(SERVER_TO_LOCAL_TIME_DIFFERENCE) ,'success');
 	}
 	if ($EmailText!=''){
-		$EmailText = $EmailText . 'webERP to OpenCart Daily Sync was last run on: ' . $LastTimeRun .  "\n\n" . 
+		$EmailText = $EmailText . 'KwaMoja to OpenCart Daily Sync was last run on: ' . $LastTimeRun .  "\n\n" . 
 					'Server time difference: ' . SERVER_TO_LOCAL_TIME_DIFFERENCE . "\n\n" .
 					'Server time now: ' . GetServerTimeNow(SERVER_TO_LOCAL_TIME_DIFFERENCE) . "\n\n";
 	}
 
-	// maintain outlet category in webERP
-	// Not needed because now in weberp one item only belongs to 1 sales category, so no chance to have more than one to clean up
-//	$EmailText = MaintainWeberpOutletSalesCategories($ShowMessages, $LastTimeRun, $db, $db_oc, $oc_tableprefix, $EmailText);
+	// maintain outlet category in KwaMoja
+	// Not needed because now in KwaMoja one item only belongs to 1 sales category, so no chance to have more than one to clean up
+//	$EmailText = MaintainKwaMojaOutletSalesCategories($ShowMessages, $LastTimeRun, $db, $db_oc, $oc_tableprefix, $EmailText);
 
 	// do all hourly maintenance as well...
-	$EmailText = WeberpToOpenCartHourlySync($ShowMessages, $db, $db_oc, $oc_tableprefix, FALSE, $EmailText);
+	$EmailText = KwaMojaToOpenCartHourlySync($ShowMessages, $db, $db_oc, $oc_tableprefix, FALSE, $EmailText);
 	
 	// recreate the list of featured in OpenCart
 	$EmailText = SyncFeaturedList($ShowMessages, $LastTimeRun, $db, $db_oc, $oc_tableprefix, $EmailText);
@@ -32,7 +32,7 @@ function WeberpToOpenCartDailySync($ShowMessages, $db, $db_oc, $oc_tableprefix, 
 	// activate / inactivate categories depending on items No items = inactive. Items = Active
 	$EmailText = ActivateCategoryDependingOnQOH($ShowMessages, $LastTimeRun, $db, $db_oc, $oc_tableprefix, $EmailText);
 
-	// maintain the outlet category in a special way (both webERP and OC)
+	// maintain the outlet category in a special way (both KwaMoja and OC)
 	$EmailText = MaintainOpenCartOutletSalesCategories($ShowMessages, $LastTimeRun, $db, $db_oc, $oc_tableprefix, $EmailText);
 
 	// assign multiple images to products
@@ -42,7 +42,7 @@ function WeberpToOpenCartDailySync($ShowMessages, $db, $db_oc, $oc_tableprefix, 
 	$EmailText = SyncRelatedItems($ShowMessages, $LastTimeRun, $db, $db_oc, $oc_tableprefix, $EmailText);
 
 	// We are done!
-	SetLastTimeRun('WeberpToOpenCartDaily', $db);
+	SetLastTimeRun('KwaMojaToOpenCartDaily', $db);
 	DB_Txn_Commit($db);
 	if ($ShowMessages){
 		time_finish($begintime);
@@ -51,19 +51,19 @@ function WeberpToOpenCartDailySync($ShowMessages, $db, $db_oc, $oc_tableprefix, 
 	return $EmailText;
 }
 
-function WeberpToOpenCartHourlySync($ShowMessages, $db, $db_oc, $oc_tableprefix, $ControlTx = TRUE, $EmailText=''){
+function KwaMojaToOpenCartHourlySync($ShowMessages, $db, $db_oc, $oc_tableprefix, $ControlTx = TRUE, $EmailText=''){
 	$begintime = time_start();
 	if ($ControlTx){
 		DB_Txn_Begin($db);
 	}
-	// check last time we run this script, so we know which records need to update from OC to webERP
-	$LastTimeRun = CheckLastTimeRun('WeberpToOpenCartHourly', $db);
+	// check last time we run this script, so we know which records need to update from OC to KwaMoja
+	$LastTimeRun = CheckLastTimeRun('KwaMojaToOpenCartHourly', $db);
 	if ($ShowMessages){
 		prnMsg('This script was last run on: ' . $LastTimeRun . ' Server time difference: ' . SERVER_TO_LOCAL_TIME_DIFFERENCE,'success');
 		prnMsg('Server time now: ' . GetServerTimeNow(SERVER_TO_LOCAL_TIME_DIFFERENCE) ,'success');
 	}
 	if (($EmailText!='') AND ControlTx){
-		$EmailText = $EmailText . 'webERP to OpenCart Hourly Sync was last run on: ' . $LastTimeRun .  "\n\n" . 
+		$EmailText = $EmailText . 'KwaMoja to OpenCart Hourly Sync was last run on: ' . $LastTimeRun .  "\n\n" . 
 					'Server time difference: ' . SERVER_TO_LOCAL_TIME_DIFFERENCE . "\n\n" .
 					'Server time now: ' . GetServerTimeNow(SERVER_TO_LOCAL_TIME_DIFFERENCE) . "\n\n";
 	}
@@ -83,7 +83,7 @@ function WeberpToOpenCartHourlySync($ShowMessages, $db, $db_oc, $oc_tableprefix,
 	$EmailText = CleanDuplicatedUrlAlias($ShowMessages, $LastTimeRun, $db, $db_oc, $oc_tableprefix, $EmailText);
 
 	// We are done!
-	SetLastTimeRun('WeberpToOpenCartHourly', $db);
+	SetLastTimeRun('KwaMojaToOpenCartHourly', $db);
 	if ($ControlTx){
 		DB_Txn_Commit($db);
 	}
@@ -99,10 +99,10 @@ function SyncProductBasicInformation($ShowMessages, $LastTimeRun, $db, $db_oc, $
 	$Today = date('Y-m-d');
 
 /*	if ($EmailText !=''){
-		$EmailText = $EmailText . "Basic Product Information --> Server Time = " . $ServerNow . " --> webERP Time = " .  date('d/M/Y H:i:s') . "\n\n"; 
+		$EmailText = $EmailText . "Basic Product Information --> Server Time = " . $ServerNow . " --> KwaMoja Time = " .  date('d/M/Y H:i:s') . "\n\n"; 
 	}
 */	
-	/* let's get the webERP price list and base currency for the online customer */
+	/* let's get the KwaMoja price list and base currency for the online customer */
 	list ($PriceList, $Currency) = GetOnlinePriceList($db);
 	
 	/* Look for all stockid that have been modified lately */
@@ -161,14 +161,14 @@ function SyncProductBasicInformation($ShowMessages, $LastTimeRun, $db, $db_oc, $
 			$Image = PATH_OPENCART_IMAGES . $myrow['stockid'].'.jpg';
 			$ManufacturerId = $myrow['manufacturers_id'];
 			$Shipping = 1; // will need function depending if it's a shippable or not item 
-			$CustomerCode = GetWeberpCustomerIdFromCurrency(OPENCART_DEFAULT_CURRENCY, $db);
-			$Price = GetPrice($myrow['stockid'], $CustomerCode, $CustomerCode, $db); // Get the price without any discount from webERP
+			$CustomerCode = GetKwaMojaCustomerIdFromCurrency(OPENCART_DEFAULT_CURRENCY, $db);
+			$Price = GetPrice($myrow['stockid'], $CustomerCode, $CustomerCode, $db); // Get the price without any discount from KwaMoja
 			$DiscountCategory = $myrow['discountcategory'];
-			$Points = 0; // No points concept in webERP
-			$TaxClassId = 0; // Not sure how to link stockid and tax in webERP
+			$Points = 0; // No points concept in KwaMoja
+			$TaxClassId = 0; // Not sure how to link stockid and tax in KwaMoja
 			$DateAvailable = $ServerNow; 
 			$Weight = $myrow['grossweight'];
-			$WeightClassId = 1; //In webERP grossweight is always in Kg.
+			$WeightClassId = 1; //In KwaMoja grossweight is always in Kg.
 			$Length = $myrow['length'];
 			$Width = $myrow['width'];
 			$Height = $myrow['height'];
@@ -397,10 +397,10 @@ function SyncProductBasicInformation($ShowMessages, $LastTimeRun, $db, $db_oc, $
 		}
 	}
 	if ($ShowMessages){
-		prnMsg(locale_number_format($i,0) . ' ' . _('Products synchronized from webERP to OpenCart'),'success');
+		prnMsg(locale_number_format($i,0) . ' ' . _('Products synchronized from KwaMoja to OpenCart'),'success');
 	}
 	if ($EmailText !=''){
-		$EmailText = $EmailText . locale_number_format($i,0) . ' ' . _('Product Basic Info synchronized from webERP to OpenCart') . "\n\n"; 
+		$EmailText = $EmailText . locale_number_format($i,0) . ' ' . _('Product Basic Info synchronized from KwaMoja to OpenCart') . "\n\n"; 
 	}
 	return $EmailText;
 }
@@ -410,10 +410,10 @@ function SyncProductSalesCategories($ShowMessages, $LastTimeRun, $db, $db_oc, $o
 	$Today = date('Y-m-d');
 	
 /*	if ($EmailText !=''){
-		$EmailText = $EmailText . "Product - Sales Categories --> Server Time = " . $ServerNow . " --> webERP Time = " .  date('d/M/Y H:i:s') . "\n\n"; 
+		$EmailText = $EmailText . "Product - Sales Categories --> Server Time = " . $ServerNow . " --> KwaMoja Time = " .  date('d/M/Y H:i:s') . "\n\n"; 
 	}
 */
-	/* Look for the late modifications of salescatprod table in webERP */
+	/* Look for the late modifications of salescatprod table in KwaMoja */
 	$SQL = "SELECT salescatprod.salescatid,
 				salescatprod.stockid,
 				salescatprod.manufacturers_id,
@@ -504,10 +504,10 @@ function SyncProductSalesCategories($ShowMessages, $LastTimeRun, $db, $db_oc, $o
 		}
 	}
 	if ($ShowMessages){
-		prnMsg(locale_number_format($i,0) . ' ' . _('Products to Sales Categories synchronized from webERP to OpenCart'),'success');
+		prnMsg(locale_number_format($i,0) . ' ' . _('Products to Sales Categories synchronized from KwaMoja to OpenCart'),'success');
 	}
 	if ($EmailText !=''){
-		$EmailText = $EmailText . locale_number_format($i,0) . ' ' . _('Product - Sales Categories synchronized from webERP to OpenCart') . "\n\n"; 
+		$EmailText = $EmailText . locale_number_format($i,0) . ' ' . _('Product - Sales Categories synchronized from KwaMoja to OpenCart') . "\n\n"; 
 	}
 	return $EmailText;
 }
@@ -517,13 +517,13 @@ function SyncProductPrices($ShowMessages, $LastTimeRun, $db, $db_oc, $oc_tablepr
 	$Today = date('Y-m-d');
 
 /*	if ($EmailText !=''){
-		$EmailText = $EmailText . "Product Price Sync --> Server Time = " . $ServerNow . " --> webERP Time = " .  date('d/M/Y H:i:s') . "\n\n"; 
+		$EmailText = $EmailText . "Product Price Sync --> Server Time = " . $ServerNow . " --> KwaMoja Time = " .  date('d/M/Y H:i:s') . "\n\n"; 
 	}
 */
-	/* let's get the webERP price list and base currency for the online customer */
+	/* let's get the KwaMoja price list and base currency for the online customer */
 	list ($PriceList, $Currency) = GetOnlinePriceList($db);
 	
-	/* Look for the late modifications of prices table in webERP */
+	/* Look for the late modifications of prices table in KwaMoja */
 	$SQL = "SELECT prices.stockid,
 				stockmaster.discountcategory
 			FROM prices, stockmaster
@@ -558,8 +558,8 @@ function SyncProductPrices($ShowMessages, $LastTimeRun, $db, $db_oc, $oc_tablepr
 
 			/* Field Matching */
 			$Model = $myrow['stockid'];
-			$CustomerCode = GetWeberpCustomerIdFromCurrency(OPENCART_DEFAULT_CURRENCY, $db);
-			$Price = GetPrice ($myrow['stockid'], $CustomerCode, $CustomerCode, $db); // Get the price without any discount from webERP
+			$CustomerCode = GetKwaMojaCustomerIdFromCurrency(OPENCART_DEFAULT_CURRENCY, $db);
+			$Price = GetPrice ($myrow['stockid'], $CustomerCode, $CustomerCode, $db); // Get the price without any discount from KwaMoja
 			$ManufacturerId = $myrow['manufacturers_id'];
 			$DiscountCategory = $myrow['discountcategory'];
 			
@@ -598,10 +598,10 @@ function SyncProductPrices($ShowMessages, $LastTimeRun, $db, $db_oc, $oc_tablepr
 		}
 	}
 	if ($ShowMessages){
-		prnMsg(locale_number_format($i,0) . ' ' . _('Product Prices synchronized from webERP to OpenCart'),'success');
+		prnMsg(locale_number_format($i,0) . ' ' . _('Product Prices synchronized from KwaMoja to OpenCart'),'success');
 	}
 	if ($EmailText !=''){
-		$EmailText = $EmailText . locale_number_format($i,0) . ' ' . _('Product Prices synchronized from webERP to OpenCart') . "\n\n"; 
+		$EmailText = $EmailText . locale_number_format($i,0) . ' ' . _('Product Prices synchronized from KwaMoja to OpenCart') . "\n\n"; 
 	}
 	return $EmailText;
 }
@@ -611,13 +611,13 @@ function SyncProductQOH($ShowMessages, $LastTimeRun, $db, $db_oc, $oc_tableprefi
 	$Today = date('Y-m-d');
 	
 /*	if ($EmailText !=''){
-		$EmailText = $EmailText . "Sync Product QOH --> Server Time = " . $ServerNow . " --> webERP Time = " .  date('d/M/Y H:i:s') . "\n\n"; 
+		$EmailText = $EmailText . "Sync Product QOH --> Server Time = " . $ServerNow . " --> KwaMoja Time = " .  date('d/M/Y H:i:s') . "\n\n"; 
 	}
 */
-	/* let's get the webERP price list and base currency for the online customer */
+	/* let's get the KwaMoja price list and base currency for the online customer */
 	list ($PriceList, $Currency) = GetOnlinePriceList($db);
 	
-	/* Look for the late modifications of prices table in webERP */
+	/* Look for the late modifications of prices table in KwaMoja */
 	$SQL = "SELECT DISTINCT(locstock.stockid)
 			FROM locstock, salescatprod
 			WHERE locstock.stockid = salescatprod.stockid
@@ -690,10 +690,10 @@ function SyncProductQOH($ShowMessages, $LastTimeRun, $db, $db_oc, $oc_tableprefi
 		}
 	}
 	if ($ShowMessages){
-		prnMsg(locale_number_format($i,0) . ' ' . _('Product QOH synchronized from webERP to OpenCart'),'success');
+		prnMsg(locale_number_format($i,0) . ' ' . _('Product QOH synchronized from KwaMoja to OpenCart'),'success');
 	}
 	if ($EmailText !=''){
-		$EmailText = $EmailText . locale_number_format($i,0) . ' ' . _('Product QOH synchronized from webERP to OpenCart') . "\n\n"; 
+		$EmailText = $EmailText . locale_number_format($i,0) . ' ' . _('Product QOH synchronized from KwaMoja to OpenCart') . "\n\n"; 
 	}
 	
 	return $EmailText;
@@ -704,7 +704,7 @@ function CleanDuplicatedUrlAlias($ShowMessages, $LastTimeRun, $db, $db_oc, $oc_t
 	$Today = date('Y-m-d');
 	
 /*	if ($EmailText !=''){
-		$EmailText = $EmailText . "Clean Duplicated URL Alias --> Server Time = " . $ServerNow . " --> webERP Time = " .  date('d/M/Y H:i:s') . "\n\n"; 
+		$EmailText = $EmailText . "Clean Duplicated URL Alias --> Server Time = " . $ServerNow . " --> KwaMoja Time = " .  date('d/M/Y H:i:s') . "\n\n"; 
 	}
 */
 	$SQL = "SELECT 	" . $oc_tableprefix . "url_alias.url_alias_id,
@@ -958,10 +958,10 @@ function SyncSalesCategories($ShowMessages, $LastTimeRun, $db, $db_oc, $oc_table
 		if ($i > 0){
 			prnMsg('Remind to run Repair Categories on OpenCart!','warn');
 		}
-		prnMsg(locale_number_format($i,0) . ' ' . _('Sales Categories synchronized from webERP to OpenCart'),'success');
+		prnMsg(locale_number_format($i,0) . ' ' . _('Sales Categories synchronized from KwaMoja to OpenCart'),'success');
 	}
 	if ($EmailText !=''){
-		$EmailText = $EmailText . locale_number_format($i,0) . ' ' . _('Sales Categories synchronized from webERP to OpenCart') . "\n\n"; 
+		$EmailText = $EmailText . locale_number_format($i,0) . ' ' . _('Sales Categories synchronized from KwaMoja to OpenCart') . "\n\n"; 
 	}
 	return $EmailText;
 }
@@ -973,7 +973,7 @@ function SyncFeaturedList($ShowMessages, $LastTimeRun, $db, $db_oc, $oc_tablepre
 	$SettingId = GetOpenCartSettingId(0,"featured", "featured_product", $db_oc, $oc_tableprefix);
 	$ListFeaturedOpenCart = "";
 	
-	/* Look for the featured items in webERP 
+	/* Look for the featured items in KwaMoja 
 	we'll recreate the full list everytime as it will be short and
 	it's a list that will change quite often */
 	$SQL = "SELECT DISTINCT(salescatprod.stockid)
@@ -1196,17 +1196,17 @@ function MaintainOpenCartOutletSalesCategories($ShowMessages, $LastTimeRun, $db,
 	return $EmailText;
 }
 
-function MaintainWeberpOutletSalesCategories($ShowMessages, $LastTimeRun, $db, $db_oc, $oc_tableprefix, $EmailText=''){
+function MaintainKwaMojaOutletSalesCategories($ShowMessages, $LastTimeRun, $db, $db_oc, $oc_tableprefix, $EmailText=''){
 
-	/* Look for all products in weberp marked as OUTLET and "something else"*/
+	/* Look for all products in KwaMoja marked as OUTLET and "something else"*/
 
 	$SQL = "SELECT salescatprod.stockid
 			FROM salescatprod
-			WHERE salescatprod.salescatid IN (" . WEBERP_OUTLET_CATEGORIES . ")";
+			WHERE salescatprod.salescatid IN (" . KWAMOJA_OUTLET_CATEGORIES . ")";
 		$result = DB_query($SQL, $db);
 	if (DB_num_rows($result) != 0){
 		if ($ShowMessages){
-			echo '<p class="page_title_text" align="center"><strong>' . _('Maintain webERP Outlet Sales Categories') .'</strong></p>';
+			echo '<p class="page_title_text" align="center"><strong>' . _('Maintain KwaMoja Outlet Sales Categories') .'</strong></p>';
 			echo '<div>';
 			echo '<table class="selection">';
 			$TableHeader = '<tr>
@@ -1216,7 +1216,7 @@ function MaintainWeberpOutletSalesCategories($ShowMessages, $LastTimeRun, $db, $
 			echo $TableHeader;
 		}
 		$DbgMsg = _('The SQL statement that failed was');
-		$UpdateErrMsg = _('The SQL to update outlet sales category in webERP failed');
+		$UpdateErrMsg = _('The SQL to update outlet sales category in KwaMoja failed');
 
 		$k = 0; //row colour counter
 		$i = 0;
@@ -1228,7 +1228,7 @@ function MaintainWeberpOutletSalesCategories($ShowMessages, $LastTimeRun, $db, $
 			$Action = "Delete sales categories not OUTLET";
 			$sqlDelete = "DELETE FROM salescatprod  
 							WHERE stockid = '" . $ProductId . "'
-								AND salescatid NOT IN (" . WEBERP_OUTLET_CATEGORIES . ")";
+								AND salescatid NOT IN (" . KWAMOJA_OUTLET_CATEGORIES . ")";
 			$resultDelete = DB_query($sqlDelete,$db,$UpdateErrMsg,$DbgMsg,true);
 			if ($ShowMessages){
 				printf('<td>%s</td>
@@ -1250,7 +1250,7 @@ function MaintainWeberpOutletSalesCategories($ShowMessages, $LastTimeRun, $db, $
 		}
 	}
 	if ($EmailText !=''){
-		$EmailText = $EmailText . locale_number_format($i,0) . ' ' . _('webERP Outlet Sales Categories Maintained') . "\n\n"; 
+		$EmailText = $EmailText . locale_number_format($i,0) . ' ' . _('KwaMoja Outlet Sales Categories Maintained') . "\n\n"; 
 	}
 	return $EmailText;
 }
@@ -1264,7 +1264,7 @@ function SyncMultipleImages($ShowMessages, $LastTimeRun, $db, $db_oc, $oc_tablep
 		echo '<div>';
 		echo '<table class="selection">';
 		$TableHeader = '<tr>
-							<th>' . _('webERP Code') . '</th>
+							<th>' . _('KwaMoja Code') . '</th>
 							<th>' . _('File') . '</th>
 						</tr>';
 		echo $TableHeader;
@@ -1341,8 +1341,8 @@ function SyncRelatedItems($ShowMessages, $LastTimeRun, $db, $db_oc, $oc_tablepre
 			echo '<div>';
 			echo '<table class="selection">';
 			$TableHeader = '<tr>
-								<th>' . _('Item webERP') . '</th>
-								<th>' . _('Related webERP') . '</th>
+								<th>' . _('Item KwaMoja') . '</th>
+								<th>' . _('Related KwaMoja') . '</th>
 								<th>' . _('Item OC') . '</th>
 								<th>' . _('Related OC') . '</th>
 								<th>' . _('Action') . '</th>
@@ -1398,10 +1398,10 @@ function SyncRelatedItems($ShowMessages, $LastTimeRun, $db, $db_oc, $oc_tablepre
 		}
 	}
 	if ($ShowMessages){
-		prnMsg(locale_number_format($i,0) . ' ' . _('Pairs of related items synchronized from webERP to OpenCart'),'success');
+		prnMsg(locale_number_format($i,0) . ' ' . _('Pairs of related items synchronized from KwaMoja to OpenCart'),'success');
 	}
 	if ($EmailText !=''){
-		$EmailText = $EmailText . locale_number_format($i,0) . ' ' . _('Pairs of related items synchronized from webERP to OpenCart') . "\n\n"; 
+		$EmailText = $EmailText . locale_number_format($i,0) . ' ' . _('Pairs of related items synchronized from KwaMoja to OpenCart') . "\n\n"; 
 	}
 	return $EmailText;
 }

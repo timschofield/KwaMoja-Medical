@@ -454,7 +454,7 @@ while ($AccountRow = DB_fetch_array($AccountsResult)) {
 	}
 }
 echo '</select></td>
-		<td>' . _('Select the webERP P/L account to use for commissions (transaction fees) charged by Pay Pal') . '</td>
+		<td>' . _('Select the P/L account to use for commissions (transaction fees) charged by Pay Pal') . '</td>
 	</tr>';
 
 echo '<tr>

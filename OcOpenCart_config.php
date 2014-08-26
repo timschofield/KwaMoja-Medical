@@ -5,13 +5,12 @@ Edit all this file to provide the information for the connector to communicate w
 
 $Version = '0.01';
 
-$Language ='en_GB';
+$Language = 'en_GB';
 
 $opencart_db_user = 'root';
 $opencart_db_pwd = 'omu2tbdf';
 $opencart_db_host = 'localhost';
 $opencart_db_name = 'opencart_database_name';
-$opencart_db_tableprefix ='oc_';
-
+$opencart_db_tableprefix = 'oc_';
 
 ?>

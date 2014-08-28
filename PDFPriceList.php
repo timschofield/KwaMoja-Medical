@@ -10,6 +10,10 @@
 		* Gross Profit, calculated, len = 8chr
 		* prices.price, decimal(20,4), len = 20chr + 4spaces */
 
+/*	Please note that addTextWrap() YPos is a font-size-height further down than
+	addText() and other functions. Use addText() instead of addTextWrap() to
+	print left aligned elements.*/
+
 include('includes/session.inc');
 
 if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_POST['FromCriteria']) >= 1 and isset($_POST['ToCriteria']) and mb_strlen($_POST['ToCriteria']) >= 1) {
@@ -172,30 +176,37 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 
 		if ($CurrCode != $PriceList['currabrev']) {
 			$FontSize = 10;
-			$YPos -= 2 * $line_height;
+			if ($YPos < $Bottom_Margin + $FontSize * 3) {// If the next line reaches the bottom margin, do PageHeader().
+			   PageHeader();
+			}
+			$YPos -= $FontSize;// Jumps additional line before.
 			require_once('includes/CurrenciesArray.php');// To get the currency name from the currency code.
-			$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 300 - $Left_Margin, $FontSize, $PriceList['currabrev'] . ' - ' . _($CurrencyName[$PriceList['currabrev']]));
+			$LeftOvers = $PDF->addText($Left_Margin, $YPos, $FontSize, $PriceList['currabrev'] . ' - ' . _($CurrencyName[$PriceList['currabrev']]));
 			$CurrCode = $PriceList['currabrev'];
+			$YPos -= $FontSize;// End-of-line line-feed.
 		}
 
 		if ($Category != $PriceList['categoryid']) {
 			$FontSize = 10;
-			$YPos -= 2 * $line_height;
-			$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 300-$Left_Margin, $FontSize, $PriceList['categoryid'] . ' - ' . $PriceList['categorydescription']);
+			if ($YPos < $Bottom_Margin + $FontSize * 3) {// If the next line reaches the bottom margin, do PageHeader().
+			   PageHeader();
+			}
+			$YPos -= $FontSize;// Jumps additional line before.
+			$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, $FontSize, $PriceList['categoryid'] . ' - ' . $PriceList['categorydescription']);
 			$Category = $PriceList['categoryid'];
+			$YPos -= $FontSize;// End-of-line line-feed.
 		}
 
 		$FontSize = 8;
-		$YPos -= $line_height;
-		$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 80, $FontSize, $PriceList['stockid']);
-		$LeftOvers = $PDF->addTextWrap($Left_Margin + 80, $YPos, 200, $FontSize, $PriceList['description']);
-		$LeftOvers = $PDF->addTextWrap($Left_Margin + 280, $YPos, 40, $FontSize, ConvertSQLDate($PriceList['startdate']));
+		$PDF->addText($Left_Margin, $YPos, $FontSize, $PriceList['stockid']);
+		$PDF->addText($Left_Margin + 80, $YPos, $FontSize, $PriceList['description']);
+		$PDF->addText($Left_Margin + 280, $YPos, $FontSize, ConvertSQLDate($PriceList['startdate']));
 		if ($PriceList['enddate'] != '0000-00-00') {
 			$DisplayEndDate = ConvertSQLDate($PriceList['enddate']);
 		} else {
 			$DisplayEndDate = _('No End Date');
 		}
-		$LeftOvers = $PDF->addTextWrap($Left_Margin + 320, $YPos, 48, $FontSize, $DisplayEndDate);
+		$PDF->addText($Left_Margin + 320, $YPos, $FontSize, $DisplayEndDate);
 
 		// Shows gross profit percentage:
 		if ($_POST['ShowGPPercentages'] == 'Yes') {
@@ -203,20 +214,23 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 			if ($PriceList['price'] != 0) {
 				$DisplayGPPercent = locale_number_format((($PriceList['price'] - $PriceList['standardcost']) * 100 / $PriceList['price']), 2) . '%';
 			}
-			$LeftOvers = $PDF->addTextWrap($Page_Width - $Right_Margin - 128, $YPos, 32, $FontSize, $DisplayGPPercent, 'right');
+			$PDF->addTextWrap($Page_Width - $Right_Margin - 128, $YPos, 32, $FontSize, $DisplayGPPercent, 'right');
 		}
 		// Displays unit price:
-		$LeftOvers = $PDF->addTextWrap($Page_Width - $Right_Margin - 96, $YPos, 96, $FontSize, locale_number_format($PriceList['price'], $PriceList['decimalplaces']), 'right');
+		$PDF->addTextWrap($Page_Width - $Right_Margin - 96, $YPos, 96, $FontSize, locale_number_format($PriceList['price'], $PriceList['decimalplaces']), 'right');
 
 		if ($_POST['CustomerSpecials'] == 'Customer Special Prices Only') {
 			/*Need to show to which branch the price relates */
 			if ($PriceList['branchcode'] != '') {
-				$LeftOvers = $PDF->addTextWrap($Left_Margin + 376, $YPos, 160, $FontSize, $PriceList['brname']);
+				$PDF->addText($Left_Margin + 376, $YPos, $FontSize, $PriceList['brname']);
 			} else {
-				$LeftOvers = $PDF->addTextWrap($Left_Margin + 376, $YPos, 160, $FontSize, _('All'));
+				$PDF->addText($Left_Margin + 376, $YPos, $FontSize, _('All'));
 			}
+			$YPos -= $FontSize;// End-of-line line-feed.
 
-		} else if ($_POST['CustomerSpecials'] == 'Full Description') {
+		} elseif ($_POST['CustomerSpecials']=='Full Description') {
+			$YPos -= $FontSize;
+
 			// Prints item image:
 			$YPosImage = $YPos;// Initializes the image bottom $YPos.
 
@@ -225,7 +239,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				if($YPos-36 < $Bottom_Margin) {// If the image bottom reaches the bottom margin, do PageHeader().
 					PageHeader();
 				}
-				$LeftOvers = $PDF->Image($_SESSION['part_pics_dir'] . '/'.$PriceList['stockid'].'.jpg', $Left_Margin + 3, $Page_Height - $YPos, 36, 36);
+				$LeftOvers = $PDF->Image($_SESSION['part_pics_dir'] . '/' . $PriceList['stockid'] . '.jpg', $Left_Margin + 3, $Page_Height - $YPos, 36, 36);
 				$YPosImage = $YPos - 36;// Stores the $YPos of the image bottom (see bottom).
 			}
 			// Prints stockmaster.longdescription:
@@ -236,17 +250,20 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 			foreach ($Split as $LeftOvers) {
 				$LeftOvers = stripslashes($LeftOvers);
 				while(mb_strlen($LeftOvers) > 1) {
-					$YPos -= $FontSize2;
 					if ($YPos < $Bottom_Margin) {// If the description line reaches the bottom margin, do PageHeader().
 						PageHeader();
 						$YPosImage = $YPos;// Resets the image bottom $YPos.
 					}
-					$LeftOvers = $PDF->addTextWrap($XPos, $YPos, $Width, $FontSize2, $LeftOvers);
+					$LeftOvers = $PDF->addTextWrap($XPos, $YPos - $FontSize2, $Width, $FontSize2, $LeftOvers);
+					$YPos -= $FontSize2;
 					$LeftOvers = $PDF->Image($_SESSION['part_pics_dir'] . '/' . $PriceList['stockid'] . '.jpg', 265, $Page_Height - $Top_Margin - $YPos + 33, 33, 33);
 				}
 			}
 			// Assigns to $YPos the lowest $YPos value between the image and the description:
 			$YPos = min($YPosImage, $YPos);
+			$YPos -= $FontSize;// Jumps additional line after the image and the description.
+		} else {
+			$YPos -= $FontSize;// End-of-line line-feed.
 		}/* Endif full descriptions*/
 
 		if ($YPos < $Bottom_Margin + $line_height) {
@@ -392,27 +409,34 @@ function PageHeader() {
 	}
 
 	$YPos = $Page_Height - $Top_Margin;
+	$FontSizeExt = $FontSize;// To preserve the main font size.
 	$FontSize = 10;
+	$PDF->addText($Left_Margin, $YPos, $FontSize, $_SESSION['CompanyRecord']['coyname']);// Company name.
+	$pdf->addTextWrap($Page_Width - $Right_Margin - 140, $YPos - $FontSize, 140, $FontSize, _('Page'). ' ' . $PageNumber, 'right');// Page number.
 
-	$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 300, $FontSize, $_SESSION['CompanyRecord']['coyname']);
-	$LeftOvers = $PDF->addTextWrap($Page_Width - $Right_Margin - 140, $YPos, 140, $FontSize, _('Printed') . ': ' . Date($_SESSION['DefaultDateFormat']) . '   ' . _('Page') . ' ' . $PageNumber);
-
-	$YPos -= $line_height;
+	$YPos -= $FontSize;
 	//Note, this is ok for multilang as this is the value of a Select, text in option is different
 	if ($_POST['CustomerSpecials'] == _('Customer Special Prices Only')) {
-		$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 550, $FontSize, $CustomerName . ' ' . _('Prices for Categories') . ' ' . $_POST['FromCriteria'] . ' - ' . $_POST['ToCriteria'] . ' ' . _('Effective As At') . ' ' . $_POST['EffectiveDate']);
+		$PDF->addText($Left_Margin, $YPos, $FontSize, _('Price List') . ': ' . $CustomerName);
 	} else {
-		$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 550, $FontSize, $SalesTypeName . ' ' . _('Prices For Categories') . ' ' . $_POST['FromCriteria'] . ' - ' . $_POST['ToCriteria'] . ' ' . _('Effective As At') . ' ' . $_POST['EffectiveDate']);
+		$PDF->addText($Left_Margin, $YPos, $FontSize, _('Price List') . ': ' . $SalesTypeName);
 	}
+	$PDF->addTextWrap($Page_Width - $Right_Margin - 140, $YPos-$FontSize, 140, $FontSize, _('Printed') . ': ' . date($_SESSION['DefaultDateFormat']), 'right');// Date printed.
+
+	$YPos -= $FontSize;
+	$PDF->addText($Left_Margin, $YPos, $FontSize, _('Categories') . ': ' . $_POST['FromCriteria'] . ' - ' . $_POST['ToCriteria'] . '. ' . _('Effective As At') . ' ' . $_POST['EffectiveDate']);// Categories and effective date.
+	$PDF->addTextWrap($Page_Width - $Right_Margin - 140, $YPos - $FontSize, 140, $FontSize, date('H:i:s'), 'right');// Time printed.
 
 	$YPos -= (2 * $line_height);
 
-	/*Draw a rectangle to put the headings in */
+	// Draws a rectangle to put the headings in:
+	$PDF->Rectangle(
+		$Left_Margin,// Rectangle $XPos.
+		$YPos,// Rectangle $YPos.
+		$Page_Width-$Left_Margin-$Right_Margin,// Rectangle $Width.
+		$line_height * 2);// Rectangle $Height.
 
-	$PDF->line($Left_Margin, $YPos + $line_height, $Page_Width - $Right_Margin, $YPos + $line_height);
-	$PDF->line($Left_Margin, $YPos + $line_height, $Left_Margin, $YPos- $line_height);
-	$PDF->line($Left_Margin, $YPos - $line_height, $Page_Width - $Right_Margin, $YPos - $line_height);
-	$PDF->line($Page_Width - $Right_Margin, $YPos + $line_height, $Page_Width - $Right_Margin, $YPos - $line_height);
+	$YPos -= $line_height;
 
 	/*set up the headings */
 	$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 80, $FontSize, _('Item Code'));// 20chr @ 8dpi.
@@ -440,7 +464,15 @@ function PageHeader() {
 	}
 	$LeftOvers = $PDF->addTextWrap($Page_Width - $Right_Margin - 96, $YPos, 96, $FontSize, _('Price') , 'right');// 24chr @ 8dpd.
 
-	$YPos -= (1.5 * $line_height);
+	$YPos -= $FontSize;
+
+	// In some countries it is mandatory to clarify that prices do not include taxes:
+	$pdf->addText($Left_Margin, $YPos, $FontSize, '* ' . _('Prices excluding tax'));// Warning text.
+	$YPos -= $FontSize;// End-of-line line-feed.*/
+
+/*	$YPos -= $FontSize;// Jumps additional line after the table headings.*/
+
+	$FontSize = $FontSizeExt;// Resets to the main font size.
 }
 
 ?>

@@ -281,7 +281,7 @@ if (isset($_POST['TaxAuthority']) and isset($_POST['PrintPDF']) and isset($_POST
 
 	$PDF->addText($Left_Margin, $YPos, $FontSize, _('Adjustments for Tax paid to Customs, FBT, entertainments etc must also be entered'));
 	$YPos -= $FontSize;
-	$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos - $FontSize, $Page_Width - $Left_Margin - $Right_Margin, $FontSize, _('This information excludes Tax on journal entries/payments/receipts all Tax should be entered through AR/AP'));
+	$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos - $FontSize, $Page_Width - $Left_Margin - $Right_Margin, $FontSize, _('This information excludes tax on journal entries/payments/receipts. All tax should be entered through AR/AP.'));
 	$YPos -= $FontSize;
 	$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos - $FontSize, $Page_Width - $Left_Margin - $Right_Margin, $FontSize, $LeftOvers);
 

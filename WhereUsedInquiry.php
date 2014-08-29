@@ -48,7 +48,8 @@ echo '<br />
 if (isset($StockId)) {
 
 	$SQL = "SELECT bom.*,
-				stockmaster.description
+				stockmaster.description,
+				stockmaster.discontinued
 			FROM bom
 			INNER JOIN stockmaster
 				ON bom.parent = stockmaster.stockid
@@ -69,6 +70,7 @@ if (isset($StockId)) {
 		echo '<table width="97%" class="selection">
 				<tr>
 					<th>' . _('Used By') . '</th>
+					<th>' . _('Status') . '</th>
 					<th>' . _('Work Centre') . '</th>
 					<th>' . _('Location') . '</th>
 					<th>' . _('Quantity Required') . '</th>
@@ -86,13 +88,19 @@ if (isset($StockId)) {
 				$k = 1;
 			}
 
+			if ($myrow['discontinued'] == 1){
+				$Status = _('Obsolete');
+			}else{
+				$Status = _('Current');
+			}
+
 			echo '<td><a target="_blank" href="' . $RootPath . '/BOMInquiry.php?StockID=' . $MyRow['parent'] . '" alt="' . _('Show Bill Of Material') . '">' . $MyRow['parent'] . ' - ' . $MyRow['description'] . '</a></td>
 				<td>' . $MyRow['workcentreadded'] . '</td>
 				<td>' . $MyRow['loccode'] . '</td>
 				<td class="number">' . locale_number_format($MyRow['quantity'], 'Variable') . '</td>
 				<td>' . ConvertSQLDate($MyRow['effectiveafter']) . '</td>
 				<td>' . ConvertSQLDate($MyRow['effectiveto']) . '</td>
-				</tr>';
+			</tr>';
 
 			//end of page full new headings if
 		}

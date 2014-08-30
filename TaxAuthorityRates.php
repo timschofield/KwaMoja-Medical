@@ -9,6 +9,8 @@ if (isset($_GET['TaxAuthority'])) {
 
 include('includes/session.inc');
 $Title = _('Tax Rates');
+$ViewTopic = 'Tax';// Filename in ManualContents.php's TOC.
+$BookMark = 'TaxAuthorityRates';// Anchor's id in the manual's html document.
 include('includes/header.inc');
 
 echo '<p class="page_title_text noPrint" >
@@ -107,7 +109,7 @@ if (DB_num_rows($TaxRatesResult) > 0) {
 		printf('<td>%s</td>
 				<td>%s</td>
 				<td><input type="text" class="number" name="%s" required="required" minlength="1" maxlength="5" size="5" value="%s" /></td>
-				</tr>', $MyRow['taxprovincename'], $MyRow['taxcatname'], $MyRow['dispatchtaxprovince'] . '_' . $MyRow['taxcatid'], locale_number_format($MyRow['taxrate'] * 100, 2));
+				</tr>', $MyRow['taxprovincename'], _($MyRow['taxcatname']), $MyRow['dispatchtaxprovince'] . '_' . $MyRow['taxcatid'], locale_number_format($MyRow['taxrate'] * 100, 2));
 
 		$OldProvince = $MyRow['dispatchtaxprovince'];
 

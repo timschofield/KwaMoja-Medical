@@ -3,6 +3,8 @@
 include('includes/session.inc');
 
 $Title = _('Tax Categories');
+$ViewTopic = 'Tax';// Filename in ManualContents.php's TOC.
+$BookMark = 'TaxCategories';// Anchor's id in the manual's html document.
 
 include('includes/header.inc');
 
@@ -178,12 +180,12 @@ if (!isset($SelectedTaxCategory)) {
 		}
 
 		if ($MyRow['taxcatname'] != 'Freight') {
-			echo '<td>' . $MyRow['taxcatname'] . '</td>
+			echo '<td>' . _($MyRow['taxcatname']) . '</td>
 					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedTaxCategory=' . $MyRow['taxcatid'] . '">' . _('Edit') . '</a></td>
 					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedTaxCategory=' . $MyRow['taxcatid'] . '&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this tax category?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
 				</tr>';
 		} else {
-			echo '<td>' . $MyRow['taxcatname'] . '</td>
+			echo '<td>' . _($MyRow['taxcatname']) . '</td>
 					<td>' . _('Edit') . '</td>
 					<td>' . _('Delete') . '</td>
 				</tr>';

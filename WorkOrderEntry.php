@@ -29,23 +29,25 @@ if (isset($_POST['NewItems'])) {
 		}
 	}
 }
-$LocSql = "SELECT locations.loccode
-				FROM locations
-				INNER JOIN locationusers
-					ON locationusers.loccode=locations.loccode
-					AND locationusers.userid='" . $_SESSION['UserID'] . "'
-					AND locationusers.canupd=1
-				WHERE locations.loccode='" . $LocCode . "'";
-$LocResult = DB_query($LocSql);
-$LocRow = DB_fetch_array($LocResult);
 
-if (is_null($LocRow['loccode']) or $LocRow['loccode'] == ''){
-	prnMsg(_('Your security settings do not allow you to create or update new Work Order at this location') . ' ' . $LocCode, 'error');
-	echo '<br /><a href="' . $RootPath . '/SelectWorkOrder.php">' . _('Select an existing work order') . '</a>';
-	include('includes/footer.inc');
-	exit;
+if (isset($LocCode)) {
+	$LocSql = "SELECT locations.loccode
+					FROM locations
+					INNER JOIN locationusers
+						ON locationusers.loccode=locations.loccode
+						AND locationusers.userid='" . $_SESSION['UserID'] . "'
+						AND locationusers.canupd=1
+					WHERE locations.loccode='" . $LocCode . "'";
+	$LocResult = DB_query($LocSql);
+	$LocRow = DB_fetch_array($LocResult);
+
+	if (is_null($LocRow['loccode']) or $LocRow['loccode'] == ''){
+		prnMsg(_('Your security settings do not allow you to create or update new Work Order at this location') . ' ' . $LocCode, 'error');
+		echo '<br /><a href="' . $RootPath . '/SelectWorkOrder.php">' . _('Select an existing work order') . '</a>';
+		include('includes/footer.inc');
+		exit;
+	}
 }
-
 if (isset($_POST['RequiredBy']) and !isset($_POST['NewItems'])) {
 	$_SESSION['WorkOrder' . $Identifier]->RequiredBy = $_POST['RequiredBy'];
 	$_SESSION['WorkOrder' . $Identifier]->StartDate = $_POST['StartDate'];
@@ -94,7 +96,7 @@ $SQL = "SELECT locationname,
 				locations.loccode
 			FROM locations
 			INNER JOIN locationusers
-				ON locationusers.loccode=workorders.loccode
+				ON locationusers.loccode=locations.loccode
 				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
 				AND locationusers.canupd=1";
 $LocResult = DB_query($SQL);

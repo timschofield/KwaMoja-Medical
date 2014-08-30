@@ -2,6 +2,8 @@
 
 include('includes/session.inc');
 $Title = _('Tax Authorities');
+$ViewTopic = 'Tax';// Filename in ManualContents.php's TOC.
+$BookMark = 'TaxAuthorities';// Anchor's id in the manual's html document.
 include('includes/header.inc');
 
 echo '<p class="page_title_text noPrint" >
@@ -156,6 +158,7 @@ if (!isset($SelectedTaxAuthID)) {
 				<th>' . _('Bank Account') . '</th>
 				<th>' . _('Bank Act Type') . '</th>
 				<th>' . _('Bank Swift') . '</th>
+				<th colspan="4">' . _('Maintenance') . '</th>
 			</tr>';
 	$k = 0;
 	while ($MyRow = DB_fetch_row($Result)) {

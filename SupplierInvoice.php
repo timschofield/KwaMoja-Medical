@@ -73,7 +73,7 @@ if (isset($_GET['SupplierID']) and $_GET['SupplierID'] != '') {
 				WHERE suppliers.taxgroupid=taxgroups.taxgroupid
 				AND suppliers.currcode=currencies.currabrev
 				AND suppliers.paymentterms=paymentterms.termsindicator
-				AND suppliers.supplierid = '" . $_GET['SupplierID'] . "'";
+				AND suppliers.supplierid = '" . stripslashes($_GET['SupplierID']) . "'";
 
 	$ErrMsg = _('The supplier record selected') . ': ' . $_GET['SupplierID'] . ' ' . _('cannot be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve the supplier details and failed was');
@@ -89,7 +89,7 @@ if (isset($_GET['SupplierID']) and $_GET['SupplierID'] != '') {
 	$_SESSION['SuppTrans']->CurrDecimalPlaces = $MyRow['decimalplaces'];
 	$_SESSION['SuppTrans']->TaxGroup = $MyRow['taxgroupid'];
 	$_SESSION['SuppTrans']->TaxGroupDescription = $MyRow['taxgroupdescription'];
-	$_SESSION['SuppTrans']->SupplierID = $MyRow['supplierid'];
+	$_SESSION['SuppTrans']->SupplierID = stripslashes($MyRow['supplierid']);
 
 	if ($MyRow['daysbeforedue'] == 0) {
 		$_SESSION['SuppTrans']->Terms = '1' . $MyRow['dayinfollowingmonth'];
@@ -139,7 +139,7 @@ if (isset($_GET['ReceivePO']) and $_GET['ReceivePO'] != '') {
 	/*Need to check that the user has permission to receive goods */
 
 	if (!in_array(1001, $_SESSION['AllowedPageSecurityTokens'])) {
-		prnMsg(_('Your permissions do not allow receiving of goods. Automatic receiving of purchase orders is restricted to those only users who are authorised to receive goods/services'), 'error');
+		prnMsg(_('Your permissions do not allow receiving of goods. Automatic receiving of purchase orders is restricted to only those users who are authorised to receive goods/services'), 'error');
 	} //!in_array(1001, $_SESSION['AllowedPageSecurityTokens'])
 	else {
 		/* The user has permission to receive goods then lets go */

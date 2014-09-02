@@ -221,8 +221,8 @@ function FetchReportDetails($ReportID) {
 			FROM " . DBReports . "
 			WHERE id = '" . $ReportID . "'";
 	$Result = DB_query($SQL, '', '', false, true);
-	$myrow = DB_fetch_assoc($Result);
-	foreach ($myrow as $Key => $Value) {
+	$MyRow = DB_fetch_assoc($Result);
+	foreach ($MyRow as $Key => $Value) {
 		$Prefs[$Key] = $Value;
 	}
 	// Build drop down menus for selectable criteria

@@ -51,14 +51,14 @@ echo '<style>
 
 $SQL = "SELECT id FROM dashboard_scripts WHERE scripts='" . basename($_SERVER['PHP_SELF']) . "'";
 $result = DB_query($SQL);
-$myrow = DB_fetch_array($result);
+$MyRow = DB_fetch_array($result);
 
 echo '<div align="center">
 <table border="0" cellspacing="0" cellpadding="0"  style="max-width:100%;width:99%;">
       <tr>
         <th colspan="3" style="margin:0px;padding:0px;background: transparent;">
 			<div class="CanvasTitle">' . _('Work orders') . '
-				<a href="' . $RootPath . 'Dashboard.php?Remove=' . urlencode($myrow['id']) . '" target="_parent" id="CloseButton">X</a>
+				<a href="' . $RootPath . 'Dashboard.php?Remove=' . urlencode($MyRow['id']) . '" target="_parent" id="CloseButton">X</a>
 			</div>
 		</th>
       </tr>';

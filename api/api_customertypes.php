@@ -14,8 +14,8 @@ function GetCustomerTypeList($user, $password) {
 	$SQL = 'SELECT typeid FROM debtortype';
 	$result = api_DB_query($SQL);
 	$i = 0;
-	while ($myrow = DB_fetch_array($result)) {
-		$TaxgroupList[$i] = $myrow[0];
+	while ($MyRow = DB_fetch_array($result)) {
+		$TaxgroupList[$i] = $MyRow[0];
 		$i++;
 	}
 	return $TaxgroupList;

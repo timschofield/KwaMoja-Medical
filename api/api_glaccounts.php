@@ -105,10 +105,10 @@ function GetGLAccountList($user, $password) {
 				ORDER BY accountcode';
 	$result = api_DB_query($SQL);
 	$i = 0;
-	while ($myrow = DB_fetch_array($result)) {
-		$GLAccountList[$i]['accountcode'] = $myrow[0];
-		$GLAccountList[$i]['accountname'] = $myrow[1];
-		$GLAccountList[$i]['pandl'] = $myrow[2];
+	while ($MyRow = DB_fetch_array($result)) {
+		$GLAccountList[$i]['accountcode'] = $MyRow[0];
+		$GLAccountList[$i]['accountname'] = $MyRow[1];
+		$GLAccountList[$i]['pandl'] = $MyRow[2];
 		$i++;
 	}
 	return $GLAccountList;

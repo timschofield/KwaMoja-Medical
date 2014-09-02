@@ -88,7 +88,7 @@ if (isset($StockId)) {
 				$k = 1;
 			}
 
-			if ($myrow['discontinued'] == 1){
+			if ($MyRow['discontinued'] == 1){
 				$Status = _('Obsolete');
 			}else{
 				$Status = _('Current');

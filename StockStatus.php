@@ -240,12 +240,12 @@ while ($MyRow = DB_fetch_array($LocStockResult)) {
 		} else {
 			$Available = $MyRow['quantity'] - $DemandQty;
 		}
-		if ($myrow['canupd']==1) {
+		if ($MyRow['canupd']==1) {
 			echo '<td>' . $MyRow['locationname'] . '</td>
 				<td><input type="text" name="BinLocation' . $MyRow['loccode'] . '" value="' . $MyRow['bin'] . '" minlength="0" maxlength="10" size="11" onchange="ReloadForm(UpdateBinLocations)"/></td>';
 		} else {
-			echo '<td>' . $myrow['locationname'] . '</td>
-				<td> ' . $myrow['bin'] . '</td>';
+			echo '<td>' . $MyRow['locationname'] . '</td>
+				<td> ' . $MyRow['bin'] . '</td>';
 		}
 
 		printf('<td class="number">%s</td>

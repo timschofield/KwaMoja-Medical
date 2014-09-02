@@ -234,7 +234,7 @@ if (!(isset($_POST['Search']))) {
 					ON locationusers.loccode=locstock.loccode
 					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
 					AND locationusers.canview=1
-				WHERE stockid = '" . $myrow['stockid'] . "'" .
+				WHERE stockid = '" . $MyRow['stockid'] . "'" .
 				$WhereLocation);
 		$QOHRow = DB_fetch_row($QOHResult);
 		$QOH = $QOHRow[0];

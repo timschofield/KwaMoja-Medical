@@ -301,8 +301,8 @@ function ChangeSequence($SeqNum, $EntryType, $UpDown) {
 	$SQL = "SELECT id FROM " . DBRptFields . "
 		WHERE reportid = " . $ReportID . " AND entrytype = '" . $EntryType . "' AND seqnum = " . $SeqNum . ";";
 	$Result = DB_query($SQL, '', '', false, true);
-	$myrow = DB_fetch_row($Result);
-	$OrigID = $myrow[0];
+	$MyRow = DB_fetch_row($Result);
+	$OrigID = $MyRow[0];
 	if ($UpDown == 'up')
 		$NewSeqNum = $SeqNum - 1;
 	else
@@ -622,9 +622,9 @@ function ExportReport($ReportID) {
 	// Fetch the core report data from table reports
 	$SQL = "SELECT * FROM " . DBReports . " WHERE id = " . $ReportID . ";";
 	$Result = DB_query($SQL, '', '', false, true);
-	$myrow = DB_fetch_assoc($Result);
+	$MyRow = DB_fetch_assoc($Result);
 	// Fetch the language dependent db entries
-	$ReportName = $myrow['reportname'];
+	$ReportName = $MyRow['reportname'];
 	// Enter some export file info for language translation
 	$CSVOutput .= '/* Report Name: ' . $ReportName . ' */' . $crlf;
 	$CSVOutput .= '/* Export File Generated: : ' . date('Y-m-d h:m:s', time()) . ' */' . $crlf . $crlf . $crlf;
@@ -632,9 +632,9 @@ function ExportReport($ReportID) {
 	$CSVOutput .= '/* Only modify the language portion between the single quotes after the colon. */' . $crlf . $crlf;
 	$CSVOutput .= '/* Report Name and Title Information: */' . $crlf;
 	$CSVOutput .= "ReportName:'" . DB_escape_string($ReportName) . "'" . $crlf;
-	if ($myrow['reporttype'] <> 'frm') {
-		$CSVOutput .= "Title1Desc:'" . DB_escape_string($myrow['title1desc']) . "'" . $crlf;
-		$CSVOutput .= "Title2Desc:'" . DB_escape_string($myrow['title2desc']) . "'" . $crlf;
+	if ($MyRow['reporttype'] <> 'frm') {
+		$CSVOutput .= "Title1Desc:'" . DB_escape_string($MyRow['title1desc']) . "'" . $crlf;
+		$CSVOutput .= "Title2Desc:'" . DB_escape_string($MyRow['title2desc']) . "'" . $crlf;
 	}
 	// Now add the report fields
 	$CSVOutput .= $crlf . '/* Report Field Description Information: */' . $crlf;
@@ -659,7 +659,7 @@ function ExportReport($ReportID) {
 	$CSVOutput .= '/* SQL report data. */' . $crlf;
 	// Build the report sql string
 	$RptData = 'ReportData:';
-	foreach ($myrow as $Key => $Value)
+	foreach ($MyRow as $Key => $Value)
 		if ($Key <> 'id')
 			$RptData .= $Key . "='" . DB_escape_string($Value) . "', ";
 	$RptData = mb_substr($RptData, 0, -2) . ";"; // Strip the last comma and space and add a semicolon
@@ -792,7 +792,7 @@ function ImportReport($RptName) {
 function CreateTableList($ReportID, $Table) {
 	$SQL = "SELECT table" . $Table . " FROM " . DBReports . " WHERE id='" . $ReportID . "'";
 	$Result = DB_query($SQL, '', '', false, true);
-	$myrow = DB_fetch_row($Result);
+	$MyRow = DB_fetch_row($Result);
 
 	$TableList = '';
 
@@ -800,7 +800,7 @@ function CreateTableList($ReportID, $Table) {
 
 	while ($mytable = DB_fetch_row($Result)) {
 		$tablename = strtolower($mytable[0]);
-		if ($myrow[0] == $tablename)
+		if ($MyRow[0] == $tablename)
 			$TableList .= "<option selected='selected' value='" . $tablename . "'>" . $tablename . "</option>";
 		else
 			$TableList .= "<option value='" . $tablename . "'>" . $tablename . "</option>";
@@ -812,18 +812,18 @@ function CreateLinkList($ReportID, $Table) {
 	$SQL = "SELECT table1, table2, table3, table4, table5, table6
 		FROM " . DBReports . " WHERE id='" . $ReportID . "'";
 	$Result = DB_query($SQL, '', '', false, true);
-	$myrow = DB_fetch_row($Result);
+	$MyRow = DB_fetch_row($Result);
 	$LinkList = '';
 	$j = 0;
 
 	/* Get list of link tables from foreign keys */
 	for ($i = 0; $i < $Table; $i++) {
 		$comments = '';
-		$SQL = "SELECT table1, table2 FROM reportlinks WHERE table1 = '" . $myrow[$i] . "'";
+		$SQL = "SELECT table1, table2 FROM reportlinks WHERE table1 = '" . $MyRow[$i] . "'";
 		$Result = DB_query($SQL, '', '', false, true);
 		while ($mytable = DB_fetch_row($Result)) {
-			if ($myrow[$Table]) {
-				if ($myrow[$Table] == $mytable[1]) {
+			if ($MyRow[$Table]) {
+				if ($MyRow[$Table] == $mytable[1]) {
 					$LinkList .= "<option selected='selected' value='" . $mytable[1] . "'>" . $mytable[1];
 				} else {
 					$LinkList .= "<option value='" . $mytable[1] . "'>" . $mytable[1];
@@ -838,7 +838,7 @@ function CreateLinkList($ReportID, $Table) {
 			}
 		} // while
 	} // for
-	if (!$myrow[$Table] and $Table > $j) {
+	if (!$MyRow[$Table] and $Table > $j) {
 		$LinkList = '';
 	}
 	return $LinkList;
@@ -853,18 +853,18 @@ function CreateLinkEqList($ReportID, $Table) {
 		table6, table6criteria
 		FROM " . DBReports . " WHERE id='" . $ReportID . "'";
 	$Result = DB_query($SQL, '', '', false, true);
-	$myrow = DB_fetch_row($Result);
+	$MyRow = DB_fetch_row($Result);
 	$LinkEqList = '';
 	$j = 0;
 
 	/* Get list of foreign key constraints */
 	for ($i = 0; $i < $Table; $i++) {
 		$comments = '';
-		$SQL = "SELECT table1, table2, equation FROM reportlinks WHERE table1 = '" . $myrow[$i] . "'";
+		$SQL = "SELECT table1, table2, equation FROM reportlinks WHERE table1 = '" . $MyRow[$i] . "'";
 		$Result = DB_query($SQL, '', '', false, true);
 		while ($mytable = DB_fetch_row($Result)) {
-			if ($myrow[$Table + 3]) {
-				if ($myrow[$Table + 3] == $mytable[2]) {
+			if ($MyRow[$Table + 3]) {
+				if ($MyRow[$Table + 3] == $mytable[2]) {
 					$LinkEqList .= "<option selected='selected' value='" . $mytable[2] . "'>" . $mytable[2];
 				} else {
 					$LinkEqList .= "<option value='" . $mytable[2] . "'>" . $mytable[2];
@@ -879,7 +879,7 @@ function CreateLinkEqList($ReportID, $Table) {
 			}
 		} // while
 	} // for
-	if (!$myrow[$Table] and $Table > $j) {
+	if (!$MyRow[$Table] and $Table > $j) {
 		$LinkEqList = '';
 	}
 	return $LinkEqList;
@@ -887,20 +887,20 @@ function CreateLinkEqList($ReportID, $Table) {
 
 function CreateFieldList($ReportID, $FName, $Type) {
 	if ($Type == 'Company') { // then pull from the company information table
-		$myrow[] = CompanyDataBase;
+		$MyRow[] = CompanyDataBase;
 	} else { // pull from user selected tables for this report
 		$SQL = "SELECT table1, table2, table3, table4, table5, table6
 			FROM " . DBReports . " WHERE id='" . $ReportID . "'";
 		$Result = DB_query($SQL, '', '', false, true);
-		$myrow = DB_fetch_row($Result);
+		$MyRow = DB_fetch_row($Result);
 	}
 	$FieldList = '';
 
 	for ($i = 0; $i < 6; $i++) {
-		if ($myrow[$i]) {
-			$Result = DB_show_fields($myrow[$i]);
+		if ($MyRow[$i]) {
+			$Result = DB_show_fields($MyRow[$i]);
 			while ($mytable = DB_fetch_row($Result)) {
-				$fieldname = strtolower($myrow[$i]) . "." . strtolower($mytable[0]);
+				$fieldname = strtolower($MyRow[$i]) . "." . strtolower($mytable[0]);
 				if ($FName == $fieldname) {
 					$FieldList .= "<option selected='selected' value='" . $fieldname . "'>" . $fieldname . "</option>";
 				} else {

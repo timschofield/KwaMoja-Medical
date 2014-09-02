@@ -14,8 +14,8 @@ function GetTaxGroupList($user, $password) {
 	$SQL = 'SELECT taxgroupid FROM taxgroups';
 	$result = api_DB_query($SQL);
 	$i = 0;
-	while ($myrow = DB_fetch_array($result)) {
-		$TaxgroupList[$i] = $myrow[0];
+	while ($MyRow = DB_fetch_array($result)) {
+		$TaxgroupList[$i] = $MyRow[0];
 		$i++;
 	}
 	return $TaxgroupList;
@@ -54,11 +54,11 @@ function GetTaxGroupTaxes($TaxGroup, $User, $Password) {
 	$result = api_DB_query($SQL);
 	$i = 0;
 	$Answer = array();
-	while ($myrow = DB_fetch_array($result)) {
-		$Answer[$i]['taxgroupid'] = $myrow['taxgroupid'];
-		$Answer[$i]['taxauthid'] = $myrow['taxauthid'];
-		$Answer[$i]['calculationorder'] = $myrow['calculationorder'];
-		$Answer[$i]['taxontax'] = $myrow['taxontax'];
+	while ($MyRow = DB_fetch_array($result)) {
+		$Answer[$i]['taxgroupid'] = $MyRow['taxgroupid'];
+		$Answer[$i]['taxauthid'] = $MyRow['taxauthid'];
+		$Answer[$i]['calculationorder'] = $MyRow['calculationorder'];
+		$Answer[$i]['taxontax'] = $MyRow['taxontax'];
 		$i++;
 	}
 	$Errors[0] = 0;
@@ -79,8 +79,8 @@ function GetTaxAuthorityList($User, $Password) {
 	$SQL = 'SELECT taxid FROM taxauthorities';
 	$result = api_DB_query($SQL);
 	$i = 0;
-	while ($myrow = DB_fetch_array($result)) {
-		$TaxAuthList[$i] = $myrow[0];
+	while ($MyRow = DB_fetch_array($result)) {
+		$TaxAuthList[$i] = $MyRow[0];
 		$i++;
 	}
 	return $TaxAuthList;
@@ -119,10 +119,10 @@ function GetTaxAuthorityRates($TaxAuthority, $User, $Password) {
 	$result = api_DB_query($SQL);
 	$i = 0;
 	$Answer = array();
-	while ($myrow = DB_fetch_array($result)) {
-		$Answer[$i]['taxcatid'] = $myrow['taxcatid'];
-		$Answer[$i]['dispatchtaxprovince'] = $myrow['dispatchtaxprovince'];
-		$Answer[$i]['taxrate'] = $myrow['taxrate'];
+	while ($MyRow = DB_fetch_array($result)) {
+		$Answer[$i]['taxcatid'] = $MyRow['taxcatid'];
+		$Answer[$i]['dispatchtaxprovince'] = $MyRow['dispatchtaxprovince'];
+		$Answer[$i]['taxrate'] = $MyRow['taxrate'];
 		$i++;
 	}
 	$Errors[0] = 0;

@@ -14,8 +14,8 @@ function GetSalesTypeList($user, $password) {
 	$SQL = "SELECT typeabbrev FROM salestypes";
 	$result = api_DB_query($SQL);
 	$i = 0;
-	while ($myrow = DB_fetch_array($result)) {
-		$SalesTypeList[$i] = $myrow[0];
+	while ($MyRow = DB_fetch_array($result)) {
+		$SalesTypeList[$i] = $MyRow[0];
 		$i++;
 	}
 	$Errors[0] = 0;

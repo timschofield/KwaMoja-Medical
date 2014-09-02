@@ -50,13 +50,13 @@ echo '<style>
 
 $SQL = "SELECT id FROM dashboard_scripts WHERE scripts='" . basename($_SERVER['PHP_SELF']) . "'";
 $result = DB_query($SQL);
-$myrow = DB_fetch_array($result);
+$MyRow = DB_fetch_array($result);
 
 echo '<table  style="max-width:100%;width:99%;" border="0" cellspacing="0" cellpadding="2">
       <tr>
         <th colspan="6" style="margin:0px;padding:0px;background: transparent;">
 			<div class="CanvasTitle">' . _('Latest customer orders') . '
-				<a href="' . $RootPath . 'Dashboard.php?Remove=' . urlencode($myrow['id']) . '" target="_parent" id="CloseButton">X</a>
+				<a href="' . $RootPath . 'Dashboard.php?Remove=' . urlencode($MyRow['id']) . '" target="_parent" id="CloseButton">X</a>
 			</div>
         </th>
       </tr>';

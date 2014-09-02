@@ -245,8 +245,8 @@ function build_dropdown_list($arraylist) {
 function FetchReportDetails($ReportID) {
 	$SQL = "SELECT *	FROM " . DBReports . " WHERE id = '" . $ReportID . "'";
 	$Result = DB_query($SQL, '', '', false, true);
-	$myrow = DB_fetch_assoc($Result);
-	foreach ($myrow as $Key => $Value) {
+	$MyRow = DB_fetch_assoc($Result);
+	foreach ($MyRow as $Key => $Value) {
 		$Prefs[$Key] = $Value;
 	}
 	// Build drop down menus for selectable criteria; need $ReportID
@@ -281,8 +281,8 @@ function ChangeSequence($ReportID, $SeqNum, $EntryType, $UpDown) {
 		AND seqnum = '" . $SeqNum . "'";
 
 	$Result = DB_query($SQL, '', '', false, true);
-	$myrow = DB_fetch_row($Result);
-	$OrigID = $myrow[0];
+	$MyRow = DB_fetch_row($Result);
+	$OrigID = $MyRow[0];
 	if ($UpDown == 'up') {
 		$NewSeqNum = $SeqNum - 1;
 	} else {
@@ -376,8 +376,8 @@ function ReadPostData($ReportID, $Prefs) {
 		// values saved, read them back in to update $Prefs array
 		$SQL = "SELECT *	FROM " . DBReports . " WHERE id = '" . $ReportID . "'";
 		$Result = DB_query($SQL, '', '', false, true);
-		$myrow = DB_fetch_assoc($Result);
-		foreach ($myrow as $Key => $Value)
+		$MyRow = DB_fetch_assoc($Result);
+		foreach ($MyRow as $Key => $Value)
 			$Prefs[$Key] = $Value;
 		return $Prefs;
 	}
@@ -554,9 +554,9 @@ function SaveNewReport($ReportID, $AllowOverwrite) {
 	$SQL = "SELECT id, defaultreport FROM " . DBReports . " WHERE reportname='" . addslashes($_POST['ReportName']) . "';";
 	$Result = DB_query($SQL, '', '', false, true);
 	if (DB_num_rows($Result) > 0)
-		$myrow = DB_fetch_array($Result);
-	if (isset($myrow)) { // then we have a duplicate report name do some checking
-		if ($myrow['defaultreport']) { // it's a default don't allow overwrite no matter what, return
+		$MyRow = DB_fetch_array($Result);
+	if (isset($MyRow)) { // then we have a duplicate report name do some checking
+		if ($MyRow['defaultreport']) { // it's a default don't allow overwrite no matter what, return
 			$Rtn['result'] = 'warn';
 			$Rtn['default'] = true;
 			$Rtn['message'] = RPT_SAVEDEF;
@@ -568,10 +568,10 @@ function SaveNewReport($ReportID, $AllowOverwrite) {
 			return $Rtn;
 		}
 		// check for the same report to update or replace a different report than ReportID
-		if ($myrow['id'] <> $ReportID) { // erase the report to overwrite and duplicate ReportID
-			$SQL = "DELETE FROM " . DBReports . " WHERE id = '" . $myrow['id'] . "'";
+		if ($MyRow['id'] <> $ReportID) { // erase the report to overwrite and duplicate ReportID
+			$SQL = "DELETE FROM " . DBReports . " WHERE id = '" . $MyRow['id'] . "'";
 			$Result = DB_query($SQL, '', '', false, true);
-			$SQL = "DELETE FROM " . DBRptFields . " WHERE reportid = '" . $myrow['id'] . "'";
+			$SQL = "DELETE FROM " . DBRptFields . " WHERE reportid = '" . $MyRow['id'] . "'";
 			$Result = DB_query($SQL, '', '', false, true);
 		} else { // just return because the save as name is the same as the current report name
 			$Rtn['message'] = RPT_REPORT . $Prefs['reportname'] . RPT_WASSAVED . $_POST['ReportName'];

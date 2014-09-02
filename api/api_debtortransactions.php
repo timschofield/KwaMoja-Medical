@@ -51,8 +51,8 @@ function ConvertToSQLDate($DateEntry) {
 function VerifyTransactionDate($TranDate, $i, $Errors) {
 	$SQL = "SELECT confvalue FROM config WHERE confname='" . DefaultDateFormat . "'";
 	$result = api_DB_query($SQL);
-	$myrow = DB_fetch_array($result);
-	$DateFormat = $myrow[0];
+	$MyRow = DB_fetch_array($result);
+	$DateFormat = $MyRow[0];
 	if (mb_strpos($TranDate, '/') > 0) {
 		$DateArray = explode('/', $TranDate);
 	} elseif (mb_strpos($TranDate, '.') > 0) {
@@ -87,8 +87,8 @@ function VerifyTransactionDate($TranDate, $i, $Errors) {
 function GetPeriodFromTransactionDate($TranDate, $i, $Errors) {
 	$SQL = "SELECT confvalue FROM config WHERE confname='DefaultDateFormat'";
 	$result = api_DB_query($SQL);
-	$myrow = DB_fetch_array($result);
-	$DateFormat = $myrow[0];
+	$MyRow = DB_fetch_array($result);
+	$DateFormat = $MyRow[0];
 	if (mb_strstr('/', $PeriodEnd)) {
 		$Date_Array = explode('/', $PeriodEnd);
 	} elseif (mb_strstr('.', $PeriodEnd)) {
@@ -118,8 +118,8 @@ function GetPeriodFromTransactionDate($TranDate, $i, $Errors) {
 	$Date = $Year . '-' . $Month . '-' . $Day;
 	$SQL = "SELECT MAX(periodno) FROM periods WHERE lastdate_in_period<='" . $Date . "'";
 	$result = api_DB_query($SQL);
-	$myrow = DB_fetch_array($result);
-	return $myrow[0];
+	$MyRow = DB_fetch_array($result);
+	return $MyRow[0];
 }
 
 /* Verify that the Settled flag is a 1 or 0 */
@@ -252,8 +252,8 @@ function VerifyConsignment($consignment, $i, $Errors) {
  $SQL="SELECT salesglcode FROM salesglpostings
  WHERE stkcat='any'";
  $result=api_DB_query($SQL);
- $myrow=DB_fetch_array($result);
- return $myrow[0];
+ $MyRow=DB_fetch_array($result);
+ return $MyRow[0];
  }
  */
 
@@ -261,8 +261,8 @@ function VerifyConsignment($consignment, $i, $Errors) {
 function GetDebtorsGLCode($db) {
 	$SQL = "SELECT debtorsact FROM companies";
 	$result = api_DB_query($SQL);
-	$myrow = DB_fetch_array($result);
-	return $myrow[0];
+	$MyRow = DB_fetch_array($result);
+	return $MyRow[0];
 }
 
 
@@ -544,8 +544,8 @@ function CreateCreditNote($Header, $LineDetails, $User, $Password) {
 	if (DB_error_no() != 0) {
 		$Errors[] = NoTaxProvince;
 	}
-	$myrow = DB_fetch_row($TaxProvResult);
-	$DispTaxProvinceID = $myrow[0];
+	$MyRow = DB_fetch_row($TaxProvResult);
+	$DispTaxProvinceID = $MyRow[0];
 
 	/*Start an SQL transaction */
 	$result = DB_Txn_Begin();
@@ -607,30 +607,30 @@ function CreateCreditNote($Header, $LineDetails, $User, $Password) {
 
 		$LineTaxAmount = 0;
 
-		while ($myrow = DB_fetch_array($GetTaxRatesResult)) {
-			if (!isset($TaxTotals[$myrow['taxauthid']]['FXAmount'])) {
-				$TaxTotals[$myrow['taxauthid']]['FXAmount'] = 0;
+		while ($MyRow = DB_fetch_array($GetTaxRatesResult)) {
+			if (!isset($TaxTotals[$MyRow['taxauthid']]['FXAmount'])) {
+				$TaxTotals[$MyRow['taxauthid']]['FXAmount'] = 0;
 			}
-			$TaxAuthID = $myrow['taxauthid'];
-			$TaxTotals[$myrow['taxauthid']]['GLCode'] = $myrow['taxglcode'];
-			$TaxTotals[$myrow['taxauthid']]['TaxRate'] = $myrow['taxrate'];
-			$TaxTotals[$myrow['taxauthid']]['TaxAuthDescription'] = $myrow['description'];
+			$TaxAuthID = $MyRow['taxauthid'];
+			$TaxTotals[$MyRow['taxauthid']]['GLCode'] = $MyRow['taxglcode'];
+			$TaxTotals[$MyRow['taxauthid']]['TaxRate'] = $MyRow['taxrate'];
+			$TaxTotals[$MyRow['taxauthid']]['TaxAuthDescription'] = $MyRow['description'];
 
-			if ($myrow['taxontax'] == 1) {
-				$TaxAuthAmount = ($LineNetAmount + $LineTaxAmount) * $myrow['taxrate'];
+			if ($MyRow['taxontax'] == 1) {
+				$TaxAuthAmount = ($LineNetAmount + $LineTaxAmount) * $MyRow['taxrate'];
 			} else {
-				$TaxAuthAmount = $LineNetAmount * $myrow['taxrate'];
+				$TaxAuthAmount = $LineNetAmount * $MyRow['taxrate'];
 			}
-			$TaxTotals[$myrow['taxauthid']]['FXAmount'] += $TaxAuthAmount;
+			$TaxTotals[$MyRow['taxauthid']]['FXAmount'] += $TaxAuthAmount;
 
 			/*Make an array of the taxes and amounts including GLcodes for later posting - need debtortransid
 			so can only post once the debtor trans is posted - can only post debtor trans when all tax is calculated */
-			$LineTaxes[$LineCounter][$myrow['calculationorder']] = array(
-				'TaxCalculationOrder' => $myrow['calculationorder'],
-				'TaxAuthID' => $myrow['taxauthid'],
-				'TaxAuthDescription' => $myrow['description'],
-				'TaxRate' => $myrow['taxrate'],
-				'TaxOnTax' => $myrow['taxontax'],
+			$LineTaxes[$LineCounter][$MyRow['calculationorder']] = array(
+				'TaxCalculationOrder' => $MyRow['calculationorder'],
+				'TaxAuthID' => $MyRow['taxauthid'],
+				'TaxAuthDescription' => $MyRow['description'],
+				'TaxRate' => $MyRow['taxrate'],
+				'TaxOnTax' => $MyRow['taxontax'],
 				'TaxAuthAmount' => $TaxAuthAmount
 			);
 			$LineTaxAmount += $TaxAuthAmount;
@@ -870,23 +870,23 @@ function CreateCreditNote($Header, $LineDetails, $User, $Password) {
 
 		$Result = api_DB_query($SQL, $db, '', '', true);
 
-		$myrow = DB_fetch_row($Result);
+		$MyRow = DB_fetch_row($Result);
 
-		if ($myrow[0] > 0) {
+		if ($MyRow[0] > 0) {
 			/*Update the existing record that already exists */
 
 			$SQL = "UPDATE salesanalysis
 						SET amt=amt+" . ($CN_Line['price'] * $CN_Line['qty'] / $CN_Header['rate']) . ",
 						qty=qty +" . $CN_Line['qty'] . ",
 						disc=disc+" . ($CN_Line['discountpercent'] * $CN_Line['price'] * $CN_Line['qty'] / $CN_Header['rate']) . "
-						WHERE salesanalysis.area='" . $myrow[2] . "'
-						AND salesanalysis.salesperson='" . $myrow[3] . "'
+						WHERE salesanalysis.area='" . $MyRow[2] . "'
+						AND salesanalysis.salesperson='" . $MyRow[3] . "'
 						AND typeabbrev ='" . $Header['tpe'] . "'
 						AND periodno = '" . $PeriodNo . "'
 						AND cust  " . LIKE . " '" . $Header['debtorno'] . "'
 						AND custbranch  " . LIKE . "  '" . $Header['branchcode'] . "'
 						AND stockid  " . LIKE . " '" . $CN_Line['stockid'] . "'
-						AND salesanalysis.stkcategory ='" . $myrow[1] . "'
+						AND salesanalysis.stkcategory ='" . $MyRow[1] . "'
 						AND budgetoractual='1'";
 
 		} else {

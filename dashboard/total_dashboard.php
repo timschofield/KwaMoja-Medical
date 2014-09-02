@@ -42,14 +42,14 @@ echo '</head><body style="background:transparent;">';
 
 $SQL = "SELECT id FROM dashboard_scripts WHERE scripts='" . basename($_SERVER['PHP_SELF']) . "'";
 $result = DB_query($SQL);
-$myrow = DB_fetch_array($result);
+$MyRow = DB_fetch_array($result);
 
 echo '<div class="centre">
 		<table border="0" cellspacing="0" style="max-width:100%;width:99%;" cellpadding="2" class="selection">
 			<tr>
 				<th colspan="2" style="margin:0px;padding:0px;background: transparent;">
 					<div class="CanvasTitle">' . _('Sales/Purchase Order Report') . '
-						<a href="' . $RootPath . 'Dashboard.php?Remove=' . urlencode($myrow['id']) . '" target="_parent" id="CloseButton">X</a>
+						<a href="' . $RootPath . 'Dashboard.php?Remove=' . urlencode($MyRow['id']) . '" target="_parent" id="CloseButton">X</a>
 					</div>
 				</th>
 			</tr>

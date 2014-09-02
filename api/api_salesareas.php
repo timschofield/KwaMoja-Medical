@@ -27,8 +27,8 @@ function GetSalesAreasList($User, $Password) {
 	$SQL = 'SELECT areacode FROM areas';
 	$result = api_DB_query($SQL);
 	$i = 0;
-	while ($myrow = DB_fetch_array($result)) {
-		$SalesAreaList[$i] = $myrow[0];
+	while ($MyRow = DB_fetch_array($result)) {
+		$SalesAreaList[$i] = $MyRow[0];
 		$i++;
 	}
 	return $SalesAreaList;

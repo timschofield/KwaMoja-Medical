@@ -220,6 +220,15 @@ echo '<table width="90%" class="selection">
 
 $j = 1;
 $k = 0; //row colour counter
+
+$AuthSQL = "SELECT offhold
+				FROM purchorderauth
+				WHERE userid='" . $_SESSION['UserID'] . "'
+					AND currabrev='" . $SupplierRecord['currcode'] . "'";
+
+$AuthResult = DB_query($AuthSQL);
+$AuthRow = DB_fetch_array($AuthResult);
+
 while ($MyRow = DB_fetch_array($TransResult)) {
 
 	if ($MyRow['hold'] == 0 and $MyRow['settled'] == 0) {
@@ -280,15 +289,6 @@ while ($MyRow = DB_fetch_array($TransResult)) {
 					$MyRow['transno']);
 
 			} else {
-
-				$AuthSQL = "SELECT offhold
-							FROM purchorderauth
-							WHERE userid='" . $_SESSION['UserID'] . "'
-							AND currabrev='" . $SupplierRecord['currcode'] . "'";
-
-				$AuthResult = DB_query($AuthSQL);
-
-				$AuthRow = DB_fetch_array($AuthResult);
 
 				printf($BaseTD8);
  				if ($AuthRow[0] == 0) {

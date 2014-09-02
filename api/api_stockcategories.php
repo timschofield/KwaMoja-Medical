@@ -158,9 +158,9 @@ function SearchStockCategories($Field, $Criteria, $user, $password) {
 	$result = DB_Query($SQL);
 	$i = 0;
 	$CategoryList = array();
-	while ($myrow = DB_fetch_array($result)) {
-		$CategoryList[1][$i]['categoryid'] = $myrow[0];
-		$CategoryList[1][$i]['categorydescription'] = $myrow[1];
+	while ($MyRow = DB_fetch_array($result)) {
+		$CategoryList[1][$i]['categoryid'] = $MyRow[0];
+		$CategoryList[1][$i]['categorydescription'] = $MyRow[1];
 		$i++;
 	}
 	return $CategoryList;
@@ -186,9 +186,9 @@ function StockCatPropertyList($Label, $Category, $user, $password) {
 	$i = 0;
 	$ItemList = array();
 	$ItemList[0] = 0;
-	while ($myrow = DB_fetch_array($result)) {
-		$ItemList[1][$i]['stockid'] = $myrow[0];
-		$ItemList[1][$i]['description'] = $myrow[1];
+	while ($MyRow = DB_fetch_array($result)) {
+		$ItemList[1][$i]['stockid'] = $MyRow[0];
+		$ItemList[1][$i]['description'] = $MyRow[1];
 		$i++;
 	}
 	return $ItemList;
@@ -205,9 +205,9 @@ function GetStockCatProperty($Property, $StockId, $user, $password) {
 					   WHERE stockid='" . $StockId . "'
 					   AND stkcatpropid='" . $Property . "'";
 	$result = DB_Query($SQL);
-	$myrow = DB_fetch_array($result);
+	$MyRow = DB_fetch_array($result);
 	$Errors[0] = 0;
-	$Errors[1] = $myrow[0];
+	$Errors[1] = $MyRow[0];
 	return $Errors;
 }
 
@@ -223,8 +223,8 @@ function GetStockCategoryList($user, $password) {
 	$SQL = "SELECT categoryid FROM stockcategory";
 	$result = api_DB_query($SQL);
 	$i = 0;
-	while ($myrow = DB_fetch_array($result)) {
-		$StockCategoryList[$i] = $myrow[0];
+	while ($MyRow = DB_fetch_array($result)) {
+		$StockCategoryList[$i] = $MyRow[0];
 		$i++;
 	}
 	return $StockCategoryList;

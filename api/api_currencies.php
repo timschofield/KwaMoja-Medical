@@ -14,8 +14,8 @@ function GetCurrencyList($user, $password) {
 	$SQL = 'SELECT currabrev FROM currencies';
 	$result = api_DB_query($SQL);
 	$i = 0;
-	while ($myrow = DB_fetch_array($result)) {
-		$CurrencyList[$i] = $myrow[0];
+	while ($MyRow = DB_fetch_array($result)) {
+		$CurrencyList[$i] = $MyRow[0];
 		$i++;
 	}
 	return $CurrencyList;

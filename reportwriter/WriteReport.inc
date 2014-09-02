@@ -158,8 +158,8 @@ class PDF extends Cpdf {
 		$fill = false;
 		$NeedTop = 'No';
 		$MaxRowHt = 0; //track the tallest row to estimate page breaks
-		foreach ($Data as $myrow) {
-			$Action = array_shift($myrow);
+		foreach ($Data as $MyRow) {
+			$Action = array_shift($MyRow);
 			$todo = explode(':', $Action); // contains a letter of the date type and title/groupname
 			switch ($todo[0]) {
 				case "r": // Report Total
@@ -229,7 +229,7 @@ class PDF extends Cpdf {
 					$maxY = $this->y0; // set to current top of row
 					$col = 1;
 					$LastY = $this->y0;
-					foreach ($myrow as $Key => $Value) {
+					foreach ($MyRow as $Key => $Value) {
 						$this->SetLeftMargin($CellXPos[$col - 1]);
 						$this->SetX($CellXPos[$col - 1]);
 						$this->SetY($LastY);
@@ -558,10 +558,10 @@ function BuildDataArray($ReportID, $SQL, $Prefs) {
 	$RowCnt = 0; // Row counter for output data
 	$ColCnt = 1;
 	$GrpWorking = false;
-	while ($myrow = DB_fetch_row($Result)) {
+	while ($MyRow = DB_fetch_row($Result)) {
 		// Check to see if a total row needs to be displayed
 		if (isset($GrpField)) { // we're checking for group totals, see if this group is complete
-			if ($myrow[$GrpField] <> $GrpWorking and $GrpWorking <> false) { // it's a new group so print totals
+			if ($MyRow[$GrpField] <> $GrpWorking and $GrpWorking <> false) { // it's a new group so print totals
 				$OutputArray[$RowCnt][0] = 'g:' . $GrpWorking;
 				foreach ($Seq as $offset => $TotalCtl) {
 					$OutputArray[$RowCnt][$offset + 1] = $TotalCtl['grptotal'];
@@ -569,16 +569,16 @@ function BuildDataArray($ReportID, $SQL, $Prefs) {
 				}
 				$RowCnt++; // go to next row
 			}
-			$GrpWorking = $myrow[$GrpField]; // set to new grouping value
+			$GrpWorking = $MyRow[$GrpField]; // set to new grouping value
 		}
 		$OutputArray[$RowCnt][0] = 'd'; // let the display class know its a data element
 		foreach ($Seq as $Key => $TableCtl) { //
 			// insert data into output array and set to next column
-			$OutputArray[$RowCnt][$ColCnt] = $myrow[$Key];
+			$OutputArray[$RowCnt][$ColCnt] = $MyRow[$Key];
 			$ColCnt++;
 			if ($TableCtl['total']) { // add to the running total if need be
-				$Seq[$Key]['grptotal'] += $myrow[$Key];
-				$Seq[$Key]['rpttotal'] += $myrow[$Key];
+				$Seq[$Key]['grptotal'] += $MyRow[$Key];
+				$Seq[$Key]['rpttotal'] += $MyRow[$Key];
 			}
 		}
 		$RowCnt++;
@@ -626,8 +626,8 @@ function GenerateCSVFile($Data, $Prefs) {
 	}
 	$CSVOutput = mb_substr($CSVOutput, 0, -1) . chr(10); // Strip the last comma off and add line feed
 	// Now write each data line and totals
-	foreach ($Data as $myrow) {
-		$Action = array_shift($myrow);
+	foreach ($Data as $MyRow) {
+		$Action = array_shift($MyRow);
 		$todo = explode(':', $Action); // contains a letter of the date type and title/groupname
 		switch ($todo[0]) {
 			case "r": // Report Total
@@ -641,7 +641,7 @@ function GenerateCSVFile($Data, $Prefs) {
 			case "d": // Data
 			default:
 				$CSVLine = '';
-				foreach ($myrow as $mycolumn) { // check for embedded commas and enclose in quotes
+				foreach ($MyRow as $mycolumn) { // check for embedded commas and enclose in quotes
 					if (mb_strpos($mycolumn, ',') === false)
 						$CSVLine .= $mycolumn . ',';
 					else

@@ -14,8 +14,8 @@ function GetSalesmanList($user, $password) {
 	$SQL = 'SELECT salesmancode FROM salesman';
 	$result = api_DB_query($SQL);
 	$i = 0;
-	while ($myrow = DB_fetch_array($result)) {
-		$SalesmanList[$i] = $myrow[0];
+	while ($MyRow = DB_fetch_array($result)) {
+		$SalesmanList[$i] = $MyRow[0];
 		$i++;
 	}
 	return $SalesmanList;

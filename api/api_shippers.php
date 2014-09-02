@@ -14,8 +14,8 @@ function GetShipperList($User, $Password) {
 	$SQL = 'SELECT shipper_id FROM shippers';
 	$result = api_DB_query($SQL);
 	$i = 0;
-	while ($myrow = DB_fetch_array($result)) {
-		$ShipperList[$i] = $myrow[0];
+	while ($MyRow = DB_fetch_array($result)) {
+		$ShipperList[$i] = $MyRow[0];
 		$i++;
 	}
 	return $ShipperList;

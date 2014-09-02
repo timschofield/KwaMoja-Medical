@@ -41,8 +41,8 @@ function VerifyComments($comments, $i, $Errors) {
 function VerifyOrderDate($orddate, $i, $Errors) {
 	$SQL = "SELECT confvalue FROM config WHERE confname='DefaultDateFormat'";
 	$result = api_DB_query($SQL);
-	$myrow = DB_fetch_array($result);
-	$DateFormat = $myrow[0];
+	$MyRow = DB_fetch_array($result);
+	$DateFormat = $MyRow[0];
 	if (mb_strstr($orddate, "/")) {
 		$DateArray = explode('/', $orddate);
 	} elseif (mb_strstr($orddate, ".")) {
@@ -119,8 +119,8 @@ function VerifyFromStockLocation($FromStockLocn, $i, $Errors) {
 function VerifyDeliveryDate($DeliveryDate, $i, $Errors) {
 	$SQL = "SELECT confvalue FROM config WHERE confname='DefaultDateFormat'";
 	$result = api_DB_query($SQL);
-	$myrow = DB_fetch_array($result);
-	$DateFormat = $myrow[0];
+	$MyRow = DB_fetch_array($result);
+	$DateFormat = $MyRow[0];
 	if (mb_strstr($DeliveryDate, '/')) {
 		$DateArray = explode('/', $DeliveryDate);
 	} elseif (mb_strstr($PeriodEnd, '.')) {
@@ -163,8 +163,8 @@ function GetOrderLineNumber($OrderNo, $i, $Errors) {
 					FROM salesorderdetails
 					 WHERE orderno='" . $OrderNo . "'";
 	$lineresult = api_DB_query($linesql);
-	if ($myrow = DB_fetch_row($lineresult)) {
-		return $myrow[0] + 1;
+	if ($MyRow = DB_fetch_row($lineresult)) {
+		return $MyRow[0] + 1;
 	} else {
 		return 1;
 	}
@@ -229,8 +229,8 @@ function VerifyPOLine($poline, $i, $Errors) {
 function VerifyItemDueDate($ItemDue, $i, $Errors) {
 	$SQL = "SELECT confvalue FROM config WHERE confname='DefaultDateFormat'";
 	$result = api_DB_query($SQL);
-	$myrow = DB_fetch_array($result);
-	$DateFormat = $myrow[0];
+	$MyRow = DB_fetch_array($result);
+	$DateFormat = $MyRow[0];
 	if (mb_strstr($ItemDue, '/')) {
 		$DateArray = explode('/', $ItemDue);
 	} elseif (mb_strstr($PeriodEnd, '.')) {
@@ -697,8 +697,8 @@ function InvoiceSalesOrder($OrderNo, $User, $Password) {
 	if (DB_error_no() != 0) {
 		$Errors[] = NoTaxProvince;
 	}
-	$myrow = DB_fetch_row($TaxProvResult);
-	$DispTaxProvinceID = $myrow[0];
+	$MyRow = DB_fetch_row($TaxProvResult);
+	$DispTaxProvinceID = $MyRow[0];
 
 	$LineItemsSQL = "SELECT stkcode,
 								unitprice,
@@ -764,31 +764,31 @@ function InvoiceSalesOrder($OrderNo, $User, $Password) {
 			$Errors[] = TaxRatesFailed;
 		}
 		$LineTaxAmount = 0;
-		while ($myrow = DB_fetch_array($GetTaxRatesResult)) {
+		while ($MyRow = DB_fetch_array($GetTaxRatesResult)) {
 
-			if (!isset($TaxTotals[$myrow['taxauthid']]['FXAmount'])) {
-				$TaxTotals[$myrow['taxauthid']]['FXAmount'] = 0;
+			if (!isset($TaxTotals[$MyRow['taxauthid']]['FXAmount'])) {
+				$TaxTotals[$MyRow['taxauthid']]['FXAmount'] = 0;
 			}
-			$TaxAuthID = $myrow['taxauthid'];
-			$TaxTotals[$myrow['taxauthid']]['GLCode'] = $myrow['taxglcode'];
-			$TaxTotals[$myrow['taxauthid']]['TaxRate'] = $myrow['taxrate'];
-			$TaxTotals[$myrow['taxauthid']]['TaxAuthDescription'] = $myrow['description'];
+			$TaxAuthID = $MyRow['taxauthid'];
+			$TaxTotals[$MyRow['taxauthid']]['GLCode'] = $MyRow['taxglcode'];
+			$TaxTotals[$MyRow['taxauthid']]['TaxRate'] = $MyRow['taxrate'];
+			$TaxTotals[$MyRow['taxauthid']]['TaxAuthDescription'] = $MyRow['description'];
 
-			if ($myrow['taxontax'] == 1) {
-				$TaxAuthAmount = ($LineNetAmount + $LineTaxAmount) * $myrow['taxrate'];
+			if ($MyRow['taxontax'] == 1) {
+				$TaxAuthAmount = ($LineNetAmount + $LineTaxAmount) * $MyRow['taxrate'];
 			} else {
-				$TaxAuthAmount = $LineNetAmount * $myrow['taxrate'];
+				$TaxAuthAmount = $LineNetAmount * $MyRow['taxrate'];
 			}
-			$TaxTotals[$myrow['taxauthid']]['FXAmount'] += $TaxAuthAmount;
+			$TaxTotals[$MyRow['taxauthid']]['FXAmount'] += $TaxAuthAmount;
 
 			/*Make an array of the taxes and amounts including GLcodes for later posting - need debtortransid
 			so can only post once the debtor trans is posted - can only post debtor trans when all tax is calculated */
-			$LineTaxes[$LineCounter][$myrow['calculationorder']] = array(
-				'TaxCalculationOrder' => $myrow['calculationorder'],
-				'TaxAuthID' => $myrow['taxauthid'],
-				'TaxAuthDescription' => $myrow['description'],
-				'TaxRate' => $myrow['taxrate'],
-				'TaxOnTax' => $myrow['taxontax'],
+			$LineTaxes[$LineCounter][$MyRow['calculationorder']] = array(
+				'TaxCalculationOrder' => $MyRow['calculationorder'],
+				'TaxAuthID' => $MyRow['taxauthid'],
+				'TaxAuthDescription' => $MyRow['description'],
+				'TaxRate' => $MyRow['taxrate'],
+				'TaxOnTax' => $MyRow['taxontax'],
 				'TaxAuthAmount' => $TaxAuthAmount
 			);
 			$LineTaxAmount += $TaxAuthAmount;
@@ -1038,23 +1038,23 @@ function InvoiceSalesOrder($OrderNo, $User, $Password) {
 		$DbgMsg = _('SQL to count the no of sales analysis records');
 		$Result = api_DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
 
-		$myrow = DB_fetch_row($Result);
+		$MyRow = DB_fetch_row($Result);
 
-		if ($myrow[0] > 0) {
+		if ($MyRow[0] > 0) {
 			/*Update the existing record that already exists */
 
 			$SQL = "UPDATE salesanalysis
 						SET amt=amt+" . filter_number_format($OrderLineRow['unitprice'] * $OrderLineRow['quantity'] / $OrderHeader['rate']) . ",
 						qty=qty +" . $OrderLineRow['quantity'] . ",
 						disc=disc+" . filter_number_format($OrderLineRow['discountpercent'] * $OrderLineRow['unitprice'] * $OrderLineRow['quantity'] / $OrderHeader['rate']) . "
-						WHERE salesanalysis.area='" . $myrow[2] . "'
-						AND salesanalysis.salesperson='" . $myrow[3] . "'
+						WHERE salesanalysis.area='" . $MyRow[2] . "'
+						AND salesanalysis.salesperson='" . $MyRow[3] . "'
 						AND typeabbrev ='" . $OrderHeader['ordertype'] . "'
 						AND periodno = '" . $PeriodNo . "'
 						AND cust  " . LIKE . " '" . $OrderHeader['debtorno'] . "'
 						AND custbranch  " . LIKE . "  '" . $OrderHeader['branchcode'] . "'
 						AND stockid  " . LIKE . " '" . $OrderLineRow['stkcode'] . "'
-						AND salesanalysis.stkcategory ='" . $myrow[1] . "'
+						AND salesanalysis.stkcategory ='" . $MyRow[1] . "'
 						AND budgetoractual='1'";
 
 		} else {
@@ -1313,25 +1313,25 @@ function GetCurrentPeriod(&$db) {
 	/* Find the unix timestamp of the last period end date in periods table */
 	$SQL = "SELECT MAX(lastdate_in_period), MAX(periodno) from periods";
 	$result = api_DB_query($SQL);
-	$myrow = DB_fetch_row($result);
+	$MyRow = DB_fetch_row($result);
 
-	if (is_null($myrow[0])) {
+	if (is_null($MyRow[0])) {
 		$InsertFirstPeriodResult = api_DB_query("INSERT INTO periods VALUES (0,'" . Date('Y-m-d', mktime(0, 0, 0, Date('m') + 1, 0, Date('Y'))) . "')");
 		$InsertFirstPeriodResult = api_DB_query("INSERT INTO periods VALUES (1,'" . Date('Y-m-d', mktime(0, 0, 0, Date('m') + 2, 0, Date('Y'))) . "')");
 		$LastPeriod = 1;
 		$LastPeriodEnd = mktime(0, 0, 0, Date('m') + 2, 0, Date('Y'));
 	} else {
-		$Date_Array = explode('-', $myrow[0]);
+		$Date_Array = explode('-', $MyRow[0]);
 		$LastPeriodEnd = mktime(0, 0, 0, $Date_Array[1] + 1, 0, (int) $Date_Array[0]);
-		$LastPeriod = $myrow[1];
+		$LastPeriod = $MyRow[1];
 	}
 	/* Find the unix timestamp of the first period end date in periods table */
 	$SQL = "SELECT MIN(lastdate_in_period), MIN(periodno) from periods";
 	$result = api_DB_query($SQL);
-	$myrow = DB_fetch_row($result);
-	$Date_Array = explode('-', $myrow[0]);
+	$MyRow = DB_fetch_row($result);
+	$Date_Array = explode('-', $MyRow[0]);
 	$FirstPeriodEnd = mktime(0, 0, 0, $Date_Array[1], 0, (int) $Date_Array[0]);
-	$FirstPeriod = $myrow[1];
+	$FirstPeriod = $MyRow[1];
 
 	/* If the period number doesn't exist */
 	if (!PeriodExists($TransDate)) {
@@ -1367,10 +1367,10 @@ function GetCurrentPeriod(&$db) {
 		/* Make sure the following months period exists */
 		$SQL = "SELECT MAX(lastdate_in_period), MAX(periodno) from periods";
 		$result = api_DB_query($SQL);
-		$myrow = DB_fetch_row($result);
-		$Date_Array = explode('-', $myrow[0]);
+		$MyRow = DB_fetch_row($result);
+		$Date_Array = explode('-', $MyRow[0]);
 		$LastPeriodEnd = mktime(0, 0, 0, $Date_Array[1] + 2, 0, (int) $Date_Array[0]);
-		$LastPeriod = $myrow[1];
+		$LastPeriod = $MyRow[1];
 		CreatePeriod($LastPeriod + 1, $LastPeriodEnd);
 	}
 
@@ -1384,9 +1384,9 @@ function GetCurrentPeriod(&$db) {
 
 	$ErrMsg = _('An error occurred in retrieving the period number');
 	$GetPrdResult = api_DB_query($GetPrdSQL, $db, $ErrMsg);
-	$myrow = DB_fetch_row($GetPrdResult);
+	$MyRow = DB_fetch_row($GetPrdResult);
 
-	return $myrow[0];
+	return $MyRow[0];
 }
 
 ?>

@@ -532,8 +532,8 @@ function GetCustomerBranchCodes($DebtorNumber, $user, $password) {
 		$Errors[0] = DatabaseUpdateFailed;
 	else {
 		$Errors[0] = 0; // Signal data may follow.
-		while ($myrow = DB_fetch_row($result)) {
-			$Errors[] = $myrow[0];
+		while ($MyRow = DB_fetch_row($result)) {
+			$Errors[] = $MyRow[0];
 		}
 	}
 

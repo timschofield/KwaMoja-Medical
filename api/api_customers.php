@@ -567,8 +567,8 @@ function SearchCustomers($Field, $Criteria, $user, $password) {
 	$DebtorList = array(
 		0
 	); // First element: no errors
-	while ($myrow = DB_fetch_array($result)) {
-		$DebtorList[] = $myrow[0];
+	while ($MyRow = DB_fetch_array($result)) {
+		$DebtorList[] = $MyRow[0];
 	}
 	return $DebtorList;
 }

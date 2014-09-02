@@ -69,8 +69,8 @@ function GetLocationList($user, $password) {
 	$SQL = "SELECT loccode FROM locations";
 	$result = api_DB_query($SQL);
 	$i = 0;
-	while ($myrow = DB_fetch_array($result)) {
-		$LocationList[$i] = $myrow[0];
+	while ($MyRow = DB_fetch_array($result)) {
+		$LocationList[$i] = $MyRow[0];
 		$i++;
 	}
 	$Errors[1] = $LocationList;

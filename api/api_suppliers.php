@@ -48,8 +48,8 @@ function VerifySupplierName($SupplierName, $i, $Errors) {
 function VerifySupplierSinceDate($suppliersincedate, $i, $Errors) {
 	$SQL = "SELECT confvalue FROM config where confname='DefaultDateFormat'";
 	$result = api_DB_query($SQL);
-	$myrow = DB_fetch_array($result);
-	$DateFormat = $myrow[0];
+	$MyRow = DB_fetch_array($result);
+	$DateFormat = $MyRow[0];
 	if (mb_strstr('/', $PeriodEnd)) {
 		$Date_Array = explode('/', $PeriodEnd);
 	} elseif (mb_strstr('.', $PeriodEnd)) {
@@ -343,8 +343,8 @@ function SearchSuppliers($Field, $Criteria, $user, $password) {
 	$result = DB_Query($SQL);
 	$i = 0;
 	$SupplierList = array();
-	while ($myrow = DB_fetch_array($result)) {
-		$SupplierList[$i] = $myrow[0];
+	while ($MyRow = DB_fetch_array($result)) {
+		$SupplierList[$i] = $MyRow[0];
 		$i++;
 	}
 	return $SupplierList;

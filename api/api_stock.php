@@ -77,8 +77,8 @@ function VerifyMBFlag($mbflag, $i, $Errors) {
 function VerifyLastCurCostDate($CurCostDate, $i, $Errors) {
 	$SQL = "SELECT confvalue FROM config WHERE confname='DefaultDateFormat'";
 	$result = api_DB_query($SQL);
-	$myrow = DB_fetch_array($result);
-	$DateFormat = $myrow[0];
+	$MyRow = DB_fetch_array($result);
+	$DateFormat = $MyRow[0];
 	if (mb_strstr('/', $PeriodEnd)) {
 		$Date_Array = explode('/', $PeriodEnd);
 	} elseif (mb_strstr('.', $PeriodEnd)) {
@@ -259,8 +259,8 @@ function VerifyDecimalPlaces($DecimalPlaces, $i, $Errors) {
 function GetCategoryGLCode($CategoryID, $field) {
 	$SQL = 'SELECT ' . $field . " FROM stockcategory WHERE categoryid='" . $CategoryID . "'";
 	$result = DB_Query($SQL);
-	$myrow = DB_fetch_row($result);
-	return $myrow[0];
+	$MyRow = DB_fetch_row($result);
+	return $MyRow[0];
 }
 
 /* Insert a new stock item in the KwaMoja database. This function takes an
@@ -535,8 +535,8 @@ function SearchStockItems($Field, $Criteria, $user, $password) {
 	$result = DB_Query($SQL);
 	$i = 0;
 	$StockItemList = array();
-	while ($myrow = DB_fetch_array($result)) {
-		$StockItemList[$i] = $myrow[0];
+	while ($MyRow = DB_fetch_array($result)) {
+		$StockItemList[$i] = $MyRow[0];
 		$i++;
 	}
 	if (sizeof($Errors) == 0) {
@@ -565,9 +565,9 @@ function GetStockBalance($StockId, $user, $password) {
 	$result = api_DB_query($SQL);
 	if (sizeof($Errors) == 0) {
 		$i = 0;
-		while ($myrow = DB_fetch_array($result)) {
-			$answer[$i]['quantity'] = $myrow['quantity'];
-			$answer[$i]['loccode'] = $myrow['loccode'];
+		while ($MyRow = DB_fetch_array($result)) {
+			$answer[$i]['quantity'] = $MyRow['quantity'];
+			$answer[$i]['loccode'] = $MyRow['loccode'];
 			$i++;
 		}
 		$Errors[0] = 0;
@@ -593,9 +593,9 @@ function GetStockReorderLevel($StockId, $user, $password) {
 	$result = DB_Query($SQL);
 	if (sizeof($Errors) == 0) {
 		$i = 0;
-		while ($myrow = DB_fetch_array($result)) {
-			$answer[$i]['reorderlevel'] = $myrow['reorderlevel'];
-			$answer[$i]['loccode'] = $myrow['loccode'];
+		while ($MyRow = DB_fetch_array($result)) {
+			$answer[$i]['reorderlevel'] = $MyRow['reorderlevel'];
+			$answer[$i]['loccode'] = $MyRow['loccode'];
 			$i++;
 		}
 		$Errors[0] = 0;
@@ -696,8 +696,8 @@ function SetStockPrice($StockId, $Currency, $SalesType, $Price, $user, $password
 				 and typeabbrev='" . $SalesType . "'
 				 and currabrev='" . $Currency . "'";
 	$result = DB_Query($SQL);
-	$myrow = DB_fetch_row($result);
-	if ($myrow[0] == 0) {
+	$MyRow = DB_fetch_row($result);
+	if ($MyRow[0] == 0) {
 		$SQL = "INSERT INTO prices VALUES('" . $StockId . "',
 											'" . $SalesType . "',
 											'" . $Currency . "',
@@ -734,8 +734,8 @@ function GetStockPrice($StockId, $Currency, $SalesType, $user, $password) {
 				 AND startdate<=CURRENT_DATE
 				 AND (enddate>CURRENT_DATE OR enddate='0000-00-00')";
 	$result = DB_Query($SQL);
-	$myrow = DB_fetch_row($result);
-	if ($myrow[0] == 0) {
+	$MyRow = DB_fetch_row($result);
+	if ($MyRow[0] == 0) {
 		$Errors[0] = NoPricesSetup;
 		return $Errors;
 	} else {
@@ -747,9 +747,9 @@ function GetStockPrice($StockId, $Currency, $SalesType, $user, $password) {
 							 AND (enddate>CURRENT_DATE OR enddate='0000-00-00')";
 	}
 	$result = DB_Query($SQL);
-	$myrow = DB_fetch_row($result);
+	$MyRow = DB_fetch_row($result);
 	$Errors[0] = 0;
-	$Errors[1] = $myrow;
+	$Errors[1] = $MyRow;
 	return $Errors;
 }
 
@@ -769,9 +769,9 @@ function GetStockTaxRate($StockId, $TaxAuth, $user, $password) {
 				WHERE stockid='" . $StockId . "'
 				AND taxauthority='" . $TaxAuth . "'";
 	$result = DB_Query($SQL);
-	$myrow = DB_fetch_row($result);
+	$MyRow = DB_fetch_row($result);
 	$Errors[0] = 0;
-	$Errors[1] = $myrow;
+	$Errors[1] = $MyRow;
 	return $Errors;
 }
 
@@ -887,8 +887,8 @@ function GetBatches($StockId, $Location, $user, $password) {
 	$result = DB_Query($SQL);
 	if (sizeof($Errors) == 0) {
 		$i = 0;
-		while ($myrow = DB_fetch_array($result)) {
-			$answer[$i] = $myrow;
+		while ($MyRow = DB_fetch_array($result)) {
+			$answer[$i] = $MyRow;
 			$i++;
 		}
 		return $answer;

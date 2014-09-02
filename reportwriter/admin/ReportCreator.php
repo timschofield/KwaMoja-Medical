@@ -46,8 +46,8 @@ if (!isset($_POST['ReportID'])) { // entered for the first time or created new r
 	} else { // we only have a reportid, we need to retrieve the type from thge db to set up the forms correctly
 		$SQL = "SELECT reporttype FROM " . DBReports . " WHERE id='" . $ReportID . "'";
 		$Result = DB_query($SQL, '', '', false, true);
-		$myrow = DB_fetch_array($Result);
-		$Type = $myrow[0];
+		$MyRow = DB_fetch_array($Result);
+		$Type = $MyRow[0];
 	}
 }
 if (!isset($_GET['action'])) {
@@ -76,14 +76,14 @@ switch ($_GET['action']) {
 			case RPT_BTN_EDIT: // fetch the report information and go to the page setup screen
 				$SQL = "SELECT * FROM " . DBReports . " WHERE id='" . $ReportID . "'";
 				$Result = DB_query($SQL, '', '', false, true);
-				$myrow = DB_fetch_array($Result);
+				$MyRow = DB_fetch_array($Result);
 				$FormParams = PrepStep('3');
 				break;
 			case RPT_BTN_RENAME: // Rename a report was selected, fetch the report name and show rename form
 				$SQL = "SELECT reportname FROM " . DBReports . " WHERE id='" . $ReportID . "'";
 				$Result = DB_query($SQL, '', '', false, true);
-				$myrow = DB_fetch_array($Result);
-				$_POST['ReportName'] = $myrow['reportname'];
+				$MyRow = DB_fetch_array($Result);
+				$_POST['ReportName'] = $MyRow['reportname'];
 			// continue like copy was pushed
 			case RPT_BTN_COPY: // Copy a report was selected
 				$FormParams = PrepStep('2');
@@ -132,8 +132,8 @@ switch ($_GET['action']) {
 				$SQL = "SELECT id FROM " . DBReports . " WHERE reportname='" . addslashes($_POST['ReportName']) . "';";
 				$Result = DB_query($SQL, '', '', false, true);
 				if (DB_num_rows($Result) > 0) { // then we have a duplicate report name, error and reload
-					$myrow = DB_fetch_array($Result);
-					$ReplaceReportID = $myrow['id']; // save the duplicate report id
+					$MyRow = DB_fetch_array($Result);
+					$ReplaceReportID = $MyRow['id']; // save the duplicate report id
 					$usrMsg[] = array(
 						'message' => RPT_SAVEDUP,
 						'level' => 'error'
@@ -212,7 +212,7 @@ switch ($_GET['action']) {
 				// read back in new data for next screen (will set defaults as defined in the db)
 				$SQL = "SELECT * FROM " . DBReports . " WHERE id='" . $ReportID . "'";
 				$Result = DB_query($SQL, '', '', false, true);
-				$myrow = DB_fetch_array($Result);
+				$MyRow = DB_fetch_array($Result);
 				$FormParams = PrepStep('3');
 				break;
 
@@ -230,8 +230,8 @@ switch ($_GET['action']) {
 				$SQL = "SELECT id FROM " . DBReports . " WHERE reportname='" . addslashes($_POST['ReportName']) . "';";
 				$Result = DB_query($SQL, '', '', false, true);
 				if (DB_num_rows($Result) > 0) { // then we have a duplicate report name, error and reload
-					$myrow = DB_fetch_array($Result);
-					if ($myrow['id'] <> $ReportID) { // then the report has a duplicate name to something other than itself, error
+					$MyRow = DB_fetch_array($Result);
+					if ($MyRow['id'] <> $ReportID) { // then the report has a duplicate name to something other than itself, error
 						$usrMsg[] = array(
 							'message' => RPT_REPDUP,
 							'level' => 'error'
@@ -261,7 +261,7 @@ switch ($_GET['action']) {
 				// read back in new data for next screen (will set defaults as defined in the db)
 				$SQL = "SELECT * FROM " . DBReports . " WHERE id='" . $ReportID . "'";
 				$Result = DB_query($SQL, '', '', false, true);
-				$myrow = DB_fetch_array($Result);
+				$MyRow = DB_fetch_array($Result);
 				$FormParams = PrepStep('3');
 				break;
 			case RPT_BTN_CONT: // fetch the report information and go to the page setup screen
@@ -276,7 +276,7 @@ switch ($_GET['action']) {
 						reportname
 					FROM " . DBReports . " WHERE id='" . $ReportID . "'";
 				$Result = DB_query($SQL, '', '', false, true);
-				$myrow = DB_fetch_array($Result);
+				$MyRow = DB_fetch_array($Result);
 				$numrows = DB_num_rows($Result);
 				$FormParams = PrepStep('4');
 				break;
@@ -292,7 +292,7 @@ switch ($_GET['action']) {
 			case RPT_BTN_BACK:
 				$SQL = "SELECT * FROM " . DBReports . " WHERE id='" . $ReportID . "'";
 				$Result = DB_query($SQL, '', '', false, true);
-				$myrow = DB_fetch_array($Result);
+				$MyRow = DB_fetch_array($Result);
 				$FormParams = PrepStep('3');
 				break;
 			case RPT_BTN_UPDATE:
@@ -300,8 +300,8 @@ switch ($_GET['action']) {
 				if ($_POST['Table1']) {
 					$SQL = "SELECT table1 FROM " . DBReports . " WHERE id='" . $ReportID . "'";
 					$Result = DB_query($SQL, '', '', false, true);
-					$myrow = DB_fetch_row($Result);
-					if ($myrow[0] != $_POST['Table1']) {
+					$MyRow = DB_fetch_row($Result);
+					if ($MyRow[0] != $_POST['Table1']) {
 						unset($_POST['Table2']);
 						unset($_POST['Table2Criteria']);
 						unset($_POST['Table3']);
@@ -332,7 +332,7 @@ switch ($_GET['action']) {
 							reportname
 						FROM " . DBReports . " WHERE id='" . $ReportID . "'";
 					$Result = DB_query($SQL, '', '', false, true);
-					$myrow = DB_fetch_array($Result);
+					$MyRow = DB_fetch_array($Result);
 					$FormParams = PrepStep('4');
 					break;
 				}
@@ -386,7 +386,7 @@ switch ($_GET['action']) {
 							reportname
 						FROM " . DBReports . " WHERE id='" . $ReportID . "'";
 					$Result = DB_query($SQL, '', '', false, true);
-					$myrow = DB_fetch_array($Result);
+					$MyRow = DB_fetch_array($Result);
 					$FormParams = PrepStep('4');
 					break;
 				case RPT_BTN_ADDNEW:
@@ -433,13 +433,13 @@ switch ($_GET['action']) {
 					$SQL = "SELECT id, displaydesc, params FROM " . DBRptFields . "
 						WHERE reportid = " . $ReportID . " AND entrytype='fieldlist' AND seqnum = " . $SeqNum . ";";
 					$Result = DB_query($SQL, '', '', false, true);
-					$myrow = DB_fetch_assoc($Result);
-					$Params = unserialize($myrow['params']);
+					$MyRow = DB_fetch_assoc($Result);
+					$Params = unserialize($MyRow['params']);
 					$reportname = $_POST['ReportName'];
 					$ButtonValue = RPT_BTN_ADDNEW; // default the field button to Add New for form entry
 					$FormParams = PrepStep('prop');
-					$FormParams['id'] = $myrow['id'];
-					$DisplayName = $myrow['displaydesc'];
+					$FormParams['id'] = $MyRow['id'];
+					$DisplayName = $MyRow['displaydesc'];
 					break;
 				case RPT_BTN_CONT: // fetch the report information and go to the page setup screen
 					$DateListings = RetrieveFields('dateselect');
@@ -468,8 +468,8 @@ switch ($_GET['action']) {
 		$SQL = "SELECT id, params FROM " . DBRptFields . "
 			WHERE reportid = " . $ReportID . " AND entrytype='fieldlist' AND seqnum = " . $SeqNum . ";";
 		$Result = DB_query($SQL, '', '', false, true);
-		$myrow = DB_fetch_assoc($Result);
-		$Params = unserialize($myrow['params']);
+		$MyRow = DB_fetch_assoc($Result);
+		$Params = unserialize($MyRow['params']);
 		if (!isset($_POST['todo'])) { // then a sequence image button was pushed, we must be in form table entry
 			$success = ModFormTblEntry($Params);
 			if (!$success) { // check for errors
@@ -486,7 +486,7 @@ switch ($_GET['action']) {
 			}
 			// Update field properties
 			$FormParams = PrepStep('prop');
-			$FormParams['id'] = $myrow['id'];
+			$FormParams['id'] = $MyRow['id'];
 		} else {
 			// fetch the choices with the form post data
 			foreach ($_POST as $Key => $Value)
@@ -513,7 +513,7 @@ switch ($_GET['action']) {
 							// reload form with bad data entered as field defaults, ready to be editted
 							$DisplayName = $_POST['DisplayName'];
 							$FormParams = PrepStep('prop');
-							$FormParams['id'] = $myrow['id'];
+							$FormParams['id'] = $MyRow['id'];
 							break;
 						}
 						$Params['Seq'][] = $_POST['TotalField'];
@@ -523,7 +523,7 @@ switch ($_GET['action']) {
 					$Result = DB_query($SQL, '', '', false, true);
 					$Params['TotalField'] = '';
 					$FormParams = PrepStep('prop');
-					$FormParams['id'] = $myrow['id'];
+					$FormParams['id'] = $MyRow['id'];
 					break;
 				case RPT_BTN_CHANGE:
 				case RPT_BTN_ADDNEW:
@@ -540,7 +540,7 @@ switch ($_GET['action']) {
 							$ButtonValue = RPT_BTN_CHANGE;
 						$DisplayName = $_POST['DisplayName'];
 						$FormParams = PrepStep('prop');
-						$FormParams['id'] = $myrow['id'];
+						$FormParams['id'] = $MyRow['id'];
 						break;
 					}
 					if ($_POST['todo'] == RPT_BTN_ADDNEW)
@@ -559,7 +559,7 @@ switch ($_GET['action']) {
 								'level' => 'error'
 							);
 							$FormParams = PrepStep('prop');
-							$FormParams['id'] = $myrow['id'];
+							$FormParams['id'] = $MyRow['id'];
 							break;
 						} else {
 							$Params['filename'] = $success['filename'];
@@ -582,7 +582,7 @@ switch ($_GET['action']) {
 					} else { // print error message if need be and reload parameter form
 						$DisplayName = $_POST['DisplayName'];
 						$FormParams = PrepStep('prop');
-						$FormParams['id'] = $myrow['id'];
+						$FormParams['id'] = $MyRow['id'];
 					}
 					break;
 				default: // bail to reports home

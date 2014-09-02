@@ -220,7 +220,7 @@ class PDF extends PDF_Language {
 		$FillThisRow = false;
 		$MaxRowHt = 0; //track the tallest row to estimate page breaks
 		$this->y0 = $Params['LineYStrt'];
-		foreach ($Params['Data'] as $index => $myrow) {
+		foreach ($Params['Data'] as $index => $MyRow) {
 			// See if we are at or near the end of the table box size
 			if (($this->y0 + $MaxRowHt) > $MaxBoxY) { // need a new page
 				$this->DrawTableLines($Params, $MaxBoxY); // Now draw the box and lines around the table
@@ -238,19 +238,19 @@ class PDF extends PDF_Language {
 			$this->Cell($Params['BoxWidth'], $MaxBoxY - $this->y0, '', 0, 0, 'L', 1);
 			// fill in the data
 			if ($index == 0)
-				$MaxRowHt = $this->ShowTableRow($Params, $myrow, $Heading = true);
+				$MaxRowHt = $this->ShowTableRow($Params, $MyRow, $Heading = true);
 			else
-				$MaxRowHt = $this->ShowTableRow($Params, $myrow, $Heading = false);
+				$MaxRowHt = $this->ShowTableRow($Params, $MyRow, $Heading = false);
 			$FillThisRow = !$FillThisRow;
 		}
 		$this->DrawTableLines($Params, $MaxBoxY); // Now draw the box and lines around the table
 	}
 
-	function ShowTableRow($Params, $myrow, $Heading) {
+	function ShowTableRow($Params, $MyRow, $Heading) {
 		$maxY = $this->y0; // set to current top of row
 		$Col = 0;
 		$NextXPos = $Params['LineXStrt'];
-		foreach ($myrow as $Key => $Value) {
+		foreach ($MyRow as $Key => $Value) {
 			if ($Params['Seq'][$Col]['TblShow']) {
 				$this->SetLeftMargin($NextXPos);
 				$this->SetXY($NextXPos, $this->y0);

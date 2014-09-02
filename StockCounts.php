@@ -238,7 +238,7 @@ if ($_GET['Action'] == 'Enter') {
 				<td>' . $MyRow['qtycounted'] . '</td>
 				<td>' . $MyRow['reference'] . '</td>
 				<td>';
-		if ($myrow['canupd'] == 1) {
+		if ($MyRow['canupd'] == 1) {
 			echo '<input type="checkbox" name="DEL[' . $MyRow['id'] . ']" maxlength="20" size="20" />';
 		}
 		echo '</td>

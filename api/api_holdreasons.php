@@ -14,8 +14,8 @@ function GetHoldReasonList($user, $password) {
 	$SQL = 'SELECT reasoncode FROM holdreasons';
 	$result = api_DB_query($SQL);
 	$i = 0;
-	while ($myrow = DB_fetch_array($result)) {
-		$HoldReasonList[$i] = $myrow[0];
+	while ($MyRow = DB_fetch_array($result)) {
+		$HoldReasonList[$i] = $MyRow[0];
 		$i++;
 	}
 	return $HoldReasonList;

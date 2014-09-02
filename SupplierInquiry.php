@@ -157,17 +157,12 @@ echo '<tr>
 	  </tr>
 	</table>';
 
-echo '<br />
-	<div class="centre">
-		<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-echo '<div>
-		<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
+echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
+echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 echo _('Show all transactions after') . ': ' . '<input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="TransAfterDate" value="' . $_POST['TransAfterDate'] . '" required="required" minlength="1" maxlength="10" size="10" />
 		<input type="submit" name="Refresh Inquiry" value="' . _('Refresh Inquiry') . '" />
-	</div>
-	</form>
-	<br />';
-echo '</div>';
+	</form>';
+
 $DateAfterCriteria = FormatDateForSQL($_POST['TransAfterDate']);
 
 $SQL = "SELECT supptrans.id,
@@ -253,27 +248,21 @@ while ($MyRow = DB_fetch_array($TransResult)) {
 	// All table-row (tag tr) must have 10 table-datacells (tag td).
 
 	$BaseTD8 = '<td>' . ConvertSQLDate($MyRow['trandate']) . '</td>
-		<td>' . _($MyRow['typename']) . '</td>
-		<td class="number">' . $MyRow['transno'] . '</td>
-		<td>' . $MyRow['suppreference'] . '</td>
-		<td>' . $MyRow['transtext'] . '</td>
-		<td class="number">' . locale_number_format($MyRow['totalamount'],$SupplierRecord['currdecimalplaces']) . '</td>
-		<td class="number">' . locale_number_format($MyRow['allocated'],$SupplierRecord['currdecimalplaces']) . '</td>
-		<td class="number">' . locale_number_format($MyRow['totalamount']-$MyRow['allocated'],$SupplierRecord['currdecimalplaces']) . '</td>';
+				<td>' . _($MyRow['typename']) . '</td>
+				<td class="number">' . $MyRow['transno'] . '</td>
+				<td>' . $MyRow['suppreference'] . '</td>
+				<td>' . $MyRow['transtext'] . '</td>
+				<td class="number">' . locale_number_format($MyRow['totalamount'],$SupplierRecord['currdecimalplaces']) . '</td>
+				<td class="number">' . locale_number_format($MyRow['allocated'],$SupplierRecord['currdecimalplaces']) . '</td>
+				<td class="number">' . locale_number_format($MyRow['totalamount']-$MyRow['allocated'],$SupplierRecord['currdecimalplaces']) . '</td>';
 
-	$PaymentTD1 = '<td><a href="' . $RootPath . '/PaymentAllocations.php?SuppID=%s&amp;InvID=%s" title="' .
-			_('Click to view payments') . '"><img alt="" src="' . $RootPath .
-			'/css/' . $Theme . '/images/money_delete.png" width="16"/> ' . _('Payments') . '</a></td>';
+	$PaymentTD1 = '<td><a href="' . $RootPath . '/PaymentAllocations.php?SuppID=%s&amp;InvID=%s" title="' . _('Click to view payments') . '"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/money_delete.png" width="16"/> ' . _('Payments') . '</a></td>';
 
 /* To do: $HoldValueTD1*/
 
-	$AllocationTD1 = '<td><a href="' . $RootPath . '/SupplierAllocations.php?AllocTrans=%s" title="' .
-			_('Click to allocate funds') . '"><img alt="" src="' . $RootPath .
-			'/css/' . $Theme . '/images/allocation.png" /> ' . _('Allocation') . '</a></td>';
+	$AllocationTD1 = '<td><a href="' . $RootPath . '/SupplierAllocations.php?AllocTrans=%s" title="' . _('Click to allocate funds') . '"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/allocation.png" /> ' . _('Allocation') . '</a></td>';
 
-	$GLEntriesTD1 = '<td><a href="' . $RootPath . '/GLTransInquiry.php?TypeID=%s&amp;TransNo=%s" target="_blank" title="' .
-			_('Click to view the GL entries') . '"><img alt="" src="' . $RootPath .
-			'/css/' . $Theme . '/images/gl.png" width="16" /> ' . _('GL Entries') . '</a></td>';
+	$GLEntriesTD1 = '<td><a href="' . $RootPath . '/GLTransInquiry.php?TypeID=%s&amp;TransNo=%s" target="_blank" title="' . _('Click to view the GL entries') . '"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/gl.png" width="16" /> ' . _('GL Entries') . '</a></td>';
 
 	if ($MyRow['type'] == 20) { /*Show a link to allow GL postings to be viewed but no link to allocate */
 

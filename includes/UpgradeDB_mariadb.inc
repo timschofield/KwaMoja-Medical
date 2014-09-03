@@ -161,7 +161,8 @@ function AddIndex($Columns, $Table, $Name) {
 		$Result = DB_query($SQL);
 		if (DB_num_rows($Result) == 0) {
 			$SQL = "ALTER TABLE `" . $Table . "` ADD INDEX " . $Name . " (`" . $Columns[0] . "`";
-			for ($i = 1; $i < sizeOf($Columns); $i++) {
+			$SizeOfColumns = sizeOf($Columns);
+			for ($i = 1; $i < $SizeOfColumns; $i++) {
 				$SQL .= "," . $Columns[$i];
 			}
 			$SQL .= ")";
@@ -541,7 +542,8 @@ function DropTable($Table, $Field) {
 function InsertRecord($Table, $CheckFields, $CheckValues, $Fields, $Values) {
 	if (DB_table_exists($Table)) {
 		$SQL = "SELECT * FROM " . $Table . " WHERE ";
-		for ($i = 0; $i < sizeOf($CheckFields); $i++) {
+		$SizeOfCheckFields = sizeOf($CheckFields);
+		for ($i = 0; $i < $SizeOfCheckFields; $i++) {
 			$SQL = $SQL . $CheckFields[$i] . "='" . $CheckValues[$i] . "' AND ";
 		}
 		$SQL = mb_substr($SQL, 0, mb_strlen($SQL) - 5);
@@ -549,11 +551,13 @@ function InsertRecord($Table, $CheckFields, $CheckValues, $Fields, $Values) {
 	}
 	if (DB_num_rows($Result) == 0 or isset($SQLFile)) {
 		$SQL = "INSERT INTO " . $Table . " (";
-		for ($i = 0; $i < sizeOf($Fields); $i++) {
+		$SizeOfFields = sizeOf($Fields);
+		for ($i = 0; $i < $SizeOfFields; $i++) {
 			$SQL = $SQL . $Fields[$i] . ",";
 		}
 		$SQL = mb_substr($SQL, 0, mb_strlen($SQL) - 1) . ") VALUES (";
-		for ($i = 0; $i < sizeOf($Values); $i++) {
+		$SizeOfValues = sizeOf($Values);
+		for ($i = 0; $i < $SizeOfValues; $i++) {
 			$SQL = $SQL . "'" . $Values[$i] . "',";
 		}
 		$SQL = mb_substr($SQL, 0, mb_strlen($SQL) - 1) . ")";

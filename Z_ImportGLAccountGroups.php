@@ -35,7 +35,8 @@ if (isset($_POST['update'])) {
 		$buffer = fgets($fp, 4096);
 		$FieldValues = explode(',', $buffer);
 		if ($FieldValues[0] != '') {
-			for ($i = 0; $i < sizeof($FieldValues); $i++) {
+			$SizeOfFieldValues = sizeOf($FieldValues);
+			for ($i = 0; $i < $SizeOfFieldValues; $i++) {
 				$AccountGroupDetails[$FieldNames[$i]] = $FieldValues[$i];
 			}
 			$accountgroup = php_xmlrpc_encode($AccountGroupDetails);
@@ -64,7 +65,8 @@ if (isset($_POST['update'])) {
 						<td>' . $AccountGroupDetails['groupname'] . '</td>
 						<td>' . 'Failure' . '</td>
 						<td>';
-				for ($i = 0; $i < sizeof($answer); $i++) {
+				$SizeOfAnswer = sizeOf($answer);
+				for ($i = 0; $i < $SizeOfAnswer; $i++) {
 					echo 'Error no ' . $answer[$i] . ' - ' . $ErrorDescription[$answer[$i]] . '<br />';
 				}
 				echo '</td>

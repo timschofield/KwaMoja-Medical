@@ -95,8 +95,8 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 	//loop through file rows
 	$row = 1;
 	while (($MyRow = fgetcsv($FileHandle, 10000, ",")) !== FALSE) {
-
-		for ($i = 0; $i < sizeof($MyRow); $i++) {
+		$NumberOfFields = sizeOf($MyRow);
+		for ($i = 0; $i < $NumberOfFields; $i++) {
 			if ($MyRow[$i] == '') {
 				$MyRow[$i] = $Defaults[$i];
 			}

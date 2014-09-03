@@ -735,7 +735,7 @@ $MonthNames = array(
 );
 echo '<tr style="outline: 1px solid"><td>' . _('Financial Year Ends On') . ':</td>
 	<td><select required="required" minlength="1" name="X_YearEnd">';
-for ($i = 1; $i <= sizeof($MonthNames); $i++)
+for ($i = 1; $i <= 12; $i++)
 	echo '<option ' . ($_SESSION['YearEnd'] == $i ? 'selected="selected" ' : '') . 'value="' . $i . '">' . $MonthNames[$i] . '</option>';
 echo '</select></td>
 	<td>' . _('Defining the month in which the financial year ends enables the system to provide useful defaults for general ledger reports') . '</td></tr>';
@@ -874,7 +874,8 @@ $WikiApplications = array(
 
 echo '<tr style="outline: 1px solid"><td>' . _('Wiki application') . ':</td>
 	<td><select required="required" minlength="1" name="X_WikiApp">';
-for ($i = 0; $i < sizeof($WikiApplications); $i++) {
+$SizeOfWikiApplications = sizeOf($WikiApplications);
+for ($i = 0; $i < SizeOfWikiApplications; $i++) {
 	echo '<option '.($_SESSION['WikiApp'] == $i ? 'selected="selected" ' : '').'value="'. $i .'">' . $WikiApplications[$i]  . '</option>';
 }
 echo '</select></td>

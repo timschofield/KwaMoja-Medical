@@ -2,10 +2,14 @@
 $PageSecurity = 0;
 
 include('includes/session.inc');
-
-if (file_exists('install/InitialScripts.txt') and (filesize('install/InitialScripts.txt') > 0) and isset($_SESSION['DatabaseName'])) {
-	echo '<meta http-equiv="refresh" content="0; url=' . $RootPath . '/InitialScripts.php">';
-	exit;
+if (!isset($_SESSION['FirstRun'])) {
+	if (file_exists('install/InitialScripts.txt') and (filesize('install/InitialScripts.txt') > 0) and isset($_SESSION['DatabaseName'])) {
+		$_SESSION['FirstRun'] = true;
+		echo '<meta http-equiv="refresh" content="0; url=' . $RootPath . '/InitialScripts.php">';
+		exit;
+	} else {
+		$_SESSION['FirstRun'] = false;
+	}
 }
 
 $Title = _('Main Menu');
@@ -81,9 +85,9 @@ while ($i < count($_SESSION['ModuleLink'])) {
 			echo '<li class="main_menu_unselected">';
 
 		}
-		echo '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Application=' . urlencode($_SESSION['ModuleLink'][$i]) . '">' . $_SESSION['ModuleList'][$i] . '</a></li>';
+		echo '<a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '?Application=', urlencode($_SESSION['ModuleLink'][$i]), '">', $_SESSION['ModuleList'][$i], '</a></li>';
 	}
-	$i++;
+	++$i;
 }
 echo '</ul></div>'; // MainMenuDiv ===HJ===
 
@@ -116,7 +120,7 @@ foreach ($_SESSION['MenuItems'][$_SESSION['Module']]['Transactions']['Caption'] 
 				<p><a href="' . $RootPath . $_SESSION['MenuItems'][$_SESSION['Module']]['Transactions']['URL'][$i] . '">&bull; ' . $Caption . '</a></p>
 			  </li>';
 	}
-	$i++;
+	++$i;
 }
 echo '</ul></div>'; //=== TransactionsDiv ===
 
@@ -144,7 +148,7 @@ if (isset($_SESSION['MenuItems'][$_SESSION['Module']]['Reports'])) {
 					<p><a href="' . $RootPath . $_SESSION['MenuItems'][$_SESSION['Module']]['Reports']['URL'][$i] . '">&bull; ' . $Caption . '</a></p>
 				</li>';
 		}
-		$i++;
+		++$i;
 	}
 }
 
@@ -175,7 +179,7 @@ if (isset($_SESSION['MenuItems'][$_SESSION['Module']]['Maintenance'])) {
 					</li>';
 			}
 		}
-		$i++;
+		++$i;
 	}
 }
 echo '</ul></div>'; // MaintenanceDive ===HJ===

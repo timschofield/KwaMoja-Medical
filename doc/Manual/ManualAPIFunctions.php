@@ -36,8 +36,8 @@ $client->setDebug($DebugLevel);
 
 $response = $client->send($Msg);
 $answer = php_xmlrpc_decode($response->value());
-
-for ($i=0; $i<sizeof($answer); $i++) {
+$SizeOfAnswer = sizeOf($Answer);
+for ($i = 0; $i < $SizeOfAnswer; $i++) {
 	echo '<br /><table border="1" width="80%"><tr><th colspan="3"><h4>'._('Method name')._('  -  ').'<b>'.$answer[$i].'</b></h4></th></tr>';
 	$method = php_xmlrpc_encode($answer[$i]);
 	$Msg = new xmlrpcmsg("system.methodHelp", array($method));

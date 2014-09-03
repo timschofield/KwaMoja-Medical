@@ -122,7 +122,8 @@ if (isset($_POST['View'])) {
 		$SQLString = str_replace('WHERE', ',', $SQLString);
 		$SQLString = str_replace('AND', ',', $SQLString);
 		$FieldArray = preg_split("/[[:space:]]*([[:alnum:].]+[[:space:]]*=[[:space:]]*(?:'[^']*'|[[:digit:].]+))[[:space:]]*,/", $SQLString, 0, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
-		for ($i = 0; $i < sizeof($FieldArray); $i++) {
+		$SizeOfFieldArray = sizeOf($FieldArray);
+		for ($i = 0; $i < $SizeOfFieldArray; $i++) {
 			$Assigment = explode('=', $FieldArray[$i]);
 			$_SESSION['SQLString']['fields'][$i] = $Assigment[0];
 			if (sizeof($Assigment) > 1) {
@@ -199,7 +200,8 @@ if (isset($_POST['View'])) {
 				<td>' . $_SESSION['SQLString']['table'] . '</td>
 				<td>' . $_SESSION['SQLString']['fields'][0] . '</td>
 				<td>' . trim(str_replace("'", "", $_SESSION['SQLString']['values'][0])) . '</td></tr>';
-			for ($i = 1; $i < sizeof($_SESSION['SQLString']['fields']); $i++) {
+			$SizeOfFields = sizeOf($_SESSION['SQLString']['fields']);
+			for ($i = 1; $i < $SizeOfFields; $i++) {
 				if (isset($_SESSION['SQLString']['values'][$i]) and (trim(str_replace("'", "", $_SESSION['SQLString']['values'][$i])) != "") & (trim($_SESSION['SQLString']['fields'][$i]) != 'password') & (trim($_SESSION['SQLString']['fields'][$i]) != 'www_users.password')) {
 					echo '<tr style="background-color:' . $RowColour . '">';
 					echo '<td></td>

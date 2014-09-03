@@ -207,7 +207,8 @@ $Copy = '';
 
 $line_height = $FormDesign->LineHeight;
 
-for ($i = 0; $i < sizeof($OrdersToPick); $i++) {
+$SizeOfOrdersToPick = sizeOf($OrdersToPick);
+for ($i = 0; $i < $SizeOfOrdersToPick; $i++) {
 	/*Cycle through each of the orders to pick */
 	if ($i > 0) {
 		$PDF->newPage();

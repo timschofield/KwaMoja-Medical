@@ -138,16 +138,6 @@ if (isset($_POST['submit']) or isset($_POST['pdf']) or isset($_POST['csv'])) {
 				$LeftOvers = $PDF->addTextWrap($XPos, $YPos, 30 - $Left_Margin, $FontSize, $MyRow['assetid']);
 				$LeftOvers = $PDF->addTextWrap($XPos + 30, $YPos, 150 - $Left_Margin, $FontSize, $MyRow['description']);
 				$LeftOvers = $PDF->addTextWrap($XPos + 180, $YPos, 40 - $Left_Margin, $FontSize, $MyRow['serialno']);
-				/*
-				 * $TempYPos = $YPos;
-				 for ($i = 1;$i < sizeof($Ancestors) - 1;$i++) {
-				 for ($j = 0;$j < $i;$j++) {
-				 $TempYPos-= (0.8 * $line_height);
-				 $LeftOvers = $PDF->addTextWrap($XPos + 300, $TempYPos, 300 - $Left_Margin, $FontSize, '	');
-				 }
-				 $LeftOvers = $PDF->addTextWrap($XPos + 300, $TempYPos, 300 - $Left_Margin, $FontSize, '|_' . $Ancestors[$i]);
-				 }
-				 * */
 
 				$LeftOvers = $PDF->addTextWrap($XPos + 220, $YPos, 50 - $Left_Margin, $FontSize, ConvertSQLDate($MyRow['datepurchased']));
 				$LeftOvers = $PDF->addTextWrap($XPos + 270, $YPos, 70, $FontSize, locale_number_format($MyRow['costbfwd'], 0), 'right');
@@ -171,14 +161,6 @@ if (isset($_POST['submit']) or isset($_POST['pdf']) or isset($_POST['csv'])) {
 						<td style="vertical-align:top">' . $MyRow['longdescription'] . '</td>
 						<td style="vertical-align:top">' . $MyRow['serialno'] . '</td>
 						<td>' . $MyRow['locationdescription'] . '<br />';
-				/*	Not reworked yet
-				 * for ($i = 1;$i < sizeOf($Ancestors) - 1;$i++) {
-				 for ($j = 0;$j < $i;$j++) {
-				 echo '&nbsp;&nbsp;&nbsp;&nbsp;';
-				 }
-				 echo '|_' . $Ancestors[$i] . '<br />';
-				 }
-				 */
 				echo '</td>
 					<td style="vertical-align:top">' . ConvertSQLDate($MyRow['datepurchased']) . '</td>
 					<td style="vertical-align:top" class="number">' . locale_number_format($MyRow['costbfwd'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>

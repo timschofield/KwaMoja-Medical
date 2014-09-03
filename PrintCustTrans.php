@@ -325,7 +325,8 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 					$YPos -= ($line_height);
 
 					$lines = explode('\r\n', htmlspecialchars_decode($MyRow2['narrative']));
-					for ($i = 0; $i < sizeOf($lines); $i++) {
+					$SizeOfLines = sizeOf($lines);
+					for ($i = 0; $i < $SizeOfLines; $i++) {
 						while (mb_strlen($lines[$i]) > 1) {
 							if ($YPos - $line_height <= $Bottom_Margin) {
 								/* head up a new invoice/credit note page */

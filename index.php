@@ -216,19 +216,21 @@ function GetRptLinks($GroupID) {
 		_('Standard Reports and Forms')
 	);
 
-	$SQL = "SELECT id,
-					reporttype,
-					defaultreport,
-					groupname,
-					reportname
-				FROM reports
-				ORDER BY groupname,
-						reportname";
-	$Result = DB_query($SQL, '', '', false, true);
-	$_SESSION['ReportList'] = array();
-	while ($Temp = DB_fetch_array($Result))
-		$_SESSION['ReportList'][] = $Temp;
-
+	if (!isset($_SESSION['ReportList'])) {
+		$SQL = "SELECT id,
+						reporttype,
+						defaultreport,
+						groupname,
+						reportname
+					FROM reports
+					ORDER BY groupname,
+							reportname";
+		$Result = DB_query($SQL, '', '', false, true);
+		$_SESSION['ReportList'] = array();
+		while ($Temp = DB_fetch_array($Result)) {
+			$_SESSION['ReportList'][] = $Temp;
+		}
+	}
 	$RptLinks = '';
 	for ($Def = 1; $Def >= 0; $Def--) {
 		$RptLinks .= '<li class="menu_group_headers">';

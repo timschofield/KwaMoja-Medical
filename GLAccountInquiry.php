@@ -34,7 +34,14 @@ if (isset($_POST['Period'])) {
 
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . _('General Ledger Account Inquiry') . '" alt="' . _('General Ledger Account Inquiry') . '" />' . ' ' . _('General Ledger Account Inquiry') . '</p>';
 
-echo '<div class="page_help_text noPrint">' . _('Use the keyboard Shift key to select multiple periods') . '</div><br />';
+if (isset($SelectedAccount) and $_SESSION['CompanyRecord']['retainedearnings'] == $SelectedAccount) {
+	prnMsg( _('The retained earnings account is managed separately by the system, and therefore cannot be inquired upon. See manual for details'), 'info');
+	echo '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Select another account') . '</a>';
+	include('includes/footer.inc');
+	exit;
+}
+
+echo '<div class="page_help_text noPrint">' . _('Use the keyboard Shift key to select multiple periods') . '</div>';
 
 echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -55,16 +62,21 @@ if (isset($SelectedPeriod)) { //If it was called from itself (in other words an 
 $DefaultPeriodDate = Date('Y-m-d', Mktime(0, 0, 0, Date('m'), 0, Date('Y')));
 
 /*Show a form to allow input of criteria for TB to show */
-echo '<table class="selection" summary="' . _('Inquiry Selection Criteria') . '">
+echo '<table class="selection" summary="', _('Inquiry Selection Criteria'), '">
 		<tr>
-			<td>' . _('Account') . ':</td><td><select minlength="0" name="Account">';
-$SQL = "SELECT accountcode, accountname FROM chartmaster ORDER BY accountcode";
+			<td>', _('Account'), ':</td>
+			<td><select minlength="0" name="Account">';
+$SQL = "SELECT accountcode,
+				accountname
+			FROM chartmaster
+			WHERE accountcode<>'" . $_SESSION['CompanyRecord']['retainedearnings'] . "'
+			ORDER BY accountcode";
 $Account = DB_query($SQL);
 while ($MyRow = DB_fetch_array($Account)) {
 	if (isset($SelectedAccount) and $MyRow['accountcode'] == $SelectedAccount) {
-		echo '<option selected="selected" value="' . $MyRow['accountcode'] . '">' . $MyRow['accountcode'] . ' ' . htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false) . '</option>';
+		echo '<option selected="selected" value="', $MyRow['accountcode'], '">', $MyRow['accountcode'], ' ', htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false), '</option>';
 	} else {
-		echo '<option value="' . $MyRow['accountcode'] . '">' . $MyRow['accountcode'] . ' ' . htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false) . '</option>';
+		echo '<option value="', $MyRow['accountcode'], '">', $MyRow['accountcode'], ' ', htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false), '</option>';
 	}
 }
 echo '</select>
@@ -73,8 +85,8 @@ echo '</select>
 
 //Select the tag
 echo '<tr>
-		<td>' . _('Select Tag') . ':</td>
-			<td><select minlength="0" name="tag">';
+		<td>', _('Select Tag'), ':</td>
+		<td><select minlength="0" name="tag">';
 
 $SQL = "SELECT tagref,
 			tagdescription
@@ -82,15 +94,20 @@ $SQL = "SELECT tagref,
 		ORDER BY tagdescription";
 
 $Result = DB_query($SQL);
-echo '<option value="0">0 - ' . _('All tags') . '</option>';
+echo '<option value="0">0 - ', _('All tags'), '</option>';
 while ($MyRow = DB_fetch_array($Result)) {
 	if (isset($_POST['tag']) and $_POST['tag'] == $MyRow['tagref']) {
-		echo '<option selected="selected" value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
+		echo '<option selected="selected" value="', $MyRow['tagref'], '">', $MyRow['tagref'], ' - ', $MyRow['tagdescription'], '</option>';
 	} else {
-		echo '<option value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
+		echo '<option value="', $MyRow['tagref'] . '">', $MyRow['tagref'], ' - ', $MyRow['tagdescription'], '</option>';
 	}
 }
-echo '</select></td></tr><tr> <td>' . _('For Period range') . ':</td><td><select minlength="0" name="Period[]" size="12" multiple="multiple">';
+echo '</select>
+			</td>
+		</tr>
+		<tr>
+			<td>', _('For Period range'), ':</td>
+			<td><select minlength="0" name="Period[]" size="12" multiple="multiple">';
 $SQL = "SELECT periodno, lastdate_in_period FROM periods ORDER BY periodno DESC";
 $Periods = DB_query($SQL);
 $id = 0;
@@ -102,13 +119,14 @@ while ($MyRow = DB_fetch_array($Periods)) {
 		echo '<option value="' . $MyRow['periodno'] . '">' . _(MonthAndYearFromSQLDate($MyRow['lastdate_in_period'])) . '</option>';
 	}
 }
-echo '</select></td>
+echo '</select>
+			</td>
 		</tr>
-		</table>
-		<div class="centre">
-				<input type="submit" name="Show" value="' . _('Show Account Transactions') . '" />
-		</div>
-		</form>';
+	</table>
+	<div class="centre">
+		<input type="submit" name="Show" value="', _('Show Account Transactions'), '" />
+	</div>
+</form>';
 
 /* End of the Form  rest of script is what happens if the show button is hit*/
 
@@ -165,23 +183,23 @@ if (isset($_POST['Show'])) {
 	$ErrMsg = _('The transactions for account') . ' ' . $SelectedAccount . ' ' . _('could not be retrieved because');
 	$TransResult = DB_query($SQL, $ErrMsg);
 
-	echo '<table class="selection" summary="' . _('General Ledger account inquiry details') . '">
+	echo '<table class="selection" summary="', _('General Ledger account inquiry details'), '">
 			<tr>
 				<th colspan="8">
-					<b>' . _('Transactions for account') . ' ' . $SelectedAccount . ' - ' . $SelectedAccountName . '</b>
-					<img src="' . $RootPath . '/css/' . $Theme . '/images/printer.png" class="PrintIcon noPrint" title="' . _('Print') . '" alt="' . _('Print') . '" onclick="window.print();" />
+					<b>', _('Transactions for account'), ' ', $SelectedAccount, ' - ', $SelectedAccountName, '</b>
+					<img src="', $RootPath, '/css/', $Theme, '/images/printer.png" class="PrintIcon noPrint" title="', _('Print'), '" alt="', _('Print'), '" onclick="window.print();" />
 				</th>
 			</tr>
 			<tr>
-				<th>' . _('Type') . '</th>
-				<th>' . _('Trans no') . '</th>
-				<th>' . _('Cheque') . '</th>
-				<th>' . _('Date') . '</th>
-				<th>' . _('Debit') . '</th>
-				<th>' . _('Credit') . '</th>
-				<th>' . _('Narrative') . '</th>
-				<th>' . _('Balance') . '</th>
-				<th>' . _('Tag') . '</th>
+				<th>', _('Type'), '</th>
+				<th>', _('Trans no'), '</th>
+				<th>', _('Cheque'), '</th>
+				<th>', _('Date'), '</th>
+				<th>', _('Debit'), '</th>
+				<th>', _('Credit'), '</th>
+				<th>', _('Narrative'), '</th>
+				<th>', _('Balance'), '</th>
+				<th>', _('Tag'), '</th>
 			</tr>';
 
 	if ($PandLAccount == True) {
@@ -213,12 +231,12 @@ if (isset($_POST['Show'])) {
 		$RunningTotal = $BfwdRow['bfwd'];
 		if ($RunningTotal < 0) { //its a credit balance b/fwd
 			echo '<tr>
-					<td colspan="4"><b>' . _('Brought Forward Balance') . '</b></td>
+					<td colspan="5"><b>' . _('Brought Forward Balance') . '</b></td>
 					<td class="number"><b>' . locale_number_format(-$RunningTotal, $_SESSION['CompanyRecord']['decimalplaces']) . '</b></td>
 				</tr>';
 		} else { //its a debit balance b/fwd
 			echo '<tr>
-					<td colspan="3"><b>' . _('Brought Forward Balance') . '</b></td>
+					<td colspan="4"><b>' . _('Brought Forward Balance') . '</b></td>
 					<td class="number"><b>' . locale_number_format($RunningTotal, $_SESSION['CompanyRecord']['decimalplaces']) . '</b></td>
 				</tr>';
 		}
@@ -246,7 +264,7 @@ if (isset($_POST['Show'])) {
 				$ChartDetailRow = DB_fetch_array($ChartDetailsResult);
 
 				echo '<tr>
-						<td colspan="3"><b>' . _('Total for period') . ' ' . $PeriodNo . '</b></td>';
+						<td colspan="4"><b>' . _('Total for period') . ' ' . $PeriodNo . '</b></td>';
 				if ($PeriodTotal < 0) { //its a credit balance b/fwd
 					if ($PandLAccount == True) {
 //						$RunningTotal = 0;
@@ -326,7 +344,7 @@ if (isset($_POST['Show'])) {
 			</tr>';
 	}
 
-	echo '<tr><td colspan="3"><b>';
+	echo '<tr><td colspan="4"><b>';
 	if ($PandLAccount == True) {
 		echo _('Total Movement for selected periods');
 	} else {

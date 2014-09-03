@@ -71,7 +71,8 @@ if (!isset($_POST['continue'])) {
 	echo '<tr><td style="background-color: #b9ecb4;color: #006400;">' . $_SESSION['Updates']['Successes'] . ' ' . _('updates have succeeded') . '</td></tr>';
 	echo '<tr><td style="background-color: #c7ccf6;color: #616162;">' . $_SESSION['Updates']['Warnings'] . ' ' . _('updates have not been done as the update was unnecessary on this database') . '</td></tr>';
 	if ($_SESSION['Updates']['Errors'] > 0) {
-		for ($i = 0; $i < sizeOf($_SESSION['Updates']['Messages']); $i++) {
+		$SizeOfErrorMessages = sizeOf($_SESSION['Updates']['Messages']);
+		for ($i = 0; $i < $SizeOfErrorMessages; $i++) {
 			echo '<tr><td>' . $_SESSION['Updates']['Messages'][$i] . '</td></tr>';
 		}
 	}

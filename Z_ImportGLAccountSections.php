@@ -34,7 +34,8 @@ if (isset($_POST['update'])) {
 		$buffer = fgets($fp, 4096);
 		$FieldValues = explode(',', $buffer);
 		if ($FieldValues[0] != '') {
-			for ($i = 0; $i < sizeof($FieldValues); $i++) {
+		$SizeOfFieldValues = sizeOf($FieldValues);
+			for ($i = 0; $i < $SizeOfFieldValues; $i++) {
 				$AccountSectionDetails[$FieldNames[$i]] = $FieldValues[$i];
 			}
 			$accountsection = php_xmlrpc_encode($AccountSectionDetails);
@@ -57,7 +58,8 @@ if (isset($_POST['update'])) {
 				$successes++;
 			} else {
 				echo '<tr ' . $FailureStyle . '><td>' . $AccountSectionDetails['sectionname'] . '</td><td>' . 'Failure' . '</td><td>';
-				for ($i = 0; $i < sizeof($answer); $i++) {
+				$SizeOfAnswer = sizeOf($answer);
+				for ($i = 0; $i < $SizeOfAnswer; $i++) {
 					echo 'Error no ' . $answer[$i] . ' - ' . $ErrorDescription[$answer[$i]] . '<br />';
 				}
 				echo '</td></tr>';

@@ -785,7 +785,8 @@ function StockAdjustment($StockId, $Location, $Quantity, $TranDate, $user, $pass
 	$Errors = VerifyStockCodeExists($StockId, sizeof($Errors), $Errors);
 	$balances = GetStockBalance($StockId, $user, $password);
 	$balance = 0;
-	for ($i = 0; $i < sizeof($balances); $i++) {
+	$SizeOfBalances = sizeOf($balances);
+	for ($i = 0; $i < $SizeOfBalances; $i++) {
 		$balance = $balance + $balances[$i]['quantity'];
 	}
 	$newqoh = $Quantity + $balance;

@@ -34,7 +34,8 @@ if (isset($_POST['update'])) {
 		$buffer = fgets($fp, 4096);
 		$FieldValues = explode(',', $buffer);
 		if ($FieldValues[0] != '') {
-			for ($i = 0; $i < sizeof($FieldValues); $i++) {
+			$SizeOfFieldValues = sizeOf($FieldValues);
+			for ($i = 0; $i < $SizeOfFieldValues; $i++) {
 				if (mb_substr($FieldNames[$i], 0, 6) == 'group_' or $FieldNames[$i] == 'group_') {
 					$FieldNames[$i] = mb_substr($FieldNames[$i], 0, 6);
 					$FieldValues[$i] = mb_substr($FieldValues[$i], 0, mb_strlen($FieldValues[$i]) - 1);
@@ -62,7 +63,8 @@ if (isset($_POST['update'])) {
 				$successes++;
 			} else {
 				echo '<tr ' . $FailureStyle . '><td>' . $AccountDetails['accountcode'] . '</td><td>' . 'Failure' . '</td><td>';
-				for ($i = 0; $i < sizeof($answer); $i++) {
+				$SizeOfAnswer = sizeOf($answer);
+				for ($i = 0; $i < $SizeOfAnswer; $i++) {
 					echo 'Error no ' . $answer[$i] . ' - ' . $ErrorDescription[$answer[$i]] . '<br />';
 				}
 				echo '</td></tr>';

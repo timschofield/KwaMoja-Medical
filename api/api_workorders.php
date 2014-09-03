@@ -275,7 +275,8 @@ function WorkOrderIssue($WONumber, $StockId, $Location, $Quantity, $TranDate, $B
 	} else {
 		$balances = GetStockBalance($StockId, $user, $password);
 		$balance = 0;
-		for ($i = 0; $i < sizeof($balances); $i++) {
+		$SizeOfBalances = sizeOf($balances);
+		for ($i = 0; $i < $SizeOfBalances; $i++) {
 			$balance = $balance + $balances[$i]['quantity'];
 		}
 		$newqoh = $Quantity + $balance;
@@ -381,7 +382,8 @@ function WorkOrderReceive($WONumber, $StockId, $Location, $Quantity, $TranDate, 
 	$itemdetails = GetStockItem($StockId, $user, $password);
 	$balances = GetStockBalance($StockId, $user, $password);
 	$balance = 0;
-	for ($i = 0; $i < sizeof($balances); $i++) {
+	$SizeOfBalnces = sizeOf($balances);
+	for ($i = 0; $i < $SizeOfBalances; $i++) {
 		$balance = $balance + $balances[$i]['quantity'];
 	}
 	$newqoh = $Quantity + $balance;

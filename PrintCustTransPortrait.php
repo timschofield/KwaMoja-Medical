@@ -387,7 +387,8 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 					$YPos -= ($FontSize * $lines);
 
 					$lines = explode('\r\n', htmlspecialchars_decode($MyRow2['narrative']));
-					for ($i = 0; $i < sizeOf($lines); $i++) {
+					$SizeOfLines = sizeOf($lines);
+					for ($i = 0; $i < $SizeOfLines; $i++) {
 						while (mb_strlen($lines[$i]) > 1) {
 							if ($YPos - $line_height <= $Bottom_Margin) {
 								/* head up a new invoice/credit note page */
@@ -466,7 +467,8 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 
 			$FontSize = 8;
 			$LeftOvers = explode('\r\n', DB_escape_string($MyRow['invtext']));
-			for ($i = 0; $i < sizeOf($LeftOvers); $i++) {
+			$SizeOfLeftOvers = sizeOf($LeftOvers);
+			for ($i = 0; $i < $SizeOfLeftOvers; $i++) {
 				$PDF->addText($Left_Margin, $YPos - 8 - ($i * 8), $FontSize, $LeftOvers[$i]);
 			}
 			$FontSize = 10;

@@ -401,7 +401,8 @@ function indian_number_format($Number, $DecimalPlaces) {
 		$RestUnits = (strlen($RestUnits) % 2 == 1) ? '0' . $RestUnits : $RestUnits; // explodes the remaining digits in 2's formats, adds a zero in the beginning to maintain the 2's grouping.
 		$FirstPart = '';
 		$ExplodedUnits = str_split($RestUnits, 2);
-		for ($i = 0; $i < sizeof($ExplodedUnits); $i++) {
+		$SizeOfExplodedUnits = sizeOf($ExplodedUnits);
+		for ($i = 0; $i < $SizeOfExplodedUnits; $i++) {
 			$FirstPart .= intval($ExplodedUnits[$i]) . ','; // creates each of the 2's group and adds a comma to the end
 		}
 

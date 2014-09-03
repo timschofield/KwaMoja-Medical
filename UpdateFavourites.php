@@ -24,5 +24,10 @@ if (DB_num_rows($Result) == 0) {
 						AND href='" . $_GET['Script'] . "'";
 	$Result = DB_query($SQL);
 }
+$SQL = "SELECT caption, href FROM favourites WHERE userid='" . $_SESSION['UserID'] . "'";
+$Result = DB_query($SQL);
+while ($MyRow = DB_fetch_array($Result)) {
+	$_SESSION['Favourites'][$MyRow['href']] = $MyRow['caption'];
+}
 
 ?>

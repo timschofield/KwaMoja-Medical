@@ -561,39 +561,39 @@ if ($AllowDemoMode) {
 	echo '<tr>
 			<td>' . _('PayPal Pro User') . ':</td>
 			<td><input type="text" class="noSpecialChars"  size="40" maxlength="40" name="X_ShopPayPalProUser" value="' . $_SESSION['ShopPayPalProUser'] . '" /></td>
-			<td>' . _('The PayPal Pro Merchant User account for credit card payment available in only USA and Canada') . '</td>
+			<td>' . _('The') . '<a href="https://www.paypal.com/us/webapps/mpp/paypal-payments-pro">' . _('PayPal Pro') . '</a> ' .  _('Merchant User account for credit card payment available in only USA and Canada') . '</td>
 		</tr>';
 
 	echo '<tr>
 			<td>' . _('PayPal Pro Password') . ':</td>
 			<td><input type="text" size="20" maxlength="20" name="X_ShopPayPalProPassword" value="' . $_SESSION['ShopPayPalProPassword'] . '" /></td>
-			<td>' . _('The PayPal Pro Merchant account password for credit card payment available in only USA and Canada') . '</td>
+			<td>' . _('The') . '<a href="https://www.paypal.com/us/webapps/mpp/paypal-payments-pro">' . _('PayPal Pro') . '</a> ' . _('Merchant account password for credit card payment available in only USA and Canada') . '</td>
 		</tr>';
 	echo '<tr>
 			<td>' . _('PayPal Pro Signature') . ':</td>
 			<td><input type="text" size="80" maxlength="80" name="X_ShopPayPalProSignature" value="' . $_SESSION['ShopPayPalProSignature'] . '" /></td>
-			<td>' . _('The PayPal Pro merchant account signature for credit card payment available in only USA and Canada') . '</td>
+			<td>' . _('The') . '<a href="https://www.paypal.com/us/webapps/mpp/paypal-payments-pro">' . _('PayPal Pro') . '</a> ' . _('merchant account signature for credit card payment available in only USA and Canada') . '</td>
 		</tr>';
 	echo '<tr>
 			<td>' . _('Pay Flow Pro User') . ':</td>
 			<td><input type="text" class="noSpecialChars"  size="40" maxlength="40" name="X_ShopPayFlowUser" value="' . $_SESSION['ShopPayFlowUser'] . '" /></td>
-			<td>' . _('The') . ' <a href="https://www.paypal.com/webapps/mpp/payflow-payment-gateway">PayFlow Pro</a> ' . _('Merchant User account') . '</td>
+			<td>' . _('The') . ' <a href="https://www.paypal.com/us/webapps/mpp/payflow-payment-gateway">PayFlow Pro</a> ' . _('Merchant User account') . '</td>
 		</tr>';
 
 	echo '<tr>
 			<td>' . _('Pay Flow Pro Password') . ':</td>
 			<td><input type="text" size="20" maxlength="20" name="X_ShopPayFlowPassword" value="' . $_SESSION['ShopPayFlowPassword'] . '" /></td>
-			<td>' . _('The') . ' <a href="https://www.paypal.com/webapps/mpp/payflow-payment-gateway">PayFlow Pro</a> ' . _('Merchant account password') . '</td>
+			<td>' . _('The') . ' <a href="https://www.paypal.com/us/webapps/mpp/payflow-payment-gateway">PayFlow Pro</a> ' . _('Merchant account password') . '</td>
 		</tr>';
 	echo '<tr>
 			<td>' . _('Pay Flow Pro Vendor') . ':</td>
 			<td><input type="text" class="noSpecialChars" size="20" maxlength="20" name="X_ShopPayFlowVendor" value="' . $_SESSION['ShopPayFlowVendor'] . '" /></td>
-			<td>' . _('The') . ' <a href="https://www.paypal.com/webapps/mpp/payflow-payment-gateway">PayFlow Pro</a> ' . _('vendor') . '</td>
+			<td>' . _('The') . ' <a href="https://www.paypal.com/us/webapps/mpp/payflow-payment-gateway">PayFlow Pro</a> ' . _('vendor') . '</td>
 		</tr>';
 	echo '<tr>
 			<td>' . _('Pay Flow Pro Merchant') . ':</td>
 			<td><input type="text" size="20" maxlength="20" name="X_ShopPayFlowMerchant" value="' . $_SESSION['ShopPayFlowMerchant'] . '" /></td>
-			<td>' . _('The') . ' <a href="https://www.paypal.com/webapps/mpp/payflow-payment-gateway">PayFlow Pro</a> ' . _('merchant') . '</td>
+			<td>' . _('The') . ' <a href="https://www.paypal.com/us/webapps/mpp/payflow-payment-gateway">PayFlow Pro</a> ' . _('merchant') . '</td>
 		</tr>';
 	echo '<tr>
 			<td>' . _('SwipeHQ Merchant ID') . ':</td>

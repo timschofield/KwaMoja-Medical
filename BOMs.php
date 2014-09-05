@@ -67,6 +67,7 @@ function DisplayBOMItems($UltimateParent, $Parent, $Component, $Level) {
 	global $ParentMBflag;
 	$SQL = "SELECT bom.component,
 					stockmaster.description as itemdescription,
+					stockmaster.units,
 					locations.locationname,
 					locations.loccode,
 					workcentres.description as workcentrename,
@@ -147,11 +148,12 @@ function DisplayBOMItems($UltimateParent, $Parent, $Component, $Level) {
 				<td>%s</td>
 				<td>%s</td>
 				<td>%s</td>
+				<td>%s</td>
 				<td class="number">%s</td>
 				<td><a href="%s&amp;Select=%s&amp;SelectedComponent=%s">' . _('Edit') . '</a></td>
 				<td>' . $DrillText . '</td>
 				<td><a href="%s&amp;Select=%s&amp;SelectedComponent=%s&amp;delete=1&amp;ReSelect=%s&amp;Location=%s&amp;WorkCentre=%s" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this component from the bill of material?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-			 </tr>', $Level1, $MyRow['sequence'], $MyRow['component'], $MyRow['itemdescription'], $MyRow['locationname'], $MyRow['workcentrename'], locale_number_format($MyRow['quantity'], 'Variable'), ConvertSQLDate($MyRow['effectiveafter']), ConvertSQLDate($MyRow['effectiveto']), $AutoIssue, $QuantityOnHand, htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $Parent, $MyRow['component'], $DrillLink, $DrillID, htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $Parent, $MyRow['component'], $UltimateParent, $MyRow['loccode'], $MyRow['workcentrecode']);
+			 </tr>', $Level1, $MyRow['sequence'], $MyRow['component'], $MyRow['itemdescription'], $MyRow['locationname'], $MyRow['workcentrename'], locale_number_format($MyRow['quantity'], 'Variable'), $MyRow['units'], ConvertSQLDate($MyRow['effectiveafter']), ConvertSQLDate($MyRow['effectiveto']), $AutoIssue, $QuantityOnHand, htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $Parent, $MyRow['component'], $DrillLink, $DrillID, htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $Parent, $MyRow['component'], $UltimateParent, $MyRow['loccode'], $MyRow['workcentrecode']);
 
 	} //END WHILE LIST LOOP
 } //end of function DisplayBOMItems
@@ -517,6 +519,7 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 			<th>' . _('Location') . '</th>
 			<th>' . _('Work Centre') . '</th>
 			<th>' . _('Quantity') . '</th>
+			<th>' . _('UOM') . '</th>
 			<th>' . _('Effective After') . '</th>
 			<th>' . _('Effective To') . '</th>
 			<th>' . _('Auto Issue') . '</th>

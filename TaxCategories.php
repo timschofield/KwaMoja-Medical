@@ -2,7 +2,7 @@
 
 include('includes/session.inc');
 
-$Title = _('Tax Categories');
+$Title = _('Tax Categories Maintenance');
 $ViewTopic = 'Tax';// Filename in ManualContents.php's TOC.
 $BookMark = 'TaxCategories';// Anchor's id in the manual's html document.
 
@@ -143,7 +143,7 @@ if (isset($_POST['submit'])) {
 	unset($_POST['TaxCategoryName']);
 }
 
-if (!isset($SelectedTaxCategory)) {
+if (!isset($SelectedTaxCategory) or $SelectedTaxCategory == '') {
 
 	/* An tax category could be posted when one has been edited and is being updated
 	or GOT when selected for modification
@@ -163,9 +163,8 @@ if (!isset($SelectedTaxCategory)) {
 
 	echo '<table class="selection">
 			<tr>
-				<th class="SortableColumn">' . _('Tax Categories') . '</th>
-				<th></th>
-				<th></th>
+				<th class="SortableColumn">', _('Tax Categories'), '</th>
+				<th colspan="2">', _('Maintenance'), '</th>
 			</tr>';
 
 	$k = 0; //row colour counter
@@ -196,7 +195,7 @@ if (!isset($SelectedTaxCategory)) {
 } //end of ifs and buts!
 
 
-if (isset($SelectedTaxCategory)) {
+if ($SelectedTaxCategory != '') {
 	echo '<div class="centre">
 			<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Review Tax Categories') . '</a>
 		</div>';
@@ -207,7 +206,7 @@ if (!isset($_GET['delete'])) {
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
-	if (isset($SelectedTaxCategory)) {
+	if ($SelectedTaxCategory != '') {
 		//editing an existing section
 
 		$SQL = "SELECT taxcatid,
@@ -229,14 +228,14 @@ if (!isset($_GET['delete'])) {
 		}
 
 	} else {
-		$_POST['TaxCategoryName'] = '';
+		$SelectedTaxCategory = '';
 		echo '<table class="selection">';
 	}
 	echo '<tr>
 			<td>' . _('Tax Category Name') . ':' . '</td>
-			<td><input type="text" name="TaxCategoryName" size="30" required="required" minlength="1" maxlength="30" value="' . $_POST['TaxCategoryName'] . '" /></td>
+			<td><input type="text" name="TaxCategoryName" size="30" required="required" minlength="1" maxlength="30" value="' . $SelectedTaxCategory . '" /></td>
 		</tr>
-		</table>';
+	</table>';
 
 	echo '<div class="centre">
 			<input type="submit" name="submit" value="' . _('Enter Information') . '" />
@@ -244,6 +243,12 @@ if (!isset($_GET['delete'])) {
 	</form>';
 
 } //end if record deleted no point displaying form to add record
+
+echo '<div class="centre">
+		<a href="', $RootPath, '/TaxAuthorities.php">', _('Tax Authorities and Rates Maintenance'), '</a>
+		<a href="', $RootPath, '/TaxGroups.php">', _('Tax Group Maintenance'), '</a>
+		<a href="', $RootPath, '/TaxProvinces.php">', _('Dispatch Tax Province Maintenance'), '</a>
+	</div>';
 
 include('includes/footer.inc');
 ?>

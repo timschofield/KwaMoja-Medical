@@ -2,7 +2,9 @@
 
 include('includes/session.inc');
 
-$Title = _('Tax Groups');
+$Title = _('Tax Group Maintenance');
+$ViewTopic = 'Tax';// Filename in ManualContents.php's TOC.
+$BookMark = 'TaxGroups';// Anchor's id in the manual's html document.
 include('includes/header.inc');
 
 if (isset($_GET['SelectedGroup'])) {
@@ -11,7 +13,7 @@ if (isset($_GET['SelectedGroup'])) {
 	$SelectedGroup = $_POST['SelectedGroup'];
 }
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p><br />';
+echo '<p class="page_title_text noPrint"><img src="', $RootPath, '/css/', $Theme, '/images/maintenance.png" title="', $Title, '" alt="" />', ' ', $Title, '</p>';
 
 if (isset($_POST['submit']) or isset($_GET['remove']) or isset($_GET['add'])) {
 
@@ -186,6 +188,7 @@ if (!isset($SelectedGroup)) {
 				<tr>
 					<th class="SortableColumn">' . _('Group No') . '</th>
 					<th class="SortableColumn">' . _('Tax Group') . '</th>
+					<th colspan="2" >', _('Maintenance') . '</th>
 				</tr>';
 
 		$k = 0; //row colour counter
@@ -198,11 +201,10 @@ if (!isset($SelectedGroup)) {
 				$k = 1;
 			}
 
-			printf('<td>%s</td>
-					<td>%s</td>
-					<td><a href="%s&amp;SelectedGroup=%s">' . _('Edit') . '</a></td>
-					<td><a href="%s&amp;SelectedGroup=%s&amp;Delete=1&amp;GroupID=%s" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this tax group?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-					</tr>', $MyRow['taxgroupid'], $MyRow['taxgroupdescription'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['taxgroupid'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['taxgroupid'], urlencode($MyRow['taxgroupdescription']));
+			echo '<td>', $MyRow['taxgroupid'], '</td>
+					<td>', $MyRow['taxgroupdescription'], '</td>
+					<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', '&amp;SelectedGroup=', $MyRow['taxgroupid'], '">' . _('Edit') . '</a></td>
+					<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', '&amp;SelectedGroup=', $MyRow['taxgroupid'], '&amp;Delete=1&amp;GroupID=', urlencode($MyRow['taxgroupdescription']), '" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this tax group?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>';
 
 		} //END WHILE LIST LOOP
 		echo '</table>';
@@ -232,7 +234,7 @@ if (isset($SelectedGroup)) {
 		$_POST['GroupName'] = $MyRow['taxgroupdescription'];
 	}
 }
-echo '<br />';
+
 echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 if (isset($_POST['SelectedGroup'])) {
@@ -249,7 +251,6 @@ echo '<tr>
 echo '<td><input type="submit" name="submit" value="' . _('Enter Group') . '" /></td>
 	</tr>
 	</table>
-	<br />
 	</form>';
 
 
@@ -320,13 +321,13 @@ if (isset($SelectedGroup)) {
 				echo '<option value="1">' . _('Yes') . '</option>';
 				echo '<option selected="selected" value="0">' . _('No') . '</option>';
 			}
-			echo '</select></td>
+			echo '</select>
+					</td>
 				</tr>';
 
 		}
 		echo '</table>';
-		echo '<br />
-			<div class="centre">
+		echo '<div class="centre">
 				<input type="submit" name="UpdateOrder" value="' . _('Update Order') . '" />
 			</div>';
 	}
@@ -343,7 +344,6 @@ if (isset($SelectedGroup)) {
 	}
 
 	if (DB_num_rows($Result) > 0) {
-		echo '<br />';
 		echo '<table class="selection">
 				<tr>
 					<th colspan="4">' . _('Assigned Taxes') . '</th>
@@ -361,8 +361,7 @@ if (isset($SelectedGroup)) {
 				</tr>';
 
 	} else {
-		echo '<br />
-				<div class="centre">' . _('There are no tax authorities defined to allocate to this tax group') . '
+		echo '<div class="centre">' . _('There are no tax authorities defined to allocate to this tax group') . '
 				</div>';
 	}
 
@@ -409,6 +408,12 @@ if (isset($SelectedGroup)) {
 	echo '</table>';
 
 }
+
+echo '<div class="centre">
+		<a href="', $RootPath, '/TaxAuthorities.php">', _('Tax Authorities and Rates Maintenance'),  '</a>
+		<a href="', $RootPath, '/TaxProvinces.php">', _('Dispatch Tax Province Maintenance'),  '</a>
+		<a href="', $RootPath, '/TaxCategories.php">', _('Tax Category Maintenance'), '</a>
+	</div>';
 
 include('includes/footer.inc');
 

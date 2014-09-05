@@ -1,7 +1,7 @@
 <?php
 
 include('includes/session.inc');
-$Title = _('Tax Authorities');
+$Title = _('Tax Authorities Maintenance');
 $ViewTopic = 'Tax';// Filename in ManualContents.php's TOC.
 $BookMark = 'TaxAuthorities';// Anchor's id in the manual's html document.
 include('includes/header.inc');
@@ -150,7 +150,7 @@ if (!isset($SelectedTaxAuthID)) {
 	echo '<table class="selection">
 			<tr>
 				<th class="SortableColumn">', _('ID'), '</th>
-				<th class="SortableColumn">', _('Description'), '</th>
+				<th class="SortableColumn">', _('Tax Authority'), '</th>
 				<th>', _('Input Tax'), '<br />', _('GL Account'), '</th>
 				<th>', _('Output Tax'), '<br />', _('GL Account'), '</th>
 				<th>', _('Bank'), '</th>
@@ -315,6 +315,13 @@ echo '<div class="centre">
 			<input type="submit" name="submit" value="', _('Enter Information'), '" />
 		</div>
 	</form>';
+
+echo '<div class="centre">
+		<a href="', $RootPath, '/TaxGroups.php">', _('Tax Group Maintenance'), '</a>
+		<a href="', $RootPath, '/TaxProvinces.php">', _('Dispatch Tax Province Maintenance'), '</a>
+		<a href="', $RootPath, '/TaxCategories.php">', _('Tax Category Maintenance'), '</a>
+	</div>';
+
 
 include('includes/footer.inc');
 

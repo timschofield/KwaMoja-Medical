@@ -491,6 +491,7 @@ if (isset($_POST['submit'])) {
 						shrinkageflag varchar(5),
 						eoqflag varchar(5),
 						usemrpdemands varchar(5),
+						userldemands varchar(5),
 						leeway smallint) DEFAULT CHARSET=utf8";
 	$Result = DB_query($SQL);
 	// Create entry for location field from $_POST['location'], which is an array
@@ -510,6 +511,7 @@ if (isset($_POST['submit'])) {
 									shrinkageflag,
 									eoqflag,
 									usemrpdemands,
+									userldemands,
 									leeway)
 								VALUES (
 									CURRENT_TIMESTAMP,
@@ -518,6 +520,7 @@ if (isset($_POST['submit'])) {
 									'" . $_POST['ShrinkageFlag'] . "',
 									'" . $_POST['EOQFlag'] . "',
 									'" . $_POST['UserMRPDemands'] . "',
+									'" . $_POST['UseRLDemands'] . "',
 									'" . filter_number_format($_POST['Leeway']) . "')";
 	$Result = DB_query($SQL);
 
@@ -537,6 +540,10 @@ if (isset($_POST['submit'])) {
 		if ($MyRow['usemrpdemands'] == 'y') {
 			$UseMRPDemands = _('Yes');
 		}
+		$UseRLDemands = _('No');
+		if ($myrow['userldemands'] == 'y') {
+			$UseRLDemands = _('Yes');
+ 		}
 		$useeoq = _('No');
 		if ($MyRow['eoqflag'] == 'y') {
 			$useeoq = _('Yes');
@@ -567,6 +574,10 @@ if (isset($_POST['submit'])) {
 				<tr>
 					<td>' . _('Use MRP Demands') . ':</td>
 					<td>' . $UseMRPDemands . '</td>
+				</tr>
+				<tr>
+					<td>' . _('Use Reorder Level Demands') . ':</td>
+					<td>' . $UseRLDemands . '</td>
 				</tr>
 				<tr>
 					<td>' . _('Use EOQ') . ':</td>
@@ -623,6 +634,10 @@ if (isset($_POST['submit'])) {
 			<td>' . _('Use MRP Demands?') . ':</td>
 			<td><input type="checkbox" name="UserMRPDemands" value="y" checked="checked" /></td>
 		</tr>
+		<tr>
+			<td>' . _('Use Reorder Level Demands?') . ':</td>
+			<td><input type="checkbox" name="UseRLDemands" value="y" checked="checked" /></td>
+ 		</tr>
 		<tr>
 			<td>' . _('Use EOQ?') . ':</td>
 			<td><input type="checkbox" name="EOQFlag" value="y" checked="checked" /></td>

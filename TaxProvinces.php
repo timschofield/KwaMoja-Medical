@@ -2,12 +2,14 @@
 
 include('includes/session.inc');
 
-$Title = _('Dispatch Tax Provinces');
+$Title = _('Dispatch Tax Province Maintenance');
 
+$ViewTopic = 'Tax';// Filename in ManualContents.php's TOC.
+$BookMark = 'TaxProvinces';// Anchor's id in the manual's html document.
 include('includes/header.inc');
 
 echo '<p class="page_title_text noPrint" >
-		<img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '
+		<img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '
 	</p>';
 
 if (isset($_GET['SelectedTaxProvince']))
@@ -163,7 +165,8 @@ if (!isset($SelectedTaxProvince)) {
 
 	echo '<table class="selection">
 			<tr>
-				<th class="SortableColumn">' . _('Tax Provinces') . '</th>
+				<th class="SortableColumn">', _('Tax Provinces'), '</th>
+				<th colspan="2">', _('Maintenance'), '</th>
 			</tr>';
 
 	$k = 0; //row colour counter
@@ -183,7 +186,7 @@ if (!isset($SelectedTaxProvince)) {
 			</tr>';
 
 	} //END WHILE LIST LOOP
-	echo '</table><br />';
+	echo '</table>';
 } //end of ifs and buts!
 
 

@@ -6,6 +6,10 @@ Freight cost is determined by looking for a match of destination city from the A
 
 function CalcFreightCost($TotalValue, $BrAdd2, $BrAdd3, $BrAdd4, $BrAdd5, $BrAddCountry, $TotalVolume, $TotalWeight, $FromLocation, $Currency, $CountriesArra) {
 
+	$CalcFreightCost =9999999999;
+	$CalcBestShipper ='';
+	global $CountriesArray;
+
 	$ParameterError = FALSE;
 	if ((!isset($BrAdd2)) and (!isset($BrAdd3)) and (!isset($BrAdd4)) and (!isset($BrAdd5)) and (!isset($BrAddCountry))){
 		// No address field to detect destination ==> ERROR
@@ -58,8 +62,6 @@ function CalcFreightCost($TotalValue, $BrAdd2, $BrAdd3, $BrAdd4, $BrAdd5, $BrAdd
 	if (DB_error_no() != 0) {
 		echo _('The freight calculation for the destination city cannot be performed because') . ' - ' . DB_error_msg() . ' - ' . $SQL;
 	} elseif (DB_num_rows($CalcFreightCostResult) > 0) {
-
-		$CalcFreightCost =9999999999;
 
 		while ($MyRow = DB_fetch_array($CalcFreightCostResult)) {
 

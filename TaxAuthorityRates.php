@@ -8,13 +8,13 @@ if (isset($_GET['TaxAuthority'])) {
 }
 
 include('includes/session.inc');
-$Title = _('Tax Rates');
+$Title = _('Tax Rates Maintenance');
 $ViewTopic = 'Tax';// Filename in ManualContents.php's TOC.
 $BookMark = 'TaxAuthorityRates';// Anchor's id in the manual's html document.
 include('includes/header.inc');
 
 echo '<p class="page_title_text noPrint" >
-		<img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Supplier Types') . '" alt="" />' . $Title . '
+		<img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . $Title . '" alt="" />' . $Title . '
 	</p>';
 
 if (!isset($TaxAuthority)) {

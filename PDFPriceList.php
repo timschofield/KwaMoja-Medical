@@ -214,9 +214,10 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 			if ($PriceList['price'] != 0) {
 				$DisplayGPPercent = locale_number_format((($PriceList['price'] - $PriceList['standardcost']) * 100 / $PriceList['price']), 2) . '%';
 			}
-			$PDF->addTextWrap($Page_Width - $Right_Margin - 128, $YPos - $FontSize, 32, $FontSize, $DisplayGPPercent, 'right');		}
+			$PDF->addTextWrap($Page_Width - $Right_Margin - 128, $YPos - $FontSize, 32, $FontSize, $DisplayGPPercent, 'right');
+		}
 		// Displays unit price:
-		$PDF->addTextWrap($Page_Width - $Right_Margin - 96, $YPos-$FontSize, 96, $FontSize, locale_number_format($PriceList['price'], $PriceList['decimalplaces']),
+		$PDF->addTextWrap($Page_Width - $Right_Margin - 96, $YPos-$FontSize, 96, $FontSize, locale_number_format($PriceList['price'], $PriceList['decimalplaces']));
 		if ($_POST['CustomerSpecials'] == 'Customer Special Prices Only') {
 			/*Need to show to which branch the price relates */
 			if ($PriceList['branchcode'] != '') {

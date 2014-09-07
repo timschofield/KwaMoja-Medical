@@ -18,7 +18,7 @@ if (isset($_GET['StockID'])) {
 	$StockId = '';
 }
 
-$ItemDescriptionLanguagesArray = explode(',',$_SESSION['ItemDescriptionLanguages']);//WARNING: if the last character is a ",", there are n+1 languages.
+$ItemDescriptionLanguagesArray = explode(',', $_SESSION['ItemDescriptionLanguages']);//WARNING: if the last character is a ",", there are n+1 languages.
 
 if (isset($_POST['NextItem_x'])) {
 	$Result = DB_query("SELECT stockid FROM stockmaster WHERE stockid>'" . $StockId . "' ORDER BY stockid ASC LIMIT 1");
@@ -37,7 +37,7 @@ if (isset($_POST['PreviousItem_x'])) {
 	}
 }
 
-if (isset($StockId) AND !isset($_POST['UpdateCategories'])) {
+if (isset($StockId) and !isset($_POST['UpdateCategories'])) {
 	$SQL = "SELECT COUNT(stockid)
 			FROM stockmaster
 			WHERE stockid='" . $StockId . "'
@@ -132,7 +132,7 @@ if (isset($_POST['submit'])) {
 		$Errors[$i] = 'StockID';
 		$i++;
 	}
-	if (ContainsIllegalCharacters($StockId) or mb_strpos($StockId, ' ')) {
+	if (ContainsIllegalCharacters($StockId)) {
 		$InputError = 1;
 		prnMsg(_('The stock item code cannot contain any of the following characters') . " - ' &amp; + \" \\ ." . _('or a space'), 'error');
 		$Errors[$i] = 'StockID';
@@ -266,7 +266,7 @@ if (isset($_POST['submit'])) {
 					INNER JOIN stockcosts
 						ON stockmaster.stockid=stockcosts.stockid
 							AND succeeded=0
-					WHERE stockid = '" . $StockId . "'";
+					WHERE stockmaster.stockid = '" . $StockId . "'";
 			$MBFlagResult = DB_query($SQL);
 			$MyRow = DB_fetch_row($MBFlagResult);
 			$OldMBFlag = $MyRow[0];
@@ -634,7 +634,7 @@ if (isset($_POST['submit'])) {
 					//now insert the language descriptions
 					$ErrMsg = _('Could not update the language description because');
 					$DbgMsg = _('The SQL that was used to update the language description and failed was');
-					if (count($ItemDescriptionLanguages) > 0) {
+					if (count($ItemDescriptionLanguagesArray) > 0) {
 						foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
 							if ($LanguageId != ''){
 								$SQL = "INSERT INTO stockdescriptiontranslations VALUES('" . $StockId . "','" . $LanguageId . "', '" . $_POST['Description_' . str_replace('.', '_', $LanguageId)] . "')";

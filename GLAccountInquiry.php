@@ -35,7 +35,7 @@ if (isset($_POST['Period'])) {
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . _('General Ledger Account Inquiry') . '" alt="' . _('General Ledger Account Inquiry') . '" />' . ' ' . _('General Ledger Account Inquiry') . '</p>';
 
 if (isset($SelectedAccount) and $_SESSION['CompanyRecord']['retainedearnings'] == $SelectedAccount) {
-	prnMsg( _('The retained earnings account is managed separately by the system, and therefore cannot be inquired upon. See manual for details'), 'info');
+	prnMsg(_('The retained earnings account is managed separately by the system, and therefore cannot be inquired upon. See manual for details'), 'info');
 	echo '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Select another account') . '</a>';
 	include('includes/footer.inc');
 	exit;
@@ -150,7 +150,7 @@ if (isset($_POST['Show'])) {
 		/*its a balance sheet account */
 	}
 
-	$SQL= "SELECT counterindex,
+	$SQL = "SELECT counterindex,
 				type,
 				typename,
 				gltrans.typeno,
@@ -170,7 +170,7 @@ if (isset($_POST['Show'])) {
 			AND periodno>='" . $FirstPeriodSelected . "'
 			AND periodno<='" . $LastPeriodSelected . "'";
 
-	if ($_POST['tag']!=0) {
+	if ($_POST['tag'] != 0) {
 		$SQL = $SQL . " AND tag='" . $_POST['tag'] . "'";
 	}
 
@@ -263,23 +263,25 @@ if (isset($_POST['Show'])) {
 				$ChartDetailsResult = DB_query($SQL, $ErrMsg);
 				$ChartDetailRow = DB_fetch_array($ChartDetailsResult);
 
-				echo '<tr>
-						<td colspan="4"><b>' . _('Total for period') . ' ' . $PeriodNo . '</b></td>';
-				if ($PeriodTotal < 0) { //its a credit balance b/fwd
-					if ($PandLAccount == True) {
-//						$RunningTotal = 0;
+				if ($PeriodNo != -9999) {
+					echo '<tr>
+							<td colspan="4"><b>' . _('Total for period') . ' ' . $PeriodNo . '</b></td>';
+					if ($PeriodTotal < 0) { //its a credit balance b/fwd
+						if ($PandLAccount == True) {
+							//							$RunningTotal = 0;
+						}
+						echo '<td></td>
+									<td class="number"><b>' . locale_number_format(-$PeriodTotal, $_SESSION['CompanyRecord']['decimalplaces']) . '</b></td>
+									<td></td>
+								</tr>';
+					} else { //its a debit balance b/fwd
+						if ($PandLAccount == True) {
+							//								$RunningTotal = 0;
+						}
+						echo '<td class="number"><b>' . locale_number_format($PeriodTotal, $_SESSION['CompanyRecord']['decimalplaces']) . '</b></td>
+									<td colspan="2"></td>
+								</tr>';
 					}
-					echo '<td></td>
-							<td class="number"><b>' . locale_number_format(-$PeriodTotal, $_SESSION['CompanyRecord']['decimalplaces']) . '</b></td>
-							<td></td>
-						</tr>';
-				} else { //its a debit balance b/fwd
-					if ($PandLAccount == True) {
-//						$RunningTotal = 0;
-					}
-					echo '<td class="number"><b>' . locale_number_format($PeriodTotal, $_SESSION['CompanyRecord']['decimalplaces']) . '</b></td>
-							<td colspan="2"></td>
-						</tr>';
 				}
 				$IntegrityReport .= '<br />' . _('Period') . ': ' . $PeriodNo . _('Account movement per transaction') . ': ' . locale_number_format($PeriodTotal, $_SESSION['CompanyRecord']['decimalplaces']) . ' ' . _('Movement per ChartDetails record') . ': ' . locale_number_format($ChartDetailRow['actual'], $_SESSION['CompanyRecord']['decimalplaces']) . ' ' . _('Period difference') . ': ' . locale_number_format($PeriodTotal - $ChartDetailRow['actual'], 3);
 
@@ -331,17 +333,19 @@ if (isset($_POST['Show'])) {
 			</tr>', $MyRow['typename'], $URL_to_TransDetail, $MyRow['typeno'], $MyRow['chequeno'], $FormatedTranDate, $DebitAmount, $CreditAmount, $MyRow['narrative'], locale_number_format($RunningTotal, $_SESSION['CompanyRecord']['decimalplaces']), $tagrow['tagdescription']);
 
 	}
-	echo '<tr>
-			<td colspan="3"><b>' . _('Total for period') . ' ' . $PeriodNo . '</b></td>';
-	if ($PeriodTotal < 0) { //its a credit balance b/fwd
-		echo '<td></td>
-				<td class="number"><b>' . locale_number_format(-$PeriodTotal, $_SESSION['CompanyRecord']['decimalplaces']) . '</b></td>
-				<td></td>
-			</tr>';
-	} else { //its a debit balance b/fwd
-		echo '<td class="number"><b>' . locale_number_format($PeriodTotal, $_SESSION['CompanyRecord']['decimalplaces']) . '</b></td>
-				<td colspan="2"></td>
-			</tr>';
+	if ($PeriodNo != -9999) {
+		echo '<tr>
+				<td colspan="3"><b>' . _('Total for period') . ' ' . $PeriodNo . '</b></td>';
+		if ($PeriodTotal < 0) { //its a credit balance b/fwd
+			echo '<td></td>
+					<td class="number"><b>' . locale_number_format(-$PeriodTotal, $_SESSION['CompanyRecord']['decimalplaces']) . '</b></td>
+					<td></td>
+				</tr>';
+		} else { //its a debit balance b/fwd
+			echo '<td class="number"><b>' . locale_number_format($PeriodTotal, $_SESSION['CompanyRecord']['decimalplaces']) . '</b></td>
+					<td colspan="2"></td>
+				</tr>';
+		}
 	}
 
 	echo '<tr><td colspan="4"><b>';

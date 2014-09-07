@@ -84,18 +84,18 @@ if (isset($_POST['Submit'])) {
 									shrinkfactor,
 									netweight
 							FROM stockmaster
-							WHERE stockid='" . $StockId . "';";
+							WHERE stockid='" . $StockId . "'";
 			$Result = DB_query($SQL);
 			/* duplicate rows into stockcosts */
-			$SQL = "INSERT INTO stockcosts VALUES ( SELECT  '" . $NewStockID . "' AS stockid,
+			$SQL = "INSERT INTO stockcosts SELECT  '" . $NewStockID . "' AS stockid,
 															stockcosts.materialcost,
 															stockcosts.labourcost,
 															stockcosts.overheadcost,
-															CURRENT_TIME,
+															CURRENT_TIMESTAMP,
 															0
 														FROM stockcosts
 														WHERE  stockcosts.stockid='" . $StockId . "'
-															AND stockcosts.succeeded=0)";
+															AND stockcosts.succeeded=0";
 			$Result = DB_query($SQL);
 
 		} else {
@@ -105,15 +105,15 @@ if (isset($_POST['Submit'])) {
 										AND succeeded=0";
 			$Result = DB_query($SQL);
 
-			$SQL = "INSERT INTO stockcosts VALUES ( SELECT  '" . $NewStockID . "',
+			$SQL = "INSERT INTO stockcosts SELECT  '" . $NewStockID . "' AS stockid,
 															stockcosts.materialcost,
 															stockcosts.labourcost,
 															stockcosts.overheadcost,
-															CURRENT_TIME,
+															CURRENT_TIMESTAMP,
 															0
 														FROM stockcosts
 														WHERE  stockcosts.stockid='" . $StockId . "'
-															AND stockcosts.succeeded=0)";
+															AND stockcosts.succeeded=0";
 			$Result = DB_query($SQL);
 		}
 

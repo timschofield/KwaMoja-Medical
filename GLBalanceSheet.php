@@ -23,7 +23,7 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-	echo '<br /><table class="selection" summary="' . _('Criteria for report') . '">
+	echo '<table class="selection" summary="' . _('Criteria for report') . '">
 			<tr>
 				<td>' . _('Select the balance date') . ':</td>
 				<td><select minlength="0" name="BalancePeriodEnd">';
@@ -61,14 +61,12 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 		</tr>
 	</table>';
 
-	echo '<br />
-			<div class="centre">
-				<input type="submit" name="ShowBalanceSheet" value="' . _('Show on Screen (HTML)') . '" />
-			</div>';
-	echo '<br />
-			<div class="centre">
-				<input type="submit" name="PrintPDF" value="' . _('Produce PDF Report') . '" />
-			</div>';
+	echo '<div class="centre">
+			<input type="submit" name="ShowBalanceSheet" value="' . _('Show on Screen (HTML)') . '" />
+		</div>';
+	echo '<div class="centre">
+			<input type="submit" name="PrintPDF" value="' . _('Produce PDF Report') . '" />
+		</div>';
 	echo '</form>';
 
 	/*Now do the posting while the user is thinking about the period to select */
@@ -384,8 +382,7 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 	$AccountsResult = DB_query($SQL, _('No general ledger accounts were returned by the SQL because'));
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/preview.gif" title="' . _('HTML View') . '" alt="' . _('HTML View') . '" /> ' . _('HTML View') . '</p>';
 
-	echo '<div class="invoice">
-			<table class="selection" summary="' . _('HTML View') . '">
+	echo '<table class="selection" summary="' . _('HTML View') . '">
 			<tr>
 				<th colspan="6">
 					<h2>' . _('Balance Sheet as at') . ' ' . $BalanceDate . '
@@ -678,8 +675,9 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 		</tr>';
 
 	echo '</table>';
-	echo '</div>';
-	echo '<br /><div class="centre noPrint"><input type="submit" name="SelectADifferentPeriod" value="' . _('Select A Different Balance Date') . '" /></div>';
+	echo '<div class="centre noPrint">
+			<input type="submit" name="SelectADifferentPeriod" value="' . _('Select A Different Balance Date') . '" />
+		</div>';
 	echo '</form>';
 }
 

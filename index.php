@@ -237,9 +237,9 @@ function GetRptLinks($GroupID) {
 		$RptLinks .= '<b>' . $Title[$Def] . '</b>';
 		$RptLinks .= '</li>';
 		$NoEntries = true;
-		if ($_SESSION['ReportList']) { // then there are reports to show, show by grouping
+		if (isset($_SESSION['ReportList']['groupname']) and count($_SESSION['ReportList']['groupname']) > 0) { // then there are reports to show, show by grouping
 			foreach ($_SESSION['ReportList'] as $Report) {
-				if ($Report['groupname'] == $GroupID and $Report['defaultreport'] == $Def) {
+				if (isset($Report['groupname']) and $Report['groupname'] == $GroupID and $Report['defaultreport'] == $Def) {
 					$RptLinks .= '<li class="menu_group_item">';
 					$RptLinks .= '<p><a href="' . $RootPath . '/reportwriter/ReportMaker.php?action=go&amp;reportid=' . urlencode($Report['id']) . '">&bull; ' . _($Report['reportname']) . '</a></p>';
 					$RptLinks .= '</li>';

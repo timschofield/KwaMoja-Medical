@@ -1,7 +1,7 @@
 <?php
 
 function KwaMojaToOpenCartDailySync($ShowMessages, $oc_tableprefix, $EmailText = '') {
-	$begintime = time_start();
+//	$begintime = time_start();
 	DB_Txn_Begin();
 
 	// check last time we run this script, so we know which records need to update from OC to KwaMoja
@@ -43,14 +43,14 @@ function KwaMojaToOpenCartDailySync($ShowMessages, $oc_tableprefix, $EmailText =
 	SetLastTimeRun('KwaMojaToOpenCartDaily');
 	DB_Txn_Commit();
 	if ($ShowMessages) {
-		time_finish($begintime);
+//		time_finish($begintime);
 	}
 
 	return $EmailText;
 }
 
 function KwaMojaToOpenCartHourlySync($ShowMessages, $oc_tableprefix, $ControlTx = TRUE, $EmailText = '') {
-	$begintime = time_start();
+//	$begintime = time_start();
 	if ($ControlTx) {
 		DB_Txn_Begin();
 	}
@@ -84,7 +84,7 @@ function KwaMojaToOpenCartHourlySync($ShowMessages, $oc_tableprefix, $ControlTx 
 		DB_Txn_Commit();
 	}
 	if ($ShowMessages) {
-		time_finish($begintime);
+//		time_finish($begintime);
 	}
 
 	return $EmailText;
@@ -120,6 +120,7 @@ function SyncProductBasicInformation($ShowMessages, $LastTimeRun, $oc_tableprefi
 			ORDER BY stockmaster.stockid";
 
 	$Result = DB_query($SQL);
+	$i = 0;
 	if (DB_num_rows($Result) != 0) {
 		if ($ShowMessages) {
 			echo '<p class="page_title_text" align="center"><strong>' . _('Product Basic Info') . '</strong></p>';
@@ -139,7 +140,6 @@ function SyncProductBasicInformation($ShowMessages, $LastTimeRun, $oc_tableprefi
 		$InsertErrMsg = _('The SQL to insert Basic Product Information in Opencart failed');
 
 		$k = 0; //row colour counter
-		$i = 0;
 		while ($MyRow = DB_fetch_array($Result)) {
 			if ($ShowMessages) {
 				$k = StartEvenOrOddRow($k);
@@ -157,7 +157,9 @@ function SyncProductBasicInformation($ShowMessages, $LastTimeRun, $oc_tableprefi
 			$Image = PATH_OPENCART_IMAGES . $MyRow['stockid'] . '.jpg';
 			$ManufacturerId = $MyRow['manufacturers_id'];
 			$Shipping = 1; // will need function depending if it's a shippable or not item
-			$CustomerCode = GetKwaMojaCustomerIdFromCurrency(OPENCART_DEFAULT_CURRENCY);
+			if (defined('KWAMOJA_ONLINE_CUSTOMER_CODE_PREFIX')) {
+				$CustomerCode = GetKwaMojaCustomerIdFromCurrency(OPENCART_DEFAULT_CURRENCY);
+			}
 			$Price = GetPrice($MyRow['stockid'], $CustomerCode, $CustomerCode); // Get the price without any discount from KwaMoja
 			$DiscountCategory = $MyRow['discountcategory'];
 			$Points = 0; // No points concept in KwaMoja
@@ -414,6 +416,7 @@ function SyncProductSalesCategories($ShowMessages, $LastTimeRun, $oc_tableprefix
 			ORDER BY salescatprod.salescatid, salescatprod.stockid";
 
 	$Result = DB_query($SQL);
+	$i = 0;
 	if (DB_num_rows($Result) != 0) {
 		if ($ShowMessages) {
 			echo '<p class="page_title_text" align="center"><strong>' . _('Product - Sales Categories') . '</strong></p>';
@@ -433,7 +436,6 @@ function SyncProductSalesCategories($ShowMessages, $LastTimeRun, $oc_tableprefix
 		$InsertErrMsg = _('The SQL to insert Product - Sales Categories in Opencart failed');
 
 		$k = 0; //row colour counter
-		$i = 0;
 		while ($MyRow = DB_fetch_array($Result)) {
 
 			/* Field Matching */
@@ -500,6 +502,7 @@ function SyncProductPrices($ShowMessages, $LastTimeRun, $oc_tableprefix, $EmailT
 	$ServerNow = GetServerTimeNow(SERVER_TO_LOCAL_TIME_DIFFERENCE);
 	$Today = date('Y-m-d');
 
+	$i = 0;
 	/*	if ($EmailText !=''){
 	$EmailText = $EmailText . "Product Price Sync --> Server Time = " . $ServerNow . " --> KwaMoja Time = " .  date('d/M/Y H:i:s') . "\n\n";
 	}
@@ -515,7 +518,7 @@ function SyncProductPrices($ShowMessages, $LastTimeRun, $oc_tableprefix, $EmailT
 				AND prices.typeabbrev ='" . $PriceList . "'
 				AND prices.currabrev ='" . $Currency . "'
 				AND (prices.date_created >= '" . $LastTimeRun . "'
-					OR prices.date_updated >= '" . $LastTimeRun . "')
+				OR prices.date_updated >= '" . $LastTimeRun . "')
 			ORDER BY prices.stockid";
 
 	$Result = DB_query($SQL);
@@ -536,13 +539,14 @@ function SyncProductPrices($ShowMessages, $LastTimeRun, $oc_tableprefix, $EmailT
 		$UpdateErrMsg = _('The SQL to update Product Prices in Opencart failed');
 
 		$k = 0; //row colour counter
-		$i = 0;
 		while ($MyRow = DB_fetch_array($Result)) {
 			$k = StartEvenOrOddRow($k);
 
 			/* Field Matching */
 			$Model = $MyRow['stockid'];
-			$CustomerCode = GetKwaMojaCustomerIdFromCurrency(OPENCART_DEFAULT_CURRENCY);
+			if (defined('KWAMOJA_ONLINE_CUSTOMER_CODE_PREFIX')) {
+				$CustomerCode = GetKwaMojaCustomerIdFromCurrency(OPENCART_DEFAULT_CURRENCY);
+			}
 			$Price = GetPrice($MyRow['stockid'], $CustomerCode, $CustomerCode); // Get the price without any discount from KwaMoja
 			$ManufacturerId = $MyRow['manufacturers_id'];
 			$DiscountCategory = $MyRow['discountcategory'];
@@ -606,6 +610,7 @@ function SyncProductQOH($ShowMessages, $LastTimeRun, $oc_tableprefix, $EmailText
 			ORDER BY locstock.stockid";
 
 	$Result = DB_query($SQL);
+	$i = 0;
 	if (DB_num_rows($Result) != 0) {
 		if ($ShowMessages) {
 			echo '<p class="page_title_text" align="center"><strong>' . _('Product QOH Updates') . '</strong></p>';
@@ -622,7 +627,6 @@ function SyncProductQOH($ShowMessages, $LastTimeRun, $oc_tableprefix, $EmailText
 		$UpdateErrMsg = _('The SQL to update Product QOH in Opencart failed');
 
 		$k = 0; //row colour counter
-		$i = 0;
 		while ($MyRow = DB_fetch_array($Result)) {
 
 			/* Field Matching */
@@ -689,9 +693,9 @@ function CleanDuplicatedUrlAlias($ShowMessages, $LastTimeRun, $oc_tableprefix, $
 		ORDER BY " . $oc_tableprefix . "url_alias.query,
 				" . $oc_tableprefix . "url_alias.url_alias_id DESC";
 	$Result = DB_query_oc($SQL);
+	$i = 0;
 	if (DB_num_rows($Result) != 0) {
 		$k = 0; //row colour counter
-		$i = 0;
 		$PreviousQuery = "";
 		$PreviousKeyword = "";
 		$ShowHeader = TRUE;
@@ -761,7 +765,7 @@ function CleanDuplicatedUrlAlias($ShowMessages, $LastTimeRun, $oc_tableprefix, $
 			$PreviousQuery = $MyRow['query'];
 			$PreviousKeyword = $MyRow['keyword'];
 		}
-		if (!ShowHeader) {
+		if (!$ShowHeader) {
 			if ($ShowMessages) {
 				echo '</table>
 					</div>
@@ -791,6 +795,7 @@ function SyncSalesCategories($ShowMessages, $LastTimeRun, $oc_tableprefix, $Emai
 			ORDER BY salescatid";
 
 	$Result = DB_query($SQL);
+	$i = 0;
 	if (DB_num_rows($Result) != 0) {
 		if ($ShowMessages) {
 			echo '<p class="page_title_text" align="center"><strong>' . _('Sales categories') . '</strong></p>';
@@ -808,7 +813,6 @@ function SyncSalesCategories($ShowMessages, $LastTimeRun, $oc_tableprefix, $Emai
 		$InsertErrMsg = _('The SQL to insert sales categories in Opencart failed');
 
 		$k = 0; //row colour counter
-		$i = 0;
 		while ($MyRow = DB_fetch_array($Result)) {
 
 			/* FIELD MATCHING */
@@ -948,6 +952,7 @@ function SyncFeaturedList($ShowMessages, $LastTimeRun, $oc_tableprefix, $EmailTe
 			WHERE salescatprod.featured ='1'
 			ORDER BY salescatprod.stockid";
 	$Result = DB_query($SQL);
+	$i = 0;
 	if (DB_num_rows($Result) != 0) {
 		if ($ShowMessages) {
 			echo '<p class="page_title_text" align="center"><strong>' . _('Create featured list in OpenCart') . '</strong></p>';
@@ -962,7 +967,6 @@ function SyncFeaturedList($ShowMessages, $LastTimeRun, $oc_tableprefix, $EmailTe
 		}
 		$Action = "Added";
 		$k = 0; //row colour counter
-		$i = 0;
 		while ($MyRow = DB_fetch_array($Result)) {
 			/* Field Matching */
 			$Model = $MyRow['stockid'];
@@ -1020,6 +1024,7 @@ function ActivateCategoryDependingOnQOH($ShowMessages, $LastTimeRun, $oc_tablepr
 				AND parentcatid != 0
 			ORDER BY salescatname";
 	$Result = DB_query($SQL);
+	$i = 0;
 	if (DB_num_rows($Result) != 0) {
 		if ($ShowMessages) {
 			echo '<p class="page_title_text" align="center"><strong>' . _('Activate/Inactivate Categories depending on QOH') . '</strong></p>';
@@ -1036,7 +1041,6 @@ function ActivateCategoryDependingOnQOH($ShowMessages, $LastTimeRun, $oc_tablepr
 		$UpdateErrMsg = _('The SQL to Activate Categories depending QOH in Opencart failed');
 
 		$k = 0; //row colour counter
-		$i = 0;
 		while ($MyRow = DB_fetch_array($Result)) {
 
 			/* Field Matching */
@@ -1104,6 +1108,7 @@ function MaintainOpenCartOutletSalesCategories($ShowMessages, $LastTimeRun, $oc_
 			WHERE " . $oc_tableprefix . "product.product_id = " . $oc_tableprefix . "product_to_category.product_id
 				AND category_id IN (" . OPENCART_OUTLET_CATEGORIES . ")";
 	$Result = DB_query_oc($SQL);
+	$i = 0;
 	if (DB_num_rows($Result) != 0) {
 		if ($ShowMessages) {
 			echo '<p class="page_title_text" align="center"><strong>' . _('Maintain Outlet Sales Categories') . '</strong></p>';
@@ -1119,7 +1124,6 @@ function MaintainOpenCartOutletSalesCategories($ShowMessages, $LastTimeRun, $oc_
 		$UpdateErrMsg = _('The SQL to update Product QOH in Opencart failed');
 
 		$k = 0; //row colour counter
-		$i = 0;
 		while ($MyRow = DB_fetch_array($Result)) {
 
 			$ProductId = $MyRow['product_id'];
@@ -1162,6 +1166,7 @@ function MaintainKwaMojaOutletSalesCategories($ShowMessages, $LastTimeRun, $oc_t
 			FROM salescatprod
 			WHERE salescatprod.salescatid IN (" . KWAMOJA_OUTLET_CATEGORIES . ")";
 	$Result = DB_query($SQL);
+	$i = 0;
 	if (DB_num_rows($Result) != 0) {
 		if ($ShowMessages) {
 			echo '<p class="page_title_text" align="center"><strong>' . _('Maintain KwaMoja Outlet Sales Categories') . '</strong></p>';
@@ -1177,7 +1182,6 @@ function MaintainKwaMojaOutletSalesCategories($ShowMessages, $LastTimeRun, $oc_t
 		$UpdateErrMsg = _('The SQL to update outlet sales category in KwaMoja failed');
 
 		$k = 0; //row colour counter
-		$i = 0;
 		while ($MyRow = DB_fetch_array($Result)) {
 			$k = StartEvenOrOddRow($k);
 

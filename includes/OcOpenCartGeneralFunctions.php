@@ -149,6 +149,82 @@ function GetKwaMojaCustomerIdFromCurrency($Currency) {
 	return KWAMOJA_ONLINE_CUSTOMER_CODE_PREFIX . $Currency;
 }
 
+function CreateDebtorFromOpenCartID($OpenCartCustomerID, $CurrencyCode, $oc_tableprefix) {
+	$SQL = "SELECT 	" . $oc_tableprefix . "customer.firstname,
+					" . $oc_tableprefix . "customer.lastname,
+					" . $oc_tableprefix . "customer.email,
+					" . $oc_tableprefix . "customer.telephone,
+					" . $oc_tableprefix . "address.address_1,
+					" . $oc_tableprefix . "address.address_2,
+					" . $oc_tableprefix . "address.city,
+					" . $oc_tableprefix . "address.postcode
+				FROM " . $oc_tableprefix . "customer
+				INNER JOIN " . $oc_tableprefix . "address
+					ON " . $oc_tableprefix . "customer.address_id=" . $oc_tableprefix . "address.address_id";
+	$Result = DB_query_oc($SQL);
+	$OpenCartCustomerRow = DB_fetch_array($Result);
+
+	DB_Txn_Begin();
+
+	$DebtorSql = "INSERT INTO debtorsmaster (debtorno,
+											name,
+											address1,
+											address2,
+											address3,
+											address4,
+											currcode,
+											salestype,
+											holdreason,
+											paymentterms,
+											typeid
+										) VALUES (
+											'" . $OpenCartCustomerID . "',
+											'" . $OpenCartCustomerRow['firstname'] . ' ' . $OpenCartCustomerRow['lastname'] . "',
+											'" . $OpenCartCustomerRow['address_1'] . "',
+											'" . $OpenCartCustomerRow['address_2'] . "',
+											'" . $OpenCartCustomerRow['city'] . "',
+											'" . $OpenCartCustomerRow['postcode'] . "',
+											'" . $CurrencyCode . "',
+											'" . OPENCART_DEFAULT_CUSTOMER_SALES_TYPE . "',
+											'" . OPENCART_DEFAULT_CUSTOMER_HOLD_REASON . "',
+											'" . OPENCART_DEFAULT_CUSTOMER_PAYMENT_TERMS . "',
+											'" . OPENCART_DEFAULT_CUSTOMER_TYPE . "'
+										)";
+	$DebtorResult = DB_query($DebtorSql);
+
+	$BranchSql = "INSERT INTO custbranch (branchcode,
+										debtorno,
+										brname,
+										braddress1,
+										braddress2,
+										braddress3,
+										braddress4,
+										area,
+										salesman,
+										email,
+										defaultlocation,
+										phoneno,
+										taxgroupid,
+										defaultshipvia
+									) VALUES (
+										'" . $OpenCartCustomerID . "',
+										'" . $OpenCartCustomerID . "',
+										'" . $OpenCartCustomerRow['firstname'] . ' ' . $OpenCartCustomerRow['lastname'] . "',
+										'" . $OpenCartCustomerRow['address_1'] . "',
+										'" . $OpenCartCustomerRow['address_2'] . "',
+										'" . $OpenCartCustomerRow['city'] . "',
+										'" . $OpenCartCustomerRow['postcode'] . "',
+										'" . OPENCART_DEFAULT_AREA . "',
+										'" . OPENCART_DEFAULT_SALESMAN . "',
+										'" . $OpenCartCustomerRow['email'] . "',
+										'" . OPENCART_DEFAULT_LOCATION . "',
+										'" . $OpenCartCustomerRow['telephone'] . "',
+										'" . OPENCART_DEFAULT_CUSTOMER_TAXGROUPID . "'
+										'" . OPENCART_DEFAULT_SHIPVIA . "'
+									)";
+	$BranchResult = DB_query($BranchSql);
+}
+
 function GetKwaMojaGLAccountFromCurrency($Currency) {
 	if ($Currency == "AUD") {
 		return KWAMOJA_GL_PAYPAL_ACCOUNT_AUD;

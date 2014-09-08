@@ -80,20 +80,20 @@ if (isset($WO) and isset($StockId) and $WO != '') {
 
 			$ErrMsg = _('The bill of material could not be retrieved because');
 			$BOMResult = DB_query($SQLBOM, $ErrMsg);
-			while ($myComponent = DB_fetch_array($BOMResult)) {
+			while ($MyComponent = DB_fetch_array($BOMResult)) {
 
-				$ComponentNeeded = $myComponent['bomqty'] * $QtyPending;
-				$PrevisionShrinkage = $ComponentNeeded * ($myComponent['shrinkfactor'] / 100);
+				$ComponentNeeded = $MyComponent['bomqty'] * $QtyPending;
+				$PrevisionShrinkage = $ComponentNeeded * ($MyComponent['shrinkfactor'] / 100);
 
 				$Xpos = $Left_Margin + 1;
 
-				$PDF->addTextWrap($Xpos, $YPos, 150, $FontSize, $myComponent['component'], 'left');
-				$PDF->addTextWrap(150, $YPos, 50, $FontSize, locale_number_format($myComponent['bomqty'], $myComponent['decimalplaces']), 'right');
-				$PDF->addTextWrap(200, $YPos, 30, $FontSize, $myComponent['units'], 'left');
-				$PDF->addTextWrap(230, $YPos, 50, $FontSize, locale_number_format($ComponentNeeded, $myComponent['decimalplaces']), 'right');
-				$PDF->addTextWrap(280, $YPos, 30, $FontSize, $myComponent['units'], 'left');
-				$PDF->addTextWrap(310, $YPos, 50, $FontSize, locale_number_format($PrevisionShrinkage, $myComponent['decimalplaces']), 'right');
-				$PDF->addTextWrap(360, $YPos, 30, $FontSize, $myComponent['units'], 'left');
+				$PDF->addTextWrap($Xpos, $YPos, 150, $FontSize, $MyComponent['component'], 'left');
+				$PDF->addTextWrap(150, $YPos, 50, $FontSize, locale_number_format($MyComponent['bomqty'], $MyComponent['decimalplaces']), 'right');
+				$PDF->addTextWrap(200, $YPos, 30, $FontSize, $MyComponent['units'], 'left');
+				$PDF->addTextWrap(230, $YPos, 50, $FontSize, locale_number_format($ComponentNeeded, $MyComponent['decimalplaces']), 'right');
+				$PDF->addTextWrap(280, $YPos, 30, $FontSize, $MyComponent['units'], 'left');
+				$PDF->addTextWrap(310, $YPos, 50, $FontSize, locale_number_format($PrevisionShrinkage, $MyComponent['decimalplaces']), 'right');
+				$PDF->addTextWrap(360, $YPos, 30, $FontSize, $MyComponent['units'], 'left');
 
 				$YPos -= $line_height;
 

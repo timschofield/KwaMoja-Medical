@@ -55,9 +55,9 @@ echo '<style media="screen">
 		</style>';
 echo '</head>';
 if ($Debug == 1) {
-	echo '<body class="holmes-debug">';
+	echo '<body class="holmes-debug" onload="Scheduler()">';
 } else {
-	echo '<body>';
+	echo '<body onload="Scheduler()">';
 }
 
 if (isset($_GET['FontSize'])) {
@@ -176,7 +176,7 @@ if (isset($Title)) {
 }
 echo '</div>'; // HeaderWrapDiv
 echo '</div>'; // Headerdiv
-
+echo '<div id="HiddenOutput" style="display: none"></div>';
 echo '<div id="BodyDiv">';
 echo '<input type="hidden" name="Theme" id="Theme" value="', $Theme, '" />';
 echo '<div id="BodyWrapDiv">';

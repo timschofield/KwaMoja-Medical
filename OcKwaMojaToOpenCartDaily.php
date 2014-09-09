@@ -4,19 +4,19 @@ $PageSecurity=1;
 /* Session started in session.inc for password checking and authorisation level check
 config.php is in turn included in session.inc*/
 
-include('includes/session.inc');
+include_once('includes/session.inc');
 $Title = _('KwaMoja to OpenCart Daily Synchronizer ' . VERSIONFILE);
-include('includes/header.inc');
-include('includes/GetPrice.inc');
+include_once('includes/header.inc');
+include_once('includes/GetPrice.inc');
 
 // include ('includes/KLGeneralFunctions.php');
-include('includes/OcKwaMojaOpenCartDefines.php');
-include('includes/OcOpenCartGeneralFunctions.php');
-include('includes/OcKwaMojaToOpenCartSync.php');
-include('includes/OcOpenCartConnectDB.php');
+include_once('includes/OcKwaMojaOpenCartDefines.php');
+include_once('includes/OcOpenCartGeneralFunctions.php');
+include_once('includes/OcKwaMojaToOpenCartSync.php');
+include_once('includes/OcOpenCartConnectDB.php');
 
 KwaMojaToOpenCartDailySync(TRUE, $oc_tableprefix);
 
-include('includes/footer.inc');
+include_once('includes/footer.inc');
 
 ?>

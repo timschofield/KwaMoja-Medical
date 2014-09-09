@@ -1,7 +1,7 @@
 <?php
 
 function KwaMojaToOpenCartDailySync($ShowMessages, $oc_tableprefix, $EmailText = '') {
-//	$begintime = time_start();
+	$begintime = time_start();
 	DB_Txn_Begin();
 
 	// check last time we run this script, so we know which records need to update from OC to KwaMoja
@@ -43,7 +43,7 @@ function KwaMojaToOpenCartDailySync($ShowMessages, $oc_tableprefix, $EmailText =
 	SetLastTimeRun('KwaMojaToOpenCartDaily');
 	DB_Txn_Commit();
 	if ($ShowMessages) {
-//		time_finish($begintime);
+		time_finish($begintime);
 	}
 
 	return $EmailText;
@@ -1292,6 +1292,7 @@ function SyncRelatedItems($ShowMessages, $LastTimeRun, $oc_tableprefix, $EmailTe
 			ORDER BY stockid, related";
 
 	$Result = DB_query($SQL);
+	$i = 0;
 	if (DB_num_rows($Result) != 0) {
 		if ($ShowMessages) {
 			echo '<p class="page_title_text" align="center"><strong>' . _('Related Items') . '</strong></p>';
@@ -1311,7 +1312,6 @@ function SyncRelatedItems($ShowMessages, $LastTimeRun, $oc_tableprefix, $EmailTe
 		$InsertErrMsg = _('The SQL to insert related items in Opencart failed');
 
 		$k = 0; //row colour counter
-		$i = 0;
 		while ($MyRow = DB_fetch_array($Result)) {
 			$k = StartEvenOrOddRow($k);
 

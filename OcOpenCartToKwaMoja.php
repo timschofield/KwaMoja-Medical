@@ -4,7 +4,7 @@ $PageSecurity = 1;
 /* Session started in session.inc for password checking and authorisation level check
 config.php is in turn included in session.inc*/
 
-include('includes/session.inc');
+include_once('includes/session.inc');
 $Title = _('OpenCart to KwaMoja Syncrhonizer ' . VERSIONFILE);
 include('includes/header.inc');
 

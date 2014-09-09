@@ -944,4 +944,27 @@ function GetGoogleProductFeedCategory($StockId, $SalesCategory) {
 	return $Category;
 }
 
+function getDirectoryTree($outerDir){
+	$dirs = array_diff(scandir($outerDir), array(".", "..", ".DS_Store"));
+	$dir_array = array();
+
+	foreach ($dirs as $d){
+		if(is_dir($outerDir."/".$d)) {
+			$dir_array[$d] = getDirectoryTree($outerDir."/".$d);
+		}
+		else {
+			$dir_array[$d] = $d;
+		}
+	}
+	return $dir_array;
+}
+
+function time_start() {
+	return microtime(true);
+}
+
+function time_finish() {
+	return microtime(true);
+}
+
 ?>

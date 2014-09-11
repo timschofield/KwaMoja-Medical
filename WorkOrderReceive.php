@@ -859,7 +859,8 @@ $SQL = "SELECT locationname,
 			INNER JOIN locationusers
 				ON locationusers.loccode=locations.loccode
 				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
-				AND locationusers.canupd=1";
+				AND locationusers.canupd=1
+			WHERE locations.usedforwo = 1";
 
 $LocResult = DB_query($SQL);
 while ($LocRow = DB_fetch_array($LocResult)) {

@@ -136,7 +136,8 @@ if (!isset($StockId)) {
 					INNER JOIN locationusers
 						ON locationusers.loccode=locations.loccode
 						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
-						AND locationusers.canview=1";
+						AND locationusers.canview=1
+					WHERE locations.usedforwo=1";
 
 		$ResultStkLocs = DB_query($SQL);
 

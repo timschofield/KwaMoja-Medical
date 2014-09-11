@@ -69,7 +69,8 @@ if (isset($_POST['submit'])) {
 									cashsalecustomer ='" . $_POST['CashSaleCustomer'] . "',
 									cashsalebranch ='" . $_POST['CashSaleBranch'] . "',
 									managed = '" . $_POST['Managed'] . "',
-									internalrequest = '" . $_POST['InternalRequest'] . "'
+									internalrequest = '" . $_POST['InternalRequest'] . "',
+									usedforwo = '" . $_POST['UsedForWO'] . "'
 						WHERE loccode = '" . $SelectedLocation . "'";
 
 		$ErrMsg = _('An error occurred updating the') . ' ' . $SelectedLocation . ' ' . _('location record because');
@@ -96,7 +97,7 @@ if (isset($_POST['submit'])) {
 		unset($SelectedLocation);
 		unset($_POST['Contact']);
 		unset($_POST['InternalRequest']);
-
+		unset($_POST['UsedForWO']);
 
 	} elseif ($InputError != 1) {
 
@@ -105,13 +106,6 @@ if (isset($_POST['submit'])) {
 			$_POST['Managed'] = 1;
 		} else {
 			$_POST['Managed'] = 0;
-		}
-
-		/* Set the InternalRequest field to 1 if it is checked, otherwise 0 */
-		if ($_POST['InternalRequest'] == 'Yes') {
-			$_POST['InternalRequest'] = 1;
-		} else {
-			$_POST['InternalRequest'] = 0;
 		}
 
 		/*SelectedLocation is null cos no item selected on first time round so must be adding a	record must be submitting new entries in the new Location form */
@@ -132,7 +126,8 @@ if (isset($_POST['submit'])) {
 										cashsalecustomer,
 										cashsalebranch,
 										managed,
-										internalrequest)
+										internalrequest,
+										usedforwo)
 						VALUES ('" . $_POST['LocCode'] . "',
 								'" . $_POST['LocationName'] . "',
 								'" . $_POST['DelAdd1'] . "',
@@ -149,7 +144,8 @@ if (isset($_POST['submit'])) {
 								'" . $_POST['CashSaleCustomer'] . "',
 								'" . $_POST['CashSaleBranch'] . "',
 								'" . $_POST['Managed'] . "',
-								'" . $_POST['InternalRequest'] . "')";
+								'" . $_POST['InternalRequest'] . "',
+								'" . $_POST['UsedForWO'] . "')";
 
 		$ErrMsg = _('An error occurred inserting the new location record because');
 		$DbgMsg = _('The SQL used to insert the location record was');
@@ -248,6 +244,7 @@ if (isset($_POST['submit'])) {
 		unset($SelectedLocation);
 		unset($_POST['Contact']);
 		unset($_POST['InternalRequest']);
+		unset($_POST['UsedForWO']);
 
 	}
 
@@ -506,7 +503,8 @@ if (!isset($_GET['delete'])) {
 					cashsalecustomer,
 					cashsalebranch,
 					managed,
-					internalrequest
+					internalrequest,
+					usedforwo
 				FROM locations
 				WHERE loccode='" . $SelectedLocation . "'";
 
@@ -530,6 +528,7 @@ if (!isset($_GET['delete'])) {
 		$_POST['CashSaleBranch'] = $MyRow['cashsalebranch'];
 		$_POST['Managed'] = $MyRow['managed'];
 		$_POST['InternalRequest'] = $MyRow['internalrequest'];
+		$_POST['UsedForWO'] = $MyRow['usedforwo'];
 
 
 		echo '<input type="hidden" name="SelectedLocation" value="' . $SelectedLocation . '" />';
@@ -687,6 +686,26 @@ if (!isset($_GET['delete'])) {
 	} else {
 		echo '<option value="0">' . _('No') . '</option>';
 	}
+	echo '</select>
+				</td>
+			</tr>';
+
+	echo '<tr>
+			<td>' . _('Use for Work Order Productions?') . ':</td>
+			<td><select name="UsedForWO">';
+	if (isset($_POST['UsedForWO']) and $_POST['UsedForWO'] == 1) {
+		echo '<option selected="selected" value="1">' . _('Yes') . '</option>';
+	} else {
+		echo '<option value="1">' . _('Yes') . '</option>';
+	}
+	if (isset($_POST['UsedForWO']) and $_POST['UsedForWO'] == 0) {
+		echo '<option selected="selected" value="0">' . _('No') . '</option>';
+	} else {
+		echo '<option value="0">' . _('No') . '</option>';
+	}
+	echo '</select>
+				</td>
+			</tr>';
 
 	/*
 	This functionality is not written yet ...

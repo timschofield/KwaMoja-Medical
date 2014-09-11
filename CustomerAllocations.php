@@ -358,7 +358,7 @@ if (isset($_POST['AllocTrans'])) {
 			$CurTrans = "&nbsp;";
 		}
 
-		echo '<td>' . $AllocnItem->TransType . '</td>
+		echo '<td>' . _($AllocnItem->TransType) . '</td>
 			<td class="number">' . $AllocnItem->TypeNo . '</td>
 			<td>' . $AllocnItem->TransDate . '</td>
 			<td class="number">' . locale_number_format($AllocnItem->TransAmount, $_SESSION['Alloc']->CurrDecimalPlaces) . '</td>

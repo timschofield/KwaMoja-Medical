@@ -118,7 +118,14 @@ function SyncOrderInformation($ShowMessages, $LastTimeRun, $oc_tableprefix, $Ema
 				echo '<tr class="EvenTableRows">';
 			}
 			/* FIELD MATCHING */
-			$CustomerCode = GetKwaMojaCustomerIdFromCurrency($MyRow['currency_code']);
+			if (defined('KWAMOJA_ONLINE_CUSTOMER_CODE_PREFIX')) {
+				$CustomerCode = GetKwaMojaCustomerIdFromCurrency($MyRow['currency_code']);
+			} else if (!DataExistsInKwaMoja('debtorsmaster', 'debtorno', $MyRow['customer_id'])) {
+				CreateDebtorFromOpenCartID($MyRow['customer_id'], $MyRow['currency_code'], $oc_tableprefix);
+				$CustomerCode = $MyRow['customer_id'];
+			} else {
+				$CustomerCode = $MyRow['customer_id'];
+			}
 			$CustomerName = $MyRow['customerfirstname'] . ' ' . $MyRow['customerlastname'];
 			$PaymentName = $MyRow['paymentfirstname'] . ' ' . $MyRow['paymentlastname'];
 			$ShippingName = $MyRow['shippingfirstname'] . ' ' . $MyRow['shippinglastname'];
@@ -469,7 +476,14 @@ function SyncPaypalPaymentInformation($ShowMessages, $LastTimeRun, $oc_tablepref
 			}
 
 			/* FIELD MATCHING */
-			$CustomerCode = GetKwaMojaCustomerIdFromCurrency($MyRow['ordercurrency']);
+			if (defined('KWAMOJA_ONLINE_CUSTOMER_CODE_PREFIX')) {
+				$CustomerCode = GetKwaMojaCustomerIdFromCurrency($MyRow['ordercurrency']);
+			} else if (!DataExistsInKwaMoja('debtorsmaster', 'debtorno', $MyRow['customer_id'])) {
+				CreateDebtorFromOpenCartID($MyRow['customer_id'], $MyRow['ordercurrency'], $oc_tableprefix);
+				$CustomerCode = $MyRow['customer_id'];
+			} else {
+				$CustomerCode = $MyRow['customer_id'];
+			}
 			$OrderNo = GetKwaMojaOrderNo($CustomerCode, $MyRow['order_id']);
 			$PaymentSystem = OPENCART_DEFAULT_PAYMENT_SYSTEM;
 			$CurrencyOrder = $MyRow['ordercurrency'];

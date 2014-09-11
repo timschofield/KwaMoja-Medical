@@ -1015,11 +1015,12 @@ if (isset($_SESSION['CustomerRecord']) and isset($_POST['CustomerID']) and $_POS
 
 	echo '<table width="90%" class="selection" summary="' . _('Batch Totals') . '">
 			<tr>
-				<th width="20%">' . _('Total Balance') . '</th>
-				<th width="20%">' . _('Current') . '</th>
-				<th width="20%">' . _('Now Due') . '</th>
-				<th width="20%">' . $_SESSION['PastDueDays1'] . '-' . $_SESSION['PastDueDays2'] . ' ' . _('Days Overdue') . '</th>
-				<th width="20%">' . _('Over') . ' ' . $_SESSION['PastDueDays2'] . ' ' . _('Days Overdue') . '</th>
+				<th width="17%">' . _('Total Balance') . '</th>
+				<th width="17%">' . _('Current') . '</th>
+				<th width="17%">' . _('Now Due') . '</th>
+				<th width="17%">' . $_SESSION['PastDueDays1'] . '-' . $_SESSION['PastDueDays2'] . ' ' . _('Days Overdue') . '</th>
+				<th width="16%">' . _('Over') . ' ' . $_SESSION['PastDueDays2'] . ' ' . _('Days Overdue') . '</th>
+				<th width="16%">' . _('Customer Transaction Inquiry') . '</th>
 			</tr>';
 
 	echo '<tr>
@@ -1028,9 +1029,9 @@ if (isset($_SESSION['CustomerRecord']) and isset($_POST['CustomerID']) and $_POS
 			<td class="number">' . locale_number_format(($_SESSION['CustomerRecord']['due'] - $_SESSION['CustomerRecord']['overdue1']), $_SESSION['CustomerRecord']['currdecimalplaces']) . '</td>
 			<td class="number">' . locale_number_format(($_SESSION['CustomerRecord']['overdue1'] - $_SESSION['CustomerRecord']['overdue2']), $_SESSION['CustomerRecord']['currdecimalplaces']) . '</td>
 			<td class="number">' . locale_number_format($_SESSION['CustomerRecord']['overdue2'], $_SESSION['CustomerRecord']['currdecimalplaces']) . '</td>
+			<td><a href="CustomerInquiry.php?CustomerID=' . urlencode($_POST['CustomerID']) . '&Status=0" target="_blank">' . _('Inquiry') . '</td>
 		</tr>
-		</table>
-		<br />';
+	</table>';
 
 	echo '<table class="selection">';
 

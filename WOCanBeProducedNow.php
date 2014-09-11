@@ -176,7 +176,8 @@ function display() {
 			INNER JOIN locationusers
 				ON locationusers.loccode=locations.loccode
 				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
-				AND locationusers.canview=1";
+				AND locationusers.canview=1
+			WHERE locations.usedforwo=1";
 	$LocnResult = DB_query($SQL);
 
 	while ($MyRow = DB_fetch_array($LocnResult)) {

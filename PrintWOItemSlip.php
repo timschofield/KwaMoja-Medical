@@ -166,11 +166,8 @@ function PrintHeader($PDF, $YPos, $PageNumber, $Page_Height, $Top_Margin, $Left_
 
 	$PDF->addTextWrap($Xpos, $YPos, 150, $FontSize, _('Component Code'), 'left');
 	$PDF->addTextWrap(150, $YPos, 50, $FontSize, _('Qty BOM'), 'right');
-	$PDF->addTextWrap(200, $YPos, 30, $FontSize, _(''), 'left');
 	$PDF->addTextWrap(230, $YPos, 50, $FontSize, _('Qty Needed'), 'right');
-	$PDF->addTextWrap(280, $YPos, 30, $FontSize, _(''), 'left');
 	$PDF->addTextWrap(310, $YPos, 50, $FontSize, _('Shrinkage'), 'right');
-	$PDF->addTextWrap(360, $YPos, 30, $FontSize, _(''), 'left');
 
 	$FontSize = 10;
 	$YPos -= $line_height;

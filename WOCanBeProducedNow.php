@@ -48,7 +48,7 @@ function submit($RootPath, $Location) {
 							<th>' . _('Needed') . '</th>
 							<th>' . _('Shrinkage') . '</th>
 							<th>' . _('UOM') . '</th>
-							<th>' . _('') . '</th>
+							<th></th>
 							<th>' . _('Result') . '</th>
 						</tr>';
 

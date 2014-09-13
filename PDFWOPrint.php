@@ -111,12 +111,12 @@ if (!isset($_GET['WO']) and !isset($_POST['WO'])) {
 	include('includes/header.inc');
 	prnMsg(_('Select a Work Order Number to Print before calling this page'), 'error');
 	echo '<table class="table_index">
-			<tr>
-				<td class="menu_group_item">
-					<li><a href="' . $RootPath . '/SelectWorkOrder.php">' . _('Select Work Order') . '</a></li>
-				</td>
-			</tr>
-		</table>';
+				<tr>
+					<td class="menu_group_item">
+						<li><a href="' . $RootPath . '/SelectWorkOrder.php">' . _('Select Work Order') . '</a></li>
+					</td>
+				</tr>
+			</table>';
 	include('includes/footer.inc');
 	exit();
 
@@ -184,7 +184,7 @@ if (isset($SelectedWO) and $SelectedWO != '' and $SelectedWO > 0 and $SelectedWO
 							ON workorders.wo=woitems.wo
 						INNER JOIN locationusers
 							ON locationusers.loccode=locations.loccode
-							AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+							AND locationusers.userid='" . $_SESSION['UserID'] . "'
 							AND locationusers.canview=1
 						INNER JOIN stockmaster
 							ON woitems.stockid=stockmaster.stockid
@@ -416,7 +416,8 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 											FROM locstock LEFT OUTER JOIN stockserialitems
 											ON locstock.loccode=stockserialitems.loccode AND locstock.stockid = stockserialitems.stockid
 											WHERE locstock.loccode='" . $WOHeader['loccode'] . "'
-											AND locstock.stockid='" . $WOLine[$i]['item'] . "'");
+											AND locstock.stockid='" . $WOLine[$i]['item'] . "'
+											ORDER BY createdate, quantity");
 				while ($ToIssue = DB_fetch_array($AvailQty)) {
 					if ($WOLine[$i]['controlled']) {
 						$CurLot = $ToIssue['serialno'];
@@ -688,7 +689,7 @@ else {
 				</tr>
 				<tr>
 					<td>' . _('Print or Email the Order') . '</td>
-				<td><select name="PrintOrEmail">';
+					<td><select name="PrintOrEmail">';
 
 		if (!isset($_POST['PrintOrEmail'])) {
 			$_POST['PrintOrEmail'] = 'Print';
@@ -705,8 +706,8 @@ else {
 			}
 		}
 		echo '</select>
-				</td>
-			</tr>';
+					</td>
+				</tr>';
 		$SQL = "SELECT workorders.wo,
 						workorders.loccode,
 						locations.email

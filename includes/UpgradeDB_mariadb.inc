@@ -132,6 +132,29 @@ function NewMenuItem($Link, $Section, $Caption, $URL, $Sequence) {
 	}
 }
 
+function RemoveMenuItem($Link, $Section, $Caption, $URL) {
+	$SQL = "SELECT modulelink FROM menuitems WHERE modulelink='" . $Link . "' AND menusection='" . $Section . "' AND url='" . $URL . "'";
+	$Result = DB_query($SQL);
+	if (DB_num_rows($Result) != 0) {
+		$SQL = "SELECT secroleid FROM securityroles";
+		$Result = DB_query($SQL);
+		while ($MyRow = DB_fetch_array($Result)) {
+			$SQL = "DELETE FROM menuitems WHERE modulelink='" . $Link . "'
+											AND menusection='" . $Section . "'
+											AND caption='" . $Caption . "'
+											AND url='" . $URL . "'";
+			$response = executeSQL($SQL, False);
+			if ($response == 0) {
+				OutputResult(_('The menu link') . ' ' . $Caption . ' ' . _('has been deleted'), 'success');
+			} else {
+				OutputResult(_('The menu link') . ' ' . $Caption . ' ' . _('could not be deleted') . '<br />' . $SQL, 'error');
+			}
+		}
+	} else {
+		OutputResult(_('The menu link') . ' ' . $Caption . ' ' . _('does not exist'), 'info');
+	}
+}
+
 function AddColumn($Column, $Table, $Type, $Null, $Default, $After) {
 	global $SQLFile;
 	if (DB_table_exists($Table)) {
@@ -141,7 +164,11 @@ function AddColumn($Column, $Table, $Type, $Null, $Default, $After) {
 			if ($Type == 'text') {
 				$response = executeSQL("ALTER TABLE `" . $Table . "` ADD COLUMN `" . $Column . "` " . $Type . " " . $Null . " AFTER `" . $After . "`", False);
 			} else {
-				$response = executeSQL("ALTER TABLE `" . $Table . "` ADD COLUMN `" . $Column . "` " . $Type . " " . $Null . " DEFAULT '" . $Default . "' AFTER `" . $After . "`", False);
+				if ($Default == 'CURRENT_TIMESTAMP') {
+					$response = executeSQL("ALTER TABLE `" . $Table . "` ADD COLUMN `" . $Column . "` " . $Type . " " . $Null . " DEFAULT " . $Default . " AFTER `" . $After . "`", False);
+				} else {
+					$response = executeSQL("ALTER TABLE `" . $Table . "` ADD COLUMN `" . $Column . "` " . $Type . " " . $Null . " DEFAULT '" . $Default . "' AFTER `" . $After . "`", False);
+				}
 			}
 			$SQL = "ALTER TABLE `" . $Table . "` ADD COLUMN `" . $Column . "` " . $Type . " " . $Null . " DEFAULT '" . $Default . "' AFTER `" . $After . "`";
 			if ($response == 0) {

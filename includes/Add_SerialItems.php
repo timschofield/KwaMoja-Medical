@@ -11,8 +11,8 @@ if ((isset($_POST['AddBatches']) and $_POST['AddBatches'] != '')) {
 	for ($i = 0; $i < 10; $i++) {
 		if (isset($_POST['SerialNo' . $i]) and mb_strlen($_POST['SerialNo' . $i]) > 0) {
 			/* add input quantity validation, the quantity left due to wrong decimal places is very annoying for controlled items */
-			if(is_numeric(filter_number_format($_POST['Qty' . $i]))){
-				if(strlen(substr(strrchr(filter_number_format($_POST['Qty' . $i]), "."), 1)) > $DecimalPlaces) {
+			if (is_numeric(filter_number_format($_POST['Qty' . $i]))) {
+				if (strlen(substr(strrchr(filter_number_format($_POST['Qty' . $i]), "."), 1)) > $DecimalPlaces) {
 					echo '<br/>';
 					prnMsg(_('Please correct input quantity ') . ' ' . $_POST['Qty' . $i] . ' ' . _('to') . ' ' . $DecimalPlaces . ' ' . _('decimalplaces'), 'error');
 					$AddThisBundle = false;
@@ -33,7 +33,7 @@ if ((isset($_POST['AddBatches']) and $_POST['AddBatches'] != '')) {
 					if (!isset($AddThisBundle)) {
 						$AddThisBundle = true;
 					}
-					/* If the user enters a duplicate serial number the later one over-writes
+					/*If the user enters a duplicate serial number the later one over-writes
 					 * the first entered one - no warning given though ?
 					 */
 					if (((filter_number_format($_POST['Qty' . $i])) * $InOutModifier) > $ExistingBundleQty) {
@@ -142,9 +142,9 @@ if (isset($_POST['AddSequence']) and $_POST['AddSequence'] != '') {
 		prnMsg(_('To Add Items Sequentially, the Begin Number must be less than the End Number'), 'error');
 	} else {
 		$SQL = "SELECT serialno
-				FROM stockserialitems
-				WHERE serialno BETWEEN '" . $BeginNo . "' AND '" . $EndNo . "'
-					AND stockid = '" . $StockId . "' AND loccode='" . $LocationOut . "'";
+					FROM stockserialitems
+					WHERE serialno BETWEEN '" . $BeginNo . "' AND '" . $EndNo . "'
+						AND stockid = '" . $StockId . "' AND loccode='" . $LocationOut . "'";
 		$Qty = ($InOutModifier > 0 ? 1 : 0);
 		if ($LineItem->Serialised == 1) {
 			$SQL .= " AND quantity = " . $Qty;

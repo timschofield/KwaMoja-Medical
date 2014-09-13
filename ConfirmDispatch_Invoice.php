@@ -1,5 +1,7 @@
 <?php
 
+/* $Id: ConfirmDispatch_Invoice.php 6450 2013-11-28 15:19:14Z exsonqu $*/
+
 /* Session started in session.inc for password checking and authorisation level check */
 include('includes/DefineCartClass.php');
 include('includes/DefineSerialItems.php');
@@ -9,6 +11,7 @@ $Title = _('Confirm Dispatches and Invoice An Order');
 /* Manual links before header.inc */
 $ViewTopic = 'ARTransactions';
 $BookMark = 'ConfirmInvoice';
+
 include('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');
 include('includes/CountriesArray.php');
@@ -48,6 +51,7 @@ if (!isset($_GET['OrderNumber']) and !isset($_SESSION['ProcessingOrder'])) {
 								salesorders.branchcode,
 								salesorders.customerref,
 								salesorders.comments,
+								salesorders.internalcomment,
 								salesorders.orddate,
 								salesorders.ordertype,
 								salesorders.shipvia,
@@ -70,7 +74,9 @@ if (!isset($_GET['OrderNumber']) and !isset($_SESSION['ProcessingOrder'])) {
 								currencies.rate as currency_rate,
 								currencies.decimalplaces,
 								custbranch.defaultshipvia,
-								custbranch.specialinstructions
+								custbranch.specialinstructions,
+								pickreq.consignment,
+								pickreq.packages
 						FROM salesorders
 						INNER JOIN debtorsmaster
 							ON salesorders.debtorno = debtorsmaster.debtorno
@@ -83,8 +89,11 @@ if (!isset($_GET['OrderNumber']) and !isset($_SESSION['ProcessingOrder'])) {
 							ON locations.loccode=salesorders.fromstkloc
 						INNER JOIN locationusers
 							ON locationusers.loccode=salesorders.fromstkloc
-							AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+							AND locationusers.userid='" . $_SESSION['UserID'] . "'
 							AND locationusers.canupd=1
+						LEFT OUTER JOIN pickreq
+							ON pickreq.orderno=salesorders.orderno
+							AND pickreq.closed=0
 						WHERE salesorders.orderno = '" . $_GET['OrderNumber'] . "'";
 
 	if ($_SESSION['SalesmanLogin'] != '') {
@@ -105,11 +114,14 @@ if (!isset($_GET['OrderNumber']) and !isset($_SESSION['ProcessingOrder'])) {
 		$_SESSION['Items' . $Identifier]->CustomerName = $MyRow['name'];
 		$_SESSION['Items' . $Identifier]->CustRef = $MyRow['customerref'];
 		$_SESSION['Items' . $Identifier]->Comments = $MyRow['comments'];
+		$_SESSION['Items' . $Identifier]->InternalComments = reverse_escape($MyRow['internalcomment']);
 		$_SESSION['Items' . $Identifier]->DefaultSalesType = $MyRow['ordertype'];
 		$_SESSION['Items' . $Identifier]->DefaultCurrency = $MyRow['currcode'];
 		$_SESSION['Items' . $Identifier]->CurrDecimalPlaces = $MyRow['decimalplaces'];
 		$BestShipper = $MyRow['shipvia'];
 		$_SESSION['Items' . $Identifier]->ShipVia = $MyRow['shipvia'];
+		$_SESSION['Items' . $Identifier]->Consignment = $MyRow['consignment'];
+		$_SESSION['Items' . $Identifier]->Packages = $MyRow['packages'];
 
 		if (is_null($BestShipper)) {
 			$BestShipper = 0;
@@ -170,8 +182,8 @@ if (!isset($_GET['OrderNumber']) and !isset($_SESSION['ProcessingOrder'])) {
 								ON stockcosts.stockid=stockmaster.stockid
 								AND succeeded=0
 							WHERE salesorderdetails.orderno ='" . $_GET['OrderNumber'] . "'
-								AND salesorderdetails.quantity - salesorderdetails.qtyinvoiced >0
-								ORDER BY salesorderdetails.orderlineno";
+							AND salesorderdetails.quantity - salesorderdetails.qtyinvoiced >0
+							ORDER BY salesorderdetails.orderlineno";
 
 		$ErrMsg = _('The line items of the order cannot be retrieved because');
 		$DbgMsg = _('The SQL that failed was');
@@ -187,7 +199,34 @@ if (!isset($_GET['OrderNumber']) and !isset($_SESSION['ProcessingOrder'])) {
 				/*Calculate the taxes applicable to this line item from the customer branch Tax Group and Item Tax Category */
 
 				$_SESSION['Items' . $Identifier]->GetTaxes($MyRow['orderlineno']);
+				$SerialItemsSQL = "SELECT pickreqdetails.qtypicked,
+										pickserialdetails.stockid,
+										serialno,
+										moveqty
+									FROM pickreq
+									INNER JOIN pickreqdetails
+										ON pickreqdetails.prid=pickreq.prid
+									LEFT OUTER JOIN pickserialdetails
+										ON pickserialdetails.detailno=pickreqdetails.detailno
+									WHERE pickreq.orderno ='" . $_GET['OrderNumber'] . "'
+										AND pickreq.closed=0
+										AND pickreqdetails.orderlineno='" . $MyRow['orderlineno'] . "'";
 
+				$ErrMsg = _('The serial items of the pick list cannot be retrieved because');
+				$DbgMsg = _('The SQL that failed was');
+				$SerialItemsResult = DB_query($SerialItemsSQL, $ErrMsg, $DbgMsg);
+				if (DB_num_rows($SerialItemsResult) > 0) {
+					$InOutModifier = 1;
+					while ($MySerial = DB_fetch_array($SerialItemsResult)) {
+						if (isset($MySerial['serialno'])) {
+							$_SESSION['Items' . $Identifier]->LineItems[$MyRow['orderlineno']]->SerialItems[$MySerial['serialno']] = new SerialItem($MySerial['serialno'], ($InOutModifier > 0 ? 1 : 1) * filter_number_format($MySerial['moveqty']));
+						} else {
+							if ($_SESSION['RequirePickingNote'] == 1) {
+								$_SESSION['Items' . $Identifier]->LineItems[$MyRow['orderlineno']]->QtyDispatched = $MySerial['qtypicked'];
+							}
+						}
+					}
+				}
 			}
 			/* line items from sales order details */
 		} else {
@@ -216,6 +255,11 @@ if (!isset($_GET['OrderNumber']) and !isset($_SESSION['ProcessingOrder'])) {
 	}
 	if (isset($_POST['ChargeFreightCost'])) {
 		$_SESSION['Items' . $Identifier]->FreightCost = filter_number_format($_POST['ChargeFreightCost']);
+	}
+	//echo isset($_POST['InternalComments']);
+	//var_dump($_POST['InternalComments']);
+	if (isset($_POST['InternalComments'])) {
+		$_SESSION['Items' . $Identifier]->InternalComments = $_POST['InternalComments'];
 	}
 	foreach ($_SESSION['Items' . $Identifier]->FreightTaxes as $FreightTaxLine) {
 		if (isset($_POST['FreightTaxRate' . $FreightTaxLine->TaxCalculationOrder])) {
@@ -255,7 +299,7 @@ if (!isset($_GET['OrderNumber']) and !isset($_SESSION['ProcessingOrder'])) {
 if ($_SESSION['Items' . $Identifier]->SpecialInstructions) {
 	prnMsg($_SESSION['Items' . $Identifier]->SpecialInstructions, 'warn');
 }
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Confirm Invoice') . '" alt="" />' . ' ' . _('Confirm Dispatch and Invoice') . '</p>';
+echo '<p class="page_title_text noPrint "><img src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Confirm Invoice') . '" alt="" />' . ' ' . _('Confirm Dispatch and Invoice') . '</p>';
 echo '<table class="selection">
 			<tr>
 				<th><img src="' . $RootPath . '/css/' . $Theme . '/images/customer.png" title="' . _('Customer') . '" alt="" />' . ' ' . _('Customer Code') . ' :<b> ' . $_SESSION['Items' . $Identifier]->DebtorNo . '</b></th>
@@ -310,6 +354,18 @@ foreach ($_SESSION['Items' . $Identifier]->LineItems as $LnItm) {
 	} else {
 		$RowStarter = '<tr class="OddTableRows">';
 		$k = 1;
+	}
+
+	if (sizeOf($LnItm->SerialItems) > 0) {
+		$_SESSION['Items' . $Identifier]->LineItems[$LnItm->LineNumber]->QtyDispatched = 0; //initialise QtyDispatched
+		foreach ($LnItm->SerialItems as $SerialItem) { //calculate QtyDispatched from bundle quantities
+			$_SESSION['Items' . $Identifier]->LineItems[$LnItm->LineNumber]->QtyDispatched += $SerialItem->BundleQty;
+		}
+	} else if (isset($_POST[$LnItm->LineNumber . '_QtyDispatched'])) {
+		if (is_numeric(filter_number_format($_POST[$LnItm->LineNumber . '_QtyDispatched'])) and filter_number_format($_POST[$LnItm->LineNumber . '_QtyDispatched']) <= ($_SESSION['Items' . $Identifier]->LineItems[$LnItm->LineNumber]->Quantity - $_SESSION['Items' . $Identifier]->LineItems[$LnItm->LineNumber]->QtyInv)) {
+
+			$_SESSION['Items' . $Identifier]->LineItems[$LnItm->LineNumber]->QtyDispatched = round(filter_number_format($_POST[$LnItm->LineNumber . '_QtyDispatched']), $LnItm->DecimalPlaces);
+		}
 	}
 
 	$LineTotal = $LnItm->QtyDispatched * $LnItm->Price * (1 - $LnItm->DiscountPercent);
@@ -422,7 +478,7 @@ was not fully delivered the first time ?? */
 
 if (!isset($_SESSION['Items' . $Identifier]->FreightCost) or $_SESSION['Items' . $Identifier]->FreightCost == 0) {
 	if ($_SESSION['DoFreightCalc'] == True) {
-		list($FreightCost, $BestShipper) = CalcFreightCost( $_SESSION['Items' . $Identifier]->total,
+		list($FreightCost, $BestShipper) = CalcFreightCost($_SESSION['Items' . $Identifier]->total,
 															$_SESSION['Items' . $Identifier]->BrAdd2,
 															$_SESSION['Items' . $Identifier]->BrAdd3,
 															$_SESSION['Items' . $Identifier]->BrAdd4,
@@ -592,9 +648,9 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 					   		stockmaster.mbflag
 		 			FROM locstock
 		 			INNER JOIN stockmaster
-						ON stockmaster.stockid=locstock.stockid
+					ON stockmaster.stockid=locstock.stockid
 					WHERE stockmaster.stockid='" . $OrderLine->StockID . "'
-						AND locstock.loccode='" . $_SESSION['Items' . $Identifier]->Location . "'";
+					AND locstock.loccode='" . $_SESSION['Items' . $Identifier]->Location . "'";
 
 			$ErrMsg = _('Could not retrieve the quantity left at the location once this order is invoiced (for the purposes of checking that stock will not go negative because)');
 			$Result = DB_query($SQL, $ErrMsg);
@@ -612,13 +668,13 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 							   locstock.quantity-(" . $OrderLine->QtyDispatched . "*bom.quantity) AS qtyleft
 						FROM bom
 						INNER JOIN locstock
-							ON bom.component=locstock.stockid
+						ON bom.component=locstock.stockid
 						INNER JOIN stockmaster
-							ON stockmaster.stockid=bom.component
+						ON stockmaster.stockid=bom.component
 						WHERE bom.parent='" . $OrderLine->StockID . "'
-							AND locstock.loccode='" . $_SESSION['Items' . $Identifier]->Location . "'
-							AND effectiveafter <CURRENT_DATE
-							AND effectiveto >=CURRENT_DATE";
+						AND locstock.loccode='" . $_SESSION['Items' . $Identifier]->Location . "'
+						AND effectiveafter <CURRENT_DATE
+						AND effectiveto >=CURRENT_DATE";
 
 				$ErrMsg = _('Could not retrieve the component quantity left at the location once the assembly item on this order is invoiced (for the purposes of checking that stock will not go negative because)');
 				$Result = DB_query($SQL, $ErrMsg);
@@ -703,8 +759,7 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 	$Changes = 0;
 
 	while ($MyRow = DB_fetch_array($Result)) {
-
-		if ($_SESSION['Items' . $Identifier]->LineItems[$MyRow['orderlineno']]->Quantity != $MyRow['quantity'] OR $_SESSION['Items' . $Identifier]->LineItems[$MyRow['orderlineno']]->QtyInv != $MyRow['qtyinvoiced']) {
+		if ($_SESSION['Items' . $Identifier]->LineItems[$MyRow['orderlineno']]->Quantity != $MyRow['quantity'] or $_SESSION['Items' . $Identifier]->LineItems[$MyRow['orderlineno']]->QtyInv != $MyRow['qtyinvoiced']) {
 
 			echo '<br />' . _('Orig order for') . ' ' . $MyRow['orderlineno'] . ' ' . _('has a quantity of') . ' ' . $MyRow['quantity'] . ' ' . _('and an invoiced qty of') . ' ' . $MyRow['qtyinvoiced'] . ' ' . _('the session shows quantity of') . ' ' . $_SESSION['Items' . $Identifier]->LineItems[$MyRow['orderlineno']]->Quantity . ' ' . _('and quantity invoice of') . ' ' . $_SESSION['Items' . $Identifier]->LineItems[$MyRow['orderlineno']]->QtyInv;
 
@@ -722,6 +777,7 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 		}
 	}
 	/*loop through all line items of the order to ensure none have been invoiced since started looking at this order*/
+
 
 	DB_free_result($Result);
 
@@ -752,7 +808,9 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 
 	/*Update order header for invoice charged on */
 	$SQL = "UPDATE salesorders
-			SET comments = CONCAT(comments,' Inv ','" . $InvoiceNo . "')
+			SET comments = CONCAT(comments,' Inv ','" . $InvoiceNo . "'),
+			internalcomment = '" . $_POST['InternalComments'] . "',
+			printedpackingslip=0
 			WHERE orderno= '" . $_SESSION['ProcessingOrder'] . "'";
 
 	$ErrMsg = _('CRITICAL ERROR') . ' ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The sales order header could not be updated with the invoice number');
@@ -779,7 +837,7 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 									shipvia,
 									consignment,
 									packages,
-									salesperson)
+									salesperson )
 								VALUES (
 									'" . $InvoiceNo . "',
 									10,
@@ -806,7 +864,29 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 	$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 	$DebtorTransID = DB_Last_Insert_ID('debtortrans', 'id');
+	if ($_SESSION['FreightInGrossMargin'] == 1) {
+		$SQL = "INSERT INTO freighttrans (transno,
+										type,
+										partnerno,
+										reference,
+										trandate,
+										ovrecovered,
+										rate,
+										inputdate)
+							VALUES (
+									'" . $InvoiceNo . "',
+									'" . 10 . "',
+									'" . $_SESSION['Items' . $Identifier]->DebtorNo . "',
+									'" . $_SESSION['Items' . $Identifier]->CustRef . "',
+									'" . $DefaultDispatchDate . "',
+									'" . filter_number_format($_POST['ChargeFreightCost']) . "',
+									'" . $_SESSION['CurrencyRate'] . "',
+									'" . Date('Y-m-d') . "')";
 
+		$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The freight invoice transaction could not be added to the database because');
+		$DbgMsg = _('The following SQL to insert the freight invoice was used');
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
+	}
 	/* Insert the tax totals for each tax authority where tax was charged on the invoice */
 	foreach ($TaxTotals as $TaxAuthID => $TaxAmount) {
 
@@ -928,6 +1008,29 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 
 			$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The sales order detail record could not be updated because');
 			$DbgMsg = _('The following SQL to update the sales order detail record was used');
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+
+			/*update any open pickreqdetails*/
+			$LineItemsSQL = "SELECT pickreqdetails.detailno
+							FROM pickreqdetails INNER JOIN pickreq ON pickreq.prid=pickreqdetails.prid
+							INNER JOIN salesorderdetails
+								ON salesorderdetails.orderno = pickreq.orderno
+								AND salesorderdetails.orderlineno=pickreqdetails.orderlineno
+							WHERE pickreq.orderno ='" . $_SESSION['ProcessingOrder'] . "'
+							AND pickreq.closed=0
+							AND salesorderdetails.orderlineno='" . $OrderLine->LineNumber . "'";
+
+			$ErrMsg = _('The line items of the pick list cannot be retrieved because');
+			$DbgMsg = _('The SQL that failed was');
+			$LineItemsResult = DB_query($LineItemsSQL, $ErrMsg, $DbgMsg);
+			$MyLine = DB_fetch_array($LineItemsResult);
+			$DetailNo = $MyLine['detailno'];
+			$SQL = "UPDATE pickreqdetails
+					SET invoicedqty='" . $OrderLine->QtyDispatched . "'
+					WHERE detailno='" . $DetailNo . "'";
+
+			$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The pickreqdetail record could not be inserted because');
+			$DbgMsg = _('The following SQL to insert the pickreqdetail records was used');
 			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 			/* Update location stock records if not a dummy stock item
@@ -1131,7 +1234,7 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 												'" . -$OrderLine->QtyDispatched . "',
 												'" . $OrderLine->DiscountPercent . "',
 												'" . $OrderLine->StandardCost . "',
-												'" . DB_escape_string($OrderLine->Narrative) . "' )";
+												'" . DB_escape_string($OrderLine->Narrative) . "')";
 			}
 
 
@@ -1197,7 +1300,6 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 			/*end if the orderline is a controlled item */
 
 			/*Insert Sales Analysis records */
-
 			$SalesValue = 0;
 			if ($_SESSION['CurrencyRate'] > 0) {
 				$SalesValue = $OrderLine->Price * $OrderLine->QtyDispatched / $_SESSION['CurrencyRate'];
@@ -1215,12 +1317,12 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 					FROM salesanalysis
 					INNER JOIN custbranch
 						ON salesanalysis.cust=custbranch.debtorno
-							AND salesanalysis.custbranch=custbranch.branchcode
-							AND salesanalysis.area=custbranch.area
+						AND salesanalysis.custbranch=custbranch.branchcode
+						AND salesanalysis.area=custbranch.area
 					INNER JOIN stockmaster
 						ON salesanalysis.stkcategory=stockmaster.categoryid
 					WHERE salesanalysis.salesperson='" . $_SESSION['Items' . $Identifier]->SalesPerson . "'
-						AND salesanalysis.typeabbrev='" . $_SESSION['Items' . $Identifier]->DefaultSalesType . "'
+						AND salesanalysis.typeabbrev ='" . $_SESSION['Items' . $Identifier]->DefaultSalesType . "'
 						AND salesanalysis.periodno='" . $PeriodNo . "'
 						AND salesanalysis.cust='" . $_SESSION['Items' . $Identifier]->DebtorNo . "'
 						AND salesanalysis.custbranch='" . $_SESSION['Items' . $Identifier]->Branch . "'
@@ -1247,7 +1349,7 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 
 				$SQL = "UPDATE salesanalysis SET amt=amt+" . round(($SalesValue), $_SESSION['CompanyRecord']['decimalplaces']) . ",
 												cost=cost+" . round(($OrderLine->StandardCost * $OrderLine->QtyDispatched), $_SESSION['CompanyRecord']['decimalplaces']) . ",
-												qty=qty+" . $OrderLine->QtyDispatched . ",
+												qty=qty +" . $OrderLine->QtyDispatched . ",
 												disc=disc+" . round(($OrderLine->DiscountPercent * $SalesValue), $_SESSION['CompanyRecord']['decimalplaces']) . "
 								WHERE salesanalysis.area='" . $MyRow[5] . "'
 								AND salesanalysis.salesperson='" . $MyRow[8] . "'
@@ -1437,7 +1539,7 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 												'" . $DefaultDispatchDate . "',
 												'" . $PeriodNo . "',
 												'" . $DisposalRow['accumdepnact'] . "',
-												'" . $_SESSION['Items'.$Identifier]->DebtorNo . ' - ' . $OrderLine->StockID . ' ' . _('accumulated depreciation disposal') . "',
+												'" . $_SESSION['Items' . $Identifier]->DebtorNo . ' - ' . $OrderLine->StockID . ' ' . _('accumulated depreciation disposal') . "',
 												'" . $DisposalRow['accumdepn'] . "')";
 
 						$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The reversal of accumulated depreciation GL posting on disposal could not be inserted because');
@@ -1459,7 +1561,7 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 											'" . $DefaultDispatchDate . "',
 											'" . $PeriodNo . "',
 											'" . $DisposalRow['costact'] . "',
-											'" . $_SESSION['Items'.$Identifier]->DebtorNo . " - " . $OrderLine->StockID . ' ' . _('cost disposal') . "',
+											'" . $_SESSION['Items' . $Identifier]->DebtorNo . " - " . $OrderLine->StockID . ' ' . _('cost disposal') . "',
 											'" . -$DisposalRow['cost'] . "')";
 
 						$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The reversal of asset cost on disposal GL posting could not be inserted because');
@@ -1481,7 +1583,7 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 											'" . $DefaultDispatchDate . "',
 											'" . $PeriodNo . "',
 											'" . $DisposalRow['disposalact'] . "',
-											'" . $_SESSION['Items'.$Identifier]->DebtorNo . " - " . $OrderLine->StockID .  ' ' . _('net book value disposal') . "',
+											'" . $_SESSION['Items' . $Identifier]->DebtorNo . " - " . $OrderLine->StockID . ' ' . _('net book value disposal') . "',
 											'" . ($DisposalRow['cost'] - $DisposalRow['accumdepn']) . "')";
 
 						$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The disposal net book value GL posting could not be inserted because');
@@ -1503,7 +1605,7 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 										'" . $DefaultDispatchDate . "',
 										'" . $PeriodNo . "',
 										'" . $DisposalRow['disposalact'] . "',
-										'" . $_SESSION['Items'.$Identifier]->DebtorNo . " - " . $OrderLine->StockID .  ' ' . _('asset disposal proceeds') . "',
+										'" . $_SESSION['Items' . $Identifier]->DebtorNo . " - " . $OrderLine->StockID . ' ' . _('asset disposal proceeds') . "',
 										'" . round((-$OrderLine->Price * $OrderLine->QtyDispatched * (1 - $OrderLine->DiscountPercent) / $_SESSION['CurrencyRate']), $_SESSION['CompanyRecord']['decimalplaces']) . "')";
 
 					$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The disposal proceeds GL posting could not be inserted because');
@@ -1551,10 +1653,19 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 			}
 		}
 		/*Quantity dispatched is more than 0 */
+
 	}
 	/*end of OrderLine loop */
 
-
+	/*update any open pick list*/
+	$SQL = "UPDATE pickreq
+			SET status = 'Invoiced',
+				closed='1'
+			WHERE orderno= '" . $_SESSION['ProcessingOrder'] . "'
+			AND closed=0";
+	$ErrMsg = _('CRITICAL ERROR') . ' ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The pick list header could not be updated');
+	$DbgMsg = _('The following SQL to update the pick list was used');
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 	if ($_SESSION['CompanyRecord']['gllink_debtors'] == 1) {
 
 		/*Post debtors transaction to GL debit debtors, credit freight re-charged and credit sales */
@@ -1658,13 +1769,19 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 	/*Process Invoice not set so allow input of invoice data */
 
 	if (!isset($_POST['Consignment'])) {
-		$_POST['Consignment'] = '';
+		if ($_SESSION['Items' . $Identifier]->Consignment != '') {
+			$_POST['Consignment'] = $_SESSION['Items' . $Identifier]->Consignment;
+		} else {
+			$_POST['Consignment'] = '';
+		}
 	}
-
 	if (!isset($_POST['Packages'])) {
-		$_POST['Packages'] = '1';
+		if ($_SESSION['Items' . $Identifier]->Packages) {
+			$_POST['Packages'] = $_SESSION['Items' . $Identifier]->Packages;
+		} else {
+			$_POST['Packages'] = '1';
+		}
 	}
-
 	if (!isset($_POST['InvoiceText'])) {
 		$_POST['InvoiceText'] = '';
 	}
@@ -1688,7 +1805,7 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 	$j++;
 	echo '<tr>
 			<td>' . _('Action For Balance') . ':</td>
-			<td>
+			 <td>
 				<select required="required" minlength="1" tabindex="' . $j . '" name="BOPolicy">
 					<option selected="selected" value="BO">' . _('Automatically put balance on back order') . '</option>
 					<option value="CAN">' . _('Cancel any quantities not delivered') . '</option>
@@ -1699,6 +1816,12 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 	echo '<tr>
 			<td>' . _('Invoice Text') . ':</td>
 			<td><textarea tabindex="' . $j . '" name="InvoiceText" cols="31" rows="5">' . reverse_escape($_POST['InvoiceText']) . '</textarea></td>
+		</tr>';
+
+	$j++;
+	echo '<tr>
+			<td>' . _('Internal Comments') . ':</td>
+			<td><textarea tabindex="' . $j . '" name="InternalComments" pattern=".{0,20}" cols="31" rows="5">' . reverse_escape($_SESSION['Items' . $Identifier]->InternalComments) . '</textarea></td>
 		</tr>';
 
 	$j++;

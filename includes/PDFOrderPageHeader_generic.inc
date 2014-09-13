@@ -1,7 +1,6 @@
 <?php
-
+/* $Id: PDFOrderPageHeader_generic.inc 5816 2013-02-07 07:54:41Z daintree $*/
 /* pdf-php by R&OS code to set up a new sales order page */
-
 if ($PageNumber > 1) {
 	$PDF->newPage();
 }
@@ -91,10 +90,10 @@ $header_line_height = $line_height + 25;
 
 $LeftOvers = $PDF->addTextWrap($XPos, $YPos, 127, $FontSize, _('Item Code'), 'left');
 $LeftOvers = $PDF->addTextWrap(147, $YPos, 255, $FontSize, _('Item Description'), 'left');
-$LeftOvers = $PDF->addTextWrap(400, $YPos, 85, $FontSize, _('Quantity'), 'right');
+$LeftOvers = $PDF->addTextWrap(400, $YPos, 85, $FontSize, _('Ord Quantity'), 'right');
 $LeftOvers = $PDF->addTextWrap(487, $YPos, 70, $FontSize, _('Bin Locn'), 'center');
-$LeftOvers = $PDF->addTextWrap(573, $YPos, 85, $FontSize, _('This Del'), 'center');
-$LeftOvers = $PDF->addTextWrap(672, $YPos, 85, $FontSize, _('Prev Dels'), 'center');
+$LeftOvers = $PDF->addTextWrap(573, $YPos, 85, $FontSize, _('This Delivery'), 'right');
+$LeftOvers = $PDF->addTextWrap(672, $YPos, 85, $FontSize, _('Prev Delivery'), 'right');
 
 $YPos -= $line_height;
 

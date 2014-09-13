@@ -172,7 +172,7 @@ if (isset($_POST['PlacePO'])) {
 						FROM locations
 						INNER JOIN locationusers
 							ON locationusers.loccode=locations.loccode
-							AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+							AND locationusers.userid='" . $_SESSION['UserID'] . "'
 							AND locationusers.canupd=1
 						WHERE locations.loccode = '" . $_SESSION['UserStockLocation'] . "'";
 			$ErrMsg = _('The delivery address for the order could not be obtained from the user default stock location');
@@ -197,7 +197,7 @@ if (isset($_POST['PlacePO'])) {
 						//if the user has authority to authorise the PO then it should be created as authorised
 						$AuthSQL = "SELECT authlevel
 					 				FROM purchorderauth
-									WHERE userid='" . $_SESSION['UserID'] . "'
+								    WHERE userid='" . $_SESSION['UserID'] . "'
 									AND currabrev='" . $SuppRow['currcode'] . "'";
 
 						$AuthResult = DB_query($AuthSQL);
@@ -240,18 +240,18 @@ if (isset($_POST['PlacePO'])) {
 					$Order_Value = 0;
 					/*Now get all the required details for the supplier */
 					$SQL = "SELECT address1,
-									address2,
-									address3,
-									address4,
-									address5,
-									address6,
-									telephone,
-									paymentterms,
-									currcode,
-									rate
-							FROM suppliers INNER JOIN currencies
-							ON suppliers.currcode = currencies.currabrev
-							WHERE supplierid='" . $SupplierID . "'";
+        							address2,
+        							address3,
+        							address4,
+        							address5,
+        							address6,
+        							telephone,
+        							paymentterms,
+        							currcode,
+        							rate
+					        FROM suppliers INNER JOIN currencies
+						    ON suppliers.currcode = currencies.currabrev
+						    WHERE supplierid='" . $SupplierID . "'";
 
 					$ErrMsg = _('Could not get the supplier information for the order');
 					$SuppResult = DB_query($SQL, $ErrMsg);
@@ -260,61 +260,61 @@ if (isset($_POST['PlacePO'])) {
 					$StatusComment = date($_SESSION['DefaultDateFormat']) . ' - ' . _('Order Created by') . ' ' . $UserDetails . ' - ' . _('Auto created from sales orders') . '<br />';
 					/*Insert to purchase order header record */
 					$SQL = "INSERT INTO purchorders ( orderno,
-													  supplierno,
-													  orddate,
-													  rate,
-													  initiator,
-													  intostocklocation,
-													  deladd1,
-													  deladd2,
-													  deladd3,
-													  deladd4,
-													  deladd5,
-													  deladd6,
-													  tel,
-													  suppdeladdress1,
-													  suppdeladdress2,
-													  suppdeladdress3,
-													  suppdeladdress4,
-													  suppdeladdress5,
-													  suppdeladdress6,
-													  supptel,
-													  version,
-													  revised,
-													  deliveryby,
-													  status,
-													  stat_comment,
-													  deliverydate,
-													  paymentterms,
-													  allowprint)
-													VALUES(	'" . $PO_OrderNo . "',
-														'" . $SupplierID . "',
-														CURRENT_DATE,
-														'" . $SuppRow['rate'] . "',
-														'" . $_SESSION['UserID'] . "',
-														'" . $_SESSION['UserStockLocation'] . "',
-														'" . $DelAddRow['locationname'] . "',
-														'" . $DelAddRow['deladd1'] . "',
-														'" . $DelAddRow['deladd2'] . "',
-														'" . $DelAddRow['deladd3'] . "',
-														'" . $DelAddRow['deladd4'] . "',
-														'" . $DelAddRow['deladd5'] . ' ' . $DelAddRow['deladd6'] . "',
-														'" . $DelAddRow['tel'] . "',
-														'" . $SuppRow['address1'] . "',
-														'" . $SuppRow['address2'] . "',
-														'" . $SuppRow['address3'] . "',
-														'" . $SuppRow['address4'] . "',
-														'" . $SuppRow['address5'] . "',
-														'" . $SuppRow['address6'] . "',
-														'" . $SuppRow['telephone'] . "',
-														'1.0',
-														CURRENT_DATE,
-														'" . $_SESSION['Default_Shipper'] . "',
-														'Pending',
-														'" . $StatusComment . "',
-														CURRENT_DATE,
-														'" . $SuppRow['paymentterms'] . "',
-														0)";
+                									  supplierno,
+                									  orddate,
+                									  rate,
+                									  initiator,
+                									  intostocklocation,
+                									  deladd1,
+                									  deladd2,
+                									  deladd3,
+                									  deladd4,
+                									  deladd5,
+                									  deladd6,
+                									  tel,
+                									  suppdeladdress1,
+                									  suppdeladdress2,
+                									  suppdeladdress3,
+                									  suppdeladdress4,
+                									  suppdeladdress5,
+                									  suppdeladdress6,
+                									  supptel,
+                									  version,
+                									  revised,
+                									  deliveryby,
+                									  status,
+                									  stat_comment,
+                									  deliverydate,
+                									  paymentterms,
+                									  allowprint)
+                									VALUES(	'" . $PO_OrderNo . "',
+                										'" . $SupplierID . "',
+                										CURRENT_DATE,
+                										'" . $SuppRow['rate'] . "',
+                										'" . $_SESSION['UserID'] . "',
+                										'" . $_SESSION['UserStockLocation'] . "',
+                										'" . $DelAddRow['locationname'] . "',
+                										'" . $DelAddRow['deladd1'] . "',
+                										'" . $DelAddRow['deladd2'] . "',
+                										'" . $DelAddRow['deladd3'] . "',
+                										'" . $DelAddRow['deladd4'] . "',
+                										'" . $DelAddRow['deladd5'] . ' ' . $DelAddRow['deladd6'] . "',
+                										'" . $DelAddRow['tel'] . "',
+                										'" . $SuppRow['address1'] . "',
+                										'" . $SuppRow['address2'] . "',
+                										'" . $SuppRow['address3'] . "',
+                										'" . $SuppRow['address4'] . "',
+                										'" . $SuppRow['address5'] . "',
+                										'" . $SuppRow['address6'] . "',
+                										'" . $SuppRow['telephone'] . "',
+                										'1.0',
+                										CURRENT_DATE,
+                										'" . $_SESSION['Default_Shipper'] . "',
+                										'Pending',
+                										'" . $StatusComment . "',
+                										CURRENT_DATE,
+                										'" . $SuppRow['paymentterms'] . "',
+                										0)";
 
 					$ErrMsg = _('The purchase order header record could not be inserted into the database because');
 					$DbgMsg = _('The SQL statement used to insert the purchase order header record and failed was');
@@ -324,25 +324,25 @@ if (isset($_POST['PlacePO'])) {
 				/*reminder we are in a loop of the total of each item to place a purchase order for based on a selection of sales orders */
 				$DeliveryDate = DateAdd(Date($_SESSION['DefaultDateFormat']), 'd', $ItemRow['leadtime']);
 				$SQL = "INSERT INTO purchorderdetails ( orderno,
-														itemcode,
-														deliverydate,
-														itemdescription,
-														glcode,
-														unitprice,
-														quantityord,
-														suppliersunit,
-														suppliers_partno,
-														conversionfactor )
-										 VALUES ('" . $PO_OrderNo . "',
-												 '" . $ItemRow['stockid'] . "',
-												 '" . FormatDateForSQL($DeliveryDate) . "',
-												 '" . $ItemRow['suppliers_partno'] . '  ' . $ItemRow['supplierdescription'] . "',
-												 '" . $ItemRow['stockact'] . "',
-												 '" . $ItemRow['price'] . "',
-												 '" . $ItemRow['orderqty'] . "',
-												 '" . $ItemRow['suppliersuom'] . "',
-												 '" . $ItemRow['suppliers_partno'] . "',
-												 '" . $ItemRow['conversionfactor'] . "')";
+                    									itemcode,
+                    									deliverydate,
+                    									itemdescription,
+                    									glcode,
+                    									unitprice,
+                    									quantityord,
+                    									suppliersunit,
+                    									suppliers_partno,
+                    									conversionfactor )
+                                         VALUES ('" . $PO_OrderNo . "',
+                    						     '" . $ItemRow['stockid'] . "',
+                    						     '" . FormatDateForSQL($DeliveryDate) . "',
+                    						     '" . $ItemRow['suppliers_partno'] . '  ' . $ItemRow['supplierdescription'] . "',
+                    						     '" . $ItemRow['stockact'] . "',
+                    						     '" . $ItemRow['price'] . "',
+                    						     '" . $ItemRow['orderqty'] . "',
+                    						     '" . $ItemRow['suppliersuom'] . "',
+                    						     '" . $ItemRow['suppliers_partno'] . "',
+                    						     '" . $ItemRow['conversionfactor'] . "')";
 				$ErrMsg = _('One of the purchase order detail records could not be inserted into the database because');
 				$DbgMsg = _('The SQL statement used to insert the purchase order detail record and failed was');
 
@@ -374,7 +374,7 @@ if (isset($_POST['PlacePO'])) {
 					$Result = DB_query("UPDATE purchorders SET allowprint=1,
 															status='Authorised',
 															stat_comment='" . $StatusComment . "'
-														  WHERE orderno='" . $PO_OrderNo . "'", $ErrMsg, $DbgMsg, true);
+									                      WHERE orderno='" . $PO_OrderNo . "'", $ErrMsg, $DbgMsg, true);
 				} else { // no authority to authorise this order
 					if (DB_num_rows($AuthResult) == 0) {
 						$AuthMessage = _('Your authority to approve purchase orders in') . ' ' . $SuppRow['currcode'] . ' ' . _('has not yet been set up') . '<br />';
@@ -422,7 +422,7 @@ if (isset($_GET['OrderNumber'])) {
 if (isset($OrderNumber) and $OrderNumber != '') {
 	$OrderNumber = trim($OrderNumber);
 	if (!is_numeric($OrderNumber)) {
-		prnMsg( _('The Order Number entered MUST be numeric'), 'error');
+		prnMsg(_('The Order Number entered MUST be numeric'), 'error');
 		unset($OrderNumber);
 		include('includes/footer.inc');
 		exit;
@@ -447,21 +447,21 @@ if (isset($_POST['SearchParts'])) {
 	$SearchString = '%' . str_replace(' ', '%', $_POST['Keywords']) . '%';
 
 	$SQL = "SELECT stockmaster.stockid,
-					stockmaster.description,
-					stockmaster.decimalplaces,
-					SUM(locstock.quantity) AS qoh,
-					stockmaster.units
-				FROM stockmaster
-				INNER JOIN locstock
-					ON stockmaster.stockid=locstock.stockid
-				WHERE stockmaster.description " . LIKE . " '" . $SearchString . "'
-					AND stockmaster.stockid " . LIKE . " '%" . $_POST['StockCode'] . "%'
-					AND stockmaster.categoryid='" . $_POST['StockCat'] . "'
-				GROUP BY stockmaster.stockid,
-					stockmaster.description,
-					stockmaster.decimalplaces,
-					stockmaster.units
-				ORDER BY stockmaster.stockid";
+				stockmaster.description,
+				stockmaster.decimalplaces,
+				SUM(locstock.quantity) AS qoh,
+				stockmaster.units
+			FROM stockmaster
+			INNER JOIN locstock
+				ON stockmaster.stockid=locstock.stockid
+			WHERE stockmaster.description " . LIKE . " '" . $SearchString . "'
+			AND stockmaster.stockid " . LIKE . " '%" . $_POST['StockCode'] . "%'
+			AND stockmaster.categoryid='" . $_POST['StockCat'] . "'
+			GROUP BY stockmaster.stockid,
+				stockmaster.description,
+				stockmaster.decimalplaces,
+				stockmaster.units
+			ORDER BY stockmaster.stockid";
 
 
 	$ErrMsg = _('No stock items were returned by the SQL because');
@@ -497,9 +497,8 @@ if (!isset($StockId)) {
 					FROM locations
 					INNER JOIN locationusers
 						ON locationusers.loccode=locations.loccode
-						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.userid='" . $_SESSION['UserID'] . "'
 						AND locationusers.canview=1";
-
 		$ResultStkLocs = DB_query($SQL);
 
 		while ($MyRow = DB_fetch_array($ResultStkLocs)) {
@@ -553,11 +552,11 @@ if (!isset($StockId)) {
 	}
 
 	echo '<table class="selection">
-			<tr>
-				<th colspan="6"><h3>' . _('To search for sales orders for a specific part use the part selection facilities below') . '</h3></th>
-			</tr>
-			<tr>
-				<td>' . _('Select a stock category') . ':
+		<tr>
+			<th colspan="6"><h3>' . _('To search for sales orders for a specific part use the part selection facilities below') . '</h3></th>
+		</tr>
+		<tr>
+			<td>' . _('Select a stock category') . ':
 					<select minlength="0" name="StockCat">';
 
 	while ($MyRow1 = DB_fetch_array($Result1)) {
@@ -572,26 +571,26 @@ if (!isset($StockId)) {
 			<td>' . _('Enter text extract(s) in the description') . ':</td>
 			<td><input type="text" name="Keywords" size="20" minlength="0" maxlength="25" value="' . $_POST['Keywords'] . '" /></td>
 		</tr>
-	  	<tr>
+      	<tr>
 			<td></td>
-	  		<td><b>' . _('OR') . ' </b>' . _('Enter extract of the Stock Code') . ':</td>
-	  		<td><input type="text" name="StockCode" size="15" minlength="0" maxlength="18" value="' . $_POST['StockCode'] . '" /></td>
-	  	</tr>
-	  </table>';
+      		<td><b>' . _('OR') . ' </b>' . _('Enter extract of the Stock Code') . ':</td>
+      		<td><input type="text" name="StockCode" size="15" minlength="0" maxlength="18" value="' . $_POST['StockCode'] . '" /></td>
+      	</tr>
+      </table>';
 	echo '<div class="centre">
 			<input type="submit" name="SearchParts" value="' . _('Search Parts Now') . '" />
 			<input type="submit" name="ResetPart" value="' . _('Show All') . '" />
 		</div>';
 
-	if (isset($StockItemsResult) AND DB_num_rows($StockItemsResult) > 0) {
+	if (isset($StockItemsResult) and DB_num_rows($StockItemsResult) > 0) {
 
 		echo '<table cellpadding="2" class="selection">
-				<tr>
-					<th class="SortableColumn">' . _('Code') . '</th>
-					<th class="SortableColumn">' . _('Description') . '</th>
-					<th>' . _('On Hand') . '</th>
-					<th>' . _('Units') . '</th>
-				</tr>';
+		<tr>
+			<th class="SortableColumn" >' . _('Code') . '</th>
+			<th class="SortableColumn" >' . _('Description') . '</th>
+			<th>' . _('On Hand') . '</th>
+			<th>' . _('Units') . '</th>
+		</tr>';
 
 		$k = 0; //row colour counter
 
@@ -636,11 +635,10 @@ if (!isset($StockId)) {
 			$SalesMan = ' LIKE \'%\'';
 		}
 
-	/*Harmonize the ordervalue with SUM function since it is allowed to
-	 * have the same items appeared several times in one sales orders. If there
-	 * is no sum value, this situation not inclued.*/
-
-	$SQL = "SELECT salesorders.orderno,
+		/*Harmonize the ordervalue with SUM function since it is allowed to
+		 * have the same items appeared several times in one sales orders. If there
+		 * is no sum value, this situation not inclued.*/
+		$SQL = "SELECT salesorders.orderno,
 					debtorsmaster.name,
 					custbranch.brname,
 					salesorders.customerref,
@@ -649,7 +647,8 @@ if (!isset($StockId)) {
 					salesorders.deliverto,
 					salesorders.printedpackingslip,
 					salesorders.poplaced,
-				        SUM(salesorderdetails.unitprice*salesorderdetails.quantity*(1-salesorderdetails.discountpercent)/currencies.rate) AS ordervalue
+					SUM(salesorderdetails.unitprice*salesorderdetails.quantity*(1-salesorderdetails.discountpercent)/currencies.rate) AS ordervalue,
+					pickreq.prid
 				FROM salesorders INNER JOIN salesorderdetails
 					ON salesorders.orderno = salesorderdetails.orderno
 					INNER JOIN debtorsmaster
@@ -660,49 +659,57 @@ if (!isset($StockId)) {
 					INNER JOIN currencies
 					ON debtorsmaster.currcode = currencies.currabrev
 					WHERE salesorderdetails.completed=0 ";
-	//Add salesman role control
-	if ($_SESSION['SalesmanLogin'] != '') {
-		$SQL .= " AND salesorders.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
-	}
+		//Add salesman role control
+		if ($_SESSION['SalesmanLogin'] != '') {
+			$SQL .= " AND salesorders.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
+		}
 
-	if (isset($OrderNumber) and $OrderNumber != '') {
+		if (isset($OrderNumber) and $OrderNumber != '') {
 
 			$SQL .= "AND salesorders.orderno=" . $OrderNumber . " AND salesorders.quotation=" . $Quotations;
-	} else {
-	      /* $DateAfterCriteria = FormatDateforSQL($OrdersAfterDate); */
-		if (isset($SelectedCustomer)) {
-			if (isset($SelectedStockItem)) {
-				$SQL .= "AND salesorders.quotation=" . $Quotations . "
-						AND salesorderdetails.stkcode='" . $SelectedStockItem . "'
-						AND salesorders.debtorno='" . $SelectedCustomer . "'
-						AND salesorders.fromstkloc='" . $_POST['StockLocation'] . "'";
-			} else {
-				$SQL .= "AND  salesorders.quotation =" . $Quotations . "
-						AND salesorders.debtorno='" . $SelectedCustomer . "'
-						AND salesorders.fromstkloc = '" . $_POST['StockLocation'] . "'";
+		} else {
+			/* $DateAfterCriteria = FormatDateforSQL($OrdersAfterDate); */
+			if (isset($SelectedCustomer)) {
+				if (isset($SelectedStockItem)) {
+					$SQL .= "AND salesorders.quotation=" . $Quotations . "
+                                               AND salesorderdetails.stkcode='" . $SelectedStockItem . "'
+                                               AND salesorders.debtorno='" . $SelectedCustomer . "'
+                                               AND salesorders.fromstkloc='" . $_POST['StockLocation'] . "'";
+				} else {
+					$SQL .= "AND  salesorders.quotation =" . $Quotations . "
+                                               AND salesorders.debtorno='" . $SelectedCustomer . "'
+                                               AND salesorders.fromstkloc = '" . $_POST['StockLocation'] . "'";
 
-			}
-		} else { //no customer selected
-			if (isset($SelectedStockItem)) {
-				$SQL .= "AND salesorders.quotation =" . $Quotations . "
-						AND salesorderdetails.stkcode='" . $SelectedStockItem . "'
-						AND salesorders.fromstkloc = '" . $_POST['StockLocation'] . "'";
-			} else {
-				$SQL .= "AND salesorders.quotation =" . $Quotations . "
-						AND salesorders.fromstkloc = '" . $_POST['StockLocation'] . "'";
-			}
-		} //end selected customer
+				}
+			} else { //no customer selected
+				if (isset($SelectedStockItem)) {
+					$SQL .= "AND salesorders.quotation =" . $Quotations . "
+                                               AND salesorderdetails.stkcode='" . $SelectedStockItem . "'
+                                               AND salesorders.fromstkloc = '" . $_POST['StockLocation'] . "'";
+				} else {
+					$SQL .= "AND salesorders.quotation =" . $Quotations . "
+                                               AND salesorders.fromstkloc = '" . $_POST['StockLocation'] . "'";
+				}
+			} //end selected customer
 
-		$SQL .= " GROUP BY salesorders.orderno,
-							debtorsmaster.name,
-							custbranch.brname,
-							salesorders.customerref,
-							salesorders.orddate,
-							salesorders.deliverydate,
-							salesorders.deliverto,
-							salesorders.printedpackingslip,
-							salesorders.poplaced
-					ORDER BY salesorders.orderno";
+			$SQL .= " GROUP BY salesorders.orderno,
+					LEFT OUTER JOIN pickreq
+					ON pickreq.orderno=salesorders.orderno
+					AND pickreq.closed=0
+				WHERE salesorderdetails.completed=0
+				AND salesorders.orderno=" . $OrderNumber . "
+				AND salesorders.quotation =" . $Quotations . "
+				GROUP BY salesorders.orderno,
+					debtorsmaster.name,
+					custbranch.brname,
+					salesorders.customerref,
+					salesorders.orddate,
+					salesorders.deliverydate,
+					salesorders.deliverto,
+					salesorders.printedpackingslip,
+					salesorders.poplaced
+				ORDER BY salesorders.orderno";
+
 		} //end not order number selected
 
 		$ErrMsg = _('No orders or quotations were returned by the SQL because');
@@ -722,12 +729,22 @@ if (!isset($StockId)) {
 
 			echo '<table cellpadding="2" width="95%" class="selection">';
 			echo '<tbody>';
+			if (is_null($AuthRow['cancreate']) or !isset($AuthRow)) {
+				$AuthRow['cancreate'] = 1;
+			}
 
+			$PrintPickLabel = '';
+			if ($_SESSION['RequirePickingNote'] == 1) {
+				$PrintPickLabel = '<th>' . _('Pick Lists') . '</th>';
+			}
 			if (isset($_POST['Quotations']) and $_POST['Quotations'] == 'Orders_Only') {
 				echo '<tr>
 						<th class="SortableColumn">' . _('Modify') . '</th>
+						<th>' . _('Acknowledge') . '</th>
+						' . $PrintPickLabel . '
 						<th>' . _('Invoice') . '</th>
 						<th>' . _('Dispatch Note') . '</th>
+						<th>' . _('Labels') . '</th>
 						<th class="SortableColumn">' . _('Customer') . '</th>
 						<th class="SortableColumn">' . _('Branch') . '</th>
 						<th>' . _('Cust Order') . ' #</th>
@@ -743,7 +760,7 @@ if (!isset($StockId)) {
 				}
 			} else {
 				/* displaying only quotations */
-				echo'<tr>
+				echo '<tr>
 						<th class="SortableColumn">' . _('Modify') . '</th>
 						<th>' . _('Print Quote') . '</th>
 						<th class="SortableColumn">' . _('Customer') . '</th>
@@ -772,6 +789,18 @@ if (!isset($StockId)) {
 
 				$ModifyPage = $RootPath . '/SelectOrderItems.php?ModifyOrderNumber=' . $MyRow['orderno'];
 				$Confirm_Invoice = $RootPath . '/ConfirmDispatch_Invoice.php?OrderNumber=' . $MyRow['orderno'];
+				$PrintPickList = '';
+				$PrintPickLabel = '';
+				$PrintDummyFlag = '<input type="hidden" name="dummy" value="%s" />';
+				if ($_SESSION['RequirePickingNote'] == 1) {
+					$PrintPickList = $RootPath . '/GeneratePickingList.php?TransNo=' . $MyRow['orderno'];
+					if (isset($MyRow['prid']) and $MyRow['prid'] > '') {
+						$PrintPickLabel = '<td><a href="%s">' . str_pad($MyRow['prid'], 10, '0', STR_PAD_LEFT) . '</a></td>';
+					} else {
+						$PrintPickLabel = '<td><a href="%s">' . _('Pick') . '</a></td>';
+					}
+					$PrintDummyFlag = '';
+				}
 
 				if ($_SESSION['PackNoteFormat'] == 1) {
 					/*Laser printed A4 default */
@@ -786,33 +815,46 @@ if (!isset($StockId)) {
 				$FormatedOrderDate = ConvertSQLDate($MyRow['orddate']);
 				$FormatedOrderValue = locale_number_format($MyRow['ordervalue'], $_SESSION['CompanyRecord']['decimalplaces']);
 				$OrdersTotal += $MyRow['ordervalue'];
+				$PrintAck = $RootPath . '/PDFAck.php?AcknowledgementNo=' . $MyRow['orderno'];
+
+				if (!in_array($PricesSecurity, $_SESSION['AllowedPageSecurityTokens']) or !isset($PricesSecurity)) {
+					$FormatedOrderValue = '---------';
+				}
+
 				if ($MyRow['printedpackingslip'] == 0) {
 					$PrintText = _('Print');
 				} else {
 					$PrintText = _('Reprint');
 				}
 
+				$PrintLabels = $RootPath . '/PDFShipLabel.php?Type=Sales&ORD=' . $MyRow['orderno'];
+
 				if ($_POST['Quotations'] == 'Orders_Only') {
 
 					/*Check authority to create POs if user has authority then show the check boxes to select sales orders to place POs for otherwise don't provide this option */
 					if ($AuthRow['cancreate'] == 0 and $MyRow['poplaced'] == 0) { //cancreate==0 if the user can create POs and not already placed
 						printf('<td><a href="%s">%s</a></td>
+						<td><a href="%s" target="_blank">' . _('Acknowledge') . '</a>' . $PrintDummyFlag . '</td>
+						' . $PrintPickLabel . '
 						<td><a href="%s">' . _('Invoice') . '</a></td>
-						<td><a target="_blank" href="%s">' . $PrintText . ' <img src="' . $RootPath . '/css/' . $Theme . '/images/pdf.png" title="' . _('Click for PDF') . '" alt="" /></a></td>
-						<td>%s</td>
-						<td>%s</td>
-						<td>%s</td>
-						<td>%s</td>
-						<td>%s</td>
-						<td>%s</td>
-						<td class="number">%s</td>
-						<td><input type="checkbox" name="PlacePO_%s" /><input type="hidden" name="OrderNo_PO_%s" value="%s" /></td>
-						</tr>', $ModifyPage, $MyRow['orderno'], $Confirm_Invoice, $PrintDispatchNote, $MyRow['name'], $MyRow['brname'], $MyRow['customerref'], $FormatedOrderDate, $FormatedDelDate, html_entity_decode($MyRow['deliverto'], ENT_QUOTES, 'UTF-8'), $FormatedOrderValue, $i, $i, $MyRow['orderno']);
+        				<td><a target="_blank" href="%s">' . $PrintText . ' <img src="' . $RootPath . '/css/' . $Theme . '/images/pdf.png" title="' . _('Click for PDF') . '" alt="" /></a></td>
+						<td><a href="%s">' . _('Labels') . '</a></td>
+        				<td>%s</td>
+        				<td>%s</td>
+        				<td>%s</td>
+        				<td>%s</td>
+        				<td>%s</td>
+        				<td>%s</td>
+        				<td class="number">%s</td>
+        				<td><input type="checkbox" name="PlacePO_%s" /><input type="hidden" name="OrderNo_PO_%s" value="%s" /></td>
+        				</tr>', $ModifyPage, $MyRow['orderno'], $PrintAck, $PrintPickList, $Confirm_Invoice, $PrintDispatchNote, $PrintLabels, $MyRow['name'], $MyRow['brname'], $MyRow['customerref'], $FormatedOrderDate, $FormatedDelDate, html_entity_decode($MyRow['deliverto'], ENT_QUOTES, 'UTF-8'), $FormatedOrderValue, $i, $i, $MyRow['orderno']);
 					} else {
 						/*User is not authorised to create POs so don't even show the option */
 						printf('<td><a href="%s">%s</a></td>
+							<td><a href="%s">' . _('Acknowledge') . '</a></td>
 							<td><a href="%s">' . _('Invoice') . '</a></td>
 							<td><a target="_blank" href="%s">' . $PrintText . ' <img src="' . $RootPath . '/css/' . $Theme . '/images/pdf.png" title="' . _('Click for PDF') . '" alt="" /></a></td>
+							<td><a href="%s">' . _('Labels') . '</a></td>
 							<td>%s</td>
 							<td>%s</td>
 							<td>%s</td>
@@ -820,7 +862,7 @@ if (!isset($StockId)) {
 							<td>%s</td>
 							<td>%s</td>
 							<td class="number">%s</td>
-							</tr>', $ModifyPage, $MyRow['orderno'], $Confirm_Invoice, $PrintDispatchNote, $MyRow['name'], $MyRow['brname'], $MyRow['customerref'], $FormatedOrderDate, $FormatedDelDate, html_entity_decode($MyRow['deliverto'], ENT_QUOTES, 'UTF-8'), $FormatedOrderValue);
+							</tr>', $ModifyPage, $MyRow['orderno'], $PrintAck, $Confirm_Invoice, $PrintDispatchNote, $PrintLabels, $MyRow['name'], $MyRow['brname'], $MyRow['customerref'], $FormatedOrderDate, $FormatedDelDate, html_entity_decode($MyRow['deliverto'], ENT_QUOTES, 'UTF-8'), $FormatedOrderValue);
 					}
 
 				} else {
@@ -837,8 +879,13 @@ if (!isset($StockId)) {
 						</tr>', $ModifyPage, $MyRow['orderno'], $PrintQuotation, $PrintQuotationPortrait, $MyRow['name'], $MyRow['brname'], $MyRow['customerref'], $FormatedOrderDate, $FormatedDelDate, html_entity_decode($MyRow['deliverto'], ENT_QUOTES, 'UTF-8'), $FormatedOrderValue);
 				}
 				$i++;
+				$OrdersTotal += $MyRow['ordervalue'];
+				//end of page full new headings if
 			} //end while loop through orders to display
 			echo '</tbody>';
+
+			echo '</table><table>';
+
 			if ($_POST['Quotations'] == 'Orders_Only' and $AuthRow['cancreate'] == 0) { //cancreate==0 means can create POs
 
 				echo '<tr><td colspan="11" class="number"><input type="submit" name="PlacePO" value="' . _('Place') . " " . _('PO') . '" onclick="return MakeConfirm(\'' . _('This will create purchase orders for all the items on the checked sales orders above, based on the preferred supplier purchasing data held in the system. Are You Absolutely Sure?') . '\');" /></td</tr>';
@@ -848,6 +895,9 @@ if (!isset($StockId)) {
 				echo '<b>' . _('Total Order(s) Value in');
 			} else {
 				echo '<b>' . _('Total Quotation(s) Value in');
+			}
+			if (!in_array($PricesSecurity, $_SESSION['AllowedPageSecurityTokens']) or !isset($PricesSecurity)) {
+				$OrdersTotal = '---------';
 			}
 			echo ' ' . $_SESSION['CompanyRecord']['currencydefault'] . ' :</b></td>
 			<td class="number"><b>' . locale_number_format($OrdersTotal, $_SESSION['CompanyRecord']['decimalplaces']) . '</b></td>

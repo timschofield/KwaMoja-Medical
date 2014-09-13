@@ -47,7 +47,7 @@ if (!isset($RecvQty)) {
 	$RecvQty = 0;
 }
 if (!isset($_POST['EntryType']) or trim($_POST['EntryType']) == '') {
-	if ($RecvQty <= 50) {
+	if ($RecvQty <= 500000) {
 		$_POST['EntryType'] = 'KEYED';
 	} //elseif ($RecvQty <= 50) { $EntryType = "BARCODE"; }
 	else {
@@ -106,7 +106,7 @@ echo ' value="FILE" />' . _('File Upload') . '&nbsp; <input type="file" name="Im
 global $TableHeader;
 /* Link to clear the list and start from scratch */
 $EditLink = '<div class="centre">
-				<a class="FontSize" href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '&amp;EditControlled=true&amp;StockID=' . $LineItem->StockID . '&amp;LineNo=' . $LineNo . $CreditInvoice . '">' . _('Edit') . '</a> | ';
+					<a class="FontSize" href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '&amp;EditControlled=true&amp;StockID=' . $LineItem->StockID . '&amp;LineNo=' . $LineNo . $CreditInvoice . '">' . _('Edit') . '</a> | ';
 $RemoveLink = '<a class="FontSize" href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '&amp;DELETEALL=YES&amp;StockID=' . $LineItem->StockID . '&amp;LineNo=' . $LineNo . $CreditInvoice . '">' . _('Remove All') . '</a>
 			</div>';
 

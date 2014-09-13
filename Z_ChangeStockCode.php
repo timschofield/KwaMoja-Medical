@@ -1,8 +1,8 @@
 <?php
 
-/*	This script is an utility to change an inventory item code.
- *	It uses function ChangeFieldInTable($TableName, $FieldName, $OldValue,
- *	$NewValue, $db) from .../includes/MiscFunctions.php.
+/*     This script is an utility to change an inventory item code.
+ *     It uses function ChangeFieldInTable($TableName, $FieldName, $OldValue,
+ *     $NewValue, $db) from .../includes/MiscFunctions.php.
  */
 
 include('includes/session.inc');
@@ -107,13 +107,13 @@ if (isset($_POST['ProcessStockChange'])) {
 		echo ' ... ' . _('completed');
 		echo '<br />' . _('Copying over the costs');
 		$SQL = "INSERT INTO stockcosts SELECT '" . $_POST['NewStockID'] . "',
-									stockcosts.materialcost,
-									stockcosts.labourcost,
-									stockcosts.overheadcost,
-									stockcosts.costfrom,
-									stockcosts.succeeded
-								FROM stockcosts
-								WHERE stockid='" . $_POST['OldStockID'] . "'";
+												stockcosts.materialcost,
+												stockcosts.labourcost,
+												stockcosts.overheadcost,
+												stockcosts.costfrom,
+												stockcosts.succeeded
+											FROM stockcosts
+											WHERE stockid='" . $_POST['OldStockID'] . "'";
 
 		$DbgMsg = _('The SQL statement that failed was');
 		$ErrMsg = _('The SQL to insert the new stock costs record failed');
@@ -139,6 +139,7 @@ if (isset($_POST['ProcessStockChange'])) {
 			if (DB_error_no() == 0) {
 				ChangeFieldInTable("mrprequirements", "part", $_POST['OldStockID'], $_POST['NewStockID']);
 			}
+
 			$Result = DB_query("SELECT * FROM mrpsupplies", '', '', false, false);
 			if (DB_error_no() == 0) {
 				ChangeFieldInTable("mrpsupplies", "part", $_POST['OldStockID'], $_POST['NewStockID']);
@@ -158,7 +159,13 @@ if (isset($_POST['ProcessStockChange'])) {
 		ChangeFieldInTable("contractbom", "stockid", $_POST['OldStockID'], $_POST['NewStockID']);
 		ChangeFieldInTable("bom", "component", $_POST['OldStockID'], $_POST['NewStockID']);
 		ChangeFieldInTable("bom", "parent", $_POST['OldStockID'], $_POST['NewStockID']);
- 		ChangeFieldInTable("stockrequestitems", "stockid", $_POST['OldStockID'], $_POST['NewStockID']);
+		ChangeFieldInTable("stockrequestitems", "stockid", $_POST['OldStockID'], $_POST['NewStockID']);
+		ChangeFieldInTable("custitem", "stockid", $_POST['OldStockID'], $_POST['NewStockID']);
+		ChangeFieldInTable("pickreqdetails", "stockid", $_POST['OldStockID'], $_POST['NewStockID']);
+
+		DB_IgnoreForeignKeys();
+
+		ChangeFieldInTable("bom", "parent", $_POST['OldStockID'], $_POST['NewStockID']);
 
 		echo '<br />' . _('Changing any image files');
 		if (file_exists($_SESSION['part_pics_dir'] . '/' . $_POST['OldStockID'] . '.jpg')) {
@@ -170,6 +177,7 @@ if (isset($_POST['ProcessStockChange'])) {
 		} else {
 			echo ' ... ' . _('completed');
 		}
+
 		ChangeFieldInTable("stockitemproperties", "stockid", $_POST['OldStockID'], $_POST['NewStockID']);
 		ChangeFieldInTable("worequirements", "stockid", $_POST['OldStockID'], $_POST['NewStockID']);
 		ChangeFieldInTable("worequirements", "parentstockid", $_POST['OldStockID'], $_POST['NewStockID']);
@@ -180,7 +188,7 @@ if (isset($_POST['ProcessStockChange'])) {
 		ChangeFieldInTable("offers", "stockid", $_POST['OldStockID'], $_POST['NewStockID']);
 		ChangeFieldInTable("tenderitems", "stockid", $_POST['OldStockID'], $_POST['NewStockID']);
 		ChangeFieldInTable("stockdescriptiontranslations", "stockid", $_POST['OldStockID'], $_POST['NewStockID']);// Updates the translated item titles (StockTitles)
-/*		ChangeFieldInTable("Stockdescriptions", "stockid", $_POST['OldStockID'], $_POST['NewStockID']);// Updates the translated item descriptions (StockDescriptions)*/
+/*		 ChangeFieldInTable("Stockdescriptions", "stockid", $_POST['OldStockID'], $_POST['NewStockID']);// Updates the translated item descriptions (StockDescriptions)*/
 
 		DB_ReinstateForeignKeys();
 
@@ -201,7 +209,6 @@ if (isset($_POST['ProcessStockChange'])) {
 		}
 
 	} //only do the stuff above if  $InputError==0
-
 }
 
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
@@ -209,19 +216,19 @@ echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />'
 
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Inventory') . '" alt="" />' . ' ' . $Title . '</p>';
 echo '<table>
-		<tr>
-			<td>' . _('Existing Inventory Code') . ':</td>
-			<td><input type="text" name="OldStockID" size="20" minlength="0" maxlength="20" /></td>
-		</tr>
-		<tr>
-			<td>' . _('New Inventory Code') . ':</td>
-			<td><input type="text" name="NewStockID" size="20" minlength="0" maxlength="20" /></td>
-		</tr>
-		</table>
-		<div class="centre">
-			<input type="submit" name="ProcessStockChange" value="' . _('Process') . '" />
-		</div>
+	<tr>
+		<td>' . _('Existing Inventory Code') . ':</td>
+		<td><input type="text" name="OldStockID" size="20" minlength="0" maxlength="20" /></td>
+	</tr>
+	<tr>
+		<td>' . _('New Inventory Code') . ':</td>
+		<td><input type="text" name="NewStockID" size="20" minlength="0" maxlength="20" /></td>
+	</tr>
+	</table>
+
+		<input type="submit" name="ProcessStockChange" value="' . _('Process') . '" />
 	</form>';
 
 include('includes/footer.inc');
+
 ?>

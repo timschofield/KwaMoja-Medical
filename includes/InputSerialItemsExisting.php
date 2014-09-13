@@ -16,17 +16,33 @@
 
 if ($_POST['EntryType'] == 'KEYED') {
 	/*Also a multi select box for adding bundles to the dispatch without keying */
-	$SQL = "SELECT serialno,
-					quantity
-				FROM stockserialitems
-				INNER JOIN locationusers
-					ON locationusers.loccode=stockserialitems.loccode
-					AND locationusers.userid='" . $_SESSION['UserID'] . "'
-					AND locationusers.canupd=1
-				WHERE stockid='" . $StockId . "'
-					AND stockserialitems.loccode ='" . $LocationOut . "'
-					AND quantity > 0";
 
+	$SQL = "SELECT serialno,
+				quantity,
+				(SELECT SUM(moveqty)
+					FROM pickserialdetails
+					INNER JOIN pickreqdetails on pickreqdetails.detailno=pickserialdetails.detailno
+					INNER JOIN pickreq on pickreq.prid=pickreqdetails.prid
+					AND pickreq.closed=0
+					WHERE pickserialdetails.serialno=stockserialitems.serialno
+					AND pickserialdetails.stockid=stockserialitems.stockid) as qtypickedtotal,
+				(SELECT SUM(moveqty)
+					FROM pickserialdetails
+					INNER JOIN pickreqdetails on pickreqdetails.detailno=pickserialdetails.detailno
+					INNER JOIN pickreq on pickreq.prid=pickreqdetails.prid
+					AND pickreq.orderno='" . $OrderstoPick . "'
+					AND pickreq.closed=0
+					WHERE pickserialdetails.serialno=stockserialitems.serialno
+					AND pickserialdetails.stockid=stockserialitems.stockid) as qtypickedthisorder
+		FROM stockserialitems
+		INNER JOIN locationusers
+			ON locationusers.loccode=stockserialitems.loccode
+			AND locationusers.userid='" . $_SESSION['UserID'] . "'
+			AND locationusers.canupd=1
+		WHERE stockid='" . $StockId . "'
+		AND stockserialitems.loccode ='" . $LocationOut . "'
+		AND quantity > 0
+		ORDER BY createdate, quantity";
 	$ErrMsg = '<br />' . _('Could not retrieve the items for') . ' ' . $StockId;
 	$Bundles = DB_query($SQL, $ErrMsg);
 	echo '<table class="selection"><tr>';
@@ -51,6 +67,12 @@ if ($_POST['EntryType'] == 'KEYED') {
 		$id = 0;
 		$ItemsAvailable = 0;
 		while ($MyRow = DB_fetch_array($Bundles)) {
+			if (is_null($MyRow['qtypickedtotal'])) {
+				$MyRow['qtypickedtotal'] = 0;
+			}
+			if (is_null($MyRow['qtypickedthisorder'])) {
+				$MyRow['qtypickedthisorder'] = 0;
+			}
 			if ($LineItem->Serialised == 1) {
 				if (!array_key_exists($MyRow['serialno'], $AllSerials)) {
 					echo '<option value="' . $MyRow['serialno'] . '">' . $MyRow['serialno'] . '</option>';
@@ -62,7 +84,7 @@ if ($_POST['EntryType'] == 'KEYED') {
 					if (isset($AllSerials[$MyRow['serialno']])) {
 						$RecvQty = $MyRow['quantity'] - $InOutModifier * $AllSerials[$MyRow['serialno']];
 					} else {
-						$RecvQty = $MyRow['quantity'];
+							$RecvQty = $MyRow['quantity'];
 					}
 					echo '<option value="' . $MyRow['serialno'] . '/|/' . $RecvQty . '">' . $MyRow['serialno'] . ' - ' . _('Qty left') . ': ' . $RecvQty . '</option>';
 					$ItemsAvailable += $RecvQty;

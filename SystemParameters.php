@@ -34,6 +34,9 @@ if (isset($_POST['submit'])) {
 	} elseif (mb_strlen($_POST['X_RomalpaClause']) > 5000) {
 		$InputError = 1;
 		prnMsg(_('The Romalpa Clause may not contain single quotes and may not be longer than 5000 chars'), 'error');
+	} elseif (mb_strlen($_POST['X_TermsAndConditions']) > 5000) {
+		$InputError = 1;
+		prnMsg(_('The Terms and conditions may not contain single quotes and may not be longer than 5000 chars'), 'error');
 	} elseif (mb_strlen($_POST['X_QuickEntries']) > 2 or !is_numeric($_POST['X_QuickEntries']) or $_POST['X_QuickEntries'] < 1 or $_POST['X_QuickEntries'] > 99) {
 		$InputError = 1;
 		prnMsg(_('No less than 1 and more than 99 Quick entries allowed'), 'error');
@@ -109,6 +112,9 @@ if (isset($_POST['submit'])) {
 		}
 		if ($_SESSION['RomalpaClause'] != $_POST['X_RomalpaClause']) {
 			$SQL[] = "UPDATE config SET confvalue = '" . $_POST['X_RomalpaClause'] . "' WHERE confname = 'RomalpaClause'";
+		}
+		if ($_SESSION['TermsAndConditions'] != $_POST['X_TermsAndConditions']) {
+			$SQL[] = "UPDATE config SET confvalue = '" . $_POST['X_TermsAndConditions'] . "' WHERE confname = 'TermsAndConditions'";
 		}
 		if ($_SESSION['QuickEntries'] != $_POST['X_QuickEntries']) {
 			$SQL[] = "UPDATE config SET confvalue = '" . $_POST['X_QuickEntries'] . "' WHERE confname = 'QuickEntries'";
@@ -408,6 +414,11 @@ echo '<tr style="outline: 1px solid"><td>' . _('Show Settled Last Month') . ':</
 echo '<tr style="outline: 1px solid"><td>' . _('Romalpa Clause') . ':</td>
 	<td><textarea name="X_RomalpaClause" rows="3" cols="40">' . $_SESSION['RomalpaClause'] . '</textarea></td>
 	<td>' . _('This text appears on invoices and credit notes in small print. Normally a reservation of title clause that gives the company rights to collect goods which have not been paid for - to give some protection for bad debts.') . '</td></tr>';
+
+//TermsAndConditions
+echo '<tr style="outline: 1px solid"><td>' . _('Terms and Conditions of Sale') . ':</td>
+	<td><textarea name="X_TermsAndConditions" rows="3" cols="40">' . $_SESSION['TermsAndConditions'] . '</textarea></td>
+	<td>' . _('The organisations terms and conditions of sale to be printed on order acknowledgements.') . '</td></tr>';
 
 // QuickEntries
 echo '<tr style="outline: 1px solid"><td>' . _('Quick Entries') . ':</td>

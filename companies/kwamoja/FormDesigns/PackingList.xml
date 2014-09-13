@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form name="Picking List">
+<form name="Packing List">
 	<PaperSize name="Paper size">Letter_Landscape</PaperSize>
 	<LineHeight name="Line height">12</LineHeight>
 	<logo type="image" name="Logo" id="Logo">
@@ -21,23 +21,23 @@
 	<CompanyName type="SimpleText" name="Company name" id="CompanyName">
 		<FontSize>10</FontSize>
 		<x>251</x>
-		<y>-500</y>
+		<y>88</y>
 	</CompanyName>
 	<CompanyAddress type="ElementArray" name="Company address">
 		<Line1 type="SimpleText" name="Line 1" id="CompanyAddress1">
 			<FontSize>10</FontSize>
 			<x>251</x>
-			<y>-500</y>
+			<y>100</y>
 		</Line1>
 		<Line2 type="SimpleText" name="Line 2" id="CompanyAddress2">
 			<FontSize>10</FontSize>
 			<x>251</x>
-			<y>-500</y>
+			<y>112</y>
 		</Line2>
 		<Line3 type="SimpleText" name="Line 3" id="CompanyAddress3">
 			<FontSize>10</FontSize>
 			<x>251</x>
-			<y>-500</y>
+			<y>124</y>
 		</Line3>
 		<Line4 type="SimpleText" name="Line 4" id="CompanyAddress4">
 			<FontSize>10</FontSize>
@@ -53,17 +53,17 @@
 	<CompanyPhone type="SimpleText" name="Company phone number" id="CompanyPhone">
 		<FontSize>10</FontSize>
 		<x>251</x>
-		<y>100</y>
+		<y>136</y>
 	</CompanyPhone>
 	<CompanyFax type="SimpleText" name="Company fax number" id="CompanyFax">
 		<FontSize>10</FontSize>
 		<x>251</x>
-		<y>110</y>
+		<y>148</y>
 	</CompanyFax>
 	<CompanyEmail type="SimpleText" name="Company email address" id="CompanyEmail">
 		<FontSize>10</FontSize>
 		<x>251</x>
-		<y>120</y>
+		<y>160</y>
 	</CompanyEmail>
 	<DeliveryAddress type="ElementArray" name="Delivery address">
 		<Caption type="SimpleText" name="Caption" id="DeliveryAddressCaption">
@@ -172,17 +172,17 @@
 	<ShipperCode type="SimpleText" name="Shipper Code" id="ShipperCode">
 		<FontSize>12</FontSize>
 		<x>595</x>
-		<y>91</y>
+		<y>105</y>
 	</ShipperCode>
-	<PickList type="SimpleText" name="Pick List" id="PickList">
+	<CustPO type="SimpleText" name="Pick List" id="CustPO">
 		<FontSize>12</FontSize>
 		<x>595</x>
-		<y>105</y>
-	</PickList>
+		<y>91</y>
+	</CustPO>
 	<Comments type="MultiLineText" name="Comments" id="Comments">
 		<FontSize>12</FontSize>
 		<x>251</x>
-		<y>157</y>
+		<y>188</y>
 		<Length>520</Length>
 	</Comments>
 	<PageNumberCaption type="SimpleText" name="Page Number Caption" id="PageNumberCaption">
@@ -200,11 +200,11 @@
 			<FontSize>12</FontSize>
 			<x>25</x>
 			<y>238</y>
-			<Length>127</Length>
+			<Length>117</Length>
 		</Column1>
 		<Column2 type="MultiLineText" name="Heading 2" id="Heading2">
 			<FontSize>12</FontSize>
-			<x>147</x>
+			<x>153</x>
 			<y>238</y>
 			<Length>255</Length>
 		</Column2>
@@ -228,9 +228,9 @@
 		</Column5>
 		<Column6 type="MultiLineText" name="Heading 6" id="Heading6">
 			<FontSize>12</FontSize>
-			<x>685</x>
+			<x>690</x>
 			<y>238</y>
-			<Length>85</Length>
+			<Length>83</Length>
 		</Column6>
 	</Headings>
 	<Data type="ElementArray" name="Column Data">

@@ -12,10 +12,10 @@ if (!isset($_GET['TransNo']) or $_GET['TransNo'] == "") {
 	echo '<table class="table_index">
 			<tr>
 			<td class="menu_group_item">
-			<ul>
+            <ul>
 				<li><a href="' . $RootPath . '/SelectSalesOrder.php">' . _('Outstanding Sales Orders') . '</a></li>
 				<li><a href="' . $RootPath . '/SelectCompletedOrder.php">' . _('Completed Sales Orders') . '</a></li>
-			</ul>
+            </ul>
 			</td>
 			</tr>
 			</table>';
@@ -27,43 +27,43 @@ if (!isset($_GET['TransNo']) or $_GET['TransNo'] == "") {
 $ErrMsg = _('There was a problem retrieving the order header details for Order Number') . ' ' . $_GET['TransNo'] . ' ' . _('from the database');
 
 $SQL = "SELECT salesorders.debtorno,
-				salesorders.customerref,
-				salesorders.comments,
-				salesorders.orddate,
-				salesorders.deliverto,
-				salesorders.deladd1,
-				salesorders.deladd2,
-				salesorders.deladd3,
-				salesorders.deladd4,
-				salesorders.deladd5,
-				salesorders.deladd6,
-				salesorders.deliverblind,
-				debtorsmaster.name,
-				debtorsmaster.address1,
-				debtorsmaster.address2,
-				debtorsmaster.address3,
-				debtorsmaster.address4,
-				debtorsmaster.address5,
-				debtorsmaster.address6,
-				shippers.shippername,
-				salesorders.printedpackingslip,
-				salesorders.datepackingslipprinted,
-				locations.locationname,
-				salesorders.fromstkloc
-			FROM salesorders
-			INNER JOIN debtorsmaster
-				ON salesorders.debtorno=debtorsmaster.debtorno
-			INNER JOIN shippers
-				ON salesorders.shipvia=shippers.shipper_id
-			INNER JOIN locations
-				ON salesorders.fromstkloc=locations.loccode
-			INNER JOIN locationusers
-				ON locationusers.loccode=locations.loccode
-				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
-				AND locationusers.canview=1
-			WHERE salesorders.orderno='" . $_GET['TransNo'] . "'";
+    		salesorders.customerref,
+			salesorders.comments,
+			salesorders.orddate,
+			salesorders.deliverto,
+			salesorders.deladd1,
+			salesorders.deladd2,
+			salesorders.deladd3,
+			salesorders.deladd4,
+			salesorders.deladd5,
+			salesorders.deladd6,
+			salesorders.deliverblind,
+			debtorsmaster.name,
+			debtorsmaster.address1,
+			debtorsmaster.address2,
+			debtorsmaster.address3,
+			debtorsmaster.address4,
+			debtorsmaster.address5,
+			debtorsmaster.address6,
+			shippers.shippername,
+			salesorders.printedpackingslip,
+			salesorders.datepackingslipprinted,
+			locations.locationname,
+			salesorders.fromstkloc
+		FROM salesorders
+		INNER JOIN debtorsmaster
+			ON salesorders.debtorno=debtorsmaster.debtorno
+		INNER JOIN shippers
+			ON salesorders.shipvia=shippers.shipper_id
+		INNER JOIN locations
+			ON salesorders.fromstkloc=locations.loccode
+		INNER JOIN locationusers
+			ON locationusers.loccode=locations.loccode
+			AND locationusers.userid='" . $_SESSION['UserID'] . "'
+			AND locationusers.canview=1
+		WHERE salesorders.orderno='" . $_GET['TransNo'] . "'";
 if ($_SESSION['SalesmanLogin'] != '') {
-       $SQL .= " AND salesorders.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
+	$SQL .= " AND salesorders.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
 }
 $Result = DB_query($SQL, $ErrMsg);
 
@@ -101,11 +101,11 @@ if (DB_num_rows($Result) == 0) {
 		echo '<table class="table_index">
 						<tr>
 						<td class="menu_group_item">
-						<li><a href="' . $RootPath . '/SelectSalesOrder.php">' . _('Outstanding Sales Orders') . '</a></li>
-						<li><a href="' . $RootPath . '/SelectCompletedOrder.php">' . _('Completed Sales Orders') . '</a></li>
-						</td>
-						</tr>
-						</table>';
+                        <li><a href="' . $RootPath . '/SelectSalesOrder.php">' . _('Outstanding Sales Orders') . '</a></li>
+                        <li><a href="' . $RootPath . '/SelectCompletedOrder.php">' . _('Completed Sales Orders') . '</a></li>
+                        </td>
+                        </tr>
+                        </table>';
 
 		include('includes/footer.inc');
 		exit;
@@ -146,14 +146,29 @@ for ($i = 1; $i <= 2; $i++) {
 					salesorderdetails.narrative,
 					stockmaster.mbflag,
 					stockmaster.decimalplaces,
+					stockmaster.controlled,
+					stockmaster.serialised,
+					pickreqdetails.qtypicked,
+					pickreqdetails.detailno,
+					custitem.cust_part,
+					custitem.cust_description,
 					locstock.bin
 				FROM salesorderdetails
 				INNER JOIN stockmaster
-					ON salesorderdetails.stkcode=stockmaster.stockid
+				ON salesorderdetails.stkcode=stockmaster.stockid
 				INNER JOIN locstock
-					ON stockmaster.stockid = locstock.stockid
+				ON stockmaster.stockid = locstock.stockid
+				LEFT OUTER JOIN pickreq
+				ON pickreq.orderno=salesorderdetails.orderno
+				AND pickreq.closed=0
+				LEFT OUTER JOIN pickreqdetails
+				ON pickreqdetails.prid=pickreq.prid
+				AND pickreqdetails.orderlineno=salesorderdetails.orderlineno
+				LEFT OUTER JOIN custitem
+				ON custitem.debtorno='" . $MyRow['debtorno'] . "'
+				AND custitem.stockid=salesorderdetails.stkcode
 				WHERE locstock.loccode = '" . $MyRow['fromstkloc'] . "'
-					AND salesorderdetails.orderno='" . $_GET['TransNo'] . "'";
+				AND salesorderdetails.orderno='" . $_GET['TransNo'] . "'";
 	$Result = DB_query($SQL, $ErrMsg);
 
 	if (DB_num_rows($Result) > 0) {
@@ -166,7 +181,11 @@ for ($i = 1; $i <= 2; $i++) {
 
 			$DisplayQty = locale_number_format($MyRow2['quantity'], $MyRow2['decimalplaces']);
 			$DisplayPrevDel = locale_number_format($MyRow2['qtyinvoiced'], $MyRow2['decimalplaces']);
-			$DisplayQtySupplied = locale_number_format($MyRow2['quantity'] - $MyRow2['qtyinvoiced'], $MyRow2['decimalplaces']);
+			if ($MyRow2['qtypicked'] > 0) {
+				$DisplayQtySupplied = locale_number_format($MyRow2['qtypicked'], $MyRow2['decimalplaces']);
+			} else {
+				$DisplayQtySupplied = locale_number_format($MyRow2['quantity'] - $MyRow2['qtyinvoiced'], $MyRow2['decimalplaces']);
+			}
 
 			$LeftOvers = $PDF->addTextWrap($XPos, $YPos, 127, $FontSize, $MyRow2['stkcode']);
 			$LeftOvers = $PDF->addTextWrap(147, $YPos, 255, $FontSize, $MyRow2['description']);
@@ -183,6 +202,19 @@ for ($i = 1; $i <= 2; $i++) {
 			else {
 				/*increment a line down for the next line item */
 				$YPos -= ($line_height);
+			}
+			if ($MyRow2['cust_part'] > '') {
+				$LeftOvers = $PDF->addTextWrap($XPos, $YPos, 127, $FontSize, $MyRow2['cust_part'], 'right');
+				$LeftOvers = $PDF->addTextWrap(147, $YPos, 255, $FontSize, $MyRow2['cust_description']);
+				if ($YPos - $line_height <= 50) {
+					/* We reached the end of the page so finsih off the page and start a newy */
+					$PageNumber++;
+					include('includes/PDFOrderPageHeader_generic.inc');
+				} //end if need a new page headed up
+				else {
+					/*increment a line down for the next line item */
+					$YPos -= ($line_height);
+				}
 			}
 			if ($MyRow2['mbflag'] == 'A') {
 				/*Then its an assembly item - need to explode into it's components for packing list purposes */
@@ -214,6 +246,31 @@ for ($i = 1; $i <= 2; $i++) {
 					}
 				} //loop around all the components of the assembly
 			}
+			if ($MyRow2['controlled'] == '1') {
+				$ControlLabel = _('Lot') . ':';
+				if ($MyRow2['serialised'] == 1) {
+					$ControlLabel = _('Serial') . ':';
+				}
+				$sersql = "SELECT serialno,
+									moveqty
+							FROM pickserialdetails
+							WHERE pickserialdetails.detailno='" . $MyRow2['detailno'] . "'";
+				$serresult = DB_query($sersql, $ErrMsg);
+				while ($myser = DB_fetch_array($serresult)) {
+					$LeftOvers = $PDF->addTextWrap($XPos, $YPos, 127, $FontSize, $ControlLabel, 'right');
+					$LeftOvers = $PDF->addTextWrap(147, $YPos, 255, $FontSize, $myser['serialno'], 'left');
+					$LeftOvers = $PDF->addTextWrap(147, $YPos, 255, $FontSize, $myser['moveqty'], 'right');
+					if ($YPos - $line_height <= 50) {
+						/* We reached the end of the page so finsih off the page and start a newy */
+						$PageNumber++;
+						include('includes/PDFOrderPageHeader_generic.inc');
+					} //end if need a new page headed up
+					else {
+						/*increment a line down for the next line item */
+						$YPos -= ($line_height);
+					}
+				} //while loop on myser
+			} //controlled
 		} //end while there are line items to print out
 
 	}

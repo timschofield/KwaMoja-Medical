@@ -19,8 +19,7 @@ if (!isset($_SESSION['Trans'])) {
 	echo '<a href="' . $RootPath . '/ImportBankTrans.php">' . _('Import Bank Transactions') . '</a>';
 	include('includes/footer.inc');
 	exit;
-	/*It all stops here if there aint no bank transactions being imported i.e. $_SESSION['Trans'] has not been initiated
-	 * */
+	/*It all stops here if there aint no bank transactions being imported i.e. $_SESSION['Trans'] has not been initiated */
 }
 
 if (isset($_GET['TransID'])) {
@@ -248,7 +247,7 @@ if ($AllowGLAnalysis == false) {
 	}
 	echo '<tr>
 			<td>' . _('Account Code') . ':</td>
-			<td><input type="text" name="GLCode" size=12 required="required" minlength="1" maxlength=11 value="' . $_POST['GLCode'] . '"></td>
+			<td><input type="text" name="GLCode" size=12 minlength="1" maxlength=11 value="' . $_POST['GLCode'] . '"></td>
 		</tr>';
 	echo '<tr>
 			<td>' . _('Account Selection') . ':<br />(' . _('If you know the code enter it above') . '<br />' . _('otherwise select the account from the list') . ')</td>

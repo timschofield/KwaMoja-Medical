@@ -291,6 +291,7 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 	}
 	$graph->SetXTickPos('none');
 	$graph->SetXTickLabelPos('none');
+	$graph->SetXLabelAngle(90);
 	$graph->SetBackgroundColor('white');
 	$graph->SetTitleColor('blue');
 	$graph->SetFileFormat('png');

@@ -11,7 +11,8 @@ if (isset($_POST['Save'])) {
 	foreach ($_POST as $Key=>$Value) {
 		if (mb_substr($Key, 0, 8) == 'Sequence') {
 			$ReportLink = mb_substr($Key, 8, mb_strlen($Key) - 8);
-			$SQL = "UPDATE modules SET sequence='" . $Value . "'
+			$SQL = "UPDATE modules SET sequence='" . $Value . "',
+										modulename='" . $_POST['Name' . $ReportLink] . "'
 									WHERE reportlink='" . $ReportLink . "'
 										AND secroleid='" . $_POST['SecurityRole'] . "'";
 			$Result = DB_query($SQL);
@@ -37,8 +38,8 @@ if (!isset($_POST['SecurityRole'])) {
 		echo '<option value="' . $MyRow['secroleid'] . '">' . $MyRow['secrolename'] . '</option>';
 	}
 
-	echo '</div>
-		</select>';
+	echo '</select>
+		</div>';
 
 	echo '<div class="centre">
 			<input type="submit" name="Submit" value="' . _('Select Security Role') . '" />
@@ -65,12 +66,14 @@ if (!isset($_POST['SecurityRole'])) {
 	echo '<table class="selection">
 			<tr>
 				<th>' . _('Module Name') . '</th>
+				<th>' . _('New Name') . '</th>
 				<th>' . _('Sequence') . '</th>
 			</tr>';
 
 	while ($MyRow = DB_fetch_array($Result)) {
 		echo '<tr>
 				<td>' . $MyRow['modulename'] . '</td>
+				<td><input type="text" required="required" minlength="1" maxlength="50" size="25" name="Name' . $MyRow['reportlink'] . '" value="' . $MyRow['modulename'] . '" /></td>
 				<td><input type="text" required="required" minlength="1" maxlength="5" size="5" class="number" name="Sequence' . $MyRow['reportlink'] . '" value="' . $MyRow['sequence'] . '" /></td>
 			</tr>';
 	}

@@ -81,7 +81,8 @@ if (isset($_POST['submit'])) {
 											bankaccountnumber='" . $_POST['BankAccountNumber'] . "',
 											bankaddress='" . $_POST['BankAddress'] . "',
 											pettycash='" . $_POST['PettyCash'] . "',
-											invoice ='" . $_POST['DefAccount'] . "'
+											invoice ='" . $_POST['DefAccount'] . "',
+											importformat='" . $_POST['ImportFormat'] . "'
 										WHERE accountcode = '" . $SelectedBankAccount . "'";
 			prnMsg(_('Note that it is not possible to change the currency of the account once there are transactions against it'), 'warn');
 			echo '<br />';
@@ -92,7 +93,8 @@ if (isset($_POST['submit'])) {
 											bankaddress='" . $_POST['BankAddress'] . "',
 											pettycash='" . $_POST['PettyCash'] . "',
 											currcode ='" . $_POST['CurrCode'] . "',
-											invoice ='" . $_POST['DefAccount'] . "'
+											invoice ='" . $_POST['DefAccount'] . "',
+											importformat='" . $_POST['ImportFormat'] . "'
 										WHERE accountcode = '" . $SelectedBankAccount . "'";
 		}
 
@@ -108,7 +110,8 @@ if (isset($_POST['submit'])) {
 										bankaddress,
 										currcode,
 										invoice,
-										pettycash
+										pettycash,
+										importformat
 									) VALUES ('" . $_POST['AccountCode'] . "',
 										'" . $_POST['BankAccountName'] . "',
 										'" . $_POST['BankAccountCode'] . "',
@@ -116,7 +119,8 @@ if (isset($_POST['submit'])) {
 										'" . $_POST['BankAddress'] . "',
 										'" . $_POST['CurrCode'] . "',
 										'" . $_POST['DefAccount'] . "',
-										'" . $_POST['PettyCash'] . "'
+										'" . $_POST['PettyCash'] . "',
+										'" . $_POST['ImportFormat'] . "'
 									)";
 		$Msg = _('The new bank account has been entered');
 	}
@@ -137,6 +141,7 @@ if (isset($_POST['submit'])) {
 		unset($_POST['CurrCode']);
 		unset($_POST['DefAccount']);
 		unset($_POST['PettyCash']);
+		unset($_POST['ImportFormat']);
 		unset($SelectedBankAccount);
 	}
 
@@ -177,7 +182,8 @@ if (!isset($SelectedBankAccount)) {
 					bankaddress,
 					currcode,
 					invoice,
-					pettycash
+					pettycash,
+					importformat
 				FROM bankaccounts
 				INNER JOIN chartmaster
 					ON bankaccounts.accountcode = chartmaster.accountcode";
@@ -193,6 +199,7 @@ if (!isset($SelectedBankAccount)) {
 				<th>' . _('Bank Account Code') . '</th>
 				<th>' . _('Bank Account Number') . '</th>
 				<th>' . _('Bank Address') . '</th>
+				<th>' . _('Import Format') . '</th>
 				<th>' . _('Currency') . '</th>
 				<th>' . _('Default for Invoices') . '</th>
 				<th>' . _('Bank or Cash Account') . '</th>
@@ -219,7 +226,19 @@ if (!isset($SelectedBankAccount)) {
 		} else {
 			$PettyCash = _('Cash');
 		}
+		switch ($MyRow['importformat']) {
+			case 'MT940-ING':
+				$ImportFormat = 'ING MT940';
+				break;
+			case 'MT940-SCB':
+				$ImportFormat = 'SCB MT940';
+				break;
+			default:
+				$ImportFormat = '';
+		}
+
 		printf('<td>%s<br />%s</td>
+				<td>%s</td>
 				<td>%s</td>
 				<td>%s</td>
 				<td>%s</td>
@@ -229,7 +248,7 @@ if (!isset($SelectedBankAccount)) {
 				<td>%s</td>
 				<td><a href="%s?SelectedBankAccount=%s">' . _('Edit') . '</a></td>
 				<td><a href="%s?SelectedBankAccount=%s&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this bank account?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-			</tr>', $MyRow['accountcode'], $MyRow['accountname'], $MyRow['bankaccountname'], $MyRow['bankaccountcode'], $MyRow['bankaccountnumber'], $MyRow['bankaddress'], $MyRow['currcode'], $DefaultBankAccount, $PettyCash, htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $MyRow['accountcode'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $MyRow['accountcode']);
+			</tr>', $MyRow['accountcode'], $MyRow['accountname'], $MyRow['bankaccountname'], $MyRow['bankaccountcode'], $MyRow['bankaccountnumber'], $MyRow['bankaddress'], $ImportFormat, $MyRow['currcode'], $DefaultBankAccount, $PettyCash, htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $MyRow['accountcode'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $MyRow['accountcode']);
 
 	}
 	//END WHILE LIST LOOP
@@ -317,7 +336,9 @@ if (!isset($_POST['BankAccountCode'])) {
 if (!isset($_POST['BankAddress'])) {
 	$_POST['BankAddress'] = '';
 }
-
+if (!isset($_POST['ImportFormat'])) {
+	$_POST['ImportFormat'] = '';
+}
 echo '<tr>
 		<td>' . _('Bank Account Name') . ': </td>
 		<td><input tabindex="2" type="text" name="BankAccountName" value="' . $_POST['BankAccountName'] . '" size="40" required="required" minlength="1" maxlength="50" /></td>
@@ -334,9 +355,19 @@ echo '<tr>
 		<td>' . _('Bank Address') . ': </td>
 		<td><input tabindex="4" type="text" name="BankAddress" value="' . $_POST['BankAddress'] . '" size="40" minlength="0" maxlength="50" /></td>
 	</tr>
+ 	<tr>
+		<td>' . _('Transaction Import File Format') . ': </td>
+		<td>
+			<select tabindex="5" name="ImportFormat">
+				<option ' . ($_POST['ImportFormat'] == '' ? 'selected="selected"' : '') . ' value="">' . _('N/A') . '</option>
+				<option ' . ($_POST['ImportFormat'] == 'MT940-SCB' ? 'selected="selected"' : '') . ' value="MT940-SCB">' . _('MT940 - Siam Comercial Bank Thailand') . '</option>
+				<option ' . ($_POST['ImportFormat'] == 'MT940-ING' ? 'selected="selected"' : '') . ' value="MT940-ING">' . _('MT940 - ING Bank Netherlands') . '</option>
+			</select>
+		</td>
+	</tr>
 	<tr>
 		<td>' . _('Currency Of Account') . ': </td>
-		<td><select minlength="0" tabindex="5" name="CurrCode">';
+		<td><select minlength="0" tabindex="6" name="CurrCode">';
 
 if (!isset($_POST['CurrCode']) or $_POST['CurrCode'] == '') {
 	$_POST['CurrCode'] = $_SESSION['CompanyRecord']['currencydefault'];
@@ -409,12 +440,12 @@ foreach ($BankOrCash as $Code=>$Type) {
 }
 echo '</select>
 		</td>
-	</tr>';
+	</tr>
+</table>';
 
-echo '</table>
-		<div class="centre">
-			<input tabindex="7" type="submit" name="submit" value="' . _('Enter Information') . '" />
-		</div>';
+echo '<div class="centre">
+		<input tabindex="7" type="submit" name="submit" value="' . _('Enter Information') . '" />
+	</div>';
 echo '</form>';
 include('includes/footer.inc');
 ?>

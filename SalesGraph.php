@@ -299,6 +299,8 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 	$graph->SetShading(5);
 	$graph->SetDrawYGrid(TRUE);
 	$graph->SetDataType('text-data');
+	$graph->SetNumberFormat('.', ',');
+	$graph->SetPrecisionY($_SESSION['CompanyRecord']['decimalplaces']);
 
 	$SalesResult = DB_query($SQL);
 	if (DB_error_no() != 0) {

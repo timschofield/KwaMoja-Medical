@@ -34,8 +34,9 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/sales.png" title="' . _('Select criteria') . '" alt="' . _('Select criteria') . '" />' . ' ' . $Title . '</p>';
 
 	echo '<table class="selection" summary="' . _('Criteria for the sales graph') . '">
-			<tr><td>' . _('Select Period From') . ':</td>
-			<td><select minlength="0" name="FromPeriod">';
+			<tr>
+				<td>' . _('Select Period From') . ':</td>
+				<td><select minlength="0" name="FromPeriod">';
 
 	if (Date('m') > $_SESSION['YearEnd']) {
 		/*Dates in SQL format */
@@ -83,7 +84,9 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 			echo '<option value ="' . $MyRow['periodno'] . '">' . MonthAndYearFromSQLDate($MyRow['lastdate_in_period']) . '</option>';
 		}
 	}
-	echo '</select></td></tr>';
+	echo '</select>
+				</td>
+			</tr>';
 
 	$AreasResult = DB_query("SELECT areacode, areadescription FROM areas");
 
@@ -105,7 +108,9 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 			echo '<option value="' . $MyRow['areacode'] . '">' . $MyRow['areadescription'] . '</option>';
 		}
 	}
-	echo '</select></td></tr>';
+	echo '</select>
+				</td>
+			</tr>';
 
 	$CategoriesResult = DB_query("SELECT categoryid, categorydescription FROM stockcategory");
 
@@ -127,7 +132,9 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 			echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 		}
 	}
-	echo '</select></td></tr>';
+	echo '</select>
+				</td>
+			</tr>';
 
 	echo '<tr>
 			<td>' . _('For Sales Person') . ':</td>
@@ -154,19 +161,23 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 	echo '</select></td>
 		</tr>';
 
-	echo '<tr><td>' . _('Graph Type') . '</td>';
-	echo '<td><select minlength="0" name="GraphType">';
-	echo '<option value="bars">' . _('Bar Graph') . '</option>';
-	echo '<option value="stackedbars">' . _('Stacked Bar Graph') . '</option>';
-	echo '<option value="lines">' . _('Line Graph') . '</option>';
-	echo '<option value="linepoints">' . _('Line Point Graph') . '</option>';
-	echo '<option value="area">' . _('Area Graph') . '</option>';
-	echo '<option value="points">' . _('Points Graph') . '</option>';
-	echo '<option value="pie">' . _('Pie Graph') . '</option>';
-	echo '<option value="thinbarline">' . _('Thin Bar Line Graph') . '</option>';
-	echo '<option value="squared">' . _('Squared Graph') . '</option>';
-	echo '<option value="stackedarea">' . _('Stacked Area Graph') . '</option>';
-	echo '</select></td></tr>';
+	echo '<tr>
+			<td>' . _('Graph Type') . '</td>
+			<td>
+				<select minlength="0" name="GraphType">
+					<option value="bars">' . _('Bar Graph') . '</option>
+					<option value="stackedbars">' . _('Stacked Bar Graph') . '</option>
+					<option value="lines">' . _('Line Graph') . '</option>
+					<option value="linepoints">' . _('Line Point Graph') . '</option>
+					<option value="area">' . _('Area Graph') . '</option>
+					<option value="points">' . _('Points Graph') . '</option>
+					<option value="pie">' . _('Pie Graph') . '</option>
+					<option value="thinbarline">' . _('Thin Bar Line Graph') . '</option>
+					<option value="squared">' . _('Squared Graph') . '</option>
+					<option value="stackedarea">' . _('Stacked Area Graph') . '</option>
+				</select>
+			</td>
+		</tr>';
 
 	if (!isset($_POST['ValueFrom'])) {
 		$_POST['ValueFrom'] = '';
@@ -174,17 +185,27 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 	if (!isset($_POST['ValueTo'])) {
 		$_POST['ValueTo'] = '';
 	}
-	echo '<tr><td>' . _('Graph On') . ':</td><td>
-			<input type="radio" name="GraphOn" value="All" checked="checked" />' . _('All') . '<br />
-			<input type="radio" name="GraphOn" value="Customer" />' . _('Customer') . '<br />
-			<input type="radio" name="GraphOn" value="StockID" />' . _('Item Code') . '</td></tr>';
-	echo '<tr><td>' . _('From') . ':<input type="text" name="ValueFrom" value="' . $_POST['ValueFrom'] . '" /></td>
-	 		<td>' . _('To') . ':<input type="text" name="ValueTo" value="' . $_POST['ValueTo'] . '" /></td></tr>';
+	echo '<tr>
+			<td>' . _('Graph On') . ':</td>
+			<td>
+				<input type="radio" name="GraphOn" value="All" checked="checked" />' . _('All') . '<br />
+				<input type="radio" name="GraphOn" value="Customer" />' . _('Customer') . '<br />
+				<input type="radio" name="GraphOn" value="StockID" />' . _('Item Code') . '
+			</td>
+		</tr>';
+	echo '<tr>
+			<td>' . _('From') . ':<input type="text" name="ValueFrom" value="' . $_POST['ValueFrom'] . '" /></td>
+	 		<td>' . _('To') . ':<input type="text" name="ValueTo" value="' . $_POST['ValueTo'] . '" /></td>
+	 	</tr>';
 
-	echo '<tr><td>' . _('Graph Value') . ':</td><td>
-			<input type="radio" name="GraphValue" value="Net" checked="checked" />' . _('Net Sales Value') . '<br />
-			<input type="radio" name="GraphValue" value="GP" />' . _('Gross Profit') . '<br />
-			<input type="radio" name="GraphValue" value="Quantity" />' . _('Quantity') . '</td></tr>';
+	echo '<tr>
+			<td>' . _('Graph Value') . ':</td>
+			<td>
+				<input type="radio" name="GraphValue" value="Net" checked="checked" />' . _('Net Sales Value') . '<br />
+				<input type="radio" name="GraphValue" value="GP" />' . _('Gross Profit') . '<br />
+				<input type="radio" name="GraphValue" value="Quantity" />' . _('Quantity') . '
+			</td>
+		</tr>';
 
 	echo '</table>';
 
@@ -319,7 +340,7 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 
 	//Draw it
 	$graph->DrawGraph();
-	echo '<br /><table class="selection" summary="' . _('Sales Report Graph') . '">
+	echo '<table class="selection" summary="' . _('Sales Report Graph') . '">
 			<tr>
 				<th>' . _('Sales Report Graph') . '
 					<img src="' . $RootPath . '/css/' . $Theme . '/images/printer.png" class="PrintIcon noPrint" title="' . _('Print') . '" alt="' . _('Print') . '" onclick="window.print();" />

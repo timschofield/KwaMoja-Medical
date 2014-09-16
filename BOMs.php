@@ -675,7 +675,8 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 				INNER JOIN locationusers
 					ON locationusers.loccode=locations.loccode
 					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
-					AND locationusers.canupd=1";
+					AND locationusers.canupd=1
+				WHERE locations.usedforwo = 1";
 	$Result = DB_query($SQL);
 
 	while ($MyRow = DB_fetch_array($Result)) {

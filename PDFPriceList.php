@@ -30,6 +30,12 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 
 	$line_height = 12;
 
+	if ($_POST['Currency'] != "All") {
+		$WhereCurrency = " AND prices.currabrev = '" . $_POST['Currency'] . "' ";
+	} else {
+		$WhereCurrency = "";
+	}
+
 	/*Now figure out the inventory data to report for the category range under review */
 	if ($_POST['CustomerSpecials'] == _('Customer Special Prices Only')) {
 
@@ -97,7 +103,8 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 						AND stockmaster.categoryid <= '" . $_POST['ToCriteria'] . "'
 						AND prices.debtorno='" . $_SESSION['CustomerID'] . "'
 						AND prices.startdate<='" . FormatDateForSQL($_POST['EffectiveDate']) . "'
-						AND (prices.enddate='0000-00-00' OR prices.enddate >'" . FormatDateForSQL($_POST['EffectiveDate']) . "')
+						AND (prices.enddate='0000-00-00' OR prices.enddate >'" . FormatDateForSQL($_POST['EffectiveDate']) . "')" .
+						$WhereCurrency . "
 					ORDER BY prices.currabrev,
 							stockmaster.categoryid,
 							stockmaster.stockid,
@@ -137,7 +144,8 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 					AND stockmaster.categoryid <= '" . $_POST['ToCriteria'] . "'
 					AND prices.typeabbrev='" . $_POST['SalesType'] . "'
 					AND prices.startdate<='" . FormatDateForSQL($_POST['EffectiveDate']) . "'
-					AND (prices.enddate='0000-00-00' OR prices.enddate>'" . FormatDateForSQL($_POST['EffectiveDate']) . "')
+					AND (prices.enddate='0000-00-00' OR prices.enddate>'" . FormatDateForSQL($_POST['EffectiveDate']) . "')" .
+					$WhereCurrency . "
 					AND prices.debtorno=''
 				ORDER BY prices.currabrev,
 					stockmaster.categoryid,
@@ -319,8 +327,9 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				</td>
 			</tr>';
 
-		echo '<tr><td>' . _('To Inventory Category Code') . ':</td>
-		  <td><select minlength="0" name="ToCriteria">';
+		echo '<tr>
+				<td>' . _('To Inventory Category Code') . ':</td>
+				<td><select minlength="0" name="ToCriteria">';
 
 		/*Set the index for the categories result set back to 0 */
 		DB_data_seek($CatResult, 0);
@@ -345,6 +354,19 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 		while ($MyRow = DB_fetch_array($SalesTypesResult)) {
 			echo '<option value="' . $MyRow['typeabbrev'] . '">' . $MyRow['sales_type'] . '</option>';
 		}
+		echo '</select>
+					</td>
+				</tr>';
+
+		echo '<tr>
+				<td>' . _('For Currency').':</td>
+                <td><select name="Currency">';
+		$SQL = "SELECT currabrev, currency FROM currencies ORDER BY currency";
+		$CurrencyResult=DB_query($SQL);
+		echo '<option selected="selected" value="All">' . _('All')  . '</option>';
+		while ($MyRow=DB_fetch_array($CurrencyResult)) {
+			echo '<option value="' . $MyRow['currabrev'] . '">' . $MyRow['currency'] . '</option>';
+ 		}
 		echo '</select>
 					</td>
 				</tr>';

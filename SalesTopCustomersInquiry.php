@@ -237,7 +237,7 @@ if (isset($_POST['ShowSales'])) {
 				<td class="number">' . locale_number_format($SalesRow['netsalesvalue'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
 				<td class="number">' . locale_number_format($SalesRow['salesquantity'], 'Variable') . '</td>
 				</tr>';
-		$i++;
+		++$i;
 
 		$CumulativeTotalSales += $SalesRow['salesvalue'];
 		$CumulativeTotalRefunds += $SalesRow['returnvalue'];

@@ -105,7 +105,7 @@ while ($row = DB_fetch_array($SalesOrdersResult)) {
 		$k = 0;
 	} else {
 		echo '<tr class="OddTableRows">';
-		$k++;
+		++$k;
 	}
 
 	$FormatedOrderValue = locale_number_format($row['ordervalue'], $row['currdecimalplaces']);

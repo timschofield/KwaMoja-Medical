@@ -153,7 +153,7 @@ if (!isset($_SESSION['SPL' . $Identifier]->BranchCode)) {
 				$k = 0;
 			} else {
 				echo '<tr class="OddTableRows">';
-				$k++;
+				++$k;
 			}
 
 			printf('<td><input type="submit" name="SelectBranch" value="%s" /></td>

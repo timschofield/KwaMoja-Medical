@@ -114,7 +114,7 @@ if ($SelectedWO == 'Preview') {
 		if ($i % $LabelsPerBox == 0) {
 			$BoxNumber += 1;
 		}
-		$i++;
+		++$i;
 	}
 	if ($LeftOverQty > 0) {
 		$j = 1;
@@ -127,8 +127,8 @@ if ($SelectedWO == 'Preview') {
 			if ($i % $LabelsPerBox == 0) {
 				$BoxNumber += 1;
 			}
-			$i++;
-			$j++;
+			++$i;
+			++$j;
 			$NoOfLabels++;
 		}
 	}

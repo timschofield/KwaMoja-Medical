@@ -61,41 +61,41 @@ if (isset($_POST['submit'])) {
 		$InputError = 1;
 		prnMsg(_('The currency already exists in the database'), 'error');
 		$Errors[$i] = 'Abbreviation';
-		$i++;
+		++$i;
 	}
 	if (!is_numeric(filter_number_format($_POST['ExchangeRate']))) {
 		$InputError = 1;
 		prnMsg(_('The exchange rate must be numeric'), 'error');
 		$Errors[$i] = 'ExchangeRate';
-		$i++;
+		++$i;
 	}
 	if (!is_numeric(filter_number_format($_POST['DecimalPlaces']))) {
 		$InputError = 1;
 		prnMsg(_('The number of decimal places to display for amounts in this currency must be numeric'), 'error');
 		$Errors[$i] = 'DecimalPlaces';
-		$i++;
+		++$i;
 	} elseif (filter_number_format($_POST['DecimalPlaces']) < 0) {
 		$InputError = 1;
 		prnMsg(_('The number of decimal places to display for amounts in this currency must be positive or zero'), 'error');
 		$Errors[$i] = 'DecimalPlaces';
-		$i++;
+		++$i;
 	} elseif (filter_number_format($_POST['DecimalPlaces']) > 4) {
 		$InputError = 1;
 		prnMsg(_('The number of decimal places to display for amounts in this currency is expected to be 4 or less'), 'error');
 		$Errors[$i] = 'DecimalPlaces';
-		$i++;
+		++$i;
 	}
 	if (mb_strlen($_POST['Country']) > 50) {
 		$InputError = 1;
 		prnMsg(_('The currency country must be 50 characters or less long'), 'error');
 		$Errors[$i] = 'Country';
-		$i++;
+		++$i;
 	}
 	if (mb_strlen($_POST['HundredsName']) > 15) {
 		$InputError = 1;
 		prnMsg(_('The hundredths name must be 15 characters or less long'), 'error');
 		$Errors[$i] = 'HundredsName';
-		$i++;
+		++$i;
 	}
 	if (($FunctionalCurrency != '') and (isset($SelectedCurrency) and $SelectedCurrency == $FunctionalCurrency)) {
 		$_POST['ExchangeRate'] = 1;
@@ -321,7 +321,7 @@ if (!isset($SelectedCurrency)) {
 			$k = 0;
 		} else {
 			echo '<tr class="OddTableRows">';
-			$k++;
+			++$k;
 		}
 		// Lets show the country flag
 		$ImageFile = 'flags/' . mb_strtoupper($MyRow['currabrev']) . '.gif';

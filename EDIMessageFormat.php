@@ -139,7 +139,7 @@ if (!isset($SelectedMessageLine)) {
 			$k = 0;
 		} else {
 			echo '<tr class="OddTableRows">';
-			$k++;
+			++$k;
 		}
 
 

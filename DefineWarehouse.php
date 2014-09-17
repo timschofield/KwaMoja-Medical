@@ -130,7 +130,7 @@ if (isset($_POST['Insert']) or isset($_POST['Update'])) {
 				$ErrMsg = _('An error occurred inserting the container detaails');
 				$DbgMsg = _('The SQL used to insert the container record was');
 				$Result = DB_query($InsertSQL, $ErrMsg, $DbgMsg);
-				$k++;
+				++$k;
 			}
 		}
 	}

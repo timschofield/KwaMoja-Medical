@@ -139,7 +139,7 @@ function userLogin($Name, $Password, $SysAdminEmail = '') {
 						$UserIsSysAdmin = TRUE;
 					}
 					$_SESSION['AllowedPageSecurityTokens'][$i] = $MyRow[0];
-					$i++;
+					++$i;
 				}
 			}
 			// check if only maintenance users can access KwaMoja

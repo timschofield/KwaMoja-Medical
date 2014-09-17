@@ -16,7 +16,7 @@ function GetSalesmanList($user, $password) {
 	$i = 0;
 	while ($MyRow = DB_fetch_array($result)) {
 		$SalesmanList[$i] = $MyRow[0];
-		$i++;
+		++$i;
 	}
 	return $SalesmanList;
 }

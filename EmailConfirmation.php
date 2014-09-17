@@ -234,7 +234,7 @@ if (DB_num_rows($Result) > 0) {
 							<td align="right">' . $DisplayQty . '</td>
 							<td align="center">' . $ItemDue[$i] . '</td>
 							</tr>';
-		$i++;
+		++$i;
 	} //end while there are line items to print out
 }
 /*end if there are order details to show on the order*/

@@ -287,7 +287,7 @@ if (!isset($_GET['Edit'])) {
 				$k = 0;
 			} else {
 				echo '<tr class="OddTableRows">';
-				$k++;
+				++$k;
 			}
 			if ($MyRow['preferred'] == 1) {
 				$DisplayPreferred = _('Yes');
@@ -455,7 +455,7 @@ if (isset($SuppliersResult)) {
 			$k = 0;
 		} else {
 			echo '<tr class="OddTableRows">';
-			$k++;
+			++$k;
 		}
 		printf('<td><input type="submit" name="SupplierID" value="%s" /></td>
 				<td>%s</td>
@@ -676,7 +676,7 @@ if (!isset($SuppliersResult)) {
 				$k = 0;
 			} else {
 				echo '<tr class="OddTableRows">';
-				$k++;
+				++$k;
 			}
 			printf('<input type="hidden" name="DiscountID%s" value="%s" />
 					<td><input type="text" name="DiscountNarrative%s" value="%s" minlength="0" maxlength="20" size="20" /></td>
@@ -687,7 +687,7 @@ if (!isset($SuppliersResult)) {
 					<td><a href="%s?DeleteDiscountID=%s&amp;StockID=%s&amp;EffectiveFrom=%s&amp;SupplierID=%s&amp;Edit=1">' . _('Delete') . '</a></td>
 					</tr>', $i, $MyRow['id'], $i, $MyRow['discountnarrative'], $i, locale_number_format($MyRow['discountamount'], $CurrDecimalPlaces), $i, locale_number_format($MyRow['discountpercent'] * 100, 2), $i, ConvertSQLDate($MyRow['effectivefrom']), $i, ConvertSQLDate($MyRow['effectiveto']), htmlspecialchars($_SERVER['PHP_SELF']), $MyRow['id'], $StockId, $EffectiveFrom, $SupplierID);
 
-			$i++;
+			++$i;
 		} //end of while loop
 
 		echo '<input type="hidden" name="NumberOfDiscounts" value="' . $i . '" />';

@@ -109,7 +109,7 @@ function GetGLAccountList($user, $password) {
 		$GLAccountList[$i]['accountcode'] = $MyRow[0];
 		$GLAccountList[$i]['accountname'] = $MyRow[1];
 		$GLAccountList[$i]['pandl'] = $MyRow[2];
-		$i++;
+		++$i;
 	}
 	return $GLAccountList;
 }

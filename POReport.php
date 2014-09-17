@@ -559,7 +559,7 @@ function submit($PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $Supplie
 						$k = 0;
 					} else {
 						echo '<tr class="OddTableRows">';
-						$k++;
+						++$k;
 					}
 					$linectr++;
 					// Detail for both DateType of Order
@@ -621,7 +621,7 @@ function submit($PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $Supplie
 						$k = 0;
 					} else {
 						echo '<tr class="OddTableRows">';
-						$k++;
+						++$k;
 					}
 					$linectr++;
 					// Detail for both DateType of Ship
@@ -726,7 +726,7 @@ function submit($PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $Supplie
 					$k = 0;
 				} else {
 					echo '<tr class="OddTableRows">';
-					$k++;
+					++$k;
 				}
 				printf('<td>%s</td>
 						<td>%s</td>

@@ -16,7 +16,7 @@ function GetPaymentTermsList($user, $password) {
 	$i = 0;
 	while ($MyRow = DB_fetch_array($result)) {
 		$PaymentTermsList[$i] = $MyRow[0];
-		$i++;
+		++$i;
 	}
 	return $PaymentTermsList;
 }
@@ -56,7 +56,7 @@ function GetPaymentMethodsList($User, $Password) {
 	$i = 0;
 	while ($MyRow = DB_fetch_array($result)) {
 		$PaymentMethodsList[$i] = $MyRow[0];
-		$i++;
+		++$i;
 	}
 	return $PaymentMethodsList;
 }

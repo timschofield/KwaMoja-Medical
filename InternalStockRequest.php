@@ -444,7 +444,7 @@ foreach ($_SESSION['Request']->LineItems as $LineItems) {
 		$k = 0;
 	} else {
 		echo '<tr class="OddTableRows">';
-		$k++;
+		++$k;
 	}
 	echo '<td>' . $LineItems->LineNumber . '</td>
 			<td>' . $LineItems->StockID . '</td>
@@ -730,7 +730,7 @@ if (isset($searchresult) and !isset($_POST['Select'])) {
 				$k = 0;
 			} else {
 				echo '<tr class="OddTableRows">';
-				$k++;
+				++$k;
 			}
 			if ($MyRow['mbflag'] == 'D') {
 				$qoh = _('N/A');
@@ -887,7 +887,7 @@ if (isset($SearchResult)) {
 		echo '<input type="hidden" name="ItemDescription' . $i . '" value="' . $MyRow['description'] . '" />';
 		echo '<input type="hidden" name="Units' . $i . '" value="' . $MyRow['stockunits'] . '" />';
 
-		$i++;
+		++$i;
 		//end of page full new headings if
 	}
 	//end of while loop

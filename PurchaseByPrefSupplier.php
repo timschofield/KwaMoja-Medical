@@ -511,7 +511,7 @@ if (isset($_POST['Supplier']) and isset($_POST['ShowItems']) and $_POST['Supplie
 					<td class="number">' . locale_number_format(round($SalesRow['wk1'], $ItemRow['decimalplaces']), $ItemRow['decimalplaces']) . '</td>
 					<td><input type="hidden" name="StockID' . $i . '" value="' . $ItemRow['stockid'] . '" /><input type="text" class="number" name="OrderQty' . $i . '" value="' . $_POST['OrderQty' . $i] . '" title="' . _('Enter the quantity to purchase of this item') . '" size="6" maxlength="6" /></td>
 				</tr>';
-			$i++;
+			++$i;
 		}
 		echo '<input type="hidden" name="Supplier" value="' . stripslashes($_POST['Supplier']) . '" />';
 		/*end preferred supplier items while loop */

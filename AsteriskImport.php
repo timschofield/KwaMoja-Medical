@@ -26,7 +26,7 @@ if (isset($_POST['Submit'])) { //start file processing
 			include('includes/footer.inc');
 			exit;
 		}
-		$i++;
+		++$i;
 		$SQL = "SELECT COUNT(debtorno) as totalrecords FROM debtorsmaster WHERE debtorno='" . $MyRow[0] . "'";
 		$Result = DB_query($SQL);
 		$CheckRow = DB_fetch_row($Result);

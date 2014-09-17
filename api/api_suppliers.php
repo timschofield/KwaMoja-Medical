@@ -345,7 +345,7 @@ function SearchSuppliers($Field, $Criteria, $user, $password) {
 	$SupplierList = array();
 	while ($MyRow = DB_fetch_array($result)) {
 		$SupplierList[$i] = $MyRow[0];
-		$i++;
+		++$i;
 	}
 	return $SupplierList;
 }

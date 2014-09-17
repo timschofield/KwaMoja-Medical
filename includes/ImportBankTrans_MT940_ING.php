@@ -60,7 +60,7 @@ if (substr($LineText,0,4)==':20:'){ //Timestamp of report MT940 generation
 					$TransAmount = doubleval('-' . str_replace(',','.',substr($LineText,$ValueStart,-10)));
 				}
 			}
-			$i++;
+			++$i;
 			$_SESSION['Trans'][$i] = new BankTrans($TransDate,$TransAmount) ;
 	  }
 	  if (substr($LineText,0,4)==':86:'){

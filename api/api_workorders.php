@@ -478,7 +478,7 @@ function SearchWorkOrders($Field, $Criteria, $user, $password) {
 	$WOList = array();
 	while ($MyRow = DB_fetch_array($result)) {
 		$WOList[$i] = $MyRow[0];
-		$i++;
+		++$i;
 	}
 	return $WOList;
 }

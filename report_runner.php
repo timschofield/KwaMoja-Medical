@@ -25,27 +25,27 @@ if ($argc < 7) {
 for ($i = 1; $i < $argc; $i++) {
 	switch ($argv[$i]) {
 		case '-r':
-			$i++;
+			++$i;
 			$reportnumber = $argv[$i];
 			break;
 		case '-n':
-			$i++;
+			++$i;
 			$reportname = $argv[$i];
 			break;
 		case '-e':
-			$i++;
+			++$i;
 			$emailaddresses = $argv[$i];
 			break;
 		case '-d':
-			$i++;
+			++$i;
 			$DatabaseName = $argv[$i];
 			break;
 		case '-H':
-			$i++;
+			++$i;
 			$HOMEDIR = $argv[$i];
 			break;
 		case '-t':
-			$i++;
+			++$i;
 			$Mailtext = $argv[$i];
 			break;
 		default:

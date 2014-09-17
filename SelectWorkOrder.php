@@ -228,7 +228,7 @@ if (!isset($StockId)) {
 				$k = 0;
 			} else {
 				echo '<tr class="OddTableRows">';
-				$k++;
+				++$k;
 			}
 
 			printf('<td><input type="submit" name="SelectedStockItem" value="%s" /></td>
@@ -359,7 +359,7 @@ if (!isset($StockId)) {
 					$k = 0;
 				} else {
 					echo '<tr class="OddTableRows">';
-					$k++;
+					++$k;
 				}
 
 				$ModifyPage = $RootPath . '/WorkOrderEntry.php?WO=' . urlencode($MyRow['wo']);

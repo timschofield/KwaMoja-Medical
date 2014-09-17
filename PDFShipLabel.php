@@ -218,7 +218,7 @@ if ($SelectedORD == 'Preview') {
 				$MyArray[$NoOfLabels]['customerref'] = $MyRow['customerref'];
 				$MyArray[$NoOfLabels]['stockid'] = $MyRow['stockid'];
 				$MyArray[$NoOfLabels]['custitem'] = $MyRow['cust_part'] . ' ' . $MyRow['cust_description'];
-				$i++;
+				++$i;
 				$NoOfLabels++;
 			}
 			if ($LeftOverQty > 0) {
@@ -235,8 +235,8 @@ if ($SelectedORD == 'Preview') {
 					$MyArray[$NoOfLabels]['customerref'] = $MyRow['customerref'];
 					$MyArray[$NoOfLabels]['stockid'] = $MyRow['stockid'];
 					$MyArray[$NoOfLabels]['custitem'] = $MyRow['cust_part'] . ' ' . $MyRow['cust_description'];
-					$i++;
-					$j++;
+					++$i;
+					++$j;
 					//$NoOfLabels++;
 				}
 			}

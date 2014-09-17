@@ -111,7 +111,7 @@ if (isset($_POST['submit'])) {
 	while ($i < count($_SESSION['ModuleList'])) {
 		$FormVbl = 'Module_' . $i;
 		$ModulesAllowed .= $_POST[($FormVbl)] . ',';
-		$i++;
+		++$i;
 	}
 	$_POST['ModulesAllowed'] = $ModulesAllowed;
 
@@ -465,7 +465,7 @@ if (isset($SelectedUser)) {
 			$_POST['ModulesAllowed'] .= ',';
 		}
 		$_POST['ModulesAllowed'] .= '1';
-		$i++;
+		++$i;
 	}
 }
 
@@ -708,7 +708,7 @@ foreach ($_SESSION['ModuleList'] as $ModuleName) {
 	}
 	echo '</select></td>
 		</tr>';
-	$i++;
+	++$i;
 }
 if (!isset($_POST['PDFLanguage'])) {
 	$_POST['PDFLanguage'] = 0;

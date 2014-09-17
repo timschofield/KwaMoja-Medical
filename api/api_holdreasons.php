@@ -16,7 +16,7 @@ function GetHoldReasonList($user, $password) {
 	$i = 0;
 	while ($MyRow = DB_fetch_array($result)) {
 		$HoldReasonList[$i] = $MyRow[0];
-		$i++;
+		++$i;
 	}
 	return $HoldReasonList;
 }

@@ -163,7 +163,7 @@ while ($MyRow = DB_fetch_array($ContractsResult)) {
 		$k = 0;
 	} else {
 		echo '<tr class="OddTableRows">';
-		$k++;
+		++$k;
 	}
 
 	$ModifyPage = $RootPath . '/Contracts.php?ModifyContractRef=' . $MyRow['contractref'];

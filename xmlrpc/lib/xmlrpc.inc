@@ -3442,7 +3442,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 					{
 						$ko = true;
 					}
-					$j++;
+					++$j;
 				}
 				if($ko)
 				{

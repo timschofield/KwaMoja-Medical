@@ -246,7 +246,7 @@ if (isset($_POST['CommitBatch'])) {
 	$i = 0;
 	while ($Act = DB_fetch_row($Result)) {
 		$BankAccounts[$i] = $Act[0];
-		$i++;
+		++$i;
 	}
 
 	$_SESSION['ReceiptBatch']->BatchNo = GetNextTransNo(12);

@@ -202,7 +202,7 @@ if ($invalid_imports > 0 and !$_SESSION['CurImportFile']['Processed']) {
 				<td>' . $SItem->BundleRef . '</td>
 				<td class="number">' . locale_number_format($SItem->BundleQty, $LineItem->DecimalPlaces) . '</td>
 			</tr>';
-		$i++;
+		++$i;
 		if ($i == 100) {
 			break;
 		}

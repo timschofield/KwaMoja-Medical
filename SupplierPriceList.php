@@ -274,7 +274,7 @@ if (isset($searchresult) and !isset($_POST['Select'])) {
 				$k = 0;
 			} else {
 				echo '<tr class="OddTableRows">';
-				$k++;
+				++$k;
 			}
 
 			echo '<td><input type="submit" name="Select" value="' . $MyRow['stockid'] . '" /></td>
@@ -454,7 +454,7 @@ if (isset($SuppliersResult)) {
 			$k = 0;
 		} else {
 			echo '<tr class="OddTableRows">';
-			$k++;
+			++$k;
 		}
 		printf('<td><input type="submit" name="SupplierID" value="%s" /></td>
 				<td>%s</td>

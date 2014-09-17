@@ -176,7 +176,7 @@ function GetUsers($GroupId, $GroupName) {
 		$i = 0;
 		while ($MyRow = DB_fetch_array($Result)) {
 			$UsersAssigned[$i] = $MyRow['userid'];
-			$i++;
+			++$i;
 		}
 	}
 

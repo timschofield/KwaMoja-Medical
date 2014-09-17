@@ -121,7 +121,7 @@ if (!isset($_POST['submit']) and isset($_POST['supplierid'])) {
 			$k = 0;
 		} else {
 			echo '<tr class="OddTableRows">';
-			$k++;
+			++$k;
 		}
 		echo '<td>' . $MyRow['offerid'] . '</td>
 			<td>' . $MyRow['suppname'] . '</td>

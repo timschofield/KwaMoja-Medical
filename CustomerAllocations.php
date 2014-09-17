@@ -363,7 +363,7 @@ if (isset($_POST['AllocTrans'])) {
 			<td>' . $AllocnItem->TransDate . '</td>
 			<td class="number">' . locale_number_format($AllocnItem->TransAmount, $_SESSION['Alloc']->CurrDecimalPlaces) . '</td>
 			<td class="number">' . locale_number_format($YetToAlloc, $_SESSION['Alloc']->CurrDecimalPlaces) . '</td>';
-		$j++;
+		++$j;
 
 		if ($AllocnItem->TransAmount < 0) {
 			$Balance += $YetToAlloc;
@@ -380,7 +380,7 @@ if (isset($_POST['AllocTrans'])) {
 				echo ' />';
 			}
 			$Balance += $YetToAlloc - $AllocnItem->AllocAmt;
-			$j++;
+			++$j;
 			echo '<input tabindex="' . $j . '" type="text" class="number" name="Amt' . $Counter . '" required="required" minlength="1" maxlength="12" size="13" value="' . locale_number_format(round($AllocnItem->AllocAmt, $_SESSION['Alloc']->CurrDecimalPlaces), $_SESSION['Alloc']->CurrDecimalPlaces) . '" />
 					<input type="hidden" name="AllocID' . $Counter . '" value="' . $AllocnItem->ID . '" /></td>
 					<td class="number">' . locale_number_format($Balance, $_SESSION['Alloc']->CurrDecimalPlaces) . '</td>
@@ -393,7 +393,7 @@ if (isset($_POST['AllocTrans'])) {
 	echo '<tr>
 			<td colspan="5" class="number"><b>' . _('Total Allocated') . ':</b></td>
 			<td class="number"><b>' . locale_number_format($TotalAllocated, $_SESSION['Alloc']->CurrDecimalPlaces) . '</b></td>';
-	$j++;
+	++$j;
 	echo '<td colspan="2">
 			<input tabindex="' . $j . '" type="submit" name="RefreshAllocTotal" value="' . _('Recalculate Total To Allocate') . '" /></td>
 		</tr>
@@ -469,7 +469,7 @@ if (isset($_POST['AllocTrans'])) {
 			$k = 0;
 		} else {
 			echo '<tr class="OddTableRows">';
-			$k++;
+			++$k;
 		}
 		echo '<td>' . _($MyRow['typename']) . '</td>
 				<td>' . $MyRow['name'] . '</td>
@@ -570,7 +570,7 @@ if (isset($_POST['AllocTrans'])) {
 			$k = 0;
 		} else {
 			echo '<tr class="OddTableRows">';
-			$k++;
+			++$k;
 		}
 
 		echo '<td>' . _($MyRow['typename']) . '</td>

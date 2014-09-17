@@ -537,7 +537,7 @@ function SearchStockItems($Field, $Criteria, $user, $password) {
 	$StockItemList = array();
 	while ($MyRow = DB_fetch_array($result)) {
 		$StockItemList[$i] = $MyRow[0];
-		$i++;
+		++$i;
 	}
 	if (sizeof($Errors) == 0) {
 		$Errors[0] = 0;
@@ -568,7 +568,7 @@ function GetStockBalance($StockId, $user, $password) {
 		while ($MyRow = DB_fetch_array($result)) {
 			$answer[$i]['quantity'] = $MyRow['quantity'];
 			$answer[$i]['loccode'] = $MyRow['loccode'];
-			$i++;
+			++$i;
 		}
 		$Errors[0] = 0;
 		$Errors[1] = $answer;
@@ -596,7 +596,7 @@ function GetStockReorderLevel($StockId, $user, $password) {
 		while ($MyRow = DB_fetch_array($result)) {
 			$answer[$i]['reorderlevel'] = $MyRow['reorderlevel'];
 			$answer[$i]['loccode'] = $MyRow['loccode'];
-			$i++;
+			++$i;
 		}
 		$Errors[0] = 0;
 		$Errors[1] = $answer;
@@ -890,7 +890,7 @@ function GetBatches($StockId, $Location, $user, $password) {
 		$i = 0;
 		while ($MyRow = DB_fetch_array($result)) {
 			$answer[$i] = $MyRow;
-			$i++;
+			++$i;
 		}
 		return $answer;
 	} else {

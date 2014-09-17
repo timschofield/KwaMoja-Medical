@@ -470,7 +470,7 @@ if (isset($_POST['PrintPDF']) and $_POST['Part'] != '') {
 		if ($YPos < $Bottom_Margin + $line_height) {
 			PrintHeader($PDF, $YPos, $PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin);
 		}
-		$i++;
+		++$i;
 	}
 	/*end while loop */
 
@@ -755,7 +755,7 @@ if (isset($searchresult) and !isset($_POST['Select'])) {
 				$k = 0;
 			} else {
 				echo '<tr class="OddTableRows">';
-				$k++;
+				++$k;
 			}
 			if ($MyRow['mbflag'] == 'D') {
 				$qoh = 'N/A';

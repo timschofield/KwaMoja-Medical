@@ -167,7 +167,7 @@ if (!isset($SelectedTaxAuthID)) {
 			$k = 0;
 		} else {
 			echo '<tr class="OddTableRows">';
-			$k++;
+			++$k;
 		}
 
 		echo '<td>', $MyRow[0], '</td>

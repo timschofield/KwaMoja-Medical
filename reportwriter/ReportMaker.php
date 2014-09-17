@@ -427,7 +427,7 @@ function ReadPostData($ReportID, $Prefs) {
 				WHERE reportid ='" . $ReportID . "' AND entrytype='critlist' AND seqnum='" . $i . "'";
 			$Result = DB_query($SQL, '', '', false, true);
 		}
-		$i++;
+		++$i;
 	}
 	// If it's a default report, we're done, return
 	if ($Prefs['defaultreport'])
@@ -450,7 +450,7 @@ function ReadPostData($ReportID, $Prefs) {
 				columnbreak='" . $Prefs['FieldListings'][$i - 1]['columnbreak'] . "'
 			WHERE reportid ='" . $ReportID . "' AND entrytype='fieldlist' AND seqnum='" . $i . "'";
 		$Result = DB_query($SQL, '', '', false, true);
-		$i++;
+		++$i;
 	}
 	return $Prefs;
 }

@@ -92,7 +92,7 @@ switch ($_POST['todo']) {
 				$Prefs['CritListings'][$i - 1]['params'] .= ':' . $_POST['defcritsel' . $i];
 				$Prefs['CritListings'][$i - 1]['params'] .= ':' . $_POST['fromvalue' . $i];
 				$Prefs['CritListings'][$i - 1]['params'] .= ':' . $_POST['tovalue' . $i];
-				$i++;
+				++$i;
 			}
 		} else { // then parameters may have been passed in the URL, load them if necessary
 			// NOTE: The max number of parameters to test is currrently set at the date and 10 form specific.

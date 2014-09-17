@@ -16,7 +16,7 @@ function GetCurrencyList($user, $password) {
 	$i = 0;
 	while ($MyRow = DB_fetch_array($result)) {
 		$CurrencyList[$i] = $MyRow[0];
-		$i++;
+		++$i;
 	}
 	return $CurrencyList;
 }

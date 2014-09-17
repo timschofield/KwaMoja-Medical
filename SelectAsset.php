@@ -274,7 +274,7 @@ if (isset($SearchResult) and !isset($_POST['Select'])) {
 				$k = 0;
 			} else {
 				echo '<tr class="OddTableRows">';
-				$k++;
+				++$k;
 			}
 			echo '<td><input type="submit" name="Select" value="' . $MyRow['assetid'] . '" /></td>
 					<td>' . $MyRow['description'] . '</td>

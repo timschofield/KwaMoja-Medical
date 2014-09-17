@@ -75,40 +75,40 @@ if (isset($_POST['submit'])) {
 		$InputError = 1;
 		prnMsg(_('The asset description must be entered and be fifty characters or less long. It cannot be a zero length string either, a description is required'), 'error');
 		$Errors[$i] = 'Description';
-		$i++;
+		++$i;
 	}
 	if (mb_strlen($_POST['LongDescription']) == 0) {
 		$InputError = 1;
 		prnMsg(_('The asset long description cannot be a zero length string, a long description is required'), 'error');
 		$Errors[$i] = 'LongDescription';
-		$i++;
+		++$i;
 	}
 
 	if (mb_strlen($_POST['BarCode']) > 20) {
 		$InputError = 1;
 		prnMsg(_('The barcode must be 20 characters or less long'), 'error');
 		$Errors[$i] = 'BarCode';
-		$i++;
+		++$i;
 	}
 
 	if (trim($_POST['AssetCategoryID']) == '') {
 		$InputError = 1;
 		prnMsg(_('There are no asset categories defined. All assets must belong to a valid category,'), 'error');
 		$Errors[$i] = 'AssetCategoryID';
-		$i++;
+		++$i;
 	}
 	if (trim($_POST['AssetLocation']) == '') {
 		$InputError = 1;
 		prnMsg(_('There are no asset locations defined. All assets must belong to a valid location,'), 'error');
 		$Errors[$i] = 'AssetLocation';
-		$i++;
+		++$i;
 	}
 	if (!is_numeric(filter_number_format($_POST['DepnRate'])) OR filter_number_format($_POST['DepnRate']) > 100 OR filter_number_format($_POST['DepnRate']) < 0) {
 
 		$InputError = 1;
 		prnMsg(_('The depreciation rate is expected to be a number between 0 and 100'), 'error');
 		$Errors[$i] = 'DepnRate';
-		$i++;
+		++$i;
 	}
 	if (filter_number_format($_POST['DepnRate']) > 0 and filter_number_format($_POST['DepnRate']) < 1) {
 		prnMsg(_('Numbers less than 1 are interpreted as less than 1%. The depreciation rate should be entered as a number between 0 and 100'), 'warn');

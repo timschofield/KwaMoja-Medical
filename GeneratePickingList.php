@@ -162,7 +162,7 @@ if (isset($_POST['TransDate']) or (isset($_GET['TransNo']) and $_GET['TransNo'] 
 	$i = 0;
 	while ($MyRow = DB_fetch_array($Result)) {
 		$OrdersToPick[$i] = $MyRow;
-		$i++;
+		++$i;
 	}
 } else {
 	$OrdersToPick[0]['debtorno'] = str_pad('', 10, 'x');

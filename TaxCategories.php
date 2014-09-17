@@ -175,7 +175,7 @@ if (!isset($SelectedTaxCategory) or $SelectedTaxCategory == '') {
 			$k = 0;
 		} else {
 			echo '<tr class="OddTableRows">';
-			$k++;
+			++$k;
 		}
 
 		if ($MyRow['taxcatname'] != 'Freight') {

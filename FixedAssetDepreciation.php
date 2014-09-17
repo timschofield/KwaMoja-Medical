@@ -155,7 +155,7 @@ while ($AssetRow = DB_fetch_array($AssetsResult)) {
 		$k = 0;
 	} else {
 		echo '<tr class="OddTableRows">';
-		$k++;
+		++$k;
 	}
 	echo '<td>' . $AssetRow['assetid'] . '</td>
 		<td>' . $AssetRow['description'] . '</td>

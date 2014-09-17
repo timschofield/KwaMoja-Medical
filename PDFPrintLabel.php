@@ -95,7 +95,7 @@ if ((isset($_POST['ShowLabels']) or isset($_POST['SetAll'])) and isset($_POST['F
 			<input type="hidden" name="Description' . $i . '" value="' . $LabelRow['description'] . '" />
 			<input type="hidden" name="Barcode' . $i . '" value="' . $LabelRow['barcode'] . '" />
 			<input type="hidden" name="Price' . $i . '" value="' . locale_number_format($LabelRow['price'], $LabelRow['decimalplaces']) . '" />';
-		$i++;
+		++$i;
 	}
 	$i--;
 	echo '</table>
@@ -167,7 +167,7 @@ if (isset($_POST['PrintLabels']) and $NoOfLabels > 0) {
 		$LabelFields[$i]['HPos'] = $LabelFieldRow['hpos'] * $PtsPerMM;
 		$LabelFields[$i]['FontSize'] = $LabelFieldRow['fontsize'];
 		$LabelFields[$i]['Barcode'] = $LabelFieldRow['barcode'];
-		$i++;
+		++$i;
 	}
 
 	include('includes/PDFStarter.php');

@@ -280,7 +280,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['Review'])) {
 				$k = 0;
 			} else {
 				echo '<tr class="OddTableRows">';
-				$k++;
+				++$k;
 			}
 
 			echo '<td><a href="' . $RootPath . '/WorkOrderEntry.php?NewItem=' . urlencode($MyRow['part']) . '&amp;ReqQty=' . urlencode($MyRow['supplyquantity']) . '&amp;ReqDate=' . urlencode($MyRow['duedate']) . '">' . _('Convert') . '</a></td>
@@ -297,7 +297,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['Review'])) {
 			}
 			echo '</tr>';
 
-			$j++;
+			++$j;
 			$Total_ExtCost += ($MyRow['supplyquantity'] * $MyRow['computedcost']);
 
 		} // end while loop

@@ -172,7 +172,7 @@ if (!isset($SelectedMeasureID)) {
 			$k = 0;
 		} else {
 			echo '<tr class="OddTableRows">';
-			$k++;
+			++$k;
 		}
 
 		echo '<td>' . $MyRow[1] . '</td>';

@@ -377,7 +377,7 @@ if (isset($SearchResult)) {
 				<input type="hidden" name="StockID' . $i . '" value="' . $MyRow['stockid'] . '" />
 				</td>
 			</tr>';
-		$i++;
+		++$i;
 		if ($i == $_SESSION['DisplayRecordsMax']) {
 			break;
 		}

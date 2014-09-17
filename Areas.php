@@ -37,27 +37,27 @@ if (isset($_POST['submit'])) {
 		$InputError = 1;
 		prnMsg(_('The area code must be three characters or less long'), 'error');
 		$Errors[$i] = 'AreaCode';
-		$i++;
+		++$i;
 	} elseif (DB_num_rows($Result) > 0 and !isset($SelectedArea)) {
 		$InputError = 1;
 		prnMsg(_('The area code entered already exists'), 'error');
 		$Errors[$i] = 'AreaCode';
-		$i++;
+		++$i;
 	} elseif (mb_strlen($_POST['AreaDescription']) > 25) {
 		$InputError = 1;
 		prnMsg(_('The area description must be twenty five characters or less long'), 'error');
 		$Errors[$i] = 'AreaDescription';
-		$i++;
+		++$i;
 	} elseif (trim($_POST['AreaCode']) == '') {
 		$InputError = 1;
 		prnMsg(_('The area code may not be empty'), 'error');
 		$Errors[$i] = 'AreaCode';
-		$i++;
+		++$i;
 	} elseif (trim($_POST['AreaDescription']) == '') {
 		$InputError = 1;
 		prnMsg(_('The area description may not be empty'), 'error');
 		$Errors[$i] = 'AreaDescription';
-		$i++;
+		++$i;
 	}
 
 	if (isset($SelectedArea) and $InputError != 1) {
@@ -160,7 +160,7 @@ if (!isset($SelectedArea)) {
 			$k = 0;
 		} else {
 			echo '<tr class="OddTableRows">';
-			$k++;
+			++$k;
 		}
 		$SQL = "SELECT areadescription FROM areas WHERE areacode='" . $MyRow['parentarea'] . "'";
 		$ParentResult = DB_query($SQL);

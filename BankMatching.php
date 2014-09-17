@@ -307,7 +307,7 @@ if ($InputError != 1 and isset($_POST['BankAccount']) and $_POST['BankAccount'] 
 					<td colspan="2"><input type="text" minlength="0" maxlength="15" size="15" class="number" name="AmtClear_%s" /></td>
 				</tr>', $MyRow['ref'], $MyRow['banktranstype'], $DisplayTranDate, locale_number_format($MyRow['amt'], $CurrDecimalPlaces), locale_number_format($Outstanding, $CurrDecimalPlaces), $i, $i, $MyRow['banktransid'], $i);
 		}
-		$i++;
+		++$i;
 	}
 	//end of while loop
 	echo '</table>

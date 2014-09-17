@@ -29,7 +29,7 @@ function GetSalesAreasList($User, $Password) {
 	$i = 0;
 	while ($MyRow = DB_fetch_array($result)) {
 		$SalesAreaList[$i] = $MyRow[0];
-		$i++;
+		++$i;
 	}
 	return $SalesAreaList;
 }

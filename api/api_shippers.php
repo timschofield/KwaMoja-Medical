@@ -16,7 +16,7 @@ function GetShipperList($User, $Password) {
 	$i = 0;
 	while ($MyRow = DB_fetch_array($result)) {
 		$ShipperList[$i] = $MyRow[0];
-		$i++;
+		++$i;
 	}
 	return $ShipperList;
 }

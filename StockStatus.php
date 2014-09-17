@@ -327,7 +327,7 @@ if ($DebtorNo) {
 					$LastPrice,
 					$LastDiscount
 				);
-				$k++;
+				++$k;
 				if ($k > 9) {
 					break;
 					/* 10 price records is enough to display */

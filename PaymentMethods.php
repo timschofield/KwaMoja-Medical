@@ -36,7 +36,7 @@ if (isset($_POST['submit'])) {
 		$InputError = 1;
 		prnMsg(_('The payment method may not be empty.'), 'error');
 		$Errors[$i] = 'MethodName';
-		$i++;
+		++$i;
 	}
 	if (isset($_POST['SelectedPaymentID']) and $InputError != 1) {
 
@@ -189,7 +189,7 @@ if (!isset($SelectedPaymentID)) {
 			$k = 0;
 		} else {
 			echo '<tr class="OddTableRows">';
-			$k++;
+			++$k;
 		}
 
 		echo '<td>' . $MyRow['paymentname'] . '</td>

@@ -184,7 +184,7 @@ if (isset($_POST['submit'])) {
 									'" . $demandqty . "',
 									'" . $datearray[$i] . "')";
 				$insertresult = DB_query($SQL);
-				$i++;
+				++$i;
 				$TotalRecords++;
 
 			} // end of foreach for INSERT

@@ -487,7 +487,7 @@ if (isset($Result)) {
 				<td>' . $MyRow['faxno'] . '</td>
 				<td>' . $MyRow['email'] . '</td>
 			</tr>';
-			$i++;
+			++$i;
 			$RowIndex++;
 			//end of page full new headings if
 		} //($MyRow = DB_fetch_array($Result)) and ($RowIndex <> $_SESSION['DisplayRecordsMax'])

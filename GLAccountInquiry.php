@@ -298,7 +298,7 @@ if (isset($_POST['Show'])) {
 			$k = 0;
 		} else {
 			echo '<tr class="OddTableRows">';
-			$k++;
+			++$k;
 		}
 
 		$RunningTotal += $MyRow['amount'];

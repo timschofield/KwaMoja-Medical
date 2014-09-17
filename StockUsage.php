@@ -155,7 +155,7 @@ if (isset($_POST['ShowUsage'])) {
 			$k = 0;
 		} else {
 			echo '<tr class="OddTableRows">';
-			$k++;
+			++$k;
 		}
 
 		$DisplayDate = MonthAndYearFromSQLDate($MyRow['lastdate_in_period']);

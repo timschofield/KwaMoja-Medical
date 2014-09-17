@@ -35,7 +35,7 @@ if (isset($_POST['submit'])) {
 		$InputError = 1;
 		prnMsg(_('That geocode ID already exists in the database'), 'error');
 		$Errors[$i] = 'GeoCodeID';
-		$i++;
+		++$i;
 	}
 
 	$Msg = '';

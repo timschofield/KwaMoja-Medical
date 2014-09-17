@@ -71,7 +71,7 @@ function GetLocationList($user, $password) {
 	$i = 0;
 	while ($MyRow = DB_fetch_array($result)) {
 		$LocationList[$i] = $MyRow[0];
-		$i++;
+		++$i;
 	}
 	$Errors[1] = $LocationList;
 	return $Errors;

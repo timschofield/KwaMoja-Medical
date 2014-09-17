@@ -46,38 +46,38 @@ if (isset($_POST['submit'])) {
 		prnMsg(_('The Expense type  code cannot be an empty string or spaces'), 'error');
 		echo '<br />';
 		$Errors[$i] = 'CodeExpense';
-		$i++;
+		++$i;
 	} elseif (mb_strlen($_POST['CodeExpense']) > 20) {
 		$InputError = 1;
 		prnMsg(_('The Expense code must be twenty characters or less long'), 'error');
 		echo '<br />';
 		$Errors[$i] = 'CodeExpense';
-		$i++;
+		++$i;
 	} elseif (ContainsIllegalCharacters($_POST['CodeExpense'])) {
 		$InputError = 1;
 		prnMsg(_('The Expense code cannot contain any of the following characters " \' - &amp;'), 'error');
 		echo '<br />';
 		$Errors[$i] = 'CodeExpense';
-		$i++;
+		++$i;
 	} elseif (ContainsIllegalCharacters($_POST['Description'])) {
 		$InputError = 1;
 		prnMsg(_('The Expense description cannot contain any of the following characters " \' - &amp;'), 'error');
 		echo '<br />';
 		$Errors[$i] = 'Description';
-		$i++;
+		++$i;
 	} elseif (mb_strlen($_POST['Description']) > 50) {
 		$InputError = 1;
 		prnMsg(_('The tab code must be Fifty characters or less long'), 'error');
 		echo '<br />';
 		echo '<br />';
 		$Errors[$i] = 'Description';
-		$i++;
+		++$i;
 	} elseif (mb_strlen($_POST['Description']) == 0) {
 		$InputError = 1;
 		echo prnMsg(_('The tab code description must be entered'), 'error');
 		echo '<br />';
 		$Errors[$i] = 'Description';
-		$i++;
+		++$i;
 	} elseif ($_POST['GLAccount'] == '') {
 		$InputError = 1;
 		echo prnMsg(_('A general ledger code must be selected for this expense'), 'error');

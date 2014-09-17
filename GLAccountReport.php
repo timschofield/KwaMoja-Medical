@@ -243,7 +243,7 @@ else {
 	while ($MyRow = DB_fetch_array($AccountsResult)) {
 		if (isset($_POST['Account'][$i]) and $MyRow['accountcode'] == $_POST['Account'][$i]) {
 			echo '<option selected="selected" value="' . $MyRow['accountcode'] . '">' . $MyRow['accountcode'] . ' ' . $MyRow['accountname'] . '</option>';
-			$i++;
+			++$i;
 		} else {
 			echo '<option value="' . $MyRow['accountcode'] . '">' . $MyRow['accountcode'] . ' ' . $MyRow['accountname'] . '</option>';
 		}

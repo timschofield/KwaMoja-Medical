@@ -100,7 +100,7 @@ if (isset($_POST['submit'])) {
 		} elseif (mb_substr($LangFile[$i], 0, 6) == 'msgstr') {
 			$ModuleText[$j] = mb_substr($LangFile[$i], 8, mb_strlen($LangFile[$i]) - 10);
 			$Msgstr[$j] = $i;
-			$j++;
+			++$j;
 		}
 	}
 	$TotalLines = $j - 1;

@@ -118,7 +118,7 @@ if (isset($_POST['submit']) or isset($_POST['pdf']) or isset($_POST['csv'])) {
 		 $ParentSQL = "SELECT locationdescription from fixedassetlocations where locationid='" . $LocationRow['parentlocationid'] . "'";
 		 $ParentResult = DB_query($ParentSQL);
 		 $ParentRow = DB_fetch_array($ParentResult);
-		 $i++;
+		 ++$i;
 		 $Ancestors[$i] = $ParentRow['locationdescription'];
 		 }
 		 */

@@ -49,7 +49,7 @@ class PDF extends PDF_Language {
 			switch ($SingleObject['params']['index']) {
 				case "Data":
 					$SingleObject['params']['TextField'] = $FieldValues[$i]; // fill the data to display
-					$i++; // increment to the next field
+					++$i; // increment to the next field
 				case "TBlk": // same operation as page number
 				case "Text":
 				case "CDta":
@@ -562,7 +562,7 @@ function BuildPDF($ReportID, $Prefs) {
 		foreach ($FieldListings as $Key => $SingleObject) {
 			if ($SingleObject['params']['index'] == 'CDta') {
 				$FieldListings[$Key]['params']['TextField'] = $CoyData[$i];
-				$i++;
+				++$i;
 			}
 		}
 	}

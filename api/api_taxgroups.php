@@ -16,7 +16,7 @@ function GetTaxGroupList($user, $password) {
 	$i = 0;
 	while ($MyRow = DB_fetch_array($result)) {
 		$TaxgroupList[$i] = $MyRow[0];
-		$i++;
+		++$i;
 	}
 	return $TaxgroupList;
 }
@@ -59,7 +59,7 @@ function GetTaxGroupTaxes($TaxGroup, $User, $Password) {
 		$Answer[$i]['taxauthid'] = $MyRow['taxauthid'];
 		$Answer[$i]['calculationorder'] = $MyRow['calculationorder'];
 		$Answer[$i]['taxontax'] = $MyRow['taxontax'];
-		$i++;
+		++$i;
 	}
 	$Errors[0] = 0;
 	$Errors[1] = $Answer;
@@ -81,7 +81,7 @@ function GetTaxAuthorityList($User, $Password) {
 	$i = 0;
 	while ($MyRow = DB_fetch_array($result)) {
 		$TaxAuthList[$i] = $MyRow[0];
-		$i++;
+		++$i;
 	}
 	return $TaxAuthList;
 }
@@ -123,7 +123,7 @@ function GetTaxAuthorityRates($TaxAuthority, $User, $Password) {
 		$Answer[$i]['taxcatid'] = $MyRow['taxcatid'];
 		$Answer[$i]['dispatchtaxprovince'] = $MyRow['dispatchtaxprovince'];
 		$Answer[$i]['taxrate'] = $MyRow['taxrate'];
-		$i++;
+		++$i;
 	}
 	$Errors[0] = 0;
 	$Errors[1] = $Answer;

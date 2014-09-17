@@ -82,7 +82,7 @@ if ($NumberOfPeriodsUsage != 24) {
 		"black"
 	) //Border Colors
 		);
-	for ($i = 1; $i++; $i <= $NumberOfPeriodsUsage) {
+	for ($i = 1; ++$i; $i <= $NumberOfPeriodsUsage) {
 		$UsageRow = DB_fetch_array($MovtsResult);
 		if (!$UsageRow) {
 			break;
@@ -102,7 +102,7 @@ if ($NumberOfPeriodsUsage != 24) {
 		"black"
 	) //Border Colors
 		);
-	for ($i = 1; $i++; $i <= 12) {
+	for ($i = 1; ++$i; $i <= 12) {
 		$UsageRow = DB_fetch_array($MovtsResult);
 		if (!$UsageRow) {
 			break;
@@ -112,7 +112,7 @@ if ($NumberOfPeriodsUsage != 24) {
 			$UsageRow['qtyused']
 		);
 	}
-	for ($i = 0, $i++; $i <= 11;) {
+	for ($i = 0, ++$i; $i <= 11;) {
 		$UsageRow = DB_fetch_array($MovtsResult);
 		if (!$UsageRow) {
 			break;

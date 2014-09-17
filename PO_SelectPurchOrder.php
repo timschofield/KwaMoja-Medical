@@ -313,7 +313,7 @@ if (isset($StockItemsResult)) {
 				$k = 0;
 			} else {
 				echo '<tr class="OddTableRows">';
-				$k++;
+				++$k;
 			}
 			$ViewPurchOrder = $RootPath . '/PO_OrderDetails.php?OrderNo=' . $MyRow['orderno'];
 			$FormatedOrderDate = ConvertSQLDate($MyRow['orddate']);

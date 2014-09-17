@@ -576,7 +576,7 @@ if ($_SESSION['RequireSupplierSelection'] == 1 or !isset($_SESSION['PO' . $Ident
 			} //$k == 1
 			else {
 				echo '<tr class="OddTableRows">';
-				$k++;
+				++$k;
 			}
 
 			echo '<td><input type="submit" style="width:100%" name="Select" value="' . $MyRow['supplierid'] . '" /></td>

@@ -575,7 +575,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 					<td>' . $MyRow['faxno'] . '</td>
 					</tr>';
 			$LastCustomer = $MyRow['name'];
-			$j++;
+			++$j;
 			//end of page full new headings if
 		} //$MyRow = DB_fetch_array($Result_CustSelect)
 		//end of while loop
@@ -753,7 +753,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 			$QuickEntryPOLine = 'poline_' . $i;
 			$QuickEntryItemDue = 'itemdue_' . $i;
 
-			$i++;
+			++$i;
 
 			if (isset($_POST[$QuickEntryCode])) {
 				$NewItem = mb_strtoupper($_POST[$QuickEntryCode]);
@@ -876,7 +876,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 														WHERE stockid ='ASSET-" . $_POST['AssetToDisposeOf'] . "'");
 			$j = 0;
 			while (DB_num_rows($TestAssetExistsAlreadyResult) == 1) { //then it exists already ... bum
-				$j++;
+				++$j;
 				$TestAssetExistsAlreadyResult = DB_query("SELECT stockid
 														FROM stockmaster
 														WHERE stockid ='ASSET-" . $_POST['AssetToDisposeOf'] . '-' . $j . "'");
@@ -1516,7 +1516,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 						<input type="hidden" name="StockID' . $i . '" value="' . $MyRow['stockid'] . '" />
 						</td>
 						</tr>', $MyRow['stockid'], $MyRow['longdescription'], $MyRow['description'], $MyRow['units'], locale_number_format($QOH, $QOHRow['decimalplaces']), locale_number_format($DemandQty, $QOHRow['decimalplaces']), locale_number_format($OnOrder, $QOHRow['decimalplaces']), locale_number_format($Available, $QOHRow['decimalplaces']));
-				$i++;
+				++$i;
 				//end of page full new headings if
 			} //$MyRow = DB_fetch_array($Result2)
 			//end of while loop for Frequently Ordered Items
@@ -1691,7 +1691,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 						<input type="hidden" name="StockID' . $i . '" value="' . $MyRow['stockid'] . '" />
 						</td>
 						</tr>', $MyRow['stockid'], $MyRow['longdescription'], $MyRow['description'], $MyRow['cust_part'] . '-' . $MyRow['cust_description'], $MyRow['units'], locale_number_format($QOH, $QOHRow['decimalplaces']), locale_number_format($DemandQty, $QOHRow['decimalplaces']), locale_number_format($OnOrder, $QOHRow['decimalplaces']), locale_number_format($Available, $QOHRow['decimalplaces']));
-				$i++;
+				++$i;
 				//end of page full new headings if
 			} //$MyRow = DB_fetch_array($SearchResult)
 			//end of while loop

@@ -765,7 +765,7 @@ class qrCode extends barcode {
 						$dataCounter++;
 					}
 
-					$i++;
+					++$i;
 				}
 
 				$totalDataBits += $addToTotalData;
@@ -842,7 +842,7 @@ class qrCode extends barcode {
 			} else {
 				$dataCodewords[$codewordCounter]=17;
 			}
-			$i++;
+			++$i;
 			$codewordCounter++;
 		}
 

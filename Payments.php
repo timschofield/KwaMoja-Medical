@@ -313,7 +313,7 @@ if (isset($_POST['CommitBatch'])) {
 
 	while ($Act = DB_fetch_row($Result)) {
 		$BankAccounts[$i] = $Act[0];
-		$i++;
+		++$i;
 	} //$Act = DB_fetch_row($Result)
 
 	$PeriodNo = GetPeriod($_SESSION['PaymentDetail' . $Identifier]->DatePaid);

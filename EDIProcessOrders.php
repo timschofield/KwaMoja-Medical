@@ -46,7 +46,7 @@ while ($SegRow = DB_fetch_array($OrderSeg)) {
 		'MaxOccur' => $SegRow['maxoccur'],
 		'SegGroup' => $SegRow['seggroup']
 	);
-	$i++;
+	++$i;
 }
 
 $TotalNoOfSegments = $i - 1;
@@ -578,7 +578,7 @@ while (false !== ($OrderFile = readdir($dirhandle))) {
 				$i = 0;
 				while ($SysAdminsRow = DB_fetch_array($Result)) {
 					$Recipients[$i] = "'" . $SysAdminsRow['realname'] . "' <" . $SysAdminsRow['email'] . ">";
-					$i++;
+					++$i;
 				}
 			}
 			$TryNextFile = False;

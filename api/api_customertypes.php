@@ -16,7 +16,7 @@ function GetCustomerTypeList($user, $password) {
 	$i = 0;
 	while ($MyRow = DB_fetch_array($result)) {
 		$TaxgroupList[$i] = $MyRow[0];
-		$i++;
+		++$i;
 	}
 	return $TaxgroupList;
 }

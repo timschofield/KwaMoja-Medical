@@ -29,7 +29,7 @@ if (!isset($_SESSION['JournalDetail'])) {
 	$i = 0;
 	while ($Act = DB_fetch_row($Result)) {
 		$_SESSION['JournalDetail']->BankAccounts[$i] = $Act[0];
-		$i++;
+		++$i;
 	}
 
 }
@@ -392,7 +392,7 @@ foreach ($_SESSION['JournalDetail']->GLEntries as $JournalItem) {
 		$j = 0;
 	} else {
 		echo '<tr class="EvenTableRows">';
-		$j++;
+		++$j;
 	}
 	$SQL = "SELECT tagdescription
 			FROM tags

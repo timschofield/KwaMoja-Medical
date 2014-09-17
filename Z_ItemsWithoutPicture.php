@@ -46,7 +46,7 @@ if (DB_num_rows($Result) != 0) {
 					<td>%s</td>
 					<td>%s</td>
 				</tr>', $i, $MyRow['categorydescription'], $CodeLink, $MyRow['description']);
-			$i++;
+			++$i;
 		}
 	}
 	echo '</table>

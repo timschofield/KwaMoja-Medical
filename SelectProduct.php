@@ -712,7 +712,7 @@ if (isset($SearchResult) and !isset($_POST['Select'])) {
 				$k = 0;
 			} else {
 				echo '<tr class="OddTableRows">';
-				$k++;
+				++$k;
 			}
 			if ($MyRow['mbflag'] == 'D') {
 				$qoh = _('N/A');

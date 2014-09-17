@@ -116,7 +116,7 @@ if (isset($_POST['ShowResults']) and $_POST['TransType'] != '') {
 			$k = 0;
 		} else {
 			echo '<tr class="EvenTableRows">';
-			$k++;
+			++$k;
 		}
 
 		printf('<td>%s</td>

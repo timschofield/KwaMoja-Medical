@@ -58,7 +58,7 @@ if (isset($_POST['submit'])) {
 
 	while ($Act = DB_fetch_row($Result)) {
 		$BankAccounts[$i] = $Act[0];
-		$i++;
+		++$i;
 	}
 	if (in_array($_POST['CostAct'], $BankAccounts)) {
 		prnMsg(_('The asset cost account selected is a bank account - bank accounts are protected from having any other postings made to them. Select another balance sheet account for the asset cost'), 'error');

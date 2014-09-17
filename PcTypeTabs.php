@@ -36,12 +36,12 @@ if (isset($_POST['submit'])) {
 		$InputError = 1;
 		prnMsg('<br />' . _('The Tabs type code cannot be an empty string'), 'error');
 		$Errors[$i] = 'TypeTabCode';
-		$i++;
+		++$i;
 	} elseif (mb_strlen($_POST['TypeTabCode']) > 20) {
 		$InputError = 1;
 		echo prnMsg(_('The tab code must be twenty characters or less long'), 'error');
 		$Errors[$i] = 'TypeTabCode';
-		$i++;
+		++$i;
 	} elseif (ContainsIllegalCharacters($_POST['TypeTabCode']) or mb_strpos($_POST['TypeTabCode'], ' ') > 0) {
 		$InputError = 1;
 		prnMsg(_('The petty cash tab type code cannot contain any of the illegal characters'), 'error');
@@ -49,7 +49,7 @@ if (isset($_POST['submit'])) {
 		$InputError = 1;
 		echo prnMsg(_('The tab code must be Fifty characters or less long'), 'error');
 		$Errors[$i] = 'TypeTabCode';
-		$i++;
+		++$i;
 	}
 
 	if (isset($SelectedTab) and $InputError != 1) {

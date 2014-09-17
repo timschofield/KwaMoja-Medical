@@ -172,7 +172,7 @@ if (isset($_POST['SearchSupplier'])) {
 			$k = 0;
 		} else {
 			echo '<tr class="OddTableRows">';
-			$k++;
+			++$k;
 		}
 		printf('<td><input type="submit" name="SupplierID" value="%s" /></td>
 				<td>%s</td>
@@ -271,7 +271,7 @@ if (isset($SupplierID) AND $Edit == false) {
 				$k = 0;
 			} else {
 				echo '<tr class="OddTableRows">';
-				$k++;
+				++$k;
 			}
 			if ($MyRow['categoryid'] == '') {
 				$ItemDescription = $MyRow['stockid'] . ' - ' . $MyRow['description'];

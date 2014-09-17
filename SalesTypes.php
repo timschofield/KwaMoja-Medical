@@ -31,27 +31,27 @@ if (isset($_POST['submit'])) {
 		$InputError = 1;
 		prnMsg(_('The sales type (price list) code must be two characters or less long'), 'error');
 		$Errors[$i] = 'SalesType';
-		$i++;
+		++$i;
 	} elseif ($_POST['TypeAbbrev'] == '' OR $_POST['TypeAbbrev'] == ' ' OR $_POST['TypeAbbrev'] == '  ') {
 		$InputError = 1;
 		prnMsg(_('The sales type (price list) code cannot be an empty string or spaces'), 'error');
 		$Errors[$i] = 'SalesType';
-		$i++;
+		++$i;
 	} elseif (trim($_POST['Sales_Type']) == '') {
 		$InputError = 1;
 		prnMsg(_('The sales type (price list) description cannot be empty'), 'error');
 		$Errors[$i] = 'SalesType';
-		$i++;
+		++$i;
 	} elseif (mb_strlen($_POST['Sales_Type']) > 40) {
 		$InputError = 1;
 		echo prnMsg(_('The sales type (price list) description must be forty characters or less long'), 'error');
 		$Errors[$i] = 'SalesType';
-		$i++;
+		++$i;
 	} elseif ($_POST['TypeAbbrev'] == 'AN') {
 		$InputError = 1;
 		prnMsg(_('The sales type code cannot be AN since this is a system defined abbreviation for any sales type in general ledger interface lookups'), 'error');
 		$Errors[$i] = 'SalesType';
-		$i++;
+		++$i;
 	}
 
 	if (isset($SelectedType) and $InputError != 1) {

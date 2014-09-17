@@ -16,7 +16,7 @@ function GetSalesTypeList($user, $password) {
 	$i = 0;
 	while ($MyRow = DB_fetch_array($result)) {
 		$SalesTypeList[$i] = $MyRow[0];
-		$i++;
+		++$i;
 	}
 	$Errors[0] = 0;
 	$Errors[1] = $SalesTypeList;

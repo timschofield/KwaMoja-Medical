@@ -73,7 +73,7 @@ if (substr($LineText,0,4)==':20:'){ //Timestamp of report MT940 generation
 				}
 			}
 
-			$i++;
+			++$i;
 			$_SESSION['Trans'][$i] = new BankTrans($TransDate,$TransAmount) ;
 			$_SESSION['Trans'][$i]->Description = substr($LineText,$ValueEnd+1);
 	  }

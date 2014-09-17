@@ -813,7 +813,7 @@ if (!isset($_SESSION['Contract' . $Identifier]->DebtorNo) or $_SESSION['Contract
 					<td>' . $MyRow['faxno'] . '</td>
 					</tr>';
 			$LastCustomer = $MyRow['name'];
-			$j++;
+			++$j;
 			//end of page full new headings if
 		}
 		//end of while loop

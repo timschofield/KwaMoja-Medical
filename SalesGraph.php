@@ -324,7 +324,7 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 			$MyRow['sales'],
 			$MyRow['budget']
 		);
-		$i++;
+		++$i;
 	}
 
 	$graph->SetDataValues($GraphArray);

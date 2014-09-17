@@ -29,7 +29,7 @@ function display_children($Parent, $Level, &$BOMTree) {
 				$BOMTree[$i]['Component'] = $MyRow['component']; // Component
 				// call this function again to display this
 				// child's children
-				$i++;
+				++$i;
 				display_children($MyRow['component'], $Level + 1, $BOMTree);
 			}
 		}
@@ -414,7 +414,7 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 		echo '<tr><td><div class="centre">' . _('Manufactured parent items') . ' : ';
 		while ($MyRow = DB_fetch_array($Result)) {
 			echo (($i) ? ', ' : '') . '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Select=' . $MyRow['parent'] . '">' . $MyRow['description'] . '&nbsp;(' . $MyRow['parent'] . ')</a>';
-			$i++;
+			++$i;
 		} //end while loop
 		echo '</div></td></tr>';
 		echo '</table>';
@@ -437,7 +437,7 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 		$i = 0;
 		while ($MyRow = DB_fetch_array($Result)) {
 			echo (($i) ? ', ' : '') . '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Select=' . $MyRow['parent'] . '">' . $MyRow['description'] . '&nbsp;(' . $MyRow['parent'] . ')</a>';
-			$i++;
+			++$i;
 		} //end while loop
 		echo '</div></td></tr>';
 		echo '</table>';
@@ -465,7 +465,7 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 		$i = 0;
 		while ($MyRow = DB_fetch_array($Result)) {
 			echo (($i) ? ', ' : '') . '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Select=' . $MyRow['parent'] . '">' . $MyRow['description'] . '&nbsp;(' . $MyRow['parent'] . ')</a>';
-			$i++;
+			++$i;
 		} //end while loop
 		echo '</div></td>
 				</tr>
@@ -495,7 +495,7 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 		$i = 0;
 		while ($MyRow = DB_fetch_array($Result)) {
 			echo (($i) ? ', ' : '') . '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Select=' . $MyRow['parent'] . '">' . $MyRow['description'] . '&nbsp;(' . $MyRow['parent'] . ')</a>';
-			$i++;
+			++$i;
 		} //end while loop
 		echo '</div></td></tr>';
 		echo '</table>';
@@ -543,7 +543,7 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 				$k = 0;
 			} else {
 				echo '<tr class="OddTableRows">';
-				$k++;
+				++$k;
 			}
 			DisplayBOMItems($UltimateParent, $Parent, $Component, $Level);
 		}
@@ -887,7 +887,7 @@ if (!isset($SelectedParent)) {
 				$k = 0;
 			} else {
 				echo '<tr class="OddTableRows">';
-				$k++;
+				++$k;
 			}
 			if ($MyRow['mbflag'] == 'A' or $MyRow['mbflag'] == 'K' or $MyRow['mbflag'] == 'G') {
 				$StockOnHand = _('N/A');
@@ -901,7 +901,7 @@ if (!isset($SelectedParent)) {
 					<td>%s</td>
 					</tr>', $MyRow['stockid'], $MyRow['description'], $StockOnHand, $MyRow['units']);
 
-			$j++;
+			++$j;
 			//end of page full new headings if
 		}
 		//end of while loop

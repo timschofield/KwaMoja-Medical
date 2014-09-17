@@ -161,7 +161,7 @@ function SearchStockCategories($Field, $Criteria, $user, $password) {
 	while ($MyRow = DB_fetch_array($result)) {
 		$CategoryList[1][$i]['categoryid'] = $MyRow[0];
 		$CategoryList[1][$i]['categorydescription'] = $MyRow[1];
-		$i++;
+		++$i;
 	}
 	return $CategoryList;
 }
@@ -189,7 +189,7 @@ function StockCatPropertyList($Label, $Category, $user, $password) {
 	while ($MyRow = DB_fetch_array($result)) {
 		$ItemList[1][$i]['stockid'] = $MyRow[0];
 		$ItemList[1][$i]['description'] = $MyRow[1];
-		$i++;
+		++$i;
 	}
 	return $ItemList;
 }
@@ -225,7 +225,7 @@ function GetStockCategoryList($user, $password) {
 	$i = 0;
 	while ($MyRow = DB_fetch_array($result)) {
 		$StockCategoryList[$i] = $MyRow[0];
-		$i++;
+		++$i;
 	}
 	return $StockCategoryList;
 }

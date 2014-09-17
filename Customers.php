@@ -43,91 +43,91 @@ if (isset($_POST['submit'])) {
 		$InputError = 1;
 		prnMsg(_('The customer number already exists in the database'), 'error');
 		$Errors[$i] = 'DebtorNo';
-		$i++;
+		++$i;
 	} //$MyRow[0] > 0 and isset($_POST['New'])
 	elseif (mb_strlen($_POST['CustName']) > 40 or mb_strlen($_POST['CustName']) == 0) {
 		$InputError = 1;
 		prnMsg(_('The customer name must be entered and be forty characters or less long'), 'error');
 		$Errors[$i] = 'CustName';
-		$i++;
+		++$i;
 	} //mb_strlen($_POST['CustName']) > 40 or mb_strlen($_POST['CustName']) == 0
 		elseif ($_SESSION['AutoDebtorNo'] == 0 and mb_strlen($_POST['DebtorNo']) == 0) {
 		$InputError = 1;
 		prnMsg(_('The debtor code cannot be empty'), 'error');
 		$Errors[$i] = 'DebtorNo';
-		$i++;
+		++$i;
 	} //$_SESSION['AutoDebtorNo'] == 0 and (ContainsIllegalCharacters($_POST['DebtorNo']) or mb_strpos($_POST['DebtorNo'], ' '))
 		elseif (mb_strlen($_POST['Address1']) > 40) {
 		$InputError = 1;
 		prnMsg(_('The Line 1 of the address must be forty characters or less long'), 'error');
 		$Errors[$i] = 'Address1';
-		$i++;
+		++$i;
 	} //mb_strlen($_POST['Address1']) > 40
 		elseif (mb_strlen($_POST['Address2']) > 40) {
 		$InputError = 1;
 		prnMsg(_('The Line 2 of the address must be forty characters or less long'), 'error');
 		$Errors[$i] = 'Address2';
-		$i++;
+		++$i;
 	} //mb_strlen($_POST['Address2']) > 40
 		elseif (mb_strlen($_POST['Address3']) > 40) {
 		$InputError = 1;
 		prnMsg(_('The Line 3 of the address must be forty characters or less long'), 'error');
 		$Errors[$i] = 'Address3';
-		$i++;
+		++$i;
 	} //mb_strlen($_POST['Address3']) > 40
 		elseif (mb_strlen($_POST['Address4']) > 50) {
 		$InputError = 1;
 		prnMsg(_('The Line 4 of the address must be fifty characters or less long'), 'error');
 		$Errors[$i] = 'Address4';
-		$i++;
+		++$i;
 	} //mb_strlen($_POST['Address4']) > 50
 		elseif (mb_strlen($_POST['Address5']) > 20) {
 		$InputError = 1;
 		prnMsg(_('The Line 5 of the address must be twenty characters or less long'), 'error');
 		$Errors[$i] = 'Address5';
-		$i++;
+		++$i;
 	} //mb_strlen($_POST['Address5']) > 20
 		elseif (!is_numeric(filter_number_format($_POST['CreditLimit']))) {
 		$InputError = 1;
 		prnMsg(_('The credit limit must be numeric'), 'error');
 		$Errors[$i] = 'CreditLimit';
-		$i++;
+		++$i;
 	} //!is_numeric(filter_number_format($_POST['CreditLimit']))
 		elseif (!is_numeric(filter_number_format($_POST['PymtDiscount']))) {
 		$InputError = 1;
 		prnMsg(_('The payment discount must be numeric'), 'error');
 		$Errors[$i] = 'PymtDiscount';
-		$i++;
+		++$i;
 	} //!is_numeric(filter_number_format($_POST['PymtDiscount']))
 		elseif (!Is_Date($_POST['ClientSince'])) {
 		$InputError = 1;
 		prnMsg(_('The customer since field must be a date in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
 		$Errors[$i] = 'ClientSince';
-		$i++;
+		++$i;
 	} //!Is_Date($_POST['ClientSince'])
 		elseif (!is_numeric(filter_number_format($_POST['Discount']))) {
 		$InputError = 1;
 		prnMsg(_('The discount percentage must be numeric'), 'error');
 		$Errors[$i] = 'Discount';
-		$i++;
+		++$i;
 	} //!is_numeric(filter_number_format($_POST['Discount']))
 		elseif (filter_number_format($_POST['CreditLimit']) < 0) {
 		$InputError = 1;
 		prnMsg(_('The credit limit must be a positive number'), 'error');
 		$Errors[$i] = 'CreditLimit';
-		$i++;
+		++$i;
 	} //filter_number_format($_POST['CreditLimit']) < 0
 		elseif ((filter_number_format($_POST['PymtDiscount']) > 10) or (filter_number_format($_POST['PymtDiscount']) < 0)) {
 		$InputError = 1;
 		prnMsg(_('The payment discount is expected to be less than 10% and greater than or equal to 0'), 'error');
 		$Errors[$i] = 'PymtDiscount';
-		$i++;
+		++$i;
 	} //(filter_number_format($_POST['PymtDiscount']) > 10) or (filter_number_format($_POST['PymtDiscount']) < 0)
 		elseif ((filter_number_format($_POST['Discount']) > 100) or (filter_number_format($_POST['Discount']) < 0)) {
 		$InputError = 1;
 		prnMsg(_('The discount is expected to be less than 100% and greater than or equal to 0'), 'error');
 		$Errors[$i] = 'Discount';
-		$i++;
+		++$i;
 	} //(filter_number_format($_POST['Discount']) > 100) or (filter_number_format($_POST['Discount']) < 0)
 
 	if ($InputError != 1) {

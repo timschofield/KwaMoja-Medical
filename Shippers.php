@@ -31,12 +31,12 @@ if (isset($_POST['submit'])) {
 		$InputError = 1;
 		prnMsg(_('The shipper\'s name must be forty characters or less long'), 'error');
 		$Errors[$i] = 'ShipperName';
-		$i++;
+		++$i;
 	} elseif (trim($_POST['ShipperName']) == '') {
 		$InputError = 1;
 		prnMsg(_('The shipper\'s name may not be empty'), 'error');
 		$Errors[$i] = 'ShipperName';
-		$i++;
+		++$i;
 	}
 
 	if (isset($SelectedShipper) and $InputError != 1) {

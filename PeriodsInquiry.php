@@ -37,12 +37,12 @@ for ($i = 0; $i < 3; $i++) {
 			$k = 0;
 		} else {
 			echo '<tr class="OddTableRows">';
-			$k++;
+			++$k;
 		}
 		echo '<td>' . $MyRow['periodno'] . '</td>
 			  <td>' . ConvertSQLDate($MyRow['lastdate_in_period']) . '</td>
 			</tr>';
-		$j++;
+		++$j;
 		if ($j == $PeriodsInTable) {
 			break;
 		}

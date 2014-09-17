@@ -369,7 +369,7 @@ function SyncOrderInformation($ShowMessages, $LastTimeRun, $oc_tableprefix, $Ema
 						}
 					}
 				}
-				$i++;
+				++$i;
 				if ($ShowMessages) {
 					echo '</table>';
 					echo '</table>';
@@ -535,7 +535,7 @@ function SyncPaypalPaymentInformation($ShowMessages, $LastTimeRun, $oc_tablepref
 			if ($EmailText != '') {
 				$EmailText = $EmailText . $MyRow['customer_id'] . " = " . $MyRow['email'] . " = " . $CustomerCode . " = " . $MyRow['order_id'] . " = " . $TotalOrder . " = " . $MyRow['ordercurrency'] . " = " . $AmountPaid . " = " . $MyRow['payment_status'] . " --> " . $Action . "\n";
 			}
-			$i++;
+			++$i;
 		}
 		if ($ShowMessages) {
 			echo '</table>

@@ -461,7 +461,7 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 					$LYGroupTotal[$Level] = 0;
 					$ParentGroups[$Level] = '';
 					$Level--;
-					$j++;
+					++$j;
 				}
 				if ($_POST['Detail'] == 'Detailed') {
 					echo '<tr>
@@ -483,7 +483,7 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 				$GroupTotal[$Level] = 0;
 				$LYGroupTotal[$Level] = 0;
 				$ParentGroups[$Level] = '';
-				$j++;
+				++$j;
 			}
 		}
 		if ($MyRow['sectioninaccounts'] != $Section) {
@@ -512,7 +512,7 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 							<td></td>
 							<td class="number">%s</td>
 						</tr>', $Sections[$Section], locale_number_format($SectionBalance, $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($SectionBalanceLY, $_SESSION['CompanyRecord']['decimalplaces']));
-				$j++;
+				++$j;
 			}
 			$SectionBalanceLY = 0;
 			$SectionBalance = 0;
@@ -543,7 +543,7 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 			$LYGroupTotal[$Level] = 0;
 			$ActGrp = $MyRow['groupname'];
 			$ParentGroups[$Level] = $MyRow['groupname'];
-			$j++;
+			++$j;
 		}
 
 		$SectionBalanceLY += $LYAccountBalance;
@@ -564,7 +564,7 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 					$k=0;
 				} else {
 					echo '<tr class="EvenTableRows">';
-					$k++;
+					++$k;
 				}
 
 				$ActEnquiryURL = '<a href="' . $RootPath . '/GLAccountInquiry.php?Period=' . urlencode($_POST['BalancePeriodEnd']) . '&amp;Account=' . urlencode($MyRow['accountcode']) . '">' . $MyRow['accountcode'] . '</a>';
@@ -580,7 +580,7 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 						htmlspecialchars($MyRow['accountname'],ENT_QUOTES,'UTF-8',false),
 						locale_number_format($AccountBalance,$_SESSION['CompanyRecord']['decimalplaces']),
 						locale_number_format($LYAccountBalance,$_SESSION['CompanyRecord']['decimalplaces']));
-				$j++;
+				++$j;
 			}
 		}
 	}

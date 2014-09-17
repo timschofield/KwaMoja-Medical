@@ -601,7 +601,7 @@ if (!isset($StockId)) {
 				$k = 0;
 			} else {
 				echo '<tr class="OddTableRows">';
-				$k++;
+				++$k;
 			}
 
 			printf('<td><input type="submit" name="SelectedStockItem" value="%s" /></td>
@@ -784,7 +784,7 @@ if (!isset($StockId)) {
 					$k = 0;
 				} else {
 					echo '<tr class="OddTableRows">';
-					$k++;
+					++$k;
 				}
 
 				$ModifyPage = $RootPath . '/SelectOrderItems.php?ModifyOrderNumber=' . $MyRow['orderno'];
@@ -878,7 +878,7 @@ if (!isset($StockId)) {
 						<td class="number">%s</td>
 						</tr>', $ModifyPage, $MyRow['orderno'], $PrintQuotation, $PrintQuotationPortrait, $MyRow['name'], $MyRow['brname'], $MyRow['customerref'], $FormatedOrderDate, $FormatedDelDate, html_entity_decode($MyRow['deliverto'], ENT_QUOTES, 'UTF-8'), $FormatedOrderValue);
 				}
-				$i++;
+				++$i;
 				$OrdersTotal += $MyRow['ordervalue'];
 				//end of page full new headings if
 			} //end while loop through orders to display

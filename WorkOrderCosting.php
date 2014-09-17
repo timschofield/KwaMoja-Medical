@@ -237,7 +237,7 @@ while ($RequirementsRow = DB_fetch_array($RequirementsResult)) {
 	if ($k == 1) {
 		$k = 0;
 	} else {
-		$k++;
+		++$k;
 	}
 	echo '<tr>
 			<td colspan="9"><hr /></td>
@@ -271,7 +271,7 @@ if (DB_num_rows($WOIssuesResult) > 0) {
 			$k = 0;
 		} else {
 			echo '<tr class="OddTableRows">';
-			$k++;
+			++$k;
 		}
 
 		echo '<td>' . $WOIssuesRow['stockid'] . '</td>

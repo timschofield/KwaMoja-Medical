@@ -99,13 +99,13 @@ function search(&$StockId) { //####SEARCH_SEARCH_SEARCH_SEARCH_SEARCH_SEARCH_SEA
 				$k = 0;
 			} else {
 				echo '<tr class="OddTableRows">';
-				$k++;
+				++$k;
 			}
 			$TabIndex = $j + 4;
 			echo '<td><input tabindex="' . $TabIndex . '" type="submit" name="StockID" value="' . $MyRow['stockid'] . '" /></td>
 				<td>' . $MyRow['description'] . '</td>
 				</tr>';
-			$j++;
+			++$j;
 		} //end of while loop
 
 		echo '</table>';

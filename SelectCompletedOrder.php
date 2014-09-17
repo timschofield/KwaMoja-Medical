@@ -400,7 +400,7 @@ if (isset($StockItemsResult)) {
 			$k = 0;
 		} else {
 			echo '<tr class="OddTableRows">';
-			$k++;
+			++$k;
 		}
 
 		printf('<td><input type="submit" name="SelectedStockItem" value="%s" /></td>

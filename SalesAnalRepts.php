@@ -290,7 +290,7 @@ if (!isset($SelectedReport)) {
 			$k = 0;
 		} else {
 			echo '<tr class="OddTableRows">';
-			$k++;
+			++$k;
 		}
 
 

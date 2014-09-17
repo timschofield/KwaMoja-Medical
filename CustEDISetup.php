@@ -31,13 +31,13 @@ if (isset($_POST['submit'])) {
 		$InputError = 1;
 		prnMsg(_('The customers EDI reference code must be set when EDI Invoices or EDI orders are activated'), 'warn');
 		$Errors[$i] = 'EDIReference';
-		$i++;
+		++$i;
 	}
 	if (mb_strlen($_POST['EDIAddress']) < 4 and $_POST['EDIInvoices'] == 1) {
 		$InputError = 1;
 		prnMsg(_('The customers EDI email address or FTP server address must be entered if EDI Invoices are to be sent'), 'warn');
 		$Errors[$i] = 'EDIAddress';
-		$i++;
+		++$i;
 	}
 
 

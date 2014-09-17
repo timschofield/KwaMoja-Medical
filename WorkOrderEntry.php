@@ -164,7 +164,7 @@ if ($_SESSION['WorkOrder' . $Identifier]->NumberOfItems > 0) {
 			$j = 0;
 		} else {
 			echo '<tr class="EvenTableRows">';
-			$j++;
+			++$j;
 		}
 		echo '<td>
 				<input type="hidden" name="OutputItem' . $WOItem->LineNumber . '" value="' . $WOItem->StockID . '" />' . $WOItem->StockID . ' - ' . $WOItem->Description . '

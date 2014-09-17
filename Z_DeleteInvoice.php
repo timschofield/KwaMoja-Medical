@@ -51,7 +51,7 @@ $i = 0;
 
 while ($MyRow = DB_fetch_array($Result)) {
 	$StockMovement[$i] = $MyRow;
-	$i++;
+	++$i;
 }
 
 prnMsg(_('The number of stock movements to be deleted is') . ': ' . DB_num_rows($Result), 'info');

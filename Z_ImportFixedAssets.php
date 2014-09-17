@@ -55,7 +55,7 @@ if ($_FILES['SelectedAssetFile']['name']) { //start file processing
 			include('includes/footer.inc');
 			exit;
 		}
-		$i++;
+		++$i;
 	}
 
 	//start database transaction

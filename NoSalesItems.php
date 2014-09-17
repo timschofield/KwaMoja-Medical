@@ -31,7 +31,7 @@ if (!(isset($_POST['Search']))) {
 	while ($MyRow = DB_fetch_array($locationresult)) {
 		if (isset($_POST['Location'][$i]) and $MyRow['loccode'] == $_POST['Location'][$i]) {
 			echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
-			$i++;
+			++$i;
 		} else {
 			echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 		}

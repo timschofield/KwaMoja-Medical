@@ -22,26 +22,26 @@ if (isset($_POST['submit'])) {
 		prnMsg(_('The quantity break must be entered as a positive number'), 'error');
 		$InputError = 1;
 		$Errors[$i] = 'QuantityBreak';
-		$i++;
+		++$i;
 	}
 
 	if (filter_number_format($_POST['QuantityBreak']) <= 0) {
 		prnMsg(_('The quantity of all items on an order in the discount category') . ' ' . $_POST['DiscountCategory'] . ' ' . _('at which the discount will apply is 0 or less than 0') . '. ' . _('Positive numbers are expected for this entry'), 'warn');
 		$InputError = 1;
 		$Errors[$i] = 'QuantityBreak';
-		$i++;
+		++$i;
 	}
 	if (!is_numeric(filter_number_format($_POST['DiscountRate']))) {
 		prnMsg(_('The discount rate must be entered as a positive number'), 'warn');
 		$InputError = 1;
 		$Errors[$i] = 'DiscountRate';
-		$i++;
+		++$i;
 	}
 	if (filter_number_format($_POST['DiscountRate']) <= 0 OR filter_number_format($_POST['DiscountRate']) > 100) {
 		prnMsg(_('The discount rate applicable for this record is either less than 0% or greater than 100%') . '. ' . _('Numbers between 1 and 100 are expected'), 'warn');
 		$InputError = 1;
 		$Errors[$i] = 'DiscountRate';
-		$i++;
+		++$i;
 	}
 
 	/* actions to take once the user has clicked the submit button

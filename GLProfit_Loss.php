@@ -795,7 +795,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 				$GrpPrdBudget[$Level] = 0;
 				$ParentGroups[$Level] = '';
 			}
-			$j++;
+			++$j;
 		}
 
 		if ($MyRow['sectioninaccounts'] != $Section) {
@@ -900,7 +900,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 							<td></td>
 							<td class="number"><i>%s</i></td>
 							</tr><tr><td colspan="6"> </td></tr>', locale_number_format($PrdGPPercent, 1) . '%', locale_number_format($BudgetGPPercent, 1) . '%', locale_number_format($BudgetGPPercent, 1) . '%', locale_number_format($LYGPPercent, 1) . '%');
-					$j++;
+					++$j;
 				}
 
 				if (($Section != 1) and ($Section != 2)) {
@@ -967,7 +967,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 					<td colspan="8"><h2><b>%s</b></h2></td>
 					</tr>', $Sections[$MyRow['sectioninaccounts']]);
 			}
-			$j++;
+			++$j;
 
 		}
 
@@ -1022,7 +1022,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 					$k = 0;
 				} else {
 					echo '<tr class="OddTableRows">';
-					$k++;
+					++$k;
 				}
 				$ActEnquiryURL = '<a href="' . $RootPath . '/GLAccountInquiry.php?Period=' . $_POST['ToPeriod'] . '&amp;Account=' . $MyRow['accountcode'] . '&amp;Show=Yes">' . $MyRow['accountcode'] . '</a>';
 
@@ -1052,7 +1052,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 							<td></td>
 							</tr>', $ActEnquiryURL, htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false), locale_number_format($AccountPeriodActual, $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($AccountPeriodBudget, $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($AccountPeriodBudget-$AccountPeriodActual, $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($AccountPeriodLY, $_SESSION['CompanyRecord']['decimalplaces']));
 				}
-				$j++;
+				++$j;
 			}
 		}
 	}
@@ -1148,7 +1148,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 			$GrpPrdBudget[$Level] = 0;
 			$ParentGroups[$Level] = '';
 		}
-		$j++;
+		++$j;
 	}
 
 	if ($MyRow['sectioninaccounts'] != $Section) {
@@ -1246,7 +1246,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 					<td></td>
 					<td class="number"><i>%s</i></td>
 					</tr><tr><td colspan="6"> </td></tr>', locale_number_format($PrdGPPercent, 1) . '%', locale_number_format($BudgetGPPercent, 1) . '%', locale_number_format($LYGPPercent, 1) . '%');
-			$j++;
+			++$j;
 		}
 
 		$SectionPrdLY = 0;
@@ -1261,7 +1261,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 				</tr>', $Sections[$MyRow['sectioninaccounts']]);
 		}
 
-		$j++;
+		++$j;
 
 	}
 

@@ -97,7 +97,7 @@ if (isset($_POST['Show'])) {
 			$j = 0;
 		} else {
 			echo '<tr class="EvenTableRows">';
-			$j++;
+			++$j;
 		}
 		echo '<td>' . $CurPeriod . '</td>
 					<td class="number">' . locale_number_format($dtRow['bfwd'], 2) . '</td>';

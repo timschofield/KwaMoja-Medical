@@ -144,12 +144,12 @@ if (!class_exists('Cpdf', false)) {
 				if ($l > $wmax) {
 					break;
 				} else {
-					$i++;
+					++$i;
 				}
 			}
 			if ($sep == -1) {
 				if ($i == 0) {
-					$i++;
+					++$i;
 				}
 
 				if (isset($this->ws) and $this->ws > 0) {

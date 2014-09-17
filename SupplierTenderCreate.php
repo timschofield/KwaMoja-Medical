@@ -741,7 +741,7 @@ if (isset($_POST['Search'])) {
 					<input type="hidden" value="' . $MyRow['stockid'] . '" name="StockID' . $i . '" />
 				</tr>';
 
-			$i++;
+			++$i;
 			#end of page full new headings if
 		}
 		#end of while loop

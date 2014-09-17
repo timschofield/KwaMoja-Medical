@@ -347,7 +347,7 @@ $TaxTotal = 0;
 $k = 0; //row colour counter
 $j = 0;
 foreach ($_SESSION['Items' . $Identifier]->LineItems as $LnItm) {
-	$j++;
+	++$j;
 	if ($k == 1) {
 		$RowStarter = '<tr class="EvenTableRows">';
 		$k = 0;
@@ -410,7 +410,7 @@ foreach ($_SESSION['Items' . $Identifier]->LineItems as $LnItm) {
 			echo '<br />';
 		}
 		echo $Tax->TaxAuthDescription;
-		$i++;
+		++$i;
 	}
 	echo '</td>';
 	echo '<td class="number">';
@@ -431,7 +431,7 @@ foreach ($_SESSION['Items' . $Identifier]->LineItems as $LnItm) {
 		} else {
 			echo '<input type="text" class="number" name="' . $LnItm->LineNumber . $Tax->TaxCalculationOrder . '_TaxRate" required="required" minlength="1" maxlength="4" size="4" value="' . $Tax->TaxRate * 100 . '" />';
 		}
-		$i++;
+		++$i;
 		if ($Tax->TaxOnTax == 1) {
 			$TaxTotals[$Tax->TaxAuthID] += ($Tax->TaxRate * ($LineTotal + $TaxLineTotal));
 			$TaxLineTotal += ($Tax->TaxRate * ($LineTotal + $TaxLineTotal));
@@ -531,7 +531,7 @@ if ($_SESSION['DoFreightCalc'] == True) {
 } else {
 	//	echo '<td colspan="1"></td>';
 }
-$j++;
+++$j;
 if (!isset($_POST['ChargeFreightCost'])) {
 	$_POST['ChargeFreightCost'] = 0;
 }
@@ -560,7 +560,7 @@ foreach ($_SESSION['Items' . $Identifier]->FreightTaxes as $FreightTaxLine) {
 		echo '<br />';
 	}
 	echo $FreightTaxLine->TaxAuthDescription;
-	$i++;
+	++$i;
 }
 
 echo '</td><td class="number">';
@@ -584,7 +584,7 @@ foreach ($_SESSION['Items' . $Identifier]->FreightTaxes as $FreightTaxLine) {
 		$TaxTotals[$FreightTaxLine->TaxAuthID] += ($FreightTaxLine->TaxRate * $_SESSION['Items' . $Identifier]->FreightCost);
 		$FreightTaxTotal += ($FreightTaxLine->TaxRate * $_SESSION['Items' . $Identifier]->FreightCost);
 	}
-	$i++;
+	++$i;
 	$TaxGLCodes[$FreightTaxLine->TaxAuthID] = $FreightTaxLine->TaxGLCode;
 }
 echo '</td>';
@@ -1785,24 +1785,24 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 	if (!isset($_POST['InvoiceText'])) {
 		$_POST['InvoiceText'] = '';
 	}
-	$j++;
+	++$j;
 	echo '<table class="selection">
 		<tr>
 			<td>' . _('Date On Invoice') . ':</td>
 			<td><input tabindex="' . $j . '" type="text" required="required" minlength="1" maxlength="10" size="15" name="DispatchDate" value="' . $DefaultDispatchDate . '" id="datepicker" alt="' . $_SESSION['DefaultDateFormat'] . '" class="date" /></td>
 		</tr>';
-	$j++;
+	++$j;
 	echo '<tr>
 			<td>' . _('Consignment Note Ref') . ':</td>
 			<td><input tabindex="' . $j . '" type="text" minlength="0" maxlength="20" size="20" name="Consignment" value="' . $_POST['Consignment'] . '" /></td>
 		</tr>';
-	$j++;
+	++$j;
 	echo '<tr>
 			<td>' . _('No Of Packages in Delivery') . ':</td>
 			<td><input tabindex="' . $j . '" type="text" minlength="0" maxlength="6" size="6" class="number" name="Packages" value="' . $_POST['Packages'] . '" /></td>
 		</tr>';
 
-	$j++;
+	++$j;
 	echo '<tr>
 			<td>' . _('Action For Balance') . ':</td>
 			 <td>
@@ -1812,26 +1812,26 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 				</select>
 			</td>
 		</tr>';
-	$j++;
+	++$j;
 	echo '<tr>
 			<td>' . _('Invoice Text') . ':</td>
 			<td><textarea tabindex="' . $j . '" name="InvoiceText" cols="31" rows="5">' . reverse_escape($_POST['InvoiceText']) . '</textarea></td>
 		</tr>';
 
-	$j++;
+	++$j;
 	echo '<tr>
 			<td>' . _('Internal Comments') . ':</td>
 			<td><textarea tabindex="' . $j . '" name="InternalComments" pattern=".{0,20}" cols="31" rows="5">' . reverse_escape($_SESSION['Items' . $Identifier]->InternalComments) . '</textarea></td>
 		</tr>';
 
-	$j++;
+	++$j;
 	echo '</table>
 		<br />
 		<div class="centre">
 			<input type="submit" tabindex="' . $j . '" name="Update" value="' . _('Update') . '" />
 			<br />';
 
-	$j++;
+	++$j;
 	echo '<br />
 			<input type="submit" tabindex="' . $j . '" name="ProcessInvoice" value="' . _('Process Invoice') . '" />
 		</div>

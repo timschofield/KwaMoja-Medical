@@ -127,7 +127,7 @@ if (isset($_POST['ShowResults']) and $_POST['TransNo'] != '') {
 					$k = 0;
 				} else {
 					echo '<tr class="OddTableRows">';
-					$k++;
+					++$k;
 				}
 
 				if ($MyRow['type'] == 11) {

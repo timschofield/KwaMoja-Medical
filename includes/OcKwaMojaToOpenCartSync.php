@@ -380,7 +380,7 @@ function SyncProductBasicInformation($ShowMessages, $LastTimeRun, $oc_tableprefi
 			if ($EmailText != '') {
 				$EmailText = $EmailText . str_pad($Model, 20, " ") . " = " . $Name . " --> " . $Action . "\n";
 			}
-			$i++;
+			++$i;
 		}
 		if ($ShowMessages) {
 			echo '</table>
@@ -481,7 +481,7 @@ function SyncProductSalesCategories($ShowMessages, $LastTimeRun, $oc_tableprefix
 			if ($EmailText != '') {
 				$EmailText = $EmailText . str_pad($Model, 20, " ") . " --> " . $SalesCatId . " --> " . $Action . "\n";
 			}
-			$i++;
+			++$i;
 		}
 		if ($ShowMessages) {
 			echo '</table>
@@ -572,7 +572,7 @@ function SyncProductPrices($ShowMessages, $LastTimeRun, $oc_tableprefix, $EmailT
 			if ($EmailText != '') {
 				$EmailText = $EmailText . str_pad($Model, 20, " ") . " = " . locale_number_format($Price, 2) . " = " . $DiscountCategory . " --> " . $Action . "\n";
 			}
-			$i++;
+			++$i;
 		}
 		if ($ShowMessages) {
 			echo '</table>
@@ -660,7 +660,7 @@ function SyncProductQOH($ShowMessages, $LastTimeRun, $oc_tableprefix, $EmailText
 			if ($EmailText != '') {
 				$EmailText = $EmailText . str_pad($Model, 20, " ") . " QOH = " . locale_number_format($Quantity, 0) . "\n";
 			}
-			$i++;
+			++$i;
 		}
 		if ($ShowMessages) {
 			echo '</table>
@@ -760,7 +760,7 @@ function CleanDuplicatedUrlAlias($ShowMessages, $LastTimeRun, $oc_tableprefix, $
 				if ($EmailText != '') {
 					$EmailText = $EmailText . locale_number_format($MyRow['url_alias_id'], 0) . " --> " . $MyRow['query'] . " --> " . $MyRow['keyword'] . "\n";
 				}
-				$i++;
+				++$i;
 			}
 			$PreviousQuery = $MyRow['query'];
 			$PreviousKeyword = $MyRow['keyword'];
@@ -917,7 +917,7 @@ function SyncSalesCategories($ShowMessages, $LastTimeRun, $oc_tableprefix, $Emai
 			if ($EmailText != '') {
 				$EmailText = $EmailText . $MyRow['salescatid'] . " = " . $Name . " --> " . $Action . "\n";
 			}
-			$i++;
+			++$i;
 		}
 		if ($ShowMessages) {
 			echo '</table>
@@ -990,7 +990,7 @@ function SyncFeaturedList($ShowMessages, $LastTimeRun, $oc_tableprefix, $EmailTe
 			if ($EmailText != '') {
 				$EmailText = $EmailText . str_pad($Model, 20, " ") . " = " . $ProductId . " --> " . $Action . "\n";
 			}
-			$i++;
+			++$i;
 		}
 		UpdateSettingValueOpenCart($SettingId, $ListFeaturedOpenCart, $oc_tableprefix);
 		if ($ShowMessages) {
@@ -1071,7 +1071,7 @@ function ActivateCategoryDependingOnQOH($ShowMessages, $LastTimeRun, $oc_tablepr
 			$EmailText = $EmailText . $CategoryName . " --> " . locale_number_format($CategoryQOH,0) . " --> " . $Action . "\n";
 			}
 			*/
-			$i++;
+			++$i;
 		}
 		if ($ShowMessages) {
 			echo '</table>
@@ -1144,7 +1144,7 @@ function MaintainOpenCartOutletSalesCategories($ShowMessages, $LastTimeRun, $oc_
 			$EmailText = $EmailText . str_pad($Model, 20, " ") . " --> " . $Action . "\n";
 			}
 			*/
-			$i++;
+			++$i;
 		}
 		if ($ShowMessages) {
 			echo '</table>
@@ -1201,7 +1201,7 @@ function MaintainKwaMojaOutletSalesCategories($ShowMessages, $LastTimeRun, $oc_t
 			$EmailText = $EmailText . str_pad($ProductId, 20, " ") . " --> " . $Action . "\n";
 			}
 			*/
-			$i++;
+			++$i;
 		}
 		if ($ShowMessages) {
 			echo '</table>
@@ -1263,7 +1263,7 @@ function SyncMultipleImages($ShowMessages, $LastTimeRun, $oc_tableprefix, $Email
 								<td>%s</td>
 								</tr>', $StockId, $file);
 					}
-					$i++;
+					++$i;
 				}
 			}
 			$multipleimage++;
@@ -1340,7 +1340,7 @@ function SyncRelatedItems($ShowMessages, $LastTimeRun, $oc_tableprefix, $EmailTe
 						<td>%s</td>
 						</tr>', $MyRow['stockid'], $MyRow['related'], $ProductId, $RelatedId, $Action);
 			}
-			$i++;
+			++$i;
 		}
 		if ($ShowMessages) {
 			echo '</table>

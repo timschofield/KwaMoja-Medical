@@ -51,42 +51,42 @@ if (isset($_POST['Submit'])) {
 		$InputError = 1;
 		prnMsg('<br />' . _('The Tab code cannot be an empty string or spaces'), 'error');
 		$Errors[$i] = 'TabCode';
-		$i++;
+		++$i;
 	} elseif (mb_strlen($_POST['TabCode']) > 20) {
 		$InputError = 1;
 		echo prnMsg(_('The Tab code must be twenty characters or less long'), 'error');
 		$Errors[$i] = 'TabCode';
-		$i++;
+		++$i;
 	} elseif (($_POST['SelectUser']) == '') {
 		$InputError = 1;
 		echo prnMsg(_('You must select a User for this tab'), 'error');
 		$Errors[$i] = 'UserName';
-		$i++;
+		++$i;
 	} elseif (($_POST['SelectTabs']) == '') {
 		$InputError = 1;
 		echo prnMsg(_('You must select a type of tab from the list'), 'error');
 		$Errors[$i] = 'TabType';
-		$i++;
+		++$i;
 	} elseif (($_POST['SelectAssigner']) == '') {
 		$InputError = 1;
 		echo prnMsg(_('You must select a User to assign cash to this tab'), 'error');
 		$Errors[$i] = 'AssignerName';
-		$i++;
+		++$i;
 	} elseif (($_POST['SelectAuthoriser']) == '') {
 		$InputError = 1;
 		echo prnMsg(_('You must select a User to authorise this tab'), 'error');
 		$Errors[$i] = 'AuthoriserName';
-		$i++;
+		++$i;
 	} elseif (($_POST['GLAccountCash']) == '') {
 		$InputError = 1;
 		echo prnMsg(_('You must select a General ledger code for the cash to be assigned from'), 'error');
 		$Errors[$i] = 'GLCash';
-		$i++;
+		++$i;
 	} elseif (($_POST['GLAccountPcashTab']) == '') {
 		$InputError = 1;
 		echo prnMsg(_('You must select a General ledger code for this petty cash tab'), 'error');
 		$Errors[$i] = 'GLTab';
-		$i++;
+		++$i;
 	}
 
 	if (isset($SelectedTab) and $InputError != 1) {

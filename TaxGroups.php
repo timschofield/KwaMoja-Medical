@@ -280,7 +280,7 @@ if (isset($SelectedGroup)) {
 	while ($MyRow = DB_fetch_array($UsedResult)) {
 		$TaxAuthsUsed[$i] = $MyRow['taxauthid'];
 		$TaxAuthRow[$i] = $MyRow;
-		$i++;
+		++$i;
 	}
 
 	/* the order and tax on tax will only be an issue if more than one tax authority in the group */

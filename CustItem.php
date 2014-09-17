@@ -160,7 +160,7 @@ if ($Edit == false) {
 				$k = 0;
 			} else {
 				echo '<tr class="OddTableRows">';
-				$k++;
+				++$k;
 			}
 
 			printf('<td>%s</td>
@@ -302,7 +302,7 @@ if (isset($debtorsmasterResult) and DB_num_rows($debtorsmasterResult) > 0) {
 			$k = 0;
 		} else {
 			echo '<tr class="OddTableRows">';
-			$k++;
+			++$k;
 		}
 		printf('<td><input type="submit" name="DebtorNo" value="%s" /></td>
 				<td>%s</td>

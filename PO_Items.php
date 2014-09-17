@@ -1204,7 +1204,7 @@ if (isset($SearchResult)) {
 			<td><input class="number" type="text" size="6" required="required" minlength="1" maxlength="11" value="0" name="NewQty' . $j . '" /></td>
 			<input type="hidden" name="StockID' . $j . '" . value="' . $MyRow['stockid'] . '" />
 			</tr>';
-		$j++;
+		++$j;
 		$PartsDisplayed++;
 		//end of page full new headings if
 	} //$MyRow = DB_fetch_array($SearchResult)

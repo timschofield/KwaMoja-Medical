@@ -33,22 +33,22 @@ if (isset($_POST['submit'])) {
 		$InputError = 1;
 		prnMsg(_('The salesperson code must be three characters or less long'), 'error');
 		$Errors[$i] = 'SalesmanCode';
-		$i++;
+		++$i;
 	} elseif (mb_strlen($_POST['SalesmanCode']) == 0 or $_POST['SalesmanCode'] == '') {
 		$InputError = 1;
 		prnMsg(_('The salesperson code cannot be empty'), 'error');
 		$Errors[$i] = 'SalesmanCode';
-		$i++;
+		++$i;
 	} elseif (mb_strlen($_POST['SalesmanName']) > 30) {
 		$InputError = 1;
 		prnMsg(_('The salesperson name must be thirty characters or less long'), 'error');
 		$Errors[$i] = 'SalesmanName';
-		$i++;
+		++$i;
 	} elseif (mb_strlen($_POST['SalesArea']) == 0) {
 		$InputError = 1;
 		prnMsg(_('You must select an area for this salesman'), 'error');
 		$Errors[$i] = 'SalesmanName';
-		$i++;
+		++$i;
 	} elseif (mb_strlen($_POST['SManTel']) > 20) {
 		$InputError = 1;
 		prnMsg(_('The salesperson telephone number must be twenty characters or less long'), 'error');
@@ -244,7 +244,7 @@ if (!isset($SelectedSalesPerson)) {
 			$k = 0;
 		} else {
 			echo '<tr class="OddTableRows">';
-			$k++;
+			++$k;
 		}
 		if ($MyRow['current'] == 1) {
 			$ActiveText = _('Yes');

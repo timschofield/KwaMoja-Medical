@@ -190,7 +190,7 @@ if (isset($SelectedRole)) {
 	$i = 0;
 	while ($MyRow = DB_fetch_row($UsedResult)) {
 		$TokensUsed[$i] = $MyRow[0];
-		$i++;
+		++$i;
 	}
 
 	echo '<br /><table class="selection"><tr>';

@@ -248,7 +248,7 @@
 		{
 			if(!$Msg->addParam($params->arraymem($i)))
 			{
-				$i++;
+				++$i;
 				return _xmlrpcs_multicall_error(new xmlrpcresp(0,
 					$GLOBALS['xmlrpcerr']['incorrect_params'],
 					$GLOBALS['xmlrpcstr']['incorrect_params'] . ": probable xml error in param " . $i));

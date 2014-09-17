@@ -519,7 +519,7 @@ if (isset($_POST['TenderType']) and $_POST['TenderType'] == 3 and !isset($_POST[
 				<td><input type="text" class="number" required="required" minlength="1" maxlength="10" size="10" name="Price' . $i . '" value="0.00" /></td>
 				<td><input type="text" class="date" required="required" minlength="1" maxlength="10" alt="' . $_SESSION['DefaultDateFormat'] . '" name="RequiredByDate' . $i . '" size="11" value="' . ConvertSQLDate($MyItemRow['requiredbydate']) . '" /></td>
 				</tr>';
-			$i++;
+			++$i;
 		}
 		echo '</form>';
 	}
@@ -700,7 +700,7 @@ if (isset($_POST['Search'])) {
 					<input type="hidden" size="12" value="' . $MyRow['stockid'] . '" name="StockID' . $i . '" />
 					<input type="hidden" value="' . $UOM . '" name="uom' . $i . '" />
 					</tr>';
-			$i++;
+			++$i;
 			$PartsDisplayed++;
 			if ($PartsDisplayed == $Maximum_Number_Of_Parts_To_Show) {
 				break;

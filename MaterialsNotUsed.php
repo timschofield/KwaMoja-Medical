@@ -62,7 +62,7 @@ if (DB_num_rows($Result) != 0) {
 				<td class="number">%s</td>
 				<td class="number">%s</td>
 				</tr>', $i, $CodeLink, $MyRow['description'], locale_number_format($MyRow['qoh'], $MyRow['decimalplaces']), locale_number_format($MyRow['stdcost'], $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($LineValue, $_SESSION['CompanyRecord']['decimalplaces']));
-		$i++;
+		++$i;
 	}
 
 	printf('<td colspan="4">%s</td>

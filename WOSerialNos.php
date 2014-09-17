@@ -317,8 +317,8 @@ if (DB_num_rows($WOSerialNoResult) == 0) {
 		}
 		echo '<td><textarea name="Notes' . $i . '" cols="60" rows="3">' . $WOSNRow['qualitytext'] . '</textarea></td>';
 		echo '<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Delete=1&Reference=' . $WOSNRow['serialno'] . '&Quantity=' . locale_number_format($WOSNRow['quantity'], 'Variable') . '&WO=' . $WO . '&StockID=' . $StockId . '&Description=' . $Description . '&Serialised=' . $Serialised . '&NextSerialNo=' . $NextSerialNo . '">' . _('Delete') . '</a></td></tr>';
-		$i++;
-		$j++;
+		++$i;
+		++$j;
 	}
 
 	if ($Serialised == 0) {

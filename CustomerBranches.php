@@ -55,31 +55,31 @@ if (isset($_POST['submit'])) {
 		$InputError = 1;
 		prnMsg(_('The Branch code must be at least one character long'), 'error');
 		$Errors[$i] = 'BranchCode';
-		$i++;
+		++$i;
 	}
 	if (!is_numeric($_POST['FwdDate'])) {
 		$InputError = 1;
 		prnMsg(_('The date after which invoices are charged to the following month is expected to be a number and a recognised number has not been entered'), 'error');
 		$Errors[$i] = 'FwdDate';
-		$i++;
+		++$i;
 	}
 	if ($_POST['FwdDate'] > 30) {
 		$InputError = 1;
 		prnMsg(_('The date (in the month) after which invoices are charged to the following month should be a number less than 31'), 'error');
 		$Errors[$i] = 'FwdDate';
-		$i++;
+		++$i;
 	}
 	if (!is_numeric(filter_number_format($_POST['EstDeliveryDays']))) {
 		$InputError = 1;
 		prnMsg(_('The estimated delivery days is expected to be a number and a recognised number has not been entered'), 'error');
 		$Errors[$i] = 'EstDeliveryDays';
-		$i++;
+		++$i;
 	}
 	if (filter_number_format($_POST['EstDeliveryDays']) > 60) {
 		$InputError = 1;
 		prnMsg(_('The estimated delivery days should be a number of days less than 60') . '. ' . _('A package can be delivered by seafreight anywhere in the world normally in less than 60 days'), 'error');
 		$Errors[$i] = 'EstDeliveryDays';
-		$i++;
+		++$i;
 	}
 	if (!isset($_POST['EstDeliveryDays'])) {
 		$_POST['EstDeliveryDays'] = 1;

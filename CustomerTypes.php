@@ -33,7 +33,7 @@ if (isset($_POST['submit'])) {
 		$InputError = 1;
 		prnMsg(_('The customer type name description must be 100 characters or less long'), 'error');
 		$Errors[$i] = 'CustomerType';
-		$i++;
+		++$i;
 	}
 
 	if (mb_strlen($_POST['TypeName']) == 0) {
@@ -41,7 +41,7 @@ if (isset($_POST['submit'])) {
 		echo '<br />';
 		prnMsg(_('The customer type name description must contain at least one character'), 'error');
 		$Errors[$i] = 'CustomerType';
-		$i++;
+		++$i;
 	}
 
 	$CheckSql = "SELECT count(*)
@@ -54,7 +54,7 @@ if (isset($_POST['submit'])) {
 		echo '<br />';
 		prnMsg(_('You already have a customer type called') . ' ' . $_POST['TypeName'], 'error');
 		$Errors[$i] = 'CustomerName';
-		$i++;
+		++$i;
 	}
 
 	if (isset($SelectedType) and $InputError != 1) {

@@ -124,7 +124,7 @@ Class WorkOrder {
 			$i = 1;
 			while ($WOItem = DB_fetch_array($WOItemsResult)) {
 				$this->Items[$i] = new WOItem($WOItem['stockid'], $WOItem['comments'], $WOItem['qtyreqd'], $WOItem['qtyrecd'], $WOItem['nextlotsnref'], $this->LocationCode, $i);
-				$i++;
+				++$i;
 			}
 			$this->NumberOfItems = $i;
 		}

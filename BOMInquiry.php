@@ -114,7 +114,7 @@ if (isset($_POST['Search']) and isset($Result) and !isset($SelectedParent)) {
 			$k = 0;
 		} else {
 			echo '<tr class="OddTableRows">';
-			$k++;
+			++$k;
 		}
 		if ($MyRow['mbflag'] == 'A' or $MyRow['mbflag'] == 'K') {
 			$StockOnHand = 'N/A';
@@ -127,7 +127,7 @@ if (isset($_POST['Search']) and isset($Result) and !isset($SelectedParent)) {
 				<td class="number">%s</td>
 				<td>%s</td>
 				</tr>', $MyRow['stockid'], $MyRow['description'], $StockOnHand, $MyRow['units']);
-		$j++;
+		++$j;
 		//end of page full new headings if
 	}
 	//end of while loop
@@ -205,7 +205,7 @@ if (isset($StockId) and $StockId != "") {
 				$k = 0;
 			} else {
 				echo '<tr class="OddTableRows">';
-				$k++;
+				++$k;
 			}
 
 			$ComponentLink = '<a href="' . $RootPath . '/SelectProduct.php?StockID=' . urlencode($MyRow['component']) . '">' . $MyRow['component'] . '</a>';
@@ -220,7 +220,7 @@ if (isset($StockId) and $StockId != "") {
 
 			$TotalCost += $MyRow['componentcost'];
 
-			$j++;
+			++$j;
 		}
 
 		$TotalCost += $ParentLabourCost;

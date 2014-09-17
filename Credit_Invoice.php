@@ -320,7 +320,7 @@ foreach ($_SESSION['CreditItems' . $Identifier]->LineItems as $LnItm) {
 			$RowStarter = 'class="OddTableRows"';
 			$k = 1;
 		}
-		$j++;
+		++$j;
 
 		echo '<tr ' . $RowStarter . '><td>' . $LnItm->StockID . '</td>
 			<td title="' . $LnItm->LongDescription . '">' . $LnItm->ItemDescription . '</td>
@@ -339,7 +339,7 @@ foreach ($_SESSION['CreditItems' . $Identifier]->LineItems as $LnItm) {
 
 		$DisplayLineTotal = locale_number_format($LineTotal, $_SESSION['CreditItems' . $Identifier]->CurrDecimalPlaces);
 
-		$j++;
+		++$j;
 		echo '<td><input tabindex="' . $j . '" type="text" class="number" name="Price_' . $LnItm->LineNumber . '" required="required" minlength="1" maxlength="12" size="6" value="' . locale_number_format($LnItm->Price, $_SESSION['CreditItems' . $Identifier]->CurrDecimalPlaces) . '" /></td>
 		<td><input tabindex="' . $j . '" type="text" class="number" name="Discount_' . $LnItm->LineNumber . '" required="required" minlength="1" maxlength="3" size="3" value="' . locale_number_format(($LnItm->DiscountPercent * 100), 2) . '" /></td>
 		<td class="number">' . $DisplayLineTotal . '</td>';
@@ -353,7 +353,7 @@ foreach ($_SESSION['CreditItems' . $Identifier]->LineItems as $LnItm) {
 					echo '<br />';
 				}
 				echo $Tax->TaxAuthDescription;
-				$i++;
+				++$i;
 			}
 		}
 		echo '</td>';
@@ -370,7 +370,7 @@ foreach ($_SESSION['CreditItems' . $Identifier]->LineItems as $LnItm) {
 			if (!isset($_POST['ProcessCredit'])) {
 				echo '<input type="text" class="number" name="' . $LnItm->LineNumber . $Tax->TaxCalculationOrder . '_TaxRate" maxlength="4" size="4" value="' . locale_number_format($Tax->TaxRate * 100, 2) . '" />';
 			}
-			$i++;
+			++$i;
 			if ($Tax->TaxOnTax == 1) {
 				$TaxTotals[$Tax->TaxAuthID] += ($Tax->TaxRate * ($LineTotal + $TaxLineTotal));
 				$TaxLineTotal += ($Tax->TaxRate * ($LineTotal + $TaxLineTotal));
@@ -399,7 +399,7 @@ foreach ($_SESSION['CreditItems' . $Identifier]->LineItems as $LnItm) {
 				<br />
 				<hr /></td>
 			</tr>';
-		$j++;
+		++$j;
 	}
 }
 /*end foreach loop displaying the invoice lines to credit */
@@ -424,7 +424,7 @@ if (!isset($_POST['ProcessCredit'])) {
 			echo '<br />';
 		}
 		echo $FreightTaxLine->TaxAuthDescription;
-		$i++;
+		++$i;
 	}
 }
 $FreightTaxTotal = 0; //initialise tax total
@@ -445,7 +445,7 @@ foreach ($_SESSION['CreditItems' . $Identifier]->FreightTaxes as $FreightTaxLine
 		$TaxTotals[$FreightTaxLine->TaxAuthID] += ($FreightTaxLine->TaxRate * $_SESSION['CreditItems' . $Identifier]->FreightCost);
 		$FreightTaxTotal += ($FreightTaxLine->TaxRate * $_SESSION['CreditItems' . $Identifier]->FreightCost);
 	}
-	$i++;
+	++$i;
 	$TaxGLCodes[$FreightTaxLine->TaxAuthID] = $FreightTaxLine->TaxGLCode;
 }
 if (!isset($_POST['ProcessCredit'])) {
@@ -1514,7 +1514,7 @@ if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 		echo '<option selected="selected" value="ReverseOverCharge">' . _('Reverse overcharge') . '</option>';
 	}
 	echo '</select></td></tr>';
-	$j++;
+	++$j;
 
 	if (!isset($_POST['CreditType']) or $_POST['CreditType'] == 'Return') {
 
@@ -1543,7 +1543,7 @@ if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 			}
 		}
 		echo '</select></td></tr>';
-		$j++;
+		++$j;
 
 	} elseif ($_POST['CreditType'] == 'WriteOff') {
 		/* the goods are to be written off to somewhere */
@@ -1571,7 +1571,7 @@ if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 		}
 		echo '</select></td></tr>';
 	}
-	$j++;
+	++$j;
 	echo '<tr>
 			<td>' . _('Sales person'). ':</td>';
 
@@ -1606,7 +1606,7 @@ if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 		<div class="centre">
 			<input tabindex="' . $j . '" type="submit" name="Update" value="' . _('Update') . '" />
 			<br />';
-	$j++;
+	++$j;
 	echo '<input type="submit" tabindex="' . $j++ . '" name="ProcessCredit" value="' . _('Process Credit') . '" />
 		</div>';
 }

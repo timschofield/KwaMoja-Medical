@@ -42,31 +42,31 @@ if (isset($_POST['submit'])) {
 		$InputError = 1;
 		prnMsg(_('The bank account code already exists in the database'), 'error');
 		$Errors[$i] = 'AccountCode';
-		$i++;
+		++$i;
 	}
 	if (mb_strlen($_POST['BankAccountName']) > 50) {
 		$InputError = 1;
 		prnMsg(_('The bank account name must be fifty characters or less long'), 'error');
 		$Errors[$i] = 'AccountName';
-		$i++;
+		++$i;
 	}
 	if (trim($_POST['BankAccountName']) == '') {
 		$InputError = 1;
 		prnMsg(_('The bank account name may not be empty.'), 'error');
 		$Errors[$i] = 'AccountName';
-		$i++;
+		++$i;
 	}
 	if (mb_strlen($_POST['BankAccountNumber']) > 50) {
 		$InputError = 1;
 		prnMsg(_('The bank account number must be fifty characters or less long'), 'error');
 		$Errors[$i] = 'AccountNumber';
-		$i++;
+		++$i;
 	}
 	if (mb_strlen($_POST['BankAddress']) > 50) {
 		$InputError = 1;
 		prnMsg(_('The bank address must be fifty characters or less long'), 'error');
 		$Errors[$i] = 'BankAddress';
-		$i++;
+		++$i;
 	}
 
 	if (isset($SelectedBankAccount) and $InputError != 1) {
@@ -212,7 +212,7 @@ if (!isset($SelectedBankAccount)) {
 			$k = 0;
 		} else {
 			echo '<tr class="OddTableRows">';
-			$k++;
+			++$k;
 		}
 		if ($MyRow['invoice'] == 0) {
 			$DefaultBankAccount = _('No');

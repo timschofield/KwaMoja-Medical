@@ -407,7 +407,7 @@ if (isset($_POST['SelectingOrderItems']) or isset($_POST['QuickEntry']) or isset
 		$QuickEntryPOLine = 'poline_' . $i;
 		$QuickEntryItemDue = 'ItemDue_' . $i;
 
-		$i++;
+		++$i;
 
 		if (isset($_POST[$QuickEntryCode])) {
 			$NewItem = mb_strtoupper($_POST[$QuickEntryCode]);
@@ -2233,7 +2233,7 @@ if (!isset($_POST['ProcessSale'])) {
 							<input type="hidden" name="StockID%s" value="%s" />
 						</td>
 						</tr>', $MyRow['stockid'], $MyRow['description'], $MyRow['units'], $QOH, $DemandQty, $OnOrder, $Available, $i, $i, $MyRow['stockid']);
-				$i++; //index for controls
+				++$i; //index for controls
 				#end of page full new headings if
 			}
 			#end of while loop for Frequently Ordered Items
@@ -2403,7 +2403,7 @@ if (!isset($_POST['ProcessSale'])) {
 						<td class="number">%s</td>
 						<td><input class="number"  tabindex="' . strval($j + 7) . '" required="required" minlength="1" type="text" size="6" name="OrderQty%s" value="0" /><input type="hidden" name="StockID%s" value="%s" /></td>
 						</tr>', $MyRow['stockid'], $MyRow['description'], $MyRow['units'], locale_number_format($QOH, $MyRow['decimalplaces']), locale_number_format($DemandQty, $MyRow['decimalplaces']), locale_number_format($OnOrder, $MyRow['decimalplaces']), locale_number_format($Available, $MyRow['decimalplaces']), $i, $i, $MyRow['stockid']);
-				$i++;
+				++$i;
 				#end of page full new headings if
 			}
 			#end of while loop

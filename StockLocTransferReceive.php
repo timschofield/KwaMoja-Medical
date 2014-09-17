@@ -59,7 +59,7 @@ if (isset($_POST['ProcessTransfer'])) {
 			$_SESSION['Transfer' . $Identifier]->TransferItem[$i]->CancelBalance = 0;
 		}
 		$TotalQuantity += $TrfLine->Quantity;
-		$i++;
+		++$i;
 	}
 	/*end loop to validate and update the SESSION['Transfer'] data */
 	if ($TotalQuantity < 0) {
@@ -370,7 +370,7 @@ if (isset($_POST['ProcessTransfer'])) {
 					}
 				}
 			}
-			$i++;
+			++$i;
 		}
 		/*end of foreach TransferItem */
 
@@ -436,7 +436,7 @@ if (isset($_GET['Trf_ID'])) {
 		$_SESSION['Transfer' . $Identifier]->TransferItem[$i]->PrevRecvQty = $MyRow['recqty'];
 		$_SESSION['Transfer' . $Identifier]->TransferItem[$i]->Quantity = $MyRow['shipqty'] - $MyRow['recqty'];
 
-		$i++;
+		++$i;
 		/*numerical index for the TransferItem[] array of LineItem s */
 
 	} while ($MyRow = DB_fetch_array($Result));
@@ -477,7 +477,7 @@ if (isset($_SESSION['Transfer' . $Identifier])) {
 			$k = 0;
 		} else {
 			echo '<tr class="OddTableRows">';
-			$k++;
+			++$k;
 		}
 
 		echo '<td>' . $TrfLine->StockID . '</td>
@@ -525,7 +525,7 @@ if (isset($_SESSION['Transfer' . $Identifier])) {
 
 		echo '</tr>';
 
-		$i++;
+		++$i;
 		/* the array of TransferItem s is indexed numerically and i matches the index no */
 	}
 	/*end of foreach TransferItem */
@@ -606,7 +606,7 @@ if (isset($_SESSION['Transfer' . $Identifier])) {
 				$k = 0;
 			} else {
 				echo '<tr class="OddTableRows">';
-				$k++;
+				++$k;
 			}
 			echo '<td class="number">' . $MyRow['reference'] . '</td>
 					<td>' . $MyRow['trffromloc'] . '</td>

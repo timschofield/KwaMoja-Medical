@@ -681,7 +681,7 @@ function LevelNetting($Part, $eoq, $PanSize, $ShrinkFactor, $LeadTime) {
 	$i = 0;
 	while ($MyRow = DB_fetch_array($Result)) {
 		array_push($Requirements, $MyRow);
-		$i++;
+		++$i;
 	} //end of while loop
 
 	// Load mrpsupplies into $Supplies array
@@ -691,7 +691,7 @@ function LevelNetting($Part, $eoq, $PanSize, $ShrinkFactor, $LeadTime) {
 	$i = 0;
 	while ($MyRow = DB_fetch_array($Result)) {
 		array_push($Supplies, $MyRow);
-		$i++;
+		++$i;
 	} //end of while loop
 
 	// Go through all requirements and check if have supplies to cover them

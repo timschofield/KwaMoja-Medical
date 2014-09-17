@@ -247,7 +247,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 				<td>' . $MyRow['faxno'] . '</td>
 				</tr>';
 			$LastCustomer = $MyRow['name'];
-			$j++;
+			++$j;
 			//end of page full new headings if
 		} //end of while loop
 		echo '</table><input type="hidden" name="JustSelectedACustomer" value="Yes" />';
@@ -394,7 +394,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 			do {
 				$QuickEntryCode = 'part_' . $i;
 				$QuickEntryQty = 'qty_' . $i;
-				$i++;
+				++$i;
 			} while (!is_numeric(filter_number_format($_POST[$QuickEntryQty])) and filter_number_format($_POST[$QuickEntryQty]) <= 0 and mb_strlen($_POST[$QuickEntryCode]) != 0 and $i <= $QuickEntires);
 
 			$_POST['NewItem'] = trim($_POST[$QuickEntryCode]);
@@ -637,7 +637,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 				$k = 0;
 			} else {
 				$RowStarter = '<tr class="OddTableRows">';
-				$k++;
+				++$k;
 			}
 
 			echo $RowStarter . '<td>' . $LineItem->StockID . '</td>
@@ -666,7 +666,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 					echo '<br />';
 				}
 				echo $Tax->TaxAuthDescription;
-				$i++;
+				++$i;
 			}
 			echo '</td>';
 			echo '<td>';
@@ -679,7 +679,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 					echo '<br />';
 				}
 				echo '<input type="text" class="number" name="' . $LineItem->LineNumber . $Tax->TaxCalculationOrder . '_TaxRate" required="required" minlength="1" maxlength="4" size="4" value="' . locale_number_format($Tax->TaxRate * 100, 'Variable') . '" />';
-				$i++;
+				++$i;
 				if ($Tax->TaxOnTax == 1) {
 					$TaxTotals[$Tax->TaxAuthID] += ($Tax->TaxRate * ($LineTotal + $TaxLineTotal));
 					$TaxLineTotal += ($Tax->TaxRate * ($LineTotal + $TaxLineTotal));
@@ -729,7 +729,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 				echo '<br />';
 			}
 			echo $FreightTaxLine->TaxAuthDescription;
-			$i++;
+			++$i;
 		}
 
 		echo '</td><td>';
@@ -749,7 +749,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 				$TaxTotals[$FreightTaxLine->TaxAuthID] += ($FreightTaxLine->TaxRate * $_SESSION['CreditItems' . $Identifier]->FreightCost);
 				$FreightTaxTotal += ($FreightTaxLine->TaxRate * $_SESSION['CreditItems' . $Identifier]->FreightCost);
 			}
-			$i++;
+			++$i;
 			$TaxGLCodes[$FreightTaxLine->TaxAuthID] = $FreightTaxLine->TaxGLCode;
 		}
 		echo '</td>';
@@ -962,7 +962,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 					$k = 0;
 				} else {
 					echo '<tr class="OddTableRows">';
-					$k++;
+					++$k;
 				}
 				if (file_exists($_SESSION['part_pics_dir'] . '/' . mb_strtoupper($MyRow['stockid']) . '.jpg')) {
 					printf('<td><input type="submit" name="NewItem" value="%s" /></td>

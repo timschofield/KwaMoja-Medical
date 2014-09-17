@@ -196,7 +196,7 @@ if (!isset($SelectedCOGSPostingID)) {
 				$k = 0;
 			} else {
 				echo '<tr class="OddTableRows">';
-				$k++;
+				++$k;
 			}
 
 			printf('<td>%s</td>

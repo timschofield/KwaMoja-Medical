@@ -524,7 +524,7 @@ function ReadDefReports() {
 					$ReportList[$i]['GrpName'] = $GrpName;
 					$ReportList[$i]['RptName'] = $RptName;
 					$ReportList[$i]['FileName'] = $pinfo[basename];
-					$i++;
+					++$i;
 				}
 			}
 		}
@@ -546,7 +546,7 @@ function ReadDefReports() {
 		if (!$GrpMember)
 			$Temp['GrpName'] = RPT_MISC;
 		$OptionList .= '<option value="' . $Temp['FileName'] . '">' . $Temp['RptName'] . '</option>';
-		$i++;
+		++$i;
 	}
 	if ($CloseOptGrp)
 		$OptionList .= '</optgroup>';
@@ -652,7 +652,7 @@ function ExportReport($ReportID) {
 		}
 		$SQL = mb_substr($SQL, 0, -2) . ";"; // Strip the last comma and space and add a semicolon
 		$FieldData[$i] = $SQL;
-		$i++;
+		++$i;
 	}
 	$CSVOutput .= '/* End of language fields. */' . $crlf . $crlf;
 	$CSVOutput .= '/* DO NOT EDIT BELOW THIS LINE! */' . $crlf . $crlf . $crlf;
@@ -834,7 +834,7 @@ function CreateLinkList($ReportID, $Table) {
 				} else {
 					$LinkList .= "<option value='" . $mytable[1] . "'>" . $mytable[1];
 				}
-				$j++;
+				++$j;
 			}
 		} // while
 	} // for
@@ -875,7 +875,7 @@ function CreateLinkEqList($ReportID, $Table) {
 				} else {
 					$LinkEqList .= "<option value='" . $mytable[2] . "'>" . $mytable[2];
 				}
-				$j++;
+				++$j;
 			}
 		} // while
 	} // for

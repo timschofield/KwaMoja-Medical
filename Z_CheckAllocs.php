@@ -75,7 +75,7 @@ while ($MyRow = DB_fetch_array($Result)) {
 			$k = 0;
 		} else {
 			echo '<tr class="OddTableRows">';
-			$k++;
+			++$k;
 		}
 
 		if ($MyRow1['type'] == 11) {

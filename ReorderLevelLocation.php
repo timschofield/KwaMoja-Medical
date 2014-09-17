@@ -136,7 +136,7 @@ if (isset($_POST['submit']) or isset($_POST['Update'])) {
 
 		echo '</td>
 			</tr> ';
-		$i++;
+		++$i;
 	} //end of looping
 	echo '<tr>
 			<td style="text-align:center" colspan="7">

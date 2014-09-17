@@ -90,7 +90,7 @@ if (isset($_POST['CreateTemplate'])) {
 								'" . $ChartRow['accountname'] . "',
 								'" . $ChartRow['group_'] . "');\n";
 			}
-			$i++;
+			++$i;
 		}
 
 		/*Now the tax set up */
@@ -247,7 +247,7 @@ while ($ChartRow = DB_fetch_array($ChartResult)) {
 			<td>' . htmlspecialchars($ChartRow['accountname'], ENT_QUOTES, 'UTF-8', false) . '</td>
 			<td><input type="checkbox" name="IncludeAccount_' . $i . '" checked="checked" /></td>
 		</tr>';
-	$i++;
+	++$i;
 }
 
 echo '</table>';

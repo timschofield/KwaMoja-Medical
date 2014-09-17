@@ -101,7 +101,7 @@ if (isset($_POST['PrintPDF'])) {
 				if ($i > 0) {
 					$SQL .= " OR ";
 				}
-				$i++;
+				++$i;
 				$SQL .= "custbranch.salesman='" . $Salesperson . "'";
 			}
 
@@ -152,7 +152,7 @@ if (isset($_POST['PrintPDF'])) {
 				if ($i > 0) {
 					$SQL .= " OR ";
 				}
-				$i++;
+				++$i;
 				$SQL .= "custbranch.area='" . $Area . "'";
 			}
 
@@ -200,7 +200,7 @@ if (isset($_POST['PrintPDF'])) {
 				if ($i > 0) {
 					$SQL .= " OR ";
 				}
-				$i++;
+				++$i;
 				$SQL .= "custbranch.area='" . $Area . "'";
 			}
 
@@ -211,7 +211,7 @@ if (isset($_POST['PrintPDF'])) {
 				if ($i > 0) {
 					$SQL .= " OR ";
 				}
-				$i++;
+				++$i;
 				$SQL .= "custbranch.salesman='" . $Salesperson . "'";
 			}
 

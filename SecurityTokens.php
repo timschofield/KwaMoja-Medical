@@ -19,7 +19,7 @@ if (isset($_GET['SelectedToken'])) {
 					echo '</tr>
 							<tr>';
 				}
-				$i++;
+				++$i;
 				echo '<td>' . $ScriptRow['script'] . '</td>';
 			}
 			echo '</tr></table>';

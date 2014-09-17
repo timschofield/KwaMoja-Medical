@@ -656,7 +656,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 				$GrpPrdActual[$Level] = 0;
 				$ParentGroups[$Level] = '';
 			}
-			$j++;
+			++$j;
 		}
 
 		if ($MyRow['sectioninaccounts'] != $Section) {
@@ -719,7 +719,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 							<td></td>
 							<td class="number"><i>%s</i></td>
 							</tr><tr><td colspan="6"> </td></tr>', locale_number_format($PrdGPPercent, 1) . '%');
-					$j++;
+					++$j;
 				}
 			}
 			$SectionPrdActual = 0;
@@ -731,7 +731,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 							<td colspan="6"><h2><b>%s</b></h2></td>
 						</tr>', $Sections[$MyRow['sectioninaccounts']]);
 			}
-			$j++;
+			++$j;
 
 		}
 
@@ -773,7 +773,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 				$k = 0;
 			} else {
 				echo '<tr class="OddTableRows">';
-				$k++;
+				++$k;
 			}
 
 			$ActEnquiryURL = '<a href="' . $RootPath . '/GLAccountInquiry.php?Period=' . $_POST['ToPeriod'] . '&amp;Account=' . $MyRow['account'] . '&amp;Show=Yes">' . $MyRow['account'] . '</a>';
@@ -791,7 +791,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 						</tr>', $ActEnquiryURL, htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false), locale_number_format(-$AccountPeriodActual, $_SESSION['CompanyRecord']['decimalplaces']));
 			}
 
-			$j++;
+			++$j;
 		}
 	}
 	//end of loop
@@ -856,7 +856,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 			$GrpPrdActual[$Level] = 0;
 			$ParentGroups[$Level] = '';
 		}
-		$j++;
+		++$j;
 	}
 
 	if ($MyRow['sectioninaccounts'] != $Section) {
@@ -913,7 +913,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 					<td></td>
 				</tr>';
 
-			$j++;
+			++$j;
 		}
 
 		$SectionPrdActual = 0;
@@ -925,7 +925,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 					<td colspan="6"><h2><b>' . $Sections[$MyRow['sectioninaccounts']] . '</b></h2></td>
 				</tr>';
 		}
-		$j++;
+		++$j;
 
 	}
 

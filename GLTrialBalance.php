@@ -542,7 +542,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 						$ParentGroups[$Level] = '';
 						$Level--;
 
-						$j++;
+						++$j;
 					} while ($Level > 0 and $MyRow['groupname'] != $ParentGroups[$Level]);
 
 					if ($Level > 0) {
@@ -576,7 +576,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 			$k = 0;
 		} else {
 			echo '<tr class="OddTableRows">';
-			$k++;
+			++$k;
 		}
 		/*MonthActual, MonthBudget, FirstPrdBFwd, FirstPrdBudgetBFwd, LastPrdBudgetCFwd, LastPrdCFwd */
 
@@ -635,7 +635,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 				<td class="number">%s</td>
 				</tr>', $ActEnquiryURL, htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false), locale_number_format($MyRow['monthactual'], $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($MyRow['monthbudget'], $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($AccountPeriodActual, $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($AccountPeriodBudget, $_SESSION['CompanyRecord']['decimalplaces']));
 
-		$j++;
+		++$j;
 	}
 	//end of while loop
 
@@ -675,7 +675,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 				$ParentGroups[$Level] = '';
 				$Level--;
 
-				$j++;
+				++$j;
 			} while (isset($ParentGroups[$Level]) and ($MyRow['groupname'] != $ParentGroups[$Level] and $Level > 0));
 
 			if ($Level > 0) {

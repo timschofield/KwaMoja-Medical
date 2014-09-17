@@ -198,7 +198,7 @@ if (!isset($SelectedLabelID)) {
 				$k = 0;
 			} else {
 				echo '<tr class="OddTableRows">';
-				$k++;
+				++$k;
 			}
 			if ($MyRow['rowheight'] == 0 ) {
 				$NoOfRows = 0;
@@ -433,7 +433,7 @@ if (isset($SelectedLabelID)) {
 				$k = 0;
 			} else {
 				echo '<tr class="OddTableRows">';
-				$k++;
+				++$k;
 			}
 
 			echo '<input type="hidden" name="LabelFieldID' . $i . '" value="' . $MyRow['labelfieldid'] . '" />
@@ -473,7 +473,7 @@ if (isset($SelectedLabelID)) {
 			echo '</select></td>
 				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedLabelID=' . $SelectedLabelID . '&amp;DeleteField=' . $MyRow['labelfieldid'] . ' onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this label field?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
 				</tr>';
-			$i++;
+			++$i;
 		}
 		//END WHILE LIST LOOP
 		$i--; //last increment needs to be wound back

@@ -97,7 +97,7 @@ if (isset($_POST['Submit'])) {
 														)";
 				$InsertResult = DB_query($InsertSQL);
 		}
-		$i++;
+		++$i;
 	}
 	$SQL = "INSERT INTO abcstock (SELECT '" . $_POST['GroupID'] . "',
 										stockid,

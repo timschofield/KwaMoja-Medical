@@ -38,13 +38,13 @@ if (isset($_POST['submit'])) {
 		$InputError = 1;
 		prnMsg(_('The credit status code already exists in the database'), 'error');
 		$Errors[$i] = 'ReasonCode';
-		$i++;
+		++$i;
 	}
 	if (!is_numeric($_POST['ReasonCode'])) {
 		$InputError = 1;
 		prnMsg(_('The status code name must be an integer'), 'error');
 		$Errors[$i] = 'ReasonCode';
-		$i++;
+		++$i;
 	}
 	if (mb_strlen($_POST['ReasonDescription']) > 30) {
 		$InputError = 1;
@@ -54,7 +54,7 @@ if (isset($_POST['submit'])) {
 		$InputError = 1;
 		prnMsg(_('The credit status description must be entered'), 'error');
 		$Errors[$i] = 'ReasonDescription';
-		$i++;
+		++$i;
 	}
 
 	$Msg = '';

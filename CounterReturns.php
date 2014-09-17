@@ -372,7 +372,7 @@ if (isset($_POST['SelectingReturnItems']) or isset($_POST['QuickEntry']) or isse
 		$QuickEntryCode = 'part_' . $i;
 		$QuickEntryQty = 'qty_' . $i;
 
-		$i++;
+		++$i;
 
 		if (isset($_POST[$QuickEntryCode])) {
 			$NewItem = mb_strtoupper($_POST[$QuickEntryCode]);
@@ -1816,8 +1816,8 @@ if (!isset($_POST['ProcessReturn'])) {
 						<td class="number">%s</td>
 						<td><input class="number" required="required" minlength="1" maxlength="11" tabindex="' . strval($j + 7) . '" type="text" size="6" name="ReturnQty%s" value="0" /></font><input type="hidden" name="StockID%s" value="%s" /></td>
 						</tr>', $MyRow['stockid'], $MyRow['longdescription'], $MyRow['description'], $MyRow['units'], locale_number_format($QOH, $MyRow['decimalplaces']), locale_number_format($DemandQty, $MyRow['decimalplaces']), locale_number_format($OnOrder, $MyRow['decimalplaces']), locale_number_format($Available, $MyRow['decimalplaces']), $i, $i, $MyRow['stockid']);
-				$j++;
-				$i++;
+				++$j;
+				++$i;
 				#end of page full new headings if
 			}
 			#end of while loop

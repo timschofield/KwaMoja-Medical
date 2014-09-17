@@ -218,78 +218,78 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 			$InputError = 1;
 			prnMsg(_('The debtor code cannot be empty'), 'error');
 			$Errors[$i] = 'DebtorNo';
-			$i++;
+			++$i;
 		} elseif ($_POST['AutoDebtorNo'] == 0 and (ContainsIllegalCharacters($_POST['DebtorNo']) or mb_strpos($_POST['DebtorNo'], ' '))) {
 			$InputError = 1;
 			prnMsg(_('The customer code cannot contain any of the following characters') . " . - ' &amp; + \" " . _('or a space'), 'error');
 			$Errors[$i] = 'DebtorNo';
-			$i++;
+			++$i;
 		}
 		if (mb_strlen($_POST['CustName']) > 40 or mb_strlen($_POST['CustName']) == 0) {
 			$InputError = 1;
 			prnMsg(_('The customer name must be entered and be forty characters or less long'), 'error');
 			$Errors[$i] = 'CustName';
-			$i++;
+			++$i;
 		} elseif (mb_strlen($_POST['Address1']) > 40) {
 			$InputError = 1;
 			prnMsg(_('The Line 1 of the address must be forty characters or less long'), 'error');
 			$Errors[$i] = 'Address1';
-			$i++;
+			++$i;
 		} elseif (mb_strlen($_POST['Address2']) > 40) {
 			$InputError = 1;
 			prnMsg(_('The Line 2 of the address must be forty characters or less long'), 'error');
 			$Errors[$i] = 'Address2';
-			$i++;
+			++$i;
 		} elseif (mb_strlen($_POST['Address3']) > 40) {
 			$InputError = 1;
 			prnMsg(_('The Line 3 of the address must be forty characters or less long'), 'error');
 			$Errors[$i] = 'Address3';
-			$i++;
+			++$i;
 		} elseif (mb_strlen($_POST['Address4']) > 50) {
 			$InputError = 1;
 			prnMsg(_('The Line 4 of the address must be fifty characters or less long'), 'error');
 			$Errors[$i] = 'Address4';
-			$i++;
+			++$i;
 		} elseif (mb_strlen($_POST['Address5']) > 20) {
 			$InputError = 1;
 			prnMsg(_('The Line 5 of the address must be twenty characters or less long'), 'error');
 			$Errors[$i] = 'Address5';
-			$i++;
+			++$i;
 		} elseif (!is_numeric(filter_number_format($_POST['CreditLimit']))) {
 			$InputError = 1;
 			prnMsg(_('The credit limit must be numeric'), 'error');
 			$Errors[$i] = 'CreditLimit';
-			$i++;
+			++$i;
 		} elseif (!is_numeric(filter_number_format($_POST['PymtDiscount']))) {
 			$InputError = 1;
 			prnMsg(_('The payment discount must be numeric'), 'error');
 			$Errors[$i] = 'PymtDiscount';
-			$i++;
+			++$i;
 		} elseif (!Is_Date($_POST['ClientSince'])) {
 			$InputError = 1;
 			prnMsg(_('The customer since field must be a date in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
 			$Errors[$i] = 'ClientSince';
-			$i++;
+			++$i;
 		} elseif (!is_numeric(filter_number_format($_POST['Discount']))) {
 			$InputError = 1;
 			prnMsg(_('The discount percentage must be numeric'), 'error');
 			$Errors[$i] = 'Discount';
-			$i++;
+			++$i;
 		} elseif (filter_number_format($_POST['CreditLimit']) < 0) {
 			$InputError = 1;
 			prnMsg(_('The credit limit must be a positive number'), 'error');
 			$Errors[$i] = 'CreditLimit';
-			$i++;
+			++$i;
 		} elseif ((filter_number_format($_POST['PymtDiscount']) > 10) or (filter_number_format($_POST['PymtDiscount']) < 0)) {
 			$InputError = 1;
 			prnMsg(_('The payment discount is expected to be less than 10% and greater than or equal to 0'), 'error');
 			$Errors[$i] = 'PymtDiscount';
-			$i++;
+			++$i;
 		} elseif ((filter_number_format($_POST['Discount']) > 100) or (filter_number_format($_POST['Discount']) < 0)) {
 			$InputError = 1;
 			prnMsg(_('The discount is expected to be less than 100% and greater than or equal to 0'), 'error');
 			$Errors[$i] = 'Discount';
-			$i++;
+			++$i;
 		}
 
 		if (ContainsIllegalCharacters($_POST['EDIReference']) or mb_strstr($_POST['EDIReference'], ' ')) {
@@ -300,13 +300,13 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 			$InputError = 1;
 			prnMsg(_('The customers EDI reference code must be set when EDI Invoices or EDI orders are activated'), 'warn');
 			$Errors[$i] = 'EDIReference';
-			$i++;
+			++$i;
 		}
 		if (mb_strlen($_POST['EDIAddress']) < 4 and $_POST['EDIInvoices'] == 1) {
 			$InputError = 1;
 			prnMsg(_('The customers EDI email address or FTP server address must be entered if EDI Invoices are to be sent'), 'warn');
 			$Errors[$i] = 'EDIAddress';
-			$i++;
+			++$i;
 		}
 
 
@@ -436,37 +436,37 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 			$InputError = 1;
 			prnMsg(_('The Branch code cannot contain any of the following characters') . " -  &amp; \' &lt; &gt;", 'error');
 			$Errors[$i] = 'BranchCode';
-			$i++;
+			++$i;
 		}
 		if (mb_strlen($_POST['BranchCode']) == 0) {
 			$InputError = 1;
 			prnMsg(_('The Branch code must be at least one character long'), 'error');
 			$Errors[$i] = 'BranchCode';
-			$i++;
+			++$i;
 		}
 		if (!is_numeric($_POST['FwdDate'])) {
 			$InputError = 1;
 			prnMsg(_('The date after which invoices are charged to the following month is expected to be a number and a recognised number has not been entered'), 'error');
 			$Errors[$i] = 'FwdDate';
-			$i++;
+			++$i;
 		}
 		if ($_POST['FwdDate'] > 30) {
 			$InputError = 1;
 			prnMsg(_('The date (in the month) after which invoices are charged to the following month should be a number less than 31'), 'error');
 			$Errors[$i] = 'FwdDate';
-			$i++;
+			++$i;
 		}
 		if (!is_numeric(filter_number_format($_POST['EstDeliveryDays']))) {
 			$InputError = 1;
 			prnMsg(_('The estimated delivery days is expected to be a number and a recognised number has not been entered'), 'error');
 			$Errors[$i] = 'EstDeliveryDays';
-			$i++;
+			++$i;
 		}
 		if (filter_number_format($_POST['EstDeliveryDays']) > 60) {
 			$InputError = 1;
 			prnMsg(_('The estimated delivery days should be a number of days less than 60') . '. ' . _('A package can be delivered by seafreight anywhere in the world normally in less than 60 days'), 'error');
 			$Errors[$i] = 'EstDeliveryDays';
-			$i++;
+			++$i;
 		}
 
 		if ($InputError != 1) {

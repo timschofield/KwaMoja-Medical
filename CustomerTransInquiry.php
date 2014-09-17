@@ -119,7 +119,7 @@ if (isset($_POST['ShowResults']) and $_POST['TransType'] != '') {
 			$k = 0;
 		} else {
 			echo '<tr class="OddTableRows">';
-			$k++;
+			++$k;
 		}
 
 		$format_base = '<td>%s</td>

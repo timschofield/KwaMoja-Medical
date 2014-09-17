@@ -914,7 +914,7 @@ if ($WORow['controlled'] == 1) { //controlled
 							<tr>';
 					}
 					echo '<td><input type="checkbox" name="CheckItem' . $i . '" />' . $WOSNRow[0] . '<input type="hidden" name="SerialNo' . $i . '" value="' . $WOSNRow[0] . '" /><input type="hidden" name="QualityText' . $i . '" value="' . $WOSNRow[1] . '" /></td>';
-					$i++;
+					++$i;
 				}
 			}
 		} else { //serial numbers not yet defined need to enter them manually now
@@ -969,7 +969,7 @@ if ($WORow['controlled'] == 1) { //controlled
 						  		<input type="hidden" name="QualityText' . $i . '" value="' . $WOSNRow[2] . '" />
 						  		<input type="hidden" name="QtyReqd' . $i . '" value="' . locale_number_format($WOSNRow[1], 'Variable') . '" /></td>
 						  	</tr>';
-					$i++;
+					++$i;
 				}
 			}
 		} else { // batches/lots yet to be set up enter them manually

@@ -309,7 +309,7 @@
 							$paramDocs[$i]['name'] = trim($matches[2]);
 							$paramDocs[$i]['doc'] = $matches[3];
 						}
-						$i++;
+						++$i;
 					}
 					elseif(mb_strpos($doc, '@return') === 0)
 					{
@@ -335,7 +335,7 @@
 				$params[$i] = array();
 				$params[$i]['name'] = '$'.$paramobj->getName();
 				$params[$i]['isoptional'] = $paramobj->isOptional();
-				$i++;
+				++$i;
 			}
 
 
@@ -370,7 +370,7 @@
 				}
 
 				$pars[] = "\$p$i";
-				$i++;
+				++$i;
 				if($param['isoptional'])
 				{
 					$innercode .= "}\n";

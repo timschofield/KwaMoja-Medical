@@ -311,7 +311,7 @@ echo '<table width="90%" cellpadding="2" class="selection">
 $k = 0; //row colour counter
 $j = 0;
 foreach ($_SESSION['Items' . $Identifier]->LineItems as $LnItm) {
-	$j++;
+	++$j;
 	if ($k == 1) {
 		$RowStarter = '<tr class="EvenTableRows">';
 		$k = 0;
@@ -662,7 +662,7 @@ if (isset($_POST['ProcessPickList']) and $_POST['ProcessPickList'] != '') {
 		$_POST['Status'] = $_SESSION['Items' . $Identifier]->Status;
 	}
 
-	$j++;
+	++$j;
 
 	echo '<table class="selection"
 		<tr>
@@ -696,32 +696,32 @@ if (isset($_POST['ProcessPickList']) and $_POST['ProcessPickList'] != '') {
 			<td>' . _('Consignment Note Ref') . ':</td>
 			<td><input tabindex="' . $j . '" type="text" data-type="no-illegal-chars" title="' . _('Enter the consignment note reference to enable tracking of the delivery in the event of customer proof of delivery issues') . '" maxlength="15" size="15" name="Consignment" value="' . $_POST['Consignment'] . '" /></td>
 		</tr>';
-	$j++;
+	++$j;
 	echo '<tr>
 			<td>' . _('No Of Packages in Delivery') . ':</td>
 			<td><input tabindex="' . $j . '" type="number" maxlength="6" size="6" class="integer" name="Packages" value="' . $_POST['Packages'] . '" /></td>
 		</tr>';
 
-	$j++;
+	++$j;
 	echo '<tr>
 			<td>' . _('Pick List Comments') . ':</td>
 			<td><textarea tabindex="' . $j . '" name="Comments" pattern=".{0,20}" cols="31" rows="5">' . reverse_escape($_SESSION['Items' . $Identifier]->Comments) . '</textarea></td>
 		</tr>';
 
-	$j++;
+	++$j;
 	echo '<tr>
 			<td>' . _('Order Internal Comments') . ':</td>
 			<td><textarea tabindex="' . $j . '" name="InternalComments" pattern=".{0,20}" cols="31" rows="5">' . reverse_escape($_SESSION['Items' . $Identifier]->InternalComments) . '</textarea></td>
 		</tr>';
 
-	$j++;
+	++$j;
 	echo '</table>';
 	if (($_SESSION['Items' . $Identifier]->Status != 'Shipped') or (in_array($ARSecurity, $_SESSION['AllowedPageSecurityTokens']))) {
 		//only allow A/R to change status on an already shipped Pick, we expect to invoice, we need A/R intervention to prevent ship, cancel, no invoice, lost money
 		echo '<div class="centre">
 				<input type="submit" tabindex="' . $j . '" name="Update" value="' . _('Update') . '" />
 				<br />';
-		$j++;
+		++$j;
 		echo '<br />
 				<input type="submit" tabindex="' . $j . '" name="ProcessPickList" value="' . _('Process Pick List') . '" />
 			</div>

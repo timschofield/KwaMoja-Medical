@@ -131,7 +131,7 @@ if (!isset($_GET['TypeID']) or !isset($_GET['TransNo'])) {
 					$j = 0;
 				} else {
 					echo '<tr class="EvenTableRows">';
-					$j++;
+					++$j;
 				}
 				echo '<td>', MonthAndYearFromSQLDate($TransRow['lastdate_in_period']), '</td>
 					<td>', $TranDate, '</td>
@@ -169,7 +169,7 @@ if (!isset($_GET['TypeID']) or !isset($_GET['TransNo'])) {
 						$j = 0;
 					} else {
 						echo '<tr class="EvenTableRows">';
-						$j++;
+						++$j;
 					}
 					echo '<td>', MonthAndYearFromSQLDate($TransRow['lastdate_in_period']), '</td>
 						<td>', $TranDate, '</td>

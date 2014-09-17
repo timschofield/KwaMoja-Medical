@@ -550,7 +550,7 @@ function BuildDataArray($ReportID, $SQL, $Prefs) {
 			$Seq[$i]['total'] = $DataFields['params'];
 			$Seq[$i]['grptotal'] = '';
 			$Seq[$i]['rpttotal'] = '';
-			$i++;
+			++$i;
 		}
 	}
 

@@ -35,7 +35,7 @@ while ($MyRow = DB_fetch_array($AccountsResult)) {
 		$k = 0;
 	} else {
 		echo '<tr class="OddTableRows">';
-		$k++;
+		++$k;
 	}
 
 	if ($MyRow['group_'] == $ActGrp) {

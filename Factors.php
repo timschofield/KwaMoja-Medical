@@ -307,7 +307,7 @@ if (empty($FactorID) and !isset($_POST['Create']) and !isset($_POST['Amend'])) {
 			$j = 0;
 		} else {
 			echo '<tr class="EvenTableRows">';
-			$j++;
+			++$j;
 		}
 		echo '<td>' . $MyRow['id'] . '</td>
 			<td>' . $MyRow['coyname'] . '</td>

@@ -179,7 +179,7 @@ echo '<tr>
 		<td>' . _('Currency') . ':</td>
 		<td><select name="CurrAbrev">';
 while ($MyRow = DB_fetch_array($Result)) {
-	if ($MyRow['currabrev'] == $_POST['CurrAbrev']) {
+	if (isset($_POST['CurrAbrev']) and $MyRow['currabrev'] == $_POST['CurrAbrev']) {
 		echo '<option selected="selected" value="' . $MyRow['currabrev'] . '">' . $CurrencyName[$MyRow['currabrev']] . '</option>';
 	} else {
 		echo '<option value="' . $MyRow['currabrev'] . '">' . $CurrencyName[$MyRow['currabrev']] . '</option>';
@@ -228,6 +228,12 @@ if (!isset($_POST['StartDate'])){
 }
 if (!isset($_POST['EndDate'])) {
 	$_POST['EndDate'] = GetMySQLMaxDate();
+}
+if (!isset($_POST['QuantityBreak'])) {
+	$_POST['QuantityBreak'] = 0;
+}
+if (!isset($_POST['Price'])) {
+	$_POST['Price'] = 0;
 }
 echo '<tr>
 		<td>'. _('Price Effective From Date') . ':</td>

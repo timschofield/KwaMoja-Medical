@@ -15,7 +15,6 @@ if (!file_exists($PathPrefix . 'config.php')) {
 } //!file_exists($PathPrefix . 'config.php')
 include($PathPrefix . 'config.php');
 
-$DBVersion = HighestFileName($PathPrefix);
 if (isset($dbuser)) {
 	$DBUser = $dbuser;
 	$DBPassword = $dbpassword;
@@ -85,7 +84,7 @@ else { //set SESSION['FormID'] before the a user has even logged in
 }
 
 /* only do security checks if AllowAnyone is not true */
-if (!isset($AllowAnyone)) {
+if (!isset($AllowAnyone) or !isset($_SESSION['CompanyDefaultsLoaded'])) {
 	/* only do security checks if AllowAnyone is not true */
 
 	include $PathPrefix . 'includes/UserLogin.php';
@@ -139,6 +138,7 @@ if (!isset($AllowAnyone)) {
 if (!isset($_SESSION['CompanyDefaultsLoaded'])) {
 	include($PathPrefix . 'includes/GetConfig.php');
 	/*If the highest of the DB update files is greater than the DBUpdateNumber held in config table then do upgrades */
+	$DBVersion = HighestFileName($PathPrefix);
 	if (($DBVersion > $_SESSION['DBUpdateNumber']) and (basename($_SERVER['SCRIPT_NAME']) != 'Z_UpgradeDatabase.php')) {
 		header('Location: Z_UpgradeDatabase.php');
 	}

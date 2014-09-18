@@ -195,19 +195,21 @@ function GetRptLinks($GroupID) {
 	be generated, one for standard reports and the other for custom reports.
 	*/
 	global $RootPath;
-	$FormGroups = array (
-		'gl:chk' => _('Bank Checks'),	// Bank checks grouped with the gl report group
-		'ar:col' => _('Collection Letters'),
-		'ar:cust' => _('Customer Statements'),
-		'gl:deps' => _('Bank Deposit Slips'),
-		'ar:inv' => _('Invoices and Packing Slips'),
-		'ar:lblc' => _('Labels - Customer'),
-		'prch:lblv' => _('Labels - Vendor'),
-		'prch:po' => _('Purchase Orders'),
-		'ord:quot' => _('Customer Quotes'),
-		'ar:rcpt' => _('Sales Receipts'),
-		'ord:so' => _('Sales Orders'),
-		'misc:misc' => _('Miscellaneous'));  // do not delete misc category
+	if (!isset($_SESSION['FormGroups'])) {
+		$_SESSION['FormGroups'] = array (
+			'gl:chk' => _('Bank Checks'),	// Bank checks grouped with the gl report group
+			'ar:col' => _('Collection Letters'),
+			'ar:cust' => _('Customer Statements'),
+			'gl:deps' => _('Bank Deposit Slips'),
+			'ar:inv' => _('Invoices and Packing Slips'),
+			'ar:lblc' => _('Labels - Customer'),
+			'prch:lblv' => _('Labels - Vendor'),
+			'prch:po' => _('Purchase Orders'),
+			'ord:quot' => _('Customer Quotes'),
+			'ar:rcpt' => _('Sales Receipts'),
+			'ord:so' => _('Sales Orders'),
+			'misc:misc' => _('Miscellaneous'));  // do not delete misc category
+	}
 	if (isset($_SESSION['ReportList'][$GroupID])) {
 		$GroupID = $_SESSION['ReportList'][$GroupID];
 	}
@@ -254,7 +256,7 @@ function GetRptLinks($GroupID) {
 					$RptLinks .= '<li class="menu_group_item">';
 					$RptLinks .= '<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/folders.gif" width="16" height="13" alt="" />&nbsp;';
 					$RptLinks .= '<a href="' . $RootPath . '/reportwriter/FormMaker.php?id=' . urlencode($Report['groupname']) . '">&bull; ';
-					$RptLinks .= $FormGroups[$Report['groupname']] . '</a>';
+					$RptLinks .= $_SESSION['FormGroups'][$Report['groupname']] . '</a>';
 					$RptLinks .= '</li>';
 					$NoForms = false;
 					$NoEntries = false;

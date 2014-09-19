@@ -346,7 +346,6 @@ if (isset($_POST['submit'])) {
 /* end of if submit */
 
 echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 echo '<table cellpadding="2" class="selection" width="98%">
 		<tr>
@@ -886,7 +885,7 @@ $WikiApplications = array(
 echo '<tr style="outline: 1px solid"><td>' . _('Wiki application') . ':</td>
 	<td><select required="required" minlength="1" name="X_WikiApp">';
 $SizeOfWikiApplications = sizeOf($WikiApplications);
-for ($i = 0; $i < SizeOfWikiApplications; $i++) {
+for ($i = 0; $i < $SizeOfWikiApplications; $i++) {
 	echo '<option '.($_SESSION['WikiApp'] == $i ? 'selected="selected" ' : '').'value="'. $i .'">' . $WikiApplications[$i]  . '</option>';
 }
 echo '</select></td>
@@ -1116,8 +1115,7 @@ echo '</select>
 	 </tr>';
 
 echo '</table>
-		<br /><div class="centre"><input type="submit" name="submit" value="' . _('Update') . '" /></div>
-	</div>
+		<div class="centre"><input type="submit" name="submit" value="' . _('Update') . '" /></div>
 	</form>';
 
 include('includes/footer.inc');

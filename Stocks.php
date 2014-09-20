@@ -37,7 +37,7 @@ if (isset($_POST['PreviousItem_x'])) {
 	}
 }
 
-if (isset($StockId) and !isset($_POST['UpdateCategories'])) {
+if (isset($StockID) and !isset($_POST['UpdateCategories'])) {
 	$SQL = "SELECT COUNT(stockid)
 			FROM stockmaster
 			WHERE stockid='" . $StockId . "'
@@ -54,13 +54,15 @@ if (isset($StockId) and !isset($_POST['UpdateCategories'])) {
 
 if (isset($_POST['New'])) {
 	$New = $_POST['New'];
+} else {
+	$New = 0;
 }
 
 echo '<div class="toplink">
 		<a href="' . $RootPath . '/SelectProduct.php">' . _('Back to Items') . '</a>
 	</div>
 	<p class="page_title_text noPrint" >
-		<img src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Stock') . '" alt="" />' . ' ' . $Title . '
+		<img src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Stock') . '" alt="" />' . $Title . '
 	</p>';
 
 if (isset($_FILES['ItemPicture']) and $_FILES['ItemPicture']['name'] != '') {
@@ -432,7 +434,9 @@ if (isset($_POST['submit'])) {
 					foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
 						if ($LanguageId != '') {
 							$Result = DB_query("DELETE FROM stockdescriptiontranslations WHERE stockid='" . $StockId . "' AND language_id='" . $LanguageId . "'", $ErrMsg, $DbgMsg, true);
-							$Result = DB_query("INSERT INTO stockdescriptiontranslations VALUES('" . $StockId . "','" . $LanguageId . "', '" . $_POST['Description_' . str_replace('.', '_', $LanguageId)] . "')", $db, $ErrMsg, $DbgMsg, true);
+							$Result = DB_query("INSERT INTO stockdescriptiontranslations VALUES('" . $StockId . "','" . $LanguageId . "', '" . $_POST['Description_' . str_replace('.', '_', $LanguageId)] . "')", $ErrMsg, $DbgMsg, true);
+							$Result = DB_query("DELETE FROM stocklongdescriptiontranslations WHERE stockid='" . $StockId . "' AND language_id='" . $LanguageId . "'", $ErrMsg, $DbgMsg, true);
+							$Result = DB_query("INSERT INTO stocklongdescriptiontranslations VALUES('" . $StockId . "','" . $LanguageId . "', '" . $_POST['LongDescription_' . str_replace('.', '_', $LanguageId)] . "')", $ErrMsg, $DbgMsg, true);
 						}
 					}
 					/*
@@ -639,6 +643,8 @@ if (isset($_POST['submit'])) {
 							if ($LanguageId != ''){
 								$SQL = "INSERT INTO stockdescriptiontranslations VALUES('" . $StockId . "','" . $LanguageId . "', '" . $_POST['Description_' . str_replace('.', '_', $LanguageId)] . "')";
 								$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+								$SQL = "INSERT INTO stocklongdescriptiontranslations VALUES('" . $StockId . "','" . $LanguageId . "', '" . $_POST['LongDescription_' . str_replace('.', '_', $LanguageId)] . "')";
+								$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 							}
 						}
 					}
@@ -824,6 +830,8 @@ if (isset($_POST['submit'])) {
 		//and cascade delete the item descriptions in other languages
 		$SQL = "DELETE FROM stockdescriptiontranslations WHERE stockid='" . $StockId . "'";
 		$Result = DB_query($SQL, _('Could not delete the item language descriptions'), '', true);
+		$SQL = "DELETE FROM stocklongdescriptiontranslations WHERE stockid='" . $StockId . "'";
+		$Result = DB_query($SQL, _('Could not delete the item language descriptions'), '', true);
 		//and finally remove the stockmaster
 		$SQL = "DELETE FROM stockmaster WHERE stockid='" . $StockId . "'";
 		$Result = DB_query($SQL, _('Could not delete the item record'), '', true);
@@ -947,7 +955,6 @@ if (!isset($StockId) or $StockId == '' or isset($_POST['UpdateCategories'])) {
 	$_POST['Pansize'] = $MyRow['pansize'];
 	$_POST['ShrinkFactor'] = $MyRow['shrinkfactor'];
 	$SQL = "SELECT descriptiontranslation, language_id FROM stockdescriptiontranslations WHERE stockid='" . $StockId . "' AND (";
-
 	foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
 		$SQL .= "language_id='" . $LanguageId . "' OR ";
 	}
@@ -955,6 +962,16 @@ if (!isset($StockId) or $StockId == '' or isset($_POST['UpdateCategories'])) {
 	$Result = DB_query($SQL);
 	while ($MyRow = DB_fetch_array($Result)) {
 		$_POST['Description_' . str_replace('.', '_', $MyRow['language_id'])] = $MyRow['descriptiontranslation'];
+	}
+
+	$SQL = "SELECT longdescriptiontranslation, language_id FROM stocklongdescriptiontranslations WHERE stockid='" . $StockId . "' AND (";
+	foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
+		$SQL .= "language_id='" . $LanguageId . "' OR ";
+	}
+	$SQL = mb_substr($SQL, 0, mb_strlen($SQL) - 3) . ')';
+	$Result = DB_query($SQL);
+	while ($MyRow = DB_fetch_array($Result)) {
+		$_POST['LongDescription_' . str_replace('.', '_', $MyRow['language_id'])] = $MyRow['longdescriptiontranslation'];
 	}
 
 	echo '<tr>
@@ -979,6 +996,16 @@ echo '<tr>
 		<td><input type="text" name="Description" size="52" required="required" minlength="1" maxlength="50" value="' . stripslashes($Description) . '" /></td>
 	</tr>';
 
+if (isset($_POST['LongDescription'])) {
+	$LongDescription = AddCarriageReturns($_POST['LongDescription']);
+} else {
+	$LongDescription = '';
+}
+echo '<tr>
+		<td>' . _('Part Description') . ' (' . _('long') . '):</td>
+		<td><textarea required="required" minlength="1" name="LongDescription" cols="40" rows="3">' . stripslashes($LongDescription) . '</textarea></td>
+	</tr>';
+
 foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
 	if ($LanguageId != '') {
 		//unfortunately cannot have points in POST variables so have to mess with the language id
@@ -990,19 +1017,17 @@ foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
 				<td>' . $LanguagesArray[$LanguageId]['LanguageName'] . ' ' . _('Description') . ':</td>
 				<td><input type="text" name="' . $PostVariableName . '" size="52" minlength="0" maxlength="50" value="' . $_POST[$PostVariableName] . '" /></td>
 			</tr>';
+		if (!isset($_POST['Long' . $PostVariableName])) {
+			$_POST['Long' . $PostVariableName] = '';
+		}
+		echo '<tr>
+				<td>' . $LanguagesArray[$LanguageId]['LanguageName'] . ' ' . _('Long Description') . ':</td>
+				<td><textarea name="Long' . $PostVariableName . '" cols="40" rows="3">' . $_POST['Long' . $PostVariableName] . '</textarea></td>
+			</tr>';
 	}
 }
 
-if (isset($_POST['LongDescription'])) {
-	$LongDescription = AddCarriageReturns($_POST['LongDescription']);
-} else {
-	$LongDescription = '';
-}
 echo '<tr>
-		<td>' . _('Part Description') . ' (' . _('long') . '):</td>
-		<td><textarea required="required" minlength="1" name="LongDescription" cols="40" rows="3">' . stripslashes($LongDescription) . '</textarea></td>
-	</tr>
-	<tr>
 		<td>' . _('Image File (.jpg)') . ':</td>
 		<td><input type="file" id="ItemPicture" name="ItemPicture" />
 		<br /><input type="checkbox" name="ClearImage" id="ClearImage" value="1" > '._('Clear Image').'
@@ -1054,7 +1079,8 @@ if (!isset($_POST['CategoryID'])) {
 	$_POST['CategoryID'] = $Category;
 }
 
-echo '</select><a target="_blank" href="' . $RootPath . '/StockCategories.php">' . _('Add or Modify Stock Categories') . '</a></td>
+echo '</select><a class="FontSize" target="_blank" href="' . $RootPath . '/StockCategories.php">' . _('Add or Modify Stock Categories') . '</a>
+		</td>
 	</tr>';
 
 if (!isset($_POST['EOQ']) or $_POST['EOQ'] == '') {

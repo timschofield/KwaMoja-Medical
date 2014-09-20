@@ -74,7 +74,7 @@ function VerifySalesType($SalesType, $i, $Errors) {
 
 /* Check that the clientsince date is a valid date */
 function VerifyClientSince($ClientSince, $i, $Errors) {
-	if (!Is_Date($ClientSince)) {
+	if (!is_date($ClientSince)) {
 		//			$Errors[$i] = InvalidClientSinceDate;
 	}
 	return $Errors;
@@ -132,7 +132,7 @@ function VerifyLastPaid($LastPaid, $i, $Errors) {
 
 /* Check that the last paid date is a valid date */
 function VerifyLastPaidDate($ClientSince, $i, $Errors) {
-	if (!Is_Date($ClientSince)) {
+	if (!is_date($ClientSince)) {
 		$Errors[$i] = InvalidLastPaidDate;
 	}
 	return $Errors;

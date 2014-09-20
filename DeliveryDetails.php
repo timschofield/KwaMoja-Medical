@@ -89,20 +89,20 @@ if (isset($_POST['Update']) or isset($_POST['BackToLineDetails']) or isset($_POS
 
 	*/
 	// Check the date is OK
-	if (isset($_POST['DeliveryDate']) and !Is_Date($_POST['DeliveryDate'])) {
+	if (isset($_POST['DeliveryDate']) and !is_date($_POST['DeliveryDate'])) {
 		$InputErrors = 1;
 		prnMsg(_('An invalid date entry was made') . '. ' . _('The date entry must be in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'warn');
-	} //isset($_POST['DeliveryDate']) and !Is_Date($_POST['DeliveryDate'])
+	} //isset($_POST['DeliveryDate']) and !is_date($_POST['DeliveryDate'])
 	// Check the date is OK
-	if (isset($_POST['QuoteDate']) and !Is_Date($_POST['QuoteDate'])) {
+	if (isset($_POST['QuoteDate']) and !is_date($_POST['QuoteDate'])) {
 		$InputErrors = 1;
 		prnMsg(_('An invalid date entry was made') . '. ' . _('The date entry must be in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'warn');
-	} //isset($_POST['QuoteDate']) and !Is_Date($_POST['QuoteDate'])
+	} //isset($_POST['QuoteDate']) and !is_date($_POST['QuoteDate'])
 	// Check the date is OK
-	if (isset($_POST['ConfirmedDate']) and !Is_Date($_POST['ConfirmedDate'])) {
+	if (isset($_POST['ConfirmedDate']) and !is_date($_POST['ConfirmedDate'])) {
 		$InputErrors = 1;
 		prnMsg(_('An invalid date entry was made') . '. ' . _('The date entry must be in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'warn');
-	} //isset($_POST['ConfirmedDate']) and !Is_Date($_POST['ConfirmedDate'])
+	} //isset($_POST['ConfirmedDate']) and !is_date($_POST['ConfirmedDate'])
 
 	/* This check is not appropriate where orders need to be entered in retrospectively in some cases this check will be appropriate and this should be uncommented
 

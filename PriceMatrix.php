@@ -46,11 +46,11 @@ if (isset($_POST['submit'])) {
 		prnMsg(_('The price must be entered as a positive number'), 'warn');
 		$InputError = 1;
 	}
-	if (!Is_Date($_POST['StartDate'])) {
+	if (!is_date($_POST['StartDate'])) {
 		$InputError = 1;
 		prnMsg(_('The date this price is to take effect from must be entered in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
 	}
-	if (!Is_Date($_POST['EndDate'])) {
+	if (!is_date($_POST['EndDate'])) {
 		$InputError = 1;
 		prnMsg(_('The date this price is be in effect to must be entered in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
 		if (Date1GreaterThanDate2($_POST['StartDate'], $_POST['EndDate'])){
@@ -60,10 +60,10 @@ if (isset($_POST['submit'])) {
 	}
 
 
-	if (Is_Date($_POST['EndDate'])) {
+	if (is_date($_POST['EndDate'])) {
 		$SQLEndDate = FormatDateForSQL($_POST['EndDate']);
 	}
-	if (Is_Date($_POST['StartDate'])) {
+	if (is_date($_POST['StartDate'])) {
 		$SQLStartDate = FormatDateForSQL($_POST['StartDate']);
 	}
 	$SQL = "SELECT COUNT(salestype)

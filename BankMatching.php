@@ -108,10 +108,10 @@ while ($MyRow = DB_fetch_array($ResultBankActs)) {
 echo '</select></td>
 	</tr>';
 
-if (!isset($_POST['BeforeDate']) or !Is_Date($_POST['BeforeDate'])) {
+if (!isset($_POST['BeforeDate']) or !is_date($_POST['BeforeDate'])) {
 	$_POST['BeforeDate'] = Date($_SESSION['DefaultDateFormat']);
 }
-if (!isset($_POST['AfterDate']) or !Is_Date($_POST['AfterDate'])) {
+if (!isset($_POST['AfterDate']) or !is_date($_POST['AfterDate'])) {
 	$_POST['AfterDate'] = Date($_SESSION['DefaultDateFormat'], Mktime(0, 0, 0, Date('m') - 3, Date('d'), Date('y')));
 }
 
@@ -164,11 +164,11 @@ if (isset($_POST['BankAccount'])) {
 }
 
 $InputError = 0;
-if (!Is_Date($_POST['BeforeDate'])) {
+if (!is_date($_POST['BeforeDate'])) {
 	$InputError = 1;
 	prnMsg(_('The date entered for the field to show') . ' ' . $TypeName . ' ' . _('before') . ', ' . _('is not entered in a recognised date format') . '. ' . _('Entry is expected in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
 }
-if (!Is_Date($_POST['AfterDate'])) {
+if (!is_date($_POST['AfterDate'])) {
 	$InputError = 1;
 	prnMsg(_('The date entered for the field to show') . ' ' . $Type . ' ' . _('after') . ', ' . _('is not entered in a recognised date format') . '. ' . _('Entry is expected in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
 }

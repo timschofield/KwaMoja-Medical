@@ -27,7 +27,7 @@ if (DB_num_rows($Result) == 0) { //then depn has never been run yet?
 	if (!isset($_POST['ProcessDate'])) {
 		$_POST['ProcessDate'] = Date($_SESSION['DefaultDateFormat'], mktime(0, 0, 0, date('m'), 0, date('Y')));
 	} else { //ProcessDate is set - make sure it is on the last day of the month selected
-		if (!Is_Date($_POST['ProcessDate'])) {
+		if (!is_date($_POST['ProcessDate'])) {
 			prnMsg(_('The date is expected to be in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
 			$InputError = true;
 		} else {

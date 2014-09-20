@@ -115,11 +115,11 @@ echo '</form>';
 if (isset($_POST['ShowSales'])) {
 	$InputError = 0; //assume no input errors now test for errors
 	if ($_POST['DateRange'] == 'Custom') {
-		if (!Is_Date($_POST['FromDate'])) {
+		if (!is_date($_POST['FromDate'])) {
 			$InputError = 1;
 			prnMsg(_('The date entered for the from date is not in the appropriate format. Dates must be entered in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
 		}
-		if (!Is_Date($_POST['ToDate'])) {
+		if (!is_date($_POST['ToDate'])) {
 			$InputError = 1;
 			prnMsg(_('The date entered for the to date is not in the appropriate format. Dates must be entered in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
 		}

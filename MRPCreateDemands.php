@@ -11,12 +11,12 @@ if (isset($_POST['submit'])) {
 
 	$InputError = 0;
 
-	if (isset($_POST['FromDate']) and !Is_Date($_POST['FromDate'])) {
+	if (isset($_POST['FromDate']) and !is_date($_POST['FromDate'])) {
 		$Msg = _('The date from must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
 		$InputError = 1;
 		unset($_POST['FromDate']);
 	}
-	if (isset($_POST['ToDate']) and !Is_Date($_POST['ToDate'])) {
+	if (isset($_POST['ToDate']) and !is_date($_POST['ToDate'])) {
 		$Msg = _('The date to must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
 		$InputError = 1;
 		unset($_POST['ToDate']);
@@ -27,7 +27,7 @@ if (isset($_POST['submit'])) {
 		unset($_POST['ToDate']);
 		unset($_POST['FromoDate']);
 	}
-	if (isset($_POST['DistDate']) and !Is_Date($_POST['DistDate'])) {
+	if (isset($_POST['DistDate']) and !is_date($_POST['DistDate'])) {
 		$Msg = _('The distribution start date must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
 		$InputError = 1;
 		unset($_POST['DistDate']);

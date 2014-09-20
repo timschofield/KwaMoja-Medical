@@ -8,7 +8,7 @@ $Title = _('Reverse and Delete Supplier Payments');
 include('includes/header.inc');
 
 /*Only do deletions if user hits the button */
-if (isset($_POST['RevPayts']) and Is_Date($_POST['PaytDate']) == 1) {
+if (isset($_POST['RevPayts']) and is_date($_POST['PaytDate']) == 1) {
 
 	$SQLTranDate = FormatDateForSQL($_POST['PaytDate']);
 

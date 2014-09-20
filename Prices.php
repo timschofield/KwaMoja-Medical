@@ -71,13 +71,13 @@ if (isset($_POST['submit'])) {
 		$InputError = 1;
 		prnMsg(_('The price entered must be numeric'), 'error');
 	}
-	if (!Is_Date($_POST['StartDate'])) {
+	if (!is_date($_POST['StartDate'])) {
 		$InputError = 1;
 		prnMsg(_('The date this price is to take effect from must be entered in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
 	}
 	if ($_POST['EndDate'] != '') {
 		if (FormatDateForSQL($_POST['EndDate']) != '0000-00-00') {
-			if (!Is_Date($_POST['EndDate']) and $_POST['EndDate'] != '') {
+			if (!is_date($_POST['EndDate']) and $_POST['EndDate'] != '') {
 				$InputError = 1;
 				prnMsg(_('The date this price is be in effect to must be entered in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
 			}
@@ -91,7 +91,7 @@ if (isset($_POST['submit'])) {
 			}
 		}
 	}
-	if (Is_Date($_POST['EndDate'])) {
+	if (is_date($_POST['EndDate'])) {
 		$SQLEndDate = FormatDateForSQL($_POST['EndDate']);
 	} else {
 		$SQLEndDate = '0000-00-00';

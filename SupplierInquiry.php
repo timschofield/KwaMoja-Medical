@@ -27,7 +27,7 @@ if (!isset($_GET['SupplierID']) and !isset($_SESSION['SupplierID'])) {
 if (isset($_GET['FromDate'])) {
 	$_POST['TransAfterDate'] = $_GET['FromDate'];
 }
-if (!isset($_POST['TransAfterDate']) or !Is_Date($_POST['TransAfterDate'])) {
+if (!isset($_POST['TransAfterDate']) or !is_date($_POST['TransAfterDate'])) {
 	$_POST['TransAfterDate'] = Date($_SESSION['DefaultDateFormat'], Mktime(0, 0, 0, Date('m') - 12, Date('d'), Date('Y')));
 }
 

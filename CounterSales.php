@@ -432,7 +432,7 @@ if (isset($_POST['SelectingOrderItems']) or isset($_POST['QuickEntry']) or isset
 			/* break out of the loop if nothing in the quick entry fields*/
 		}
 
-		if (!Is_Date($NewItemDue)) {
+		if (!is_date($NewItemDue)) {
 			prnMsg(_('An invalid date entry was made for ') . ' ' . $NewItem . ' ' . _('The date entry') . ' ' . $NewItemDue . ' ' . _('must be in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'warn');
 			//Attempt to default the due date to something sensible?
 			$NewItemDue = DateAdd(Date($_SESSION['DefaultDateFormat']), 'd', $_SESSION['Items' . $Identifier]->DeliveryDays);
@@ -814,7 +814,7 @@ if (count($_SESSION['Items' . $Identifier]->LineItems) > 0) {
 		}
 		echo '<td class="number">' . locale_number_format($SubTotal, $_SESSION['Items' . $Identifier]->CurrDecimalPlaces) . '</td>';
 		$LineDueDate = $OrderLine->ItemDue;
-		if (!Is_Date($OrderLine->ItemDue)) {
+		if (!is_date($OrderLine->ItemDue)) {
 			$LineDueDate = DateAdd(Date($_SESSION['DefaultDateFormat']), 'd', $_SESSION['Items' . $Identifier]->DeliveryDays);
 			$_SESSION['Items' . $Identifier]->LineItems[$OrderLine->LineNumber]->ItemDue = $LineDueDate;
 		}

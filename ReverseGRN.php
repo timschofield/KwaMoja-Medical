@@ -346,7 +346,7 @@ if (isset($_GET['GRNNo']) and isset($_POST['SupplierID'])) {
 	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
-	if (!isset($_POST['RecdAfterDate']) or !Is_Date($_POST['RecdAfterDate'])) {
+	if (!isset($_POST['RecdAfterDate']) or !is_date($_POST['RecdAfterDate'])) {
 		$_POST['RecdAfterDate'] = Date($_SESSION['DefaultDateFormat'], Mktime(0, 0, 0, Date("m") - 3, Date("d"), Date("Y")));
 	}
 	echo '<input type="hidden" name="SupplierID" value="' . $_POST['SupplierID'] . '" />';

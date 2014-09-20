@@ -120,7 +120,7 @@ if (isset($_POST['SearchParts']) and $_POST['SearchParts'] != '') {
 		echo '<br />' . _('For the part') . ': ' . $SelectedStockItem . ' ' . _('and') . ' <input type="hidden" name="SelectedStockItem" value="' . $SelectedStockItem . '" />';
 	}
 
-} else if (isset($_POST['SearchOrders']) and Is_Date($_POST['OrdersAfterDate']) == 1) {
+} else if (isset($_POST['SearchOrders']) and is_date($_POST['OrdersAfterDate']) == 1) {
 
 	//figure out the SQL required from the inputs available
 	if (isset($OrderNumber)) {
@@ -311,7 +311,7 @@ if (isset($_POST['SearchParts']) and $_POST['SearchParts'] != '') {
 
 } //end of which button clicked options
 
-if (!isset($_POST['OrdersAfterDate']) or $_POST['OrdersAfterDate'] == '' or !Is_Date($_POST['OrdersAfterDate'])) {
+if (!isset($_POST['OrdersAfterDate']) or $_POST['OrdersAfterDate'] == '' or !is_date($_POST['OrdersAfterDate'])) {
 	$_POST['OrdersAfterDate'] = Date($_SESSION['DefaultDateFormat'], Mktime(0, 0, 0, Date('m') - 2, Date('d'), Date('Y')));
 }
 echo '<div><table class="selection">';

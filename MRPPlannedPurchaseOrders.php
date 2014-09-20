@@ -27,7 +27,7 @@ if (isset($_POST['PrintPDF'])) {
 	$Xpos = $Left_Margin + 1;
 	$WhereDate = ' ';
 	$ReportDate = ' ';
-	if (Is_Date($_POST['cutoffdate'])) {
+	if (is_date($_POST['cutoffdate'])) {
 		$FormatDate = FormatDateForSQL($_POST['cutoffdate']);
 		$WhereDate = " AND duedate <= '" . $FormatDate . "' ";
 		$ReportDate = _(' Through  ') . Format_Date($_POST['cutoffdate']);
@@ -172,7 +172,7 @@ if (isset($_POST['PrintPDF'])) {
 			// Get and print supplier info for part
 			list($lastdate, $lastsupplier, $preferredsupplier) = GetPartInfo($holdpart);
 			$displaydate = $lastdate;
-			if (!Is_Date($lastdate)) {
+			if (!is_date($lastdate)) {
 				$displaydate = ' ';
 			}
 			$YPos -= $line_height;
@@ -234,7 +234,7 @@ if (isset($_POST['PrintPDF'])) {
 	// Get and print supplier info for part
 	list($lastdate, $lastsupplier, $preferredsupplier) = GetPartInfo($holdpart);
 	$displaydate = $lastdate;
-	if (!Is_Date($lastdate)) {
+	if (!is_date($lastdate)) {
 		$displaydate = ' ';
 	}
 	$YPos -= $line_height;

@@ -39,12 +39,12 @@ function submit(&$ChangeDate) {
 
 	//first off validate inputs sensible
 
-	if (!Is_Date($_POST['FromDate'])) {
+	if (!is_date($_POST['FromDate'])) {
 		$InputError = 1;
 		prnMsg(_('Invalid From Date'), 'error');
 	}
 
-	if (!Is_Date($_POST['ToDate'])) {
+	if (!is_date($_POST['ToDate'])) {
 		$InputError = 1;
 		prnMsg(_('Invalid To Date'), 'error');
 
@@ -163,7 +163,7 @@ function update(&$ChangeDate) {
 		  GROUP BY calendardate";
 	$Result = DB_query($SQL);
 	$MyRow = DB_fetch_row($Result);
-	if ($MyRow[0] < 1 or !Is_Date($ChangeDate)) {
+	if ($MyRow[0] < 1 or !is_date($ChangeDate)) {
 		$InputError = 1;
 		prnMsg(_('Invalid Change Date'), 'error');
 	}

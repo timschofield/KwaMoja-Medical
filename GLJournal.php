@@ -37,7 +37,7 @@ if (!isset($_SESSION['JournalDetail'])) {
 if (isset($_POST['JournalProcessDate'])) {
 	$_SESSION['JournalDetail']->JnlDate = $_POST['JournalProcessDate'];
 
-	if (!Is_Date($_POST['JournalProcessDate'])) {
+	if (!is_date($_POST['JournalProcessDate'])) {
 		prnMsg(_('The date entered was not valid please enter the date to process the journal in the format') . $_SESSION['DefaultDateFormat'], 'warn');
 		$_POST['CommitBatch'] = 'Do not do it the date is wrong';
 	}
@@ -236,7 +236,7 @@ echo '<p class="page_title_text noPrint" >
 
 // A new table in the first column of the main table
 
-if (!Is_Date($_SESSION['JournalDetail']->JnlDate)) {
+if (!is_date($_SESSION['JournalDetail']->JnlDate)) {
 	// Default the date to the last day of the previous month
 	$_SESSION['JournalDetail']->JnlDate = Date($_SESSION['DefaultDateFormat'], mktime(0, 0, 0, date('m'), 0, date('Y')));
 }

@@ -780,11 +780,11 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 				/* break out of the loop if nothing in the quick entry fields*/
 			} //!isset($NewItem)
 
-			if (!Is_Date($NewItemDue)) {
+			if (!is_date($NewItemDue)) {
 				prnMsg(_('An invalid date entry was made for ') . ' ' . $NewItem . ' ' . _('The date entry') . ' ' . $NewItemDue . ' ' . _('must be in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'warn');
 				//Attempt to default the due date to something sensible?
 				$NewItemDue = DateAdd(Date($_SESSION['DefaultDateFormat']), 'd', $_SESSION['Items' . $Identifier]->DeliveryDays);
-			} //!Is_Date($NewItemDue)
+			} //!is_date($NewItemDue)
 
 			/*Now figure out if the item is a kit set - the field MBFlag='K'*/
 			$SQL = "SELECT stockmaster.mbflag
@@ -992,12 +992,12 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 					$OrderLine->DiscountPercent = 0;
 				} //!isset($OrderLine->DiscountPercent)
 
-				if (!Is_Date($_POST['ItemDue_' . $OrderLine->LineNumber])) {
+				if (!is_date($_POST['ItemDue_' . $OrderLine->LineNumber])) {
 					prnMsg(_('An invalid date entry was made for ') . ' ' . $NewItem . ' ' . _('The date entry') . ' ' . $ItemDue . ' ' . _('must be in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'warn');
 					//Attempt to default the due date to something sensible?
 
 					$_POST['ItemDue_' . $OrderLine->LineNumber] = DateAdd(Date($_SESSION['DefaultDateFormat']), 'd', $_SESSION['Items' . $Identifier]->DeliveryDays);
-				} //!Is_Date($_POST['ItemDue_' . $OrderLine->LineNumber])
+				} //!is_date($_POST['ItemDue_' . $OrderLine->LineNumber])
 				if ($Quantity < 0 or $Price < 0 or $DiscountPercentage > 100 or $DiscountPercentage < 0) {
 					prnMsg(_('The item could not be updated because you are attempting to set the quantity ordered to less than 0 or the price less than 0 or the discount more than 100% or less than 0%'), 'warn');
 				} //$Quantity < 0 or $Price < 0 or $DiscountPercentage > 100 or $DiscountPercentage < 0
@@ -1329,10 +1329,10 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 			}
 			echo '<td class="number">' . $DisplayLineTotal . '</td>';
 			$LineDueDate = $OrderLine->ItemDue;
-			if (!Is_Date($OrderLine->ItemDue)) {
+			if (!is_date($OrderLine->ItemDue)) {
 				$LineDueDate = DateAdd(Date($_SESSION['DefaultDateFormat']), 'd', $_SESSION['Items' . $Identifier]->DeliveryDays);
 				$_SESSION['Items' . $Identifier]->LineItems[$OrderLine->LineNumber]->ItemDue = $LineDueDate;
-			} //!Is_Date($OrderLine->ItemDue)
+			} //!is_date($OrderLine->ItemDue)
 
 			echo '<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="ItemDue_' . $OrderLine->LineNumber . '" size="10" required="required" minlength="1" maxlength="10" value="' . $LineDueDate . '" /></td>';
 

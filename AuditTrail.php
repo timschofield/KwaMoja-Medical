@@ -15,7 +15,7 @@ if (!isset($_POST['ToDate'])) {
 	$_POST['ToDate'] = Date($_SESSION['DefaultDateFormat']);
 }
 
-if ((!(Is_Date($_POST['FromDate'])) or (!Is_Date($_POST['ToDate']))) and (isset($_POST['View']))) {
+if ((!(is_date($_POST['FromDate'])) or (!is_date($_POST['ToDate']))) and (isset($_POST['View']))) {
 	prnMsg(_('Incorrect date format used, please re-enter'), error);
 	unset($_POST['View']);
 }

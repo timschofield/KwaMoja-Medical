@@ -5,11 +5,11 @@ include('includes/SQL_CommonFunctions.inc');
 
 $InputError = 0;
 
-if (isset($_POST['FromDate']) and !Is_Date($_POST['FromDate'])) {
+if (isset($_POST['FromDate']) and !is_date($_POST['FromDate'])) {
 	$Msg = _('The date from must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
 	$InputError = 1;
 }
-if (isset($_POST['ToDate']) and !Is_Date($_POST['ToDate'])) {
+if (isset($_POST['ToDate']) and !is_date($_POST['ToDate'])) {
 	$Msg = _('The date to must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
 	$InputError = 1;
 }

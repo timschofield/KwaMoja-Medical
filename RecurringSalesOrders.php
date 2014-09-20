@@ -170,11 +170,11 @@ if (isset($_POST['DeleteRecurringOrder'])) {
 if (isset($_POST['Process'])) {
 	$Result = DB_Txn_Begin();
 	$InputErrors = 0;
-	if (!Is_Date($_POST['StartDate'])) {
+	if (!is_date($_POST['StartDate'])) {
 		$InputErrors = 1;
 		prnMsg(_('The last recurrence or start date of this recurring order must be a valid date in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
 	}
-	if (!Is_Date($_POST['StopDate'])) {
+	if (!is_date($_POST['StopDate'])) {
 		$InputErrors = 1;
 		prnMsg(_('The end date of this recurring order must be a valid date in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
 	}

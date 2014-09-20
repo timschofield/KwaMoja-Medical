@@ -16,8 +16,8 @@ if (isset($Errors)) {
 
 $Errors = array();
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Customer Types') . '" alt="" />' . _('Customer Type Setup') . '</p>';
-echo '<div class="page_help_text noPrint">' . _('Add/edit/delete Customer Types') . '</div>';
+echo '<p class="page_title_text noPrint" ><img src="', $RootPath, '/css/', $Theme, '/images/maintenance.png" title="', _('Customer Types'), '" alt="" />', _('Customer Type Setup'), '</p>';
+echo '<div class="page_help_text noPrint">', _('Add/edit/delete Customer Types'), '</div>';
 
 if (isset($_POST['submit'])) {
 
@@ -28,20 +28,15 @@ if (isset($_POST['submit'])) {
 	ie the page has called itself with some user input */
 
 	//first off validate inputs sensible
-	$i = 1;
 	if (mb_strlen($_POST['TypeName']) > 100) {
 		$InputError = 1;
 		prnMsg(_('The customer type name description must be 100 characters or less long'), 'error');
-		$Errors[$i] = 'CustomerType';
-		++$i;
 	}
 
 	if (mb_strlen($_POST['TypeName']) == 0) {
 		$InputError = 1;
 		echo '<br />';
 		prnMsg(_('The customer type name description must contain at least one character'), 'error');
-		$Errors[$i] = 'CustomerType';
-		++$i;
 	}
 
 	$CheckSql = "SELECT count(*)
@@ -53,8 +48,6 @@ if (isset($_POST['submit'])) {
 		$InputError = 1;
 		echo '<br />';
 		prnMsg(_('You already have a customer type called') . ' ' . $_POST['TypeName'], 'error');
-		$Errors[$i] = 'CustomerName';
-		++$i;
 	}
 
 	if (isset($SelectedType) and $InputError != 1) {
@@ -68,11 +61,11 @@ if (isset($_POST['submit'])) {
 
 		// First check the type is not being duplicated
 
-		$checkSql = "SELECT count(*)
+		$CheckSql = "SELECT count(*)
 				 FROM debtortype
 				 WHERE typename = '" . $_POST['TypeName'] . "'";
 
-		$CheckResult = DB_query($checkSql);
+		$CheckResult = DB_query($CheckSql);
 		$CheckRow = DB_fetch_row($CheckResult);
 
 		if ($CheckRow[0] > 0) {
@@ -88,9 +81,9 @@ if (isset($_POST['submit'])) {
 
 
 			$Msg = _('Customer type') . ' ' . $_POST["TypeName"] . ' ' . _('has been created');
-			$checkSql = "SELECT count(typeid)
+			$CheckSql = "SELECT count(typeid)
 				 FROM debtortype";
-			$Result = DB_query($checkSql);
+			$Result = DB_query($CheckSql);
 			$MyRow = DB_fetch_row($Result);
 
 		}
@@ -178,18 +171,20 @@ if (!isset($SelectedType)) {
 	links to delete or edit each. These will call the same page again and allow update/input
 	or deletion of the records*/
 
-	$SQL = "SELECT typeid, typename FROM debtortype";
+	$SQL = "SELECT typeid,
+					typename
+				FROM debtortype";
 	$Result = DB_query($SQL);
 
-	echo '<br /><table class="selection">';
+	echo '<table class="selection">';
 	echo '<tr>
-			<th class="SortableColumn">' . _('Type ID') . '</th>
-			<th class="SortableColumn">' . _('Type Name') . '</th>
+			<th class="SortableColumn">', _('Type ID'), '</th>
+			<th class="SortableColumn">', _('Type Name'), '</th>
 		</tr>';
 
 	$k = 0; //row colour counter
 
-	while ($MyRow = DB_fetch_row($Result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -198,11 +193,11 @@ if (!isset($SelectedType)) {
 			$k = 1;
 		}
 
-		printf('<td>%s</td>
-				<td>%s</td>
-				<td><a href="%sSelectedType=%s">' . _('Edit') . '</a></td>
-				<td><a href="%sSelectedType=%s&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this Customer Type?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-			</tr>', $MyRow[0], $MyRow[1], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow[0], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow[0]);
+		echo '<td>', $MyRow['typeid'], '</td>
+				<td>', $MyRow['typename'], '</td>
+				<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '?SelectedType=', urlencode($MyRow['typeid']), '">' . _('Edit') . '</a></td>
+				<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '?SelectedType=', urlencode($MyRow['typeid']), '&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this Customer Type?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+			</tr>';
 	}
 	//END WHILE LIST LOOP
 	echo '</table>';
@@ -210,8 +205,8 @@ if (!isset($SelectedType)) {
 
 if (!isset($_GET['delete'])) {
 
-	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
+	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '">';
+	echo '<input type="hidden" name="FormID" value="', $_SESSION['FormID'], '" />';
 
 	// The user wish to EDIT an existing type
 	if (isset($SelectedType) and $SelectedType != '') {
@@ -224,17 +219,17 @@ if (!isset($_GET['delete'])) {
 		$Result = DB_query($SQL);
 		$MyRow = DB_fetch_array($Result);
 
-		$_POST['typeid'] = $MyRow['typeid'];
 		$_POST['TypeName'] = $MyRow['typename'];
 
-		echo '<input type="hidden" name="SelectedType" value="' . $SelectedType . '" />';
-		echo '<input type="hidden" name="typeid" value="' . $_POST['typeid'] . '" />';
+		echo '<input type="hidden" name="SelectedType" value="', $SelectedType, '" />';
+		echo '<input type="hidden" name="typeid" value="', $SelectedType, '" />';
 		echo '<table class="selection">';
 
 		// We dont allow the user to change an existing type code
 
 		echo '<tr>
-				<td>' . _('Type ID') . ': ' . $_POST['typeid'] . '</td>
+				<td>', _('Type ID'), ': </td>
+				<td>', $SelectedType, '</td>
 			</tr>';
 
 	} else {
@@ -246,14 +241,14 @@ if (!isset($_GET['delete'])) {
 		$_POST['TypeName'] = '';
 	}
 	echo '<tr>
-			<td>' . _('Type Name') . ':</td>
-			<td><input type="text" name="TypeName" required="required" minlength="1" maxlength="100" value="' . $_POST['TypeName'] . '" /></td>
+			<td>', _('Type Name'), ':</td>
+			<td><input type="text" name="TypeName" required="required" minlength="1" maxlength="100" value="', $_POST['TypeName'], '" /></td>
 		</tr>';
 
 	echo '</table>'; // close main table
 
 	echo '<div class="centre">
-			<input type="submit" name="submit" value="' . _('Accept') . '" />
+			<input type="submit" name="submit" value="', _('Accept'), '" />
 		</div>';
 	echo '</form>';
 

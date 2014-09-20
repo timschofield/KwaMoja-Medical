@@ -174,18 +174,16 @@ while ($MyRow = DB_fetch_array($LocStockResult)) {
 
 	if ($Its_A_KitSet_Assembly_Or_Dummy == False) {
 
-		$SQL = "SELECT SUM(purchorderdetails.quantityord*(CASE WHEN purchdata.conversionfactor IS NULL THEN 1 ELSE purchdata.conversionfactor END) -
-							purchorderdetails.quantityrecd*(CASE WHEN purchdata.conversionfactor IS NULL THEN 1 ELSE purchdata.conversionfactor END))
-			FROM purchorders LEFT JOIN purchorderdetails
-			ON purchorders.orderno=purchorderdetails.orderno
-			LEFT JOIN purchdata ON purchorders.supplierno=purchdata.supplierno
-				AND purchorderdetails.itemcode=purchdata.stockid
-			WHERE purchorderdetails.itemcode='" . $StockId . "'
-			AND purchorders.intostocklocation='" . $MyRow['loccode'] . "'
-			AND (purchorders.status<>'Cancelled'
-			AND purchorders.status<>'Pending'
-			AND purchorders.status<>'Rejected'
-			AND purchorders.status<>'Completed')";
+		$SQL = "SELECT SUM(purchorderdetails.quantityord-purchorderdetails.quantityrecd)
+					FROM purchorders
+					LEFT JOIN purchorderdetails
+						ON purchorders.orderno=purchorderdetails.orderno
+					WHERE purchorderdetails.itemcode='" . $StockId . "'
+						AND purchorders.intostocklocation='" . $MyRow['loccode'] . "'
+						AND (purchorders.status<>'Cancelled'
+						AND purchorders.status<>'Pending'
+						AND purchorders.status<>'Rejected'
+						AND purchorders.status<>'Completed')";
 		$ErrMsg = _('The quantity on order for this product to be received into') . ' ' . $MyRow['loccode'] . ' ' . _('cannot be retrieved because');
 		$QOOResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 

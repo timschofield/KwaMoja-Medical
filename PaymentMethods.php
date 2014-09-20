@@ -3,16 +3,23 @@
 include('includes/session.inc');
 
 $Title = _('Payment Methods');
-
+/* Manual links before header.inc */
+/* RChacon: This is a topic to create.*/
+$ViewTopic = 'ARTransactions';// Filename in ManualContents.php's TOC.
+$BookMark = 'PaymentMethods';// Anchor's id in the manual's html document.
 include('includes/header.inc');
-
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . _('Payments') . '" alt="" />' . ' ' . $Title . '</p>';
 
 if (isset($_GET['SelectedPaymentID'])) {
 	$SelectedPaymentID = $_GET['SelectedPaymentID'];
 } elseif (isset($_POST['SelectedPaymentID'])) {
 	$SelectedPaymentID = $_POST['SelectedPaymentID'];
 }
+
+if (isset($SelectedPaymentID)) {
+	echo '<div class="toplink"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Review Payment Methods') . '</a></div>';
+}
+
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . _('Payments') . '" alt="" />' . ' ' . $Title . '</p>';
 
 if (isset($Errors)) {
 	unset($Errors);
@@ -174,10 +181,10 @@ if (!isset($SelectedPaymentID)) {
 
 	echo '<table class="selection">
 		<tr>
-			<th>' . _('Payment Method') . '</th>
-			<th>' . _('Use For Payments') . '</th>
-			<th>' . _('Use For Receipts') . '</th>
-			<th>' . _('Use Pre-printed Stationery') . '</th>
+			<th class="SortableColumn">' . _('Payment Method') . '</th>
+			<th class="SortableColumn">' . _('Use For Payments') . '</th>
+			<th class="SortableColumn">' . _('Use For Receipts') . '</th>
+			<th class="SortableColumn">' . _('Use Pre-printed Stationery') . '</th>
 			<th>' . _('Open POS Cash Drawer for Sale') . '</th>
 		</tr>';
 
@@ -204,11 +211,6 @@ if (!isset($SelectedPaymentID)) {
 	} //END WHILE LIST LOOP
 	echo '</table>';
 } //end of ifs and buts!
-
-
-if (isset($SelectedPaymentID)) {
-	echo '<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Review Payment Methods') . '</a></div>';
-}
 
 if (!isset($_GET['delete'])) {
 

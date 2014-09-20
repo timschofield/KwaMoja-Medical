@@ -48,7 +48,7 @@ if (!isset($_POST['continue'])) {
 	echo '</form></div>';
 } else {
 	$StartingUpdate = $_SESSION['DBUpdateNumber'] + 1;
-	$EndingUpdate = $DBVersion;
+	$EndingUpdate = HighestFileName($PathPrefix);
 	if (isset($_POST['CreateSQLFile'])) {
 		$SQLFile = fopen('./companies/' . $_SESSION['DatabaseName'] . '/reportwriter/UpgradeDB' . $StartingUpdate . '-' . $EndingUpdate . '.sql', 'w');
 	}

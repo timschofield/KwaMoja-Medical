@@ -39,14 +39,16 @@ if (isset($_POST['insert']) or isset($_POST['update'])) {
 		prnMsg(_('The supplier type name description must contain at least one character'), 'error');
 	}
 
-	$CheckSql = "SELECT count(*)
-			 FROM suppliertype
-			 WHERE typename = '" . $_POST['TypeName'] . "'";
-	$CheckResult = DB_query($CheckSql);
-	$CheckRow = DB_fetch_row($CheckResult);
-	if ($CheckRow[0] > 0 and isset($_POST['insert'])) {
-		$InputError = 1;
-		prnMsg(_('You already have a supplier type called') . ' ' . $_POST['TypeName'], 'error');
+	if (isset($_POST['insert'])) {
+		$CheckSql = "SELECT count(*)
+				FROM suppliertype
+				WHERE typename = '" . $_POST['TypeName'] . "'";
+		$CheckResult = DB_query($CheckSql);
+		$CheckRow = DB_fetch_row($CheckResult);
+		if ($CheckRow[0] > 0) {
+			$InputError = 1;
+			prnMsg(_('You already have a supplier type called') . ' ' . $_POST['TypeName'], 'error');
+		}
 	}
 
 	if (isset($_POST['update']) and $InputError != 1) {
@@ -72,19 +74,10 @@ if (isset($_POST['insert']) or isset($_POST['update'])) {
 		//run the SQL from either of the above possibilites
 		$Result = DB_query($SQL);
 
-
-		// Fetch the default supplier type.
-		$SQL = "SELECT confvalue
-					FROM config
-					WHERE confname='DefaultSupplierType'";
-		$Result = DB_query($SQL);
-		$SupplierTypeRow = DB_fetch_row($Result);
-		$DefaultSupplierType = $SupplierTypeRow[0];
-
 		// Does it exist
 		$CheckSql = "SELECT count(*)
 				 FROM suppliertype
-				 WHERE typeid = '" . $DefaultSupplierType . "'";
+				 WHERE typeid = '" . $_SESSION['DefaultSupplierType'] . "'";
 		$CheckResult = DB_query($CheckSql);
 		$CheckRow = DB_fetch_row($CheckResult);
 
@@ -165,7 +158,7 @@ if (!isset($SelectedType)) {
 if (isset($SelectedType)) {
 
 	echo '<div class="centre">
-			<p><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Show All Types Defined') . '</a></p>
+			<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Show All Types Defined') . '</a>
 		</div>';
 }
 if (!isset($_GET['delete'])) {
@@ -205,29 +198,19 @@ if (!isset($_GET['delete'])) {
 	echo '<tr>
 			<td>' . _('Type Name') . ':</td>
 			<td><input type="text" autofocus="autofocus" required="required" minlength="1" maxlength="100" name="TypeName" value="' . $_POST['TypeName'] . '" /></td>
-		</tr>';
+		</tr>
+	</table>';
 
 	if (isset($_GET['Edit'])) {
-		echo '<tr>
-				<td colspan="2">
-					<div class="centre">
-						<input type="submit" name="update" value="' . _('Update Type') . '" />
-					</div>
-				</td>
-			</tr>
-		</table>
-		</form>';
+		echo '<div class="centre">
+				<input type="submit" name="update" value="', _('Update Type'), '" />
+			</div>';
 	} else {
-		echo '<tr>
-				<td colspan="2">
-					<div class="centre">
-						<input type="submit" name="insert" value="' . _('Add Type') . '" />
-					</div>
-				</td>
-			</tr>
-		</table>
-		</form>';
+		echo '<div class="centre">
+				<input type="submit" name="insert" value="', _('Add Type'), '" />
+			</div>';
 	}
+	echo '</form>';
 
 } // end if user wish to delete
 

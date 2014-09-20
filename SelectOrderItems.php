@@ -446,7 +446,7 @@ if (isset($SelectedCustomer)) {
 		prnMsg(_('The') . ' ' . htmlspecialchars($MyRow[0], ENT_QUOTES, 'UTF-8', false) . ' ' . _('account is currently on hold please contact the credit control personnel to discuss'), 'warn');
 	}
 
-} elseif (!$_SESSION['Items' . $Identifier]->DefaultSalesType or $_SESSION['Items' . $Identifier]->DefaultSalesType == '') {
+} elseif ((!$_SESSION['Items' . $Identifier]->DefaultSalesType or $_SESSION['Items' . $Identifier]->DefaultSalesType == '') and !isset($_GET['NewOrder'])) {
 	//Possible that the check to ensure this account is not on hold has not been done
 	//if the customer is placing own order, if this is the case then
 	//DefaultSalesType will not have been set as above

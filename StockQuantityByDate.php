@@ -80,7 +80,7 @@ echo '<tr>
 
 $TotalQuantity = 0;
 
-if (isset($_POST['ShowStatus']) and Is_Date($_POST['OnHandDate'])) {
+if (isset($_POST['ShowStatus']) and is_date($_POST['OnHandDate'])) {
 	if ($_POST['StockCategory'] == 'All') {
 		$SQL = "SELECT stockid,
 						 description,

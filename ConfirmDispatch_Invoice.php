@@ -611,7 +611,7 @@ echo '<tr>
 	<td class="number"><hr /><b>' . locale_number_format($TaxTotal + ($_SESSION['Items' . $Identifier]->total + $_POST['ChargeFreightCost']), $_SESSION['Items' . $Identifier]->CurrDecimalPlaces) . '</b><hr /></td>
 </tr>';
 
-if (!isset($_POST['DispatchDate']) or !Is_Date($_POST['DispatchDate'])) {
+if (!isset($_POST['DispatchDate']) or !is_date($_POST['DispatchDate'])) {
 	$DefaultDispatchDate = Date($_SESSION['DefaultDateFormat'], CalcEarliestDispatchDate());
 } else {
 	$DefaultDispatchDate = $_POST['DispatchDate'];

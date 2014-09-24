@@ -76,7 +76,7 @@ if (!isset($_GET['Delete']) and isset($_SESSION['ReceiptBatch'])) {
 		exit;
 	}
 
-	if (!Is_Date($_POST['DateBanked'])) {
+	if (!is_date($_POST['DateBanked'])) {
 		$_POST['DateBanked'] = Date($_SESSION['DefaultDateFormat']);
 	}
 	$_SESSION['ReceiptBatch']->DateBanked = $_POST['DateBanked'];
@@ -813,7 +813,7 @@ if (DB_num_rows($AccountsResults) == 0) {
 		</tr>';
 }
 
-if (!Is_Date($_SESSION['ReceiptBatch']->DateBanked)) {
+if (!is_date($_SESSION['ReceiptBatch']->DateBanked)) {
 	$_SESSION['ReceiptBatch']->DateBanked = Date($_SESSION['DefaultDateFormat']);
 }
 

@@ -78,11 +78,11 @@ function submit($PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $Supplie
 
 	//first off validate inputs sensible
 
-	if (!Is_Date($_POST['FromDate'])) {
+	if (!is_date($_POST['FromDate'])) {
 		$InputError = 1;
 		prnMsg(_('Invalid From Date'), 'error');
 	}
-	if (!Is_Date($_POST['ToDate'])) {
+	if (!is_date($_POST['ToDate'])) {
 		$InputError = 1;
 		prnMsg(_('Invalid To Date'), 'error');
 	}
@@ -786,11 +786,11 @@ function submitcsv($PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $Supp
 
 	//first off validate inputs sensible
 
-	if (!Is_Date($_POST['FromDate'])) {
+	if (!is_date($_POST['FromDate'])) {
 		$InputError = 1;
 		prnMsg(_('Invalid From Date'), 'error');
 	}
-	if (!Is_Date($_POST['ToDate'])) {
+	if (!is_date($_POST['ToDate'])) {
 		$InputError = 1;
 		prnMsg(_('Invalid To Date'), 'error');
 	}

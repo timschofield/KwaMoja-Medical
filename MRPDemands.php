@@ -144,7 +144,7 @@ function submit(&$StockId, &$DemandID) //####SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_
 		$InputError = 1;
 		prnMsg(_('Quantity must be greater than 0'), 'error');
 	}
-	if (!Is_Date($_POST['Duedate'])) {
+	if (!is_date($_POST['Duedate'])) {
 		$InputError = 1;
 		prnMsg(_('Invalid due date'), 'error');
 	}

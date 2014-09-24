@@ -99,12 +99,12 @@ if (isset($_POST['submit'])) {
 		$Errors[$i] = 'PymtDiscount';
 		++$i;
 	} //!is_numeric(filter_number_format($_POST['PymtDiscount']))
-		elseif (!Is_Date($_POST['ClientSince'])) {
+		elseif (!is_date($_POST['ClientSince'])) {
 		$InputError = 1;
 		prnMsg(_('The customer since field must be a date in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
 		$Errors[$i] = 'ClientSince';
 		++$i;
-	} //!Is_Date($_POST['ClientSince'])
+	} //!is_date($_POST['ClientSince'])
 		elseif (!is_numeric(filter_number_format($_POST['Discount']))) {
 		$InputError = 1;
 		prnMsg(_('The discount percentage must be numeric'), 'error');

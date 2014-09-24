@@ -14,7 +14,7 @@ or d.m.Y  for Germany ;) Juergen Ruemmler heinrich@ruemmler.net
 
 */
 
-function Is_date($DateEntry) {
+function is_date($DateEntry) {
 
 	$DateEntry = Trim($DateEntry);
 
@@ -82,7 +82,7 @@ function Is_date($DateEntry) {
 		return 0;
 	}
 
-} //end of Is_Date function
+} //end of is_date function
 
 
 function MonthAndYearFromSQLDate($DateEntry) {
@@ -1053,7 +1053,7 @@ function GetPeriod($TransDate, $UseProhibit = true) {
 		$TransDate = mktime(0, 0, 0, $Date_Array[1], $Date_Array[2], $Date_Array[0]);
 	}
 
-	if (Is_Date(ConvertSQLDate($_SESSION['ProhibitPostingsBefore'])) and $UseProhibit) { //then the ProhibitPostingsBefore configuration is set
+	if (is_date(ConvertSQLDate($_SESSION['ProhibitPostingsBefore'])) and $UseProhibit) { //then the ProhibitPostingsBefore configuration is set
 		$Date_Array = explode('-', $_SESSION['ProhibitPostingsBefore']);
 		$ProhibitPostingsBefore = mktime(0, 0, 0, $Date_Array[1], $Date_Array[2], $Date_Array[0]);
 

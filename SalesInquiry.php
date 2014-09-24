@@ -84,14 +84,14 @@ function submit($PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $DebtorName,
 
 	//first off validate inputs sensible
 
-	if (!Is_Date($_POST['FromDate'])) {
+	if (!is_date($_POST['FromDate'])) {
 		$InputError = 1;
 		prnMsg(_('Invalid From Date'), 'error');
-	} //!Is_Date($_POST['FromDate'])
-	if (!Is_Date($_POST['ToDate'])) {
+	} //!is_date($_POST['FromDate'])
+	if (!is_date($_POST['ToDate'])) {
 		$InputError = 1;
 		prnMsg(_('Invalid To Date'), 'error');
-	} //!Is_Date($_POST['ToDate'])
+	} //!is_date($_POST['ToDate'])
 
 	if ($_POST['ReportType'] == 'Summary' and $_POST['DateType'] == 'Order' and $_POST['SummaryType'] == 'transno') {
 		$InputError = 1;

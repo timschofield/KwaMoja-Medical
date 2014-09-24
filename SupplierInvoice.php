@@ -972,11 +972,11 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 		prnMsg(_('The invoice as entered cannot be processed because the there is no suppliers invoice number or reference entered') . '. ' . _('The supplier invoice number must be entered'), 'error');
 
 	} //mb_strlen($_SESSION['SuppTrans']->SuppReference) < 1
-		elseif (!Is_date($_SESSION['SuppTrans']->TranDate)) {
+		elseif (!is_date($_SESSION['SuppTrans']->TranDate)) {
 		$InputError = True;
 		prnMsg(_('The invoice as entered cannot be processed because the invoice date entered is not in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
 
-	} //!Is_date($_SESSION['SuppTrans']->TranDate)
+	} //!is_date($_SESSION['SuppTrans']->TranDate)
 		elseif (DateDiff(Date($_SESSION['DefaultDateFormat']), $_SESSION['SuppTrans']->TranDate, 'd') < 0) {
 		$InputError = True;
 		prnMsg(_('The invoice as entered cannot be processed because the invoice date is after today') . '. ' . _('Purchase invoices are expected to have a date prior to or today'), 'error');

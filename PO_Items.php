@@ -445,10 +445,10 @@ if (isset($_POST['EnterLine'])) {
 		$AllowUpdate = false;
 		prnMsg(_('Cannot Enter this order line') . '<br />' . _('The price entered must be numeric'), 'error');
 	} //!is_numeric(filter_number_format($_POST['Price']))
-	if (!Is_Date($_POST['ReqDelDate'])) {
+	if (!is_date($_POST['ReqDelDate'])) {
 		$AllowUpdate = False;
 		prnMsg(_('Cannot Enter this order line') . '</b><br />' . _('The date entered must be in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
-	} //!Is_Date($_POST['ReqDelDate'])
+	} //!is_date($_POST['ReqDelDate'])
 
 	/*It's not a stock item
 	 * need to check GL Code is valid if GLLink is active

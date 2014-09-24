@@ -180,9 +180,9 @@ if (isset($_POST['BankAccount']) and $_POST['BankAccount'] != '') {
 	}
 }
 
-if (isset($_POST['DatePaid']) and $_POST['DatePaid'] != '' and Is_Date($_POST['DatePaid'])) {
+if (isset($_POST['DatePaid']) and $_POST['DatePaid'] != '' and is_date($_POST['DatePaid'])) {
 	$_SESSION['PaymentDetail' . $Identifier]->DatePaid = $_POST['DatePaid'];
-} //isset($_POST['DatePaid']) and $_POST['DatePaid'] != '' and Is_Date($_POST['DatePaid'])
+} //isset($_POST['DatePaid']) and $_POST['DatePaid'] != '' and is_date($_POST['DatePaid'])
 if (isset($_POST['ExRate']) and $_POST['ExRate'] != '') {
 	$_SESSION['PaymentDetail' . $Identifier]->ExRate = filter_number_format($_POST['ExRate']); //ex rate between payment currency and account currency
 } //isset($_POST['ExRate']) and $_POST['ExRate'] != ''
@@ -810,10 +810,10 @@ if (isset($_POST['Cancel'])) {
 	unset($_POST['AccountName']);
 } //isset($_POST['Cancel'])
 
-if (isset($_POST['DatePaid']) and ($_POST['DatePaid'] == '' or !Is_Date($_SESSION['PaymentDetail' . $Identifier]->DatePaid))) {
+if (isset($_POST['DatePaid']) and ($_POST['DatePaid'] == '' or !is_date($_SESSION['PaymentDetail' . $Identifier]->DatePaid))) {
 	$_POST['DatePaid'] = Date($_SESSION['DefaultDateFormat']);
 	$_SESSION['PaymentDetail' . $Identifier]->DatePaid = $_POST['DatePaid'];
-} //isset($_POST['DatePaid']) and ($_POST['DatePaid'] == '' or !Is_Date($_SESSION['PaymentDetail' . $Identifier]->DatePaid))
+} //isset($_POST['DatePaid']) and ($_POST['DatePaid'] == '' or !is_date($_SESSION['PaymentDetail' . $Identifier]->DatePaid))
 
 if ($_SESSION['PaymentDetail' . $Identifier]->Currency == '' and $_SESSION['PaymentDetail' . $Identifier]->SupplierID == '') {
 	$_SESSION['PaymentDetail' . $Identifier]->Currency = $_SESSION['CompanyRecord']['currencydefault'];

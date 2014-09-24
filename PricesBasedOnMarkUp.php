@@ -188,11 +188,11 @@ if (isset($_POST['UpdatePrices'])) {
 		$InputError = 1;
 	}
 
-	if (!Is_Date($_POST['PriceEndDate']) and $_POST['PriceEndDate'] != '') {
+	if (!is_date($_POST['PriceEndDate']) and $_POST['PriceEndDate'] != '') {
 		$InputError = 1;
 		prnMsg(_('The date the new price is to be in effect to must be entered in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
 	}
-	if (!Is_Date($_POST['PriceStartDate'])) {
+	if (!is_date($_POST['PriceStartDate'])) {
 		$InputError = 1;
 		prnMsg(_('The date this price is to take effect from must be entered in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
 	}
@@ -244,7 +244,7 @@ if (isset($_POST['UpdatePrices'])) {
 			include('includes/footer.inc');
 			exit;
 		}
-		if (Is_Date($_POST['PriceEndDate'])) {
+		if (is_date($_POST['PriceEndDate'])) {
 			$SQLEndDate = FormatDateForSQL($_POST['PriceEndDate']);
 		} else {
 			$SQLEndDate = '0000-00-00';

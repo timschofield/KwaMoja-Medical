@@ -243,7 +243,7 @@ if (isset($_POST['CommitContract']) or isset($_POST['CreateQuotation'])) {
 		prnMsg(_('The contract description is expected to be more than 10 characters long. Please alter the contract description in full before proceeding.'), 'error');
 		$InputError = true;
 	}
-	if (!Is_Date($_POST['RequiredDate'])) {
+	if (!is_date($_POST['RequiredDate'])) {
 		prnMsg(_('The date the contract is required to be completed by must be entered in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
 		$InputError = true;
 	}

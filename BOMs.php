@@ -208,11 +208,11 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 
 		//editing a component need to do some validation of inputs
 
-		if (!Is_Date($_POST['EffectiveAfter'])) {
+		if (!is_date($_POST['EffectiveAfter'])) {
 			$InputError = 1;
 			prnMsg(_('The effective after date field must be a date in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
 		}
-		if (!Is_Date($_POST['EffectiveTo'])) {
+		if (!is_date($_POST['EffectiveTo'])) {
 			$InputError = 1;
 			prnMsg(_('The effective to date field must be a date in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
 		}

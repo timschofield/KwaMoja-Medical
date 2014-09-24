@@ -223,7 +223,7 @@ if (isset($_POST['EnterLine'])) {
 		prnMsg(_('Cannot Enter this order line') . '<br />' . _('The sale is at a lower price than the cost'), 'warn');
 	}
 
-	if (!Is_Date($_POST['ReqDelDate'])) {
+	if (!is_date($_POST['ReqDelDate'])) {
 		$AllowAdd = False;
 		prnMsg(_('Cannot Enter this order line') . '<br />' . _('The date entered must be in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'warn');
 	}

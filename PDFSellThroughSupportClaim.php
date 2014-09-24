@@ -14,7 +14,7 @@ if (isset($_POST['PrintPDF'])) {
 
 	$Title = _('Sell Through Support Claim') . ' - ' . _('Problem Report');
 
-	if (!Is_Date($_POST['FromDate']) OR !Is_Date($_POST['ToDate'])) {
+	if (!is_date($_POST['FromDate']) OR !is_date($_POST['ToDate'])) {
 		include('includes/header.inc');
 		prnMsg(_('The dates entered must be in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
 		include('includes/footer.inc');

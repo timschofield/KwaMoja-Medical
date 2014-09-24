@@ -163,7 +163,7 @@ if ($_FILES['SelectedAssetFile']['name']) { //start file processing
 			prnMsg(_('The asset location code entered must be exist in the asset locations table'), 'error');
 			echo '<br />' . _('Row') . ':' . $Row . ' - ' . _('Invalid asset location code') . ': ' . $AssetLocationCode;
 		}
-		if (!Is_Date($DatePurchased)) {
+		if (!is_date($DatePurchased)) {
 			$InputError = true;
 			prnMsg(_('The date purchased must be entered in the format') . ': ' . $_SESSION['DefaultDateFormat'], 'error');
 			echo '<br />' . _('Row') . ':' . $Row . ' - ' . _('Invalid date format') . ': ' . $DatePurchased;

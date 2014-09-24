@@ -160,13 +160,13 @@ if (isset($_POST['Update']) or (isset($_GET['Add']) and $_SESSION['Shipment']->C
 	$InputError = 0;
 	if (isset($_POST['Update'])) {
 
-		if (!Is_Date($_POST['ShipmentDate'])) {
+		if (!is_date($_POST['ShipmentDate'])) {
 			$InputError = 1;
 			prnMsg(_('The date of expected arrival of the shipment must be entered in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
 		} else {
 			$_SESSION['Shipment']->ShipmentDate = FormatDateForSQL($_POST['ShipmentDate']);
 		}
-		if (!Is_Date($_POST['ETA'])) {
+		if (!is_date($_POST['ETA'])) {
 			$InputError = 1;
 			prnMsg(_('The date of expected arrival of the shipment must be entered in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
 		} elseif (Date1GreaterThanDate2($_POST['ETA'], $_POST['ShipmentDate']) == 0) {

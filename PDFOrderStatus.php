@@ -5,12 +5,12 @@ include('includes/SQL_CommonFunctions.inc');
 
 $InputError = 0;
 
-if (isset($_POST['FromDate']) and !Is_Date($_POST['FromDate'])) {
+if (isset($_POST['FromDate']) and !is_date($_POST['FromDate'])) {
 	$Msg = _('The date from must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
 	$InputError = 1;
 	unset($_POST['FromDate']);
 }
-if (isset($_POST['ToDate']) and !Is_Date($_POST['ToDate'])) {
+if (isset($_POST['ToDate']) and !is_date($_POST['ToDate'])) {
 	$Msg = _('The date to must be specified in the format') . ' ' . $_SESSION['DefaultDateFormat'];
 	$InputError = 1;
 	unset($_POST['ToDate']);
@@ -54,8 +54,6 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate'])) {
 	}
 	echo '</select></td></tr>';
 
-	echo '<tr>
-			<td>' . _('Inventory Location') . ':</td><td><select required="required" minlength="1" name="Location">';
 	$SQL = "SELECT locations.loccode,
 					locationname
 				FROM locations
@@ -63,9 +61,11 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate'])) {
 					ON locationusers.loccode=locations.loccode
 					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
 					AND locationusers.canview=1";
+	$Result = DB_query($SQL);
+	echo '<tr>
+			<td>' . _('Inventory Location') . ':</td><td><select required="required" minlength="1" name="Location">';
 	echo '<option selected="selected" value="All">' . _('All Locations') . '</option>';
 
-	$Result = DB_query($SQL);
 	while ($MyRow = DB_fetch_array($Result)) {
 		echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 	}

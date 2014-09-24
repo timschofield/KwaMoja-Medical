@@ -50,7 +50,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 			include('includes/footer.inc');
 			exit;
 		}
-		if (!Is_Date($_POST['EffectiveDate'])) {
+		if (!is_date($_POST['EffectiveDate'])) {
 			$Title = _('Special price List - No Customer Selected');
 			$ViewTopic = 'SalesTypes';// Filename in ManualContents.php's TOC.
 			$BookMark = 'PDFPriceList';// Anchor's id in the manual's html document.

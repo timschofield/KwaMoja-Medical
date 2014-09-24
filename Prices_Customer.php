@@ -81,12 +81,12 @@ if (isset($_POST['submit'])) {
 		}
 	}
 
-	if (!Is_Date($_POST['StartDate'])) {
+	if (!is_date($_POST['StartDate'])) {
 		$InputError = 1;
 		$Msg = _('The date this price is to take effect from must be entered in the format') . ' ' . $_SESSION['DefaultDateFormat'];
 	}
 	if ($_POST['EndDate'] != '0000-00-00') {
-		if (!Is_Date($_POST['EndDate']) and $_POST['EndDate'] != '') { //EndDate can also be blank for default prices
+		if (!is_date($_POST['EndDate']) and $_POST['EndDate'] != '') { //EndDate can also be blank for default prices
 			$InputError = 1;
 			$Msg = _('The date this price is be in effect to must be entered in the format') . ' ' . $_SESSION['DefaultDateFormat'];
 		}
@@ -299,7 +299,7 @@ if (isset($_GET['Edit']) and $_GET['Edit'] == 1) {
 	$_POST['Price'] = $_GET['Price'];
 	$_POST['Branch'] = $_GET['Branch'];
 	$_POST['StartDate'] = ConvertSQLDate($_GET['StartDate']);
-	if (Is_Date($_GET['EndDate'])) {
+	if (is_date($_GET['EndDate'])) {
 		$_POST['EndDate'] = ConvertSQLDate($_GET['EndDate']);
 	} else {
 		$_POST['EndDate'] = '';

@@ -42,10 +42,10 @@ while ($MyRow = DB_fetch_array($ResultStkLocs)) {
 
 echo '</select>';
 
-if (!isset($_POST['BeforeDate']) or !Is_Date($_POST['BeforeDate'])) {
+if (!isset($_POST['BeforeDate']) or !is_date($_POST['BeforeDate'])) {
 	$_POST['BeforeDate'] = Date($_SESSION['DefaultDateFormat']);
 }
-if (!isset($_POST['AfterDate']) or !Is_Date($_POST['AfterDate'])) {
+if (!isset($_POST['AfterDate']) or !is_date($_POST['AfterDate'])) {
 	$_POST['AfterDate'] = Date($_SESSION['DefaultDateFormat'], Mktime(0, 0, 0, Date('m') - 1, Date('d'), Date('y')));
 }
 echo ' ' . _('Show Movements before') . ': <input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="BeforeDate" size="12" required="required" minlength="1" maxlength="12" value="' . $_POST['BeforeDate'] . '" />';

@@ -384,7 +384,7 @@ if (isset($_POST['submit'])) {
 		$Errors[$i] = 'BankRef';
 		++$i;
 	}
-	if (!Is_Date($_POST['SupplierSince'])) {
+	if (!is_date($_POST['SupplierSince'])) {
 		$InputError = 1;
 		prnMsg(_('The supplier since field must be a date in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
 		$Errors[$i] = 'SupplierSince';

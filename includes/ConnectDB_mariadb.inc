@@ -12,15 +12,17 @@ if (!isset($DBPort)) {
 }
 global $db; // Make sure it IS global, regardless of our context
 
-$db = mysqli_connect('p:'.$Host, $DBUser, $DBPassword, $_SESSION['DatabaseName'], $DBPort);
+if (!isset($db)) {
+	$db = mysqli_connect('p:'.$Host, $DBUser, $DBPassword, $_SESSION['DatabaseName'], $DBPort);
+
+	//this statement sets the charset to be used for sending data to and from the db server
+	//if not set, both mysqli server and mysqli client/library may assume otherwise
+	mysqli_set_charset($db, 'utf8');
+}
 
 if ($Debug == 1) {
 	$Result = DB_query('SET sql_mode = ANSI');
 }
-
-//this statement sets the charset to be used for sending data to and from the db server
-//if not set, both mysqli server and mysqli client/library may assume otherwise
-mysqli_set_charset($db, 'utf8');
 
 /* check connection */
 if (mysqli_connect_errno()) {
@@ -34,24 +36,6 @@ if (mysqli_connect_errno()) {
 if (!$db) {
 	echo '<br />' . _('The configuration in the file config.php for the database user name and password do not provide the information required to connect to the database server');
 	exit;
-}
-
-/* Update to allow RecurringSalesOrdersProcess.php to run via cron */
-if (isset($DatabaseName)) {
-	if (!mysqli_select_db($db, $DatabaseName)) {
-		echo '<br />' . _('The company name entered does not correspond to a database on the database server specified in the config.php configuration file. Try logging in with a different company name');
-		echo '<br /><a href="index.php">' . _('Back to login page') . '</A>';
-		unset($DatabaseName);
-		exit;
-	}
-} else {
-	if (!mysqli_select_db($db, $_SESSION['DatabaseName'])) {
-		echo '<br />' . _('The company name entered does not correspond to a database on the database server specified in the config.php configuration file. Try logging in with a different company name');
-		echo '<br /><a href="index.php">' . _('Back to login page') . '</A>';
-
-		unset($_SESSION['DatabaseName']);
-		exit;
-	}
 }
 
 require_once($PathPrefix . 'includes/MiscFunctions.php');

@@ -6,11 +6,12 @@ $Title = _('Search All Sales Orders');
 
 include('includes/header.inc');
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Search') . '" alt="" />
-	 ' . ' ' . _('Search Sales Orders') . '</p>';
+echo '<p class="page_title_text noPrint" >
+		<img src="', $RootPath, '/css/', $Theme, '/images/magnifier.png" title="', _('Search'), '" alt="" /> ', ' ', _('Search Sales Orders'), '
+	</p>';
 
-echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
+echo '<form onSubmit="return VerifyForm(this);" action="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '" method="post" class="noPrint">';
+echo '<input type="hidden" name="FormID" value="', $_SESSION['FormID'], '" />';
 
 if (isset($_POST['completed'])) {
 	$Completed = "=1";
@@ -61,22 +62,23 @@ if (isset($_POST['ResetPart'])) {
 }
 
 if (isset($OrderNumber)) {
-	echo '<p class="page_title_text noPrint"><img src="' . $RootPath . '/css/' . $Theme . '/images/sales.png" title="' . _('Sales Order') . '" alt="" />
-		 ' . ' ' . _('Order Number') . ' - ' . $OrderNumber . '</p>';
+	echo '<p class="page_title_text noPrint">
+			<img src="', $RootPath, '/css/', $Theme, '/images/sales.png" title="', _('Sales Order'), '" alt="" /> ', _('Order Number'), ' - ', $OrderNumber, '
+		</p>';
 	if (mb_strlen($_SESSION['UserBranch']) > 1) {
-		echo _('For customer') . ': ' . stripslashes($SelectedCustomer);
-		echo '<input type="hidden" name="SelectedCustomer" value="' . $SelectedCustomer . '" />';
+		echo _('For customer'), ': ', stripslashes($SelectedCustomer);
+		echo '<input type="hidden" name="SelectedCustomer" value="', $SelectedCustomer, '" />';
 	}
 } elseif (isset($CustomerRef)) {
 	echo _('Customer Ref') . ' - ' . $CustomerRef;
 	if (mb_strlen($_SESSION['UserBranch']) > 1) {
-		echo ' ' . _('and for customer') . ': ' . stripslashes($SelectedCustomer) . ' ' . _('and') . ' ';
-		echo '<input type="hidden" name="SelectedCustomer" value="' . $SelectedCustomer . '" />';
+		echo ' ', _('and for customer'), ': ', stripslashes($SelectedCustomer), ' ', _('and'), ' ';
+		echo '<input type="hidden" name="SelectedCustomer" value="', $SelectedCustomer, '" />';
 	}
 } else {
 	if (isset($SelectedCustomer)) {
-		echo _('For customer') . ': ' . stripslashes($SelectedCustomer) . ' ' . _('and') . ' ';
-		echo '<input type="hidden" name="SelectedCustomer" value="' . $SelectedCustomer . '" />';
+		echo _('For customer'), ': ', stripslashes($SelectedCustomer), ' ' . _('and'), ' ';
+		echo '<input type="hidden" name="SelectedCustomer" value="', $SelectedCustomer, '" />';
 	}
 
 	if (isset($SelectedStockItem)) {
@@ -117,7 +119,7 @@ if (isset($_POST['SearchParts']) and $_POST['SearchParts'] != '') {
 		$SelectedStockItem = $MyRow[0];
 		$_POST['SearchOrders'] = 'True';
 		unset($StockItemsResult);
-		echo '<br />' . _('For the part') . ': ' . $SelectedStockItem . ' ' . _('and') . ' <input type="hidden" name="SelectedStockItem" value="' . $SelectedStockItem . '" />';
+		echo '<br />', _('For the part'), ': ', $SelectedStockItem, ' ', _('and'), ' <input type="hidden" name="SelectedStockItem" value="', $SelectedStockItem, '" />';
 	}
 
 } else if (isset($_POST['SearchOrders']) and is_date($_POST['OrdersAfterDate']) == 1) {
@@ -131,15 +133,17 @@ if (isset($_POST['SearchParts']) and $_POST['SearchParts'] != '') {
 						salesorders.orddate,
 						salesorders.deliverydate,
 						salesorders.deliverto,
-						currencies.decimalplaces AS currdecimalplaces, SUM(salesorderdetails.unitprice*salesorderdetails.quantity*(1-salesorderdetails.discountpercent)) AS ordervalue
-					FROM salesorders INNER JOIN salesorderdetails
+						currencies.decimalplaces AS currdecimalplaces,
+						SUM(salesorderdetails.unitprice*salesorderdetails.quantity*(1-salesorderdetails.discountpercent)) AS ordervalue
+					FROM salesorders
+					INNER JOIN salesorderdetails
 						ON salesorders.orderno = salesorderdetails.orderno
-						INNER JOIN debtorsmaster
+					INNER JOIN debtorsmaster
 						ON salesorders.debtorno = debtorsmaster.debtorno
-						INNER JOIN custbranch
+					INNER JOIN custbranch
 						ON salesorders.branchcode = custbranch.branchcode
 						AND salesorders.debtorno = custbranch.debtorno
-						INNER JOIN currencies
+					INNER JOIN currencies
 						ON debtorsmaster.currcode = currencies.currabrev
 					WHERE salesorders.orderno='" . $OrderNumber . "'
 						AND salesorders.quotation=0
@@ -153,15 +157,17 @@ if (isset($_POST['SearchParts']) and $_POST['SearchParts'] != '') {
 							salesorders.customerref,
 							salesorders.orddate,
 							salesorders.deliverydate,
-							salesorders.deliverto, SUM(salesorderdetails.unitprice*salesorderdetails.quantity*(1-salesorderdetails.discountpercent)) AS ordervalue
-						FROM salesorders INNER JOIN salesorderdetails
+							salesorders.deliverto,
+							SUM(salesorderdetails.unitprice*salesorderdetails.quantity*(1-salesorderdetails.discountpercent)) AS ordervalue
+						FROM salesorders
+						INNER JOIN salesorderdetails
 							ON salesorders.orderno = salesorderdetails.orderno
-							INNER JOIN debtorsmaster
+						INNER JOIN debtorsmaster
 							ON salesorders.debtorno = debtorsmaster.debtorno
-							INNER JOIN custbranch
+						INNER JOIN custbranch
 							ON salesorders.branchcode = custbranch.branchcode
 							AND salesorders.debtorno = custbranch.debtorno
-							INNER JOIN currencies
+						INNER JOIN currencies
 							ON debtorsmaster.currcode = currencies.currabrev
 						WHERE salesorders.debtorno='" . $SelectedCustomer . "'
 							AND salesorders.customerref like '%" . $CustomerRef . "%'
@@ -175,15 +181,17 @@ if (isset($_POST['SearchParts']) and $_POST['SearchParts'] != '') {
 							salesorders.customerref,
 							salesorders.orddate,
 							salesorders.deliverydate,
-							salesorders.deliverto, SUM(salesorderdetails.unitprice*salesorderdetails.quantity*(1-salesorderdetails.discountpercent)) AS ordervalue
-						FROM salesorders INNER JOIN salesorderdetails
+							salesorders.deliverto,
+							SUM(salesorderdetails.unitprice*salesorderdetails.quantity*(1-salesorderdetails.discountpercent)) AS ordervalue
+						FROM salesorders
+						INNER JOIN salesorderdetails
 							ON salesorders.orderno = salesorderdetails.orderno
-							INNER JOIN debtorsmaster
+						INNER JOIN debtorsmaster
 							ON salesorders.debtorno = debtorsmaster.debtorno
-							INNER JOIN custbranch
+						INNER JOIN custbranch
 							ON salesorders.branchcode = custbranch.branchcode
 							AND salesorders.debtorno = custbranch.debtorno
-							INNER JOIN currencies
+						INNER JOIN currencies
 							ON debtorsmaster.currcode = currencies.currabrev
 						WHERE salesorders.customerref " . LIKE . " '%" . $CustomerRef . "%'
 							AND salesorders.quotation=0
@@ -203,15 +211,17 @@ if (isset($_POST['SearchParts']) and $_POST['SearchParts'] != '') {
 								salesorders.customerref,
 								salesorders.orddate,
 								salesorders.deliverydate,
-								salesorders.deliverto, SUM(salesorderdetails.unitprice*salesorderdetails.quantity*(1-salesorderdetails.discountpercent)) AS ordervalue
-							FROM salesorders INNER JOIN salesorderdetails
+								salesorders.deliverto,
+								SUM(salesorderdetails.unitprice*salesorderdetails.quantity*(1-salesorderdetails.discountpercent)) AS ordervalue
+							FROM salesorders
+							INNER JOIN salesorderdetails
 								ON salesorders.orderno = salesorderdetails.orderno
-								INNER JOIN debtorsmaster
+							INNER JOIN debtorsmaster
 								ON salesorders.debtorno = debtorsmaster.debtorno
-								INNER JOIN custbranch
+							INNER JOIN custbranch
 								ON salesorders.branchcode = custbranch.branchcode
 								AND salesorders.debtorno = custbranch.debtorno
-								INNER JOIN currencies
+							INNER JOIN currencies
 								ON debtorsmaster.currcode = currencies.currabrev
 							WHERE salesorderdetails.stkcode='" . $SelectedStockItem . "'
 								AND salesorders.debtorno='" . $SelectedCustomer . "'
@@ -226,15 +236,17 @@ if (isset($_POST['SearchParts']) and $_POST['SearchParts'] != '') {
 								salesorders.customerref,
 								salesorders.orddate,
 								salesorders.deliverto,
-								salesorders.deliverydate, SUM(salesorderdetails.unitprice*salesorderdetails.quantity*(1-salesorderdetails.discountpercent)) AS ordervalue
-							FROM salesorders INNER JOIN salesorderdetails
+								salesorders.deliverydate,
+								SUM(salesorderdetails.unitprice*salesorderdetails.quantity*(1-salesorderdetails.discountpercent)) AS ordervalue
+							FROM salesorders
+							INNER JOIN salesorderdetails
 								ON salesorders.orderno = salesorderdetails.orderno
-								INNER JOIN debtorsmaster
+							INNER JOIN debtorsmaster
 								ON salesorders.debtorno = debtorsmaster.debtorno
-								INNER JOIN custbranch
+							INNER JOIN custbranch
 								ON salesorders.branchcode = custbranch.branchcode
 								AND salesorders.debtorno = custbranch.debtorno
-								INNER JOIN currencies
+							INNER JOIN currencies
 								ON debtorsmaster.currcode = currencies.currabrev
 							WHERE salesorders.debtorno='" . $SelectedCustomer . "'
 								AND salesorders.orddate >= '" . $DateAfterCriteria . "'
@@ -250,15 +262,17 @@ if (isset($_POST['SearchParts']) and $_POST['SearchParts'] != '') {
 								salesorders.customerref,
 								salesorders.orddate,
 								salesorders.deliverto,
-								salesorders.deliverydate, SUM(salesorderdetails.unitprice*salesorderdetails.quantity*(1-salesorderdetails.discountpercent)) AS ordervalue
-							FROM salesorders INNER JOIN salesorderdetails
+								salesorders.deliverydate,
+								SUM(salesorderdetails.unitprice*salesorderdetails.quantity*(1-salesorderdetails.discountpercent)) AS ordervalue
+							FROM salesorders
+							INNER JOIN salesorderdetails
 								ON salesorders.orderno = salesorderdetails.orderno
-								INNER JOIN debtorsmaster
+							INNER JOIN debtorsmaster
 								ON salesorders.debtorno = debtorsmaster.debtorno
-								INNER JOIN custbranch
+							INNER JOIN custbranch
 								ON salesorders.branchcode = custbranch.branchcode
 								AND salesorders.debtorno = custbranch.debtorno
-								INNER JOIN currencies
+							INNER JOIN currencies
 								ON debtorsmaster.currcode = currencies.currabrev
 							WHERE salesorderdetails.stkcode='" . $SelectedStockItem . "'
 								AND salesorders.orddate >= '" . $DateAfterCriteria . "'
@@ -272,15 +286,17 @@ if (isset($_POST['SearchParts']) and $_POST['SearchParts'] != '') {
 								salesorders.customerref,
 								salesorders.orddate,
 								salesorders.deliverto,
-								salesorders.deliverydate, SUM(salesorderdetails.unitprice*salesorderdetails.quantity*(1-salesorderdetails.discountpercent)) AS ordervalue
-							FROM salesorders INNER JOIN salesorderdetails
+								salesorders.deliverydate,
+								SUM(salesorderdetails.unitprice*salesorderdetails.quantity*(1-salesorderdetails.discountpercent)) AS ordervalue
+							FROM salesorders
+							INNER JOIN salesorderdetails
 								ON salesorders.orderno = salesorderdetails.orderno
-								INNER JOIN debtorsmaster
+							INNER JOIN debtorsmaster
 								ON salesorders.debtorno = debtorsmaster.debtorno
-								INNER JOIN custbranch
+							INNER JOIN custbranch
 								ON salesorders.branchcode = custbranch.branchcode
 								AND salesorders.debtorno = custbranch.debtorno
-								INNER JOIN currencies
+							INNER JOIN currencies
 								ON debtorsmaster.currcode = currencies.currabrev
 							WHERE salesorders.orddate >= '" . $DateAfterCriteria . "'
 								AND salesorders.quotation=0
@@ -314,29 +330,32 @@ if (isset($_POST['SearchParts']) and $_POST['SearchParts'] != '') {
 if (!isset($_POST['OrdersAfterDate']) or $_POST['OrdersAfterDate'] == '' or !is_date($_POST['OrdersAfterDate'])) {
 	$_POST['OrdersAfterDate'] = Date($_SESSION['DefaultDateFormat'], Mktime(0, 0, 0, Date('m') - 2, Date('d'), Date('Y')));
 }
-echo '<div><table class="selection">';
+echo '<table class="selection">';
 
 if (isset($PartString)) {
-	echo '<tr><td>' . $PartString . '</td>';
+	echo '<tr>
+			<td>', $PartString, '</td>';
 } else {
-	echo '<tr><td></td>';
+	echo '<tr>
+			<td></td>';
 }
 if (!isset($_POST['OrderNumber'])) {
 	$_POST['OrderNumber'] = '';
 }
-echo '<td>' . _('Order Number') . ':</td>
-	<td><input type="text" name="OrderNumber" minlength="0" maxlength="8" size="9" value ="' . $_POST['OrderNumber'] . '" /></td>
-	<td>' . _('for all orders placed after') . ': </td>
-	<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '"  name="OrdersAfterDate" minlength="0" maxlength="10" size="11" value="' . $_POST['OrdersAfterDate'] . '" /></td>
-	<td><input type="submit" name="SearchOrders" value="' . _('Search Orders') . '" /></td>
+echo '<td>', _('Order Number'), ':</td>
+		<td><input type="text" name="OrderNumber" minlength="0" maxlength="8" size="9" value="', $_POST['OrderNumber'], '" /></td>
+		<td>', _('for all orders placed after'), ': </td>
+		<td><input type="text" class="date" alt="', $_SESSION['DefaultDateFormat'], '"  name="OrdersAfterDate" maxlength="10" size="11" value="', $_POST['OrdersAfterDate'], '" /></td>
+		<td><input type="submit" name="SearchOrders" value="', _('Search Orders'), '" /></td>
 	</tr>';
 echo '<tr>
 		<td></td>
-		<td>' . _('Customer Ref') . ':</td><td><input type="text" name="CustomerRef" minlength="0" maxlength="8" size="9" /></td>
+		<td>', _('Customer Ref'), ':</td><td><input type="text" name="CustomerRef" minlength="0" maxlength="8" size="9" /></td>
 		<td></td>
-		<td colspan="2"><input type="checkbox" ' . $ShowChecked . ' name="completed" />' . _('Show Completed orders only') . '</td></tr>';
+		<td colspan="2"><input type="checkbox" ', $ShowChecked, ' name="completed" />', _('Show Completed orders only'), '</td>
+	</tr>';
 
-echo '</table></div>';
+echo '</table>';
 
 if (!isset($SelectedStockItem)) {
 	$Result1 = DB_query("SELECT categoryid,
@@ -344,53 +363,55 @@ if (!isset($SelectedStockItem)) {
 						FROM stockcategory
 						ORDER BY categorydescription");
 
-	echo '<br />';
-	echo '<div class="page_help_text noPrint">' . _('To search for sales orders for a specific part use the part selection facilities below') . '</div>';
-	echo '<br />
-		<div><table class="selection">';
-	echo '<tr><td>' . _('Select a stock category') . ':';
+	echo '<div class="page_help_text noPrint">', _('To search for sales orders for a specific part use the part selection facilities below'), '</div>';
+	echo '<table class="selection">';
+	echo '<tr>
+			<td>', _('Select a stock category'), ':';
 	echo '<select minlength="0" name="StockCat">';
 
 	while ($MyRow1 = DB_fetch_array($Result1)) {
 		if (isset($_POST['StockCat']) and $MyRow1['categoryid'] == $_POST['StockCat']) {
-			echo '<option selected="selected" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
+			echo '<option selected="selected" value="', $MyRow1['categoryid'], '">', $MyRow1['categorydescription'], '</option>';
 		} else {
-			echo '<option value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
+			echo '<option value="', $MyRow1['categoryid'], '">', $MyRow1['categorydescription'], '</option>';
 		}
 	}
 
-	echo '</select></td>
-		<td>' . _('Enter text extracts in the description') . ':</td>
+	echo '</select>
+			</td>';
+	echo '<td>', _('Enter text extracts in the description'), ':</td>
 		<td><input type="text" name="Keywords" size="20" minlength="0" maxlength="25" /></td>
 	</tr>
 	<tr>
 		<td></td>
-		<td><b> ' . _('OR') . ' </b>' . _('Enter extract of the Stock Code') . ':</td>
+		<td><b> ', _('OR'), ' </b>', _('Enter extract of the Stock Code'), ':</td>
 		<td><input type="text" name="StockCode" size="15" minlength="0" maxlength="18" /></td>
-   </tr>
-   <tr><td colspan="4"><div class="centre"><input type="submit" name="SearchParts" value="' . _('Search Parts Now') . '" />';
+	</tr>
+	<tr>
+		<td colspan="4">
+			<div class="centre">
+				<input type="submit" name="SearchParts" value="', _('Search Parts Now'), '" />';
 
 	if (count($_SESSION['AllowedPageSecurityTokens']) > 1) {
-		echo '<input type="submit" name="ResetPart" value="' . _('Show All') . '" /></div>';
+		echo '<input type="submit" name="ResetPart" value="', _('Show All'), '" /></div>';
 	}
-	echo '</td>
-		</tr>
-		</table></div>';
+	echo '</div>
+		</td>
+	</tr>
+</table>';
 
 }
 
 if (isset($StockItemsResult)) {
 
-	echo '<br />
-		<table cellpadding="2" class="selection">
+	echo '<table cellpadding="2" class="selection">
 			<tr>
-				<th class="SortableColumn">' . _('Code') . '</th>
-				<th class="SortableColumn">' . _('Description') . '</th>
-				<th>' . _('On Hand') . '</th>
-				<th>' . _('Units') . '</th>
+				<th class="SortableColumn">', _('Code'), '</th>
+				<th class="SortableColumn">', _('Description'), '</th>
+				<th>', _('On Hand'), '</th>
+				<th>', _('Units'), '</th>
 			</tr>';
 
-	$j = 1;
 	$k = 0; //row colour counter
 
 	while ($MyRow = DB_fetch_array($StockItemsResult)) {
@@ -403,10 +424,13 @@ if (isset($StockItemsResult)) {
 			++$k;
 		}
 
-		printf('<td><input type="submit" name="SelectedStockItem" value="%s" /></td>
-				<td>%s</td>
-				<td class="number">%s</td>
-				<td>%s</td></tr>', $MyRow['stockid'], $MyRow['description'], locale_number_format($MyRow['qoh'], $MyRow['decimalplaces']), $MyRow['units']);
+		echo '<td>
+				<input type="submit" name="SelectedStockItem" value="', $MyRow['stockid'], '" />
+			</td>
+			<td>', $MyRow['description'], '</td>
+			<td class="number">', locale_number_format($MyRow['qoh'], $MyRow['decimalplaces']), '</td>
+			<td>', $MyRow['units'], '</td>
+		</tr>';
 
 		//end of page full new headings if
 	}
@@ -421,30 +445,28 @@ if (isset($SalesOrdersResult)) {
 
 	/*show a table of the orders returned by the SQL */
 
-	echo '<br /><table cellpadding="2" width="90%" class="selection">
+	echo '<table cellpadding="2" width="90%" class="selection">
 			<tr>
 				<th colspan="9">
-					<h3>' . _('Sales Orders') . '
-						<img src="' . $RootPath . '/css/' . $Theme . '/images/printer.png" class="PrintIcon noPrint" title="' . _('Print') . '" alt="" onclick="window.print();" />
+					<h3>', _('Sales Orders'), '
+						<img src="', $RootPath, '/css/', $Theme, '/images/printer.png" class="PrintIcon noPrint" title="', _('Print'), '" alt="" onclick="window.print();" />
 					</h3>
 				</th>
 			</tr>
 		<tbody>
 			<tr>
-				<th class="SortableColumn">' . _('Order') . ' #</th>
-				<th class="SortableColumn">' . _('Customer') . '</th>
-				<th class="SortableColumn">' . _('Branch') . '</th>
-				<th>' . _('Cust Order') . ' #</th>
-				<th>' . _('Order Date') . '</th>
-				<th>' . _('Req Del Date') . '</th>
-				<th>' . _('Delivery To') . '</th>
-				<th>' . _('Order Total') . '</th>
+				<th class="SortableColumn">', _('Order'), ' #</th>
+				<th class="SortableColumn">', _('Customer'), '</th>
+				<th class="SortableColumn">', _('Branch'), '</th>
+				<th>', _('Cust Order'), ' #</th>
+				<th class="SortableColumn">', _('Order Date'), '</th>
+				<th class="SortableColumn">', _('Req Del Date'), '</th>
+				<th>', _('Delivery To'), '</th>
+				<th class="SortableColumn">', _('Order Total'), '</th>
 			</tr>';
 
-	$j = 1;
 	$k = 0; //row colour counter
 	while ($MyRow = DB_fetch_array($SalesOrdersResult)) {
-
 
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -454,26 +476,22 @@ if (isset($SalesOrdersResult)) {
 			$k = 1;
 		}
 
-		$ViewPage = $RootPath . '/OrderDetails.php?OrderNumber=' . $MyRow['orderno'];
-		$FormatedDelDate = ConvertSQLDate($MyRow['deliverydate']);
-		$FormatedOrderDate = ConvertSQLDate($MyRow['orddate']);
-		$FormatedOrderValue = locale_number_format($MyRow['ordervalue'], $MyRow['currdecimalplaces']);
-
-		printf('<td><a href="%s">%s</a></td>
-				<td>%s</td>
-				<td>%s</td>
-				<td>%s</td>
-				<td>%s</td>
-				<td>%s</td>
-				<td>%s</td>
-				<td class="number">%s</td>
-				</tr>', $ViewPage, $MyRow['orderno'], $MyRow['name'], $MyRow['brname'], $MyRow['customerref'], $FormatedOrderDate, $FormatedDelDate, $MyRow['deliverto'], $FormatedOrderValue);
+		echo '<td><a href="', $RootPath . '/OrderDetails.php?OrderNumber=' . $MyRow['orderno'], '">', $MyRow['orderno'], '</a></td>
+				<td>', $MyRow['name'], '</td>
+				<td>', $MyRow['brname'], '</td>
+				<td>', $MyRow['customerref'], '</td>
+				<td>', ConvertSQLDate($MyRow['orddate']), '</td>
+				<td>', ConvertSQLDate($MyRow['deliverydate']), '</td>
+				<td>', $MyRow['deliverto'], '</td>
+				<td class="number">', locale_number_format($MyRow['ordervalue'], $MyRow['currdecimalplaces']), '</td>
+			</tr>';
 
 		//end of page full new headings if
 	}
 	//end of while loop
 
-	echo '</tbody></table>';
+	echo '</tbody>
+	</table>';
 }
 
 echo '</form>';

@@ -303,7 +303,7 @@ if (!isset($_SESSION['tender' . $Identifier]) or isset($_POST['LookupDeliveryAdd
 						ON locationusers.loccode=.locations.loccode
 						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
 						AND locationusers.canupd=1
-					WHERE loccode='" . $_POST['StkLocation'] . "'";
+					WHERE locations.loccode='" . $_POST['StkLocation'] . "'";
 
 		$LocnAddrResult = DB_query($SQL);
 		if (DB_num_rows($LocnAddrResult) == 1) {

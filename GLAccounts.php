@@ -205,14 +205,17 @@ if (isset($_POST['submit'])) {
 
 if (!isset($_GET['delete'])) {
 
-	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" id="GLAccounts" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
-	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
+	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" id="GLAccounts" action="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '">';
+	echo '<input type="hidden" name="FormID" value="', $_SESSION['FormID'], '" />';
 
 	if (isset($SelectedAccount)) {
 		//editing an existing account
 
-		$SQL = "SELECT accountcode, accountname, group_ FROM chartmaster WHERE accountcode='" . $SelectedAccount . "'";
+		$SQL = "SELECT accountcode,
+						accountname,
+						group_
+					FROM chartmaster
+					WHERE accountcode='" . $SelectedAccount . "'";
 
 		$Result = DB_query($SQL);
 		$MyRow = DB_fetch_array($Result);
@@ -221,16 +224,16 @@ if (!isset($_GET['delete'])) {
 		$_POST['AccountName'] = $MyRow['accountname'];
 		$_POST['Group'] = $MyRow['group_'];
 
-		echo '<input type="hidden" name="SelectedAccount" value="' . $SelectedAccount . '" />';
-		echo '<input type="hidden" name="AccountCode" value="' . $_POST['AccountCode'] . '" />';
+		echo '<input type="hidden" name="SelectedAccount" value="', $SelectedAccount, '" />';
+		echo '<input type="hidden" name="AccountCode" value="', $_POST['AccountCode'], '" />';
 		echo '<table class="selection">
 				<tr>
-					<td>' . _('Account Code') . ':</td>
-					<td>' . $_POST['AccountCode'] . '</td>
+					<td>', _('Account Code'), ':</td>
+					<td>', $_POST['AccountCode'], '</td>
 				</tr>';
 		echo '<tr>
-				<td>' . _('Account Name') . ':</td>
-				<td><input type="text" size="51" autofocus="autofocus" required="required" minlength="1" maxlength="50" name="AccountName" value="' . $_POST['AccountName'] . '" /></td>
+				<td>', _('Account Name'), ':</td>
+				<td><input type="text" size="51" autofocus="autofocus" required="required" minlength="1" maxlength="50" name="AccountName" value="', $_POST['AccountName'], '" /></td>
 			</tr>';
 	} else {
 		if (!isset($_POST['AccountName'])) {
@@ -238,12 +241,12 @@ if (!isset($_GET['delete'])) {
 		}
 		echo '<table class="selection">';
 		echo '<tr>
-				<td>' . _('Account Code') . ':</td>
+				<td>', _('Account Code'), ':</td>
 				<td><input type="text" name="AccountCode" size="11" autofocus="autofocus" required="required" minlength="1" maxlength="20" /></td>
 			</tr>';
 		echo '<tr>
 				<td>' . _('Account Name') . ':</td>
-				<td><input type="text" size="51" required="required" minlength="1" maxlength="50" name="AccountName" value="' . $_POST['AccountName'] . '" /></td>
+				<td><input type="text" size="51" required="required" minlength="1" maxlength="50" name="AccountName" value="', $_POST['AccountName'], '" /></td>
 			</tr>';
 	}
 
@@ -255,23 +258,24 @@ if (!isset($_GET['delete'])) {
 	$Result = DB_query($SQL);
 
 	echo '<tr>
-			<td>' . _('Account Group') . ':</td>
+			<td>', _('Account Group'), ':</td>
 			<td><select required="required" minlength="1" name="Group">';
 
 	while ($MyRow = DB_fetch_array($Result)) {
-		if (isset($_POST['Group']) and $MyRow[0] == $_POST['Group']) {
-			echo '<option selected="selected" value="';
+		if (isset($_POST['Group']) and $MyRow['groupname'] == $_POST['Group']) {
+			echo '<option selected="selected" value="', $MyRow['groupname'], '">', $MyRow['groupname'], '</option>';
 		} else {
-			echo '<option value="';
+			echo '<option value="', $MyRow['groupname'], '">', $MyRow['groupname'], '</option>';
 		}
-		echo $MyRow[0] . '">' . $MyRow[0] . '</option>';
 	}
-	echo '</select></td>
-		</tr>
+	echo '</select>
+				</td>
+			</tr>
 		</table>';
 
-	echo '<br /><div class="centre"><input type="submit" name="submit" value="' . _('Enter Information') . '" /></div>';
-	echo '</div>';
+	echo '<div class="centre">
+			<input type="submit" name="submit" value="', _('Enter Information'), '" />
+		</div>';
 	echo '</form>';
 
 } //end if record deleted no point displaying form to add record
@@ -284,29 +288,33 @@ if (!isset($SelectedAccount)) {
 	or deletion of the records*/
 
 	$SQL = "SELECT accountcode,
-			accountname,
-			group_,
-			CASE WHEN pandl=0 THEN '" . _('Balance Sheet') . "' ELSE '" . _('Profit/Loss') . "' END AS acttype
-		FROM chartmaster,
-			accountgroups
-		WHERE chartmaster.group_=accountgroups.groupname
-		ORDER BY chartmaster.accountcode";
+					accountname,
+					group_,
+					CASE WHEN pandl=0
+						THEN '" . _('Balance Sheet') . "'
+						ELSE '" . _('Profit/Loss') . "'
+					END AS acttype
+				FROM chartmaster
+				INNER JOIN accountgroups
+					ON chartmaster.group_=accountgroups.groupname
+				ORDER BY chartmaster.accountcode";
 
 	$ErrMsg = _('The chart accounts could not be retrieved because');
 
 	$Result = DB_query($SQL, $ErrMsg);
 
-	echo '<br /><table class="selection">';
+	echo '<table class="selection">';
 	echo '<tr>
-		<th>' . _('Account Code') . '</th>
-		<th>' . _('Account Name') . '</th>
-		<th>' . _('Account Group') . '</th>
-		<th>' . _('P/L or B/S') . '</th>
-	</tr>';
+			<th class="SortableColumn">', _('Account Code'), '</th>
+			<th class="SortableColumn">', _('Account Name'), '</th>
+			<th class="SortableColumn">', _('Account Group'), '</th>
+			<th class="SortableColumn">', _('P/L or B/S'), '</th>
+			<th colspan="2"></th>
+		</tr>';
 
 	$k = 0; //row colour counter
 
-	while ($MyRow = DB_fetch_row($Result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
@@ -316,25 +324,23 @@ if (!isset($SelectedAccount)) {
 		}
 
 
-		printf("<td>%s</td>
-		<td>%s</td>
-		<td>%s</td>
-		<td>%s</td>
-		<td><a href=\"%s&amp;SelectedAccount=%s\">" . _('Edit') . "</a></td>
-		<td><a href=\"%s&amp;SelectedAccount=%s&amp;delete=1\" onclick=\"return MakeConfirm('" . _('Are you sure you wish to delete this account? Additional checks will be performed in any event to ensure data integrity is not compromised.') . "', \'Confirm Delete\', this);\">" . _('Delete') . "</a></td>
-		</tr>", $MyRow[0], $MyRow[1], $MyRow[2], $MyRow[3], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow[0], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow[0]);
+		echo '<td>', $MyRow['accountcode'],'</td>
+			<td>', $MyRow['accountname'], '</td>
+			<td>', $MyRow['group_'], '</td>
+			<td>', $MyRow['acttype'], '</td>
+			<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '?', '&amp;SelectedAccount=', $MyRow['accountcode'], '">', _('Edit'), '</a></td>
+			<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '?', '&amp;SelectedAccount=', $MyRow['accountcode'], '&amp;delete=1" onclick="return MakeConfirm("', _('Are you sure you wish to delete this account? Additional checks will be performed in any event to ensure data integrity is not compromised.'), '", \'Confirm Delete\', this);">', _('Delete'), '</a></td>
+		</tr>';
 
 	}
 	//END WHILE LIST LOOP
 	echo '</table>';
 } //END IF selected ACCOUNT
 
-//end of ifs and buts!
-
-echo '<br />';
-
 if (isset($SelectedAccount)) {
-	echo '<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Show All Accounts') . '</a></div>';
+	echo '<div class="centre">
+			<a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '">', _('Show All Accounts'), '</a>
+		</div>';
 }
 
 include('includes/footer.inc');

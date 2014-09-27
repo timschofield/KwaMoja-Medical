@@ -1,6 +1,6 @@
 <?php
 define("VERSIONFILE", "1.05");
-$PageSecurity=1;
+
 /* Session started in session.inc for password checking and authorisation level check
 config.php is in turn included in session.inc*/
 

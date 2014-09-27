@@ -113,10 +113,11 @@ function SyncProductBasicInformation($ShowMessages, $LastTimeRun, $oc_tableprefi
 				stockmaster.discountcategory,
 				salescatprod.salescatid,
 				salescatprod.manufacturers_id
-			FROM stockmaster, salescatprod
-			WHERE stockmaster.stockid = salescatprod.stockid
-				AND ((stockmaster.date_created >= '" . $LastTimeRun . "'	OR stockmaster.date_updated >= '" . $LastTimeRun . "')
-					OR (salescatprod.date_created >= '" . $LastTimeRun . "'	OR salescatprod.date_updated >= '" . $LastTimeRun . "'))
+			FROM stockmaster
+			INNER JOIN salescatprod
+				ON stockmaster.stockid = salescatprod.stockid
+			WHERE ((stockmaster.date_created >= '" . $LastTimeRun . "'	OR stockmaster.date_updated >= '" . $LastTimeRun . "'
+					OR salescatprod.date_created >= '" . $LastTimeRun . "'	OR salescatprod.date_updated >= '" . $LastTimeRun . "'))
 			ORDER BY stockmaster.stockid";
 
 	$Result = DB_query($SQL);
@@ -142,7 +143,13 @@ function SyncProductBasicInformation($ShowMessages, $LastTimeRun, $oc_tableprefi
 		$k = 0; //row colour counter
 		while ($MyRow = DB_fetch_array($Result)) {
 			if ($ShowMessages) {
-				$k = StartEvenOrOddRow($k);
+				if ($k == 1) {
+					echo '<tr class="EvenTableRows">';
+					$k = 0;
+				} else {
+					echo '<tr class="OddTableRows">';
+					++$k;
+				}
 			}
 			/* Field Matching */
 			$Model = $MyRow['stockid'];
@@ -159,6 +166,8 @@ function SyncProductBasicInformation($ShowMessages, $LastTimeRun, $oc_tableprefi
 			$Shipping = 1; // will need function depending if it's a shippable or not item
 			if (defined('KWAMOJA_ONLINE_CUSTOMER_CODE_PREFIX')) {
 				$CustomerCode = GetKwaMojaCustomerIdFromCurrency(OPENCART_DEFAULT_CURRENCY);
+			} else {
+				$CustomerCode = '';
 			}
 			$Price = GetPrice($MyRow['stockid'], $CustomerCode, $CustomerCode); // Get the price without any discount from KwaMoja
 			$DiscountCategory = $MyRow['discountcategory'];
@@ -1313,7 +1322,13 @@ function SyncRelatedItems($ShowMessages, $LastTimeRun, $oc_tableprefix, $EmailTe
 
 		$k = 0; //row colour counter
 		while ($MyRow = DB_fetch_array($Result)) {
-			$k = StartEvenOrOddRow($k);
+			if ($k == 1) {
+				echo '<tr class="EvenTableRows">';
+				$k = 0;
+			} else {
+				echo '<tr class="OddTableRows">';
+				++$k;
+			}
 
 			/* FIELD MATCHING */
 			$ProductId = GetOpenCartProductId($MyRow['stockid'], $oc_tableprefix);

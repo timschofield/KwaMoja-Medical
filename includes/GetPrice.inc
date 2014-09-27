@@ -1,6 +1,6 @@
 <?php
 
-function GetPrice($StockId, $DebtorNo, $BranchCode, $OrderLineQty, $ReportZeroPrice = 1) {
+function GetPrice($StockId, $DebtorNo, $BranchCode, $OrderLineQty = 0, $ReportZeroPrice = 1) {
 
 	$Price = 0;
 	/*Search by branch and customer for a date specified price */

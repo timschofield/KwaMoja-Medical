@@ -17,12 +17,13 @@ CreateTable('unitsofdimension',
 InsertRecord('unitsofdimension', array('unitname'), array('mm'), array('unitid', 'unitname'), array(NULL, 'mm'));
 InsertRecord('unitsofdimension', array('unitname'), array('cm'), array('unitid', 'unitname'), array(NULL, 'cm'));
 
-NewScript('OpenCartToKwaMoja.php',  '15');
-NewScript('KwaMojaToOpenCart.php',  '15');
+NewScript('OcOpenCartToKwaMoja.php',  '15');
+NewScript('OcKwaMojaToOpenCartHourly.php',  '15');
+NewScript('OcKwaMojaToOpenCartDaily.php',  '15');
 
 NewConfigValue('OpenCartToKwaMoja_LastRun', '0000-00-00 00:00:00');
 NewConfigValue('KwaMojaToOpenCartHourly_LastRun', '0000-00-00 00:00:00');
-NewConfigValue('KwaMojaToOpenCartHourly_LastRun', '0000-00-00 00:00:00');
+NewConfigValue('KwaMojaToOpenCartDaily_LastRun', '0000-00-00 00:00:00');
 
 AddColumn('date_created', 'salescat', 'DATETIME', 'NOT NULL', '0000-00-00 00:00:00', 'active');
 AddColumn('date_updated', 'salescat', 'TIMESTAMP ON UPDATE CURRENT_TIMESTAMP', 'NOT NULL', '0000-00-00 00:00:00', 'date_created');

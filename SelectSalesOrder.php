@@ -1,5 +1,6 @@
 <?php
 
+$PricesSecurity = 1000;
 include('includes/session.inc');
 $Title = _('Search Outstanding Sales Orders');
 /* Manual links before header.inc */
@@ -649,16 +650,20 @@ if (!isset($StockId)) {
 					salesorders.poplaced,
 					SUM(salesorderdetails.unitprice*salesorderdetails.quantity*(1-salesorderdetails.discountpercent)/currencies.rate) AS ordervalue,
 					pickreq.prid
-				FROM salesorders INNER JOIN salesorderdetails
+				FROM salesorders
+				INNER JOIN salesorderdetails
 					ON salesorders.orderno = salesorderdetails.orderno
-					INNER JOIN debtorsmaster
+				INNER JOIN debtorsmaster
 					ON salesorders.debtorno = debtorsmaster.debtorno
-					INNER JOIN custbranch
+				INNER JOIN custbranch
 					ON debtorsmaster.debtorno = custbranch.debtorno
 					AND salesorders.branchcode = custbranch.branchcode
-					INNER JOIN currencies
+				INNER JOIN currencies
 					ON debtorsmaster.currcode = currencies.currabrev
-					WHERE salesorderdetails.completed=0 ";
+				LEFT OUTER JOIN pickreq
+					ON pickreq.orderno=salesorders.orderno
+					AND pickreq.closed=0
+				WHERE salesorderdetails.completed=0";
 		//Add salesman role control
 		if ($_SESSION['SalesmanLogin'] != '') {
 			$SQL .= " AND salesorders.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
@@ -671,44 +676,37 @@ if (!isset($StockId)) {
 			/* $DateAfterCriteria = FormatDateforSQL($OrdersAfterDate); */
 			if (isset($SelectedCustomer)) {
 				if (isset($SelectedStockItem)) {
-					$SQL .= "AND salesorders.quotation=" . $Quotations . "
+					$SQL .= " AND salesorders.quotation=" . $Quotations . "
                                                AND salesorderdetails.stkcode='" . $SelectedStockItem . "'
                                                AND salesorders.debtorno='" . $SelectedCustomer . "'
                                                AND salesorders.fromstkloc='" . $_POST['StockLocation'] . "'";
 				} else {
-					$SQL .= "AND  salesorders.quotation =" . $Quotations . "
+					$SQL .= " AND  salesorders.quotation =" . $Quotations . "
                                                AND salesorders.debtorno='" . $SelectedCustomer . "'
                                                AND salesorders.fromstkloc = '" . $_POST['StockLocation'] . "'";
 
 				}
 			} else { //no customer selected
 				if (isset($SelectedStockItem)) {
-					$SQL .= "AND salesorders.quotation =" . $Quotations . "
+					$SQL .= " AND salesorders.quotation =" . $Quotations . "
                                                AND salesorderdetails.stkcode='" . $SelectedStockItem . "'
                                                AND salesorders.fromstkloc = '" . $_POST['StockLocation'] . "'";
 				} else {
-					$SQL .= "AND salesorders.quotation =" . $Quotations . "
+					$SQL .= " AND salesorders.quotation =" . $Quotations . "
                                                AND salesorders.fromstkloc = '" . $_POST['StockLocation'] . "'";
 				}
 			} //end selected customer
 
 			$SQL .= " GROUP BY salesorders.orderno,
-					LEFT OUTER JOIN pickreq
-					ON pickreq.orderno=salesorders.orderno
-					AND pickreq.closed=0
-				WHERE salesorderdetails.completed=0
-				AND salesorders.orderno=" . $OrderNumber . "
-				AND salesorders.quotation =" . $Quotations . "
-				GROUP BY salesorders.orderno,
-					debtorsmaster.name,
-					custbranch.brname,
-					salesorders.customerref,
-					salesorders.orddate,
-					salesorders.deliverydate,
-					salesorders.deliverto,
-					salesorders.printedpackingslip,
-					salesorders.poplaced
-				ORDER BY salesorders.orderno";
+						debtorsmaster.name,
+						custbranch.brname,
+						salesorders.customerref,
+						salesorders.orddate,
+						salesorders.deliverydate,
+						salesorders.deliverto,
+						salesorders.printedpackingslip,
+						salesorders.poplaced
+					ORDER BY salesorders.orderno";
 
 		} //end not order number selected
 
@@ -739,19 +737,19 @@ if (!isset($StockId)) {
 			}
 			if (isset($_POST['Quotations']) and $_POST['Quotations'] == 'Orders_Only') {
 				echo '<tr>
-						<th class="SortableColumn">' . _('Modify') . '</th>
-						<th>' . _('Acknowledge') . '</th>
-						' . $PrintPickLabel . '
-						<th>' . _('Invoice') . '</th>
-						<th>' . _('Dispatch Note') . '</th>
-						<th>' . _('Labels') . '</th>
-						<th class="SortableColumn">' . _('Customer') . '</th>
-						<th class="SortableColumn">' . _('Branch') . '</th>
-						<th>' . _('Cust Order') . ' #</th>
-						<th>' . _('Order Date') . '</th>
-						<th>' . _('Req Del Date') . '</th>
-						<th>' . _('Delivery To') . '</th>
-						<th>' . _('Order Total') . '<br />' . $_SESSION['CompanyRecord']['currencydefault'] . '</th>';
+						<th class="SortableColumn">', _('Modify'), '</th>
+						<th>', _('Acknowledge'), '</th>
+						', $PrintPickLabel, '
+						<th>', _('Invoice'), '</th>
+						<th>', _('Dispatch Note'), '</th>
+						<th>', _('Labels'), '</th>
+						<th class="SortableColumn">', _('Customer'), '</th>
+						<th class="SortableColumn">', _('Branch'), '</th>
+						<th>', _('Cust Order'), ' #</th>
+						<th>', _('Order Date'), '</th>
+						<th>', _('Req Del Date'), '</th>
+						<th>', _('Delivery To'), '</th>
+						<th>', _('Order Total'), '<br />', $_SESSION['CompanyRecord']['currencydefault'], '</th>';
 
 				if ($AuthRow['cancreate'] == 0) { //if cancreate==0 then this means the user can create orders hmmm!!
 					echo '<th>' . _('Place PO') . '</th></tr>';
@@ -761,15 +759,15 @@ if (!isset($StockId)) {
 			} else {
 				/* displaying only quotations */
 				echo '<tr>
-						<th class="SortableColumn">' . _('Modify') . '</th>
-						<th>' . _('Print Quote') . '</th>
-						<th class="SortableColumn">' . _('Customer') . '</th>
-						<th class="SortableColumn">' . _('Branch') . '</th>
-						<th>' . _('Cust Ref') . ' #</th>
-						<th>' . _('Quote Date') . '</th>
-						<th>' . _('Req Del Date') . '</th>
-						<th>' . _('Delivery To') . '</th>
-						<th>' . _('Quote Total') . '<br />' . $_SESSION['CompanyRecord']['currencydefault'] . '</th>
+						<th class="SortableColumn">', _('Modify'), '</th>
+						<th>', _('Print Quote'), '</th>
+						<th class="SortableColumn">', _('Customer'), '</th>
+						<th class="SortableColumn">', _('Branch'), '</th>
+						<th>', _('Cust Ref'), ' #</th>
+						<th>', _('Quote Date'), '</th>
+						<th>', _('Req Del Date'), '</th>
+						<th>', _('Delivery To'), '</th>
+						<th>', _('Quote Total'), '<br />' . $_SESSION['CompanyRecord']['currencydefault'] . '</th>
 					</tr>';
 			}
 
@@ -817,7 +815,7 @@ if (!isset($StockId)) {
 				$OrdersTotal += $MyRow['ordervalue'];
 				$PrintAck = $RootPath . '/PDFAck.php?AcknowledgementNo=' . $MyRow['orderno'];
 
-				if (!in_array($PricesSecurity, $_SESSION['AllowedPageSecurityTokens']) or !isset($PricesSecurity)) {
+				if (!isset($PricesSecurity) or !in_array($PricesSecurity, $_SESSION['AllowedPageSecurityTokens'])) {
 					$FormatedOrderValue = '---------';
 				}
 
@@ -884,25 +882,26 @@ if (!isset($StockId)) {
 			} //end while loop through orders to display
 			echo '</tbody>';
 
-			echo '</table><table>';
-
-			if ($_POST['Quotations'] == 'Orders_Only' and $AuthRow['cancreate'] == 0) { //cancreate==0 means can create POs
-
-				echo '<tr><td colspan="11" class="number"><input type="submit" name="PlacePO" value="' . _('Place') . " " . _('PO') . '" onclick="return MakeConfirm(\'' . _('This will create purchase orders for all the items on the checked sales orders above, based on the preferred supplier purchasing data held in the system. Are You Absolutely Sure?') . '\');" /></td</tr>';
-			}
-			echo '<tr><td colspan="9" class="number">';
+			echo '<tr>
+					<td colspan="12" class="number">';
 			if ($_POST['Quotations'] == 'Orders_Only') {
 				echo '<b>' . _('Total Order(s) Value in');
 			} else {
 				echo '<b>' . _('Total Quotation(s) Value in');
 			}
-			if (!in_array($PricesSecurity, $_SESSION['AllowedPageSecurityTokens']) or !isset($PricesSecurity)) {
+			if (!isset($PricesSecurity) or !in_array($PricesSecurity, $_SESSION['AllowedPageSecurityTokens'])) {
 				$OrdersTotal = '---------';
 			}
 			echo ' ' . $_SESSION['CompanyRecord']['currencydefault'] . ' :</b></td>
-			<td class="number"><b>' . locale_number_format($OrdersTotal, $_SESSION['CompanyRecord']['decimalplaces']) . '</b></td>
-			</tr>
-			</table>';
+			<td class="number"><b>' . locale_number_format($OrdersTotal, $_SESSION['CompanyRecord']['decimalplaces']) . '</b></td>';
+			if ($_POST['Quotations'] == 'Orders_Only' and $AuthRow['cancreate'] == 0) { //cancreate==0 means can create POs
+
+				echo '<td class="number">
+							<input type="submit" name="PlacePO" value="' . _('Place') . " " . _('PO') . '" onclick="return MakeConfirm(\'' . _('This will create purchase orders for all the items on the checked sales orders above, based on the preferred supplier purchasing data held in the system. Are You Absolutely Sure?') . '\');" />
+						</td>
+					</tr>';
+			}
+			echo '</table>';
 		} //end if there are some orders to show
 	}
 

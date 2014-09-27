@@ -384,7 +384,7 @@ function MaintainOpenCartDiscountForItem($ProductId, $Price, $DiscountCategory, 
 		$SQL = "DELETE FROM " . $oc_tableprefix . KWAMOJA_DISCOUNTS_IN_OPENCART_TABLE . "
 				WHERE product_id = '" . $ProductId . "'";
 		$DeleteErrMsg = _('The SQL to delete the product discount in Opencart table ') . ' ' . KWAMOJA_DISCOUNTS_IN_OPENCART_TABLE . ' ' . ('failed');
-		$ResultDelete = DB_query_oc($SQL, $DeleteErrMsg, $DbgMsg, true);
+		$ResultDelete = DB_query_oc($SQL, $DeleteErrMsg, true);
 	} else {
 		// ProductId has some discount in Kwamoja
 		// so replicate all the discounts in OpenCart
@@ -824,7 +824,7 @@ function MaintainUrlAlias($SEOQuery, $SEOKeyword, $oc_tableprefix) {
 	// search if we already have it
 	$SQL = "SELECT url_alias_id
 			FROM " . $oc_tableprefix . "url_alias
-			WHERE query = '" . $$SEOQuery . "'";
+			WHERE query = '" . $SEOQuery . "'";
 	$ErrMsg = _('Could not get the UrlAlias in Opencart because');
 	$Result = DB_query_oc($SQL, $ErrMsg);
 	if (DB_num_rows($Result) != 0) {
@@ -920,7 +920,7 @@ function GetGoogleProductFeedStatus($StockId, $SalesCategory, $Quantity) {
 }
 
 function GetGoogleProductFeedCategory($StockId, $SalesCategory) {
-	if (isRing($StockId)) {
+/*	if (isRing($StockId)) {
 		$Category = "Clothing & Accessories > Jewellery & Watches > Rings";
 	} elseif (isToeRing($StockId)) {
 		$Category = "Clothing & Accessories > Jewellery & Watches > Rings";
@@ -940,8 +940,8 @@ function GetGoogleProductFeedCategory($StockId, $SalesCategory) {
 		$Category = "Clothing & Accessories > Jewellery & Watches > Necklaces";
 	} else {
 		$Category = "Clothing & Accessories > Jewellery & Watches";
-	}
-	return $Category;
+	}*/
+	return 'Category';
 }
 
 function getDirectoryTree($outerDir){

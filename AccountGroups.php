@@ -259,6 +259,7 @@ if (!isset($_GET['SelectedAccountGroup']) and !isset($_POST['SelectedAccountGrou
 				<th class="SortableColumn">' . _('Sequence In TB') . '</th>
 				<th>' . _('Profit and Loss') . '</th>
 				<th>' . _('Parent Group') . '</th>
+				<th colspan="2"></th>
 			</tr>';
 
 	$k = 0; //row colour counter

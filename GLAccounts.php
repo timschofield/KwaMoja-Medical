@@ -34,7 +34,7 @@ if (isset($_POST['submit'])) {
 	if (isset($SelectedAccount) and $InputError != 1) {
 
 		$SQL = "UPDATE chartmaster SET accountname='" . $_POST['AccountName'] . "',
-						group_='" . $_POST['Group'] . "'
+						group_='" . htmlspecialchars($_POST['Group']) . "'
 				WHERE accountcode ='" . $SelectedAccount . "'";
 
 		$ErrMsg = _('Could not update the account because');
@@ -50,7 +50,7 @@ if (isset($_POST['submit'])) {
 						group_)
 					VALUES ('" . $_POST['AccountCode'] . "',
 							'" . $_POST['AccountName'] . "',
-							'" . $_POST['Group'] . "')";
+							'" . htmlspecialchars($_POST['Group']) . "')";
 		$Result = DB_query($SQL, $ErrMsg);
 
 		prnMsg(_('The new general ledger account has been added'), 'success');
@@ -74,9 +74,7 @@ if (isset($_POST['submit'])) {
 	$MyRow = DB_fetch_row($Result);
 	if ($MyRow[0] > 0) {
 		$CancelDelete = 1;
-		prnMsg(_('Cannot delete this account because chart details have been created using this account and at least one period has postings to it'), 'warn');
-		echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('chart details that require this account code');
-
+		prnMsg(_('Cannot delete this account because chart details have been created using this account and at least one period has postings to it.') . ' ' . _('There are') . ' ' . $MyRow[0] . ' ' . _('chart details that require this account code'), 'warn');
 	} else {
 		// PREVENT DELETES IF DEPENDENT RECORDS IN 'GLTrans'
 		$SQL = "SELECT COUNT(*)
@@ -90,9 +88,7 @@ if (isset($_POST['submit'])) {
 		$MyRow = DB_fetch_row($Result);
 		if ($MyRow[0] > 0) {
 			$CancelDelete = 1;
-			prnMsg(_('Cannot delete this account because transactions have been created using this account'), 'warn');
-			echo '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('transactions that require this account code');
-
+			prnMsg(_('Cannot delete this account because transactions have been created using this account.') . ' ' . '<br />' . _('There are') . ' ' . $MyRow[0] . ' ' . _('transactions that require this account code'), 'warn');
 		} else {
 			//PREVENT DELETES IF Company default accounts set up to this account
 			$SQL = "SELECT COUNT(*) FROM companies
@@ -328,8 +324,8 @@ if (!isset($SelectedAccount)) {
 			<td>', $MyRow['accountname'], '</td>
 			<td>', $MyRow['group_'], '</td>
 			<td>', $MyRow['acttype'], '</td>
-			<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '?', '&amp;SelectedAccount=', $MyRow['accountcode'], '">', _('Edit'), '</a></td>
-			<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '?', '&amp;SelectedAccount=', $MyRow['accountcode'], '&amp;delete=1" onclick="return MakeConfirm("', _('Are you sure you wish to delete this account? Additional checks will be performed in any event to ensure data integrity is not compromised.'), '", \'Confirm Delete\', this);">', _('Delete'), '</a></td>
+			<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '?', '&amp;SelectedAccount=', urlencode($MyRow['accountcode']), '">', _('Edit'), '</a></td>
+			<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '?', '&amp;SelectedAccount=', urlencode($MyRow['accountcode']), '&amp;delete=1" onclick="return MakeConfirm("', _('Are you sure you wish to delete this account? Additional checks will be performed in any event to ensure data integrity is not compromised.'), '", \'Confirm Delete\', this);">', _('Delete'), '</a></td>
 		</tr>';
 
 	}

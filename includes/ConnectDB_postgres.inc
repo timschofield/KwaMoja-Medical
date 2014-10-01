@@ -195,4 +195,15 @@ function DB_select_database($DBName) {
 	mysqli_select_db($db, $DBName);
 }
 
+function DB_set_timezone() {
+	$Now = new DateTime();
+	$Minutes = $Now->getOffset() / 60;
+	$Sign = ($Minutes < 0 ? -1 : 1);
+	$Minutes = abs($Minutes);
+	$Hours = floor($Minutes / 60);
+	$Minutes -= $Hours * 60;
+	$Offset = sprintf('%+d:%02d', $Hours * $Sign, $Minutes);
+	$Result = DB_query("SET time_zone='" . $Offset . "'");
+}
+
 ?>

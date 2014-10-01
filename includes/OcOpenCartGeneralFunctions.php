@@ -835,7 +835,7 @@ function MaintainUrlAlias($SEOQuery, $SEOKeyword, $oc_tableprefix) {
 		$ErrMsg = _('The MaintainUrlAlias function failed');
 		$SQLUpdate = "UPDATE " . $oc_tableprefix . "url_alias SET
 						keyword ='" . $SEOKeyword . "'
-					WHERE url_alias_id = '" . $$AliasId . "'";
+					WHERE url_alias_id = '" . $AliasId . "'";
 		$ResultUpdate = DB_query_oc($SQLUpdate, $ErrMsg, $DbgMsg, true);
 	} else {
 		// otherwise we insert it

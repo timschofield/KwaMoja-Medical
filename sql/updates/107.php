@@ -21,6 +21,10 @@ NewScript('OcOpenCartToKwaMoja.php',  '15');
 NewScript('OcKwaMojaToOpenCartHourly.php',  '15');
 NewScript('OcKwaMojaToOpenCartDaily.php',  '15');
 
+NewMenuItem('orders', 'Transactions', 'Synchronise OpenCart to KwaMoja', '/OcOpenCartToKwaMoja.php', 11);
+NewMenuItem('orders', 'Transactions', 'Synchronise KwaMoja to OpenCart Hourly', '/OcKwaMojaToOpenCartHourly.php', 12);
+NewMenuItem('orders', 'Transactions', 'Synchronise KwaMoja to OpenCart Daily', '/OcKwaMojaToOpenCartDaily.php', 13);
+
 NewConfigValue('OpenCartToKwaMoja_LastRun', '0000-00-00 00:00:00');
 NewConfigValue('KwaMojaToOpenCartHourly_LastRun', '0000-00-00 00:00:00');
 NewConfigValue('KwaMojaToOpenCartDaily_LastRun', '0000-00-00 00:00:00');

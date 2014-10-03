@@ -536,9 +536,12 @@ if (isset($_POST['ProcessPickList']) and $_POST['ProcessPickList'] != '') {
 
 	$DefaultDispatchDate = FormatDateForSQL($DefaultDispatchDate);
 
-	/*remove existing pickserialdetails records*/
-	$SQL = "DELETE from pickserialdetails
-			WHERE pickserialdetails.detailno=  (SELECT detailno FROM pickreqdetails WHERE prid='" . $_SESSION['ProcessingPick'] . "')";
+/*remove existing pickserialdetails records*/
+	$SQL = "DELETE pickserialdetails
+				FROM pickserialdetails
+				INNER JOIN pickreqdetails
+					ON pickreqdetails.detailno=pickserialdetails.detailno
+				WHERE prid='" . $_SESSION['ProcessingPick'] . "'";
 	$ErrMsg = _('CRITICAL ERROR') . ' ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The pickserialdetails could not be deleted');
 	$DbgMsg = _('The following SQL to delete them was used');
 	$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
@@ -571,51 +574,45 @@ if (isset($_POST['ProcessPickList']) and $_POST['ProcessPickList'] != '') {
 	$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 	foreach ($_SESSION['Items' . $Identifier]->LineItems as $OrderLine) {
-		if ($OrderLine->QtyDispatched != 0 and $OrderLine->QtyDispatched != '' and $OrderLine->QtyDispatched) {
-			$LineItemsSQL = "SELECT pickreqdetails.detailno
-							FROM pickreqdetails INNER JOIN pickreq ON pickreq.prid=pickreqdetails.prid
-							INNER JOIN salesorderdetails
-								ON salesorderdetails.orderno = pickreq.orderno
-								AND salesorderdetails.orderlineno=pickreqdetails.orderlineno
-							WHERE pickreqdetails.prid ='" . $_SESSION['ProcessingPick'] . "'
-							AND salesorderdetails.orderlineno='" . $OrderLine->LineNumber . "'";
+		$LineItemsSQL = "SELECT pickreqdetails.detailno
+						FROM pickreqdetails INNER JOIN pickreq ON pickreq.prid=pickreqdetails.prid
+						INNER JOIN salesorderdetails
+							ON salesorderdetails.orderno = pickreq.orderno
+							AND salesorderdetails.orderlineno=pickreqdetails.orderlineno
+						WHERE pickreqdetails.prid ='" . $_SESSION['ProcessingPick'] . "'
+						AND salesorderdetails.orderlineno='" . $OrderLine->LineNumber . "'";
 
-			$ErrMsg = _('The line items of the pick list cannot be retrieved because');
-			$DbgMsg = _('The SQL that failed was');
-			$LineItemsResult = DB_query($LineItemsSQL, $ErrMsg, $DbgMsg);
-			$myline = DB_fetch_array($LineItemsResult);
-			$DetailNo = $myline['detailno'];
-			$SQL = "UPDATE pickreqdetails
-					SET qtypicked='" . $OrderLine->QtyDispatched . "'
-					" . $ExtraLineSQL . "
-					WHERE detailno='" . $DetailNo . "'";
+		$ErrMsg = _('The line items of the pick list cannot be retrieved because');
+		$DbgMsg = _('The SQL that failed was');
+		$LineItemsResult = DB_query($LineItemsSQL, $ErrMsg, $DbgMsg);
+		$MyLine = DB_fetch_array($LineItemsResult);
+		$DetailNo = $MyLine['detailno'];
+		$SQL = "UPDATE pickreqdetails
+				SET qtypicked='" . $OrderLine->QtyDispatched . "'
+				" . $ExtraLineSQL . "
+				WHERE detailno='" . $DetailNo . "'";
 
-			$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The pickreqdetail record could not be inserted because');
-			$DbgMsg = _('The following SQL to insert the pickreqdetail records was used');
-			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+		$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The pickreqdetail record could not be inserted because');
+		$DbgMsg = _('The following SQL to insert the pickreqdetail records was used');
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
-			if ($OrderLine->Controlled == 1) {
-				foreach ($OrderLine->SerialItems as $Item) {
-					/* now insert the serial records */
-					$SQL = "INSERT INTO pickserialdetails (detailno,
-														stockid,
-														serialno,
-														moveqty)
-									VALUES ('" . $DetailNo . "',
-											'" . $OrderLine->StockID . "',
-											'" . $Item->BundleRef . "',
-											'" . $Item->BundleQty . "')";
+		if ($OrderLine->Controlled == 1) {
+			foreach($OrderLine->SerialItems as $Item) {
+				/* now insert the serial records */
+				$SQL = "INSERT INTO pickserialdetails (detailno,
+													stockid,
+													serialno,
+													moveqty)
+								VALUES ('" . $DetailNo . "',
+										'" . $OrderLine->StockID . "',
+										'" . $Item->BundleRef . "',
+										'" . $Item->BundleQty . "')";
 
-					$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The serial stock movement record could not be inserted because');
-					$DbgMsg = _('The following SQL to insert the serial stock movement records was used');
-					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
-				}
-				/* foreach controlled item in the serialitems array */
-			}
-			/*end if the orderline is a controlled item */
-
-		}
-		/*Quantity dispatched is more than 0 */
+				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The serial stock movement record could not be inserted because');
+				$DbgMsg = _('The following SQL to insert the serial stock movement records was used');
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+			}/* foreach controlled item in the serialitems array */
+		} /*end if the orderline is a controlled item */
 
 	}
 	/*end of OrderLine loop */

@@ -57,78 +57,78 @@ $ErrMsg = _('There was a problem retrieving the order header details from the da
 if (!isset($_POST['TransDate']) and $_GET['TransNo'] != 'Preview') {
 	/* If there is no transaction date set, then it must be for a single order */
 	$SQL = "SELECT salesorders.debtorno,
-        		salesorders.orderno,
-        		salesorders.customerref,
-        		salesorders.comments,
-        		salesorders.orddate,
-        		salesorders.deliverto,
-        		salesorders.deladd1,
-        		salesorders.deladd2,
-        		salesorders.deladd3,
-        		salesorders.deladd4,
-        		salesorders.deladd5,
-        		salesorders.deladd6,
-        		salesorders.deliverblind,
-        		salesorders.deliverydate,
-        		debtorsmaster.name,
-        		debtorsmaster.address1,
-        		debtorsmaster.address2,
-        		debtorsmaster.address3,
-        		debtorsmaster.address4,
-        		debtorsmaster.address5,
-        		debtorsmaster.address6,
-        		shippers.shippername,
-        		salesorders.printedpackingslip,
-        		salesorders.datepackingslipprinted,
+				salesorders.orderno,
+				salesorders.customerref,
+				salesorders.comments,
+				salesorders.orddate,
+				salesorders.deliverto,
+				salesorders.deladd1,
+				salesorders.deladd2,
+				salesorders.deladd3,
+				salesorders.deladd4,
+				salesorders.deladd5,
+				salesorders.deladd6,
+				salesorders.deliverblind,
+				salesorders.deliverydate,
+				debtorsmaster.name,
+				debtorsmaster.address1,
+				debtorsmaster.address2,
+				debtorsmaster.address3,
+				debtorsmaster.address4,
+				debtorsmaster.address5,
+				debtorsmaster.address6,
+				shippers.shippername,
+				salesorders.printedpackingslip,
+				salesorders.datepackingslipprinted,
 				locations.loccode,
-        		locations.locationname
-        	FROM salesorders INNER JOIN salesorderdetails on salesorderdetails.orderno=salesorders.orderno,
-        		debtorsmaster,
-        		shippers,
-        		locations INNER JOIN locationusers ON locationusers.loccode=locations.loccode AND locationusers.userid='" . $_SESSION['UserID'] . "' AND locationusers.canupd=1
-        	WHERE salesorders.debtorno=debtorsmaster.debtorno
-        	AND salesorders.shipvia=shippers.shipper_id
-        	AND salesorders.fromstkloc=locations.loccode
-        	AND salesorders.orderno='" . $_GET['TransNo'] . "'
+				locations.locationname
+			FROM salesorders INNER JOIN salesorderdetails on salesorderdetails.orderno=salesorders.orderno,
+				debtorsmaster,
+				shippers,
+				locations INNER JOIN locationusers ON locationusers.loccode=locations.loccode AND locationusers.userid='" . $_SESSION['UserID'] . "' AND locationusers.canupd=1
+			WHERE salesorders.debtorno=debtorsmaster.debtorno
+			AND salesorders.shipvia=shippers.shipper_id
+			AND salesorders.fromstkloc=locations.loccode
+			AND salesorders.orderno='" . $_GET['TransNo'] . "'
 			AND salesorderdetails.completed=0
 			GROUP BY salesorders.orderno";
 } else if (isset($_POST['TransDate']) or (isset($_GET['TransNo']) and $_GET['TransNo'] != 'Preview')) {
 	/* We are printing picking lists for all orders on a day */
 	$SQL = "SELECT salesorders.debtorno,
-            		salesorders.orderno,
-            		salesorders.customerref,
-            		salesorders.comments,
-            		salesorders.orddate,
-            		salesorders.deliverto,
-            		salesorders.deladd1,
-            		salesorders.deladd2,
-            		salesorders.deladd3,
-            		salesorders.deladd4,
-            		salesorders.deladd5,
-            		salesorders.deladd6,
-            		salesorders.deliverblind,
-            		salesorders.deliverydate,
-            		debtorsmaster.name,
-            		debtorsmaster.address1,
-            		debtorsmaster.address2,
-            		debtorsmaster.address3,
-            		debtorsmaster.address4,
-            		debtorsmaster.address5,
-            		debtorsmaster.address6,
-            		shippers.shippername,
-            		salesorders.printedpackingslip,
-            		salesorders.datepackingslipprinted,
+					salesorders.orderno,
+					salesorders.customerref,
+					salesorders.comments,
+					salesorders.orddate,
+					salesorders.deliverto,
+					salesorders.deladd1,
+					salesorders.deladd2,
+					salesorders.deladd3,
+					salesorders.deladd4,
+					salesorders.deladd5,
+					salesorders.deladd6,
+					salesorders.deliverblind,
+					salesorders.deliverydate,
+					debtorsmaster.name,
+					debtorsmaster.address1,
+					debtorsmaster.address2,
+					debtorsmaster.address3,
+					debtorsmaster.address4,
+					debtorsmaster.address5,
+					debtorsmaster.address6,
+					shippers.shippername,
+					salesorders.printedpackingslip,
+					salesorders.datepackingslipprinted,
 					locations.loccode,
-            		locations.locationname
-            	FROM salesorders INNER JOIN salesorderdetails on salesorderdetails.orderno=salesorders.orderno,
-            		debtorsmaster,
-            		shippers,
-            		locations INNER JOIN locationusers ON locationusers.loccode=locations.loccode AND locationusers.userid='" . $_SESSION['UserID'] . "' AND locationusers.canupd=1
-            	WHERE salesorders.debtorno=debtorsmaster.debtorno
+					locations.locationname
+				FROM salesorders INNER JOIN salesorderdetails on salesorderdetails.orderno=salesorders.orderno,
+					debtorsmaster,
+					shippers,
+					locations INNER JOIN locationusers ON locationusers.loccode=locations.loccode AND locationusers.userid='" . $_SESSION['UserID'] . "' AND locationusers.canupd=1
+				WHERE salesorders.debtorno=debtorsmaster.debtorno
 				AND salesorders.shipvia=shippers.shipper_id
-            	AND salesorders.fromstkloc=locations.loccode
-            	AND salesorders.fromstkloc='" . $_POST['loccode'] . "'
-            	AND salesorders.deliverydate<='" . FormatDateForSQL($_POST['TransDate']) . "'
+				AND salesorders.fromstkloc=locations.loccode
+				AND salesorders.fromstkloc='" . $_POST['loccode'] . "'
+				AND salesorders.deliverydate<='" . FormatDateForSQL($_POST['TransDate']) . "'
 				AND salesorderdetails.completed=0
 				GROUP BY salesorders.orderno
 				ORDER BY salesorders.deliverydate, salesorders.orderno";
@@ -233,47 +233,58 @@ for ($i = 0; $i < sizeof($OrdersToPick); $i++) {
 				AND closed='0'";
 		$CountResult = DB_query($SQL);
 		$Count = DB_fetch_row($CountResult);
+		if (!isset($Count[2]) or $COunt[2] == '') {
+			$Count[2]='Please pick order. Generate packing slip. Apply shipment labels and ship in system.';
+		}
 		if ($Count[0] == 0) {
 			$SQL = "SELECT salesorderdetails.stkcode,
-            				stockmaster.description,
+							stockmaster.description,
 							stockmaster.controlled,
 							stockmaster.serialised,
-            				salesorderdetails.orderlineno,
-            				(salesorderdetails.quantity - salesorderdetails.qtyinvoiced) as qtyexpected,
+							salesorderdetails.orderlineno,
+							(salesorderdetails.quantity - salesorderdetails.qtyinvoiced) as qtyexpected,
 							salesorderdetails.quantity,
 							salesorderdetails.qtyinvoiced,
-            				salesorderdetails.narrative,
-            				stockmaster.decimalplaces,
+							salesorderdetails.narrative,
+							stockmaster.decimalplaces,
 							custitem.cust_part,
 							custitem.cust_description,
-							(SELECT quantity FROM locstock where locstock.loccode='" . $OrdersToPick[$i]['loccode'] . "' AND locstock.stockid=salesorderdetails.stkcode) as qtyavail
-            			FROM salesorderdetails
-            			INNER JOIN stockmaster
-            				ON salesorderdetails.stkcode=stockmaster.stockid
+							locstock.quantity qtyavail,
+							bin
+						FROM salesorderdetails
+						INNER JOIN locstock
+							ON locstock.loccode='" . $OrdersToPick[$i]['loccode'] . "'
+							AND locstock.stockid=salesorderdetails.stkcode
+						INNER JOIN stockmaster
+							ON salesorderdetails.stkcode=stockmaster.stockid
 						LEFT OUTER JOIN custitem
 							ON custitem.debtorno='" . $OrdersToPick[$i]['debtorno'] . "'
 							AND custitem.stockid=stockmaster.stockid
-            			WHERE salesorderdetails.orderno='" . $OrdersToPick[$i]['orderno'] . "'
+						WHERE salesorderdetails.orderno='" . $OrdersToPick[$i]['orderno'] . "'
 						AND salesorderdetails.completed=0";
 		} else {
 			$SQL = "SELECT salesorderdetails.stkcode,
-            				stockmaster.description,
+							stockmaster.description,
 							stockmaster.controlled,
 							stockmaster.serialised,
-            				salesorderdetails.orderlineno,
-            				(salesorderdetails.quantity - salesorderdetails.qtyinvoiced) as qtyexpected,
+							salesorderdetails.orderlineno,
+							(salesorderdetails.quantity - salesorderdetails.qtyinvoiced) as qtyexpected,
 							salesorderdetails.quantity,
 							salesorderdetails.qtyinvoiced,
-            				pickreqdetails.qtypicked,
+							pickreqdetails.qtypicked,
 							pickreqdetails.shipqty,
-            				salesorderdetails.narrative,
-            				stockmaster.decimalplaces,
+							salesorderdetails.narrative,
+							stockmaster.decimalplaces,
 							custitem.cust_part,
 							custitem.cust_description,
-							(SELECT quantity FROM locstock where locstock.loccode='" . $OrdersToPick[$i]['loccode'] . "' AND locstock.stockid=salesorderdetails.stkcode) as qtyavail
-            			FROM salesorderdetails
-            			INNER JOIN stockmaster
-            				ON salesorderdetails.stkcode=stockmaster.stockid
+							locstock.quantity qtyavail,
+							bin
+						FROM salesorderdetails
+						INNER JOIN locstock
+							ON locstock.loccode='" . $OrdersToPick[$i]['loccode'] . "'
+							AND locstock.stockid=salesorderdetails.stkcode
+						INNER JOIN stockmaster
+							ON salesorderdetails.stkcode=stockmaster.stockid
 						LEFT OUTER JOIN pickreq
 							ON pickreq.orderno=salesorderdetails.orderno
 							AND pickreq.closed=0
@@ -284,7 +295,7 @@ for ($i = 0; $i < sizeof($OrdersToPick); $i++) {
 						LEFT OUTER JOIN custitem
 							ON custitem.debtorno='" . $OrdersToPick[$i]['debtorno'] . "'
 							AND custitem.stockid=stockmaster.stockid
-            			WHERE salesorderdetails.orderno='" . $OrdersToPick[$i]['orderno'] . "'
+						WHERE salesorderdetails.orderno='" . $OrdersToPick[$i]['orderno'] . "'
 						AND salesorderdetails.completed=0";
 		}
 		$LineResult = DB_query($SQL, $ErrMsg);
@@ -292,7 +303,7 @@ for ($i = 0; $i < sizeof($OrdersToPick); $i++) {
 	if ((isset($_GET['TransNo']) and $_GET['TransNo'] == 'Preview') or (isset($LineResult) and DB_num_rows($LineResult) > 0)) {
 		/*Yes there are line items to start the ball rolling with a page header */
 		DB_Txn_Begin();
-		include('includes/GenPickingListHeader.inc');
+		//include('includes/GenPickingListHeader.inc');
 		if (isset($_POST['TransDate']) or (isset($_GET['TransNo']) and $_GET['TransNo'] != 'Preview')) {
 			$LinesToShow = DB_num_rows($LineResult);
 			if ($Count[0] == 0) {
@@ -316,12 +327,14 @@ for ($i = 0; $i < sizeof($OrdersToPick); $i++) {
 							'Please pick order. Generate packing slip. Apply shipment labels and ship in system.  Return all Paperwork to MemberSupport@resmart.com',
 							'" . $OrdersToPick[$i]['loccode'] . "',
 							'" . $OrdersToPick[$i]['orderno'] . "');";
-				$headerresult = DB_query($SQL);
+				$HeaderResult = DB_query($SQL);
 				$PickReqID = DB_Last_Insert_ID('pickreq', 'prid');
+				$Count[1]=$PickReqID;
 			} //create pickreq
 		} else {
 			$LinesToShow = 1;
 		}
+		include('includes/GenPickingListHeader.inc');
 		$YPos = $FormDesign->Data->y;
 		$Lines = 0;
 
@@ -349,7 +362,7 @@ for ($i = 0; $i < sizeof($OrdersToPick); $i++) {
 							'" . $MyRow2['orderlineno'] . "',
 							'" . $MyRow2['stkcode'] . "',
 							'" . $MyRow2['qtyexpected'] . "');";
-					$LineResult = DB_query($SQL);
+					$InsLineResult = DB_query($SQL);
 					$MyRow2['qtyexpected'] = 0;
 					$MyRow2['qtypicked'] = 0;
 				} //create pickreqdetail
@@ -363,11 +376,11 @@ for ($i = 0; $i < sizeof($OrdersToPick); $i++) {
 					$DisplayPicked = '____________';
 				}
 			}
-			$ListCount++;
+			++$ListCount;
 
 			$LeftOvers = $PDF->addTextWrap($FormDesign->Headings->Column1->x, $Page_Height - $YPos, $FormDesign->Headings->Column1->Length, $FormDesign->Headings->Column1->FontSize, $MyRow2['stkcode'], 'left');
 			$LeftOvers = $PDF->addTextWrap($FormDesign->Headings->Column2->x, $Page_Height - $YPos, $FormDesign->Headings->Column2->Length, $FormDesign->Headings->Column2->FontSize, $MyRow2['description']);
-			$LeftOvers = $PDF->addTextWrap($FormDesign->Headings->Column3->x, $Page_Height - $YPos, $FormDesign->Headings->Column3->Length, $FormDesign->Headings->Column3->FontSize, $DisplayQty, 'right');
+			$LeftOvers = $PDF->addTextWrap($FormDesign->Headings->Column3->x, $Page_Height - $YPos, $FormDesign->Headings->Column3->Length, $FormDesign->Headings->Column3->FontSize, $MyRow2['bin'], 'right');
 			$LeftOvers = $PDF->addTextWrap($FormDesign->Headings->Column4->x, $Page_Height - $YPos, $FormDesign->Headings->Column4->Length, $FormDesign->Headings->Column4->FontSize, $DisplayQtySupplied, 'right');
 			$LeftOvers = $PDF->addTextWrap($FormDesign->Headings->Column5->x, $Page_Height - $YPos, $FormDesign->Headings->Column5->Length, $FormDesign->Headings->Column5->FontSize, $DisplayQtyAvail, 'right');
 			$LeftOvers = $PDF->addTextWrap($FormDesign->Headings->Column6->x, $Page_Height - $YPos, $FormDesign->Headings->Column6->Length, $FormDesign->Headings->Column6->FontSize, $DisplayPicked, 'right');
@@ -456,13 +469,14 @@ for ($i = 0; $i < sizeof($OrdersToPick); $i++) {
 					}
 				} //while
 			} //controlled
-			$YPos = $Page_Height - 45;
-			$PDF->setFont('', 'B');
-			$LeftOvers = $PDF->addTextWrap($FormDesign->Headings->Column2->x, $Page_Height - $YPos, $FormDesign->Headings->Column2->Length, $FormDesign->Headings->Column2->FontSize, _('Signed for: ') . '______________________________');
-			$LeftOvers = $PDF->addTextWrap($FormDesign->Headings->Column3->x, $Page_Height - $YPos, $FormDesign->Headings->Column3->Length, $FormDesign->Headings->Column3->FontSize, _('Date : ') . '__________');
-			$PDF->setFont('', '');
-			$Lines++;
+			++$Lines;
+			$YPos += ($line_height);
 		} //end while there are line items to print out
+		$YPos = $Page_Height - 45;
+		$PDF->setFont('', 'B');
+		$LeftOvers = $PDF->addTextWrap($FormDesign->Headings->Column2->x, $Page_Height - $YPos, $FormDesign->Headings->Column2->Length, $FormDesign->Headings->Column2->FontSize, _('Signed for: ') . '______________________________');
+		$LeftOvers = $PDF->addTextWrap($FormDesign->Headings->Column3->x, $Page_Height - $YPos, $FormDesign->Headings->Column3->Length, $FormDesign->Headings->Column3->FontSize, _('Date : ') . '__________');
+		$PDF->setFont('', '');
 
 	}
 	/*end if there are order details to show on the order*/

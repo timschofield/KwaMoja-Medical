@@ -63,8 +63,8 @@ $Msg .= "//assuming that the web server is also the sql server\n";
 $Msg .= "\$DBUser = '" . $DBUser . "';\n";
 $Msg .= "\$DBPassword = '" . $DBPassword . "';\n";
 $Msg .= "// The timezone of the business - this allows the possibility of having;\n";
-$Msg .= "date_default_timezone_set('" . $_SESSION['Installer']['TimeZone'] . "');\n";
-$Msg .= "putenv('TZ=" . $_SESSION['Installer']['TimeZone'] . "');\n";
+$Msg .= "define('TIMEZONE', '" . $_SESSION['Installer']['TimeZone'] . "');\n";
+$Msg .= "date_default_timezone_set(TIMEZONE);\n";
 $Msg .= "\$AllowCompanySelectionBox = 'ShowSelectionBox';\n";
 $Msg .= "//The system administrator name use the user input mail;\n";
 if (strtolower($_SESSION['Installer']['Email']) != 'admin@kwamoja.com') {

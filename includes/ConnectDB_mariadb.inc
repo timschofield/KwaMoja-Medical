@@ -18,6 +18,7 @@ if (!isset($db)) {
 	//this statement sets the charset to be used for sending data to and from the db server
 	//if not set, both mysqli server and mysqli client/library may assume otherwise
 	mysqli_set_charset($db, 'utf8');
+	DB_set_timezone();
 }
 
 if ($Debug == 1) {
@@ -53,7 +54,7 @@ function DB_query($SQL, $ErrorMessage = '', $DebugMessage = '', $Transaction = f
 	global $PathPrefix;
 	global $RootPath;
 	global $Messages;
-
+//echo $SQL;
 	if (isset($_SESSION['MonthsAuditTrail']) and (DB_error_no($db) == 0 and $_SESSION['MonthsAuditTrail'] > 0) and (DB_affected_rows($Result) > 0)) {
 
 		$SQLArray = explode(' ', $SQL);
@@ -250,6 +251,17 @@ function DB_table_exists($TableName) {
 function DB_select_database($DBName) {
 	global $db;
 	mysqli_select_db($db, $DBName);
+}
+
+function DB_set_timezone() {
+	$Now = new DateTime();
+	$Minutes = $Now->getOffset() / 60;
+	$Sign = ($Minutes < 0 ? -1 : 1);
+	$Minutes = abs($Minutes);
+	$Hours = floor($Minutes / 60);
+	$Minutes -= $Hours * 60;
+	$Offset = sprintf('%+d:%02d', $Hours * $Sign, $Minutes);
+	$Result = DB_query("SET time_zone='" . $Offset . "'");
 }
 
 ?>

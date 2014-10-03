@@ -125,16 +125,14 @@ function SyncProductBasicInformation($ShowMessages, $LastTimeRun, $oc_tableprefi
 	if (DB_num_rows($Result) != 0) {
 		if ($ShowMessages) {
 			echo '<p class="page_title_text" align="center"><strong>' . _('Product Basic Info') . '</strong></p>';
-			echo '<div>';
-			echo '<table class="selection">';
-			$TableHeader = '<tr>
-								<th>' . _('StockID') . '</th>
-								<th>' . _('Description') . '</th>
-								<th>' . _('QOH') . '</th>
-								<th>' . _('Basic Price') . '</th>
-								<th>' . _('Action') . '</th>
-							</tr>';
-			echo $TableHeader;
+			echo '<table class="selection">
+					<tr>
+						<th>' . _('StockID') . '</th>
+						<th>' . _('Description') . '</th>
+						<th>' . _('QOH') . '</th>
+						<th>' . _('Basic Price') . '</th>
+						<th>' . _('Action') . '</th>
+					</tr>';
 		}
 		$DbgMsg = _('The SQL statement that failed was');
 		$UpdateErrMsg = _('The SQL to update Basic Product Information in Opencart failed');
@@ -392,9 +390,7 @@ function SyncProductBasicInformation($ShowMessages, $LastTimeRun, $oc_tableprefi
 			++$i;
 		}
 		if ($ShowMessages) {
-			echo '</table>
-					</div>
-					</form>';
+			echo '</table>';
 		}
 	}
 	if ($ShowMessages) {
@@ -429,16 +425,14 @@ function SyncProductSalesCategories($ShowMessages, $LastTimeRun, $oc_tableprefix
 	if (DB_num_rows($Result) != 0) {
 		if ($ShowMessages) {
 			echo '<p class="page_title_text" align="center"><strong>' . _('Product - Sales Categories') . '</strong></p>';
-			echo '<div>';
-			echo '<table class="selection">';
-			$TableHeader = '<tr>
-								<th>' . _('StockID') . '</th>
-								<th>' . _('Sales Category') . '</th>
-								<th>' . _('Manufacturer Id') . '</th>
-								<th>' . _('Featured') . '</th>
-								<th>' . _('Action') . '</th>
-							</tr>';
-			echo $TableHeader;
+			echo '<table class="selection">
+					<tr>
+						<th>' . _('StockID') . '</th>
+						<th>' . _('Sales Category') . '</th>
+						<th>' . _('Manufacturer Id') . '</th>
+						<th>' . _('Featured') . '</th>
+						<th>' . _('Action') . '</th>
+					</tr>';
 		}
 		$DbgMsg = _('The SQL statement that failed was');
 		$UpdateErrMsg = _('The SQL to update Product - Sales Categories in Opencart failed');
@@ -479,7 +473,13 @@ function SyncProductSalesCategories($ShowMessages, $LastTimeRun, $oc_tableprefix
 				$ResultInsert = DB_query_oc($SQLInsert, $InsertErrMsg, $DbgMsg, true);
 			}
 			if ($ShowMessages) {
-				$k = StartEvenOrOddRow($k);
+				if ($k == 1) {
+					echo '<tr class="EvenTableRows">';
+					$k = 0;
+				} else {
+					echo '<tr class="OddTableRows">';
+					++$k;
+				}
 				printf('<td>%s</td>
 						<td>%s</td>
 						<td>%s</td>
@@ -493,9 +493,7 @@ function SyncProductSalesCategories($ShowMessages, $LastTimeRun, $oc_tableprefix
 			++$i;
 		}
 		if ($ShowMessages) {
-			echo '</table>
-					</div>
-					</form>';
+			echo '</table>';
 		}
 	}
 	if ($ShowMessages) {
@@ -534,22 +532,28 @@ function SyncProductPrices($ShowMessages, $LastTimeRun, $oc_tableprefix, $EmailT
 	if (DB_num_rows($Result) != 0) {
 		if ($ShowMessages) {
 			echo '<p class="page_title_text" align="center"><strong>' . _('Product Prices Updates') . '</strong></p>';
-			echo '<div>';
-			echo '<table class="selection">';
-			$TableHeader = '<tr>
-								<th>' . _('StockID') . '</th>
-								<th>' . _('New Price') . '</th>
-								<th>' . _('Discount Category') . '</th>
-								<th>' . _('Action') . '</th>
-							</tr>';
-			echo $TableHeader;
+			echo '<table class="selection">
+					<tr>
+						<th>' . _('StockID') . '</th>
+						<th>' . _('New Price') . '</th>
+						<th>' . _('Discount Category') . '</th>
+						<th>' . _('Action') . '</th>
+					</tr>';
 		}
 		$DbgMsg = _('The SQL statement that failed was');
 		$UpdateErrMsg = _('The SQL to update Product Prices in Opencart failed');
 
 		$k = 0; //row colour counter
 		while ($MyRow = DB_fetch_array($Result)) {
-			$k = StartEvenOrOddRow($k);
+			if ($ShowMessages) {
+				if ($k == 1) {
+					echo '<tr class="EvenTableRows">';
+					$k = 0;
+				} else {
+					echo '<tr class="OddTableRows">';
+					++$k;
+				}
+			}
 
 			/* Field Matching */
 			$Model = $MyRow['stockid'];
@@ -584,9 +588,7 @@ function SyncProductPrices($ShowMessages, $LastTimeRun, $oc_tableprefix, $EmailT
 			++$i;
 		}
 		if ($ShowMessages) {
-			echo '</table>
-					</div>
-					</form>';
+			echo '</table>';
 		}
 	}
 	if ($ShowMessages) {
@@ -623,14 +625,12 @@ function SyncProductQOH($ShowMessages, $LastTimeRun, $oc_tableprefix, $EmailText
 	if (DB_num_rows($Result) != 0) {
 		if ($ShowMessages) {
 			echo '<p class="page_title_text" align="center"><strong>' . _('Product QOH Updates') . '</strong></p>';
-			echo '<div>';
-			echo '<table class="selection">';
-			$TableHeader = '<tr>
-								<th>' . _('StockID') . '</th>
-								<th>' . _('Online QOH') . '</th>
-								<th>' . _('Action') . '</th>
-							</tr>';
-			echo $TableHeader;
+			echo '<table class="selection">
+					<tr>
+						<th>' . _('StockID') . '</th>
+						<th>' . _('Online QOH') . '</th>
+						<th>' . _('Action') . '</th>
+					</tr>';
 		}
 		$DbgMsg = _('The SQL statement that failed was');
 		$UpdateErrMsg = _('The SQL to update Product QOH in Opencart failed');
@@ -660,7 +660,15 @@ function SyncProductQOH($ShowMessages, $LastTimeRun, $oc_tableprefix, $EmailText
 						WHERE product_id = '" . $ProductId . "'";
 			$ResultUpdate = DB_query_oc($SQLUpdate, $UpdateErrMsg, $DbgMsg, true);
 			if ($ShowMessages) {
-				$k = StartEvenOrOddRow($k);
+				if ($ShowMessages) {
+					if ($k == 1) {
+						echo '<tr class="EvenTableRows">';
+						$k = 0;
+					} else {
+						echo '<tr class="OddTableRows">';
+						++$k;
+					}
+				}
 				printf('<td>%s</td>
 						<td class="number">%s</td>
 						<td>%s</td>
@@ -672,9 +680,7 @@ function SyncProductQOH($ShowMessages, $LastTimeRun, $oc_tableprefix, $EmailText
 			++$i;
 		}
 		if ($ShowMessages) {
-			echo '</table>
-					</div>
-					</form>';
+			echo '</table>';
 		}
 	}
 	if ($ShowMessages) {
@@ -717,14 +723,12 @@ function CleanDuplicatedUrlAlias($ShowMessages, $LastTimeRun, $oc_tableprefix, $
 				if ($ShowHeader) {
 					if ($ShowMessages) {
 						echo '<p class="page_title_text" align="center"><strong>' . _('Duplicated URL Alias clean up') . '</strong></p>';
-						echo '<div>';
-						echo '<table class="selection">';
-						$TableHeader = '<tr>
-											<th>' . _('URL Alias ID') . '</th>
-											<th>' . _('Query') . '</th>
-											<th>' . _('Keyword') . '</th>
-										</tr>';
-						echo $TableHeader;
+						echo '<table class="selection">
+								<tr>
+									<th>' . _('URL Alias ID') . '</th>
+									<th>' . _('Query') . '</th>
+									<th>' . _('Keyword') . '</th>
+								</tr>';
 					}
 					$ShowHeader = FALSE;
 				}
@@ -760,7 +764,13 @@ function CleanDuplicatedUrlAlias($ShowMessages, $LastTimeRun, $oc_tableprefix, $
 				}
 
 				if ($ShowMessages) {
-					$k = StartEvenOrOddRow($k);
+					if ($k == 1) {
+						echo '<tr class="EvenTableRows">';
+						$k = 0;
+					} else {
+						echo '<tr class="OddTableRows">';
+						++$k;
+					}
 					printf('<td class="number">%s</td>
 							<td>%s</td>
 							<td>%s</td>
@@ -776,9 +786,7 @@ function CleanDuplicatedUrlAlias($ShowMessages, $LastTimeRun, $oc_tableprefix, $
 		}
 		if (!$ShowHeader) {
 			if ($ShowMessages) {
-				echo '</table>
-					</div>
-					</form>';
+				echo '</table>';
 			}
 		}
 	}
@@ -808,14 +816,12 @@ function SyncSalesCategories($ShowMessages, $LastTimeRun, $oc_tableprefix, $Emai
 	if (DB_num_rows($Result) != 0) {
 		if ($ShowMessages) {
 			echo '<p class="page_title_text" align="center"><strong>' . _('Sales categories') . '</strong></p>';
-			echo '<div>';
-			echo '<table class="selection">';
-			$TableHeader = '<tr>
-								<th>' . _('SalesCatID') . '</th>
-								<th>' . _('SalesCatName') . '</th>
-								<th>' . _('Action') . '</th>
-							</tr>';
-			echo $TableHeader;
+			echo '<table class="selection">
+					<tr>
+						<th>' . _('SalesCatID') . '</th>
+						<th>' . _('SalesCatName') . '</th>
+						<th>' . _('Action') . '</th>
+					</tr>';
 		}
 		$DbgMsg = _('The SQL statement that failed was');
 		$UpdateErrMsg = _('The SQL to update sales categories in Opencart failed');
@@ -917,7 +923,13 @@ function SyncSalesCategories($ShowMessages, $LastTimeRun, $oc_tableprefix, $Emai
 
 			}
 			if ($ShowMessages) {
-				$k = StartEvenOrOddRow($k);
+				if ($k == 1) {
+					echo '<tr class="EvenTableRows">';
+					$k = 0;
+				} else {
+					echo '<tr class="OddTableRows">';
+					++$k;
+				}
 				printf('<td>%s</td>
 						<td>%s</td>
 						<td>%s</td>
@@ -929,9 +941,7 @@ function SyncSalesCategories($ShowMessages, $LastTimeRun, $oc_tableprefix, $Emai
 			++$i;
 		}
 		if ($ShowMessages) {
-			echo '</table>
-					</div>
-					</form>';
+			echo '</table>';
 		}
 	}
 	if ($ShowMessages) {
@@ -965,14 +975,12 @@ function SyncFeaturedList($ShowMessages, $LastTimeRun, $oc_tableprefix, $EmailTe
 	if (DB_num_rows($Result) != 0) {
 		if ($ShowMessages) {
 			echo '<p class="page_title_text" align="center"><strong>' . _('Create featured list in OpenCart') . '</strong></p>';
-			echo '<div>';
-			echo '<table class="selection">';
-			$TableHeader = '<tr>
-								<th>' . _('StockID') . '</th>
-								<th>' . _('OpenCartID') . '</th>
-								<th>' . _('Action') . '</th>
-							</tr>';
-			echo $TableHeader;
+			echo '<table class="selection">
+					<tr>
+						<th>' . _('StockID') . '</th>
+						<th>' . _('OpenCartID') . '</th>
+						<th>' . _('Action') . '</th>
+					</tr>';
 		}
 		$Action = "Added";
 		$k = 0; //row colour counter
@@ -990,7 +998,13 @@ function SyncFeaturedList($ShowMessages, $LastTimeRun, $oc_tableprefix, $EmailTe
 				$ListFeaturedOpenCart = $ListFeaturedOpenCart . "," . strval($ProductId);
 			}
 			if ($ShowMessages) {
-				$k = StartEvenOrOddRow($k);
+				if ($k == 1) {
+					echo '<tr class="EvenTableRows">';
+					$k = 0;
+				} else {
+					echo '<tr class="OddTableRows">';
+					++$k;
+				}
 				printf('<td>%s</td>
 						<td class="number">%s</td>
 						<td>%s</td>
@@ -1003,9 +1017,7 @@ function SyncFeaturedList($ShowMessages, $LastTimeRun, $oc_tableprefix, $EmailTe
 		}
 		UpdateSettingValueOpenCart($SettingId, $ListFeaturedOpenCart, $oc_tableprefix);
 		if ($ShowMessages) {
-			echo '</table>
-					</div>
-					</form>';
+			echo '</table>';
 		}
 	}
 	if ($ShowMessages) {
@@ -1037,14 +1049,12 @@ function ActivateCategoryDependingOnQOH($ShowMessages, $LastTimeRun, $oc_tablepr
 	if (DB_num_rows($Result) != 0) {
 		if ($ShowMessages) {
 			echo '<p class="page_title_text" align="center"><strong>' . _('Activate/Inactivate Categories depending on QOH') . '</strong></p>';
-			echo '<div>';
-			echo '<table class="selection">';
-			$TableHeader = '<tr>
-								<th>' . _('Sales Category') . '</th>
-								<th>' . _('QOH') . '</th>
-								<th>' . _('Action') . '</th>
-							</tr>';
-			echo $TableHeader;
+			echo '<table class="selection">
+					<tr>
+						<th>' . _('Sales Category') . '</th>
+						<th>' . _('QOH') . '</th>
+						<th>' . _('Action') . '</th>
+					</tr>';
 		}
 		$DbgMsg = _('The SQL statement that failed was');
 		$UpdateErrMsg = _('The SQL to Activate Categories depending QOH in Opencart failed');
@@ -1070,7 +1080,13 @@ function ActivateCategoryDependingOnQOH($ShowMessages, $LastTimeRun, $oc_tablepr
 							WHERE category_id = '" . $CategoryId . "'";
 			$ResultUpdate = DB_query_oc($SQLUpdate, $UpdateErrMsg, $DbgMsg, true);
 			if ($ShowMessages) {
-				$k = StartEvenOrOddRow($k);
+				if ($k == 1) {
+					echo '<tr class="EvenTableRows">';
+					$k = 0;
+				} else {
+					echo '<tr class="OddTableRows">';
+					++$k;
+				}
 				printf('<td>%s</td>
 						<td class="number">%s</td>
 						<td>%s</td>
@@ -1083,9 +1099,7 @@ function ActivateCategoryDependingOnQOH($ShowMessages, $LastTimeRun, $oc_tablepr
 			++$i;
 		}
 		if ($ShowMessages) {
-			echo '</table>
-					</div>
-					</form>';
+			echo '</table>';
 		}
 	}
 	if ($ShowMessages) {
@@ -1121,13 +1135,11 @@ function MaintainOpenCartOutletSalesCategories($ShowMessages, $LastTimeRun, $oc_
 	if (DB_num_rows($Result) != 0) {
 		if ($ShowMessages) {
 			echo '<p class="page_title_text" align="center"><strong>' . _('Maintain Outlet Sales Categories') . '</strong></p>';
-			echo '<div>';
-			echo '<table class="selection">';
-			$TableHeader = '<tr>
-								<th>' . _('StockID') . '</th>
-								<th>' . _('Action') . '</th>
-							</tr>';
-			echo $TableHeader;
+			echo '<table class="selection">
+					<tr>
+						<th>' . _('StockID') . '</th>
+						<th>' . _('Action') . '</th>
+					</tr>';
 		}
 		$DbgMsg = _('The SQL statement that failed was');
 		$UpdateErrMsg = _('The SQL to update Product QOH in Opencart failed');
@@ -1144,7 +1156,13 @@ function MaintainOpenCartOutletSalesCategories($ShowMessages, $LastTimeRun, $oc_
 								AND category_id NOT IN (" . OPENCART_OUTLET_CATEGORIES . ")";
 			$ResultDelete = DB_query_oc($SQLDelete, $UpdateErrMsg, $DbgMsg, true);
 			if ($ShowMessages) {
-				$k = StartEvenOrOddRow($k);
+				if ($k == 1) {
+					echo '<tr class="EvenTableRows">';
+					$k = 0;
+				} else {
+					echo '<tr class="OddTableRows">';
+					++$k;
+				}
 				printf('<td>%s</td>
 						<td>%s</td>
 						</tr>', $Model, $Action);
@@ -1156,9 +1174,7 @@ function MaintainOpenCartOutletSalesCategories($ShowMessages, $LastTimeRun, $oc_
 			++$i;
 		}
 		if ($ShowMessages) {
-			echo '</table>
-					</div>
-					</form>';
+			echo '</table>';
 		}
 	}
 	if ($EmailText != '') {
@@ -1179,20 +1195,24 @@ function MaintainKwaMojaOutletSalesCategories($ShowMessages, $LastTimeRun, $oc_t
 	if (DB_num_rows($Result) != 0) {
 		if ($ShowMessages) {
 			echo '<p class="page_title_text" align="center"><strong>' . _('Maintain KwaMoja Outlet Sales Categories') . '</strong></p>';
-			echo '<div>';
-			echo '<table class="selection">';
-			$TableHeader = '<tr>
-								<th>' . _('StockID') . '</th>
-								<th>' . _('Action') . '</th>
-							</tr>';
-			echo $TableHeader;
+			echo '<table class="selection">
+					<tr>
+						<th>' . _('StockID') . '</th>
+						<th>' . _('Action') . '</th>
+					</tr>';
 		}
 		$DbgMsg = _('The SQL statement that failed was');
 		$UpdateErrMsg = _('The SQL to update outlet sales category in KwaMoja failed');
 
 		$k = 0; //row colour counter
 		while ($MyRow = DB_fetch_array($Result)) {
-			$k = StartEvenOrOddRow($k);
+			if ($k == 1) {
+				echo '<tr class="EvenTableRows">';
+				$k = 0;
+			} else {
+				echo '<tr class="OddTableRows">';
+				++$k;
+			}
 
 			$ProductId = $MyRow['stockid'];
 
@@ -1213,9 +1233,7 @@ function MaintainKwaMojaOutletSalesCategories($ShowMessages, $LastTimeRun, $oc_t
 			++$i;
 		}
 		if ($ShowMessages) {
-			echo '</table>
-					</div>
-					</form>';
+			echo '</table>';
 		}
 	}
 	if ($EmailText != '') {
@@ -1230,13 +1248,11 @@ function SyncMultipleImages($ShowMessages, $LastTimeRun, $oc_tableprefix, $Email
 
 	if ($ShowMessages) {
 		echo '<p class="page_title_text" align="center"><strong>' . _('Synchronize multiple images per item') . '</strong></p>';
-		echo '<div>';
-		echo '<table class="selection">';
-		$TableHeader = '<tr>
-							<th>' . _('KwaMoja Code') . '</th>
-							<th>' . _('File') . '</th>
-						</tr>';
-		echo $TableHeader;
+		echo '<table class="selection">
+				<tr>
+					<th>' . _('KwaMoja Code') . '</th>
+					<th>' . _('File') . '</th>
+				</tr>';
 	}
 	$SQLTruncate = "TRUNCATE " . $oc_tableprefix . "product_image";
 	$ResultSQLTruncate = DB_query_oc($SQLTruncate);
@@ -1267,7 +1283,13 @@ function SyncMultipleImages($ShowMessages, $LastTimeRun, $oc_tableprefix, $Email
 									'" . $multipleimage . "')";
 					$ResultInsert = DB_query_oc($SQLInsert, $InsertErrMsg, $DbgMsg, true);
 					if ($ShowMessages) {
-						$k = StartEvenOrOddRow($k);
+						if ($k == 1) {
+							echo '<tr class="EvenTableRows">';
+							$k = 0;
+						} else {
+							echo '<tr class="OddTableRows">';
+							++$k;
+						}
 						printf('<td>%s</td>
 								<td>%s</td>
 								</tr>', $StockId, $file);
@@ -1279,9 +1301,7 @@ function SyncMultipleImages($ShowMessages, $LastTimeRun, $oc_tableprefix, $Email
 		}
 	}
 	if ($ShowMessages) {
-		echo '</table>
-				</div>
-				</form>';
+		echo '</table>';
 		prnMsg(locale_number_format($i, 0) . ' ' . _('Multiple Images Synchronized'), 'success');
 	}
 	if ($EmailText != '') {
@@ -1305,16 +1325,14 @@ function SyncRelatedItems($ShowMessages, $LastTimeRun, $oc_tableprefix, $EmailTe
 	if (DB_num_rows($Result) != 0) {
 		if ($ShowMessages) {
 			echo '<p class="page_title_text" align="center"><strong>' . _('Related Items') . '</strong></p>';
-			echo '<div>';
-			echo '<table class="selection">';
-			$TableHeader = '<tr>
-								<th>' . _('Item KwaMoja') . '</th>
-								<th>' . _('Related KwaMoja') . '</th>
-								<th>' . _('Item OC') . '</th>
-								<th>' . _('Related OC') . '</th>
-								<th>' . _('Action') . '</th>
-							</tr>';
-			echo $TableHeader;
+			echo '<table class="selection">
+					<tr>
+						<th>' . _('Item KwaMoja') . '</th>
+						<th>' . _('Related KwaMoja') . '</th>
+						<th>' . _('Item OC') . '</th>
+						<th>' . _('Related OC') . '</th>
+						<th>' . _('Action') . '</th>
+					</tr>';
 		}
 		$DbgMsg = _('The SQL statement that failed was');
 		$UpdateErrMsg = _('The SQL to update related items in Opencart failed');
@@ -1358,9 +1376,7 @@ function SyncRelatedItems($ShowMessages, $LastTimeRun, $oc_tableprefix, $EmailTe
 			++$i;
 		}
 		if ($ShowMessages) {
-			echo '</table>
-					</div>
-					</form>';
+			echo '</table>';
 		}
 	}
 	if ($ShowMessages) {

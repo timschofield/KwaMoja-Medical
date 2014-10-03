@@ -17,12 +17,13 @@ $SysAdminEmail = 'admin@mydomain.com';
 // The timezone of the business - this allows the possibility of having
 // the web-server on a overseas machine but record local time
 // this is not necessary if you have your own server locally
-//date_default_timezone_set('Europe/London');
-//date_default_timezone_set('America/Los_Angeles');
-//date_default_timezone_set('Asia/Shanghai');
-//date_default_timezone_set('Australia/Melbourne');
-//date_default_timezone_set('Australia/Sydney');
-//date_default_timezone_set('Pacific/Auckland');
+define('TIMEZONE', 'Europe/London');
+//define('TIMEZONE', 'America/Los_Angeles');
+//define('TIMEZONE', 'Asia/Shanghai');
+//define('TIMEZONE', 'Australia/Melbourne');
+//define('TIMEZONE', 'Australia/Sydney');
+//define('TIMEZONE', 'Pacific/Auckland');
+date_default_timezone_set(TIMEZONE);
 
 // Connection information for the database
 // $Host is the computer ip address or name where the database is located

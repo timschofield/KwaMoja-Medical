@@ -6,15 +6,19 @@ global $db; // Make sure it IS global, regardless of our context
 if (!isset($DBPort)) {
 	$DBPort = 3306;
 }
-$db = mysql_pconnect($Host . ':' . $DBPort, $DBUser, $DBPassword);
 
 if ($Debug == 1) {
 	$Result = DB_query('SET sql_mode = ANSI');
 }
 
-//this statement sets the charset to be used for sending data to and from the db server
-//if not set, both mysql server and mysql client/library may assume otherwise
-mysql_set_charset('utf8', $db);
+if (!isset($db)) {
+	$db = $db = mysql_pconnect($Host . ':' . $DBPort, $DBUser, $DBPassword);
+
+	//this statement sets the charset to be used for sending data to and from the db server
+	//if not set, both mysqli server and mysqli client/library may assume otherwise
+	mysqli_set_charset($db, 'utf8');
+	DB_set_timezone();
+}
 
 //$varabc =  mysql_client_encoding($db);
 //printf("client encoding is %s\n", $varabc);
@@ -230,6 +234,17 @@ function DB_table_exists($TableName) {
 function DB_select_database($DBName) {
 	global $db;
 	mysql_select_db($DBName, $db);
+}
+
+function DB_set_timezone() {
+	$Now = new DateTime();
+	$Minutes = $Now->getOffset() / 60;
+	$Sign = ($Minutes < 0 ? -1 : 1);
+	$Minutes = abs($Minutes);
+	$Hours = floor($Minutes / 60);
+	$Minutes -= $Hours * 60;
+	$Offset = sprintf('%+d:%02d', $Hours * $Sign, $Minutes);
+	$Result = DB_query("SET time_zone='" . $Offset . "'");
 }
 
 ?>

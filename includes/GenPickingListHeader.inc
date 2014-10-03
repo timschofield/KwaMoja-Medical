@@ -78,7 +78,7 @@ $PDF->addText($FormDesign->PageNumber->x, $Page_Height - $FormDesign->PageNumber
 $PDF->setFont('', 'B');
 $LeftOvers = $PDF->addTextWrap($FormDesign->Headings->Column1->x, $Page_Height - $FormDesign->Headings->Column1->y, $FormDesign->Headings->Column1->Length, $FormDesign->Headings->Column1->FontSize, _('Item Code'), 'left');
 $LeftOvers = $PDF->addTextWrap($FormDesign->Headings->Column2->x, $Page_Height - $FormDesign->Headings->Column2->y, $FormDesign->Headings->Column2->Length, $FormDesign->Headings->Column2->FontSize, _('Item Description'), 'left');
-$LeftOvers = $PDF->addTextWrap($FormDesign->Headings->Column3->x, $Page_Height - $FormDesign->Headings->Column3->y, $FormDesign->Headings->Column3->Length, $FormDesign->Headings->Column3->FontSize, _('Order Quantity'), 'right');
+$LeftOvers = $PDF->addTextWrap($FormDesign->Headings->Column3->x, $Page_Height - $FormDesign->Headings->Column3->y, $FormDesign->Headings->Column3->Length, $FormDesign->Headings->Column3->FontSize, _('Bin Location'), 'right');
 $LeftOvers = $PDF->addTextWrap($FormDesign->Headings->Column4->x, $Page_Height - $FormDesign->Headings->Column4->y, $FormDesign->Headings->Column4->Length, $FormDesign->Headings->Column4->FontSize, _('Open Quantity'), 'right');
 $LeftOvers = $PDF->addTextWrap($FormDesign->Headings->Column5->x, $Page_Height - $FormDesign->Headings->Column5->y, $FormDesign->Headings->Column5->Length, $FormDesign->Headings->Column5->FontSize, _('Available'), 'right');
 $LeftOvers = $PDF->addTextWrap($FormDesign->Headings->Column6->x, $Page_Height - $FormDesign->Headings->Column6->y, $FormDesign->Headings->Column6->Length, $FormDesign->Headings->Column6->FontSize, _('Actual Picked'), 'right');

@@ -162,7 +162,7 @@ if (isset($_POST['submit'])) {
 												customerpoline='" . $_POST['CustomerPOLine'] . "',
 												typeid='" . $_POST['typeid'] . "',
 												language_id='" . $_POST['LanguageID'] . "'
-											WHERE debtorno = '" . $_POST['DebtorNo'] . "'";
+											WHERE debtorno = '" . stripslashes($_POST['DebtorNo']) . "'";
 			} //$MyRow[0] == 0
 			else {
 				$CurrSQL = "SELECT currcode
@@ -192,7 +192,7 @@ if (isset($_POST['submit'])) {
 												customerpoline='" . $_POST['CustomerPOLine'] . "',
 												typeid='" . $_POST['typeid'] . "',
 												language_id='" . $_POST['LanguageID'] . "'
-											WHERE debtorno = '" . $_POST['DebtorNo'] . "'";
+											WHERE debtorno = '" . stripslashes($_POST['DebtorNo']) . "'";
 
 				if ($OldCurrency != $_POST['CurrCode']) {
 					prnMsg(_('The currency code cannot be updated as there are already transactions for this customer'), 'info');
@@ -555,7 +555,7 @@ if (!isset($DebtorNo)) {
 			<td><table class="selection">
 				<tr>
 					<td>' . _('Discount Percent') . ':</td>
-					<td><input tabindex="11" type="text" class="number" name="Discount" value="0" size="5" minlength="0" maxlength="4" /></td>
+					<td><input tabindex="11" type="text" class="number" name="Discount" value="0" size="5" minlength="0" maxlength="5" /></td>
 				</tr>
 				<tr>
 					<td>' . _('Discount Code') . ':</td>
@@ -928,7 +928,7 @@ else {
 
 		echo '<tr>
 				<td>' . _('Discount Percent') . ':</td>
-				<td><input type="text" name="Discount" class="number" size="5" minlength="0" maxlength="4" value="' . $_POST['Discount'] . '" /></td>
+				<td><input type="text" name="Discount" class="number" size="5" minlength="0" maxlength="5" value="' . $_POST['Discount'] . '" /></td>
 			</tr>
 			<tr>
 				<td>' . _('Discount Code') . ':</td>

@@ -1,12 +1,12 @@
 <?php
 
-include('includes/session.inc');
+include ('includes/session.inc');
 $Title = _('Customer Branches');
 /* Manual links before header.inc */
 $ViewTopic = 'AccountsReceivable';
 $BookMark = 'NewCustomerBranch';
-include('includes/header.inc');
-include('includes/CountriesArray.php');
+include ('includes/header.inc');
+include ('includes/CountriesArray.php');
 
 if (isset($_GET['DebtorNo'])) {
 	$DebtorNo = mb_strtoupper(html_entity_decode(stripslashes($_GET['DebtorNo'])));
@@ -17,10 +17,9 @@ if (isset($_GET['DebtorNo'])) {
 if (!isset($DebtorNo)) {
 	prnMsg(_('This page must be called with the debtor code of the customer for whom you wish to edit the branches for') . '.
 		<br />' . _('When the pages is called from within the system this will always be the case') . ' <br />' . _('Select a customer first then select the link to add/edit/delete branches'), 'warn');
-	include('includes/footer.inc');
+	include ('includes/footer.inc');
 	exit;
 }
-
 
 if (isset($_GET['SelectedBranch'])) {
 	$SelectedBranch = mb_strtoupper($_GET['SelectedBranch']);
@@ -41,7 +40,7 @@ if (isset($_POST['submit'])) {
 	$i = 1;
 
 	/* actions to take once the user has clicked the submit button
-	ie the page has called itself with some user input */
+	 ie the page has called itself with some user input */
 
 	//first off validate inputs sensible
 
@@ -165,7 +164,7 @@ if (isset($_POST['submit'])) {
 					WHERE branchcode = '" . stripslashes($SelectedBranch) . "' AND debtorno='" . $DebtorNo . "'";
 
 		if ($_SESSION['SalesmanLogin'] != '') {
-			$SQL .= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
+			$SQL.= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
 		}
 
 		$Msg = $_POST['BrName'] . ' ' . _('branch has been updated.');
@@ -342,11 +341,11 @@ if (isset($_POST['submit'])) {
 						} else {
 							$SQL = "DELETE FROM custbranch WHERE branchcode='" . $SelectedBranch . "' AND debtorno='" . $DebtorNo . "'";
 							if ($_SESSION['SalesmanLogin'] != '') {
-								$SQL .= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
+								$SQL.= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
 							}
 							$ErrMsg = _('The branch record could not be deleted') . ' - ' . _('the SQL server returned the following message');
 							$Result = DB_query($SQL, $ErrMsg);
-							if (DB_error_no() == 0){
+							if (DB_error_no() == 0) {
 								prnMsg(_('Branch Deleted'), 'success');
 							}
 						}
@@ -383,7 +382,7 @@ if (!isset($SelectedBranch)) {
 				WHERE custbranch.debtorno = '" . $DebtorNo . "'";
 
 	if ($_SESSION['SalesmanLogin'] != '') {
-		$SQL .= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
+		$SQL.= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
 	}
 
 	$Result = DB_query($SQL);
@@ -514,7 +513,7 @@ if (!isset($_GET['delete'])) {
 					AND debtorno='" . $DebtorNo . "'";
 
 		if ($_SESSION['SalesmanLogin'] != '') {
-			$SQL .= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
+			$SQL.= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
 		}
 
 		$Result = DB_query($SQL);
@@ -610,11 +609,9 @@ if (!isset($_GET['delete'])) {
 		$_POST['DeliverBlind'] = $_SESSION['DefaultBlindPackNote'];
 	}
 
-
 	echo '<tr>
 			<td>';
 	echo '<input type="hidden" name="DebtorNo" value="' . $DebtorNo . '" />';
-
 
 	echo _('Branch Name') . ':</td>';
 	if (!isset($_POST['BrName'])) {
@@ -711,7 +708,7 @@ if (!isset($_GET['delete'])) {
 		echo '</table>';
 		prnMsg(_('There are no areas defined as yet') . ' - ' . _('customer branches must be allocated to an area') . '. ' . _('Please use the link below to define at least one sales area'), 'error');
 		echo '<br /><a href="' . $RootPath . '/Areas.php">' . _('Define Sales Areas') . '</a>';
-		include('includes/footer.inc');
+		include ('includes/footer.inc');
 		exit;
 	}
 
@@ -728,7 +725,6 @@ if (!isset($_GET['delete'])) {
 		echo $MyRow['areacode'] . '">' . $MyRow['areadescription'] . '</option>';
 
 	} //end while loop
-
 
 	echo '</select></td>
 		</tr>';
@@ -753,7 +749,7 @@ if (!isset($_GET['delete'])) {
 			echo '</table>';
 			prnMsg(_('There are no sales people defined as yet') . ' - ' . _('customer branches must be allocated to a sales person') . '. ' . _('Please use the link below to define at least one sales person'), 'error');
 			echo '<p align="center"><a href="' . $RootPath . '/SalesPeople.php">' . _('Define Sales People') . '</a>';
-			include('includes/footer.inc');
+			include ('includes/footer.inc');
 			exit;
 		}
 
@@ -762,7 +758,7 @@ if (!isset($_GET['delete'])) {
 				<td><select tabindex="13" name="Salesman">';
 
 		while ($MyRow = DB_fetch_array($Result)) {
-			if (isset($_POST['Salesman']) AND $MyRow['salesmancode'] == $_POST['Salesman']) {
+			if (isset($_POST['Salesman']) and $MyRow['salesmancode'] == $_POST['Salesman']) {
 				echo '<option selected="selected" value="';
 			} else {
 				echo '<option value="';
@@ -775,6 +771,7 @@ if (!isset($_GET['delete'])) {
 			</tr>';
 
 		//	DB_data_seek($Result,0); //by thumb
+
 	}
 
 	$SQL = "SELECT locations.loccode,
@@ -782,7 +779,7 @@ if (!isset($_GET['delete'])) {
 				FROM locations
 				INNER JOIN locationusers
 					ON locationusers.loccode=locations.loccode
-					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.userid='" . $_SESSION['UserID'] . "'
 					AND locationusers.canupd=1";
 	$Result = DB_query($SQL);
 
@@ -790,7 +787,7 @@ if (!isset($_GET['delete'])) {
 		echo '</table>';
 		prnMsg(_('There are no stock locations defined as yet') . ' - ' . _('customer branches must refer to a default location where stock is normally drawn from') . '. ' . _('Please use the link below to define at least one stock location'), 'error');
 		echo '<br /><a href="' . $RootPath . '/Locations.php">' . _('Define Stock Locations') . '</a>';
-		include('includes/footer.inc');
+		include ('includes/footer.inc');
 		exit;
 	}
 
@@ -843,7 +840,7 @@ if (!isset($_GET['delete'])) {
 		echo '</table>';
 		prnMsg(_('There are no tax groups defined - these must be set up first before any branches can be set up') . '
 				<br /><a href="' . $RootPath . '/TaxGroups.php">' . _('Define Tax Groups') . '</a>', 'error');
-		include('includes/footer.inc');
+		include ('includes/footer.inc');
 		exit;
 	}
 	echo '<tr>
@@ -876,14 +873,13 @@ if (!isset($_GET['delete'])) {
 	echo '	</select></td>
 		</tr>';
 
-
 	$SQL = "SELECT shipper_id, shippername FROM shippers";
 	$ShipperResults = DB_query($SQL);
 	if (DB_num_rows($ShipperResults) == 0) {
 		echo '</table>';
 		prnMsg(_('There are no shippers defined - these must be set up first before any branches can be set up') . '
 				<br /><a href="' . $RootPath . '/Shippers.php">' . _('Define Shippers') . '</a>', 'error');
-		include('includes/footer.inc');
+		include ('includes/footer.inc');
 		exit;
 	}
 	echo '<tr>
@@ -976,5 +972,5 @@ if (!isset($_GET['delete'])) {
 
 } //end if record deleted no point displaying form to add record
 
-include('includes/footer.inc');
+include ('includes/footer.inc');
 ?>

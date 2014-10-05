@@ -162,7 +162,7 @@ if (isset($_POST['submit'])) {
 						defaultshipvia='" . $_POST['DefaultShipVia'] . "',
 						custbranchcode='" . $_POST['CustBranchCode'] . "',
 						deliverblind='" . $_POST['DeliverBlind'] . "'
-					WHERE branchcode = '" . $SelectedBranch . "' AND debtorno='" . $DebtorNo . "'";
+					WHERE branchcode = '" . stripslashes($SelectedBranch) . "' AND debtorno='" . $DebtorNo . "'";
 
 		if ($_SESSION['SalesmanLogin'] != '') {
 			$SQL .= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
@@ -427,7 +427,7 @@ if (!isset($SelectedBranch)) {
 					<td>%s</td>
 					<td>%s</td>
 					<td><a href="%s?DebtorNo=%s&amp;SelectedBranch=%s">%s</a></td>
-					<td><a href="%s?DebtorNo=%s&amp;SelectedBranch=%s&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this branch?') . '\', \'Confirm Delete\', this);">%s</a></td></tr>', $MyRow[1], $MyRow[2], $MyRow[5], $MyRow[3], $MyRow[4], $MyRow[6], $MyRow[7], $MyRow[8], $MyRow[8], $MyRow[9], ($MyRow[10] ? _('No') : _('Yes')), htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $DebtorNo, urlencode($MyRow[1]), _('Edit'), htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), urlencode($DebtorNo), urlencode($MyRow[1]), _('Delete Branch'));
+					<td><a href="%s?DebtorNo=%s&amp;SelectedBranch=%s&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this branch?') . '\', \'Confirm Delete\', this);">%s</a></td></tr>', $MyRow[1], $MyRow[2], $MyRow[5], $MyRow[3], $MyRow[4], $MyRow[6], $MyRow[7], $MyRow[8], $MyRow[8], $MyRow[9], ($MyRow[10] ? _('No') : _('Yes')), htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), urlencode($DebtorNo), urlencode($MyRow[1]), _('Edit'), htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), urlencode($DebtorNo), urlencode($MyRow[1]), _('Delete Branch'));
 
 			if ($MyRow[10]) {
 				$TotalDisable++;

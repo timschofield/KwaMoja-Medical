@@ -110,6 +110,12 @@ function NewMenuItem($Link, $Section, $Caption, $URL, $Sequence) {
 		$SQL = "SELECT secroleid FROM securityroles";
 		$Result = DB_query($SQL);
 		while ($MyRow = DB_fetch_array($Result)) {
+			$SQL = "UPDATE `menuitems` SET sequence=sequence+1
+							WHERE sequence>='" . $Sequence . "'
+								AND secroleid='" . $MyRow['secroleid'] . "'
+								AND link='" . $Link . "'
+								AND section='" . $Section . "'";
+			$Response = executeSQL($SQL, False);
 			$SQL = "INSERT INTO `menuitems` (`secroleid`,
 												`modulelink`,
 												`menusection`,

@@ -30,15 +30,15 @@ if ($_SESSION['geocode_integration'] == 1 and isset($_SESSION['SupplierID'])) {
 	$ErrMsg = _('An error occurred in retrieving the information');
 	$Result2 = DB_query($SQL, $ErrMsg);
 	$MyRow2 = DB_fetch_array($Result2);
-	$lat = $MyRow2['lat'];
-	$lng = $MyRow2['lng'];
-	$api_key = $MyRow['geocode_key'];
-	$center_long = $MyRow['center_long'];
-	$center_lat = $MyRow['center_lat'];
-	$map_height = $MyRow['map_height'];
-	$map_width = $MyRow['map_width'];
-	$map_host = $MyRow['map_host'];
-	echo '<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=' . $api_key . '"';
+	$Latitude = $MyRow2['lat'];
+	$Longitude = $MyRow2['lng'];
+	$ApiKey = $MyRow['geocode_key'];
+	$CenterLong = $MyRow['center_long'];
+	$CenterLat = $MyRow['center_lat'];
+	$MapHeight = $MyRow['map_height'];
+	$MapWidth = $MyRow['map_width'];
+	$MapHost = $MyRow['map_host'];
+	echo '<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=' . $ApiKey . '"';
 	echo ' type="text/javascript"></script>';
 	echo ' <script type="text/javascript">';
 	echo 'function load() {
@@ -46,8 +46,8 @@ if ($_SESSION['geocode_integration'] == 1 and isset($_SESSION['SupplierID'])) {
 			var map = new GMap2(document.getElementById("map"));
 			map.addControl(new GSmallMapControl());
 			map.addControl(new GMapTypeControl());';
-	echo 'map.setCenter(new GLatLng(' . $lat . ', ' . $lng . '), 11);';
-	echo 'var marker = new GMarker(new GLatLng(' . $lat . ', ' . $lng . '));';
+	echo 'map.setCenter(new GLatLng(' . $Latitude . ', ' . $Longitude . '), 11);';
+	echo 'var marker = new GMarker(new GLatLng(' . $Latitude . ', ' . $Longitude . '));';
 	echo 'map.addOverlay(marker);
 			GEvent.addListener(marker, "click", function() {
 			marker.openInfoWindowHtml(WINDOW_HTML);
@@ -77,7 +77,7 @@ if (isset($_POST['Select'])) {
 	unset($_POST['Next']);
 	unset($_POST['Previous']);
 }
-if (isset($_POST['Search']) OR isset($_POST['Go']) OR isset($_POST['Next']) OR isset($_POST['Previous'])) {
+if (isset($_POST['Search']) or isset($_POST['Go']) or isset($_POST['Next']) or isset($_POST['Previous'])) {
 
 	if (mb_strlen($_POST['Keywords']) > 0 and mb_strlen($_POST['SupplierCode']) > 0) {
 		prnMsg(_('Supplier name keywords have been used in preference to the Supplier code extract entered'), 'info');
@@ -302,7 +302,7 @@ echo '</form>';
 // Only display the geocode map if the integration is turned on, and there is a latitude/longitude to display
 if (isset($_SESSION['SupplierID']) and $_SESSION['SupplierID'] != '') {
 	if ($_SESSION['geocode_integration'] == 1) {
-		if ($lat == 0) {
+		if ($Latitude == 0) {
 			echo '<br />';
 			echo '<div class="centre">' . _('Mapping is enabled, but no Mapping data to display for this Supplier.') . '</div>';
 		} else {
@@ -317,7 +317,7 @@ if (isset($_SESSION['SupplierID']) and $_SESSION['SupplierID'] != '') {
 					<td valign="top">';
 			/* Mapping */
 			echo '<div class="centre">' . _('Mapping is enabled, Map will display below.') . '</div>';
-			echo '<div class="centre" id="map" style="width: ' . $map_width . 'px; height: ' . $map_height . 'px"></div></div><br />';
+			echo '<div class="centre" id="map" style="width: ' . $MapWidth . 'px; height: ' . $MapHeight . 'px"></div></div><br />';
 			echo '</td></tr></table>';
 		}
 	}
@@ -328,9 +328,12 @@ if (isset($_SESSION['SupplierID']) and $_SESSION['SupplierID'] != '') {
 							suppliers.lastpaid,
 							suppliers.lastpaiddate,
 							suppliersince,
-							currencies.decimalplaces AS currdecimalplaces
-					FROM suppliers INNER JOIN currencies
-					ON suppliers.currcode=currencies.currabrev
+							currencies.decimalplaces AS currdecimalplaces,
+							email,
+							telephone
+					FROM suppliers
+					INNER JOIN currencies
+						ON suppliers.currcode=currencies.currabrev
 					WHERE suppliers.supplierid ='" . $_SESSION['SupplierID'] . "'";
 			$ErrMsg = _('An error occurred in retrieving the information');
 			$DataResult = DB_query($SQL, $ErrMsg);
@@ -338,36 +341,60 @@ if (isset($_SESSION['SupplierID']) and $_SESSION['SupplierID'] != '') {
 			// Select some more data about the supplier
 			$SQL = "SELECT SUM(-ovamount) AS total FROM supptrans WHERE supplierno = '" . $_SESSION['SupplierID'] . "' and type != '20'";
 			$Total1Result = DB_query($SQL);
-			$row = DB_fetch_array($Total1Result);
-			echo '<br />';
-			echo '<table width="45%" cellpadding="4">
+			$Row = DB_fetch_array($Total1Result);
+			echo '<table style="width:75%" cellpadding="4">
 					<tr>
-						<th style="width:33%" colspan="2">' . _('Supplier Data') . '</th>
+						<th colspan="4">' . _('Supplier Data') . '</th>
 					</tr>
 					<tr>
-						<td valign="top" class="select">';
+						<td style="width:30%" valign="top" class="select">';
 			/* Supplier Data */
 			//echo "Distance to this Supplier: <b>TBA</b><br />";
 			if ($MyRow['lastpaiddate'] == 0) {
 				echo _('No payments yet to this supplier.') . '</td>
-					<td valign="top" class="select"></td>
-					</tr>';
+					<td valign="top" class="select"></td>';
 			} else {
 				echo _('Last Paid') . ':</td>
-					<td valign="top" class="select"> <b>' . ConvertSQLDate($MyRow['lastpaiddate']) . '</b></td>
+					<td style="width:20%" valign="top" class="select"> <b>' . ConvertSQLDate($MyRow['lastpaiddate']) . '</b></td>';
+			}
+			echo '<td style="width:30%" valign="top" class="select">' . _('Last Paid Amount') . ':</td>
+					<td style="width:20%" valign="top" class="number select">  <b>' . locale_number_format($MyRow['lastpaid'], $MyRow['currdecimalplaces']) . '</b></td></tr>';
+			echo '<tr>
+					<td style="width:30%" valign="top" class="select">' . _('Supplier since') . ':</td>
+					<td style="width:20%" valign="top" class="select"> <b>' . ConvertSQLDate($MyRow['suppliersince']) . '</b></td>
+					<td style="width:30%" valign="top" class="select">' . _('Total Spend with this Supplier') . ':</td>
+					<td style="width:20%" valign="top" class="number select"> <b>' . locale_number_format($Row['total'], $MyRow['currdecimalplaces']) . '</b></td>
+				</tr>';
+			echo '<tr>
+					<td style="width:30%" valign="top" class="select">' . _('Email Address') . ':</td>
+					<td style="width:20%" valign="top" class="select"> <b>' . $MyRow['email'] . '</b></td>
+					<td style="width:30%" valign="top" class="select">' . _('Telephone Number') . ':</td>
+					<td style="width:20%" valign="top" class="number select"> <b>' . $MyRow['telephone'] . '</b></td>
+				</tr>';
+			echo '<tr>
+					<th colspan="4" style="text-align:left">' . _('Contacts') . ':</th>
+				</tr>';
+			echo '<tr>
+					<th style="width:40%">' . _('Contact Name') . '</th>
+					<th style="width:20%">' . _('Position') . '</th>
+					<th style="width:20%">' . _('Telephone Number') . '</th>
+					<th style="width:20%">' . _('Email Address') . '</th>
+				</tr>';
+			$ContactSQL = "SELECT contact,
+									position,
+									tel,
+									email
+								FROM suppliercontacts
+								WHERE supplierid='" . $_SESSION['SupplierID'] . "'";
+			$ContactResult = DB_query($ContactSQL);
+			while ($ContactRow = DB_fetch_array($ContactResult)) {
+				echo '<tr>
+						<td style="width:40%" class="select">' . $ContactRow['contact'] . '</td>
+						<td style="width:20%" class="select">' . $ContactRow['position'] . '</td>
+						<td style="width:20%" class="select">' . $ContactRow['tel'] . '</td>
+						<td style="width:20%" class="select">' . $ContactRow['email'] . '</td>
 					</tr>';
 			}
-			echo '<tr>
-					<td valign="top" class="select">' . _('Last Paid Amount') . ':</td>
-					<td valign="top" class="select">  <b>' . locale_number_format($MyRow['lastpaid'], $MyRow['currdecimalplaces']) . '</b></td></tr>';
-			echo '<tr>
-					<td valign="top" class="select">' . _('Supplier since') . ':</td>
-					<td valign="top" class="select"> <b>' . ConvertSQLDate($MyRow['suppliersince']) . '</b></td>
-					</tr>';
-			echo '<tr>
-					<td valign="top" class="select">' . _('Total Spend with this Supplier') . ':</td>
-					<td valign="top" class="select"> <b>' . locale_number_format($row['total'], $MyRow['currdecimalplaces']) . '</b></td>
-					</tr>';
 			echo '</table>';
 		}
 	}

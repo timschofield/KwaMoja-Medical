@@ -9,9 +9,9 @@ $BookMark = 'SupplierContact';
 include('includes/header.inc');
 
 if (isset($_GET['SupplierID'])) {
-	$SupplierID = urldecode($_GET['SupplierID']);
+	$SupplierID = stripslashes($_GET['SupplierID']);
 } elseif (isset($_POST['SupplierID'])) {
-	$SupplierID = $_POST['SupplierID'];
+	$SupplierID = stripslashes($_POST['SupplierID']);
 }
 
 echo '<div class="toplink">
@@ -66,7 +66,7 @@ if (isset($_POST['submit'])) {
 											email='" . $_POST['Email'] . "',
 											mobile = '" . $_POST['Mobile'] . "'
 				WHERE contact='" . $SelectedContact . "'
-				AND supplierid='" . $SupplierID . "'";
+				AND supplierid='" . DB_escape_string($SupplierID) . "'";
 
 		$Msg = _('The supplier contact information has been updated');
 
@@ -81,7 +81,7 @@ if (isset($_POST['submit'])) {
 											fax,
 											email,
 											mobile)
-				VALUES ('" . $SupplierID . "',
+				VALUES ('" . DB_escape_string($SupplierID) . "',
 					'" . $_POST['Contact'] . "',
 					'" . $_POST['Position'] . "',
 					'" . $_POST['Tel'] . "',
@@ -133,7 +133,7 @@ if (!isset($SelectedContact)) {
 				FROM suppliercontacts,
 					suppliers
 				WHERE suppliercontacts.supplierid=suppliers.supplierid
-				AND suppliercontacts.supplierid = '" . $SupplierID . "'";
+				AND suppliercontacts.supplierid = '" . DB_escape_string($SupplierID) . "'";
 
 	$Result = DB_query($SQL);
 
@@ -162,7 +162,7 @@ if (!isset($SelectedContact)) {
 					<td>%s</td>
 					<td><a href="mailto:%s">%s</a></td>
 					<td><a href="%s&amp;SupplierID=%s&amp;SelectedContact=%s">' . _('Edit') . '</a></td>
-					<td><a href="%s&amp;SupplierID=%s&amp;SelectedContact=%s&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this contact?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td></tr>', $MyRow['contact'], $MyRow['position'], $MyRow['tel'], $MyRow['fax'], $MyRow['email'], $MyRow['email'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $SupplierID, $MyRow['contact'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $SupplierID, $MyRow['contact']);
+					<td><a href="%s&amp;SupplierID=%s&amp;SelectedContact=%s&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this contact?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td></tr>', $MyRow['contact'], $MyRow['position'], $MyRow['tel'], $MyRow['fax'], $MyRow['email'], $MyRow['email'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', urlencode($SupplierID), $MyRow['contact'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', urlencode($SupplierID), $MyRow['contact']);
 		} while ($MyRow = DB_fetch_array($Result));
 		echo '</tbody>
 			</table><br />';
@@ -197,7 +197,7 @@ if (!isset($_GET['delete'])) {
 						email
 					FROM suppliercontacts
 					WHERE contact='" . $SelectedContact . "'
-					AND supplierid='" . $SupplierID . "'";
+					AND supplierid='" . DB_escape_string($SupplierID) . "'";
 
 		$Result = DB_query($SQL);
 		$MyRow = DB_fetch_array($Result);

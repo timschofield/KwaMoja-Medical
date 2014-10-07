@@ -275,7 +275,7 @@ if (!isset($_GET['OrderNumber']) and !isset($_SESSION['ProcessingOrder'])) {
 			}
 			//Preventing from dispatched more than ordered. Since it's controlled items, users must select the batch/lot again.
 			if ($_SESSION['Items' . $Identifier]->LineItems[$Itm->LineNumber]->QtyDispatched > ($_SESSION['Items' . $Identifier]->LineItems[$Itm->LineNumber]->Quantity - $_SESSION['Items' . $Identifier]->LineItems[$Itm->LineNumber]->QtyInv)) {
-				prnMsg(_('Invoiceed quantity cannot not be more than the order balance') . '. ' . _('The invoiced quantity is') . ' ' . $_SESSION['Items' . $Identifier]->LineItems[$Itm->LineNumber]->QtyDispatched . ' ' . _('And the order balance is ') . ' ' . ($_SESSION['Items'.$Identifier]->LineItems[$Itm->LineNumber]->Quantity - $_SESSION['Items'.$Identifier]->LineItems[$Itm->LineNumber]->QtyInv), 'error');
+				prnMsg(_('Invoiceed quantity cannot not be more than the order balance') . '. ' . _('The invoiced quantity is') . ' ' . $_SESSION['Items' . $Identifier]->LineItems[$Itm->LineNumber]->QtyDispatched . ' ' . _('And the order balance is ') . ' ' . ($_SESSION['Items' . $Identifier]->LineItems[$Itm->LineNumber]->Quantity - $_SESSION['Items' . $Identifier]->LineItems[$Itm->LineNumber]->QtyInv), 'error');
 				include('includes/footer.inc');
 				exit;
 			}
@@ -312,7 +312,6 @@ echo '<table class="selection">
 			<br />';
 
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '" method="post" class="noPrint">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 /***************************************************************
@@ -478,17 +477,7 @@ was not fully delivered the first time ?? */
 
 if (!isset($_SESSION['Items' . $Identifier]->FreightCost) or $_SESSION['Items' . $Identifier]->FreightCost == 0) {
 	if ($_SESSION['DoFreightCalc'] == True) {
-		list($FreightCost, $BestShipper) = CalcFreightCost($_SESSION['Items' . $Identifier]->total,
-															$_SESSION['Items' . $Identifier]->BrAdd2,
-															$_SESSION['Items' . $Identifier]->BrAdd3,
-															$_SESSION['Items' . $Identifier]->BrAdd4,
-															$_SESSION['Items' . $Identifier]->BrAdd5,
-															$_SESSION['Items' . $Identifier]->BrAdd6,
-															$_SESSION['Items' . $Identifier]->totalVolume,
-															$_SESSION['Items' . $Identifier]->totalWeight,
-															$_SESSION['Items' . $Identifier]->Location,
-															$_SESSION['Items' . $Identifier]->DefaultCurrency,
-															$CountriesArray);
+		list($FreightCost, $BestShipper) = CalcFreightCost($_SESSION['Items' . $Identifier]->total, $_SESSION['Items' . $Identifier]->BrAdd2, $_SESSION['Items' . $Identifier]->BrAdd3, $_SESSION['Items' . $Identifier]->BrAdd4, $_SESSION['Items' . $Identifier]->BrAdd5, $_SESSION['Items' . $Identifier]->BrAdd6, $_SESSION['Items' . $Identifier]->totalVolume, $_SESSION['Items' . $Identifier]->totalWeight, $_SESSION['Items' . $Identifier]->Location, $_SESSION['Items' . $Identifier]->DefaultCurrency, $CountriesArray);
 		$_SESSION['Items' . $Identifier]->ShipVia = $BestShipper;
 	}
 	if (is_numeric($FreightCost)) {
@@ -596,12 +585,6 @@ echo '<td class="number">' . locale_number_format($FreightTaxTotal, $_SESSION['I
 $TaxTotal += $FreightTaxTotal;
 
 $DisplaySubTotal = locale_number_format(($_SESSION['Items' . $Identifier]->total + filter_number_format($_POST['ChargeFreightCost'])), $_SESSION['Items' . $Identifier]->CurrDecimalPlaces);
-
-
-/* round the totals to avoid silly entries */
-$TaxTotal = round($TaxTotal, $_SESSION['Items' . $Identifier]->CurrDecimalPlaces);
-$_SESSION['Items' . $Identifier]->total = round($_SESSION['Items' . $Identifier]->total, $_SESSION['Items' . $Identifier]->CurrDecimalPlaces);
-$_POST['ChargeFreightCost'] = round(filter_number_format($_POST['ChargeFreightCost']), $_SESSION['Items' . $Identifier]->CurrDecimalPlaces);
 
 echo '<tr>
 	<td colspan="8" class="number">' . _('Invoice Totals') . '</td>
@@ -1471,7 +1454,7 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 											'" . $PeriodNo . "',
 											'" . $SalesGLAccounts['salesglcode'] . "',
 											'" . $_SESSION['Items' . $Identifier]->DebtorNo . " - " . $OrderLine->StockID . " x " . $OrderLine->QtyDispatched . " @ " . $OrderLine->Price . "',
-											'" . round((-$OrderLine->Price * $OrderLine->QtyDispatched / $_SESSION['CurrencyRate']), $_SESSION['CompanyRecord']['decimalplaces']) . "')";
+											'" . (-$OrderLine->Price * $OrderLine->QtyDispatched / $_SESSION['CurrencyRate']) . "')";
 
 					$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The sales GL posting could not be inserted because');
 					$DbgMsg = '<br />' . _('The following SQL to insert the GLTrans record was used');
@@ -1493,7 +1476,7 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 													'" . $PeriodNo . "',
 													'" . $SalesGLAccounts['discountglcode'] . "',
 													'" . $_SESSION['Items' . $Identifier]->DebtorNo . " - " . $OrderLine->StockID . " @ " . ($OrderLine->DiscountPercent * 100) . "%',
-													'" . round(($OrderLine->Price * $OrderLine->QtyDispatched * $OrderLine->DiscountPercent / $_SESSION['CurrencyRate']), $_SESSION['CompanyRecord']['decimalplaces']) . "')";
+													'" . ($OrderLine->Price * $OrderLine->QtyDispatched * $OrderLine->DiscountPercent / $_SESSION['CurrencyRate']) . "')";
 
 						$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The sales discount GL posting could not be inserted because');
 						$DbgMsg = _('The following SQL to insert the GLTrans record was used');
@@ -1606,7 +1589,7 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 										'" . $PeriodNo . "',
 										'" . $DisposalRow['disposalact'] . "',
 										'" . $_SESSION['Items' . $Identifier]->DebtorNo . " - " . $OrderLine->StockID . ' ' . _('asset disposal proceeds') . "',
-										'" . round((-$OrderLine->Price * $OrderLine->QtyDispatched * (1 - $OrderLine->DiscountPercent) / $_SESSION['CurrencyRate']), $_SESSION['CompanyRecord']['decimalplaces']) . "')";
+										'" . (-$OrderLine->Price * $OrderLine->QtyDispatched * (1 - $OrderLine->DiscountPercent) / $_SESSION['CurrencyRate']) . "')";
 
 					$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The disposal proceeds GL posting could not be inserted because');
 					$DbgMsg = '<br />' . _('The following SQL to insert the GLTrans record was used');
@@ -1684,7 +1667,7 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 										'" . $PeriodNo . "',
 										'" . $_SESSION['CompanyRecord']['debtorsact'] . "',
 										'" . $_SESSION['Items' . $Identifier]->DebtorNo . "',
-										'" . round((($_SESSION['Items' . $Identifier]->total + $_SESSION['Items' . $Identifier]->FreightCost + $TaxTotal) / $_SESSION['CurrencyRate']), $_SESSION['CompanyRecord']['decimalplaces']) . "')";
+										'" . (($_SESSION['Items' . $Identifier]->total + $_SESSION['Items' . $Identifier]->FreightCost + $TaxTotal) / $_SESSION['CurrencyRate']) . "')";
 
 			$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The total debtor GL posting could not be inserted because');
 			$DbgMsg = _('The following SQL to insert the total debtors control GLTrans record was used');
@@ -1709,7 +1692,7 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 					'" . $PeriodNo . "',
 					'" . $_SESSION['CompanyRecord']['freightact'] . "',
 					'" . $_SESSION['Items' . $Identifier]->DebtorNo . "',
-					'" . round((-$_SESSION['Items' . $Identifier]->FreightCost / $_SESSION['CurrencyRate']), $_SESSION['CompanyRecord']['decimalplaces']) . "')";
+					'" . (-$_SESSION['Items' . $Identifier]->FreightCost / $_SESSION['CurrencyRate']) . "')";
 
 			$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The freight GL posting could not be inserted because');
 			$DbgMsg = _('The following SQL to insert the GLTrans record was used');
@@ -1731,7 +1714,7 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 											'" . $PeriodNo . "',
 											'" . $TaxGLCodes[$TaxAuthID] . "',
 											'" . $_SESSION['Items' . $Identifier]->DebtorNo . "',
-											'" . round((-$TaxAmount / $_SESSION['CurrencyRate']), $_SESSION['CompanyRecord']['decimalplaces']) . "')";
+											'" . (-$TaxAmount / $_SESSION['CurrencyRate']) . "')";
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The tax GL posting could not be inserted because');
 				$DbgMsg = _('The following SQL to insert the GLTrans record was used');
@@ -1837,7 +1820,6 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 		</div>
 		<input type="hidden" name="ShipVia" value="' . $_SESSION['Items' . $Identifier]->ShipVia . '" />';
 }
-echo '</div>';
 echo '</form>';
 
 include('includes/footer.inc');

@@ -1764,37 +1764,10 @@ if (!isset($_POST['ProcessReturn'])) {
 					$DemandQty = 0;
 				}
 
-				// Find the quantity on purchase orders
-				$SQL = "SELECT SUM(purchorderdetails.quantityord-purchorderdetails.quantityrecd) AS QOO
-							 FROM purchorderdetails INNER JOIN purchorders
-							 WHERE purchorderdetails.completed=0
-							 AND purchorders.status <>'Cancelled'
-							 AND purchorders.status <>'Rejected'
-							AND purchorderdetails.itemcode='" . $MyRow['stockid'] . "'";
-
-				$ErrMsg = _('The order details for this product cannot be retrieved because');
-				$PurchResult = DB_query($SQL, $ErrMsg);
-
-				$PurchRow = DB_fetch_row($PurchResult);
-				if ($PurchRow[0] != null) {
-					$PurchQty = $PurchRow[0];
-				} else {
-					$PurchQty = 0;
-				}
-
-				// Find the quantity on works orders
-				$SQL = "SELECT SUM(woitems.qtyreqd - woitems.qtyrecd) AS dedm
-						   FROM woitems
-						   WHERE stockid='" . $MyRow['stockid'] . "'";
-				$ErrMsg = _('The order details for this product cannot be retrieved because');
-				$WoResult = DB_query($SQL, $ErrMsg);
-
-				$WoRow = DB_fetch_row($WoResult);
-				if ($WoRow[0] != null) {
-					$WoQty = $WoRow[0];
-				} else {
-					$WoQty = 0;
-				}
+				// Get the QOO due to Purchase orders for all locations. Function defined in SQL_CommonFunctions.inc
+				$QOO = GetQuantityOnOrderDueToPurchaseOrders($MyRow['stockid']);
+				// Get the QOO dues to Work Orders for all locations. Function defined in SQL_CommonFunctions.inc
+				$QOO += GetQuantityOnOrderDueToWorkOrders($MyRow['stockid']);
 
 				if ($k == 1) {
 					echo '<tr class="EvenTableRows">';
@@ -1803,9 +1776,8 @@ if (!isset($_POST['ProcessReturn'])) {
 					echo '<tr class="OddTableRows">';
 					$k = 1;
 				}
-				$OnOrder = $PurchQty + $WoQty;
 
-				$Available = $QOH - $DemandQty + $OnOrder;
+				$Available = $QOH - $DemandQty + $QOO;
 
 				printf('<td>%s</td>
 						<td title="%s">%s</td>
@@ -1815,7 +1787,7 @@ if (!isset($_POST['ProcessReturn'])) {
 						<td class="number">%s</td>
 						<td class="number">%s</td>
 						<td><input class="number" required="required" minlength="1" maxlength="11" tabindex="' . strval($j + 7) . '" type="text" size="6" name="ReturnQty%s" value="0" /></font><input type="hidden" name="StockID%s" value="%s" /></td>
-						</tr>', $MyRow['stockid'], $MyRow['longdescription'], $MyRow['description'], $MyRow['units'], locale_number_format($QOH, $MyRow['decimalplaces']), locale_number_format($DemandQty, $MyRow['decimalplaces']), locale_number_format($OnOrder, $MyRow['decimalplaces']), locale_number_format($Available, $MyRow['decimalplaces']), $i, $i, $MyRow['stockid']);
+						</tr>', $MyRow['stockid'], $MyRow['longdescription'], $MyRow['description'], $MyRow['units'], locale_number_format($QOH, $MyRow['decimalplaces']), locale_number_format($DemandQty, $MyRow['decimalplaces']), locale_number_format($QOO, $MyRow['decimalplaces']), locale_number_format($Available, $MyRow['decimalplaces']), $i, $i, $MyRow['stockid']);
 				++$j;
 				++$i;
 				#end of page full new headings if

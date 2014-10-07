@@ -174,40 +174,10 @@ while ($MyRow = DB_fetch_array($LocStockResult)) {
 
 	if ($Its_A_KitSet_Assembly_Or_Dummy == False) {
 
-		$SQL = "SELECT SUM(purchorderdetails.quantityord-purchorderdetails.quantityrecd)
-					FROM purchorders
-					LEFT JOIN purchorderdetails
-						ON purchorders.orderno=purchorderdetails.orderno
-					WHERE purchorderdetails.itemcode='" . $StockId . "'
-						AND purchorders.intostocklocation='" . $MyRow['loccode'] . "'
-						AND (purchorders.status<>'Cancelled'
-						AND purchorders.status<>'Pending'
-						AND purchorders.status<>'Rejected'
-						AND purchorders.status<>'Completed')";
-		$ErrMsg = _('The quantity on order for this product to be received into') . ' ' . $MyRow['loccode'] . ' ' . _('cannot be retrieved because');
-		$QOOResult = DB_query($SQL, $ErrMsg, $DbgMsg);
-
-		if (DB_num_rows($QOOResult) == 1) {
-			$QOORow = DB_fetch_row($QOOResult);
-			$QOO = $QOORow[0];
-		} else {
-			$QOO = 0;
-		}
-
-		//Also the on work order quantities
-		$SQL = "SELECT SUM(woitems.qtyreqd-woitems.qtyrecd) AS qtywo
-				FROM woitems INNER JOIN workorders
-				ON woitems.wo=workorders.wo
-				WHERE workorders.closed=0
-				AND workorders.loccode='" . $MyRow['loccode'] . "'
-				AND woitems.stockid='" . $StockId . "'";
-		$ErrMsg = _('The quantity on work orders for this product to be received into') . ' ' . $MyRow['loccode'] . ' ' . _('cannot be retrieved because');
-		$QOOResult = DB_query($SQL, $ErrMsg, $DbgMsg);
-
-		if (DB_num_rows($QOOResult) == 1) {
-			$QOORow = DB_fetch_row($QOOResult);
-			$QOO += $QOORow[0];
-		}
+		// Get the QOO due to Purchase orders for all locations. Function defined in SQL_CommonFunctions.inc
+		$QOO = GetQuantityOnOrderDueToPurchaseOrders($StockId, $MyRow['loccode']);
+		// Get the QOO dues to Work Orders for all locations. Function defined in SQL_CommonFunctions.inc
+		$QOO += GetQuantityOnOrderDueToWorkOrders($StockId, $MyRow['loccode']);
 
 		$InTransitSQL = "SELECT SUM(shipqty-recqty) as intransit
 						FROM loctransfers
@@ -314,14 +284,14 @@ if ($DebtorNo) {
 	while ($MyRow = DB_fetch_array($MovtsResult)) {
 		if ($LastPrice != $MyRow['price'] or $LastDiscount != $MyRow['discount']) {
 			/* consolidate price history for records with same price/discount */
-			if (isset($qty)) {
+			if (isset($Quantity)) {
 				$DateRange = ConvertSQLDate($FromDate);
 				if ($FromDate != $ToDate) {
 					$DateRange .= ' - ' . ConvertSQLDate($ToDate);
 				}
 				$PriceHistory[] = array(
 					$DateRange,
-					$qty,
+					$Quantity,
 					$LastPrice,
 					$LastDiscount
 				);
@@ -338,19 +308,19 @@ if ($DebtorNo) {
 			$LastPrice = $MyRow['price'];
 			$LastDiscount = $MyRow['discountpercent'];
 			$ToDate = $MyRow['trandate'];
-			$qty = 0;
+			$Quantity = 0;
 		}
-		$qty += $MyRow['qty'];
+		$Quantity += $MyRow['qty'];
 		$FromDate = $MyRow['trandate'];
 	}
-	if (isset($qty)) {
+	if (isset($Quantity)) {
 		$DateRange = ConvertSQLDate($FromDate);
 		if ($FromDate != $ToDate) {
 			$DateRange .= ' - ' . ConvertSQLDate($ToDate);
 		}
 		$PriceHistory[] = array(
 			$DateRange,
-			$qty,
+			$Quantity,
 			$LastPrice,
 			$LastDiscount
 		);

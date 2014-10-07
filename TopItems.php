@@ -206,43 +206,10 @@ if (!(isset($_POST['Search']))) {
 				$QohResult = DB_query($QohSql);
 				$QohRow = DB_fetch_row($QohResult);
 				$QOH = $QohRow[0];
-				$QooSql = "SELECT SUM(purchorderdetails.quantityord -purchorderdetails.quantityrecd) AS QtyOnOrder
-							FROM purchorders
-							INNER JOIN purchorderdetails
-								ON purchorders.orderno=purchorderdetails.orderno
-							INNER JOIN locationusers
-								ON locationusers.loccode=purchorders.intostocklocation
-								AND locationusers.userid='" .  $_SESSION['UserID'] . "'
-								AND locationusers.canview=1
-							WHERE purchorderdetails.itemcode='" . DB_escape_string($MyRow['stkcode']) . "'
-								AND purchorderdetails.completed =0
-								AND purchorders.status<>'Cancelled'
-								AND purchorders.status<>'Pending'
-								AND purchorders.status<>'Rejected'";
-				$QooResult = DB_query($QooSql);
-				if (DB_num_rows($QooResult) == 0) {
-					$QOO = 0;
-				} else {
-					$QooRow = DB_fetch_row($QooResult);
-					$QOO = $QooRow[0];
-				}
-				//Also the on work order quantities
-				$SQL = "SELECT SUM(woitems.qtyreqd-woitems.qtyrecd) AS qtywo
-							FROM woitems
-							INNER JOIN workorders
-								ON woitems.wo=workorders.wo
-							INNER JOIN locationusers
-								ON locationusers.loccode=workorders.loccode
-								AND locationusers.userid='" .  $_SESSION['UserID'] . "'
-								AND locationusers.canview=1
-							WHERE workorders.closed=0
-								AND woitems.stockid='" . DB_escape_string($MyRow['stkcode']) . "'";
-				$ErrMsg = _('The quantity on work orders for this product cannot be retrieved because');
-				$QOOResult = DB_query($SQL, $ErrMsg);
-				if (DB_num_rows($QOOResult) == 1) {
-					$QOORow = DB_fetch_row($QOOResult);
-					$QOO += $QOORow[0];
-				}
+				// Get the QOO due to Purchase orders for all locations. Function defined in SQL_CommonFunctions.inc
+				$QOO = GetQuantityOnOrderDueToPurchaseOrders($MyRow['stkcode']);
+				// Get the QOO dues to Work Orders for all locations. Function defined in SQL_CommonFunctions.inc
+				$QOO += GetQuantityOnOrderDueToWorkOrders($MyRow['stkcode']);
 				break;
 		}
 		if (is_numeric($QOH) and is_numeric($QOO)) {

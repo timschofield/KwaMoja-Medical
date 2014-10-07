@@ -1,7 +1,7 @@
 <?php
 
 include('includes/session.inc');
-
+include ('includes/SQL_CommonFunctions.inc');
 $Title = _('All Stock Status By Location/Category');
 
 include('includes/header.inc');
@@ -221,24 +221,10 @@ if (isset($_POST['ShowStatus'])) {
 			$DemandQty += $DemandRow[0];
 		}
 
-
-		$SQL = "SELECT SUM(purchorderdetails.quantityord - purchorderdetails.quantityrecd) AS qoo
-				FROM purchorderdetails
-				INNER JOIN purchorders
-					ON purchorderdetails.orderno=purchorders.orderno
-				WHERE purchorders.intostocklocation='" . $MyRow['loccode'] . "'
-					AND purchorderdetails.itemcode='" . $StockId . "'
-					AND (purchorders.status = 'Authorised' OR purchorders.status='Printed')";
-
-		$ErrMsg = _('The quantity on order for this product to be received into') . ' ' . $MyRow['loccode'] . ' ' . _('cannot be retrieved because');
-		$QOOResult = DB_query($SQL, $ErrMsg);
-
-		if (DB_num_rows($QOOResult) == 1) {
-			$QOORow = DB_fetch_row($QOOResult);
-			$QOO = $QOORow[0];
-		} else {
-			$QOO = 0;
-		}
+		// Get the QOO due to Purchase orders for all locations. Function defined in SQL_CommonFunctions.inc
+		$QOO = GetQuantityOnOrderDueToPurchaseOrders($StockId, $MyRow['loccode']);
+		// Get the QOO dues to Work Orders for all locations. Function defined in SQL_CommonFunctions.inc
+		$QOO += GetQuantityOnOrderDueToWorkOrders($StockId, $MyRow['loccode']);
 
 		if (($_POST['BelowReorderQuantity'] == 'Below' and ($MyRow['quantity'] - $MyRow['reorderlevel'] - $DemandQty) < 0) or $_POST['BelowReorderQuantity'] == 'All' or $_POST['BelowReorderQuantity'] == 'NotZero' or ($_POST['BelowReorderQuantity'] == 'OnOrder' and $QOO != 0)) {
 

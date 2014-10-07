@@ -43,7 +43,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 
 	// Javier:
 	$PageNumber = 1;
-	$line_height = 12;
+	$LineHeight = 12;
 
 	/*Now figure out the inventory data to report for the category range under review
 	need QOH, QOO, QDem, Sales Mth -1, Sales Mth -2, Sales Mth -3, Sales Mth -4*/
@@ -135,9 +135,9 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 			if ($Category != '') {
 				/*Then it's NOT the first time round */
 				/*draw a line under the CATEGORY TOTAL*/
-				$YPos -= $line_height;
+				$YPos -= $LineHeight;
 				$PDF->line($Left_Margin, $YPos, $Page_Width - $Right_Margin, $YPos);
-				$YPos -= (2 * $line_height);
+				$YPos -= (2 * $LineHeight);
 			}
 
 			$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 260 - $Left_Margin, $FontSize, $InventoryPlan['categoryid'] . ' - ' . $InventoryPlan['categorydescription'], 'left');
@@ -145,7 +145,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 			$FontSize = 8;
 		}
 
-		$YPos -= $line_height;
+		$YPos -= $LineHeight;
 
 
 		if ($_POST['Location'] == 'All') {
@@ -296,57 +296,19 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 			exit;
 		}
 
+		// Get the QOO due to Purchase orders for all locations. Function defined in SQL_CommonFunctions.inc
+		// Get the QOO dues to Work Orders for all locations. Function defined in SQL_CommonFunctions.inc
 		if ($_POST['Location'] == 'All') {
-			$SQL = "SELECT SUM(purchorderdetails.quantityord - purchorderdetails.quantityrecd) as qtyonorder
-						FROM purchorderdetails
-						INNER JOIN purchorders
-							ON purchorderdetails.orderno = purchorders.orderno
-						INNER JOIN locationusers
-							ON locationusers.loccode=purchorders.intostocklocation
-							AND locationusers.userid='" .  $_SESSION['UserID'] . "'
-							AND locationusers.canview=1
-						WHERE  purchorderdetails.itemcode = '" . $InventoryPlan['stockid'] . "'
-							AND purchorderdetails.completed = 0
-							AND purchorders.status <> 'Cancelled'
-							AND purchorders.status <> 'Rejected'
-							AND purchorders.status <> 'Pending'
-							AND purchorders.status <> 'Completed'";
+			$QOO = GetQuantityOnOrderDueToPurchaseOrders($InventoryPlan['stockid']);
+			$QOO += GetQuantityOnOrderDueToWorkOrders($InventoryPlan['stockid']);
 		} else {
-			$SQL = "SELECT SUM(purchorderdetails.quantityord - purchorderdetails.quantityrecd) as qtyonorder
-						FROM purchorderdetails
-						INNER JOIN purchorders
-							ON purchorderdetails.orderno = purchorders.orderno
-						INNER JOIN locationusers
-							ON locationusers.loccode=purchorders.intostocklocation
-							AND locationusers.userid='" .  $_SESSION['UserID'] . "'
-							AND locationusers.canview=1
-						WHERE purchorderdetails.itemcode = '" . $InventoryPlan['stockid'] . "'
-							AND purchorderdetails.completed = 0
-							AND purchorders.intostocklocation=  '" . $_POST['Location'] . "'
-							AND purchorders.status <> 'Cancelled'
-							AND purchorders.status <> 'Rejected'
-							AND purchorders.status <> 'Pending'
-							AND purchorders.status <> 'Completed'";
+			$QOO = GetQuantityOnOrderDueToPurchaseOrders($InventoryPlan['stockid'], $_POST['Location']);
+			$QOO += GetQuantityOnOrderDueToWorkOrders($InventoryPlan['stockid'], $_POST['Location']);
 		}
 
 		$DemandRow = DB_fetch_array($DemandResult);
 		$BOMDemandRow = DB_fetch_array($BOMDemandResult);
 		$TotalDemand = $DemandRow['qtydemand'] + $BOMDemandRow['dem'];
-
-		$OnOrdResult = DB_query($SQL, '', '', false, false);
-		if (DB_error_no() != 0) {
-			$Title = _('Inventory Planning') . ' - ' . _('Problem Report') . '....';
-			include('includes/header.inc');
-			prnMsg(_('The purchase order quantities could not be retrieved by the SQL because') . ' - ' . DB_error_msg(), 'error');
-			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-			if ($Debug == 1) {
-				echo '<br />' . $SQL;
-			}
-			include('includes/footer.inc');
-			exit;
-		}
-
-		$OnOrdRow = DB_fetch_array($OnOrdResult);
 
 		$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 110, $FontSize, $InventoryPlan['stockid'], 'left');
 		$LeftOvers = $PDF->addTextWrap(130, $YPos, 120, 6, $InventoryPlan['description'], 'left');
@@ -372,9 +334,9 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 		$LeftOvers = $PDF->addTextWrap(597, $YPos, 40, $FontSize, locale_number_format($InventoryPlan['qoh'], 0), 'right');
 		$LeftOvers = $PDF->addTextWrap(638, $YPos, 40, $FontSize, locale_number_format($TotalDemand, 0), 'right');
 
-		$LeftOvers = $PDF->addTextWrap(679, $YPos, 40, $FontSize, locale_number_format($OnOrdRow['qtyonorder'], 0), 'right');
+		$LeftOvers = $PDF->addTextWrap(679, $YPos, 40, $FontSize, locale_number_format($QOO, 0), 'right');
 
-		$SuggestedTopUpOrder = $IdealStockHolding - $InventoryPlan['qoh'] + $TotalDemand - $OnOrdRow['qtyonorder'];
+		$SuggestedTopUpOrder = $IdealStockHolding - $InventoryPlan['qoh'] + $TotalDemand - $QOO;
 		if ($SuggestedTopUpOrder <= 0) {
 			$LeftOvers = $PDF->addTextWrap(720, $YPos, 40, $FontSize, '   ', 'right');
 
@@ -385,7 +347,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 
 
 
-		if ($YPos < $Bottom_Margin + $line_height) {
+		if ($YPos < $Bottom_Margin + $LineHeight) {
 			$PageNumber++;
 			include('includes/PDFInventoryPlanPageHeader.inc');
 		}
@@ -393,9 +355,9 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 	}
 	/*end inventory valn while loop */
 
-	$YPos -= (2 * $line_height);
+	$YPos -= (2 * $LineHeight);
 
-	$PDF->line($Left_Margin, $YPos + $line_height, $Page_Width - $Right_Margin, $YPos + $line_height);
+	$PDF->line($Left_Margin, $YPos + $LineHeight, $Page_Width - $Right_Margin, $YPos + $LineHeight);
 
 	if ($ListCount == 0) {
 		$Title = _('Print Inventory Planning Report Empty');

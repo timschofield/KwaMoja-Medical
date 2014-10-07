@@ -1474,40 +1474,11 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 				else {
 					$DemandQty = 0;
 				}
-				// Find the quantity on purchase orders
-				$SQL = "SELECT SUM(purchorderdetails.quantityord-purchorderdetails.quantityrecd) AS qoo
-						FROM purchorderdetails INNER JOIN purchorders
-						ON purchorderdetails.orderno=purchorders.orderno
-						WHERE purchorderdetails.completed=0
-						AND purchorders.status<> 'Completed'
-						AND purchorders.status<> 'Rejected'
-						AND purchorders.status<> 'Cancelled'
-						AND purchorderdetails.itemcode='" . $MyRow['stockid'] . "'";
 
-				$ErrMsg = _('The order details for this product cannot be retrieved because');
-				$PurchResult = DB_query($SQL, $ErrMsg);
-
-				$PurchRow = DB_fetch_row($PurchResult);
-				if ($PurchRow[0] != null) {
-					$PurchQty = $PurchRow[0];
-				} //$PurchRow[0] != null
-				else {
-					$PurchQty = 0;
-				}
-
-				// Find the quantity on works orders
-				$SQL = "SELECT SUM(woitems.qtyreqd - woitems.qtyrecd) AS qwo
-						   FROM woitems
-						   WHERE stockid='" . $MyRow['stockid'] . "'";
-				$ErrMsg = _('The order details for this product cannot be retrieved because');
-				$WoResult = DB_query($SQL, $ErrMsg);
-				$WoRow = DB_fetch_row($WoResult);
-				if ($WoRow[0] != null) {
-					$WoQty = $WoRow[0];
-				} //$WoRow[0] != null
-				else {
-					$WoQty = 0;
-				}
+				// Get the QOO due to Purchase orders for all locations. Function defined in SQL_CommonFunctions.inc
+				$PurchQty = GetQuantityOnOrderDueToPurchaseOrders($MyRow['stockid']);
+				// Get the QOO dues to Work Orders for all locations. Function defined in SQL_CommonFunctions.inc
+				$WoQty = GetQuantityOnOrderDueToWorkOrders($MyRow['stockid']);
 
 				if ($k == 1) {
 					echo '<tr class="EvenTableRows">';
@@ -1648,42 +1619,10 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 					$DemandQty = 0;
 				}
 
-				// Find the quantity on purchase orders
-				$SQL = "SELECT SUM(purchorderdetails.quantityord-purchorderdetails.quantityrecd) AS qoo
-						 FROM purchorderdetails INNER JOIN purchorders
-						 ON purchorderdetails.orderno=purchorders.orderno
-						 WHERE purchorderdetails.completed=0
-						 AND purchorders.status<>'Cancelled'
-						 AND purchorders.status<>'Rejected'
-						 AND purchorders.status<>'Pending'
-						 AND purchorders.status<>'Completed'
-						AND purchorderdetails.itemcode='" . $MyRow['stockid'] . "'";
-
-				$ErrMsg = _('The order details for this product cannot be retrieved because');
-				$PurchResult = DB_query($SQL, $ErrMsg);
-
-				$PurchRow = DB_fetch_row($PurchResult);
-				if ($PurchRow[0] != null) {
-					$PurchQty = $PurchRow[0];
-				} //$PurchRow[0] != null
-				else {
-					$PurchQty = 0;
-				}
-
-				// Find the quantity on works orders
-				$SQL = "SELECT SUM(woitems.qtyreqd - woitems.qtyrecd) AS dedm
-					   FROM woitems
-					   WHERE stockid='" . $MyRow['stockid'] . "'";
-				$ErrMsg = _('The order details for this product cannot be retrieved because');
-				$WoResult = DB_query($SQL, $ErrMsg);
-
-				$WoRow = DB_fetch_row($WoResult);
-				if ($WoRow[0] != null) {
-					$WoQty = $WoRow[0];
-				} //$WoRow[0] != null
-				else {
-					$WoQty = 0;
-				}
+				// Get the QOO due to Purchase orders for all locations. Function defined in SQL_CommonFunctions.inc
+				$PurchQty = GetQuantityOnOrderDueToPurchaseOrders($MyRow['stockid']);
+				// Get the QOO dues to Work Orders for all locations. Function defined in SQL_CommonFunctions.inc
+				$WoQty = GetQuantityOnOrderDueToWorkOrders($MyRow['stockid']);
 
 				if ($k == 1) {
 					echo '<tr class="EvenTableRows">';

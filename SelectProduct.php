@@ -278,43 +278,12 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 						WHERE stockid = '" . $StockId . "'");
 			$QOHRow = DB_fetch_row($QOHResult);
 			$QOH = locale_number_format($QOHRow[0], $MyRow['decimalplaces']);
-			$QOOSQL = "SELECT SUM(purchorderdetails.quantityord -purchorderdetails.quantityrecd) AS QtyOnOrder
-							FROM purchorders
-							INNER JOIN purchorderdetails
-								ON purchorders.orderno=purchorderdetails.orderno
-							INNER JOIN locationusers
-								ON locationusers.loccode=purchorders.intostocklocation
-								AND locationusers.userid='" .  $_SESSION['UserID'] . "'
-								AND locationusers.canview=1
-							WHERE purchorderdetails.itemcode='" . $StockId . "'
-								AND purchorderdetails.completed =0
-								AND purchorders.status<>'Cancelled'
-								AND purchorders.status<>'Pending'
-								AND purchorders.status<>'Rejected'";
-			$QOOResult = DB_query($QOOSQL);
-			if (DB_num_rows($QOOResult) == 0) {
-				$QOO = 0;
-			} else {
-				$QOORow = DB_fetch_row($QOOResult);
-				$QOO = $QOORow[0];
-			}
-			//Also the on work order quantities
-			$SQL = "SELECT SUM(woitems.qtyreqd-woitems.qtyrecd) AS qtywo
-						FROM woitems
-						INNER JOIN workorders
-							ON woitems.wo=workorders.wo
-						INNER JOIN locationusers
-							ON locationusers.loccode=workorders.loccode
-							AND locationusers.userid='" .  $_SESSION['UserID'] . "'
-							AND locationusers.canview=1
-						WHERE workorders.closed=0
-							AND woitems.stockid='" . $StockId . "'";
-			$ErrMsg = _('The quantity on work orders for this product cannot be retrieved because');
-			$QOOResult = DB_query($SQL, $ErrMsg);
-			if (DB_num_rows($QOOResult) == 1) {
-				$QOORow = DB_fetch_row($QOOResult);
-				$QOO += $QOORow[0];
-			}
+
+			// Get the QOO due to Purchase orders for all locations. Function defined in SQL_CommonFunctions.inc
+			$QOO = GetQuantityOnOrderDueToPurchaseOrders($StockId);
+			// Get the QOO dues to Work Orders for all locations. Function defined in SQL_CommonFunctions.inc
+			$QOO += GetQuantityOnOrderDueToWorkOrders($StockId);
+
 			$QOO = locale_number_format($QOO, $MyRow['decimalplaces']);
 			break;
 	}
@@ -477,7 +446,7 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 				$StockImgLink = '<img src="GetStockImage.php?automake=1&amp;textcolor=FFFFFF&amp;bgcolor=CCCCCC' . '&amp;StockID=' . urlencode($StockId) . '&amp;text=' . urlencode($StockId) . '&amp;width=100' . '&amp;height=100' . '" alt="" />';
 			}
 		} else {
-			if (isset($StockId) AND file_exists($_SESSION['part_pics_dir'] . '/' . $StockId . '.jpg')) {
+			if (isset($StockId) and file_exists($_SESSION['part_pics_dir'] . '/' . $StockId . '.jpg')) {
 				$StockImgLink = '<img src="' . $_SESSION['part_pics_dir'] . '/' . $StockId . '.jpg" height="100" width="100" />';
 			} else {
 				$StockImgLink = _('No Image');
@@ -715,9 +684,9 @@ if (isset($SearchResult) and !isset($_POST['Select'])) {
 				++$k;
 			}
 			if ($MyRow['mbflag'] == 'D') {
-				$qoh = _('N/A');
+				$QOH = _('N/A');
 			} else {
-				$qoh = locale_number_format($MyRow['qoh'], $MyRow['decimalplaces']);
+				$QOH = locale_number_format($MyRow['qoh'], $MyRow['decimalplaces']);
 			}
 			if ($MyRow['discontinued'] == 1) {
 				$ItemStatus = '<p class="bad">' . _('Obsolete') . '</p>';
@@ -728,7 +697,7 @@ if (isset($SearchResult) and !isset($_POST['Select'])) {
 			echo '<td>' . $ItemStatus . '</td>
 				<td><input type="submit" name="Select" value="' . $MyRow['stockid'] . '" /></td>
 				<td title="' . $MyRow['longdescription'] . '">' . $MyRow['description'] . '</td>
-				<td class="number">' . $qoh . '</td>
+				<td class="number">' . $QOH . '</td>
 				<td>' . $MyRow['units'] . '</td>
 				<td><a target="_blank" href="' . $RootPath . '/StockStatus.php?StockID=' . $MyRow['stockid'] . '">' . _('View') . '</a></td>
 				</tr>';

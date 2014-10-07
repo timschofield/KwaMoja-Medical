@@ -1192,28 +1192,10 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 				$AssemblyDemandRow = DB_fetch_row($AssemblyDemandResult);
 				$QuantityAssemblyDemand = $AssemblyDemandRow[0];
 
-				$SQL = "SELECT SUM(purchorderdetails.quantityord - purchorderdetails.quantityrecd) as qtyonorder
-						FROM purchorderdetails INNER JOIN purchorders
-						ON purchorderdetails.orderno = purchorders.orderno
-						WHERE purchorderdetails.itemcode = '" . $StockItem->StockID . "'
-						AND purchorderdetails.completed = 0
-						AND purchorders.status<>'Cancelled'
-						AND purchorders.status<>'Rejected'
-						AND purchorders.status<>'Pending'
-						AND purchorders.status<>'Completed'";
-				$PurchOrdersResult = DB_query($SQL);
-				$PurchOrdersRow = DB_fetch_row($PurchOrdersResult);
-				$QuantityPurchOrders = $PurchOrdersRow[0];
-
-				$SQL = "SELECT SUM(woitems.qtyreqd - woitems.qtyrecd) as qtyonorder
-						FROM woitems INNER JOIN workorders
-						ON woitems.wo=workorders.wo
-						WHERE woitems.stockid = '" . $StockItem->StockID . "'
-						AND woitems.qtyreqd > woitems.qtyrecd
-						AND workorders.closed = 0";
-				$WorkOrdersResult = DB_query($SQL);
-				$WorkOrdersRow = DB_fetch_row($WorkOrdersResult);
-				$QuantityWorkOrders = $WorkOrdersRow[0];
+				// Get the QOO due to Purchase orders for all locations. Function defined in SQL_CommonFunctions.inc
+				$QuantityPurchOrders = GetQuantityOnOrderDueToPurchaseOrders($StockItem->StockID);
+				// Get the QOO dues to Work Orders for all locations. Function defined in SQL_CommonFunctions.inc
+				$QuantityWorkOrders = GetQuantityOnOrderDueToWorkOrders($StockItem->StockID);
 
 				//Now we have the data - do we need to make any more?
 				$ShortfallQuantity = $QOH - $QuantityDemand - $QuantityAssemblyDemand + $QuantityPurchOrders + $QuantityWorkOrders;
@@ -2179,37 +2161,11 @@ if (!isset($_POST['ProcessSale'])) {
 				} else {
 					$DemandQty = 0;
 				}
-				// Find the quantity on purchase orders
-				$SQL = "SELECT SUM(purchorderdetails.quantityord-purchorderdetails.quantityrecd) AS QOO
-						FROM purchorderdetails INNER JOIN purchorders
-						ON purchorderdetails.orderno=purchorders.orderno
-						WHERE purchorderdetails.completed=0
-						AND purchorders.status<>'Cancelled'
-						AND purchorders.status<>'Rejected'
-						AND purchorderdetails.itemcode='" . $MyRow['stockid'] . "'";
 
-				$ErrMsg = _('The order details for this product cannot be retrieved because');
-				$PurchResult = DB_query($SQL, $ErrMsg);
-
-				$PurchRow = DB_fetch_row($PurchResult);
-				if ($PurchRow[0] != null) {
-					$PurchQty = $PurchRow[0];
-				} else {
-					$PurchQty = 0;
-				}
-
-				// Find the quantity on works orders
-				$SQL = "SELECT SUM(woitems.qtyreqd - woitems.qtyrecd) AS dedm
-					   FROM woitems
-					   WHERE stockid='" . $MyRow['stockid'] . "'";
-				$ErrMsg = _('The order details for this product cannot be retrieved because');
-				$WoResult = DB_query($SQL, $ErrMsg);
-				$WoRow = DB_fetch_row($WoResult);
-				if ($WoRow[0] != null) {
-					$WoQty = $WoRow[0];
-				} else {
-					$WoQty = 0;
-				}
+				// Get the QOO due to Purchase orders for all locations. Function defined in SQL_CommonFunctions.inc
+				$QOO = GetQuantityOnOrderDueToPurchaseOrders($MyRow['stockid']);
+				// Get the QOO dues to Work Orders for all locations. Function defined in SQL_CommonFunctions.inc
+				$QOO += GetQuantityOnOrderDueToWorkOrders($MyRow['stockid']);
 
 				if ($k == 1) {
 					echo '<tr class="EvenTableRows">';
@@ -2218,9 +2174,8 @@ if (!isset($_POST['ProcessSale'])) {
 					echo '<tr class="OddTableRows">';
 					$k = 1;
 				}
-				$OnOrder = $PurchQty + $WoQty;
 
-				$Available = $QOH - $DemandQty + $OnOrder;
+				$Available = $QOH - $DemandQty + $QOO;
 
 				printf('<td>%s</td>
 						<td>%s</td>
@@ -2232,7 +2187,7 @@ if (!isset($_POST['ProcessSale'])) {
 						<td><input class="number" tabindex="' . strval($j + 7) . '" type="text" size="6" name="OrderQty%s" value="0" />
 							<input type="hidden" name="StockID%s" value="%s" />
 						</td>
-						</tr>', $MyRow['stockid'], $MyRow['description'], $MyRow['units'], $QOH, $DemandQty, $OnOrder, $Available, $i, $i, $MyRow['stockid']);
+						</tr>', $MyRow['stockid'], $MyRow['description'], $MyRow['units'], $QOH, $DemandQty, $QOO, $Available, $i, $i, $MyRow['stockid']);
 				++$i; //index for controls
 				#end of page full new headings if
 			}
@@ -2350,38 +2305,10 @@ if (!isset($_POST['ProcessSale'])) {
 					$DemandQty = 0;
 				}
 
-				// Find the quantity on purchase orders
-				$SQL = "SELECT SUM(purchorderdetails.quantityord-purchorderdetails.quantityrecd) AS QOO
-						 FROM purchorderdetails INNER JOIN purchorders
-						 WHERE purchorderdetails.completed=0
-						 AND purchorders.status <>'Cancelled'
-						 AND purchorders.status <>'Rejected'
-						 AND purchorders.status <>'Completed'
-						AND purchorderdetails.itemcode='" . $MyRow['stockid'] . "'";
-
-				$ErrMsg = _('The order details for this product cannot be retrieved because');
-				$PurchResult = DB_query($SQL, $ErrMsg);
-
-				$PurchRow = DB_fetch_row($PurchResult);
-				if ($PurchRow[0] != null) {
-					$PurchQty = $PurchRow[0];
-				} else {
-					$PurchQty = 0;
-				}
-
-				// Find the quantity on works orders
-				$SQL = "SELECT SUM(woitems.qtyreqd - woitems.qtyrecd) AS dedm
-						   FROM woitems
-						   WHERE stockid='" . $MyRow['stockid'] . "'";
-				$ErrMsg = _('The order details for this product cannot be retrieved because');
-				$WoResult = DB_query($SQL, $ErrMsg);
-
-				$WoRow = DB_fetch_row($WoResult);
-				if ($WoRow[0] != null) {
-					$WoQty = $WoRow[0];
-				} else {
-					$WoQty = 0;
-				}
+				// Get the QOO due to Purchase orders for all locations. Function defined in SQL_CommonFunctions.inc
+				$QOO = GetQuantityOnOrderDueToPurchaseOrders($MyRow['stockid']);
+				// Get the QOO dues to Work Orders for all locations. Function defined in SQL_CommonFunctions.inc
+				$QOO += GetQuantityOnOrderDueToWorkOrders($MyRow['stockid']);
 
 				if ($k == 1) {
 					echo '<tr class="EvenTableRows">';
@@ -2390,9 +2317,8 @@ if (!isset($_POST['ProcessSale'])) {
 					echo '<tr class="OddTableRows">';
 					$k = 1;
 				}
-				$OnOrder = $PurchQty + $WoQty;
 
-				$Available = $QOH - $DemandQty + $OnOrder;
+				$Available = $QOH - $DemandQty + $QOO;
 
 				printf('<td>%s</td>
 						<td>%s</td>
@@ -2402,7 +2328,7 @@ if (!isset($_POST['ProcessSale'])) {
 						<td class="number">%s</td>
 						<td class="number">%s</td>
 						<td><input class="number"  tabindex="' . strval($j + 7) . '" required="required" minlength="1" type="text" size="6" name="OrderQty%s" value="0" /><input type="hidden" name="StockID%s" value="%s" /></td>
-						</tr>', $MyRow['stockid'], $MyRow['description'], $MyRow['units'], locale_number_format($QOH, $MyRow['decimalplaces']), locale_number_format($DemandQty, $MyRow['decimalplaces']), locale_number_format($OnOrder, $MyRow['decimalplaces']), locale_number_format($Available, $MyRow['decimalplaces']), $i, $i, $MyRow['stockid']);
+						</tr>', $MyRow['stockid'], $MyRow['description'], $MyRow['units'], locale_number_format($QOH, $MyRow['decimalplaces']), locale_number_format($DemandQty, $MyRow['decimalplaces']), locale_number_format($QOO, $MyRow['decimalplaces']), locale_number_format($Available, $MyRow['decimalplaces']), $i, $i, $MyRow['stockid']);
 				++$i;
 				#end of page full new headings if
 			}

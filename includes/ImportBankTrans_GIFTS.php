@@ -13,9 +13,9 @@ if ($LineArray[0] == 6) { //Closing balance
 	$_SESSION['Statement']->ClosingBalance = doubleval($LineArray[3]);
 	$_SESSION['Statement']->ClosingDate = trim($LineArray[10], '"');
 }
-if ($LineArray[0] == 3) {//A Transaction Line
+if ($LineArray[0] == 3) { //A Transaction Line
 	++$i;
-	$_SESSION['Trans'][$i] = new BankTrans(trim($LineArray[10], '"'), doubleval(-$LineArray[3])) ;
+	$_SESSION['Trans'][$i] = new BankTrans(trim($LineArray[10], '"'), doubleval(-$LineArray[3]));
 	$_SESSION['Trans'][$i]->Description = trim($LineArray[12], '"') . '-' . trim($LineArray[6], '"') . ' ' . trim($LineArray[7], '"') . ' ' . trim($LineArray[8], '"') . ' ' . trim($LineArray[9], '"') . ' ' . trim($LineArray[11], '"') . ' ' . trim($LineArray[14], '"');
 }
 

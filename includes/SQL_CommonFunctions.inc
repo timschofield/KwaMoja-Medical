@@ -119,7 +119,7 @@ function GetCreditAvailable($DebtorNo) {
 			debtorsmaster.creditlimit";
 
 	$ErrMsg = _('The current account balance of the customer could not be retrieved because');
-	$GetAccountBalanceResult = DB_query($SQL,  $ErrMsg);
+	$GetAccountBalanceResult = DB_query($SQL, $ErrMsg);
 
 	if (DB_num_rows($GetAccountBalanceResult) == 1) {
 
@@ -374,6 +374,82 @@ function EnsureGLEntriesBalance($TransType, $TransTypeNo) {
 
 		}
 	}
+}
+
+/* 	GetQuantityOnOrderDueToPurchaseOrders return the QOO for an item due to Purchase orders (not WO).
+If Location is empty, it returns the QOO for all locations
+If location is NOT empty, returns the QOO for that specific location.
+*/
+function GetQuantityOnOrderDueToPurchaseOrders($StockId, $Location = '') {
+	if ($Location == "") {
+		// All locations to be considered
+		$WhereLocation = "";
+		$ErrMsg = _('The quantity on order due to purchase orders for') . ' ' . $StockId . ' ' . _('to be received into all locations cannot be retrieved because');
+	} else {
+		// Just 1 location to consider
+		$WhereLocation = " AND purchorders.intostocklocation = '" . $Location . "'";
+		$ErrMsg = _('The quantity on order due to purchase orders for') . ' ' . $StockId . ' ' . _('to be received into') . ' ' . $Location . ' ' . _('cannot be retrieved because');
+	}
+
+	$SQL = "SELECT SUM(purchorderdetails.quantityord -purchorderdetails.quantityrecd) AS QtyOnOrder
+			FROM purchorders
+			INNER JOIN purchorderdetails
+				ON purchorders.orderno=purchorderdetails.orderno
+			INNER JOIN locationusers
+				ON locationusers.loccode=purchorders.intostocklocation
+				AND locationusers.userid='" . $_SESSION['UserID'] . "'
+				AND locationusers.canview=1
+			WHERE purchorderdetails.itemcode='" . $StockId . "'
+				AND purchorderdetails.completed = 0
+				AND purchorders.status<>'Cancelled'
+				AND purchorders.status<>'Pending'
+				AND purchorders.status<>'Rejected'
+				AND purchorders.status<>'Completed'" . $WhereLocation;
+
+	$QOOResult = DB_query($SQL, $ErrMsg);
+	if (DB_num_rows($QOOResult) == 0) {
+		$QOO = 0;
+	} else {
+		$QOORow = DB_fetch_row($QOOResult);
+		$QOO = $QOORow[0];
+	}
+	return $QOO;
+}
+
+/* 	GetQuantityOnOrderDueToWorkOrders return the QOO for an item due to Work orders (not PO).
+If Location is empty, it returns the QOO for all locations
+If location is NOT empty, returns the QOO for that specific location.
+*/
+function GetQuantityOnOrderDueToWorkOrders($StockId, $Location = '') {
+	if ($Location == "") {
+		// All locations to be considered
+		$WhereLocation = "";
+		$ErrMsg = _('The quantity on order due to work orders for') . ' ' . $StockId . ' ' . _('to be received into all locations cannot be retrieved because');
+	} else {
+		// Just 1 location to consider
+		$WhereLocation = " AND workorders.loccode='" . $Location . "'";
+		$ErrMsg = _('The quantity on order due to work orders for') . ' ' . $StockId . ' ' . _('to be received into') . ' ' . $Location . ' ' . _('cannot be retrieved because');
+	}
+
+	$SQL = "SELECT SUM(woitems.qtyreqd-woitems.qtyrecd) AS qtywo
+			FROM woitems
+			INNER JOIN workorders
+				ON woitems.wo=workorders.wo
+			INNER JOIN locationusers
+				ON locationusers.loccode=workorders.loccode
+				AND locationusers.userid='" . $_SESSION['UserID'] . "'
+				AND locationusers.canview=1
+			WHERE workorders.closed=0
+				AND woitems.stockid='" . $StockId . "'" . $WhereLocation;
+
+	$QOOResult = DB_query($SQL, $ErrMsg);
+	if (DB_num_rows($QOOResult) == 0) {
+		$QOO = 0;
+	} else {
+		$QOORow = DB_fetch_row($QOOResult);
+		$QOO = $QOORow[0];
+	}
+	return $QOO;
 }
 
 ?>

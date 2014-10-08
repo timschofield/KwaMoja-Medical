@@ -85,9 +85,18 @@ if (isset($_POST['submit'])) {
 	} elseif (mb_strlen($_POST['X_FrequentlyOrderedItems']) > 2 or !is_numeric($_POST['X_FrequentlyOrderedItems'])) {
 		$InputError = 1;
 		prnMsg(_('The number of frequently ordered items to display must be numeric'), 'error');
-	} elseif (strlen($_POST['X_SmtpSetting']) != 1 OR !is_numeric($_POST['X_SmtpSetting'])) {
+	} elseif (strlen($_POST['X_SmtpSetting']) != 1 or !is_numeric($_POST['X_SmtpSetting'])) {
 		$InputError = 1;
 		prnMsg(_('The SMTP setting should be selected as Yes or No'), 'error');
+	} elseif (mb_strlen($_POST['X_QualityProdSpecText']) > 5000) {
+		$InputError = 1;
+		prnMsg(_('The QualityProdSpecText may not be more than 5000 characters long.'), 'error');
+	} elseif (mb_strlen($_POST['X_QualityCOAText']) > 5000) {
+		$InputError = 1;
+		prnMsg(_('The QualityCOAText may not be more than 5000 characters long.'), 'error');
+	} elseif (strlen($_POST['X_QualityLogSamples']) != 1 or !is_numeric($_POST['X_QualityLogSamples'])) {
+		$InputError = 1;
+		prnMsg(_('The QualityLogSamples setting should be selected as Yes or No'), 'error');
 	}
 
 
@@ -309,6 +318,15 @@ if (isset($_POST['submit'])) {
 		if ($_SESSION['AutoAuthorisePO'] != $_POST['X_AutoAuthorisePO']) {
 			$SQL[] = "UPDATE config SET confvalue='" . $_POST['X_AutoAuthorisePO'] . "' WHERE confname='AutoAuthorisePO'";
 		}
+		if ($_SESSION['QualityProdSpecText'] != $_POST['X_QualityProdSpecText']) {
+			$SQL[] = "UPDATE config SET confvalue='" . $_POST['X_QualityProdSpecText'] . "' WHERE confname='QualityProdSpecText'";
+		}
+		if ($_SESSION['QualityCOAText'] != $_POST['X_QualityCOAText']) {
+			$SQL[] = "UPDATE config SET confvalue='" . $_POST['X_QualityCOAText'] . "' WHERE confname='QualityCOAText'";
+		}
+		if ($_SESSION['QualityLogSamples'] != $_POST['X_QualityLogSamples']) {
+			$SQL[] = "UPDATE config SET confvalue='" . $_POST['X_QualityLogSamples'] . "' WHERE confname='QualityLogSamples'";
+		}
 		if (isset($_POST['X_ItemDescriptionLanguages'])) {
 			$ItemDescriptionLanguages = '';
 			foreach ($_POST['X_ItemDescriptionLanguages'] as $ItemLanguage) {
@@ -325,8 +343,8 @@ if (isset($_POST['submit'])) {
 		$ErrMsg = _('The system configuration could not be updated because');
 		if (sizeof($SQL) > 1) {
 			$Result = DB_Txn_Begin();
-			foreach ($SQL as $line) {
-				$Result = DB_query($line, $ErrMsg);
+			foreach ($SQL as $Line) {
+				$Result = DB_query($Line, $ErrMsg);
 			}
 			$Result = DB_Txn_Commit();
 		} elseif (sizeof($SQL) == 1) {
@@ -454,7 +472,7 @@ echo '<tr style="outline: 1px solid">
 		<td><select minlength="0" name="X_ItemDescriptionLanguages[]" size="5" multiple="multiple" >';
 echo '<option value="">' . _('None') . '</option>';
 foreach ($LanguagesArray as $LanguageEntry => $LanguageName) {
-	if (isset($_POST['X_ItemDescriptionLanguages']) AND in_array($LanguageEntry, $_POST['X_ItemDescriptionLanguages'])) {
+	if (isset($_POST['X_ItemDescriptionLanguages']) and in_array($LanguageEntry, $_POST['X_ItemDescriptionLanguages'])) {
 		echo '<option selected="selected" value="' . $LanguageEntry . '">' . $LanguageName['LanguageName'] . '</option>';
 	} elseif ($LanguageEntry != $DefaultLanguage) {
 		echo '<option value="' . $LanguageEntry . '">' . $LanguageName['LanguageName'] . '</option>';
@@ -562,8 +580,8 @@ echo '<td><select required="required" minlength="1" name="X_DefaultPriceList">';
 if (DB_num_rows($Result) == 0) {
 	echo '<option selected="selected" value="">' . _('Unavailable');
 } else {
-	while ($row = DB_fetch_array($Result)) {
-		echo '<option ' . ($_SESSION['DefaultPriceList'] == $row['typeabbrev'] ? 'selected="selected" ' : '') . 'value="' . $row['typeabbrev'] . '">' . $row['sales_type'] . '</option>';
+	while ($MyRow = DB_fetch_array($Result)) {
+		echo '<option ' . ($_SESSION['DefaultPriceList'] == $MyRow['typeabbrev'] ? 'selected="selected" ' : '') . 'value="' . $MyRow['typeabbrev'] . '">' . $MyRow['sales_type'] . '</option>';
 	}
 }
 echo '</select></td>
@@ -578,8 +596,8 @@ echo '<td><select required="required" minlength="1" name="X_Default_Shipper">';
 if (DB_num_rows($Result) == 0) {
 	echo '<option selected="selected" value="">' . _('Unavailable') . '</option>';
 } else {
-	while ($row = DB_fetch_array($Result)) {
-		echo '<option ' . ($_SESSION['Default_Shipper'] == $row['shipper_id'] ? 'selected="selected" ' : '') . 'value="' . $row['shipper_id'] . '">' . $row['shippername'] . '</option>';
+	while ($MyRow = DB_fetch_array($Result)) {
+		echo '<option ' . ($_SESSION['Default_Shipper'] == $MyRow['shipper_id'] ? 'selected="selected" ' : '') . 'value="' . $MyRow['shipper_id'] . '">' . $MyRow['shippername'] . '</option>';
 	}
 }
 echo '</select></td>
@@ -637,8 +655,8 @@ echo '<td><select required="required" minlength="1" name="X_DefaultTaxCategory">
 if (DB_num_rows($Result) == 0) {
 	echo '<option selected="selected" value="">' . _('Unavailable') . '</option>';
 } else {
-	while ($row = DB_fetch_array($Result)) {
-		echo '<option ' . ($_SESSION['DefaultTaxCategory'] == $row['taxcatid'] ? 'selected="selected" ' : '') . 'value="' . $row['taxcatid'] . '">' . $row['taxcatname'] . '</option>';
+	while ($MyRow = DB_fetch_array($Result)) {
+		echo '<option ' . ($_SESSION['DefaultTaxCategory'] == $MyRow['taxcatid'] ? 'selected="selected" ' : '') . 'value="' . $MyRow['taxcatid'] . '">' . $MyRow['taxcatname'] . '</option>';
 	}
 }
 echo '</select></td>
@@ -796,7 +814,7 @@ $DirHandle = dir($CompanyDirectory);
 
 while ($DirEntry = $DirHandle->read()) {
 
-	if (is_dir($CompanyDirectory . $DirEntry) AND $DirEntry != '..' AND $DirEntry != '.' AND $DirEntry != '.svn' AND $DirEntry != 'CVS' AND $DirEntry != 'reports' AND $DirEntry != 'locale' AND $DirEntry != 'fonts') {
+	if (is_dir($CompanyDirectory . $DirEntry) and $DirEntry != '..' and $DirEntry != '.' and $DirEntry != '.svn' and $DirEntry != 'CVS' and $DirEntry != 'reports' and $DirEntry != 'locale' and $DirEntry != 'fonts') {
 
 		if ($_SESSION['part_pics_dir'] == $CompanyDirectory . $DirEntry) {
 			echo '<option selected="selected" value="' . $DirEntry . '">' . $DirEntry . '</option>';
@@ -818,7 +836,7 @@ $DirHandle = dir($CompanyDirectory);
 
 while (false != ($DirEntry = $DirHandle->read())) {
 
-	if (is_dir($CompanyDirectory . $DirEntry) AND $DirEntry != '..' AND $DirEntry != 'includes' AND $DirEntry != '.' AND $DirEntry != '.svn' AND $DirEntry != 'doc' AND $DirEntry != 'css' AND $DirEntry != 'CVS' AND $DirEntry != 'sql' AND $DirEntry != 'part_pics' AND $DirEntry != 'locale' AND $DirEntry != 'fonts') {
+	if (is_dir($CompanyDirectory . $DirEntry) and $DirEntry != '..' and $DirEntry != 'includes' and $DirEntry != '.' and $DirEntry != '.svn' and $DirEntry != 'doc' and $DirEntry != 'css' and $DirEntry != 'CVS' and $DirEntry != 'sql' and $DirEntry != 'part_pics' and $DirEntry != 'locale' and $DirEntry != 'fonts') {
 
 		if ($_SESSION['reports_dir'] == $CompanyDirectory . $DirEntry) {
 			echo '<option selected="selected" value="' . $DirEntry . '">' . $DirEntry . '</option>';
@@ -1111,6 +1129,36 @@ if ($_SESSION['SmtpSetting'] == 0) {
 echo '</select>
 		 </td>
 		<td>' . _('The default setting is using mail in default php.ini, if you choose Yes for this selection, you can use the SMTP set in the setup section.') . '
+		</td>
+	 </tr>';
+
+echo '<tr style="outline: 1px solid">
+		<td>' . _('Text For Quality Product Specification') . ':</td>
+		<td><textarea name="X_QualityProdSpecText" rows="3" cols="40">' . $_SESSION['QualityProdSpecText'] . '</textarea></td>
+		<td>' . _('This text appears on product specifications') . '</td>
+	</tr>';
+
+echo '<tr style="outline: 1px solid">
+		<td>' . _('Text For Quality Product Certifications') . ':</td>
+		<td><textarea name="X_QualityCOAText" rows="3" cols="40">' . $_SESSION['QualityCOAText'] . '</textarea></td>
+		<td>' . _('This text appears on product certifications') . '</td>
+	</tr>';
+
+echo '<tr style="outline: 1px solid">
+		<td>' . _('Using Smtp Mail') . '</td>
+		<td>
+			<select required="required" minlength="1" type="text" name="X_QualityLogSamples" >';
+if ($_SESSION['QualityLogSamples'] == 0) {
+	echo '<option select="selected" value="0">' . _('No') . '</option>';
+	echo '<option value="1">' . _('Yes') . '</option>';
+} elseif ($_SESSION['QualityLogSamples'] == 1) {
+	echo '<option select="selected" value="1">' . _('Yes') . '</option>';
+	echo '<option value="0">' . _('No') . '</option>';
+}
+
+echo '</select>
+		 </td>
+		<td>' . _('The flag determines if the system creates quality samples automatically for each lot during P/O Receipt and W/O Recipt transactions.') . '
 		</td>
 	 </tr>';
 

@@ -33,6 +33,13 @@ if (!$db) {
 	exit;
 }
 
+if (! mysql_select_db($_SESSION['DatabaseName'],$db)) {
+	echo '<br />' . _('The company name entered does not correspond to a database on the database server specified in the config.php configuration file. Try logging in with a different company name');
+	echo '<br /><a href="index.php">' . _('Back to login page') . '</A>';
+	unset ($_SESSION['DatabaseName']);
+	exit;
+}
+
 require_once($PathPrefix . 'includes/MiscFunctions.php');
 
 //DB wrapper functions to change only once for whole application

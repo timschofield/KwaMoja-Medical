@@ -90,11 +90,14 @@ function DB_query($SQL, $ErrorMessage = '', $DebugMessage = '', $Transaction = f
 
 			if ($SQLArray[2] != 'audittrail') { // to ensure the auto delete of audit trail history is not logged
 				$AuditSQL = "INSERT INTO audittrail (transactiondate,
-									userid,
-									querystring)
-						VALUES('" . Date('Y-m-d H:i:s') . "',
-							'" . trim($_SESSION['UserID']) . "',
-							'" . DB_escape_string($SQL) . "')";
+													userid,
+													address,
+													querystring)
+												VALUES(
+													'" . Date('Y-m-d H:i:s') . "',
+													'" . trim($_SESSION['UserID']) . "',
+													'" . $_SERVER['REMOTE_ADDR'] . "',
+													'" . DB_escape_string($SQL) . "')";
 
 				$AuditResult = mysqli_query($db, $AuditSQL);
 			}
@@ -184,9 +187,9 @@ function DB_show_fields($TableName) {
 	return $Result;
 }
 
-function interval($val, $Inter) {
+function interval($Value, $Interval) {
 	global $DBType;
-	return "\n" . 'interval ' . $val . ' ' . $Inter . "\n";
+	return "\n" . 'interval ' . $Value . ' ' . $Interval . "\n";
 }
 
 function DB_Maintenance() {

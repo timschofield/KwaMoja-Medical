@@ -50,11 +50,11 @@ echo '<tr>
 		<td>' . _('User ID') . '</td>
 		<td><select minlength="0" tabindex="3" name="SelectedUser">';
 echo '<option value="ALL">' . _('All') . '</option>';
-while ($users = DB_fetch_row($UserResult)) {
-	if (isset($_POST['SelectedUser']) and $users[0] == $_POST['SelectedUser']) {
-		echo '<option selected="selected" value="' . $users[0] . '">' . $users[0] . '</option>';
+while ($Users = DB_fetch_row($UserResult)) {
+	if (isset($_POST['SelectedUser']) and $Users[0] == $_POST['SelectedUser']) {
+		echo '<option selected="selected" value="' . $Users[0] . '">' . $Users[0] . '</option>';
 	} else {
-		echo '<option value="' . $users[0] . '">' . $users[0] . '</option>';
+		echo '<option value="' . $Users[0] . '">' . $Users[0] . '</option>';
 	}
 }
 echo '</select></td></tr>';
@@ -64,11 +64,11 @@ echo '<tr>
 		<td>' . _('Table ') . '</td>
 		<td><select minlength="0" tabindex="4" name="SelectedTable">';
 echo '<option value="ALL">' . _('All') . '</option>';
-while ($tables = DB_fetch_row($TableResult)) {
-	if (isset($_POST['SelectedTable']) and $tables[0] == $_POST['SelectedTable']) {
-		echo '<option selected="selected" value="' . $tables[0] . '">' . $tables[0] . '</option>';
+while ($Tables = DB_fetch_row($TableResult)) {
+	if (isset($_POST['SelectedTable']) and $Tables[0] == $_POST['SelectedTable']) {
+		echo '<option selected="selected" value="' . $Tables[0] . '">' . $Tables[0] . '</option>';
 	} else {
-		echo '<option value="' . $tables[0] . '">' . $tables[0] . '</option>';
+		echo '<option value="' . $Tables[0] . '">' . $Tables[0] . '</option>';
 	}
 }
 echo '</select></td></tr>';
@@ -106,8 +106,8 @@ if (isset($_POST['View'])) {
 		$SQLString = str_replace('(', '', $SQLString);
 		$SQLString = str_replace($_SESSION['SQLString']['table'], '', $SQLString);
 		$SQLArray = explode('VALUES', $SQLString);
-		$fieldnamearray = explode(',', $SQLArray[0]);
-		$_SESSION['SQLString']['fields'] = $fieldnamearray;
+		$FieldNameArray = explode(',', $SQLArray[0]);
+		$_SESSION['SQLString']['fields'] = $FieldNameArray;
 		if (isset($SQLArray[1])) {
 			$FieldValueArray = preg_split("/[[:space:]]*('[^']*'|[[:digit:].]+),/", $SQLArray[1], 0, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
 			$_SESSION['SQLString']['values'] = $FieldValueArray;
@@ -153,12 +153,14 @@ if (isset($_POST['View'])) {
 	if ($_POST['SelectedUser'] == 'ALL') {
 		$SQL = "SELECT transactiondate,
 				userid,
+				address,
 				querystring
 			FROM audittrail
 			WHERE transactiondate BETWEEN '" . $FromDate . "' AND '" . $ToDate . "'" . $ContainingText;
 	} else {
 		$SQL = "SELECT transactiondate,
 				userid,
+				address,
 				querystring
 			FROM audittrail
 			WHERE userid='" . $_POST['SelectedUser'] . "'
@@ -170,22 +172,23 @@ if (isset($_POST['View'])) {
 	echo '<tr>
 			<th>' . _('Date/Time') . '</th>
 			<th>' . _('User') . '</th>
+			<th>' . _('Address') . '</th>
 			<th>' . _('Type') . '</th>
 			<th>' . _('Table') . '</th>
 			<th>' . _('Field Name') . '</th>
 			<th>' . _('Value') . '</th>
 		</tr>';
-	while ($MyRow = DB_fetch_row($Result)) {
-		if (Query_Type($MyRow[2]) == "INSERT") {
-			InsertQueryInfo(str_replace("INSERT INTO", '', $MyRow[2]));
+	while ($MyRow = DB_fetch_array($Result)) {
+		if (Query_Type($MyRow['querystring']) == "INSERT") {
+			InsertQueryInfo(str_replace("INSERT INTO", '', $MyRow['querystring']));
 			$RowColour = '#a8ff90';
 		}
-		if (Query_Type($MyRow[2]) == "UPDATE") {
-			UpdateQueryInfo(str_replace("UPDATE", '', $MyRow[2]));
+		if (Query_Type($MyRow['querystring']) == "UPDATE") {
+			UpdateQueryInfo(str_replace("UPDATE", '', $MyRow['querystring']));
 			$RowColour = '#feff90';
 		}
-		if (Query_Type($MyRow[2]) == "DELETE") {
-			DeleteQueryInfo(str_replace("DELETE FROM", '', $MyRow[2]));
+		if (Query_Type($MyRow['querystring']) == "DELETE") {
+			DeleteQueryInfo(str_replace("DELETE FROM", '', $MyRow['querystring']));
 			$RowColour = '#fe90bf';
 		}
 
@@ -194,9 +197,10 @@ if (isset($_POST['View'])) {
 				$_SESSION['SQLString']['values'][0] = '';
 			}
 			echo '<tr style="background-color: ' . $RowColour . '">
-				<td>' . $MyRow[0] . '</td>
-				<td>' . $MyRow[1] . '</td>
-				<td>' . Query_Type($MyRow[2]) . '</td>
+				<td>' . $MyRow['transactiondate'] . '</td>
+				<td>' . $MyRow['userid'] . '</td>
+				<td>' . $MyRow['address'] . '</td>
+				<td>' . Query_Type($MyRow['querystring']) . '</td>
 				<td>' . $_SESSION['SQLString']['table'] . '</td>
 				<td>' . $_SESSION['SQLString']['fields'][0] . '</td>
 				<td>' . trim(str_replace("'", "", $_SESSION['SQLString']['values'][0])) . '</td></tr>';
@@ -205,6 +209,7 @@ if (isset($_POST['View'])) {
 				if (isset($_SESSION['SQLString']['values'][$i]) and (trim(str_replace("'", "", $_SESSION['SQLString']['values'][$i])) != "") & (trim($_SESSION['SQLString']['fields'][$i]) != 'password') & (trim($_SESSION['SQLString']['fields'][$i]) != 'www_users.password')) {
 					echo '<tr style="background-color:' . $RowColour . '">';
 					echo '<td></td>
+						<td></td>
 						<td></td>
 						<td></td>
 						<td></td>';

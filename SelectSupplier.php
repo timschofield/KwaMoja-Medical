@@ -123,6 +123,80 @@ if (isset($_SESSION['SupplierID'])) {
 		$SupplierName = $MyRow[0];
 	}
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" title="' . _('Supplier') . '" alt="" />' . ' ' . _('Supplier') . ' : <b>' . stripslashes($_SESSION['SupplierID']) . ' - ' . $SupplierName . '</b> ' . _('has been selected') . '.</p>';
+	// Extended Info only if selected in Configuration
+	if ($_SESSION['Extended_SupplierInfo'] == 1) {
+		if ($_SESSION['SupplierID'] != '') {
+			$SQL = "SELECT suppliers.suppname,
+							suppliers.lastpaid,
+							suppliers.lastpaiddate,
+							suppliersince,
+							currencies.decimalplaces AS currdecimalplaces,
+							email,
+							telephone
+					FROM suppliers
+					INNER JOIN currencies
+						ON suppliers.currcode=currencies.currabrev
+					WHERE suppliers.supplierid ='" . $_SESSION['SupplierID'] . "'";
+			$ErrMsg = _('An error occurred in retrieving the information');
+			$DataResult = DB_query($SQL, $ErrMsg);
+			$MyRow = DB_fetch_array($DataResult);
+			// Select some more data about the supplier
+			$SQL = "SELECT SUM(-ovamount) AS total FROM supptrans WHERE supplierno = '" . $_SESSION['SupplierID'] . "' and type != '20'";
+			$Total1Result = DB_query($SQL);
+			$Row = DB_fetch_array($Total1Result);
+			echo '<table style="width:75%" cellpadding="4">';
+			echo '<tr>
+					<th style="width:40%">' . _('Contact Name') . '</th>
+					<th style="width:20%">' . _('Position') . '</th>
+					<th style="width:20%">' . _('Telephone Number') . '</th>
+					<th style="width:20%">' . _('Email Address') . '</th>
+				</tr>';
+			$ContactSQL = "SELECT contact,
+									position,
+									tel,
+									email
+								FROM suppliercontacts
+								WHERE supplierid='" . $_SESSION['SupplierID'] . "'";
+			$ContactResult = DB_query($ContactSQL);
+			while ($ContactRow = DB_fetch_array($ContactResult)) {
+				echo '<tr>
+						<td style="width:40%" class="select">' . $ContactRow['contact'] . '</td>
+						<td style="width:20%" class="select">' . $ContactRow['position'] . '</td>
+						<td style="width:20%" class="select">' . $ContactRow['tel'] . '</td>
+						<td style="width:20%" class="select">' . $ContactRow['email'] . '</td>
+					</tr>';
+			}
+			echo '<tr>
+					<th colspan="4">' . _('Supplier Data') . '</th>
+				</tr>
+				<tr>
+					<td style="width:30%" valign="top" class="select">';
+			/* Supplier Data */
+			//echo "Distance to this Supplier: <b>TBA</b><br />";
+			if ($MyRow['lastpaiddate'] == 0) {
+				echo _('No payments yet to this supplier.') . '</td>
+					<td valign="top" class="select"></td>';
+			} else {
+				echo _('Last Paid') . ':</td>
+					<td style="width:20%" valign="top" class="select"> <b>' . ConvertSQLDate($MyRow['lastpaiddate']) . '</b></td>';
+			}
+			echo '<td style="width:30%" valign="top" class="select">' . _('Last Paid Amount') . ':</td>
+					<td style="width:20%" valign="top" class="number select">  <b>' . locale_number_format($MyRow['lastpaid'], $MyRow['currdecimalplaces']) . '</b></td></tr>';
+			echo '<tr>
+					<td style="width:30%" valign="top" class="select">' . _('Supplier since') . ':</td>
+					<td style="width:20%" valign="top" class="select"> <b>' . ConvertSQLDate($MyRow['suppliersince']) . '</b></td>
+					<td style="width:30%" valign="top" class="select">' . _('Total Spend with this Supplier') . ':</td>
+					<td style="width:20%" valign="top" class="number select"> <b>' . locale_number_format($Row['total'], $MyRow['currdecimalplaces']) . '</b></td>
+				</tr>';
+			echo '<tr>
+					<td style="width:30%" valign="top" class="select">' . _('Email Address') . ':</td>
+					<td style="width:20%" valign="top" class="select"> <b>' . $MyRow['email'] . '</b></td>
+					<td style="width:30%" valign="top" class="select">' . _('Telephone Number') . ':</td>
+					<td style="width:20%" valign="top" class="number select"> <b>' . $MyRow['telephone'] . '</b></td>
+				</tr>';
+			echo '</table>';
+		}
+	}
 	echo '<div class="page_help_text noPrint">' . _('Select a menu option to operate using this supplier.') . '</div>';
 	echo '<table width="90%" cellpadding="4">
 			<tr>
@@ -133,49 +207,33 @@ if (isset($_SESSION['SupplierID'])) {
 	echo '<tr>
 			<td valign="top" class="select">';
 	/* Inquiry Options */
-	echo '<a href="' . $RootPath . '/SupplierInquiry.php?SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Supplier Account Inquiry') . '</a>';
+	echo '<a href="' . $RootPath . '/SupplierInquiry.php?SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Account Inquiry') . '</a>';
 
-	echo '<a href="' . $RootPath . '/PO_SelectOSPurchOrder.php?SelectedSupplier=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Add / Receive / View Outstanding Purchase Orders') . '</a>';
-	echo '<a href="' . $RootPath . '/PO_SelectPurchOrder.php?SelectedSupplier=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('View All Purchase Orders') . '</a>';
+	echo '<a href="' . $RootPath . '/PO_SelectOSPurchOrder.php?SelectedSupplier=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Outstanding Purchase Orders') . '</a>';
+	echo '<a href="' . $RootPath . '/PO_SelectPurchOrder.php?SelectedSupplier=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('View All Orders') . '</a>';
 	wikiLink('Supplier', urlencode(stripslashes($_SESSION['SupplierID'])));
-	echo '<a href="' . $RootPath . '/ShiptsList.php?SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '&amp;SupplierName=' . urlencode($SupplierName) . '">' . _('List all open shipments for') . ' ' . $SupplierName . '</a>';
-	echo '<a href="' . $RootPath . '/Shipt_Select.php?SelectedSupplier=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Search / Modify / Close Shipments') . '</a>';
-	echo '<a href="' . $RootPath . '/SuppPriceList.php?SelectedSupplier=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Supplier Price List') . '</a>';
+	echo '<a href="' . $RootPath . '/ShiptsList.php?SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '&amp;SupplierName=' . urlencode($SupplierName) . '">' . _('Open shipments') . '</a>';
+	echo '<a href="' . $RootPath . '/Shipt_Select.php?SelectedSupplier=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Modify/Close Shipments') . '</a>';
+	echo '<a href="' . $RootPath . '/SuppPriceList.php?SelectedSupplier=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Price List') . '</a>';
 	echo '</td><td valign="top" class="select">';
 	/* Supplier Transactions */
-	echo '<a href="' . $RootPath . '/PO_Header.php?NewOrder=Yes&amp;SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Enter a Purchase Order for This Supplier') . '</a>';
-	echo '<a href="' . $RootPath . '/SupplierInvoice.php?SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Enter a Suppliers Invoice') . '</a>';
-	echo '<a href="' . $RootPath . '/SupplierCredit.php?New=true&amp;SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Enter a Suppliers Credit Note') . '</a>';
-	echo '<a href="' . $RootPath . '/Payments.php?SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Enter a Payment to, or Receipt from the Supplier') . '</a>';
+	echo '<a href="' . $RootPath . '/PO_Header.php?NewOrder=Yes&amp;SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Enter a Purchase Order') . '</a>';
+	echo '<a href="' . $RootPath . '/SupplierInvoice.php?SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Enter an Invoice') . '</a>';
+	echo '<a href="' . $RootPath . '/SupplierCredit.php?New=true&amp;SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Enter a Credit Note') . '</a>';
+	echo '<a href="' . $RootPath . '/Payments.php?SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Enter a Payment/Receipt') . '</a>';
 	echo '<a href="' . $RootPath . '/ReverseGRN.php?SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Reverse an Outstanding Goods Received Note (GRN)') . '</a>';
 	echo '</td><td valign="top" class="select">';
 	/* Supplier Maintenance */
-	echo '<a href="' . $RootPath . '/Suppliers.php">' . _('Add a New Supplier') . '</a>
-		<a href="' . $RootPath . '/Suppliers.php?SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Modify Or Delete Supplier Details') . '</a>
-		<a href="' . $RootPath . '/SupplierContacts.php?SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Add/Modify/Delete Supplier Contacts') . '</a>
-		<a href="' . $RootPath . '/SellThroughSupport.php?SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Set Up Sell Through Support Deals') . '</a>
-		<a href="' . $RootPath . '/Shipments.php?NewShipment=Yes">' . _('Set Up A New Shipment') . '</a>
-		<a href="' . $RootPath . '/SuppLoginSetup.php">' . _('Supplier Login Configuration') . '</a>
+	echo '<a href="' . $RootPath . '/Suppliers.php">' . _('Add Supplier') . '</a>
+		<a href="' . $RootPath . '/Suppliers.php?SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Modify Supplier') . '</a>
+		<a href="' . $RootPath . '/SupplierContacts.php?SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Contacts') . '</a>
+		<a href="' . $RootPath . '/SellThroughSupport.php?SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Sell Through Support') . '</a>
+		<a href="' . $RootPath . '/Shipments.php?NewShipment=Yes">' . _('Shipments') . '</a>
+		<a href="' . $RootPath . '/SuppLoginSetup.php">' . _('Supplier Login') . '</a>
 		</td>
 		</tr>
 		</table>';
-	// Supplier is not selected yet
-	echo '';
-	echo '<table width="90%" cellpadding="4">
-		<tr>
-			<th style="width:33%">' . _('Supplier Inquiries') . '</th>
-			<th style="width:33%">' . _('Supplier Transactions') . '</th>
-			<th style="width:33%">' . _('Supplier Maintenance') . '</th>
-		</tr>';
-	echo '<tr>
-			<td valign="top" class="select"></td>
-			<td valign="top" class="select"></td>
-			<td valign="top" class="select">';
-	/* Supplier Maintenance */
-	echo '<a href="' . $RootPath . '/Suppliers.php">' . _('Add a New Supplier') . '</a>';
-	echo '</td>
-		</tr>
-		</table>';
+
 }
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -319,83 +377,6 @@ if (isset($_SESSION['SupplierID']) and $_SESSION['SupplierID'] != '') {
 			echo '<div class="centre">' . _('Mapping is enabled, Map will display below.') . '</div>';
 			echo '<div class="centre" id="map" style="width: ' . $MapWidth . 'px; height: ' . $MapHeight . 'px"></div></div><br />';
 			echo '</td></tr></table>';
-		}
-	}
-	// Extended Info only if selected in Configuration
-	if ($_SESSION['Extended_SupplierInfo'] == 1) {
-		if ($_SESSION['SupplierID'] != '') {
-			$SQL = "SELECT suppliers.suppname,
-							suppliers.lastpaid,
-							suppliers.lastpaiddate,
-							suppliersince,
-							currencies.decimalplaces AS currdecimalplaces,
-							email,
-							telephone
-					FROM suppliers
-					INNER JOIN currencies
-						ON suppliers.currcode=currencies.currabrev
-					WHERE suppliers.supplierid ='" . $_SESSION['SupplierID'] . "'";
-			$ErrMsg = _('An error occurred in retrieving the information');
-			$DataResult = DB_query($SQL, $ErrMsg);
-			$MyRow = DB_fetch_array($DataResult);
-			// Select some more data about the supplier
-			$SQL = "SELECT SUM(-ovamount) AS total FROM supptrans WHERE supplierno = '" . $_SESSION['SupplierID'] . "' and type != '20'";
-			$Total1Result = DB_query($SQL);
-			$Row = DB_fetch_array($Total1Result);
-			echo '<table style="width:75%" cellpadding="4">
-					<tr>
-						<th colspan="4">' . _('Supplier Data') . '</th>
-					</tr>
-					<tr>
-						<td style="width:30%" valign="top" class="select">';
-			/* Supplier Data */
-			//echo "Distance to this Supplier: <b>TBA</b><br />";
-			if ($MyRow['lastpaiddate'] == 0) {
-				echo _('No payments yet to this supplier.') . '</td>
-					<td valign="top" class="select"></td>';
-			} else {
-				echo _('Last Paid') . ':</td>
-					<td style="width:20%" valign="top" class="select"> <b>' . ConvertSQLDate($MyRow['lastpaiddate']) . '</b></td>';
-			}
-			echo '<td style="width:30%" valign="top" class="select">' . _('Last Paid Amount') . ':</td>
-					<td style="width:20%" valign="top" class="number select">  <b>' . locale_number_format($MyRow['lastpaid'], $MyRow['currdecimalplaces']) . '</b></td></tr>';
-			echo '<tr>
-					<td style="width:30%" valign="top" class="select">' . _('Supplier since') . ':</td>
-					<td style="width:20%" valign="top" class="select"> <b>' . ConvertSQLDate($MyRow['suppliersince']) . '</b></td>
-					<td style="width:30%" valign="top" class="select">' . _('Total Spend with this Supplier') . ':</td>
-					<td style="width:20%" valign="top" class="number select"> <b>' . locale_number_format($Row['total'], $MyRow['currdecimalplaces']) . '</b></td>
-				</tr>';
-			echo '<tr>
-					<td style="width:30%" valign="top" class="select">' . _('Email Address') . ':</td>
-					<td style="width:20%" valign="top" class="select"> <b>' . $MyRow['email'] . '</b></td>
-					<td style="width:30%" valign="top" class="select">' . _('Telephone Number') . ':</td>
-					<td style="width:20%" valign="top" class="number select"> <b>' . $MyRow['telephone'] . '</b></td>
-				</tr>';
-			echo '<tr>
-					<th colspan="4" style="text-align:left">' . _('Contacts') . ':</th>
-				</tr>';
-			echo '<tr>
-					<th style="width:40%">' . _('Contact Name') . '</th>
-					<th style="width:20%">' . _('Position') . '</th>
-					<th style="width:20%">' . _('Telephone Number') . '</th>
-					<th style="width:20%">' . _('Email Address') . '</th>
-				</tr>';
-			$ContactSQL = "SELECT contact,
-									position,
-									tel,
-									email
-								FROM suppliercontacts
-								WHERE supplierid='" . $_SESSION['SupplierID'] . "'";
-			$ContactResult = DB_query($ContactSQL);
-			while ($ContactRow = DB_fetch_array($ContactResult)) {
-				echo '<tr>
-						<td style="width:40%" class="select">' . $ContactRow['contact'] . '</td>
-						<td style="width:20%" class="select">' . $ContactRow['position'] . '</td>
-						<td style="width:20%" class="select">' . $ContactRow['tel'] . '</td>
-						<td style="width:20%" class="select">' . $ContactRow['email'] . '</td>
-					</tr>';
-			}
-			echo '</table>';
 		}
 	}
 }

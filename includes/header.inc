@@ -55,9 +55,9 @@ echo '<style media="screen">
 		</style>';
 echo '</head>';
 if ($Debug == 1) {
-	echo '<body class="holmes-debug" onload="Scheduler()">';
+	echo '<body class="holmes-debug" onload="initial()">';
 } else {
-	echo '<body onload="Scheduler()">';
+	echo '<body onload="initial()">';
 }
 
 if (isset($_GET['FontSize'])) {

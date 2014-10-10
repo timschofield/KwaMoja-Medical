@@ -197,28 +197,29 @@ if (isset($_POST['View'])) {
 				$_SESSION['SQLString']['values'][0] = '';
 			}
 			echo '<tr style="background-color: ' . $RowColour . '">
-				<td>' . $MyRow['transactiondate'] . '</td>
-				<td>' . $MyRow['userid'] . '</td>
-				<td>' . $MyRow['address'] . '</td>
-				<td>' . Query_Type($MyRow['querystring']) . '</td>
-				<td>' . $_SESSION['SQLString']['table'] . '</td>
-				<td>' . $_SESSION['SQLString']['fields'][0] . '</td>
-				<td>' . trim(str_replace("'", "", $_SESSION['SQLString']['values'][0])) . '</td></tr>';
+					<td>' . $MyRow['transactiondate'] . '</td>
+					<td>' . $MyRow['userid'] . '</td>
+					<td>' . $MyRow['address'] . '</td>
+					<td>' . Query_Type($MyRow['querystring']) . '</td>
+					<td>' . $_SESSION['SQLString']['table'] . '</td>
+					<td>' . $_SESSION['SQLString']['fields'][0] . '</td>
+					<td>' . trim(str_replace("'", "", $_SESSION['SQLString']['values'][0])) . '</td>
+				</tr>';
 			$SizeOfFields = sizeOf($_SESSION['SQLString']['fields']);
 			for ($i = 1; $i < $SizeOfFields; $i++) {
 				if (isset($_SESSION['SQLString']['values'][$i]) and (trim(str_replace("'", "", $_SESSION['SQLString']['values'][$i])) != "") & (trim($_SESSION['SQLString']['fields'][$i]) != 'password') & (trim($_SESSION['SQLString']['fields'][$i]) != 'www_users.password')) {
-					echo '<tr style="background-color:' . $RowColour . '">';
-					echo '<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>';
-					echo '<td>' . $_SESSION['SQLString']['fields'][$i] . '</td>
-						<td>' . trim(str_replace("'", "", $_SESSION['SQLString']['values'][$i])) . '</td>';
-					echo '</tr>';
+					echo '<tr style="background-color:' . $RowColour . '">
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td>' . $_SESSION['SQLString']['fields'][$i] . '</td>
+							<td>' . trim(str_replace("'", "", $_SESSION['SQLString']['values'][$i])) . '</td>
+						</tr>';
 				}
 			}
-			echo '<tr style="background-color:black"> <td colspan="6"></td> </tr>';
+			echo '<tr style="background-color:black"> <td colspan="7"></td> </tr>';
 		}
 		unset($_SESSION['SQLString']);
 	}

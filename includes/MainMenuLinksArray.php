@@ -5,7 +5,7 @@ unset($_SESSION['ReportList']);
 unset($_SESSION['ModuleList']);
 unset($_SESSION['MenuItems']);
 
-$SQL = "SELECT `modulelink`,
+$SQL = "SELECT SQL_CACHE `modulelink`,
 				`reportlink` ,
 				`modulename`
 			FROM modules
@@ -18,7 +18,7 @@ while ($MyRow = DB_fetch_array($Result)) {
 	$_SESSION['ReportList'][$MyRow['modulelink']] = $MyRow['reportlink'];
 	$_SESSION['ModuleList'][] = _($MyRow['modulename']);
 }
-$SQL = "SELECT `modulelink`,
+$SQL = "SELECT SQL_CACHE `modulelink`,
 				`menusection` ,
 				`caption` ,
 				`url`

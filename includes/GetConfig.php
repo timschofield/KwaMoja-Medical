@@ -11,7 +11,7 @@ if (isset($ForceConfigReload) and $ForceConfigReload == true or !isset($_SESSION
 		$ErrMsg = _('There was a problem deleting expired audit-trail history');
 		$Result = DB_query($SQL);
 	} //isset($_SESSION['MonthsAuditTrail'])
-	$SQL = "SELECT confname, confvalue FROM config";
+	$SQL = "SELECT SQL_CACHE confname, confvalue FROM config";
 	$ErrMsg = _('Could not get the configuration parameters from the database because');
 	$ConfigResult = DB_query($SQL, $ErrMsg);
 	while ($MyRow = DB_fetch_array($ConfigResult)) {
@@ -28,7 +28,7 @@ if (isset($ForceConfigReload) and $ForceConfigReload == true or !isset($_SESSION
 	/*Maybe we should check config directories exist and try to create if not */
 
 	/*Load the pagesecurity settings from the database */
-	$SQL = "SELECT script, pagesecurity FROM scripts";
+	$SQL = "SELECT SQL_CACHE script, pagesecurity FROM scripts";
 	$Result = DB_query($SQL, '', '', false, false);
 	if (DB_error_no() != 0) {
 		/* the table may not exist with the pagesecurity field in it if it is an older KwaMoja database
@@ -46,17 +46,8 @@ if (isset($ForceConfigReload) and $ForceConfigReload == true or !isset($_SESSION
 		header('Location: Z_UpgradeDatabase.php'); //divert to the db upgrade if the VersionNumber is not in the config table
 	}
 
-	/*
-	check the decimalplaces field exists in currencies - this was added in 4.0 but is required in 4.04 as it is used everywhere as the default decimal places to show on all home currency amounts
-	*/
-	$Result = DB_query("SELECT decimalplaces FROM currencies", '', '', false, false);
-	if (DB_error_no() != 0) { //then decimalplaces not already a field in currencies
-		$Result = DB_query("ALTER TABLE `currencies`
-							ADD COLUMN `decimalplaces` tinyint(3) NOT NULL DEFAULT 2 AFTER `hundredsname`");
-	}
 	/* Also reads all the company data set up in the company record and returns an array */
-
-	$SQL = "SELECT coyname,
+	$SQL = "SELECT SQL_CACHE coyname,
 					gstno,
 					regoffice1,
 					regoffice2,
@@ -89,7 +80,7 @@ if (isset($ForceConfigReload) and $ForceConfigReload == true or !isset($_SESSION
 	$ReadCoyResult = DB_query($SQL, $ErrMsg);
 
 	if (DB_num_rows($ReadCoyResult) == 0) {
-		$PeriodsSQL = "SELECT periodno FROM periods";
+		$PeriodsSQL = "SELECT SQL_CACHE periodno FROM periods";
 		$PeriodResult = DB_query($PeriodsSQL);
 		if (DB_num_rows($PeriodResult) == 0) {
 			$_SESSION['DefaultDateFormat'] = 'd/m/Y';
@@ -99,7 +90,7 @@ if (isset($ForceConfigReload) and $ForceConfigReload == true or !isset($_SESSION
 		$_SESSION['CompanyRecord'] = DB_fetch_array($ReadCoyResult);
 	}
 
-	$SQL = "SELECT id,
+	$SQL = "SELECT SQL_CACHE id,
 				host,
 				port,
 				heloaddress,

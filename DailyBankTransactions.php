@@ -10,7 +10,6 @@ echo '<p class="page_title_text noPrint" > <img src="' . $RootPath . '/css/' . $
 
 if (!isset($_POST['Show'])) {
 	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	echo '<table class="selection" summary="' . _('Select criteria for inquiry') . '">';
@@ -72,10 +71,8 @@ if (!isset($_POST['Show'])) {
 			</td>
 		</tr>
 		</table>
-		<br />
 		<div class="centre">
 			<input type="submit" name="Show" value="' . _('Show transactions') . '" />
-		</div>
 		</div>
 		</form>';
 } else {
@@ -96,6 +93,7 @@ if (!isset($_POST['Show'])) {
 					banktrans.exrate,
 					banktrans.banktranstype,
 					banktrans.transdate,
+					banktrans.transno,
 					banktrans.ref,
 					banktrans.chequeno,
 					bankaccounts.bankaccountname,
@@ -126,6 +124,7 @@ if (!isset($_POST['Show'])) {
 				<tr>
 					<th>' . ('Date') . '</th>
 					<th>' . _('Transaction type') . '</th>
+					<th>' . _('Number') . '</th>
 					<th>' . _('Type') . '</th>
 					<th>' . _('Reference') . '</th>
 					<th>' . _('Number') . '</th>
@@ -153,7 +152,8 @@ if (!isset($_POST['Show'])) {
 			if ($_POST['ShowType'] == 'All' or ($_POST['ShowType'] == 'Unmatched' and $Matched == _('No')) or ($_POST['ShowType'] == 'Matched' and $Matched == _('Yes'))) {
 				echo '<tr>
 						<td>' . ConvertSQLDate($MyRow['transdate']) . '</td>
-						<td>' . $MyRow['typename'] . '</td>
+						<td>' . _($MyRow['typename']) . '</td>
+						<td class="number"><a href="' . $RootPath . '/GLTransInquiry.php?TypeID=' . $MyRow['typeid'] . '&amp;TransNo=' . $MyRow['transno'] . '">' . $MyRow['transno'] . '</a></td>
 						<td>' . $MyRow['banktranstype'] . '</td>
 						<td>' . $MyRow['ref'] . '</td>
 						<td>' . $MyRow['chequeno'] . '</td>

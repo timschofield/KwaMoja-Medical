@@ -93,7 +93,7 @@ if (isset($_FILES['ItemPicture']) and $_FILES['ItemPicture']['name'] != '') {
 
 	if ($UploadTheFile == 'Yes') {
 		$Result = move_uploaded_file($_FILES['ItemPicture']['tmp_name'], $FileName);
-		$message = ($Result) ? _('File url') . '<a href="' . $FileName . '">' . $FileName . '</a>' : _('Something is wrong with uploading a file');
+		$Message = ($Result) ? _('File url') . '<a href="' . $FileName . '">' . $FileName . '</a>' : _('Something is wrong with uploading a file');
 	}
 }
 
@@ -1360,7 +1360,7 @@ if (DB_num_rows($PropertiesResult) > 0) {
 echo '<input type="hidden" name="PropertyCounter" value="' . $PropertyCounter . '" />';
 echo '<br />';
 
-if ($New == 1) {
+if ($New == 0) {
 	echo '<input type="submit" name="submit" value="' . _('Insert New Item') . '" />';
 	echo '<input type="submit" name="UpdateCategories" style="visibility:hidden;width:1px" value="' . _('Categories') . '" />';
 

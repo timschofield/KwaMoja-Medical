@@ -146,21 +146,21 @@ function DB_error_msg() {
 	return pg_last_error($db);
 }
 
-function DB_Last_Insert_ID($table, $fieldname) {
+function DB_Last_Insert_ID($Table, $FieldName) {
 	global $db;
-	$tempres = DB_query("SELECT currval('" . $table . "_" . $fieldname . "_seq') FROM " . $table);
-	$Res = pg_fetch_result($tempres, 0, 0);
-	DB_free_result($tempres);
-	return $Res;
+	$TemporaryResult = DB_query("SELECT currval('" . $Table . "_" . $FieldName . "_seq') FROM " . $Table);
+	$Result = pg_fetch_result($TemporaryResult, 0, 0);
+	DB_free_result($TemporaryResult);
+	return $Result;
 }
 
 function DB_escape_string($String) {
 	return pg_escape_string($String);
 }
 
-function INTERVAL($val, $Inter) {
+function interval($Value, $Interval) {
 	global $DBType;
-	return "\n(CAST( (" . $val . ") as text ) or ' " . $Inter . "')::interval\n";
+	return "\n" . 'interval ' . $Value . ' ' . $Interval . "\n";
 }
 
 function DB_show_tables($TableName = '%') {

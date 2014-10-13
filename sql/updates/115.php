@@ -9,6 +9,7 @@ NewScript('PDFTestPlan.php', '16');
 NewScript('SelectQASamples.php', '16');
 NewScript('HistoricalTestResults.php', '16');
 
+NewSecurityToken(16, _('Quality Assurance Manager'));
 
 NewConfigValue('QualityProdSpecText', 'Disclaimer: No information supplied by our company constitutes a warranty regarding product performance or use. Any information regarding
 performance or use is only offered as suggestion for investigation for use, based upon our company or other customer experience. our company

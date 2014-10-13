@@ -32,6 +32,27 @@ function CreateTrigger($Table, $TriggerName, $Event, $Row, $EventSql) {
 	}
 }
 
+function NewSecurityToken($TokenId, $TokenName) {
+	$SQL = "SELECT tokenid FROM securitytokens WHERE tokenid='" . $TokenId . "'";
+	$Result = DB_query($SQL);
+	if (DB_num_rows($Result) == 0) {
+		$SQL = "INSERT INTO securitytokens (tokenid,
+											tokenname
+										) VALUES (
+											'" . $TokenId . "',
+											'" . $TokenName . "'
+										)";
+		$Response = executeSQL($SQL, False);
+		if ($Response == 0) {
+			OutputResult(_('The security token') . ' ' . $TokenId . ' ' . _('has been created'), 'success');
+		} else {
+			OutputResult(_('The security token') . ' ' . $TokenId . ' ' . _('could not be created') . '<br />' . $SQL, 'error');
+		}
+	} else {
+		OutputResult(_('The security token') . ' ' . $TokenId . ' ' . _('already exists'), 'info');
+	}
+}
+
 function NewSysType($TypeID, $TypeDescription) {
 	/* Does type already exist */
 	$SQL = "SELECT typeid FROM systypes WHERE typeid='" . $TypeID . "'";

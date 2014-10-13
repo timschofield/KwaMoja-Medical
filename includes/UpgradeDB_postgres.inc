@@ -32,7 +32,7 @@ function CreateTrigger($Table, $TriggerName, $Event, $Row, $EventSql) {
 	}
 }
 
-function NewSrcurityToken($TokenId, $TokenName) {
+function NewSecurityToken($TokenId, $TokenName) {
 	$SQL = "SELECT tokenid FROM securitytokens WHERE tokenid='" . $TokenId . "'";
 	$Result = DB_query($SQL);
 	if (DB_num_rows($Result) == 0) {

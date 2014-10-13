@@ -96,7 +96,11 @@ function userLogin($Name, $Password, $SysAdminEmail = '') {
 			$_SESSION['UserBranch'] = $MyRow['branchcode'];
 			$_SESSION['DefaultPageSize'] = $MyRow['pagesize'];
 			$_SESSION['UserStockLocation'] = $MyRow['defaultlocation'];
-			$_SESSION['RestrictLocations'] = $MyRow['restrictlocations'];
+			if (isset($MyRow['restrictlocations'])) {
+				$_SESSION['RestrictLocations'] = $MyRow['restrictlocations'];
+			} else {
+				$_SESSION['RestrictLocations'] = 1;
+			}
 			$_SESSION['UserEmail'] = $MyRow['email'];
 			$_SESSION['ModulesEnabled'] = explode(",", $MyRow['modulesallowed']);
 			$_SESSION['UsersRealName'] = $MyRow['realname'];
@@ -105,8 +109,16 @@ function userLogin($Name, $Password, $SysAdminEmail = '') {
 			$_SESSION['SalesmanLogin'] = $MyRow['salesman'];
 			$_SESSION['CanCreateTender'] = $MyRow['cancreatetender'];
 			$_SESSION['AllowedDepartment'] = $MyRow['department'];
-			$_SESSION['ScreenFontSize'] = $MyRow['fontsize'];
-			$_SESSION['DefaultTag'] = $MyRow['defaulttag'];
+			if (isset($MyRow['fontsize'])) {
+				$_SESSION['ScreenFontSize'] = $MyRow['fontsize'];
+			} else {
+				$_SESSION['ScreenFontSize'] = 0;
+			}
+			if (isset($MyRow['defaulttag'])) {
+				$_SESSION['DefaultTag'] = $MyRow['defaulttag'];
+			} else {
+				$_SESSION['DefaultTag'] = 1;
+			}
 
 			if (isset($MyRow['pdflanguage'])) {
 				$_SESSION['PDFLanguage'] = $MyRow['pdflanguage'];
@@ -149,7 +161,7 @@ function userLogin($Name, $Password, $SysAdminEmail = '') {
 				return UL_CONFIGERR;
 			} else {
 				$myMaintenanceRow = DB_fetch_row($Maintenance_Result);
-				if (($myMaintenanceRow[0] == -1) AND ($UserIsSysAdmin == FALSE)) {
+				if (($myMaintenanceRow[0] == -1) and ($UserIsSysAdmin == FALSE)) {
 					// the configuration setting has been set to -1 ==> Allow SysAdmin Access Only
 					// the user is NOT a SysAdmin
 					return UL_MAINTENANCE;

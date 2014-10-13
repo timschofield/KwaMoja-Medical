@@ -15,6 +15,14 @@ if (!file_exists($PathPrefix . 'config.php')) {
 } //!file_exists($PathPrefix . 'config.php')
 include($PathPrefix . 'config.php');
 
+if (isset($host)) {
+	/* It seems to be a webERP installation being upgraded
+	 * so make sure variables are correctly named */
+	$Host = $host;
+	$DBPort = $mysqlport;
+	$Debug = 0;
+}
+
 if (isset($dbuser)) {
 	$DBUser = $dbuser;
 	$DBPassword = $dbpassword;
@@ -137,6 +145,9 @@ if (!isset($AllowAnyone) or !isset($_SESSION['CompanyDefaultsLoaded'])) {
 
 if (!isset($_SESSION['CompanyDefaultsLoaded'])) {
 	include($PathPrefix . 'includes/GetConfig.php');
+	if (!isset($_SESSION['DBUpdateNumber'])) {
+		$_SESSION['DBUpdateNumber'] = 0;
+	}
 	/*If the highest of the DB update files is greater than the DBUpdateNumber held in config table then do upgrades */
 	$DBVersion = HighestFileName($PathPrefix);
 	if (($DBVersion > $_SESSION['DBUpdateNumber']) and (basename($_SERVER['SCRIPT_NAME']) != 'Z_UpgradeDatabase.php')) {

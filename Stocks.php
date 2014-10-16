@@ -266,7 +266,7 @@ if (isset($_POST['submit'])) {
 					INNER JOIN stockcosts
 						ON stockmaster.stockid=stockcosts.stockid
 							AND succeeded=0
-					WHERE stockid = '" . $StockId . "'";
+					WHERE stockmaster.stockid = '" . $StockId . "'";
 			$MBFlagResult = DB_query($SQL);
 			$MyRow = DB_fetch_row($MBFlagResult);
 			$OldMBFlag = $MyRow[0];

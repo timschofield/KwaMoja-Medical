@@ -21,6 +21,7 @@ if (isset($host)) {
 	$Host = $host;
 	$DBPort = $mysqlport;
 	$Debug = 0;
+	$DefaultCompany = $DefaultDatabase;
 }
 
 if (isset($dbuser)) {

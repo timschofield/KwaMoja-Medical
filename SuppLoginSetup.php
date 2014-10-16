@@ -28,7 +28,9 @@ $ModuleList = array(
 	_('Setup')
 );
 
-echo '<a href="' . $RootPath . '/SelectSupplier.php">' . _('Back to Suppliers') . '</a><br />';
+echo '<div class="toplink">
+		<a href="' . $RootPath . '/SelectSupplier.php">' . _('Back to Suppliers') . '</a>
+	</div>';
 
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" title="' . _('Supplier') . '" alt="" />' . ' ' . _('Supplier') . ' : ' . $_SESSION['SupplierID'] . _(' has been selected') . '</p><br />';
 
@@ -189,7 +191,7 @@ $Result = DB_query($SQL);
 
 while ($MyRow = DB_fetch_array($Result)) {
 
-	if (isset($_POST['DefaultLocation']) AND $MyRow['loccode'] == $_POST['DefaultLocation']) {
+	if (isset($_POST['DefaultLocation']) and $MyRow['loccode'] == $_POST['DefaultLocation']) {
 
 		echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 	} else {
@@ -285,7 +287,6 @@ echo '</select></td>
 	<br />
 	<div class="centre">
 		<input type="submit" name="submit" value="' . _('Enter Information') . '" />
-	</div>
 	</div>
 	</form>';
 

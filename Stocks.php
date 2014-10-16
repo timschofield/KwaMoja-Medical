@@ -18,7 +18,7 @@ if (isset($_GET['StockID'])) {
 	$StockId = '';
 }
 
-$ItemDescriptionLanguagesArray = explode(',', $_SESSION['ItemDescriptionLanguages']);//WARNING: if the last character is a ",", there are n+1 languages.
+$ItemDescriptionLanguagesArray = explode(',',$_SESSION['ItemDescriptionLanguages']);//WARNING: if the last character is a ",", there are n+1 languages.
 
 if (isset($_POST['NextItem_x'])) {
 	$Result = DB_query("SELECT stockid FROM stockmaster WHERE stockid>'" . $StockId . "' ORDER BY stockid ASC LIMIT 1");
@@ -36,8 +36,8 @@ if (isset($_POST['PreviousItem_x'])) {
 		unset($_POST['Description_' . str_replace('.', '_', $LanguageId)]);
 	}
 }
-$New = 1;
-if (isset($StockID) and !isset($_POST['UpdateCategories'])) {
+
+if (isset($StockId) and !isset($_POST['UpdateCategories'])) {
 	$SQL = "SELECT COUNT(stockid)
 			FROM stockmaster
 			WHERE stockid='" . $StockId . "'
@@ -57,10 +57,10 @@ if (isset($_POST['New'])) {
 }
 
 echo '<div class="toplink">
-		<a href="', $RootPath, '/SelectProduct.php">', _('Back to Items'), '</a>
+		<a href="' . $RootPath . '/SelectProduct.php">' . _('Back to Items') . '</a>
 	</div>
 	<p class="page_title_text noPrint" >
-		<img src="', $RootPath, '/css/', $Theme, '/images/inventory.png" title="', _('Stock'), '" alt="" />', $Title, '
+		<img src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Stock') . '" alt="" />' . ' ' . $Title . '
 	</p>';
 
 if (isset($_FILES['ItemPicture']) and $_FILES['ItemPicture']['name'] != '') {
@@ -97,6 +97,10 @@ if (isset($_FILES['ItemPicture']) and $_FILES['ItemPicture']['name'] != '') {
 	}
 }
 
+if (isset($Errors)) {
+	unset($Errors);
+}
+$Errors = array();
 $InputError = 0;
 
 if (isset($_POST['submit'])) {
@@ -107,91 +111,136 @@ if (isset($_POST['submit'])) {
 	ie the page has called itself with some user input */
 
 	//first off validate inputs sensible
+	$i = 1;
+
 
 	if (!isset($_POST['Description']) or mb_strlen($_POST['Description']) > 50 or mb_strlen($_POST['Description']) == 0) {
 		$InputError = 1;
 		prnMsg(_('The stock item description must be entered and be fifty characters or less long') . '. ' . _('It cannot be a zero length string either') . ' - ' . _('a description is required'), 'error');
+		$Errors[$i] = 'Description';
+		$i++;
 	}
 	if (mb_strlen($_POST['LongDescription']) == 0) {
 		$InputError = 1;
 		prnMsg(_('The stock item description cannot be a zero length string') . ' - ' . _('a long description is required'), 'error');
+		$Errors[$i] = 'LongDescription';
+		$i++;
 	}
 	if (mb_strlen($StockId) == 0) {
 		$InputError = 1;
 		prnMsg(_('The Stock Item code cannot be empty'), 'error');
+		$Errors[$i] = 'StockID';
+		$i++;
 	}
-	if (ContainsIllegalCharacters($StockId)) {
+	if (ContainsIllegalCharacters($StockId) or mb_strpos($StockId, ' ')) {
 		$InputError = 1;
 		prnMsg(_('The stock item code cannot contain any of the following characters') . " - ' &amp; + \" \\ ." . _('or a space'), 'error');
+		$Errors[$i] = 'StockID';
+		$i++;
 		$StockId = '';
 	}
 	if (mb_strlen($_POST['Units']) > 20) {
 		$InputError = 1;
 		prnMsg(_('The unit of measure must be 20 characters or less long'), 'error');
+		$Errors[$i] = 'Units';
+		$i++;
 	}
 	if (mb_strlen($_POST['BarCode']) > 20) {
 		$InputError = 1;
 		prnMsg(_('The barcode must be 20 characters or less long'), 'error');
+		$Errors[$i] = 'BarCode';
+		$i++;
 	}
 	if (!is_numeric(filter_number_format($_POST['Volume']))) {
 		$InputError = 1;
 		prnMsg(_('The volume of the packaged item in cubic metres must be numeric'), 'error');
+		$Errors[$i] = 'Volume';
+		$i++;
 	}
 	if (filter_number_format($_POST['Volume']) < 0) {
 		$InputError = 1;
 		prnMsg(_('The volume of the packaged item must be a positive number'), 'error');
+		$Errors[$i] = 'Volume';
+		$i++;
 	}
 	if (!is_numeric(filter_number_format($_POST['GrossWeight']))) {
 		$InputError = 1;
 		prnMsg(_('The weight of the packaged item in KGs must be numeric'), 'error');
+		$Errors[$i] = 'KGS';
+		$i++;
 	}
 	if (filter_number_format($_POST['GrossWeight']) < 0) {
 		$InputError = 1;
 		prnMsg(_('The weight of the packaged item must be a positive number'), 'error');
+		$Errors[$i] = 'KGS';
+		$i++;
 	}
 	if (!is_numeric(filter_number_format($_POST['NetWeight']))) {
 		$InputError = 1;
 		prnMsg(_('The net weight of the item in Net Weight must be numeric'),'error');
+		$Errors[$i] = 'NetWeight';
+		$i++;
 	}
 	if (filter_number_format($_POST['NetWeight'])<0) {
 		$InputError = 1;
 		prnMsg(_('The net weight of the item must be a positive number'),'error');
+		$Errors[$i] = 'NetWeight';
+		$i++;
 	}
 	if (!is_numeric(filter_number_format($_POST['EOQ']))) {
 		$InputError = 1;
 		prnMsg(_('The economic order quantity must be numeric'), 'error');
+		$Errors[$i] = 'EOQ';
+		$i++;
 	}
 	if (filter_number_format($_POST['EOQ']) < 0) {
 		$InputError = 1;
 		prnMsg(_('The economic order quantity must be a positive number'), 'error');
+		$Errors[$i] = 'EOQ';
+		$i++;
 	}
 	if ($_POST['Controlled'] == 0 and $_POST['Serialised'] == 1) {
 		$InputError = 1;
 		prnMsg(_('The item can only be serialised if there is lot control enabled already') . '. ' . _('Batch control') . ' - ' . _('with any number of items in a lot/bundle/roll is enabled when controlled is enabled') . '. ' . _('Serialised control requires that only one item is in the batch') . '. ' . _('For serialised control') . ', ' . _('both controlled and serialised must be enabled'), 'error');
+		$Errors[$i] = 'Serialised';
+		$i++;
 	}
 	if ($_POST['NextSerialNo'] != 0 and $_POST['Serialised'] == 0) {
 		$InputError = 1;
 		prnMsg(_('The item can only have automatically generated serial numbers if it is a serialised item'), 'error');
+		$Errors[$i] = 'NextSerialNo';
+		$i++;
 	}
 	if ($_POST['NextSerialNo'] != 0 and $_POST['MBFlag'] != 'M') {
 		$InputError = 1;
 		prnMsg(_('The item can only have automatically generated serial numbers if it is a manufactured item'), 'error');
+		$Errors[$i] = 'NextSerialNo';
+		$i++;
 	}
 	if (($_POST['MBFlag'] == 'A' or $_POST['MBFlag'] == 'K' or $_POST['MBFlag'] == 'D' or $_POST['MBFlag'] == 'G') and $_POST['Controlled'] == 1) {
+
 		$InputError = 1;
 		prnMsg(_('Assembly/Kitset/Phantom/Service/Labour items cannot also be controlled items') . '. ' . _('Assemblies/Dummies/Phantom and Kitsets are not physical items and batch/serial control is therefore not appropriate'), 'error');
+		$Errors[$i] = 'Controlled';
+		$i++;
 	}
 	if (trim($_POST['CategoryID']) == '') {
 		$InputError = 1;
 		prnMsg(_('There are no inventory categories defined. All inventory items must belong to a valid inventory category,'), 'error');
+		$Errors[$i] = 'CategoryID';
+		$i++;
 	}
 	if (!is_numeric(filter_number_format($_POST['Pansize']))) {
 		$InputError = 1;
 		prnMsg(_('Pansize quantity must be numeric'), 'error');
+		$Errors[$i] = 'Pansize';
+		$i++;
 	}
 	if (!is_numeric(filter_number_format($_POST['ShrinkFactor']))) {
 		$InputError = 1;
 		prnMsg(_('Shrinkage factor quantity must be numeric'), 'error');
+		$Errors[$i] = 'ShrinkFactor';
+		$i++;
 	}
 
 	if ($InputError != 1) {
@@ -217,7 +266,7 @@ if (isset($_POST['submit'])) {
 					INNER JOIN stockcosts
 						ON stockmaster.stockid=stockcosts.stockid
 							AND succeeded=0
-					WHERE stockmaster.stockid = '" . $StockId . "'";
+					WHERE stockid = '" . $StockId . "'";
 			$MBFlagResult = DB_query($SQL);
 			$MyRow = DB_fetch_row($MBFlagResult);
 			$OldMBFlag = $MyRow[0];
@@ -277,14 +326,13 @@ if (isset($_POST['submit'])) {
 				if ($_POST['MBFlag'] == 'K' or $_POST['MBFlag'] == 'A' or $_POST['MBFlag'] == 'D') {
 
 					$SQL = "SELECT quantityord-quantityrecd
-							FROM purchorderdetails
-							INNER JOIN purchorders
-								ON purchorders.orderno=purchorderdetails.orderno
+							FROM purchorderdetails INNER JOIN purchorders
+							ON purchorders.orderno=purchorderdetails.orderno
 							WHERE itemcode = '" . $StockId . "'
-								AND purchorderdetails.completed=0
-								AND purchorders.status<>'Cancelled'
-								AND purchorders.status<>'Completed'
-								AND purchorders.status<>'Rejected'";
+							AND purchorderdetails.completed=0
+							AND purchorders.status<>'Cancelled'
+							AND purchorders.status<>'Completed'
+							AND purchorders.status<>'Rejected'";
 
 					$Result = DB_query($SQL);
 					$ChkPurchOrds = DB_fetch_row($Result);
@@ -343,6 +391,8 @@ if (isset($_POST['submit'])) {
 					}
 				}
 			}
+
+
 
 			if ($InputError == 0) {
 
@@ -534,6 +584,8 @@ if (isset($_POST['submit'])) {
 			if (DB_num_rows($Result) == 1) {
 				prnMsg(_('The stock code entered is already in the database - duplicate stock codes are prohibited by the system. Try choosing an alternative stock code'), 'error');
 				$InputError = 1;
+				$Errors[$i] = 'StockID';
+				$i++;
 			} else {
 				DB_Txn_Begin();
 				$SQL = "INSERT INTO stockmaster (stockid,
@@ -584,7 +636,7 @@ if (isset($_POST['submit'])) {
 					//now insert the language descriptions
 					$ErrMsg = _('Could not update the language description because');
 					$DbgMsg = _('The SQL that was used to update the language description and failed was');
-					if (count($ItemDescriptionLanguagesArray) > 0) {
+					if (count($ItemDescriptionLanguages) > 0) {
 						foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
 							if ($LanguageId != ''){
 								$SQL = "INSERT INTO stockdescriptiontranslations VALUES('" . $StockId . "','" . $LanguageId . "', '" . $_POST['Description_' . str_replace('.', '_', $LanguageId)] . "')";
@@ -807,7 +859,6 @@ if (isset($_POST['submit'])) {
 		unset($_SESSION['SelectedStockItem']);
 		foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
 			unset($_POST['Description_' . str_replace('.', '_', $LanguageId)]);
-			unset($_POST['LongDescription_' . str_replace('.', '_', $LanguageId)]);
 		}
 		unset($StockId);
 
@@ -817,6 +868,7 @@ if (isset($_POST['submit'])) {
 
 
 echo '<form onSubmit="return VerifyForm(this);" id="ItemForm" enctype="multipart/form-data" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
+echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
 	<input type="hidden" name="New" value="' . $New . '" />
 	<table class="selection">';
@@ -901,6 +953,7 @@ if (!isset($StockId) or $StockId == '' or isset($_POST['UpdateCategories'])) {
 	$_POST['Pansize'] = $MyRow['pansize'];
 	$_POST['ShrinkFactor'] = $MyRow['shrinkfactor'];
 	$SQL = "SELECT descriptiontranslation, language_id FROM stockdescriptiontranslations WHERE stockid='" . $StockId . "' AND (";
+
 	foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
 		$SQL .= "language_id='" . $LanguageId . "' OR ";
 	}
@@ -909,7 +962,6 @@ if (!isset($StockId) or $StockId == '' or isset($_POST['UpdateCategories'])) {
 	while ($MyRow = DB_fetch_array($Result)) {
 		$_POST['Description_' . str_replace('.', '_', $MyRow['language_id'])] = $MyRow['descriptiontranslation'];
 	}
-
 	$SQL = "SELECT longdescriptiontranslation, language_id FROM stocklongdescriptiontranslations WHERE stockid='" . $StockId . "' AND (";
 	foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
 		$SQL .= "language_id='" . $LanguageId . "' OR ";
@@ -972,7 +1024,6 @@ foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
 			</tr>';
 	}
 }
-
 echo '<tr>
 		<td>' . _('Image File (.jpg)') . ':</td>
 		<td><input type="file" id="ItemPicture" name="ItemPicture" />
@@ -1025,8 +1076,7 @@ if (!isset($_POST['CategoryID'])) {
 	$_POST['CategoryID'] = $Category;
 }
 
-echo '</select><a class="FontSize" target="_blank" href="' . $RootPath . '/StockCategories.php">' . _('Add or Modify Stock Categories') . '</a>
-		</td>
+echo '</select><a target="_blank" href="' . $RootPath . '/StockCategories.php">' . _('Add or Modify Stock Categories') . '</a></td>
 	</tr>';
 
 if (!isset($_POST['EOQ']) or $_POST['EOQ'] == '') {
@@ -1360,7 +1410,7 @@ if (DB_num_rows($PropertiesResult) > 0) {
 echo '<input type="hidden" name="PropertyCounter" value="' . $PropertyCounter . '" />';
 echo '<br />';
 
-if ($New == 0) {
+if ($New == 1) {
 	echo '<input type="submit" name="submit" value="' . _('Insert New Item') . '" />';
 	echo '<input type="submit" name="UpdateCategories" style="visibility:hidden;width:1px" value="' . _('Categories') . '" />';
 
@@ -1378,6 +1428,7 @@ if ($New == 0) {
 }
 
 echo '</div>
+	</div>
 	</form>';
 include('includes/footer.inc');
 ?>

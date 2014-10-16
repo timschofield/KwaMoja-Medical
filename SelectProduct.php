@@ -4,6 +4,7 @@ $PricesSecurity = 1000; //don't show pricing info unless security token 1000 ava
 $SuppliersSecurity = 9; //don't show supplier purchasing info unless security token 9 available to user
 
 include('includes/session.inc');
+include('includes/SQL_CommonFunctions.inc');
 $Title = _('Search Inventory Items');
 /* Manual links before header.inc */
 $ViewTopic = 'Inventory';

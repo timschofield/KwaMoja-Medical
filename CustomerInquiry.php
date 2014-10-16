@@ -21,6 +21,30 @@ if (!isset($_GET['CustomerID']) and !isset($_SESSION['CustomerID'])) {
 	$CustomerID = $_SESSION['CustomerID'];
 }
 
+//Check if the users have proper authority
+if ($_SESSION['SalesmanLogin'] != '') {
+	$ViewAllowed = false;
+	$sql = "SELECT salesman FROM custbranch WHERE debtorno = '" . $CustomerID . "'";
+	$ErrMsg = _('Failed to retrieve sales data');
+	$result = DB_query($sql,$db,$ErrMsg);
+	if(DB_num_rows($result)>0) {
+		while($myrow = DB_fetch_array($result)) {
+			if ($_SESSION['SalesmanLogin'] == $myrow['salesman']){
+				$ViewAllowed = true;
+			}
+		}
+	} else {
+		prnMsg(_('There is no salesman data set for this debtor'),'error');
+		include('includes/footer.inc');
+		exit;
+	}
+	if (!$ViewAllowed){
+		prnMsg(_('You have no authority to review this data'),'error');
+		include('includes/footer.inc');
+		exit;
+	}
+}
+
 if (isset($_GET['Status'])) {
 	if (is_numeric($_GET['Status'])) {
 		$_POST['Status'] = $_GET['Status'];
@@ -78,13 +102,8 @@ $SQL = "SELECT debtorsmaster.name,
 			ON debtorsmaster.currcode = currencies.currabrev
 	 	INNER JOIN debtortrans
 			ON debtorsmaster.debtorno = debtortrans.debtorno
-		WHERE debtorsmaster.debtorno = '" . $CustomerID . "'";
-
-if ($_SESSION['SalesmanLogin'] != '') {
-	$SQL .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
-}
-
-$SQL .= " GROUP BY debtorsmaster.name,
+	 		AND debtorsmaster.debtorno = debtortrans.debtorno
+		GROUP BY debtorsmaster.name,
 			currencies.currency,
 			paymentterms.terms,
 			paymentterms.daysbeforedue,
@@ -211,13 +230,8 @@ $SQL = "SELECT systypes.typename,
 			LEFT JOIN salesorders
 				ON salesorders.orderno=debtortrans.order_
 			WHERE debtortrans.debtorno = '" . $CustomerID . "'
-				AND debtortrans.trandate >= '" . $DateAfterCriteria . "'";
-
-if ($_SESSION['SalesmanLogin'] != '') {
-	$SQL .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
-}
-
-$SQL .= " ORDER BY debtortrans.id";
+				AND debtortrans.trandate >= '" . $DateAfterCriteria . "'
+			ORDER BY debtortrans.id";
 
 $ErrMsg = _('No transactions were returned by the SQL because');
 $TransResult = DB_query($SQL, $ErrMsg);

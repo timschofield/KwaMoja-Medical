@@ -47,6 +47,12 @@ if (!ini_get('safe_mode')) {
 session_write_close(); //in case a previous session is not closed
 session_start();
 
+if (isset($_SESSION['LastActivity']) and (time() - $_SESSION['LastActivity']) > $SessionLifeTime) {
+	unset($_SESSION);
+} else {
+	$_SESSION['LastActivity'] = time();
+}
+
 include($PathPrefix . 'includes/ConnectDB.inc');
 include($PathPrefix . 'includes/DateFunctions.inc');
 

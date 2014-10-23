@@ -78,10 +78,13 @@ if (isset($_POST['UpdateData'])) {
 										'" . filter_number_format($_POST['MaterialCost']) . "',
 										'" . filter_number_format($_POST['LabourCost']) . "',
 										'" . filter_number_format($_POST['OverheadCost']) . "',
-										CURRENT_TIME,
+										CURRENT_TIMESTAMP,
 										0)";
 		$ErrMsg = _('The new cost details for the stock item could not be inserted because');
 		$DbgMsg = _('The SQL that failed was');
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+
+		$SQL = "UPDATE stockmaster SET lastcostupdate=CURRENT_DATE WHERE stockid='" . $StockId . "'";
 		$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 		$Result = DB_Txn_Commit();

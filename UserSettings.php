@@ -153,17 +153,13 @@ echo '<tr>
 		<td>', _('Theme'), ':</td>
 		<td><select minlength="0" name="Theme">';
 
-$Themes = scandir('css/');
-
+$Themes = glob('css/*', GLOB_ONLYDIR);
 foreach ($Themes as $ThemeName) {
-
-	if (is_dir('css/' . $ThemeName) and $ThemeName != '.' and $ThemeName != '..' and $ThemeName != '.svn') {
-
-		if ($_SESSION['Theme'] == $ThemeName) {
-			echo '<option selected="selected" value="', $ThemeName, '">', $ThemeName, '</option>';
-		} else {
-			echo '<option value="', $ThemeName, '">', $ThemeName, '</option>';
-		}
+	$ThemeName = basename($ThemeName);
+	if ($_SESSION['Theme'] == $ThemeName) {
+		echo '<option selected="selected" value="', $ThemeName, '">', $ThemeName, '</option>';
+	} else {
+		echo '<option value="', $ThemeName, '">', $ThemeName, '</option>';
 	}
 }
 

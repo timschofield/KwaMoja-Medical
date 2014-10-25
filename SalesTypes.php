@@ -193,8 +193,8 @@ if (!isset($SelectedType)) {
 
 	echo '<table class="selection">';
 	echo '<tr>
-			<th>', _('Type Code'), '</th>
-			<th>', _('Type Name'), '</th>
+			<th class="SortableColumn">', _('Type Code'), '</th>
+			<th class="SortableColumn">', _('Type Name'), '</th>
 		</tr>';
 
 	$k = 0; //row colour counter

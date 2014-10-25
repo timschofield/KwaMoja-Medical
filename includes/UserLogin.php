@@ -24,6 +24,7 @@ function userLogin($Name, $Password, $SysAdminEmail = '') {
 
 	global $Debug;
 	setcookie('Login', $_SESSION['DatabaseName'], time()+3600*24);
+	$_SESSION['LastActivity'] = time();
 	if (!isset($_SESSION['AccessLevel']) or $_SESSION['AccessLevel'] == '' or (isset($Name) and $Name != '')) {
 		/* if not logged in */
 		$_SESSION['AccessLevel'] = '';

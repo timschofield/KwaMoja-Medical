@@ -48,8 +48,8 @@ echo '<style>
 			</style>';
 
 $SQL = "SELECT id FROM dashboard_scripts WHERE scripts='" . basename($_SERVER['PHP_SELF']) . "'";
-$result = DB_query($SQL);
-$MyRow = DB_fetch_array($result);
+$Result = DB_query($SQL);
+$MyRow = DB_fetch_array($Result);
 
 echo '<table border="0" cellspacing="0" cellpadding="1" style="max-width:100%;width:99%;">
 		<tr>
@@ -78,7 +78,7 @@ $SQL = "SELECT banktrans.currcode,
 				ON banktrans.currcode=currencies.currabrev
 			ORDER BY banktrans.transdate DESC LIMIT 5";
 
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 $AccountCurrTotal = 0;
 $LocalCurrTotal = 0;
 
@@ -93,7 +93,7 @@ echo '<tbody>
 
 $k = 0;
 
-while ($row = DB_fetch_array($result)) {
+while ($row = DB_fetch_array($Result)) {
 	if ($k == 1) {
 		echo '<tr class="EvenTableRows">';
 		$k = 0;

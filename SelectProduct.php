@@ -34,7 +34,7 @@ if (isset($_POST['StockCode'])) {
 	$_POST['StockCode'] = trim(mb_strtoupper($_POST['StockCode']));
 }
 // Always show the search facilities
-$SQL = "SELECT categoryid,
+$SQL = "SELECT SQL_CACHE categoryid,
 				categorydescription
 		FROM stockcategory
 		ORDER BY categorydescription";

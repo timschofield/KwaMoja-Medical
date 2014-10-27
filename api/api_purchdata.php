@@ -84,7 +84,7 @@ function InsertPurchData($PurchDataDetails, $user, $password) {
 		$SQL = "INSERT INTO purchdata (" . mb_substr($FieldNames, 0, -2) . ")
 					VALUES ('" . mb_substr($FieldValues, 0, -2) . "') ";
 		DB_Txn_Begin();
-		$result = DB_Query($SQL);
+		$Result = DB_Query($SQL);
 		DB_Txn_Commit();
 		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;
@@ -133,7 +133,7 @@ function ModifyPurchData($PurchDataDetails, $user, $password) {
 	$SQL = mb_substr($SQL, 0, -2) . " WHERE stockid='" . $PurchDataDetails['stockid'] . "'
 								AND supplierno='" . $PurchDataDetails['supplierno'] . "'";
 	if (sizeof($Errors) == 0) {
-		$result = DB_Query($SQL);
+		$Result = DB_Query($SQL);
 		echo DB_error_no();
 		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;

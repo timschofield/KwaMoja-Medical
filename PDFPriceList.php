@@ -180,7 +180,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 	$Category = '';
 	$CatTot_Val = 0;
 
-	while ($PriceList = DB_fetch_array($PricesResult,$db)) {
+	while ($PriceList = DB_fetch_array($PricesResult)) {
 
 		if ($CurrCode != $PriceList['currabrev']) {
 			$FontSize = 10;

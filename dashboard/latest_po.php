@@ -48,8 +48,8 @@ echo '<style>
 			</style>';
 
 $SQL = "SELECT id FROM dashboard_scripts WHERE scripts='" . basename($_SERVER['PHP_SELF']) . "'";
-$result = DB_query($SQL);
-$MyRow = DB_fetch_array($result);
+$Result = DB_query($SQL);
+$MyRow = DB_fetch_array($Result);
 
 echo '<table style="max-width:100%;width:99%;" cellspacing="0" cellpadding="1" border="0">
 		<tr>

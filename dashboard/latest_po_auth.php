@@ -49,8 +49,8 @@ echo '<style>
 			</style>';
 
 $SQL = "SELECT id FROM dashboard_scripts WHERE scripts='" . basename($_SERVER['PHP_SELF']) . "'";
-$result = DB_query($SQL);
-$MyRow = DB_fetch_array($result);
+$Result = DB_query($SQL);
+$MyRow = DB_fetch_array($Result);
 
 echo '<table style="max-width:100%;width:99%;" border="0" cellspacing="0" cellpadding="1" border="1">
 		<tr>
@@ -73,7 +73,7 @@ $SQL = "SELECT purchorders.*,
 		INNER JOIN www_users
 			ON www_users.userid=purchorders.initiator
 		WHERE status='Pending' LIMIT 5";
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 echo '<tbody>
 		<tr>
 			<th>' . _('Supplier') . '</th>
@@ -84,7 +84,7 @@ echo '<tbody>
 			<th>' . _('Status') . '</th>
 		</tr>';
 $k = 0;
-while ($row = DB_fetch_array($result)) {
+while ($row = DB_fetch_array($Result)) {
 	if ($k == 1) {
 		echo '<tr class="EvenTableRows">';
 		$k = 0;

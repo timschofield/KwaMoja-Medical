@@ -374,7 +374,7 @@ function InsertBranch($BranchDetails, $user, $password) {
 	}
 	$SQL = "INSERT INTO custbranch (" . mb_substr($FieldNames, 0, -2) . ") VALUES (" . mb_substr($FieldValues, 0, -2) . ") ";
 	if (sizeof($Errors) == 0) {
-		$result = api_DB_Query($SQL, $db);
+		$Result = api_DB_Query($SQL, $db);
 		return $_SESSION['db_err_msg'];
 		if ($_SESSION['db_err_msg'] != '') {
 			$Errors[0] = DatabaseUpdateFailed;
@@ -502,7 +502,7 @@ function ModifyBranch($BranchDetails, $user, $password) {
 	$SQL = mb_substr($SQL, 0, -2) . " WHERE debtorno='" . $BranchDetails['debtorno'] . "'
 								   AND branchcode='" . $BranchDetails['branchcode'] . "'";
 	if (sizeof($Errors) == 0) {
-		$result = api_DB_Query($SQL);
+		$Result = api_DB_Query($SQL);
 		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;
 		} else {
@@ -527,12 +527,12 @@ function GetCustomerBranchCodes($DebtorNumber, $user, $password) {
 	}
 	$SQL = "SELECT branchcode FROM custbranch
 				WHERE debtorno = '" . $DebtorNumber . "'";
-	$result = api_DB_query($SQL);
+	$Result = api_DB_query($SQL);
 	if (DB_error_no() != 0)
 		$Errors[0] = DatabaseUpdateFailed;
 	else {
 		$Errors[0] = 0; // Signal data may follow.
-		while ($MyRow = DB_fetch_row($result)) {
+		while ($MyRow = DB_fetch_row($Result)) {
 			$Errors[] = $MyRow[0];
 		}
 	}
@@ -557,13 +557,13 @@ function GetCustomerBranch($DebtorNumber, $BranchCode, $user, $password) {
 	$SQL = "SELECT * FROM custbranch
 					 WHERE debtorno='" . $DebtorNumber . "'
 					 AND branchcode='" . $BranchCode . "'";
-	$result = api_DB_Query($SQL);
+	$Result = api_DB_Query($SQL);
 	if (DB_error_no() != 0) {
 		$Errors[0] = DatabaseUpdateFailed;
 	} else {
 		$Errors[0] = 0;
-		if (DB_num_rows($result) > 0)
-			$Errors += DB_fetch_array($result);
+		if (DB_num_rows($Result) > 0)
+			$Errors += DB_fetch_array($Result);
 	}
 	return $Errors;
 }

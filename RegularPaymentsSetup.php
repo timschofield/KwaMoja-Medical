@@ -16,8 +16,8 @@ if (isset($_GET['Complete'])) {
 	$SQL = "UPDATE regularpayments SET completed=1 WHERE id='" . $_GET['Payment'] . "'";
 	$ErrMsg = _('Cannot set regular payment as completed because');
 	$DbgMsg = _('Cannot set regular payment as completed using the SQL');
-	$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg);
-	if (DB_error_no($db) == 0) {
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
+	if (DB_error_no() == 0) {
 		prnMsg(_('The regular payment has been marked as complete and no further payments will be made'), 'success');
 	} else {
 		prnMsg(_('There was a problem marking this payment as completed'), 'error');
@@ -39,7 +39,7 @@ if (isset($_GET['Edit'])) {
 					regularpayments.completed
 				FROM regularpayments
 				WHERE id='" . $_GET['Payment'] . "'";
-	$Result = DB_query($SQL, $db);
+	$Result = DB_query($SQL);
 	$MyRow = DB_fetch_array($Result);
 	$_POST['Frequency'] = $MyRow['frequency'];
 	$_POST['Days'] = $MyRow['days'];
@@ -141,7 +141,7 @@ if (isset($_POST['Add']) or isset($_POST['Update'])) {
 			$ErrMsg = _('Cannot insert a new regular payment because');
 			$DbgMsg = _('Cannot insert a new regular payment using the SQL');
 		}
-		$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 		unset($_POST['ID']);
 		unset($_POST['Frequency']);
 		unset($_POST['Days']);
@@ -232,7 +232,7 @@ $SQL = "SELECT bankaccountname,
 
 $ErrMsg = _('The bank accounts could not be retrieved because');
 $DbgMsg = _('The SQL used to retrieve the bank accounts was');
-$AccountsResults = DB_query($SQL, $db, $ErrMsg, $DbgMsg);
+$AccountsResults = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 echo '<tr>
 		<td>' . _('Bank Account') . ':</td>
@@ -264,7 +264,7 @@ echo '<tr>
 		<td>' . _('Currency of Payment') . ':</td>
 		<td><select required="required" minlength="1" name="Currency">';
 $SQL = "SELECT currency, currabrev, rate FROM currencies";
-$Result = DB_query($SQL, $db);
+$Result = DB_query($SQL);
 
 if (DB_num_rows($Result) == 0) {
 	echo '</select></td>
@@ -286,7 +286,7 @@ $SQL = "SELECT tagref,
 				tagdescription
 			FROM tags
 			ORDER BY tagdescription";
-$Result = DB_query($SQL, $db);
+$Result = DB_query($SQL);
 echo '<tr>
 		<td>' . _('Select Tag') . ':</td>
 		<td><select minlength="0" name="Tag">
@@ -317,7 +317,7 @@ $SQL = "SELECT groupname
 			FROM accountgroups
 			ORDER BY sequenceintb";
 
-$Result = DB_query($SQL, $db);
+$Result = DB_query($SQL);
 if (DB_num_rows($Result) == 0) {
 	echo '</select></td>
 		</tr>';
@@ -353,7 +353,7 @@ echo '<tr>
 		<td>' . _('Select GL Account') . ':</td>
 		<td><select minlength="0" name="GLCode" onchange="return assignComboToInput(this,' . 'GLManualCode' . ')">';
 
-$Result = DB_query($SQL, $db);
+$Result = DB_query($SQL);
 if (DB_num_rows($Result) == 0) {
 	echo '</select></td></tr>';
 	prnMsg(_('No General ledger accounts have been set up yet') . ' - ' . _('payments cannot be analysed against GL accounts until the GL accounts are set up'), 'error');
@@ -425,7 +425,7 @@ $SQL = "SELECT regularpayments.id,
 			INNER JOIN chartmaster
 				ON chartmaster.accountcode=regularpayments.glcode
 			WHERE completed=0";
-$Result = DB_query($SQL, $db);
+$Result = DB_query($SQL);
 
 if (DB_num_rows($Result) > 0 and !isset($_GET['Edit'])) {
 	echo '<table class="selection">

@@ -12,9 +12,9 @@ function GetPaymentTermsList($user, $password) {
 		return $Errors;
 	}
 	$SQL = 'SELECT termsindicator FROM paymentterms';
-	$result = api_DB_query($SQL);
+	$Result = api_DB_query($SQL);
 	$i = 0;
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		$PaymentTermsList[$i] = $MyRow[0];
 		++$i;
 	}
@@ -36,8 +36,8 @@ function GetPaymentTermsDetails($paymentterms, $user, $password) {
 		}
 	}
 	$SQL = "SELECT * FROM paymentterms WHERE termsindicator='" . $paymentterms . "'";
-	$result = api_DB_query($SQL);
-	return DB_fetch_array($result);
+	$Result = api_DB_query($SQL);
+	return DB_fetch_array($Result);
 }
 /* This function returns a list of the payment methods
  * currently setup on KwaMoja
@@ -52,9 +52,9 @@ function GetPaymentMethodsList($User, $Password) {
 		}
 	}
 	$SQL = "SELECT paymentid FROM paymentmethods";
-	$result = api_DB_query($SQL);
+	$Result = api_DB_query($SQL);
 	$i = 0;
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		$PaymentMethodsList[$i] = $MyRow[0];
 		++$i;
 	}
@@ -76,8 +76,8 @@ function GetPaymentMethodDetails($PaymentMethod, $User, $Password) {
 		}
 	}
 	$SQL = "SELECT * FROM paymentmethods WHERE paymentid='" . $PaymentMethod . "'";
-	$result = api_DB_query($SQL);
-	return DB_fetch_array($result);
+	$Result = api_DB_query($SQL);
+	return DB_fetch_array($Result);
 }
 
 ?>

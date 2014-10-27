@@ -3,7 +3,7 @@
 AddColumn('authoriser', 'purchorders', 'VARCHAR(20)', 'NOT NULL', '', 'initiator');
 
 $SQL = "UPDATE purchorders SET authoriser=initiator";
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 
 $DirHandle = dir('companies/');
 while (false !== ($CompanyEntry = $DirHandle->read())) {

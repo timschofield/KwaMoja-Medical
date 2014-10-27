@@ -12,9 +12,9 @@ function GetTaxGroupList($user, $password) {
 		return $Errors;
 	}
 	$SQL = 'SELECT taxgroupid FROM taxgroups';
-	$result = api_DB_query($SQL);
+	$Result = api_DB_query($SQL);
 	$i = 0;
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		$TaxgroupList[$i] = $MyRow[0];
 		++$i;
 	}
@@ -34,8 +34,8 @@ function GetTaxGroupDetails($taxgroup, $user, $password) {
 		return $Errors;
 	}
 	$SQL = "SELECT * FROM taxgroups WHERE taxgroupid='" . $taxgroup . "'";
-	$result = api_DB_query($SQL);
-	return DB_fetch_array($result);
+	$Result = api_DB_query($SQL);
+	return DB_fetch_array($Result);
 }
 
 /* This function takes as a parameter a tax group id
@@ -51,10 +51,10 @@ function GetTaxGroupTaxes($TaxGroup, $User, $Password) {
 		return $Errors;
 	}
 	$SQL = "SELECT taxgroupid, taxauthid, calculationorder, taxontax FROM taxgrouptaxes WHERE taxgroupid='" . $TaxGroup . "'";
-	$result = api_DB_query($SQL);
+	$Result = api_DB_query($SQL);
 	$i = 0;
 	$Answer = array();
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		$Answer[$i]['taxgroupid'] = $MyRow['taxgroupid'];
 		$Answer[$i]['taxauthid'] = $MyRow['taxauthid'];
 		$Answer[$i]['calculationorder'] = $MyRow['calculationorder'];
@@ -77,9 +77,9 @@ function GetTaxAuthorityList($User, $Password) {
 		return $Errors;
 	}
 	$SQL = 'SELECT taxid FROM taxauthorities';
-	$result = api_DB_query($SQL);
+	$Result = api_DB_query($SQL);
 	$i = 0;
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		$TaxAuthList[$i] = $MyRow[0];
 		++$i;
 	}
@@ -99,8 +99,8 @@ function GetTaxAuthorityDetails($TaxAuthority, $User, $Password) {
 		return $Errors;
 	}
 	$SQL = "SELECT * FROM taxauthorities WHERE taxid='" . $TaxAuthority . "'";
-	$result = api_DB_query($SQL);
-	return DB_fetch_array($result);
+	$Result = api_DB_query($SQL);
+	return DB_fetch_array($Result);
 }
 
 /* This function takes as a parameter a tax authority id and a tax category id
@@ -116,10 +116,10 @@ function GetTaxAuthorityRates($TaxAuthority, $User, $Password) {
 		return $Errors;
 	}
 	$SQL = "SELECT taxcatid, dispatchtaxprovince, taxrate FROM taxauthrates WHERE taxauthority='" . $TaxAuthority . "'";
-	$result = api_DB_query($SQL);
+	$Result = api_DB_query($SQL);
 	$i = 0;
 	$Answer = array();
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		$Answer[$i]['taxcatid'] = $MyRow['taxcatid'];
 		$Answer[$i]['dispatchtaxprovince'] = $MyRow['dispatchtaxprovince'];
 		$Answer[$i]['taxrate'] = $MyRow['taxrate'];

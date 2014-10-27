@@ -191,10 +191,10 @@ if (DB_num_rows($LineItemsResult) > 0) {
 		if ($MyRow['qtyinvoiced'] > 0) {
 			$DisplayActualDeliveryDate = ConvertSQLDate($MyRow['actualdispatchdate']);
 		} else {
-	  		$DisplayActualDeliveryDate = '<span style="color:red;">' . ConvertSQLDate($myrow['itemdue']) . '</span>';
+	  		$DisplayActualDeliveryDate = '<span style="color:red;">' . ConvertSQLDate($MyRow['itemdue']) . '</span>';
 		}
 
-		echo '<td>' . $myrow['poline'] . '</td>
+		echo '<td>' . $MyRow['poline'] . '</td>
 				<td>' . $MyRow['stkcode'] . '</td>
 				<td>' . $MyRow['description'] . '</td>
 				<td class="number">' . $MyRow['quantity'] . '</td>

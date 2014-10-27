@@ -54,7 +54,7 @@ $SQL = "SELECT regularpayments.id,
 				ON chartmaster.accountcode=regularpayments.glcode
 			WHERE completed=0
 				AND nextpayment<=CURRENT_DATE";
-$Result = DB_query($SQL, $db);
+$Result = DB_query($SQL);
 
 if (DB_num_rows($Result) > 0 and !isset($_GET['Edit'])) {
 	echo '<table class="selection">

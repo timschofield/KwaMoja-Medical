@@ -375,7 +375,7 @@ function InsertCustomer($CustomerDetails, $user = '', $password = '') {
 	}
 	$SQL = "INSERT INTO debtorsmaster (" . mb_substr($FieldNames, 0, -2) . ") VALUES (" . mb_substr($FieldValues, 0, -2) . ") ";
 	if (sizeof($Errors) == 0) {
-		$result = api_DB_Query($SQL, $db);
+		$Result = api_DB_Query($SQL, $db);
 		if ($_SESSION['db_err_msg'] != '') {
 			$Errors[0] = DatabaseUpdateFailed;
 		} else {
@@ -517,7 +517,7 @@ function ModifyCustomer($CustomerDetails, $user, $password) {
 	}
 	$SQL = mb_substr($SQL, 0, -2) . " WHERE debtorno='" . $CustomerDetails['debtorno'] . "'";
 	if (sizeof($Errors) == 0) {
-		$result = api_DB_Query($SQL, $db);
+		$Result = api_DB_Query($SQL, $db);
 		if ($_SESSION['db_err_msg'] != '') {
 			$Errors[0] = DatabaseUpdateFailed;
 		} else {
@@ -543,9 +543,9 @@ function GetCustomer($DebtorNumber, $user, $password) {
 		return $Errors;
 	}
 	$SQL = "SELECT * FROM debtorsmaster WHERE debtorno='" . $DebtorNumber . "'";
-	$result = api_DB_Query($SQL);
+	$Result = api_DB_Query($SQL);
 	$Errors[0] = 0; // None found.
-	$Errors[1] = DB_fetch_array($result);
+	$Errors[1] = DB_fetch_array($Result);
 
 	return $Errors;
 }
@@ -563,11 +563,11 @@ function SearchCustomers($Field, $Criteria, $user, $password) {
 	$SQL = 'SELECT debtorno
 			FROM debtorsmaster
 			WHERE ' . $Field . " LIKE '%" . $Criteria . "%'";
-	$result = api_DB_Query($SQL);
+	$Result = api_DB_Query($SQL);
 	$DebtorList = array(
 		0
 	); // First element: no errors
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		$DebtorList[] = $MyRow[0];
 	}
 	return $DebtorList;

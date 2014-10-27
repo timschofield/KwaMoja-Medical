@@ -2,7 +2,7 @@
 
 /*     This script is an utility to change an inventory item code.
  *     It uses function ChangeFieldInTable($TableName, $FieldName, $OldValue,
- *     $NewValue, $db) from .../includes/MiscFunctions.php.
+ *     $NewValue) from .../includes/MiscFunctions.php.
  */
 
 include('includes/session.inc');

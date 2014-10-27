@@ -508,7 +508,7 @@
 			return false;
 		}
 
-        $result = array();
+        $Result = array();
 		$mlist = get_class_methods($classname);
 		foreach($mlist as $mname)
 		{
@@ -524,13 +524,13 @@
                         $methodwrap = wrap_php_function(array($classname, $mname), '', $extra_options);
                         if ( $methodwrap )
                         {
-                            $result[$methodwrap['function']] = $methodwrap['function'];
+                            $Result[$methodwrap['function']] = $methodwrap['function'];
                         }
                     }
     			}
 			}
 		}
-        return $result;
+        return $Result;
     }
 
 	/**
@@ -670,7 +670,7 @@
 					}
 				}
 
-				$results = build_remote_method_wrapper_code($client, $methodname,
+				$Results = build_remote_method_wrapper_code($client, $methodname,
 					$xmlrpcfuncname, $msig, $mdesc, $timeout, $protocol, $simple_client_copy,
 					$prefix, $decode_php_objects, $encode_php_objects, $decode_fault,
 					$fault_response);
@@ -679,7 +679,7 @@
 				if ($buildit)
 				{
 					$allOK = 0;
-					eval($results['source'].'$allOK=1;');
+					eval($Results['source'].'$allOK=1;');
 					// alternative
 					//$xmlrpcfuncname = create_function('$m', $innercode);
 					if($allOK)
@@ -694,8 +694,8 @@
 				}
 				else
 				{
-					$results['function'] = $xmlrpcfuncname;
-					return $results;
+					$Results['function'] = $xmlrpcfuncname;
+					return $Results;
 				}
 			}
 		}

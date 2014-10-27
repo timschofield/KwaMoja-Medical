@@ -65,7 +65,7 @@ function InsertStockCategory($CategoryDetails, $user, $password) {
 	$SQL = "INSERT INTO stockcategory ('" . mb_substr($FieldNames, 0, -2) . "')
 				VALUES ('" . mb_substr($FieldValues, 0, -2) . "') ";
 	if (sizeof($Errors) == 0) {
-		$result = DB_Query($SQL);
+		$Result = DB_Query($SQL);
 		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;
 		} else {
@@ -106,7 +106,7 @@ function ModifyStockCategory($CategoryDetails, $user, $password) {
 	}
 	$SQL = mb_substr($SQL, 0, -2) . " WHERE categoryid='" . $CategoryDetails['categoryid'] . "'";
 	if (sizeof($Errors) == 0) {
-		$result = DB_Query($SQL);
+		$Result = DB_Query($SQL);
 		echo DB_error_no();
 		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;
@@ -133,9 +133,9 @@ function GetStockCategory($Categoryid, $user, $password) {
 		return $Errors;
 	}
 	$SQL = "SELECT * FROM stockcategory WHERE categoryid='" . $Categoryid . "'";
-	$result = DB_Query($SQL);
+	$Result = DB_Query($SQL);
 	if (sizeof($Errors) == 0) {
-		return DB_fetch_array($result);
+		return DB_fetch_array($Result);
 	} else {
 		return $Errors;
 	}
@@ -155,10 +155,10 @@ function SearchStockCategories($Field, $Criteria, $user, $password) {
 					categorydescription
 			FROM stockcategory
 			WHERE " . $Field . " " . LIKE . " '%" . $Criteria . "%'";
-	$result = DB_Query($SQL);
+	$Result = DB_Query($SQL);
 	$i = 0;
 	$CategoryList = array();
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		$CategoryList[1][$i]['categoryid'] = $MyRow[0];
 		$CategoryList[1][$i]['categorydescription'] = $MyRow[1];
 		++$i;
@@ -182,11 +182,11 @@ function StockCatPropertyList($Label, $Category, $user, $password) {
 				  ON stockitemproperties.stockid=stockmaster.stockid
 				  WHERE stockitemproperties.value like '" . $Label . "'
 				AND stockcatproperties.categoryid='" . $Category . "'";
-	$result = DB_Query($SQL);
+	$Result = DB_Query($SQL);
 	$i = 0;
 	$ItemList = array();
 	$ItemList[0] = 0;
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		$ItemList[1][$i]['stockid'] = $MyRow[0];
 		$ItemList[1][$i]['description'] = $MyRow[1];
 		++$i;
@@ -204,8 +204,8 @@ function GetStockCatProperty($Property, $StockId, $user, $password) {
 	$SQL = "SELECT value FROM stockitemproperties
 					   WHERE stockid='" . $StockId . "'
 					   AND stkcatpropid='" . $Property . "'";
-	$result = DB_Query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = DB_Query($SQL);
+	$MyRow = DB_fetch_array($Result);
 	$Errors[0] = 0;
 	$Errors[1] = $MyRow[0];
 	return $Errors;
@@ -221,9 +221,9 @@ function GetStockCategoryList($user, $password) {
 		return $Errors;
 	}
 	$SQL = "SELECT categoryid FROM stockcategory";
-	$result = api_DB_query($SQL);
+	$Result = api_DB_query($SQL);
 	$i = 0;
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		$StockCategoryList[$i] = $MyRow[0];
 		++$i;
 	}

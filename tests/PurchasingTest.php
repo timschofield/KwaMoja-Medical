@@ -25,7 +25,7 @@ if ($CodeOrName==1) {
 $fields['SearchSuppliers']='Search Now';
 
 include('includes/GetURL.php');
-echo $result;
+echo $Result;
 //close connection
 curl_close($ch);
 

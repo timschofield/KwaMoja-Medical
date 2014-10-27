@@ -829,7 +829,7 @@
 2013-08-27 11:16:05 +0100	icedlava <icedlava@gmail.com>
 	* Prevent sql error when transfer to location contains special characters such as quotes
 2013-08-27 11:13:51 +0100	icedlava <icedlava@gmail.com>
-	* Prevent error warning on DB_free_result call when mysql $result is not a resource.
+	* Prevent error warning on DB_free_result call when mysql $Result is not a resource.
 2013-08-27 11:11:53 +0100	icedlava <icedlava@gmail.com>
 	* Allow display of new component form after deletion of BOM component - else too much work to get back to item to add one.
 2013-08-27 10:56:12 +0100	icedlava <icedlava@gmail.com>
@@ -1237,7 +1237,7 @@
 2013-07-26 09:48:13 +0100	icedlava <icedlava@gmail.com>
 	* Fix Form Designer xml name to prevent duplicate confusion - Goods Received Note to GL Journal (GL Journal  itself requires finishing).
 2013-07-26 09:45:37 +0100	icedlava <icedlava@gmail.com>
-	* Fix PO PDF Preview when $result returns Bool in some environments. Outputs error to browser and prevents PDF output.
+	* Fix PO PDF Preview when $Result returns Bool in some environments. Outputs error to browser and prevents PDF output.
 2013-07-25 14:49:16 -0700	KwaMoja <pmunir31@gmail.com>
 	* Merge pull request #201 from timschofield/develop
 2013-07-25 22:44:01 +0100	Phil Daintree <phil@logicworks.co.nz>
@@ -6645,7 +6645,7 @@
 2010-08-07 11:15:40 +0000	Tim Schofield <tim@weberpafrica.com>
 	* Sql quoting correction, layout changes, and assorted minor bug corrections
 2010-08-07 10:04:40 +0000	Tim Schofield <tim@weberpafrica.com>
-	* Unset $result variable once used as it was causing search errors later in the script
+	* Unset $Result variable once used as it was causing search errors later in the script
 2010-08-06 17:14:20 +0000	Tim Schofield <tim@weberpafrica.com>
 	* Purchase Ordering - Set the allow print flag when the order is re-authorised
 2010-08-02 09:54:13 +0000	Tim Schofield <tim@weberpafrica.com>

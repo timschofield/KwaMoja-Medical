@@ -67,13 +67,13 @@ class URLDetails {
 
 	private function GetTextDetails() {
 		$Texts=array();
-		$result=$this->xml->getElementsByTagName('input');
+		$Result=$this->xml->getElementsByTagName('input');
 		$k=0;
-		for ($i=0; $i<$result->length; $i++) {
-			if ($result->item($i)->getAttribute('type')=='text') {
-				for ($j=0; $j<$result->item($i)->attributes->length; $j++) {
-					$name = $result->item($i)->attributes->item($j)->name;
-					$Texts['text'][$k][$name]=(string)$result->item($i)->attributes->getNamedItem($name)->nodeValue;
+		for ($i=0; $i<$Result->length; $i++) {
+			if ($Result->item($i)->getAttribute('type')=='text') {
+				for ($j=0; $j<$Result->item($i)->attributes->length; $j++) {
+					$name = $Result->item($i)->attributes->item($j)->name;
+					$Texts['text'][$k][$name]=(string)$Result->item($i)->attributes->getNamedItem($name)->nodeValue;
 				}
 				if (!isset($Texts['text'][$k]['maxlength'])) {
 					error_log('**Warning** '.$Texts['text'][$k]['name'].' in '.$this->GetURL().' has no maxlength attribute set.'."\n\n", 3, '/home/tim/kwamoja'.date('Ymd').'.log');
@@ -86,13 +86,13 @@ class URLDetails {
 
 	private function GetSubmitDetails() {
 		$Submits=array();
-		$result=$this->xml->getElementsByTagName('input');
+		$Result=$this->xml->getElementsByTagName('input');
 		$k=0;
-		for ($i=0; $i<$result->length; $i++) {
-			if ($result->item($i)->getAttribute('type')=='submit') {
-				for ($j=0; $j<$result->item($i)->attributes->length; $j++) {
-					$name = $result->item($i)->attributes->item($j)->name;
-					$Submits['submit'][$k][$name]=(string)$result->item($i)->attributes->getNamedItem($name)->nodeValue;
+		for ($i=0; $i<$Result->length; $i++) {
+			if ($Result->item($i)->getAttribute('type')=='submit') {
+				for ($j=0; $j<$Result->item($i)->attributes->length; $j++) {
+					$name = $Result->item($i)->attributes->item($j)->name;
+					$Submits['submit'][$k][$name]=(string)$Result->item($i)->attributes->getNamedItem($name)->nodeValue;
 				}
 				$k++;
 			}
@@ -102,13 +102,13 @@ class URLDetails {
 
 	private function GetButtonDetails() {
 		$Submits=array();
-		$result=$this->xml->getElementsByTagName('button');
+		$Result=$this->xml->getElementsByTagName('button');
 		$k=0;
-		for ($i=0; $i<$result->length; $i++) {
-			if ($result->item($i)->getAttribute('type')=='submit') {
-				for ($j=0; $j<$result->item($i)->attributes->length; $j++) {
-					$name = $result->item($i)->attributes->item($j)->name;
-					$Submits['button'][$k][$name]=(string)$result->item($i)->attributes->getNamedItem($name)->nodeValue;
+		for ($i=0; $i<$Result->length; $i++) {
+			if ($Result->item($i)->getAttribute('type')=='submit') {
+				for ($j=0; $j<$Result->item($i)->attributes->length; $j++) {
+					$name = $Result->item($i)->attributes->item($j)->name;
+					$Submits['button'][$k][$name]=(string)$Result->item($i)->attributes->getNamedItem($name)->nodeValue;
 				}
 				$k++;
 			}
@@ -118,13 +118,13 @@ class URLDetails {
 
 	private function GetRadioDetails() {
 		$Radios=array();
-		$result=$this->xml->getElementsByTagName('input');
+		$Result=$this->xml->getElementsByTagName('input');
 		$k=0;
-		for ($i=0; $i<$result->length; $i++) {
-			if ($result->item($i)->getAttribute('type')=='radio') {
-				for ($j=0; $j<$result->item($i)->attributes->length; $j++) {
-					$name = $result->item($i)->attributes->item($j)->name;
-					$Radios['radio'][$k][$name]=(string)$result->item($i)->attributes->getNamedItem($name)->nodeValue;
+		for ($i=0; $i<$Result->length; $i++) {
+			if ($Result->item($i)->getAttribute('type')=='radio') {
+				for ($j=0; $j<$Result->item($i)->attributes->length; $j++) {
+					$name = $Result->item($i)->attributes->item($j)->name;
+					$Radios['radio'][$k][$name]=(string)$Result->item($i)->attributes->getNamedItem($name)->nodeValue;
 				}
 				$k++;
 			}
@@ -134,13 +134,13 @@ class URLDetails {
 
 	private function GetCheckBoxDetails() {
 		$CheckBoxs=array();
-		$result=$this->xml->getElementsByTagName('input');
+		$Result=$this->xml->getElementsByTagName('input');
 		$k=0;
-		for ($i=0; $i<$result->length; $i++) {
-			if ($result->item($i)->getAttribute('type')=='checkbox') {
-				for ($j=0; $j<$result->item($i)->attributes->length; $j++) {
-					$name = $result->item($i)->attributes->item($j)->name;
-					$CheckBoxs['checkbox'][$k][$name]=(string)$result->item($i)->attributes->getNamedItem($name)->nodeValue;
+		for ($i=0; $i<$Result->length; $i++) {
+			if ($Result->item($i)->getAttribute('type')=='checkbox') {
+				for ($j=0; $j<$Result->item($i)->attributes->length; $j++) {
+					$name = $Result->item($i)->attributes->item($j)->name;
+					$CheckBoxs['checkbox'][$k][$name]=(string)$Result->item($i)->attributes->getNamedItem($name)->nodeValue;
 				}
 				$k++;
 			}
@@ -150,13 +150,13 @@ class URLDetails {
 
 	private function GetHiddenDetails() {
 		$Hiddens=array();
-		$result=$this->xml->getElementsByTagName('input');
+		$Result=$this->xml->getElementsByTagName('input');
 		$k=0;
-		for ($i=0; $i<$result->length; $i++) {
-			if ($result->item($i)->getAttribute('type')=='hidden') {
-				for ($j=0; $j<$result->item($i)->attributes->length; $j++) {
-					$name = $result->item($i)->attributes->item($j)->name;
-					$Hiddens['hidden'][$k][$name]=(string)$result->item($i)->attributes->getNamedItem($name)->nodeValue;
+		for ($i=0; $i<$Result->length; $i++) {
+			if ($Result->item($i)->getAttribute('type')=='hidden') {
+				for ($j=0; $j<$Result->item($i)->attributes->length; $j++) {
+					$name = $Result->item($i)->attributes->item($j)->name;
+					$Hiddens['hidden'][$k][$name]=(string)$Result->item($i)->attributes->getNamedItem($name)->nodeValue;
 				}
 				$k++;
 			}
@@ -166,13 +166,13 @@ class URLDetails {
 
 	private function GetPasswordDetails() {
 		$Passwords=array();
-		$result=$this->xml->getElementsByTagName('input');
+		$Result=$this->xml->getElementsByTagName('input');
 		$k=0;
-		for ($i=0; $i<$result->length; $i++) {
-			if ($result->item($i)->getAttribute('type')=='password') {
-				for ($j=0; $j<$result->item($i)->attributes->length; $j++) {
-					$name = $result->item($i)->attributes->item($j)->name;
-					$Passwords['password'][$k][$name]=(string)$result->item($i)->attributes->getNamedItem($name)->nodeValue;
+		for ($i=0; $i<$Result->length; $i++) {
+			if ($Result->item($i)->getAttribute('type')=='password') {
+				for ($j=0; $j<$Result->item($i)->attributes->length; $j++) {
+					$name = $Result->item($i)->attributes->item($j)->name;
+					$Passwords['password'][$k][$name]=(string)$Result->item($i)->attributes->getNamedItem($name)->nodeValue;
 				}
 				$k++;
 			}
@@ -182,14 +182,14 @@ class URLDetails {
 
 	private function GetSelectDetails() {
 		$Selects=array();
-		$result=$this->xml->getElementsByTagName('select');
-		for ($i=0; $i<$result->length; $i++) {
-			$SelectName=$result->item($i)->getAttribute('name');
-			$result1=$result->item($i)->getElementsByTagName('option');
-			for ($j=0; $j<$result1->length; $j++) {
-				for ($k=0; $k<$result1->item($j)->attributes->length; $k++) {
-					$name = $result1->item($j)->attributes->item($k)->name;
-					$Selects['select'][$SelectName]['options'][$j][$name]=(string)$result1->item($j)->attributes->getNamedItem($name)->nodeValue;
+		$Result=$this->xml->getElementsByTagName('select');
+		for ($i=0; $i<$Result->length; $i++) {
+			$SelectName=$Result->item($i)->getAttribute('name');
+			$Result1=$Result->item($i)->getElementsByTagName('option');
+			for ($j=0; $j<$Result1->length; $j++) {
+				for ($k=0; $k<$Result1->item($j)->attributes->length; $k++) {
+					$name = $Result1->item($j)->attributes->item($k)->name;
+					$Selects['select'][$SelectName]['options'][$j][$name]=(string)$Result1->item($j)->attributes->getNamedItem($name)->nodeValue;
 				}
 			}
 		}
@@ -198,13 +198,13 @@ class URLDetails {
 
 	public function GetHREFDetails() {
 		$Links=array();
-		$result=$this->xml->getElementsByTagName('a');
+		$Result=$this->xml->getElementsByTagName('a');
 		$k=0;
-		for ($i=0; $i<$result->length; $i++) {
-			for ($j=0; $j<$result->item($i)->attributes->length; $j++) {
-				$name = $result->item($i)->attributes->item($j)->name;
-				$Links[$k][$name]=(string)$result->item($i)->attributes->getNamedItem($name)->nodeValue;
-				$Links[$k]['value']=$result->item($i)->nodeValue;
+		for ($i=0; $i<$Result->length; $i++) {
+			for ($j=0; $j<$Result->item($i)->attributes->length; $j++) {
+				$name = $Result->item($i)->attributes->item($j)->name;
+				$Links[$k][$name]=(string)$Result->item($i)->attributes->getNamedItem($name)->nodeValue;
+				$Links[$k]['value']=$Result->item($i)->nodeValue;
 			}
 			$k++;
 		}
@@ -213,13 +213,13 @@ class URLDetails {
 
 	public function GetLabelDetails() {
 		$Labels=array();
-		$result=$this->xml->getElementsByTagName('label');
+		$Result=$this->xml->getElementsByTagName('label');
 		$k=0;
-		for ($i=0; $i<$result->length; $i++) {
-			for ($j=0; $j<$result->item($i)->attributes->length; $j++) {
-				$name = $result->item($i)->attributes->item($j)->name;
-				$Labels[$k][$name]=(string)$result->item($i)->attributes->getNamedItem($name)->nodeValue;
-				$Labels[$k]['value']=$result->item($i)->nodeValue;
+		for ($i=0; $i<$Result->length; $i++) {
+			for ($j=0; $j<$Result->item($i)->attributes->length; $j++) {
+				$name = $Result->item($i)->attributes->item($j)->name;
+				$Labels[$k][$name]=(string)$Result->item($i)->attributes->getNamedItem($name)->nodeValue;
+				$Labels[$k]['value']=$Result->item($i)->nodeValue;
 			}
 			$k++;
 		}
@@ -229,10 +229,10 @@ class URLDetails {
 	public function GetFormAction() {
 		$Action='';
 		$Passwords=array();
-		$result=$this->xml->getElementsByTagName('form');
+		$Result=$this->xml->getElementsByTagName('form');
 		$k=0;
-		for ($i=0; $i<$result->length; $i++) {
-			$Action=(string)$result->item($i)->attributes->getNamedItem('name')->nodeValue;
+		for ($i=0; $i<$Result->length; $i++) {
+			$Action=(string)$Result->item($i)->attributes->getNamedItem('name')->nodeValue;
 		}
 		return $Action;
 	}
@@ -251,12 +251,12 @@ class URLDetails {
 
 	private function ValidateHTML($html) {
 		$Validator = new XhtmlValidator();
-		$result=$Validator->validate($html);
+		$Result=$Validator->validate($html);
 		if($Validator->validate($html) === false){
 			error_log('**Error**'.'There are errors in the XHTML of page '.$this->GetURL()."\n", 3, '/home/tim/kwamoja'.date('Ymd').'.log');
 			$Validator->logErrors();
 		}
-		return $result;
+		return $Result;
 	}
 
 	private function ValidateLinks($ServerPath, $ch) {
@@ -265,7 +265,7 @@ class URLDetails {
 				curl_setopt($ch,CURLOPT_URL,$ServerPath.$this->Links[$i]['href']);
 				curl_setopt($ch,CURLOPT_RETURNTRANSFER,True);
 				curl_setopt($ch,CURLOPT_COOKIEJAR,'/tmp/'.$this->SessionID.'/curl.txt');
-				$result = curl_exec($ch);
+				$Result = curl_exec($ch);
 				$response = curl_getinfo( $ch );
 				if ($response['http_code']!=200) {
 					error_log('**Warning**'.$i.' '.$ServerPath.$this->Links[$i]['href'].' '.$response['http_code']."\n", 3, '/home/tim/kwamoja'.date('Ymd').'.log');
@@ -289,19 +289,19 @@ class URLDetails {
 		curl_setopt($ch,CURLOPT_COOKIEJAR,'/tmp/'.$this->SessionID.'/curl.txt');
 
 		//execute post
-		$result[0] = curl_exec($ch);
+		$Result[0] = curl_exec($ch);
 
 		$this->xml = new DOMDocument();
-		$this->xml->loadHTML($result[0]);
-//		$answer = $this->ValidateHTML($result[0]);
+		$this->xml->loadHTML($Result[0]);
+//		$answer = $this->ValidateHTML($Result[0]);
 
 		$this->Links=$this->GetHREFDetails();
 		$this->ValidateLinks($ServerPath, $ch);
 
-		$result[1] = $this->GetHREFDetails();
-		$result[2] = $this->GetFormDetails();
+		$Result[1] = $this->GetHREFDetails();
+		$Result[2] = $this->GetFormDetails();
 
-		return $result;
+		return $Result;
 
 	}
 

@@ -1016,13 +1016,13 @@ class XhtmlValidator
 
     function getUniqueAttributesAndEventsForTag($tag)
     {
-        $result = array();
+        $Result = array();
         if (isset($this->_tags[$tag]['attributes']) and is_array($this->_tags[$tag]['attributes'])) {
             foreach($this->_tags[$tag]['attributes'] as $k => $candidate) {
-                $result[] = is_numeric($k) ? $candidate : $k;
+                $Result[] = is_numeric($k) ? $candidate : $k;
             }
         }
-        return $result;
+        return $Result;
     }
 
     function getDefaultAttributesAndEventsForTag($tag)
@@ -1137,10 +1137,10 @@ class XhtmlValidator
     function isTagAlowedOnCurrentContext($tag, $previous)
     {
         $rules = $this->getRules();
-        $result = isset($rules[$previous]) ? in_array($tag, $rules[$previous]) : true;
+        $Result = isset($rules[$previous]) ? in_array($tag, $rules[$previous]) : true;
         $inverse_rules = $this->getInverseRulesForTag($tag);
-        $result = isset($inverse_rules[$tag]) ? in_array($previous, $inverse_rules[$tag]) : $result;
-        return $result;
+        $Result = isset($inverse_rules[$tag]) ? in_array($previous, $inverse_rules[$tag]) : $Result;
+        return $Result;
     }
 
     function getRules()

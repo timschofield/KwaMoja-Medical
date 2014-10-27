@@ -255,14 +255,14 @@
 			}
 		}
 
-		$result = $server->execute($Msg);
+		$Result = $server->execute($Msg);
 
-		if($result->faultCode() != 0)
+		if($Result->faultCode() != 0)
 		{
-			return _xmlrpcs_multicall_error($result);		// Method returned fault.
+			return _xmlrpcs_multicall_error($Result);		// Method returned fault.
 		}
 
-		return new xmlrpcval(array($result->value()), 'array');
+		return new xmlrpcval(array($Result->value()), 'array');
 	}
 
 	function _xmlrpcs_multicall_do_call_phpvals($server, $call)
@@ -299,19 +299,19 @@
 		foreach($call['params'] as $val)
 			$pt[] = php_2_xmlrpc_type(gettype($val));
 
-		$result = $server->execute($call['methodName'], $call['params'], $pt);
+		$Result = $server->execute($call['methodName'], $call['params'], $pt);
 
-		if($result->faultCode() != 0)
+		if($Result->faultCode() != 0)
 		{
-			return _xmlrpcs_multicall_error($result);		// Method returned fault.
+			return _xmlrpcs_multicall_error($Result);		// Method returned fault.
 		}
 
-		return new xmlrpcval(array($result->value()), 'array');
+		return new xmlrpcval(array($Result->value()), 'array');
 	}
 
 	function _xmlrpcs_multicall($server, $m)
 	{
-		$result = array();
+		$Result = array();
 		// let accept a plain list of php parameters, beside a single xmlrpc msg object
 		if (is_object($m))
 		{
@@ -320,7 +320,7 @@
 			for($i = 0; $i < $numCalls; $i++)
 			{
 				$call = $calls->arraymem($i);
-				$result[$i] = _xmlrpcs_multicall_do_call($server, $call);
+				$Result[$i] = _xmlrpcs_multicall_do_call($server, $call);
 			}
 		}
 		else
@@ -328,11 +328,11 @@
 			$numCalls=count($m);
 			for($i = 0; $i < $numCalls; $i++)
 			{
-				$result[$i] = _xmlrpcs_multicall_do_call_phpvals($server, $m[$i]);
+				$Result[$i] = _xmlrpcs_multicall_do_call_phpvals($server, $m[$i]);
 			}
 		}
 
-		return new xmlrpcresp(new xmlrpcval($result, 'array'));
+		return new xmlrpcresp(new xmlrpcval($Result, 'array'));
 	}
 
 	$GLOBALS['_xmlrpcs_dmap']=array(

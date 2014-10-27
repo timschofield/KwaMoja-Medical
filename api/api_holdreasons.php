@@ -12,9 +12,9 @@ function GetHoldReasonList($user, $password) {
 		return $Errors;
 	}
 	$SQL = 'SELECT reasoncode FROM holdreasons';
-	$result = api_DB_query($SQL);
+	$Result = api_DB_query($SQL);
 	$i = 0;
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		$HoldReasonList[$i] = $MyRow[0];
 		++$i;
 	}
@@ -34,8 +34,8 @@ function GetHoldReasonDetails($holdreason, $user, $password) {
 		return $Errors;
 	}
 	$SQL = "SELECT * FROM holdreasons WHERE reasoncode='" . $holdreason . "'";
-	$result = api_DB_query($SQL);
-	return DB_fetch_array($result);
+	$Result = api_DB_query($SQL);
+	return DB_fetch_array($Result);
 }
 
 ?>

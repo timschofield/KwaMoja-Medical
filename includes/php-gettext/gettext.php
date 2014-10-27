@@ -391,8 +391,8 @@ class gettext_reader {
       if (! array_key_exists($Key, $this->cache_translations)) {
         return ($number != 1) ? $plural : $single;
       } else {
-        $result = $this->cache_translations[$Key];
-        $list = explode(chr(0), $result);
+        $Result = $this->cache_translations[$Key];
+        $list = explode(chr(0), $Result);
         return $list[$select];
       }
     } else {
@@ -400,8 +400,8 @@ class gettext_reader {
       if ($num == -1) {
         return ($number != 1) ? $plural : $single;
       } else {
-        $result = $this->get_translation_string($num);
-        $list = explode(chr(0), $result);
+        $Result = $this->get_translation_string($num);
+        $list = explode(chr(0), $Result);
         return $list[$select];
       }
     }

@@ -142,9 +142,9 @@ for ($UpdateNumber = $StartingUpdate; $UpdateNumber <= $EndingUpdate; $UpdateNum
 					</script>';
 		echo str_repeat(' ', 1024 * 4);
 		$SQL = "SET foreign_key_checks=0";
-		$result = executeSQL($SQL, $DB, False);
+		$Result = executeSQL($SQL, $DB, False);
 		flush();
-		if ($result == 0) {
+		if ($Result == 0) {
 			include($PathPrefix . 'sql/install/' . $UpdateNumber . '.php');
 		}
 		flush();
@@ -177,7 +177,7 @@ InsertRecord('www_users', array('userid'),
 /* Now we uploade the chosen chart of accounts */
 if (!isset($_POST['Demo'])) {
 	$SQL = "SET foreign_key_checks=0";
-	$result = executeSQL($SQL, $DB, False);
+	$Result = executeSQL($SQL, $DB, False);
 	include($PathPrefix . 'install/coa/' . $_SESSION['Installer']['CoA']);
 	echo '<div class="success">' . _('Your chosen chart of accounts has been uploaded') . '</div>';
 	ob_flush();
@@ -200,7 +200,7 @@ function executeSQL($SQL, $TrapErrors = False) {
 	/* Run an sql statement and return an error code */
 	if (!isset($SQLFile)) {
 		DB_IgnoreForeignKeys();
-		$result = DB_query($SQL, '', '', false, $TrapErrors);
+		$Result = DB_query($SQL, '', '', false, $TrapErrors);
 		$ErrorNumber = DB_error_no();
 		DB_ReinstateForeignKeys();
 		return $ErrorNumber;
@@ -249,7 +249,7 @@ function PopulateSQLDataBySQL($File, $DB, $DBType, $NewDB = false, $DemoDB = 'kw
 		}
 		if (mb_strpos($SQLScriptFile[$i - 1], ';') > 0 and !$InAFunction) {
 			// Database created above with correct name.
-			$result = ($DBType == 'mysql') ? mysql_query($SQL, $DB) : mysqli_query($DB, $SQL);
+			$Result = ($DBType == 'mysql') ? mysql_query($SQL, $DB) : mysqli_query($DB, $SQL);
 			$SQL = '';
 		}
 		$percent = intval($i / $ScriptFileEntries * 100) . "%";

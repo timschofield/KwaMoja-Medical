@@ -444,7 +444,7 @@ if (isset($_POST['submit'])) {
 							$SQL = "UPDATE stockdescriptiontranslations " .
 									"SET descriptiontranslation='" . $DescriptionTranslation . "' " .
 									"WHERE stockid='" . $StockId . "' AND (language_id='" . $LanguageId. "')";
-							$Result = DB_query($SQL, $db, $ErrMsg, $DbgMsg, true);
+							$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 					}
 					*/
 

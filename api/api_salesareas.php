@@ -25,9 +25,9 @@ function GetSalesAreasList($User, $Password) {
 		return $Errors;
 	}
 	$SQL = 'SELECT areacode FROM areas';
-	$result = api_DB_query($SQL);
+	$Result = api_DB_query($SQL);
 	$i = 0;
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		$SalesAreaList[$i] = $MyRow[0];
 		++$i;
 	}
@@ -47,13 +47,13 @@ function GetSalesAreaDetails($area, $User, $Password) {
 		return $Errors;
 	}
 	$SQL = 'SELECT * FROM areas WHERE areacode="' . $area . '"';
-	$result = api_DB_query($SQL);
-	if (DB_num_rows($result) == 0) {
+	$Result = api_DB_query($SQL);
+	if (DB_num_rows($Result) == 0) {
 		$Errors[0] = NoSuchArea;
 		return $Errors;
 	} else {
 		$Errors[0] = 0;
-		$Errors[1] = DB_fetch_array($result);
+		$Errors[1] = DB_fetch_array($Result);
 		return $Errors;
 	}
 }
@@ -82,7 +82,7 @@ function InsertSalesArea($AreaDetails, $User, $Password) {
 	$SQL = 'INSERT INTO areas (' . mb_substr($FieldNames, 0, -2) . ")
 				VALUES ('" . mb_substr($FieldValues, 0, -2) . "') ";
 	if (sizeof($Errors) == 0) {
-		$result = DB_Query($SQL);
+		$Result = DB_Query($SQL);
 		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;
 		} else {
@@ -105,13 +105,13 @@ function GetSalesAreaDetailsFromName($AreaName, $User, $Password) {
 		return $Errors;
 	}
 	$SQL = "SELECT * FROM areas WHERE areadescription='" . $AreaName . "'";
-	$result = api_DB_query($SQL);
-	if (DB_num_rows($result) == 0) {
+	$Result = api_DB_query($SQL);
+	if (DB_num_rows($Result) == 0) {
 		$Errors[0] = NoSuchArea;
 		return $Errors;
 	} else {
 		$Errors[0] = 0;
-		$Errors[1] = DB_fetch_array($result);
+		$Errors[1] = DB_fetch_array($Result);
 		return $Errors;
 	}
 }

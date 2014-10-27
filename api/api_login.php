@@ -117,7 +117,7 @@ function DoSetup() {
 					$SQL = "DELETE FROM audittrail
 							WHERE  transactiondate <= '" . Date('Y-m-d', mktime(0, 0, 0, Date('m') - $_SESSION['MonthsAuditTrail'])) . "'";
 					$ErrMsg = _('There was a problem deleting expired audit-trail history');
-					$result = api_DB_query($SQL);
+					$Result = api_DB_query($SQL);
 				}
 				$_SESSION['DB_Maintenance_LastRun'] = Date('Y-m-d');
 			}

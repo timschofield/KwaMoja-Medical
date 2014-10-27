@@ -47,8 +47,8 @@ function VerifySupplierName($SupplierName, $i, $Errors) {
  * target KwaMoja company */
 function VerifySupplierSinceDate($suppliersincedate, $i, $Errors) {
 	$SQL = "SELECT confvalue FROM config where confname='DefaultDateFormat'";
-	$result = api_DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = api_DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 	$DateFormat = $MyRow[0];
 	if (mb_strstr('/', $PeriodEnd)) {
 		$Date_Array = explode('/', $PeriodEnd);
@@ -204,7 +204,7 @@ function InsertSupplier($SupplierDetails, $user, $password) {
 	}
 	$SQL = 'INSERT INTO suppliers (' . mb_substr($FieldNames, 0, -2) . ') ' . 'VALUES (' . mb_substr($FieldValues, 0, -2) . ') ';
 	if (sizeof($Errors) == 0) {
-		$result = DB_Query($SQL);
+		$Result = DB_Query($SQL);
 		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;
 		} else {
@@ -292,7 +292,7 @@ function ModifySupplier($SupplierDetails, $user, $password) {
 	}
 	$SQL = mb_substr($SQL, 0, -2) . " WHERE supplierid='" . $SupplierDetails['supplierid'] . "'";
 	if (sizeof($Errors) == 0) {
-		$result = DB_Query($SQL);
+		$Result = DB_Query($SQL);
 		echo DB_error_no();
 		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;
@@ -319,9 +319,9 @@ function GetSupplier($SupplierID, $user, $password) {
 		return $Errors;
 	}
 	$SQL = "SELECT * FROM suppliers WHERE supplierid='" . $SupplierID . "'";
-	$result = DB_Query($SQL);
+	$Result = DB_Query($SQL);
 	if (sizeof($Errors) == 0) {
-		return DB_fetch_array($result);
+		return DB_fetch_array($Result);
 	} else {
 		return $Errors;
 	}
@@ -340,10 +340,10 @@ function SearchSuppliers($Field, $Criteria, $user, $password) {
 	$SQL = 'SELECT supplierid
 			FROM suppliers
 			WHERE ' . $Field . " LIKE '%" . $Criteria . "%' ORDER BY supplierid";
-	$result = DB_Query($SQL);
+	$Result = DB_Query($SQL);
 	$i = 0;
 	$SupplierList = array();
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		$SupplierList[$i] = $MyRow[0];
 		++$i;
 	}

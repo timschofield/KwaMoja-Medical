@@ -318,7 +318,7 @@ if (isset($_POST['submit'])) {
 					if (count($ItemDescriptionLanguagesArray) > 0) {
 						foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
 							if ($LanguageId!=''){
-								$Result = DB_query("INSERT INTO stockdescriptiontranslations VALUES('" . $_POST['StockID'] . "','" . $LanguageId . "', '" . $_POST['Description_' . str_replace('.', '_', $LanguageId)] . "')", $db, $ErrMsg, $DbgMsg, true);
+								$Result = DB_query("INSERT INTO stockdescriptiontranslations VALUES('" . $_POST['StockID'] . "','" . $LanguageId . "', '" . $_POST['Description_' . str_replace('.', '_', $LanguageId)] . "')", $ErrMsg, $DbgMsg, true);
 							}
 						}
 					}

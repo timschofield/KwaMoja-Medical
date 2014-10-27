@@ -11,8 +11,8 @@ function GetDefaultCurrency($user, $password) {
 		return $Errors;
 	}
 	$SQL = "SELECT currencydefault FROM companies WHERE coycode=1";
-	$result = api_DB_query($SQL);
-	$answer = DB_fetch_array($result);
+	$Result = api_DB_query($SQL);
+	$answer = DB_fetch_array($Result);
 	$ReturnValue[0] = 0;
 	$ReturnValue[1] = $answer;
 	return $ReturnValue;
@@ -29,8 +29,8 @@ function GetDefaultPriceList($user, $password) {
 		return $Errors;
 	}
 	$SQL = "SELECT confvalue FROM config WHERE confname='DefaultPriceList'";
-	$result = api_DB_query($SQL);
-	$answer = DB_fetch_array($result);
+	$Result = api_DB_query($SQL);
+	$answer = DB_fetch_array($Result);
 	$ReturnValue[0] = 0;
 	$ReturnValue[1] = $answer;
 	return $ReturnValue;
@@ -47,8 +47,8 @@ function GetDefaultDateFormat($user, $password) {
 		return $Errors;
 	}
 	$SQL = "SELECT confvalue FROM config WHERE confname='DefaultDateFormat'";
-	$result = api_DB_query($SQL);
-	$answer = DB_fetch_array($result);
+	$Result = api_DB_query($SQL);
+	$answer = DB_fetch_array($Result);
 	$ReturnValue[0] = 0;
 	$ReturnValue[1] = $answer;
 	return $ReturnValue;
@@ -64,8 +64,8 @@ function GetReportsDirectory($user, $password) {
 		return $Errors;
 	}
 	$SQL = "SELECT confvalue FROM config WHERE confname='reports_dir'";
-	$result = api_DB_query($SQL);
-	$answer = DB_fetch_array($result);
+	$Result = api_DB_query($SQL);
+	$answer = DB_fetch_array($Result);
 	$ReturnValue[0] = 0;
 	$ReturnValue[1] = $answer;
 	return $ReturnValue;
@@ -81,8 +81,8 @@ function GetDefaultLocation($user, $password) {
 		return $Errors;
 	}
 	$SQL = "select defaultlocation from www_users where userid='" . $user . "'";
-	$result = api_DB_query($SQL);
-	$answer = DB_fetch_array($result);
+	$Result = api_DB_query($SQL);
+	$answer = DB_fetch_array($Result);
 	$ReturnValue[0] = 0;
 	$ReturnValue[1] = $answer;
 	return $ReturnValue;
@@ -99,8 +99,8 @@ function GetDefaultShipper($user, $password) {
 		return $Errors;
 	}
 	$SQL = "SELECT confvalue from config WHERE confname='Default_Shipper'";
-	$result = api_DB_query($SQL);
-	$answer = DB_fetch_array($result);
+	$Result = api_DB_query($SQL);
+	$answer = DB_fetch_array($Result);
 	$ReturnValue[0] = 0;
 	$ReturnValue[1] = $answer;
 	return $ReturnValue;
@@ -117,8 +117,8 @@ function GetDefaultArea($user, $password) {
 		return $Errors;
 	}
 	$SQL = "SELECT confvalue from config WHERE confname='DefaultArea'";
-	$result = api_DB_query($SQL);
-	$answer = DB_fetch_array($result);
+	$Result = api_DB_query($SQL);
+	$answer = DB_fetch_array($Result);
 	$ReturnValue[0] = 0;
 	$ReturnValue[1] = $answer;
 	return $ReturnValue;
@@ -135,8 +135,8 @@ function GetDefaultSalesPerson($user, $password) {
 		return $Errors;
 	}
 	$SQL = "SELECT confvalue from config WHERE confname='DefaultSalesPerson'";
-	$result = api_DB_query($SQL);
-	$answer = DB_fetch_array($result);
+	$Result = api_DB_query($SQL);
+	$answer = DB_fetch_array($Result);
 	$ReturnValue[0] = 0;
 	$ReturnValue[1] = $answer;
 	return $ReturnValue;

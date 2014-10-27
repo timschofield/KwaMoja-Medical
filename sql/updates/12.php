@@ -4,8 +4,8 @@
  * character set
  */
 
-$result = DB_show_tables();
-while ($table = DB_fetch_array($result)) {
+$Result = DB_show_tables();
+while ($table = DB_fetch_array($Result)) {
 	if (CharacterSet($table[0]) != 'utf8_general_ci') {
 		$response = executeSQL('ALTER TABLE ' . $table[0] . ' CONVERT TO CHARACTER SET utf8');
 		if ($response == 0) {
@@ -757,8 +757,8 @@ ChangeColumnName('location', 'fixedassets', 'varchar(6)', 'NOT NULL', '', 'asset
 
 if (DB_table_exists('fixedassets')) {
 	$SQL = "desc fixedassets stockid";
-	$result = DB_query($SQL);
-	if (DB_num_rows($result) > 0) {
+	$Result = DB_query($SQL);
+	if (DB_num_rows($Result) > 0) {
 		$response = executeSQL("UPDATE fixedassets INNER JOIN stockmaster ON fixedassets.stockid=stockmaster.stockid SET assetcategoryid=stockmaster.categoryid,
 fixedassets.description=stockmaster.description, fixedassets.longdescription=stockmaster.longdescription", False);
 		if ($response == 0) {
@@ -788,8 +788,8 @@ Createtable('fixedassetcategories', "CREATE TABLE IF NOT EXISTS `fixedassetcateg
 
 if (DB_table_exists('fixedassets')) {
 	$SQL = "SELECT categoryid FROM fixedassetcategories";
-	$result = DB_query($SQL);
-	if (DB_num_rows($result) == 0) {
+	$Result = DB_query($SQL);
+	if (DB_num_rows($Result) == 0) {
 		$response = executeSQL("INSERT INTO fixedassetcategories (categoryid, categorydescription, costact, depnact, disposalact, accumdepnact)
 SELECT categoryid, categorydescription, stockact, adjglact, materialuseagevarac, wipact FROM stockcategory WHERE stocktype='A'", False);
 		if ($response == 0) {
@@ -806,8 +806,8 @@ SELECT categoryid, categorydescription, stockact, adjglact, materialuseagevarac,
 }
 
 $SQL = "SELECT categoryid FROM stockcategory WHERE stockcategory.stocktype='A'";
-$result = DB_query($SQL);
-if (DB_num_rows($result) != 0) {
+$Result = DB_query($SQL);
+if (DB_num_rows($Result) != 0) {
 	$response = executeSQL("DELETE locstock.* FROM locstock INNER JOIN stockmaster ON locstock.stockid=stockmaster.stockid INNER JOIN stockcategory ON stockmaster.categoryid=stockcategory.categoryid WHERE stockcategory.stocktype='A'", False);
 	if ($response == 0) {
 		OutputResult(_('The fixedassetcategories have been removed from stockcategory'), 'success');
@@ -825,8 +825,8 @@ $SQL = "SELECT stockitemproperties.stockid
 	INNER JOIN stockcategory
 		ON stockmaster.categoryid=stockcategory.categoryid
 	WHERE stockcategory.stocktype='A'";
-$result = DB_query($SQL);
-if (DB_num_rows($result) != 0) {
+$Result = DB_query($SQL);
+if (DB_num_rows($Result) != 0) {
 	$response = executeSQL("DELETE stockitemproperties.* FROM stockitemproperties INNER JOIN stockmaster ON stockitemproperties.stockid=stockmaster.stockid INNER JOIN stockcategory ON stockmaster.categoryid=stockcategory.categoryid WHERE stockcategory.stocktype='A'", False);
 	if ($response == 0) {
 		OutputResult(_('The fixed assets have been removed from stockitemproperties'), 'success');
@@ -840,8 +840,8 @@ if (DB_num_rows($result) != 0) {
 $SQL = "SELECT stockserialmoves.* FROM stockserialmoves, stockmoves,
 stockmaster,stockcategory WHERE stockserialmoves.stockmoveno=stockmoves.stkmoveno AND
 stockmoves.stockid = stockmaster.stockid AND stockmaster.categoryid = stockcategory.categoryid AND stockcategory.stocktype = 'A'";
-$result = DB_query($SQL);
-if (DB_num_rows($result) != 0) {
+$Result = DB_query($SQL);
+if (DB_num_rows($Result) != 0) {
 	$response = executeSQL("DELETE stockserialmoves.* FROM stockserialmoves, stockmoves,
 stockmaster,stockcategory WHERE stockserialmoves.stockmoveno=stockmoves.stkmoveno AND
 stockmoves.stockid = stockmaster.stockid AND stockmaster.categoryid = stockcategory.categoryid AND stockcategory.stocktype = 'A'", False);
@@ -856,8 +856,8 @@ stockmoves.stockid = stockmaster.stockid AND stockmaster.categoryid = stockcateg
 
 $SQL = "SELECT stockserialitems.* FROM stockserialitems, stockmaster, stockcategory
 WHERE stockserialitems.stockid = stockmaster.stockid AND stockmaster.categoryid=stockcategory.categoryid AND stocktype='A'";
-$result = DB_query($SQL);
-if (DB_num_rows($result) != 0) {
+$Result = DB_query($SQL);
+if (DB_num_rows($Result) != 0) {
 	$response = executeSQL("DELETE stockserialitems.* FROM stockserialitems, stockmaster, stockcategory
 WHERE stockserialitems.stockid = stockmaster.stockid AND stockmaster.categoryid=stockcategory.categoryid AND stocktype='A'", False);
 	if ($response == 0) {
@@ -876,8 +876,8 @@ $SQL = "SELECT stockmoves.*
 		WHERE stockmoves.stockid = stockmaster.stockid
 			AND stockmaster.categoryid = stockcategory.categoryid
 			AND stockcategory.stocktype = 'A'";
-$result = DB_query($SQL);
-if (DB_num_rows($result) != 0) {
+$Result = DB_query($SQL);
+if (DB_num_rows($Result) != 0) {
 	$response = executeSQL("DELETE stockmoves.* FROM stockmoves, stockmaster, stockcategory WHERE stockmoves.stockid = stockmaster.stockid AND stockmaster.categoryid = stockcategory.categoryid AND stockcategory.stocktype = 'A'", False);
 	if ($response == 0) {
 		OutputResult(_('The fixed assets have been removed from stockmoves, stockmaster, and stockcategory tables'), 'success');
@@ -889,8 +889,8 @@ if (DB_num_rows($result) != 0) {
 }
 
 $SQL = "SELECT stockmaster.* FROM stockmaster INNER JOIN stockcategory ON stockmaster.categoryid=stockcategory.categoryid WHERE stockcategory.stocktype='A'";
-$result = DB_query($SQL);
-if (DB_num_rows($result) != 0) {
+$Result = DB_query($SQL);
+if (DB_num_rows($Result) != 0) {
 	$response = executeSQL("DELETE stockmaster.* FROM stockmaster INNER JOIN stockcategory ON stockmaster.categoryid=stockcategory.categoryid WHERE stockcategory.stocktype='A'", False);
 	if ($response == 0) {
 		OutputResult(_('The fixed assets have been removed from stockmaster table'), 'success');
@@ -904,8 +904,8 @@ if (DB_num_rows($result) != 0) {
 ChangeColumnName('id', 'fixedassets', 'int(11)', 'NOT NULL', 0, 'assetid', 'AUTO_INCREMENT');
 
 $SQL = "SELECT categoryid FROM  stockcategory WHERE stocktype='A'";
-$result = DB_query($SQL);
-if (DB_num_rows($result) != 0) {
+$Result = DB_query($SQL);
+if (DB_num_rows($Result) != 0) {
 	$response = executeSQL("DELETE FROM stockcategory WHERE stocktype='A'", False);
 	if ($response == 0) {
 		OutputResult(_('The fixed assets have been removed from stockmaster table'), 'success');

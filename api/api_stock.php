@@ -76,8 +76,8 @@ function VerifyMBFlag($mbflag, $i, $Errors) {
  * target KwaMoja company */
 function VerifyLastCurCostDate($CurCostDate, $i, $Errors) {
 	$SQL = "SELECT confvalue FROM config WHERE confname='DefaultDateFormat'";
-	$result = api_DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = api_DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 	$DateFormat = $MyRow[0];
 	if (mb_strstr('/', $PeriodEnd)) {
 		$Date_Array = explode('/', $PeriodEnd);
@@ -258,8 +258,8 @@ function VerifyDecimalPlaces($DecimalPlaces, $i, $Errors) {
 
 function GetCategoryGLCode($CategoryID, $field) {
 	$SQL = 'SELECT ' . $field . " FROM stockcategory WHERE categoryid='" . $CategoryID . "'";
-	$result = DB_Query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_Query($SQL);
+	$MyRow = DB_fetch_row($Result);
 	return $MyRow[0];
 }
 
@@ -482,7 +482,7 @@ function ModifyStockItem($StockItemDetails, $user, $password) {
 	}
 	$SQL = mb_substr($SQL, 0, -2) . " WHERE stockid='" . $StockItemDetails['stockid'] . "'";
 	if (sizeof($Errors) == 0) {
-		$result = DB_Query($SQL);
+		$Result = DB_Query($SQL);
 		echo DB_error_no();
 		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;
@@ -509,10 +509,10 @@ function GetStockItem($StockId, $user, $password) {
 		return $Errors;
 	}
 	$SQL = "SELECT * FROM stockmaster WHERE stockid='" . $StockId . "'";
-	$result = DB_Query($SQL);
+	$Result = DB_Query($SQL);
 	if (sizeof($Errors) == 0) {
 		$Errors[0] = 0;
-		$Errors[1] = DB_fetch_array($result);
+		$Errors[1] = DB_fetch_array($Result);
 		return $Errors;
 	} else {
 		return $Errors;
@@ -532,10 +532,10 @@ function SearchStockItems($Field, $Criteria, $user, $password) {
 	$SQL = "SELECT stockid
 			  FROM stockmaster
 			  WHERE " . $Field . " LIKE '%" . $Criteria . "%'";
-	$result = DB_Query($SQL);
+	$Result = DB_Query($SQL);
 	$i = 0;
 	$StockItemList = array();
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		$StockItemList[$i] = $MyRow[0];
 		++$i;
 	}
@@ -562,10 +562,10 @@ function GetStockBalance($StockId, $user, $password) {
 	$SQL = "SELECT quantity,
 					 loccode
 			   FROM locstock WHERE stockid='" . $StockId . "'";
-	$result = api_DB_query($SQL);
+	$Result = api_DB_query($SQL);
 	if (sizeof($Errors) == 0) {
 		$i = 0;
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			$answer[$i]['quantity'] = $MyRow['quantity'];
 			$answer[$i]['loccode'] = $MyRow['loccode'];
 			++$i;
@@ -590,10 +590,10 @@ function GetStockReorderLevel($StockId, $user, $password) {
 		return $Errors;
 	}
 	$SQL = "SELECT reorderlevel, loccode FROM locstock WHERE stockid='" . $StockId . "'";
-	$result = DB_Query($SQL);
+	$Result = DB_Query($SQL);
 	if (sizeof($Errors) == 0) {
 		$i = 0;
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			$answer[$i]['reorderlevel'] = $MyRow['reorderlevel'];
 			$answer[$i]['loccode'] = $MyRow['loccode'];
 			++$i;
@@ -620,7 +620,7 @@ function SetStockReorderLevel($StockId, $Location, $ReorderLevel, $user, $passwo
 	$SQL = "UPDATE locstock SET reorderlevel='" . $ReorderLevel . "'
 					 WHERE stockid='" . $StockId . "'
 					 AND loccode='" . $Location . "'";
-	$result = DB_Query($SQL);
+	$Result = DB_Query($SQL);
 	if (sizeof($Errors) == 0) {
 		return 0;
 	} else {
@@ -643,10 +643,10 @@ function GetAllocatedStock($StockId, $user, $password) {
 			 FROM salesorderdetails
 			 WHERE stkcode='" . $StockId . "'
 			 AND completed=0";
-	$result = DB_Query($SQL);
+	$Result = DB_Query($SQL);
 	if (sizeof($Errors) == 0) {
 		$Errors[0] = 0;
-		$Errors[1] = DB_fetch_array($result);
+		$Errors[1] = DB_fetch_array($Result);
 		return $Errors;
 	} else {
 		return $Errors;
@@ -668,10 +668,10 @@ function GetOrderedStock($StockId, $user, $password) {
 			  FROM purchorderdetails
 			  WHERE itemcode='" . $StockId . "'
 			  AND completed=0";
-	$result = DB_Query($SQL);
+	$Result = DB_Query($SQL);
 	if (sizeof($Errors) == 0) {
 		$Errors[0] = 0;
-		$Errors[1] = DB_fetch_array($result);
+		$Errors[1] = DB_fetch_array($Result);
 		return $Errors;
 	} else {
 		return $Errors;
@@ -695,8 +695,8 @@ function SetStockPrice($StockId, $Currency, $SalesType, $Price, $user, $password
 				 WHERE stockid='" . $StockId . "'
 				 and typeabbrev='" . $SalesType . "'
 				 and currabrev='" . $Currency . "'";
-	$result = DB_Query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_Query($SQL);
+	$MyRow = DB_fetch_row($Result);
 	if ($MyRow[0] == 0) {
 		$SQL = "INSERT INTO prices VALUES('" . $StockId . "',
 											'" . $SalesType . "',
@@ -709,7 +709,7 @@ function SetStockPrice($StockId, $Currency, $SalesType, $Price, $user, $password
 					AND typeabbrev='" . $SalesType . "'
 					AND currabrev='" . $Currency . "'";
 	}
-	$result = DB_Query($SQL);
+	$Result = DB_Query($SQL);
 	$Errors[0] = 0;
 	return $Errors;
 }
@@ -733,8 +733,8 @@ function GetStockPrice($StockId, $Currency, $SalesType, $user, $password) {
 				 AND currabrev='" . $Currency . "'
 				 AND startdate<=CURRENT_DATE
 				 AND (enddate>CURRENT_DATE OR enddate='0000-00-00')";
-	$result = DB_Query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_Query($SQL);
+	$MyRow = DB_fetch_row($Result);
 	if ($MyRow[0] == 0) {
 		$Errors[0] = NoPricesSetup;
 		return $Errors;
@@ -746,8 +746,8 @@ function GetStockPrice($StockId, $Currency, $SalesType, $user, $password) {
 							 AND startdate<=CURRENT_DATE
 							 AND (enddate>CURRENT_DATE OR enddate='0000-00-00')";
 	}
-	$result = DB_Query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_Query($SQL);
+	$MyRow = DB_fetch_row($Result);
 	$Errors[0] = 0;
 	$Errors[1] = $MyRow;
 	return $Errors;
@@ -768,8 +768,8 @@ function GetStockTaxRate($StockId, $TaxAuth, $user, $password) {
 				ON taxauthrates.taxcatid=stockmaster.taxcatid
 				WHERE stockid='" . $StockId . "'
 				AND taxauthority='" . $TaxAuth . "'";
-	$result = DB_Query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = DB_Query($SQL);
+	$MyRow = DB_fetch_row($Result);
 	$Errors[0] = 0;
 	$Errors[1] = $MyRow;
 	return $Errors;
@@ -885,10 +885,10 @@ function GetBatches($StockId, $Location, $user, $password) {
 										WHERE stockmoves.type=25) as t
 				ON stockserialitems.stockid=t.stockid and stockserialitems.serialno=t.serialno
 			WHERE stockid='" . $StockId . "' AND loccode='" . $Location . "'";
-	$result = DB_Query($SQL);
+	$Result = DB_Query($SQL);
 	if (sizeof($Errors) == 0) {
 		$i = 0;
-		while ($MyRow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			$answer[$i] = $MyRow;
 			++$i;
 		}

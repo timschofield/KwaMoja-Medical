@@ -1661,7 +1661,7 @@
 				curl_setopt($curl, $opt, $val);
 			}
 
-			$result = curl_exec($curl);
+			$Result = curl_exec($curl);
 
 			if ($this->debug > 1)
 			{
@@ -1671,7 +1671,7 @@
 				print "---END---\n</PRE>";
 			}
 
-			if(!$result) /// @todo we should use a better check here - what if we get back '' or '0'?
+			if(!$Result) /// @todo we should use a better check here - what if we get back '' or '0'?
 			{
 				$this->errstr='no response';
 				$resp=new xmlrpcresp(0, $GLOBALS['xmlrpcerr']['curl_fail'], $GLOBALS['xmlrpcstr']['curl_fail']. ': '. curl_error($curl));
@@ -1687,7 +1687,7 @@
 				{
 					curl_close($curl);
 				}
-				$resp =& $Msg->parseResponse($result, true, $this->return_type);
+				$resp =& $Msg->parseResponse($Result, true, $this->return_type);
 			}
 			return $resp;
 		}
@@ -1722,11 +1722,11 @@
 			}
 			if(!$this->no_multicall)
 			{
-				$results = $this->_try_multicall($Msgs, $timeout, $method);
-				if(is_array($results))
+				$Results = $this->_try_multicall($Msgs, $timeout, $method);
+				if(is_array($Results))
 				{
 					// System.multicall succeeded
-					return $results;
+					return $Results;
 				}
 				else
 				{
@@ -1739,13 +1739,13 @@
 					}
 					else
 					{
-						if (is_a($results, 'xmlrpcresp'))
+						if (is_a($Results, 'xmlrpcresp'))
 						{
-							$result = $results;
+							$Result = $Results;
 						}
 						else
 						{
-							$result = new xmlrpcresp(0, $GLOBALS['xmlrpcerr']['multicall_error'], $GLOBALS['xmlrpcstr']['multicall_error']);
+							$Result = new xmlrpcresp(0, $GLOBALS['xmlrpcerr']['multicall_error'], $GLOBALS['xmlrpcstr']['multicall_error']);
 						}
 					}
 				}
@@ -1757,14 +1757,14 @@
 				$fallback = true;
 			}
 
-			$results = array();
+			$Results = array();
 			if ($fallback)
 			{
 				// system.multicall is (probably) unsupported by server:
 				// emulate multicall via multiple requests
 				foreach($Msgs as $Msg)
 				{
-					$results[] =& $this->send($Msg, $timeout, $method);
+					$Results[] =& $this->send($Msg, $timeout, $method);
 				}
 			}
 			else
@@ -1774,10 +1774,10 @@
 				// return an array with the same error repeated n times
 				foreach($Msgs as $Msg)
 				{
-					$results[] = $result;
+					$Results[] = $Result;
 				}
 			}
-			return $results;
+			return $Results;
 		}
 
 		/**
@@ -1806,16 +1806,16 @@
 			$multicall->addParam(new xmlrpcval($calls, 'array'));
 
 			// Attempt RPC call
-			$result =& $this->send($multicall, $timeout, $method);
+			$Result =& $this->send($multicall, $timeout, $method);
 
-			if($result->faultCode() != 0)
+			if($Result->faultCode() != 0)
 			{
 				// call to system.multicall failed
-				return $result;
+				return $Result;
 			}
 
 			// Unpack responses.
-			$rets = $result->value();
+			$rets = $Result->value();
 
 			if ($this->return_type == 'xml')
 			{
@@ -1824,7 +1824,7 @@
 			else if ($this->return_type == 'phpvals')
 			{
 				///@todo test this code branch...
-				$rets = $result->value();
+				$rets = $Result->value();
 				if(!is_array($rets))
 				{
 					return false;		// bad return type from system.multicall
@@ -1874,7 +1874,7 @@
 			}
 			else // return type == 'xmlrpcvals'
 			{
-				$rets = $result->value();
+				$rets = $Result->value();
 				if($rets->kindOf() != 'array')
 				{
 					return false;		// bad return type from system.multicall
@@ -2039,12 +2039,12 @@
 				$this->content_type = 'text/xml; charset=' . $charset_encoding;
 			else
 				$this->content_type = 'text/xml';
-			$result = "<methodResponse>\n";
+			$Result = "<methodResponse>\n";
 			if($this->errno)
 			{
 				// G. Giunta 2005/2/13: let non-ASCII response messages be tolerated by clients
 				// by xml-encoding non ascii chars
-				$result .= "<fault>\n" .
+				$Result .= "<fault>\n" .
 "<value>\n<struct><member><name>faultCode</name>\n<value><int>" . $this->errno .
 "</int></value>\n</member>\n<member>\n<name>faultString</name>\n<value><string>" .
 xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $charset_encoding) . "</string></value>\n</member>\n" .
@@ -2056,7 +2056,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 				{
 					if (is_string($this->val) && $this->valtyp == 'xml')
 					{
-						$result .= "<params>\n<param>\n" .
+						$Result .= "<params>\n<param>\n" .
 							$this->val .
 							"</param>\n</params>";
 					}
@@ -2068,14 +2068,14 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 				}
 				else
 				{
-					$result .= "<params>\n<param>\n" .
+					$Result .= "<params>\n<param>\n" .
 						$this->val->serialize($charset_encoding) .
 						"</param>\n</params>";
 				}
 			}
-			$result .= "\n</methodResponse>";
-			$this->payload = $result;
-			return $result;
+			$Result .= "\n</methodResponse>";
+			$this->payload = $Result;
+			return $Result;
 		}
 	}
 
@@ -3320,9 +3320,9 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 					}
 					if (is_int($out))
 					{
-						$result = new Datetime();
-						$result->setTimestamp($out);
-						return $result;
+						$Result = new Datetime();
+						$Result->setTimestamp($out);
+						return $Result;
 					}
 					elseif (is_a($out, 'Datetime'))
 					{

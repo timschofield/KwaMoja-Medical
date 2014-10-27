@@ -1,6 +1,6 @@
 <?php
 $SQL = "SET foreign_key_checks=0";
-$result = executeSQL($SQL, False);
+$Result = executeSQL($SQL, False);
 
 executeSQL("INSERT INTO securitytokens VALUES(0, 'Main Index Page')");
 executeSQL("INSERT INTO securitygroups (SELECT secroleid,0 FROM securityroles)");

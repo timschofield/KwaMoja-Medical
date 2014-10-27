@@ -44,8 +44,8 @@ function VerifyReceivedQuantity($quantity, $i, $Errors) {
 
 function VerifyRequiredByDate($RequiredByDate, $i, $Errors) {
 	$SQL = "SELECT confvalue FROM config WHERE confname='DefaultDateFormat'";
-	$result = api_DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = api_DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 	$DateFormat = $MyRow[0];
 	if (mb_strstr('/', $PeriodEnd)) {
 		$Date_Array = explode('/', $PeriodEnd);
@@ -77,8 +77,8 @@ function VerifyRequiredByDate($RequiredByDate, $i, $Errors) {
 
 function VerifyStartDate($StartDate, $i, $Errors) {
 	$SQL = "SELECT confvalue FROM config WHERE confname='DefaultDateFormat'";
-	$result = api_DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = api_DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 	$DateFormat = $MyRow[0];
 	if (mb_strstr('/', $PeriodEnd)) {
 		$Date_Array = explode('/', $PeriodEnd);
@@ -145,8 +145,8 @@ function VerifyLotSerialNumber($nextlotsnref, $i, $Errors) {
 
 function VerifyBatch($batch, $stockid, $location, $i, $Errors) {
 	$SQL = "SELECT controlled, serialised FROM stockmaster WHERE stockid='" . $stockid . "'";
-	$result = api_DB_query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = api_DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
 	if ($MyRow[0] != 1) {
 		$Errors[$i] = ItemNotControlled;
 		return $Errors;
@@ -158,12 +158,12 @@ function VerifyBatch($batch, $stockid, $location, $i, $Errors) {
 			  WHERE stockid='" . $stockid . "'
 			  AND loccode='" . $location . "'
 			  AND serialno='" . $batch . "'";
-	$result = api_DB_query($SQL);
-	if (DB_num_rows($result) == 0) {
+	$Result = api_DB_query($SQL);
+	if (DB_num_rows($Result) == 0) {
 		$Errors[$i] = BatchNumberDoesntExist;
 		return $Errors;
 	}
-	$MyRow = DB_fetch_row($result);
+	$MyRow = DB_fetch_row($Result);
 	if ($MyRow <= 0) {
 		$Errors[$i] = BatchIsEmpty;
 		return $Errors;
@@ -473,10 +473,10 @@ function SearchWorkOrders($Field, $Criteria, $user, $password) {
 	$SQL = "SELECT wo
 			  FROM woitems
 			  WHERE " . $Field . " " . LIKE . " '%" . $Criteria . "%'";
-	$result = DB_Query($SQL);
+	$Result = DB_Query($SQL);
 	$i = 0;
 	$WOList = array();
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		$WOList[$i] = $MyRow[0];
 		++$i;
 	}

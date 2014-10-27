@@ -40,8 +40,8 @@ function VerifyComments($comments, $i, $Errors) {
  * target KwaMoja company */
 function VerifyOrderDate($orddate, $i, $Errors) {
 	$SQL = "SELECT confvalue FROM config WHERE confname='DefaultDateFormat'";
-	$result = api_DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = api_DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 	$DateFormat = $MyRow[0];
 	if (mb_strstr($orddate, "/")) {
 		$DateArray = explode('/', $orddate);
@@ -118,8 +118,8 @@ function VerifyFromStockLocation($FromStockLocn, $i, $Errors) {
  * target KwaMoja company */
 function VerifyDeliveryDate($DeliveryDate, $i, $Errors) {
 	$SQL = "SELECT confvalue FROM config WHERE confname='DefaultDateFormat'";
-	$result = api_DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = api_DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 	$DateFormat = $MyRow[0];
 	if (mb_strstr($DeliveryDate, '/')) {
 		$DateArray = explode('/', $DeliveryDate);
@@ -228,8 +228,8 @@ function VerifyPOLine($poline, $i, $Errors) {
  * target KwaMoja company */
 function VerifyItemDueDate($ItemDue, $i, $Errors) {
 	$SQL = "SELECT confvalue FROM config WHERE confname='DefaultDateFormat'";
-	$result = api_DB_query($SQL);
-	$MyRow = DB_fetch_array($result);
+	$Result = api_DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 	$DateFormat = $MyRow[0];
 	if (mb_strstr($ItemDue, '/')) {
 		$DateArray = explode('/', $ItemDue);
@@ -349,7 +349,7 @@ function InsertSalesOrderHeader($OrderHeader, $user, $password) {
 					VALUES (" . mb_substr($FieldValues, 0, -2) . ")";
 	if (sizeof($Errors) == 0) {
 
-		$result = api_DB_Query($SQL);
+		$Result = api_DB_Query($SQL);
 
 		if (DB_error_no() != 0) {
 			//$Errors[0] = DatabaseUpdateFailed;
@@ -447,7 +447,7 @@ function ModifySalesOrderHeader($OrderHeader, $user, $password) {
 	}
 	$SQL = mb_substr($SQL, 0, -2) . " WHERE orderno='" . $OrderHeader['orderno'] . "'";
 	if (sizeof($Errors) == 0) {
-		$result = api_DB_Query($SQL);
+		$Result = api_DB_Query($SQL);
 		echo DB_error_no();
 		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;
@@ -514,7 +514,7 @@ function InsertSalesOrderLine($OrderLine, $user, $password) {
 			VALUES (" . mb_substr($FieldValues, 0, -2) . ")";
 
 	if (sizeof($Errors) == 0) {
-		$result = api_DB_Query($SQL);
+		$Result = api_DB_Query($SQL);
 		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;
 		} else {
@@ -573,7 +573,7 @@ function ModifySalesOrderLine($OrderLine, $user, $password) {
 	//echo $SQL;
 	//exit;
 	if (sizeof($Errors) == 0) {
-		$result = api_DB_Query($SQL);
+		$Result = api_DB_Query($SQL);
 		echo DB_error_no();
 		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;
@@ -600,9 +600,9 @@ function GetSalesOrderHeader($OrderNo, $user, $password) {
 		return $Errors;
 	}
 	$SQL = "SELECT * FROM salesorders WHERE orderno='" . $OrderNo . "'";
-	$result = api_DB_Query($SQL);
+	$Result = api_DB_Query($SQL);
 	if (sizeof($Errors) == 0) {
-		return DB_fetch_array($result);
+		return DB_fetch_array($Result);
 	} else {
 		return $Errors;
 	}
@@ -625,9 +625,9 @@ function GetSalesOrderLine($OrderNo, $user, $password) {
 		return $Errors;
 	}
 	$SQL = "SELECT * FROM salesorderdetails WHERE orderno='" . $OrderNo . "'";
-	$result = api_DB_Query($SQL);
+	$Result = api_DB_Query($SQL);
 	if (sizeof($Errors) == 0) {
-		return DB_fetch_array($result);
+		return DB_fetch_array($Result);
 	} else {
 		return $Errors;
 	}
@@ -723,7 +723,7 @@ function InvoiceSalesOrder($OrderNo, $User, $Password) {
 	}
 
 	/*Start an SQL transaction */
-	$result = DB_Txn_Begin();
+	$Result = DB_Txn_Begin();
 	/*Now Get the next invoice number - function in SQL_CommonFunctions*/
 	$InvoiceNo = GetNextTransNo(10);
 	$PeriodNo = GetCurrentPeriod($db);
@@ -1312,8 +1312,8 @@ function GetCurrentPeriod(&$db) {
 	$TransDate = time(); //The current date to find the period for
 	/* Find the unix timestamp of the last period end date in periods table */
 	$SQL = "SELECT MAX(lastdate_in_period), MAX(periodno) from periods";
-	$result = api_DB_query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = api_DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
 
 	if (is_null($MyRow[0])) {
 		$InsertFirstPeriodResult = api_DB_query("INSERT INTO periods VALUES (0,'" . Date('Y-m-d', mktime(0, 0, 0, Date('m') + 1, 0, Date('Y'))) . "')");
@@ -1327,8 +1327,8 @@ function GetCurrentPeriod(&$db) {
 	}
 	/* Find the unix timestamp of the first period end date in periods table */
 	$SQL = "SELECT MIN(lastdate_in_period), MIN(periodno) from periods";
-	$result = api_DB_query($SQL);
-	$MyRow = DB_fetch_row($result);
+	$Result = api_DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
 	$Date_Array = explode('-', $MyRow[0]);
 	$FirstPeriodEnd = mktime(0, 0, 0, $Date_Array[1], 0, (int) $Date_Array[0]);
 	$FirstPeriod = $MyRow[1];
@@ -1366,8 +1366,8 @@ function GetCurrentPeriod(&$db) {
 	} else if (!PeriodExists(mktime(0, 0, 0, Date('m', $TransDate) + 1, Date('d', $TransDate), Date('Y', $TransDate)))) {
 		/* Make sure the following months period exists */
 		$SQL = "SELECT MAX(lastdate_in_period), MAX(periodno) from periods";
-		$result = api_DB_query($SQL);
-		$MyRow = DB_fetch_row($result);
+		$Result = api_DB_query($SQL);
+		$MyRow = DB_fetch_row($Result);
 		$Date_Array = explode('-', $MyRow[0]);
 		$LastPeriodEnd = mktime(0, 0, 0, $Date_Array[1] + 2, 0, (int) $Date_Array[0]);
 		$LastPeriod = $MyRow[1];

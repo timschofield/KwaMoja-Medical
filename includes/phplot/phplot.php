@@ -387,10 +387,10 @@ class PHPlot
     protected function GetColorIndexArray($color_array, $max_colors)
     {
         $n = min(count($color_array), $max_colors);
-        $result = array();
+        $Result = array();
         for ($i = 0; $i < $n; $i++)
-            $result[] = $this->GetColorIndex($color_array[$i]);
-        return $result;
+            $Result[] = $this->GetColorIndex($color_array[$i]);
+        return $Result;
     }
 
     /*
@@ -402,10 +402,10 @@ class PHPlot
     protected function GetDarkColorIndexArray($color_array, $max_colors)
     {
         $n = min(count($color_array), $max_colors);
-        $result = array();
+        $Result = array();
         for ($i = 0; $i < $n; $i++)
-            $result[] = $this->GetDarkColorIndex($color_array[$i]);
-        return $result;
+            $Result[] = $this->GetDarkColorIndex($color_array[$i]);
+        return $Result;
     }
 
     /*
@@ -782,14 +782,14 @@ class PHPlot
         }
 
         // Build the string to be evaluated later by SetDashedStyle() with $which_ndxcolor set.
-        $result = '';
+        $Result = '';
         $vals = array('$which_ndxcol,', 'IMG_COLOR_TRANSPARENT,');
         $index = 0;
         foreach ($asked as $n) {
-            $result .= str_repeat($vals[$index], $n);
+            $Result .= str_repeat($vals[$index], $n);
             $index = 1 - $index;
         }
-        $this->default_dashed_style = "array($result)";
+        $this->default_dashed_style = "array($Result)";
 
         return TRUE;
     }
@@ -2006,13 +2006,13 @@ class PHPlot
     protected function CheckOptionArray($opt, $acc, $func)
     {
         $opt_array = (array)$opt;
-        $result = array();
+        $Result = array();
         foreach ($opt_array as $option) {
             $choice = $this->CheckOption($option, $acc, $func);
             if (is_null($choice)) return NULL; // In case CheckOption error handler returns
-            $result[] = $choice;
+            $Result[] = $choice;
         }
-        return $result;
+        return $Result;
     }
 
     /*

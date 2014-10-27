@@ -12,9 +12,9 @@ function GetSalesmanList($user, $password) {
 		return $Errors;
 	}
 	$SQL = 'SELECT salesmancode FROM salesman';
-	$result = api_DB_query($SQL);
+	$Result = api_DB_query($SQL);
 	$i = 0;
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		$SalesmanList[$i] = $MyRow[0];
 		++$i;
 	}
@@ -34,13 +34,13 @@ function GetSalesmanDetails($salesman, $user, $password) {
 		return $Errors;
 	}
 	$SQL = "SELECT * FROM salesman WHERE salesmancode='" . $salesman . "'";
-	$result = api_DB_query($SQL);
-	if (DB_num_rows($result) == 0) {
+	$Result = api_DB_query($SQL);
+	if (DB_num_rows($Result) == 0) {
 		$Errors[0] = NoSuchSalesMan;
 		return $Errors;
 	} else {
 		$Errors[0] = 0;
-		$Errors[1] = DB_fetch_array($result);
+		$Errors[1] = DB_fetch_array($Result);
 		return $Errors;
 	}
 }
@@ -65,7 +65,7 @@ function InsertSalesman($SalesmanDetails, $user, $password) {
 	}
 	$SQL = 'INSERT INTO salesman (' . mb_substr($FieldNames, 0, -2) . ') ' . 'VALUES (' . mb_substr($FieldValues, 0, -2) . ') ';
 	if (sizeof($Errors) == 0) {
-		$result = DB_Query($SQL);
+		$Result = DB_Query($SQL);
 		if (DB_error_no() != 0) {
 			$Errors[0] = DatabaseUpdateFailed;
 		} else {
@@ -88,13 +88,13 @@ function GetSalesmanDetailsFromName($SalesmanName, $user, $password) {
 		return $Errors;
 	}
 	$SQL = "SELECT * FROM salesman WHERE salesmanname='" . $SalesmanName . "'";
-	$result = api_DB_query($SQL);
-	if (DB_num_rows($result) == 0) {
+	$Result = api_DB_query($SQL);
+	if (DB_num_rows($Result) == 0) {
 		$Errors[0] = NoSuchSalesMan;
 		return $Errors;
 	} else {
 		$Errors[0] = 0;
-		$Errors[1] = DB_fetch_array($result);
+		$Errors[1] = DB_fetch_array($Result);
 		return $Errors;
 	}
 }

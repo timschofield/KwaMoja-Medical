@@ -541,7 +541,7 @@ if (isset($_POST['submit'])) {
 			$UseMRPDemands = _('Yes');
 		}
 		$UseRLDemands = _('No');
-		if ($myrow['userldemands'] == 'y') {
+		if ($MyRow['userldemands'] == 'y') {
 			$UseRLDemands = _('Yes');
  		}
 		$useeoq = _('No');

@@ -308,8 +308,7 @@ echo '<table class="selection">
 			<tr>
 				<th colspan ="2"><b>' . _('Invoice amounts stated in') . ' ' . $_SESSION['Items' . $Identifier]->DefaultCurrency . '</b></th>
 			</tr>
-			</table>
-			<br />';
+		</table>';
 
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '" method="post" class="noPrint">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -480,7 +479,7 @@ if (!isset($_SESSION['Items' . $Identifier]->FreightCost) or $_SESSION['Items' .
 		list($FreightCost, $BestShipper) = CalcFreightCost($_SESSION['Items' . $Identifier]->total, $_SESSION['Items' . $Identifier]->BrAdd2, $_SESSION['Items' . $Identifier]->BrAdd3, $_SESSION['Items' . $Identifier]->BrAdd4, $_SESSION['Items' . $Identifier]->BrAdd5, $_SESSION['Items' . $Identifier]->BrAdd6, $_SESSION['Items' . $Identifier]->totalVolume, $_SESSION['Items' . $Identifier]->totalWeight, $_SESSION['Items' . $Identifier]->Location, $_SESSION['Items' . $Identifier]->DefaultCurrency, $CountriesArray);
 		$_SESSION['Items' . $Identifier]->ShipVia = $BestShipper;
 	}
-	if (is_numeric($FreightCost)) {
+	if (isset($FreightCost) and is_numeric($FreightCost)) {
 		$FreightCost = $FreightCost / $_SESSION['CurrencyRate'];
 	} else {
 		$FreightCost = 0;
@@ -600,7 +599,7 @@ if (!isset($_POST['DispatchDate']) or !is_date($_POST['DispatchDate'])) {
 	$DefaultDispatchDate = $_POST['DispatchDate'];
 }
 
-echo '</table><br />';
+echo '</table>';
 
 if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 
@@ -729,7 +728,6 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 			echo '<br />' . _('Count of items in the session') . ' ' . count($_SESSION['Items' . $Identifier]->LineItems);
 		}
 
-		echo '<br />';
 		prnMsg(_('This order has been changed or invoiced since this delivery was started to be confirmed') . '. ' . _('Processing halted') . '. ' . _('To enter and confirm this dispatch') . '/' . _('invoice the order must be re-selected and re-read again to update the changes made by the other user'), 'error');
 
 		unset($_SESSION['Items' . $Identifier]->LineItems);
@@ -1736,15 +1734,15 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 
 	echo prnMsg(_('Invoice number') . ' ' . $InvoiceNo . ' ' . _('processed'), 'success');
 
-	echo '<br /><div class="centre">';
+	echo '<div class="centre">';
 
 	if ($_SESSION['InvoicePortraitFormat'] == 0) {
-		echo '<img src="' . $RootPath . '/css/' . $Theme . '/images/printer.png" title="' . _('Print') . '" alt="" />' . ' ' . '<a target="_blank" href="' . $RootPath . '/PrintCustTrans.php?FromTransNo=' . $InvoiceNo . '&amp;InvOrCredit=Invoice&amp;PrintPDF=True">' . _('Print this invoice') . ' (' . _('Landscape') . ')</a><br /><br />';
+		echo '<img src="' . $RootPath . '/css/' . $Theme . '/images/printer.png" title="' . _('Print') . '" alt="" />' . ' ' . '<a target="_blank" href="' . $RootPath . '/PrintCustTrans.php?FromTransNo=' . $InvoiceNo . '&amp;InvOrCredit=Invoice&amp;PrintPDF=True">' . _('Print this invoice') . ' (' . _('Landscape') . ')</a><br />';
 	} else {
-		echo '<img src="' . $RootPath . '/css/' . $Theme . '/images/printer.png" title="' . _('Print') . '" alt="" />' . ' ' . '<a target="_blank" href="' . $RootPath . '/PrintCustTransPortrait.php?FromTransNo=' . $InvoiceNo . '&amp;InvOrCredit=Invoice&amp;PrintPDF=True">' . _('Print this invoice') . ' (' . _('Portrait') . ')</a><br /><br />';
+		echo '<img src="' . $RootPath . '/css/' . $Theme . '/images/printer.png" title="' . _('Print') . '" alt="" />' . ' ' . '<a target="_blank" href="' . $RootPath . '/PrintCustTransPortrait.php?FromTransNo=' . $InvoiceNo . '&amp;InvOrCredit=Invoice&amp;PrintPDF=True">' . _('Print this invoice') . ' (' . _('Portrait') . ')</a><br />';
 	}
-	echo '<a href="' . $RootPath . '/SelectSalesOrder.php">' . _('Select another order for invoicing') . '</a><br /><br />';
-	echo '<a href="' . $RootPath . '/SelectOrderItems.php?NewOrder=Yes">' . _('Sales Order Entry') . '</a></div><br />';
+	echo '<a href="' . $RootPath . '/SelectSalesOrder.php">' . _('Select another order for invoicing') . '</a><br />';
+	echo '<a href="' . $RootPath . '/SelectOrderItems.php?NewOrder=Yes">' . _('Sales Order Entry') . '</a></div>';
 	/*end of process invoice */
 
 
@@ -1809,14 +1807,11 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 
 	++$j;
 	echo '</table>
-		<br />
 		<div class="centre">
-			<input type="submit" tabindex="' . $j . '" name="Update" value="' . _('Update') . '" />
-			<br />';
+			<input type="submit" tabindex="' . $j . '" name="Update" value="' . _('Update') . '" />';
 
 	++$j;
-	echo '<br />
-			<input type="submit" tabindex="' . $j . '" name="ProcessInvoice" value="' . _('Process Invoice') . '" />
+	echo '<input type="submit" tabindex="' . $j . '" name="ProcessInvoice" value="' . _('Process Invoice') . '" />
 		</div>
 		<input type="hidden" name="ShipVia" value="' . $_SESSION['Items' . $Identifier]->ShipVia . '" />';
 }

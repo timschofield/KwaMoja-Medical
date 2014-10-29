@@ -31,13 +31,13 @@ $SQL = "SELECT secroleid,
 		FROM securityroles
 		ORDER BY secrolename";
 
-$Sec_Result = DB_query($SQL);
+$SecResult = DB_query($SQL);
 $SecurityRoles = array();
 // Now load it into an a ray using Key/Value pairs
-while ($Sec_row = DB_fetch_row($Sec_Result)) {
-	$SecurityRoles[$Sec_row[0]] = $Sec_row[1];
+while ($SecRow = DB_fetch_row($SecResult)) {
+	$SecurityRoles[$SecRow[0]] = $SecRow[1];
 }
-DB_free_result($Sec_Result);
+DB_free_result($SecResult);
 
 if (isset($_GET['SelectedUser'])) {
 	$SelectedUser = $_GET['SelectedUser'];
@@ -258,7 +258,7 @@ if (isset($_POST['submit'])) {
 	// comment out except for demo!  Do not want anyopne deleting demo user.
 
 
-	if ($AllowDemoMode AND $SelectedUser == 'admin') {
+	if ($AllowDemoMode and $SelectedUser == 'admin') {
 		prnMsg(_('The demonstration user called demo cannot be deleted'), 'error');
 	} else {
 
@@ -267,10 +267,15 @@ if (isset($_POST['submit'])) {
 		if (DB_num_rows($Result) != 0) {
 			prnMsg(_('Cannot delete user as entries already exist in the audit trail'), 'warn');
 		} else {
+			$Result = DB_Txn_Begin();
+			$SQL="DELETE FROM locationusers WHERE userid='" . $SelectedUser . "'";
+			$ErrMsg = _('The Location - User could not be deleted because');;
+			$Result = DB_query($SQL,$ErrMsg, '', true);
 
 			$SQL = "DELETE FROM www_users WHERE userid='" . $SelectedUser . "'";
 			$ErrMsg = _('The User could not be deleted because');
-			$Result = DB_query($SQL, $ErrMsg);
+			$Result = DB_query($SQL, $ErrMsg, '', true);
+			$Result = DB_Txn_Commit();
 			prnMsg(_('User Deleted'), 'info');
 		}
 		unset($SelectedUser);

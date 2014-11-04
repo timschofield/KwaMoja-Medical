@@ -43,7 +43,7 @@
     opacity: 0;
     z-index: 1000000;
     border-radius: 10px;
-  text-shadow: 1 -1px 1px #592726;
+  text-shadow: 1px -1px 1px #592726;
    pointer-events: none;
     -webkit-transition: 0.3s ease;
     -moz-transition: 0.3s ease;

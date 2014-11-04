@@ -23,7 +23,10 @@ define('UL_MAINTENANCE', 5);
 function userLogin($Name, $Password, $SysAdminEmail = '') {
 
 	global $Debug;
-	setcookie('Login', $_SESSION['DatabaseName'], time()+3600*24);
+	setcookie('Login', $_SESSION['DatabaseName'], time()+3600*24*30);
+	if (isset($_COOKIE['Module'])) {
+		$_GET['Application'] = $_COOKIE['Module'];
+	}
 	$_SESSION['LastActivity'] = time();
 	if (!isset($_SESSION['AccessLevel']) or $_SESSION['AccessLevel'] == '' or (isset($Name) and $Name != '')) {
 		/* if not logged in */
@@ -45,10 +48,10 @@ function userLogin($Name, $Password, $SysAdminEmail = '') {
 		$ErrMsg = _('Could not retrieve user details on login because');
 		$Debug = 1;
 		$PasswordVerified = false;
-		$Auth_Result = DB_query($SQL, $ErrMsg);
+		$AuthResult = DB_query($SQL, $ErrMsg);
 
-		if (DB_num_rows($Auth_Result) > 0) {
-			$MyRow = DB_fetch_array($Auth_Result);
+		if (DB_num_rows($AuthResult) > 0) {
+			$MyRow = DB_fetch_array($AuthResult);
 			if (VerifyPass($Password, $MyRow['password'])) {
 				$PasswordVerified = true;
 		    } elseif (isset($GLOBALS['CryptFunction'])) {
@@ -135,19 +138,19 @@ function userLogin($Name, $Password, $SysAdminEmail = '') {
 
 			$SQL = "UPDATE www_users SET lastvisitdate='" . date('Y-m-d H:i:s') . "'
 							WHERE www_users.userid='" . $Name . "'";
-			$Auth_Result = DB_query($SQL);
+			$AuthResult = DB_query($SQL);
 			/*get the security tokens that the user has access to */
 			$SQL = "SELECT tokenid
 						FROM securitygroups
 						WHERE secroleid =  '" . $_SESSION['AccessLevel'] . "'";
-			$Sec_Result = DB_query($SQL);
+			$SecResult = DB_query($SQL);
 			$_SESSION['AllowedPageSecurityTokens'] = array();
-			if (DB_num_rows($Sec_Result) == 0) {
+			if (DB_num_rows($SecResult) == 0) {
 				return UL_CONFIGERR;
 			} else {
 				$i = 0;
 				$UserIsSysAdmin = FALSE;
-				while ($MyRow = DB_fetch_row($Sec_Result)) {
+				while ($MyRow = DB_fetch_row($SecResult)) {
 					if ($MyRow[0] == 15) {
 						$UserIsSysAdmin = TRUE;
 					}
@@ -157,12 +160,12 @@ function userLogin($Name, $Password, $SysAdminEmail = '') {
 			}
 			// check if only maintenance users can access KwaMoja
 			$SQL = "SELECT confvalue FROM config WHERE confname = 'DB_Maintenance'";
-			$Maintenance_Result = DB_query($SQL);
-			if (DB_num_rows($Maintenance_Result) == 0) {
+			$MaintenanceResult = DB_query($SQL);
+			if (DB_num_rows($MaintenanceResult) == 0) {
 				return UL_CONFIGERR;
 			} else {
-				$myMaintenanceRow = DB_fetch_row($Maintenance_Result);
-				if (($myMaintenanceRow[0] == -1) and ($UserIsSysAdmin == FALSE)) {
+				$MyMaintenanceRow = DB_fetch_row($MaintenanceResult);
+				if (($MyMaintenanceRow[0] == -1) and ($UserIsSysAdmin == FALSE)) {
 					// the configuration setting has been set to -1 ==> Allow SysAdmin Access Only
 					// the user is NOT a SysAdmin
 					return UL_MAINTENANCE;
@@ -177,7 +180,7 @@ function userLogin($Name, $Password, $SysAdminEmail = '') {
 				$SQL = "UPDATE www_users
 							SET blocked=1
 							WHERE www_users.userid='" . $Name . "'";
-				$Auth_Result = DB_query($SQL);
+				$AuthResult = DB_query($SQL);
 				if ($SysAdminEmail != '') {
 					$EmailSubject = _('User access blocked') . ' ' . $Name;
 					$EmailText = _('User ID') . ' ' . $Name . ' - ' . $Password . ' - ' . _('has been blocked access at') . ' ' . Date('Y-m-d H:i:s') . ' ' . _('from IP') . ' ' . $_SERVER["REMOTE_ADDR"] . ' ' . _('due to too many failed attempts.');

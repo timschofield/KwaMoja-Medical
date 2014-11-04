@@ -65,6 +65,7 @@ if (isset($SupplierLogin) and $SupplierLogin == 1) {
 if (isset($_GET['Application'])) {
 	/*This is sent by this page (to itself) when the user clicks on a tab */
 	$_SESSION['Module'] = $_GET['Application'];
+	setcookie('Module', $_GET['Application'], time()+3600*24*30);
 }
 
 //=== MainMenuDiv =======================================================================

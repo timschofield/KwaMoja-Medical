@@ -16,7 +16,7 @@
 
 include('includes/session.inc');
 
-if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_POST['FromCriteria']) >= 1 and isset($_POST['ToCriteria']) and mb_strlen($_POST['ToCriteria']) >= 1) {
+if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST['Categories']) > 0) {
 
 /*	if ($_POST['CustomerSpecials']=='Customer Special Prices Only') {
 		// To do: For special prices, change from portrait to landscape orientation.
@@ -99,8 +99,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 						ON prices.debtorno=custbranch.debtorno
 						AND prices.branchcode=custbranch.branchcode
 					WHERE prices.typeabbrev = '" . $SalesType . "'
-						AND stockmaster.categoryid >= '" . $_POST['FromCriteria'] . "'
-						AND stockmaster.categoryid <= '" . $_POST['ToCriteria'] . "'
+						AND stockmaster.categoryid IN ('" . implode(',', $_POST['Categories']) . "')
 						AND prices.debtorno='" . $_SESSION['CustomerID'] . "'
 						AND prices.startdate<='" . FormatDateForSQL($_POST['EffectiveDate']) . "'
 						AND (prices.enddate='0000-00-00' OR prices.enddate >'" . FormatDateForSQL($_POST['EffectiveDate']) . "')" .
@@ -140,8 +139,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 					ON stockmaster.stockid=prices.stockid
 				INNER JOIN currencies
 					ON prices.currabrev=currencies.currabrev
-				WHERE stockmaster.categoryid >= '" . $_POST['FromCriteria'] . "'
-					AND stockmaster.categoryid <= '" . $_POST['ToCriteria'] . "'
+				WHERE stockmaster.categoryid IN ('" . implode(',', $_POST['Categories']) . "')
 					AND prices.typeabbrev='" . $_POST['SalesType'] . "'
 					AND prices.startdate<='" . FormatDateForSQL($_POST['EffectiveDate']) . "'
 					AND (prices.enddate='0000-00-00' OR prices.enddate>'" . FormatDateForSQL($_POST['EffectiveDate']) . "')" .
@@ -152,8 +150,8 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 					stockmaster.stockid,
 					prices.startdate";
 	}
-	$PricesResult = DB_query($SQL, '', '', false, false);
 
+	$PricesResult = DB_query($SQL, '', '', false, false);
 	if (DB_error_no() != 0) {
 		$Title = _('Price List') . ' - ' . _('Problem Report....');
 		include('includes/header.inc');
@@ -298,26 +296,17 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 
 	if (!isset($_POST['FromCriteria']) or !isset($_POST['ToCriteria'])) {
 
-		/*if $FromCriteria is not set then show a form to allow input	*/
-		$SQL = "SELECT min(categorydescription) as firstcategory,
-						max(categorydescription) as lastcategory
-					FROM stockcategory";
-		$Result = DB_query($SQL);
-		$MyRow = DB_fetch_array($Result);
-		$StartCategory = $MyRow['firstcategory'];
-		$EndCategory = $MyRow['lastcategory'];
-
 		echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 		echo '<table class="selection">
 				<tr>
-					<td>' . _('From Inventory Category') . ':</td>
-					<td><select autofocus="autofocus" required="required" minlength="1" name="FromCriteria">';
+					<td>' . _('Select Inventory Categories') . ':</td>
+					<td><select autofocus="autofocus" required="required" minlength="1" size="12" name="Categories[]" multiple="multiple">';
 
-		$SQL = 'SELECT categoryid, categorydescription FROM stockcategory ORDER BY categoryid';
+		$SQL = 'SELECT categoryid, categorydescription FROM stockcategory ORDER BY categorydescription';
 		$CatResult = DB_query($SQL);
 		while ($MyRow = DB_fetch_array($CatResult)) {
-			if ($MyRow['categorydescription'] == $StartCategory) {
+			if (isset($_POST['Categories']) and in_array($MyRow['categoryid'], $_POST['Categories'])) {
 				echo '<option selected="selected" value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 			} else {
 				echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
@@ -326,24 +315,6 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 		echo '</select>
 				</td>
 			</tr>';
-
-		echo '<tr>
-				<td>' . _('To Inventory Category') . ':</td>
-				<td><select minlength="0" name="ToCriteria">';
-
-		/*Set the index for the categories result set back to 0 */
-		DB_data_seek($CatResult, 0);
-
-		while ($MyRow = DB_fetch_array($CatResult)) {
-			if ($MyRow['categorydescription'] == $EndCategory) {
-				echo '<option selected="selected" value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
-			} else {
-				echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
-			}
-		}
-		echo '</select>
-					</td>
-				</tr>';
 
 		echo '<tr>
 				<td>' . _('For Sales Type/Price List') . ':</td>
@@ -432,7 +403,7 @@ function PageHeader() {
 	$FontSizeLast = $FontSize;// To preserve the main font size.
 	$FontSize = 10;
 	$PDF->addText($Left_Margin, $YPos, $FontSize, $_SESSION['CompanyRecord']['coyname']);// Company name.
-	$pdf->addTextWrap($Page_Width - $Right_Margin - 140, $YPos - $FontSize, 140, $FontSize, _('Page'). ' ' . $PageNumber, 'right');// Page number.
+	$PDF->addTextWrap($Page_Width - $Right_Margin - 140, $YPos - $FontSize, 140, $FontSize, _('Page'). ' ' . $PageNumber, 'right');// Page number.
 
 	$YPos -= $FontSize;
 	//Note, this is ok for multilang as this is the value of a Select, text in option is different

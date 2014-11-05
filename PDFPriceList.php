@@ -134,7 +134,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				INNER JOIN stockcosts
 					ON stockcosts.stockid=stockmaster.stockid
 					AND stockcosts.succeeded=0
-				INNER JOIN	stockcategory
+				INNER JOIN stockcategory
 	   				 ON stockmaster.categoryid=stockcategory.categoryid
 				INNER JOIN prices
 					ON stockmaster.stockid=prices.stockid
@@ -148,7 +148,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 					$WhereCurrency . "
 					AND prices.debtorno=''
 				ORDER BY prices.currabrev,
-					stockmaster.categoryid,
+					stockcategory.categorydescription,
 					stockmaster.stockid,
 					prices.startdate";
 	}
@@ -299,8 +299,8 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 	if (!isset($_POST['FromCriteria']) or !isset($_POST['ToCriteria'])) {
 
 		/*if $FromCriteria is not set then show a form to allow input	*/
-		$SQL = "SELECT min(categoryid) as firstcategory,
-						max(categoryid) as lastcategory
+		$SQL = "SELECT min(categorydescription) as firstcategory,
+						max(categorydescription) as lastcategory
 					FROM stockcategory";
 		$Result = DB_query($SQL);
 		$MyRow = DB_fetch_array($Result);
@@ -311,16 +311,16 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 		echo '<table class="selection">
 				<tr>
-					<td>' . _('From Inventory Category Code') . ':</td>
+					<td>' . _('From Inventory Category') . ':</td>
 					<td><select autofocus="autofocus" required="required" minlength="1" name="FromCriteria">';
 
 		$SQL = 'SELECT categoryid, categorydescription FROM stockcategory ORDER BY categoryid';
 		$CatResult = DB_query($SQL);
 		while ($MyRow = DB_fetch_array($CatResult)) {
-			if ($MyRow['categoryid'] == $StartCategory) {
-				echo '<option selected="selected" value="' . $MyRow['categoryid'] . '">' . $MyRow['categoryid'] . ' - ' . $MyRow['categorydescription'] . '</option>';
+			if ($MyRow['categorydescription'] == $StartCategory) {
+				echo '<option selected="selected" value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 			} else {
-				echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categoryid'] . ' - ' . $MyRow['categorydescription'] . '</option>';
+				echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 			}
 		}
 		echo '</select>
@@ -328,17 +328,17 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 			</tr>';
 
 		echo '<tr>
-				<td>' . _('To Inventory Category Code') . ':</td>
+				<td>' . _('To Inventory Category') . ':</td>
 				<td><select minlength="0" name="ToCriteria">';
 
 		/*Set the index for the categories result set back to 0 */
 		DB_data_seek($CatResult, 0);
 
 		while ($MyRow = DB_fetch_array($CatResult)) {
-			if ($MyRow['categoryid'] == $EndCategory) {
-				echo '<option selected="selected" value="' . $MyRow['categoryid'] . '">' . $MyRow['categoryid'] . ' - ' . $MyRow['categorydescription'] . '</option>';
+			if ($MyRow['categorydescription'] == $EndCategory) {
+				echo '<option selected="selected" value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 			} else {
-				echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categoryid'] . ' - ' . $MyRow['categorydescription'] . '</option>';
+				echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 			}
 		}
 		echo '</select>

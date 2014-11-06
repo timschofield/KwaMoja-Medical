@@ -188,6 +188,8 @@ if (isset($_POST['ProcessStockChange'])) {
 		ChangeFieldInTable("offers", "stockid", $_POST['OldStockID'], $_POST['NewStockID']);
 		ChangeFieldInTable("tenderitems", "stockid", $_POST['OldStockID'], $_POST['NewStockID']);
 		ChangeFieldInTable("stockdescriptiontranslations", "stockid", $_POST['OldStockID'], $_POST['NewStockID']);// Updates the translated item titles (StockTitles)
+		ChangeFieldInTable("custitem", "stockid", $_POST['OldStockID'], $_POST['NewStockID']);
+		ChangeFieldInTable("pricematrix", "stockid", $_POST['OldStockID'], $_POST['NewStockID']);
 /*		 ChangeFieldInTable("Stockdescriptions", "stockid", $_POST['OldStockID'], $_POST['NewStockID']);// Updates the translated item descriptions (StockDescriptions)*/
 
 		DB_ReinstateForeignKeys();

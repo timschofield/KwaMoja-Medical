@@ -13,7 +13,16 @@ $LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 300, $FontSize, $_SESSION['C
 
 $YPos -= $line_height;
 
-$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 300, $FontSize, _('Inventory Valuation for Categories between') . ' ' . $_POST['FromCriteria'] . ' ' . _('and') . ' ' . $_POST['ToCriteria'] . ' ' . _('at') . ' ' . $_POST['Location'] . ' ' . _('location'));
+$CategoryArray = array();
+$CategorySQL = "SELECT categorydescription
+					FROM stockcategory
+					WHERE categoryid IN ('". implode("','",$_POST['Categories'])."')";
+$CategoryResult = DB_query($CategorySQL);
+while ($CategoryRow = DB_fetch_array($CategoryResult)) {
+	$CategoryArray[] = $CategoryRow['categorydescription'];
+}
+
+$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 300, $FontSize, _('Inventory Valuation for Categories') . ' ' . implode(',', $CategoryArray) . ' ' . _('at') . ' ' . $_POST['Location'] . ' ' . _('location'));
 $LeftOvers = $PDF->addTextWrap($Page_Width - $Right_Margin - 120, $YPos, 120, $FontSize, _('Printed') . ': ' . Date($_SESSION['DefaultDateFormat']) . '   ' . _('Page') . ' ' . $PageNumber);
 
 $YPos -= (2 * $line_height);

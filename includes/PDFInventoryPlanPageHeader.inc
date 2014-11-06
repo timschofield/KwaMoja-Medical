@@ -11,14 +11,23 @@ $YPos = $Page_Height - $Top_Margin;
 
 $LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 300, $FontSize, $_SESSION['CompanyRecord']['coyname']);
 
-$YPos -= $line_height;
+$YPos -= $LineHeight;
 
 $FontSize = 10;
 
+$CategoryArray = array();
+$CategorySQL = "SELECT categorydescription
+					FROM stockcategory
+					WHERE categoryid IN ('". implode("','",$_POST['Categories'])."')";
+$CategoryResult = DB_query($CategorySQL);
+while ($CategoryRow = DB_fetch_array($CategoryResult)) {
+	$CategoryArray[] = $CategoryRow['categorydescription'];
+}
+
 if (isset($_POST['SupplierID']) and $_POST['SupplierID'] == "0") { //no supplier selected its a stock category report
-	$ReportTitle = _('Inventory Planning for Categories Between') . ' ' . $_POST['FromCriteria'] . ' ' . _('and') . ' ' . $_POST['ToCriteria'];
+	$ReportTitle = _('Inventory Planning for Categories') . ' ' . implode(',', $CategoryArray);
 } else { //supplier selected its just planning for products from the supplier
-	$ReportTitle = _('Inventory Planning for Products Category') . ' ' . $_POST['FromCriteria'];
+	$ReportTitle = _('Inventory Planning for Products Category') . ' ' . implode(',', $CategoryArray);
 }
 
 if ($_POST['Location'] == 'All') {
@@ -34,14 +43,14 @@ if ($_POST['Location'] == 'All') {
 $FontSize = 8;
 $LeftOvers = $PDF->addTextWrap($Page_Width - $Right_Margin - 120, $YPos, 120, $FontSize, _('Printed') . ': ' . Date($_SESSION['DefaultDateFormat']) . '   ' . _('Page') . ' ' . $PageNumber);
 
-$YPos -= (2 * $line_height);
+$YPos -= (2 * $LineHeight);
 
 /*Draw a rectangle to put the headings in     */
 
-$PDF->line($Left_Margin, $YPos + $line_height, $Page_Width - $Right_Margin, $YPos + $line_height);
-$PDF->line($Left_Margin, $YPos + $line_height, $Left_Margin, $YPos - $line_height);
-$PDF->line($Left_Margin, $YPos - $line_height, $Page_Width - $Right_Margin, $YPos - $line_height);
-$PDF->line($Page_Width - $Right_Margin, $YPos + $line_height, $Page_Width - $Right_Margin, $YPos - $line_height);
+$PDF->line($Left_Margin, $YPos + $LineHeight, $Page_Width - $Right_Margin, $YPos + $LineHeight);
+$PDF->line($Left_Margin, $YPos + $LineHeight, $Left_Margin, $YPos - $LineHeight);
+$PDF->line($Left_Margin, $YPos - $LineHeight, $Page_Width - $Right_Margin, $YPos - $LineHeight);
+$PDF->line($Page_Width - $Right_Margin, $YPos + $LineHeight, $Page_Width - $Right_Margin, $YPos - $LineHeight);
 
 /*set up the headings */
 $XPos = $Left_Margin + 1;
@@ -67,6 +76,6 @@ $LeftOvers = $PDF->addTextWrap(648, $YPos, 40, $FontSize, _('Cust Ords'), 'centr
 $LeftOvers = $PDF->addTextWrap(694, $YPos, 40, $FontSize, _('Splr Ords'), 'centre');
 $LeftOvers = $PDF->addTextWrap(735, $YPos, 40, $FontSize, _('Sugg Ord'), 'centre');
 
-$YPos = $YPos - (2 * $line_height);
+$YPos = $YPos - (2 * $LineHeight);
 $FontSize = 8;
 ?>

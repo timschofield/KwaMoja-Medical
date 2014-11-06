@@ -2,7 +2,7 @@
 
 include('includes/session.inc');
 
-if ((isset($_POST['PrintPDF']) or isset($_POST['CSV'])) and isset($_POST['FromCriteria']) and mb_strlen($_POST['FromCriteria']) >= 1 and isset($_POST['ToCriteria']) and mb_strlen($_POST['ToCriteria']) >= 1) {
+if ((isset($_POST['PrintPDF']) or isset($_POST['CSV'])) and isset($_POST['Categories']) and sizeOf($_POST['Categories']) > 0) {
 
 	include('includes/PDFStarter.php');
 
@@ -47,8 +47,7 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['CSV'])) and isset($_POST['FromCr
 					stockmaster.stockid,
 					stockmaster.description
 				HAVING SUM(locstock.quantity)!=0
-				AND stockmaster.categoryid >= '" . $_POST['FromCriteria'] . "'
-				AND stockmaster.categoryid <= '" . $_POST['ToCriteria'] . "'
+				AND stockmaster.categoryid IN ('". implode("','",$_POST['Categories'])."')
 				ORDER BY stockcategory.categorydescription,
 					stockmaster.stockid";
 	} else {
@@ -74,8 +73,7 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['CSV'])) and isset($_POST['FromCr
 					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
 					AND locationusers.canview=1
 				WHERE locstock.quantity!=0
-					AND stockcategory.categoryid >= '" . $_POST['FromCriteria'] . "'
-					AND stockcategory.categoryid <= '" . $_POST['ToCriteria'] . "'
+					AND stockmaster.categoryid IN ('". implode("','",$_POST['Categories'])."')
 					AND locstock.loccode = '" . $_POST['Location'] . "'
 				ORDER BY stockcategory.categorydescription,
 					stockmaster.stockid";
@@ -224,83 +222,69 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['CSV'])) and isset($_POST['FromCr
 	$Title = _('Inventory Valuation Reporting');
 	include('includes/header.inc');
 
-	if (empty($_POST['FromCriteria']) or empty($_POST['ToCriteria'])) {
+	echo '<p class="page_title_text noPrint" >
+			<img src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Inventory') . '" alt="" />' . ' ' . $Title . '
+		</p>';
 
-		/*if $FromCriteria is not set then show a form to allow input	*/
-		echo '<p class="page_title_text noPrint" >
-				<img src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Inventory') . '" alt="" />' . ' ' . $Title . '
-			</p>';
-
-		echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">
+	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">
 			<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
 			<table class="selection">
 			<tr>
-				<td>' . _('From Inventory Category Code') . ':</td>
-				<td><select minlength="0" name="FromCriteria">';
-
-		$SQL = "SELECT categoryid,
+				<td>' . _('Select Inventory Categories') . ':</td>
+				<td><select autofocus="autofocus" required="required" minlength="1" size="12" name="Categories[]"multiple="multiple">';
+	$SQL = 'SELECT categoryid,
 					categorydescription
 				FROM stockcategory
-				ORDER BY categorydescription";
-
-		$CatResult = DB_query($SQL);
-		while ($MyRow = DB_fetch_array($CatResult)) {
-			echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . ' - ' . $MyRow['categoryid'] . '</option>';
+				ORDER BY categorydescription';
+	$CatResult = DB_query($SQL);
+	while ($MyRow = DB_fetch_array($CatResult)) {
+		if (isset($_POST['Categories']) and in_array($MyRow['categoryid'], $_POST['Categories'])) {
+			echo '<option selected="selected" value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] .'</option>';
+		} else {
+			echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 		}
-		echo '</select></td>
-			</tr>';
+	}
+	echo '</select>
+			</td>
+		</tr>';
 
-		echo '<tr>
-				<td>' . _('To Inventory Category Code') . ':</td>
-				<td><select minlength="0" name="ToCriteria">';
+	echo '<tr>
+			<td>' . _('For Inventory in Location') . ':</td>
+			<td><select name="Location">';
 
-		/*Set the index for the categories result set back to 0 */
-		DB_data_seek($CatResult, 0);
+	$SQL = "SELECT locations.loccode,
+					locationname
+				FROM locations
+				INNER JOIN locationusers
+					ON locationusers.loccode=locations.loccode
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "' AND locationusers.canview=1";
 
-		while ($MyRow = DB_fetch_array($CatResult)) {
-			echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . ' - ' . $MyRow['categoryid'] . '</option>';
-		}
-		echo '</select></td>
-			</tr>';
+	$LocnResult=DB_query($SQL);
 
-		echo '<tr>
-				<td>' . _('For Inventory in Location') . ':</td>
-				<td><select minlength="0" name="Location">';
+	echo '<option value="All">' . _('All Locations') . '</option>';
 
-		$SQL = "SELECT locationname,
-						locations.loccode
-						FROM locations
-						INNER JOIN locationusers
-							ON locationusers.loccode=locations.loccode
-							AND locationusers.userid='" .  $_SESSION['UserID'] . "'
-							AND locationusers.canview=1";
-		echo '<option value="All">' . _('All Locations') . '</option>';
+	while ($MyRow = DB_fetch_array($LocnResult)) {
+		echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
+	}
+	echo '</select>
+			</td>
+		</tr>';
 
-		$LocnResult = DB_query($SQL);
-
-
-		while ($MyRow = DB_fetch_array($LocnResult)) {
-			echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
-		}
-		echo '</select></td>
-			</tr>';
-
-		echo '<tr>
-				<td>' . _('Summary or Detailed Report') . ':</td>
-				<td><select minlength="0" name="DetailedReport">
+	echo '<tr>
+			<td>' . _('Summary or Detailed Report') . ':</td>
+			<td><select name="DetailedReport">
 					<option selected="selected" value="No">' . _('Summary Report') . '</option>
 					<option value="Yes">' . _('Detailed Report') . '</option>
-					</select></td>
-			</tr>
-			</table>
-			<div class="centre">
-				<input type="submit" name="PrintPDF" value="' . _('Print PDF') . '" />
-				<input type="submit" name="CSV" value="' . _('Output to CSV') . '" />
-			</div>';
-		echo '</form>';
-	}
+				</select>
+			</td>
+		</tr>
+		</table>
+		<div class="centre">
+			<input type="submit" name="PrintPDF" value="' . _('Print PDF') . '" />
+			<input type="submit" name="CSV" value="' . _('Output to CSV') . '" />
+		</div>';
+	echo '</form>';
+
 	include('includes/footer.inc');
 
-}
-/*end of else not PrintPDF */
-?>
+} /*end of else not PrintPDF */

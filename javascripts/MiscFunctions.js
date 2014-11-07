@@ -377,7 +377,7 @@ function SortSelect() {
 	e.sort(function (e, t) {
 		if (direction == "a") {
 			if (columnClass == "number") {
-				return parseFloat(e[columnNumber]) - parseFloat(t[columnNumber])
+				return parseFloat(e[columnNumber].replace(/[,.]/g, '')) - parseFloat(t[columnNumber].replace(/[,.]/g, ''))
 			} else if (columnClass == "date") {
 				da = new Date(e[columnNumber]);
 				db = new Date(t[columnNumber]);
@@ -387,7 +387,7 @@ function SortSelect() {
 			}
 		} else {
 			if (columnClass == "number") {
-				return parseFloat(t[columnNumber]) - parseFloat(e[columnNumber])
+				return parseFloat(t[columnNumber].replace(/[,.]/g, '')) - parseFloat(e[columnNumber].replace(/[,.]/g, ''))
 			} else if (columnClass == "date") {
 				da = new Date(e[columnNumber]);
 				db = new Date(t[columnNumber]);

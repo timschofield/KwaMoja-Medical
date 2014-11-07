@@ -168,8 +168,7 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 						INNER JOIN currencies
 							ON debtorsmaster.currcode=currencies.currabrev
 						WHERE debtortrans.type=10
-							AND debtortrans.transno='" . $FromTransNo . "'
-							AND locations.loccode" . LIKE . "'" . $_POST['LocCode'] . "'";
+							AND debtortrans.transno='" . $FromTransNo . "'";
 
 			if (isset($_POST['PrintEDI']) and $_POST['PrintEDI'] == 'No') {
 				$SQL = $SQL . " AND debtorsmaster.ediinvoices=0";
@@ -226,8 +225,7 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 							ON debtorsmaster.currcode=currencies.currabrev
 						WHERE debtortrans.type=11
 							AND debtortrans.transno='" . $FromTransNo . "'
-							AND debtortrans.transno='" . $FromTransNo . "'
-							AND locations.loccode" . LIKE . "'" . $_POST['LocCode'] . "'";
+							AND debtortrans.transno='" . $FromTransNo . "'";
 
 			if (isset($_POST['PrintEDI']) and $_POST['PrintEDI'] == 'No') {
 				$SQL = $SQL . " AND debtorsmaster.ediinvoices=0";
@@ -519,33 +517,44 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 	$FromTransNo--;
 
 	if (isset($_GET['Email'])) { //email the invoice to address supplied
-		include('includes/htmlMimeMail.php');
-		$FromTransNo--; //reverse the increment to retain the correct transaction number
-		$FileName = $_SESSION['reports_dir'] . '/' . $_SESSION['DatabaseName'] . '_' . $InvOrCredit . '_' . $_GET['FromTransNo'] . '.pdf';
-		$PDF->Output($FileName, 'F');
-		$Mail = new htmlMimeMail();
+		$Title = _('Emailing') . ' ' . $InvOrCredit . ' ' . _('Number') . ' ' . $FromTransNo;
+		include('includes/header.inc');
+		include('includes/PHPMailer/PHPMailerAutoload.php');
+		$mail = new PHPMailer();
+		$mail->IsSMTP();
+		$mail->CharSet = 'UTF-8';
 
-		$Attachment = $Mail->getFile($FileName);
-		$Mail->setText(_('Please find attached') . ' ' . $InvOrCredit . ' ' . $_GET['FromTransNo']);
-		$Mail->SetSubject($InvOrCredit . ' ' . $_GET['FromTransNo']);
-		$Mail->addAttachment($Attachment, $FileName, 'application/pdf');
-		if ($_SESSION['SmtpSetting'] == 0) {
-			$Mail->setFrom($_SESSION['CompanyRecord']['coyname'] . ' <' . $_SESSION['CompanyRecord']['email'] . '>');
-			$Result = $Mail->send(array(
-				$_GET['Email']
-			));
+		$mail->Host = $_SESSION['SMTPSettings']['host']; // SMTP server example
+		$mail->SMTPDebug  = 0;                     // enables SMTP debug information (for testing)
+		$mail->SMTPAuth   = $_SESSION['SMTPSettings']['auth'];
+		$mail->SMTPSecure = "ssl";                 // enable SMTP authentication
+		$mail->Port       = $_SESSION['SMTPSettings']['port'];                    // set the SMTP port for the GMAIL server
+		$mail->Username   = html_entity_decode($_SESSION['SMTPSettings']['username']); // SMTP account username example
+		$mail->Password   = html_entity_decode($_SESSION['SMTPSettings']['password']);        // SMTP account password example
+		$mail->From =  $_SESSION['CompanyRecord']['email'];
+		$mail->FromName = 'KwaMoja';
+		$mail->addAddress($_GET['Email']);     // Add a recipient
+
+		$FileName = $_SESSION['reports_dir'] . '/' . $_SESSION['DatabaseName'] . '_' . $InvOrCredit . '_' . $FromTransNo . '.pdf';
+		$PDF->Output($FileName, 'F');
+
+		$mail->WordWrap = 50;                                 // Set word wrap to 50 characters
+		$mail->addAttachment($FileName);         // Add attachments
+		$mail->isHTML(true);                                  // Set email format to HTML
+
+		$mail->Subject = _('Please find attached') . ': ' . $InvOrCredit . ' ' . $FromTransNo;
+		$mail->Body    = $InvOrCredit . ' ' . $FromTransNo;
+
+		if(!$mail->send()) {
+			echo 'Message could not be sent.';
+			echo 'Mailer Error: ' . $mail->ErrorInfo;
 		} else {
-			$Result = SendmailBySmtp($Mail, array(
-				$_GET['Email']
-			));
+			echo '<p>' . $InvOrCredit . ' ' . _('number') . ' ' . $FromTransNo . ' ' . _('has been emailed to') . ' ' . $_GET['Email'];
 		}
 
 		unlink($FileName); //delete the temporary file
-
-		$Title = _('Emailing') . ' ' . $InvOrCredit . ' ' . _('Number') . ' ' . $FromTransNo;
-		include('includes/header.inc');
-		echo '<p>' . $InvOrCredit . ' ' . _('number') . ' ' . $FromTransNo . ' ' . _('has been emailed to') . ' ' . $_GET['Email'];
 		include('includes/footer.inc');
+
 		exit;
 
 	} else { //its not an email just print the invoice to PDF

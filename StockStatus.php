@@ -1,6 +1,7 @@
 <?php
 
 include('includes/session.inc');
+include('includes/SQL_CommonFunctions.inc');
 
 $Title = _('Stock Status');
 

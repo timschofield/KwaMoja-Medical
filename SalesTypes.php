@@ -231,6 +231,7 @@ if (!isset($_GET['delete'])) {
 				   sales_type
 				FROM salestypes
 				WHERE typeabbrev='" . $SelectedType . "'";
+		$Result = DB_query($SQL);
 
 		if (DB_num_rows($Result) == 0) {
 			echo '<div class="page_help_text">', _('As this is the first time that the system has been used, you must first create a default price list.'),

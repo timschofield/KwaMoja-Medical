@@ -126,8 +126,10 @@ if (isset($_POST['submit'])) {
 	// Prevent delete if saletype exist in customer transactions
 
 	$SQL = "SELECT COUNT(*)
-		   FROM debtortrans
-		   WHERE debtortrans.type='" . $SelectedType . "'";
+			FROM debtortrans
+			INNER JOIN debtorsmaster
+				ON debtortrans.debtorno=debtorsmaster.debtorno
+			WHERE debtorsmaster.typeid='" . $SelectedType . "'";
 
 	$ErrMsg = _('The number of transactions using this customer type could not be retrieved');
 	$Result = DB_query($SQL, $ErrMsg);
@@ -222,7 +224,6 @@ if (!isset($_GET['delete'])) {
 		$_POST['TypeName'] = $MyRow['typename'];
 
 		echo '<input type="hidden" name="SelectedType" value="', $SelectedType, '" />';
-		echo '<input type="hidden" name="typeid" value="', $SelectedType, '" />';
 		echo '<table class="selection">';
 
 		// We dont allow the user to change an existing type code

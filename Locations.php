@@ -394,6 +394,7 @@ if (isset($_POST['submit'])) {
 								WHERE dispatchtaxprovince='" . $TaxProvinceRow[0] . "'");
 		}
 
+		$Result = DB_query("DELETE FROM container WHERE location ='" . $SelectedLocation . "'");
 		$Result = DB_query("DELETE FROM locstock WHERE loccode ='" . $SelectedLocation . "'");
 		$Result = DB_query("DELETE FROM locations WHERE loccode='" . $SelectedLocation . "'");
 		$Result = DB_query("DELETE FROM locationusers WHERE loccode='" . $SelectedLocation . "'");
@@ -436,9 +437,9 @@ if (!isset($SelectedLocation)) {
 
 		echo '<table class="selection">';
 		echo '<tr>
-				<th>' . _('Location Code') . '</th>
-				<th>' . _('Location Name') . '</th>
-				<th>' . _('Tax Province') . '</th>
+				<th class="SortableColumn">' . _('Location Code') . '</th>
+				<th class="SortableColumn">' . _('Location Name') . '</th>
+				<th class="SortableColumn">' . _('Tax Province') . '</th>
 			</tr>';
 
 		$k = 0; //row colour counter
@@ -480,7 +481,7 @@ if (isset($SelectedLocation)) {
 if (!isset($_GET['delete'])) {
 
 	include('includes/CountriesArray.php');
-	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
+	echo '<form onSubmit="return VerifyForm(this);" id="Locations" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	if (isset($SelectedLocation)) {

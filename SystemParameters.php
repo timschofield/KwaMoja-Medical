@@ -532,7 +532,7 @@ echo '<tr style="outline: 1px solid"><td>' . _('Invoice Orientation') . ':</td>
 echo '<tr style="outline: 1px solid">
 		<td>' . _('Invoice Quantity Default') . ':</td>
 		<td>
-			<select name="X_InvoicePortraitFormat">
+			<select name="X_InvoiceQuantityFormat">
 				<option '.($_SESSION['InvoiceQuantityDefault']=='0'?'selected="selected" ':'').'value="0">' . _('0') . '</option>
 				<option '.($_SESSION['InvoiceQuantityDefault']=='1'?'selected="selected" ':'').'value="1">' . _('Outstanding') . '</option>
 			</select>

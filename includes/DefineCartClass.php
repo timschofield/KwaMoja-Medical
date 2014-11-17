@@ -379,6 +379,11 @@ class LineDetails {
 			$this->QtyDispatched = 0;
 		} else {
 			$this->QtyDispatched = $Qty - $QtyInvoiced;
+			if ($_SESSION['InvoiceQuantityDefault'] == 1) {
+				$this->QtyDispatched = $Qty - $QtyInvoiced;
+			} else {
+				$this->QtyDispathced = 0;
+			}
 		}
 		$this->QOHatLoc = $QOHatLoc;
 		$this->MBflag = $MBflag;

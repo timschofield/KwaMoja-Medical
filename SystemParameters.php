@@ -245,6 +245,9 @@ if (isset($_POST['submit'])) {
 		if ($_SESSION['ProhibitJournalsToControlAccounts'] != $_POST['X_ProhibitJournalsToControlAccounts']) {
 			$SQL[] = "UPDATE config SET confvalue = '" . $_POST['X_ProhibitJournalsToControlAccounts'] . "' WHERE confname = 'ProhibitJournalsToControlAccounts'";
 		}
+		if ($_SESSION['InvoiceQuantityDefault'] != $_POST['X_InvoiceQuantityDefault']) {
+			$sql[] = "UPDATE config SET confvalue = '" . $_POST['X_InvoiceQuantityDefault'] . "' WHERE confname = 'InvoiceQuantityDefault'";
+		}
 		if ($_SESSION['InvoicePortraitFormat'] != $_POST['X_InvoicePortraitFormat']) {
 			$SQL[] = "UPDATE config SET confvalue = '" . $_POST['X_InvoicePortraitFormat'] . "' WHERE confname = 'InvoicePortraitFormat'";
 		}
@@ -524,6 +527,19 @@ echo '<tr style="outline: 1px solid"><td>' . _('Invoice Orientation') . ':</td>
 	</select></td>
 	<td>' . _('Select the invoice layout') . '</td>
 	</tr>';
+
+//Default Invoice Quantity
+echo '<tr style="outline: 1px solid">
+		<td>' . _('Invoice Quantity Default') . ':</td>
+		<td>
+			<select name="X_InvoicePortraitFormat">
+				<option '.($_SESSION['InvoiceQuantityDefault']=='0'?'selected="selected" ':'').'value="0">' . _('0') . '</option>
+				<option '.($_SESSION['InvoiceQuantityDefault']=='1'?'selected="selected" ':'').'value="1">' . _('Outstanding') . '</option>
+			</select>
+		</td>
+		<td>' . _('This setting controls the default behaviour of invoicing. Setting to 0 defaults the invocie quantity to zero to force entry. Set to outstanding to default the invoice quantity to the balance outstanding, after previous deliveries, on the sales order') . '</td>
+	</tr>';
+
 
 //Blind packing note
 echo '<tr style="outline: 1px solid"><td>' . _('Show company details on packing slips') . ':</td>
@@ -1145,7 +1161,7 @@ echo '<tr style="outline: 1px solid">
 	</tr>';
 
 echo '<tr style="outline: 1px solid">
-		<td>' . _('Using Smtp Mail') . '</td>
+		<td>' . _('Auto Log Quality Samples') . '</td>
 		<td>
 			<select required="required" minlength="1" type="text" name="X_QualityLogSamples" >';
 if ($_SESSION['QualityLogSamples'] == 0) {

@@ -246,7 +246,7 @@ if (isset($_POST['submit'])) {
 			$SQL[] = "UPDATE config SET confvalue = '" . $_POST['X_ProhibitJournalsToControlAccounts'] . "' WHERE confname = 'ProhibitJournalsToControlAccounts'";
 		}
 		if ($_SESSION['InvoiceQuantityDefault'] != $_POST['X_InvoiceQuantityDefault']) {
-			$sql[] = "UPDATE config SET confvalue = '" . $_POST['X_InvoiceQuantityDefault'] . "' WHERE confname = 'InvoiceQuantityDefault'";
+			$SQL[] = "UPDATE config SET confvalue = '" . $_POST['X_InvoiceQuantityDefault'] . "' WHERE confname = 'InvoiceQuantityDefault'";
 		}
 		if ($_SESSION['InvoicePortraitFormat'] != $_POST['X_InvoicePortraitFormat']) {
 			$SQL[] = "UPDATE config SET confvalue = '" . $_POST['X_InvoicePortraitFormat'] . "' WHERE confname = 'InvoicePortraitFormat'";

@@ -3,8 +3,8 @@
 
 include('includes/session.inc');
 $Title = _('User Authorised Inventory Locations Maintenance');
-$ViewTopic = 'Inventory';// Filename in ManualContents.php's TOC.
-$BookMark = 'LocationUsers';// Anchor's id in the manual's html document.
+$ViewTopic = 'Inventory'; // Filename in ManualContents.php's TOC.
+$BookMark = 'LocationUsers'; // Anchor's id in the manual's html document.
 include('includes/header.inc');
 
 echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/money_add.png" title="' . _('User Authorised Locations') . '" alt="" />' . ' ' . $Title . '</p>';
@@ -198,8 +198,7 @@ if (isset($_POST['process']) or isset($SelectedUser)) {
 		printf('<td>%s</td>
 				<td>%s</td>
 				<td>%s</td>
-				<td>%s</td>' .
-				$ToggleText . '
+				<td>%s</td>' . $ToggleText . '
 				<td><a href="%s?SelectedLocation=%s&amp;delete=yes&amp;SelectedUser=' . $SelectedUser . '" onclick="return confirm(\'' . _('Are you sure you wish to un-authorise this location?') . '\');">' . _('Un-authorise') . '</a></td>
 				</tr>',
 				$MyRow['loccode'],

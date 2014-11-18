@@ -75,6 +75,8 @@ if (isset($_POST['submit'])) {
 							WHERE reasoncode = '" . $SelectedReason . "'";
 		}
 		$Msg = _('The credit status record has been updated');
+		unset($SelectedReason);
+		unset($_POST['ReasonDescription']);
 
 	} else if ($InputError != 1) {
 
@@ -170,7 +172,7 @@ if (!isset($SelectedReason)) {
 			<td>' . $MyRow['reasondescription'] . '</td>
 			<td>' . $DissallowText . '</td>
 			<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedReason=' . urlencode($MyRow['reasoncode']) . '">' . _('Edit') . '</a></td>
-			<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedReason=' . urlencode($MyRow['reasoncode']) . '&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this credit status record?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+			<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedReason=' . urlencode($MyRow['reasoncode']) . '&delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this credit status record?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
 			</tr>';
 
 	} //END WHILE LIST LOOP

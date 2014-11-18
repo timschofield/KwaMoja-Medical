@@ -182,7 +182,6 @@ if (!isset($_GET['delete'])) {
 		$_POST['TypeName'] = $MyRow['typename'];
 
 		echo '<input type="hidden" name="SelectedType" value="' . $SelectedType . '" />';
-		echo '<input type="hidden" name="TypeID" value="' . $_POST['TypeID'] . '" />';
 
 		// We dont allow the user to change an existing type code
 

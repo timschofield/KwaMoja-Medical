@@ -539,7 +539,6 @@ else {
 if ($_SESSION['RequireSupplierSelection'] == 1 or !isset($_SESSION['PO' . $Identifier]->SupplierID) or $_SESSION['PO' . $Identifier]->SupplierID == '') {
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" title="' . _('Purchase Order') . '" alt="" />' . ' ' . _('Purchase Order: Select Supplier') . '</p>';
 	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '" method="post" class="noPrint" id="choosesupplier">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	if (isset($SuppliersReturned)) {
@@ -555,13 +554,13 @@ if ($_SESSION['RequireSupplierSelection'] == 1 or !isset($_SESSION['PO' . $Ident
 				<td><input type="text" name="SuppCode" size="15" minlength="0" maxlength="18" /></td>
 			</tr>
 		</table>
-		<br />
 		<div class="centre">
-		<input type="submit" name="SearchSuppliers" value="' . _('Search Now') . '" />
-		<input type="submit" value="' . _('Reset') . '" /></div>';
+			<input type="submit" name="SearchSuppliers" value="' . _('Search Now') . '" />
+			<input type="submit" value="' . _('Reset') . '" />
+		</div>';
 
 	if (isset($Result_SuppSelect)) {
-		echo '<br /><table cellpadding="3" class="selection">
+		echo '<table cellpadding="3" class="selection">
 						<tr>
 							<th class="SortableColumn">' . _('Code') . '</th>
 							<th class="SortableColumn">' . _('Supplier Name') . '</th>
@@ -608,7 +607,6 @@ else {
 	/* everything below here only do if a supplier is selected */
 
 	echo '<form onSubmit="return VerifyForm(this);" id="form1" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '" method="post" class="noPrint">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	echo '<p class="page_title_text noPrint" >
@@ -1183,7 +1181,6 @@ else {
 }
 /*end of if supplier selected */
 
-echo '</div>
-	  </form>';
+echo '</form>';
 include('includes/footer.inc');
 ?>

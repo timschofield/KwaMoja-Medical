@@ -93,7 +93,7 @@ if (isset($_POST['submit'])) {
 
 		/*Selected terms is null cos no item selected on first time round so must be adding a record must be submitting new entries in the new payment terms form */
 
-		if ($_POST['DaysOrFoll'] == 'on') {
+		if (isset($_POST['DaysOrFoll']) and $_POST['DaysOrFoll'] == 'on') {
 			$SQL = "INSERT INTO paymentterms (termsindicator,
 								terms,
 								daysbeforedue,
@@ -201,7 +201,7 @@ if (!isset($SelectedTerms)) {
 				<td>' . $FollMthText . '</td>
 				<td>' . $DueAfterText . '</td>
 				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedTerms=' . urlencode($MyRow[0]) . '">' . _('Edit') . '</a></td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedTerms=' . urlencode($MyRow[0]) . '&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this payment term?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedTerms=' . urlencode($MyRow[0]) . '&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this payment term?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
 			</tr>';
 
 	} //END WHILE LIST LOOP
@@ -266,7 +266,7 @@ if (!isset($_GET['delete'])) {
 			</tr>';
 		echo '<tr>
 				<td>' . _('Term Code') . ':</td>
-				<td><input type="text" name="TermsIndicator" value="' . $_POST['TermsIndicator'] . '" size="3" autofocus="autofocus" required="required" minlength="1" maxlength="2" /></td>
+				<td><input type="text" class="AlphaNumeric" name="TermsIndicator" value="' . $_POST['TermsIndicator'] . '" size="3" autofocus="autofocus" required="required" minlength="1" maxlength="2" /></td>
 			</tr>';
 	}
 
@@ -283,7 +283,7 @@ if (!isset($_GET['delete'])) {
 	echo '  /></td>
 		</tr>
 		<tr><td>' . _('Days (Or Day In Following Month)') . ':</td>
-			<td><input type="text" name="DayNumber" class="number"  size="4" minlength="0" maxlength="3" value="';
+			<td><input type="text" name="DayNumber" maxvalue="30" class="integer" size="3" minlength="0" maxlength="3" value="';
 	if ($DaysBeforeDue != 0) {
 		echo locale_number_format($DaysBeforeDue, 0);
 	} else {

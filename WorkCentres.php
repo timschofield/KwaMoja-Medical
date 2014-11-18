@@ -201,7 +201,7 @@ if (isset($SelectedWC)) {
 	echo '<table class="selection">
 			<tr>
 				<td>' . _('Work Centre Code') . ':</td>
-				<td><input type="text" class="AlphaNumeric" name="Code" size="6" autofocus="autofocus" required="required" minlength="1" maxlength="5" value="' . $_POST['Code'] . '" /></td>
+				<td><input type="text" class="AlphaNumeric" name="Code" size="6" autofocus="autofocus" required="required" minlength="2" maxlength="5" value="' . $_POST['Code'] . '" /></td>
 			</tr>';
 }
 

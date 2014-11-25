@@ -321,7 +321,7 @@ while ($MyRow = DB_fetch_array($TransResult)) {
 						</a>
 					</td>
 					<td>
-						<a href="', $RootPath, '/GLTransInquiry.php?TypeID=', $MyRow['type'], '&amp;TransNo=', $MyRow['transno'], '">', _('View GL Entries'), '
+						<a href="', $RootPath, '/GLTransInquiry.php?TypeID=', $MyRow['type'], '&amp;TransNo=', $MyRow['transno'], '">', _('View the GL Entries'), '
 							<img src="', $RootPath, '/css/', $Theme, '/images/gl.png" title="', _('View the GL Entries'), '" alt="" />
 						</a>
 					</td>
@@ -439,7 +439,7 @@ while ($MyRow = DB_fetch_array($TransResult)) {
 						</a>
 					</td>
 					<td>
-						<a href="', $RootPath, '/GLTransInquiry.php?TypeID=', $MyRow['type'], '&amp;TransNo=', $MyRow['transno'], '">' . _('View GL Entries') . '
+						<a href="', $RootPath, '/GLTransInquiry.php?TypeID=', $MyRow['type'], '&amp;TransNo=', $MyRow['transno'], '">' . _('View the GL Entries') . '
 							<img src="', $RootPath, '/css/', $Theme, '/images/gl.png" title="', _('View the GL Entries'), '" alt="" />
 						</a>
 					</td>
@@ -509,7 +509,7 @@ while ($MyRow = DB_fetch_array($TransResult)) {
 					<td></td>
 					<td></td>
 					<td>
-						<a href="', $RootPath, '/GLTransInquiry.php?TypeID=', $MyRow['type'], '&amp;TransNo=', $MyRow['transno'], '">', _('View GL Entries'), '
+						<a href="', $RootPath, '/GLTransInquiry.php?TypeID=', $MyRow['type'], '&amp;TransNo=', $MyRow['transno'], '">', _('View the GL Entries'), '
 							<img src="', $RootPath, '/css/', $Theme, '/images/gl.png" title="', _('View the GL Entries'), '" alt="" />
 						</a>
 					</td>
@@ -563,7 +563,7 @@ while ($MyRow = DB_fetch_array($TransResult)) {
 					<td></td>
 					<td></td>
 					<td>
-						<a href="', $RootPath, '/GLTransInquiry.php?TypeID=', $MyRow['type'], '&amp;TransNo=', $MyRow['transno'], '">' . _('View GL Entries') . '
+						<a href="', $RootPath, '/GLTransInquiry.php?TypeID=', $MyRow['type'], '&amp;TransNo=', $MyRow['transno'], '">' . _('View the GL Entries') . '
 						<img src="', $RootPath, '/css/', $Theme, '/images/gl.png" title="', _('View the GL Entries'), '" alt="" />
 					</a>
 					</td>
@@ -612,7 +612,7 @@ while ($MyRow = DB_fetch_array($TransResult)) {
 					<td></td>
 					<td></td>
 					<td>
-						<a href="', $RootPath, '/GLTransInquiry.php?TypeID=', $MyRow['type'], '&amp;TransNo=', $MyRow['transno'], '">', _('View GL Entries'), '
+						<a href="', $RootPath, '/GLTransInquiry.php?TypeID=', $MyRow['type'], '&amp;TransNo=', $MyRow['transno'], '">', _('View the GL Entries'), '
 							<img src="', $RootPath, '/css/', $Theme, '/images/gl.png" title="', _('View the GL Entries'), '" alt="" />
 						</a>
 					</td>

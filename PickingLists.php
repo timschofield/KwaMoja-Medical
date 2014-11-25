@@ -151,6 +151,7 @@ if (!isset($_GET['Prid']) and !isset($_SESSION['ProcessingPick'])) {
 		$LineItemsSQL = "SELECT pickreqdetails.detailno,
 								pickreqdetails.qtypicked,
 								pickreqdetails.shipqty,
+								pickreqdetails.detailno,
 								stkcode,
 								stockmaster.description,
 								stockmaster.longdescription,
@@ -205,7 +206,8 @@ if (!isset($_GET['Prid']) and !isset($_SESSION['ProcessingPick'])) {
 									FROM pickserialdetails
 									INNER JOIN pickreqdetails
 										ON pickreqdetails.detailno=pickserialdetails.detailno
-									WHERE pickreqdetails.prid ='" . $_GET['Prid'] . "'";
+									WHERE pickreqdetails.prid ='" . $_GET['Prid'] . "'
+									AND pickserialdetails.detailno='" . $MyRow['detailno'] . "'";
 
 				$ErrMsg = _('The serial items of the pick list cannot be retrieved because');
 				$DbgMsg = _('The SQL that failed was');

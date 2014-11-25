@@ -26,11 +26,12 @@ if (!(isset($_POST['Search']))) {
 				INNER JOIN locationusers
 					ON locationusers.loccode=locations.loccode
 					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
-					AND locationusers.canview=1";
+					AND locationusers.canview=1
+				ORDER BY locations.locationname";
 	echo '<option selected="selected" value="All">' . _('All Locations') . '</option>';
 	$Result = DB_query($SQL);
 	while ($MyRow = DB_fetch_array($Result)) {
-		echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['loccode'] . ' - ' . $MyRow['locationname'] . '</option>';
+		echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 	}
 	echo '</select></td>
 		</tr>';
@@ -42,7 +43,8 @@ if (!(isset($_POST['Search']))) {
 
 	$SQL = "SELECT typename,
 					typeid
-				FROM debtortype";
+				FROM debtortype
+			ORDER BY typename";
 	$Result = DB_query($SQL);
 	echo '<option value="All">' . _('All') . '</option>';
 	while ($MyRow = DB_fetch_array($Result)) {

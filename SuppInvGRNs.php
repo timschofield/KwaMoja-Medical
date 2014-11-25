@@ -254,10 +254,11 @@ else {
 					<th colspan="10"><h3>' . _('Goods Received Yet to be Invoiced From') . ' ' . $_SESSION['SuppTrans']->SupplierName . '</h3></th>
 				</tr>
 				<tr>
-					<th>' . _('Select') . '</th>
-					<th>' . _('Sequence') . ' #</th>
-					<th>' . _('Order') . '</th>
-					<th>' . _('Item Code') . '</th>
+					<th class="SortableColumn">' . _('Select') . '</th>
+					<th class="SortableColumn">' . _('Sequence') . ' #</th>
+					<th class="SortableColumn">' . _('GRN Number') . '</th>
+					<th class="SortableColumn">' . _('Order') . '</th>
+					<th class="SortableColumn">' . _('Item Code') . '</th>
 					<th>' . _('Description') . '</th>
 					<th>' . _('Total Qty Received') . '</th>
 					<th>' . _('Qty Already Invoiced') . '</th>
@@ -286,6 +287,7 @@ else {
 					<td><input type="checkbox" name="GRNNo_' . $GRNTmp->GRNNo . '" /></td>';
 			}
 			echo '<td>' . $GRNTmp->GRNNo . '</td>
+			<td>' . $GRNTmp->GRNBatchNo . '</td>
 			<td>' . $GRNTmp->PONo . '</td>
 			<td>' . $GRNTmp->ItemCode . '</td>
 			<td>' . $GRNTmp->ItemDescription . '</td>

@@ -113,7 +113,7 @@ $PDF->addText($Perforation + 1, $YPosR - $LineCountR * $LineHeight, $FontSize, _
 
 $FontSize = 8;
 $XPos = $Page_Width / 2 - 60;
-$PDF->addText($XPos, $YPos, $FontSize, _('All amounts stated in') . ' - ' . $StmtHeader['currency']);
+$PDF->addText($XPos, $YPos, $FontSize, _('All amounts stated in') . ' - ' . _($StmtHeader['currency']));
 $YPos -= $line_height;
 $PDF->addText($XPos, $YPos, $FontSize, $StmtHeader['terms']);
 

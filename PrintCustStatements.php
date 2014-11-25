@@ -192,7 +192,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 
 						$FontSize = 9;
 
-						$LeftOvers = $PDF->addTextWrap($Left_Margin + 1, $YPos, 60, $FontSize, $MyRow['typename'], 'left');
+						$LeftOvers = $PDF->addTextWrap($Left_Margin + 1, $YPos, 60, $FontSize, _($MyRow['typename']), 'left');
 						$LeftOvers = $PDF->addTextWrap($Left_Margin + 110, $YPos, 50, $FontSize, $MyRow['transno'], 'left');
 						$LeftOvers = $PDF->addTextWrap($Left_Margin + 211, $YPos, 50, $FontSize, ConvertSQLDate($MyRow['trandate']), 'left');
 
@@ -242,7 +242,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 					$DisplayOutstanding = locale_number_format($MyRow['ostdg'], $StmtHeader['currdecimalplaces']);
 
 					$FontSize = 9;
-					$LeftOvers = $PDF->addTextWrap($Left_Margin + 1, $YPos, 60, $FontSize, $MyRow['typename'], 'left');
+					$LeftOvers = $PDF->addTextWrap($Left_Margin + 1, $YPos, 60, $FontSize, _($MyRow['typename']), 'left');
 					$LeftOvers = $PDF->addTextWrap($Left_Margin + 110, $YPos, 50, $FontSize, $MyRow['transno'], 'left');
 					$LeftOvers = $PDF->addTextWrap($Left_Margin + 211, $YPos, 50, $FontSize, ConvertSQLDate($MyRow['trandate']), 'left');
 
@@ -260,7 +260,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 
 					/*Now show also in the remittance advice sectin */
 					$FontSize = 8;
-					$LeftOvers = $PDF->addTextWrap($Perforation + 10, $YPos, 30, $FontSize, $MyRow['typename'], 'left');
+					$LeftOvers = $PDF->addTextWrap($Perforation + 10, $YPos, 30, $FontSize, _($MyRow['typename']), 'left');
 					$LeftOvers = $PDF->addTextWrap($Perforation + 75, $YPos, 30, $FontSize, $MyRow['transno'], 'left');
 					$LeftOvers = $PDF->addTextWrap($Perforation + 90, $YPos, 60, $FontSize, $DisplayOutstanding, 'right');
 

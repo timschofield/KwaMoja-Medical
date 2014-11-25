@@ -323,7 +323,7 @@ echo '<table class="selection">
 		</tr>
 		<tr>
 			<td>' . _('Category Name') . ':</td>
-			<td><input type="text" name="SalesCatName" size="20" required="required" minlength="1" maxlength="20" value="' . $_POST['SalesCatName'] . '" /></td>
+			<td><input type="text" name="SalesCatName" size="20" required="required" minlength="1" maxlength="50" value="' . $_POST['SalesCatName'] . '" /></td>
 		</tr>';
 
 echo '<tr>

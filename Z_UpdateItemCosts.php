@@ -80,7 +80,7 @@ if (isset($_FILES['CostUpdateFile']) and $_FILES['CostUpdateFile']['name']) { //
 		//dont update costs for assembly or kit-sets or ghost items!!
 		if ($OldCost != $NewCost and $OldRow['mbflag'] != 'K' and $OldRow['mbflag'] != 'A' and $OldRow['mbflag'] != 'G') {
 
-			ItemCostUpdateGL($db, $StockID, $NewCost, $OldCost, $QOH);
+			ItemCostUpdateGL($StockID, $NewCost, $OldCost, $QOH);
 
 			$ErrMsg = _('The old cost details for the stock item could not be updated because');
 			$DbgMsg = _('The SQL that failed was');
@@ -100,7 +100,7 @@ if (isset($_FILES['CostUpdateFile']) and $_FILES['CostUpdateFile']['name']) { //
 			$SQL = "UPDATE stockmaster SET lastcostupdate=CURRENT_DATE WHERE stockid='" . $StockId . "'";
 			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
-			UpdateCost($db, $StockID); //Update any affected BOMs
+			UpdateCost($StockID); //Update any affected BOMs
 
 		}
 

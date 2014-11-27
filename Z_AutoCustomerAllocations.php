@@ -106,7 +106,7 @@ if (isset($_GET['DebtorNo'])) {
 include('includes/footer.inc');
 
 function ProcessAllocation() {
-	global $db;
+
 	if ($InputError == 0) {
 		//
 		//========[ START TRANSACTION ]===========

@@ -1429,7 +1429,7 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The stock side of the cost of sales GL posting could not be inserted because');
 				$DbgMsg = _('The following SQL to insert the GLTrans record was used');
 				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
-				EnsureGLEntriesBalance(10,$InvoiceNo,$db);
+				EnsureGLEntriesBalance(10, $InvoiceNo);
 			}
 			/* end of if GL and stock integrated and standard cost !=0  and not an asset */
 
@@ -1595,7 +1595,7 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 				} // end if the item being sold was an asset
-				EnsureGLEntriesBalance(10,$InvoiceNo,$db);
+				EnsureGLEntriesBalance(10, $InvoiceNo);
 			}
 			/*end of if sales integrated with debtors */
 

@@ -15,11 +15,11 @@ $Title = _('Email') . ' ' . $TransactionType . ' ' . _('Number') . ' ' . $_GET['
 if (isset($_POST['DoIt']) and IsEmailAddress($_POST['EmailAddr'])) {
 
 	if ($_SESSION['InvoicePortraitFormat'] == 0) {
-		echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/PrintCustTrans.php?Subject=' . $_POST['EmailSubject'] . '&FromTransNo=' . $_POST['TransNo'] . '&PrintPDF=Yes&InvOrCredit=' . $_POST['InvOrCredit'] . '&Email=' . $_POST['EmailAddr'] . '">';
+		echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/PrintCustTrans.php?Subject=' . urlencode($_POST['EmailSubject']) . '&FromTransNo=' . urlencode($_POST['TransNo']) . '&PrintPDF=Yes&InvOrCredit=' . urlencode($_POST['InvOrCredit']) . '&Email=' . urlencode($_POST['EmailAddr']) . '">';
 
 		prnMsg(_('The transaction should have been emailed off') . '. ' . _('If this does not happen') . ' (' . _('if the browser does not support META Refresh') . ')' . '<a href="' . $RootPath . '/PrintCustTrans.php?FromTransNo=' . $_POST['FromTransNo'] . '&PrintPDF=Yes&InvOrCredit=' . $_POST['InvOrCredit'] . '&Email=' . $_POST['EmailAddr'] . '">' . _('click here') . '</a> ' . _('to email the customer transaction'), 'success');
 	} else {
-		echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/PrintCustTransPortrait.php?Subject=' . $_POST['EmailSubject'] . '&FromTransNo=' . $_POST['TransNo'] . '&PrintPDF=Yes&InvOrCredit=' . $_POST['InvOrCredit'] . '&Email=' . $_POST['EmailAddr'] . '">';
+		echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/PrintCustTransPortrait.php?Subject=' . urlencode($_POST['EmailSubject']) . '&FromTransNo=' . urlencode($_POST['TransNo']) . '&PrintPDF=Yes&InvOrCredit=' . urlencode($_POST['InvOrCredit']) . '&Email=' . urlencode($_POST['EmailAddr']) . '">';
 
 		prnMsg(_('The transaction should have been emailed off. If this does not happen (perhaps the browser does not support META Refresh)') . '<a href="' . $RootPath . '/PrintCustTransPortrait.php?FromTransNo=' . $_POST['FromTransNo'] . '&PrintPDF=Yes&InvOrCredit=' . $_POST['InvOrCredit'] . '&Email=' . $_POST['EmailAddr'] . '">' . _('click here') . '</a> ' . _('to email the customer transaction'), 'success');
 	}
@@ -67,7 +67,7 @@ echo '<tr>
 	</tr>';
 echo '<tr>
 		<td>' . _('Subject line of email. If blank a default will be used') . ':</td>
-		<td><input type="email" name="EmailSubject" minlength="0" maxlength="60" size="60" value="" /></td>
+		<td><input type="text" name="EmailSubject" minlength="0" maxlength="60" size="60" value="" /></td>
 	</tr>
 </table>';
 

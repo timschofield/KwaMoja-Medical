@@ -208,6 +208,8 @@ if (DB_num_rows($Result) == 0) {
 } else {
 	echo '<tr>
 			<th>' . _('Normal Price') . '</th>
+			<th>' . _('Start Date') . '</th>
+			<th>' . _('End Date') . '</th>
 		</tr>';
 	while ($MyRow = DB_fetch_array($Result)) {
 		if ($MyRow['enddate'] == '0000-00-00') {
@@ -317,7 +319,7 @@ if (!isset($_POST['StartDate'])) {
 }
 
 if (!isset($_POST['EndDate'])) {
-	$_POST['EndDate'] = '';
+	$_POST['EndDate'] = ConvertSQLDate('2030-01-01');
 }
 
 $SQL = "SELECT branchcode,

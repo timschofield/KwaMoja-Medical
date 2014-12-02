@@ -15,11 +15,11 @@ $Title = _('Email') . ' ' . $TransactionType . ' ' . _('Number') . ' ' . $_GET['
 if (isset($_POST['DoIt']) and IsEmailAddress($_POST['EmailAddr'])) {
 
 	if ($_SESSION['InvoicePortraitFormat'] == 0) {
-		echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/PrintCustTrans.php?FromTransNo=' . $_POST['TransNo'] . '&PrintPDF=Yes&InvOrCredit=' . $_POST['InvOrCredit'] . '&Email=' . $_POST['EmailAddr'] . '">';
+		echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/PrintCustTrans.php?Subject=' . $_POST['EmailSubject'] . '&FromTransNo=' . $_POST['TransNo'] . '&PrintPDF=Yes&InvOrCredit=' . $_POST['InvOrCredit'] . '&Email=' . $_POST['EmailAddr'] . '">';
 
 		prnMsg(_('The transaction should have been emailed off') . '. ' . _('If this does not happen') . ' (' . _('if the browser does not support META Refresh') . ')' . '<a href="' . $RootPath . '/PrintCustTrans.php?FromTransNo=' . $_POST['FromTransNo'] . '&PrintPDF=Yes&InvOrCredit=' . $_POST['InvOrCredit'] . '&Email=' . $_POST['EmailAddr'] . '">' . _('click here') . '</a> ' . _('to email the customer transaction'), 'success');
 	} else {
-		echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/PrintCustTransPortrait.php?FromTransNo=' . $_POST['TransNo'] . '&PrintPDF=Yes&InvOrCredit=' . $_POST['InvOrCredit'] . '&Email=' . $_POST['EmailAddr'] . '">';
+		echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/PrintCustTransPortrait.php?Subject=' . $_POST['EmailSubject'] . '&FromTransNo=' . $_POST['TransNo'] . '&PrintPDF=Yes&InvOrCredit=' . $_POST['InvOrCredit'] . '&Email=' . $_POST['EmailAddr'] . '">';
 
 		prnMsg(_('The transaction should have been emailed off. If this does not happen (perhaps the browser does not support META Refresh)') . '<a href="' . $RootPath . '/PrintCustTransPortrait.php?FromTransNo=' . $_POST['FromTransNo'] . '&PrintPDF=Yes&InvOrCredit=' . $_POST['InvOrCredit'] . '&Email=' . $_POST['EmailAddr'] . '">' . _('click here') . '</a> ' . _('to email the customer transaction'), 'success');
 	}
@@ -32,15 +32,17 @@ if (isset($_POST['DoIt']) and IsEmailAddress($_POST['EmailAddr'])) {
 
 include('includes/header.inc');
 
+echo '<p class="page_title_text noPrint">
+		<img src="' . $RootPath . '/css/' . $Theme . '/images/email.png" title="' . $Title . '" alt="" />' . $Title . '
+	</p>';
 
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 echo '<input type="hidden" name="TransNo" value="' . $_GET['FromTransNo'] . '" />';
 echo '<input type="hidden" name="InvOrCredit" value="' . $_GET['InvOrCredit'] . '" />';
 
-echo '<br /><table>';
+echo '<table>';
 
 $SQL = "SELECT email
 		FROM custbranch INNER JOIN debtortrans
@@ -59,14 +61,19 @@ if (DB_num_rows($ContactResult) > 0) {
 	$EmailAddress = '';
 }
 
-echo '<tr><td>' . _('Email') . ' ' . $_GET['InvOrCredit'] . ' ' . _('number') . ' ' . $_GET['FromTransNo'] . ' ' . _('to') . ':</td>
-	<td><input type="email" name="EmailAddr" autofocus="autofocus" minlength="0" maxlength="60" size="60" value="' . $EmailAddress . '" /></td>
+echo '<tr>
+		<td>' . _('Email') . ' ' . $_GET['InvOrCredit'] . ' ' . _('number') . ' ' . $_GET['FromTransNo'] . ' ' . _('to') . ':</td>
+		<td><input type="email" name="EmailAddr" autofocus="autofocus" minlength="1" required="required" maxlength="60" size="60" value="' . $EmailAddress . '" /></td>
+	</tr>';
+echo '<tr>
+		<td>' . _('Subject line of email. If blank a default will be used') . ':</td>
+		<td><input type="email" name="EmailSubject" minlength="0" maxlength="60" size="60" value="" /></td>
 	</tr>
-	</table>';
+</table>';
 
-echo '<br /><div class="centre"><input type="submit" name="DoIt" value="' . _('OK') . '" />';
-echo '</div>
-	  </div>
-	  </form>';
+echo '<div class="centre">
+		<input type="submit" name="DoIt" value="' . _('OK') . '" />
+	</div>
+</form>';
 include('includes/footer.inc');
 ?>

@@ -496,6 +496,11 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 		$mail->IsSMTP();
 		$mail->CharSet = 'UTF-8';
 
+		$SQL = "SELECT realname FROM www_users WHERE userid='" . $MyRow['initiator'] . "'";
+		$UserResult = DB_query($SQL);
+		$MyUserRow = DB_fetch_array($UserResult);
+		$SenderName = $MyUserRow['realname'];
+
 		$mail->Host = $_SESSION['SMTPSettings']['host']; // SMTP server example
 		$mail->SMTPDebug  = 0;                     // enables SMTP debug information (for testing)
 		$mail->SMTPAuth   = $_SESSION['SMTPSettings']['auth'];
@@ -504,7 +509,7 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 		$mail->Username   = html_entity_decode($_SESSION['SMTPSettings']['username']); // SMTP account username example
 		$mail->Password   = html_entity_decode($_SESSION['SMTPSettings']['password']);        // SMTP account password example
 		$mail->From =  $_SESSION['CompanyRecord']['email'];
-		$mail->FromName = 'KwaMoja';
+		$mail->FromName = $SenderName;
 		$mail->addAddress($_GET['Email']);     // Add a recipient
 
 		$FileName = $_SESSION['reports_dir'] . '/' . $_SESSION['DatabaseName'] . '_' . $InvOrCredit . '_' . $FromTransNo . '.pdf';
@@ -514,7 +519,11 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 		$mail->addAttachment($FileName);         // Add attachments
 		$mail->isHTML(true);                                  // Set email format to HTML
 
-		$mail->Subject = _('Please find attached') . ': ' . $InvOrCredit . ' ' . $FromTransNo;
+		if (isset($_GET['Subject']) and $_GET['Subject'] != '') {
+			$mail->Subject = $_GET['Subject'];
+		} else {
+			$mail->Subject = _('Please find attached') . ': ' . $InvOrCredit . ' ' . $FromTransNo;
+		}
 		$mail->Body    = $InvOrCredit . ' ' . $FromTransNo;
 
 		if(!$mail->send()) {

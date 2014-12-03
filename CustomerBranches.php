@@ -599,6 +599,7 @@ if (!isset($_GET['delete'])) {
 		}
 		if (!isset($_POST['BranchCode'])) {
 			$_POST['BranchCode'] = '';
+			$_POST['DisableTrans'] = 0;
 		}
 		echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/customer.png" title="' . _('Customer') . '" alt="" />' . ' ' . _('Add a Branch') . '</p>';
 		echo '<table class="selection">

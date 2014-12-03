@@ -73,7 +73,7 @@ if (DB_num_rows($ChartDetailsNotSetUpResult) > 0) {
 /*All the ChartDetail records should have been created now and be available to accept postings */
 
 for ($CurrPeriod = $CreateFrom; $CurrPeriod <= $CreateTo; $CurrPeriod++) {
-
+/*
 	$CheckSQL = "SELECT SUM(amount) as checksum
 						FROM gltrans
 						WHERE posted=0
@@ -89,7 +89,7 @@ for ($CurrPeriod = $CreateFrom; $CurrPeriod <= $CreateTo; $CurrPeriod++) {
 		include('includes/footer.inc');
 		exit;
 	}
-
+*/
 	$SQL = "SELECT counterindex,
 					periodno,
 					account,

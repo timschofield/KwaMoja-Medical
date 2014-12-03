@@ -779,6 +779,7 @@ echo '</table>';
 echo '</td></tr></table>';
 
 if (isset($_POST['New']) and $_POST['New']) {
+	echo '<input type="hidden" name="New" value="Yes" />';
 	echo '<div class="centre">
 				<input type="submit" name="submit" value="' . _('Add New Customer') . '" />&nbsp;
 				<input type="submit" name="Reset" value="' . _('Reset') . '" />

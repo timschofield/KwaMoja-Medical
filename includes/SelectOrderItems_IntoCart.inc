@@ -48,7 +48,7 @@ if ($AlreadyOnThisOrder != 1) {
 			FROM stockmaster
 			INNER JOIN locstock
 				ON stockmaster.stockid=locstock.stockid
-			INNER JOIN stockcosts
+			LEFT JOIN stockcosts
 				ON stockcosts.stockid=stockmaster.stockid
 				AND stockcosts.succeeded=0
 			WHERE locstock.loccode='" . $_SESSION['Items' . $Identifier]->Location . "'

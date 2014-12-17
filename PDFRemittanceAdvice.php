@@ -53,7 +53,7 @@ if ((isset($_POST['PrintPDF'])) and isset($_POST['FromCriteria']) and mb_strlen(
 	/*then print the report */
 
 	include('includes/PDFStarter.php');
-	$PDF->addInfo('Title', _('Remmitance Advice'));
+	$PDF->addInfo('Title', _('Remittance Advice'));
 	$PDF->addInfo('Subject', _('Remittance Advice') . ' - ' . _('suppliers from') . ' ' . $_POST['FromCriteria'] . ' ' . _('to') . ' ' . $_POST['ToCriteria'] . ' ' . _('and Paid On') . ' ' . $_POST['PaymentDate']);
 
 	$line_height = 12;

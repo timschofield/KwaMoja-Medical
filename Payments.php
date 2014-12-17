@@ -961,7 +961,7 @@ if ($_SESSION['PaymentDetail' . $Identifier]->AccountCurrency != $_SESSION['Paym
 	} //$_POST['Currency'] != $_POST['PreviousCurrency'] and isset($SuggestedExRate)
 	echo '<tr>
 			<td>' . _('Payment Exchange Rate') . ':</td>
-			<td><input class="number" type="text" name="ExRate" required="required" minlength="1" maxlength="10" size="12" value="' . $_SESSION['PaymentDetail' . $Identifier]->ExRate . '" /></td>
+			<td><input class="number" type="text" name="ExRate" required="required" minlength="1" maxlength="12" size="14" value="' . $_SESSION['PaymentDetail' . $Identifier]->ExRate . '" /></td>
 			<td>' . $SuggestedExRateText . ' <i>' . _('The exchange rate between the currency of the bank account currency and the currency of the payment') . '. 1 ' . $_SESSION['PaymentDetail' . $Identifier]->AccountCurrency . ' = ? ' . $_SESSION['PaymentDetail' . $Identifier]->Currency . '</i></td>
 		</tr>';
 } //$_SESSION['PaymentDetail' . $Identifier]->AccountCurrency != $_SESSION['PaymentDetail' . $Identifier]->Currency and isset($_SESSION['PaymentDetail' . $Identifier]->AccountCurrency)
@@ -977,7 +977,7 @@ if ($_SESSION['PaymentDetail' . $Identifier]->AccountCurrency != $_SESSION['Comp
 	} //$_POST['FunctionalExRate'] == 1 and isset($SuggestedFunctionalExRate)
 	echo '<tr>
 			<td>' . _('Functional Exchange Rate') . ':</td>
-			<td><input type="text" class="number" name="FunctionalExRate" required="required" minlength="1" maxlength="10" size="12" value="' . $_SESSION['PaymentDetail' . $Identifier]->FunctionalExRate . '" /></td>
+			<td><input type="text" class="number" name="FunctionalExRate" required="required" minlength="1" maxlength="12" size="14" value="' . $_SESSION['PaymentDetail' . $Identifier]->FunctionalExRate . '" /></td>
 			<td>' . ' ' . $SuggestedFunctionalExRateText . ' <i>' . _('The exchange rate between the currency of the business (the functional currency) and the currency of the bank account') . '. 1 ' . $_SESSION['CompanyRecord']['currencydefault'] . ' = ? ' . $_SESSION['PaymentDetail' . $Identifier]->AccountCurrency . '</i></td>
 		</tr>';
 } //$_SESSION['PaymentDetail' . $Identifier]->AccountCurrency != $_SESSION['CompanyRecord']['currencydefault'] and isset($_SESSION['PaymentDetail' . $Identifier]->AccountCurrency)

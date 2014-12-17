@@ -221,7 +221,7 @@ if (isset($_POST['CommitBatch'])) {
 	and add up the non-GL ones for posting to debtors later,
 	also add the total discount total receipts*/
 
-	$PeriodNo = GetPeriod($_SESSION['ReceiptBatch']->DateBanked, $db);
+	$PeriodNo = GetPeriod($_SESSION['ReceiptBatch']->DateBanked);
 
 	if ($_SESSION['CompanyRecord'] == 0) {
 		prnMsg(_('The company has not yet been set up properly') . ' - ' . _('this information is needed to process the batch') . '. ' . _('Processing has been cancelled'), 'error');
@@ -239,7 +239,7 @@ if (isset($_POST['CommitBatch'])) {
 		++$i;
 	}
 
-	$_SESSION['ReceiptBatch']->BatchNo = GetNextTransNo(12, $db);
+	$_SESSION['ReceiptBatch']->BatchNo = GetNextTransNo(12);
 	/*Start a transaction to do the whole lot inside */
 	$Result = DB_Txn_Begin();
 
@@ -364,7 +364,7 @@ if (isset($_POST['CommitBatch'])) {
 
 				*/
 
-				$PaymentTransNo = GetNextTransNo(1, $db);
+				$PaymentTransNo = GetNextTransNo(1);
 				$SQL = "INSERT INTO banktrans (transno,
 											type,
 											bankact,
@@ -555,7 +555,7 @@ if (isset($_POST['CommitBatch'])) {
 			$ErrMsg = _('Cannot insert a GL transaction for the payment discount debit');
 			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		} //end if there is some discount
-		EnsureGLEntriesBalance(12, $_SESSION['ReceiptBatch']->BatchNo, $db);
+		EnsureGLEntriesBalance(12, $_SESSION['ReceiptBatch']->BatchNo);
 	} //end if there is GL work to be done - ie config is to link to GL
 
 

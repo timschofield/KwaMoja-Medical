@@ -459,8 +459,8 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 	}
 	/*end if there are order details to show on the order - or its a preview*/
 	if ($FooterPrintedInPage == 0) {
-		$LeftOvers = $PDF->addText($FormDesign->SignedDate->x, $Page_Height - $FormDesign->SignedDate->y, $FormDesign->SignedDate->FontSize, _('Date : ') . '______________');
-		$LeftOvers = $PDF->addText($FormDesign->SignedBy->x, $Page_Height - $FormDesign->SignedBy->y, $FormDesign->SignedBy->FontSize, _('Signed for: ') . '____________________________________');
+		$LeftOvers = $PDF->addText($FormDesign->SignedDate->x, $Page_Height - $FormDesign->SignedDate->y, $FormDesign->SignedDate->FontSize, _('Date') . ' : ______________');
+		$LeftOvers = $PDF->addText($FormDesign->SignedBy->x, $Page_Height - $FormDesign->SignedBy->y, $FormDesign->SignedBy->FontSize, _('Signed for') . ': ____________________________________');
 		$FooterPrintedInPage = 1;
 	}
 

@@ -77,6 +77,7 @@ $SQL = "SELECT stockmoves.stockid,
 				stockmoves.type,
 				stockmoves.transno,
 				stockmoves.trandate,
+				stockmoves.userid,
 				stockmoves.debtorno,
 				stockmoves.branchcode,
 				stockmoves.qty,
@@ -104,6 +105,7 @@ echo '<tr>
 		<th>' . _('Type') . '</th>
 		<th>' . _('Number') . '</th>
 		<th>' . _('Date') . '</th>
+		<th>' . _('User ID') . '</th>
 		<th>' . _('Customer') . '</th>
 		<th>' . _('Branch') . '</th>
 		<th>' . _('Quantity') . '</th>
@@ -135,12 +137,13 @@ while ($MyRow = DB_fetch_array($MovtsResult)) {
 				<td>%s</td>
 				<td>%s</td>
 				<td>%s</td>
+				<td>%s</td>
 				<td class="number">%s</td>
 				<td>%s</td>
 				<td class="number">%s</td>
 				<td class="number">%s%%</td>
 				<td class="number">%s</td>
-				</tr>', $RootPath, $MyRow['transno'], $MyRow['typename'], $MyRow['transno'], $DisplayTranDate, $MyRow['debtorno'], $MyRow['branchcode'], locale_number_format($MyRow['qty'], $MyRow['decimalplaces']), $MyRow['reference'], locale_number_format($MyRow['price'], $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($MyRow['discountpercent'] * 100, 2), locale_number_format($MyRow['newqoh'], $MyRow['decimalplaces']));
+				</tr>', $RootPath, $MyRow['transno'], $MyRow['typename'], $MyRow['transno'], $DisplayTranDate, $MyRow['userid'], $MyRow['debtorno'], $MyRow['branchcode'], locale_number_format($MyRow['qty'], $MyRow['decimalplaces']), $MyRow['reference'], locale_number_format($MyRow['price'], $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($MyRow['discountpercent'] * 100, 2), locale_number_format($MyRow['newqoh'], $MyRow['decimalplaces']));
 
 	} elseif ($MyRow['type'] == 11) {
 
@@ -149,12 +152,13 @@ while ($MyRow = DB_fetch_array($MovtsResult)) {
 				<td>%s</td>
 				<td>%s</td>
 				<td>%s</td>
+				<td>%s</td>
 				<td class="number">%s</td>
 				<td>%s</td>
 				<td class="number">%s</td>
 				<td class="number">%s%%</td>
 				<td class="number">%s</td>
-				</tr>', $RootPath, $MyRow['transno'], $MyRow['typename'], $MyRow['transno'], $DisplayTranDate, $MyRow['debtorno'], $MyRow['branchcode'], locale_number_format($MyRow['qty'], $MyRow['decimalplaces']), $MyRow['reference'], locale_number_format($MyRow['price'], $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($MyRow['discountpercent'] * 100, 2), locale_number_format($MyRow['newqoh'], $MyRow['decimalplaces']));
+				</tr>', $RootPath, $MyRow['transno'], $MyRow['typename'], $MyRow['transno'], $DisplayTranDate, $MyRow['userid'], $MyRow['debtorno'], $MyRow['branchcode'], locale_number_format($MyRow['qty'], $MyRow['decimalplaces']), $MyRow['reference'], locale_number_format($MyRow['price'], $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($MyRow['discountpercent'] * 100, 2), locale_number_format($MyRow['newqoh'], $MyRow['decimalplaces']));
 	} else {
 
 		printf('<td>%s</td>
@@ -162,12 +166,13 @@ while ($MyRow = DB_fetch_array($MovtsResult)) {
 				<td>%s</td>
 				<td>%s</td>
 				<td>%s</td>
+				<td>%s</td>
 				<td class="number">%s</td>
 				<td>%s</td>
 				<td class="number">%s</td>
 				<td class="number">%s%%</td>
 				<td class="number">%s</td>
-				</tr>', $MyRow['typename'], $MyRow['transno'], $DisplayTranDate, $MyRow['debtorno'], $MyRow['branchcode'], locale_number_format($MyRow['qty'], $MyRow['decimalplaces']), $MyRow['reference'], locale_number_format($MyRow['price'], $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($MyRow['discountpercent'] * 100, 2), locale_number_format($MyRow['newqoh'], $MyRow['decimalplaces']));
+				</tr>', $MyRow['typename'], $MyRow['transno'], $DisplayTranDate, $MyRow['userid'], $MyRow['debtorno'], $MyRow['branchcode'], locale_number_format($MyRow['qty'], $MyRow['decimalplaces']), $MyRow['reference'], locale_number_format($MyRow['price'], $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($MyRow['discountpercent'] * 100, 2), locale_number_format($MyRow['newqoh'], $MyRow['decimalplaces']));
 	}
 	//end of page full new headings if
 }

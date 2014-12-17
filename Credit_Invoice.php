@@ -284,12 +284,13 @@ if (!isset($_POST['ProcessCredit'])) {
 			<th>' . _('Units') . '</th>
 			<th>' . _('Credit') . '<br />' . _('Quantity') . '</th>
 			<th>' . _('Price') . '</th>
-			<th>' . _('Discount') . ' %' . '</th>
+			<th>' . _('Discount Rate') . '</th>
 			<th>' . _('Total') . '<br />' . _('Excl Tax') . '</th>
 			<th>' . _('Tax Authority') . '</th>
-			<th>' . _('Tax') . ' %' . '</th>
-			<th>' . _('Tax') . '<br />' . _('Amount') . '</th>
+			<th>' . _('Tax Rate') . '</th>
+			<th>' . _('Tax Amount') . '</th>
 			<th>' . _('Total') . '<br />' . _('Incl Tax') . '</th>
+			<th>&nbsp;</th>
 		</tr>';
 
 }

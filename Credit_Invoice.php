@@ -314,15 +314,15 @@ foreach ($_SESSION['CreditItems' . $Identifier]->LineItems as $LnItm) {
 
 	if (!isset($_POST['ProcessCredit'])) {
 		if ($k == 1) {
-			$RowStarter = 'class="EvenTableRows"';
+			echo '<tr class="EvenTableRows">';
 			$k = 0;
 		} else {
-			$RowStarter = 'class="OddTableRows"';
+			echo '<tr class="OddTableRows">';
 			$k = 1;
 		}
 		++$j;
 
-		echo '<tr ' . $RowStarter . '><td>' . $LnItm->StockID . '</td>
+		echo '<td>' . $LnItm->StockID . '</td>
 			<td title="' . $LnItm->LongDescription . '">' . $LnItm->ItemDescription . '</td>
 			<td class="number">' . locale_number_format($LnItm->Quantity, $LnItm->DecimalPlaces) . '</td>
 			<td>' . $LnItm->Units . '</td>';

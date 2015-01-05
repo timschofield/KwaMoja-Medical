@@ -290,7 +290,9 @@ while ($MyRow = DB_fetch_array($Result)) {
 	} //elseif ($MyRow['rangemin'] > '') {
 	//	$Value=$MyRow['rangemin'] . ' - ' . $MyRow['rangemax'];
 	//}
-	$Value .= ' ' . $MyRow['units'];
+	if (strtoupper($Value) <> 'NB' and strtoupper($Value) <> 'NO BREAK') {
+		$Value.= ' ' . $MyRow['units'];
+	}
 	$i = 0;
 	foreach ($SectionColLabs as $CurColLab) {
 		$ColLabel = $CurColLab;

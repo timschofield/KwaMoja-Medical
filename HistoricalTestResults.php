@@ -135,9 +135,9 @@ if (isset($KeyValue)) {
 	if ($TotResults > 0) {
 		echo '<br/>' . _('Historical Test Results for') . ' ' . $KeyValue . '-' . $MyRowSelection['description'] . '<br/>';
 		$k = 0; //row colour counter
-		echo '<div><div style="overflow:auto; width:98%; padding:10px; "><table width="90%" style="overflow: scroll;"><tr><th style="white-space:nowrap; text-align:right">' . _('Sample ID:') . '<br>' . _('Lot/Serial:') . '<br>' . _('Sample Date:') . '</th>';
+		echo '<div><div style="overflow:auto; width:98%; padding:10px; "><table width="90%" style="overflow: scroll;"><tr><th style="white-space:nowrap; text-align:right">' . _('Sample ID:') . '<br>' . _('Lot/Serial:') . '<br>' . _('Identifier:') . '<br>' . _('Sample Date:') . '</th>';
 		foreach ($SamplesArray as $SampleKey => $SampleValue) {
-			echo '<th>' . $SampleKey . '<br>' . $SampleValue['lotkey'] . '<br>' . ConvertSQLDate($SampleValue['sampledate']) . '</th>';
+			echo '<th>' . $SampleKey . '<br>' . $SampleValue['lotkey'] . '<br>' . $SampleValue['identifier'] . '<br>' . ConvertSQLDate($SampleValue['sampledate']) . '</th>';
 		}
 		echo '</tr>';
 		foreach ($TestsArray as $TestKey => $TestValue) {
@@ -151,6 +151,9 @@ if (isset($KeyValue)) {
 			}
 			echo '<td class="select" style="white-space:nowrap;">' . $TestValue . '</th>';
 			foreach ($SamplesArray as $SampleKey => $SampleValue) {
+				if ($AllResultsArray[$TestKey][$SampleKey]['testvalue'] == '' or !isset($AllResultsArray[$TestKey][$SampleKey]['testvalue'])) {
+					$AllResultsArray[$TestKey][$SampleKey]['testvalue'] = '&nbsp;';
+				}
 				echo '<td>' . $AllResultsArray[$TestKey][$SampleKey]['testvalue'] . '</td>';
 			}
 			echo '</tr>';

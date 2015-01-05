@@ -144,118 +144,9 @@ if (isset($_POST['submit'])) {
 	}
 }
 
-if (!isset($SelectedQATest)) {
-
-	/* It could still be the second time the page has been run and a record has been selected for modification - SelectedQATest will exist because it was sent with the new call. If its the first time the page has been displayed with no parameters
-	then none of the above are true and the list of QA Test will be displayed with
-	links to delete or edit each. These will call the same page again and allow update/input
-	or deletion of the records*/
-
-	$SQL = "SELECT testid,
-				name,
-				method,
-				groupby,
-				units,
-				type,
-				defaultvalue,
-				numericvalue,
-				showoncert,
-				showonspec,
-				showontestplan,
-				active
-			FROM qatests";
-	$Result = DB_query($SQL);
-
-	echo '<table class="selection">';
-	echo '<tr>
-			<th class="SortableColumn">', _('Test ID'), '</th>
-			<th class="SortableColumn">', _('Name'), '</th>
-			<th class="SortableColumn">', _('Method'), '</th>
-			<th class="SortableColumn">', _('Group By'), '</th>
-			<th class="SortableColumn">', _('Units'), '</th>
-			<th class="SortableColumn">', _('Type'), '</th>
-			<th>', _('Possible Values'), '</th>
-			<th class="SortableColumn">', _('Numeric Value'), '</th>
-			<th class="SortableColumn">', _('Show on Cert'), '</th>
-			<th class="SortableColumn">', _('Show on Spec'), '</th>
-			<th class="SortableColumn">', _('Show on Test Plan'), '</th>
-			<th class="SortableColumn">', _('Active'), '</th>
-		</tr>';
-	$k = 0;
-	while ($MyRow = DB_fetch_array($Result)) {
-
-		if ($k == 1) {
-			echo '<tr class="EvenTableRows">';
-			$k = 0;
-		} else {
-			echo '<tr class="OddTableRows">';
-			$k++;
-		}
-		if ($MyRow['active'] == 1) {
-			$ActiveText = _('Yes');
-		} else {
-			$ActiveText = _('No');
-		}
-		if ($MyRow['numericvalue'] == 1) {
-			$IsNumeric = _('Yes');
-		} else {
-			$IsNumeric = _('No');
-		}
-		if ($MyRow['showoncert'] == 1) {
-			$ShowOnCertText = _('Yes');
-		} else {
-			$ShowOnCertText = _('No');
-		}
-		if ($MyRow['showonspec'] == 1) {
-			$ShowOnSpecText = _('Yes');
-		} else {
-			$ShowOnSpecText = _('No');
-		}
-		if ($MyRow['showontestplan'] == 1) {
-			$ShowOnTestPlanText = _('Yes');
-		} else {
-			$ShowOnTestPlanText = _('No');
-		}
-		switch ($MyRow['type']) {
-			case 0; //textbox
-				$TypeDisp = 'Text Box';
-				break;
-			case 1; //select box
-				$TypeDisp = 'Select Box';
-				break;
-			case 2; //checkbox
-				$TypeDisp = 'Check Box';
-				break;
-			case 3; //datebox
-				$TypeDisp = 'Date Box';
-				break;
-			case 4; //range
-				$TypeDisp = 'Numeric Range';
-				break;
-		} //end switch
-		echo '<td>', $MyRow['testid'], '</td>
-			<td>', $MyRow['name'], '</td>
-			<td>', $MyRow['method'], '</td>
-			<td>', $MyRow['groupby'], '</td>
-			<td>', $MyRow['units'], '</td>
-			<td>', $TypeDisp, '</td>
-			<td>', $MyRow['defaultvalue'], '</td>
-			<td>', $IsNumeric, '</td>
-			<td>', $ShowOnCertText, '</td>
-			<td>', $ShowOnSpecText, '</td>
-			<td>', $ShowOnTestPlanText, '</td>
-			<td>', $ActiveText, '</td>
-			<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '?SelectedQATest=', $MyRow['testid'], '">' . _('Edit') . '</a></td>
-			<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '?SelectedQATest=', $MyRow['testid'], '&amp;delete=1" onclick="return confirm(\'' . _('Are you sure you wish to delete this QA Test ?') . '\');">' . _('Delete') . '</a></td>
-		</tr>';
-
-	} //END WHILE LIST LOOP
-	echo '</table>';
-} //end of ifs and buts!
-
 if (isset($SelectedQATest)) {
 	echo '<div class="centre">
-			<a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '">', _('Show All Product Specifications'), '</a>
+			<a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '">', _('Show All QA Tests'), '</a>
 		</div>';
 }
 
@@ -364,9 +255,9 @@ if (!isset($_GET['delete'])) {
 		echo '<option value="3">' . _('Date Box') . '</option>';
 	}
 	if ($_POST['Type'] == 4) {
-		echo '<option selected="selected" value="4">' . _('Numeric Range') . '</option>';
+		echo '<option selected="selected" value="4">' . _('Range') . '</option>';
 	} else {
-		echo '<option value="4">' . _('Numeric Range') . '</option>';
+		echo '<option value="4">' . _('Range') . '</option>';
 	}
 	echo '</select>
 			</td>
@@ -464,6 +355,116 @@ if (!isset($_GET['delete'])) {
 	</form>';
 
 } //end if record deleted no point displaying form to add record
+
+if (!isset($SelectedQATest)) {
+
+	/* It could still be the second time the page has been run and a record has been selected for modification - SelectedQATest will exist because it was sent with the new call. If its the first time the page has been displayed with no parameters
+	then none of the above are true and the list of QA Test will be displayed with
+	links to delete or edit each. These will call the same page again and allow update/input
+	or deletion of the records*/
+
+	$SQL = "SELECT testid,
+				name,
+				method,
+				groupby,
+				units,
+				type,
+				defaultvalue,
+				numericvalue,
+				showoncert,
+				showonspec,
+				showontestplan,
+				active
+			FROM qatests
+			ORDER BY name";
+	$Result = DB_query($SQL);
+
+	echo '<table class="selection">';
+	echo '<tr>
+			<th class="SortableColumn">', _('Test ID'), '</th>
+			<th class="SortableColumn">', _('Name'), '</th>
+			<th class="SortableColumn">', _('Method'), '</th>
+			<th class="SortableColumn">', _('Group By'), '</th>
+			<th class="SortableColumn">', _('Units'), '</th>
+			<th class="SortableColumn">', _('Type'), '</th>
+			<th>', _('Possible Values'), '</th>
+			<th class="SortableColumn">', _('Numeric Value'), '</th>
+			<th class="SortableColumn">', _('Show on Cert'), '</th>
+			<th class="SortableColumn">', _('Show on Spec'), '</th>
+			<th class="SortableColumn">', _('Show on Test Plan'), '</th>
+			<th class="SortableColumn">', _('Active'), '</th>
+		</tr>';
+	$k = 0;
+	while ($MyRow = DB_fetch_array($Result)) {
+
+		if ($k == 1) {
+			echo '<tr class="EvenTableRows">';
+			$k = 0;
+		} else {
+			echo '<tr class="OddTableRows">';
+			$k++;
+		}
+		if ($MyRow['active'] == 1) {
+			$ActiveText = _('Yes');
+		} else {
+			$ActiveText = _('No');
+		}
+		if ($MyRow['numericvalue'] == 1) {
+			$IsNumeric = _('Yes');
+		} else {
+			$IsNumeric = _('No');
+		}
+		if ($MyRow['showoncert'] == 1) {
+			$ShowOnCertText = _('Yes');
+		} else {
+			$ShowOnCertText = _('No');
+		}
+		if ($MyRow['showonspec'] == 1) {
+			$ShowOnSpecText = _('Yes');
+		} else {
+			$ShowOnSpecText = _('No');
+		}
+		if ($MyRow['showontestplan'] == 1) {
+			$ShowOnTestPlanText = _('Yes');
+		} else {
+			$ShowOnTestPlanText = _('No');
+		}
+		switch ($MyRow['type']) {
+			case 0; //textbox
+				$TypeDisp = 'Text Box';
+				break;
+			case 1; //select box
+				$TypeDisp = 'Select Box';
+				break;
+			case 2; //checkbox
+				$TypeDisp = 'Check Box';
+				break;
+			case 3; //datebox
+				$TypeDisp = 'Date Box';
+				break;
+			case 4; //range
+				$TypeDisp = 'Range';
+				break;
+		} //end switch
+		echo '<td class="number">', $MyRow['testid'], '</td>
+			<td>', $MyRow['name'], '</td>
+			<td>', $MyRow['method'], '</td>
+			<td>', $MyRow['groupby'], '</td>
+			<td>', $MyRow['units'], '</td>
+			<td>', $TypeDisp, '</td>
+			<td>', $MyRow['defaultvalue'], '</td>
+			<td>', $IsNumeric, '</td>
+			<td>', $ShowOnCertText, '</td>
+			<td>', $ShowOnSpecText, '</td>
+			<td>', $ShowOnTestPlanText, '</td>
+			<td>', $ActiveText, '</td>
+			<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '?SelectedQATest=', urlencode($MyRow['testid']), '">' . _('Edit') . '</a></td>
+			<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '?SelectedQATest=', urlencode($MyRow['testid']), '&amp;delete=1" onclick="return confirm(\'' . _('Are you sure you wish to delete this QA Test ?') . '\');">' . _('Delete') . '</a></td>
+		</tr>';
+
+	} //END WHILE LIST LOOP
+	echo '</table>';
+} //end of ifs and buts!
 
 include('includes/footer.inc');
 ?>

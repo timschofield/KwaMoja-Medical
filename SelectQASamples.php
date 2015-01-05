@@ -79,6 +79,7 @@ if (isset($_POST['submit'])) {
 			prnMsg($Msg, 'warning');
 		}
 		$SQL = "UPDATE qasamples SET identifier='" . $_POST['Identifier'] . "',
+									sampledate='" . FormatDateForSQL($_POST['SampleDate']) . "',
 									comments='" . $_POST['Comments'] . "',
 									cert='" . $_POST['Cert'] . "'
 				WHERE sampleid = '" . $SelectedSampleID . "'";
@@ -466,7 +467,8 @@ if (!isset($_GET['delete'])) {
 						lotkey,
 						identifier,
 						comments,
-						cert
+						cert,
+						sampledate
 				FROM qasamples
 				WHERE sampleid='" . $SelectedSampleID . "'";
 
@@ -477,6 +479,7 @@ if (!isset($_GET['delete'])) {
 		$_POST['LotKey'] = $MyRow['lotkey'];
 		$_POST['Identifier'] = $MyRow['identifier'];
 		$_POST['Comments'] = $MyRow['comments'];
+		$_POST['SampleDate'] = ConvertSQLDate($MyRow['sampledate']);
 		$_POST['Cert'] = $MyRow['cert'];
 
 		echo '<input type="hidden" name="SelectedSampleID" value="' . $SelectedSampleID . '" />';
@@ -502,7 +505,10 @@ if (!isset($_GET['delete'])) {
 				<td>' . _('Comments') . ':</td>
 				<td><input type="text" name="Comments" size="30" maxlength="255" value="' . $_POST['Comments'] . '" /></td>
 			</tr>';
-
+		echo '<tr>
+				<td>' . _('Sample Date') . ':</td>
+				<td><input class="date" type="text" name="SampleDate" size="10" maxlength="10" value="' . $_POST['SampleDate']. '" /></td>
+			</tr>';
 		echo '<tr>
 				<td>' . _('Use for Cert?') . ':</td>
 				<td><select name="Cert">';

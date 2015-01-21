@@ -21,7 +21,6 @@ class PDF extends Cpdf {
 
 		$this->SetDrawColor(128, 0, 0);
 		$this->SetLineWidth(.35); // 1 point
-		$this->AliasNbPages();
 		$this->AddPage();
 
 	}

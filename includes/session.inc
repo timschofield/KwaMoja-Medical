@@ -110,8 +110,6 @@ if (!isset($AllowAnyone) or !isset($_SESSION['CompanyDefaultsLoaded'])) {
 		$rc = UL_OK;
 	}
 
-	/*  Need to set the theme to make login screen nice */
-	$Theme = (isset($_SESSION['Theme'])) ? $_SESSION['Theme'] : 'gel';
 	switch ($rc) {
 		case UL_OK;
 			include($PathPrefix . 'includes/LanguageSetup.php');

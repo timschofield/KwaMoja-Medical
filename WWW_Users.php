@@ -665,7 +665,7 @@ echo '<tr>
 $Themes = glob('css/*', GLOB_ONLYDIR);
 foreach ($Themes as $ThemeName) {
 	$ThemeName = basename($ThemeName);
-	if ($_SESSION['Theme'] == $ThemeName) {
+	if ($_SESSION['DefaultTheme'] == $ThemeName) {
 		echo '<option selected="selected" value="', $ThemeName, '">', $ThemeName, '</option>';
 	} else {
 		echo '<option value="', $ThemeName, '">', $ThemeName, '</option>';

@@ -107,6 +107,9 @@ if (isset($_POST['submit'])) {
 		if ($_SESSION['DefaultDateFormat'] != $_POST['X_DefaultDateFormat']) {
 			$SQL[] = "UPDATE config SET confvalue = '" . $_POST['X_DefaultDateFormat'] . "' WHERE confname = 'DefaultDateFormat'";
 		}
+		if ($_SESSION['DefaultTheme'] != $_POST['X_DefaultTheme']) {
+			$SQL[] = "UPDATE config SET confvalue = '" . $_POST['X_DefaultTheme'] . "' WHERE confname = 'DefaultTheme'";
+		}
 		if ($_SESSION['PastDueDays1'] != $_POST['X_PastDueDays1']) {
 			$SQL[] = "UPDATE config SET confvalue = '" . $_POST['X_PastDueDays1'] . "' WHERE confname = 'PastDueDays1'";
 		}
@@ -395,6 +398,25 @@ echo '<tr style="outline: 1px solid">
 		</td>
 		<td>' . _('The default date format for entry of dates and display.') . '</td>
 	</tr>';
+// DefaultTheme:
+echo '<tr style="outline: 1px solid">
+		<td>' . _('Default Theme') . ':</td>
+		<td><select name="X_DefaultTheme">';
+$Themes = glob('css/*', GLOB_ONLYDIR);
+foreach ($Themes as $ThemeName) {
+	$ThemeName = basename($ThemeName);
+	if ($_SESSION['DefaultTheme'] == $ThemeName) {
+		echo '<option selected="selected" value="', $ThemeName, '">', $ThemeName, '</option>';
+	} else {
+		echo '<option value="', $ThemeName, '">', $ThemeName, '</option>';
+	}
+}
+echo '</select>
+		</td>
+		<td>' . _("The default theme to use for the login screen and the setup of new users. The users' theme selection will override it.") . '</td>
+	</tr>';
+
+// ---------- New section:
 
 echo '<tr>
 		<th colspan="3">' . _('Accounts Receivable/Payable Settings') . '</th>

@@ -638,7 +638,7 @@ if (isset($_POST['submit'])) {
 					$DbgMsg = _('The SQL that was used to update the language description and failed was');
 					if (count($ItemDescriptionLanguages) > 0) {
 						foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
-							if ($LanguageId != ''){
+							if ($LanguageId != '' and $_POST['Description_' . str_replace('.', '_', $LanguageId)] != '') {
 								$SQL = "INSERT INTO stockdescriptiontranslations VALUES('" . $StockId . "','" . $LanguageId . "', '" . $_POST['Description_' . str_replace('.', '_', $LanguageId)] . "')";
 								$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 								$SQL = "INSERT INTO stocklongdescriptiontranslations VALUES('" . $StockId . "','" . $LanguageId . "', '" . $_POST['LongDescription_' . str_replace('.', '_', $LanguageId)] . "')";

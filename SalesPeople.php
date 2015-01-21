@@ -2,6 +2,14 @@
 
 include('includes/session.inc');
 $Title = _('Sales People Maintenance');
+$ViewTopic = 'SalesPeople';
+$BookMark = 'SalesPeople';
+if (isset($_GET['SelectedSalesPerson'])) {
+	$BookMark = 'SalespeopleEdit';
+}// For Edit's screen.
+if (isset($_GET['delete'])) {
+	$BookMark = 'SalespeopleDelete';
+}// For Delete's ERROR Message Report.
 include('includes/header.inc');
 
 if (isset($_GET['SelectedSalesPerson'])) {
@@ -169,7 +177,6 @@ if (isset($_POST['submit'])) {
 	//the link to delete a selected record was clicked instead of the submit button
 
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'DebtorsMaster'
-
 	$SQL = "SELECT COUNT(*) FROM custbranch WHERE  custbranch.salesman='" . $SelectedSalesPerson . "'";
 	$Result = DB_query($SQL);
 	$MyRow = DB_fetch_row($Result);

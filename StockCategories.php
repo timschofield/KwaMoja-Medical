@@ -62,6 +62,12 @@ if (isset($_POST['UpdateProperties'])) {
 		} else {
 			$_POST['PropNumeric' . $i] = 0;
 		}
+		if (!isset($_POST['PropMinimum' . $i]) or $_POST['PropMinimum' . $i] === '') {
+			$_POST['PropMinimum' . $i] = '-999999999';
+		}
+		if (!isset($_POST['PropMaximum' . $i]) or $_POST['PropMaximum' . $i] === '') {
+			$_POST['PropMaximum' . $i] = '999999999';
+		}
 		if ($_POST['PropID' . $i] == 'NewProperty' and mb_strlen($_POST['PropLabel' . $i]) > 0) {
 			$SQL = "INSERT INTO stockcatproperties (categoryid,
 													label,

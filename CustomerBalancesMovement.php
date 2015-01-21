@@ -1,8 +1,11 @@
 <?php
 /* $Id: Z_CustomerBalancesMovements.php 6941 2014-10-26 23:18:08Z daintree $*/
-$PageSecurity = 1;
+
 include('includes/session.inc');
-$Title = _('Customer Balances Movements');
+$Title = _('Customer Activity and Balances');
+/*To do: Info in the manual. RChacon.
+$ViewTopic = '';// Filename in ManualContents.php's TOC.
+$BookMark = '';// Anchor's id in the manual's html document.*/
 
 if (!isset($_POST['CreateCSV'])) {
 	include('includes/header.inc');

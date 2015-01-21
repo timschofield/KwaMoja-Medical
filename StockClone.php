@@ -318,7 +318,24 @@ if (isset($_POST['submit'])) {
 					if (count($ItemDescriptionLanguagesArray) > 0) {
 						foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
 							if ($LanguageId!=''){
-								$Result = DB_query("INSERT INTO stockdescriptiontranslations VALUES('" . $_POST['StockID'] . "','" . $LanguageId . "', '" . $_POST['Description_' . str_replace('.', '_', $LanguageId)] . "')", $ErrMsg, $DbgMsg, true);
+								$SQL = "INSERT INTO stockdescriptiontranslations (stockid,
+																				language_id,
+																				descriptiontranslation
+																			)VALUES(
+																				'" . $StockID . "',
+																				'" . $LanguageId . "',
+																				'" . $_POST['Description_' . str_replace('.','_',$LanguageId)]  . "'
+																			)";
+								$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+								$SQL = "INSERT INTO stocklongdescriptiontranslations (stockid,
+																					language_id,
+																					longdescriptiontranslation
+																				)VALUES(
+																					'" . $StockID . "',
+																					'" . $LanguageId . "',
+																					'" . $_POST['LongDescription_' . str_replace('.','_',$LanguageId)]. "'
+																				)";
+								$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 							}
 						}
 					}
@@ -623,6 +640,16 @@ if ((!isset($_POST['UpdateCategories']) and ($InputError != 1)) or $_POST['New']
 	$Result = DB_query($SQL);
 	while ($MyRow = DB_fetch_array($Result)) {
 		$_POST['Description_' . str_replace('.', '_', $MyRow['language_id'])] = $MyRow['descriptiontranslation'];
+	}
+
+	$SQL = "SELECT longdescriptiontranslation, language_id FROM stocklongdescriptiontranslations WHERE stockid='" . $selectedStockID . "' AND (";
+	foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
+		$SQL .= "language_id='" . $LanguageId . "' OR ";
+	}
+	$SQL = mb_substr($SQL, 0, mb_strlen($SQL) - 3) . ')';
+	$Result = DB_query($SQL);
+	while ($MyRow = DB_fetch_array($Result)) {
+		$_POST['LongDescription_' . str_replace('.', '_', $MyRow['language_id'])] = $MyRow['longdescriptiontranslation'];
 	}
 
 }

@@ -144,11 +144,11 @@ if ($Edit == false) {
 
 		echo '<table cellpadding="2" class="selection">';
 		$TableHeader = '<tr>
-							<th class="ascending">' . _('Customer') . '</th>
+							<th class="SortableColumn">' . _('Customer') . '</th>
 							<th>' . _('Customer Unit') . '</th>
 							<th>' . _('Conversion Factor') . '</th>
-							<th class="ascending">' . _('Customer Item') . '</th>
-							<th class="ascending">' . _('Customer Description') . '</th>
+							<th class="SortableColumn">' . _('Customer Item') . '</th>
+							<th class="SortableColumn">' . _('Customer Description') . '</th>
 
 						</tr>';
 		echo $TableHeader;
@@ -287,12 +287,12 @@ if (isset($debtorsmasterResult) and DB_num_rows($debtorsmasterResult) > 0) {
 			<table cellpadding="2" colspan="7" class="selection">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	$TableHeader = '<tr>
-						<th class="ascending">' . _('Code') . '</th>
-	                	<th class="ascending">' . _('Customer Name') . '</th>
-						<th class="ascending">' . _('Currency') . '</th>
-						<th class="ascending">' . _('Address 1') . '</th>
-						<th class="ascending">' . _('Address 2') . '</th>
-						<th class="ascending">' . _('Address 3') . '</th>
+						<th class="SortableColumn">' . _('Code') . '</th>
+	                	<th class="SortableColumn">' . _('Customer Name') . '</th>
+						<th class="SortableColumn">' . _('Currency') . '</th>
+						<th class="SortableColumn">' . _('Address 1') . '</th>
+						<th class="SortableColumn">' . _('Address 2') . '</th>
+						<th class="SortableColumn">' . _('Address 3') . '</th>
 					</tr>';
 	echo $TableHeader;
 	$k = 0;

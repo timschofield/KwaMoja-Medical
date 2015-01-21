@@ -161,17 +161,15 @@ if (isset($_GET['CopyResults']) or isset($_POST['CopyResults'])) {
 					</div>
 				</td>
 			</tr>
-			</table>
-			<br />
-			<br />';
+			</table>';
 
 		if (isset($StockItemsResult)) {
 			echo '<table class="selection">';
 			$TableHeader = '<tr>
-								<th class="ascending">' . _('Code') . '</th>
-								<th class="ascending">' . _('Description') . '</th>
-								<th class="ascending">' . _('On Hand') . '</th>
-								<th class="ascending">' . _('Units') . '</th>
+								<th class="SortableColumn">' . _('Code') . '</th>
+								<th class="SortableColumn">' . _('Description') . '</th>
+								<th class="SortableColumn">' . _('On Hand') . '</th>
+								<th class="SortableColumn">' . _('Units') . '</th>
 							</tr>';
 			echo $TableHeader;
 			$j = 1;
@@ -269,16 +267,16 @@ if (isset($_GET['CopyResults']) or isset($_POST['CopyResults'])) {
 
 				echo '<table cellpadding="2" width="90%" class="selection">';
 				$TableHeader = '<tr>
-									<th class="ascending">' . _('Copy Results') . '</th>
-									<th class="ascending">' . _('Enter Results') . '</th>
-									<th class="ascending">' . _('Specification') . '</th>
-									<th class="ascending">' . _('Description') . '</th>
-									<th class="ascending">' . _('Lot / Serial') . '</th>
-									<th class="ascending">' . _('Identifier') . '</th>
-									<th class="ascending">' . _('Created By') . '</th>
-									<th class="ascending">' . _('Sample Date') . '</th>
-									<th class="ascending">' . _('Comments') . '</th>
-									<th class="ascending">' . _('Cert Allowed') . '</th>
+									<th class="SortableColumn">' . _('Copy Results') . '</th>
+									<th class="SortableColumn">' . _('Enter Results') . '</th>
+									<th class="SortableColumn">' . _('Specification') . '</th>
+									<th class="SortableColumn">' . _('Description') . '</th>
+									<th class="SortableColumn">' . _('Lot / Serial') . '</th>
+									<th class="SortableColumn">' . _('Identifier') . '</th>
+									<th class="SortableColumn">' . _('Created By') . '</th>
+									<th class="SortableColumn">' . _('Sample Date') . '</th>
+									<th class="SortableColumn">' . _('Comments') . '</th>
+									<th class="SortableColumn">' . _('Cert Allowed') . '</th>
 								</tr>';
 				echo $TableHeader;
 				$j = 1;

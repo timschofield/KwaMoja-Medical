@@ -91,7 +91,7 @@ if (!isset($_SESSION['SPL' . $Identifier]->CustomerID)) {
 	$MyRow = DB_fetch_array($Result);
 	if ($MyRow['dissallowinvoices'] != 1) {
 		if ($MyRow['dissallowinvoices'] == 2) {
-			prnMsg(_('The') . ' ' . $MyRow['name'] . ' ' . _('account is currently flagged as an account that needs to be watched please contact the credit control personnel to discuss'), 'warn');
+			prnMsg(_('The') . ' ' . $MyRow['name'] . ' ' . _('account is currently flagged as an account that needs to be watched. Please contact the credit control personnel to discuss'), 'warn');
 		}
 	}
 	$_SESSION['SPL' . $Identifier]->CustomerID = $_SESSION['CustomerID'];

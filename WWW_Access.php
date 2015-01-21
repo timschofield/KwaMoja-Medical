@@ -2,10 +2,14 @@
 
 include('includes/session.inc');
 
-$Title = _('Access Permission Maintenance');
+$Title = _('Access Permissions Maintenance');// Screen identificator.
+$ViewTopic = 'SecuritySchema';// Filename's id in ManualContents.php's TOC.
+$BookMark = 'WWW_Access';// Anchor's id in the manual's html document.
 include('includes/header.inc');
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/group_add.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
+echo '<p class="page_title_text noPrint" >
+		<img src="' . $RootPath . '/css/' . $Theme . '/images/group_add.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '
+	</p>';
 
 if (isset($_GET['SelectedRole'])) {
 	$SelectedRole = $_GET['SelectedRole'];
@@ -104,10 +108,10 @@ if (!isset($SelectedRole)) {
 		ORDER BY secrolename";
 	$Result = DB_query($SQL);
 
-	echo '<table class="selection">';
-	echo '<tr>
-			<th>' . _('Role') . '</th>
-		</tr>';
+	echo '<table class="selection">
+			<tr>
+				<th>' . _('Role') . '</th>
+			</tr>';
 
 	$k = 0; //row colour counter
 

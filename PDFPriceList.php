@@ -394,7 +394,7 @@ function PageHeader() {
 	global $SalesTypeName;
 	global $CustomerName;
 
-	$PageNumber++;// Increments $PageNumber before printing.
+	++$PageNumber;// Increments $PageNumber before printing.
 	if ($PageNumber > 1) {// Inserts a page break if it is not the first page.
 		$PDF->newPage();
 	}
@@ -415,7 +415,7 @@ function PageHeader() {
 	$PDF->addTextWrap($Page_Width - $Right_Margin - 140, $YPos-$FontSize, 140, $FontSize, _('Printed') . ': ' . date($_SESSION['DefaultDateFormat']), 'right');// Date printed.
 
 	$YPos -= $FontSize;
-	$PDF->addText($Left_Margin, $YPos, $FontSize, _('Categories') . ': ' . $_POST['FromCriteria'] . ' - ' . $_POST['ToCriteria'] . '. ' . _('Effective As At') . ' ' . $_POST['EffectiveDate']);// Categories and effective date.
+	$PDF->addText($Left_Margin, $YPos, $FontSize, _('Effective As At') . ' ' . $_POST['EffectiveDate']);
 	$PDF->addTextWrap($Page_Width - $Right_Margin - 140, $YPos - $FontSize, 140, $FontSize, date('H:i:s'), 'right');// Time printed.
 
 	$YPos -= (2 * $line_height);

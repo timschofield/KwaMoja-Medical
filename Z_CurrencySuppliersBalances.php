@@ -1,10 +1,14 @@
 <?php
 
 include('includes/session.inc');
-$Title = _('Currency Supplier Balances');
+$Title = _('Currency Supplier Balances');// Screen identificator.
+$ViewTopic = 'SpecialUtilities';// Filename's id in ManualContents.php's TOC.
+$BookMark = 'Z_CurrencySuppliersBalances';// Anchor's id in the manual's html document.
 include('includes/header.inc');
 
-echo '<div class="centre"><h3>' . _('Suppliers Balances By Currency Totals') . '</h3></div>';
+echo '<p class="page_title_text">
+		<img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" title="' . _('Show Local Currency Total Suppliers Balances') . '" /> ' . _('Suppliers Balances By Currency Totals') . '
+	</p>';// Page title.
 
 $SQL = "SELECT SUM(ovamount+ovgst-alloc) AS currencybalance,
 		currcode,

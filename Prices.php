@@ -401,7 +401,6 @@ function ReSequenceEffectiveDates($Item, $PriceList, $CurrAbbrev) {
 		}
 		$StartDate = $MyRow['startdate'];
 		$EndDate = $MyRow['enddate'];
-		$Price = $MyRow['price'];
 	} // end of loop around all prices
 
 	//Now look for duplicate prices with no end

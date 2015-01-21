@@ -3,10 +3,14 @@
 /*Script to change the GL account code throughout the database */
 
 include('includes/session.inc');
-$Title = _('UTILITY PAGE Change A GL Account Code');
+$Title = _('UTILITY PAGE Change A GL Account Code');// Screen identificator.
+$ViewTopic = 'SpecialUtilities'; // Filename's id in ManualContents.php's TOC.
+$BookMark = 'Z_ChangeGLAccountCode'; // Anchor's id in the manual's html document.
 include('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');
-
+echo '<p class="page_title_text">
+		<img alt="" src="' . $RootPath.'/css/' . $Theme . '/images/gl.png" title="' . _('Change A GL Account Code') . '" />' . _('Change A GL Account Code') . '
+	</p>';// Page title.
 if (isset($_POST['ProcessGLAccountCode'])) {
 
 	$InputError = 0;
@@ -30,7 +34,6 @@ if (isset($_POST['ProcessGLAccountCode'])) {
 		$InputError = 1;
 	}
 
-
 	/*Now check that the new code doesn't already exist */
 	$Result = DB_query("SELECT accountcode FROM chartmaster WHERE accountcode='" . $_POST['NewAccountCode'] . "'");
 	if (DB_num_rows($Result) != 0) {
@@ -38,7 +41,6 @@ if (isset($_POST['ProcessGLAccountCode'])) {
 		prnMsg(_('The replacement GL account code') . ': ' . $_POST['NewAccountCode'] . ' ' . _('already exists as a GL account code in the system') . ' - ' . _('a unique GL account code must be entered for the new code'), 'error');
 		$InputError = 1;
 	}
-
 
 	if ($InputError == 0) { // no input errors
 		$Result = DB_Txn_Begin();

@@ -244,10 +244,18 @@ while ($MyRow = DB_fetch_array($Result)) {
 	$Value = '';
 	if ($MyRow['targetvalue'] > '') {
 		$Value = $MyRow['targetvalue'];
-	} elseif ($MyRow['rangemin'] > '') {
-		$Value = $MyRow['rangemin'] . ' - ' . $MyRow['rangemax'];
+	} elseif ($MyRow['rangemin'] > '' or $MyRow['rangemax'] > '') {
+		if ($MyRow['rangemin'] > '' and $MyRow['rangemax'] == '') {
+			$Value = '> ' . $MyRow['rangemin'];
+		} elseif ($MyRow['rangemin'] == '' and $MyRow['rangemax'] > '') {
+			$Value = '< ' . $MyRow['rangemax'];
+		} else {
+			$Value = $MyRow['rangemin'] . ' - ' . $MyRow['rangemax'];
+		}
 	}
-	$Value .= ' ' . $MyRow['units'];
+	if (strtoupper($Value) <> 'NB' and strtoupper($Value) <> 'NO BREAK') {
+		$Value.= ' ' . $MyRow['units'];
+	}
 	$i = 0;
 
 	foreach ($SectionColLabs as $CurColLab) {

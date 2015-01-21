@@ -452,4 +452,64 @@ function GetQuantityOnOrderDueToWorkOrders($StockId, $Location = '') {
 	return $QOO;
 }
 
+/*Creates sample and testresults */
+function CreateQASample ($ProdSpecKey, $LotKey, $Identifier, $Comments, $Cert, $DuplicateOK) {
+	$Result = DB_query("SELECT COUNT(testid) FROM prodspecs
+							WHERE keyval='" . $ProdSpecKey . "'
+							AND active='1'");
+	$MyRow = DB_fetch_row($Result);
+	if ($MyRow[0] > 0) {
+		if ($DuplicateOK == 0) {
+			$Result = DB_query("SELECT COUNT(sampleid) FROM qasamples
+								WHERE prodspeckey='" . $ProdSpecKey . "'
+								AND lotkey='" . $LotKey ."'");
+			$MyRow2 = DB_fetch_row($Result);
+		} else {
+			$MyRow2[0] = 0;
+		}
+		if ($MyRow2[0] == 0 or $DuplicateOK == 1) {
+			$SQL = "INSERT INTO qasamples (prodspeckey,
+											lotkey,
+											identifier,
+											comments,
+											cert,
+											createdby,
+											sampledate)
+								VALUES('" . $ProdSpecKey . "',
+										'" . $LotKey  . "',
+										'" . $Identifier  . "',
+										'" . $Comments  . "',
+										'" . $Cert  . "',
+										'" . $_SESSION['UserID'] . "',
+										CURRENT_DATE)";
+			$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The create of the qasamples record failed');
+			$DbgMsg = _('The following SQL to create the qasamples was used');
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+			$SampleID=DB_Last_Insert_ID('qasamples', 'sampleid');
+			$SQL = "INSERT INTO sampleresults (sampleid,
+											testid,
+											defaultvalue,
+											targetvalue,
+											rangemin,
+											rangemax,
+											showoncert,
+											showontestplan)
+								SELECT '" . $SampleID . "',
+											testid,
+											defaultvalue,
+											targetvalue,
+											rangemin,
+											rangemax,
+											showoncert,
+											showontestplan
+											FROM prodspecs WHERE keyval='" .$ProdSpecKey. "'
+											AND prodspecs.active='1'";
+			$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The create of the sampleresults record failed');
+			$DbgMsg = _('The following SQL to create the sampleresults was used');
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+
+		} //$MyRow2[0]=0
+	} //$MyRow[0]>0
+}
+
 ?>

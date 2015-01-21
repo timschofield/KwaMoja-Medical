@@ -576,6 +576,9 @@ if (isset($_POST['Process'])) { //user hit the process the work order receipts e
 								$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 							}
 						} //end prefined controlled items or not
+						if ($_SESSION['QualityLogSamples'] == 1) {
+							CreateQASample($_POST['StockID'], $_POST['SerialNo' . $i], '', 'Created from Work Order', 0, 0);
+						}
 					} //non blank SerialNo
 				} //end for all of the potential serialised fields received
 			} else { //the item is just batch/lot controlled not serialised
@@ -675,6 +678,9 @@ if (isset($_POST['Process'])) { //user hit the process the work order receipts e
 								$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 							}
 						}
+						if ($_SESSION['QualityLogSamples'] == 1) {
+							CreateQASample($_POST['StockID'], $_POST['BatchRef' . $i], '', 'Created from Work Order', 0 , 0);
+ 						}
 					} //non blank BundleRef
 				} //end for all of the potential batch/lot fields received
 			} //end of the batch controlled stuff

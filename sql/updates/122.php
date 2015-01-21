@@ -6,6 +6,9 @@ AddColumn('needsrevision', 'stocklongdescriptiontranslations', 'INT(1)', 'NOT NU
 NewScript('AutomaticTranslationDescriptions.php', '15');
 NewMenuItem('Utilities', 'Transactions', _('Automatic Translation - Item descriptions'), '/AutomaticTranslationDescriptions.php', 6);
 
+NewScript('RevisionTranslations.php', '15');
+NewMenuItem('stock', 'Maintenance', _('Translated Descriptions Revision'), '/RevisionTranslations.php', 2);
+
 UpdateDBNo(basename(__FILE__, '.php'));
 
 ?>

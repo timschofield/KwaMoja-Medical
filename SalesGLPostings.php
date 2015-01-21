@@ -158,12 +158,14 @@ if (!isset($SelectedSalesPostingID)) {
 					groupname,
 					sectioninaccounts,
 					pandl,
-					sequenceintb
+					sequenceintb,
+					parentgroupname
 				) VALUES (
 					'Sales',
 					1,
 					1,
-					10)";
+					10,
+					' ')";
 
 			$Result = DB_query($SQL);
 		}

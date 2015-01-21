@@ -330,7 +330,7 @@ if (isset($_POST['Show'])) {
 				<td>%s</td>
 				<td class="number"><b>%s</b></td>
 				<td>%s</td>
-			</tr>', $MyRow['typename'], $URL_to_TransDetail, $MyRow['typeno'], $MyRow['chequeno'], $FormatedTranDate, $DebitAmount, $CreditAmount, $MyRow['narrative'], locale_number_format($RunningTotal, $_SESSION['CompanyRecord']['decimalplaces']), $tagrow['tagdescription']);
+			</tr>', _($MyRow['typename']), $URL_to_TransDetail, $MyRow['typeno'], $MyRow['chequeno'], $FormatedTranDate, $DebitAmount, $CreditAmount, $MyRow['narrative'], locale_number_format($RunningTotal, $_SESSION['CompanyRecord']['decimalplaces']), $tagrow['tagdescription']);
 
 	}
 	if ($PeriodNo != -9999) {

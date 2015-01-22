@@ -15,7 +15,7 @@ $SourceLanguage = mb_substr($_SESSION['Language'], 0, 2);
 $SQL = "SELECT stockmaster.stockid,
 				description,
 				longdescription,
-				language_id,
+				stockdescriptiontranslations.language_id,
 				descriptiontranslation,
 				longdescriptiontranslation
 		FROM stockmaster
@@ -46,7 +46,8 @@ if (DB_num_rows($Result) != 0) {
 		if ($MyRow['descriptiontranslation'] == '') {
 			$TargetLanguage = mb_substr($MyRow['language_id'], 0, 2);
 			$TranslatedText = translate_via_google_translator($MyRow['description'], $TargetLanguage, $SourceLanguage);
-
+			$ErrMsg = _('Cannot update stock item descriptions');
+			$DbgMsg = _('The sql that failed to update the item descriptions is');
 			$SQL = "UPDATE stockdescriptiontranslations " . "SET descriptiontranslation='" . $TranslatedText . "', " . "needsrevision= '1' " . "WHERE stockid='" . $MyRow['stockid'] . "' AND (language_id='" . $MyRow['language_id'] . "')";
 			$Update = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 

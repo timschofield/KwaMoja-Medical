@@ -178,7 +178,7 @@ if (!isset($_GET['OrderNumber']) and !isset($_SESSION['ProcessingOrder'])) {
 							FROM salesorderdetails
 							INNER JOIN stockmaster
 							 	ON salesorderdetails.stkcode = stockmaster.stockid
-							INNER JOIN stockcosts
+							LEFT JOIN stockcosts
 								ON stockcosts.stockid=stockmaster.stockid
 								AND succeeded=0
 							WHERE salesorderdetails.orderno ='" . $_GET['OrderNumber'] . "'

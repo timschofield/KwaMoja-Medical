@@ -317,7 +317,7 @@ if (isset($_POST['Process'])) { //user hit the process the work order receipts e
 										  FROM worequirements
 										  INNER JOIN stockmaster
 											ON worequirements.stockid=stockmaster.stockid
-										  INNER JOIN stockcosts
+										  LEFT JOIN stockcosts
 											ON worequirements.stockid=stockcosts.stockid
 										  INNER JOIN stockcategory
 											ON stockmaster.categoryid=stockcategory.categoryid

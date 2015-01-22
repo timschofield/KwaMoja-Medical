@@ -25,7 +25,7 @@ $SQL = "SELECT stockserialitems.stockid,
 				ON stockserialmoves.stockmoveno=stockmoves.stkmoveno
 			INNER JOIN stockmaster
 				ON stockmaster.stockid = stockserialitems.stockid
-			INNER JOIN stockcosts
+			LEFT JOIN stockcosts
 				ON stockcosts.stockid=stockmaster.stockid
 				AND stockcosts.succeeded=0
 			INNER JOIN locationusers

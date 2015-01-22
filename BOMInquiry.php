@@ -160,7 +160,7 @@ if (isset($StockId) and $StockId != "") {
 				FROM bom
 				INNER JOIN stockmaster
 					ON bom.component = stockmaster.stockid
-				INNER JOIN stockcosts
+				LEFT JOIN stockcosts
 					ON stockmaster.stockid=stockcosts.stockid
 					AND stockcosts.succeeded=0
 				WHERE bom.parent = '" . $StockId . "'

@@ -137,7 +137,7 @@ if (!isset($_GET['InvoiceNumber']) and !$_SESSION['ProcessingCredit']) {
 							FROM stockmoves
 							INNER JOIN stockmaster
 								ON stockmoves.stockid = stockmaster.stockid
-							INNER JOIN stockcosts
+							LEFT JOIN stockcosts
 								ON stockcosts.stockid=stockmaster.stockid
 								AND stockcosts.succeeded=0
 							WHERE stockmoves.transno ='" . $_GET['InvoiceNumber'] . "'
@@ -732,7 +732,7 @@ if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 									bom.quantity,
 									stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost AS standard
 								FROM bom
-								INNER JOIN stockcosts
+								LEFT JOIN stockcosts
 									ON stockcosts.stockid=bom.component
 									AND stockcosts.succeeded=0
 								WHERE bom.parent='" . $CreditLine->StockID . "'

@@ -88,7 +88,7 @@ $WOItemsResult = DB_query("SELECT woitems.stockid,
 								ON woitems.stockid=stockmaster.stockid
 							INNER JOIN stockcategory
 								ON stockmaster.categoryid=stockcategory.categoryid
-							INNER JOIN stockcosts
+							LEFT JOIN stockcosts
 								ON stockmaster.stockid=stockcosts.stockid
 								AND stockcosts.succeeded=0
 							WHERE woitems.wo='" . $_POST['WO'] . "'", $ErrMsg);
@@ -332,7 +332,7 @@ if (isset($_POST['Close'])) {
 								ON woitems.stockid=stockmaster.stockid
 							INNER JOIN stockcategory
 								ON stockmaster.categoryid=stockcategory.categoryid
-							INNER JOIN stockcosts
+							LEFT JOIN stockcosts
 								ON stockmaster.stockid=stockcosts.categoryid
 								AND stockcosts.succeeded=0
 							WHERE woitems.wo='" . $_POST['WO'] . "'", $ErrMsg);

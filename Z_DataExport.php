@@ -54,7 +54,7 @@ if (isset($_POST['pricelist'])) {
 				ON stockmaster.stockid=prices.stockid
 			INNER JOIN stockcategory
 				ON stockmaster.categoryid=stockcategory.categoryid
-			INNER JOIN stockcosts
+			LEFT JOIN stockcosts
 				ON stockmaster.stockid=stockcosts.stockid
 			WHERE prices.typeabbrev='" . $_POST['SalesType'] . "'
 				AND ( (prices.debtorno='') OR (prices.debtorno IS NULL))

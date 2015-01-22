@@ -63,7 +63,7 @@ if (isset($_FILES['CostUpdateFile']) and $_FILES['CostUpdateFile']['name']) { //
 				FROM stockmaster
 				INNER JOIN locstock
 					ON stockmaster.stockid=locstock.stockid
-				INNER JOIN stockcosts
+				LEFT JOIN stockcosts
 					ON stockmaster.stockid=stockcosts.stockid
 					AND stockcosts.succeeded=0
 				WHERE stockmaster.stockid='" . $StockID . "'

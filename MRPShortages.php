@@ -87,7 +87,7 @@ if (isset($_POST['PrintPDF'])) {
 							supplytotal.supply,
 							(demandtotal.demand - supplytotal.supply) * (stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost ) as extcost
 						FROM stockmaster
-						INNER JOIN stockcosts
+						LEFT JOIN stockcosts
 							ON stockcosts.stockid=stockmaster.stockid
 							AND stockcosts.succeeded=0
 						LEFT JOIN demandtotal
@@ -127,7 +127,7 @@ if (isset($_POST['PrintPDF'])) {
 					supplytotal.supply,
 					(demandtotal.demand - supplytotal.supply) * (stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost ) as extcost
 				FROM stockmaster
-				INNER JOIN stockcosts
+				LEFT JOIN stockcosts
 					ON stockcosts.stockid=stockmaster.stockid
 					AND stockcosts.succeeded=0
 				LEFT JOIN demandtotal

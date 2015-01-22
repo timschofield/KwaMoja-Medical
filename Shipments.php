@@ -95,7 +95,7 @@ if (isset($_GET['SelectedShipment'])) {
 							FROM purchorderdetails
 							INNER JOIN stockmaster
 								ON purchorderdetails.itemcode=stockmaster.stockid
-							INNER JOIN stockcosts
+							LEFT JOIN stockcosts
 								ON stockcosts.stockid=stockmaster.stockid
 								AND stockcosts.succeeded=0
 							INNER JOIN purchorders
@@ -260,7 +260,7 @@ if (isset($_GET['Add']) and $_SESSION['Shipment']->Closed == 0 and $InputError =
 			FROM purchorderdetails
 			INNER JOIN stockmaster
 				ON purchorderdetails.itemcode=stockmaster.stockid
-			INNER JOIN stockcosts
+			LEFT JOIN stockcosts
 				ON stockcosts.stockid=stockmaster.stockid
 				AND stockcosts.succeeded=0
 			WHERE purchorderdetails.podetailitem='" . $_GET['Add'] . "'";

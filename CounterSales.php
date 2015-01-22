@@ -1426,7 +1426,7 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 								bom.quantity,
 								stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS standard
 							FROM bom
-							INNER JOIN stockcosts
+							LEFT JOIN stockcosts
 								ON bom.component=stockcosts.stockid
 								AND SUCCEEDED=0
 							WHERE bom.parent='" . $OrderLine->StockID . "'

@@ -33,7 +33,7 @@ if (isset($_POST['UpdateAll'])) {
 							stockcosts.overheadcost,
 							stockmaster.decimalplaces
 						FROM stockmaster
-						INNER JOIN stockcosts
+						LEFT JOIN stockcosts
 							ON stockcosts.stockid=stockmaster.stockid
 							AND stockcosts.succeeded=0
 						WHERE stockcosts.stockid='" . $StockId . "'";

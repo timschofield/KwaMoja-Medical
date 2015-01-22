@@ -24,7 +24,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 				FROM stockmaster
 				INNER JOIN stockcheckfreeze
 					ON stockcheckfreeze.stockid=stockmaster.stockid
-				INNER JOIN stockcosts
+				LEFT JOIN stockcosts
 					ON stockcosts.stockid=stockmaster.stockid
 					AND stockcosts.succeeded=0
 				ORDER BY stockcheckfreeze.loccode,

@@ -1025,7 +1025,7 @@ if (isset($_POST['ProcessReturn']) and $_POST['ProcessReturn'] != '') {
 								bom.quantity,
 								stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS standard
 							FROM bom
-							INNER JOIN stockcosts
+							LEFT JOIN stockcosts
 								ON bom.component=stockcosts.stockid
 								AND stockcosts.succeeded=0
 							WHERE bom.parent='" . $ReturnItemLine->StockID . "'

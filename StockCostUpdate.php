@@ -29,7 +29,7 @@ if (isset($_POST['UpdateData'])) {
 			FROM stockmaster
 			INNER JOIN locstock
 				ON stockmaster.stockid=locstock.stockid
-			INNER JOIN stockcosts
+			LEFT JOIN stockcosts
 				ON stockmaster.stockid=stockcosts.stockid
 				AND stockcosts.succeeded=0
 			WHERE stockmaster.stockid='" . $StockId . "'
@@ -113,7 +113,7 @@ $SQL = "SELECT description,
 				ON stockmaster.stockid=locstock.stockid
 			INNER JOIN stockcategory
 				ON stockmaster.categoryid = stockcategory.categoryid
-			INNER JOIN stockcosts
+			LEFT JOIN stockcosts
 				ON stockmaster.stockid = stockcosts.stockid
 				AND stockcosts.succeeded=0
 			WHERE stockmaster.stockid='" . $StockId . "'

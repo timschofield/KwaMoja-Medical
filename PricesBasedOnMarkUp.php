@@ -252,7 +252,7 @@ if (isset($_POST['UpdatePrices'])) {
 		$SQL = "SELECT stockid,
 						stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS cost
 				FROM stockmaster
-				INNER JOIN stockcosts
+				LEFT JOIN stockcosts
 					ON stockmaster.stockid=stockcosts.stockid
 					AND stockcosts.succeeded=0
 				WHERE categoryid>='" . $_POST['StkCatFrom'] . "'

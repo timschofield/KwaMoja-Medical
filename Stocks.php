@@ -265,7 +265,7 @@ if (isset($_POST['submit'])) {
 					FROM stockmaster
 					INNER JOIN stockcategory
 						ON stockmaster.categoryid=stockcategory.categoryid
-					INNER JOIN stockcosts
+					LEFT JOIN stockcosts
 						ON stockmaster.stockid=stockcosts.stockid
 							AND succeeded=0
 					WHERE stockmaster.stockid = '" . $StockId . "'";

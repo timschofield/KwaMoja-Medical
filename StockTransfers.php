@@ -118,7 +118,7 @@ if ($NewTransfer and isset($_POST['StockID'])) {
 					perishable,
 					decimalplaces
 				FROM stockmaster
-				INNER JOIN stockcosts
+				LEFT JOIN stockcosts
 					ON stockmaster.stockid=stockcosts.stockid
 					AND stockcosts.succeeded=0
 				WHERE stockcosts.stockid='" . trim(mb_strtoupper($_POST['StockID'])) . "'";

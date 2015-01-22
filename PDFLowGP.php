@@ -38,7 +38,7 @@ if (isset($_POST['PrintPDF'])) {
 					(stockmoves.price*(1-stockmoves.discountpercent)) - (stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost) AS gp,
 					debtorsmaster.name
 				FROM stockmaster
-				INNER JOIN stockcosts
+				LEFT JOIN stockcosts
 					ON stockcosts.stockid=stockmaster.stockid
 					AND stockcosts.succeeded=0
 				INNER JOIN stockmoves

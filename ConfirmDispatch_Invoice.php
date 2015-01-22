@@ -1063,7 +1063,7 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 								bom.quantity,
 								stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS standard
 							FROM bom
-							INNER JOIN stockcosts
+							LEFT JOIN stockcosts
 								ON bom.component=stockcosts.stockid
 								AND stockcosts.succeeeded=0
 							WHERE bom.parent='" . $OrderLine->StockID . "'

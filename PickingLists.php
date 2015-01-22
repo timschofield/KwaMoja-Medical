@@ -182,7 +182,7 @@ if (!isset($_GET['Prid']) and !isset($_SESSION['ProcessingPick'])) {
 								AND salesorderdetails.orderlineno=pickreqdetails.orderlineno
 							INNER JOIN stockmaster
 							 	ON salesorderdetails.stkcode = stockmaster.stockid
-							INNER JOIN stockcosts
+							LEFT JOIN stockcosts
 								ON stockmaster.stockid=stockcosts.stockid
 								AND stockcosts.succeeded=0
 							WHERE pickreqdetails.prid ='" . $_GET['Prid'] . "'

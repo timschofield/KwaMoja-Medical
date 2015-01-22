@@ -84,7 +84,7 @@ if ($Location == 'All') {
 				stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost AS unitcost,
 				SUM(locstock.quantity) *(stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost) AS itemtotal
 			FROM stockmaster
-			INNER JOIN stockcosts
+			LEFT JOIN stockcosts
 				ON stockcosts.stockid=stockmaster.stockid
 				AND stockcosts.succeeded=0
 			INNER JOIN stockcategory
@@ -112,7 +112,7 @@ if ($Location == 'All') {
 				stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost AS unitcost,
 				locstock.quantity *(stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost) AS itemtotal
 			FROM stockmaster
-			INNER JOIN stockcosts
+			LEFT JOIN stockcosts
 				ON stockcosts.stockid=stockmaster.stockid
 				AND stockcosts.succeeded=0
 			INNER JOIN stockcategory

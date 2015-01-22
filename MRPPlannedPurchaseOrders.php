@@ -41,7 +41,7 @@ if (isset($_POST['PrintPDF'])) {
 					   stockmaster.actualcost,
 					   (stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost ) as computedcost
 				FROM mrpplannedorders
-				INNER JOIN stockcosts
+				LEFT JOIN stockcosts
 					ON stockmaster.stockid=stockcosts.stockid
 					AND stockcosts.succeeded=0
 				INNER JOIN stockmaster
@@ -63,7 +63,7 @@ if (isset($_POST['PrintPDF'])) {
 					   stockmaster.actualcost,
 					   (stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost ) as computedcost
 				FROM mrpplannedorders
-				INNER JOIN stockcosts
+				LEFT JOIN stockcosts
 					ON stockmaster.stockid=stockcosts.stockid
 					AND stockcosts.succeeded=0
 				INNER JOIN stockmaster
@@ -95,7 +95,7 @@ if (isset($_POST['PrintPDF'])) {
 					   stockmaster.actualcost,
 					   (stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost ) as computedcost
 				FROM mrpplannedorders
-				INNER JOIN stockcosts
+				LEFT JOIN stockcosts
 					ON stockmaster.stockid=stockcosts.stockid
 					AND stockcosts.succeeded=0
 				INNER JOIN stockmaster

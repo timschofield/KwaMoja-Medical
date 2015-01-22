@@ -565,7 +565,7 @@ function CreateCreditNote($Header, $LineDetails, $User, $Password) {
 							mbflag,
 							stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS standardcost
 						FROM stockmaster
-						INNER JOIN stockcosts
+						LEFT JOIN stockcosts
 							ON stockcosts.stockid=stockmaster.stockid
 							AND stockcosts.succeeded=0
 						WHERE stockcosts.stockid ='" . $CN_Line['stockid'] . "'";
@@ -709,7 +709,7 @@ function CreateCreditNote($Header, $LineDetails, $User, $Password) {
 							bom.quantity,
 							stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS standard
 						FROM bom
-						INNER JOIN stockcosts
+						LEFT JOIN stockcosts
 							ON bom.component=stockcosts.stockid
 							AND succeeded=0
 						WHERE bom.parent='" . $CN_Line['stockid'] . "'

@@ -88,7 +88,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 					FROM stockmaster
 					INNER JOIN	stockcategory
 						ON stockmaster.categoryid=stockcategory.categoryid
-					INNER JOIN stockcosts
+					LEFT JOIN stockcosts
 						ON stockcosts.stockid=stockmaster.stockid
 						AND stockcosts.succeeded=0
 					INNER JOIN prices
@@ -130,7 +130,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 					stockcategory.categorydescription,
 					currencies.decimalplaces
 				FROM stockmaster
-				INNER JOIN stockcosts
+				LEFT JOIN stockcosts
 					ON stockcosts.stockid=stockmaster.stockid
 					AND stockcosts.succeeded=0
 				INNER JOIN stockcategory

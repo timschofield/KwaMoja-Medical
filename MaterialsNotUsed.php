@@ -16,7 +16,7 @@ $SQL = "SELECT stockmaster.stockid,
 				FROM locstock
 				WHERE locstock.stockid = stockmaster.stockid) AS qoh
 		FROM stockmaster
-		INNER JOIN stockcosts
+		LEFT JOIN stockcosts
 			ON stockcosts.stockid=stockmater.stockid
 			AND stockcosts.succeeded=0
 		INNER JOIN stockcategory

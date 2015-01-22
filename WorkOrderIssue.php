@@ -114,7 +114,7 @@ if (isset($_POST['Process'])) { //user hit the process the work order issues ent
 					stockmaster.serialised,
 					stockmaster.mbflag
 			FROM stockmaster
-			INNER JOIN stockcosts
+			LEFT JOIN stockcosts
 				ON stockcosts.stockid=stockmaster.stockid
 					AND stockcosts.succeeded=0
 			WHERE stockcosts.stockid='" . $_POST['IssueItem'] . "'";

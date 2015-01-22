@@ -188,7 +188,7 @@ if (isset($_POST['NewItem'])) {
 								stockmaster.decimalplaces,
 								stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS unitcost
 							FROM stockmaster
-							INNER JOIN stockcosts
+							LEFT JOIN stockcosts
 								ON stockcosts.stockid=stockmaster.stockid
 									AND succeeded=0
 							WHERE stockmaster.stockid = '" . trim($_POST['StockID' . $i]) . "'";

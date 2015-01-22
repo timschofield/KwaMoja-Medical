@@ -69,7 +69,7 @@ if (DB_num_rows($ContractHdrResult) == 1 and !isset($_SESSION['Contract' . $Iden
 						FROM contractbom
 						INNER JOIN stockmaster
 							ON contractbom.stockid=stockmaster.stockid
-						INNER JOIN stockcosts
+						LEFT JOIN stockcosts
 							ON stockmaster.stockid=stockcosts.stockid
 							AND stockcosts.succeeded=0
 						WHERE contractref ='" . $ContractRef . "'";

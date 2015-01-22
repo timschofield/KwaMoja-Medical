@@ -710,7 +710,7 @@ function InvoiceSalesOrder($OrderNo, $User, $Password) {
 						FROM salesorderdetails
 						INNER JOIN stockmaster
 							ON salesorderdetails.stkcode = stockmaster.stockid
-						INNER JOIN stockcosts
+						LEFT JOIN stockcosts
 							ON stockcosts.stockid=stockmaster.stockid
 							AND stockcosts.succeeded=0
 						WHERE orderno ='" . $OrderNo . "'
@@ -876,7 +876,7 @@ function InvoiceSalesOrder($OrderNo, $User, $Password) {
 							bom.quantity,
 							stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS standard
 						FROM bom
-						INNER JOIN stockcosts
+						LEFT JOIN stockcosts
 							ON bom.component=stockcosts.stockid
 						WHERE bom.parent='" . $OrderLineRow['stkcode'] . "'
 							AND bom.effectiveto >= CURRENT_DATE

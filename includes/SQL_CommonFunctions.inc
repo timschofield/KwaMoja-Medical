@@ -279,7 +279,7 @@ function WoRealRequirements($WO, $LocCode, $StockId, $Qty = 1, $ParentID = '') {
 			FROM bom
 			INNER JOIN stockmaster
 				ON bom.component=stockmaster.stockid
-			INNER JOIN stockcosts
+			LEFT JOIN stockcosts
 				ON stockcosts.stockid=stockmaster.stockid
 				AND stockcosts.succeeded=0
 			WHERE bom.parent='" . $StockId . "'
@@ -311,7 +311,7 @@ function WoRealRequirements($WO, $LocCode, $StockId, $Qty = 1, $ParentID = '') {
 						FROM bom
 						INNER JOIN stockmaster
 							ON bom.component=stockmaster.stockid
-						INNER JOIN stockcosts
+						LEFT JOIN stockcosts
 							ON stockcosts.stockid=stockmaster.stockid
 							AND stockcosts.succeeded=0
 						WHERE bom.parent='" . $StockId . "'

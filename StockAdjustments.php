@@ -49,7 +49,7 @@ if ($NewAdjustment == true) {
 							stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS totalcost,
 							units
 						FROM stockmaster
-						INNER JOIN stockcosts
+						LEFT JOIN stockcosts
 							ON stockmaster.stockid=stockcosts.stockid
 							AND stockcosts.succeeded=0
 						WHERE stockcosts.stockid='" . $_SESSION['Adjustment' . $Identifier]->StockID . "'");
@@ -425,7 +425,7 @@ if (!isset($_SESSION['Adjustment' . $Identifier])) {
 				units,
 				decimalplaces
 			FROM stockmaster
-			INNER JOIN stockcosts
+			LEFT JOIN stockcosts
 				ON stockmaster.stockid=stockcosts.stockid
 				AND stockcosts.succeeded=0
 			WHERE stockcosts.stockid='" . $StockId . "'";

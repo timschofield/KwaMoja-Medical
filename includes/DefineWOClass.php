@@ -158,7 +158,7 @@ Class WOItem {
 									FROM stockmaster
 									INNER JOIN bom
 										ON stockmaster.stockid=bom.parent
-									INNER JOIN stockcosts
+									LEFT JOIN stockcosts
 										ON stockmaster.stockid=stockcosts.stockid
 										AND stockcosts.succeeded=0
 									WHERE bom.parent='" . $StockId . "'");
@@ -194,7 +194,7 @@ Class WOItem {
 									FROM bom
 									INNER JOIN stockmaster
 										ON stockmaster.stockid=bom.component
-									INNER JOIN stockcosts
+									LEFT JOIN stockcosts
 										ON stockmaster.stockid=stockcosts.stockid
 										AND stockcosts.succeeded=0
 									WHERE bom.parent='" . $StockId . "'
@@ -266,7 +266,7 @@ Class WOItem {
 									FROM bom
 									INNER JOIN stockmaster
 										ON stockmaster.stockid=bom.component
-									INNER JOIN stockcosts
+									LEFT JOIN stockcosts
 										ON stockmaster.stockid=stockcosts.stockid
 										AND stockcosts.succeeded=0
 									WHERE bom.parent='" . $this->StockID . "'

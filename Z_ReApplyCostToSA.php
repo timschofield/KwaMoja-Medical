@@ -36,7 +36,7 @@ if (isset($_POST['UpdateSalesAnalysis']) and $_POST['PeriodNo'] != 0) {
 				FROM salesanalysis
 				INNER JOIN stockmaster
 					ON salesanalysis.stockid=stockmaster.stockid
-				INNER JOIN stockcosts
+				LEFT JOIN stockcosts
 					ON salesanalysis.stockid=stockcosts.stockid
 				WHERE periodno='" . $_POST['PeriodNo'] . "'
 					AND stockmaster.mbflag<>'D'

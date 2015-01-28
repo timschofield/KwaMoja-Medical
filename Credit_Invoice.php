@@ -737,7 +737,7 @@ if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 									AND stockcosts.succeeded=0
 								WHERE bom.parent='" . $CreditLine->StockID . "'
 									AND bom.effectiveto > CURRENT_DATE
-									AND bom.effectiveafter < CURRENT_DATE";
+									AND bom.effectiveafter <= CURRENT_DATE";
 
 					$ErrMsg = _('Could not retrieve assembly components from the database for') . ' ' . $CreditLine->StockID . ' ' . _('because');
 					$DbgMsg = _('The SQL that failed was');

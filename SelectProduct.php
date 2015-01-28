@@ -168,7 +168,7 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 										AND stockcosts.succeeded=0
 									WHERE bom.parent='" . $StockId . "'
 										AND bom.effectiveto > CURRENT_DATE
-										AND bom.effectiveafter < CURRENT_DATE");
+										AND bom.effectiveafter <= CURRENT_DATE");
 			$CostRow = DB_fetch_row($CostResult);
 			$Cost = $CostRow[0];
 		} else {
@@ -204,7 +204,7 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 										AND stockcosts.succeeded=0
 									WHERE bom.parent='" . $StockId . "'
 										AND bom.effectiveto > CURRENT_DATE
-										AND bom.effectiveafter < CURRENT_DATE");
+										AND bom.effectiveafter <= CURRENT_DATE");
 			$CostRow = DB_fetch_row($CostResult);
 			$Cost = $CostRow[0];
 		} else {

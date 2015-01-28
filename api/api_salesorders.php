@@ -879,8 +879,8 @@ function InvoiceSalesOrder($OrderNo, $User, $Password) {
 						LEFT JOIN stockcosts
 							ON bom.component=stockcosts.stockid
 						WHERE bom.parent='" . $OrderLineRow['stkcode'] . "'
-							AND bom.effectiveto >= CURRENT_DATE
-							AND bom.effectiveafter < CURRENT_DATE";
+							AND bom.effectiveto > CURRENT_DATE
+							AND bom.effectiveafter <= CURRENT_DATE";
 
 			$AssResult = api_DB_query($SQL);
 

@@ -58,8 +58,8 @@ if (isset($StockId)) {
 				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
 				AND locationusers.canview=1
 			WHERE component='" . $StockId . "'
-				AND bom.effectiveafter<=CURRENT_DATE
-				AND bom.effectiveto >=CURRENT_DATE";
+				AND bom.effectiveafter <= CURRENT_DATE
+				AND bom.effectiveto > CURRENT_DATE";
 
 	$ErrMsg = _('The parents for the selected part could not be retrieved because');
 	$Result = DB_query($SQL, $ErrMsg);

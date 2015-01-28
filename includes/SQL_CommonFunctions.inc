@@ -219,8 +219,8 @@ function BomMaterialCost($Parent) {
 				ON bom.component = stockcosts.stockid
 				AND stockcosts.succeeded=0
 			WHERE bom.parent='" . $Parent . "'
-				AND bom.effectiveafter<=CURRENT_DATE
-				AND bom.effectiveto>=CURRENT_DATE";
+				AND bom.effectiveafter <= CURRENT_DATE
+				AND bom.effectiveto > CURRENT_DATE";
 	$Result = DB_query($SQL);
 	$MyRow = DB_fetch_row($Result);
 	$MaterialCost = $MyRow[0];
@@ -284,8 +284,8 @@ function WoRealRequirements($WO, $LocCode, $StockId, $Qty = 1, $ParentID = '') {
 				AND stockcosts.succeeded=0
 			WHERE bom.parent='" . $StockId . "'
 				AND bom.loccode ='" . $LocCode . "'
-				AND bom.effectiveafter<=CURRENT_DATE
-				AND bom.effectiveto>=CURRENT_DATE
+				AND bom.effectiveafter <= CURRENT_DATE
+				AND bom.effectiveto > CURRENT_DATE
 				AND stockmaster.mbflag<>'G'
 				AND bom.component NOT IN (
 					SELECT stockid
@@ -316,8 +316,8 @@ function WoRealRequirements($WO, $LocCode, $StockId, $Qty = 1, $ParentID = '') {
 							AND stockcosts.succeeded=0
 						WHERE bom.parent='" . $StockId . "'
 							AND bom.loccode ='" . $LocCode . "'
-							AND bom.effectiveafter<=CURRENT_DATE
-							AND bom.effectiveto>=CURRENT_DATE
+							AND bom.effectiveafter <= CURRENT_DATE
+							AND bom.effectiveto > CURRENT_DATE
 							AND stockmaster.mbflag<>'G'
 							AND bom.component IN (
 								SELECT stockid
@@ -340,6 +340,8 @@ function WoRealRequirements($WO, $LocCode, $StockId, $Qty = 1, $ParentID = '') {
 			ON bom.component=stockmaster.stockid
 			WHERE parent='" . $StockId . "'
 			AND loccode ='" . $LocCode . "'
+			AND bom.effectiveafter <= CURRENT_DATE
+			AND bom.effectiveto > CURRENT_DATE
 			AND stockmaster.mbflag='G'";
 	$Result = DB_query($SQL);
 	while ($MyRow = DB_fetch_array($Result)) {

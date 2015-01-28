@@ -46,7 +46,7 @@ if (isset($_POST['PrintPDF'])) {
 					  CONCAT(bom.component,bom.parent) AS sortpart
 					  FROM bom
 			  WHERE bom.component ='" . $_POST['Part'] . "'
-			  AND bom.effectiveto >= CURRENT_DATE
+			  AND bom.effectiveto > CURRENT_DATE
 			  AND bom.effectiveafter <= CURRENT_DATE";
 	$Result = DB_query($SQL);
 
@@ -73,7 +73,7 @@ if (isset($_POST['PrintPDF'])) {
 					 bom.quantity
 					 FROM bom
 			  WHERE bom.component ='" . $_POST['Part'] . "'
-			  AND bom.effectiveto >= CURRENT_DATE
+			  AND bom.effectiveto > CURRENT_DATE
 			  AND bom.effectiveafter <= CURRENT_DATE";
 	$Result = DB_query($SQL);
 
@@ -104,7 +104,7 @@ if (isset($_POST['PrintPDF'])) {
 						 bom.quantity
 				FROM bom,passbom
 				WHERE bom.component = passbom.part
-				AND bom.effectiveto >= CURRENT_DATE
+				AND bom.effectiveto > CURRENT_DATE
 				AND bom.effectiveafter <= CURRENT_DATE";
 		$Result = DB_query($SQL);
 
@@ -124,7 +124,7 @@ if (isset($_POST['PrintPDF'])) {
 						  CONCAT(passbom2.sortpart,bom.parent) AS sortpart
 				   FROM bom,passbom2
 				   WHERE bom.component = passbom2.part
-					AND bom.effectiveto >= CURRENT_DATE
+					AND bom.effectiveto > CURRENT_DATE
 					AND bom.effectiveafter <= CURRENT_DATE";
 		$Result = DB_query($SQL);
 		$Result = DB_query("SELECT COUNT(*) FROM bom,passbom WHERE bom.component = passbom.part");

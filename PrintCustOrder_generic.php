@@ -222,9 +222,12 @@ for ($i = 1; $i <= 2; $i++) {
 								bom.quantity,
 								stockmaster.description,
 								stockmaster.decimalplaces
-						FROM bom INNER JOIN stockmaster
-						ON bom.component=stockmaster.stockid
-						WHERE bom.parent='" . $MyRow2['stkcode'] . "'";
+						FROM bom
+						INNER JOIN stockmaster
+							ON bom.component=stockmaster.stockid
+						WHERE bom.parent='" . $MyRow2['stkcode'] . "'
+							AND bom.effectiveafter <= '" . date('Y-m-d') . "'
+							AND bom.effectiveto > '" . date('Y-m-d') . "'";
 				$ErrMsg = _('Could not retrieve the components of the ordered assembly item');
 				$AssemblyResult = DB_query($SQL, $ErrMsg);
 				$LeftOvers = $PDF->addTextWrap($XPos, $YPos, 150, $FontSize, _('Assembly Components:-'));

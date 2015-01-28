@@ -74,7 +74,7 @@ if (isset($WO) and isset($StockId) and $WO != '') {
 						AND bom.component = locstock.stockid
 						AND locstock.loccode = '" . $Location . "'
 						AND bom.parent = '" . $StockId . "'
-						AND bom.effectiveafter < CURRENT_DATE
+						AND bom.effectiveafter <= CURRENT_DATE
 						AND (bom.effectiveto > CURRENT_DATE
 						 OR bom.effectiveto='0000-00-00')";
 

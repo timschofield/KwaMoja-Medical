@@ -164,7 +164,7 @@ if (isset($StockId) and $StockId != "") {
 					ON stockmaster.stockid=stockcosts.stockid
 					AND stockcosts.succeeded=0
 				WHERE bom.parent = '" . $StockId . "'
-					AND bom.effectiveafter < CURRENT_DATE
+					AND bom.effectiveafter <= CURRENT_DATE
 					AND bom.effectiveto > CURRENT_DATE";
 
 	$ErrMsg = _('The bill of material could not be retrieved because');

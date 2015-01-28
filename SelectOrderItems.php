@@ -816,7 +816,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 							FROM bom
 							WHERE bom.parent='" . $NewItem . "'
 							AND bom.effectiveto > CURRENT_DATE
-							AND bom.effectiveafter < CURRENT_DATE";
+							AND bom.effectiveafter <= CURRENT_DATE";
 
 					$ErrMsg = _('Could not retrieve kitset components from the database because') . ' ';
 					$KitResult = DB_query($SQL, $ErrMsg, $DbgMsg);
@@ -1128,7 +1128,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 						FROM bom
 						WHERE bom.parent='" . $NewItem . "'
 						AND bom.effectiveto > CURRENT_DATE
-						AND bom.effectiveafter < CURRENT_DATE";
+						AND bom.effectiveafter <= CURRENT_DATE";
 
 				$ErrMsg = _('Could not retrieve kitset components from the database because');
 				$KitResult = DB_query($SQL, $ErrMsg);
@@ -1183,7 +1183,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 								FROM bom
 								WHERE bom.parent='" . $NewItem . "'
 								AND bom.effectiveto > CURRENT_DATE
-								AND bom.effectiveafter < CURRENT_DATE";
+								AND bom.effectiveafter <= CURRENT_DATE";
 
 						$ErrMsg = _('Could not retrieve kitset components from the database because');
 						$KitResult = DB_query($SQL, $ErrMsg);

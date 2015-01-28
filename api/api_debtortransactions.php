@@ -713,8 +713,8 @@ function CreateCreditNote($Header, $LineDetails, $User, $Password) {
 							ON bom.component=stockcosts.stockid
 							AND succeeded=0
 						WHERE bom.parent='" . $CN_Line['stockid'] . "'
-							AND bom.effectiveto >= CURRENT_DATE
-							AND bom.effectiveafter < CURRENT_DATE";
+							AND bom.effectiveto > CURRENT_DATE
+							AND bom.effectiveafter <= CURRENT_DATE";
 
 			$AssResult = api_DB_query($SQL);
 

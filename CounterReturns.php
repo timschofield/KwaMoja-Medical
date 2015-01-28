@@ -412,7 +412,7 @@ if (isset($_POST['SelectingReturnItems']) or isset($_POST['QuickEntry']) or isse
 						FROM bom
 						WHERE bom.parent='" . $NewItem . "'
 						AND bom.effectiveto > CURRENT_DATE
-						AND bom.effectiveafter < CURRENT_DATE";
+						AND bom.effectiveafter <= CURRENT_DATE";
 
 				$ErrMsg = _('Could not retrieve kitset components from the database because') . ' ';
 				$KitResult = DB_query($SQL, $ErrMsg, $DbgMsg);
@@ -515,7 +515,7 @@ if (isset($_POST['Recalculate'])) {
 							FROM bom
 							WHERE bom.parent='" . $ReturnItemLine->StockID . "'
 							AND bom.effectiveto > CURRENT_DATE
-							AND bom.effectiveafter < CURRENT_DATE";
+							AND bom.effectiveafter <= CURRENT_DATE";
 
 				$ErrMsg = _('Could not retrieve kitset components from the database because');
 				$KitResult = DB_query($SQL, $ErrMsg);
@@ -569,7 +569,7 @@ if (isset($NewItem)) {
 					FROM bom
 					WHERE bom.parent='" . $NewItem . "'
 					AND bom.effectiveto > CURRENT_DATE
-					AND bom.effectiveafter < CURRENT_DATE";
+					AND bom.effectiveafter <= CURRENT_DATE";
 
 			$ErrMsg = _('Could not retrieve kitset components from the database because');
 			$KitResult = DB_query($SQL, $ErrMsg);
@@ -625,7 +625,7 @@ if (isset($NewItemArray) and isset($_POST['SelectingReturnItems'])) {
 				  			FROM bom
 							WHERE bom.parent='" . $NewItem . "'
 							AND bom.effectiveto > CURRENT_DATE
-							AND bom.effectiveafter < CURRENT_DATE";
+							AND bom.effectiveafter <= CURRENT_DATE";
 
 					$ErrMsg = _('Could not retrieve kitset components from the database because');
 					$KitResult = DB_query($SQL, $ErrMsg);
@@ -1030,7 +1030,7 @@ if (isset($_POST['ProcessReturn']) and $_POST['ProcessReturn'] != '') {
 								AND stockcosts.succeeded=0
 							WHERE bom.parent='" . $ReturnItemLine->StockID . "'
 								AND bom.effectiveto > CURRENT_DATE
-								AND bom.effectiveafter < CURRENT_DATE";
+								AND bom.effectiveafter <= CURRENT_DATE";
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('Could not retrieve assembly components from the database for') . ' ' . $ReturnItemLine->StockID . _('because') . ' ';
 				$DbgMsg = _('The SQL that failed was');

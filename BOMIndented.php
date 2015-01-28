@@ -47,7 +47,7 @@ if (isset($_POST['PrintPDF'])) {
 					CONCAT(bom.parent,bom.component) AS sortpart
 				FROM bom
 				WHERE bom.parent ='" . $_POST['Part'] . "'
-					AND bom.effectiveto >= CURRENT_DATE
+					AND bom.effectiveto > CURRENT_DATE
 					AND bom.effectiveafter <= CURRENT_DATE";
 	$Result = DB_query($SQL);
 
@@ -78,7 +78,7 @@ if (isset($_POST['PrintPDF'])) {
 					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
 					AND locationusers.canview=1
 				WHERE bom.parent ='" . $_POST['Part'] . "'
-					AND bom.effectiveto >= CURRENT_DATE
+					AND bom.effectiveto > CURRENT_DATE
 					AND bom.effectiveafter <= CURRENT_DATE";
 	$Result = DB_query($SQL);
 	//echo "<br />sql is $SQL<br />";
@@ -116,7 +116,7 @@ if (isset($_POST['PrintPDF'])) {
 					ON locationusers.loccode=loccode
 					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
 					AND locationusers.canview=1
-				WHERE bom.effectiveto >= CURRENT_DATE
+				WHERE bom.effectiveto > CURRENT_DATE
 					AND bom.effectiveafter <= CURRENT_DATE";
 			$Result = DB_query($SQL);
 
@@ -140,7 +140,7 @@ if (isset($_POST['PrintPDF'])) {
 							CONCAT(passbom2.sortpart,bom.component) AS sortpart
 						FROM bom,passbom2
 						WHERE bom.parent = passbom2.part
-							AND bom.effectiveto >= CURRENT_DATE
+							AND bom.effectiveto > CURRENT_DATE
 							AND bom.effectiveafter <= CURRENT_DATE";
 			$Result = DB_query($SQL);
 

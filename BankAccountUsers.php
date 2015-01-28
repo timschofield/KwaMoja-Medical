@@ -1,7 +1,10 @@
 <?php
 
 include('includes/session.inc');
-$Title = _('Maintenance Of Bank Account Authorised Users');
+$Title = _('Bank Account Users');;// Screen identificator.
+$ViewTopic = 'GeneralLedger';// Filename's id in ManualContents.php's TOC.
+/* To do this section in the manual.
+$BookMark = 'BankAccountUsers';// Anchor's id in the manual's html document.*/
 include('includes/header.inc');
 
 echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/money_add.png" title="' . _('Bank Account Authorised Users') . '" alt="" />' . ' ' . $Title . '</p>';

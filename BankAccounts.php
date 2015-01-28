@@ -2,9 +2,9 @@
 
 include('includes/session.inc');
 
-$Title = _('Bank Accounts Maintenance');
-$ViewTopic = 'GeneralLedger';
-$BookMark = 'BankAccounts';
+$Title = _('Bank Accounts');// Screen identificator.
+$ViewTopic= 'GeneralLedger';// Filename's id in ManualContents.php's TOC.
+$BookMark = 'BankAccounts';// Anchor's id in the manual's html document.
 include('includes/header.inc');
 
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/money_add.png" title="' . _('Bank') . '" alt="" />' . ' ' . $Title . '</p>';

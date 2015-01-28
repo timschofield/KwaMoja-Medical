@@ -1,9 +1,9 @@
 <?php
 
 include('includes/session.inc');
-$Title = _('Bank Account Matching');
-$ViewTopic = 'GeneralLedger';
-$BookMark = 'BankMatching';
+$Title = _('Bank Matching');// Screen identificator.
+$ViewTopic = 'GeneralLedger';// Filename's id in ManualContents.php's TOC.
+$BookMark = 'BankMatching';// Filename's id in ManualContents.php's TOC.
 include('includes/header.inc');
 
 if ((isset($_GET['Type']) and $_GET['Type'] == 'Receipts') or (isset($_POST['Type']) and $_POST['Type'] == 'Receipts')) {

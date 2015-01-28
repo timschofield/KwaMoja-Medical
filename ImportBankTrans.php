@@ -3,7 +3,9 @@
 include('includes/DefineImportBankTransClass.php');
 include('includes/session.inc');
 
-$Title = _('Import Bank Transactions');
+$Title = _('Import Bank Transactions');// Screen identificator.
+$ViewTopic = 'GeneralLedger';// Filename's id in ManualContents.php's TOC.
+$BookMark = 'ImportBankTrans';// Anchor's id in the manual's html document.
 
 include('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');

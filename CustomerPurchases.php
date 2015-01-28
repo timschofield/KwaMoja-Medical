@@ -1,7 +1,10 @@
 <?php
 
 include('includes/session.inc');
-$Title = _('Customer Purchases');
+$Title = _('Customer Purchases');// Screen identificator.
+$ViewTopic = 'ARInquiries';// Filename's id in ManualContents.php's TOC.
+/* This help needs to be writing...
+$BookMark = 'CustomerPurchases';// Anchor's id in the manual's html document.*/
 include('includes/header.inc');
 
 if (isset($_GET['DebtorNo'])) {
@@ -91,14 +94,14 @@ else {
 				<td>' . ConvertSQLDate($StockMovesRow['trandate']) . '</td>
 				<td>' . $StockMovesRow['stockid'] . '</td>
 				<td>' . $StockMovesRow['description'] . '</td>
-				<td>' . $StockMovesRow['typename'] . '</td>
-				<td>' . $StockMovesRow['transno'] . '</td>
+				<td>' . _($StockMovesRow['typename']) . '</td>
+				<td class="number">' . $StockMovesRow['transno'] . '</td>
 				<td>' . $StockMovesRow['locationname'] . '</td>
 				<td>' . $StockMovesRow['branchcode'] . '</td>
 				<td class="number">' . locale_number_format($StockMovesRow['price'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
 				<td class="number">' . locale_number_format(-$StockMovesRow['qty'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
 				<td class="number">' . locale_number_format((-$StockMovesRow['qty'] * $StockMovesRow['price']), $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
-				<td>' . $StockMovesRow['reference'] . '</td>
+				<td class="number">' . $StockMovesRow['reference'] . '</td>
 				<td>' . $StockMovesRow['narrative'] . '</td>
 			</tr>';
 

@@ -229,7 +229,7 @@ if (isset($_GET['ModifyOrderNumber']) and $_GET['ModifyOrderNumber'] != '') {
 							FROM salesorderdetails
 							INNER JOIN stockmaster
 								ON salesorderdetails.stkcode = stockmaster.stockid
-							INNER JOIN stockcosts
+							LEFT JOIN stockcosts
 								ON stockcosts.stockid = stockmaster.stockid
 								AND stockcosts.succeeded=0
 							INNER JOIN locstock
@@ -1261,11 +1261,22 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 		/*only show order lines if there are any */
 
 		/* This is where the order as selected should be displayed  reflecting any deletions or insertions*/
+	 	if($_SESSION['Items' . $Identifier]->DefaultPOLine == 1) {// Does customer require PO Line number by sales order line?
+			$ShowPOLine = 1;// Show one additional column:  'PO Line'.
+		} else {
+			$ShowPOLine = 0;// Do NOT show 'PO Line'.
+		}
+
+		if(in_array(1000, $_SESSION['AllowedPageSecurityTokens'])) {//Is it an internal user with appropriate permissions?
+			$ShowDiscountGP = 2;// Show two additional columns: 'Discount' and 'GP %'.
+		} else {
+			$ShowDiscountGP = 0;// Do NOT show 'Discount' and 'GP %'.
+		}
 
 		echo '<div class="page_help_text noPrint">' . _('Quantity (required) - Enter the number of units ordered.  Price (required) - Enter the unit price.  Discount (optional) - Enter a percentage discount.  GP% (optional) - Enter a percentage Gross Profit (GP) to add to the unit cost.  Due Date (optional) - Enter a date for delivery.') . '</div><br />';
 		echo '<table width="90%" cellpadding="2">
 				<tr style="background-color:#800000">';
-		if ($_SESSION['Items' . $Identifier]->DefaultPOLine == 1) {
+		if($ShowPOLine) {
 			echo '<th>' . _('PO Line') . '</th>';
 		} //$_SESSION['Items' . $Identifier]->DefaultPOLine == 1
 		echo '<th>' . _('Item Code') . '</th>
@@ -1275,12 +1286,14 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 				<th>' . _('Unit') . '</th>
 				<th>' . _('Price') . '</th>';
 
-		if (in_array(1000, $_SESSION['AllowedPageSecurityTokens'])) {
+		if($ShowDiscountGP) {
 			echo '<th>' . _('Discount') . '</th>
 						<th>' . _('GP %') . '</th>';
 		} //in_array(1000, $_SESSION['AllowedPageSecurityTokens'])
 		echo '<th>' . _('Total') . '</th>
-			<th>' . _('Due Date') . '</th></tr>';
+			<th>' . _('Due Date') . '</th>
+			<th>&nbsp;</th>
+		</tr>';
 
 		$_SESSION['Items' . $Identifier]->total = 0;
 		$_SESSION['Items' . $Identifier]->totalVolume = 0;
@@ -1309,14 +1322,13 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 
 			echo $RowStarter;
 			echo '<td>';
-			if ($_SESSION['Items' . $Identifier]->DefaultPOLine == 1) { //show the input field only if required
-				echo '<input tabindex="1" type="text" name="POLine_' . $OrderLine->LineNumber . '" size="20" required="required" minlength="1" maxlength="20" value="' . $OrderLine->POLine . '" /></td><td>';
-			} //$_SESSION['Items' . $Identifier]->DefaultPOLine == 1
-			else {
-				echo '<input type="hidden" name="POLine_' . $OrderLine->LineNumber . '" value="" />';
+			if($ShowPOLine) {// Show the input field only if required.
+				echo '<input maxlength="20" name="POLine_' . $OrderLine->LineNumber . '" size="20" type="text" value="' . $OrderLine->POLine . '" /></td><td>';
+			} else {
+				echo '<input name="POLine_' . $OrderLine->LineNumber . '" type="hidden" value="" />';
 			}
 
-			echo '<a target="_blank" href="' . $RootPath . '/StockStatus.php?identifier=' . $Identifier . '&amp;StockID=' . $OrderLine->StockID . '&amp;DebtorNo=' . $_SESSION['Items' . $Identifier]->DebtorNo . '">' . $OrderLine->StockID . '</a></td>
+			echo '<a href="' . $RootPath . '/StockStatus.php?identifier=' . urlencode($Identifier) . '&amp;StockID=' . urlencode($OrderLine->StockID) . '&amp;DebtorNo=' . urlencode($_SESSION['Items'.$identifier]->DebtorNo) . '" target="_blank">' . $OrderLine->StockID . '</a></td>
 				<td title="' . $OrderLine->LongDescription . '">' . $OrderLine->ItemDescription . '</td>';
 
 			echo '<td><input class="number" tabindex="2" type="text" name="Quantity_' . $OrderLine->LineNumber . '" size="6" required="required" minlength="1" maxlength="11" value="' . locale_number_format($OrderLine->Quantity, $OrderLine->DecimalPlaces) . '" />';

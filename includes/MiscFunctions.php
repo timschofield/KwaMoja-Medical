@@ -343,7 +343,7 @@ function http_file_exists($url) {
 function locale_number_format($Number, $DecimalPlaces = 0) {
 	global $DecimalPoint;
 	global $ThousandsSeparator;
-	if ($_SESSION['Language'] == 'hi_IN.utf8' or $_SESSION['Language'] == 'en_IN.utf8') {
+	if(substr($_SESSION['Language'], 3, 2) == 'IN') {
 		return indian_number_format(floatval($Number), $DecimalPlaces);
 	} else {
 		if (!is_numeric($DecimalPlaces) and $DecimalPlaces == 'Variable') {

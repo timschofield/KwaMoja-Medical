@@ -30,7 +30,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				AND locationusers.canview=1
 			WHERE bom.parent >= '" . $_POST['FromCriteria'] . "'
 				AND bom.parent <= '" . $_POST['ToCriteria'] . "'
-				AND bom.effectiveto >= CURRENT_DATE
+				AND bom.effectiveto > CURRENT_DATE
 				AND bom.effectiveafter <= CURRENT_DATE
 			ORDER BY bom.parent,
 					bom.component";

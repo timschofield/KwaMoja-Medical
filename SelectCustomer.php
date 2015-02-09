@@ -233,6 +233,7 @@ if ($_SESSION['CustomerID'] != '' and !isset($_POST['Search']) and !isset($_POST
 	echo '<tr><td valign="top" class="select">';
 	/* Customer Inquiry Options */
 	echo '<a href="' . $RootPath . '/CustomerInquiry.php?CustomerID=' . urlencode($_SESSION['CustomerID']) . '">' . _('Customer Transaction Inquiries') . '</a>';
+	echo '<a href="' . $RootPath . '/CustomerAccount.php?CustomerID=' . urlencode($_SESSION['CustomerID']) . '">' . _('Customer Account statement on screen') . '</a>';
 	echo '<a href="' . $RootPath . '/Customers.php?DebtorNo=' . urlencode($_SESSION['CustomerID']) . '&amp;Modify=No">' . _('View Customer Details') . '</a>';
 	echo '<a href="' . $RootPath . '/PrintCustStatements.php?FromCust=' . urlencode($_SESSION['CustomerID']) . '&amp;ToCust=' . urlencode($_SESSION['CustomerID']) . '&amp;PrintPDF=Yes">' . _('Print Customer Statement') . '</a>';
 	echo '<a href="' . $RootPath . '/SelectCompletedOrder.php?SelectedCustomer=' . urlencode($_SESSION['CustomerID']) . '">' . _('Order Inquiries') . '</a>';

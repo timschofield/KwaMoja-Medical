@@ -478,8 +478,7 @@ if (isset($_POST['CreditType']) and ($_POST['CreditType'] == 'WriteOff' or $_POS
 	foreach ($_SESSION['CreditItems' . $Identifier]->LineItems as $CreditLine) {
 		$SQL = "SELECT count(orderno) FROM salesorderdetails WHERE orderno = '" . $_SESSION['CreditItems' . $Identifier]->OrderNo . "'
 									AND stkcode = '" . $CreditLine->StockID . "'
-									AND quantity >=" . $CreditLine->QtyDispatched . "
-									AND qtyinvoiced >=" . $CreditLine->QtyDispatched;
+									AND qtyinvoiced >='" . $CreditLine->QtyDispatched . "'";
 		$ErrMsg = _('Failed to retrieve salesoderdetails to compare if the order has been invoiced and that it is possible that the credit note may not already have been done');
 		$DuplicateCreditResult = DB_query($SQL, $ErrMsg);
 		$MyRow1 = DB_fetch_row($DuplicateCreditResult);

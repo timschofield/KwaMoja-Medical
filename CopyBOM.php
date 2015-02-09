@@ -100,7 +100,7 @@ if (isset($_POST['Submit'])) {
 
 		} else {
 
-			$SQL = "UPDATE stockcosts SET succeded=1
+			$SQL = "UPDATE stockcosts SET succeeded=1
 									WHERE stockid='" . $NewStockID . "'
 										AND succeeded=0";
 			$Result = DB_query($SQL);

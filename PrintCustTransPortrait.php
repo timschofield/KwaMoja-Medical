@@ -384,7 +384,7 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 					}
 					$YPos -= ($FontSize * $lines);
 
-					$lines = explode('\r\n', htmlspecialchars_decode($MyRow2['narrative']));
+					$lines = explode("\r\n", htmlspecialchars_decode($MyRow2['narrative']));
 					$SizeOfLines = sizeOf($lines);
 					for ($i = 0; $i < $SizeOfLines; $i++) {
 						while (mb_strlen($lines[$i]) > 1) {
@@ -464,7 +464,7 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 			$PDF->addTextWrap($Left_Margin, $YPos + 3, 280, $FontSize,_('Payment Terms') . ': ' . $MyRow['terms']);
 
 			$FontSize = 8;
-			$LeftOvers = explode('\r\n', DB_escape_string($MyRow['invtext']));
+			$LeftOvers = explode("\r\n", DB_escape_string($MyRow['invtext']));
 			$SizeOfLeftOvers = sizeOf($LeftOvers);
 			for ($i = 0; $i < $SizeOfLeftOvers; $i++) {
 				$PDF->addText($Left_Margin, $YPos - 8 - ($i * 8), $FontSize, $LeftOvers[$i]);

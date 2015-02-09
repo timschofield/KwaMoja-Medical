@@ -322,7 +322,7 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 
 					$YPos -= ($line_height);
 
-					$lines = explode('\r\n', htmlspecialchars_decode($MyRow2['narrative']));
+					$lines = explode("\r\n", htmlspecialchars_decode($MyRow2['narrative']));
 					$SizeOfLines = sizeOf($lines);
 					for ($i = 0; $i < $SizeOfLines; $i++) {
 						while (mb_strlen($lines[$i]) > 1) {

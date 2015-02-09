@@ -324,7 +324,7 @@ while (mb_strlen($LeftOvers) > 1) {
 	$LeftOvers = $PDF->addTextWrap($XPos + 5, $YPos, 445, $FontSize, $LeftOvers, 'left');
 }
 
-$PDF->OutputI($_SESSION['DatabaseName'] . 'ProductSpecification' . date('Y-m-d') . '.pdf');
+$PDF->OutputI($_SESSION['DatabaseName'] . '_ProductSpecification_' . date('Y-m-d') . '.pdf');
 $PDF->__destruct();
 
 ?>

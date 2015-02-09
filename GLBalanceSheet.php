@@ -380,7 +380,7 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 			chartdetails.accountcode";
 
 	$AccountsResult = DB_query($SQL, _('No general ledger accounts were returned by the SQL because'));
-	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/preview.gif" title="' . _('HTML View') . '" alt="' . _('HTML View') . '" /> ' . _('HTML View') . '</p>';
+	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/preview.png" title="' . _('HTML View') . '" alt="' . _('HTML View') . '" /> ' . _('HTML View') . '</p>';
 
 	echo '<table class="selection" summary="' . _('HTML View') . '">
 			<tr>

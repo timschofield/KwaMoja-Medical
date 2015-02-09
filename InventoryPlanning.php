@@ -56,7 +56,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 					FROM locstock
 					INNER JOIN locationusers
 						ON locationusers.loccode=locstock.loccode
-						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.userid='" . $_SESSION['UserID'] . "'
 						AND locationusers.canview=1
 					INNER JOIN stockmaster
 						ON locstock.stockid=stockmaster.stockid
@@ -64,7 +64,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 					INNER JOIN stockcategory
 						ON stockmaster.categoryid=stockcategory.categoryid
 					WHERE (stockmaster.mbflag='B' OR stockmaster.mbflag='M')
-						AND stockmaster.categoryid IN ('". implode("','",$_POST['Categories'])."')
+						AND stockmaster.categoryid IN ('" . implode("','", $_POST['Categories']) . "')
 					GROUP BY stockmaster.categoryid,
 						stockmaster.description,
 						stockcategory.categorydescription,
@@ -81,14 +81,14 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 					FROM locstock
 					INNER JOIN locationusers
 						ON locationusers.loccode=locstock.loccode
-						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.userid='" . $_SESSION['UserID'] . "'
 						AND locationusers.canview=1
 					INNER JOIN stockmaster
 						ON locstock.stockid=stockmaster.stockid
 						AND stockmaster.discontinued = 0
 					INNER JOIN stockcategory
 						ON stockmaster.categoryid=stockcategory.categoryid
-					WHERE stockmaster.categoryid IN ('". implode("','",$_POST['Categories'])."')
+					WHERE stockmaster.categoryid IN ('" . implode("','", $_POST['Categories']) . "')
 						AND (stockmaster.mbflag='B' OR stockmaster.mbflag='M')
 						AND locstock.loccode = '" . $_POST['Location'] . "'
 					ORDER BY stockmaster.categoryid,
@@ -156,7 +156,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 					FROM stockmoves
 					INNER JOIN locationusers
 						ON locationusers.loccode=stockmoves.loccode
-						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.userid='" . $_SESSION['UserID'] . "'
 						AND locationusers.canview=1
 					WHERE stockid='" . $InventoryPlan['stockid'] . "'
 						AND (type=10 OR type=11)
@@ -171,7 +171,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 					FROM stockmoves
 					INNER JOIN locationusers
 						ON locationusers.loccode=stockmoves.loccode
-						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.userid='" . $_SESSION['UserID'] . "'
 						AND locationusers.canview=1
 					WHERE stockid='" . $InventoryPlan['stockid'] . "'
 						AND stockmoves.loccode ='" . $_POST['Location'] . "'
@@ -203,7 +203,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 							ON salesorderdetails.orderno=salesorders.orderno
 						INNER JOIN locationusers
 							ON locationusers.loccode=salesorders.fromstkloc
-							AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+							AND locationusers.userid='" . $_SESSION['UserID'] . "'
 							AND locationusers.canview=1
 						WHERE salesorderdetails.stkcode = '" . $InventoryPlan['stockid'] . "'
 							AND salesorderdetails.completed = 0
@@ -215,7 +215,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 							ON salesorderdetails.orderno=salesorders.orderno
 						INNER JOIN locationusers
 							ON locationusers.loccode=salesorders.fromstkloc
-							AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+							AND locationusers.userid='" . $_SESSION['UserID'] . "'
 							AND locationusers.canview=1
 						WHERE salesorders.fromstkloc ='" . $_POST['Location'] . "'
 							AND salesorderdetails.stkcode = '" . $InventoryPlan['stockid'] . "'
@@ -251,7 +251,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 							ON salesorders.orderno = salesorderdetails.orderno
 						INNER JOIN locationusers
 							ON locationusers.loccode=salesorders.fromstkloc
-							AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+							AND locationusers.userid='" . $_SESSION['UserID'] . "'
 							AND locationusers.canview=1
 						WHERE salesorderdetails.quantity-salesorderdetails.qtyinvoiced > 0
 							AND bom.component='" . $InventoryPlan['stockid'] . "'
@@ -269,7 +269,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 							ON salesorders.orderno = salesorderdetails.orderno
 						INNER JOIN locationusers
 							ON locationusers.loccode=salesorders.fromstkloc
-							AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+							AND locationusers.userid='" . $_SESSION['UserID'] . "'
 							AND locationusers.canview=1
 						WHERE salesorderdetails.quantity-salesorderdetails.qtyinvoiced > 0
 							AND bom.component='" . $InventoryPlan['stockid'] . "'
@@ -368,6 +368,109 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 		$PDF->OutputD($_SESSION['DatabaseName'] . '_Inventory_Planning_' . Date('Y-m-d') . '.pdf');
 		$PDF->__destruct();
 	}
+} elseif (isset($_POST['ExportToCSV'])) { //send the data to a CSV
+
+	function stripcomma($String) { //because we're using comma as a delimiter
+		return str_replace(',', '', str_replace(';', '', $String));
+	}
+	/*Now figure out the inventory data to report for the category range under review
+	need QOH, QOO, QDem, Sales Mth -1, Sales Mth -2, Sales Mth -3, Sales Mth -4*/
+	if ($_POST['Location'] == 'All') {
+		$SQL = "SELECT stockmaster.categoryid,
+						stockmaster.description,
+						stockcategory.categorydescription,
+						locstock.stockid,
+						SUM(locstock.quantity) AS qoh
+					FROM locstock
+					INNER JOIN locationusers ON locationusers.loccode=locstock.loccode AND locationusers.userid='" . $_SESSION['UserID'] . "' AND locationusers.canview=1,
+						stockmaster,
+						stockcategory
+					WHERE locstock.stockid=stockmaster.stockid
+					AND stockmaster.discontinued = 0
+					AND stockmaster.categoryid=stockcategory.categoryid
+					AND (stockmaster.mbflag='B' OR stockmaster.mbflag='M')
+					AND stockmaster.categoryid IN ('" . implode("','", $_POST['Categories']) . "')
+					GROUP BY stockmaster.categoryid,
+						stockmaster.description,
+						stockcategory.categorydescription,
+						locstock.stockid,
+						stockmaster.stockid
+					ORDER BY stockmaster.categoryid,
+						stockmaster.stockid";
+	} else {
+		$SQL = "SELECT stockmaster.categoryid,
+					locstock.stockid,
+					stockmaster.description,
+					stockcategory.categorydescription,
+					locstock.quantity  AS qoh
+				FROM locstock
+				INNER JOIN locationusers ON locationusers.loccode=locstock.loccode AND locationusers.userid='" . $_SESSION['UserID'] . "' AND locationusers.canview=1,
+					stockmaster,
+					stockcategory
+				WHERE locstock.stockid=stockmaster.stockid
+				AND stockmaster.discontinued = 0
+				AND stockmaster.categoryid IN ('" . implode("','", $_POST['Categories']) . "')
+				AND stockmaster.categoryid=stockcategory.categoryid
+				AND (stockmaster.mbflag='B' OR stockmaster.mbflag='M')
+				AND locstock.loccode = '" . $_POST['Location'] . "'
+				ORDER BY stockmaster.categoryid,
+					stockmaster.stockid";
+	}
+	$InventoryResult = DB_query($SQL);
+	$CurrentPeriod = GetPeriod(Date($_SESSION['DefaultDateFormat']));
+	$Periods = array();
+	for ($i = 0; $i < 24; $i++) {
+		$Periods[$i]['Period'] = $CurrentPeriod - $i;
+		$Periods[$i]['Month'] = GetMonthText(Date('m', mktime(0, 0, 0, Date('m') - $i, Date('d'), Date('Y')))) . ' ' . Date('Y', mktime(0, 0, 0, Date('m') - $i, Date('d'), Date('Y')));
+	}
+	$SQLStarter = "SELECT stockmoves.stockid,";
+	for ($i = 0; $i < 24; $i++) {
+		$SQLStarter .= "SUM(CASE WHEN prd='" . $Periods[$i]['Period'] . "' THEN -qty ELSE 0 END) AS prd" . $i . ' ';
+		if ($i < 23) {
+			$SQLStarter .= ', ';
+		}
+	}
+	$SQLStarter .= "FROM stockmoves
+					INNER JOIN locationusers ON locationusers.loccode=stockmoves.loccode AND locationusers.userid='" . $_SESSION['UserID'] . "' AND locationusers.canview=1
+					WHERE (type=10 OR type=11)
+					AND stockmoves.hidemovt=0";
+	if ($_POST['Location'] != 'All') {
+		$SQLStarter .= " AND stockmoves.loccode ='" . $_POST['Location'] . "'";
+	}
+
+	$CSVListing = _('Category ID') . ',' . _('Category Description') . ',' . _('Stock ID') . ',' . _('Description') . ',' . _('QOH') . ',';
+	for ($i = 0; $i < 24; $i++) {
+		$CSVListing .= $Periods[$i]['Month'] . ',';
+	}
+	$CSVListing .= "\r\n";
+
+	$Category = '';
+
+	while ($InventoryPlan = DB_fetch_array($InventoryResult)) {
+
+		$SQL = $SQLStarter . " AND stockid='" . $InventoryPlan['stockid'] . "' GROUP BY stockmoves.stockid";
+		$SalesResult = DB_query($SQL, _('The stock usage of this item could not be retrieved because'));
+
+		if (DB_num_rows($SalesResult) == 0) {
+			$CSVListing .= stripcomma($InventoryPlan['categoryid']) . ',' . stripcomma($InventoryPlan['categorydescription']) . ',' . stripcomma($InventoryPlan['stockid']) . ',' . stripcomma($InventoryPlan['description']) . ',' . stripcomma($InventoryPlan['qoh']) . "\r\n";
+		} else {
+			$SalesRow = DB_fetch_array($SalesResult);
+			$CSVListing .= stripcomma($InventoryPlan['categoryid']) . ',' . stripcomma($InventoryPlan['categorydescription']) . ',' . stripcomma($InventoryPlan['stockid']) . ',' . stripcomma($InventoryPlan['description']) . ',' . stripcomma($InventoryPlan['qoh']);
+			for ($i = 0; $i < 24; $i++) {
+				$CSVListing .= ',' . $SalesRow['prd' . $i];
+			}
+			$CSVListing .= "\r\n";
+		}
+
+	}
+	header('Content-Encoding: UTF-8');
+	header('Content-type: text/csv; charset=UTF-8');
+	header("Content-disposition: attachment; filename=InventoryPlanning_" . Date('Y-m-d:h:m:s') . '.csv');
+	header("Pragma: public");
+	header("Expires: 0");
+	echo "\xEF\xBB\xBF"; // UTF-8
+	echo $CSVListing;
+	exit;
 
 } else {
 	/*The option to print PDF was not hit */
@@ -390,7 +493,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 	$CatResult = DB_query($SQL);
 	while ($MyRow = DB_fetch_array($CatResult)) {
 		if (isset($_POST['Categories']) AND in_array($MyRow['categoryid'], $_POST['Categories'])) {
-			echo '<option selected="selected" value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] .'</option>';
+			echo '<option selected="selected" value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 		} else {
 			echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 		}
@@ -408,7 +511,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 				FROM locations
 				INNER JOIN locationusers
 					ON locationusers.loccode=locations.loccode
-					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+					AND locationusers.userid='" . $_SESSION['UserID'] . "'
 					AND locationusers.canview=1";
 	$LocnResult = DB_query($SQL);
 
@@ -442,6 +545,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 		</table>
 		<div class="centre">
 			<input type="submit" name="PrintPDF" value="' . _('Print PDF') . '" />
+			<input type="submit" name="ExportToCSV" value="' . _('Export 24 months to CSV') . '" />
 		</div>
 		</form>';
 	include('includes/footer.inc');

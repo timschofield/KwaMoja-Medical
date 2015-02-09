@@ -3,6 +3,8 @@
 
 include('includes/session.inc');
 $Title = _('Select QA Samples');
+$ViewTopic = 'QualityAssurance';// Filename in ManualContents.php's TOC.
+$BookMark = 'QA_Samples';// Anchor's id in the manual's html document.
 include('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');
 
@@ -236,7 +238,14 @@ if (!isset($SelectedSampleID)) {
 		$StockItemsResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 	}
 
-	if (true or !isset($LotNumber) or $LotNumber == "") { //revisit later, right now always show all inputs
+	if (true or !isset($LotNumber) or $LotNumber == '') { //revisit later, right now always show all inputs
+		echo '<table class="selection"><tr><td>';
+		if (!isset($LotNumber)) {
+			$LotNumber = '';
+		}
+		if (!isset($SampleID)) {
+			$SampleID = '';
+		}
 		echo '<table class="selection">
 				<tr>
 					<td>';

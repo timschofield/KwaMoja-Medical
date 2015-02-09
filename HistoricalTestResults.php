@@ -2,12 +2,16 @@
 
 include('includes/session.inc');
 $Title = _('Historical Test Results');
+$ViewTopic = 'QualityAssurance';// Filename in ManualContents.php's TOC.
+$BookMark = 'QA_HistoricalResults';// Anchor's id in the manual's html document.
 include('includes/header.inc');
 
 if (isset($_GET['KeyValue'])) {
 	$KeyValue = mb_strtoupper($_GET['KeyValue']);
 } elseif (isset($_POST['KeyValue'])) {
 	$KeyValue = mb_strtoupper($_POST['KeyValue']);
+} else {
+	$KeyValue = '';
 }
 
 if (!isset($_POST['FromDate'])) {
@@ -135,7 +139,7 @@ if (isset($KeyValue)) {
 	if ($TotResults > 0) {
 		echo '<br/>' . _('Historical Test Results for') . ' ' . $KeyValue . '-' . $MyRowSelection['description'] . '<br/>';
 		$k = 0; //row colour counter
-		echo '<div><div style="overflow:auto; width:98%; padding:10px; "><table width="90%" style="overflow: scroll;"><tr><th style="white-space:nowrap; text-align:right">' . _('Sample ID:') . '<br>' . _('Lot/Serial:') . '<br>' . _('Identifier:') . '<br>' . _('Sample Date:') . '</th>';
+		echo '<div style="overflow:auto; width:98%; padding:10px; "><table width="90%" style="overflow: scroll;"><tr><th style="white-space:nowrap; text-align:right">' . _('Sample ID:') . '<br>' . _('Lot/Serial:') . '<br>' . _('Identifier:') . '<br>' . _('Sample Date:') . '</th>';
 		foreach ($SamplesArray as $SampleKey => $SampleValue) {
 			echo '<th>' . $SampleKey . '<br>' . $SampleValue['lotkey'] . '<br>' . $SampleValue['identifier'] . '<br>' . ConvertSQLDate($SampleValue['sampledate']) . '</th>';
 		}
@@ -158,7 +162,9 @@ if (isset($KeyValue)) {
 			}
 			echo '</tr>';
 		}
-		echo '</tr></table></div></div>';
+		echo '</tr>
+			</table>
+		</div>';
 	}
 }
 include('includes/footer.inc');

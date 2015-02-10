@@ -370,12 +370,12 @@ if (isset($_GET['CopyResults']) or isset($_POST['CopyResults'])) {
 				$CompareVal = 'no';
 			}
 			if ($MyRow['type'] == 4) {
-				//$RangeDisplay=$myrow['rangemin'] . '-'  . $myrow['rangemax'] . ' ' . $myrow['units'];
+				//$RangeDisplay=$MyRow['rangemin'] . '-'  . $MyRow['rangemax'] . ' ' . $MyRow['units'];
 				$RangeDisplay = '';
 				if ($MyRow['rangemin'] > '' or $MyRow['rangemax'] > '') {
 					if ($MyRow['rangemin'] > '' and $MyRow['rangemax'] == '') {
 						$RangeDisplay = '> ' . $MyRow['rangemin'] . ' ' . $MyRow['units'];
-					} elseif ($myrow['rangemin'] == '' and $myrow['rangemax'] > '') {
+					} elseif ($MyRow['rangemin'] == '' and $MyRow['rangemax'] > '') {
 						$RangeDisplay = '< ' . $MyRow['rangemax'] . ' ' . $MyRow['units'];
 					} else {
 						$RangeDisplay = $MyRow['rangemin'] . ' - ' . $MyRow['rangemax'] . ' ' . $MyRow['units'];
@@ -401,7 +401,7 @@ if (isset($_GET['CopyResults']) or isset($_POST['CopyResults'])) {
 							$IsInSpec = 0;
 						}
 					} elseif ($MyRow2['rangemin'] == '' and $MyRow2['rangemax'] > '') {
-						if (($MyRow['testvalue'] <> $MyRow2['targetvalue']) and ($myrow['testvalue'] >= $MyRow2['rangemax'])) {
+						if (($MyRow['testvalue'] <> $MyRow2['targetvalue']) and ($MyRow['testvalue'] >= $MyRow2['rangemax'])) {
 							$IsInSpec = 0;
 						}
 					}
@@ -817,7 +817,7 @@ while ($MyRow = DB_fetch_array($Result)) {
 		$RangeDisplay = '';
 		if ($MyRow['rangemin'] > '' or $MyRow['rangemax'] > '') {
 			if ($MyRow['rangemin'] > '' and $MyRow['rangemax'] == '') {
-				$RangeDisplay = '> ' . $myrow['rangemin'] . ' ' . $MyRow['units'];
+				$RangeDisplay = '> ' . $MyRow['rangemin'] . ' ' . $MyRow['units'];
 			} elseif ($MyRow['rangemin'] == '' and $MyRow['rangemax'] > '') {
 				$RangeDisplay = '< ' . $MyRow['rangemax'] . ' ' . $MyRow['units'];
 			} else {

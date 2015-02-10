@@ -665,10 +665,10 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 	if (isset($_POST['Search']) or isset($_POST['Next']) or isset($_POST['Previous'])) {
 		if (!empty($_POST['CustItemFlag'])) {
 			$IncludeCustItem = " INNER JOIN custitem ON custitem.stockid=stockmaster.stockid
-								AND custitem.debtorno='" . $_SESSION['Items' . $Identifier]->DebtorNo . "'";
+								AND custitem.debtorno='" . $_SESSION['Items' . $Identifier]->DebtorNo . "' ";
 		} else {
 			$IncludeCustItem = " LEFT OUTER JOIN custitem ON custitem.stockid=stockmaster.stockid
-								AND custitem.debtorno='" . $_SESSION['Items' . $Identifier]->DebtorNo . "'";
+								AND custitem.debtorno='" . $_SESSION['Items' . $Identifier]->DebtorNo . "' ";
 		}
 
 		//insert wildcard characters in spaces
@@ -690,7 +690,9 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 					FROM stockmaster
 					INNER JOIN stockcategory
 						ON stockmaster.categoryid=stockcategory.categoryid" . $IncludeCustItem . "
-					WHERE stockmaster.mbflag <>'G'
+					WHERE (stockcategory.stocktype='F' OR stockcategory.stocktype='D' OR stockcategory.stocktype='L')
+						AND stockmaster.mbflag <>'G'
+						AND stockmaster.discontinued=0
 						AND stockmaster.discontinued=0
 						AND stockmaster.description " . LIKE . " '" . $KeywordsString . "'
 						AND stockmaster.categoryid " . LIKE . " '" . $_POST['StockCat'] . "'

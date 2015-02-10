@@ -3,8 +3,8 @@ echo '<div id="mask">
 				<div id="dialog" name="dialog"></div>
 			</div>';
 
-
 if (isset($Messages) and count($Messages) > 0) {
+	echo '<br />';
 	foreach ($Messages as $Message) {
 		$Prefix = '';
 		switch ($Message[1]) {

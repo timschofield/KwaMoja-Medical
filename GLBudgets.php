@@ -30,9 +30,7 @@ echo '<p class="page_title_text noPrint" >
 		<img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Budgets') . '" alt="' . _('Budgets') . '" />' . ' ' . $Title . '
 	</p>';
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint" id="selectaccount">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-echo '<br />';
 echo '<table summary="' . _('General ledger account election') . '">
 		<tr>
 			<td>' . _('Select GL Account') . ':</td>
@@ -48,7 +46,8 @@ $SQL = "SELECT accountcode,
 
 $Result = DB_query($SQL);
 if (DB_num_rows($Result) == 0) {
-	echo '</select></td>
+	echo '</select>
+			</td>
 		</tr>';
 	prnMsg(_('No General ledger accounts have been set up yet') . ' - ' . _('budgets cannot be allocated until the GL accounts are set up'), 'warn');
 } else {
@@ -65,7 +64,8 @@ if (DB_num_rows($Result) == 0) {
 		}
 		$LastCode = $MyRow['accountcode'];
 	}
-	echo '</select></td>
+	echo '</select>
+			</td>
 		</tr>';
 }
 
@@ -80,15 +80,10 @@ echo '</table>';
 echo '<input type="hidden" name="PrevAccount" value="' . $PrevCode . '" />';
 echo '<input type="hidden" name="NextAccount" value="' . $NextCode . '" />';
 
-echo '<br />
-		<table summary="' . _('Account Navigation') . '">
-		<tr>
-			<td><input type="submit" name="Previous" value="' . _('Prev Account') . '" /></td>
-			<td><input type="submit" name="Select" value="' . _('Select Account') . '" /></td>
-			<td><input type="submit" name="Next" value="' . _('Next Account') . '" /></td>
-		</tr>
-		</table>
-		<br />
+echo '<div class="centre">
+		<input type="submit" name="Previous" value="' . _('Prev Account') . '" />
+		<input type="submit" name="Select" value="' . _('Select Account') . '" />
+		<input type="submit" name="Next" value="' . _('Next Account') . '" />
 	</div>
 	</form>';
 
@@ -101,22 +96,36 @@ if (isset($SelectedAccount) and $SelectedAccount != '') {
 	// If the update button has been hit, then update chartdetails with the budget figures
 	// for this year and next.
 	if (isset($_POST['update'])) {
+		DB_Txn_Begin();
 		$ErrMsg = _('Cannot update GL budgets');
 		$DbgMsg = _('The SQL that failed to update the GL budgets was');
+		$LastYearBudgetCumulative = 0;
+		$ThisYearBudgetCumulative = 0;
+		$NextYearBudgetCumulative = 0;
 		for ($i = 1; $i <= 12; $i++) {
-			$SQL = "UPDATE chartdetails SET budget='" . round(filter_number_format($_POST[$i . 'last']), $_SESSION['CompanyRecord']['decimalplaces']) . "'
+			$LastYearBudget = round(filter_number_format($_POST[$i . 'last']), $_SESSION['CompanyRecord']['decimalplaces']);
+			$LastYearBudgetCumulative += $LastYearBudget;
+			$SQL = "UPDATE chartdetails SET budget='" . $LastYearBudget . "',
+											bfwdbudget='" . $LastYearBudgetCumulative . "'
 					WHERE period='" . ($CurrentYearEndPeriod - (24 - $i)) . "'
 					AND  accountcode = '" . $SelectedAccount . "'";
-			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
-			$SQL = "UPDATE chartdetails SET budget='" . round(filter_number_format($_POST[$i . 'this']), $_SESSION['CompanyRecord']['decimalplaces']) . "'
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+			$ThisYearBudget = round(filter_number_format($_POST[$i . 'this']), $_SESSION['CompanyRecord']['decimalplaces']);
+			$ThisYearBudgetCumulative += $ThisYearBudget;
+			$SQL = "UPDATE chartdetails SET budget='" . $ThisYearBudget . "',
+											bfwdbudget='" . $ThisYearBudgetCumulative . "'
 					WHERE period='" . ($CurrentYearEndPeriod - (12 - $i)) . "'
 					AND  accountcode = '" . $SelectedAccount . "'";
-			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
-			$SQL = "UPDATE chartdetails SET budget='" . round(filter_number_format($_POST[$i . 'next']), $_SESSION['CompanyRecord']['decimalplaces']) . "'
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+			$NextYearBudget = round(filter_number_format($_POST[$i . 'next']), $_SESSION['CompanyRecord']['decimalplaces']);
+			$NextYearBudgetCumulative += $NextYearBudget;
+			$SQL = "UPDATE chartdetails SET budget='" . $NextYearBudget . "',
+											bfwdbudget='" . $NextYearBudgetCumulative . "'
 					WHERE period='" . ($CurrentYearEndPeriod + $i) . "'
 					AND  accountcode = '" . $SelectedAccount . "'";
-			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		}
+		DB_Txn_Commit();
 	}
 	// End of update
 
@@ -125,8 +134,8 @@ if (isset($SelectedAccount) and $SelectedAccount != '') {
 	/* If the periods dont exist then create them */
 	for ($i = 1; $i <= 36; $i++) {
 		$MonthEnd = mktime(0, 0, 0, $_SESSION['YearEnd'] + 1 + $i, 0, $YearEndYear - 2);
-		$period = GetPeriod(Date($_SESSION['DefaultDateFormat'], $MonthEnd), false);
-		$PeriodEnd[$period] = Date('M Y', $MonthEnd);
+		$Period = GetPeriod(Date($_SESSION['DefaultDateFormat'], $MonthEnd), false);
+		$PeriodEnd[$Period] = Date('M Y', $MonthEnd);
 	}
 	include('includes/GLPostings.inc'); //creates chartdetails with correct values
 	// End of create periods
@@ -168,10 +177,8 @@ if (isset($SelectedAccount) and $SelectedAccount != '') {
 	// Table Headers
 
 	echo '<form onSubmit="return VerifyForm(this);" id="form" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-	echo '<br />
-			<table class="selection" width="90%" summary="' . _('Budget Entry') . '">
+	echo '<table class="selection" width="90%" summary="' . _('Budget Entry') . '">
 			<tr>
 				<th colspan="3">' . _('Last Financial Year') . '</th>
 				<th colspan="3">' . _('This Financial Year') . '</th>
@@ -242,50 +249,10 @@ if (isset($SelectedAccount) and $SelectedAccount != '') {
 
 	echo '<input type="hidden" name="SelectedAccount" value="' . $SelectedAccount . '" />';
 
-	echo '<br />
-		<div class="centre">
+	echo '<div class="centre">
 			<input type="submit" name="update" value="' . _('Update') . '" />
 		</div>
-		</div>
-		</form>';
-
-	$SQL = "SELECT MIN(periodno) FROM periods";
-	$Result = DB_query($SQL);
-	$MyRow = DB_fetch_array($Result);
-	$FirstPeriod = $MyRow[0];
-
-	$SQL = "SELECT MAX(periodno) FROM periods";
-	$Result = DB_query($SQL);
-	$MyRow = DB_fetch_array($Result);
-	$LastPeriod = $MyRow[0];
-
-	for ($i = $FirstPeriod; $i <= $LastPeriod; $i++) {
-		$SQL = "SELECT accountcode,
-					period,
-					budget,
-					actual,
-					bfwd,
-					bfwdbudget
-				FROM chartdetails
-				WHERE period ='" . $i . "'
-				AND  accountcode = '" . $SelectedAccount . "'";
-
-		$ErrMsg = _('Could not retrieve the ChartDetail records because');
-		$Result = DB_query($SQL, $ErrMsg);
-
-		while ($MyRow = DB_fetch_array($Result)) {
-
-			$CFwdBudget = $MyRow['bfwdbudget'] + $MyRow['budget'];
-			$SQL = "UPDATE chartdetails
-					SET bfwdbudget='" . $CFwdBudget . "'
-					WHERE period='" . ($MyRow['period'] + 1) . "'
-					AND  accountcode = '" . $SelectedAccount . "'";
-
-			$ErrMsg = _('Could not update the chartdetails record because');
-			$updresult = DB_query($SQL, $ErrMsg);
-		}
-	}
-	/* end of for loop */
+	</form>';
 }
 
 include('includes/footer.inc');

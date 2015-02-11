@@ -113,7 +113,7 @@ if (isset($_POST['PrintPDF'])) {
 				INNER JOIN passbom
 					ON bom.parent = passbom.part
 				INNER JOIN locationusers
-					ON locationusers.loccode=loccode
+					ON locationusers.loccode=bom.loccode
 					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
 					AND locationusers.canview=1
 				WHERE bom.effectiveto > CURRENT_DATE

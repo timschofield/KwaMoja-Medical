@@ -26,23 +26,6 @@ if (isset($_POST['submit'])) {
 		$InputError = 1;
 		prnMsg(_('The location code may not be empty'), 'error');
 	}
-	if ($_POST['CashSaleCustomer'] != '') {
-
-		if ($_POST['CashSaleBranch'] == '') {
-			prnMsg(_('A cash sale customer and branch are necessary to fully setup the counter sales functionality'), 'error');
-			$InputError = 1;
-		} else { //customer branch is set too ... check it ties up with a valid customer
-			$SQL = "SELECT * FROM custbranch
-					WHERE debtorno='" . $_POST['CashSaleCustomer'] . "'
-					AND branchcode='" . $_POST['CashSaleBranch'] . "'";
-
-			$Result = DB_query($SQL);
-			if (DB_num_rows($Result) == 0) {
-				$InputError = 1;
-				prnMsg(_('The cash sale customer for this location must be defined with both a valid customer code and a valid branch code for this customer'), 'error');
-			}
-		}
-	} //end of checking the customer - branch code entered
 
 	if (isset($SelectedLocation) and $InputError != 1) {
 
@@ -66,8 +49,6 @@ if (isset($_POST['submit'])) {
 									email='" . $_POST['Email'] . "',
 									contact='" . $_POST['Contact'] . "',
 									taxprovinceid = '" . $_POST['TaxProvince'] . "',
-									cashsalecustomer ='" . $_POST['CashSaleCustomer'] . "',
-									cashsalebranch ='" . $_POST['CashSaleBranch'] . "',
 									managed = '" . $_POST['Managed'] . "',
 									internalrequest = '" . $_POST['InternalRequest'] . "',
 									usedforwo = '" . $_POST['UsedForWO'] . "'
@@ -92,8 +73,6 @@ if (isset($_POST['submit'])) {
 		unset($_POST['Email']);
 		unset($_POST['TaxProvince']);
 		unset($_POST['Managed']);
-		unset($_POST['CashSaleCustomer']);
-		unset($_POST['CashSaleBranch']);
 		unset($SelectedLocation);
 		unset($_POST['Contact']);
 		unset($_POST['InternalRequest']);
@@ -123,8 +102,6 @@ if (isset($_POST['submit'])) {
 										email,
 										contact,
 										taxprovinceid,
-										cashsalecustomer,
-										cashsalebranch,
 										managed,
 										internalrequest,
 										usedforwo)
@@ -141,8 +118,6 @@ if (isset($_POST['submit'])) {
 								'" . $_POST['Email'] . "',
 								'" . $_POST['Contact'] . "',
 								'" . $_POST['TaxProvince'] . "',
-								'" . $_POST['CashSaleCustomer'] . "',
-								'" . $_POST['CashSaleBranch'] . "',
 								'" . $_POST['Managed'] . "',
 								'" . $_POST['InternalRequest'] . "',
 								'" . $_POST['UsedForWO'] . "')";
@@ -238,8 +213,6 @@ if (isset($_POST['submit'])) {
 		unset($_POST['Fax']);
 		unset($_POST['Email']);
 		unset($_POST['TaxProvince']);
-		unset($_POST['CashSaleCustomer']);
-		unset($_POST['CashSaleBranch']);
 		unset($_POST['Managed']);
 		unset($SelectedLocation);
 		unset($_POST['Contact']);
@@ -501,8 +474,6 @@ if (!isset($_GET['delete'])) {
 					tel,
 					email,
 					taxprovinceid,
-					cashsalecustomer,
-					cashsalebranch,
 					managed,
 					internalrequest,
 					usedforwo
@@ -525,8 +496,6 @@ if (!isset($_GET['delete'])) {
 		$_POST['Fax'] = $MyRow['fax'];
 		$_POST['Email'] = $MyRow['email'];
 		$_POST['TaxProvince'] = $MyRow['taxprovinceid'];
-		$_POST['CashSaleCustomer'] = $MyRow['cashsalecustomer'];
-		$_POST['CashSaleBranch'] = $MyRow['cashsalebranch'];
 		$_POST['Managed'] = $MyRow['managed'];
 		$_POST['InternalRequest'] = $MyRow['internalrequest'];
 		$_POST['UsedForWO'] = $MyRow['usedforwo'];
@@ -587,12 +556,6 @@ if (!isset($_GET['delete'])) {
 	}
 	if (!isset($_POST['Email'])) {
 		$_POST['Email'] = '';
-	}
-	if (!isset($_POST['CashSaleCustomer'])) {
-		$_POST['CashSaleCustomer'] = '';
-	}
-	if (!isset($_POST['CashSaleBranch'])) {
-		$_POST['CashSaleBranch'] = '';
 	}
 	if (!isset($_POST['Managed'])) {
 		$_POST['Managed'] = 0;
@@ -665,14 +628,6 @@ if (!isset($_GET['delete'])) {
 	}
 
 	echo '</select></td>
-		</tr>
-		<tr>
-			<td>' . _('Default Counter Sales Customer Code') . ':' . '</td>
-			<td><input type="text" name="CashSaleCustomer" value="' . $_POST['CashSaleCustomer'] . '" size="11" minlength="0" maxlength="10" /></td>
-		</tr>
-		<tr>
-			<td>' . _('Counter Sales Branch Code') . ':' . '</td>
-			<td><input type="text" name="CashSaleBranch" value="' . $_POST['CashSaleBranch'] . '" size="11" minlength="0" maxlength="10" /></td>
 		</tr>';
 	echo '<tr>
 			<td>' . _('Allow internal requests?') . ':</td>

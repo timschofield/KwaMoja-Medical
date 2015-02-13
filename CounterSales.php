@@ -123,7 +123,7 @@ if (!isset($_SESSION['Items' . $Identifier])) {
 				ON debtorsmaster.paymentterms=paymentterms.termsindicator
 				INNER JOIN currencies
 				ON debtorsmaster.currcode=currencies.currabrev
-				WHERE debtorsmaster.debtorno = '" . $_SESSION['Items' . $Identifier]->DebtorNo . "'";
+				WHERE debtorsmaster.debtorno = '" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "'";
 
 		$ErrMsg = _('The details of the customer selected') . ': ' . $_SESSION['Items' . $Identifier]->DebtorNo . ' ' . _('cannot be retrieved because');
 		$DbgMsg = _('The SQL used to retrieve the customer details and failed was') . ':';
@@ -157,8 +157,8 @@ if (!isset($_SESSION['Items' . $Identifier])) {
 					   custbranch.taxgroupid,
 					   custbranch.defaultshipvia
 				FROM custbranch
-				WHERE custbranch.branchcode='" . $_SESSION['Items' . $Identifier]->Branch . "'
-				AND custbranch.debtorno = '" . $_SESSION['Items' . $Identifier]->DebtorNo . "'
+				WHERE custbranch.branchcode='" . DB_escape_string($_SESSION['Items' . $Identifier]->Branch) . "'
+				AND custbranch.debtorno = '" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "'
 				AND custbranch.disabletrans = 0";
 			$ErrMsg = _('The customer branch record of the customer selected') . ': ' . $_SESSION['Items' . $Identifier]->Branch . ' ' . _('cannot be retrieved because');
 			$DbgMsg = _('SQL used to retrieve the branch details was') . ':';
@@ -193,7 +193,7 @@ if (!isset($_SESSION['Items' . $Identifier])) {
 
 			if ($_SESSION['CheckCreditLimits'] > 0 and $AlreadyWarnedAboutCredit == false) {
 				/*Check credit limits is 1 for warn and 2 for prohibit sales */
-				$_SESSION['Items' . $Identifier]->CreditAvailable = GetCreditAvailable($_SESSION['Items' . $Identifier]->DebtorNo);
+				$_SESSION['Items' . $Identifier]->CreditAvailable = GetCreditAvailable(DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo));
 
 				if ($_SESSION['CheckCreditLimits'] == 1 and $_SESSION['Items' . $Identifier]->CreditAvailable <= 0) {
 					prnMsg(_('The') . ' ' . $MyRow['brname'] . ' ' . _('account is currently at or over their credit limit'), 'warn');
@@ -1057,8 +1057,8 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 		$SQL = "SELECT area,
 						defaultshipvia
 				FROM custbranch
-				WHERE custbranch.debtorno ='" . $_SESSION['Items' . $Identifier]->DebtorNo . "'
-				AND custbranch.branchcode = '" . $_SESSION['Items' . $Identifier]->Branch . "'";
+				WHERE custbranch.debtorno ='" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "'
+				AND custbranch.branchcode = '" . DB_escape_string($_SESSION['Items' . $Identifier]->Branch) . "'";
 
 		$ErrMsg = _('We were unable to load the area from the custbranch table where the sale is to ');
 		$Result = DB_query($SQL, $ErrMsg);
@@ -1104,8 +1104,8 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 												salesperson)
 											VALUES (
 												'" . $OrderNo . "',
-												'" . $_SESSION['Items' . $Identifier]->DebtorNo . "',
-												'" . $_SESSION['Items' . $Identifier]->Branch . "',
+												'" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "',
+												'" . DB_escape_string($_SESSION['Items' . $Identifier]->Branch) . "',
 												'" . $_SESSION['Items' . $Identifier]->CustRef . "',
 												'" . $_SESSION['Items' . $Identifier]->Comments . "',
 												'" . Date('Y-m-d H:i') . "',
@@ -1340,8 +1340,8 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 			VALUES (
 				'" . $InvoiceNo . "',
 				10,
-				'" . $_SESSION['Items' . $Identifier]->DebtorNo . "',
-				'" . $_SESSION['Items' . $Identifier]->Branch . "',
+				'" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "',
+				'" . DB_escape_string($_SESSION['Items' . $Identifier]->Branch) . "',
 				'" . $DefaultDispatchDate . "',
 				'" . date('Y-m-d H-i-s') . "',
 				'" . $PeriodNo . "',
@@ -1480,8 +1480,8 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 												'" . $_SESSION['Items' . $Identifier]->Location . "',
 												'" . $DefaultDispatchDate . "',
 												'" . $_SESSION['UserID'] . "',
-												'" . $_SESSION['Items' . $Identifier]->DebtorNo . "',
-												'" . $_SESSION['Items' . $Identifier]->Branch . "',
+												'" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "',
+												'" . DB_escape_string($_SESSION['Items' . $Identifier]->Branch) . "',
 												'" . $PeriodNo . "',
 												'" . _('Assembly') . ': ' . $OrderLine->StockID . ' ' . _('Order') . ': ' . $OrderNo . "',
 												'" . -$AssParts['quantity'] * $OrderLine->Quantity . "',
@@ -1540,8 +1540,8 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 								'" . $_SESSION['Items' . $Identifier]->Location . "',
 								'" . $DefaultDispatchDate . "',
 								'" . $_SESSION['UserID'] . "',
-								'" . $_SESSION['Items' . $Identifier]->DebtorNo . "',
-								'" . $_SESSION['Items' . $Identifier]->Branch . "',
+								'" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "',
+								'" . DB_escape_string($_SESSION['Items' . $Identifier]->Branch) . "',
 								'" . $LocalCurrencyPrice . "',
 								'" . $PeriodNo . "',
 								'" . $OrderNo . "',
@@ -1576,8 +1576,8 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 										'" . $_SESSION['Items' . $Identifier]->Location . "',
 										'" . $DefaultDispatchDate . "',
 										'" . $_SESSION['UserID'] . "',
-										'" . $_SESSION['Items' . $Identifier]->DebtorNo . "',
-										'" . $_SESSION['Items' . $Identifier]->Branch . "',
+										'" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "',
+										'" . DB_escape_string($_SESSION['Items' . $Identifier]->Branch) . "',
 										'" . $LocalCurrencyPrice . "',
 										'" . $PeriodNo . "',
 										'" . $OrderNo . "',
@@ -1678,8 +1678,8 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 				AND salesanalysis.salesperson='" . $_SESSION['Items' . $Identifier]->SalesPerson . "'
 				AND salesanalysis.typeabbrev ='" . $_SESSION['Items' . $Identifier]->DefaultSalesType . "'
 				AND salesanalysis.periodno='" . $PeriodNo . "'
-				AND salesanalysis.cust " . LIKE . " '" . $_SESSION['Items' . $Identifier]->DebtorNo . "'
-				AND salesanalysis.custbranch " . LIKE . " '" . $_SESSION['Items' . $Identifier]->Branch . "'
+				AND salesanalysis.cust " . LIKE . " '" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "'
+				AND salesanalysis.custbranch " . LIKE . " '" . DB_escape_string($_SESSION['Items' . $Identifier]->Branch) . "'
 				AND salesanalysis.stockid " . LIKE . " '" . $OrderLine->StockID . "'
 				AND salesanalysis.budgetoractual=1
 				GROUP BY salesanalysis.stockid,
@@ -1709,8 +1709,8 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 							AND salesanalysis.salesperson='" . $_SESSION['Items' . $Identifier]->SalesPerson . "'
 							AND typeabbrev ='" . $_SESSION['Items' . $Identifier]->DefaultSalesType . "'
 							AND periodno = '" . $PeriodNo . "'
-							AND cust " . LIKE . " '" . $_SESSION['Items' . $Identifier]->DebtorNo . "'
-							AND custbranch " . LIKE . " '" . $_SESSION['Items' . $Identifier]->Branch . "'
+							AND cust " . LIKE . " '" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "'
+							AND custbranch " . LIKE . " '" . DB_escape_string($_SESSION['Items' . $Identifier]->Branch) . "'
 							AND stockid " . LIKE . " '" . $OrderLine->StockID . "'
 							AND salesanalysis.stkcategory ='" . $MyRow[2] . "'
 							AND budgetoractual=1";
@@ -1735,8 +1735,8 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 						'" . $PeriodNo . "',
 						'" . ($SalesValue) . "',
 						'" . ($OrderLine->StandardCost * $OrderLine->Quantity) . "',
-						'" . $_SESSION['Items' . $Identifier]->DebtorNo . "',
-						'" . $_SESSION['Items' . $Identifier]->Branch . "',
+						'" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "',
+						'" . DB_escape_string($_SESSION['Items' . $Identifier]->Branch) . "',
 						'" . $OrderLine->Quantity . "',
 						'" . ($OrderLine->DiscountPercent * $SalesValue) . "',
 						'" . $OrderLine->StockID . "',
@@ -1747,8 +1747,8 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 					FROM stockmaster,
 						custbranch
 					WHERE stockmaster.stockid = '" . $OrderLine->StockID . "'
-					AND custbranch.debtorno = '" . $_SESSION['Items' . $Identifier]->DebtorNo . "'
-					AND custbranch.branchcode='" . $_SESSION['Items' . $Identifier]->Branch . "'";
+					AND custbranch.debtorno = '" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "'
+					AND custbranch.branchcode='" . DB_escape_string($_SESSION['Items' . $Identifier]->Branch) . "'";
 			}
 
 			$ErrMsg = _('Sales analysis record could not be added or updated because');
@@ -1773,7 +1773,7 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 												'" . $DefaultDispatchDate . "',
 												'" . $PeriodNo . "',
 												'" . GetCOGSGLAccount($Area, $OrderLine->StockID, $_SESSION['Items' . $Identifier]->DefaultSalesType) . "',
-												'" . $_SESSION['Items' . $Identifier]->DebtorNo . " - " . $OrderLine->StockID . " x " . $OrderLine->Quantity . " @ " . $OrderLine->StandardCost . "',
+												'" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . " - " . $OrderLine->StockID . " x " . $OrderLine->Quantity . " @ " . $OrderLine->StandardCost . "',
 												'" . $OrderLine->StandardCost * $OrderLine->Quantity . "')";
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The cost of sales GL posting could not be inserted because');
@@ -1795,7 +1795,7 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 											'" . $DefaultDispatchDate . "',
 											'" . $PeriodNo . "',
 											'" . $StockGLCode['stockact'] . "',
-											'" . $_SESSION['Items' . $Identifier]->DebtorNo . " - " . $OrderLine->StockID . " x " . $OrderLine->Quantity . " @ " . $OrderLine->StandardCost . "',
+											'" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . " - " . $OrderLine->StockID . " x " . $OrderLine->Quantity . " @ " . $OrderLine->StandardCost . "',
 											'" . (-$OrderLine->StandardCost * $OrderLine->Quantity) . "')";
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The stock side of the cost of sales GL posting could not be inserted because');
@@ -1821,7 +1821,7 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 											'" . $DefaultDispatchDate . "',
 											'" . $PeriodNo . "',
 											'" . $SalesGLAccounts['salesglcode'] . "',
-											'" . $_SESSION['Items' . $Identifier]->DebtorNo . " - " . $OrderLine->StockID . " x " . $OrderLine->Quantity . " @ " . $OrderLine->Price . "',
+											'" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . " - " . $OrderLine->StockID . " x " . $OrderLine->Quantity . " @ " . $OrderLine->Price . "',
 											'" . (-$OrderLine->Price * $OrderLine->Quantity / $ExRate) . "')";
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The sales GL posting could not be inserted because');
@@ -1842,7 +1842,7 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 													'" . $DefaultDispatchDate . "',
 													'" . $PeriodNo . "',
 													'" . $SalesGLAccounts['discountglcode'] . "',
-													'" . $_SESSION['Items' . $Identifier]->DebtorNo . " - " . $OrderLine->StockID . " @ " . ($OrderLine->DiscountPercent * 100) . "%',
+													'" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . " - " . $OrderLine->StockID . " @ " . ($OrderLine->DiscountPercent * 100) . "%',
 													'" . ($OrderLine->Price * $OrderLine->Quantity * $OrderLine->DiscountPercent / $ExRate) . "')";
 
 					$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The sales discount GL posting could not be inserted because');
@@ -1871,7 +1871,7 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 												'" . $DefaultDispatchDate . "',
 												'" . $PeriodNo . "',
 												'" . $_SESSION['CompanyRecord']['debtorsact'] . "',
-												'" . $_SESSION['Items' . $Identifier]->DebtorNo . "',
+												'" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "',
 												'" . (($_SESSION['Items' . $Identifier]->total + filter_number_format($_POST['TaxTotal'])) / $ExRate) . "')";
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The total debtor GL posting could not be inserted because');
@@ -1894,7 +1894,7 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 													'" . $DefaultDispatchDate . "',
 													'" . $PeriodNo . "',
 													'" . $_SESSION['Items' . $Identifier]->TaxGLCodes[$TaxAuthID] . "',
-													'" . $_SESSION['Items' . $Identifier]->DebtorNo . "',
+													'" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "',
 													'" . (-$TaxAmount / $ExRate) . "')";
 
 					$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The tax GL posting could not be inserted because');
@@ -2024,7 +2024,7 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 							salesperson)
 					VALUES ('" . $ReceiptNumber . "',
 						12,
-						'" . $_SESSION['Items' . $Identifier]->DebtorNo . "',
+						'" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "',
 						'" . $DefaultDispatchDate . "',
 						'" . date('Y-m-d H-i-s') . "',
 						'" . $PeriodNo . "',
@@ -2044,7 +2044,7 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 
 			$SQL = "UPDATE debtorsmaster SET lastpaiddate = '" . $DefaultDispatchDate . "',
 											lastpaid='" . filter_number_format($_POST['AmountPaid']) . "'
-									WHERE debtorsmaster.debtorno='" . $_SESSION['Items' . $Identifier]->DebtorNo . "'";
+									WHERE debtorsmaster.debtorno='" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "'";
 
 			$DbgMsg = _('The SQL that failed to update the date of the last payment received was');
 			$ErrMsg = _('Cannot update the customer record for the date of the last payment received because');

@@ -104,7 +104,7 @@ if ($AlreadyOnThisOrder != 1) {
 				$Discount = 0;
 			}
 
-			$Price = GetPrice($NewItem, $_SESSION['Items' . $Identifier]->DebtorNo, $_SESSION['Items' . $Identifier]->Branch, $NewItemQty);
+			$Price = GetPrice($NewItem, DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo), DB_escape_string($_SESSION['Items' . $Identifier]->Branch), $NewItemQty);
 
 			/* Need to check for sell through support deals */
 
@@ -115,7 +115,7 @@ if ($AlreadyOnThisOrder != 1) {
 					INNER JOIN currencies
 						ON currencies.currabrev=suppliers.currcode
 					WHERE stockid='" . $NewItem . "'
-					AND (debtorno='" . $_SESSION['Items' . $Identifier]->DebtorNo . "'
+					AND (debtorno='" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "'
 						OR debtorno='')
 					AND effectivefrom <=CURRENT_DATE
 					AND effectiveto >=CURRENT_DATE";
@@ -145,7 +145,7 @@ if ($AlreadyOnThisOrder != 1) {
 					INNER JOIN currencies
 					ON currencies.currabrev=suppliers.currcode
 					WHERE stockmaster.stockid='" . $NewItem . "'
-					AND (debtorno='" . $_SESSION['Items' . $Identifier]->DebtorNo . "'
+					AND (debtorno='" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "'
 						OR debtorno='')
 					AND effectivefrom <=CURRENT_DATE
 					AND effectiveto >=CURRENT_DATE";

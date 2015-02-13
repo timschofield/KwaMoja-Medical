@@ -38,8 +38,6 @@ if (!isset($SysAdminEmail)) {
 	$SysAdminEmail = '';
 }
 
-ini_set('session.gc_maxlifetime', $SessionLifeTime);
-
 if (!ini_get('safe_mode')) {
 	set_time_limit($MaximumExecutionTime);
 	ini_set('max_execution_time', $MaximumExecutionTime);

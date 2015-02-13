@@ -240,11 +240,11 @@ echo '<input tabindex="3" type="submit" name="Refresh Inquiry" value="', _('Refr
 
 echo '<table class="selection">
 		<tr>
-			<th class="ascending">', _('Type'), '</th>
-			<th class="ascending">', _('Number'), '</th>
-			<th class="ascending">', _('Date'), '</th>
+			<th class="SortableColumn">', _('Type'), '</th>
+			<th class="SortableColumn">', _('Number'), '</th>
+			<th class="SortableColumn">', _('Date'), '</th>
 			<th>', _('Branch'), '</th>
-			<th class="ascending">', _('Reference'), '</th>
+			<th class="SortableColumn">', _('Reference'), '</th>
 			<th>', _('Comments'), '</th>
 			<th>', _('Order'), '</th>
 			<th>', _('Charges'), '</th>

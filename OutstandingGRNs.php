@@ -13,10 +13,10 @@ if (isset($_POST['FromCriteria']) and mb_strlen($_POST['FromCriteria']) >= 1 and
 	$Result = DB_query($SQL);
 	$MyRow = DB_fetch_array($Result);
 
-	if ($_POST['FromCriteria']=='') {
+	if ($_POST['FromCriteria'] == '') {
 		$_POST['FromCriteria'] = $MyRow['fromcriteria'];
 	}
-	if ($_POST['ToCriteria']=='') {
+	if ($_POST['ToCriteria'] == '') {
 		$_POST['Toriteria'] = $MyRow['tocriteria'];
 	}
 
@@ -166,16 +166,17 @@ if (isset($_POST['PrintPDF']) and DB_num_rows($GRNsResult) > 0) {
 	$PDF->__destruct();
 } elseif (isset($_POST['ShowOnScreen']) and DB_num_rows($GRNsResult) > 0) {
 
+	$Title = _('Outstanding GRNs Report');
 	include('includes/header.inc');
 
 	echo '<p class="page_title_text noPrint"  align="center"><strong>' . _('Goods Received but not invoiced Yet') . '</strong></p>';
 
 	echo '<div class="page_help_text noPrint">' . _('Shows the list of goods received not yet invoiced, both in supplier currency and home currency. When run for all suppliers, the total in home curency should match the GL Account for Goods received not invoiced.') . '</div>';
 
-	echo '<div>';
 	echo '<table class="selection">
 			<tr>
 				<th>' . _('Supplier') . '</th>
+				<th>' . _('Supplier Name') . '</th>
 				<th>' . _('PO#') . '</th>
 				<th>' . _('Item Code') . '</th>
 				<th>' . _('Qty Received') . '</th>
@@ -200,29 +201,29 @@ if (isset($_POST['PrintPDF']) and DB_num_rows($GRNsResult) > 0) {
 		}
 		$QtyPending = $GRNs['qtyrecd'] - $GRNs['quantityinv'];
 		$TotalHomeCurrency = $TotalHomeCurrency + ($QtyPending * $GRNs['stdcostunit']);
-		printf('<td>%s</td>
-				<td class="number">%s</td>
-				<td>%s</td>
-				<td class="number">%s</td>
-				<td class="number">%s</td>
-				<td class="number">%s</td>
-				<td class="number">%s</td>
-				<td>%s</td>
-				<td class="number">%s</td>
-				<td>%s</td>
-				<td class="number">%s</td>
-				<td>%s</td>
-				</tr>', $GRNs['supplierid'], $GRNs['orderno'], $GRNs['itemcode'], $GRNs['qtyrecd'], $GRNs['quantityinv'], $QtyPending, locale_number_format($GRNs['unitprice'], $GRNs['decimalplaces']), $GRNs['currcode'], locale_number_format(($QtyPending * $GRNs['unitprice']), $GRNs['decimalplaces']), $GRNs['currcode'], locale_number_format(($GRNs['qtyrecd'] - $GRNs['quantityinv']) * $GRNs['stdcostunit'], $_SESSION['CompanyRecord']['decimalplaces']), $_SESSION['CompanyRecord']['currencydefault']);
+		echo '<td>' . $GRNs['supplierid'] . '</td>
+				<td>' . $GRNs['suppname'] . '</td>
+				<td class="number">' . $GRNs['orderno'] . '</td>
+				<td>' . $GRNs['itemcode'] . '</td>
+				<td class="number">' . $GRNs['qtyrecd'] . '</td>
+				<td class="number">' . $GRNs['quantityinv'] . '</td>
+				<td class="number">' . $QtyPending . '</td>
+				<td class="number">' . locale_number_format($GRNs['unitprice'], $GRNs['decimalplaces']) . '</td>
+				<td>' . $GRNs['currcode'] . '</td>
+				<td class="number">' . locale_number_format(($QtyPending * $GRNs['unitprice']), $GRNs['decimalplaces']) . '</td>
+				<td>' . $GRNs['currcode'] . '</td>
+				<td class="number">' . locale_number_format(($GRNs['qtyrecd'] - $GRNs['quantityinv']) * $GRNs['stdcostunit'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
+				<td>' . $_SESSION['CompanyRecord']['currencydefault'] . '</td>
+				</tr>';
 
 	}
-	printf('<td colspan="9">%s</td>
-			<td>%s</td>
-			<td class="number">%s</td>
-			<td>%s</td>
-			</tr>', '', _('Total') . ':', locale_number_format($TotalHomeCurrency, $_SESSION['CompanyRecord']['decimalplaces']), $_SESSION['CompanyRecord']['currencydefault']);
+	echo '<td colspan="9"></td>
+			<td>' . _('Total') . ':</td>
+			<td class="number">' . locale_number_format($TotalHomeCurrency, $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
+			<td>' . $_SESSION['CompanyRecord']['currencydefault'] . '</td>
+		</tr>';
 
-	echo '</table>
-			</div>';
+	echo '</table>';
 
 	include('includes/footer.inc');
 
@@ -243,8 +244,7 @@ if (isset($_POST['PrintPDF']) and DB_num_rows($GRNsResult) > 0) {
 
 	echo '<div class="page_help_text noPrint">' . _('Shows the list of goods received not yet invoiced, both in supplier currency and home currency. When run for all suppliers the total in home curency should match the GL Account for Goods received not invoiced.') . '</div>';
 
-	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">
-		  <div>';
+	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table class="selection">';
 
@@ -257,11 +257,9 @@ if (isset($_POST['PrintPDF']) and DB_num_rows($GRNsResult) > 0) {
 			<td><input type="text" name="ToCriteria" required="required" minlength="1" maxlength="20" value="' . $MyRow['tocriteria'] . '" /></td>
 		</tr>
 		</table>
-		<br />
 		<div class="centre">
 			<input type="submit" name="PrintPDF" value="' . _('Print PDF') . '" />
 			<input type="submit" name="ShowOnScreen" value="' . _('Show On Screen') . '" />
-		</div>
 		</div>
 		</form>';
 

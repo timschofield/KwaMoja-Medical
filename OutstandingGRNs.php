@@ -218,7 +218,7 @@ if (isset($_POST['PrintPDF']) and DB_num_rows($GRNsResult) > 0) {
 
 	}
 	echo '<tr>
-			<td colspan="9"></td>
+			<td colspan="10"></td>
 			<td>' . _('Total') . ':</td>
 			<td class="number">' . locale_number_format($TotalHomeCurrency, $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
 			<td>' . $_SESSION['CompanyRecord']['currencydefault'] . '</td>

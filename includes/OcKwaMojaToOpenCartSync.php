@@ -112,7 +112,8 @@ function SyncProductBasicInformation($ShowMessages, $LastTimeRun, $oc_tableprefi
 				stockmaster.unitsdimension,
 				stockmaster.discountcategory,
 				salescatprod.salescatid,
-				salescatprod.manufacturers_id
+				salescatprod.manufacturers_id,
+				stockmaster.discontinued
 			FROM stockmaster
 			INNER JOIN salescatprod
 				ON stockmaster.stockid = salescatprod.stockid
@@ -186,6 +187,7 @@ function SyncProductBasicInformation($ShowMessages, $LastTimeRun, $oc_tableprefi
 			} else {
 				$Status = 0;
 			}
+			$Status = $MyRow['discontinued'];
 			$Viewed = 0;
 
 			$LanguageId = 1;
@@ -217,7 +219,6 @@ function SyncProductBasicInformation($ShowMessages, $LastTimeRun, $oc_tableprefi
 								sku = '" . $SKU . "',
 								mpn = '" . $MPN . "',
 								image = '" . $Image . "',
-								gpf_status = '" . $GPFStatus . "',
 								google_product_category = '" . $GoogleProductCategory . "',
 								brand = '" . $GoogleBrand . "',
 								gender = '" . $GoogleGender . "',
@@ -283,14 +284,6 @@ function SyncProductBasicInformation($ShowMessages, $LastTimeRun, $oc_tableprefi
 								sort_order,
 								status,
 								viewed,
-								gpf_status,
-								google_product_category,
-								brand,
-								gender,
-								agegroup,
-								`condition`,
-								oos_status,
-								identifier_exists,
 								date_added,
 								date_modified)
 							VALUES
@@ -322,14 +315,6 @@ function SyncProductBasicInformation($ShowMessages, $LastTimeRun, $oc_tableprefi
 								'" . $SortOrder . "',
 								'" . $Status . "',
 								'" . $Viewed . "',
-								'" . $GPFStatus . "',
-								'" . $GoogleProductCategory . "',
-								'" . $GoogleBrand . "',
-								'" . $GoogleGender . "',
-								'" . $GoogleAgeGroup . "',
-								'" . $GoogleCondition . "',
-								'" . $GoogleOosStatus . "',
-								'" . $GoogleIdentifier . "',
 								'" . $ServerNow . "',
 								'" . $ServerNow . "'
 								)";
@@ -376,6 +361,52 @@ function SyncProductBasicInformation($ShowMessages, $LastTimeRun, $oc_tableprefi
 
 				$SortOrder++;
 			}
+
+			/* Update any translated descriptions */
+			/* First fetch the open cart languages */
+			$SQL = "SELECT language_id,
+							code
+						FROM " . $oc_tableprefix . "language
+						WHERE language_id<>1";
+			$LanguagesResult = DB_query_oc($SQL);
+			while ($LanguageRow = DB_fetch_array($LanguagesResult)) {
+				$SQL = "SELECT language_id,
+								descriptiontranslation
+							FROM stockdescriptiontranslations
+							WHERE stockid='" . $MyRow['stockid'] . "'
+								AND language_id LIKE '%" . $LanguageRow['code'] . "%'";
+				$DescriptionResult = DB_query($SQL);
+				$DescriptionRow = DB_fetch_array($DescriptionResult);
+				$ShortDescription = $DescriptionRow['descriptiontranslation'];
+				$SQL = "SELECT language_id,
+								longdescriptiontranslation
+							FROM stocklongdescriptiontranslations
+							WHERE stockid='" . $MyRow['stockid'] . "'
+								AND language_id LIKE '%" . $LanguageRow['code'] . "%'";
+				$DescriptionResult = DB_query($SQL);
+				$DescriptionRow = DB_fetch_array($DescriptionResult);
+				$LongDescription = $DescriptionRow['longdescriptiontranslation'];
+				if (DataExistsInOpenCart($oc_tableprefix . 'product_description', 'model', $MyRow['stockid'])) {
+					$UpdateSQL = "UPDATE " . $oc_tableprefix . "product_description SET name='" . $ShortDescription. "',
+																						description='" . $LongDescription . "'
+																					WHERE product_id='" . $ProductId . "'
+																						AND language_id='" . $LanguageRow['language_id'] . "'";
+					$UpdateResult = DB_query_oc($UpdateSQL);
+				} else {
+					$InsertSQL = "INSERT INTO " . $oc_tableprefix . "product_description (product_id,
+																						  language_id,
+																						  name,
+																						  description
+																					) VALUES (
+																						  '" . $ProductId . "',
+																						  '" . $LanguageRow['language_id'] . "',
+																						  '" . DB_escape_string($ShortDescription) . "',
+																						  '" . DB_escape_string($LongDescription) . "'
+																					)";
+					$InsertResult = DB_query_oc($InsertSQL);
+				}
+			}
+
 			if ($ShowMessages) {
 				printf('<td>%s</td>
 						<td>%s</td>
@@ -810,7 +841,6 @@ function SyncSalesCategories($ShowMessages, $LastTimeRun, $oc_tableprefix, $Emai
 			WHERE date_created >= '" . $LastTimeRun . "'
 				OR date_updated >= '" . $LastTimeRun . "'
 			ORDER BY salescatid";
-
 	$Result = DB_query($SQL);
 	$i = 0;
 	if (DB_num_rows($Result) != 0) {
@@ -845,6 +875,9 @@ function SyncSalesCategories($ShowMessages, $LastTimeRun, $oc_tableprefix, $Emai
 			$MetaDescription = CreateMetaDescription('Sales category', trim($MyRow['salescatname']));
 			$MetaKeyword = CreateMetaKeyword('', trim($MyRow['salescatname']));
 			$CategoryId = $MyRow['salescatid'];
+			$LanguagesSQL = "SELECT language_id
+						FROM " . $oc_tableprefix . "language";
+			$LanguagesResult = DB_query_oc($LanguagesSQL);
 			if (DataExistsInOpenCart($oc_tableprefix . 'category', 'category_id', $MyRow['salescatid'])) {
 				$Action = "Update";
 				$SQLUpdate = "UPDATE " . $oc_tableprefix . "category
@@ -854,12 +887,13 @@ function SyncSalesCategories($ShowMessages, $LastTimeRun, $oc_tableprefix, $Emai
 									date_modified 	= '" . $ServerNow . "'
 								WHERE category_id 	= '" . $CategoryId . "'";
 				$ResultUpdate = DB_query_oc($SQLUpdate, $UpdateErrMsg, $DbgMsg, true);
-
-				$SQLUpdate = "UPDATE " . $oc_tableprefix . "category_description
-								SET language_id 		= '" . $Language_Id . "',
-									name	 			= '" . $Name . "'
-								WHERE category_id 	= '" . $CategoryId . "'";
-				$ResultUpdate = DB_query_oc($SQLUpdate, $UpdateErrMsg, $DbgMsg, true);
+				while ($LanguagesRow = DB_fetch_array($LanguagesResult)) {
+					$SQLUpdate = "UPDATE " . $oc_tableprefix . "category_description
+									SET name= '" . $Name . "'
+									WHERE category_id 	= '" . $CategoryId . "'
+										AND language_id 		= '" . $LanguagesRow['language_id'] . "'";
+					$ResultUpdate = DB_query_oc($SQLUpdate, $UpdateErrMsg, $DbgMsg, true);
+				}
 
 				// update SEO Keywords if needed
 				$SEOQuery = 'category_id=' . $CategoryId;
@@ -890,22 +924,24 @@ function SyncSalesCategories($ShowMessages, $LastTimeRun, $oc_tableprefix, $Emai
 								'" . $ServerNow . "'
 								)";
 				$ResultInsert = DB_query_oc($SQLInsert, $InsertErrMsg, $DbgMsg, true);
-				$SQLInsert = "INSERT INTO " . $oc_tableprefix . "category_description
-								(category_id,
-								language_id,
-								name,
-								description,
-								meta_description,
-								meta_keyword)
-							VALUES
-								('" . $CategoryId . "',
-								'" . $Language_Id . "',
-								'" . $Name . "',
-								'" . $Description . "',
-								'" . $MetaDescription . "',
-								'" . $MetaKeyword . "'
+				while ($LanguagesRow = DB_fetch_array($LanguagesResult)) {
+					$SQLInsert = "INSERT INTO " . $oc_tableprefix . "category_description
+									(category_id,
+									language_id,
+									name,
+									description,
+									meta_description,
+									meta_keyword)
+								VALUES
+									('" . $CategoryId . "',
+									'" . $LanguagesRow['language_id'] . "',
+									'" . $Name . "',
+									'" . $Description . "',
+									'" . $MetaDescription . "',
+									'" . $MetaKeyword . "'
 								)";
-				$ResultInsert = DB_query_oc($SQLInsert, $InsertErrMsg, $DbgMsg, true);
+					$ResultInsert = DB_query_oc($SQLInsert, $InsertErrMsg, $DbgMsg, true);
+				}
 				$SQLInsert = "INSERT INTO " . $oc_tableprefix . "category_to_store
 								(category_id,
 								store_id)

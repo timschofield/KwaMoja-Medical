@@ -23,7 +23,7 @@ define('UL_MAINTENANCE', 5);
 function userLogin($Name, $Password, $SysAdminEmail = '') {
 
 	global $Debug;
-	setcookie('Login', $_SESSION['DatabaseName'], time()+3600*24*30);
+	setcookie('Login', $_SESSION['DatabaseName'], time() + 3600 * 24 * 30);
 	if (isset($_COOKIE['Module'])) {
 		$_GET['Application'] = $_COOKIE['Module'];
 	}
@@ -46,7 +46,6 @@ function userLogin($Name, $Password, $SysAdminEmail = '') {
 				FROM www_users
 				WHERE www_users.userid='" . $Name . "'";
 		$ErrMsg = _('Could not retrieve user details on login because');
-		$Debug = 1;
 		$PasswordVerified = false;
 		$AuthResult = DB_query($SQL, $ErrMsg);
 

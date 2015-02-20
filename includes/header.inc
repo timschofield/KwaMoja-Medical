@@ -40,14 +40,15 @@ echo '<link rel="icon" href="', $RootPath, '/favicon.ico" />';
 echo '<link href="', $RootPath, '/css/', $_SESSION['Theme'], '/default.css" rel="stylesheet" type="text/css" media="screen" />';
 echo '<link href="' . $RootPath . '/css/print.css" rel="stylesheet" type="text/css" media="print" />';
 echo '<link href="', $RootPath, '/css/hint.css" rel="stylesheet" type="text/css" />';
-if ($Debug == 1) {
+
+if ($Debug === 1) {
 	echo '<link href="', $RootPath, '/css/holmes.css" rel="stylesheet" type="text/css" />';
 }
 
 echo '<script type="text/javascript" src = "', $RootPath, '/javascripts/MiscFunctions.js"></script>';
 
 echo '</head>';
-if ($Debug == 1) {
+if ($Debug === 1) {
 	echo '<body class="holmes-debug" onload="initial()">';
 } else {
 	echo '<body onload="initial()">';

@@ -20,7 +20,6 @@ if (isset($host)) {
 	 * so make sure variables are correctly named */
 	$Host = $host;
 	$DBPort = $mysqlport;
-	$Debug = 0;
 	$DefaultCompany = $DefaultDatabase;
 }
 

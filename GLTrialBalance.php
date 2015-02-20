@@ -454,20 +454,22 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 	Account Code ,   Account Name , Month Actual, Month Budget, Period Actual, Period Budget */
 
 	echo '<table cellpadding="2" class="selection" summary="' . _('Trial Balance Report') . '">';
-	echo '<tr>
-			<th colspan="6">
-				<b>' . _('Trial Balance for the month of ') . $PeriodToDate . _(' and for the ') . $NumberOfMonths . _(' months to ') . $PeriodToDate . '</b>
-				<img src="' . $RootPath . '/css/' . $Theme . '/images/printer.png" class="PrintIcon noPrint" title="' . _('Print') . '" alt="' . _('Print') . '" onclick="window.print();" />
-			</th>
-		</tr>
-		<tr>
-			<th>' . _('Account') . '</th>
-			<th>' . _('Account Name') . '</th>
-			<th>' . _('Month Actual') . '</th>
-			<th>' . _('Month Budget') . '</th>
-			<th>' . _('Period Actual') . '</th>
-			<th>' . _('Period Budget') . '</th>
-		</tr>';
+	echo '<thead>
+			<tr>
+				<th colspan="6">
+					<b>' . _('Trial Balance for the month of ') . $PeriodToDate . _(' and for the ') . $NumberOfMonths . _(' months to ') . $PeriodToDate . '</b>
+					<img src="' . $RootPath . '/css/' . $Theme . '/images/printer.png" class="PrintIcon noPrint" title="' . _('Print') . '" alt="' . _('Print') . '" onclick="window.print();" />
+				</th>
+			</tr>
+			<tr>
+				<th>' . _('Account') . '</th>
+				<th>' . _('Account Name') . '</th>
+				<th>' . _('Month Actual') . '</th>
+				<th>' . _('Month Budget') . '</th>
+				<th>' . _('Period Actual') . '</th>
+				<th>' . _('Period Budget') . '</th>
+			</tr>
+		</thead>';
 
 	$k = 0; //row colour counter
 	$ActGrp = '';

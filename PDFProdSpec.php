@@ -109,7 +109,7 @@ $HeaderPrinted = 0;
 $LineHeight = $FontSize * 1.25;
 $RectHeight = 12;
 $SectionHeading = 0;
-$CurSection = '';
+$CurSection = 'NULL';
 $SectionTitle = '';
 $SectionTrailer = '';
 
@@ -119,6 +119,27 @@ $SectionsArray = array(
 		3,
 		_('Technical Data Sheet Properties'),
 		_('* Data herein is typical and not to be construed as specifications.'),
+		array(
+			260,
+			110,
+			135
+		),
+		array(
+			_('Physical Property'),
+			_('Value'),
+			_('Test Method')
+		),
+		array(
+			'left',
+			'center',
+			'center'
+		)
+	),
+	array(
+		'',
+		3,
+		_('Header'),
+		_('* Trailer'),
 		array(
 			260,
 			110,
@@ -194,7 +215,7 @@ while ($MyRow = DB_fetch_array($Result)) {
 
 	if ($CurSection != $MyRow['groupby']) {
 		$SectionHeading = 0;
-		if ($CurSection != '' and $PrintTrailer == 1) {
+		if ($CurSection != 'NULL' and $PrintTrailer == 1) {
 			$PDF->line($XPos + 1, $YPos + $RectHeight, $XPos + 506, $YPos + $RectHeight);
 		}
 		$PrevTrailer = $SectionTrailer;
@@ -254,7 +275,7 @@ while ($MyRow = DB_fetch_array($Result)) {
 		}
 	}
 	if (strtoupper($Value) <> 'NB' and strtoupper($Value) <> 'NO BREAK') {
-		$Value.= ' ' . $MyRow['units'];
+		$Value .= ' ' . $MyRow['units'];
 	}
 	$i = 0;
 

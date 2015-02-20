@@ -178,6 +178,27 @@ $SectionsArray = array(
 		)
 	),
 	array(
+		'',
+		3,
+		_('Header'),
+		_('* Trailer'),
+		array(
+			260,
+			110,
+			135
+		),
+		array(
+			_('Physical Property'),
+			_('Value'),
+			_('Test Method')
+		),
+		array(
+			'left',
+			'center',
+			'center'
+		)
+	),
+	array(
 		'Processing',
 		2,
 		_('Injection Molding Processing Guidelines'),
@@ -237,7 +258,7 @@ while ($MyRow = DB_fetch_array($Result)) {
 
 	if ($CurSection != $MyRow['groupby']) {
 		$SectionHeading = 0;
-		if ($CurSection != '' and $PrintTrailer == 1) {
+		if ($CurSection != 'NULL' and $PrintTrailer == 1) {
 			$PDF->line($XPos + 1, $YPos + $RectHeight, $XPos + 506, $YPos + $RectHeight);
 		}
 		$PrevTrailer = $SectionTrailer;
@@ -291,7 +312,7 @@ while ($MyRow = DB_fetch_array($Result)) {
 	//	$Value=$MyRow['rangemin'] . ' - ' . $MyRow['rangemax'];
 	//}
 	if (strtoupper($Value) <> 'NB' and strtoupper($Value) <> 'NO BREAK') {
-		$Value.= ' ' . $MyRow['units'];
+		$Value .= ' ' . $MyRow['units'];
 	}
 	$i = 0;
 	foreach ($SectionColLabs as $CurColLab) {

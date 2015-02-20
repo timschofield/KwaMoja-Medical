@@ -13,45 +13,30 @@ if (!isset($RootPath)) {
 
 $ViewTopic = isset($ViewTopic) ? '?ViewTopic=' . $ViewTopic : '';
 $BookMark = isset($BookMark) ? '#' . $BookMark : '';
-$StrictXHTML = False;
 
 if (isset($Title) and $Title == _('Copy a BOM to New Item Code')) { //solve the cannot modify heaer information in CopyBOM.php scritps
 	ob_start();
 }
 
-echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-			"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
-if (!headers_sent()) {
-	if ($StrictXHTML) {
-		header('Content-type: application/xhtml+xml; charset=utf-8');
-		echo '<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />';
-	} else {
-		header('Content-type: text/html; charset=utf-8');
-		echo '<meta http-equiv="Content-Type" content="application/html; charset=utf-8" />';
-	}
-}
+echo '<!DOCTYPE html>';
+echo '<meta http-equiv="Content-Type" content="application/html; charset=utf-8" />';
 
-echo '<html xmlns="http://www.w3.org/1999/xhtml">
+echo '<html>
 		<head>
-			<title>', $Title, '</title>';
-echo '<link rel="shortcut icon" href="', $RootPath, '/favicon.ico" />';
-echo '<link rel="icon" href="', $RootPath, '/favicon.ico" />';
+			<title>', $Title, '</title>
+			<link rel="icon" href="', $RootPath, '/favicon.ico" />
+			<link href="', $RootPath, '/css/', $_SESSION['Theme'], '/default.css" rel="stylesheet" type="text/css" media="screen" />
+			<link href="', $RootPath, '/css/print.css" rel="stylesheet" type="text/css" media="print" />
+			<link href="', $RootPath, '/css/hint.css" rel="stylesheet" type="text/css" media="screen" />
+			<script type="text/javascript" src = "', $RootPath, '/javascripts/MiscFunctions.js"></script>';
 
-echo '<link href="', $RootPath, '/css/', $_SESSION['Theme'], '/default.css" rel="stylesheet" type="text/css" media="screen" />';
-echo '<link href="' . $RootPath . '/css/print.css" rel="stylesheet" type="text/css" media="print" />';
-echo '<link href="', $RootPath, '/css/hint.css" rel="stylesheet" type="text/css" />';
-
-if ($Debug === 1) {
-	echo '<link href="', $RootPath, '/css/holmes.css" rel="stylesheet" type="text/css" />';
-}
-
-echo '<script type="text/javascript" src = "', $RootPath, '/javascripts/MiscFunctions.js"></script>';
-
-echo '</head>';
-if ($Debug === 1) {
-	echo '<body class="holmes-debug" onload="initial()">';
-} else {
+if ($Debug === 0) {
+	echo '</head>';
 	echo '<body onload="initial()">';
+} else {
+	echo '<link href="', $RootPath, '/css/holmes.css" rel="stylesheet" type="text/css" />';
+	echo '</head>';
+	echo '<body class="holmes-debug" onload="initial()">';
 }
 
 if (isset($_GET['FontSize'])) {
@@ -59,30 +44,23 @@ if (isset($_GET['FontSize'])) {
 				SET fontsize='" . $_GET['FontSize'] . "'
 				WHERE userid = '" . $_SESSION['UserID'] . "'";
 	$Result = DB_query($SQL);
-}
-
-if (isset($_POST['FontSize'])) {
-	$_SESSION['ScreenFontSize'] = $_POST['FontSize'];
-} else if (isset($_GET['FontSize'])) {
-	$_SESSION['ScreenFontSize'] = $_GET['FontSize'];
-}
-
-switch ($_SESSION['ScreenFontSize']) {
-	case 0:
-		$FontSize = '8pt';
-		break;
-	case 1:
-		$FontSize = '10pt';
-		break;
-	case 2:
-		$FontSize = '12pt';
-		break;
-	default:
-		$FontSize = '10pt';
+	switch ($_GET['FontSize']) {
+		case 0:
+			$_SESSION['ScreenFontSize'] = '8pt';
+			break;
+		case 1:
+			$_SESSION['ScreenFontSize'] = '10pt';
+			break;
+		case 2:
+			$_SESSION['ScreenFontSize'] = '12pt';
+			break;
+		default:
+			$_SESSION['ScreenFontSize'] = '10pt';
+	}
 }
 echo '<style>
 			body {
-					font-size: ', $FontSize, ';
+					font-size: ', $_SESSION['ScreenFontSize'], ';
 				}
 			</style>';
 
@@ -90,10 +68,7 @@ echo '<div id="CanvasDiv">';
 echo '<div id="HeaderDiv" class="noPrint">';
 echo '<div id="HeaderWrapDiv">';
 
-
 if (isset($Title)) {
-
-
 	if (!isset($_SESSION['CompanyRecord'])) {
 		include('companies/' . $_SESSION['DatabaseName'] . '/Companies.php');
 		$_SESSION['CompanyRecord']['coyname'] = $CompanyName[$_SESSION['DatabaseName']];
@@ -153,14 +128,14 @@ if (isset($Title)) {
 
 		$DefaultManualLink = '<li><a class="hint--left" data-hint="' . _('Read the manual page for this functionality') . '" target="_blank" href="' . $RootPath . '/doc/Manual/ManualContents.php' . $ViewTopic . $BookMark . '"><img src="' . $RootPath . '/css/' . $Theme . '/images/manual.png" alt="' . _('Help') . '" /></a></li>';
 
-		if (mb_substr($_SESSION['Language'], 0, 2) != 'en') {
+		if (strstr($_SESSION['Language'], 'en')) {
+			echo $DefaultManualLink;
+		} else {
 			if (file_exists('locale/' . $_SESSION['Language'] . '/Manual/ManualContents.php')) {
 				echo '<a class="hint--left" data-hint="', _('Read the manual page for this functionality'), '" href="', $RootPath, '/locale/', $_SESSION['Language'], '/Manual/ManualContents.php', $ViewTopic, $BookMark, '"><img src="', $RootPath, '/css/', $Theme, '/images/manual.png" title="', _('Help'), '" alt="', _('Help'), '" /></a>';
 			} else {
 				echo $DefaultManualLink;
 			}
-		} else {
-			echo $DefaultManualLink;
 		}
 	}
 

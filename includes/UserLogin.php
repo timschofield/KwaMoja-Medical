@@ -113,14 +113,26 @@ function userLogin($Name, $Password, $SysAdminEmail = '') {
 			$_SESSION['CanCreateTender'] = $MyRow['cancreatetender'];
 			$_SESSION['AllowedDepartment'] = $MyRow['department'];
 			if (isset($MyRow['fontsize'])) {
-				$_SESSION['ScreenFontSize'] = $MyRow['fontsize'];
+				switch ($MyRow['fontsize']) {
+					case 0:
+						$_SESSION['ScreenFontSize'] = '8pt';
+						break;
+					case 1:
+						$_SESSION['ScreenFontSize'] = '10pt';
+						break;
+					case 2:
+						$_SESSION['ScreenFontSize'] = '12pt';
+						break;
+					default:
+						$_SESSION['ScreenFontSize'] = '10pt';
+				}
 			} else {
 				$_SESSION['ScreenFontSize'] = 0;
 			}
 			if (isset($MyRow['defaulttag'])) {
 				$_SESSION['DefaultTag'] = $MyRow['defaulttag'];
 			} else {
-				$_SESSION['DefaultTag'] = 1;
+				$_SESSION['DefaultTag'] = '8pt';
 			}
 
 			if (isset($MyRow['pdflanguage'])) {

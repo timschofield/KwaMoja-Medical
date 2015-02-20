@@ -10,49 +10,42 @@ if (!isset($RootPath)) {
 		$RootPath = '';
 	}
 }
-$Debug = 0;
+
 $ViewTopic = isset($ViewTopic) ? '?ViewTopic=' . $ViewTopic : '';
 $BookMark = isset($BookMark) ? '#' . $BookMark : '';
 $StrictXHTML = False;
-if (!headers_sent()) {
-	if ($StrictXHTML) {
-		header('Content-type: application/xhtml+xml; charset=utf-8');
-	} else {
-		header('Content-type: text/html; charset=utf-8');
-	}
-}
+
 if (isset($Title) and $Title == _('Copy a BOM to New Item Code')) { //solve the cannot modify heaer information in CopyBOM.php scritps
 	ob_start();
 }
 
 echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+if (!headers_sent()) {
+	if ($StrictXHTML) {
+		header('Content-type: application/xhtml+xml; charset=utf-8');
+		echo '<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />';
+	} else {
+		header('Content-type: text/html; charset=utf-8');
+		echo '<meta http-equiv="Content-Type" content="application/html; charset=utf-8" />';
+	}
+}
 
 echo '<html xmlns="http://www.w3.org/1999/xhtml">
 		<head>
 			<title>', $Title, '</title>';
 echo '<link rel="shortcut icon" href="', $RootPath, '/favicon.ico" />';
 echo '<link rel="icon" href="', $RootPath, '/favicon.ico" />';
-if ($StrictXHTML) {
-	echo '<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />';
-} else {
-	echo '<meta http-equiv="Content-Type" content="application/html; charset=utf-8" />';
-}
-echo '<link href="', $RootPath, '/css/', $_SESSION['Theme'], '/default.css" rel="stylesheet" type="text/css" />';
+
+echo '<link href="', $RootPath, '/css/', $_SESSION['Theme'], '/default.css" rel="stylesheet" type="text/css" media="screen" />';
+echo '<link href="' . $RootPath . '/css/print.css" rel="stylesheet" type="text/css" media="print" />';
 echo '<link href="', $RootPath, '/css/hint.css" rel="stylesheet" type="text/css" />';
 if ($Debug == 1) {
 	echo '<link href="', $RootPath, '/css/holmes.css" rel="stylesheet" type="text/css" />';
 }
 
 echo '<script type="text/javascript" src = "', $RootPath, '/javascripts/MiscFunctions.js"></script>';
-echo '<style media="screen">
-			.noPrint{ display: block; }
-			.yesPrint{ display: block !important; }
-		</style>
-		<style media="print">
-			.noPrint{ display: none; }
-			.yesPrint{ display: block !important; }
-		</style>';
+
 echo '</head>';
 if ($Debug == 1) {
 	echo '<body class="holmes-debug" onload="initial()">';

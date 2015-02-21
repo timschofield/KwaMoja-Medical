@@ -130,7 +130,19 @@ if (isset($_POST['submit'])) {
 		}
 
 		if ($SelectedUser == $_SESSION['UserID']) {
-			$_SESSION['ScreenFontSize'] = $_POST['FontSize'];
+			switch ($_POST['FontSize']) {
+				case 0:
+					$_SESSION['ScreenFontSize'] = '8pt';
+					break;
+				case 1:
+					$_SESSION['ScreenFontSize'] = '10pt';
+					break;
+				case 2:
+					$_SESSION['ScreenFontSize'] = '12pt';
+					break;
+				default:
+					$_SESSION['ScreenFontSize'] = '10pt';
+			}
 		}
 		$SQL = "UPDATE www_users SET realname='" . $_POST['RealName'] . "',
 						customerid='" . $_POST['Cust'] . "',
@@ -657,6 +669,9 @@ if (isset($_POST['PageSize']) and $_POST['PageSize'] == 'Legal_Landscape') {
 echo '</select></td>
 	</tr>';
 
+if (!isset($_POST['Theme'])) {
+	$_POST['Theme'] = $_SESSION['DefaultTheme'];
+}
 echo '<tr>
 		<td>' . _('Theme') . ':</td>
 		<td><select minlength="0" name="Theme">';
@@ -665,7 +680,7 @@ echo '<tr>
 $Themes = glob('css/*', GLOB_ONLYDIR);
 foreach ($Themes as $ThemeName) {
 	$ThemeName = basename($ThemeName);
-	if ($_SESSION['DefaultTheme'] == $ThemeName) {
+	if ($_POST['Theme'] == $ThemeName) {
 		echo '<option selected="selected" value="', $ThemeName, '">', $ThemeName, '</option>';
 	} else {
 		echo '<option value="', $ThemeName, '">', $ThemeName, '</option>';

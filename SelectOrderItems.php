@@ -1725,9 +1725,14 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 		while ($AssetRow = DB_fetch_array($AssetsResult)) {
 			echo '<option value="' . $AssetRow['assetid'] . '">' . $AssetRow['assetid'] . ' - ' . $AssetRow['description'] . '</option>';
 		} //$AssetRow = DB_fetch_array($AssetsResult)
-		echo '</select></td></tr></table>
-						<br /><div class="centre"><input type="submit" name="AssetDisposalEntered" value="' . _('Add Asset To Order') . '" />
-					 <input type="submit" name="PartSearch" value="' . _('Search Parts') . '" /></div>';
+		echo '</select>
+				</td>
+			</tr>
+		</table>';
+		echo '<div class="centre">
+				<input type="submit" name="AssetDisposalEntered" value="' . _('Add Asset To Order') . '" />
+				<input type="submit" name="PartSearch" value="' . _('Search Parts') . '" />
+			</div>';
 
 		echo '</form>';
 

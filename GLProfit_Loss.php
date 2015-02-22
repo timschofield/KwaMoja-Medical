@@ -1,7 +1,9 @@
 <?php
 
 include('includes/session.inc');
-$Title = _('Profit and Loss');
+$Title = _('Profit and Loss');// Screen identification.
+$ViewTopic= 'GeneralLedger';// Filename's id in ManualContents.php's TOC.
+$BookMark = 'ProfitAndLoss';// Anchor's id in the manual's html document.
 include('includes/SQL_CommonFunctions.inc');
 include('includes/AccountSectionsDef.inc'); // This loads the $Sections variable
 
@@ -12,13 +14,11 @@ if (isset($_POST['FromPeriod']) and ($_POST['FromPeriod'] > $_POST['ToPeriod']))
 
 if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POST['SelectADifferentPeriod'])) {
 
-	$ViewTopic = 'GeneralLedger';
-	$BookMark = 'ProfitAndLoss';
 	include('includes/header.inc');
 
-	echo '<p class="page_title_text noPrint" >
-			<img src="' . $RootPath . '/css/' . $Theme . '/images/printer.png" title="' . _('Print Profit and Loss Report') . '" alt="' . _('Print Profit and Loss Report') . '" />' . ' ' . _('Print Profit and Loss Report') . '
-		</p>';
+	echo '<p class="page_title_text">
+			<img alt="" class="noprint" src="' . $RootPath . '/css/' . $Theme . '/images/printer.png" title="' . _('Print') . '" />' . _('Print Profit and Loss Report') . '
+		</p>';// Page title.
 	echo '<div class="page_help_text noPrint">' . _('Profit and loss statement, also called an Income Statement, or Statement of Operations, this is the statement that indicates how the revenue (money received from the sale of products and services before expenses are taken out, also known as the top line) is transformed into the net income (the result after all revenues and expenses have been accounted for, also known as the "bottom line").') . '<br />' . _('The purpose of the income statement is to show whether the company made or lost money during the period being reported.') . '<br />' . _('The Profit and Loss statement represents a period of time. This contrasts with the Balance Sheet, which represents a single moment in time.') . '<br />' . $ProjectName . _(' is an accrual based system (not a cash based system).  Accrual systems include items when they are invoiced to the customer, and when expenses are owed based on the supplier invoice date.') . '</div>';
 
 	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
@@ -639,7 +639,10 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 
 	$AccountsResult = DB_query($SQL, _('No general ledger accounts were returned by the SQL because'), _('The SQL that failed was'));
 
-	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . _('General Ledger Profit Loss Inquiry') . '" alt="' . _('General Ledger Profit Loss Inquiry') . '" />' . ' ' . _('Statement of Profit and Loss for the') . ' ' . $NumberOfMonths . ' ' . _('months to') . ' and including ' . $PeriodToDate . '</p>';
+	echo '<p class="page_title_text">
+			<img alt="" class="noprint" src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . _('General Ledger Profit Loss Inquiry') . '" />
+			' . _('Statement of Profit and Loss for the') . ' ' . $NumberOfMonths . ' ' . _('months to') . ' and including ' . $PeriodToDate . '
+		</p>';// Page title.
 
 	/*show a table of the accounts info returned by the SQL
 	Account Code ,   Account Name , Month Actual, Month Budget, Period Actual, Period Budget */

@@ -1107,7 +1107,7 @@ else {
 		</tr>
 		<tr>
 			<td>' . _('Address') . ' 6 :</td>
-			<td><input type="text" name="SuppDelAdd6" size="16" minlength="0" maxlength="15" value="' . $_POST['SuppDelAdd5'] . '" /></td>
+			<td><input type="text" name="SuppDelAdd6" size="16" minlength="0" maxlength="15" value="' . $_POST['SuppDelAdd6'] . '" /></td>
 		</tr>
 		<tr>
 			<td>' . _('Phone') . ':</td>

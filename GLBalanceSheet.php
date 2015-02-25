@@ -388,13 +388,14 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/preview.png" title="' . _('HTML View') . '" alt="' . _('HTML View') . '" /> ' . _('HTML View') . '</p>';
 
 	echo '<table class="selection" summary="' . _('HTML View') . '">
-			<tr>
-				<th colspan="6">
-					<h2>' . _('Balance Sheet as at') . ' ' . $BalanceDate . '
-					<img src="' . $RootPath . '/css/' . $Theme . '/images/printer.png" class="PrintIcon noPrint" title="' . _('Print') . '" alt="' . _('Print') . '" onclick="window.print();" />
-					</h2>
-				</th>
-			</tr>';
+			<thead>
+				<tr>
+					<th colspan="6">
+						<h2>' . _('Balance Sheet as at') . ' ' . $BalanceDate . '
+						<img src="' . $RootPath . '/css/' . $Theme . '/images/printer.png" class="PrintIcon noPrint" title="' . _('Print') . '" alt="' . _('Print') . '" onclick="window.print();" />
+						</h2>
+					</th>
+				</tr>';
 
 	if ($_POST['Detail'] == 'Detailed') {
 		$TableHeader = '<tr>
@@ -411,7 +412,7 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 							<th colspan="2">' . _('Last Year') . '</th>
 						</tr>';
 	}
-
+	echo '</thead>';
 
 	$k = 0; //row colour counter
 	$Section = '';

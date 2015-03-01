@@ -197,7 +197,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 			$SQL = "SELECT COUNT(supplierid) FROM suppliers WHERE supplierid='" . $SupplierID . "'";
 			$Result = DB_query($SQL);
 			$MyRow = DB_fetch_row($Result);
-			$SuppExists = (DB_num_rows($Result) > 0);
+			$SuppExists = ($MyRow[0] > 0);
 			if ($SuppExists and $_POST['UpdateIfExists'] != 1) {
 				$UpdatedNum++;
 			} elseif ($SuppExists) {

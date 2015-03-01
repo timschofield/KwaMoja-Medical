@@ -3,7 +3,8 @@
 // Display demo user name and password within login form if $AllowDemoMode is true
 
 include('LanguageSetup.php');
-
+include('MobileDetect.php');
+$MobileDetect = new Mobile_Detect;
 if ((isset($AllowDemoMode)) and ($AllowDemoMode == True) and (!isset($demo_text))) {
 	$demo_text = _('Login as user') . ': <i>' . _('admin') . '</i><br />' . _('with password') . ': <i>' . _('kwamoja') . '</i>';
 } elseif (!isset($demo_text)) {
@@ -11,13 +12,18 @@ if ((isset($AllowDemoMode)) and ($AllowDemoMode == True) and (!isset($demo_text)
 }
 
 //echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+echo '<html>
+		<head>
+			<title>' . $ProjectName . ' ' . _('Login screen') . '</title>';
+echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
+echo '<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />';
+
+if (!$MobileDetect->isMobile()) {
+	echo '<link rel="stylesheet" href="css/login.css" type="text/css" />';
+} else {
+	echo '<link rel="stylesheet" href="css/login-mobile.css" type="text/css" />';
+}
 ?>
-<html>
-<head>
-	<title><?php echo $ProjectName; echo ' ' . _('Login screen'); ?></title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-	<link rel="stylesheet" href="css/login.css" type="text/css" />
 	<!-- Javascript required for Twitter follow me button-->
 	<script>
 	  !function(d,s,id){
@@ -52,7 +58,7 @@ if (get_magic_quotes_gpc()) {
 			</th>
 		</tr>
 		<tr>
-			<td width="70%">
+			<td id="login-container">
 				<div id="login_box">
 					<form action="index.php" name="LogIn" method="post" class="noPrint">
 					<input type="hidden" name="FormID" value="<?php
@@ -125,7 +131,7 @@ echo _('Login');
 					</form>
 				</div>
 			</td>
-			<td style="width: 20%; padding-left: 1%;">
+			<td id="ProjectLinks">
 				<div>
 					<b>Join us at :</b><br />
 					<a href="<?php echo $SourceforgeSite; ?>" target="_blank"><img src="css/sourceforge-logo.png" style="width:70%; border: 1px solid #A49999;" /></a><br />
@@ -133,7 +139,7 @@ echo _('Login');
 					<a href="<?php echo $CodeplexSite; ?>" target="_blank"><img src="css/codeplex-logo.png" style="width:70%; border: 1px solid #A49999;" /></a><br /><br />
 				</div>
 			</td>
-			<td style="width: 25%; padding-left: 0%;">
+			<td id="ProjectLinks">
 				<div>
 					<b>Follow us at:</b>
 					<!--Follow us on twitter button-->

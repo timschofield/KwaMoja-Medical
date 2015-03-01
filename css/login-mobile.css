@@ -6,6 +6,7 @@ font-size:10pt;
 margin:0;
 padding:0;
 text-align:center
+vertical-align:middle;
 }
 
 #container {
@@ -16,35 +17,31 @@ border:solid #A49999 1px;
 border-radius:15px;
 box-shadow:0 0 15px #DADADA;
 filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff',endColorstr='#ededed',GradientType=1);
-margin:90px auto 0;
+margin:1% auto 0;
 opacity:1.0;
 padding:10px 0 36px;
 text-align:left;
-width:65%;
+width:90%;
 z-index:1000
 }
 
 #login_logo {
 height:51px;
 margin:0 auto 10px;
-width:200px
+width:45%
 }
 
 #ProjectLinks {
-display: auto;
-width: 15%;
-padding-left: 0%;
+display: none;
 }
 
 #login_box {
 background:#E5E5E5;
 border:solid #A49999 1px;
 border-radius:15px;
-margin:0 10px 10px 20px;
-}
-
-#login-container {
-width:70%;
+margin:0 20px 10px 20px;
+margin-top:30px;
+width: 95%;
 }
 
 #contact_box {
@@ -76,9 +73,10 @@ border-radius:3px;
 border-style:solid;
 border-width:1px;
 color:#616161;
-font-size:100%;
-margin:10px 0 0;
-width:auto
+font-size:300%;
+margin:10px 0 0 50px;
+position:relative;
+width:80%
 }
 
 select:hover, select:focus {
@@ -88,7 +86,6 @@ border-radius:3px;
 border-style:solid;
 border-width:1px;
 box-shadow:0 0 5px #7E7575;
-font-size:100%;
 box-shadow:0 0 5px #7E7575
 }
 
@@ -99,10 +96,12 @@ border-radius:3px;
 border-style:solid;
 border-width:1px;
 color:#616161;
-font-size:100%;
+font-size:300%;
 margin:10px 0 0;
 vertical-align:middle;
-width:50%
+margin:10px 0 0 50px;
+position:relative;
+width:80%
 }
 
 input:hover, input:focus {
@@ -111,7 +110,6 @@ border-color:#000;
 border-style:solid;
 border-width:1px;
 box-shadow:0 0 5px #7E7575;
-font-size:100%;
 box-shadow:0 0 5px #7E7575
 }
 
@@ -120,7 +118,7 @@ background:#E5E5E5;
 border:solid gray 1px;
 border-radius:7px;
 color:#8A8A8A;
-font-size:100%;
+font-size:300%;
 font-weight:700;
 margin:10px 10px 10px 50px;
 padding:4px;
@@ -146,14 +144,16 @@ label {
 display:block;
 float:left;
 font-weight:700;
+font-size:300%;
 line-height:normal;
 margin:10px 0 0 50px;
 position:relative;
-width:30%
+width:80%
 }
 
 #demo_text {
-margin:10px 0 0 50px
+margin:10px 0 0 50px;
+font-size:180%;
 }
 
 div.centre {

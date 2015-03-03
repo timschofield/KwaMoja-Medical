@@ -108,6 +108,11 @@ function userLogin($Name, $Password, $SysAdminEmail = '') {
 			$_SESSION['ModulesEnabled'] = explode(",", $MyRow['modulesallowed']);
 			$_SESSION['UsersRealName'] = $MyRow['realname'];
 			$_SESSION['Theme'] = $MyRow['theme'];
+			require_once 'MobileDetect.php';
+			$MobileDetect = new Mobile_Detect;
+			if ($MobileDetect->isMobile()) {
+				$_SESSION['Theme'] = 'mobile';
+			}
 			$_SESSION['Language'] = $MyRow['language'];
 			$_SESSION['SalesmanLogin'] = $MyRow['salesman'];
 			$_SESSION['CanCreateTender'] = $MyRow['cancreatetender'];

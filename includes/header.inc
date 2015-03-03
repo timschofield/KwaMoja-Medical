@@ -95,7 +95,7 @@ if (isset($Title)) {
 	echo '<div id="QuickMenuDiv"><ul>';
 
 	if ($ScriptName != 'Dashboard.php') {
-		echo '<li><a class="hint--bottom" data-hint="', _('Show Dashboard'), '" href="', $RootPath, '/Dashboard.php"><img width="32px" src="', $RootPath, '/css/', $Theme, '/images/dashboard-icon.png" alt="', _('Dashboard'), '" /></a></li>'; //take off inline formatting, use CSS instead ===HJ===
+		echo '<li><a class="hint--bottom" data-hint="', _('Show Dashboard'), '" href="', $RootPath, '/Dashboard.php"><img width="32px" src="', $RootPath, '/css/', $Theme, '/images/dashboard-icon.png" alt="', _('Show Dashboard'), '" /></a></li>'; //take off inline formatting, use CSS instead ===HJ===
 	}
 	if ($ScriptName != 'index.php') {
 		echo '<li><a class="hint--bottom" data-hint="', _('Return to the main menu'), '" href="', $RootPath, '/index.php"><img src="', $RootPath, '/css/', $Theme, '/images/home.png" alt="', _('Main Menu'), '" /></a></li>'; //take off inline formatting, use CSS instead ===HJ===

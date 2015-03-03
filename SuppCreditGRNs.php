@@ -14,7 +14,7 @@ $Title = _('Enter Supplier Credit Note Against Goods Received');
 include('includes/header.inc');
 
 echo '<p class="page_title_text noPrint" >
-		<img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Dispatch') . '" alt="" />' . ' ' . $Title . '
+		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Dispatch') . '" alt="" />' . ' ' . $Title . '
 	</p>';
 
 if (!isset($_SESSION['SuppTrans'])) {

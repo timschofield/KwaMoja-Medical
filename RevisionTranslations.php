@@ -8,7 +8,7 @@ $Title = _('Review Translated Descriptions'); // Screen identificator.
 $ViewTopic = 'Inventory'; // Filename's id in ManualContents.php's TOC.
 $BookMark = 'ReviewTranslatedDescriptions'; // Anchor's id in the manual's html document.
 include('includes/header.inc');
-echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . // Title icon.
+echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . // Title icon.
 	_('Review Translated Descriptions') . '" />' . // Icon title.
 	_('Review Translated Descriptions') . '</p>'; // Page title.
 

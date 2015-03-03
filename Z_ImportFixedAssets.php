@@ -7,7 +7,7 @@ $Title = _('Import Fixed Assets');
 include('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');
 
-echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/fixed_assets.png" title="' . _('Import Fixed Assets from .csv file') . '" />' . ' ' . _('Import Fixed Assets from .csv file') . '</p>';
+echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/fixed_assets.png" title="' . _('Import Fixed Assets from .csv file') . '" />' . ' ' . _('Import Fixed Assets from .csv file') . '</p>';
 
 // If this script is called with a file object, then the file contents are imported
 // If this script is called with the gettemplate flag, then a template file is served

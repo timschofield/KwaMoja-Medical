@@ -6,7 +6,7 @@ $Title = _('Sales Category Maintenance');
 
 include('includes/header.inc');
 
-echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
+echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
 
 if (isset($_GET['SelectedCategory'])) {
 	$SelectedCategory = mb_strtoupper($_GET['SelectedCategory']);
@@ -505,7 +505,7 @@ if ($Result) {
 				<td>' . $MyRow['manufacturers_name'] . '</td>
 				<td>';
 			if ($MyRow['featured'] == 1) {
-				echo '<img src="css/' . $Theme . '/images/tick.png"></td>
+				echo '<img src="css/' . $_SESSION['Theme'] . '/images/tick.png"></td>
 				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?RemoveFeature=Yes&amp;ParentCategory=' . $ParentCategory . '&amp;StockID=' . $MyRow['stockid'] . '">' . _('Cancel Feature') . '</a></td>';
 			} else {
 				echo '</td>

@@ -403,7 +403,7 @@ if (isset($_POST['PlacePO'])) {
 
 /*To the sales order selection form */
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/sales.png" title="' . _('Sales') . '" alt="" />' . ' ' . _('Outstanding Sales Orders') . '</p> ';
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/sales.png" title="' . _('Sales') . '" alt="" />' . ' ' . _('Outstanding Sales Orders') . '</p> ';
 
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -835,7 +835,7 @@ if (!isset($StockId)) {
 						<td><a href="%s" target="_blank">' . _('Acknowledge') . '</a>' . $PrintDummyFlag . '</td>
 						' . $PrintPickLabel . '
 						<td><a href="%s">' . _('Invoice') . '</a></td>
-        				<td><a target="_blank" href="%s">' . $PrintText . ' <img src="' . $RootPath . '/css/' . $Theme . '/images/pdf.png" title="' . _('Click for PDF') . '" alt="" /></a></td>
+        				<td><a target="_blank" href="%s">' . $PrintText . ' <img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/pdf.png" title="' . _('Click for PDF') . '" alt="" /></a></td>
 						<td><a href="%s">' . _('Labels') . '</a></td>
         				<td>%s</td>
         				<td>%s</td>
@@ -853,7 +853,7 @@ if (!isset($StockId)) {
 							<td>' . $PrintDummyFlag . '</td>
 							' . $PrintPickLabel . '
 							<td><a href="%s">' . _('Invoice') . '</a></td>
-							<td><a target="_blank" href="%s">' . $PrintText . ' <img src="' . $RootPath . '/css/' . $Theme . '/images/pdf.png" title="' . _('Click for PDF') . '" alt="" /></a></td>
+							<td><a target="_blank" href="%s">' . $PrintText . ' <img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/pdf.png" title="' . _('Click for PDF') . '" alt="" /></a></td>
 							<td><a href="%s">' . _('Labels') . '</a></td>
 							<td>%s</td>
 							<td>%s</td>

@@ -5,7 +5,7 @@ include('includes/session.inc');
 $Title = _('Units Of Measure');
 
 include('includes/header.inc');
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
 
 if (isset($_GET['SelectedMeasureID']))
 	$SelectedMeasureID = $_GET['SelectedMeasureID'];

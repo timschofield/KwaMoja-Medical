@@ -7,7 +7,7 @@ $Title = _('Aged Controlled Inventory') . ' ' ._('as-of') .' ' . Date(($_SESSION
 include('includes/header.inc');
 
 echo '<p class="page_title_text">
-		<img src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Inventory') . '" alt="" /><b>' . $Title . '</b>
+		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Inventory') . '" alt="" /><b>' . $Title . '</b>
 	</p>';
 
 $SQL = "SELECT stockserialitems.stockid,

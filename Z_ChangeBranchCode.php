@@ -5,7 +5,7 @@ $Title = _('UTILITY PAGE To Changes A Customer Branch Code In All Tables');// Sc
 $ViewTopic = 'SpecialUtilities'; // Filename's id in ManualContents.php's TOC.
 $BookMark = 'Z_ChangeBranchCode'; // Anchor's id in the manual's html document.
 include('includes/header.inc');
-echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/customer.png" title="' . _('Change A Customer Branch Code') . '" />' . _('Change A Customer Branch Code') . '</p>';// Page title.
+echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/customer.png" title="' . _('Change A Customer Branch Code') . '" />' . _('Change A Customer Branch Code') . '</p>';// Page title.
 if (isset($_POST['ProcessCustomerChange'])) {
 
 	/*First check the customer code exists */

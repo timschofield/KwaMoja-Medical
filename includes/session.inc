@@ -194,9 +194,6 @@ if (!isset($_SESSION['CompanyDefaultsLoaded'])) {
 
 if (isset($_POST['Theme']) and ($_SESSION['UsersRealName'] == $_POST['RealName'])) {
 	$_SESSION['Theme'] = $_POST['Theme'];
-	$Theme = $_POST['Theme'];
-} else {
-	$Theme = $_SESSION['Theme'];
 }
 
 /* Set the logo if not yet set.

@@ -23,7 +23,7 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate'])) {
 	$BookMark = 'ChequePaymentListing';
 	include('includes/header.inc');
 
-	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/money_add.png" title="' . $Title . '" alt="' . $Title . '" />' . $Title . '</p>';
+	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/money_add.png" title="' . $Title . '" alt="' . $Title . '" />' . $Title . '</p>';
 
 	if ($InputError == 1) {
 		prnMsg($Msg, 'error');

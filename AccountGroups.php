@@ -48,7 +48,7 @@ if (isset($_POST['MoveGroup'])) {
 		</div>';
 	prnMsg(_('All accounts in the account group') . ': ' . $_POST['OriginalAccountGroup'] . ' ' . _('have been changed to the account group') . ': ' . $_POST['DestinyAccountGroup'], 'success');
 	echo '<p class="page_title_text noPrint" >
-			<img src="', $RootPath, '/css/', $Theme, '/images/maintenance.png" title="', _('Search'), '" alt="" />', $Title, '
+			<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/maintenance.png" title="', _('Search'), '" alt="" />', $Title, '
 		</p>';
 } //isset($_POST['MoveGroup'])
 
@@ -256,7 +256,7 @@ if (!isset($_GET['SelectedAccountGroup']) and !isset($_POST['SelectedAccountGrou
 	$ErrMsg = _('Could not get account groups because');
 	$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 	echo '<p class="page_title_text noPrint" >
-			<img src="', $RootPath, '/css/', $Theme, '/images/maintenance.png" title="', _('Search'), '" alt="" />', $Title, '
+			<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/maintenance.png" title="', _('Search'), '" alt="" />', $Title, '
 		</p>';
 
 	echo '<table class="selection">
@@ -342,7 +342,7 @@ if (!isset($_GET['delete'])) {
 		$_POST['PandL'] = $MyRow['pandl'];
 		$_POST['ParentGroupName'] = $MyRow['parentgroupname'];
 
-		echo '<p class="page_title_text noPrint"><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '<br /></p>';
+		echo '<p class="page_title_text noPrint"><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '<br /></p>';
 
 		echo '<input type="hidden" name="SelectedAccountGroup" value="', stripslashes($_GET['SelectedAccountGroup']), '" /></td>
 				<input type="hidden" name="OldGroupName" value="', $_POST['GroupName'], '" />';

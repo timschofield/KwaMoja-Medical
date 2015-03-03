@@ -20,7 +20,7 @@ if (!isset($_POST['Date'])) {
 
 	echo '<div class="centre">
 			<p class="page_title_text noPrint" >
-				<img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . $Title . '" alt="' . $Title . '" />' . ' ' . _('Customer Transaction Listing') . '</p>';
+				<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/transactions.png" title="' . $Title . '" alt="' . $Title . '" />' . ' ' . _('Customer Transaction Listing') . '</p>';
 
 	if ($InputError == 1) {
 		prnMsg($Msg, 'error');

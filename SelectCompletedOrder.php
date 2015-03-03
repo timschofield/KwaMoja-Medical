@@ -7,7 +7,7 @@ $Title = _('Search All Sales Orders');
 include('includes/header.inc');
 
 echo '<p class="page_title_text noPrint" >
-		<img src="', $RootPath, '/css/', $Theme, '/images/magnifier.png" title="', _('Search'), '" alt="" /> ', ' ', _('Search Sales Orders'), '
+		<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/magnifier.png" title="', _('Search'), '" alt="" /> ', ' ', _('Search Sales Orders'), '
 	</p>';
 
 echo '<form onSubmit="return VerifyForm(this);" action="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '" method="post" class="noPrint">';
@@ -63,7 +63,7 @@ if (isset($_POST['ResetPart'])) {
 
 if (isset($OrderNumber)) {
 	echo '<p class="page_title_text noPrint">
-			<img src="', $RootPath, '/css/', $Theme, '/images/sales.png" title="', _('Sales Order'), '" alt="" /> ', _('Order Number'), ' - ', $OrderNumber, '
+			<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/sales.png" title="', _('Sales Order'), '" alt="" /> ', _('Order Number'), ' - ', $OrderNumber, '
 		</p>';
 	if (mb_strlen($_SESSION['UserBranch']) > 1) {
 		echo _('For customer'), ': ', stripslashes($SelectedCustomer);
@@ -449,7 +449,7 @@ if (isset($SalesOrdersResult)) {
 			<tr>
 				<th colspan="9">
 					<h3>', _('Sales Orders'), '
-						<img src="', $RootPath, '/css/', $Theme, '/images/printer.png" class="PrintIcon noPrint" title="', _('Print'), '" alt="" onclick="window.print();" />
+						<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/printer.png" class="PrintIcon noPrint" title="', _('Print'), '" alt="" onclick="window.print();" />
 					</h3>
 				</th>
 			</tr>

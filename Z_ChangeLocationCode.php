@@ -7,7 +7,7 @@ $BookMark = 'Z_ChangeLocationCode'; // Anchor's id in the manual's html document
 include('includes/header.inc');
 
 echo '<p class="page_title_text">
-		<img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Change A Location Code') . '" /> ' . _('Change A Location Code') . '
+		<img alt="" src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Change A Location Code') . '" /> ' . _('Change A Location Code') . '
 	</p>';// Page title.
 
 include('includes/SQL_CommonFunctions.inc');

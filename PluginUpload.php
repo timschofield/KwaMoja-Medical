@@ -6,7 +6,7 @@ $Title = _('Upload a Plugin');
 
 include('includes/header.inc');
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/upload.png" title="' . _('Upload Plugin') . '" alt="" />' . _('Upload Plugin') . '</p>';
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/upload.png" title="' . _('Upload Plugin') . '" alt="" />' . _('Upload Plugin') . '</p>';
 
 if (isset($_POST['submit'])) {
 	switch ($_FILES['pluginfile']['error']) {

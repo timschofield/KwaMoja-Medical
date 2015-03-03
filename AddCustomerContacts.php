@@ -20,9 +20,9 @@ $NameSql = "SELECT name FROM debtorsmaster WHERE debtorno='" . $DebtorNo . "'";
 $Result = DB_query($NameSql);
 $MyRow = DB_fetch_array($Result);
 if (!isset($_GET['Id'])) {
-	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Contacts for Customer') . ': <b>' . htmlspecialchars($MyRow['name'], ENT_QUOTES, 'UTF-8') . '</b></p><br />';
+	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Contacts for Customer') . ': <b>' . htmlspecialchars($MyRow['name'], ENT_QUOTES, 'UTF-8') . '</b></p><br />';
 } else {
-	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Edit contact for') . ': <b>' . htmlspecialchars($MyRow['name'], ENT_QUOTES, 'UTF-8') . '</b></p><br />';
+	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Edit contact for') . ': <b>' . htmlspecialchars($MyRow['name'], ENT_QUOTES, 'UTF-8') . '</b></p><br />';
 }
 if (isset($_POST['submit'])) {
 

@@ -292,7 +292,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 	$BookMark = 'PDFPriceList';// Anchor's id in the manual's html document.
 	include('includes/header.inc');
 
-	echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/customer.png" title="' . _('Price List') . '" />' . ' ' . _('Print a price list by inventory category') . '</p>';
+	echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/customer.png" title="' . _('Price List') . '" />' . ' ' . _('Print a price list by inventory category') . '</p>';
 
 	if (!isset($_POST['FromCriteria']) or !isset($_POST['ToCriteria'])) {
 

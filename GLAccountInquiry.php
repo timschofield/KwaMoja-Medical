@@ -32,7 +32,7 @@ if (isset($_POST['Period'])) {
 	$SelectedPeriod = $_POST['Period'];
 }
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . _('General Ledger Account Inquiry') . '" alt="' . _('General Ledger Account Inquiry') . '" />' . ' ' . _('General Ledger Account Inquiry') . '</p>';
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/transactions.png" title="' . _('General Ledger Account Inquiry') . '" alt="' . _('General Ledger Account Inquiry') . '" />' . ' ' . _('General Ledger Account Inquiry') . '</p>';
 
 if (isset($SelectedAccount) and $_SESSION['CompanyRecord']['retainedearnings'] == $SelectedAccount) {
 	prnMsg(_('The retained earnings account is managed separately by the system, and therefore cannot be inquired upon. See manual for details'), 'info');
@@ -187,7 +187,7 @@ if (isset($_POST['Show'])) {
 			<tr>
 				<th colspan="8">
 					<b>', _('Transactions for account'), ' ', $SelectedAccount, ' - ', $SelectedAccountName, '</b>
-					<img src="', $RootPath, '/css/', $Theme, '/images/printer.png" class="PrintIcon noPrint" title="', _('Print'), '" alt="', _('Print'), '" onclick="window.print();" />
+					<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/printer.png" class="PrintIcon noPrint" title="', _('Print'), '" alt="', _('Print'), '" onclick="window.print();" />
 				</th>
 			</tr>
 			<tr>

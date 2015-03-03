@@ -9,7 +9,7 @@ $BookMark = 'Z_ChangeGLAccountCode'; // Anchor's id in the manual's html documen
 include('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');
 echo '<p class="page_title_text">
-		<img alt="" src="' . $RootPath.'/css/' . $Theme . '/images/gl.png" title="' . _('Change A GL Account Code') . '" />' . _('Change A GL Account Code') . '
+		<img alt="" src="' . $RootPath.'/css/' . $_SESSION['Theme'] . '/images/gl.png" title="' . _('Change A GL Account Code') . '" />' . _('Change A GL Account Code') . '
 	</p>';// Page title.
 if (isset($_POST['ProcessGLAccountCode'])) {
 

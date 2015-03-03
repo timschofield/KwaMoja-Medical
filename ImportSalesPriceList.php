@@ -4,7 +4,7 @@ include('includes/session.inc');
 $Title = _('Import Sales Price List');
 include('includes/header.inc');
 
-echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Import Price List from CSV file') . '" />' . ' ' . _('Import Price List from CSV file') . '</p>';
+echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Import Price List from CSV file') . '" />' . ' ' . _('Import Price List from CSV file') . '</p>';
 
 $FieldHeadings = array(
 	'StockID', //  0 'STOCKID',

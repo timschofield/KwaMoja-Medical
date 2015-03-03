@@ -181,7 +181,7 @@ if (!isset($SelectedManufacturer)) {
 			FROM manufacturers";
 	$Result = DB_query($SQL);
 
-	echo '<p class="page_Title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" Title="' . _('Manufacturers') . '" alt="" />' . ' ' . $Title . '</p>';
+	echo '<p class="page_Title_text"><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/supplier.png" Title="' . _('Manufacturers') . '" alt="" />' . ' ' . $Title . '</p>';
 
 	if (DB_num_rows($Result) != 0) {
 
@@ -242,7 +242,7 @@ if (!isset($_GET['delete'])) {
 
 	if (isset($SelectedManufacturer)) {
 		//editing an existing Brand
-		echo '<p class="page_Title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" Title="' . _('Brand') . '" alt="" />' . ' ' . $Title . '</p>';
+		echo '<p class="page_Title_text"><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/supplier.png" Title="' . _('Brand') . '" alt="" />' . ' ' . $Title . '</p>';
 
 		$SQL = "SELECT manufacturers_id,
 					manufacturers_name,

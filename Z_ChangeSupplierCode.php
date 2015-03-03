@@ -8,7 +8,7 @@ $ViewTopic = 'SpecialUtilities'; // Filename's id in ManualContents.php's TOC.
 $BookMark = 'Z_ChangeSupplierCode'; // Anchor's id in the manual's html document
 include('includes/header.inc');
 echo '<p class="page_title_text">
-		<img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" title="' . _('Change A Supplier Code') . '" /> ' . _('Change A Supplier Code') . '
+		<img alt="" src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/supplier.png" title="' . _('Change A Supplier Code') . '" /> ' . _('Change A Supplier Code') . '
 	</p>';// Page title.
 
 if (isset($_POST['ProcessSupplierChange'])) {

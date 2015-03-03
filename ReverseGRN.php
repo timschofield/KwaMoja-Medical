@@ -25,7 +25,7 @@ if (!isset($_POST['SupplierID']) or $_POST['SupplierID'] == "") {
 	$_POST['SuppName'] = $SuppRow[0];
 }
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" title="' . _('Sales') . '" alt="" />' . ' ' . _('Reverse Goods Received from') . ' ' . $_POST['SuppName'] . '</p> ';
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/supplier.png" title="' . _('Sales') . '" alt="" />' . ' ' . _('Reverse Goods Received from') . ' ' . $_POST['SuppName'] . '</p> ';
 
 if (isset($_GET['GRNNo']) and isset($_POST['SupplierID'])) {
 	/* SQL to process the postings for the GRN reversal.. */

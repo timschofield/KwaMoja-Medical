@@ -4,7 +4,7 @@ include('includes/session.inc');
 $Title = _('User Settings');
 include('includes/header.inc');
 
-echo '<p class="page_title_text noPrint" ><img src="', $RootPath, '/css/', $Theme, '/images/user.png" title="', _('User Settings'), '" alt="" />', ' ', _('User Settings'), '</p>';
+echo '<p class="page_title_text noPrint" ><img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/user.png" title="', _('User Settings'), '" alt="" />', ' ', _('User Settings'), '</p>';
 
 $PDFLanguages = array(
 	_('Latin Western Languages - Times'),
@@ -93,7 +93,7 @@ if (isset($_POST['Modify'])) {
 		$_SESSION['DisplayRecordsMax'] = $_POST['DisplayRecordsMax'];
 		$_SESSION['Theme'] = trim($_POST['Theme']);
 		/*already set by session.inc but for completeness */
-		$Theme = $_SESSION['Theme'];
+		$_SESSION['Theme'] = $_SESSION['Theme'];
 		$_SESSION['Language'] = trim($_POST['Language']);
 		$_SESSION['PDFLanguage'] = $_POST['PDFLanguage'];
 		include('includes/LanguageSetup.php');
@@ -156,10 +156,12 @@ echo '<tr>
 $Themes = glob('css/*', GLOB_ONLYDIR);
 foreach ($Themes as $ThemeName) {
 	$ThemeName = basename($ThemeName);
-	if ($_SESSION['Theme'] == $ThemeName) {
-		echo '<option selected="selected" value="', $ThemeName, '">', $ThemeName, '</option>';
-	} else {
-		echo '<option value="', $ThemeName, '">', $ThemeName, '</option>';
+	if ($ThemeName != 'mobile') {
+		if ($_SESSION['Theme'] == $ThemeName) {
+			echo '<option selected="selected" value="', $ThemeName, '">', $ThemeName, '</option>';
+		} else {
+			echo '<option value="', $ThemeName, '">', $ThemeName, '</option>';
+		}
 	}
 }
 

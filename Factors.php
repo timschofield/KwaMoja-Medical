@@ -20,7 +20,7 @@ if (isset($_POST['Create'])) {
 	$_POST['New'] = 'Yes';
 }
 
-echo '<div class="centre"><p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" title="' . _('Factor Companies') . '" alt="" />' . ' ' . $Title . '</p></div>';
+echo '<div class="centre"><p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/supplier.png" title="' . _('Factor Companies') . '" alt="" />' . ' ' . $Title . '</p></div>';
 
 /* This section has been reached because the user has pressed either the insert/update buttons on the
 form hopefully with input in the correct fields, which we check for firsrt. */

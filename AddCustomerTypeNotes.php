@@ -90,7 +90,7 @@ if (!isset($Id)) {
 	$SQLname = "SELECT typename from debtortype where typeid='" . $DebtorType . "'";
 	$Result = DB_query($SQLname);
 	$MyRow = DB_fetch_array($Result);
-	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/customer.png" title="' . _('Search') . '" alt="" />' . _('Notes for Customer Type') . ': <b>' . $MyRow['typename'] . '</b></p>
+	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/customer.png" title="' . _('Search') . '" alt="" />' . _('Notes for Customer Type') . ': <b>' . $MyRow['typename'] . '</b></p>
 		<br />';
 
 	$SQL = "SELECT noteid,

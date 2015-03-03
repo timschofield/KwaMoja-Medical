@@ -15,7 +15,7 @@ echo '<div class="toplink">
 		<a href="' . $RootPath . '/Z_poAdmin.php">' . _('Back to the translation menu') . '</a>
 	</div>';
 
-echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Edit Remaining Strings For This Language') . '" />' . ' ' . _('Edit Remaining Strings For This Language') . '</p>';
+echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Edit Remaining Strings For This Language') . '" />' . ' ' . _('Edit Remaining Strings For This Language') . '</p>';
 
 /* Your webserver user MUST have read/write access to here,
 otherwise you'll be wasting your time */

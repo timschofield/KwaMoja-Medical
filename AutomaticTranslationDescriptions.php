@@ -93,7 +93,7 @@ if (DB_num_rows($Result) != 0) {
 	prnMsg("Number of translated descriptions via Google API: " . locale_number_format($i));
 } else {
 
-	echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('No item description was automatically translated') . '" />' . ' ' . _('No item description was automatically translated') . '</p>';
+	echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('No item description was automatically translated') . '" />' . ' ' . _('No item description was automatically translated') . '</p>';
 
 	// Add error message for "Google Translator API Key" empty.
 

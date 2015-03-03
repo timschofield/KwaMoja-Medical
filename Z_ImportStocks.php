@@ -4,7 +4,7 @@ include('includes/session.inc');
 $Title = _('Import Items');
 include('includes/header.inc');
 
-echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Import Stock Items from .csv') . '" />' . ' ' . _('Import Stock Items from .csv') . '</p>';
+echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Import Stock Items from .csv') . '" />' . ' ' . _('Import Stock Items from .csv') . '</p>';
 
 // If this script is called with a file object, then the file contents are imported
 // If this script is called with the gettemplate flag, then a template file is served

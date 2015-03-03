@@ -134,7 +134,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 	$ViewTopic = 'ARReports';
 	$BookMark = 'PriorMonthDebtors';
 	include('includes/header.inc');
-	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/customer.png" title="' . _('Debtor Balances') . '" alt="' . _('Debtor Balances') . '" />' . ' ' . $Title . '</p><br />';
+	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/customer.png" title="' . _('Debtor Balances') . '" alt="' . _('Debtor Balances') . '" />' . ' ' . $Title . '</p><br />';
 
 	$SQL = "SELECT min(debtorno) AS fromcriteria,
 					max(debtorno) AS tocriteria

@@ -11,7 +11,7 @@ $Title = _('Install a Plugin');
 
 include('includes/header.inc');
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/plugin.png" width="24px" title="' . _('Install Plugin') . '" alt="" />' . _('Install Plugin') . '</p>';
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/plugin.png" width="24px" title="' . _('Install Plugin') . '" alt="" />' . _('Install Plugin') . '</p>';
 
 if (isset($_POST['Install'])) {
 	$ZipFile = zip_open('plugins/' . $_POST['Available']);

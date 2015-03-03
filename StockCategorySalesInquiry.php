@@ -4,7 +4,7 @@ include('includes/session.inc');
 $Title = _('Sales By Category By Item Inquiry');
 include('includes/header.inc');
 
-echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . _('Sales Report') . '" alt="" />' . ' ' . _('Sales By Category By Item Inquiry') . '</p>';
+echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/transactions.png" title="' . _('Sales Report') . '" alt="" />' . ' ' . _('Sales By Category By Item Inquiry') . '</p>';
 echo '<div class="page_help_text">' . _('Select the parameters for the inquiry') . '</div>';
 
 if (!isset($_POST['DateRange'])) {

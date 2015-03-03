@@ -75,10 +75,10 @@ if (isset($Title)) {
 	}
 	echo '<div id="AppInfoDiv">'; //===HJ===
 	echo '<div id="AppInfoCompanyDiv">';
-	echo '<img src="', $RootPath, '/css/', $Theme, '/images/company.png" title="', _('Company'), '" alt="', _('Company'), '"/>', stripslashes($_SESSION['CompanyRecord']['coyname']);
+	echo '<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/company.png" title="', _('Company'), '" alt="', _('Company'), '"/>', stripslashes($_SESSION['CompanyRecord']['coyname']);
 	echo '</div>';
 	echo '<div id="AppInfoUserDiv">';
-	echo '<a  class="hint--bottom" data-hint="' . _('Change the settings for') . ' ' . $_SESSION['UsersRealName'] . '" href="', $RootPath, '/UserSettings.php"><img src="', $RootPath, '/css/', $Theme, '/images/user.png" alt="', stripslashes($_SESSION['UsersRealName']), '" /></a>';
+	echo '<a  class="hint--bottom" data-hint="' . _('Change the settings for') . ' ' . $_SESSION['UsersRealName'] . '" href="', $RootPath, '/UserSettings.php"><img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/user.png" alt="', stripslashes($_SESSION['UsersRealName']), '" /></a>';
 	echo '</div>';
 	echo '<div id="AppInfoModuleDiv">';
 	// Make the title text a class, can be set to display:none is some themes
@@ -95,10 +95,10 @@ if (isset($Title)) {
 	echo '<div id="QuickMenuDiv"><ul>';
 
 	if ($ScriptName != 'Dashboard.php') {
-		echo '<li><a class="hint--bottom" data-hint="', _('Show Dashboard'), '" href="', $RootPath, '/Dashboard.php"><img width="32px" src="', $RootPath, '/css/', $Theme, '/images/dashboard-icon.png" alt="', _('Show Dashboard'), '" /></a></li>'; //take off inline formatting, use CSS instead ===HJ===
+		echo '<li><a class="hint--bottom" data-hint="', _('Show Dashboard'), '" href="', $RootPath, '/Dashboard.php"><img width="32px" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/dashboard-icon.png" alt="', _('Show Dashboard'), '" /></a></li>'; //take off inline formatting, use CSS instead ===HJ===
 	}
 	if ($ScriptName != 'index.php') {
-		echo '<li><a class="hint--bottom" data-hint="', _('Return to the main menu'), '" href="', $RootPath, '/index.php"><img src="', $RootPath, '/css/', $Theme, '/images/home.png" alt="', _('Main Menu'), '" /></a></li>'; //take off inline formatting, use CSS instead ===HJ===
+		echo '<li><a class="hint--bottom" data-hint="', _('Return to the main menu'), '" href="', $RootPath, '/index.php"><img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/home.png" alt="', _('Main Menu'), '" /></a></li>'; //take off inline formatting, use CSS instead ===HJ===
 	}
 
 	if (count($_SESSION['AllowedPageSecurityTokens']) > 1) {
@@ -113,9 +113,9 @@ if (isset($Title)) {
 			}
 			if ($ScriptName != 'index.php') {
 				if (!isset($_SESSION['Favourites'][$ScriptName]) or $_SESSION['Favourites'][$ScriptName] == '') {
-					echo '<li><span class="hint--bottom" data-hint="', _('Add this script to your list of commonly used'), '"><img src="', $RootPath, '/css/', $Theme, '/images/add.png" id="PlusMinus" onclick="AddScript(\'', $ScriptName, '\',\'', $Title, '\')"', '" alt="', _('Add to commonly used'), '" /></span></li>';
+					echo '<li><span class="hint--bottom" data-hint="', _('Add this script to your list of commonly used'), '"><img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/add.png" id="PlusMinus" onclick="AddScript(\'', $ScriptName, '\',\'', $Title, '\')"', '" alt="', _('Add to commonly used'), '" /></span></li>';
 				} else {
-					echo '<li><span class="hint--bottom" data-hint="', _('Remove this script from your list of commonly used'), '"><img src="', $RootPath, '/css/', $Theme, '/images/subtract.png" id="PlusMinus" onclick="RemoveScript(\'', $ScriptName, '\')"', '" alt="', _('Remove from commonly used'), '" /></span></li>';
+					echo '<li><span class="hint--bottom" data-hint="', _('Remove this script from your list of commonly used'), '"><img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/subtract.png" id="PlusMinus" onclick="RemoveScript(\'', $ScriptName, '\')"', '" alt="', _('Remove from commonly used'), '" /></span></li>';
 				}
 			}
 			echo '<li><select name="Favourites" id="favourites" onchange="window.open (this.value,\'_self\',false)">';
@@ -126,20 +126,20 @@ if (isset($Title)) {
 			echo '</select></li>';
 		}
 
-		$DefaultManualLink = '<li><a class="hint--left" data-hint="' . _('Read the manual page for this functionality') . '" target="_blank" href="' . $RootPath . '/doc/Manual/ManualContents.php' . $ViewTopic . $BookMark . '"><img src="' . $RootPath . '/css/' . $Theme . '/images/manual.png" alt="' . _('Help') . '" /></a></li>';
+		$DefaultManualLink = '<li><a class="hint--left" data-hint="' . _('Read the manual page for this functionality') . '" target="_blank" href="' . $RootPath . '/doc/Manual/ManualContents.php' . $ViewTopic . $BookMark . '"><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/manual.png" alt="' . _('Help') . '" /></a></li>';
 
 		if (strstr($_SESSION['Language'], 'en')) {
 			echo $DefaultManualLink;
 		} else {
 			if (file_exists('locale/' . $_SESSION['Language'] . '/Manual/ManualContents.php')) {
-				echo '<a class="hint--left" data-hint="', _('Read the manual page for this functionality'), '" href="', $RootPath, '/locale/', $_SESSION['Language'], '/Manual/ManualContents.php', $ViewTopic, $BookMark, '"><img src="', $RootPath, '/css/', $Theme, '/images/manual.png" title="', _('Help'), '" alt="', _('Help'), '" /></a>';
+				echo '<a class="hint--left" data-hint="', _('Read the manual page for this functionality'), '" href="', $RootPath, '/locale/', $_SESSION['Language'], '/Manual/ManualContents.php', $ViewTopic, $BookMark, '"><img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/manual.png" title="', _('Help'), '" alt="', _('Help'), '" /></a>';
 			} else {
 				echo $DefaultManualLink;
 			}
 		}
 	}
 
-	echo '<li><a class="hint--left" data-hint="', _('Logout'), '" href="', $RootPath, '/Logout.php" onclick="return MakeConfirm(\'', _('Are you sure you wish to logout?'), '\', \'', _('Confirm Logout'), '\', this);"><img src="', $RootPath, '/css/', $Theme, '/images/quit.png" alt="', _('Logout'), '" /></a></li>';
+	echo '<li><a class="hint--left" data-hint="', _('Logout'), '" href="', $RootPath, '/Logout.php" onclick="return MakeConfirm(\'', _('Are you sure you wish to logout?'), '\', \'', _('Confirm Logout'), '\', this);"><img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/quit.png" alt="', _('Logout'), '" /></a></li>';
 
 	echo '</ul></div>'; // QuickMenuDiv
 }
@@ -147,7 +147,7 @@ echo '</div>'; // HeaderWrapDiv
 echo '</div>'; // Headerdiv
 echo '<div id="HiddenOutput" style="display: none"></div>';
 echo '<div id="BodyDiv">';
-echo '<input type="hidden" name="Theme" id="Theme" value="', $Theme, '" />';
+echo '<input type="hidden" name="Theme" id="Theme" value="', $_SESSION['Theme'], '" />';
 echo '<div id="BodyWrapDiv">';
 
 ?>

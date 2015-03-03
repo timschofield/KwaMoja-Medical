@@ -11,7 +11,7 @@ if (!isset($_POST['CreateCSV'])) {
 	include('includes/header.inc');
 
 	echo '<p class="page_title_text">
-		<img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . _('Customer Balances Movements') . '" alt="" />' . ' ' . _('Customer Balances Movements') . '
+		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/transactions.png" title="' . _('Customer Balances Movements') . '" alt="" />' . ' ' . _('Customer Balances Movements') . '
 	</p>';
 }
 if (!isset($_POST['RunReport'])) {

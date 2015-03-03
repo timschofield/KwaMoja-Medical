@@ -4,7 +4,7 @@ include('includes/session.inc');
 $Title = _('Sales Category Report');
 include('includes/header.inc');
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . _('Sales Report') . '" alt="" />' . ' ' . _('Sales Category Report') . '</p>';
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/transactions.png" title="' . _('Sales Report') . '" alt="" />' . ' ' . _('Sales Category Report') . '</p>';
 echo '<div class="page_help_text noPrint">' . _('Select the parameters for the report') . '</div><br />';
 
 if (!isset($_POST['DateRange'])) {
@@ -161,7 +161,7 @@ if (isset($_POST['ShowSales'])) {
 			<tr>
 				<th colspan="9">
 					<h3>' . _('Show Sales') . ' ' . _('Between') . ' ' . ConvertSQLDate($FromDate) . ' ' . _('and') . ' ' . ConvertSQLDate($ToDate) . '
-						<img src="' . $RootPath . '/css/' . $Theme . '/images/printer.png" class="PrintIcon noPrint" title="' . _('Print') . '" alt="" onclick="window.print();" />
+						<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/printer.png" class="PrintIcon noPrint" title="' . _('Print') . '" alt="" onclick="window.print();" />
 					</h3>
 				</th>
 			</tr>';

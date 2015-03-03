@@ -53,7 +53,7 @@ while ($InventoryIssuesRow = DB_fetch_array($InventoryIssuesResult)) {
 }
 
 echo '<p class="page_title_text noPrint" >
-			<img src="' . $RootPath . '/css/' . $Theme . '/images/contract.png" title="' . _('Contract') . '" alt="" />';
+			<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/contract.png" title="' . _('Contract') . '" alt="" />';
 if ($_SESSION['Contract' . $Identifier]->Status == 3) {
 	echo _('Closed') . ' ';
 } elseif ($_SESSION['Contract' . $Identifier]->Status == 2) {

@@ -14,7 +14,7 @@ if (!isset($_POST['BatchNo'])) {
 	$BookMark = 'BankingSummary';
 	include('includes/header.inc');
 
-	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . $Title . '" alt="' . $Title . '" />' . ' ' . $Title . '</p>';
+	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . $Title . '" alt="' . $Title . '" />' . ' ' . $Title . '</p>';
 
 	$SQL = "SELECT DISTINCT
 			transno,

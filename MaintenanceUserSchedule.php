@@ -8,7 +8,7 @@ include('includes/header.inc');
 $ViewTopic = 'FixedAssets';
 $BookMark = 'AssetMaintenance';
 
-echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/group_add.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p><br />';
+echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/group_add.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p><br />';
 
 
 if (isset($_GET['Complete'])) {

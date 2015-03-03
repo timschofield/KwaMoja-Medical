@@ -280,14 +280,14 @@ if (!isset($_GET['Prid']) and !isset($_SESSION['ProcessingPick'])) {
 if ($_SESSION['Items' . $Identifier]->SpecialInstructions) {
 	prnMsg($_SESSION['Items' . $Identifier]->SpecialInstructions, 'warn');
 }
-echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Pick List Maintenance') . '" alt="" />' . ' ' . _('Pick List: ') . str_pad($_SESSION['ProcessingPick'], 10, '0', STR_PAD_LEFT) . _(' for Order No: ') . $_SESSION['Items' . $Identifier]->OrderNo . '</p>';
+echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Pick List Maintenance') . '" alt="" />' . ' ' . _('Pick List: ') . str_pad($_SESSION['ProcessingPick'], 10, '0', STR_PAD_LEFT) . _(' for Order No: ') . $_SESSION['Items' . $Identifier]->OrderNo . '</p>';
 
 echo '<div class="toplink">
 		<a href="' . $RootPath . '/SelectPickingLists.php">' . _('Back to Pick Lists') . '</a>
 	</div>';
 echo '<table class="selection">
 			<tr>
-				<th><img src="' . $RootPath . '/css/' . $Theme . '/images/customer.png" title="' . _('Customer') . '" alt="" />' . ' ' . _('Customer Code') . ' :<b> ' . $_SESSION['Items' . $Identifier]->DebtorNo . '</b></th>
+				<th><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/customer.png" title="' . _('Customer') . '" alt="" />' . ' ' . _('Customer Code') . ' :<b> ' . $_SESSION['Items' . $Identifier]->DebtorNo . '</b></th>
 				<th>' . _('Customer Name') . ' :<b> ' . $_SESSION['Items' . $Identifier]->CustomerName . '</b></th>
 			</tr>
 			</table>';
@@ -638,7 +638,7 @@ if (isset($_POST['ProcessPickList']) and $_POST['ProcessPickList'] != '') {
 
 	echo '<br /><div class="centre">';
 
-	echo '<a target="_blank" href="' . $PrintDispatchNote . '">' . _('Print Packing Slip') . '<img src="' . $RootPath . '/css/' . $Theme . '/images/pdf.png" title="' . _('Click for PDF') . '" alt="" /></a><br />
+	echo '<a target="_blank" href="' . $PrintDispatchNote . '">' . _('Print Packing Slip') . '<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/pdf.png" title="' . _('Click for PDF') . '" alt="" /></a><br />
 		<a target="_blank" href="' . $PrintLabels . '">' . _('Print Customer Labels') . '</a><br /><br />';
 
 	echo '<a href="' . $RootPath . '/SelectPickingLists.php">' . _('Select another pick list for processing') . '</a><br /><br />';

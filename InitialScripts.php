@@ -8,7 +8,7 @@ $Title = _('Initialise New Installation');
 include('includes/header.inc');
 
 echo '<p class="page_title_text noPrint" >
-		<img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Initialise New Installation') . '" alt="' . _('Initialise New Installation') . '" />' . $Title . '
+		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Initialise New Installation') . '" alt="' . _('Initialise New Installation') . '" />' . $Title . '
 	</p>';
 
 echo '<div class="page_help_text noPrint">' .

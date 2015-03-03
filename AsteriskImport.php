@@ -4,7 +4,7 @@ include('includes/session.inc');
 $Title = _('Import Asterisk Data');
 include('includes/header.inc');
 
-echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . $Title . '" />' . ' ' . $Title . '</p>';
+echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . $Title . '" />' . ' ' . $Title . '</p>';
 
 if (isset($_POST['Submit'])) { //start file processing
 

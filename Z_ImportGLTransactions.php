@@ -5,7 +5,7 @@ $Title = _('Import General Ledger Transactions');
 include('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');
 
-echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Import GL Payments Receipts Or Journals From CSV') . '" />' . ' ' . _('Import GL Payments Receipts Or Journals From CSV') . '</p>';
+echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Import GL Payments Receipts Or Journals From CSV') . '" />' . ' ' . _('Import GL Payments Receipts Or Journals From CSV') . '</p>';
 
 $FieldHeadings = array(
 	'Date', //  0 'Transaction Date',

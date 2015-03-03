@@ -5,7 +5,7 @@ $Title = _('Search Pick Lists ');
 include('includes/header.inc');
 
 echo '<p class="page_title_text">
-		<img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Pick Lists') . '" alt=""  />' . ' ' . _('Pick Lists') . '</p>';
+		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Pick Lists') . '" alt=""  />' . ' ' . _('Pick Lists') . '</p>';
 
 if (isset($_GET['SelectedStockItem'])) {
 	$SelectedStockItem = $_GET['SelectedStockItem'];
@@ -428,8 +428,8 @@ else {
 			}
 
 			echo '<td><a href="' . $ModifyPickList . '">' . str_pad($MyRow['prid'], 10, '0', STR_PAD_LEFT) . '</a></td>
-					<td><a href="' . $PrintPickList . '">Print <img src="' . $RootPath . '/css/' . $Theme . '/images/pdf.png" title="' . _('Click for PDF') . '" alt="" /></a></td>
-					<td><a target="_blank" href="' . $PrintDispatchNote . '">' . $PrintText . ' <img src="' . $RootPath . '/css/' . $Theme . '/images/pdf.png" title="' . _('Click for PDF') . '" alt="" /></a></td>
+					<td><a href="' . $PrintPickList . '">Print <img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/pdf.png" title="' . _('Click for PDF') . '" alt="" /></a></td>
+					<td><a target="_blank" href="' . $PrintDispatchNote . '">' . $PrintText . ' <img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/pdf.png" title="' . _('Click for PDF') . '" alt="" /></a></td>
 					<td><a target="_blank" href="' . $PrintLabels . '">' . _('Labels') . '</a></td>
 					<td>' . $MyRow['orderno'] . '</td>
 					<td>' . $MyRow['name'] . '</td>

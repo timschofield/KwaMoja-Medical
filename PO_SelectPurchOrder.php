@@ -20,7 +20,7 @@ if (isset($_GET['SelectedSupplier'])) {
 	$SelectedSupplier = stripslashes($_POST['SelectedSupplier']);
 }
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title;
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title;
 if (isset($SelectedSupplier)) {
 	echo ' ' . _('for Supplier') . ': ' . $SelectedSupplier;
 	echo '<input type="hidden" name="SelectedSupplier" value="' . $SelectedSupplier . '" />';

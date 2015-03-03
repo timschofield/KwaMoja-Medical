@@ -8,7 +8,7 @@ $BookMark = 'TaxCategories';// Anchor's id in the manual's html document.
 
 include('includes/header.inc');
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Supplier Types') . '" alt="" />' . $Title . '</p>';
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Supplier Types') . '" alt="" />' . $Title . '</p>';
 
 if (isset($_GET['SelectedTaxCategory'])) {
 	$SelectedTaxCategory = $_GET['SelectedTaxCategory'];

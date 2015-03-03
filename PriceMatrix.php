@@ -23,7 +23,7 @@ $Result = DB_query($SQL);
 $MyRow = DB_fetch_array($Result);
 
 echo '<div class="toplink"><a href="' . $RootPath . '/SelectProduct.php">' . _('Back to Items') . '</a></div>';
-echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . ' - ' . $MyRow['description'] . '</p><br />';
+echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . ' - ' . $MyRow['description'] . '</p><br />';
 
 if (isset($_POST['submit'])) {
 

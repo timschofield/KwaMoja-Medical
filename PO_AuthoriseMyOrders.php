@@ -6,7 +6,7 @@ $Title = _('Authorise Purchase Orders');
 
 include('includes/header.inc');
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '</p>';
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/transactions.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '</p>';
 
 $EmailSQL = "SELECT email FROM www_users WHERE userid='" . $_SESSION['UserID'] . "'";
 $EmailResult = DB_query($EmailSQL);

@@ -95,7 +95,7 @@ if (!isset($Id)) {
 				WHERE debtorno='" . $DebtorNo . "'";
 	$Result = DB_query($NameSql);
 	$MyRow = DB_fetch_array($Result);
-	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . _('Notes for Customer') . ': <b>' . $MyRow['name'] . '</b></p>
+	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . _('Notes for Customer') . ': <b>' . $MyRow['name'] . '</b></p>
 		<br />';
 
 	$SQL = "SELECT noteid,

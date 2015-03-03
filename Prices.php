@@ -15,7 +15,7 @@ echo '<div class="toplink">
 		<a href="' . $RootPath . '/SelectProduct.php">' . _('Back to Items') . '</a>
 	</div>';
 
-echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/money_add.png" title="' . _('Search') . '" />' . ' ' . $Title . '</p>';
+echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/money_add.png" title="' . _('Search') . '" />' . ' ' . $Title . '</p>';
 
 //initialise no input errors assumed initially before we test
 $InputError = 0;

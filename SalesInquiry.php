@@ -67,7 +67,7 @@ else {
 }
 
 if (isset($_POST['submit'])) {
-	submit($PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $DebtorName, $DebtorNameOp, $SaveSummaryType, $RootPath, $Theme);
+	submit($PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $DebtorName, $DebtorNameOp, $SaveSummaryType, $RootPath, $_SESSION['Theme']);
 } //isset($_POST['submit'])
 else {
 	display();
@@ -75,7 +75,7 @@ else {
 
 
 //####_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT_SUBMIT####
-function submit($PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $DebtorName, $DebtorNameOp, $SaveSummaryType, $RootPath, $Theme) {
+function submit($PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $DebtorName, $DebtorNameOp, $SaveSummaryType, $RootPath, $_SESSION['Theme']) {
 	//initialise no input errors
 	$InputError = 0;
 
@@ -687,7 +687,7 @@ function submit($PartNumber, $PartNumberOp, $DebtorNo, $DebtorNoOp, $DebtorName,
 				<tr>
 					<th colspan="15">
 						<h3>' . _('Sales Inquiry') . '
-							<img src="' . $RootPath . '/css/' . $Theme . '/images/printer.png" class="PrintIcon noPrint" title="' . _('Print') . '" alt="" onclick="window.print();" />
+							<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/printer.png" class="PrintIcon noPrint" title="' . _('Print') . '" alt="" onclick="window.print();" />
 						</h3>
 					</th>
 				</tr>';

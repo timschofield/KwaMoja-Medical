@@ -7,7 +7,7 @@ $BookMark = 'Z_CurrencySuppliersBalances';// Anchor's id in the manual's html do
 include('includes/header.inc');
 
 echo '<p class="page_title_text">
-		<img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" title="' . _('Show Local Currency Total Suppliers Balances') . '" /> ' . _('Suppliers Balances By Currency Totals') . '
+		<img alt="" src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/supplier.png" title="' . _('Show Local Currency Total Suppliers Balances') . '" /> ' . _('Suppliers Balances By Currency Totals') . '
 	</p>';// Page title.
 
 $SQL = "SELECT SUM(ovamount+ovgst-alloc) AS currencybalance,

@@ -11,7 +11,7 @@ if ((isset($_GET['Type']) and $_GET['Type'] == 'Receipts') or (isset($_POST['Typ
 	$Type = 'Receipts';
 	$TypeName = _('Receipts');
 	echo '<p class="page_title_text noPrint" >
-			<img src="' . $RootPath . '/css/' . $Theme . '/images/money_add.png" title="' . _('Bank Matching') . '" alt="' . _('Bank Matching') . '" />' . ' ' . _('Bank Account Matching - Receipts') . '
+			<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/money_add.png" title="' . _('Bank Matching') . '" alt="' . _('Bank Matching') . '" />' . ' ' . _('Bank Account Matching - Receipts') . '
 		</p>';
 
 } elseif ((isset($_GET['Type']) and $_GET['Type'] == 'Payments') or (isset($_POST['Type']) and $_POST['Type'] == 'Payments')) {
@@ -19,7 +19,7 @@ if ((isset($_GET['Type']) and $_GET['Type'] == 'Receipts') or (isset($_POST['Typ
 	$Type = 'Payments';
 	$TypeName = _('Payments');
 	echo '<p class="page_title_text noPrint" >
-			<img src="' . $RootPath . '/css/' . $Theme . '/images/money_delete.png" title="' . _('Bank Matching') . '" alt="' . _('Bank Matching') . '" />' . ' ' . _('Bank Account Matching - Payments') . '
+			<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/money_delete.png" title="' . _('Bank Matching') . '" alt="' . _('Bank Matching') . '" />' . ' ' . _('Bank Account Matching - Payments') . '
 		</p>';
 
 } else {

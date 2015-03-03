@@ -32,7 +32,7 @@ if (!isset($_GET['TypeID']) or !isset($_GET['TransNo'])) {
 		//
 		//========[ SHOW SYNOPSYS ]===========
 		//
-		echo '<p class="page_title_text noPrint"><img src="', $RootPath, '/css/', $Theme, '/images/magnifier.png" title="', $Title, '" alt="" />', ' ', $Title, '</p>';
+		echo '<p class="page_title_text noPrint"><img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/magnifier.png" title="', $Title, '" alt="" />', ' ', $Title, '</p>';
 		echo '<table class="selection">'; //Main table
 		echo '<tr>
 				<th colspan="7"><h2><b>', _($TransName), ' ', $_GET['TransNo'], '</b></h2></th>

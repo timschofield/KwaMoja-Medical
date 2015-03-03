@@ -758,7 +758,7 @@ if (isset($_POST['SelectedCustomer'])) {
 
 if (!isset($_SESSION['Contract' . $Identifier]->DebtorNo) or $_SESSION['Contract' . $Identifier]->DebtorNo == '') {
 
-	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/contract.png" title="' . _('Contract') . '" alt="" />' . ' ' . _('Contract: Select Customer') . '</p>';
+	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/contract.png" title="' . _('Contract') . '" alt="" />' . ' ' . _('Contract: Select Customer') . '</p>';
 	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '" name="CustomerSelection" method="post" class="noPrint">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
@@ -829,7 +829,7 @@ if (!isset($_SESSION['Contract' . $Identifier]->DebtorNo) or $_SESSION['Contract
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	echo '<p class="page_title_text noPrint" >
-			<img src="' . $RootPath . '/css/' . $Theme . '/images/contract.png" title="' . _('Contract') . '" alt="" /> ' . $_SESSION['Contract' . $Identifier]->CustomerName;
+			<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/contract.png" title="' . _('Contract') . '" alt="" /> ' . $_SESSION['Contract' . $Identifier]->CustomerName;
 
 	if ($_SESSION['CompanyRecord']['currencydefault'] != $_SESSION['Contract' . $Identifier]->CurrCode) {
 		echo ' - ' . _('All amounts stated in') . ' ' . $_SESSION['Contract' . $Identifier]->CurrCode . '<br />';

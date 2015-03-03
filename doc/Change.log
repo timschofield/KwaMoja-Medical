@@ -2839,7 +2839,7 @@
 2012-12-29 14:56:17 -0800	KwaMoja <pmunir31@gmail.com>
 	* Merge pull request #12 from timschofield/develop
 2012-12-29 22:51:26 +0000	Phil Daintree <phil@logicworks.co.nz>
-	* Phil: Replace all instances of $theme with $Theme
+	* Phil: Replace all instances of $theme with $_SESSION['Theme']
 2012-12-29 14:39:12 -0800	KwaMoja <pmunir31@gmail.com>
 	* Merge pull request #11 from fahadhatib/develop
 2012-12-29 22:35:24 +0000	Fahad Hatib <fahad.hatib@gmail.com>

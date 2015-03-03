@@ -130,7 +130,7 @@ if (!isset($SelectedParam)) {
 			FROM geocode_param";
 	$Result = DB_query($SQL);
 
-	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Geocode Setup') . '" alt="" />' . _('Setup configuration for Geocoding of Customers and Suppliers') . '</p>';
+	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Geocode Setup') . '" alt="" />' . _('Setup configuration for Geocoding of Customers and Suppliers') . '</p>';
 	echo '<div class="page_help_text noPrint">' . _('Get a google API key at ') . '<a href="http://code.google.com/apis/maps/signup.html" target="_blank"> http://code.google.com/apis/maps/signup.html</a></div>';
 	echo '<div class="centre"><p>' . _('Find the lat/long for your map center point at ') . '<a href="http://www.batchgeocode.com/lookup/" target="_blank">http://www.batchgeocode.com/lookup/</a></p>';
 	prnMsg(_('Set the maps centre point using the Center Longitude and Center Latitude. Set the maps screen size using the height and width in pixels (px)'), 'info');
@@ -210,7 +210,7 @@ if (!isset($_GET['delete'])) {
 
 		echo '<input type="hidden" name="SelectedParam" value="' . $SelectedParam . '" />';
 		echo '<input type="hidden" name="GeoCodeID" value="' . $_POST['GeoCodeID'] . '" />';
-		echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Geocode Setup') . '" alt="" />' . _('Setup configuration for Geocoding of Customers and Suppliers') . '</p>';
+		echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Geocode Setup') . '" alt="" />' . _('Setup configuration for Geocoding of Customers and Suppliers') . '</p>';
 		echo '<br /><table>
 				<tr><td>' . _('Geocode Code') . ':</td>
 					<td>' . $_POST['GeoCodeID'] . '</td></tr>';

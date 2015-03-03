@@ -5,7 +5,7 @@ $Title = _('WO items can be produced with available stock');
 include('includes/header.inc');
 
 echo '<p class="page_title_text" align="center">
-		<img src="' . $RootPath . '/css/' . $Theme . '/images/reports.png" title="' . _('Search') . '" alt="" />
+		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/reports.png" title="' . _('Search') . '" alt="" />
 		<strong>' . "List of items in WO ready to be produced in: " . '</strong>
 	</p>';
 

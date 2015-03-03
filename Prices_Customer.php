@@ -29,7 +29,7 @@ if (!isset($Item) or !isset($_SESSION['CustomerID']) or $_SESSION['CustomerID'] 
 	exit;
 }
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . _('Special Customer Prices') . '</p><br />';
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . _('Special Customer Prices') . '</p><br />';
 echo '<b>' . htmlspecialchars($MyRow['name'], ENT_QUOTES, 'UTF-8') . ' ' . _('in') . ' ' . $MyRow['currcode'] . '<br />' . ' ' . _('for') . ' ';
 
 $CurrCode = $MyRow['currcode'];

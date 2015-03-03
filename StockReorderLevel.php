@@ -17,7 +17,7 @@ echo '<div class="toplink">
 	</div>';
 
 echo '<p class="page_title_text noPrint" >
-		<img src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Inventory') . '" alt="" /><b>' . $Title . '</b>
+		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Inventory') . '" alt="" /><b>' . $Title . '</b>
 	</p>';
 
 $Result = DB_query("SELECT description, units FROM stockmaster WHERE stockid='" . $StockId . "'");

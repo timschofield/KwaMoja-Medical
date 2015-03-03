@@ -59,7 +59,7 @@ echo '<div class="toplink"><a href="' . $RootPath . '/SelectWorkOrder.php">' . _
 echo '<a href="' . $RootPath . '/WorkOrderCosting.php?WO=' . urlencode($SelectedWO) . '">' . _('Back to Costing') . '</a></div>';
 
 echo '<p class="page_title_text noPrint" >
-		<img src="' . $RootPath . '/css/' . $Theme . '/images/group_add.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '
+		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/group_add.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '
 	</p>';
 
 echo '<table cellpadding="2" class="selection">

@@ -34,7 +34,7 @@ if (isset($_POST['Search'])) {
 
 }
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Search') . '" alt="' . _('Search for General Ledger Accounts') . '" />' . ' ' . _('Search for General Ledger Accounts') . '</p>';
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Search') . '" alt="' . _('Search for General Ledger Accounts') . '" />' . ' ' . _('Search for General Ledger Accounts') . '</p>';
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
@@ -93,12 +93,12 @@ if (isset($Result) and DB_num_rows($Result) > 0) {
 				<td>' . $MyRow['pl'] . '</td>
 				<td>
 					<a href="' . $RootPath . '/GLAccountInquiry.php?Account=' . urlencode($MyRow['accountcode']) . '&amp;Show=Yes">
-						<img width="24px" src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Inquiry') . '" alt="' . _('Inquiry') . '" />
+						<img width="24px" src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Inquiry') . '" alt="' . _('Inquiry') . '" />
 					</a>
 				</td>
 				<td>
 					<a href="' . $RootPath . '/GLAccounts.php?SelectedAccount=' . urlencode($MyRow['accountcode']) . '">
-						<img width="24px" src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Edit') . '" alt="' . _('Edit') . '" />
+						<img width="24px" src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Edit') . '" alt="' . _('Edit') . '" />
 					</a>
 			</tr>';
 	}

@@ -175,7 +175,7 @@ if (isset($StockId) and $StockId != "") {
 	} else {
 		echo '<a href="' . $RootPath . '/index.php">' . _('Return to Main Menu') . '</a>';
 		echo '<p class="page_title_text noPrint" >
-				<img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '
+				<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '
 				</p>
 				<br />';
 

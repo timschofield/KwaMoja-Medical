@@ -3,7 +3,7 @@ include('includes/session.inc');
 $Title = _('Update Item Costs From CSV');
 include('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');
-echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Update Item Costs from CSV file') . '" />' . ' ' . _('Update Item Costs from CSV file') . '</p>';
+echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Update Item Costs from CSV file') . '" />' . ' ' . _('Update Item Costs from CSV file') . '</p>';
 
 $FieldHeadings = array(
 	'StockID',

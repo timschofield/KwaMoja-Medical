@@ -4,7 +4,7 @@ include('includes/session.inc');
 $Title = _('Page Security Levels');
 include('includes/header.inc');
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/security.png" title="' . _('Page Security Levels') . '" alt="" />' . ' ' . $Title . '</p><br />';
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/security.png" title="' . _('Page Security Levels') . '" alt="" />' . ' ' . $Title . '</p><br />';
 
 if (isset($_POST['Update']) and $AlloDemoMode != true) {
 	foreach ($_POST as $ScriptName => $PageSecurityValue) {

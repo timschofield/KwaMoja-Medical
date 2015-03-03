@@ -7,7 +7,7 @@ $Title = _('Payment Terms Maintenance');
 include('includes/header.inc');
 
 echo '<p class="page_title_text noPrint" >
-		<img src="' . $RootPath . '/css/' . $Theme . '/images/money_add.png" title="' . _('Payment Terms') . '" alt="" />' . ' ' . $Title . '</p>';
+		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/money_add.png" title="' . _('Payment Terms') . '" alt="" />' . ' ' . $Title . '</p>';
 
 if (isset($_GET['SelectedTerms'])) {
 	$SelectedTerms = $_GET['SelectedTerms'];

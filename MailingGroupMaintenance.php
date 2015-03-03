@@ -4,7 +4,7 @@ include('includes/session.inc');
 $Title = _('Mailing Group Maintenance');
 include('includes/header.inc');
 
-echo '<p class= "page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/group_add.png" alt="" />' . $Title . '</p>';
+echo '<p class= "page_title_text"><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/group_add.png" alt="" />' . $Title . '</p>';
 
 //show the mail group existed only when user request this page first
 if (!isset($_POST['Clean']) and !isset($_GET['Delete']) and !isset($_GET['Edit']) and !isset($_GET['Add']) and !isset($_GET['Remove'])) {

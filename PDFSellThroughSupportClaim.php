@@ -160,7 +160,7 @@ if (isset($_POST['PrintPDF'])) {
 
 	include('includes/header.inc');
 
-	echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . $Title . '" alt="" />' . ' ' . _('Sell Through Support Claims Report') . '</p>';
+	echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/transactions.png" title="' . $Title . '" alt="" />' . ' ' . _('Sell Through Support Claims Report') . '</p>';
 
 	if (!isset($_POST['FromDate']) OR !isset($_POST['ToDate'])) {
 

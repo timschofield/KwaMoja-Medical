@@ -23,7 +23,7 @@ $BookMark = 'UserMaintenance';
 include('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/group_add.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/group_add.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
 
 // Make an array of the security roles
 $SQL = "SELECT secroleid,
@@ -680,10 +680,12 @@ echo '<tr>
 $Themes = glob('css/*', GLOB_ONLYDIR);
 foreach ($Themes as $ThemeName) {
 	$ThemeName = basename($ThemeName);
-	if ($_POST['Theme'] == $ThemeName) {
-		echo '<option selected="selected" value="', $ThemeName, '">', $ThemeName, '</option>';
-	} else {
-		echo '<option value="', $ThemeName, '">', $ThemeName, '</option>';
+	if ($ThemeName != 'mobile') {
+		if ($_POST['Theme'] == $ThemeName) {
+			echo '<option selected="selected" value="', $ThemeName, '">', $ThemeName, '</option>';
+		} else {
+			echo '<option value="', $ThemeName, '">', $ThemeName, '</option>';
+		}
 	}
 }
 

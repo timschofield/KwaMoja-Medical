@@ -60,7 +60,7 @@ echo '<div class="toplink">
 		<a href="' . $RootPath . '/SelectProduct.php">' . _('Back to Items') . '</a>
 	</div>
 	<p class="page_title_text noPrint" >
-		<img src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Stock') . '" alt="" />' . ' ' . $Title . '
+		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Stock') . '" alt="" />' . ' ' . $Title . '
 	</p>';
 
 if (isset($_FILES['ItemPicture']) and $_FILES['ItemPicture']['name'] != '') {
@@ -896,9 +896,9 @@ echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
 if (isset($StockId) and $StockId != '') {
 	echo '<table width="100%">
 			<tr>
-				<td><input class="image" src="css/' . $Theme . '/images/previous.png" type="image" name="PreviousItem" title="' . _('Previous Item') . '" value="" /></td>
+				<td><input class="image" src="css/' . $_SESSION['Theme'] . '/images/previous.png" type="image" name="PreviousItem" title="' . _('Previous Item') . '" value="" /></td>
 				<td><label>' . _('Navigate Items') . '</label></td>
-				<td><input class="image" src="css/' . $Theme . '/images/next.png" type="image" name="NextItem" title="' . _('Next Item') . '" value="" /></td>
+				<td><input class="image" src="css/' . $_SESSION['Theme'] . '/images/next.png" type="image" name="NextItem" title="' . _('Next Item') . '" value="" /></td>
 			</tr>';
 }
 

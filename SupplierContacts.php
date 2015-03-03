@@ -18,7 +18,7 @@ echo '<div class="toplink">
 		<a href="' . $RootPath . '/SelectSupplier.php">' . _('Back to Suppliers') . '</a>
 	</div>';
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . _('Supplier Allocations') . '" alt="" />' . ' ' . $Title . '</p>';
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/transactions.png" title="' . _('Supplier Allocations') . '" alt="" />' . ' ' . $Title . '</p>';
 
 if (!isset($SupplierID)) {
 	echo '<p /><p />';

@@ -7,7 +7,7 @@ $ViewTopic = 'GeneralLedger';// Filename's id in ManualContents.php's TOC.
 $BookMark = 'BankAccountUsers';// Anchor's id in the manual's html document.*/
 include('includes/header.inc');
 
-echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/money_add.png" title="' . _('Bank Account Authorised Users') . '" alt="" />' . ' ' . $Title . '</p>';
+echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/money_add.png" title="' . _('Bank Account Authorised Users') . '" alt="" />' . ' ' . $Title . '</p>';
 
 if (isset($_POST['SelectedUser'])) {
 	$SelectedUser = mb_strtoupper($_POST['SelectedUser']);

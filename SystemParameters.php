@@ -7,7 +7,7 @@ $ViewTopic = 'GettingStarted';
 $BookMark = 'SystemConfiguration';
 include('includes/header.inc');
 include('includes/CountriesArray.php');
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Supplier Types') . '" alt="" />' . $Title . '</p>';
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Supplier Types') . '" alt="" />' . $Title . '</p>';
 
 if (isset($_POST['submit'])) {
 
@@ -402,13 +402,13 @@ echo '<tr style="outline: 1px solid">
 echo '<tr style="outline: 1px solid">
 		<td>' . _('Default Theme') . ':</td>
 		<td><select name="X_DefaultTheme">';
-$Themes = glob('css/*', GLOB_ONLYDIR);
-foreach ($Themes as $ThemeName) {
-	$ThemeName = basename($ThemeName);
-	if ($_SESSION['DefaultTheme'] == $ThemeName) {
-		echo '<option selected="selected" value="', $ThemeName, '">', $ThemeName, '</option>';
+$_SESSION['Theme']s = glob('css/*', GLOB_ONLYDIR);
+foreach ($_SESSION['Theme']s as $_SESSION['Theme']Name) {
+	$_SESSION['Theme']Name = basename($_SESSION['Theme']Name);
+	if ($_SESSION['DefaultTheme'] == $_SESSION['Theme']Name) {
+		echo '<option selected="selected" value="', $_SESSION['Theme']Name, '">', $_SESSION['Theme']Name, '</option>';
 	} else {
-		echo '<option value="', $ThemeName, '">', $ThemeName, '</option>';
+		echo '<option value="', $_SESSION['Theme']Name, '">', $_SESSION['Theme']Name, '</option>';
 	}
 }
 echo '</select>

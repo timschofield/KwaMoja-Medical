@@ -8,7 +8,7 @@ $BookMark = 'ARTransInquiry';
 include('includes/header.inc');
 
 echo '<p class="page_title_text noPrint" >
-		<img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . _('Transaction Inquiry') . '" alt="" />' . ' ' . _('Transaction Inquiry') . '
+		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/transactions.png" title="' . _('Transaction Inquiry') . '" alt="" />' . ' ' . _('Transaction Inquiry') . '
 	</p>';
 echo '<div class="page_help_text noPrint">' . _('Choose which type of transaction to report on.') . '</div>
 	<br />';
@@ -139,12 +139,12 @@ if (isset($_POST['ShowResults']) and $_POST['TransType'] != '') {
 			/* invoices */
 
 			printf($format_base . '<td><a target="_blank" href="%s/PrintCustTrans.php?FromTransNo=%s&InvOrCredit=Invoice"><img src="%s" title="' . _('Click to preview the invoice') . '" /></a></td>
-					</tr>', _($MyRow['typename']), $MyRow['transno'], ConvertSQLDate($MyRow['trandate']), $MyRow['debtorno'], $MyRow['branchcode'], $MyRow['reference'], $MyRow['invtext'], $MyRow['order_'], locale_number_format($MyRow['rate'], 6), locale_number_format($MyRow['totalamt'], $MyRow['currdecimalplaces']), $MyRow['currcode'], $RootPath, $MyRow['transno'], $RootPath . '/css/' . $Theme . '/images/preview.png');
+					</tr>', _($MyRow['typename']), $MyRow['transno'], ConvertSQLDate($MyRow['trandate']), $MyRow['debtorno'], $MyRow['branchcode'], $MyRow['reference'], $MyRow['invtext'], $MyRow['order_'], locale_number_format($MyRow['rate'], 6), locale_number_format($MyRow['totalamt'], $MyRow['currdecimalplaces']), $MyRow['currcode'], $RootPath, $MyRow['transno'], $RootPath . '/css/' . $_SESSION['Theme'] . '/images/preview.png');
 
 		} elseif ($_POST['TransType'] == 11) {
 			/* credit notes */
 			printf($format_base . '<td><a target="_blank" href="%s/PrintCustTrans.php?FromTransNo=%s&InvOrCredit=Credit"><img src="%s" title="' . _('Click to preview the credit') . '" /></a></td>
-					</tr>', _($MyRow['typename']), $MyRow['transno'], ConvertSQLDate($MyRow['trandate']), $MyRow['debtorno'], $MyRow['branchcode'], $MyRow['reference'], $MyRow['invtext'], $MyRow['order_'], locale_number_format($MyRow['rate'], 6), locale_number_format($MyRow['totalamt'], $MyRow['currdecimalplaces']), $MyRow['currcode'], $RootPath, $MyRow['transno'], $RootPath . '/css/' . $Theme . '/images/preview.png');
+					</tr>', _($MyRow['typename']), $MyRow['transno'], ConvertSQLDate($MyRow['trandate']), $MyRow['debtorno'], $MyRow['branchcode'], $MyRow['reference'], $MyRow['invtext'], $MyRow['order_'], locale_number_format($MyRow['rate'], 6), locale_number_format($MyRow['totalamt'], $MyRow['currdecimalplaces']), $MyRow['currcode'], $RootPath, $MyRow['transno'], $RootPath . '/css/' . $_SESSION['Theme'] . '/images/preview.png');
 		} else {
 			/* otherwise */
 			printf($format_base . '</tr>', _($MyRow['typename']), $MyRow['transno'], ConvertSQLDate($MyRow['trandate']), $MyRow['debtorno'], $MyRow['branchcode'], $MyRow['reference'], $MyRow['invtext'], $MyRow['order_'], locale_number_format($MyRow['rate'], 6), locale_number_format($MyRow['totalamt'], $MyRow['currdecimalplaces']), $MyRow['currcode']);

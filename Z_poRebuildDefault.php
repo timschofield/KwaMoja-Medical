@@ -22,7 +22,7 @@ echo '<div class="toplink">
 		<a href="' . $RootPath . '/Z_poAdmin.php">' . _('Back to the translation menu') . '</a>
 	</div>';
 
-echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Rebuild the System Default Language File') . '" />' . ' ' . _('Rebuild the System Default Language File') . '</p>';
+echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Rebuild the System Default Language File') . '" />' . ' ' . _('Rebuild the System Default Language File') . '</p>';
 
 echo '<div class="page_help_text noPrint">' . _('Utility page to rebuild the system default language file') . '</div>';
 

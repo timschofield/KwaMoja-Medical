@@ -33,7 +33,7 @@ $CustomerRecord = DB_fetch_array($CustomerResult);
 echo '<div class="toplink"><a href="SelectCustomer.php">' . _('Return to customer selection screen') . '</a></div>';
 
 echo '<p class="page_title_text noPrint" >
-		<img src="' . $RootPath . '/css/' . $Theme . '/images/customer.png" title="' . _('Customer') . '" alt="" /> ' . _('Items Purchased by Customer') . ' : ' . $CustomerRecord['name'] . '
+		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/customer.png" title="' . _('Customer') . '" alt="" /> ' . _('Items Purchased by Customer') . ' : ' . $CustomerRecord['name'] . '
 	</p>';
 
 $SQLWhere = '';

@@ -117,7 +117,7 @@ if (!isset($SelectedShipper)) {
 	links to delete or edit each. These will call the same page again and allow update/input
 	or deletion of the records*/
 	echo '<p class="page_title_text noPrint" >
-			<img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
+			<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/supplier.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
 
 	$SQL = "SELECT * FROM shippers ORDER BY shipper_id";
 	$Result = DB_query($SQL);
@@ -150,7 +150,7 @@ if (!isset($SelectedShipper)) {
 
 if (isset($SelectedShipper)) {
 	echo '<p class="page_title_text noPrint" >
-			<img src="' . $RootPath . '/css/' . $Theme . '/images/supplier.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
+			<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/supplier.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
 	echo '<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('REVIEW RECORDS') . '</a></div>';
 }
 

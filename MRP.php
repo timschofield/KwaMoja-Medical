@@ -536,7 +536,7 @@ if (isset($_POST['submit'])) {
 
 } else { // End of if submit isset
 	// Display form if submit has not been hit
-	echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/inventory.png" title="' . _('Inventory') . '" alt="" />' . ' ' . $Title . '</p>';
+	echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Inventory') . '" alt="" />' . ' ' . $Title . '</p>';
 
 	// Display parameters from last run
 	$SQL = "SELECT * FROM mrpparameters";

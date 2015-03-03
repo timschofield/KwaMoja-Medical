@@ -6,7 +6,7 @@ $Title = _('Shipment Costing');
 include('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Search') . '" alt="" />
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Search') . '" alt="" />
 	 ' . ' ' . $Title . '</p>';
 
 if (isset($_GET['NewShipment']) and $_GET['NewShipment'] == 'Yes') {

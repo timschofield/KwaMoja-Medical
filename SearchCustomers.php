@@ -38,7 +38,7 @@ include('includes/header.inc');
 unset($_SESSION['DebtorNo']);
 unset($_SESSION['BranchNo']);
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Search for a Customer') . '<br /></p>';
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Search for a Customer') . '<br /></p>';
 
 /* Container box to hold three separate boxes horizontally */
 echo '<div class="container">';

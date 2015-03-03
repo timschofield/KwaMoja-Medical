@@ -26,7 +26,7 @@ if (isset($_GET['QASampleID'])) {
 if ((!isset($SelectedCOA) || $SelectedCOA == '') and (!isset($QASampleID) or $QASampleID == '')) {
 	$Title = _('Select Certificate of Analysis To Print');
 	include('includes/header.inc');
-	echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/printer.png" title="' . _('Print') . '" alt="" />' . ' ' . $Title . '</p>';
+	echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/printer.png" title="' . _('Print') . '" alt="" />' . ' ' . $Title . '</p>';
 	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 

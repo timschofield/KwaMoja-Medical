@@ -27,7 +27,7 @@ $MyRow = DB_fetch_array($Result);
 $CustomerName = $MyRow['name'];
 
 echo '<p class="page_title_text noPrint" >
-		<img src="' . $RootPath . '/css/' . $Theme . '/images/customer.png" title="' . _('Customer') . '" alt="" />' . ' ' . _('Customer') . ' : ' . $_SESSION['CustomerID'] . ' - ' . $CustomerName . _(' has been selected') . '</p>
+		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/customer.png" title="' . _('Customer') . '" alt="" />' . ' ' . _('Customer') . ' : ' . $_SESSION['CustomerID'] . ' - ' . $CustomerName . _(' has been selected') . '</p>
 	<br />';
 
 
@@ -231,18 +231,18 @@ echo '</select></td>
 		<td>' . _('Theme') . ':</td>
 		<td><select minlength="0" name="Theme">';
 
-$ThemeDirectory = dir('css/');
+$_SESSION['Theme']Directory = dir('css/');
 
-while (false != ($ThemeName = $ThemeDirectory->read())) {
+while (false != ($_SESSION['Theme']Name = $_SESSION['Theme']Directory->read())) {
 
-	if (is_dir('css/' . $ThemeName) and $ThemeName != '.' and $ThemeName != '..' and $ThemeName != '.svn') {
+	if (is_dir('css/' . $_SESSION['Theme']Name) and $_SESSION['Theme']Name != '.' and $_SESSION['Theme']Name != '..' and $_SESSION['Theme']Name != '.svn') {
 
-		if (isset($_POST['Theme']) and $_POST['Theme'] == $ThemeName) {
-			echo '<option selected="selected" value="' . $ThemeName . '">' . $ThemeName . '</option>';
-		} elseif (!isset($_POST['Theme']) and ($Theme == $ThemeName)) {
-			echo '<option selected="selected" value="' . $ThemeName . '">' . $ThemeName . '</option>';
+		if (isset($_POST['Theme']) and $_POST['Theme'] == $_SESSION['Theme']Name) {
+			echo '<option selected="selected" value="' . $_SESSION['Theme']Name . '">' . $_SESSION['Theme']Name . '</option>';
+		} elseif (!isset($_POST['Theme']) and ($_SESSION['Theme'] == $_SESSION['Theme']Name)) {
+			echo '<option selected="selected" value="' . $_SESSION['Theme']Name . '">' . $_SESSION['Theme']Name . '</option>';
 		} else {
-			echo '<option value="' . $ThemeName . '">' . $ThemeName . '</option>';
+			echo '<option value="' . $_SESSION['Theme']Name . '">' . $_SESSION['Theme']Name . '</option>';
 		}
 	}
 }

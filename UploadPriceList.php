@@ -11,7 +11,7 @@ $FieldHeadings = array(
 	'Price' //  3 'Price'
 );
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . $Title . '" alt="' . $Title . '" />' . ' ' . $Title . '</p>';
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . $Title . '" alt="' . $Title . '" />' . ' ' . $Title . '</p>';
 
 if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file processing
 	//check file info

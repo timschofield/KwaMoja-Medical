@@ -7,7 +7,7 @@ $Title = _('Run stock ranking analysis');
 include('includes/header.inc');
 
 echo '<p class="page_title_text noPrint" >
-		<img src="' . $RootPath . '/css/' . $Theme . '/images/rank.png" title="' . $Title . '" alt="' . $Title . '" />' . ' ' . $Title . '
+		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/rank.png" title="' . $Title . '" alt="' . $Title . '" />' . ' ' . $Title . '
 	</p>';
 
 if (isset($_POST['Submit'])) {

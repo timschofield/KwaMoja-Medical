@@ -20,7 +20,7 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 	include('includes/header.inc');
 
 	echo '<p class="page_title_text">
-			<img alt="" class="noprint" src="' . $RootPath.'/css/' . $Theme . '/images/printer.png" title="' . _('Print Statement of Financial Position') . '" />
+			<img alt="" class="noprint" src="' . $RootPath.'/css/' . $_SESSION['Theme'] . '/images/printer.png" title="' . _('Print Statement of Financial Position') . '" />
 			' . _('Balance Sheet') . '
 		</p>';// Page title.
 
@@ -385,14 +385,14 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 			chartdetails.accountcode";
 
 	$AccountsResult = DB_query($SQL, _('No general ledger accounts were returned by the SQL because'));
-	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/preview.png" title="' . _('HTML View') . '" alt="' . _('HTML View') . '" /> ' . _('HTML View') . '</p>';
+	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/preview.png" title="' . _('HTML View') . '" alt="' . _('HTML View') . '" /> ' . _('HTML View') . '</p>';
 
 	echo '<table class="selection" summary="' . _('HTML View') . '">
 			<thead>
 				<tr>
 					<th colspan="6">
 						<h2>' . _('Balance Sheet as at') . ' ' . $BalanceDate . '
-						<img src="' . $RootPath . '/css/' . $Theme . '/images/printer.png" class="PrintIcon noPrint" title="' . _('Print') . '" alt="' . _('Print') . '" onclick="window.print();" />
+						<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/printer.png" class="PrintIcon noPrint" title="' . _('Print') . '" alt="' . _('Print') . '" onclick="window.print();" />
 						</h2>
 					</th>
 				</tr>';

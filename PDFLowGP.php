@@ -119,7 +119,7 @@ if (isset($_POST['PrintPDF'])) {
 
 	include('includes/header.inc');
 
-	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . $Title . '" alt="" />' . ' ' . _('Low Gross Profit Report') . '</p>';
+	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/transactions.png" title="' . $Title . '" alt="" />' . ' ' . _('Low Gross Profit Report') . '</p>';
 
 	if (!isset($_POST['FromDate']) or !isset($_POST['ToDate'])) {
 

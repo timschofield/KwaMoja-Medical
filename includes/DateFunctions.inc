@@ -175,7 +175,7 @@ function GetWeekDayText($WeekDayNumber) {
 }
 
 function DisplayDateTime() {
-	return _(date('l')) . ' ' . date('j') . ' ' . _(date('F')) . ' ' . date('G:i');
+	return _(date('l j F G:i'));
 }
 
 function DayOfWeekFromSQLDate($DateEntry) {

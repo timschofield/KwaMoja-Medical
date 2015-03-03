@@ -52,8 +52,10 @@ if ($_SESSION['Theme'] == 'mobile') {
 		echo '<table id="SubMenuTable">
 				<tr>
 					<td id="SubMenuCell">
-					<img id="SubMenuIcon" src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/customer.png" />' .
-						_('New Client') . '
+						<a id="SubMenuLink" href="' . $RootPath . '/Customers.php">
+							<img id="SubMenuIcon" src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/customer.png" />' .
+							_('New Client') . '
+						</a>
 					</td>
 				</tr>
 				<tr>
@@ -206,7 +208,7 @@ if ($_SESSION['Theme'] == 'mobile') {
 		exit;
 	}
 
-	if (isset($_GET['Application'])) {
+	if (isset($_GET['Application']) and ($_GET['Application'] != '')) {
 		/*This is sent by this page (to itself) when the user clicks on a tab */
 		$_SESSION['Module'] = $_GET['Application'];
 		setcookie('Module', $_GET['Application'], time() + 3600 * 24 * 30);
@@ -245,11 +247,11 @@ if ($_SESSION['Theme'] == 'mobile') {
 
 	echo '<li class="menu_group_headers">'; //=== SubMenuHeader ===
 	if ($_SESSION['Module'] == 'system') {
-		$Header = '<img src="' . $RootPath . '/css/' . $Theme . '/images/company.png" title="' . _('General Setup Options') . '" alt="' . _('General Setup Options') . '" /><b>' . _('General Setup Options') . '</b>';
+		echo '<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/company.png" title="', _('General Setup Options'), '" alt="', _('General Setup Options'), '" /><b>', _('General Setup Options'), '</b>';
 	} else {
-		$Header = '<img src="' . $RootPath . '/css/' . $Theme . '/images/transactions.png" title="' . _('Transactions') . '" alt="' . _('Transactions') . '" /><b>' . _('Transactions') . '</b>';
+		echo '<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/transactions.png" title="', _('Transactions'), '" alt="', _('Transactions'), '" /><b>', _('Transactions'), '</b>';
 	}
-	echo $Header;
+
 	echo '</li>'; // SubMenuHeader
 
 	//=== SubMenu Items ===

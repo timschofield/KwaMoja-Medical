@@ -86,19 +86,22 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 	} else {
 		$ItemStatus = '';
 	}
-	echo '<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Inventory') . '" alt="" /><b title="' . $MyRow['longdescription'] . '">' . ' ' . $StockId . ' - ' . $MyRow['description'] . '</b> ' . $ItemStatus ;
-
 
 	echo '<table width="95%">
 			<tr>
-			<td style="width:45%" valign="top">
-			<table>'; //nested table
+				<th colspan="5">
+					<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Inventory') . '" alt="" /><b title="' . $MyRow['longdescription'] . '">' . ' ' . $StockId . ' - ' . $MyRow['description'] . '</b> ' . $ItemStatus  . '
+				</th>
+			</tr>
+			<tr>
+				<td style="width:45%" valign="top">
+				<table>'; //nested table
 	$SQL = "SELECT abccategory FROM abcstock WHERE stockid='" . $StockId . "'";
 	$ABCResult = DB_query($SQL);
 	$ABCRow = DB_fetch_array($ABCResult);
 	echo '<tr>
 			<th class="number">' . _('Category') . ':</th>
-			<td colspan="2" class="select">' . $MyRow['categorydescription'], '</td>
+			<td colspan="4" class="select">' . $MyRow['categorydescription'], '</td>
 			<th class="number">' . _('ABC Rank') . ':</th>
 			<td class="select">' . $ABCRow['abccategory'], '</td>
 		</tr>';
@@ -180,12 +183,12 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 		} else {
 			while ($PriceRow = DB_fetch_array($PriceResult)) {
 				echo '<tr>
-						<th colspan="1">' . _('Sell Price') . ':</th>
+						<th class="number">' . _('Sell Price') . ':</th>
 						<td class="select">';
 				$Price = $PriceRow['price'];
 				echo $PriceRow['sales_type'] . '</td>
 					<td class="select" style="width:17%">' . locale_number_format($Price, $_SESSION['CompanyRecord']['decimalplaces']) . ' ' . $PriceRow['currabrev'] . '</td>
-					<th class="number">' . _('Gross Profit') . '</th>
+					<th class="number">' . _('Gross Profit') . ':</th>
 					<td class="select">';
 				if ($Price > 0) {
 					$GP = locale_number_format(($Price - $Cost) * 100 / $Price, 1);
@@ -211,7 +214,7 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 			$Cost = $MyRow['cost'];
 		}
 		echo '<tr>
-				<th class="number">' . _('Cost') . '</th>
+				<th class="number">' . _('Cost') . ':</th>
 				<td class="select">' . locale_number_format($Cost, $_SESSION['StandardCostDecimalPlaces']) . '</td>
 			</tr>';
 	} //end of if PricesSecuirty allows viewing of prices

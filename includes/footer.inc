@@ -51,13 +51,13 @@ echo '</div>'; // BodyDiv
 echo '<div id="FooterDiv" class="noPrint">';
 echo '<div id="FooterWrapDiv">';
 
-echo '<div id="FooterLogoDiv">';
-echo '<a href="http://www.kwamoja.com" target="_blank"><img src="' . $RootPath . '/' . $_SESSION['LogoFile'] . '" width="120" alt="KwaMoja" title="KwaMoja" /></a>';
-echo '</div>';
+echo '<div id="FooterLogoDiv">
+		<a href="http://www.kwamoja.com" target="_blank"><img src="', $RootPath, '/', $_SESSION['LogoFile'], '" width="120" alt="KwaMoja" title="KwaMoja" /></a>
+	</div>';
 
-echo '<div id="FooterVersionDiv">';
-echo 'KwaMoja ' . _('version') . ' ' . $_SESSION['VersionNumber'];
-echo '</div>';
+echo '<div id="FooterVersionDiv">
+		KwaMoja ', _('version'), ' ', $_SESSION['VersionNumber'],
+	'</div>';
 
 echo '<div id="FooterTimeDiv">';
 echo DisplayDateTime();

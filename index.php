@@ -264,7 +264,7 @@ if ($_SESSION['Theme'] == 'mobile') {
 		}
 		if ((in_array($PageSecurity, $_SESSION['AllowedPageSecurityTokens']) and $PageSecurity != '')) {
 			echo '<li class="menu_group_item">
-				<p><a href="' . $RootPath . $_SESSION['MenuItems'][$_SESSION['Module']]['Transactions']['URL'][$i] . '">&bull; ' . $Caption . '</a></p>
+				<p><a href="', $RootPath, $_SESSION['MenuItems'][$_SESSION['Module']]['Transactions']['URL'][$i], '">&bull; ', $Caption, '</a></p>
 			  </li>';
 		}
 		++$i;

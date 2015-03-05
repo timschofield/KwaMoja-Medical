@@ -113,6 +113,11 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 			echo _('Assembly Item'), '</td>';
 			$Its_A_Kitset_Assembly_Or_Dummy = true;
 			break;
+		case 'G':
+			echo _('Phantom Assembly Item');
+			$Its_A_Kitset_Assembly_Or_Dummy = true;
+			$Its_A_Kitset = true;
+			break;
 		case 'K':
 			echo _('Kitset Item'), '</td>';
 			$Its_A_Kitset_Assembly_Or_Dummy = true;
@@ -165,7 +170,7 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 									AND branchcode=''
 									AND startdate <= CURRENT_DATE AND ( enddate >= CURRENT_DATE OR enddate = '0000-00-00')
 									AND stockid='" . $StockId . "'");
-		if ($MyRow['mbflag'] == 'K' or $MyRow['mbflag'] == 'A') {
+		if ($MyRow['mbflag'] == 'K' or $MyRow['mbflag'] == 'A' or $myrow['mbflag'] == 'G') {
 			$CostResult = DB_query("SELECT SUM(bom.quantity * (stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost)) AS cost
 									FROM bom
 									LEFT JOIN stockcosts

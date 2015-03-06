@@ -500,6 +500,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 	$CheckPeriodBudget = 0;
 
 	$j = 0;
+	echo '<tbody>';
 
 	while ($MyRow = DB_fetch_array($AccountsResult)) {
 
@@ -709,8 +710,8 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 				<td class="number">%s</td>
 				<td class="number">%s</td>
 			</tr>', locale_number_format($CheckMonth, $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($CheckBudgetMonth, $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($CheckPeriodActual, $_SESSION['CompanyRecord']['decimalplaces']), locale_number_format($CheckPeriodBudget, $_SESSION['CompanyRecord']['decimalplaces']));
-
-	echo '</table><br />';
+	echo '</tbody>';
+	echo '</table>';
 	echo '<div class="centre noPrint"><input type="submit" name="SelectADifferentPeriod" value="' . _('Select A Different Period') . '" /></div>';
 }
 echo '</form>';

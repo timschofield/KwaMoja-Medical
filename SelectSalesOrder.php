@@ -726,11 +726,10 @@ if (!isset($StockId)) {
 			$AuthRow = DB_fetch_array($AuthResult);
 
 			echo '<table cellpadding="2" width="95%" class="selection">';
-			echo '<tbody>';
 			if (is_null($AuthRow['cancreate']) or !isset($AuthRow)) {
 				$AuthRow['cancreate'] = 1;
 			}
-
+			echo '<tbody>';
 			$PrintPickLabel = '';
 			if ($_SESSION['RequirePickingNote'] == 1) {
 				$PrintPickLabel = '<th>' . _('Pick Lists') . '</th>';
@@ -770,7 +769,6 @@ if (!isset($StockId)) {
 						<th>', _('Quote Total'), '<br />' . $_SESSION['CompanyRecord']['currencydefault'] . '</th>
 					</tr>';
 			}
-
 			$i = 0;
 			$k = 0; //row colour counter
 			$OrdersTotal = 0;
@@ -879,7 +877,6 @@ if (!isset($StockId)) {
 						</tr>', $ModifyPage, $MyRow['orderno'], $PrintQuotation, $PrintQuotationPortrait, $MyRow['name'], $MyRow['brname'], $MyRow['customerref'], $FormatedOrderDate, $FormatedDelDate, html_entity_decode($MyRow['deliverto'], ENT_QUOTES, 'UTF-8'), $FormatedOrderValue);
 				}
 				++$i;
-				$OrdersTotal += $MyRow['ordervalue'];
 				//end of page full new headings if
 			} //end while loop through orders to display
 			echo '</tbody>';

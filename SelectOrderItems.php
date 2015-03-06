@@ -147,10 +147,10 @@ if (isset($_GET['ModifyOrderNumber']) and $_GET['ModifyOrderNumber'] != '') {
 			exit;
 		} //$_SESSION['SalesmanLogin'] != '' and $_SESSION['SalesmanLogin'] != $MyRow['salesman']
 		$_SESSION['Items' . $Identifier]->OrderNo = $_GET['ModifyOrderNumber'];
-		$_SESSION['Items' . $Identifier]->DebtorNo = $MyRow['debtorno'];
+		$_SESSION['Items' . $Identifier]->DebtorNo = DB_escape_string($MyRow['debtorno']);
 		$_SESSION['Items' . $Identifier]->CreditAvailable = GetCreditAvailable($_SESSION['Items' . $Identifier]->DebtorNo);
 		/*CustomerID defined in header.inc */
-		$_SESSION['Items' . $Identifier]->Branch = $MyRow['branchcode'];
+		$_SESSION['Items' . $Identifier]->Branch = DB_escape_string($MyRow['branchcode']);
 		$_SESSION['Items' . $Identifier]->CustomerName = $MyRow['name'];
 		$_SESSION['Items' . $Identifier]->CustRef = $MyRow['customerref'];
 		$_SESSION['Items' . $Identifier]->Comments = stripcslashes($MyRow['comments']);
@@ -1571,13 +1571,14 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 		} //isset($_POST['StockCode'])
 		echo '" /></td>
 				<td><input type="checkbox" name="CustItemFlag" value="C" />' . _('Customer Item flag') . '&nbsp;&nbsp;<br/><span class="dpTbl">' . _('If checked, only items for this customer will show') . '</span> </td>
-			</tr>';
+			</tr>
+		</table>';
 
-		echo '<tr>
-				<td style="text-align:center" colspan="1"><input tabindex="4" type="submit" name="Search" value="' . _('Search Now') . '" /></td>
-				<td style="text-align:center" colspan="1"><input tabindex="5" type="submit" name="QuickEntry" value="' . _('Use Quick Entry') . '" /></td>';
+		echo '<div class="centre">
+				<input tabindex="4" type="submit" name="Search" value="' . _('Search Now') . '" />
+				<input tabindex="5" type="submit" name="QuickEntry" value="' . _('Use Quick Entry') . '" />
+			</div>';
 
-		echo '</tr></table>';
 		if (isset($SearchResult)) {
 			echo '<div class="page_help_text noPrint">' . _('Select an item by entering the quantity required.  Click Order when ready.') . '</div>';
 			$j = 1;

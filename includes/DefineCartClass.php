@@ -74,6 +74,7 @@ class Cart {
 		$this->FreightCost = 0;
 		$this->FreightTaxes = array();
 		$this->CurrDecimalPlaces = 2; //default
+		$this->Location = $_SESSION['UserStockLocation'];
 	}
 
 	function add_to_cart($StockId, $Qty, $Descr, $LongDescr, $Price, $Disc = 0, $UOM, $Volume, $Weight, $QOHatLoc = 0, $MBflag = 'B', $ActDispatchDate = NULL, $QtyInvoiced = 0, $DiscCat = '', $Controlled = 0, $Serialised = 0, $DecimalPlaces = 0, $Narrative = '', $UpdateDB = 'No', $LineNumber = -1, $TaxCategory = 0, $vtigerProductID = '', $ItemDue = '', $POLine = '', $StandardCost = 0, $EOQ = 1, $NextSerialNo = 0, $ExRate = 1, $Identifier = 0) {

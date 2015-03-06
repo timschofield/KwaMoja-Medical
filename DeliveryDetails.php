@@ -1007,10 +1007,6 @@ echo '<tr>
 	<td>' . _('Deliver from the warehouse at') . ':</td>
 	<td><select required="required" minlength="1" name="Location">';
 
-if ($_SESSION['Items' . $Identifier]->Location == '' or !isset($_SESSION['Items' . $Identifier]->Location)) {
-	$_SESSION['Items' . $Identifier]->Location = $DefaultStockLocation;
-} //$_SESSION['Items' . $Identifier]->Location == '' or !isset($_SESSION['Items' . $Identifier]->Location)
-
 $ErrMsg = _('The stock locations could not be retrieved');
 $DbgMsg = _('SQL used to retrieve the stock locations was') . ':';
 $SQL = "SELECT locationname,

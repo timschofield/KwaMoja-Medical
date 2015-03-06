@@ -40,22 +40,11 @@ if (!isset($_POST['ToDate'])) {
 	$_POST['ToDate'] = Date($_SESSION['DefaultDateFormat']);
 }
 
-if (isset($Errors)) {
-	unset($Errors);
-}
-
-$Errors = array();
-
-echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
+echo '<p class="page_title_text">
+		<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/maintenance.png" title="', _('Search'), '" alt="" />', $Title, '
+	</p>';
 
 if (isset($_POST['submit'])) {
-
-	//initialise no input errors assumed initially before we test
-	$InputError = 0;
-
-	/* actions to take once the user has clicked the submit button
-	ie the page has called itself with some user input */
-	$i = 1;
 
 	//first off validate inputs sensible
 
@@ -149,12 +138,12 @@ if (isset($_POST['submit'])) {
 
 if (!isset($SelectedSampleID)) {
 
-	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
-	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
+	echo '<form action="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '" method="post">';
+	echo '<input type="hidden" name="FormID" value="', $_SESSION['FormID'], '" />';
 	if (isset($_POST['ResetPart'])) {
 		unset($SelectedStockItem);
 	}
-
+	$InputError = 0;
 	if (isset($SampleID) and $SampleID != '') {
 		if (!is_numeric($SampleID)) {
 			prnMsg(_('The Sample ID entered') . ' <U>' . _('MUST') . '</U> ' . _('be numeric'), 'error');
@@ -239,7 +228,7 @@ if (!isset($SelectedSampleID)) {
 	}
 
 	if (true or !isset($LotNumber) or $LotNumber == '') { //revisit later, right now always show all inputs
-		echo '<table class="selection"><tr><td>';
+
 		if (!isset($LotNumber)) {
 			$LotNumber = '';
 		}
@@ -250,62 +239,60 @@ if (!isset($SelectedSampleID)) {
 				<tr>
 					<td>';
 		if (isset($SelectedStockItem)) {
-			echo _('For the part') . ':<b>' . $SelectedStockItem . '</b> ' . _('and') . ' <input type="hidden" name="SelectedStockItem" value="' . $SelectedStockItem . '" />';
+			echo _('For the part'), ':<b>', $SelectedStockItem, '</b> ', _('and'), ' ', '<input type="hidden" name="SelectedStockItem" value="', $SelectedStockItem, '" />';
 		}
-		echo _('Lot Number') . ': <input name="LotNumber" autofocus="autofocus" maxlength="20" size="12" value="' . $LotNumber . '"/> ' . _('Sample ID') . ': <input name="SampleID" maxlength="10" size="10" value="' . $SampleID . '"/> ';
-		echo _('From Sample Date') . ': <input name="FromDate" size="10" class="date" value="' . $_POST['FromDate'] . '"/> ' . _('To Sample Date') . ': <input name="ToDate" size="10" class="date" value="' . $_POST['ToDate'] . '"/> ';
-		echo '<input type="submit" name="SearchSamples" value="' . _('Search Samples') . '" /></td>
+		echo _('Lot Number'), ': <input name="LotNumber" autofocus="autofocus" maxlength="20" size="12" value="', $LotNumber, '" /> ';
+		echo _('Sample ID'), ': <input name="SampleID" maxlength="10" size="10" value="', $SampleID, '" /> ';
+		echo _('From Sample Date'), ': <input name="FromDate" size="10" class="date" value="', $_POST['FromDate'], '" /> ';
+		echo _('To Sample Date'), ': <input name="ToDate" size="10" class="date" value="', $_POST['ToDate'], '" /> ';
+		echo '<input type="submit" name="SearchSamples" value="', _('Search Samples'), '" />';
+		echo '</td>
 			</tr>
-			</table>';
+		</table>';
 	}
 	$SQL = "SELECT categoryid,
 				categorydescription
 			FROM stockcategory
 			ORDER BY categorydescription";
 	$Result1 = DB_query($SQL);
-	echo '
-			<table class="selection">
+	echo '<table class="selection">
 			<tr>
-				<td>';
-	echo _('To search for Pick Lists for a specific part use the part selection facilities below') . '</td></tr>';
+				<th colspan="6">
+					<h3>', _('To search for Pick Lists for a specific part use the part selection facilities below'), '</h3>
+				</th>
+			</tr>';
 	echo '<tr>
-			<td>' . _('Select a stock category') . ':<select name="StockCat">';
+			<td>', _('Select a stock category'), ':<select name="StockCat">';
 	while ($MyRow1 = DB_fetch_array($Result1)) {
 		if (isset($_POST['StockCat']) and $MyRow1['categoryid'] == $_POST['StockCat']) {
-			echo '<option selected="selected" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
+			echo '<option selected="selected" value="', $MyRow1['categoryid'], '">', $MyRow1['categorydescription'], '</option>';
 		} else {
-			echo '<option value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
+			echo '<option value="', $MyRow1['categoryid'], '">', $MyRow1['categorydescription'], '</option>';
 		}
 	}
 	echo '</select></td>
-			<td>' . _('Enter text extracts in the') . ' <b>' . _('description') . '</b>:</td>
+			<td>', _('Enter text extracts in the'), ' <b>', _('description'), '</b>:</td>
 			<td><input type="text" name="Keywords" size="20" maxlength="25" /></td>
 		</tr>
 		<tr>
-			<td></td>
-			<td><b>' . _('OR') . ' </b>' . _('Enter extract of the') . '<b> ' . _('Stock Code') . '</b>:</td>
+			<td colspan="2" class="number"><b>', _('OR'), ' </b>', _('Enter extract of the'), '<b> ', _('Stock Code'), '</b>:</td>
 			<td><input type="text" name="StockCode" size="15" maxlength="18" /></td>
 		</tr>
-		<tr>
-			<td colspan="3">
-				<div class="centre">
-					<input type="submit" name="SearchParts" value="' . _('Search Parts Now') . '" />
-					<input type="submit" name="ResetPart" value="' . _('Show All') . '" />
-				</div>
-			</td>
-		</tr>
-		</table>';
+		</table>
+		<div class="centre">
+			<input type="submit" name="SearchParts" value="', _('Search Parts Now'), '" />
+			<input type="submit" name="ResetPart" value="', _('Show All'), '" />
+		</div>';
 
 	if (isset($StockItemsResult)) {
-		echo '<table class="selection">';
-		$TableHeader = '<tr>
-							<th class="SortableColumn">' . _('Code') . '</th>
-							<th class="SortableColumn">' . _('Description') . '</th>
-							<th class="SortableColumn">' . _('On Hand') . '</th>
-							<th class="SortableColumn">' . _('Units') . '</th>
-						</tr>';
-		echo $TableHeader;
-		$j = 1;
+		echo '<table class="selection">
+				<tr>
+					<th class="SortableColumn">', _('Code'), '</th>
+					<th class="SortableColumn">', _('Description'), '</th>
+					<th class="SortableColumn">', _('On Hand'), '</th>
+					<th class="SortableColumn">', _('Units'), '</th>
+				</tr>';
+
 		$k = 0; //row colour counter
 		while ($MyRow = DB_fetch_array($StockItemsResult)) {
 			if ($k == 1) {
@@ -315,18 +302,11 @@ if (!isset($SelectedSampleID)) {
 				echo '<tr class="OddTableRows">';
 				$k = 1;
 			}
-			echo '<td><input type="submit" name="SelectedStockItem" value="' . $MyRow['stockid'] . '"</td>
-				<td>' . $MyRow['description'] . '</td>
-				<td class="number">' . locale_number_format($MyRow['qoh'], $MyRow['decimalplaces']) . '</td>
-				<td>' . $MyRow['units'] . '</td>
+			echo '<td><input type="submit" name="SelectedStockItem" value="', $MyRow['stockid'], '"</td>
+				<td>', $MyRow['description'], '</td>
+				<td class="number">', locale_number_format($MyRow['qoh'], $MyRow['decimalplaces']), '</td>
+				<td>', $MyRow['units'], '</td>
 			</tr>';
-			++$j;
-			if ($j == 12) {
-				$j = 1;
-				echo $TableHeader;
-			}
-			//end of page full new headings if
-
 		}
 		//end of while loop
 		echo '</table>';
@@ -398,20 +378,18 @@ if (!isset($SelectedSampleID)) {
 		$SampleResult = DB_query($SQL, $ErrMsg);
 		if (DB_num_rows($SampleResult) > 0) {
 
-			echo '<table cellpadding="2" width="90%" class="selection">';
-			$TableHeader = '<tr>
-								<th class="SortableColumn">' . _('Enter Results') . '</th>
-								<th class="SortableColumn">' . _('Specification') . '</th>
-								<th class="SortableColumn">' . _('Description') . '</th>
-								<th class="SortableColumn">' . _('Lot / Serial') . '</th>
-								<th class="SortableColumn">' . _('Identifier') . '</th>
-								<th class="SortableColumn">' . _('Created By') . '</th>
-								<th class="SortableColumn">' . _('Sample Date') . '</th>
-								<th class="SortableColumn">' . _('Comments') . '</th>
-								<th class="SortableColumn">' . _('Cert Allowed') . '</th>
-							</tr>';
-			echo $TableHeader;
-			$j = 1;
+			echo '<table cellpadding="2" width="90%" class="selection">
+					<tr>
+						<th class="SortableColumn">', _('Enter Results'), '</th>
+						<th class="SortableColumn">', _('Specification'), '</th>
+						<th class="SortableColumn">', _('Description'), '</th>
+						<th class="SortableColumn">', _('Lot / Serial'), '</th>
+						<th class="SortableColumn">', _('Identifier'), '</th>
+						<th class="SortableColumn">', _('Created By'), '</th>
+						<th class="SortableColumn">', _('Sample Date'), '</th>
+						<th class="SortableColumn">', _('Comments'), '</th>
+						<th class="SortableColumn">', _('Cert Allowed'), '</th>
+					</tr>';
 			$k = 0; //row colour counter
 			while ($MyRow = DB_fetch_array($SampleResult)) {
 				if ($k == 1) {
@@ -420,55 +398,47 @@ if (!isset($SelectedSampleID)) {
 					$k = 0;
 				} else {
 					echo '<tr class="OddTableRows">';
-					$k++;
+					++$k;
 				}
 				$ModifySampleID = $RootPath . '/TestPlanResults.php?SelectedSampleID=' . $MyRow['sampleid'];
-				$Edit = '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedSampleID=' . $MyRow['sampleid'] . '">' . _('Edit') . '</a>';
-				$Delete = '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?delete=yes&amp;SelectedSampleID=' . $MyRow['sampleid'] . '" onclick="return confirm(\'' . _('Are you sure you wish to delete this Sample ID ?') . '\');">' . _('Delete') . '</a>';
+				$Edit = '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedSampleID=' . urlencode($MyRow['sampleid']) . '">' . _('Edit') . '</a>';
+				$Delete = '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?delete=yes&amp;SelectedSampleID=' . urlencode($MyRow['sampleid']) . '" onclick="return confirm(\'' . _('Are you sure you wish to delete this Sample ID ?') . '\');">' . _('Delete') . '</a>';
 				$FormatedSampleDate = ConvertSQLDate($MyRow['sampledate']);
 
 				//echo '<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?CopyTest=yes&amp;SelectedSampleID=' .$SelectedSampleID .'">' . _('Copy These Results') . '</a></div>';
 				//echo '<div class="centre"><a target="_blank" href="'. $RootPath . '/PDFTestPlan.php?SelectedSampleID=' .$SelectedSampleID .'">' . _('Print Testing Worksheet') . '</a></div>';
 				if ($MyRow['cert'] == 1) {
-					$CertAllowed = '<a target="_blank" href="' . $RootPath . '/PDFCOA.php?LotKey=' . $MyRow['lotkey'] . '&ProdSpec=' . $MyRow['prodspeckey'] . '">' . _('Yes') . '</a>';
+					$CertAllowed = '<a target="_blank" href="' . $RootPath . '/PDFCOA.php?LotKey=' . urlencode($MyRow['lotkey']) . '&ProdSpec=' . urlencode($MyRow['prodspeckey']) . '">' . _('Yes') . '</a>';
 				} else {
 					$CertAllowed = _('No');
 				}
 
-				echo '<td><a href="' . $ModifySampleID . '">' . str_pad($MyRow['sampleid'], 10, '0', STR_PAD_LEFT) . '</a></td>
-						<td>' . $MyRow['prodspeckey'] . '</td>
-						<td>' . $MyRow['description'] . '</td>
-						<td>' . $MyRow['lotkey'] . '</td>
-						<td>' . $MyRow['identifier'] . '</td>
-						<td>' . $MyRow['createdby'] . '</td>
-						<td>' . $FormatedSampleDate . '</td>
-						<td>' . $MyRow['comments'] . '</td>
-						<td>' . $CertAllowed . '</td>
-						<td>' . $Edit . '</td>
-						<td>' . $Delete . '</td>
-						</tr>';
-				$j++;
-				if ($j == 12) {
-					$j = 1;
-					//echo $TableHeader;
-				}
+				echo '<td><a href="', $ModifySampleID, '">', str_pad($MyRow['sampleid'], 10, '0', STR_PAD_LEFT), '</a></td>
+						<td>', $MyRow['prodspeckey'], '</td>
+						<td>', $MyRow['description'], '</td>
+						<td>', $MyRow['lotkey'], '</td>
+						<td>', $MyRow['identifier'], '</td>
+						<td>', $MyRow['createdby'], '</td>
+						<td>', $FormatedSampleDate, '</td>
+						<td>', $MyRow['comments'], '</td>
+						<td>', $CertAllowed, '</td>
+						<td>', $Edit, '</td>
+						<td>', $Delete, '</td>
+					</tr>';
 				//end of page full new headings if
 			} //end of while loop
 			echo '</table>';
 		} // end if Pick Lists to show
 	}
-	echo '</form>';
 } //end of ifs and buts!
 
 if (isset($SelectedSampleID)) {
-	echo '<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Show All Samples') . '</a></div>';
-
+	echo '<div class="centre">
+			<a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '">', _('Show All Samples'), '</a>
+		</div>';
 }
 
 if (!isset($_GET['delete'])) {
-
-	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	if (isset($SelectedSampleID)) {
 
@@ -491,52 +461,54 @@ if (!isset($_GET['delete'])) {
 		$_POST['SampleDate'] = ConvertSQLDate($MyRow['sampledate']);
 		$_POST['Cert'] = $MyRow['cert'];
 
-		echo '<input type="hidden" name="SelectedSampleID" value="' . $SelectedSampleID . '" />';
+		echo '<form method="post" action="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '">';
+		echo '<input type="hidden" name="FormID" value="', $_SESSION['FormID'], '" />';
+		echo '<input type="hidden" name="SelectedSampleID" value="', $SelectedSampleID, '" />';
 		echo '<table class="selection">
 				<tr>
-					<td>' . _('Sample ID') . ':</td>
-					<td>' . str_pad($SelectedSampleID, 10, '0', STR_PAD_LEFT) . '</td>
+					<td>', _('Sample ID'), ':</td>
+					<td>', str_pad($SelectedSampleID, 10, '0', STR_PAD_LEFT), '</td>
 				</tr>';
 
 		echo '<tr>
-				<td>' . _('Specification') . ':</td>
-				<td>' . $_POST['ProdSpecKey'] . '</td>
+				<td>', _('Specification'), ':</td>
+				<td>', $_POST['ProdSpecKey'], '</td>
 			</tr>';
 		echo '<tr>
-				<td>' . _('Lot') . ':</td>
-				<td>' . $_POST['LotKey'] . '</td>
+				<td>', _('Lot'), ':</td>
+				<td>', $_POST['LotKey'], '</td>
 			</tr>';
 		echo '<tr>
-				<td>' . _('Identifier') . ':</td>
-				<td><input type="text" name="Identifier" size="15" maxlength="15" value="' . $_POST['Identifier'] . '" /></td>
+				<td>', _('Identifier'), ':</td>
+				<td><input type="text" name="Identifier" size="15" maxlength="15" value="', $_POST['Identifier'], '" /></td>
 			</tr>';
 		echo '<tr>
-				<td>' . _('Comments') . ':</td>
-				<td><input type="text" name="Comments" size="30" maxlength="255" value="' . $_POST['Comments'] . '" /></td>
+				<td>', _('Comments'), ':</td>
+				<td><input type="text" name="Comments" size="30" maxlength="255" value="', $_POST['Comments'], '" /></td>
 			</tr>';
 		echo '<tr>
-				<td>' . _('Sample Date') . ':</td>
-				<td><input class="date" type="text" name="SampleDate" size="10" maxlength="10" value="' . $_POST['SampleDate']. '" /></td>
+				<td>', _('Sample Date'), ':</td>
+				<td><input class="date" type="text" name="SampleDate" size="10" maxlength="10" value="', $_POST['SampleDate'], '" /></td>
 			</tr>';
 		echo '<tr>
-				<td>' . _('Use for Cert?') . ':</td>
+				<td>', _('Use for Cert?'), ':</td>
 				<td><select name="Cert">';
 		if ($_POST['Cert'] == 1) {
-			echo '<option selected="selected" value="1">' . _('Yes') . '</option>';
+			echo '<option selected="selected" value="1">', _('Yes'), '</option>';
 		} else {
-			echo '<option value="1">' . _('Yes') . '</option>';
+			echo '<option value="1">', _('Yes'), '</option>';
 		}
 		if ($_POST['Cert'] == 0) {
-			echo '<option selected="selected" value="0">' . _('No') . '</option>';
+			echo '<option selected="selected" value="0">', _('No'), '</option>';
 		} else {
-			echo '<option value="0">' . _('No') . '</option>';
+			echo '<option value="0">', _('No'), '</option>';
 		}
 		echo '</select>
 					</td>
 				</tr>
 			</table>
 			<div class="centre">
-				<input type="submit" name="submit" value="' . _('Enter Information') . '" />
+				<input type="submit" name="submit" value="', _('Enter Information'), '" />
 			</div>
 			</form>';
 
@@ -548,71 +520,76 @@ if (!isset($_GET['delete'])) {
 		$_POST['Cert'] = 0;
 		$_POST['DuplicateOK'] = 1;
 
-		echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
+		echo '<form method="post" action="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '">';
+		echo '<input type="hidden" name="FormID" value="', $_SESSION['FormID'], '" />';
 		echo '<table class="selection">';
+
 		$SQLSpecSelect = "SELECT DISTINCT(keyval),
 								description
-							FROM prodspecs LEFT OUTER JOIN stockmaster
-							ON stockmaster.stockid=prodspecs.keyval";
-
+							FROM prodspecs
+							LEFT OUTER JOIN stockmaster
+								ON stockmaster.stockid=prodspecs.keyval";
 		$ResultSelection = DB_query($SQLSpecSelect);
 		echo '<tr>
-				<td>' . _('Specification') . ':</td>';
-		echo '<td><select name="ProdSpecKey">';
+				<td>', _('Specification'), ':</td>
+				<td><select name="ProdSpecKey">';
 		while ($MyRowSelection = DB_fetch_array($ResultSelection)) {
-			echo '<option value="' . $MyRowSelection['keyval'] . '">' . $MyRowSelection['keyval'] . ' - ' . htmlspecialchars($MyRowSelection['description'], ENT_QUOTES, 'UTF-8', false) . '</option>';
+			echo '<option value="', $MyRowSelection['keyval'], '">', $MyRowSelection['keyval'], ' - ', htmlspecialchars($MyRowSelection['description'], ENT_QUOTES, 'UTF-8', false), '</option>';
 		}
-		echo '</select></td>
+		echo '</select>
+				</td>
 			</tr>';
 		echo '<tr>
-				<td>' . _('Lot') . ':</td>
-				<td><input type="text" required="required" name="LotKey" size="15" maxlength="15" value="' . $_POST['LotKey'] . '" /></td>
+				<td>', _('Lot'), ':</td>
+				<td><input type="text" required="required" name="LotKey" size="15" maxlength="15" value="', $_POST['LotKey'], '" /></td>
 			</tr>';
 		echo '<tr>
-				<td>' . _('Identifier') . ':</td>
-				<td><input type="text" name="Identifier" size="15" maxlength="15" value="' . $_POST['Identifier'] . '" /></td>
+				<td>', _('Identifier'), ':</td>
+				<td><input type="text" name="Identifier" size="15" maxlength="15" value="', $_POST['Identifier'], '" /></td>
 			</tr>';
 		echo '<tr>
-				<td>' . _('Comments') . ':</td>
-				<td><input type="text" name="Comments" size="30" maxlength="255" value="' . $_POST['Comments'] . '" /></td>
+				<td>', _('Comments'), ':</td>
+				<td><input type="text" name="Comments" size="30" maxlength="255" value="', $_POST['Comments'], '" /></td>
 			</tr>';
 
 		echo '<tr>
-				<td>' . _('Use for Cert?') . ':</td>
+				<td>', _('Use for Cert?'), ':</td>
 				<td><select name="Cert">';
 		if ($_POST['Cert'] == 1) {
-			echo '<option selected="selected" value="1">' . _('Yes') . '</option>';
+			echo '<option selected="selected" value="1">', _('Yes'), '</option>';
 		} else {
-			echo '<option value="1">' . _('Yes') . '</option>';
+			echo '<option value="1">', _('Yes'), '</option>';
 		}
 		if ($_POST['Cert'] == 0) {
-			echo '<option selected="selected" value="0">' . _('No') . '</option>';
+			echo '<option selected="selected" value="0">', _('No'), '</option>';
 		} else {
-			echo '<option value="0">' . _('No') . '</option>';
+			echo '<option value="0">', _('No'), '</option>';
 		}
-		echo '</select></td></tr>';
+		echo '</select>
+				</td>
+			</tr>';
+
 		echo '<tr>
-				<td>' . _('Duplicate for Lot OK?') . ':</td>
+				<td>', _('Duplicate for Lot OK?'), ':</td>
 				<td><select name="DuplicateOK">';
 		if ($_POST['DuplicateOK'] == 1) {
-			echo '<option selected="selected" value="1">' . _('Yes') . '</option>';
+			echo '<option selected="selected" value="1">', _('Yes'), '</option>';
 		} else {
-			echo '<option value="1">' . _('Yes') . '</option>';
+			echo '<option value="1">', _('Yes'), '</option>';
 		}
 		if ($_POST['DuplicateOK'] == 0) {
-			echo '<option selected="selected" value="0">' . _('No') . '</option>';
+			echo '<option selected="selected" value="0">', _('No'), '</option>';
 		} else {
-			echo '<option value="0">' . _('No') . '</option>';
+			echo '<option value="0">', _('No'), '</option>';
 		}
 		echo '</select>
 					</td>
 				</tr>
 			</table>
 			<div class="centre">
-				<input type="submit" name="submit" value="' . _('Enter Information') . '" />
+				<input type="submit" name="submit" value="', _('Enter Information'), '" />
 			</div>
-			</form>';
+		</form>';
 	}
 } //end if record deleted no point displaying form to add record
 

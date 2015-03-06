@@ -3,7 +3,7 @@
 
 @media print {
 
-#FooterDiv, #HeaderDiv, #MainMenuDiv, .noprint, .site-description, .site-title {
+#FooterDiv, #HeaderDiv, #MainMenuDiv, .noPrint, .site-description, .site-title {
 	display:none;
 	/* Remove unwanted elements. */
 }
@@ -74,7 +74,7 @@ body, #CanvasDiv {
 	border-radius:0;
 	box-shadow:none;
 	font-family:Arial, Verdana, Helvetica, sans-serif;
-	font-size:11pt;
+	font-size:8pt;
 	margin:0;
 	padding:0;
 }
@@ -98,6 +98,15 @@ body, #CanvasDiv {
 	border-radius:0;
 	box-shadow:none;
 	padding:0;
+	width:100%;
+}
+
+#BodyDiv th {
+	font-size: 200%;
+}
+
+#BodyDiv th {
+	font-size: 12px;
 }
 
 }

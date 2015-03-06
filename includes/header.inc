@@ -21,7 +21,7 @@ if (isset($Title) and $Title == _('Copy a BOM to New Item Code')) { //solve the 
 echo '<!DOCTYPE html>';
 echo '<meta http-equiv="Content-Type" content="application/html; charset=utf-8" />';
 
-echo '<html>
+echo '<html moznomarginboxes mozdisallowselectionprint>
 		<head>
 			<title>', $Title, '</title>
 			<link rel="icon" href="', $RootPath, '/favicon.ico" />

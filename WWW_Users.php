@@ -347,10 +347,10 @@ if (!isset($SelectedUser)) {
 			$k = 1;
 		}
 
-		if ($MyRow[8] == '') {
-			$LastVisitDate = Date($_SESSION['DefaultDateFormat']);
+		if ($MyRow['lastvisitdate'] == '') {
+			$LastVisitDate = _('User has not logged in yet');
 		} else {
-			$LastVisitDate = ConvertSQLDate($MyRow[8]);
+			$LastVisitDate = ConvertSQLDate($MyRow['lastvisitdate']);
 		}
 
 		/*The SecurityHeadings array is defined in config.php */

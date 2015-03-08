@@ -422,7 +422,7 @@ if (DB_num_rows($LineItemsResult) > 0) {
 				$Result = DB_query($SQL, $ErrMsg, '', TRUE);
 			}
 
-			if ($_POST['UpdateCost'] == 'Yes') {
+			if (isset($_POST['UpdateCost']) and $_POST['UpdateCost'] == 'Yes') {
 				/*Only ever a standard costing option
 				Weighted average costing implies cost updates taking place automatically */
 
@@ -718,11 +718,9 @@ if (isset($_POST['Close'])) {
 
 	prnMsg(_('Shipment') . ' ' . $_GET['SelectedShipment'] . ' ' . _('has been closed'));
 	if ($_SESSION['CompanyRecord']['gllink_stock'] == 1) {
-		echo '<br />';
 		prnMsg(_('All variances were posted to the general ledger'));
 	}
-	if ($_POST['UpdateCost'] == 'Yes') {
-		echo '<br />';
+	if (isset($_POST['UpdateCost']) and $_POST['UpdateCost'] == 'Yes') {
 		prnMsg(_('All shipment items have had their standard costs updated'));
 	}
 }

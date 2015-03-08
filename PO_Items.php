@@ -22,7 +22,9 @@ if (!isset($_SESSION['PO' . $Identifier])) {
 include('includes/header.inc');
 
 if (!isset($_POST['Commit'])) {
-	echo '<div class="toplink"><a href="' . $RootPath . '/PO_Header.php?identifier=' . urlencode($Identifier) . '">' . _('Back To Purchase Order Header') . '</a></div>';
+	echo '<div class="toplink">
+			<a href="', $RootPath, '/PO_Header.php?identifier=', urlencode($Identifier), '">', _('Back To Purchase Order Header'), '</a>
+		</div>';
 } //!isset($_POST['Commit'])
 
 if (isset($_POST['UpdateLines']) or isset($_POST['Commit'])) {
@@ -692,20 +694,20 @@ if (count($_SESSION['PO' . $Identifier]->LineItems) > 0 and !isset($_GET['Edit']
 	if (isset($_SESSION['PO' . $Identifier]->OrderNo)) {
 		echo ' ' . _('Purchase Order') . ' ' . $_SESSION['PO' . $Identifier]->OrderNo;
 	} //isset($_SESSION['PO' . $Identifier]->OrderNo)
-	echo '<br /><b>' . _(' Order Summary') . '</b></p>';
-	echo '<table cellpadding="2" class="selection">';
-	echo '<tr>
-			<th class="SortableColumn">' . _('Item Code') . '</th>
-			<th class="SortableColumn">' . _('Description') . '</th>
-			<th>' . _('Quantity Our Units') . '</th>
-			<th>' . _('Our Unit') . '</th>
-			<th>' . _('Price Our Units') . ' (' . $_SESSION['PO' . $Identifier]->CurrCode . ')</th>
-			<th>' . _('Unit Conversion Factor') . '</th>
-			<th>' . _('Order Quantity') . '<br />' . _('Supplier Units') . '</th>
-			<th>' . _('Supplier Unit') . '</th>
-			<th>' . _('Order Price') . '<br />' . _('Supp Units') . ' (' . $_SESSION['PO' . $Identifier]->CurrCode . ')</th>
-			<th>' . _('Sub-Total') . ' (' . $_SESSION['PO' . $Identifier]->CurrCode . ')</th>
-			<th>' . _('Deliver By') . '</th>
+	echo '<b>&nbsp;-&nbsp' . _(' Order Summary') . '</b></p>';
+	echo '<table cellpadding="2" class="selection">
+			<tr>
+				<th class="SortableColumn">' . _('Item Code') . '</th>
+				<th class="SortableColumn">' . _('Description') . '</th>
+				<th>' . _('Quantity Our Units') . '</th>
+				<th>' . _('Our Unit') . '</th>
+				<th>' . _('Price Our Units') . ' (' . $_SESSION['PO' . $Identifier]->CurrCode . ')</th>
+				<th>' . _('Unit Conversion Factor') . '</th>
+				<th>' . _('Order Quantity') . '<br />' . _('Supplier Units') . '</th>
+				<th>' . _('Supplier Unit') . '</th>
+				<th>' . _('Order Price') . '<br />' . _('Supp Units') . ' (' . $_SESSION['PO' . $Identifier]->CurrCode . ')</th>
+				<th>' . _('Sub-Total') . ' (' . $_SESSION['PO' . $Identifier]->CurrCode . ')</th>
+				<th>' . _('Deliver By') . '</th>
 			</tr>';
 
 	$_SESSION['PO' . $Identifier]->Total = 0;
@@ -735,22 +737,27 @@ if (count($_SESSION['PO' . $Identifier]->LineItems) > 0 and !isset($_GET['Edit']
 				$k = 1;
 			}
 
-			echo '<td>' . $POLine->StockID . '</td>
-				<td><input type="text" name="ItemDescription' . $POLine->LineNo . '" size="30" value="' . stripslashes($POLine->ItemDescription) . '" /></td>
-				<td class="number">' . locale_number_format($POLine->Quantity, $POLine->DecimalPlaces) . '</td>
-				<td>' . $POLine->Units . '</td>
-				<td class="number">' . $DisplayPrice . '</td>
-				<td><input type="text" class="number" required="required" minlength="1" maxlength="8" name="ConversionFactor' . $POLine->LineNo . '" size="8" value="' . locale_number_format($POLine->ConversionFactor, 'Variable') . '" /></td>
-				<td><input type="text" class="number" required="required" minlength="1" maxlength="10" name="SuppQty' . $POLine->LineNo . '" size="10" value="' . locale_number_format(round($POLine->Quantity / $POLine->ConversionFactor, $POLine->DecimalPlaces), $POLine->DecimalPlaces) . '" /></td>
-				<td>' . $POLine->SuppliersUnit . '</td>
-				<td><input type="text" class="number" name="SuppPrice' . $POLine->LineNo . '" size="10" value="' . $SuppPrice . '" /></td>
-				<td class="number">' . $DisplayLineTotal . '</td>
-				<td><input type="text" class="date" required="required" minlength="1" maxlength="10" alt="' . $_SESSION['DefaultDateFormat'] . '" name="ReqDelDate' . $POLine->LineNo . '" size="10" value="' . $POLine->ReqDelDate . '" /></td>';
+			echo '<td>', $POLine->StockID, '</td>
+				<td><input type="text" name="ItemDescription', $POLine->LineNo, '" size="30" value="', stripslashes($POLine->ItemDescription), '" /></td>
+				<td class="number">', locale_number_format($POLine->Quantity, $POLine->DecimalPlaces), '</td>
+				<td>', $POLine->Units, '</td>
+				<td class="number">', $DisplayPrice, '</td>
+				<td><input type="text" class="number" required="required" minlength="1" maxlength="8" name="ConversionFactor', $POLine->LineNo, '" size="8" value="', locale_number_format($POLine->ConversionFactor, 'Variable'), '" /></td>
+				<td><input type="text" class="number" required="required" minlength="1" maxlength="10" name="SuppQty', $POLine->LineNo, '" size="10" value="', locale_number_format(round($POLine->Quantity / $POLine->ConversionFactor, $POLine->DecimalPlaces), $POLine->DecimalPlaces), '" /></td>
+				<td>', $POLine->SuppliersUnit, '</td>';
+			if (in_array(1002, $_SESSION['AllowedPageSecurityTokens'])) {
+				echo '<td><input type="text" class="number" name="SuppPrice', $POLine->LineNo, '" size="10" value="', $SuppPrice, '" /></td>';
+			} else {
+				echo '<td><input type="hidden" class="number" name="SuppPrice', $POLine->LineNo, '" size="10" value="', $SuppPrice, '" /></td>';
+				echo '<td>', $SuppPrice, '</td>';
+			}
+			echo '<td class="number">', $DisplayLineTotal, '</td>
+				<td><input type="text" class="date" required="required" minlength="1" maxlength="10" alt="', $_SESSION['DefaultDateFormat'], '" name="ReqDelDate', $POLine->LineNo, '" size="10" value="', $POLine->ReqDelDate, '" /></td>';
 			if ($POLine->QtyReceived != 0 and $POLine->Completed != 1) {
-				echo '<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '&amp;Complete=' . $POLine->LineNo . '">' . _('Complete') . '</a></td>';
+				echo '<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '?identifier=', urlencode($Identifier), '&amp;Complete=', urlencode($POLine->LineNo), '">', _('Complete'), '</a></td>';
 			} //$POLine->QtyReceived != 0 and $POLine->Completed != 1
 			elseif ($POLine->QtyReceived == 0) {
-				echo '<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '&amp;Delete=' . $POLine->LineNo . '">' . _('Delete') . '</a></td>';
+				echo '<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '?identifier=', urlencode($Identifier), '&amp;Delete=', urlencode($POLine->LineNo), '">', _('Delete'), '</a></td>';
 			} //$POLine->QtyReceived == 0
 			echo '</tr>';
 			$_SESSION['PO' . $Identifier]->Total += $LineTotal;
@@ -759,13 +766,13 @@ if (count($_SESSION['PO' . $Identifier]->LineItems) > 0 and !isset($_GET['Edit']
 
 	$DisplayTotal = locale_number_format($_SESSION['PO' . $Identifier]->Total, $_SESSION['PO' . $Identifier]->CurrDecimalPlaces);
 	echo '<tr>
-			<td colspan="9" class="number">' . _('TOTAL') . _(' excluding Tax') . '</td>
-			<td class="number"><b>' . $DisplayTotal . '</b></td>
+			<td colspan="9" class="number">', _('TOTAL'), _(' excluding Tax'), '</td>
+			<td class="number"><b>', $DisplayTotal, '</b></td>
 		</tr>
 	</table>';
 	echo '<div class="centre">
-			<input type="submit" name="UpdateLines" value="' . _('Update Order Lines') . '" />
-			&nbsp;<input type="submit" name="Commit" value="' . _('Process Order') . '" />
+			<input type="submit" name="UpdateLines" value="', _('Update Order Lines'), '" />
+			&nbsp;<input type="submit" name="Commit" value="', _('Process Order'), '" />
 		</div>';
 
 } //count($_SESSION['PO' . $Identifier]->LineItems) > 0 and !isset($_GET['Edit'])
@@ -774,24 +781,28 @@ if (count($_SESSION['PO' . $Identifier]->LineItems) > 0 and !isset($_GET['Edit']
 
 
 if (isset($_POST['NonStockOrder'])) {
-	echo '<br /><table class="selection"><tr>
-				<td>' . _('Item Description') . '</td>';
-	echo '<td><input type="text" name="ItemDescription" size="40" /></td></tr>';
-	echo '<tr>
-			<td>' . _('General Ledger Code') . '</td>
-			<td><select minlength="0" name="GLCode">';
+	echo '<table class="selection">
+			<tr>
+				<td>', _('Item Description'), '</td>
+				<td><input type="text" name="ItemDescription" size="40" /></td>
+			</tr>';
+
 	$SQL = "SELECT accountcode,
 				  accountname
 				FROM chartmaster
 				ORDER BY accountcode ASC";
-
 	$Result = DB_query($SQL);
-	while ($MyRow = DB_fetch_array($Result)) {
-		echo '<option value="' . $MyRow['accountcode'] . '">' . $MyRow['accountcode'] . ' - ' . $MyRow['accountname'] . '</option>';
-	} //$MyRow = DB_fetch_array($Result)
-	echo '</select></td></tr>';
 	echo '<tr>
-			<td>' . _('OR Asset ID') . '</td>
+			<td>', _('General Ledger Code'), '</td>
+			<td><select minlength="0" name="GLCode">';
+	while ($MyRow = DB_fetch_array($Result)) {
+		echo '<option value="', $MyRow['accountcode'], '">', $MyRow['accountcode'], ' - ', $MyRow['accountname'], '</option>';
+	} //$MyRow = DB_fetch_array($Result)
+	echo '</select>
+			</td>
+		</tr>';
+	echo '<tr>
+			<td>', _('OR Asset ID'), '</td>
 			<td><select required="required" minlength="1" name="AssetID">';
 
 	$SQL = "SELECT assetid,
@@ -808,29 +819,29 @@ if (isset($_POST['NonStockOrder'])) {
 		else {
 			$DatePurchased = ConvertSQLDate($AssetRow['datepurchased']);
 		}
-		echo '<option value="' . $AssetRow['assetid'] . '">' . $AssetRow['assetid'] . ' - ' . $DatePurchased . ' - ' . $AssetRow['description'] . '</option>';
+		echo '<option value="', $AssetRow['assetid'], '">', $AssetRow['assetid'], ' - ', $DatePurchased, ' - ', $AssetRow['description'], '</option>';
 	} //$AssetRow = DB_fetch_array($AssetsResult)
 
-	echo '</select><a href="FixedAssetItems.php" target=_blank>' . _('New Fixed Asset') . '</a></td></tr>
+	echo '</select><a href="FixedAssetItems.php" target=_blank>', _('New Fixed Asset'), '</a></td></tr>
 		<tr>
-			<td>' . _('Quantity to purchase') . '</td>
+			<td>', _('Quantity to purchase'), '</td>
 			<td><input type="text" class="number" name="Qty" required="required" minlength="1" maxlength="10" size="10" value="1" /></td>
 		</tr>
 		<tr>
-			<td>' . _('Price per item') . '</td>
+			<td>', _('Price per item'), '</td>
 			<td><input type="text" required="required" minlength="1" maxlength="10" class="number" name="Price" size="10" /></td>
 		</tr>
 		<tr>
-			<td>' . _('Unit') . '</td>
-			<td><input type="text" required="required" minlength="1" maxlength="10" name="SuppliersUnit" size="10" value="' . _('each') . '" /></td>
+			<td>', _('Unit'), '</td>
+			<td><input type="text" required="required" minlength="1" maxlength="10" name="SuppliersUnit" size="10" value="', _('each'), '" /></td>
 		</tr>
 		<tr>
-			<td>' . _('Delivery Date') . '</td>
-			<td><input type="text" class="date" required="required" minlength="1" maxlength="10" alt="' . $_SESSION['DefaultDateFormat'] . '" name="ReqDelDate" size="11" value="' . $_SESSION['PO' . $Identifier]->DeliveryDate . '" /></td>
+			<td>', _('Delivery Date'), '</td>
+			<td><input type="text" class="date" required="required" minlength="1" maxlength="10" alt="', $_SESSION['DefaultDateFormat'], '" name="ReqDelDate" size="11" value="', $_SESSION['PO' . $Identifier]->DeliveryDate, '" /></td>
 		</tr>
 		</table>
 		<div class="centre">
-			<input type="submit" name="EnterLine" value="' . _('Enter Item') . '" />
+			<input type="submit" name="EnterLine" value="', _('Enter Item'), '" />
 		</div>';
 } //isset($_POST['NonStockOrder'])
 
@@ -846,7 +857,7 @@ if (isset($_POST['Search'])) {
 		$SearchString = '%' . str_replace(' ', '%', $_POST['Keywords']) . '%';
 
 		if ($_POST['StockCat'] == 'All') {
-			if ($_POST['SupplierItemsOnly'] == 'on') {
+			if (isset($_POST['SupplierItemsOnly']) and $_POST['SupplierItemsOnly'] == 'on') {
 				$SQL = "SELECT stockmaster.stockid,
 								stockmaster.description,
 								stockmaster.units
@@ -882,7 +893,7 @@ if (isset($_POST['Search'])) {
 			}
 		} //$_POST['StockCat'] == 'All'
 		else { //for a specific stock category
-			if ($_POST['SupplierItemsOnly'] == 'on') {
+			if (isset($_POST['SupplierItemsOnly']) and $_POST['SupplierItemsOnly'] == 'on') {
 				$SQL = "SELECT stockmaster.stockid,
 								stockmaster.description,
 								stockmaster.units
@@ -924,7 +935,7 @@ if (isset($_POST['Search'])) {
 		$_POST['StockCode'] = '%' . $_POST['StockCode'] . '%';
 
 		if ($_POST['StockCat'] == 'All') {
-			if ($_POST['SupplierItemsOnly'] == 'on') {
+			if (isset($_POST['SupplierItemsOnly']) and $_POST['SupplierItemsOnly'] == 'on') {
 				$SQL = "SELECT stockmaster.stockid,
 								stockmaster.description,
 								stockmaster.units
@@ -959,7 +970,7 @@ if (isset($_POST['Search'])) {
 			}
 		} //$_POST['StockCat'] == 'All'
 		else { //for a specific stock category and LIKE stock code
-			if ($_POST['SupplierItemsOnly'] == 'on') {
+			if (isset($_POST['SupplierItemsOnly']) and $_POST['SupplierItemsOnly'] == 'on') {
 				$SQL = "SELECT stockmaster.stockid,
 								stockmaster.description,
 								stockmaster.units
@@ -999,7 +1010,7 @@ if (isset($_POST['Search'])) {
 	} //$_POST['StockCode']
 	else {
 		if ($_POST['StockCat'] == 'All') {
-			if (isset($_POST['SupplierItemsOnly'])) {
+			if (isset($_POST['SupplierItemsOnly']) and isset($_POST['SupplierItemsOnly'])) {
 				$SQL = "SELECT stockmaster.stockid,
 								stockmaster.description,
 								stockmaster.units
@@ -1094,22 +1105,23 @@ if (!isset($_GET['Edit'])) {
 
 	echo '<table class="selection">
 			<tr>
-				<th colspan="3"><h3>' . _('Search For Stock Items') . ':</h3></th>';
+				<th colspan="3"><h3>', _('Search For Stock Items'), ':</h3></th>
+			</tr>
+			<tr>
+				<td>', _('Item Category'), ': <select minlength="0" name="StockCat">';
 
-	echo '</tr>
-			<tr><td>' . _('Item Category') . ': <select minlength="0" name="StockCat">';
-
-	echo '<option selected="selected" value="All">' . _('All') . '</option>';
+	echo '<option selected="selected" value="All">', _('All'), '</option>';
 
 	while ($MyRow1 = DB_fetch_array($Result1)) {
 		if (isset($_POST['StockCat']) and $_POST['StockCat'] == $MyRow1['categoryid']) {
-			echo '<option selected="selected" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
+			echo '<option selected="selected" value="', $MyRow1['categoryid'], '">', $MyRow1['categorydescription'], '</option>';
 		} //isset($_POST['StockCat']) and $_POST['StockCat'] == $MyRow1['categoryid']
 		else {
-			echo '<option value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
+			echo '<option value="', $MyRow1['categoryid'], '">', $MyRow1['categorydescription'], '</option>';
 		}
 	} //$MyRow1 = DB_fetch_array($Result1)
-
+	echo '</select>
+		</td>';
 	unset($_POST['Keywords']);
 	unset($_POST['StockCode']);
 
@@ -1121,39 +1133,50 @@ if (!isset($_GET['Edit'])) {
 		$_POST['StockCode'] = '';
 	} //!isset($_POST['StockCode'])
 
-	echo '</select></td>
-		<td>' . _('Enter text extracts in the description') . ':</td>
-		<td><input type="text" name="Keywords" size="20" minlength="0" maxlength="25" value="' . $_POST['Keywords'] . '" /></td></tr>
-		<tr><td>' . _('Only items defined as from this Supplier') . ' <input type="checkbox" name="SupplierItemsOnly" ';
-	if (isset($_POST['SupplierItemsOnly']) and $_POST['SupplierItemsOnly'] == 'on') {
-		echo 'checked';
-	} //isset($_POST['SupplierItemsOnly']) and $_POST['SupplierItemsOnly'] == 'on'
-	echo ' /></td>
-			<td><b>' . _('OR') . ' </b>' . _('Enter extract of the Stock Code') . ':</td>
-			<td><input type="text" name="StockCode" size="15" minlength="0" maxlength="18" value="' . $_POST['StockCode'] . '" /></td>
+	echo '<td>', _('Enter text extracts in the description'), ':</td>
+			<td><input type="text" name="Keywords" size="20" minlength="0" maxlength="25" value="', $_POST['Keywords'], '" /></td>
 		</tr>
 		<tr>
 			<td></td>
-			<td><b>' . _('OR') . ' </b><a target="_blank" href="' . $RootPath . '/Stocks.php">' . _('Insert New Item') . '</a></td>
+			<td><b>', _('OR'), '&nbsp;&nbsp;</b>', _('Enter extract of the Stock Code'), ':</td>
+			<td><input type="text" name="StockCode" size="15" minlength="0" maxlength="18" value="', $_POST['StockCode'], '" /></td>
 		</tr>
-		</table>
+		<tr>
+			<td></td>
+			<td><b>', _('OR'), '</b>&nbsp;&nbsp;
+			<a class="FontSize" target="_blank" href="', $RootPath, '/Stocks.php">', _('Insert New Item'), '</a></td>
+		</tr>
+		<tr>
+			<td colspan="2" class="number">', _('Only items defined as from this Supplier'), '&nbsp;';
+	if (isset($_POST['SupplierItemsOnly']) and $_POST['SupplierItemsOnly'] == 'on') {
+		echo '<input type="checkbox" name="SupplierItemsOnly" checked="checked"  />';
+	} else {
+		echo '<input type="checkbox" name="SupplierItemsOnly"  />';
+	} //isset($_POST['SupplierItemsOnly']) and $_POST['SupplierItemsOnly'] == 'on'
+	echo '</td>
+		</tr>
+	</table>
 
-		<div class="centre"><input type="submit" name="Search" value="' . _('Search Now') . '" />
-		<input type="submit" name="NonStockOrder" value="' . _('Order a non stock item') . '" />
+		<div class="centre">
+			<input type="submit" name="Search" value="', _('Search Now'), '" />
+			<input type="submit" name="NonStockOrder" value="', _('Order a non stock item'), '" />
 		</div>';
 
 	$PartsDisplayed = 0;
 } //!isset($_GET['Edit'])
 
 if (isset($SearchResult)) {
+	echo '<div class="centre">
+			<input type="submit" name="NewItem" value="', _('Order some'), '" />
+		</div>';
 	echo '<table cellpadding="1" class="selection">
 			<tr>
-				<th class="SortableColumn">' . _('Code') . '</th>
-				<th class="SortableColumn">' . _('Description') . '</th>
-				<th>' . _('Our Units') . '</th>
-				<th>' . _('Conversion') . '<br />' . _('Factor') . '</th>
-				<th>' . _('Supplier/Order') . '<br />' . _('Units') . '</th>
-				<th colspan="2"><a href="#end">' . _('Go to end of list') . '</a></th>
+				<th class="SortableColumn">', _('Code'), '</th>
+				<th class="SortableColumn">' . _('Description'), '</th>
+				<th>', _('Our Units'), '</th>
+				<th>', _('Conversion'), '<br />', _('Factor'), '</th>
+				<th>', _('Supplier/Order'), '<br />', _('Units'), '</th>
+				<th colspan="2"><a href="#end">', _('Go to end of list'), '</a></th>
 			</tr>';
 
 	$k = 0; //row colour counter
@@ -1163,8 +1186,7 @@ if (isset($SearchResult)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
 			$k = 0;
-		} //$k == 1
-		else {
+		} else {
 			echo '<tr class="OddTableRows">';
 			$k = 1;
 		}
@@ -1172,8 +1194,7 @@ if (isset($SearchResult)) {
 		$FileName = $MyRow['stockid'] . '.jpg';
 		if (file_exists($_SESSION['part_pics_dir'] . '/' . $FileName)) {
 			$ImageSource = '<img src="' . $RootPath . '/' . $_SESSION['part_pics_dir'] . '/' . $MyRow['stockid'] . '.jpg" width="50" height="50" />';
-		} //file_exists($_SESSION['part_pics_dir'] . '/' . $FileName)
-		else {
+		} else {
 			$ImageSource = '<i>' . _('No Image') . '</i>';
 		}
 
@@ -1190,28 +1211,30 @@ if (isset($SearchResult)) {
 			$PurchDataRow = DB_fetch_array($PurchDataResult);
 			$OrderUnits = $PurchDataRow['suppliersuom'];
 			$ConversionFactor = locale_number_format($PurchDataRow['conversionfactor'], 'Variable');
-		} //DB_num_rows($PurchDataResult) > 0
-		else {
+		} else {
 			$OrderUnits = $MyRow['units'];
 			$ConversionFactor = 1;
 		}
-		echo '<td>' . $MyRow['stockid'] . '</td>
-			<td>' . $MyRow['description'] . '</td>
-			<td>' . $MyRow['units'] . '</td>
-			<td class="number">' . $ConversionFactor . '</td>
-			<td>' . $OrderUnits . '</td>
-			<td>' . $ImageSource . '</td>
-			<td><input class="number" type="text" size="6" required="required" minlength="1" maxlength="11" value="0" name="NewQty' . $j . '" /></td>
-			<input type="hidden" name="StockID' . $j . '" . value="' . $MyRow['stockid'] . '" />
-			</tr>';
+		echo '<td>', $MyRow['stockid'], '</td>
+			<td>', $MyRow['description'], '</td>
+			<td>', $MyRow['units'], '</td>
+			<td class="number">', $ConversionFactor, '</td>
+			<td>', $OrderUnits, '</td>
+			<td>', $ImageSource, '</td>
+			<td><input class="number" type="text" size="6" required="required" minlength="1" maxlength="11" value="0" name="NewQty', $j, '" /></td>
+		</tr>';
+		echo '<input type="hidden" name="StockID', $j, '", value="', $MyRow['stockid'], '" />';
 		++$j;
-		$PartsDisplayed++;
+		++$PartsDisplayed;
 		//end of page full new headings if
 	} //$MyRow = DB_fetch_array($SearchResult)
 	//end of while loop
 	echo '</table>';
 	echo '<input type="hidden" name="PO_ItemsResubmitFormValue" value="' . $_SESSION['PO_ItemsResubmitForm' . $Identifier] . '" />';
-	echo '<a name="end"></a><br /><div class="centre"><input type="submit" name="NewItem" value="' . _('Order some') . '" /></div>';
+	echo '<a name="end"></a>';
+	echo '<div class="centre">
+			<input type="submit" name="NewItem" value="', _('Order some'), '" />
+		</div>';
 } //end if SearchResults to show
 
 echo '</form>';

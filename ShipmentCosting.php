@@ -6,8 +6,9 @@ $Title = _('Shipment Costing');
 include('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Search') . '" alt="" />
-	 ' . ' ' . $Title . '</p>';
+echo '<p class="page_title_text noPrint" >
+		<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/magnifier.png" title="', _('Search'), '" alt="" />', ' ', $Title, '
+	</p>';
 
 if (isset($_GET['NewShipment']) and $_GET['NewShipment'] == 'Yes') {
 	unset($_SESSION['Shipment']->LineItems);
@@ -15,8 +16,6 @@ if (isset($_GET['NewShipment']) and $_GET['NewShipment'] == 'Yes') {
 }
 
 if (!isset($_GET['SelectedShipment'])) {
-
-	echo '<br />';
 	prnMsg(_('This page is expected to be called with the shipment number to show the costing for'), 'error');
 	include('includes/footer.inc');
 	exit;
@@ -43,26 +42,25 @@ if (DB_num_rows($GetShiptHdrResult) == 0) {
 }
 
 $HeaderData = DB_fetch_array($GetShiptHdrResult);
-echo '<br />
-	<table class="selection">
-	<tr>
-		<th colspan="4"><h3>' . _('Shipment Details') . '</h3></th>
-	</tr>
-	<tr>
-		<td><b>' . _('Shipment') . ': </b></td>
-		<td><b>' . $_GET['SelectedShipment'] . '</b></td>
-		<td><b>' . _('From') . ' ' . $HeaderData['suppname'] . '</b></td>
-	</tr>
-	<tr>
-		<td>' . _('Vessel') . ': </td>
-		<td>' . $HeaderData['vessel'] . '</td>
-		<td>' . _('Voyage Ref') . ': </td>
-		<td>' . $HeaderData['voyageref'] . '</td>
-	</tr>
-	<tr>
-		<td>' . _('Expected Arrival Date (ETA)') . ': </td>
-		<td>' . ConvertSQLDate($HeaderData['eta']) . '</td>
-	</tr>
+echo '<table class="selection">
+		<tr>
+			<th colspan="4"><h3>', _('Shipment Details'), '</h3></th>
+		</tr>
+		<tr>
+			<td><b>', _('Shipment'), ': </b></td>
+			<td><b>', $_GET['SelectedShipment'], '</b></td>
+			<td><b>', _('From'), ' ', $HeaderData['suppname'], '</b></td>
+		</tr>
+		<tr>
+			<td>', _('Vessel'), ': </td>
+			<td>', $HeaderData['vessel'], '</td>
+			<td>', _('Voyage Ref'), ': </td>
+			<td>', $HeaderData['voyageref'], '</td>
+		</tr>
+		<tr>
+			<td>', _('Expected Arrival Date (ETA)'), ': </td>
+			<td>', ConvertSQLDate($HeaderData['eta']), '</td>
+		</tr>
 	</table>';
 
 /*Get the total non-stock item shipment charges */
@@ -140,17 +138,17 @@ if (DB_num_rows($LineItemsResult) > 0) {
 
 	echo '<table cellpadding="2" class="selection">
 			<tr>
-				<th colspan="9"><h3>' . _('Items on shipment') . '</h3></th>
+				<th colspan="9"><h3>', _('Items on shipment'), '</h3></th>
 			</tr>
 			<tr>
-				<th>' . _('Item') . '</th>
-				<th>' . _('Quantity') . '<br />' . _('Invoiced') . '</th>
-				<th>' . _('Quantity') . '<br />' . _('Received') . '</th>
-				<th>' . _('Invoiced') . '<br />' . _('Charges') . '</th>
-				<th>' . _('Shipment') . '<br />' . _('Charges') . '</th>
-				<th>' . _('Shipment') . '<br />' . _('Cost') . '</th>
-				<th>' . _('Standard') . '<br />' . _('Cost') . '</th>
-				<th>' . _('Variance') . '</th>
+				<th>', _('Item'), '</th>
+				<th>', _('Quantity'), '<br />', _('Invoiced'), '</th>
+				<th>', _('Quantity'), '<br />', _('Received'), '</th>
+				<th>', _('Invoiced'), '<br />', _('Charges'), '</th>
+				<th>', _('Shipment'), '<br />', _('Charges'), '</th>
+				<th>', _('Shipment'), '<br />', _('Cost'), '</th>
+				<th>', _('Standard'), '<br />', _('Cost'), '</th>
+				<th>', _('Variance'), '</th>
 				<th>%</th>
 			</tr>';
 
@@ -458,19 +456,21 @@ if (DB_num_rows($LineItemsResult) > 0) {
 					$Result = DB_query($SQL, $ErrMsg, '', TRUE);
 
 					$SQL = "INSERT INTO gltrans (type,
-										typeno,
-										trandate,
-										periodno,
-										account,
-										narrative,
-										amount)
-								VALUES (35,
-									'" . $CostUpdateNo . "',
-									CURRENT_DATE,
-									'" . $PeriodNo . "',
-									'" . $StockGLCodes['stockact'] . "',
-									'" . _('Shipment of') . ' ' . $MyRow['itemcode'] . ' ' . _('cost was') . ' ' . $StdCostUnit . ' ' . _('changed to') . ' ' . locale_number_format($ItemShipmentCost, $_SESSION['CompanyRecord']['decimalplaces']) . ' x ' . _('QOH of') . ' ' . $QOH . "',
-									" . $ValueOfChange . ")";
+												typeno,
+												trandate,
+												periodno,
+												account,
+												narrative,
+												amount
+											) VALUES (
+												35,
+												'" . $CostUpdateNo . "',
+												CURRENT_DATE,
+												'" . $PeriodNo . "',
+												'" . $StockGLCodes['stockact'] . "',
+												'" . _('Shipment of') . ' ' . $MyRow['itemcode'] . ' ' . _('cost was') . ' ' . $StdCostUnit . ' ' . _('changed to') . ' ' . locale_number_format($ItemShipmentCost, $_SESSION['CompanyRecord']['decimalplaces']) . ' x ' . _('QOH of') . ' ' . $QOH . "',
+												" . $ValueOfChange . "
+											)";
 
 					$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The GL debit for stock cost adjustment posting could not be inserted because') . ' ' . DB_error_msg();
 
@@ -500,26 +500,27 @@ if (DB_num_rows($LineItemsResult) > 0) {
 
 		/*  Item / Qty Inv/  FX price/ Local Val/ Portion of chgs/ Shipt Cost/ Std Cost/ Variance/ Var % */
 
-		echo '<td>' . $MyRow['itemcode'] . ' - ' . stripslashes($MyRow['itemdescription']) . '</td>
-			<td class="number">' . locale_number_format($MyRow['totqtyinvoiced'], 'Variable') . '</td>
-			<td class="number">' . locale_number_format($MyRow['totqtyrecd'], 'Variable') . '</td>
-			<td class="number">' . locale_number_format($ItemCharges, $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
-			<td class="number">' . locale_number_format($PortionOfCharges, $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
-			<td class="number">' . locale_number_format($ItemShipmentCost, $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
-			<td class="number">' . locale_number_format($StdCostUnit, $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
-			<td class="number">' . locale_number_format($Variance, $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
-			<td class="number">' . $VariancePercentage . '%</td></tr>';
+		echo '<td>', $MyRow['itemcode'], ' - ', stripslashes($MyRow['itemdescription']), '</td>
+			<td class="number">', locale_number_format($MyRow['totqtyinvoiced'], 'Variable'), '</td>
+			<td class="number">', locale_number_format($MyRow['totqtyrecd'], 'Variable'), '</td>
+			<td class="number">', locale_number_format($ItemCharges, $_SESSION['CompanyRecord']['decimalplaces']), '</td>
+			<td class="number">', locale_number_format($PortionOfCharges, $_SESSION['CompanyRecord']['decimalplaces']), '</td>
+			<td class="number">', locale_number_format($ItemShipmentCost, $_SESSION['CompanyRecord']['decimalplaces']), '</td>
+			<td class="number">', locale_number_format($StdCostUnit, $_SESSION['CompanyRecord']['decimalplaces']), '</td>
+			<td class="number">', locale_number_format($Variance, $_SESSION['CompanyRecord']['decimalplaces']), '</td>
+			<td class="number">', $VariancePercentage, '%</td>
+		</tr>';
 	}
 }
 echo '<tr>
-		<td colspan="3" class="number"><b>' . _('Total Shipment Charges') . '</b></td>
-		<td class="number">' . locale_number_format($TotalInvoiceValueOfShipment, $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
-		<td class="number">' . locale_number_format($TotalCostsToApportion, $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
+		<td colspan="3" class="number"><b>', _('Total Shipment Charges'), '</b></td>
+		<td class="number">', locale_number_format($TotalInvoiceValueOfShipment, $_SESSION['CompanyRecord']['decimalplaces']), '</td>
+		<td class="number">', locale_number_format($TotalCostsToApportion, $_SESSION['CompanyRecord']['decimalplaces']), '</td>
 	</tr>';
 
 echo '<tr>
-		<td colspan="6" class="number">' . _('Total Value of all variances on this shipment') . '</td>
-		<td class="number">' . locale_number_format($TotalShiptVariance, $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
+		<td colspan="6" class="number">', _('Total Value of all variances on this shipment'), '</td>
+		<td class="number">', locale_number_format($TotalShiptVariance, $_SESSION['CompanyRecord']['decimalplaces']), '</td>
 	</tr>';
 
 echo '</table>';
@@ -530,41 +531,43 @@ echo '<table width="95%">
 			<td valign="top">'; // put this shipment charges side by side in a table (major table 2 cols)
 
 $SQL = "SELECT suppliers.suppname,
-			supptrans.suppreference,
-			systypes.typename,
-			supptrans.trandate,
-			supptrans.rate,
-			suppliers.currcode,
-			shipmentcharges.stockid,
-			shipmentcharges.value,
-			supptrans.transno,
-			supptrans.supplierno
-		FROM supptrans INNER JOIN shipmentcharges
-			ON shipmentcharges.transtype=supptrans.type
-			AND shipmentcharges.transno=supptrans.transno
-		INNER JOIN suppliers
-			ON suppliers.supplierid=supptrans.supplierno
-		INNER JOIN systypes ON systypes.typeid=supptrans.type
-		WHERE shipmentcharges.stockid<>''
-		AND shipmentcharges.shiptref='" . $_GET['SelectedShipment'] . "'
-		ORDER BY supptrans.supplierno,
-			supptrans.transno,
-			shipmentcharges.stockid";
+				supptrans.suppreference,
+				systypes.typename,
+				supptrans.trandate,
+				supptrans.rate,
+				suppliers.currcode,
+				shipmentcharges.stockid,
+				shipmentcharges.value,
+				supptrans.transno,
+				supptrans.supplierno
+			FROM supptrans
+			INNER JOIN shipmentcharges
+				ON shipmentcharges.transtype=supptrans.type
+				AND shipmentcharges.transno=supptrans.transno
+			INNER JOIN suppliers
+				ON suppliers.supplierid=supptrans.supplierno
+			INNER JOIN systypes
+				ON systypes.typeid=supptrans.type
+			WHERE shipmentcharges.stockid<>''
+				AND shipmentcharges.shiptref='" . $_GET['SelectedShipment'] . "'
+			ORDER BY supptrans.supplierno,
+					supptrans.transno,
+					shipmentcharges.stockid";
 
 $ChargesResult = DB_query($SQL);
 
-echo '<table cellpadding="2" class="selection">';
-echo '<tr>
-		<th colspan="6"><h3>' . _('Shipment Charges Against Products') . '</h3></th>
-	</tr>
-	<tr>
-		<th>' . _('Supplier') . '</th>
-		<th>' . _('Type') . '</th>
-		<th>' . _('Ref') . '</th>
-		<th>' . _('Date') . '</th>
-		<th>' . _('Item') . '</th>
-		<th>' . _('Local Amount') . '<br />' . _('Charged') . '</th>
-	</tr>';
+echo '<table cellpadding="2" class="selection">
+		<tr>
+			<th colspan="6"><h3>', _('Shipment Charges Against Products'), '</h3></th>
+		</tr>
+		<tr>
+			<th>', _('Supplier'), '</th>
+			<th>', _('Type'), '</th>
+			<th>', _('Ref'), '</th>
+			<th>', _('Date'), '</th>
+			<th>', _('Item'), '</th>
+			<th>', _('Local Amount'), '<br />', _('Charged'), '</th>
+		</tr>';
 
 /*show the line items on the shipment with the value invoiced and shipt cost */
 
@@ -583,61 +586,62 @@ while ($MyRow = DB_fetch_array($ChargesResult)) {
 		$k = 1;
 	}
 
-	echo '<td>' . $MyRow['suppname'] . '</td>
-		<td>' . $MyRow['typename'] . '</td>
-		<td>' . $MyRow['suppreference'] . '</td>
-		<td>' . ConvertSQLDate($MyRow['trandate']) . '</td>
-		<td>' . $MyRow['stockid'] . '</td>
-		<td class="number">' . locale_number_format($MyRow['value'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
-		</tr>';
+	echo '<td>', $MyRow['suppname'], '</td>
+		<td>', $MyRow['typename'], '</td>
+		<td>', $MyRow['suppreference'], '</td>
+		<td>', ConvertSQLDate($MyRow['trandate']), '</td>
+		<td>', $MyRow['stockid'], '</td>
+		<td class="number">', locale_number_format($MyRow['value'], $_SESSION['CompanyRecord']['decimalplaces']), '</td>
+	</tr>';
 
 	$TotalItemShipmentChgs += $MyRow['value'];
 }
 
 echo '<tr>
-		<td colspan="5" class="number"><b>' . _('Total Charges Against Shipment Items') . ':</b></td>
-		<td class="number">' . locale_number_format($TotalItemShipmentChgs, $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
+		<td colspan="5" class="number"><b>', _('Total Charges Against Shipment Items'), ':</b></td>
+		<td class="number">', locale_number_format($TotalItemShipmentChgs, $_SESSION['CompanyRecord']['decimalplaces']), '</td>
 	</tr>';
 
-echo '</table>';
-
-echo '</td><td valign="top">'; //major table
+echo '</table>
+	</td>'; //major table
 
 /* Now the shipment freight/duty etc general charges */
 
 $SQL = "SELECT suppliers.suppname,
-		supptrans.suppreference,
-		systypes.typename,
-		supptrans.trandate,
-		supptrans.rate,
-		suppliers.currcode,
-		shipmentcharges.stockid,
-		shipmentcharges.value
-	FROM supptrans INNER JOIN shipmentcharges
-		ON shipmentcharges.transtype=supptrans.type
-		AND shipmentcharges.transno=supptrans.transno
-	INNER JOIN suppliers
-		ON suppliers.supplierid=supptrans.supplierno
-	INNER JOIN systypes
-		ON systypes.typeid=supptrans.type
-	WHERE shipmentcharges.stockid=''
-	AND shipmentcharges.shiptref='" . $_GET['SelectedShipment'] . "'
-	ORDER BY supptrans.supplierno,
-		supptrans.transno";
+				supptrans.suppreference,
+				systypes.typename,
+				supptrans.trandate,
+				supptrans.rate,
+				suppliers.currcode,
+				shipmentcharges.stockid,
+				shipmentcharges.value
+			FROM supptrans
+			INNER JOIN shipmentcharges
+				ON shipmentcharges.transtype=supptrans.type
+				AND shipmentcharges.transno=supptrans.transno
+			INNER JOIN suppliers
+				ON suppliers.supplierid=supptrans.supplierno
+			INNER JOIN systypes
+				ON systypes.typeid=supptrans.type
+			WHERE shipmentcharges.stockid=''
+				AND shipmentcharges.shiptref='" . $_GET['SelectedShipment'] . "'
+			ORDER BY supptrans.supplierno,
+					supptrans.transno";
 
 $ChargesResult = DB_query($SQL);
 
-echo '<table cellpadding="2" class="selection">';
-echo '<tr>
-		<th colspan="6"><h3>' . _('General Shipment Charges') . '</h3></th>
-	</tr>
-	<tr>
-		<th>' . _('Supplier') . '</th>
-		<th>' . _('Type') . '</th>
-		<th>' . _('Ref') . '</th>
-		<th>' . _('Date') . '</th>
-		<th>' . _('Local Amount') . '<br />' . _('Charged') . '</th>
-	</tr>';
+echo '<td valign="top">';
+echo '<table cellpadding="2" class="selection">
+		<tr>
+			<th colspan="6"><h3>', _('General Shipment Charges'), '</h3></th>
+		</tr>
+		<tr>
+			<th>', _('Supplier'), '</th>
+			<th>', _('Type'), '</th>
+			<th>', _('Ref'), '</th>
+			<th>', _('Date'), '</th>
+			<th>', _('Local Amount'), '<br />', _('Charged'), '</th>
+		</tr>';
 
 /*show the line items on the shipment with the value invoiced and shipt cost */
 
@@ -655,42 +659,45 @@ while ($MyRow = DB_fetch_array($ChargesResult)) {
 		$k = 1;
 	}
 
-	echo '<td>' . $MyRow['suppname'] . '</td>
-		<td>' . $MyRow['typename'] . '</td>
-		<td>' . $MyRow['suppreference'] . '</td>
-		<td>' . ConvertSQLDate($MyRow['trandate']) . '</td>
-		<td class="number">' . locale_number_format($MyRow['value'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td></tr>';
+	echo '<td>', $MyRow['suppname'], '</td>
+		<td>', $MyRow['typename'], '</td>
+		<td>', $MyRow['suppreference'], '</td>
+		<td>', ConvertSQLDate($MyRow['trandate']), '</td>
+		<td class="number">', locale_number_format($MyRow['value'], $_SESSION['CompanyRecord']['decimalplaces']), '</td>
+	</tr>';
 
 	$TotalGeneralShipmentChgs += $MyRow['value'];
 
 }
 
 echo '<tr>
-	<td class="number" colspan="4"><b>' . _('Total General Shipment Charges') . ':</b></td>
-	<td class="number">' . locale_number_format($TotalGeneralShipmentChgs, $_SESSION['CompanyRecord']['decimalplaces']) . '</td></tr>';
+		<td class="number" colspan="4"><b>', _('Total General Shipment Charges'), ':</b></td>
+		<td class="number">', locale_number_format($TotalGeneralShipmentChgs, $_SESSION['CompanyRecord']['decimalplaces']), '</td>
+	</tr>';
 
 echo '</table>';
 
 echo '</td>
 	</tr>
-	</table>'; //major table close
+</table>'; //major table close
 
 if (isset($_GET['Close'])) {
 	/* Only an opportunity to confirm user wishes to close */
 
 	// if the page was called with Close=Yes then show options to confirm OK to c
 	echo '<div class="centre">
-			<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedShipment=' . $_GET['SelectedShipment'] . '">';
-	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
+			<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '?SelectedShipment=', $_GET['SelectedShipment'], '">';
+	echo '<input type="hidden" name="FormID" value="', $_SESSION['FormID'], '" />';
 
 	if ($_SESSION['WeightedAverageCosting'] == 0) {
 		/* We are standard costing - so show the option to update costs - under W. Avg cost updates are implicit */
-		echo _('Update Standard Costs') . ':<select required="required" minlength="1" name="UpdateCost">
-					<option selected="selected" value="Yes">' . _('Yes') . '</option>
-					<option value="No">' . _('No') . '</option>
-					</select>';
+		echo _('Update Standard Costs'), ':';
+		echo '<select required="required" minlength="1" name="UpdateCost">
+				<option selected="selected" value="Yes">', _('Yes'), '</option>
+				<option value="No">', _('No'), '</option>
+			</select>';
 	}
-	echo '<input type="submit" name="Close" value="' . _('Confirm OK to Close') . '" />
+	echo '<input type="submit" name="Close" value="', _('Confirm OK to Close'), '" />
 		</form>';
 }
 
@@ -711,9 +718,9 @@ if (isset($_POST['Close'])) {
 	$Result = DB_query("UPDATE purchorderdetails
 								   SET quantityord=quantityrecd,
 									   completed=1
-							WHERE shiptref = '" . $_GET['SelectedShipment'] . "'", _('Could not complete the purchase order lines on this shipment'), '', TRUE);
+							WHERE shiptref = '" . $_GET['SelectedShipment'] . "'", _('Could not complete the purchase order lines on this shipment'), '', true);
 
-	$Result = DB_query("UPDATE shipments SET closed=1 WHERE shiptref='" . $_GET['SelectedShipment'] . "'", _('Could not update the shipment to closed'), '', TRUE);
+	$Result = DB_query("UPDATE shipments SET closed=1 WHERE shiptref='" . $_GET['SelectedShipment'] . "'", _('Could not update the shipment to closed'), '', true);
 	$Result = DB_Txn_Commit();
 
 	prnMsg(_('Shipment') . ' ' . $_GET['SelectedShipment'] . ' ' . _('has been closed'));

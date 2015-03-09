@@ -1067,12 +1067,14 @@ else {
 	echo '<input type="submit" name="SearchSuppliers" value="' . _('Select Now') . '" /></td>
 		</tr>';
 
-	echo '<tr>
-				<td>' . _('Supplier Contact') . ':</td>
-				<td><select minlength="0" name="SupplierContact">';
-
 	$SQL = "SELECT contact FROM suppliercontacts WHERE supplierid='" . $_POST['Select'] . "'";
 	$SuppCoResult = DB_query($SQL);
+
+	echo '<tr>
+				<td>' . _('Supplier Contact') . ':</td>
+				<td>
+					<select minlength="0" name="SupplierContact">
+						<option value=''></option>';
 
 	while ($SuppCoRow = DB_fetch_array($SuppCoResult)) {
 		if ($_POST['SupplierContact'] == $SuppCoRow['contact'] or ($_POST['SupplierContact'] == '' and $SuppCoRow['contact'] == $_SESSION['PO' . $Identifier]->SupplierContact)) {

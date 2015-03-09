@@ -1,4 +1,5 @@
 <?php
+/* Allows you to view all bank transactions for a selected date range, and the inquiry can be filtered by matched or unmatched transactions, or all transactions can be chosen. */
 
 include('includes/session.inc');
 $Title = _('Bank Transactions Inquiry');
@@ -6,13 +7,7 @@ $ViewTopic = 'GeneralLedger';
 $BookMark = 'DailyBankTransactions';
 include('includes/header.inc');
 
-echo '<p class="page_title_text noPrint" > <img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/money_add.png" title="' . $Title . '" alt="' . $Title . '" />' . ' ' . $Title . '</p>';
-
 if (!isset($_POST['Show'])) {
-	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-
-	echo '<table class="selection" summary="' . _('Select criteria for inquiry') . '">';
 
 	$SQL = "SELECT 	bankaccountname,
 					bankaccounts.accountcode,
@@ -28,13 +23,23 @@ if (!isset($_POST['Show'])) {
 	$DbgMsg = _('The SQL used to retrieve the bank accounts was');
 	$AccountsResults = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-	echo '<tr>
-			<td>' . _('Bank Account') . ':</td>
-			<td><select minlength="0" name="BankAccount">';
+	echo '<p class="page_title_text">
+			<img alt="" class="noPrint" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/bank.png" title="', _('Bank Transactions Inquiry'), '" />', _('Bank Transactions Inquiry'), '
+		</p>';// Page title.
+
+	echo '<form action="', htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8'), '" method="post">';
+	echo '<input type="hidden" name="FormID" value="', $_SESSION['FormID'], '" />';
+
+	echo '<table class="selection">
+			<tr>
+				<td>', _('Bank Account'), ':</td>
+				<td><select minlength="0" name="BankAccount">';
 
 	if (DB_num_rows($AccountsResults) == 0) {
-		echo '</select></td>
-				</tr></table>';
+		echo '</select>
+					</td>
+				</tr>
+			</table>';
 		prnMsg(_('Bank Accounts have not yet been defined. You must first') . ' <a href="' . $RootPath . '/BankAccounts.php">' . _('define the bank accounts') . '</a> ' . _('and general ledger accounts to be affected'), 'warn');
 		include('includes/footer.inc');
 		exit;
@@ -45,34 +50,36 @@ if (!isset($_POST['Show'])) {
 				$_POST['BankAccount'] = $MyRow['accountcode'];
 			}
 			if (isset($_POST['BankAccount']) and $_POST['BankAccount'] == $MyRow['accountcode']) {
-				echo '<option selected="selected" value="' . $MyRow['accountcode'] . '">' . $MyRow['bankaccountname'] . ' - ' . $MyRow['currcode'] . '</option>';
+				echo '<option selected="selected" value="', $MyRow['accountcode'], '">', $MyRow['bankaccountname'], ' - ', $MyRow['currcode'], '</option>';
 			} else {
-				echo '<option value="' . $MyRow['accountcode'] . '">' . $MyRow['bankaccountname'] . ' - ' . $MyRow['currcode'] . '</option>';
+				echo '<option value="', $MyRow['accountcode'], '">', $MyRow['bankaccountname'], ' - ', $MyRow['currcode'], '</option>';
 			}
 		}
-		echo '</select></td></tr>';
+		echo '</select>
+				</td>
+			</tr>';
 	}
 	echo '<tr>
-			<td>' . _('Transactions Dated From') . ':</td>
-			<td><input type="text" name="FromTransDate" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" required="required" minlength="1" maxlength="10" size="11" onchange="isDate(this, this.value, ' . "'" . $_SESSION['DefaultDateFormat'] . "'" . ')" value="' . date($_SESSION['DefaultDateFormat']) . '" /></td>
+			<td>', _('Transactions Dated From'), ':</td>
+			<td><input type="text" name="FromTransDate" class="date" alt="', $_SESSION['DefaultDateFormat'], '" required="required" minlength="1" maxlength="10" size="11" onchange="isDate(this, this.value, ', "'", $_SESSION['DefaultDateFormat'], "'", ')" value="', date($_SESSION['DefaultDateFormat']), '" /></td>
 		</tr>
 		<tr>
 			<td>' . _('Transactions Dated To') . ':</td>
-			<td><input type="text" name="ToTransDate" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" required="required" minlength="1" maxlength="10" size="11" onchange="isDate(this, this.value, ' . "'" . $_SESSION['DefaultDateFormat'] . "'" . ')" value="' . date($_SESSION['DefaultDateFormat']) . '" /></td>
+			<td><input type="text" name="ToTransDate" class="date" alt="', $_SESSION['DefaultDateFormat'], '" required="required" minlength="1" maxlength="10" size="11" onchange="isDate(this, this.value, ', "'", $_SESSION['DefaultDateFormat'], "'", ')" value="', date($_SESSION['DefaultDateFormat']), '" /></td>
 		</tr>
 		<tr>
-			<td>' . _('Show Transactions') . '</td>
+			<td>', _('Show Transactions'), '</td>
 			<td>
 				<select minlength="0" name="ShowType">
-					<option value="All">' . _('All') . '</option>
-					<option value="Unmatched">' . _('Unmatched') . '</option>
-					<option value="Matched">' . _('Matched') . '</option>
+					<option value="All">', _('All'), '</option>
+					<option value="Unmatched">', _('Unmatched'), '</option>
+					<option value="Matched">', _('Matched'), '</option>
 				</select>
 			</td>
 		</tr>
 		</table>
 		<div class="centre">
-			<input type="submit" name="Show" value="' . _('Show transactions') . '" />
+			<input type="submit" name="Show" value="', _('Show transactions'), '" />
 		</div>
 		</form>';
 } else {
@@ -107,33 +114,38 @@ if (!isset($_POST['Show'])) {
 				WHERE bankact='" . $_POST['BankAccount'] . "'
 					AND transdate>='" . FormatDateForSQL($_POST['FromTransDate']) . "'
 					AND transdate<='" . FormatDateForSQL($_POST['ToTransDate']) . "'
-				ORDER BY banktrans.transdate";
+				ORDER BY banktrans.transdate ASC,
+						banktrans.banktransid ASC";
 	$Result = DB_query($SQL);
 	if (DB_num_rows($Result) == 0) {
+		echo '<p class="page_title_text">
+				<img alt="" class="noPrint" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/bank.png" title="', _('Bank Transactions Inquiry'),  '" />', _('Bank Transactions Inquiry'), '
+			</p>';// Page title.
 		prnMsg(_('There are no transactions for this account in the date range selected'), 'info');
 	} else {
 		$BankDetailRow = DB_fetch_array($BankResult);
-		echo '<table class="selection" summary="' . _('Account Transactions For') . ' ' . $BankDetailRow['bankaccountname'] . ' ' . _('Between') . ' ' . $_POST['FromTransDate'] . ' ' . _('and') . ' ' . $_POST['ToTransDate'] . '">
-				<tr>
-					<th colspan="10">
-						<h3>' . _('Account Transactions For') . ' ' . $BankDetailRow['bankaccountname'] . ' ' . _('Between') . ' ' . $_POST['FromTransDate'] . ' ' . _('and') . ' ' . $_POST['ToTransDate'] . '
-							<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/printer.png" class="PrintIcon noPrint" title="' . _('Print') . '" alt="' . _('Print') . '" onclick="window.print();" />
-						</h3>
-					</th>
-				</tr>
-				<tr>
-					<th>' . ('Date') . '</th>
-					<th>' . _('Transaction type') . '</th>
-					<th>' . _('Number') . '</th>
-					<th>' . _('Type') . '</th>
-					<th>' . _('Reference') . '</th>
-					<th>' . _('Number') . '</th>
-					<th>' . _('Amount in') . ' ' . $BankDetailRow['currcode'] . '</th>
-					<th>' . _('Running Total') . ' ' . $BankDetailRow['currcode'] . '</th>
-					<th>' . _('Amount in') . ' ' . $_SESSION['CompanyRecord']['currencydefault'] . '</th>
-					<th>' . _('Running Total') . ' ' . $_SESSION['CompanyRecord']['currencydefault'] . '</th>
-					<th>' . _('Matched') . '</th>
-				</tr>';
+		echo '<p class="page_title_text">
+				<img alt="" class="noPrint" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/bank.png" title="', _('Bank Transactions Inquiry'), '" />',
+					_('Account Transactions For'),' ',
+					$BankDetailRow['bankaccountname'], ' ',
+					_('Between'), ' ', $_POST['FromTransDate'], ' ', _('and'), ' ', $_POST['ToTransDate'], '
+			</p>';// Page title.*/
+		echo '<table class="selection">
+				<thead>
+					<tr>
+						<th>' . ('Date') . '</th>
+						<th>' . _('Transaction type') . '</th>
+						<th>' . _('Number') . '</th>
+						<th>' . _('Type') . '</th>
+						<th>' . _('Reference') . '</th>
+						<th>' . _('Number') . '</th>
+						<th>' . _('Amount in') . ' ' . $BankDetailRow['currcode'] . '</th>
+						<th>' . _('Running Total') . ' ' . $BankDetailRow['currcode'] . '</th>
+						<th>' . _('Amount in') . ' ' . $_SESSION['CompanyRecord']['currencydefault'] . '</th>
+						<th>' . _('Running Total') . ' ' . $_SESSION['CompanyRecord']['currencydefault'] . '</th>
+						<th>' . _('Matched') . '</th>
+					</tr>
+				</thead>';
 
 		$AccountCurrTotal = 0;
 		$LocalCurrTotal = 0;

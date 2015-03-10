@@ -218,12 +218,13 @@ if (isset($_GET['AllocTrans'])) {
 					debtortrans.diffonexch,
 					debtortrans.alloc,
 					currencies.decimalplaces
-			FROM debtortrans INNER JOIN systypes
-			ON debtortrans.type = systypes.typeid
+			FROM debtortrans
+			INNER JOIN systypes
+				ON debtortrans.type = systypes.typeid
 			INNER JOIN debtorsmaster
-			ON debtortrans.debtorno = debtorsmaster.debtorno
+				ON debtortrans.debtorno = debtorsmaster.debtorno
 			INNER JOIN currencies
-			ON debtorsmaster.currcode=currencies.currabrev
+				ON debtorsmaster.currcode=currencies.currabrev
 			WHERE debtortrans.id='" . $_POST['AllocTrans'] . "'";
 
 	if ($_SESSION['SalesmanLogin'] != '') {
@@ -257,7 +258,7 @@ if (isset($_GET['AllocTrans'])) {
 			FROM debtortrans INNER JOIN systypes
 			ON debtortrans.type = systypes.typeid
 			WHERE debtortrans.settled=0
-			AND debtorno='" . $_SESSION['Alloc']->DebtorNo . "'";
+			AND debtorno='" . DB_escape_string($_SESSION['Alloc']->DebtorNo) . "'";
 
 	if ($_SESSION['SalesmanLogin'] != '') {
 		$SQL .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
@@ -283,12 +284,13 @@ if (isset($_GET['AllocTrans'])) {
 					debtortrans.alloc-custallocns.amt AS prevallocs,
 					amt,
 					custallocns.id AS allocid
-			FROM debtortrans INNER JOIN systypes
-			ON debtortrans.type = systypes.typeid
-			INNER JOIN custallocns
-			ON debtortrans.id=custallocns.transid_allocto
-			WHERE custallocns.transid_allocfrom='" . $_POST['AllocTrans'] . "'
-			AND debtorno='" . $_SESSION['Alloc']->DebtorNo . "'";
+				FROM debtortrans
+				INNER JOIN systypes
+					ON debtortrans.type = systypes.typeid
+				INNER JOIN custallocns
+					ON debtortrans.id=custallocns.transid_allocto
+				WHERE custallocns.transid_allocfrom='" . $_POST['AllocTrans'] . "'
+					AND debtorno='" . DB_escape_string($_SESSION['Alloc']->DebtorNo) . "'";
 
 	if ($_SESSION['SalesmanLogin'] != '') {
 		$SQL .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
@@ -307,38 +309,36 @@ if (isset($_GET['AllocTrans'])) {
 
 
 echo '<p class="page_title_text noPrint" >
-		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/transactions.png" title="' . _('Allocate Receipt') . '" alt="" />' . ' ' . _('Allocate Receipts') . '
+		<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/transactions.png" title="', _('Allocate Receipt'), '" alt="" />', ' ', _('Allocate Receipts'), '
 	</p>';
 
 
 if (isset($_POST['AllocTrans'])) {
 	// Page called with trans number
-	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-	echo '<input type="hidden" name="AllocTrans" value="' . $_POST['AllocTrans'] . '" />';
+	echo '<form onSubmit="return VerifyForm(this);" action="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '" method="post" class="noPrint">';
+	echo '<input type="hidden" name="FormID" value="', $_SESSION['FormID'], '" />';
+	echo '<input type="hidden" name="AllocTrans" value="', $_POST['AllocTrans'], '" />';
 
 	// Show trans already allocated and potential new allocations
 
 	echo '<table class="selection">';
 	echo '<tr>
 			<th colspan="7">
-			<div class="centre">
-				<b>' . $_SESSION['Alloc']->DebtorNo . ' - ' . $_SESSION['Alloc']->CustomerName . '</b>
-			</div>';
+				<b>', $_SESSION['Alloc']->DebtorNo, ' - ', $_SESSION['Alloc']->CustomerName, '</b>';
 
 	if ($_SESSION['Alloc']->TransExRate != 1) {
-		echo '<br />' . _('Amount in customer currency') . ' <b>' . locale_number_format(-$_SESSION['Alloc']->TransAmt, $_SESSION['Alloc']->CurrDecimalPlaces) . '</b><i> (' . _('converted into local currency at an exchange rate of') . ' ' . $_SESSION['Alloc']->TransExRate . ')</i>';
+		echo '<br />', _('Amount in customer currency'), ' <b>', locale_number_format(-$_SESSION['Alloc']->TransAmt, $_SESSION['Alloc']->CurrDecimalPlaces), '</b><i>(', _('converted into local currency at an exchange rate of'), ' ', $_SESSION['Alloc']->TransExRate . ')</i>';
 	}
 	echo '</th>
-		</tr>
-		<tr>
-			<th>' . _('Trans') . '<br />' . _('Type') . '</th>
-			<th>' . _('Trans') . '<br />' . _('Number') . '</th>
-			<th>' . _('Trans') . '<br />' . _('Date') . '</th>
-			<th>' . _('Total') . '<br />' . _('Amount') . '</th>
-			<th>' . _('Yet to') . '<br />' . _('Allocate') . '</th>
-			<th>' . _('This') . '<br />' . _('Allocation') . '</th>
-			<th>' . _('Running') . '<br />' . _('Balance') . '</th>
+		</tr>';
+	echo '<tr>
+			<th>', _('Trans'), '<br />', _('Type'), '</th>
+			<th>', _('Trans'), '<br />', _('Number'), '</th>
+			<th>', _('Trans'), '<br />', _('Date'), '</th>
+			<th>', _('Total'), '<br />', _('Amount'), '</th>
+			<th>', _('Yet to'), '<br />', _('Allocate'), '</th>
+			<th>', _('This'), '<br />', _('Allocation'), '</th>
+			<th>', _('Running'), '<br />', _('Balance'), '</th>
 		</tr>';
 
 	$Counter = 0;
@@ -358,56 +358,56 @@ if (isset($_POST['AllocTrans'])) {
 			$CurTrans = "&nbsp;";
 		}
 
-		echo '<td>' . _($AllocnItem->TransType) . '</td>
-			<td class="number">' . $AllocnItem->TypeNo . '</td>
-			<td>' . $AllocnItem->TransDate . '</td>
-			<td class="number">' . locale_number_format($AllocnItem->TransAmount, $_SESSION['Alloc']->CurrDecimalPlaces) . '</td>
-			<td class="number">' . locale_number_format($YetToAlloc, $_SESSION['Alloc']->CurrDecimalPlaces) . '</td>';
-		++$j;
+		echo '<td>', _($AllocnItem->TransType), '</td>
+			<td class="number">', $AllocnItem->TypeNo, '</td>
+			<td>', $AllocnItem->TransDate, '</td>
+			<td class="number">', locale_number_format($AllocnItem->TransAmount, $_SESSION['Alloc']->CurrDecimalPlaces), '</td>
+			<td class="number">', locale_number_format($YetToAlloc, $_SESSION['Alloc']->CurrDecimalPlaces), '</td>';
 
 		if ($AllocnItem->TransAmount < 0) {
 			$Balance += $YetToAlloc;
-			echo '<td>' . $CurTrans . '</td>
-						<td class="number">' . locale_number_format($Balance, $_SESSION['Alloc']->CurrDecimalPlaces) . '</td>
-					</tr>';
+			echo '<td>', $CurTrans, '</td>
+					<td class="number">', locale_number_format($Balance, $_SESSION['Alloc']->CurrDecimalPlaces), '</td>
+				</tr>';
 		} else {
-			echo '<td class="number"><input type="hidden" name="YetToAlloc' . $Counter . '" value="' . round($YetToAlloc, $_SESSION['Alloc']->CurrDecimalPlaces) . '" />';
-			echo '<input tabindex="' . $j . '" type="checkbox" name="All' . $Counter . '"';
+			echo '<td class="number"><input type="hidden" name="YetToAlloc', $Counter, '" value="', round($YetToAlloc, $_SESSION['Alloc']->CurrDecimalPlaces), '" />';
 
 			if (ABS($AllocnItem->AllocAmt - $YetToAlloc) < 0.01) {
-				echo ' checked="checked" />';
+				echo '<input type="checkbox" name="All', $Counter, '" checked="checked" />';
 			} else {
-				echo ' />';
+				echo '<input type="checkbox" name="All', $Counter, '" />';
 			}
 			$Balance += $YetToAlloc - $AllocnItem->AllocAmt;
 			++$j;
-			echo '<input tabindex="' . $j . '" type="text" class="number" name="Amt' . $Counter . '" required="required" minlength="1" maxlength="12" size="13" value="' . locale_number_format(round($AllocnItem->AllocAmt, $_SESSION['Alloc']->CurrDecimalPlaces), $_SESSION['Alloc']->CurrDecimalPlaces) . '" />
-					<input type="hidden" name="AllocID' . $Counter . '" value="' . $AllocnItem->ID . '" /></td>
-					<td class="number">' . locale_number_format($Balance, $_SESSION['Alloc']->CurrDecimalPlaces) . '</td>
+			echo '<input type="text" class="number" name="Amt', $Counter, '" required="required" minlength="1" maxlength="12" size="13" value="', locale_number_format(round($AllocnItem->AllocAmt, $_SESSION['Alloc']->CurrDecimalPlaces), $_SESSION['Alloc']->CurrDecimalPlaces), '" />
+					<input type="hidden" name="AllocID', $Counter, '" value="', $AllocnItem->ID, '" /></td>
+					<td class="number">', locale_number_format($Balance, $_SESSION['Alloc']->CurrDecimalPlaces), '</td>
 				</tr>';
 		}
 		$TotalAllocated += round($AllocnItem->AllocAmt, $_SESSION['Alloc']->CurrDecimalPlaces);
-		$Counter++;
+		++$Counter;
 	}
 
 	echo '<tr>
-			<td colspan="5" class="number"><b>' . _('Total Allocated') . ':</b></td>
-			<td class="number"><b>' . locale_number_format($TotalAllocated, $_SESSION['Alloc']->CurrDecimalPlaces) . '</b></td>';
-	++$j;
-	echo '<td colspan="2">
-			<input tabindex="' . $j . '" type="submit" name="RefreshAllocTotal" value="' . _('Recalculate Total To Allocate') . '" /></td>
+			<td colspan="5" class="number"><b>', _('Total Allocated'), ':</b></td>
+			<td class="number"><b>', locale_number_format($TotalAllocated, $_SESSION['Alloc']->CurrDecimalPlaces), '</b></td>
+			<td colspan="2">
+				<input type="submit" name="RefreshAllocTotal" value="', _('Recalculate Total To Allocate'), '" />
+			</td>
 		</tr>
 		<tr>
-			<td colspan="5" class="number"><b>' . _('Left to allocate') . '</b></td>
-			<td class="number"><b>' . locale_number_format(-$_SESSION['Alloc']->TransAmt - $TotalAllocated, $_SESSION['Alloc']->CurrDecimalPlaces) . '</b></td>
+			<td colspan="5" class="number"><b>', _('Left to allocate'), '</b></td>
+			<td class="number"><b>', locale_number_format(-$_SESSION['Alloc']->TransAmt - $TotalAllocated, $_SESSION['Alloc']->CurrDecimalPlaces), '</b></td>
 		</tr>
-		</table>
-		<input type="hidden" name="TotalNumberOfAllocs" value="' . $Counter . '" />
-		<div class="centre">
-			<input tabindex="' . $j . '" type="submit" name="UpdateDatabase" value="' . _('Process Allocations') . '" />
-			<input tabindex="' . $j . '" type="submit" name="Cancel" value="' . _('Cancel') . '" />
+	</table>';
+
+	echo '<input type="hidden" name="TotalNumberOfAllocs" value="', $Counter, '" />';
+
+	echo '<div class="centre">
+			<input type="submit" name="UpdateDatabase" value="', _('Process Allocations'), '" />
+			<input type="submit" name="Cancel" value="', _('Cancel'), '" />
 		</div>
-		</form>';
+	</form>';
 
 } elseif (isset($_GET['DebtorNo'])) {
 	// Page called with customer code
@@ -427,15 +427,16 @@ if (isset($_POST['AllocTrans'])) {
 				debtortrans.alloc,
 				currencies.decimalplaces AS currdecimalplaces,
 				debtorsmaster.currcode
-			FROM debtortrans INNER JOIN debtorsmaster
-			ON debtortrans.debtorno=debtorsmaster.debtorno
+			FROM debtortrans
+			INNER JOIN debtorsmaster
+				ON debtortrans.debtorno=debtorsmaster.debtorno
 			INNER JOIN systypes
-			ON debtortrans.type=systypes.typeid
+				ON debtortrans.type=systypes.typeid
 			INNER JOIN currencies
-			ON debtorsmaster.currcode=currencies.currabrev
+				ON debtorsmaster.currcode=currencies.currabrev
 			WHERE debtortrans.debtorno='" . $_GET['DebtorNo'] . "'
-			AND (debtortrans.type=12 OR debtortrans.type=11)
-			AND debtortrans.settled=0";
+				AND (debtortrans.type=12 OR debtortrans.type=11)
+				AND debtortrans.settled=0";
 
 	if ($_SESSION['SalesmanLogin'] != '') {
 		$SQL .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
@@ -452,15 +453,15 @@ if (isset($_POST['AllocTrans'])) {
 	}
 	echo '<table class="selection">
 				<tr>
-					<th>' . _('Trans Type') . '</th>
-					<th>' . _('Customer') . '</th>
-					<th>' . _('Cust No') . '</th>
-					<th>' . _('Number') . '</th>
-					<th>' . _('Date') . '</th>
-					<th>' . _('Total') . '</th>
-					<th>' . _('To Alloc') . '</th>
-					<th>' . _('Currency') . '</th>
-					<th>' . _('Action') . '</th>
+					<th>', _('Trans Type'), '</th>
+					<th>', _('Customer'), '</th>
+					<th>', _('Cust No'), '</th>
+					<th>', _('Number'), '</th>
+					<th>', _('Date'), '</th>
+					<th>', _('Total'), '</th>
+					<th>', _('To Alloc'), '</th>
+					<th>', _('Currency'), '</th>
+					<th>', _('Action'), '</th>
 				</tr>';
 	$k = 0;
 	while ($MyRow = DB_fetch_array($Result)) {
@@ -471,15 +472,16 @@ if (isset($_POST['AllocTrans'])) {
 			echo '<tr class="OddTableRows">';
 			++$k;
 		}
-		echo '<td>' . _($MyRow['typename']) . '</td>
-				<td>' . $MyRow['name'] . '</td>
-				<td>' . $MyRow['debtorno'] . '</td>
-				<td>' . $MyRow['transno'] . '</td>
-				<td>' . ConvertSQLDate($MyRow['trandate']) . '</td>
-				<td class="number">' . locale_number_format($MyRow['total'], $MyRow['currdecimalplaces']) . '</td>
-				<td class="number">' . locale_number_format($MyRow['total'] - $MyRow['alloc'], $MyRow['currdecimalplaces']) . '</td>
-				<td>' . $MyRow['currcode'] . '</td>';
-		echo '<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?AllocTrans=' . $MyRow['id'] . '">' . _('Allocate') . '</a></td></tr>';
+		echo '<td>', _($MyRow['typename']), '</td>
+				<td>', $MyRow['name'], '</td>
+				<td>', $MyRow['debtorno'], '</td>
+				<td>', $MyRow['transno'], '</td>
+				<td>', ConvertSQLDate($MyRow['trandate']), '</td>
+				<td class="number">', locale_number_format($MyRow['total'], $MyRow['currdecimalplaces']), '</td>
+				<td class="number">', locale_number_format($MyRow['total'] - $MyRow['alloc'], $MyRow['currdecimalplaces']), '</td>
+				<td>', $MyRow['currcode'], '</td>
+				<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '?AllocTrans=', $MyRow['id'], '">', _('Allocate'), '</a></td>
+			</tr>';
 	}
 	echo '</table>';
 } else {
@@ -500,15 +502,16 @@ if (isset($_POST['AllocTrans'])) {
 				debtortrans.alloc,
 				debtorsmaster.currcode,
 				currencies.decimalplaces AS currdecimalplaces
-			FROM debtortrans INNER JOIN debtorsmaster
-			ON debtortrans.debtorno=debtorsmaster.debtorno
+			FROM debtortrans
+			INNER JOIN debtorsmaster
+				ON debtortrans.debtorno=debtorsmaster.debtorno
 			INNER JOIN systypes
-			ON debtortrans.type=systypes.typeid
+				ON debtortrans.type=systypes.typeid
 			INNER JOIN currencies
-			ON debtorsmaster.currcode=currencies.currabrev
+				ON debtorsmaster.currcode=currencies.currabrev
 			WHERE (debtortrans.type=12 OR debtortrans.type=11)
-			AND debtortrans.settled=0
-			AND debtortrans.ovamount<0";
+				AND debtortrans.settled=0
+				AND debtortrans.ovamount<0";
 
 	if ($_SESSION['SalesmanLogin'] != '') {
 		$SQL .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
@@ -522,15 +525,15 @@ if (isset($_POST['AllocTrans'])) {
 	$CurrentDebtor = '';
 	echo '<table class="selection">
 				<tr>
-					<th>' . _('Trans Type') . '</th>
-					<th>' . _('Customer') . '</th>
-					<th>' . _('Cust No') . '</th>
-					<th>' . _('Number') . '</th>
-					<th>' . _('Date') . '</th>
-					<th>' . _('Total') . '</th>
-					<th>' . _('To Alloc') . '</th>
-					<th>' . _('Currency') . '</th>
-					<th>' . _('Action') . '</th>
+					<th>', _('Trans Type'), '</th>
+					<th>', _('Customer'), '</th>
+					<th>', _('Cust No'), '</th>
+					<th>', _('Number'), '</th>
+					<th>', _('Date'), '</th>
+					<th>', _('Total'), '</th>
+					<th>', _('To Alloc'), '</th>
+					<th>', _('Currency'), '</th>
+					<th>', _('Action'), '</th>
 				</tr>';
 
 	$k = 0;
@@ -541,9 +544,9 @@ if (isset($_POST['AllocTrans'])) {
 		if ($CurrentDebtor != $MyRow['debtorno']) {
 			if ($CurrentTransaction > 1) {
 				echo '<tr class="OddTableRows">
-						<td colspan="7" class="number"><b>' . locale_number_format($Balance, $CurrDecimalPlaces) . '</b></td>
-						<td><b>' . $CurrCode . '</b></td>
-						<td><b>' . _('Balance') . '</b></td>
+						<td colspan="7" class="number"><b>', locale_number_format($Balance, $CurrDecimalPlaces), '</b></td>
+						<td><b>', $CurrCode, '</b></td>
+						<td><b>', _('Balance'), '</b></td>
 					</tr>';
 			}
 
@@ -573,15 +576,15 @@ if (isset($_POST['AllocTrans'])) {
 			++$k;
 		}
 
-		echo '<td>' . _($MyRow['typename']) . '</td>
-				<td>' . $MyRow['name'] . '</td>
-				<td>' . $MyRow['debtorno'] . '</td>
-				<td>' . $MyRow['transno'] . '</td>
-				<td>' . ConvertSQLDate($MyRow['trandate']) . '</td>
-				<td class="number">' . locale_number_format($MyRow['total'], $CurrDecimalPlaces) . '</td>
-				<td class="number">' . locale_number_format($MyRow['total'] - $MyRow['alloc'], $CurrDecimalPlaces) . '</td>
-				<td>' . $CurrCode . '</td>
-				<td>' . $AllocateLink . '</td>
+		echo '<td>', _($MyRow['typename']), '</td>
+				<td>', $MyRow['name'], '</td>
+				<td>', $MyRow['debtorno'], '</td>
+				<td>', $MyRow['transno'], '</td>
+				<td>', ConvertSQLDate($MyRow['trandate']), '</td>
+				<td class="number">', locale_number_format($MyRow['total'], $CurrDecimalPlaces), '</td>
+				<td class="number">', locale_number_format($MyRow['total'] - $MyRow['alloc'], $CurrDecimalPlaces), '</td>
+				<td>',$CurrCode, '</td>
+				<td>', $AllocateLink, '</td>
 			</tr>';
 
 	} //end loop around unallocated receipts and credit notes
@@ -593,9 +596,9 @@ if (isset($_POST['AllocTrans'])) {
 		prnMsg(_('There are no allocations to be done'), 'info');
 	} else {
 		echo '<tr class="OddTableRows">
-				<td colspan="7" class="number"><b>' . locale_number_format($Balance, $CurrDecimalPlaces) . '</b></td>
-				<td><b>' . $CurrCode . '</b></td>
-				<td><b>' . _('Balance') . '</b></td>
+				<td colspan="7" class="number"><b>', locale_number_format($Balance, $CurrDecimalPlaces), '</b></td>
+				<td><b>', $CurrCode, '</b></td>
+				<td><b>', _('Balance'), '</b></td>
 			</tr>';
 	}
 	echo '</table>';

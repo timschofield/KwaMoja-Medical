@@ -399,8 +399,12 @@ if ($_SESSION['PO' . $Identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 
 			if ($OrderLine->StockID != '') { //Its a stock item line
 				/*Need to get the current standard cost as it is now so we can process GL jorunals later*/
-				$SQL = "SELECT stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost as stdcost
+				$SQL = "SELECT stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost as stdcost,
+								mbflagg
 							FROM stockcosts
+							INNER JOIN stockmaster
+								ON stockcosts.stockid=stockmaster.stockid
+								AND stockcosts.succeeded=0
 							WHERE stockcosts.stockid='" . $OrderLine->StockID . "'";
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The standard cost of the item being received cannot be retrieved because');
 				$DbgMsg = _('The following SQL to retrieve the standard cost was used');
@@ -408,8 +412,22 @@ if ($_SESSION['PO' . $Identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 
 				$MyRow = DB_fetch_row($Result);
 
-				if ($OrderLine->QtyReceived == 0) { //its the first receipt against this line
-					$_SESSION['PO' . $Identifier]->LineItems[$OrderLine->LineNo]->StandardCost = $MyRow[0];
+				if($MyRow[1] != 'D') {
+					if ($OrderLine->QtyReceived == 0) { //its the first receipt against this line
+						$_SESSION['PO'.$identifier]->LineItems[$OrderLine->LineNo]->StandardCost = $MyRow[0];
+					}
+					$CurrentStandardCost = $MyRow[0];
+					/* Set the purchase order line stdcostunit = weighted average / standard cost used for all
+					 * receipts of this line. This assures that the quantity received against the purchase order
+					 * line multiplied by the weighted average of standard costs received = the total of standard
+					 * cost posted to GRN suspense
+					 */
+					$_SESSION['PO'.$identifier]->LineItems[$OrderLine->LineNo]->StandardCost = (($CurrentStandardCost * $OrderLine->ReceiveQty) + ($_SESSION['PO'.$identifier]->LineItems[$OrderLine->LineNo]->StandardCost * $OrderLine->QtyReceived)) / ($OrderLine->ReceiveQty + $OrderLine->QtyReceived);
+				} elseif ($MyRow[1] == 'D') { //it's a dummy part which without stock.
+					$Dummy = true;
+					if($OrderLine->QtyReceived == 0){//There is
+						$_SESSION['PO'.$identifier]->LineItems[$OrderLine->LineNo]->StandardCost = $LocalCurrencyPrice;
+					}
 				}
 				$CurrentStandardCost = $MyRow[0];
 
@@ -424,7 +442,7 @@ if ($_SESSION['PO' . $Identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 				$_SESSION['PO' . $Identifier]->LineItems[$OrderLine->LineNo]->StandardCost = $LocalCurrencyPrice;
 			}
 
-			if ($OrderLine->StockID == '') {
+			if ($OrderLine->StockID == '' or isset($Dummy)) {
 				/*Its a NOMINAL item line */
 				$CurrentStandardCost = $_SESSION['PO' . $Identifier]->LineItems[$OrderLine->LineNo]->StandardCost;
 			}
@@ -449,7 +467,7 @@ if ($_SESSION['PO' . $Identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 
-			if ($OrderLine->StockID != '') {
+			if ($OrderLine->StockID != '' and empty($Dummy)) {
 				/*Its a stock item so use the standard cost for the journals */
 				$UnitCost = $CurrentStandardCost;
 			} else {

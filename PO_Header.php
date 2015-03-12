@@ -1074,7 +1074,7 @@ else {
 				<td>' . _('Supplier Contact') . ':</td>
 				<td>
 					<select minlength="0" name="SupplierContact">
-						<option value=''></option>';
+						<option value=""></option>';
 
 	while ($SuppCoRow = DB_fetch_array($SuppCoResult)) {
 		if ($_POST['SupplierContact'] == $SuppCoRow['contact'] or ($_POST['SupplierContact'] == '' and $SuppCoRow['contact'] == $_SESSION['PO' . $Identifier]->SupplierContact)) {

@@ -642,7 +642,7 @@ if (!isset($_POST['IssueItem'])) { //no item selected to issue yet
 	$SQL = "SELECT categoryid,
 			categorydescription
 			FROM stockcategory
-			WHERE stocktype='F' OR stocktype='D'
+			WHERE stocktype='F' OR stocktype='D' OR stocktype='L'
 			ORDER BY categorydescription";
 	$Result1 = DB_query($SQL);
 

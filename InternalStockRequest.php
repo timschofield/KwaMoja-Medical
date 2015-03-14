@@ -476,9 +476,10 @@ $SQL = "SELECT stockcategory.categoryid,
 			ORDER BY stockcategory.categorydescription";
 $Result1 = DB_query($SQL);
 if (DB_num_rows($Result1) == 0) {
-	echo '<p class="bad">' . _('Problem Report') . ':<br />' . _('There are no stock categories currently defined please use the link below to set them up') . '</p>';
+	echo '<p class="bad">' . _('Problem Report') . ': ' . _('There are no stock categories currently defined for which you are allowed to create stock requests') . '.</p>';
 	echo '<br />
 		<a href="' . $RootPath . '/StockCategories.php">' . _('Define Stock Categories') . '</a>';
+	include('includes/footer.inc');
 	exit;
 }
 echo '<table class="selection">
@@ -707,18 +708,16 @@ if (isset($searchresult) and !isset($_POST['Select'])) {
 				<input type="hidden" name=Keywords value="' . $_POST['Keywords'] . '" />
 				<input type="hidden" name=StockCat value="' . $_POST['StockCat'] . '" />
 				<input type="hidden" name=StockCode value="' . $_POST['StockCode'] . '" />
-				<br />
-				</div>';
+			</div>';
 		}
-		echo '<table cellpadding="2">';
-		echo '<tr>
-				<th>' . _('Code') . '</th>
-				<th>' . _('Description') . '</th>
-				<th>' . _('Total Qty On Hand') . '</th>
-				<th>' . _('Units') . '</th>
-				<th>' . _('Stock Status') . '</th>
-			</tr>';
-		$j = 1;
+		echo '<table cellpadding="2">
+				<tr>
+					<th>', _('Code'), '</th>
+					<th>', _('Description'), '</th>
+					<th>', _('Total Qty On Hand'), '</th>
+					<th>', _('Units'), '</th>
+					<th>', _('Stock Status'), '</th>
+				</tr>';
 		$k = 0; //row counter to determine background colour
 		$RowIndex = 0;
 		if (DB_num_rows($searchresult) <> 0) {
@@ -743,12 +742,12 @@ if (isset($searchresult) and !isset($_POST['Select'])) {
 				$ItemStatus = '';
 			}
 
-			echo '<td><input type="submit" name="Select" value="' . $MyRow['stockid'] . '" /></td>
-					<td>' . $MyRow['description'] . '</td>
-					<td class="number">' . $qoh . '</td>
-					<td>' . $MyRow['units'] . '</td>
-					<td><a target="_blank" href="' . $RootPath . '/StockStatus.php?StockID=' . $MyRow['stockid'] . '">' . _('View') . '</a></td>
-					<td>' . $ItemStatus . '</td>
+			echo '<td><input type="submit" name="Select" value="', $MyRow['stockid'], '" /></td>
+					<td>', $MyRow['description'], '</td>
+					<td class="number">', $qoh, '</td>
+					<td>', $MyRow['units'], '</td>
+					<td><a target="_blank" href="', $RootPath, '/StockStatus.php?StockID=', urlencode($MyRow['stockid']), '">', _('View'), '</a></td>
+					<td>', $ItemStatus, '</td>
 				</tr>';
 			//end of page full new headings if
 		}
@@ -760,33 +759,35 @@ if (isset($searchresult) and !isset($_POST['Select'])) {
 /* end display list if there is more than one record */
 
 if (isset($SearchResult)) {
-	echo '<br />';
 	echo '<div class="page_help_text noPrint">' . _('Select an item by entering the quantity required.  Click Order when ready.') . '</div>';
-	echo '<br />';
-	$j = 1;
-	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint" id="orderform">';
-	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-	echo '<table class="table1">';
-	echo '<tr><td>
-			<input type="hidden" name="Previous" value="' . ($Offset - 1) . '" />
-			<input tabindex="' . ($j + 8) . '" type="submit" name="Prev" value="' . _('Prev') . '" /></td>';
-	echo '<td style="text-align:center" colspan="6">
-			<input type="hidden" name="order_items" value="1" />
-			<input tabindex="' . ($j + 9) . '" type="submit" value="' . _('Add to Requisition') . '" /></td>';
-	echo '<td>
-			<input type="hidden" name="NextList" value="' . ($Offset + 1) . '" />
-			<input tabindex="' . ($j + 10) . '" type="submit" name="Next" value="' . _('Next') . '" /></td></tr>';
+	echo '<form onSubmit="return VerifyForm(this);" action="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '" method="post" class="noPrint" id="orderform">';
+	echo '<input type="hidden" name="FormID" value="', $_SESSION['FormID'], '" />';
+	echo '<table class="table1">
+			<tr>
+				<td>
+					<input type="hidden" name="Previous" value="', ($Offset - 1), '" />
+					<input type="submit" name="Prev" value="', _('Prev'), '" />
+				</td>
+				<td style="text-align:center" colspan="6">
+					<input type="hidden" name="order_items" value="1" />
+					<input type="submit" value="', _('Add to Requisition'), '" />
+				</td>
+				<td>
+					<input type="hidden" name="NextList" value="', ($Offset + 1), '" />
+					<input type="submit" name="Next" value="', _('Next'), '" />
+				</td>
+			</tr>';
 	echo '<tbody>
 			<tr>
-			<th class="SortableColumn">' . _('Code') . '</th>
-			<th class="SortableColumn">' . _('Description') . '</th>
-			<th>' . _('Units') . '</th>
-			<th>' . _('On Hand') . '</th>
-			<th>' . _('On Demand') . '</th>
-			<th>' . _('On Order') . '</th>
-			<th>' . _('Available') . '</th>
-			<th>' . _('Quantity') . '</th>
-		</tr>';
+				<th class="SortableColumn">', _('Code'), '</th>
+				<th class="SortableColumn">', _('Description'), '</th>
+				<th>', _('Units'), '</th>
+				<th>', _('On Hand'), '</th>
+				<th>', _('On Demand'), '</th>
+				<th>', _('On Order'), '</th>
+				<th>', _('Available'), '</th>
+				<th>', _('Quantity'), '</th>
+			</tr>';
 	$ImageSource = _('No Image');
 
 	$k = 0; //row colour counter
@@ -813,12 +814,13 @@ if (isset($SearchResult)) {
 
 		// Find the quantity on outstanding sales orders
 		$SQL = "SELECT SUM(salesorderdetails.quantity-salesorderdetails.qtyinvoiced) AS dem
-				 FROM salesorderdetails INNER JOIN salesorders
-				 ON salesorders.orderno = salesorderdetails.orderno
-				 WHERE salesorders.fromstkloc='" . $_SESSION['Request']->Location . "'
-				 AND salesorderdetails.completed=0
-				 AND salesorders.quotation=0
-				 AND salesorderdetails.stkcode='" . $MyRow['stockid'] . "'";
+					FROM salesorderdetails
+					INNER JOIN salesorders
+						ON salesorders.orderno = salesorderdetails.orderno
+					WHERE salesorders.fromstkloc='" . $_SESSION['Request']->Location . "'
+						AND salesorderdetails.completed=0
+						AND salesorders.quotation=0
+						AND salesorderdetails.stkcode='" . $MyRow['stockid'] . "'";
 		$ErrMsg = _('The demand for this product from') . ' ' . $_SESSION['Request']->Location . ' ' . _('cannot be retrieved because');
 		$DemandResult = DB_query($SQL, $ErrMsg);
 
@@ -831,13 +833,14 @@ if (isset($SearchResult)) {
 
 		// Find the quantity on purchase orders
 		$SQL = "SELECT SUM(purchorderdetails.quantityord-purchorderdetails.quantityrecd)*purchorderdetails.conversionfactor AS dem
-				 FROM purchorderdetails LEFT JOIN purchorders
-					ON purchorderdetails.orderno=purchorders.orderno
-				 WHERE purchorderdetails.completed=0
-				 AND purchorders.status<>'Cancelled'
-				 AND purchorders.status<>'Rejected'
-				 AND purchorders.status<>'Completed'
-				AND purchorderdetails.itemcode='" . $MyRow['stockid'] . "'";
+					FROM purchorderdetails
+					LEFT JOIN purchorders
+						ON purchorderdetails.orderno=purchorders.orderno
+					WHERE purchorderdetails.completed=0
+						AND purchorders.status<>'Cancelled'
+						AND purchorders.status<>'Rejected'
+						AND purchorders.status<>'Completed'
+						AND purchorderdetails.itemcode='" . $MyRow['stockid'] . "'";
 
 		$ErrMsg = _('The order details for this product cannot be retrieved because');
 		$PurchResult = DB_query($SQL, $ErrMsg);
@@ -872,31 +875,41 @@ if (isset($SearchResult)) {
 		}
 		$OnOrder = $PurchQty + $WoQty;
 		$Available = $QOH - $DemandQty + $OnOrder;
-		echo '<td>' . $MyRow['stockid'] . '</td>
-				<td>' . $MyRow['description'] . '</td>
-				<td>' . $MyRow['stockunits'] . '</td>
-				<td class="number">' . locale_number_format($QOH, $DecimalPlaces) . '</td>
-				<td class="number">' . locale_number_format($DemandQty, $DecimalPlaces) . '</td>
-				<td class="number">' . locale_number_format($OnOrder, $DecimalPlaces) . '</td>
-				<td class="number">' . locale_number_format($Available, $DecimalPlaces) . '</td>
-				<td><input class="number" autofocus="autofocus" tabindex="' . ($j + 7) . '" type="text" size="6" name="Quantity' . $i . '" value="0" />
-				<input type="hidden" name="StockID' . $i . '" value="' . $MyRow['stockid'] . '" />
+		echo '<td>', $MyRow['stockid'], '</td>
+				<td>', $MyRow['description'], '</td>
+				<td>', $MyRow['stockunits'], '</td>
+				<td class="number">', locale_number_format($QOH, $DecimalPlaces), '</td>
+				<td class="number">', locale_number_format($DemandQty, $DecimalPlaces), '</td>
+				<td class="number">', locale_number_format($OnOrder, $DecimalPlaces), '</td>
+				<td class="number">', locale_number_format($Available, $DecimalPlaces), '</td>
+				<td>
+					<input class="number" autofocus="autofocus" type="text" size="6" name="Quantity', $i, '" value="0" />
+					<input type="hidden" name="StockID', $i, '" value="', $MyRow['stockid'], '" />
 				</td>
 			</tr>';
-		echo '<input type="hidden" name="DecimalPlaces' . $i . '" value="' . $MyRow['decimalplaces'] . '" />';
-		echo '<input type="hidden" name="ItemDescription' . $i . '" value="' . $MyRow['description'] . '" />';
-		echo '<input type="hidden" name="Units' . $i . '" value="' . $MyRow['stockunits'] . '" />';
+		echo '<input type="hidden" name="DecimalPlaces', $i, '" value="', $MyRow['decimalplaces'], '" />';
+		echo '<input type="hidden" name="ItemDescription', $i, '" value="', $MyRow['description'], '" />';
+		echo '<input type="hidden" name="Units', $i, '" value="', $MyRow['stockunits'], '" />';
 
 		++$i;
 		//end of page full new headings if
 	}
 	//end of while loop
-	echo '</tbody><tr><td><input type="hidden" name="Previous" value="' . ($Offset - 1) . '" />
-			<input tabindex="' . ($j + 7) . '" type="submit" name="Prev" value="' . _('Prev') . '" /></td>';
-	echo '<td style="text-align:center" colspan="6"><input type="hidden" name="order_items" value="1" />
-		<input tabindex="' . ($j + 8) . '" type="submit" value="' . _('Add to Requisition') . '" /></td>';
-	echo '<td><input type="hidden" name="NextList" value="' . ($Offset + 1) . '" />
-		<input tabindex="' . ($j + 9) . '" type="submit" name="Next" value="' . _('Next') . '" /></td><tr/>';
+	echo '</tbody>';
+	echo '<tr>
+			<td>
+				<input type="hidden" name="Previous" value="', ($Offset - 1), '" />
+				<input type="submit" name="Prev" value="', _('Prev'), '" />
+			</td>
+			<td style="text-align:center" colspan="6">
+				<input type="hidden" name="order_items" value="1" />
+				<input type="submit" value="', _('Add to Requisition'), '" />
+			</td>
+			<td>
+				<input type="hidden" name="NextList" value="', ($Offset + 1), '" />
+				<input type="submit" name="Next" value="', _('Next'), '" />
+			</td>
+		<tr/>';
 	echo '</table>
 		</form>';
 

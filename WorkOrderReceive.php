@@ -933,11 +933,16 @@ if ($WORow['controlled'] == 1) { //controlled
 					echo '</tr>
 						<tr>';
 				}
-				echo '<td><input type="textbox" name="SerialNo' . $i . '" ';
+				echo '<td><input type="textbox" name="SerialNo' . $i . '" /></td>';
 				if ($i == 0) {
-					echo 'value="' . $StringBitOfLotSNRef . ($LotSNRefNumeric + 1) . '"';
+					if (!isset($StringBitOfLotSNRef)) {
+						$StringBitOfLotSNRef = '';
+					}
+					if (!isset($LotSNRefNumeric)) {
+						$LotSNRefNumeric = '';
+					}
+					echo 'value="' . $StringBitOfLotSNRef . ($LotSNRefNumeric + 1) . '" /></td>';
 				}
-				echo '" /></td>';
 
 			}
 		}

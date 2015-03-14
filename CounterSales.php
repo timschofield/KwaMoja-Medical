@@ -1686,7 +1686,7 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 							ON salesanalysis.cust=custbranch.debtorno
 							AND salesanalysis.custbranch=custbranch.branchcode
 							AND salesanalysis.area=custbranch.area
-						INNER JOINstockmaster
+						INNER JOIN stockmaster
 							ON salesanalysis.stkcategory=stockmaster.categoryid
 							AND salesanalysis.stockid=stockmaster.stockid
 						WHERE salesanalysis.salesperson='" . $_SESSION['Items' . $Identifier]->SalesPerson . "'

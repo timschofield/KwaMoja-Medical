@@ -717,7 +717,7 @@ if (count($_SESSION['Items' . $Identifier]->LineItems) > 0) {
 				<td><input class="number" type="text" name="Price_' . $ReturnItemLine->LineNumber . '" size="16" required="required" minlength="1" maxlength="16" value="' . locale_number_format($ReturnItemLine->Price, $_SESSION['Items' . $Identifier]->CurrDecimalPlaces) . '" /></td>
 				<td><input class="number" type="text" name="Discount_' . $ReturnItemLine->LineNumber . '" size="5" required="required" minlength="1" maxlength="4" value="' . locale_number_format(($ReturnItemLine->DiscountPercent * 100), 2) . '" /></td>
 				<td><input class="number" type="text" name="GPPercent_' . $ReturnItemLine->LineNumber . '" size="3" required="required" minlength="1" maxlength="40" value="' . locale_number_format($ReturnItemLine->GPPercent, 2) . '" /></td>
-				<td class="number">' . locale_number_format($SubTotal, $_SESSION['Items' . $Identifier]->CurrDecimalPlaces) . '</td>';
+				<td class="number">', locale_number_format($SubTotal, $_SESSION['Items' . $Identifier]->CurrDecimalPlaces), '</td>';
 		$LineDueDate = $ReturnItemLine->ItemDue;
 		$_SESSION['Items' . $Identifier]->LineItems[$ReturnItemLine->LineNumber]->ItemDue = $LineDueDate;
 
@@ -743,13 +743,19 @@ if (count($_SESSION['Items' . $Identifier]->LineItems) > 0) {
 		$TaxTotal += $TaxLineTotal;
 		$_SESSION['Items' . $Identifier]->TaxTotals = $TaxTotals;
 		$_SESSION['Items' . $Identifier]->TaxGLCodes = $TaxGLCodes;
-		echo '<td class="number">' . locale_number_format($TaxLineTotal, $_SESSION['Items' . $Identifier]->CurrDecimalPlaces) . '</td>';
-		echo '<td class="number">' . locale_number_format($SubTotal + $TaxLineTotal, $_SESSION['Items' . $Identifier]->CurrDecimalPlaces) . '</td>';
-		echo '<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '&Delete=' . $ReturnItemLine->LineNumber . '" onclick="return MakeConfirm(\'' . _('Are You Sure?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td></tr>';
+		echo '<td class="number">', locale_number_format($TaxLineTotal, $_SESSION['Items' . $Identifier]->CurrDecimalPlaces), '</td>';
+		echo '<td class="number">', locale_number_format($SubTotal + $TaxLineTotal, $_SESSION['Items' . $Identifier]->CurrDecimalPlaces), '</td>';
+		echo '<td>
+				<a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '?identifier=', urlencode($Identifier), '&Delete=', urlencode($ReturnItemLine->LineNumber), '" onclick="return MakeConfirm(\'', _('Are You Sure?'), '\', \'Confirm Delete\', this);">', _('Delete'), '</a>
+			</td>
+		</tr>';
 
 		if ($_SESSION['AllowOrderLineItemNarrative'] == 1) {
 			echo $RowStarter;
-			echo '<td valign="top" colspan="11">' . _('Narrative') . ':<textarea name="Narrative_' . $ReturnItemLine->LineNumber . '" cols="100" rows="1">' . stripslashes(AddCarriageReturns($ReturnItemLine->Narrative)) . '</textarea><br /></td></tr>';
+			echo '<td valign="top" colspan="11">', _('Narrative'), ':
+					<textarea name="Narrative_', $ReturnItemLine->LineNumber, '" cols="100" rows="1">', stripslashes(AddCarriageReturns($ReturnItemLine->Narrative)), '</textarea>
+				</td>
+			</tr>';
 		} else {
 			echo '<input type="hidden" name="Narrative" value="" />';
 		}
@@ -761,59 +767,72 @@ if (count($_SESSION['Items' . $Identifier]->LineItems) > 0) {
 	}
 	/* end of loop around items */
 
-	echo '<tr class="EvenTableRows">';
-	echo '<td colspan="8" class="number"><b>' . _('Total') . '</b></td>';
-	echo '<td class="number">' . locale_number_format(($_SESSION['Items' . $Identifier]->total), $_SESSION['Items' . $Identifier]->CurrDecimalPlaces) . '</td>
-			<td class="number">' . locale_number_format($TaxTotal, $_SESSION['Items' . $Identifier]->CurrDecimalPlaces) . '</td>
-			<td class="number">' . locale_number_format(($_SESSION['Items' . $Identifier]->total + $TaxTotal), $_SESSION['Items' . $Identifier]->CurrDecimalPlaces) . '</td>
+	echo '<tr class="EvenTableRows">
+			<td colspan="8" class="number"><b>', _('Total'), '</b></td>
+			<td class="number">', locale_number_format(($_SESSION['Items' . $Identifier]->total), $_SESSION['Items' . $Identifier]->CurrDecimalPlaces), '</td>
+			<td class="number">', locale_number_format($TaxTotal, $_SESSION['Items' . $Identifier]->CurrDecimalPlaces), '</td>
+			<td class="number">', locale_number_format(($_SESSION['Items' . $Identifier]->total + $TaxTotal), $_SESSION['Items' . $Identifier]->CurrDecimalPlaces), '</td>
 		</tr>
 		<tr class="EvenTableRows">
-			<td colspan="10" class="number"><b>' . _('Rounded Total') . '</b></td>
-			<td class="number">' . locale_number_format(round($_SESSION['Items' . $Identifier]->total + $TaxTotal, 0), $_SESSION['Items' . $Identifier]->CurrDecimalPlaces) . '</td>
+			<td colspan="10" class="number"><b>', _('Rounded Total'), '</b></td>
+			<td class="number">', locale_number_format(round($_SESSION['Items' . $Identifier]->total + $TaxTotal, 0), $_SESSION['Items' . $Identifier]->CurrDecimalPlaces), '</td>
 		</tr>
-		</table>';
-	echo '<input type="hidden" name="TaxTotal" value="' . $TaxTotal . '" />';
-	echo '<table><tr><td>';
+	</table>';
+	echo '<input type="hidden" name="TaxTotal" value="', $TaxTotal, '" />';
+	echo '<table>
+			<tr>
+				<td>';
 	//nested table
-	echo '<table><tr>
-		<td style="color:red">' . _('Returned By') . ':</td>
-		<td><input type="text" size="25" minlength="0" maxlength="25" name="DeliverTo" value="' . stripslashes($_SESSION['Items' . $Identifier]->DeliverTo) . '" /></td>
-	</tr>';
+	echo '<table>
+			<tr>
+				<td style="color:red">', _('Returned By'), ':</td>
+				<td><input type="text" size="25" minlength="0" maxlength="25" name="DeliverTo" value="', stripslashes($_SESSION['Items' . $Identifier]->DeliverTo), '" /></td>
+			</tr>';
 	echo '<tr>
-			<td style="color:red">' . _('Contact Phone Number') . ':</td>
-			<td><input type="tel" size="25" minlength="0" maxlength="25" name="PhoneNo" value="' . stripslashes($_SESSION['Items' . $Identifier]->PhoneNo) . '" /></td>
+			<td style="color:red">', _('Contact Phone Number'), ':</td>
+			<td><input type="tel" size="25" minlength="0" maxlength="25" name="PhoneNo" value="', stripslashes($_SESSION['Items' . $Identifier]->PhoneNo), '" /></td>
 		</tr>';
 
 	echo '<tr>
-			<td style="color:red">' . _('Contact Email') . ':</td>
-			<td><input type="email" size="25" minlength="0" maxlength="30" name="Email" value="' . stripslashes($_SESSION['Items' . $Identifier]->Email) . '" /></td>
+			<td style="color:red">', _('Contact Email'), ':</td>
+			<td><input type="email" size="25" minlength="0" maxlength="30" name="Email" value="', stripslashes($_SESSION['Items' . $Identifier]->Email), '" /></td>
 		</tr>';
 
 	echo '<tr>
-			<td style="color:red">' . _('Customer Reference') . ':</td>
-			<td><input type="text" size="25" minlength="0" maxlength="25" name="CustRef" value="' . stripcslashes($_SESSION['Items' . $Identifier]->CustRef) . '" /></td>
+			<td style="color:red">', _('Customer Reference'), ':</td>
+			<td><input type="text" size="25" minlength="0" maxlength="25" name="CustRef" value="', stripcslashes($_SESSION['Items' . $Identifier]->CustRef), '" /></td>
 		</tr>';
 	echo '<tr>
-			<td style="color:red">' . _('Sales person') . ':</td>
-			<td><select minlength="0" name="SalesPerson">';
-	$SalesPeopleResult = DB_query("SELECT salesmancode, salesmanname FROM salesman WHERE current=1");
-	if (!isset($_POST['SalesPerson']) and $_SESSION['SalesmanLogin'] != NULL) {
-		$_SESSION['Items' . $Identifier]->SalesPerson = $_SESSION['SalesmanLogin'];
-	}
-	while ($SalesPersonRow = DB_fetch_array($SalesPeopleResult)) {
-		if ($SalesPersonRow['salesmancode'] == $_SESSION['Items' . $Identifier]->SalesPerson) {
-			echo '<option selected="selected" value="' . $SalesPersonRow['salesmancode'] . '">' . $SalesPersonRow['salesmanname'] . '</option>';
-		} else {
-			echo '<option value="' . $SalesPersonRow['salesmancode'] . '">' . $SalesPersonRow['salesmanname'] . '</option>';
+			<td>', _('Sales person'), ':</td>';
+
+	if ($_SESSION['SalesmanLogin'] != '') {
+		echo '<td>';
+		echo $_SESSION['UsersRealName'];
+		echo '</td>
+			</tr>';
+	} else {
+		$SalesPeopleResult = DB_query("SELECT salesmancode, salesmanname FROM salesman WHERE current=1");
+		if (!isset($_POST['SalesPerson']) and $_SESSION['SalesmanLogin'] != NULL ){
+			$_SESSION['Items' . $Identifier]->SalesPerson = $_SESSION['SalesmanLogin'];
 		}
-	}
 
-	echo '</select></td>
-		</tr>';
+		echo '<td>
+				<select name="SalesPerson">';
+		while ($SalesPersonRow = DB_fetch_array($SalesPeopleResult)){
+			if ($SalesPersonRow['salesmancode'] == $_SESSION['Items' . $Identifier]->SalesPerson){
+				echo '<option selected="selected" value="', $SalesPersonRow['salesmancode'], '">', $SalesPersonRow['salesmanname'], '</option>';
+			} else {
+				echo '<option value="', $SalesPersonRow['salesmancode'], '">', $SalesPersonRow['salesmanname'], '</option>';
+			}
+		}
+		echo '</select>
+				</td>
+			</tr>';
+	}
 	echo '<tr>
-		<td style="color:red">' . _('Reason for Return') . ':</td>
-		<td><textarea name="Comments" cols="23" rows="5">' . stripcslashes($_SESSION['Items' . $Identifier]->Comments) . '</textarea></td>
-	</tr>';
+			<td style="color:red">', _('Reason for Return'), ':</td>
+			<td><textarea name="Comments" cols="23" rows="5">', stripcslashes($_SESSION['Items' . $Identifier]->Comments), '</textarea></td>
+		</tr>';
 	echo '</table>'; //end the sub table in the first column of master table
 	echo '</td><th valign="bottom">'; //for the master table
 	echo '<table class="selection">'; // a new nested table in the second column of master table
@@ -822,13 +841,13 @@ if (count($_SESSION['Items' . $Identifier]->LineItems) > 0) {
 	$PaymentMethodsResult = DB_query("SELECT paymentid, paymentname FROM paymentmethods");
 
 	echo '<tr>
-			<td style="color:red">' . _('Payment Type') . ':</td>
+			<td style="color:red">', _('Payment Type'), ':</td>
 			<td><select minlength="0" name="PaymentMethod">';
 	while ($PaymentMethodRow = DB_fetch_array($PaymentMethodsResult)) {
 		if (isset($_POST['PaymentMethod']) and $_POST['PaymentMethod'] == $PaymentMethodRow['paymentid']) {
-			echo '<option selected="selected" value="' . $PaymentMethodRow['paymentid'] . '">' . $PaymentMethodRow['paymentname'] . '</option>';
+			echo '<option selected="selected" value="', $PaymentMethodRow['paymentid'], '">', $PaymentMethodRow['paymentname'], '</option>';
 		} else {
-			echo '<option value="' . $PaymentMethodRow['paymentid'] . '">' . $PaymentMethodRow['paymentname'] . '</option>';
+			echo '<option value="', $PaymentMethodRow['paymentid'], '">', $PaymentMethodRow['paymentname'], '</option>';
 		}
 	}
 	echo '</select>
@@ -838,13 +857,13 @@ if (count($_SESSION['Items' . $Identifier]->LineItems) > 0) {
 	$BankAccountsResult = DB_query("SELECT bankaccountname, accountcode FROM bankaccounts");
 
 	echo '<tr>
-			<td style="color:red">' . _('Bank Account') . ':</td>
+			<td style="color:red">', _('Bank Account'), ':</td>
 			<td><select name="BankAccount">';
 	while ($BankAccountsRow = DB_fetch_array($BankAccountsResult)) {
 		if (isset($_POST['BankAccount']) and $_POST['BankAccount'] == $BankAccountsRow['accountcode']) {
-			echo '<option selected="selected" value="' . $BankAccountsRow['accountcode'] . '">' . $BankAccountsRow['bankaccountname'] . '</option>';
+			echo '<option selected="selected" value="', $BankAccountsRow['accountcode'], '">', $BankAccountsRow['bankaccountname'], '</option>';
 		} else {
-			echo '<option value="' . $BankAccountsRow['accountcode'] . '">' . $BankAccountsRow['bankaccountname'] . '</option>';
+			echo '<option value="', $BankAccountsRow['accountcode'], '">', $BankAccountsRow['bankaccountname'], '</option>';
 		}
 	}
 	echo '</select>
@@ -855,20 +874,20 @@ if (count($_SESSION['Items' . $Identifier]->LineItems) > 0) {
 		$_POST['AmountPaid'] = 0;
 	}
 	echo '<tr>
-			<td style="color:red">' . _('Paid to Customer') . ':</td>
-			<td><input type="text" class="number" name="AmountPaid" required="required" minlength="1" maxlength="12" size="12" value="' . $_POST['AmountPaid'] . '" /></td>
+			<td style="color:red">', _('Paid to Customer'), ':</td>
+			<td><input type="text" class="number" name="AmountPaid" required="required" minlength="1" maxlength="12" size="12" value="', $_POST['AmountPaid'], '" /></td>
 		</tr>';
 
-	echo '</table>'; //end the sub table in the second column of master table
-	echo '</th></tr></table>'; //end of column/row/master table
+	echo '</table>
+			</th>
+		</tr>
+	</table>'; //end of column/row/master table
 	if (!isset($_POST['ProcessReturn'])) {
-		echo '<br />
-				<div class="centre">
-					<input type="submit" name="Recalculate" value="' . _('Re-Calculate') . '" />
-					<input type="submit" name="ProcessReturn" value="' . _('Process The Return') . '" />
-				</div>';
+		echo '<div class="centre">
+				<input type="submit" name="Recalculate" value="', _('Re-Calculate'), '" />
+				<input type="submit" name="ProcessReturn" value="', _('Process The Return'), '" />
+			</div>';
 	}
-	echo '<hr />';
 
 } # end of if lines
 
@@ -926,8 +945,6 @@ if (isset($_POST['ProcessReturn']) and $_POST['ProcessReturn'] != '') {
 		$CreditNoteNo = GetNextTransNo(11);
 		$PeriodNo = GetPeriod(Date($_SESSION['DefaultDateFormat']));
 
-		$ReturnDate = Date('Y-m-d');
-
 		/*Now insert the DebtorTrans */
 
 		$SQL = "INSERT INTO debtortrans (transno,
@@ -944,22 +961,24 @@ if (isset($_POST['ProcessReturn']) and $_POST['ProcessReturn'] != '') {
 										rate,
 										invtext,
 										shipvia,
-										alloc )
-			VALUES ('" . $CreditNoteNo . "',
-					11,
-					'" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "',
-					'" . DB_escape_string($_SESSION['Items' . $Identifier]->Branch) . "',
-					'" . $ReturnDate . "',
-					'" . date('Y-m-d H-i-s') . "',
-					'" . $PeriodNo . "',
-					'" . $_SESSION['Items' . $Identifier]->CustRef . "',
-					'" . $_SESSION['Items' . $Identifier]->DefaultSalesType . "',
-					'" . -$_SESSION['Items' . $Identifier]->total . "',
-					'" . filter_number_format(-$_POST['TaxTotal']) . "',
-					'" . $ExRate . "',
-					'" . $_SESSION['Items' . $Identifier]->Comments . "',
-					'" . $_SESSION['Items' . $Identifier]->ShipVia . "',
-					'" . (-$_SESSION['Items' . $Identifier]->total - filter_number_format($_POST['TaxTotal'])) . "')";
+										alloc
+									) VALUES (
+										'" . $CreditNoteNo . "',
+										11,
+										'" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "',
+										'" . DB_escape_string($_SESSION['Items' . $Identifier]->Branch) . "',
+										CURRENT_DATE,
+										CURRENT_TIMESTAMP,
+										'" . $PeriodNo . "',
+										'" . $_SESSION['Items' . $Identifier]->CustRef . "',
+										'" . $_SESSION['Items' . $Identifier]->DefaultSalesType . "',
+										'" . -$_SESSION['Items' . $Identifier]->total . "',
+										'" . filter_number_format(-$_POST['TaxTotal']) . "',
+										'" . $ExRate . "',
+										'" . $_SESSION['Items' . $Identifier]->Comments . "',
+										'" . $_SESSION['Items' . $Identifier]->ShipVia . "',
+										'" . (-$_SESSION['Items' . $Identifier]->total - filter_number_format($_POST['TaxTotal'])) . "'
+									)";
 
 		$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The debtor transaction record could not be inserted because');
 		$DbgMsg = _('The following SQL to insert the debtor transaction record was used');
@@ -972,10 +991,12 @@ if (isset($_POST['ProcessReturn']) and $_POST['ProcessReturn'] != '') {
 
 			$SQL = "INSERT INTO debtortranstaxes (debtortransid,
 													taxauthid,
-													taxamount)
-										VALUES ('" . $DebtorTransID . "',
-											'" . $TaxAuthID . "',
-											'" . -$TaxAmount / $ExRate . "')";
+													taxamount
+												) VALUES (
+													'" . $DebtorTransID . "',
+													'" . $TaxAuthID . "',
+													'" . -$TaxAmount / $ExRate . "'
+												)";
 
 			$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The debtor transaction taxes records could not be inserted because');
 			$DbgMsg = _('The following SQL to insert the debtor transaction taxes record was used');
@@ -1077,7 +1098,7 @@ if (isset($_POST['ProcessReturn']) and $_POST['ProcessReturn'] != '') {
 													standardcost,
 													show_on_inv_crds,
 													newqoh
-						) VALUES (
+												) VALUES (
 													'" . $AssParts['component'] . "',
 													 11,
 													'" . $CreditNoteNo . "',
@@ -1091,7 +1112,8 @@ if (isset($_POST['ProcessReturn']) and $_POST['ProcessReturn'] != '') {
 													'" . $AssParts['quantity'] * $ReturnItemLine->Quantity . "',
 													'" . $AssParts['standard'] . "',
 													0,
-													newqoh + " . ($AssParts['quantity'] * $ReturnItemLine->Quantity) . " )";
+													newqoh + " . ($AssParts['quantity'] * $ReturnItemLine->Quantity) . "
+												)";
 
 					$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('Stock movement records for the assembly components of') . ' ' . $ReturnItemLine->StockID . ' ' . _('could not be inserted because');
 					$DbgMsg = _('The following SQL to insert the assembly components stock movement records was used');
@@ -1172,21 +1194,23 @@ if (isset($_POST['ProcessReturn']) and $_POST['ProcessReturn'] != '') {
 												qty,
 												discountpercent,
 												standardcost,
-												narrative )
-						VALUES ('" . $ReturnItemLine->StockID . "',
-								'11',
-								'" . $CreditNoteNo . "',
-								'" . $_SESSION['Items' . $Identifier]->Location . "',
-								'" . $ReturnDate . "',
-								'" . $_SESSION['UserID'] . "',
-								'" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "',
-								'" . DB_escape_string($_SESSION['Items' . $Identifier]->Branch) . "',
-								'" . $LocalCurrencyPrice . "',
-								'" . $PeriodNo . "',
-								'" . $ReturnItemLine->Quantity . "',
-								'" . $ReturnItemLine->DiscountPercent . "',
-								'" . $ReturnItemLine->StandardCost . "',
-								'" . $ReturnItemLine->Narrative . "')";
+												narrative
+											) VALUES (
+												'" . $ReturnItemLine->StockID . "',
+												'11',
+												'" . $CreditNoteNo . "',
+												'" . $_SESSION['Items' . $Identifier]->Location . "',
+												'" . $ReturnDate . "',
+												'" . $_SESSION['UserID'] . "',
+												'" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "',
+												'" . DB_escape_string($_SESSION['Items' . $Identifier]->Branch) . "',
+												'" . $LocalCurrencyPrice . "',
+												'" . $PeriodNo . "',
+												'" . $ReturnItemLine->Quantity . "',
+												'" . $ReturnItemLine->DiscountPercent . "',
+												'" . $ReturnItemLine->StandardCost . "',
+												'" . $ReturnItemLine->Narrative . "'
+											)";
 			}
 
 			$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('Stock movement records could not be inserted because');
@@ -1200,15 +1224,17 @@ if (isset($_POST['ProcessReturn']) and $_POST['ProcessReturn'] != '') {
 			foreach ($ReturnItemLine->Taxes as $Tax) {
 
 				$SQL = "INSERT INTO stockmovestaxes (stkmoveno,
-														taxauthid,
-														taxrate,
-														taxcalculationorder,
-														taxontax)
-						VALUES ('" . $StkMoveNo . "',
-								'" . $Tax->TaxAuthID . "',
-								'" . $Tax->TaxRate . "',
-								'" . $Tax->TaxCalculationOrder . "',
-								'" . $Tax->TaxOnTax . "')";
+													taxauthid,
+													taxrate,
+													taxcalculationorder,
+													taxontax
+												) VALUES (
+													'" . $StkMoveNo . "',
+													'" . $Tax->TaxAuthID . "',
+													'" . $Tax->TaxRate . "',
+													'" . $Tax->TaxCalculationOrder . "',
+													'" . $Tax->TaxOnTax . "'
+												)";
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('Taxes and rates applicable to this invoice line item could not be inserted because');
 				$DbgMsg = _('The following SQL to insert the stock movement tax detail records was used');
@@ -1231,21 +1257,21 @@ if (isset($_POST['ProcessReturn']) and $_POST['ProcessReturn'] != '') {
 					salesanalysis.periodno,
 					salesanalysis.typeabbrev,
 					salesanalysis.salesperson
-				FROM salesanalysis,
-					custbranch,
-					stockmaster
-				WHERE salesanalysis.stkcategory=stockmaster.categoryid
-				AND salesanalysis.stockid=stockmaster.stockid
-				AND salesanalysis.cust=custbranch.debtorno
-				AND salesanalysis.custbranch=custbranch.branchcode
-				AND salesanalysis.area=custbranch.area
-				AND salesanalysis.salesperson='" . $_SESSION['Items' . $Identifier]->SalesPerson . "'
-				AND salesanalysis.typeabbrev ='" . $_SESSION['Items' . $Identifier]->DefaultSalesType . "'
-				AND salesanalysis.periodno='" . $PeriodNo . "'
-				AND salesanalysis.cust " . LIKE . " '" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "'
-				AND salesanalysis.custbranch " . LIKE . " '" . DB_escape_string($_SESSION['Items' . $Identifier]->Branch) . "'
-				AND salesanalysis.stockid " . LIKE . " '" . $ReturnItemLine->StockID . "'
-				AND salesanalysis.budgetoractual=1
+				FROM salesanalysis
+				INNER JOIN custbranch
+					ON salesanalysis.cust=custbranch.debtorno
+					AND salesanalysis.custbranch=custbranch.branchcode
+					AND salesanalysis.area=custbranch.area
+				INNER JOIN stockmaster
+					ON salesanalysis.stkcategory=stockmaster.categoryid
+					ON salesanalysis.stockid=stockmaster.stockid
+				WHERE salesanalysis.salesperson='" . $_SESSION['Items' . $Identifier]->SalesPerson . "'
+					AND salesanalysis.typeabbrev ='" . $_SESSION['Items' . $Identifier]->DefaultSalesType . "'
+					AND salesanalysis.periodno='" . $PeriodNo . "'
+					AND salesanalysis.cust " . LIKE . " '" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "'
+					AND salesanalysis.custbranch " . LIKE . " '" . DB_escape_string($_SESSION['Items' . $Identifier]->Branch) . "'
+					AND salesanalysis.stockid " . LIKE . " '" . $ReturnItemLine->StockID . "'
+					AND salesanalysis.budgetoractual=1
 				GROUP BY salesanalysis.stockid,
 					salesanalysis.stkcategory,
 					salesanalysis.cust,
@@ -1282,7 +1308,7 @@ if (isset($_POST['ProcessReturn']) and $_POST['ProcessReturn'] != '') {
 			} else {
 				/* insert a new sales analysis record */
 
-				$SQL = "INSERT INTO salesanalysis (	typeabbrev,
+				$SQL = "INSERT INTO salesanalysis (typeabbrev,
 													periodno,
 													amt,
 													cost,
@@ -1295,24 +1321,24 @@ if (isset($_POST['ProcessReturn']) and $_POST['ProcessReturn'] != '') {
 													budgetoractual,
 													salesperson,
 													stkcategory	)
-					SELECT '" . $_SESSION['Items' . $Identifier]->DefaultSalesType . "',
-						'" . $PeriodNo . "',
-						'" . -($SalesValue) . "',
-						'" . -($ReturnItemLine->StandardCost * $ReturnItemLine->Quantity) . "',
-						'" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "',
-						'" . DB_escape_string($_SESSION['Items' . $Identifier]->Branch) . "',
-						'" . -$ReturnItemLine->Quantity . "',
-						'" . -($ReturnItemLine->DiscountPercent * $SalesValue) . "',
-						'" . $ReturnItemLine->StockID . "',
-						custbranch.area,
-						1,
-						'" . $_SESSION['Items' . $Identifier]->SalesPerson . "',
-						stockmaster.categoryid
-					FROM stockmaster,
-						custbranch
-					WHERE stockmaster.stockid = '" . $ReturnItemLine->StockID . "'
-					AND custbranch.debtorno = '" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "'
-					AND custbranch.branchcode='" . DB_escape_string($_SESSION['Items' . $Identifier]->Branch) . "'";
+												SELECT '" . $_SESSION['Items' . $Identifier]->DefaultSalesType . "',
+														'" . $PeriodNo . "',
+														'" . -($SalesValue) . "',
+														'" . -($ReturnItemLine->StandardCost * $ReturnItemLine->Quantity) . "',
+														'" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "',
+														'" . DB_escape_string($_SESSION['Items' . $Identifier]->Branch) . "',
+														'" . -$ReturnItemLine->Quantity . "',
+														'" . -($ReturnItemLine->DiscountPercent * $SalesValue) . "',
+														'" . $ReturnItemLine->StockID . "',
+														custbranch.area,
+														1,
+														'" . $_SESSION['Items' . $Identifier]->SalesPerson . "',
+														stockmaster.categoryid
+													FROM stockmaster,
+														custbranch
+													WHERE stockmaster.stockid = '" . $ReturnItemLine->StockID . "'
+														AND custbranch.debtorno = '" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "'
+														AND custbranch.branchcode='" . DB_escape_string($_SESSION['Items' . $Identifier]->Branch) . "'";
 			}
 
 			$ErrMsg = _('Sales analysis record could not be added or updated because');
@@ -1325,20 +1351,22 @@ if (isset($_POST['ProcessReturn']) and $_POST['ProcessReturn'] != '') {
 
 				/*first the cost of sales entry*/
 
-				$SQL = "INSERT INTO gltrans (	type,
-												typeno,
-												trandate,
-												periodno,
-												account,
-												narrative,
-												amount)
-										VALUES ( 11,
-												'" . $CreditNoteNo . "',
-												'" . $ReturnDate . "',
-												'" . $PeriodNo . "',
-												'" . GetCOGSGLAccount($Area, $ReturnItemLine->StockID, $_SESSION['Items' . $Identifier]->DefaultSalesType) . "',
-												'" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . " - " . $ReturnItemLine->StockID . " x " . -$ReturnItemLine->Quantity . " @ " . $ReturnItemLine->StandardCost . "',
-												'" . $ReturnItemLine->StandardCost * -$ReturnItemLine->Quantity . "')";
+				$SQL = "INSERT INTO gltrans (type,
+											typeno,
+											trandate,
+											periodno,
+											account,
+											narrative,
+											amount
+										) VALUES (
+											11,
+											'" . $CreditNoteNo . "',
+											'" . $ReturnDate . "',
+											'" . $PeriodNo . "',
+											'" . GetCOGSGLAccount($Area, $ReturnItemLine->StockID, $_SESSION['Items' . $Identifier]->DefaultSalesType) . "',
+											'" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . " - " . $ReturnItemLine->StockID . " x " . -$ReturnItemLine->Quantity . " @ " . $ReturnItemLine->StandardCost . "',
+											'" . $ReturnItemLine->StandardCost * -$ReturnItemLine->Quantity . "'
+										)";
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The cost of sales GL posting could not be inserted because');
 				$DbgMsg = _('The following SQL to insert the GLTrans record was used');
@@ -1353,14 +1381,16 @@ if (isset($_POST['ProcessReturn']) and $_POST['ProcessReturn'] != '') {
 											periodno,
 											account,
 											narrative,
-											amount )
-										VALUES ( 11,
+											amount
+										) VALUES (
+											11,
 											'" . $CreditNoteNo . "',
 											'" . $ReturnDate . "',
 											'" . $PeriodNo . "',
 											'" . $StockGLCode['stockact'] . "',
 											'" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . " - " . $ReturnItemLine->StockID . " x " . -$ReturnItemLine->Quantity . " @ " . $ReturnItemLine->StandardCost . "',
-											'" . ($ReturnItemLine->StandardCost * $ReturnItemLine->Quantity) . "')";
+											'" . ($ReturnItemLine->StandardCost * $ReturnItemLine->Quantity) . "'
+										)";
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The stock side of the cost of sales GL posting could not be inserted because');
 				$DbgMsg = _('The following SQL to insert the GLTrans record was used');
@@ -1379,14 +1409,16 @@ if (isset($_POST['ProcessReturn']) and $_POST['ProcessReturn'] != '') {
 											periodno,
 											account,
 											narrative,
-											amount )
-										VALUES ( 11,
+											amount
+										) VALUES (
+											11,
 											'" . $CreditNoteNo . "',
 											'" . $ReturnDate . "',
 											'" . $PeriodNo . "',
 											'" . $SalesGLAccounts['salesglcode'] . "',
 											'" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . " - " . $ReturnItemLine->StockID . " x " . -$ReturnItemLine->Quantity . " @ " . $ReturnItemLine->Price . "',
-											'" . ($ReturnItemLine->Price * $ReturnItemLine->Quantity / $ExRate) . "')";
+											'" . ($ReturnItemLine->Price * $ReturnItemLine->Quantity / $ExRate) . "'
+										)";
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The sales GL posting could not be inserted because');
 				$DbgMsg = '<br />' . _('The following SQL to insert the GLTrans record was used');
@@ -1400,14 +1432,16 @@ if (isset($_POST['ProcessReturn']) and $_POST['ProcessReturn'] != '') {
 												periodno,
 												account,
 												narrative,
-												amount )
-												VALUES ( 11,
-													'" . $CreditNoteNo . "',
-													'" . $ReturnDate . "',
-													'" . $PeriodNo . "',
-													'" . $SalesGLAccounts['discountglcode'] . "',
-													'" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . " - " . $ReturnItemLine->StockID . " @ " . ($ReturnItemLine->DiscountPercent * 100) . "%',
-													'" . -($ReturnItemLine->Price * $ReturnItemLine->Quantity * $ReturnItemLine->DiscountPercent / $ExRate) . "')";
+												amount
+											) VALUES (
+												11,
+												'" . $CreditNoteNo . "',
+												'" . $ReturnDate . "',
+												'" . $PeriodNo . "',
+												'" . $SalesGLAccounts['discountglcode'] . "',
+												'" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . " - " . $ReturnItemLine->StockID . " @ " . ($ReturnItemLine->DiscountPercent * 100) . "%',
+												'" . -($ReturnItemLine->Price * $ReturnItemLine->Quantity * $ReturnItemLine->DiscountPercent / $ExRate) . "'
+											)";
 
 					$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The sales discount GL posting could not be inserted because');
 					$DbgMsg = _('The following SQL to insert the GLTrans record was used');
@@ -1423,20 +1457,22 @@ if (isset($_POST['ProcessReturn']) and $_POST['ProcessReturn'] != '') {
 
 			/*Post debtors transaction to GL debit debtors, credit freight re-charged and credit sales */
 			if (($_SESSION['Items' . $Identifier]->total + filter_number_format($_POST['TaxTotal'])) != 0) {
-				$SQL = "INSERT INTO gltrans (	type,
-												typeno,
-												trandate,
-												periodno,
-												account,
-												narrative,
-												amount	)
-											VALUES ( 11,
-												'" . $CreditNoteNo . "',
-												'" . $ReturnDate . "',
-												'" . $PeriodNo . "',
-												'" . $_SESSION['CompanyRecord']['debtorsact'] . "',
-												'" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "',
-												'" . -(($_SESSION['Items' . $Identifier]->total + filter_number_format($_POST['TaxTotal'])) / $ExRate) . "')";
+				$SQL = "INSERT INTO gltrans (type,
+											typeno,
+											trandate,
+											periodno,
+											account,
+											narrative,
+											amount
+										) VALUES (
+											11,
+											'" . $CreditNoteNo . "',
+											'" . $ReturnDate . "',
+											'" . $PeriodNo . "',
+											'" . $_SESSION['CompanyRecord']['debtorsact'] . "',
+											'" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "',
+											'" . -(($_SESSION['Items' . $Identifier]->total + filter_number_format($_POST['TaxTotal'])) / $ExRate) . "'
+										)";
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The total debtor GL posting could not be inserted because');
 				$DbgMsg = _('The following SQL to insert the total debtors control GLTrans record was used');
@@ -1446,20 +1482,22 @@ if (isset($_POST['ProcessReturn']) and $_POST['ProcessReturn'] != '') {
 
 			foreach ($_SESSION['Items' . $Identifier]->TaxTotals as $TaxAuthID => $TaxAmount) {
 				if ($TaxAmount != 0) {
-					$SQL = "INSERT INTO gltrans (	type,
-													typeno,
-													trandate,
-													periodno,
-													account,
-													narrative,
-													amount	)
-												VALUES ( 11,
-													'" . $CreditNoteNo . "',
-													'" . $ReturnDate . "',
-													'" . $PeriodNo . "',
-													'" . $_SESSION['Items' . $Identifier]->TaxGLCodes[$TaxAuthID] . "',
-													'" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "',
-													'" . ($TaxAmount / $ExRate) . "')";
+					$SQL = "INSERT INTO gltrans (type,
+												typeno,
+												trandate,
+												periodno,
+												account,
+												narrative,
+												amount
+											) VALUES (
+												11,
+												'" . $CreditNoteNo . "',
+												'" . $ReturnDate . "',
+												'" . $PeriodNo . "',
+												'" . $_SESSION['Items' . $Identifier]->TaxGLCodes[$TaxAuthID] . "',
+												'" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "',
+												'" . ($TaxAmount / $ExRate) . "'
+											)";
 
 					$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The tax GL posting could not be inserted because');
 					$DbgMsg = _('The following SQL to insert the GLTrans record was used');
@@ -1480,33 +1518,37 @@ if (isset($_POST['ProcessReturn']) and $_POST['ProcessReturn'] != '') {
 											periodno,
 											account,
 											narrative,
-											amount)
-						VALUES (12,
-							'" . $PaymentNumber . "',
-							'" . $ReturnDate . "',
-							'" . $PeriodNo . "',
-							'" . $_POST['BankAccount'] . "',
-							'" . $_SESSION['Items' . $Identifier]->LocationName . ' ' . _('Counter Return') . ' ' . $CreditNoteNo . "',
-							'" . -(filter_number_format($_POST['AmountPaid']) / $ExRate) . "')";
+											amount
+										) VALUES (
+											12,
+											'" . $PaymentNumber . "',
+											'" . $ReturnDate . "',
+											'" . $PeriodNo . "',
+											'" . $_POST['BankAccount'] . "',
+											'" . $_SESSION['Items' . $Identifier]->LocationName . ' ' . _('Counter Return') . ' ' . $CreditNoteNo . "',
+											'" . -(filter_number_format($_POST['AmountPaid']) / $ExRate) . "'
+										)";
 				$DbgMsg = _('The SQL that failed to insert the GL transaction for the bank account debit was');
 				$ErrMsg = _('Cannot insert a GL transaction for the bank account debit');
 				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 				/* Now Debit Debtors account with negative receipt/payment to customer */
-				$SQL = "INSERT INTO gltrans ( type,
-						typeno,
-						trandate,
-						periodno,
-						account,
-						narrative,
-						amount)
-				VALUES (12,
-					'" . $PaymentNumber . "',
-					'" . $ReturnDate . "',
-					'" . $PeriodNo . "',
-					'" . $_SESSION['CompanyRecord']['debtorsact'] . "',
-					'" . $_SESSION['Items' . $Identifier]->LocationName . ' ' . _('Counter Return') . ' ' . $CreditNoteNo . "',
-					'" . (filter_number_format($_POST['AmountPaid']) / $ExRate) . "')";
+				$SQL = "INSERT INTO gltrans (type,
+											typeno,
+											trandate,
+											periodno,
+											account,
+											narrative,
+											amount
+										) VALUES (
+											12,
+											'" . $PaymentNumber . "',
+											'" . $ReturnDate . "',
+											'" . $PeriodNo . "',
+											'" . $_SESSION['CompanyRecord']['debtorsact'] . "',
+											'" . $_SESSION['Items' . $Identifier]->LocationName . ' ' . _('Counter Return') . ' ' . $CreditNoteNo . "',
+											'" . (filter_number_format($_POST['AmountPaid']) / $ExRate) . "'
+										)";
 				$DbgMsg = _('The SQL that failed to insert the GL transaction for the debtors account credit was');
 				$ErrMsg = _('Cannot insert a GL transaction for the debtors account credit');
 				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
@@ -1523,9 +1565,10 @@ if (isset($_POST['ProcessReturn']) and $_POST['ProcessReturn'] != '') {
 			}
 			//Now need to add the receipt banktrans record
 			//First get the account currency that it has been banked into
-			$Result = DB_query("SELECT rate FROM currencies
+			$Result = DB_query("SELECT rate
+								FROM currencies
 								INNER JOIN bankaccounts
-								ON currencies.currabrev=bankaccounts.currcode
+									ON currencies.currabrev=bankaccounts.currcode
 								WHERE bankaccounts.accountcode='" . $_POST['BankAccount'] . "'");
 			$MyRow = DB_fetch_row($Result);
 			$BankAccountExRate = $MyRow[0];
@@ -1545,28 +1588,29 @@ if (isset($_POST['ProcessReturn']) and $_POST['ProcessReturn'] != '') {
 			//insert the banktrans record in the currency of the bank account
 
 			$SQL = "INSERT INTO banktrans (type,
-						transno,
-						bankact,
-						ref,
-						exrate,
-						functionalexrate,
-						transdate,
-						banktranstype,
-						amount,
-						currcode,
-						userid)
-					VALUES (12,
-						'" . $PaymentNumber . "',
-						'" . $_POST['BankAccount'] . "',
-						'" . $_SESSION['Items' . $Identifier]->LocationName . ' ' . _('Counter Sale') . ' ' . $CreditNoteNo . "',
-						'" . $ExRate . "',
-						'" . $BankAccountExRate . "',
-						'" . $ReturnDate . "',
-						'" . $_POST['PaymentMethod'] . "',
-						'" . -filter_number_format($_POST['AmountPaid']) * $BankAccountExRate . "',
-						'" . $_SESSION['Items' . $Identifier]->DefaultCurrency . "',
-						'" . $_SESSION['UserID'] . "'
-					)";
+											transno,
+											bankact,
+											ref,
+											exrate,
+											functionalexrate,
+											transdate,
+											banktranstype,
+											amount,
+											currcode,
+											userid
+										) VALUES (
+											12,
+											'" . $PaymentNumber . "',
+											'" . $_POST['BankAccount'] . "',
+											'" . $_SESSION['Items' . $Identifier]->LocationName . ' ' . _('Counter Sale') . ' ' . $CreditNoteNo . "',
+											'" . $ExRate . "',
+											'" . $BankAccountExRate . "',
+											'" . $ReturnDate . "',
+											'" . $_POST['PaymentMethod'] . "',
+											'" . -filter_number_format($_POST['AmountPaid']) * $BankAccountExRate . "',
+											'" . $_SESSION['Items' . $Identifier]->DefaultCurrency . "',
+											'" . $_SESSION['UserID'] . "'
+										)";
 
 			$DbgMsg = _('The SQL that failed to insert the bank account transaction was');
 			$ErrMsg = _('Cannot insert a bank transaction');
@@ -1575,27 +1619,29 @@ if (isset($_POST['ProcessReturn']) and $_POST['ProcessReturn'] != '') {
 			//insert a new debtortrans for the receipt
 
 			$SQL = "INSERT INTO debtortrans (transno,
-							type,
-							debtorno,
-							trandate,
-							inputdate,
-							prd,
-							reference,
-							rate,
-							ovamount,
-							alloc,
-							invtext)
-					VALUES ('" . $PaymentNumber . "',
-						12,
-						'" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "',
-						'" . $ReturnDate . "',
-						'" . date('Y-m-d H-i-s') . "',
-						'" . $PeriodNo . "',
-						'" . $CreditNoteNo . "',
-						'" . $ExRate . "',
-						'" . filter_number_format($_POST['AmountPaid']) . "',
-						'" . filter_number_format($_POST['AmountPaid']) . "',
-						'" . $_SESSION['Items' . $Identifier]->LocationName . ' ' . _('Counter Sale') . "')";
+											type,
+											debtorno,
+											trandate,
+											inputdate,
+											prd,
+											reference,
+											rate,
+											ovamount,
+											alloc,
+											invtext
+										) VALUES (
+											'" . $PaymentNumber . "',
+											12,
+											'" . DB_escape_string($_SESSION['Items' . $Identifier]->DebtorNo) . "',
+											'" . $ReturnDate . "',
+											CURRENT_TIMESTAMP,
+											'" . $PeriodNo . "',
+											'" . $CreditNoteNo . "',
+											'" . $ExRate . "',
+											'" . filter_number_format($_POST['AmountPaid']) . "',
+											'" . filter_number_format($_POST['AmountPaid']) . "',
+											'" . $_SESSION['Items' . $Identifier]->LocationName . ' ' . _('Counter Sale') . "'
+										)";
 
 			$DbgMsg = _('The SQL that failed to insert the customer receipt transaction was');
 			$ErrMsg = _('Cannot insert a receipt transaction against the customer because');
@@ -1603,17 +1649,18 @@ if (isset($_POST['ProcessReturn']) and $_POST['ProcessReturn'] != '') {
 
 			$ReceiptDebtorTransID = DB_Last_Insert_ID('debtortrans', 'id');
 
-
 			//and finally add the allocation record between receipt and invoice
 
-			$SQL = "INSERT INTO custallocns (	amt,
-												datealloc,
-												transid_allocfrom,
-												transid_allocto )
-									VALUES  ('" . filter_number_format($_POST['AmountPaid']) . "',
+			$SQL = "INSERT INTO custallocns (amt,
+											datealloc,
+											transid_allocfrom,
+											transid_allocto
+										) VALUES (
+											'" . filter_number_format($_POST['AmountPaid']) . "',
 											'" . $ReturnDate . "',
-											 '" . $DebtorTransID . "',
-											 '" . $ReceiptDebtorTransID . "')";
+											'" . $DebtorTransID . "',
+											'" . $ReceiptDebtorTransID . "'
+										)";
 			$DbgMsg = _('The SQL that failed to insert the allocation of the receipt to the credit note was');
 			$ErrMsg = _('Cannot insert the customer allocation of the receipt to the invoice because');
 			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
@@ -1627,16 +1674,16 @@ if (isset($_POST['ProcessReturn']) and $_POST['ProcessReturn'] != '') {
 		unset($_SESSION['Items' . $Identifier]->LineItems);
 		unset($_SESSION['Items' . $Identifier]);
 
-		echo prnMsg(_('Credit Note number') . ' ' . $CreditNoteNo . ' ' . _('processed'), 'success');
+		prnMsg(_('Credit Note number') . ' ' . $CreditNoteNo . ' ' . _('processed'), 'success');
 
-		echo '<br /><div class="centre">';
+		echo '<div class="centre">';
 
 		if ($_SESSION['InvoicePortraitFormat'] == 0) {
-			echo '<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/printer.png" title="' . _('Print') . '" alt="" />' . ' ' . '<a target="_blank" href="' . $RootPath . '/PrintCustTrans.php?FromTransNo=' . $CreditNoteNo . '&InvOrCredit=Credit&PrintPDF=True">' . _('Print this credit note') . ' (' . _('Landscape') . ')</a><br /><br />';
+			echo '<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/printer.png" title="', _('Print'), '" alt="" />', ' ', '<a target="_blank" href="', $RootPath, '/PrintCustTrans.php?FromTransNo=', urlencode($CreditNoteNo), '&InvOrCredit=Credit&PrintPDF=True">', _('Print this credit note'), ' (', _('Landscape'), ')</a>';
 		} else {
-			echo '<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/printer.png" title="' . _('Print') . '" alt="" />' . ' ' . '<a target="_blank" href="' . $RootPath . '/PrintCustTransPortrait.php?FromTransNo=' . $CreditNoteNo . '&InvOrCredit=Credit&PrintPDF=True" onClick="return window.location=\'index.php\'">' . _('Print this credit note') . ' (' . _('Portrait') . ')</a><br /><br />';
+			echo '<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/printer.png" title="', _('Print'), '" alt="" />', ' ', '<a target="_blank" href="', $RootPath, '/PrintCustTransPortrait.php?FromTransNo=', urlencode($CreditNoteNo), '&InvOrCredit=Credit&PrintPDF=True" onClick="return window.location=\'index.php\'">', _('Print this credit note'), ' (', _('Portrait'), ')</a>';
 		}
-		echo '<br /><br /><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Start a new Counter Return') . '</a></div>';
+		echo '<a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '">', _('Start a new Counter Return'), '</a></div>';
 
 	}
 	// There were input errors so don't process nuffin
@@ -1653,96 +1700,101 @@ if (isset($_POST['ProcessReturn']) and $_POST['ProcessReturn'] != '') {
 if (!isset($_POST['ProcessReturn'])) {
 	if (isset($_POST['PartSearch']) and $_POST['PartSearch'] != '') {
 
-		echo '<input type="hidden" name="PartSearch" value="' . _('Yes Please') . '" />';
-		echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ';
-		echo _('Search for Items') . '</p>';
-		echo '<div class="page_help_text noPrint">' . _('Search for Items') . _(', Searches the database for items, you can narrow the results by selecting a stock category, or just enter a partial item description or partial item code') . '.</div><br />';
-		echo '<table class="selection">
-				<tr>
-					<td><b>' . _('Select a Stock Category') . ': </b><select minlength="0" tabindex="1" name="StockCat">';
+		echo '<input type="hidden" name="PartSearch" value="', _('Yes Please'), '" />';
+		echo '<p class="page_title_text noPrint" >
+				<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/magnifier.png" title="', _('Search'), '" alt="" />', ' ', _('Search for Items'), '
+			</p>';
+		echo '<div class="page_help_text noPrint">
+				', _('Search for Items'), '. ', _('Searches the database for items, you can narrow the results by selecting a stock category, or just enter a partial item description or partial item code'), '.
+			</div>';
 
-		if (!isset($_POST['StockCat'])) {
-			echo '<option selected="selected" value="All">' . _('All') . '</option>';
-			$_POST['StockCat'] = 'All';
-		} else {
-			echo '<option value="All">' . _('All') . '</option>';
-		}
+		echo '<table class="selection">';
+
 		$SQL = "SELECT categoryid,
 					categorydescription
 				FROM stockcategory
 				WHERE stocktype='F' OR stocktype='D'
 				ORDER BY categorydescription";
 		$Result1 = DB_query($SQL);
+		echo '<tr>
+				<td><b>', _('Select a Stock Category'), ': </b>
+					<select minlength="0" tabindex="1" name="StockCat">';
+		if (!isset($_POST['StockCat'])) {
+			echo '<option selected="selected" value="All">', _('All'), '</option>';
+			$_POST['StockCat'] = 'All';
+		} else {
+			echo '<option value="All">', _('All'), '</option>';
+		}
 		while ($MyRow1 = DB_fetch_array($Result1)) {
 			if ($_POST['StockCat'] == $MyRow1['categoryid']) {
-				echo '<option selected="selected" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
+				echo '<option selected="selected" value="', $MyRow1['categoryid'], '">', $MyRow1['categorydescription'] . '</option>';
 			} else {
-				echo '<option value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
+				echo '<option value="', $MyRow1['categoryid'], '">', $MyRow1['categorydescription'], '</option>';
 			}
 		}
+		echo '</select>
+				</td>';
 
-?>
+		if (!isset($_POST['Keywords'])) {
+			$_POST['Keywords'] = '';
+		}
+		echo '<td>
+				<b>', _('Enter partial Description'), ':</b>
+				<input type="text" autofocus="autofocus" name="Keywords" size="20" minlength="0" maxlength="25" value="', $_POST['Keywords'], '" />
+			</td>';
 
-		</select></td>
-		<td><b><?php
-		echo _('Enter partial Description');
-?>:</b>
-		<input tabindex="2" type="text" autofocus="autofocus" name="Keywords" size="20" minlength="0" maxlength="25" value="<?php
-		if (isset($_POST['Keywords']))
-			echo $_POST['Keywords'];
-?>" /></td>
-
-		<td align="right"><b><?php
-		echo _('OR');
-?> </b><b><?php
-		echo _('Enter extract of the Stock Code');
-?>:</b>
-		<input tabindex="3" type="text" name="StockCode" size="15" minlength="0" maxlength="18" value="<?php
-		if (isset($_POST['StockCode']))
-			echo $_POST['StockCode'];
-?>" /></td>
-
-		</tr><tr>
-		<td style="text-align:center" colspan="1"><input tabindex="4" type="submit" name="Search" value="<?php
-		echo _('Search Now');
-?>" /></td>
-		<td style="text-align:center" colspan="1"><input tabindex="5" type="submit" name="QuickEntry" value="<?php
-		echo _('Use Quick Entry');
-?>" /></td>
-
-		<?php
-
-		echo '</tr></table><br />';
+		if (!isset($_POST['StockCode'])) {
+			$_POST['StockCode'] = '';
+		}
+		echo '<td align="right">
+				<b>', _('OR'), ' ', _('Enter extract of the Stock Code'), ':</b>
+				<input tabindex="3" type="text" name="StockCode" size="15" minlength="0" maxlength="18" value="', $_POST['StockCode'], '" />
+			</td>
+		</tr>
+	</table>';
+		echo '<div class="centre">
+				<input type="submit" name="Search" value="', _('Search Now'), '" />
+				<input type="submit" name="QuickEntry" value="',  _('Use Quick Entry'), '" />
+			</div>
+		';
 		// Add some useful help as the order progresses
 		if (isset($SearchResult)) {
-			echo '<br />';
-			echo '<div class="page_help_text noPrint">' . _('Select an item by entering the quantity required.  Click Return when ready.') . '</div>';
-			echo '<br />';
+			echo '<div class="page_help_text noPrint">', _('Select an item by entering the quantity required. Click Return when ready.'), '</div>';
 		}
 
 
 		if (isset($SearchResult)) {
-			$j = 1;
 			$i = 0;
-			echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '" method="post" class="noPrint" name="ReturnForm">';
-			echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-			echo '<table class="table1">';
-			echo '<tr>
-					<td><input type="hidden" name="previous" value="' . strval($Offset - 1) . '" /><input tabindex="' . strval($j + 7) . '" type="submit" name="Prev" value="' . _('Prev') . '" /></td>
-					<td style="text-align:center" colspan="6"><input type="hidden" name="SelectingReturnItems" value="1" /><input tabindex="' . strval($j + 8) . '" type="submit" value="' . _('Return Item(s)') . '" /></td>
-					<td><input type="hidden" name="NextList" value="' . strval($Offset + 1) . '" /><input tabindex="' . strval($j + 9) . '" type="submit" name="Next" value="' . _('Next') . '" /></td>
-				</tr>
-			<tbody>
-				<tr>
-					<th class="SortableColumn">' . _('Code') . '</th>
-					<th class="SortableColumn">' . _('Description') . '</th>
-					<th>' . _('Units') . '</th>
-					<th>' . _('On Hand') . '</th>
-					<th>' . _('On Demand') . '</th>
-					<th>' . _('On Order') . '</th>
-					<th>' . _('Available') . '</th>
-					<th>' . _('Quantity') . '</th>
-				</tr>';
+			echo '<form onSubmit="return VerifyForm(this);" action="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '?identifier=', urlencode($Identifier), '" method="post" class="noPrint" name="ReturnForm">';
+			echo '<input type="hidden" name="FormID" value="', $_SESSION['FormID'], '" />';
+			echo '<table class="table1">
+					<thead>
+						<tr>
+							<td>
+								<input type="hidden" name="previous" value="', strval($Offset - 1), '" />
+								<input type="submit" name="Prev" value="', _('Prev'), '" />
+							</td>
+							<td style="text-align:center" colspan="6">
+								<input type="hidden" name="SelectingReturnItems" value="1" />
+								<input type="submit" value="', _('Return Item(s)'), '" />
+							</td>
+							<td>
+								<input type="hidden" name="NextList" value="', strval($Offset + 1), '" />
+								<input type="submit" name="Next" value="', _('Next'), '" />
+							</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th class="SortableColumn">', _('Code'), '</th>
+							<th class="SortableColumn">', _('Description'), '</th>
+							<th>', _('Units'), '</th>
+							<th>', _('On Hand'), '</th>
+							<th>', _('On Demand'), '</th>
+							<th>', _('On Order'), '</th>
+							<th>', _('Available'), '</th>
+							<th>', _('Quantity'), '</th>
+						</tr>';
 			$k = 0; //row colour counter
 
 			while ($MyRow = DB_fetch_array($SearchResult)) {
@@ -1758,12 +1810,13 @@ if (!isset($_POST['ProcessReturn'])) {
 
 				// Find the quantity on outstanding sales orders
 				$SQL = "SELECT SUM(salesorderdetails.quantity-salesorderdetails.qtyinvoiced) AS dem
-						 FROM salesorderdetails INNER JOIN salesorders
-						 ON salesorders.orderno = salesorderdetails.orderno
-						 WHERE salesorders.fromstkloc='" . $_SESSION['Items' . $Identifier]->Location . "'
-						 AND salesorderdetails.completed=0
-						 AND salesorders.quotation=0
-						 AND salesorderdetails.stkcode='" . $MyRow['stockid'] . "'";
+							FROM salesorderdetails
+							INNER JOIN salesorders
+								ON salesorders.orderno = salesorderdetails.orderno
+							WHERE salesorders.fromstkloc='" . $_SESSION['Items' . $Identifier]->Location . "'
+								AND salesorderdetails.completed=0
+								AND salesorders.quotation=0
+								AND salesorderdetails.stkcode='" . $MyRow['stockid'] . "'";
 
 				$ErrMsg = _('The demand for this product from') . ' ' . $_SESSION['Items' . $Identifier]->Location . ' ' . _('cannot be retrieved because');
 				$DemandResult = DB_query($SQL, $ErrMsg);
@@ -1790,84 +1843,92 @@ if (!isset($_POST['ProcessReturn'])) {
 
 				$Available = $QOH - $DemandQty + $QOO;
 
-				printf('<td>%s</td>
-						<td title="%s">%s</td>
-						<td>%s</td>
-						<td class="number">%s</td>
-						<td class="number">%s</td>
-						<td class="number">%s</td>
-						<td class="number">%s</td>
-						<td><input class="number" required="required" minlength="1" maxlength="11" tabindex="' . strval($j + 7) . '" type="text" size="6" name="ReturnQty%s" value="0" /></font><input type="hidden" name="StockID%s" value="%s" /></td>
-						</tr>', $MyRow['stockid'], $MyRow['longdescription'], $MyRow['description'], $MyRow['units'], locale_number_format($QOH, $MyRow['decimalplaces']), locale_number_format($DemandQty, $MyRow['decimalplaces']), locale_number_format($QOO, $MyRow['decimalplaces']), locale_number_format($Available, $MyRow['decimalplaces']), $i, $i, $MyRow['stockid']);
-				++$j;
+				echo '<td>', $MyRow['stockid'], '</td>
+						<td title="', $MyRow['longdescription'], '">', $MyRow['description'], '</td>
+						<td>', $MyRow['units'], '</td>
+						<td class="number">', locale_number_format($QOH, $MyRow['decimalplaces']), '</td>
+						<td class="number">', locale_number_format($DemandQty, $MyRow['decimalplaces']), '</td>
+						<td class="number">', locale_number_format($QOO, $MyRow['decimalplaces']), '</td>
+						<td class="number">', locale_number_format($Available, $MyRow['decimalplaces']), '</td>
+						<td><input class="number" required="required" minlength="1" maxlength="11" type="text" size="6" name="ReturnQty', $i, '" value="0" />
+							</font><input type="hidden" name="StockID', $i, '" value="', $MyRow['stockid'], '" />
+						</td>
+					</tr>';
 				++$i;
 				#end of page full new headings if
 			}
 			#end of while loop
-			echo '</tbody><input type="hidden" name="CustRef" value="' . $_SESSION['Items' . $Identifier]->CustRef . '" />';
-			echo '<input type="hidden" name="Comments" value="' . $_SESSION['Items' . $Identifier]->Comments . '" />';
-			echo '<input type="hidden" name="DeliverTo" value="' . $_SESSION['Items' . $Identifier]->DeliverTo . '" />';
-			echo '<input type="hidden" name="PhoneNo" value="' . $_SESSION['Items' . $Identifier]->PhoneNo . '" />';
-			echo '<input type="hidden" name="Email" value="' . $_SESSION['Items' . $Identifier]->Email . '" />';
-			echo '<input type="hidden" name="SalesPerson" value="' . $_SESSION['Items' . $Identifier]->SalesPerson . '" />';
+			echo '</tbody>';
+			echo '<input type="hidden" name="CustRef" value="', $_SESSION['Items' . $Identifier]->CustRef, '" />';
+			echo '<input type="hidden" name="Comments" value="', $_SESSION['Items' . $Identifier]->Comments, '" />';
+			echo '<input type="hidden" name="DeliverTo" value="', $_SESSION['Items' . $Identifier]->DeliverTo, '" />';
+			echo '<input type="hidden" name="PhoneNo" value="', $_SESSION['Items' . $Identifier]->PhoneNo, '" />';
+			echo '<input type="hidden" name="Email" value="', $_SESSION['Items' . $Identifier]->Email, '" />';
+			echo '<input type="hidden" name="SalesPerson" value="', $_SESSION['Items' . $Identifier]->SalesPerson, '" />';
 
 			echo '<tr>
 					<td>
-						<input type="hidden" name="previous" value="' . strval($Offset - 1) . '" />
-						<input tabindex="' . strval($j + 7) . '" type="submit" name="Prev" value="' . _('Prev') . '" />
+						<input type="hidden" name="previous" value="', strval($Offset - 1), '" />
+						<input type="submit" name="Prev" value="', _('Prev'), '" />
 					</td>
 					<td style="text-align:center" colspan="6">
 						<input type="hidden" name="SelectingReturnItems" value="1" />
-						<input tabindex="' . strval($j + 8) . '" type="submit" value="' . _('Add to Sale') . '" />
+						<input type="submit" value="', _('Add to Sale'), '" />
 					</td>
 					<td>
-						<input type="hidden" name="NextList" value="' . strval($Offset + 1) . '" />
-						<input tabindex="' . strval($j + 9) . '" type="submit" name="Next" value="' . _('Next') . '" />
+						<input type="hidden" name="NextList" value="', strval($Offset + 1), '" />
+						<input type="submit" name="Next" value="', _('Next'), '" />
 					</td>
-				</tr>';
-			echo '</table></form>';
+				</tr>
+			</table>
+		</form>';
 
 		} #end if SearchResults to show
-	}
-	/*end of PartSearch options to be displayed */
-	else {
+	} else {
 		/* show the quick entry form variable */
 
-		echo '<div class="page_help_text noPrint"><b>' . _('Use this form to add return items quickly if the item codes are already known') . '</b></div><br />
-		 		<table border="1">
-				<tr>';
-		/*do not display colum unless customer requires po line number by sales order line*/
-		echo '<th>' . _('Item Code') . '</th>
-				<th>' . _('Quantity') . '</th>
-				</tr>';
+		echo '<div class="page_help_text noPrint"><b>', _('Use this form to add return items quickly if the item codes are already known'), '</b></div>
+		 		<table>
+					<tr>
+						<th>', _('Item Code'), '</th>
+						<th>', _('Quantity'), '</th>
+					</tr>';
 		$ReturnDate = Date($_SESSION['DefaultDateFormat']);
 		if (count($_SESSION['Items' . $Identifier]->LineItems) == 0) {
-			echo '<input type="hidden" name="CustRef" value="' . $_SESSION['Items' . $Identifier]->CustRef . '" />';
-			echo '<input type="hidden" name="Comments" value="' . $_SESSION['Items' . $Identifier]->Comments . '" />';
-			echo '<input type="hidden" name="DeliverTo" value="' . $_SESSION['Items' . $Identifier]->DeliverTo . '" />';
-			echo '<input type="hidden" name="PhoneNo" value="' . $_SESSION['Items' . $Identifier]->PhoneNo . '" />';
-			echo '<input type="hidden" name="Email" value="' . $_SESSION['Items' . $Identifier]->Email . '" />';
+			echo '<input type="hidden" name="CustRef" value="', $_SESSION['Items' . $Identifier]->CustRef, '" />';
+			echo '<input type="hidden" name="Comments" value="', $_SESSION['Items' . $Identifier]->Comments, '" />';
+			echo '<input type="hidden" name="DeliverTo" value="', $_SESSION['Items' . $Identifier]->DeliverTo, '" />';
+			echo '<input type="hidden" name="PhoneNo" value="', $_SESSION['Items' . $Identifier]->PhoneNo, '" />';
+			echo '<input type="hidden" name="Email" value="', $_SESSION['Items' . $Identifier]->Email, '" />';
+			echo '<input type="hidden" name="SalesPerson" value="', $_SESSION['Items' . $Identifier]->SalesPerson, '" />';
 		}
 		for ($i = 1; $i <= $_SESSION['QuickEntries']; $i++) {
 
 			echo '<tr class="OddTableRow">';
 			/* Do not display colum unless customer requires po line number by sales order line*/
 			if ($i == 1) {
-				echo '<td><input type="text" autofocus="autofocus" name="part_' . $i . '" size="21" minlength="0" maxlength="20" /></td>';
+				echo '<td><input type="text" autofocus="autofocus" name="part_', $i, '" size="21" minlength="0" maxlength="20" /></td>';
 			} else {
-				echo '<td><input type="text" name="part_' . $i . '" size="21" minlength="0" maxlength="20" /></td>';
+				echo '<td><input type="text" name="part_', $i, '" size="21" minlength="0" maxlength="20" /></td>';
 			}
-			echo '<td><input type="text" class="number" name="qty_' . $i . '" size="6" minlength="0" maxlength="6" />
-						<input type="hidden" class="date" name="ItemDue_' . $i . '" value="' . $ReturnDate . '" /></td>
-				</tr>';
+			echo '<td>
+					<input type="text" class="number" name="qty_', $i, '" size="6" minlength="0" maxlength="6" />
+					<input type="hidden" class="date" name="ItemDue_', $i, '" value="', $ReturnDate, '" />
+				</td>
+			</tr>';
 		}
 
-		echo '</table><br /><div class="centre"><input type="submit" name="QuickEntry" value="' . _('Quick Entry') . '" />
-					 <input type="submit" name="PartSearch" value="' . _('Search Parts') . '" /></div>';
+		echo '</table>';
+		echo '<div class="centre">
+				<input type="submit" name="QuickEntry" value="', _('Quick Entry'), '" />
+				<input type="submit" name="PartSearch" value="', _('Search Parts'), '" />
+			</div>';
 
 	}
 	if ($_SESSION['Items' . $Identifier]->ItemsOrdered >= 1) {
-		echo '<br /><div class="centre"><input type="submit" name="CancelReturn" value="' . _('Cancel Return') . '" onclick="return MakeConfirm(\'' . _('Are you sure you wish to cancel this return?') . '\');" /></div>';
+		echo '<div class="centre">
+				<input type="submit" name="CancelReturn" value="', _('Cancel Return'), '" onclick="return MakeConfirm(\'', _('Are you sure you wish to cancel this return?'), '\');" />
+			</div>';
 	}
 }
 echo '</form>';

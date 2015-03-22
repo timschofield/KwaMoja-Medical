@@ -28,6 +28,7 @@ if ((isset($_POST['PrintPDF'])) and isset($_POST['FromCriteria']) and mb_strlen(
 					suppliers.address5,
 					suppliers.address6,
 					suppliers.currcode,
+					suppliers.paymentterms,
 					supptrans.id,
 					currencies.decimalplaces AS currdecimalplaces
 			FROM supptrans INNER JOIN suppliers ON supptrans.supplierno = suppliers.supplierid
@@ -60,6 +61,7 @@ if ((isset($_POST['PrintPDF'])) and isset($_POST['FromCriteria']) and mb_strlen(
 
 	$SupplierID = '';
 	$RemittanceAdviceCounter = 0;
+	$TotalPayments = 0;
 	while ($SuppliersPaid = DB_fetch_array($SuppliersResult)) {
 
 		$PageNumber = 1;
@@ -142,12 +144,11 @@ if ((isset($_POST['PrintPDF'])) and isset($_POST['FromCriteria']) and mb_strlen(
 	$Title = _('Remittance Advices');
 	include('includes/header.inc');
 
-	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/printer.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '</p>';
+	echo '<p class="page_title_text noPrint" ><img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/printer.png" title="', $Title, '" alt="" />', ' ', $Title, '</p>';
 	/* show form to allow input	*/
 
-	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
-	echo '<div>';
-	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
+	echo '<form onSubmit="return VerifyForm(this);" action="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '" method="post" class="noPrint">';
+	echo '<input type="hidden" name="FormID" value="', $_SESSION['FormID'], '" />';
 	echo '<table>';
 
 	$SQL = "SELECT min(supplierid) AS fromcriteria,
@@ -158,12 +159,12 @@ if ((isset($_POST['PrintPDF'])) and isset($_POST['FromCriteria']) and mb_strlen(
 	$MyRow = DB_fetch_array($Result);
 
 	echo '<tr>
-			<td>' . _('From Supplier Code') . ':</td>
-			<td><input type="text" required="required" minlength="1" maxlength="6" size="7" name="FromCriteria" value="' . $MyRow['fromcriteria'] . '" /></td>
+			<td>', _('From Supplier Code'), ':</td>
+			<td><input type="text" required="required" minlength="1" maxlength="6" size="7" name="FromCriteria" value="', $MyRow['fromcriteria'], '" /></td>
 		</tr>';
 	echo '<tr>
-			<td>' . _('To Supplier Code') . ':</td>
-			<td><input type="text" required="required" minlength="1" maxlength="6" size="7" name="ToCriteria" value="' . $MyRow['tocriteria'] . '" /></td>
+			<td>', _('To Supplier Code'), ':</td>
+			<td><input type="text" required="required" minlength="1" maxlength="6" size="7" name="ToCriteria" value="', $MyRow['tocriteria'], '" /></td>
 		</tr>';
 
 	if (!isset($_POST['PaymentDate'])) {
@@ -173,18 +174,16 @@ if ((isset($_POST['PrintPDF'])) and isset($_POST['FromCriteria']) and mb_strlen(
 	}
 
 	echo '<tr>
-			<td>' . _('Date Of Payment') . ':</td>
-			<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="PaymentDate" required="required" minlength="1" maxlength="11" size="12" value="' . $DefaultDate . '" /></td>
+			<td>', _('Date Of Payment'), ':</td>
+			<td><input type="text" class="date" alt="', $_SESSION['DefaultDateFormat'], '" name="PaymentDate" required="required" minlength="1" maxlength="11" size="12" value="', $DefaultDate, '" /></td>
 		</tr>';
+	echo '</table>';
 
-	echo '</table>
-		<br />
-		<div class="centre">
-			<input type="submit" name="PrintPDF" value="' . _('Print PDF') . '" />
+	echo '<div class="centre">
+			<input type="submit" name="PrintPDF" value="', _('Print PDF'), '" />
 		</div>';
 
-	echo '</div>
-		  </form>';
+	echo '</form>';
 
 	include('includes/footer.inc');
 }
@@ -283,7 +282,7 @@ function PageHeader() {
 	$XPos = $Page_Width / 2 - 60;
 	$PDF->addText($XPos, $YPos, $FontSize, _('All amounts stated in') . ' - ' . $SuppliersPaid['currcode']);
 	$YPos -= $line_height;
-	$PDF->addText($XPos, $YPos, $FontSize, $SuppliersPaid['terms']);
+	$PDF->addText($XPos, $YPos, $FontSize, $SuppliersPaid['paymentterms']);
 
 	$YPos = $Page_Height - $Top_Margin - 180;
 	//$YPos -= $line_height;

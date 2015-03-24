@@ -441,9 +441,9 @@ echo '<tr style="outline: 1px solid"><td>' . _('Default Credit Limit') . ':</td>
 // Check Credit Limits
 echo '<tr style="outline: 1px solid"><td>' . _('Check Credit Limits') . ':</td>
 	<td><select required="required" minlength="1" name="X_CheckCreditLimits">
-	<option ' . ($_SESSION['CheckCreditLimits'] == 0 ? 'selected="selected" ' : '') . 'value="0">' . _('Do not check') . '</option>
-	<option ' . ($_SESSION['CheckCreditLimits'] == 1 ? 'selected="selected" ' : '') . 'value="1">' . _('Warn on breach') . '</option>
-	<option ' . ($_SESSION['CheckCreditLimits'] == 2 ? 'selected="selected" ' : '') . 'value="2">' . _('Prohibit Sales') . '</option>
+	<option ' . ($_SESSION['CheckCreditLimits'] === 0 ? 'selected="selected" ' : '') . 'value="0">' . _('Do not check') . '</option>
+	<option ' . ($_SESSION['CheckCreditLimits'] === 1 ? 'selected="selected" ' : '') . 'value="1">' . _('Warn on breach') . '</option>
+	<option ' . ($_SESSION['CheckCreditLimits'] === 2 ? 'selected="selected" ' : '') . 'value="2">' . _('Prohibit Sales') . '</option>
 	</select></td>
 	<td>' . _('Credit limits can be checked at order entry to warn only or to stop the order from being entered where it would take a customer account balance over their limit') . '</td></tr>';
 
@@ -486,8 +486,8 @@ echo '<tr style="outline: 1px solid"><td>' . _('Sales Order Allows Same Item Mul
 echo '<tr style="outline: 1px solid">
 		<td>' . _('Order Entry allows Line Item Narrative') . ':</td>
 		<td><select required="required" minlength="1" name="X_AllowOrderLineItemNarrative">
-		<option ' . ($_SESSION['AllowOrderLineItemNarrative'] == '1' ? 'selected="selected" ' : '') . 'value="1">' . _('Allow Narrative Entry') . '</option>
-		<option ' . ($_SESSION['AllowOrderLineItemNarrative'] == '0' ? 'selected="selected" ' : '') . 'value="0">' . _('No Narrative Line') . '</option>
+		<option ' . ($_SESSION['AllowOrderLineItemNarrative'] === '1' ? 'selected="selected" ' : '') . 'value="1">' . _('Allow Narrative Entry') . '</option>
+		<option ' . ($_SESSION['AllowOrderLineItemNarrative'] === '0' ? 'selected="selected" ' : '') . 'value="0">' . _('No Narrative Line') . '</option>
 		</select></td>
 		<td>' . _('Select whether or not to allow entry of narrative on order line items. This narrative will appear on invoices and packing slips. Useful mainly for service businesses.') . '</td>
 	</tr>';
@@ -520,8 +520,8 @@ echo '<tr style="outline: 1px solid">
 //'RequirePickingNote'
 echo '<tr style="outline: 1px solid"><td>' . _('A picking note must be produced before an order can be delivered') . ':</td>
 	<td><select required="required" minlength="1" name="X_RequirePickingNote">
-	<option ' . ($_SESSION['RequirePickingNote'] == '1' ? 'selected="selected" ' : '') . 'value="1">' . _('Yes') . '</option>
-	<option ' . ($_SESSION['RequirePickingNote'] == '0' ? 'selected="selected" ' : '') . 'value="0">' . _('No') . '</option>
+	<option ' . ($_SESSION['RequirePickingNote'] === '1' ? 'selected="selected" ' : '') . 'value="1">' . _('Yes') . '</option>
+	<option ' . ($_SESSION['RequirePickingNote'] === '0' ? 'selected="selected" ' : '') . 'value="0">' . _('No') . '</option>
 	</select></td>
 	<td>' . _('Select whether or not a picking note must be produced before an order can be delivered to a customer.') . '</td>
 	</tr>';
@@ -529,8 +529,8 @@ echo '<tr style="outline: 1px solid"><td>' . _('A picking note must be produced 
 //UpdateCurrencyRatesDaily
 echo '<tr style="outline: 1px solid"><td>' . _('Auto Update Exchange Rates Daily') . ':</td>
 	<td><select required="required" minlength="1" name="X_UpdateCurrencyRatesDaily">
-	<option ' . ($_SESSION['UpdateCurrencyRatesDaily'] == '1' ? 'selected="selected" ' : '') . 'value="1">' . _('Automatic') . '</option>
-	<option ' . ($_SESSION['UpdateCurrencyRatesDaily'] == '0' ? 'selected="selected" ' : '') . 'value="0">' . _('Manually') . '</option>
+	<option ' . ($_SESSION['UpdateCurrencyRatesDaily'] === '1' ? 'selected="selected" ' : '') . 'value="1">' . _('Automatic') . '</option>
+	<option ' . ($_SESSION['UpdateCurrencyRatesDaily'] === '0' ? 'selected="selected" ' : '') . 'value="0">' . _('Manually') . '</option>
 	</select></td>
 	<td>' . _('Automatic updates to exchange rates will retrieve the latest daily rates from either the European Central Bank or Google once per day - when the first user logs in for the day. Manual will never update the rates automatically - exchange rates will need to be maintained manually') . '</td>
 	</tr>';
@@ -545,8 +545,8 @@ echo '<tr style="outline: 1px solid"><td>' . _('Source Exchange Rates From') . '
 //Default Packing Note Format
 echo '<tr style="outline: 1px solid"><td>' . _('Format of Packing Slips') . ':</td>
 	<td><select required="required" minlength="1" name="X_PackNoteFormat">
-	<option ' . ($_SESSION['PackNoteFormat'] == '1' ? 'selected="selected" ' : '') . 'value="1">' . _('Laser Printed') . '</option>
-	<option ' . ($_SESSION['PackNoteFormat'] == '2' ? 'selected="selected" ' : '') . 'value="2">' . _('Special Stationery') . '</option>
+	<option ' . ($_SESSION['PackNoteFormat'] === '1' ? 'selected="selected" ' : '') . 'value="1">' . _('Laser Printed') . '</option>
+	<option ' . ($_SESSION['PackNoteFormat'] === '2' ? 'selected="selected" ' : '') . 'value="2">' . _('Special Stationery') . '</option>
 	</select></td>
 	<td>' . _('Choose the format that packing notes should be printed by default') . '</td>
 	</tr>';
@@ -554,8 +554,8 @@ echo '<tr style="outline: 1px solid"><td>' . _('Format of Packing Slips') . ':</
 //Default Invoice Format
 echo '<tr style="outline: 1px solid"><td>' . _('Invoice Orientation') . ':</td>
 	<td><select required="required" minlength="1" name="X_InvoicePortraitFormat">
-	<option ' . ($_SESSION['InvoicePortraitFormat'] == '0' ? 'selected="selected" ' : '') . 'value="0">' . _('Landscape') . '</option>
-	<option ' . ($_SESSION['InvoicePortraitFormat'] == '1' ? 'selected="selected" ' : '') . 'value="1">' . _('Portrait') . '</option>
+	<option ' . ($_SESSION['InvoicePortraitFormat'] === '0' ? 'selected="selected" ' : '') . 'value="0">' . _('Landscape') . '</option>
+	<option ' . ($_SESSION['InvoicePortraitFormat'] === '1' ? 'selected="selected" ' : '') . 'value="1">' . _('Portrait') . '</option>
 	</select></td>
 	<td>' . _('Select the invoice layout') . '</td>
 	</tr>';
@@ -565,8 +565,8 @@ echo '<tr style="outline: 1px solid">
 		<td>' . _('Invoice Quantity Default') . ':</td>
 		<td>
 			<select name="X_InvoiceQuantityDefault">
-				<option '.($_SESSION['InvoiceQuantityDefault']=='0'?'selected="selected" ':'').'value="0">' . _('0') . '</option>
-				<option '.($_SESSION['InvoiceQuantityDefault']=='1'?'selected="selected" ':'').'value="1">' . _('Outstanding') . '</option>
+				<option '.($_SESSION['InvoiceQuantityDefault'] === '0'?'selected="selected" ':'').'value="0">' . _('0') . '</option>
+				<option '.($_SESSION['InvoiceQuantityDefault'] === '1'?'selected="selected" ':'').'value="1">' . _('Outstanding') . '</option>
 			</select>
 		</td>
 		<td>' . _('This setting controls the default behaviour of invoicing. Setting to 0 defaults the invocie quantity to zero to force entry. Set to outstanding to default the invoice quantity to the balance outstanding, after previous deliveries, on the sales order') . '</td>
@@ -576,8 +576,8 @@ echo '<tr style="outline: 1px solid">
 //Blind packing note
 echo '<tr style="outline: 1px solid"><td>' . _('Show company details on packing slips') . ':</td>
 	<td><select required="required" minlength="1" name="X_DefaultBlindPackNote">
-	<option ' . ($_SESSION['DefaultBlindPackNote'] == '1' ? 'selected="selected" ' : '') . 'value="1">' . _('Show Company Details') . '</option>
-	<option ' . ($_SESSION['DefaultBlindPackNote'] == '2' ? 'selected="selected" ' : '') . 'value="2">' . _('Hide Company Details') . '</option>
+	<option ' . ($_SESSION['DefaultBlindPackNote'] === '1' ? 'selected="selected" ' : '') . 'value="1">' . _('Show Company Details') . '</option>
+	<option ' . ($_SESSION['DefaultBlindPackNote'] === '2' ? 'selected="selected" ' : '') . 'value="2">' . _('Hide Company Details') . '</option>
 	</select></td>
 	<td>' . _('Customer branches can be set by default not to print packing slips with the company logo and address. This is useful for companies that ship to customers customers and to show the source of the shipment would be inappropriate. There is an option on the setup of customer branches to ship blind, this setting is the default applied to all new customer branches') . '</td>
 	</tr>';

@@ -405,7 +405,7 @@ if (!isset($SelectedBranch)) {
 		$SQL.= " AND custbranch.salesman='" . $_SESSION['SalesmanLogin'] . "'";
 	}
 	$Result = DB_query($SQL);
-	$MyRow = DB_fetch_row($Result);
+	$MyRow = DB_fetch_array($Result);
 	$TotalEnable = 0;
 	$TotalDisable = 0;
 	if ($MyRow) {
@@ -434,26 +434,33 @@ if (!isset($SelectedBranch)) {
 				$k = 1;
 			}
 
-			printf('<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td><a href="Mailto:%s">%s</a></td>
-					<td>%s</td>
-					<td>%s</td>
-					<td><a href="%s?DebtorNo=%s&amp;SelectedBranch=%s">%s</a></td>
-					<td><a href="%s?DebtorNo=%s&amp;SelectedBranch=%s&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this branch?') . '\', \'Confirm Delete\', this);">%s</a></td></tr>', $MyRow[1], $MyRow[2], $MyRow[5], $MyRow[3], $MyRow[4], $MyRow[6], $MyRow[7], $MyRow[8], $MyRow[8], $MyRow[9], ($MyRow[10] ? _('No') : _('Yes')), htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), urlencode(stripslashes($DebtorNo)), urlencode($MyRow[1]), _('Edit'), htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), urlencode($DebtorNo), urlencode($MyRow[1]), _('Delete Branch'));
-
-			if ($MyRow[10]) {
-				$TotalDisable++;
+			if ($MyRow['disabletrans']) {
+				$MyRow['disabletrans'] = _('No');
 			} else {
-				$TotalEnable++;
+				$MyRow['disabletrans'] = _('Yes');
 			}
 
-		} while ($MyRow = DB_fetch_row($Result));
+			echo '<td>', $MyRow['branchcode'], '</td>
+					<td>', $MyRow['brname'], '</td>
+					<td>', $MyRow['contactname'], '</td>
+					<td>', $MyRow['salesmanname'], '</td>
+					<td>', $MyRow['areadescription'], '</td>
+					<td>', $MyRow['phoneno'], '</td>
+					<td>', $MyRow['faxno'], '</td>
+					<td><a href="Mailto:', $MyRow['email'], '">', $MyRow['email'], '</a></td>
+					<td>', $MyRow['taxgroupdescription'], '</td>
+					<td>', $MyRow['disabletrans'], '</td>
+					<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '?DebtorNo=', urlencode(stripslashes($DebtorNo)), '&amp;SelectedBranch=', urlencode($MyRow['branchcode']), '">', _('Edit'), '</a></td>
+					<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '?DebtorNo=', urlencode(stripslashes($DebtorNo)), '&amp;SelectedBranch=', urlencode($MyRow['branchcode']), '&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this branch?') . '\', \'Confirm Delete\', this);">', _('Delete Branch'), '</a></td>
+				</tr>';
+
+			if ($MyRow['disabletrans'] == _('No')) {
+				++$TotalDisable;
+			} else {
+				++$TotalEnable;
+			}
+
+		} while ($MyRow = DB_fetch_array($Result));
 		//END WHILE LIST LOOP
 		echo '</table>';
 		echo '<div class="centre">';

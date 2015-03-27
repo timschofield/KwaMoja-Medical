@@ -49,7 +49,7 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 	$PDF->addInfo('Creator', $ProjectName . ' ' . $HomePage);
 
 	if ($InvOrCredit == 'Invoice') {
-		$PDF->addInfo('Title', _('Sales Invoice') . ' ' . $FromTransNo . ' to ' . $_POST['ToTransNo']);
+		$PDF->addInfo('Title', _('Sales Invoice') . ' ' . $FromTransNo . _('to') . $_POST['ToTransNo']);
 		$PDF->addInfo('Subject', _('Invoices from') . ' ' . $FromTransNo . ' ' . _('to') . ' ' . $_POST['ToTransNo']);
 	} else {
 		$PDF->addInfo('Title', _('Sales Credit Note'));

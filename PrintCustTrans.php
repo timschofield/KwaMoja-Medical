@@ -272,7 +272,7 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 			} // end else
 
 			$Result = DB_query($SQL);
-			if (DB_error_no() != 0 or DB_num_rows($Result) == 0) {
+			if (DB_error_no() != 0 or DB_num_rows($Result) == 0 and $InvOrCredit == 'Invoice') {
 				$Title = _('Transaction Print Error Report');
 				include('includes/header.inc');
 				echo '<br />' . _('There was a problem retrieving the invoice or credit note stock movement details for invoice number') . ' ' . $FromTransNo . ' ' . _('from the database');
@@ -771,7 +771,7 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 			}
 
 			$Result = DB_query($SQL);
-			if (DB_num_rows($Result) == 0 or DB_error_no() != 0) {
+			if ((DB_num_rows($Result) == 0 and $InvOrCredit == 'Invoice') or (DB_error_no() != 0))
 				echo '<p>' . _('There was a problem retrieving the invoice or credit note details for note number') . ' ' . $FromTransNo . ' ' . _('from the database') . '. ' . _('To print an invoice, the sales order record, the customer transaction record and the branch record for the customer must not have been purged') . '. ' . _('To print a credit note only requires the customer, transaction, salesman and branch records be available');
 				if ($Debug == 1) {
 					echo _('The SQL used to get this information that failed was') . '<br />' . $SQL;

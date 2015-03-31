@@ -101,7 +101,7 @@ if (isset($_POST['submit']) or isset($_GET['remove']) or isset($_GET['add'])) {
 
 	while ($MyRow = DB_fetch_row($Result)) {
 
-		if (is_numeric($_POST['CalcOrder_' . $MyRow[0]]) and $_POST['CalcOrder_' . $MyRow[0]] < 5) {
+		if (is_numeric($_POST['CalcOrder_' . $MyRow[0]]) and $_POST['CalcOrder_' . $MyRow[0]] < 10) {
 
 			$SQL = "UPDATE taxgrouptaxes
 				SET calculationorder='" . $_POST['CalcOrder_' . $MyRow[0]] . "',

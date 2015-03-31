@@ -1,6 +1,8 @@
 <?php
 
 include('includes/session.inc');
+
+include('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');
 
 if ($_GET['InvOrCredit'] == 'Invoice') {
@@ -29,8 +31,6 @@ if (isset($_POST['DoIt']) and IsEmailAddress($_POST['EmailAddr'])) {
 	$_GET['FromTransNo'] = $_POST['FromTransNo'];
 	prnMsg(_('The email address does not appear to be a valid email address. The transaction was not emailed'), 'warn');
 }
-
-include('includes/header.inc');
 
 echo '<p class="page_title_text noPrint">
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/email.png" title="' . $Title . '" alt="" />' . $Title . '

@@ -277,10 +277,10 @@ class Cart {
 		if (DB_num_rows($GetTaxRatesResult) == 0) {
 			prnMsg(_('It appears that taxes are not defined correctly for this customer tax group'), 'error');
 		} else {
-
+			$i = 1;
 			while ($MyRow = DB_fetch_array($GetTaxRatesResult)) {
-
-				$this->LineItems[$LineNumber]->Taxes[$MyRow['calculationorder']] = new Tax($MyRow['calculationorder'], $MyRow['taxauthid'], $MyRow['description'], $MyRow['taxrate'], $MyRow['taxontax'], $MyRow['taxglcode']);
+				$this->LineItems[$LineNumber]->Taxes[$i] = new Tax($MyRow['calculationorder'], $MyRow['taxauthid'], $MyRow['description'], $MyRow['taxrate'], $MyRow['taxontax'], $MyRow['taxglcode']);
+				++$i;
 			} //end loop around different taxes
 		} //end if there are some taxes defined
 	} //end method GetTaxes
@@ -317,10 +317,10 @@ class Cart {
 
 		$ErrMsg = _('The taxes and rates for this item could not be retrieved because');
 		$GetTaxRatesResult = DB_query($SQL, $ErrMsg);
-
+		$i = 1;
 		while ($MyRow = DB_fetch_array($GetTaxRatesResult)) {
-
-			$this->FreightTaxes[$MyRow['calculationorder']] = new Tax($MyRow['calculationorder'], $MyRow['taxauthid'], $MyRow['description'], $MyRow['taxrate'], $MyRow['taxontax'], $MyRow['taxglcode']);
+			$this->LineItems[$LineNumber]->Taxes[$i] = new Tax($MyRow['calculationorder'], $MyRow['taxauthid'], $MyRow['description'], $MyRow['taxrate'], $MyRow['taxontax'], $MyRow['taxglcode']);
+			++$i;
 		}
 	} //end method GetFreightTaxes()
 

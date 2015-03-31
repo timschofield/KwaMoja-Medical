@@ -541,7 +541,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 			<th colspan="9">
 				<div class="centre">
 					<h2>
-					<b>' . _('Statement of Income and Expenditure for Tag') . ' ' . $MyRow[0] . _('during the') . ' ' . $NumberOfMonths . ' ' . _('months to') . ' ' . $PeriodToDate . '</b>
+					<b>' . _('Statement of Income and Expenditure for Tag') . ' ' . $MyRow[0] . ' ' . _('during the') . ' ' . $NumberOfMonths . ' ' . _('months to') . ' ' . $PeriodToDate . '</b>
 					<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/printer.png" class="PrintIcon noPrint" title="' . _('Print') . '" alt="' . _('Print') . '" onclick="window.print();" />
 					</h2>
 				</div>
@@ -570,10 +570,8 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 	$SectionPrdBudget = 0;
 
 	$PeriodProfitLoss = 0;
-	$PeriodProfitLoss = 0;
 	$PeriodLYProfitLoss = 0;
 	$PeriodBudgetProfitLoss = 0;
-
 
 	$ActGrp = '';
 	$ParentGroups = array();
@@ -703,10 +701,10 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 								<td colspan="2"><h2>' . _('Gross Profit') . '</h2></td>
 								<td></td>
 								<td class="number">%s</td>
-							</tr>', locale_number_format($TotalIncome - $SectionPrdActual, $_SESSION['CompanyRecord']['decimalplaces']));
+							</tr>', locale_number_format($TotalIncome + $SectionPrdActual, $_SESSION['CompanyRecord']['decimalplaces']));
 
 					if ($TotalIncome != 0) {
-						$PrdGPPercent = 100 * ($TotalIncome - $SectionPrdActual) / $TotalIncome;
+						$PrdGPPercent = 100 * ($TotalIncome + $SectionPrdActual) / $TotalIncome;
 					} else {
 						$PrdGPPercent = 0;
 					}

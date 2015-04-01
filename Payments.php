@@ -745,6 +745,15 @@ if (isset($_POST['CommitBatch'])) {
 } elseif (isset($_GET['Delete'])) {
 	/* User hit delete the receipt entry from the batch */
 	$_SESSION['PaymentDetail' . $Identifier]->Remove_GLItem($_GET['Delete']);
+	//recover the bank account relative setting
+	$_POST['BankAccount'] = $_SESSION['PaymentDetail' . $Identifier]->Account;
+	$_POST['DatePaid'] = $_SESSION['PaymentDetail' . $Identifier]->DatePaid;
+	$_POST['Currency'] = $_SESSION['PaymentDetail' . $Identifier]->Currency;
+	$_POST['ExRate'] = $_SESSION['PaymentDetail' . $Identifier]->ExRate;
+	$_POST['FunctionalExRate'] = $_SESSION['PaymentDetail' . $Identifier]->FunctionalExRate;
+	$_POST['PaymentType'] = $_SESSION['PaymentDetail' . $Identifier]->Paymenttype;
+	$_POST['BankTransRef'] = $_SESSION['PaymentDetail' . $Identifier]->BankTransRef;
+	$_POST['Narrative'] = $_SESSION['PaymentDetail' . $Identifier]->Narrative;
 
 } elseif (isset($_POST['Process']) and !$BankAccountEmpty) { //user hit submit a new GL Analysis line into the payment
 

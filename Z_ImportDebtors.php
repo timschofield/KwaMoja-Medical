@@ -432,7 +432,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 
 		$i = 0;
 
-		if (ContainsIllegalCharacters($_POST['BranchCode']) or mb_strstr($_POST['BranchCode'], ' ') or mb_strstr($_POST['BranchCode'], '-')) {
+		if (ContainsIllegalCharacters($_POST['BranchCode']) or mb_strstr($_POST['BranchCode'], ' ')) {
 			$InputError = 1;
 			prnMsg(_('The Branch code cannot contain any of the following characters') . " -  &amp; \' &lt; &gt;", 'error');
 			$Errors[$i] = 'BranchCode';

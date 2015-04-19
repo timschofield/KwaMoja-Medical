@@ -52,7 +52,7 @@ while ($MyRow = DB_fetch_array($Result)) {
 
 DB_data_seek($Result, 0);
 
-echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
+echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 echo '<input type="submit" name="submit" value="" style="display:none;" />';
 echo '<div style="width:100%;font-size:120%;color:#2F4F4F;">' . _('Add reports to your dashboard') . '&nbsp;&nbsp;&nbsp;

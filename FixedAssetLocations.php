@@ -109,7 +109,7 @@ while ($MyRow = DB_fetch_array($Result)) {
 
 echo '</table>
 	<br />';
-echo '<form onSubmit="return VerifyForm(this);" id="LocationForm" method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">
+echo '<form id="LocationForm" method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">
 	  <div>
 	<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
 	<table class="selection">

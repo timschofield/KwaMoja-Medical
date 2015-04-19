@@ -74,7 +74,7 @@ if (isset($_POST['submit']) and !isset($_POST['SubmitCategory'])) {
 }
 
 if (isset($_POST['SelectChoice'])) {
-	echo '<form onSubmit="return VerifyForm(this);" id="update" method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
+	echo '<form id="update" method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
@@ -102,7 +102,7 @@ if (isset($_POST['SelectChoice'])) {
 	echo '</div>
 		  </form>';
 
-	echo '<form onSubmit="return VerifyForm(this);" method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
+	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<input type="hidden" name="ChooseOption" value="' . $_POST['ChooseOption'] . '" />';
@@ -251,7 +251,7 @@ if (isset($_POST['SelectChoice'])) {
 }
 
 if (!isset($_POST['SelectChoice'])) {
-	echo '<form onSubmit="return VerifyForm(this);" method="post" id="choose" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">
+	echo '<form method="post" id="choose" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">
 				<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
 				<table class="selection">
 					<tr>

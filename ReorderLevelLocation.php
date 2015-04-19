@@ -66,7 +66,7 @@ if (isset($_POST['submit']) or isset($_POST['Update'])) {
 	echo '<p class="page_title_text" ><strong>' . _('Location : ') . '' . $Location['locationname'] . ' </strong></p>';
 	echo '<p class="page_title_text" ><strong>' . _('Number Of Days Sales : ') . '' . locale_number_format($_POST['NumberOfDays'], 0) . '' . _(' Days ') . ' </strong></p>';
 	$k = 0; //row colour counter
-	echo '<form onSubmit="return VerifyForm(this);" action="ReorderLevelLocation.php" method="post" id="Update">';
+	echo '<form action="ReorderLevelLocation.php" method="post" id="Update">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table>';
 	echo '<tr>
@@ -153,7 +153,7 @@ if (isset($_POST['submit']) or isset($_POST['Update'])) {
 
 	echo '<div class="page_help_text">' . _('Use this report to display the reorder levels for Inventory items in different categories.') . '</div>';
 
-	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
+	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	$SQL = "SELECT locationname,
 					locations.loccode

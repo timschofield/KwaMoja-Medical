@@ -40,7 +40,7 @@ if (isset($_POST['submit']) and isset($_POST['NewLanguage'])) {
 		$_POST['NewLanguage'] = mb_substr($_POST['NewLanguage'], 0, 3) . mb_strtoupper(mb_substr($_POST['NewLanguage'], 3, 2));
 
 		echo '<div class="centre">';
-		echo '<form onSubmit="return VerifyForm(this);" method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
+		echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 
@@ -71,7 +71,7 @@ if (isset($_POST['submit']) and isset($_POST['NewLanguage'])) {
 
 
 prnMsg(_('This utility will create a new language and a new language translation file for it from the system default') . '<br /><br />' . _('If the language already exists then you cannot recreate it'), 'info', _('PLEASE NOTE'));
-echo '<form onSubmit="return VerifyForm(this);" method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
+echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 echo '<table>

@@ -19,10 +19,11 @@ if (isset($Title) and $Title == _('Copy a BOM to New Item Code')) { //solve the 
 }
 
 echo '<!DOCTYPE html>';
-echo '<meta http-equiv="Content-Type" content="application/html; charset=utf-8" />';
+echo '';
 
 echo '<html moznomarginboxes mozdisallowselectionprint>
 		<head>
+			<meta http-equiv="Content-Type" content="application/html; charset=utf-8" />
 			<title>', $Title, '</title>
 			<link rel="icon" href="', $RootPath, '/favicon.ico" />
 			<link href="', $RootPath, '/css/', $_SESSION['Theme'], '/default.css" rel="stylesheet" type="text/css" media="screen" />

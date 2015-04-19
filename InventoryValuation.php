@@ -222,7 +222,7 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['CSV'])) and isset($_POST['Catego
 	$Title = _('Inventory Valuation Reporting');
 	include('includes/header.inc');
 
-	echo '<p class="page_title_text noPrint" >
+	echo '<p class="page_title_text" >
 			<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Inventory') . '" alt="" />' . ' ' . $Title . '
 		</p>';
 

@@ -7,7 +7,7 @@ $ViewTopic = 'SecuritySchema';// Filename's id in ManualContents.php's TOC.
 $BookMark = 'WWW_Access';// Anchor's id in the manual's html document.
 include('includes/header.inc');
 
-echo '<p class="page_title_text noPrint" >
+echo '<p class="page_title_text" >
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/group_add.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '
 	</p>';
 

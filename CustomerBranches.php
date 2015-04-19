@@ -123,7 +123,7 @@ if (isset($_POST['submit'])) {
 			} else {
 				// failure to geocode
 				$Geocode_Pending = false;
-				echo '<div class="page_help_text noPrint"><b>' . _('Geocode Notice') . ':</b> ' . _('Address') . ': ' . $Address . ' ' . _('failed to geocode');
+				echo '<div class="page_help_text"><b>' . _('Geocode Notice') . ':</b> ' . _('Address') . ': ' . $Address . ' ' . _('failed to geocode');
 				echo _('Received status') . ' ' . $Status . '</div>';
 			}
 		}
@@ -409,7 +409,7 @@ if (!isset($SelectedBranch)) {
 	$TotalEnable = 0;
 	$TotalDisable = 0;
 	if ($MyRow) {
-		echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/customer.png" title="' . _('Customer') . '" alt="" />' . ' ' . _('Branches defined for') . ' ' . stripslashes($DebtorNo) . ' - ' . $MyRow[0] . '</p>';
+		echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/customer.png" title="' . _('Customer') . '" alt="" />' . ' ' . _('Branches defined for') . ' ' . stripslashes($DebtorNo) . ' - ' . $MyRow[0] . '</p>';
 		echo '<table class="selection">
 			<tr>
 				<th>' . _('Code') . '</th>
@@ -480,7 +480,7 @@ if (!isset($SelectedBranch)) {
 
 		$Result = DB_query($SQL);
 		$MyRow = DB_fetch_row($Result);
-		echo '<div class="page_help_text noPrint">' . _('No Branches are defined for') . ' - ' . $MyRow[0] . '. ' . _('You must have a minimum of one branch for each Customer. Please add a branch now.') . '</div>';
+		echo '<div class="page_help_text">' . _('No Branches are defined for') . ' - ' . $MyRow[0] . '. ' . _('You must have a minimum of one branch for each Customer. Please add a branch now.') . '</div>';
 		$_POST['BranchCode'] = mb_substr($DebtorNo, 0, 10);
 		$_POST['BrName'] = $MyRow[0];
 		$_POST['BrAddress1'] = $MyRow[1];
@@ -590,7 +590,7 @@ if (!isset($_GET['delete'])) {
 		if (isset($SelectedBranch)) {
 			echo '<div class="toplink"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?DebtorNo=' . urlencode(stripslashes($DebtorNo)) . '">' . _('Show all branches defined for') . ' ' . stripslashes($DebtorNo) . '</a></div>';
 		}
-		echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/customer.png" title="' . _('Customer') . '" alt="" />
+		echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/customer.png" title="' . _('Customer') . '" alt="" />
 				 ' . ' ' . _('Change Details for Branch') . ' ' . stripslashes($SelectedBranch) . '</p>';
 		echo '<br />
 			<table class="selection">
@@ -635,7 +635,7 @@ if (!isset($_GET['delete'])) {
 			$_POST['BranchCode'] = '';
 			$_POST['DisableTrans'] = 0;
 		}
-		echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/customer.png" title="' . _('Customer') . '" alt="" />' . ' ' . _('Add a Branch') . '</p>';
+		echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/customer.png" title="' . _('Customer') . '" alt="" />' . ' ' . _('Add a Branch') . '</p>';
 		echo '<table class="selection">
 				<tr>
 					<td>' . _('Branch Code') . ':</td>

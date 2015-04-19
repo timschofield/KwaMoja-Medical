@@ -37,7 +37,7 @@ if (!isset($_FILES['ImportFile']) and !isset($_SESSION['Statement'])) {
 	}
 	echo '<form name="ImportForm" enctype="multipart/form-data" method="post" action="' . $_SERVER['PHP_SELF'] . '">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-	echo '<p class="page_title_text noPrint" >
+	echo '<p class="page_title_text" >
 			<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/upload.png" title="' . _('Receive') . '" alt="" />' . $Title  . '</p>';
 	echo '<table>
 			<tr>

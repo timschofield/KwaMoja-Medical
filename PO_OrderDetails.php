@@ -92,7 +92,7 @@ if (!isset($MyRow['realname'])) {
 echo '<div class="toplink">
 		<a href="' . $RootPath . '/PO_SelectPurchOrder.php">' . _('Outstanding Sales Orders') . '</a>
 	</div>';
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/supplier.png" title="' . _('Purchase Order') . '" alt="" />' . ' ' . $Title . '</p>';
+echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/supplier.png" title="' . _('Purchase Order') . '" alt="" />' . ' ' . $Title . '</p>';
 
 echo '<table class="selection" cellpadding="2">
 		<tr>

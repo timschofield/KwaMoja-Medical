@@ -11,7 +11,7 @@ $Title = _('Install a Plugin');
 
 include('includes/header.inc');
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/plugin.png" width="24px" title="' . _('Install Plugin') . '" alt="" />' . _('Install Plugin') . '</p>';
+echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/plugin.png" width="24px" title="' . _('Install Plugin') . '" alt="" />' . _('Install Plugin') . '</p>';
 
 if (isset($_POST['Install'])) {
 	$ZipFile = zip_open('plugins/' . $_POST['Available']);
@@ -116,7 +116,7 @@ if (isset($_POST['Install'])) {
 	echo '<input type="submit" name="reload" value="Reload" hidden="hidden" />';
 	if (!isset($_POST['reload'])) {
 
-		echo '<div class="page_help_text noPrint">' . _('Select the plugin that you wish to install from the list below.') . '</div>';
+		echo '<div class="page_help_text">' . _('Select the plugin that you wish to install from the list below.') . '</div>';
 		echo '<br /><div class="centre">
 				<div class="box_header">' . _('Available plugins') . '</div>
 				<select minlength="0" multiple="multiple" name="Available" onclick="ReloadForm(reload);">';

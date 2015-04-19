@@ -20,7 +20,7 @@ echo '<div class="toplink">
 
 echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Edit a Language File Module') . '" />' . ' ' . _('Edit a Language File Module') . '</p>';
 
-echo '<div class="page_help_text noPrint">' . _('Utility to edit a language file module') . '. '. _('Current language is') . ' ' . $_SESSION['Language'] . '. ' . _('To change language click on the user name at the top left, change to language desired and click Modify') . '. ' . _('Make sure you have selected the correct language to translate!') . '. ' . '</div>';
+echo '<div class="page_help_text">' . _('Utility to edit a language file module') . '. '. _('Current language is') . ' ' . $_SESSION['Language'] . '. ' . _('To change language click on the user name at the top left, change to language desired and click Modify') . '. ' . _('Make sure you have selected the correct language to translate!') . '. ' . '</div>';
 
 if ($_SESSION['Language'] == 'en_GB.utf8') {
 	$PathToLanguage = './locale/' . $_SESSION['Language'] . '/LC_MESSAGES/messages.pot';

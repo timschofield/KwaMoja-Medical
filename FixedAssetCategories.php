@@ -9,7 +9,7 @@ $BookMark = 'AssetCategories';
 include('includes/header.inc');
 
 echo '<div class="centre">
-	<p class="page_title_text noPrint" >
+	<p class="page_title_text" >
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/money_add.png" title="' . _('Fixed Asset Categories') . '" alt="" />' . ' ' . $Title . '
 	</p>
 	</div>';

@@ -11,7 +11,7 @@ $Title = _('Uninstall a Plugin');
 
 include('includes/header.inc');
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/plugin.png" width="24px" title="' . _('Uninstall Plugin') . '" alt="" />' . _('Uninstall Plugin') . '</p>';
+echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/plugin.png" width="24px" title="' . _('Uninstall Plugin') . '" alt="" />' . _('Uninstall Plugin') . '</p>';
 
 if (isset($_POST['UnInstall'])) {
 	$ZipFile = zip_open('plugins/' . $_POST['Available']);
@@ -111,7 +111,7 @@ if (isset($_POST['UnInstall'])) {
 	echo '<div>';
 
 	if (!isset($_POST['reload'])) {
-		echo '<div class="page_help_text noPrint">' . _('Select the plugin that you wish to remove from the list below.') . '</div>';
+		echo '<div class="page_help_text">' . _('Select the plugin that you wish to remove from the list below.') . '</div>';
 		echo '<br /><div class="centre">
 				<div class="box_header">' . _('Installed plugins') . '</div>
 				<select required="required" minlength="1" multiple="multiple" name="Available" onclick="ReloadForm(reload);">';

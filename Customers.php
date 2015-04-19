@@ -15,7 +15,7 @@ include ('includes/header.inc');
 include ('includes/SQL_CommonFunctions.inc');
 include ('includes/CountriesArray.php');
 
-echo '<p class="page_title_text noPrint" >
+echo '<p class="page_title_text" >
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/customer.png" title="' . _('Customer') . '" alt="" />' . ' ' . _('Customer Maintenance') . '
 	</p>';
 

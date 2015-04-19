@@ -308,7 +308,7 @@ if (isset($_GET['AllocTrans'])) {
 }
 
 
-echo '<p class="page_title_text noPrint" >
+echo '<p class="page_title_text" >
 		<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/transactions.png" title="', _('Allocate Receipt'), '" alt="" />', ' ', _('Allocate Receipts'), '
 	</p>';
 

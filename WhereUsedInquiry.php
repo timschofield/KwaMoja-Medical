@@ -11,7 +11,7 @@ if (isset($_GET['StockID'])) {
 }
 
 echo '<div class="toplink"><a href="' . $RootPath . '/SelectProduct.php">' . _('Back to Items') . '</a></div>
-	<p class="page_title_text noPrint" >
+	<p class="page_title_text" >
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '
 	</p>';
 if (isset($StockId)) {

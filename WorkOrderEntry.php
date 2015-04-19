@@ -61,7 +61,7 @@ if (isset($_POST['RequiredBy']) and !isset($_POST['NewItems'])) {
 	}
 }
 
-echo '<p class="page_title_text noPrint" >
+echo '<p class="page_title_text" >
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/transactions.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '
 	</p>';
 
@@ -144,7 +144,7 @@ echo '</table>';
 echo '<table class="selection">
 		<tr>
 			<th colspan="8"><h3>' . _('Items to be manufactured') . '
-				<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/add.png" class="PrintIcon noPrint" title="' . _('Add items to the work order') . '" alt="' . _('Add items to the work order') . '" onclick="ShowTable(\'ItemSelect\');" />
+				<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/add.png" class="PrintIcon" title="' . _('Add items to the work order') . '" alt="' . _('Add items to the work order') . '" onclick="ShowTable(\'ItemSelect\');" />
 			</h3></th>
 		</tr>
 		<tr>
@@ -207,7 +207,7 @@ echo '</table>';
 echo '<table class="selection print">
 		<tr>
 			<th colspan="7"><h3>' . _('Requirements for order') . '
-				<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/printer.png" class="PrintIcon noPrint" title="' . _('Print Requirements') . '" alt="' . _('Print Requirements') . '" onclick="window.print();" />
+				<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/printer.png" class="PrintIcon" title="' . _('Print Requirements') . '" alt="' . _('Print Requirements') . '" onclick="window.print();" />
 			</h3></th>
 		</tr>
 		<tr>

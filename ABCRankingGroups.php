@@ -6,7 +6,7 @@ $Title = _('Maintain ABC ranking groups');
 
 include('includes/header.inc');
 
-echo '<p class="page_title_text noPrint" >
+echo '<p class="page_title_text" >
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . $Title . '" alt="' . $Title . '" />' . ' ' . $Title . '
 	</p>';
 
@@ -117,7 +117,7 @@ if (isset($_POST['Submit'])) {
 			<tr>
 				<th colspan="10">
 					<h3>' . _('List of ABC Ranking Groups') . '
-						<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/printer.png" class="PrintIcon noPrint" title="' . _('Print') . '" alt="' . _('Print') . '" onclick="window.print();" />
+						<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/printer.png" class="PrintIcon" title="' . _('Print') . '" alt="' . _('Print') . '" onclick="window.print();" />
 					</h3>
 				</th>
 			</tr>

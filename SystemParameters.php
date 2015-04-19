@@ -7,7 +7,7 @@ $ViewTopic = 'GettingStarted';
 $BookMark = 'SystemConfiguration';
 include('includes/header.inc');
 include('includes/CountriesArray.php');
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Supplier Types') . '" alt="" />' . $Title . '</p>';
+echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Supplier Types') . '" alt="" />' . $Title . '</p>';
 
 if (isset($_POST['submit'])) {
 

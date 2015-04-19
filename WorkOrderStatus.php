@@ -58,7 +58,7 @@ $WORow = DB_fetch_array($WOResult);
 echo '<div class="toplink"><a href="' . $RootPath . '/SelectWorkOrder.php">' . _('Back to Work Orders') . '</a><br />';
 echo '<a href="' . $RootPath . '/WorkOrderCosting.php?WO=' . urlencode($SelectedWO) . '">' . _('Back to Costing') . '</a></div>';
 
-echo '<p class="page_title_text noPrint" >
+echo '<p class="page_title_text" >
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/group_add.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '
 	</p>';
 

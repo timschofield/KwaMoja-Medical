@@ -46,7 +46,7 @@ if (isset($_POST['update'])) {
 		WHERE tagref='" . $_POST['reference'] . "'";
 	$Result = DB_query($SQL);
 }
-echo '<p class="page_title_text noPrint" >
+echo '<p class="page_title_text" >
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Print') . '" alt="' . $Title . '" />' . ' ' . $Title . '
 	</p>';
 

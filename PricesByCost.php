@@ -4,7 +4,7 @@ include('includes/session.inc');
 $Title = _('Update of Prices By A Multiple Of Cost');
 include('includes/header.inc');
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Inventory') . '" alt="" />' . ' ' . _('Update Price By Cost') . '</p>';
+echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Inventory') . '" alt="" />' . ' ' . _('Update Price By Cost') . '</p>';
 
 if (isset($_POST['submit']) or isset($_POST['update'])) {
 	if ($_POST['Margin'] == '') {
@@ -150,7 +150,7 @@ if (isset($_POST['submit']) or isset($_POST['update'])) {
 	}
 	/*end of else Category */
 
-	echo '<div class="page_help_text noPrint">' . _('Items in') . ' ' . $CategoryText . ' ' . _('With Prices') . ' ' . $Comparator . '' . $_POST['Margin'] . ' ' . _('times') . ' ' . _('Cost in Price List') . ' ' . $SalesTypeRow['sales_type'] . '</div><br /><br />';
+	echo '<div class="page_help_text">' . _('Items in') . ' ' . $CategoryText . ' ' . _('With Prices') . ' ' . $Comparator . '' . $_POST['Margin'] . ' ' . _('times') . ' ' . _('Cost in Price List') . ' ' . $SalesTypeRow['sales_type'] . '</div><br /><br />';
 
 	if ($numrow > 0) { //the number of prices returned from the main prices query is
 		echo '<table class="selection">';
@@ -238,7 +238,7 @@ if (isset($_POST['submit']) or isset($_POST['update'])) {
 	}
 } else {
 	/*The option to submit was not hit so display form */
-	echo '<div class="page_help_text noPrint">' . _('Prices can be displayed based on their relation to cost') . '</div><br />';
+	echo '<div class="page_help_text">' . _('Prices can be displayed based on their relation to cost') . '</div><br />';
 	echo '<br />
 		  <form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
 	echo '<div>';

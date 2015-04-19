@@ -15,7 +15,7 @@ if (isset($_POST['ChangeDate'])) {
 	$ChangeDate = trim(mb_strtoupper($_GET['ChangeDate']));
 }
 
-echo '<p class="page_title_text noPrint" >
+echo '<p class="page_title_text" >
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Inventory') . '" alt="" />' . ' ' . $Title . '
 	</p>';
 

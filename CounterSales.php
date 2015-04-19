@@ -230,7 +230,7 @@ if (isset($_POST['CancelOrder'])) {
 } else {
 	/*Not cancelling the order */
 
-	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Counter Sales') . '" alt="" />' . ' ';
+	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Counter Sales') . '" alt="" />' . ' ';
 	echo $_SESSION['Items' . $Identifier]->CustomerName . ' ' . _('Counter Sale') . ' ' . _('from') . ' ' . $_SESSION['Items' . $Identifier]->LocationName . ' ' . _('inventory') . ' (' . _('all amounts in') . ' ' . $_SESSION['Items' . $Identifier]->DefaultCurrency . ')';
 	echo '</p>';
 }
@@ -2157,10 +2157,10 @@ if (!isset($_POST['ProcessSale'])) {
 						ORDER BY sales DESC
 						LIMIT " . $_SESSION['FrequentlyOrderedItems'];
 			$Result2 = DB_query($SQL);
-			echo '<p class="page_title_text noPrint">
+			echo '<p class="page_title_text">
 					<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/magnifier.png" title="', _('Search'), '" alt="" />', _('Frequently Ordered Items'), '
 				</p>';
-			echo '<div class="page_help_text noPrint">',
+			echo '<div class="page_help_text">',
 					_('Frequently Ordered Items, shows the most frequently ordered items in the last 6 months. You can choose from this list, or search further for other items'), '.
 				</div>';
 			echo '<table class="table1">
@@ -2248,12 +2248,12 @@ if (!isset($_POST['ProcessSale'])) {
 			</table>';
 		} //end of if Frequently Ordered Items > 0
 		if (isset($Msg)) {
-			echo '<div class="page_help_text noPrint"><b>', $Msg, '</b></div>';
+			echo '<div class="page_help_text"><b>', $Msg, '</b></div>';
 		}
-		echo '<p class="page_title_text noPrint">
+		echo '<p class="page_title_text">
 				<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/magnifier.png" title="', _('Search'), '" alt="" />', _('Search for Items'), '
 			</p>';
-		echo '<div class="page_help_text noPrint">
+		echo '<div class="page_help_text">
 				', _('Search for Items'), '.&nbsp;', _('Searches the database for items, you can narrow the results by selecting a stock category, or just enter a partial item description or partial item code'), '.
 			</div>';
 		echo '<table class="selection">';
@@ -2310,7 +2310,7 @@ if (!isset($_POST['ProcessSale'])) {
 
 		// Add some useful help as the order progresses
 		if (isset($SearchResult)) {
-			echo '<div class="page_help_text noPrint">', _('Select an item by entering the quantity required.  Click Order when ready.'), '</div>';
+			echo '<div class="page_help_text">', _('Select an item by entering the quantity required.  Click Order when ready.'), '</div>';
 		}
 
 
@@ -2435,7 +2435,7 @@ if (!isset($_POST['ProcessSale'])) {
 	else {
 		/* show the quick entry form variable */
 
-		echo '<div class="page_help_text noPrint">
+		echo '<div class="page_help_text">
 				<b>', _('Use this form to add items quickly if the item codes are already known'), '</b>
 			</div>';
 		if (count($_SESSION['Items' . $Identifier]->LineItems) == 0) {

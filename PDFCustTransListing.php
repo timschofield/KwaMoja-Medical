@@ -19,7 +19,7 @@ if (!isset($_POST['Date'])) {
 	include('includes/header.inc');
 
 	echo '<div class="centre">
-			<p class="page_title_text noPrint" >
+			<p class="page_title_text" >
 				<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/transactions.png" title="' . $Title . '" alt="' . $Title . '" />' . ' ' . _('Customer Transaction Listing') . '</p>';
 
 	if ($InputError == 1) {

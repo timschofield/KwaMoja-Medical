@@ -7,10 +7,10 @@ $ViewTopic = 'ARInquiries';
 $BookMark = 'ARTransInquiry';
 include('includes/header.inc');
 
-echo '<p class="page_title_text noPrint" >
+echo '<p class="page_title_text" >
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/transactions.png" title="' . _('Transaction Inquiry') . '" alt="" />' . ' ' . _('Transaction Inquiry') . '
 	</p>';
-echo '<div class="page_help_text noPrint">' . _('Choose which type of transaction to report on.') . '</div>
+echo '<div class="page_help_text">' . _('Choose which type of transaction to report on.') . '</div>
 	<br />';
 
 echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';

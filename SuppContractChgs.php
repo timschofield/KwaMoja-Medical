@@ -58,10 +58,10 @@ if (isset($_GET['Delete'])) {
 /*Show all the selected ContractRefs so far from the SESSION['SuppInv']->Contracts array */
 if ($_SESSION['SuppTrans']->InvoiceOrCredit == 'Invoice') {
 	echo '<div class="centre">
-				<p class="page_title_text noPrint" >' . _('Contract charges on Invoice') . ' ';
+				<p class="page_title_text" >' . _('Contract charges on Invoice') . ' ';
 } else {
 	echo '<div class="centre">
-				<p class="page_title_text noPrint" >' . _('Contract credits on Credit Note') . ' ';
+				<p class="page_title_text" >' . _('Contract credits on Credit Note') . ' ';
 }
 
 echo $_SESSION['SuppTrans']->SuppReference . ' ' . _('From') . ' ' . $_SESSION['SuppTrans']->SupplierName;

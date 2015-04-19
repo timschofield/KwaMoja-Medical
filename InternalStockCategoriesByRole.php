@@ -101,7 +101,7 @@ if (isset($_POST['submit'])) {
 
 if (!isset($SelectedRole)) {
 
-	echo '<p class="page_title_text noPrint">
+	echo '<p class="page_title_text">
 			<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/user.png" title="', _('Select a user role'), '" alt="" />', ' ', _('Select a user role') . '
 		</p>';
 
@@ -147,7 +147,7 @@ if (!isset($SelectedRole)) {
 if (isset($_POST['process']) or isset($SelectedRole)) {
 
 	echo '<div class="toplink"><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '">', _('Select another role'), '</a></div>';
-	echo '<p class="page_title_text noPrint">
+	echo '<p class="page_title_text">
 			<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/inventory.png" title="', _('Select a stock category'), '" alt="" />', _('Select a stock category'), '
 		</p>';
 

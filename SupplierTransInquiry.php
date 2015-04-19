@@ -4,7 +4,7 @@ include('includes/session.inc');
 $Title = _('Supplier Transactions Inquiry');
 include('includes/header.inc');
 
-echo '<p class="page_title_text noPrint" >
+echo '<p class="page_title_text" >
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/supplier.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '
 	</p>';
 

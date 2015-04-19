@@ -45,7 +45,7 @@ echo '<div class="toplink">
 		<a href="' . $RootPath . '/StockAdjustments.php?identifier=' . urlencode($Identifier) . '">' . _('Back to Adjustment Screen') . '</a>
 	</div>';
 
-echo '<p class="page_title_text noPrint" >' . _('Adjustment of controlled item') . ' ' . $LineItem->StockID . ' - ' . $LineItem->ItemDescription;
+echo '<p class="page_title_text" >' . _('Adjustment of controlled item') . ' ' . $LineItem->StockID . ' - ' . $LineItem->ItemDescription;
 
 /** vars needed by InputSerialItem : **/
 $LocationOut = $_SESSION['Adjustment' . $Identifier]->StockLocation;

@@ -32,7 +32,7 @@ if (isset($_POST['DoIt']) and IsEmailAddress($_POST['EmailAddr'])) {
 	prnMsg(_('The email address does not appear to be a valid email address. The transaction was not emailed'), 'warn');
 }
 
-echo '<p class="page_title_text noPrint">
+echo '<p class="page_title_text">
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/email.png" title="' . $Title . '" alt="" />' . $Title . '
 	</p>';
 

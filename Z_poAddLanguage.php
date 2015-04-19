@@ -23,7 +23,7 @@ echo '<div class="toplink">
 
 echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Add a New Language to the System') . '" />' . ' ' .  _('Add a New Language to the System') . '</p>';
 
-echo '<div class="page_help_text noPrint">' . _('Utility to create a new language file') . _('Current language is') . ' ' . $_SESSION['Language'] . '</div>';
+echo '<div class="page_help_text">' . _('Utility to create a new language file') . _('Current language is') . ' ' . $_SESSION['Language'] . '</div>';
 
 $DefaultLanguage = 'en_GB';// The default language is English-United Kingdom (British English).
 $PathToDefault = './locale/' . $DefaultLanguage . '/LC_MESSAGES/messages.po';

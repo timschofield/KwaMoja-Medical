@@ -197,7 +197,7 @@ if (isset($_POST['CancelReturn'])) {
 } else {
 	/*Not cancelling the return */
 
-	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Counter Return') . '" alt="" />' . ' ';
+	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Counter Return') . '" alt="" />' . ' ';
 	echo '<font color="red" size="5">' . $_SESSION['Items' . $Identifier]->CustomerName . '<br /> ' . _('Counter Return') . ' ' . _('to') . ' ' . $_SESSION['Items' . $Identifier]->LocationName . ' ' . _('inventory') . ' (' . _('all amounts in') . ' ' . $_SESSION['Items' . $Identifier]->DefaultCurrency . ')';
 	echo '</font></p>';
 }
@@ -205,11 +205,11 @@ if (isset($_POST['CancelReturn'])) {
 if (isset($_POST['Search']) or isset($_POST['Next']) or isset($_POST['Prev'])) {
 
 	if ($_POST['Keywords'] != '' and $_POST['StockCode'] == '') {
-		$Msg = '<div class="page_help_text noPrint">' . _('Item description has been used in search') . '.</div>';
+		$Msg = '<div class="page_help_text">' . _('Item description has been used in search') . '.</div>';
 	} else if ($_POST['StockCode'] != '' and $_POST['Keywords'] == '') {
-		$Msg = '<div class="page_help_text noPrint">' . _('Item Code has been used in search') . '.</div>';
+		$Msg = '<div class="page_help_text">' . _('Item Code has been used in search') . '.</div>';
 	} else if ($_POST['Keywords'] == '' and $_POST['StockCode'] == '') {
-		$Msg = '<div class="page_help_text noPrint">' . _('Stock Category has been used in search') . '.</div>';
+		$Msg = '<div class="page_help_text">' . _('Stock Category has been used in search') . '.</div>';
 	}
 	if (isset($_POST['Keywords']) and mb_strlen($_POST['Keywords']) > 0) {
 		//insert wildcard characters in spaces
@@ -1701,10 +1701,10 @@ if (!isset($_POST['ProcessReturn'])) {
 	if (isset($_POST['PartSearch']) and $_POST['PartSearch'] != '') {
 
 		echo '<input type="hidden" name="PartSearch" value="', _('Yes Please'), '" />';
-		echo '<p class="page_title_text noPrint" >
+		echo '<p class="page_title_text" >
 				<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/magnifier.png" title="', _('Search'), '" alt="" />', ' ', _('Search for Items'), '
 			</p>';
-		echo '<div class="page_help_text noPrint">
+		echo '<div class="page_help_text">
 				', _('Search for Items'), '. ', _('Searches the database for items, you can narrow the results by selecting a stock category, or just enter a partial item description or partial item code'), '.
 			</div>';
 
@@ -1759,7 +1759,7 @@ if (!isset($_POST['ProcessReturn'])) {
 		';
 		// Add some useful help as the order progresses
 		if (isset($SearchResult)) {
-			echo '<div class="page_help_text noPrint">', _('Select an item by entering the quantity required. Click Return when ready.'), '</div>';
+			echo '<div class="page_help_text">', _('Select an item by entering the quantity required. Click Return when ready.'), '</div>';
 		}
 
 
@@ -1887,7 +1887,7 @@ if (!isset($_POST['ProcessReturn'])) {
 	} else {
 		/* show the quick entry form variable */
 
-		echo '<div class="page_help_text noPrint"><b>', _('Use this form to add return items quickly if the item codes are already known'), '</b></div>
+		echo '<div class="page_help_text"><b>', _('Use this form to add return items quickly if the item codes are already known'), '</b></div>
 		 		<table>
 					<tr>
 						<th>', _('Item Code'), '</th>

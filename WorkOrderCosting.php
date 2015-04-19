@@ -15,7 +15,7 @@ if (isset($_GET['WO'])) {
 }
 
 echo '<div class="toplink"><a href="' . $RootPath . '/SelectWorkOrder.php">' . _('Back to Work Orders') . '</a></div>
-	<p class="page_title_text noPrint" >
+	<p class="page_title_text" >
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '
 	</p>';
 

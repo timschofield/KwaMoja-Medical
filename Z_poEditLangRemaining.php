@@ -27,7 +27,7 @@ if ($_SESSION['Language'] == 'en_GB.utf8') {
 }
 $PathToNewLanguage = './locale/' . $_SESSION['Language'] . '/LC_MESSAGES/messages.po.new';
 
-echo '<div class="page_help_text noPrint">' .
+echo '<div class="page_help_text">' .
 		_('Utility to edit a language file module') . _('Current language is') . ' ' . $_SESSION['Language'] .
 		_('When finished modifying you must click on Modify at the bottom in order to save changes') .
 	'</div>';

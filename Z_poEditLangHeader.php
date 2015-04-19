@@ -15,7 +15,7 @@ echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $_SE
 
 /* Your webserver user MUST have read/write access to here, otherwise you'll be wasting your time */
 
-echo '<div class="page_help_text noPrint">' . _('Utility to edit a language file header') . ' - ' . _('Current language is') . ' ' . $_SESSION['Language'] . '</div>';
+echo '<div class="page_help_text">' . _('Utility to edit a language file header') . ' - ' . _('Current language is') . ' ' . $_SESSION['Language'] . '</div>';
 
 if ($_SESSION['Language'] == 'en_GB.utf8') {
 	$PathToLanguage = './locale/' . $_SESSION['Language'] . '/LC_MESSAGES/messages.pot';

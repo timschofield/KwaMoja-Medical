@@ -4,7 +4,7 @@ include('includes/session.inc');
 $Title = _('Shipments Open Inquiry');
 include('includes/header.inc');
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/supplier.png" title="' . _('Supplier') . '" alt="" />' . ' ' . _('Open Shipments for') . ' ' . $_GET['SupplierName'] . '.</p>';
+echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/supplier.png" title="' . _('Supplier') . '" alt="" />' . ' ' . _('Open Shipments for') . ' ' . $_GET['SupplierName'] . '.</p>';
 
 if (!isset($_GET['SupplierID']) or !isset($_GET['SupplierName'])) {
 	echo '<br />';

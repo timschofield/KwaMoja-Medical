@@ -88,7 +88,7 @@ if (!isset($OrderNumber) or $OrderNumber == '') {
 		echo '<div class="toplink"><a href="' . $RootPath . '/PO_Header.php?NewOrder=Yes">' . _('Add Purchase Order') . '</a></div>';
 	}
 
-	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title;
+	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title;
 	if (isset($SelectedSupplier)) {
 		echo ' ' . _('for Supplier') . ': ' . $SelectedSupplier;
 		echo '<input type="hidden" name="SelectedSupplier" value="' . $SelectedSupplier . '" />';
@@ -188,7 +188,7 @@ if (!isset($OrderNumber) or $OrderNumber == '') {
 $SQL = "SELECT categoryid, categorydescription FROM stockcategory ORDER BY categorydescription";
 $Result1 = DB_query($SQL);
 
-echo '<div class="page_help_text noPrint">' . _('To search for purchase orders for a specific part use the part selection facilities below') . '</div>';
+echo '<div class="page_help_text">' . _('To search for purchase orders for a specific part use the part selection facilities below') . '</div>';
 
 if (!isset($_POST['StockCode'])) {
 	$_POST['StockCode'] = '';

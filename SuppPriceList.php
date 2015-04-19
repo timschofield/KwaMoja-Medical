@@ -204,8 +204,8 @@ if (isset($_POST['PrintPDF'])) {
 
 	$Title = _('Supplier Price List');
 	include('includes/header.inc');
-	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Purchase') . '" alt="" />' . ' ' . _('Supplier Price List') . '</p>';
-	echo '<div class="page_help_text noPrint">' . _('View the Price List from supplier') . '</div><br />';
+	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Purchase') . '" alt="" />' . ' ' . _('Supplier Price List') . '</p>';
+	echo '<div class="page_help_text">' . _('View the Price List from supplier') . '</div><br />';
 
 	echo '<br/>
 		<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';

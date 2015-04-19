@@ -4,7 +4,7 @@ include('includes/session.inc');
 $Title = _('User Settings');
 include('includes/header.inc');
 
-echo '<p class="page_title_text noPrint" ><img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/user.png" title="', _('User Settings'), '" alt="" />', ' ', _('User Settings'), '</p>';
+echo '<p class="page_title_text" ><img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/user.png" title="', _('User Settings'), '" alt="" />', ' ', _('User Settings'), '</p>';
 
 $PDFLanguages = array(
 	_('Latin Western Languages - Times'),

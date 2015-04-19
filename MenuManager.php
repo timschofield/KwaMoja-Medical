@@ -12,7 +12,7 @@ if (!isset($_POST['SecurityRole'])) {
 				FROM securityroles";
 	$RoleResult = DB_query($RoleSQL);
 
-	echo '<p class="page_title_text noPrint" >
+	echo '<p class="page_title_text" >
 			<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Select a Security Role to work with') . '" alt="' . _('Select a Security Role to work with') . '" />' . ' ' . _('Select a Security Role to work with') . '
 		</p>';
 
@@ -37,7 +37,7 @@ if (!isset($_POST['SecurityRole'])) {
 	$RoleResult = DB_query($RoleSQL);
 	$RoleRow = DB_fetch_array($RoleResult);
 
-	echo '<p class="page_title_text noPrint" >
+	echo '<p class="page_title_text" >
 			<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Maintian Menus for Role') . ' - ' . $RoleRow['secrolename'] . '" alt="' . _('Maintian Menus for Role') . ' - ' . $RoleRow['secrolename'] . '" />' . ' ' . _('Maintian Menus for Role') . ' - ' . $RoleRow['secrolename'] . '
 		</p>';
 

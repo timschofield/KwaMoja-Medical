@@ -562,7 +562,7 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 		echo '<form onSubmit="return VerifyForm(this);" action="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '" method="post">';
 		echo '<input type="hidden" name="FormID" value="', $_SESSION['FormID'], '" />';
 
-		echo '<p class="page_title_text noPrint">
+		echo '<p class="page_title_text">
 				<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/printer.png" title="', _('Print'), '" alt="" />', ' ', _('Print Invoices or Credit Notes (Landscape Mode)'), '
 			</p>';
 		echo '<table class="table1">
@@ -644,7 +644,7 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 		$Result = DB_query($SQL);
 		$MyRow = DB_fetch_row($Result);
 
-		echo '<div class="page_help_text noPrint">
+		echo '<div class="page_help_text">
 				<b>', _('The last invoice created was number'), ' ', $MyRow[0], '</b>
 				<br />', _('If only a single invoice is required'), ', ', _('enter the invoice number to print in the Start transaction number to print field and leave the End transaction number to print field blank'), '. ', _('Only use the end invoice to print field if you wish to print a sequential range of invoices');
 

@@ -32,7 +32,7 @@ if (isset($_POST['Period'])) {
 	$SelectedPeriod = $_POST['Period'];
 }
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/transactions.png" title="' . _('General Ledger Account Inquiry') . '" alt="' . _('General Ledger Account Inquiry') . '" />' . ' ' . _('General Ledger Account Inquiry') . '</p>';
+echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/transactions.png" title="' . _('General Ledger Account Inquiry') . '" alt="' . _('General Ledger Account Inquiry') . '" />' . ' ' . _('General Ledger Account Inquiry') . '</p>';
 
 if (isset($SelectedAccount) and $_SESSION['CompanyRecord']['retainedearnings'] == $SelectedAccount) {
 	prnMsg(_('The retained earnings account is managed separately by the system, and therefore cannot be inquired upon. See manual for details'), 'info');
@@ -41,7 +41,7 @@ if (isset($SelectedAccount) and $_SESSION['CompanyRecord']['retainedearnings'] =
 	exit;
 }
 
-echo '<div class="page_help_text noPrint">' . _('Use the keyboard Shift key to select multiple periods') . '</div>';
+echo '<div class="page_help_text">' . _('Use the keyboard Shift key to select multiple periods') . '</div>';
 
 echo '<form onSubmit="return VerifyForm(this);" method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -187,7 +187,7 @@ if (isset($_POST['Show'])) {
 			<tr>
 				<th colspan="8">
 					<b>', _('Transactions for account'), ' ', $SelectedAccount, ' - ', $SelectedAccountName, '</b>
-					<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/printer.png" class="PrintIcon noPrint" title="', _('Print'), '" alt="', _('Print'), '" onclick="window.print();" />
+					<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/printer.png" class="PrintIcon" title="', _('Print'), '" alt="', _('Print'), '" onclick="window.print();" />
 				</th>
 			</tr>
 			<tr>

@@ -405,7 +405,7 @@ if (isset($_POST['PlacePO'])) {
 
 /*To the sales order selection form */
 
-echo '<p class="page_title_text noPrint">
+echo '<p class="page_title_text">
 		<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/sales.png" title="', _('Sales'), '" alt="" />', '&nbsp;', _('Outstanding Sales Orders'), '
 	</p> ';
 

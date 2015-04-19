@@ -7,7 +7,7 @@ include('includes/session.inc');
 $Title = _('Reorder Level Location Reporting');
 include('includes/header.inc');
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Inventory') . '" alt="" />' . ' ' . _('Inventory Reorder Level Location Report') . '</p>';
+echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Inventory') . '" alt="" />' . ' ' . _('Inventory Reorder Level Location Report') . '</p>';
 
 
 //update database if update pressed
@@ -63,8 +63,8 @@ if (isset($_POST['submit']) or isset($_POST['Update'])) {
 	$ResultLocation = DB_query($SqlLoc);
 	$Location = DB_fetch_array($ResultLocation);
 
-	echo '<p class="page_title_text noPrint" ><strong>' . _('Location : ') . '' . $Location['locationname'] . ' </strong></p>';
-	echo '<p class="page_title_text noPrint" ><strong>' . _('Number Of Days Sales : ') . '' . locale_number_format($_POST['NumberOfDays'], 0) . '' . _(' Days ') . ' </strong></p>';
+	echo '<p class="page_title_text" ><strong>' . _('Location : ') . '' . $Location['locationname'] . ' </strong></p>';
+	echo '<p class="page_title_text" ><strong>' . _('Number Of Days Sales : ') . '' . locale_number_format($_POST['NumberOfDays'], 0) . '' . _(' Days ') . ' </strong></p>';
 	$k = 0; //row colour counter
 	echo '<form onSubmit="return VerifyForm(this);" action="ReorderLevelLocation.php" method="post" id="Update">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -151,7 +151,7 @@ if (isset($_POST['submit']) or isset($_POST['Update'])) {
 	/*The option to submit was not hit so display form */
 
 
-	echo '<div class="page_help_text noPrint">' . _('Use this report to display the reorder levels for Inventory items in different categories.') . '</div>';
+	echo '<div class="page_help_text">' . _('Use this report to display the reorder levels for Inventory items in different categories.') . '</div>';
 
 	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';

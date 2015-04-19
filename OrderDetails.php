@@ -50,7 +50,7 @@ $DbgMsg = _('The SQL that failed to get the order header was');
 $GetOrdHdrResult = DB_query($OrderHeaderSQL, $ErrMsg, $DbgMsg);
 
 if (DB_num_rows($GetOrdHdrResult) == 1) {
-	echo '<p class="page_title_text noPrint" >
+	echo '<p class="page_title_text" >
 			<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/supplier.png" title="' . _('Order Details') . '" alt="" />' . ' ' . $Title . '
 		</p>';
 

@@ -56,18 +56,18 @@ if (isset($_POST['ShowReport'])) {
 	$Title = _('Outstanding GRNs Report');
 	include('includes/header.inc');
 
-	echo '<p class="page_title_text noPrint"  align="center">
+	echo '<p class="page_title_text"  align="center">
 			<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Goods Received but not invoiced Yet') . '" alt="" />' . _('Goods Received but not invoiced Yet') . '
 		</p>';
 
-	echo '<div class="page_help_text noPrint">' . _('Shows the list of goods received not yet invoiced, both in supplier currency and home currency. When run for all suppliers, the total in home curency should match the GL Account for Goods received not invoiced.') . '</div>';
+	echo '<div class="page_help_text">' . _('Shows the list of goods received not yet invoiced, both in supplier currency and home currency. When run for all suppliers, the total in home curency should match the GL Account for Goods received not invoiced.') . '</div>';
 
 	echo '<table class="selection">
 			<thead>
 				<tr>
 					<th colspan="14">
 						<b>' . _('Outstanding GRN report') . '</b>
-						<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/printer.png" class="PrintIcon noPrint" title="' . _('Print') . '" alt="' . _('Print') . '" onclick="window.print();" />
+						<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/printer.png" class="PrintIcon" title="' . _('Print') . '" alt="' . _('Print') . '" onclick="window.print();" />
 					</th>
 				</tr>
 				<tr>
@@ -133,11 +133,11 @@ if (isset($_POST['ShowReport'])) {
 	$Title = _('Outstanding GRNs Report');
 	include('includes/header.inc');
 
-	echo '<p class="page_title_text noPrint"  align="center">
+	echo '<p class="page_title_text"  align="center">
 			<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . $Title . '" alt="" />' . $Title . '
 		</p>';
 
-	echo '<div class="page_help_text noPrint">' . _('Shows the list of goods received not yet invoiced, both in supplier currency and home currency. When run for all suppliers the total in home curency should match the GL Account for Goods received not invoiced.') . '</div>';
+	echo '<div class="page_help_text">' . _('Shows the list of goods received not yet invoiced, both in supplier currency and home currency. When run for all suppliers the total in home curency should match the GL Account for Goods received not invoiced.') . '</div>';
 
 	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';

@@ -8,7 +8,7 @@ echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION[
 echo '<div class="page_help_text">' . _('Select the month to show daily sales for') . '</div>
 	<br />';
 
-echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
+echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 if (!isset($_POST['MonthToShow'])) {
@@ -18,7 +18,7 @@ if (!isset($_POST['MonthToShow'])) {
 	$EndDateSQL = $MyRow['lastdate_in_period'];
 }
 
-echo '<div class="centre"><table class="selection">
+echo '<table class="selection">
 		<tr>
 			<td>' . _('Month to Show') . ':</td>
 			<td><select minlength="0" tabindex="1" name="MonthToShow">';

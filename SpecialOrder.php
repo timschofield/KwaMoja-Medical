@@ -16,7 +16,7 @@ if (empty($_GET['identifier'])) {
 	$Identifier = $_GET['identifier'];
 }
 
-echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?identifier=' . $Identifier) . '" method="post" class="noPrint">';
+echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?identifier=' . $Identifier) . '" method="post">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 if (isset($_GET['NewSpecial']) and $_GET['NewSpecial'] == 'yes') {

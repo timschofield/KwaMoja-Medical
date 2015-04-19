@@ -229,7 +229,7 @@ echo '<table width="100%">
 if ($CustomerRecord['dissallowinvoices'] != 0) {
 	echo '<br /><font color="red" size="4"><b>', _('ACCOUNT ON HOLD'), '</font></b><br />';
 }
-echo '<form onSubmit="return VerifyForm(this);" action="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '" method="post" class="noPrint">
+echo '<form onSubmit="return VerifyForm(this);" action="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '" method="post">
 		<input type="hidden" name="FormID" value="', $_SESSION['FormID'], '" />';
 echo _('Show all transactions after'), ':<input tabindex="1" type="text" required="required" class="date" alt="', $_SESSION['DefaultDateFormat'], '" id="datepicker" name="TransAfterDate" value="', $_POST['TransAfterDate'], '" minlength="0" maxlength="10" size="12" />';
 

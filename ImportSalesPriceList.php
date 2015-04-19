@@ -144,7 +144,7 @@ if (isset($_FILES['PriceListFile']) and $_FILES['PriceListFile']['name']) { //st
 
 } else { //show file upload form
 
-	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint" enctype="multipart/form-data">';
+	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" enctype="multipart/form-data">';
 	echo '<div class="centre">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<div class="page_help_text">' . _('This function loads a new sales price list from a comma separated variable (csv) file.') . '<br />' . _('The file must contain four columns, and the first row should be the following headers') . ':<br />StockID, SalesType, CurrencyCode, Price<br />' . _('followed by rows containing these four fields for each price to be uploaded.') . '<br />' . _('The StockID, SalesType, and CurrencyCode fields must have a corresponding entry in the stockmaster, salestypes, and currencies tables.') . '</div>';

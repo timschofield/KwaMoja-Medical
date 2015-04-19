@@ -24,7 +24,7 @@ if (!isset($_POST['Show'])) {
 	$AccountsResults = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 	echo '<p class="page_title_text">
-			<img alt="" class="noPrint" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/bank.png" title="', _('Bank Transactions Inquiry'), '" />', _('Bank Transactions Inquiry'), '
+			<img alt="" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/bank.png" title="', _('Bank Transactions Inquiry'), '" />', _('Bank Transactions Inquiry'), '
 		</p>';// Page title.
 
 	echo '<form action="', htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8'), '" method="post">';
@@ -119,13 +119,13 @@ if (!isset($_POST['Show'])) {
 	$Result = DB_query($SQL);
 	if (DB_num_rows($Result) == 0) {
 		echo '<p class="page_title_text">
-				<img alt="" class="noPrint" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/bank.png" title="', _('Bank Transactions Inquiry'),  '" />', _('Bank Transactions Inquiry'), '
+				<img alt="" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/bank.png" title="', _('Bank Transactions Inquiry'),  '" />', _('Bank Transactions Inquiry'), '
 			</p>';// Page title.
 		prnMsg(_('There are no transactions for this account in the date range selected'), 'info');
 	} else {
 		$BankDetailRow = DB_fetch_array($BankResult);
 		echo '<p class="page_title_text">
-				<img alt="" class="noPrint" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/bank.png" title="', _('Bank Transactions Inquiry'), '" />',
+				<img alt="" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/bank.png" title="', _('Bank Transactions Inquiry'), '" />',
 					_('Account Transactions For'),' ',
 					$BankDetailRow['bankaccountname'], ' ',
 					_('Between'), ' ', $_POST['FromTransDate'], ' ', _('and'), ' ', $_POST['ToTransDate'], '
@@ -180,7 +180,7 @@ if (!isset($_POST['Show'])) {
 		echo '</table>';
 	} //end if no bank trans in the range to show
 
-	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
+	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
 	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<br /><div class="centre"><input type="submit" name="Return" value="' . _('Select Another Date') . '" /></div>';

@@ -525,7 +525,7 @@ if (isset($SelectedCustomer)) {
 if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Identifier]->DebtorNo) or $_SESSION['Items' . $Identifier]->DebtorNo == '') {
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Enter an Order or Quotation') . ' : ' . _('Search for the Customer Branch.') . '</p>';
 	echo '<div class="page_help_text noPrint">' . _('Orders/Quotations are placed against the Customer Branch. A Customer may have several Branches.') . '</div>';
-	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '" method="post" class="noPrint">
+	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '" method="post">
 			 <input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
 			 <table cellpadding="3" class="selection">
 				<tr>
@@ -732,7 +732,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 
 	//Always do the stuff below if not looking for a customerid
 
-	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '" id="SelectParts" method="post" class="noPrint">';
+	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '" id="SelectParts" method="post">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	//Get The exchange rate used for GPPercent calculations on adding or amending items
@@ -1740,7 +1740,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 	} //end of if it is a Quick Entry screen/part search or asset selection form to display
 
 	if ($_SESSION['Items' . $Identifier]->ItemsOrdered >= 1) {
-		echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '" method="post" class="noPrint" name="deleteform">';
+		echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '" method="post" name="deleteform">';
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 		echo '<div class="centre">
 				<input type="submit" name="CancelOrder" value="' . _('Cancel Whole Order') . '" onclick="return MakeConfirm(\'' . _('Are you sure you wish to cancel this entire order?') . '\');" />

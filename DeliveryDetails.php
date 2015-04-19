@@ -852,7 +852,7 @@ echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_
 echo '</b>&nbsp;' . _('Customer Name') . ' :<b> ' . $_SESSION['Items' . $Identifier]->CustomerName . '</b></p>';
 
 
-echo '<form onSubmit="return VerifyForm(this);" action="' . $_SERVER['PHP_SELF'] . '?identifier=' . $Identifier . '" method="post" class="noPrint">';
+echo '<form onSubmit="return VerifyForm(this);" action="' . $_SERVER['PHP_SELF'] . '?identifier=' . $Identifier . '" method="post">';
 echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 

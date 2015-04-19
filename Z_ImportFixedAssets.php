@@ -283,7 +283,7 @@ if ($_FILES['SelectedAssetFile']['name']) { //start file processing
 		<br />
 		<br />
 	';
-	echo '<form onSubmit="return VerifyForm(this);" enctype="multipart/form-data" action="Z_ImportFixedAssets.php" method="post" class="noPrint">';
+	echo '<form onSubmit="return VerifyForm(this);" enctype="multipart/form-data" action="Z_ImportFixedAssets.php" method="post">';
 	echo '<div class="centre">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 

@@ -228,7 +228,7 @@ if (!isset($_SESSION['tender' . $Identifier]) or isset($_POST['LookupDeliveryAdd
 	if (!isset($_SESSION['tender' . $Identifier]->RequiredByDate)) {
 		$_SESSION['tender' . $Identifier]->RequiredByDate = FormatDateForSQL(date($_SESSION['DefaultDateFormat']));
 	}
-	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '" method="post" class="noPrint">';
+	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '" method="post">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table class="selection">';
 	echo '<tr>
@@ -467,7 +467,7 @@ if (!isset($_SESSION['tender' . $Identifier]) or isset($_POST['LookupDeliveryAdd
 }
 
 if (isset($_POST['Suppliers'])) {
-	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?identifier=' . $Identifier, ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
+	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?identifier=' . $Identifier, ENT_QUOTES, 'UTF-8') . '" method="post">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Search for Suppliers') . '</p>
 		<table cellpadding="3" class="selection">
@@ -490,7 +490,7 @@ if (isset($_POST['Suppliers'])) {
 }
 
 if (isset($_POST['SearchSupplier']) or isset($_POST['Go']) or isset($_POST['Next']) or isset($_POST['Previous'])) {
-	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?identifier=' . urlencode($Identifier), ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
+	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?identifier=' . urlencode($Identifier), ENT_QUOTES, 'UTF-8') . '" method="post">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	if (!isset($_POST['PageOffset'])) {
 		$_POST['PageOffset'] = 0;
@@ -601,7 +601,7 @@ if (isset($_POST['SearchSupplier'])) {
 /*The supplier has chosen option 2
  */
 if (isset($_POST['Items'])) {
-	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?identifier=' . $Identifier, ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint">';
+	echo '<form onSubmit="return VerifyForm(this);" action="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?identifier=' . $Identifier, ENT_QUOTES, 'UTF-8') . '" method="post">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Search for Inventory Items') . '</p>';
 	$SQL = "SELECT categoryid,
@@ -662,7 +662,7 @@ if (isset($_POST['Items'])) {
 
 if (isset($_POST['Search'])) {
 	/*ie seach for stock items */
-	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?identifier=' . $Identifier, ENT_QUOTES, 'UTF-8') . '">';
+	echo '<form onSubmit="return VerifyForm(this);" method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?identifier=' . $Identifier, ENT_QUOTES, 'UTF-8') . '">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/supplier.png" title="' . _('Tenders') . '" alt="" />' . ' ' . _('Select items required on this tender') . '</p>';
 

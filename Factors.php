@@ -194,7 +194,7 @@ if (isset($FactorID) and isset($_POST['Amend'])) {
 if (isset($_POST['Amend']) or isset($_POST['Create'])) {
 	// its a new factor being added
 
-	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
+	echo '<form onSubmit="return VerifyForm(this);" method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<input type="hidden" name="FactorID" value="' . $FactorID . '" />
 		<input type="hidden" name="New" value="Yes" />
@@ -267,7 +267,7 @@ option to create a new one*/
 
 if (empty($FactorID) and !isset($_POST['Create']) and !isset($_POST['Amend'])) {
 
-	echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
+	echo '<form onSubmit="return VerifyForm(this);" method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	echo '<input type="hidden" name="New" value="No" />';

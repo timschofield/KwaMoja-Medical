@@ -163,7 +163,7 @@ if (isset($_POST['Submit'])) { //start file processing
 
 } else { //show file upload form
 
-	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" class="noPrint" enctype="multipart/form-data">';
+	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" enctype="multipart/form-data">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	$FilesToImport = glob('companies/' . $_SESSION['DatabaseName'] . '/pbx-data/*.as');
 	if (sizeof($FilesToImport) > 0) {

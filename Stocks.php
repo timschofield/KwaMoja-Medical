@@ -888,7 +888,7 @@ if (isset($_POST['submit'])) {
 }
 
 
-echo '<form onSubmit="return VerifyForm(this);" id="ItemForm" enctype="multipart/form-data" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
+echo '<form onSubmit="return VerifyForm(this);" id="ItemForm" enctype="multipart/form-data" method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
 	<input type="hidden" name="New" value="' . $New . '" />
 	<table class="selection">';

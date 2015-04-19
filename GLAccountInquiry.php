@@ -43,7 +43,7 @@ if (isset($SelectedAccount) and $_SESSION['CompanyRecord']['retainedearnings'] =
 
 echo '<div class="page_help_text noPrint">' . _('Use the keyboard Shift key to select multiple periods') . '</div>';
 
-echo '<form onSubmit="return VerifyForm(this);" method="post" class="noPrint" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
+echo '<form onSubmit="return VerifyForm(this);" method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 /* Get the start and periods, depending on how this script was called*/

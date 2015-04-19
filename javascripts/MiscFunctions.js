@@ -286,56 +286,6 @@ function changeDate() {
 	isDate(this.value, this.alt)
 }
 
-function VerifyForm(e) {
-	Clean = true;
-	Alert = "";
-	for (var t = 0, n = e.length; t < n; t++) {
-		if (e.elements[t].type == "text") {
-			var r = document.getElementsByName(e.elements[t].name);
-			Class = r[0].getAttribute("class");
-			if (r[0].getAttribute("minlength") > e.elements[t].value.length) {
-				if (e.elements[t].value.length == 0) {
-					Alert = Alert + "You must input a value in the field " + r[0].getAttribute("name") + "<br />"
-				} else {
-					Alert = Alert + r[0].getAttribute("name") + " field must be at least " + r[0].getAttribute("minlength") + " characters long" + "<br />"
-				}
-				r[0].className = Class + " inputerror";
-				Clean = false
-			} else {
-				r[0].className = Class
-			}
-		}
-		if (e.elements[t].type == "select-one") {
-			Class = e.elements[t].getAttribute("class");
-			if (e.elements[t].getAttribute("minlength") > 0 && e.elements[t].value.length == 0) {
-				Alert = Alert + "You must make a selection in the field " + e.elements[t].getAttribute("name") + "<br />";
-				e.elements[t].className = Class + " inputerror";
-				Clean = false
-			}
-		}
-		if (e.elements[t].type == "password") {
-			Class = e.elements[t].getAttribute("class");
-			if (e.elements[t].getAttribute("minlength") > 0 && e.elements[t].value.length == 0) {
-				Alert = Alert + "You must make a selection in the field " + e.elements[t].getAttribute("name") + "<br />";
-				e.elements[t].className = Class + " inputerror";
-				Clean = false
-			}
-		}
-		if (e.elements[t].type == "email") {
-			Class = e.elements[t].getAttribute("class");
-			if (e.elements[t].value.length > 0 && !validateEmail(e.elements[t].value)) {
-				Alert = Alert + "You have not entered a valid email address <br />";
-				e.elements[t].className = Class + " inputerror";
-				Clean = false
-			}
-		}
-	}
-	if (Alert != "") {
-		makeAlert(Alert, "Input Error")
-	}
-	return Clean
-}
-
 function SortSelect() {
 	selElem = this;
 	var e = new Array;

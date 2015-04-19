@@ -19,7 +19,7 @@ echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />'
 
 echo '<table class="selection">
 	 <tr>
-		 <td>' . _('From Stock Location') . ':</td><td><select minlength="0" name="StockLocation">';
+		 <td>' . _('From Stock Location') . ':</td><td><select name="StockLocation">';
 
 $SQL = "SELECT locationname,
 				locations.loccode
@@ -63,7 +63,7 @@ if (DB_num_rows($Result1) == 0) {
 
 echo '<tr>
 		<td>' . _('In Stock Category') . ':</td>
-		<td><select required="required" minlength="1" name="StockCat">';
+		<td><select required="required" name="StockCat">';
 if (!isset($_POST['StockCat'])) {
 	$_POST['StockCat'] = 'All';
 }
@@ -84,7 +84,7 @@ echo '</select></td></tr>';
 
 echo '<tr>
 		<td>' . _('Shown Only Items Where') . ':</td>
-		<td><select required="required" minlength="1" name="BelowReorderQuantity">';
+		<td><select required="required" name="BelowReorderQuantity">';
 if (!isset($_POST['BelowReorderQuantity'])) {
 	$_POST['BelowReorderQuantity'] = 'All';
 }

@@ -370,7 +370,7 @@ if (!isset($_GET['delete'])) {
 		}
 		echo '<tr>
 				<td>' . _('Column Number') . ':</td>
-				<td><input type="text" class="number" name="ColID" size="3" minlength="0" maxlength="3" value="' . $_POST['ColID'] . '" />&nbsp;(' . _('A number between 1 and 10 is expected') . ')</td>
+				<td><input type="text" class="number" name="ColID" size="3" maxlength="3" value="' . $_POST['ColID'] . '" />&nbsp;(' . _('A number between 1 and 10 is expected') . ')</td>
 			</tr>';
 	}
 	if (!isset($_POST['Heading1'])) {
@@ -378,18 +378,18 @@ if (!isset($_GET['delete'])) {
 	}
 	echo '<tr>
 			<td>' . _('Heading line 1') . ':</td>
-			<td><input type="text" size="16" minlength="0" maxlength="15" name="Heading1" value="' . $_POST['Heading1'] . '" /></td>
+			<td><input type="text" size="16" maxlength="15" name="Heading1" value="' . $_POST['Heading1'] . '" /></td>
 		</tr>';
 	if (!isset($_POST['Heading2'])) {
 		$_POST['Heading2'] = '';
 	}
 	echo '<tr>
 			<td>' . _('Heading line 2') . ':</td>
-			<td><input type="text" size="16" minlength="0" maxlength="15" name="Heading2" value="' . $_POST['Heading2'] . '" /></td>
+			<td><input type="text" size="16" maxlength="15" name="Heading2" value="' . $_POST['Heading2'] . '" /></td>
 		</tr>';
 	echo '<tr>
 			<td>' . _('Calculation') . ':</td>
-			<td><select minlength="0" name="Calculation">';
+			<td><select name="Calculation">';
 	if (!isset($_POST['Calculation'])) {
 		$_POST['Calculation'] = 0;
 	}
@@ -408,7 +408,7 @@ if (!isset($_GET['delete'])) {
 
 		echo '<tr>
 				<td>' . _('From Period') . ':</td>
-				<td><select minlength="0" name="PeriodFrom">';
+				<td><select name="PeriodFrom">';
 		$SQL = "SELECT periodno, lastdate_in_period FROM periods ORDER BY periodno DESC";
 		$ErrMsg = _('Could not load periods table');
 		$Result = DB_query($SQL, $ErrMsg);
@@ -424,7 +424,7 @@ if (!isset($_GET['delete'])) {
 
 		echo '<tr>
 				<td>' . _('ToPeriod') . ':</td>
-				<td><select minlength="0" name="PeriodTo">';
+				<td><select name="PeriodTo">';
 		$SQL = "SELECT periodno, lastdate_in_period FROM periods ORDER BY periodno DESC";
 		$ErrMsg = _('Could not load periods table');
 		$Result = DB_query($SQL, $ErrMsg);
@@ -440,13 +440,13 @@ if (!isset($_GET['delete'])) {
 
 		echo '<tr>
 				<td>' . _('Data to show') . ':</td>
-				<td><select minlength="0" name="DataType">';
+				<td><select name="DataType">';
 		DataOptions($_POST['DataType']);
 		echo '</select></td>
 			</tr>';
 		echo '<tr>
 				<td>' . _('Budget or Actual') . ':</td>
-				<td><select minlength="0" name="BudgetOrActual">';
+				<td><select name="BudgetOrActual">';
 		if ($_POST['BudgetOrActual'] == 0) {
 			echo '<option selected="selected" value="0">' . _('Budget') . '</option>';
 			echo '<option value="1">' . _('Actual') . '</option>';
@@ -467,15 +467,15 @@ if (!isset($_GET['delete'])) {
 
 		echo '<tr>
 				<td>' . _('Numerator Column') . ' #:</td>
-				<td><input type="text" size="4" minlength="0" maxlength="3" name="ColNumerator" value="' . $_POST['ColNumerator'] . '" /></td>
+				<td><input type="text" size="4" maxlength="3" name="ColNumerator" value="' . $_POST['ColNumerator'] . '" /></td>
 			</tr>';
 		echo '<tr>
 				<td>' . _('Denominator Column') . ' #:</td>
-				<td><input type="text" size="4" minlength="0" maxlength="3" name="ColDenominator" value="' . $_POST['ColDenominator'] . '" /></td>
+				<td><input type="text" size="4" maxlength="3" name="ColDenominator" value="' . $_POST['ColDenominator'] . '" /></td>
 			</tr>';
 		echo '<tr>
 				<td>' . _('Calculation Operator') . ':</td>
-				<td><select minlength="0" name="CalcOperator">';
+				<td><select name="CalcOperator">';
 		if ($_POST['CalcOperator'] == '/') {
 			echo '<option selected="selected" value="/">' . _('Numerator Divided By Denominator') . '</option>';
 		} else {
@@ -506,11 +506,11 @@ if (!isset($_GET['delete'])) {
 			</tr>';
 		echo '<tr>
 				<td>' . _('Constant') . ':</td>
-				<td><input type="text" size="10" minlength="0" maxlength="10" name="Constant" value="' . $_POST['Constant'] . '" /></td>
+				<td><input type="text" size="10" maxlength="10" name="Constant" value="' . $_POST['Constant'] . '" /></td>
 			</tr>';
 		echo '<tr>
 				<td>' . _('Format Type') . ':</td>
-				<td><select minlength="0" name="ValFormat">';
+				<td><select name="ValFormat">';
 		if ($_POST['ValFormat'] == 'N') {
 			echo '<option selected="selected" value="N">' . _('Numeric') . '</option>';
 			echo '<option value="P">' . _('Percentage') . '</option>';

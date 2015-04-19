@@ -34,10 +34,10 @@ if (!isset($_POST['ToPeriod']) or $_POST['ToPeriod'] == '') {
 
 echo '<tr>
 			<td>' . _('Start Period') . ':</td>
-			<td><select minlength="0" name="FromPeriod">';
+			<td><select name="FromPeriod">';
 
 $ToSelect = '<tr><td>' . _('End Period') . ':</td>
-					<td><select minlength="0" name="ToPeriod">';
+					<td><select name="ToPeriod">';
 
 $SQL = "SELECT periodno, lastdate_in_period FROM periods ORDER BY periodno";
 $perResult = DB_query($SQL);

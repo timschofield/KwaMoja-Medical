@@ -247,7 +247,7 @@ if (!isset($_POST['GroupName'])) {
 }
 echo '<tr>
 		<td>' . _('Tax Group') . ':</td>
-		<td><input type="text" name="GroupName" size="40" required="required" minlength="1" maxlength="40" value="' . $_POST['GroupName'] . '" /></td>';
+		<td><input type="text" name="GroupName" size="40" required="required" maxlength="40" value="' . $_POST['GroupName'] . '" /></td>';
 echo '<td><input type="submit" name="submit" value="' . _('Enter Group') . '" /></td>
 	</tr>
 	</table>
@@ -312,8 +312,8 @@ if (isset($SelectedGroup)) {
 			}
 
 			echo '<td>' . $TaxAuthRow[$i]['taxname'] . '</td>
-				<td><input type="text" class="integer" name="CalcOrder_' . $TaxAuthRow[$i]['taxauthid'] . '" value="' . $TaxAuthRow[$i]['calculationorder'] . '" size="2" required="required" minlength="1" maxlength="2" style="width: 100%" /></td>
-				<td><select required="required" minlength="1" name="TaxOnTax_' . $TaxAuthRow[$i]['taxauthid'] . '" style="width: 100%">';
+				<td><input type="text" class="integer" name="CalcOrder_' . $TaxAuthRow[$i]['taxauthid'] . '" value="' . $TaxAuthRow[$i]['calculationorder'] . '" size="2" required="required" maxlength="2" style="width: 100%" /></td>
+				<td><select required="required" name="TaxOnTax_' . $TaxAuthRow[$i]['taxauthid'] . '" style="width: 100%">';
 			if ($TaxAuthRow[$i]['taxontax'] == 1) {
 				echo '<option selected="selected" value="1">' . _('Yes') . '</option>';
 				echo '<option value="0">' . _('No') . '</option>';

@@ -203,7 +203,7 @@ echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />'
 echo '<table class="selection">
 	<tr>
 		<td>' . _('Demand Type') . ':</td>
-		<td><select minlength="0" name="MRPDemandtype">';
+		<td><select name="MRPDemandtype">';
 $SQL = "SELECT mrpdemandtype,
 				description
 		FROM mrpdemandtypes";
@@ -213,7 +213,7 @@ while ($MyRow = DB_fetch_array($Result)) {
 } //end while loop
 echo '</select></td></tr>';
 echo '<tr><td>' . _('Inventory Category') . ':</td>
-		<td><select minlength="0" name="CategoryID">';
+		<td><select name="CategoryID">';
 echo '<option selected="selected" value="All">' . _('All Stock Categories') . '</option>';
 $SQL = "SELECT categoryid,
 			   categorydescription
@@ -225,7 +225,7 @@ while ($MyRow = DB_fetch_array($Result)) {
 echo '</select></td>
 		</tr>';
 echo '<tr><td>' . _('Inventory Location') . ':</td>
-		<td><select minlength="0" name="Location">';
+		<td><select name="Location">';
 
 $SQL = "SELECT locationname,
 				locations.loccode
@@ -259,7 +259,7 @@ echo '<tr>
 	</tr>
 	<tr>
 		<td>' . _('Distribution Period') . ':</td>
-		<td><select minlength="0" name="Period">
+		<td><select name="Period">
 			<option selected="selected" value="weekly">' . _('Weekly') . '</option>
 			<option value="monthly">' . _('Monthly') . '</option>
 			</select></td>
@@ -278,7 +278,7 @@ echo '<tr>
 	</tr>
 	<tr>
 		<td>' . _('Multiplier') . ':</td>
-		<td><input type="text" class="integer" name="Multiplier" required="required" minlength="1" maxlength="2" size="2" value="1" /></td>
+		<td><input type="text" class="integer" name="Multiplier" required="required" maxlength="2" size="2" value="1" /></td>
 	</tr>
 	<tr>
 		<td></td>

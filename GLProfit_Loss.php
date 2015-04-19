@@ -38,7 +38,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 	echo '<table class="selection" summary="' . _('Criteria for report') . '">
 			<tr>
 				<td>' . _('Select Period From') . ':</td>
-				<td><select minlength="0" name="FromPeriod">';
+				<td><select name="FromPeriod">';
 
 	$SQL = "SELECT periodno,
 					lastdate_in_period
@@ -78,7 +78,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 
 	echo '<tr>
 			<td>' . _('Select Period To') . ':</td>
-			<td><select minlength="0" name="ToPeriod">';
+			<td><select name="ToPeriod">';
 
 	$RetResult = DB_data_seek($Periods, 0);
 
@@ -95,7 +95,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 	echo '<tr>
 			<td>' . _('Detail Or Summary') . ':</td>
 			<td>
-				<select minlength="0" name="Detail">
+				<select name="Detail">
 					<option value="Summary">' . _('Summary') . '</option>
 					<option selected="selected" value="Detailed">' . _('All Accounts') . '</option>
 				</select>

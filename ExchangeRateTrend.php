@@ -32,7 +32,7 @@ $Result = DB_query($SQL);
 // CurrencyToShow Currency Picker
 echo '<tr>
 		<td>
-			<select minlength="0" name="CurrencyToShow" onchange="ReloadForm(update.submit)">';
+			<select name="CurrencyToShow" onchange="ReloadForm(update.submit)">';
 
 while ($MyRow = DB_fetch_array($Result)) {
 	if ($MyRow['currabrev'] != $_SESSION['CompanyRecord']['currencydefault']) {

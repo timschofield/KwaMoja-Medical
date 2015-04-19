@@ -931,7 +931,7 @@ function display() //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
 
 	echo '<tr>
 			<td>' . _('Report Type') . ':</td>
-			<td><select required="required" minlength="1" name="ReportType">
+			<td><select required="required" name="ReportType">
 				<option selected="selected" value="Detail">' . _('Detail') . '</option>
 				<option value="Summary">' . _('Summary') . '</option>
 			</select></td>
@@ -941,7 +941,7 @@ function display() //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
 
 	echo '<tr>
 			<td>' . _('Order Type') . ':</td>
-			<td><select required="required" minlength="1" name="OrderType">
+			<td><select required="required" name="OrderType">
 				<option selected="selected" value="0">' . _('Sales Order') . '</option>
 				<option value="1">' . _('Quotation') . '</option>
 			</select></td>
@@ -950,7 +950,7 @@ function display() //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
 
 	echo '<tr>
 			<td>' . _('Date Type') . ':</td>
-			<td><select required="required" minlength="1" name="DateType">
+			<td><select required="required" name="DateType">
 				<option selected="selected" value="Order">' . _('Order Date') . '</option>
 				<option value="Invoice">' . _('Invoice Date') . '</option>
 			</select></td>
@@ -959,7 +959,7 @@ function display() //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
 
 	echo '<tr>
 			<td>' . _('Invoice Type') . ':</td>
-			<td><select required="required" minlength="1" name="InvoiceType">
+			<td><select required="required" name="InvoiceType">
 				<option selected="selected" value="All">' . _('All') . '</option>
 				<option value="10">' . _('Sales Invoice') . '</option>
 				<option value="11">' . _('Credit Note') . '</option>
@@ -970,45 +970,45 @@ function display() //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
 
 	echo '<tr>
 			<td>' . _('Date Range') . ':</td>
-			<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="FromDate" size="10" required="required" minlength="1" maxlength="10" value="' . $_POST['FromDate'] . '" /></td>
+			<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="FromDate" size="10" required="required" maxlength="10" value="' . $_POST['FromDate'] . '" /></td>
 			<td>' . _('To') . ':</td>
-			<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="ToDate" size="10" required="required" minlength="1" maxlength="10" value="' . $_POST['ToDate'] . '" /></td>
+			<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="ToDate" size="10" required="required" maxlength="10" value="' . $_POST['ToDate'] . '" /></td>
 		</tr>';
 	if (!isset($_POST['PartNumber'])) {
 		$_POST['PartNumber'] = '';
 	} //!isset($_POST['PartNumber'])
 	echo '<tr>
 			<td>' . _('Stock Code') . ':</td>
-			<td><select required="required" minlength="1" name="PartNumberOp">
+			<td><select required="required" name="PartNumberOp">
 				<option selected="selected" value="Equals">' . _('Equals') . '</option>
 				<option value="LIKE">' . _('Begins With') . '</option>
 			</select></td>
 			<td>&nbsp;</td>
-			<td><input type="text" name="PartNumber" size="20" minlength="0" maxlength="20" value="' . $_POST['PartNumber'] . '" /></td>
+			<td><input type="text" name="PartNumber" size="20" maxlength="20" value="' . $_POST['PartNumber'] . '" /></td>
 		</tr>';
 	if (!isset($_POST['DebtorNo'])) {
 		$_POST['DebtorNo'] = '';
 	} //!isset($_POST['DebtorNo'])
 	echo '<tr>
 			<td>' . _('Customer Code') . ':</td>
-			<td><select required="required" minlength="1" name="DebtorNoOp">
+			<td><select required="required" name="DebtorNoOp">
 				<option selected="selected" value="Equals">' . _('Equals') . '</option>
 				<option value="LIKE">' . _('Begins With') . '</option>
 			</select></td>
 			<td>&nbsp;</td>
-			<td><input type="text" name="DebtorNo" size="10" minlength="0" maxlength="10" value="' . $_POST['DebtorNo'] . '" /></td>
+			<td><input type="text" name="DebtorNo" size="10" maxlength="10" value="' . $_POST['DebtorNo'] . '" /></td>
 		</tr>';
 	if (!isset($_POST['DebtorName'])) {
 		$_POST['DebtorName'] = '';
 	} //!isset($_POST['DebtorName'])
 	echo '<tr>
 			<td>' . _('Customer Name') . ':</td>
-			<td><select required="required" minlength="1" name="DebtorNameOp">
+			<td><select required="required" name="DebtorNameOp">
 				<option selected="selected" value="LIKE">' . _('Begins With') . '</option>
 				<option value="Equals">' . _('Equals') . '</option>
 			</select></td>
 			<td>&nbsp;</td>
-			<td><input type="text" name="DebtorName" size="30" minlength="0" maxlength="30" value="' . $_POST['DebtorName'] . '" /></td>
+			<td><input type="text" name="DebtorName" size="30" maxlength="30" value="' . $_POST['DebtorName'] . '" /></td>
 		</tr>';
 	if (!isset($_POST['OrderNo'])) {
 		$_POST['OrderNo'] = '';
@@ -1017,12 +1017,12 @@ function display() //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
 			<td>' . _('Order Number') . ':</td>
 			<td>' . _('Equals') . '</td>
 			<td>&nbsp;</td>
-			<td><input type="text" name="OrderNo" size="10" minlength="0" maxlength="10" value="' . $_POST['OrderNo'] . '" /></td>
+			<td><input type="text" name="OrderNo" size="10" maxlength="10" value="' . $_POST['OrderNo'] . '" /></td>
 		</tr>';
 
 	echo '<tr>
 			<td>' . _('Line Item Status') . ':</td>
-			<td><select minlength="0" name="LineStatus">
+			<td><select name="LineStatus">
 				<option selected="selected" value="All">' . _('All') . '</option>
 				<option value="Completed">' . _('Completed') . '</option>
 				<option value="Open">' . _('Not Completed') . '</option>
@@ -1032,7 +1032,7 @@ function display() //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
 
 	echo '<tr>
 			<td>' . _('Stock Categories') . ':</td>
-			<td><select minlength="0" name="Category">';
+			<td><select name="Category">';
 
 	$CategoryResult = DB_query("SELECT categoryid, categorydescription FROM stockcategory");
 	echo '<option selected="selected" value="All">' . _('All Categories') . '</option>';
@@ -1062,7 +1062,7 @@ function display() //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
 
 	// Use name='Areas[]' multiple - if want to create an array for Areas and allow multiple selections
 	echo '<tr><td>' . _('For Sales Areas') . ':</td>
-				<td><select minlength="0" name="Area">';
+				<td><select name="Area">';
 	$AreasResult = DB_query("SELECT areacode, areadescription FROM areas");
 	echo '<option selected="selected" value="All">' . _('All Areas') . '</option>';
 	while ($MyRow = DB_fetch_array($AreasResult)) {
@@ -1073,7 +1073,7 @@ function display() //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
 	echo '<tr><td>&nbsp;</td></tr>';
 	echo '<tr>
 			<td>' . _('Sort By') . ':</td>
-			<td><select minlength="0" name="SortBy">
+			<td><select name="SortBy">
 				<option selected="selected" value="salesorderdetails.orderno">' . _('Order Number') . '</option>
 				<option value="salesorderdetails.stkcode">' . _('Stock Code') . '</option>
 				<option value="debtorsmaster.debtorno,salesorderdetails.orderno">' . _('Customer Code') . '</option>
@@ -1090,7 +1090,7 @@ function display() //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
 
 	echo '<tr><td>&nbsp;</td></tr>';
 	echo '<tr><td>' . _('Summary Type') . ':</td>
-			<td><select minlength="0" name="SummaryType">
+			<td><select name="SummaryType">
 				<option selected="selected" value="orderno">' . _('Order Number') . '</option>
 				<option value="transno">' . _('Transaction Number') . '</option>
 				<option value="stkcode">' . _('Stock Code') . '</option>

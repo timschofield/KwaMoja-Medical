@@ -468,7 +468,7 @@ if (isset($SelectedUser)) {
 	echo '<table class="selection">
 			<tr>
 				<td>' . _('User Login') . ':</td>
-				<td><input type="text" name="UserID" size="22" required="required" minlength="3" maxlength="20" /></td>
+				<td><input type="text" name="UserID" size="22" required="required" maxlength="20" /></td>
 			</tr>';
 
 	/*set the default modules to show to all
@@ -500,23 +500,23 @@ if (!isset($_POST['Email'])) {
 }
 echo '<tr>
 		<td>' . _('Password') . ':</td>
-		<td><input type="password" name="Password" size="22" minlength="0" maxlength="20" value="' . $_POST['Password'] . '" /></td>
+		<td><input type="password" name="Password" size="22" maxlength="20" value="' . $_POST['Password'] . '" /></td>
 	</tr>';
 echo '<tr>
 		<td>' . _('Full Name') . ':</td>
-		<td><input type="text" name="RealName" value="' . $_POST['RealName'] . '" size="36" required="required" minlength="1" maxlength="35" /></td>
+		<td><input type="text" name="RealName" value="' . $_POST['RealName'] . '" size="36" required="required" maxlength="35" /></td>
 	</tr>';
 echo '<tr>
 		<td>' . _('Telephone No') . ':</td>
-		<td><input type="tel" name="Phone" value="' . $_POST['Phone'] . '" size="32" minlength="0" maxlength="30" /></td>
+		<td><input type="tel" name="Phone" value="' . $_POST['Phone'] . '" size="32" maxlength="30" /></td>
 	</tr>';
 echo '<tr>
 		<td>' . _('Email Address') . ':</td>
-		<td><input type="email" name="Email" value="' . $_POST['Email'] . '" size="32" minlength="0" maxlength="55" /></td>
+		<td><input type="email" name="Email" value="' . $_POST['Email'] . '" size="32" maxlength="55" /></td>
 	</tr>';
 echo '<tr>
 		<td>' . _('Security Role') . ':</td>
-		<td><select minlength="0" name="Access">';
+		<td><select name="Access">';
 
 foreach ($SecurityRoles as $SecKey => $SecVal) {
 	if (isset($_POST['Access']) and $SecKey == $_POST['Access']) {
@@ -531,7 +531,7 @@ echo '<input type="hidden" name="ID" value="' . $_SESSION['UserID'] . '" /></td>
 
 echo '<tr>
 		<td>' . _('User Can Create Tenders') . ':</td>
-		<td><select minlength="0" name="CanCreateTender">';
+		<td><select name="CanCreateTender">';
 
 if (isset($_POST['CanCreateTender']) and $_POST['CanCreateTender'] == 0) {
 	echo '<option selected="selected" value="0">' . _('No') . '</option>';
@@ -544,7 +544,7 @@ echo '</select></td></tr>';
 
 echo '<tr>
 		<td>' . _('Default Location') . ':</td>
-		<td><select minlength="0" name="DefaultLocation">';
+		<td><select name="DefaultLocation">';
 
 $SQL = "SELECT loccode, locationname FROM locations";
 $Result = DB_query($SQL);
@@ -562,7 +562,7 @@ echo '</select></td>
 
 echo '<tr>
 		<td>' . _('Restrict to just this location') . ': </td>
-		<td><select minlength="0" name="RestrictLocations">';
+		<td><select name="RestrictLocations">';
 if (isset($_POST['RestrictLocations']) and $_POST['RestrictLocations'] == 0) {
 	echo '<option selected="selected" value="0">' . _('No') . '</option>';
 	echo '<option value="1">' . _('Yes') . '</option>';
@@ -584,22 +584,22 @@ if (!isset($_POST['SupplierID'])) {
 }
 echo '<tr>
 		<td>' . _('Customer Code') . ':</td>
-		<td><input type="text" name="Cust" size="10" minlength="0" maxlength="10" value="' . $_POST['Cust'] . '" /></td>
+		<td><input type="text" name="Cust" size="10" maxlength="10" value="' . $_POST['Cust'] . '" /></td>
 	</tr>';
 
 echo '<tr>
 		<td>' . _('Branch Code') . ':</td>
-		<td><input type="text" name="BranchCode" size="10" minlength="0" maxlength="10" value="' . $_POST['BranchCode'] . '" /></td>
+		<td><input type="text" name="BranchCode" size="10" maxlength="10" value="' . $_POST['BranchCode'] . '" /></td>
 	</tr>';
 
 echo '<tr>
 		<td>' . _('Supplier Code') . ':</td>
-		<td><input type="text" name="SupplierID" size="10" minlength="0" maxlength="10" value="' . $_POST['SupplierID'] . '" /></td>
+		<td><input type="text" name="SupplierID" size="10" maxlength="10" value="' . $_POST['SupplierID'] . '" /></td>
 	</tr>';
 
 echo '<tr>
 		<td>' . _('Restrict to Sales Person') . ':</td>
-		<td><select minlength="0" name="Salesman">';
+		<td><select name="Salesman">';
 
 $SQL = "SELECT salesmancode, salesmanname FROM salesman WHERE current = 1 ORDER BY salesmanname";
 $Result = DB_query($SQL);
@@ -623,7 +623,7 @@ echo '</select></td>
 
 echo '<tr>
 		<td>' . _('Reports Page Size') . ':</td>
-		<td><select minlength="0" name="PageSize">';
+		<td><select name="PageSize">';
 
 if (isset($_POST['PageSize']) and $_POST['PageSize'] == 'A4') {
 	echo '<option selected="selected" value="A4">' . _('A4') . '</option>';
@@ -674,7 +674,7 @@ if (!isset($_POST['Theme'])) {
 }
 echo '<tr>
 		<td>' . _('Theme') . ':</td>
-		<td><select minlength="0" name="Theme">';
+		<td><select name="Theme">';
 
 
 $Themes = glob('css/*', GLOB_ONLYDIR);
@@ -695,7 +695,7 @@ echo '</select></td>
 
 echo '<tr>
 		<td>' . _('Language') . ':</td>
-		<td><select minlength="0" name="UserLanguage">';
+		<td><select name="UserLanguage">';
 
 foreach ($LanguagesArray as $LanguageEntry => $LanguageName) {
 	if (isset($_POST['UserLanguage']) and $_POST['UserLanguage'] == $LanguageEntry) {
@@ -717,7 +717,7 @@ foreach ($_SESSION['ModuleList'] as $ModuleName) {
 
 	echo '<tr>
 			<td>' . _('Display') . ' ' . $ModuleName . ' ' . _('module') . ': </td>
-			<td><select minlength="0" name="Module_' . $i . '">';
+			<td><select name="Module_' . $i . '">';
 	if ($ModulesAllowed[$i] == 0) {
 		echo '<option selected="selected" value="0">' . _('No') . '</option>';
 		echo '<option value="1">' . _('Yes') . '</option>';
@@ -735,7 +735,7 @@ if (!isset($_POST['PDFLanguage'])) {
 
 echo '<tr>
 		<td>' . _('PDF Language Support') . ': </td>
-		<td><select minlength="0" name="PDFLanguage">';
+		<td><select name="PDFLanguage">';
 for ($i = 0; $i < count($PDFLanguages); $i++) {
 	if ($_POST['PDFLanguage'] == $i) {
 		echo '<option selected="selected" value="' . $i . '">' . $PDFLanguages[$i] . '</option>';
@@ -757,7 +757,7 @@ $SQL = "SELECT departmentid,
 		ORDER BY description";
 
 $Result = DB_query($SQL);
-echo '<td><select minlength="0" name="Department">';
+echo '<td><select name="Department">';
 if ((isset($_POST['Department']) and $_POST['Department'] == '0') or !isset($_POST['Department'])) {
 	echo '<option selected="selected" value="0">' . _('Any Internal Department') . '</option>';
 } else {
@@ -777,7 +777,7 @@ echo '</select></td>
 
 echo '<tr>
 		<td>' . _('Account Status') . ':</td>
-		<td><select minlength="0" name="Blocked">';
+		<td><select name="Blocked">';
 if (isset($_POST['Blocked']) and $_POST['Blocked'] == 0) {
 	echo '<option selected="selected" value="0">' . _('Open') . '</option>';
 	echo '<option value="1">' . _('Blocked') . '</option>';
@@ -792,7 +792,7 @@ echo '</select></td>
 
 echo '<tr>
 		<td>' . _('Screen Font Size') . ':</td>
-		<td><select minlength="0" name="FontSize">';
+		<td><select name="FontSize">';
 if (isset($_POST['FontSize']) and $_POST['FontSize'] == 0) {
 	echo '<option selected="selected" value="0">' . _('Small') . '</option>';
 	echo '<option value="1">' . _('Medium') . '</option>';
@@ -812,7 +812,7 @@ echo '</select></td>
 //Select the tag
 echo '<tr>
 		<td>' . _('Default Tag For User') . '</td>
-		<td><select minlength="0" name="DefaultTag">';
+		<td><select name="DefaultTag">';
 
 $SQL = "SELECT tagref,
 				tagdescription

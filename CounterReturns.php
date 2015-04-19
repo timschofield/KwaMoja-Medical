@@ -710,13 +710,13 @@ if (count($_SESSION['Items' . $Identifier]->LineItems) > 0) {
 		echo '<td><a target="_blank" href="' . $RootPath . '/StockStatus.php?identifier=' . $Identifier . '&StockID=' . $ReturnItemLine->StockID . '&DebtorNo=' . $_SESSION['Items' . $Identifier]->DebtorNo . '">' . $ReturnItemLine->StockID . '</a></td>
 			<td title="' . $ReturnItemLine->LongDescription . '">' . $ReturnItemLine->ItemDescription . '</td>';
 
-		echo '<td><input class="number" tabindex="2" type="text" name="Quantity_' . $ReturnItemLine->LineNumber . '" size="6" required="required" minlength="1" maxlength="6" value="' . locale_number_format($ReturnItemLine->Quantity, $ReturnItemLine->DecimalPlaces) . '" />';
+		echo '<td><input class="number" tabindex="2" type="text" name="Quantity_' . $ReturnItemLine->LineNumber . '" size="6" required="required" maxlength="6" value="' . locale_number_format($ReturnItemLine->Quantity, $ReturnItemLine->DecimalPlaces) . '" />';
 
 		echo '</td>
 				<td>' . $ReturnItemLine->Units . '</td>
-				<td><input class="number" type="text" name="Price_' . $ReturnItemLine->LineNumber . '" size="16" required="required" minlength="1" maxlength="16" value="' . locale_number_format($ReturnItemLine->Price, $_SESSION['Items' . $Identifier]->CurrDecimalPlaces) . '" /></td>
-				<td><input class="number" type="text" name="Discount_' . $ReturnItemLine->LineNumber . '" size="5" required="required" minlength="1" maxlength="4" value="' . locale_number_format(($ReturnItemLine->DiscountPercent * 100), 2) . '" /></td>
-				<td><input class="number" type="text" name="GPPercent_' . $ReturnItemLine->LineNumber . '" size="3" required="required" minlength="1" maxlength="40" value="' . locale_number_format($ReturnItemLine->GPPercent, 2) . '" /></td>
+				<td><input class="number" type="text" name="Price_' . $ReturnItemLine->LineNumber . '" size="16" required="required" maxlength="16" value="' . locale_number_format($ReturnItemLine->Price, $_SESSION['Items' . $Identifier]->CurrDecimalPlaces) . '" /></td>
+				<td><input class="number" type="text" name="Discount_' . $ReturnItemLine->LineNumber . '" size="5" required="required" maxlength="4" value="' . locale_number_format(($ReturnItemLine->DiscountPercent * 100), 2) . '" /></td>
+				<td><input class="number" type="text" name="GPPercent_' . $ReturnItemLine->LineNumber . '" size="3" required="required" maxlength="40" value="' . locale_number_format($ReturnItemLine->GPPercent, 2) . '" /></td>
 				<td class="number">', locale_number_format($SubTotal, $_SESSION['Items' . $Identifier]->CurrDecimalPlaces), '</td>';
 		$LineDueDate = $ReturnItemLine->ItemDue;
 		$_SESSION['Items' . $Identifier]->LineItems[$ReturnItemLine->LineNumber]->ItemDue = $LineDueDate;
@@ -786,21 +786,21 @@ if (count($_SESSION['Items' . $Identifier]->LineItems) > 0) {
 	echo '<table>
 			<tr>
 				<td style="color:red">', _('Returned By'), ':</td>
-				<td><input type="text" size="25" minlength="0" maxlength="25" name="DeliverTo" value="', stripslashes($_SESSION['Items' . $Identifier]->DeliverTo), '" /></td>
+				<td><input type="text" size="25" maxlength="25" name="DeliverTo" value="', stripslashes($_SESSION['Items' . $Identifier]->DeliverTo), '" /></td>
 			</tr>';
 	echo '<tr>
 			<td style="color:red">', _('Contact Phone Number'), ':</td>
-			<td><input type="tel" size="25" minlength="0" maxlength="25" name="PhoneNo" value="', stripslashes($_SESSION['Items' . $Identifier]->PhoneNo), '" /></td>
+			<td><input type="tel" size="25" maxlength="25" name="PhoneNo" value="', stripslashes($_SESSION['Items' . $Identifier]->PhoneNo), '" /></td>
 		</tr>';
 
 	echo '<tr>
 			<td style="color:red">', _('Contact Email'), ':</td>
-			<td><input type="email" size="25" minlength="0" maxlength="30" name="Email" value="', stripslashes($_SESSION['Items' . $Identifier]->Email), '" /></td>
+			<td><input type="email" size="25" maxlength="30" name="Email" value="', stripslashes($_SESSION['Items' . $Identifier]->Email), '" /></td>
 		</tr>';
 
 	echo '<tr>
 			<td style="color:red">', _('Customer Reference'), ':</td>
-			<td><input type="text" size="25" minlength="0" maxlength="25" name="CustRef" value="', stripcslashes($_SESSION['Items' . $Identifier]->CustRef), '" /></td>
+			<td><input type="text" size="25" maxlength="25" name="CustRef" value="', stripcslashes($_SESSION['Items' . $Identifier]->CustRef), '" /></td>
 		</tr>';
 	echo '<tr>
 			<td>', _('Sales person'), ':</td>';
@@ -842,7 +842,7 @@ if (count($_SESSION['Items' . $Identifier]->LineItems) > 0) {
 
 	echo '<tr>
 			<td style="color:red">', _('Payment Type'), ':</td>
-			<td><select minlength="0" name="PaymentMethod">';
+			<td><select name="PaymentMethod">';
 	while ($PaymentMethodRow = DB_fetch_array($PaymentMethodsResult)) {
 		if (isset($_POST['PaymentMethod']) and $_POST['PaymentMethod'] == $PaymentMethodRow['paymentid']) {
 			echo '<option selected="selected" value="', $PaymentMethodRow['paymentid'], '">', $PaymentMethodRow['paymentname'], '</option>';
@@ -875,7 +875,7 @@ if (count($_SESSION['Items' . $Identifier]->LineItems) > 0) {
 	}
 	echo '<tr>
 			<td style="color:red">', _('Paid to Customer'), ':</td>
-			<td><input type="text" class="number" name="AmountPaid" required="required" minlength="1" maxlength="12" size="12" value="', $_POST['AmountPaid'], '" /></td>
+			<td><input type="text" class="number" name="AmountPaid" required="required" maxlength="12" size="12" value="', $_POST['AmountPaid'], '" /></td>
 		</tr>';
 
 	echo '</table>
@@ -1718,7 +1718,7 @@ if (!isset($_POST['ProcessReturn'])) {
 		$Result1 = DB_query($SQL);
 		echo '<tr>
 				<td><b>', _('Select a Stock Category'), ': </b>
-					<select minlength="0" tabindex="1" name="StockCat">';
+					<select tabindex="1" name="StockCat">';
 		if (!isset($_POST['StockCat'])) {
 			echo '<option selected="selected" value="All">', _('All'), '</option>';
 			$_POST['StockCat'] = 'All';
@@ -1740,7 +1740,7 @@ if (!isset($_POST['ProcessReturn'])) {
 		}
 		echo '<td>
 				<b>', _('Enter partial Description'), ':</b>
-				<input type="text" autofocus="autofocus" name="Keywords" size="20" minlength="0" maxlength="25" value="', $_POST['Keywords'], '" />
+				<input type="text" autofocus="autofocus" name="Keywords" size="20" maxlength="25" value="', $_POST['Keywords'], '" />
 			</td>';
 
 		if (!isset($_POST['StockCode'])) {
@@ -1748,7 +1748,7 @@ if (!isset($_POST['ProcessReturn'])) {
 		}
 		echo '<td align="right">
 				<b>', _('OR'), ' ', _('Enter extract of the Stock Code'), ':</b>
-				<input tabindex="3" type="text" name="StockCode" size="15" minlength="0" maxlength="18" value="', $_POST['StockCode'], '" />
+				<input tabindex="3" type="text" name="StockCode" size="15" maxlength="18" value="', $_POST['StockCode'], '" />
 			</td>
 		</tr>
 	</table>';
@@ -1850,7 +1850,7 @@ if (!isset($_POST['ProcessReturn'])) {
 						<td class="number">', locale_number_format($DemandQty, $MyRow['decimalplaces']), '</td>
 						<td class="number">', locale_number_format($QOO, $MyRow['decimalplaces']), '</td>
 						<td class="number">', locale_number_format($Available, $MyRow['decimalplaces']), '</td>
-						<td><input class="number" required="required" minlength="1" maxlength="11" type="text" size="6" name="ReturnQty', $i, '" value="0" />
+						<td><input class="number" required="required" maxlength="11" type="text" size="6" name="ReturnQty', $i, '" value="0" />
 							</font><input type="hidden" name="StockID', $i, '" value="', $MyRow['stockid'], '" />
 						</td>
 					</tr>';
@@ -1907,12 +1907,12 @@ if (!isset($_POST['ProcessReturn'])) {
 			echo '<tr class="OddTableRow">';
 			/* Do not display colum unless customer requires po line number by sales order line*/
 			if ($i == 1) {
-				echo '<td><input type="text" autofocus="autofocus" name="part_', $i, '" size="21" minlength="0" maxlength="20" /></td>';
+				echo '<td><input type="text" autofocus="autofocus" name="part_', $i, '" size="21" maxlength="20" /></td>';
 			} else {
-				echo '<td><input type="text" name="part_', $i, '" size="21" minlength="0" maxlength="20" /></td>';
+				echo '<td><input type="text" name="part_', $i, '" size="21" maxlength="20" /></td>';
 			}
 			echo '<td>
-					<input type="text" class="number" name="qty_', $i, '" size="6" minlength="0" maxlength="6" />
+					<input type="text" class="number" name="qty_', $i, '" size="6" maxlength="6" />
 					<input type="hidden" class="date" name="ItemDue_', $i, '" value="', $ReturnDate, '" />
 				</td>
 			</tr>';

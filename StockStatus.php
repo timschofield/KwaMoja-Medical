@@ -55,7 +55,7 @@ if ($MyRow[2] == 'K') {
 
 echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-echo _('Stock Code') . ':<input type="text" name="StockID" size="21" value="' . $StockId . '" required="required" minlength="1" maxlength="20" />';
+echo _('Stock Code') . ':<input type="text" name="StockID" size="21" value="' . $StockId . '" required="required" maxlength="20" />';
 
 echo ' <input type="submit" name="ShowStatus" value="' . _('Show Stock Status') . '" />';
 
@@ -211,7 +211,7 @@ while ($MyRow = DB_fetch_array($LocStockResult)) {
 		}
 		if ($MyRow['canupd']==1) {
 			echo '<td>' . $MyRow['locationname'] . '</td>
-				<td><input type="text" name="BinLocation' . $MyRow['loccode'] . '" value="' . $MyRow['bin'] . '" minlength="0" maxlength="10" size="11" onchange="ReloadForm(UpdateBinLocations)"/></td>';
+				<td><input type="text" name="BinLocation' . $MyRow['loccode'] . '" value="' . $MyRow['bin'] . '" maxlength="10" size="11" onchange="ReloadForm(UpdateBinLocations)"/></td>';
 		} else {
 			echo '<td>' . $MyRow['locationname'] . '</td>
 				<td> ' . $MyRow['bin'] . '</td>';

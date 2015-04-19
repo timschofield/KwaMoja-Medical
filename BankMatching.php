@@ -86,7 +86,7 @@ echo '<input type="hidden" name="Type" value="' . $Type . '" />';
 echo '<table class="selection" summary="' . _('Selection Criteria for inquiry') . '">
 		<tr>
 			<td>' . _('Bank Account') . ':</td>
-			<td colspan="3"><select autofocus="autofocus" minlength="1" tabindex="1" name="BankAccount">';
+			<td colspan="3"><select autofocus="autofocus" tabindex="1" name="BankAccount">';
 
 $SQL = "SELECT bankaccounts.accountcode,
 				bankaccounts.bankaccountname
@@ -118,16 +118,16 @@ if (!isset($_POST['AfterDate']) or !is_date($_POST['AfterDate'])) {
 // Change to allow input of FROM DATE and then TO DATE, instead of previous back-to-front method, add datepicker
 echo '<tr>
 		<td>' . _('Show') . ' ' . $TypeName . ' ' . _('from') . ':</td>
-		<td><input tabindex="3" type="text" name="AfterDate" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" size="12" required="required" minlength="1" maxlength="10" onchange="isDate(this, this.value, ' . "'" . $_SESSION['DefaultDateFormat'] . "'" . ')" value="' . $_POST['AfterDate'] . '" /></td>
+		<td><input tabindex="3" type="text" name="AfterDate" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" size="12" required="required" maxlength="10" onchange="isDate(this, this.value, ' . "'" . $_SESSION['DefaultDateFormat'] . "'" . ')" value="' . $_POST['AfterDate'] . '" /></td>
 	</tr>';
 
 echo '<tr>
 		<td>' . _('to') . ':</td>
-		<td><input tabindex="2" type="text" name="BeforeDate" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" size="12" required="required" minlength="1" maxlength="10" onchange="isDate(this, this.value, ' . "'" . $_SESSION['DefaultDateFormat'] . "'" . ')" value="' . $_POST['BeforeDate'] . '" /></td>
+		<td><input tabindex="2" type="text" name="BeforeDate" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" size="12" required="required" maxlength="10" onchange="isDate(this, this.value, ' . "'" . $_SESSION['DefaultDateFormat'] . "'" . ')" value="' . $_POST['BeforeDate'] . '" /></td>
 	</tr>';
 echo '<tr>
 		<td colspan="3">' . _('Choose outstanding') . ' ' . $TypeName . ' ' . _('only or all') . ' ' . $TypeName . ' ' . _('in the date range') . ':</td>
-		<td><select minlength="0" tabindex="4" name="Ostg_or_All">';
+		<td><select tabindex="4" name="Ostg_or_All">';
 
 if (isset($_POST['Ostg_or_All']) and $_POST['Ostg_or_All'] == 'All') {
 	echo '<option selected="selected" value="All">' . _('Show all') . ' ' . $TypeName . ' ' . _('in the date range') . '</option>';
@@ -141,7 +141,7 @@ echo '</select></td>
 
 echo '<tr>
 	<td colspan="3">' . _('Choose to display only the first 20 matching') . ' ' . $TypeName . ' ' . _('or all') . ' ' . $TypeName . ' ' . _('meeting the criteria') . ':</td>
-	<td><select minlength="0" tabindex="5" name="First20_or_All">';
+	<td><select tabindex="5" name="First20_or_All">';
 if (isset($_POST['First20_or_All']) and $_POST['First20_or_All'] == 'All') {
 	echo '<option selected="selected" value="All">' . _('Show all') . ' ' . $TypeName . ' ' . _('in the date range') . '</option>';
 	echo '<option value="First20">' . _('Show only the first 20') . ' ' . $TypeName . '</option>';
@@ -304,7 +304,7 @@ if ($InputError != 1 and isset($_POST['BankAccount']) and $_POST['BankAccount'] 
 					<td class="number">%s</td>
 					<td class="number">%s</td>
 					<td><input type="checkbox" name="Clear_%s" /><input type="hidden" name="BankTrans_%s" value="%s" /></td>
-					<td colspan="2"><input type="text" minlength="0" maxlength="15" size="15" class="number" name="AmtClear_%s" /></td>
+					<td colspan="2"><input type="text" maxlength="15" size="15" class="number" name="AmtClear_%s" /></td>
 				</tr>', $MyRow['ref'], $MyRow['banktranstype'], $DisplayTranDate, locale_number_format($MyRow['amt'], $CurrDecimalPlaces), locale_number_format($Outstanding, $CurrDecimalPlaces), $i, $i, $MyRow['banktransid'], $i);
 		}
 		++$i;

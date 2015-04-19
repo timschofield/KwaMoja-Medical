@@ -15,7 +15,7 @@ if (!isset($_POST['FromPeriod'])) {
 	echo '<table>
 			 <tr>
 				 <td>' . _('Select Period From') . ':</td>
-				 <td><select minlength="0" name="FromPeriod">';
+				 <td><select name="FromPeriod">';
 
 	$SQL = "SELECT periodno,
 				   lastdate_in_period

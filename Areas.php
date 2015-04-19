@@ -222,13 +222,13 @@ if (!isset($_GET['delete'])) {
 		echo '<table class="selection">
 			<tr>
 				<td>' . _('Area Code') . ':</td>
-				<td><input tabindex="1" type="text" name="AreaCode" value="' . $_POST['AreaCode'] . '" size="3" autofocus="autofocus" required="required" minlength="1" maxlength="3" /></td>
+				<td><input tabindex="1" type="text" name="AreaCode" value="' . $_POST['AreaCode'] . '" size="3" autofocus="autofocus" required="required" maxlength="3" /></td>
 			</tr>';
 	}
 
 	echo '<tr>
 			<td>' . _('Parent Area') . ':' . '</td>
-			<td><select minlength="0" tabindex="2" name="ParentArea">';
+			<td><select tabindex="2" name="ParentArea">';
 
 	$SQL = "SELECT areacode, areadescription FROM areas ORDER BY areadescription";
 	$ErrMsg = _('An error occurred in retrieving the areas from the database');
@@ -248,7 +248,7 @@ if (!isset($_GET['delete'])) {
 
 	echo '<tr>
 			<td>' . _('Area Name') . ':</td>
-			<td><input tabindex="3" type="text" name="AreaDescription" value="' . $_POST['AreaDescription'] . '" size="26" required="required" minlength="1" maxlength="25" /></td>
+			<td><input tabindex="3" type="text" name="AreaDescription" value="' . $_POST['AreaDescription'] . '" size="26" required="required" maxlength="25" /></td>
 		</tr>';
 
 	echo '<tr>

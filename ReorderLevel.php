@@ -204,7 +204,7 @@ if (isset($_POST['PrintPDF'])) {
 	echo '<table class="selection">
 			<tr>
 				<td>' . _('From Stock Location') . ':</td>
-				<td><select required="required" minlength="1" name="StockLocation"> ';
+				<td><select required="required" name="StockLocation"> ';
 	$SQL = "SELECT locationname,
 					locations.loccode
 				FROM locations
@@ -239,7 +239,7 @@ if (isset($_POST['PrintPDF'])) {
 
 	echo '<tr>
 			<td>' . _('In Stock Category') . ':</td>
-			<td><select required="required" minlength="1" name="StockCat">';
+			<td><select required="required" name="StockCat">';
 	if (!isset($_POST['StockCat'])) {
 		$_POST['StockCat'] = 'All';
 	}

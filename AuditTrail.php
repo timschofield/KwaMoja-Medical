@@ -38,17 +38,17 @@ echo '<table class="selection">';
 
 echo '<tr>
 		<td>' . _('From Date') . ' ' . $_SESSION['DefaultDateFormat'] . '</td>
-		<td><input tabindex="1" type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="FromDate" size="11" required="required" minlength="1" maxlength="10" value="' . $_POST['FromDate'] . '" /></td>
+		<td><input tabindex="1" type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="FromDate" size="11" required="required" maxlength="10" value="' . $_POST['FromDate'] . '" /></td>
 	</tr>';
 echo '<tr>
 		<td>' . _('To Date') . ' ' . $_SESSION['DefaultDateFormat'] . '</td>
-		<td><input tabindex="2" type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="ToDate" size="11" required="required" minlength="1" maxlength="10" value="' . $_POST['ToDate'] . '" /></td>
+		<td><input tabindex="2" type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="ToDate" size="11" required="required" maxlength="10" value="' . $_POST['ToDate'] . '" /></td>
 	</tr>';
 
 // Show user selections
 echo '<tr>
 		<td>' . _('User ID') . '</td>
-		<td><select minlength="0" tabindex="3" name="SelectedUser">';
+		<td><select tabindex="3" name="SelectedUser">';
 echo '<option value="ALL">' . _('All') . '</option>';
 while ($Users = DB_fetch_row($UserResult)) {
 	if (isset($_POST['SelectedUser']) and $Users[0] == $_POST['SelectedUser']) {
@@ -62,7 +62,7 @@ echo '</select></td></tr>';
 // Show table selections
 echo '<tr>
 		<td>' . _('Table ') . '</td>
-		<td><select minlength="0" tabindex="4" name="SelectedTable">';
+		<td><select tabindex="4" name="SelectedTable">';
 echo '<option value="ALL">' . _('All') . '</option>';
 while ($Tables = DB_fetch_row($TableResult)) {
 	if (isset($_POST['SelectedTable']) and $Tables[0] == $_POST['SelectedTable']) {
@@ -79,7 +79,7 @@ if (!isset($_POST['ContainingText'])) {
 // Show the text
 echo '<tr>
 		<td>' . _('Containing text') . ':</td>
-		<td><input type="text" name="ContainingText" size="20" minlength="0" maxlength="20" value="' . $_POST['ContainingText'] . '" /></td>
+		<td><input type="text" name="ContainingText" size="20" maxlength="20" value="' . $_POST['ContainingText'] . '" /></td>
 	</tr>';
 
 

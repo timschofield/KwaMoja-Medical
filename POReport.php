@@ -1338,7 +1338,7 @@ function display() //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
 			<tr>
 				<td>' . _('Report Type') . ':</td>
 				<td>
-					<select minlength="0" name="ReportType">
+					<select name="ReportType">
 						<option selected="selected" value="Detail">' . _('Detail') . '</option>
 						<option value="Summary">' . _('Summary') . '</option>
 					</select>
@@ -1348,7 +1348,7 @@ function display() //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
 			<tr>
 				<td>' . _('Date Type') . ':</td>
 				<td>
-					<select minlength="0" name="DateType">
+					<select name="DateType">
 						<option selected="selected" value="Order">' . _('Order Date') . '</option>
 						<option value="Delivery">' . _('Delivery Date') . '</option>
 					</select>
@@ -1357,17 +1357,17 @@ function display() //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
 			</tr>
 			<tr>
 				<td>' . _('Date Range') . ':</td>
-				<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="FromDate" size="10" minlength="0" maxlength="10" value="' . $_POST['FromDate'] . '" /> ' . _('To') . ':&nbsp;&nbsp;
-				<input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="ToDate" size="10" minlength="0" maxlength="10" value="' . $_POST['ToDate'] . '" /></td>
+				<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="FromDate" size="10" maxlength="10" value="' . $_POST['FromDate'] . '" /> ' . _('To') . ':&nbsp;&nbsp;
+				<input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="ToDate" size="10" maxlength="10" value="' . $_POST['ToDate'] . '" /></td>
 			</tr>
 			<tr>
 				<td>' . _('Part Number') . ':</td>
 				<td>
-					<select minlength="0" name="PartNumberOp">
+					<select name="PartNumberOp">
 						<option selected="selected" value="Equals">' . _('Equals') . '</option>
 						<option value="LIKE">' . _('Begins With') . '</option>
 					</select>';
-	echo '&nbsp;&nbsp;<input type="text" name="PartNumber" size="20" minlength="0" maxlength="20" value="';
+	echo '&nbsp;&nbsp;<input type="text" name="PartNumber" size="20" maxlength="20" value="';
 	if (isset($_POST['PartNumber'])) {
 		echo $_POST['PartNumber'] . '" /></td></tr>';
 	} else {
@@ -1377,11 +1377,11 @@ function display() //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
 	echo '<tr>
 			<td>' . _('Supplier Number') . ':</td>
 			<td>
-				<select minlength="0" name="SupplierIdOp">
+				<select name="SupplierIdOp">
 					<option selected="selected" value="Equals">' . _('Equals') . '</option>
 					<option value="LIKE">' . _('Begins With') . '</option>
 				</select>
-				&nbsp;&nbsp;<input type="text" name="SupplierId" size="10" minlength="0" maxlength="10" value="';
+				&nbsp;&nbsp;<input type="text" name="SupplierId" size="10" maxlength="10" value="';
 	if (isset($_POST['SupplierId'])) {
 		echo $_POST['SupplierId'] . '" /></td></tr>';
 	} else {
@@ -1391,11 +1391,11 @@ function display() //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
 	echo '<tr>
 			<td>' . _('Supplier Name') . ':</td>
 			<td>
-				<select required="required" minlength="1" name="SupplierNameOp">
+				<select required="required" name="SupplierNameOp">
 					<option selected="selected" value="LIKE">' . _('Begins With') . '</option>
 					<option value="Equals">' . _('Equals') . '</option>
 				</select>&nbsp;&nbsp;
-				<input type="text" name="SupplierName" size="30" minlength="0" maxlength="30" value="';
+				<input type="text" name="SupplierName" size="30" maxlength="30" value="';
 	if (isset($_POST['SupplierName'])) {
 		echo $_POST['SupplierName'] . '" /></td></tr>';
 	} else {
@@ -1404,7 +1404,7 @@ function display() //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
 
 	echo '<tr>
 			<td>' . _('Order Number') . ':</td>
-			<td>' . _('Equals') . ':&nbsp;&nbsp;<input type="text" name="OrderNo" size="10" minlength="0" maxlength="10" value="';
+			<td>' . _('Equals') . ':&nbsp;&nbsp;<input type="text" name="OrderNo" size="10" maxlength="10" value="';
 	if (isset($_POST['OrderNo'])) {
 		echo $_POST['OrderNo'] . '" /></td></tr>';
 	} else {
@@ -1414,7 +1414,7 @@ function display() //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
 	echo '<tr>
 			<td>' . _('Line Item Status') . ':</td>
 			<td>
-				<select required="required" minlength="1" name="LineStatus">
+				<select required="required" name="LineStatus">
 					<option selected="selected" value="All">' . _('All') . '</option>
 					<option value="Completed">' . _('Completed') . '</option>
 					<option value="Open">' . _('Not Completed') . '</option>
@@ -1425,7 +1425,7 @@ function display() //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
 
 	echo '<tr>
 			<td>' . _('Stock Categories') . ':</td>
-			<td><select required="required" minlength="1" name="Category">';
+			<td><select required="required" name="Category">';
 	$SQL = "SELECT categoryid, categorydescription FROM stockcategory";
 	$CategoryResult = DB_query($SQL);
 	echo '<option selected="selected" value="All">' . _('All Categories') . '</option>';
@@ -1440,7 +1440,7 @@ function display() //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
 	echo '<tr>
 			<td>' . _('Sort By') . ':</td>
 			<td>
-				<select required="required" minlength="1" name="SortBy">
+				<select required="required" name="SortBy">
 					<option selected="selected" value="purchorderdetails.orderno">' . _('Order Number') . '</option>
 					<option value="purchorderdetails.itemcode">' . _('Part Number') . '</option>
 					<option value="suppliers.supplierid,purchorderdetails.orderno">' . _('Supplier Number') . '</option>
@@ -1456,7 +1456,7 @@ function display() //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
 	echo '<tr>
 			<td>' . _('Summary Type') . ':</td>
 			<td>
-				<select required="required" minlength="1" name="SummaryType">
+				<select required="required" name="SummaryType">
 					<option selected="selected" value="orderno">' . _('Order Number') . '</option>
 					<option value="itemcode">' . _('Part Number') . '</option>
 					<option value="extprice">' . _('Extended Price') . '</option>

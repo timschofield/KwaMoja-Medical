@@ -73,8 +73,8 @@ if (!isset($_POST['SecurityRole'])) {
 	while ($MyRow = DB_fetch_array($Result)) {
 		echo '<tr>
 				<td>' . $MyRow['modulename'] . '</td>
-				<td><input type="text" required="required" minlength="1" maxlength="50" size="25" name="Name' . $MyRow['reportlink'] . '" value="' . $MyRow['modulename'] . '" /></td>
-				<td><input type="text" required="required" minlength="1" maxlength="5" size="5" class="number" name="Sequence' . $MyRow['reportlink'] . '" value="' . $MyRow['sequence'] . '" /></td>
+				<td><input type="text" required="required" maxlength="50" size="25" name="Name' . $MyRow['reportlink'] . '" value="' . $MyRow['modulename'] . '" /></td>
+				<td><input type="text" required="required" maxlength="5" size="5" class="number" name="Sequence' . $MyRow['reportlink'] . '" value="' . $MyRow['sequence'] . '" /></td>
 			</tr>';
 	}
 

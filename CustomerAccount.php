@@ -231,7 +231,7 @@ if ($CustomerRecord['dissallowinvoices'] != 0) {
 }
 echo '<form action="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '" method="post">
 		<input type="hidden" name="FormID" value="', $_SESSION['FormID'], '" />';
-echo _('Show all transactions after'), ':<input tabindex="1" type="text" required="required" class="date" alt="', $_SESSION['DefaultDateFormat'], '" id="datepicker" name="TransAfterDate" value="', $_POST['TransAfterDate'], '" minlength="0" maxlength="10" size="12" />';
+echo _('Show all transactions after'), ':<input tabindex="1" type="text" required="required" class="date" alt="', $_SESSION['DefaultDateFormat'], '" id="datepicker" name="TransAfterDate" value="', $_POST['TransAfterDate'], '" maxlength="10" size="12" />';
 
 echo '<input tabindex="3" type="submit" name="Refresh Inquiry" value="', _('Refresh Inquiry'), '" />
 	</form>';

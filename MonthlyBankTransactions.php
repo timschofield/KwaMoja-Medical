@@ -28,7 +28,7 @@ if (!isset($_POST['Show'])) {
 
 	echo '<tr>
 			<td>' . _('Bank Account') . ':</td>
-			<td><select minlength="0" name="BankAccount">';
+			<td><select name="BankAccount">';
 
 	if (DB_num_rows($AccountsResults) == 0) {
 		echo '</select></td>
@@ -60,7 +60,7 @@ if (!isset($_POST['Show'])) {
 
 	echo '<tr>
 				<td>' . _('Select Period') . ':</td>
-				<td><select minlength="0" name="FromPeriod">';
+				<td><select name="FromPeriod">';
 	while ($MyRow = DB_fetch_array($Periods)) {
 		if (isset($_POST['FromPeriod']) and $_POST['FromPeriod'] == $MyRow['periodno']) {
 			echo '<option selected="selected" value="' . $MyRow['periodno'] . '">' . MonthAndYearFromSQLDate($MyRow['lastdate_in_period']) . '</option>';

@@ -468,11 +468,11 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 		echo '<table class="selection">';
 		echo '<tr>
 				<td>' . _('Starting Customer statement to print (Customer code)') . ' </td>
-				<td><input type="text" required="required" minlength="1" maxlength="10" size="7" name="FromCust" value="' . $MyRow['fromcriteria'] . '" /></td>
+				<td><input type="text" required="required" maxlength="10" size="7" name="FromCust" value="' . $MyRow['fromcriteria'] . '" /></td>
 			</tr>
 			<tr>
 				<td>' . _('Ending Customer statement to print (Customer code)') . '</td>
-				<td><input type="text" required="required" minlength="1" maxlength="10" size="7" name="ToCust" value="' . $MyRow['tocriteria'] . '" /></td>
+				<td><input type="text" required="required" maxlength="10" size="7" name="ToCust" value="' . $MyRow['tocriteria'] . '" /></td>
 			</tr>
 		</table>';
 		echo '<br /><div class="centre">

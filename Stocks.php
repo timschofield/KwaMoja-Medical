@@ -914,7 +914,7 @@ if (!isset($StockId) or $StockId == '' or isset($_POST['UpdateCategories'])) {
 	if ($New == 1) {
 		echo '<tr>
 				<td>' . _('Item Code') . ':</td>
-				<td><input type="text" value="' . $StockId . '" name="StockID" size="21" required="required" minlength="1" maxlength="20" /></td>
+				<td><input type="text" value="' . $StockId . '" name="StockID" size="21" required="required" maxlength="20" /></td>
 			</tr>';
 	} else {
 		echo '<tr>
@@ -1011,7 +1011,7 @@ if (isset($_POST['Description'])) {
 }
 echo '<tr>
 		<td>' . _('Part Description') . ' (' . _('short') . '):</td>
-		<td><input type="text" name="Description" size="52" required="required" minlength="1" maxlength="50" value="' . stripslashes($Description) . '" /></td>
+		<td><input type="text" name="Description" size="52" required="required" maxlength="50" value="' . stripslashes($Description) . '" /></td>
 	</tr>';
 
 if (isset($_POST['LongDescription'])) {
@@ -1021,7 +1021,7 @@ if (isset($_POST['LongDescription'])) {
 }
 echo '<tr>
 		<td>' . _('Part Description') . ' (' . _('long') . '):</td>
-		<td><textarea required="required" minlength="1" name="LongDescription" cols="40" rows="3">' . stripslashes($LongDescription) . '</textarea></td>
+		<td><textarea required="required" name="LongDescription" cols="40" rows="3">' . stripslashes($LongDescription) . '</textarea></td>
 	</tr>';
 
 foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
@@ -1033,7 +1033,7 @@ foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
 		}
 		echo '<tr>
 				<td>' . $LanguagesArray[$LanguageId]['LanguageName'] . ' ' . _('Description') . ':</td>
-				<td><input type="text" name="' . $PostVariableName . '" size="52" minlength="0" maxlength="50" value="' . $_POST[$PostVariableName] . '" /></td>
+				<td><input type="text" name="' . $PostVariableName . '" size="52" maxlength="50" value="' . $_POST[$PostVariableName] . '" /></td>
 			</tr>';
 		if (!isset($_POST['Long' . $PostVariableName])) {
 			$_POST['Long' . $PostVariableName] = '';
@@ -1076,7 +1076,7 @@ echo '</tr>';
 
 echo '<tr>
 		<td>' . _('Category') . ':</td>
-		<td><select required="required" minlength="1" name="CategoryID" onchange="ReloadForm(ItemForm.UpdateCategories)">';
+		<td><select required="required" name="CategoryID" onchange="ReloadForm(ItemForm.UpdateCategories)">';
 
 $SQL = "SELECT categoryid, categorydescription FROM stockcategory";
 $ErrMsg = _('The stock categories could not be retrieved because');
@@ -1137,15 +1137,15 @@ if (!isset($_POST['NextSerialNo'])) {
 
 echo '<tr>
 		<td>' . _('Economic Order Quantity') . ':</td>
-		<td><input type="text" class="number" name="EOQ" size="12" minlength="0" maxlength="10" value="' . locale_number_format($_POST['EOQ'], 'Variable') . '" /></td></tr>';
+		<td><input type="text" class="number" name="EOQ" size="12" maxlength="10" value="' . locale_number_format($_POST['EOQ'], 'Variable') . '" /></td></tr>';
 
 echo '<tr>
 		<td>' . _('Packaged Volume (metres cubed)') . ':</td>
-		<td><input type="text" class="number" name="Volume" size="12" minlength="0" maxlength="10" value="' . locale_number_format($_POST['Volume'], 'Variable') . '" /></td>
+		<td><input type="text" class="number" name="Volume" size="12" maxlength="10" value="' . locale_number_format($_POST['Volume'], 'Variable') . '" /></td>
 	</tr>';
 
 echo '<tr>
-		<td>' . _('Packaged Weight (KGs)') . ':</td><td><input type="text" class="number" name="GrossWeight" size="12" minlength="0" maxlength="10" value="' . locale_number_format($_POST['GrossWeight'], 'Variable') . '" /></td>
+		<td>' . _('Packaged Weight (KGs)') . ':</td><td><input type="text" class="number" name="GrossWeight" size="12" maxlength="10" value="' . locale_number_format($_POST['GrossWeight'], 'Variable') . '" /></td>
 	</tr>';
 
 echo '<tr>
@@ -1154,7 +1154,7 @@ echo '<tr>
 
 echo '<tr>
 		<td>' . _('Units of Measure') . ':</td>
-		<td><select minlength="0" name="Units">';
+		<td><select name="Units">';
 
 $SQL = "SELECT unitname FROM unitsofmeasure ORDER by unitname";
 $UOMResult = DB_query($SQL);
@@ -1175,7 +1175,7 @@ echo '</select></td>
 
 echo '<tr>
 		<td>' . _('Assembly, Kit, Manufactured or Service/Labour') . ':</td>
-		<td><select minlength="0" name="MBFlag">';
+		<td><select name="MBFlag">';
 if (!isset($_POST['MBFlag']) or $_POST['MBFlag'] == 'A') {
 	echo '<option selected="selected" value="A">' . _('Assembly') . '</option>';
 } else {
@@ -1213,7 +1213,7 @@ echo '</select></td>
 
 echo '<tr>
 		<td>' . _('Current or Obsolete') . ':</td>
-		<td><select minlength="0" name="Discontinued">';
+		<td><select name="Discontinued">';
 
 if ($_POST['Discontinued'] == 0) {
 	echo '<option selected="selected" value="0">' . _('Current') . '</option>';
@@ -1230,7 +1230,7 @@ echo '</select></td>
 
 echo '<tr>
 		<td>' . _('Batch, Serial or Lot Control') . ':</td>
-		<td><select minlength="0" name="Controlled">';
+		<td><select name="Controlled">';
 
 if ($_POST['Controlled'] == 0) {
 	echo '<option selected="selected" value="0">' . _('No Control') . '</option>';
@@ -1244,7 +1244,7 @@ if ($_POST['Controlled'] == 1) {
 }
 echo '</select></td></tr>';
 
-echo '<tr><td>' . _('Serialised') . ':</td><td><select minlength="0" name="Serialised">';
+echo '<tr><td>' . _('Serialised') . ':</td><td><select name="Serialised">';
 
 if ($_POST['Serialised'] == 0) {
 	echo '<option selected="selected" value="0">' . _('No') . '</option>';
@@ -1262,14 +1262,14 @@ echo '</select><i>' . _('Note') . ', ' . _('this has no effect if the item is no
 if ($_POST['Serialised'] == 1 and $_POST['MBFlag'] == 'M') {
 	echo '<tr>
 			<td>' . _('Next Serial No (Greater than zero for auto numbering)') . ':</td>
-			<td><input  type="text" name="NextSerialNo" size="15" minlength="0" maxlength="15" value="' . $_POST['NextSerialNo'] . '" /></td></tr>';
+			<td><input  type="text" name="NextSerialNo" size="15" maxlength="15" value="' . $_POST['NextSerialNo'] . '" /></td></tr>';
 } else {
 	echo '<tr><td><input type="hidden" name="NextSerialNo" value="0" /></td></tr>';
 }
 
 echo '<tr>
 		<td>' . _('Perishable') . ':</td>
-		<td><select minlength="0" name="Perishable">';
+		<td><select name="Perishable">';
 
 if (!isset($_POST['Perishable']) or $_POST['Perishable'] == 0) {
 	echo '<option selected="selected" value="0">' . _('No') . '</option>';
@@ -1285,7 +1285,7 @@ echo '</select></td></tr>';
 
 echo '<tr>
 		<td>' . _('Decimal Places for display Quantity') . ':</td>
-		<td><input type="text" class="number" name="DecimalPlaces" size="1" minlength="0" maxlength="1" value="' . $_POST['DecimalPlaces'] . '" /></td>
+		<td><input type="text" class="number" name="DecimalPlaces" size="1" maxlength="1" value="' . $_POST['DecimalPlaces'] . '" /></td>
 	</tr>';
 
 if (isset($_POST['BarCode'])) {
@@ -1295,7 +1295,7 @@ if (isset($_POST['BarCode'])) {
 }
 echo '<tr>
 		<td>' . _('Bar Code') . ':</td>
-		<td><input type="text" name="BarCode" size="22" minlength="0" maxlength="20" value="' . $BarCode . '" /></td>
+		<td><input type="text" name="BarCode" size="22" maxlength="20" value="' . $BarCode . '" /></td>
 	</tr>';
 
 if (isset($_POST['DiscountCategory'])) {
@@ -1305,12 +1305,12 @@ if (isset($_POST['DiscountCategory'])) {
 }
 echo '<tr>
 		<td>' . _('Discount Category') . ':</td>
-		<td><input type="text" name="DiscountCategory" size="2" minlength="0" maxlength="2" value="' . $DiscountCategory . '" /></td>
+		<td><input type="text" name="DiscountCategory" size="2" maxlength="2" value="' . $DiscountCategory . '" /></td>
 	</tr>';
 
 echo '<tr>
 		<td>' . _('Tax Category') . ':</td>
-		<td><select minlength="0" name="TaxCat">';
+		<td><select name="TaxCat">';
 $SQL = "SELECT taxcatid, taxcatname FROM taxcategories ORDER BY taxcatname";
 $Result = DB_query($SQL);
 
@@ -1331,11 +1331,11 @@ echo '</select></td>
 
 echo '<tr>
 		<td>' . _('Pan Size') . ':</td>
-		<td><input type="text" class="number" name="Pansize" size="6" minlength="0" maxlength="6" value="' . locale_number_format($_POST['Pansize'], 0) . '" /></td>
+		<td><input type="text" class="number" name="Pansize" size="6" maxlength="6" value="' . locale_number_format($_POST['Pansize'], 0) . '" /></td>
 	</tr>
 	 <tr>
 		<td>' . _('Shrinkage Factor') . ':</td>
-		<td><input type="text" class="number" name="ShrinkFactor" size="6" minlength="0" maxlength="6" value="' . locale_number_format($_POST['ShrinkFactor'], 0) . '" /></td>
+		<td><input type="text" class="number" name="ShrinkFactor" size="6" maxlength="6" value="' . locale_number_format($_POST['ShrinkFactor'], 0) . '" /></td>
 	</tr>';
 
 echo '</table>
@@ -1393,15 +1393,15 @@ if (DB_num_rows($PropertiesResult) > 0) {
 					echo '<input type="hidden" name="PropMin' . $PropertyCounter . '" value="' . $PropertyRow['minimumvalue'] . '" />';
 					echo '<input type="hidden" name="PropMax' . $PropertyCounter . '" value="' . $PropertyRow['maximumvalue'] . '" />';
 
-					echo '<input type="text" class="number" name="PropValue' . $PropertyCounter . '" size="20" minlength="0" maxlength="100" value="' . locale_number_format($PropertyValue, 'Variable') . '" />';
+					echo '<input type="text" class="number" name="PropValue' . $PropertyCounter . '" size="20" maxlength="100" value="' . locale_number_format($PropertyValue, 'Variable') . '" />';
 					echo _('A number between') . ' ' . locale_number_format($PropertyRow['minimumvalue'], 'Variable') . ' ' . _('and') . ' ' . locale_number_format($PropertyRow['maximumvalue'], 'Variable') . ' ' . _('is expected');
 				} else {
-					echo '<input type="text" name="PropValue' . $PropertyCounter . '" size="20" minlength="0" maxlength="100" value="' . $PropertyValue . '" />';
+					echo '<input type="text" name="PropValue' . $PropertyCounter . '" size="20" maxlength="100" value="' . $PropertyValue . '" />';
 				}
 				break;
 			case 1; //select box
 				$OptionValues = explode(',', $PropertyRow['defaultvalue']);
-				echo '<select minlength="0" name="PropValue' . $PropertyCounter . '">';
+				echo '<select name="PropValue' . $PropertyCounter . '">';
 				foreach ($OptionValues as $PropertyOptionValue) {
 					if ($PropertyOptionValue == $PropertyValue) {
 						echo '<option selected="selected" value="' . $PropertyOptionValue . '">' . $PropertyOptionValue . '</option>';

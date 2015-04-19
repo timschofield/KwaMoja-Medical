@@ -27,7 +27,7 @@ $DefaultPeriodDate = Date('Y-m-d', Mktime(0, 0, 0, Date('m'), 0, Date('Y')));
 echo '<table class="selection" summary="' . _('Criteria for report') . '">
 			<tr>
 			 <td>' . _('Selected Accounts') . ':</td>
-			 <td><select minlength="0" name="Account[]" size="12" multiple="multiple">';
+			 <td><select name="Account[]" size="12" multiple="multiple">';
 $SQL = "SELECT accountcode, accountname FROM chartmaster ORDER BY accountcode";
 $AccountsResult = DB_query($SQL);
 $i = 0;
@@ -42,7 +42,7 @@ while ($MyRow = DB_fetch_array($AccountsResult)) {
 echo '</select></td>';
 
 echo '<td>' . _('For Period range') . ':</td>
-		<td><select minlength="0" name="Period[]" size="12" multiple="multiple">';
+		<td><select name="Period[]" size="12" multiple="multiple">';
 $SQL = "SELECT periodno, lastdate_in_period FROM periods ORDER BY periodno DESC";
 $Periods = DB_query($SQL);
 $id = 0;
@@ -58,7 +58,7 @@ while ($MyRow = DB_fetch_array($Periods)) {
 echo '</select></td></tr>';
 
 //Select the tag
-echo '<tr><td>' . _('Select Tag') . ':</td><td><select minlength="0" name="tag">';
+echo '<tr><td>' . _('Select Tag') . ':</td><td><select name="tag">';
 
 $SQL = "SELECT tagref,
 		   tagdescription

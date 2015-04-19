@@ -257,11 +257,11 @@ if (isset($_POST['PrintPDF'])) {
 			<table class="selection">';
 	echo '<tr>
 			<td>' . _('Part') . ':</td>
-			<td><input type ="text" name="Part" autofocus="autofocus" required="required" minlength="1" maxlength="20" size="20" /></td>
+			<td><input type ="text" name="Part" autofocus="autofocus" required="required" maxlength="20" size="20" /></td>
 		</tr>
 		<tr>
 			<td>' . _('Levels') . ':</td>
-			<td><select minlength="0" name="Levels">
+			<td><select name="Levels">
 				<option selected="selected" value="All">' . _('All Levels') . '</option>
 				<option value="One">' . _('One Level') . '</option>
 				</select>
@@ -269,7 +269,7 @@ if (isset($_POST['PrintPDF'])) {
 		</tr>
 		<tr>
 			<td>' . _('Print Option') . ':</td>
-			<td><select minlength="0" name="Fill">
+			<td><select name="Fill">
 				<option selected="selected" value="yes">' . _('Print With Alternating Highlighted Lines') . '</option>
 				<option value="no">' . _('Plain Print') . '</option>
 				</select>

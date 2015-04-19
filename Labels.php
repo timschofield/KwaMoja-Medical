@@ -306,11 +306,11 @@ echo '<table class="selection" summary="' . _('Outside container for label diagr
 			<td><table summary="' . _('Label specifications') . '">
 				<tr>
 					<td>' . _('Label Description') . ':</td>
-					<td><input type="text" name="Description" size="21" required="required" minlength="1" maxlength="20" value="' . $_POST['Description'] . '" /></td>
+					<td><input type="text" name="Description" size="21" required="required" maxlength="20" value="' . $_POST['Description'] . '" /></td>
 				</tr>
 				<tr>
 					<td>' . _('Label Paper Size') . ':</td>
-					<td><select required="required" minlength="1" name="PaperSize" onchange="ReloadForm(submit)" >';
+					<td><select required="required" name="PaperSize" onchange="ReloadForm(submit)" >';
 
 if (!isset($_POST['PaperSize'])) {
 	echo '<option selected="selected" value="custom">' . _('Custom Size') . '</option>';
@@ -363,36 +363,36 @@ if (!isset($_POST['PaperSize']) or $_POST['PaperSize'] == 'Custom') {
 	}
 	echo '<tr>
 			<td>' . _('Page Width') . '</td>
-			<td><input type="text" size="4" required="required" minlength="1" maxlength="4" name="PageWidth" value="' . $_POST['PageWidth'] . '" /></td>
+			<td><input type="text" size="4" required="required" maxlength="4" name="PageWidth" value="' . $_POST['PageWidth'] . '" /></td>
 		</tr>
 		<tr>
 			<td>' . _('Page Height') . '</td>
-			<td><input type="text" size="4" required="required" minlength="1" maxlength="4" name="PageHeight" value="' . $_POST['PageHeight'] . '" /></td>
+			<td><input type="text" size="4" required="required" maxlength="4" name="PageHeight" value="' . $_POST['PageHeight'] . '" /></td>
 		</tr>';
 }
 echo '<tr>
 		<td>' . _('Label Height') . ' - (He):</td>
-		<td><input type="text" name="Height" size="4" required="required" minlength="1" maxlength="4" value="' . $_POST['Height'] . '" /></td>
+		<td><input type="text" name="Height" size="4" required="required" maxlength="4" value="' . $_POST['Height'] . '" /></td>
 	</tr>
 	<tr>
 		<td>' . _('Label Width') . ' - (Wi):</td>
-		<td><input type="text" name="Width" size="4" required="required" minlength="1" maxlength="4" value="' . $_POST['Width'] . '" /></td>
+		<td><input type="text" name="Width" size="4" required="required" maxlength="4" value="' . $_POST['Width'] . '" /></td>
 	</tr>
 	<tr>
 		<td>' . _('Top Margin') . ' - (Tm):</td>
-		<td><input type="text" name="TopMargin" size="4" required="required" minlength="1" maxlength="4" value="' . $_POST['TopMargin'] . '" /></td>
+		<td><input type="text" name="TopMargin" size="4" required="required" maxlength="4" value="' . $_POST['TopMargin'] . '" /></td>
 	</tr>
 	<tr>
 		<td>' . _('Left Margin') . ' - (Lm):</td>
-		<td><input type="text" name="LeftMargin" size="4" required="required" minlength="1" maxlength="4" value="' . $_POST['LeftMargin'] . '" /></td>
+		<td><input type="text" name="LeftMargin" size="4" required="required" maxlength="4" value="' . $_POST['LeftMargin'] . '" /></td>
 	</tr>
 	<tr>
 		<td>' . _('Row Height') . ' - (Rh):</td>
-		<td><input type="text" name="RowHeight" size="4" required="required" minlength="1" maxlength="4" value="' . $_POST['RowHeight'] . '" /></td>
+		<td><input type="text" name="RowHeight" size="4" required="required" maxlength="4" value="' . $_POST['RowHeight'] . '" /></td>
 	</tr>
 	<tr>
 		<td>' . _('Column Width') . ' - (Cw):</td>
-		<td><input type="text" name="ColumnWidth" size="4" required="required" minlength="1" maxlength="4" value="' . $_POST['ColumnWidth'] . '" /></td>
+		<td><input type="text" name="ColumnWidth" size="4" required="required" maxlength="4" value="' . $_POST['ColumnWidth'] . '" /></td>
 	</tr>
 	</table></td></tr>
 	</td></tr>
@@ -437,7 +437,7 @@ if (isset($SelectedLabelID)) {
 			}
 
 			echo '<input type="hidden" name="LabelFieldID' . $i . '" value="' . $MyRow['labelfieldid'] . '" />
-			<td><select minlength="0" name="FieldName' . $i . '" onchange="ReloadForm(submit)">';
+			<td><select name="FieldName' . $i . '" onchange="ReloadForm(submit)">';
 			if ($MyRow['fieldvalue'] == 'itemcode') {
 				echo '<option selected="selected" value="itemcode">' . _('Item Code') . '</option>';
 			} else {
@@ -459,10 +459,10 @@ if (isset($SelectedLabelID)) {
 				echo '<option value="price">' . _('Price') . '</option>';
 			}
 			echo '</select></td>
-				<td><input type="text" name="VPos' . $i . '" size="4" required="required" minlength="1" maxlength="4" value="' . $MyRow['vpos'] . '" /></td>
-				<td><input type="text" name="HPos' . $i . '" size="4" required="required" minlength="1" maxlength="4" value="' . $MyRow['hpos'] . '" /></td>
-				<td><input type="text" name="FontSize' . $i . '" size="4" required="required" minlength="1" maxlength="4" value="' . $MyRow['fontsize'] . '" /></td>
-				<td><select minlength="0" name="Barcode' . $i . '" onchange="ReloadForm(submit)">';
+				<td><input type="text" name="VPos' . $i . '" size="4" required="required" maxlength="4" value="' . $MyRow['vpos'] . '" /></td>
+				<td><input type="text" name="HPos' . $i . '" size="4" required="required" maxlength="4" value="' . $MyRow['hpos'] . '" /></td>
+				<td><input type="text" name="FontSize' . $i . '" size="4" required="required" maxlength="4" value="' . $MyRow['fontsize'] . '" /></td>
+				<td><select name="Barcode' . $i . '" onchange="ReloadForm(submit)">';
 			if ($MyRow['barcode'] == 0) {
 				echo '<option selected="selected" value="0">' . _('No') . '</option>
 						<option value="1">' . _('Yes') . '</option>';
@@ -482,16 +482,16 @@ if (isset($SelectedLabelID)) {
 	echo '<input type="hidden" name="NoOfFieldsDefined" value="' . $i . '" />';
 
 	echo '<tr>
-		<td><select minlength="0" name="FieldName">
+		<td><select name="FieldName">
 			<option value="itemcode">' . _('Item Code') . '</option>
 			<option value="itemdescription">' . _('Item Descrption') . '</option>
 			<option value="barcode">' . _('Item Barcode') . '</option>
 			<option value="price">' . _('Price') . '</option>
 			</select></td>
-		<td><input type="text" size="4" required="required" minlength="1" maxlength="4" name="VPos" /></td>
-		<td><input type="text" size="4" required="required" minlength="1" maxlength="4" name="HPos" /></td>
-		<td><input type="text" size="4" required="required" minlength="1" maxlength="4" name="FontSize" /></td>
-		<td><select minlength="0" name="Barcode">
+		<td><input type="text" size="4" required="required" maxlength="4" name="VPos" /></td>
+		<td><input type="text" size="4" required="required" maxlength="4" name="HPos" /></td>
+		<td><input type="text" size="4" required="required" maxlength="4" name="FontSize" /></td>
+		<td><select name="Barcode">
 			<option value="1">' . _('Yes') . '</option>
 			<option selected="selected" value="0">' . _('No') . '</option>
 			</select></td>

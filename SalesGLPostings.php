@@ -298,7 +298,7 @@ if (!isset($_GET['delete'])) {
 		<tr>
 			<td>' . _('Area') . ':</td>
 			<td>
-				<select required="required" minlength="1" name="Area">
+				<select required="required" name="Area">
 					<option value="AN">' . _('Any Other') . '</option>';
 
 	while ($MyRow = DB_fetch_array($Result)) {
@@ -322,7 +322,7 @@ if (!isset($_GET['delete'])) {
 	echo '<tr>
 			<td>' . _('Stock Category') . ':</td>
 			<td>
-				<select required="required" minlength="1" name="StkCat">
+				<select required="required" name="StkCat">
 					<option value="ANY">' . _('Any Other') . '</option>';
 
 	while ($MyRow = DB_fetch_array($Result)) {
@@ -349,7 +349,7 @@ if (!isset($_GET['delete'])) {
 
 	echo '<tr>
 			<td>' . _('Sales Type') . ' / ' . _('Price List') . ':</td>
-			<td><select required="required" minlength="1" name="SalesType">';
+			<td><select required="required" name="SalesType">';
 	echo '<option value="AN">' . _('Any Other') . '</option>';
 
 	while ($MyRow = DB_fetch_array($Result)) {
@@ -367,7 +367,7 @@ if (!isset($_GET['delete'])) {
 
 	echo '<tr>
 			<td>' . _('Post Sales to GL Account') . ':</td>
-			<td><select required="required" minlength="1" name="SalesGLCode">';
+			<td><select required="required" name="SalesGLCode">';
 
 	DB_free_result($Result);
 	$SQL = "SELECT chartmaster.accountcode,
@@ -397,7 +397,7 @@ if (!isset($_GET['delete'])) {
 		<tr>
 			<td>' . _('Post Discount to GL Account') . ':</td>
 			<td>
-				<select required="required" minlength="1" name="DiscountGLCode">';
+				<select required="required" name="DiscountGLCode">';
 
 	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['DiscountGLCode']) and $MyRow['accountcode'] == $_POST['DiscountGLCode']) {

@@ -19,7 +19,7 @@ if (!isset($_POST['SecurityRole'])) {
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<div class="centre">
-			<select name="SecurityRole" autofocus="autofocus" required="required" minlength="1" onChange="ReloadForm(SelectSecRole)">
+			<select name="SecurityRole" autofocus="autofocus" required="required" onChange="ReloadForm(SelectSecRole)">
 				<option value=""></option>';
 
 	while ($RoleRow = DB_fetch_array($RoleResult)) {

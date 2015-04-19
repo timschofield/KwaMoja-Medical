@@ -233,7 +233,7 @@ if (isset($SelectedCategory) and !isset($_POST['submit'])) {
 	echo '<table class="selection">
 			<tr>
 				<td>' . _('Category Code') . ':</td>
-				<td><input type="text" name="CategoryID" size="7" required="required" minlength="1" maxlength="6" value="' . $_POST['CategoryID'] . '" /></td>
+				<td><input type="text" name="CategoryID" size="7" required="required" maxlength="6" value="' . $_POST['CategoryID'] . '" /></td>
 			</tr>';
 }
 
@@ -266,11 +266,11 @@ if (!isset($_POST['CategoryDescription'])) {
 
 echo '<tr>
 		<td>' . _('Category Description') . ':</td>
-		<td><input type="text" name="CategoryDescription" size="22" required="required" minlength="1" maxlength="20" value="' . $_POST['CategoryDescription'] . '" /></td>
+		<td><input type="text" name="CategoryDescription" size="22" required="required" maxlength="20" value="' . $_POST['CategoryDescription'] . '" /></td>
 	</tr>
 	<tr>
 		<td>' . _('Fixed Asset Cost GL Code') . ':</td>
-		<td><select required="required" minlength="0" name="CostAct">';
+		<td><select required="required" name="CostAct">';
 
 while ($MyRow = DB_fetch_array($BSAccountsResult)) {
 
@@ -284,7 +284,7 @@ echo '</select></td>
 	</tr>
 	<tr>
 		<td>' . _('Profit and Loss Depreciation GL Code') . ':</td>
-		<td><select required="required" minlength="0" name="DepnAct">';
+		<td><select required="required" name="DepnAct">';
 
 while ($MyRow = DB_fetch_array($PnLAccountsResult)) {
 	if (isset($_POST['DepnAct']) and $MyRow['accountcode'] == $_POST['DepnAct']) {
@@ -299,7 +299,7 @@ echo '</select></td>
 DB_data_seek($PnLAccountsResult, 0);
 echo '<tr>
 		<td>' . _('Profit or Loss on Disposal GL Code') . ':</td>
-		<td><select required="required" minlength="0" name="DisposalAct">';
+		<td><select required="required" name="DisposalAct">';
 while ($MyRow = DB_fetch_array($PnLAccountsResult)) {
 	if (isset($_POST['DisposalAct']) and $MyRow['accountcode'] == $_POST['DisposalAct']) {
 		echo '<option selected="selected" value="' . $MyRow['accountcode'] . '">' . htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false) . ' (' . $MyRow['accountcode'] . ')' . '</option>';
@@ -313,7 +313,7 @@ echo '</select></td>
 DB_data_seek($BSAccountsResult, 0);
 echo '<tr>
 		<td>' . _('Balance Sheet Accumulated Depreciation GL Code') . ':</td>
-		<td><select required="required" minlength="0" name="AccumDepnAct">';
+		<td><select required="required" name="AccumDepnAct">';
 
 while ($MyRow = DB_fetch_array($BSAccountsResult)) {
 

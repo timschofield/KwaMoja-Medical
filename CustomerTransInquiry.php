@@ -19,7 +19,7 @@ echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />'
 echo '<table class="selection">
 		<tr>
 			<td>' . _('Type') . ':</td>
-			<td><select minlength="0" tabindex="1" name="TransType"> ';
+			<td><select tabindex="1" name="TransType"> ';
 
 $SQL = "SELECT typeid,
 				typename
@@ -51,9 +51,9 @@ if (!isset($_POST['ToDate'])) {
 	$_POST['ToDate'] = Date($_SESSION['DefaultDateFormat']);
 }
 echo '<td>' . _('From') . ':</td>
-	<td><input tabindex="2" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" type="text" name="FromDate" required="required" minlength="1" maxlength="10" size="11" value="' . $_POST['FromDate'] . '" /></td>
+	<td><input tabindex="2" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" type="text" name="FromDate" required="required" maxlength="10" size="11" value="' . $_POST['FromDate'] . '" /></td>
 	<td>' . _('To') . ':</td>
-	<td><input tabindex="3" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" type="text" name="ToDate" required="required" minlength="1" maxlength="10" size="11" value="' . $_POST['ToDate'] . '" /></td>
+	<td><input tabindex="3" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" type="text" name="ToDate" required="required" maxlength="10" size="11" value="' . $_POST['ToDate'] . '" /></td>
 	</tr>
 	</table>
 	<div class="centre">

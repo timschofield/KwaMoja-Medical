@@ -109,13 +109,13 @@ if (!isset($_POST['ShiptRef'])) {
 echo '<table class="selection">';
 echo '<tr>
 		<td>' . _('Shipment Reference') . ':</td>
-		<td><input type="text" name="ShiptRef" size="12" required="required" minlength="1" maxlength="11" value="' . $_POST['ShiptRef'] . '" /></td>
+		<td><input type="text" name="ShiptRef" size="12" required="required" maxlength="11" value="' . $_POST['ShiptRef'] . '" /></td>
 	</tr>';
 echo '<tr>
 		<td>' . _('Shipment Selection') . ':
 			<br /> ' . _('If you know the code enter it above') . '
 			<br />' . _('otherwise select the shipment from the list') . '</td>
-		<td><select required="required" minlength="1" name="ShiptSelection">';
+		<td><select required="required" name="ShiptSelection">';
 
 $SQL = "SELECT shiptref,
 				vessel,
@@ -144,7 +144,7 @@ if (!isset($_POST['Amount'])) {
 }
 echo '<tr>
 		<td>' . _('Amount') . ':</td>
-		<td><input type="number" class="number" name="Amount" size="12" required="required" minlength="1" maxlength="11" value="' . locale_number_format($_POST['Amount'], $_SESSION['SuppTrans']->CurrDecimalPlaces) . '" /></td>
+		<td><input type="number" class="number" name="Amount" size="12" required="required" maxlength="11" value="' . locale_number_format($_POST['Amount'], $_SESSION['SuppTrans']->CurrDecimalPlaces) . '" /></td>
 	</tr>
 	</table>';
 

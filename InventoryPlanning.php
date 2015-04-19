@@ -486,7 +486,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 	echo '<table class="selection">
 			<tr>
 				<td>' . _('Select Inventory Categories') . ':</td>
-				<td><select autofocus="autofocus" required="required" minlength="1" size="12" name="Categories[]"multiple="multiple">';
+				<td><select autofocus="autofocus" required="required" size="12" name="Categories[]"multiple="multiple">';
 	$SQL = 'SELECT categoryid, categorydescription
 			FROM stockcategory
 			ORDER BY categorydescription';
@@ -504,7 +504,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 
 	echo '<tr>
 			<td>' . _('For Inventory in Location') . ':</td>
-			<td><select minlength="0" name="Location">';
+			<td><select name="Location">';
 
 	$SQL = "SELECT locations.loccode,
 					locationname
@@ -526,7 +526,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 
 	echo '<tr>
 			<td>' . _('Stock Planning') . ':</td>
-			<td><select minlength="0" name="NumberMonthsHolding">
+			<td><select name="NumberMonthsHolding">
 					<option selected="selected" value="1">' . _('One Month MAX') . '</option>
 					<option value="1.5">' . _('One Month and a half MAX') . '</option>
 					<option value="2">' . _('Two Months MAX') . '</option>

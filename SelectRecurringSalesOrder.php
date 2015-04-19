@@ -16,7 +16,7 @@ echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION[
 echo '<table class="selection">
 		<tr>
 			<td>' . _('Select recurring order templates for delivery from') . ':</td>
-			<td>' . '<select required="required" minlength="1" name="StockLocation">';
+			<td>' . '<select required="required" name="StockLocation">';
 
 $SQL = "SELECT locations.loccode,
 				locationname

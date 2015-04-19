@@ -144,7 +144,7 @@ if (!isset($SelectedTabs)) {
 	echo '<table class="selection">'; //Main table
 
 	echo '<tr><td>' . _('Petty Cash Tabs for User ') . $_SESSION['UserID'] . ':</td>
-				<td><select required="required" minlength="1" name="SelectedTabs">';
+				<td><select required="required" name="SelectedTabs">';
 
 	$SQL = "SELECT tabcode
 		FROM pctabs
@@ -204,7 +204,7 @@ if (!isset($SelectedTabs)) {
 		$CurrDecimalPlaces = $MyRow['decimalplaces'];
 
 		echo '<input type="hidden" name="SelectedTabs" value="' . $SelectedTabs . '" />';
-		echo '<input type="text" class="number" name="Days" value="' . $Days . '" required="required" minlength="1" maxlength="3" size="4" /> ' . _('Days');
+		echo '<input type="text" class="number" name="Days" value="' . $Days . '" required="required" maxlength="3" size="4" /> ' . _('Days');
 		echo '<input type="submit" name="Go" value="' . _('Go') . '" />';
 		echo '</th></tr>';
 
@@ -336,10 +336,10 @@ if (!isset($SelectedTabs)) {
 		echo '<table class="selection">'; //Main table
 		echo '<tr>
 				<td>' . _('Date Of Expense') . ':</td>
-				<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="Date" size="10" required="required" minlength="1" maxlength="10" value="' . $_POST['Date'] . '" /></td>
+				<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="Date" size="10" required="required" maxlength="10" value="' . $_POST['Date'] . '" /></td>
 			</tr>';
 		echo '<tr>
-				<td>' . _('Code Of Expense') . ':</td><td><select required="required" minlength="1" name="SelectedExpense">';
+				<td>' . _('Code Of Expense') . ':</td><td><select required="required" name="SelectedExpense">';
 
 		DB_free_result($Result);
 
@@ -368,7 +368,7 @@ if (!isset($SelectedTabs)) {
 	//Select the tag
 	echo '<tr>
 			<td>' . _('Tag') . ':</td>
-			<td><select minlength="0" name="Tag">';
+			<td><select name="Tag">';
 
 	$SQL = "SELECT tagref,
 					tagdescription
@@ -394,7 +394,7 @@ if (!isset($SelectedTabs)) {
 
 		echo '<tr>
 				<td>' . _('Amount') . ':</td>
-				<td><input type="text" class="number" name="Amount" size="12" required="required" minlength="1" maxlength="11" value="' . $_POST['Amount'] . '" /></td>
+				<td><input type="text" class="number" name="Amount" size="12" required="required" maxlength="11" value="' . $_POST['Amount'] . '" /></td>
 			</tr>';
 
 		if (!isset($_POST['Notes'])) {
@@ -402,7 +402,7 @@ if (!isset($SelectedTabs)) {
 		}
 
 		echo '<tr><td>' . _('Notes') . ':</td>
-				<td><input type="text" name="Notes" size="50" minlength="0" maxlength="49" value="' . $_POST['Notes'] . '" /></td></tr>';
+				<td><input type="text" name="Notes" size="50" maxlength="49" value="' . $_POST['Notes'] . '" /></td></tr>';
 
 		if (!isset($_POST['Receipt'])) {
 			$_POST['Receipt'] = '';
@@ -410,7 +410,7 @@ if (!isset($SelectedTabs)) {
 
 		echo '<tr>
 				<td>' . _('Receipt') . ':</td>
-				<td><input type="text" name="Receipt" size="50" minlength="0" maxlength="49" value="' . $_POST['Receipt'] . '" /></td>
+				<td><input type="text" name="Receipt" size="50" maxlength="49" value="' . $_POST['Receipt'] . '" /></td>
 			</tr>';
 		echo '</table>'; // close main table
 

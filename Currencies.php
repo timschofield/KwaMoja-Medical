@@ -421,7 +421,7 @@ if (!isset($_GET['delete'])) {
 		echo '<table class="selection">
 			<tr>
 				<td>' . _('Currency') . ':</td>
-				<td><select minlength="0" name="Abbreviation">';
+				<td><select name="Abbreviation">';
 		foreach ($CurrencyName as $CurrencyAbbreviation => $Currency) {
 			echo '<option value="' . $CurrencyAbbreviation . '">' . $CurrencyAbbreviation . '-' . $Currency . '</option>';
 		}
@@ -436,7 +436,7 @@ if (!isset($_GET['delete'])) {
 		$_POST['Country'] = '';
 	}
 	if ($_POST['Abbreviation'] != $FunctionalCurrency) {
-		echo '<td><input type="text" name="Country" size="30" required="required" minlength="1" maxlength="50" value="' . $_POST['Country'] . '" /></td>';
+		echo '<td><input type="text" name="Country" size="30" required="required" maxlength="50" value="' . $_POST['Country'] . '" /></td>';
 	} else {
 		echo '<td>' . $_POST['Country'] . '</td>';
 		echo '<input type="hidden" name="Country" value="' . $_POST['Country'] . '" />';
@@ -448,7 +448,7 @@ if (!isset($_GET['delete'])) {
 	if (!isset($_POST['HundredsName'])) {
 		$_POST['HundredsName'] = '';
 	}
-	echo '<input type="text" name="HundredsName" size="10" required="required" minlength="1" maxlength="15" value="' . $_POST['HundredsName'] . '" /></td>
+	echo '<input type="text" name="HundredsName" size="10" required="required" maxlength="15" value="' . $_POST['HundredsName'] . '" /></td>
 		</tr>
 		<tr>
 			<td>' . _('Decimal Places to Display') . ':</td>
@@ -456,7 +456,7 @@ if (!isset($_GET['delete'])) {
 	if (!isset($_POST['DecimalPlaces'])) {
 		$_POST['DecimalPlaces'] = 2;
 	}
-	echo '<input class="integer" type="text" name="DecimalPlaces" size="2" required="required" minlength="1" maxlength="2" value="' . $_POST['DecimalPlaces'] . '" /></td>
+	echo '<input class="integer" type="text" name="DecimalPlaces" size="2" required="required" maxlength="2" value="' . $_POST['DecimalPlaces'] . '" /></td>
 		</tr>
 		<tr>
 			<td>' . _('Exchange Rate') . ':</td>';
@@ -464,7 +464,7 @@ if (!isset($_GET['delete'])) {
 		$_POST['ExchangeRate'] = 1;
 	}
 	if ($_POST['Abbreviation'] != $FunctionalCurrency) {
-		echo '<td><input type="text" class="number" name="ExchangeRate" size="10" required="required" minlength="1" maxlength="10" value="' . $_POST['ExchangeRate'] . '" /></td>';
+		echo '<td><input type="text" class="number" name="ExchangeRate" size="10" required="required" maxlength="10" value="' . $_POST['ExchangeRate'] . '" /></td>';
 	} else {
 		echo '<td>' . $_POST['ExchangeRate'] . '</td>';
 		echo '<input type="hidden" class="number" name="ExchangeRate" value="' . $_POST['ExchangeRate'] . '" />';
@@ -476,7 +476,7 @@ if (!isset($_GET['delete'])) {
 
 	echo '<tr>
 			<td>' . _('Show in webSHOP') . ':</td>
-			<td><select minlength="0" name="webcart">';
+			<td><select name="webcart">';
 
 	if ($_POST['webcart'] == 1) {
 		echo '<option selected="selected" value="1">' . _('Yes') . '</option>';

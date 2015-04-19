@@ -91,7 +91,7 @@ echo '<table class="selection">
 
 echo '<tr>
 		<td class="label">' . _('Location where items are to be received into') . ':</td>
-		<td><select minlength="0" name="StockLocation" onChange="ReloadForm(Refresh)">';
+		<td><select name="StockLocation" onChange="ReloadForm(Refresh)">';
 
 $SQL = "SELECT locationname,
 				locations.loccode
@@ -120,7 +120,7 @@ if (!isset($_POST['StartDate'])) {
 
 echo '<tr>
 		<td class="label">' . _('Start Date') . ':</td>
-		<td><input type="text" name="StartDate" size="12" minlength="0" maxlength="12" value="' . $_SESSION['WorkOrder' . $Identifier]->StartDate . '" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" /></td>
+		<td><input type="text" name="StartDate" size="12" maxlength="12" value="' . $_SESSION['WorkOrder' . $Identifier]->StartDate . '" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" /></td>
 	</tr>';
 
 if (!isset($_POST['RequiredBy'])) {
@@ -129,7 +129,7 @@ if (!isset($_POST['RequiredBy'])) {
 
 echo '<tr>
 		<td class="label">' . _('Required By') . ':</td>
-		<td><input type="text" name="RequiredBy" size="12" minlength="0" maxlength="12" value="' . $_SESSION['WorkOrder' . $Identifier]->RequiredBy . '" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" /></td>
+		<td><input type="text" name="RequiredBy" size="12" maxlength="12" value="' . $_SESSION['WorkOrder' . $Identifier]->RequiredBy . '" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" /></td>
 	</tr>';
 
 if ($_SESSION['WorkOrder' . $Identifier]->CostIssued > 0) {
@@ -175,7 +175,7 @@ if ($_SESSION['WorkOrder' . $Identifier]->NumberOfItems > 0) {
 		if ($WOItem->Controlled == 1 and $_SESSION['DefineControlledOnWOEntry'] == 1) {
 			echo '<td class="number">' . locale_number_format($_POST['OutputQty' . $i], $_POST['DecimalPlaces' . $i]) . '</td>';
 		} else {
-			echo '<td><input type="text" class="number" name="OutputQty' . $WOItem->LineNumber . '" value="' . locale_number_format($WOItem->QuantityRequired - $WOItem->QuantityReceived, $WOItem->DecimalPlaces) . '" size="10" required="required" minlength="1" maxlength="10" /></td>';
+			echo '<td><input type="text" class="number" name="OutputQty' . $WOItem->LineNumber . '" value="' . locale_number_format($WOItem->QuantityRequired - $WOItem->QuantityReceived, $WOItem->DecimalPlaces) . '" size="10" required="required" maxlength="10" /></td>';
 		}
 		echo '<td class="number"><input type="hidden" name="RecdQty' . $WOItem->LineNumber . '" value="' . locale_number_format($WOItem->QuantityReceived, $WOItem->DecimalPlaces) . '" />' . locale_number_format($WOItem->QuantityReceived, $WOItem->DecimalPlaces) . '</td>
 		  		<td class="number">' . locale_number_format($WOItem->QuantityRequired - $WOItem->QuantityReceived, $WOItem->DecimalPlaces) . '</td>';
@@ -250,7 +250,7 @@ $Result1 = DB_query($SQL);
 
 echo '<table class="search" id="ItemSelect">
 		<tr>
-			<td>' . _('Select a stock category') . ':<select minlength="0" name="StockCat">';
+			<td>' . _('Select a stock category') . ':<select name="StockCat">';
 
 if (!isset($_POST['StockCat'])) {
 	echo '<option selected="True" value="All">' . _('All') . '</option>';
@@ -278,12 +278,12 @@ if (!isset($_POST['StockCode'])) {
 
 echo '</select></td>
 		<td>' . _('Enter text extracts in the') . ' <b>' . _('description') . '</b>:</td>
-		<td><input type="text" name="Keywords" size="20" minlength="0" maxlength="25" value="' . $_POST['Keywords'] . '" /></td>
+		<td><input type="text" name="Keywords" size="20" maxlength="25" value="' . $_POST['Keywords'] . '" /></td>
 	</tr>
 	<tr>
 		<td>&nbsp;</td>
 		<td><font size="3"><b>' . _('OR') . ' </b></font>' . _('Enter extract of the') . ' <b>' . _('Stock Code') . '</b>:</td>
-		<td><input type="text" name="StockCode" size="15" minlength="0" maxlength="18" value="' . $_POST['StockCode'] . '" /></td>
+		<td><input type="text" name="StockCode" size="15" maxlength="18" value="' . $_POST['StockCode'] . '" /></td>
 	</tr>
 	<tr>
 		<th colspan="3">
@@ -380,7 +380,7 @@ if (isset($SearchResult)) {
 						<td>%s</td>
 						<td>%s</td>
 						<input type="hidden" name="StockID' . $LineNumber . '" value="%s" />
-						<td><input type="text" required="required" minlength="1" maxlength="11" class="number" name="Quantity' . $LineNumber . '" value="0" /></td>
+						<td><input type="text" required="required" maxlength="11" class="number" name="Quantity' . $LineNumber . '" value="0" /></td>
 						</tr>', $MyRow['stockid'], $MyRow['description'], $MyRow['units'], $ImageSource, $MyRow['stockid']);
 			} //end if not already on work order
 			$LineNumber++;

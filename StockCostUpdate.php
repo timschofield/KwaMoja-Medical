@@ -139,7 +139,7 @@ echo '<table widthe="98%">
 echo '<table cellpadding="2" class="selection">
 		<tr>
 			<th colspan="2">' . _('Item Code') . ':
-				<input type="text" name="StockID" value="' . $StockId . '"  required="required" minlength="1" maxlength="20" />
+				<input type="text" name="StockID" value="' . $StockId . '"  required="required" maxlength="20" />
 				<input type="submit" name="Show" value="' . _('Show Cost Details') . '" />
 			</th>
 		</tr>

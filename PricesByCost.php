@@ -222,7 +222,7 @@ if (isset($_POST['submit']) or isset($_POST['update'])) {
 					<td class="number">' . locale_number_format($Cost, $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
 					<td class="number">' . locale_number_format($CurrentGP, 1) . '%</td>
 					<td class="number">' . locale_number_format($ProposedPrice, $MyRow['decimalplaces']) . '</td>
-					<td><input type="text" class="number" name="Price_' . $PriceCounter . '" required="required" minlength="1" maxlength="14" size="10" value="' . locale_number_format($MyRow['price'], $MyRow['decimalplaces']) . '" /></td>
+					<td><input type="text" class="number" name="Price_' . $PriceCounter . '" required="required" maxlength="14" size="10" value="' . locale_number_format($MyRow['price'], $MyRow['decimalplaces']) . '" /></td>
 				</tr> ';
 			$PriceCounter++;
 		} //end of looping
@@ -251,7 +251,7 @@ if (isset($_POST['submit']) or isset($_POST['update'])) {
 	$Result1 = DB_query($SQL);
 	echo '<tr>
 			<td>' . _('Category') . ':</td>
-			<td><select required="required" minlength="1" name="StockCat">';
+			<td><select required="required" name="StockCat">';
 	echo '<option value="all">' . _('All Categories') . '</option>';
 	while ($MyRow1 = DB_fetch_array($Result1)) {
 		echo '<option value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
@@ -259,7 +259,7 @@ if (isset($_POST['submit']) or isset($_POST['update'])) {
 	echo '</select></td></tr>';
 	echo '<tr>
 			<td>' . _('Price') . '
-				<select required="required" minlength="1" name="Comparator">
+				<select required="required" name="Comparator">
 					<option value="1">' . _('Less than or equal to') . '</option>
 					<option value="2">' . _('Greater than or equal to') . '</option>';
 	if ($_SESSION['WeightedAverageCosting'] == 1) {
@@ -270,11 +270,11 @@ if (isset($_POST['submit']) or isset($_POST['update'])) {
 	if (!isset($_POST['Margin'])) {
 		$_POST['Margin'] = 1;
 	}
-	echo '<td><input type="text" class="number" name="Margin" required="required" minlength="1" maxlength="8" size="8" value="' . $_POST['Margin'] . '" /></td></tr>';
+	echo '<td><input type="text" class="number" name="Margin" required="required" maxlength="8" size="8" value="' . $_POST['Margin'] . '" /></td></tr>';
 	$Result = DB_query("SELECT typeabbrev, sales_type FROM salestypes");
 	echo '<tr>
 			<td>' . _('Sales Type') . '/' . _('Price List') . ':</td>
-			<td><select required="required" minlength="1" name="SalesType">';
+			<td><select required="required" name="SalesType">';
 	while ($MyRow = DB_fetch_array($Result)) {
 		if ($_POST['SalesType'] == $MyRow['typeabbrev']) {
 			echo '<option selected="selected" value="' . $MyRow['typeabbrev'] . '">' . $MyRow['sales_type'] . '</option>';
@@ -288,7 +288,7 @@ if (isset($_POST['submit']) or isset($_POST['update'])) {
 			</td></tr>';
 	echo '<tr>
 			<td>' . _('Currency') . ':</td>
-			<td><select required="required" minlength="1" name="CurrCode">';
+			<td><select required="required" name="CurrCode">';
 	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['CurrCode']) and $_POST['CurrCode'] == $MyRow['currabrev']) {
 			echo '<option selected="selected" value="' . $MyRow['currabrev'] . '">' . $MyRow['currency'] . '</option>';

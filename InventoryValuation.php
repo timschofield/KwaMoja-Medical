@@ -231,7 +231,7 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['CSV'])) and isset($_POST['Catego
 			<table class="selection">
 			<tr>
 				<td>' . _('Select Inventory Categories') . ':</td>
-				<td><select autofocus="autofocus" required="required" minlength="1" size="12" name="Categories[]"multiple="multiple">';
+				<td><select autofocus="autofocus" required="required" size="12" name="Categories[]"multiple="multiple">';
 	$SQL = 'SELECT categoryid,
 					categorydescription
 				FROM stockcategory

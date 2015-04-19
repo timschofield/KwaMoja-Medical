@@ -262,7 +262,7 @@ if (count($_SESSION['Contract' . $Identifier]->ContractBOM) > 0) {
 
 		echo '<td>' . $ContractComponent->StockID . '</td>
 			  <td>' . $ContractComponent->ItemDescription . '</td>
-			  <td><input type="text" class="number" name="Qty' . $ContractComponent->ComponentID . '" required="required" minlength="1" maxlength="11" size="11" value="' . locale_number_format($ContractComponent->Quantity, $ContractComponent->DecimalPlaces) . '" /></td>
+			  <td><input type="text" class="number" name="Qty' . $ContractComponent->ComponentID . '" required="required" maxlength="11" size="11" value="' . locale_number_format($ContractComponent->Quantity, $ContractComponent->DecimalPlaces) . '" /></td>
 			  <td>' . $ContractComponent->UOM . '</td>
 			  <td class="number">' . locale_number_format($ContractComponent->ItemCost, $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
 			  <td class="number">' . $DisplayLineTotal . '</td>
@@ -299,7 +299,7 @@ if (!isset($_GET['Edit'])) {
 	echo '<table class="selection">
 			<tr></tr>
 			<tr>
-				<td><select minlength="0" name="StockCat">';
+				<td><select name="StockCat">';
 
 	echo '<option selected="selected" value="All">' . _('All') . '</option>';
 	while ($MyRow1 = DB_fetch_array($Result1)) {
@@ -323,12 +323,12 @@ if (!isset($_GET['Edit'])) {
 
 	echo '</select></td>
 			<td>' . _('Enter text extracts in the description') . ':</td>
-			<td><input type="text" name="Keywords" size="20" autofocus="autofocus" minlength=1" maxlength="25" value="' . $_POST['Keywords'] . '" /></td>
+			<td><input type="text" name="Keywords" size="20" autofocus="autofocus" maxlength="25" value="' . $_POST['Keywords'] . '" /></td>
 		</tr>
 		<tr>
 			<td></td>
 			<td><b>' . _('OR') . ' </b>' . _('Enter extract of the Stock Code') . ':</td>
-			<td><input type="text" name="StockCode" size="15" minlength="0" maxlength="18" value="' . $_POST['StockCode'] . '" /></td>
+			<td><input type="text" name="StockCode" size="15" maxlength="18" value="' . $_POST['StockCode'] . '" /></td>
 		</tr>
 		<tr>
 			<td></td>

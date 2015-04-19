@@ -265,7 +265,7 @@ if (!isset($_GET['delete'])) {
 				</tr>
 				<tr>
 					<td>' . _('Type Code') . ':</td>
-					<td><input type="text" class="AlphaNumeric" size="3" required="required" minlength="1" maxlength="2" name="TypeAbbrev" /></td>
+					<td><input type="text" class="AlphaNumeric" size="3" required="required" maxlength="2" name="TypeAbbrev" /></td>
 				</tr>';
 	}
 
@@ -274,7 +274,7 @@ if (!isset($_GET['delete'])) {
 	}
 	echo '<tr>
 			<td>', _('Sales Type Name'), ':</td>
-			<td><input type="text" required="required" minlength="1" maxlength="40" name="Sales_Type" value="', $_POST['Sales_Type'], '" /></td></tr>';
+			<td><input type="text" required="required" maxlength="40" name="Sales_Type" value="', $_POST['Sales_Type'], '" /></td></tr>';
 
 	echo '</table>'; // close main table
 

@@ -35,11 +35,11 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate'])) {
 	echo '<table class="selection" summary="' . _('Report Criteria') . '">
 	 		<tr>
 				<td>' . _('Enter the date from which cheques are to be listed') . ':</td>
-				<td><input type="text" name="FromDate" required="required" minlength="1" maxlength="10" size="10" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '"  value="' . Date($_SESSION['DefaultDateFormat']) . '" /></td>
+				<td><input type="text" name="FromDate" required="required" maxlength="10" size="10" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '"  value="' . Date($_SESSION['DefaultDateFormat']) . '" /></td>
 			</tr>
 			<tr>
 				<td>' . _('Enter the date to which cheques are to be listed') . ':</td>
-				<td><input type="text" name="ToDate" required="required" minlength="1" maxlength="10" size="10"  class="date" alt="' . $_SESSION['DefaultDateFormat'] . '"  value="' . Date($_SESSION['DefaultDateFormat']) . '" /></td>
+				<td><input type="text" name="ToDate" required="required" maxlength="10" size="10"  class="date" alt="' . $_SESSION['DefaultDateFormat'] . '"  value="' . Date($_SESSION['DefaultDateFormat']) . '" /></td>
 			</tr>
 			<tr>
 				<td>' . _('Bank Account') . '</td><td>';
@@ -48,7 +48,7 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate'])) {
 	$Result = DB_query($SQL);
 
 
-	echo '<select minlength="0" name="BankAccount">';
+	echo '<select name="BankAccount">';
 
 	while ($MyRow = DB_fetch_array($Result)) {
 		echo '<option value="' . $MyRow['accountcode'] . '">' . $MyRow['bankaccountname'] . '</option>';
@@ -59,7 +59,7 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate'])) {
 
 	echo '<tr>
 				<td>' . _('Email the report off') . ':</td>
-				<td><select required="required" minlength="1" name="Email">
+				<td><select required="required" name="Email">
 					<option selected="selected" value="No">' . _('No') . '</option>
 					<option value="Yes">' . _('Yes') . '</option>
 				</select></td>

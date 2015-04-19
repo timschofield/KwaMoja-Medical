@@ -172,7 +172,7 @@ if (isset($_POST['Submit'])) {
 	echo '<table class="selection">
 			<tr>
 				<td>' . _('From Stock ID') . '</td>';
-	echo '<td><select minlength="0" name="StockID">';
+	echo '<td><select name="StockID">';
 	while ($MyRow = DB_fetch_row($Result)) {
 		if (isset($_GET['Item']) and $MyRow[0] == $_GET['Item']) {
 			echo '<option selected="selected" value="' . $MyRow[0] . '">' . $MyRow[0] . ' -- ' . $MyRow[1] . '</option>';
@@ -184,7 +184,7 @@ if (isset($_POST['Submit'])) {
 			</tr>';
 	echo '<tr>
 			<td><input type="radio" name="NewOrExisting" value="N" />' . _(' To New Stock ID') . '</td>';
-	echo '<td><input type="text" required="required" minlength="1" maxlength="20" name="ToStockID" /></td></tr>';
+	echo '<td><input type="text" required="required" maxlength="20" name="ToStockID" /></td></tr>';
 
 	$SQL = "SELECT stockid,
 					description
@@ -196,7 +196,7 @@ if (isset($_POST['Submit'])) {
 	if (DB_num_rows($Result) > 0) {
 		echo '<tr>
 				<td><input type="radio" name="NewOrExisting" value="E" />' . _('To Existing Stock ID') . '</td><td>';
-		echo '<select minlength="0" name="ExStockID">';
+		echo '<select name="ExStockID">';
 		while ($MyRow = DB_fetch_row($Result)) {
 			echo '<option value="' . $MyRow[0] . '">' . $MyRow[0] . ' -- ' . $MyRow[1] . '</option>';
 		}

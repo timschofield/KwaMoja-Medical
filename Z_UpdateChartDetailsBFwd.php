@@ -24,7 +24,7 @@ if (!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) {
 	echo '<table>
 			<tr>
 				<td>' . _('Select Period From') . ':</td>
-				<td><select minlength="0" name="FromPeriod">';
+				<td><select name="FromPeriod">';
 	foreach ($PeriodsArray as $PeriodNo => $PeriodName) {
 		if ($PeriodNo == $DefaultFromPeriod) {
 			echo '<option selected="selected" value="' . $PeriodNo . '">' . $PeriodName . '</option>';
@@ -39,7 +39,7 @@ if (!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) {
 
 	echo '<tr>
 			<td>' . _('Select Period To') . ':</td>
-			<td><select minlength="0" name="ToPeriod">';
+			<td><select name="ToPeriod">';
 
 	foreach ($PeriodsArray as $PeriodNo => $PeriodName) {
 		if ($PeriodNo == $DefaultToPeriod) {

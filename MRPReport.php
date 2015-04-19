@@ -538,7 +538,7 @@ if (isset($_POST['PrintPDF']) and $_POST['Part'] != '') {
 	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Search for Inventory Items') . '</p>';
 	echo '<table class="selection"><tr>';
 	echo '<td>' . _('In Stock Category') . ':';
-	echo '<select minlength="0" name="StockCat">';
+	echo '<select name="StockCat">';
 	if (!isset($_POST['StockCat'])) {
 		$_POST['StockCat'] = '';
 	}
@@ -565,9 +565,9 @@ if (isset($_POST['PrintPDF']) and $_POST['Part'] != '') {
 	echo '<td><h3><b>' . _('OR') . ' ' . '</b></h3>' . _('Enter partial') . ' <b>' . _('Stock Code') . '</b>:</td>';
 	echo '<td>';
 	if (isset($_POST['StockCode'])) {
-		echo '<input type="text" autofocus="autofocus" name="StockCode" value="' . $_POST['StockCode'] . '" size="15" minlength="0" maxlength="18" />';
+		echo '<input type="text" autofocus="autofocus" name="StockCode" value="' . $_POST['StockCode'] . '" size="15" maxlength="18" />';
 	} else {
-		echo '<input type="text" autofocus="autofocus" name="StockCode" size="15" minlength="0" maxlength="18" />';
+		echo '<input type="text" autofocus="autofocus" name="StockCode" size="15" maxlength="18" />';
 	}
 	echo '</td>
 		</tr>
@@ -745,7 +745,7 @@ if (isset($searchresult) and !isset($_POST['Select'])) {
 		if ($ListPageMax > 1) {
 			echo '<div class="centre">
 					<p>&nbsp;&nbsp;' . $_POST['PageOffset'] . ' ' . _('of') . ' ' . $ListPageMax . ' ' . _('pages') . '. ' . _('Go to Page') . ': ';
-			echo '<select minlength="0" name="PageOffset">';
+			echo '<select name="PageOffset">';
 			$ListPage = 1;
 			while ($ListPage <= $ListPageMax) {
 				if ($ListPage == $_POST['PageOffset']) {

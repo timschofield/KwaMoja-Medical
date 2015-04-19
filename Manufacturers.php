@@ -283,11 +283,11 @@ if (!isset($_GET['delete'])) {
 
 	echo '<tr>
 			<td>' . _('Brand Name') . ':' . '</td>
-			<td><input type="text" name="ManufacturersName" value="' . $_POST['ManufacturersName'] . '" size="32" autofocus="autofocus" required="required" minlength="1" maxlength="32" /></td>
+			<td><input type="text" name="ManufacturersName" value="' . $_POST['ManufacturersName'] . '" size="32" autofocus="autofocus" required="required" maxlength="32" /></td>
 		</tr>
 		<tr>
 			<td>' . _('Brand URL') . ':' . '</td>
-			<td><input type="text" name="ManufacturersURL" value="' . $_POST['ManufacturersURL'] . '" size="50" required="required" minlength="1" maxlength="50" /></td>
+			<td><input type="text" name="ManufacturersURL" value="' . $_POST['ManufacturersURL'] . '" size="50" required="required" maxlength="50" /></td>
 		</tr>
 		<tr>
 			<td>' . _('Brand Image File (.jpg)') . ':</td>

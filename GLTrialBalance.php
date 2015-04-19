@@ -45,7 +45,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 	echo '<table class="selection" summary="' . _('Input criteria for inquiry') . '">
 			<tr>
 				<td>' . _('Select Period From') . ':</td>
-				<td><select minlength="0" name="FromPeriod">';
+				<td><select name="FromPeriod">';
 	$NextYear = date('Y-m-d', strtotime('+1 Year'));
 	$SQL = "SELECT periodno,
 					lastdate_in_period
@@ -81,7 +81,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 
 	echo '<tr>
 			<td>' . _('Select Period To') . ':</td>
-			<td><select minlength="0" name="ToPeriod">';
+			<td><select name="ToPeriod">';
 
 	$RetResult = DB_data_seek($Periods, 0);
 

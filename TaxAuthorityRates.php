@@ -108,7 +108,7 @@ if (DB_num_rows($TaxRatesResult) > 0) {
 
 		printf('<td>%s</td>
 				<td>%s</td>
-				<td><input type="text" class="number" name="%s" required="required" minlength="1" maxlength="5" size="5" value="%s" /></td>
+				<td><input type="text" class="number" name="%s" required="required" maxlength="5" size="5" value="%s" /></td>
 				</tr>', $MyRow['taxprovincename'], _($MyRow['taxcatname']), $MyRow['dispatchtaxprovince'] . '_' . $MyRow['taxcatid'], locale_number_format($MyRow['taxrate'] * 100, 2));
 
 		$OldProvince = $MyRow['dispatchtaxprovince'];

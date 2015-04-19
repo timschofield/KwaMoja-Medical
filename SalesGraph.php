@@ -36,7 +36,7 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 	echo '<table class="selection" summary="' . _('Criteria for the sales graph') . '">
 			<tr>
 				<td>' . _('Select Period From') . ':</td>
-				<td><select minlength="0" name="FromPeriod">';
+				<td><select name="FromPeriod">';
 
 	if (Date('m') > $_SESSION['YearEnd']) {
 		/*Dates in SQL format */
@@ -72,7 +72,7 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 
 	echo '<tr>
 			<td>' . _('Select Period To') . ':</td>
-			<td><select minlength="0" name="ToPeriod">';
+			<td><select name="ToPeriod">';
 
 	$RetResult = DB_data_seek($Periods, 0);
 
@@ -95,7 +95,7 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 	}
 	echo '<tr>
 			<td>' . _('For Sales Area/Region') . ':</td>
-			<td><select minlength="0" name="SalesArea">';
+			<td><select name="SalesArea">';
 	if ($_POST['SalesArea'] == 'All') {
 		echo '<option selected="selected" value="All">' . _('All') . '</option>';
 	} else {
@@ -119,7 +119,7 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 	}
 	echo '<tr>
 			<td>' . _('For Stock Category') . ':</td>
-			<td><select minlength="0" name="CategoryID">';
+			<td><select name="CategoryID">';
 	if ($_POST['CategoryID'] == 'All') {
 		echo '<option selected="selected" value="All">' . _('All') . '</option>';
 	} else {
@@ -138,7 +138,7 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 
 	echo '<tr>
 			<td>' . _('For Sales Person') . ':</td>
-			<td><select minlength="0" name="SalesmanCode">';
+			<td><select name="SalesmanCode">';
 
 	$SQL = "SELECT salesmancode, salesmanname FROM salesman";
 	if ($_SESSION['SalesmanLogin'] != '') {
@@ -165,7 +165,7 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 	echo '<tr>
 			<td>' . _('Graph Type') . '</td>
 			<td>
-				<select minlength="0" name="GraphType">
+				<select name="GraphType">
 					<option value="bars">' . _('Bar Graph') . '</option>
 					<option value="stackedbars">' . _('Stacked Bar Graph') . '</option>
 					<option value="lines">' . _('Line Graph') . '</option>

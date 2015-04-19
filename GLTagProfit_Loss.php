@@ -36,7 +36,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 	echo '<table class="selection" summary="' . _('Input Criteria for Report') . '">
 			<tr>
 				<td>' . _('Select Period From') . ':</td>
-				<td><select minlength="0" name="FromPeriod">';
+				<td><select name="FromPeriod">';
 
 	$SQL = "SELECT periodno,
 					lastdate_in_period
@@ -76,7 +76,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 
 	echo '<tr>
 			<td>' . _('Select Period To') . ':</td>
-			<td><select minlength="0" name="ToPeriod">';
+			<td><select name="ToPeriod">';
 
 	$RetResult = DB_data_seek($Periods, 0);
 
@@ -92,7 +92,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 	//Select the tag
 	echo '<tr>
 			<td>' . _('Select tag') . '</td>
-			<td><select minlength="0" name="tag">';
+			<td><select name="tag">';
 
 	$SQL = "SELECT tagref,
 				tagdescription
@@ -113,7 +113,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 
 	echo '<tr>
 			<td>' . _('Detail Or Summary') . ':</td>
-			<td><select minlength="0" name="Detail">
+			<td><select name="Detail">
 				<option selected="selected" value="Summary">' . _('Summary') . '</option>
 				<option selected="selected" value="Detailed">' . _('All Accounts') . '</option>
 				</select>

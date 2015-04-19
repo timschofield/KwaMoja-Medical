@@ -380,7 +380,7 @@ if (isset($_POST['PrintPDF'])) {
 	echo '<table class="selection" summary="' . _('Input criteria for report') . '">';
 	echo '<tr>
 			<td>' . _('For Sales Areas') . ':</td>
-			<td><select required="required" minlength="1" name="Areas[]" multiple="multiple">';
+			<td><select required="required" name="Areas[]" multiple="multiple">';
 
 	$SQL = "SELECT areacode, areadescription FROM areas";
 	$AreasResult = DB_query($SQL);
@@ -393,7 +393,7 @@ if (isset($_POST['PrintPDF'])) {
 	echo '</select></td></tr>';
 
 	echo '<tr><td>' . _('For Sales folk') . ':</td>
-			<td><select required="required" minlength="1" name="SalesPeople[]" multiple="multiple">';
+			<td><select required="required" name="SalesPeople[]" multiple="multiple">';
 
 	$SQL = "SELECT salesmancode, salesmanname FROM salesman";
 	if ($_SESSION['SalesmanLogin'] != '') {
@@ -409,20 +409,20 @@ if (isset($_POST['PrintPDF'])) {
 	echo '</select></td></tr>';
 
 	echo '<tr><td>' . _('Level Of Activity') . ':</td>
-			<td><select required="required" minlength="1" name="Activity">
+			<td><select required="required" name="Activity">
 				<option selected="selected" value="All">' . _('All customers') . '</option>
 				<option value="GreaterThan">' . _('Sales Greater Than') . '</option>
 				<option value="LessThan">' . _('Sales Less Than') . '</option>
 				</select></td>
 			<td>';
 
-	echo '<input type="text" class="number" name="ActivityAmount" size="8" minlength="0" maxlength="8" value="0" /></td>
+	echo '<input type="text" class="number" name="ActivityAmount" size="8" maxlength="8" value="0" /></td>
 		</tr>';
 
 	$DefaultActivitySince = Date($_SESSION['DefaultDateFormat'], Mktime(0, 0, 0, Date('m') - 6, 0, Date('y')));
 	echo '<tr>
 			<td>' . _('Activity Since') . ':</td>
-			<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '"  name="ActivitySince" size="10" minlength="0" maxlength="10" value="' . $DefaultActivitySince . '" /></td>
+			<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '"  name="ActivitySince" size="10" maxlength="10" value="' . $DefaultActivitySince . '" /></td>
 		</tr>';
 
 	echo '</table>

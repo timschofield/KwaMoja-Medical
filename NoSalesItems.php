@@ -16,7 +16,7 @@ if (!(isset($_POST['Search']))) {
 			<td>' . _('Select Location') . '</td>
 			<td>:</td>
 			<td>
-				<select minlength="1" required="required" name="Location">';
+				<select required="required" name="Location">';
 	$SQL = "SELECT locations.loccode,
 					locationname
 				FROM locations
@@ -43,7 +43,7 @@ if (!(isset($_POST['Search']))) {
 	echo '<tr>
 			<td width="150">' . _('Select Customer Type') . '</td>
 			<td>:</td>
-			<td><select minlength="0" name="Customers">';
+			<td><select name="Customers">';
 
 	$SQL = "SELECT typename,
 					typeid
@@ -64,7 +64,7 @@ if (!(isset($_POST['Search']))) {
 	echo '<tr>
 			<td width="150">' . _('In Stock Category') . ' </td>
 			<td>:</td>
-			<td><select minlength="0" name="StockCat">';
+			<td><select name="StockCat">';
 	if (!isset($_POST['StockCat'])) {
 		$_POST['StockCat'] = 'All';
 	}
@@ -85,7 +85,7 @@ if (!(isset($_POST['Search']))) {
 	echo '<tr>
 			<td>' . _('Number Of Days') . ' </td>
 			<td>:</td>
-			<td><input class="number" tabindex="3" type="text" name="NumberOfDays" size="8" required="required"	minlength="1" maxlength="8" value="30" /></td>
+			<td><input class="number" tabindex="3" type="text" name="NumberOfDays" size="8" required="required" maxlength="8" value="30" /></td>
 		 </tr>
 	</table>
 	<br />

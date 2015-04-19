@@ -199,10 +199,10 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 		</tr>
 		<tr>
 			<td>' . _('Enter text in the customer name') . ':</td>
-			<td><input type="text" name="Keywords" size="20" minlength="0" maxlength="25" /></td>
+			<td><input type="text" name="Keywords" size="20" maxlength="25" /></td>
 			<td><b>' . _('OR') . '</b></td>
 			<td>' . _('Enter text extract in the customer code') . ':</td>
-			<td><input type="text" name="CustCode" size="15" minlength="0" maxlength="18" /></td>
+			<td><input type="text" name="CustCode" size="15" maxlength="18" /></td>
 		</tr>';
 	echo '</table>
 		<br />
@@ -644,7 +644,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 									<td title="' . $LineItem->LongDescription . '">' . $LineItem->ItemDescription . '</td>';
 
 			if ($LineItem->Controlled == 0) {
-				echo '<td><input type="text" class="number" name="Quantity_' . $LineItem->LineNumber . '" required="required" minlength="1" maxlength="11" size="6" value="' . locale_number_format(round($LineItem->Quantity, $LineItem->DecimalPlaces), $LineItem->DecimalPlaces) . '" /></td>';
+				echo '<td><input type="text" class="number" name="Quantity_' . $LineItem->LineNumber . '" required="required" maxlength="11" size="6" value="' . locale_number_format(round($LineItem->Quantity, $LineItem->DecimalPlaces), $LineItem->DecimalPlaces) . '" /></td>';
 			} else {
 				echo '<td class="number">
 						<a href="' . $RootPath . '/CreditItemsControlled.php?LineNo=' . urlencode($LineItem->LineNumber) . '&identifier=' . urlencode($Identifier) . '">' . locale_number_format($LineItem->Quantity, $LineItem->DecimalPlaces) . '</a>
@@ -652,9 +652,9 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 			}
 
 			echo '<td>' . $LineItem->Units . '</td>
-			<td><input type="text" class="number" name="Price_' . $LineItem->LineNumber . '" size="10" required="required" minlength="1" maxlength="12" value="' . locale_number_format($LineItem->Price, $_SESSION['CreditItems' . $Identifier]->CurrDecimalPlaces) . '" /></td>
+			<td><input type="text" class="number" name="Price_' . $LineItem->LineNumber . '" size="10" required="required" maxlength="12" value="' . locale_number_format($LineItem->Price, $_SESSION['CreditItems' . $Identifier]->CurrDecimalPlaces) . '" /></td>
 			<td><input type="CheckBox" name="Gross" value="false" /></td>
-			<td><input type="text" class="number" name="Discount_' . $LineItem->LineNumber . '" size="3" required="required" minlength="1" maxlength="3" value="' . locale_number_format(($LineItem->DiscountPercent * 100), 'Variable') . '" />%</td>
+			<td><input type="text" class="number" name="Discount_' . $LineItem->LineNumber . '" size="3" required="required" maxlength="3" value="' . locale_number_format(($LineItem->DiscountPercent * 100), 'Variable') . '" />%</td>
 			<td class="number">' . $DisplayLineTotal . '</td>';
 
 
@@ -678,7 +678,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 				if ($i > 0) {
 					echo '<br />';
 				}
-				echo '<input type="text" class="number" name="' . $LineItem->LineNumber . $Tax->TaxCalculationOrder . '_TaxRate" required="required" minlength="1" maxlength="4" size="4" value="' . locale_number_format($Tax->TaxRate * 100, 'Variable') . '" />';
+				echo '<input type="text" class="number" name="' . $LineItem->LineNumber . $Tax->TaxCalculationOrder . '_TaxRate" required="required" maxlength="4" size="4" value="' . locale_number_format($Tax->TaxRate * 100, 'Variable') . '" />';
 				++$i;
 				if ($Tax->TaxOnTax == 1) {
 					$TaxTotals[$Tax->TaxAuthID] += ($Tax->TaxRate * ($LineTotal + $TaxLineTotal));
@@ -717,7 +717,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 				<td colspan="5"></td>';
 
 		echo '<td colspan="2" class="number">' . _('Credit Freight') . '</td>
-			<td><input type="text" class="number" size="6" required="required" minlength="1" maxlength="6" name="ChargeFreightCost" value="' . locale_number_format($_SESSION['CreditItems' . $Identifier]->FreightCost, $_SESSION['CreditItems' . $Identifier]->CurrDecimalPlaces) . '" /></td>';
+			<td><input type="text" class="number" size="6" required="required" maxlength="6" name="ChargeFreightCost" value="' . locale_number_format($_SESSION['CreditItems' . $Identifier]->FreightCost, $_SESSION['CreditItems' . $Identifier]->CurrDecimalPlaces) . '" /></td>';
 
 		$FreightTaxTotal = 0; //initialise tax total
 
@@ -740,7 +740,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 				echo '<br />';
 			}
 
-			echo '<input type="text" class="number" name=FreightTaxRate' . $FreightTaxLine->TaxCalculationOrder . ' required="required" minlength="1" maxlength="4" size="4" value="' . locale_number_format(($FreightTaxLine->TaxRate * 100), 'Variable') . '" />';
+			echo '<input type="text" class="number" name=FreightTaxRate' . $FreightTaxLine->TaxCalculationOrder . ' required="required" maxlength="4" size="4" value="' . locale_number_format(($FreightTaxLine->TaxRate * 100), 'Variable') . '" />';
 
 			if ($FreightTaxLine->TaxOnTax == 1) {
 				$TaxTotals[$FreightTaxLine->TaxAuthID] += ($FreightTaxLine->TaxRate * ($_SESSION['CreditItems' . $Identifier]->FreightCost + $FreightTaxTotal));
@@ -776,7 +776,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 				<table class="selection">
 				<tr>
 					<td>' . _('Credit Note Type') . ' :</td>
-					<td><select required="required" minlength="1" name="CreditType" onchange="ReloadForm(MainForm.Update)" >';
+					<td><select required="required" name="CreditType" onchange="ReloadForm(MainForm.Update)" >';
 
 		if (!isset($_POST['CreditType']) or $_POST['CreditType'] == 'Return') {
 			echo '<option selected="selected" value="Return">' . _('Goods returned to store') . '</option>
@@ -801,7 +801,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 
 			echo '<tr>
 					<td>' . _('Goods Returned to Location') . ' :</td>
-					<td><select required="required" minlength="1" name="Location">';
+					<td><select required="required" name="Location">';
 
 			$SQL = "SELECT locations.loccode,
 							locationname
@@ -830,7 +830,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 
 			echo '<tr>
 					<td>' . _('Write off the cost of the goods to') . '</td>
-					<td><select required="required" minlength="1" name=WriteOffGLCode>';
+					<td><select required="required" name=WriteOffGLCode>';
 
 			$SQL = "SELECT accountcode,
 						accountname
@@ -852,7 +852,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 		}
 		echo '<tr>
 				<td>' . _('Sales person') . ':</td>
-				<td><select required="required" minlength="1" name="SalesPerson">';
+				<td><select required="required" name="SalesPerson">';
 		$SalesPeopleResult = DB_query("SELECT salesmancode, salesmanname FROM salesman WHERE current=1");
 		if (!isset($_POST['SalesPerson']) and $_SESSION['SalesmanLogin'] != NULL) {
 			$_SESSION['CreditItems' . $Identifier]->SalesPerson = $_SESSION['SalesmanLogin'];
@@ -911,7 +911,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 		echo '<br />
 				<table class="selection">
 				<tr>
-					<td>' . _('Select a stock category') . ':&nbsp;<select minlength="0" name="StockCat">';
+					<td>' . _('Select a stock category') . ':&nbsp;<select name="StockCat">';
 
 		echo '<option selected="selected" value="All">' . _('All') . '</option>';
 		while ($MyRow1 = DB_fetch_array($Result1)) {
@@ -930,10 +930,10 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 			$_POST['StockCode'] = '';
 		}
 		echo '<td>' . _('Enter text extracts in the description') . ':&nbsp;</td>';
-		echo '<td><input type="text" name="Keywords" size="20" minlength="0" maxlength="25" value="' . $_POST['Keywords'] . '" /></td></tr>';
+		echo '<td><input type="text" name="Keywords" size="20" maxlength="25" value="' . $_POST['Keywords'] . '" /></td></tr>';
 		echo '<tr><td></td>';
 		echo '<td><b>' . _('OR') . '</b>&nbsp;&nbsp;' . _('Enter extract of the Stock Code') . ':&nbsp;</td>';
-		echo '<td><input type="text" name="StockCode" size="15" minlength="0" maxlength="18" value="' . $_POST['StockCode'] . '" /></td>';
+		echo '<td><input type="text" name="StockCode" size="15" maxlength="18" value="' . $_POST['StockCode'] . '" /></td>';
 		echo '</tr>';
 		echo '</table>
 				<br />
@@ -998,8 +998,8 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 		for ($i = 1; $i <= $_SESSION['QuickEntries']; $i++) {
 
 			echo '<tr class="OddTableRows">
-					<td><input type="text" name="part_' . $i . '" size="21" minlength="0" maxlength="20" /></td>
-					<td><input type="text" class="number" name="qty_' . $i . '" size="6" minlength="0" maxlength="6" /></td>
+					<td><input type="text" name="part_' . $i . '" size="21" maxlength="20" /></td>
+					<td><input type="text" class="number" name="qty_' . $i . '" size="6" maxlength="6" /></td>
 				</tr>';
 		}
 

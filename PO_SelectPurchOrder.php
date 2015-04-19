@@ -87,7 +87,7 @@ if (isset($_POST['SearchParts'])) {
  */
 if (!isset($OrderNumber) or $OrderNumber == "") {
 	echo '<table class="selection"><tr><td>';
-	echo _('Order Number') . ': <input type="text" class="integer" name="OrderNumber" autofocus="autofocus" minlength="0" maxlength="8" size="9" /> ' . _('Into Stock Location') . ':<select minlength="0" name="StockLocation"> ';
+	echo _('Order Number') . ': <input type="text" class="integer" name="OrderNumber" autofocus="autofocus" maxlength="8" size="9" /> ' . _('Into Stock Location') . ':<select name="StockLocation"> ';
 	$SQL = "SELECT locations.loccode,
 					locationname
 				FROM locations
@@ -109,7 +109,7 @@ if (!isset($OrderNumber) or $OrderNumber == "") {
 			echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 		}
 	}
-	echo '</select> ' . _('Order Status') . ':<select minlength="0" name="Status">';
+	echo '</select> ' . _('Order Status') . ':<select name="Status">';
 	if (!isset($_POST['Status'])) {
 		$_POST['Status'] = 'Pending';
 	}
@@ -158,7 +158,7 @@ echo '<div class="page_help_text">' . _('To search for purchase orders for a spe
 echo '<table class="selection">
 		<tr>
 			<td><tr>
-		<td>' . _('Select a stock category') . ':<select minlength="0" name="StockCat">';
+		<td>' . _('Select a stock category') . ':<select name="StockCat">';
 while ($MyRow1 = DB_fetch_array($Result1)) {
 	if (isset($_POST['StockCat']) and $MyRow1['categoryid'] == $_POST['StockCat']) {
 		echo '<option selected="selected" value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
@@ -168,12 +168,12 @@ while ($MyRow1 = DB_fetch_array($Result1)) {
 }
 echo '</select></td>
 		<td>' . _('Enter text extracts in the') . ' <b>' . _('description') . '</b>:</td>
-		<td><input type="text" name="Keywords" size="20" minlength="0" maxlength="25" /></td>
+		<td><input type="text" name="Keywords" size="20" maxlength="25" /></td>
 	</tr>
 	<tr>
 		<td></td>
 		<td><b>' . _('OR') . ' </b>' . _('Enter extract of the') . '<b> ' . _('Stock Code') . '</b>:</td>
-		<td><input type="text" name="StockCode" size="15" minlength="0" maxlength="18" /></td>
+		<td><input type="text" name="StockCode" size="15" maxlength="18" /></td>
 	</tr>
 	<tr>
 		<td colspan="3">

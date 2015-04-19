@@ -164,7 +164,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['CSV'])) {
 		<table class="selection">
 		<tr>
 			<td>' . _('Selection') . ':</td>
-			<td><select minlength="0" name="Selection">
+			<td><select name="Selection">
 				<option selected="selected" value="All">' . _('All') . '</option>
 				<option value="Multiple">' . _('Only Parts With Multiple Locations') . '</option>
 				</select></td>
@@ -186,7 +186,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['CSV'])) {
 
 	echo '<tr>
 			<td>' . _('In Stock Category') . ':</td>
-			<td><select minlength="0" name="StockCat">';
+			<td><select name="StockCat">';
 	if (!isset($_POST['StockCat'])) {
 		$_POST['StockCat'] = 'All';
 	}

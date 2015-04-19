@@ -101,7 +101,7 @@ if (isset($_POST['SearchParts'])) {
 
 if (!isset($ShiptRef) or $ShiptRef == "") {
 	echo '<table class="selection"><tr><td>';
-	echo _('Shipment Number') . ': <input type="text" name="ShiptRef" minlength="0" maxlength="10" size="10" /> ' . _('Into Stock Location') . ' :<select minlength="0" name="StockLocation"> ';
+	echo _('Shipment Number') . ': <input type="text" name="ShiptRef" maxlength="10" size="10" /> ' . _('Into Stock Location') . ' :<select name="StockLocation"> ';
 	if ($_SESSION['RestrictLocations'] == 0) {
 		$SQL = "SELECT locationname,
 						loccode
@@ -131,7 +131,7 @@ if (!isset($ShiptRef) or $ShiptRef == "") {
 	}
 
 	echo '</select>';
-	echo ' <select minlength="0" name="OpenOrClosed">';
+	echo ' <select name="OpenOrClosed">';
 	if (isset($_POST['OpenOrClosed']) and $_POST['OpenOrClosed'] == 1) {
 		echo '<option selected="selected" value="1">' . _('Closed Shipments Only') . '</option>';
 		echo '<option value="0">' . _('Open Shipments Only') . '</option>';
@@ -160,7 +160,7 @@ echo '<tr>
 	</tr>
 	<tr>
 		<td>' . _('Select a stock category') . ':
-			<select minlength="0" name="StockCat">';
+			<select name="StockCat">';
 
 while ($MyRow1 = DB_fetch_array($Result1)) {
 	if (isset($_POST['StockCat']) and $MyRow1['categoryid'] == $_POST['StockCat']) {
@@ -171,12 +171,12 @@ while ($MyRow1 = DB_fetch_array($Result1)) {
 }
 echo '</select></td>
 		<td>' . _('Enter text extracts in the') . '<b> ' . _('description') . '</b>:</td>
-		<td><input type="text" name="Keywords" size="20" minlength="0" maxlength="25" /></td>
+		<td><input type="text" name="Keywords" size="20" maxlength="25" /></td>
 	</tr>
 	<tr>
 		<td></td>
 		<td><b>' . _('OR') . ' </b> ' . _('Enter extract of the') . ' <b> ' . _('Stock Code') . '</b>:</td>
-		<td><input type="text" name="StockCode" size="15" minlength="0" maxlength="18" /></td>
+		<td><input type="text" name="StockCode" size="15" maxlength="18" /></td>
 	</tr>
 	</table>';
 

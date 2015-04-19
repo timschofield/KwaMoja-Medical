@@ -295,11 +295,11 @@ echo '<table class="selection">
 
 echo '<tr>
 		<td>' . _('Vessel Name /Transport Agent') . ': </td>
-		<td><input type="text" name="Vessel" required="required" minlength="1" maxlength="50" size="50" value="' . $_SESSION['Shipment']->Vessel . '" /></td>
+		<td><input type="text" name="Vessel" required="required" maxlength="50" size="50" value="' . $_SESSION['Shipment']->Vessel . '" /></td>
 	</tr>
 	<tr>
 		<td>' . _('Voyage Ref / Consignment Note') . ': </td>
-		<td><input type="text" name="VoyageRef" required="required" minlength="1" maxlength="20" size="20" value="' . $_SESSION['Shipment']->VoyageRef . '" /></td>
+		<td><input type="text" name="VoyageRef" required="required" maxlength="20" size="20" value="' . $_SESSION['Shipment']->VoyageRef . '" /></td>
 	</tr>';
 
 if (isset($_SESSION['Shipment']->ShipmentDate)) {
@@ -317,13 +317,13 @@ if (isset($_SESSION['Shipment']->ETA)) {
 echo '<tr>
 		<td>' . _('Shipment Date') . ': </td>
 		<td>
-			<input type="text" name="ShipmentDate" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" required="required" minlength="1" maxlength="10" size="10" value="' . $ShipmentDate . '" />
+			<input type="text" name="ShipmentDate" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" required="required" maxlength="10" size="10" value="' . $ShipmentDate . '" />
 		</td>
 	</tr>
 	<tr>
 		<td>' . _('Expected Arrival Date (ETA)') . ': </td>
 		<td>
-			<input type="text" name="ETA" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" required="required" minlength="1" maxlength="10" size="10" value="' . $ETA . '" />
+			<input type="text" name="ETA" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" required="required" maxlength="10" size="10" value="' . $ETA . '" />
 		</td>
 	</tr>';
 
@@ -355,7 +355,7 @@ if (!isset($_SESSION['Shipment']->StockLocation)) {
 
 	echo _('Stock Location') . ': </td>
 			<td>
-				<select required="required" minlength="1" name="StockLocation">';
+				<select required="required" name="StockLocation">';
 
 	if ($_SESSION['RestrictLocations'] == 0) {
 		$SQL = "SELECT locationname,

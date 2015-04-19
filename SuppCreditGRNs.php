@@ -149,7 +149,7 @@ echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />'
 echo '<table class="selection">
 		<tr>
 		<th colspan="10"><h3>' . _('Show Goods Received Since') . ':&nbsp;</h3>';
-echo '<input type="text" name="Show_Since" required="required" minlength="1" maxlength="11" size="12" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" value="' . $_POST['Show_Since'] . '" />
+echo '<input type="text" name="Show_Since" required="required" maxlength="11" size="12" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" value="' . $_POST['Show_Since'] . '" />
 		<input type="submit" name="FindGRNs" value="' . _('Display GRNs') . '" />
 		<h3> ' . _('From') . ' ' . $_SESSION['SuppTrans']->SupplierName . '</h3></th>
 	</tr>';
@@ -273,9 +273,9 @@ if (DB_num_rows($GRNResults) > 0) {
 				<td>' . $_POST['GRNNo'] . '</td>
 				<td>' . $MyRow['itemcode'] . ' ' . $MyRow['itemdescription'] . '</td>
 				<td class="number">' . locale_number_format($MyRow['qtyostdg'], $MyRow['decimalplaces']) . '</td>
-				<td><input type="text" name="This_QuantityCredited" value="' . locale_number_format($MyRow['qtyostdg'], $MyRow['decimalplaces']) . '" size="11" required="required" minlength="1" maxlength="10" /></td>
+				<td><input type="text" name="This_QuantityCredited" value="' . locale_number_format($MyRow['qtyostdg'], $MyRow['decimalplaces']) . '" size="11" required="required" maxlength="10" /></td>
 				<td class="number">' . $DisplayPrice . '</td>
-				<td><input type="text" name="ChgPrice" value="' . locale_number_format($Price, $_SESSION['SuppTrans']->CurrDecimalPlaces) . '" size="11" required="required" minlength="1" maxlength="10" /></td>
+				<td><input type="text" name="ChgPrice" value="' . locale_number_format($Price, $_SESSION['SuppTrans']->CurrDecimalPlaces) . '" size="11" required="required" maxlength="10" /></td>
 			</tr>
 			</table>';
 

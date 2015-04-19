@@ -211,7 +211,7 @@ if (DB_num_rows($Result) > 0) {
 			<tr>
 				<th colspan="7">
 				<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />' . _('Pricing for part') . ':
-				<input type="text" autofocus="autofocus" name="Item" size="22" value="' . $Item . '" minlength="0" maxlength="20" />
+				<input type="text" autofocus="autofocus" name="Item" size="22" value="' . $Item . '" maxlength="20" />
 				<input type="submit" name="NewPart" value="' . _('Review Prices') . '" /></th>
 			</tr>';
 
@@ -291,7 +291,7 @@ echo '<table class="selection">
 		</tr>';
 echo '<tr>
 		<td>' . _('Currency') . ':</td>
-		<td><select required="required" minlength="1" name="CurrAbrev">';
+		<td><select required="required" name="CurrAbrev">';
 while ($MyRow = DB_fetch_array($Result)) {
 	if ($MyRow['currabrev'] == $_POST['CurrAbrev']) {
 		echo '<option selected="selected" value="';
@@ -308,7 +308,7 @@ echo '</select>
 		</tr>
 		<tr>
 			<td>' . _('Sales Type Price List') . ':</td>
-			<td><select required="required" minlength="1" name="TypeAbbrev">';
+			<td><select required="required" name="TypeAbbrev">';
 
 $SQL = "SELECT typeabbrev, sales_type FROM salestypes";
 $Result = DB_query($SQL);
@@ -334,11 +334,11 @@ if (!isset($_POST['EndDate'])) {
 }
 echo '<tr>
 		<td>' . _('Price Effective From Date') . ':</td>
-		<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="StartDate" size="10" required="required" minlength="1" maxlength="10" value="' . $_POST['StartDate'] . '" /></td>
+		<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="StartDate" size="10" required="required" maxlength="10" value="' . $_POST['StartDate'] . '" /></td>
 	</tr>';
 echo '<tr>
 		<td>' . _('Price Effective To Date') . ':</td>
-		<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="EndDate" size="10" minlength="0" maxlength="10" value="' . $_POST['EndDate'] . '" /></td>
+		<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="EndDate" size="10" maxlength="10" value="' . $_POST['EndDate'] . '" /></td>
 	</tr>';
 echo '<input type="hidden" name="Item" value="' . $Item . '" />';
 if (!isset($_POST['Price'])) {
@@ -347,7 +347,7 @@ if (!isset($_POST['Price'])) {
 echo '<tr>
 		<td>' . _('Price') . ':</td>
 		<td>
-			<input type="text" class="number" name="Price" size="12" required="required" minlength="1" maxlength="11" value="' . $_POST['Price'] . '" />
+			<input type="text" class="number" name="Price" size="12" required="required" maxlength="11" value="' . $_POST['Price'] . '" />
 		</td>
 	</tr>
 </table>

@@ -30,9 +30,9 @@ if (!isset($_POST['AfterDate']) or !is_date($_POST['AfterDate'])) {
 }
 echo '<table class="selection">
 			<tr>
-				<th colspan="10">' . _('Stock Code') . ':<input type="text" name="StockID" size="21" value="' . $StockId . '" required="required" minlength="1" maxlength="20" />';
+				<th colspan="10">' . _('Stock Code') . ':<input type="text" name="StockID" size="21" value="' . $StockId . '" required="required" maxlength="20" />';
 
-echo '  ' . _('From Stock Location') . ':<select required="required" minlength="1" name="StockLocation"> ';
+echo '  ' . _('From Stock Location') . ':<select required="required" name="StockLocation"> ';
 
 $SQL = "SELECT locations.loccode,
 				locationname
@@ -63,8 +63,8 @@ echo '</select></th>
 	</tr>';
 echo '<tr>
 		<th colspan="10">' . _('Show Movements between') . ':
-			<input type="text" name="AfterDate" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" size="12" required="required" minlength="1" maxlength="12" value="' . $_POST['AfterDate'] . '" /> ' . _('and') . ':
-			<input type="text" name="BeforeDate" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" size="12" required="required" minlength="1" maxlength="12" value="' . $_POST['BeforeDate'] . '" />
+			<input type="text" name="AfterDate" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" size="12" required="required" maxlength="12" value="' . $_POST['AfterDate'] . '" /> ' . _('and') . ':
+			<input type="text" name="BeforeDate" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" size="12" required="required" maxlength="12" value="' . $_POST['BeforeDate'] . '" />
 			<input type="submit" name="ShowMoves" value="' . _('Show Stock Movements') . '" />
 		</th>
 	</tr>';

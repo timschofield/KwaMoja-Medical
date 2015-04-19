@@ -193,15 +193,15 @@ if (!isset($_GET['delete'])) {
 		</tr>
 		<tr>
 			<td>' . _('Web site') . ':</td>
-			<td><input type="text" name="Href" value="' . $_POST['Href'] . '" size="35" minlength="0" maxlength="100" /></td>
+			<td><input type="text" name="Href" value="' . $_POST['Href'] . '" size="35" maxlength="100" /></td>
 		</tr>
 		<tr>
 			<td>' . _('Date') . ':</td>
-			<td><input type="text" name="NoteDate" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" value="' . $_POST['NoteDate'] . '" size="10" minlength="0" maxlength="10" /></td>
+			<td><input type="text" name="NoteDate" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" value="' . $_POST['NoteDate'] . '" size="10" maxlength="10" /></td>
 		</tr>
 		<tr>
 			<td>' . _('Priority') . ':</td>
-			<td><input type="text" name="Priority" value="' . $_POST['Priority'] . '" size="1" minlength="0" maxlength="3" /></td>
+			<td><input type="text" name="Priority" value="' . $_POST['Priority'] . '" size="1" maxlength="3" /></td>
 		</tr>
 		</table>
 		<br />

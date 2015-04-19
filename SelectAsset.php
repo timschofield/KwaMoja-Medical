@@ -48,7 +48,7 @@ echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-
 		<table class="selection">
 		<tr>
 			<td>' . _('In Asset Category') . ':</td>
-			<td><select minlength="0" name="AssetCategory">';
+			<td><select name="AssetCategory">';
 
 if (!isset($_POST['AssetCategory'])) {
 	$_POST['AssetCategory'] = 'ALL';
@@ -70,15 +70,15 @@ echo '</select></td>
 	<td>' . _('Enter partial description') . ':</td>
 	<td>';
 if (isset($_POST['Keywords'])) {
-	echo '<input type="text" autofocus="autofocus" name="Keywords" value="' . $_POST['Keywords'] . '" size="20" minlength="0" maxlength="25" />';
+	echo '<input type="text" autofocus="autofocus" name="Keywords" value="' . $_POST['Keywords'] . '" size="20" maxlength="25" />';
 } else {
-	echo '<input type="text" autofocus="autofocus" name="Keywords" size="20" minlength="0" maxlength="25" />';
+	echo '<input type="text" autofocus="autofocus" name="Keywords" size="20" maxlength="25" />';
 }
 echo '</td>
 	</tr>
 	<tr>
 		<td>' . _('Asset Location') . ':</td>
-		<td><select minlength="0" name="AssetLocation">';
+		<td><select name="AssetLocation">';
 
 if (!isset($_POST['AssetLocation'])) {
 	$_POST['AssetLocation'] = 'ALL';
@@ -103,9 +103,9 @@ echo '  </td>
 		<td><b>' . _('OR') . ' ' . '</b>' . _('Enter partial asset code') . ':</td>
 		<td>';
 if (isset($_POST['AssetCode'])) {
-	echo '<input type="text" class="number" name="AssetCode" value="' . $_POST['AssetCode'] . '" size="15" minlength="0" maxlength="13" />';
+	echo '<input type="text" class="number" name="AssetCode" value="' . $_POST['AssetCode'] . '" size="15" maxlength="13" />';
 } else {
-	echo '<input type="text" name="AssetCode" size="15" minlength="0" maxlength="13" />';
+	echo '<input type="text" name="AssetCode" size="15" maxlength="13" />';
 }
 echo '</td>
 	</tr>
@@ -234,7 +234,7 @@ if (isset($SearchResult) and !isset($_POST['Select'])) {
 		}
 		if ($ListPageMax > 1) {
 			echo '<div class="centre"><p>&nbsp;&nbsp;' . $_POST['PageOffset'] . ' ' . _('of') . ' ' . $ListPageMax . ' ' . _('pages') . '. ' . _('Go to Page') . ': ';
-			echo '<select minlength="0" name="PageOffset">';
+			echo '<select name="PageOffset">';
 			$ListPage = 1;
 			while ($ListPage <= $ListPageMax) {
 				if ($ListPage == $_POST['PageOffset']) {

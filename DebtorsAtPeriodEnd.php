@@ -154,15 +154,15 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 		echo '<table class="selection" summary="' . _('Input criteria for report') . '">';
 		echo '<tr>
 				<td>' . _('From Customer Code') . ':</td>
-				<td><input tabindex="1" type="text" autofocus="autofocus" required="required" minlength="1" maxlength="10" size="7" name="FromCriteria" value="' . $MyRow['fromcriteria'] . '" /></td>
+				<td><input tabindex="1" type="text" autofocus="autofocus" required="required" maxlength="10" size="7" name="FromCriteria" value="' . $MyRow['fromcriteria'] . '" /></td>
 			</tr>
 			<tr>
 				<td>' . _('To Customer Code') . ':</td>
-				<td><input tabindex="2" type="text" required="required" minlength="1" maxlength="10" size="7" name="ToCriteria" value="' . $MyRow['tocriteria'] . '" /></td>
+				<td><input tabindex="2" type="text" required="required" maxlength="10" size="7" name="ToCriteria" value="' . $MyRow['tocriteria'] . '" /></td>
 			</tr>
 			<tr>
 				<td>' . _('Balances As At') . ':</td>
-				<td><select minlength="0" tabindex="3" name="PeriodEnd">';
+				<td><select tabindex="3" name="PeriodEnd">';
 
 		$SQL = "SELECT periodno, lastdate_in_period FROM periods ORDER BY periodno DESC";
 		$Periods = DB_query($SQL, _('Could not retrieve period data because'), _('The SQL that failed to get the period data was'));

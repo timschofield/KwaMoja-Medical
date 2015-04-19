@@ -194,10 +194,10 @@ if (!isset($SupplierID) or isset($_POST['SearchSupplier'])) {
 			<tr>
 				<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
 				<td>' . _('Text in the Supplier') . ' <b>' . _('NAME') . '</b>:</td>
-				<td><input type="text" name="Keywords" size="20" minlength="0" maxlength="25" /></td>
+				<td><input type="text" name="Keywords" size="20" maxlength="25" /></td>
 				<td><b>' . _('OR') . '</b></td>
 				<td>' . _('Text in Supplier') . ' <b>' . _('CODE') . '</b>:</td>
-				<td><input type="text" name="SupplierCode" size="20" minlength="0" maxlength="50" /></td>
+				<td><input type="text" name="SupplierCode" size="20" maxlength="50" /></td>
 			</tr>
 			</table>
 			<br />
@@ -363,7 +363,7 @@ if (isset($SupplierID)) { //not selecting a supplier
 
 	echo '<tr>
 			<td>' . _('Support for Customer') . ':</td>
-			<td><select minlength="0" name="DebtorNo">';
+			<td><select name="DebtorNo">';
 	if ($_POST['DebtorNo'] == '') {
 		echo '<option selected="selected" value="">' . _('All Customers') . '</option>';
 	} else {
@@ -384,7 +384,7 @@ if (isset($SupplierID)) { //not selecting a supplier
 
 	echo '<tr>
 			<td>' . _('Support Whole Category') . ':</td>
-			<td><select minlength="0" name="CategoryID">';
+			<td><select name="CategoryID">';
 	if (isset($_POST['CategoryID']) and $_POST['CategoryID'] == '') {
 		echo '<option selected="selected" value="">' . _('Specific Item Only') . '</option>';
 	} else {
@@ -405,7 +405,7 @@ if (isset($SupplierID)) { //not selecting a supplier
 
 	echo '<tr>
 			<td>' . _('Support Specific Item') . ':</td>
-			<td><select minlength="0" name="StockID">';
+			<td><select name="StockID">';
 	if (isset($_POST['StockID']) and $_POST['StockID'] == '') {
 		echo '<option selected="selected" value="">' . _('Support An Entire Category') . '</option>';
 	} else {
@@ -435,23 +435,23 @@ if (isset($SupplierID)) { //not selecting a supplier
 
 	echo '<tr>
 			<td>' . _('Narrative') . ':</td>
-			<td><input type="text" name="Narrative" required="required" minlength="1" maxlength="20" size="21" value="' . $_POST['Narrative'] . '" /></td>
+			<td><input type="text" name="Narrative" required="required" maxlength="20" size="21" value="' . $_POST['Narrative'] . '" /></td>
 		</tr>
 		 <tr>
 			<td>' . _('Rebate value per unit') . ' (' . $SuppRow['currcode'] . '):</td>
-			<td><input type="text" class="number" name="RebateAmount" required="required" minlength="1" maxlength="12" size="12" value="' . $_POST['RebateAmount'] . '" /></td>
+			<td><input type="text" class="number" name="RebateAmount" required="required" maxlength="12" size="12" value="' . $_POST['RebateAmount'] . '" /></td>
 		</tr>
 		<tr>
 			<td>' . _('Rebate Percent') . ':</td>
-			<td><input type="text" class="number" name="RebatePercent" required="required" minlength="1" maxlength="5" size="6" value="' . $_POST['RebatePercent'] . '" />%</td>
+			<td><input type="text" class="number" name="RebatePercent" required="required" maxlength="5" size="6" value="' . $_POST['RebatePercent'] . '" />%</td>
 		</tr>
 		<tr>
 			<td>' . _('Support Start Date') . ':</td>
-			<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="EffectiveFrom" required="required" minlength="1" maxlength="10" size="11" value="' . $_POST['EffectiveFrom'] . '" /></td>
+			<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="EffectiveFrom" required="required" maxlength="10" size="11" value="' . $_POST['EffectiveFrom'] . '" /></td>
 		</tr>
 		<tr>
 			<td>' . _('Support End Date') . ':</td>
-			<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="EffectiveTo" required="required" minlength="1" maxlength="10" size="11" value="' . $_POST['EffectiveTo'] . '" /></td>
+			<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="EffectiveTo" required="required" maxlength="10" size="11" value="' . $_POST['EffectiveTo'] . '" /></td>
 		</tr>
 		</table>
 		<br />

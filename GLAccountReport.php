@@ -236,7 +236,7 @@ else {
 	echo '<table class="selection" summary="' . _('Selection Criteria fro Report') . '">
 				<tr>
 				 <td>' . _('Selected Accounts') . ':</td>
-				 <td><select minlength="0" name="Account[]" multiple="multiple">';
+				 <td><select name="Account[]" multiple="multiple">';
 	$SQL = "SELECT accountcode, accountname FROM chartmaster ORDER BY accountcode";
 	$AccountsResult = DB_query($SQL);
 	$i = 0;
@@ -251,7 +251,7 @@ else {
 	echo '</select></td>';
 
 	echo '<td>' . _('For Period range') . ':</td>
-			<td><select minlength="0" Name=Period[] multiple="multiple">';
+			<td><select Name=Period[] multiple="multiple">';
 	$SQL = "SELECT periodno, lastdate_in_period FROM periods ORDER BY periodno DESC";
 	$Periods = DB_query($SQL);
 	$id = 0;
@@ -269,7 +269,7 @@ else {
 	//Select the tag
 	echo '<tr>
 			<td>' . _('Select Tag') . ':</td>
-			<td><select minlength="0" name="tag">';
+			<td><select name="tag">';
 
 	$SQL = "SELECT tagref,
 					tagdescription

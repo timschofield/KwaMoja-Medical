@@ -222,13 +222,13 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 
 	echo '<br /><input type="hidden" name="MAX_FILE_SIZE" value="1000000" />';
 	echo _('Select Transaction Type') . ':&nbsp;
-			<select minlength="0" name="TransactionType">
+			<select name="TransactionType">
 				<option value=0>' . _('GL Journal') . '</option>
 				<option value=1>' . _('GL Payment') . '</option>
 				<option value=2>' . _('GL Receipt') . '</option>
 			</select>&nbsp;&nbsp;';
 
-	echo _('Select Currency') . ':&nbsp;<select minlength="0" name="Currency">';
+	echo _('Select Currency') . ':&nbsp;<select name="Currency">';
 	$SQL = "SELECT currency, currabrev, rate FROM currencies";
 	$Result = DB_query($SQL);
 	if (DB_num_rows($Result) == 0) {

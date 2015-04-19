@@ -54,9 +54,9 @@ if ($MyRow[2] == 'K' OR $MyRow[2] == 'A' OR $MyRow[2] == 'D') {
 }
 
 echo '<tr>
-		<td>' . _('Stock Code') . ':<input type="text" name="StockID" size="21" required="required" minlength="1" maxlength="20" value="' . $StockId . '" />';
+		<td>' . _('Stock Code') . ':<input type="text" name="StockID" size="21" required="required" maxlength="20" value="' . $StockId . '" />';
 
-echo _('From Stock Location') . ':<select required="required" minlength="1" name="StockLocation">';
+echo _('From Stock Location') . ':<select required="required" name="StockLocation">';
 
 $SQL = "SELECT locationname,
 				locations.loccode

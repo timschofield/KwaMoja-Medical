@@ -233,12 +233,12 @@ if (!isset($_GET['delete'])) {
 		echo '<table class="selection">
 			<tr>
 				<td>' . _('Section Number') . ':' . '</td>
-				<td><input tabindex="1" type="text" name="SectionID" class="number" size="4" autofocus="autofocus" required="required" minlength="1" maxlength="4" value="' . $_POST['SectionID'] . '" /></td>
+				<td><input tabindex="1" type="text" name="SectionID" class="number" size="4" autofocus="autofocus" required="required" maxlength="4" value="' . $_POST['SectionID'] . '" /></td>
 			</tr>';
 	}
 	echo '<tr>
 			<td>' . _('Section Description') . ':' . '</td>
-			<td><input tabindex="2" type="text" name="SectionName" autofocus="autofocus" required="required" size="30" minlength="3" maxlength="30" value="' . $_POST['SectionName'] . '" /></td>
+			<td><input tabindex="2" type="text" name="SectionName" autofocus="autofocus" required="required" size="30" maxlength="30" value="' . $_POST['SectionName'] . '" /></td>
 		</tr>';
 
 	echo '<tr>

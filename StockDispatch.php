@@ -338,11 +338,11 @@ if (isset($_POST['PrintPDF'])) {
 	echo '<table class="selection">
 		 <tr>
 			 <td>' . _('Dispatch Percent') . ':</td>
-			 <td><input type ="text" name="Percent" class="number" required="required" minlength="1" maxlength="8" size="8" value="0" /></td>
+			 <td><input type ="text" name="Percent" class="number" required="required" maxlength="8" size="8" value="0" /></td>
 		 </tr>';
 	echo '<tr>
 			  <td>' . _('From Stock Location') . ':</td>
-			  <td><select required="required" minlength="1" name="FromLocation"> ';
+			  <td><select required="required" name="FromLocation"> ';
 	while ($MyRow = DB_fetch_array($ResultStkLocs)) {
 		if ($MyRow['loccode'] == $_POST['FromLocation']) {
 			echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
@@ -359,7 +359,7 @@ if (isset($_POST['PrintPDF'])) {
 	}
 	echo '<tr>
 			<td>' . _('To Stock Location') . ':</td>
-			<td><select required="required" minlength="1" name="ToLocation"> ';
+			<td><select required="required" name="ToLocation"> ';
 	while ($MyRow = DB_fetch_array($ResultStkLocs)) {
 		if ($MyRow['loccode'] == $_POST['ToLocation']) {
 			echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
@@ -384,7 +384,7 @@ if (isset($_POST['PrintPDF'])) {
 
 	echo '<tr>
 			<td>' . _('In Stock Category') . ':</td>
-			<td><select required="required" minlength="1" name="StockCat">';
+			<td><select required="required" name="StockCat">';
 	if (!isset($_POST['StockCat'])) {
 		$_POST['StockCat'] = 'All';
 	}
@@ -406,7 +406,7 @@ if (isset($_POST['PrintPDF'])) {
 	echo '<tr>
 			<td>' . _('Dispatch Strategy') . ':</td>
 			<td>
-				<select required="required" minlength="1" name="Strategy">
+				<select required="required" name="Strategy">
 					<option selected="selected" value="All">' . _('Items needed at TO location with overstock at FROM location') . '</option>
 					<option value="OverFrom">' . _('Items with overstock at FROM location') . '</option>
 				</select>
@@ -417,7 +417,7 @@ if (isset($_POST['PrintPDF'])) {
 	echo '<tr>
 			<td>' . _('Report Type') . ':</td>
 			<td>
-				<select required="required" minlength="1" name="ReportType">';
+				<select required="required" name="ReportType">';
 	if ($_SESSION['RestrictLocations'] == 0) {
 		echo '<option selected="selected" value="Batch">' . _('Create Batch') . '</option>';
 	}
@@ -431,7 +431,7 @@ if (isset($_POST['PrintPDF'])) {
 	echo '<tr>
 			<td>' . _('Template') . ':</td>
 			<td>
-				<select required="required" minlength="1" name="template">
+				<select required="required" name="template">
 					<option selected="selected" value="fullprices">' . _('Full with Prices') . '</option>
 					<option value="full">' . _('Full') . '</option>
 					<option value="standard">' . _('Standard') . '</option>

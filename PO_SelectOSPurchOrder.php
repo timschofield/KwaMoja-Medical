@@ -104,8 +104,8 @@ if (!isset($OrderNumber) or $OrderNumber == '') {
 
 	echo '<table class="selection">
 			<tr>
-				<td>' . _('Order Number') . ': <input type="text" name="OrderNumber" autofocus="autofocus" minlength="0" maxlength="8" size="9" value="" />  ' . _('Into Stock Location') . ':
-				<select minlength="0" name="StockLocation">';
+				<td>' . _('Order Number') . ': <input type="text" name="OrderNumber" autofocus="autofocus" maxlength="8" size="9" value="" />  ' . _('Into Stock Location') . ':
+				<select name="StockLocation">';
 
 	if (!isset($_POST['DateFrom'])) {
 		$DateSQL = "SELECT min(orddate) as fromdate,
@@ -145,7 +145,7 @@ if (!isset($OrderNumber) or $OrderNumber == '') {
 			echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 		}
 	} //$MyRow = DB_fetch_array($ResultStkLocs)
-	echo '</select> ' . _('Order Status') . ':<select minlength="0" name="Status">';
+	echo '</select> ' . _('Order Status') . ':<select name="Status">';
 	if (!isset($_POST['Status']) or $_POST['Status'] == 'Pending_Authorised') {
 		echo '<option selected="selected" value="Pending_Authorised">' . _('Pending and Authorised') . '</option>';
 	} //!isset($_POST['Status']) or $_POST['Status'] == 'Pending_Authorised'
@@ -201,7 +201,7 @@ if (!isset($_POST['Keywords'])) {
 echo '<table class="selection">
 			<tr>
 				<td>' . _('Select a stock category') . ':
-					<select minlength="0" name="StockCat">';
+					<select name="StockCat">';
 
 while ($MyRow1 = DB_fetch_array($Result1)) {
 	if (isset($_POST['StockCat']) and $MyRow1['categoryid'] == $_POST['StockCat']) {
@@ -213,12 +213,12 @@ while ($MyRow1 = DB_fetch_array($Result1)) {
 } //end loop through categories
 echo '</select></td>
 		<td>' . _('Enter text extracts in the') . ' ' . '<b>' . _('description') . '</b>:</td>
-		<td><input type="text" name="Keywords" size="20" minlength="0" maxlength="25" value="' . $_POST['Keywords'] . '" /></td>
+		<td><input type="text" name="Keywords" size="20" maxlength="25" value="' . $_POST['Keywords'] . '" /></td>
 	</tr>
 	<tr>
 		<td></td>
 		<td><b>' . _('OR') . '</b>' . ' ' . _('Enter extract of the') . ' ' . '<b>' . _('Stock Code') . '</b>:</td>
-		<td><input type="text" name="StockCode" size="15" minlength="0" maxlength="18" value="' . $_POST['StockCode'] . '" /></td>
+		<td><input type="text" name="StockCode" size="15" maxlength="18" value="' . $_POST['StockCode'] . '" /></td>
 	</tr>
 	</table>
 	<table>

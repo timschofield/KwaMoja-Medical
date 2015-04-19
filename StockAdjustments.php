@@ -447,18 +447,18 @@ echo '<tr>
 		<td>' . _('Stock Code') . ':</td>
 		<td>';
 if (isset($StockId)) {
-	echo '<input type="text" name="StockID" size="21" value="' . $StockId . '" minlength="0" maxlength="20" /></td></tr>';
+	echo '<input type="text" name="StockID" size="21" value="' . $StockId . '" maxlength="20" /></td></tr>';
 } else {
-	echo '<input type="text" name="StockID" size="21" value="" minlength="0" maxlength="20" /></td></tr>';
+	echo '<input type="text" name="StockID" size="21" value="" maxlength="20" /></td></tr>';
 }
 echo '<tr>
 		<td>' . _('Partial Description') . ':</td>
 		<td><input type="text" name="StockText" size="21" value="' . stripslashes($_GET['Description']) . '" />&nbsp; &nbsp;' . _('Partial Stock Code') . ':</td>
 		<td>';
 if (isset($StockId)) {
-	echo '<input type="text" name="StockCode" size="21" value="' . $StockId . '" minlength="0" maxlength="20" />';
+	echo '<input type="text" name="StockCode" size="21" value="' . $StockId . '" maxlength="20" />';
 } else {
-	echo '<input type="text" name="StockCode" size="21" value="" minlength="0" maxlength="20" />';
+	echo '<input type="text" name="StockCode" size="21" value="" maxlength="20" />';
 }
 echo '</td>
 		<td><input type="submit" name="CheckCode" value="' . _('Check Part') . '" /></td>
@@ -490,7 +490,7 @@ if (isset($_SESSION['Adjustment' . $Identifier]) and !isset($_SESSION['Adjustmen
 
 echo '<tr>
 		<td>' . _('Comments On Why') . ':</td>
-		<td><input type="text" name="Narrative" size="32" minlength="0" maxlength="30" value="' . $Narrative . '" /></td>
+		<td><input type="text" name="Narrative" size="32" maxlength="30" value="' . $Narrative . '" /></td>
 	</tr>';
 
 echo '<tr>
@@ -507,13 +507,13 @@ if ($Controlled == 1) {
 				[<a class="FontSize" href="' . $RootPath . '/StockAdjustmentsControlled.php?AdjType=REMOVE&identifier=' . urlencode($Identifier) . '">' . _('Remove') . '</a>]
 				[<a class="FontSize" href="' . $RootPath . '/StockAdjustmentsControlled.php?AdjType=ADD&identifier=' . urlencode($Identifier) . '">' . _('Add') . '</a>]';
 } else {
-	echo '<input type="text" class="number" name="Quantity" size="12" required="required" minlength="1" maxlength="12" value="' . locale_number_format($Quantity, $DecimalPlaces) . '" />';
+	echo '<input type="text" class="number" name="Quantity" size="12" required="required" maxlength="12" value="' . locale_number_format($Quantity, $DecimalPlaces) . '" />';
 }
 echo '</td></tr>';
 //Select the tag
 echo '<tr>
 		<td>' . _('Select Tag') . '</td>
-		<td><select minlength="0" name="tag">';
+		<td><select name="tag">';
 
 $SQL = "SELECT tagref,
 				tagdescription

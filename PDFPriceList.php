@@ -301,7 +301,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 		echo '<table class="selection">
 				<tr>
 					<td>' . _('Select Inventory Categories') . ':</td>
-					<td><select autofocus="autofocus" required="required" minlength="1" size="12" name="Categories[]" multiple="multiple">';
+					<td><select autofocus="autofocus" required="required" size="12" name="Categories[]" multiple="multiple">';
 
 		$SQL = 'SELECT categoryid, categorydescription FROM stockcategory ORDER BY categorydescription';
 		$CatResult = DB_query($SQL);
@@ -318,7 +318,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 
 		echo '<tr>
 				<td>' . _('For Sales Type/Price List') . ':</td>
-				<td><select minlength="0" name="SalesType">';
+				<td><select name="SalesType">';
 		$SQL = "SELECT sales_type, typeabbrev FROM salestypes";
 		$SalesTypesResult = DB_query($SQL);
 
@@ -345,7 +345,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 		echo '<tr>
 				<td>' . _('Show Gross Profit %') . ':</td>
 				<td>
-					<select required="required" minlength="1" name="ShowGPPercentages">
+					<select required="required" name="ShowGPPercentages">
 						<option selected="selected" value="No">' . _('Prices Only') . '</option>
 						<option value="Yes">' . _('Show GP % too') . '</option>
 					</select>
@@ -355,7 +355,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 		echo '<tr>
 				<td>' . _('Price Listing Type') . ':</td>
 				<td>
-					<select required="required" minlength="1" name="CustomerSpecials">
+					<select required="required" name="CustomerSpecials">
 						<option selected="selected" value="Sales Type Prices">' . _('Default Sales Type Prices') . '</option>
 						<option value="Customer Special Prices Only">' . _('Customer Special Prices Only') . '</option>
 						<option value="Full Description">' . _('Full Description') . '</option>
@@ -365,7 +365,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 
 		echo '<tr>
 				<td>' . _('Effective As At') . ':</td>
-				<td><input type="text" size="11" required="required" minlength="1" maxlength="10" class="date"	alt="' . $_SESSION['DefaultDateFormat'] . '" name="EffectiveDate" value="' . Date($_SESSION['DefaultDateFormat']) . '" /></td>
+				<td><input type="text" size="11" required="required" maxlength="10" class="date"	alt="' . $_SESSION['DefaultDateFormat'] . '" name="EffectiveDate" value="' . Date($_SESSION['DefaultDateFormat']) . '" /></td>
 			</tr>';
 
 		echo '</table>';

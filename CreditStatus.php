@@ -222,7 +222,7 @@ if (!isset($_GET['delete'])) {
 		echo '<table class="selection">
 			<tr>
 				<td>' . _('Status Code') . ':</td>
-				<td><input tabindex="1" class="integer" type="text" name="ReasonCode" value="' . $_POST['ReasonCode'] . '" size="3" autofocus="autofocus" required="required" minlength="1" maxlength="2" /></td>
+				<td><input tabindex="1" class="integer" type="text" name="ReasonCode" value="' . $_POST['ReasonCode'] . '" size="3" autofocus="autofocus" required="required" maxlength="2" /></td>
 			</tr>';
 	}
 
@@ -231,7 +231,7 @@ if (!isset($_GET['delete'])) {
 	}
 	echo '<tr>
 			<td>' . _('Description') . ':</td>
-			<td><input tabindex="2" type="text" name="ReasonDescription" value="' . $_POST['ReasonDescription'] . '" size="28" required="required" minlength="1" maxlength="30" /></td>
+			<td><input tabindex="2" type="text" name="ReasonDescription" value="' . $_POST['ReasonDescription'] . '" size="28" required="required" maxlength="30" /></td>
 		</tr>
 		<tr>
 			<td>' . _('Disallow Invoices') . '</td>';

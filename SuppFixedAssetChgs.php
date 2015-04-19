@@ -119,11 +119,11 @@ echo '<br /><table class="selection">';
 
 echo '<tr>
 		<td>' . _('Enter Asset ID') . ':</td>
-		<td><input type="integer" name="AssetID" size="5" required="required" minlength="1" maxlength="6" value="' . $_POST['AssetID'] . '" /> <a href="FixedAssetItems.php" target="_blank">' . _('New Fixed Asset') . '</a></td>
+		<td><input type="integer" name="AssetID" size="5" required="required" maxlength="6" value="' . $_POST['AssetID'] . '" /> <a href="FixedAssetItems.php" target="_blank">' . _('New Fixed Asset') . '</a></td>
 	</tr>';
 echo '<tr>
 		<td><b>' . _('OR') . ' </b>' . _('Select from list') . ':</td>
-		<td><select minlength="0" name="AssetSelection">';
+		<td><select name="AssetSelection">';
 
 $SQL = "SELECT assetid,
 			description
@@ -151,7 +151,7 @@ if (!isset($_POST['Amount'])) {
 } //!isset($_POST['Amount'])
 echo '<tr>
 		<td>' . _('Amount') . ':</td>
-		<td><input type="text" class="number" name="Amount" size="12" required="required" minlength="1" maxlength="11" value="' . locale_number_format($_POST['Amount'], $_SESSION['SuppTrans']->CurrDecimalPlaces) . '" /></td>
+		<td><input type="text" class="number" name="Amount" size="12" required="required" maxlength="11" value="' . locale_number_format($_POST['Amount'], $_SESSION['SuppTrans']->CurrDecimalPlaces) . '" /></td>
 	</tr>';
 echo '</table>';
 

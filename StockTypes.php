@@ -228,7 +228,7 @@ if (!isset($_GET['delete'])) {
 				</tr>
 				<tr>
 					<td>' . _('Type Code') . ':</td>
-					<td><input type="text" size="3" required="required" minlength="1" maxlength="2" name="TypeAbbrev" /></td>
+					<td><input type="text" size="3" required="required" maxlength="2" name="TypeAbbrev" /></td>
 				</tr>';
 	}
 
@@ -242,7 +242,7 @@ if (!isset($_GET['delete'])) {
 	}
 	echo '<tr>
 			<td>' . _('Stock Type Name') . ':</td>
-			<td><input type="text" required="required" minlength="1" maxlength="40" name="StockType" value="' . $_POST['StockType'] . '" /></td>
+			<td><input type="text" required="required" maxlength="40" name="StockType" value="' . $_POST['StockType'] . '" /></td>
 		</tr>
 		<tr>
 			<td>' . _('Physical Items') . '</td>

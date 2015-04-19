@@ -521,7 +521,7 @@ if (!isset($_GET['delete'])) {
 				</tr>';
 		echo '<tr>
 				<td>' . _('Location Code') . ':</td>
-				<td><input type="text" name="LocCode" value="' . $_POST['LocCode'] . '" size="5" required="required" minlength="1" maxlength="5" /></td>
+				<td><input type="text" name="LocCode" value="' . $_POST['LocCode'] . '" size="5" required="required" maxlength="5" /></td>
 			</tr>';
 	}
 	if (!isset($_POST['LocationName'])) {
@@ -563,31 +563,31 @@ if (!isset($_GET['delete'])) {
 
 	echo '<tr>
 			<td>' . _('Location Name') . ':' . '</td>
-			<td><input type="text" name="LocationName" value="' . $_POST['LocationName'] . '" size="51" required="required" minlength="1" maxlength="50" /></td>
+			<td><input type="text" name="LocationName" value="' . $_POST['LocationName'] . '" size="51" required="required" maxlength="50" /></td>
 		</tr>
 		<tr>
 			<td>' . _('Contact for deliveries') . ':' . '</td>
-			<td><input type="text" name="Contact" value="' . $_POST['Contact'] . '" size="31" required="required" minlength="1" maxlength="30" /></td>
+			<td><input type="text" name="Contact" value="' . $_POST['Contact'] . '" size="31" required="required" maxlength="30" /></td>
 		</tr>
 		<tr>
 			<td>' . _('Delivery Address 1') . ':' . '</td>
-			<td><input type="text" name="DelAdd1" value="' . $_POST['DelAdd1'] . '" size="41" required="required" minlength="1" maxlength="40" /></td>
+			<td><input type="text" name="DelAdd1" value="' . $_POST['DelAdd1'] . '" size="41" required="required" maxlength="40" /></td>
 		</tr>
 		<tr>
 			<td>' . _('Delivery Address 2') . ':' . '</td>
-			<td><input type="text" name="DelAdd2" value="' . $_POST['DelAdd2'] . '" size="41" minlength="0" maxlength="40" /></td>
+			<td><input type="text" name="DelAdd2" value="' . $_POST['DelAdd2'] . '" size="41" maxlength="40" /></td>
 		</tr>
 		<tr>
 			<td>' . _('Delivery Address 3') . ':' . '</td>
-			<td><input type="text" name="DelAdd3" value="' . $_POST['DelAdd3'] . '" size="41" minlength="0" maxlength="40" /></td>
+			<td><input type="text" name="DelAdd3" value="' . $_POST['DelAdd3'] . '" size="41" maxlength="40" /></td>
 		</tr>
 		<tr>
 			<td>' . _('Delivery Address 4') . ':' . '</td>
-			<td><input type="text" name="DelAdd4" value="' . $_POST['DelAdd4'] . '" size="41" minlength="0" maxlength="40" /></td>
+			<td><input type="text" name="DelAdd4" value="' . $_POST['DelAdd4'] . '" size="41" maxlength="40" /></td>
 		</tr>
 		<tr>
 			<td>' . _('Delivery Address 5') . ':' . '</td>
-			<td><input type="text" name="DelAdd5" value="' . $_POST['DelAdd5'] . '" size="21" minlength="0" maxlength="20" /></td>
+			<td><input type="text" name="DelAdd5" value="' . $_POST['DelAdd5'] . '" size="21" maxlength="20" /></td>
 		</tr>
 			<td>' . _('Country') . ':</td>
 			<td><select name="DelAdd6">';
@@ -604,19 +604,19 @@ if (!isset($_GET['delete'])) {
  		</tr>
 		<tr>
 			<td>' . _('Telephone No') . ':' . '</td>
-			<td><input type="tel" name="Tel" value="' . $_POST['Tel'] . '" size="31" minlength="0" maxlength="30" /></td>
+			<td><input type="tel" name="Tel" value="' . $_POST['Tel'] . '" size="31" maxlength="30" /></td>
 		</tr>
 		<tr>
 			<td>' . _('Facsimile No') . ':' . '</td>
-			<td><input type="tel" name="Fax" value="' . $_POST['Fax'] . '" size="31" minlength="0" maxlength="30" /></td>
+			<td><input type="tel" name="Fax" value="' . $_POST['Fax'] . '" size="31" maxlength="30" /></td>
 		</tr>
 		<tr>
 			<td>' . _('Email') . ':' . '</td>
-			<td><input type="email" name="Email" value="' . $_POST['Email'] . '" size="31" minlength="0" maxlength="55" /></td>
+			<td><input type="email" name="Email" value="' . $_POST['Email'] . '" size="31" maxlength="55" /></td>
 		</tr>
 		<tr>
 			<td>' . _('Tax Province') . ':' . '</td>
-			<td><select minlength="0" name="TaxProvince">';
+			<td><select name="TaxProvince">';
 
 	$TaxProvinceResult = DB_query("SELECT taxprovinceid, taxprovincename FROM taxprovinces");
 	while ($MyRow = DB_fetch_array($TaxProvinceResult)) {
@@ -631,7 +631,7 @@ if (!isset($_GET['delete'])) {
 		</tr>';
 	echo '<tr>
 			<td>' . _('Allow internal requests?') . ':</td>
-			<td><select minlength="0" name="InternalRequest">';
+			<td><select name="InternalRequest">';
 	if (isset($_POST['InternalRequest']) and $_POST['InternalRequest'] == 1) {
 		echo '<option selected="selected" value="1">' . _('Yes') . '</option>';
 	} else {

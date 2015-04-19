@@ -322,7 +322,7 @@ echo '</select></td>
 
 echo '<tr>
 		<td>' . _('Allow Payment Surcharges') . ':</td>
-		<td><select minlength="0" name="X_ShopAllowSurcharges">';
+		<td><select name="X_ShopAllowSurcharges">';
 if ($_SESSION['ShopAllowSurcharges'] == "1") {
 	echo '<option selected="selected" value="1">' . _('Yes') . '</option>';
 	echo '<option value="0">' . _('No') . '</option>';
@@ -337,7 +337,7 @@ echo '</select></td>
 $DummyItemsResult = DB_query("SELECT stockid, description FROM stockmaster WHERE mbflag='D'");
 echo '<tr>
 		<td>' . _('Surcharges Stock Item') . ':</td>
-		<td><select minlength="0" name="X_ShopSurchargeStockID">';
+		<td><select name="X_ShopSurchargeStockID">';
 while ($ItemsRow = DB_fetch_array($DummyItemsResult)) {
 	if ($_SESSION['ShopSurchargeStockID'] == $ItemsRow['stockid']) {
 		echo '<option selected="selected" value="' . $ItemsRow['stockid'] . '">' . $ItemsRow['stockid'] . '-' . $ItemsRow['description'] . '</option>';
@@ -386,7 +386,7 @@ echo '<tr>
 
 echo '<tr>
 		<td>' . _('Allow Bank Transfer Payment') . ':</td>
-		<td><select minlength="0" name="X_ShopAllowBankTransfer">';
+		<td><select name="X_ShopAllowBankTransfer">';
 if ($_SESSION['ShopAllowBankTransfer'] == 1) {
 	echo '<option selected="selected" value="1">' . _('Yes') . '</option>';
 	echo '<option value="0">' . _('No') . '</option>';
@@ -409,7 +409,7 @@ echo '<tr>
 
 echo '<tr>
 		<td>' . _('Allow PayPal Payment') . ':</td>
-		<td><select minlength="0" name="X_ShopAllowPayPal">';
+		<td><select name="X_ShopAllowPayPal">';
 if ($_SESSION['ShopAllowPayPal'] == 1) {
 	echo '<option selected="selected" value="1">' . _('Yes') . '</option>';
 	echo '<option value="0">' . _('No') . '</option>';
@@ -423,7 +423,7 @@ echo '</select></td>
 
 echo '<tr>
 		<td>' . _('Pay Pal Bank Account') . ':</td>
-		<td><select minlength="0" name="X_ShopPayPalBankAccount">';
+		<td><select name="X_ShopPayPalBankAccount">';
 $BankAccountsResult = DB_query("SELECT accountcode, bankaccountname FROM bankaccounts");
 while ($BankAccountRow = DB_fetch_array($BankAccountsResult)) {
 	if ($_SESSION['ShopPayPalBankAccount'] == $BankAccountRow['accountcode']) {
@@ -492,7 +492,7 @@ echo '<tr>
 
 echo '<tr>
 		<td>' . _('Allow Credit Card Payments') . ':</td>
-		<td><select minlength="0" name="X_ShopAllowCreditCards">';
+		<td><select name="X_ShopAllowCreditCards">';
 if ($_SESSION['ShopAllowCreditCards'] == 1) {
 	echo '<option selected="selected" value="1">' . _('Yes') . '</option>';
 	echo '<option value="0">' . _('No') . '</option>';
@@ -508,9 +508,9 @@ echo '<tr>
 		<td>' . _('Credit Card Gateway') . ':</td>
 		<td>';
 if ($AllowDemoMode) {
-	echo '<select minlength="0" name="SomeNameNotUsed">';
+	echo '<select name="SomeNameNotUsed">';
 } else {
-	echo '<select minlength="0" name="X_ShopCreditCardGateway">';
+	echo '<select name="X_ShopCreditCardGateway">';
 }
 if ($_SESSION['ShopCreditCardGateway'] == 'PayPalPro') {
 	echo '<option selected="selected" value="PayPalPro">' . _('PayPal Pro') . '</option>';
@@ -539,7 +539,7 @@ echo '<tr>
 
 echo '<tr>
 		<td>' . _('Credit Card Bank Account') . ':</td>
-		<td><select minlength="0" name="X_ShopCreditCardBankAccount">';
+		<td><select name="X_ShopCreditCardBankAccount">';
 DB_data_seek($BankAccountsResult, 0);
 while ($BankAccountRow = DB_fetch_array($BankAccountsResult)) {
 	if ($_SESSION['ShopCreditCardBankAccount'] == $BankAccountRow['accountcode']) {

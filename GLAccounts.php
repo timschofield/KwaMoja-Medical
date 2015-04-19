@@ -229,7 +229,7 @@ if (!isset($_GET['delete'])) {
 				</tr>';
 		echo '<tr>
 				<td>', _('Account Name'), ':</td>
-				<td><input type="text" size="51" autofocus="autofocus" required="required" minlength="1" maxlength="50" name="AccountName" value="', $_POST['AccountName'], '" /></td>
+				<td><input type="text" size="51" autofocus="autofocus" required="required" maxlength="50" name="AccountName" value="', $_POST['AccountName'], '" /></td>
 			</tr>';
 	} else {
 		if (!isset($_POST['AccountName'])) {
@@ -238,11 +238,11 @@ if (!isset($_GET['delete'])) {
 		echo '<table class="selection">';
 		echo '<tr>
 				<td>', _('Account Code'), ':</td>
-				<td><input type="text" name="AccountCode" size="11" autofocus="autofocus" required="required" minlength="1" maxlength="20" /></td>
+				<td><input type="text" name="AccountCode" size="11" autofocus="autofocus" required="required" maxlength="20" /></td>
 			</tr>';
 		echo '<tr>
 				<td>' . _('Account Name') . ':</td>
-				<td><input type="text" size="51" required="required" minlength="1" maxlength="50" name="AccountName" value="', $_POST['AccountName'], '" /></td>
+				<td><input type="text" size="51" required="required" maxlength="50" name="AccountName" value="', $_POST['AccountName'], '" /></td>
 			</tr>';
 	}
 
@@ -255,7 +255,7 @@ if (!isset($_GET['delete'])) {
 
 	echo '<tr>
 			<td>', _('Account Group'), ':</td>
-			<td><select required="required" minlength="1" name="Group">';
+			<td><select required="required" name="Group">';
 
 	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['Group']) and $MyRow['groupname'] == $_POST['Group']) {

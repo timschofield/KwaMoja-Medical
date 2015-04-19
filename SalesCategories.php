@@ -323,7 +323,7 @@ echo '<table class="selection">
 		</tr>
 		<tr>
 			<td>' . _('Category Name') . ':</td>
-			<td><input type="text" name="SalesCatName" size="20" required="required" minlength="1" maxlength="50" value="' . $_POST['SalesCatName'] . '" /></td>
+			<td><input type="text" name="SalesCatName" size="20" required="required" maxlength="50" value="' . $_POST['SalesCatName'] . '" /></td>
 		</tr>';
 
 echo '<tr>
@@ -416,7 +416,7 @@ if ($Result and DB_num_rows($Result)) {
 			</tr>
 			<tr>
 				<td>' . _('Select Inv. Item') . ':</td>
-				<td><select required="required" minlength="1" name="AddStockID">';
+				<td><select required="required" name="AddStockID">';
 
 	while ($MyRow = DB_fetch_array($Result)) {
 		if (!array_keys($StockIds, $MyRow['stockid'])) {
@@ -428,7 +428,7 @@ if ($Result and DB_num_rows($Result)) {
 			</tr>
 			<tr>
 			<td>' . _('Select Manufacturer/Brand') . ':</td>
-			<td><select minlength="0" name="Brand">
+			<td><select name="Brand">
 			 <option value="">' . _('Select Brand') . '</option>';
 	$BrandResult = DB_query("SELECT manufacturers_id, manufacturers_name FROM manufacturers");
 	while ($MyRow = DB_fetch_array($BrandResult)) {

@@ -284,19 +284,19 @@ echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION[
 echo '<table cellpadding="3" class="selection">';
 echo '<tr><td colspan="2">' . _('Enter a partial Name') . ':</td><td>';
 if (isset($_POST['Keywords'])) {
-	echo '<input type="text" name="Keywords" value="' . $_POST['Keywords'] . '" size="20" minlength="0" maxlength="25" />';
+	echo '<input type="text" name="Keywords" value="' . $_POST['Keywords'] . '" size="20" maxlength="25" />';
 } //isset($_POST['Keywords'])
 else {
-	echo '<input type="text" name="Keywords" size="20" minlength="0" maxlength="25" />';
+	echo '<input type="text" name="Keywords" size="20" maxlength="25" />';
 }
 echo '</td>
 	<td><b>' . _('OR') . '</b></td><td>' . _('Enter a partial Code') . ':</td>
 	<td>';
 if (isset($_POST['CustCode'])) {
-	echo '<input type="text" autofocus="autofocus" name="CustCode" value="' . $_POST['CustCode'] . '" size="15" minlength="0" maxlength="18" />';
+	echo '<input type="text" autofocus="autofocus" name="CustCode" value="' . $_POST['CustCode'] . '" size="15" maxlength="18" />';
 } //isset($_POST['CustCode'])
 else {
-	echo '<input type="text" autofocus="autofocus" name="CustCode" size="15" minlength="0" maxlength="18" />';
+	echo '<input type="text" autofocus="autofocus" name="CustCode" size="15" maxlength="18" />';
 }
 echo '</td>
 	</tr>
@@ -305,20 +305,20 @@ echo '</td>
 		<td>' . _('Enter a partial Phone Number') . ':</td>
 		<td>';
 if (isset($_POST['CustPhone'])) {
-	echo '<input type="text" name="CustPhone" value="' . $_POST['CustPhone'] . '" size="15" minlength="0" maxlength="18" />';
+	echo '<input type="text" name="CustPhone" value="' . $_POST['CustPhone'] . '" size="15" maxlength="18" />';
 } //isset($_POST['CustPhone'])
 else {
-	echo '<input type="text" name="CustPhone" size="15" minlength="0" maxlength="18" />';
+	echo '<input type="text" name="CustPhone" size="15" maxlength="18" />';
 }
 echo '</td>';
 echo '<td><b>' . _('OR') . '</b></td>
 		<td>' . _('Enter part of the Address') . ':</td>
 		<td>';
 if (isset($_POST['CustAdd'])) {
-	echo '<input type="text" name="CustAdd" value="' . $_POST['CustAdd'] . '" size="20" minlength="0" maxlength="25" />';
+	echo '<input type="text" name="CustAdd" value="' . $_POST['CustAdd'] . '" size="20" maxlength="25" />';
 } //isset($_POST['CustAdd'])
 else {
-	echo '<input type="text" name="CustAdd" size="20" minlength="0" maxlength="25" />';
+	echo '<input type="text" name="CustAdd" size="20" maxlength="25" />';
 }
 echo '</td></tr>';
 echo '<tr>
@@ -336,7 +336,7 @@ if (isset($_POST['CustType'])) {
 	} //DB_num_rows($Result2) == 0
 	else {
 		// If OK show select box with option selected
-		echo '<select minlength="0" name="CustType">
+		echo '<select name="CustType">
 				<option value="ALL">' . _('Any') . '</option>';
 		while ($MyRow = DB_fetch_array($Result2)) {
 			if ($_POST['CustType'] == $MyRow['typename']) {
@@ -361,7 +361,7 @@ else {
 	} //DB_num_rows($Result2) == 0
 	else {
 		// if OK show select box with available options to choose
-		echo '<select minlength="0" name="CustType">
+		echo '<select name="CustType">
 				<option value="ALL">' . _('Any') . '</option>';
 		while ($MyRow = DB_fetch_array($Result2)) {
 			echo '<option value="' . $MyRow['typename'] . '">' . $MyRow['typename'] . '</option>';
@@ -383,7 +383,7 @@ if (DB_num_rows($Result2) == 0) {
 } //DB_num_rows($Result2) == 0
 else {
 	// if OK show select box with available options to choose
-	echo '<select minlength="0" name="Area">';
+	echo '<select name="Area">';
 	echo '<option value="ALL">' . _('Any') . '</option>';
 	while ($MyRow = DB_fetch_array($Result2)) {
 		if (isset($_POST['Area']) and $_POST['Area'] == $MyRow['areacode']) {
@@ -423,7 +423,7 @@ if (isset($Result)) {
 		echo '<input type="hidden" name="PageOffset" value="' . $_POST['PageOffset'] . '" />';
 		if ($ListPageMax > 1) {
 			echo '<br /><div class="centre">&nbsp;&nbsp;' . $_POST['PageOffset'] . ' ' . _('of') . ' ' . $ListPageMax . ' ' . _('pages') . '. ' . _('Go to Page') . ': ';
-			echo '<select minlength="0" name="PageOffset1">';
+			echo '<select name="PageOffset1">';
 			$ListPage = 1;
 			while ($ListPage <= $ListPageMax) {
 				if ($ListPage == $_POST['PageOffset']) {
@@ -503,7 +503,7 @@ if (isset($Result)) {
 if (!isset($_POST['CSV'])) {
 	if (isset($ListPageMax) and $ListPageMax > 1) {
 		echo '<div class="centre">&nbsp;&nbsp;' . $_POST['PageOffset'] . ' ' . _('of') . ' ' . $ListPageMax . ' ' . _('pages') . '. ' . _('Go to Page') . ': ';
-		echo '<select minlength="0" name="PageOffset2">';
+		echo '<select name="PageOffset2">';
 		$ListPage = 1;
 		while ($ListPage <= $ListPageMax) {
 			if ($ListPage == $_POST['PageOffset']) {

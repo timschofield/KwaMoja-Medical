@@ -166,7 +166,7 @@ if (isset($_POST['submit']) or isset($_POST['Update'])) {
 	echo '<table class="selection">
 			<tr>
 				<td>' . _('Location') . ':</td>
-				<td><select minlength="0" name="StockLocation"> ';
+				<td><select name="StockLocation"> ';
 
 	while ($MyRow = DB_fetch_array($ResultStkLocs)) {
 		echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
@@ -181,7 +181,7 @@ if (isset($_POST['submit']) or isset($_POST['Update'])) {
 	$Result1 = DB_query($SQL);
 
 	echo '<tr><td>' . _('Category') . ':</td>
-				<td><select required="required" minlength="1" name="StockCat">';
+				<td><select required="required" name="StockCat">';
 
 	while ($MyRow1 = DB_fetch_array($Result1)) {
 		echo '<option value="' . $MyRow1['categoryid'] . '">' . $MyRow1['categorydescription'] . '</option>';
@@ -190,11 +190,11 @@ if (isset($_POST['submit']) or isset($_POST['Update'])) {
 	echo '</select></td></tr>';
 	echo '<tr>
 			<td>' . _('Number Of Days Sales') . ':</td>
-			<td><input type="text" class="number" name="NumberOfDays" required="required" minlength="1" maxlength="3" size="4" value="0" /></td>
+			<td><input type="text" class="number" name="NumberOfDays" required="required" maxlength="3" size="4" value="0" /></td>
 		  </tr>';
 	echo '<tr>
 			<td>' . _('Order By') . ':</td>
-			<td><select minlength="0" name="Sequence">
+			<td><select name="Sequence">
 				<option value="1">' . _('Total Invoiced') . '</option>
 				<option value="2">' . _('Item Code') . '</option>
 				</select></td>

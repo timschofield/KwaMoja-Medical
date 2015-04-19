@@ -266,13 +266,13 @@ if (!isset($_GET['delete'])) {
 			</tr>';
 		echo '<tr>
 				<td>' . _('Term Code') . ':</td>
-				<td><input type="text" class="AlphaNumeric" name="TermsIndicator" value="' . $_POST['TermsIndicator'] . '" size="3" autofocus="autofocus" required="required" minlength="1" maxlength="2" /></td>
+				<td><input type="text" class="AlphaNumeric" name="TermsIndicator" value="' . $_POST['TermsIndicator'] . '" size="3" autofocus="autofocus" required="required" maxlength="2" /></td>
 			</tr>';
 	}
 
 	echo '<tr>
 			<td>' . _('Terms Description') . ':</td>
-			<td><input type="text" name="Terms" value="' . $_POST['Terms'] . '" size="35" required="required" minlength="1" maxlength="40" /></td>
+			<td><input type="text" name="Terms" value="' . $_POST['Terms'] . '" size="35" required="required" maxlength="40" /></td>
 		</tr>
 		<tr>
 			<td>' . _('Due After A Given No. Of Days') . ':</td>
@@ -283,7 +283,7 @@ if (!isset($_GET['delete'])) {
 	echo '  /></td>
 		</tr>
 		<tr><td>' . _('Days (Or Day In Following Month)') . ':</td>
-			<td><input type="text" name="DayNumber" maxvalue="30" class="integer" size="3" minlength="0" maxlength="3" value="';
+			<td><input type="text" name="DayNumber" maxvalue="30" class="integer" size="3" maxlength="3" value="';
 	if ($DaysBeforeDue != 0) {
 		echo locale_number_format($DaysBeforeDue, 0);
 	} else {

@@ -145,11 +145,11 @@ if (isset($_POST['ShowReport'])) {
 	echo '<table class="selection">
 			<tr>
 				<td>' . _('From Supplier Code') . ':</td>
-				<td><input type="text" name="FromCriteria" autofocus="autofocus" required="required" minlength="1" maxlength="20" value="' . $MyRow['fromcriteria'] . '" /></td>
+				<td><input type="text" name="FromCriteria" autofocus="autofocus" required="required" maxlength="20" value="' . $MyRow['fromcriteria'] . '" /></td>
 			</tr>
 			<tr>
 				<td>' . _('To Supplier Code') . ':</td>
-				<td><input type="text" name="ToCriteria" required="required" minlength="1" maxlength="20" value="' . $MyRow['tocriteria'] . '" /></td>
+				<td><input type="text" name="ToCriteria" required="required" maxlength="20" value="' . $MyRow['tocriteria'] . '" /></td>
 			</tr>
 		</table>
 		<div class="centre">

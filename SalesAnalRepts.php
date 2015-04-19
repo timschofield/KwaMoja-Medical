@@ -384,11 +384,11 @@ if (!isset($_GET['delete'])) {
 	}
 	echo '<tr>
 			<td class="number">' . _('Report Heading') . ':</td>
-			<td colspan="2"><input type="text" size="80" minlength="0" maxlength="80" name="ReportHeading" value="' . $_POST['ReportHeading'] . '" /></td>
+			<td colspan="2"><input type="text" size="80" maxlength="80" name="ReportHeading" value="' . $_POST['ReportHeading'] . '" /></td>
 		</tr>';
 
 	echo '<tr>
-			<td>' . _('Group By 1') . ': <select minlength="0" name="GroupByData1">';
+			<td>' . _('Group By 1') . ': <select name="GroupByData1">';
 
 	if (!isset($_POST['GroupByData1'])) {
 		$_POST['GroupByData1'] = 'Not Used';
@@ -396,7 +396,7 @@ if (!isset($_GET['delete'])) {
 	GrpByDataOptions($_POST['GroupByData1']);
 
 	echo '</select></td>
-			<td>' . _('Page Break After') . ': <select minlength="0" name="NewPageAfter1">';
+			<td>' . _('Page Break After') . ': <select name="NewPageAfter1">';
 
 	if (isset($_POST['NewPageAfter1']) and $_POST['NewPageAfter1'] == 0) {
 		echo '<option selected="selected" value="0">' . _('No') . '</option>';
@@ -415,11 +415,11 @@ if (!isset($_GET['delete'])) {
 	if (!isset($_POST['Upper1'])) {
 		$_POST['Upper1'] = '';
 	}
-	echo '<td>' . _('From') . ': <input type="text" name="Lower1" size="10" minlength="0" maxlength="10" value="' . $_POST['Lower1'] . '" /></td>
-			<td>' . _('To') . ': <input type="text" name="Upper1" size="10" minlength="0" maxlength="10" value="' . $_POST['Upper1'] . '" /></td>
+	echo '<td>' . _('From') . ': <input type="text" name="Lower1" size="10" maxlength="10" value="' . $_POST['Lower1'] . '" /></td>
+			<td>' . _('To') . ': <input type="text" name="Upper1" size="10" maxlength="10" value="' . $_POST['Upper1'] . '" /></td>
 		</tr>
 		<tr>
-			<td>' . _('Group By 2') . ': <select minlength="0" name="GroupByData2">';
+			<td>' . _('Group By 2') . ': <select name="GroupByData2">';
 
 	if (!isset($_POST['GroupByData2'])) {
 		$_POST['GroupByData2'] = 'Not Used';
@@ -427,7 +427,7 @@ if (!isset($_GET['delete'])) {
 	GrpByDataOptions($_POST['GroupByData2']);
 
 	echo '</select></td>
-			<td>' . _('Page Break After') . ': <select minlength="0" name="NewPageAfter2">';
+			<td>' . _('Page Break After') . ': <select name="NewPageAfter2">';
 
 	if (isset($_POST['NewPageAfter2']) and $_POST['NewPageAfter2'] == 0) {
 		echo '<option selected="selected" value="0">' . _('No') . '</option>';
@@ -446,11 +446,11 @@ if (!isset($_GET['delete'])) {
 	}
 
 	echo '</select></td>';
-	echo '<td>' . _('From') . ': <input type="text" name="Lower2" size="10" minlength="0" maxlength="10" value="' . $_POST['Lower2'] . '" /></td>
-			<td>' . _('To') . ': <input type="text" name="Upper2" size="10" minlength="0" maxlength="10" value="' . $_POST['Upper2'] . '" /></td>
+	echo '<td>' . _('From') . ': <input type="text" name="Lower2" size="10" maxlength="10" value="' . $_POST['Lower2'] . '" /></td>
+			<td>' . _('To') . ': <input type="text" name="Upper2" size="10" maxlength="10" value="' . $_POST['Upper2'] . '" /></td>
 		</tr>
 		<tr>
-			<td>' . _('Group By 3') . ': <select minlength="0" name="GroupByData3">';
+			<td>' . _('Group By 3') . ': <select name="GroupByData3">';
 
 	if (!isset($_POST['GroupByData3'])) {
 		$_POST['GroupByData3'] = 'Not Used';
@@ -458,7 +458,7 @@ if (!isset($_GET['delete'])) {
 	GrpByDataOptions($_POST['GroupByData3']);
 
 	echo '</select></td>
-			<td>' . _('Page Break After') . ': <select minlength="0" name="NewPageAfter3">';
+			<td>' . _('Page Break After') . ': <select name="NewPageAfter3">';
 
 	if (isset($_POST['NewPageAfter3']) and $_POST['NewPageAfter3'] == 0) {
 		echo '<option selected="selected" value="0">' . _('No') . '</option>';
@@ -478,11 +478,11 @@ if (!isset($_GET['delete'])) {
 		$_POST['Upper3'] = '';
 	}
 
-	echo '<td>' . _('From') . ': <input type="text" name="Lower3" size="10" minlength="0" maxlength="10" value="' . $_POST['Lower3'] . '" /></td>
-			<td>' . _('To') . ': <input type="text" name="Upper3" size="10" minlength="0" maxlength="10" value="' . $_POST['Upper3'] . '" /></td>
+	echo '<td>' . _('From') . ': <input type="text" name="Lower3" size="10" maxlength="10" value="' . $_POST['Lower3'] . '" /></td>
+			<td>' . _('To') . ': <input type="text" name="Upper3" size="10" maxlength="10" value="' . $_POST['Upper3'] . '" /></td>
 		</tr>
 		<tr>
-			<td>' . _('Group By 4') . ': <select minlength="0" name="GroupByData4">';
+			<td>' . _('Group By 4') . ': <select name="GroupByData4">';
 
 	if (!isset($_POST['GroupByData4'])) {
 		$_POST['GroupByData4'] = 'Not Used';
@@ -500,8 +500,8 @@ if (!isset($_GET['delete'])) {
 		$_POST['Upper4'] = '';
 	}
 
-	echo '<td>' . _('From') . ': <input type="text" name="Lower4" size="10" minlength="0" maxlength="10" value="' . $_POST['Lower4'] . '" /></td>
-			<td>' . _('To') . ': <input type="text" name="Upper4" size="10" minlength="0" maxlength="10" value="' . $_POST['Upper4'] . '" /></td>
+	echo '<td>' . _('From') . ': <input type="text" name="Lower4" size="10" maxlength="10" value="' . $_POST['Lower4'] . '" /></td>
+			<td>' . _('To') . ': <input type="text" name="Upper4" size="10" maxlength="10" value="' . $_POST['Upper4'] . '" /></td>
 		</tr>';
 
 	echo '</table>';

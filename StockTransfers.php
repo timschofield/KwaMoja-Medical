@@ -481,7 +481,7 @@ echo '<table class="selection">
 			<td>' . _('Stock Code') . ':</td>
 			<td>';
 if (isset($_POST['StockID'])) {
-	echo '<input type="text" name="StockID" size="21" value="' . $_POST['StockID'] . '" required="required" minlength="1" maxlength="20" /></td></tr>';
+	echo '<input type="text" name="StockID" size="21" value="' . $_POST['StockID'] . '" required="required" maxlength="20" /></td></tr>';
 } else {
 	echo '<input type="text" name="StockID" size="21" value="" maxlength="20" /></td></tr>';
 }
@@ -489,9 +489,9 @@ echo '<tr><td>' . _('Partial Description') . ':</td>
 		<td><input type="text" name="StockText" size="21" value="' . stripslashes($_GET['Description']) . '" /></td>
 		<td>' . _('Partial Stock Code') . ':</td><td>';
 if (isset($_POST['StockID'])) {
-	echo '<input type="text" name="StockCode" size="21" value="' . $_POST['StockID'] . '" minlength="0" maxlength="20" />';
+	echo '<input type="text" name="StockCode" size="21" value="' . $_POST['StockID'] . '" maxlength="20" />';
 } else {
-	echo '<input type="text" name="StockCode" size="21" value="" minlength="0" maxlength="20" />';
+	echo '<input type="text" name="StockCode" size="21" value="" maxlength="20" />';
 }
 echo '</td><td><input type="submit" name="CheckCode" value="' . _('Check Part') . '" /></td></tr>';
 
@@ -504,7 +504,7 @@ if (isset($_SESSION['Transfer' . $Identifier]->TransferItem[0]->ItemDescription)
 
 echo '<tr>
 		<td>' . _('From Stock Location') . ':</td>
-		<td><select required="required" minlength="1" name="StockLocationFrom">';
+		<td><select required="required" name="StockLocationFrom">';
 
 $SQL = "SELECT locationname,
 				locations.loccode
@@ -535,7 +535,7 @@ echo '</select></td>
 
 echo '<tr>
 		<td>' . _('To Stock Location') . ': </td>
-		<td><select required="required" minlength="1" name="StockLocationTo"> ';
+		<td><select required="required" name="StockLocationTo"> ';
 
 $SQL = "SELECT locationname,
 				loccode
@@ -566,9 +566,9 @@ if (isset($_SESSION['Transfer' . $Identifier]->TransferItem[0]->Controlled) and 
 
 	echo '<td class="number"><input type="hidden" name="Quantity" value="' . locale_number_format($_SESSION['Transfer' . $Identifier]->TransferItem[0]->Quantity) . '" /><a href="' . $RootPath . '/StockTransferControlled.php?identifier=' . urlencode($Identifier) . '&StockLocationFrom=' . urlencode($_SESSION['Transfer' . $Identifier]->StockLocationFrom) . '">' . $_SESSION['Transfer' . $Identifier]->TransferItem[0]->Quantity . '</a></td></tr>';
 } elseif (isset($_SESSION['Transfer' . $Identifier]->TransferItem[0]->Controlled)) {
-	echo '<td><input type="text" class="number" name="Quantity" size="12" required="required" minlength="1" maxlength="12" value="' . locale_number_format($_SESSION['Transfer' . $Identifier]->TransferItem[0]->Quantity) . '" /></td></tr>';
+	echo '<td><input type="text" class="number" name="Quantity" size="12" required="required" maxlength="12" value="' . locale_number_format($_SESSION['Transfer' . $Identifier]->TransferItem[0]->Quantity) . '" /></td></tr>';
 } else {
-	echo '<td><input type="text" class="number" name="Quantity" size="12" required="required" minlength="1" maxlength="12" value="0" /></td>
+	echo '<td><input type="text" class="number" name="Quantity" size="12" required="required" maxlength="12" value="0" /></td>
 		</tr>';
 }
 

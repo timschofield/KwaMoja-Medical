@@ -332,7 +332,7 @@ echo '<table class="selection">
 		<tr>
 			<td>' . _('Branch') . ':</td>
 			<td>
-				<select minlength="0" name="Branch">
+				<select name="Branch">
 					<option value="">' . _('All branches') . '</option>';
 
 while ($MyRow = DB_fetch_array($Result)) {
@@ -345,14 +345,14 @@ while ($MyRow = DB_fetch_array($Result)) {
 echo '</select></td></tr>';
 echo '<tr>
 		<td>' . _('Start Date') . ':</td>
-		<td><input type="text" name="StartDate" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" size="11" required="required" minlength="1" maxlength="10" value="' . $_POST['StartDate'] . '" /></td>
+		<td><input type="text" name="StartDate" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" size="11" required="required" maxlength="10" value="' . $_POST['StartDate'] . '" /></td>
 	</tr>';
 echo '<tr>
 		<td>' . _('End Date') . ':</td>
-		<td><input type="text" name="EndDate" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" size="11" required="required" minlength="1" maxlength="10" value="' . $_POST['EndDate'] . '" /></td></tr>';
+		<td><input type="text" name="EndDate" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" size="11" required="required" maxlength="10" value="' . $_POST['EndDate'] . '" /></td></tr>';
 
 echo '<tr><td>' . _('Price') . ':</td>
-		  <td><input type="text" class="number" name="Price" size="11" required="required" minlength="1" maxlength="10" value="' . locale_number_format($_POST['Price'], 2) . '" /></td>
+		  <td><input type="text" class="number" name="Price" size="11" required="required" maxlength="10" value="' . locale_number_format($_POST['Price'], 2) . '" /></td>
 		</tr>
 	</table>';
 

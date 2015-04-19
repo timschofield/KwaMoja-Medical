@@ -21,11 +21,11 @@ echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />'
 echo '<table>
 		<tr>
 			<td>' . _('Existing Supplier Code') . ':</td>
-			<td><input type="text" name="OldSupplierNo" size="20" minlength="0" maxlength="20" /></td>
+			<td><input type="text" name="OldSupplierNo" size="20" maxlength="20" /></td>
 		</tr>
 		<tr>
 			<td> ' . _('New Supplier Code') . ':</td>
-			<td><input type="text" name="NewSupplierNo" size="20" minlength="0" maxlength="20" /></td>
+			<td><input type="text" name="NewSupplierNo" size="20" maxlength="20" /></td>
 		</tr>
 	</table>
 	<div class="centre">

@@ -189,7 +189,7 @@ if (!isset($_GET['delete'])) {
 	echo '<tr>
 			<td>' . _('Contact Note') . '</td>';
 	if (isset($_POST['Note'])) {
-		echo '<td><textarea name="Note" rows="3" required="required" minlength="1" cols="32">' . $_POST['Note'] . '</textarea></td>
+		echo '<td><textarea name="Note" rows="3" required="required" cols="32">' . $_POST['Note'] . '</textarea></td>
 			</tr>';
 	} else {
 		echo '<td><textarea name="Note" rows="3" cols="32"></textarea></td>
@@ -198,28 +198,28 @@ if (!isset($_GET['delete'])) {
 	echo '<tr>
 			<td>' . _('WWW') . '</td>';
 	if (isset($_POST['Href'])) {
-		echo '<td><input type="text" name="Href" value="' . $_POST['Href'] . '" size="35" minlength="0" maxlength="100" /></td>
+		echo '<td><input type="text" name="Href" value="' . $_POST['Href'] . '" size="35" maxlength="100" /></td>
 			</tr>';
 	} else {
-		echo '<td><input type="text" name="Href" size="35" minlength="0" maxlength="100" /></td>
+		echo '<td><input type="text" name="Href" size="35" maxlength="100" /></td>
 			</tr>';
 	}
 	echo '<tr>
 			<td>' . _('Date') . '</td>';
 	if (isset($_POST['date'])) {
-		echo '<td><input type="text" name="NoteDate" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" id="datepicker" value="' . ConvertSQLDate($_POST['date']) . '" size="10" minlength="0" maxlength="10" /></td>
+		echo '<td><input type="text" name="NoteDate" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" id="datepicker" value="' . ConvertSQLDate($_POST['date']) . '" size="10" maxlength="10" /></td>
 			</tr>';
 	} else {
-		echo '<td><input type="text" name="NoteDate" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" id="datepicker" value="' . date($_SESSION['DefaultDateFormat']) . '" size="10" minlength="0" maxlength="10" /></td>
+		echo '<td><input type="text" name="NoteDate" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" id="datepicker" value="' . date($_SESSION['DefaultDateFormat']) . '" size="10" maxlength="10" /></td>
 			</tr>';
 	}
 	echo '<tr>
 			<td>' . _('Priority') . '</td>';
 	if (isset($_POST['Priority'])) {
-		echo '<td><input type="text" class=integer" name="Priority" value="' . $_POST['Priority'] . '" size="1" minlength="0" maxlength="3" /></td>
+		echo '<td><input type="text" class=integer" name="Priority" value="' . $_POST['Priority'] . '" size="1" maxlength="3" /></td>
 			</tr>';
 	} else {
-		echo '<td><input type="text" class="integer" name="Priority" size="1" minlength="0" maxlength="3" /></td>
+		echo '<td><input type="text" class="integer" name="Priority" size="1" maxlength="3" /></td>
 			</tr>';
 	}
 	echo '<tr>

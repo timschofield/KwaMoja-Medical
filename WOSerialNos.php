@@ -240,7 +240,7 @@ echo '<table class="selection">';
 if ($Serialised == 1 and $NextSerialNo > 0) {
 	echo '<tr>
 			<td>' . _('Add A Number of New Serial Numbers') . ':</td>
-			<td><input type="text" name="NumberToAdd" size="10" class="number" required="required" minlength="1" maxlength="10" value="1" /></td>
+			<td><input type="text" name="NumberToAdd" size="10" class="number" required="required" maxlength="10" value="1" /></td>
 			<td>' . _('Starting at') . ':</td>
 			<td align="right">' . $NextSerialNo . '</td>';
 } else {
@@ -258,9 +258,9 @@ if ($Serialised == 1 and $NextSerialNo > 0) {
 				<tr><td>';
 		echo _('Add a single batch/lot number');
 	}
-	echo '</td><td><input type="text" name="Reference" minlength="0" maxlength="30" size="30" /></td>';
+	echo '</td><td><input type="text" name="Reference" maxlength="30" size="30" /></td>';
 	if ($Serialised == 0) { //also need to add the quantity
-		echo '<td><input type="text" name="Quantity" size="10" class="number" required="required" minlength="1" maxlength="10" value="1" /></td>';
+		echo '<td><input type="text" name="Quantity" size="10" class="number" required="required" maxlength="10" value="1" /></td>';
 	} else { //it will be 1 for a serial item
 		echo '<td><input type="hidden" name="Quantity" value="1" /></td>';
 	}

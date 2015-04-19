@@ -33,7 +33,7 @@ if (!isset($_POST['Show'])) {
 	echo '<table class="selection">
 			<tr>
 				<td>', _('Bank Account'), ':</td>
-				<td><select minlength="0" name="BankAccount">';
+				<td><select name="BankAccount">';
 
 	if (DB_num_rows($AccountsResults) == 0) {
 		echo '</select>
@@ -61,16 +61,16 @@ if (!isset($_POST['Show'])) {
 	}
 	echo '<tr>
 			<td>', _('Transactions Dated From'), ':</td>
-			<td><input type="text" name="FromTransDate" class="date" alt="', $_SESSION['DefaultDateFormat'], '" required="required" minlength="1" maxlength="10" size="11" onchange="isDate(this, this.value, ', "'", $_SESSION['DefaultDateFormat'], "'", ')" value="', date($_SESSION['DefaultDateFormat']), '" /></td>
+			<td><input type="text" name="FromTransDate" class="date" alt="', $_SESSION['DefaultDateFormat'], '" required="required" maxlength="10" size="11" onchange="isDate(this, this.value, ', "'", $_SESSION['DefaultDateFormat'], "'", ')" value="', date($_SESSION['DefaultDateFormat']), '" /></td>
 		</tr>
 		<tr>
 			<td>' . _('Transactions Dated To') . ':</td>
-			<td><input type="text" name="ToTransDate" class="date" alt="', $_SESSION['DefaultDateFormat'], '" required="required" minlength="1" maxlength="10" size="11" onchange="isDate(this, this.value, ', "'", $_SESSION['DefaultDateFormat'], "'", ')" value="', date($_SESSION['DefaultDateFormat']), '" /></td>
+			<td><input type="text" name="ToTransDate" class="date" alt="', $_SESSION['DefaultDateFormat'], '" required="required" maxlength="10" size="11" onchange="isDate(this, this.value, ', "'", $_SESSION['DefaultDateFormat'], "'", ')" value="', date($_SESSION['DefaultDateFormat']), '" /></td>
 		</tr>
 		<tr>
 			<td>', _('Show Transactions'), '</td>
 			<td>
-				<select minlength="0" name="ShowType">
+				<select name="ShowType">
 					<option value="All">', _('All'), '</option>
 					<option value="Unmatched">', _('Unmatched'), '</option>
 					<option value="Matched">', _('Matched'), '</option>

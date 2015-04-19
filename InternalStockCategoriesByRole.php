@@ -116,7 +116,7 @@ if (!isset($SelectedRole)) {
 
 	echo '<tr>
 			<td>', _('Select User Role'), ':</td>
-			<td><select required="required" minlength="1" name="SelectedRole">';
+			<td><select required="required" name="SelectedRole">';
 	echo '<option value="">', _('Not Yet Selected'), '</option>';
 	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($SelectedRole) and $MyRow['secroleid'] == $SelectedRole) {
@@ -159,7 +159,7 @@ if (isset($_POST['process']) or isset($SelectedRole)) {
 
 		echo '<tr>
 				<td>', _('Select Stock Category Code'), ':</td>
-				<td><select minlength="0" name="SelectedCategory">';
+				<td><select name="SelectedCategory">';
 
 		$SQL = "SELECT categoryid,
 						categorydescription

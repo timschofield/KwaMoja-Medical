@@ -119,17 +119,17 @@ if (isset($_GET['SelectedLocation'])) {
 	echo '<input type="hidden" name="LocationID" value="' . $LocationID . '" />';
 	echo '<td>' . $LocationID . '</td>';
 } else {
-	echo '<td><input type="text" name="LocationID" required="required" minlength="1" maxlength="6" size="6" value="' . $LocationID . '" /></td>
+	echo '<td><input type="text" name="LocationID" required="required" maxlength="6" size="6" value="' . $LocationID . '" /></td>
 		</tr>';
 }
 
 echo '<tr>
 		<th style="text-align:left">' . _('Location Description') . '</th>
-		<td><input type="text" name="LocationDescription" required="required" minlength="1" maxlength="20" size="20" value="' . $LocationDescription . '" /></td>
+		<td><input type="text" name="LocationDescription" required="required" maxlength="20" size="20" value="' . $LocationDescription . '" /></td>
 	</tr>
 	<tr>
 		<th style="text-align:left">' . _('Parent Location') . '</th>
-		<td><select minlength="0" name="ParentLocationID">';
+		<td><select name="ParentLocationID">';
 
 $SQL = "SELECT locationid, locationdescription FROM fixedassetlocations";
 $Result = DB_query($SQL);

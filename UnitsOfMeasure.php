@@ -224,7 +224,7 @@ if (!isset($_GET['delete'])) {
 	}
 	echo '<tr>
 		<td>' . _('Unit of Measure') . ':' . '</td>
-		<td><input type="text" name="MeasureName" size="15" required="required" minlength="1" maxlength="15" value="' . $_POST['MeasureName'] . '" /></td>
+		<td><input type="text" name="MeasureName" size="15" required="required" maxlength="15" value="' . $_POST['MeasureName'] . '" /></td>
 		</tr>';
 	echo '</table>';
 

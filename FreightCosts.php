@@ -34,7 +34,7 @@ if (!isset($LocationFrom) or !isset($ShipperID)) {
 	echo '<table class="selection">
 		<tr>
 			<td>' . _('Select A Freight Company to set up costs for') . '</td>
-			<td><select minlength="0" name="ShipperID">';
+			<td><select name="ShipperID">';
 
 	while ($MyRow = DB_fetch_array($ShipperResults)) {
 		echo '<option value="' . $MyRow['shipper_id'] . '">' . $MyRow['shippername'] . '</option>';
@@ -42,7 +42,7 @@ if (!isset($LocationFrom) or !isset($ShipperID)) {
 	echo '</select></td></tr>
 			<tr>
 				<td>' . _('Select the warehouse') . ' (' . _('ship from location') . ')</td>
-				<td><select minlength="0" name="LocationFrom">';
+				<td><select name="LocationFrom">';
 
 	$SQL = "SELECT locationname,
 					loctions.loccode
@@ -363,31 +363,31 @@ if (isset($LocationFrom) and isset($ShipperID)) {
 
 	echo'<tr>
 			<td>' . _('Destination Zone') . ':</td>
-			<td><input type="text" required="required" minlength="1" maxlength="20" size="20" name="Destination" value="' . $_POST['Destination'] . '" /></td>
+			<td><input type="text" required="required" maxlength="20" size="20" name="Destination" value="' . $_POST['Destination'] . '" /></td>
 		</tr>';
 	echo '<tr>
 			<td>' . _('Rate per Cubic Metre') . ':</td>
-			<td><input type="text" name="CubRate" class="number" size="6" required="required" minlength="1" maxlength="5" value="' . $_POST['CubRate'] . '" /></td>
+			<td><input type="text" name="CubRate" class="number" size="6" required="required" maxlength="5" value="' . $_POST['CubRate'] . '" /></td>
 		</tr>';
 	echo '<tr>
 			<td>' . _('Rate Per KG') . ':</td>
-			<td><input type="text" name="KGRate" class="number" size="6" required="required" minlength="1" maxlength="5" value="' . $_POST['KGRate'] . '" /></td>
+			<td><input type="text" name="KGRate" class="number" size="6" required="required" maxlength="5" value="' . $_POST['KGRate'] . '" /></td>
 		</tr>';
 	echo '<tr>
 			<td>' . _('Maximum Weight Per Package (KGs)') . ':</td>
-			<td><input type="text" name="MAXKGs" class="number" size="8" required="required" minlength="1" maxlength="7" value="' . $_POST['MAXKGs'] . '" /></td>
+			<td><input type="text" name="MAXKGs" class="number" size="8" required="required" maxlength="7" value="' . $_POST['MAXKGs'] . '" /></td>
 		</tr>';
 	echo '<tr>
 			<td>' . _('Maximum Volume Per Package (cubic metres)') . ':</td>
-			<td><input type="text" name="MAXCub" class="number" size="8" required="required" minlength="1" maxlength="7" value="' . $_POST['MAXCub'] . '" /></td>
+			<td><input type="text" name="MAXCub" class="number" size="8" required="required" maxlength="7" value="' . $_POST['MAXCub'] . '" /></td>
 		</tr>';
 	echo '<tr>
 			<td>' . _('Fixed Price (zero if rate per KG or Cubic)') . ':</td>
-			<td><input type="text" name="FixedPrice" class="number" size="11" required="required" minlength="1" maxlength="10" value="' . $_POST['FixedPrice'] . '" /></td>
+			<td><input type="text" name="FixedPrice" class="number" size="11" required="required" maxlength="10" value="' . $_POST['FixedPrice'] . '" /></td>
 		</tr>';
 	echo '<tr>
 			<td>' . _('Minimum Charge (0 is N/A)') . ':</td>
-			<td><input type="text" name="MinimumChg" class="number" size="11" required="required" minlength="1" maxlength="10" value="' . $_POST['MinimumChg'] . '" /></td>
+			<td><input type="text" name="MinimumChg" class="number" size="11" required="required" maxlength="10" value="' . $_POST['MinimumChg'] . '" /></td>
 		</tr>';
 
 	echo '</table><br />';

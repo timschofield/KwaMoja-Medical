@@ -568,7 +568,7 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 		echo '<table class="table1">
 				<tr>
 					<td>', _('Print Invoices or Credit Notes'), '</td>
-					<td><select minlength="0" name="InvOrCredit">';
+					<td><select name="InvOrCredit">';
 		if (!isset($InvOrCredit) or $InvOrCredit == 'Invoice') {
 			echo '<option selected="selected" value="Invoice">', _('Invoices'), '</option>';
 			echo '<option value="Credit">', _('Credit Notes'), '</option>';
@@ -582,7 +582,7 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 
 		echo '<tr>
 				<td>', _('Print EDI Transactions'), '</td>
-				<td><select minlength="0" name="PrintEDI">';
+				<td><select name="PrintEDI">';
 		if (!isset($InvOrCredit) or $InvOrCredit == 'Invoice') {
 			echo '<option selected="selected" value="No">', _('Do not Print PDF EDI Transactions'), '</option>';
 			echo '<option value="Yes">', _('Print PDF EDI Transactions Too'), '</option>';
@@ -596,7 +596,7 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 
 		echo '<tr>
 				<td>', _('Despatch Location'), ': </td>
-				<td><select minlength="0" tabindex="2" name="LocCode">';
+				<td><select tabindex="2" name="LocCode">';
 
 		if ($_SESSION['RestrictLocations'] == 0) {
 			$SQL = "SELECT locationname,
@@ -626,11 +626,11 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 
 		echo '<tr>
 				<td>', _('Start invoice/credit note number to print'), '</td>
-				<td><input type="text" class="number" required="required" minlength="1" maxlength="6" size="7" name="FromTransNo" /></td>
+				<td><input type="text" class="number" required="required" maxlength="6" size="7" name="FromTransNo" /></td>
 			</tr>';
 		echo '<tr>
 				<td>', _('End invoice/credit note number to print'), '</td>
-				<td><input type="text" class="number" required="required" minlength="1" maxlength="6" size="7" name="ToTransNo" /></td>
+				<td><input type="text" class="number" required="required" maxlength="6" size="7" name="ToTransNo" /></td>
 			</tr>
 		</table>';
 

@@ -65,7 +65,7 @@ $DefaultPeriodDate = Date('Y-m-d', Mktime(0, 0, 0, Date('m'), 0, Date('Y')));
 echo '<table class="selection" summary="', _('Inquiry Selection Criteria'), '">
 		<tr>
 			<td>', _('Account'), ':</td>
-			<td><select minlength="0" name="Account">';
+			<td><select name="Account">';
 $SQL = "SELECT accountcode,
 				accountname
 			FROM chartmaster
@@ -86,7 +86,7 @@ echo '</select>
 //Select the tag
 echo '<tr>
 		<td>', _('Select Tag'), ':</td>
-		<td><select minlength="0" name="tag">';
+		<td><select name="tag">';
 
 $SQL = "SELECT tagref,
 			tagdescription
@@ -107,7 +107,7 @@ echo '</select>
 		</tr>
 		<tr>
 			<td>', _('For Period range'), ':</td>
-			<td><select minlength="0" name="Period[]" size="12" multiple="multiple">';
+			<td><select name="Period[]" size="12" multiple="multiple">';
 $SQL = "SELECT periodno, lastdate_in_period FROM periods ORDER BY periodno DESC";
 $Periods = DB_query($SQL);
 $id = 0;

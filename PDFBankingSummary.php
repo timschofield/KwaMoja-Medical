@@ -29,7 +29,7 @@ if (!isset($_POST['BatchNo'])) {
 				<table class="selection" summary="' . _('Details of the batch to be re-printed') . '">
 					<tr>
 						<td>' . _('Select the batch number of receipts to be printed') . ':</td>
-						<td><select autofocus="autofocus" required="required" minlength="1" name="BatchNo">';
+						<td><select autofocus="autofocus" required="required" name="BatchNo">';
 	while ($MyRow = DB_fetch_array($Result)) {
 		echo '<option value="' . $MyRow['transno'] . '">' . _('Batch') . ' ' . $MyRow['transno'] . ' - ' . ConvertSqlDate($MyRow['transdate']) . '</option>';
 	}

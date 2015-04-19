@@ -21,7 +21,7 @@ if (!isset($_POST['MonthToShow'])) {
 echo '<table class="selection">
 		<tr>
 			<td>' . _('Month to Show') . ':</td>
-			<td><select minlength="0" tabindex="1" name="MonthToShow">';
+			<td><select tabindex="1" name="MonthToShow">';
 
 $PeriodsResult = DB_query("SELECT periodno, lastdate_in_period FROM periods");
 

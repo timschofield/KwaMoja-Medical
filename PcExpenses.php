@@ -274,7 +274,7 @@ if (!isset($_GET['delete'])) {
 		echo '<table class="selection">
 				<tr>
 					<td>' . _('Code Of Expense') . ':</td>
-					<td><input type="text" name="CodeExpense" autofocus="autofocus" required="required" minlength="1" maxlength="20" /></td>
+					<td><input type="text" name="CodeExpense" autofocus="autofocus" required="required" maxlength="20" /></td>
 				</tr>';
 
 	}
@@ -284,12 +284,12 @@ if (!isset($_GET['delete'])) {
 	}
 	echo '<tr>
 			<td>' . _('Description') . ':</td>
-			<td><input type="text" name="Description" size="50" required="required" minlength="1" maxlength="50" value="' . $_POST['Description'] . '" /></td>
+			<td><input type="text" name="Description" size="50" required="required" maxlength="50" value="' . $_POST['Description'] . '" /></td>
 		</tr>';
 
 	echo '<tr>
 			<td>' . _('Account Code') . ':</td>
-			<td><select required="required" minlength="1" name="GLAccount">';
+			<td><select required="required" name="GLAccount">';
 
 	DB_free_result($Result);
 	$SQL = "SELECT accountcode,
@@ -313,7 +313,7 @@ if (!isset($_GET['delete'])) {
 	//Select the tag
 	echo '<tr>
 			<td>' . _('Tag') . ':</td>
-			<td><select minlength="0" name="Tag">';
+			<td><select name="Tag">';
 
 	$SQL = "SELECT tagref,
 					tagdescription

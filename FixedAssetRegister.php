@@ -241,7 +241,7 @@ if (isset($_POST['submit']) or isset($_POST['pdf']) or isset($_POST['csv'])) {
 	echo '<table class="selection">';
 	echo '<tr>
 			<th>' . _('Asset Category') . '</th>
-			<td><select minlength="0" name="AssetCategory">
+			<td><select name="AssetCategory">
 				<option value="%">' . _('ALL') . '</option>';
 	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['AssetCategory']) and $MyRow['categoryid'] == $_POST['AssetCategory']) {
@@ -256,7 +256,7 @@ if (isset($_POST['submit']) or isset($_POST['pdf']) or isset($_POST['csv'])) {
 	$Result = DB_query($SQL);
 	echo '<tr>
 			<th>' . _('Asset Location') . '</th>
-			<td><select minlength="0" name="AssetLocation">
+			<td><select name="AssetLocation">
 				<option value="%">' . _('ALL') . '</option>';
 	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['AssetLocation']) and $MyRow['locationid'] == $_POST['AssetLocation']) {
@@ -271,7 +271,7 @@ if (isset($_POST['submit']) or isset($_POST['pdf']) or isset($_POST['csv'])) {
 	$Result = DB_query($SQL);
 	echo '<tr>
 			<th>' . _('Asset') . '</th>
-			<td><select minlength="0" name="AssetID">
+			<td><select name="AssetID">
 				<option value="%">' . _('ALL') . '</option>';
 	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['AssetID']) and $MyRow['assetid'] == $_POST['AssetID']) {
@@ -291,11 +291,11 @@ if (isset($_POST['submit']) or isset($_POST['pdf']) or isset($_POST['csv'])) {
 
 	echo '<tr>
 			<th>' . _(' From Date') . '</th>
-			<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="FromDate" required="required" minlength="1" maxlength="10" size="11" value="' . $_POST['FromDate'] . '" /></td>
+			<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="FromDate" required="required" maxlength="10" size="11" value="' . $_POST['FromDate'] . '" /></td>
 		</tr>
 		<tr>
 			<th>' . _('To Date ') . '</th>
-			<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="ToDate" required="required" minlength="1" maxlength="10" size="11" value="' . $_POST['ToDate'] . '" /></td>
+			<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="ToDate" required="required" maxlength="10" size="11" value="' . $_POST['ToDate'] . '" /></td>
 		</tr>
 	</table>
 	<br />

@@ -541,7 +541,7 @@ echo '<p class="page_title_text" ><img src="', $RootPath, '/css/', $_SESSION['Th
 echo '<table class="selection">
 		<tr>
 			<td>', _('In Stock Category'), ':
-				<select minlength="0" name="StockCat">';
+				<select name="StockCat">';
 if (!isset($_POST['StockCat'])) {
 	$_POST['StockCat'] = '';
 }
@@ -562,18 +562,18 @@ echo '</select>
 
 echo '<td>', _('Enter partial'), '<b> ', _('Description'), '</b>:</td>';
 if (isset($_POST['Keywords'])) {
-	echo '<td><input type="search" name="Keywords" value="', $_POST['Keywords'], '" size="20" minlength="0" maxlength="25" /></td>';
+	echo '<td><input type="search" name="Keywords" value="', $_POST['Keywords'], '" size="20" maxlength="25" /></td>';
 } else {
-	echo '<td><input type="search" name="Keywords" size="20" minlength="0" maxlength="25" /></td>';
+	echo '<td><input type="search" name="Keywords" size="20" maxlength="25" /></td>';
 }
 echo '</tr>';
 
 echo '<tr>
 		<td colspan="2" class="number"><b>', _('OR'), ' ', '</b>', _('Enter partial'), ' <b>', _('Stock Code'), '</b>:</td>';
 if (isset($_POST['StockCode'])) {
-	echo '<td><input type="search" name="StockCode" autofocus="autofocus" value="', $_POST['StockCode'], '" size="15" minlength="0" maxlength="18" /></td>';
+	echo '<td><input type="search" name="StockCode" autofocus="autofocus" value="', $_POST['StockCode'], '" size="15" maxlength="18" /></td>';
 } else {
-	echo '<td><input type="search" name="StockCode" autofocus="autofocus" size="15" minlength="0" maxlength="18" /></td>';
+	echo '<td><input type="search" name="StockCode" autofocus="autofocus" size="15" maxlength="18" /></td>';
 }
 echo '</tr>
 	</table>';
@@ -658,7 +658,7 @@ if (isset($SearchResult) and !isset($_POST['Select'])) {
 		}
 		if ($ListPageMax > 1) {
 			echo '<div class="centre">&nbsp;&nbsp;', $_POST['PageOffset'], ' ', _('of'), ' ', $ListPageMax, ' ', _('pages'), '. ', _('Go to Page'), ': ';
-			echo '<select minlength="0" name="PageOffset">';
+			echo '<select name="PageOffset">';
 			$ListPage = 1;
 			while ($ListPage <= $ListPageMax) {
 				if ($ListPage == $_POST['PageOffset']) {

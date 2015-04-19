@@ -194,7 +194,7 @@ if (isset($_POST['submit'])) {
 		echo '<table class="selection">';
 		echo '<tr>
 				<td>', _('Parent Group'), ':', '</td>
-				<td><select minlength="0" tabindex="2" name="DestinyAccountGroup">';
+				<td><select tabindex="2" name="DestinyAccountGroup">';
 
 		$SQL = "SELECT groupname FROM accountgroups";
 		$GroupResult = DB_query($SQL, $ErrMsg, $DbgMsg);
@@ -378,14 +378,14 @@ if (!isset($_GET['delete'])) {
 	} //!isset($_POST['MoveGroup'])
 	echo '<tr>
 			<td>', _('Account Group Name'), ':</td>
-			<td><input tabindex="1" type="text" name="GroupName" size="50" autofocus="autofocus" required="required" minlength="3" maxlength="50" value="', stripslashes($_POST['GroupName']), '" /></td>
+			<td><input tabindex="1" type="text" name="GroupName" size="50" autofocus="autofocus" required="required" maxlength="50" value="', stripslashes($_POST['GroupName']), '" /></td>
 		</tr>';
 
 	$SQL = "SELECT groupname FROM accountgroups";
 	$GroupResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 	echo '<tr>
 			<td>', _('Parent Group'), ':</td>
-			<td><select minlength="0" tabindex="2" name="ParentGroupName">';
+			<td><select tabindex="2" name="ParentGroupName">';
 
 	if (!isset($_POST['ParentGroupName'])) {
 		echo '<option selected="selected" value="">' . _('Top Level Group') . '</option>';
@@ -408,7 +408,7 @@ if (!isset($_GET['delete'])) {
 	$SecResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 	echo '<tr>
 			<td>', _('Section In Accounts'), ':</td>
-			<td><select required="required" minlength="1" tabindex="3" name="SectionInAccounts">';
+			<td><select required="required" tabindex="3" name="SectionInAccounts">';
 	echo '<option value=""></option>';
 	while ($SecRow = DB_fetch_array($SecResult)) {
 		if ($_POST['SectionInAccounts'] == $SecRow['sectionid']) {
@@ -423,7 +423,7 @@ if (!isset($_GET['delete'])) {
 
 	echo '<tr>
 			<td>', _('Profit and Loss'), ':</td>
-			<td><select required="required" minlength="1" tabindex="4" name="PandL">';
+			<td><select required="required" tabindex="4" name="PandL">';
 
 	echo '<option selected="selected" value=""></option>';
 	if ($_POST['PandL'] == 1) {
@@ -443,7 +443,7 @@ if (!isset($_GET['delete'])) {
 
 	echo '<tr>
 			<td>', _('Sequence In TB'), ':</td>
-			<td><input tabindex="5" type="text" required="required" minlength="1" maxlength="4" name="SequenceInTB" class="integer" value="', $_POST['SequenceInTB'], '" /></td>
+			<td><input tabindex="5" type="text" required="required" maxlength="4" name="SequenceInTB" class="integer" value="', $_POST['SequenceInTB'], '" /></td>
 		</tr>';
 
 	echo '</table>';

@@ -417,7 +417,7 @@ if (isset($SelectedCategory)) {
 			</tr>
 			<tr>
 				<td>' . _('Category Code') . ':</td>
-				<td><input type="text" name="CategoryID" size="7" autofocus="autofocus" required="required" minlength="1" maxlength="6" value="" /></td>
+				<td><input type="text" name="CategoryID" size="7" autofocus="autofocus" required="required" maxlength="6" value="" /></td>
 			</tr>';
 }
 
@@ -449,7 +449,7 @@ if (!isset($_POST['CategoryDescription'])) {
 
 echo '<tr>
 		<td>' . _('Category Description') . ':</td>
-		<td><input type="text" name="CategoryDescription" size="22" required="required" minlength="1" maxlength="20" value="' . $_POST['CategoryDescription'] . '" /></td>
+		<td><input type="text" name="CategoryDescription" size="22" required="required" maxlength="20" value="' . $_POST['CategoryDescription'] . '" /></td>
 	</tr>';
 
 // Stock Type input.
@@ -497,7 +497,7 @@ if (isset($_POST['StockType']) and $_POST['StockType'] == 'L') {
 			<td>' . _('Stock GL Code');
 }
 echo ':</td>
-		<td><select required="required" minlength="1" name="StockAct">';
+		<td><select required="required" name="StockAct">';
 
 while ($MyRow = DB_fetch_array($Result)) {
 
@@ -515,7 +515,7 @@ echo '</select>
 
 echo '<tr>
 		<td>' . _('WIP GL Code') . ':</td>
-		<td><select required="required" minlength="1" name="WIPAct">';
+		<td><select required="required" name="WIPAct">';
 
 while ($MyRow = DB_fetch_array($BSAccountsResult)) {
 
@@ -533,7 +533,7 @@ DB_data_seek($BSAccountsResult, 0);
 
 echo '<tr>
 		<td>' . _('Stock Adjustments GL Code') . ':</td>
-		<td><select required="required" minlength="1" name="AdjGLAct">';
+		<td><select required="required" name="AdjGLAct">';
 
 while ($MyRow = DB_fetch_array($PnLAccountsResult)) {
 	if (isset($_POST['AdjGLAct']) and $MyRow['accountcode'] == $_POST['AdjGLAct']) {
@@ -550,7 +550,7 @@ echo '</select>
 
 echo '<tr>
 		<td>' . _('Internal Stock Issues GL Code') . ':</td>
-		<td><select required="required" minlength="1" name="IssueGLAct">';
+		<td><select required="required" name="IssueGLAct">';
 
 while ($MyRow = DB_fetch_array($PnLAccountsResult)) {
 	if (isset($_POST['IssueGLAct']) and $MyRow['accountcode'] == $_POST['IssueGLAct']) {
@@ -567,7 +567,7 @@ echo '</select>
 
 echo '<tr>
 		<td>' . _('Price Variance GL Code') . ':</td>
-		<td><select required="required" minlength="1" name="PurchPriceVarAct">';
+		<td><select required="required" name="PurchPriceVarAct">';
 
 while ($MyRow = DB_fetch_array($PnLAccountsResult)) {
 	if (isset($_POST['PurchPriceVarAct']) and $MyRow['accountcode'] == $_POST['PurchPriceVarAct']) {
@@ -589,7 +589,7 @@ if (isset($_POST['StockType']) and $_POST['StockType'] == 'L') {
 	echo _('Usage Variance GL Code');
 }
 echo ':</td>
-		<td><select required="required" minlength="1" name="MaterialUseageVarAc">';
+		<td><select required="required" name="MaterialUseageVarAc">';
 
 while ($MyRow = DB_fetch_array($PnLAccountsResult)) {
 	if (isset($_POST['MaterialUseageVarAc']) and $MyRow['accountcode'] == $_POST['MaterialUseageVarAc']) {
@@ -638,8 +638,8 @@ if (isset($SelectedCategory)) {
 	while ($MyRow = DB_fetch_array($Result)) {
 		echo '<input type="hidden" name="PropID' . $PropertyCounter . '" value="' . $MyRow['stkcatpropid'] . '" />';
 		echo '<tr>
-				<td><input type="text" name="PropLabel' . $PropertyCounter . '" size="50" minlength="0" maxlength="100" value="' . $MyRow['label'] . '" /></td>
-				<td><select minlength="0" name="PropControlType' . $PropertyCounter . '">';
+				<td><input type="text" name="PropLabel' . $PropertyCounter . '" size="50" maxlength="100" value="' . $MyRow['label'] . '" /></td>
+				<td><select name="PropControlType' . $PropertyCounter . '">';
 		if ($MyRow['controltype'] == 0) {
 			echo '<option selected="selected" value="0">' . _('Text Box') . '</option>';
 		} else {
@@ -685,8 +685,8 @@ if (isset($SelectedCategory)) {
 	} //end loop around defined properties for this category
 	echo '<input type="hidden" name="PropID' . $PropertyCounter . '" value="NewProperty" />';
 	echo '<tr>
-			<td><input type="text" name="PropLabel' . $PropertyCounter . '" size="50" minlength="0" maxlength="100" /></td>
-			<td><select minlength="0" name="PropControlType' . $PropertyCounter . '">
+			<td><input type="text" name="PropLabel' . $PropertyCounter . '" size="50" maxlength="100" /></td>
+			<td><select name="PropControlType' . $PropertyCounter . '">
 				<option selected="selected" value="0">' . _('Text Box') . '</option>
 				<option value="1">' . _('Select Box') . '</option>
 				<option value="2">' . _('Check Box') . '</option>

@@ -63,11 +63,11 @@ if (DB_num_rows($ContactResult) > 0) {
 
 echo '<tr>
 		<td>' . _('Email') . ' ' . $_GET['InvOrCredit'] . ' ' . _('number') . ' ' . $_GET['FromTransNo'] . ' ' . _('to') . ':</td>
-		<td><input type="email" name="EmailAddr" autofocus="autofocus" minlength="1" required="required" maxlength="60" size="60" value="' . $EmailAddress . '" /></td>
+		<td><input type="email" name="EmailAddr" autofocus="autofocus" required="required" maxlength="60" size="60" value="' . $EmailAddress . '" /></td>
 	</tr>';
 echo '<tr>
 		<td>' . _('Subject line of email. If blank a default will be used') . ':</td>
-		<td><input type="text" name="EmailSubject" minlength="0" maxlength="60" size="60" value="" /></td>
+		<td><input type="text" name="EmailSubject" maxlength="60" size="60" value="" /></td>
 	</tr>
 </table>';
 

@@ -52,7 +52,7 @@ $LocStockResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 echo '<table class="selection">';
 echo '<tr>
-		<th colspan="3">' . _('Stock Code') . ':<input type="text" name="StockID" size="21" value="' . $StockId . '" required="required" minlength="1" maxlength="20" /><input type="submit" name="Show" value="' . _('Show Re-Order Levels') . '" /></th>
+		<th colspan="3">' . _('Stock Code') . ':<input type="text" name="StockID" size="21" value="' . $StockId . '" required="required" maxlength="20" /><input type="submit" name="Show" value="' . _('Show Re-Order Levels') . '" /></th>
 	</tr>';
 echo '<tr>
 		<th colspan="3"><h3><b>' . $StockId . ' - ' . $MyRow[0] . '</b>  (' . _('In Units of') . ' ' . $MyRow[1] . ')</h3></th>

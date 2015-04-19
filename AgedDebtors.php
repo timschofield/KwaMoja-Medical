@@ -482,15 +482,15 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 			<table class="selection">
 			<tr>
 				<td>' . _('From Customer Code') . ':' . '</td>
-				<td><input tabindex="1" type="text" autofocus="autofocus" required="required" minlength="1" maxlength="6" size="7" name="FromCriteria" value="' . $MyRow['fromcriteria'] . '" /></td>
+				<td><input tabindex="1" type="text" autofocus="autofocus" required="required" maxlength="6" size="7" name="FromCriteria" value="' . $MyRow['fromcriteria'] . '" /></td>
 			</tr>
 			<tr>
 				<td>' . _('To Customer Code') . ':' . '</td>
-				<td><input tabindex="2" type="text" required="required" minlength="1" maxlength="6" size="7" name="ToCriteria" value="' . $MyRow['tocriteria'] . '" /></td>
+				<td><input tabindex="2" type="text" required="required" maxlength="6" size="7" name="ToCriteria" value="' . $MyRow['tocriteria'] . '" /></td>
 			</tr>
 			<tr>
 				<td>' . _('All balances or overdues only') . ':' . '</td>
-				<td><select minlength="0" tabindex="3" name="All_Or_Overdues">
+				<td><select tabindex="3" name="All_Or_Overdues">
 					<option selected="selected" value="All">' . _('All customers with balances') . '</option>
 					<option value="OverduesOnly">' . _('Overdue accounts only') . '</option>
 					<option value="HeldOnly">' . _('Held accounts only') . '</option>
@@ -518,7 +518,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 		}
 		echo '<tr>
 				<td>' . _('Only show customers trading in') . ':' . '</td>
-				<td><select minlength="0" tabindex="5" name="Currency">';
+				<td><select tabindex="5" name="Currency">';
 
 		$SQL = "SELECT currency, currabrev FROM currencies";
 
@@ -534,7 +534,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 			</tr>
 			<tr>
 				<td>' . _('Summary or detailed report') . ':' . '</td>
-				<td><select minlength="0" tabindex="6" name="DetailedReport">
+				<td><select tabindex="6" name="DetailedReport">
 					<option selected="selected" value="No">' . _('Summary Report') . '</option>
 					<option value="Yes">' . _('Detailed Report') . '</option>
 					</select>

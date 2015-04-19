@@ -886,7 +886,7 @@ $AccountsResults = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 echo '<tr>
 		<td>' . _('Bank Account') . ':</td>
-		<td><select autofocus="autofocus" required="required" minlength="1" name="BankAccount" onchange="ReloadForm(UpdateHeader)">';
+		<td><select autofocus="autofocus" required="required" name="BankAccount" onchange="ReloadForm(UpdateHeader)">';
 
 if (DB_num_rows($AccountsResults) == 0) {
 	echo '</select></td>
@@ -912,14 +912,14 @@ if (DB_num_rows($AccountsResults) == 0) {
 
 echo '<tr>
 		<td>' . _('Date Paid') . ':</td>
-		<td><input type="text" name="DatePaid" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" required="required" minlength="1" maxlength="10" size="11" onchange="isDate(this, this.value, ' . "'" . $_SESSION['DefaultDateFormat'] . "'" . ')" value="' . $_SESSION['PaymentDetail' . $Identifier]->DatePaid . '" /></td>
+		<td><input type="text" name="DatePaid" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" required="required" maxlength="10" size="11" onchange="isDate(this, this.value, ' . "'" . $_SESSION['DefaultDateFormat'] . "'" . ')" value="' . $_SESSION['PaymentDetail' . $Identifier]->DatePaid . '" /></td>
 	</tr>';
 
 
 if ($_SESSION['PaymentDetail' . $Identifier]->SupplierID == '') {
 	echo '<tr>
 			<td>' . _('Currency of Payment') . ':</td>
-			<td><select required="required" minlength="1" name="Currency" onchange="ReloadForm(UpdateHeader)">';
+			<td><select required="required" name="Currency" onchange="ReloadForm(UpdateHeader)">';
 	$SQL = "SELECT currency, currabrev, rate FROM currencies";
 	$Result = DB_query($SQL);
 
@@ -970,7 +970,7 @@ if ($_SESSION['PaymentDetail' . $Identifier]->AccountCurrency != $_SESSION['Paym
 	} //$_POST['Currency'] != $_POST['PreviousCurrency'] and isset($SuggestedExRate)
 	echo '<tr>
 			<td>' . _('Payment Exchange Rate') . ':</td>
-			<td><input class="number" type="text" name="ExRate" required="required" minlength="1" maxlength="12" size="14" value="' . $_SESSION['PaymentDetail' . $Identifier]->ExRate . '" /></td>
+			<td><input class="number" type="text" name="ExRate" required="required" maxlength="12" size="14" value="' . $_SESSION['PaymentDetail' . $Identifier]->ExRate . '" /></td>
 			<td>' . $SuggestedExRateText . ' <i>' . _('The exchange rate between the currency of the bank account currency and the currency of the payment') . '. 1 ' . $_SESSION['PaymentDetail' . $Identifier]->AccountCurrency . ' = ? ' . $_SESSION['PaymentDetail' . $Identifier]->Currency . '</i></td>
 		</tr>';
 } //$_SESSION['PaymentDetail' . $Identifier]->AccountCurrency != $_SESSION['PaymentDetail' . $Identifier]->Currency and isset($_SESSION['PaymentDetail' . $Identifier]->AccountCurrency)
@@ -986,14 +986,14 @@ if ($_SESSION['PaymentDetail' . $Identifier]->AccountCurrency != $_SESSION['Comp
 	} //$_POST['FunctionalExRate'] == 1 and isset($SuggestedFunctionalExRate)
 	echo '<tr>
 			<td>' . _('Functional Exchange Rate') . ':</td>
-			<td><input type="text" class="number" name="FunctionalExRate" required="required" minlength="1" maxlength="12" size="14" value="' . $_SESSION['PaymentDetail' . $Identifier]->FunctionalExRate . '" /></td>
+			<td><input type="text" class="number" name="FunctionalExRate" required="required" maxlength="12" size="14" value="' . $_SESSION['PaymentDetail' . $Identifier]->FunctionalExRate . '" /></td>
 			<td>' . ' ' . $SuggestedFunctionalExRateText . ' <i>' . _('The exchange rate between the currency of the business (the functional currency) and the currency of the bank account') . '. 1 ' . $_SESSION['CompanyRecord']['currencydefault'] . ' = ? ' . $_SESSION['PaymentDetail' . $Identifier]->AccountCurrency . '</i></td>
 		</tr>';
 } //$_SESSION['PaymentDetail' . $Identifier]->AccountCurrency != $_SESSION['CompanyRecord']['currencydefault'] and isset($_SESSION['PaymentDetail' . $Identifier]->AccountCurrency)
 echo '<tr>
 		<td>' . _('Payment type') . ':</td>
 		<input type="submit" style="display:none;" name="UpdatePmtType" value="Update" />
-		<td><select minlength="0" name="Paymenttype" onchange="return ReloadForm(UpdatePmtType)">';
+		<td><select name="Paymenttype" onchange="return ReloadForm(UpdatePmtType)">';
 
 include('includes/GetPaymentMethods.php');
 /* The array Payttypes is set up in includes/GetPaymentMethods.php
@@ -1019,7 +1019,7 @@ $MyRow = DB_fetch_array($Result);
 if ($MyRow['usepreprintedstationery'] == 1) {
 	echo '<tr>
 			<td>' . _('Cheque Number') . ':</td>
-			<td><input type="text" name="ChequeNum" minlength="0" maxlength="8" size="10" value="' . $_SESSION['PaymentDetail' . $Identifier]->ChequeNumber . '" /></td><td>' . _('(if using pre-printed stationery)') . '</td>
+			<td><input type="text" name="ChequeNum" maxlength="8" size="10" value="' . $_SESSION['PaymentDetail' . $Identifier]->ChequeNumber . '" /></td><td>' . _('(if using pre-printed stationery)') . '</td>
 		</tr>';
 }
 
@@ -1055,7 +1055,7 @@ if ($_SESSION['CompanyRecord']['gllink_creditors'] == 1 and $_SESSION['PaymentDe
 	//Select the Tag
 	echo '<tr>
 			<td>' . _('Select Tag') . ':</td>
-			<td><select minlength="0" name="Tag">';
+			<td><select name="Tag">';
 
 	$SQL = "SELECT tagref,
 				tagdescription
@@ -1080,19 +1080,19 @@ if ($_SESSION['CompanyRecord']['gllink_creditors'] == 1 and $_SESSION['PaymentDe
 	if (isset($_POST['GLManualCode'])) {
 		echo '<tr>
 				<td>' . _('Enter GL Account Manually') . ':</td>
-				<td><input type="text" class="number" name="GLManualCode" minlength="0" maxlength="12" size="12" onchange="return inArray(this, GLCode.options,' . "'" . 'The account code ' . "'" . '+ this.value+ ' . "'" . ' doesnt exist' . "'" . ')"' . ' value="' . $_POST['GLManualCode'] . '"   /></td>
+				<td><input type="text" class="number" name="GLManualCode" maxlength="12" size="12" onchange="return inArray(this, GLCode.options,' . "'" . 'The account code ' . "'" . '+ this.value+ ' . "'" . ' doesnt exist' . "'" . ')"' . ' value="' . $_POST['GLManualCode'] . '"   /></td>
 			</tr>';
 	} //isset($_POST['GLManualCode'])
 	else {
 		echo '<tr>
 				<td>' . _('Enter GL Account Manually') . ':</td>
-				<td><input type="text" class="number" name="GLManualCode" minlength="0" maxlength="12" size="12" onchange="return inArray(this, GLCode.options,' . "'" . 'The account code ' . "'" . '+ this.value+ ' . "'" . ' doesnt exist' . "'" . ')" /></td>
+				<td><input type="text" class="number" name="GLManualCode" maxlength="12" size="12" onchange="return inArray(this, GLCode.options,' . "'" . 'The account code ' . "'" . '+ this.value+ ' . "'" . ' doesnt exist' . "'" . ')" /></td>
 			</tr>';
 	}
 
 	echo '<tr>
 			<td>' . _('Select GL Group') . ':</td>
-			<td><select minlength="0" name="GLGroup" onchange="return ReloadForm(UpdateCodes)">';
+			<td><select name="GLGroup" onchange="return ReloadForm(UpdateCodes)">';
 
 	$SQL = "SELECT groupname
 			FROM accountgroups
@@ -1134,7 +1134,7 @@ if ($_SESSION['CompanyRecord']['gllink_creditors'] == 1 and $_SESSION['PaymentDe
 
 	echo '<tr>
 			<td>' . _('Select GL Account') . ':</td>
-			<td><select minlength="0" name="GLCode" onchange="return assignComboToInput(this,' . 'GLManualCode' . ')">';
+			<td><select name="GLCode" onchange="return assignComboToInput(this,' . 'GLManualCode' . ')">';
 
 	$Result = DB_query($SQL);
 	if (DB_num_rows($Result) == 0) {
@@ -1156,31 +1156,31 @@ if ($_SESSION['CompanyRecord']['gllink_creditors'] == 1 and $_SESSION['PaymentDe
 
 	echo '<tr>
 			<td>' . _('Cheque/Voucher Number') . '</td>
-			<td><input type="text" name="Cheque" minlength="0" maxlength="12" size="12" /></td>
+			<td><input type="text" name="Cheque" maxlength="12" size="12" /></td>
 		</tr>';
 
 	if (isset($_POST['GLNarrative'])) { // General Ledger Payment (Different than Bank Account) info to be inserted on gltrans.narrative, varchar(200).
 		echo '<tr>
 				<td>' . _('GL Narrative') . ':</td>
-				<td><input type="text" name="GLNarrative" minlength="0" maxlength="50" size="52" value="' . stripslashes($_POST['GLNarrative']) . '" /></td>
+				<td><input type="text" name="GLNarrative" maxlength="50" size="52" value="' . stripslashes($_POST['GLNarrative']) . '" /></td>
 			</tr>';
 	} //isset($_POST['GLNarrative'])
 	else {
 		echo '<tr>
 				<td>' . _('GL Narrative') . ':</td>
-				<td><input type="text" name="GLNarrative" minlength="0" maxlength="50" size="52" /></td>
+				<td><input type="text" name="GLNarrative" maxlength="50" size="52" /></td>
 			</tr>';
 	}
 
 	if (isset($_POST['GLAmount'])) {
 		echo '<tr>
 				<td>' . _('Amount') . ' (' . $_SESSION['PaymentDetail' . $Identifier]->Currency . '):</td>
-				<td><input type="text" name="GLAmount" minlength="0" maxlength="12" size="12" class="number" value="' . $_POST['GLAmount'] . '" /></td>
+				<td><input type="text" name="GLAmount" maxlength="12" size="12" class="number" value="' . $_POST['GLAmount'] . '" /></td>
 			</tr>';
 	} //isset($_POST['GLAmount'])
 	else {
 		echo '<tr><td>' . _('Amount') . ' (' . $_SESSION['PaymentDetail' . $Identifier]->Currency . '):</td>
-				<td><input type="text" name="GLAmount" minlength="0" maxlength="12" size="12" class="number" /></td>
+				<td><input type="text" name="GLAmount" maxlength="12" size="12" class="number" /></td>
 			</tr>';
 	}
 
@@ -1273,7 +1273,7 @@ if ($_SESSION['CompanyRecord']['gllink_creditors'] == 1 and $_SESSION['PaymentDe
 	echo '<table class="selection">
 		<tr>
 			<td>' . _('Amount of Payment') . ' ' . $_SESSION['PaymentDetail' . $Identifier]->Currency . ':</td>
-			<td><input class="number" type="text" id="Amount" name="Amount" minlength="0" maxlength="12" size="13" value="' . locale_number_format($_SESSION['PaymentDetail' . $Identifier]->Amount, $_SESSION['PaymentDetail' . $Identifier]->CurrDecimalPlaces) . '" /></td>
+			<td><input class="number" type="text" id="Amount" name="Amount" maxlength="12" size="13" value="' . locale_number_format($_SESSION['PaymentDetail' . $Identifier]->Amount, $_SESSION['PaymentDetail' . $Identifier]->CurrDecimalPlaces) . '" /></td>
 		</tr>';
 
 	if (isset($_SESSION['PaymentDetail' . $Identifier]->SupplierID)) {
@@ -1281,7 +1281,7 @@ if ($_SESSION['CompanyRecord']['gllink_creditors'] == 1 and $_SESSION['PaymentDe
 		echo '<tr>';
 		echo '<td><input type="hidden" name="SuppName" value="' . $_SESSION['PaymentDetail' . $Identifier]->SuppName . '" />
 				' . _('Amount of Discount') . ':</td>
-				<td><input class="number" type="text" name="Discount" minlength="0" maxlength="12" size="13" value="' . $_SESSION['PaymentDetail' . $Identifier]->Discount . '" /></td>
+				<td><input class="number" type="text" name="Discount" maxlength="12" size="13" value="' . $_SESSION['PaymentDetail' . $Identifier]->Discount . '" /></td>
 			</tr>';
 	} //isset($_SESSION['PaymentDetail' . $Identifier]->SupplierID)
 	else {
@@ -1289,7 +1289,7 @@ if ($_SESSION['CompanyRecord']['gllink_creditors'] == 1 and $_SESSION['PaymentDe
 	}
 	echo '<tr>
 			<td>' . _('Cheque/Voucher Number') . '</td>
-			<td><input type="text" name="Cheque" minlength="0" maxlength="12" size="12" /></td>
+			<td><input type="text" name="Cheque" maxlength="12" size="12" /></td>
 		</tr>';
 	echo '</table><br />';
 	echo '<div class="centre"><input type="submit" name="CommitBatch" value="' . _('Accept and Process Payment') . '" /></div>';

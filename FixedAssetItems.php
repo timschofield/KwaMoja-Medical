@@ -466,7 +466,7 @@ if (isset($_POST['Description'])) {
 
 echo '<tr>
 		<td>' . _('Asset Description') . ' (' . _('short') . '):</td>
-		<td><input type="text" name="Description" size="52" required="required" minlength="1" maxlength="50" value="' . $Description . '" /></td>
+		<td><input type="text" name="Description" size="52" required="required" maxlength="50" value="' . $Description . '" /></td>
 	</tr>';
 
 if (isset($_POST['LongDescription'])) {
@@ -506,7 +506,7 @@ if (!isset($New)) { //ie not new at all!
 
 echo '<tr>
 		<td>' . _('Asset Category') . ':</td>
-		<td><select minlength="0" name="AssetCategoryID">';
+		<td><select name="AssetCategoryID">';
 
 $SQL = "SELECT categoryid, categorydescription FROM fixedassetcategories";
 $ErrMsg = _('The asset categories could not be retrieved because');
@@ -540,7 +540,7 @@ $Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 echo '<tr>
 		<td>' . _('Asset Location') . ':</td>
-		<td><select minlength="0" name="AssetLocation">';
+		<td><select name="AssetLocation">';
 
 while ($MyRow = DB_fetch_array($Result)) {
 	if ($_POST['AssetLocation'] == $MyRow['locationid']) {
@@ -554,15 +554,15 @@ echo '</select>
 	</tr>
 	<tr>
 		<td>' . _('Bar Code') . ':</td>
-		<td><input type="text" name="BarCode" size="22" minlength="0" maxlength="20" value="' . $_POST['BarCode'] . '" /></td>
+		<td><input type="text" name="BarCode" size="22" maxlength="20" value="' . $_POST['BarCode'] . '" /></td>
 	</tr>
 	<tr>
 		<td>' . _('Serial Number') . ':</td>
-		<td><input type="text" name="SerialNo" size="32" minlength="0" maxlength="30" value="' . $_POST['SerialNo'] . '" /></td>
+		<td><input type="text" name="SerialNo" size="32" maxlength="30" value="' . $_POST['SerialNo'] . '" /></td>
 	</tr>
 	<tr>
 		<td>' . _('Depreciation Type') . ':</td>
-		<td><select minlength="0" name="DepnType">';
+		<td><select name="DepnType">';
 
 if (!isset($_POST['DepnType'])) {
 	$_POST['DepnType'] = 0; //0 = Straight line - 1 = Diminishing Value
@@ -579,7 +579,7 @@ echo '</select></td>
 	</tr>
 	<tr>
 		<td>' . _('Depreciation Rate') . ':</td>
-		<td><input type="text" class="integer" name="DepnRate" size="4" required="required" minlength="1" maxlength="4" value="' . $_POST['DepnRate'] . '" />%</td>
+		<td><input type="text" class="integer" name="DepnRate" size="4" required="required" maxlength="4" value="' . $_POST['DepnRate'] . '" />%</td>
 	</tr>
 	</table>';
 

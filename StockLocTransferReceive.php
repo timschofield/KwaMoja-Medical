@@ -511,7 +511,7 @@ if (isset($_SESSION['Transfer' . $Identifier])) {
 					<a href="' . $RootPath . '/StockTransferControlled.php?identifier=' . urlencode($Identifier) . '&TransferItem=' . urlencode($i) . '" />' . $Qty . '</a>
 				</td>';
 		} else {
-			echo '<td><input type="text" class="number" name="Qty' . $i . '" required="required" minlength="1" maxlength="10" size="auto" value="' . locale_number_format($Qty, $TrfLine->DecimalPlaces) . '" /></td>';
+			echo '<td><input type="text" class="number" name="Qty' . $i . '" required="required" maxlength="10" size="auto" value="' . locale_number_format($Qty, $TrfLine->DecimalPlaces) . '" /></td>';
 		}
 
 		echo '<td>' . $TrfLine->PartUnit . '</td>';
@@ -564,7 +564,7 @@ if (isset($_SESSION['Transfer' . $Identifier])) {
 	echo '<tr>
 			<td>' . _('Select Location Receiving Into') . ':</td>
 			<td>';
-	echo '<select required="required" minlength="1" name="RecLocation" onchange="ReloadForm(form1.RefreshTransferList)">';
+	echo '<select required="required" name="RecLocation" onchange="ReloadForm(form1.RefreshTransferList)">';
 	if (!isset($_POST['RecLocation'])) {
 		$_POST['RecLocation'] = $_SESSION['UserStockLocation'];
 	}

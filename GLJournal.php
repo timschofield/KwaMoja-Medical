@@ -248,13 +248,13 @@ echo '<table>
 							<td>' . _('Date to Process Journal') . ':</td>';
 
 if (!isset($_GET['NewJournal']) or $_GET['NewJournal'] == '') {
-	echo '<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="JournalProcessDate" required="required" minlength="1" maxlength="10" size="11" value="' . $_SESSION['JournalDetail']->JnlDate . '" /></td>';
+	echo '<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="JournalProcessDate" required="required" maxlength="10" size="11" value="' . $_SESSION['JournalDetail']->JnlDate . '" /></td>';
 } else {
-	echo '<td><input type="text" autofocus="autofocus" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="JournalProcessDate" required="required" minlength="1" maxlength="10" size="11" value="' . $_SESSION['JournalDetail']->JnlDate . '" /></td>';
+	echo '<td><input type="text" autofocus="autofocus" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="JournalProcessDate" required="required" maxlength="10" size="11" value="' . $_SESSION['JournalDetail']->JnlDate . '" /></td>';
 }
 
 echo '<td>' . _('Type') . ':</td>
-		<td><select minlength="0" name="JournalType">';
+		<td><select name="JournalType">';
 
 if (isset($_POST['JournalType']) and $_POST['JournalType'] == 'Reversing') {
 	echo '<option selected="selected" value = "Reversing">' . _('Reversing') . '</option>';
@@ -289,7 +289,7 @@ echo '<tr>
 
 //Select the tag
 echo '<tr>
-		<td><select minlength="0" name="tag">';
+		<td><select name="tag">';
 
 $SQL = "SELECT tagref,
 				tagdescription
@@ -313,9 +313,9 @@ if (!isset($_POST['GLManualCode'])) {
 }
 
 if (!isset($_GET['NewJournal']) or $_GET['NewJournal'] == '') {
-	echo '<td><input type="text" autofocus="autofocus" name="GLManualCode" minlength="0" maxlength="12" size="12" onchange="inArray(this.value, GLCode.options,' . "'" . 'The account code ' . "'" . '+ this.value+ ' . "'" . ' doesnt exist' . "'" . ')" value="' . $_POST['GLManualCode'] . '"  /></td>';
+	echo '<td><input type="text" autofocus="autofocus" name="GLManualCode" maxlength="12" size="12" onchange="inArray(this.value, GLCode.options,' . "'" . 'The account code ' . "'" . '+ this.value+ ' . "'" . ' doesnt exist' . "'" . ')" value="' . $_POST['GLManualCode'] . '"  /></td>';
 } else {
-	echo '<td><input type="text" name="GLManualCode" minlength="0" maxlength="12" size="12" onchange="inArray(this.value, GLCode.options,' . "'" . 'The account code ' . "'" . '+ this.value+ ' . "'" . ' doesnt exist' . "'" . ')" value="' . $_POST['GLManualCode'] . '"  /></td>';
+	echo '<td><input type="text" name="GLManualCode" maxlength="12" size="12" onchange="inArray(this.value, GLCode.options,' . "'" . 'The account code ' . "'" . '+ this.value+ ' . "'" . ' doesnt exist' . "'" . ')" value="' . $_POST['GLManualCode'] . '"  /></td>';
 }
 
 $SQL = "SELECT accountcode,
@@ -324,7 +324,7 @@ $SQL = "SELECT accountcode,
 		ORDER BY accountcode";
 
 $Result = DB_query($SQL);
-echo '<td><select minlength="0" name="GLCode" onchange="return assignComboToInput(this,' . 'GLManualCode' . ')">';
+echo '<td><select name="GLCode" onchange="return assignComboToInput(this,' . 'GLManualCode' . ')">';
 echo '<option value="">' . _('Select a general ledger account code') . '</option>';
 while ($MyRow = DB_fetch_array($Result)) {
 	if (isset($_POST['GLCode']) and $_POST['GLCode'] == $MyRow['accountcode']) {
@@ -348,11 +348,11 @@ if (!isset($_POST['Debit'])) {
 echo '</tr>
 	<tr>
 		<th>' . _('Debit') . '</th>
-		<td><input type="text" class="number" name="Debit" onchange="eitherOr(this, ' . 'Credit' . ')" minlength="0" maxlength="12" size="10" value="' . locale_number_format($_POST['Debit'], $_SESSION['CompanyRecord']['decimalplaces']) . '" /></td>
+		<td><input type="text" class="number" name="Debit" onchange="eitherOr(this, ' . 'Credit' . ')" maxlength="12" size="10" value="' . locale_number_format($_POST['Debit'], $_SESSION['CompanyRecord']['decimalplaces']) . '" /></td>
 	</tr>
 	<tr>
 		<th>' . _('Credit') . '</th>
-		<td><input type="text" class="number" name="Credit" onchange="eitherOr(this, ' . 'Debit' . ')" minlength="0" maxlength="12" size="10" value="' . locale_number_format($_POST['Credit'], $_SESSION['CompanyRecord']['decimalplaces']) . '" /></td>
+		<td><input type="text" class="number" name="Credit" onchange="eitherOr(this, ' . 'Debit' . ')" maxlength="12" size="10" value="' . locale_number_format($_POST['Credit'], $_SESSION['CompanyRecord']['decimalplaces']) . '" /></td>
 	</tr>
 	<tr>
 		<td></td>
@@ -362,7 +362,7 @@ echo '</tr>
 	<tr>
 		<th></th>
 		<th>' . _('GL Narrative') . '</th>
-		<td><input type="text" name="GLNarrative" minlength="0" maxlength="100" size="100" value="' . $_POST['GLNarrative'] . '" /></td>
+		<td><input type="text" name="GLNarrative" maxlength="100" size="100" value="' . $_POST['GLNarrative'] . '" /></td>
 	</tr>
 	</table>';
 /*Close the main table */

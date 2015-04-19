@@ -493,10 +493,10 @@ if (!isset($StockId)) {
 		echo '<table class="selection">
 				<tr>
 					<td>', _('Order number'), ': </td>
-					<td><input type="text" class="integer" name="OrderNumber" minlength="0" maxlength="8" size="9" /></td>
+					<td><input type="text" class="integer" name="OrderNumber" maxlength="8" size="9" /></td>
 					<td>', _('From Stock Location'), ':</td>
 					<td>
-						<select minlength="0" name="StockLocation"> ';
+						<select name="StockLocation"> ';
 
 		$SQL = "SELECT locationname,
 						locations.loccode
@@ -524,7 +524,7 @@ if (!isset($StockId)) {
 		echo '</select>
 				</td>
 				<td>
-					<select minlength="0" name="Quotations">';
+					<select name="Quotations">';
 
 		if (isset($_GET['Quotations']) and $_GET['Quotations'] == 'Quotes_Only') {
 			$_POST['Quotations'] = 'Quotes_Only';
@@ -565,7 +565,7 @@ if (!isset($StockId)) {
 			</tr>
 			<tr>
 				<td>', _('Select a stock category'), ':
-						<select minlength="0" name="StockCat">';
+						<select name="StockCat">';
 
 	while ($MyRow1 = DB_fetch_array($Result1)) {
 		if (isset($_POST['StockCat']) and $_POST['StockCat'] == $MyRow1['categoryid']) {
@@ -577,11 +577,11 @@ if (!isset($StockId)) {
 
 	echo '</select></td>
 			<td>', _('Enter text extract(s) in the description'), ':</td>
-			<td><input type="text" name="Keywords" size="20" minlength="0" maxlength="25" value="', $_POST['Keywords'], '" /></td>
+			<td><input type="text" name="Keywords" size="20" maxlength="25" value="', $_POST['Keywords'], '" /></td>
 		</tr>
       	<tr>
       		<td colspan="2" class="number"><b>', _('OR'), ' </b>', _('Enter extract of the Stock Code'), ':</td>
-      		<td><input type="text" name="StockCode" size="15" minlength="0" maxlength="18" value="', $_POST['StockCode'], '" /></td>
+      		<td><input type="text" name="StockCode" size="15" maxlength="18" value="', $_POST['StockCode'], '" /></td>
       	</tr>
       </table>';
 	echo '<div class="centre">

@@ -28,17 +28,17 @@ if (!isset($_POST['FromDate'])) {
 	echo '<table class="selection">';
 	echo '<tr>
 				<td>' . _('Enter the date from which the transactions are to be listed') . ':</td>
-				<td><input type="text" name="FromDate" autofocus="autofocus" required="required" minlength="1" maxlength="10" size="10" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" value="' . Date($_SESSION['DefaultDateFormat']) . '" /></td>
+				<td><input type="text" name="FromDate" autofocus="autofocus" required="required" maxlength="10" size="10" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" value="' . Date($_SESSION['DefaultDateFormat']) . '" /></td>
 			</tr>';
 	echo '<tr>
 				<td>' . _('Enter the date to which the transactions are to be listed') . ':</td>
-				<td><input type="text" name="ToDate" required="required" minlength="1" maxlength="10" size="10" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" value="' . Date($_SESSION['DefaultDateFormat']) . '" /></td>
+				<td><input type="text" name="ToDate" required="required" maxlength="10" size="10" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" value="' . Date($_SESSION['DefaultDateFormat']) . '" /></td>
 			</tr>';
 
 	echo '<tr>
 			<td>' . _('Transaction type') . '</td>
 			<td>
-				<select required="required" minlength="1" name="TransType">
+				<select required="required" name="TransType">
 					<option value="10">' . _('Sales Invoice') . '</option>
 					<option value="11">' . _('Sales Credit Note') . '</option>
 					<option value="16">' . _('Location Transfer') . '</option>
@@ -55,7 +55,7 @@ if (!isset($_POST['FromDate'])) {
 
 	echo '<tr>
 			<td>' . _('For Stock Location') . ':</td>
-			<td><select required="required" minlength="1" name="StockLocation">';
+			<td><select required="required" name="StockLocation">';
 	$SQL = "SELECT locationname,
 					locations.loccode
 				FROM locations

@@ -94,7 +94,7 @@ $Result = DB_query($SQL);
 
 echo '<tr><td>' . _('Customer Price List') . ' (' . _('Sales Type') . '):</td><td>';
 
-echo '<select minlength="0" tabindex="1" name="SalesType">';
+echo '<select tabindex="1" name="SalesType">';
 
 while ($MyRow = DB_fetch_array($Result)) {
 	if (isset($_POST['SalesType']) and $MyRow['typeabbrev'] == $_POST['SalesType']) {
@@ -112,7 +112,7 @@ $Result = DB_query($SQL);
 if (DB_num_rows($Result) > 0) {
 	echo '<tr>
 			<td>' . _('Discount Category Code') . ': </td>
-			<td><select minlength="0" name="DiscountCategory">';
+			<td><select name="DiscountCategory">';
 
 	while ($MyRow = DB_fetch_array($Result)) {
 		if ($MyRow['discountcategory'] == $_POST['DiscCat']) {
@@ -128,11 +128,11 @@ if (DB_num_rows($Result) > 0) {
 
 echo '<tr>
 		<td>' . _('Quantity Break') . '</td>
-		<td><input class="number" tabindex="3" type="text" name="QuantityBreak" size="10" required="required" minlength="1" maxlength="10" /></td>
+		<td><input class="number" tabindex="3" type="text" name="QuantityBreak" size="10" required="required" maxlength="10" /></td>
 	</tr>
 	<tr>
 		<td>' . _('Discount Rate') . ' (%):</td>
-		<td><input class="number" tabindex="4" type="text" name="DiscountRate" size="5" required="required" minlength="1" maxlength="5" /></td>
+		<td><input class="number" tabindex="4" type="text" name="DiscountRate" size="5" required="required" maxlength="5" /></td>
 	</tr>
 	</table>
 	<br />

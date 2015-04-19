@@ -223,7 +223,7 @@ if (!isset($_GET['delete'])) {
 		echo '<table class="selection">
 				<tr>
 					<td>' . _('Contact Name') . ':</td>
-					<td><input type="text" name="Contact" size="41" required="required" minlength="1" maxlength="40" value="' . $_POST['Contact'] . '" /></td>
+					<td><input type="text" name="Contact" size="41" required="required" maxlength="40" value="' . $_POST['Contact'] . '" /></td>
 				</tr>';
 	}
 	if (!isset($_POST['Position'])) {
@@ -245,23 +245,23 @@ if (!isset($_GET['delete'])) {
 	echo '<tr>
 			<td><input type="hidden" name="SupplierID" value="' . stripslashes($SupplierID) . '" />
 			' . _('Position') . ':</td>
-			<td><input type="text" name="Position" size="31" minlength="0" maxlength="30" value="' . $_POST['Position'] . '" /></td>
+			<td><input type="text" name="Position" size="31" maxlength="30" value="' . $_POST['Position'] . '" /></td>
 		</tr>
 		<tr>
 			<td>' . _('Telephone No') . ':</td>
-			<td><input type="tel" name="Tel" size="31" minlength="0" maxlength="30" value="' . $_POST['Tel'] . '" /></td>
+			<td><input type="tel" name="Tel" size="31" maxlength="30" value="' . $_POST['Tel'] . '" /></td>
 		</tr>
 		<tr>
 			<td>' . _('Facsimile No') . ':</td>
-			<td><input type="tel" name="Fax" size="31" minlength="0" maxlength="30" value="' . $_POST['Fax'] . '" /></td>
+			<td><input type="tel" name="Fax" size="31" maxlength="30" value="' . $_POST['Fax'] . '" /></td>
 		</tr>
 		<tr>
 			<td>' . _('Mobile No') . ':</td>
-			<td><input type="tel" name="Mobile" size="31" minlength="0" maxlength="30" value="' . $_POST['Mobile'] . '" /></td>
+			<td><input type="tel" name="Mobile" size="31" maxlength="30" value="' . $_POST['Mobile'] . '" /></td>
 		</tr>
 		<tr>
 			<td><a href="Mailto:' . $_POST['Email'] . '">' . _('Email') . ':</a></td>
-			<td><input type="email" name="Email" size="51" minlength="0" maxlength="50" value="' . $_POST['Email'] . '" /></td>
+			<td><input type="email" name="Email" size="51" maxlength="50" value="' . $_POST['Email'] . '" /></td>
 		</tr>
 		</table>
 		<br />';

@@ -620,7 +620,7 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 		echo '<tr>
 					<td>' . _('Component code') . ':</td>
 					<td>';
-		echo '<select required="required" autofocus="autofocus" minlength="1" tabindex="1" name="Component">';
+		echo '<select required="required" autofocus="autofocus" tabindex="1" name="Component">';
 
 		if ($ParentMBflag == 'A') {
 			/*Its an assembly */
@@ -665,7 +665,7 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 
 	echo '<tr>
 				<td>' . _('Location') . ': </td>
-				<td><select required="required" minlength="1" tabindex="2" name="LocCode">';
+				<td><select required="required" tabindex="2" name="LocCode">';
 
 	DB_free_result($Result);
 
@@ -713,7 +713,7 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 		exit;
 	}
 
-	echo '<select required="required" minlength="1" tabindex="3" name="WorkCentreAdded">';
+	echo '<select required="required" tabindex="3" name="WorkCentreAdded">';
 
 	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['WorkCentreAdded']) and $MyRow['code'] == $_POST['WorkCentreAdded']) {
@@ -730,7 +730,7 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 				</tr>
 				<tr>
 					<td>' . _('Quantity') . ': </td>
-					<td><input tabindex="4" type="text" class="number" name="Quantity" size="10" required="required" minlength="1" maxlength="8" value="';
+					<td><input tabindex="4" type="text" class="number" name="Quantity" size="10" required="required" maxlength="8" value="';
 	if (isset($_POST['Quantity'])) {
 		echo $_POST['Quantity'];
 	} else {
@@ -749,18 +749,18 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 
 	echo '<tr>
 				<td>' . _('Effective After') . ' (' . $_SESSION['DefaultDateFormat'] . '):</td>
-				<td><input tabindex="5" type="text" name="EffectiveAfter" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" size="11" required="required" minlength="1" maxlength="10" value="' . $_POST['EffectiveAfter'] . '" /></td>
+				<td><input tabindex="5" type="text" name="EffectiveAfter" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" size="11" required="required" maxlength="10" value="' . $_POST['EffectiveAfter'] . '" /></td>
 			</tr>
 			<tr>
 				<td>' . _('Effective To') . ' (' . $_SESSION['DefaultDateFormat'] . '):</td>
-				<td><input tabindex="6" type="text" name="EffectiveTo" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" size="11" required="required" minlength="1" maxlength="10" value="' . $_POST['EffectiveTo'] . '" /></td>
+				<td><input tabindex="6" type="text" name="EffectiveTo" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" size="11" required="required" maxlength="10" value="' . $_POST['EffectiveTo'] . '" /></td>
 			</tr>';
 
 	if ($ParentMBflag == 'M' or $ParentMBflag == 'G') {
 		echo '<tr>
 					<td>' . _('Auto Issue this Component to Work Orders') . ':</td>
 					<td>
-					<select required="required" minlength="1" tabindex="7" name="AutoIssue">';
+					<select required="required" tabindex="7" name="AutoIssue">';
 
 		if (!isset($_POST['AutoIssue'])) {
 			$_POST['AutoIssue'] = $_SESSION['AutoIssue'];
@@ -858,10 +858,10 @@ if (!isset($SelectedParent)) {
 		<table class="selection" cellpadding="3">
 			<tr>
 				<td>' . _('Enter text extracts in the') . ' <b>' . _('description') . '</b>:</td>
-				<td><input tabindex="1" type="text" name="Keywords" size="20" minlength="0" maxlength="25" /></td>
+				<td><input tabindex="1" type="text" name="Keywords" size="20" maxlength="25" /></td>
 				<td><b>' . _('OR') . '</b></td>
 				<td>' . _('Enter extract of the') . ' <b>' . _('Stock Code') . '</b>:</td>
-				<td><input tabindex="2" type="text" autofocus="autofocus" name="StockCode" size="15" minlength="0" maxlength="18" /></td>
+				<td><input tabindex="2" type="text" autofocus="autofocus" name="StockCode" size="15" maxlength="18" /></td>
 			</tr>
 		</table>';
 	echo '<div class="centre">

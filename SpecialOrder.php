@@ -581,7 +581,7 @@ if (isset($_POST['Commit'])) {
 
 /*Show the header information for modification */
 
-echo '<table><tr><td>' . _('Receive Purchase Into and Sell From') . ': <select minlength="0" name="StkLocation">';
+echo '<table><tr><td>' . _('Receive Purchase Into and Sell From') . ': <select name="StkLocation">';
 
 $SQL = "SELECT locations.loccode,
 				locationname
@@ -606,9 +606,9 @@ while ($LocnRow = DB_fetch_array($LocnResult)) {
 }
 echo '</select></td>';
 
-echo '<td>' . _('Initiated By') . ': <input type="text" name="Initiator" size="11" minlength="0" maxlength="10" value="' . $_SESSION['SPL' . $Identifier]->Initiator . '" /></td>
-	<td>' . _('Special Ref') . ': <input type="text" name="QuotationRef" size="16" minlength="0" maxlength="15" value="' . $_SESSION['SPL' . $Identifier]->QuotationRef . '" /></td>
-	<td>' . _('Customer Ref') . ': <input type="text" name="CustRef" size="11" minlength="0" maxlength="10" value="' . $_SESSION['SPL' . $Identifier]->CustRef . '" /></td>
+echo '<td>' . _('Initiated By') . ': <input type="text" name="Initiator" size="11" maxlength="10" value="' . $_SESSION['SPL' . $Identifier]->Initiator . '" /></td>
+	<td>' . _('Special Ref') . ': <input type="text" name="QuotationRef" size="16" maxlength="15" value="' . $_SESSION['SPL' . $Identifier]->QuotationRef . '" /></td>
+	<td>' . _('Customer Ref') . ': <input type="text" name="CustRef" size="11" maxlength="10" value="' . $_SESSION['SPL' . $Identifier]->CustRef . '" /></td>
 	</tr>
 	<tr>
 		<td valign="top" colspan="2">' . _('Comments') . ': <textarea name="Comments" cols="70" rows="2">' . $_SESSION['SPL' . $Identifier]->Comments . '</textarea></td>
@@ -692,12 +692,12 @@ if (!isset($_POST['ItemDescription'])) {
 echo '<table>';
 echo '<tr>
 		<td>' . _('Ordered item Description') . ':</td>
-		<td><input type="text" name="ItemDescription" size="40" required="required" minlength="1" maxlength="40" value="' . $_POST['ItemDescription'] . '" /></td>
+		<td><input type="text" name="ItemDescription" size="40" required="required" maxlength="40" value="' . $_POST['ItemDescription'] . '" /></td>
 	</tr>';
 
 echo '<tr>
 		<td>' . _('Category') . ':</td>
-		<td><select required="required" minlength="1" name="StkCat">';
+		<td><select required="required" name="StkCat">';
 
 $SQL = "SELECT categoryid, categorydescription FROM stockcategory";
 $ErrMsg = _('The stock categories could not be retrieved because');
@@ -719,7 +719,7 @@ $_POST['Qty'] = 1;
 
 echo '<tr>
 		<td>' . _('Order Quantity') . ':</td>
-		<td><input type="text" class="number" size="7" required="required" minlength="1" maxlength="6" name="Qty" value="' . locale_number_format($_POST['Qty'], 'Variable') . '" /></td>
+		<td><input type="text" class="number" size="7" required="required" maxlength="6" name="Qty" value="' . locale_number_format($_POST['Qty'], 'Variable') . '" /></td>
 	</tr>';
 
 if (!isset($_POST['Cost'])) {
@@ -727,7 +727,7 @@ if (!isset($_POST['Cost'])) {
 }
 echo '<tr>
 		<td>' . _('Unit Cost') . ':</td>
-		<td><input type="text" class="number" size="15" required="required" minlength="1" maxlength="14" name="Cost" value="' . locale_number_format($_POST['Cost'], $_SESSION['SPL' . $Identifier]->SuppCurrDecimalPlaces) . '" /></td>
+		<td><input type="text" class="number" size="15" required="required" maxlength="14" name="Cost" value="' . locale_number_format($_POST['Cost'], $_SESSION['SPL' . $Identifier]->SuppCurrDecimalPlaces) . '" /></td>
 	</tr>';
 
 if (!isset($_POST['Price'])) {
@@ -735,7 +735,7 @@ if (!isset($_POST['Price'])) {
 }
 echo '<tr>
 		<td>' . _('Unit Price') . ':</td>
-		<td><input type="text" class="number" size="15" required="required" minlength="1" maxlength="14" name="Price" value="' . locale_number_format($_POST['Price'], $_SESSION['SPL' . $Identifier]->CustCurrDecimalPlaces) . '" /></td>
+		<td><input type="text" class="number" size="15" required="required" maxlength="14" name="Price" value="' . locale_number_format($_POST['Price'], $_SESSION['SPL' . $Identifier]->CustCurrDecimalPlaces) . '" /></td>
 	</tr>';
 
 /*Default the required delivery date to tomorrow as a starting point */
@@ -743,7 +743,7 @@ $_POST['ReqDelDate'] = Date($_SESSION['DefaultDateFormat'], Mktime(0, 0, 0, Date
 
 echo '<tr>
 		<td>' . _('Required Delivery Date') . ':</td>
-		<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" size="12" minlength="0" maxlength="11" name="ReqDelDate" value="' . $_POST['ReqDelDate'] . '" /></td>
+		<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" size="12" maxlength="11" name="ReqDelDate" value="' . $_POST['ReqDelDate'] . '" /></td>
 	</tr>';
 
 echo '</table>';

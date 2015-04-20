@@ -43,7 +43,7 @@ if (isset($_POST['Submit'])) {
 	}
 	prnMsg(_('The ranking method has been successfully saved to the database'), 'success');
 	echo '<div class="centre">
-			<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('View all the ranking methods') . '</a>
+			<a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '">', _('View all the ranking methods'), '</a>
 		</div>';
 	include('includes/footer.inc');
 	exit;
@@ -52,37 +52,37 @@ if (isset($_POST['Submit'])) {
 					methodname
 				FROM abcmethods";
 	$Result = DB_query($SQL);
-	echo '<table class="selection" summary="' . _('List of ABC Ranking Methods') . '">
+	echo '<table class="selection" summary="', _('List of ABC Ranking Methods'), '">
 			<tr>
 				<th colspan="10">
-					<h3>' . _('List of ABC Ranking Methods') . '
-						<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/printer.png" class="PrintIcon" title="' . _('Print') . '" alt="' . _('Print') . '" onclick="window.print();" />
+					<h3>', _('List of ABC Ranking Methods'), '
+						<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/printer.png" class="PrintIcon" title="', _('Print'), '" alt="', _('Print'), '" onclick="window.print();" />
 					</h3>
 				</th>
 			</tr>
 			<tr>
-				<th>' . _('ID') . '</th>
-				<th>' . _('Method name') . '</th>
+				<th>', _('ID'), '</th>
+				<th>', _('Method name'), '</th>
 			</tr>';
 
 	while ($MyRow = DB_fetch_array($Result)) {
 		echo '<tr class="OddTableRows">
-				<td>' . $MyRow['methodid'] . '</td>
-				<td>' . $MyRow['methodname'] . '</td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedMethodID=' . $MyRow['methodid'] . '">' . _('Edit') . '</a></td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedMethodID=' . $MyRow['methodid'] . '&amp;Delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this ranking method?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+				<td>', $MyRow['methodid'], '</td>
+				<td>', $MyRow['methodname'], '</td>
+				<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '?SelectedMethodID=', $MyRow['methodid'], '">', _('Edit'), '</a></td>
+				<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '?SelectedMethodID=', $MyRow['methodid'], '&amp;Delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this ranking method?') . '\', \'Confirm Delete\', this);">', _('Delete'), '</a></td>
 			</tr>';
 	}
 	echo '</table>';
 
-	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" id="ABCMethods">';
-	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
+	echo '<form action="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '" method="post" id="ABCMethods">';
+	echo '<input type="hidden" name="FormID" value="', $_SESSION['FormID'], '" />';
 
 	if (isset($_GET['SelectedMethodID'])) {
 		$SQL = "SELECT methodid,
-							methodname
-						FROM abcmethods
-						WHERE methodid='" . $_GET['SelectedMethodID'] . "'";
+						methodname
+					FROM abcmethods
+					WHERE methodid='" . $_GET['SelectedMethodID'] . "'";
 		$Result = DB_query($SQL);
 		$MyRow = DB_fetch_array($Result);
 		echo '<input type="hidden" name="Mode" value="Edit" />';
@@ -97,20 +97,22 @@ if (isset($_POST['Submit'])) {
 	echo '<table>
 			<tr>
 				<th colspan="2">
-					<h3>' . _('Ranking Method Details') . '</h3>
+					<h3>', _('Ranking Method Details'), '</h3>
 				</th>
 			</tr>
 			<tr class="EvenTableRows">
-				<td>' . _('Method ID') . '</td>
-				<td>' . $IDInput . '</td>
+				<td>', _('Method ID'), '</td>
+				<td>', $IDInput, '</td>
 			</tr>
 			<tr class="OddTableRows">
-				<td>' . _('Method Description') . '</td>
-				<td><input type="text" size="30" required="required" maxlength="40" name="MethodName" value="' . $Description . '" /></td>
+				<td>', _('Method Description'), '</td>
+				<td><input type="text" size="30" required="required" maxlength="40" name="MethodName" value="', $Description, '" /></td>
 			</tr>
 		</table>';
 
-	echo '<div class="centre"><input type="submit" name="Submit" value="Save" />';
+	echo '<div class="centre">
+			<input type="submit" name="Submit" value="Save" />
+		</div>';
 	echo '</form>';
 }
 

@@ -141,7 +141,7 @@ if (isset($_SESSION['SupplierID'])) {
 			$DataResult = DB_query($SQL, $ErrMsg);
 			$MyRow = DB_fetch_array($DataResult);
 			// Select some more data about the supplier
-			$SQL = "SELECT SUM(ovamount) AS total FROM supptrans WHERE supplierno = '" . $_SESSION['SupplierID'] . "' AND (type == '20' OR type='21')";
+			$SQL = "SELECT SUM(ovamount) AS total FROM supptrans WHERE supplierno = '" . $_SESSION['SupplierID'] . "' AND (type = '20' OR type='21')";
 			$Total1Result = DB_query($SQL);
 			$Row = DB_fetch_array($Total1Result);
 			echo '<table style="width:75%" cellpadding="4">';

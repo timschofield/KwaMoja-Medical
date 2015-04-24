@@ -124,8 +124,6 @@ if (!isset($SelectedRole)) {
 		} else {
 			echo '<option value="', $MyRow['secroleid'], '">', $MyRow['secroleid'], ' - ', $MyRow['secrolename'], '</option>';
 		}
-		echo
-
 	} //end while loop
 
 	echo '</select>

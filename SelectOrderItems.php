@@ -663,6 +663,11 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 
 	$Msg = '';
 	if (isset($_POST['Search']) or isset($_POST['Next']) or isset($_POST['Previous'])) {
+		if (!empty($_POST['RawMaterialFlag'])) {
+			$RawMaterialSellable = " OR stockcategory.stocktype='M'";
+		} else {
+			$RawMaterialSellable = '';
+		}
 		if (!empty($_POST['CustItemFlag'])) {
 			$IncludeCustItem = " INNER JOIN custitem ON custitem.stockid=stockmaster.stockid
 								AND custitem.debtorno='" . $_SESSION['Items' . $Identifier]->DebtorNo . "' ";
@@ -690,7 +695,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 					FROM stockmaster
 					INNER JOIN stockcategory
 						ON stockmaster.categoryid=stockcategory.categoryid" . $IncludeCustItem . "
-					WHERE (stockcategory.stocktype='F' OR stockcategory.stocktype='D' OR stockcategory.stocktype='L')
+					WHERE (stockcategory.stocktype='F' OR stockcategory.stocktype='D' OR stockcategory.stocktype='L' " . $RawMaterialSellable . ")
 						AND stockmaster.mbflag <>'G'
 						AND stockmaster.discontinued=0
 						AND stockmaster.discontinued=0

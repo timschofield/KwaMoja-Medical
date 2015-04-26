@@ -315,7 +315,7 @@ if (!isset($_POST['GLManualCode'])) {
 if (!isset($_GET['NewJournal']) or $_GET['NewJournal'] == '') {
 	echo '<td><input type="text" autofocus="autofocus" name="GLManualCode" maxlength="12" size="12" onchange="inArray(this.value, GLCode.options,' . "'" . 'The account code ' . "'" . '+ this.value+ ' . "'" . ' doesnt exist' . "'" . ')" value="' . $_POST['GLManualCode'] . '"  /></td>';
 } else {
-	echo '<td><input type="text" name="GLManualCode" maxlength="12" size="12" onchange="inArray(this.value, GLCode.options,' . "'" . 'The account code ' . "'" . '+ this.value+ ' . "'" . ' doesnt exist' . "'" . ')" value="' . $_POST['GLManualCode'] . '"  /></td>';
+	echo '<td><input type="text" name="GLManualCode" maxlength="12" size="12" onchange="inArray(this, GLCode.options,' . "'" . 'The account code ' . "'" . '+ this.value+ ' . "'" . ' doesnt exist' . "'" . ')" value="' . $_POST['GLManualCode'] . '"  /></td>';
 }
 
 $SQL = "SELECT accountcode,

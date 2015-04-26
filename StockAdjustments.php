@@ -380,7 +380,12 @@ if (isset($_POST['EnterAdjustment']) and $_POST['EnterAdjustment'] != '') {
 
 		$Result = DB_Txn_Commit();
 
-		$ConfirmationText = _('A stock adjustment for') . ' ' . $_SESSION['Adjustment' . $Identifier]->StockID . ' -  ' . $_SESSION['Adjustment' . $Identifier]->ItemDescription . ' ' . _('has been created from location') . ' ' . $_SESSION['Adjustment' . $Identifier]->StockLocation . ' ' . _('for a quantity of') . ' ' . locale_number_format($_SESSION['Adjustment' . $Identifier]->Quantity, $_SESSION['Adjustment' . $Identifier]->DecimalPlaces);
+		if (mb_strlen($_SESSION['Adjustment' . $Identifier]->Narrative) > 0) {
+			$AdjustReason =  _('Narrative') . ' ' . $_SESSION['Adjustment' . $Identifier]->Narrative . ':';
+		} else {
+			$AdjustReason = '';
+		}
+		$ConfirmationText = _('A stock adjustment for') . ' ' . $_SESSION['Adjustment' . $Identifier]->StockID . ' -  ' . $_SESSION['Adjustment' . $Identifier]->ItemDescription . ' ' . _('has been created from location') . ' ' . $_SESSION['Adjustment' . $Identifier]->StockLocation . ' ' . _('for a quantity of') . ' ' . locale_number_format($_SESSION['Adjustment' . $Identifier]->Quantity, $_SESSION['Adjustment' . $Identifier]->DecimalPlaces) . ' ' . $AdjustReason;
 		prnMsg($ConfirmationText, 'success');
 
 		if ($_SESSION['InventoryManagerEmail'] != '') {

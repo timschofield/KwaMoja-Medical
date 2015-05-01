@@ -97,6 +97,7 @@ if (!isset($_POST['ProcessGoodsReceived'])) {
 				<th>' . _('Quantity') . '<br />' . _('Ordered') . '</th>
 				<th>' . _('Units') . '</th>
 				<th>' . _('Already') . '<br />' . _('Received') . '</th>
+				<th>' . _('Delivery') . '<br />' . _('Date') . '</th>
 				<th>' . _('Conversion') . '<br />' . _('Factor') . '</th>
 				<th>' . _('Quantity') . '<br />' . _('Ordered') . '</th>
 				<th>' . _('Units') . '</th>
@@ -165,6 +166,7 @@ if (count($_SESSION['PO' . $Identifier]->LineItems) > 0 and !isset($_POST['Proce
 			<td class="number">' . $DisplayQtyOrd . '</td>
 			<td>' . $LnItm->Units . '</td>
 			<td class="number">' . $DisplayQtyRec . '</td>
+			<td>' . $LnItm->ReqDelDate . '</td>
 			<td class="number">';
 
 		if ($LnItm->Controlled == 1) {

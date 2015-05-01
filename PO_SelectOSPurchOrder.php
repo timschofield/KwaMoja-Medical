@@ -113,8 +113,13 @@ if (!isset($OrderNumber) or $OrderNumber == '') {
 						FROM purchorders";
 		$DateResult = DB_query($DateSQL);
 		$DateRow = DB_fetch_array($DateResult);
-		$DateFrom = $DateRow['fromdate'];
-		$DateTo = $DateRow['todate'];
+		if ($DateRow['fromdate'] != null) {
+			$DateFrom = $DateRow['fromdate'];
+			$DateTo = $DateRow['todate'];
+		} else {
+			$DateFrom = date('Y-m-d');
+			$DateTo = date('Y-m-d');
+		}
 		$_POST['SearchOrders'] = 'New';
 	} else {
 		$DateFrom = FormatDateForSQL($_POST['DateFrom']);

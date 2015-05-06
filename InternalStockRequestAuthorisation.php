@@ -26,6 +26,16 @@ if (isset($_POST['UpdateAll'])) {
 						WHERE dispatchid='" . $CancelItems[0] . "'
 							AND dispatchitemsid='" . $CancelItems[1] . "'";
 			$Result = DB_query($SQL);
+			$CheckCompletionSQL = "SELECT dispatchid
+										FROM stockrequestitems
+										WHERE completed=0
+											AND dispatchid='" . $CancelItems[0] . "'";
+			$CheckCompletionResult = DB_query($CheckCompletionSQL);
+			if (DB_num_rows($CheckCompletionResult) == 0) {
+				$SetClosedSQL = "UPDATE stockrequest SET closed=1
+										WHERE dispatchid='" . $CancelItems[0] . "'";
+				$SetClosedResult = DB_query($SetClosedSQL);
+			}
 		}
 	}
 }

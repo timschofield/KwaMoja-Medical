@@ -273,9 +273,9 @@ if (isset($_POST['Location'])) {
 			ON stockrequest.loccode=locations.loccode
 		LEFT JOIN www_users
 			ON www_users.userid=departments.authoriser
-	WHERE stockrequest.authorised=1
-		AND stockrequest.closed=0
-		AND stockrequest.loccode='" . $_POST['Location'] . "'";
+		WHERE stockrequest.authorised=1
+			AND stockrequest.closed=0
+			AND stockrequest.loccode='" . $_POST['Location'] . "'";
 	$Result = DB_query($SQL);
 
 	if (DB_num_rows($Result) == 0) {
@@ -287,7 +287,6 @@ if (isset($_POST['Location'])) {
 	}
 
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table class="selection">
 			<tr>
@@ -369,8 +368,7 @@ if (isset($_POST['Location'])) {
 		echo '</table></td></tr>';
 	} //end while header loop
 	echo '</table>';
-	echo '<br /><div class="centre"><input type="submit" name="UpdateAll" value="' . _('Update') . '" /></div>
-		  </div>
+	echo '<div class="centre"><input type="submit" name="UpdateAll" value="' . _('Update') . '" /></div>
 		  </form>';
 }
 

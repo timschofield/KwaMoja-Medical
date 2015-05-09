@@ -14,6 +14,8 @@ include('includes/DefineCartClass.php');
 
 include('includes/session.inc');
 $Title = _('Order Delivery Details');
+$ViewTopic = 'SalesOrders';// Filename's id in ManualContents.php's TOC.
+$BookMark = 'DeliveryDetails';// Anchor's id in the manual's html document.
 include('includes/header.inc');
 include('includes/FreightCalculation.inc');
 include('includes/SQL_CommonFunctions.inc');

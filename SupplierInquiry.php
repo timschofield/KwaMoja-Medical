@@ -298,14 +298,14 @@ while ($MyRow = DB_fetch_array($TransResult)) {
 
 			if ($MyRow['totalamount'] - $MyRow['allocated'] == 0) {
 				/*The trans is settled so don't show option to hold */
-				echo $BaseTD8, '<td class="noprint">&nbsp;</td><td class="noprint">&nbsp;</td></tr>';
+				echo $BaseTD8, '<td class="noPrint">&nbsp;</td><td class="noPrint">&nbsp;</td></tr>';
 
 			} else {
 
 				echo $BaseTD8 . '
-					<td class="noprint"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES,'UTF-8') . '/PaymentAllocations.php?SuppID=' .
+					<td class="noPrint"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES,'UTF-8') . '/PaymentAllocations.php?SuppID=' .
 						$MyRow['type'] . '&amp;InvID=' . $MyRow['transno'] . '">' . _('View Payments') . '</a></td>
-					<td class="noprint"><a href="' . $HoldValue . '?HoldType=' . urlencode($_POST['TransAfterDate']) . '&amp;HoldTrans=' . urlencode($HoldValue) . '&amp;HoldStatus=' .
+					<td class="noPrint"><a href="' . $HoldValue . '?HoldType=' . urlencode($_POST['TransAfterDate']) . '&amp;HoldTrans=' . urlencode($HoldValue) . '&amp;HoldStatus=' .
 						$RootPath . '&amp;FromDate='. urlencode($MyRow['supplierno']) . '">' . $MyRow['suppreference'] . '</a></td></tr>';
 			}
 		}
@@ -323,7 +323,7 @@ while ($MyRow = DB_fetch_array($TransResult)) {
 
 		} else {
 			/*Not linked to GL */
-			printf($BaseTD8 . $AllocationTD1 . '<td class="noprint">&nbsp;</td></tr>',
+			printf($BaseTD8 . $AllocationTD1 . '<td class="noPrint">&nbsp;</td></tr>',
 				// $AllocationTD1 parameters:
 				$MyRow['id']);
 

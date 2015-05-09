@@ -41,6 +41,8 @@ if (isset($OrderNumber) and $OrderNumber != '') {
 		prnMsg(_('The Order Number entered') . ' <u>' . _('MUST') . '</u> ' . _('be numeric'), 'error');
 		unset($OrderNumber);
 	}
+	$DateFrom = FormatDateForSQL($_POST['DateFrom']);
+	$DateTo = FormatDateForSQL($_POST['DateTo']);
 }
 
 if (isset($_POST['SearchParts'])) {
@@ -66,7 +68,7 @@ if (isset($_POST['SearchParts'])) {
 				WHERE purchorderdetails.completed=0
 					AND stockmaster.description " . LIKE . " '" . $SearchString . "'
 					AND stockmaster.stockid " . LIKE . " '%" . $_POST['StockCode'] . "%'
-					AND stockmaster.categoryid='" . $_POST['StockCat'] . "'
+					AND stockmaster.categoryid " . LIKE . " '%" . $_POST['StockCat'] . "%'
 				GROUP BY stockmaster.stockid,
 						stockmaster.description,
 						stockmaster.units
@@ -81,114 +83,119 @@ if (isset($_POST['SearchParts'])) {
 $OrdersAfterDate = Date("d/m/Y",Mktime(0,0,0,Date("m")-2,Date("d"),Date("Y")));
 */
 
-if (!isset($OrderNumber) or $OrderNumber == '') {
+if (isset($SelectedSupplier)) {
+	echo '<div class="toplink"><a href="' . $RootPath . '/PO_Header.php?NewOrder=Yes&amp;SupplierID=' . urlencode($SelectedSupplier) . '">' . _('Add Purchase Order') . '</a></div>';
+} else {
+	echo '<div class="toplink"><a href="' . $RootPath . '/PO_Header.php?NewOrder=Yes">' . _('Add Purchase Order') . '</a></div>';
+}
+
+echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title;
+if (isset($SelectedSupplier)) {
+	echo ' ' . _('for Supplier') . ': ' . $SelectedSupplier;
+	echo '<input type="hidden" name="SelectedSupplier" value="' . $SelectedSupplier . '" />';
+} //isset($SelectedSupplier)
+if (isset($SelectedStockItem)) {
 	if (isset($SelectedSupplier)) {
-		echo '<div class="toplink"><a href="' . $RootPath . '/PO_Header.php?NewOrder=Yes&amp;SupplierID=' . urlencode($SelectedSupplier) . '">' . _('Add Purchase Order') . '</a></div>';
-	} else {
-		echo '<div class="toplink"><a href="' . $RootPath . '/PO_Header.php?NewOrder=Yes">' . _('Add Purchase Order') . '</a></div>';
+		echo ' ' . _('and') . ' ';
 	}
+	echo ' ' . _('for stock item') . ': ' . $SelectedStockItem;
+	echo '<input type="hidden" name="SelectedStockItem" value="' . $SelectedStockItem . '" />';
+} //isset($SelectedStockItem)
+echo '</p>';
 
-	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title;
-	if (isset($SelectedSupplier)) {
-		echo ' ' . _('for Supplier') . ': ' . $SelectedSupplier;
-		echo '<input type="hidden" name="SelectedSupplier" value="' . $SelectedSupplier . '" />';
-	} //isset($SelectedSupplier)
-	if (isset($SelectedStockItem)) {
-		if (isset($SelectedSupplier)) {
-			echo ' ' . _('and') . ' ';
-		}
-		echo ' ' . _('for stock item') . ': ' . $SelectedStockItem;
-		echo '<input type="hidden" name="SelectedStockItem" value="' . $SelectedStockItem . '" />';
-	} //isset($SelectedStockItem)
-	echo '</p>';
+if (!isset($_POST['OrderNumber']) or $_POST['OrderNumber'] == '') {
+	$_POST['OrderNumber'] = '';
+}
 
-	echo '<table class="selection">
-			<tr>
-				<td>' . _('Order Number') . ': <input type="text" name="OrderNumber" autofocus="autofocus" maxlength="8" size="9" value="" />  ' . _('Into Stock Location') . ':
-				<select name="StockLocation">';
+echo '<table class="selection">
+		<tr>
+			<td>' . _('Order Number') . ': <input type="text" name="OrderNumber" autofocus="autofocus" maxlength="8" size="9" value="' . $_POST['OrderNumber'] . '" />  ' . _('Into Stock Location') . ':
+			<select name="StockLocation">';
 
-	if (!isset($_POST['DateFrom'])) {
-		$DateSQL = "SELECT min(orddate) as fromdate,
-							max(orddate) as todate
-						FROM purchorders";
-		$DateResult = DB_query($DateSQL);
-		$DateRow = DB_fetch_array($DateResult);
-		if ($DateRow['fromdate'] != null) {
-			$DateFrom = $DateRow['fromdate'];
-			$DateTo = $DateRow['todate'];
-		} else {
-			$DateFrom = date('Y-m-d');
-			$DateTo = date('Y-m-d');
-		}
-		$_POST['SearchOrders'] = 'New';
+if (!isset($_POST['DateFrom'])) {
+	$DateSQL = "SELECT min(orddate) as fromdate,
+						max(orddate) as todate
+					FROM purchorders";
+	$DateResult = DB_query($DateSQL);
+	$DateRow = DB_fetch_array($DateResult);
+	if ($DateRow['fromdate'] != null) {
+		$DateFrom = $DateRow['fromdate'];
+		$DateTo = $DateRow['todate'];
 	} else {
-		$DateFrom = FormatDateForSQL($_POST['DateFrom']);
-		$DateTo = FormatDateForSQL($_POST['DateTo']);
+		$DateFrom = date('Y-m-d');
+		$DateTo = date('Y-m-d');
 	}
+	$_POST['SearchOrders'] = 'New';
+} else {
+	$DateFrom = FormatDateForSQL($_POST['DateFrom']);
+	$DateTo = FormatDateForSQL($_POST['DateTo']);
+}
 
-	$SQL = "SELECT locationname,
-					locations.loccode
-				FROM locations
-				INNER JOIN locationusers
-					ON locationusers.loccode=locations.loccode
-					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
-					AND locationusers.canview=1";
-	$ResultStkLocs = DB_query($SQL);
-	while ($MyRow = DB_fetch_array($ResultStkLocs)) {
-		if (isset($_POST['StockLocation'])) {
-			if ($MyRow['loccode'] == $_POST['StockLocation']) {
-				echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
-			} //$MyRow['loccode'] == $_POST['StockLocation']
-			else {
-				echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
-			}
-		} //isset($_POST['StockLocation'])
-		elseif ($MyRow['loccode'] == $_SESSION['UserStockLocation']) {
+$SQL = "SELECT locationname,
+				locations.loccode
+			FROM locations
+			INNER JOIN locationusers
+				ON locationusers.loccode=locations.loccode
+				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.canview=1";
+$ResultStkLocs = DB_query($SQL);
+if (DB_num_rows($ResultStkLocs) > 1) {
+	echo '<option value="">' . _('All') . '</option>';
+}
+while ($MyRow = DB_fetch_array($ResultStkLocs)) {
+	if (isset($_POST['StockLocation'])) {
+		if ($MyRow['loccode'] == $_POST['StockLocation']) {
 			echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
-		} //$MyRow['loccode'] == $_SESSION['UserStockLocation']
+		} //$MyRow['loccode'] == $_POST['StockLocation']
 		else {
 			echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 		}
-	} //$MyRow = DB_fetch_array($ResultStkLocs)
-	echo '</select> ' . _('Order Status') . ':<select name="Status">';
-	if (!isset($_POST['Status']) or $_POST['Status'] == 'Pending_Authorised') {
-		echo '<option selected="selected" value="Pending_Authorised">' . _('Pending and Authorised') . '</option>';
-	} //!isset($_POST['Status']) or $_POST['Status'] == 'Pending_Authorised'
+	} //isset($_POST['StockLocation'])
+	elseif ($MyRow['loccode'] == $_SESSION['UserStockLocation']) {
+		echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
+	} //$MyRow['loccode'] == $_SESSION['UserStockLocation']
 	else {
-		echo '<option value="Pending_Authorised">' . _('Pending and Authorised') . '</option>';
+		echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 	}
-	if (isset($_POST['Status']) and $_POST['Status'] == 'Pending') {
-		echo '<option selected="selected" value="Pending">' . _('Pending') . '</option>';
-	} //$_POST['Status'] == 'Pending'
-	else {
-		echo '<option value="Pending">' . _('Pending') . '</option>';
-	}
-	if (isset($_POST['Status']) and $_POST['Status'] == 'Authorised') {
-		echo '<option selected="selected" value="Authorised">' . _('Authorised') . '</option>';
-	} //$_POST['Status'] == 'Authorised'
-	else {
-		echo '<option value="Authorised">' . _('Authorised') . '</option>';
-	}
-	if (isset($_POST['Status']) and $_POST['Status'] == 'Cancelled') {
-		echo '<option selected="selected" value="Cancelled">' . _('Cancelled') . '</option>';
-	} //$_POST['Status'] == 'Cancelled'
-	else {
-		echo '<option value="Cancelled">' . _('Cancelled') . '</option>';
-	}
-	if (isset($_POST['Status']) and $_POST['Status'] == 'Rejected') {
-		echo '<option selected="selected" value="Rejected">' . _('Rejected') . '</option>';
-	} //$_POST['Status'] == 'Rejected'
-	else {
-		echo '<option value="Rejected">' . _('Rejected') . '</option>';
-	}
-	echo '</select>
-		' . _('Orders Between') . ':&nbsp;<input type="text" name="DateFrom" value="' . ConvertSQLDate($DateFrom) . '"  class="date" size="10" alt="' . $_SESSION['DefaultDateFormat'] . '"  />
-		' . _('and') . ':&nbsp;<input type="text" name="DateTo" value="' . ConvertSQLDate($DateTo) . '"  class="date" size="10" alt="' . $_SESSION['DefaultDateFormat'] . '"  />
-		<input type="submit" name="SearchOrders" value="' . _('Search Purchase Orders') . '" />
-		</td>
-		</tr>
-		</table>';
-} //!isset($OrderNumber) or $OrderNumber == ''
+} //$MyRow = DB_fetch_array($ResultStkLocs)
+echo '</select> ' . _('Order Status') . ':<select name="Status">';
+if (!isset($_POST['Status']) or $_POST['Status'] == 'Pending_Authorised') {
+	echo '<option selected="selected" value="Pending_Authorised">' . _('Pending and Authorised') . '</option>';
+} //!isset($_POST['Status']) or $_POST['Status'] == 'Pending_Authorised'
+else {
+	echo '<option value="Pending_Authorised">' . _('Pending and Authorised') . '</option>';
+}
+if (isset($_POST['Status']) and $_POST['Status'] == 'Pending') {
+	echo '<option selected="selected" value="Pending">' . _('Pending') . '</option>';
+} //$_POST['Status'] == 'Pending'
+else {
+	echo '<option value="Pending">' . _('Pending') . '</option>';
+}
+if (isset($_POST['Status']) and $_POST['Status'] == 'Authorised') {
+	echo '<option selected="selected" value="Authorised">' . _('Authorised') . '</option>';
+} //$_POST['Status'] == 'Authorised'
+else {
+	echo '<option value="Authorised">' . _('Authorised') . '</option>';
+}
+if (isset($_POST['Status']) and $_POST['Status'] == 'Cancelled') {
+	echo '<option selected="selected" value="Cancelled">' . _('Cancelled') . '</option>';
+} //$_POST['Status'] == 'Cancelled'
+else {
+	echo '<option value="Cancelled">' . _('Cancelled') . '</option>';
+}
+if (isset($_POST['Status']) and $_POST['Status'] == 'Rejected') {
+	echo '<option selected="selected" value="Rejected">' . _('Rejected') . '</option>';
+} //$_POST['Status'] == 'Rejected'
+else {
+	echo '<option value="Rejected">' . _('Rejected') . '</option>';
+}
+echo '</select>
+	' . _('Orders Between') . ':&nbsp;<input type="text" name="DateFrom" value="' . ConvertSQLDate($DateFrom) . '"  class="date" size="10" alt="' . $_SESSION['DefaultDateFormat'] . '"  />
+	' . _('and') . ':&nbsp;<input type="text" name="DateTo" value="' . ConvertSQLDate($DateTo) . '"  class="date" size="10" alt="' . $_SESSION['DefaultDateFormat'] . '"  />
+	<input type="submit" name="SearchOrders" value="' . _('Search Purchase Orders') . '" />
+	</td>
+	</tr>
+	</table>';
 
 $SQL = "SELECT categoryid, categorydescription FROM stockcategory ORDER BY categorydescription";
 $Result1 = DB_query($SQL);
@@ -206,7 +213,8 @@ if (!isset($_POST['Keywords'])) {
 echo '<table class="selection">
 			<tr>
 				<td>' . _('Select a stock category') . ':
-					<select name="StockCat">';
+					<select name="StockCat">
+						<option value="">' . _('All') . '</option>';
 
 while ($MyRow1 = DB_fetch_array($Result1)) {
 	if (isset($_POST['StockCat']) and $MyRow1['categoryid'] == $_POST['StockCat']) {
@@ -298,7 +306,7 @@ if (isset($StockItemsResult)) {
 		$StockItemSearchString = '';
 	}
 	if (isset($_POST['StockLocation'])) {
-		$LocationSearchString = " AND purchorders.intostocklocation = '" . $_POST['StockLocation'] . "' ";
+		$LocationSearchString = " AND purchorders.intostocklocation " . LIKE . " '%" . $_POST['StockLocation'] . "%' ";
 	} else {
 		$LocationSearchString = '';
 	}
@@ -400,19 +408,19 @@ if (isset($StockItemsResult)) {
 		$MyUserRow = DB_fetch_array($UserResult);
 		$InitiatorName = $MyUserRow['realname'];
 
-		echo '<td><a href="' . $ModifyPage . '">' . $MyRow['orderno'] . '</a></td>
-			<td>' . $FormatedOrderDate . '</td>
-			<td>' . $FormatedDeliveryDate . '</td>
-			<td>' . $InitiatorName . '</td>
-			<td>' . $MyRow['suppname'] . '</td>
-			<td>' . $MyRow['currcode'] . '</td>';
+		echo '<td><a href="', $ModifyPage, '">', $MyRow['orderno'], '</a></td>
+			<td>', $FormatedOrderDate, '</td>
+			<td>', $FormatedDeliveryDate, '</td>
+			<td>', $InitiatorName, '</td>
+			<td>', $MyRow['suppname'], '</td>
+			<td>', $MyRow['currcode'], '</td>';
 		if (in_array($PricesSecurity, $_SESSION['AllowedPageSecurityTokens']) or !isset($PricesSecurity)) {
-			echo '<td class="number">' . $FormatedOrderValue . '</td>';
+			echo '<td class="number">', $FormatedOrderValue, '</td>';
 		} //in_array($PricesSecurity, $_SESSION['AllowedPageSecurityTokens']) or !isset($PricesSecurity)
-		echo '<td>' . _($MyRow['status']) . '</td>
-					<td>' . $PrintPurchOrder . '</td>
-					<td>' . $ReceiveOrder . '</td>
-				</tr>';
+		echo '<td>', _($MyRow['status']), '</td>
+				<td>', $PrintPurchOrder, '</td>
+				<td>', $ReceiveOrder, '</td>
+			</tr>';
 		//end of page full new headings if
 	} //end of while loop around purchase orders retrieved
 

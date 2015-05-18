@@ -1,10 +1,9 @@
 <?php
 
 include ('includes/session.inc');
-$Title = _('Customer Branches');
-/* Manual links before header.inc */
-$ViewTopic = 'AccountsReceivable';
-$BookMark = 'NewCustomerBranch';
+$Title = _('Customer Branches');// Screen identification.
+$ViewTopic = 'AccountsReceivable';// Filename's id in ManualContents.php's TOC.
+$BookMark = 'NewCustomerBranch';// Anchor's id in the manual's html document.
 include ('includes/header.inc');
 include ('includes/CountriesArray.php');
 

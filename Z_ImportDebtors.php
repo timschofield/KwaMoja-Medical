@@ -219,11 +219,6 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 			prnMsg(_('The debtor code cannot be empty'), 'error');
 			$Errors[$i] = 'DebtorNo';
 			++$i;
-		} elseif ($_POST['AutoDebtorNo'] == 0 and (ContainsIllegalCharacters($_POST['DebtorNo']) or mb_strpos($_POST['DebtorNo'], ' '))) {
-			$InputError = 1;
-			prnMsg(_('The customer code cannot contain any of the following characters') . " . - ' &amp; + \" " . _('or a space'), 'error');
-			$Errors[$i] = 'DebtorNo';
-			++$i;
 		}
 		if (mb_strlen($_POST['CustName']) > 40 or mb_strlen($_POST['CustName']) == 0) {
 			$InputError = 1;

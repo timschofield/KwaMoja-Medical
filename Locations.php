@@ -51,7 +51,9 @@ if (isset($_POST['submit'])) {
 									taxprovinceid = '" . $_POST['TaxProvince'] . "',
 									managed = '" . $_POST['Managed'] . "',
 									internalrequest = '" . $_POST['InternalRequest'] . "',
-									usedforwo = '" . $_POST['UsedForWO'] . "'
+									usedforwo = '" . $_POST['UsedForWO'] . "',
+									glaccountcode = '" . $_POST['GLAccountCode'] . "',
+									allowinvoicing = '" . $_POST['AllowInvoicing'] . "'
 						WHERE loccode = '" . $SelectedLocation . "'";
 
 		$ErrMsg = _('An error occurred updating the') . ' ' . $SelectedLocation . ' ' . _('location record because');
@@ -77,6 +79,8 @@ if (isset($_POST['submit'])) {
 		unset($_POST['Contact']);
 		unset($_POST['InternalRequest']);
 		unset($_POST['UsedForWO']);
+		unset($_POST['GLAccountCode']);
+		unset($_POST['AllowInvoicing']);
 
 	} elseif ($InputError != 1) {
 
@@ -104,7 +108,9 @@ if (isset($_POST['submit'])) {
 										taxprovinceid,
 										managed,
 										internalrequest,
-										usedforwo)
+										usedforwo,
+										glaccountcode,
+										allowinvoicing)
 						VALUES ('" . $_POST['LocCode'] . "',
 								'" . $_POST['LocationName'] . "',
 								'" . $_POST['DelAdd1'] . "',
@@ -120,7 +126,9 @@ if (isset($_POST['submit'])) {
 								'" . $_POST['TaxProvince'] . "',
 								'" . $_POST['Managed'] . "',
 								'" . $_POST['InternalRequest'] . "',
-								'" . $_POST['UsedForWO'] . "')";
+								'" . $_POST['UsedForWO'] . "',
+								'" . $_POST['GLAccountCode'] . "',
+								'" . $_POST['AllowInvoicing'] . "')";
 
 		$ErrMsg = _('An error occurred inserting the new location record because');
 		$DbgMsg = _('The SQL used to insert the location record was');
@@ -218,7 +226,8 @@ if (isset($_POST['submit'])) {
 		unset($_POST['Contact']);
 		unset($_POST['InternalRequest']);
 		unset($_POST['UsedForWO']);
-
+		unset($_POST['GLAccountCode']);
+		unset($_POST['AllowInvoicing']);
 	}
 
 
@@ -385,9 +394,11 @@ if (!isset($SelectedLocation)) {
 	links to delete or edit each. These will call the same page again and allow update/input
 	or deletion of the records*/
 
-	$SQL = "SELECT .locations.loccode,
+	$SQL = "SELECT locations.loccode,
 					locationname,
 					taxprovinces.taxprovincename as description,
+					glaccountcode,
+					allowinvoicing,
 					managed
 				FROM locations
 				INNER JOIN locationusers
@@ -410,9 +421,12 @@ if (!isset($SelectedLocation)) {
 
 		echo '<table class="selection">';
 		echo '<tr>
-				<th class="SortableColumn">' . _('Location Code') . '</th>
-				<th class="SortableColumn">' . _('Location Name') . '</th>
-				<th class="SortableColumn">' . _('Tax Province') . '</th>
+				<th class="SortableColumn">', _('Location Code'), '</th>
+				<th class="SortableColumn">', _('Location Name'), '</th>
+				<th class="SortableColumn">', _('Tax Province'), '</th>
+				<th class="SortableColumn">', _('GL Account Code'), '</th>
+				<th class="SortableColumn">', _('Allow Invoicing'), '</th>
+				<th class="noprint" colspan="2">&nbsp;</th>
 			</tr>';
 
 		$k = 0; //row colour counter
@@ -433,11 +447,24 @@ if (!isset($SelectedLocation)) {
 			*/
 			printf('<td>%s</td>
 					<td>%s</td>
+					<td class="number">%s</td>
+					<td class="centre">%s</td>
 					<td>%s</td>
 					<td><a href="%sSelectedLocation=%s">' . _('Edit') . '</a></td>
 					<td><a href="%sLocation=%s">' . _('Define') . '</a></td>
 					<td><a href="%sSelectedLocation=%s&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this inventory location?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-					</tr>', $MyRow['loccode'], $MyRow['locationname'], $MyRow['description'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['loccode'], 'DefineWarehouse.php?', $MyRow['loccode'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['loccode']);
+					</tr>',
+					$MyRow['loccode'],
+					$MyRow['locationname'],
+					$MyRow['description'],
+					($MyRow['glaccountcode'] != '' ? $MyRow['glaccountcode'] : '&nbsp;'),// Use a non-breaking space to avoid an empty cell in a HTML table.
+					($MyRow['allowinvoicing'] == 1 ? _('Yes') : _('No')),
+					htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?',
+					$MyRow['loccode'],
+					'DefineWarehouse.php?',
+					$MyRow['loccode'],
+					htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?',
+					$MyRow['loccode']);
 		}
 	}
 	//END WHILE LIST LOOP
@@ -476,7 +503,9 @@ if (!isset($_GET['delete'])) {
 					taxprovinceid,
 					managed,
 					internalrequest,
-					usedforwo
+					usedforwo,
+					glaccountcode,
+					allowinvoicing
 				FROM locations
 				WHERE loccode='" . $SelectedLocation . "'";
 
@@ -499,7 +528,8 @@ if (!isset($_GET['delete'])) {
 		$_POST['Managed'] = $MyRow['managed'];
 		$_POST['InternalRequest'] = $MyRow['internalrequest'];
 		$_POST['UsedForWO'] = $MyRow['usedforwo'];
-
+		$_POST['GLAccountCode'] = $MyRow['glaccountcode'];
+		$_POST['AllowInvoicing'] = $MyRow['allowinvoicing'];
 
 		echo '<input type="hidden" name="SelectedLocation" value="' . $SelectedLocation . '" />';
 		echo '<input type="hidden" name="LocCode" value="' . $_POST['LocCode'] . '" />';
@@ -559,6 +589,12 @@ if (!isset($_GET['delete'])) {
 	}
 	if (!isset($_POST['Managed'])) {
 		$_POST['Managed'] = 0;
+	}
+	if(!isset($_POST['AllowInvoicing'])) {
+		$_POST['AllowInvoicing'] = 1;// If not set, set value to "Yes".
+	}
+	if (!isset($_POST['GLAccountCode'])) {
+		$_POST['GLAccountCode'] = '';
 	}
 
 	echo '<tr>
@@ -628,6 +664,42 @@ if (!isset($_GET['delete'])) {
 	}
 
 	echo '</select></td>
+		</tr>';
+	// Location's ledger account:
+
+	//SQL to poulate account selection boxes
+	$SQL = "SELECT accountcode,
+					accountname
+				FROM chartmaster
+				LEFT JOIN accountgroups
+					ON chartmaster.group_=accountgroups.groupname
+				WHERE accountgroups.pandl=0
+				ORDER BY accountcode";
+	$BSAccountsResult = DB_query($SQL);
+	echo '<tr title="', _('Enter the GL account for this location, or leave it in blank if not needed'), '">
+			<td><label for="GLAccountCode">', _('GL Account Code'), ':</label></td>
+			<td><select name="GLAccountCode">';
+
+	while ($MyRow = DB_fetch_array($BSAccountsResult)) {
+
+		if (isset($_POST['GLAccountCode']) and $MyRow['accountcode'] == $_POST['GLAccountCode']) {
+			echo '<option selected="selected" value="' . $MyRow['accountcode'] . '">' . $MyRow['accountname'] . ' (' . $MyRow['accountcode'] . ')' . '</option>';
+		} else {
+			echo '<option value="' . $MyRow['accountcode'] . '">' . $MyRow['accountname'] . ' (' . $MyRow['accountcode'] . ')' . '</option>';
+		}
+	} //end while loop
+	echo '</select>
+			</td>
+		</tr>';
+	// Allow or deny the invoicing of items in this location:
+	echo '<tr title="', _('Use this parameter to indicate whether these inventory location allows or denies the invoicing of its items.'), '">
+			<td><label for="AllowInvoicing">', _('Allow Invoicing'), ':</label></td>
+			<td>
+				<select name="AllowInvoicing">
+					<option', ($_POST['AllowInvoicing'] == 1 ? ' selected="selected"' : ''), ' value="1">', _('Yes'), '</option>
+					<option', ($_POST['AllowInvoicing'] == 0 ? ' selected="selected"' : ''), ' value="0">', _('No'), '</option>
+				</select>
+			</td>
 		</tr>';
 	echo '<tr>
 			<td>' . _('Allow internal requests?') . ':</td>

@@ -4,22 +4,26 @@
 
 class StockTransfer {
 
-	Var $TrfID;
-	Var $StockLocationFrom;
-	Var $StockLocationFromName;
-	Var $StockLocationTo;
-	Var $StockLocationToName;
-	Var $TranDate;
-	Var $TransferItem;
+	var $TrfID;
+	var $StockLocationFrom;
+	var $StockLocationFromName;
+	var $StockLocationFromAccount;
+	var $StockLocationTo;
+	var $StockLocationToName;
+	var $StockLocationToAccount;
+	var $TranDate;
+	var $TransferItem;
 	/*Array of LineItems */
 
-	function StockTransfer($TrfID, $StockLocationFrom, $StockLocationFromName, $StockLocationTo, $StockLocationToName, $TranDate) {
+	function StockTransfer($TrfID, $StockLocationFrom, $StockLocationFromName, $StockLocationFromAccount, $StockLocationTo, $StockLocationToName, $StockLocationToAccount, $TranDate) {
 
 		$this->TrfID = $TrfID;
 		$this->StockLocationFrom = $StockLocationFrom;
 		$this->StockLocationFromName = $StockLocationFromName;
+		$this->StockLocationFromAccount = $StockLocationFromAccount;
 		$this->StockLocationTo = $StockLocationTo;
 		$this->StockLocationToName = $StockLocationToName;
+		$this->StockLocationToAccount = $StockLocationToAccount;
 		$this->TranDate = $TranDate;
 		$this->TransferItem = array();
 		/*Array of LineItem s */

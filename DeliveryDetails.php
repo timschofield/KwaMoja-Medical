@@ -1009,27 +1009,27 @@ echo '<tr>
 	<td>' . _('Deliver from the warehouse at') . ':</td>
 	<td><select required="required" name="Location">';
 
-$ErrMsg = _('The stock locations could not be retrieved');
-$DbgMsg = _('SQL used to retrieve the stock locations was') . ':';
-$SQL = "SELECT locationname,
-				locations.loccode
+// BEGIN: **********************************************************************
+$SQL = "SELECT locations.loccode,
+				locationname
 			FROM locations
 			INNER JOIN locationusers
 				ON locationusers.loccode=locations.loccode
-				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
-				AND locationusers.canupd=1";
+				AND locationusers.userid='" . $_SESSION['UserID'] . "'
+				AND locationusers.canupd=1
+			WHERE locations.allowinvoicing='1'";
+$ErrMsg = _('The stock locations could not be retrieved');
+$DbgMsg = _('SQL used to retrieve the stock locations was') . ':';
+
 $StkLocsResult = DB_query($SQL, $ErrMsg, $DbgMsg);
-
+// COMMENT: What if there is no authorized locations available for this user?
 while ($MyRow = DB_fetch_array($StkLocsResult)) {
-	if ($_SESSION['Items' . $Identifier]->Location == $MyRow['loccode']) {
-		echo '<option selected="selected" value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
-	} //$_SESSION['Items' . $Identifier]->Location == $MyRow['loccode']
-	else {
-		echo '<option value="' . $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
-	}
-} //$MyRow = DB_fetch_array($StkLocsResult)
-
-echo '</select></td></tr>';
+	echo '<option', ($_SESSION['Items' . $Identifier]->Location == $MyRow['loccode'] ? ' selected="selected"' : ''), ' value="', $MyRow['loccode'], '">', $MyRow['locationname'], '</option>';
+}
+echo '</select>
+		</td>
+	</tr>';
+// END: ************************************************************************
 
 // Set the default date to earliest possible date if not set already
 if (!isset($_SESSION['Items' . $Identifier]->DeliveryDate)) {

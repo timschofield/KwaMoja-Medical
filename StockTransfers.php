@@ -1,13 +1,12 @@
 <?php
-
+/* Entry of point to point stock location transfers of a single part. */
 include('includes/DefineSerialItems.php');
 include('includes/DefineStockTransfers.php');
 
 include('includes/session.inc');
-$Title = _('Stock Transfers');
-/* Manual links before header.inc */
-$ViewTopic = 'Inventory';
-$BookMark = 'LocationTransfers';
+$Title = _('Stock Transfers');// Screen identification.
+$ViewTopic = 'Inventory';// Filename's id in ManualContents.php's TOC.
+$BookMark = 'LocationTransfers';// Anchor's id in the manual's html document.
 include('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');
 
@@ -216,6 +215,47 @@ if (isset($_POST['EnterTransfer'])) {
 			include('includes/footer.inc');
 			exit;
 		}
+// BEGIN: **********************************************************************
+		// Insert outgoing inventory GL transaction if any of the locations has a GL account code:
+		if ($_SESSION['Transfer']->StockLocationFromAccount != '' or $_SESSION['Transfer']->StockLocationToAccount != '') {
+			// Get the account code:
+			if ($_SESSION['Transfer']->StockLocationToAccount != '') {
+				$AccountCode = $_SESSION['Transfer']->StockLocationToAccount;
+			} else {
+				$StockGLCode = GetStockGLCode($_SESSION['Transfer']->TransferItem[0]->StockID);// Get Category's account codes.
+				$AccountCode = $StockGLCode['stockact'];// Select account code for stock.
+			}
+			// Get the item cost:
+			$SQLStandardCost = "SELECT stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost AS standardcost
+								FROM stockcosts
+								WHERE stockcosts.stockid ='" . $_SESSION['Transfer']->TransferItem[0]->StockID . "'";
+			$ErrMsg = _('The standard cost of the item cannot be retrieved because');
+			$DbgMsg = _('The SQL that failed was');
+			$Result = DB_query($SQLStandardCost,$ErrMsg,$DbgMsg);
+			$MyRow = DB_fetch_array($Result);
+			$StandardCost = $MyRow['standardcost'];// QUESTION: Standard cost for: Assembly (value="A") and Manufactured (value="M") items ?
+			// Insert record:
+			$SQL = "INSERT INTO gltrans (
+					periodno,
+					trandate,
+					type,
+					typeno,
+					account,
+					narrative,
+					amount)
+				VALUES (
+					'" . $PeriodNo . "',
+					'" . $SQLTransferDate . "',
+					16,
+					'" . $TransferNumber . "',
+					'" . $AccountCode . "',
+					'" . $_SESSION['Transfer']->StockLocationFrom . ' - ' . $_SESSION['Transfer']->TransferItem[0]->StockID . ' x ' . $_SESSION['Transfer']->TransferItem[0]->Quantity . ' @ ' . $StandardCost . "',
+					'" . -$_SESSION['Transfer']->TransferItem[0]->Quantity * $StandardCost . "')";
+					$ErrMsg =  _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The outgoing inventory GL transacction record could not be inserted because');
+					$DbgMsg =  _('The following SQL to insert records was used');
+					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+		}
+// END: ************************************************************************
 		// Insert the stock movement for the stock going out of the from location
 		$SQL = "INSERT INTO stockmoves (stockid,
 										type,
@@ -335,6 +375,47 @@ if (isset($_POST['EnterTransfer'])) {
 			// There must actually be some error this should never happen
 			$QtyOnHandPrior = 0;
 		}
+// BEGIN: **********************************************************************
+		// Insert incoming inventory GL transaction if any of the locations has a GL account code:
+		if ($_SESSION['Transfer']->StockLocationFromAccount != '' or $_SESSION['Transfer']->StockLocationToAccount != '') {
+			// Get the account code:
+			if($_SESSION['Transfer']->StockLocationToAccount != '') {
+				$AccountCode = $_SESSION['Transfer']->StockLocationToAccount;
+			} else {
+				$StockGLCode = GetStockGLCode($_SESSION['Transfer']->TransferItem[0]->StockID);// Get Category's account codes.
+				$AccountCode = $StockGLCode['stockact'];// Select account code for stock.
+			}
+			// Get the item cost:
+			$SQLStandardCost = "SELECT stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost AS standardcost
+								FROM stockcosts
+								WHERE stockcosts.stockid ='" . $_SESSION['Transfer']->TransferItem[0]->StockID . "'";
+			$ErrMsg = _('The standard cost of the item cannot be retrieved because');
+			$DbgMsg = _('The SQL that failed was');
+			$Result = DB_query($SQLStandardCost, $ErrMsg, $DbgMsg);
+			$MyRow = DB_fetch_array($Result);
+			$StandardCost = $MyRow['standardcost'];// QUESTION: Standard cost for: Assembly (value="A") and Manufactured (value="M") items ?
+			// Insert record:
+			$SQL = "INSERT INTO gltrans (
+					periodno,
+					trandate,
+					type,
+					typeno,
+					account,
+					narrative,
+					amount)
+				VALUES (
+					'" . $PeriodNo . "',
+					'" . $SQLTransferDate . "',
+					16,
+					'" . $TransferNumber . "',
+					'" . $AccountCode . "',
+					'" . $_SESSION['Transfer']->StockLocationTo . ' - ' . $_SESSION['Transfer']->TransferItem[0]->StockID . ' x ' . $_SESSION['Transfer']->TransferItem[0]->Quantity . ' @ ' .  $StandardCost . "',
+					'" . $_SESSION['Transfer']->TransferItem[0]->Quantity * $StandardCost . "')";
+			$ErrMsg =  _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The incoming inventory GL transacction record could not be inserted because');
+			$DbgMsg =  _('The following SQL to insert records was used');
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+		}
+// END: ************************************************************************
 
 		// Insert the stock movement for the stock coming into the to location
 		$SQL = "INSERT INTO stockmoves (stockid,

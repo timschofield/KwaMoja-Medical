@@ -90,6 +90,9 @@ if (isset($_POST['ProcessGLAccountCode'])) {
 
 		ChangeFieldInTable("lastcostrollup", "stockact", $_POST['OldAccountCode'], $_POST['NewAccountCode']);
 		ChangeFieldInTable("lastcostrollup", "adjglact", $_POST['OldAccountCode'], $_POST['NewAccountCode']);
+// BEGIN: **********************************************************************
+		ChangeFieldInTable("locations", "glaccountcode", $_POST['OldAccountCode'], $_POST['NewAccountCode']);// Location's ledger account.
+// END: ************************************************************************
 
 		ChangeFieldInTable("pcexpenses", "glaccount", $_POST['OldAccountCode'], $_POST['NewAccountCode']);
 
@@ -131,24 +134,22 @@ if (isset($_POST['ProcessGLAccountCode'])) {
 }
 
 echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
-echo '<div class="centre">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
-echo '<br />
-	<table>
-	<tr>
-		<td>' . _('Existing GL Account Code') . ':</td>
-		<td><input type="text" name="OldAccountCode" size="20" maxlength="20" /></td>
-	</tr>
-	<tr>
-		<td>' . _('New GL Account Code') . ':</td>
-		<td><input type="text" name="NewAccountCode" size="20" maxlength="20" /></td>
-	</tr>
+echo '<table>
+		<tr>
+			<td>' . _('Existing GL Account Code') . ':</td>
+			<td><input type="text" name="OldAccountCode" size="20" maxlength="20" /></td>
+		</tr>
+		<tr>
+			<td>' . _('New GL Account Code') . ':</td>
+			<td><input type="text" name="NewAccountCode" size="20" maxlength="20" /></td>
+		</tr>
 	</table>
-
+	<div class="centre"></div>
 		<input type="submit" name="ProcessGLAccountCode" value="' . _('Process') . '" />
 	</div>
-	</form>';
+</form>';
 
 include('includes/footer.inc');
 

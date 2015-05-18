@@ -808,13 +808,15 @@ if (!isset($_GET['delete'])) {
 
 	}
 
+// BEGIN: **********************************************************************
 	$SQL = "SELECT locations.loccode,
 					locationname
 				FROM locations
 				INNER JOIN locationusers
 					ON locationusers.loccode=locations.loccode
 					AND locationusers.userid='" . $_SESSION['UserID'] . "'
-					AND locationusers.canupd=1";
+					AND locationusers.canupd=1
+				WHERE locations.allowinvoicing='1'";
 	$Result = DB_query($SQL);
 
 	if (DB_num_rows($Result) == 0) {
@@ -838,6 +840,7 @@ if (!isset($_GET['delete'])) {
 		echo $MyRow['loccode'] . '">' . $MyRow['locationname'] . '</option>';
 
 	} //end while loop
+// END: ************************************************************************
 
 	echo '</select></td>
 		</tr>';

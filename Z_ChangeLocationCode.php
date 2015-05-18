@@ -72,7 +72,12 @@ if (isset($_POST['ProcessLocationChange'])) {
 										taxprovinceid,
 										managed,
 										cashsalecustomer,
-										cashsalebranch)
+										cashsalebranch,
+										internalrequest,
+										usedforwo,
+										glaccountcode,
+										allowinvoicing
+										)
 				SELECT '" . $_POST['NewLocationID'] . "',
 						'" . $_POST['NewLocationName'] . "',
 						deladd1,
@@ -88,7 +93,11 @@ if (isset($_POST['ProcessLocationChange'])) {
 						taxprovinceid,
 						managed,
 						cashsalecustomer,
-						cashsalebranch
+						cashsalebranch,
+						internalrequest,
+						usedforwo,
+						glaccountcode,
+						allowinvoicing
 				FROM locations
 				WHERE loccode='" . $_POST['OldLocationID'] . "'";
 

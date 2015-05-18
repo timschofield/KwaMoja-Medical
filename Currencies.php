@@ -23,8 +23,7 @@ if (isset($Errors)) {
 
 $Errors = array();
 
-echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/money_add.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '</p>
-	<br />';
+echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/money_add.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '</p>';
 
 $SQL = "SELECT count(currabrev)
 		FROM currencies";
@@ -264,10 +263,19 @@ if (isset($_POST['submit'])) {
 			} elseif ($FunctionalCurrency == $SelectedCurrency) {
 				prnMsg(_('Cannot delete this currency because it is the functional currency of the company'), 'warn');
 			} else {
-				//only delete if used in neither customer or supplier, comp prefs, bank trans accounts
-				$SQL = "DELETE FROM currencies WHERE currabrev='" . $SelectedCurrency . "'";
+				$SQL = "SELECT COUNT(*) FROM bankaccounts
+						WHERE currcode = '" . $SelectedCurrency . "'";
 				$Result = DB_query($SQL);
-				prnMsg(_('The currency definition record has been deleted'), 'success');
+				$MyRow = DB_fetch_row($Result);
+				if ($MyRow[0] > 0){
+					prnMsg(_('Cannot delete this currency because there are bank accounts that use this currency') .
+					'<br />' . ' ' . _('There are') . ' ' . $MyRow[0] . ' ' . _('bank accounts that refer to this currency'),'warn');
+				} else {
+					//only delete if used in neither customer or supplier, comp prefs, bank trans accounts
+					$SQL = "DELETE FROM currencies WHERE currabrev='" . $SelectedCurrency . "'";
+					$Result = DB_query($SQL);
+					prnMsg(_('The currency definition record has been deleted'),'success');
+				}
 			}
 		}
 	}

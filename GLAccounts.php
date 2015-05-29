@@ -18,6 +18,9 @@ echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION[
 
 if (isset($_POST['submit'])) {
 
+	$GroupSQL = "SELECT groupname FROM accountgroups WHERE groupcode='" . $_POST['Group'] . "'";
+	$GroupResult = DB_query($GroupSQL);
+	$GroupRow = DB_fetch_array($GroupResult);
 	//initialise no input errors assumed initially before we test
 	$InputError = 0;
 
@@ -34,7 +37,8 @@ if (isset($_POST['submit'])) {
 	if (isset($SelectedAccount) and $InputError != 1) {
 
 		$SQL = "UPDATE chartmaster SET accountname='" . $_POST['AccountName'] . "',
-						group_='" . htmlspecialchars($_POST['Group']) . "'
+						group_='" . htmlspecialchars($GroupRow['groupname']) . "',
+						groupcode='" . $_POST['Group'] . "'
 				WHERE accountcode ='" . $SelectedAccount . "'";
 
 		$ErrMsg = _('Could not update the account because');
@@ -47,10 +51,13 @@ if (isset($_POST['submit'])) {
 		$ErrMsg = _('Could not add the new account code');
 		$SQL = "INSERT INTO chartmaster (accountcode,
 						accountname,
-						group_)
+						group_,
+						groupcode)
 					VALUES ('" . $_POST['AccountCode'] . "',
 							'" . $_POST['AccountName'] . "',
-							'" . htmlspecialchars($_POST['Group']) . "')";
+							'" . htmlspecialchars($GroupRow['groupname']) . "',
+							'" . $_POST['Group'] . "'
+						)";
 		$Result = DB_query($SQL, $ErrMsg);
 
 		prnMsg(_('The new general ledger account has been added'), 'success');
@@ -250,7 +257,7 @@ if (!isset($_GET['delete'])) {
 		$_POST['AccountName'] = '';
 	}
 
-	$SQL = "SELECT groupname FROM accountgroups ORDER BY sequenceintb";
+	$SQL = "SELECT groupcode, groupname FROM accountgroups ORDER BY sequenceintb";
 	$Result = DB_query($SQL);
 
 	echo '<tr>
@@ -258,10 +265,10 @@ if (!isset($_GET['delete'])) {
 			<td><select required="required" name="Group">';
 
 	while ($MyRow = DB_fetch_array($Result)) {
-		if (isset($_POST['Group']) and $MyRow['groupname'] == $_POST['Group']) {
-			echo '<option selected="selected" value="', $MyRow['groupname'], '">', $MyRow['groupname'], '</option>';
+		if (isset($_POST['Group']) and $MyRow['groupcode'] == $_POST['Group']) {
+			echo '<option selected="selected" value="', $MyRow['groupcode'], '">', $MyRow['groupname'], '</option>';
 		} else {
-			echo '<option value="', $MyRow['groupname'], '">', $MyRow['groupname'], '</option>';
+			echo '<option value="', $MyRow['groupcode'], '">', $MyRow['groupname'], '</option>';
 		}
 	}
 	echo '</select>

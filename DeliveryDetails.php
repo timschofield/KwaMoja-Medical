@@ -1017,7 +1017,8 @@ $SQL = "SELECT locations.loccode,
 				ON locationusers.loccode=locations.loccode
 				AND locationusers.userid='" . $_SESSION['UserID'] . "'
 				AND locationusers.canupd=1
-			WHERE locations.allowinvoicing='1'";
+			WHERE locations.allowinvoicing='1'
+			ORDER BY locations.locationname";
 $ErrMsg = _('The stock locations could not be retrieved');
 $DbgMsg = _('SQL used to retrieve the stock locations was') . ':';
 

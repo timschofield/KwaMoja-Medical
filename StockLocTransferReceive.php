@@ -70,9 +70,10 @@ if (isset($_POST['ProcessTransfer'])) {
 	if (!$InputError) {
 		/*All inputs must be sensible so make the stock movement records and update the locations stocks */
 
+		$Result = DB_Txn_Begin(); // The Txn should affect the full transfer
+
 		foreach ($_SESSION['Transfer' . $Identifier]->TransferItem as $TrfLine) {
 			if ($TrfLine->Quantity >= 0) {
-				$Result = DB_Txn_Begin();
 
 				/* Need to get the current location quantity will need it later for the stock movement */
 				$SQL = "SELECT locstock.quantity
@@ -209,11 +210,9 @@ if (isset($_POST['ProcessTransfer'])) {
 					$QtyOnHandPrior = 0;
 				}
 
-// COMMENT: "if($TrfLine->Quantity !=0) {}" should be as a general condition to avoid transactions in zero.
-
 // BEGIN: **********************************************************************
 				// Insert outgoing inventory GL transaction if any of the locations has a GL account code:
-				if(($_SESSION['Transfer']->StockLocationFromAccount != '' or $_SESSION['Transfer']->StockLocationToAccount != '') and $TrfLine->Quantity != 0) {
+				if(($_SESSION['Transfer']->StockLocationFromAccount != '' or $_SESSION['Transfer']->StockLocationToAccount != '')) {
 					// Get the account code:
 					if($_SESSION['Transfer']->StockLocationFromAccount != '') {
 						$AccountCode = $_SESSION['Transfer']->StockLocationFromAccount;
@@ -368,7 +367,7 @@ if (isset($_POST['ProcessTransfer'])) {
 				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 // BEGIN: **********************************************************************
 				// Insert incoming inventory GL transaction if any of the locations has a GL account code:
-				if (($_SESSION['Transfer']->StockLocationFromAccount != '' or $_SESSION['Transfer']->StockLocationToAccount != '') and $TrfLine->Quantity != 0) {
+				if (($_SESSION['Transfer']->StockLocationFromAccount != '' or $_SESSION['Transfer']->StockLocationToAccount != '')) {
 					// Get the account code:
 					if($_SESSION['Transfer']->StockLocationToAccount !='') {
 						$AccountCode = $_SESSION['Transfer']->StockLocationToAccount;

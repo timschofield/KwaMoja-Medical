@@ -656,7 +656,7 @@ function DropPrimaryKey($Table, $OldKey) {
 		$Fields[] = $MyRow['COLUMN_NAME'];
 	}
 	if ($Total == sizeOf($OldKey) and $Fields == $OldKey) {
-		$SQL = "ALTER TABLE " . $Table . " DROP PRIMARY KEY";
+		$SQL = "ALTER TABLE `" . $Table . "` DROP PRIMARY KEY";
 		$Response = executeSQL($SQL);
 		if ($Response == 0) {
 			OutputResult(_('The primary key in') . ' ' . $Table . ' ' . _('has been removed'), 'success');
@@ -674,7 +674,7 @@ function AddPrimaryKey($Table, $Fields) {
 	$Result = DB_query($SQL);
 	if (DB_num_rows($Result) != sizeOf($Fields)) {
 		$KeyString = implode(",", $Fields);
-		$Response = executeSQL("ALTER TABLE " . $Table . " ADD PRIMARY KEY ( " . $KeyString . " )");
+		$Response = executeSQL("ALTER TABLE `" . $Table . "` ADD PRIMARY KEY ( " . $KeyString . " )");
 		if ($Response == 0) {
 			OutputResult(_('The primary key in') . ' ' . $Table . ' ' . _('has been added'), 'success');
 		} else {

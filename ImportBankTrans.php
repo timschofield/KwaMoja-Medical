@@ -31,7 +31,7 @@ if (!isset($_FILES['ImportFile']) and !isset($_SESSION['Statement'])) {
 	$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 	if (DB_num_rows($Result) ==0){
 		prnMsg(_('There are no bank accounts defined that are set up to allow importation of bank statement transactions. First define the file format used by your bank for statement exports.'),'error');
-		echo '<br /><a href="BankAccounts.php>' . _('Setup Import Format for Bank Accounts') . '</a>';
+		echo '<br /><a href="BankAccounts.php">' . _('Setup Import Format for Bank Accounts') . '</a>';
 		include('includes/footer.inc');
 		exit;
 	}

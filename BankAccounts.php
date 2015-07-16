@@ -274,7 +274,8 @@ if (isset($SelectedBankAccount) and !isset($_GET['delete'])) {
 					bankaddress,
 					currcode,
 					invoice,
-					pettycash
+					pettycash,
+					importformat
 			FROM bankaccounts
 			WHERE bankaccounts.accountcode='" . $SelectedBankAccount . "'";
 
@@ -289,6 +290,7 @@ if (isset($SelectedBankAccount) and !isset($_GET['delete'])) {
 	$_POST['CurrCode'] = $MyRow['currcode'];
 	$_POST['DefAccount'] = $MyRow['invoice'];
 	$_POST['PettyCash'] = $MyRow['pettycash'];
+	$_POST['ImportFormat'] = $MyRow['importformat'];
 
 	echo '<input type="hidden" name="SelectedBankAccount" value="' . $SelectedBankAccount . '" />';
 	echo '<input type="hidden" name="AccountCode" value="' . $_POST['AccountCode'] . '" />';

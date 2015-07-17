@@ -110,14 +110,16 @@ class Cart {
 														discountpercent,
 														itemdue,
 														poline)
-													VALUES(" . $LineNumber . ",
-														" . $_SESSION['ExistingOrder' . $Identifier] . ",
+													VALUES(
+														'" . $LineNumber . "',
+														'" . $_SESSION['ExistingOrder' . $Identifier] . "',
 														'" . trim(mb_strtoupper($StockId)) . "',
-														" . $Qty . ",
-														" . $Price . ",
-														" . $Disc . ",'
-														" . FormatDateForSQL($ItemDue) . "',
-														" . $POLine . ")";
+														'" . $Qty . "',
+														'" . $Price . "',
+														'" . $Disc . "',
+														'" . FormatDateForSQL($ItemDue) . "',
+														'" . $POLine . "'
+													)";
 				$Result = DB_query($SQL, _('The order line for') . ' ' . mb_strtoupper($StockId) . ' ' . _('could not be inserted'));
 			}
 
@@ -139,9 +141,9 @@ class Cart {
 		$this->LineItems[$UpdateLineNumber]->POLine = $POLine;
 		$this->LineItems[$UpdateLineNumber]->GPPercent = $GPPercent;
 		if ($UpdateDB == 'Yes') {
-			$Result = DB_query("UPDATE salesorderdetails SET quantity=" . $Qty . ",
-															unitprice=" . $Price . ",
-															discountpercent=" . $Disc . ",
+			$Result = DB_query("UPDATE salesorderdetails SET quantity='" . $Qty . "',
+															unitprice='" . $Price . "',
+															discountpercent='" . $Disc . "',
 															narrative ='" . $Narrative . "',
 															itemdue = '" . FormatDateForSQL($ItemDue) . "',
 															poline = '" . $POLine . "'

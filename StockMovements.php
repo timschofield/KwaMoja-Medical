@@ -40,7 +40,8 @@ $SQL = "SELECT locations.loccode,
 			INNER JOIN locationusers
 				ON locationusers.loccode=locations.loccode
 				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
-				AND locationusers.canview=1";
+				AND locationusers.canview=1
+			ORDER BY locationname";
 
 $ResultStkLocs = DB_query($SQL);
 

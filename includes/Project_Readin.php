@@ -9,6 +9,7 @@ $ProjectHeaderSQL = "SELECT projectdescription,
 							categoryid,
 							wo,
 							requireddate,
+							completiondate,
 							drawing,
 							exrate,
 							donors.name,
@@ -39,6 +40,7 @@ if (DB_num_rows($ProjectHdrResult) == 1 and !isset($_SESSION['Project' . $Identi
 	$_SESSION['Project' . $Identifier]->CategoryID = $MyRow['categoryid'];
 	$_SESSION['Project' . $Identifier]->WO = $MyRow['wo'];
 	$_SESSION['Project' . $Identifier]->RequiredDate = ConvertSQLDate($MyRow['requireddate']);
+	$_SESSION['Project' . $Identifier]->CompletionDate = ConvertSQLDate($MyRow['completiondate']);
 	$_SESSION['Project' . $Identifier]->Drawing = $MyRow['drawing'];
 	$_SESSION['Project' . $Identifier]->ExRate = $MyRow['exrate'];
 	$_SESSION['Project' . $Identifier]->DonorName = $MyRow['name'];
@@ -49,6 +51,7 @@ if (DB_num_rows($ProjectHdrResult) == 1 and !isset($_SESSION['Project' . $Identi
 
 	$ProjectBOMsql = "SELECT projectbom.stockid,
 							stockmaster.description,
+							projectbom.requiredby,
 							projectbom.workcentreadded,
 							projectbom.quantity,
 							stockmaster.units,
@@ -68,7 +71,7 @@ if (DB_num_rows($ProjectHdrResult) == 1 and !isset($_SESSION['Project' . $Identi
 
 	if (DB_num_rows($ProjectBOMResult) > 0) {
 		while ($MyRow = DB_fetch_array($ProjectBOMResult)) {
-			$_SESSION['Project' . $Identifier]->Add_To_ProjectBOM($MyRow['stockid'], $MyRow['description'], $MyRow['workcentreadded'], $MyRow['quantity'], $MyRow['cost'], $MyRow['units'], $MyRow['decimalplaces']);
+			$_SESSION['Project' . $Identifier]->Add_To_ProjectBOM($MyRow['stockid'], $MyRow['description'], $MyRow['requiredby'], $MyRow['workcentreadded'], $MyRow['quantity'], $MyRow['cost'], $MyRow['units'], $MyRow['decimalplaces']);
 		}
 		/* add project bill of materials BOM lines*/
 	} //end is there was a project BOM to add

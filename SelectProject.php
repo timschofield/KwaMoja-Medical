@@ -7,7 +7,7 @@ $BookMark = 'SelectProject';
 include('includes/header.inc');
 
 echo '<div class="toplink">
-		<a href="' . $RootPath . '/Projects.php">' . _('New Project') . '</a>
+		<a href="' . $RootPath . '/Projects.php">' . _('Create a New Project') . '</a>
 	</div>';
 echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/contract.png" title="' . _('Projects') . '" alt="" />' . ' ' . _('Select A Project') . '</p> ';
 echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';

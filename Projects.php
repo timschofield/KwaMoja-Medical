@@ -69,6 +69,7 @@ if (isset($_SESSION['Project' . $Identifier]) and (isset($_POST['EnterProjectBOM
 	$_SESSION['Project' . $Identifier]->ProjectDescription = $_POST['ProjectDescription'];
 	$_SESSION['Project' . $Identifier]->LocCode = $_POST['LocCode'];
 	$_SESSION['Project' . $Identifier]->RequiredDate = $_POST['RequiredDate'];
+	$_SESSION['Project' . $Identifier]->CompletionDate = $_POST['CompletionDate'];
 	$_SESSION['Project' . $Identifier]->DonorRef = $_POST['DonorRef'];
 	$_SESSION['Project' . $Identifier]->ExRate = filter_number_format($_POST['ExRate']);
 
@@ -242,11 +243,19 @@ if (isset($_POST['CommitProject']) or isset($_POST['CreateBudget'])) {
 		$InputError = true;
 	}
 	if (!is_date($_POST['RequiredDate'])) {
+		prnMsg(_('The date the project is required to be started by must be entered in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
+		$InputError = true;
+	}
+	if (!is_date($_POST['CompletionDate'])) {
 		prnMsg(_('The date the project is required to be completed by must be entered in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
 		$InputError = true;
 	}
 	if (Date1GreaterThanDate2(Date($_SESSION['DefaultDateFormat']), $_POST['RequiredDate']) and $_POST['RequiredDate'] != '') {
-		prnMsg(_('The date that the project is to be completed by is expected to be a date in the future. Make the required date a date after today before proceeding.'), 'error');
+		prnMsg(_('The date that the project is to be started by is expected to be a date in the future. Make the start date a date after today before proceeding.'), 'error');
+		$InputError = true;
+	}
+	if (Date1GreaterThanDate2($_POST['RequiredDate'], $_POST['CompletionDate']) and $_POST['CompletionDate'] != '') {
+		prnMsg(_('The date that the project is to be completed must be later than the start date.'), 'error');
 		$InputError = true;
 	}
 
@@ -255,6 +264,7 @@ if (isset($_POST['CommitProject']) or isset($_POST['CreateBudget'])) {
 		$_SESSION['Project' . $Identifier]->ProjectDescription = $_POST['ProjectDescription'];
 		$_SESSION['Project' . $Identifier]->LocCode = $_POST['LocCode'];
 		$_SESSION['Project' . $Identifier]->RequiredDate = $_POST['RequiredDate'];
+		$_SESSION['Project' . $Identifier]->CompletionDate = $_POST['CompletionDate'];
 		$_SESSION['Project' . $Identifier]->Status = $_POST['Status'];
 		$_SESSION['Project' . $Identifier]->DonorRef = $_POST['DonorRef'];
 		$_SESSION['Project' . $Identifier]->ExRate = filter_number_format($_POST['ExRate']);
@@ -264,6 +274,7 @@ if (isset($_POST['CommitProject']) or isset($_POST['CreateBudget'])) {
 					categoryid,
 					loccode,
 					requireddate,
+					completiondate,
 					margin,
 					customerref,
 					exrate,
@@ -282,6 +293,7 @@ if (isset($_POST['CommitProject']) or isset($_POST['CreateBudget'])) {
 		if ($ExistingProject['status'] <= 1 and !$InputError) {
 			//then we can accept any changes at all do an update on the whole lot
 			$SQL = "UPDATE projects SET requireddate = '" . FormatDateForSQL($_POST['RequiredDate']) . "',
+										completiondate = '" . FormatDateForSQL($_POST['CompletionDate']) . "',
 										loccode='" . $_POST['LocCode'] . "',
 										customerref = '" . $_POST['DonorRef'] . "',
 										exrate = '" . filter_number_format($_POST['ExRate']) . "'
@@ -294,10 +306,12 @@ if (isset($_POST['CommitProject']) or isset($_POST['CreateBudget'])) {
 			foreach ($_SESSION['Project' . $Identifier]->ProjectBOM as $Component) {
 				$SQL = "INSERT INTO projectbom (projectref,
 												stockid,
-												quantity)
+												quantity,
+												requiredby)
 											VALUES ( '" . $_POST['ProjectRef'] . "',
 												'" . $Component->StockID . "',
-												'" . $Component->Quantity . "')";
+												'" . $Component->Quantity . "',
+												'" . $Component->RequiredBy . "')";
 				$Result = DB_query($SQL, $ErrMsg);
 			}
 
@@ -379,6 +393,7 @@ if (isset($_POST['CommitProject']) or isset($_POST['CreateBudget'])) {
 										projectdescription,
 										loccode,
 										requireddate,
+										completiondate,
 										customerref,
 										exrate)
 					VALUES ('" . $_POST['ProjectRef'] . "',
@@ -386,6 +401,7 @@ if (isset($_POST['CommitProject']) or isset($_POST['CreateBudget'])) {
 							'" . $_POST['ProjectDescription'] . "',
 							'" . $_POST['LocCode'] . "',
 							'" . FormatDateForSQL($_POST['RequiredDate']) . "',
+							'" . FormatDateForSQL($_POST['CompletionDate']) . "',
 							'" . $_POST['DonorRef'] . "',
 							'" . filter_number_format($_POST['ExRate']) . "')";
 
@@ -397,10 +413,13 @@ if (isset($_POST['CommitProject']) or isset($_POST['CreateBudget'])) {
 		foreach ($_SESSION['Project' . $Identifier]->ProjectBOM as $Component) {
 			$SQL = "INSERT INTO projectbom (projectref,
 											stockid,
-											quantity)
+											quantity,
+											requiredby)
 							VALUES ('" . $_POST['ProjectRef'] . "',
 									'" . $Component->StockID . "',
-									'" . $Component->Quantity . "')";
+									'" . $Component->Quantity . "',
+									'" . $Component->RequiredBy . "',
+									)";
 			$Result = DB_query($SQL, $ErrMsg);
 		}
 
@@ -529,7 +548,7 @@ if (isset($_POST['CreateBudget']) and !$InputError) {
 											'" . $DonorDetailsRow['address5'] . "',
 											'" . $DonorDetailsRow['address6'] . "',
 											'" . $_SESSION['Project' . $Identifier]->LocCode . "',
-											'" . FormatDateForSQL($_SESSION['Project' . $Identifier]->RequiredDate) . "',
+											'" . FormatDateForSQL($_SESSION['Project' . $Identifier]->CompletionDate) . "',
 											CURRENT_DATE,
 											'1' )";
 
@@ -634,7 +653,7 @@ if (isset($_POST['SelectedDonor'])) {
 
 if (!isset($_SESSION['Project' . $Identifier]->DonorNo) or $_SESSION['Project' . $Identifier]->DonorNo == '') {
 
-	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/project.png" title="' . _('Project') . '" alt="" />' . ' ' . _('Project: Select Donor') . '</p>';
+	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/contract.png" title="' . _('Project') . '" alt="" />' . ' ' . _('Project: Select Donor') . '</p>';
 	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '" name="DonorSelection" method="post">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
@@ -699,7 +718,7 @@ if (!isset($_SESSION['Project' . $Identifier]->DonorNo) or $_SESSION['Project' .
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	echo '<p class="page_title_text" >
-			<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/project.png" title="' . _('Project') . '" alt="" /> ' . $_SESSION['Project' . $Identifier]->DonorName;
+			<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/contract.png" title="' . _('Project') . '" alt="" />' . _('Donor') . ': ' . $_SESSION['Project' . $Identifier]->DonorName . '<br />';
 
 	if ($_SESSION['CompanyRecord']['currencydefault'] != $_SESSION['Project' . $Identifier]->CurrCode) {
 		echo ' - ' . _('All amounts stated in') . ' ' . $_SESSION['Project' . $Identifier]->CurrCode . '<br />';
@@ -755,13 +774,22 @@ if (!isset($_SESSION['Project' . $Identifier]->DonorNo) or $_SESSION['Project' .
 			<td><textarea name="ProjectDescription" required="required" style="width:100%" rows="5" cols="40">' . $_SESSION['Project' . $Identifier]->ProjectDescription . '</textarea></td>
 		</tr>';
 
-	if (!isset($_SESSION['Project' . $Identifier]->RequiredDate)) {
-		$_SESSION['Project' . $Identifier]->RequiredDate = DateAdd(date($_SESSION['DefaultDateFormat']), 'm', 1);
+    if (!isset($_SESSION['Project' . $Identifier]->RequiredDate)) {
+            $_SESSION['Project' . $Identifier]->RequiredDate = DateAdd(date($_SESSION['DefaultDateFormat']), 'm', 1);
 	}
 
 	echo '<tr>
 			<td>' . _('Required Start Date') . ':</td>
 			<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="RequiredDate" size="11" value="' . $_SESSION['Project' . $Identifier]->RequiredDate . '" /></td>
+		</tr>';
+
+	if (!isset($_SESSION['Project' . $Identifier]->CompletionDate)) {
+		$_SESSION['Project' . $Identifier]->CompletionDate = DateAdd(date($_SESSION['DefaultDateFormat']), 'm', 1);
+	}
+
+	echo '<tr>
+			<td>' . _('Estimated Completion Date') . ':</td>
+			<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="CompletionDate" size="11" value="' . $_SESSION['Project' . $Identifier]->CompletionDate . '" /></td>
 		</tr>';
 
 	echo '<tr>
@@ -892,17 +920,9 @@ if (!isset($_SESSION['Project' . $Identifier]->DonorNo) or $_SESSION['Project' .
 	echo '<div class="centre">
 			<input type="submit" name="EnterProjectBOM" value="' . _('Enter Items Required') . '" />
 			<input type="submit" name="EnterProjectRequirements" value="' . _('Enter Other Requirements') . '" />';
-	if ($_SESSION['Project' . $Identifier]->Status == 0) { // not yet quoted
-		echo '<input type="submit" name="CommitProject" value="' . _('Commit Changes') . '" />';
-	} elseif ($_SESSION['Project' . $Identifier]->Status == 1) { //quoted but not yet ordered
-		echo '<input type="submit" name="CommitProject" value="' . _('Update Budget') . '" />';
-	}
-	if ($_SESSION['Project' . $Identifier]->Status == 0) { //not yet quoted
-		echo ' <input type="submit" name="CreateBudget" value="' . _('Create Budget') . '" />
-			</div>';
-	} else {
-		echo '</div>';
-	}
+	echo '<input type="submit" name="CommitProject" value="' . _('Commit Changes') . '" />';
+
+	echo '</div>';
 	if ($_SESSION['Project' . $Identifier]->Status != 2) {
 		echo '<div class="centre">
 				 <input type="submit" name="CancelProject" value="' . _('Cancel and Delete Project') . '" />

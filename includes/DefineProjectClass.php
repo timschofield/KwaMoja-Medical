@@ -28,6 +28,7 @@ class Project {
 	var $WO;
 	/*the wo created when the quotation is converted to an order */
 	var $RequiredDate;
+	var $CompletionDate;
 	var $Drawing;
 	/*a link to the contract drawing*/
 	var $CurrCode;
@@ -51,10 +52,10 @@ class Project {
 		$this->Status = 0;
 	}
 
-	function Add_To_ProjectBOM($StockId, $ItemDescription, $WorkCentre, $Quantity, $ItemCost, $UOM, $DecimalPlaces) {
+	function Add_To_ProjectBOM($StockId, $ItemDescription, $RequiredBy, $WorkCentre, $Quantity, $ItemCost, $UOM, $DecimalPlaces) {
 
 		if (isset($StockId) and $Quantity != 0) {
-			$this->ProjectBOM[$this->BOMComponentCounter] = new ProjectComponent($this->BOMComponentCounter, $StockId, $ItemDescription, $WorkCentre, $Quantity, $ItemCost, $UOM, $DecimalPlaces);
+			$this->ProjectBOM[$this->BOMComponentCounter] = new ProjectComponent($this->BOMComponentCounter, $StockId, $ItemDescription, $RequiredBy, $WorkCentre, $Quantity, $ItemCost, $UOM, $DecimalPlaces);
 			$this->BOMComponentCounter++;
 			return 1;
 		}
@@ -93,18 +94,20 @@ class ProjectComponent {
 	var $ComponentID;
 	var $StockId;
 	var $ItemDescription;
+	var $RequiredBy;
 	var $WorkCentre;
 	var $Quantity;
 	var $ItemCost;
 	var $UOM;
 	var $DecimalPlaces;
 
-	function ProjectComponent($ComponentID, $StockId, $ItemDescription, $WorkCentre, $Quantity, $ItemCost, $UOM, $DecimalPlaces = 0) {
+	function ProjectComponent($ComponentID, $StockId, $ItemDescription, $RequiredBy, $WorkCentre, $Quantity, $ItemCost, $UOM, $DecimalPlaces = 0) {
 
 		/* Constructor function to add a new Project Component object with passed params */
 		$this->ComponentID = $ComponentID;
 		$this->StockID = $StockId;
 		$this->ItemDescription = $ItemDescription;
+		$this->RequiredBy = $RequiredBy;
 		$this->WorkCentre = $WorkCentre;
 		$this->Quantity = $Quantity;
 		$this->ItemCost = $ItemCost;

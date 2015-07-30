@@ -27,6 +27,7 @@ if (isset($_POST['UpdateLines']) or isset($_POST['BackToHeader'])) {
 				$_SESSION['Project' . $Identifier]->Remove_ProjectComponent($ProjectComponent->ComponentID);
 			} else {
 				$_SESSION['Project' . $Identifier]->ProjectBOM[$ProjectComponent->ComponentID]->Quantity = filter_number_format($_POST['Qty' . $ProjectComponent->ComponentID]);
+				$_SESSION['Project' . $Identifier]->ProjectBOM[$ProjectComponent->ComponentID]->RequiredBy = $_POST['RequiredBy' . $ProjectComponent->ComponentID];
 			}
 		} // end loop around the items on the contract BOM
 	} // end if the contract is not currently committed to by the customer
@@ -42,100 +43,29 @@ if (isset($_POST['BackToHeader'])) {
 }
 
 if (isset($_POST['Search'])) {
-	/*ie seach for stock items */
 
-	if ($_POST['Keywords'] and $_POST['StockCode']) {
-		prnMsg(_('Stock description keywords have been used in preference to the Stock code extract entered'), 'info');
+	$SearchString = '%' . str_replace(' ', '%', $_POST['Keywords']) . '%';
+
+	if ($_POST['StockCat'] == 'All') {
+		$_POST['StockCat'] = '%';
 	}
 
-	if ($_POST['Keywords']) {
-		//insert wildcard characters in spaces
-		$SearchString = '%' . str_replace(' ', '%', $_POST['Keywords']) . '%';
+	$_POST['StockCode'] = '%' . $_POST['StockCode'] . '%';
 
-		if ($_POST['StockCat'] == 'All') {
-			$SQL = "SELECT stockmaster.stockid,
-						stockmaster.description,
-						stockmaster.units
-					FROM stockmaster INNER JOIN stockcategory
+	$SQL = "SELECT stockmaster.stockid,
+					stockmaster.description,
+					stockmaster.units
+				FROM stockmaster
+				INNER JOIN stockcategory
 					ON stockmaster.categoryid=stockcategory.categoryid
-					WHERE stockmaster.mbflag!='D'
+				WHERE stockmaster.mbflag!='D'
 					AND stockmaster.mbflag!='A'
 					AND stockmaster.mbflag!='K'
-					and stockmaster.discontinued!=1
-					AND stockmaster.description " . LIKE . " '$SearchString'
-					ORDER BY stockmaster.stockid";
-		} else {
-			$SQL = "SELECT stockmaster.stockid,
-						stockmaster.description,
-						stockmaster.units
-					FROM stockmaster INNER JOIN stockcategory
-					ON stockmaster.categoryid=stockcategory.categoryid
-					WHERE stockmaster.mbflag!='D'
-					AND stockmaster.mbflag!='A'
-					AND stockmaster.mbflag!='K'
-					and stockmaster.discontinued!=1
-					AND stockmaster.description " . LIKE . " '$SearchString'
-					AND stockmaster.categoryid='" . $_POST['StockCat'] . "'
-					ORDER BY stockmaster.stockid";
-		}
-
-	} elseif ($_POST['StockCode']) {
-
-		$_POST['StockCode'] = '%' . $_POST['StockCode'] . '%';
-
-		if ($_POST['StockCat'] == 'All') {
-			$SQL = "SELECT stockmaster.stockid,
-						stockmaster.description,
-						stockmaster.units
-					FROM stockmaster INNER JOIN stockcategory
-					ON stockmaster.categoryid=stockcategory.categoryid
-					WHERE stockmaster.mbflag!='D'
-					AND stockmaster.mbflag!='A'
-					AND stockmaster.mbflag!='K'
-					AND stockmaster.discontinued!=1
+					AND stockmaster.discontinued<>1
 					AND stockmaster.stockid " . LIKE . " '" . $_POST['StockCode'] . "'
-					ORDER BY stockmaster.stockid";
-		} else {
-			$SQL = "SELECT stockmaster.stockid,
-						stockmaster.description,
-						stockmaster.units
-					FROM stockmaster INNER JOIN stockcategory
-					ON stockmaster.categoryid=stockcategory.categoryid
-					WHERE stockmaster.mbflag!='D'
-					AND stockmaster.mbflag!='A'
-					AND stockmaster.mbflag!='K'
-					AND stockmaster.discontinued!=1
-					AND stockmaster.stockid " . LIKE . " '" . $_POST['StockCode'] . "'
-					AND stockmaster.categoryid='" . $_POST['StockCat'] . "'
-					ORDER BY stockmaster.stockid";
-		}
-
-	} else {
-		if ($_POST['StockCat'] == 'All') {
-			$SQL = "SELECT stockmaster.stockid,
-						stockmaster.description,
-						stockmaster.units
-					FROM stockmaster INNER JOIN stockcategory
-					ON stockmaster.categoryid=stockcategory.categoryid
-					WHERE stockmaster.mbflag!='D'
-					AND stockmaster.mbflag!='A'
-					AND stockmaster.mbflag!='K'
-					AND stockmaster.discontinued!=1
-					ORDER BY stockmaster.stockid";
-		} else {
-			$SQL = "SELECT stockmaster.stockid,
-						stockmaster.description,
-						stockmaster.units
-					FROM stockmaster INNER JOIN stockcategory
-					ON stockmaster.categoryid=stockcategory.categoryid
-					WHERE stockmaster.mbflag!='D'
-					AND stockmaster.mbflag!='A'
-					AND stockmaster.mbflag!='K'
-					AND stockmaster.discontinued!=1
-					AND stockmaster.categoryid='" . $_POST['StockCat'] . "'
-					ORDER BY stockmaster.stockid";
-		}
-	}
+					AND stockmaster.description " . LIKE . " '" . $SearchString . "'
+					AND stockmaster.categoryid " . LIKE . " '" . $_POST['StockCat'] . "'
+				ORDER BY stockmaster.stockid";
 
 	$ErrMsg = _('There is a problem selecting the part records to display because');
 	$DbgMsg = _('The SQL statement that failed was');
@@ -164,50 +94,34 @@ if (isset($_GET['Delete'])) {
 if (isset($_POST['NewItem'])) {
 	/* NewItem is set from the part selection list as the part code selected */
 	for ($i = 0; $i < $_POST['CountOfItems']; $i++) {
-		$AlreadyOnThisBOM = 0;
+
 		if (filter_number_format($_POST['Qty' . $i]) > 0) {
-			if (count($_SESSION['Project' . $Identifier]->ProjectBOM) != 0) {
 
-				foreach ($_SESSION['Project' . $Identifier]->ProjectBOM as $Component) {
+			$SQL = "SELECT stockmaster.description,
+							stockmaster.stockid,
+							stockmaster.units,
+							stockmaster.decimalplaces,
+							stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS unitcost
+						FROM stockmaster
+						LEFT JOIN stockcosts
+							ON stockcosts.stockid=stockmaster.stockid
+								AND succeeded=0
+						WHERE stockmaster.stockid = '" . trim($_POST['StockID' . $i]) . "'";
 
-					/* do a loop round the items on the order to see that the item
-					is not already on this order */
-					if ($Component->StockID == trim($_POST['StockID' . $i])) {
-						$AlreadyOnThisBOM = 1;
-						prnMsg(_('The item') . ' ' . trim($_POST['StockID' . $i]) . ' ' . _('is already in the bill of material for this contract. The system will not allow the same item on the contract more than once. However you can change the quantity required for the item.'), 'error');
-					}
+			$ErrMsg = _('The item details could not be retrieved');
+			$DbgMsg = _('The SQL used to retrieve the item details but failed was');
+			$Result1 = DB_query($SQL, $ErrMsg, $DbgMsg);
+
+			if ($MyRow = DB_fetch_array($Result1)) {
+
+				$_SESSION['Project' . $Identifier]->Add_To_ProjectBOM(trim($_POST['StockID' . $i]), $MyRow['description'], $_POST['ReqBy' . $i], '', filter_number_format($_POST['Qty' . $i]), $MyRow['unitcost'], $MyRow['units'], $MyRow['decimalplaces']);
+			} else {
+				prnMsg(_('The item code') . ' ' . trim($_POST['StockID' . $i]) . ' ' . _('does not exist in the database and therefore cannot be added to the project BOM'), 'error');
+				if ($Debug == 1) {
+					echo '<br />' . $SQL;
 				}
-				/* end of the foreach loop to look for preexisting items of the same code */
-			}
-
-			if ($AlreadyOnThisBOM != 1) {
-
-				$SQL = "SELECT stockmaster.description,
-								stockmaster.stockid,
-								stockmaster.units,
-								stockmaster.decimalplaces,
-								stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS unitcost
-							FROM stockmaster
-							LEFT JOIN stockcosts
-								ON stockcosts.stockid=stockmaster.stockid
-									AND succeeded=0
-							WHERE stockmaster.stockid = '" . trim($_POST['StockID' . $i]) . "'";
-
-				$ErrMsg = _('The item details could not be retrieved');
-				$DbgMsg = _('The SQL used to retrieve the item details but failed was');
-				$Result1 = DB_query($SQL, $ErrMsg, $DbgMsg);
-
-				if ($MyRow = DB_fetch_array($Result1)) {
-
-					$_SESSION['Project' . $Identifier]->Add_To_ProjectBOM(trim($_POST['StockID' . $i]), $MyRow['description'], '', filter_number_format($_POST['Qty' . $i]), /* Qty */ $MyRow['unitcost'], $MyRow['units'], $MyRow['decimalplaces']);
-				} else {
-					prnMsg(_('The item code') . ' ' . trim($_POST['StockID' . $i]) . ' ' . _('does not exist in the database and therefore cannot be added to the contract BOM'), 'error');
-					if ($Debug == 1) {
-						echo '<br />' . $SQL;
-					}
-					include('includes/footer.inc');
-					exit;
-				}
+				include('includes/footer.inc');
+				exit;
 			}
 			/* end of if not already on the contract BOM */
 		}
@@ -241,6 +155,7 @@ if (count($_SESSION['Project' . $Identifier]->ProjectBOM) > 0) {
 			<th>' . _('UOM') . '</th>
 			<th>' . _('Unit Cost') . '</th>
 			<th>' . _('Sub-total') . '</th>
+			<th>' . _('Required By') . '</th>
 		</tr>';
 
 	$_SESSION['Project' . $Identifier]->total = 0;
@@ -266,6 +181,7 @@ if (count($_SESSION['Project' . $Identifier]->ProjectBOM) > 0) {
 			  <td>' . $ProjectComponent->UOM . '</td>
 			  <td class="number">' . locale_number_format($ProjectComponent->ItemCost, $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
 			  <td class="number">' . $DisplayLineTotal . '</td>
+				<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="RequiredBy' . $ProjectComponent->ComponentID . '" size="11" value="' . $ProjectComponent->RequiredBy . '" />
 			  <td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '&amp;Delete=' . $ProjectComponent->ComponentID . '" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this item from the contract BOM?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td></tr>';
 		$TotalCost += $LineTotal;
 	}
@@ -350,6 +266,7 @@ if (isset($SearchResult)) {
 				<th>' . _('Units') . '</th>
 				<th>' . _('Image') . '</th>
 				<th>' . _('Quantity') . '</th>
+				<th>' . _('Required By') . '</th>
 			</tr>';
 
 	$k = 0; //row colour counter
@@ -375,6 +292,7 @@ if (isset($SearchResult)) {
 				<td>' . $MyRow['units'] . '</td>
 				<td>' . $ImageSource . '</td>
 				<td><input class="number" type="text" size="6" value="0" name="Qty' . $i . '" />
+				<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="ReqBy' . $i . '" size="11" value="' . $_SESSION['Project' . $Identifier]->CompletionDate . '" />
 				<input type="hidden" name="StockID' . $i . '" value="' . $MyRow['stockid'] . '" />
 				</td>
 			</tr>';

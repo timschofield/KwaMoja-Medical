@@ -192,9 +192,9 @@ if (isset($_POST['ProcessStockChange'])) {
 		ChangeFieldInTable("prodspecs", "keyval", $_POST['OldStockID'], $_POST['NewStockID']);
 		ChangeFieldInTable("qasamples", "prodspeckey", $_POST['OldStockID'], $_POST['NewStockID']);
 		ChangeFieldInTable("stockdescriptiontranslations", "stockid", $_POST['OldStockID'], $_POST['NewStockID']);// Updates the translated item titles (StockTitles)
+		ChangeFieldInTable("stocklongdescriptiontranslations", "stockid", $_POST['OldStockID'], $_POST['NewStockID']);
 		ChangeFieldInTable("custitem", "stockid", $_POST['OldStockID'], $_POST['NewStockID']);
 		ChangeFieldInTable("pricematrix", "stockid", $_POST['OldStockID'], $_POST['NewStockID']);
-/*		 ChangeFieldInTable("Stockdescriptions", "stockid", $_POST['OldStockID'], $_POST['NewStockID']);// Updates the translated item descriptions (StockDescriptions)*/
 
 		DB_ReinstateForeignKeys();
 

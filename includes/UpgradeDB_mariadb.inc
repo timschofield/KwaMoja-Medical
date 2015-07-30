@@ -53,6 +53,23 @@ function NewSecurityToken($TokenId, $TokenName) {
 	}
 }
 
+function NewSysType($TypeID, $TypeDescription) {
+	/* Does type already exist */
+	$SQL = "SELECT typeid FROM systypes WHERE typeid='" . $TypeID . "'";
+	$Result = DB_query($SQL);
+	if (DB_num_rows($Result) == 0) {
+		$SQL = "INSERT INTO `systypes` (`typeid`, `typename`) VALUES ('" . $TypeID . "', '" . $TypeDescription . "')";
+		$Response = executeSQL($SQL, False);
+		if ($Response == 0) {
+			OutputResult(_('The type') . ' ' . $TypeDescription . ' ' . _('has been inserted'), 'success');
+		} else {
+			OutputResult(_('The type') . ' ' . $TypeDescription . ' ' . _('could not be inserted') . '<br />' . $SQL, 'error');
+		}
+	} else {
+		OutputResult(_('The script') . ' ' . $TypeDescription . ' ' . _('already exists'), 'info');
+	}
+}
+
 function NewScript($ScriptName, $PageSecurity) {
 	/*Is page already in table */
 	$SQL = "SELECT script FROM scripts WHERE script='" . $ScriptName . "'";
@@ -515,7 +532,7 @@ function AddConstraint($Table, $Constraint, $Field, $ReferenceTable, $ReferenceF
 			$List = implode(',', $ReferenceField);
 			$ReferenceField = $List;
 		}
-		$SQL = "ALTER TABLE " . $Table . " ADD CONSTRAINT " . $Constraint . " FOREIGN KEY (" . $Field . ") REFERENCES " . $ReferenceTable . " (" . $ReferenceField . ")";
+		$SQL = "ALTER TABLE `" . $Table . "` ADD CONSTRAINT `" . $Constraint . "` FOREIGN KEY (" . $Field . ") REFERENCES `" . $ReferenceTable . "` (" . $ReferenceField . ")";
 		$Response = executeSQL($SQL, False);
 		if ($Response == 0) {
 			OutputResult(_('The constraint') . ' ' . $Constraint . ' ' . _('has been added'), 'success');

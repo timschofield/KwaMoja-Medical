@@ -1,6 +1,6 @@
 <?php
 
-AddColumn('createdate', 'stockserialitems', 'DATETIME', 'NULL', 'CURRENT_TIMESTAMP', 'qualitytext');
+AddColumn('createdate', 'stockserialitems', 'DATETIME', 'NULL', Date('Y-m-d H:i:s'), 'qualitytext');
 AddIndex(array('createdate'), 'stockserialitems', 'CreateDate');
 
 UpdateField('stockserialitems', 'createdate', 'NULL', "stockid LIKE '%'");

@@ -485,7 +485,7 @@ if (!isset($New)) { //ie not new at all!
 			<td>' . _('Image File (.jpg)') . ':</td>
 			<td><input type="file" id="ItemPicture" name="ItemPicture" /></td>';
 
-	if (function_exists('imagecreatefromjpg')) {
+	if (function_exists('imagecreatefromjpeg')) {
 		$AssetImgLink = '<img src="GetStockImage.php?automake=1&textcolor=FFFFFF&bgcolor=CCCCCC' . '&AssetID=' . urlencode($AssetID) . '&text=' . '&width=64' . '&height=64' . '" />';
 	} else {
 		if (isset($AssetID) and file_exists($_SESSION['part_pics_dir'] . '/ASSET_' . $AssetID . '.jpg')) {

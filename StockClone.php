@@ -701,7 +701,7 @@ if (empty($_POST['StockID']) or ($_POST['StockID'] == $_POST['OldStockID'])) {
 	$tempid = $_POST['StockID'];
 }
 
-if (function_exists('imagecreatefromjpg') and isset($tempfile)) {
+if (function_exists('imagecreatefromjpeg') and isset($tempfile)) {
 	$StockImgLink = '<img src="GetStockImage.php?automake=1&amp;textcolor=FFFFFF&amp;bgcolor=CCCCCC' . '&amp;StockID=' . urlencode($tempid) . '&amp;text=' . '&amp;width=100' . '&amp;height=100' . '" alt="" />';
 } else {
 	if (!empty($tempid) and file_exists($_SESSION['part_pics_dir'] . '/' . $tempid . '.jpg')) {

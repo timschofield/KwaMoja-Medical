@@ -560,7 +560,7 @@ if (isset($_POST['CommitBatch'])) {
 			$DbgMsg = _('Cannot update the supplier record for the date of the last payment made using the SQL');
 			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
-			$_SESSION['PaymentDetail' . $Identifier]->Narrative = $_SESSION['PaymentDetail' . $Identifier]->SupplierID . '-' . $_SESSION['PaymentDetail' . $Identifier]->Narrative;
+			$_SESSION['PaymentDetail' . $Identifier]->Narrative = $_SESSION['PaymentDetail' . $Identifier]->SupplierID . ' - ' . $_SESSION['PaymentDetail' . $Identifier]->Narrative;
 
 			if ($_SESSION['CompanyRecord']['gllink_creditors'] == 1) {
 				/* then do the supplier control GLTrans */

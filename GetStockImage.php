@@ -56,13 +56,6 @@ function DecodeBgColor($ColourStr) {
 		);
 }
 
-if (!function_exists('imagecreatefrompng')) {
-	$Title = _('Image Manipulation Script Problem');
-	include('includes/header.inc');
-	prnMsg(_('This script requires the gd image functions to be available to php - this needs to be enabled in your server php version before this script can be used'), 'error');
-	include('includes/footer.inc');
-	exit;
-}
 $DefaultImage = 'DefaultItem.png';
 
 $FilePath = $_SESSION['part_pics_dir'] . '/';

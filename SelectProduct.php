@@ -458,7 +458,7 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 		echo '<a href="', $RootPath, '/StockAdjustments.php?StockID=', $UrlEncodedStockId, '">', _('Quantity Adjustments'), '</a>';
 		echo '<a href="', $RootPath, '/StockTransfers.php?StockID=', $UrlEncodedStockId, '&amp;NewTransfer=true">', _('Location Transfers'), '</a>';
 		//show the item image if it has been uploaded
-		if (function_exists('imagecreatefromjpg')) {
+		if (function_exists('imagecreatefromjpeg')) {
 			if ($_SESSION['ShowStockidOnImages'] == '0') {
 				$StockImgLink = '<img src="GetStockImage.php?automake=1&amp;textcolor=FFFFFF&amp;bgcolor=CCCCCC' . '&amp;StockID=' . $UrlEncodedStockId . '&amp;text=' . '&amp;width=100' . '&amp;height=100' . '" alt="" />';
 			} else {

@@ -1050,7 +1050,7 @@ echo '<tr>
 		<br /><input type="checkbox" name="ClearImage" id="ClearImage" value="1" > '._('Clear Image').'
 		</td>';
 
-if (function_exists('imagecreatefromjpg') and isset($StockId) and !empty($StockId)) {
+if (function_exists('imagecreatefromjpeg') and isset($StockId) and !empty($StockId)) {
 	$StockImgLink = '<img src="GetStockImage.php?automake=1&amp;textcolor=FFFFFF&amp;bgcolor=CCCCCC' . '&amp;StockID=' . urlencode($StockId) . '&amp;text=' . '&amp;width=100' . '&amp;height=100' . '" alt="" />';
 } else {
 	if(isset($StockId) and  !empty($StockId) and file_exists($_SESSION['part_pics_dir'] . '/' . $StockId . '.jpg')) {

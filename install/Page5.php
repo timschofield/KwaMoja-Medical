@@ -5,6 +5,29 @@ $DBUser = $_SESSION['Installer']['UserName'];
 $DBPassword = $_SESSION['Installer']['Password'];
 $DBType = $_SESSION['Installer']['DBMS'];
 $_SESSION['DatabaseName'] = $_SESSION['Installer']['Database'];
+$DefaultDatabase = 'default';
+
+/* Try to connect to the DBMS */
+switch($_SESSION['Installer']['DBMS']) {
+	case 'mariadb':
+		$DB = @mysqli_connect($_SESSION['Installer']['HostName'], $_SESSION['Installer']['UserName'], $_SESSION['Installer']['Password']);
+		break;
+	case 'mysql':
+		$DB = @mysql_connect($_SESSION['Installer']['HostName'] . ':' . $_SESSION['Installer']['DBPort'], $_SESSION['Installer']['UserName'], $_SESSION['Installer']['Password']);
+		break;
+	case 'mysqli':
+		$DB = @mysqli_connect($_SESSION['Installer']['HostName'], $_SESSION['Installer']['UserName'], $_SESSION['Installer']['Password']);
+		break;
+	case 'posgres':
+		$DB = pg_connect('host=' . $_SESSION['Installer']['HostName'] . ' dbname=kwamoja port=5432 user=postgres');;
+		break;
+	default:
+		$DB = @mysqli_connect($_SESSION['Installer']['HostName'], $_SESSION['Installer']['UserName'], $_SESSION['Installer']['Password']);
+		break;
+}
+if (!$DB) {
+	$Errors[] = _('Failed to connect the database management system');
+}
 
 include($PathPrefix . 'includes/ConnectDB_' . $_SESSION['Installer']['DBMS'] . '.inc');
 include($PathPrefix . 'includes/UpgradeDB_' . $_SESSION['Installer']['DBMS'] . '.inc');
@@ -23,10 +46,10 @@ if (!file_exists($Path_To_Root . '/companies/' . $_SESSION['Installer']['Databas
 	$Result = mkdir($CompanyDir . '/reportwriter');
 	$Result = mkdir($CompanyDir . '/pdf_append');
 	$Result = mkdir($CompanyDir . '/FormDesigns');
-	copy($Path_To_Root . '/companies/kwamoja/FormDesigns/GoodsReceived.xml', $CompanyDir . '/FormDesigns/GoodsReceived.xml');
-	copy($Path_To_Root . '/companies/kwamoja/FormDesigns/PickingList.xml', $CompanyDir . '/FormDesigns/PickingList.xml');
-	copy($Path_To_Root . '/companies/kwamoja/FormDesigns/PurchaseOrder.xml', $CompanyDir . '/FormDesigns/PurchaseOrder.xml');
-	copy($Path_To_Root . '/companies/kwamoja/FormDesigns/Journal.xml', $CompanyDir . '/FormDesigns/Journal.xml');
+	copy($Path_To_Root . '/companies/default/FormDesigns/GoodsReceived.xml', $CompanyDir . '/FormDesigns/GoodsReceived.xml');
+	copy($Path_To_Root . '/companies/default/FormDesigns/PickingList.xml', $CompanyDir . '/FormDesigns/PickingList.xml');
+	copy($Path_To_Root . '/companies/default/FormDesigns/PurchaseOrder.xml', $CompanyDir . '/FormDesigns/PurchaseOrder.xml');
+	copy($Path_To_Root . '/companies/default/FormDesigns/Journal.xml', $CompanyDir . '/FormDesigns/Journal.xml');
 	echo '<div class="success">' . _('The companies directory has been successfully created') . '</div>';
 	ob_flush();
 	if (isset($File_Temp_Name)) {
@@ -134,7 +157,7 @@ $_SESSION['Updates']['Errors'] = 0;
 $_SESSION['Updates']['Successes'] = 0;
 $_SESSION['Updates']['Warnings'] = 0;
 for ($UpdateNumber = $StartingUpdate; $UpdateNumber <= $EndingUpdate; $UpdateNumber++) {
-	if (file_exists($PathPrefix . 'sql/install/' . $UpdateNumber . '.php')) {
+	if (file_exists($PathPrefix . 'sql/updates/' . $UpdateNumber . '.php')) {
 		$percent = intval($UpdateNumber / $EndingUpdate * 100) . "%";
 		echo '<script language="javascript">
 						document.getElementById("progress").innerHTML="<div style=\"margin: 1px;border-radius: 5px; width:' . $percent . ';background-color:#157213;\">&nbsp;</div>";
@@ -145,7 +168,7 @@ for ($UpdateNumber = $StartingUpdate; $UpdateNumber <= $EndingUpdate; $UpdateNum
 		$Result = executeSQL($SQL, $DB, False);
 		flush();
 		if ($Result == 0) {
-			include($PathPrefix . 'sql/install/' . $UpdateNumber . '.php');
+			include($PathPrefix . 'sql/updates/' . $UpdateNumber . '.php');
 		}
 		flush();
 	}
@@ -190,7 +213,7 @@ if (!isset($_POST['Demo'])) {
 ChangeConfigValue('VersionNumber', '14.02');
 
 function HighestFileName($PathPrefix) {
-	$files = glob($PathPrefix . 'sql/install/*.php');
+	$files = glob($PathPrefix . 'sql/updates/*.php');
 	natsort($files);
 	return basename(array_pop($files), ".php");
 }

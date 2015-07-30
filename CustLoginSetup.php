@@ -231,18 +231,18 @@ echo '</select></td>
 		<td>' . _('Theme') . ':</td>
 		<td><select name="Theme">';
 
-$_SESSION['Theme']Directory = dir('css/');
+$ThemeDirectory = dir('css/');
 
-while (false != ($_SESSION['Theme']Name = $_SESSION['Theme']Directory->read())) {
+while (false != ($ThemeName = $ThemeDirectory->read())) {
 
-	if (is_dir('css/' . $_SESSION['Theme']Name) and $_SESSION['Theme']Name != '.' and $_SESSION['Theme']Name != '..' and $_SESSION['Theme']Name != '.svn') {
+	if (is_dir('css/' . $ThemeName) and $ThemeName != '.' and $ThemeName != '..' and $ThemeName != '.svn') {
 
-		if (isset($_POST['Theme']) and $_POST['Theme'] == $_SESSION['Theme']Name) {
-			echo '<option selected="selected" value="' . $_SESSION['Theme']Name . '">' . $_SESSION['Theme']Name . '</option>';
-		} elseif (!isset($_POST['Theme']) and ($_SESSION['Theme'] == $_SESSION['Theme']Name)) {
-			echo '<option selected="selected" value="' . $_SESSION['Theme']Name . '">' . $_SESSION['Theme']Name . '</option>';
+		if (isset($_POST['Theme']) and $_POST['Theme'] == $ThemeName) {
+			echo '<option selected="selected" value="' . $ThemeName . '">' . $ThemeName . '</option>';
+		} elseif (!isset($_POST['Theme']) and ($_SESSION['Theme'] == $ThemeName)) {
+			echo '<option selected="selected" value="' . $ThemeName . '">' . $ThemeName . '</option>';
 		} else {
-			echo '<option value="' . $_SESSION['Theme']Name . '">' . $_SESSION['Theme']Name . '</option>';
+			echo '<option value="' . $ThemeName . '">' . $ThemeName . '</option>';
 		}
 	}
 }

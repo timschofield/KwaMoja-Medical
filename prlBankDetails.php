@@ -7,7 +7,7 @@ $Title = _('Bank Details Section');
 
 include('includes/header.inc');
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/bank.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '</p>';
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/bank.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '</p>';
 
 /* Fill $employeeid variable if set in either
  * $_GET or $_POST arrays

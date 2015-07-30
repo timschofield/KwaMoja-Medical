@@ -8,7 +8,7 @@ include('includes/header.inc');
 
 echo '<div class="toplink"><a href="' . $RootPath . '/prlEditPayroll.php?SelectedAccountr=">' . _('Create Payroll Period') . '</a></div>';
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/payrol.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '</p>';
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/payrol.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '</p>';
 
 if (isset($_GET['PayrollID'])) {
 	$PayrollID = $_GET['PayrollID'];

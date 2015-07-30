@@ -7,7 +7,7 @@ $Title = _('Payroll Records Maintenance');
 include('includes/header.inc');
 include('includes/prlFunctions.php');
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/payrol.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '</p>';
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/payrol.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '</p>';
 
 if (isset($_GET['PayrollID'])) {
 	$PayrollID = $_GET['PayrollID'];

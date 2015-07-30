@@ -7,7 +7,7 @@ include('includes/header.inc');
 
 echo '<div class="toplink"><a href="' . $RootPath . '/prlEmployeeMaster.php">' . _('Create a New Employee Record') . '</a></div>';
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '</p>';
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '</p>';
 
 if (isset($_GET['EmployeeID'])) {
 	$EmployeeID = $_GET['EmployeeID'];

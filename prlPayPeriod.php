@@ -14,7 +14,7 @@ if (isset($_GET['PayPeriodID'])) {
 	unset($PayPeriodID);
 }
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
 
 if (isset($_POST['insert']) or isset($_POST['update'])) {
 

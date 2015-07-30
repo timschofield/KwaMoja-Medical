@@ -15,7 +15,7 @@ if (isset($_GET['Bracket'])) {
 	$_POST["New"] = True;
 }
 
-echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $Theme . '/images/payrol.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '</p>';
+echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/payrol.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '</p>';
 
 if (isset($_POST['Submit'])) {
 

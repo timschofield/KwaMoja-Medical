@@ -15,7 +15,7 @@ if (isset($_GET['EmployeeID'])) {
 	unset($EmployeeID);
 }
 
-echo '<p class="page_title_text noPrint"><img src="' . $RootPath . '/css/' . $Theme . '/images/customer.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '<br /></p>';
+echo '<p class="page_title_text noPrint"><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/customer.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '<br /></p>';
 
 if (isset($_POST['insert']) or isset($_POST['update'])) {
 

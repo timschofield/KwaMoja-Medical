@@ -154,8 +154,8 @@ if (!isset($_SESSION['CompanyDefaultsLoaded'])) {
 		$_SESSION['DBUpdateNumber'] = 0;
 	}
 	/*If the highest of the DB update files is greater than the DBUpdateNumber held in config table then do upgrades */
-	$DBVersion = HighestFileName($PathPrefix);
-	if (($DBVersion > $_SESSION['DBUpdateNumber']) and (basename($_SERVER['SCRIPT_NAME']) != 'Z_UpgradeDatabase.php')) {
+	$_SESSION['DBVersion'] = HighestFileName($PathPrefix);
+	if (($_SESSION['DBVersion'] > $_SESSION['DBUpdateNumber']) and (basename($_SERVER['SCRIPT_NAME']) != 'Z_UpgradeDatabase.php')) {
 		header('Location: Z_UpgradeDatabase.php');
 	}
 

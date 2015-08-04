@@ -8,6 +8,10 @@ $Title = _('Database Upgrade');
 
 //ob_start(); /*what is this for? */
 
+if (!isset($_SESSION['DBVersion'])) {
+	header('Location: index.php');
+}
+
 include('includes/header.inc');
 
 function executeSQL($SQL, $TrapErrors = False) {
@@ -48,7 +52,7 @@ if (!isset($_POST['continue'])) {
 	echo '</form></div>';
 } else {
 	$StartingUpdate = $_SESSION['DBUpdateNumber'] + 1;
-	$EndingUpdate = HighestFileName($PathPrefix);
+	$EndingUpdate = $_SESSION['DBVersion'];
 	if (isset($_POST['CreateSQLFile'])) {
 		$SQLFile = fopen('./companies/' . $_SESSION['DatabaseName'] . '/reportwriter/UpgradeDB' . $StartingUpdate . '-' . $EndingUpdate . '.sql', 'w');
 	}

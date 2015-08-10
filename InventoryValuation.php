@@ -257,7 +257,8 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['CSV'])) and isset($_POST['Catego
 				FROM locations
 				INNER JOIN locationusers
 					ON locationusers.loccode=locations.loccode
-					AND locationusers.userid='" .  $_SESSION['UserID'] . "' AND locationusers.canview=1";
+					AND locationusers.userid='" .  $_SESSION['UserID'] . "' AND locationusers.canview=1
+				ORDER BY locationname";
 
 	$LocnResult=DB_query($SQL);
 

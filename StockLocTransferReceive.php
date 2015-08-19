@@ -437,6 +437,11 @@ if (isset($_POST['ProcessTransfer'])) {
 				unset($_POST['Qty' . $i]);
 			} /*end if Quantity >= 0 */
 			if ($TrfLine->CancelBalance == 1) {
+				$SQL = "UPDATE loctransfers SET shipqty = recqty
+						WHERE reference = '" . $_SESSION['Transfer']->TrfID . "'
+						AND stockid = '" .  $TrfLine->StockID . "'";
+				$ErrMsg =  _('CRITICAL ERROR') . '! ' . _('Unable to set the quantity received to the quantity shipped to cancel the balance on this transfer line');
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 				// send an email to the inventory manager about this cancellation (as can lead to employee fraud)
 				if ($_SESSION['InventoryManagerEmail'] != '') {
 					$ConfirmationText = _('Cancelled balance at transfer') . ': ' . $_SESSION['Transfer' . $Identifier]->TrfID . "\r\n" . _('From Location') . ': ' . $_SESSION['Transfer' . $Identifier]->StockLocationFrom . "\r\n" . _('To Location') . ': ' . $_SESSION['Transfer' . $Identifier]->StockLocationTo . "\r\n" . _('Stock code') . ': ' . $TrfLine->StockID . "\r\n" . _('Qty received') . ': ' . round($TrfLine->Quantity, $TrfLine->DecimalPlaces) . "\r\n" . _('By user') . ': ' . $_SESSION['UserID'] . "\r\n" . _('At') . ': ' . Date('Y-m-d H:i:s');

@@ -1504,6 +1504,12 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 			$DbgMsg = _('The following SQL to update the GRN quantity invoiced was used');
 			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
 
+			$SQL = "INSERT INTO suppinvstogrn VALUES ('" . $InvoiceNo . "',
+													'" . $EnteredGRN->GRNNo . "')";
+			$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The invoice could not be mapped to the goods received record because');
+			$DbgMsg = _('The following SQL to map the invoice to the GRN was used');
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
+
 			if (mb_strlen($EnteredGRN->ShiptRef) > 0 and $EnteredGRN->ShiptRef != '0') {
 				/* insert the shipment charge records */
 				$SQL = "INSERT INTO shipmentcharges (shiptref,

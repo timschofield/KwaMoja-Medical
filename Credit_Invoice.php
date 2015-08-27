@@ -551,8 +551,9 @@ if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 		if ($MyRow[0] > ($_SESSION['CreditItems' . $Identifier]->total + $_SESSION['CreditItems' . $Identifier]->FreightCost + $TaxTotal)) {
 
 			$Allocate_amount = $_SESSION['CreditItems' . $Identifier]->total + $_SESSION['CreditItems' . $Identifier]->FreightCost + $TaxTotal;
+			$SettledInvoice = 0;
 			$Settled = 1;
-		} else if ($MyRow[0] > ($_SESSION['CreditItems' . $Identifier]->total + $_SESSION['CreditItems' . $Identifier]->FreightCost + $TaxTotal)) {
+		} else if ($MyRow[0] < ($_SESSION['CreditItems' . $Identifier]->total + $_SESSION['CreditItems' . $Identifier]->FreightCost + $TaxTotal)) {
 			/*the balance left to allocate is less than the credit note value */
 			$Allocate_amount = $MyRow[0];
 			$SettledInvoice = 1;

@@ -966,7 +966,7 @@ if (isset($_POST['PostCreditNote'])) {
 									$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
 
 									$SQL = "INSERT INTO stockcosts VALUES('" . $EnteredGRN->ItemCode . "',
-																	'" . ($OldMaterialCost + $CostIncrement) . "',
+																	'" . ($OldMaterialCost - $CostIncrement) . "',
 																	'" . $OldLabourCost . "',
 																	'" . $OldOverheadCost . "',
 																	CURRENT_TIME,

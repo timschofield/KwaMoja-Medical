@@ -1,9 +1,12 @@
 <?php
+/* Shows the stock on hand together with outstanding sales orders and outstanding purchase orders by stock location for all items in the selected stock category */
 
 include('includes/session.inc');
 include ('includes/SQL_CommonFunctions.inc');
 $Title = _('All Stock Status By Location/Category');
 
+$ViewTopic = 'Inventory';
+$BookMark = 'StockLocStatus';
 include('includes/header.inc');
 
 if (isset($_GET['StockID'])) {
@@ -12,14 +15,17 @@ if (isset($_GET['StockID'])) {
 	$StockId = trim(mb_strtoupper($_POST['StockID']));
 }
 
-echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
+echo '<p class="page_title_text">
+		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '
+	</p>';
 
 echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 echo '<table class="selection">
-	 <tr>
-		 <td>' . _('From Stock Location') . ':</td><td><select name="StockLocation">';
+		<tr>
+			<td>' . _('From Stock Location') . ':</td>
+			<td><select name="StockLocation">';
 
 $SQL = "SELECT locationname,
 				locations.loccode
@@ -149,6 +155,8 @@ if (isset($_POST['ShowStatus'])) {
 	$DbgMsg = _('The SQL that failed was');
 	$LocStockResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
+	echo '<br />', DisplayDateTime(), // Display current date and time.
+		'<br />';
 	echo '<table cellpadding="5" cellspacing="4" class="selection">
 		 	<tr>
 				<th>' . _('Location') . '</th>

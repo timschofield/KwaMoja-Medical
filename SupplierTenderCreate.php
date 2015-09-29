@@ -523,17 +523,7 @@ if (isset($_POST['SearchSupplier']) or isset($_POST['Go']) or isset($_POST['Next
 				LIMIT " . ($_SESSION['DisplayRecordsMax'] * $_POST['PageOffset']) . ", " . ($_SESSION['DisplayRecordsMax']);
 
 	$Result = DB_query($SQL);
-	if (DB_num_rows($Result) == 1) {
-		$MyRow = DB_fetch_array($Result);
-		$SingleSupplierReturned = $MyRow['supplierid'];
-	}
 } //end of if search
-if (isset($SingleSupplierReturned)) {
-	/*there was only one supplier returned */
-	$_SESSION['SupplierID'] = $SingleSupplierReturned;
-	unset($_POST['Keywords']);
-	unset($_POST['SupplierCode']);
-}
 
 if (isset($_POST['SearchSupplier'])) {
 	$ListCount = DB_num_rows($Result);

@@ -154,12 +154,15 @@ if (!isset($_GET['SelectedSectionID']) and !isset($_POST['SelectedSectionID'])) 
 	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '<br /></p>';
 
 	echo '<table class="selection">
-			<tr>
-				<th class="SortableColumn">' . _('Section Number') . '</th>
-				<th class="SortableColumn">' . _('Section Description') . '</th>
-				<th class="noprint" colspan="2">&nbsp;</th>
-			</tr>';
+			<thead>
+				<tr>
+					<th class="SortedColumn">' . _('Section Number') . '</th>
+					<th class="SortedColumn">' . _('Section Description') . '</th>
+					<th class="noprint" colspan="2">&nbsp;</th>
+				</tr>
+			</thead>';
 
+	echo '<tbody>';
 	$k = 0; //row colour counter
 	while ($MyRow = DB_fetch_array($Result)) {
 
@@ -180,6 +183,7 @@ if (!isset($_GET['SelectedSectionID']) and !isset($_POST['SelectedSectionID'])) 
 		}
 		echo '</tr>';
 	} //END WHILE LIST LOOP
+	echo '</tbody>';
 	echo '</table>';
 } //end of ifs and buts!
 

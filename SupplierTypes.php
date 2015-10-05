@@ -127,14 +127,16 @@ if (!isset($SelectedType)) {
 	$SQL = "SELECT typeid, typename FROM suppliertype";
 	$Result = DB_query($SQL);
 
-	echo '<table class="selection">';
-	echo '<tr>
-			<th class="SortableColumn">' . _('Type ID') . '</th>
-			<th class="SortableColumn">' . _('Type Name') . '</th>
-		</tr>';
+	echo '<table class="selection">
+			<thead>
+				<tr>
+					<th class="SortedColumn">' . _('Type ID') . '</th>
+					<th class="SortedColumn">' . _('Type Name') . '</th>
+				</tr>
+			</thead>';
 
 	$k = 0; //row colour counter
-
+	echo '<tbody>';
 	while ($MyRow = DB_fetch_row($Result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -151,6 +153,7 @@ if (!isset($SelectedType)) {
 			</tr>';
 	}
 	//END WHILE LIST LOOP
+	echo '</tbody>';
 	echo '</table>';
 }
 

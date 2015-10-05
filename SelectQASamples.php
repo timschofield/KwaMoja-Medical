@@ -286,13 +286,15 @@ if (!isset($SelectedSampleID)) {
 
 	if (isset($StockItemsResult)) {
 		echo '<table class="selection">
-				<tr>
-					<th class="SortableColumn">', _('Code'), '</th>
-					<th class="SortableColumn">', _('Description'), '</th>
-					<th class="SortableColumn">', _('On Hand'), '</th>
-					<th class="SortableColumn">', _('Units'), '</th>
-				</tr>';
-
+				<thead>
+					<tr>
+						<th class="SortedColumn">', _('Code'), '</th>
+						<th class="SortedColumn">', _('Description'), '</th>
+						<th class="SortedColumn">', _('On Hand'), '</th>
+						<th class="SortedColumn">', _('Units'), '</th>
+					</tr>
+				</thead>';
+		echo '<tbody>';
 		$k = 0; //row colour counter
 		while ($MyRow = DB_fetch_array($StockItemsResult)) {
 			if ($k == 1) {
@@ -309,6 +311,7 @@ if (!isset($SelectedSampleID)) {
 			</tr>';
 		}
 		//end of while loop
+		echo '</tbody>';
 		echo '</table>';
 	}
 	//end if stock search results to show
@@ -379,18 +382,21 @@ if (!isset($SelectedSampleID)) {
 		if (DB_num_rows($SampleResult) > 0) {
 
 			echo '<table cellpadding="2" width="90%" class="selection">
-					<tr>
-						<th class="SortableColumn">', _('Enter Results'), '</th>
-						<th class="SortableColumn">', _('Specification'), '</th>
-						<th class="SortableColumn">', _('Description'), '</th>
-						<th class="SortableColumn">', _('Lot / Serial'), '</th>
-						<th class="SortableColumn">', _('Identifier'), '</th>
-						<th class="SortableColumn">', _('Created By'), '</th>
-						<th class="SortableColumn">', _('Sample Date'), '</th>
-						<th class="SortableColumn">', _('Comments'), '</th>
-						<th class="SortableColumn">', _('Cert Allowed'), '</th>
-					</tr>';
+					<thead>
+						<tr>
+							<th class="SortedColumn">', _('Enter Results'), '</th>
+							<th class="SortedColumn">', _('Specification'), '</th>
+							<th class="SortedColumn">', _('Description'), '</th>
+							<th class="SortedColumn">', _('Lot / Serial'), '</th>
+							<th class="SortedColumn">', _('Identifier'), '</th>
+							<th class="SortedColumn">', _('Created By'), '</th>
+							<th class="SortedColumn">', _('Sample Date'), '</th>
+							<th class="SortedColumn">', _('Comments'), '</th>
+							<th class="SortedColumn">', _('Cert Allowed'), '</th>
+						</tr>
+					</thead>';
 			$k = 0; //row colour counter
+			echo '<tbody>';
 			while ($MyRow = DB_fetch_array($SampleResult)) {
 				if ($k == 1) {
 					/*alternate bgcolour of row for highlighting */
@@ -427,6 +433,7 @@ if (!isset($SelectedSampleID)) {
 					</tr>';
 				//end of page full new headings if
 			} //end of while loop
+			echo '</tbody>';
 			echo '</table>';
 		} // end if Pick Lists to show
 	}

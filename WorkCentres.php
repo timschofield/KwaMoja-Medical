@@ -127,14 +127,16 @@ if (!isset($SelectedWC)) {
 					AND locationusers.canview=1";
 	$Result = DB_query($SQL);
 	echo '<table class="selection">
-			<tr>
-				<th class="SortableColumn">' . _('WC Code') . '</th>
-				<th class="SortableColumn">' . _('Description') . '</th>
-				<th class="SortableColumn">' . _('Location') . '</th>
-				<th>' . _('Overhead GL Account') . '</th>
-				<th>' . _('Overhead Per Hour') . '</th>
-			</tr>';
-
+			<thead>
+				<tr>
+					<th class="SortedColumn">' . _('WC Code') . '</th>
+					<th class="SortedColumn">' . _('Description') . '</th>
+					<th class="SortedColumn">' . _('Location') . '</th>
+					<th>' . _('Overhead GL Account') . '</th>
+					<th>' . _('Overhead Per Hour') . '</th>
+				</tr>
+			</thead>';
+	echo '<tbody>';
 	while ($MyRow = DB_fetch_array($Result)) {
 
 		printf('<tr>
@@ -147,7 +149,7 @@ if (!isset($SelectedWC)) {
 					<td><a href="%s&amp;SelectedWC=%s&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this work centre?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
 				</tr>', $MyRow['code'], $MyRow['description'], $MyRow['locationname'], $MyRow['overheadrecoveryact'] . ' - ' . $MyRow['accountname'], $MyRow['overheadperhour'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['code'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['code']);
 	}
-
+	echo '</tbody>';
 	//END WHILE LIST LOOP
 	echo '</table>';
 }

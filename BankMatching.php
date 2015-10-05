@@ -258,18 +258,20 @@ if ($InputError != 1 and isset($_POST['BankAccount']) and $_POST['BankAccount'] 
 	$PaymentsResult = DB_query($SQL, $ErrMsg);
 
 	echo '<table cellpadding="2" class="selection" summary="' . _('Payments to be matched') . '">
-			<tr>
-				<th class="SortableColumn">' . _('Cheque No') . '</th>
-				<th class="SortableColumn">' . _('Ref') . '</th>
-				<th class="SortableColumn">' . _('Date') . '</th>
-				<th>' . _('Amount') . '</th>
-				<th>' . _('Outstanding') . '</th>
-				<th colspan="3">' . _('Clear') . ' / ' . _('Unclear') . '</th>
-			</tr>';
+			<thead>
+				<tr>
+					<th class="SortedColumn">' . _('Cheque No') . '</th>
+					<th class="SortedColumn">' . _('Ref') . '</th>
+					<th class="SortedColumn">' . _('Date') . '</th>
+					<th>' . _('Amount') . '</th>
+					<th>' . _('Outstanding') . '</th>
+					<th colspan="3">' . _('Clear') . ' / ' . _('Unclear') . '</th>
+				</tr>
+			</thead>';
 
 	$k = 0; //row colour counter
 	$i = 1; //no of rows counter
-
+	echo '<tbody>';
 	while ($MyRow = DB_fetch_array($PaymentsResult)) {
 
 		$DisplayTranDate = ConvertSQLDate($MyRow['transdate']);
@@ -310,7 +312,8 @@ if ($InputError != 1 and isset($_POST['BankAccount']) and $_POST['BankAccount'] 
 		++$i;
 	}
 	//end of while loop
-	echo '</table>
+	echo '</tbody>
+			</table>
 			<div class="centre">
 				<input type="hidden" name="RowCounter" value="' . $i . '" />
 				<input type="submit" name="Update" value="' . _('Update Matching') . '" />

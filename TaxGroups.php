@@ -185,12 +185,15 @@ if (!isset($SelectedGroup)) {
 		echo '</div>';
 	} else {
 		echo '<table class="selection">
-				<tr>
-					<th class="SortableColumn">' . _('Group No') . '</th>
-					<th class="SortableColumn">' . _('Tax Group') . '</th>
-					<th colspan="2" >', _('Maintenance') . '</th>
-				</tr>';
+				<thead>
+					<tr>
+						<th class="SortedColumn">' . _('Group No') . '</th>
+						<th class="SortedColumn">' . _('Tax Group') . '</th>
+						<th colspan="2" >', _('Maintenance') . '</th>
+					</tr>
+				</thead>';
 
+		echo '<tbody>';
 		$k = 0; //row colour counter
 		while ($MyRow = DB_fetch_array($Result)) {
 			if ($k == 1) {
@@ -207,6 +210,7 @@ if (!isset($SelectedGroup)) {
 					<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', '&amp;SelectedGroup=', $MyRow['taxgroupid'], '&amp;Delete=1&amp;GroupID=', urlencode($MyRow['taxgroupdescription']), '" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this tax group?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>';
 
 		} //END WHILE LIST LOOP
+		echo '</tbody>';
 		echo '</table>';
 	}
 } //end of ifs and buts!
@@ -289,15 +293,18 @@ if (isset($SelectedGroup)) {
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
 				<input type="hidden" name="SelectedGroup" value="' . $SelectedGroup . '" />';
 		echo '<table class="selection">
-				<tr>
-					<th colspan="3"><h3>' . _('Calculation Order') . '</h3></th>
-				</tr>
-				<tr>
-					<th class="SortableColumn">' . _('Tax Authority') . '</th>
-					<th>' . _('Order') . '</th>
-					<th>' . _('Tax on Prior Taxes') . '</th>
-				</tr>';
+				<thead>
+					<tr>
+						<th colspan="3"><h3>' . _('Calculation Order') . '</h3></th>
+					</tr>
+					<tr>
+						<th class="SortedColumn">' . _('Tax Authority') . '</th>
+						<th>' . _('Order') . '</th>
+						<th>' . _('Tax on Prior Taxes') . '</th>
+					</tr>
+				</thead>';
 		$k = 0; //row colour counter
+		echo '<tbody>';
 		for ($i = 1; $i < count($TaxAuthRow) + 1; $i++) {
 			if ($k == 1) {
 				echo '<tr class="OddTableRows">';
@@ -326,6 +333,7 @@ if (isset($SelectedGroup)) {
 				</tr>';
 
 		}
+		echo '</tbody>';
 		echo '</table>';
 		echo '<div class="centre">
 				<input type="submit" name="UpdateOrder" value="' . _('Update Order') . '" />
@@ -345,26 +353,29 @@ if (isset($SelectedGroup)) {
 
 	if (DB_num_rows($Result) > 0) {
 		echo '<table class="selection">
-				<tr>
-					<th colspan="4">' . _('Assigned Taxes') . '</th>
-					<th></th>
-					<th colspan="2">' . _('Available Taxes') . '</th>
-				</tr>
-				<tr>
-					<th class="SortableColumn">' . _('Tax Auth ID') . '</th>
-					<th class="SortableColumn">' . _('Tax Authority Name') . '</th>
-					<th>' . _('Calculation Order') . '</th>
-					<th>' . _('Tax on Prior Tax(es)') . '</th>
-					<th></th>
-					<th>' . _('Tax Auth ID') . '</th>
-					<th>' . _('Tax Authority Name') . '</th>
-				</tr>';
+				<thead>
+					<tr>
+						<th colspan="4">' . _('Assigned Taxes') . '</th>
+						<th></th>
+						<th colspan="2">' . _('Available Taxes') . '</th>
+					</tr>
+					<tr>
+						<th>' . _('Tax Auth ID') . '</th>
+						<th>' . _('Tax Authority Name') . '</th>
+						<th>' . _('Calculation Order') . '</th>
+						<th>' . _('Tax on Prior Tax(es)') . '</th>
+						<th></th>
+						<th>' . _('Tax Auth ID') . '</th>
+						<th>' . _('Tax Authority Name') . '</th>
+					</tr>
+				</thead>';
 
 	} else {
 		echo '<div class="centre">' . _('There are no tax authorities defined to allocate to this tax group') . '
 				</div>';
 	}
 
+	echo '<tbody>';
 	$k = 0; //row colour counter
 	while ($AvailRow = DB_fetch_array($Result)) {
 
@@ -405,6 +416,7 @@ if (isset($SelectedGroup)) {
 		}
 		echo '</tr>';
 	}
+	echo '</tbody>';
 	echo '</table>';
 
 }

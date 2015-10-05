@@ -146,20 +146,23 @@ if (isset($_GET['ListTests'])) {
 			ORDER BY name";
 	$Result = DB_query($SQL);
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
-		<table class="selection">
-			<tr>
-				<th class="SortableColumn">' . _('Add') . '</th>
-				<th class="SortableColumn">' . _('Name') . '</th>
-				<th class="SortableColumn">' . _('Method') . '</th>
-				<th class="SortableColumn">' . _('Units') . '</th>
-				<th>' . _('Possible Values') . '</th>
-				<th>' . _('Target Value') . '</th>
-				<th>' . _('Range Min') . '</th>
-				<th>' . _('Range Max') . '</th>
-			</tr>';
+	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
+	echo '<table class="selection">
+			<thead>
+				<tr>
+					<th class="SortedColumn">' . _('Add') . '</th>
+					<th class="SortedColumn">' . _('Name') . '</th>
+					<th class="SortedColumn">' . _('Method') . '</th>
+					<th class="SortedColumn">' . _('Units') . '</th>
+					<th>' . _('Possible Values') . '</th>
+					<th>' . _('Target Value') . '</th>
+					<th>' . _('Range Min') . '</th>
+					<th>' . _('Range Max') . '</th>
+				</tr>
+			</thead>';
 	$k = 0;
 	$x = 0;
+	echo '<tbody>';
 	while ($MyRow = DB_fetch_array($Result)) {
 
 		if ($k == 1) {
@@ -212,12 +215,15 @@ if (isset($_GET['ListTests'])) {
 
 	} //END WHILE LIST LOOP
 
-	echo '</table><br /></div>
-			<div class="centre">
-				<input type="hidden" name="KeyValue" value="' . $KeyValue . '" />
-				<input type="hidden" name="AddTestsCounter" value="' . $x . '" />
-				<input type="submit" name="AddTests" value="' . _('Add') . '" />
-		</div></form>';
+	echo '</tbody>
+	</table>';
+
+	echo '<div class="centre">
+			<input type="hidden" name="KeyValue" value="' . $KeyValue . '" />
+			<input type="hidden" name="AddTestsCounter" value="' . $x . '" />
+			<input type="submit" name="AddTests" value="' . _('Add') . '" />
+		</div>
+	</form>';
 	include('includes/footer.inc');
 	exit;
 } //ListTests
@@ -361,21 +367,24 @@ if (!isset($SelectedQATest)) {
 	$Result = DB_query($SQL);
 
 	echo '<table class="selection">
-		<tr>
-			<th class="SortableColumn">' . _('Name') . '</th>
-			<th class="SortableColumn">' . _('Method') . '</th>
-			<th class="SortableColumn">' . _('Units') . '</th>
-			<th class="SortableColumn">' . _('Type') . '</th>
-			<th>' . _('Possible Values') . '</th>
-			<th>' . _('Target Value') . '</th>
-			<th>' . _('Range Min') . '</th>
-			<th>' . _('Range Max') . '</th>
-			<th class="SortableColumn">' . _('Show on Cert') . '</th>
-			<th class="SortableColumn">' . _('Show on Spec') . '</th>
-			<th class="SortableColumn">' . _('Show on Test Plan') . '</th>
-			<th class="SortableColumn">' . _('Active') . '</th>
-		</tr>';
+			<thead>
+				<tr>
+					<th class="SortedColumn">' . _('Name') . '</th>
+					<th class="SortedColumn">' . _('Method') . '</th>
+					<th class="SortedColumn">' . _('Units') . '</th>
+					<th class="SortedColumn">' . _('Type') . '</th>
+					<th>' . _('Possible Values') . '</th>
+					<th>' . _('Target Value') . '</th>
+					<th>' . _('Range Min') . '</th>
+					<th>' . _('Range Max') . '</th>
+					<th class="SortedColumn">' . _('Show on Cert') . '</th>
+					<th class="SortedColumn">' . _('Show on Spec') . '</th>
+					<th class="SortedColumn">' . _('Show on Test Plan') . '</th>
+					<th class="SortedColumn">' . _('Active') . '</th>
+				</tr>
+			</thead>';
 	$k = 0;
+	echo '<tbody>';
 	while ($MyRow = DB_fetch_array($Result)) {
 
 		if ($k == 1) {
@@ -447,17 +456,19 @@ if (!isset($SelectedQATest)) {
 			</tr>', $MyRow['name'], $MyRow['method'], $MyRow['units'], $TypeDisp, $MyRow['defaultvalue'], $MyRow['targetvalue'], $MyRow['rangemin'], $MyRow['rangemax'], $ShowOnCertText, $ShowOnSpecText, $ShowOnTestPlanText, $ActiveText, htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['testid'], $KeyValue, htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['testid'], $KeyValue);
 
 	} //END WHILE LIST LOOP
-	echo '</table><br />';
+	echo '</tbody>
+	</table>';
 } //end of ifs and buts!
 
 if (isset($SelectedQATest)) {
-	echo '<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?KeyValue=' . $KeyValue . '">' . _('Show All Product Specs') . '</a></div>';
+	echo '<div class="centre">
+			<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?KeyValue=' . $KeyValue . '">' . _('Show All Product Specs') . '</a>
+		</div>';
 }
 
 if (!isset($_GET['delete'])) {
 
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	if (isset($SelectedQATest)) {
@@ -621,7 +632,6 @@ if (!isset($_GET['delete'])) {
 			<br />
 			<div class="centre">
 				<input type="submit" name="submit" value="' . _('Enter Information') . '" />
-			</div>
 			</div>
 			</form>';
 	}

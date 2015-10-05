@@ -157,15 +157,18 @@ if (isset($_POST['SearchSupplier'])) {
 			<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
 			<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
 			<table cellpadding="2" colspan="7" class="selection">
-				<tr>
-					<th class="SortableColumn">' . _('Code') . '</th>
-					<th class="SortableColumn">' . _('Supplier Name') . '</th>
-					<th>' . _('Currency') . '</th>
-					<th>' . _('Address 1') . '</th>
-					<th>' . _('Address 2') . '</th>
-					<th>' . _('Address 3') . '</th>
-				</tr>';
+				<thead>
+					<tr>
+						<th class="SortedColumn">' . _('Code') . '</th>
+						<th class="SortedColumn">' . _('Supplier Name') . '</th>
+						<th>' . _('Currency') . '</th>
+						<th>' . _('Address 1') . '</th>
+						<th>' . _('Address 2') . '</th>
+						<th>' . _('Address 3') . '</th>
+					</tr>
+				</thead>';
 	$k = 0;
+	echo '<tbody>';
 	while ($MyRow = DB_fetch_array($SuppliersResult)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -182,9 +185,9 @@ if (isset($_POST['SearchSupplier'])) {
 				<td>%s</td>
 				</tr>', $MyRow['supplierid'], $MyRow['suppname'], $MyRow['currcode'], $MyRow['address1'], $MyRow['address2'], $MyRow['address3']);
 	} //end of while loop
-	echo '</table>
-			<br/>
-			</form>';
+	echo '</tbody>
+		</table>
+	</form>';
 } //end if results to show
 if (!isset($SupplierID) or isset($_POST['SearchSupplier'])) {
 	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Search for Suppliers') . '</p>';

@@ -419,16 +419,19 @@ if (!isset($SelectedLocation)) {
 
 	if (DB_num_rows($Result) != 0) {
 
-		echo '<table class="selection">';
-		echo '<tr>
-				<th class="SortableColumn">', _('Location Code'), '</th>
-				<th class="SortableColumn">', _('Location Name'), '</th>
-				<th class="SortableColumn">', _('Tax Province'), '</th>
-				<th class="SortableColumn">', _('GL Account Code'), '</th>
-				<th class="SortableColumn">', _('Allow Invoicing'), '</th>
-				<th class="noprint" colspan="2">&nbsp;</th>
-			</tr>';
+		echo '<table class="selection">
+				<thead>
+					<tr>
+						<th class="SortedColumn">', _('Location Code'), '</th>
+						<th class="SortedColumn">', _('Location Name'), '</th>
+						<th class="SortedColumn">', _('Tax Province'), '</th>
+						<th class="SortedColumn">', _('GL Account Code'), '</th>
+						<th class="SortedColumn">', _('Allow Invoicing'), '</th>
+						<th class="noprint" colspan="2">&nbsp;</th>
+					</tr>
+				</thead>';
 
+		echo'<tbody>';
 		$k = 0; //row colour counter
 		while ($MyRow = DB_fetch_array($Result)) {
 			if ($k == 1) {
@@ -468,6 +471,7 @@ if (!isset($SelectedLocation)) {
 		}
 	}
 	//END WHILE LIST LOOP
+	echo '</tbody>';
 	echo '</table>';
 }
 

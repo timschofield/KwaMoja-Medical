@@ -164,15 +164,17 @@ if (isset($_GET['CopyResults']) or isset($_POST['CopyResults'])) {
 			</table>';
 
 		if (isset($StockItemsResult)) {
-			echo '<table class="selection">';
-			$TableHeader = '<tr>
-								<th class="SortableColumn">' . _('Code') . '</th>
-								<th class="SortableColumn">' . _('Description') . '</th>
-								<th class="SortableColumn">' . _('On Hand') . '</th>
-								<th class="SortableColumn">' . _('Units') . '</th>
-							</tr>';
-			echo $TableHeader;
-			$j = 1;
+			echo '<table class="selection">
+					<thead>
+						<tr>
+							<th class="SortedColumn">' . _('Code') . '</th>
+							<th class="SortedColumn">' . _('Description') . '</th>
+							<th class="SortedColumn">' . _('On Hand') . '</th>
+							<th class="SortedColumn">' . _('Units') . '</th>
+						</tr>
+					</thead>';
+
+			echo '<tbody>';
 			$k = 0; //row colour counter
 			while ($MyRow = DB_fetch_array($StockItemsResult)) {
 				if ($k == 1) {
@@ -186,16 +188,11 @@ if (isset($_GET['CopyResults']) or isset($_POST['CopyResults'])) {
 					<td>' . $MyRow['description'] . '</td>
 					<td class="number">' . locale_number_format($MyRow['qoh'], $MyRow['decimalplaces']) . '</td>
 					<td>' . $MyRow['units'] . '</td>
-					</tr>';
-				$j++;
-				if ($j == 12) {
-					$j = 1;
-					echo $TableHeader;
-				}
-				//end of page full new headings if
+				</tr>';
 
 			}
 			//end of while loop
+			echo '</tbody>';
 			echo '</table>';
 		}
 		//end if stock search results to show
@@ -265,21 +262,23 @@ if (isset($_GET['CopyResults']) or isset($_POST['CopyResults'])) {
 			$SampleResult = DB_query($SQL, $ErrMsg);
 			if (DB_num_rows($SampleResult) > 0) {
 
-				echo '<table cellpadding="2" width="90%" class="selection">';
-				$TableHeader = '<tr>
-									<th class="SortableColumn">' . _('Copy Results') . '</th>
-									<th class="SortableColumn">' . _('Enter Results') . '</th>
-									<th class="SortableColumn">' . _('Specification') . '</th>
-									<th class="SortableColumn">' . _('Description') . '</th>
-									<th class="SortableColumn">' . _('Lot / Serial') . '</th>
-									<th class="SortableColumn">' . _('Identifier') . '</th>
-									<th class="SortableColumn">' . _('Created By') . '</th>
-									<th class="SortableColumn">' . _('Sample Date') . '</th>
-									<th class="SortableColumn">' . _('Comments') . '</th>
-									<th class="SortableColumn">' . _('Cert Allowed') . '</th>
-								</tr>';
-				echo $TableHeader;
-				$j = 1;
+				echo '<table cellpadding="2" width="90%" class="selection">
+						<thead>
+							<tr>
+								<th class="SortedColumn">' . _('Copy Results') . '</th>
+								<th class="SortedColumn">' . _('Enter Results') . '</th>
+								<th class="SortedColumn">' . _('Specification') . '</th>
+								<th class="SortedColumn">' . _('Description') . '</th>
+								<th class="SortedColumn">' . _('Lot / Serial') . '</th>
+								<th class="SortedColumn">' . _('Identifier') . '</th>
+								<th class="SortedColumn">' . _('Created By') . '</th>
+								<th class="SortedColumn">' . _('Sample Date') . '</th>
+								<th class="SortedColumn">' . _('Comments') . '</th>
+								<th class="SortedColumn">' . _('Cert Allowed') . '</th>
+							</tr>
+						</thead>';
+
+				echo '<tbody>';
 				$k = 0; //row colour counter
 				while ($MyRow = DB_fetch_array($SampleResult)) {
 					if ($k == 1) {
@@ -310,14 +309,10 @@ if (isset($_GET['CopyResults']) or isset($_POST['CopyResults'])) {
 							<td>' . $FormatedSampleDate . '</td>
 							<td>' . $MyRow['comments'] . '</td>
 							<td>' . $CertAllowed . '</td>
-							</tr>';
-					$j++;
-					if ($j == 12) {
-						$j = 1;
-						echo $TableHeader;
-					}
-					//end of page full new headings if
+						</tr>';
+
 				} //end of while loop
+				echo '</tbody>';
 				echo '</table>';
 			} // end if Pick Lists to show
 		}
@@ -492,19 +487,22 @@ if (isset($_GET['ListTests'])) {
 	$Result = DB_query($SQL);
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-	echo '<table class="selection">';
-	echo '<tr>
-			<th class="SortableColumn">' . _('Add') . '</th>
-			<th class="SortableColumn">' . _('Name') . '</th>
-			<th class="SortableColumn">' . _('Method') . '</th>
-			<th class="SortableColumn">' . _('Units') . '</th>
-			<th>' . _('Possible Values') . '</th>
-			<th>' . _('Target Value') . '</th>
-			<th>' . _('Range Min') . '</th>
-			<th>' . _('Range Max') . '</th>
-		</tr>';
+	echo '<table class="selection">
+			<thead>
+				<tr>
+					<th class="SortedColumn">' . _('Add') . '</th>
+					<th class="SortedColumn">' . _('Name') . '</th>
+					<th class="SortedColumn">' . _('Method') . '</th>
+					<th class="SortedColumn">' . _('Units') . '</th>
+					<th>' . _('Possible Values') . '</th>
+					<th>' . _('Target Value') . '</th>
+					<th>' . _('Range Min') . '</th>
+					<th>' . _('Range Max') . '</th>
+				</tr>
+			</thead>';
 	$k = 0;
 	$i = 0;
+	echo '<tbody>';
 	while ($MyRow = DB_fetch_array($Result)) {
 
 		if ($k == 1) {
@@ -558,12 +556,15 @@ if (isset($_GET['ListTests'])) {
 
 	} //END WHILE LIST LOOP
 
-	echo '</table>
-			<div class="centre">
-				<input type="hidden" name="SelectedSampleID" value="' . $SelectedSampleID . '" />
-				<input type="hidden" name="AddTestsCounter" value="' . $i . '" />
-				<input type="submit" name="AddTests" value="' . _('Add') . '" />
-		</div></form>';
+	echo '</tbody>
+	</table>';
+
+	echo '<div class="centre">
+			<input type="hidden" name="SelectedSampleID" value="' . $SelectedSampleID . '" />
+			<input type="hidden" name="AddTestsCounter" value="' . $i . '" />
+			<input type="submit" name="AddTests" value="' . _('Add') . '" />
+		</div>
+	</form>';
 	include('includes/footer.inc');
 	exit;
 } //ListTests
@@ -698,9 +699,7 @@ echo '<div class="centre"><a href="' . $RootPath . '/SelectQASamples.php">' . _(
 
 
 echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-
 
 $SQL = "SELECT prodspeckey,
 				description,
@@ -724,24 +723,31 @@ if ($MyRow['cert'] == 1) {
 
 echo '<input type="hidden" name="SelectedSampleID" value="' . $SelectedSampleID . '" />';
 echo '<table class="selection">
-		<tr>
-			<th>' . _('Sample ID') . '</th>
-			<th>' . _('Specification') . '</th>
-			<th>' . _('Lot / Serial') . '</th>
-			<th>' . _('Identifier') . '</th>
-			<th>' . _('Sample Date') . '</th>
-			<th>' . _('Comments') . '</th>
-			<th>' . _('Used for Cert') . '</th>
-		</tr>';
+		<thead>
+			<tr>
+				<th>' . _('Sample ID') . '</th>
+				<th>' . _('Specification') . '</th>
+				<th>' . _('Lot / Serial') . '</th>
+				<th>' . _('Identifier') . '</th>
+				<th>' . _('Sample Date') . '</th>
+				<th>' . _('Comments') . '</th>
+				<th>' . _('Used for Cert') . '</th>
+			</tr>
+		</thead>';
 
-echo '<tr class="EvenTableRows"><td>' . str_pad($SelectedSampleID, 10, '0', STR_PAD_LEFT) . '</td>
-	<td>' . $MyRow['prodspeckey'] . ' - ' . $MyRow['description'] . '</td>
-	<td>' . $MyRow['lotkey'] . '</td>
-	<td>' . $MyRow['identifier'] . '</td>
-	<td>' . ConvertSQLDate($MyRow['sampledate']) . '</td>
-	<td>' . $MyRow['comments'] . '</td>
-	<td>' . $Cert . '</td>
-	</tr>	</table><br />';
+echo '<tbody>
+		<tr class="EvenTableRows">
+			<td>' . str_pad($SelectedSampleID, 10, '0', STR_PAD_LEFT) . '</td>
+			<td>' . $MyRow['prodspeckey'] . ' - ' . $MyRow['description'] . '</td>
+			<td>' . $MyRow['lotkey'] . '</td>
+			<td>' . $MyRow['identifier'] . '</td>
+			<td>' . ConvertSQLDate($MyRow['sampledate']) . '</td>
+			<td>' . $MyRow['comments'] . '</td>
+			<td>' . $Cert . '</td>
+		</tr>
+	</tbody>
+</table>';
+
 $LotKey = $MyRow['lotkey'];
 $ProdSpec = $MyRow['prodspeckey'];
 $CanCert = $MyRow['cert'];
@@ -771,18 +777,20 @@ $SQL = "SELECT sampleid,
 
 $Result = DB_query($SQL);
 
-echo '<table cellpadding="2" width="90%" class="selection">';
-$TableHeader = '<tr>
-					<th class="SortableColumn">' . _('Test Name') . '</th>
-					<th class="SortableColumn">' . _('Test Method') . '</th>
-					<th class="SortableColumn">' . _('Range') . '</th>
-					<th class="SortableColumn">' . _('Target Value') . '</th>
-					<th class="SortableColumn">' . _('Test Date') . '</th>
-					<th class="SortableColumn">' . _('Tested By') . '</th>
-					<th class="SortableColumn">' . _('Test Result') . '</th>
-					<th class="SortableColumn">' . _('On Cert') . '</th>
-				</tr>';
-echo $TableHeader;
+echo '<table cellpadding="2" width="90%" class="selection">
+		<thead>
+			<tr>
+				<th class="SortedColumn">' . _('Test Name') . '</th>
+				<th class="SortedColumn">' . _('Test Method') . '</th>
+				<th class="SortedColumn">' . _('Range') . '</th>
+				<th class="SortedColumn">' . _('Target Value') . '</th>
+				<th class="SortedColumn">' . _('Test Date') . '</th>
+				<th class="SortedColumn">' . _('Tested By') . '</th>
+				<th class="SortedColumn">' . _('Test Result') . '</th>
+				<th class="SortedColumn">' . _('On Cert') . '</th>
+			</tr>
+		</thead>';
+
 $i = 0;
 $k = 0; //row colour counter
 $TechSql = "SELECT userid,
@@ -796,8 +804,7 @@ $TechSql = "SELECT userid,
 					AND tokenid='16'";
 
 $TechResult = DB_query($TechSql);
-
-
+echo '<tbody'>;
 while ($MyRow = DB_fetch_array($Result)) {
 	if ($k == 1) {
 		/*alternate bgcolour of row for highlighting */
@@ -935,12 +942,13 @@ while ($MyRow = DB_fetch_array($Result)) {
 		</tr>';
 }
 
-echo '</table>
-	<div class="centre">
+echo '</tbody>
+	</table>';
+echo '<div class="centre">
 		<input type="hidden" name="TestResultsCounter" value="' . $i . '" />
 		<input type="submit" name="submit" value="' . _('Enter Information') . '" />
 	</div>
-	</form>';
+</form>';
 
 echo '<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?ListTests=yes&amp;SelectedSampleID=' . $SelectedSampleID . '">' . _('Add More Tests') . '</a></div>';
 echo '<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?CopyResults=yes&amp;SelectedSampleID=' . $SelectedSampleID . '">' . _('Copy These Results') . '</a></div>';

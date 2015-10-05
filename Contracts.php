@@ -779,18 +779,21 @@ if (!isset($_SESSION['Contract' . $Identifier]->DebtorNo) or $_SESSION['Contract
 
 	if (isset($Result_CustSelect)) {
 
-		echo '<br /><table cellpadding="2" class="selection">
-						<tr>
-							<th class="SortableColumn">' . _('Customer') . '</th>
-							<th class="SortableColumn">' . _('Branch') . '</th>
-							<th>' . _('Contact') . '</th>
-							<th>' . _('Phone') . '</th>
-							<th>' . _('Fax') . '</th>
-						</tr>';
+		echo '<table cellpadding="2" class="selection">
+				<thead>
+					<tr>
+						<th class="SortedColumn">' . _('Customer') . '</th>
+						<th class="SortedColumn">' . _('Branch') . '</th>
+						<th>' . _('Contact') . '</th>
+						<th>' . _('Phone') . '</th>
+						<th>' . _('Fax') . '</th>
+					</tr>
+				</thead>';
 
 		$k = 0; //row counter to determine background colour
 		$j = 0;
 		$LastCustomer = '';
+		echo '<tbody>';
 		while ($MyRow = DB_fetch_array($Result_CustSelect)) {
 
 			if ($k == 1) {
@@ -818,7 +821,9 @@ if (!isset($_SESSION['Contract' . $Identifier]->DebtorNo) or $_SESSION['Contract
 		}
 		//end of while loop
 
-		echo '</table></form>';
+		echo '</tbody>
+			</table>
+		</form>';
 	} //end if results to show
 
 	//end if RequireCustomerSelection

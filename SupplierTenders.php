@@ -287,16 +287,19 @@ if (isset($_POST['TenderType']) and $_POST['TenderType'] != 3 and isset($_SESSIO
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/supplier.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Items to offer from') . ' ' . $Supplier . '</p>';
 	echo '<table>
-		<tr>
-			<th class="SortableColumn">' . _('Stock ID') . '</th>
-			<th class="SortableColumn">' . _('Description') . '</th>
-			<th>' . _('Quantity') . '</th>
-			<th>' . _('UOM') . '</th>
-			<th>' . _('Price') . ' (' . $Currency . ')</th>
-			<th>' . _('Line Total') . ' (' . $Currency . ')</th>
-			<th class="SortableColumn">' . _('Expiry Date') . '</th>
-		</tr>';
+			<thead>
+				<tr>
+					<th class="SortedColumn">' . _('Stock ID') . '</th>
+					<th class="SortedColumn">' . _('Description') . '</th>
+					<th>' . _('Quantity') . '</th>
+					<th>' . _('UOM') . '</th>
+					<th>' . _('Price') . ' (' . $Currency . ')</th>
+					<th>' . _('Line Total') . ' (' . $Currency . ')</th>
+					<th class="SortedColumn">' . _('Expiry Date') . '</th>
+				</tr>
+			</thead>';
 	$k = 0;
+	echo '<tbody>';
 	foreach ($_SESSION['offer' . $Identifier]->LineItems as $LineItems) {
 		if ($LineItems->Deleted == False) {
 			if ($LineItems->ExpiryDate < date('Y-m-d')) {
@@ -321,6 +324,7 @@ if (isset($_POST['TenderType']) and $_POST['TenderType'] != 3 and isset($_SESSIO
 				</tr>';
 		}
 	}
+	echo '</tbody>';
 	echo '</table>';
 	echo '<input type="hidden" name="TenderType" value="' . $_POST['TenderType'] . '" />';
 	if ($_POST['TenderType'] == 1) {
@@ -402,11 +406,9 @@ if (isset($_POST['TenderType']) AND $_POST['TenderType'] == 2 AND !isset($_POST[
 	echo '</td>
 		</tr>
 		</table>
-		<br />
 		<div class="centre">
 			<input type="submit" name="Search" value="' . _('Search Now') . '" />
 		</div>
-		<br />
 		</form>';
 }
 
@@ -640,18 +642,21 @@ if (isset($_POST['Search'])) {
 	if (isset($SearchResult)) {
 
 		echo '<table cellpadding="1">
-				<tr>
-					<th class="SortableColumn">' . _('Code') . '</th>
-					<th class="SortableColumn">' . _('Description') . '</th>
-					<th>' . _('Units') . '</th>
-					<th>' . _('Image') . '</th>
-					<th>' . _('Quantity') . '</th>
-					<th>' . _('Price') . ' (' . $Currency . ')</th>
-				</tr>';
+				<thead>
+					<tr>
+						<th class="SortedColumn">' . _('Code') . '</th>
+						<th class="SortedColumn">' . _('Description') . '</th>
+						<th>' . _('Units') . '</th>
+						<th>' . _('Image') . '</th>
+						<th>' . _('Quantity') . '</th>
+						<th>' . _('Price') . ' (' . $Currency . ')</th>
+					</tr>
+				</thead>';
 
 		$i = 0;
 		$k = 0; //row colour counter
 		$PartsDisplayed = 0;
+		echo '<tbody>';
 		while ($MyRow = DB_fetch_array($SearchResult)) {
 
 			if ($k == 1) {
@@ -699,7 +704,7 @@ if (isset($_POST['Search'])) {
 					<td><input class="number" type="text" size="12" value="0" name="Price' . $i . '" /></td>
 					<input type="hidden" size="12" value="' . $MyRow['stockid'] . '" name="StockID' . $i . '" />
 					<input type="hidden" value="' . $UOM . '" name="uom' . $i . '" />
-					</tr>';
+				</tr>';
 			++$i;
 			$PartsDisplayed++;
 			if ($PartsDisplayed == $Maximum_Number_Of_Parts_To_Show) {
@@ -708,6 +713,7 @@ if (isset($_POST['Search'])) {
 			#end of page full new headings if
 		}
 		#end of while loop
+		echo '</tbody>';
 		echo '</table>';
 		if ($PartsDisplayed == $Maximum_Number_Of_Parts_To_Show) {
 
@@ -715,7 +721,6 @@ if (isset($_POST['Search'])) {
 			prnMsg(_('Only the first') . ' ' . $Maximum_Number_Of_Parts_To_Show . ' ' . _('can be displayed') . '. ' . _('Please restrict your search to only the parts required'), 'info');
 		}
 		echo '<a name="end"></a>
-				<br />
 				<div class="centre">
 					<input type="submit" name="NewItem" value="Add to Offer" />
 				</div>';

@@ -561,16 +561,18 @@ if ($_SESSION['RequireSupplierSelection'] == 1 or !isset($_SESSION['PO' . $Ident
 
 	if (isset($Result_SuppSelect)) {
 		echo '<table cellpadding="3" class="selection">
-						<tr>
-							<th class="SortableColumn">' . _('Code') . '</th>
-							<th class="SortableColumn">' . _('Supplier Name') . '</th>
-							<th>' . _('Address') . '</th>
-							<th>' . _('Currency') . '</th>
-						</tr>';
+				<thead>
+					<tr>
+						<th class="SortedColumn">' . _('Code') . '</th>
+						<th class="SortedColumn">' . _('Supplier Name') . '</th>
+						<th>' . _('Address') . '</th>
+						<th>' . _('Currency') . '</th>
+					</tr>
+				</thead>';
 
 		$k = 0;
 		/*row counter to determine background colour */
-
+		echo '<tbody>';
 		while ($MyRow = DB_fetch_array($Result_SuppSelect)) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
@@ -596,6 +598,7 @@ if ($_SESSION['RequireSupplierSelection'] == 1 or !isset($_SESSION['PO' . $Ident
 			//end of page full new headings if
 		} //end of while loop
 
+		echo '</tbody>';
 		echo '</table>';
 
 	} //isset($Result_SuppSelect)

@@ -137,17 +137,18 @@ if (isset($_POST['ShowUsage'])) {
 	}
 
 	echo '<table class="selection">
-			<tbody>
+			<thead>
 				<tr>
-					<th class="SortableColumn">' . _('Month') . '</th>
+					<th class="SortedColumn">' . _('Month') . '</th>
 					<th>' . _('Usage') . '</th>
-				</tr>';
+				</tr>
+			</thead>';
 
 	$k = 0; //row colour counter
 
 	$TotalUsage = 0;
 	$PeriodsCounter = 0;
-
+	echo '<tbody>';
 	while ($MyRow = DB_fetch_array($MovtsResult)) {
 
 		if ($k == 1) {

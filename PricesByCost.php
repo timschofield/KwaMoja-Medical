@@ -153,22 +153,23 @@ if (isset($_POST['submit']) or isset($_POST['update'])) {
 	echo '<div class="page_help_text">' . _('Items in') . ' ' . $CategoryText . ' ' . _('With Prices') . ' ' . $Comparator . '' . $_POST['Margin'] . ' ' . _('times') . ' ' . _('Cost in Price List') . ' ' . $SalesTypeRow['sales_type'] . '</div><br /><br />';
 
 	if ($numrow > 0) { //the number of prices returned from the main prices query is
-		echo '<table class="selection">';
-		echo '<tr>
-				<th class="SortableColumn">' . _('Code') . '</th>
-				<th class="SortableColumn">' . _('Description') . '</th>
-				<th class="SortableColumn">' . _('Customer') . '</th>
-				<th class="SortableColumn">' . _('Branch') . '</th>
-				<th class="SortableColumn">' . _('Start Date') . '</th>
-				<th>' . _('End Date') . '</th>
-				<th>' . _('Cost') . '</th>
-				<th>' . _('GP %') . '</th>
-				<th>' . _('Price Proposed') . '</th>
-				<th>' . _('List Price') . '</th>
-			<tr>';
+		echo '<table class="selection">
+				<thead>
+					<tr>
+						<th class="SortedColumn">' . _('Code') . '</th>
+						<th class="SortedColumn">' . _('Description') . '</th>
+						<th class="SortedColumn">' . _('Customer') . '</th>
+						<th class="SortedColumn">' . _('Branch') . '</th>
+						<th class="SortedColumn">' . _('Start Date') . '</th>
+						<th>' . _('End Date') . '</th>
+						<th>' . _('Cost') . '</th>
+						<th>' . _('GP %') . '</th>
+						<th>' . _('Price Proposed') . '</th>
+						<th>' . _('List Price') . '</th>
+					<tr>
+				</thead>';
 		$k = 0; //row colour counter
 		echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" id="update">';
-		echo '<div>';
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 		echo '<input type="hidden" value="' . $_POST['StockCat'] . '" name="StockCat" />
 			<input type="hidden" value="' . $_POST['Margin'] . '" name="Margin" />
@@ -177,6 +178,7 @@ if (isset($_POST['submit']) or isset($_POST['update'])) {
 			<input type="hidden" value="' . $_POST['SalesType'] . '" name="SalesType" />';
 
 		$PriceCounter = 0;
+		echo '<tbody>';
 		while ($MyRow = DB_fetch_array($Result)) {
 
 			if ($k == 1) {
@@ -226,12 +228,17 @@ if (isset($_POST['submit']) or isset($_POST['update'])) {
 				</tr> ';
 			$PriceCounter++;
 		} //end of looping
-		echo '<tr>
-			<td style="text-align:right" colspan="4"><input type="submit" name="submit" value="' . _('Update') . '" onclick="return MakeConfirm(\'' . _('If the prices above do not have a commencement date as today, this will create new prices with commencement date of today at the entered figures and update the existing prices with historical start dates to have an end date of yesterday. Are You Sure?') . '\');" /></td>
-			<td style="text-align:left" colspan="3"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '"><input type="submit" value="' . _('Back') . '" /></a></td>
-			 </tr>
-			 </div>
-			 </form>';
+		echo '</tbody>
+				<tr>
+					<td style="text-align:right" colspan="4">
+						<input type="submit" name="submit" value="' . _('Update') . '" onclick="return MakeConfirm(\'' . _('If the prices above do not have a commencement date as today, this will create new prices with commencement date of today at the entered figures and update the existing prices with historical start dates to have an end date of yesterday. Are You Sure?') . '\');" />
+					</td>
+					<td style="text-align:left" colspan="3">
+						<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '"><input type="submit" value="' . _('Back') . '" /></a>
+					</td>
+				</tr>
+			</table>
+		</form>';
 	} else {
 		prnMsg(_('There were no prices meeting the criteria specified to review'), 'info');
 		echo '<br /><div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Back') . '<a/></div>';
@@ -239,9 +246,7 @@ if (isset($_POST['submit']) or isset($_POST['update'])) {
 } else {
 	/*The option to submit was not hit so display form */
 	echo '<div class="page_help_text">' . _('Prices can be displayed based on their relation to cost') . '</div><br />';
-	echo '<br />
-		  <form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
-	echo '<div>';
+	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table class="selection">';
 
@@ -299,9 +304,10 @@ if (isset($_POST['submit']) or isset($_POST['update'])) {
 	DB_data_seek($Result, 0);
 	echo '</select></td></tr>';
 	echo '</table>
-		<br /><div class="centre"><input type="submit" name="submit" value="' . _('Submit') . '" /></div>';
-	echo '</div>
-		  </form>';
+		<div class="centre">
+			<input type="submit" name="submit" value="' . _('Submit') . '" />
+		</div>';
+	echo '</form>';
 }
 /*end of else not submit */
 include('includes/footer.inc');

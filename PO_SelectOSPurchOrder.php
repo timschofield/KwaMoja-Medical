@@ -243,15 +243,17 @@ echo '</select></td>
 
 if (isset($StockItemsResult)) {
 	echo '<table cellpadding="2" class="selection">
-			<tr>
-				<th class="SortableColumn">' . _('Code') . '</th>
-				<th class="SortableColumn">' . _('Description') . '</th>
-				<th>' . _('On Hand') . '</th>
-				<th>' . _('Orders') . '<br />' . _('Outstanding') . '</th>
-				<th>' . _('Units') . '</th>
-			</tr>';
+			<thead>
+				<tr>
+					<th class="SortedColumn">' . _('Code') . '</th>
+					<th class="SortedColumn">' . _('Description') . '</th>
+					<th>' . _('On Hand') . '</th>
+					<th>' . _('Orders') . '<br />' . _('Outstanding') . '</th>
+					<th>' . _('Units') . '</th>
+				</tr>
+			</thead>';
 	$k = 0; //row colour counter
-
+	echo '<tbody>';
 	while ($MyRow = DB_fetch_array($StockItemsResult)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -270,6 +272,7 @@ if (isset($StockItemsResult)) {
 
 	} //end of while loop through search items
 
+	echo '</tbody>';
 	echo '</table>';
 
 } elseif (isset($_POST['SearchOrders'])) {
@@ -356,23 +359,26 @@ if (isset($StockItemsResult)) {
 	/*show a table of the orders returned by the SQL */
 
 	echo '<table cellpadding="2" width="97%" class="selection">
-			<tr>
-				<th class="SortableColumn">' . _('Order #') . '</th>
-				<th class="SortableColumn">' . _('Order Date') . '</th>
-				<th class="SortableColumn">' . _('Delivery Date') . '</th>
-				<th class="SortableColumn">' . _('Initiated by') . '</th>
-				<th class="SortableColumn">' . _('Supplier') . '</th>
-				<th>' . _('Currency') . '</th>';
+			<thead>
+				<tr>
+					<th class="SortedColumn">' . _('Order #') . '</th>
+					<th class="SortedColumn">' . _('Order Date') . '</th>
+					<th class="SortedColumn">' . _('Delivery Date') . '</th>
+					<th class="SortedColumn">' . _('Initiated by') . '</th>
+					<th class="SortedColumn">' . _('Supplier') . '</th>
+					<th>' . _('Currency') . '</th>';
 
 	if (in_array($PricesSecurity, $_SESSION['AllowedPageSecurityTokens']) or !isset($PricesSecurity)) {
 		echo '<th>' . _('Order Total') . '</th>';
 	} //in_array($PricesSecurity, $_SESSION['AllowedPageSecurityTokens']) or !isset($PricesSecurity)
-	echo '<th class="SortableColumn">' . _('Status') . '</th>
-			<th class="SortableColumn">' . _('Print') . '</th>
+	echo '<th class="SortedColumn">' . _('Status') . '</th>
+			<th class="SortedColumn">' . _('Print') . '</th>
 			<th>' . _('Receive') . '</th>
-		</tr>';
+		</tr>
+	</thead>';
 
 	$k = 0; //row colour counter
+	echo '<tbody>';
 	while ($MyRow = DB_fetch_array($PurchOrdersResult)) {
 		if ($k == 1) {
 			/*alternate bgcolour of row for highlighting */
@@ -424,6 +430,7 @@ if (isset($StockItemsResult)) {
 		//end of page full new headings if
 	} //end of while loop around purchase orders retrieved
 
+	echo '</tbody>';
 	echo '</table>';
 }
 

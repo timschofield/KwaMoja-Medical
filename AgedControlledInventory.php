@@ -43,15 +43,19 @@ $TotalQty = 0;
 $TotalVal = 0;
 $k = 0; //row colour counter
 echo '<table>
-		<tr>
-			<th class="SortableColumn">' . _('Stock') . '</th>
-			<th class="SortableColumn">' . _('Description') . '</th>
-			<th class="SortableColumn">' . _('Batch') . '</th>
-			<th class="SortableColumn">' . _('Quantity Remaining') . '</th>
-			<th class="SortableColumn">' . _('Inventory Value') . '</th>
-			<th class="SortableColumn">' . _('Date') . '</th>
-			<th class="SortableColumn">' . _('Days Old') . '</th>
-		</tr>';
+		<thead>
+			<tr>
+				<th class="SortedColumn">' . _('Stock') . '</th>
+				<th class="SortedColumn">' . _('Description') . '</th>
+				<th class="SortedColumn">' . _('Batch') . '</th>
+				<th class="SortedColumn">' . _('Quantity Remaining') . '</th>
+				<th class="SortedColumn">' . _('Inventory Value') . '</th>
+				<th class="SortedColumn">' . _('Date') . '</th>
+				<th class="SortedColumn">' . _('Days Old') . '</th>
+			</tr>
+		</thead>';
+
+echo '<tbody>';
 while ($LocQtyRow = DB_fetch_array($LocStockResult)) {
 
 	if ($k == 1) {
@@ -87,6 +91,7 @@ while ($LocQtyRow = DB_fetch_array($LocStockResult)) {
 
 
 } //while
+echo '</tbody>';
 if ($k == 1) {
 	echo '<tfoot><tr class="OddTableRows">';
 	$k = 0;

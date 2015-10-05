@@ -439,15 +439,18 @@ if (isset($SuppliersResult)) {
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	echo '<table cellpadding="2" class="selection">
-			<tr>
-				<th class="SortableColumn">' . _('Code') . '</th>
-				<th class="SortableColumn">' . _('Supplier Name') . '</th>
-				<th>' . _('Currency') . '</th>
-				<th>' . _('Address 1') . '</th>
-				<th>' . _('Address 2') . '</th>
-				<th>' . _('Address 3') . '</th>
-			</tr>';
+			<thead>
+				<tr>
+					<th class="SortedColumn">' . _('Code') . '</th>
+					<th class="SortedColumn">' . _('Supplier Name') . '</th>
+					<th>' . _('Currency') . '</th>
+					<th>' . _('Address 1') . '</th>
+					<th>' . _('Address 2') . '</th>
+					<th>' . _('Address 3') . '</th>
+				</tr>
+			</thead>';
 	$k = 0;
+	echo '<tbody>';
 	while ($MyRow = DB_fetch_array($SuppliersResult)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -466,9 +469,9 @@ if (isset($SuppliersResult)) {
 
 	}
 	//end of while loop
-	echo '</table>
-		  <br/>
-		  </form>';
+	echo '</tbody>
+	</table>
+</form>';
 	include('includes/footer.inc');
 	exit;
 }

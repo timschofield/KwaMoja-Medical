@@ -109,13 +109,15 @@ $LocalTotal = 0;
 
 if (!isset($_POST['CreateCSV'])) {
 	echo '<table>
-			<tr>
-				<th class="SortableColumn">' . _('Customer') . ' </th>
-				<th class="SortableColumn">' . _('Opening Balance') . '</th>
-				<th class="SortableColumn">' . _('Debits') . '</th>
-				<th class="SortableColumn">' . _('Credits') . '</th>
-				<th class="SortableColumn">' . _('Balance') . '</th>
-			</tr>';
+			<thead>
+				<tr>
+					<th class="SortedColumn">' . _('Customer') . ' </th>
+					<th class="SortedColumn">' . _('Opening Balance') . '</th>
+					<th class="SortedColumn">' . _('Debits') . '</th>
+					<th class="SortedColumn">' . _('Credits') . '</th>
+					<th class="SortedColumn">' . _('Balance') . '</th>
+				</tr>
+			</thead>';
 } else {
 	$CSVFile = '"' . _('Customer') . '","' . _('Opening Balance') . '","' . _('Debits') . '", "' . _('Credits') . '","' . _('Balance') . '"' . "\n";
 }
@@ -125,7 +127,7 @@ $OpeningBalances = 0;
 $Debits = 0;
 $Credits = 0;
 $ClosingBalances = 0;
-
+echo '<tbody>';
 while ($MyRow = DB_fetch_array($Result)) {
 
 	/*Get the sum of all transactions after the ending date -
@@ -185,6 +187,7 @@ while ($MyRow = DB_fetch_array($Result)) {
 }
 
 if (!isset($_POST['CreateCSV'])) {
+	echo '</tbody>';
 	echo '</table>';
 }
 

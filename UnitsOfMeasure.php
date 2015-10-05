@@ -160,10 +160,12 @@ if (!isset($SelectedMeasureID)) {
 	$Result = DB_query($SQL, $ErrMsg);
 
 	echo '<table class="selection">
-			<tr>
-				<th class="SortableColumn">' . _('Units of Measure') . '</th>
-			</tr>';
-
+			<thead>
+				<tr>
+					<th class="SortedColumn">' . _('Units of Measure') . '</th>
+				</tr>
+			</thead>';
+	echo '<tbody>';
 	$k = 0; //row colour counter
 	while ($MyRow = DB_fetch_row($Result)) {
 
@@ -181,6 +183,7 @@ if (!isset($SelectedMeasureID)) {
 		echo '</tr>';
 
 	} //END WHILE LIST LOOP
+	echo '</tbody>';
 	echo '</table>';
 } //end of ifs and buts!
 

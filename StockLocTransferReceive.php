@@ -546,21 +546,23 @@ if (isset($_SESSION['Transfer' . $Identifier])) {
 
 	$i = 0; //Line Item Array pointer
 
-	echo '<table class="selection">';
-	echo '<tr>
-			<th colspan="7"><h3>' . _('Location Transfer Reference') . ' #' . $_SESSION['Transfer' . $Identifier]->TrfID . ' ' . _('from') . ' ' . $_SESSION['Transfer' . $Identifier]->StockLocationFromName . ' ' . _('to') . ' ' . $_SESSION['Transfer' . $Identifier]->StockLocationToName . '</h3></th>
-		</tr>
-	<tbody>
-		<tr>
-			<th class="SortableColumn">' . _('Item Code') . '</th>
-			<th class="SortableColumn">' . _('Item Description') . '</th>
-			<th>' . _('Quantity Dispatched') . '</th>
-			<th>' . _('Quantity Received') . '</th>
-			<th>' . _('Quantity To Receive') . '</th>
-			<th>' . _('Units') . '</th>
-			<th>' . _('Cancel Balance') . '</th>
-		</tr>';
+	echo '<table class="selection">
+			<thead>
+				<tr>
+					<th colspan="7"><h3>' . _('Location Transfer Reference') . ' #' . $_SESSION['Transfer' . $Identifier]->TrfID . ' ' . _('from') . ' ' . $_SESSION['Transfer' . $Identifier]->StockLocationFromName . ' ' . _('to') . ' ' . $_SESSION['Transfer' . $Identifier]->StockLocationToName . '</h3></th>
+				</tr>
+				<tr>
+					<th class="SortedColumn">' . _('Item Code') . '</th>
+					<th class="SortedColumn">' . _('Item Description') . '</th>
+					<th>' . _('Quantity Dispatched') . '</th>
+					<th>' . _('Quantity Received') . '</th>
+					<th>' . _('Quantity To Receive') . '</th>
+					<th>' . _('Units') . '</th>
+					<th>' . _('Cancel Balance') . '</th>
+				</tr>
+			</thead>';
 
+	echo '<tbody>';
 	$k = 0;
 	foreach ($_SESSION['Transfer' . $Identifier]->TransferItem as $TrfLine) {
 		if ($k == 1) {
@@ -621,7 +623,8 @@ if (isset($_SESSION['Transfer' . $Identifier])) {
 	}
 	/*end of foreach TransferItem */
 
-	echo '</tbody></table>
+	echo '</tbody>
+		</table>
 		<div class="centre">
 			<input type="submit" name="ProcessTransfer" value="' . _('Process Inventory Transfer') . '" />
 			<br />

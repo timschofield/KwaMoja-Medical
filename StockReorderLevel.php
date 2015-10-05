@@ -50,22 +50,23 @@ $DbgMsg = _('The SQL that failed was');
 
 $LocStockResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
-echo '<table class="selection">';
-echo '<tr>
-		<th colspan="3">' . _('Stock Code') . ':<input type="text" name="StockID" size="21" value="' . $StockId . '" required="required" maxlength="20" /><input type="submit" name="Show" value="' . _('Show Re-Order Levels') . '" /></th>
-	</tr>';
-echo '<tr>
-		<th colspan="3"><h3><b>' . $StockId . ' - ' . $MyRow[0] . '</b>  (' . _('In Units of') . ' ' . $MyRow[1] . ')</h3></th>
-	</tr>
-<tbody>
-	<tr>
-		<th class="SortableColumn">' . _('Location') . '</th>
-		<th>' . _('Quantity On Hand') . '</th>
-		<th>' . _('Re-Order Level') . '</th>
-	</tr>';
+echo '<table class="selection">
+		<thead>
+			<tr>
+				<th colspan="3">' . _('Stock Code') . ':<input type="text" name="StockID" size="21" value="' . $StockId . '" required="required" maxlength="20" /><input type="submit" name="Show" value="' . _('Show Re-Order Levels') . '" /></th>
+			</tr>
+			<tr>
+				<th colspan="3"><h3><b>' . $StockId . ' - ' . $MyRow[0] . '</b>  (' . _('In Units of') . ' ' . $MyRow[1] . ')</h3></th>
+			</tr>
+			<tr>
+				<th class="SortedColumn">' . _('Location') . '</th>
+				<th>' . _('Quantity On Hand') . '</th>
+				<th>' . _('Re-Order Level') . '</th>
+			</tr>
+		</thead>';
 
 $k = 0; //row colour counter
-
+echo '<tbody>';
 while ($MyRow = DB_fetch_array($LocStockResult)) {
 
 	if ($k == 1) {

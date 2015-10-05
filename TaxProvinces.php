@@ -164,11 +164,14 @@ if (!isset($SelectedTaxProvince)) {
 	}
 
 	echo '<table class="selection">
-			<tr>
-				<th class="SortableColumn">', _('Tax Provinces'), '</th>
-				<th colspan="2">', _('Maintenance'), '</th>
-			</tr>';
+			<thead>
+				<tr>
+					<th class="SortedColumn">', _('Tax Provinces'), '</th>
+					<th colspan="2">', _('Maintenance'), '</th>
+				</tr>
+			</thead>';
 
+	echo '<tbody>';
 	$k = 0; //row colour counter
 	while ($MyRow = DB_fetch_row($Result)) {
 
@@ -186,6 +189,7 @@ if (!isset($SelectedTaxProvince)) {
 			</tr>';
 
 	} //END WHILE LIST LOOP
+	echo '</tbody>';
 	echo '</table>';
 } //end of ifs and buts!
 

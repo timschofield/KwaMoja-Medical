@@ -1,11 +1,11 @@
-/*** 
+/***
 
 Xenos Theme
 by Khwunchai J.
 
 Xenos is a very clean and classy looking theme design for KwaMoja.
 
-NOTE: 
+NOTE:
 This CSS is not yet fully optimized. Some styles maybe redundant and not supported by some browser.
 
 ***/
@@ -55,7 +55,7 @@ table {
     width:100%;
     /*border-collapse: collapse;*/
     border:thin outset #B3B3B3;
-    
+
     -webkit-border-radius:  4px;
     -moz-border-radius:     4px;
     border-radius:          4px;
@@ -79,31 +79,11 @@ th.number {
 	background-color:#800000;
 	color:white;
 }
-th.ascending {
-  cursor:s-resize;
+
+th.SortedColumn {
+cursor:s-resize;
 }
-th.descending {
-  cursor:n-resize;
-}
-th:after {
-	content:"";
-	float:right;
-	margin-top:7px;
-	visibility:hidden;
-}
-th.ascending:after {
-	border-width:0 4px 4px;
-	border-style:solid;
-	border-color:#000 transparent;
-	visibility:visible;
-}
-th.descending:after {
-	border-bottom:none;
-	border-left:4px solid transparent;
-	border-right:4px solid transparent;
-	border-top:4px solid #000;
-	visibility:visible;
-}
+
 td {
     padding:2px 4px;
 	text-align:left;
@@ -172,7 +152,7 @@ input.inputerror, input.error, select.error, select.selecterror, label.error {
 input[type='text'], input[type='tel'], input[type='password'], input[type='email'] {
     border:thin solid #C3C3C3;
     padding:4px 8px;
-    
+
     -webkit-border-radius:  4px;
     -moz-border-radius:     4px;
     border-radius:          4px;
@@ -183,7 +163,7 @@ input:required, select:required, textarea:required {
 input[type='text']:focus, input[type='tel']:focus, input[type='password']:focus, input[type='email']:focus, input[type='submit'], textarea:focus, select:focus, button:focus {
     outline:none;
     border-color:#2380CD;
-    
+
     -moz-box-shadow:    0px 0px 5px #55B1EA;
 	-webkit-box-shadow: 0px 0px 5px #55B1EA;
 	box-shadow:         0px 0px 5px #55B1EA;
@@ -196,7 +176,7 @@ input[type='submit'], button {
     font-weight:bold;
     color:#FFFFFF;
     cursor: pointer;
-    
+
     -webkit-border-radius:  4px;
     -moz-border-radius:     4px;
     border-radius:          4px;
@@ -210,7 +190,7 @@ select {
 textarea{
     border:thin solid #C3C3C3;
     padding:4px 8px;
-    
+
     -webkit-border-radius:  4px;
     -moz-border-radius:     4px;
     border-radius:          4px;
@@ -410,9 +390,9 @@ select.selecterror {
     height:38px;
 }
 
-/*** links as buttons!!! clicking anywhere in the button will activate 
+/*** links as buttons!!! clicking anywhere in the button will activate
      the link!!! ***HJ***/
-	 
+
 #QuickMenuDiv li a{
     color:white;
     font-weight:bold;
@@ -454,7 +434,7 @@ select.selecterror {
 	width:auto; /* automatic width */
 	margin:0 auto;
 	margin-bottom:10px;
-	
+
 	-webkit-border-radius:  4px;
     -moz-border-radius:     4px;
     border-radius:          4px;
@@ -468,7 +448,7 @@ select.selecterror {
     background-color:white;
     border:thin outset #D2D2D2;
     padding:5px;
-    
+
     -webkit-border-radius:  4px;
     -moz-border-radius:     4px;
     border-radius:          4px;
@@ -490,7 +470,7 @@ select.selecterror {
 	width:14%;
 	border:thin inset #5D5D5D;
 	background:#686868;
-	
+
 	-webkit-border-radius:  4px;
     -moz-border-radius:     4px;
     border-radius:          4px;
@@ -527,7 +507,7 @@ select.selecterror {
 	border-bottom:thin solid #444444;
 }
 #MainMenuDiv .main_menu_selected a{ /* the selected button */
-	/*border:thin inset #191919;*/	
+	/*border:thin inset #191919;*/
 	background:#2A2A2A;
 	border-bottom:thin solid #191919;
 }
@@ -544,7 +524,7 @@ select.selecterror {
 	border:thin outset #D2D2D2;
 	background-color:white;	/* for custom reports */
 	min-height:400px;
-	
+
 	-webkit-border-radius:  4px;
     -moz-border-radius:     4px;
     border-radius:          4px;
@@ -608,7 +588,7 @@ select.selecterror {
 
 #FooterDiv{
 	clear:both; /* REQUIRED */
-    overflow:hidden;	
+    overflow:hidden;
     color:#999999;
     width: 98.6%;
     margin: auto;
@@ -621,7 +601,7 @@ select.selecterror {
 	overflow:hidden;
 	padding:3px;
 }
-#FooterLogoDiv{ 
+#FooterLogoDiv{
 	float:right; /* right side */
     padding:2px;
 }

@@ -200,18 +200,20 @@ if (DB_num_rows($TransResult) == 0) {
 /*show a table of the transactions returned by the SQL */
 
 echo '<table width="90%" class="selection">
-	<tr>
-		<th class="SortableColumn">' . _('Date') . '</th>
-		<th class="SortableColumn">' . _('Type') . '</th>
-		<th class="SortableColumn">' . _('Number') . '</th>
-		<th class="SortableColumn">' . _('Reference') . '</th>
-		<th class="SortableColumn">' . _('Comments') . '</th>
-		<th class="SortableColumn">' . _('Total') . '</th>
-		<th class="SortableColumn">' . _('Allocated') . '</th>
-		<th class="SortableColumn">' . _('Balance') . '</th>
-		<th class="noPrint">' . _('More Info') . '</th>
-		<th> class="noPrint"' . _('More Info') . '</th>
-	</tr>';
+		<thead>
+			<tr>
+				<th class="SortedColumn">' . _('Date') . '</th>
+				<th class="SortedColumn">' . _('Type') . '</th>
+				<th class="SortedColumn">' . _('Number') . '</th>
+				<th class="SortedColumn">' . _('Reference') . '</th>
+				<th class="SortedColumn">' . _('Comments') . '</th>
+				<th class="SortedColumn">' . _('Total') . '</th>
+				<th class="SortedColumn">' . _('Allocated') . '</th>
+				<th class="SortedColumn">' . _('Balance') . '</th>
+				<th class="noPrint">' . _('More Info') . '</th>
+				<th class="noPrint">' . _('More Info') . '</th>
+			</tr>
+		</thead>';
 
 $j = 1;
 $k = 0; //row colour counter
@@ -223,7 +225,7 @@ $AuthSQL = "SELECT offhold
 
 $AuthResult = DB_query($AuthSQL);
 $AuthRow = DB_fetch_array($AuthResult);
-
+echo '<tbody>';
 while ($MyRow = DB_fetch_array($TransResult)) {
 
 	if ($MyRow['hold'] == 0 and $MyRow['settled'] == 0) {
@@ -331,6 +333,7 @@ while ($MyRow = DB_fetch_array($TransResult)) {
 	} //end of page full new headings if
 } //end of while loop
 
+echo '</tbody>';
 echo '</table>';
 include('includes/footer.inc');
 ?>

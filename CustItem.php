@@ -142,18 +142,20 @@ if ($Edit == false) {
 		$NoCustItemData = 1;
 	} else if ($StockId != '') {
 
-		echo '<table cellpadding="2" class="selection">';
-		$TableHeader = '<tr>
-							<th class="SortableColumn">' . _('Customer') . '</th>
-							<th>' . _('Customer Unit') . '</th>
-							<th>' . _('Conversion Factor') . '</th>
-							<th class="SortableColumn">' . _('Customer Item') . '</th>
-							<th class="SortableColumn">' . _('Customer Description') . '</th>
+		echo '<table cellpadding="2" class="selection">
+				<thead>
+					<tr>
+						<th class="SortedColumn">' . _('Customer') . '</th>
+						<th>' . _('Customer Unit') . '</th>
+						<th>' . _('Conversion Factor') . '</th>
+						<th class="SortedColumn">' . _('Customer Item') . '</th>
+						<th class="SortedColumn">' . _('Customer Description') . '</th>
+					</tr>
+				</thead>';
 
-						</tr>';
-		echo $TableHeader;
 		$CountPreferreds = 0;
 		$k = 0; //row colour counter
+		echo '<tbody>';
 		while ($MyRow = DB_fetch_array($custitemResult)) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
@@ -172,6 +174,7 @@ if ($Edit == false) {
 					<td><a href="%s?StockID=%s&amp;DebtorNo=%s&amp;Delete=1" onclick=\'return confirm("' . _('Are you sure you wish to delete this customer data?') . '");\'>' . _('Delete') . '</a></td>
 					</tr>', $MyRow['name'], $MyRow['customersUOM'], locale_number_format($MyRow['conversionfactor'], 'Variable'), $MyRow['cust_part'], $MyRow['cust_description'], htmlspecialchars($_SERVER['PHP_SELF']), $StockId, $MyRow['debtorno'], htmlspecialchars($_SERVER['PHP_SELF']), $StockId, $MyRow['debtorno']);
 		} //end of while loop
+		echo '</tbody>';
 		echo '</table>';
 	} // end of there are rows to show
 }
@@ -283,19 +286,23 @@ if (isset($debtorsmasterResult) and DB_num_rows($debtorsmasterResult) > 0) {
 		$StockId = '';
 		$StockUOM = 'each';
 	}
-	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF']) . '" method="post">
-			<table cellpadding="2" colspan="7" class="selection">';
+	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF']) . '" method="post">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-	$TableHeader = '<tr>
-						<th class="SortableColumn">' . _('Code') . '</th>
-	                	<th class="SortableColumn">' . _('Customer Name') . '</th>
-						<th class="SortableColumn">' . _('Currency') . '</th>
-						<th class="SortableColumn">' . _('Address 1') . '</th>
-						<th class="SortableColumn">' . _('Address 2') . '</th>
-						<th class="SortableColumn">' . _('Address 3') . '</th>
-					</tr>';
-	echo $TableHeader;
+
+	echo '<table cellpadding="2" colspan="7" class="selection">
+			<thead>
+				<tr>
+					<th class="SortedColumn">' . _('Code') . '</th>
+					<th class="SortedColumn">' . _('Customer Name') . '</th>
+					<th class="SortedColumn">' . _('Currency') . '</th>
+					<th class="SortedColumn">' . _('Address 1') . '</th>
+					<th class="SortedColumn">' . _('Address 2') . '</th>
+					<th class="SortedColumn">' . _('Address 3') . '</th>
+				</tr>
+			</thead>';
+
 	$k = 0;
+	echo '<tbody>';
 	while ($MyRow = DB_fetch_array($debtorsmasterResult)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -317,8 +324,9 @@ if (isset($debtorsmasterResult) and DB_num_rows($debtorsmasterResult) > 0) {
 
 	}
 	//end of while loop
-	echo '</table>
-			</form>';
+	echo '</tbody>
+		</table>
+	</form>';
 }
 //end if results to show
 

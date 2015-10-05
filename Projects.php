@@ -674,14 +674,17 @@ if (!isset($_SESSION['Project' . $Identifier]->DonorNo) or $_SESSION['Project' .
 	if (isset($Result_DonorSelect)) {
 
 		echo '<table cellpadding="2" class="selection">
-				<tr>
-					<th class="SortableColumn">' . _('Donor Number') . '</th>
-					<th class="SortableColumn">' . _('Name') . '</th>
-				</tr>';
+				<thead>
+					<tr>
+						<th class="SortedColumn">' . _('Donor Number') . '</th>
+						<th class="SortedColumn">' . _('Name') . '</th>
+					</tr>
+				</thead>';
 
 		$k = 0; //row counter to determine background colour
 		$j = 0;
 		$LastDonor = '';
+		echo '<tbody>';
 		while ($MyRow = DB_fetch_array($Result_DonorSelect)) {
 
 			if ($k == 1) {
@@ -707,7 +710,9 @@ if (!isset($_SESSION['Project' . $Identifier]->DonorNo) or $_SESSION['Project' .
 		}
 		//end of while loop
 
-		echo '</table></form>';
+		echo '</tbody>
+			</table>
+		</form>';
 	} //end if results to show
 
 	//end if RequireDonorSelection

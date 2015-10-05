@@ -180,14 +180,17 @@ if (!isset($SelectedPaymentID)) {
 	$Result = DB_query($SQL, $ErrMsg);
 
 	echo '<table class="selection">
-		<tr>
-			<th class="SortableColumn">' . _('Payment Method') . '</th>
-			<th class="SortableColumn">' . _('Use For Payments') . '</th>
-			<th class="SortableColumn">' . _('Use For Receipts') . '</th>
-			<th class="SortableColumn">' . _('Use Pre-printed Stationery') . '</th>
-			<th>' . _('Open POS Cash Drawer for Sale') . '</th>
-		</tr>';
+			<thead>
+				<tr>
+					<th class="SortedColumn">' . _('Payment Method') . '</th>
+					<th class="SortedColumn">' . _('Use For Payments') . '</th>
+					<th class="SortedColumn">' . _('Use For Receipts') . '</th>
+					<th class="SortedColumn">' . _('Use Pre-printed Stationery') . '</th>
+					<th>' . _('Open POS Cash Drawer for Sale') . '</th>
+				</tr>
+			</thead>';
 
+	echo'<tbody>';
 	$k = 0; //row colour counter
 	while ($MyRow = DB_fetch_array($Result)) {
 
@@ -209,6 +212,7 @@ if (!isset($SelectedPaymentID)) {
 			</tr>';
 
 	} //END WHILE LIST LOOP
+	echo '</tbody>';
 	echo '</table>';
 } //end of ifs and buts!
 

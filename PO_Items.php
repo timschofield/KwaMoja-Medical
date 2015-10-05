@@ -696,23 +696,25 @@ if (count($_SESSION['PO' . $Identifier]->LineItems) > 0 and !isset($_GET['Edit']
 	} //isset($_SESSION['PO' . $Identifier]->OrderNo)
 	echo '<b>&nbsp;-&nbsp' . _(' Order Summary') . '</b></p>';
 	echo '<table cellpadding="2" class="selection">
-			<tr>
-				<th class="SortableColumn">' . _('Item Code') . '</th>
-				<th class="SortableColumn">' . _('Description') . '</th>
-				<th>' . _('Quantity Our Units') . '</th>
-				<th>' . _('Our Unit') . '</th>
-				<th>' . _('Price Our Units') . ' (' . $_SESSION['PO' . $Identifier]->CurrCode . ')</th>
-				<th>' . _('Unit Conversion Factor') . '</th>
-				<th>' . _('Order Quantity') . '<br />' . _('Supplier Units') . '</th>
-				<th>' . _('Supplier Unit') . '</th>
-				<th>' . _('Order Price') . '<br />' . _('Supp Units') . ' (' . $_SESSION['PO' . $Identifier]->CurrCode . ')</th>
-				<th>' . _('Sub-Total') . ' (' . $_SESSION['PO' . $Identifier]->CurrCode . ')</th>
-				<th>' . _('Deliver By') . '</th>
-			</tr>';
+			<thead>
+				<tr>
+					<th class="SortedColumn">' . _('Item Code') . '</th>
+					<th class="SortedColumn">' . _('Description') . '</th>
+					<th>' . _('Quantity Our Units') . '</th>
+					<th>' . _('Our Unit') . '</th>
+					<th>' . _('Price Our Units') . ' (' . $_SESSION['PO' . $Identifier]->CurrCode . ')</th>
+					<th>' . _('Unit Conversion Factor') . '</th>
+					<th>' . _('Order Quantity') . '<br />' . _('Supplier Units') . '</th>
+					<th>' . _('Supplier Unit') . '</th>
+					<th>' . _('Order Price') . '<br />' . _('Supp Units') . ' (' . $_SESSION['PO' . $Identifier]->CurrCode . ')</th>
+					<th>' . _('Sub-Total') . ' (' . $_SESSION['PO' . $Identifier]->CurrCode . ')</th>
+					<th>' . _('Deliver By') . '</th>
+				</tr>
+			</thead>';
 
 	$_SESSION['PO' . $Identifier]->Total = 0;
 	$k = 0; //row colour counter
-
+	echo '<tbody>';
 	foreach ($_SESSION['PO' . $Identifier]->LineItems as $POLine) {
 		if ($POLine->Deleted == False) {
 			$LineTotal = $POLine->Quantity * $POLine->Price;
@@ -763,7 +765,7 @@ if (count($_SESSION['PO' . $Identifier]->LineItems) > 0 and !isset($_GET['Edit']
 			$_SESSION['PO' . $Identifier]->Total += $LineTotal;
 		} //$POLine->Deleted == False
 	} //$_SESSION['PO' . $Identifier]->LineItems as $POLine
-
+	echo '</tbody>';
 	$DisplayTotal = locale_number_format($_SESSION['PO' . $Identifier]->Total, $_SESSION['PO' . $Identifier]->CurrDecimalPlaces);
 	echo '<tr>
 			<td colspan="9" class="number">', _('TOTAL'), _(' excluding Tax'), '</td>
@@ -1170,18 +1172,20 @@ if (isset($SearchResult)) {
 			<input type="submit" name="NewItem" value="', _('Order some'), '" />
 		</div>';
 	echo '<table cellpadding="1" class="selection">
-			<tr>
-				<th class="SortableColumn">', _('Code'), '</th>
-				<th class="SortableColumn">' . _('Description'), '</th>
-				<th>', _('Our Units'), '</th>
-				<th>', _('Conversion'), '<br />', _('Factor'), '</th>
-				<th>', _('Supplier/Order'), '<br />', _('Units'), '</th>
-				<th colspan="2"><a href="#end">', _('Go to end of list'), '</a></th>
-			</tr>';
+			<thead>
+				<tr>
+					<th class="SortedColumn">', _('Code'), '</th>
+					<th class="SortedColumn">' . _('Description'), '</th>
+					<th>', _('Our Units'), '</th>
+					<th>', _('Conversion'), '<br />', _('Factor'), '</th>
+					<th>', _('Supplier/Order'), '<br />', _('Units'), '</th>
+					<th colspan="2"><a href="#end">', _('Go to end of list'), '</a></th>
+				</tr>
+			</thead>';
 
 	$k = 0; //row colour counter
 	$j = 0;
-
+	echo '<tbody>';
 	while ($MyRow = DB_fetch_array($SearchResult)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -1229,6 +1233,7 @@ if (isset($SearchResult)) {
 		//end of page full new headings if
 	} //$MyRow = DB_fetch_array($SearchResult)
 	//end of while loop
+	echo '</tbody>';
 	echo '</table>';
 	echo '<input type="hidden" name="PO_ItemsResubmitFormValue" value="' . $_SESSION['PO_ItemsResubmitForm' . $Identifier] . '" />';
 	echo '<a name="end"></a>';

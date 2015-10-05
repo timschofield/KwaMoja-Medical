@@ -191,19 +191,21 @@ if ($AllowGLAnalysis == false) {
 	}
 } else {
 	/*Allow GL Analysis == true */
-	echo '</p><table cellpadding="2" class="selection">
+	echo '<table cellpadding="2" class="selection">
+			<thead>
 				<tr>
 					<th colspan="5">' . _('General ledger Analysis') . '</th>
 				</tr>
 				<tr>
-					<th class="SortableColumn">' . _('Account') . '</th>
-					<th class="SortableColumn">' . _('Name') . '</th>
+					<th class="SortedColumn">' . _('Account') . '</th>
+					<th class="SortedColumn">' . _('Name') . '</th>
 					<th>' . _('Amount') . '<br />' . _('in') . ' ' . $_SESSION['Statement']->CurrCode . '</th>
 					<th>' . _('Narrative') . '</th>
 					<th>' . _('Tag') . '</th>
-				</tr>';
+				</tr>
+			</thead>';
 	$TotalGLValue = 0;
-
+	echo '<tbody>';
 	foreach ($_SESSION['Trans'][$TransID]->GLEntries AS $EnteredGLCode) {
 
 		echo '<tr>
@@ -219,7 +221,7 @@ if ($AllowGLAnalysis == false) {
 		$TotalGLValue += $EnteredGLCode->Amount;
 
 	}
-
+	echo '</tbody>';
 	echo '<tr>
 			<td colspan="2" class="number">' . _('Total of GL Entries') . ':</td>
 			<td class="number"><font size=2 color=navy>' . locale_number_format($TotalGLValue, $_SESSION['Statement']->CurrDecimalPlaces) . '</font></td>

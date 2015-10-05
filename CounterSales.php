@@ -2164,19 +2164,21 @@ if (!isset($_POST['ProcessSale'])) {
 					_('Frequently Ordered Items, shows the most frequently ordered items in the last 6 months. You can choose from this list, or search further for other items'), '.
 				</div>';
 			echo '<table class="table1">
-					<tr>
-						<th class="SortableColumn">', _('Code'), '</th>
-						<th class="SortableColumn">', _('Description'), '</th>
-						<th>', _('Units'), '</th>
-						<th>', _('On Hand'), '</th>
-						<th>', _('On Demand'), '</th>
-						<th>', _('On Order'), '</th>
-						<th>', _('Available'), '</th>
-						<th>', _('Quantity'), '</th>
-					</tr>';
+					<thead>
+						<tr>
+							<th class="SortedColumn">', _('Code'), '</th>
+							<th class="SortedColumn">', _('Description'), '</th>
+							<th>', _('Units'), '</th>
+							<th>', _('On Hand'), '</th>
+							<th>', _('On Demand'), '</th>
+							<th>', _('On Order'), '</th>
+							<th>', _('Available'), '</th>
+							<th>', _('Quantity'), '</th>
+						</tr>
+					</thead>';
 			$i = 0;
 			$k = 0; //row colour counter
-
+			echo '<tbody>';
 			while ($MyRow = DB_fetch_array($Result2)) {
 				// This code needs sorting out, but until then :
 				$ImageSource = _('No Image');
@@ -2238,6 +2240,7 @@ if (!isset($_POST['ProcessSale'])) {
 				++$i; //index for controls
 				#end of page full new headings if
 			}
+			echo '</tbody>';
 			#end of while loop for Frequently Ordered Items
 			echo '<tr>
 					<td style="text-align:center" colspan="8">
@@ -2315,35 +2318,36 @@ if (!isset($_POST['ProcessSale'])) {
 
 
 		if (isset($SearchResult)) {
-			echo '<table class="table1">';
-			echo '<tr>
-					<td>
-						<input type="hidden" name="PreviousList" value="', strval($Offset - 1), '" />
-						<input type="submit" name="Previous" value="', _('Prev'), '" />
-					</td>
-					<td style="text-align:center" colspan="6">
-						<input type="hidden" name="SelectingOrderItems" value="1" />
-						<input type="submit" value="', _('Add to Sale'), '" />
-					</td>
-					<td>
-						<input type="hidden" name="NextList" value="', strval($Offset + 1), '" />
-						<input type="submit" name="Next" value="', _('Next'), '" />
-					</td>
-				</tr>';
-			echo '<tbody>
-					<tr>
-						<th class="SortableColumn">', _('Code'), '</th>
-						<th class="SortableColumn">', _('Description'), '</th>
-						<th>', _('Units'), '</th>
-						<th>', _('On Hand'), '</th>
-						<th>', _('On Demand'), '</th>
-						<th>', _('On Order'), '</th>
-						<th>', _('Available'), '</th>
-						<th>', _('Quantity'), '</th>
-					</tr>';
+			echo '<table class="table1">
+					<thead>
+						<tr>
+							<td>
+								<input type="hidden" name="PreviousList" value="', strval($Offset - 1), '" />
+								<input type="submit" name="Previous" value="', _('Prev'), '" />
+							</td>
+							<td style="text-align:center" colspan="6">
+								<input type="hidden" name="SelectingOrderItems" value="1" />
+								<input type="submit" value="', _('Add to Sale'), '" />
+							</td>
+							<td>
+								<input type="hidden" name="NextList" value="', strval($Offset + 1), '" />
+								<input type="submit" name="Next" value="', _('Next'), '" />
+							</td>
+						</tr>
+						<tr>
+							<th class="SortedColumn">', _('Code'), '</th>
+							<th class="SortedColumn">', _('Description'), '</th>
+							<th>', _('Units'), '</th>
+							<th>', _('On Hand'), '</th>
+							<th>', _('On Demand'), '</th>
+							<th>', _('On Order'), '</th>
+							<th>', _('Available'), '</th>
+							<th>', _('Quantity'), '</th>
+						</tr>
+					</thead>';
 			$i = 0;
 			$k = 0; //row colour counter
-
+			echo '<tbody>';
 			while ($MyRow = DB_fetch_array($SearchResult)) {
 
 				// Find the quantity in stock at location

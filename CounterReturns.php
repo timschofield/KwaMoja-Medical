@@ -1783,20 +1783,19 @@ if (!isset($_POST['ProcessReturn'])) {
 								<input type="submit" name="Next" value="', _('Next'), '" />
 							</td>
 						</tr>
-					</thead>
-					<tbody>
 						<tr>
-							<th class="SortableColumn">', _('Code'), '</th>
-							<th class="SortableColumn">', _('Description'), '</th>
+							<th class="SortedColumn">', _('Code'), '</th>
+							<th class="SortedColumn">', _('Description'), '</th>
 							<th>', _('Units'), '</th>
 							<th>', _('On Hand'), '</th>
 							<th>', _('On Demand'), '</th>
 							<th>', _('On Order'), '</th>
 							<th>', _('Available'), '</th>
 							<th>', _('Quantity'), '</th>
-						</tr>';
+						</tr>
+					</thead>';
 			$k = 0; //row colour counter
-
+			echo '<tbody>';
 			while ($MyRow = DB_fetch_array($SearchResult)) {
 
 				// Find the quantity in stock at location

@@ -136,18 +136,21 @@ $ProjectsResult = DB_query($SQL, $ErrMsg);
 /*show a table of the projects returned by the SQL */
 
 echo '<table cellpadding="2" width="98%" class="selection">
-		<tr>
-			<th>' . _('Modify') . '</th>
-			<th class="SortableColumn">' . _('Order') . '</th>
-			<th>' . _('Issue To WO') . '</th>
-			<th>' . _('Costing') . '</th>
-			<th class="SortableColumn">' . _('Project Ref') . '</th>
-			<th>' . _('Description') . '</th>
-			<th>' . _('Customer') . '</th>
-			<th>' . _('Required Date') . '</th>
-		</tr>';
+		<thead>
+			<tr>
+				<th>' . _('Modify') . '</th>
+				<th class="SortedColumn">' . _('Order') . '</th>
+				<th>' . _('Issue To WO') . '</th>
+				<th>' . _('Costing') . '</th>
+				<th class="SortedColumn">' . _('Project Ref') . '</th>
+				<th>' . _('Description') . '</th>
+				<th>' . _('Customer') . '</th>
+				<th>' . _('Required Date') . '</th>
+			</tr>
+		</thead>';
 
 $k = 0; //row colour counter
+echo '<tbody>';
 while ($MyRow = DB_fetch_array($ProjectsResult)) {
 	if ($k == 1) {
 		echo '<tr class="EvenTableRows">';
@@ -190,7 +193,8 @@ while ($MyRow = DB_fetch_array($ProjectsResult)) {
 }
 //end of while loop
 
-echo '</table>
-	  </form>';
+echo '</tbody>
+	</table>
+</form>';
 include('includes/footer.inc');
 ?>

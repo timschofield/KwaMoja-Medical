@@ -291,8 +291,10 @@ function SortSelect() {
 	var e = new Array;
 	th = document.getElementById("Theme").value;
 	columnText = selElem.innerHTML;
-	table = selElem.parentNode.parentNode;
-	i = table.rows[0];
+	TableHeader = selElem.parentNode;
+	TableBodyElements = TableHeader.parentNode.parentNode.getElementsByTagName('tbody');
+	table = TableBodyElements[0];
+	i = TableHeader;
 	for (var t = 0, n; n = i.cells[t]; t++) {
 		if (i.cells[t].innerHTML == columnText) {
 			columnNumber = t;
@@ -314,7 +316,7 @@ function SortSelect() {
 			}
 		}
 	}
-	for (var r = 1, i; i = table.rows[r]; r++) {
+	for (var r = 0, i; i = table.rows[r]; r++) {
 		var o = new Array;
 		for (var t = 0, n; n = i.cells[t]; t++) {
 			if (i.cells[t].tagName == "TD") {
@@ -347,7 +349,7 @@ function SortSelect() {
 			}
 		}
 	});
-	for (var r = 0, i; i = table.rows[r + 1]; r++) {
+	for (var r = 0, i; i = table.rows[r]; r++) {
 		var o = new Array;
 		o = e[r];
 		for (var t = 0, n; n = i.cells[t]; t++) {
@@ -447,7 +449,7 @@ function initial() {
 	}
 	var n = document.getElementsByTagName("th");
 	for (i = 0; i < n.length; i++) {
-		if (n[i].className == "SortableColumn") {
+		if (n[i].className == "SortedColumn") {
 			n[i].onclick = SortSelect
 		}
 	}

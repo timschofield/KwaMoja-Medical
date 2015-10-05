@@ -70,15 +70,16 @@ else {
 echo $_SESSION['SuppTrans']->SuppReference . ' ' . _('From') . ' ' . $_SESSION['SuppTrans']->SupplierName;
 echo '</p></div>';
 echo '<table class="selection">
-		<tbody>
+		<thead>
 			<tr>
-				<th class="SortableColumn">' . _('Asset ID') . '</th>
-				<th class="SortableColumn">' . _('Description') . '</th>
+				<th class="SortedColumn">' . _('Asset ID') . '</th>
+				<th class="SortedColumn">' . _('Description') . '</th>
 				<th>' . _('Amount') . '</th>
-			</tr>';
+			</tr>
+		</thead>';
 
 $TotalAssetValue = 0;
-
+echo '<tbody>';
 foreach ($_SESSION['SuppTrans']->Assets as $EnteredAsset) {
 	echo '<tr>
 			<td>' . $EnteredAsset->AssetID . '</td>

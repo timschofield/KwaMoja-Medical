@@ -381,22 +381,25 @@ if (!isset($SelectedQATest)) {
 			ORDER BY name";
 	$Result = DB_query($SQL);
 
-	echo '<table class="selection">';
-	echo '<tr>
-			<th class="SortableColumn">', _('Test ID'), '</th>
-			<th class="SortableColumn">', _('Name'), '</th>
-			<th class="SortableColumn">', _('Method'), '</th>
-			<th class="SortableColumn">', _('Group By'), '</th>
-			<th class="SortableColumn">', _('Units'), '</th>
-			<th class="SortableColumn">', _('Type'), '</th>
-			<th>', _('Possible Values'), '</th>
-			<th class="SortableColumn">', _('Numeric Value'), '</th>
-			<th class="SortableColumn">', _('Show on Cert'), '</th>
-			<th class="SortableColumn">', _('Show on Spec'), '</th>
-			<th class="SortableColumn">', _('Show on Test Plan'), '</th>
-			<th class="SortableColumn">', _('Active'), '</th>
-		</tr>';
+	echo '<table class="selection">
+			<thead>
+				<tr>
+					<th class="SortedColumn">', _('Test ID'), '</th>
+					<th class="SortedColumn">', _('Name'), '</th>
+					<th class="SortedColumn">', _('Method'), '</th>
+					<th class="SortedColumn">', _('Group By'), '</th>
+					<th class="SortedColumn">', _('Units'), '</th>
+					<th class="SortedColumn">', _('Type'), '</th>
+					<th>', _('Possible Values'), '</th>
+					<th class="SortedColumn">', _('Numeric Value'), '</th>
+					<th class="SortedColumn">', _('Show on Cert'), '</th>
+					<th class="SortedColumn">', _('Show on Spec'), '</th>
+					<th class="SortedColumn">', _('Show on Test Plan'), '</th>
+					<th class="SortedColumn">', _('Active'), '</th>
+				</tr>
+			</thead>';
 	$k = 0;
+	echo '<tbody>';
 	while ($MyRow = DB_fetch_array($Result)) {
 
 		if ($k == 1) {
@@ -465,6 +468,7 @@ if (!isset($SelectedQATest)) {
 		</tr>';
 
 	} //END WHILE LIST LOOP
+	echo '</tbody>';
 	echo '</table>';
 } //end of ifs and buts!
 

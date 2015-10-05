@@ -245,25 +245,28 @@ if (DB_num_rows($TransResult) == 0) {
 /* Show a table of the invoices returned by the SQL. */
 
 echo '<table class="selection">
-		<tr>
-			<th class="SortableColumn">', _('Type'), '</th>
-			<th class="SortableColumn">', _('Number'), '</th>
-			<th class="SortableColumn">', _('Date'), '</th>
-			<th>', _('Branch'), '</th>
-			<th class="SortableColumn">', _('Reference'), '</th>
-			<th>', _('Comments'), '</th>
-			<th>', _('Order'), '</th>
-			<th>', _('Total'), '</th>
-			<th>', _('Allocated'), '</th>
-			<th>', _('Balance'), '</th>
-			<th class="noPrint">', _('More Info'), '</th>
-			<th class="noPrint">', _('More Info'), '</th>
-			<th class="noPrint">', _('More Info'), '</th>
-			<th class="noPrint">', _('More Info'), '</th>
-			<th class="noPrint">', _('More Info'), '</th>
-		</tr>';
+		<thead>
+			<tr>
+				<th class="SortedColumn">', _('Type'), '</th>
+				<th class="SortedColumn">', _('Number'), '</th>
+				<th class="SortedColumn">', _('Date'), '</th>
+				<th>', _('Branch'), '</th>
+				<th class="SortedColumn">', _('Reference'), '</th>
+				<th>', _('Comments'), '</th>
+				<th>', _('Order'), '</th>
+				<th>', _('Total'), '</th>
+				<th>', _('Allocated'), '</th>
+				<th>', _('Balance'), '</th>
+				<th class="noPrint">', _('More Info'), '</th>
+				<th class="noPrint">', _('More Info'), '</th>
+				<th class="noPrint">', _('More Info'), '</th>
+				<th class="noPrint">', _('More Info'), '</th>
+				<th class="noPrint">', _('More Info'), '</th>
+			</tr>
+		</thead>';
 
 $k = 0; //row colour counter
+echo '<tbody>';
 while ($MyRow = DB_fetch_array($TransResult)) {
 
 	if ($k == 1) {
@@ -645,6 +648,7 @@ while ($MyRow = DB_fetch_array($TransResult)) {
 }
 //end of while loop
 
+echo '</tbody>';
 echo '</table>';
 include('includes/footer.inc');
 ?>

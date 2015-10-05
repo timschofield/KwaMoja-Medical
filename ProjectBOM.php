@@ -260,17 +260,20 @@ if (!isset($_GET['Edit'])) {
 if (isset($SearchResult)) {
 
 	echo '<table cellpadding="1">
-			<tr>
-				<th class="SortableColumn">' . _('Code') . '</th>
-				<th class="SortableColumn">' . _('Description') . '</th>
-				<th>' . _('Units') . '</th>
-				<th>' . _('Image') . '</th>
-				<th>' . _('Quantity') . '</th>
-				<th>' . _('Required By') . '</th>
-			</tr>';
+			<thead>
+				<tr>
+					<th class="SortedColumn">' . _('Code') . '</th>
+					<th class="SortedColumn">' . _('Description') . '</th>
+					<th>' . _('Units') . '</th>
+					<th>' . _('Image') . '</th>
+					<th>' . _('Quantity') . '</th>
+					<th>' . _('Required By') . '</th>
+				</tr>
+			</thead>';
 
 	$k = 0; //row colour counter
 	$i = 0;
+	echo '<tbody>';
 	while ($MyRow = DB_fetch_array($SearchResult)) {
 
 		if ($k == 1) {
@@ -304,8 +307,10 @@ if (isset($SearchResult)) {
 	}
 
 	#end of while loop
-	echo '</table>
-			<input type="hidden" name="CountOfItems" value="' . $i . '" />';
+	echo '</tbody>
+	</table>';
+
+	echo '<input type="hidden" name="CountOfItems" value="' . $i . '" />';
 	if ($i == $_SESSION['DisplayRecordsMax']) {
 
 		prnMsg(_('Only the first') . ' ' . $_SESSION['DisplayRecordsMax'] . ' ' . _('can be displayed') . '. ' . _('Please restrict your search to only the parts required'), 'info');

@@ -142,19 +142,19 @@ if (!isset($SelectedContact)) {
 		$MyRow = DB_fetch_array($Result);
 
 		echo '<table class="selection">
-				<tr>
-					<th colspan="7"><h3>' . _('Contacts Defined for') . ' - ' . $MyRow['suppname'] . '</h3></th>
-				</tr>';
-
-		echo '<tbody>
-				<tr>
-					<th class="SortableColumn">' . _('Name') . '</th>
-					<th class="SortableColumn">' . _('Position') . '</th>
-					<th>' . _('Phone No') . '</th>
-					<th>' . _('Fax No') . '</th>
-					<th>' . _('Email') . '</th>
-				</tr>';
-
+				<thead>
+					<tr>
+						<th colspan="7"><h3>' . _('Contacts Defined for') . ' - ' . $MyRow['suppname'] . '</h3></th>
+					</tr>
+					<tr>
+						<th class="SortedColumn">' . _('Name') . '</th>
+						<th class="SortedColumn">' . _('Position') . '</th>
+						<th>' . _('Phone No') . '</th>
+						<th>' . _('Fax No') . '</th>
+						<th>' . _('Email') . '</th>
+					</tr>
+				</thead>';
+		echo '<tbody>';
 		do {
 			printf('<tr><td>%s</td>
 					<td>%s</td>
@@ -165,7 +165,7 @@ if (!isset($SelectedContact)) {
 					<td><a href="%s&amp;SupplierID=%s&amp;SelectedContact=%s&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this contact?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td></tr>', $MyRow['contact'], $MyRow['position'], $MyRow['tel'], $MyRow['fax'], $MyRow['email'], $MyRow['email'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', urlencode($SupplierID), $MyRow['contact'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', urlencode($SupplierID), $MyRow['contact']);
 		} while ($MyRow = DB_fetch_array($Result));
 		echo '</tbody>
-			</table><br />';
+			</table>';
 	} else {
 		prnMsg(_('There are no contacts defined for this supplier'), 'info');
 	}

@@ -444,18 +444,19 @@ if (isset($Result)) {
 		$RowIndex = 0;
 	} //!isset($_POST['CSV'])
 	if (DB_num_rows($Result) <> 0) {
-		echo '<br />
-				<table cellpadding="2" class="selection">
+		echo '<table cellpadding="2" class="selection">
+				<thead>
 					<tr>
-						<th class="SortableColumn">' . _('Code') . '</th>
-						<th class="SortableColumn">' . _('Customer Name') . '</th>
-						<th class="SortableColumn">' . _('Branch') . '</th>
+						<th class="SortedColumn">' . _('Code') . '</th>
+						<th class="SortedColumn">' . _('Customer Name') . '</th>
+						<th class="SortedColumn">' . _('Branch') . '</th>
 						<th>' . _('Contact') . '</th>
 						<th>' . _('Type') . '</th>
 						<th>' . _('Phone') . '</th>
 						<th>' . _('Fax') . '</th>
 						<th>' . _('Email') . '</th>
-					</tr>';
+					</tr>
+				</thead>';
 		if (isset($_POST['CSV'])) {
 			$FileName = $_SESSION['reports_dir'] . '/Customer_Listing_' . Date('Y-m-d') . '.csv';
 			echo '<br /><p class="page_title_text" ><a href="' . $FileName . '">' . _('Click to view the csv Search Result') . '</p>';
@@ -468,6 +469,7 @@ if (isset($Result)) {
 			DB_data_seek($Result, ($_POST['PageOffset'] - 1) * $_SESSION['DisplayRecordsMax']);
 		} //!isset($_POST['CSV'])
 		$i = 0; //counter for input controls
+		echo '<tbody>';
 		while (($MyRow = DB_fetch_array($Result)) and ($RowIndex <> $_SESSION['DisplayRecordsMax'])) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
@@ -493,6 +495,7 @@ if (isset($Result)) {
 			//end of page full new headings if
 		} //($MyRow = DB_fetch_array($Result)) and ($RowIndex <> $_SESSION['DisplayRecordsMax'])
 		//end of while loop
+		echo '</tbody>';
 		echo '</table>';
 		echo '<input type="hidden" name="JustSelectedACustomer" value="Yes" />';
 		echo '</table>';
@@ -639,19 +642,22 @@ if (isset($_SESSION['CustomerID']) and $_SESSION['CustomerID'] != '') {
 				ORDER BY contid";
 		$Result = DB_query($SQL);
 		if (DB_num_rows($Result) <> 0) {
-			echo '<br /><div class="centre"><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/group_add.png" title="' . _('Customer Contacts') . '" alt="" />' . ' ' . _('Customer Contacts') . '</div>';
-			echo '<br /><table width="45%">';
-			echo '<tr>
-					<th class="SortableColumn">' . _('Name') . '</th>
-					<th class="SortableColumn">' . _('Role') . '</th>
-					<th class="SortableColumn">' . _('Phone Number') . '</th>
-					<th>' . _('Email') . '</th>
-					<th>' . _('Notes') . '</th>
-					<th>' . _('Edit') . '</th>
-					<th>' . _('Delete') . '</th>
-					<th> <a href="AddCustomerContacts.php?DebtorNo=' . urlencode($_SESSION['CustomerID']) . '">' . _('Add New Contact') . '</a> </th>
-				</tr>';
+			echo '<div class="centre"><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/group_add.png" title="' . _('Customer Contacts') . '" alt="" />' . ' ' . _('Customer Contacts') . '</div>';
+			echo '<table width="45%">
+					<thead>
+						<tr>
+							<th class="SortedColumn">' . _('Name') . '</th>
+							<th class="SortedColumn">' . _('Role') . '</th>
+							<th class="SortedColumn">' . _('Phone Number') . '</th>
+							<th>' . _('Email') . '</th>
+							<th>' . _('Notes') . '</th>
+							<th>' . _('Edit') . '</th>
+							<th>' . _('Delete') . '</th>
+							<th> <a href="AddCustomerContacts.php?DebtorNo=' . urlencode($_SESSION['CustomerID']) . '">' . _('Add New Contact') . '</a> </th>
+						</tr>
+					</thead>';
 			$k = 0; //row colour counter
+			echo '<tbody>';
 			while ($MyRow = DB_fetch_array($Result)) {
 				if ($k == 1) {
 					echo '<tr class="OddTableRows">';
@@ -670,6 +676,7 @@ if (isset($_SESSION['CustomerID']) and $_SESSION['CustomerID'] != '') {
 					<td><a href="AddCustomerContacts.php?Id=' . urlencode($MyRow[0]) . '&amp;DebtorNo=' . urlencode($MyRow[1]) . '&amp;delete=1">' . _('Delete') . '</a></td>
 					</tr>';
 			} //END WHILE LIST LOOP
+			echo '</tbody>';
 			echo '</table>';
 		} //DB_num_rows($Result) <> 0
 		else {
@@ -693,17 +700,20 @@ if (isset($_SESSION['CustomerID']) and $_SESSION['CustomerID'] != '') {
 		$Result = DB_query($SQL);
 		if (DB_num_rows($Result) <> 0) {
 			echo '<div class="centre"><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/note_add.png" title="' . _('Customer Notes') . '" alt="" />' . ' ' . _('Customer Notes') . '</div><br />';
-			echo '<table width="45%">';
-			echo '<tr>
-					<th class="SortableColumn">' . _('date') . '</th>
-					<th>' . _('note') . '</th>
-					<th>' . _('hyperlink') . '</th>
-					<th class="SortableColumn">' . _('priority') . '</th>
-					<th>' . _('Edit') . '</th>
-					<th>' . _('Delete') . '</th>
-					<th> <a href="AddCustomerNotes.php?DebtorNo=' . urlencode($_SESSION['CustomerID']) . '">' . ' ' . _('Add New Note') . '</a> </th>
-				</tr>';
+			echo '<table width="45%">
+					<thead>
+						<tr>
+							<th class="SortedColumn">' . _('date') . '</th>
+							<th>' . _('note') . '</th>
+							<th>' . _('hyperlink') . '</th>
+							<th class="SortedColumn">' . _('priority') . '</th>
+							<th>' . _('Edit') . '</th>
+							<th>' . _('Delete') . '</th>
+							<th> <a href="AddCustomerNotes.php?DebtorNo=' . urlencode($_SESSION['CustomerID']) . '">' . ' ' . _('Add New Note') . '</a> </th>
+						</tr>
+					</thead>';
 			$k = 0; //row colour counter
+			echo '<tbody>';
 			while ($MyRow = DB_fetch_array($Result)) {
 				if ($k == 1) {
 					echo '<tr class="OddTableRows">';
@@ -721,6 +731,7 @@ if (isset($_SESSION['CustomerID']) and $_SESSION['CustomerID'] != '') {
 					<td><a href="AddCustomerNotes.php?Id=' . urlencode($MyRow['noteid']) . '&amp;DebtorNo=' . urlencode($MyRow['debtorno']) . '&amp;delete=1">' . _('Delete') . '</a></td>
 					</tr>';
 			} //END WHILE LIST LOOP
+			echo '</tbody>';
 			echo '</table>';
 		} //DB_num_rows($Result) <> 0
 		else {
@@ -740,17 +751,20 @@ if (isset($_SESSION['CustomerID']) and $_SESSION['CustomerID'] != '') {
 			echo '<div class="centre">
 					<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/folder_add.png" title="' . _('Customer Type (Group) Notes') . '" alt="" />' . ' ' . _('Customer Type (Group) Notes for') . ':<b> ' . $CustomerTypeName . '</b>' . '
 				</div>';
-			echo '<table width="45%">';
-			echo '<tr>
-				 	<th class="SortableColumn">' . _('date') . '</th>
-				  	<th>' . _('note') . '</th>
-				   	<th>' . _('file link / reference / URL') . '</th>
-				   	<th class="SortableColumn">' . _('priority') . '</th>
-				   	<th>' . _('Edit') . '</th>
-				   	<th>' . _('Delete') . '</th>
-				   	<th><a href="AddCustomerTypeNotes.php?DebtorType=' . urlencode($CustomerType) . '">' . _('Add New Group Note') . '</a></th>
-				  </tr>';
+			echo '<table width="45%">
+					<thead>
+						<tr>
+							<th class="SortedColumn">' . _('date') . '</th>
+							<th>' . _('note') . '</th>
+							<th>' . _('file link / reference / URL') . '</th>
+							<th class="SortedColumn">' . _('priority') . '</th>
+							<th>' . _('Edit') . '</th>
+							<th>' . _('Delete') . '</th>
+							<th><a href="AddCustomerTypeNotes.php?DebtorType=' . urlencode($CustomerType) . '">' . _('Add New Group Note') . '</a></th>
+						</tr>
+					</thead>';
 			$k = 0; //row colour counter
+			echo '<tbody>';
 			while ($MyRow = DB_fetch_array($Result)) {
 				if ($k == 1) {
 					echo '<tr class="OddTableRows">';
@@ -768,6 +782,7 @@ if (isset($_SESSION['CustomerID']) and $_SESSION['CustomerID'] != '') {
 					<td><a href="AddCustomerTypeNotes.php?Id=' . urlencode($MyRow[0]) . '&amp;DebtorType=' . urlencode($MyRow[1]) . '&amp;delete=1">' . _('Delete') . '</a></td>
 				</tr>';
 			} //END WHILE LIST LOOP
+			echo '</tbody>';
 			echo '</table>';
 		} //DB_num_rows($Result) <> 0
 		else {

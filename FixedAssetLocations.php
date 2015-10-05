@@ -90,12 +90,15 @@ $Result = DB_query($SQL);
 
 if (DB_num_rows($Result) > 0) {
 	echo '<table class="selection">
-		<tr>
-			<th class="SortableColumn">' . _('Location ID') . '</th>
-			<th class="SortableColumn">' . _('Location Description') . '</th>
-			<th>' . _('Parent Location') . '</th>
-		</tr>';
+			<thead>
+				<tr>
+					<th class="SortedColumn">' . _('Location ID') . '</th>
+					<th class="SortedColumn">' . _('Location Description') . '</th>
+					<th>' . _('Parent Location') . '</th>
+				</tr>
+			</thead>';
 }
+echo '<tbody>';
 while ($MyRow = DB_fetch_array($Result)) {
 	echo '<tr>
 			<td>' . $MyRow['locationid'] . '</td>
@@ -107,10 +110,9 @@ while ($MyRow = DB_fetch_array($Result)) {
 		<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedLocation=' . $MyRow['locationid'] . '">' . _('Edit') . '</a></td></tr>';
 }
 
-echo '</table>
-	<br />';
+echo '</tbody>';
+echo '</table>';
 echo '<form id="LocationForm" method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">
-	  <div>
 	<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
 	<table class="selection">
 	<tr>
@@ -144,8 +146,7 @@ while ($MyRow = DB_fetch_array($Result)) {
 }
 echo '</select></td>
 	</tr>
-	</table>
-	<br />';
+	</table>';
 
 echo '<div class="centre">';
 if (isset($_GET['SelectedLocation'])) {
@@ -157,7 +158,6 @@ if (isset($_GET['SelectedLocation'])) {
 	echo '<input type="submit" name="submit" value="' . _('Enter Information') . '" />';
 }
 echo '</div>
-	  </div>
 	</form>';
 
 include('includes/footer.inc');

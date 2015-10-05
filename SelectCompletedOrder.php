@@ -405,15 +405,17 @@ if (!isset($SelectedStockItem)) {
 if (isset($StockItemsResult)) {
 
 	echo '<table cellpadding="2" class="selection">
-			<tr>
-				<th class="SortableColumn">', _('Code'), '</th>
-				<th class="SortableColumn">', _('Description'), '</th>
-				<th>', _('On Hand'), '</th>
-				<th>', _('Units'), '</th>
-			</tr>';
+			<thead>
+				<tr>
+					<th class="SortedColumn">', _('Code'), '</th>
+					<th class="SortedColumn">', _('Description'), '</th>
+					<th>', _('On Hand'), '</th>
+					<th>', _('Units'), '</th>
+				</tr>
+			</thead>';
 
 	$k = 0; //row colour counter
-
+	echo '<tbody>';
 	while ($MyRow = DB_fetch_array($StockItemsResult)) {
 
 		if ($k == 1) {
@@ -436,6 +438,7 @@ if (isset($StockItemsResult)) {
 	}
 	//end of while loop
 
+	echo '</tbody>';
 	echo '</table>';
 
 }
@@ -446,26 +449,28 @@ if (isset($SalesOrdersResult)) {
 	/*show a table of the orders returned by the SQL */
 
 	echo '<table cellpadding="2" width="90%" class="selection">
-			<tr>
-				<th colspan="9">
-					<h3>', _('Sales Orders'), '
-						<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/printer.png" class="PrintIcon" title="', _('Print'), '" alt="" onclick="window.print();" />
-					</h3>
-				</th>
-			</tr>
-		<tbody>
-			<tr>
-				<th class="SortableColumn">', _('Order'), ' #</th>
-				<th class="SortableColumn">', _('Customer'), '</th>
-				<th class="SortableColumn">', _('Branch'), '</th>
-				<th>', _('Cust Order'), ' #</th>
-				<th class="SortableColumn">', _('Order Date'), '</th>
-				<th class="SortableColumn">', _('Req Del Date'), '</th>
-				<th>', _('Delivery To'), '</th>
-				<th class="SortableColumn">', _('Order Total'), '</th>
-			</tr>';
+			<thead>
+				<tr>
+					<th colspan="9">
+						<h3>', _('Sales Orders'), '
+							<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/printer.png" class="PrintIcon" title="', _('Print'), '" alt="" onclick="window.print();" />
+						</h3>
+					</th>
+				</tr>
+				<tr>
+					<th class="SortedColumn">', _('Order'), ' #</th>
+					<th class="SortedColumn">', _('Customer'), '</th>
+					<th class="SortedColumn">', _('Branch'), '</th>
+					<th>', _('Cust Order'), ' #</th>
+					<th class="SortedColumn">', _('Order Date'), '</th>
+					<th class="SortedColumn">', _('Req Del Date'), '</th>
+					<th>', _('Delivery To'), '</th>
+					<th class="SortedColumn">', _('Order Total'), '</th>
+				</tr>
+			</thead>';
 
 	$k = 0; //row colour counter
+	echo '<tbody>';
 	while ($MyRow = DB_fetch_array($SalesOrdersResult)) {
 
 		if ($k == 1) {

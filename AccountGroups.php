@@ -272,16 +272,19 @@ if (!isset($_GET['SelectedAccountGroup']) and !isset($_POST['SelectedAccountGrou
 		</p>';
 
 	echo '<table class="selection">
-			<tr>
-				<th class="SortableColumn">', _('Group Code'), '</th>
-				<th class="SortableColumn">', _('Group Name'), '</th>
-				<th class="SortableColumn">', _('Section'), '</th>
-				<th class="SortableColumn">', _('Sequence In TB'), '</th>
-				<th>', _('Profit and Loss'), '</th>
-				<th>', _('Parent Group'), '</th>
-				<th colspan="2"></th>
-			</tr>';
+			<thead>
+				<tr>
+					<th class="SortedColumn">', _('Group Code'), '</th>
+					<th class="SortedColumn">', _('Group Name'), '</th>
+					<th class="SortedColumn">', _('Section'), '</th>
+					<th class="SortedColumn">', _('Sequence In TB'), '</th>
+					<th>', _('Profit and Loss'), '</th>
+					<th>', _('Parent Group'), '</th>
+					<th colspan="2"></th>
+				</tr>
+			</thead>';
 
+	echo '<tbody>';
 	$k = 0; //row colour counter
 	while ($MyRow = DB_fetch_array($Result)) {
 		if ($k == 1) {
@@ -315,6 +318,7 @@ if (!isset($_GET['SelectedAccountGroup']) and !isset($_POST['SelectedAccountGrou
 		</tr>';
 
 	} //END WHILE LIST LOOP
+	echo '</tbody>';
 	echo '</table>';
 } //end of ifs and buts!
 

@@ -69,16 +69,17 @@ echo $_SESSION['SuppTrans']->SuppReference . ' ' . _('From') . ' ' . $_SESSION['
 echo '</p></div>';
 
 echo '<table class="selection">
-		<tbody>
+		<thead>
 			<tr>
-				<th class="SortableColumn">' . _('Contract') . '</th>
+				<th class="SortedColumn">' . _('Contract') . '</th>
 				<th>' . _('Amount') . '</th>
 				<th>' . _('Narrative') . '</th>
 				<th>' . _('Anticipated') . '</th>
-			</tr>';
+			</tr>
+		</thead>';
 
 $TotalContractsValue = 0;
-
+echo '<tbody>';
 foreach ($_SESSION['SuppTrans']->Contracts as $EnteredContract) {
 
 	if ($EnteredContract->AnticipatedCost == true) {
@@ -117,7 +118,6 @@ if ($_SESSION['SuppTrans']->InvoiceOrCredit == 'Invoice') {
 
 /*Set up a form to allow input of new Contract charges */
 echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 if (!isset($_POST['ContractRef'])) {
@@ -179,7 +179,6 @@ echo '</td>
 
 echo '<div class="centre"><input type="submit" name="AddContractChgToInvoice" value="' . _('Enter Contract Charge') . '" /></div>';
 
-echo '</div>
-	  </form>';
+echo '</form>';
 include('includes/footer.inc');
 ?>

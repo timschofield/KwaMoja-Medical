@@ -678,18 +678,21 @@ if (isset($SearchResult) and !isset($_POST['Select'])) {
 			</div>';
 		}
 		echo '<table class="selection">
-				<tr>
-					<th>', _('Stock Status'), '</th>
-					<th class="SortableColumn">', _('Code'), '</th>
-					<th class="SortableColumn">', _('Description'), '</th>
-					<th>', _('Total Qty On Hand'), '</th>
-					<th>', _('Units'), '</th>
-				</tr>';
+				<thead>
+					<tr>
+						<th>', _('Stock Status'), '</th>
+						<th class="SortedColumn">', _('Code'), '</th>
+						<th class="SortedColumn">', _('Description'), '</th>
+						<th>', _('Total Qty On Hand'), '</th>
+						<th>', _('Units'), '</th>
+					</tr>
+				</thead>';
 		$k = 0; //row counter to determine background colour
 		if (DB_num_rows($SearchResult) <> 0) {
 			DB_data_seek($SearchResult, ($_POST['PageOffset'] - 1) * $_SESSION['DisplayRecordsMax']);
 		}
 		$RowIndex = 1;
+		echo '<tbody>';
 		while (($MyRow = DB_fetch_array($SearchResult)) and ($RowIndex <= $_SESSION['DisplayRecordsMax'])) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
@@ -719,8 +722,9 @@ if (isset($SearchResult) and !isset($_POST['Select'])) {
 			++$RowIndex;
 		}
 		//end of while loop
-		echo '</table>
-			</form>';
+		echo '</tbody>
+			</table>
+		</form>';
 	}
 }
 /* end display list if there is more than one record */

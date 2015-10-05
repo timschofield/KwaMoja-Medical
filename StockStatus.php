@@ -81,17 +81,17 @@ $DbgMsg = _('The SQL that was used to fetch the location details and failed was'
 $LocStockResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 echo '<table class="selection">
-			<tbody>';
+			<thead>';
 
 if ($Its_A_KitSet_Assembly_Or_Dummy == True) {
 	echo '<tr>
-			<th class="SortableColumn">' . _('Location') . '</th>
+			<th class="SortedColumn">' . _('Location') . '</th>
 			<th>' . _('Demand') . '</th>
 		</tr>';
 } else {
 	echo '<tr>
-			<th class="SortableColumn">' . _('Location') . '</th>
-			<th class="SortableColumn">' . _('Bin Location') . '</th>
+			<th class="SortedColumn">' . _('Location') . '</th>
+			<th class="SortedColumn">' . _('Bin Location') . '</th>
 			<th>' . _('Quantity On Hand') . '</th>
 			<th>' . _('Re-Order Level') . '</th>
 			<th>' . _('Demand') . '</th>
@@ -100,9 +100,9 @@ if ($Its_A_KitSet_Assembly_Or_Dummy == True) {
 			<th>' . _('On Order') . '</th>
 		</tr>';
 }
-
+echo '</thead>';
 $k = 0; //row colour counter
-
+echo '<tbody>';
 while ($MyRow = DB_fetch_array($LocStockResult)) {
 
 	if ($k == 1) {
@@ -328,19 +328,20 @@ if ($DebtorNo) {
 	}
 	if (isset($PriceHistory)) {
 		echo '<table class="selection">
-				<tr>
-					<th colspan="4"><font color="navy" size="2">' . _('Pricing history for sales of') . ' ' . $StockId . ' ' . _('to') . ' ' . $DebtorNo . '</font></th>
-				</tr>
-			<tbody>
-				<tr>
-					<th class="SortableColumn">' . _('Date Range') . '</th>
-					<th>' . _('Quantity') . '</th>
-					<th>' . _('Price') . '</th>
-					<th>' . _('Discount') . '</th>
-				</tr>';
+				<thead>
+					<tr>
+						<th colspan="4"><font color="navy" size="2">' . _('Pricing history for sales of') . ' ' . $StockId . ' ' . _('to') . ' ' . $DebtorNo . '</font></th>
+					</tr>
+					<tr>
+						<th class="SortedColumn">' . _('Date Range') . '</th>
+						<th>' . _('Quantity') . '</th>
+						<th>' . _('Price') . '</th>
+						<th>' . _('Discount') . '</th>
+					</tr>
+				</thead>';
 
 		$k = 0; //row colour counter
-
+		echo '<tbody>';
 		foreach ($PriceHistory as $PreviousPrice) {
 
 			if ($k == 1) {

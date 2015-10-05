@@ -230,19 +230,21 @@ if (!isset($SelectedSalesPerson)) {
 			FROM salesman";
 	$Result = DB_query($SQL);
 
-	echo '<table class="selection">';
-	echo '<tr>
-			<th class="SortableColumn">' . _('Code') . '</th>
-			<th class="SortableColumn">' . _('Name') . '</th>
-			<th class="SortableColumn">' . _('SalesArea') . '</th>
-			<th class="SortableColumn">' . _('Manager') . '</th>
-			<th>' . _('Telephone') . '</th>
-			<th>' . _('Facsimile') . '</th>
-			<th>' . _('Comm Rate 1') . '</th>
-			<th>' . _('Break') . '</th>
-			<th>' . _('Comm Rate 2') . '</th>
-			<th class="SortableColumn">' . _('Current') . '</th>
-		</tr>';
+	echo '<table class="selection">
+			<thead>
+				<tr>
+					<th class="SortedColumn">' . _('Code') . '</th>
+					<th class="SortedColumn">' . _('Name') . '</th>
+					<th class="SortedColumn">' . _('SalesArea') . '</th>
+					<th class="SortedColumn">' . _('Manager') . '</th>
+					<th>' . _('Telephone') . '</th>
+					<th>' . _('Facsimile') . '</th>
+					<th>' . _('Comm Rate 1') . '</th>
+					<th>' . _('Break') . '</th>
+					<th>' . _('Comm Rate 2') . '</th>
+					<th class="SortedColumn">' . _('Current') . '</th>
+				</tr>
+			</thead>';
 	$k = 0;
 	while ($MyRow = DB_fetch_array($Result)) {
 

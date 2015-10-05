@@ -41,19 +41,22 @@ if (!isset($EmployeeID)) {
 	$result = DB_query($sql, $ErrMsg);
 
 	if (DB_num_rows($result) > 0) {
-		echo '<table class="selection">';
-		echo '<tr>
-				<th class="SortableColumn">' . _('Employee ID') . '</th>
-				<th class="SortableColumn">' . _('Last Name ') . '</th>
-				<th class="SortableColumn">' . _('First Name') . '</th>
-				<th class="SortableColumn">' . _('Pay Type  ') . '</th>
-				<th class="SortableColumn">' . _('Marital Status') . '</th>
-				<th class="SortableColumn">' . _('Date of Birth') . '</th>
-				<th class="SortableColumn">' . _('Status   ') . '</th>
-				<th class="SortableColumn">' . _('Pay Period') . '</th>
-			</tr>';
+		echo '<table class="selection">
+				<thead>
+					<tr>
+						<th class="SortedColumn">' . _('Employee ID') . '</th>
+						<th class="SortedColumn">' . _('Last Name ') . '</th>
+						<th class="SortedColumn">' . _('First Name') . '</th>
+						<th class="SortedColumn">' . _('Pay Type  ') . '</th>
+						<th class="SortedColumn">' . _('Marital Status') . '</th>
+						<th class="SortedColumn">' . _('Date of Birth') . '</th>
+						<th class="SortedColumn">' . _('Status   ') . '</th>
+						<th class="SortedColumn">' . _('Pay Period') . '</th>
+					</tr>
+				</thead>';
 
 		$k = 0; //row colour counter
+		echo '<tbody>';
 		while ($myrow = DB_fetch_array($result)) {
 
 			//alternateTableRowColor($k);
@@ -74,6 +77,7 @@ if (!isset($EmployeeID)) {
 				<td>' . $myrow['payperioddesc'] . '</td>
 				<td><a href=' . $RootPath . '/prlEmployeeMaster.php?EmployeeID=' . $myrow['employeeid'] . '>' . _('Edit') . '</td></tr>';
 		} //END WHILE LIST LOOP
+		echo '</tbody>';
 		echo '</table>';
 	} else {
 		prnMsg( _('No employees have been created. Please create an employee first'), 'info');

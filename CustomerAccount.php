@@ -267,21 +267,24 @@ echo '<form onSubmit="return VerifyForm(this);" action="', htmlspecialchars($_SE
 /* Show a table of the invoices returned by the SQL. */
 
 echo '<table class="selection">
-		<tr>
-			<th class="SortableColumn">', _('Type'), '</th>
-			<th class="SortableColumn">', _('Number'), '</th>
-			<th class="SortableColumn">', _('Date'), '</th>
-			<th>', _('Branch'), '</th>
-			<th class="SortableColumn">', _('Reference'), '</th>
-			<th>', _('Comments'), '</th>
-			<th>', _('Order'), '</th>
-			<th>', _('Charges'), '</th>
-			<th>', _('Credits'), '</th>
-			<th>', _('Allocated'), '</th>
-			<th>', _('Balance'), '</th>
-			<th class="noprint" colspan="4">&nbsp;</th>
-		</tr>';
+		<thead>
+			<tr>
+				<th class="SortedColumn">', _('Type'), '</th>
+				<th class="SortedColumn">', _('Number'), '</th>
+				<th class="SortedColumn">', _('Date'), '</th>
+				<th>', _('Branch'), '</th>
+				<th class="SortedColumn">', _('Reference'), '</th>
+				<th>', _('Comments'), '</th>
+				<th>', _('Order'), '</th>
+				<th>', _('Charges'), '</th>
+				<th>', _('Credits'), '</th>
+				<th>', _('Allocated'), '</th>
+				<th>', _('Balance'), '</th>
+				<th class="noprint" colspan="4">&nbsp;</th>
+			</tr>
+		</thead>';
 
+echo '<tbody>';
 $k = 0; //row colour counter
 $OutstandingOrSettled = '';
 if ($_SESSION['InvoicePortraitFormat'] == 1) { //Invoice/credits in portrait
@@ -431,6 +434,7 @@ foreach ($Transactions as $MyRow) {
 }
 //end of while loop
 
+echo '</tbody>';
 echo '</table>';
 
 echo '<table class="selection" width="70%">

@@ -60,22 +60,23 @@ if (isset($_GET['Delete'])) {
 
 /*Show all the selected GRNs so far from the SESSION['SuppTrans']->GRNs array */
 
-echo '<table class="selection">';
-echo '<tr>
-		<th colspan="6"><h3>' . _('Credits Against Goods Received Selected') . '</h3></th>
-	</tr>
-	<tbody>
-		<tr>
-			<th class="SortableColumn">' . _('GRN') . '</th>
-			<th class="SortableColumn">' . _('Item Code') . '</th>
-			<th class="SortableColumn">' . _('Description') . '</th>
-			<th>' . _('Quantity Credited') . '</th>
-			<th>' . _('Price Credited in') . ' ' . $_SESSION['SuppTrans']->CurrCode . '</th>
-			<th>' . _('Line Value in') . ' ' . $_SESSION['SuppTrans']->CurrCode . '</th>
-		</tr>';
+echo '<table class="selection">
+		<thead>
+			<tr>
+				<th colspan="6"><h3>' . _('Credits Against Goods Received Selected') . '</h3></th>
+			</tr>
+			<tr>
+				<th class="SortedColumn">' . _('GRN') . '</th>
+				<th class="SortedColumn">' . _('Item Code') . '</th>
+				<th class="SortedColumn">' . _('Description') . '</th>
+				<th>' . _('Quantity Credited') . '</th>
+				<th>' . _('Price Credited in') . ' ' . $_SESSION['SuppTrans']->CurrCode . '</th>
+				<th>' . _('Line Value in') . ' ' . $_SESSION['SuppTrans']->CurrCode . '</th>
+			</tr>
+		</thead>';
 
 $TotalValueCharged = 0;
-
+echo '<tbody>';
 foreach ($_SESSION['SuppTrans']->GRNs as $EnteredGRN) {
 	if ($EnteredGRN->ChgPrice > 1) {
 		$DisplayPrice = locale_number_format($EnteredGRN->ChgPrice, $_SESSION['SuppTrans']->CurrDecimalPlaces);
@@ -103,7 +104,6 @@ echo '</tbody>
 			<td class="number"><h4>' . locale_number_format($TotalValueCharged, $_SESSION['SuppTrans']->CurrDecimalPlaces) . '</h4></td>
 		</tr>';
 echo '</table>
-	<br />
 	<div class="centre">
 		<a href="' . $RootPath . '/SupplierCredit.php">' . _('Back to Credit Note Entry') . '</a>
 	</div>';
@@ -147,28 +147,31 @@ echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 echo '<table class="selection">
-		<tr>
-		<th colspan="10"><h3>' . _('Show Goods Received Since') . ':&nbsp;</h3>';
-echo '<input type="text" name="Show_Since" required="required" maxlength="11" size="12" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" value="' . $_POST['Show_Since'] . '" />
-		<input type="submit" name="FindGRNs" value="' . _('Display GRNs') . '" />
-		<h3> ' . _('From') . ' ' . $_SESSION['SuppTrans']->SupplierName . '</h3></th>
-	</tr>';
-
-if (DB_num_rows($GRNResults) > 0) {
-	echo '<tbody>
+		<thead>
 			<tr>
-				<th class="SortableColumn">' . _('GRN') . '</th>
-				<th class="SortableColumn">' . _('Order') . '</th>
-				<th class="SortableColumn">' . _('Item Code') . '</th>
-				<th class="SortableColumn">' . _('Description') . '</th>
-				<th>' . _('Delivered') . '</th>
-				<th>' . _('Total Qty') . '<br />' . _('Received') . '</th>
-				<th>' . _('Qty Invoiced') . '</th>
-				<th>' . _('Qty Yet') . '<br />' . _('invoice') . '</th>
-				<th>' . _('Price') . '<br />' . $_SESSION['SuppTrans']->CurrCode . '</th>
-				<th>' . _('Line Value') . '<br />' . _('In') . ' ' . $_SESSION['SuppTrans']->CurrCode . '</th>
+				<th colspan="10">
+					<h3>' . _('Show Goods Received Since') . ':&nbsp;</h3>
+					<input type="text" name="Show_Since" required="required" maxlength="11" size="12" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" value="' . $_POST['Show_Since'] . '" />
+					<input type="submit" name="FindGRNs" value="' . _('Display GRNs') . '" />
+					<h3> ' . _('From') . ' ' . $_SESSION['SuppTrans']->SupplierName . '</h3>
+				</th>
 			</tr>';
 
+if (DB_num_rows($GRNResults) > 0) {
+	echo '<tr>
+			<th class="SortedColumn">' . _('GRN') . '</th>
+			<th class="SortedColumn">' . _('Order') . '</th>
+			<th class="SortedColumn">' . _('Item Code') . '</th>
+			<th class="SortedColumn">' . _('Description') . '</th>
+			<th>' . _('Delivered') . '</th>
+			<th>' . _('Total Qty') . '<br />' . _('Received') . '</th>
+			<th>' . _('Qty Invoiced') . '</th>
+			<th>' . _('Qty Yet') . '<br />' . _('invoice') . '</th>
+			<th>' . _('Price') . '<br />' . $_SESSION['SuppTrans']->CurrCode . '</th>
+			<th>' . _('Line Value') . '<br />' . _('In') . ' ' . $_SESSION['SuppTrans']->CurrCode . '</th>
+		</tr>
+	</thead>';
+	echo '<tbody>';
 	while ($MyRow = DB_fetch_array($GRNResults)) {
 
 		$GRNAlreadyOnCredit = False;
@@ -206,7 +209,7 @@ if (DB_num_rows($GRNResults) > 0) {
 					<td class="number">' . locale_number_format($MyRow['qtyrecd'] - $MyRow['quantityinv'], $MyRow['decimalplaces']) . '</td>
 					<td class="number">' . $DisplayPrice . '</td>
 					<td class="number">' . locale_number_format($Price * ($MyRow['qtyrecd'] - $MyRow['quantityinv']), $_SESSION['SuppTrans']->CurrDecimalPlaces) . '</td>
-				  	</tr>';
+				</tr>';
 		}
 	}
 

@@ -76,15 +76,17 @@ if (isset($Result) and DB_num_rows($Result) > 0) {
 
 	echo '<form action="GLAccountInquiry.php" method="post">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-	echo '<table class="selection" summary="' . _('List of GL Accounts') . '">';
+	echo '<table class="selection" summary="' . _('List of GL Accounts') . '">
+			<thead>
+				<tr>
+					<th class="SortedColumn">' . _('Code') . '</th>
+					<th class="SortedColumn">' . _('Account Name') . '</th>
+					<th class="SortedColumn">' . _('Group') . '</th>
+					<th class="SortedColumn">' . _('Account Type') . '</th>
+				</tr>
+			</thead>';
 
-	echo '<tr>
-			<th class="SortableColumn">' . _('Code') . '</th>
-			<th class="SortableColumn">' . _('Account Name') . '</th>
-			<th class="SortableColumn">' . _('Group') . '</th>
-			<th class="SortableColumn">' . _('Account Type') . '</th>
-		</tr>';
-
+	echo '<tbody>';
 	while ($MyRow = DB_fetch_array($Result)) {
 		echo '<tr>
 				<td>' . htmlspecialchars($MyRow['accountcode'],ENT_QUOTES,'UTF-8',false) . '</td>
@@ -104,6 +106,7 @@ if (isset($Result) and DB_num_rows($Result) > 0) {
 	}
 	//end of while loop
 
+	echo '</tbody>';
 	echo '</table>';
 
 }

@@ -162,12 +162,15 @@ if (!isset($SelectedTaxCategory) or $SelectedTaxCategory == '') {
 	$Result = DB_query($SQL, $ErrMsg);
 
 	echo '<table class="selection">
-			<tr>
-				<th class="SortableColumn">', _('Tax Categories'), '</th>
-				<th colspan="2">', _('Maintenance'), '</th>
-			</tr>';
+			<thead>
+				<tr>
+					<th class="SortedColumn">', _('Tax Categories'), '</th>
+					<th colspan="2">', _('Maintenance'), '</th>
+				</tr>
+			</thead>';
 
 	$k = 0; //row colour counter
+	echo '<tbody>';
 	while ($MyRow = DB_fetch_array($Result)) {
 
 		if ($k == 1) {
@@ -191,6 +194,7 @@ if (!isset($SelectedTaxCategory) or $SelectedTaxCategory == '') {
 		}
 
 	} //END WHILE LIST LOOP
+	echo '</tbody>';
 	echo '</table>';
 } //end of ifs and buts!
 

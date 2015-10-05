@@ -166,20 +166,21 @@ if (!(isset($_POST['Search']))) {
 
 	echo '<p class="page_title_text"  align="center"><strong>' . _('Top Sales Items List') . '</strong></p>';
 	echo '<form action="PDFTopItems.php"  method="GET">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-	echo '<table class="selection">';
-	echo '<tr>
-			<th class="SortableColumn">' . _('#') . '</th>
-			<th class="SortableColumn">' . _('Code') . '</th>
-			<th class="SortableColumn">' . _('Description') . '</th>
-			<th class="SortableColumn">' . _('Total Invoiced') . '</th>
-			<th>' . _('Units') . '</th>
-			<th class="SortableColumn">' . _('Value Sales') . '</th>
-			<th>' . _('On Hand') . '</th>
-			<th>' . _('On Order') . '</th>
-			<th>' . _('Stock (Days)') . '</th>
-		</tr>';
+	echo '<table class="selection">
+			<thead>
+				<tr>
+					<th class="SortedColumn">' . _('#') . '</th>
+					<th class="SortedColumn">' . _('Code') . '</th>
+					<th class="SortedColumn">' . _('Description') . '</th>
+					<th class="SortedColumn">' . _('Total Invoiced') . '</th>
+					<th>' . _('Units') . '</th>
+					<th class="SortedColumn">' . _('Value Sales') . '</th>
+					<th>' . _('On Hand') . '</th>
+					<th>' . _('On Order') . '</th>
+					<th>' . _('Stock (Days)') . '</th>
+				</tr>
+			</thead>';
 	echo '<input type="hidden" value="' . $_POST['Location'] . '" name="Location" />
 			<input type="hidden" value="' . $_POST['Sequence'] . '" name="Sequence" />
 			<input type="hidden" value="' . filter_number_format($_POST['NumberOfDays']) . '" name="NumberOfDays" />
@@ -187,6 +188,7 @@ if (!(isset($_POST['Search']))) {
 			<input type="hidden" value="' . filter_number_format($_POST['NumberOfTopItems']) . '" name="NumberOfTopItems" />';
 	$k = 0; //row colour counter
 	$i = 1;
+	echo '<tbody>';
 	while ($MyRow = DB_fetch_array($Result)) {
 		$QOH = 0;
 		$QOO = 0;
@@ -259,12 +261,11 @@ if (!(isset($_POST['Search']))) {
 		}
 		++$i;
 	}
+	echo '</tbody>';
 	echo '</table>';
-	echo '<br />
-			<div class="centre">
+	echo '<div class="centre">
 				<input type="submit" name="PrintPDF" value="' . _('Print To PDF') . '" />
 			</div>
-		</div>
 		</form>';
 }
 include('includes/footer.inc');

@@ -95,16 +95,18 @@ if ($_SESSION['SuppTrans']->InvoiceOrCredit == 'Invoice') {
 }
 echo '</p>
 	<table class="selection">
-		<tr>
-			<th class="SortableColumn">' . _('Account') . '</th>
-			<th class="SortableColumn">' . _('Name') . '</th>
-			<th>' . _('Amount') . '<br />' . _('in') . ' ' . $_SESSION['SuppTrans']->CurrCode . '</th>
-			<th>' . _('Narrative') . '</th>
-			<th>' . _('Tag') . '</th>
-		</tr>';
+		<thead>
+			<tr>
+				<th class="SortedColumn">' . _('Account') . '</th>
+				<th class="SortedColumn">' . _('Name') . '</th>
+				<th>' . _('Amount') . '<br />' . _('in') . ' ' . $_SESSION['SuppTrans']->CurrCode . '</th>
+				<th>' . _('Narrative') . '</th>
+				<th>' . _('Tag') . '</th>
+			</tr>
+		</thead>';
 $TotalGLValue = 0;
 $i = 0;
-
+echo '<tbody>';
 foreach ($_SESSION['SuppTrans']->GLCodes as $EnteredGLCode) {
 
 	echo '<tr>
@@ -120,7 +122,7 @@ foreach ($_SESSION['SuppTrans']->GLCodes as $EnteredGLCode) {
 	$TotalGLValue += $EnteredGLCode->Amount;
 
 }
-
+echo '</tbody>';
 echo '<tr>
 		<td colspan="2" class="number">' . _('Total') . ':</td>
 		<td class="number">' . locale_number_format($TotalGLValue, $_SESSION['SuppTrans']->CurrDecimalPlaces) . '</td>

@@ -592,15 +592,17 @@ if (!isset($StockId)) {
 	if (isset($StockItemsResult) and DB_num_rows($StockItemsResult) > 0) {
 
 		echo '<table cellpadding="2" class="selection">
-				<tr>
-					<th class="SortableColumn" >', _('Code'), '</th>
-					<th class="SortableColumn" >', _('Description'), '</th>
-					<th>', _('On Hand'), '</th>
-					<th>', _('Units'), '</th>
-				</tr>';
+				<thead>
+					<tr>
+						<th class="SortedColumn" >', _('Code'), '</th>
+						<th class="SortedColumn" >', _('Description'), '</th>
+						<th>', _('On Hand'), '</th>
+						<th>', _('Units'), '</th>
+					</tr>
+				</thead>';
 
 		$k = 0; //row colour counter
-
+		echo '<tbody>';
 		while ($MyRow = DB_fetch_array($StockItemsResult)) {
 
 			if ($k == 1) {
@@ -620,6 +622,7 @@ if (!isset($StockId)) {
 		}
 		//end of while loop
 
+		echo '</tbody>';
 		echo '</table>';
 
 	}
@@ -735,21 +738,21 @@ if (!isset($StockId)) {
 			if (is_null($AuthRow['cancreate']) or !isset($AuthRow)) {
 				$AuthRow['cancreate'] = 1;
 			}
-			echo '<tbody>';
+			echo '<thead>';
 			$PrintPickLabel = '';
 			if ($_SESSION['RequirePickingNote'] == 1) {
 				$PrintPickLabel = '<th>' . _('Pick Lists') . '</th>';
 			}
 			if (isset($_POST['Quotations']) and $_POST['Quotations'] == 'Orders_Only') {
 				echo '<tr>
-						<th class="SortableColumn">', _('Modify'), '</th>
+						<th class="SortedColumn">', _('Modify'), '</th>
 						<th>', _('Acknowledge'), '</th>
 						', $PrintPickLabel, '
 						<th>', _('Invoice'), '</th>
 						<th>', _('Dispatch Note'), '</th>
 						<th>', _('Labels'), '</th>
-						<th class="SortableColumn">', _('Customer'), '</th>
-						<th class="SortableColumn">', _('Branch'), '</th>
+						<th class="SortedColumn">', _('Customer'), '</th>
+						<th class="SortedColumn">', _('Branch'), '</th>
 						<th>', _('Cust Order'), ' #</th>
 						<th>', _('Order Date'), '</th>
 						<th>', _('Req Del Date'), '</th>
@@ -764,10 +767,10 @@ if (!isset($StockId)) {
 			} else {
 				/* displaying only quotations */
 				echo '<tr>
-						<th class="SortableColumn">', _('Modify'), '</th>
+						<th class="SortedColumn">', _('Modify'), '</th>
 						<th>', _('Print Quote'), '</th>
-						<th class="SortableColumn">', _('Customer'), '</th>
-						<th class="SortableColumn">', _('Branch'), '</th>
+						<th class="SortedColumn">', _('Customer'), '</th>
+						<th class="SortedColumn">', _('Branch'), '</th>
 						<th>', _('Cust Ref'), ' #</th>
 						<th>', _('Quote Date'), '</th>
 						<th>', _('Req Del Date'), '</th>
@@ -775,9 +778,11 @@ if (!isset($StockId)) {
 						<th>', _('Quote Total'), '<br />' . $_SESSION['CompanyRecord']['currencydefault'] . '</th>
 					</tr>';
 			}
+			echo '</thead>';
 			$i = 0;
 			$k = 0; //row colour counter
 			$OrdersTotal = 0;
+			echo '<tbody>';
 			while ($MyRow = DB_fetch_array($SalesOrdersResult)) {
 
 

@@ -208,26 +208,28 @@ $Result = DB_query($SQL);
 if (DB_num_rows($Result) > 0) {
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 	echo '<table class="selection">
+			<thead>
+				<tr>
+					<th colspan="7">
+						<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />' . _('Pricing for part') . ':
+						<input type="text" autofocus="autofocus" name="Item" size="22" value="' . $Item . '" maxlength="20" />
+						<input type="submit" name="NewPart" value="' . _('Review Prices') . '" />
+					</th>
+			</tr>
 			<tr>
-				<th colspan="7">
-				<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />' . _('Pricing for part') . ':
-				<input type="text" autofocus="autofocus" name="Item" size="22" value="' . $Item . '" maxlength="20" />
-				<input type="submit" name="NewPart" value="' . _('Review Prices') . '" /></th>
-			</tr>';
-
-	echo '<tr>
-			<th class="SortableColumn">' . _('Currency') . '</th>
-			<th class="SortableColumn">' . _('Sales Type') . '</th>
-			<th>' . _('Price') . '</th>
-			<th class="SortableColumn">' . _('Start Date') . ' </th>
-			<th>' . _('End Date') . '</th>';
+				<th class="SortedColumn">' . _('Currency') . '</th>
+				<th class="SortedColumn">' . _('Sales Type') . '</th>
+				<th>' . _('Price') . '</th>
+				<th class="SortedColumn">' . _('Start Date') . ' </th>
+				<th>' . _('End Date') . '</th>';
 	if (in_array(1000, $_SESSION['AllowedPageSecurityTokens'])) { // If is allow to modify prices.
 		echo '<th colspan="2">' . _('Maintenance') . '</th>';
 	}
-	echo '</tr>';
+	echo '</tr>
+		</thead>';
 
 	$k = 0; //row colour counter
-
+	echo '<tbody>';
 	while ($MyRow = DB_fetch_array($Result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -255,8 +257,9 @@ if (DB_num_rows($Result) > 0) {
 		echo '</tr>';
 	}
 	//END WHILE LIST LOOP
-	echo '</table>
-		</form>';
+	echo '</tbody>
+		</table>
+	</form>';
 } else {
 	prnMsg(_('There are no prices set up for this part'), 'warn');
 }

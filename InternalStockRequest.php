@@ -763,35 +763,37 @@ if (isset($SearchResult)) {
 	echo '<form action="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '" method="post" id="orderform">';
 	echo '<input type="hidden" name="FormID" value="', $_SESSION['FormID'], '" />';
 	echo '<table class="table1">
-			<tr>
-				<td>
-					<input type="hidden" name="Previous" value="', ($Offset - 1), '" />
-					<input type="submit" name="Prev" value="', _('Prev'), '" />
-				</td>
-				<td style="text-align:center" colspan="6">
-					<input type="hidden" name="order_items" value="1" />
-					<input type="submit" value="', _('Add to Requisition'), '" />
-				</td>
-				<td>
-					<input type="hidden" name="NextList" value="', ($Offset + 1), '" />
-					<input type="submit" name="Next" value="', _('Next'), '" />
-				</td>
-			</tr>';
-	echo '<tbody>
-			<tr>
-				<th class="SortableColumn">', _('Code'), '</th>
-				<th class="SortableColumn">', _('Description'), '</th>
-				<th>', _('Units'), '</th>
-				<th>', _('On Hand'), '</th>
-				<th>', _('On Demand'), '</th>
-				<th>', _('On Order'), '</th>
-				<th>', _('Available'), '</th>
-				<th>', _('Quantity'), '</th>
-			</tr>';
+			<thead>
+				<tr>
+					<td>
+						<input type="hidden" name="Previous" value="', ($Offset - 1), '" />
+						<input type="submit" name="Prev" value="', _('Prev'), '" />
+					</td>
+					<td style="text-align:center" colspan="6">
+						<input type="hidden" name="order_items" value="1" />
+						<input type="submit" value="', _('Add to Requisition'), '" />
+					</td>
+					<td>
+						<input type="hidden" name="NextList" value="', ($Offset + 1), '" />
+						<input type="submit" name="Next" value="', _('Next'), '" />
+					</td>
+				</tr>
+				<tr>
+					<th class="SortedColumn">', _('Code'), '</th>
+					<th class="SortedColumn">', _('Description'), '</th>
+					<th>', _('Units'), '</th>
+					<th>', _('On Hand'), '</th>
+					<th>', _('On Demand'), '</th>
+					<th>', _('On Order'), '</th>
+					<th>', _('Available'), '</th>
+					<th>', _('Quantity'), '</th>
+				</tr>
+			</thead>';
 	$ImageSource = _('No Image');
 
 	$k = 0; //row colour counter
 	$i = 0;
+	echo '<tbody>';
 	while ($MyRow = DB_fetch_array($SearchResult)) {
 		if ($MyRow['decimalplaces'] == '') {
 			$DecimalPlacesSQL = "SELECT decimalplaces

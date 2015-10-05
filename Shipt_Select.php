@@ -188,16 +188,18 @@ echo '<div class="centre">
 if (isset($StockItemsResult)) {
 
 	echo '<table class="selection">
-			<tr>
-				<th class="SortableColumn">' . _('Code') . '</th>
-				<th class="SortableColumn">' . _('Description') . '</th>
-				<th>' . _('On Hand') . '</th>
-				<th>' . _('Orders') . '<br />' . _('Outstanding') . '</th>
-				<th>' . _('Units') . '</th>
-			</tr>';
+			<thead>
+				<tr>
+					<th class="SortedColumn">' . _('Code') . '</th>
+					<th class="SortedColumn">' . _('Description') . '</th>
+					<th>' . _('On Hand') . '</th>
+					<th>' . _('Orders') . '<br />' . _('Outstanding') . '</th>
+					<th>' . _('Units') . '</th>
+				</tr>
+			</thead>';
 
 	$k = 0; //row colour counter
-
+	echo '<tbody>';
 	while ($MyRow = DB_fetch_array($StockItemsResult)) {
 
 		if ($k == 1) {
@@ -218,6 +220,7 @@ if (isset($StockItemsResult)) {
 	}
 	//end of while loop
 
+	echo '</tbody>';
 	echo '</table>';
 
 }
@@ -278,14 +281,16 @@ else {
 		/*show a table of the shipments returned by the SQL */
 
 		echo '<table width="95%" class="selection">
-				<tr>
-					<th class="SortableColumn">' . _('Shipment') . '</th>
-					<th class="SortableColumn">' . _('Supplier') . '</th>
-					<th class="SortableColumn">' . _('Vessel') . '</th>
-					<th class="SortableColumn">' . _('Voyage') . '</th>
-					<th class="SortableColumn">' . _('Expected Arrival') . '</th>
-				</tr>';
-
+				<thead>
+					<tr>
+						<th class="SortedColumn">' . _('Shipment') . '</th>
+						<th class="SortedColumn">' . _('Supplier') . '</th>
+						<th class="SortedColumn">' . _('Vessel') . '</th>
+						<th class="SortedColumn">' . _('Voyage') . '</th>
+						<th class="SortedColumn">' . _('Expected Arrival') . '</th>
+					</tr>
+				</thead>';
+		echo '<tbody>';
 		$k = 0; //row colour counter
 		while ($MyRow = DB_fetch_array($ShipmentsResult)) {
 
@@ -331,6 +336,7 @@ else {
 		}
 		//end of while loop
 
+		echo '</tbody>';
 		echo '</table>';
 	} // end if shipments to show
 }

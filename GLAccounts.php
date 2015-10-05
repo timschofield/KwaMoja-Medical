@@ -306,17 +306,19 @@ if (!isset($SelectedAccount)) {
 
 	$Result = DB_query($SQL, $ErrMsg);
 
-	echo '<table class="selection">';
-	echo '<tr>
-			<th class="SortableColumn">', _('Account Code'), '</th>
-			<th class="SortableColumn">', _('Account Name'), '</th>
-			<th class="SortableColumn">', _('Account Group'), '</th>
-			<th class="SortableColumn">', _('P/L or B/S'), '</th>
-			<th colspan="2"></th>
-		</tr>';
+	echo '<table class="selection">
+			<thead>
+				<tr>
+					<th class="SortedColumn">', _('Account Code'), '</th>
+					<th class="SortedColumn">', _('Account Name'), '</th>
+					<th class="SortedColumn">', _('Account Group'), '</th>
+					<th class="SortedColumn">', _('P/L or B/S'), '</th>
+					<th colspan="2"></th>
+				</tr>
+			</thead>';
 
 	$k = 0; //row colour counter
-
+	echo '<tbody>';
 	while ($MyRow = DB_fetch_array($Result)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -337,6 +339,7 @@ if (!isset($SelectedAccount)) {
 
 	}
 	//END WHILE LIST LOOP
+	echo '</tbody>';
 	echo '</table>';
 } //END IF selected ACCOUNT
 

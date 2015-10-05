@@ -549,17 +549,20 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 				<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
 				<input type="hidden" name="JustSelectedACustomer" value="Yes" />
 				<table class="selection">
-					<tr>
-						<th class="SortableColumn">' . _('Customer') . '</th>
-						<th class="SortableColumn">' . _('Branch') . '</th>
-						<th class="SortableColumn">' . _('Contact') . '</th>
-						<th>' . _('Phone') . '</th>
-						<th>' . _('Fax') . '</th>
-					</tr>';
+					<thead>
+						<tr>
+							<th class="SortedColumn">' . _('Customer') . '</th>
+							<th class="SortedColumn">' . _('Branch') . '</th>
+							<th class="SortedColumn">' . _('Contact') . '</th>
+							<th>' . _('Phone') . '</th>
+							<th>' . _('Fax') . '</th>
+						</tr>
+					</thead>';
 
 		$j = 1;
 		$k = 0; //row counter to determine background colour
 		$LastCustomer = '';
+		echo '<tbody>';
 		while ($MyRow = DB_fetch_array($Result_CustSelect)) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
@@ -589,6 +592,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 		} //$MyRow = DB_fetch_array($Result_CustSelect)
 		//end of while loop
 
+		echo '</tbody>';
 		echo '</table>';
 	} //end if results to show
 	echo '</form>';
@@ -1448,20 +1452,22 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 					<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Frequently Ordered Items') . '</p>
 					<div class="page_help_text">' . _('Frequently Ordered Items') . _(', shows the most frequently ordered items in the last 6 months.  You can choose from this list, or search further for other items') . '.</div>
 					<table class="table1">
-						<tr>
-							<th class="SortableColumn">' . _('Code') . '</th>
-							<th class="SortableColumn">' . _('Description') . '</th>
-							<th>' . _('Units') . '</th>
-							<th>' . _('On Hand') . '</th>
-							<th>' . _('On Demand') . '</th>
-							<th>' . _('On Order') . '</th>
-							<th>' . _('Available') . '</th>
-							<th>' . _('Quantity') . '</th>
-						</tr>';
+						<thead>
+							<tr>
+								<th class="SortedColumn">' . _('Code') . '</th>
+								<th class="SortedColumn">' . _('Description') . '</th>
+								<th>' . _('Units') . '</th>
+								<th>' . _('On Hand') . '</th>
+								<th>' . _('On Demand') . '</th>
+								<th>' . _('On Order') . '</th>
+								<th>' . _('Available') . '</th>
+								<th>' . _('Quantity') . '</th>
+							</tr>
+						</thead>';
 			$i = 0;
 			$j = 1;
 			$k = 0; //row colour counter
-
+			echo '<tbody>';
 			while ($MyRow = DB_fetch_array($Result2)) {
 				// This code needs sorting out, but until then :
 				$ImageSource = _('No Image');
@@ -1527,7 +1533,12 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 
 			} //$MyRow = DB_fetch_array($Result2)
 			//end of while loop for Frequently Ordered Items
-			echo '<td style="text-align:center" colspan="8"><input type="hidden" name="SelectingOrderItems" value="1" /><input tabindex="' . strval($j + 8) . '" type="submit" value="' . _('Add to Sales Order') . '" /></td></tr>';
+			echo '</tbody>';
+			echo '<td style="text-align:center" colspan="8">
+					<input type="hidden" name="SelectingOrderItems" value="1" />
+					<input tabindex="' . strval($j + 8) . '" type="submit" value="' . _('Add to Sales Order') . '" />
+				</td>
+			</tr>';
 			echo '</table>';
 		} //end of if Frequently Ordered Items > 0
 		echo '<div class="centre">' . $Msg;
@@ -1587,26 +1598,38 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 		if (isset($SearchResult)) {
 			echo '<div class="page_help_text">' . _('Select an item by entering the quantity required.  Click Order when ready.') . '</div>';
 			$j = 1;
-			echo '<table class="table1">';
-			echo '<tr><td colspan="1"><input type="hidden" name="PreviousList" value="' . strval($Offset - 1) . '" /><input tabindex="' . strval($j + 8) . '" type="submit" name="Previous" value="' . _('Previous') . '" /></td>';
-			echo '<td style="text-align:center" colspan="6"><input type="hidden" name="SelectingOrderItems" value="1" /><input tabindex="' . strval($j + 9) . '" type="submit" value="' . _('Add to Sales Order') . '" /></td>';
-			echo '<td colspan="1"><input type="hidden" name="NextList" value="' . strval($Offset + 1) . '" /><input tabindex="' . strval($j + 10) . '" type="submit" name="Next" value="' . _('Next') . '" /></td></tr>';
-			echo '<tbody>
-					<tr>
-						<th class="SortableColumn">' . _('Code') . '</th>
-						<th class="SortableColumn">' . _('Description') . '</th>
-						<th class="SortableColumn" >' . _('Customer Item') . '</th>
-						<th>' . _('Units') . '</th>
-						<th>' . _('On Hand') . '</th>
-						<th>' . _('On Demand') . '</th>
-						<th>' . _('On Order') . '</th>
-						<th>' . _('Available') . '</th>
-						<th>' . _('Quantity') . '</th>
-					</tr>';
+			echo '<table class="table1">
+					<thead>
+						<tr>
+							<td colspan="1">
+								<input type="hidden" name="PreviousList" value="' . strval($Offset - 1) . '" />
+								<input tabindex="' . strval($j + 8) . '" type="submit" name="Previous" value="' . _('Previous') . '" />
+							</td>
+							<td style="text-align:center" colspan="6">
+								<input type="hidden" name="SelectingOrderItems" value="1" />
+								<input tabindex="' . strval($j + 9) . '" type="submit" value="' . _('Add to Sales Order') . '" />
+							</td>
+							<td colspan="1">
+								<input type="hidden" name="NextList" value="' . strval($Offset + 1) . '" />
+								<input tabindex="' . strval($j + 10) . '" type="submit" name="Next" value="' . _('Next') . '" />
+							</td>
+						</tr>
+						<tr>
+							<th class="SortedColumn">' . _('Code') . '</th>
+							<th class="SortedColumn">' . _('Description') . '</th>
+							<th class="SortedColumn" >' . _('Customer Item') . '</th>
+							<th>' . _('Units') . '</th>
+							<th>' . _('On Hand') . '</th>
+							<th>' . _('On Demand') . '</th>
+							<th>' . _('On Order') . '</th>
+							<th>' . _('Available') . '</th>
+							<th>' . _('Quantity') . '</th>
+						</tr>
+					</thead>';
 			$ImageSource = _('No Image');
 			$i = 0;
 			$k = 0; //row colour counter
-
+			echo '<tbody>';
 			while ($MyRow = DB_fetch_array($SearchResult)) {
 				// Find the quantity in stock at location
 				$QOHSQL = "SELECT quantity AS qoh,

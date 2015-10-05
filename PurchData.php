@@ -265,20 +265,23 @@ if (!isset($_GET['Edit'])) {
 		$NoPurchasingData = 1;
 	} else if ($StockId != '') {
 		echo '<table cellpadding="2" class="selection">
-				<tr>
-					<th class="SortableColumn">' . _('Supplier') . '</th>
-					<th>' . _('Price') . '</th>
-					<th>' . _('Supplier Unit') . '</th>
-					<th>' . _('Conversion Factor') . '</th>
-					<th>' . _('Cost Per Our Unit') . '</th>
-					<th>' . _('Currency') . '</th>
-					<th class="SortableColumn">' . _('Effective From') . '</th>
-					<th>' . _('Min Order Qty') . '</th>
-					<th>' . _('Lead Time') . '</th>
-					<th class="SortableColumn">' . _('Preferred') . '</th>
-				</tr>';
+				<thead>
+					<tr>
+						<th class="SortedColumn">' . _('Supplier') . '</th>
+						<th>' . _('Price') . '</th>
+						<th>' . _('Supplier Unit') . '</th>
+						<th>' . _('Conversion Factor') . '</th>
+						<th>' . _('Cost Per Our Unit') . '</th>
+						<th>' . _('Currency') . '</th>
+						<th class="SortedColumn">' . _('Effective From') . '</th>
+						<th>' . _('Min Order Qty') . '</th>
+						<th>' . _('Lead Time') . '</th>
+						<th class="SortedColumn">' . _('Preferred') . '</th>
+					</tr>
+				</thead>';
 		$CountPreferreds = 0;
 		$k = 0; //row colour counter
+		echo '<tbody>';
 		while ($MyRow = DB_fetch_array($PurchDataResult)) {
 			if ($MyRow['preferred'] == 1) {
 				echo '<tr class="EvenTableRows">';
@@ -312,14 +315,14 @@ if (!isset($_GET['Edit'])) {
 					<td><a href="%s?StockID=%s&SupplierID=%s&Delete=1&EffectiveFrom=%s" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this suppliers price?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
 					</tr>', $MyRow['suppname'], locale_number_format($MyRow['price'], $UPriceDecimalPlaces), $MyRow['suppliersuom'], locale_number_format($MyRow['conversionfactor'], 'Variable'), locale_number_format($MyRow['price'] / $MyRow['conversionfactor'], $UPriceDecimalPlaces), $MyRow['currcode'], ConvertSQLDate($MyRow['effectivefrom']), locale_number_format($MyRow['minorderqty'], 'Variable'), locale_number_format($MyRow['leadtime'], 'Variable'), $DisplayPreferred, htmlspecialchars($_SERVER['PHP_SELF']), $StockId, $MyRow['supplierno'], $MyRow['effectivefrom'], htmlspecialchars($_SERVER['PHP_SELF']), $StockId, $MyRow['supplierno'], $MyRow['effectivefrom'], htmlspecialchars($_SERVER['PHP_SELF']), $StockId, $MyRow['supplierno'], $MyRow['effectivefrom']);
 		} //end of while loop
-		echo '</table><br/>';
+		echo '</tbody>';
+		echo '</table>';
 		if ($CountPreferreds > 1) {
 			prnMsg(_('There are now') . ' ' . $CountPreferreds . ' ' . _('preferred suppliers set up for') . ' ' . $StockId . ' ' . _('you should edit the supplier purchasing data to make only one supplier the preferred supplier'), 'warn');
 		} elseif ($CountPreferreds == 0) {
 			prnMsg(_('There are NO preferred suppliers set up for') . ' ' . $StockId . ' ' . _('you should make one supplier only the preferred supplier'), 'warn');
 		}
 	} // end of there are purchsing data rows to show
-	echo '<br/>';
 }
 /* Only show the existing purchasing data records if one is not being edited */
 
@@ -438,17 +441,21 @@ if (isset($SuppliersResult)) {
 		$StockUOM = 'each';
 	}
 	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF']) . '" method="post">
-			<table cellpadding="2" colspan="7" class="selection">';
-	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
-			<tr>
-				<th class="SortableColumn">' . _('Code') . '</th>
-				<th class="SortableColumn">' . _('Supplier Name') . '</th>
-				<th class="SortableColumn">' . _('Currency') . '</th>
-				<th>' . _('Address 1') . '</th>
-				<th>' . _('Address 2') . '</th>
-				<th>' . _('Address 3') . '</th>
-			</tr>';
+			<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
+
+	echo '<table cellpadding="2" colspan="7" class="selection">
+			<thead>
+				<tr>
+					<th class="SortedColumn">' . _('Code') . '</th>
+					<th class="SortedColumn">' . _('Supplier Name') . '</th>
+					<th class="SortedColumn">' . _('Currency') . '</th>
+					<th>' . _('Address 1') . '</th>
+					<th>' . _('Address 2') . '</th>
+					<th>' . _('Address 3') . '</th>
+				</tr>
+			</thead>';
 	$k = 0;
+	echo '<tbody>';
 	while ($MyRow = DB_fetch_array($SuppliersResult)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -470,9 +477,9 @@ if (isset($SuppliersResult)) {
 
 	}
 	//end of while loop
-	echo '</table>
-			<br/>
-			</form>';
+	echo '</tbody>
+		</table>
+	</form>';
 }
 //end if results to show
 
@@ -661,15 +668,18 @@ if (!isset($SuppliersResult)) {
 		$DiscountsResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 		echo '<table cellpadding="2" colspan="7" class="selection">
-				<tr>
-					<th class="SortableColumn">' . _('Discount Name') . '</th>
-					<th>' . _('Discount') . '<br />' . _('Value') . '</th>
-					<th>' . _('Discount') . '<br />' . _('Percent') . '</th>
-					<th class="SortableColumn">' . _('Effective From') . '</th>
-					<th>' . _('Effective To') . '</th>
-				</tr>';
+				<thead>
+					<tr>
+						<th class="SortedColumn">' . _('Discount Name') . '</th>
+						<th>' . _('Discount') . '<br />' . _('Value') . '</th>
+						<th>' . _('Discount') . '<br />' . _('Percent') . '</th>
+						<th class="SortedColumn">' . _('Effective From') . '</th>
+						<th>' . _('Effective To') . '</th>
+					</tr>
+				</thead>';
 		$k = 0;
 		$i = 0; //DiscountCounter
+		echo '<tbody>';
 		while ($MyRow = DB_fetch_array($DiscountsResult)) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
@@ -689,7 +699,7 @@ if (!isset($SuppliersResult)) {
 
 			++$i;
 		} //end of while loop
-
+		echo '</tbody>';
 		echo '<input type="hidden" name="NumberOfDiscounts" value="' . $i . '" />';
 
 		$DefaultEndDate = Date($_SESSION['DefaultDateFormat'], mktime(0, 0, 0, Date('m') + 1, 0, Date('y')));

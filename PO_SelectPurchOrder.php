@@ -187,14 +187,17 @@ echo '</select></td>
 
 if (isset($StockItemsResult)) {
 	echo '<table class="selection">
-			<tr>
-				<th class="SortableColumn">' . _('Code') . '</th>
-				<th class="SortableColumn">' . _('Description') . '</th>
-				<th>' . _('On Hand') . '</th>
-				<th>' . _('Orders') . '<br />' . _('Outstanding') . '</th>
-				<th>' . _('Units') . '</th>
-			</tr>';
+			<thead>
+				<tr>
+					<th class="SortedColumn">' . _('Code') . '</th>
+					<th class="SortedColumn">' . _('Description') . '</th>
+					<th>' . _('On Hand') . '</th>
+					<th>' . _('Orders') . '<br />' . _('Outstanding') . '</th>
+					<th>' . _('Units') . '</th>
+				</tr>
+			</thead>';
 	$k = 0; //row colour counter
+	echo '<tbody>';
 	while ($MyRow = DB_fetch_array($StockItemsResult)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -211,6 +214,7 @@ if (isset($StockItemsResult)) {
 			</tr>';
 	}
 	//end of while loop
+	echo '</tbody>';
 	echo '</table>';
 } else {
 	//figure out the SQL required from the inputs available
@@ -294,18 +298,21 @@ if (isset($StockItemsResult)) {
 	if (DB_num_rows($PurchOrdersResult) > 0) {
 		/*show a table of the orders returned by the SQL */
 		echo '<table cellpadding="2" width="90%" class="selection">
-				<tr>
-					<th class="SortableColumn">' . _('View') . '</th>
-					<th class="SortableColumn">' . _('Supplier') . '</th>
-					<th>' . _('Currency') . '</th>
-					<th class="SortableColumn">' . _('Requisition') . '</th>
-					<th class="SortableColumn">' . _('Order Date') . '</th>
-					<th class="SortableColumn">' . _('Delivery Date') . '</th>
-					<th class="SortableColumn">' . _('Initiator') . '</th>
-					<th>' . _('Order Total') . '</th>
-					<th>' . _('Status') . '</th>
-				</tr>';
+				<thead>
+					<tr>
+						<th class="SortedColumn">' . _('View') . '</th>
+						<th class="SortedColumn">' . _('Supplier') . '</th>
+						<th>' . _('Currency') . '</th>
+						<th class="SortedColumn">' . _('Requisition') . '</th>
+						<th class="SortedColumn">' . _('Order Date') . '</th>
+						<th class="SortedColumn">' . _('Delivery Date') . '</th>
+						<th class="SortedColumn">' . _('Initiator') . '</th>
+						<th>' . _('Order Total') . '</th>
+						<th>' . _('Status') . '</th>
+					</tr>
+				</thead>';
 		$k = 0; //row colour counter
+		echo '<tbody>';
 		while ($MyRow = DB_fetch_array($PurchOrdersResult)) {
 			if ($k == 1) {
 				/*alternate bgcolour of row for highlighting */
@@ -334,6 +341,7 @@ if (isset($StockItemsResult)) {
 
 		}
 		//end of while loop
+		echo '</tbody>';
 		echo '</table>';
 	} // end if purchase orders to show
 }

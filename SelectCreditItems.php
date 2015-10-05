@@ -212,18 +212,21 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 
 	if (isset($Result_CustSelect)) {
 
-		echo '<br /><table cellpadding="2">
-						<tr>
-							<th class="SortableColumn">' . _('Customer') . '</th>
-							<th class="SortableColumn">' . _('Branch') . '</th>
-							<th>' . _('Contact') . '</th>
-							<th>' . _('Phone') . '</th>
-							<th>' . _('Fax') . '</th>
-						</tr>';
+		echo '<table cellpadding="2">
+				<thead>
+					<tr>
+						<th class="SortedColumn">' . _('Customer') . '</th>
+						<th class="SortedColumn">' . _('Branch') . '</th>
+						<th>' . _('Contact') . '</th>
+						<th>' . _('Phone') . '</th>
+						<th>' . _('Fax') . '</th>
+					</tr>
+				</thead>';
 
 		$j = 1;
 		$k = 0; //row counter to determine background colour
 		$LastCustomer = '';
+		echo '<tbody>';
 		while ($MyRow = DB_fetch_array($Result_CustSelect)) {
 
 			if ($k == 1) {
@@ -250,7 +253,9 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 			++$j;
 			//end of page full new headings if
 		} //end of while loop
-		echo '</table><input type="hidden" name="JustSelectedACustomer" value="Yes" />';
+		echo '</tbody>
+			</table>
+		<input type="hidden" name="JustSelectedACustomer" value="Yes" />';
 	} //end if results to show
 	echo '</div>
           </form>';

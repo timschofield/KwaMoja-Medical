@@ -259,14 +259,17 @@ echo '</select></td>
 
 if (isset($StockItemsResult)) {
 	echo '<table class="selection">
-			<tr>
-				<th class="SortableColumn">', _('Code'), '</th>
-				<th class="SortableColumn">', _('Description'), '</th>
-				<th class="SortableColumn">', _('On Hand'), '</th>
-				<th class="SortableColumn">', _('Picked'), '</th>
-				<th class="SortableColumn">', _('Units'), '</th>
-			</tr>';
+			<thead>
+				<tr>
+					<th class="SortedColumn">', _('Code'), '</th>
+					<th class="SortedColumn">', _('Description'), '</th>
+					<th class="SortedColumn">', _('On Hand'), '</th>
+					<th class="SortedColumn">', _('Picked'), '</th>
+					<th class="SortedColumn">', _('Units'), '</th>
+				</tr>
+			</thead>';
 	$k = 0; //row colour counter
+	echo '<tbody>';
 	while ($MyRow = DB_fetch_array($StockItemsResult)) {
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -285,6 +288,7 @@ if (isset($StockItemsResult)) {
 
 	}
 	//end of while loop
+	echo '</tbody>';
 	echo '</table>';
 }
 //end if stock search results to show
@@ -402,20 +406,23 @@ else {
 	if (DB_num_rows($PickReqResult) > 0) {
 		/*show a table of the pick lists returned by the SQL */
 		echo '<table cellpadding="2" width="90%" class="selection">
-				<tr>
-					<th class="SortableColumn">', _('Modify'), '</th>
-					<th class="SortableColumn">', _('Picking List'), '</th>
-					<th class="SortableColumn">', _('Packing List'), '</th>
-					<th class="SortableColumn">', _('Labels'), '</th>
-					<th class="SortableColumn">', _('Order'), '</th>
-					<th class="SortableColumn">', _('Customer'), '</th>
-					<th class="SortableColumn">', _('Request Date'), '</th>
-					<th class="SortableColumn">', _('Ship Date'), '</th>
-					<th class="SortableColumn">', _('Shipped By'), '</th>
-					<th class="SortableColumn">', _('Initiated On'), '</th>
-					<th class="SortableColumn">', _('Initiated By'), '</th>
-				</tr>';
+				<thead>
+					<tr>
+						<th class="SortedColumn">', _('Modify'), '</th>
+						<th class="SortedColumn">', _('Picking List'), '</th>
+						<th class="SortedColumn">', _('Packing List'), '</th>
+						<th class="SortedColumn">', _('Labels'), '</th>
+						<th class="SortedColumn">', _('Order'), '</th>
+						<th class="SortedColumn">', _('Customer'), '</th>
+						<th class="SortedColumn">', _('Request Date'), '</th>
+						<th class="SortedColumn">', _('Ship Date'), '</th>
+						<th class="SortedColumn">', _('Shipped By'), '</th>
+						<th class="SortedColumn">', _('Initiated On'), '</th>
+						<th class="SortedColumn">', _('Initiated By'), '</th>
+					</tr>
+				</thead>';
 		$k = 0; //row colour counter
+		echo '<tbody>';
 		while ($MyRow = DB_fetch_array($PickReqResult)) {
 			if ($k == 1) {
 				/*alternate bgcolour of row for highlighting */
@@ -464,6 +471,7 @@ else {
 				</tr>';
 			//end of page full new headings if
 		} //end of while loop
+		echo '</tbody>';
 		echo '</table>';
 	} // end if Pick Lists to show
 }

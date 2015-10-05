@@ -297,18 +297,22 @@ if (isset($_POST['Search'])) {
 	if (DB_num_rows($Result) <> 0) {
 		DB_data_seek($Result, ($_POST['PageOffset'] - 1) * $_SESSION['DisplayRecordsMax']);
 		echo '<table cellpadding="2">
-				<tr>
-					<th class="SortableColumn">' . _('Code') . '</th>
-					<th class="SortableColumn">' . _('Supplier Name') . '</th>
-					<th>' . _('Currency') . '</th>
-					<th>' . _('Address 1') . '</th>
-					<th>' . _('Address 2') . '</th>
-					<th>' . _('Address 3') . '</th>
-					<th>' . _('Address 4') . '</th>
-					<th>' . _('Telephone') . '</th>
-					<th>' . _('Email') . '</th>
-					<th>' . _('URL') . '</th>
-				</tr>';
+				<thead>
+					<tr>
+						<th class="SortedColumn">' . _('Code') . '</th>
+						<th class="SortedColumn">' . _('Supplier Name') . '</th>
+						<th>' . _('Currency') . '</th>
+						<th>' . _('Address 1') . '</th>
+						<th>' . _('Address 2') . '</th>
+						<th>' . _('Address 3') . '</th>
+						<th>' . _('Address 4') . '</th>
+						<th>' . _('Telephone') . '</th>
+						<th>' . _('Email') . '</th>
+						<th>' . _('URL') . '</th>
+					</tr>
+				</thead>';
+
+		echo '<tbody>';
 		while (($MyRow = DB_fetch_array($Result)) and ($RowIndex <> $_SESSION['DisplayRecordsMax'])) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
@@ -332,6 +336,7 @@ if (isset($_POST['Search'])) {
 			//end of page full new headings if
 		}
 		//end of while loop
+		echo '</tbody>';
 		echo '</table>';
 	} else {
 		prnMsg( _('There are no suppliers returned for this criteria. Please enter new criteria'), 'info');

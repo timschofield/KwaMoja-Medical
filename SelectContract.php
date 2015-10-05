@@ -9,7 +9,6 @@ include('includes/header.inc');
 echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/contract.png" title="' . _('Contracts') . '" alt="" />' . ' ' . _('Select A Contract') . '</p> ';
 
 echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 echo '<br /><div class="centre">';
@@ -145,18 +144,21 @@ $ContractsResult = DB_query($SQL, $ErrMsg);
 /*show a table of the contracts returned by the SQL */
 
 echo '<table cellpadding="2" width="98%" class="selection">
-		<tr>
-			<th>' . _('Modify') . '</th>
-			<th class="SortableColumn">' . _('Order') . '</th>
-			<th>' . _('Issue To WO') . '</th>
-			<th>' . _('Costing') . '</th>
-			<th class="SortableColumn">' . _('Contract Ref') . '</th>
-			<th>' . _('Description') . '</th>
-			<th>' . _('Customer') . '</th>
-			<th>' . _('Required Date') . '</th>
-		</tr>';
+		<thead>
+			<tr>
+				<th>' . _('Modify') . '</th>
+				<th class="SortedColumn">' . _('Order') . '</th>
+				<th>' . _('Issue To WO') . '</th>
+				<th>' . _('Costing') . '</th>
+				<th class="SortedColumn">' . _('Contract Ref') . '</th>
+				<th>' . _('Description') . '</th>
+				<th>' . _('Customer') . '</th>
+				<th>' . _('Required Date') . '</th>
+			</tr>
+		</thead>';
 
 $k = 0; //row colour counter
+echo '<tbody>';
 while ($MyRow = DB_fetch_array($ContractsResult)) {
 	if ($k == 1) {
 		echo '<tr class="EvenTableRows">';
@@ -201,8 +203,7 @@ while ($MyRow = DB_fetch_array($ContractsResult)) {
 //end of while loop
 
 echo '</table>
-	  </div>
-	  </form>
-	  <br />';
+	</tbody>
+</form>';
 include('includes/footer.inc');
 ?>

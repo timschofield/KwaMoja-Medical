@@ -427,7 +427,7 @@ if (!isset($SelectedLocation)) {
 						<th class="SortedColumn">', _('Tax Province'), '</th>
 						<th class="SortedColumn">', _('GL Account Code'), '</th>
 						<th class="SortedColumn">', _('Allow Invoicing'), '</th>
-						<th class="noprint" colspan="2">&nbsp;</th>
+						<th class="noPrint" colspan="2">&nbsp;</th>
 					</tr>
 				</thead>';
 

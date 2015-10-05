@@ -3,7 +3,7 @@
 
 @media print {
 
-#FooterDiv, #HeaderDiv, #MainMenuDiv, .noprint, .page_title_text img, .site-description, .site-title, .page_help_text, .PrintIcon, form {
+#FooterDiv, #HeaderDiv, #MainMenuDiv, .noPrint, .page_title_text img, .site-description, .site-title, .page_help_text, .PrintIcon, form {
 	display:none;
 	/* Remove unwanted elements. */
 }

@@ -158,7 +158,7 @@ if (!isset($_GET['SelectedSectionID']) and !isset($_POST['SelectedSectionID'])) 
 				<tr>
 					<th class="SortedColumn">' . _('Section Number') . '</th>
 					<th class="SortedColumn">' . _('Section Description') . '</th>
-					<th class="noprint" colspan="2">&nbsp;</th>
+					<th class="noPrint" colspan="2">&nbsp;</th>
 				</tr>
 			</thead>';
 
@@ -175,11 +175,11 @@ if (!isset($_GET['SelectedSectionID']) and !isset($_POST['SelectedSectionID'])) 
 		}
 
 		echo '<td class="number">' . $MyRow['sectionid'] . '</td><td>' . $MyRow['sectionname'] . '</td>';
-		echo '<td class="noprint"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?SelectedSectionID=' . urlencode($MyRow['sectionid']), ENT_QUOTES, 'UTF-8') . '">' . _('Edit') . '</a></td>';
+		echo '<td class="noPrint"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?SelectedSectionID=' . urlencode($MyRow['sectionid']), ENT_QUOTES, 'UTF-8') . '">' . _('Edit') . '</a></td>';
 		if ($MyRow['sectionid'] == '1' or $MyRow['sectionid'] == '2') {
-			echo '<td class="noprint"><b>' . _('Restricted') . '</b></td>';
+			echo '<td class="noPrint"><b>' . _('Restricted') . '</b></td>';
 		} else {
-			echo '<td class="noprint"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?SelectedSectionID=' . urlencode($MyRow['sectionid']) . '&delete=1', ENT_QUOTES, 'UTF-8') . '">' . _('Delete') . '</a></td>';
+			echo '<td class="noPrint"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?SelectedSectionID=' . urlencode($MyRow['sectionid']) . '&delete=1', ENT_QUOTES, 'UTF-8') . '">' . _('Delete') . '</a></td>';
 		}
 		echo '</tr>';
 	} //END WHILE LIST LOOP
@@ -194,7 +194,7 @@ if (isset($_POST['SelectedSectionID']) or isset($_GET['SelectedSectionID'])) {
 
 if (!isset($_GET['delete'])) {
 
-	echo '<form method="post" class="noprint" id="AccountSections" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
+	echo '<form method="post" class="noPrint" id="AccountSections" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	if (isset($_GET['SelectedSectionID'])) {

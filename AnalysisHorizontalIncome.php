@@ -117,7 +117,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 			</tr>
 		</table>';
 
-		echo '<div class="centre noprint">
+		echo '<div class="centre noPrint">
 				<button name="ShowPL" type="submit" value="', _('Show on Screen (HTML)'), '">
 					<img alt="" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/gl.png" /> ', _('Show on Screen (HTML)'), '
 				</button>
@@ -523,7 +523,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 			<input type="hidden" name="FormID" value="', $_SESSION['FormID'], '" />
 			<input type="hidden" name="FromPeriod" value="', $_POST['FromPeriod'], '" />
 			<input type="hidden" name="ToPeriod" value="', $_POST['ToPeriod'], '" />
-			<div class="centre noprint">
+			<div class="centre noPrint">
 				<button onclick="javascript:window.print()" type="button">
 					<img alt="" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/printer.png" /> ', _('Print This'), '
 				</button>

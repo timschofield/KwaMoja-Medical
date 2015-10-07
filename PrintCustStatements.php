@@ -3,6 +3,11 @@
 include('includes/session.inc');
 include('includes/SQL_CommonFunctions.inc');
 
+$ViewTopic = 'ARReports';
+$BookMark = 'CustomerStatements';
+
+$Title = _('Print Customer Statements');
+
 // if this file is called from another script, we set the required POST variables from the GET
 // We call this file from SelectCustomer.php when a customer is selected and we want a statement printed
 
@@ -173,6 +178,8 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 
 			include('includes/PDFStatementPageHeader.inc');
 
+			$Cust_Name = $StmtHeader['name'];
+			$Cust_No = $StmtHeader['debtorno'];
 
 			if ($_SESSION['Show_Settled_LastMonth'] == 1) {
 				if (DB_num_rows($SetldTrans) >= 1) {
@@ -430,7 +437,35 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 
 	if (isset($PDF)) {
 
-        $PDF->OutputD($_SESSION['DatabaseName'] . '_CustStatements_' . date('Y-m-d') . '.pdf');
+		if (isset($_GET['Email'])) { //email the invoice to address supplied
+			include ('includes/htmlMimeMail.php');
+			$FileName = 'XXX_' . 'Statement_' . $Cust_No  . '_' . $Cust_Name . '.pdf';
+			$PDF->Output($FileName, 'F');
+			$Mail = new htmlMimeMail();
+
+			$Attachment = $Mail->getFile($FileName);
+			$Mail->setText(_('Please find attached Statements') );
+			$Mail->SetSubject('Your Statement From XXX');
+			$Mail->addAttachment($Attachment, $FileName, 'application/pdf');
+			if ($_SESSION['SmtpSetting'] == 0) {
+				$Mail->setFrom($_SESSION['CompanyRecord']['coyname'] . ' <' . $_SESSION['CompanyRecord']['email'] . '>');
+				$Result = $Mail->send(array($_GET['Email']));
+			} else {
+				$Result = SendmailBySmtp($Mail, array($_GET['Email']));
+			}
+
+			unlink($FileName); //delete the temporary file
+
+			$Title = _('Emailing customer statements');
+			include('includes/header.inc');
+			echo '<p>' .  _(' Customer statements has been emailed to') . ' ' . $_GET['Email'];
+			include('includes/footer.inc');
+			exit;
+
+		} else { //its not an email just print the invoice to PDF
+			$PDF->OutputD($_SESSION['DatabaseName'] . '_CustStatements_' . date('Y-m-d') . '.pdf');
+		}
+
 		$PDF->__destruct();
 
 	} else {

@@ -342,10 +342,9 @@ if (isset($_POST['JustSelectedACustomer']) and !isset($_POST['SearchCust'])) {
 		} //isset($_POST['SubmitCustomerSelection' . $i])
 
 	} //$i = 0; $i < count($_POST); $i++
-	if ($i == count($_POST)) {
+	if ($i == count($_POST) and !isset($SelectedCustomer)) {//if there is ONLY one customer searched at above, the $SelectedCustomer already setup, then there is a wrong warning
 		prnMsg(_('Unable to identify the selected customer'), 'error');
-	} //$i == count($_POST)
-	else {
+	} elseif (!isset($SelectedCustomer)) {
 		$SelectedCustomer = $_POST['SelectedCustomer' . $i];
 		$SelectedBranch = $_POST['SelectedBranch' . $i];
 	}

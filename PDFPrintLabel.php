@@ -3,9 +3,9 @@
 include('includes/session.inc');
 include('includes/barcodepack/class.code128.php');
 
-$PtsPerMM = 2.83465; //pdf points per mm
+$PtsPerMM = 2.83464567; //pdf points per mm (72 dpi / 25.4 mm per inch)
 
-if ((isset($_POST['ShowLabels']) or isset($_POST['SetAll'])) and isset($_POST['FromCriteria']) and mb_strlen($_POST['FromCriteria']) >= 1 and isset($_POST['ToCriteria']) and mb_strlen($_POST['ToCriteria']) >= 1) {
+if ((isset($_POST['ShowLabels']) or isset($_POST['SetAll'])) and isset($_POST['StockCategory']) and mb_strlen($_POST['StockCategory']) >= 1) {
 
 	$Title = _('Print Labels');
 	include('includes/header.inc');
@@ -21,8 +21,7 @@ if ((isset($_POST['ShowLabels']) or isset($_POST['SetAll'])) and isset($_POST['F
 				ON stockmaster.stockid=prices.stockid
 			INNER JOIN currencies
 				ON prices.currabrev=currencies.currabrev
-			WHERE stockmaster.categoryid >= '" . $_POST['FromCriteria'] . "'
-			AND stockmaster.categoryid <= '" . $_POST['ToCriteria'] . "'
+			WHERE stockmaster.categoryid = '" . $_POST['StockCategory'] . "'
 			AND prices.typeabbrev='" . $_POST['SalesType'] . "'
 			AND prices.currabrev='" . $_POST['Currency'] . "'
 			AND prices.startdate<='" . FormatDateForSQL($_POST['EffectiveDate']) . "'
@@ -101,8 +100,7 @@ if ((isset($_POST['ShowLabels']) or isset($_POST['SetAll'])) and isset($_POST['F
 	echo '</table>
 		<input type="hidden" name="NoOfLabels" value="' . ($i + 1) . '" />
 		<input type="hidden" name="LabelID" value="' . $_POST['LabelID'] . '" />
-		<input type="hidden" name="FromCriteria" value="' . $_POST['FromCriteria'] . '" />
-		<input type="hidden" name="ToCriteria" value="' . $_POST['ToCriteria'] . '" />
+		<input type="hidden" name="StockCategory" value="' . $_POST['StockCategory'] . '" />
 		<input type="hidden" name="SalesType" value="' . $_POST['SalesType'] . '" />
 		<input type="hidden" name="Currency" value="' . $_POST['Currency'] . '" />
 		<input type="hidden" name="EffectiveDate" value="' . $_POST['EffectiveDate'] . '" />
@@ -200,7 +198,7 @@ if (isset($_POST['PrintLabels']) and $NoOfLabels > 0) {
 				foreach ($LabelFields as $Field) {
 
 					if ($Field['FieldValue'] == 'price') {
-						$Value = $_POST['Price' . $i];
+						$Value = $_POST['Price' . $i] . ' '. $_POST['Currency'];
 					} elseif ($Field['FieldValue'] == 'stockid') {
 						$Value = $_POST['StockID' . $i];
 					} elseif ($Field['FieldValue'] == 'description') {
@@ -209,7 +207,9 @@ if (isset($_POST['PrintLabels']) and $NoOfLabels > 0) {
 						$Value = $_POST['Barcode' . $i];
 					}
 					if ($Field['FieldValue'] == 'price') { //need to format for the number of decimal places
-						$LeftOvers = $PDF->addTextWrap($XPos + $Field['HPos'], $YPos - $LabelDimensions['label_height'] + $Field['VPos'], $LabelDimensions['label_width'] - $Field['HPos'], $Field['FontSize'], $_POST['Price' . $i], 'center');
+						$LeftOvers = $PDF->addTextWrap($XPos + $Field['HPos'], $YPos - $LabelDimensions['label_height'] + $Field['VPos'], $LabelDimensions['label_width'] - $Field['HPos'], $Field['FontSize'], $Value);
+					} elseif ($Field['FieldValue'] == 'logo'){
+						$PDF->addJpegFromFile($_SESSION['LogoFile'], $XPos + $Field['HPos'], $YPos - $LabelDimensions['label_height'] + $Field['VPos'], '', $Field['FontSize']);
 					} elseif ($Field['Barcode'] == 1) {
 
 						$BarcodeImage = new code128(str_replace('_', '', $Value));
@@ -222,7 +222,7 @@ if (isset($_POST['PrintLabels']) and $NoOfLabels > 0) {
 						$PDF->addJpegFromFile('@' . $Image_String, $XPos + $Field['HPos'], $YPos - $LabelDimensions['label_height'] + $Field['VPos'], '', $Field['FontSize']);
 
 					} else {
-						$LeftOvers = $PDF->addTextWrap($XPos + $Field['HPos'], $YPos - $LabelDimensions['label_height'] + $Field['VPos'], $LabelDimensions['label_width'] - $Field['HPos'] - 20, $Field['FontSize'], $Value);
+						$LeftOvers = $PDF->addTextWrap($XPos + $Field['HPos'], $YPos - $LabelDimensions['label_height'] + $Field['VPos'], $LabelDimensions['label_width'] - $Field['HPos'], $Field['FontSize'], $Value);
 					}
 				} // end loop through label fields
 				if ($NoOfLabels > 0) {
@@ -273,9 +273,9 @@ if (isset($_POST['PrintLabels']) and $NoOfLabels > 0) {
 		prnMsg(_('The GD module for PHP is required to print barcode labels. Your PHP installation is not capable currently. You will most likely experience problems with this script until the GD module is enabled.'), 'error');
 	}
 
-	if (!isset($_POST['FromCriteria']) or !isset($_POST['ToCriteria'])) {
+	if (!isset($_POST['StockCategory'])) {
 
-		/*if $FromCriteria is not set then show a form to allow input	*/
+	/*if $StockCategory is not set then show a form to allow input	*/
 
 		echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -291,26 +291,12 @@ if (isset($_POST['PrintLabels']) and $NoOfLabels > 0) {
 		echo '</select></td>
 			</tr>
 			<tr>
-				<td>' . _('From Inventory Category Code') . ':</td>
-				<td><select required="required" name="FromCriteria">';
+				<td>' .  _('For Stock Category') .':</td>
+				<td><select name="StockCategory">';
 
-		$CatResult = DB_query("SELECT categoryid, categorydescription FROM stockcategory ORDER BY categoryid");
-		while ($MyRow = DB_fetch_array($CatResult)) {
-			echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categoryid'] . ' - ' . $MyRow['categorydescription'] . '</option>';
-		}
-		echo '</select>
-				</td>
-			</tr>';
-
-		echo '<tr>
-				<td>' . _('To Inventory Category Code') . ':</td>
-				<td><select required="required" name="ToCriteria">';
-
-		/*Set the index for the categories result set back to 0 */
-		DB_data_seek($CatResult, 0);
-
-		while ($MyRow = DB_fetch_array($CatResult)) {
-			echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categoryid'] . ' - ' . $MyRow['categorydescription'] . '</option>';
+		$CatResult= DB_query("SELECT categoryid, categorydescription FROM stockcategory ORDER BY categorydescription");
+ 		while ($MyRow = DB_fetch_array($CatResult)){
+			echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 		}
 		echo '</select>
 				</td>

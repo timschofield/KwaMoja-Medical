@@ -4,7 +4,7 @@ include('includes/session.inc');
 $Title = _('Label Templates');
 include('includes/header.inc');
 
-//define PaperSize array sizes in pdf points
+//define PaperSize array sizes in mm
 $PaperSize = array();
 $PaperSize['A4']['PageHeight'] = 297;
 $PaperSize['A4']['PageWidth'] = 210;
@@ -18,7 +18,7 @@ $PaperSize['Legal']['PageHeight'] = 355.6;
 $PaperSize['Legal']['PageWidth'] = 215.9;
 
 echo '<p class="page_title_text" >
-		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Label Template Maintenance') . '" alt="' . _('Label Template Maintenance') . '" />' . $Title . _('all measurements in PDF points') . '
+		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Label Template Maintenance') . '" alt="' . _('Label Template Maintenance') . '" />' . $Title . _('all measurements in mm.') . '
 	</p>';
 
 if (!function_exists('gd_info')) {
@@ -458,6 +458,11 @@ if (isset($SelectedLabelID)) {
 			} else {
 				echo '<option value="price">' . _('Price') . '</option>';
 			}
+			if ($MyRow['fieldvalue'] == 'logo'){
+				echo '<option selected="selected" value="logo">' . _('Company Logo') . '</option>';
+			} else {
+				echo '<option value="logo">' . _('Company Logo') . '</option>';
+			}
 			echo '</select></td>
 				<td><input type="text" name="VPos' . $i . '" size="4" required="required" maxlength="4" value="' . $MyRow['vpos'] . '" /></td>
 				<td><input type="text" name="HPos' . $i . '" size="4" required="required" maxlength="4" value="' . $MyRow['hpos'] . '" /></td>
@@ -482,19 +487,30 @@ if (isset($SelectedLabelID)) {
 	echo '<input type="hidden" name="NoOfFieldsDefined" value="' . $i . '" />';
 
 	echo '<tr>
-		<td><select name="FieldName">
-			<option value="itemcode">' . _('Item Code') . '</option>
-			<option value="itemdescription">' . _('Item Descrption') . '</option>
-			<option value="barcode">' . _('Item Barcode') . '</option>
-			<option value="price">' . _('Price') . '</option>
-			</select></td>
-		<td><input type="text" size="4" required="required" maxlength="4" name="VPos" /></td>
-		<td><input type="text" size="4" required="required" maxlength="4" name="HPos" /></td>
-		<td><input type="text" size="4" required="required" maxlength="4" name="FontSize" /></td>
-		<td><select name="Barcode">
-			<option value="1">' . _('Yes') . '</option>
-			<option selected="selected" value="0">' . _('No') . '</option>
-			</select></td>
+			<td>
+				<select name="FieldName">
+					<option value="itemcode">' . _('Item Code') . '</option>
+					<option value="itemdescription">' . _('Item Descrption') . '</option>
+					<option value="barcode">' . _('Item Barcode') . '</option>
+					<option value="price">' . _('Price') . '</option>
+					<option value="logo">' . _('Company Logo') . '</option>
+				</select>
+			</td>
+			<td>
+				<input type="text" size="4" required="required" maxlength="4" name="VPos" />
+			</td>
+			<td>
+				<input type="text" size="4" required="required" maxlength="4" name="HPos" />
+			</td>
+			<td>
+				<input type="text" size="4" required="required" maxlength="4" name="FontSize" />
+			</td>
+			<td>
+				<select name="Barcode">
+					<option value="1">' . _('Yes') . '</option>
+					<option selected="selected" value="0">' . _('No') . '</option>
+				</select>
+			</td>
 		</tr>
 		</table>
 		</td>

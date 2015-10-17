@@ -29,14 +29,14 @@ if (isset($_POST['submit'])) {
 
 	//first off validate inputs sensible
 
-	if (mb_strlen($_POST['AccountName']) > 20) {
+	if (mb_strlen($_POST['AccountName']) > 150) {
 		$InputError = 1;
-		prnMsg(_('The account name must be twenty characters or less long'), 'warn');
+		prnMsg(_('The account name must be one hundred and fifty characters or less long'), 'warn');
 	}
 
 	if (isset($SelectedAccount) and $InputError != 1) {
 
-		$SQL = "UPDATE chartmaster SET accountname='" . $_POST['AccountName'] . "',
+		$SQL = "UPDATE chartmaster SET accountname='" . htmlspecialchars($_POST['AccountName']) . "',
 						group_='" . htmlspecialchars($GroupRow['groupname']) . "',
 						groupcode='" . $_POST['Group'] . "'
 				WHERE accountcode ='" . $SelectedAccount . "'";
@@ -249,7 +249,7 @@ if (!isset($_GET['delete'])) {
 			</tr>';
 		echo '<tr>
 				<td>' . _('Account Name') . ':</td>
-				<td><input type="text" size="51" required="required" maxlength="50" name="AccountName" value="', $_POST['AccountName'], '" /></td>
+				<td><input type="text" size="51" required="required" maxlength="150" name="AccountName" value="', $_POST['AccountName'], '" /></td>
 			</tr>';
 	}
 

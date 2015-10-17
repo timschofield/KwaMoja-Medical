@@ -320,15 +320,17 @@ if (isset($_POST['submit'])) {
 	/* actions to take once the user has clicked the submit button
 	ie the page has called itself with some user input */
 
-	//first off validate inputs sensible
-	$SQL = "SELECT COUNT(supplierid) FROM suppliers WHERE supplierid='" . DB_escape_string($SupplierID) . "'";
-	$Result = DB_query($SQL);
-	$MyRow = DB_fetch_row($Result);
-	if ($MyRow[0] > 0 and isset($_POST['New'])) {
-		$InputError = 1;
-		prnMsg(_('The supplier number already exists in the database'), 'error');
-		$Errors[$i] = 'ID';
-		++$i;
+	if ($_SESSION['AutoSupplierNo'] == 0) {
+		//first off validate inputs sensible
+		$SQL = "SELECT COUNT(supplierid) FROM suppliers WHERE supplierid='" . DB_escape_string($SupplierID) . "'";
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_row($Result);
+		if ($MyRow[0] > 0 and isset($_POST['New'])) {
+			$InputError = 1;
+			prnMsg(_('The supplier number already exists in the database'), 'error');
+			$Errors[$i] = 'ID';
+			++$i;
+		}
 	}
 	if (mb_strlen(trim($_POST['SuppName'])) > 40 or mb_strlen(trim($_POST['SuppName'])) == 0 or trim($_POST['SuppName']) == '') {
 		$InputError = 1;
@@ -530,7 +532,8 @@ if (isset($_POST['submit'])) {
 
 			if ($_SESSION['AutoSupplierNo'] == 1) {
 				/* system assigned, sequential, numeric */
-				$SupplierID = GetNextTransNo(600);
+				/* $SupplierID = GetNextTransNo(600); */
+				$SupplierID = GetNextSupplierCode($_POST['SupplierType']);
 			}
 
 			$SQL = "INSERT INTO suppliers (supplierid,

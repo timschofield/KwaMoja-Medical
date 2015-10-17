@@ -33,6 +33,17 @@ function GetNextTransNo($TransType) {
 	return $MyRow[0] + 1;
 }
 
+function GetNextSupplierCode($SupplierType) {
+	/* Get the next supplier number */
+	$SQL = "SELECT nextsupplierno FROM suppliertype WHERE typeid='" . $SupplierType . "'";
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
+
+	/* Increase the counter */
+	$SQL = "UPDATE suppliertype SET nextsupplierno='" . ($MyRow['nextsupplierno'] + 1) . "' WHERE typeid='" . $SupplierType . "'";
+	$Result = DB_query($SQL);
+	return $MyRow['nextsupplierno'] + 1;
+}
 
 function GetStockGLCode($StockId) {
 

@@ -262,7 +262,7 @@ if (!isset($_GET['SelectedAccountGroup']) and !isset($_POST['SelectedAccountGrou
 					parentgroupname
 			FROM accountgroups
 			LEFT JOIN accountsection ON sectionid = sectioninaccounts
-			ORDER BY sequenceintb";
+			ORDER BY groupcode";
 
 	$DbgMsg = _('The sql that was used to retrieve the account group information was ');
 	$ErrMsg = _('Could not get account groups because');
@@ -407,7 +407,7 @@ if (!isset($_GET['delete'])) {
 
 	echo '<tr>
 			<td>', _('Account Group Name'), ':</td>
-			<td><input tabindex="1" type="text" name="GroupName" size="50" required="required" maxlength="50" value="', stripslashes($_POST['GroupName']), '" /></td>
+			<td><input tabindex="1" type="text" name="GroupName" size="50" required="required" maxlength="150" value="', stripslashes($_POST['GroupName']), '" /></td>
 		</tr>';
 
 	$SQL = "SELECT groupcode, groupname FROM accountgroups";

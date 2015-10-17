@@ -401,9 +401,9 @@ function UpdateFavourites(e, t) {
 
 function AddAmount(t,Target) {
 	if (t.checked) {
-		document.getElementById(Target).value=parseInt(document.getElementById(Target).value)+parseInt(t.value);
+		document.getElementById(Target).value=parseFloat(document.getElementById(Target).value)+parseFloat(t.value);
 	} else {
-		document.getElementById(Target).value=parseInt(document.getElementById(Target).value)-parseInt(t.value);
+		document.getElementById(Target).value=parseFloat(document.getElementById(Target).value)-parseFloat(t.value);
 	}
 }
 

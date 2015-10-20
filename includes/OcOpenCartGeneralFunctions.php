@@ -336,12 +336,33 @@ function GetOnlineQOH($StockId) {
 		return 0;
 	}
 }
-
+/*
 function GetOnlinePriceList() {
 	$SQL = "SELECT debtorsmaster.currcode,
 				debtorsmaster.salestype
 			FROM debtorsmaster
 			WHERE debtorsmaster.debtorno = '" . $_SESSION['ShopDebtorNo'] . "'";
+	$Result = DB_query($SQL);
+	if (DB_num_rows($Result) != 0) {
+		$MyRow = DB_fetch_array($Result);
+		return array(
+			$MyRow['salestype'],
+			$MyRow['currcode']
+		);
+	} else {
+		return array(
+			0,
+			0
+		);
+	}
+}
+*/
+function GetOnlinePriceList() {
+	$SQL = "SELECT currabrev,
+				typeabbrev,
+				price
+			FROM prices
+			WHERE startdate<=CURRENT_DATE AND enddate>=CURRENT_DATE";
 	$Result = DB_query($SQL);
 	if (DB_num_rows($Result) != 0) {
 		$MyRow = DB_fetch_array($Result);

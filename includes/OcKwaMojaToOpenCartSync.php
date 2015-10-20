@@ -168,7 +168,7 @@ function SyncProductBasicInformation($ShowMessages, $LastTimeRun, $oc_tableprefi
 			} else {
 				$CustomerCode = '';
 			}
-			$Price = GetPrice($MyRow['stockid'], $CustomerCode, $CustomerCode); // Get the price without any discount from KwaMoja
+			$Price = GetPrice($MyRow['stockid'], '', ''); // Get the price without any discount from KwaMoja
 			$DiscountCategory = $MyRow['discountcategory'];
 			$Points = 0; // No points concept in KwaMoja
 			$TaxClassId = 0; // Not sure how to link stockid and tax in KwaMoja

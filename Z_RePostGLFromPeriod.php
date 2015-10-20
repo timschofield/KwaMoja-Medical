@@ -35,26 +35,41 @@ if (!isset($_POST['FromPeriod'])) {
 	</form>';
 
 } else {
-	/*OK do the updates */
 
-	/* Make the posted flag on all GL entries including and after the period selected = 0 */
-	$SQL = "UPDATE gltrans SET posted=0 WHERE periodno >='" . $_POST['FromPeriod'] . "'";
-	$UpdGLTransPostedFlag = DB_query($SQL);
+	/* Zeroise the whole table */
+	$SQL = "UPDATE chartdetails SET actual=0, bfwd=0";
+	$Result = DB_query($SQL);
 
-	/* Now make all the actuals 0 for all periods including and after the period from */
-	$SQL = "UPDATE chartdetails SET actual =0 WHERE period >= '" . $_POST['FromPeriod'] . "'";
-	$UpdActualChartDetails = DB_query($SQL);
+	/* Then get the list of all GL codes */
+	$SQL = "SELECT accountcode FROM chartmaster";
+	$GLCodesResult = DB_query($SQL);
 
-	$ChartDetailBFwdResult = DB_query("SELECT accountcode, bfwd FROM chartdetails WHERE period='" . $_POST['FromPeriod'] . "'");
-	while ($ChartRow = DB_fetch_array($ChartDetailBFwdResult)) {
-		$SQL = "UPDATE chartdetails SET bfwd ='" . $ChartRow['bfwd'] . "' WHERE period > '" . $_POST['FromPeriod'] . "' AND accountcode='" . $ChartRow['accountcode'] . "'";
-		$UpdActualChartDetails = DB_query($SQL);
+	/* and cycle through each code */
+	while ($GLCodes = DB_fetch_array($GLCodesResult)) {
+		/* Fetch the periods */
+		$SQL = "SELECT period
+					FROM chartdetails
+					WHERE accountcode='" . $GLCodes['accountcode'] . "'
+					ORDER BY period";
+		$PeriodResult = DB_query($SQL);
+		$BalanceBroughtForward = 0;
+		while ($Periods = DB_fetch_array($PeriodResult)) {
+			/* Get the actual period amount */
+			$SQL = "SELECT SUM(amount) AS actual FROM gltrans WHERE account='" . $GLCodes['accountcode'] . "' AND periodno='" . $Periods['period'] . "'";
+			$Result = DB_query($SQL);
+			$MyRow = DB_fetch_array($Result);
+
+			/* Update the chartdetails table */
+			$SQL = "UPDATE chartdetails SET actual='" . $MyRow['actual'] . "',
+											bfwd=" . $BalanceBroughtForward ."
+										WHERE accountcode='" . $GLCodes['accountcode'] . "'
+											AND period='" . $Periods['period'] . "'";
+			$Result = DB_query($SQL);
+
+			/* Calculate the balance carried forward */
+			$BalanceBroughtForward += $MyRow['actual'];
+		}
 	}
-
-	/*Now repost the lot */
-
-	include('includes/GLPostings.inc');
-
 	prnMsg(_('All general ledger postings have been reposted from period') . ' ' . $_POST['FromPeriod'], 'success');
 }
 include('includes/footer.inc');

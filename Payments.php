@@ -1094,9 +1094,10 @@ if ($_SESSION['CompanyRecord']['gllink_creditors'] == 1 and $_SESSION['PaymentDe
 			<td>' . _('Select GL Group') . ':</td>
 			<td><select name="GLGroup" onchange="return ReloadForm(UpdateCodes)">';
 
-	$SQL = "SELECT groupname
+	$SQL = "SELECT groupcode,
+					groupname
 			FROM accountgroups
-			ORDER BY sequenceintb";
+			ORDER BY groupcode";
 
 	$Result = DB_query($SQL);
 	if (DB_num_rows($Result) == 0) {
@@ -1106,11 +1107,11 @@ if ($_SESSION['CompanyRecord']['gllink_creditors'] == 1 and $_SESSION['PaymentDe
 	} else {
 		echo '<option value=""></option>';
 		while ($MyRow = DB_fetch_array($Result)) {
-			if (isset($_POST['GLGroup']) and (stripslashes($_POST['GLGroup']) == $MyRow['groupname'])) {
-				echo '<option selected="selected" value="' . $MyRow['groupname'] . '">' . $MyRow['groupname'] . '</option>';
+			if (isset($_POST['GLGroup']) and (stripslashes($_POST['GLGroup']) == $MyRow['groupcode'])) {
+				echo '<option selected="selected" value="' . $MyRow['groupcode'] . '">' . $MyRow['groupcode'] . ' - ' . $MyRow['groupname'] . '</option>';
 			} //isset($_POST['GLGroup']) and ($_POST['GLGroup'] == $MyRow['groupname'])
 			else {
-				echo '<option value="' . $MyRow['groupname'] . '">' . $MyRow['groupname'] . '</option>';
+				echo '<option value="' . $MyRow['groupcode'] . '">' . $MyRow['groupcode'] . ' - ' . $MyRow['groupname'] . '</option>';
 			}
 		} //$MyRow = DB_fetch_array($Result)
 		echo '</select>
@@ -1122,7 +1123,7 @@ if ($_SESSION['CompanyRecord']['gllink_creditors'] == 1 and $_SESSION['PaymentDe
 		$SQL = "SELECT accountcode,
 						accountname
 				FROM chartmaster
-				WHERE group_='" . $_POST['GLGroup'] . "'
+				WHERE groupcode='" . $_POST['GLGroup'] . "'
 				ORDER BY accountcode";
 	} else {
 		$SQL = "SELECT accountcode,

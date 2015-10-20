@@ -140,9 +140,9 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 			Sum(CASE WHEN chartdetails.period='" . $_POST['ToPeriod'] . "' THEN chartdetails.actual ELSE 0 END) AS monthactual,
 			Sum(CASE WHEN chartdetails.period='" . $_POST['ToPeriod'] . "' THEN chartdetails.budget ELSE 0 END) AS monthbudget,
 			Sum(CASE WHEN chartdetails.period='" . $_POST['ToPeriod'] . "' THEN chartdetails.bfwdbudget + chartdetails.budget ELSE 0 END) AS lastprdbudgetcfwd
-		FROM chartmaster INNER JOIN accountgroups ON chartmaster.group_ = accountgroups.groupname
+		FROM chartmaster INNER JOIN accountgroups ON chartmaster.groupcode = accountgroups.groupcode
 			INNER JOIN chartdetails ON chartmaster.accountcode= chartdetails.accountcode
-		GROUP BY accountgroups.groupname,
+		GROUP BY accountgroups.groupcode,
 				accountgroups.parentgroupname,
 				accountgroups.pandl,
 				accountgroups.sequenceintb,
@@ -150,7 +150,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 				chartmaster.accountname
 		ORDER BY accountgroups.pandl desc,
 			accountgroups.sequenceintb,
-			accountgroups.groupname,
+			accountgroups.groupcode,
 			chartdetails.accountcode";
 
 	$AccountsResult = DB_query($SQL);
@@ -432,9 +432,9 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 			Sum(CASE WHEN chartdetails.period='" . $_POST['ToPeriod'] . "' THEN chartdetails.actual ELSE 0 END) AS monthactual,
 			Sum(CASE WHEN chartdetails.period='" . $_POST['ToPeriod'] . "' THEN chartdetails.budget ELSE 0 END) AS monthbudget,
 			Sum(CASE WHEN chartdetails.period='" . $_POST['ToPeriod'] . "' THEN chartdetails.bfwdbudget + chartdetails.budget ELSE 0 END) AS lastprdbudgetcfwd
-		FROM chartmaster INNER JOIN accountgroups ON chartmaster.group_ = accountgroups.groupname
+		FROM chartmaster INNER JOIN accountgroups ON chartmaster.groupcode = accountgroups.groupcode
 			INNER JOIN chartdetails ON chartmaster.accountcode= chartdetails.accountcode
-		GROUP BY accountgroups.groupname,
+		GROUP BY accountgroups.groupcode,
 				accountgroups.pandl,
 				accountgroups.sequenceintb,
 				accountgroups.parentgroupname,
@@ -442,7 +442,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 				chartmaster.accountname
 		ORDER BY accountgroups.pandl desc,
 			accountgroups.sequenceintb,
-			accountgroups.groupname,
+			accountgroups.groupcode,
 			chartdetails.accountcode";
 
 

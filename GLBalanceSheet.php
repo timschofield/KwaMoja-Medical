@@ -98,7 +98,7 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 	$SQL = "SELECT Sum(CASE WHEN chartdetails.period='" . $_POST['BalancePeriodEnd'] . "' THEN chartdetails.bfwd + chartdetails.actual ELSE 0 END) AS accumprofitbfwd,
 			Sum(CASE WHEN chartdetails.period='" . ($_POST['BalancePeriodEnd'] - 12) . "' THEN chartdetails.bfwd + chartdetails.actual ELSE 0 END) AS lyaccumprofitbfwd
 		FROM chartmaster INNER JOIN accountgroups
-		ON chartmaster.group_ = accountgroups.groupname INNER JOIN chartdetails
+		ON chartmaster.groupcode = accountgroups.groupcode INNER JOIN chartdetails
 		ON chartmaster.accountcode= chartdetails.accountcode
 		WHERE accountgroups.pandl=1";
 
@@ -127,10 +127,10 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 			Sum(CASE WHEN chartdetails.period='" . $_POST['BalancePeriodEnd'] . "' THEN chartdetails.bfwd + chartdetails.actual ELSE 0 END) AS balancecfwd,
 			Sum(CASE WHEN chartdetails.period='" . ($_POST['BalancePeriodEnd'] - 12) . "' THEN chartdetails.bfwd + chartdetails.actual ELSE 0 END) AS lybalancecfwd
 		FROM chartmaster INNER JOIN accountgroups
-		ON chartmaster.group_ = accountgroups.groupname INNER JOIN chartdetails
+		ON chartmaster.groupcode = accountgroups.groupcode INNER JOIN chartdetails
 		ON chartmaster.accountcode= chartdetails.accountcode
 		WHERE accountgroups.pandl=0
-		GROUP BY accountgroups.groupname,
+		GROUP BY accountgroups.groupcode,
 			chartdetails.accountcode,
 			chartmaster.accountname,
 			accountgroups.parentgroupname,
@@ -138,7 +138,7 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 			accountgroups.sectioninaccounts
 		ORDER BY accountgroups.sectioninaccounts,
 			accountgroups.sequenceintb,
-			accountgroups.groupname,
+			accountgroups.groupcode,
 			chartdetails.accountcode";
 
 	$AccountsResult = DB_query($SQL);
@@ -353,7 +353,7 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 	$SQL = "SELECT Sum(CASE WHEN chartdetails.period='" . $_POST['BalancePeriodEnd'] . "' THEN chartdetails.bfwd + chartdetails.actual ELSE 0 END) AS accumprofitbfwd,
 			Sum(CASE WHEN chartdetails.period='" . ($_POST['BalancePeriodEnd'] - 12) . "' THEN chartdetails.bfwd + chartdetails.actual ELSE 0 END) AS lyaccumprofitbfwd
 		FROM chartmaster INNER JOIN accountgroups
-		ON chartmaster.group_ = accountgroups.groupname INNER JOIN chartdetails
+		ON chartmaster.groupcode = accountgroups.groupcode INNER JOIN chartdetails
 		ON chartmaster.accountcode= chartdetails.accountcode
 		WHERE accountgroups.pandl=1";
 
@@ -370,10 +370,10 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 			Sum(CASE WHEN chartdetails.period='" . $_POST['BalancePeriodEnd'] . "' THEN chartdetails.bfwd + chartdetails.actual ELSE 0 END) AS balancecfwd,
 			Sum(CASE WHEN chartdetails.period='" . ($_POST['BalancePeriodEnd'] - 12) . "' THEN chartdetails.bfwd + chartdetails.actual ELSE 0 END) AS lybalancecfwd
 		FROM chartmaster INNER JOIN accountgroups
-		ON chartmaster.group_ = accountgroups.groupname INNER JOIN chartdetails
+		ON chartmaster.groupcode = accountgroups.groupcode INNER JOIN chartdetails
 		ON chartmaster.accountcode= chartdetails.accountcode
 		WHERE accountgroups.pandl=0
-		GROUP BY accountgroups.groupname,
+		GROUP BY accountgroups.groupcode,
 			chartdetails.accountcode,
 			chartmaster.accountname,
 			accountgroups.parentgroupname,
@@ -381,7 +381,7 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 			accountgroups.sectioninaccounts
 		ORDER BY accountgroups.sectioninaccounts,
 			accountgroups.sequenceintb,
-			accountgroups.groupname,
+			accountgroups.groupcode,
 			chartdetails.accountcode";
 
 	$AccountsResult = DB_query($SQL, _('No general ledger accounts were returned by the SQL because'));

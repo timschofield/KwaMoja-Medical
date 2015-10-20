@@ -565,7 +565,8 @@ if (isset($_POST['CommitBatch'])) {
 
 	echo '<p class="page_title_text"><img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/printer.png" title="', _('Print'), '" alt="" />', ' ', '<a href="', $RootPath, '/PDFBankingSummary.php?BatchNo=', urlencode($_SESSION['ReceiptBatch']->BatchNo), '">', _('Print PDF Batch Summary'), '</a></p>';
 	echo '<p class="page_title_text"><img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/allocation.png" title="', _('Allocate'), '" alt="" />', ' ', '<a href="', $RootPath, '/CustomerAllocations.php">', _('Allocate Receipts'), '</a></p>';
-	echo '<p class="page_title_text"><a href="', $RootPath, '/CustomerReceipt.php?NewReceipt=Yes&Type=Customer">', _('Enter Receipts'), '</a></p>';
+	echo '<p class="page_title_text"><a href="', $RootPath, '/CustomerReceipt.php?NewReceipt=Yes&Type=Customer">', _('Enter Customer Receipts'), '</a></p>';
+	echo '<p class="page_title_text"><a href="', $RootPath, '/CustomerReceipt.php?NewReceipt=Yes&Type=GL">', _('Enter GL Receipts'), '</a></p>';
 
 	unset($_SESSION['ReceiptBatch']);
 	include('includes/footer.inc');

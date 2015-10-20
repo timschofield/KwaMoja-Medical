@@ -264,8 +264,11 @@ if (isset($_POST['Show'])) {
 				$ChartDetailRow = DB_fetch_array($ChartDetailsResult);
 
 				if ($PeriodNo != -9999) {
+					$PeriodSQL = "SELECT lastdate_in_period FROM periods WHERE periodno='" . $PeriodNo . "'";
+					$PeriodResult = DB_query($PeriodSQL);
+					$PeriodRow = DB_fetch_array($PeriodResult);
 					echo '<tr>
-							<td colspan="4"><b>' . _('Total for period') . ' ' . $PeriodNo . '</b></td>';
+							<td colspan="4"><b>' . _('Total for period ending') . ' ' . ConvertSQLDate($PeriodRow['lastdate_in_period']) . '</b></td>';
 					if ($PeriodTotal < 0) { //its a credit balance b/fwd
 						if ($PandLAccount == True) {
 							//							$RunningTotal = 0;
@@ -334,8 +337,11 @@ if (isset($_POST['Show'])) {
 
 	}
 	if ($PeriodNo != -9999) {
+		$PeriodSQL = "SELECT lastdate_in_period FROM periods WHERE periodno='" . $PeriodNo . "'";
+		$PeriodResult = DB_query($PeriodSQL);
+		$PeriodRow = DB_fetch_array($PeriodResult);
 		echo '<tr>
-				<td colspan="3"><b>' . _('Total for period') . ' ' . $PeriodNo . '</b></td>';
+				<td colspan="3"><b>' . _('Total for period ending') . ' ' . ConvertSQLDate($PeriodRow['lastdate_in_period']) . '</b></td>';
 		if ($PeriodTotal < 0) { //its a credit balance b/fwd
 			echo '<td></td>
 					<td class="number"><b>' . locale_number_format(-$PeriodTotal, $_SESSION['CompanyRecord']['decimalplaces']) . '</b></td>

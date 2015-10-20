@@ -63,7 +63,7 @@ if (isset($_POST['submit'])) {
 	//first off validate inputs sensible
 	$SQL = "SELECT count(groupname)
 			FROM accountgroups
-			WHERE groupname='" . $_POST['GroupName'] . "'";
+			WHERE groupcode='" . $_POST['GroupCode'] . "'";
 
 	$DbgMsg = _('The SQL that was used to retrieve the information was');
 	$ErrMsg = _('Could not check whether the group exists because');
@@ -73,7 +73,7 @@ if (isset($_POST['submit'])) {
 
 	if ($MyRow[0] != 0 and $_POST['SelectedAccountGroup'] == '') {
 		$InputError = 1;
-		prnMsg(_('The account group name already exists in the database'), 'error');
+		prnMsg(_('The account group code already exists in the database'), 'error');
 	} //$MyRow[0] != 0 and $_POST['SelectedAccountGroup'] == ''
 	if (mb_strlen($_POST['GroupName']) == 0) {
 		$InputError = 1;
@@ -150,7 +150,7 @@ if (isset($_POST['submit'])) {
 										pandl='" . $_POST['PandL'] . "',
 										sequenceintb='" . $_POST['SequenceInTB'] . "',
 										parentgroupcode='" . $_POST['ParentGroup'] . "',
-										parentgroupname='" . $ParentGroupRow['groupname'] . "'
+										parentgroupname='" . DB_escape_string($ParentGroupRow['groupname']) . "'
 									WHERE groupname = '" . $_POST['SelectedAccountGroup'] . "'";
 		$ErrMsg = _('An error occurred in updating the account group');
 		$DbgMsg = _('The SQL that was used to update the account group was');
@@ -163,14 +163,16 @@ if (isset($_POST['submit'])) {
 											sectioninaccounts,
 											sequenceintb,
 											pandl,
+											parentgroupcode,
 											parentgroupname
 										) VALUES (
-											'" . $_POST['GroupName'] . "',
+											'" . DB_escape_string($_POST['GroupName']) . "',
 											'" . $_POST['GroupCode'] . "',
 											'" . $_POST['SectionInAccounts'] . "',
 											'" . $_POST['SequenceInTB'] . "',
 											'" . $_POST['PandL'] . "',
-											'" . $ParentGroupRow['groupname'] . "')";
+											'" . $_POST['ParentGroup'] . "',
+											'" . DB_escape_string($ParentGroupRow['groupname']) . "')";
 		$ErrMsg = _('An error occurred in inserting the account group');
 		$DbgMsg = _('The SQL that was used to insert the account group was');
 		$Msg = _('Record inserted');
@@ -207,13 +209,13 @@ if (isset($_POST['submit'])) {
 				<td>', _('Parent Group'), ':', '</td>
 				<td><select tabindex="2" name="DestinyAccountGroup">';
 
-		$SQL = "SELECT groupname FROM accountgroups";
+		$SQL = "SELECT groupcode, groupname FROM accountgroups";
 		$GroupResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 		while ($GroupRow = DB_fetch_array($GroupResult)) {
 			if (isset($_POST['ParentGroupName']) and $_POST['ParentGroupName'] == $GroupRow['groupname']) {
-				echo '<option selected="selected" value="', htmlentities($GroupRow['groupname'], ENT_QUOTES, 'UTF-8'), '">', htmlentities($GroupRow['groupname'], ENT_QUOTES, 'UTF-8'), '</option>';
+				echo '<option selected="selected" value="', htmlentities($GroupRow['groupcode'], ENT_QUOTES, 'UTF-8'), '">', $GroupRow['groupcode'] . ' - ' . htmlentities($GroupRow['groupname'], ENT_QUOTES, 'UTF-8'), '</option>';
 			} else {
-				echo '<option value="', htmlentities($GroupRow['groupname'], ENT_QUOTES, 'UTF-8'), '">', htmlentities($GroupRow['groupname'], ENT_QUOTES, 'UTF-8'), '</option>';
+				echo '<option value="', htmlentities($GroupRow['groupcode'], ENT_QUOTES, 'UTF-8'), '">', $GroupRow['groupcode'] . ' - ' . htmlentities($GroupRow['groupname'], ENT_QUOTES, 'UTF-8'), '</option>';
 			}
 		} //$GroupRow = DB_fetch_array($GroupResult)
 		echo '</select>
@@ -259,6 +261,7 @@ if (!isset($_GET['SelectedAccountGroup']) and !isset($_POST['SelectedAccountGrou
 					sectionname,
 					sequenceintb,
 					pandl,
+					parentgroupcode,
 					parentgroupname
 			FROM accountgroups
 			LEFT JOIN accountsection ON sectionid = sectioninaccounts
@@ -279,7 +282,8 @@ if (!isset($_GET['SelectedAccountGroup']) and !isset($_POST['SelectedAccountGrou
 					<th class="SortedColumn">', _('Section'), '</th>
 					<th class="SortedColumn">', _('Sequence In TB'), '</th>
 					<th>', _('Profit and Loss'), '</th>
-					<th>', _('Parent Group'), '</th>
+					<th>', _('Parent Group Code'), '</th>
+					<th>', _('Parent Group Name'), '</th>
 					<th colspan="2"></th>
 				</tr>
 			</thead>';
@@ -312,6 +316,7 @@ if (!isset($_GET['SelectedAccountGroup']) and !isset($_POST['SelectedAccountGrou
 			<td>', $MyRow['sectionname'], '</td>
 			<td class="number">', $MyRow['sequenceintb'], '</td>
 			<td>', $PandLText, '</td>
+			<td>', $MyRow['parentgroupcode'], '</td>
 			<td>', $MyRow['parentgroupname'], '</td>
 			<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'] . '?SelectedAccountGroup=' . urlencode($MyRow['groupname']), ENT_QUOTES, 'UTF-8'), '">', _('Edit'), '</a></td>
 			<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'] . '?SelectedAccountGroup=' . urlencode($MyRow['groupname']), ENT_QUOTES, 'UTF-8'), '&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this account group?') . '\', \'Confirm Delete\', this);">', _('Delete'), '</a></td>
@@ -410,7 +415,7 @@ if (!isset($_GET['delete'])) {
 			<td><input tabindex="1" type="text" name="GroupName" size="50" required="required" maxlength="150" value="', stripslashes($_POST['GroupName']), '" /></td>
 		</tr>';
 
-	$SQL = "SELECT groupcode, groupname FROM accountgroups";
+	$SQL = "SELECT groupcode, groupname FROM accountgroups ORDER BY groupcode";
 	$GroupResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 	echo '<tr>
 			<td>', _('Parent Group'), ':</td>
@@ -424,9 +429,9 @@ if (!isset($_GET['delete'])) {
 
 	while ($GroupRow = DB_fetch_array($GroupResult)) {
 		if (isset($_POST['ParentGroup']) and $_POST['ParentGroup'] == $GroupRow['groupcode']) {
-			echo '<option selected="selected" value="', $GroupRow['groupcode'], '">', $GroupRow['groupname'], '</option>';
+			echo '<option selected="selected" value="', $GroupRow['groupcode'], '">', $GroupRow['groupcode'] . ' - ' . $GroupRow['groupname'], '</option>';
 		} else {
-			echo '<option value="', $GroupRow['groupcode'], '">', $GroupRow['groupname'], '</option>';
+			echo '<option value="', $GroupRow['groupcode'], '">', $GroupRow['groupcode'] . ' - ' . $GroupRow['groupname'], '</option>';
 		}
 	} //$GroupRow = DB_fetch_array($GroupResult)
 	echo '</select>

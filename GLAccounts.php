@@ -299,7 +299,7 @@ if (!isset($SelectedAccount)) {
 					END AS acttype
 				FROM chartmaster
 				INNER JOIN accountgroups
-					ON chartmaster.group_=accountgroups.groupname
+					ON chartmaster.groupcode=accountgroups.groupcode
 				ORDER BY chartmaster.accountcode";
 
 	$ErrMsg = _('The chart accounts could not be retrieved because');

@@ -266,9 +266,9 @@ if (!isset($_GET['delete'])) {
 
 	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['Group']) and $MyRow['groupcode'] == $_POST['Group']) {
-			echo '<option selected="selected" value="', $MyRow['groupcode'], '">', $MyRow['groupname'], '</option>';
+			echo '<option selected="selected" value="', $MyRow['groupcode'], '">', $MyRow['groupcode'] . ' - ' . $MyRow['groupname'], '</option>';
 		} else {
-			echo '<option value="', $MyRow['groupcode'], '">', $MyRow['groupname'], '</option>';
+			echo '<option value="', $MyRow['groupcode'], '">', $MyRow['groupcode'] . ' - ' . $MyRow['groupname'], '</option>';
 		}
 	}
 	echo '</select>
@@ -293,6 +293,7 @@ if (!isset($SelectedAccount)) {
 	$SQL = "SELECT accountcode,
 					accountname,
 					group_,
+					chartmaster.groupcode,
 					CASE WHEN pandl=0
 						THEN '" . _('Balance Sheet') . "'
 						ELSE '" . _('Profit/Loss') . "'
@@ -311,7 +312,8 @@ if (!isset($SelectedAccount)) {
 				<tr>
 					<th class="SortedColumn">', _('Account Code'), '</th>
 					<th class="SortedColumn">', _('Account Name'), '</th>
-					<th class="SortedColumn">', _('Account Group'), '</th>
+					<th class="SortedColumn">', _('Account Group Code'), '</th>
+					<th class="SortedColumn">', _('Account Group Name'), '</th>
 					<th class="SortedColumn">', _('P/L or B/S'), '</th>
 					<th colspan="2"></th>
 				</tr>
@@ -331,6 +333,7 @@ if (!isset($SelectedAccount)) {
 
 		echo '<td>', $MyRow['accountcode'],'</td>
 			<td>', $MyRow['accountname'], '</td>
+			<td>', $MyRow['groupcode'], '</td>
 			<td>', $MyRow['group_'], '</td>
 			<td>', $MyRow['acttype'], '</td>
 			<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '?', '&amp;SelectedAccount=', urlencode($MyRow['accountcode']), '">', _('Edit'), '</a></td>

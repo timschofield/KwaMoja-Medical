@@ -156,18 +156,18 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 					Sum(CASE WHEN chartdetails.period='" . ($_POST['ToPeriod'] - 12) . "' THEN chartdetails.bfwd + chartdetails.actual ELSE 0 END) AS lylastprdcfwd,
 					Sum(CASE WHEN chartdetails.period='" . $_POST['ToPeriod'] . "' THEN chartdetails.bfwdbudget + chartdetails.budget ELSE 0 END) AS lastprdbudgetcfwd
 				FROM chartmaster INNER JOIN accountgroups
-				ON chartmaster.group_ = accountgroups.groupname INNER JOIN chartdetails
+				ON chartmaster.groupcode = accountgroups.groupcode INNER JOIN chartdetails
 				ON chartmaster.accountcode= chartdetails.accountcode
 				WHERE accountgroups.pandl=1
 				GROUP BY accountgroups.sectioninaccounts,
-					accountgroups.groupname,
+					accountgroups.groupcode,
 					accountgroups.parentgroupname,
 					chartdetails.accountcode,
 					chartmaster.accountname,
 					accountgroups.sequenceintb
 				ORDER BY accountgroups.sectioninaccounts,
 					accountgroups.sequenceintb,
-					accountgroups.groupname,
+					accountgroups.groupcode,
 					chartdetails.accountcode";
 
 	$AccountsResult = DB_query($SQL);
@@ -625,7 +625,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 					SUM(CASE WHEN chartdetails.period='" . ($_POST['ToPeriod'] - 12) . "' THEN chartdetails.bfwd + chartdetails.actual ELSE 0 END) AS lylastprdcfwd,
 					SUM(CASE WHEN chartdetails.period='" . $_POST['ToPeriod'] . "' THEN chartdetails.bfwdbudget + chartdetails.budget ELSE 0 END) AS lastprdbudgetcfwd
 			FROM chartmaster INNER JOIN accountgroups
-			ON chartmaster.group_ = accountgroups.groupname INNER JOIN chartdetails
+			ON chartmaster.groupcode = accountgroups.groupcode INNER JOIN chartdetails
 			ON chartmaster.accountcode= chartdetails.accountcode
 			WHERE accountgroups.pandl=1
 			GROUP BY accountgroups.sectioninaccounts,

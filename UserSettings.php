@@ -199,11 +199,11 @@ if (!isset($_POST['PDFLanguage'])) {
 echo '<tr>
 		<td>', _('Screen Font Size'), ':</td>
 		<td><select name="FontSize">';
-if (isset($_SESSION['ScreenFontSize']) and $_SESSION['ScreenFontSize'] == 0) {
+if (isset($_SESSION['ScreenFontSize']) and $_SESSION['ScreenFontSize'] == '8pt') {
 	echo '<option selected="selected" value="0">', _('Small'), '</option>';
 	echo '<option value="1">', _('Medium'), '</option>';
 	echo '<option value="2">', _('Large'), '</option>';
-} else if (isset($_SESSION['ScreenFontSize']) and $_SESSION['ScreenFontSize'] == 1) {
+} else if (isset($_SESSION['ScreenFontSize']) and $_SESSION['ScreenFontSize'] == '10pt') {
 	echo '<option value="0">', _('Small'), '</option>';
 	echo '<option selected="selected" value="1">', _('Medium'), '</option>';
 	echo '<option value="2">', _('Large'), '</option>';

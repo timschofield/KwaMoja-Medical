@@ -92,6 +92,13 @@ if (!isset($_POST['Show'])) {
 			WHERE bankaccounts.accountcode='" . $_POST['BankAccount'] . "'";
 	$BankResult = DB_query($SQL, _('Could not retrieve the bank account details'));
 
+	$BalancesSQL = "SELECT SUM(amount) AS balance,
+							SUM(amount/functionalexrate/exrate) AS fbalance
+						FROM banktrans
+						WHERE bankact='" . $_POST['BankAccount'] . "'
+							AND transdate<'" . FormatDateForSQL($_POST['FromTransDate']) . "'";
+	$BalancesResult = DB_query($BalancesSQL);
+	$BalancesRow = DB_fetch_array($BalancesResult);
 
 	$SQL = "SELECT 	banktrans.currcode,
 					banktrans.amount,
@@ -105,12 +112,17 @@ if (!isset($_POST['Show'])) {
 					banktrans.chequeno,
 					bankaccounts.bankaccountname,
 					systypes.typename,
-					systypes.typeid
+					systypes.typeid,
+					gltrans.narrative
 				FROM banktrans
 				INNER JOIN bankaccounts
-				ON banktrans.bankact=bankaccounts.accountcode
+					ON banktrans.bankact=bankaccounts.accountcode
 				INNER JOIN systypes
-				ON banktrans.type=systypes.typeid
+					ON banktrans.type=systypes.typeid
+				INNER JOIN gltrans
+					ON banktrans.type=gltrans.type
+					AND banktrans.transno=gltrans.typeno
+					AND banktrans.amount=gltrans.amount
 				WHERE bankact='" . $_POST['BankAccount'] . "'
 					AND transdate>='" . FormatDateForSQL($_POST['FromTransDate']) . "'
 					AND transdate<='" . FormatDateForSQL($_POST['ToTransDate']) . "'
@@ -138,17 +150,37 @@ if (!isset($_POST['Show'])) {
 						<th>' . _('Number') . '</th>
 						<th>' . _('Type') . '</th>
 						<th>' . _('Reference') . '</th>
+						<th>' . _('Narrative') . '</th>
 						<th>' . _('Number') . '</th>
 						<th>' . _('Amount in') . ' ' . $BankDetailRow['currcode'] . '</th>
-						<th>' . _('Running Total') . ' ' . $BankDetailRow['currcode'] . '</th>
-						<th>' . _('Amount in') . ' ' . $_SESSION['CompanyRecord']['currencydefault'] . '</th>
-						<th>' . _('Running Total') . ' ' . $_SESSION['CompanyRecord']['currencydefault'] . '</th>
-						<th>' . _('Matched') . '</th>
-					</tr>
-				</thead>';
+						<th>' . _('Balance') . ' ' . $BankDetailRow['currcode'] . '</th>';
+		if ($BankDetailRow['currcode'] != $_SESSION['CompanyRecord']['currencydefault']) {
+			echo '<th>' . _('Amount in') . ' ' . $_SESSION['CompanyRecord']['currencydefault'] . '</th>
+				<th>' . _('Balance') . ' ' . $_SESSION['CompanyRecord']['currencydefault'] . '</th>';
+		}
+		echo '<th>' . _('Matched') . '</th>
+			</tr>
+		</thead>';
 
-		$AccountCurrTotal = 0;
-		$LocalCurrTotal = 0;
+		$AccountCurrTotal = $BalancesRow['balance'];
+		$LocalCurrTotal = $BalancesRow['fbalance'];
+		if ($BankDetailRow['currcode'] != $_SESSION['CompanyRecord']['currencydefault']) {
+			echo '<tr class="EvenTableRows">
+					<td colspan="8">' . _('Balances Brought Forward') . '</td>
+					<td class="number">' . locale_number_format($BalancesRow['balance'], $BankDetailRow['decimalplaces']) . '</td>
+					<td></td>
+					<td class="number">' . locale_number_format($BalancesRow['fbalance'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
+					<td></td>
+				</tr>';
+		} else {
+			echo '<tr class="EvenTableRows">
+					<td colspan="8">' . _('Balances Brought Forward') . '</td>
+					<td class="number">' . locale_number_format($BalancesRow['balance'], $BankDetailRow['decimalplaces']) . '</td>
+					<td></td>
+				</tr>';
+		}
+
+		$RowCounter = 0;
 
 		while ($MyRow = DB_fetch_array($Result)) {
 
@@ -162,20 +194,51 @@ if (!isset($_POST['Show'])) {
 			}
 
 			if ($_POST['ShowType'] == 'All' or ($_POST['ShowType'] == 'Unmatched' and $Matched == _('No')) or ($_POST['ShowType'] == 'Matched' and $Matched == _('Yes'))) {
-				echo '<tr>
-						<td>' . ConvertSQLDate($MyRow['transdate']) . '</td>
+				if ($RowCounter === 0) {
+					echo '<tr class="OddTableRows">';
+					$RowCounter = 1;
+				} else {
+					echo '<tr class="EvenTableRows">';
+					$RowCounter = 0;
+				}
+				echo '<td>' . ConvertSQLDate($MyRow['transdate']) . '</td>
 						<td>' . _($MyRow['typename']) . '</td>
 						<td class="number"><a href="' . $RootPath . '/GLTransInquiry.php?TypeID=' . $MyRow['typeid'] . '&amp;TransNo=' . $MyRow['transno'] . '">' . $MyRow['transno'] . '</a></td>
 						<td>' . $MyRow['banktranstype'] . '</td>
 						<td>' . $MyRow['ref'] . '</td>
+						<td>' . $MyRow['narrative'] . '</td>
 						<td>' . $MyRow['chequeno'] . '</td>
 						<td class="number">' . locale_number_format($MyRow['amount'], $BankDetailRow['decimalplaces']) . '</td>
-						<td class="number">' . locale_number_format($AccountCurrTotal, $BankDetailRow['decimalplaces']) . '</td>
-						<td class="number">' . locale_number_format($MyRow['amount'] / $MyRow['functionalexrate'] / $MyRow['exrate'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
-						<td class="number">' . locale_number_format($LocalCurrTotal, $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
-						<td class="number">' . $Matched . '</td>
+						<td class="number">' . locale_number_format($AccountCurrTotal, $BankDetailRow['decimalplaces']) . '</td>';
+				if ($BankDetailRow['currcode'] != $_SESSION['CompanyRecord']['currencydefault']) {
+					echo '<td class="number">' . locale_number_format($MyRow['amount'] / $MyRow['functionalexrate'] / $MyRow['exrate'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
+						<td class="number">' . locale_number_format($LocalCurrTotal, $_SESSION['CompanyRecord']['decimalplaces']) . '</td>';
+				}
+				echo '<td class="number">' . $Matched . '</td>
 					</tr>';
 			}
+		}
+		if ($RowCounter === 0) {
+			echo '<tr class="OddTableRows">';
+			$RowCounter = 1;
+		} else {
+			echo '<tr class="EvenTableRows">';
+			$RowCounter = 0;
+		}
+		if ($BankDetailRow['currcode'] != $_SESSION['CompanyRecord']['currencydefault']) {
+			echo '<tr class="EvenTableRows">
+					<td colspan="8">' . _('Balances Brought Forward') . '</td>
+					<td class="number">' . locale_number_format($AccountCurrTotal, $BankDetailRow['decimalplaces']) . '</td>
+					<td></td>
+					<td class="number">' . locale_number_format($BalancesRow['fbalance'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
+					<td></td>
+				</tr>';
+		} else {
+			echo '<tr class="EvenTableRows">
+					<td colspan="8">' . _('Balances Brought Forward') . '</td>
+					<td class="number">' . locale_number_format($LocalCurrTotal, $BankDetailRow['decimalplaces']) . '</td>
+					<td></td>
+				</tr>';
 		}
 		echo '</table>';
 	} //end if no bank trans in the range to show

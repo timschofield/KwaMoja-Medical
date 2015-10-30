@@ -78,7 +78,7 @@ if (isset($_POST['ModifyGRN'])) {
 	} //$_SESSION['Check_Price_Charged_vs_Order_Price'] == True and $_POST['OrderPrice'] != 0
 
 	if ($InputError == False) {
-		$_SESSION['SuppTrans']->Modify_GRN_To_Trans($_POST['GRNNumber'], $_POST['PODetailItem'], $_POST['ItemCode'], $_POST['ItemDescription'], $_POST['QtyRecd'], $_POST['Prev_QuantityInv'], filter_number_format($_POST['This_QuantityInv']), $_POST['OrderPrice'], filter_number_format($_POST['ChgPrice']), $Complete, $_SESSION['SuppTrans']->GRNs[$_POST['GRNNo'.$i]]->StdCostUnit, $_SESSION['SuppTrans']->GRNs[$_POST['GRNNo'.$i]]->ShiptRef, $_SESSION['SuppTrans']->GRNs[$_POST['GRNNo'.$i]]->JobRef, $_SESSION['SuppTrans']->GRNs[$_POST['GRNNo'.$i]]->GLCode, $Hold);
+		$_SESSION['SuppTrans']->Modify_GRN_To_Trans($_POST['GRNNumber'], $_POST['PODetailItem'], $_POST['ItemCode'], $_POST['ItemDescription'], $_POST['QtyRecd'], $_POST['Prev_QuantityInv'], filter_number_format($_POST['This_QuantityInv']), $_POST['OrderPrice'], filter_number_format($_POST['ChgPrice']), $Complete, $_SESSION['SuppTrans']->GRNs[$_POST['GRNNo' . $i]]->StdCostUnit, $_SESSION['SuppTrans']->GRNs[$_POST['GRNNo' . $i]]->ShiptRef, $_SESSION['SuppTrans']->GRNs[$_POST['GRNNo' . $i]]->JobRef, $_SESSION['SuppTrans']->GRNs[$_POST['GRNNo' . $i]]->GLCode, $Hold, $_SESSION['SuppTrans']->GRNs[$_POST['GRNNo' . $i]]->SupplierRef);
 	} //$InputError == False
 } //isset($_POST['ModifyGRN'])
 
@@ -97,6 +97,7 @@ echo '<table class="selection">
 			</tr>
 			<tr>
 				<th class="SortedColumn">' . _('Sequence') . ' #</th>
+				<th>' . _("Supplier's Ref") . '</th>
 				<th class="SortedColumn">' . _('Item Code') . '</th>
 				<th class="SortedColumn">' . _('Description') . '</th>
 				<th>' . _('Quantity Charged') . '</th>
@@ -115,10 +116,11 @@ foreach ($_SESSION['SuppTrans']->GRNs as $EnteredGRN) {
 	}
 	echo '<tr>
 			<td>' . $EnteredGRN->GRNNo . '</td>
+			<td>' . $EnteredGRN->SupplierRef . '</td>
 			<td>' . $EnteredGRN->ItemCode . '</td>
 			<td>' . $EnteredGRN->ItemDescription . '</td>
 			<td class="number">' . locale_number_format($EnteredGRN->This_QuantityInv, 'Variable') . '</td>
-			<td class="number">' . $DisplayPrice  . '</td>
+			<td class="number">' . $DisplayPrice . '</td>
 			<td class="number">' . locale_number_format($EnteredGRN->ChgPrice * $EnteredGRN->This_QuantityInv, $_SESSION['SuppTrans']->CurrDecimalPlaces) . '</td>
 			<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Modify=' . $EnteredGRN->GRNNo . '">' . _('Modify') . '</a></td>
 			<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Delete=' . $EnteredGRN->GRNNo . '">' . _('Delete') . '</a></td>
@@ -151,6 +153,7 @@ $SQL = "SELECT grnbatch,
 				grns.qtyrecd,
 				grns.quantityinv,
 				grns.stdcostunit,
+				grns.supplierref,
 				purchorderdetails.glcode,
 				purchorderdetails.shiptref,
 				purchorderdetails.jobref,
@@ -192,7 +195,7 @@ if (!isset($_SESSION['SuppTransTmp'])) {
 			$MyRow['decimalplaces'] = 2;
 		} //$MyRow['decimalplaces'] == ''
 		if ($GRNAlreadyOnInvoice == False) {
-			$_SESSION['SuppTransTmp']->Add_GRN_To_Trans($MyRow['grnno'], $MyRow['podetailitem'], $MyRow['itemcode'], $MyRow['itemdescription'], $MyRow['qtyrecd'], $MyRow['quantityinv'], $MyRow['qtyrecd'] - $MyRow['quantityinv'], $MyRow['unitprice'], $MyRow['unitprice'], $Complete, $MyRow['stdcostunit'], $MyRow['shiptref'], $MyRow['jobref'], $MyRow['glcode'], $MyRow['orderno'], $MyRow['assetid'], 0, $MyRow['decimalplaces'], $MyRow['grnbatch']);
+			$_SESSION['SuppTransTmp']->Add_GRN_To_Trans($MyRow['grnno'], $MyRow['podetailitem'], $MyRow['itemcode'], $MyRow['itemdescription'], $MyRow['qtyrecd'], $MyRow['quantityinv'], $MyRow['qtyrecd'] - $MyRow['quantityinv'], $MyRow['unitprice'], $MyRow['unitprice'], $Complete, $MyRow['stdcostunit'], $MyRow['shiptref'], $MyRow['jobref'], $MyRow['glcode'], $MyRow['orderno'], $MyRow['assetid'], 0, $MyRow['decimalplaces'], $MyRow['grnbatch'], $MyRow['supplierref']);
 		} //$GRNAlreadyOnInvoice == False
 	} //$MyRow = DB_fetch_array($GRNResults)
 } //!isset($_SESSION['SuppTransTmp'])
@@ -257,6 +260,7 @@ else {
 						<th class="SortedColumn">' . _('Select') . '</th>
 						<th class="SortedColumn">' . _('Sequence') . ' #</th>
 						<th class="SortedColumn">' . _('GRN Number') . '</th>
+						<th class="SortedColumn">' . _('Supplier\'s Ref') . '</th>
 						<th class="SortedColumn">' . _('Order') . '</th>
 						<th class="SortedColumn">' . _('Item Code') . '</th>
 						<th>' . _('Description') . '</th>
@@ -289,6 +293,7 @@ else {
 			}
 			echo '<td>' . $GRNTmp->GRNNo . '</td>
 				<td>' . $GRNTmp->GRNBatchNo . '</td>
+				<td>' . $GRNTmp->SupplierRef . '</td>
 				<td>' . $GRNTmp->PONo . '</td>
 				<td>' . $GRNTmp->ItemCode . '</td>
 				<td>' . $GRNTmp->ItemDescription . '</td>

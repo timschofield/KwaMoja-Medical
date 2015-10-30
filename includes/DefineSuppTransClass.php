@@ -41,6 +41,7 @@ class SuppTrans {
 	var $TaxGroupDescription;
 	var $Taxes;
 	var $Hold;
+	var $SupplierRef = '';
 
 	function SuppTrans() {
 		/*Constructor function initialises a new Supplier Transaction object */
@@ -82,19 +83,19 @@ class SuppTrans {
 	} //end method GetTaxes()
 
 
-	function Add_GRN_To_Trans($GRNNo, $PODetailItem, $ItemCode, $ItemDescription, $QtyRecd, $Prev_QuantityInv, $This_QuantityInv, $OrderPrice, $ChgPrice, $Complete, $StdCostUnit = 0, $ShiptRef, $JobRef, $GLCode, $PONo, $AssetID = 0, $Hold = 0, $DecimalPlaces = 2, $GRNBatchNo) {
+	function Add_GRN_To_Trans($GRNNo, $PODetailItem, $ItemCode, $ItemDescription, $QtyRecd, $Prev_QuantityInv, $This_QuantityInv, $OrderPrice, $ChgPrice, $Complete, $StdCostUnit = 0, $ShiptRef, $JobRef, $GLCode, $PONo, $AssetID = 0, $Hold = 0, $DecimalPlaces = 2, $GRNBatchNo, $SupplierRef) {
 
 		if ($This_QuantityInv != 0 and isset($This_QuantityInv)) {
-			$this->GRNs[$GRNNo] = new GRNs($GRNNo, $PODetailItem, $ItemCode, $ItemDescription, $QtyRecd, $Prev_QuantityInv, $This_QuantityInv, $OrderPrice, $ChgPrice, $Complete, $StdCostUnit, $ShiptRef, $JobRef, $GLCode, $PONo, $AssetID, $Hold, $DecimalPlaces, $GRNBatchNo);
+			$this->GRNs[$GRNNo] = new GRNs($GRNNo, $PODetailItem, $ItemCode, $ItemDescription, $QtyRecd, $Prev_QuantityInv, $This_QuantityInv, $OrderPrice, $ChgPrice, $Complete, $StdCostUnit, $ShiptRef, $JobRef, $GLCode, $PONo, $AssetID, $Hold, $DecimalPlaces, $GRNBatchNo, $SupplierRef);
 			return 1;
 		}
 		return 0;
 	}
 
-	function Modify_GRN_To_Trans($GRNNo, $PODetailItem, $ItemCode, $ItemDescription, $QtyRecd, $Prev_QuantityInv, $This_QuantityInv, $OrderPrice, $ChgPrice, $Complete, $StdCostUnit, $ShiptRef, $JobRef, $GLCode, $Hold) {
+	function Modify_GRN_To_Trans($GRNNo, $PODetailItem, $ItemCode, $ItemDescription, $QtyRecd, $Prev_QuantityInv, $This_QuantityInv, $OrderPrice, $ChgPrice, $Complete, $StdCostUnit, $ShiptRef, $JobRef, $GLCode, $Hold, $SupplierRef) {
 
 		if ($This_QuantityInv != 0 and isset($This_QuantityInv)) {
-			$this->GRNs[$GRNNo]->Modify($PODetailItem, $ItemCode, $ItemDescription, $QtyRecd, $Prev_QuantityInv, $This_QuantityInv, $OrderPrice, $ChgPrice, $Complete, $StdCostUnit, $ShiptRef, $JobRef, $GLCode, $Hold);
+			$this->GRNs[$GRNNo]->Modify($PODetailItem, $ItemCode, $ItemDescription, $QtyRecd, $Prev_QuantityInv, $This_QuantityInv, $OrderPrice, $ChgPrice, $Complete, $StdCostUnit, $ShiptRef, $JobRef, $GLCode, $Hold, $SupplierRef);
 			return 1;
 		}
 		return 0;
@@ -103,7 +104,7 @@ class SuppTrans {
 	function Copy_GRN_To_Trans($GRNSrc) {
 		if ($GRNSrc->This_QuantityInv != 0 and isset($GRNSrc->This_QuantityInv)) {
 
-			$this->GRNs[$GRNSrc->GRNNo] = new GRNs($GRNSrc->GRNNo, $GRNSrc->PODetailItem, $GRNSrc->ItemCode, $GRNSrc->ItemDescription, $GRNSrc->QtyRecd, $GRNSrc->Prev_QuantityInv, $GRNSrc->This_QuantityInv, $GRNSrc->OrderPrice, $GRNSrc->ChgPrice, $GRNSrc->Complete, $GRNSrc->StdCostUnit, $GRNSrc->ShiptRef, $GRNSrc->JobRef, $GRNSrc->GLCode, $GRNSrc->PONo, $GRNSrc->AssetID, $GRNSrc->Hold, $GRNSrc->DecimalPlaces, $GRNSrc->GRNBatchNo);
+			$this->GRNs[$GRNSrc->GRNNo] = new GRNs($GRNSrc->GRNNo, $GRNSrc->PODetailItem, $GRNSrc->ItemCode, $GRNSrc->ItemDescription, $GRNSrc->QtyRecd, $GRNSrc->Prev_QuantityInv, $GRNSrc->This_QuantityInv, $GRNSrc->OrderPrice, $GRNSrc->ChgPrice, $GRNSrc->Complete, $GRNSrc->StdCostUnit, $GRNSrc->ShiptRef, $GRNSrc->JobRef, $GRNSrc->GLCode, $GRNSrc->PONo, $GRNSrc->AssetID, $GRNSrc->Hold, $GRNSrc->DecimalPlaces, $GRNSrc->GRNBatchNo, $GRNSrc->SupplierRef);
 			return 1;
 		}
 		return 0;
@@ -226,8 +227,9 @@ class GRNs {
 	var $AssetID;
 	var $DecimalPlaces;
 	var $GRNBatchNo;
+	var $SupplierRef;
 
-	function GRNs($GRNNo, $PODetailItem, $ItemCode, $ItemDescription, $QtyRecd, $Prev_QuantityInv, $This_QuantityInv, $OrderPrice, $ChgPrice, $Complete, $StdCostUnit = 0, $ShiptRef, $JobRef, $GLCode, $PONo, $AssetID, $Hold = 0, $DecimalPlaces = 2, $GRNBatchNo) {
+	function GRNs($GRNNo, $PODetailItem, $ItemCode, $ItemDescription, $QtyRecd, $Prev_QuantityInv, $This_QuantityInv, $OrderPrice, $ChgPrice, $Complete, $StdCostUnit = 0, $ShiptRef, $JobRef, $GLCode, $PONo, $AssetID, $Hold = 0, $DecimalPlaces = 2, $GRNBatchNo, $SupplierRef = '') {
 
 
 
@@ -251,9 +253,10 @@ class GRNs {
 		$this->Hold = $Hold;
 		$this->DecimalPlaces = $DecimalPlaces;
 		$this->GRNBatchNo = $GRNBatchNo;
+		$this->SupplierRef = $SupplierRef;
 	}
 
-	function Modify($PODetailItem, $ItemCode, $ItemDescription, $QtyRecd, $Prev_QuantityInv, $This_QuantityInv, $OrderPrice, $ChgPrice, $Complete, $StdCostUnit, $ShiptRef, $JobRef, $GLCode, $Hold) {
+	function Modify($PODetailItem, $ItemCode, $ItemDescription, $QtyRecd, $Prev_QuantityInv, $This_QuantityInv, $OrderPrice, $ChgPrice, $Complete, $StdCostUnit, $ShiptRef, $JobRef, $GLCode, $Hold, $SupplierRef) {
 
 		/* Modify function to edit a GRNs object with passed params */
 		$this->PODetailItem = $PODetailItem;
@@ -270,6 +273,7 @@ class GRNs {
 		$this->JobRef = $JobRef;
 		$this->Hold = $Hold;
 		$this->GLCode = $GLCode;
+		$this->SupplierRef = $SupplierRef;
 	}
 }
 

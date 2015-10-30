@@ -649,6 +649,8 @@ if (!isset($_POST['PostInvoice'])) {
 			</tr>
 				<tr style="background-color:#800000">
 					<th>' . _('Seq') . ' #</th>
+					<th>' . _('GRN Batch') . '</th>
+					<th>' . _('Supplier Ref') . '</th>
 					<th>' . _('Item Code') . '</th>
 					<th>' . _('Description') . '</th>
 					<th>' . _('Quantity Charged') . '</th>
@@ -659,6 +661,8 @@ if (!isset($_POST['PostInvoice'])) {
 		foreach ($_SESSION['SuppTrans']->GRNs as $EnteredGRN) {
 			echo '<tr>
 					<td>' . $EnteredGRN->GRNNo . '</td>
+					<td>' . $EnteredGRN->GRNBatchNo . '</td>
+					<td>' . $EnteredGRN->SupplierRef . '</td>
 					<td>' . $EnteredGRN->ItemCode . '</td>
 					<td>' . $EnteredGRN->ItemDescription . '</td>
 					<td class="number">' . locale_number_format($EnteredGRN->This_QuantityInv, $EnteredGRN->DecimalPlaces) . '</td>
@@ -1872,11 +1876,10 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 		$Result = DB_Txn_Commit();
 
 		prnMsg(_('Supplier invoice number') . ' ' . $InvoiceNo . ' ' . _('has been processed'), 'success');
-		echo '<br />
-				<div class="centre">
-					<a href="' . $RootPath . '/SupplierInvoice.php?&SupplierID=' . urlencode($_SESSION['SuppTrans']->SupplierID) . '">' . _('Enter another Invoice for this Supplier') . '</a>
-					<a href="' . $RootPath . '/Payments.php?&SupplierID=' . urlencode($_SESSION['SuppTrans']->SupplierID) . '&amp;Amount=' . urlencode($_SESSION['SuppTrans']->OvAmount + $TaxTotal) . '">' . _('Enter payment') . '</a>
-				</div>';
+		echo '<div class="centre">
+				<a href="' . $RootPath . '/SupplierInvoice.php?&SupplierID=' . urlencode($_SESSION['SuppTrans']->SupplierID) . '">' . _('Enter another Invoice for this Supplier') . '</a>
+				<a href="' . $RootPath . '/Payments.php?&SupplierID=' . urlencode($_SESSION['SuppTrans']->SupplierID) . '&amp;Amount=' . urlencode($_SESSION['SuppTrans']->OvAmount + $TaxTotal) . '">' . _('Enter payment') . '</a>
+			</div>';
 		unset($_SESSION['SuppTrans']->GRNs);
 		unset($_SESSION['SuppTrans']->Shipts);
 		unset($_SESSION['SuppTrans']->GLCodes);

@@ -29,6 +29,7 @@ class PurchOrder {
 	var $SuppDelAdd5;
 	var $SuppDelAdd6;
 	var $SupplierContact;
+	var $SupplierRef;
 	var $SuppTel;
 	var $Comments;
 	var $Location;

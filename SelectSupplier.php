@@ -208,6 +208,7 @@ if (isset($_SESSION['SupplierID'])) {
 			<td valign="top" class="select">';
 	/* Inquiry Options */
 	echo '<a href="' . $RootPath . '/SupplierInquiry.php?SupplierID=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Account Inquiry') . '</a>';
+	echo '<a href="' . $RootPath . '/SupplierGRNAndInvoiceInquiry.php?SelectedSupplier=' . urlencode($_SESSION['SupplierID']) . '&amp;SupplierName=' . urlencode($SupplierName) . '">' . _('Supplier Delivery Note AND GRN inquiry') . '</a>';
 
 	echo '<a href="' . $RootPath . '/PO_SelectOSPurchOrder.php?SelectedSupplier=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('Outstanding Purchase Orders') . '</a>';
 	echo '<a href="' . $RootPath . '/PO_SelectPurchOrder.php?SelectedSupplier=' . urlencode(stripslashes($_SESSION['SupplierID'])) . '">' . _('View All Orders') . '</a>';
@@ -330,7 +331,7 @@ if (isset($_POST['Search'])) {
 					<td>' . $MyRow['address4'] . '</td>
 					<td>' . $MyRow['telephone'] . '</td>
 					<td><a href="mailto://' . $MyRow['email'] . '">' . $MyRow['email'] . '</a></td>
-					<td><a href="'.$MyRow['url'].'"target="_blank">' . $MyRow['url']. '</a></td>
+					<td><a href="' . $MyRow['url'] . '"target="_blank">' . $MyRow['url'] . '</a></td>
 				</tr>';
 			$RowIndex = $RowIndex + 1;
 			//end of page full new headings if
@@ -339,7 +340,7 @@ if (isset($_POST['Search'])) {
 		echo '</tbody>';
 		echo '</table>';
 	} else {
-		prnMsg( _('There are no suppliers returned for this criteria. Please enter new criteria'), 'info');
+		prnMsg(_('There are no suppliers returned for this criteria. Please enter new criteria'), 'info');
 	}
 }
 //end if results to show

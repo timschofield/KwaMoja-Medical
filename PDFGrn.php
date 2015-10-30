@@ -44,6 +44,7 @@ if ($GRNNo == 'Preview') {
 				grns.itemdescription,
 				grns.qtyrecd,
 				grns.supplierid,
+				grns.supplierref,
 				purchorderdetails.suppliersunit,
 				purchorderdetails.conversionfactor,
 				stockmaster.units,
@@ -55,7 +56,7 @@ if ($GRNNo == 'Preview') {
 				ON purchorders.orderno = purchorderdetails.orderno
 			INNER JOIN locationusers
 				ON locationusers.loccode=purchorders.intostocklocation
-				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.userid='" . $_SESSION['UserID'] . "'
 				AND locationusers.canview=1
 			LEFT JOIN stockmaster
 			ON grns.itemcode=stockmaster.stockid
@@ -64,6 +65,9 @@ if ($GRNNo == 'Preview') {
 	$GRNResult = DB_query($SQL);
 	$NoOfGRNs = DB_num_rows($GRNResult);
 	if ($NoOfGRNs > 0) { //there are GRNs to print
+		$SupplierRef = DB_fetch_array($GRNResult);
+		$SupplierRef = $SupplierRef['supplierref'];
+		DB_data_seek($GRNResult, 0);
 
 		$SQL = "SELECT suppliers.suppname,
 						suppliers.address1,

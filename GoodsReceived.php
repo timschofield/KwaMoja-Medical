@@ -68,19 +68,38 @@ if ($_SESSION['PO' . $Identifier]->Status != 'Printed') {
 
 echo '<p class="page_title_text" >
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/supplier.png" title="' . _('Receive') . '" alt="" />' . ' ' . _('Receive Purchase Order') . ' : ' . $_SESSION['PO' . $Identifier]->OrderNo . ' ' . _('from') . ' ' . $_SESSION['PO' . $Identifier]->SupplierName . '</p>';
-echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '" method="post">';
+echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '" id="form1" method="post">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 if (!isset($_POST['ProcessGoodsReceived'])) {
-	if (!isset($_POST['DefaultReceivedDate'])) {
+	if (!isset($_POST['DefaultReceivedDate']) and !isset($_SESSION['PO' . $Identifier]->DefaultReceivedDate)) {
 		/* This is meant to be the date the goods are received - it does not make sense to set this to the date that we requested delivery in the purchase order - I have not applied your change here Tim for this reason - let me know if I have it wrong - Phil */
 		$_POST['DefaultReceivedDate'] = Date($_SESSION['DefaultDateFormat']);
+		$_SESSION['PO' . $Identifier]->DefaultReceivedDate = $_POST['DefaultReceivedDate'];
+	} else {
+		if (isset($_POST['DefaultReceivedDate']) and is_date($_POST['DefaultReceivedDate'])) {
+			$_SESSION['PO' . $Identifier]->DefaultReceivedDate = $_POST['DefaultReceivedDate'];
+		} elseif (isset($_POST['DefaultReceivedDate']) and !is_date($_POST['DefaultReceivedDate'])) {
+			prnMsg(_('The default received date is not a date format'), 'error');
+			$_POST['DefaultReceivedDate'] = Date($_SESSION['DefaultDateFormat']);
+		}
+	}
+	if (!isset($_POST['SupplierReference'])) {
+		$_POST['SupplierReference'] = '';
+	} else {
+		if (isset($_POST['SupplierReference']) AND mb_strlen(trim($_POST['SupplierReference'])) > 30) {
+			prnMsg(_('The supplier\'s delivery note no should not be more than 30 characters'), 'error');
+		} else {
+			$_SESSION['PO' . $Identifier]->SupplierRef = $_POST['SupplierReference'];
+		}
 	}
 
 	echo '<table class="selection">
 			<tr>
 				<td>' . _('Date Goods/Service Received') . ':</td>
-				<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" maxlength="10" size="10" onchange="return isDate(this, this.value, ' . "'" . $_SESSION['DefaultDateFormat'] . "'" . ')" name="DefaultReceivedDate" value="' . $_POST['DefaultReceivedDate'] . '" /></td>
+				<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . "'" . ')" name="DefaultReceivedDate" value="' . $_SESSION['PO' . $Identifier]->DefaultReceivedDate . '" /></td>
+				<td>' . _("Supplier's Reference") . ':</td>
+				<td><input type="text" name="SupplierReference" value="' . $_SESSION['PO' . $Identifier]->SupplierRef . '" maxlength="30" size="20"  onchange="ReloadForm(form1.Update)"/></td>
 			</tr>
 		</table>';
 
@@ -227,6 +246,16 @@ $DeliveryQuantityTooLarge = 0;
 $NegativesFound = false;
 $InputError = false;
 
+if (isset($_POST['DefaultReceivedDate']) and !is_date($_POST['DefaultReceivedDate'])) {
+	$InputError = true;
+	prnMsg(_('The goods received date is not a date format'), 'error');
+}
+
+if (isset($_POST['SupplierReference']) and mb_strlen(trim($_POST['SupplierReference'])) > 30) {
+	$InputError = true;
+	prnMsg(_('The delivery note of suppliers should not be more than 30 characters'), 'error');
+}
+
 if (count($_SESSION['PO' . $Identifier]->LineItems) > 0) {
 
 	foreach ($_SESSION['PO' . $Identifier]->LineItems as $OrderLine) {
@@ -309,15 +338,14 @@ if ($_SESSION['PO' . $Identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 	$Changes = 0;
 	$LineNo = 1;
 
-	if (DB_num_rows($Result) == 0) {//Those goods must have been received by another user. So should destroy the session data and show warning to users
+	if (DB_num_rows($Result) == 0) { //Those goods must have been received by another user. So should destroy the session data and show warning to users
 		prnMsg(_('This order has been changed or invoiced since this delivery was started to be actioned') . ' . ' . _('Processing halted'), 'error');
-		echo '<div class="centre"><a href="' . $RootPath . '/PO_SelectOSPurchOrder.php">' .
-			_('Select a different purchase order for receiving goods against') . '</a></div>';
+		echo '<div class="centre"><a href="' . $RootPath . '/PO_SelectOSPurchOrder.php">' . _('Select a different purchase order for receiving goods against') . '</a></div>';
 		unset($_SESSION['PO' . $Identifier]->LineItems);
 		unset($_SESSION['PO' . $Identifier]);
 		unset($_POST['ProcessGoodsReceived']);
 		echo '</form>';
-		include ('includes/footer.inc');
+		include('includes/footer.inc');
 		exit;
 	}
 
@@ -414,9 +442,9 @@ if ($_SESSION['PO' . $Identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 
 				$MyRow = DB_fetch_row($Result);
 
-				if($MyRow[1] != 'D') {
+				if ($MyRow[1] != 'D') {
 					if ($OrderLine->QtyReceived == 0) { //its the first receipt against this line
-						$_SESSION['PO'.$identifier]->LineItems[$OrderLine->LineNo]->StandardCost = $MyRow[0];
+						$_SESSION['PO' . $Identifier]->LineItems[$OrderLine->LineNo]->StandardCost = $MyRow[0];
 					}
 					$CurrentStandardCost = $MyRow[0];
 					/* Set the purchase order line stdcostunit = weighted average / standard cost used for all
@@ -424,11 +452,11 @@ if ($_SESSION['PO' . $Identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 					 * line multiplied by the weighted average of standard costs received = the total of standard
 					 * cost posted to GRN suspense
 					 */
-					$_SESSION['PO'.$identifier]->LineItems[$OrderLine->LineNo]->StandardCost = (($CurrentStandardCost * $OrderLine->ReceiveQty) + ($_SESSION['PO'.$identifier]->LineItems[$OrderLine->LineNo]->StandardCost * $OrderLine->QtyReceived)) / ($OrderLine->ReceiveQty + $OrderLine->QtyReceived);
+					$_SESSION['PO' . $Identifier]->LineItems[$OrderLine->LineNo]->StandardCost = (($CurrentStandardCost * $OrderLine->ReceiveQty) + ($_SESSION['PO' . $Identifier]->LineItems[$OrderLine->LineNo]->StandardCost * $OrderLine->QtyReceived)) / ($OrderLine->ReceiveQty + $OrderLine->QtyReceived);
 				} elseif ($MyRow[1] == 'D') { //it's a dummy part which without stock.
 					$Dummy = true;
-					if($OrderLine->QtyReceived == 0){//There is
-						$_SESSION['PO'.$identifier]->LineItems[$OrderLine->LineNo]->StandardCost = $LocalCurrencyPrice;
+					if ($OrderLine->QtyReceived == 0) { //There is
+						$_SESSION['PO' . $Identifier]->LineItems[$OrderLine->LineNo]->StandardCost = $LocalCurrencyPrice;
 					}
 				}
 				$CurrentStandardCost = $MyRow[0];
@@ -487,7 +515,8 @@ if ($_SESSION['PO' . $Identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 									qtyrecd,
 									supplierid,
 									stdcostunit,
-									reference)
+									reference,
+									supplierref)
 							VALUES ('" . $GRN . "',
 								'" . $OrderLine->PODetailRec . "',
 								'" . $OrderLine->StockID . "',
@@ -496,7 +525,8 @@ if ($_SESSION['PO' . $Identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 								'" . $OrderLine->ReceiveQty . "',
 								'" . DB_escape_string($_SESSION['PO' . $Identifier]->SupplierID) . "',
 								'" . $CurrentStandardCost . "',
-								'" . DB_escape_string($OrderLine->GRNReference) . "'
+								'" . DB_escape_string($OrderLine->GRNReference) . "',
+								'" . trim($_POST['SupplierReference']) . "'
 							)";
 
 			$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('A GRN record could not be inserted') . '. ' . _('This receipt of goods has not been processed because');
@@ -713,7 +743,7 @@ if ($_SESSION['PO' . $Identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 											'" . $_POST['DefaultReceivedDate'] . "',
 											'" . $PeriodNo . "',
 											'" . $OrderLine->GLCode . "',
-											'" . _('PO') . ' ' . $_SESSION['PO'.$Identifier]->OrderNo . ': ' . DB_escape_string($_SESSION['PO'.$Identifier]->SupplierID) . ' - ' . $OrderLine->StockID . ' - ' . DB_escape_string($OrderLine->ItemDescription) . ' x ' . $OrderLine->ReceiveQty . " @ " . locale_number_format($CurrentStandardCost,$_SESSION['CompanyRecord']['decimalplaces']) . "',
+											'" . _('PO') . ' ' . $_SESSION['PO' . $Identifier]->OrderNo . ': ' . DB_escape_string($_SESSION['PO' . $Identifier]->SupplierID) . ' - ' . $OrderLine->StockID . ' - ' . DB_escape_string($OrderLine->ItemDescription) . ' x ' . $OrderLine->ReceiveQty . " @ " . locale_number_format($CurrentStandardCost, $_SESSION['CompanyRecord']['decimalplaces']) . "',
 											'" . $CurrentStandardCost * $OrderLine->ReceiveQty . "'
 										)";
 
@@ -736,7 +766,7 @@ if ($_SESSION['PO' . $Identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 											'" . $_POST['DefaultReceivedDate'] . "',
 											'" . $PeriodNo . "',
 											'" . $_SESSION['CompanyRecord']['grnact'] . "',
-											'" . _('PO') . ' ' . $_SESSION['PO'.$Identifier]->OrderNo . ': ' . DB_escape_string($_SESSION['PO'.$Identifier]->SupplierID) . ' - ' . $OrderLine->StockID . ' - ' . DB_escape_string($OrderLine->ItemDescription) . ' x ' . $OrderLine->ReceiveQty . ' @ ' . locale_number_format($UnitCost,$_SESSION['CompanyRecord']['decimalplaces']) . "',
+											'" . _('PO') . ' ' . $_SESSION['PO' . $Identifier]->OrderNo . ': ' . DB_escape_string($_SESSION['PO' . $Identifier]->SupplierID) . ' - ' . $OrderLine->StockID . ' - ' . DB_escape_string($OrderLine->ItemDescription) . ' x ' . $OrderLine->ReceiveQty . ' @ ' . locale_number_format($UnitCost, $_SESSION['CompanyRecord']['decimalplaces']) . "',
 											'" . -$UnitCost * $OrderLine->ReceiveQty . "'
 										)";
 
@@ -785,7 +815,7 @@ if ($_SESSION['PO' . $Identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 
 	echo '<div class="centre">
 			<a href="' . $RootPath . '/PO_Header.php?ModifyOrderNumber=' . urlencode($_SESSION['PO' . $Identifier]->OrderNo) . '">' . _('Modify Order Items') . '</a>
-			<a href="' . $RootPath . '/PO_SelectOSPurchOrder.php">' . _('Select a different purchase order for receiving goods against'). '</a>
+			<a href="' . $RootPath . '/PO_SelectOSPurchOrder.php">' . _('Select a different purchase order for receiving goods against') . '</a>
 		</div>
 		<div class="centre">
 			<input type="submit" name="Update" value="' . _('Update') . '" />

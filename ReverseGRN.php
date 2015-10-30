@@ -36,6 +36,7 @@ if (isset($_GET['GRNNo']) and isset($_POST['SupplierID'])) {
 					grns.itemcode,
 					grns.itemdescription,
 					grns.deliverydate,
+					grns.supplierref,
 					purchorderdetails.glcode,
 					purchorderdetails.assetid,
 					grns.qtyrecd,
@@ -50,7 +51,7 @@ if (isset($_GET['GRNNo']) and isset($_POST['SupplierID'])) {
 				ON purchorderdetails.orderno = purchorders.orderno
 			INNER JOIN locationusers
 				ON locationusers.loccode=purchorders.intostocklocation
-				AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+				AND locationusers.userid='" . $_SESSION['UserID'] . "'
 				AND locationusers.canupd=1
 			WHERE grnno='" . $_GET['GRNNo'] . "'";
 
@@ -372,6 +373,7 @@ if (isset($_GET['GRNNo']) and isset($_POST['SupplierID'])) {
 						grns.itemcode,
 						grns.itemdescription,
 						grns.deliverydate,
+						grns.supplierref,
 						qtyrecd,
 						quantityinv,
 						qtyrecd-quantityinv AS qtytoreverse
@@ -382,11 +384,11 @@ if (isset($_GET['GRNNo']) and isset($_POST['SupplierID'])) {
 						ON purchorders.orderno = purchorderdetails.orderno
 					INNER JOIN locationusers
 						ON locationusers.loccode=purchorders.intostocklocation
-						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.userid='" . $_SESSION['UserID'] . "'
 						AND locationusers.canupd=1
 					WHERE grns.supplierid = '" . $_POST['SupplierID'] . "'
 						AND (grns.qtyrecd-grns.quantityinv) >0
-						AND grns.deliverydate>='" . FormatDateForSQL($_POST['RecdAfterDate']) ."'";
+						AND grns.deliverydate>='" . FormatDateForSQL($_POST['RecdAfterDate']) . "'";
 
 		$ErrMsg = _('An error occurred in the attempt to get the outstanding GRNs for') . ' ' . $_POST['SuppName'] . '. ' . _('The message was') . ':';
 		$DbgMsg = _('The SQL that failed was') . ':';
@@ -396,17 +398,18 @@ if (isset($_GET['GRNNo']) and isset($_POST['SupplierID'])) {
 			prnMsg(_('There are no outstanding goods received yet to be invoiced for') . ' ' . $_POST['SuppName'] . '.<br />' . _('To reverse a GRN that has been invoiced first it must be credited'), 'warn');
 		} else { //there are GRNs to show
 
-			echo '<br /><table cellpadding="2" class="selection">
-							<tr>
-								<th>' . _('GRN') . ' #</th>
-								<th>' . _('GRN Batch') . '</th>
-								<th>' . _('Item Code') . '</th>
-								<th>' . _('Description') . '</th>
-								<th>' . _('Date') . '<br />' . _('Received') . '</th>
-								<th>' . _('Quantity') . '<br />' . _('Received') . '</th>
-								<th>' . _('Quantity') . '<br />' . _('Invoiced') . '</th>
-								<th>' . _('Quantity To') . '<br />' . _('Reverse') . '</th>
-							</tr>';
+			echo '<table cellpadding="2" class="selection">
+					<tr>
+						<th>' . _('GRN') . ' #</th>
+						<th>' . _('GRN Batch') . '</th>
+						<th>' . _('Supplier\' Ref') . '</th>
+						<th>' . _('Item Code') . '</th>
+						<th>' . _('Description') . '</th>
+						<th>' . _('Date') . '<br />' . _('Received') . '</th>
+						<th>' . _('Quantity') . '<br />' . _('Received') . '</th>
+						<th>' . _('Quantity') . '<br />' . _('Invoiced') . '</th>
+						<th>' . _('Quantity To') . '<br />' . _('Reverse') . '</th>
+					</tr>';
 
 			/* show the GRNs outstanding to be invoiced that could be reversed */
 			$k = 0;
@@ -430,11 +433,12 @@ if (isset($_GET['GRNNo']) and isset($_POST['SupplierID'])) {
 						<td>%s</td>
 						<td>%s</td>
 						<td>%s</td>
+						<td>%s</td>
 						<td class="number">%s</td>
 						<td class="number">%s</td>
 						<td class="number">%s</td>
 						<td>%s</td>
-						</tr>', $MyRow['grnno'], $MyRow['grnbatch'], $MyRow['itemcode'], $MyRow['itemdescription'], $DisplayDateDel, $DisplayQtyRecd, $DisplayQtyInv, $DisplayQtyRev, $LinkToRevGRN);
+						</tr>', $MyRow['grnno'], $MyRow['grnbatch'], $MyRow['supplierref'], $MyRow['itemcode'], $MyRow['itemdescription'], $DisplayDateDel, $DisplayQtyRecd, $DisplayQtyInv, $DisplayQtyRev, $LinkToRevGRN);
 
 			}
 

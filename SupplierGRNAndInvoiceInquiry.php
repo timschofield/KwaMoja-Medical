@@ -18,6 +18,8 @@ if (isset($_GET['SelectedSupplier'])) {
 
 if (isset($_GET['SupplierName'])) {
 	$SupplierName = $_GET['SupplierName'];
+} else if (isset($_POST['SupplierName'])) {
+	$SupplierName = $_POST['SupplierName'];
 }
 
 if (!isset($_POST['SupplierRef']) or trim($_POST['SupplierRef']) == '') {
@@ -35,15 +37,16 @@ if (!isset($_POST['SupplierRef']) or trim($_POST['SupplierRef']) == '') {
 
 echo '<p class="page_title_text">' . _('Supplier Invoice and Delivery Note Inquiry') . '<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/transactions.png" alt="" />' . _('Supplier') . ': ' . $SupplierName . '</p>';
 echo '<div class="page_help_text">' . _('The supplier\'s delivery note is prefer to GRN No, and GRN No is prefered to Invoice No') . '</div>';
-echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">
-	<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
-	<input type="hidden" name="SelectedSupplier" value="' . $SupplierID . '" />';
+echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
+echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
+echo '<input type="hidden" name="SelectedSupplier" value="' . $SupplierID . '" />';
+echo '<input type="hidden" name="SupplierName" value="' . $SupplierName . '" />';
 
 echo '<table class="selection">
 		<tr>
-			<td class="label">' . _('Part of Supplier\'s Delivery Note') . ':</td><td><input type="text" name="SupplierRef" value="' . $_POST['SupplierRef'] . '" size="20" maxlength="30" ></td>
-			<td class="label">' . _('GRN No') . ':</td><td><input type="text" name="GRNBatchNo" value="' . $_POST['GRNBatchNo'] . '" size="6" maxlength="6" /></td>
-			<td class="label">' . _('Invoice No') . ':</td><td><input type="text" name="InvoiceNo" value="' . $_POST['InvoiceNo'] . '" size="11" maxlength="11" /></td>
+			<td>' . _('Part of Supplier\'s Delivery Note') . ':</td><td><input type="text" name="SupplierRef" value="' . $_POST['SupplierRef'] . '" size="20" maxlength="30" ></td>
+			<td>' . _('GRN No') . ':</td><td><input type="text" name="GRNBatchNo" value="' . $_POST['GRNBatchNo'] . '" size="6" maxlength="6" /></td>
+			<td>' . _('Invoice No') . ':</td><td><input type="text" name="InvoiceNo" value="' . $_POST['InvoiceNo'] . '" size="11" maxlength="11" /></td>
 		</tr>
 	</table>';
 

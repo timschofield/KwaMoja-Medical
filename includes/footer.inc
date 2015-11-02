@@ -56,7 +56,7 @@ echo '<div id="FooterLogoDiv">
 	</div>';
 
 echo '<div id="FooterVersionDiv">
-		KwaMoja ', _('version'), ' ', $_SESSION['VersionNumber'],
+		KwaMoja ', _('version'), ' ', $_SESSION['VersionNumber'], '.', $_SESSION['DBUpdateNumber'],
 	'</div>';
 
 echo '<div id="FooterTimeDiv">';

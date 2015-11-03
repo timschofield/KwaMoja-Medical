@@ -184,23 +184,25 @@ if (isset($_POST['Show'])) {
 	$TransResult = DB_query($SQL, $ErrMsg);
 
 	echo '<table class="selection" summary="', _('General Ledger account inquiry details'), '">
-			<tr>
-				<th colspan="8">
-					<b>', _('Transactions for account'), ' ', $SelectedAccount, ' - ', $SelectedAccountName, '</b>
-					<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/printer.png" class="PrintIcon" title="', _('Print'), '" alt="', _('Print'), '" onclick="window.print();" />
-				</th>
-			</tr>
-			<tr>
-				<th>', _('Type'), '</th>
-				<th>', _('Trans no'), '</th>
-				<th>', _('Cheque'), '</th>
-				<th>', _('Date'), '</th>
-				<th>', _('Debit'), '</th>
-				<th>', _('Credit'), '</th>
-				<th>', _('Narrative'), '</th>
-				<th>', _('Balance'), '</th>
-				<th>', _('Tag'), '</th>
-			</tr>';
+			<thead>
+				<tr>
+					<th colspan="9">
+						<b>', _('Transactions for account'), ' ', $SelectedAccount, ' - ', $SelectedAccountName, '</b>
+						<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/printer.png" class="PrintIcon" title="', _('Print'), '" alt="', _('Print'), '" onclick="window.print();" />
+					</th>
+				</tr>
+				<tr>
+					<th>', _('Type'), '</th>
+					<th>', _('Trans no'), '</th>
+					<th>', _('Cheque'), '</th>
+					<th>', _('Date'), '</th>
+					<th>', _('Debit'), '</th>
+					<th>', _('Credit'), '</th>
+					<th>', _('Narrative'), '</th>
+					<th>', _('Balance'), '</th>
+					<th>', _('Tag'), '</th>
+				</tr>
+			</thead>';
 
 	if ($PandLAccount == True) {
 		$RunningTotal = 0;

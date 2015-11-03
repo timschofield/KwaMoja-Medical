@@ -23,7 +23,7 @@ if (isset($_GET['OldStockID']) or isset($_POST['OldStockID'])) { //we are clonin
 	$_POST['StockID'] = '';
 	$InputError = 1;
 	$Errors[0] = 'OldStockID';
-	prnMsg(_('To use this script it must be called with the Stock ID of the item to be cloned passed in as $OldStockID. Please use the Clone This Item option in the Items Menu.'), 'error');
+	prnMsg(_('To use this script it must be called with the Stock ID of the item to be cloned. Please use the "Clone This Item" option in the Items Menu.'), 'error');
 }
 
 $ItemDescriptionLanguagesArray = explode(',',$_SESSION['ItemDescriptionLanguages']);
@@ -511,13 +511,13 @@ if (isset($_POST['submit'])) {
 					if (DB_error_no() == 0) {
 						prnMsg(_('New Cloned Item') . ' ' . '<a href="SelectProduct.php?StockID=' . urlencode($_POST['StockID']) . '">' . $_POST['StockID'] . '</a> ' . _('has been added to the database') . '<br />' . _('We also attempted to setup item purchase data and pricing.'));
 
-						if ($NoPricingData == 1) {
+						if (isset($NoPricingData)) {
 							prnMsg(_('There is no pricing data to clone. Use the following link to add pricing.'));
 						}
 
 						prnMsg('<br />' . '<a target="_blank" href="Prices.php?Item=' . $_POST['StockID'] . '">' . _('Review Item Prices') . '</a> ', 'success');
 
-						if ($NoPurchasingData == 1) {
+						if (isset($NoPurchasingData)) {
 							prnMsg(_('There is no purchasing data to clone .Use the following link to add purchasing data.'));
 						}
 						prnMsg('<br />' . '<a target="_blank" href="PurchData.php?StockID=' . $_POST['StockID'] . '">' . _('Review Item Purchase Data.') . '</a> ', 'success') . prnMsg(_('Costing was updated for this cloned item.') . '<br />' . '<a target="_blank" href="StockCostUpdate.php?StockID=' . $_POST['StockID'] . '">' . _('Review Item Cost') . '</a>', 'success');
@@ -583,7 +583,7 @@ if ($_POST['StockID'] == '' or ($_POST['StockID'] == $_POST['OldStockID']) or is
 }
 if ((!isset($_POST['UpdateCategories']) and ($InputError != 1)) or $_POST['New'] == 1) { // Must be modifying an existing item and no changes made yet
 
-	$selectedStockID = $_POST['OldStockID'];
+	$SelectedStockId = $_POST['OldStockID'];
 	$SQL = "SELECT stockid,
 					description,
 					longdescription,
@@ -606,7 +606,7 @@ if ((!isset($_POST['UpdateCategories']) and ($InputError != 1)) or $_POST['New']
 					pansize,
 					shrinkfactor
 			FROM stockmaster
-			WHERE stockid = '" . $selectedStockID . "'";
+			WHERE stockid = '" . $SelectedStockId . "'";
 
 	$Result = DB_query($SQL);
 	$MyRow = DB_fetch_array($Result);
@@ -632,7 +632,7 @@ if ((!isset($_POST['UpdateCategories']) and ($InputError != 1)) or $_POST['New']
 	$_POST['Pansize'] = $MyRow['pansize'];
 	$_POST['ShrinkFactor'] = $MyRow['shrinkfactor'];
 
-	$SQL = "SELECT descriptiontranslation, language_id FROM stockdescriptiontranslations WHERE stockid='" . $selectedStockID . "' AND (";
+	$SQL = "SELECT descriptiontranslation, language_id FROM stockdescriptiontranslations WHERE stockid='" . $SelectedStockId . "' AND (";
 	foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
 		$SQL .= "language_id='" . $LanguageId . "' OR ";
 	}
@@ -642,7 +642,7 @@ if ((!isset($_POST['UpdateCategories']) and ($InputError != 1)) or $_POST['New']
 		$_POST['Description_' . str_replace('.', '_', $MyRow['language_id'])] = $MyRow['descriptiontranslation'];
 	}
 
-	$SQL = "SELECT longdescriptiontranslation, language_id FROM stocklongdescriptiontranslations WHERE stockid='" . $selectedStockID . "' AND (";
+	$SQL = "SELECT longdescriptiontranslation, language_id FROM stocklongdescriptiontranslations WHERE stockid='" . $SelectedStockId . "' AND (";
 	foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
 		$SQL .= "language_id='" . $LanguageId . "' OR ";
 	}
@@ -668,12 +668,14 @@ foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
 	if ($LanguageId != '') {
 		//unfortunately cannot have points in POST variables so have to mess with the language id
 		$PostVariableName = 'Description_' . str_replace('.', '_', $LanguageId);
+	    $LongDescriptionTranslated = 'LongDescription_' . str_replace('.','_',$LanguageId);
 		if (!isset($_POST[$PostVariableName])) {
 			$_POST[$PostVariableName] = '';
 		}
 		echo '<tr>
 				<td>' . $LanguagesArray[$LanguageId]['LanguageName'] . ' ' . _('Description') . ':</td>
 				<td><input type="text" name="' . $PostVariableName . '" size="52" maxlength="50" value="' . $_POST[$PostVariableName] . '" /></td>
+				<td><input type="hidden" name="' . $LongDescriptionTranslated . '" value="' . $_POST['LongDescription_' . str_replace('.','_',$LanguageId)] . '" />
 			</tr>';
 	}
 }

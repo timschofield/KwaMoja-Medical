@@ -265,7 +265,7 @@ $SQL = "SELECT sales_type,
 				price,
 				currencies.currabrev,
 				currencies.currency,
-				currencies.decimalplaces AS currdecimalplace
+				currencies.decimalplaces AS currdecimalplaces
 			FROM pricematrix
 			INNER JOIN salestypes
 				ON pricematrix.salestype=salestypes.typeabbrev

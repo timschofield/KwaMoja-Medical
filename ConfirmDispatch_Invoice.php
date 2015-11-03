@@ -264,7 +264,7 @@ if (!isset($_GET['OrderNumber']) and !isset($_SESSION['ProcessingOrder'])) {
 	$i = 1;
 	foreach ($_SESSION['Items' . $Identifier]->FreightTaxes as $FreightTaxLine) {
 		if (isset($_POST['FreightTaxRate'  . $i])) {
-			$_SESSION['Items' . $identifier]->FreightTaxes[$i]->TaxRate = filter_number_format($_POST['FreightTaxRate'  . $i]) / 100;
+			$_SESSION['Items' . $Identifier]->FreightTaxes[$i]->TaxRate = filter_number_format($_POST['FreightTaxRate'  . $i]) / 100;
 		}
 		++$i;
 	}
@@ -290,7 +290,7 @@ if (!isset($_GET['OrderNumber']) and !isset($_SESSION['ProcessingOrder'])) {
 		$i = 1;
 		foreach ($Itm->Taxes as $TaxLine) {
 			if (isset($_POST[$Itm->LineNumber  . $i . '_TaxRate'])) {
-				$_SESSION['Items' . $identifier]->LineItems[$Itm->LineNumber]->Taxes[$i]->TaxRate = filter_number_format($_POST[$Itm->LineNumber  . $i . '_TaxRate']) / 100;
+				$_SESSION['Items' . $Identifier]->LineItems[$Itm->LineNumber]->Taxes[$i]->TaxRate = filter_number_format($_POST[$Itm->LineNumber  . $i . '_TaxRate']) / 100;
  			}
 			++$i;
 		}

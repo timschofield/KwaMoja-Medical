@@ -33,20 +33,25 @@ if (isset($_POST['ReMergePO'])) {
 
 	/*update the messages.po file with any new strings */
 
-	/*first rebuild the en_GB default with xgettext */
+	if (!function_exists('msgmerge')) {
+		prnMsg(_('The gettext utilities must be present on your server for these language utilities to work'),'error');
+		exit;
+	} else {
+		/*first rebuild the en_GB default with xgettext */
 
-	$PathToDefault = './locale/en_GB.utf8/LC_MESSAGES/messages.po';
-	$FilesToInclude = '*php includes/*.php includes/*.inc';
-	$xgettextCmd = 'xgettext --no-wrap -L php -o ' . $PathToDefault . ' ' . $FilesToInclude;
+		$PathToDefault = './locale/en_GB.utf8/LC_MESSAGES/messages.po';
+		$FilesToInclude = '*php includes/*.php includes/*.inc';
+		$xgettextCmd = 'xgettext --no-wrap -L php -o ' . $PathToDefault . ' ' . $FilesToInclude;
 
-	system($xgettextCmd);
-	/*now merge the translated file with the new template to get new strings*/
+		system($xgettextCmd);
+		/*now merge the translated file with the new template to get new strings*/
 
-	$MsgMergeCmd = 'msgmerge --no-wrap --update ' . $PathToLanguage . ' ' . $PathToDefault;
+		$MsgMergeCmd = 'msgmerge --no-wrap --update ' . $PathToLanguage . ' ' . $PathToDefault;
 
-	system($MsgMergeCmd);
-	//$Result = rename($PathToNewLanguage, $PathToLanguage);
-	exit;
+		system($MsgMergeCmd);
+		//$Result = rename($PathToNewLanguage, $PathToLanguage);
+		exit;
+	}
 }
 
 if (isset($_POST['module'])) {
@@ -155,11 +160,11 @@ if (isset($_POST['module'])) {
 				/* skip it */
 
 			} else {
-				echo '<tr>';
-				echo '<td valign="top"><i>' . $DefaultText[$i] . '</i></td>';
-				echo '<td valign="top"><input type="text" size="60" name="moduletext_' . $Msgstr[$i] . '" value="' . $ModuleText[$i] . '" /></td>';
-				echo '<td valign="top">' . $AlsoIn[$i] . '<input type="hidden" name="msgstr_' . $Msgstr[$i] . '" value="' . $Msgstr[$i] . '" /></td>';
-				echo '</tr>';
+				echo '<tr>
+						<td valign="top"><i>' . $DefaultText[$i] . '</i></td>
+						<td valign="top"><input type="text" size="60" name="moduletext_' . $Msgstr[$i] . '" value="' . $ModuleText[$i] . '" /></td>
+						<td valign="top">' . $AlsoIn[$i] . '<input type="hidden" name="msgstr_' . $Msgstr[$i] . '" value="' . $Msgstr[$i] . '" /></td>
+					</tr>';
 				echo '<tr>
 						<th colspan="3"></th>
 					</tr>';
@@ -219,20 +224,23 @@ if (isset($_POST['module'])) {
 		echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" >';
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
-		echo '<table>';
-
-		echo '<tr><td>' . _('Select the module to edit') . '</td>';
-		echo '<td><select name="module">';
+		echo '<table>
+				<tr>
+					<td>' . _('Select the module to edit') . '</td>
+					<td><select name="module">';
 		for ($i = 0; $i < $NumberOfModules; $i++) {
 			echo '<option>' . $AvailableModules[$i] . '</option>';
 		}
-		echo '</select></td>';
+		echo '</select>
+				</td>';
 
-		echo '</tr></table>';
+		echo '</tr>
+		</table>';
+
 		echo '<div class="centre">
-			<input type="submit" name="proceed" value="' . _('Proceed') . '" />
-			<input type="submit" name="ReMergePO" value="' . _('Refresh messages with latest strings') . '" />
-		</div>
+				<input type="submit" name="proceed" value="' . _('Proceed') . '" />
+				<input type="submit" name="ReMergePO" value="' . _('Refresh messages with latest strings') . '" />
+			</div>
 		</form>';
 	}
 }

@@ -120,7 +120,22 @@ if (!isset($_GET['TypeID']) or !isset($_GET['TransNo'])) {
 				$DetailResult = DB_query($DetailSQL);
 
 			} else {
-				$URL = $RootPath . '/GLAccountInquiry.php?Account=' . $TransRow['account'];
+				// if user is allowed to see the account we show it, other wise we show "OTHERS ACCOUNTS"
+				$CheckSql = "SELECT count(*)
+							 FROM glaccountusers
+							 WHERE accountcode= '" . $TransRow['account'] . "'
+								 AND userid = '" . $_SESSION['UserID'] . "'
+								 AND canview = '1'";
+				$CheckResult = DB_query($CheckSql);
+				$CheckRow = DB_fetch_row($CheckResult);
+
+				if ($CheckRow[0] > 0) {
+					$AccountName = $TransRow['accountname'];
+					$URL = $RootPath . '/GLAccountInquiry.php?Account=' . $TransRow['account'];
+				} else {
+					$AccountName = _('Other GL Accounts');
+					$URL = "";
+				}
 
 				if (mb_strlen($TransRow['narrative']) == 0) {
 					$TransRow['narrative'] = '&nbsp;';
@@ -134,13 +149,22 @@ if (!isset($_GET['TypeID']) or !isset($_GET['TransNo'])) {
 					++$j;
 				}
 				echo '<td>', MonthAndYearFromSQLDate($TransRow['lastdate_in_period']), '</td>
-					<td>', $TranDate, '</td>
-					<td><a href="', $URL, '">', $TransRow['accountname'], '</a></td>
-					<td class="number">', $DebitAmount, '</td>
-					<td class="number">', $CreditAmount, '</td>
-					<td>', $TransRow['narrative'], '</td>
-					<td>', $Posted, '</td>
-				</tr>';
+						<td>', $TranDate, '</td>';
+
+				if ($URL == ""){
+					// User is not allowed to see this GL account, don't show the details
+					echo '	<td>', $AccountName, '</td>
+							<td>', $AccountName, '</td>';
+				} else {
+					echo '	<td><a href="', $URL, '">', $AccountName, '</a></td>
+							<td>', $TransRow['narrative'], '</td>';
+				}
+
+				echo '	<td class="number">', $DebitAmount, '</td>
+						<td class="number">', $CreditAmount, '</td>
+						<td>', $TransRow['narrative'], '</td>
+						<td>', $Posted, '</td>
+					</tr>';
 			}
 
 			if ($DetailResult and $AnalysisCompleted == 'Not Yet') {

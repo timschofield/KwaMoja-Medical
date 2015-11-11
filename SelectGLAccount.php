@@ -24,6 +24,10 @@ if (isset($_POST['Search'])) {
 				FROM chartmaster
 				INNER JOIN accountgroups
 					ON chartmaster.group_ = accountgroups.groupname
+				INNER JOIN glaccountusers
+					ON glaccountusers.accountcode=chartmaster.accountcode
+					AND glaccountusers.userid='" .  $_SESSION['UserID'] . "'
+					AND glaccountusers.canupd=1
 				WHERE accountname " . LIKE . " '" . $SearchString . "'
 					AND chartmaster.accountcode >= '" . $_POST['GLCode'] . "'
 					AND chartmaster.group_ " . LIKE . "  '" . $_POST['Group'] . "'

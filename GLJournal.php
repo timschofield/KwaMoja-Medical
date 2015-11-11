@@ -318,10 +318,11 @@ if (!isset($_GET['NewJournal']) or $_GET['NewJournal'] == '') {
 	echo '<td><input type="text" name="GLManualCode" maxlength="12" size="12" onchange="inArray(this, GLCode.options,' . "'" . 'The account code ' . "'" . '+ this.value+ ' . "'" . ' doesnt exist' . "'" . ')" value="' . $_POST['GLManualCode'] . '"  /></td>';
 }
 
-$SQL = "SELECT accountcode,
-			accountname
+$SQL="SELECT chartmaster.accountcode,
+			chartmaster.accountname
 		FROM chartmaster
-		ORDER BY accountcode";
+			INNER JOIN glaccountusers ON glaccountusers.accountcode=chartmaster.accountcode AND glaccountusers.userid='" .  $_SESSION['UserID'] . "' AND glaccountusers.canupd=1
+		ORDER BY chartmaster.accountcode";
 
 $Result = DB_query($SQL);
 echo '<td><select name="GLCode" onchange="return assignComboToInput(this,' . 'GLManualCode' . ')">';
@@ -333,7 +334,9 @@ while ($MyRow = DB_fetch_array($Result)) {
 		echo '<option value="' . $MyRow['accountcode'] . '">' . $MyRow['accountcode'] . ' - ' . htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false) . '</option>';
 	}
 }
-echo '</select></td>';
+echo '</select>
+		</td>
+	</tr>';
 
 if (!isset($_POST['GLNarrative'])) {
 	$_POST['GLNarrative'] = '';
@@ -345,8 +348,7 @@ if (!isset($_POST['Debit'])) {
 	$_POST['Debit'] = 0;
 }
 
-echo '</tr>
-	<tr>
+echo '<tr>
 		<th>' . _('Debit') . '</th>
 		<td><input type="text" class="number" name="Debit" onchange="eitherOr(this, ' . 'Credit' . ')" maxlength="12" size="10" value="' . locale_number_format($_POST['Debit'], $_SESSION['CompanyRecord']['decimalplaces']) . '" /></td>
 	</tr>

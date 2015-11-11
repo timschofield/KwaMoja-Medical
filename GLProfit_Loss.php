@@ -155,9 +155,10 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 					Sum(CASE WHEN chartdetails.period='" . ($_POST['FromPeriod'] - 12) . "' THEN chartdetails.bfwd ELSE 0 END) AS lyfirstprdbfwd,
 					Sum(CASE WHEN chartdetails.period='" . ($_POST['ToPeriod'] - 12) . "' THEN chartdetails.bfwd + chartdetails.actual ELSE 0 END) AS lylastprdcfwd,
 					Sum(CASE WHEN chartdetails.period='" . $_POST['ToPeriod'] . "' THEN chartdetails.bfwdbudget + chartdetails.budget ELSE 0 END) AS lastprdbudgetcfwd
-				FROM chartmaster INNER JOIN accountgroups
-				ON chartmaster.groupcode = accountgroups.groupcode INNER JOIN chartdetails
-				ON chartmaster.accountcode= chartdetails.accountcode
+				FROM chartmaster
+					INNER JOIN accountgroups ON chartmaster.groupcode = accountgroups.groupcode
+					INNER JOIN chartdetails ON chartmaster.accountcode= chartdetails.accountcode
+					INNER JOIN glaccountusers ON glaccountusers.accountcode=chartmaster.accountcode AND glaccountusers.userid='" .  $_SESSION['UserID'] . "' AND glaccountusers.canview=1
 				WHERE accountgroups.pandl=1
 				GROUP BY accountgroups.sectioninaccounts,
 					accountgroups.groupcode,
@@ -624,9 +625,10 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 					SUM(CASE WHEN chartdetails.period='" . ($_POST['FromPeriod'] - 12) . "' THEN chartdetails.bfwd ELSE 0 END) AS lyfirstprdbfwd,
 					SUM(CASE WHEN chartdetails.period='" . ($_POST['ToPeriod'] - 12) . "' THEN chartdetails.bfwd + chartdetails.actual ELSE 0 END) AS lylastprdcfwd,
 					SUM(CASE WHEN chartdetails.period='" . $_POST['ToPeriod'] . "' THEN chartdetails.bfwdbudget + chartdetails.budget ELSE 0 END) AS lastprdbudgetcfwd
-			FROM chartmaster INNER JOIN accountgroups
-			ON chartmaster.groupcode = accountgroups.groupcode INNER JOIN chartdetails
-			ON chartmaster.accountcode= chartdetails.accountcode
+			FROM chartmaster
+				INNER JOIN accountgroups ON chartmaster.groupcode = accountgroups.groupcode
+				INNER JOIN chartdetails	ON chartmaster.accountcode= chartdetails.accountcode
+				INNER JOIN glaccountusers ON glaccountusers.accountcode=chartmaster.accountcode AND glaccountusers.userid='" .  $_SESSION['UserID'] . "' AND glaccountusers.canview=1
 			WHERE accountgroups.pandl=1
 			GROUP BY accountgroups.sectioninaccounts,
 					accountgroups.parentgroupname,

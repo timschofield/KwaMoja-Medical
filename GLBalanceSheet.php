@@ -126,9 +126,10 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 			chartmaster.accountname,
 			Sum(CASE WHEN chartdetails.period='" . $_POST['BalancePeriodEnd'] . "' THEN chartdetails.bfwd + chartdetails.actual ELSE 0 END) AS balancecfwd,
 			Sum(CASE WHEN chartdetails.period='" . ($_POST['BalancePeriodEnd'] - 12) . "' THEN chartdetails.bfwd + chartdetails.actual ELSE 0 END) AS lybalancecfwd
-		FROM chartmaster INNER JOIN accountgroups
-		ON chartmaster.groupcode = accountgroups.groupcode INNER JOIN chartdetails
-		ON chartmaster.accountcode= chartdetails.accountcode
+		FROM chartmaster
+			INNER JOIN accountgroups ON chartmaster.groupcode = accountgroups.groupcode
+			INNER JOIN chartdetails	ON chartmaster.accountcode= chartdetails.accountcode
+			INNER JOIN glaccountusers ON glaccountusers.accountcode=chartmaster.accountcode AND glaccountusers.userid='" .  $_SESSION['UserID'] . "' AND glaccountusers.canview=1
 		WHERE accountgroups.pandl=0
 		GROUP BY accountgroups.groupcode,
 			chartdetails.accountcode,
@@ -369,9 +370,10 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 			chartmaster.accountname,
 			Sum(CASE WHEN chartdetails.period='" . $_POST['BalancePeriodEnd'] . "' THEN chartdetails.bfwd + chartdetails.actual ELSE 0 END) AS balancecfwd,
 			Sum(CASE WHEN chartdetails.period='" . ($_POST['BalancePeriodEnd'] - 12) . "' THEN chartdetails.bfwd + chartdetails.actual ELSE 0 END) AS lybalancecfwd
-		FROM chartmaster INNER JOIN accountgroups
-		ON chartmaster.groupcode = accountgroups.groupcode INNER JOIN chartdetails
-		ON chartmaster.accountcode= chartdetails.accountcode
+		FROM chartmaster
+			INNER JOIN accountgroups ON chartmaster.groupcode = accountgroups.groupcode
+			INNER JOIN chartdetails	ON chartmaster.accountcode= chartdetails.accountcode
+			INNER JOIN glaccountusers ON glaccountusers.accountcode=chartmaster.accountcode AND glaccountusers.userid='" .  $_SESSION['UserID'] . "' AND glaccountusers.canview=1
 		WHERE accountgroups.pandl=0
 		GROUP BY accountgroups.groupcode,
 			chartdetails.accountcode,

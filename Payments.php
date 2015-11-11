@@ -1120,16 +1120,18 @@ if ($_SESSION['CompanyRecord']['gllink_creditors'] == 1 and $_SESSION['PaymentDe
 	}
 
 	if (isset($_POST['GLGroup']) and $_POST['GLGroup'] != '') {
-		$SQL = "SELECT accountcode,
-						accountname
+		$SQL = "SELECT chartmaster.accountcode,
+						chartmaster.accountname
 				FROM chartmaster
-				WHERE groupcode='" . $_POST['GLGroup'] . "'
-				ORDER BY accountcode";
+					INNER JOIN glaccountusers ON glaccountusers.accountcode=chartmaster.accountcode AND glaccountusers.userid='" .  $_SESSION['UserID'] . "' AND glaccountusers.canupd=1
+				WHERE chartmaster.groupcode='" . $_POST['GLGroup'] . "'
+				ORDER BY chartmaster.accountcode";
 	} else {
-		$SQL = "SELECT accountcode,
-						accountname
+		$SQL = "SELECT chartmaster.accountcode,
+						chartmaster.accountname
 				FROM chartmaster
-				ORDER BY accountcode";
+					INNER JOIN glaccountusers ON glaccountusers.accountcode=chartmaster.accountcode AND glaccountusers.userid='" .  $_SESSION['UserID'] . "' AND glaccountusers.canupd=1
+				ORDER BY chartmaster.accountcode";
 	}
 
 

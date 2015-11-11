@@ -66,11 +66,13 @@ echo '<table class="selection" summary="', _('Inquiry Selection Criteria'), '">
 		<tr>
 			<td>', _('Account'), ':</td>
 			<td><select name="Account">';
-$SQL = "SELECT accountcode,
-				accountname
-			FROM chartmaster
-			WHERE accountcode<>'" . $_SESSION['CompanyRecord']['retainedearnings'] . "'
-			ORDER BY accountcode";
+$SQL = "SELECT chartmaster.accountcode,
+			   chartmaster.accountname
+		FROM chartmaster
+		INNER JOIN glaccountusers ON glaccountusers.accountcode=chartmaster.accountcode AND glaccountusers.userid='" .  $_SESSION['UserID'] . "' AND glaccountusers.canview=1
+		WHERE accountcode<>'" . $_SESSION['CompanyRecord']['retainedearnings'] . "'
+		ORDER BY chartmaster.accountcode";
+
 $Account = DB_query($SQL);
 while ($MyRow = DB_fetch_array($Account)) {
 	if (isset($SelectedAccount) and $MyRow['accountcode'] == $SelectedAccount) {

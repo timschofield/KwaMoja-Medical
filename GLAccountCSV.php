@@ -28,7 +28,11 @@ echo '<table class="selection" summary="' . _('Criteria for report') . '">
 			<tr>
 			 <td>' . _('Selected Accounts') . ':</td>
 			 <td><select name="Account[]" size="12" multiple="multiple">';
-$SQL = "SELECT accountcode, accountname FROM chartmaster ORDER BY accountcode";
+$SQL = "SELECT chartmaster.accountcode,
+			   chartmaster.accountname
+		FROM chartmaster
+		INNER JOIN glaccountusers ON glaccountusers.accountcode=chartmaster.accountcode AND glaccountusers.userid='" .  $_SESSION['UserID'] . "' AND glaccountusers.canview=1
+		ORDER BY chartmaster.accountcode";
 $AccountsResult = DB_query($SQL);
 $i = 0;
 while ($MyRow = DB_fetch_array($AccountsResult)) {

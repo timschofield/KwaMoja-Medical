@@ -164,48 +164,49 @@ function GetCreditAvailable($DebtorNo) {
 }
 
 function ItemCostUpdateGL($StockId, $NewCost, $OldCost, $QOH) {
-
-	if ($_SESSION['CompanyRecord']['gllink_stock'] == 1 and $QOH != 0) {
+	if ($_SESSION['CompanyRecord']['gllink_stock'] == 1
+		and $QOH != 0
+		and (abs($NewCost - $OldCost) > pow(1, -($_SESSION['StandardCostDecimalPlaces'] + 1)))) {
 
 		$CostUpdateNo = GetNextTransNo(35);
 		$PeriodNo = GetPeriod(date($_SESSION['DefaultDateFormat']));
-		$StockGLCode = GetStockGLCode($StockId);
+		$StockGLCode = GetStockGLCode($StockID);
 
 		$ValueOfChange = $QOH * ($NewCost - $OldCost);
 
 		$SQL = "INSERT INTO gltrans (type,
-										typeno,
-										trandate,
-										periodno,
-										account,
-										narrative,
-										amount)
+									typeno,
+									trandate,
+									periodno,
+									account,
+									narrative,
+									amount)
 							VALUES ('35',
-							'" . $CostUpdateNo . "',
-							CURRENT_DATE,
-							'" . $PeriodNo . "',
-							'" . $StockGLCode['adjglact'] . "',
-							'" . $StockId . ' ' . _('cost was') . ' ' . $OldCost . ' ' . _('changed to') . ' ' . $NewCost . ' x ' . _('Quantity on hand of') . ' ' . $QOH . "',
-							'" . -$ValueOfChange . "')";
+									'" . $CostUpdateNo . "',
+									CURRENT_DATE,
+									'" . $PeriodNo . "',
+									'" . $StockGLCode['stockact'] . "',
+									'" . $StockId . ' ' . _('cost was') . ' ' . $OldCost . ' ' . _('changed to') . ' ' . $NewCost . ' x ' . _('Quantity on hand of') . ' ' . $QOH . "',
+									'" . $ValueOfChange . "')";
 
-		$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The GL credit for the stock cost adjustment posting could not be inserted because');
+		$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The GL debit for stock cost adjustment posting could not be inserted because');
 		$DbgMsg = _('The following SQL to insert the GLTrans record was used');
 		$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 		$SQL = "INSERT INTO gltrans (type,
-							typeno,
-							trandate,
-							periodno,
-							account,
-							narrative,
-							amount)
-						VALUES ('35',
-							'" . $CostUpdateNo . "',
-							CURRENT_DATE,
-							'" . $PeriodNo . "',
-							'" . $StockGLCode['stockact'] . "',
-							'" . $StockId . ' ' . _('cost was') . ' ' . $OldCost . ' ' . _('changed to') . ' ' . $NewCost . ' x ' . _('Quantity on hand of') . ' ' . $QOH . "',
-							'" . $ValueOfChange . "')";
+									typeno,
+									trandate,
+									periodno,
+									account,
+									narrative,
+									amount)
+							VALUES ('35',
+									'" . $CostUpdateNo . "',
+									CURRENT_DATE,
+									'" . $PeriodNo . "',
+									'" . $StockGLCode['stockact'] . "',
+									'" . $StockID . ' ' . _('cost was') . ' ' . $OldCost . ' ' . _('changed to') .' ' . $NewCost . ' x ' . _('Quantity on hand of') . ' ' . $QOH . "',
+									'" . $ValueOfChange . "')";
 
 		$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The GL debit for stock cost adjustment posting could not be inserted because');
 		$DbgMsg = _('The following SQL to insert the GLTrans record was used');

@@ -151,7 +151,7 @@ if (isset($_POST['submit'])) {
 										sequenceintb='" . $_POST['SequenceInTB'] . "',
 										parentgroupcode='" . $_POST['ParentGroup'] . "',
 										parentgroupname='" . DB_escape_string($ParentGroupRow['groupname']) . "'
-									WHERE groupname = '" . $_POST['SelectedAccountGroup'] . "'";
+									WHERE groupcode = '" . $_POST['SelectedAccountGroup'] . "'";
 		$ErrMsg = _('An error occurred in updating the account group');
 		$DbgMsg = _('The SQL that was used to update the account group was');
 		$Msg = _('Record Updated');
@@ -192,7 +192,7 @@ if (isset($_POST['submit'])) {
 
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'ChartMaster'
 
-	$SQL = "SELECT COUNT(group_) AS groups FROM chartmaster WHERE chartmaster.group_='" . $_GET['SelectedAccountGroup'] . "'";
+	$SQL = "SELECT COUNT(group_) AS groups FROM chartmaster WHERE chartmaster.groupcode='" . $_GET['SelectedAccountGroup'] . "'";
 	$ErrMsg = _('An error occurred in retrieving the group information from chartmaster');
 	$DbgMsg = _('The SQL that was used to retrieve the information was');
 	$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
@@ -227,7 +227,7 @@ if (isset($_POST['submit'])) {
 			</div>';
 
 	} else {
-		$SQL = "SELECT COUNT(groupname) groupnames FROM accountgroups WHERE parentgroupname = '" . $_GET['SelectedAccountGroup'] . "'";
+		$SQL = "SELECT COUNT(groupname) groupnames FROM accountgroups WHERE parentgroupcode = '" . $_GET['SelectedAccountGroup'] . "'";
 		$ErrMsg = _('An error occurred in retrieving the parent group information');
 		$DbgMsg = _('The SQL that was used to retrieve the information was');
 		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
@@ -237,7 +237,7 @@ if (isset($_POST['submit'])) {
 			echo '<br />', _('There are'), ' ', $MyRow['groupnames'], ' ', _('account groups that have this group as its/there parent account group');
 
 		} else {
-			$SQL = "DELETE FROM accountgroups WHERE groupname='" . $_GET['SelectedAccountGroup'] . "'";
+			$SQL = "DELETE FROM accountgroups WHERE groupcode='" . $_GET['SelectedAccountGroup'] . "'";
 			$ErrMsg = _('An error occurred in deleting the account group');
 			$DbgMsg = _('The SQL that was used to delete the account group was');
 			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
@@ -318,8 +318,8 @@ if (!isset($_GET['SelectedAccountGroup']) and !isset($_POST['SelectedAccountGrou
 			<td>', $PandLText, '</td>
 			<td>', $MyRow['parentgroupcode'], '</td>
 			<td>', $MyRow['parentgroupname'], '</td>
-			<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'] . '?SelectedAccountGroup=' . urlencode($MyRow['groupname']), ENT_QUOTES, 'UTF-8'), '">', _('Edit'), '</a></td>
-			<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'] . '?SelectedAccountGroup=' . urlencode($MyRow['groupname']), ENT_QUOTES, 'UTF-8'), '&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this account group?') . '\', \'Confirm Delete\', this);">', _('Delete'), '</a></td>
+			<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'] . '?SelectedAccountGroup=' . urlencode($MyRow['groupcode']), ENT_QUOTES, 'UTF-8'), '">', _('Edit'), '</a></td>
+			<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'] . '?SelectedAccountGroup=' . urlencode($MyRow['groupcode']), ENT_QUOTES, 'UTF-8'), '&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this account group?') . '\', \'Confirm Delete\', this);">', _('Delete'), '</a></td>
 		</tr>';
 
 	} //END WHILE LIST LOOP
@@ -348,7 +348,7 @@ if (!isset($_GET['delete'])) {
 						pandl,
 						parentgroupcode
 				FROM accountgroups
-				WHERE groupname='" . $_GET['SelectedAccountGroup'] . "'";
+				WHERE groupcode='" . $_GET['SelectedAccountGroup'] . "'";
 
 		$ErrMsg = _('An error occurred in retrieving the account group information');
 		$DbgMsg = _('The SQL that was used to retrieve the account group and that failed in the process was');

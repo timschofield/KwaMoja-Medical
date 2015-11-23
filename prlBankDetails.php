@@ -122,7 +122,7 @@ if (isset($_POST['insert']) or isset($_POST['update'])) {
 
 if (!isset($employeeid)) {
 	/* If there is no employee id set then show an input form */
-	echo '<form onSubmit="VerifyForm(this)" method="post" class="noPrint" id="BankDetails" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
+	echo '<form method="post" class="noPrint" id="BankDetails" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table>
 			<tr>
@@ -173,7 +173,7 @@ if (isset($_GET['employeeid']) and (!isset($_GET['delete']))) {
 					ON prlemployeemaster.employeeid=prlbankdetails.employeeid
 				    WHERE prlemployeemaster.employeeid='" . $employeeid . "'";
 	$result = DB_query($sql);
-	echo '<form onSubmit="VerifyForm(this)" method="post" class="noPrint" id="BankDetails" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
+	echo '<form method="post" class="noPrint" id="BankDetails" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table>';
 

@@ -121,7 +121,7 @@ if (isset($_GET['Edit'])) {
 	$_POST['Frequency'] = '';
 }
 
-echo '<form onSubmit="VerifyForm(this)" method="post" id="JobScheduler" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
+echo '<form method="post" id="JobScheduler" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 $Files = glob('*.php');

@@ -258,7 +258,7 @@ if ($CustomerRecord['dissallowinvoices'] != 0) {
 	echo '<br /><b><font color="red" size="4">', _('ACCOUNT ON HOLD'), '</font></b><br />';
 }
 
-echo '<form onSubmit="return VerifyForm(this);" action="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '" method="post" class="centre noPrint">
+echo '<form action="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '" method="post" class="centre noPrint">
 		<input name="FormID" type="hidden" value="', $_SESSION['FormID'], '" />',
 		_('Show all transactions after'), ':<input alt="', $_SESSION['DefaultDateFormat'], '" class="date" id="datepicker" maxlength="10" minlength="0" name="TransAfterDate" required="required" size="12" tabindex="1" type="text" value="', $_POST['TransAfterDate'], '" />',
 		'<input name="Refresh Inquiry" tabindex="3" type="submit" value="', _('Refresh Inquiry'), '" />

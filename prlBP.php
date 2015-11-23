@@ -102,7 +102,7 @@ if (isset($_POST['Submit'])) {
 
 //Bracket exists - either passed when calling the form or from the form itself
 
-echo '<form onSubmit="VerifyForm(this)" method="post" class="noPrint" id="BasicPay" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
+echo '<form method="post" class="noPrint" id="BasicPay" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 if (!isset($_POST["New"]) and isset($Bracket)) {

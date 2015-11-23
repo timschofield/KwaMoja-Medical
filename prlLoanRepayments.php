@@ -108,7 +108,7 @@ if (isset($_POST['Process'])) {
 }
 
 if (!isset($_POST['PayPeriodID'])) {
-	echo '<form onSubmit="VerifyForm(this)" method="post" class="noPrint" id="LoanDeductionForm" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
+	echo '<form method="post" class="noPrint" id="LoanDeductionForm" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table>';
 	echo '<tr>
@@ -149,7 +149,7 @@ if (!isset($_POST['PayPeriodID'])) {
 					AND prlloanfile.loanbalance>0";
 	$Result = DB_query($SQL);
 
-	echo '<form onSubmit="VerifyForm(this)" method="post" class="noPrint" id="LoanDeductionForm" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
+	echo '<form method="post" class="noPrint" id="LoanDeductionForm" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<input type="hidden" name="PayPeriodID" value="' . $_POST['PayPeriodID'] . '" />';
 	echo '<input type="hidden" name="PayrollDate" value="' . $_POST['PayrollDate'] . '" />';

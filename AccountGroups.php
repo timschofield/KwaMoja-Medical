@@ -200,7 +200,7 @@ if (isset($_POST['submit'])) {
 	if ($MyRow['groups'] > 0) {
 		prnMsg(_('Cannot delete this account group because general ledger accounts have been created using this group'), 'warn');
 		echo '<br />' . _('There are') . ' ' . $MyRow['groups'] . ' ' . _('general ledger accounts that refer to this account group');
-		echo '<form onSubmit="VerifyForm(this)" method="post" id="AccountGroups" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
+		echo '<form method="post" id="AccountGroups" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 		echo '<input type="hidden" name="OriginalAccountGroup" value="' . $_GET['SelectedAccountGroup'] . '" />';
@@ -335,7 +335,7 @@ if (isset($_POST['SelectedAccountGroup']) or isset($_GET['SelectedAccountGroup']
 } //isset($_POST['SelectedAccountGroup']) or isset($_GET['SelectedAccountGroup'])
 
 if (!isset($_GET['delete'])) {
-	echo '<form onSubmit="return VerifyForm(this)" method="post" id="AccountGroups" action="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '">';
+	echo '<form method="post" id="AccountGroups" action="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '">';
 	echo '<input type="hidden" name="FormID" value="', $_SESSION['FormID'], '" />';
 
 	if (isset($_GET['SelectedAccountGroup'])) {

@@ -166,7 +166,7 @@ if (isset($_POST['submit'])) {
 											parentgroupcode,
 											parentgroupname
 										) VALUES (
-											'" . DB_escape_string($_POST['GroupName']) . "',
+											'" . $_POST['GroupName'] . "',
 											'" . $_POST['GroupCode'] . "',
 											'" . $_POST['SectionInAccounts'] . "',
 											'" . $_POST['SequenceInTB'] . "',

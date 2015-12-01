@@ -156,8 +156,7 @@ if (!isset($_GET['TypeID']) or !isset($_GET['TransNo'])) {
 					echo '	<td>', $AccountName, '</td>
 							<td>', $AccountName, '</td>';
 				} else {
-					echo '	<td><a href="', $URL, '">', $AccountName, '</a></td>
-							<td>', $TransRow['narrative'], '</td>';
+					echo '	<td><a href="', $URL, '">', $AccountName, '</a></td>';
 				}
 
 				echo '	<td class="number">', $DebitAmount, '</td>

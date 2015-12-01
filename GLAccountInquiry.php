@@ -70,9 +70,9 @@ $SQL = "SELECT chartmaster.accountcode,
 			   chartmaster.accountname
 		FROM chartmaster
 		INNER JOIN glaccountusers ON glaccountusers.accountcode=chartmaster.accountcode AND glaccountusers.userid='" .  $_SESSION['UserID'] . "' AND glaccountusers.canview=1
-		WHERE accountcode<>'" . $_SESSION['CompanyRecord']['retainedearnings'] . "'
+		WHERE chartmaster.accountcode<>'" . $_SESSION['CompanyRecord']['retainedearnings'] . "'
 		ORDER BY chartmaster.accountcode";
-
+echo $SQL;
 $Account = DB_query($SQL);
 while ($MyRow = DB_fetch_array($Account)) {
 	if (isset($SelectedAccount) and $MyRow['accountcode'] == $SelectedAccount) {

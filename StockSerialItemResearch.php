@@ -22,11 +22,7 @@ echo '<form id="SerialNoResearch" method="post" action="' . htmlspecialchars($_S
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 echo _('Serial Number') . ': <input id="serialno" type="text" name="serialno" size="21" required="required" maxlength="20" value="' . $SerialNo . '" /> &nbsp;<input type="submit" name="submit" value="' . _('Search') . '" />
-</form>';
-
-echo '<script  type="text/javascript">
-		document.getElementById("serialno").focus();
-	</script>';
+</form><br />';
 
 if ($SerialNo != '') {
 	//the point here is to allow a semi fuzzy search, but still keep someone from killing the db server
@@ -65,7 +61,7 @@ if ($SerialNo != '') {
 				INNER JOIN locations
 					on stockmoves.loccode = locations.loccode
 				INNER JOIN locationusers
-					ON locationusers.loccode=l.loccode
+					ON locationusers.loccode=locations.loccode
 					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
 					AND locationusers.canview=1
 				WHERE stockserialitems.serialno " . LIKE . " '" . $SerialNo . "'
@@ -108,7 +104,6 @@ if ($SerialNo != '') {
 		echo '</table>';
 	} // ELSE THERE WHERE ROWS
 } //END OF POST IS SET
-echo '</div>';
 
 include('includes/footer.inc');
 ?>

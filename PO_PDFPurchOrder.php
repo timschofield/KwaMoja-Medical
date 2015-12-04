@@ -389,7 +389,6 @@ else {
 	/*the user has just gone into the page need to ask the question whether to print the order or email it to the supplier */
 	include('includes/header.inc');
 	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	if ($ViewingOnly == 1) {
 		echo '<input type="hidden" name="ViewingOnly" value="1" />';
@@ -453,7 +452,10 @@ else {
 					}
 				} //mb_strlen($ContactDetails['email']) > 2 and mb_strpos($ContactDetails['email'], '@') > 0
 			} //$ContactDetails = DB_fetch_array($ContactsResult)
-			echo '</select></td></tr></table>';
+			echo '</select>
+					</td>
+				</tr>
+			</table>';
 		} //DB_num_rows($ContactsResult) > 0
 		else {
 			echo '</table><br />';
@@ -464,12 +466,10 @@ else {
 	else {
 		echo '</table>';
 	}
-	echo '<br />
-		 <div class="centre">
+	echo '<div class="centre">
 			  <input type="submit" name="DoIt" value="' . _('OK') . '" />
-		 </div>
-		 </div>
-		 </form>';
+		</div>
+	</form>';
 
 	include('includes/footer.inc');
 }

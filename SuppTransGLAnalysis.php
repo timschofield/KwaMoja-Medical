@@ -143,7 +143,6 @@ if ($_SESSION['SuppTrans']->InvoiceOrCredit == 'Invoice') {
 
 /*Set up a form to allow input of new GL entries */
 echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 echo '<br />
@@ -222,7 +221,6 @@ echo '<div class="centre">
 		<input type="submit" name="AddGLCodeToTrans" value="' . _('Enter GL Line') . '" />
 	</div>';
 
-echo '</div>
-	  </form>';
+echo '</form>';
 include('includes/footer.inc');
 ?>

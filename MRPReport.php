@@ -723,7 +723,6 @@ if (isset($_POST['Search']) or isset($_POST['Go']) or isset($_POST['Next']) or i
 /* display list if there is more than one record */
 if (isset($searchresult) and !isset($_POST['Select'])) {
 	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	$ListCount = DB_num_rows($searchresult);
 	if ($ListCount > 0) {
@@ -799,9 +798,7 @@ if (isset($searchresult) and !isset($_POST['Select'])) {
 		}
 		//end of while loop
 		echo '</table>
-			</div>
-			</form>
-			<br />';
+			</form>';
 	}
 
 	include('includes/footer.inc');

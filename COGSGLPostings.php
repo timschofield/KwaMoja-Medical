@@ -219,10 +219,7 @@ if (isset($SelectedCOGSPostingID)) {
 	echo '<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Show all cost of sales posting records') . '</a></div>';
 }
 
-echo '<br />';
-
 echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 if (isset($SelectedCOGSPostingID)) {
@@ -342,15 +339,14 @@ while ($MyRow = DB_fetch_array($Result)) {
 
 DB_free_result($Result);
 
-echo '</select></td>
-	</tr>
+echo '</select>
+			</td>
+		</tr>
 	</table>
-	<br />
 	<div class="centre">
 		<input tabindex="5" type="submit" name="submit" value="' . _('Enter Information') . '" />
 	</div>
-	</div>
-	</form>';
+</form>';
 
 include('includes/footer.inc');
 ?>

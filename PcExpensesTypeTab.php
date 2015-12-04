@@ -106,7 +106,6 @@ if (!isset($SelectedTab)) {
 	links to delete or edit each. These will call the same page again and allow update/input
 	or deletion of the records*/
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table class="selection">'; //Main table
 
@@ -135,20 +134,20 @@ if (!isset($SelectedTab)) {
 	echo '</table>'; // close main table
 	DB_free_result($Result);
 
-	echo '<br /><div class="centre"><input type="submit" name="Process" value="' . _('Accept') . '" />
-				<input type="submit" name="Cancel" value="' . _('Cancel') . '" /></div>';
+	echo '<div class="centre">
+			<input type="submit" name="Process" value="' . _('Accept') . '" />
+			<input type="submit" name="Cancel" value="' . _('Cancel') . '" />
+		</div>';
 
-	echo '</div>
-		  </form>';
+	echo '</form>';
 
 }
 
 //end of ifs and buts!
 if (isset($_POST['process']) or isset($SelectedTab)) {
 
-	echo '<br /><div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Expense Codes for Type of Tab ') . ' ' . $SelectedTab . '</a></div>';
+	echo '<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Expense Codes for Type of Tab ') . ' ' . $SelectedTab . '</a></div>';
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	echo '<input type="hidden" name="SelectedTab" value="' . $SelectedTab . '" />';
@@ -162,8 +161,7 @@ if (isset($_POST['process']) or isset($SelectedTab)) {
 
 	$Result = DB_query($SQL);
 
-	echo '<br />
-			<table class="selection">';
+	echo '<table class="selection">';
 	echo '<tr>
 			<th colspan="3"><h3>' . _('Expense Codes for Type of Tab ') . ' ' . $SelectedTab . '</h3></th>
 		</tr>
@@ -194,7 +192,7 @@ if (isset($_POST['process']) or isset($SelectedTab)) {
 	if (!isset($_GET['delete'])) {
 
 
-		echo '<br /><table  class="selection">'; //Main table
+		echo '<table  class="selection">'; //Main table
 
 		echo '<tr>
 				<td>' . _('Select Expense Code') . ':</td>
@@ -218,16 +216,19 @@ if (isset($_POST['process']) or isset($SelectedTab)) {
 
 		} //end while loop
 
-		echo '</select></td></tr>';
+		echo '</select>
+				</td>
+			</tr>';
 
 		echo '</table>'; // close main table
 		DB_free_result($Result);
 
-		echo '<br /><div class="centre"><input type="submit" name="submit" value="' . _('Accept') . '" />
-									<input type="submit" name="Cancel" value="' . _('Cancel') . '" /></div>';
+		echo '<div class="centre">
+				<input type="submit" name="submit" value="' . _('Accept') . '" />
+				<input type="submit" name="Cancel" value="' . _('Cancel') . '" />
+			</div>';
 
-		echo '</div>
-			  </form>';
+		echo '</form>';
 
 	} // end if user wish to delete
 }

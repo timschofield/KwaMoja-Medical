@@ -758,7 +758,6 @@ function submit($PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $Supplie
 			echo '</table>';
 		} // End of if ($_POST['ReportType']
 		echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
-		echo '<div>';
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 		echo '<input type="hidden" name="ReportType" value="' . $_POST['ReportType'] . '" />';
 		echo '<input type="hidden" name="DateType" value="' . $_POST['DateType'] . '" />';
@@ -775,9 +774,8 @@ function submit($PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $Supplie
 		echo '<input type="hidden" name="Category" value="' . $_POST['Category'] . '" />';
 		echo '<input type="hidden" name="SortBy" value="' . $_POST['SortBy'] . '" />';
 		echo '<input type="hidden" name="SummaryType" value="' . $_POST['SummaryType'] . '" />';
-		echo '<br /><div class="centre"><input type="submit" name="submitcsv" value="' . _('Export as csv file') . '" /></div>';
-		echo '</div>
-			  </form>';
+		echo '<div class="centre"><input type="submit" name="submitcsv" value="' . _('Export as csv file') . '" /></div>';
+		echo '</form>';
 	} // End of if inputerror != 1
 } // End of function submit()
 
@@ -1331,7 +1329,6 @@ function display() //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
 	// the page is called.
 
 	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	echo '<table class="selection">
@@ -1469,17 +1466,17 @@ function display() //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
 			<td>&nbsp;</td>
 		</tr>';
 
-	echo '<tr><td>&nbsp;</td></tr>
+	echo '<tr>
+			<td>&nbsp;</td>
+		</tr>
 		<tr>
-		<td colspan="4"><div class="centre"><input type="submit" name="submit" value="' . _('Run Inquiry') . '" /></div></td>
-	</tr>
-	<tr>
-		<td colspan="4"><div class="centre"><input type="submit" name="submitcsv" value="' . _('Export as csv file') . '" /></div></td>
-	</tr>
-	</table>
-	<br/>';
-	echo '</div>
-		 </form>';
+			<td colspan="4"><div class="centre"><input type="submit" name="submit" value="' . _('Run Inquiry') . '" /></div></td>
+		</tr>
+		<tr>
+			<td colspan="4"><div class="centre"><input type="submit" name="submitcsv" value="' . _('Export as csv file') . '" /></div></td>
+		</tr>
+	</table>';
+	echo '</form>';
 
 } // End of function display()
 

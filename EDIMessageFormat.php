@@ -96,7 +96,6 @@ if (isset($Msg)) {
 }
 
 echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 echo '<br />
@@ -151,12 +150,11 @@ if (!isset($SelectedMessageLine)) {
 				</tr>', $MyRow[1], $MyRow[2], $MyRow[3], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $MyRow[0], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), $MyRow[0]);
 
 	} //END WHILE LIST LOOP
-	echo '</table><br />';
+	echo '</table>';
 	if (DB_num_rows($Result) == 0) {
 		echo '<div class="centre">
 				<input tabindex="1" type="submit" name="NewEDIInvMsg" value="' . _('Create New EDI Invoice Message From Default Template') . '" />
-			</div>
-			<br />';
+			</div>';
 	}
 } //end of ifs SelectedLine is not set
 
@@ -240,13 +238,12 @@ echo '<tr><td>' . _('Line Text') . ':' . '</td>';
 echo '<td>';
 echo '<input tabindex="4" type="text" name="LineText" size="50" maxlength="50" value="' . $_POST['LineText'] . '" />';
 echo '</td></tr>';
-echo '</table><br />';
+echo '</table>';
 if (isset($_GET['SelectedMessageLine'])) {
 	echo '<div class="centre"><input tabindex="5" type="submit" name="update" value="' . _('Update Information') . '" /></div>';
 } else {
 	echo '<div class="centre"><input tabindex="5" type="submit" name="submit" value="' . _('Enter Information') . '" /></div>';
 }
-echo '</div>';
 echo '</form>';
 
 include('includes/footer.inc');

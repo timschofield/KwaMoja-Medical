@@ -18,7 +18,6 @@ $Result = DB_query($SQL);
 $PrintHeader = TRUE;
 if (DB_num_rows($Result) != 0) {
 	echo '<p class="page_title_text"  align="center"><strong>' . _('Current Items without picture') . '</strong></p>';
-	echo '<div>';
 	echo '<table class="selection">';
 	$k = 0; //row colour counter
 	$i = 1;
@@ -49,9 +48,7 @@ if (DB_num_rows($Result) != 0) {
 			++$i;
 		}
 	}
-	echo '</table>
-	</div>
-	</form>';
+	echo '</table>';
 }
 include('includes/footer.inc');
 ?>

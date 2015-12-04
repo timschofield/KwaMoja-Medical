@@ -246,7 +246,6 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['PrintPDFAndProcess'])) and isset
 	$MyRow = DB_fetch_array($Result);
 
 	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table class="selection">';
 
@@ -370,8 +369,7 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['PrintPDFAndProcess'])) and isset
 				<input type="submit" name="PrintPDF" value="' . _('Print PDF Only') . '" />
 				<input type="submit" name="PrintPDFAndProcess" value="' . _('Print and Process Payments') . '" />
 			</div>';
-	echo '</div>
-		  </form>';
+	echo '</form>';
 	include('includes/footer.inc');
 }
 /*end of else not PrintPDF */

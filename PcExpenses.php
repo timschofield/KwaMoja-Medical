@@ -236,9 +236,7 @@ if (isset($SelectedExpense)) {
 if (!isset($_GET['delete'])) {
 
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-	echo '<br />'; //Main table
 
 	// The user wish to EDIT an existing type
 	if (isset($SelectedExpense) and $SelectedExpense != '') {
@@ -335,14 +333,12 @@ if (!isset($_GET['delete'])) {
 	echo '</table>'; // close main table
 	DB_free_result($Result);
 
-	echo '<br />
-		<div class="centre">
+	echo '<div class="centre">
 			<input type="submit" name="submit" value="' . _('Accept') . '" />
 			<input type="submit" name="Cancel" value="' . _('Cancel') . '" />
 		</div>';
 
-	echo '</div>
-		  </form>';
+	echo '</form>';
 
 } // end if user wish to delete
 

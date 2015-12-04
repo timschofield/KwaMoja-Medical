@@ -67,9 +67,8 @@ if (isset($_POST['submit'])) {
 }
 
 echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-echo '<br /><table class="selection">';
+echo '<table class="selection">';
 
 $SQL = "SELECT debtorno,
 		name,
@@ -88,13 +87,16 @@ $Result = DB_query($SQL, $ErrMsg);
 
 $MyRow = DB_fetch_array($Result);
 
-echo '<tr><td>' . _('Customer Code') . ':</td>
+echo '<tr>
+		<td>' . _('Customer Code') . ':</td>
 		<td>' . $_SESSION['CustomerID'] . '</td>
-		</tr>';
-echo '<tr><td>' . _('Customer Name') . ':</td>
+	</tr>';
+echo '<tr>
+		<td>' . _('Customer Name') . ':</td>
 		<td>' . $MyRow['name'] . '</td>
-		</tr>';
-echo '<tr><td>' . _('Enable Sending of EDI Invoices') . ':</td>
+	</tr>';
+echo '<tr>
+		<td>' . _('Enable Sending of EDI Invoices') . ':</td>
 		<td><select tabindex="1" name="EDIInvoices">';
 
 if ($MyRow['ediinvoices'] == 0) {
@@ -109,8 +111,9 @@ if ($MyRow['ediinvoices'] == 0) {
 echo '</select><a href="' . $RootPath . '/EDIMessageFormat.php?MessageType=INVOIC&amp;PartnerCode=' . urlencode($_SESSION['CustomerID']) . '">' . _('Create') . '/' . _('Edit Invoice Message Format') . '</a></td>
 	</tr>';
 
-echo '<tr><td>' . _('Enable Receiving of EDI Orders') . ':</td>
-	<td><select tabindex="2" name="EDIOrders">';
+echo '<tr>
+		<td>' . _('Enable Receiving of EDI Orders') . ':</td>
+		<td><select tabindex="2" name="EDIOrders">';
 
 if ($MyRow['ediorders'] == 0) {
 
@@ -157,8 +160,9 @@ if ($MyRow['editransport'] == 'ftp') {
 }
 
 echo '</table>
-		<br /><div class="centre"><input tabindex="8" type="submit" name="submit" value="' . _('Update EDI Configuration') . '" /></div>
-	</div>
+		<div class="centre">
+			<input tabindex="8" type="submit" name="submit" value="' . _('Update EDI Configuration') . '" />
+		</div>
 	</form>';
 
 include('includes/footer.inc');

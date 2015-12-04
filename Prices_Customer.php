@@ -290,7 +290,6 @@ if (DB_num_rows($Result) == 0) {
 echo '</table></td></tr></table><br />';
 
 echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 echo '<input type="hidden" name="Item" value="' . $Item . '" />';
 
@@ -357,12 +356,10 @@ echo '<tr><td>' . _('Price') . ':</td>
 	</table>';
 
 
-echo '<br />
-		<div class="centre">
-			<input type="submit" name="submit" value="' . _('Enter Information') . '" />
-		</div>
-		</div>
-		</form>';
+echo '<div class="centre">
+		<input type="submit" name="submit" value="' . _('Enter Information') . '" />
+	</div>
+</form>';
 
 include('includes/footer.inc');
 exit;

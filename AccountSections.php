@@ -111,7 +111,7 @@ if (isset($_POST['submit'])) {
 	$MyRow = DB_fetch_array($Result);
 	if ($MyRow['sections'] > 0) {
 		prnMsg(_('Cannot delete this account section because general ledger accounts groups have been created using this section'), 'warn');
-		echo '<div>';
+		echo '<div class="centre">';
 		echo '<br />' . _('There are') . ' ' . $MyRow['sections'] . ' ' . _('general ledger accounts groups that refer to this account section');
 		echo '</div>';
 

@@ -23,8 +23,7 @@ $SQL = "SELECT script,
 
 $Result = DB_query($SQL);
 
-echo '<br /><form method="post" id="PageSecurity" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-echo '<div>';
+echo '<form method="post" id="PageSecurity" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 echo '<table class="selection">';
@@ -51,12 +50,10 @@ while ($MyRow = DB_fetch_array($Result)) {
 	DB_data_seek($TokenResult, 0);
 }
 
-echo '</table><br />';
+echo '</table>';
 
 echo '<div class="centre">
 		<input type="submit" name="Update" value="' . _('Update Security Levels') . '" />
-	</div>
-	<br />
 	</div>
 	</form>';
 

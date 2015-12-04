@@ -33,7 +33,6 @@ if (isset($_GET['AssetID'])) {
 	$SQL = "SELECT categoryid, categorydescription FROM fixedassetcategories";
 	$Result = DB_query($SQL);
 	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	echo '<table class="selection"><tr>';
@@ -96,12 +95,12 @@ if (isset($_GET['AssetID'])) {
 		echo '<input type="text" name="AssetID" size="15" maxlength="40" />';
 	}
 
-	echo '</td></tr></table><br />';
+	echo '</td></tr></table>';
 
-	echo '<div class="centre"><input type="submit" name="Search" value="' . _('Search Now') . '" /></div>
-		  </div>
-		  </form>
-		  <br />';
+	echo '<div class="centre">
+			<input type="submit" name="Search" value="' . _('Search Now') . '" />
+		</div>
+	</form>';
 }
 
 if (isset($_POST['Search'])) {

@@ -312,7 +312,6 @@ if (!isset($_GET['delete'])) {
 	$MyRow = DB_fetch_array($Result);
 	$ReportHeading = $MyRow['reportheading'];
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<input type="hidden" name="ReportHeading" value="' . $ReportHeading . '" />';
 	echo '<input type="hidden" name="ReportID" value="' . $ReportID . '" />';
@@ -527,12 +526,10 @@ if (!isset($_GET['delete'])) {
 
 	echo '</table>';
 
-	echo '<br />
-			<div class="centre">
-				<input type="submit" name="submit" value="' . _('Enter Information') . '" />
-			</div>
+	echo '<div class="centre">
+			<input type="submit" name="submit" value="' . _('Enter Information') . '" />
 		</div>
-		</form>';
+	</form>';
 
 } //end if record deleted no point displaying form to add record
 

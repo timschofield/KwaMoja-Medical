@@ -855,7 +855,6 @@ echo '</b>&nbsp;' . _('Customer Name') . ' :<b> ' . $_SESSION['Items' . $Identif
 
 
 echo '<form action="' . $_SERVER['PHP_SELF'] . '?identifier=' . $Identifier . '" method="post">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 
@@ -1214,7 +1213,7 @@ echo '</select></td></tr>';
 
 echo '</table>';
 
-echo '<br /><div class="centre"><input type="submit" name="BackToLineDetails" value="' . _('Modify Order Lines') . '" /><br />';
+echo '<div class="centre"><input type="submit" name="BackToLineDetails" value="' . _('Modify Order Lines') . '" /><br />';
 
 if ($_SESSION['ExistingOrder' . $Identifier] == 0) {
 	echo '<br /><br /><input type="submit" name="ProcessOrder" value="' . _('Place Order') . '" />';
@@ -1225,7 +1224,6 @@ else {
 }
 
 echo '</div>
-	  </div>
 	  </form>';
 include('includes/footer.inc');
 ?>

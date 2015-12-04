@@ -121,7 +121,6 @@ if (isset($_POST['submit'])) {
 }
 
 echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 echo '<table class="selection">
@@ -265,10 +264,8 @@ foreach ($LanguagesArray as $LanguageEntry => $LanguageName) {
 echo '</select></td>
 	</tr>
 	</table>
-	<br />
 	<div class="centre">
 		<input type="submit" name="submit" value="' . _('Enter Information') . '" />
-	</div>
 	</div>
 	</form>';
 

@@ -254,7 +254,6 @@ if (isset($SearchResult) and !isset($_POST['Select'])) {
 		echo '</form>';
 
 		echo '<form action="FixedAssetItems.php" method="post">';
-		echo '<div>';
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 		echo '<table class="selection">
 				<tr>
@@ -284,8 +283,7 @@ if (isset($SearchResult) and !isset($_POST['Select'])) {
 		}
 		//end of while loop
 		echo '</table>';
-		echo '</div>
-		  </form>';
+		echo '</form>';
 	} // there were records to list
 }
 /* end display list if there is more than one record */

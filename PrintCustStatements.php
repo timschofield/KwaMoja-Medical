@@ -497,7 +497,6 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 		$MyRow = DB_fetch_array($Result);
 
 		echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
-		echo '<div>';
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 		echo '<table class="selection">';
@@ -510,11 +509,10 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 				<td><input type="text" required="required" maxlength="10" size="7" name="ToCust" value="' . $MyRow['tocriteria'] . '" /></td>
 			</tr>
 		</table>';
-		echo '<br /><div class="centre">
+		echo '<div class="centre">
 				<input type="submit" name="PrintPDF" value="' . _('Print All Statements in the Range Selected') . '" />
 			</div>';
-		echo '</div>
-			  </form>';
+		echo '</form>';
 	}
 	echo '<br /><br /><br />';
 	include('includes/footer.inc');

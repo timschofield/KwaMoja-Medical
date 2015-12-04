@@ -604,8 +604,7 @@ if (!isset($_POST['PostInvoice'])) {
 		</tr>
 		</table>';
 
-	echo '<br /><form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" id="form1">';
-	echo '<div>';
+	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" id="form1">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	echo '<br /><table class="selection">';
@@ -624,8 +623,7 @@ if (!isset($_POST['PostInvoice'])) {
 	</tr>
 	</table>';
 
-	echo '<br />
-		<div class="centre">
+	echo '<div class="centre">
 			<input type="submit" name="GRNS" value="' . _('Purchase Orders') . '" />
 			<input type="submit" name="Shipts" value="' . _('Shipments') . '" />
 			<input type="submit" name="Contracts" value="' . _('Contracts') . '" /> ';
@@ -642,8 +640,7 @@ if (!isset($_POST['PostInvoice'])) {
 		/*if there are any GRNs selected for invoicing then */
 		/*Show all the selected GRNs so far from the SESSION['SuppInv']->GRNs array */
 
-		echo '<br />
-				<table class="selection">
+		echo '<table class="selection">
 			<tr>
 				<th colspan="6">' . _('Purchase Order Charges') . '</th>
 			</tr>
@@ -926,8 +923,7 @@ if (!isset($_POST['PostInvoice'])) {
 				<input type="submit" name="PostInvoice" value="' . _('Enter Invoice') . '" />
 			</div>';
 
-	echo '</div>
-		  </form>';
+	echo '</form>';
 } //!isset($_POST['PostInvoice'])
 else { // $_POST['PostInvoice'] is set so do the postings -and dont show the button to process
 

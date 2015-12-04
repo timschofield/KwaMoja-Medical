@@ -9,7 +9,6 @@ $BookMark = 'RecurringSalesOrders';
 include('includes/header.inc');
 
 echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/customer.png" title="' . _('Inventory Items') . '" alt="" />' . ' ' . $Title . '</p>';
 
@@ -87,8 +86,7 @@ SUM(recurrsalesorderdetails.unitprice*recurrsalesorderdetails.quantity*(1-recurr
 
 	/*show a table of the orders returned by the SQL */
 
-	echo '<br />
-		<table cellpadding="2" width="90%" class="selection">
+	echo '<table cellpadding="2" width="90%" class="selection">
 			<tr>
 				<th>' . _('Modify') . '</th>
 				<th>' . _('Customer') . '</th>
@@ -133,8 +131,7 @@ SUM(recurrsalesorderdetails.unitprice*recurrsalesorderdetails.quantity*(1-recurr
 
 	echo '</table>';
 }
-echo '</div>
-	  </form>';
+echo '</form>';
 
 include('includes/footer.inc');
 ?>

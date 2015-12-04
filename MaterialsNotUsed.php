@@ -32,7 +32,6 @@ $Result = DB_query($SQL);
 echo '<p class="page_title_text" align="center"><strong>' . _('Raw Materials Not Used in any BOM') . '</strong></p>';
 if (DB_num_rows($Result) != 0) {
 	$TotalValue = 0;
-	echo '<div>';
 	echo '<table class="selection">
 			<tr>
 				<th>' . _('#') . '</th>
@@ -70,9 +69,7 @@ if (DB_num_rows($Result) != 0) {
 			<td class="number">%s</td>
 			</tr>', '', _('Total') . ':', locale_number_format($TotalValue, $_SESSION['CompanyRecord']['decimalplaces']));
 
-	echo '</table>
-			</div>
-			</form>';
+	echo '</table>';
 } else {
 	prnMsg(_('There are no raw materials to show in this inquiry'), 'info');
 }

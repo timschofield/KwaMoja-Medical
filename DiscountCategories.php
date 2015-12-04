@@ -75,7 +75,6 @@ if (isset($_POST['submit']) and !isset($_POST['SubmitCategory'])) {
 
 if (isset($_POST['SelectChoice'])) {
 	echo '<form id="update" method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	$SQL = "SELECT DISTINCT discountcategory FROM stockmaster WHERE discountcategory <>''";
@@ -96,14 +95,11 @@ if (isset($_POST['SelectChoice'])) {
 		echo '</select></td>';
 		echo '<td><input type="submit" name="select" value="' . _('Select') . '" /></td>
 			</tr>
-			</table>
-			<br />';
+			</table>';
 	}
-	echo '</div>
-		  </form>';
+	echo '</form>';
 
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<input type="hidden" name="ChooseOption" value="' . $_POST['ChooseOption'] . '" />';
 	echo '<input type="hidden" name="SelectChoice" value="' . $_POST['SelectChoice'] . '" />';
@@ -149,7 +145,7 @@ if (isset($_POST['SelectChoice'])) {
 
 		echo '</table>';
 
-		echo '<br /><div class="centre"><input type="submit" name="submit" value="' . _('Update Item') . '" /></div>';
+		echo '<div class="centre"><input type="submit" name="submit" value="' . _('Update Item') . '" /></div>';
 
 		if (isset($_POST['search'])) {
 			if ($_POST['PartID'] != '' and $_POST['PartDesc'] == '')
@@ -184,11 +180,15 @@ if (isset($_POST['SelectChoice'])) {
 		while ($MyRow = DB_fetch_array($Result)) {
 			echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categorydescription'] . '</option>';
 		}
-		echo '</select></td></tr></table>';
-		echo '<br /><div class="centre"><input type="submit" name="SubmitCategory" value="' . _('Update Items') . '" /></div>';
+		echo '</select>
+					</td>
+				</tr>
+			</table>';
+		echo '<div class="centre">
+				<input type="submit" name="SubmitCategory" value="' . _('Update Items') . '" />
+			</div>';
 	}
-	echo '</div>
-		  </form>';
+	echo '</form>';
 
 	if (!isset($_POST['DiscCat'])) {
 		/*set DiscCat to something to show results for first cat defined */

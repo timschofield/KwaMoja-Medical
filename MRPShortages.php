@@ -253,7 +253,6 @@ if (isset($_POST['PrintPDF'])) {
 	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Stock') . '" alt="" />' . ' ' . $Title . '</p>';
 
 	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table class="selection">';
 	echo '<tr><td>' . _('Inventory Category') . ':</td><td><select name="CategoryID">';
@@ -265,35 +264,38 @@ if (isset($_POST['PrintPDF'])) {
 	while ($MyRow = DB_fetch_array($Result)) {
 		echo '<option value="' . $MyRow['categoryid'] . '">' . $MyRow['categoryid'] . ' - ' . $MyRow['categorydescription'] . '</option>';
 	} //end while loop
-	echo '</select></td></tr>';
-	echo '<tr><td>' . _('Sort') . ':</td>
+	echo '</select>
+			</td>
+		</tr>';
+	echo '<tr>
+			<td>' . _('Sort') . ':</td>
 			<td><select name="Sort">
-				<option selected="selected" value="extcost">' . _('Extended Shortage Dollars') . '</option>
-				<option value="stockid">' . _('Part Number') . '</option>
+					<option selected="selected" value="extcost">' . _('Extended Shortage Dollars') . '</option>
+					<option value="stockid">' . _('Part Number') . '</option>
 				</select>
 			</td>
 		</tr>';
 
-	echo '<tr><td>' . _('Shortage-Excess Option') . ':</td>
+	echo '<tr>
+			<td>' . _('Shortage-Excess Option') . ':</td>
 			<td><select name="ReportType">
-				<option selected="selected" value="Shortage">' . _('Report MRP Shortages') . '</option>
-				<option value="Excess">' . _('Report MRP Excesses') . '</option>
+					<option selected="selected" value="Shortage">' . _('Report MRP Shortages') . '</option>
+					<option value="Excess">' . _('Report MRP Excesses') . '</option>
 				</select>
 			</td>
 		</tr>';
 
-	echo '<tr><td>' . _('Print Option') . ':</td>
+	echo '<tr>
+			<td>' . _('Print Option') . ':</td>
 			<td><select name="Fill">
-				<option selected="selected" value="yes">' . _('Print With Alternating Highlighted Lines') . '</option>
-				<option value="no">' . _('Plain Print') . '</option>
+					<option selected="selected" value="yes">' . _('Print With Alternating Highlighted Lines') . '</option>
+					<option value="no">' . _('Plain Print') . '</option>
 				</select>
 			</td>
 		</tr>';
 	echo '</table>
-		<br />
 		<div class="centre">
 			<input type="submit" name="PrintPDF" value="' . _('Print PDF') . '" />
-		</div>
 		</div>
 		</form>';
 

@@ -74,7 +74,6 @@ if (isset($_POST['EnterNewRequirement'])) {
 /* This is where the other requirement as entered/modified should be displayed reflecting any deletions or insertions*/
 
 echo '<form name="ContractReqtsForm" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '" method="post">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/contract.png" title="' . _('Contract Other Requirements') . '" alt="" />  ' . _('Contract Other Requirements') . ' - ' . $_SESSION['Contract' . $Identifier]->CustomerName . '</p>';
 
@@ -126,7 +125,6 @@ if (count($_SESSION['Contract' . $Identifier]->ContractReqts) > 0) {
 			<td class="number"><b>' . $DisplayTotal . '</b></td>
 		</tr>
 		</table>
-		<br />
 		<div class="centre">
 			<input type="submit" name="UpdateLines" value="' . _('Update Other Requirements Lines') . '" />
 			<input type="submit" name="BackToHeader" value="' . _('Back To Contract Header') . '" />
@@ -161,10 +159,8 @@ echo '<table class="selection">
 
 		</table>
 
-		<br />
 		<div class="centre">
 			<input type="submit" name="EnterNewRequirement" value="' . _('Enter New Contract Requirement') . '" />
-		</div>
 		</div>
 		</form>';
 

@@ -374,7 +374,6 @@ if (isset($_POST['Search']) or isset($_POST['Next']) or isset($_POST['Previous']
 /* Always do the stuff below */
 
 echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '" id="SelectParts" method="post">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 //Get The exchange rate used for GPPercent calculations on adding or amending items

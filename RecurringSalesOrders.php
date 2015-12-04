@@ -300,7 +300,6 @@ if (isset($_POST['Process'])) {
 
 echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/customer.png" title="' . _('Search') . '" alt="" /><b>' . ' ' . _('Recurring Order for Customer') . ' : ' . $_SESSION['Items' . $Identifier]->CustomerName . '</b></p>';
 echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '" method="post">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 echo '<table cellpadding="2" class="selection">';
@@ -498,11 +497,9 @@ if ($NewRecurringOrder == 'Yes') {
 
 	echo '<input type="submit" name="Process" value="' . _('Update Recurring Order Details') . '" />';
 	echo '<hr />';
-	echo '<br /><br /><input type="submit" name="DeleteRecurringOrder" value="' . _('Delete Recurring Order') . ' ' . $_POST['ExistingRecurrOrderNo'] . '" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this recurring order template?') . '\');" />';
+	echo '<input type="submit" name="DeleteRecurringOrder" value="' . _('Delete Recurring Order') . ' ' . $_POST['ExistingRecurrOrderNo'] . '" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this recurring order template?') . '\');" />';
 }
 
-echo '</div>';
-echo '</div>
-	  </form>';
+echo '</form>';
 include('includes/footer.inc');
 ?>

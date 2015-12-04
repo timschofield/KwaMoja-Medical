@@ -346,7 +346,6 @@ if (isset($_GET['GRNNo']) and isset($_POST['SupplierID'])) {
 
 } else {
 	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	if (!isset($_POST['RecdAfterDate']) or !is_date($_POST['RecdAfterDate'])) {
@@ -359,12 +358,10 @@ if (isset($_GET['GRNNo']) and isset($_POST['SupplierID'])) {
 			<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="RecdAfterDate" value="' . $_POST['RecdAfterDate'] . '" required="required" maxlength="10" size="10" /></td>
 		</tr>
 		</table>
-		<br />
 		<div class="centre">
 			<input type="submit" name="ShowGRNS" value="' . _('Show Outstanding Goods Received') . '" />
 		</div>';
-	echo '</div>
-		  </form>';
+	echo '</form>';
 
 	if (isset($_POST['ShowGRNS'])) {
 

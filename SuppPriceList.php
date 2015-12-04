@@ -207,9 +207,7 @@ if (isset($_POST['PrintPDF'])) {
 	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Purchase') . '" alt="" />' . ' ' . _('Supplier Price List') . '</p>';
 	echo '<div class="page_help_text">' . _('View the Price List from supplier') . '</div><br />';
 
-	echo '<br/>
-		<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
-	echo '<div>';
+	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	$SQL = "SELECT supplierid,suppname FROM `suppliers`";
@@ -260,8 +258,7 @@ if (isset($_POST['PrintPDF'])) {
 				<input type="submit" name="PrintPDF" value="' . _('Print PDF') . '" />
 			</div>';
 
-	echo '</div>
-		  </form>';
+	echo '</form>';
 	include('includes/footer.inc');
 
 }

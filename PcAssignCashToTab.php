@@ -156,7 +156,6 @@ if (!isset($SelectedTabs)) {
 	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/money_add.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
 
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	$SQL = "SELECT tabcode
@@ -184,13 +183,11 @@ if (!isset($SelectedTabs)) {
 	echo '</table>'; // close main table
 	DB_free_result($Result);
 
-	echo '<br />
-		<div class="centre">
+	echo '<div class="centre">
 			<input type="submit" name="Process" value="' . _('Accept') . '" />
 			<input type="submit" name="Cancel" value="' . _('Cancel') . '" />
 		</div>';
-	echo '</div>
-		  </form>';
+	echo '</form>';
 }
 
 //end of ifs and buts!
@@ -322,7 +319,6 @@ if (isset($_POST['Process']) or isset($SelectedTabs)) {
 		}
 
 		echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-		echo '<div>';
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 		if (isset($_GET['edit'])) {
 
@@ -396,12 +392,12 @@ if (isset($_POST['Process']) or isset($SelectedTabs)) {
 		echo '<input type="hidden" name="SelectedTabs" value="' . $SelectedTabs . '" />';
 		echo '<input type="hidden" name="Days" value="' . $Days . '" />';
 
-		echo '<br /><div class="centre">
+		echo '<div class="centre">
 				<input type="submit" name="submit" value="' . _('Accept') . '" />
-				<input type="submit" name="Cancel" value="' . _('Cancel') . '" /></div>';
+				<input type="submit" name="Cancel" value="' . _('Cancel') . '" />
+			</div>';
 
-		echo '</div>
-			  </form>';
+		echo '</form>';
 
 	} // end if user wish to delete
 }

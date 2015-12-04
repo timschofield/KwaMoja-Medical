@@ -271,10 +271,8 @@ if (isset($_POST['CommitDepreciation']) and $InputError == false) {
 	include('includes/GLPostings.inc');
 } else {
 	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" id="form">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-	echo '<br />
-		<table class="selection" width="30%">
+	echo '<table class="selection" width="30%">
 		<tr>';
 	if ($AllowUserEnteredProcessDate) {
 		echo '<td>' . _('Date to Process Depreciation') . ':</td>
@@ -286,8 +284,6 @@ if (isset($_POST['CommitDepreciation']) and $InputError == false) {
 	echo '<td><div class="centre"><input type="submit" name="CommitDepreciation" value="' . _('Commit Depreciation') . '" /></div></td>
 		</tr>
 		</table>
-		<br />
-		</div>
 		</form>';
 }
 include('includes/footer.inc');

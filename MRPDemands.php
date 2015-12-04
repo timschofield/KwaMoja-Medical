@@ -83,7 +83,6 @@ function search(&$StockId) { //####SEARCH_SEARCH_SEARCH_SEARCH_SEARCH_SEARCH_SEA
 	// If the SELECT found records, display them
 	if (DB_num_rows($Result) > 0) {
 		echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
-		echo '<div>';
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 		echo '<table cellpadding="2" class="selection">
 				<tr>
@@ -109,7 +108,6 @@ function search(&$StockId) { //####SEARCH_SEARCH_SEARCH_SEARCH_SEARCH_SEARCH_SEA
 		} //end of while loop
 
 		echo '</table>';
-		echo '</div>';
 		echo '</form>';
 
 	} else {
@@ -263,7 +261,6 @@ function listall($part, $DemandType) { //####LISTALL_LISTALL_LISTALL_LISTALL_LIS
 	// demandtype
 
 	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	$where = " ";
 	if ($DemandType) {
@@ -298,22 +295,24 @@ function listall($part, $DemandType) { //####LISTALL_LISTALL_LISTALL_LISTALL_LIS
 	while ($MyRow = DB_fetch_array($Result)) {
 		$displaydate = ConvertSQLDate($MyRow[4]);
 		$ctr++;
-		echo '<tr><td>' . $MyRow['stockid'] . '</td>
+		echo '<tr>
+				<td>' . $MyRow['stockid'] . '</td>
 				<td>' . $MyRow['description'] . '</td>
 				<td>' . $MyRow['mrpdemandtype'] . '</td>
 				<td>' . locale_number_format($MyRow['quantity'], $MyRow['decimalplaces']) . '</td>
 				<td>' . $displaydate . '</td>
 				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?DemandID=' . $MyRow['demandid'] . '&amp;StockID=' . $MyRow['stockid'] . '">' . _('Edit') . '</a></td>
 				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?DemandID=' . $MyRow['demandid'] . '&amp;StockID=' . $MyRow['stockid'] . '&amp;delete=yes" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this demand?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-				</tr>';
+			</tr>';
 	}
 
 	//END WHILE LIST LOOP
-	echo '<tr><td>' . _('Number of Records') . '</td>
-				<td>' . $ctr . '</td></tr>';
+	echo '<tr>
+			<td>' . _('Number of Records') . '</td>
+			<td>' . $ctr . '</td>
+		</tr>';
 	echo '</table>';
-	echo '</div>';
-	echo '</form><br/><br/><br/><br/>';
+	echo '</form>';
 	unset($StockId);
 	display($StockId, $DemandID);
 
@@ -326,7 +325,6 @@ function display(&$StockId, &$DemandID) { //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_
 	// the page is called, and is also invoked at the end of all of the other functions.
 	// echo "<br/>DISPLAY - DemandID = $DemandID<br/>";
 	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	if (!isset($StockId)) {
 		echo '<table cellpadding="3" class="selection"><tr>
@@ -415,7 +413,6 @@ function display(&$StockId, &$DemandID) { //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_
 		echo '</select></td>
 			</tr>
 			</table>
-			<br />
 			<div class="centre">
 				<input type="submit" name="submit" value="' . _('Enter Information') . '" />&nbsp;&nbsp;
 				<input type="submit" name="listsome" value="' . _('List Selection') . '" />&nbsp;&nbsp;
@@ -426,8 +423,7 @@ function display(&$StockId, &$DemandID) { //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_
 		}
 		echo '</div>';
 	}
-	echo '</div>
-		</form>';
+	echo '</form>';
 
 } // End of function display()
 

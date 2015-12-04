@@ -158,7 +158,6 @@ if (isset($SelectedRole)) {
 }
 echo '<br />';
 echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 if (isset($_POST['SelectedRole'])) {
 	echo '<input type="hidden" name="SelectedRole" value="' . $_POST['SelectedRole'] . '" />';
@@ -172,10 +171,8 @@ echo '<tr>
 		<td><input type="text" name="SecRoleName" size="40" required="required" maxlength="40" value="' . $_POST['SecRoleName'] . '" /></td>
 	</tr>';
 echo '</table>
-	<br />
 	<div class="centre">
 		<input type="submit" name="submit" value="' . _('Enter Role') . '" />
-	</div>
 	</div>
 	</form>';
 

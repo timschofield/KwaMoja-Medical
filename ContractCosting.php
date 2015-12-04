@@ -437,14 +437,11 @@ if (isset($_POST['CloseContract']) and $_SESSION['Contract' . $Identifier]->Stat
 if ($_SESSION['Contract' . $Identifier]->Status == 2) { //the contract is an order being processed now
 
 	echo '<form  method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedContract=' . $_SESSION['Contract' . $Identifier]->ContractRef . '&amp;identifier=' . $Identifier . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-	echo '<br />
-		<div class="centre">
+	echo '<div class="centre">
 			<input type="submit" name="CloseContract" value="' . _('Close Contract') . '" onclick="return MakeConfirm(\'' . _('Closing the contract will prevent further stock being issued to it and charges being made against it. Variances will be taken to the profit and loss account. Are You Sure?') . '\');" />
 		</div>
-		</div>
-		</form>';
+	</form>';
 }
 
 include('includes/footer.inc');

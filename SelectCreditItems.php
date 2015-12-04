@@ -189,7 +189,6 @@ if (isset($SelectedCustomer) and isset($_POST['JustSelectedACustomer'])) {
 if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems' . $Identifier]->DebtorNo) OR $_SESSION['CreditItems' . $Identifier]->DebtorNo == '') {
 
 	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '" method="post">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Select Customer For Credit Note') . '</p>';
 
@@ -205,7 +204,6 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 			<td><input type="text" name="CustCode" size="15" maxlength="18" /></td>
 		</tr>';
 	echo '</table>
-		<br />
 		<div class="centre">
 			<input type="submit" name="SearchCust" value="' . _('Search Now') . '" />
 		</div>';
@@ -257,8 +255,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 			</table>
 		<input type="hidden" name="JustSelectedACustomer" value="Yes" />';
 	} //end if results to show
-	echo '</div>
-          </form>';
+	echo '</form>';
 
 
 	//end if RequireCustomerSelection
@@ -386,7 +383,6 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 	Set up the form for the credit note display and  entry*/
 
 	echo '<form id="MainForm" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?identifier=' . $Identifier . '" method="post">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 
@@ -1017,8 +1013,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 
 	}
 
-	echo '</div>
-          </form>';
+	echo '</form>';
 } //end of else not selecting a customer
 
 if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {

@@ -249,7 +249,6 @@ if (isset($_POST['PrintPDF']) or isset($_POST['Review'])) {
 				<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Inventory') . '" alt="" />' . ' ' . $Title . '</p>';
 
 		echo '<form action="MRPConvertWorkOrders.php" method="post">';
-		echo '<div>';
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 		echo '<table class="selection">';
 		echo '<tr>
@@ -308,8 +307,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['Review'])) {
 				<td colspan="4" class="number">' . _('Total Extended Cost') . ': ' . locale_number_format($Total_ExtCost, $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
 			</tr>
 			</table>';
-		echo '</div>
-			  </form>';
+		echo '</form>';
 
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		include('includes/footer.inc');
@@ -324,8 +322,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['Review'])) {
 	echo '<p class="page_title_text" >
 			<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Inventory') . '" alt="" />' . ' ' . $Title . '</p>';
 
-	echo '<br /><br /><form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
-	echo '<div>';
+	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table class="selection">';
 	echo '<tr>

@@ -350,7 +350,6 @@ if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/transactions.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '</p>';
 
 	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	echo '<table class="selection">';
@@ -378,10 +377,14 @@ if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 		echo '<option selected="selected" value="Leave">' . _('Do not Adjust System stock to Nil') . '</option>';
 	}
 
-	echo '</select></td></tr>';
-	echo '</table><br /><div class="centre"><input type="submit" name="PrintPDF" value="' . _('Print PDF') . '" /></div>';
-	echo '</div>
-		  </form>';
+	echo '</select>
+			</td>
+		</tr>';
+	echo '</table>';
+	echo '<div class="centre">
+			<input type="submit" name="PrintPDF" value="' . _('Print PDF') . '" />
+		</div>';
+	echo '</form>';
 
 	include('includes/footer.inc');
 

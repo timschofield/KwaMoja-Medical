@@ -217,7 +217,7 @@ if (empty($_POST['FormName'])) {
 		closedir($handle);
 	}
 	echo '</select></td></tr></table>';
-	echo '<br /><div class="centre"><input tabindex="6" type="submit" name="submit" value="' . _('Edit Form Layout') . '" /></div>';
+	echo '<div class="centre"><input tabindex="6" type="submit" name="submit" value="' . _('Edit Form Layout') . '" /></div>';
 	echo '</form>';
 	include('includes/footer.inc');
 	exit;
@@ -248,7 +248,6 @@ $Papers = array(
 	'Legal_Landscape'
 ); // Possible paper sizes/orientations
 echo '<form method="post" id="Form" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 echo '<input name="FormName" type="hidden" value="' . $_POST['FormName'] . '" />';
 echo '<table width="95%" border="1">'; //Start of outer table
@@ -431,8 +430,10 @@ foreach ($FormDesign as $Key) {
 	}
 }
 echo '</tr></table>'; //End of outer table
-echo '<br /><div class="centre"><input tabindex="6" type="submit" name="preview" value="' . _('Preview the Form Layout') . '" />';
-echo '<input tabindex="7" type="submit" name="save" value="' . _('Save the Form Layout') . '" /></div>';
+echo '<div class="centre">
+		<input tabindex="6" type="submit" name="preview" value="' . _('Preview the Form Layout') . '" />
+		<input tabindex="7" type="submit" name="save" value="' . _('Save the Form Layout') . '" />
+	</div>';
 /*echo '<br /><div class="centre"><input tabindex="8" type="submit" name="return" value="' . _('Return') . '" /></div>';*/
 echo '</form>';
 /* END: PROCEDURE DIVISION. */

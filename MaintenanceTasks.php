@@ -118,11 +118,9 @@ while ($MyRow = DB_fetch_array($Result)) {
 		</tr>';
 }
 
-echo '</table><br /><br />';
-
+echo '</table>';
 
 echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" id="form1">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 echo '<table class="selection">';
 
@@ -223,22 +221,20 @@ while ($MyRow = DB_fetch_array($ManagerResult)) {
 		echo '<option value="' . $MyRow['userid'] . '">' . $MyRow['userid'] . '</option>';
 	}
 }
-echo '</select></td>
+echo '</select>
+		</td>
 	</tr>
-	</table>';
+</table>';
 
 if (isset($_GET['Edit'])) {
-	echo '<br />
-			<div class="centre">
-				<input type="submit" name="Update" value="' . _('Update Task') . '" />
-			</div>';
+	echo '<div class="centre">
+			<input type="submit" name="Update" value="' . _('Update Task') . '" />
+		</div>';
 } else {
-	echo '<br />
-		<div class="centre">
+	echo '<div class="centre">
 			<input type="submit" name="Submit" value="' . _('Enter New Task') . '" />
 		</div>';
 }
-echo '</div>
-		</form>';
+echo '</form>';
 include('includes/footer.inc');
 ?>

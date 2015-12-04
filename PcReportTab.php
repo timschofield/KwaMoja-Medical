@@ -233,7 +233,6 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 	$SQL_ToDate = FormatDateForSQL($_POST['ToDate']);
 
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<input type="hidden" name="FromDate" value="' . $_POST['FromDate'] . '" />
 			<input type="hidden" name="ToDate" value="' . $_POST['ToDate'] . '" />';
@@ -245,7 +244,7 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 
 	$Tabs = DB_fetch_array($TabResult);
 
-	echo '<br /><table class="selection">';
+	echo '<table class="selection">';
 
 	echo '<tr>
 			<td>' . _('Tab Code') . '</td>
@@ -395,9 +394,8 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 		</tr>';
 
 	echo '</table>';
-	echo '<br /><div class="centre"><input type="submit" name="SelectDifferentDate" value="' . _('Select A Different Date') . '" /></div>';
-	echo '</div>
-		  </form>';
+	echo '<div class="centre"><input type="submit" name="SelectDifferentDate" value="' . _('Select A Different Date') . '" /></div>';
+	echo '</form>';
 }
 include('includes/footer.inc');
 

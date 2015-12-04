@@ -181,7 +181,6 @@ if (isset($SelectedParam)) {
 if (!isset($_GET['delete'])) {
 
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 	if (isset($SelectedParam) and ($InputError != 1)) {
@@ -211,8 +210,9 @@ if (!isset($_GET['delete'])) {
 		echo '<input type="hidden" name="SelectedParam" value="' . $SelectedParam . '" />';
 		echo '<input type="hidden" name="GeoCodeID" value="' . $_POST['GeoCodeID'] . '" />';
 		echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Geocode Setup') . '" alt="" />' . _('Setup configuration for Geocoding of Customers and Suppliers') . '</p>';
-		echo '<br /><table>
-				<tr><td>' . _('Geocode Code') . ':</td>
+		echo '<table>
+				<tr>
+					<td>' . _('Geocode Code') . ':</td>
 					<td>' . $_POST['GeoCodeID'] . '</td></tr>';
 
 	} else { //end of if $SelectedParam only do the else when a new record is being entered
@@ -250,7 +250,8 @@ if (!isset($_GET['delete'])) {
 			<td><input tabindex="7" type="text" name="Map_Host" value="' . $_POST['Map_Host'] . '" size="20" maxlength="300" /></td>
 		</tr>
 	</table>
-	<div class="centre"><input tabindex="4" type="submit" name="submit" value="' . _('Enter Information') . '" /></div><br />
+	<div class="centre">
+		<input tabindex="4" type="submit" name="submit" value="' . _('Enter Information') . '" />
 	</div>
 	</form>';
 	echo '<div class="page_help_text">' . _('When ready, click on the link below to run the GeoCode process. This will Geocode all Branches and Suppliers. This may take some time. Errors will be returned to the screen.') . '<br />';

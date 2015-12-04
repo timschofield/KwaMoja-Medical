@@ -13,7 +13,6 @@ if (!isset($_POST['DateRange'])) {
 }
 
 echo '<form id="form1" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
-echo '<div>';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 echo '<table cellpadding="2">
@@ -110,11 +109,8 @@ echo ' /></td>
 	</table>';
 
 
-echo '<br /><div class="centre"><input tabindex="4" type="submit" name="ShowSales" value="' . _('Show Sales') . '" />';
-echo '</div>';
-echo '<br />';
-echo '</div>
-	  </form>';
+echo '<div class="centre"><input tabindex="4" type="submit" name="ShowSales" value="' . _('Show Sales') . '" />';
+echo '</form>';
 
 if (isset($_POST['ShowSales'])) {
 	$InputError = 0; //assume no input errors now test for errors

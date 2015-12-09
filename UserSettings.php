@@ -96,6 +96,7 @@ if (isset($_POST['Modify'])) {
 		$_SESSION['Theme'] = $_SESSION['Theme'];
 		$_SESSION['Language'] = trim($_POST['Language']);
 		$_SESSION['PDFLanguage'] = $_POST['PDFLanguage'];
+		include('includes/MainMenuLinksArray.php');
 		include('includes/LanguageSetup.php');
 
 	}

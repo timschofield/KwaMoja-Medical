@@ -4,7 +4,7 @@ include('includes/session.inc');
 $Title = _('Search Work Orders');
 include('includes/header.inc');
 
-echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $Theme . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
+echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
 
 echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">
 		<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -246,8 +246,10 @@ if (!isset($StockID)) {
 		echo '</select> &nbsp;&nbsp;
 			<select name="ClosedOrOpen">';
 
-		if ($_GET['ClosedOrOpen'] == 'Closed_Only') {
+		if (isset($_GET['ClosedOrOpen']) and $_GET['ClosedOrOpen'] == 'Closed_Only') {
 			$_POST['ClosedOrOpen'] = 'Closed_Only';
+		} else {
+			$_POST['ClosedOrOpen'] = 'All';
 		}
 
 		if ($_POST['ClosedOrOpen'] == 'Closed_Only') {
@@ -375,9 +377,13 @@ if (!isset($StockID)) {
 		//start date and end date
 		if (!empty($_POST['DateFrom'])) {
 			$StartDateFrom = " AND workorders.startdate>='" . FormatDateForSQL($_POST['DateFrom']) . "'";
+		} else {
+			$StartDateFrom = '';
 		}
 		if (!empty($_POST['DateTo'])) {
 			$StartDateTo = " AND workorders.startdate<='" . FormatDateForSQL($_POST['DateTo']) . "'";
+		} else {
+			$StartDateTo = '';
 		}
 
 		if (isset($SelectedWO) and $SelectedWO != '') {

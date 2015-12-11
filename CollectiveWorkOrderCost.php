@@ -297,7 +297,7 @@ if (!isset($StockID)) {
 			FROM stockcategory
 			ORDER BY categorydescription";
 
-	$Result1 = DB_query($SQL, $db);
+	$Result1 = DB_query($SQL);
 
 	echo '<table class="selection">
 			<tr>

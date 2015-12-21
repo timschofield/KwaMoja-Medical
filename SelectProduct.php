@@ -187,7 +187,7 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 		if (DB_num_rows($PriceResult) == 0) {
 			echo '<tr>
 					<th class="number">', _('Sell Price'), ':</th>
-					<td class="select">', _('No Default Price Set in Home Currency'), '</td>
+					<td class="select">', _('No Default Price Set'), '</td>
 				</tr>';
 			$Price = 0;
 		} else {
@@ -575,6 +575,15 @@ if (isset($_POST['StockCode'])) {
 } else {
 	echo '<td><input type="search" name="StockCode" autofocus="autofocus" size="15" maxlength="18" /></td>';
 }
+echo '</tr>';
+
+echo '<tr>
+		<td colspan="2" class="number"><b>', _('OR'), ' ', '</b>', _('Enter partial'), ' <b>', _('Supplier Stock Code'), '</b>:</td>';
+if (isset($_POST['SupplierStockCode'])) {
+	echo '<td><input type="search" name="SupplierStockCode" autofocus="autofocus" value="', $_POST['SupplierStockCode'], '" size="15" maxlength="18" /></td>';
+} else {
+	echo '<td><input type="search" name="SupplierStockCode" autofocus="autofocus" size="15" maxlength="18" /></td>';
+}
 echo '</tr>
 	</table>';
 
@@ -602,22 +611,34 @@ if (isset($_POST['Search']) or isset($_POST['Go']) or isset($_POST['Next']) or i
 	if ($_POST['StockCat'] == 'All') {
 		$_POST['StockCat'] = '%';
 	}
+	if ($_POST['SupplierStockCode'] != '') {
+		$SupplierCodeSQL = " AND purchdata.suppliers_partno " . LIKE . " '%" . $_POST['SupplierStockCode'] . "%' ";
+	} else {
+		$SupplierCodeSQL = " ";
+	}
 	$SQL = "SELECT stockmaster.stockid,
+					purchdata.suppliers_partno,
 					stockmaster.description,
 					stockmaster.longdescription,
 					SUM(locstock.quantity) AS qoh,
 					stockmaster.units,
 					stockmaster.mbflag,
 					stockmaster.discontinued,
-					stockmaster.decimalplaces
+					stockmaster.decimalplaces,
+					suppliers.suppname
 				FROM stockmaster
 				LEFT JOIN stockcategory
 					ON stockmaster.categoryid=stockcategory.categoryid
 				LEFT JOIN locstock
 					ON stockmaster.stockid=locstock.stockid
+				LEFT JOIN purchdata
+					ON stockmaster.stockid=purchdata.stockid
+				LEFT JOIN suppliers
+					ON purchdata.supplierno=suppliers.supplierid
 				WHERE stockmaster.description " . LIKE . " '" . $SearchString . "'
 					AND stockmaster.categoryid " . LIKE . " '" . $_POST['StockCat'] . "'
-					AND stockmaster.stockid " . LIKE . " '%" . $_POST['StockCode'] . "%'
+					AND stockmaster.stockid " . LIKE . " '%" . $_POST['StockCode'] . "%'" .
+					$SupplierCodeSQL . "
 				GROUP BY stockmaster.stockid,
 					stockmaster.description,
 					stockmaster.longdescription,
@@ -683,6 +704,7 @@ if (isset($SearchResult) and !isset($_POST['Select'])) {
 						<th>', _('Stock Status'), '</th>
 						<th class="SortedColumn">', _('Code'), '</th>
 						<th class="SortedColumn">', _('Description'), '</th>
+						<th class="SortedColumn">', _('Suppliers Stock Code'), '</th>
 						<th>', _('Total Qty On Hand'), '</th>
 						<th>', _('Units'), '</th>
 					</tr>
@@ -715,6 +737,7 @@ if (isset($SearchResult) and !isset($_POST['Select'])) {
 			echo '<td>', $ItemStatus, '</td>
 				<td><input type="submit" name="Select" value="', $MyRow['stockid'], '" /></td>
 				<td title="', $MyRow['longdescription'], '">', $MyRow['description'], '</td>
+				<td title="', $MyRow['suppname'], '">', $MyRow['suppliers_partno'], '</td>
 				<td class="number">', $QOH, '</td>
 				<td>', $MyRow['units'], '</td>
 				<td><a target="_blank" href="', $RootPath, '/StockStatus.php?StockID=', $MyRow['stockid'], '">', _('View'), '</a></td>

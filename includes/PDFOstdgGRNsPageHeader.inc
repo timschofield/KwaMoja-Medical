@@ -14,7 +14,7 @@ $LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 260, $FontSize, $_SESSION['C
 $YPos -= $line_height;
 
 $LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 300, $FontSize, _('Outstanding GRNs Valuation for Suppliers between') . ' ' . $_POST['FromCriteria'] . ' ' . _('and') . ' ' . $_POST['ToCriteria']);
-$LeftOvers = $PDF->addTextWrap($Page_Width - $Right_Margin - 120, $YPos, 120, $FontSize, _('Printed') . ': ' . Date($_SESSION['DefaultDateFormat']) . '   ' . _('Page') . ' ' . $PageNumber);
+$LeftOvers = $PDF->addTextWrap($Page_Width - $Right_Margin - 120, $YPos, 220, $FontSize, _('Printed') . ': ' . Date($_SESSION['DefaultDateFormat']) . '   ' . _('Page') . ' ' . $PageNumber);
 
 $YPos -= (2 * $line_height);
 

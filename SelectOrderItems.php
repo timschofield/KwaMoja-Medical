@@ -1090,7 +1090,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 				else {
 					$DiscountMatrixRate = $MyRow[0];
 				}
-				if ($MyRow[0] != 0) {
+				if ($DiscountMatrixRate != 0) {
 					/* need to update the lines affected */
 					foreach ($_SESSION['Items' . $Identifier]->LineItems as $OrderLine_2) {
 						if ($OrderLine_2->DiscCat == $OrderLine->DiscCat) {
@@ -1254,9 +1254,11 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 			else {
 				$DiscountMatrixRate = $MyRow[0];
 			}
-			foreach ($_SESSION['Items' . $Identifier]->LineItems as $StkItems_2) {
-				if ($StkItems_2->DiscCat == $OrderLine->DiscCat) {
-					$_SESSION['Items' . $Identifier]->LineItems[$StkItems_2->LineNumber]->DiscountPercent = $DiscountMatrixRate;
+			if ($DiscountMatrixRate != 0) {
+				foreach ($_SESSION['Items'.$Identifier]->LineItems as $StkItems_2) {
+					if ($StkItems_2->DiscCat == $OrderLine->DiscCat) {
+						$_SESSION['Items' . $Identifier]->LineItems[$StkItems_2->LineNumber]->DiscountPercent = $DiscountMatrixRate;
+					}
 				} //$StkItems_2->DiscCat == $OrderLine->DiscCat
 
 			} //$_SESSION['Items' . $Identifier]->LineItems as $StkItems_2

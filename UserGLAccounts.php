@@ -1,12 +1,18 @@
 <?php
-/* $Id: glaccountusers.php 6806 2013-09-28 05:10:46Z daintree $*/
+/* $Id: UserGLAccounts.php 7427 2015-12-27 19:59:10Z rchacon $*/
+/* Maintenance of GL Accounts allowed for a user. */
 
 include('includes/session.inc');
-$Title = _('User Authorised GL Accounts Maintenance');
+$Title = _('User Authorised GL Accounts');
+$ViewTopic = 'GeneralLedger';
+$BookMark = 'UserGLAccounts';
 include('includes/header.inc');
 
-echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/money_add.png" title="' . _('User Authorised GL Accounts') . '" alt="" />' . ' ' . $Title . '</p>';
-
+if (isset($_POST['SelectedUser']) and $_POST['SelectedUser'] <> '') { //If POST not empty:
+	$SelectedUser = mb_strtoupper($_POST['SelectedUser']);
+} elseif (isset($_GET['SelectedUser']) and $_GET['SelectedUser'] <> '') { //If GET not empty:
+	$SelectedUser = mb_strtoupper($_GET['SelectedUser']);
+}
 if (isset($_POST['SelectedGLAccount'])) {
 	$SelectedGLAccount = mb_strtoupper($_POST['SelectedGLAccount']);
 } elseif (isset($_GET['SelectedGLAccount'])) {
@@ -15,247 +21,228 @@ if (isset($_POST['SelectedGLAccount'])) {
 	$SelectedGLAccount = '';
 }
 
-if (isset($_POST['SelectedUser'])) {
-	$SelectedUser = mb_strtoupper($_POST['SelectedUser']);
-} elseif (isset($_GET['SelectedUser'])) {
-	$SelectedUser = mb_strtoupper($_GET['SelectedUser']);
-}
-
-if (isset($_POST['Cancel'])) {
+if (isset($_GET['Cancel']) or isset($_POST['Cancel'])) {
 	unset($SelectedUser);
 	unset($SelectedGLAccount);
 }
 
-if (isset($_POST['Process'])) {
-	if ($_POST['SelectedUser'] == '') {
-		prnMsg(_('You have not selected any User'), 'error');
-		echo '<br />';
-		unset($SelectedUser);
-		unset($_POST['SelectedUser']);
+if (!isset($SelectedUser)) { // If is NOT set a user for GL accounts.
+	echo '<p class="page_title_text"><img alt="" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/gl.png" title="', _('User Authorised GL Accounts'), '" /> ', _('User Authorised GL Accounts'), '</p>'; // Page title.
+
+	/* It could still be the second time the page has been run and a record has been selected for modification - SelectedGLAccount will exist because it was sent with the new call. If its the first time the page has been displayed with no parameters then none of the above are true. These will call the same page again and allow update/input or deletion of the records.*/
+
+	if (isset($_POST['Process'])) {
+		prnMsg(_('You have not selected any user'), 'error');
 	}
-}
-
-if (isset($_POST['submit'])) {
-
-	$InputError = 0;
-
-	if ($_POST['SelectedGLAccount'] == '') {
-		$InputError = 1;
-		prnMsg(_('You have not selected an GL Account to be authorised for this user'), 'error');
-		echo '<br />';
-		unset($SelectedUser);
-	}
-
-	if ($InputError != 1) {
-
-		// First check the user is not being duplicated
-
-		$CheckSql = "SELECT count(*)
-			     FROM glaccountusers
-			     WHERE accountcode= '" . $_POST['SelectedGLAccount'] . "'
-				 AND userid = '" . $_POST['SelectedUser'] . "'";
-
-		$CheckResult = DB_query($CheckSql);
-		$CheckRow = DB_fetch_row($CheckResult);
-
-		if ($CheckRow[0] > 0) {
-			$InputError = 1;
-			prnMsg(_('The GL Account') . ' ' . $_POST['SelectedGLAccount'] . ' ' . _('is already authorised for this user'), 'error');
-		} else {
-			// Add new record on submit
-			$SQL = "INSERT INTO glaccountusers (accountcode,
-												userid,
-												canview,
-												canupd)
-										VALUES ('" . $_POST['SelectedGLAccount'] . "',
-												'" . $_POST['SelectedUser'] . "',
-												'1',
-												'1')";
-
-			$msg = _('User') . ': ' . $_POST['SelectedUser'] . ' ' . _('authority to use the') . ' ' . $_POST['SelectedGLAccount'] . ' ' . _('GL Account has been changed');
-			$Result = DB_query($SQL);
-			prnMsg($msg, 'success');
-			unset($_POST['SelectedGLAccount']);
-		}
-	}
-} elseif (isset($_GET['delete'])) {
-	$SQL = "DELETE FROM glaccountusers
-		WHERE accountcode='" . $SelectedGLAccount . "'
-		AND userid='" . $SelectedUser . "'";
-
-	$ErrMsg = _('The GL Account user record could not be deleted because');
-	$Result = DB_query($SQL, $ErrMsg);
-	prnMsg(_('User') . ' ' . $SelectedUser . ' ' . _('has had their authority to use the') . ' ' . $SelectedGLAccount . ' ' . _('GL Account removed'), 'success');
-	unset($_GET['delete']);
-} elseif (isset($_GET['ToggleUpdate'])) {
-	$SQL = "UPDATE glaccountusers
-			SET canupd='" . $_GET['ToggleUpdate'] . "'
-			WHERE accountcode='" . $SelectedGLAccount . "'
-			AND userid='" . $SelectedUser . "'";
-
-	$ErrMsg = _('The GL Account user record could not be deleted because');
-	$Result = DB_query($SQL, $ErrMsg);
-	prnMsg(_('User') . ' ' . $SelectedUser . ' ' . _('has had their authority to update') . ' ' . $SelectedGLAccount . ' ' . _('GL Account removed'), 'success');
-	unset($_GET['ToggleUpdate']);
-}
-
-if (!isset($SelectedUser)) {
-
-	/* It could still be the second time the page has been run and a record has been selected for modification - SelectedGLAccount will exist because it was sent with the new call. If its the first time the page has been displayed with no parameters
-	then none of the above are true. These will call the same page again and allow update/input or deletion of the records*/
-	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
-			<table class="selection">
+	echo '<form action="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '" method="post">
+		<input name="FormID" type="hidden" value="', $_SESSION['FormID'], '" />
+		<table class="selection">
 			<tr>
-				<td>' . _('Select User') . ':</td>
-				<td><select name="SelectedUser">';
-
-	$Result = DB_query("SELECT userid,
-								realname
-						FROM www_users
-						ORDER BY userid");
-
-	echo '<option value="">' . _('Not Yet Selected') . '</option>';
+				<td>', _('Select User'), ':</td>
+				<td>
+					<select name="SelectedUser" onchange="this.form.submit()">
+						<option value="">', _('Not Yet Selected'), '</option>';
+	$SQL = "SELECT userid,
+					realname
+				FROM www_users
+				ORDER BY userid";
+	$Result = DB_query($SQL);
 	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($SelectedUser) and $MyRow['userid'] == $SelectedUser) {
-			echo '<option selected="selected" value="';
+			echo '<option selected="selected" value="', $MyRow['userid'], '">', $MyRow['userid'], ' - ', $MyRow['realname'], '</option>';
 		} else {
-			echo '<option value="';
+			echo '<option value="', $MyRow['userid'], '">', $MyRow['userid'], ' - ', $MyRow['realname'], '</option>';
 		}
-		echo $MyRow['userid'] . '">' . $MyRow['userid'] . ' - ' . $MyRow['realname'] . '</option>';
+	} // End while loop.
+	echo '</select>
+				</td>
+			</tr>
+		</table>'; //Close Select_User table.
 
-	} //end while loop
-
-	echo '</select></td></tr>';
-
-	echo '</table>'; // close main table
-	DB_free_result($Result);
-
-	echo '<div class="centre">
-			<input type="submit" name="Process" value="' . _('Accept') . '" />
-			<input type="submit" name="Cancel" value="' . _('Cancel') . '" />
-		</div>';
-
+	echo '<div class="centre noprint">
+			<input name="Process" type="submit" value="' . _('Accept') . '" />
+		</div> '; // "Accept" button.
 	echo '</form>';
 
-}
-
-//end of ifs and buts!
-if (isset($_POST['process']) or isset($SelectedUser)) {
-	$SQLName = "SELECT realname
-			FROM www_users
-			WHERE userid='" . $SelectedUser . "'";
-	$Result = DB_query($SQLName);
+} else { // If is set a user for GL accounts ($SelectedUser).
+	$SQL = "SELECT realname
+				FROM www_users
+				WHERE userid='" . $SelectedUser . "'";
+	$Result = DB_query($SQL);
 	$MyRow = DB_fetch_array($Result);
 	$SelectedUserName = $MyRow['realname'];
+	echo '<p class="page_title_text"><img alt="" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/gl.png" title="', _('User Authorised GL Accounts'), '" /> ', _('Authorised GL Accounts for'), ' ', $SelectedUserName, '</p>'; // Page title.
 
-	echo '<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Authorised GL Accounts for') . ' ' . $SelectedUserName . '</a></div>
-		<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">
-		<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
-		<input type="hidden" name="SelectedUser" value="' . $SelectedUser . '" />';
+	// BEGIN: Needs $SelectedUser, $SelectedGLAccount:
+	if (isset($_POST['submit'])) {
+		$InputError = 0;
+		if ($_POST['SelectedGLAccount'] == '') {
+			$InputError = 1;
+			prnMsg(_('You have not selected an GL Account to be authorised for this user'), 'error');
+			unset($SelectedGLAccount);
+		}
+		if ($InputError != 1) {
+			// First check the user is not being duplicated
+			$SQL = "SELECT count(*)
+						FROM glaccountusers
+						WHERE accountcode= '" . $_POST['SelectedGLAccount'] . "'
+							AND userid = '" . $SelectedUser . "'";
+			$CheckResult = DB_query($SQL);
+			$CheckRow = DB_fetch_row($CheckResult);
+			if ($CheckRow[0] > 0) {
+				$InputError = 1;
+				prnMsg(_('The GL Account') . ' ' . $SelectedGLAccount . ' ' . _('is already authorised for this user'), 'error');
+			} else {
+				// Add new record on submit
+				$SQL = "INSERT INTO glaccountusers (accountcode,
+													userid,
+													canview,
+													canupd)
+											VALUES ('" . $SelectedGLAccount . "',
+													'" . $SelectedUser . "',
+													'1',
+													'1')";
+				$Result = DB_query($SQL);
+				prnMsg(_('An access permission to a GL account was added') . '. ' . _('User') . ': ' . $SelectedUser . '. ' . _('GL Account') . ': ' . $SelectedGLAccount . '.', 'success');
+				unset($_POST['SelectedGLAccount']);
+			}
+		}
+	} elseif (isset($_GET['delete']) or isset($_POST['delete'])) {
+		$SQL = "DELETE FROM glaccountusers
+			WHERE accountcode='" . $SelectedGLAccount . "'
+			AND userid='" . $SelectedUser . "'";
+		$ErrMsg = _('The GL Account user record could not be deleted because');
+		$Result = DB_query($SQL, $ErrMsg);
+		prnMsg(_('An access permission to a GL account was removed') . '. ' . _('User') . ': ' . $SelectedUser . '. ' . _('GL Account') . ': ' . $SelectedGLAccount . '.', 'success');
+		unset($_GET['delete']);
+		unset($_POST['delete']);
+	} elseif (isset($_GET['ToggleUpdate']) or isset($_POST['ToggleUpdate'])) { // Can update (write) GL accounts flag.
+		if (isset($_GET['ToggleUpdate']) and $_GET['ToggleUpdate'] <> '') { //If GET not empty.
+			$ToggleUpdate = $_GET['ToggleUpdate'];
+		} elseif (isset($_POST['ToggleUpdate']) and $_POST['ToggleUpdate'] <> '') { //If POST not empty.
+			$ToggleUpdate = $_POST['ToggleUpdate'];
+		}
+		$SQL = "UPDATE glaccountusers
+				SET canupd='" . $ToggleUpdate . "'
+				WHERE accountcode='" . $SelectedGLAccount . "'
+				AND userid='" . $SelectedUser . "'";
+		$ErrMsg = _('The GL Account user record could not be updated because');
+		$Result = DB_query($SQL, $ErrMsg);
+		prnMsg(_('The access permission to update a GL account was modified') . '. ' . _('User') . ': ' . $SelectedUser . '. ' . _('GL Account') . ': ' . $SelectedGLAccount . '.', 'success');
+		unset($_GET['ToggleUpdate']);
+		unset($_POST['ToggleUpdate']);
+	}
+	// END: Needs $SelectedUser, $SelectedGLAccount.
 
+	echo '<table class="selection">
+			<thead>
+				<tr>
+					<th class="SortedColumn">', _('Code'), '</th>
+					<th class="SortedColumn">', _('Name'), '</th>
+					<th class="centre">', _('View'), '</th>
+					<th class="centre">', _('Update'), '</th>
+					<th class="noprint">&nbsp;</th>
+					<th class="noprint">
+						<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/printer.png" class="PrintIcon" title="' . _('Print') . '" alt="' . _('Print') . '" onclick="window.print();" />
+					</th>
+				</tr>
+			</thead>';
 	$SQL = "SELECT glaccountusers.accountcode,
 					canview,
 					canupd,
 					chartmaster.accountname
-			FROM glaccountusers INNER JOIN chartmaster
-			ON glaccountusers.accountcode=chartmaster.accountcode
-			WHERE glaccountusers.userid='" . $SelectedUser . "'
-			ORDER BY chartmaster.accountcode ASC";
-
+				FROM glaccountusers
+				INNER JOIN chartmaster
+					ON glaccountusers.accountcode=chartmaster.accountcode
+				WHERE glaccountusers.userid='" . $SelectedUser . "'
+				ORDER BY chartmaster.accountcode ASC";
 	$Result = DB_query($SQL);
+	echo '<tbody>';
+	if (DB_num_rows($Result) > 0) { // If the user has access permissions to one or more GL accounts:
+		$k = 0; //row colour counter
+		while ($MyRow = DB_fetch_array($Result)) {
+			if ($k == 1) {
+				echo '<tr class="EvenTableRows">';
+				$k = 0;
+			} else {
+				echo '<tr class="OddTableRows">';
+				$k = 1;
+			}
+			echo '<td class="text">', $MyRow['accountcode'], '</td>
+				<td class="text">', $MyRow['accountname'], '</td>
+				<td class="centre">';
+			if ($MyRow['canview'] == 1) {
+				echo _('Yes');
+			} else {
+				echo _('No');
+			}
+			echo '</td>';
 
-	echo '<table class="selection">';
-	echo '<tr>
-			<th colspan="6"><h3>' . _('Authorised GL Accounts for User') . ': ' . $SelectedUserName . '</h3></th>
-		</tr>';
-	echo '<tr>
-			<th>' . _('Code') . '</th>
-			<th>' . _('Name') . '</th>
-			<th>' . _('View') . '</th>
-			<th>' . _('Update') . '</th>
-		</tr>';
-
-	$k = 0; //row colour counter
-
-	while ($MyRow = DB_fetch_array($Result)) {
-		if ($k == 1) {
-			echo '<tr class="EvenTableRows">';
-			$k = 0;
-		} else {
-			echo '<tr class="OddTableRows">';
-			$k = 1;
-		}
-
-		if ($MyRow['canupd'] == 1) {
-			$ToggleText = '<td><a href="%s?SelectedGLAccount=%s&amp;ToggleUpdate=0&amp;SelectedUser=' . $SelectedUser . '" onclick="return confirm(\'' . _('Are you sure you wish to remove Update for this GL Account?') . '\');">' . _('Remove Update') . '</a></td>';
-		} else {
-			$ToggleText = '<td><a href="%s?SelectedGLAccount=%s&amp;ToggleUpdate=1&amp;SelectedUser=' . $SelectedUser . '" onclick="return confirm(\'' . _('Are you sure you wish to add Update for this GL Account?') . '\');">' . _('Add Update') . '</a></td>';
-		}
-
-		printf('<td>%s</td>
-				<td>%s</td>
-				<td>%s</td>
-				<td>%s</td>' .
-				$ToggleText . '
-				<td><a href="%s?SelectedGLAccount=%s&amp;delete=yes&amp;SelectedUser=' . $SelectedUser . '" onclick="return confirm(\'' . _('Are you sure you wish to un-authorise this GL Account?') . '\');">' . _('Un-authorise') . '</a></td>
-				</tr>',
-				$MyRow['accountcode'],
-				$MyRow['accountname'],
-				$MyRow['canview'],
-				$MyRow['canupd'],
-				htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'),
-				$MyRow['accountcode'],
-				htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'),
-				$MyRow['accountcode']);
-	}
-	//END WHILE LIST LOOP
-	echo '</table>';
-
-	if (!isset($_GET['delete'])) {
-
-
-		echo '<table  class="selection">'; //Main table
-
+			$ScriptName = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8');
+			if ($MyRow['canupd'] == 1) {
+				echo '<td class="centre">', _('Yes'), '</td>
+					<td class="noprint">
+						<a href="', $ScriptName, '?SelectedUser=', $SelectedUser, '&amp;SelectedGLAccount=', $MyRow['accountcode'], '&amp;ToggleUpdate=0" onclick="return confirm(\'', _('Are you sure you wish to remove Update for this GL Account?'), '\');">', _('Remove Update'), '</a>
+					</td>';
+			} else {
+				echo '<td class="centre">', _('No'), '</td>
+					<td class="noprint">
+						<a href="', $ScriptName, '?SelectedUser=', $SelectedUser, '&amp;SelectedGLAccount=', $MyRow['accountcode'], '&amp;ToggleUpdate=1" onclick="return confirm(\'', _('Are you sure you wish to add Update for this GL Account?'), '\');">', _('Add Update'), '</a>
+					</td>';
+			}
+			echo '<td class="noprint">
+					<a href="', $ScriptName, '?SelectedUser=', $SelectedUser, '&amp;SelectedGLAccount=', $MyRow['accountcode'], '&amp;delete=yes" onclick="return confirm(\'', _('Are you sure you wish to un-authorise this GL Account?'), '\');">', _('Un-authorise'), '</a>
+				</td>
+			</tr>';
+		} // End while list loop.
+	} else { // If the user does not have access permissions to GL accounts:
 		echo '<tr>
-				<td>' . _('Select GL Account') . ':</td>
+				<td class="centre" colspan="6">', _('User does not have access permissions to GL accounts'), '</td>
+			</tr>';
+	}
+	echo '</tbody>
+		</table>';
+	echo '<form action="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '" method="post">
+		<input name="FormID" type="hidden" value="', $_SESSION['FormID'], '" />
+		<input name="SelectedUser" type="hidden" value="', $SelectedUser, '" />';
+
+	echo '<table class="selection noprint">
+			<tr>';
+	$SQL = "SELECT accountcode,
+					accountname
+				FROM chartmaster
+				WHERE NOT EXISTS (SELECT glaccountusers.accountcode
+									FROM glaccountusers
+									WHERE glaccountusers.userid='" . $SelectedUser . "'
+										AND glaccountusers.accountcode=chartmaster.accountcode)
+				ORDER BY accountcode";
+	$Result = DB_query($SQL);
+	if (DB_num_rows($Result) > 0) { // If the user does not have access permissions to one or more GL accounts:
+		echo '<td>', _('Add access permissions to a GL account'), ':</td>
 				<td><select name="SelectedGLAccount">';
-
-		$Result = DB_query("SELECT accountcode,
-									accountname
-							FROM chartmaster
-							WHERE NOT EXISTS (SELECT glaccountusers.accountcode
-											FROM glaccountusers
-											WHERE glaccountusers.userid='" . $SelectedUser . "'
-												AND glaccountusers.accountcode=chartmaster.accountcode)
-							ORDER BY accountcode");
-
 		if (!isset($_POST['SelectedGLAccount'])) {
-			echo '<option selected="selected" value="">' . _('Not Yet Selected') . '</option>';
+			echo '<option selected="selected" value="">', _('Not Yet Selected'), '</option>';
 		}
 		while ($MyRow = DB_fetch_array($Result)) {
 			if (isset($_POST['SelectedGLAccount']) and $MyRow['accountcode'] == $_POST['SelectedGLAccount']) {
-				echo '<option selected="selected" value="';
+				echo '<option selected="selected" value="', $MyRow['accountcode'], '">', $MyRow['accountcode'], ' - ', $MyRow['accountname'], '</option>';
 			} else {
-				echo '<option value="';
+				echo '<option value="', $MyRow['accountcode'], '">', $MyRow['accountcode'], ' - ', $MyRow['accountname'], '</option>';
 			}
-			echo $MyRow['accountcode'] . '">' . $MyRow['accountcode'] .' - '. $MyRow['accountname'] . '</option>';
-
-		} //end while loop
-
+		}
 		echo '</select>
-					</td>
-				</tr>
-			</table>'; // close main table
-		DB_free_result($Result);
+				</td>
+				<td><input type="submit" name="submit" value="Accept" />';
+	} else { // If the user has access permissions to all GL accounts:
+		echo _('User has access permissions to all GL accounts');
+	}
+	echo '</td>
+			</tr>
+		</table>';
 
-		echo '<div class="centre">
-				<input type="submit" name="submit" value="' . _('Accept') . '" />
-				<input type="submit" name="Cancel" value="' . _('Cancel') . '" />
-			</div>
-			</form>';
-
-	} // end if user wish to delete
+	echo '<div class="centre noprint">
+			<a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '"><img alt="" src="', $RootPath, '/css/', $Theme, '/images/user.png" /> ', _('Select A Different User'), '</a>
+		</div>'; // "Select A Different User" button.
 }
 
 include('includes/footer.inc');

@@ -13,12 +13,14 @@ if (isset($_POST['SelectedUser']) and $_POST['SelectedUser'] <> '') { //If POST 
 } elseif (isset($_GET['SelectedUser']) and $_GET['SelectedUser'] <> '') { //If GET not empty:
 	$SelectedUser = mb_strtoupper($_GET['SelectedUser']);
 }
-if (isset($_POST['SelectedGLAccount'])) {
+if (isset($_POST['SelectedGLAccount']) and $_POST['SelectedGLAccount'] <> '') {
 	$SelectedGLAccount = mb_strtoupper($_POST['SelectedGLAccount']);
-} elseif (isset($_GET['SelectedGLAccount'])) {
+} elseif (isset($_GET['SelectedGLAccount']) and $_GET['SelectedGLAccount'] <> '') {
 	$SelectedGLAccount = mb_strtoupper($_GET['SelectedGLAccount']);
-} else {
-	$SelectedGLAccount = '';
+} else {// Unset empty SelectedGLAccount:
+ 	unset($_GET['SelectedGLAccount']);
+ 	unset($_POST['SelectedGLAccount']);
+	unset($SelectedGLAccount);
 }
 
 if (isset($_GET['Cancel']) or isset($_POST['Cancel'])) {
@@ -85,7 +87,7 @@ if (!isset($SelectedUser)) { // If is NOT set a user for GL accounts.
 			// First check the user is not being duplicated
 			$SQL = "SELECT count(*)
 						FROM glaccountusers
-						WHERE accountcode= '" . $_POST['SelectedGLAccount'] . "'
+						WHERE accountcode= '" . $SelectedGLAccount . "'
 							AND userid = '" . $SelectedUser . "'";
 			$CheckResult = DB_query($SQL);
 			$CheckRow = DB_fetch_row($CheckResult);
@@ -243,6 +245,7 @@ if (!isset($SelectedUser)) { // If is NOT set a user for GL accounts.
 	echo '<div class="centre noprint">
 			<a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '"><img alt="" src="', $RootPath, '/css/', $Theme, '/images/user.png" /> ', _('Select A Different User'), '</a>
 		</div>'; // "Select A Different User" button.
+	echo '</form>';
 }
 
 include('includes/footer.inc');

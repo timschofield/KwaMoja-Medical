@@ -54,7 +54,7 @@ if (DB_num_rows($ChartDetailsNotSetUpResult) > 0) {
 				bfwdbudget,
 				period
 			FROM chartdetails
-			WHERE period >='" . ($AccountRow['period'] - 1) . "'
+			WHERE period >='" . ($AccountRow['startperiod'] - 1) . "'
 			AND accountcode='" . $AccountRow['accountcode'] . "'
 			ORDER BY period";
 		$ChartDetails = DB_query($SQL);

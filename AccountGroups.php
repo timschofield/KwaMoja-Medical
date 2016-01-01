@@ -19,7 +19,8 @@ function CheckForRecursiveGroup($ParentGroupCode, $GroupCode) {
 	do {
 		$SQL = "SELECT parentgroupcode
 				FROM accountgroups
-				WHERE groupcode='" . $GroupCode . "'";
+				WHERE groupcode='" . $GroupCode . "'
+					AND language='" . $Language . "'";
 
 		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 		$MyRow = DB_fetch_row($Result);
@@ -36,7 +37,7 @@ if (isset($Errors)) {
 	unset($Errors);
 } //isset($Errors)
 
-$Errors = array();
+$Language = GetChartLanguage();
 
 if (isset($_POST['MoveGroup'])) {
 	$SQL = "UPDATE chartmaster SET group_='" . $_POST['DestinyAccountGroup'] . "' WHERE group_='" . $_POST['OriginalAccountGroup'] . "'";
@@ -53,6 +54,12 @@ if (isset($_POST['MoveGroup'])) {
 } //isset($_POST['MoveGroup'])
 
 if (isset($_POST['submit'])) {
+
+	foreach ($_POST as $Key=>$Value) {
+		if (mb_substr($Key, 0, 9) == 'GroupName') {
+			$GroupNames[mb_substr($Key, -5) . '.utf8'] = $Value;
+		}
+	}
 	//initialise no input errors assumed initially before we test
 
 	$InputError = 0;
@@ -63,7 +70,8 @@ if (isset($_POST['submit'])) {
 	//first off validate inputs sensible
 	$SQL = "SELECT count(groupname)
 			FROM accountgroups
-			WHERE groupcode='" . $_POST['GroupCode'] . "'";
+			WHERE groupcode='" . $_POST['GroupCode'] . "'
+				AND language='" . $Language . "'";
 
 	$DbgMsg = _('The SQL that was used to retrieve the information was');
 	$ErrMsg = _('Could not check whether the group exists because');
@@ -75,10 +83,12 @@ if (isset($_POST['submit'])) {
 		$InputError = 1;
 		prnMsg(_('The account group code already exists in the database'), 'error');
 	} //$MyRow[0] != 0 and $_POST['SelectedAccountGroup'] == ''
-	if (mb_strlen($_POST['GroupName']) == 0) {
-		$InputError = 1;
-		prnMsg(_('The account group name must be at least one character long'), 'error');
-	} //mb_strlen($_POST['GroupName']) == 0
+	foreach ($GroupNames as $GroupName) {
+		if (mb_strlen($GroupName) == 0) {
+			$InputError = 1;
+			prnMsg(_('All the account group names must be at least one character long'), 'error');
+		} //mb_strlen($_POST['GroupName']) == 0
+	}
 	if ($_POST['ParentGroup'] != '') {
 		if (CheckForRecursiveGroup($_POST['GroupCode'], $_POST['ParentGroup'])) {
 			$InputError = 1;
@@ -88,7 +98,8 @@ if (isset($_POST['submit'])) {
 						sequenceintb,
 						sectioninaccounts
 					FROM accountgroups
-					WHERE groupcode='" . $_POST['ParentGroup'] . "'";
+					WHERE groupcode='" . $_POST['ParentGroup'] . "'
+						AND language='" . $Language . "'";
 
 			$DbgMsg = _('The SQL that was used to retrieve the information was');
 			$ErrMsg = _('Could not check whether the group is recursive because');
@@ -118,7 +129,8 @@ if (isset($_POST['submit'])) {
 	$SQL = "SELECT COUNT(pandl) AS porl
 				FROM accountgroups
 				WHERE sectioninaccounts='" . $_POST['SectionInAccounts'] . "'
-					AND pandl='" . ((int) ($_POST['PandL'] xor 1)) . "'";
+					AND pandl='" . ((int) ($_POST['PandL'] xor 1)) . "'
+					AND language='" . $Language . "'";
 	$Result = DB_query($SQL);
 	$MyRow = DB_fetch_array($Result);
 	if ($MyRow['porl'] > 0) {
@@ -126,66 +138,83 @@ if (isset($_POST['submit'])) {
 		prnMsg(_('You are trying to mix Balance Sheet groups with P and L groups within the same Account Section'), 'error');
 	}
 
-	$ParentGroupSQL = "SELECT groupname FROM accountgroups WHERE groupcode='" . $_POST['ParentGroup'] . "'";
+	$ParentGroupSQL = "SELECT groupname FROM accountgroups WHERE groupcode='" . $_POST['ParentGroup'] . "' AND language='" . $Language . "'";
 	$ParentGroupResult = DB_query($ParentGroupSQL);
 	$ParentGroupRow = DB_fetch_array($ParentGroupResult);
 
-	if (isset($_POST['OldGroupName']) and $InputError != 1) {
-		/*SelectedAccountGroup could also exist if submit had not been clicked this code would not run in this case cos submit is false of course see the delete code below*/
-		if ($_POST['OldGroupName'] !== $_POST['GroupName'] or $_POST['OldGroupCode'] !== $_POST['GroupCode']) {
-			DB_IgnoreForeignKeys();
-			$SQL = "UPDATE chartmaster SET group_='" . $_POST['GroupName'] . "',
-											groupcode='" . $_POST['GroupCode'] . "'
-										WHERE group_='" . $_POST['OldGroupName'] . "'";
-			$ErrMsg = _('An error occurred in renaming the account group');
-			$DbgMsg = _('The SQL that was used to rename the account group was');
-			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
-			$SQL = "UPDATE accountgroups SET parentgroupname='" . $_POST['GroupName'] . "' WHERE parentgroupname='" . $_POST['OldGroupName'] . "'";
-			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
-			DB_ReinstateForeignKeys();
+	if (isset($_POST['OldGroupCode']) and $InputError != 1) {
+		foreach ($GroupNames as $GroupLanguage=>$GroupName) {
+			/*SelectedAccountGroup could also exist if submit had not been clicked this code would not run in this case cos submit is false of course see the delete code below*/
+			if ($_POST['OldGroupCode'] !== $_POST['GroupCode']) {
+				DB_IgnoreForeignKeys();
+				$SQL = "UPDATE chartmaster SET group_='" . $GroupName . "',
+												groupcode='" . $_POST['GroupCode'] . "'
+											WHERE groupcode='" . $_POST['OldGroupCode'] . "'
+												AND language='" . $GroupLanguage . "'";
+				$ErrMsg = _('An error occurred in renaming the account group');
+				$DbgMsg = _('The SQL that was used to rename the account group was');
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
+				$SQL = "UPDATE accountgroups SET parentgroupname='" . $_POST['GroupName'] . "' WHERE parentgroupcode='" . $_POST['OldGroupCode'] . "'";
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
+				DB_ReinstateForeignKeys();
+			}
+			$SQL = "UPDATE accountgroups SET groupname='" . $GroupName . "',
+											groupcode='" . $_POST['GroupCode'] . "',
+											sectioninaccounts='" . $_POST['SectionInAccounts'] . "',
+											pandl='" . $_POST['PandL'] . "',
+											sequenceintb='" . $_POST['SequenceInTB'] . "',
+											parentgroupcode='" . $_POST['ParentGroup'] . "',
+											parentgroupname='" . DB_escape_string($ParentGroupRow['groupname']) . "'
+										WHERE groupcode = '" . $_POST['SelectedAccountGroup'] . "'
+											AND language='" . $GroupLanguage . "'";
+			$ErrMsg = _('An error occurred in updating the account group');
+			$DbgMsg = _('The SQL that was used to update the account group was');
+			$Result = DB_query($SQL);
+			if (DB_error_no($Result) === 0) {
+				prnMsg( _('Account Group has been updated for language') . ' ' . $GroupLanguage, 'success');
+			} else {
+				prnMsg( _('Account Group could not be updated for language') . ' ' . $GroupLanguage, 'error');
+			}
 		}
-		$SQL = "UPDATE accountgroups SET groupname='" . $_POST['GroupName'] . "',
-										groupcode='" . $_POST['GroupCode'] . "',
-										sectioninaccounts='" . $_POST['SectionInAccounts'] . "',
-										pandl='" . $_POST['PandL'] . "',
-										sequenceintb='" . $_POST['SequenceInTB'] . "',
-										parentgroupcode='" . $_POST['ParentGroup'] . "',
-										parentgroupname='" . DB_escape_string($ParentGroupRow['groupname']) . "'
-									WHERE groupcode = '" . $_POST['SelectedAccountGroup'] . "'";
-		$ErrMsg = _('An error occurred in updating the account group');
-		$DbgMsg = _('The SQL that was used to update the account group was');
-		$Msg = _('Record Updated');
 	} elseif ($InputError != 1) {
 		/*Selected group is null cos no item selected on first time round so must be adding a record must be submitting new entries in the new account group form */
+		foreach ($GroupNames as $GroupLanguage=>$GroupName) {
+			$SQL = "INSERT INTO accountgroups ( groupname,
+												groupcode,
+												language,
+												sectioninaccounts,
+												sequenceintb,
+												pandl,
+												parentgroupcode,
+												parentgroupname
+											) VALUES (
+												'" . $GroupName . "',
+												'" . $_POST['GroupCode'] . "',
+												'" . $GroupLanguage . "',
+												'" . $_POST['SectionInAccounts'] . "',
+												'" . $_POST['SequenceInTB'] . "',
+												'" . $_POST['PandL'] . "',
+												'" . $_POST['ParentGroup'] . "',
+												'" . DB_escape_string($ParentGroupRow['groupname']) . "')";
+			$ErrMsg = _('An error occurred in inserting the account group');
+			$DbgMsg = _('The SQL that was used to insert the account group was');
 
-		$SQL = "INSERT INTO accountgroups ( groupname,
-											groupcode,
-											sectioninaccounts,
-											sequenceintb,
-											pandl,
-											parentgroupcode,
-											parentgroupname
-										) VALUES (
-											'" . $_POST['GroupName'] . "',
-											'" . $_POST['GroupCode'] . "',
-											'" . $_POST['SectionInAccounts'] . "',
-											'" . $_POST['SequenceInTB'] . "',
-											'" . $_POST['PandL'] . "',
-											'" . $_POST['ParentGroup'] . "',
-											'" . DB_escape_string($ParentGroupRow['groupname']) . "')";
-		$ErrMsg = _('An error occurred in inserting the account group');
-		$DbgMsg = _('The SQL that was used to insert the account group was');
-		$Msg = _('Record inserted');
+			$Result = DB_query($SQL);
+			if (DB_error_no($Result) === 0) {
+				prnMsg( _('Account Group has been inserted for language') . ' ' . $GroupLanguage, 'success');
+			} else {
+				prnMsg( _('Account Group could not be inserted for language') . ' ' . $GroupLanguage, 'error');
+			}
+		}
 	} //$InputError != 1
 
 	if ($InputError != 1) {
 		//run the SQL from either of the above possibilites
-		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
-		prnMsg($Msg, 'success');
 		unset($_POST['SelectedAccountGroup']);
 		unset($_POST['GroupCode']);
 		unset($_POST['GroupName']);
 		unset($_POST['SequenceInTB']);
+		unset($GroupNames);
 	} //$InputError != 1
 } elseif (isset($_GET['delete'])) {
 	//the link to delete a selected record was clicked instead of the submit button
@@ -264,7 +293,10 @@ if (!isset($_GET['SelectedAccountGroup']) and !isset($_POST['SelectedAccountGrou
 					parentgroupcode,
 					parentgroupname
 			FROM accountgroups
-			LEFT JOIN accountsection ON sectionid = sectioninaccounts
+			LEFT JOIN accountsection
+				ON sectionid = sectioninaccounts
+				AND accountgroups.language=accountsection.language
+			WHERE accountgroups.language='" . $Language . "'
 			ORDER BY groupcode";
 
 	$DbgMsg = _('The sql that was used to retrieve the account group information was ');
@@ -346,7 +378,8 @@ if (!isset($_GET['delete'])) {
 						sectioninaccounts,
 						sequenceintb,
 						pandl,
-						parentgroupcode
+						parentgroupcode,
+						language
 				FROM accountgroups
 				WHERE groupcode='" . $_GET['SelectedAccountGroup'] . "'";
 
@@ -358,14 +391,15 @@ if (!isset($_GET['delete'])) {
 			include('includes/footer.inc');
 			exit;
 		} //DB_num_rows($Result) == 0
-		$MyRow = DB_fetch_array($Result);
+		while ($MyRow = DB_fetch_array($Result)) {
 
-		$_POST['GroupCode'] = $MyRow['groupcode'];
-		$_POST['GroupName'] = $MyRow['groupname'];
-		$_POST['SectionInAccounts'] = $MyRow['sectioninaccounts'];
-		$_POST['SequenceInTB'] = $MyRow['sequenceintb'];
-		$_POST['PandL'] = $MyRow['pandl'];
-		$_POST['ParentGroup'] = $MyRow['parentgroupcode'];
+			$_POST['GroupCode'] = $MyRow['groupcode'];
+			$GroupNames[$MyRow['language']] = $MyRow['groupname'];
+			$_POST['SectionInAccounts'] = $MyRow['sectioninaccounts'];
+			$_POST['SequenceInTB'] = $MyRow['sequenceintb'];
+			$_POST['PandL'] = $MyRow['pandl'];
+			$_POST['ParentGroup'] = $MyRow['parentgroupcode'];
+		}
 
 		echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '<br /></p>';
 
@@ -410,12 +444,19 @@ if (!isset($_GET['delete'])) {
 			<td><input tabindex="1" class="integer" type="text" name="GroupCode" size="10" autofocus="autofocus" required="required" maxlength="10" value="', $_POST['GroupCode'], '" /></td>
 		</tr>';
 
-	echo '<tr>
-			<td>', _('Account Group Name'), ':</td>
-			<td><input tabindex="1" type="text" name="GroupName" size="50" required="required" maxlength="150" value="', stripslashes($_POST['GroupName']), '" /></td>
-		</tr>';
+	$SQL = "SELECT DISTINCT language FROM accountgroups";
+	$LanguageResult = DB_query($SQL);
+	while ($LanguageRow = DB_fetch_array($LanguageResult)) {
+		if (!isset($GroupNames[$LanguageRow['language']])) {
+			$GroupNames[$LanguageRow['language']] = '';
+		}
+		echo '<tr>
+				<td>' . _('Account Group Name') . ' (' . $LanguagesArray[$LanguageRow['language']]['LanguageName'] . ') :' . '</td>
+				<td><input tabindex="2" type="text" name="GroupName' . mb_substr($LanguageRow['language'], 0, 5) . '" autofocus="autofocus" required="required" size="50" maxlength="150" value="' . $GroupNames[$LanguageRow['language']] . '" /></td>
+			</tr>';
+	}
 
-	$SQL = "SELECT groupcode, groupname FROM accountgroups ORDER BY groupcode";
+	$SQL = "SELECT groupcode, groupname FROM accountgroups WHERE language='" . $Language . "' ORDER BY groupcode";
 	$GroupResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 	echo '<tr>
 			<td>', _('Parent Group'), ':</td>
@@ -438,7 +479,7 @@ if (!isset($_GET['delete'])) {
 				</td>
 			</tr>';
 
-	$SQL = "SELECT sectionid, sectionname FROM accountsection ORDER BY sectionid";
+	$SQL = "SELECT sectionid, sectionname FROM accountsection WHERE language='" . $Language . "' ORDER BY sectionid";
 	$SecResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 	echo '<tr>
 			<td>', _('Section In Accounts'), ':</td>

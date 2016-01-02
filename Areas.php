@@ -14,11 +14,6 @@ if (isset($_GET['SelectedArea'])) {
 	$SelectedArea = mb_strtoupper($_POST['SelectedArea']);
 }
 
-if (isset($Errors)) {
-	unset($Errors);
-}
-$Errors = array();
-
 if (isset($_POST['submit'])) {
 
 	//initialise no input errors assumed initially before we test
@@ -36,28 +31,18 @@ if (isset($_POST['submit'])) {
 	if (mb_strlen(stripslashes($_POST['AreaCode'])) > 3) {
 		$InputError = 1;
 		prnMsg(_('The area code must be three characters or less long'), 'error');
-		$Errors[$i] = 'AreaCode';
-		++$i;
 	} elseif (DB_num_rows($Result) > 0 and !isset($SelectedArea)) {
 		$InputError = 1;
 		prnMsg(_('The area code entered already exists'), 'error');
-		$Errors[$i] = 'AreaCode';
-		++$i;
 	} elseif (mb_strlen($_POST['AreaDescription']) > 25) {
 		$InputError = 1;
 		prnMsg(_('The area description must be twenty five characters or less long'), 'error');
-		$Errors[$i] = 'AreaDescription';
-		++$i;
 	} elseif (trim($_POST['AreaCode']) == '') {
 		$InputError = 1;
 		prnMsg(_('The area code may not be empty'), 'error');
-		$Errors[$i] = 'AreaCode';
-		++$i;
 	} elseif (trim($_POST['AreaDescription']) == '') {
 		$InputError = 1;
 		prnMsg(_('The area description may not be empty'), 'error');
-		$Errors[$i] = 'AreaDescription';
-		++$i;
 	}
 
 	if (isset($SelectedArea) and $InputError != 1) {

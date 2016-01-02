@@ -615,9 +615,9 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 
 		while ($MyRow = DB_fetch_array($Result)) {
 			if (isset($_POST['LocCode']) and $MyRow['loccode'] == $_POST['LocCode']) {
-				echo '<option selected="selected" value="', $MyRow['loccode'], '">', $MyRow['locationname'], '</option>'
+				echo '<option selected="selected" value="', $MyRow['loccode'], '">', $MyRow['locationname'], '</option>';
 			} else {
-				echo '<option value="', $MyRow['loccode'], '">', $MyRow['locationname'], '</option>'
+				echo '<option value="', $MyRow['loccode'], '">', $MyRow['locationname'], '</option>';
 			}
 		} //end while loop
 		echo '</select>
@@ -771,7 +771,7 @@ if (isset($PrintPDF) or isset($_GET['PrintPDF']) and $PrintPDF and isset($FromTr
 			}
 
 			$Result = DB_query($SQL);
-			if ((DB_num_rows($Result) == 0 and $InvOrCredit == 'Invoice') or (DB_error_no() != 0))
+			if ((DB_num_rows($Result) == 0 and $InvOrCredit == 'Invoice') or (DB_error_no() != 0)) {
 				echo '<p>' . _('There was a problem retrieving the invoice or credit note details for note number') . ' ' . $FromTransNo . ' ' . _('from the database') . '. ' . _('To print an invoice, the sales order record, the customer transaction record and the branch record for the customer must not have been purged') . '. ' . _('To print a credit note only requires the customer, transaction, salesman and branch records be available');
 				if ($Debug == 1) {
 					echo _('The SQL used to get this information that failed was') . '<br />' . $SQL;

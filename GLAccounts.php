@@ -265,14 +265,14 @@ if (!isset($_GET['delete'])) {
 					<td>', $_POST['AccountCode'], '</td>
 				</tr>';
 		$SQL = "SELECT DISTINCT language FROM chartmaster";
-		$_SESSION['ChartLanguage']Result = DB_query($SQL);
-		while ($_SESSION['ChartLanguage']Row = DB_fetch_array($_SESSION['ChartLanguage']Result)) {
-			if (!isset($AccountName[$_SESSION['ChartLanguage']Row['language']])) {
-				$AccountName[$_SESSION['ChartLanguage']Row['language']] = '';
+		$LanguageResult = DB_query($SQL);
+		while ($LanguageRow = DB_fetch_array($LanguageResult)) {
+			if (!isset($AccountName[$LanguageRow['language']])) {
+				$AccountName[$LanguageRow['language']] = '';
 			}
 			echo '<tr>
-					<td>', _('Account Name'), ' (', $_SESSION['ChartLanguage']sArray[$_SESSION['ChartLanguage']Row['language']]['LanguageName'], ') :</td>
-					<td><input type="text" size="51" autofocus="autofocus" required="required" maxlength="150" name="AccountName' . mb_substr($_SESSION['ChartLanguage']Row['language'], 0, 5) . '" value="', $AccountName[$_SESSION['ChartLanguage']Row['language']], '" /></td>
+					<td>', _('Account Name'), ' (', $LanguagesArray[$LanguageRow['language']]['LanguageName'], ') :</td>
+					<td><input type="text" size="51" autofocus="autofocus" required="required" maxlength="150" name="AccountName' . mb_substr($LanguageRow['language'], 0, 5) . '" value="', $AccountName[$LanguageRow['language']], '" /></td>
 				</tr>';
 		}
 	} else {
@@ -282,11 +282,11 @@ if (!isset($_GET['delete'])) {
 				<td><input type="text" name="AccountCode" size="11" autofocus="autofocus" required="required" maxlength="20" /></td>
 			</tr>';
 		$SQL = "SELECT DISTINCT language FROM chartmaster";
-		$_SESSION['ChartLanguage']Result = DB_query($SQL);
-		while ($_SESSION['ChartLanguage']Row = DB_fetch_array($_SESSION['ChartLanguage']Result)) {
+		$LanguageResult = DB_query($SQL);
+		while ($LanguageRow = DB_fetch_array($LanguageResult)) {
 			echo '<tr>
-					<td>', _('Account Name'), ' (', $_SESSION['ChartLanguage']sArray[$_SESSION['ChartLanguage']Row['language']]['LanguageName'], ') :</td>
-					<td><input type="text" size="51" autofocus="autofocus" required="required" maxlength="150" name="AccountName' . mb_substr($_SESSION['ChartLanguage']Row['language'], 0, 5) . '" value="" /></td>
+					<td>', _('Account Name'), ' (', $LanguagesArray[$LanguageRow['language']]['LanguageName'], ') :</td>
+					<td><input type="text" size="51" autofocus="autofocus" required="required" maxlength="150" name="AccountName' . mb_substr($LanguageRow['language'], 0, 5) . '" value="" /></td>
 				</tr>';
 		}
 	}

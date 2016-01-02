@@ -804,7 +804,7 @@ $TechSql = "SELECT userid,
 					AND tokenid='16'";
 
 $TechResult = DB_query($TechSql);
-echo '<tbody'>;
+echo '<tbody>';
 while ($MyRow = DB_fetch_array($Result)) {
 	if ($k == 1) {
 		/*alternate bgcolour of row for highlighting */

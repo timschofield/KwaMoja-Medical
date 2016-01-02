@@ -229,7 +229,7 @@ if (isset($_POST['process']) or isset($SelectedLocation)) {
 							WHERE NOT EXISTS (SELECT locationusers.userid
 											FROM locationusers
 											WHERE locationusers.loccode='" . $SelectedLocation . "'
-												AND locationusers.userid=www_users.userid)");
+												AND locationusers.userid=www_users.userid)";
 
 		$Result = DB_query($SQL);
 		if (!isset($_POST['SelectedUser'])) {

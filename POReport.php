@@ -572,7 +572,7 @@ function submit($PartNumber, $PartNumberOp, $SupplierId, $SupplierIdOp, $Supplie
 							<td>' . $MyRow['supplierno'] . '</td>
 							<td>' . $MyRow['suppname'] . '</td>
 							<td class="number">' . locale_number_format($MyRow['quantityord'], $MyRow['decimalplaces']) . '</td>
-							<td class="number">' . locale_number_format($MyRow['quantityrecd'],$MyRow['decimalplaces']), . '</td>
+							<td class="number">' . locale_number_format($MyRow['quantityrecd'], $MyRow['decimalplaces']) . '</td>
 							<td class="number">' . locale_number_format($MyRow['extcost'], 2) . '</td>
 							<td class="number">' . locale_number_format($MyRow['extprice'], 2) . '</td>
 							<td class="number">' . locale_number_format($MyRow['qtyinvoiced'], $MyRow['decimalplaces']) . '</td>

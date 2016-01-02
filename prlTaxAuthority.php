@@ -34,7 +34,7 @@ if (isset($_POST['submit'])) {
 		would not run in this case cos submit is false of course  see the
 		delete code below*/
 
-		$sql = 'UPDATE prltaxauthority
+		$SQL = 'UPDATE prltaxauthority
 				SET description = ' . $_POST['Description'] . "',
 				bank = '" . $_POST['Bank'] . "',
 				bankacctype = '" . $_POST['BankAccType'] . "',
@@ -42,7 +42,7 @@ if (isset($_POST['submit'])) {
 			WHERE taxid = " . $SelectedTaxAuthID;
 
 		$ErrMsg = _('The update of this tax authority failed because');
-		$result = DB_query($sql, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 
 		$msg = _('The tax authority for record has been updated');
 
@@ -50,7 +50,7 @@ if (isset($_POST['submit'])) {
 
 		/*Selected tax authority is null cos no item selected on first time round so must be adding a	record must be submitting new entries in the new tax authority form */
 
-		$sql = "INSERT INTO prltaxauthority (
+		$SQL = "INSERT INTO prltaxauthority (
 						taxid,
 						description,
 						bank,
@@ -64,13 +64,13 @@ if (isset($_POST['submit'])) {
 				'" . $_POST['BankAcc'] . "')";
 
 		$Errmsg = _('The addition of this tax authority failed because');
-		$result = DB_query($sql, $Errmsg);
+		$Result = DB_query($SQL, $Errmsg);
 
 		$msg = _('The new tax authority record has been added to the database');
 
 		$NewTaxID = DB_Last_Insert_ID('prltaxauthority', 'taxid');
 
-		$sql = 'INSERT INTO prltaxauthrates (
+		$SQL = 'INSERT INTO prltaxauthrates (
 					taxauthority,
 					dispatchtaxprovince,
 					taxcatid
@@ -82,7 +82,7 @@ if (isset($_POST['submit'])) {
 				FROM prltaxprovinces,
 					prltaxcategories';
 
-		$InsertResult = DB_query($sql);
+		$InsertResult = DB_query($SQL);
 	}
 	//run the SQL from either of the above possibilites
 	if (isset($InputError) and $InputError != 1) {
@@ -101,18 +101,18 @@ if (isset($_POST['submit'])) {
 
 	// PREVENT DELETES IF DEPENDENT RECORDS IN OTHER TABLES
 
-	$sql = 'SELECT COUNT(*)
+	$SQL = 'SELECT COUNT(*)
 			FROM prltaxgrouptaxes
 		WHERE taxauthid=' . $SelectedTaxAuthID;
 
-	$result = DB_query($sql);
-	$myrow = DB_fetch_row($result);
-	if ($myrow[0] > 0) {
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
+	if ($MyRow[0] > 0) {
 		prnmsg(_('Cannot delete this tax authority because there are tax groups defined that use it'), 'warn');
 	} else {
 		/*Cascade deletes in TaxAuthLevels */
-		$result = DB_query('DELETE FROM prltaxauthrates WHERE taxauthority= ' . $SelectedTaxAuthID);
-		$result = DB_query('DELETE FROM prltaxauthority WHERE taxid= ' . $SelectedTaxAuthID);
+		$Result = DB_query('DELETE FROM prltaxauthrates WHERE taxauthority= ' . $SelectedTaxAuthID);
+		$Result = DB_query('DELETE FROM prltaxauthority WHERE taxid= ' . $SelectedTaxAuthID);
 		prnMsg(_('The selected tax authority record has been deleted'), 'success');
 		unset($SelectedTaxAuthID);
 	} // end of related records testing
@@ -122,7 +122,7 @@ if (!isset($SelectedTaxAuthID)) {
 
 	/* It could still be the second time the page has been run and a record has been selected for modification - SelectedTaxAuthID will exist because it was sent with the new call. If its the first time the page has been displayed with no parameters then none of the above are true and the list of tax authorities will be displayed with links to delete or edit each. These will call the same page again and allow update/input or deletion of the records*/
 
-	$sql = 'SELECT taxid,
+	$SQL = 'SELECT taxid,
 			description,
 			bank,
 			bankacctype,
@@ -131,7 +131,7 @@ if (!isset($SelectedTaxAuthID)) {
 
 	$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The defined tax authorities could not be retrieved because');
 	$DbgMsg = _('The following SQL to retrieve the tax authorities was used');
-	$result = DB_query($sql, $ErrMsg, $DbgMsg);
+	$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 	echo "<table>";
 	echo '<table border=1>';
 	echo "<tr>
@@ -142,7 +142,7 @@ if (!isset($SelectedTaxAuthID)) {
 		<th>" . _('Account Number') . "</td>
 		</tr></font>";
 
-	while ($myrow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($Result)) {
 
 		printf("<tr><td>%s</td>
 				<td>%s</td>
@@ -151,7 +151,7 @@ if (!isset($SelectedTaxAuthID)) {
 				<td>%s</td>
 				<td><a href=\"%s&SelectedTaxAuthID=%s\">" . _('Edit') . "</a></td>
 				<td><a href=\"%s&SelectedTaxAuthID=%s&delete=yes\">" . _('Delete') . '</a></td>
-			</tr>', $myrow[0], $myrow[1], $myrow[3], $myrow[2], $myrow[4], $RootPath . '/prlTaxAuthorityRates.php?', $myrow[0], $_SERVER['PHP_SELF'], $myrow[0], $_SERVER['PHP_SELF'], $myrow[0]);
+			</tr>', $MyRow[0], $MyRow[1], $MyRow[3], $MyRow[2], $MyRow[4], $RootPath . '/prlTaxAuthorityRates.php?', $MyRow[0], $_SERVER['PHP_SELF'], $MyRow[0], $_SERVER['PHP_SELF'], $MyRow[0]);
 
 	}
 	//END WHILE LIST LOOP
@@ -173,7 +173,7 @@ echo '<p><form method="post" action="' . $_SERVER['PHP_SELF'] . '">';
 if (isset($SelectedTaxAuthID)) {
 	//editing an existing tax authority
 
-	$sql = 'SELECT
+	$SQL = 'SELECT
 			taxid,
 			description,
 			bank,
@@ -182,14 +182,14 @@ if (isset($SelectedTaxAuthID)) {
 		FROM prltaxauthority
 		WHERE taxid=' . $SelectedTaxAuthID;
 
-	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 
-	$_POST['taxid'] = $myrow['taxid'];
-	$_POST['Description'] = $myrow['description'];
-	$_POST['Bank'] = $myrow['bank'];
-	$_POST['BankAccType'] = $myrow['bankacctype'];
-	$_POST['BankAcc'] = $myrow['bankacc'];
+	$_POST['taxid'] = $MyRow['taxid'];
+	$_POST['Description'] = $MyRow['description'];
+	$_POST['Bank'] = $MyRow['bank'];
+	$_POST['BankAccType'] = $MyRow['bankacctype'];
+	$_POST['BankAcc'] = $MyRow['bankacc'];
 
 	echo '<input type="hidden" name="SelectedTaxAuthID" value="' . $SelectedTaxAuthID . '">';
 
@@ -203,7 +203,7 @@ $SQL = 'SELECT accountcode,
 	WHERE chartmaster.group_=prlaccountgroups.groupname
 	AND prlaccountgroups.pandl=0
 	ORDER BY accountcode';
-$result = DB_query($SQL);
+$Result = DB_query($SQL);
 
 if (!isset($_POST['Description'])) {
 	$_POST['Description'] = '';
@@ -212,17 +212,17 @@ echo '<table>
 <tr><td>' . _('Tax Authority Name') . ":</td>
 <td><input type=Text name='Description' size=30 maxlength=50 value='" . $_POST['Description'] . "'></td></tr>";
 
-while ($myrow = DB_fetch_array($result)) {
-	echo $myrow['accountcode'] . '>' . $myrow['accountname'] . ' (' . $myrow['accountcode'] . ')';
+while ($MyRow = DB_fetch_array($Result)) {
+	echo $MyRow['accountcode'] . '>' . $MyRow['accountname'] . ' (' . $MyRow['accountcode'] . ')';
 
 } //end while loop
 
 echo '</select></td></tr>';
 
-DB_data_seek($result, 0);
-while ($myrow = DB_fetch_array($result)) {
+DB_data_seek($Result, 0);
+while ($MyRow = DB_fetch_array($Result)) {
 
-	echo $myrow['accountcode'] . "'>" . $myrow['accountname'] . ' (' . $myrow['accountcode'] . ')';
+	echo $MyRow['accountcode'] . "'>" . $MyRow['accountname'] . ' (' . $MyRow['accountcode'] . ')';
 
 } //end while loop
 

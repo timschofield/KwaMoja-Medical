@@ -21,7 +21,7 @@ $PayTypes = array(
 );
 
 if (!isset($EmployeeID)) {
-	$sql = "SELECT prlemployeemaster.employeeid,
+	$SQL = "SELECT prlemployeemaster.employeeid,
 					prlemployeemaster.lastname,
 					prlemployeemaster.firstname,
 					prlemployeemaster.payperiodid,
@@ -38,9 +38,9 @@ if (!isset($EmployeeID)) {
 						firstname";
 
 	$ErrMsg = _('The employee master record could not be retrieved because');
-	$result = DB_query($sql, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
-	if (DB_num_rows($result) > 0) {
+	if (DB_num_rows($Result) > 0) {
 		echo '<table class="selection">
 				<thead>
 					<tr>
@@ -57,7 +57,7 @@ if (!isset($EmployeeID)) {
 
 		$k = 0; //row colour counter
 		echo '<tbody>';
-		while ($myrow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 
 			//alternateTableRowColor($k);
 			if ($k == 1) {
@@ -67,15 +67,15 @@ if (!isset($EmployeeID)) {
 				echo '<tr class="EvenTableRows">';
 				$k++;
 			}
-			echo '<td>' . $myrow['employeeid'] . '</td>
-    			<td>' . $myrow['lastname'] . '</td>
-				<td>' . $myrow['firstname'] . '</td>
-				<td>' . $PayTypes[$myrow['paytype']] . '</td>
-				<td>' . $myrow['marital'] . '</td>
-				<td>' . ConvertSQLDate($myrow['birthdate']) . '</td>
-				<td>' . $myrow['active'] . '</td>
-				<td>' . $myrow['payperioddesc'] . '</td>
-				<td><a href=' . $RootPath . '/prlEmployeeMaster.php?EmployeeID=' . $myrow['employeeid'] . '>' . _('Edit') . '</td></tr>';
+			echo '<td>' . $MyRow['employeeid'] . '</td>
+    			<td>' . $MyRow['lastname'] . '</td>
+				<td>' . $MyRow['firstname'] . '</td>
+				<td>' . $PayTypes[$MyRow['paytype']] . '</td>
+				<td>' . $MyRow['marital'] . '</td>
+				<td>' . ConvertSQLDate($MyRow['birthdate']) . '</td>
+				<td>' . $MyRow['active'] . '</td>
+				<td>' . $MyRow['payperioddesc'] . '</td>
+				<td><a href=' . $RootPath . '/prlEmployeeMaster.php?EmployeeID=' . $MyRow['employeeid'] . '>' . _('Edit') . '</td></tr>';
 		} //END WHILE LIST LOOP
 		echo '</tbody>';
 		echo '</table>';

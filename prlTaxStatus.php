@@ -29,18 +29,18 @@ if ($InputError != 1 and (isset($_POST['update']) or isset($_POST['insert']))) {
 
 	if (isset($_POST['update'])) {
 
-		$sql = "UPDATE prltaxstatus SET taxstatusdescription='" . $_POST['TaxStatusDescription'] . "',
+		$SQL = "UPDATE prltaxstatus SET taxstatusdescription='" . $_POST['TaxStatusDescription'] . "',
 											personalexemption='" . $_POST['PersonalExemption'] . "',
 											additionalexemption='" . $_POST['AdditionalExemption'] . "',
 											totalexemption='" . $_POST['TotalExemption'] . "'
 										WHERE taxstatusid = '" . $TaxStatusID . "'";
 		$ErrMsg = _('The tax status could not be updated because');
 		$DbgMsg = _('The SQL that was used to update the tax status but failed was');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 		prnMsg(_('The tax status master record for') . ' ' . $TaxStatusID . ' ' . _('has been updated'), 'success');
 
 	} elseif (isset($_POST['insert'])) { //its a new tax status
-		$sql = "INSERT INTO prltaxstatus (taxstatusid,
+		$SQL = "INSERT INTO prltaxstatus (taxstatusid,
 												taxstatusdescription,
 												personalexemption,
 												additionalexemption,
@@ -53,7 +53,7 @@ if ($InputError != 1 and (isset($_POST['update']) or isset($_POST['insert']))) {
 											)";
 		$ErrMsg = _('The tax status') . ' ' . $_POST['TaxStatusDescription'] . ' ' . _('could not be added because');
 		$DbgMsg = _('The SQL that was used to insert the tax status but failed was');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 		prnMsg(_('A new tax status for') . ' ' . $_POST['TaxStatusDescription'] . ' ' . _('has been added to the database'), 'success');
 
@@ -77,8 +77,8 @@ if (isset($_POST['delete']) AND $_POST['delete'] != '') {
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'SuppTrans' , PurchOrders, SupplierContacts
 
 	if ($CancelDelete == 0) {
-		$sql = "DELETE FROM prltaxstatus WHERE taxstatusid='$TaxStatusID'";
-		$result = DB_query($sql);
+		$SQL = "DELETE FROM prltaxstatus WHERE taxstatusid='$TaxStatusID'";
+		$Result = DB_query($SQL);
 		prnMsg(_('Tax status record for') . ' ' . $TaxStatusID . ' ' . _('has been deleted'), 'success');
 		unset($TaxStatusID);
 		unset($_SESSION['TaxStatusID']);
@@ -94,15 +94,15 @@ echo '<p class="page_title_text noPrint" >
 			<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/money_add.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '
 		</p>';
 
-$sql = "SELECT  taxstatusid,
+$SQL = "SELECT  taxstatusid,
 				taxstatusdescription,
 				personalexemption,
 				additionalexemption,
 				totalexemption
 			FROM prltaxstatus";
-$result = DB_query($sql);
+$Result = DB_query($SQL);
 
-if (DB_num_rows($result)) {
+if (DB_num_rows($Result)) {
 	echo '<table class="selection">
 			<tr>
 				<th>' . _('Status ID') . '<th>
@@ -111,7 +111,7 @@ if (DB_num_rows($result)) {
 				<th>' . _('Additional Excemption') . '<th>
 				<th>' . _('Total Excemption') . '<th>
 			</tr>';
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		echo '<tr>
 				<td>' . $MyRow['taxstatusid'] . '<td>
 				<td>' . $MyRow['taxstatusdescription'] . '<td>
@@ -126,19 +126,19 @@ if (DB_num_rows($result)) {
 
 if (isset($TaxStatusID)) {
 
-	$sql = "SELECT  taxstatusid,
+	$SQL = "SELECT  taxstatusid,
 						taxstatusdescription,
 						personalexemption,
 						additionalexemption,
 						totalexemption
 			FROM prltaxstatus
 			WHERE taxstatusid = '" . $TaxStatusID . "'";
-	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
-	$_POST['TaxStatusDescription'] = $myrow['taxstatusdescription'];
-	$_POST['PersonalExemption'] = $myrow['personalexemption'];
-	$_POST['AdditionalExemption'] = $myrow['additionalexemption'];
-	$_POST['TotalExemption'] = $myrow['totalexemption'];
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
+	$_POST['TaxStatusDescription'] = $MyRow['taxstatusdescription'];
+	$_POST['PersonalExemption'] = $MyRow['personalexemption'];
+	$_POST['AdditionalExemption'] = $MyRow['additionalexemption'];
+	$_POST['TotalExemption'] = $MyRow['totalexemption'];
 
 	echo '<table class="selection">';
 	echo '<input type="hidden" name="TaxStatusID" value="' . $TaxStatusID . '" />';

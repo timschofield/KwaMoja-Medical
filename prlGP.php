@@ -41,7 +41,7 @@ if (isset($_POST['submit'])) {
 
 		if (!isset($_POST["New"])) {
 
-			$sql = "UPDATE prlgrosspaytable SET
+			$SQL = "UPDATE prlgrosspaytable SET
 					rangefrom='" . DB_escape_string($_POST['RangeFr']) . "',
 					rangeto='" . DB_escape_string($_POST['RangeTo']) . "',
 					dedtypeer='" . $_POST['DedTypeER'] . "',
@@ -52,11 +52,11 @@ if (isset($_POST['submit'])) {
 
 			$ErrMsg = _('The Gross Pay could not be updated because');
 			$DbgMsg = _('The SQL that was used to update the Gross Pay but failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 			prnMsg(_('The Gross Pay master record for') . ' ' . $Bracket . ' ' . _('has been updated'), 'success');
 
 		} else { //its a new Gross Pay
-			$sql = "INSERT INTO prlgrosspaytable (bracket,
+			$SQL = "INSERT INTO prlgrosspaytable (bracket,
 					rangefrom,
 					rangeto,
 					dedtypeer,
@@ -72,7 +72,7 @@ if (isset($_POST['submit'])) {
 						'" . DB_escape_string($_POST['EEHDMF']) . "')";
 			$ErrMsg = _('The Gross Pay could not be added because');
 			$DbgMsg = _('The SQL that was used to insert the Gross Pay but failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 			prnMsg(_('A new Gross Pay has been added to the database'), 'success');
 
@@ -99,8 +99,8 @@ if (isset($_POST['submit'])) {
 
 	// PREVENT DELETES IF DEPENDENT RECORDS found
 	if ($CancelDelete == 0) {
-		$sql = "DELETE FROM prlgrosspaytable WHERE bracket='$Bracket'";
-		$result = DB_query($sql);
+		$SQL = "DELETE FROM prlgrosspaytable WHERE bracket='$Bracket'";
+		$Result = DB_query($SQL);
 		prnMsg(_('grosspay record for') . ' ' . $Bracket . ' ' . _('has been deleted'), 'success');
 		unset($Bracket);
 		unset($_SESSION['Bracket']);
@@ -131,7 +131,7 @@ if (!isset($Bracket)) {
 	echo "</select></td></tr></table><p><input type='Submit' name='submit' value='" . _('Insert New Gross Pay') . "'>";
 	echo '</form>';
 
-	$sql = "SELECT bracket,
+	$SQL = "SELECT bracket,
 					rangefrom,
 					rangeto,
 					dedtypeer,
@@ -142,7 +142,7 @@ if (!isset($Bracket)) {
 				ORDER BY bracket";
 
 	$ErrMsg = _('Could not get grosspay because');
-	$result = DB_query($sql, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
 	echo '<table border=1>';
 	echo "<tr>
@@ -157,7 +157,7 @@ if (!isset($Bracket)) {
 
 
 	$k = 0; //row colour counter
-	while ($myrow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($Result)) {
 
 		if ($k == 1) {
 			echo "<tr bgcolor='#CCCCCC'>";
@@ -166,15 +166,15 @@ if (!isset($Bracket)) {
 			echo "<tr bgcolor='#EEEEEE'>";
 			$k++;
 		}
-		echo '<td>' . $myrow[0] . '</td>';
-		echo '<td>' . $myrow[1] . '</td>';
-		echo '<td>' . $myrow[2] . '</td>';
-		echo '<td>' . $myrow[3] . '</td>';
-		echo '<td>' . $myrow[4] . '</td>';
-		echo '<td>' . $myrow[5] . '</td>';
-		echo '<td>' . $myrow[6] . '</td>';
-		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&Bracket=' . $myrow[0] . '">' . _('Edit') . '</a></td>';
-		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&Bracket=' . $myrow[0] . '&delete=1">' . _('Delete') . '</a></td>';
+		echo '<td>' . $MyRow[0] . '</td>';
+		echo '<td>' . $MyRow[1] . '</td>';
+		echo '<td>' . $MyRow[2] . '</td>';
+		echo '<td>' . $MyRow[3] . '</td>';
+		echo '<td>' . $MyRow[4] . '</td>';
+		echo '<td>' . $MyRow[5] . '</td>';
+		echo '<td>' . $MyRow[6] . '</td>';
+		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&Bracket=' . $MyRow[0] . '">' . _('Edit') . '</a></td>';
+		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&Bracket=' . $MyRow[0] . '&delete=1">' . _('Delete') . '</a></td>';
 		echo '</tr>';
 
 	} //END WHILE LIST LOOP
@@ -189,7 +189,7 @@ if (!isset($Bracket)) {
 
 	//if (!isset($_POST["New"])) {
 	if (!isset($_POST["New"])) {
-		$sql = "SELECT bracket,
+		$SQL = "SELECT bracket,
 					rangefrom,
 					rangeto,
 					dedtypeer,
@@ -198,15 +198,15 @@ if (!isset($Bracket)) {
 					employeeshare
 				FROM prlgrosspaytable
 				WHERE bracket='$Bracket'";
-		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
 
-		$_POST['RangeFr'] = $myrow['rangefrom'];
-		$_POST['RangeTo'] = $myrow['rangeto'];
-		$_POST['DedTypeER'] = $myrow['dedtypeer'];
-		$_POST['ERHDMF'] = $myrow['employershare'];
-		$_POST['DedTypeEE'] = $myrow['dedtypeee'];
-		$_POST['EEHDMF'] = $myrow['employeeshare'];
+		$_POST['RangeFr'] = $MyRow['rangefrom'];
+		$_POST['RangeTo'] = $MyRow['rangeto'];
+		$_POST['DedTypeER'] = $MyRow['dedtypeer'];
+		$_POST['ERHDMF'] = $MyRow['employershare'];
+		$_POST['DedTypeEE'] = $MyRow['dedtypeee'];
+		$_POST['EEHDMF'] = $MyRow['employeeshare'];
 		echo '<input type="hidden" name="Bracket" value="' . $Bracket . '">';
 
 	} else {

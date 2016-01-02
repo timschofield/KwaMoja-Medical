@@ -37,7 +37,7 @@ if (isset($_POST['insert']) or isset($_POST['update'])) {
 		$SQL_StartDeduction = FormatDateForSQL($_POST['StartDeduction']);
 		if (isset($_POST['update'])) {
 			//edit
-			$sql = "UPDATE prlloanfile SET loanfiledesc='" . $_POST['LoanFileDesc'] . "',
+			$SQL = "UPDATE prlloanfile SET loanfiledesc='" . $_POST['LoanFileDesc'] . "',
 											employeeid='" . $_POST['EmployeeID'] . "',
 											loandate='" . $SQL_LoanDate . "',
 											loantableid='" . $_POST['LoanTableID'] . "',
@@ -51,7 +51,7 @@ if (isset($_POST['insert']) or isset($_POST['update'])) {
 										WHERE counterindex='" . $SelectedID . "'";
 			$ErrMsg = _('The employee loan') . ' ' . $_POST['LoanFileDesc'] . ' ' . _('could not be updated because');
 			$DbgMsg = _('The SQL that was used to update the employee loan but failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 		} elseif (isset($_POST['insert'])) { //its a new employee
 			$AuthoriserSQL = "SELECT authoriser
 								FROM departments
@@ -60,7 +60,7 @@ if (isset($_POST['insert']) or isset($_POST['update'])) {
 								WHERE prlemployeemaster.employeeid='" . $_POST['EmployeeID'] . "'";
 			$AuthoriserResult = DB_query($AuthoriserSQL);
 			$AuthoriserRow = DB_fetch_array($AuthoriserResult);
-			$sql = "INSERT INTO prlloanfile (loanfileid,
+			$SQL = "INSERT INTO prlloanfile (loanfileid,
 											loanfiledesc,
 											employeeid,
 											loandate,
@@ -91,7 +91,7 @@ if (isset($_POST['insert']) or isset($_POST['update'])) {
 
 			$ErrMsg = _('The employee loan') . ' ' . $_POST['LoanFileDesc'] . ' ' . _('could not be added because');
 			$DbgMsg = _('The SQL that was used to insert the employee loan but failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 			prnMsg(_('A new employee loan for') . ' ' . $_POST['LoanFileDesc'] . ' ' . _('has been added to the database'), 'success');
 		}
@@ -280,26 +280,26 @@ if ($_POST['Status'] == 0) {
 			<td>' . _('Employee Name') . ':</td>
 			<td><select name="EmployeeID" required="required">';
 
-	$sql = "SELECT employeeid, lastname, firstname FROM prlemployeemaster ORDER BY lastname, firstname";
-	$result = DB_query($sql);
+	$SQL = "SELECT employeeid, lastname, firstname FROM prlemployeemaster ORDER BY lastname, firstname";
+	$Result = DB_query($SQL);
 	echo '<option value=""></option>';
-	while ($myrow = DB_fetch_array($result)) {
-		if (isset($_POST['EmployeeID']) and ($_POST['EmployeeID']) == $myrow['employeeid']) {
-			echo '<option selected value=' . $myrow['employeeid'] . '>' . $myrow['lastname'] . ',' . $myrow['firstname'] . '</option>';
+	while ($MyRow = DB_fetch_array($Result)) {
+		if (isset($_POST['EmployeeID']) and ($_POST['EmployeeID']) == $MyRow['employeeid']) {
+			echo '<option selected value=' . $MyRow['employeeid'] . '>' . $MyRow['lastname'] . ',' . $MyRow['firstname'] . '</option>';
 		} else {
-			echo '<option value=' . $myrow['employeeid'] . '>' . $myrow['lastname'] . ', ' . $myrow['firstname'] . '</option>';
+			echo '<option value=' . $MyRow['employeeid'] . '>' . $MyRow['lastname'] . ', ' . $MyRow['firstname'] . '</option>';
 		}
 	} //end while loop
 	echo '</select>
 				</td>
 			</tr>';
 } else {
-	$sql = "SELECT employeeid, lastname, firstname FROM prlemployeemaster WHERE employeeid='" . $_POST['EmployeeID'] . "' ORDER BY lastname, firstname";
-	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
+	$SQL = "SELECT employeeid, lastname, firstname FROM prlemployeemaster WHERE employeeid='" . $_POST['EmployeeID'] . "' ORDER BY lastname, firstname";
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 	echo '<tr>
 			<td>' . _('Employee Name') . ':</td>
-			<td>' . $myrow['lastname'] . ', ' . $myrow['firstname'] . '</td>
+			<td>' . $MyRow['lastname'] . ', ' . $MyRow['firstname'] . '</td>
 		</tr>';
 	echo '<input type="hidden" value="' . $_POST['EmployeeID'] . ' name="EmployeeID" />';
 }
@@ -321,26 +321,26 @@ if ($_POST['Status'] == 0 or $_POST['Status'] == 4) {
 	echo '<tr>
 			<td>' . _('Loan Type') . ':</td>
 			<td><select name="LoanTableID" required="required">';
-	$sql = 'SELECT loantableid, loantabledesc FROM prlloantable';
-	$result = DB_query($sql);
+	$SQL = 'SELECT loantableid, loantabledesc FROM prlloantable';
+	$Result = DB_query($SQL);
 	echo '<option value=""></option>';
-	while ($myrow = DB_fetch_array($result)) {
-		if (isset($_POST['LoanTableID']) and ($_POST['LoanTableID']) == $myrow['loantableid']) {
-			echo '<option selected="selected" value=' . $myrow['loantableid'] . '>' . $myrow['loantabledesc'] . '</option>';
+	while ($MyRow = DB_fetch_array($Result)) {
+		if (isset($_POST['LoanTableID']) and ($_POST['LoanTableID']) == $MyRow['loantableid']) {
+			echo '<option selected="selected" value=' . $MyRow['loantableid'] . '>' . $MyRow['loantabledesc'] . '</option>';
 		} else {
-			echo '<option value=' . $myrow['loantableid'] . '>' . $myrow['loantabledesc'] . '</option>';
+			echo '<option value=' . $MyRow['loantableid'] . '>' . $MyRow['loantabledesc'] . '</option>';
 		}
 	} //end while loop
 	echo '</select>
 			</td>
 		</tr>';
 } else {
-	$sql = 'SELECT loantableid, loantabledesc FROM prlloantable';
-	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
+	$SQL = 'SELECT loantableid, loantabledesc FROM prlloantable';
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 	echo '<tr>
 			<td>' . _('Loan Type') . ':</td>
-			<td>' . $myrow['loantabledesc'] . '</td>
+			<td>' . $MyRow['loantabledesc'] . '</td>
 		</tr>';
 	echo '<input type="hidden" name="LoanTableID" value="' . $_POST['LoanTableID'] . '" />';
 }
@@ -377,7 +377,7 @@ echo '<tr>
 	</tr>';
 
 if ($_POST['Status'] == 0 or $_POST['Status'] == 4) {
-	$result = DB_query("SELECT accountcode,
+	$Result = DB_query("SELECT accountcode,
 								accountname
 							FROM chartmaster
 							INNER JOIN accountgroups
@@ -388,11 +388,11 @@ if ($_POST['Status'] == 0 or $_POST['Status'] == 4) {
 			<td>' . _('GL Loan Account') . ':</td>
 			<td><select required="required" name="LoanAct">';
 
-	while ($myrow = DB_fetch_row($result)) {
-		if ($_POST['LoanAct'] == $myrow[0]) {
-			echo '<option selected="selected" value="' . $myrow[0] . '">' . htmlspecialchars($myrow[1], ENT_QUOTES, 'UTF-8') . ' (' . $myrow[0] . ')</option>';
+	while ($MyRow = DB_fetch_row($Result)) {
+		if ($_POST['LoanAct'] == $MyRow[0]) {
+			echo '<option selected="selected" value="' . $MyRow[0] . '">' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</option>';
 		} else {
-			echo '<option value="' . $myrow[0] . '">' . htmlspecialchars($myrow[1], ENT_QUOTES, 'UTF-8') . ' (' . $myrow[0] . ')</option>';
+			echo '<option value="' . $MyRow[0] . '">' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</option>';
 		}
 	} //end while loop
 
@@ -400,19 +400,19 @@ if ($_POST['Status'] == 0 or $_POST['Status'] == 4) {
 			</td>
 		</tr>';
 } else {
-	$result = DB_query("SELECT accountcode,
+	$Result = DB_query("SELECT accountcode,
 								accountname
 							FROM chartmaster
 							WHERE accountcode='" . $_POST['LoanAct'] . "'");
-	$myrow = DB_fetch_row($result);
+	$MyRow = DB_fetch_row($Result);
 	echo '<tr>
 			<td>' . _('GL Loan Account') . ':</td>
-			<td>' . htmlspecialchars($myrow[1], ENT_QUOTES, 'UTF-8') . ' (' . $myrow[0] . ')</td>
+			<td>' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</td>
 		</tr>';
 	echo '<input type="hidden" name="LoanAct" value="' . $_POST['LoanAct'] . '" />';
 }
 
-$sql = "SELECT bankaccountusers.accountcode,
+$SQL = "SELECT bankaccountusers.accountcode,
 				bankaccountname
 			FROM bankaccounts
 			INNER JOIN bankaccountusers
@@ -421,17 +421,17 @@ $sql = "SELECT bankaccountusers.accountcode,
 				AND currcode='" . $_SESSION['CompanyRecord']['currencydefault'] . "'
 			ORDER BY bankaccountusers.accountcode";
 
-$result = DB_query($sql);
+$Result = DB_query($SQL);
 
 echo '<tr>
 		<td>' . _('Cash/Bank Account') . ':</td>
 		<td><select required="required" name="BankAct">';
 
-while ($myrow = DB_fetch_row($result)) {
-	if ($_POST['BankAct'] == $myrow[0]) {
-		echo '<option selected="selected" value="' . $myrow[0] . '">' . htmlspecialchars($myrow[1], ENT_QUOTES, 'UTF-8') . ' (' . $myrow[0] . ')</option>';
+while ($MyRow = DB_fetch_row($Result)) {
+	if ($_POST['BankAct'] == $MyRow[0]) {
+		echo '<option selected="selected" value="' . $MyRow[0] . '">' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</option>';
 	} else {
-		echo '<option value="' . $myrow[0] . '">' . htmlspecialchars($myrow[1], ENT_QUOTES, 'UTF-8') . ' (' . $myrow[0] . ')</option>';
+		echo '<option value="' . $MyRow[0] . '">' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</option>';
 	}
 } //end while loop
 
@@ -450,13 +450,13 @@ if ($_POST['Status'] == 0 or $_POST['Status'] == 4) {
 				FROM tags
 				ORDER BY tagref";
 
-	$result = DB_query($SQL);
+	$Result = DB_query($SQL);
 	echo '<option value="0">0 - ' . _('None') . '</option>';
-	while ($myrow = DB_fetch_array($result)) {
-		if (isset($_POST['tag']) and $_POST['tag'] == $myrow['tagref']) {
-			echo '<option selected="selected" value="' . $myrow['tagref'] . '">' . $myrow['tagref'] . ' - ' . $myrow['tagdescription'] . '</option>';
+	while ($MyRow = DB_fetch_array($Result)) {
+		if (isset($_POST['tag']) and $_POST['tag'] == $MyRow['tagref']) {
+			echo '<option selected="selected" value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['tagref'] . '">' . $myrow['tagref'] . ' - ' . $myrow['tagdescription'] . '</option>';
+			echo '<option value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
 		}
 	}
 	echo '</select>
@@ -469,11 +469,11 @@ if ($_POST['Status'] == 0 or $_POST['Status'] == 4) {
 				FROM tags
 				WHERE tagref='" . $_POST['tag'] . "'";
 
-	$result = DB_query($SQL);
-	$myrow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 	echo '<tr>
 			<td>' . _('Select tag for this loan') . '</td>
-			<td>' . $myrow['tagref'] . ' - ' . $myrow['tagdescription'] . '</td>
+			<td>' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</td>
 		</tr>';
 	echo '<input type="hidden" name="tag" value="' . $_POST['tag'] . '" />';
 }

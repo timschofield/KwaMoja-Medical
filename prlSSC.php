@@ -41,7 +41,7 @@ if (isset($_POST['submit'])) {
 	if ($InputError != 1) {
 
 		if (!isset($_POST["New"])) {
-			$sql = "UPDATE prlssc SET
+			$SQL = "UPDATE prlssc SET
 					companyname='" . DB_escape_string($_POST['companyname']) . "',
 					country='" . DB_escape_string($_POST['country']) . "',
 					companycontact='" . DB_escape_string($_POST['companycontact']) . "',
@@ -52,12 +52,12 @@ if (isset($_POST['submit'])) {
 						WHERE companyid='$CompanyID'";
 			$ErrMsg = _('The Social Security Company could not be updated because');
 			$DbgMsg = _('The SQL that was used to update the Basic Pay but failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 			prnMsg(_('The Social Security Company master record for') . ' ' . $CompanyID . ' ' . _('has been updated'), 'success');
 
 		} else { //its a new social security company
 
-			$sql = "INSERT INTO prlssc (
+			$SQL = "INSERT INTO prlssc (
 					companyid,
 					companyname,
 					country,
@@ -76,7 +76,7 @@ if (isset($_POST['submit'])) {
 						'" . DB_escape_string($_POST['employerpercentage ']) . "')";
 			$ErrMsg = _('The Social Security Company') . ' ' . $_POST['companyname'] . ' ' . _('could not be added because');
 			$DbgMsg = _('The SQL that was used to insert the Basic Pay but failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 			prnMsg(_('A new Social Security Company has been added to the database'), 'success');
 
@@ -105,8 +105,8 @@ if (isset($_POST['submit'])) {
 
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'SuppTrans' , PurchOrders, SupplierContacts
 	if ($CancelDelete == 0) {
-		$sql = "DELETE FROM prlssc WHERE companyid='$CompanyID'";
-		$result = DB_query($sql);
+		$SQL = "DELETE FROM prlssc WHERE companyid='$CompanyID'";
+		$Result = DB_query($SQL);
 		prnMsg(_('The Social Security Company record for') . ' ' . $CompanyID . ' ' . _('has been deleted'), 'success');
 		unset($CompanyID);
 		unset($_SESSION['CompanyID']);
@@ -133,7 +133,7 @@ if (!isset($CompanyID)) {
 	echo "</select></td></tr></table><p><input type='Submit' name='submit' value='" . _('Insert New Social Security Company') . "'>";
 	echo '</form>';
 
-	$sql = "SELECT companyid,
+	$SQL = "SELECT companyid,
 					companyname,
 					country,
 					companycontact,
@@ -145,7 +145,7 @@ if (!isset($CompanyID)) {
 				ORDER BY companyid";
 
 	$ErrMsg = _('Could not get Social Security Company because');
-	$result = DB_query($sql, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
 	echo '<table border=1>';
 	echo "<tr>
@@ -161,7 +161,7 @@ if (!isset($CompanyID)) {
 
 
 	$k = 0; //row colour counter
-	while ($myrow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($Result)) {
 
 		if ($k == 1) {
 			echo "<tr bgcolor='#CCCCCC'>";
@@ -170,16 +170,16 @@ if (!isset($CompanyID)) {
 			echo "<tr bgcolor='#EEEEEE'>";
 			$k++;
 		}
-		echo '<td>' . $myrow[0] . '</td>';
-		echo '<td>' . $myrow[1] . '</td>';
-		echo '<td>' . $myrow[2] . '</td>';
-		echo '<td>' . $myrow[3] . '</td>';
-		echo '<td>' . $myrow[4] . '</td>';
-		echo '<td>' . $myrow[5] . '</td>';
-		echo '<td>' . $myrow[6] . '</td>';
-		echo '<td>' . $myrow[7] . '</td>';
-		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&CompanyID=' . $myrow[0] . '">' . _('Edit') . '</a></td>';
-		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&CompanyID=' . $myrow[0] . '&delete=1">' . _('Delete') . '</a></td>';
+		echo '<td>' . $MyRow[0] . '</td>';
+		echo '<td>' . $MyRow[1] . '</td>';
+		echo '<td>' . $MyRow[2] . '</td>';
+		echo '<td>' . $MyRow[3] . '</td>';
+		echo '<td>' . $MyRow[4] . '</td>';
+		echo '<td>' . $MyRow[5] . '</td>';
+		echo '<td>' . $MyRow[6] . '</td>';
+		echo '<td>' . $MyRow[7] . '</td>';
+		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&CompanyID=' . $MyRow[0] . '">' . _('Edit') . '</a></td>';
+		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&CompanyID=' . $MyRow[0] . '&delete=1">' . _('Delete') . '</a></td>';
 		echo '</tr>';
 
 	} //END WHILE LIST LOOP
@@ -194,7 +194,7 @@ if (!isset($CompanyID)) {
 
 	//if (!isset($_POST["New"])) {
 	if (!isset($_POST["New"])) {
-		$sql = "SELECT companyid,
+		$SQL = "SELECT companyid,
 					companyname,
 					country,
 					companycontact,
@@ -204,17 +204,17 @@ if (!isset($CompanyID)) {
 					employerpercentage
 				FROM prlssc
 				WHERE companyid='$CompanyID'";
-		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
 
-		$_POST['companyid'] = $myrow['companyid'];
-		$_POST['companyname'] = $myrow['companyname'];
-		$_POST['country'] = $myrow['country'];
-		$_POST['companycontact'] = $myrow['companycontact'];
-		$_POST['email'] = $myrow['email'];
-		$_POST['address'] = $myrow['address'];
-		$_POST['employeepercentage'] = $myrow['employeepercentage'];
-		$_POST['employerpercentage'] = $myrow['employerpercentage'];
+		$_POST['companyid'] = $MyRow['companyid'];
+		$_POST['companyname'] = $MyRow['companyname'];
+		$_POST['country'] = $MyRow['country'];
+		$_POST['companycontact'] = $MyRow['companycontact'];
+		$_POST['email'] = $MyRow['email'];
+		$_POST['address'] = $MyRow['address'];
+		$_POST['employeepercentage'] = $MyRow['employeepercentage'];
+		$_POST['employerpercentage'] = $MyRow['employerpercentage'];
 
 		echo '<input type="hidden" name="CompanyID" value="' . $CompanyID . '">';
 

@@ -56,7 +56,7 @@ if (isset($_POST['submit'])) {
 	if ($InputError != 1) {
 
 		if (!isset($_POST["New"])) {
-			$sql = "UPDATE prlnssftable SET
+			$SQL = "UPDATE prlnssftable SET
 					surname='" . DB_escape_string($_POST['surname']) . "',
 					othernames='" . DB_escape_string($_POST['othernames']) . "',
 					dob='" . $SQL_dob . "',
@@ -75,12 +75,12 @@ if (isset($_POST['submit'])) {
 						WHERE employeeno='$employeeno'";
 			$ErrMsg = _('The nssf could not be updated because');
 			$DbgMsg = _('The SQL that was used to update the nssf but failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 			prnMsg(_('The nssf master record for') . ' ' . $employeeno . ' ' . _('has been updated'), 'success');
 
 		} else { //its a new SSS
 
-			$sql = "INSERT INTO prlnssftable (employeeno,
+			$SQL = "INSERT INTO prlnssftable (employeeno,
 					surname,
 					othernames,
 					dob,
@@ -112,10 +112,10 @@ if (isset($_POST['submit'])) {
 						'" . DB_escape_string($_POST['residential']) . "',
 						'" . DB_escape_string($_POST['phonenumber']) . "',
 						'" . DB_escape_string($_POST['email']) . "')";
-			//prnMsg(_('A new nssf has been added to the database'),'success'.$sql);
+			//prnMsg(_('A new nssf has been added to the database'),'success'.$SQL);
 			$ErrMsg = _('The nssf') . ' ' . $_POST['othernames'] . ' ' . _('could not be added because');
 			$DbgMsg = _('The SQL that was used to insert the nssf but failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 			prnMsg(_('A new nssf has been added to the database'), 'success');
 
@@ -151,8 +151,8 @@ if (isset($_POST['submit'])) {
 
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'Supptrans' , PurchOrders, SupplierContacts
 	if ($CancelDelete == 0) {
-		$sql = "DELETE FROM prlnssftable WHERE employeeno='$employeeno'";
-		$result = DB_query($sql);
+		$SQL = "DELETE FROM prlnssftable WHERE employeeno='$employeeno'";
+		$Result = DB_query($SQL);
 		prnMsg(_('nssf record for') . ' ' . $employeeno . ' ' . _('has been deleted'), 'success');
 		unset($employeeno);
 		unset($_SESSION['employeeno']);
@@ -335,7 +335,7 @@ if (!isset($employeeno)) {
 	echo '</form>';
 
 
-	$sql = "SELECT employeeno,
+	$SQL = "SELECT employeeno,
 					surname,
 					othernames,
 					dob,
@@ -355,7 +355,7 @@ if (!isset($employeeno)) {
 				ORDER BY employeeno";
 
 	$ErrMsg = _('Could not get nssf because');
-	$result = DB_query($sql, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
 	echo '<table border=1>';
 	echo "<tr>
@@ -379,7 +379,7 @@ if (!isset($employeeno)) {
 
 
 	$k = 0; //row colour counter
-	while ($myrow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($Result)) {
 
 		if ($k == 1) {
 			echo "<tr bgcolor='#CCCCCC'>";
@@ -388,26 +388,26 @@ if (!isset($employeeno)) {
 			echo "<tr bgcolor='#EEEEEE'>";
 			$k++;
 		}
-		echo '<td>' . $myrow[0] . '</td>';
-		echo '<td>' . $myrow[1] . '</td>';
-		echo '<td>' . $myrow[2] . '</td>';
-		echo '<td>' . $myrow[3] . '</td>';
-		echo '<td>' . $myrow[4] . '</td>';
-		echo '<td>' . $myrow[5] . '</td>';
-		echo '<td>' . $myrow[6] . '</td>';
-		echo '<td>' . $myrow[7] . '</td>';
-		echo '<td>' . $myrow[8] . '</td>';
-		echo '<td>' . $myrow[9] . '</td>';
-		echo '<td>' . $myrow[10] . '</td>';
-		echo '<td>' . $myrow[11] . '</td>';
-		echo '<td>' . $myrow[12] . '</td>';
-		echo '<td>' . $myrow[13] . '</td>';
-		echo '<td>' . $myrow[14] . '</td>';
-		echo '<td>' . $myrow[15] . '</td>';
-		echo '<td>' . isset($myrow[16]) . '</td>';
+		echo '<td>' . $MyRow[0] . '</td>';
+		echo '<td>' . $MyRow[1] . '</td>';
+		echo '<td>' . $MyRow[2] . '</td>';
+		echo '<td>' . $MyRow[3] . '</td>';
+		echo '<td>' . $MyRow[4] . '</td>';
+		echo '<td>' . $MyRow[5] . '</td>';
+		echo '<td>' . $MyRow[6] . '</td>';
+		echo '<td>' . $MyRow[7] . '</td>';
+		echo '<td>' . $MyRow[8] . '</td>';
+		echo '<td>' . $MyRow[9] . '</td>';
+		echo '<td>' . $MyRow[10] . '</td>';
+		echo '<td>' . $MyRow[11] . '</td>';
+		echo '<td>' . $MyRow[12] . '</td>';
+		echo '<td>' . $MyRow[13] . '</td>';
+		echo '<td>' . $MyRow[14] . '</td>';
+		echo '<td>' . $MyRow[15] . '</td>';
+		echo '<td>' . isset($MyRow[16]) . '</td>';
 
-		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&employeeno=' . $myrow[0] . '">' . _('Edit') . '</a></td>';
-		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&employeeno=' . $myrow[0] . '&delete=1">' . _('Delete') . '</a></td>';
+		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&employeeno=' . $MyRow[0] . '">' . _('Edit') . '</a></td>';
+		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&employeeno=' . $MyRow[0] . '&delete=1">' . _('Delete') . '</a></td>';
 		echo '</tr>';
 
 	} //END WHILE LIST LOOP
@@ -422,7 +422,7 @@ if (!isset($employeeno)) {
 
 	//if (!isset($_POST["New"])) {
 	if (!isset($_POST["New"])) {
-		$sql = "SELECT employeeno
+		$SQL = "SELECT employeeno
 					surname,
 					othernames,
 					dob,
@@ -440,25 +440,25 @@ if (!isset($employeeno)) {
 					email
 				FROM prlnssftable
 				WHERE employeeno='$employeeno'";
-		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
 
-		$_POST['employeeno'] = isset($myrow['employeeno']);
-		$_POST['surname'] = $myrow['surname'];
-		$_POST['othernames'] = $myrow['othernames'];
-		$_POST['dob'] = ConvertSQLDate($myrow['dob']);
-		$_POST['gender'] = $myrow['gender'];
-		$_POST['dateofregistration'] = ConvertSQLDate($myrow['dateofregistration']);
-		$_POST['placeofbirth'] = isset($myrow['placeofbirth']);
-		$_POST['nationality'] = $myrow['nationality'];
-		$_POST['areaoffice'] = $myrow['areaoffice'];
-		$_POST['employer'] = $myrow['employer'];
-		$_POST['subemployer'] = $myrow['subemployer'];
-		$_POST['biometricdetailsstatus'] = $myrow['biometricdetailsstatus'];
-		$_POST['numberofdependants'] = $myrow['numberofdependants'];
-		$_POST['residential'] = $myrow['residential'];
-		$_POST['phonenumber	'] = $myrow['phonenumber'];
-		$_POST['email'] = $myrow['email'];
+		$_POST['employeeno'] = isset($MyRow['employeeno']);
+		$_POST['surname'] = $MyRow['surname'];
+		$_POST['othernames'] = $MyRow['othernames'];
+		$_POST['dob'] = ConvertSQLDate($MyRow['dob']);
+		$_POST['gender'] = $MyRow['gender'];
+		$_POST['dateofregistration'] = ConvertSQLDate($MyRow['dateofregistration']);
+		$_POST['placeofbirth'] = isset($MyRow['placeofbirth']);
+		$_POST['nationality'] = $MyRow['nationality'];
+		$_POST['areaoffice'] = $MyRow['areaoffice'];
+		$_POST['employer'] = $MyRow['employer'];
+		$_POST['subemployer'] = $MyRow['subemployer'];
+		$_POST['biometricdetailsstatus'] = $MyRow['biometricdetailsstatus'];
+		$_POST['numberofdependants'] = $MyRow['numberofdependants'];
+		$_POST['residential'] = $MyRow['residential'];
+		$_POST['phonenumber	'] = $MyRow['phonenumber'];
+		$_POST['email'] = $MyRow['email'];
 
 		echo '<input type="hidden" name="employeeno" value="' . $employeeno . '">';
 

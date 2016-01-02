@@ -21,8 +21,8 @@ if (isset($_GET['delete'])) {
 
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'SuppTrans' , PurchOrders, SupplierContacts
 	if ($CancelDelete == 0) {
-		$sql = "DELETE FROM prlottrans WHERE counterindex='$Counter'";
-		$result = DB_query($sql);
+		$SQL = "DELETE FROM prlottrans WHERE counterindex='$Counter'";
+		$Result = DB_query($SQL);
 		prnMsg(_('OT record for') . ' ' . $Counter . ' ' . _('has been deleted'), 'success');
 		unset($Counter);
 		unset($_SESSION['Counter']);
@@ -36,7 +36,7 @@ if (!isset($Counter)) {
 	or deletion of the records*/
 	echo '<form method="post" action="' . $_SERVER['PHP_SELF'] . '>';
 	echo '<input type="hidden" name="New" value="Yes">';
-	$sql = "SELECT counterindex,
+	$SQL = "SELECT counterindex,
 					payrollid,
 					otref,
 					otdesc,
@@ -48,7 +48,7 @@ if (!isset($Counter)) {
 				FROM prlottrans
 				ORDER BY counterindex";
 	$ErrMsg = _('The ot could not be retrieved because');
-	$result = DB_query($sql, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
 	echo '<table class="selection">';
 	echo '<tr>
@@ -65,7 +65,7 @@ if (!isset($Counter)) {
 
 	$k = 0; //row colour counter
 
-	while ($myrow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($Result)) {
 
 		if ($k == 1) {
 			echo '<tr class="OddTableRows">';
@@ -75,16 +75,16 @@ if (!isset($Counter)) {
 			$k++;
 		}
 
-		echo '<td>' . $myrow[0] . '</td>
-			<td>' . $myrow[1] . '</td>
-			<td>' . $myrow[2] . '</td>
-			<td>' . $myrow[3] . '</td>
-			<td>' . $myrow[4] . '</td>
-			<td>' . $myrow[5] . '</td>
-			<td>' . $myrow[6] . '</td>
-			<td>' . $myrow[7] . '</td>
-			<td>' . $myrow[8] . '</td>
-			<td><a href="' . $_SERVER['PHP_SELF'] . '?&Counter=' . $myrow[0] . '&delete=1">' . _('Delete') . '</a></td>
+		echo '<td>' . $MyRow[0] . '</td>
+			<td>' . $MyRow[1] . '</td>
+			<td>' . $MyRow[2] . '</td>
+			<td>' . $MyRow[3] . '</td>
+			<td>' . $MyRow[4] . '</td>
+			<td>' . $MyRow[5] . '</td>
+			<td>' . $MyRow[6] . '</td>
+			<td>' . $MyRow[7] . '</td>
+			<td>' . $MyRow[8] . '</td>
+			<td><a href="' . $_SERVER['PHP_SELF'] . '?&Counter=' . $MyRow[0] . '&delete=1">' . _('Delete') . '</a></td>
 		</tr>';
 
 	} //END WHILE LIST LOOP

@@ -44,28 +44,28 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['FSYear'])) {
 	$line_height = 12;
 	include('includes/PDFTaxYTDPageHeader.inc');
 	//list of all employees
-	$sql = "SELECT employeeid
+	$SQL = "SELECT employeeid
 			FROM prlemployeemaster
 			WHERE prlemployeemaster.employeeid<>''";
-	$EmpListResult = DB_query($sql, _('Could not test to see that all detail records properly initiated'));
+	$EmpListResult = DB_query($SQL, _('Could not test to see that all detail records properly initiated'));
 	if (DB_num_rows($EmpListResult) > 0) {
 		while ($emprow = DB_fetch_array($EmpListResult)) {
 			$k = 0; //row colour counter
-			$sql = "SELECT sum(taxableincome) AS Gross,sum(tax) AS Tax
+			$SQL = "SELECT sum(taxableincome) AS Gross,sum(tax) AS Tax
 					FROM prlemptaxfile
 					WHERE prlemptaxfile.employeeid='" . $emprow['employeeid'] . "'
 					AND prlemptaxfile.fsyear='" . $FSYear . "'";
-			$PayResult = DB_query($sql);
+			$PayResult = DB_query($SQL);
 			if (DB_num_rows($PayResult) > 0) {
-				$myrow = DB_fetch_array($PayResult);
+				$MyRow = DB_fetch_array($PayResult);
 				$EmpID = $emprow['employeeid'];
 				$TaxNumber = GetEmpRow($EmpID, 23);
 				$TaxID = GetEmpRow($EmpID, 35);
 				$FullName = GetName($EmpID);
 				$MyExemption = GetTaxStatusRow(GetEmpRow($EmpID, 35), 4);
-				$Gross = $myrow['Gross'];
-				$NetTaxable = $myrow['Gross'] - $MyExemption;
-				$TaxWithheld = $myrow['Tax'];
+				$Gross = $MyRow['Gross'];
+				$NetTaxable = $MyRow['Gross'] - $MyExemption;
+				$TaxWithheld = $MyRow['Tax'];
 				$MyTax = GetMyTax($NetTaxable);
 				$Refund = $MyTax - $TaxWithheld;
 				$GTNetTaxable += $NetTaxable;

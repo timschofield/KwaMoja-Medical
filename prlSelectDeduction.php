@@ -25,8 +25,8 @@ if (isset($_GET['delete'])) {
 
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'SuppTrans' , PurchOrders, SupplierContacts
 	if ($CancelDelete == 0) {
-		$sql = "DELETE FROM prlloandeduction WHERE counterindex='$Counter'";
-		$result = DB_query($sql);
+		$SQL = "DELETE FROM prlloandeduction WHERE counterindex='$Counter'";
+		$Result = DB_query($SQL);
 		prnMsg(_('Deduction record for') . ' ' . $Counter . ' ' . _('has been deleted'), 'success');
 		unset($Counter);
 		unset($_SESSION['Counter']);
@@ -35,7 +35,7 @@ if (isset($_GET['delete'])) {
 
 
 if (!isset($Counter)) {
-	$sql = "SELECT  	prlloandeduction.counterindex,
+	$SQL = "SELECT  	prlloandeduction.counterindex,
 						prlloandeduction.payrollid,
 						prlloandeduction.employeeid,
 						prlloandeduction.loantableid,
@@ -51,7 +51,7 @@ if (!isset($Counter)) {
 		AND prlloandeduction.employeeid = prlemployeemaster.employeeid
 		ORDER BY counterindex";
 	$ErrMsg = _('The ot could not be retrieved because');
-	$result = DB_query($sql, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
 	echo '<table border=1>';
 	echo "<tr>
@@ -62,7 +62,7 @@ if (!isset($Counter)) {
 		<th>" . _('Amount') . "</td>
 	</tr>";
 	$k = 0;
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 
 		//alternateTableRowColor($k);
 		if ($k == 1) {
@@ -72,11 +72,11 @@ if (!isset($Counter)) {
 			echo "<tr bgcolor='#EEEEEE'>";
 			$k++;
 		}
-		echo "<td>" . $myrow["counterindex"] . "</td>
-				<td>" . $myrow["payrollid"] . "</td>
-				<td>" . $myrow["employeeid"] . " - " . $myrow["lastname"] . ", " . $myrow["firstname"] . "</td>
-				<td>" . $myrow["loantableid"] . " - " . $myrow["loantabledesc"] . "</td>
-    			<td>" . $myrow["amount"] . "</td></tr>";
+		echo "<td>" . $MyRow["counterindex"] . "</td>
+				<td>" . $MyRow["payrollid"] . "</td>
+				<td>" . $MyRow["employeeid"] . " - " . $MyRow["lastname"] . ", " . $MyRow["firstname"] . "</td>
+				<td>" . $MyRow["loantableid"] . " - " . $MyRow["loantabledesc"] . "</td>
+    			<td>" . $MyRow["amount"] . "</td></tr>";
 
 	} //END WHILE LIST LOOP
 }

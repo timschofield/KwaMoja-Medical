@@ -27,16 +27,16 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['PayrollID'])) {
 	$PayAmountTotal = 0;
 	include('includes/PDFBankPageHeader.inc');
 
-	$sql = "SELECT employeeid,netpay
+	$SQL = "SELECT employeeid,netpay
 			FROM prlpayrolltrans
 			WHERE prlpayrolltrans.payrollid='" . $_POST['PayrollID'] . "'";
-	$PayResult = DB_query($sql);
+	$PayResult = DB_query($SQL);
 	if (DB_num_rows($PayResult) > 0) {
-		while ($myrow = DB_fetch_array($PayResult)) {
-			$EmpID = $myrow['employeeid'];
+		while ($MyRow = DB_fetch_array($PayResult)) {
+			$EmpID = $MyRow['employeeid'];
 			$FullName = GetName($EmpID);
 			$ATM = GetEmpRow($EmpID, 19);
-			$PayAmount = $myrow['netpay'];
+			$PayAmount = $MyRow['netpay'];
 			if (($PayAmount > 0) and ($ATM <> '')) {
 				$PayAmountTotal += $PayAmount;
 				$FontSize = 8;
@@ -86,16 +86,16 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['PayrollID'])) {
 
 	echo '<form method="POST" action="' . $_SERVER['PHP_SELF'] . '?">';
 	echo '<table><tr><td>' . _('Select Payroll:') . '</td><td><select Name="PayrollID">';
-	DB_data_seek($result, 0);
-	$sql = 'SELECT payrollid, payrolldesc FROM prlpayrollperiod';
-	$result = DB_query($sql);
-	while ($myrow = DB_fetch_array($result)) {
-		if ($myrow['payrollid'] == isset($_POST['PayrollID'])) {
+	DB_data_seek($Result, 0);
+	$SQL = 'SELECT payrollid, payrolldesc FROM prlpayrollperiod';
+	$Result = DB_query($SQL);
+	while ($MyRow = DB_fetch_array($Result)) {
+		if ($MyRow['payrollid'] == isset($_POST['PayrollID'])) {
 			echo '<option selected="selected" value=';
 		} else {
 			echo '<option value=';
 		}
-		echo $myrow['payrollid'] . '>' . $myrow['payrolldesc'];
+		echo $MyRow['payrollid'] . '>' . $MyRow['payrolldesc'];
 	} //end while loop
 	echo '</select></td></tr>';
 	echo "</table><p><input type='Submit' name='ShowPR' value='" . _('Show Bank Transmittal') . "'>";

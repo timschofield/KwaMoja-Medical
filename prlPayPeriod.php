@@ -48,14 +48,14 @@ if (isset($_POST['insert']) or isset($_POST['update'])) {
 
 		if (isset($_POST['update'])) {
 
-			$sql = "UPDATE prlpayperiod SET payperioddesc='" . $_POST['PayPeriodName'] . "',
+			$SQL = "UPDATE prlpayperiod SET payperioddesc='" . $_POST['PayPeriodName'] . "',
 							numberofpayday='" . $_POST['NumberOfPayday'] . "',
 							dayofpay='" . $_POST['DayOfPay'] . "'
 						WHERE payperiodid = '$PayPeriodID'";
 
 			$ErrMsg = _('The pay period could not be updated because');
 			$DbgMsg = _('The SQL that was used to update the pay period but failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 			prnMsg(_('The pay period master record for') . ' ' . $PayPeriodID . ' ' . _('has been updated'), 'success');
 			unset($PayPeriodID);
 			unset($_POST['PayPeriodName']);
@@ -63,7 +63,7 @@ if (isset($_POST['insert']) or isset($_POST['update'])) {
 
 		} elseif (isset($_POST['insert'])) { //its a new pay period
 
-			$sql = "INSERT INTO prlpayperiod (payperiodid,
+			$SQL = "INSERT INTO prlpayperiod (payperiodid,
 							payperioddesc,
 							numberofpayday,
 							dayofpay
@@ -76,7 +76,7 @@ if (isset($_POST['insert']) or isset($_POST['update'])) {
 
 			$ErrMsg = _('The pay period') . ' ' . $_POST['PayPeriodName'] . ' ' . _('could not be added because');
 			$DbgMsg = _('The SQL that was used to insert the pay period but failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 			prnMsg(_('A new pay period for') . ' ' . $_POST['PayPeriodName'] . ' ' . _('has been added to the database'), 'success');
 
@@ -98,15 +98,15 @@ if (isset($_POST['insert']) or isset($_POST['update'])) {
 
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'SuppTrans' , PurchOrders, SupplierContacts
 	if ($CancelDelete == 0) {
-		$sql = "DELETE FROM prlpayperiod WHERE payperiodid='$PayPeriodID'";
-		$result = DB_query($sql);
+		$SQL = "DELETE FROM prlpayperiod WHERE payperiodid='$PayPeriodID'";
+		$Result = DB_query($SQL);
 		prnMsg(_('Pay Period record for') . ' ' . $PayPeriodID . ' ' . _('has been deleted'), 'success');
 		unset($PayPeriodID);
 		unset($_SESSION['PayPeriodID']);
 	} //end if Delete paypayperiod
 }
 
-$sql = "SELECT payperiodid,
+$SQL = "SELECT payperiodid,
 				payperioddesc,
 				numberofpayday,
 				dayofpay
@@ -114,9 +114,9 @@ $sql = "SELECT payperiodid,
 			ORDER BY payperiodid";
 
 $ErrMsg = _('Could not get pay period because');
-$result = DB_query($sql, $ErrMsg);
+$Result = DB_query($SQL, $ErrMsg);
 
-if (DB_num_rows($result)) {
+if (DB_num_rows($Result)) {
 	echo '<table class="selection">';
 	echo '<tr>
 			<th>' . _('Pay Code') . '</td>
@@ -126,7 +126,7 @@ if (DB_num_rows($result)) {
 		</tr>';
 
 	$k = 0; //row colour counter
-	while ($myrow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($Result)) {
 
 		if ($k == 1) {
 			echo "<tr bgcolor='#CCCCCC'>";
@@ -135,12 +135,12 @@ if (DB_num_rows($result)) {
 			echo "<tr bgcolor='#EEEEEE'>";
 			$k++;
 		}
-		echo '<td>' . $myrow[0] . '</td>';
-		echo '<td>' . $myrow[1] . '</td>';
-		echo '<td class="number">' . $myrow[2] . '</td>';
-		echo '<td class="number">' . $myrow[3] . '</td>';
-		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&PayPeriodID=' . $myrow[0] . '">' . _('Edit') . '</a></td>';
-		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&PayPeriodID=' . $myrow[0] . '&delete=1">' . _('Delete') . '</a></td>';
+		echo '<td>' . $MyRow[0] . '</td>';
+		echo '<td>' . $MyRow[1] . '</td>';
+		echo '<td class="number">' . $MyRow[2] . '</td>';
+		echo '<td class="number">' . $MyRow[3] . '</td>';
+		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&PayPeriodID=' . $MyRow[0] . '">' . _('Edit') . '</a></td>';
+		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&PayPeriodID=' . $MyRow[0] . '&delete=1">' . _('Delete') . '</a></td>';
 		echo '</tr>';
 	}
 	echo '</table>';
@@ -153,17 +153,17 @@ echo '<table class="selection">';
 
 //if (!isset($_POST["New"])) {
 if (isset($PayPeriodID)) {
-	$sql = "SELECT payperiodid,
+	$SQL = "SELECT payperiodid,
 				payperioddesc,
 				numberofpayday
 			FROM prlpayperiod
 			WHERE payperiodid = '" . $PayPeriodID . "'";
 
-	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 
-	$_POST['PayPeriodName'] = $myrow['payperioddesc'];
-	$_POST['NumberOfPayday'] = $myrow['numberofpayday'];
+	$_POST['PayPeriodName'] = $MyRow['payperioddesc'];
+	$_POST['NumberOfPayday'] = $MyRow['numberofpayday'];
 	echo '<input type="hidden" name="PayPeriodID" value="' . $PayPeriodID . '">';
 	echo '<tr>
 			<td>' . _('Pay Period Code') . ':</td>

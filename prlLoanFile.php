@@ -26,7 +26,7 @@ if (isset($_POST['submit'])) {
 		$SQL_LoanDate = FormatDateForSQL($_POST['LoanDate']);
 		$SQL_StartDeduction = FormatDateForSQL($_POST['StartDeduction']);
 		if (!isset($_POST["New"])) {
-			$sql = "UPDATE prlloanfile SET
+			$SQL = "UPDATE prlloanfile SET
 					loanfiledesc='" . DB_escape_string($_POST['LoanFileDesc']) . "',
 					employeeid='" . DB_escape_string($_POST['EmployeeID']) . "',
 					loandate='$SQL_LoanDate',
@@ -40,7 +40,7 @@ if (isset($_POST['submit'])) {
 				WHERE counterindex = '$SelectedID'";
 			$ErrMsg = _('The employee loan could not be updated because');
 			$DbgMsg = _('The SQL that was used to update the employee loan but failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 			prnMsg(_('The employee loan master record for') . ' ' . isset($_POST['LoanFileId']) . ' ' . _('has been updated'), 'success');
 
 		} else { //its a new employee
@@ -63,8 +63,8 @@ if (isset($_POST['submit'])) {
 		prnMsg(_('Payroll has been assigned,closed and can not be deleted :') . ' Name :' . $_POST['FullName'] . ' Payroll :' . $_SESSION['PayDesc'], 'error');
 	}
 	if ($CancelDelete == 0) {
-		$sql = "DELETE FROM prlloanfile WHERE counterindex = '$SelectedID'";
-		$result = DB_query($sql);
+		$SQL = "DELETE FROM prlloanfile WHERE counterindex = '$SelectedID'";
+		$Result = DB_query($SQL);
 		prnMsg(_('Employee loan record for') . ' ' . isset($_POST['LoanFileId']) . ' ' . _('has been deleted'), 'success');
 		unset($SelectedID);
 		unset($_SESSION['SelectedID']);
@@ -87,7 +87,7 @@ if (!isset($SelectedID)) {
 	echo '<form method="post" action="' . $_SERVER['PHP_SELF'] . '">';
 	echo '<table>';
 	if (!isset($_POST["New"])) {
-		$sql = "SELECT  loanfileid,
+		$SQL = "SELECT  loanfileid,
 						loanfiledesc,
 						employeeid,
 						loandate,
@@ -99,17 +99,17 @@ if (!isset($SelectedID)) {
 						accountcode
 			FROM prlloanfile
 			WHERE counterindex = '$SelectedID'";
-		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
-		$_POST['LoanFileDesc'] = $myrow['loanfiledesc'];
-		$_POST['EmployeeID'] = $myrow['employeeid'];
-		$_POST['LoanDate'] = ConvertSQLDate($myrow['loandate']);
-		$_POST['LoanTableID'] = $myrow['loantableid'];
-		$_POST['LoanAmount'] = $myrow['loanamount'];
-		$_POST['Amortization'] = $myrow['amortization'];
-		$_POST['StartDeduction'] = ConvertSQLDate($myrow['nextdeduction']);
-		$_POST['YTDDeduction'] = $myrow['ytddeduction'];
-		$_POST['AccountCode'] = $myrow['accountcode'];
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
+		$_POST['LoanFileDesc'] = $MyRow['loanfiledesc'];
+		$_POST['EmployeeID'] = $MyRow['employeeid'];
+		$_POST['LoanDate'] = ConvertSQLDate($MyRow['loandate']);
+		$_POST['LoanTableID'] = $MyRow['loantableid'];
+		$_POST['LoanAmount'] = $MyRow['loanamount'];
+		$_POST['Amortization'] = $MyRow['amortization'];
+		$_POST['StartDeduction'] = ConvertSQLDate($MyRow['nextdeduction']);
+		$_POST['YTDDeduction'] = $MyRow['ytddeduction'];
+		$_POST['AccountCode'] = $MyRow['accountcode'];
 		echo '<input type="hidden" name="SelectedID" value="' . $SelectedID . '">';
 	} else {
 		// its a new supplier being added
@@ -117,30 +117,30 @@ if (!isset($SelectedID)) {
 	echo '<tr><td>' . _('Description') . ":</td>
 		<td><input type='Text' name='LoanFileDesc' value='" . $_POST['LoanFileDesc'] . "' SIZE=42 MAXLENGTH=40></td></tr>";
 	echo '<tr><td>' . _('Employee Name') . ":</td><td><select name='EmployeeID'>";
-	DB_data_seek($result, 0);
-	$sql = 'SELECT employeeid, lastname, firstname FROM prlemployeemaster ORDER BY lastname, firstname';
-	$result = DB_query($sql);
-	while ($myrow = DB_fetch_array($result)) {
-		if ($myrow['employeeid'] == $_POST['EmployeeID']) {
+	DB_data_seek($Result, 0);
+	$SQL = 'SELECT employeeid, lastname, firstname FROM prlemployeemaster ORDER BY lastname, firstname';
+	$Result = DB_query($SQL);
+	while ($MyRow = DB_fetch_array($Result)) {
+		if ($MyRow['employeeid'] == $_POST['EmployeeID']) {
 			echo '<option selected="selected" value=';
 		} else {
 			echo '<option value=';
 		}
-		echo $myrow['employeeid'] . '>' . $myrow['lastname'] . ',' . $myrow['firstname'];
+		echo $MyRow['employeeid'] . '>' . $MyRow['lastname'] . ',' . $MyRow['firstname'];
 	} //end while loop
 	echo '</select></td></tr><tr><td>' . _('Loan Date:') . ' (' . $_SESSION['DefaultDateFormat'] . "):</td>
 	<td><input type='Text' name='LoanDate' SIZE=12 MAXLENGTH=10 value=" . $_POST['LoanDate'] . '></td></tr>';
 	echo '<tr><td>' . _('Loan Type') . ":</td><td><select name='LoanTableID'>";
-	DB_data_seek($result, 0);
-	$sql = 'SELECT loantableid, loantabledesc FROM prlloantable';
-	$result = DB_query($sql);
-	while ($myrow = DB_fetch_array($result)) {
-		if ($myrow['loantableid'] == $_POST['LoanTableID']) {
+	DB_data_seek($Result, 0);
+	$SQL = 'SELECT loantableid, loantabledesc FROM prlloantable';
+	$Result = DB_query($SQL);
+	while ($MyRow = DB_fetch_array($Result)) {
+		if ($MyRow['loantableid'] == $_POST['LoanTableID']) {
 			echo '<option selected="selected" value=';
 		} else {
 			echo '<option value=';
 		}
-		echo $myrow['loantableid'] . '>' . $myrow['loantabledesc'];
+		echo $MyRow['loantableid'] . '>' . $MyRow['loantabledesc'];
 	} //end while loop
 	echo '<tr><td>' . _('Loan Amount') . ":</td>
 		<td><input type='Text' name='LoanAmount' SIZE=14 MAXLENGTH=12 value='" . $_POST['LoanAmount'] . "'></td></tr>";
@@ -149,16 +149,16 @@ if (!isset($SelectedID)) {
 	echo '</select></td></tr><tr><td>' . _('Start Deduction') . ' (' . $_SESSION['DefaultDateFormat'] . "):</td>
 	<td><input type='Text' name='StartDeduction' SIZE=12 MAXLENGTH=10 value=" . $_POST['StartDeduction'] . '></td></tr>';
 	echo '<tr><td>' . _('Account Code') . ":</td><td><select name='AccountCode'>";
-	DB_data_seek($result, 0);
-	$sql = 'SELECT accountcode, accountname FROM chartmaster';
-	$result = DB_query($sql);
-	while ($myrow = DB_fetch_array($result)) {
-		if ($myrow['accountcode'] == $_POST['AccountCode']) {
+	DB_data_seek($Result, 0);
+	$SQL = 'SELECT accountcode, accountname FROM chartmaster';
+	$Result = DB_query($SQL);
+	while ($MyRow = DB_fetch_array($Result)) {
+		if ($MyRow['accountcode'] == $_POST['AccountCode']) {
 			echo '<option selected="selected" value=';
 		} else {
 			echo '<option value=';
 		}
-		echo $myrow['accountcode'] . '>' . $myrow['accountname'];
+		echo $MyRow['accountcode'] . '>' . $MyRow['accountname'];
 	} //end while loop
 
 	if (isset($_POST["New"])) {

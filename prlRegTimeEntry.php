@@ -35,7 +35,7 @@ $msg = '';
 
 if (isset($_POST['CommitBatch']) and ($_POST['CommitBatch']) == _('Accept and Process Overtime')) {
 
-	$result = DB_query('BEGIN');
+	$Result = DB_query('BEGIN');
 
 	foreach ($_SESSION['RTDetail']->RTEntries as $RTItem) {
 		$SQL = "INSERT INTO prldailytrans ( rtref,
@@ -52,11 +52,11 @@ if (isset($_POST['CommitBatch']) and ($_POST['CommitBatch']) == _('Accept and Pr
 										)";
 		$ErrMsg = _('Cannot insert regular time entry because');
 		$DbgMsg = _('The SQL that failed to insert the regular time Trans record was');
-		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 	}
 
 	$ErrMsg = _('Cannot commit the changes');
-	$result = DB_query('COMMIT', $ErrMsg, _('The commit database transaction failed'), true);
+	$Result = DB_query('COMMIT', $ErrMsg, _('The commit database transaction failed'), true);
 
 	prnMsg(_('Regular Time') . ' ' . $_POST['RTDesc'] . ' ' . _('has been sucessfully entered'), 'success');
 	unset($_POST['RTRef']);
@@ -73,13 +73,13 @@ if (isset($_POST['CommitBatch']) and ($_POST['CommitBatch']) == _('Accept and Pr
 
 } elseif (isset($_POST['Process']) == _('Accept')) { //user hit submit a new GL Analysis line into the journal
 	if ($AllowThisPosting) {
-		$sql = "SELECT  lastname,
+		$SQL = "SELECT  lastname,
 						firstname
 					FROM prlemployeemaster
 					WHERE employeeid = '" . $_POST['EmployeeID'] . "'";
-		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
-		$_SESSION['RTDetail']->Add_RTEntry($_POST['RTHours'], $_POST['EmployeeID'], $myrow['lastname'], $myrow['firstname'], $_POST['RTDesc']);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
+		$_SESSION['RTDetail']->Add_RTEntry($_POST['RTHours'], $_POST['EmployeeID'], $MyRow['lastname'], $MyRow['firstname'], $_POST['RTDesc']);
 		/*Make sure the same receipt is not double processed by a page refresh */
 		$Cancel = 1;
 	}
@@ -126,23 +126,23 @@ echo '<tr>
 		<td><input type="text" name="EmployeeManualCode" maxlength="12" size="12" value="' . isset($_POST['EmployeeManualCode']) . '" /></td>
 		<td>' . _('OR') . ' ' . _('Select Employee Name') . ':</td>
 		<td><select name="EmployeeID">';
-$sql = 'SELECT employeeid,
+$SQL = 'SELECT employeeid,
 				lastname,
 				firstname
 			FROM prlemployeemaster
 			ORDER BY employeeid';
-$result = DB_query($sql);
-if (DB_num_rows($result) == 0) {
+$Result = DB_query($SQL);
+if (DB_num_rows($Result) == 0) {
 	echo '</select>
 			</td>
 		</tr>';
 	prnMsg(_('No Empoloyee accounts have been set up yet'), 'warn');
 } else {
-	while ($myrow = DB_fetch_array($result)) {
-		if (isset($_POST['EmployeeID']) and ($_POST['EmployeeID']) == $myrow['employeeid']) {
-			echo '<option selected value=' . $myrow['employeeid'] . '>' . $myrow['lastname'] . ',' . $myrow['firstname'] . '</option>';
+	while ($MyRow = DB_fetch_array($Result)) {
+		if (isset($_POST['EmployeeID']) and ($_POST['EmployeeID']) == $MyRow['employeeid']) {
+			echo '<option selected value=' . $MyRow['employeeid'] . '>' . $MyRow['lastname'] . ',' . $MyRow['firstname'] . '</option>';
 		} else {
-			echo '<option value=' . $myrow['employeeid'] . '>' . $myrow['lastname'] . ',' . $myrow['firstname'] . '</option>';
+			echo '<option value=' . $MyRow['employeeid'] . '>' . $MyRow['lastname'] . ',' . $MyRow['firstname'] . '</option>';
 		}
 	} //end while loop
 	echo '</select>

@@ -47,7 +47,7 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['PayrollID'])) {
 	$YPos -= (2 * $line_height);
 
 	$PaySlip = 1;
-	$sql = "SELECT prlpayrolltrans.employeeid,
+	$SQL = "SELECT prlpayrolltrans.employeeid,
 	               prlpayrolltrans.basicpay,
 				   prlpayrolltrans.othincome,
 				   prlpayrolltrans.absent,
@@ -69,25 +69,25 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['PayrollID'])) {
 			ORDER BY lastname, firstname";
 
 
-	$PayResult = DB_query($sql);
+	$PayResult = DB_query($SQL);
 	if (DB_num_rows($PayResult) > 0) {
-		while ($myrow = DB_fetch_array($PayResult)) {
+		while ($MyRow = DB_fetch_array($PayResult)) {
 
-			$EmpID = $myrow['employeeid'];
+			$EmpID = $MyRow['employeeid'];
 			$FullName = GetName($EmpID);
 
-			$Basic = $myrow['basicpay'];
-			$OthInc = $myrow['othincome'];
-			$Lates = $myrow['late'];
-			$Absent = $myrow['absent'];
-			$OT = $myrow['otpay'];
-			$Gross = $myrow['grosspay'];
-			$SSS = $myrow['sss'];
-			$HDMF = $myrow['hdmf'];
-			$PhilHealth = $myrow['philhealth'];
-			$Loan = $myrow['loandeduction'];
-			$Tax = $myrow['tax'];
-			$Net = $myrow['netpay'];
+			$Basic = $MyRow['basicpay'];
+			$OthInc = $MyRow['othincome'];
+			$Lates = $MyRow['late'];
+			$Absent = $MyRow['absent'];
+			$OT = $MyRow['otpay'];
+			$Gross = $MyRow['grosspay'];
+			$SSS = $MyRow['sss'];
+			$HDMF = $MyRow['hdmf'];
+			$PhilHealth = $MyRow['philhealth'];
+			$Loan = $MyRow['loandeduction'];
+			$Tax = $MyRow['tax'];
+			$Net = $MyRow['netpay'];
 			$Deduction = $SSS + $HDMF + $PhilHealth + $Loan + $Tax;
 
 
@@ -356,15 +356,15 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['PayrollID'])) {
 			<li>
 				<label for="PayrollID">' . _('Select Payroll') . '</label>
 					<select name="PayrollID">';
-	$sql = 'SELECT payrollid, payrolldesc FROM prlpayrollperiod';
-	$result = DB_query($sql);
-	while ($myrow = DB_fetch_array($result)) {
-		if ($myrow['payrollid'] == isset($_POST['PayrollID'])) {
-			echo '<option selected value="' . $myrow['payrollid'] . '">' . $myrow['payrolldesc'] . '</option>';
+	$SQL = 'SELECT payrollid, payrolldesc FROM prlpayrollperiod';
+	$Result = DB_query($SQL);
+	while ($MyRow = DB_fetch_array($Result)) {
+		if ($MyRow['payrollid'] == isset($_POST['PayrollID'])) {
+			echo '<option selected value="' . $MyRow['payrollid'] . '">' . $MyRow['payrolldesc'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['payrollid'] . '">' . $myrow['payrolldesc'] . '</option>';
+			echo '<option value="' . $MyRow['payrollid'] . '">' . $MyRow['payrolldesc'] . '</option>';
 		}
-		//$pn = $myrow['payrollid'] . $myrow['payrolldesc'];
+		//$pn = $MyRow['payrollid'] . $MyRow['payrolldesc'];
 	} //end while loop
 	echo '</select>
 			</li>';

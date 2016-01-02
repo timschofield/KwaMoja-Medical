@@ -118,11 +118,11 @@ if (!isset($_POST['PayPeriodID'])) {
 	echo '<tr>
 			<td>' . _('Pay Period') . ':</td>
 			<td><select name="PayPeriodID" required="required">';
-	$sql = 'SELECT payperiodid, payperioddesc FROM prlpayperiod';
-	$result = DB_query($sql);
+	$SQL = 'SELECT payperiodid, payperioddesc FROM prlpayperiod';
+	$Result = DB_query($SQL);
 	echo '<option value=""></option>';
-	while ($myrow = DB_fetch_array($result)) {
-		echo '<option value="' . $myrow['payperiodid'] . '">' . $myrow['payperioddesc'] . '</option>';
+	while ($MyRow = DB_fetch_array($Result)) {
+		echo '<option value="' . $MyRow['payperiodid'] . '">' . $MyRow['payperioddesc'] . '</option>';
 	} //end while loop
 	echo '</select>
 			</td>

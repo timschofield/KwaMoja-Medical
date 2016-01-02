@@ -23,8 +23,8 @@ if (isset($_GET['delete'])) {
 
 	// PREVENT DELETES IF DEPENDENT RECORDS
 	if ($CancelDelete == 0) {
-		$sql = "DELETE FROM prlothincfile WHERE counterindex='$Counter'";
-		$result = DB_query($sql);
+		$SQL = "DELETE FROM prlothincfile WHERE counterindex='$Counter'";
+		$Result = DB_query($SQL);
 		prnMsg(_('Other Income record for') . ' ' . $Counter . ' ' . _('has been deleted'), 'success');
 		unset($Counter);
 		unset($_SESSION['Counter']);
@@ -37,7 +37,7 @@ if (!isset($Counter)) {
 	echo '<input type="hidden" name="New" value="Yes">';
 	echo '<table>';
 
-	$sql = "SELECT  	counterindex,
+	$SQL = "SELECT  	counterindex,
 						employeeid,
 						othdate,
 						othincid,
@@ -45,7 +45,7 @@ if (!isset($Counter)) {
 		FROM prlothincfile
 		ORDER BY counterindex";
 	$ErrMsg = _('The ot could not be retrieved because');
-	$result = DB_query($sql, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
 	echo '<table border=1>';
 	echo "<tr>
@@ -58,7 +58,7 @@ if (!isset($Counter)) {
 
 	$k = 0; //row colour counter
 
-	while ($myrow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($Result)) {
 
 		if ($k == 1) {
 			echo "<tr bgcolor='#CCCCCC'>";
@@ -68,13 +68,13 @@ if (!isset($Counter)) {
 			$k++;
 		}
 
-		echo '<td>' . $myrow[0] . '</td>';
-		echo '<td>' . $myrow[1] . '</td>';
-		echo '<td>' . $myrow[2] . '</td>';
-		echo '<td>' . $myrow[3] . '</td>';
-		echo '<td>' . $myrow[4] . '</td>';
-		//echo '<td>' . $myrow[5] . '</td>';
-		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&Counter=' . $myrow[0] . '&delete=1">' . _('Delete') . '</a></td>';
+		echo '<td>' . $MyRow[0] . '</td>';
+		echo '<td>' . $MyRow[1] . '</td>';
+		echo '<td>' . $MyRow[2] . '</td>';
+		echo '<td>' . $MyRow[3] . '</td>';
+		echo '<td>' . $MyRow[4] . '</td>';
+		//echo '<td>' . $MyRow[5] . '</td>';
+		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&Counter=' . $MyRow[0] . '&delete=1">' . _('Delete') . '</a></td>';
 		echo '</tr>';
 
 	} //END WHILE LIST LOOP

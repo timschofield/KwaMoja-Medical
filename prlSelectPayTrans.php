@@ -22,11 +22,11 @@ if (isset($_GET['delete'])) {
 
 $CancelDelete = 0;
 
-$sql = "SELECT payrollid
+$SQL = "SELECT payrollid
 FROM prlpayrollperiod
 WHERE prlpayrollperiod.payrollid='" . $PayrollID . "'
 AND prlpayrollperiod.payclosed='1'";
-$PayDetails = DB_query($sql);
+$PayDetails = DB_query($SQL);
 if(DB_num_rows($PayDetails)>0)
 {
 $CancelDelete = 1;
@@ -36,8 +36,8 @@ prnMsg('Payroll is closed. Can not delete this record...','success');
 
 // PREVENT DELETES IF DEPENDENT RECORDSs
 if ($CancelDelete == 0) {
-$sql="DELETE FROM prlpayrolltrans WHERE counterindex='$Counter'";
-$result = DB_query($sql);
+$SQL="DELETE FROM prlpayrolltrans WHERE counterindex='$Counter'";
+$Result = DB_query($SQL);
 prnMsg(_('Payroll record ') . ' ' . $Counter . ' ' . _('has been deleted'),'success');
 unset($Counter);
 unset($_SESSION['Counter']);
@@ -51,7 +51,7 @@ if (!isset($Counter)) {
 	echo '<input type="hidden" name="New" value="Yes">';
 	echo '<table>';
 
-	$sql = "SELECT  	payrollid,
+	$SQL = "SELECT  	payrollid,
 						employeeid,
 						periodrate,
 						hourlyrate,
@@ -72,7 +72,7 @@ if (!isset($Counter)) {
 		FROM prlpayrolltrans
 		ORDER BY counterindex";
 	$ErrMsg = _('Payroll record could not be retrieved because');
-	$result = DB_query($sql, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
 	echo '<table border=1>';
 	echo "<tr>
@@ -96,7 +96,7 @@ if (!isset($Counter)) {
 
 	$k = 0; //row colour counter
 
-	while ($myrow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($Result)) {
 
 		if ($k == 1) {
 			echo "<tr bgcolor='#CCCCCC'>";
@@ -106,23 +106,23 @@ if (!isset($Counter)) {
 			$k++;
 		}
 
-		echo '<td>' . $myrow[0] . '</td>';
-		echo '<td>' . $myrow[1] . '</td>';
-		echo '<td>' . $myrow[2] . '</td>';
-		echo '<td>' . $myrow[3] . '</td>';
-		echo '<td>' . $myrow[4] . '</td>';
-		echo '<td>' . $myrow[5] . '</td>';
-		echo '<td>' . $myrow[6] . '</td>';
-		echo '<td>' . $myrow[7] . '</td>';
-		echo '<td>' . $myrow[8] . '</td>';
-		echo '<td>' . $myrow[9] . '</td>';
-		echo '<td>' . $myrow[10] . '</td>';
-		echo '<td>' . $myrow[11] . '</td>';
-		echo '<td>' . $myrow[12] . '</td>';
-		echo '<td>' . $myrow[13] . '</td>';
-		echo '<td>' . $myrow[14] . '</td>';
-		echo '<td>' . $myrow[15] . '</td>';
-		//echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&Counter=' . $myrow[0] . '&delete=1">' . _('Delete') .'</a></td>';
+		echo '<td>' . $MyRow[0] . '</td>';
+		echo '<td>' . $MyRow[1] . '</td>';
+		echo '<td>' . $MyRow[2] . '</td>';
+		echo '<td>' . $MyRow[3] . '</td>';
+		echo '<td>' . $MyRow[4] . '</td>';
+		echo '<td>' . $MyRow[5] . '</td>';
+		echo '<td>' . $MyRow[6] . '</td>';
+		echo '<td>' . $MyRow[7] . '</td>';
+		echo '<td>' . $MyRow[8] . '</td>';
+		echo '<td>' . $MyRow[9] . '</td>';
+		echo '<td>' . $MyRow[10] . '</td>';
+		echo '<td>' . $MyRow[11] . '</td>';
+		echo '<td>' . $MyRow[12] . '</td>';
+		echo '<td>' . $MyRow[13] . '</td>';
+		echo '<td>' . $MyRow[14] . '</td>';
+		echo '<td>' . $MyRow[15] . '</td>';
+		//echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&Counter=' . $MyRow[0] . '&delete=1">' . _('Delete') .'</a></td>';
 		echo '</tr>';
 
 	} //END WHILE LIST LOOP

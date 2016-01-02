@@ -28,8 +28,8 @@ if (isset($_GET['TaxStatusID'])) {
 
 if (isset($_GET['delete'])) {
 	//the link to delete a selected record was clicked instead of the submit button
-	$sql = "DELETE FROM prltaxstatus WHERE taxstatusid " . LIKE . "'" . DB_escape_string($TaxStatusID) . "'";
-	$result = DB_query($sql);
+	$SQL = "DELETE FROM prltaxstatus WHERE taxstatusid " . LIKE . "'" . DB_escape_string($TaxStatusID) . "'";
+	$Result = DB_query($SQL);
 	prnMsg('employee id has been deleted' . '!', 'success');
 	//}
 	//end if account group used in GL accounts
@@ -46,12 +46,12 @@ if (!isset($TaxStatusID)) {
 	links to delete or edit each. These will call the same page again and allow update/input
 	or deletion of the records*/
 
-	$sql = "SELECT taxstatusid,
+	$SQL = "SELECT taxstatusid,
 			taxstatusdescription
 		FROM prltaxstatus
 		ORDER BY taxstatusid";
 	$ErrMsg = _('The tax status master could not be retrieved because');
-	$result = DB_query($sql, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
 	echo '<table border=1>';
 	echo "<tr>
@@ -61,7 +61,7 @@ if (!isset($TaxStatusID)) {
 
 	$k = 0; //row colour counter
 
-	while ($myrow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($Result)) {
 
 		if ($k == 1) {
 			echo "<tr bgcolor='#CCCCCC'>";
@@ -71,9 +71,9 @@ if (!isset($TaxStatusID)) {
 			$k++;
 		}
 
-		echo '<td>' . $myrow[0] . '</td>';
-		echo '<td>' . $myrow[1] . '</td>';
-		echo '<td><a href="' . $RootPath . '/prlTaxStatus.php?&TaxStatusID=' . $myrow[0] . '">' . _('Edit/Delete') . '</a></td>';
+		echo '<td>' . $MyRow[0] . '</td>';
+		echo '<td>' . $MyRow[1] . '</td>';
+		echo '<td><a href="' . $RootPath . '/prlTaxStatus.php?&TaxStatusID=' . $MyRow[0] . '">' . _('Edit/Delete') . '</a></td>';
 		echo '</tr>';
 
 	} //END WHILE LIST LOOP

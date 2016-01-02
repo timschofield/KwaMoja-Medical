@@ -48,18 +48,18 @@ if (isset($_POST['submit'])) {
 
 		if (!isset($_POST["New"])) {
 
-			$sql = "UPDATE prlothinctable SET othincdesc='" . DB_escape_string($_POST['OthIncDesc']) . "',
+			$SQL = "UPDATE prlothinctable SET othincdesc='" . DB_escape_string($_POST['OthIncDesc']) . "',
 							taxable='" . DB_escape_string($_POST['Taxable']) . "'
 						WHERE othincid = '$OthIncID'";
 
 			$ErrMsg = _('The other income could not be updated because');
 			$DbgMsg = _('The SQL that was used to update the other income but failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 			prnMsg(_('The other income master record for') . ' ' . $OthIncID . ' ' . _('has been updated'), 'success');
 
 		} else { //its a new other income
 
-			$sql = "INSERT INTO prlothinctable (othincid,
+			$SQL = "INSERT INTO prlothinctable (othincid,
 							othincdesc,
 							taxable,
 							percentage)
@@ -69,7 +69,7 @@ if (isset($_POST['submit'])) {
 
 			$ErrMsg = _('The other income') . ' ' . $_POST['OthIncDesc'] . ' ' . _('could not be added because');
 			$DbgMsg = _('The SQL that was used to insert the other income but failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 			prnMsg(_('A new other income for') . ' ' . $_POST['OthIncDesc'] . ' ' . _('has been added to the database'), 'success');
 
@@ -93,8 +93,8 @@ if (isset($_POST['submit'])) {
 
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'SuppTrans' , PurchOrders, SupplierContacts
 	if ($CancelDelete == 0) {
-		$sql = "DELETE FROM prlothinctable WHERE othincid='$OthIncID'";
-		$result = DB_query($sql);
+		$SQL = "DELETE FROM prlothinctable WHERE othincid='$OthIncID'";
+		$Result = DB_query($SQL);
 		prnMsg(_('Other Income record for') . ' ' . $OthIncID . ' ' . _('has been deleted'), 'success');
 		unset($OthIncID);
 		unset($_SESSION['OthIncID']);
@@ -123,7 +123,7 @@ if (!isset($OthIncID)) {
 	echo "</select></td></tr></table><p><input type='Submit' name='submit' value='" . _('Insert New other income') . "'>";
 	echo '</form>';
 
-	$sql = "SELECT othincid,
+	$SQL = "SELECT othincid,
 			othincdesc,
 			taxable,
 			percentage
@@ -131,7 +131,7 @@ if (!isset($OthIncID)) {
 			ORDER BY othincid";
 
 	$ErrMsg = _('Could not get other income because');
-	$result = DB_query($sql, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
 	echo '<table border=1>';
 	echo "<tr>
@@ -143,7 +143,7 @@ if (!isset($OthIncID)) {
 
 
 	$k = 0; //row colour counter
-	while ($myrow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($Result)) {
 
 		if ($k == 1) {
 			echo "<tr bgcolor='#CCCCCC'>";
@@ -152,12 +152,12 @@ if (!isset($OthIncID)) {
 			echo "<tr bgcolor='#EEEEEE'>";
 			$k++;
 		}
-		echo '<td>' . $myrow[0] . '</td>';
-		echo '<td>' . $myrow[1] . '</td>';
-		echo '<td>' . $myrow[2] . '</td>';
-		echo '<td>' . $myrow[3] . '</td>';
-		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&OthIncID=' . $myrow[0] . '">' . _('Edit') . '</a></td>';
-		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&OthIncID=' . $myrow[0] . '&delete=1">' . _('Delete') . '</a></td>';
+		echo '<td>' . $MyRow[0] . '</td>';
+		echo '<td>' . $MyRow[1] . '</td>';
+		echo '<td>' . $MyRow[2] . '</td>';
+		echo '<td>' . $MyRow[3] . '</td>';
+		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&OthIncID=' . $MyRow[0] . '">' . _('Edit') . '</a></td>';
+		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&OthIncID=' . $MyRow[0] . '&delete=1">' . _('Delete') . '</a></td>';
 		echo '</tr>';
 
 	} //END WHILE LIST LOOP
@@ -172,18 +172,18 @@ if (!isset($OthIncID)) {
 
 	//if (!isset($_POST["New"])) {
 	if (!isset($_POST["New"])) {
-		$sql = "SELECT othincid,
+		$SQL = "SELECT othincid,
 				othincdesc,
 				taxable,
 				percentage
 			FROM prlothinctable
 			WHERE othincid = '$OthIncID'";
 
-		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
 
-		$_POST['OthIncDesc'] = $myrow['othincdesc'];
-		$_POST['Taxable'] = $myrow['taxable'];
+		$_POST['OthIncDesc'] = $MyRow['othincdesc'];
+		$_POST['Taxable'] = $MyRow['taxable'];
 		echo '<input type="hidden" name="OthIncID" value="' . $OthIncID . '">';
 
 	} else {

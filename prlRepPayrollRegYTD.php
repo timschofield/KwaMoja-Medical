@@ -44,50 +44,50 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['FSYear'])) {
 	$line_height = 12;
 	include('includes/PDFPayRegYTDPageHeader.inc');
 	//list of all employees
-	$sql = "SELECT employeeid
+	$SQL = "SELECT employeeid
 			FROM prlemployeemaster
 			WHERE prlemployeemaster.employeeid<>''";
-	$EmpListResult = DB_query($sql, _('Could not test to see that all detail records properly initiated'));
+	$EmpListResult = DB_query($SQL, _('Could not test to see that all detail records properly initiated'));
 	if (DB_num_rows($EmpListResult) > 0) {
 		while ($emprow = DB_fetch_array($EmpListResult)) {
 			$k = 0; //row colour counter
-			$sql = "SELECT sum(basicpay) AS Basic,sum(othincome) AS OthInc,sum(absent) as Absent,
+			$SQL = "SELECT sum(basicpay) AS Basic,sum(othincome) AS OthInc,sum(absent) as Absent,
 					          sum(late) AS Late,sum(otpay) AS OT,sum(grosspay) AS GrossPay,
 							  sum(loandeduction) AS LoanDed,sum(sss) AS SSS,sum(hdmf) AS HDMF,sum(philhealth) AS PH,
 							  sum(tax) AS Tax,sum(netpay) AS NetPay
 					FROM prlpayrolltrans
 					WHERE prlpayrolltrans.employeeid='" . $emprow['employeeid'] . "'
 					AND prlpayrolltrans.fsyear='" . $FSYear . "'";
-			$PayResult = DB_query($sql);
+			$PayResult = DB_query($SQL);
 			if (DB_num_rows($PayResult) > 0) {
-				$myrow = DB_fetch_array($PayResult);
+				$MyRow = DB_fetch_array($PayResult);
 				$EmpID = $emprow['employeeid'];
 				$FullName = GetName($EmpID);
-				$Basic = $myrow['Basic'];
-				$OthInc = $myrow['OthInc'];
-				$Late = $myrow['Late'];
-				$Absent = $myrow['Absent'];
-				$OT = $myrow['OT'];
-				$Gross = $myrow['GrossPay'];
-				$SSS = $myrow['SSS'];
-				$HDMF = $myrow['HDMF'];
-				$PH = $myrow['PH'];
-				$LoanDed = $myrow['LoanDed'];
-				$Tax = $myrow['Tax'];
-				$NetPay = $myrow['NetPay'];
+				$Basic = $MyRow['Basic'];
+				$OthInc = $MyRow['OthInc'];
+				$Late = $MyRow['Late'];
+				$Absent = $MyRow['Absent'];
+				$OT = $MyRow['OT'];
+				$Gross = $MyRow['GrossPay'];
+				$SSS = $MyRow['SSS'];
+				$HDMF = $MyRow['HDMF'];
+				$PH = $MyRow['PH'];
+				$LoanDed = $MyRow['LoanDed'];
+				$Tax = $MyRow['Tax'];
+				$NetPay = $MyRow['NetPay'];
 
-				$GTBasic += $myrow['Basic'];
-				$GTOthInc += $myrow['OthInc'];
-				$GTLate += $myrow['Late'];
-				$GTAbsent += $myrow['Absent'];
-				$GTOT += $myrow['OT'];
-				$GTGross += $myrow['GrossPay'];
-				$GTSSS += $myrow['SSS'];
-				$GTHDMF += $myrow['HDMF'];
-				$GTPhilHealth += $myrow['PH'];
-				$GTLoan += $myrow['LoanDed'];
-				$GTTax += $myrow['Tax'];
-				$GTNet += $myrow['NetPay'];
+				$GTBasic += $MyRow['Basic'];
+				$GTOthInc += $MyRow['OthInc'];
+				$GTLate += $MyRow['Late'];
+				$GTAbsent += $MyRow['Absent'];
+				$GTOT += $MyRow['OT'];
+				$GTGross += $MyRow['GrossPay'];
+				$GTSSS += $MyRow['SSS'];
+				$GTHDMF += $MyRow['HDMF'];
+				$GTPhilHealth += $MyRow['PH'];
+				$GTLoan += $MyRow['LoanDed'];
+				$GTTax += $MyRow['Tax'];
+				$GTNet += $MyRow['NetPay'];
 
 				//$YPos -= (2 * $line_height);  //double spacing
 				$FontSize = 8;

@@ -37,7 +37,7 @@ $msg = '';
 if (isset($_POST['CommitBatch']) == _('Accept and Process Overtime')) {
 
 	/*Start a transaction to do the whole lot inside */
-	$result = DB_query('BEGIN');
+	$Result = DB_query('BEGIN');
 
 	foreach ($_SESSION['OTDetail']->OTEntries as $OTItem) {
 		$SQL = "INSERT INTO prlottrans (
@@ -57,12 +57,12 @@ if (isset($_POST['CommitBatch']) == _('Accept and Process Overtime')) {
 					)";
 		$ErrMsg = _('Cannot insert overtime entry because');
 		$DbgMsg = _('The SQL that failed to insert the OT Trans record was');
-		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 	}
 
 
 	$ErrMsg = _('Cannot commit the changes');
-	$result = DB_query('COMMIT', $ErrMsg, _('The commit database transaction failed'), true);
+	$Result = DB_query('COMMIT', $ErrMsg, _('The commit database transaction failed'), true);
 
 	prnMsg(_('Overtime') . ' ' . $_POST['OTRef'] . ' ' . _('has been sucessfully entered'), 'success');
 	unset($_POST['OTRef']);
@@ -78,18 +78,18 @@ if (isset($_POST['CommitBatch']) == _('Accept and Process Overtime')) {
 
 } elseif (isset($_POST['Process']) == _('Accept')) { //user hit submit
 	if ($AllowThisPosting) {
-		$sql = "SELECT overtimedesc
+		$SQL = "SELECT overtimedesc
 			FROM prlovertimetable
 			WHERE overtimeid = '" . $_POST['OvertimeID'] . "'";
-		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
-		$OTD = $myrow['overtimedesc'];
-		$sql = "SELECT  lastname,firstname
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
+		$OTD = $MyRow['overtimedesc'];
+		$SQL = "SELECT  lastname,firstname
 			FROM prlemployeemaster
 			WHERE employeeid = '" . $_POST['EmployeeID'] . "'";
-		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
-		$_SESSION['OTDetail']->Add_OTEntry($_POST['OTHours'], $_POST['EmployeeID'], $myrow['lastname'], $myrow['firstname'], $OTD, $_POST['OvertimeID']);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
+		$_SESSION['OTDetail']->Add_OTEntry($_POST['OTHours'], $_POST['EmployeeID'], $MyRow['lastname'], $MyRow['firstname'], $OTD, $_POST['OvertimeID']);
 		$Cancel = 1;
 	}
 }
@@ -123,31 +123,31 @@ echo '<FONT SIZE=3 COLOR=BLUE>' . _('Overtime Line Entry') . '</FONT><table>';
 
 echo '<tr><td>' . _('Description') . ":</td><td COLSPAN=3><input type='Text' name='OTDesc' SIZE=42 MAXLENGTH=40 value='" . isset($_POST['OTDesc']) . "'></td></tr>";
 echo '<tr><td>' . _('Employee Name') . ":</td><td><select name='EmployeeID'>";
-DB_data_seek($result, 0);
-$sql = 'SELECT employeeid, lastname, firstname FROM prlemployeemaster ORDER BY lastname, firstname';
-$result = DB_query($sql);
-if (DB_num_rows($result) == 0) {
+DB_data_seek($Result, 0);
+$SQL = 'SELECT employeeid, lastname, firstname FROM prlemployeemaster ORDER BY lastname, firstname';
+$Result = DB_query($SQL);
+if (DB_num_rows($Result) == 0) {
 	echo '</select></td></tr>';
 	prnMsg(_('No Empoloyee accounts have been set up yet'), 'warn');
 } else {
-	while ($myrow = DB_fetch_array($result)) {
-		if (isset($_POST['EmployeeID']) and ($_POST['EmployeeID']) == $myrow['employeeid']) {
-			echo '<option selected="selected" value=' . $myrow['employeeid'] . '>' . $myrow['lastname'] . ',' . $myrow['firstname'];
+	while ($MyRow = DB_fetch_array($Result)) {
+		if (isset($_POST['EmployeeID']) and ($_POST['EmployeeID']) == $MyRow['employeeid']) {
+			echo '<option selected="selected" value=' . $MyRow['employeeid'] . '>' . $MyRow['lastname'] . ',' . $MyRow['firstname'];
 		} else {
-			echo '<option value=' . $myrow['employeeid'] . '>' . $myrow['lastname'] . ',' . $myrow['firstname'];
+			echo '<option value=' . $MyRow['employeeid'] . '>' . $MyRow['lastname'] . ',' . $MyRow['firstname'];
 		}
 	} //end while loop
 	echo '</select></td></tr>';
 }
 echo '<tr><td>' . _('Overtime Type') . ":</td><td><select name='OvertimeID'>";
-DB_data_seek($result, 0);
-$sql = 'SELECT overtimeid, overtimedesc FROM prlovertimetable';
-$result = DB_query($sql);
-while ($myrow = DB_fetch_array($result)) {
+DB_data_seek($Result, 0);
+$SQL = 'SELECT overtimeid, overtimedesc FROM prlovertimetable';
+$Result = DB_query($SQL);
+while ($MyRow = DB_fetch_array($Result)) {
 	if (isset($_POST['OvertimeID']) and ($_POST['OvertimeID']) == '') {
-		echo '<option selected="selected" value=' . $myrow['overtimeid'] . '>' . $myrow['overtimedesc'];
+		echo '<option selected="selected" value=' . $MyRow['overtimeid'] . '>' . $MyRow['overtimedesc'];
 	} else {
-		echo '<option value=' . $myrow['overtimeid'] . '>' . $myrow['overtimedesc'];
+		echo '<option value=' . $MyRow['overtimeid'] . '>' . $MyRow['overtimedesc'];
 	}
 } //end while loop
 echo '<tr><td>' . _('OTHours') . ":</td><td COLSPAN=3><input type=Text Name='OTHours' Maxlength=12 SIZE=12 value=" . isset($_POST['OTHours']) . '></td></tr>';

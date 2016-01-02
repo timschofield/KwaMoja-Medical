@@ -39,7 +39,7 @@ if (isset($_POST['Submit'])) {
 
 	if ($InputError != 1) {
 		if (!isset($_POST["New"])) {
-			$sql = "UPDATE prlbasicpaytable SET rangefrom='" . $_POST['RangeFr'] . "',
+			$SQL = "UPDATE prlbasicpaytable SET rangefrom='" . $_POST['RangeFr'] . "',
 												rangeto='" . $_POST['RangeTo'] . "',
 												salarycredit='" . $_POST['Credit'] . "',
 												employerbasicpay='" . $_POST['ERPH'] . "',
@@ -48,10 +48,10 @@ if (isset($_POST['Submit'])) {
 											WHERE bracket='" . $Bracket . "'";
 			$ErrMsg = _('The Basic Pay could not be updated because');
 			$DbgMsg = _('The SQL that was used to update the Basic Pay but failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 			prnMsg(_('The Basic Pay master record for') . ' ' . $Bracket . ' ' . _('has been updated'), 'success');
 		} else { //its a new PhilHealth
-			$sql = "INSERT INTO prlbasicpaytable (  bracket,
+			$SQL = "INSERT INTO prlbasicpaytable (  bracket,
 													rangefrom,
 													rangeto,
 													salarycredit,
@@ -69,7 +69,7 @@ if (isset($_POST['Submit'])) {
 												)";
 			$ErrMsg = _('The Basic Pay') . ' ' . $_POST['Credit'] . ' ' . _('could not be added because');
 			$DbgMsg = _('The SQL that was used to insert the Basic Pay but failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 			prnMsg(_('A new Basic Pay has been added to the database'), 'success');
 		}
 		unset($Bracket);
@@ -90,8 +90,8 @@ if (isset($_POST['Submit'])) {
 
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'SuppTrans' , PurchOrders, SupplierContacts
 	if ($CancelDelete == 0) {
-		$sql = "DELETE FROM prlbasicpaytable WHERE bracket='$Bracket'";
-		$result = DB_query($sql);
+		$SQL = "DELETE FROM prlbasicpaytable WHERE bracket='$Bracket'";
+		$Result = DB_query($SQL);
 		prnMsg(_('The Basic Pay record for') . ' ' . $Bracket . ' ' . _('has been deleted'), 'success');
 		unset($Bracket);
 		unset($_SESSION['Bracket']);
@@ -106,7 +106,7 @@ echo '<form method="post" class="noPrint" id="BasicPay" action="' . htmlspecialc
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 if (!isset($_POST["New"]) and isset($Bracket)) {
-	$sql = "SELECT bracket,
+	$SQL = "SELECT bracket,
 				rangefrom,
 				rangeto,
 				salarycredit,
@@ -115,14 +115,14 @@ if (!isset($_POST["New"]) and isset($Bracket)) {
 				total
 			FROM prlbasicpaytable
 			WHERE bracket='" . $Bracket . "'";
-	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
-	$_POST['RangeFr'] = $myrow['rangefrom'];
-	$_POST['RangeTo'] = $myrow['rangeto'];
-	$_POST['Credit'] = $myrow['salarycredit'];
-	$_POST['ERPH'] = $myrow['employerbasicpay'];
-	$_POST['EEPH'] = $myrow['employeebasicpay'];
-	$_POST['Total'] = $myrow['total'];
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
+	$_POST['RangeFr'] = $MyRow['rangefrom'];
+	$_POST['RangeTo'] = $MyRow['rangeto'];
+	$_POST['Credit'] = $MyRow['salarycredit'];
+	$_POST['ERPH'] = $MyRow['employerbasicpay'];
+	$_POST['EEPH'] = $MyRow['employeebasicpay'];
+	$_POST['Total'] = $MyRow['total'];
 	echo '<input type="hidden" name="Bracket" value="' . $Bracket . '" />';
 	echo '<table>';
 	echo '<tr>
@@ -187,7 +187,7 @@ echo '</form>';
 
 // end of main ifs
 
-$sql = "SELECT bracket,
+$SQL = "SELECT bracket,
 				rangefrom,
 				rangeto,
 				salarycredit,
@@ -198,7 +198,7 @@ $sql = "SELECT bracket,
 			ORDER BY bracket";
 
 $ErrMsg = _('Could not get Basic pay because');
-$result = DB_query($sql, $ErrMsg);
+$Result = DB_query($SQL, $ErrMsg);
 
 echo '<table class="selection">
 		<tr>
@@ -212,7 +212,7 @@ echo '<table class="selection">
 		</tr>';
 
 $k = 0; //row colour counter
-while ($myrow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 
 	if ($k == 1) {
 		echo '<tr class="EvenTableRows">';
@@ -221,15 +221,15 @@ while ($myrow = DB_fetch_array($result)) {
 		echo '<tr class="OddTableRows">';
 		$k++;
 	}
-	echo '<td>' . $myrow['bracket'] . '</td>
-		<td>' . $myrow['rangefrom'] . '</td>
-		<td>' . $myrow['rangeto'] . '</td>
-		<td>' . $myrow['salarycredit'] . '</td>
-		<td>' . $myrow['employerbasicpay'] . '</td>
-		<td>' . $myrow['employeebasicpay'] . '</td>
-		<td>' . $myrow['total'] . '</td>
-		<td><a href="' . $_SERVER['PHP_SELF'] . '?Bracket=' . $myrow['bracket'] . '">' . _('Edit') . '</a></td>
-		<td><a href="' . $_SERVER['PHP_SELF'] . '?Bracket=' . $myrow['bracket'] . '&delete=1">' . _('Delete') . '</a></td>
+	echo '<td>' . $MyRow['bracket'] . '</td>
+		<td>' . $MyRow['rangefrom'] . '</td>
+		<td>' . $MyRow['rangeto'] . '</td>
+		<td>' . $MyRow['salarycredit'] . '</td>
+		<td>' . $MyRow['employerbasicpay'] . '</td>
+		<td>' . $MyRow['employeebasicpay'] . '</td>
+		<td>' . $MyRow['total'] . '</td>
+		<td><a href="' . $_SERVER['PHP_SELF'] . '?Bracket=' . $MyRow['bracket'] . '">' . _('Edit') . '</a></td>
+		<td><a href="' . $_SERVER['PHP_SELF'] . '?Bracket=' . $MyRow['bracket'] . '&delete=1">' . _('Delete') . '</a></td>
 	</tr>';
 } //END WHILE LIST LOOP
 echo '</table>';

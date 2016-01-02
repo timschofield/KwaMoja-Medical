@@ -32,18 +32,18 @@ if (isset($_POST['insert']) or isset($_POST['update'])) {
 
 	if ($InputError == 0) {
 		if (isset($_POST['insert'])) {
-			$sql = "INSERT INTO prlemploymentstatus VALUES (NULL,
+			$SQL = "INSERT INTO prlemploymentstatus VALUES (NULL,
 															'" . $_POST['EmploymentName'] . "'
 															)";
 			$ErrMsg = _('An error occurred in inserting the employment status');
 			$DbgMsg = _('The SQL that was used to insert the employment status was');
 		} else if (isset($_POST['update'])) {
-			$sql = "UPDATE prlemploymentstatus SET employmentdesc='" . $_POST['EmploymentName'] . "'
+			$SQL = "UPDATE prlemploymentstatus SET employmentdesc='" . $_POST['EmploymentName'] . "'
 												WHERE employmentid='" . $SelectedStatusID . "'";
 			$ErrMsg = _('An error occurred in updating the employment status');
 			$DbgMsg = _('The SQL that was used to update the employment status was');
 		}
-		$result = DB_query($sql, $ErrMsg, $DbgMsg);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 	}
 	unset($SelectedStatusID);
 	unset($_POST['SelectedStatusID']);
@@ -58,8 +58,8 @@ if (isset($_POST['insert']) or isset($_POST['update'])) {
 		prnMsg(_('Cannot delete this employment status because employees have been created using this employment status'), 'warn');
 		echo '<br>' . _('There are') . ' ' . DB_num_rows($TestResult) . ' ' . _('employees that refer to this employment status') . '</FONT>';
 	} else {
-		$sql = "DELETE FROM prlemploymentstatus WHERE employmentid='" . $SelectedStatusID . "'";
-		$result = DB_query($sql);
+		$SQL = "DELETE FROM prlemploymentstatus WHERE employmentid='" . $SelectedStatusID . "'";
+		$Result = DB_query($SQL);
 		prnMsg($SelectedStatusID . ' ' . _('employement status has been deleted') . '!', 'success');
 	}
 	unset($SelectedStatusID);
@@ -80,22 +80,22 @@ if (!isset($SelectedStatusID)) {
 	links to delete or edit each. These will call the same page again and allow update/input
 	or deletion of the records*/
 
-	$sql = "SELECT employmentid,
+	$SQL = "SELECT employmentid,
 					employmentdesc
 			FROM prlemploymentstatus
 			ORDER BY employmentid";
 
 	$ErrMsg = _('Could not get employment status because');
-	$result = DB_query($sql, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
-	if (DB_num_rows($result) > 0) {
+	if (DB_num_rows($Result) > 0) {
 		echo '<table>
 				<tr>
 					<th>' . _('Employment Status') . '</td>
 				</tr>';
 
 		$k = 0; //row colour counter
-		while ($myrow = DB_fetch_array($result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 
 			if ($k == 1) {
 				echo '<tr bgcolor="#CCCCCC">';
@@ -105,9 +105,9 @@ if (!isset($SelectedStatusID)) {
 				$k++;
 			}
 
-			echo '<td>' . $myrow['employmentdesc'] . '</td>
-					<td><a href="' . $_SERVER['PHP_SELF'] . '?&SelectedStatusID=' . $myrow['employmentid'] . '">' . _('Edit') . '</a></td>
-					<td><a href="' . $_SERVER['PHP_SELF'] . '?&SelectedStatusID=' . $myrow['employmentid'] . '&delete=1">' . _('Delete') . '</a></td>
+			echo '<td>' . $MyRow['employmentdesc'] . '</td>
+					<td><a href="' . $_SERVER['PHP_SELF'] . '?&SelectedStatusID=' . $MyRow['employmentid'] . '">' . _('Edit') . '</a></td>
+					<td><a href="' . $_SERVER['PHP_SELF'] . '?&SelectedStatusID=' . $MyRow['employmentid'] . '&delete=1">' . _('Delete') . '</a></td>
 				</tr>';
 
 		} //END WHILE LIST LOOP
@@ -123,20 +123,20 @@ if (!isset($_GET['delete'])) {
 	if (isset($SelectedStatusID)) {
 		//editing an existing section
 
-		$sql = "SELECT employmentid,
+		$SQL = "SELECT employmentid,
 						employmentdesc
 					FROM prlemploymentstatus
 					WHERE employmentid='" . $SelectedStatusID . "'";
 
-		$result = DB_query($sql);
-		if (DB_num_rows($result) == 0) {
+		$Result = DB_query($SQL);
+		if (DB_num_rows($Result) == 0) {
 			prnMsg(_('Could not retrieve the requested employment status, please try again.'), 'warn');
 			unset($SelectedStatusID);
 		} else {
-			$myrow = DB_fetch_array($result);
+			$MyRow = DB_fetch_array($Result);
 
-			$_POST['StatusID'] = $myrow['employmentid'];
-			$_POST['EmploymentName'] = $myrow['employmentdesc'];
+			$_POST['StatusID'] = $MyRow['employmentid'];
+			$_POST['EmploymentName'] = $MyRow['employmentdesc'];
 
 			echo '<input type="hidden" name="SelectedStatusID" value="' . $_POST['StatusID'] . '" />';
 			echo '<table>';

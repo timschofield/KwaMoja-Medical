@@ -53,18 +53,18 @@ if (isset($_POST['submit'])) {
 
 		if (!isset($_POST["New"])) {
 
-			$sql = "UPDATE prlovertimetable SET overtimedesc='" . DB_escape_string($_POST['OverTimeDesc']) . "',
+			$SQL = "UPDATE prlovertimetable SET overtimedesc='" . DB_escape_string($_POST['OverTimeDesc']) . "',
 							overtimerate='" . DB_escape_string($_POST['OverTimeRate']) . "'
 						WHERE OverTimeID = '$OverTimeID'";
 
 			$ErrMsg = _('The overtime could not be updated because');
 			$DbgMsg = _('The SQL that was used to update the overtime but failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 			prnMsg(_('The overtime master record for') . ' ' . $OverTimeID . ' ' . _('has been updated'), 'success');
 
 		} else { //its a new overtime
 
-			$sql = "INSERT INTO prlovertimetable (OverTimeID,
+			$SQL = "INSERT INTO prlovertimetable (OverTimeID,
 							overtimedesc,
 							overtimerate)
 					 VALUES ('$OverTimeID',
@@ -73,7 +73,7 @@ if (isset($_POST['submit'])) {
 
 			$ErrMsg = _('The overtime') . ' ' . $_POST['OverTimeDesc'] . ' ' . _('could not be added because');
 			$DbgMsg = _('The SQL that was used to insert the overtime but failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 			prnMsg(_('A new overtime for') . ' ' . $_POST['OverTimeDesc'] . ' ' . _('has been added to the database'), 'success');
 
@@ -97,8 +97,8 @@ if (isset($_POST['submit'])) {
 
 	// PREVENT DELETES IF DEPENDENT RECORDS IN 'SuppTrans' , PurchOrders, SupplierContacts
 	if ($CancelDelete == 0) {
-		$sql = "DELETE FROM prlovertimetable WHERE OverTimeID='$OverTimeID'";
-		$result = DB_query($sql);
+		$SQL = "DELETE FROM prlovertimetable WHERE OverTimeID='$OverTimeID'";
+		$Result = DB_query($SQL);
 		prnMsg(_('Overtime record for') . ' ' . $OverTimeID . ' ' . _('has been deleted'), 'success');
 		unset($OverTimeID);
 		unset($_SESSION['OverTimeID']);
@@ -122,14 +122,14 @@ if (!isset($OverTimeID)) {
 	echo "</select></td></tr></table><p><input type='Submit' name='submit' value='" . _('Insert New Overtime') . "'>";
 	echo '</form>';
 
-	$sql = "SELECT OverTimeID,
+	$SQL = "SELECT OverTimeID,
 			overtimedesc,
 			overtimerate
 			FROM prlovertimetable
 			ORDER BY OverTimeID";
 
 	$ErrMsg = _('Could not get overtime because');
-	$result = DB_query($sql, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
 	echo '<table border=1>';
 	echo "<tr>
@@ -140,7 +140,7 @@ if (!isset($OverTimeID)) {
 
 
 	$k = 0; //row colour counter
-	while ($myrow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($Result)) {
 
 		if ($k == 1) {
 			echo "<tr bgcolor='#CCCCCC'>";
@@ -149,11 +149,11 @@ if (!isset($OverTimeID)) {
 			echo "<tr bgcolor='#EEEEEE'>";
 			$k++;
 		}
-		echo '<td>' . $myrow[0] . '</td>';
-		echo '<td>' . $myrow[1] . '</td>';
-		echo '<td>' . $myrow[2] . '</td>';
-		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&OverTimeID=' . $myrow[0] . '">' . _('Edit') . '</a></td>';
-		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&OverTimeID=' . $myrow[0] . '&delete=1">' . _('Delete') . '</a></td>';
+		echo '<td>' . $MyRow[0] . '</td>';
+		echo '<td>' . $MyRow[1] . '</td>';
+		echo '<td>' . $MyRow[2] . '</td>';
+		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&OverTimeID=' . $MyRow[0] . '">' . _('Edit') . '</a></td>';
+		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&OverTimeID=' . $MyRow[0] . '&delete=1">' . _('Delete') . '</a></td>';
 		echo '</tr>';
 
 	} //END WHILE LIST LOOP
@@ -168,17 +168,17 @@ if (!isset($OverTimeID)) {
 
 	//if (!isset($_POST["New"])) {
 	if (!isset($_POST["New"])) {
-		$sql = "SELECT OverTimeID,
+		$SQL = "SELECT OverTimeID,
 				overtimedesc,
 				overtimerate
 			FROM prlovertimetable
 			WHERE OverTimeID = '$OverTimeID'";
 
-		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
 
-		$_POST['OverTimeDesc'] = $myrow['overtimedesc'];
-		$_POST['OverTimeRate'] = $myrow['overtimerate'];
+		$_POST['OverTimeDesc'] = $MyRow['overtimedesc'];
+		$_POST['OverTimeRate'] = $MyRow['overtimerate'];
 		echo '<input type="hidden" name="OverTimeID" value="' . $OverTimeID . '">';
 
 	} else {

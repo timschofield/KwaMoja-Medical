@@ -47,7 +47,7 @@ if (isset($_POST['submit'])) {
 
 		if (!isset($_POST["New"])) {
 
-			$sql = "UPDATE prlpaye SET
+			$SQL = "UPDATE prlpaye SET
 					companyname='" . DB_escape_string($_POST['companyname']) . "',
 					rangefrom='" . $_POST['rangefrom'] . "',
 					rangeto='" . DB_escape_string($_POST['rangeto']) . "',
@@ -58,11 +58,11 @@ if (isset($_POST['submit'])) {
 
 			$ErrMsg = _('The Paye could not be updated because');
 			$DbgMsg = _('The SQL that was used to update the Paye but failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 			prnMsg(_('The Paye master record for') . ' ' . $PayeID . ' ' . _('has been updated'), 'success');
 
 		} else { //its a new Gross Pay
-			$sql = "INSERT INTO prlpaye (
+			$SQL = "INSERT INTO prlpaye (
 		            payeid,
 					companyname,
 					rangefrom,
@@ -79,7 +79,7 @@ if (isset($_POST['submit'])) {
 						'" . DB_escape_string($_POST['employeeid']) . "')";
 			$ErrMsg = _('The Paye could not be added because');
 			$DbgMsg = _('The SQL that was used to insert the Paye but failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 			prnMsg(_('A new Paye has been added to the database'), 'success');
 
@@ -106,8 +106,8 @@ if (isset($_POST['submit'])) {
 
 	// PREVENT DELETES IF DEPENDENT RECORDS found
 	if ($CancelDelete == 0) {
-		$sql = "DELETE FROM prlpaye WHERE payeid='$PayeID'";
-		$result = DB_query($sql);
+		$SQL = "DELETE FROM prlpaye WHERE payeid='$PayeID'";
+		$Result = DB_query($SQL);
 		prnMsg(_('paye record for') . ' ' . $PayeID . ' ' . _('has been deleted'), 'success');
 		unset($PayeID);
 		unset($_SESSION['PayeID']);
@@ -141,7 +141,7 @@ if (!isset($PayeID)) {
 	echo "</select></td></tr></table><p><input type='Submit' name='submit' value='" . _('Insert New Paye') . "'>";
 	echo '</form>';
 
-	$sql = "SELECT payeid,
+	$SQL = "SELECT payeid,
 					companyname,
 					rangefrom,
 					rangeto,
@@ -152,7 +152,7 @@ if (!isset($PayeID)) {
 				ORDER BY payeid";
 
 	$ErrMsg = _('Could not getPaye because');
-	$result = DB_query($sql, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
 	echo '<table border=1>';
 	echo "<tr>
@@ -167,7 +167,7 @@ if (!isset($PayeID)) {
 
 
 	$k = 0; //row colour counter
-	while ($myrow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($Result)) {
 
 		if ($k == 1) {
 			echo "<tr bgcolor='#CCCCCC'>";
@@ -176,15 +176,15 @@ if (!isset($PayeID)) {
 			echo "<tr bgcolor='#EEEEEE'>";
 			$k++;
 		}
-		echo '<td>' . $myrow[0] . '</td>';
-		echo '<td>' . $myrow[1] . '</td>';
-		echo '<td>' . $myrow[2] . '</td>';
-		echo '<td>' . $myrow[3] . '</td>';
-		echo '<td>' . $myrow[4] . '</td>';
-		echo '<td>' . $myrow[5] . '</td>';
-		echo '<td>' . $myrow[6] . '</td>';
-		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&PayeID=' . $myrow[0] . '&edit=1">' . _('Edit') . '</a></td>';
-		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&PayeID=' . $myrow[0] . '&delete=1">' . _('Delete') . '</a></td>';
+		echo '<td>' . $MyRow[0] . '</td>';
+		echo '<td>' . $MyRow[1] . '</td>';
+		echo '<td>' . $MyRow[2] . '</td>';
+		echo '<td>' . $MyRow[3] . '</td>';
+		echo '<td>' . $MyRow[4] . '</td>';
+		echo '<td>' . $MyRow[5] . '</td>';
+		echo '<td>' . $MyRow[6] . '</td>';
+		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&PayeID=' . $MyRow[0] . '&edit=1">' . _('Edit') . '</a></td>';
+		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&PayeID=' . $MyRow[0] . '&delete=1">' . _('Delete') . '</a></td>';
 		echo '</tr>';
 
 	} //END WHILE LIST LOOP
@@ -199,7 +199,7 @@ if (!isset($PayeID)) {
 
 	//if (!isset($_POST["New"])) {
 	if (!isset($_POST["New"])) {
-		$sql = "SELECT payeid,
+		$SQL = "SELECT payeid,
 					companyname
 					rangefrom,
 					rangeto,
@@ -208,14 +208,14 @@ if (!isset($PayeID)) {
 					employeeid
 				FROM prlpaye
 				WHERE payeid='$PayeID'";
-		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
-		$_POST['companyname'] = isset($myrow['companyname']);
-		$_POST['rangefrom'] = $myrow['rangefrom'];
-		$_POST['rangeto'] = $myrow['rangeto'];
-		$_POST['employershare'] = $myrow['employershare'];
-		$_POST['employeename'] = $myrow['employeeshare'];
-		$_POST['employeeid'] = $myrow['employeeid'];
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
+		$_POST['companyname'] = isset($MyRow['companyname']);
+		$_POST['rangefrom'] = $MyRow['rangefrom'];
+		$_POST['rangeto'] = $MyRow['rangeto'];
+		$_POST['employershare'] = $MyRow['employershare'];
+		$_POST['employeename'] = $MyRow['employeeshare'];
+		$_POST['employeeid'] = $MyRow['employeeid'];
 		echo '<input type="hidden" name="PayeID" value="' . $PayeID . '">';
 
 	} else {

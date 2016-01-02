@@ -48,24 +48,24 @@ if (isset($_POST['submit'])) {
 
 		if (!isset($_POST["New"])) {
 
-			$sql = "UPDATE salaryscale SET description='" . DB_escape_string($_POST['SalaryScaleDesc']) . "'
+			$SQL = "UPDATE salaryscale SET description='" . DB_escape_string($_POST['SalaryScaleDesc']) . "'
 						WHERE code = '$SalaryScaleID'";
 
 			$ErrMsg = _('The Salary Scale could not be updated because');
 			$DbgMsg = _('The SQL that was used to update the Salary Scale table but failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 			prnMsg(_('The Salary scale table master record for') . ' ' . $SalaryScaleID . ' ' . _('has been updated'), 'success');
 
 		} else { //its a new cost center record
 
-			$sql = "INSERT INTO salaryscale (code,
+			$SQL = "INSERT INTO salaryscale (code,
 							description)
 					 VALUES ('$SalaryScaleID',
 					 	'" . DB_escape_string($_POST['SalaryScaleDesc']) . "')";
 
 			$ErrMsg = _('The Salary Scale') . ' ' . $_POST['SalaryScaleDesc'] . ' ' . _('could not be added because');
 			$DbgMsg = _('The SQL that was used to insert the Salary Scale table but failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 			prnMsg(_('A new Salary Scale table for') . ' ' . $_POST['SalaryScaleDesc'] . ' ' . _('has been added to the database'), 'success');
 
@@ -88,8 +88,8 @@ if (isset($_POST['submit'])) {
 
 	// PREVENT DELETES IF DEPENDENT RECORDS FOUND
 	if ($CancelDelete == 0) {
-		$sql = "DELETE FROM salaryscale WHERE code='$SalaryScaleID'";
-		$result = DB_query($sql);
+		$SQL = "DELETE FROM salaryscale WHERE code='$SalaryScaleID'";
+		$Result = DB_query($SQL);
 		prnMsg(_('Salary Scale table record for') . ' ' . $SalaryScaleID . ' ' . _('has been deleted'), 'success');
 		unset($SalaryScaleID);
 		unset($_SESSION['SalaryScaleID']);
@@ -109,13 +109,13 @@ if (!isset($SalaryScaleID)) {
 	echo "</select></td></tr>'</table><p><input type='Submit' name='submit' value='" . _('Insert New Salary Scale') . "'>";
 	echo '</form>';
 
-	$sql = "SELECT code,
+	$SQL = "SELECT code,
 			     description
 			     FROM salaryscale
 			     ORDER BY code";
 
 	$ErrMsg = _('Could not get cost center because');
-	$result = DB_query($sql, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
 	echo '<table border=1>';
 	echo "<tr>
@@ -125,7 +125,7 @@ if (!isset($SalaryScaleID)) {
 
 
 	$k = 0; //row colour counter
-	while ($myrow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($Result)) {
 
 		if ($k == 1) {
 			echo "<tr bgcolor='#CCCCCC'>";
@@ -134,10 +134,10 @@ if (!isset($SalaryScaleID)) {
 			echo "<tr bgcolor='#EEEEEE'>";
 			$k++;
 		}
-		echo '<td>' . $myrow[0] . '</td>';
-		echo '<td>' . $myrow[1] . '</td>';
-		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&SalaryScaleID=' . $myrow[0] . '">' . _('Edit') . '</a></td>';
-		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&SalaryScaleID=' . $myrow[0] . '&delete=1">' . _('Delete') . '</a></td>';
+		echo '<td>' . $MyRow[0] . '</td>';
+		echo '<td>' . $MyRow[1] . '</td>';
+		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&SalaryScaleID=' . $MyRow[0] . '">' . _('Edit') . '</a></td>';
+		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&SalaryScaleID=' . $MyRow[0] . '&delete=1">' . _('Delete') . '</a></td>';
 		echo '</tr>';
 
 	} //END WHILE LIST LOOP
@@ -151,15 +151,15 @@ if (!isset($SalaryScaleID)) {
 
 	//if (!isset($_POST["New"])) {
 	if (!isset($_POST["New"])) {
-		$sql = "SELECT code,
+		$SQL = "SELECT code,
 				description
 			FROM salaryscale
 			WHERE code = '$SalaryScaleID'";
 
-		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
 
-		$_POST['SalaryScaleDesc'] = $myrow['description'];
+		$_POST['SalaryScaleDesc'] = $MyRow['description'];
 		echo '<input type="hidden" name="SalaryScaleID" value="' . $SalaryScaleID . '">';
 
 	} else {

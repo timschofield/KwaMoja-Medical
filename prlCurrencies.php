@@ -42,12 +42,12 @@ if (isset($_POST['submit'])) {
 	//first off validate inputs are sensible
 	$i = 1;
 
-	$sql = "SELECT count(currabrev)
+	$SQL = "SELECT count(currabrev)
 			FROM currencies WHERE currabrev='" . $_POST['Abbreviation'] . "'";
-	$result = DB_query($sql);
-	$myrow = DB_fetch_row($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
 
-	if ($myrow[0] != 0 and !isset($SelectedCurrency)) {
+	if ($MyRow[0] != 0 and !isset($SelectedCurrency)) {
 		$InputError = 1;
 		prnMsg(_('The currency already exists in the database'), 'error');
 		$Errors[$i] = 'Abbreviation';
@@ -97,7 +97,7 @@ if (isset($_POST['submit'])) {
 	if (isset($SelectedCurrency) AND $InputError != 1) {
 
 		/*SelectedCurrency could also exist if submit had not been clicked this code would not run in this case cos submit is false of course  see the delete code below*/
-		$sql = "UPDATE currencies SET
+		$SQL = "UPDATE currencies SET
 					currencyname='" . $_POST['CurrencyName'] . "',
 					country='" . $_POST['Country'] . "',
 					hundredsname='" . $_POST['HundredsName'] . "',
@@ -108,7 +108,7 @@ if (isset($_POST['submit'])) {
 	} else if ($InputError != 1) {
 
 		/*Selected currencies is null cos no item selected on first time round so must be adding a record must be submitting new entries in the new payment terms form */
-		$sql = "INSERT INTO currencies (currencyname,
+		$SQL = "INSERT INTO currencies (currencyname,
 						currabrev,
 						country,
 						hundredsname,
@@ -122,7 +122,7 @@ if (isset($_POST['submit'])) {
 		$msg = _('The currency definition record has been added');
 	}
 	//run the SQL from either of the above possibilites
-	$result = DB_query($sql);
+	$Result = DB_query($SQL);
 	if ($InputError != 1) {
 		prnMsg($msg, 'success');
 	}
@@ -134,17 +134,17 @@ if (isset($_POST['submit'])) {
 	unset($_POST['Abbreviation']);
 
 } elseif (isset($_GET['delete'])) {
-	$sql = "SELECT COUNT(*) FROM prlemployeemaster WHERE prlemployeemaster.currcode = '" . $SelectedCurrency . "'";
-	$result = DB_query($sql);
-	$myrow = DB_fetch_row($result);
-	if ($myrow[0] > 0) {
-		prnMsg(_('Cannot delete this currency because employers accounts have been created referring to this currency') . '<br>' . _('There are') . ' ' . $myrow[0] . ' ' . _('employers accounts that refer to this currency'), 'warn');
+	$SQL = "SELECT COUNT(*) FROM prlemployeemaster WHERE prlemployeemaster.currcode = '" . $SelectedCurrency . "'";
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
+	if ($MyRow[0] > 0) {
+		prnMsg(_('Cannot delete this currency because employers accounts have been created referring to this currency') . '<br>' . _('There are') . ' ' . $MyRow[0] . ' ' . _('employers accounts that refer to this currency'), 'warn');
 	} elseif ($FunctionalCurrency == $SelectedCurrency) {
 		prnMsg(_('Cannot delete this currency because it is the functional currency of the company'), 'warn');
 	} else {
 		//only delete if used in neither customer or supplier, comp prefs, bank trans accounts
-		$sql = "DELETE FROM currencies WHERE currabrev='" . $SelectedCurrency . "'";
-		$result = DB_query($sql);
+		$SQL = "DELETE FROM currencies WHERE currabrev='" . $SelectedCurrency . "'";
+		$Result = DB_query($SQL);
 		prnMsg(_('The currency definition record has been deleted'), 'success');
 	}
 }
@@ -158,8 +158,8 @@ if (!isset($SelectedCurrency)) {
 	links to delete or edit each. These will call the same page again and allow update/input
 	or deletion of the records*/
 
-	$sql = 'SELECT currencyname, currabrev, country, hundredsname, rate FROM currencies';
-	$result = DB_query($sql);
+	$SQL = 'SELECT currencyname, currabrev, country, hundredsname, rate FROM currencies';
+	$Result = DB_query($SQL);
 	echo "<table>";
 	echo '<table border=1>';
 	echo "<tr>
@@ -180,8 +180,8 @@ if (!isset($SelectedCurrency)) {
 		$CurrencyRatesArray = array();
 	}
 
-	while ($myrow = DB_fetch_row($result)) {
-		if ($myrow[1] == $FunctionalCurrency) {
+	while ($MyRow = DB_fetch_row($Result)) {
+		if ($MyRow[1] == $FunctionalCurrency) {
 			echo '<tr bgcolor=#FFbbbb>';
 		} elseif ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -191,13 +191,13 @@ if (!isset($SelectedCurrency)) {
 			$k++;
 		}
 		// Lets show the country flag
-		$ImageFile = 'flags/' . strtoupper($myrow[1]) . '.gif';
+		$ImageFile = 'flags/' . strtoupper($MyRow[1]) . '.gif';
 
 		if (!file_exists($ImageFile)) {
 			$ImageFile = 'flags/blank.gif';
 		}
 
-		if ($myrow[1] != $FunctionalCurrency) {
+		if ($MyRow[1] != $FunctionalCurrency) {
 			printf("<td><img src=\"%s\"></td>
 					<td>%s</td>
 					<td>%s</td>
@@ -207,7 +207,7 @@ if (!isset($SelectedCurrency)) {
 					<td class=number>%s</td>
 					<td><a href=\"%s&SelectedCurrency=%s\">%s</a></td>
 					<td><a href=\"%s&SelectedCurrency=%s&delete=1\">%s</a></td>
-					</tr>", $ImageFile, $myrow[1], $myrow[0], $myrow[2], $myrow[3], number_format($myrow[4], 5), number_format(GetCurrencyRate($myrow[1], $CurrencyRatesArray), 5), $_SERVER['PHP_SELF'], $myrow[1], _('Edit'), $_SERVER['PHP_SELF'], $myrow[1], _('Delete'), $RootPath, '&CurrencyToShow=' . $myrow[1]);
+					</tr>", $ImageFile, $MyRow[1], $MyRow[0], $MyRow[2], $MyRow[3], number_format($MyRow[4], 5), number_format(GetCurrencyRate($MyRow[1], $CurrencyRatesArray), 5), $_SERVER['PHP_SELF'], $MyRow[1], _('Edit'), $_SERVER['PHP_SELF'], $MyRow[1], _('Delete'), $RootPath, '&CurrencyToShow=' . $MyRow[1]);
 		} else {
 			printf("<td><img src=\"%s\"></td>
 					<td>%s</td>
@@ -216,7 +216,7 @@ if (!isset($SelectedCurrency)) {
 					<td>%s</td>
 					<td class=number>%s</td>
 					<td colspan=4>%s</td>
-					</tr>", $ImageFile, $myrow[1], $myrow[0], $myrow[2], $myrow[3], 1, _('Functional Currency'));
+					</tr>", $ImageFile, $MyRow[1], $MyRow[0], $MyRow[2], $MyRow[3], 1, _('Functional Currency'));
 		}
 
 	} //END WHILE LIST LOOP
@@ -237,7 +237,7 @@ if (!isset($_GET['delete'])) {
 	if (isset($SelectedCurrency) AND $SelectedCurrency != '') {
 		//editing an existing payment terms
 
-		$sql = "SELECT currencyname,
+		$SQL = "SELECT currencyname,
 				currabrev,
 				country,
 				hundredsname,
@@ -246,15 +246,15 @@ if (!isset($_GET['delete'])) {
 				WHERE currabrev='" . $SelectedCurrency . "'";
 
 		$ErrMsg = _('An error occurred in retrieving the currency information');
-		$result = DB_query($sql, $ErrMsg);
+		$Result = DB_query($SQL, $ErrMsg);
 
-		$myrow = DB_fetch_array($result);
+		$MyRow = DB_fetch_array($Result);
 
-		$_POST['Abbreviation'] = $myrow['currabrev'];
-		$_POST['CurrencyName'] = $myrow['currencyname'];
-		$_POST['Country'] = $myrow['country'];
-		$_POST['HundredsName'] = $myrow['hundredsname'];
-		$_POST['ExchangeRate'] = $myrow['rate'];
+		$_POST['Abbreviation'] = $MyRow['currabrev'];
+		$_POST['CurrencyName'] = $MyRow['currencyname'];
+		$_POST['Country'] = $MyRow['country'];
+		$_POST['HundredsName'] = $MyRow['hundredsname'];
+		$_POST['ExchangeRate'] = $MyRow['rate'];
 
 
 

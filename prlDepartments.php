@@ -47,18 +47,18 @@ if (isset($_POST['submit'])) {
 
 		if (!isset($_POST["New"])) {
 
-			$sql = "UPDATE prldepartment SET departmentname='" . DB_escape_string($_POST['departmentname']) . "',
+			$SQL = "UPDATE prldepartment SET departmentname='" . DB_escape_string($_POST['departmentname']) . "',
 						companyname='" . DB_escape_string($_POST['companyname']) . "'
 						WHERE departmentid = '$DepartmentID'";
 
 			$ErrMsg = _('The department could not be updated because');
 			$DbgMsg = _('The SQL that was used to update the department table but failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 			prnMsg(_('The department table master record for') . ' ' . $DepartmentID . ' ' . _('has been updated'), 'success');
 
 		} else { //its a new cost center record
 
-			$sql = "INSERT INTO prldepartment (
+			$SQL = "INSERT INTO prldepartment (
 							departmentid,
 							departmentname,
 							companyname)
@@ -67,7 +67,7 @@ if (isset($_POST['submit'])) {
 						'" . DB_escape_string($_POST['companyname']) . "')";
 			$ErrMsg = _('The Department') . ' ' . $_POST['departmentname'] . ' ' . _('could not be added because');
 			$DbgMsg = _('The SQL that was used to insert the Department table but failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 			prnMsg(_('A newDepartment table for') . ' ' . $_POST['departmentname'] . ' ' . _('has been added to the database'), 'success');
 
@@ -91,8 +91,8 @@ if (isset($_POST['submit'])) {
 
 	// PREVENT DELETES IF DEPENDENT RECORDS FOUND
 	if ($CancelDelete == 0) {
-		$sql = "DELETE FROM prldepartment WHERE departmentid='$DepartmentID'";
-		$result = DB_query($sql);
+		$SQL = "DELETE FROM prldepartment WHERE departmentid='$DepartmentID'";
+		$Result = DB_query($SQL);
 		prnMsg(_('Department table record for') . ' ' . $DepartmentID . ' ' . _('has been deleted'), 'success');
 		unset($DepartmentID);
 		unset($_SESSION['DepartmentID']);
@@ -113,14 +113,14 @@ if (!isset($DepartmentID)) {
 	echo "</select></td></tr>'</table><p><input type='Submit' name='submit' value='" . _('Insert New Department') . "'>";
 	echo '</form>';
 
-	$sql = "SELECT departmentid,
+	$SQL = "SELECT departmentid,
 			     departmentname,
 				 companyname
 			     FROM prldepartment
 			     ORDER BY departmentid";
 
 	$ErrMsg = _('Could not get cost center because');
-	$result = DB_query($sql, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
 	echo '<table border=1>';
 	echo "<tr>
@@ -131,7 +131,7 @@ if (!isset($DepartmentID)) {
 
 
 	$k = 0; //row colour counter
-	while ($myrow = DB_fetch_row($result)) {
+	while ($MyRow = DB_fetch_row($Result)) {
 
 		if ($k == 1) {
 			echo "<tr bgcolor='#CCCCCC'>";
@@ -140,11 +140,11 @@ if (!isset($DepartmentID)) {
 			echo "<tr bgcolor='#EEEEEE'>";
 			$k++;
 		}
-		echo '<td>' . $myrow[0] . '</td>';
-		echo '<td>' . $myrow[1] . '</td>';
-		echo '<td>' . $myrow[2] . '</td>';
-		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&DepartmentID=' . $myrow[0] . '">' . _('Edit') . '</a></td>';
-		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&DepartmentID=' . $myrow[0] . '&delete=1">' . _('Delete') . '</a></td>';
+		echo '<td>' . $MyRow[0] . '</td>';
+		echo '<td>' . $MyRow[1] . '</td>';
+		echo '<td>' . $MyRow[2] . '</td>';
+		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&DepartmentID=' . $MyRow[0] . '">' . _('Edit') . '</a></td>';
+		echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?&DepartmentID=' . $MyRow[0] . '&delete=1">' . _('Delete') . '</a></td>';
 		echo '</tr>';
 
 	} //END WHILE LIST LOOP
@@ -158,17 +158,17 @@ if (!isset($DepartmentID)) {
 
 	//if (!isset($_POST["New"])) {
 	if (!isset($_POST["New"])) {
-		$sql = "SELECT departmentid,
+		$SQL = "SELECT departmentid,
 				departmentname,
 				companyname
 			FROM prldepartment
 			WHERE departmentid = '$DepartmentID'";
 
-		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
 
-		$_POST['departmentname'] = $myrow['departmentname'];
-		$_POST['companyname'] = $myrow['companyname'];
+		$_POST['departmentname'] = $MyRow['departmentname'];
+		$_POST['companyname'] = $MyRow['companyname'];
 		echo '<input type="hidden" name="DepartmentID" value="' . $DepartmentID . '">';
 
 	} else {

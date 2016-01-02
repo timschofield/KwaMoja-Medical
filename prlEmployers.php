@@ -36,10 +36,10 @@ if (isset($_POST['submit'])) {
 	ie the page has called itself with some user input */
 
 	//first off validate inputs sensible
-	$sql = "SELECT COUNT(employerid) FROM prlemployer WHERE employerid='" . $EmployerID . "'";
-	$result = DB_query($sql);
-	$myrow = DB_fetch_row($result);
-	if ($myrow[0] > 0 and isset($_POST["New"])) {
+	$SQL = "SELECT COUNT(employerid) FROM prlemployer WHERE employerid='" . $EmployerID . "'";
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_row($Result);
+	if ($MyRow[0] > 0 and isset($_POST["New"])) {
 		$InputError = 1;
 		prnMsg(_('The employer number already exists in the database'), 'error');
 		$Errors[$i] = 'ID';
@@ -92,7 +92,7 @@ if (isset($_POST['submit'])) {
 
 		if (!isset($_POST["New"])) {
 
-			$sql = "UPDATE prlemployer SET employername='" . $_POST['employername'] . "',
+			$SQL = "UPDATE prlemployer SET employername='" . $_POST['employername'] . "',
 							address1='" . $_POST['Address1'] . "',
 							address2='" . $_POST['Address2'] . "',
 							address3='" . $_POST['Address3'] . "',
@@ -109,14 +109,14 @@ if (isset($_POST['submit'])) {
 		$ErrMsg = _('The employer could not be updated because');
 		$DbgMsg = _('The SQL that was used to update the employer but failed was');
 
-		// echo $sql;
-		$result = DB_query($sql, $ErrMsg, $DbgMsg);
+		// echo $SQL;
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 		prnMsg(_('The employer master record for') . ' ' . $EmployerID . ' ' . _('has been updated'), 'success');
 
 	} else { //its a new employer
 
-		$sql = "INSERT INTO prlemployer (
+		$SQL = "INSERT INTO prlemployer (
 							employerid,
 							employername,
 							address1,
@@ -144,7 +144,7 @@ if (isset($_POST['submit'])) {
 		$ErrMsg = _('The employer') . ' ' . $_POST['employername'] . ' ' . _('could not be added because');
 		$DbgMsg = _('The SQL that was used to insert the employer but failed was');
 
-		$result = DB_query($sql, $ErrMsg, $DbgMsg);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 		prnMsg(_('A new employer for') . ' ' . $_POST['employername'] . ' ' . _('has been added to the database'), 'success');
 
@@ -177,8 +177,8 @@ if (isset($_POST['delete']) AND $_POST['delete'] != '') {
 
 
 	if ($CancelDelete == 0) {
-		$sql = "DELETE FROM prlemployer WHERE employerid='$EmployerID'";
-		$result = DB_query($sql);
+		$SQL = "DELETE FROM prlemployer WHERE employerid='$EmployerID'";
+		$Result = DB_query($SQL);
 		prnMsg(_('Supplier record for') . ' ' . $EmployerID . ' ' . _('has been deleted'), 'success');
 		unset($EmployerID);
 		unset($_SESSION['EmployerID']);
@@ -221,7 +221,7 @@ if (!isset($EmployerID)) {
 	echo '<table>';
 
 	if (!isset($_POST["New"])) {
-		$sql = "SELECT employerid,
+		$SQL = "SELECT employerid,
 							employername,
 							address1,
 							address2,
@@ -236,20 +236,20 @@ if (!isset($EmployerID)) {
 			FROM prlemployer
 			WHERE employerid = '$EmployerID'";
 
-		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
 
-		$_POST['employername'] = stripcslashes($myrow['employername']);
-		$_POST['Address1'] = stripcslashes($myrow['address1']);
-		$_POST['Address2'] = stripcslashes($myrow['address2']);
-		$_POST['Address3'] = stripcslashes($myrow['address3']);
-		$_POST['employersince'] = ConvertSQLDate($myrow['employersince']);
-		$_POST['Email'] = $myrow['email'];
-		$_POST['telephone'] = $myrow['telephone'];
-		$_POST['Fax'] = $myrow['fax'];
-		$_POST['bankparticulars'] = stripcslashes($myrow['bankparticulars']);
-		$_POST['bankacct'] = $myrow['bankacct'];
-		$_POST['country'] = stripcslashes($myrow['country']);
+		$_POST['employername'] = stripcslashes($MyRow['employername']);
+		$_POST['Address1'] = stripcslashes($MyRow['address1']);
+		$_POST['Address2'] = stripcslashes($MyRow['address2']);
+		$_POST['Address3'] = stripcslashes($MyRow['address3']);
+		$_POST['employersince'] = ConvertSQLDate($MyRow['employersince']);
+		$_POST['Email'] = $MyRow['email'];
+		$_POST['telephone'] = $MyRow['telephone'];
+		$_POST['Fax'] = $MyRow['fax'];
+		$_POST['bankparticulars'] = stripcslashes($MyRow['bankparticulars']);
+		$_POST['bankacct'] = $MyRow['bankacct'];
+		$_POST['country'] = stripcslashes($MyRow['country']);
 
 		echo '<input type=hidden name="EmployerID" value="' . $EmployerID . '">';
 

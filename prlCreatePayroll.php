@@ -40,11 +40,11 @@ if (isset($_POST['Close']) and ($_POST['Close']) == _('Close Payroll Period')) {
 		include('includes/footer.inc');
 		exit;
 	} else {
-		$sql = "UPDATE prlpayrollperiod SET payclosed=1
+		$SQL = "UPDATE prlpayrollperiod SET payclosed=1
 					 WHERE payrollid = '" . $PayrollID . "'";
 		$ErrMsg = _('The payroll record could not be updated because');
 		$DbgMsg = _('The SQL that was used to update the payroll failed was');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 		prnMsg(_('The payroll master record for') . ' ' . $PayrollID . ' ' . _('has been closed'), 'success');
 		include('includes/footer.inc');
 		exit;
@@ -65,11 +65,11 @@ if (isset($_POST['Reopen']) and ($_POST['Reopen']) == _('Re-open Payroll Period'
 		exit;
 	} else {
 
-		$sql = "UPDATE prlpayrollperiod SET payclosed=0
+		$SQL = "UPDATE prlpayrollperiod SET payclosed=0
 								WHERE payrollid = '" . $PayrollID . "'";
 		$ErrMsg = _('The payroll record could not be updated because');
 		$DbgMsg = _('The SQL that was used to update the payroll failed was');
-		$result = DB_query($sql, $ErrMsg, $DbgMsg);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 		prnMsg(_('The payroll master record for') . ' ' . $PayrollID . ' ' . _('has been opened'), 'success');
 		include('includes/footer.inc');
 		exit;
@@ -82,7 +82,7 @@ if (isset($PayrollID)) {
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table>';
 	if (!isset($_POST["New"])) {
-		$sql = "SELECT payrollid,
+		$SQL = "SELECT payrollid,
 						payrolldesc,
 						payperiodid,
 						startdate,
@@ -92,18 +92,18 @@ if (isset($PayrollID)) {
 						payclosed
 					FROM prlpayrollperiod
 					WHERE payrollid = '" . $PayrollID . "'";
-		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
-		$Description = $myrow['payrolldesc'];
-		$PayPeriodID = GetPayPeriodDesc($myrow['payperiodid']);
-		$StartDate = ConvertSQLDate($myrow['startdate']);
-		$EndDate = ConvertSQLDate($myrow['enddate']);
-		$FSMonth = GetMonthStr($myrow['fsmonth']);
-		$FSYear = $myrow['fsyear'];
-		$SSS = GetYesNoStr(isset($myrow['deductsss']));
-		$HDMF = GetYesNoStr(isset($myrow['deducthdmf']));
-		$basicpay = GetYesNoStr(isset($myrow['basicpay']));
-		$Status = GetOpenCloseStr($myrow['payclosed']);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
+		$Description = $MyRow['payrolldesc'];
+		$PayPeriodID = GetPayPeriodDesc($MyRow['payperiodid']);
+		$StartDate = ConvertSQLDate($MyRow['startdate']);
+		$EndDate = ConvertSQLDate($MyRow['enddate']);
+		$FSMonth = GetMonthStr($MyRow['fsmonth']);
+		$FSYear = $MyRow['fsyear'];
+		$SSS = GetYesNoStr(isset($MyRow['deductsss']));
+		$HDMF = GetYesNoStr(isset($MyRow['deducthdmf']));
+		$basicpay = GetYesNoStr(isset($MyRow['basicpay']));
+		$Status = GetOpenCloseStr($MyRow['payclosed']);
 		echo '<input type="hidden" name="PayrollID" value="' . $PayrollID . '" />';
 	} else {
 		// its a new employee  being added

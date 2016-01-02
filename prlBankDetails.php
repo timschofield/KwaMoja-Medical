@@ -63,7 +63,7 @@ if (isset($_POST['insert']) or isset($_POST['update'])) {
 		/* If the are no errors then process the form */
 		if (isset($_POST['update'])) {
 			/* If we are updating an existing record */
-			$sql = "UPDATE prlbankdetails SET
+			$SQL = "UPDATE prlbankdetails SET
 					employeeid='" . DB_escape_string($_POST['employeeid']) . "',
 					bankcode='" . DB_escape_string($_POST['bankcode']) . "',
 					bankname='" . DB_escape_string($_POST['bankname']) . "',
@@ -71,11 +71,11 @@ if (isset($_POST['insert']) or isset($_POST['update'])) {
 					WHERE employeeid = '" . $employeeid . "'";
 			$ErrMsg = _('The employee could not be updated because');
 			$DbgMsg = _('The SQL that was used to update the employee but failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 			prnMsg(_('The bank details record for') . ' ' . $employeeid . ' ' . _('has been updated'), 'success');
 		} else if (isset($_POST['insert'])) {
 			/* If we are inserting a new record */
-			$sql = "INSERT INTO prlbankdetails (employeeid,
+			$SQL = "INSERT INTO prlbankdetails (employeeid,
 												bankcode,
 												bankname,
 												branchname
@@ -87,7 +87,7 @@ if (isset($_POST['insert']) or isset($_POST['update'])) {
 											)";
 			$ErrMsg = _('The bank record') . ' ' . $_POST['bankcode'] . ' ' . _('could not be added because');
 			$DbgMsg = _('The SQL that was used to insert the bank record but failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 			prnMsg(_('A new bank record for') . ' ' . $_POST['bankcode'] . ' ' . _('has been added to the database'), 'success');
 
@@ -110,8 +110,8 @@ if (isset($_POST['insert']) or isset($_POST['update'])) {
 
 	if ($CancelDelete == 0) {
 		/* If ok then delete */
-		$sql = "DELETE FROM prlbankdetails WHERE employeeid ='$employeeid'";
-		$result = DB_query($sql);
+		$SQL = "DELETE FROM prlbankdetails WHERE employeeid ='$employeeid'";
+		$Result = DB_query($SQL);
 		prnMsg(_('Bank details record for ') . ' ' . $employeeid . ' ' . _('has been deleted'), 'success');
 		unset($employeeid);
 		unset($_SESSION['employeeid']);
@@ -130,13 +130,13 @@ if (!isset($employeeid)) {
 	/* Show a drop down list of employees with the id as value and first and last names as the text */
 	echo '<td>
 			<select name="employeeid">';
-	$sql = 'SELECT employeeid,firstname,lastname FROM prlemployeemaster';
-	$result = DB_query($sql);
-	while ($myrow = DB_fetch_array($result)) {
-		if (isset($_POST['employeeid']) and $_POST['employeeid'] == $myrow['employeeid']) {
-			echo '<option selected value=' . $myrow['employeeid'] . '>' . $myrow['employeeid'] . ' - ' . $myrow['firstname'] . ' ' . $myrow['lastname'] . '</option>';
+	$SQL = 'SELECT employeeid,firstname,lastname FROM prlemployeemaster';
+	$Result = DB_query($SQL);
+	while ($MyRow = DB_fetch_array($Result)) {
+		if (isset($_POST['employeeid']) and $_POST['employeeid'] == $MyRow['employeeid']) {
+			echo '<option selected value=' . $MyRow['employeeid'] . '>' . $MyRow['employeeid'] . ' - ' . $MyRow['firstname'] . ' ' . $MyRow['lastname'] . '</option>';
 		} else {
-			echo '<option value=' . $myrow['employeeid'] . '>' . $myrow['employeeid'] . ' - ' . $myrow['firstname'] . ' ' . $myrow['lastname'] . '</option>';
+			echo '<option value=' . $MyRow['employeeid'] . '>' . $MyRow['employeeid'] . ' - ' . $MyRow['firstname'] . ' ' . $MyRow['lastname'] . '</option>';
 		}
 	}
 	echo '</select>
@@ -163,7 +163,7 @@ if (!isset($employeeid)) {
 if (isset($_GET['employeeid']) and (!isset($_GET['delete']))) {
 
 	/*If we are editing an existing record then show the details */
-	$sql = "SELECT prlemployeemaster.employeeid,
+	$SQL = "SELECT prlemployeemaster.employeeid,
 					prlemployeemaster.firstname,
 					prlemployeemaster.lastname ,
 					prlbankdetails.bankcode,
@@ -172,23 +172,23 @@ if (isset($_GET['employeeid']) and (!isset($_GET['delete']))) {
 					FROM prlemployeemaster LEFT JOIN prlbankdetails
 					ON prlemployeemaster.employeeid=prlbankdetails.employeeid
 				    WHERE prlemployeemaster.employeeid='" . $employeeid . "'";
-	$result = DB_query($sql);
+	$Result = DB_query($SQL);
 	echo '<form method="post" class="noPrint" id="BankDetails" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table>';
 
-	while ($myrow = DB_fetch_array($result)) {
-		$_POST['employeeid'] = $myrow['employeeid'];
-		$_POST['bankcode'] = $myrow['bankcode'];
-		$_POST['bankname'] = $myrow['bankname'];
-		$_POST['branchname'] = $myrow['branchname'];
+	while ($MyRow = DB_fetch_array($Result)) {
+		$_POST['employeeid'] = $MyRow['employeeid'];
+		$_POST['bankcode'] = $MyRow['bankcode'];
+		$_POST['bankname'] = $MyRow['bankname'];
+		$_POST['branchname'] = $MyRow['branchname'];
 		echo '<tr>
 				<td>' . _('Employee id') . ':</td>
 				<td><select name="employeeid">';
-		if (isset($_POST['employeeid']) and $_POST['employeeid'] == $myrow['employeeid']) {
-			echo '<option selected value="' . $myrow['employeeid'] . '">' . $myrow['employeeid'] . ' - ' . $myrow['firstname'] . ' ' . $myrow['lastname'] . '</option>';
+		if (isset($_POST['employeeid']) and $_POST['employeeid'] == $MyRow['employeeid']) {
+			echo '<option selected value="' . $MyRow['employeeid'] . '">' . $MyRow['employeeid'] . ' - ' . $MyRow['firstname'] . ' ' . $MyRow['lastname'] . '</option>';
 		} else {
-			echo '<option value="' . $myrow['employeeid'] . '">' . $myrow['employeeid'] . ' - ' . $myrow['firstname'] . ' ' . $myrow['lastname'] . '</option>';
+			echo '<option value="' . $MyRow['employeeid'] . '">' . $MyRow['employeeid'] . ' - ' . $MyRow['firstname'] . ' ' . $MyRow['lastname'] . '</option>';
 		}
 		echo '</select>
 				</td>
@@ -217,7 +217,7 @@ if (isset($_GET['employeeid']) and (!isset($_GET['delete']))) {
 }
 
 //section for viewing, editting and deleting bank details values in the database
-$sql = "SELECT prlbankdetails.employeeid,
+$SQL = "SELECT prlbankdetails.employeeid,
 				prlemployeemaster.firstname,
 				prlemployeemaster.lastname,
 				bankcode,
@@ -228,7 +228,7 @@ $sql = "SELECT prlbankdetails.employeeid,
 				ON prlemployeemaster.employeeid=prlbankdetails.employeeid
 			ORDER BY prlbankdetails.employeeid";
 
-$result = DB_query($sql);
+$Result = DB_query($SQL);
 
 //This section caters for the html table
 echo '<table class="selection">
@@ -242,7 +242,7 @@ echo '<table class="selection">
 $k = 0; //row colour counter
 
 //while loop
-while ($myrow = DB_fetch_array($result)) {
+while ($MyRow = DB_fetch_array($Result)) {
 
 	if ($k == 1) {
 		echo '<tr class="OddTableRows">';
@@ -251,13 +251,13 @@ while ($myrow = DB_fetch_array($result)) {
 		echo '<tr class="EvenTableRows">';
 		$k++;
 	}
-	echo '<td>' . $myrow['employeeid'] . '</td>
-			<td>' . $myrow['firstname'] . ' ' . $myrow['lastname'] . '</td>
-			<td>' . $myrow['bankcode'] . '</td>
-			<td>' . $myrow['bankname'] . '</td>
-			<td>' . $myrow['branchname'] . '</td>
-			<td><a href="' . $_SERVER['PHP_SELF'] . '?employeeid=' . $myrow['employeeid'] . '">' . _('Edit') . '</a></td>
-			<td><a href="' . $_SERVER['PHP_SELF'] . '?employeeid=' . $myrow['employeeid'] . '&delete=1">' . _('Delete') . '</a></td>
+	echo '<td>' . $MyRow['employeeid'] . '</td>
+			<td>' . $MyRow['firstname'] . ' ' . $MyRow['lastname'] . '</td>
+			<td>' . $MyRow['bankcode'] . '</td>
+			<td>' . $MyRow['bankname'] . '</td>
+			<td>' . $MyRow['branchname'] . '</td>
+			<td><a href="' . $_SERVER['PHP_SELF'] . '?employeeid=' . $MyRow['employeeid'] . '">' . _('Edit') . '</a></td>
+			<td><a href="' . $_SERVER['PHP_SELF'] . '?employeeid=' . $MyRow['employeeid'] . '&delete=1">' . _('Delete') . '</a></td>
 		</tr>';
 
 } //END WHILE LIST LOOP

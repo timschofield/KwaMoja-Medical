@@ -34,7 +34,7 @@ $msg = '';
 if (isset($_POST['CommitBatch']) == _('Accept and Process Other Income')) {
 
 	/*Start a transaction to do the whole lot inside */
-	$result = DB_query('BEGIN');
+	$Result = DB_query('BEGIN');
 
 
 	foreach ($_SESSION['OIDetail']->OIEntries as $OIItem) {
@@ -55,12 +55,12 @@ if (isset($_POST['CommitBatch']) == _('Accept and Process Other Income')) {
 					)";
 		$ErrMsg = _('Cannot insert entry because');
 		$DbgMsg = _('The SQL that failed to insert trans record was');
-		$result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+		$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 	}
 
 
 	$ErrMsg = _('Cannot commit the changes');
-	$result = DB_query('COMMIT', $ErrMsg, _('The commit database transaction failed'), true);
+	$Result = DB_query('COMMIT', $ErrMsg, _('The commit database transaction failed'), true);
 
 	prnMsg(_('Other Income') . ' ' . $_POST['OIDesc'] . ' ' . _('has been sucessfully entered'), 'success');
 	unset($_POST['OIRef']);
@@ -77,12 +77,12 @@ if (isset($_POST['CommitBatch']) == _('Accept and Process Other Income')) {
 } elseif (isset($_POST['Process']) == _('Accept')) {
 	if ($AllowThisPosting) {
 		$OIIDDesc = GetOthIncRow($_POST['OthIncID'], 0);
-		$sql = "SELECT  lastname,firstname
+		$SQL = "SELECT  lastname,firstname
 			FROM prlemployeemaster
 			WHERE employeeid = '" . $_POST['EmployeeID'] . "'";
-		$result = DB_query($sql);
-		$myrow = DB_fetch_array($result);
-		$_SESSION['OIDetail']->Add_OIEntry($_POST['Amount'], $_POST['EmployeeID'], $myrow['lastname'], $myrow['firstname'], $_POST['OthIncID'], $OIIDDesc);
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_array($Result);
+		$_SESSION['OIDetail']->Add_OIEntry($_POST['Amount'], $_POST['EmployeeID'], $MyRow['lastname'], $MyRow['firstname'], $_POST['OthIncID'], $OIIDDesc);
 		/*Make sure the same entry is not double processed by a page refresh */
 		$Cancel = 1;
 	}
@@ -115,32 +115,32 @@ echo '<FONT SIZE=3 COLOR=BLUE>' . _('Other Income Line Entry') . '</FONT><table>
 echo '<tr><td>' . _('Description') . ":</td>
 <td COLSPAN=3><input type='Text' name='OIDesc' SIZE=42 MAXLENGTH=40 value='" . isset($_POST['OIDesc']) . "'></td></tr>";
 echo '<tr><td>' . _('Employee Name') . ":</td><td><select name='EmployeeID'>";
-DB_data_seek($result, 0);
-$sql = 'SELECT employeeid, lastname, firstname FROM prlemployeemaster ORDER BY lastname, firstname';
-$result = DB_query($sql);
+DB_data_seek($Result, 0);
+$SQL = 'SELECT employeeid, lastname, firstname FROM prlemployeemaster ORDER BY lastname, firstname';
+$Result = DB_query($SQL);
 
-if (DB_num_rows($result) == 0) {
+if (DB_num_rows($Result) == 0) {
 	echo '</select></td></tr>';
 	prnMsg(_('No Empoloyee accounts have been set up yet'), 'warn');
 } else {
-	while ($myrow = DB_fetch_array($result)) {
-		if (isset($_POST['EmployeeID']) == $myrow['employeeid']) {
-			echo '<option selected="selected" value=' . $myrow['employeeid'] . '>' . $myrow['lastname'] . ',' . $myrow['firstname'];
+	while ($MyRow = DB_fetch_array($Result)) {
+		if (isset($_POST['EmployeeID']) == $MyRow['employeeid']) {
+			echo '<option selected="selected" value=' . $MyRow['employeeid'] . '>' . $MyRow['lastname'] . ',' . $MyRow['firstname'];
 		} else {
-			echo '<option value=' . $myrow['employeeid'] . '>' . $myrow['lastname'] . ',' . $myrow['firstname'];
+			echo '<option value=' . $MyRow['employeeid'] . '>' . $MyRow['lastname'] . ',' . $MyRow['firstname'];
 		}
 	} //end while loop
 	echo '</select></td></tr>';
 }
 echo '<tr><td>' . _('Other Income Type') . ":</td><td><select name='OthIncID'>";
-DB_data_seek($result, 0);
-$sql = 'SELECT othincid, othincdesc FROM prlothinctable';
-$result = DB_query($sql);
-while ($myrow = DB_fetch_array($result)) {
+DB_data_seek($Result, 0);
+$SQL = 'SELECT othincid, othincdesc FROM prlothinctable';
+$Result = DB_query($SQL);
+while ($MyRow = DB_fetch_array($Result)) {
 	if (isset($_POST['OthIncID']) and $_POST['OthIncID'] == '') {
-		echo '<option selected="selected" value=' . $myrow['othincid'] . '>' . $myrow['othincdesc'];
+		echo '<option selected="selected" value=' . $MyRow['othincid'] . '>' . $MyRow['othincdesc'];
 	} else {
-		echo '<option value=' . $myrow['othincid'] . '>' . $myrow['othincdesc'];
+		echo '<option value=' . $MyRow['othincid'] . '>' . $MyRow['othincdesc'];
 	}
 } //end while loop
 echo '<tr><td>' . _('Amount') . ":</td><td COLSPAN=3><input type=Text Name='Amount' Maxlength=12 SIZE=12 value=" . isset($_POST['Amount']) . '></td></tr>';

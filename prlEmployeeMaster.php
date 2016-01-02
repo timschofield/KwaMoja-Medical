@@ -42,7 +42,7 @@ if (isset($_POST['insert']) or isset($_POST['update'])) {
 	if ($InputError == 0) {
 		//	$SQL_SupplierSince = FormatDateForSQL($_POST['SupplierSince']);
 		if (isset($_POST['update'])) {
-			$sql = "UPDATE prlemployeemaster SET
+			$SQL = "UPDATE prlemployeemaster SET
 					lastname='" . $_POST['LastName'] . "',
 					firstname='" . $_POST['FirstName'] . "',
 					middlename='" . $_POST['MiddleName'] . "',
@@ -69,11 +69,11 @@ if (isset($_POST['insert']) or isset($_POST['update'])) {
 				WHERE employeeid = '" . $EmployeeID . "'";
 			$ErrMsg = _('The employee could not be updated because');
 			$DbgMsg = _('The SQL that was used to update the employee but failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 			prnMsg(_('The employee master record for') . ' ' . $EmployeeID . ' ' . _('has been updated'), 'success');
 
 		} else if (isset($_POST['insert'])) { //its a new employee
-			$sql = "INSERT INTO prlemployeemaster ( employeeid,
+			$SQL = "INSERT INTO prlemployeemaster ( employeeid,
 													lastname,
 													firstname,
 													middlename,
@@ -125,7 +125,7 @@ if (isset($_POST['insert']) or isset($_POST['update'])) {
 												)";
 			$ErrMsg = _('The employee') . ' ' . $_POST['LastName'] . ' ' . _('could not be added because');
 			$DbgMsg = _('The SQL that was used to insert the employee but failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 			prnMsg(_('A new employee for') . ' ' . $_POST['LastName'] . ' ' . _('has been added to the database'), 'success');
 
@@ -167,18 +167,18 @@ if (isset($_POST['insert']) or isset($_POST['update'])) {
 
 	$CancelDelete = 0;
 
-	$sql = "SELECT counterindex,overtimeid,employeeid
+	$SQL = "SELECT counterindex,overtimeid,employeeid
 					FROM prlottrans
 					WHERE prlottrans.employeeid='" . $EmployeeID . "'";
-	$EmpDetails = DB_query($sql);
+	$EmpDetails = DB_query($SQL);
 	if (DB_num_rows($EmpDetails) > 0) {
 		$CancelDelete = 1;
 		exit("This employee has payroll records can not be deleted..");
 	}
 
 	if ($CancelDelete == 0) {
-		$sql = "DELETE FROM prlemployeemaster WHERE employeeid='$EmployeeID'";
-		$result = DB_query($sql);
+		$SQL = "DELETE FROM prlemployeemaster WHERE employeeid='$EmployeeID'";
+		$Result = DB_query($SQL);
 		prnMsg(_('Employee record for') . ' ' . $EmployeeID . ' ' . _('has been deleted'), 'success');
 		unset($EmployeeID);
 		unset($_SESSION['EmployeeID']);
@@ -191,7 +191,7 @@ echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />'
 echo '<table>';
 
 if (isset($EmployeeID)) {
-	$sql = "SELECT  employeeid,
+	$SQL = "SELECT  employeeid,
 					lastname,
 					firstname,
 					middlename,
@@ -216,31 +216,31 @@ if (isset($EmployeeID)) {
 					active
 				FROM prlemployeemaster
 				WHERE employeeid = '" . $EmployeeID . "'";
-	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
-	$_POST['LastName'] = $myrow['lastname'];
-	$_POST['FirstName'] = $myrow['firstname'];
-	$_POST['MiddleName'] = $myrow['middlename'];
-	$_POST['Address1'] = $myrow['address1'];
-	$_POST['Address2'] = $myrow['address2'];
-	$_POST['Address3'] = $myrow['address3'];
-	$_POST['Zip'] = $myrow['zip'];
-	$_POST['Country'] = $myrow['country'];
-	$_POST['Telephone'] = $myrow['phone1'];
-	$_POST['Email'] = $myrow['email1'];
-	$_POST['ID'] = $myrow['id'];
-	$_POST['NI'] = $myrow['ni'];
-	$_POST['CostCenterID'] = $myrow['costcenterid'];
-	$_POST['DepartmentID'] = $myrow['departmentid'];
-	$_POST['Position'] = $myrow['position'];
-	$_POST['BirthDate'] = ConvertSQLDate($myrow['birthdate']);
-	$_POST['Marital'] = $myrow['marital'];
-	$_POST['Gender'] = $myrow['gender'];
-	$_POST['TaxStatusID'] = $myrow['taxstatusid'];
-	$_POST['PayPeriodID'] = $myrow['payperiodid'];
-	$_POST['PayType'] = $myrow['paytype'];
-	$_POST['EmpStatID'] = $myrow['employmentid'];
-	$_POST['Active'] = $myrow['active'];
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
+	$_POST['LastName'] = $MyRow['lastname'];
+	$_POST['FirstName'] = $MyRow['firstname'];
+	$_POST['MiddleName'] = $MyRow['middlename'];
+	$_POST['Address1'] = $MyRow['address1'];
+	$_POST['Address2'] = $MyRow['address2'];
+	$_POST['Address3'] = $MyRow['address3'];
+	$_POST['Zip'] = $MyRow['zip'];
+	$_POST['Country'] = $MyRow['country'];
+	$_POST['Telephone'] = $MyRow['phone1'];
+	$_POST['Email'] = $MyRow['email1'];
+	$_POST['ID'] = $MyRow['id'];
+	$_POST['NI'] = $MyRow['ni'];
+	$_POST['CostCenterID'] = $MyRow['costcenterid'];
+	$_POST['DepartmentID'] = $MyRow['departmentid'];
+	$_POST['Position'] = $MyRow['position'];
+	$_POST['BirthDate'] = ConvertSQLDate($MyRow['birthdate']);
+	$_POST['Marital'] = $MyRow['marital'];
+	$_POST['Gender'] = $MyRow['gender'];
+	$_POST['TaxStatusID'] = $MyRow['taxstatusid'];
+	$_POST['PayPeriodID'] = $MyRow['payperiodid'];
+	$_POST['PayType'] = $MyRow['paytype'];
+	$_POST['EmpStatID'] = $MyRow['employmentid'];
+	$_POST['Active'] = $MyRow['active'];
 	echo '<input type="hidden" name="EmployeeID" value="' . $EmployeeID . '" />';
 	echo '<tr>
 			<td>' . _('Employee ID') . '</td>
@@ -337,13 +337,13 @@ echo '<tr>
 			<td>' . _('Cost Centre') . ':</td>
 			<td><select name="CostCenterID">';
 echo '<option value=""></option>';
-$sql = 'SELECT code, description FROM workcentres';
-$result = DB_query($sql);
-while ($myrow = DB_fetch_array($result)) {
-	if ($myrow['code'] == $_POST['CostCenterID']) {
-		echo '<option selected="selected" value="' . $myrow['code'] . '">' . $myrow['description'] . '</option>';
+$SQL = 'SELECT code, description FROM workcentres';
+$Result = DB_query($SQL);
+while ($MyRow = DB_fetch_array($Result)) {
+	if ($MyRow['code'] == $_POST['CostCenterID']) {
+		echo '<option selected="selected" value="' . $MyRow['code'] . '">' . $MyRow['description'] . '</option>';
 	} else {
-		echo '<option value="' . $myrow['code'] . '">' . $myrow['description'] . '</option>';
+		echo '<option value="' . $MyRow['code'] . '">' . $MyRow['description'] . '</option>';
 	}
 } //end while loop
 echo '</select>
@@ -354,13 +354,13 @@ echo '<tr>
 			<td>' . _('Department') . ':</td>
 			<td><select name="DepartmentID">';
 echo '<option value=""></option>';
-$sql = 'SELECT departmentid, description FROM departments';
-$result = DB_query($sql);
-while ($myrow = DB_fetch_array($result)) {
-	if ($myrow['departmentid'] == $_POST['DepartmentID']) {
-		echo '<option selected="selected" value="' . $myrow['departmentid'] . '">' . $myrow['description'] . '</option>';
+$SQL = 'SELECT departmentid, description FROM departments';
+$Result = DB_query($SQL);
+while ($MyRow = DB_fetch_array($Result)) {
+	if ($MyRow['departmentid'] == $_POST['DepartmentID']) {
+		echo '<option selected="selected" value="' . $MyRow['departmentid'] . '">' . $MyRow['description'] . '</option>';
 	} else {
-		echo '<option value="' . $myrow['departmentid'] . '">' . $myrow['description'] . '</option>';
+		echo '<option value="' . $MyRow['departmentid'] . '">' . $MyRow['description'] . '</option>';
 	}
 } //end while loop
 echo '</select>
@@ -370,14 +370,14 @@ echo '</select>
 echo '<tr>
 			<td>' . _('Position') . ':</td>
 			<td><select name="Position">';
-$sql = 'SELECT secroleid, secrolename FROM securityroles';
-$result = DB_query($sql);
+$SQL = 'SELECT secroleid, secrolename FROM securityroles';
+$Result = DB_query($SQL);
 echo '<option value=""></option>';
-while ($myrow = DB_fetch_array($result)) {
-	if ($myrow['secroleid'] == $_POST['Position']) {
-		echo '<option selected="selected" value="' . $myrow['secroleid'] . '">' . $myrow['secrolename'] . '</option>';
+while ($MyRow = DB_fetch_array($Result)) {
+	if ($MyRow['secroleid'] == $_POST['Position']) {
+		echo '<option selected="selected" value="' . $MyRow['secroleid'] . '">' . $MyRow['secrolename'] . '</option>';
 	} else {
-		echo '<option value="' . $myrow['secroleid'] . '">' . $myrow['secrolename'] . '</option>';
+		echo '<option value="' . $MyRow['secroleid'] . '">' . $MyRow['secrolename'] . '</option>';
 	}
 } //end while loop
 echo '</select>
@@ -443,13 +443,13 @@ echo '<tr>
 			<td>' . _('Tax Status') . ':</td>
 			<td><select name="TaxStatusID">';
 echo '<option value=""></option>';
-$sql = 'SELECT taxstatusid, taxstatusdescription FROM prltaxstatus';
-$result = DB_query($sql);
-while ($myrow = DB_fetch_array($result)) {
-	if ($myrow['taxstatusid'] == $_POST['TaxStatusID']) {
-		echo '<option selected="selected" value="' . $myrow['taxstatusid'] . '">' . $myrow['taxstatusdescription'] . '</option>';
+$SQL = 'SELECT taxstatusid, taxstatusdescription FROM prltaxstatus';
+$Result = DB_query($SQL);
+while ($MyRow = DB_fetch_array($Result)) {
+	if ($MyRow['taxstatusid'] == $_POST['TaxStatusID']) {
+		echo '<option selected="selected" value="' . $MyRow['taxstatusid'] . '">' . $MyRow['taxstatusdescription'] . '</option>';
 	} else {
-		echo '<option value="' . $myrow['taxstatusid'] . '">' . $myrow['taxstatusdescription'] . '</option>';
+		echo '<option value="' . $MyRow['taxstatusid'] . '">' . $MyRow['taxstatusdescription'] . '</option>';
 	}
 } //end while loop
 echo '</select>
@@ -459,14 +459,14 @@ echo '</select>
 echo '<tr>
 			<td>' . _('Pay Period') . ':</td>
 			<td><select name="PayPeriodID">';
-$sql = 'SELECT payperiodid, payperioddesc FROM prlpayperiod';
-$result = DB_query($sql);
+$SQL = 'SELECT payperiodid, payperioddesc FROM prlpayperiod';
+$Result = DB_query($SQL);
 echo '<option value=""></option>';
-while ($myrow = DB_fetch_array($result)) {
-	if ($myrow['payperiodid'] == $_POST['PayPeriodID']) {
-		echo '<option selected="selected" value="' . $myrow['payperiodid'] . '">' . $myrow['payperioddesc'] . '</option>';
+while ($MyRow = DB_fetch_array($Result)) {
+	if ($MyRow['payperiodid'] == $_POST['PayPeriodID']) {
+		echo '<option selected="selected" value="' . $MyRow['payperiodid'] . '">' . $MyRow['payperioddesc'] . '</option>';
 	} else {
-		echo '<option value="' . $myrow['payperiodid'] . '">' . $myrow['payperioddesc'] . '</option>';
+		echo '<option value="' . $MyRow['payperiodid'] . '">' . $MyRow['payperioddesc'] . '</option>';
 	}
 } //end while loop
 echo '</select>
@@ -493,14 +493,14 @@ echo '</select>
 echo '<tr>
 			<td>' . _('Employment Status') . ':</td>
 			<td><select name="EmpStatID">';
-$sql = 'SELECT employmentid, employmentdesc FROM prlemploymentstatus';
-$result = DB_query($sql);
+$SQL = 'SELECT employmentid, employmentdesc FROM prlemploymentstatus';
+$Result = DB_query($SQL);
 echo '<option value=""></option>';
-while ($myrow = DB_fetch_array($result)) {
-	if ($_POST['EmpStatID'] == $myrow['employmentid']) {
-		echo '<option selected="selected" value="' . $myrow['employmentid'] . '">' . $myrow['employmentdesc'] . '</option>';
+while ($MyRow = DB_fetch_array($Result)) {
+	if ($_POST['EmpStatID'] == $MyRow['employmentid']) {
+		echo '<option selected="selected" value="' . $MyRow['employmentid'] . '">' . $MyRow['employmentdesc'] . '</option>';
 	} else {
-		echo '<option value="' . $myrow['employmentid'] . '">' . $myrow['employmentdesc'] . '</option>';
+		echo '<option value="' . $MyRow['employmentid'] . '">' . $MyRow['employmentdesc'] . '</option>';
 	}
 } //end while loop
 echo '</select>

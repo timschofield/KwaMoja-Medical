@@ -61,35 +61,35 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['PayrollID'])) {
 	$Net = 0;
 	include('includes/PDFPayRegisterPageHeader.inc');
 	$k = 0; //row colour counter
-	$sql = "SELECT employeeid,basicpay,othincome,absent,late,otpay,grosspay,loandeduction,sss,hdmf,grosspay,tax,netpay
+	$SQL = "SELECT employeeid,basicpay,othincome,absent,late,otpay,grosspay,loandeduction,sss,hdmf,grosspay,tax,netpay
 			FROM prlpayrolltrans
 			WHERE prlpayrolltrans.payrollid='" . $_POST['PayrollID'] . "'";
-	$PayResult = DB_query($sql);
+	$PayResult = DB_query($SQL);
 	if (DB_num_rows($PayResult) > 0) {
-		while ($myrow = DB_fetch_array($PayResult)) {
-			$EmpID = $myrow['employeeid'];
+		while ($MyRow = DB_fetch_array($PayResult)) {
+			$EmpID = $MyRow['employeeid'];
 			$FullName = GetName($EmpID);
-			$Basic = $myrow['basicpay'];
-			$OthInc = $myrow['othincome'];
-			$OT = $myrow['otpay'];
-			$Gross = $myrow['grosspay'];
-			$SSS = $myrow['sss'];
-			$HDMF = $myrow['hdmf'];
-			$grosspay = $myrow['grosspay'];
-			$Loan = $myrow['loandeduction'];
-			$Tax = $myrow['tax'];
-			$Net = $myrow['netpay'];
+			$Basic = $MyRow['basicpay'];
+			$OthInc = $MyRow['othincome'];
+			$OT = $MyRow['otpay'];
+			$Gross = $MyRow['grosspay'];
+			$SSS = $MyRow['sss'];
+			$HDMF = $MyRow['hdmf'];
+			$grosspay = $MyRow['grosspay'];
+			$Loan = $MyRow['loandeduction'];
+			$Tax = $MyRow['tax'];
+			$Net = $MyRow['netpay'];
 
-			$GTBasic += $myrow['basicpay'];
-			$GTOthInc += $myrow['othincome'];
-			$GTOT += $myrow['otpay'];
-			$GTGross += $myrow['grosspay'];
-			$GTSSS += $myrow['sss'];
-			$GTHDMF += $myrow['hdmf'];
-			$GTgrosspay += $myrow['grosspay'];
-			$GTLoan += $myrow['loandeduction'];
-			$GTTax += $myrow['tax'];
-			$GTNet += $myrow['netpay'];
+			$GTBasic += $MyRow['basicpay'];
+			$GTOthInc += $MyRow['othincome'];
+			$GTOT += $MyRow['otpay'];
+			$GTGross += $MyRow['grosspay'];
+			$GTSSS += $MyRow['sss'];
+			$GTHDMF += $MyRow['hdmf'];
+			$GTgrosspay += $MyRow['grosspay'];
+			$GTLoan += $MyRow['loandeduction'];
+			$GTTax += $MyRow['tax'];
+			$GTNet += $MyRow['netpay'];
 
 			//$YPos -= (2 * $line_height);  //double spacing
 			$FontSize = 8;
@@ -176,16 +176,16 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['PayrollID'])) {
 
 	echo '<form method="POST" action="' . $_SERVER['PHP_SELF'] . '?">';
 	echo '<table><tr><td>' . _('Select Payroll:') . '</td><td><select Name="PayrollID">';
-	DB_data_seek($result, 0);
-	$sql = 'SELECT payrollid, payrolldesc FROM prlpayrollperiod';
-	$result = DB_query($sql);
-	while ($myrow = DB_fetch_array($result)) {
-		if ($myrow['payrollid'] == isset($_POST['PayrollID'])) {
+	DB_data_seek($Result, 0);
+	$SQL = 'SELECT payrollid, payrolldesc FROM prlpayrollperiod';
+	$Result = DB_query($SQL);
+	while ($MyRow = DB_fetch_array($Result)) {
+		if ($MyRow['payrollid'] == isset($_POST['PayrollID'])) {
 			echo '<option selected="selected" value=';
 		} else {
 			echo '<option value=';
 		}
-		echo $myrow['payrollid'] . '>' . $myrow['payrolldesc'];
+		echo $MyRow['payrollid'] . '>' . $MyRow['payrolldesc'];
 	} //end while loop
 	echo '</select></td></tr>';
 	echo "</table><p><input type='Submit' name='ShowPR' value='" . _('Show Payroll Register') . "'>";

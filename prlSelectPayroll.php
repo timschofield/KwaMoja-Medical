@@ -19,8 +19,8 @@ if (isset($_GET['PayrollID'])) {
 
 if (isset($_GET['delete'])) {
 	//the link to delete a selected record was clicked instead of the submit button
-	$sql = "DELETE FROM prlemployeemaster WHERE employeeid " . LIKE . "'" . DB_escape_string($SelectedEmployeeID) . "'";
-	$result = DB_query($sql);
+	$SQL = "DELETE FROM prlemployeemaster WHERE employeeid " . LIKE . "'" . DB_escape_string($SelectedEmployeeID) . "'";
+	$Result = DB_query($SQL);
 	prnMsg('employee id has been deleted' . '!', 'success');
 	//}
 	//end if account group used in GL accounts
@@ -37,7 +37,7 @@ if (!isset($PayrollID)) {
 	links to delete or edit each. These will call the same page again and allow update/input
 	or deletion of the records*/
 
-	$sql = "SELECT payrollid,
+	$SQL = "SELECT payrollid,
 					payrolldesc,
 					fsmonth,
 					fsyear,
@@ -47,7 +47,7 @@ if (!isset($PayrollID)) {
 				FROM prlpayrollperiod
 				ORDER BY payrollid";
 	$ErrMsg = _('The payroll record could not be retrieved because');
-	$result = DB_query($sql, $ErrMsg);
+	$Result = DB_query($SQL, $ErrMsg);
 
 	echo '<table class="selection">
 			<tr>
@@ -62,7 +62,7 @@ if (!isset($PayrollID)) {
 
 	$k = 0; //row colour counter
 
-	while ($myrow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 
 		if ($k == 1) {
 			echo '<tr class="EvenTableRows">';
@@ -72,14 +72,14 @@ if (!isset($PayrollID)) {
 			$k++;
 		}
 
-		echo '<td>' . $myrow['payrollid'] . '</td>
-			<td>' . $myrow['payrolldesc'] . '</td>
-			<td>' . $myrow['fsmonth'] . '</td>
-			<td>' . $myrow['fsyear'] . '</td>
-			<td>' . ConvertSQLDate($myrow['startdate']) . '</td>
-			<td>' . ConvertSQLDate($myrow['enddate']) . '</td>
-			<td>' . $myrow['payperiodid'] . '</td>
-			<td><a href="' . $RootPath . '/prlCreatePayroll.php?PayrollID=' . $myrow['payrollid'] . '">' . _('Select') . '</a></td>
+		echo '<td>' . $MyRow['payrollid'] . '</td>
+			<td>' . $MyRow['payrolldesc'] . '</td>
+			<td>' . $MyRow['fsmonth'] . '</td>
+			<td>' . $MyRow['fsyear'] . '</td>
+			<td>' . ConvertSQLDate($MyRow['startdate']) . '</td>
+			<td>' . ConvertSQLDate($MyRow['enddate']) . '</td>
+			<td>' . $MyRow['payperiodid'] . '</td>
+			<td><a href="' . $RootPath . '/prlCreatePayroll.php?PayrollID=' . $MyRow['payrollid'] . '">' . _('Select') . '</a></td>
 		</tr>';
 
 	} //END WHILE LIST LOOP

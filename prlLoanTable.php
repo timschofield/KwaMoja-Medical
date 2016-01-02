@@ -37,26 +37,26 @@ if (isset($_POST['update']) or isset($_POST['insert'])) {
 
 		if (isset($_POST['update'])) {
 
-			$sql = "UPDATE prlloantable SET loantabledesc='" . $_POST['LoanTableDesc'] . "'
+			$SQL = "UPDATE prlloantable SET loantabledesc='" . $_POST['LoanTableDesc'] . "'
 						WHERE loantableid = '" . $LoanTableID . "'";
 
 			$ErrMsg = _('The loan could not be updated because');
 			$DbgMsg = _('The SQL that was used to update the loan table but failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 			prnMsg(_('The loan table master record for') . ' ' . $LoanTableID . ' ' . _('has been updated'), 'success');
 			unset($LoanTableID);
 			unset($_POST['LoanTableDesc']);
 
 		} elseif (isset($_POST['insert'])) { //its a new loan record
 
-			$sql = "INSERT INTO prlloantable (loantableid,
+			$SQL = "INSERT INTO prlloantable (loantableid,
 							loantabledesc)
 					 VALUES (NULL,
 					 	'" . $_POST['LoanTableDesc'] . "')";
 
 			$ErrMsg = _('The loan') . ' ' . $_POST['LoanTableDesc'] . ' ' . _('could not be added because');
 			$DbgMsg = _('The SQL that was used to insert the loan table but failed was');
-			$result = DB_query($sql, $ErrMsg, $DbgMsg);
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 			prnMsg(_('A new loan table for') . ' ' . $_POST['LoanTableDesc'] . ' ' . _('has been added to the database'), 'success');
 
@@ -79,26 +79,26 @@ if (isset($_POST['update']) or isset($_POST['insert'])) {
 
 	// PREVENT DELETES IF DEPENDENT RECORDS FOUND
 	if ($CancelDelete == 0) {
-		$sql = "DELETE FROM prlloantable WHERE loantableid='$LoanTableID'";
-		$result = DB_query($sql);
+		$SQL = "DELETE FROM prlloantable WHERE loantableid='$LoanTableID'";
+		$Result = DB_query($SQL);
 		prnMsg(_('Loan table record for') . ' ' . $LoanTableID . ' ' . _('has been deleted'), 'success');
 		unset($LoanTableID);
 		unset($_SESSION['LoanTableID']);
 	}
 }
 
-$sql = "SELECT loantableid,
+$SQL = "SELECT loantableid,
 				loantabledesc
 			FROM prlloantable";
-$result = DB_query($sql);
+$Result = DB_query($SQL);
 
-if (DB_num_rows($result) > 0) {
+if (DB_num_rows($Result) > 0) {
 	echo '<table class="selection">
 			<tr>
 				<th>' . _('Loan Type ID') . '</th>
 				<th>' . _('Loan Type Description') . '</th>
 			</tr>';
-	while ($MyRow = DB_fetch_array($result)) {
+	while ($MyRow = DB_fetch_array($Result)) {
 		echo '<tr>
 				<td>' . $MyRow['loantableid'] . '</td>
 				<td>' . $MyRow['loantabledesc'] . '</td>
@@ -114,15 +114,15 @@ echo '<table class="selection">';
 
 //if (!isset($_POST["New"])) {
 if (isset($LoanTableID)) {
-	$sql = "SELECT loantableid,
+	$SQL = "SELECT loantableid,
 				loantabledesc
 			FROM prlloantable
 			WHERE loantableid = '" . $LoanTableID . "'";
 
-	$result = DB_query($sql);
-	$myrow = DB_fetch_array($result);
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
 
-	$_POST['LoanTableDesc'] = $myrow['loantabledesc'];
+	$_POST['LoanTableDesc'] = $MyRow['loantabledesc'];
 	echo '<input type="hidden" name="LoanTableID" value="' . $LoanTableID . '" />';
 
 } else {

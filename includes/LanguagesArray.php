@@ -19,6 +19,11 @@ $LanguagesArray['de_DE.utf8']['WindowsLocale'] = 'german';
 $LanguagesArray['de_DE.utf8']['DecimalPoint'] = ',';
 $LanguagesArray['de_DE.utf8']['ThousandsSeparator'] = '.';
 
+$LanguagesArray['de_LU.utf8']['LanguageName'] = 'Deutsch Luxembourg';
+$LanguagesArray['de_LU.utf8']['WindowsLocale'] = 'german-luxembourg';
+$LanguagesArray['de_LU.utf8']['DecimalPoint'] = ',';
+$LanguagesArray['de_LU.utf8']['ThousandsSeparator'] = ' ';
+
 $LanguagesArray['el_GR.utf8']['LanguageName'] = 'Ελληνικά';
 $LanguagesArray['el_GR.utf8']['WindowsLocale'] = 'greek';
 $LanguagesArray['el_GR.utf8']['DecimalPoint'] = ',';

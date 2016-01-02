@@ -4,9 +4,6 @@
 
 if (isset($ForceConfigReload) and $ForceConfigReload == true or !isset($_SESSION['CompanyDefaultsLoaded']) or isset($_SESSION['FirstStart'])) {
 
-	if ($_SESSION['DBUpdateNumber'] > 144) {
-		$_SESSION['ChartLanguage'] = GetChartLanguage();
-	}
 	//purge the audit trail if necessary
 	if (isset($_SESSION['MonthsAuditTrail'])) {
 		$SQL = "DELETE FROM audittrail
@@ -47,6 +44,10 @@ if (isset($ForceConfigReload) and $ForceConfigReload == true or !isset($_SESSION
 	if (!isset($_SESSION['DBUpdateNumber'])) { // the config record for VersionNumber is not yet added
 		$_SESSION['DBUpdateNumber'] = -1;
 		header('Location: Z_UpgradeDatabase.php'); //divert to the db upgrade if the VersionNumber is not in the config table
+	}
+
+	if ($_SESSION['DBUpdateNumber'] > 143) {
+		$_SESSION['ChartLanguage'] = GetChartLanguage();
 	}
 
 	/* Also reads all the company data set up in the company record and returns an array */

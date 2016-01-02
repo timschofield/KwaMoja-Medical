@@ -30,7 +30,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 		$DefaultFromDate = Date('Y-m-d', Mktime(0, 0, 0, $_SESSION['YearEnd'] + 2, 0, Date('Y') - 1));
 		$FromDate = Date($_SESSION['DefaultDateFormat'], Mktime(0, 0, 0, $_SESSION['YearEnd'] + 2, 0, Date('Y') - 1));
 	}
-	$period = GetPeriod($FromDate);
+	$Period = GetPeriod($FromDate);
 
 	/*Show a form to allow input of criteria for profit and loss to show */
 	echo '<table class="selection" summary="' . _('Input Criteria for Report') . '">
@@ -170,11 +170,14 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 					Sum(CASE WHEN (gltrans.periodno>='" . $_POST['FromPeriod'] . "' and gltrans.periodno<='" . $_POST['ToPeriod'] . "') THEN gltrans.amount ELSE 0 END) AS TotalAllPeriods,
 					Sum(CASE WHEN (gltrans.periodno='" . $_POST['ToPeriod'] . "') THEN gltrans.amount ELSE 0 END) AS TotalThisPeriod
 			FROM chartmaster
-				INNER JOIN accountgroups ON chartmaster.groupcode = accountgroups.groupcode
-				INNER JOIN gltrans ON chartmaster.accountcode= gltrans.account
-				INNER JOIN glaccountusers ON glaccountusers.accountcode=chartmaster.accountcode AND glaccountusers.userid='" .  $_SESSION['UserID'] . "' AND glaccountusers.canview=1
+			INNER JOIN accountgroups
+				ON chartmaster.groupcode = accountgroups.groupcode
+				AND chartmaster.language = accountgroups.language
+			INNER JOIN gltrans ON chartmaster.accountcode= gltrans.account
+			INNER JOIN glaccountusers ON glaccountusers.accountcode=chartmaster.accountcode AND glaccountusers.userid='" .  $_SESSION['UserID'] . "' AND glaccountusers.canview=1
 			WHERE accountgroups.pandl=1
-			AND gltrans.tag='" . $_POST['tag'] . "'
+				AND gltrans.tag='" . $_POST['tag'] . "'
+				AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 			GROUP BY accountgroups.sectioninaccounts,
 					accountgroups.groupname,
 					accountgroups.parentgroupname,
@@ -512,11 +515,15 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 					chartmaster.accountname,
 					Sum(CASE WHEN (gltrans.periodno>='" . $_POST['FromPeriod'] . "' AND gltrans.periodno<='" . $_POST['ToPeriod'] . "') THEN gltrans.amount ELSE 0 END) AS TotalAllPeriods,
 					Sum(CASE WHEN (gltrans.periodno='" . $_POST['ToPeriod'] . "') THEN gltrans.amount ELSE 0 END) AS TotalThisPeriod
-			FROM chartmaster INNER JOIN accountgroups
-			ON chartmaster.group_ = accountgroups.groupname INNER JOIN gltrans
-			ON chartmaster.accountcode= gltrans.account
+			FROM chartmaster
+			INNER JOIN accountgroups
+				ON chartmaster.groupcode = accountgroups.groupcode
+				AND chartmaster.language = accountgroups.language
+			INNER JOIN gltrans
+				ON chartmaster.accountcode= gltrans.account
 			WHERE accountgroups.pandl=1
-			AND gltrans.tag='" . $_POST['tag'] . "'
+				AND gltrans.tag='" . $_POST['tag'] . "'
+				AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 			GROUP BY accountgroups.sectioninaccounts,
 					accountgroups.groupname,
 					accountgroups.parentgroupname,
@@ -948,7 +955,6 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 			<input type="submit" name="SelectADifferentPeriod" value="' . _('Select A Different Period') . '" />
 		</div>';
 }
-echo '</div>';
 echo '</form>';
 include('includes/footer.inc');
 

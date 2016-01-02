@@ -7,9 +7,13 @@ $Title = _('GL Codes Inquiry');
 include('includes/header.inc');
 
 $SQL = "SELECT group_,
-		accountcode ,
-		accountname
-		FROM chartmaster INNER JOIN accountgroups ON chartmaster.group_=accountgroups.groupname
+			accountcode ,
+			accountname
+		FROM chartmaster
+		INNER JOIN accountgroups
+			ON chartmaster.groupcode=accountgroups.groupcode
+			AND chartmaster.language=accountgroups.language
+		WHERE chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 		ORDER BY sequenceintb,
 				accountcode";
 

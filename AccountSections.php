@@ -12,8 +12,6 @@ if (isset($Errors)) {
 	unset($Errors);
 }
 
-$Language = GetChartLanguage();
-
 if (isset($_POST['submit'])) {
 
 	foreach ($_POST as $Key=>$Value) {
@@ -34,7 +32,7 @@ if (isset($_POST['submit'])) {
 						language
 					FROM accountsection
 					WHERE sectionid='" . $_POST['SectionID'] . "'
-						AND language='" . $Language . "'";
+						AND language='" . $_SESSION['ChartLanguage'] . "'";
 		$Result = DB_query($SQL);
 
 		if ((DB_num_rows($Result) != 0 and !isset($_POST['SelectedSectionID']))) {
@@ -146,7 +144,7 @@ if (!isset($_GET['SelectedSectionID']) and !isset($_POST['SelectedSectionID'])) 
 	$SQL = "SELECT sectionid,
 			sectionname
 		FROM accountsection
-		WHERE language='" . $Language . "'
+		WHERE language='" . $_SESSION['ChartLanguage'] . "'
 		ORDER BY sectionid";
 
 	$ErrMsg = _('Could not get account group sections because');

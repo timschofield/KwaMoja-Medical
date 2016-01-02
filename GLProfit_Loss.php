@@ -32,7 +32,6 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 		$DefaultFromDate = Date('Y-m-d', Mktime(0, 0, 0, $_SESSION['YearEnd'] + 2, 0, Date('Y') - 1));
 		$FromDate = Date($_SESSION['DefaultDateFormat'], Mktime(0, 0, 0, $_SESSION['YearEnd'] + 2, 0, Date('Y') - 1));
 	}
-	$period = GetPeriod($FromDate);
 
 	/*Show a form to allow input of criteria for profit and loss to show */
 	echo '<table class="selection" summary="' . _('Criteria for report') . '">
@@ -156,10 +155,13 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 					Sum(CASE WHEN chartdetails.period='" . ($_POST['ToPeriod'] - 12) . "' THEN chartdetails.bfwd + chartdetails.actual ELSE 0 END) AS lylastprdcfwd,
 					Sum(CASE WHEN chartdetails.period='" . $_POST['ToPeriod'] . "' THEN chartdetails.bfwdbudget + chartdetails.budget ELSE 0 END) AS lastprdbudgetcfwd
 				FROM chartmaster
-					INNER JOIN accountgroups ON chartmaster.groupcode = accountgroups.groupcode
-					INNER JOIN chartdetails ON chartmaster.accountcode= chartdetails.accountcode
-					INNER JOIN glaccountusers ON glaccountusers.accountcode=chartmaster.accountcode AND glaccountusers.userid='" .  $_SESSION['UserID'] . "' AND glaccountusers.canview=1
+				INNER JOIN accountgroups
+					ON chartmaster.groupcode = accountgroups.groupcode
+					AND chartmaster.language = accountgroups.language
+				INNER JOIN chartdetails ON chartmaster.accountcode= chartdetails.accountcode
+				INNER JOIN glaccountusers ON glaccountusers.accountcode=chartmaster.accountcode AND glaccountusers.userid='" .  $_SESSION['UserID'] . "' AND glaccountusers.canview=1
 				WHERE accountgroups.pandl=1
+					AND chartmaster.language='". $_SESSION['ChartLanguage'] . "'
 				GROUP BY accountgroups.sectioninaccounts,
 					accountgroups.groupcode,
 					accountgroups.parentgroupname,
@@ -626,10 +628,13 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 					SUM(CASE WHEN chartdetails.period='" . ($_POST['ToPeriod'] - 12) . "' THEN chartdetails.bfwd + chartdetails.actual ELSE 0 END) AS lylastprdcfwd,
 					SUM(CASE WHEN chartdetails.period='" . $_POST['ToPeriod'] . "' THEN chartdetails.bfwdbudget + chartdetails.budget ELSE 0 END) AS lastprdbudgetcfwd
 			FROM chartmaster
-				INNER JOIN accountgroups ON chartmaster.groupcode = accountgroups.groupcode
-				INNER JOIN chartdetails	ON chartmaster.accountcode= chartdetails.accountcode
-				INNER JOIN glaccountusers ON glaccountusers.accountcode=chartmaster.accountcode AND glaccountusers.userid='" .  $_SESSION['UserID'] . "' AND glaccountusers.canview=1
+			INNER JOIN accountgroups
+				ON chartmaster.groupcode = accountgroups.groupcode
+				AND chartmaster.language = accountgroups.language
+			INNER JOIN chartdetails	ON chartmaster.accountcode= chartdetails.accountcode
+			INNER JOIN glaccountusers ON glaccountusers.accountcode=chartmaster.accountcode AND glaccountusers.userid='" .  $_SESSION['UserID'] . "' AND glaccountusers.canview=1
 			WHERE accountgroups.pandl=1
+				AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 			GROUP BY accountgroups.sectioninaccounts,
 					accountgroups.parentgroupname,
 					accountgroups.groupname,

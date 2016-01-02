@@ -20,7 +20,7 @@ function CheckForRecursiveGroup($ParentGroupCode, $GroupCode) {
 		$SQL = "SELECT parentgroupcode
 				FROM accountgroups
 				WHERE groupcode='" . $GroupCode . "'
-					AND language='" . $Language . "'";
+					AND language='" . $_SESSION['ChartLanguage'] . "'";
 
 		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 		$MyRow = DB_fetch_row($Result);
@@ -36,8 +36,6 @@ function CheckForRecursiveGroup($ParentGroupCode, $GroupCode) {
 if (isset($Errors)) {
 	unset($Errors);
 } //isset($Errors)
-
-$Language = GetChartLanguage();
 
 if (isset($_POST['MoveGroup'])) {
 	$SQL = "UPDATE chartmaster SET group_='" . $_POST['DestinyAccountGroup'] . "' WHERE group_='" . $_POST['OriginalAccountGroup'] . "'";
@@ -71,7 +69,7 @@ if (isset($_POST['submit'])) {
 	$SQL = "SELECT count(groupname)
 			FROM accountgroups
 			WHERE groupcode='" . $_POST['GroupCode'] . "'
-				AND language='" . $Language . "'";
+				AND language='" . $_SESSION['ChartLanguage'] . "'";
 
 	$DbgMsg = _('The SQL that was used to retrieve the information was');
 	$ErrMsg = _('Could not check whether the group exists because');
@@ -99,7 +97,7 @@ if (isset($_POST['submit'])) {
 						sectioninaccounts
 					FROM accountgroups
 					WHERE groupcode='" . $_POST['ParentGroup'] . "'
-						AND language='" . $Language . "'";
+						AND language='" . $_SESSION['ChartLanguage'] . "'";
 
 			$DbgMsg = _('The SQL that was used to retrieve the information was');
 			$ErrMsg = _('Could not check whether the group is recursive because');
@@ -130,7 +128,7 @@ if (isset($_POST['submit'])) {
 				FROM accountgroups
 				WHERE sectioninaccounts='" . $_POST['SectionInAccounts'] . "'
 					AND pandl='" . ((int) ($_POST['PandL'] xor 1)) . "'
-					AND language='" . $Language . "'";
+					AND language='" . $_SESSION['ChartLanguage'] . "'";
 	$Result = DB_query($SQL);
 	$MyRow = DB_fetch_array($Result);
 	if ($MyRow['porl'] > 0) {
@@ -138,7 +136,7 @@ if (isset($_POST['submit'])) {
 		prnMsg(_('You are trying to mix Balance Sheet groups with P and L groups within the same Account Section'), 'error');
 	}
 
-	$ParentGroupSQL = "SELECT groupname FROM accountgroups WHERE groupcode='" . $_POST['ParentGroup'] . "' AND language='" . $Language . "'";
+	$ParentGroupSQL = "SELECT groupname FROM accountgroups WHERE groupcode='" . $_POST['ParentGroup'] . "' AND language='" . $_SESSION['ChartLanguage'] . "'";
 	$ParentGroupResult = DB_query($ParentGroupSQL);
 	$ParentGroupRow = DB_fetch_array($ParentGroupResult);
 
@@ -296,7 +294,7 @@ if (!isset($_GET['SelectedAccountGroup']) and !isset($_POST['SelectedAccountGrou
 			LEFT JOIN accountsection
 				ON sectionid = sectioninaccounts
 				AND accountgroups.language=accountsection.language
-			WHERE accountgroups.language='" . $Language . "'
+			WHERE accountgroups.language='" . $_SESSION['ChartLanguage'] . "'
 			ORDER BY groupcode";
 
 	$DbgMsg = _('The sql that was used to retrieve the account group information was ');
@@ -456,7 +454,7 @@ if (!isset($_GET['delete'])) {
 			</tr>';
 	}
 
-	$SQL = "SELECT groupcode, groupname FROM accountgroups WHERE language='" . $Language . "' ORDER BY groupcode";
+	$SQL = "SELECT groupcode, groupname FROM accountgroups WHERE language='" . $_SESSION['ChartLanguage'] . "' ORDER BY groupcode";
 	$GroupResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 	echo '<tr>
 			<td>', _('Parent Group'), ':</td>
@@ -479,7 +477,7 @@ if (!isset($_GET['delete'])) {
 				</td>
 			</tr>';
 
-	$SQL = "SELECT sectionid, sectionname FROM accountsection WHERE language='" . $Language . "' ORDER BY sectionid";
+	$SQL = "SELECT sectionid, sectionname FROM accountsection WHERE language='" . $_SESSION['ChartLanguage'] . "' ORDER BY sectionid";
 	$SecResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 	echo '<tr>
 			<td>', _('Section In Accounts'), ':</td>

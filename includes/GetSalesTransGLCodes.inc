@@ -120,28 +120,7 @@ function GetCOGSGLAccount($Area, $StockId, $SalesType) {
 	}
 
 	if (DB_num_rows($Result) == 0) {
-		/*STILL!*/
-		/*The default if all else fails */
-		/*Check GL account 1 exists */
-		prnMsg(_('Could not determine the correct general ledger account to use for posting the cost of this sale. Go to the setup menu and define appropriate COGS (Cost Of Goods Sold) accounts. To enable this invoice to be posted it has been posted to default sales and COGS - account number 1'), 'warn');
-		$SQL = "SELECT accountcode FROM chartmaster WHERE accountcode=1";
-		$Result = DB_query($SQL);
-		if (DB_num_rows($Result) == 0) {
-			/*It doesn't exist so  create it */
-			$Result = DB_query("SELECT groupname FROM accountgroups WHERE groupname='Sales'");
-			if (DB_num_rows($Result) == 0) {
-				$Result = DB_query("INSERT INTO accountgroups (groupname,
-									sectioninaccounts,
-									pandl,
-									sequenceintb)
-							VALUES ('Sales',
-								1,
-								1,
-								5)");
-			}
-			$SQL = "INSERT INTO chartmaster VALUES (1, 'Default Sales and COGS', 'Sales')";
-			$Result = DB_query($SQL);
-		}
+		prnMsg(_('Could not determine the correct general ledger account to use for posting the cost of this sale. Go to the setup menu and define appropriate COGS (Cost Of Goods Sold) accounts.'), 'warn');
 		return 1;
 	}
 
@@ -271,29 +250,7 @@ function GetSalesGLAccount($Area, $StockId, $SalesType) {
 		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 	}
 	if (DB_num_rows($Result) == 0) {
-		/*STILL!*/
-		/*The default if all else fails */
 		prnMsg(_('Could not determine the correct general ledger account to use for posting this sale to. Go to the setup menu and define appropriate Sale GL Posting accounts. To enable this invoice to be posted it has been posted to default sales and COGS - account number 1'), 'warn');
-		/*Check GL account 1 exists */
-		$SQL = "SELECT accountcode FROM chartmaster WHERE accountcode=1";
-		$Result = DB_query($SQL);
-		if (DB_num_rows($Result) == 0) {
-			/*It doesn't exist so  create it */
-			/*First check the account group sales exists */
-			$Result = DB_query("SELECT groupname FROM accountgroups WHERE groupname='Sales'");
-			if (DB_num_rows($Result) == 0) {
-				$Result = DB_query("INSERT INTO accountgroups (groupname,
-																sectioninaccounts,
-																pandl,
-																sequenceintb)
-														VALUES ('Sales',
-																1,
-																1,
-																5)");
-			}
-			$SQL = "INSERT INTO chartmaster VALUES (1, 'Default Sales and COGS', 'Sales')";
-			$Result = DB_query($SQL);
-		}
 		return array(
 			'salesglcode' => 1,
 			'discountglcode' => 1

@@ -8,11 +8,9 @@ $ViewTopic = 'FixedAssets';
 $BookMark = 'AssetCategories';
 include('includes/header.inc');
 
-echo '<div class="centre">
-	<p class="page_title_text" >
+echo '<p class="page_title_text" >
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/money_add.png" title="' . _('Fixed Asset Categories') . '" alt="" />' . ' ' . $Title . '
-	</p>
-	</div>';
+	</p>';
 
 if (isset($_GET['SelectedCategory'])) {
 	$SelectedCategory = mb_strtoupper($_GET['SelectedCategory']);
@@ -241,20 +239,25 @@ $SQL = "SELECT chartmaster.accountcode,
 				chartmaster.accountname
 		FROM chartmaster
 		INNER JOIN accountgroups
-			ON chartmaster.group_=accountgroups.groupname
+			ON chartmaster.groupcode=accountgroups.groupcode
+			AND chartmaster.language=accountgroups.language
 		LEFT JOIN bankaccounts
 			ON chartmaster.accountcode=bankaccounts.accountcode
 		WHERE accountgroups.pandl=0
 			AND bankaccounts.currcode IS NULL
+			AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 		ORDER BY accountcode";
 
 $BSAccountsResult = DB_query($SQL);
 
 $SQL = "SELECT accountcode,
 				 accountname
-		FROM chartmaster INNER JOIN accountgroups
-		ON chartmaster.group_=accountgroups.groupname
+		FROM chartmaster
+		INNER JOIN accountgroups
+			ON chartmaster.groupcode=accountgroups.groupcode
+			AND chartmaster.language=accountgroups.language
 		WHERE accountgroups.pandl!=0
+			AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 		ORDER BY accountcode";
 
 $PnLAccountsResult = DB_query($SQL);

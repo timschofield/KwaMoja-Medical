@@ -56,12 +56,14 @@ if (!isset($_GET['TypeID']) or !isset($_GET['TransNo'])) {
 						gltrans.posted,
 						chartmaster.accountname,
 						periods.lastdate_in_period
-					FROM gltrans INNER JOIN chartmaster
-					ON gltrans.account = chartmaster.accountcode
+					FROM gltrans
+					INNER JOIN chartmaster
+						ON gltrans.account = chartmaster.accountcode
 					INNER JOIN periods
-					ON periods.periodno=gltrans.periodno
+						ON periods.periodno=gltrans.periodno
 					WHERE gltrans.type= '" . $_GET['TypeID'] . "'
-					AND gltrans.typeno = '" . $_GET['TransNo'] . "'
+						AND gltrans.typeno = '" . $_GET['TransNo'] . "'
+						AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 					ORDER BY gltrans.counterindex";
 		$TransResult = DB_query($SQL);
 

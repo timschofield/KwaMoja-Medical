@@ -439,12 +439,15 @@ echo '</select></td>
 echo '<tr>
 		<td>' . _('Pay Pal Commission Account') . ':</td>
 		<td><select name="X_ShopPayPalCommissionAccount">';
+
 $AccountsResult = DB_query("SELECT accountcode,
 									accountname
 								FROM chartmaster
 								INNER JOIN accountgroups
-									ON chartmaster.group_=accountgroups.groupname
+									ON chartmaster.groupcode=accountgroups.groupcode
+									AND chartmaster.language=accountgroups.language
 								WHERE accountgroups.pandl=1
+									AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 								ORDER BY chartmaster.accountcode");
 while ($AccountRow = DB_fetch_array($AccountsResult)) {
 	if ($_SESSION['ShopPayPalCommissionAccount'] == $AccountRow['accountcode']) {

@@ -98,6 +98,7 @@ if (isset($_POST['Modify'])) {
 		$_SESSION['PDFLanguage'] = $_POST['PDFLanguage'];
 		include('includes/MainMenuLinksArray.php');
 		include('includes/LanguageSetup.php');
+		$_SESSION['ChartLanguage'] = GetChartLanguage();
 
 	}
 }

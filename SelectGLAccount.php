@@ -23,14 +23,16 @@ if (isset($_POST['Search'])) {
 						ELSE '" . _('Balance Sheet') . "' END AS pl
 				FROM chartmaster
 				INNER JOIN accountgroups
-					ON chartmaster.group_ = accountgroups.groupname
+					ON chartmaster.groupcode = accountgroups.groupcode
+					AND chartmaster.language = accountgroups.language
 				INNER JOIN glaccountusers
 					ON glaccountusers.accountcode=chartmaster.accountcode
 					AND glaccountusers.userid='" .  $_SESSION['UserID'] . "'
 					AND glaccountusers.canupd=1
 				WHERE accountname " . LIKE . " '" . $SearchString . "'
-					AND chartmaster.accountcode >= '" . $_POST['GLCode'] . "'
-					AND chartmaster.group_ " . LIKE . "  '" . $_POST['Group'] . "'
+					AND chartmaster.accountcode " . LIKE . " '" . $_POST['GLCode'] . "%'
+					AND chartmaster.groupcode " . LIKE . " '%" . $_POST['GroupCode'] . "%'
+					AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 				ORDER BY accountgroups.sequenceintb,
 					chartmaster.accountcode";
 
@@ -51,21 +53,24 @@ echo '<table class="selection" summary="' . _('Criteria for inquiry') . '">
 			<td><input type="text" name="GLCode" size="15" maxlength="18" class="number" /></td>
 		</tr>';
 
-$GroupSQL = "SELECT groupname FROM accountgroups ORDER BY sequenceintb";
+$GroupSQL = "SELECT groupcode,
+					groupname
+				FROM accountgroups
+				WHERE language='" . $_SESSION['ChartLanguage'] . "'
+				ORDER BY sequenceintb";
 $GroupResult = DB_query($GroupSQL);
 
 echo '<tr>
 		<td>' . _('Search In Account Group') . ':</td>
-		<td><select name="Group">';
+		<td><select name="GroupCode">';
 
 echo '<option value="%%">' . _('All Account Groups') . '</option>';
 while ($GroupRow = DB_fetch_array($GroupResult)) {
-	if (isset($_POST['Group']) and $GroupRow['groupname'] == $_POST['Group']) {
-		echo '<option selected="selected" value="';
+	if (isset($_POST['GroupCode']) and $GroupRow['groupcode'] == $_POST['GroupCode']) {
+		echo '<option selected="selected" value="', $GroupRow['groupcode'], '">', $GroupRow['groupcode'], ' - ', $GroupRow['groupname'], '</option>';
 	} else {
-		echo '<option value="';
+		echo '<option value="', $GroupRow['groupcode'], '">', $GroupRow['groupcode'], ' - ', $GroupRow['groupname'], '</option>';
 	}
-	echo $GroupRow['groupname'] . '">' . $GroupRow['groupname'] . '</option>';
 }
 echo '</select></td>
 	</tr>

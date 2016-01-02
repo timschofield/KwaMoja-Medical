@@ -69,8 +69,12 @@ echo '<table class="selection" summary="', _('Inquiry Selection Criteria'), '">
 $SQL = "SELECT chartmaster.accountcode,
 			   chartmaster.accountname
 		FROM chartmaster
-		INNER JOIN glaccountusers ON glaccountusers.accountcode=chartmaster.accountcode AND glaccountusers.userid='" .  $_SESSION['UserID'] . "' AND glaccountusers.canview=1
+		INNER JOIN glaccountusers
+			ON glaccountusers.accountcode=chartmaster.accountcode
+			AND glaccountusers.userid='" .  $_SESSION['UserID'] . "'
+			AND glaccountusers.canview=1
 		WHERE chartmaster.accountcode<>'" . $_SESSION['CompanyRecord']['retainedearnings'] . "'
+			AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 		ORDER BY chartmaster.accountcode";
 echo $SQL;
 $Account = DB_query($SQL);
@@ -142,8 +146,11 @@ if (isset($_POST['Show'])) {
 	/*Is the account a balance sheet or a profit and loss account */
 	$Result = DB_query("SELECT pandl
 				FROM accountgroups
-				INNER JOIN chartmaster ON accountgroups.groupname=chartmaster.group_
-				WHERE chartmaster.accountcode='" . $SelectedAccount . "'");
+				INNER JOIN chartmaster
+					ON accountgroups.groupcode=chartmaster.groupcode
+					AND accountgroups.language=chartmaster.language
+				WHERE chartmaster.accountcode='" . $SelectedAccount . "'
+					AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'");
 	$PandLRow = DB_fetch_row($Result);
 	if ($PandLRow[0] == 1) {
 		$PandLAccount = True;

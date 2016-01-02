@@ -90,7 +90,9 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 					ON chartmaster.accountcode=gltrans.account
 				INNER JOIN accountgroups
 					ON chartmaster.groupcode=accountgroups.groupcode
+					AND chartmaster.language=accountgroups.language
 				WHERE periodno<='" . ($_POST['BalancePeriodEnd']-12) . "'
+					AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 				GROUP BY chartmaster.groupcode
 						ORDER BY sequenceintb,
 								accountgroups.groupcode,
@@ -123,7 +125,9 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 					ON chartmaster.accountcode=gltrans.account
 				INNER JOIN accountgroups
 					ON chartmaster.groupcode=accountgroups.groupcode
+					AND chartmaster.language=accountgroups.language
 				WHERE periodno<='" . $_POST['BalancePeriodEnd'] . "'
+					AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 				GROUP BY chartmaster.groupcode
 						ORDER BY sequenceintb,
 								accountgroups.groupcode,
@@ -179,10 +183,12 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 						FROM chartmaster
 						INNER JOIN accountgroups
 							ON chartmaster.groupcode=accountgroups.groupcode
+							AND chartmaster.language=accountgroups.language
 						LEFT JOIN gltrans
 							ON gltrans.account=chartmaster.accountcode
 							AND gltrans.periodno<='" . $_POST['BalancePeriodEnd'] . "'
 						WHERE pandl=0
+							AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 						GROUP BY sectioninaccounts,
 								accountcode
 						ORDER BY sequenceintb,
@@ -201,10 +207,12 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 						FROM chartmaster
 						INNER JOIN accountgroups
 							ON chartmaster.groupcode=accountgroups.groupcode
+							AND chartmaster.language=accountgroups.language
 						LEFT JOIN gltrans
 							ON gltrans.account=chartmaster.accountcode
 							AND gltrans.periodno<='" . $_POST['BalancePeriodEnd'] . "'
 						WHERE pandl=0
+							AND language='" . $_SESSION['ChartLanguage'] . "'
 						GROUP BY sectioninaccounts,
 								accountcode
 						ORDER BY sequenceintb,
@@ -234,9 +242,11 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 										FROM chartmaster
 										INNER JOIN accountgroups
 											ON chartmaster.groupcode=accountgroups.groupcode
+											AND chartmaster.language=accountgroups.language
 										INNER JOIN gltrans
 											ON gltrans.account=chartmaster.accountcode
 										WHERE periodno<='" . ($_POST['BalancePeriodEnd'] - 12) . "'
+											AND language='" . $_SESSION['ChartLanguage'] . "'
 											AND pandl=1";
 			$RetainedEarningsResult = DB_query($RetainedEarningsSQL);
 			$RetainedEarningsRow = DB_fetch_array($RetainedEarningsResult);
@@ -259,9 +269,11 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 										FROM chartmaster
 										INNER JOIN accountgroups
 											ON chartmaster.groupcode=accountgroups.groupcode
+											AND chartmaster.language=accountgroups.language
 										INNER JOIN gltrans
 											ON gltrans.account=chartmaster.accountcode
 										WHERE periodno<='" . $_POST['BalancePeriodEnd'] . "'
+											AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 											AND pandl=1";
 			$RetainedEarningsResult = DB_query($RetainedEarningsSQL);
 			$RetainedEarningsRow = DB_fetch_array($RetainedEarningsResult);

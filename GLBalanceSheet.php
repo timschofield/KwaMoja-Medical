@@ -97,10 +97,14 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 
 	$SQL = "SELECT Sum(CASE WHEN chartdetails.period='" . $_POST['BalancePeriodEnd'] . "' THEN chartdetails.bfwd + chartdetails.actual ELSE 0 END) AS accumprofitbfwd,
 			Sum(CASE WHEN chartdetails.period='" . ($_POST['BalancePeriodEnd'] - 12) . "' THEN chartdetails.bfwd + chartdetails.actual ELSE 0 END) AS lyaccumprofitbfwd
-		FROM chartmaster INNER JOIN accountgroups
-		ON chartmaster.groupcode = accountgroups.groupcode INNER JOIN chartdetails
-		ON chartmaster.accountcode= chartdetails.accountcode
-		WHERE accountgroups.pandl=1";
+		FROM chartmaster
+		INNER JOIN accountgroups
+			ON chartmaster.groupcode = accountgroups.groupcode
+			AND chartmaster.language = accountgroups.language
+		INNER JOIN chartdetails
+			ON chartmaster.accountcode= chartdetails.accountcode
+		WHERE accountgroups.pandl=1
+			AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'";
 
 	$AccumProfitResult = DB_query($SQL);
 	if (DB_error_no() != 0) {
@@ -127,10 +131,17 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 			Sum(CASE WHEN chartdetails.period='" . $_POST['BalancePeriodEnd'] . "' THEN chartdetails.bfwd + chartdetails.actual ELSE 0 END) AS balancecfwd,
 			Sum(CASE WHEN chartdetails.period='" . ($_POST['BalancePeriodEnd'] - 12) . "' THEN chartdetails.bfwd + chartdetails.actual ELSE 0 END) AS lybalancecfwd
 		FROM chartmaster
-			INNER JOIN accountgroups ON chartmaster.groupcode = accountgroups.groupcode
-			INNER JOIN chartdetails	ON chartmaster.accountcode= chartdetails.accountcode
-			INNER JOIN glaccountusers ON glaccountusers.accountcode=chartmaster.accountcode AND glaccountusers.userid='" .  $_SESSION['UserID'] . "' AND glaccountusers.canview=1
+			INNER JOIN accountgroups
+				ON chartmaster.groupcode = accountgroups.groupcode
+				AND chartmaster.language = accountgroups.language
+			INNER JOIN chartdetails
+				ON chartmaster.accountcode= chartdetails.accountcode
+			INNER JOIN glaccountusers
+				ON glaccountusers.accountcode=chartmaster.accountcode
+				AND glaccountusers.userid='" .  $_SESSION['UserID'] . "'
+				AND glaccountusers.canview=1
 		WHERE accountgroups.pandl=0
+			AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 		GROUP BY accountgroups.groupcode,
 			chartdetails.accountcode,
 			chartmaster.accountname,
@@ -353,10 +364,14 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 
 	$SQL = "SELECT Sum(CASE WHEN chartdetails.period='" . $_POST['BalancePeriodEnd'] . "' THEN chartdetails.bfwd + chartdetails.actual ELSE 0 END) AS accumprofitbfwd,
 			Sum(CASE WHEN chartdetails.period='" . ($_POST['BalancePeriodEnd'] - 12) . "' THEN chartdetails.bfwd + chartdetails.actual ELSE 0 END) AS lyaccumprofitbfwd
-		FROM chartmaster INNER JOIN accountgroups
-		ON chartmaster.groupcode = accountgroups.groupcode INNER JOIN chartdetails
-		ON chartmaster.accountcode= chartdetails.accountcode
-		WHERE accountgroups.pandl=1";
+		FROM chartmaster
+		INNER JOIN accountgroups
+			ON chartmaster.groupcode = accountgroups.groupcode
+			AND chartmaster.language = accountgroups.language
+		INNER JOIN chartdetails
+			ON chartmaster.accountcode= chartdetails.accountcode
+		WHERE accountgroups.pandl=1
+			AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'";
 
 	$AccumProfitResult = DB_query($SQL, _('The accumulated profits brought forward could not be calculated by the SQL because'));
 
@@ -371,10 +386,17 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 			Sum(CASE WHEN chartdetails.period='" . $_POST['BalancePeriodEnd'] . "' THEN chartdetails.bfwd + chartdetails.actual ELSE 0 END) AS balancecfwd,
 			Sum(CASE WHEN chartdetails.period='" . ($_POST['BalancePeriodEnd'] - 12) . "' THEN chartdetails.bfwd + chartdetails.actual ELSE 0 END) AS lybalancecfwd
 		FROM chartmaster
-			INNER JOIN accountgroups ON chartmaster.groupcode = accountgroups.groupcode
-			INNER JOIN chartdetails	ON chartmaster.accountcode= chartdetails.accountcode
-			INNER JOIN glaccountusers ON glaccountusers.accountcode=chartmaster.accountcode AND glaccountusers.userid='" .  $_SESSION['UserID'] . "' AND glaccountusers.canview=1
+			INNER JOIN accountgroups
+				ON chartmaster.groupcode = accountgroups.groupcode
+				AND chartmaster.language = accountgroups.language
+			INNER JOIN chartdetails
+				ON chartmaster.accountcode= chartdetails.accountcode
+			INNER JOIN glaccountusers
+				ON glaccountusers.accountcode=chartmaster.accountcode
+				AND glaccountusers.userid='" .  $_SESSION['UserID'] . "'
+				AND glaccountusers.canview=1
 		WHERE accountgroups.pandl=0
+			AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 		GROUP BY accountgroups.groupcode,
 			chartdetails.accountcode,
 			chartmaster.accountname,

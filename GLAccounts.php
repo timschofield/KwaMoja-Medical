@@ -14,8 +14,6 @@ if (isset($_POST['SelectedAccount'])) {
 	$SelectedAccount = $_GET['SelectedAccount'];
 }
 
-$Language = GetChartLanguage();
-
 echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/transactions.png" title="' . _('General Ledger Accounts') . '" alt="" />' . ' ' . $Title . '</p>';
 
 if (isset($_POST['submit'])) {
@@ -29,7 +27,7 @@ if (isset($_POST['submit'])) {
 	$GroupSQL = "SELECT groupname
 					FROM accountgroups
 					WHERE groupcode='" . $_POST['Group'] . "'
-					AND language='" . $Language . "'";
+					AND language='" . $_SESSION['ChartLanguage'] . "'";
 	$GroupResult = DB_query($GroupSQL);
 	$GroupRow = DB_fetch_array($GroupResult);
 	//initialise no input errors assumed initially before we test
@@ -267,14 +265,14 @@ if (!isset($_GET['delete'])) {
 					<td>', $_POST['AccountCode'], '</td>
 				</tr>';
 		$SQL = "SELECT DISTINCT language FROM chartmaster";
-		$LanguageResult = DB_query($SQL);
-		while ($LanguageRow = DB_fetch_array($LanguageResult)) {
-			if (!isset($AccountName[$LanguageRow['language']])) {
-				$AccountName[$LanguageRow['language']] = '';
+		$_SESSION['ChartLanguage']Result = DB_query($SQL);
+		while ($_SESSION['ChartLanguage']Row = DB_fetch_array($_SESSION['ChartLanguage']Result)) {
+			if (!isset($AccountName[$_SESSION['ChartLanguage']Row['language']])) {
+				$AccountName[$_SESSION['ChartLanguage']Row['language']] = '';
 			}
 			echo '<tr>
-					<td>', _('Account Name'), ' (', $LanguagesArray[$LanguageRow['language']]['LanguageName'], ') :</td>
-					<td><input type="text" size="51" autofocus="autofocus" required="required" maxlength="150" name="AccountName' . mb_substr($LanguageRow['language'], 0, 5) . '" value="', $AccountName[$LanguageRow['language']], '" /></td>
+					<td>', _('Account Name'), ' (', $_SESSION['ChartLanguage']sArray[$_SESSION['ChartLanguage']Row['language']]['LanguageName'], ') :</td>
+					<td><input type="text" size="51" autofocus="autofocus" required="required" maxlength="150" name="AccountName' . mb_substr($_SESSION['ChartLanguage']Row['language'], 0, 5) . '" value="', $AccountName[$_SESSION['ChartLanguage']Row['language']], '" /></td>
 				</tr>';
 		}
 	} else {
@@ -284,11 +282,11 @@ if (!isset($_GET['delete'])) {
 				<td><input type="text" name="AccountCode" size="11" autofocus="autofocus" required="required" maxlength="20" /></td>
 			</tr>';
 		$SQL = "SELECT DISTINCT language FROM chartmaster";
-		$LanguageResult = DB_query($SQL);
-		while ($LanguageRow = DB_fetch_array($LanguageResult)) {
+		$_SESSION['ChartLanguage']Result = DB_query($SQL);
+		while ($_SESSION['ChartLanguage']Row = DB_fetch_array($_SESSION['ChartLanguage']Result)) {
 			echo '<tr>
-					<td>', _('Account Name'), ' (', $LanguagesArray[$LanguageRow['language']]['LanguageName'], ') :</td>
-					<td><input type="text" size="51" autofocus="autofocus" required="required" maxlength="150" name="AccountName' . mb_substr($LanguageRow['language'], 0, 5) . '" value="" /></td>
+					<td>', _('Account Name'), ' (', $_SESSION['ChartLanguage']sArray[$_SESSION['ChartLanguage']Row['language']]['LanguageName'], ') :</td>
+					<td><input type="text" size="51" autofocus="autofocus" required="required" maxlength="150" name="AccountName' . mb_substr($_SESSION['ChartLanguage']Row['language'], 0, 5) . '" value="" /></td>
 				</tr>';
 		}
 	}
@@ -297,7 +295,7 @@ if (!isset($_GET['delete'])) {
 		$_POST['AccountName'] = '';
 	}
 
-	$SQL = "SELECT groupcode, groupname FROM accountgroups WHERE language='" . $Language . "' ORDER BY sequenceintb";
+	$SQL = "SELECT groupcode, groupname FROM accountgroups WHERE language='" . $_SESSION['ChartLanguage'] . "' ORDER BY sequenceintb";
 	$Result = DB_query($SQL);
 
 	echo '<tr>
@@ -342,7 +340,7 @@ if (!isset($SelectedAccount)) {
 				INNER JOIN accountgroups
 					ON chartmaster.groupcode=accountgroups.groupcode
 					AND chartmaster.language=accountgroups.language
-				WHERE chartmaster.language='" . $Language . "'
+				WHERE chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 				ORDER BY chartmaster.accountcode";
 
 	$ErrMsg = _('The chart accounts could not be retrieved because');

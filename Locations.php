@@ -676,8 +676,10 @@ if (!isset($_GET['delete'])) {
 					accountname
 				FROM chartmaster
 				LEFT JOIN accountgroups
-					ON chartmaster.group_=accountgroups.groupname
+					ON chartmaster.groupcode=accountgroups.groupcode
+					AND chartmaster.language=accountgroups.language
 				WHERE accountgroups.pandl=0
+					AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 				ORDER BY accountcode";
 	$BSAccountsResult = DB_query($SQL);
 	echo '<tr title="', _('Enter the GL account for this location, or leave it in blank if not needed'), '">

@@ -186,7 +186,8 @@ if (!isset($SelectedBankAccount)) {
 					importformat
 				FROM bankaccounts
 				INNER JOIN chartmaster
-					ON bankaccounts.accountcode = chartmaster.accountcode";
+					ON bankaccounts.accountcode = chartmaster.accountcode
+				WHERE chartmaster.language='" . $_SESSION['ChartLanguage'] . "'";
 
 	$ErrMsg = _('The bank accounts set up could not be retrieved because');
 	$DbgMsg = _('The SQL used to retrieve the bank account details was') . '<br />' . $SQL;
@@ -307,17 +308,20 @@ if (isset($SelectedBankAccount) and !isset($_GET['delete'])) {
 
 	$SQL = "SELECT accountcode,
 					accountname
-			FROM chartmaster LEFT JOIN accountgroups
-			ON chartmaster.group_ = accountgroups.groupname
+			FROM chartmaster
+			LEFT JOIN accountgroups
+				ON chartmaster.groupcode = accountgroups.groupcode
+				AND chartmaster.language = accountgroups.language
 			WHERE accountgroups.pandl = 0
+				AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 			ORDER BY accountcode";
 	echo '<option value=""></option>';
 	$Result = DB_query($SQL);
 	while ($MyRow = DB_fetch_array($Result)) {
 		if (isset($_POST['AccountCode']) and $MyRow['accountcode'] == $_POST['AccountCode']) {
-			echo '<option selected="selected" value="' . $MyRow['accountcode'] . '">' . htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false) . '</option>';
+			echo '<option selected="selected" value="', $MyRow['accountcode'], '">', $MyRow['accountcode'], ' - ', htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false) . '</option>';
 		} else {
-			echo '<option value="' . $MyRow['accountcode'] . '">' . htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false) . '</option>';
+			echo '<option value="' . $MyRow['accountcode'] . '">', $MyRow['accountcode'], ' - ', htmlspecialchars($MyRow['accountname'], ENT_QUOTES, 'UTF-8', false) . '</option>';
 		}
 
 	} //end while loop

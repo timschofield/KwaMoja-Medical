@@ -40,8 +40,10 @@ $SQL = "SELECT accountcode,
 				accountname
 			FROM chartmaster
 			INNER JOIN accountgroups
-				ON accountgroups.groupname=chartmaster.group_
+				ON accountgroups.groupcode=chartmaster.groupcode
+				AND accountgroups.language=chartmaster.language
 			WHERE pandl=1
+				AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 			ORDER BY accountcode";
 
 $Result = DB_query($SQL);

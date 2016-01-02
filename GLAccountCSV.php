@@ -32,6 +32,7 @@ $SQL = "SELECT chartmaster.accountcode,
 			   chartmaster.accountname
 		FROM chartmaster
 		INNER JOIN glaccountusers ON glaccountusers.accountcode=chartmaster.accountcode AND glaccountusers.userid='" .  $_SESSION['UserID'] . "' AND glaccountusers.canview=1
+		WHERE chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 		ORDER BY chartmaster.accountcode";
 $AccountsResult = DB_query($SQL);
 $i = 0;
@@ -118,10 +119,13 @@ if (isset($_POST['MakeCSV'])) {
 	foreach ($_POST['Account'] as $SelectedAccount) {
 		/*Is the account a balance sheet or a profit and loss account */
 		$SQL = "SELECT chartmaster.accountname,
-								accountgroups.pandl
-								FROM accountgroups
-								INNER JOIN chartmaster ON accountgroups.groupname=chartmaster.group_
-								WHERE chartmaster.accountcode='" . $SelectedAccount . "'";
+						accountgroups.pandl
+					FROM accountgroups
+					INNER JOIN chartmaster
+						ON accountgroups.groupcode=chartmaster.groupcode
+						AND accountgroups.language=chartmaster.language
+					WHERE chartmaster.accountcode='" . $SelectedAccount . "'
+						AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'";
 		$Result = DB_query($SQL);
 		$AccountDetailRow = DB_fetch_row($Result);
 		$AccountName = $AccountDetailRow[1];

@@ -37,8 +37,11 @@ if (isset($_POST['RunReport'])) {
 		$Result = DB_query("SELECT chartmaster.accountname,
 								accountgroups.pandl
 							FROM accountgroups
-							INNER JOIN chartmaster ON accountgroups.groupname=chartmaster.group_
-							WHERE chartmaster.accountcode='" . $SelectedAccount . "'");
+							INNER JOIN chartmaster
+								ON accountgroups.groupcode=chartmaster.groupcode
+								AND chartmaster.language=accountgroups.language
+							WHERE chartmaster.accountcode='" . $SelectedAccount . "'
+								AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'");
 		$AccountDetailRow = DB_fetch_row($Result);
 		$AccountName = $AccountDetailRow[0];
 		if ($AccountDetailRow[1] == 1) {
@@ -240,7 +243,11 @@ else {
 	$SQL = "SELECT chartmaster.accountcode,
 				   chartmaster.accountname
 			FROM chartmaster
-			INNER JOIN glaccountusers ON glaccountusers.accountcode=chartmaster.accountcode AND glaccountusers.userid='" .  $_SESSION['UserID'] . "' AND glaccountusers.canview=1
+			INNER JOIN glaccountusers
+				ON glaccountusers.accountcode=chartmaster.accountcode
+				AND glaccountusers.userid='" .  $_SESSION['UserID'] . "'
+				AND glaccountusers.canview=1
+			WHERE chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 			ORDER BY chartmaster.accountcode";
 	$AccountsResult = DB_query($SQL);
 	$i = 0;

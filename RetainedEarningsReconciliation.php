@@ -47,10 +47,12 @@ if (isset($_POST['Submit'])) {
 							INNER JOIN chartmaster
 								ON gltrans.account=chartmaster.accountcode
 							INNER JOIN accountgroups
-								ON chartmaster.group_=accountgroups.groupname
+								ON chartmaster.groupcode=accountgroups.groupcode
+								AND chartmaster.language=accountgroups.language
 							WHERE pandl=1
 								AND periodno<='" . $YearEnd . "'
-								AND periodno>'" . ($YearEnd-12) . "'";
+								AND periodno>'" . ($YearEnd-12) . "'
+								AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'";
 		$BalanceResult = DB_query($BalanceSQL);
 		$BalanceRow = DB_fetch_Row($BalanceResult);
 		echo '<tr>

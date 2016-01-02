@@ -234,12 +234,14 @@ if (isset($SelectedTaxAuthID)) {
 
 } //end of if $SelectedTaxAuthID only do the else when a new record is being entered
 
-
 $SQL = "SELECT accountcode,
 				accountname
-		FROM chartmaster INNER JOIN accountgroups
-		ON chartmaster.group_=accountgroups.groupname
+		FROM chartmaster
+		INNER JOIN accountgroups
+		ON chartmaster.groupcode=accountgroups.groupcode
+		AND chartmaster.language=accountgroups.language
 		WHERE accountgroups.pandl=0
+			AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 		ORDER BY accountcode";
 $Result = DB_query($SQL);
 while ($MyRow = DB_fetch_array($Result)) {

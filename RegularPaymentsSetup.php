@@ -228,6 +228,7 @@ $SQL = "SELECT bankaccountname,
 			INNER JOIN bankaccountusers
 				ON bankaccounts.accountcode=bankaccountusers.accountcode
 			WHERE bankaccountusers.userid = '" . $_SESSION['UserID'] . "'
+				AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 			ORDER BY bankaccountname";
 
 $ErrMsg = _('The bank accounts could not be retrieved because');
@@ -313,8 +314,10 @@ echo '<tr>
 		<td>' . _('Select GL Group') . ':</td>
 		<td><select name="GLGroup" onchange="return ReloadForm(UpdateCodes)">';
 
-$SQL = "SELECT groupname
+$SQL = "SELECT groupcode,
+				groupname
 			FROM accountgroups
+			WHERE language='" . $_SESSION['ChartLanguage'] . "'
 			ORDER BY sequenceintb";
 
 $Result = DB_query($SQL);
@@ -325,10 +328,10 @@ if (DB_num_rows($Result) == 0) {
 } else {
 	echo '<option value=""></option>';
 	while ($MyRow = DB_fetch_array($Result)) {
-		if (isset($_POST['GLGroup']) and ($_POST['GLGroup'] == $MyRow['groupname'])) {
-			echo '<option selected="selected" value="' . $MyRow['groupname'] . '">' . $MyRow['groupname'] . '</option>';
+		if (isset($_POST['GLGroup']) and ($_POST['GLGroup'] == $MyRow['groupcode'])) {
+			echo '<option selected="selected" value="', $MyRow['groupcode'], '">', $MyRow['groupcode'], ' - ', $MyRow['groupname'], '</option>';
 		} else {
-			echo '<option value="' . $MyRow['groupname'] . '">' . $MyRow['groupname'] . '</option>';
+			echo '<option value="', $MyRow['groupcode'], '">', $MyRow['groupcode'], ' - ', $MyRow['groupname'] . '</option>';
 		}
 	} //$MyRow = DB_fetch_array($Result)
 	echo '</select>
@@ -340,12 +343,14 @@ if (isset($_POST['GLGroup']) and $_POST['GLGroup'] != '') {
 	$SQL = "SELECT accountcode,
 					accountname
 			FROM chartmaster
-			WHERE group_='" . $_POST['GLGroup'] . "'
+			WHERE groupcode='" . $_POST['GLGroup'] . "'
+				AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 			ORDER BY accountcode";
 } else {
 	$SQL = "SELECT accountcode,
 					accountname
 			FROM chartmaster
+			WHERE chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 			ORDER BY accountcode";
 }
 

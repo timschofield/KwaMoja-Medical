@@ -162,7 +162,8 @@ if (isset($_POST['CommitBatch']) and $_POST['CommitBatch'] == _('Accept and Proc
 		if ($AllowThisPosting) {
 			$SQL = "SELECT accountname
 				FROM chartmaster
-				WHERE accountcode='" . $_POST['GLManualCode'] . "'";
+				WHERE accountcode='" . $_POST['GLManualCode'] . "'
+					AND language='" . $_SESSION['ChartLanguage'] ."'";
 			$Result = DB_query($SQL);
 
 			if (DB_num_rows($Result) == 0) {
@@ -201,7 +202,10 @@ if (isset($_POST['CommitBatch']) and $_POST['CommitBatch'] == _('Accept and Proc
 			if (!isset($_POST['GLAmount'])) {
 				$_POST['GLAmount'] = 0;
 			}
-			$SQL = "SELECT accountname FROM chartmaster WHERE accountcode='" . $_POST['GLCode'] . "'";
+			$SQL = "SELECT accountname
+						FROM chartmaster
+						WHERE accountcode='" . $_POST['GLCode'] . "'
+							AND language='" . $_SESSION['ChartLanguage'] ."'";
 			$Result = DB_query($SQL);
 			$MyRow = DB_fetch_array($Result);
 			$_SESSION['JournalDetail']->add_to_glanalysis($_POST['GLAmount'], $_POST['GLNarrative'], $_POST['GLCode'], $MyRow['accountname'], $_POST['tag']);
@@ -321,7 +325,11 @@ if (!isset($_GET['NewJournal']) or $_GET['NewJournal'] == '') {
 $SQL="SELECT chartmaster.accountcode,
 			chartmaster.accountname
 		FROM chartmaster
-			INNER JOIN glaccountusers ON glaccountusers.accountcode=chartmaster.accountcode AND glaccountusers.userid='" .  $_SESSION['UserID'] . "' AND glaccountusers.canupd=1
+		INNER JOIN glaccountusers
+			ON glaccountusers.accountcode=chartmaster.accountcode
+			AND glaccountusers.userid='" .  $_SESSION['UserID'] . "'
+			AND glaccountusers.canupd=1
+		WHERE chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 		ORDER BY chartmaster.accountcode";
 
 $Result = DB_query($SQL);

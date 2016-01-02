@@ -878,6 +878,7 @@ $SQL = "SELECT bankaccountname,
 			INNER JOIN bankaccountusers
 				ON bankaccounts.accountcode=bankaccountusers.accountcode
 			WHERE bankaccountusers.userid = '" . $_SESSION['UserID'] . "'
+				AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 			ORDER BY bankaccountname";
 
 $ErrMsg = _('The bank accounts could not be retrieved because');
@@ -1097,6 +1098,7 @@ if ($_SESSION['CompanyRecord']['gllink_creditors'] == 1 and $_SESSION['PaymentDe
 	$SQL = "SELECT groupcode,
 					groupname
 			FROM accountgroups
+			WHERE language='" . $_SESSION['ChartLanguage'] . "'
 			ORDER BY groupcode";
 
 	$Result = DB_query($SQL);
@@ -1125,12 +1127,14 @@ if ($_SESSION['CompanyRecord']['gllink_creditors'] == 1 and $_SESSION['PaymentDe
 				FROM chartmaster
 					INNER JOIN glaccountusers ON glaccountusers.accountcode=chartmaster.accountcode AND glaccountusers.userid='" .  $_SESSION['UserID'] . "' AND glaccountusers.canupd=1
 				WHERE chartmaster.groupcode='" . $_POST['GLGroup'] . "'
+					AND language='" . $_SESSION['ChartLanguage'] . "'
 				ORDER BY chartmaster.accountcode";
 	} else {
 		$SQL = "SELECT chartmaster.accountcode,
 						chartmaster.accountname
 				FROM chartmaster
 					INNER JOIN glaccountusers ON glaccountusers.accountcode=chartmaster.accountcode AND glaccountusers.userid='" .  $_SESSION['UserID'] . "' AND glaccountusers.canupd=1
+				WHERE language='" . $_SESSION['ChartLanguage'] . "'
 				ORDER BY chartmaster.accountcode";
 	}
 

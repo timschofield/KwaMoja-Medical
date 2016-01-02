@@ -70,6 +70,7 @@ if (!isset($_POST['Show'])) {
 				AND gltrans.trandate<='" . FormatDateForSQL($_POST['ToTransDate']) . "'
 				AND gltrans.typeno>='" . $_POST['NumberFrom'] . "'
 				AND gltrans.typeno<='" . $_POST['NumberTo'] . "'
+				AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 			ORDER BY gltrans.typeno";
 
 	$Result = DB_query($SQL);

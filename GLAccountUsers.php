@@ -51,6 +51,7 @@ if (!isset($SelectedGLAccount)) { // If is NOT set a GL account for users.
 	$SQL ="SELECT accountcode,
 					accountname
 				FROM chartmaster
+				WHERE language='" . $_SESSION['ChartLanguage'] . "'
 				ORDER BY accountcode";
 	$Result =DB_query($SQL);
 	while ($MyRow = DB_fetch_array($Result)) {
@@ -71,7 +72,8 @@ if (!isset($SelectedGLAccount)) { // If is NOT set a GL account for users.
 } else { // If is set a GL account for users ($SelectedGLAccount).
 	$SQL = "SELECT accountname
 				FROM chartmaster
-				WHERE accountcode='" . $SelectedGLAccount . "'";
+				WHERE accountcode='" . $SelectedGLAccount . "'
+					AND language='" . $_SESSION['ChartLanguage'] . "'";
 	$Result = DB_query($SQL);
 	$MyRow = DB_fetch_array($Result);
 	$SelectedGLAccountName = $MyRow['accountname'];

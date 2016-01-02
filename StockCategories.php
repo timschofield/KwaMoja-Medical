@@ -426,8 +426,10 @@ $SQL = "SELECT accountcode,
 				accountname
 			FROM chartmaster
 			LEFT JOIN accountgroups
-				ON chartmaster.group_=accountgroups.groupname
+				ON chartmaster.groupcode=accountgroups.groupcode
+				AND chartmaster.language=accountgroups.language
 			WHERE accountgroups.pandl=0
+				AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 			ORDER BY accountcode";
 
 $BSAccountsResult = DB_query($SQL);
@@ -436,8 +438,10 @@ $SQL = "SELECT accountcode,
 				accountname
 			FROM chartmaster
 			LEFT JOIN accountgroups
-				ON chartmaster.group_=accountgroups.groupname
+				ON chartmaster.groupcode=accountgroups.groupcode
+				AND chartmaster.language=accountgroups.language
 			WHERE accountgroups.pandl=1
+				AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 			ORDER BY accountcode";
 
 $PnLAccountsResult = DB_query($SQL);

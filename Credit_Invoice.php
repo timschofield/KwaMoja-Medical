@@ -1568,9 +1568,12 @@ if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 
 		$SQL = "SELECT accountcode,
 					accountname
-				FROM chartmaster INNER JOIN accountgroups
-				ON chartmaster.group_=accountgroups.groupname
+				FROM chartmaster
+				INNER JOIN accountgroups
+					ON chartmaster.groupcode=accountgroups.groupcode
+					AND chartmaster.language=accountgroups.language
 				WHERE accountgroups.pandl=1
+					AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 				ORDER BY chartmaster.accountcode";
 
 		$Result = DB_query($SQL);

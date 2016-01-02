@@ -33,8 +33,13 @@ $SQL = "SELECT accountgroups.groupname,
 			Sum(CASE WHEN chartdetails.period='" . $_GET['ToPeriod'] . "' THEN chartdetails.actual ELSE 0 END) AS monthactual,
 			Sum(CASE WHEN chartdetails.period='" . $_GET['ToPeriod'] . "' THEN chartdetails.budget ELSE 0 END) AS monthbudget,
 			Sum(CASE WHEN chartdetails.period='" . $_GET['ToPeriod'] . "' THEN chartdetails.bfwdbudget + chartdetails.budget ELSE 0 END) AS lastprdbudgetcfwd
-		FROM chartmaster INNER JOIN accountgroups ON chartmaster.group_ = accountgroups.groupname
-			INNER JOIN chartdetails ON chartmaster.accountcode= chartdetails.accountcode
+		FROM chartmaster
+		INNER JOIN accountgroups
+			ON chartmaster.groupcode=accountgroups.groupcode
+			AND chartmaster.language=accountgroups.language
+		INNER JOIN chartdetails
+			ON chartmaster.accountcode= chartdetails.accountcode
+		WHERE chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 		GROUP BY accountgroups.groupname,
 				accountgroups.parentgroupname,
 				accountgroups.pandl,

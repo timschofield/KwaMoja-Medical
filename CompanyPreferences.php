@@ -367,9 +367,12 @@ echo '</select></td>
 
 $Result = DB_query("SELECT accountcode,
 						accountname
-					FROM chartmaster INNER JOIN accountgroups
-					ON chartmaster.group_=accountgroups.groupname
+					FROM chartmaster
+					INNER JOIN accountgroups
+						ON chartmaster.groupcode=accountgroups.groupcode
+						AND chartmaster.language=accountgroups.language
 					WHERE accountgroups.pandl=0
+						AND chartmaster.Language='" . $_SESSION['ChartLanguage'] . "'
 					ORDER BY chartmaster.accountcode");
 
 echo '<tr>
@@ -462,9 +465,12 @@ echo '<tr>
 
 $Result = DB_query("SELECT accountcode,
 						accountname
-					FROM chartmaster INNER JOIN accountgroups
-					ON chartmaster.group_=accountgroups.groupname
+					FROM chartmaster
+					INNER JOIN accountgroups
+						ON chartmaster.groupcode=accountgroups.groupcode
+						AND chartmaster.language=accountgroups.language
 					WHERE accountgroups.pandl=1
+						AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 					ORDER BY chartmaster.accountcode");
 
 while ($MyRow = DB_fetch_row($Result)) {

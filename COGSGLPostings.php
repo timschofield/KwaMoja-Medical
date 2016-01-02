@@ -74,8 +74,9 @@ if (!isset($SelectedCOGSPostingID)) {
 				cogsglpostings.stkcat,
 				cogsglpostings.salestype,
 				chartmaster.accountname
-			FROM cogsglpostings LEFT JOIN chartmaster
-			ON cogsglpostings.glcode = chartmaster.accountcode
+			FROM cogsglpostings
+			LEFT JOIN chartmaster
+				ON cogsglpostings.glcode = chartmaster.accountcode
 			WHERE chartmaster.accountcode IS NULL
 			ORDER BY cogsglpostings.area,
 				cogsglpostings.stkcat,
@@ -113,62 +114,6 @@ if (!isset($SelectedCOGSPostingID)) {
 		echo '</table>';
 	}
 
-	$SQL = "SELECT cogsglpostings.id,
-				cogsglpostings.area,
-				cogsglpostings.stkcat,
-				cogsglpostings.salestype
-			FROM cogsglpostings
-			ORDER BY cogsglpostings.area,
-				cogsglpostings.stkcat,
-				cogsglpostings.salestype";
-
-	$Result = DB_query($SQL);
-
-	if (DB_num_rows($Result) == 0) {
-		/* there is no default set up so need to check that account 1 is not already used */
-		/* First Check if we have at least a group_ caled Sales */
-		$SQL = "SELECT groupname FROM accountgroups WHERE groupname = 'Sales'";
-		$Result = DB_query($SQL);
-		if (DB_num_rows($Result) == 0) {
-			/* The required group does not seem to exist so we create it */
-			$SQL = "INSERT INTO accountgroups (	groupname,
-												sectioninaccounts,
-												pandl,
-												sequenceintb,
-												accountgroups)
-										VALUES ('Sales',
-												'1',
-												'1',
-												'10',
-												' ')";
-
-			$Result = DB_query($SQL);
-		}
-		$SQL = "SELECT accountcode FROM chartmaster WHERE accountcode ='1'";
-		$Result = DB_query($SQL);
-		if (DB_num_rows($Result) == 0) {
-			/* account number 1 is not used, so insert a new account */
-			$SQL = "INSERT INTO chartmaster (accountcode,
-											accountname,
-											group_)
-									VALUES ('1',
-											'Default Sales/Discounts',
-											'Sales'
-											)";
-			$Result = DB_query($SQL);
-		}
-
-		$SQL = "INSERT INTO cogsglpostings (	area,
-											stkcat,
-											salestype,
-											glcode)
-									VALUES ('AN',
-											'ANY',
-											'AN',
-											'1')";
-		$Result = DB_query($SQL);
-	}
-
 	if ($ShowLivePostingRecords) {
 		$SQL = "SELECT cogsglpostings.id,
 					cogsglpostings.area,
@@ -178,6 +123,7 @@ if (!isset($SelectedCOGSPostingID)) {
 				FROM cogsglpostings,
 					chartmaster
 				WHERE cogsglpostings.glcode = chartmaster.accountcode
+					AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 				ORDER BY cogsglpostings.area,
 						cogsglpostings.stkcat,
 						cogsglpostings.salestype";
@@ -317,10 +263,12 @@ echo '</select></td>
 DB_free_result($Result);
 $SQL = "SELECT chartmaster.accountcode,
 			chartmaster.accountname
-		FROM chartmaster,
-			accountgroups
-		WHERE chartmaster.group_=accountgroups.groupname
-		AND accountgroups.pandl=1
+		FROM chartmaster
+		INNER JOIN accountgroups
+			ON chartmaster.groupcode=accountgroups.groupcode
+			AND chartmaster.language=accountgroups.language
+		WHERE accountgroups.pandl=1
+			AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 		ORDER BY accountgroups.sequenceintb,
 			chartmaster.accountcode,
 			chartmaster.accountname";

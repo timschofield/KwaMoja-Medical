@@ -6,7 +6,7 @@ if (isset($_GET['PayrollID'])) {
 } else {
 	unset($PayrollID);
 }
-$Status = GetOpenCloseStr(GetPayrollRow($PayrollID, $db, 11));
+$Status = GetOpenCloseStr(GetPayrollRow($PayrollID, 11));
 if ($Status == 'Closed') {
 	prnMsg( _('Payroll is Closed. Re-open first...'), 'info');
 	include('includes/footer.inc');
@@ -17,21 +17,21 @@ if (isset($_POST['submit'])) {
 	include('includes/footer.inc');
 	exit;
 } else {
-	$sql = "DELETE FROM prlpayrolltrans WHERE payrollid ='" . $PayrollID . "'";
-	$Postdelptrans = DB_query($sql, $db);
-	$PayPeriodID = GetPayrollRow($PayrollID, $db, 2);
-	$FSMonthRow = GetPayrollRow($PayrollID, $db, 5);
-	$FSYearRow = GetPayrollRow($PayrollID, $db, 6);
-	$sql = "SELECT employeeid,
+	$SQL = "DELETE FROM prlpayrolltrans WHERE payrollid ='" . $PayrollID . "'";
+	$Postdelptrans = DB_query($SQL);
+	$PayPeriodID = GetPayrollRow($PayrollID, 2);
+	$FSMonthRow = GetPayrollRow($PayrollID, 5);
+	$FSYearRow = GetPayrollRow($PayrollID, 6);
+	$SQL = "SELECT employeeid,
 					periodrate,
 					hourlyrate
 				FROM prlemployeemaster
 				WHERE payperiodid = '" . $PayPeriodID . "'
 					AND active=0";
 
-	$ChartDetailsNotSetUpResult = DB_query($sql, $db, _('Could not test to see that all detail records properly initiated'));
+	$ChartDetailsNotSetUpResult = DB_query($SQL, _('Could not test to see that all detail records properly initiated'));
 	if (DB_num_rows($ChartDetailsNotSetUpResult) > 0) {
-		$sql = "INSERT INTO prlpayrolltrans (employeeid,
+		$SQL = "INSERT INTO prlpayrolltrans (employeeid,
 											periodrate,
 											hourlyrate)
 										SELECT employeeid,
@@ -41,15 +41,15 @@ if (isset($_POST['submit'])) {
 											WHERE prlemployeemaster.payperiodid = '" . $PayPeriodID . "'
 												AND prlemployeemaster.active=0";
 		$ErrMsg = _('Inserting new chart details records required failed because');
-		$InsChartDetailsRecords = DB_query($sql, $db, $ErrMsg);
-		$sql = "UPDATE prlpayrolltrans SET payrollid='" . $PayrollID . "'
+		$InsChartDetailsRecords = DB_query($SQL, $ErrMsg);
+		$SQL = "UPDATE prlpayrolltrans SET payrollid='" . $PayrollID . "'
 							WHERE payrollid = ''";
-		$PostPrd = DB_query($sql, $db);
+		$PostPrd = DB_query($SQL);
 
-		$sql = "UPDATE prlpayrolltrans SET fsmonth=$FSMonthRow,
+		$SQL = "UPDATE prlpayrolltrans SET fsmonth=$FSMonthRow,
 											fsyear=$FSYearRow
 										WHERE prlpayrolltrans.payrollid='" . $PayrollID . "'";
-		$PostFSPeriod = DB_query($sql, $db);
+		$PostFSPeriod = DB_query($SQL);
 	} else {
 		prnMsg( _('No Employees Records Match....'), 'info');
 		include('includes/footer.inc');

@@ -4,7 +4,9 @@
 
 if (isset($ForceConfigReload) and $ForceConfigReload == true or !isset($_SESSION['CompanyDefaultsLoaded']) or isset($_SESSION['FirstStart'])) {
 
-	$_SESSION['ChartLanguage'] = GetChartLanguage();
+	if ($_SESSION['DBUpdateNumber'] > 144) {
+		$_SESSION['ChartLanguage'] = GetChartLanguage();
+	}
 	//purge the audit trail if necessary
 	if (isset($_SESSION['MonthsAuditTrail'])) {
 		$SQL = "DELETE FROM audittrail

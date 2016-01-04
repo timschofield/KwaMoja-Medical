@@ -166,7 +166,7 @@ function GetCreditAvailable($DebtorNo) {
 function ItemCostUpdateGL($StockId, $NewCost, $OldCost, $QOH) {
 	if ($_SESSION['CompanyRecord']['gllink_stock'] == 1
 		and $QOH != 0
-		and (abs($NewCost - $OldCost) > pow(1, -($_SESSION['StandardCostDecimalPlaces'] + 1)))) {
+		and (abs($NewCost - $OldCost) > pow(10, -($_SESSION['StandardCostDecimalPlaces'] + 1)))) {
 
 		$CostUpdateNo = GetNextTransNo(35);
 		$PeriodNo = GetPeriod(date($_SESSION['DefaultDateFormat']));

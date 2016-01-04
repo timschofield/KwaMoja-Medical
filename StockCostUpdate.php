@@ -64,7 +64,7 @@ if (isset($_POST['UpdateData'])) {
 	$MyRow = DB_fetch_row($Result);
 	if (DB_num_rows($Result) == 0) {
 		prnMsg(_('The entered item code does not exist'), 'error', _('Non-existent Item'));
-	} elseif (abs($NewCost - $OldCost) > pow(1, -($_SESSION['StandardCostDecimalPlaces'] + 1))) {
+	} elseif (abs($NewCost - $OldCost) > pow(10, -($_SESSION['StandardCostDecimalPlaces'] + 1))) {
 
 		$Result = DB_Txn_Begin();
 		ItemCostUpdateGL($StockId, $NewCost, $OldCost, $_POST['QOH']);

@@ -78,6 +78,7 @@ if (!isset($SelectedCOGSPostingID)) {
 			LEFT JOIN chartmaster
 				ON cogsglpostings.glcode = chartmaster.accountcode
 			WHERE chartmaster.accountcode IS NULL
+				AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 			ORDER BY cogsglpostings.area,
 				cogsglpostings.stkcat,
 				cogsglpostings.salestype";

@@ -185,7 +185,10 @@ if (isset($_POST['Show'])) {
 
 	$SQL = $SQL . " ORDER BY periodno, gltrans.trandate, counterindex";
 
-	$NameSQL = "SELECT accountname FROM chartmaster WHERE accountcode='" . $SelectedAccount . "'";
+	$NameSQL = "SELECT accountname
+					FROM chartmaster
+					WHERE accountcode='" . $SelectedAccount . "'
+						AND language='" . $_SESSION['ChartLanguage'] . "'";
 	$NameResult = DB_query($NameSQL);
 	$NameRow = DB_fetch_array($NameResult);
 	$SelectedAccountName = $NameRow['accountname'];

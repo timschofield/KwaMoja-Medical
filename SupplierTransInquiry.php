@@ -137,10 +137,12 @@ if (isset($_POST['ShowResults']) and $_POST['TransType'] != '') {
 										accountname,
 										narrative,
 										amount
-									FROM gltrans INNER JOIN chartmaster
+									FROM gltrans
+									INNER JOIN chartmaster
 									ON gltrans.account=chartmaster.accountcode
 									WHERE type='" . $MyRow['type'] . "'
-									AND typeno='" . $MyRow['transno'] . "'", _('Could not retrieve the GL transactions for this AP transaction'));
+										AND typeno='" . $MyRow['transno'] . "'
+										AND language='" . $_SESSION['ChartLanguage'] . "'", _('Could not retrieve the GL transactions for this AP transaction'));
 
 		if (DB_num_rows($GLTransResult) == 0) {
 			echo '<tr>

@@ -157,6 +157,7 @@ if (!isset($SelectedUser)) { // If is NOT set a user for GL accounts.
 				INNER JOIN chartmaster
 					ON glaccountusers.accountcode=chartmaster.accountcode
 				WHERE glaccountusers.userid='" . $SelectedUser . "'
+					AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 				ORDER BY chartmaster.accountcode ASC";
 	$Result = DB_query($SQL);
 	echo '<tbody>';
@@ -217,6 +218,7 @@ if (!isset($SelectedUser)) { // If is NOT set a user for GL accounts.
 									FROM glaccountusers
 									WHERE glaccountusers.userid='" . $SelectedUser . "'
 										AND glaccountusers.accountcode=chartmaster.accountcode)
+					AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 				ORDER BY accountcode";
 	$Result = DB_query($SQL);
 	if (DB_num_rows($Result) > 0) { // If the user does not have access permissions to one or more GL accounts:

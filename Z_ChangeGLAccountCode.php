@@ -46,13 +46,17 @@ if (isset($_POST['ProcessGLAccountCode'])) {
 		$Result = DB_Txn_Begin();
 		echo '<br />' . _('Adding the new chartmaster record');
 		$SQL = "INSERT INTO chartmaster (accountcode,
+										language,
 										accountname,
-										group_)
-				SELECT '" . $_POST['NewAccountCode'] . "',
-					accountname,
-					group_
-				FROM chartmaster
-				WHERE accountcode='" . $_POST['OldAccountCode'] . "'";
+										group_,
+										groupcode
+									) SELECT '" . $_POST['NewAccountCode'] . "',
+											language,
+											accountname,
+											group_,
+											groupcode
+										FROM chartmaster
+										WHERE accountcode='" . $_POST['OldAccountCode'] . "'";
 
 		$DbgMsg = _('The SQL statement that failed was');
 		$ErrMsg = _('The SQL to insert the new chartmaster record failed');

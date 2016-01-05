@@ -150,7 +150,10 @@ if (!isset($SelectedID)) {
 	<td><input type='Text' name='StartDeduction' SIZE=12 MAXLENGTH=10 value=" . $_POST['StartDeduction'] . '></td></tr>';
 	echo '<tr><td>' . _('Account Code') . ":</td><td><select name='AccountCode'>";
 	DB_data_seek($Result, 0);
-	$SQL = 'SELECT accountcode, accountname FROM chartmaster';
+	$SQL = "SELECT accountcode,
+					accountname
+				FROM chartmaster
+				WHERE language='" . $_SESSION['ChartLanguage'] . "'";
 	$Result = DB_query($SQL);
 	while ($MyRow = DB_fetch_array($Result)) {
 		if ($MyRow['accountcode'] == $_POST['AccountCode']) {

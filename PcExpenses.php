@@ -203,7 +203,8 @@ if (!isset($SelectedExpense)) {
 
 		$SQLdesc = "SELECT accountname
 					FROM chartmaster
-					WHERE accountcode='" . $MyRow[2] . "'";
+					WHERE accountcode='" . $MyRow[2] . "'
+						AND language='" . $_SESSION['ChartLanguage'] . "'";
 
 		$ResultDes = DB_query($SQLdesc);
 		$Description = DB_fetch_array($ResultDes);
@@ -293,6 +294,7 @@ if (!isset($_GET['delete'])) {
 	$SQL = "SELECT accountcode,
 				accountname
 			FROM chartmaster
+			WHERE language='" . $_SESSION['ChartLanguage'] . "'
 			ORDER BY accountcode";
 	$Result = DB_query($SQL);
 	echo '<option value="">' . _('Not Yet Selected') . '</option>';

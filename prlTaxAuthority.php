@@ -196,13 +196,14 @@ if (isset($SelectedTaxAuthID)) {
 } //end of if $SelectedTaxAuthID only do the else when a new record is being entered
 
 
-$SQL = 'SELECT accountcode,
+$SQL = "SELECT accountcode,
 		accountname
 	FROM chartmaster,
 		prlaccountgroups
 	WHERE chartmaster.group_=prlaccountgroups.groupname
 	AND prlaccountgroups.pandl=0
-	ORDER BY accountcode';
+	AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
+	ORDER BY accountcode";
 $Result = DB_query($SQL);
 
 if (!isset($_POST['Description'])) {

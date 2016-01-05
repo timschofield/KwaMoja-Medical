@@ -381,8 +381,10 @@ if ($_POST['Status'] == 0 or $_POST['Status'] == 4) {
 								accountname
 							FROM chartmaster
 							INNER JOIN accountgroups
-								ON chartmaster.group_=accountgroups.groupname
+								ON chartmaster.groupcode=accountgroups.groupcode
+								AND chartmaster.language=accountgroups.language
 							WHERE accountgroups.pandl=0
+								AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 							ORDER BY chartmaster.accountcode");
 	echo '<tr>
 			<td>' . _('GL Loan Account') . ':</td>
@@ -403,7 +405,8 @@ if ($_POST['Status'] == 0 or $_POST['Status'] == 4) {
 	$Result = DB_query("SELECT accountcode,
 								accountname
 							FROM chartmaster
-							WHERE accountcode='" . $_POST['LoanAct'] . "'");
+							WHERE accountcode='" . $_POST['LoanAct'] . "'
+								AND language='" . $_SESSION['ChartLanguage'] . "'");
 	$MyRow = DB_fetch_row($Result);
 	echo '<tr>
 			<td>' . _('GL Loan Account') . ':</td>

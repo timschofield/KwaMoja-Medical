@@ -64,31 +64,59 @@ if (isset($_POST['CreateTemplate'])) {
 		$SQLScript .= "TRUNCATE TABLE taxcategories;\n";
 		$SQLScript .= "TRUNCATE TABLE taxprovinces;\n";
 
-		$GroupsResult = DB_query("SELECT groupname,
-									sectioninaccounts,
-									pandl,
-									sequenceintb,
-									parentgroupname
+		$GroupsResult = DB_query("SELECT groupcode,
+										language,
+										groupname,
+										sectioninaccounts,
+										pandl,
+										sequenceintb,
+										parentgroupcode,
+										parentgroupname
 									FROM accountgroups");
 
 		while ($GroupRow = DB_fetch_array($GroupsResult)) {
-			$SQLScript .= "INSERT INTO accountgroups (groupname,sectioninaccounts,pandl, sequenceintb, parentgroupname)
-				   VALUES ('" . $GroupRow['groupname'] . "',
-					  '" . $GroupRow['sectioninaccounts'] . "',
-					  " . $GroupRow['pandl'] . ",
-					  " . $GroupRow['sequenceintb'] . ",
-					  '" . $GroupRow['parentgroupname'] . "');\n";
+			$SQLScript .= "INSERT INTO accountgroups (groupcode,
+													language,
+													groupname,
+													sectioninaccounts,
+													pandl,
+													sequenceintb,
+													parentgroupname,
+													parentgroupcode
+												) VALUES (
+													'" . $GroupRow['groupcode'] . "',
+													'" . $GroupRow['language'] . "',
+													'" . $GroupRow['groupname'] . "',
+													'" . $GroupRow['sectioninaccounts'] . "',
+													'" . $GroupRow['pandl'] . "',
+													'" . $GroupRow['sequenceintb'] . "',
+													'" . $GroupRow['parentgroupname'] . "',
+													'" . $GroupRow['parentgroupcode'] . "'
+												);\n";
 		}
 
-		$ChartResult = DB_query("SELECT accountcode, accountname, group_ FROM chartmaster");
+		$ChartResult = DB_query("SELECT accountcode,
+										language,
+										accountname,
+										group_,
+										groupcode
+									FROM chartmaster");
 		$i = 0;
 		while ($ChartRow = DB_fetch_array($ChartResult)) {
 			if ($_POST['IncludeAccount_' . $i] == 'on') {
 
-				$SQLScript .= "INSERT INTO chartmaster (accountcode,accountname,group_)
-						   VALUES ('" . $ChartRow['accountcode'] . "',
-								'" . $ChartRow['accountname'] . "',
-								'" . $ChartRow['group_'] . "');\n";
+				$SQLScript .= "INSERT INTO chartmaster (accountcode,
+														language,
+														accountname,
+														group_,
+														groupcode
+													) VALUES (
+														'" . $ChartRow['accountcode'] . "',
+														'" . $ChartRow['language'] . "',
+														'" . $ChartRow['accountname'] . "',
+														'" . $ChartRow['group_'] . "',
+														'" . $ChartRow['groupcode'] . "'
+													);\n";
 			}
 			++$i;
 		}
@@ -234,7 +262,10 @@ prnMsg(_('Warning: All selected accounts will be exported - please de-select the
 echo '<table>';
 /*Show the chart of accounts to be exported for deslection of company specific ones */
 
-$ChartResult = DB_query("SELECT accountcode, accountname, group_ FROM chartmaster");
+$ChartResult = DB_query("SELECT accountcode,
+								accountname
+							FROM chartmaster
+							WHERE language='" . $_SESSION['ChartLanguage'] . "'");
 
 echo '<tr>
 		<th>' . _('Account Code') . '</th>

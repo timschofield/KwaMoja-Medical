@@ -191,14 +191,18 @@ if (!isset($SelectedTab)) {
 					currencies.decimalplaces,
 					chartmaster1.accountname AS glactassigntname,
 					chartmaster2.accountname AS glactpcashname
-				FROM pctabs INNER JOIN currencies
-				ON pctabs.currency=currencies.currabrev
+				FROM pctabs
+				INNER JOIN currencies
+					ON pctabs.currency=currencies.currabrev
 				INNER JOIN pctypetabs
-				ON pctabs.typetabcode=pctypetabs.typetabcode
+					ON pctabs.typetabcode=pctypetabs.typetabcode
 				INNER JOIN chartmaster AS chartmaster1 ON
-				pctabs.glaccountassignment = chartmaster1.accountcode
+					pctabs.glaccountassignment = chartmaster1.accountcode
 				INNER JOIN chartmaster AS chartmaster2 ON
-				pctabs.glaccountpcash = chartmaster2.accountcode
+					pctabs.glaccountpcash = chartmaster2.accountcode
+				WHERE chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
+					AND chartmaster1.language='" . $_SESSION['ChartLanguage'] . "'
+					AND chartmaster2.language='" . $_SESSION['ChartLanguage'] . "'
 				ORDER BY tabcode";
 	$Result = DB_query($SQL);
 	if (DB_num_rows($Result) > 0) {
@@ -454,8 +458,10 @@ if (!isset($_GET['delete'])) {
 
 	$SQL = "SELECT chartmaster.accountcode,
 					chartmaster.accountname
-			FROM chartmaster INNER JOIN bankaccounts
-			ON chartmaster.accountcode = bankaccounts.accountcode
+			FROM chartmaster
+			INNER JOIN bankaccounts
+				ON chartmaster.accountcode = bankaccounts.accountcode
+			WHERE chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 			ORDER BY chartmaster.accountcode";
 
 	$Result = DB_query($SQL);
@@ -477,9 +483,11 @@ if (!isset($_GET['delete'])) {
 			<td>' . _('GL Account Petty Cash Tab') . ':</td>
 			<td><select required="required" name="GLAccountPcashTab">';
 
-	$SQL = "SELECT accountcode, accountname
-			FROM chartmaster
-			ORDER BY accountcode";
+	$SQL = "SELECT accountcode,
+					accountname
+				FROM chartmaster
+				WHERE language='" . $_SESSION['ChartLanguage'] . "'
+				ORDER BY accountcode";
 
 	$Result = DB_query($SQL);
 

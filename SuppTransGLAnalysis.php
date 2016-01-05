@@ -36,9 +36,10 @@ if (isset($_POST['AddGLCodeToTrans']) and $_POST['AddGLCodeToTrans'] == _('Enter
 	}
 
 	$SQL = "SELECT accountcode,
-			accountname
-		FROM chartmaster
-		WHERE accountcode='" . $_POST['GLCode'] . "'";
+					accountname
+				FROM chartmaster
+				WHERE accountcode='" . $_POST['GLCode'] . "'
+					AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'";
 	$Result = DB_query($SQL);
 	if (DB_num_rows($Result) == 0 and $_POST['GLCode'] != '') {
 		prnMsg(_('The account code entered is not a valid code') . '. ' . _('This line cannot be added to the transaction') . '.<br />' . _('You can use the selection box to select the account you want'), 'error');
@@ -183,7 +184,11 @@ echo '<tr>
 		<br />' . _('otherwise select the account from the list') . ')</td>
 	<td><select name="AcctSelection" onchange="return assignComboToInput(this,' . 'GLCode' . ')">';
 
-$SQL = "SELECT accountcode, accountname FROM chartmaster ORDER BY accountcode";
+$SQL = "SELECT accountcode,
+				accountname
+			FROM chartmaster
+			WHERE language='" . $_SESSION['ChartLanguage'] . "'
+			ORDER BY accountcode";
 
 $Result = DB_query($SQL);
 echo '<option value=""></option>';

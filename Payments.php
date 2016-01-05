@@ -763,7 +763,8 @@ if (isset($_POST['CommitBatch'])) {
 	if (is_numeric($_POST['GLManualCode'])) {
 		$SQL = "SELECT accountname
 				FROM chartmaster
-				WHERE accountcode='" . $_POST['GLManualCode'] . "'";
+				WHERE accountcode='" . $_POST['GLManualCode'] . "'
+					AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'";
 
 		$Result = DB_query($SQL);
 
@@ -802,7 +803,10 @@ if (isset($_POST['CommitBatch'])) {
 		prnMsg(_('No General Ledger code has been chosen') . ' - ' . _('so this GL analysis item could not be added'), 'warn');
 	} //$_POST['GLCode'] == ''
 	else {
-		$SQL = "SELECT accountname FROM chartmaster WHERE accountcode='" . $_POST['GLCode'] . "'";
+		$SQL = "SELECT accountname
+					FROM chartmaster
+					WHERE accountcode='" . $_POST['GLCode'] . "'
+						AND language='" . $_SESSION['ChartLanguage'] . "'";
 		$Result = DB_query($SQL);
 		$MyRow = DB_fetch_array($Result);
 		$_SESSION['PaymentDetail' . $Identifier]->add_to_glanalysis(filter_number_format($_POST['GLAmount']), $_POST['GLNarrative'], $_POST['GLCode'], $MyRow['accountname'], $_POST['Tag'], $_POST['Cheque']);
@@ -834,7 +838,8 @@ if (isset($_POST['BankAccount']) and $_POST['BankAccount'] != '') {
 			FROM bankaccounts,
 				chartmaster
 			WHERE bankaccounts.accountcode= chartmaster.accountcode
-			AND chartmaster.accountcode='" . $_POST['BankAccount'] . "'";
+				AND chartmaster.accountcode='" . $_POST['BankAccount'] . "'
+				AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'";
 
 	$ErrMsg = _('The bank account name cannot be retrieved because');
 	$DbgMsg = _('SQL used to retrieve the bank account name was');

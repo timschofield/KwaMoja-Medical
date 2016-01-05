@@ -137,38 +137,39 @@ if (DB_num_rows($GetOrdHdrResult) == 1 and !isset($_SESSION['PO' . $Identifier]-
 	/*now populate the line PO array with the purchase order details records */
 
 	$LineItemsSQL = "SELECT podetailitem,
-									purchorderdetails.itemcode,
-									stockmaster.description,
-									purchorderdetails.deliverydate,
-									purchorderdetails.itemdescription,
-									glcode,
-									accountname,
-									purchorderdetails.qtyinvoiced,
-									purchorderdetails.unitprice,
-									stockmaster.units,
-									purchorderdetails.quantityord,
-									purchorderdetails.quantityrecd,
-									purchorderdetails.shiptref,
-									purchorderdetails.completed,
-									purchorderdetails.jobref,
-									purchorderdetails.stdcostunit,
-									stockmaster.controlled,
-									stockmaster.serialised,
-									stockmaster.decimalplaces,
-									purchorderdetails.assetid,
-									purchorderdetails.conversionfactor,
-									purchorderdetails.suppliersunit,
-									purchorderdetails.suppliers_partno
-									FROM purchorderdetails
-									LEFT JOIN stockmaster
-									ON purchorderdetails.itemcode=stockmaster.stockid
-									INNER JOIN purchorders
-									ON purchorders.orderno=purchorderdetails.orderno
-									LEFT JOIN chartmaster
-									ON purchorderdetails.glcode=chartmaster.accountcode
-									WHERE purchorderdetails.completed=0
-									AND purchorderdetails.orderno ='" . $_GET['ModifyOrderNumber'] . "'
-									ORDER BY podetailitem";
+							purchorderdetails.itemcode,
+							stockmaster.description,
+							purchorderdetails.deliverydate,
+							purchorderdetails.itemdescription,
+							glcode,
+							accountname,
+							purchorderdetails.qtyinvoiced,
+							purchorderdetails.unitprice,
+							stockmaster.units,
+							purchorderdetails.quantityord,
+							purchorderdetails.quantityrecd,
+							purchorderdetails.shiptref,
+							purchorderdetails.completed,
+							purchorderdetails.jobref,
+							purchorderdetails.stdcostunit,
+							stockmaster.controlled,
+							stockmaster.serialised,
+							stockmaster.decimalplaces,
+							purchorderdetails.assetid,
+							purchorderdetails.conversionfactor,
+							purchorderdetails.suppliersunit,
+							purchorderdetails.suppliers_partno
+						FROM purchorderdetails
+						LEFT JOIN stockmaster
+							ON purchorderdetails.itemcode=stockmaster.stockid
+						INNER JOIN purchorders
+							ON purchorders.orderno=purchorderdetails.orderno
+						LEFT JOIN chartmaster
+							ON purchorderdetails.glcode=chartmaster.accountcode
+						WHERE purchorderdetails.completed=0
+							AND purchorderdetails.orderno ='" . $_GET['ModifyOrderNumber'] . "'
+							AND chartmaster.language ='" . $_SESSION['ChartLanguage'] . "'
+						ORDER BY podetailitem";
 
 	$ErrMsg = _('The lines on the purchase order cannot be retrieved because');
 	$DbgMsg = _('The SQL statement that was used to retrieve the purchase order lines was');

@@ -460,7 +460,8 @@ if (isset($_POST['EnterLine'])) {
 	if ($_SESSION['PO'.$Identifier]->GLLink == 1 or $_SESSION['CompanyRecord']['gllink_creditors'] == 1) {
 		$SQL = "SELECT accountname
 					FROM chartmaster
-					WHERE accountcode ='" . $_POST['GLCode'] . "'";
+					WHERE accountcode ='" . $_POST['GLCode'] . "'
+						AND language='" . $_SESSION['ChartLanguage'] . "'";
 		$ErrMsg = _('The account details for') . ' ' . $_POST['GLCode'] . ' ' . _('could not be retrieved because');
 		$DbgMsg = _('The SQL used to retrieve the details of the account, but failed was');
 		$GLValidResult = DB_query($SQL, $ErrMsg, $DbgMsg, false, false);
@@ -568,11 +569,13 @@ if (isset($_POST['NewItem']) and !empty($_POST['PO_ItemsResubmitFormValue']) and
 							decimalplaces,
 							stockact,
 							accountname
-						FROM stockmaster INNER JOIN stockcategory
-						ON stockcategory.categoryid = stockmaster.categoryid
+						FROM stockmaster
+						INNER JOIN stockcategory
+							ON stockcategory.categoryid = stockmaster.categoryid
 						INNER JOIN chartmaster
-						ON chartmaster.accountcode = stockcategory.stockact
-						WHERE  stockmaster.stockid = '" . $ItemCode . "'";
+							ON chartmaster.accountcode = stockcategory.stockact
+						WHERE  stockmaster.stockid = '" . $ItemCode . "'
+							AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'";
 
 				$ErrMsg = _('The item details for') . ' ' . $ItemCode . ' ' . _('could not be retrieved because');
 				$DbgMsg = _('The SQL used to retrieve the item details but failed was');
@@ -792,6 +795,7 @@ if (isset($_POST['NonStockOrder'])) {
 	$SQL = "SELECT accountcode,
 				  accountname
 				FROM chartmaster
+				WHERE chartmaster.language='" . $_SESSION['ChartLanguage'] ."'
 				ORDER BY accountcode ASC";
 	$Result = DB_query($SQL);
 	echo '<tr>

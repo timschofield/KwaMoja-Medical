@@ -146,6 +146,7 @@ while ($MyRow = DB_fetch_array($Result)) {
 				INNER JOIN chartmaster
 					ON chartmaster.accountcode=gltrans.account
 				WHERE gltrans.typeno ='" . $MyRow['transno'] . "'
+					AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 					AND gltrans.type='" . $MyRow['type'] . "'";
 
 	$GLTransResult = DB_query($SQL, '', '', false, false);

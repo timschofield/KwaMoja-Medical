@@ -429,7 +429,8 @@ $SQL = "SELECT regularpayments.id,
 				ON bankaccounts.accountcode=regularpayments.bankaccountcode
 			INNER JOIN chartmaster
 				ON chartmaster.accountcode=regularpayments.glcode
-			WHERE completed=0";
+			WHERE completed=0
+				AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'";
 $Result = DB_query($SQL);
 
 if (DB_num_rows($Result) > 0 and !isset($_GET['Edit'])) {

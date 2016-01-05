@@ -41,6 +41,7 @@ if ($JournalNo == 'Preview') {
 			LEFT JOIN tags
 				ON gltrans.tag=tags.tagref
 			WHERE gltrans.type='0'
+				AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 				AND gltrans.typeno='" . $JournalNo . "'";
 	$Result = DB_query($SQL);
 	$LineCount = DB_num_rows($Result); // UldisN

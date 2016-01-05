@@ -124,7 +124,8 @@ if (!isset($SelectedWC)) {
 				INNER JOIN locationusers
 					ON locationusers.loccode=locations.loccode
 					AND locationusers.userid='" .  $_SESSION['UserID'] . "'
-					AND locationusers.canview=1";
+					AND locationusers.canview=1
+				WHERE chartmaster.language='" . $_SESSION['ChartLanguage'] . "'";
 	$Result = DB_query($SQL);
 	echo '<table class="selection">
 			<thead>

@@ -429,6 +429,34 @@ if (isset($_POST['submit'])) {
 				$DbgMsg = _('The SQL that was used to update the stock item and failed was');
 				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
+				if (in_array($_SESSION['PageSecurityArray']['StockCostUpdate.php'], $_SESSION['AllowedPageSecurityTokens'])) {
+					/*We need to update the costs for the item */
+					$NewCost = $_POST['MaterialCost'] + $_POST['LabourCost'] + $_POST['OverheadCost'];
+					ItemCostUpdateGL($StockId, $NewCost);
+
+					$ErrMsg = _('The old cost details for the stock item could not be updated because');
+					$DbgMsg = _('The SQL that failed was');
+					$SQL = "UPDATE stockcosts SET succeeded=1 WHERE stockid='" . $StockId . "'";
+					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+
+					$SQL = "INSERT INTO stockcosts VALUES('" . $StockId . "',
+														'" . filter_number_format($_POST['MaterialCost']) . "',
+														'" . filter_number_format($_POST['LabourCost']) . "',
+														'" . filter_number_format($_POST['OverheadCost']) . "',
+														CURRENT_TIMESTAMP,
+														0)";
+					$ErrMsg = _('The new cost details for the stock item could not be inserted because');
+					$DbgMsg = _('The SQL that failed was');
+					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+
+					$SQL = "UPDATE stockmaster SET lastcostupdate=CURRENT_DATE WHERE stockid='" . $StockId . "'";
+					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+
+					UpdateCost($StockId); //Update any affected BOMs
+
+					/* End of cost updates */
+				}
+
 				$ErrMsg = _('Could not update the language description because');
 				$DbgMsg = _('The SQL that was used to update the language description and failed was');
 
@@ -653,16 +681,44 @@ if (isset($_POST['submit'])) {
 				$ErrMsg = _('The item could not be added because');
 				$DbgMsg = _('The SQL that was used to add the item failed was');
 				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+
+				if (in_array($_SESSION['PageSecurityArray']['StockCostUpdate.php'], $_SESSION['AllowedPageSecurityTokens'])) {
+
+					$SQL = "INSERT INTO stockcosts VALUES('" . $StockId . "',
+														'" . filter_number_format($_POST['MaterialCost']) . "',
+														'" . filter_number_format($_POST['LabourCost']) . "',
+														'" . filter_number_format($_POST['OverheadCost']) . "',
+														CURRENT_TIMESTAMP,
+														0)";
+					$ErrMsg = _('The new cost details for the stock item could not be inserted because');
+					$DbgMsg = _('The SQL that failed was');
+					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+
+					/* End of cost updates */
+				} else {
+
+					$SQL = "INSERT INTO stockcosts VALUES('" . $StockId . "',
+														0,
+														0,
+														0,
+														CURRENT_TIMESTAMP,
+														0)";
+					$ErrMsg = _('The new cost details for the stock item could not be inserted because');
+					$DbgMsg = _('The SQL that failed was');
+					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+
+					/* End of cost updates */
+				}
 				if (DB_error_no() == 0) {
 					//now insert the language descriptions
 					$ErrMsg = _('Could not update the language description because');
 					$DbgMsg = _('The SQL that was used to update the language description and failed was');
-					if (count($ItemDescriptionLanguages) > 0) {
+					if (count($ItemDescriptionLanguagesArray) > 0) {
 						foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
 							if ($LanguageId != '' and $_POST['Description_' . str_replace('.', '_', $LanguageId)] != '') {
-								$SQL = "INSERT INTO stockdescriptiontranslations VALUES('" . $StockId . "','" . $LanguageId . "', '" . $_POST['Description_' . str_replace('.', '_', $LanguageId)] . "')";
+								$SQL = "INSERT INTO stockdescriptiontranslations VALUES('" . $StockId . "','" . $LanguageId . "', '" . $_POST['Description_' . str_replace('.', '_', $LanguageId)] . "', 0)";
 								$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
-								$SQL = "INSERT INTO stocklongdescriptiontranslations VALUES('" . $StockId . "','" . $LanguageId . "', '" . $_POST['LongDescription_' . str_replace('.', '_', $LanguageId)] . "')";
+								$SQL = "INSERT INTO stocklongdescriptiontranslations VALUES('" . $StockId . "','" . $LanguageId . "', '" . $_POST['LongDescription_' . str_replace('.', '_', $LanguageId)] . "', 0)";
 								$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 							}
 						}
@@ -925,7 +981,7 @@ if (!isset($StockId) or $StockId == '' or isset($_POST['UpdateCategories'])) {
 
 } elseif (!isset($_POST['UpdateCategories']) and $InputError != 1) { // Must be modifying an existing item and no changes made yet
 
-	$SQL = "SELECT stockid,
+	$SQL = "SELECT stockmaster.stockid,
 					description,
 					longdescription,
 					categoryid,
@@ -945,9 +1001,15 @@ if (!isset($StockId) or $StockId == '' or isset($_POST['UpdateCategories'])) {
 					decimalplaces,
 					nextserialno,
 					pansize,
-					shrinkfactor
+					shrinkfactor,
+					stockcosts.materialcost,
+					stockcosts.labourcost,
+					stockcosts.overheadcost
 			FROM stockmaster
-			WHERE stockid = '" . $StockId . "'";
+			LEFT JOIN stockcosts
+				ON stockmaster.stockid = stockcosts.stockid
+				AND stockcosts.succeeded=0
+			WHERE stockmaster.stockid = '" . $StockId . "'";
 
 	$Result = DB_query($SQL);
 	$MyRow = DB_fetch_array($Result);
@@ -972,6 +1034,9 @@ if (!isset($StockId) or $StockId == '' or isset($_POST['UpdateCategories'])) {
 	$_POST['NextSerialNo'] = $MyRow['nextserialno'];
 	$_POST['Pansize'] = $MyRow['pansize'];
 	$_POST['ShrinkFactor'] = $MyRow['shrinkfactor'];
+	$_POST['MaterialCost'] = $MyRow['materialcost'];
+	$_POST['LabourCost'] = $MyRow['labourcost'];
+	$_POST['OverheadCost'] = $MyRow['overheadcost'];
 	$SQL = "SELECT descriptiontranslation, language_id FROM stockdescriptiontranslations WHERE stockid='" . $StockId . "' AND (";
 
 	foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
@@ -1132,6 +1197,15 @@ if (!isset($_POST['ShrinkFactor'])) {
 }
 if (!isset($_POST['NextSerialNo'])) {
 	$_POST['NextSerialNo'] = 0;
+}
+if (!isset($_POST['MaterialCost'])) {
+	$_POST['MaterialCost'] = 0;
+}
+if (!isset($_POST['LabourCost'])) {
+	$_POST['LabourCost'] = 0;
+}
+if (!isset($_POST['OverheadCost'])) {
+	$_POST['OverheadCost'] = 0;
 }
 
 
@@ -1337,6 +1411,37 @@ echo '<tr>
 		<td>' . _('Shrinkage Factor') . ':</td>
 		<td><input type="text" class="number" name="ShrinkFactor" size="6" maxlength="6" value="' . locale_number_format($_POST['ShrinkFactor'], 0) . '" /></td>
 	</tr>';
+
+if (in_array($_SESSION['PageSecurityArray']['StockCostUpdate.php'], $_SESSION['AllowedPageSecurityTokens'])) {
+	echo '<tr>
+			<td>' . _('Material Cost') . ':</td>
+			<td><input type="text" class="number" name="MaterialCost" size="6" maxlength="12" value="' . locale_number_format($_POST['MaterialCost'], $_SESSION['StandardCostDecimalPlaces']) . '" /></td>
+		</tr>
+		<tr>
+			<td>' . _('Labour Cost') . ':</td>
+			<td><input type="text" class="number" name="LabourCost" size="6" maxlength="12" value="' . locale_number_format($_POST['LabourCost'], $_SESSION['StandardCostDecimalPlaces']) . '" /></td>
+		</tr>
+		<tr>
+			<td>' . _('Overhead Cost') . ':</td>
+			<td><input type="text" class="number" name="OverheadCost" size="6" maxlength="12" value="' . locale_number_format($_POST['OverheadCost'], $_SESSION['StandardCostDecimalPlaces']) . '" /></td>
+		</tr>';
+} else {
+	echo '<tr>
+			<td>' . _('Material Cost') . ':</td>
+			<td>' . locale_number_format($_POST['MaterialCost'], $_SESSION['StandardCostDecimalPlaces']) . '</td>
+			<input type="hidden" name="MaterialCost" value="' . $_POST['MaterialCost'] . '" />
+		</tr>
+		<tr>
+			<td>' . _('Labour Cost') . ':</td>
+			<td>' . locale_number_format($_POST['LabourCost'], $_SESSION['StandardCostDecimalPlaces']) . '</td>
+			<input type="hidden" name="LabourCost" value="' . $_POST['LabourCost'] . '" />
+		</tr>
+		<tr>
+			<td>' . _('Overhead Cost') . ':</td>
+			<td>' . locale_number_format($_POST['OverheadCost'], $_SESSION['StandardCostDecimalPlaces']) . '</td>
+			<input type="hidden" name="OverheadCost" value="' . $_POST['OverheadCost'] . '" />
+		</tr>';
+}
 
 echo '</table>
 	<div class="centre">';

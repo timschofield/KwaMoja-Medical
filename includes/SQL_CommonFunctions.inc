@@ -163,11 +163,43 @@ function GetCreditAvailable($DebtorNo) {
 	return $CreditAvailable;
 }
 
-function ItemCostUpdateGL($StockId, $NewCost, $OldCost, $QOH) {
+function ItemCostUpdateGL($StockID, $NewCost) {
+
+	$SQL = "SELECT stockcosts.materialcost,
+					stockcosts.labourcost,
+					stockcosts.overheadcost,
+					mbflag,
+					sum(quantity) as totalqoh
+			FROM stockmaster
+			INNER JOIN locstock
+				ON stockmaster.stockid=locstock.stockid
+			LEFT JOIN stockcosts
+				ON stockmaster.stockid=stockcosts.stockid
+				AND stockcosts.succeeded=0
+			WHERE stockmaster.stockid='" . $StockID . "'
+			GROUP BY description,
+					units,
+					lastcost,
+					actualcost,
+					stockcosts.materialcost,
+					stockcosts.labourcost,
+					stockcosts.overheadcost,
+					mbflag";
+	$ErrMsg = _('The entered item code does not exist');
+	$OldResult = DB_query($SQL, $ErrMsg);
+	$OldRow = DB_fetch_array($OldResult);
+	$QOH = $OldRow['totalqoh'];
+	if ($OldRow['mbflag'] == 'M') {
+		$OldCost = $OldRow['materialcost'] + $OldRow['labourcost'] + $OldRow['overheadcost'];
+	} else {
+		$OldCost = $OldRow['materialcost'];
+	}
+	DB_free_result($OldResult);
+
+
 	if ($_SESSION['CompanyRecord']['gllink_stock'] == 1
 		and $QOH != 0
 		and (abs($NewCost - $OldCost) > pow(10, -($_SESSION['StandardCostDecimalPlaces'] + 1)))) {
-
 		$CostUpdateNo = GetNextTransNo(35);
 		$PeriodNo = GetPeriod(date($_SESSION['DefaultDateFormat']));
 		$StockGLCode = GetStockGLCode($StockID);
@@ -186,7 +218,7 @@ function ItemCostUpdateGL($StockId, $NewCost, $OldCost, $QOH) {
 									CURRENT_DATE,
 									'" . $PeriodNo . "',
 									'" . $StockGLCode['stockact'] . "',
-									'" . $StockId . ' ' . _('cost was') . ' ' . $OldCost . ' ' . _('changed to') . ' ' . $NewCost . ' x ' . _('Quantity on hand of') . ' ' . $QOH . "',
+									'" . $StockID . ' ' . _('cost was') . ' ' . $OldCost . ' ' . _('changed to') . ' ' . $NewCost . ' x ' . _('Quantity on hand of') . ' ' . $QOH . "',
 									'" . $ValueOfChange . "')";
 
 		$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The GL debit for stock cost adjustment posting could not be inserted because');
@@ -204,9 +236,9 @@ function ItemCostUpdateGL($StockId, $NewCost, $OldCost, $QOH) {
 									'" . $CostUpdateNo . "',
 									CURRENT_DATE,
 									'" . $PeriodNo . "',
-									'" . $StockGLCode['stockact'] . "',
+									'" . $StockGLCode['adjglact'] . "',
 									'" . $StockID . ' ' . _('cost was') . ' ' . $OldCost . ' ' . _('changed to') .' ' . $NewCost . ' x ' . _('Quantity on hand of') . ' ' . $QOH . "',
-									'" . $ValueOfChange . "')";
+									'" . -$ValueOfChange . "')";
 
 		$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The GL debit for stock cost adjustment posting could not be inserted because');
 		$DbgMsg = _('The following SQL to insert the GLTrans record was used');

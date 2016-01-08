@@ -499,6 +499,7 @@ function GetInventoryLanguage() {
 
 	$Language = '';
 	$InventoryLanguages = array();
+	$Lang = $_SESSION['DefaultLanguage'];
 
 	$SQL = "SELECT language_id, COUNT(stockid) AS total FROM stockdescriptiontranslations GROUP BY language_id";
 	$Result = DB_query($SQL);

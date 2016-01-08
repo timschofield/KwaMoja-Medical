@@ -500,14 +500,14 @@ if (isset($_POST['submit'])) {
 
 					$SQL = "UPDATE stockdescriptiontranslations SET descriptiontranslation='" . $_POST['Description'] . "'
 									WHERE stockid='" . $StockID . "'
-										AND language_id='" . $DefaultLanguage . "'";
+										AND language_id='" . $_SESSION['DefaultLanguage'] . "'";
 					$ErrMsg = _('The stock description translations could not be updated because');
 					$DbgMsg = _('The SQL that was used to set the flag for translation revision failed was');
 					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 					$SQL = "UPDATE stocklongdescriptiontranslations SET longdescriptiontranslation='" . $_POST['LongDescription'] . "'
 									WHERE stockid='" . $StockID . "'
-										AND language_id='" . $DefaultLanguage . "'";
+										AND language_id='" . $_SESSION['DefaultLanguage'] . "'";
 					$ErrMsg = _('The stock description translations could not be updated because');
 					$DbgMsg = _('The SQL that was used to set the flag for translation revision failed was');
 					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
@@ -740,9 +740,9 @@ if (isset($_POST['submit'])) {
 					}
 
 					/* Insert the default language descriptions into the translations table */
-					$SQL = "INSERT INTO stockdescriptiontranslations VALUES('" . $StockId . "','" . $DefaultLanguage . "', '" . $_POST['Description'] . "', 0)";
+					$SQL = "INSERT INTO stockdescriptiontranslations VALUES('" . $StockId . "','" . $_SESSION['DefaultLanguage'] . "', '" . $_POST['Description'] . "', 0)";
 					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
-					$SQL = "INSERT INTO stocklongdescriptiontranslations VALUES('" . $StockId . "','" . $DefaultLanguage . "', '" . $_POST['LongDescription'] . ", 0)";
+					$SQL = "INSERT INTO stocklongdescriptiontranslations VALUES('" . $StockId . "','" . $_SESSION['DefaultLanguage'] . "', '" . $_POST['LongDescription'] . ", 0)";
 					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 					/* End default language descriptions */
 

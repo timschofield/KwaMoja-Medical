@@ -46,6 +46,7 @@ if (isset($ForceConfigReload) and $ForceConfigReload == true or !isset($_SESSION
 		header('Location: Z_UpgradeDatabase.php'); //divert to the db upgrade if the VersionNumber is not in the config table
 	}
 
+
 	if ($_SESSION['DBUpdateNumber'] > 143) {
 		$_SESSION['ChartLanguage'] = GetChartLanguage();
 		$_SESSION['InventoryLanguage'] = GetInventoryLanguage();
@@ -125,7 +126,7 @@ if (isset($ForceConfigReload) and $ForceConfigReload == true or !isset($_SESSION
 /*
 These variable if required are in config.php
 
-$DefaultLanguage = en_GB
+$_SESSION['DefaultLanguage'] = en_GB
 $AllowDemoMode = 1
 
 $EDIHeaderMsgId = D:01B:UN:EAN010

@@ -502,7 +502,7 @@ echo '<option value="">' . _('None') . '</option>';
 foreach ($LanguagesArray as $LanguageEntry => $LanguageName) {
 	if (isset($_POST['X_ItemDescriptionLanguages']) and in_array($LanguageEntry, $_POST['X_ItemDescriptionLanguages'])) {
 		echo '<option selected="selected" value="' . $LanguageEntry . '">' . $LanguageName['LanguageName'] . '</option>';
-	} elseif ($LanguageEntry != $DefaultLanguage) {
+	} elseif ($LanguageEntry != $_SESSION['DefaultLanguage']) {
 		echo '<option value="' . $LanguageEntry . '">' . $LanguageName['LanguageName'] . '</option>';
 	}
 }

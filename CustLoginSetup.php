@@ -255,7 +255,7 @@ echo '</select></td>
 foreach ($LanguagesArray as $LanguageEntry => $LanguageName) {
 	if (isset($_POST['UserLanguage']) and $_POST['UserLanguage'] == $LanguageEntry) {
 		echo '<option selected="selected" value="' . $LanguageEntry . '">' . $LanguageName['LanguageName'] . '</option>';
-	} elseif (!isset($_POST['UserLanguage']) and $LanguageEntry == $DefaultLanguage) {
+	} elseif (!isset($_POST['UserLanguage']) and $LanguageEntry == $_SESSION['DefaultLanguage']) {
 		echo '<option selected="selected" value="' . $LanguageEntry . '">' . $LanguageName['LanguageName'] . '</option>';
 	} else {
 		echo '<option value="' . $LanguageEntry . '">' . $LanguageName['LanguageName'] . '</option>';

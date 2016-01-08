@@ -12,6 +12,13 @@ AddColumn('language', 'chartmaster', 'VARCHAR(10)', 'NOT NULL', "en_GB.utf8", 'a
 DropPrimaryKey('chartmaster', Array('accountcode'));
 AddPrimaryKey('chartmaster', Array('accountcode', 'language'));
 
+$SQL = "SELECT stockid, description, longdescription FROM stockmaster";
+$Result = DB_query($SQL);
+while ($MyRow = DB_fetch_array($Result)) {
+	InsertRecord('stockdescriptiontranslations', array('stockid', 'language_id'), array($MyRow['stockid'], $DefaultLanguage), array('stockid', 'language_id', 'descriptiontranslation', 'needsrevision'), array($MyRow['stockid'], $DefaultLanguage, $MyRow['description'], 0));
+	InsertRecord('stocklongdescriptiontranslations', array('stockid', 'language_id'), array($MyRow['stockid'], $DefaultLanguage), array('stockid', 'language_id', 'longdescriptiontranslation', 'needsrevision'), array($MyRow['stockid'], $DefaultLanguage, $MyRow['longdescription'], 0));
+}
+
 UpdateDBNo(basename(__FILE__, '.php'));
 
 ?>

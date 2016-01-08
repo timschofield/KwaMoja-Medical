@@ -511,7 +511,7 @@ function GetInventoryLanguage() {
 	}
 
 	/* If the language exists but not the locale then use that */
-	if ($Language == '') {
+	if ($Language == '' and count($SectionLanguages) > 0)
 		foreach ($SectionLanguages as $Lang => $Count) {
 			if (substr($Lang, 0, 2) == substr($_SESSION['Language'], 0, 2)) {
 				$Language = $Lang;

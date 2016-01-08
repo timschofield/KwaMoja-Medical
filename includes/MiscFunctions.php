@@ -490,4 +490,39 @@ function GetChartLanguage() {
 	}
 	return $Language;
 }
+
+function GetInventoryLanguage() {
+
+/* Need to pick the language that the account sections will
+ * be shown in
+ */
+
+	$Language = '';
+
+	$SQL = "SELECT language_id, COUNT(stockid) AS total FROM stockdescriptiontranslations GROUP BY language_id";
+	$Result = DB_query($SQL);
+	while ($MyRow = DB_fetch_array($Result)) {
+		$SectionLanguages[$MyRow['language_id']] = $MyRow['total'];
+	}
+
+	/* If the users locale exists then look no further */
+	if (isset($SectionLanguages[$_SESSION['Language']])) {
+		$Language = $_SESSION['Language'];
+	}
+
+	/* If the language exists but not the locale then use that */
+	if ($Language == '') {
+		foreach ($SectionLanguages as $Lang => $Count) {
+			if (substr($Lang, 0, 2) == substr($_SESSION['Language'], 0, 2)) {
+				$Language = $Lang;
+			}
+		}
+	}
+
+	/* Finally just pick a language */
+	if ($Language == '') {
+		$Language = $Lang;
+	}
+	return $Language;
+}
 ?>

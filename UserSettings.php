@@ -98,9 +98,10 @@ if (isset($_POST['Modify'])) {
 		$_SESSION['PDFLanguage'] = $_POST['PDFLanguage'];
 		include('includes/MainMenuLinksArray.php');
 		include('includes/LanguageSetup.php');
-		$_SESSION['ChartLanguage'] = GetChartLanguage();
 
 	}
+	$_SESSION['ChartLanguage'] = GetChartLanguage();
+	$_SESSION['InventoryLanguage'] = GetInventoryLanguage();
 }
 
 echo '<form method="post" action="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '">';

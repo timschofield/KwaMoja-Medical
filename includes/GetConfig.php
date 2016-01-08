@@ -48,6 +48,7 @@ if (isset($ForceConfigReload) and $ForceConfigReload == true or !isset($_SESSION
 
 	if ($_SESSION['DBUpdateNumber'] > 143) {
 		$_SESSION['ChartLanguage'] = GetChartLanguage();
+		$_SESSION['InventoryLanguage'] = GetInventoryLanguage();
 	}
 
 	/* Also reads all the company data set up in the company record and returns an array */

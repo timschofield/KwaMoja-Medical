@@ -255,6 +255,8 @@ if (isset($_POST['submit'])) {
 		$ErrMsg = _('The user alterations could not be processed because');
 		$DbgMsg = _('The SQL that was used to update the user and failed was');
 		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
+		$_SESSION['ChartLanguage'] = GetChartLanguage();
+		$_SESSION['InventoryLanguage'] = GetInventoryLanguage();
 
 		unset($_POST['UserID']);
 		unset($_POST['RealName']);

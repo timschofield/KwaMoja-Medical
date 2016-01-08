@@ -67,7 +67,7 @@ if (isset($_POST['UpdateData'])) {
 	} elseif (abs($NewCost - $OldCost) > pow(10, -($_SESSION['StandardCostDecimalPlaces'] + 1))) {
 
 		$Result = DB_Txn_Begin();
-		ItemCostUpdateGL($StockId, $NewCost, $OldCost, $_POST['QOH']);
+		ItemCostUpdateGL($StockId, $NewCost);
 
 		$ErrMsg = _('The old cost details for the stock item could not be updated because');
 		$DbgMsg = _('The SQL that failed was');
@@ -226,8 +226,9 @@ if (!in_array($UpdateSecurity, $_SESSION['AllowedPageSecurityTokens'])) {
 			</tr>';
 	} elseif ($MyRow['mbflag'] == 'B' or $MyRow['mbflag'] == 'D') {
 		echo '<tr>
-				<td>' . _('Standard Cost') . ':</td>
-				<td class="number"><input type="text" class="number" name="MaterialCost" value="' . locale_number_format($MyRow['materialcost'], $_SESSION['StandardCostDecimalPlaces']) . '" /></td>
+				<th>' . _('Standard Cost') . ':
+					<input type="text" class="number" name="MaterialCost" value="' . locale_number_format($MyRow['materialcost'], $_SESSION['StandardCostDecimalPlaces']) . '" />
+				</th>
 			</tr>';
 	} else {
 		echo '<input type="hidden" name="LabourCost" value="0" />

@@ -503,17 +503,17 @@ function GetInventoryLanguage() {
 	$SQL = "SELECT language_id, COUNT(stockid) AS total FROM stockdescriptiontranslations GROUP BY language_id";
 	$Result = DB_query($SQL);
 	while ($MyRow = DB_fetch_array($Result)) {
-		$SectionLanguages[$MyRow['language_id']] = $MyRow['total'];
+		$InventoryLanguages[$MyRow['language_id']] = $MyRow['total'];
 	}
 
 	/* If the users locale exists then look no further */
-	if (isset($SectionLanguages[$_SESSION['Language']])) {
+	if (isset($InventoryLanguages[$_SESSION['Language']])) {
 		$Language = $_SESSION['Language'];
 	}
 
 	/* If the language exists but not the locale then use that */
-	if ($Language == '' and count($SectionLanguages) > 0) {
-		foreach ($SectionLanguages as $Lang => $Count) {
+	if ($Language == '' and count($InventoryLanguages) > 0) {
+		foreach ($InventoryLanguages as $Lang => $Count) {
 			if (substr($Lang, 0, 2) == substr($_SESSION['Language'], 0, 2)) {
 				$Language = $Lang;
 			}

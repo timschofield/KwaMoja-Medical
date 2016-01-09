@@ -54,8 +54,8 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 	} else {
 		$StockId = $_SESSION['SelectedStockItem'];
 	}
-	$Result = DB_query("SELECT stockmaster.description,
-								stockmaster.longdescription,
+	$Result = DB_query("SELECT stockdescriptiontranslations.descriptiontranslation AS description,
+								stocklongdescriptiontranslations.longdescriptiontranslation AS longdescription,
 								stockmaster.mbflag,
 								stockcategory.stocktype,
 								stockmaster.units,
@@ -70,12 +70,18 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 								stockcategory.categorydescription,
 								stockmaster.categoryid
 						FROM stockmaster
+						INNER JOIN stockdescriptiontranslations
+							ON stockdescriptiontranslations.stockid=stockmaster.stockid
+						INNER JOIN stocklongdescriptiontranslations
+							ON stocklongdescriptiontranslations.stockid=stockmaster.stockid
 						INNER JOIN stockcategory
 							ON stockmaster.categoryid=stockcategory.categoryid
 						LEFT JOIN stockcosts
 							ON stockmaster.stockid=stockcosts.stockid
 							AND stockcosts.succeeded=0
-						WHERE stockcosts.stockid='" . $StockId . "'");
+						WHERE stockcosts.stockid='" . $StockId . "'
+							AND stockdescriptiontranslations.language_id='" . $_SESSION['InventoryLanguage'] . "'
+							AND stocklongdescriptiontranslations.language_id='" . $_SESSION['InventoryLanguage'] . "'");
 	$MyRow = DB_fetch_array($Result);
 	$Its_A_Kitset_Assembly_Or_Dummy = false;
 	$Its_A_Dummy = false;
@@ -619,8 +625,8 @@ if (isset($_POST['Search']) or isset($_POST['Go']) or isset($_POST['Next']) or i
 	}
 	$SQL = "SELECT stockmaster.stockid,
 					purchdata.suppliers_partno,
-					stockmaster.description,
-					stockmaster.longdescription,
+					stockdescriptiontranslations.descriptiontranslation AS description,
+					stocklongdescriptiontranslations.longdescriptiontranslation AS longdescription,
 					SUM(locstock.quantity) AS qoh,
 					stockmaster.units,
 					stockmaster.mbflag,
@@ -636,7 +642,13 @@ if (isset($_POST['Search']) or isset($_POST['Go']) or isset($_POST['Next']) or i
 					ON stockmaster.stockid=purchdata.stockid
 				LEFT JOIN suppliers
 					ON purchdata.supplierno=suppliers.supplierid
-				WHERE stockmaster.description " . LIKE . " '" . $SearchString . "'
+				LEFT JOIN stockdescriptiontranslations
+					ON stockmaster.stockid=stockdescriptiontranslations.stockid
+				LEFT JOIN stocklongdescriptiontranslations
+					ON stockmaster.stockid=stocklongdescriptiontranslations.stockid
+				WHERE stockdescriptiontranslations.descriptiontranslation " . LIKE . " '" . $SearchString . "'
+					AND stockdescriptiontranslations.language_id='" . $_SESSION['InventoryLanguage'] . "'
+					AND stocklongdescriptiontranslations.language_id='" . $_SESSION['InventoryLanguage'] . "'
 					AND stockmaster.categoryid " . LIKE . " '" . $_POST['StockCat'] . "'
 					AND stockmaster.stockid " . LIKE . " '%" . $_POST['StockCode'] . "%'" .
 					$SupplierCodeSQL . "

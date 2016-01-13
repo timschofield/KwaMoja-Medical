@@ -126,7 +126,8 @@ if (isset($_POST['Submit'])) {
 							effectiveafter,
 							effectiveto,
 							quantity,
-							autoissue
+							autoissue,
+							comment
 					FROM bom
 					WHERE parent='" . $StockId . "';";
 		$Result = DB_query($SQL);

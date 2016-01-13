@@ -61,7 +61,7 @@ if (!isset($SelectedUser)) { // If is NOT set a user for GL accounts.
 			</tr>
 		</table>'; //Close Select_User table.
 
-	echo '<div class="centre noprint">
+	echo '<div class="centre noPrint">
 			<input name="Process" type="submit" value="' . _('Accept') . '" />
 		</div> '; // "Accept" button.
 	echo '</form>';
@@ -143,8 +143,8 @@ if (!isset($SelectedUser)) { // If is NOT set a user for GL accounts.
 					<th class="SortedColumn">', _('Name'), '</th>
 					<th class="centre">', _('View'), '</th>
 					<th class="centre">', _('Update'), '</th>
-					<th class="noprint">&nbsp;</th>
-					<th class="noprint">
+					<th class="noPrint">&nbsp;</th>
+					<th class="noPrint">
 						<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/printer.png" class="PrintIcon" title="' . _('Print') . '" alt="' . _('Print') . '" onclick="window.print();" />
 					</th>
 				</tr>
@@ -184,16 +184,16 @@ if (!isset($SelectedUser)) { // If is NOT set a user for GL accounts.
 			$ScriptName = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8');
 			if ($MyRow['canupd'] == 1) {
 				echo '<td class="centre">', _('Yes'), '</td>
-					<td class="noprint">
+					<td class="noPrint">
 						<a href="', $ScriptName, '?SelectedUser=', $SelectedUser, '&amp;SelectedGLAccount=', $MyRow['accountcode'], '&amp;ToggleUpdate=0" onclick="return confirm(\'', _('Are you sure you wish to remove Update for this GL Account?'), '\');">', _('Remove Update'), '</a>
 					</td>';
 			} else {
 				echo '<td class="centre">', _('No'), '</td>
-					<td class="noprint">
+					<td class="noPrint">
 						<a href="', $ScriptName, '?SelectedUser=', $SelectedUser, '&amp;SelectedGLAccount=', $MyRow['accountcode'], '&amp;ToggleUpdate=1" onclick="return confirm(\'', _('Are you sure you wish to add Update for this GL Account?'), '\');">', _('Add Update'), '</a>
 					</td>';
 			}
-			echo '<td class="noprint">
+			echo '<td class="noPrint">
 					<a href="', $ScriptName, '?SelectedUser=', $SelectedUser, '&amp;SelectedGLAccount=', $MyRow['accountcode'], '&amp;delete=yes" onclick="return confirm(\'', _('Are you sure you wish to un-authorise this GL Account?'), '\');">', _('Un-authorise'), '</a>
 				</td>
 			</tr>';
@@ -209,7 +209,7 @@ if (!isset($SelectedUser)) { // If is NOT set a user for GL accounts.
 		<input name="FormID" type="hidden" value="', $_SESSION['FormID'], '" />
 		<input name="SelectedUser" type="hidden" value="', $SelectedUser, '" />';
 
-	echo '<table class="selection noprint">
+	echo '<table class="selection noPrint">
 			<tr>';
 	$SQL = "SELECT accountcode,
 					accountname
@@ -244,7 +244,7 @@ if (!isset($SelectedUser)) { // If is NOT set a user for GL accounts.
 			</tr>
 		</table>';
 
-	echo '<div class="centre noprint">
+	echo '<div class="centre noPrint">
 			<a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '"><img alt="" src="', $RootPath, '/css/', $Theme, '/images/user.png" /> ', _('Select A Different User'), '</a>
 		</div>'; // "Select A Different User" button.
 	echo '</form>';

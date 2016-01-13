@@ -207,7 +207,7 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 												userid
 											) VALUES (
 												'" . $ReceiptTransNo . "',
-												1,
+												2,
 												'" . $AccountFrom . "',
 												'" . $Narrative . "',
 												1,

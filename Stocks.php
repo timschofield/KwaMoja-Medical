@@ -742,7 +742,7 @@ if (isset($_POST['submit'])) {
 					/* Insert the default language descriptions into the translations table */
 					$SQL = "INSERT INTO stockdescriptiontranslations VALUES('" . $StockId . "','" . $_SESSION['DefaultLanguage'] . "', '" . $_POST['Description'] . "', 0)";
 					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
-					$SQL = "INSERT INTO stocklongdescriptiontranslations VALUES('" . $StockId . "','" . $_SESSION['DefaultLanguage'] . "', '" . $_POST['LongDescription'] . ", 0)";
+					$SQL = "INSERT INTO stocklongdescriptiontranslations VALUES('" . $StockId . "','" . $_SESSION['DefaultLanguage'] . "', '" . $_POST['LongDescription'] . "', 0)";
 					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 					/* End default language descriptions */
 

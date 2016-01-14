@@ -251,7 +251,7 @@ while ($MyRow = DB_fetch_array($TransResult)) {
 
 	$BaseTD8 = '<td>' . ConvertSQLDate($MyRow['trandate']) . '</td>
 				<td>' . _($MyRow['typename']) . '</td>
-				<td class="number">' . $MyRow['transno'] . '</td>
+				<td class="number"><a href="' . $RootPath . '/SuppWhereAlloc.php?TransType=' . urlencode($MyRow['type']) . '&TransNo=' . urlencode($MyRow['transno']) . '">' . $MyRow['transno'] . '</a></td>
 				<td>' . $MyRow['suppreference'] . '</td>
 				<td>' . $MyRow['transtext'] . '</td>
 				<td class="number">' . locale_number_format($MyRow['totalamount'],$SupplierRecord['currdecimalplaces']) . '</td>
@@ -307,7 +307,7 @@ while ($MyRow = DB_fetch_array($TransResult)) {
 				echo $BaseTD8 . '
 					<td class="noPrint"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES,'UTF-8') . '/PaymentAllocations.php?SuppID=' .
 						$MyRow['type'] . '&amp;InvID=' . $MyRow['transno'] . '">' . _('View Payments') . '</a></td>
-					<td class="noPrint"><a href="' . $HoldValue . '?HoldType=' . urlencode($_POST['TransAfterDate']) . '&amp;HoldTrans=' . urlencode($HoldValue) . '&amp;HoldStatus=' .
+					<td class="noPrint"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES,'UTF-8') . '?HoldType=' . urlencode($_POST['TransAfterDate']) . '&amp;HoldTrans=' . urlencode($HoldValue) . '&amp;HoldStatus=' .
 						$RootPath . '&amp;FromDate='. urlencode($MyRow['supplierno']) . '">' . $MyRow['suppreference'] . '</a></td></tr>';
 			}
 		}

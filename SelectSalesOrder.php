@@ -760,9 +760,13 @@ if (!isset($StockId)) {
 						<th>', _('Order Total'), '<br />', $_SESSION['CompanyRecord']['currencydefault'], '</th>';
 
 				if ($AuthRow['cancreate'] == 0) { //if cancreate==0 then this means the user can create orders hmmm!!
-					echo '<th>' . _('Place PO') . '</th></tr>';
+					echo '<th>' . _('Place PO') . '</th>
+						<th>', _('Attachment'), '</th>
+						</tr>';
 				} else {
-					echo '</tr>';
+					echo '
+						<th>', _('Attachment'), '</th>
+						</tr>';
 				}
 			} else {
 				/* displaying only quotations */
@@ -836,6 +840,12 @@ if (!isset($StockId)) {
 
 				$PrintLabels = $RootPath . '/PDFShipLabel.php?Type=Sales&ORD=' . $MyRow['orderno'];
 
+				if (file_exists('companies/' . $_SESSION['DatabaseName'] . '/Attachments/' . $MyRow['orderno'] . '.pdf')) {
+					$AttachmentText = '<a href="companies/' . $_SESSION['DatabaseName'] . '/Attachments/' . $MyRow['orderno'] . '.pdf">' . _('View attachment') . '</a>';
+				} else {
+					$AttachmentText = _('No attachment');
+				}
+
 				if ($_POST['Quotations'] == 'Orders_Only') {
 
 					/*Check authority to create POs if user has authority then show the check boxes to select sales orders to place POs for otherwise don't provide this option */
@@ -854,6 +864,7 @@ if (!isset($StockId)) {
         				<td>%s</td>
         				<td class="number">%s</td>
         				<td><input type="checkbox" name="PlacePO_%s" /><input type="hidden" name="OrderNo_PO_%s" value="%s" /></td>
+        				<td>' . $AttachmentText . '</td>
         				</tr>', $ModifyPage, $MyRow['orderno'], $PrintAck, $PrintPickList, $Confirm_Invoice, $PrintDispatchNote, $PrintLabels, $MyRow['name'], $MyRow['brname'], $MyRow['customerref'], $FormatedOrderDate, $FormatedDelDate, html_entity_decode($MyRow['deliverto'], ENT_QUOTES, 'UTF-8'), $FormatedOrderValue, $i, $i, $MyRow['orderno']);
 					} else {
 						/*User is not authorised to create POs so don't even show the option */
@@ -871,6 +882,7 @@ if (!isset($StockId)) {
 							<td>%s</td>
 							<td>%s</td>
 							<td class="number">%s</td>
+							<td>' . $AttachmentText . '</td>
 							</tr>', $ModifyPage, $MyRow['orderno'], $PrintAck, $PrintPickList, $Confirm_Invoice, $PrintDispatchNote, $PrintLabels, $MyRow['name'], $MyRow['brname'], $MyRow['customerref'], $FormatedOrderDate, $FormatedDelDate, html_entity_decode($MyRow['deliverto'], ENT_QUOTES, 'UTF-8'), $FormatedOrderValue);
 					}
 

@@ -333,6 +333,40 @@ if (isset($OK_to_PROCESS) and $OK_to_PROCESS == 1 and $_SESSION['ExistingOrder' 
 
 	$OrderNo = GetNextTransNo(30);
 
+	if (isset($_FILES['Attachment']) and $_FILES['Attachment']['name'] != '') {
+
+		$Result = $_FILES['Attachment']['error'];
+		$UploadTheFile = 'Yes'; //Assume all is well to start off with
+		$FileName = 'companies/KwaMoja/Attachments/' . $OrderNo . '.pdf';
+
+		//But check for the worst
+		if (mb_strtoupper(mb_substr(trim($_FILES['Attachment']['name']), mb_strlen($_FILES['Attachment']['name']) - 3)) != 'PDF') {
+			prnMsg(_('Only pdf files are supported - a file extension of .pdf is expected'), 'warn');
+			$UploadTheFile = 'No';
+		} elseif ($_FILES['Attachment']['size'] > ($_SESSION['MaxImageSize'] * 1024)) { //File Size Check
+			prnMsg(_('The file size is over the maximum allowed. The maximum size allowed in KB is') . ' ' . $_SESSION['MaxImageSize'], 'warn');
+			$UploadTheFile = 'No';
+		} elseif ($_FILES['Attachment']['type'] != 'application/pdf') { //File Type Check
+			prnMsg(_('Only pdf files can be uploaded'), 'warn');
+			$UploadTheFile = 'No';
+		} elseif ($_FILES['Attachment']['error'] == 6 ) {  //upload temp directory check
+			prnMsg( _('No tmp directory set. You must have a tmp directory set in your PHP for upload of files.'), 'warn');
+			$UploadTheFile ='No';
+		} elseif (file_exists($FileName)) {
+			prnMsg(_('Attempting to overwrite an existing item attachment'), 'warn');
+			$Result = unlink($FileName);
+			if (!$Result) {
+				prnMsg(_('The existing attachment could not be removed'), 'error');
+				$UploadTheFile = 'No';
+			}
+		}
+
+		if ($UploadTheFile == 'Yes') {
+			$Result = move_uploaded_file($_FILES['Attachment']['tmp_name'], $FileName);
+			$Message = ($Result) ? _('File url') . '<a href="' . $FileName . '">' . $FileName . '</a>' : _('Something is wrong with uploading a file');
+		}
+	}
+
 	$HeaderSQL = "INSERT INTO salesorders (
 								orderno,
 								debtorno,
@@ -854,7 +888,7 @@ echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION[
 echo '</b>&nbsp;' . _('Customer Name') . ' :<b> ' . $_SESSION['Items' . $Identifier]->CustomerName . '</b></p>';
 
 
-echo '<form action="' . $_SERVER['PHP_SELF'] . '?identifier=' . $Identifier . '" method="post">';
+echo '<form action="' . $_SERVER['PHP_SELF'] . '?identifier=' . $Identifier . '" method="post"  enctype="multipart/form-data">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
 
@@ -997,8 +1031,7 @@ else {
 
 }
 
-echo '<br />
-	<table class="selection">
+echo '<table class="selection">
 	<tr>
 		<td>' . _('Deliver To') . ':</td>
 		<td><input type="text" size="42" autofocus="autofocus" required="required" maxlength="40" name="DeliverTo" value="' . stripslashes($_SESSION['Items' . $Identifier]->DeliverTo) . '" /></td>
@@ -1211,6 +1244,11 @@ else {
 }
 echo '</select></td></tr>';
 
+echo '<tr>
+		<td>' . _('Order Attachment') . '</td>
+		<td><input type="file" name="Attachment" id="Attachment" /></td>
+	</tr>';
+
 echo '</table>';
 
 echo '<div class="centre"><input type="submit" name="BackToLineDetails" value="' . _('Modify Order Lines') . '" /><br />';
@@ -1223,7 +1261,6 @@ else {
 	echo '<br /><input type="submit" name="ProcessOrder" value="' . _('Commit Order Changes') . '" />';
 }
 
-echo '</div>
-	  </form>';
+echo '</form>';
 include('includes/footer.inc');
 ?>

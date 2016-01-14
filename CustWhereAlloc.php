@@ -7,13 +7,19 @@ $ViewTopic = 'ARInquiries';
 $BookMark = 'WhereAllocated';
 include('includes/header.inc');
 
+if (isset($_GET['TransNo']) and isset($_GET['TransType'])) {
+	$_POST['TransNo'] = (int)$_GET['TransNo'];
+	$_POST['TransType'] = (int)$_GET['TransType'];
+	$_POST['ShowResults'] = true;
+}
+
 echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
-echo '<p class="page_title_text" >
+echo '<p class="page_title_text noPrint" >
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/money_add.png" title="' . _('Customer Where Allocated') . '" alt="' . _('Customer Where Allocated') . '" />' . $Title . '
 	</p>
-	<table class="selection" summary="' . _('Select criteria for the where used inquiry') . '">
+	<table class="selection noPrint" summary="' . _('Select criteria for the where used inquiry') . '">
 	<tr>
 		<td>' . _('Type') . ':</td>
 		<td><select tabindex="1" name="TransType"> ';
@@ -21,16 +27,23 @@ echo '<p class="page_title_text" >
 if (!isset($_POST['TransType'])) {
 	$_POST['TransType'] = '10';
 }
+
 if ($_POST['TransType'] == 10) {
-	echo '<option selected="selected" value="10">' . _('Invoices') . '</option>
-			<option value="12">' . _('Negative Receipts (Payments)') . '</option>';
-} else {
-	echo '<option value="' . $MyRow['typeid'] . '">' . $MyRow['typename'] . '</option>';
-	echo '<option selected="selected" value="12">' . _('Negative Receipts (Payments)') . '</option>
-			<option selected="selected" value="10">' . _('Invoices') . '</option>';
+	 echo '<option selected="selected" value="10">' . _('Invoice') . '</option>
+			<option value="12">' . _('Receipt') . '</option>
+			<option value="11">' . _('Credit Note') . '</option>';
+} elseif ($_POST['TransType'] == 12) {
+	echo '<option selected="selected" value="12">' . _('Receipt') . '</option>
+			<option value="10">' . _('Invoice') . '</option>
+			<option value="11">' . _('Credit Note') . '</option>';
+} elseif ($_POST['TransType'] == 11) {
+	echo '<option selected="selected" value="11">' . _('Credit Note') . '</option>
+		<option value="10">' . _('Invoice') . '</option>
+		<option value="12">' . _('Receipt') . '</option>';
 }
 
-echo '</select></td>';
+echo '</select>
+		</td>';
 
 if (!isset($_POST['TransNo'])) {
 	$_POST['TransNo'] = '';
@@ -39,8 +52,7 @@ echo '<td>' . _('Transaction Number') . ':</td>
 		<td><input class="number" tabindex="2" type="text" name="TransNo" required="required" maxlength="10" size="10" value="' . $_POST['TransNo'] . '" /></td>
 	</tr>
 	</table>
-	<br />
-	<div class="centre">
+	<div class="centre noPrint">
 		<input tabindex="3" type="submit" name="ShowResults" value="' . _('Show How Allocated') . '" />
 	</div>
 	</form>';
@@ -58,12 +70,17 @@ if (isset($_POST['ShowResults']) and $_POST['TransNo'] != '') {
 				ovamount+ovgst AS totamt,
 				currencies.decimalplaces AS currdecimalplaces,
 				debtorsmaster.currcode
-			FROM debtortrans INNER JOIN debtorsmaster
-			ON debtortrans.debtorno=debtorsmaster.debtorno
+			FROM debtortrans
+			INNER JOIN debtorsmaster
+				ON debtortrans.debtorno=debtorsmaster.debtorno
 			INNER JOIN currencies
-			ON debtorsmaster.currcode=currencies.currabrev
+				ON debtorsmaster.currcode=currencies.currabrev
 			WHERE type='" . $_POST['TransType'] . "'
-			AND transno = '" . $_POST['TransNo'] . "'";
+				AND transno = '" . $_POST['TransNo'] . "'";
+
+	if ($_SESSION['SalesmanLogin'] != '') {
+			$SQL .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
+	}
 
 	$Result = DB_query($SQL);
 
@@ -82,9 +99,18 @@ if (isset($_POST['ShowResults']) and $_POST['TransNo'] != '') {
 					ovamount+ovgst+ovfreight+ovdiscount as totalamt,
 					custallocns.amt
 				FROM debtortrans
-				INNER JOIN custallocns
-				ON debtortrans.id=custallocns.transid_allocfrom
-				WHERE custallocns.transid_allocto='" . $AllocToID . "'";
+				INNER JOIN custallocns ";
+		if ($_POST['TransType'] == 12 or $_POST['TransType'] == 11) {
+
+			$TitleInfo = ($_POST['TransType'] == 12)?_('Receipt'):_('Credit Note');
+			$SQL .= "ON debtortrans.id = custallocns.transid_allocto
+				WHERE custallocns.transid_allocfrom = '" . $AllocToID . "'";
+		} else {
+			$TitleInfo = _('invoice');
+			$SQL .= "ON debtortrans.id = custallocns.transid_allocfrom
+				WHERE custallocns.transid_allocto = '" . $AllocToID . "'";
+		}
+		$SQL .= " ORDER BY transno ";
 
 		$ErrMsg = _('The customer transactions for the selected criteria could not be retrieved because');
 		$TransResult = DB_query($SQL, $ErrMsg);
@@ -92,19 +118,20 @@ if (isset($_POST['ShowResults']) and $_POST['TransNo'] != '') {
 		if (DB_num_rows($TransResult) == 0) {
 			prnMsg(_('There are no allocations made against this transaction'), 'info');
 
-			if ($MyRow['totamt'] < 0 and $_POST['TransType'] == 12){
-					prnMsg(_('This transaction was a receipt of funds and there can be no allocations of receipts or credits to a receipt. This inquiry is meant to be used to see how a payment which is entered as a negative receipt is settled against credit notes or receipts'),'info');
+			if ($MyRow['totamt'] < 0 and ($_POST['TransType'] == 12 or $_POST['TransType'] == 11)) {
+				prnMsg(_('This transaction was a receipt of funds and there can be no allocations of receipts or credits to a receipt. This inquiry is meant to be used to see how a payment which is entered as a negative receipt is settled against credit notes or receipts'),'info');
 			} else {
 				prnMsg(_('There are no allocations made against this transaction'),'info');
 			}
 		} else {
-			echo '<br />
-				<table class="selection" summary="' . _('Allocations made against invoice number') . ' ' . $_POST['TransNo'] . '">';
+			$Printer = true;
+			echo '<div id="Report">';
+			echo '<table class="selection" summary="' . _('Allocations made against invoice number') . ' ' . $_POST['TransNo'] . '">';
 
 			echo '<tr>
 					<th colspan="6">
 					<div class="centre">
-						<b>' . _('Allocations made against invoice number') . ' ' . $_POST['TransNo'] . '<br />' . _('Transaction Total') . ': ' . locale_number_format($MyRow['totamt'], $CurrDecimalPlaces) . ' ' . $CurrCode . '</b>
+						<b>' . _('Allocations made against') . ' ' . $TitleInfo . ' ' . _('number') . ' ' . $_POST['TransNo'] . '<br />' . _('Transaction Total') . ': ' . locale_number_format($MyRow['totamt'], $CurrDecimalPlaces) . ' ' . $CurrCode . '</b>
 						<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/printer.png" class="PrintIcon" title="' . _('Print') . '" alt="' . _('Print') . '" onclick="window.print();" />
 					</div>
 					</th>
@@ -132,6 +159,8 @@ if (isset($_POST['ShowResults']) and $_POST['TransNo'] != '') {
 
 				if ($MyRow['type'] == 11) {
 					$TransType = _('Credit Note');
+				} elseif ($MyRow['type'] == 10){
+					$TransType = _('Invoice');
 				} else {
 					$TransType = _('Receipt');
 				}
@@ -150,11 +179,13 @@ if (isset($_POST['ShowResults']) and $_POST['TransNo'] != '') {
 					<td colspan="5" class="number">' . _('Total allocated') . '</td>
 					<td class="number">' . locale_number_format($AllocsTotal, $CurrDecimalPlaces) . '</td>
 				</tr>
-				</table>';
+			</table>
+		</div>';
 		} // end if there are allocations against the transaction
-	} //got the ID of the transaction to find allocations for
+	} else {
+		prnMsg( _('This transaction does not exist as yet'), 'info');
+	}
 }
-
 include('includes/footer.inc');
 
 ?>

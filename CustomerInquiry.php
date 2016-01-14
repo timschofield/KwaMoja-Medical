@@ -294,7 +294,7 @@ while ($MyRow = DB_fetch_array($TransResult)) {
 			 * - User can view GL transactions
 			 */
 			echo '<td>', _($MyRow['typename']), '</td>
-					<td>', $MyRow['transno'], '</td>
+					<td><a href="', $RootPath, '/CustWhereAlloc.php?TransType=', urlencode($MyRow['type']), '&TransNo=', urlencode($MyRow['transno']), '" target="_blank">', $MyRow['transno'], '</a></td>
 					<td>', ConvertSQLDate($MyRow['trandate']), '</td>
 					<td>', $MyRow['branchcode'], '</td>
 					<td>', $MyRow['reference'], '</td>
@@ -336,7 +336,7 @@ while ($MyRow = DB_fetch_array($TransResult)) {
 			 * - User cannot view GL transactions
 			 */
 			echo '<td>', _($MyRow['typename']), '</td>
-					<td>', $MyRow['transno'], '</td>
+					<td><a href="', $RootPath, '/CustWhereAlloc.php?TransType=', urlencode($MyRow['type']), '&TransNo=', urlencode($MyRow['transno']), '">', $MyRow['transno'], '</a></td>
 					<td>', ConvertSQLDate($MyRow['trandate']), '</td>
 					<td>', $MyRow['branchcode'], '</td>
 					<td>', $MyRow['reference'], '</td>
@@ -377,7 +377,7 @@ while ($MyRow = DB_fetch_array($TransResult)) {
 		 * - User cannot view GL transactions
 		 */
 		echo '<td>', _($MyRow['typename']), '</td>
-				<td>', $MyRow['transno'], '</td>
+				<td><a href="', $RootPath, '/CustWhereAlloc.php?TransType=', urlencode($MyRow['type']), '&TransNo=', urlencode($MyRow['transno']), '">', $MyRow['transno'], '</a></td>
 				<td>', ConvertSQLDate($MyRow['trandate']), '</td>
 				<td>', $MyRow['branchcode'], '</td>
 				<td>', $MyRow['reference'], '</td>
@@ -412,7 +412,7 @@ while ($MyRow = DB_fetch_array($TransResult)) {
 		 */
 		if ($_SESSION['CompanyRecord']['gllink_debtors'] == 1 and in_array($_SESSION['PageSecurityArray']['GLTransInquiry.php'], $_SESSION['AllowedPageSecurityTokens'])) {
 			echo '<td>', _($MyRow['typename']), '</td>
-					<td>', $MyRow['transno'], '</td>
+					<td><a href="', $RootPath, '/CustWhereAlloc.php?TransType=', urlencode($MyRow['type']), '&TransNo=', urlencode($MyRow['transno']), '">', $MyRow['transno'], '</a></td>
 					<td>', ConvertSQLDate($MyRow['trandate']), '</td>
 					<td>', $MyRow['branchcode'], '</td>
 					<td>', $MyRow['reference'], '</td>
@@ -454,7 +454,7 @@ while ($MyRow = DB_fetch_array($TransResult)) {
 			* - User cannot view GL transactions
 			*/
 			echo '<td>', _($MyRow['typename']), '</td>
-					<td>', $MyRow['transno'], '</td>
+					<td><a href="', $RootPath, '/CustWhereAlloc.php?TransType=', urlencode($MyRow['type']), '&TransNo=', urlencode($MyRow['transno']), '">', $MyRow['transno'], '</a></td>
 					<td>', ConvertSQLDate($MyRow['trandate']), '</td>
 					<td>', $MyRow['branchcode'], '</td>
 					<td>', $MyRow['reference'], '</td>

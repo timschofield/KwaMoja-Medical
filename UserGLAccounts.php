@@ -185,16 +185,16 @@ if (!isset($SelectedUser)) { // If is NOT set a user for GL accounts.
 			if ($MyRow['canupd'] == 1) {
 				echo '<td class="centre">', _('Yes'), '</td>
 					<td class="noPrint">
-						<a href="', $ScriptName, '?SelectedUser=', $SelectedUser, '&amp;SelectedGLAccount=', $MyRow['accountcode'], '&amp;ToggleUpdate=0" onclick="return confirm(\'', _('Are you sure you wish to remove Update for this GL Account?'), '\');">', _('Remove Update'), '</a>
+						<a href="', $ScriptName, '?SelectedUser=', urlencode($SelectedUser), '&amp;SelectedGLAccount=', urlencode($MyRow['accountcode']), '&amp;ToggleUpdate=0" onclick="return confirm(\'', _('Are you sure you wish to remove Update for this GL Account?'), '\');">', _('Remove Update'), '</a>
 					</td>';
 			} else {
 				echo '<td class="centre">', _('No'), '</td>
 					<td class="noPrint">
-						<a href="', $ScriptName, '?SelectedUser=', $SelectedUser, '&amp;SelectedGLAccount=', $MyRow['accountcode'], '&amp;ToggleUpdate=1" onclick="return confirm(\'', _('Are you sure you wish to add Update for this GL Account?'), '\');">', _('Add Update'), '</a>
+						<a href="', $ScriptName, '?SelectedUser=', urlencode($SelectedUser), '&amp;SelectedGLAccount=', urlencode($MyRow['accountcode']), '&amp;ToggleUpdate=1" onclick="return confirm(\'', _('Are you sure you wish to add Update for this GL Account?'), '\');">', _('Add Update'), '</a>
 					</td>';
 			}
 			echo '<td class="noPrint">
-					<a href="', $ScriptName, '?SelectedUser=', $SelectedUser, '&amp;SelectedGLAccount=', $MyRow['accountcode'], '&amp;delete=yes" onclick="return confirm(\'', _('Are you sure you wish to un-authorise this GL Account?'), '\');">', _('Un-authorise'), '</a>
+					<a href="', $ScriptName, '?SelectedUser=', urlencode($SelectedUser), '&amp;SelectedGLAccount=', urlencode($MyRow['accountcode']), '&amp;delete=yes" onclick="return confirm(\'', _('Are you sure you wish to un-authorise this GL Account?'), '\');">', _('Un-authorise'), '</a>
 				</td>
 			</tr>';
 		} // End while list loop.
@@ -245,7 +245,7 @@ if (!isset($SelectedUser)) { // If is NOT set a user for GL accounts.
 		</table>';
 
 	echo '<div class="centre noPrint">
-			<a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '"><img alt="" src="', $RootPath, '/css/', $Theme, '/images/user.png" /> ', _('Select A Different User'), '</a>
+			<a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '"><img alt="" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/user.png" /> ', _('Select A Different User'), '</a>
 		</div>'; // "Select A Different User" button.
 	echo '</form>';
 }

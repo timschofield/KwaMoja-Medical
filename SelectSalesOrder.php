@@ -851,10 +851,10 @@ if (!isset($StockId)) {
 					/*Check authority to create POs if user has authority then show the check boxes to select sales orders to place POs for otherwise don't provide this option */
 					if ($AuthRow['cancreate'] == 0 and $MyRow['poplaced'] == 0) { //cancreate==0 if the user can create POs and not already placed
 						printf('<td><a href="%s">%s</a></td>
-						<td><a href="%s" target="_blank">' . _('Acknowledge') . '</a>' . $PrintDummyFlag . '</td>
+						<td><a href="%s">' . _('Acknowledge') . '</a>' . $PrintDummyFlag . '</td>
 						' . $PrintPickLabel . '
 						<td><a href="%s">' . _('Invoice') . '</a></td>
-        				<td><a target="_blank" href="%s">' . $PrintText . ' <img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/pdf.png" title="' . _('Click for PDF') . '" alt="" /></a></td>
+        				<td><a href="%s">' . $PrintText . ' <img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/pdf.png" title="' . _('Click for PDF') . '" alt="" /></a></td>
 						<td><a href="%s">' . _('Labels') . '</a></td>
         				<td>%s</td>
         				<td>%s</td>
@@ -873,7 +873,7 @@ if (!isset($StockId)) {
 							<td>' . $PrintDummyFlag . '</td>
 							' . $PrintPickLabel . '
 							<td><a href="%s">' . _('Invoice') . '</a></td>
-							<td><a target="_blank" href="%s">' . $PrintText . ' <img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/pdf.png" title="' . _('Click for PDF') . '" alt="" /></a></td>
+							<td><a href="%s">' . $PrintText . ' <img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/pdf.png" title="' . _('Click for PDF') . '" alt="" /></a></td>
 							<td><a href="%s">' . _('Labels') . '</a></td>
 							<td>%s</td>
 							<td>%s</td>
@@ -889,7 +889,7 @@ if (!isset($StockId)) {
 				} else {
 					/*must be quotes only */
 					printf('<td><a href="%s">%s</a></td>
-						<td><a target="_blank" href="%s">' . _('Landscape') . '</a>&nbsp;&nbsp;<a target="_blank" href="%s">' . _('Portrait') . '</a></td>
+						<td><a href="%s">' . _('Landscape') . '</a>&nbsp;&nbsp;<a href="%s">' . _('Portrait') . '</a></td>
 						<td>%s</td>
 						<td>%s</td>
 						<td>%s</td>

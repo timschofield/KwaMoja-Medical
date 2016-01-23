@@ -327,7 +327,7 @@ function BuildSQL($Prefs) {
 	$ThisMonth = mb_substr($Today, 5, 2);
 	$ThisYear = mb_substr($Today, 0, 4);
 	// find total number of days in this month
-	if ($ThisMonth == 04 or $ThisMonth == 06 or $ThisMonth == 09 or $ThisMonth == 11) {
+	if ($ThisMonth == '04' or $ThisMonth == '06' or $ThisMonth == '09' or $ThisMonth == '11') {
 		$TotalDays = 30;
 	} elseif ($ThisMonth == 02 and date('L', $t)) {
 		$TotalDays = 29;
@@ -394,8 +394,8 @@ function BuildSQL($Prefs) {
 		case "h": // RPT_GROUP_QUARTER
 			$QtrStrt = intval(($ThisMonth - 1) / 3) * 3 + 1;
 			$QtrEnd = intval(($ThisMonth - 1) / 3) * 3 + 3;
-			if ($QtrEnd == 04 or $QtrEnd == 06 or $QtrEnd == 09 or $QtrEnd == 11) {
-				$TotalDays = 30;
+			if ($QtrEnd == '04' or $QtrEnd == '06' or $QtrEnd == '09' or $QtrEnd == '11') {
+				$TotalDays = '30';
 			}
 			$qs = date('Y-m-d', mktime(0, 0, 0, $QtrStrt, 1, $ThisYear));
 			$qe = date('Y-m-d', mktime(0, 0, 0, $QtrEnd, $TotalDays, $ThisYear));

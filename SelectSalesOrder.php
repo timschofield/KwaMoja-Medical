@@ -864,7 +864,7 @@ if (!isset($StockId)) {
         				<td>%s</td>
         				<td class="number">%s</td>
         				<td><input type="checkbox" name="PlacePO_%s" /><input type="hidden" name="OrderNo_PO_%s" value="%s" /></td>
-        				<td>', $AttachmentText, '</td>
+        				<td>' . $AttachmentText . '</td>
         				</tr>', $ModifyPage, $MyRow['orderno'], $PrintAck, $PrintPickList, $Confirm_Invoice, $PrintDispatchNote, $PrintLabels, $MyRow['name'], $MyRow['brname'], $MyRow['customerref'], $FormatedOrderDate, $FormatedDelDate, html_entity_decode($MyRow['deliverto'], ENT_QUOTES, 'UTF-8'), $FormatedOrderValue, $i, $i, $MyRow['orderno']);
 					} else {
 						/*User is not authorised to create POs so don't even show the option */
@@ -882,7 +882,7 @@ if (!isset($StockId)) {
 							<td>%s</td>
 							<td>%s</td>
 							<td class="number">%s</td>
-							<td>', $AttachmentText, '</td>
+							<td>' . $AttachmentText . '</td>
 							</tr>', $ModifyPage, $MyRow['orderno'], $PrintAck, $PrintPickList, $Confirm_Invoice, $PrintDispatchNote, $PrintLabels, $MyRow['name'], $MyRow['brname'], $MyRow['customerref'], $FormatedOrderDate, $FormatedDelDate, html_entity_decode($MyRow['deliverto'], ENT_QUOTES, 'UTF-8'), $FormatedOrderValue);
 					}
 

@@ -45,7 +45,9 @@ if (!ini_get('safe_mode')) {
 session_write_close(); //in case a previous session is not closed
 session_start();
 
-include($PathPrefix . 'includes/ConnectDB.inc');
+if (basename($_SERVER['SCRIPT_NAME']) != 'index.php' or !isset($_SESSION['DatabaseName'])) {
+	include($PathPrefix . 'includes/ConnectDB.inc');
+}
 include($PathPrefix . 'includes/DateFunctions.inc');
 
 // Uncomment to turn off attempts counter
@@ -81,7 +83,7 @@ if (isset($_SESSION['DatabaseName'])) {
 	to limit possibility for SQL injection attacks and cross scripting attacks
 	*/
 	foreach ($_GET as $GetKey => $GetValue) {
-		if (gettype($GetValue) != 'array') {
+		if (gettype($GetValue) != 'array' and basename($_SERVER['SCRIPT_NAME']) != 'index.php') {
 			$_GET[$GetKey] = DB_escape_string(urldecode($GetValue));
 		} //gettype($Value) != 'array'
 	} //$_GET as $Key => $Value

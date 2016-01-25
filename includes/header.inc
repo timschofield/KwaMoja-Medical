@@ -111,6 +111,9 @@ if (isset($Title)) {
 				while ($MyRow = DB_fetch_array($Result)) {
 					$_SESSION['Favourites'][$MyRow['href']] = $MyRow['caption'];
 				}
+				if (DB_num_rows($Result) == 0) {
+					$_SESSION['Favourites'] = Array();
+				}
 			}
 			if ($ScriptName != 'index.php') {
 				if (!isset($_SESSION['Favourites'][$ScriptName]) or $_SESSION['Favourites'][$ScriptName] == '') {

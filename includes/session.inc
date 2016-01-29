@@ -45,9 +45,8 @@ if (!ini_get('safe_mode')) {
 session_write_close(); //in case a previous session is not closed
 session_start();
 
-if (basename($_SERVER['SCRIPT_NAME']) != 'index.php' or !isset($_SESSION['DatabaseName'])) {
-	include($PathPrefix . 'includes/ConnectDB.inc');
-}
+include($PathPrefix . 'includes/ConnectDB.inc');
+
 include($PathPrefix . 'includes/DateFunctions.inc');
 
 // Uncomment to turn off attempts counter

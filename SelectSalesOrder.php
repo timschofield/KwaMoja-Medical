@@ -3,6 +3,22 @@
 $PricesSecurity = 1000;
 include('includes/session.inc');
 $Title = _('Search Outstanding Sales Orders');
+
+if (isset($_GET['download'])) {
+	$SQL = "SELECT type,
+					size,
+					content
+				FROM salesorderattachments
+				WHERE orderno='" . $_GET['order'] . "'
+					AND name='" . $_GET['name'] . "'";
+	$Result = DB_query($SQL);
+	$MyRow = DB_fetch_array($Result);
+    header('Content-type: ' . $MyRow['type'] . "\n");
+    header('Content-Disposition: attachment; filename=' . $_GET['name'] . "\n");
+    header('Content-Length: ' . $MyRow['size'] . "\n");
+	echo $MyRow['content'];
+	exit;
+}
 /* Manual links before header.inc */
 $ViewTopic = 'SalesOrders';
 $BookMark = 'SelectSalesOrder';
@@ -840,8 +856,14 @@ if (!isset($StockId)) {
 
 				$PrintLabels = $RootPath . '/PDFShipLabel.php?Type=Sales&ORD=' . $MyRow['orderno'];
 
-				if (file_exists('companies/' . $_SESSION['DatabaseName'] . '/Attachments/' . $MyRow['orderno'] . '.pdf')) {
-					$AttachmentText = '<a href="companies/' . $_SESSION['DatabaseName'] . '/Attachments/' . $MyRow['orderno'] . '.pdf">' . _('View attachment') . '</a>';
+				$AttachmentSQL = "SELECT name
+									FROM salesorderattachments
+									WHERE orderno='" . $MyRow['orderno'] . "'";
+				$AttachmentResult = DB_query($AttachmentSQL);
+
+				if (DB_num_rows($AttachmentResult) > 0) {
+					$AttachmentRow = DB_fetch_array($AttachmentResult);
+					$AttachmentText = '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?download=yes&order=' . urlencode($MyRow['orderno']) . '&name=' . urlencode($AttachmentRow['name']) . '">' . _('View attachment') . '</a>';
 				} else {
 					$AttachmentText = _('No attachment');
 				}

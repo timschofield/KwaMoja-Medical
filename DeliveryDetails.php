@@ -1152,7 +1152,7 @@ else {
 				<td>' . _('Sales person') . ':</td>
 				<td><select name="SalesPerson">';
 	$SalesPeopleResult = DB_query("SELECT salesmancode, salesmanname FROM salesman WHERE current=1");
-	if (!isset($_POST['SalesPerson']) AND $_SESSION['SalesmanLogin'] != NULL) {
+	if (!isset($_POST['SalesPerson']) and $_SESSION['SalesmanLogin'] != NULL) {
 		$_SESSION['Items' . $Identifier]->SalesPerson = $_SESSION['SalesmanLogin'];
 	} //!isset($_POST['SalesPerson']) AND $_SESSION['SalesmanLogin'] != NULL
 

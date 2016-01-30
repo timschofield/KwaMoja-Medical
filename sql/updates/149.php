@@ -12,7 +12,7 @@ CreateTable('salesorderattachments',
 
 $Attachments = glob('companies/' . $_SESSION['DatabaseName'] . '/Attachments/*');
 foreach ($Attachments as $Attachment) {
-if (mime_content_type($Attachment) != 'directory') {
+	if (mime_content_type($Attachment) != 'directory') {
 		$OrderNumber = pathinfo($Attachment, PATHINFO_BASENAME);
 		$Name = $OrderNumber;
 		$Type = mime_content_type($Attachment);

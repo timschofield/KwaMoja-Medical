@@ -334,7 +334,6 @@ if (isset($OK_to_PROCESS) and $OK_to_PROCESS == 1 and $_SESSION['ExistingOrder' 
 	$OrderNo = GetNextTransNo(30);
 
 	if (isset($_FILES['Attachment']) and $_FILES['Attachment']['name'] != '') {
-
 		$Result = $_FILES['Attachment']['error'];
 		$UploadTheFile = 'Yes'; //Assume all is well to start off with
 		$FileName = 'companies/KwaMoja/Attachments/' . $OrderNo . '.pdf';
@@ -362,8 +361,22 @@ if (isset($OK_to_PROCESS) and $OK_to_PROCESS == 1 and $_SESSION['ExistingOrder' 
 		}
 
 		if ($UploadTheFile == 'Yes') {
-			$Result = move_uploaded_file($_FILES['Attachment']['tmp_name'], $FileName);
-			$Message = ($Result) ? _('File url') . '<a href="' . $FileName . '">' . $FileName . '</a>' : _('Something is wrong with uploading a file');
+			$OrderNumber = $OrderNo;
+			$Name = $_FILES['Attachment']['name'];
+			$Type = $_FILES['Attachment']['type'];
+			$Size = $_FILES['Attachment']['size'];
+			$fp = fopen($_FILES['Attachment']['tmp_name'], 'r');
+			$Content = fread($fp, $Size);
+			$Content = addslashes($Content);
+			fclose($fp);
+			$SQL = "INSERT INTO salesorderattachments VALUES('" . $OrderNumber . "',
+															'" . $Name . "',
+															'" . $Type . "',
+															" . $Size . ",
+															'" . $Content . "'
+															)";
+			$Result = DB_query($SQL);
+
 		}
 	}
 

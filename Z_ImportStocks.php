@@ -255,13 +255,13 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 			$ErrMsg = _('The item could not be added because');
 			$DbgMsg = _('The SQL that was used to add the item failed was');
 			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
+			$Result = DB_query("INSERT INTO stockdescriptiontranslations VALUES('" . $StockId . "','" . $_SESSION['DefaultLanguage'] . "', '" . $MyRow[1] . "', '0')", $ErrMsg, $DbgMsg);
+			$Result = DB_query("INSERT INTO stocklongdescriptiontranslations VALUES('" . $StockId . "','" . $_SESSION['DefaultLanguage'] . "', '" . $MyRow[2] . "', '0')", $ErrMsg, $DbgMsg);
 
 			foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
 				if ($LanguageId != '') {
 					$Result = DB_query("INSERT INTO stockdescriptiontranslations VALUES('" . $StockId . "','" . $LanguageId . "', '" . $MyRow[1] . "', '0')", $ErrMsg, $DbgMsg);
-					$Result = DB_query("INSERT INTO stockdescriptiontranslations VALUES('" . $StockId . "','" . $_SESSION['DefaultLanguage'] . "', '" . $MyRow[1] . "', '0')", $ErrMsg, $DbgMsg);
 					$Result = DB_query("INSERT INTO stocklongdescriptiontranslations VALUES('" . $StockId . "','" . $LanguageId . "', '" . $MyRow[2] . "', '0')", $ErrMsg, $DbgMsg);
-					$Result = DB_query("INSERT INTO stocklongdescriptiontranslations VALUES('" . $StockId . "','" . $_SESSION['DefaultLanguage'] . "', '" . $MyRow[2] . "', '0')", $ErrMsg, $DbgMsg);
 				}
 			}
 

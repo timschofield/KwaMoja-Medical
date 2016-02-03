@@ -309,10 +309,6 @@ if (isset($SupplierID)) {
 
 $InputError = 0;
 
-if (isset($Errors)) {
-	unset($Errors);
-}
-$Errors = array();
 if (isset($_POST['submit'])) {
 
 	//initialise no input errors assumed initially before we test
@@ -328,21 +324,15 @@ if (isset($_POST['submit'])) {
 		if ($MyRow[0] > 0 and isset($_POST['New'])) {
 			$InputError = 1;
 			prnMsg(_('The supplier number already exists in the database'), 'error');
-			$Errors[$i] = 'ID';
-			++$i;
 		}
 	}
 	if (mb_strlen(trim($_POST['SuppName'])) > 40 or mb_strlen(trim($_POST['SuppName'])) == 0 or trim($_POST['SuppName']) == '') {
 		$InputError = 1;
 		prnMsg(_('The supplier name must be entered and be forty characters or less long'), 'error');
-		$Errors[$i] = 'Name';
-		++$i;
 	}
 	if ($_SESSION['AutoSupplierNo'] == 0 and mb_strlen($SupplierID) == 0) {
 		$InputError = 1;
 		prnMsg(_('The Supplier Code cannot be empty'), 'error');
-		$Errors[$i] = 'ID';
-		++$i;
 	}
 	//	if (ContainsIllegalCharacters($SupplierID)) {
 	//		$InputError = 1;
@@ -353,44 +343,34 @@ if (isset($_POST['submit'])) {
 	if (mb_strlen($_POST['Phone']) > 25) {
 		$InputError = 1;
 		prnMsg(_('The telephone number must be 25 characters or less long'), 'error');
-		$Errors[$i] = 'Telephone';
-		++$i;
 	}
 	if (mb_strlen($_POST['Fax']) > 25) {
 		$InputError = 1;
 		prnMsg(_('The fax number must be 25 characters or less long'), 'error');
-		$Errors[$i] = 'Fax';
-		++$i;
 	}
 	if (mb_strlen($_POST['Email']) > 55) {
 		$InputError = 1;
 		prnMsg(_('The email address must be 55 characters or less long'), 'error');
-		$Errors[$i] = 'Email';
-		++$i;
 	}
 	if (mb_strlen($_POST['Email']) > 0 and !IsEmailAddress($_POST['Email'])) {
 		$InputError = 1;
 		prnMsg(_('The email address is not correctly formed'), 'error');
-		$Errors[$i] = 'Email';
-		++$i;
 	}
-	if (mb_strlen($_POST['URL']) >50) {
+	if (mb_strlen($_POST['URL']) > 50) {
 		$InputError = 1;
-		prnMsg(_('The URL address must be 50 characters or less long'),'error');
-		$Errors[$i] = 'URL';
-		++$i;
+		prnMsg(_('The URL address must be 50 characters or less long'), 'error');
 	}
 	if (mb_strlen($_POST['BankRef']) > 12) {
 		$InputError = 1;
 		prnMsg(_('The bank reference text must be less than 12 characters long'), 'error');
-		$Errors[$i] = 'BankRef';
-		++$i;
 	}
 	if (!is_date($_POST['SupplierSince'])) {
 		$InputError = 1;
 		prnMsg(_('The supplier since field must be a date in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
-		$Errors[$i] = 'SupplierSince';
-		++$i;
+	}
+	if ($_POST['DefaultShipper'] == '') {
+		$InputError = 1;
+		prnMsg(_('You mst select a default shipper for tos supplier'), 'error');
 	}
 
 	/*
@@ -426,7 +406,7 @@ if (isset($_POST['submit'])) {
 				$base_url = 'http://' . MAPS_HOST . '/maps/geo?output=xml' . '&key=' . KEY;
 				$request_url = $base_url . '&q=' . urlencode($address);
 
-				$xml = simplexml_load_string(utf8_encode(file_get_contents($request_url))) or prnMsg(_('Goole map url not loading'),'warn');
+				$xml = simplexml_load_string(utf8_encode(file_get_contents($request_url))) or prnMsg(_('Goole map url not loading'), 'warn');
 				//			$xml = simplexml_load_file($request_url) or die("url not loading");
 
 				$coordinates = $xml->Response->Placemark->Point->coordinates;
@@ -490,6 +470,7 @@ if (isset($_POST['submit'])) {
 							factorcompanyid='" . $_POST['FactorID'] . "',
 							lat='" . $latitude . "',
 							lng='" . $longitude . "',
+							defaultshipper='" . $_POST['DefaultShipper'] . "',
 							taxref='" . $_POST['TaxRef'] . "'
 						WHERE supplierid = '" . DB_escape_string($SupplierID) . "'";
 			} else {
@@ -518,6 +499,7 @@ if (isset($_POST['submit'])) {
 							factorcompanyid='" . $_POST['FactorID'] . "',
 							lat='" . $latitude . "',
 							lng='" . $longitude . "',
+							defaultshipper='" . $_POST['DefaultShipper'] . "',
 							taxref='" . $_POST['TaxRef'] . "'
 						WHERE supplierid = '" . DB_escape_string($SupplierID) . "'";
 			}
@@ -560,6 +542,7 @@ if (isset($_POST['submit'])) {
 										factorcompanyid,
 										lat,
 										lng,
+										defaultshipper,
 										taxref)
 								 VALUES ('" . DB_escape_string($SupplierID) . "',
 								 	'" . $_POST['SuppName'] . "',
@@ -585,6 +568,7 @@ if (isset($_POST['submit'])) {
 									'" . $_POST['FactorID'] . "',
 									'" . $latitude . "',
 									'" . $longitude . "',
+									'" . $_POST['DefaultShipper'] . "',
 									'" . $_POST['TaxRef'] . "')";
 
 			$ErrMsg = _('The supplier') . ' ' . $_POST['SuppName'] . ' ' . _('could not be added because');
@@ -620,6 +604,7 @@ if (isset($_POST['submit'])) {
 			unset($_POST['Remittance']);
 			unset($_POST['TaxGroup']);
 			unset($_POST['FactorID']);
+			unset($_POST['DefaultShipper']);
 			unset($_POST['TaxRef']);
 
 		}
@@ -677,191 +662,49 @@ if (isset($_POST['submit'])) {
 }
 
 
+echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
+echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
+
+echo '<table class="selection">';
+
 if (!isset($SupplierID)) {
 
 	/*if the page was called without $SupplierID passed to page then assume a new supplier is to be entered show a form with a Supplier Code field other wise the form showing the fields with the existing entries against the supplier will show for editing with only a hidden SupplierID field*/
-
-	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-
 	echo '<input type="hidden" name="New" value="Yes" />';
-
-	echo '<table class="selection">';
-
 	/* if $AutoSupplierNo is off (not 0) then provide an input box for the SupplierID to manually assigned */
-	if ($_SESSION['AutoSupplierNo'] == 0)  {
+	if ($_SESSION['AutoSupplierNo'] == 0) {
 		echo '<tr>
 				<td>' . _('Supplier Code') . ':</td>
 				<td><input type="text" title="' . _('The supplier id should not be within 10 legal characters and cannot be blank') . '" required="required" name="SupplierID" size="11" maxlength="10" /></td>
 			</tr>';
 	}
-	echo '<tr>
-			<td>' . _('Supplier Name') . ':</td>
-			<td><input type="text" name="SuppName" size="42" required="required" maxlength="40" /></td>
-		</tr>';
-	echo '<tr>
-			<td>' . _('Address Line 1 (Street)') . ':</td>
-			<td><input type="text" name="Address1" size="42" maxlength="40" /></td>
-		</tr>';
-	echo '<tr>
-			<td>' . _('Address Line 2 (Street)') . ':</td>
-			<td><input type="text" name="Address2" size="42" maxlength="40" /></td>
-		</tr>';
-	echo '<tr>
-			<td>' . _('Address Line 3 (Suburb/City)') . ':</td>
-			<td><input type="text" name="Address3" size="42" maxlength="40" /></td>
-		</tr>';
-	echo '<tr>
-			<td>' . _('Address Line 4 (State/Province)') . ':</td>
-			<td><input type="text" name="Address4" size="42" maxlength="40" /></td>
-		</tr>';
-	echo '<tr>
-			<td>' . _('Address Line 5 (Postal Code)') . ':</td>
-			<td><input type="text" name="Address5" size="42" maxlength="40" /></td>
-		</tr>';
-
-	echo '<tr>
-			<td>' . _('Country') . ':</td>
-			<td><select name="Address6">';
-	foreach ($CountriesArray as $CountryEntry => $CountryName) {
-		if (isset($_POST['Address6']) and ($_POST['Address6'] == $CountryName)) {
-			echo '<option selected="selected" value="' . $CountryName . '">' . $CountryName . '</option>';
-		} elseif (!isset($_POST['Address6']) and $CountryName == "") {
-			echo '<option selected="selected" value="' . $CountryName . '">' . $CountryName . '</option>';
-		} else {
-			echo '<option value="' . $CountryName . '">' . $CountryName . '</option>';
-		}
-	}
-	echo '</select></td>
-		</tr>';
-
-	echo '<tr>
-			<td>' . _('Telephone') . ':</td>
-			<td><input type="tel" name="Phone" size="30" maxlength="40" /></td>
-		</tr>';
-	echo '<tr>
-			<td>' . _('Facsimile') . ':</td>
-			<td><input type="tel" name="Fax" size="30" maxlength="40" /></td>
-		</tr>';
-	echo '<tr>
-			<td>' . _('Email Address') . ':</td>
-			<td><input type="email" name="Email" size="30" maxlength="40" /></td>
-		</tr>';
-	echo '<tr>
-			<td>' . _('URL') . ':</td>
-			<td><input type="url" name="URL" size="30" maxlength="50" /></td>
-		</tr>';
-	echo '<tr>
-			<td>' . _('Supplier Type') . ':</td>
-			<td><select name="SupplierType">';
-	$Result = DB_query("SELECT typeid, typename FROM suppliertype");
-	while ($MyRow = DB_fetch_array($Result)) {
-		echo '<option value="' . $MyRow['typeid'] . '">' . $MyRow['typename'] . '</option>';
-	} //end while loop
-	echo '</select></td></tr>';
-
-	$DateString = Date($_SESSION['DefaultDateFormat']);
-	echo '<tr>
-			<td>' . _('Supplier Since') . ' (' . $_SESSION['DefaultDateFormat'] . '):</td>
-			<td><input type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="SupplierSince" value="' . $DateString . '" size="12" required="required" maxlength="10" /></td>
-		</tr>';
-	echo '<tr>
-			<td>' . _('Bank Particulars') . ':</td>
-			<td><input type="text" name="BankPartics" size="13" maxlength="12" /></td>
-		</tr>';
-	echo '<tr>
-			<td>' . _('Bank reference') . ':</td>
-			<td><input type="text" name="BankRef" value="0" size="13" maxlength="12" /></td>
-		</tr>';
-	echo '<tr>
-			<td>' . _('Bank Account No') . ':</td>
-			<td><input type="text" name="BankAct" size="31" maxlength="30" /></td>
-		</tr>';
-
-	$Result = DB_query("SELECT terms, termsindicator FROM paymentterms");
-
-	echo '<tr>
-			<td>' . _('Payment Terms') . ':</td>
-			<td><select required="required" name="PaymentTerms">';
-
-	while ($MyRow = DB_fetch_array($Result)) {
-		echo '<option value="' . $MyRow['termsindicator'] . '">' . $MyRow['terms'] . '</option>';
-	} //end while loop
-	echo '</select></td></tr>';
-
-	$Result = DB_query("SELECT id, coyname FROM factorcompanies");
-
-	echo '<tr>
-			<td>' . _('Factor Company') . ':</td>
-			<td><select required="required" name="FactorID">';
-	echo '<option value="0">' . _('None') . '</option>';
-	while ($MyRow = DB_fetch_array($Result)) {
-		if (isset($_POST['FactorID']) and $_POST['FactorID'] == $MyRow['id']) {
-			echo '<option selected="selected" value="' . $MyRow['id'] . '">' . $MyRow['coyname'] . '</option>';
-		} else {
-			echo '<option value="' . $MyRow['id'] . '">' . $MyRow['coyname'] . '</option>';
-		}
-	} //end while loop
-	echo '</select></td></tr>';
-	echo '<tr>
-			<td>' . _('Tax Reference') . ':</td>
-			<td><input type="text" name="TaxRef" size="21" maxlength="20" /></td></tr>';
-
-	$Result = DB_query("SELECT currency, currabrev FROM currencies");
-	if (!isset($_POST['CurrCode'])) {
-		$CurrResult = DB_query("SELECT currencydefault FROM companies WHERE coycode=1");
-		$MyRow = DB_fetch_row($CurrResult);
-		$_POST['CurrCode'] = $MyRow[0];
-	}
-
-	echo '<tr>
-			<td>' . _('Supplier Currency') . ':</td>
-			<td><select required="required" name="CurrCode">';
-	while ($MyRow = DB_fetch_array($Result)) {
-		if ($_POST['CurrCode'] == $MyRow['currabrev']) {
-			echo '<option selected="selected" value="' . $MyRow['currabrev'] . '">' . $MyRow['currency'] . '</option>';
-		} else {
-			echo '<option value="' . $MyRow['currabrev'] . '">' . $MyRow['currency'] . '</option>';
-		}
-	} //end while loop
-
-	echo '</select></td></tr>
-			<tr>
-				<td>' . _('Remittance Advice') . ':</td>
-				<td><select required="required" name="Remittance">';
-	echo '<option value="0">' . _('Not Required') . '</option>';
-	echo '<option value="1">' . _('Required') . '</option>';
-
-	echo '</select></td></tr>';
-
-	echo '<tr>
-			<td>' . _('Tax Group') . ':</td>
-			<td><select required="required" name="TaxGroup">';
-
-
-	$SQL = "SELECT taxgroupid, taxgroupdescription FROM taxgroups";
-	$Result = DB_query($SQL);
-
-	while ($MyRow = DB_fetch_array($Result)) {
-		if (isset($_POST['TaxGroup']) and $_POST['TaxGroup'] == $MyRow['taxgroupid']) {
-			echo '<option selected="selected" value="' . $MyRow['taxgroupid'] . '">' . $MyRow['taxgroupdescription'] . '</option>';
-		} else {
-			echo '<option value="' . $MyRow['taxgroupid'] . '">' . $MyRow['taxgroupdescription'] . '</option>';
-		}
-	} //end while loop
-
-	echo '</select></td></tr>
-		</table>
-		<div class="centre"><input type="submit" name="submit" value="' . _('Insert New Supplier') . '" /></div>';
-	echo '</form>';
+	$_POST['SuppName'] = '';
+	$_POST['Address1'] = '';
+	$_POST['Address2'] = '';
+	$_POST['Address3'] = '';
+	$_POST['Address4'] = '';
+	$_POST['Address5'] = '';
+	$_POST['Address6'] = $CountriesArray[$_SESSION['CountryOfOperation']];
+	$_POST['CurrCode'] = $_SESSION['CompanyRecord']['currencydefault'];
+	$_POST['Phone'] = '';
+	$_POST['Fax'] = '';
+	$_POST['Email'] = '';
+	$_POST['URL'] = '';
+	$_POST['SupplierType'] = '';
+	$_POST['SupplierSince'] = date($_SESSION['DefaultDateFormat']);
+	$_POST['PaymentTerms'] = '';
+	$_POST['BankPartics'] = '';
+	$_POST['Remittance'] = 0;
+	$_POST['BankRef'] = '';
+	$_POST['BankAct'] = '';
+	$_POST['TaxGroup'] = '';
+	$_POST['FactorID'] = '';
+	$_POST['DefaultShipper'] = $_SESSION['Default_Shipper'];
+	$_POST['TaxRef'] = '';
 
 } else {
 
 	//SupplierID exists - either passed when calling the form or from the form itself
-
-	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
-	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-	echo '<table class="selection">';
 
 	if (!isset($_POST['New'])) {
 		$SQL = "SELECT supplierid,
@@ -886,6 +729,7 @@ if (!isset($SupplierID)) {
 						remittance,
 						taxgroupid,
 						factorcompanyid,
+						defaultshipper,
 						taxref
 					FROM suppliers
 					WHERE supplierid = '" . DB_escape_string($SupplierID) . "'";
@@ -914,6 +758,7 @@ if (!isset($SupplierID)) {
 		$_POST['BankAct'] = $MyRow['bankact'];
 		$_POST['TaxGroup'] = $MyRow['taxgroupid'];
 		$_POST['FactorID'] = $MyRow['factorcompanyid'];
+		$_POST['DefaultShipper'] = $MyRow['defaultshipper'];
 		$_POST['TaxRef'] = $MyRow['taxref'];
 
 		echo '<tr><td><input type="hidden" name="SupplierID" value="' . $SupplierID . '" /></td></tr>';
@@ -921,200 +766,221 @@ if (!isset($SupplierID)) {
 	} else {
 		/* if $AutoSupplierNo is off (i.e. 0) then provide an input box for the SupplierID to manually assigned */
 		echo '<input type="hidden" name="New" value="Yes" />';
-		if ($_SESSION['AutoSupplierNo'] == 0)  {
-		// its a new supplier being added
+		if ($_SESSION['AutoSupplierNo'] == 0) {
+			// its a new supplier being added
 			echo '<tr>
 					<td>' . _('Supplier Code') . ':</td>
 					<td><input type="text" name="SupplierID" value="' . $SupplierID . '" size="12" maxlength="10" /></td>
 				</tr>';
 		}
 	}
-
-	echo '<tr>
+}
+echo '<tr>
 			<td>' . _('Supplier Name') . ':</td>
 			<td><input type="text" name="SuppName" value="' . $_POST['SuppName'] . '" size="42" required="required" maxlength="40" /></td>
 		</tr>';
-	echo '<tr>
+echo '<tr>
 			<td>' . _('Address Line 1 (Street)') . ':</td>
 			<td><input type="text" name="Address1" value="' . $_POST['Address1'] . '" size="42" maxlength="40" /></td>
 		</tr>';
-	echo '<tr>
+echo '<tr>
 			<td>' . _('Address Line 2 (Street)') . ':</td>
 			<td><input type="text" name="Address2" value="' . $_POST['Address2'] . '" size="42" maxlength="40" /></td>
 		</tr>';
-	echo '<tr>
+echo '<tr>
 			<td>' . _('Address Line 3 (Suburb/City)') . ':</td>
 			<td><input type="text" name="Address3" value="' . $_POST['Address3'] . '" size="42" maxlength="40" /></td>
 		</tr>';
-	echo '<tr>
+echo '<tr>
 			<td>' . _('Address Line 4 (State/Province)') . ':</td>
 			<td><input type="text" name="Address4" value="' . $_POST['Address4'] . '" size="42" maxlength="40" /></td>
 		</tr>';
-	echo '<tr>
+echo '<tr>
 			<td>' . _('Address Line 5 (Postal Code)') . ':</td>
 			<td><input type="text" name="Address5" value="' . $_POST['Address5'] . '" size="42" maxlength="40" /></td>
 		</tr>';
 
-	echo '<tr>
+echo '<tr>
 			<td>' . _('Country') . ':</td>
 			<td><select required="required" name="Address6">';
-	foreach ($CountriesArray as $CountryEntry => $CountryName) {
-		if (isset($_POST['Address6']) and ($_POST['Address6'] == $CountryName)) {
-			echo '<option selected="selected" value="' . $CountryName . '">' . $CountryName . '</option>';
-		} elseif (!isset($_POST['Address6']) and $CountryName == "") {
-			echo '<option selected="selected" value="' . $CountryName . '">' . $CountryName . '</option>';
-		} else {
-			echo '<option value="' . $CountryName . '">' . $CountryName . '</option>';
-		}
+foreach ($CountriesArray as $CountryEntry => $CountryName) {
+	if (isset($_POST['Address6']) and ($_POST['Address6'] == $CountryName)) {
+		echo '<option selected="selected" value="' . $CountryName . '">' . $CountryName . '</option>';
+	} elseif (!isset($_POST['Address6']) and $CountryName == "") {
+		echo '<option selected="selected" value="' . $CountryName . '">' . $CountryName . '</option>';
+	} else {
+		echo '<option value="' . $CountryName . '">' . $CountryName . '</option>';
 	}
-	echo '</select></td>
+}
+echo '</select></td>
 		</tr>';
 
-	echo '<tr>
+echo '<tr>
 			<td>' . _('Telephone') . ':</td>
 			<td><input type="tel" name="Phone" value="' . $_POST['Phone'] . '" size="42" maxlength="40" /></td>
 		</tr>';
-	echo '<tr>
+echo '<tr>
 			<td>' . _('Facsimile') . ':</td>
 			<td><input  type="tel" name="Fax" value="' . $_POST['Fax'] . '" size="42" maxlength="40" /></td>
 		</tr>';
-	echo '<tr>
+echo '<tr>
 			<td>' . _('Email Address') . ':</td>
 			<td><input type="email" name="Email" value="' . $_POST['Email'] . '" size="42" maxlength="40" /></td>
 		</tr>';
-	echo '<tr>
+echo '<tr>
 			<td>' . _('URL') . ':</td>
 			<td><input type="url" name="URL" value="' . $_POST['URL'] . '" size="42" maxlength="40" /></td>
 		</tr>';
 
-	echo '<tr>
+echo '<tr>
 			<td>' . _('Supplier Type') . ':</td>
 			<td><select required="required" name="SupplierType">';
-	$Result = DB_query("SELECT typeid, typename FROM suppliertype");
-	while ($MyRow = DB_fetch_array($Result)) {
-		if ($_POST['SupplierType'] == $MyRow['typeid']) {
-			echo '<option selected="selected" value="' . $MyRow['typeid'] . '">' . $MyRow['typename'] . '</option>';
-		} else {
-			echo '<option value="' . $MyRow['typeid'] . '">' . $MyRow['typename'] . '</option>';
-		}
-	} //end while loop
-	echo '</select></td></tr>';
+$Result = DB_query("SELECT typeid, typename FROM suppliertype");
+while ($MyRow = DB_fetch_array($Result)) {
+	if ($_POST['SupplierType'] == $MyRow['typeid']) {
+		echo '<option selected="selected" value="' . $MyRow['typeid'] . '">' . $MyRow['typename'] . '</option>';
+	} else {
+		echo '<option value="' . $MyRow['typeid'] . '">' . $MyRow['typename'] . '</option>';
+	}
+} //end while loop
+echo '</select></td></tr>';
 
-	echo '<tr>
+echo '<tr>
 			<td>' . _('Supplier Since') . ' (' . $_SESSION['DefaultDateFormat'] . '):</td>
 			<td><input size="12" required="required" maxlength="10" type="text" class="date" alt="' . $_SESSION['DefaultDateFormat'] . '" name="SupplierSince" value="' . $_POST['SupplierSince'] . '" /></td>
 		</tr>';
-	echo '<tr>
+echo '<tr>
 			<td>' . _('Bank Particulars') . ':</td>
 			<td><input type="text" name="BankPartics" size="13" maxlength="12" value="' . $_POST['BankPartics'] . '" /></td>
 		</tr>';
-	echo '<tr>
+echo '<tr>
 			<td>' . _('Bank Reference') . ':</td>
 			<td><input type="text" name="BankRef" size="13" maxlength="12" value="' . $_POST['BankRef'] . '" /></td>
 		</tr>';
-	echo '<tr>
+echo '<tr>
 			<td>' . _('Bank Account No') . ':</td>
 			<td><input type="text" name="BankAct" size="31" maxlength="30" value="' . $_POST['BankAct'] . '" /></td>
 		</tr>';
 
-	$Result = DB_query("SELECT terms, termsindicator FROM paymentterms");
+$Result = DB_query("SELECT terms, termsindicator FROM paymentterms");
 
-	echo '<tr>
+echo '<tr>
 			<td>' . _('Payment Terms') . ':</td>
 			<td><select required="required" name="PaymentTerms">';
 
-	while ($MyRow = DB_fetch_array($Result)) {
-		if ($_POST['PaymentTerms'] == $MyRow['termsindicator']) {
-			echo '<option selected="selected" value="' . $MyRow['termsindicator'] . '">' . $MyRow['terms'] . '</option>';
-		} else {
-			echo '<option value="' . $MyRow['termsindicator'] . '">' . $MyRow['terms'] . '</option>';
-		}
-	} //end while loop
-	echo '</select></td></tr>';
+while ($MyRow = DB_fetch_array($Result)) {
+	if ($_POST['PaymentTerms'] == $MyRow['termsindicator']) {
+		echo '<option selected="selected" value="' . $MyRow['termsindicator'] . '">' . $MyRow['terms'] . '</option>';
+	} else {
+		echo '<option value="' . $MyRow['termsindicator'] . '">' . $MyRow['terms'] . '</option>';
+	}
+} //end while loop
+echo '</select></td></tr>';
 
-	$Result = DB_query("SELECT id, coyname FROM factorcompanies");
+$Result = DB_query("SELECT id, coyname FROM factorcompanies");
 
-	echo '<tr>
+echo '<tr>
 			<td>' . _('Factor Company') . ':</td>
 			<td><select name="FactorID">';
-	echo '<option value="0">' . _('None') . '</option>';
-	while ($MyRow = DB_fetch_array($Result)) {
-		if ($_POST['FactorID'] == $MyRow['id']) {
-			echo '<option selected="selected" value="' . $MyRow['id'] . '">' . $MyRow['coyname'] . '</option>';
-		} else {
-			echo '<option value="' . $MyRow['id'] . '">' . $MyRow['coyname'] . '</option>';
-		}
-	} //end while loop
-	echo '</select></td></tr>';
-	echo '<tr>
+echo '<option value="0">' . _('None') . '</option>';
+while ($MyRow = DB_fetch_array($Result)) {
+	if ($_POST['FactorID'] == $MyRow['id']) {
+		echo '<option selected="selected" value="' . $MyRow['id'] . '">' . $MyRow['coyname'] . '</option>';
+	} else {
+		echo '<option value="' . $MyRow['id'] . '">' . $MyRow['coyname'] . '</option>';
+	}
+} //end while loop
+echo '</select></td></tr>';
+echo '<tr>
 			<td>' . _('Tax Reference') . ':</td>
 			<td><input type="text" name="TaxRef" size="21" maxlength="20" value="' . $_POST['TaxRef'] . '" /></td></tr>';
 
-	$Result = DB_query("SELECT currency, currabrev FROM currencies");
+$Result = DB_query("SELECT currency, currabrev FROM currencies");
 
-	echo '<tr><td>' . _('Supplier Currency') . ':</td>
+echo '<tr><td>' . _('Supplier Currency') . ':</td>
 			<td><select name="CurrCode">';
-	while ($MyRow = DB_fetch_array($Result)) {
-		if ($_POST['CurrCode'] == $MyRow['currabrev']) {
-			echo '<option selected="selected" value="' . $MyRow['currabrev'] . '">' . $MyRow['currency'] . '</option>';
-		} else {
-			echo '<option value="' . $MyRow['currabrev'] . '">' . $MyRow['currency'] . '</option>';
-		}
-	} //end while loop
+while ($MyRow = DB_fetch_array($Result)) {
+	if ($_POST['CurrCode'] == $MyRow['currabrev']) {
+		echo '<option selected="selected" value="' . $MyRow['currabrev'] . '">' . $MyRow['currency'] . '</option>';
+	} else {
+		echo '<option value="' . $MyRow['currabrev'] . '">' . $MyRow['currency'] . '</option>';
+	}
+} //end while loop
 
-	echo '</select></td></tr>
+echo '</select></td></tr>
 		<tr><td>' . _('Remittance Advice') . ':</td>
 			<td><select name="Remittance">';
 
-	if ($_POST['Remittance'] == 0) {
-		echo '<option selected="selected" value="0">' . _('Not Required') . '</option>';
-		echo '<option value="1">' . _('Required') . '</option>';
-	} else {
-		echo '<option value="0">' . _('Not Required') . '</option>';
-		echo '<option selected="selected" value="1">' . _('Required') . '</option>';
+if ($_POST['Remittance'] == 0) {
+	echo '<option selected="selected" value="0">' . _('Not Required') . '</option>';
+	echo '<option value="1">' . _('Required') . '</option>';
+} else {
+	echo '<option value="0">' . _('Not Required') . '</option>';
+	echo '<option selected="selected" value="1">' . _('Required') . '</option>';
 
-	}
+}
 
-	echo '</select>
+echo '</select>
 				</td>
 			</tr>';
 
-	echo '<tr>
+// Default_Shipper
+$SQL = "SELECT shipper_id, shippername FROM shippers orDER BY shippername";
+$ErrMsg = _('Could not load shippers');
+$Result = DB_query($SQL, $ErrMsg);
+echo '<tr>
+			<td>' . _('Default Shipper') . ':</td>';
+echo '<td>
+			<select required="required" name="DefaultShipper">';
+
+while ($MyRow = DB_fetch_array($Result)) {
+	if ($_POST['DefaultShipper'] == $MyRow['shipper_id']) {
+		echo '<option selected="selected" value="' . $MyRow['shipper_id'] . '">' . $MyRow['shippername'] . '</option>';
+	} else {
+		echo '<option value="' . $MyRow['shipper_id'] . '">' . $MyRow['shippername'] . '</option>';
+	}
+}
+
+echo '</select>
+			</td>
+		</tr>';
+
+echo '<tr>
 			<td>' . _('Tax Group') . ':</td>
 			<td><select name="TaxGroup">';
 
-	$SQL = "SELECT taxgroupid, taxgroupdescription FROM taxgroups";
-	$Result = DB_query($SQL);
+$SQL = "SELECT taxgroupid, taxgroupdescription FROM taxgroups";
+$Result = DB_query($SQL);
 
-	while ($MyRow = DB_fetch_array($Result)) {
-		if ($MyRow['taxgroupid'] == $_POST['TaxGroup']) {
-			echo '<option selected="selected" value="' . $MyRow['taxgroupid'] . '">' . $MyRow['taxgroupdescription'] . '</option>';
-		} else {
-			echo '<option value="' . $MyRow['taxgroupid'] . '">' . $MyRow['taxgroupdescription'] . '</option>';
-		}
+while ($MyRow = DB_fetch_array($Result)) {
+	if ($MyRow['taxgroupid'] == $_POST['TaxGroup']) {
+		echo '<option selected="selected" value="' . $MyRow['taxgroupid'] . '">' . $MyRow['taxgroupdescription'] . '</option>';
+	} else {
+		echo '<option value="' . $MyRow['taxgroupid'] . '">' . $MyRow['taxgroupdescription'] . '</option>';
+	}
 
-	} //end while loop
+} //end while loop
 
-	echo '</select>
+echo '</select>
 				</td>
 			</tr>
 		</table>';
 
-	if (isset($_POST['New'])) {
-		echo '<div class="centre">
+if (isset($_POST['New'])) {
+	echo '<div class="centre">
 					 <input type="submit" name="submit" value="' . _('Add These New Supplier Details') . '" />
 				</div>';
-	} else {
-		echo '<div class="centre">
+} else {
+	echo '<div class="centre">
 					<input type="submit" name="submit" value="' . _('Update Supplier') . '" />
 				</div>';
-		prnMsg( _('There is no second warning if you hit the delete button below') . '. ' . _('However checks will be made to ensure there are no outstanding purchase orders or existing accounts payable transactions before the deletion is processed'), 'Warn');
-		echo '<div class="centre">
+	prnMsg(_('There is no second warning if you hit the delete button below') . '. ' . _('However checks will be made to ensure there are no outstanding purchase orders or existing accounts payable transactions before the deletion is processed'), 'Warn');
+	echo '<div class="centre">
 				<input type="submit" name="delete" value="' . _('Delete Supplier') . '" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this supplier?') . '\');" />
 			</div>';
-	}
-	echo '</form>';
-} // end of main ifs
+}
+echo '</form>';
+// end of main ifs
 
 include('includes/footer.inc');
 ?>

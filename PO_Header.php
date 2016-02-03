@@ -412,7 +412,8 @@ if (isset($_POST['Select'])) {
 					suppliers.address5,
 					suppliers.address6,
 					suppliers.telephone,
-					suppliers.port
+					suppliers.port,
+					suppliers.defaultshipper
 				FROM suppliers INNER JOIN currencies
 				ON suppliers.currcode=currencies.currabrev
 				WHERE supplierid='" . $_POST['Select'] . "'";
@@ -444,6 +445,7 @@ if (isset($_POST['Select'])) {
 		$_POST['SuppDelAdd6'] = $MyRow['address6'];
 		$_POST['SuppTel'] = $MyRow['telephone'];
 		$_POST['Port'] = $MyRow['port'];
+		$_POST['DeliveryBy'] = $MyRow['defaultshipper'];
 
 		$_SESSION['PO' . $Identifier]->SupplierID = $_POST['Select'];
 		$_SESSION['RequireSupplierSelection'] = 0;
@@ -488,9 +490,11 @@ else {
 					suppliers.address5,
 					suppliers.address6,
 					suppliers.telephone,
+					suppliers.defaultshipper,
 					suppliers.port
-			FROM suppliers INNER JOIN currencies
-			ON suppliers.currcode=currencies.currabrev
+			FROM suppliers
+			INNER JOIN currencies
+				ON suppliers.currcode=currencies.currabrev
 			WHERE supplierid='" . $_POST['Select'] . "'";
 
 	$ErrMsg = _('The supplier record of the supplier selected') . ': ' . $_POST['Select'] . ' ' . _('cannot be retrieved because');
@@ -514,6 +518,7 @@ else {
 		$_POST['SuppDelAdd6'] = $MyRow['address6'];
 		$_POST['SuppTel'] = $MyRow['telephone'];
 		$_POST['Port'] = $MyRow['port'];
+		$_POST['DeliveryBy'] = $MyRow['defaultshipper'];
 
 
 		$_SESSION['PO' . $Identifier]->SupplierID = $_POST['Select'];
@@ -531,6 +536,7 @@ else {
 		$_SESSION['PO' . $Identifier]->SuppDelAdd6 = $_POST['SuppDelAdd6'];
 		$_SESSION['PO' . $Identifier]->SuppTel = $_POST['SuppTel'];
 		$_SESSION['PO' . $Identifier]->Port = $_POST['Port'];
+		$_SESSION['PO' . $Identifier]->DeliveryBy = $_POST['DeliveryBy'];
 		// end of added for suppliers lookup fields
 	} //!isset($_SESSION['PO' . $Identifier])
 } // NOT isset($_POST['Select']) - not called with supplier selection so update variables

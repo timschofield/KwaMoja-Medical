@@ -334,9 +334,8 @@ if (isset($OK_to_PROCESS) and $OK_to_PROCESS == 1 and $_SESSION['ExistingOrder' 
 	$OrderNo = GetNextTransNo(30);
 
 	if (isset($_FILES['Attachment']) and $_FILES['Attachment']['name'] != '') {
-		$Result = $_FILES['Attachment']['error'];
+
 		$UploadTheFile = 'Yes'; //Assume all is well to start off with
-		$FileName = 'companies/KwaMoja/Attachments/' . $OrderNo . '.pdf';
 
 		//But check for the worst
 		if (mb_strtoupper(mb_substr(trim($_FILES['Attachment']['name']), mb_strlen($_FILES['Attachment']['name']) - 3)) != 'PDF') {

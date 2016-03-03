@@ -2,14 +2,13 @@
 $PageSecurity = 0;
 
 include('includes/session.inc');
-if (!isset($_SESSION['FirstRun'])) {
-	if (file_exists('install/InitialScripts.txt') and (filesize('install/InitialScripts.txt') > 0) and isset($_SESSION['DatabaseName'])) {
-		$_SESSION['FirstRun'] = true;
-		echo '<meta http-equiv="refresh" content="0; url=' . $RootPath . '/InitialScripts.php">';
-		exit;
-	} else {
-		$_SESSION['FirstRun'] = false;
-	}
+echo $_SESSION['FirstLogIn'];
+if ($_SESSION['FirstLogIn'] == '1' and isset($_SESSION['DatabaseName'])) {
+	$_SESSION['FirstRun'] = true;
+	echo '<meta http-equiv="refresh" content="0; url=' . $RootPath . '/InitialScripts.php">';
+	exit;
+} else {
+	$_SESSION['FirstRun'] = false;
 }
 
 $Title = _('Main Menu');

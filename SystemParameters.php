@@ -215,6 +215,9 @@ if (isset($_POST['submit'])) {
 		if ($_SESSION['reports_dir'] != $_POST['X_reports_dir']) {
 			$SQL[] = "UPDATE config SET confvalue = 'companies/" . $_SESSION['DatabaseName'] . '/' . $_POST['X_reports_dir'] . "' WHERE confname = 'reports_dir'";
 		}
+		if ($_SESSION['NewBranchesMustBeAuthorised'] != $_POST['X_NewBranchesMustBeAuthorised']) {
+			$SQL[] = "UPDATE config SET confvalue = '" . ($_POST['X_NewBranchesMustBeAuthorised']) . "' WHERE confname = 'NewBranchesMustBeAuthorised'";
+		}
 		if ($_SESSION['AutoDebtorNo'] != $_POST['X_AutoDebtorNo']) {
 			$SQL[] = "UPDATE config SET confvalue = '" . ($_POST['X_AutoDebtorNo']) . "' WHERE confname = 'AutoDebtorNo'";
 		}
@@ -664,6 +667,23 @@ echo '<tr style="outline: 1px solid"><td>' . _('Apply freight charges if an orde
 	<td><input type="text" class="number" name="X_FreightChargeAppliesIfLessThan" size="12" required="required" maxlength="12" value="' . $_SESSION['FreightChargeAppliesIfLessThan'] . '" /></td>
 	<td>' . _('This parameter is only effective if Do Freight Calculation is set to Yes. If it is set to 0 then freight is always charged. The total order value is compared to this value in deciding whether or not to charge freight') . '</td></tr>';
 
+
+// Authorise Customer Brances
+echo '<tr style="outline: 1px solid">
+		<td>' . _('All new branch codes must be authorised') . ':</td>
+		<td><select required="required" name="X_NewBranchesMustBeAuthorised">';
+
+if ($_SESSION['NewBranchesMustBeAuthorised'] == 0) {
+	echo '<option selected="selected" value="0">' . _('No') . '</option>';
+	echo '<option value="1">' . _('Yes') . '</option>';
+} else {
+	echo '<option selected="selected" value="1">' . _('Yes') . '</option>';
+	echo '<option value="0">' . _('No') . '</option>';
+}
+echo '</select>
+		</td>';
+echo '<td>' . _('If enabled then all new customer branches are set to disabled by default.') . '</td>
+	</tr>';
 
 // AutoDebtorNo
 echo '<tr style="outline: 1px solid"><td>' . _('Create Debtor Codes Automatically') . ':</td>

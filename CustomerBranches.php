@@ -127,6 +127,55 @@ if (isset($_POST['submit'])) {
 			}
 		}
 	}
+
+	if (isset($_FILES['Attachment']) and $_FILES['Attachment']['name'] != '' and $InputError != 1) {
+
+		$UploadTheFile = 'Yes'; //Assume all is well to start off with
+
+		//But check for the worst
+		if (mb_strtoupper(mb_substr(trim($_FILES['Attachment']['name']), mb_strlen($_FILES['Attachment']['name']) - 3)) != 'PDF') {
+			prnMsg(_('Only pdf files are supported - a file extension of .pdf is expected'), 'warn');
+			$UploadTheFile = 'No';
+		} elseif ($_FILES['Attachment']['size'] > ($_SESSION['MaxImageSize'] * 1024)) { //File Size Check
+			prnMsg(_('The file size is over the maximum allowed. The maximum size allowed in KB is') . ' ' . $_SESSION['MaxImageSize'], 'warn');
+			$UploadTheFile = 'No';
+		} elseif ($_FILES['Attachment']['type'] != 'application/pdf') { //File Type Check
+			prnMsg(_('Only pdf files can be uploaded'), 'warn');
+			$UploadTheFile = 'No';
+		} elseif ($_FILES['Attachment']['error'] == 6 ) {  //upload temp directory check
+			prnMsg( _('No tmp directory set. You must have a tmp directory set in your PHP for upload of files.'), 'warn');
+			$UploadTheFile ='No';
+		} elseif (file_exists($FileName)) {
+			prnMsg(_('Attempting to overwrite an existing item attachment'), 'warn');
+			$Result = unlink($FileName);
+			if (!$Result) {
+				prnMsg(_('The existing attachment could not be removed'), 'error');
+				$UploadTheFile = 'No';
+			}
+		}
+
+		if ($UploadTheFile == 'Yes') {
+			$DebtorNumber = $DebtorNo;
+			$BranchCode = $SelectedBranch;
+			$Name = $_FILES['Attachment']['name'];
+			$Type = $_FILES['Attachment']['type'];
+			$Size = $_FILES['Attachment']['size'];
+			$fp = fopen($_FILES['Attachment']['tmp_name'], 'r');
+			$Content = fread($fp, $Size);
+			$Content = addslashes($Content);
+			fclose($fp);
+			$SQL = "INSERT INTO custbranchattachments VALUES('" . $DebtorNumber . "',
+															'" . $BranchCode . "',
+															'" . $Name . "',
+															'" . $Type . "',
+															" . $Size . ",
+															'" . $Content . "'
+															)";
+			$Result = DB_query($SQL);
+
+		}
+	}
+
 	if (isset($SelectedBranch) and $InputError != 1) {
 
 		/*SelectedBranch could also exist if submit had not been clicked this code would not run in this case cos submit is false of course see the 	delete code below*/
@@ -632,7 +681,7 @@ if (!isset($_GET['delete'])) {
 		}
 		if (!isset($_POST['BranchCode'])) {
 			$_POST['BranchCode'] = '';
-			$_POST['DisableTrans'] = 0;
+			$_POST['DisableTrans'] = 1;
 		}
 		echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/customer.png" title="' . _('Customer') . '" alt="" />' . ' ' . _('Add a Branch') . '</p>';
 		echo '<table class="selection">
@@ -910,21 +959,32 @@ if (!isset($_GET['delete'])) {
 	} //end while loop
 
 	echo '</select></td>
-		</tr>
-		<tr>
-			<td>' . _('Transactions on this branch') . ':</td>
-			<td><select tabindex="20" name="DisableTrans">';
-	if (isset($_POST['DisableTrans']) and $_POST['DisableTrans'] == 0) {
-		echo '<option selected="selected" value="0">' . _('Enabled') . '</option>
-				<option value="1">' . _('Disabled') . '</option>';
-	} else {
-		echo '<option selected="selected" value="1">' . _('Disabled') . '</option>
-				<option value="0">' . _('Enabled') . '</option>';
-	}
-
-	echo '	</select></td>
 		</tr>';
 
+	if ($_SESSION['NewBranchesMustBeAuthorised'] == 0 or (in_array($_SESSION['PageSecurityArray']['EnableBranches.php'], $_SESSION['AllowedPageSecurityTokens']))) {
+		echo '<tr>
+				<td>' . _('Transactions on this branch') . ':</td>
+				<td><select tabindex="20" name="DisableTrans">';
+		if (isset($_POST['DisableTrans']) and $_POST['DisableTrans'] == 0) {
+			echo '<option selected="selected" value="0">' . _('Enabled') . '</option>
+					<option value="1">' . _('Disabled') . '</option>';
+		} else {
+			echo '<option selected="selected" value="1">' . _('Disabled') . '</option>
+					<option value="0">' . _('Enabled') . '</option>';
+		}
+		echo '</select>
+				</td>
+			</tr>';
+	} else {
+		echo '<tr>
+				<td>' . _('Transactions on this branch') . ':</td>';
+		if (isset($_POST['DisableTrans']) and $_POST['DisableTrans'] == 0) {
+			echo '<td>' . _('Enabled') . '</td>';
+		} else {
+			echo '<td>' . _('Disabled') . '</td>';
+		}
+		echo '</tr>';
+	}
 	$SQL = "SELECT shipper_id, shippername FROM shippers";
 	$ShipperResults = DB_query($SQL);
 	if (DB_num_rows($ShipperResults) == 0) {
@@ -1005,6 +1065,11 @@ if (!isset($_GET['delete'])) {
 	echo '<tr>
 		<td>' . _('Postal Address 5') . ':</td>
 		<td><input tabindex="27" type="text" name="BrPostAddr5" size="21" maxlength="20" value="' . $_POST['BrPostAddr5'] . '" /></td>
+		</tr>';
+
+	echo '<tr>
+			<td>' . _('Customer Branch Attachment') . '</td>
+			<td><input type="file" name="Attachment" id="Attachment" /></td>
 		</tr>';
 
 	if (!isset($_POST['CustBranchCode'])) {

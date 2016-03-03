@@ -54,34 +54,35 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 	} else {
 		$StockId = $_SESSION['SelectedStockItem'];
 	}
-	$Result = DB_query("SELECT stockdescriptiontranslations.descriptiontranslation AS description,
-								stocklongdescriptiontranslations.longdescriptiontranslation AS longdescription,
-								stockmaster.mbflag,
-								stockcategory.stocktype,
-								stockmaster.units,
-								stockmaster.decimalplaces,
-								stockmaster.controlled,
-								stockmaster.serialised,
-								stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS cost,
-								stockmaster.discontinued,
-								stockmaster.eoq,
-								stockmaster.volume,
-								stockmaster.grossweight,
-								stockcategory.categorydescription,
-								stockmaster.categoryid
-						FROM stockmaster
-						INNER JOIN stockdescriptiontranslations
-							ON stockdescriptiontranslations.stockid=stockmaster.stockid
-						INNER JOIN stocklongdescriptiontranslations
-							ON stocklongdescriptiontranslations.stockid=stockmaster.stockid
-						INNER JOIN stockcategory
-							ON stockmaster.categoryid=stockcategory.categoryid
-						LEFT JOIN stockcosts
-							ON stockmaster.stockid=stockcosts.stockid
-							AND stockcosts.succeeded=0
-						WHERE stockcosts.stockid='" . $StockId . "'
-							AND stockdescriptiontranslations.language_id='" . $_SESSION['InventoryLanguage'] . "'
-							AND stocklongdescriptiontranslations.language_id='" . $_SESSION['InventoryLanguage'] . "'");
+	$SQL = "SELECT stockdescriptiontranslations.descriptiontranslation AS description,
+					stocklongdescriptiontranslations.longdescriptiontranslation AS longdescription,
+					stockmaster.mbflag,
+					stockcategory.stocktype,
+					stockmaster.units,
+					stockmaster.decimalplaces,
+					stockmaster.controlled,
+					stockmaster.serialised,
+					stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost AS cost,
+					stockmaster.discontinued,
+					stockmaster.eoq,
+					stockmaster.volume,
+					stockmaster.grossweight,
+					stockcategory.categorydescription,
+					stockmaster.categoryid
+				FROM stockmaster
+				INNER JOIN stockdescriptiontranslations
+					ON stockdescriptiontranslations.stockid=stockmaster.stockid
+				INNER JOIN stocklongdescriptiontranslations
+					ON stocklongdescriptiontranslations.stockid=stockmaster.stockid
+				INNER JOIN stockcategory
+					ON stockmaster.categoryid=stockcategory.categoryid
+				LEFT JOIN stockcosts
+					ON stockmaster.stockid=stockcosts.stockid
+					AND stockcosts.succeeded=0
+				WHERE stockcosts.stockid='" . $StockId . "'
+					AND stockdescriptiontranslations.language_id='" . $_SESSION['InventoryLanguage'] . "'
+					AND stocklongdescriptiontranslations.language_id='" . $_SESSION['InventoryLanguage'] . "'";
+	$Result = DB_query($SQL);
 	$MyRow = DB_fetch_array($Result);
 	$Its_A_Kitset_Assembly_Or_Dummy = false;
 	$Its_A_Dummy = false;

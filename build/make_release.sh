@@ -77,40 +77,7 @@ mysql -u$MYSQL_USER  -p$MYSQL_PWD < $BASE_DIR/build/TruncateAuditTrail.sql
 
 echo "SET FOREIGN_KEY_CHECKS = 0;" > $BASE_DIR/sql/mysql/kwamoja-new.sql
 
-mysqldump -u$MYSQL_USER  -p$MYSQL_PWD  --skip-opt --create-options --skip-set-charset --ignore-table=kwamoja.mrpsupplies  --ignore-table=kwamoja.mrpplanedorders --ignore-table=kwamoja.mrpparameters --ignore-table=kwamoja.levels --ignore-table=kwamoja.mrprequirements --ignore-table=kwamoja.buckets --no-data kwamoja >> $BASE_DIR/sql/mysql/kwamoja-new.sql
-
-mysqldump -u$MYSQL_USER  -p$MYSQL_PWD --skip-opt --skip-set-charset --quick --no-create-info kwamoja  \
-       accountgroups \
-       bankaccounts \
-       chartmaster \
-       companies \
-       cogsglpostings \
-       currencies \
-       holdreasons \
-       locations \
-       paymentterms \
-       reportlinks \
-       salesglpostings \
-       systypes \
-       taxauthorities \
-       taxgroups \
-       taxauthrates \
-       taxcategories \
-       taxprovinces \
-       www_users \
-       edi_orders_segs \
-       edi_orders_seg_groups \
-       config \
-       unitsofmeasure \
-       paymentmethods \
-       scripts \
-       securitygroups \
-       securitytokens \
-       securityroles \
-       accountsection \
-       > $BASE_DIR/sql/mysql/kwamoja-base.sql
-
-mysqldump -u$MYSQL_USER  -p$MYSQL_PWD --skip-opt --skip-set-charset --quick --ignore-table=kwamoja.mrpsupplies  --ignore-table=kwamoja.mrpplanedorders --ignore-table=kwamoja.mrpparameters --ignore-table=kwamoja.levels --ignore-table=kwamoja.mrprequirements --no-create-info kwamoja  > $BASE_DIR/sql/mysql/kwamoja-demo_data.sql
+mysqldump -nd -u root -p KwaMoja --skip-comments  --ignore-table=kwamoja.mrpsupplies  --ignore-table=kwamoja.mrpplanedorders --ignore-table=kwamoja.mrpparameters --ignore-table=kwamoja.levels --ignore-table=kwamoja.mrprequirements --ignore-table=kwamoja.buckets | grep -v '^\/\*![0-9]\{5\}.*\/;$' | grep 'DELIMITER' -v  > install/db/structure.sql
 
 rm  $BASE_DIR/sql/mysql/kwamoja-demo.sql
 echo "CREATE DATABASE IF NOT EXISTS kwamoja;" > $BASE_DIR/sql/mysql/kwamoja-demo.sql

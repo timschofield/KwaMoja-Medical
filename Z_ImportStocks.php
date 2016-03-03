@@ -34,6 +34,15 @@ $FieldHeadings = array(
 	'ItemPDF' // 17 'ITEMPDF'
 );
 
+if (count($ItemDescriptionLanguagesArray) > 1) {
+	foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
+		if ($LanguageId != '') {
+			$FieldHeadings[] = 'Description-' . $LanguageId;
+			$FieldHeadings[] = 'LongDescription-' . $LanguageId;
+		}
+	}
+}
+
 $Defaults = array(
 	'', //  0 'STOCKID',
 	'', //  1 'DESCRIPTION',
@@ -55,10 +64,19 @@ $Defaults = array(
 	'none' // 17 'ITEMPDF'
 );
 
+if (count($ItemDescriptionLanguagesArray) > 1) {
+	foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
+		if ($LanguageId != '') {
+			$Defaults[] = '';
+			$Defaults[] = '';
+		}
+	}
+}
+
 if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file processing
 
 	//initialize
-	$FieldTarget = 18;
+	$FieldTarget = 16 + (count($ItemDescriptionLanguagesArray) * 2);
 	$InputError = 0;
 
 	//check file info
@@ -258,10 +276,13 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 			$Result = DB_query("INSERT INTO stockdescriptiontranslations VALUES('" . $StockId . "','" . $_SESSION['DefaultLanguage'] . "', '" . $MyRow[1] . "', '0')", $ErrMsg, $DbgMsg);
 			$Result = DB_query("INSERT INTO stocklongdescriptiontranslations VALUES('" . $StockId . "','" . $_SESSION['DefaultLanguage'] . "', '" . $MyRow[2] . "', '0')", $ErrMsg, $DbgMsg);
 
+			$i = 0;
 			foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
 				if ($LanguageId != '') {
-					$Result = DB_query("INSERT INTO stockdescriptiontranslations VALUES('" . $StockId . "','" . $LanguageId . "', '" . $MyRow[1] . "', '0')", $ErrMsg, $DbgMsg);
-					$Result = DB_query("INSERT INTO stocklongdescriptiontranslations VALUES('" . $StockId . "','" . $LanguageId . "', '" . $MyRow[2] . "', '0')", $ErrMsg, $DbgMsg);
+					$Result = DB_query("INSERT INTO stockdescriptiontranslations VALUES('" . $StockId . "','" . $LanguageId . "', '" . $MyRow[18 + $i] . "', '0')", $ErrMsg, $DbgMsg);
+					++$i;
+					$Result = DB_query("INSERT INTO stocklongdescriptiontranslations VALUES('" . $StockId . "','" . $LanguageId . "', '" . $MyRow[18 + $i] . "', '0')", $ErrMsg, $DbgMsg);
+					++$i;
 				}
 			}
 

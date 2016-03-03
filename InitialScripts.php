@@ -3,6 +3,19 @@ $PageSecurity = 15;
 
 include('includes/session.inc');
 
+if (!isset($_SESSION['InitialScripts'])) {
+	$_SESSION['InitialScripts'][] = 'SystemParameters.php';
+	$_SESSION['InitialScripts'][] = 'Shippers.php';
+	$_SESSION['InitialScripts'][] = 'SalesTypes.php';
+	$_SESSION['InitialScripts'][] = 'Locations.php';
+	$_SESSION['InitialScripts'][] = 'TaxAuthorityRates.php';
+	$_SESSION['InitialScripts'][] = 'TaxCategories.php';
+	$_SESSION['InitialScripts'][] = 'TaxAuthorities.php';
+	$_SESSION['InitialScripts'][] = 'TaxProvinces.php';
+	$_SESSION['InitialScripts'][] = 'CompanyPreferences.php';
+	$_SESSION['InitialScripts'][] = 'Currencies.php';
+}
+
 $Title = _('Initialise New Installation');
 
 include('includes/header.inc');
@@ -18,15 +31,13 @@ echo '<div class="page_help_text">' .
 	</div>';
 
 $ThisScript = '';
-while ($ThisScript == '' and filesize('install/InitialScripts.txt') > 0) {
-	$NextScript = ReadFirstLine('install/InitialScripts.txt');
+while ($ThisScript == '' and count($_SESSION['InitialScripts']) > 0) {
+	$NextScript = array_pop($_SESSION['InitialScripts']);
 	if (trim($NextScript) == 'Currencies.php') {
 		$CurrenciesSQL = "SELECT currency FROM currencies";
 		$CurrenciesResult = DB_query($CurrenciesSQL);
 		if (DB_num_rows($CurrenciesResult) == 0) {
 			$ThisScript = $NextScript;
-		} else {
-			RemoveFirstLine('install/InitialScripts.txt');
 		}
 	}
 	if (trim($NextScript) == 'CompanyPreferences.php' and $ThisScript == '') {
@@ -34,8 +45,6 @@ while ($ThisScript == '' and filesize('install/InitialScripts.txt') > 0) {
 		$CompanyResult = DB_query($CompanySQL);
 		if (DB_num_rows($CompanyResult) == 0) {
 			$ThisScript = $NextScript;
-		} else {
-			RemoveFirstLine('install/InitialScripts.txt');
 		}
 	}
 	if (trim($NextScript) == 'TaxProvinces.php' and $ThisScript == '') {
@@ -43,8 +52,6 @@ while ($ThisScript == '' and filesize('install/InitialScripts.txt') > 0) {
 		$ProvinceResult = DB_query($ProvinceSQL);
 		if (DB_num_rows($ProvinceResult) == 0) {
 			$ThisScript = $NextScript;
-		} else {
-			RemoveFirstLine('install/InitialScripts.txt');
 		}
 	}
 	if (trim($NextScript) == 'TaxAuthorities.php' and $ThisScript == '') {
@@ -55,7 +62,6 @@ while ($ThisScript == '' and filesize('install/InitialScripts.txt') > 0) {
 		} else {
 			$Row = DB_fetch_row($AuthorityResult);
 			$_SESSION['TaxAuthority'] = $Row[0];
-			RemoveFirstLine('install/InitialScripts.txt');
 		}
 	}
 	if (trim($NextScript) == 'TaxCategories.php' and $ThisScript == '') {
@@ -63,8 +69,6 @@ while ($ThisScript == '' and filesize('install/InitialScripts.txt') > 0) {
 		$CategoryResult = DB_query($CategorySQL);
 		if (DB_num_rows($CategoryResult) == 0) {
 			$ThisScript = $NextScript;
-		} else {
-			RemoveFirstLine('install/InitialScripts.txt');
 		}
 	}
 	if (trim($NextScript) == 'TaxAuthorityRates.php' and $ThisScript == '') {
@@ -73,8 +77,6 @@ while ($ThisScript == '' and filesize('install/InitialScripts.txt') > 0) {
 		$Row = DB_fetch_row($AuthRatesResult);
 		if ($Row[0] == 0) {
 			$ThisScript = 'TaxAuthorityRates.php?TaxAuthority=' . $_SESSION['TaxAuthority'];
-		} else {
-			RemoveFirstLine('install/InitialScripts.txt');
 		}
 	}
 	if (trim($NextScript) == 'Locations.php' and $ThisScript == '') {
@@ -82,8 +84,6 @@ while ($ThisScript == '' and filesize('install/InitialScripts.txt') > 0) {
 		$LocationsResult = DB_query($LocationsSQL);
 		if (DB_num_rows($LocationsResult) == 0) {
 			$ThisScript = $NextScript;
-		} else {
-			RemoveFirstLine('install/InitialScripts.txt');
 		}
 	}
 	if (trim($NextScript) == 'SalesTypes.php' and $ThisScript == '') {
@@ -91,8 +91,6 @@ while ($ThisScript == '' and filesize('install/InitialScripts.txt') > 0) {
 		$SalesTypesResult = DB_query($SalesTypesSQL);
 		if (DB_num_rows($SalesTypesResult) == 0) {
 			$ThisScript = $NextScript;
-		} else {
-			RemoveFirstLine('install/InitialScripts.txt');
 		}
 	}
 	if (trim($NextScript) == 'Shippers.php' and $ThisScript == '') {
@@ -100,13 +98,13 @@ while ($ThisScript == '' and filesize('install/InitialScripts.txt') > 0) {
 		$ShippersResult = DB_query($ShippersSQL);
 		if (DB_num_rows($ShippersResult) == 0) {
 			$ThisScript = $NextScript;
-		} else {
-			RemoveFirstLine('install/InitialScripts.txt');
 		}
 	}
 	if (trim($NextScript) == 'SystemParameters.php' and $ThisScript == '') {
 		$ThisScript = $NextScript;
-		RemoveFirstLine('install/InitialScripts.txt');
+		$_SESSION['FirstLogIn'] = '0';
+		$SQL = "UPDATE config SET confvalue=0 WHERE confname='FirstLogIn'";
+		$Result = DB_query($SQL);
 	}
 }
 
@@ -115,22 +113,5 @@ echo '<div class="centre">
 	</div>';
 
 include('includes/footer.inc');
-
-function ReadFirstLine($FileName) {
-  $file = file($FileName);
-  return $file[0];
-}
-
-function RemoveFirstLine($FileName) {
-	$FileContents = file($FileName);
-	if ($fp = fopen($FileName, 'w')) {
-		for($i=1; $i < sizeof($FileContents); $i++) {
-			fwrite($fp,$FileContents[$i]);
-		}
-		fclose($fp);
-	} else {
-		prnMsg('Cannot open file for writing', 'error');
-	}
-}
 
 ?>

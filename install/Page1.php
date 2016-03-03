@@ -231,7 +231,7 @@ echo '<fieldset style="text-align:center">
 echo '<fieldset style="text-align:center">
 			<p>' . _('KwaMoja is an open source application licenced under GPL V2 and absolutely free to download.') . '<br />' . _('By installing KwaMoja you acknowledge you have read and agreed to') . ' ' . '<a href="http://www.gnu.org/licenses/gpl-2.0.html#SEC1" target="_blank">the licence</a>. <br />' . _('Please visit the official KwaMoja website for more information.') . '</p>
 		<div class="centre" style="display:block">
-			<a href="http://www.kwamoja.com"><img src="../css/logo.png" title="KwaMoja" alt="KwaMoja" /></a>
+			<a href="https://www.kwamoja.org"><img src="../css/kwamoja.png" title="KwaMoja" alt="KwaMoja" /></a>
 		</div>
 		</fieldset>';
 

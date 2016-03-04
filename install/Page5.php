@@ -1316,6 +1316,50 @@ foreach ($SQL as $Query) {
 	$Result = DB_query($Query);
 }
 
+$SQL = array();
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (0,'Journal - GL',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (1,'Payment - GL',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (2,'Receipt - GL',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (3,'Standing Journal',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (10,'Sales Invoice',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (11,'Credit Note',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (12,'Receipt',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (15,'Journal - Debtors',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (16,'Location Transfer',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (17,'Stock Adjustment',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (18,'Purchase Order',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (19,'Picking List',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (20,'Purchase Invoice',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (21,'Debit Note',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (22,'Creditors Payment',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (23,'Creditors Journal',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (25,'Purchase Order Delivery',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (26,'Work Order Receipt',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (28,'Work Order Issue',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (29,'Work Order Variance',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (30,'Sales Order',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (31,'Shipment Close',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (32,'Contract Close',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (35,'Cost Update',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (36,'Exchange Difference',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (37,'Tenders',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (38,'Stock Requests',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (40,'Work Order',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (41,'Asset Addition',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (42,'Asset Category Change',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (43,'Delete w/down asset',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (44,'Depreciation',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (49,'Import Fixed Assets',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (50,'Opening Balance',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (60,'Staff Loans',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (61,'Staff Loan Repayments',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (500,'Auto Debtor Number',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (510,'Auto Donor Number',0)";
+$SQL[] = "INSERT INTO `systypes` (`typeid`, `typename`, `typeno`) VALUES (600,'Auto Supplier Number',0)";
+foreach ($SQL as $Query) {
+	$Result = DB_query($Query);
+}
+
 function HighestFileName($PathPrefix) {
 	$files = glob($PathPrefix . 'sql/updates/*.php');
 	natsort($files);

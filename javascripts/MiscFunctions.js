@@ -73,6 +73,15 @@ function ReloadForm(e) {
 	e.click()
 }
 
+function clickInputByValue(value) {
+    var allInputs = document.getElementsByTagName("input");
+    var results = [];
+    for(var x=0;x<allInputs.length;x++)
+        if(allInputs[x].value == value)
+            results.push(allInputs[x]);
+    results[0].click();
+}
+
 function ShowTable(e) {
 	document.getElementById(e).style["display"] = "table"
 }

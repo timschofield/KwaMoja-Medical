@@ -474,7 +474,7 @@ while ($MyRow = DB_fetch_array($TransResult)) {
 						</a>
 					</td>
 					<td class="noPrint">
-						<a href="', $RootPath, '/EmailCustTrans.php?FromTransNo=', urle($MyRow['transno']), '&amp;InvOrCredit=Credit">', _('Email'), '
+						<a href="', $RootPath, '/EmailCustTrans.php?FromTransNo=', urlencode($MyRow['transno']), '&amp;InvOrCredit=Credit">', _('Email'), '
 							<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/email.png" title="', _('Click to email the credit note'), '" alt="" />
 						</a>
 					</td>

@@ -165,8 +165,8 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 	} else { // Summary report:
 		echo '<th class="text" colspan="2">', _('Summary'), '</th>';
 	}
-	echo '<th class="number">', ' - ', $MyRow[0], '</th>
-			<th class="number">', _('Last Year'), '</th>
+	echo '<th class="number">', _('Current period'), '</th>
+			<th class="number">', _('Last period'), '</th>
 			<th class="number">', _('Absolute change'), '</th>
 			<th class="number">', _('Relative change'), '</th>
 		</tr>

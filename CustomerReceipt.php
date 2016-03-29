@@ -888,14 +888,14 @@ if ($_SESSION['ReceiptBatch']->AccountCurrency != $_SESSION['CompanyRecord']['cu
 		$_SESSION['ReceiptBatch']->FunctionalExRate = $SuggestedFunctionalExRate;
 	}
 	if (isset($SuggestedFunctionalExRate)) {
-		$SuggestedFunctionalExRateText = '<b>' . _('Suggested rate:') . ' 1 ' . $_SESSION['CompanyRecord']['currencydefault'] . ' = ' . locale_number_format($SuggestedFunctionalExRate,8) . ' ' . $_SESSION['ReceiptBatch']->AccountCurrency . '</b>';
+		$SuggestedFunctionalExRateText = '<b>' . _('Suggested rate:') . ' 1 ' . $_SESSION['CompanyRecord']['currencydefault'] . ' = ' . $SuggestedFunctionalExRate . ' ' . $_SESSION['ReceiptBatch']->AccountCurrency . '</b>';
 	} else {
 		$SuggestedFunctionalExRateText = '<b>1 ' . $_SESSION['CompanyRecord']['currencydefault'] . ' = ? ' . $_SESSION['ReceiptBatch']->AccountCurrency . '</b>';
 	}
 	echo '<tr>
 			<td>', _('Functional Exchange Rate'), ':</td>
 			<td>
-				<input class="number" maxlength="12" name="FunctionalExRate" required="required" size="14" tabindex="5" type="text" value="', locale_number_format($_SESSION['ReceiptBatch']->FunctionalExRate,8), '" /> ',
+				<input class="number" maxlength="12" name="FunctionalExRate" required="required" size="14" tabindex="5" type="text" value="', $_SESSION['ReceiptBatch']->FunctionalExRate, '" /> ',
 				$SuggestedFunctionalExRateText, '
 				<i>', _('The exchange rate between the currency of the business (the functional currency) and the currency of the bank account'),  '.</i>
 			</td>

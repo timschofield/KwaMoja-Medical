@@ -175,7 +175,27 @@ function GetWeekDayText($WeekDayNumber) {
 }
 
 function DisplayDateTime() {
-	return _(date('l j F G:i'));
+	// Long date and time in locale format.
+	// Could be replace by IntlDateFormatter (available on PHP 5.3.0 or later). See http://php.net/manual/en/class.intldateformatter.php
+	switch ($_SESSION['Language']) {
+		case 'en_GB.utf8':
+			$long_datetime = GetWeekDayText(date('w')) . ' ' . date('j') . ' ' . GetMonthText(date('n')) . ' ' . date('Y') . ' ' . date('G:i');
+			break;
+		case 'en_US.utf8':
+			$long_datetime = GetWeekDayText(date('w')) . ', ' . GetMonthText(date('n')) . ' ' . date('j') . ', '. date('Y') . ' ' . date('G:i');
+			break;
+		case 'es_ES.utf8':
+			$long_datetime = GetWeekDayText(date('w')) . ' ' . date('j') . ' de ' . GetMonthText(date('n')) . ' de ' . date('Y') . ' ' . date('G:i');
+			break;
+		case 'fr_FR.utf8':
+			$long_datetime = GetWeekDayText(date('w')) . ' ' . date('j') . ' ' . GetMonthText(date('n')) . ' ' . date('Y') . ' ' . date('G:i');
+			break;
+		default:
+			$long_datetime = GetWeekDayText(date('w')) . ' ' . date('j') . ' ' . GetMonthText(date('n')) . ' ' . date('Y') . ' ' . date('G:i');
+			break;
+	}
+	return $long_datetime;
+/*	return GetWeekDayText(date('w')) . ' ' . date('j') . ' ' . GetMonthText(date('n')) . ' ' . date('G:i') ;*/
 }
 
 function DayOfWeekFromSQLDate($DateEntry) {

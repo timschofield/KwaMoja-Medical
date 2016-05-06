@@ -151,7 +151,7 @@ if (!isset($SelectedDepartmentID)) {
 					description,
 					authoriser
 			FROM departments
-			ORDER BY departmentid";
+			ORDER BY description";
 
 	$ErrMsg = _('There are no departments created');
 	$Result = DB_query($SQL, $ErrMsg);

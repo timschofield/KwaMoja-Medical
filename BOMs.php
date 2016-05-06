@@ -66,6 +66,7 @@ function DisplayBOMItems($UltimateParent, $Parent, $Component, $Level) {
 
 	global $ParentMBflag;
 	$SQL = "SELECT bom.component,
+					stockcategory.categorydescription,
 					stockmaster.description as itemdescription,
 					stockmaster.units,
 					locations.locationname,
@@ -85,6 +86,8 @@ function DisplayBOMItems($UltimateParent, $Parent, $Component, $Level) {
 				FROM bom
 				INNER JOIN stockmaster
 					ON bom.component=stockmaster.stockid
+				INNER JOIN stockcategory
+					ON stockcategory.categoryid = stockmaster.categoryid
 				INNER JOIN locations
 					ON bom.loccode = locations.loccode
 				INNER JOIN workcentres
@@ -140,23 +143,43 @@ function DisplayBOMItems($UltimateParent, $Parent, $Component, $Level) {
 		}
 
 		$TextIndent = $Level . 'em';
-		printf('<td class="number" style="text-align:left;text-indent:' . $TextIndent . ';" >%s</td>
+		if (!empty($MyRow['comment'])) {
+			$MyRow['comment'] = ' **' . ' ' . $MyRow['comment'];
+		}
+		$StockID = $MyRow['component'];
+		if (function_exists('imagecreatefromjpeg')) {
+			if ($_SESSION['ShowStockidOnImages'] == '0') {
+				$StockImgLink = '<img src="GetStockImage.php?automake=1&textcolor=FFFFFF&bgcolor=CCCCCC&StockID=' . urlencode($StockID) . '&text=&width=100&eight=100" alt="" />';
+			} else {
+				$StockImgLink = '<img src="GetStockImage.php?automake=1&textcolor=FFFFFF&bgcolor=CCCCCC&StockID=' . urlencode($StockID) . '&text=' . urlencode($StockID) . '&width=100&height=100" alt="" />';
+			}
+		} else {
+			if( isset($StockID) and file_exists($_SESSION['part_pics_dir'] . '/' . $StockID . '.jpg')) {
+				$StockImgLink = '<img src="' . $_SESSION['part_pics_dir'] . '/' . $StockID . '.jpg" height="100" width="100" />';
+			} else {
+				$StockImgLink = _('No Image');
+			}
+		}
+
+		printf('<td class="number" style="text-align:left;text-indent:' . $Textindent . ';" >%s</td>
 				<td class="number">%s</td>
 				<td>%s</td>
 				<td>%s</td>
 				<td>%s</td>
 				<td>%s</td>
+				<td>%s</td>
 				<td class="number">%s</td>
 				<td>%s</td>
-				<td>%s</td>
-				<td>%s</td>
-				<td>%s</td>
+				<td class="noPrint">%s</td>
+				<td class="noPrint">%s</td>
+				<td class="noPrint">%s</td>
 				<td class="number noPrint">%s</td>
 				<td class="noPrint"><a href="%s&amp;Select=%s&amp;SelectedComponent=%s">' . _('Edit') . '</a></td>
 				<td class="noPrint">' . $DrillText . '</td>
 				<td class="noPrint"><a href="%s&amp;Select=%s&amp;SelectedComponent=%s&amp;delete=1&amp;ReSelect=%s&amp;Location=%s&amp;WorkCentre=%s" onclick="return confirm(\'' . _('Are you sure you wish to delete this component from the bill of material?') . '\');">' . _('Delete') . '</a></td>
 				</tr><tr><td colspan="11" style="text-indent:' . $TextIndent . ';">%s</td>
-			 </tr>', $Level1, $MyRow['sequence'], $MyRow['component'], $MyRow['itemdescription'], $MyRow['locationname'], $MyRow['workcentrename'], locale_number_format($MyRow['quantity'], 'Variable'), $MyRow['units'], ConvertSQLDate($MyRow['effectiveafter']), ConvertSQLDate($MyRow['effectiveto']), $AutoIssue, $QuantityOnHand, htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $Parent, $MyRow['component'], $DrillLink, $DrillID, htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $Parent, $MyRow['component'], $UltimateParent, $MyRow['loccode'], $MyRow['workcentrecode'], $MyRow['comment']);
+				<td>%s</td>
+			 </tr>', $Level1, $MyRow['sequence'], $MyRow['categorydescription'], $MyRow['component'], $MyRow['itemdescription'], $MyRow['locationname'], $MyRow['workcentrename'], locale_number_format($MyRow['quantity'], 'Variable'), $MyRow['units'], ConvertSQLDate($MyRow['effectiveafter']), ConvertSQLDate($MyRow['effectiveto']), $AutoIssue, $QuantityOnHand, htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $Parent, $MyRow['component'], $DrillLink, $DrillID, htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $Parent, $MyRow['component'], $UltimateParent, $MyRow['loccode'], $MyRow['workcentrecode'], $MyRow['comment'], $StockImgLink);
 
 	} //END WHILE LIST LOOP
 } //end of function DisplayBOMItems
@@ -223,10 +246,12 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 			$InputError = 1;
 			prnMsg(_('The quantity entered must be numeric'), 'error');
 		}
+		/* Comment this out to make substittute material can be recorded in the BOM
 		if (filter_number_format($_POST['Quantity']) == 0) {
 			$InputError = 1;
 			prnMsg(_('The quantity entered cannot be zero'), 'error');
 		}
++		 */
 		if (!Date1GreaterThanDate2($_POST['EffectiveTo'], $_POST['EffectiveAfter'])) {
 			$InputError = 1;
 			prnMsg(_('The effective to date must be a date after the effective after date') . '<br />' . _('The effective to date is') . ' ' . DateDiff($_POST['EffectiveTo'], $_POST['EffectiveAfter'], 'd') . ' ' . _('days before the effective after date') . '! ' . _('No updates have been performed') . '.<br />' . _('Effective after was') . ': ' . $_POST['EffectiveAfter'] . ' ' . _('and effective to was') . ': ' . $_POST['EffectiveTo'], 'error');
@@ -507,9 +532,25 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 		echo '</div></td></tr>';
 		echo '</table>';
 	}
+
+	$StockID = $SelectedParent;
+	if (function_exists('imagecreatefromjpeg')) {
+		if ($_SESSION['ShowStockidOnImages'] == '0') {
+			$StockImgLink = '<img src="GetStockImage.php?automake=1&textcolor=FFFFFF&bgcolor=CCCCCC&StockID=' . urlencode($StockID) . '&text&width=100&eight=100" alt="" />';
+		} else {
+			$StockImgLink = '<img src="GetStockImage.php?automake=1&textcolor=FFFFFF&bgcolor=CCCCCC&StockID=' . urlencode($StockID) . '&text='. urlencode($StockID) . '&width=100&height=100" alt="" />';
+		}
+	} else {
+		if( isset($StockID) and file_exists($_SESSION['part_pics_dir'] . '/' . $StockID . '.jpg')) {
+			$StockImgLink = '<img src="' . $_SESSION['part_pics_dir'] . '/' . $StockID . '.jpg" height="100" width="100" />';
+		} else {
+			$StockImgLink = _('No Image');
+		}
+	}
+
 	echo '<table class="selection">';
 	echo '<tr>
-			<th colspan="15"><div class="centre"><b>' . $SelectedParent . ' - ' . $MyRow[0] . ' (' . $MBdesc . ') </b></div></th>
+			<th colspan="15"><div class="centre"><b>' . $SelectedParent . ' - ' . $MyRow[0] . ' (' . $MBdesc . ') </b>' . $StockImgLink . '</div></th>
 		</tr>';
 
 	$BOMTree = array();
@@ -521,15 +562,16 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 	echo '<tr>
 			<th>' . _('Level') . '</th>
 			<th>' . _('Sequence') . '</th>
+			<th>' . _('Category Description') . '</th>
 			<th>' . _('Code') . '</th>
 			<th>' . _('Description') . '</th>
 			<th>' . _('Location') . '</th>
 			<th>' . _('Work Centre') . '</th>
 			<th>' . _('Quantity') . '</th>
 			<th>' . _('UOM') . '</th>
-			<th>' . _('Effective After') . '</th>
-			<th>' . _('Effective To') . '</th>
-			<th>' . _('Auto Issue') . '</th>
+			<th class="noPrint">' . _('Effective After') . '</th>
+			<th class="noPrint">' . _('Effective To') . '</th>
+			<th class="noPrint">' . _('Auto Issue') . '</th>
 			<th class="noPrint">' . _('Qty On Hand') . '</th>
 		</tr>';
 	if (count($BOMTree) == 0) {

@@ -246,16 +246,42 @@ if (isset($_POST['Currency']) and $_POST['Currency'] != '') {
 	}
 } //isset($_POST['Currency']) and $_POST['Currency'] != ''
 
-if (isset($_POST['BankTransRef']) and $_POST['BankTransRef'] != ''){     // Reference on Bank Transactions Inquiry
-	$_SESSION['PaymentDetail' . $Identifier]->BankTransRef=$_POST['BankTransRef'];
+// Reference in banking transactions:
+if (isset($_POST['BankTransRef']) and $_POST['BankTransRef'] != '') {
+	$_SESSION['PaymentDetail' . $Identifier]->BankTransRef = $_POST['BankTransRef'];
 }
+// Narrative in general ledger transactions:
 if (isset($_POST['Narrative']) and $_POST['Narrative'] != '') {
 	$_SESSION['PaymentDetail' . $Identifier]->Narrative = $_POST['Narrative'];
-} //isset($_POST['Narrative']) and $_POST['Narrative'] != ''
+}
+// Supplier narrative in general ledger transactions:
+if (isset($_POST['gltrans_narrative'])) {
+	if ($_POST['gltrans_narrative'] == '') {
+		$_SESSION['PaymentDetail' . $Identifier]->gltrans_narrative = $_POST['Narrative'];// If blank, it uses the bank narrative.
+	} else {
+		$_SESSION['PaymentDetail' . $Identifier]->gltrans_narrative = $_POST['gltrans_narrative'];
+	}
+}
+// Supplier reference in supplier transactions:
+if (isset($_POST['supptrans_suppreference'])) {
+	if ($_POST['supptrans_suppreference'] == '') {
+		$_SESSION['PaymentDetail' . $Identifier]->supptrans_suppreference = $_POST['Paymenttype'];// If blank, it uses the payment type.
+	} else {
+		$_SESSION['PaymentDetail' . $Identifier]->supptrans_suppreference = $_POST['supptrans_suppreference'];
+	}
+}
+// Transaction text in supplier transactions:
+if (isset($_POST['supptrans_transtext'])) {
+	if ($_POST['supptrans_transtext'] == '') {
+		$_SESSION['PaymentDetail' . $Identifier]->supptrans_transtext = $_POST['Narrative'];// If blank, it uses the narrative.
+	} else {
+		$_SESSION['PaymentDetail' . $Identifier]->supptrans_transtext = $_POST['supptrans_transtext'];
+	}
+}
+
 if (isset($_POST['Amount']) and $_POST['Amount'] != '') {
 	$_SESSION['PaymentDetail' . $Identifier]->Amount = filter_number_format($_POST['Amount']);
-} //isset($_POST['Amount']) and $_POST['Amount'] != ''
-else {
+} else {
 	if (!isset($_SESSION['PaymentDetail' . $Identifier]->Amount)) {
 		$_SESSION['PaymentDetail' . $Identifier]->Amount = 0;
 	} //!isset($_SESSION['PaymentDetail' . $Identifier]->Amount)
@@ -503,11 +529,11 @@ if (isset($_POST['CommitBatch'])) {
 					22,
 					'" . $_SESSION['PaymentDetail' . $Identifier]->SupplierID . "',
 					'" . FormatDateForSQL($_SESSION['PaymentDetail' . $Identifier]->DatePaid) . "',
-					'" . date('Y-m-d H-i-s') . "',
-					'" . $_SESSION['PaymentDetail' . $Identifier]->Paymenttype . "',
+					CURRENT_TIMESTAMP,
+					'" . $_SESSION['PaymentDetail' . $Identifier]->supptrans_suppreference . "',
 					'" . ($_SESSION['PaymentDetail' . $Identifier]->FunctionalExRate / $_SESSION['PaymentDetail' . $Identifier]->ExRate) . "',
 					'" . (-$_SESSION['PaymentDetail' . $Identifier]->Amount - $_SESSION['PaymentDetail' . $Identifier]->Discount) . "',
-					'" . $_SESSION['PaymentDetail' . $Identifier]->Narrative . "'
+					'" . $_SESSION['PaymentDetail' . $Identifier]->supptrans_transtext . "'
 				)";
 
 			$ErrMsg = _('Cannot insert a payment transaction against the supplier because');
@@ -560,7 +586,7 @@ if (isset($_POST['CommitBatch'])) {
 			$DbgMsg = _('Cannot update the supplier record for the date of the last payment made using the SQL');
 			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
-			$_SESSION['PaymentDetail' . $Identifier]->Narrative = $_SESSION['PaymentDetail' . $Identifier]->SupplierID . ' - ' . $_SESSION['PaymentDetail' . $Identifier]->Narrative;
+			$_SESSION['PaymentDetail' . $Identifier]->gltrans_narrative = $_SESSION['PaymentDetail' . $Identifier]->SupplierID . ' - ' . $_SESSION['PaymentDetail' . $Identifier]->gltrans_narrative;
 
 			if ($_SESSION['CompanyRecord']['gllink_creditors'] == 1) {
 				/* then do the supplier control GLTrans */
@@ -578,7 +604,7 @@ if (isset($_POST['CommitBatch'])) {
 								'" . FormatDateForSQL($_SESSION['PaymentDetail' . $Identifier]->DatePaid) . "',
 								'" . $PeriodNo . "',
 								'" . $_SESSION['CompanyRecord']['creditorsact'] . "',
-								'" . $_SESSION['PaymentDetail' . $Identifier]->Narrative . "',
+								'" . $_SESSION['PaymentDetail' . $Identifier]->gltrans_narrative . "',
 								'" . $CreditorTotal . "')";
 				$ErrMsg = _('Cannot insert a GL transaction for the creditors account debit because');
 				$DbgMsg = _('Cannot insert a GL transaction for the creditors account debit using the SQL');
@@ -598,7 +624,7 @@ if (isset($_POST['CommitBatch'])) {
 										'" . FormatDateForSQL($_SESSION['PaymentDetail' . $Identifier]->DatePaid) . "',
 										'" . $PeriodNo . "',
 										'" . $_SESSION['CompanyRecord']['pytdiscountact'] . "',
-										'" . $_SESSION['PaymentDetail' . $Identifier]->Narrative . "',
+										'" . $_SESSION['PaymentDetail' . $Identifier]->gltrans_narrative . "',
 										'" . (-$_SESSION['PaymentDetail' . $Identifier]->Discount / $_SESSION['PaymentDetail' . $Identifier]->ExRate / $_SESSION['PaymentDetail' . $Identifier]->FunctionalExRate) . "'
 					  )";
 					$ErrMsg = _('Cannot insert a GL transaction for the payment discount credit because');
@@ -614,6 +640,11 @@ if (isset($_POST['CommitBatch'])) {
 
 			if ($_SESSION['PaymentDetail' . $Identifier]->Amount != 0) {
 				/* Bank account entry first */
+				if (isset($PaymentItem->Cheque)) {
+					$ChequeRef = $PaymentItem->Cheque;
+				} else {
+					$ChequeRef= 0;
+				}
 				$SQL = "INSERT INTO gltrans ( type,
 											typeno,
 											trandate,
@@ -626,11 +657,10 @@ if (isset($_POST['CommitBatch'])) {
 											'" . $TransNo . "',
 											'" . FormatDateForSQL($_SESSION['PaymentDetail' . $Identifier]->DatePaid) . "',
 											'" . $PeriodNo . "',
-											" . isset($PaymentItem->Cheque) ? $PaymentItem->Cheque : 0 . ",
+											'" . $ChequeRef . "',
 											'" . $_SESSION['PaymentDetail' . $Identifier]->Account . "',
 											'" . $_SESSION['PaymentDetail' . $Identifier]->Narrative . "',
-											'" . ($_SESSION['PaymentDetail' . $Identifier]>Amount / $_SESSION['PaymentDetail' . $Identifier]->ExRate / $_SESSION['PaymentDetail' . $Identifier]->FunctionalExRate) . "')";
-
+											'" . -($_SESSION['PaymentDetail' . $Identifier]->Amount / $_SESSION['PaymentDetail' . $Identifier]->ExRate / $_SESSION['PaymentDetail' . $Identifier]->FunctionalExRate) . "')";
 				$ErrMsg = _('Cannot insert a GL transaction for the bank account credit because');
 				$DbgMsg = _('Cannot insert a GL transaction for the bank account credit using the SQL');
 				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
@@ -716,6 +746,8 @@ if (isset($_POST['CommitBatch'])) {
 		unset($_POST['Paymenttype']);
 		unset($_POST['Currency']);
 		unset($_POST['Narrative']);
+		unset($_POST['gltrans_narrative']);
+		unset($_POST['supptrans_suppreference']);
 		unset($_POST['Amount']);
 		unset($_POST['Discount']);
 		unset($_SESSION['PaymentDetail' . $Identifier]->GLItems);
@@ -1288,27 +1320,52 @@ if ($_SESSION['CompanyRecord']['gllink_creditors'] == 1 and $_SESSION['PaymentDe
 	echo '</tbody>';
 	echo '</table>';
 	echo '<table class="selection">
-		<tr>
-			<td>' . _('Amount of Payment') . ' ' . $_SESSION['PaymentDetail' . $Identifier]->Currency . ':</td>
-			<td><input class="number" type="text" id="Amount" name="Amount" maxlength="12" size="13" value="' . locale_number_format($_SESSION['PaymentDetail' . $Identifier]->Amount, $_SESSION['PaymentDetail' . $Identifier]->CurrDecimalPlaces) . '" /></td>
-		</tr>';
-
-	if (isset($_SESSION['PaymentDetail' . $Identifier]->SupplierID)) {
-		/*So it is a supplier payment so show the discount entry item */
-		echo '<tr>';
-		echo '<td><input type="hidden" name="SuppName" value="' . $_SESSION['PaymentDetail' . $Identifier]->SuppName . '" />
-				' . _('Amount of Discount') . ':</td>
-				<td><input class="number" type="text" name="Discount" maxlength="12" size="13" value="' . $_SESSION['PaymentDetail' . $Identifier]->Discount . '" /></td>
+			<tr>
+				<th colspan="2"><h3>', _('Supplier Transactions Payment Entry'), '</h3></th>
 			</tr>';
-	} //isset($_SESSION['PaymentDetail' . $Identifier]->SupplierID)
-	else {
-		echo '<input type="hidden" name="Discount" value="0" />';
+
+	// If the script was called with a SupplierID, it allows to input a customised gltrans.narrative, supptrans.suppreference and supptrans.transtext:
+	// Info to be inserted on `gltrans`.`narrative` varchar(200):
+	if(!isset($_POST['gltrans_narrative'])) {
+		$_POST['gltrans_narrative'] = '';
 	}
 	echo '<tr>
-			<td>' . _('Cheque/Voucher Number') . '</td>
-			<td><input type="text" name="Cheque" maxlength="12" size="12" /></td>
+			<td>', _('Supplier Narrative'), ':</td>
+			<td><input class="text" maxlength="200" name="gltrans_narrative" size="52" type="text" value="', stripslashes($_POST['gltrans_narrative']), '" /> ', _('Supplier narrative in general ledger transactions. If blank, it uses the bank narrative.'), '</td>
 		</tr>';
-	echo '</table><br />';
+	// Info to be inserted on `supptrans`.`suppreference` varchar(20):
+	if(!isset($_POST['supptrans_suppreference'])) {
+		$_POST['supptrans_suppreference'] = '';
+	}
+	echo '<tr>
+			<td>', _('Supplier Reference'), ':</td>
+			<td><input class="text" maxlength="20" name="supptrans_suppreference" size="22" type="text" value="', stripslashes($_POST['supptrans_suppreference']), '" /> ', _('Supplier reference in supplier transactions. If blank, it uses the payment type.'), '</td>
+		</tr>';
+	// Info to be inserted on `supptrans`.`transtext` text:
+	if(!isset($_POST['supptrans_transtext'])) {
+		$_POST['supptrans_transtext'] = '';
+	}
+	echo '<tr>
+			<td>', _('Transaction Text'), ':</td>
+			<td><input class="text" maxlength="200" name="supptrans_transtext" size="52" type="text" value="', stripslashes($_POST['supptrans_transtext']), '" /> ', _('Transaction text in supplier transactions. If blank, it uses the narrative.'), '</td>
+		</tr>';
+
+	echo '<tr>
+			<td>',
+				_('Amount of Payment'), ' ', $_SESSION['PaymentDetail' . $Identifier]->Currency, ':</td>
+			<td><input class="number" maxlength="12" name="Amount" size="13" type="text" value="', $_SESSION['PaymentDetail' . $Identifier]->Amount, '" /></td>
+		</tr>';
+
+/*	if(isset($_SESSION['PaymentDetail'.$Identifier]->SupplierID)) {//included in a if with same condition.*/ /*So it is a supplier payment so show the discount entry item */
+	echo '<tr>
+			<td><input name="SuppName" type="hidden" value="', $_SESSION['PaymentDetail' . $Identifier]->SuppName, '" />',
+				_('Amount of Discount'), ' ', $_SESSION['PaymentDetail' . $Identifier]->Currency, ':</td>
+			<td><input class="number" maxlength="12" name="Discount" size="13" type="text" value="', $_SESSION['PaymentDetail' . $Identifier]->Discount, '" /></td>
+		</tr>';
+/*	} else {
+		echo '<input type="hidden" name="Discount" value="0" />';
+	}*/
+	echo '</table>';
 	echo '<div class="centre"><input type="submit" name="CommitBatch" value="' . _('Accept and Process Payment') . '" /></div>';
 }
 echo '</form>';

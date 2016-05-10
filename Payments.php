@@ -614,6 +614,11 @@ if (isset($_POST['CommitBatch'])) {
 
 			if ($_SESSION['PaymentDetail' . $Identifier]->Amount != 0) {
 				/* Bank account entry first */
+				if (isset($PaymentItem->Cheque)) {
+					$ChequeRef = $PaymentItem->Cheque;
+				} else {
+					$ChequeRef = 0;
+				}
 				$SQL = "INSERT INTO gltrans ( type,
 											typeno,
 											trandate,
@@ -626,10 +631,10 @@ if (isset($_POST['CommitBatch'])) {
 											'" . $TransNo . "',
 											'" . FormatDateForSQL($_SESSION['PaymentDetail' . $Identifier]->DatePaid) . "',
 											'" . $PeriodNo . "',
-											" . isset($PaymentItem->Cheque) ? $PaymentItem->Cheque : 0 . ",
+											'" . $ChequeRef . "',
 											'" . $_SESSION['PaymentDetail' . $Identifier]->Account . "',
 											'" . $_SESSION['PaymentDetail' . $Identifier]->Narrative . "',
-											'" . ($_SESSION['PaymentDetail' . $Identifier]>Amount / $_SESSION['PaymentDetail' . $Identifier]->ExRate / $_SESSION['PaymentDetail' . $Identifier]->FunctionalExRate) . "')";
+											'" . -($_SESSION['PaymentDetail' . $Identifier]->Amount / $_SESSION['PaymentDetail' . $Identifier]->ExRate / $_SESSION['PaymentDetail' . $Identifier]->FunctionalExRate) . "')";
 
 				$ErrMsg = _('Cannot insert a GL transaction for the bank account credit because');
 				$DbgMsg = _('Cannot insert a GL transaction for the bank account credit using the SQL');

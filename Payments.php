@@ -643,7 +643,7 @@ if (isset($_POST['CommitBatch'])) {
 				if (isset($PaymentItem->Cheque)) {
 					$ChequeRef = $PaymentItem->Cheque;
 				} else {
-					$ChequeRef= 0;
+					$ChequeRef = 0;
 				}
 				$SQL = "INSERT INTO gltrans ( type,
 											typeno,

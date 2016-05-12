@@ -103,7 +103,8 @@ if (!isset($_SESSION['SPL' . $Identifier]->CustomerID)) {
 
 if (isset($_POST['SelectBranch'])) {
 
-	$SQL = "SELECT brname
+	$SQL = "SELECT brname,
+					salesman
 			FROM custbranch
 			WHERE debtorno='" . $_SESSION['SPL' . $Identifier]->CustomerID . "'
 			AND branchcode='" . $_POST['SelectBranch'] . "'";
@@ -111,6 +112,7 @@ if (isset($_POST['SelectBranch'])) {
 	$MyRow = DB_fetch_array($BranchResult);
 	$_SESSION['SPL' . $Identifier]->BranchCode = $_POST['SelectBranch'];
 	$_SESSION['SPL' . $Identifier]->BranchName = $MyRow['brname'];
+	$_SESSION['SPL' . $Identifier]->SalesPerson = $MyRow['salesman'];
 }
 echo '<div class="centre">';
 if (!isset($_SESSION['SPL' . $Identifier]->BranchCode)) {
@@ -418,10 +420,10 @@ if (isset($_POST['Commit'])) {
 			$DbgMsg = _('The SQL statement used to insert the item and failed was');
 			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
-			$SQL = "INSERT INTO stockcosts ('" . $PartCode . "',
-											'" . $SPLLine->Cost . "',
-											0,
-											0,
+			$SQL = "INSERT INTO stockcosts VALUES('" . $PartCode . "',
+											" . $SPLLine->Cost . ",
+											0.0,
+											0.0,
 											CURRENT_TIME,
 											0)";
 			$ErrMsg = _('The cost record for line') . ' ' . $SPLLine->LineNo . ' ' . _('could not be created because');
@@ -513,6 +515,7 @@ if (isset($_POST['Commit'])) {
 											contactphone,
 											contactemail,
 											fromstkloc,
+											salesperson,
 											deliverydate)
 					VALUES ('" . $SalesOrderNo . "',
 							'" . $_SESSION['SPL' . $Identifier]->CustomerID . "',
@@ -531,6 +534,7 @@ if (isset($_POST['Commit'])) {
 							'" . $BranchDetails['phoneno'] . "',
 							'" . $BranchDetails['email'] . "',
 							'" . $_SESSION['SPL' . $Identifier]->StkLocation . "',
+							'" . $_SESSION['SPL' . $Identifier]->SalesPerson . "',
 							'" . $OrderDate . "')";
 
 		$ErrMsg = _('The sales order cannot be added because');
@@ -692,7 +696,7 @@ if (!isset($_POST['ItemDescription'])) {
 echo '<table>';
 echo '<tr>
 		<td>' . _('Ordered item Description') . ':</td>
-		<td><input type="text" name="ItemDescription" size="40" required="required" maxlength="40" value="' . $_POST['ItemDescription'] . '" /></td>
+		<td><input type="text" name="ItemDescription" size="40" maxlength="40" value="' . $_POST['ItemDescription'] . '" /></td>
 	</tr>';
 
 echo '<tr>

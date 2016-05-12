@@ -28,6 +28,7 @@ class SpecialOrder {
 	var $PurchOrderNo;
 	var $Status;
 	var $AllowPrintPO;
+	var $SalesPerson;
 
 	function __construct() {
 		/*Constructor function initialises a new special order object */

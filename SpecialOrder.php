@@ -516,6 +516,8 @@ if (isset($_POST['Commit'])) {
 											contactemail,
 											fromstkloc,
 											salesperson,
+											quotedate,
+											confirmeddate,
 											deliverydate)
 					VALUES ('" . $SalesOrderNo . "',
 							'" . $_SESSION['SPL' . $Identifier]->CustomerID . "',
@@ -535,6 +537,8 @@ if (isset($_POST['Commit'])) {
 							'" . $BranchDetails['email'] . "',
 							'" . $_SESSION['SPL' . $Identifier]->StkLocation . "',
 							'" . $_SESSION['SPL' . $Identifier]->SalesPerson . "',
+							CURRENT_DATE,
+							CURRENT_DATE,
 							'" . $OrderDate . "')";
 
 		$ErrMsg = _('The sales order cannot be added because');
@@ -576,6 +580,7 @@ if (isset($_POST['Commit'])) {
 		unset($_SESSION['SPL' . $Identifier]);
 		/*Clear the PO data to allow a newy to be input*/
 		echo '<br /><br /><a href="' . $RootPath . '/SpecialOrder.php">' . _('Enter A New Special Order') . '</a>';
+		include('includes/footer.inc');
 		exit;
 	}
 	/*end if there were no input errors trapped */

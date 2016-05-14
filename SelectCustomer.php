@@ -46,6 +46,11 @@ if ($_SESSION['geocode_integration'] == 1 and $_SESSION['CustomerID'] != "") {
 	$SQL = "SELECT * FROM geocode_param WHERE 1";
 	$ErrMsg = _('An error occurred in retrieving the information');
 	$Result = DB_query($SQL, $ErrMsg);
+	if (DB_num_rows($Result) == 0) {
+		prnMsg( _('You must first setup the geocode parameters') . ' ' . '<a href="' . $RootPath . '/GeocodeSetup.php">' . _('here') . '</a>', 'error');
+		include('includes/footer.inc');
+		exit;
+	}
 	$MyRow = DB_fetch_array($Result);
 	$SQL = "SELECT debtorsmaster.debtorno,
 					debtorsmaster.name,

@@ -1,6 +1,7 @@
 <?php
 
 $PricesSecurity = 1000; //don't show pricing info unless security token 1000 available to user
+$CostSecurity = 1002; //don't show cost info unless security token 1002 available to user
 $SuppliersSecurity = 9; //don't show supplier purchasing info unless security token 9 available to user
 
 include('includes/session.inc');
@@ -214,6 +215,8 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 					</tr>';
 			}
 		}
+	} //end of if PricesSecuirty allows viewing of prices
+	if (in_array($CostSecurity, $_SESSION['AllowedPageSecurityTokens'])) {
 		if ($MyRow['mbflag'] == 'K' or $MyRow['mbflag'] == 'A') {
 			$CostResult = DB_query("SELECT SUM(bom.quantity * (stockcosts.materialcost+stockcosts.labourcost+stockcosts.overheadcost)) AS cost
 									FROM bom
@@ -232,7 +235,8 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 				<th class="number">', _('Cost'), ':</th>
 				<td class="select">', locale_number_format($Cost, $_SESSION['StandardCostDecimalPlaces']), '</td>
 			</tr>';
-	} //end of if PricesSecuirty allows viewing of prices
+	}
+
 	echo '</table>'; //end of first nested table
 	// Item Category Property mod: display the item properties
 	echo '<table>';

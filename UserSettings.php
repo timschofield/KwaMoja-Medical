@@ -1,7 +1,10 @@
 <?php
+/* Allows the user to change system wide defaults for the theme - appearance, the number of records to show in searches and the language to display messages in */
 
 include('includes/session.inc');
 $Title = _('User Settings');
+$ViewTopic = 'GettingStarted';
+$BookMark = 'UserSettings';
 include('includes/header.inc');
 
 echo '<p class="page_title_text" ><img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/user.png" title="', _('User Settings'), '" alt="" />', ' ', _('User Settings'), '</p>';

@@ -124,6 +124,17 @@ div.centre {
   margin:0 auto;
   text-align:center;
 }
+
+.number {
+ 	text-align:right;
+ 	/* Class selector to horizontal align a number (right) in an element. */
+}
+
+.text {
+ 	text-align:left;
+ 	/* Class selector to horizontal align text (left) in an element. */
+}
+
 input {
 }
 input.number{

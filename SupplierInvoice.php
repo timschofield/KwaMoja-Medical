@@ -1070,7 +1070,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 										'" . $SQLInvoiceDate . "',
 										'" . $PeriodNo . "',
 										'" . $EnteredGLCode->GLCode . "',
-										'" . $_SESSION['SuppTrans']->SupplierID . ' ' . $EnteredGLCode->Narrative . "',
+										'" . $_SESSION['SuppTrans']->SupplierID . ' - ' . $EnteredGLCode->Narrative . "',
 										'" . $EnteredGLCode->Tag . "',
 										'" . $EnteredGLCode->Amount / $_SESSION['SuppTrans']->ExRate . "')";
 
@@ -1098,7 +1098,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 									'" . $SQLInvoiceDate . "',
 									'" . $PeriodNo . "',
 									'" . $_SESSION['SuppTrans']->GRNAct . "',
-									'" . $_SESSION['SuppTrans']->SupplierID . ' ' . _('Shipment charge against') . ' ' . $ShiptChg->ShiptRef . "',
+									'" . $_SESSION['SuppTrans']->SupplierID . ' - ' . _('Shipment charge against') . ' ' . $ShiptChg->ShiptRef . "',
 									'" . $ShiptChg->Amount / $_SESSION['SuppTrans']->ExRate . "')";
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The general ledger transaction for the shipment') . ' ' . $ShiptChg->ShiptRef . ' ' . _('could not be added because');

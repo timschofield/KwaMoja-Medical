@@ -228,6 +228,16 @@ text-align:center;
 margin:0 auto 10px;
 }
 
+.number {
+ 	text-align:right;
+ 	/* Class selector to horizontal align a number (right) in an element. */
+}
+
+.text {
+ 	text-align:left;
+ 	/* Class selector to horizontal align text (left) in an element. */
+}
+
 input:hover {
 background-color:#e3e5f5;
 border-color:gray;

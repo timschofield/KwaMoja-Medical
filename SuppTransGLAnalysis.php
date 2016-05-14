@@ -11,6 +11,8 @@ include('includes/session.inc');
 
 $Title = _('Supplier Transaction General Ledger Analysis');
 
+$ViewTopic = 'AccountsPayable';
+$BookMark = 'SuppTransGLAnalysis';
 include('includes/header.inc');
 
 if (!isset($_SESSION['SuppTrans'])) {
@@ -100,9 +102,10 @@ echo '</p>
 			<tr>
 				<th class="SortedColumn">' . _('Account') . '</th>
 				<th class="SortedColumn">' . _('Name') . '</th>
-				<th>' . _('Amount') . '<br />' . _('in') . ' ' . $_SESSION['SuppTrans']->CurrCode . '</th>
+				<th class="SortedColumn">' . _('Amount') . '<br />(' . $_SESSION['SuppTrans']->CurrCode . ')</th>
 				<th>' . _('Narrative') . '</th>
 				<th>' . _('Tag') . '</th>
+				<th colspan="2">&nbsp;</th>
 			</tr>
 		</thead>';
 $TotalGLValue = 0;
@@ -111,11 +114,11 @@ echo '<tbody>';
 foreach ($_SESSION['SuppTrans']->GLCodes as $EnteredGLCode) {
 
 	echo '<tr>
-			<td>' . $EnteredGLCode->GLCode . '</td>
-			<td>' . $EnteredGLCode->GLActName . '</td>
+			<td class="text">' . $EnteredGLCode->GLCode . '</td>
+			<td class="text">' . $EnteredGLCode->GLActName . '</td>
 			<td class="number">' . locale_number_format($EnteredGLCode->Amount, $_SESSION['SuppTrans']->CurrDecimalPlaces) . '</td>
-			<td>' . $EnteredGLCode->Narrative . '</td>
-			<td>' . $EnteredGLCode->Tag . ' - ' . $EnteredGLCode->TagName . '</td>
+			<td class="text">' . $EnteredGLCode->Narrative . '</td>
+			<td class="text">' . $EnteredGLCode->Tag  . ' - ' . $EnteredGLCode->TagName . '</td>
 			<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Edit=' . $EnteredGLCode->Counter . '">' . _('Edit') . '</a></td>
 			<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Delete=' . $EnteredGLCode->Counter . '">' . _('Delete') . '</a></td>
 		</tr>';
@@ -127,6 +130,7 @@ echo '</tbody>';
 echo '<tr>
 		<td colspan="2" class="number">' . _('Total') . ':</td>
 		<td class="number">' . locale_number_format($TotalGLValue, $_SESSION['SuppTrans']->CurrDecimalPlaces) . '</td>
+		<td colspan="4">&nbsp;</td>
 	</tr>
 	</table>';
 
@@ -208,7 +212,7 @@ if (!isset($_POST['Amount'])) {
 	$_POST['Amount'] = 0;
 }
 echo '<tr>
-		<td>' . _('Amount') . ':</td>
+		<td>', _('Amount'), ' (', $_SESSION['SuppTrans']->CurrCode, '):</td>
 		<td><input type="text" class="number" name="Amount" size="12" required="required" maxlength="11" value="' . locale_number_format($_POST['Amount'], $_SESSION['SuppTrans']->CurrDecimalPlaces) . '" /></td>
 	</tr>';
 

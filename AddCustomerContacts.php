@@ -1,7 +1,11 @@
 <?php
 
+/* Adds customer contacts */
+
 include('includes/session.inc');
 $Title = _('Customer Contacts');
+$ViewTopic = 'AccountsReceivable';
+$BookMark = 'AddCustomerContacts';
 include('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');
 
@@ -15,7 +19,9 @@ if (isset($_POST['DebtorNo'])) {
 } elseif (isset($_GET['DebtorNo'])) {
 	$DebtorNo = $_GET['DebtorNo'];
 }
-echo '<div class="toplink"><a href="' . $RootPath . '/Customers.php?DebtorNo=' . urlencode($DebtorNo) . '">' . _('Back to Customers') . '</a></div>';
+echo '<div class="toplink">
+		<a class="noPrint" href="' . $RootPath . '/Customers.php?DebtorNo=' . urlencode($DebtorNo) . '">' . _('Back to Customers') . '</a>
+	</div>';
 $NameSql = "SELECT name FROM debtorsmaster WHERE debtorno='" . $DebtorNo . "'";
 $Result = DB_query($NameSql);
 $MyRow = DB_fetch_array($Result);
@@ -120,16 +126,19 @@ if (!isset($Id)) {
 	//echo '<br />'.$SQL;
 
 	echo '<table class="selection">';
-	echo '<tr>
-			<th>' . _('Name') . '</th>
-			<th>' . _('Role') . '</th>
-			<th>' . _('Phone no') . '</th>
-			<th>' . _('Email') . '</th>
-			<th>' . _('Notes') . '</th>
-		</tr>';
+	echo '<thead>
+			<tr>
+				<th class="text">', _('Name'), '</th>
+				<th class="text">', _('Role'), '</th>
+				<th class="text">', _('Phone no'), '</th>
+				<th class="text">', _('Email'), '</th>
+				<th class="text">', _('Notes'), '</th>
+				<th class="noPrint" colspan="2">&nbsp;</th>
+			</tr>
+		</thead>';
 
 	$k = 0; //row colour counter
-
+	echo '<tbody>';
 	while ($MyRow = DB_fetch_array($Result)) {
 		if ($k == 1) {
 			echo '<tr class="OddTableRows">';
@@ -138,17 +147,18 @@ if (!isset($Id)) {
 			echo '<tr class="EvenTableRows">';
 			$k = 1;
 		}
-		printf('<td>%s</td>
-				<td>%s</td>
-				<td>%s</td>
-				<td><a href="mailto:%s">%s</a></td>
-				<td>%s</td>
-				<td><a href="%sId=%s&amp;DebtorNo=%s">' . _('Edit') . '</a></td>
-				<td><a href="%sId=%s&amp;DebtorNo=%s&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this contact?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td></tr>', $MyRow['contactname'], $MyRow['role'], $MyRow['phoneno'], $MyRow['email'], $MyRow['email'], $MyRow['notes'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['contid'], $MyRow['debtorno'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['contid'], $MyRow['debtorno']);
+		echo '<td class="text">', $MyRow['contactname'], '</td>
+				<td class="text">', $MyRow['role'], '</td>
+				<td class="text">', $MyRow['phoneno'], '</td>
+				<td class="text"><a href="mailto:', $MyRow['email'], '">', $MyRow['email'], '</a></td>
+				<td class="text">', $MyRow['notes'], '</td>
+				<td class="noprint"><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', 'Id=', $MyRow['contid'], '&DebtorNo=', $MyRow['debtorno'], '">' . _('Edit') . '</a></td>
+				<td class="noprint"><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', 'Id=', $MyRow['contid'], '&DebtorNo=', $MyRow['debtorno'], '&delete=1" onclick="return confirm(\'' . _('Are you sure you wish to delete this contact?') . '\');">' . _('Delete'). '</a></td></tr>';
 
 	}
 	//END WHILE LIST LOOP
-	echo '</table><br />';
+	echo '</tbody>
+		</table>';
 }
 if (isset($Id)) {
 	echo '<div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?DebtorNo=' . $DebtorNo . '">' . _('Review all contacts for this Customer') . '</a></div>';
@@ -187,14 +197,16 @@ if (!isset($_GET['delete'])) {
 		echo '<input type="hidden" name="DebtorNo" value="' . $_POST['DebtorNo'] . '" />';
 		echo '<br />
 				<table class="selection">
-				<tr>
-					<td>' . _('Contact Code') . ':</td>
-					<td>' . $_POST['Con_ID'] . '</td>
-				</tr>';
+					<thead>
+						<tr>
+							<td>' . _('Contact Code') . ':</td>
+							<td>' . $_POST['Con_ID'] . '</td>
+						</tr>
+					</thead>';
 	} else {
 		echo '<table class="selection">';
 	}
-
+	echo '<tbody>';
 	echo '<tr>
 			<td>' . _('Contact Name') . '</td>';
 	if (isset($_POST['ContactName'])) {
@@ -239,6 +251,7 @@ if (!isset($_GET['delete'])) {
 		echo '<td><textarea name="ContactNotes" rows="3" cols="40"></textarea></td>';
 	}
 	echo '</tr>';
+	echo '</tbody>';
 	echo '<tr>
 			<td colspan="2">
 				<div class="centre">

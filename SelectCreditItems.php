@@ -965,11 +965,16 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 					echo '<tr class="OddTableRows">';
 					++$k;
 				}
-				if (file_exists($_SESSION['part_pics_dir'] . '/' . mb_strtoupper($MyRow['stockid']) . '.jpg')) {
+
+				$SupportedImgExt = array('png', 'jpg', 'jpeg');
+				$ImageFile = reset((glob($_SESSION['part_pics_dir'] . '/' . $MyRow['stockid'] . '.{' . implode(",", $SupportedImgExt) . '}', GLOB_BRACE)));
+				if (extension_loaded('gd') && function_exists('gd_info') && file_exists ($ImageFile) ) {
+					$ImageSource = '<img src="GetStockImage.php?automake=1&textcolor=FFFFFF&bgcolor=CCCCCC&StockID=' . urlencode($MyRow['stockid']) . '&text=&width=64&height=64" alt="" />';
 					printf('<td><input type="submit" name="NewItem" value="%s" /></td>
 							<td>%s</td>
 							<td>%s</td>
-							<td><img src="GetStockImage.php?automake=1&textcolor=FFFFFF&bgcolor=CCCCCC&StockID=%s&text=&width=120&height=120" /></td></tr>', $MyRow['stockid'], $MyRow['description'], $MyRow['units'], $MyRow['stockid']);
+							<td>' . $ImageSource . '</td>
+						</tr>', $MyRow['stockid'], $MyRow['description'], $MyRow['units'], $MyRow['stockid']);
 				} else { //don't try to show the image
 					printf('<td><input type="submit" name="NewItem" value="%s" /></td>
 						<td>%s</td>

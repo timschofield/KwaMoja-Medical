@@ -63,15 +63,18 @@ echo '<div class="toplink">
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Stock') . '" alt="" />' . ' ' . $Title . '
 	</p>';
 
+$SupportedImgExt = array('png', 'jpg', 'jpeg');
+
 if (isset($_FILES['ItemPicture']) and $_FILES['ItemPicture']['name'] != '') {
 
+	$ImgExt = pathinfo($_FILES['ItemPicture']['name'], PATHINFO_EXTENSION);
 	$Result = $_FILES['ItemPicture']['error'];
 	$UploadTheFile = 'Yes'; //Assume all is well to start off with
-	$FileName = $_SESSION['part_pics_dir'] . '/' . $StockId . '.jpg';
+	$FileName = $_SESSION['part_pics_dir'] . '/' . $StockID . '.' . $ImgExt;
 
 	//But check for the worst
-	if (mb_strtoupper(mb_substr(trim($_FILES['ItemPicture']['name']), mb_strlen($_FILES['ItemPicture']['name']) - 3)) != 'JPG') {
-		prnMsg(_('Only jpg files are supported - a file extension of .jpg is expected'), 'warn');
+	if (!in_array ($ImgExt, $SupportedImgExt)) {
+		prnMsg(_('Only ' . implode(", ", $SupportedImgExt) . ' files are supported - a file extension of ' . implode(", ", $SupportedImgExt) . ' is expected'),'warn');
 		$UploadTheFile = 'No';
 	} elseif ($_FILES['ItemPicture']['size'] > ($_SESSION['MaxImageSize'] * 1024)) { //File Size Check
 		prnMsg(_('The file size is over the maximum allowed. The maximum size allowed in KB is') . ' ' . $_SESSION['MaxImageSize'], 'warn');
@@ -82,12 +85,15 @@ if (isset($_FILES['ItemPicture']) and $_FILES['ItemPicture']['name'] != '') {
 	} elseif ($_FILES['ItemPicture']['error'] == 6 ) {  //upload temp directory check
 		prnMsg( _('No tmp directory set. You must have a tmp directory set in your PHP for upload of files.'), 'warn');
 		$UploadTheFile ='No';
-	} elseif (file_exists($FileName)) {
-		prnMsg(_('Attempting to overwrite an existing item image'), 'warn');
-		$Result = unlink($FileName);
-		if (!$Result) {
-			prnMsg(_('The existing image could not be removed'), 'error');
-			$UploadTheFile = 'No';
+	}
+	foreach ($SupportedImgExt as $ext) {
+		$File = $_SESSION['part_pics_dir'] . '/' . $StockID . '.' . $ext;
+		if (file_exists ($File) ) {
+			$Result = unlink($File);
+			if (!$Result){
+				prnMsg(_('The existing image could not be removed'), 'error');
+				$UploadTheFile ='No';
+			}
 		}
 	}
 
@@ -1133,32 +1139,37 @@ foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
 	}
 }
 echo '<tr>
-		<td>' . _('Image File (.jpg)') . ':</td>
+		<td>' .  _('Image File (' . implode(", ", $SupportedImgExt) . ')') . ':</td>
 		<td><input type="file" id="ItemPicture" name="ItemPicture" />
 		<br /><input type="checkbox" name="ClearImage" id="ClearImage" value="1" > '._('Clear Image').'
 		</td>';
 
-if (function_exists('imagecreatefromjpeg') and isset($StockId) and !empty($StockId)) {
-	$StockImgLink = '<img src="GetStockImage.php?automake=1&amp;textcolor=FFFFFF&amp;bgcolor=CCCCCC' . '&amp;StockID=' . urlencode($StockId) . '&amp;text=' . '&amp;width=100' . '&amp;height=100' . '" alt="" />';
+$ImageFile = reset((glob($_SESSION['part_pics_dir'] . '/' . $StockID . '.{' . implode(",", $SupportedImgExt) . '}', GLOB_BRACE)));
+if (extension_loaded('gd') and function_exists('gd_info') and isset($StockID) and !empty($StockID)) {
+	$StockImgLink = '<img src="GetStockImage.php?automake=1&amp;textcolor=FFFFFF&amp;bgcolor=CCCCCC' . '&amp;StockID=' . urlencode($StockId) . '&amp;text=' . '&amp;width=64' . '&amp;height=64' . '" alt="" />';
+} else if (file_exists ($ImageFile)) {
+	$StockImgLink = '<img src="' . $ImageFile . '" height="64" width="64" />';
 } else {
-	if(isset($StockId) and  !empty($StockId) and file_exists($_SESSION['part_pics_dir'] . '/' . $StockId . '.jpg')) {
-		$StockImgLink = '<img src="GetStockImage.php?automake=1&amp;textcolor=FFFFFF&amp;bgcolor=CCCCCC&amp;StockID=' . $StockId . '&amp;text=&amp;width=120&amp;height=120" alt="" />';
-		if (isset($_POST['ClearImage']) ) {
-			//workaround for many variations of permission issues that could cause unlink fail
-			@unlink($_SESSION['part_pics_dir'] . '/' .$StockId.'.jpg');
-			if(is_file($_SESSION['part_pics_dir'] . '/' .$StockId.'.jpg')) {
-				prnMsg(_('You do not have access to delete this item image file.'),'error');
-			} else {
-				$StockImgLink = _('No Image');
-			}
-		}
-	} else {
-		$StockImgLink = _('No Image');
-	}
+	$StockImgLink = _('No Image');
 }
 
 if ($StockImgLink != _('No Image')) {
 	echo '<td>' . _('Image') . '<br />' . $StockImgLink . '</td>';
+}
+
+if (isset($_POST['ClearImage'])) {
+	foreach ($SupportedImgExt as $ext) {
+		$File = $_SESSION['part_pics_dir'] . '/' . $StockID . '.' . $ext;
+		if (file_exists($File) ) {
+			//workaround for many variations of permission issues that could cause unlink fail
+			@unlink($File);
+			if (is_file($ImageFile)) {
+				prnMsg(_('You do not have access to delete this item image file.'), 'error');
+			} else {
+				$StockImgLink = _('No Image');
+			}
+		}
+	}
 }
 echo '</tr>';
 

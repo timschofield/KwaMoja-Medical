@@ -703,15 +703,15 @@ if (!isset($_POST['IssueItem'])) { //no item selected to issue yet
 
 			while ($MyRow = DB_fetch_array($SearchResult)) {
 
+				$SupportedImgExt = array('png', 'jpg', 'jpeg');
 				if (!in_array($MyRow['stockid'], $ItemCodes)) {
-					if (function_exists('imagecreatefrompng')) {
-						$ImageSource = '<img src="GetStockImage.php?automake=1&amp;textcolor=FFFFFF&amp;bgcolor=CCCCCC&amp;StockID=' . urlencode($MyRow['stockid']) . '&amp;text=&amp;width=64&amp;height=64" alt="" />';
+					$ImageFile = reset((glob($_SESSION['part_pics_dir'] . '/' . $MyRow['stockid'] . '.{' . implode(",", $SupportedImgExt) . '}', GLOB_BRACE)));
+					if (extension_loaded('gd') and function_exists('gd_info') and file_exists ($ImageFile)) {
+						$ImageSource = '<img src="GetStockImage.php?automake=1&textcolor=FFFFFF&bgcolor=CCCCCC&StockID=' . urlencode($MyRow['stockid']) . '&text=&width=64&height=64" alt="" />';
+					} else if (file_exists ($ImageFile)) {
+						$ImageSource = '<img src="' . $ImageFile . '" height="64" width="64" />';
 					} else {
-						if (file_exists($_SERVER['DOCUMENT_ROOT'] . $RootPath . '/' . $_SESSION['part_pics_dir'] . '/' . $MyRow['stockid'] . '.jpg')) {
-							$ImageSource = '<img src="' . $_SERVER['DOCUMENT_ROOT'] . $RootPath . '/' . $_SESSION['part_pics_dir'] . '/' . $MyRow['stockid'] . '.jpg" alt="" />';
-						} else {
-							$ImageSource = _('No Image');
-						}
+						$ImageSource = _('No Image');
 					}
 
 					if ($k == 1) {

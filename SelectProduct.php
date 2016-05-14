@@ -450,7 +450,10 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 	if ($Its_A_Kitset_Assembly_Or_Dummy == false) {
 		echo '<a href="', $RootPath, '/PO_SelectOSPurchOrder.php?SelectedStockItem=', $UrlEncodedStockId, '">', _('Search Outstanding Purchase Orders'), '</a>';
 		echo '<a href="', $RootPath, '/PO_SelectPurchOrder.php?SelectedStockItem=', $UrlEncodedStockId, '">', _('Search All Purchase Orders'), '</a>';
-		echo '<a href="', $RootPath, '/', $_SESSION['part_pics_dir'], '/', $StockId, '.jpg">', _('Show Part Picture (if available)'), '</a>';
+
+		$SupportedImgExt = array('png', 'jpg', 'jpeg');
+		$ImageFile = reset((glob($_SESSION['part_pics_dir'] . '/' . $StockID . '.{' . implode(",", $SupportedImgExt) . '}', GLOB_BRACE)));
+		echo '<a href="' . $RootPath . '/' . $ImageFile . '" target="_blank">' . _('Show Part Picture (if available)') . '</a>';
 	}
 	if ($Its_A_Dummy == false) {
 		echo '<a href="', $RootPath, '/BOMInquiry.php?StockID=', $UrlEncodedStockId . '">', _('View Costed Bill Of Material'), '</a>';
@@ -466,9 +469,11 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 		echo '<a href="', $RootPath, '/StockAdjustments.php?StockID=', $UrlEncodedStockId, '">', _('Quantity Adjustments'), '</a>';
 		echo '<a href="', $RootPath, '/StockTransfers.php?StockID=', $UrlEncodedStockId, '&amp;NewTransfer=true">', _('Location Transfers'), '</a>';
 		//show the item image if it has been uploaded
-		if (function_exists('imagecreatefromjpeg')) {
+		if (extension_loaded('gd') and function_exists('gd_info') and file_exists($ImageFile)) {
 			if ($_SESSION['ShowStockidOnImages'] == '0') {
 				$StockImgLink = '<img src="GetStockImage.php?automake=1&amp;textcolor=FFFFFF&amp;bgcolor=CCCCCC' . '&amp;StockID=' . $UrlEncodedStockId . '&amp;text=' . '&amp;width=100' . '&amp;height=100' . '" alt="" />';
+			} else if (file_exists($ImageFile)) {
+				$StockImgLink = '<img src="' . $ImageFile . '" height="100" width="100" />';
 			} else {
 				$StockImgLink = '<img src="GetStockImage.php?automake=1&amp;textcolor=FFFFFF&amp;bgcolor=CCCCCC' . '&amp;StockID=' . $UrlEncodedStockId . '&amp;text=' . $UrlEncodedStockId . '&amp;width=100' . '&amp;height=100' . '" alt="" />';
 			}

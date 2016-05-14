@@ -724,14 +724,15 @@ if (isset($_POST['Search'])) {
 				$k = 1;
 			}
 
-			$FileName = $MyRow['stockid'] . '.jpg';
-			if (file_exists($_SESSION['part_pics_dir'] . '/' . $FileName)) {
-
-				$ImageSource = '<img src="' . $RootPath . '/' . $_SESSION['part_pics_dir'] . '/' . $FileName . '" width="50" height="50" />';
-
-			} else {
-				$ImageSource = '<i>' . _('No Image') . '</i>';
-			}
+			$SupportedImgExt = array('png', 'jpg', 'jpeg');
+			$ImageFile = reset((glob($_SESSION['part_pics_dir'] . '/' . $MyRow['stockid'] . '.{' . implode(",", $SupportedImgExt) . '}', GLOB_BRACE)));
+			if (extension_loaded('gd') and function_exists('gd_info') and file_exists($ImageFile)) {
+				$ImageSource = '<img src="GetStockImage.php?automake=1&textcolor=FFFFFF&bgcolor=CCCCCC&StockID=' . urlencode($MyRow['stockid']) . '&text=&width=64&height=64" alt="" />';
+			} else if (file_exists ($ImageFile)) {
+				$ImageSource = '<img src="' . $ImageFile . '" height="64" width="64" />';
+ 			} else {
+				$ImageSource = _('No Image');
+ 			}
 
 			echo '<td>' . $MyRow['stockid'] . '</td>
 					<td>' . $MyRow['description'] . '</td>

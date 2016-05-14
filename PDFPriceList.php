@@ -237,14 +237,15 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 			$YPos -= $FontSize;
 
 			// Prints item image:
+			$SupportedImgExt = array('png','jpg','jpeg');
+			$ImageFile = reset((glob($_SESSION['part_pics_dir'] . '/' . $PriceList['stockid'] . '.{' . implode(",", $SupportedImgExt) . '}', GLOB_BRACE)));
 			$YPosImage = $YPos;// Initializes the image bottom $YPos.
 
-			if (file_exists($_SESSION['part_pics_dir'] . '/' . $PriceList['stockid'] . '.jpg')) {
-				$img = imagecreatefromjpeg($_SESSION['part_pics_dir'] . '/' . $PriceList['stockid'] . '.jpg');
+			if (file_exists($ImageFile)) {
 				if($YPos-36 < $Bottom_Margin) {// If the image bottom reaches the bottom margin, do PageHeader().
 					PageHeader();
 				}
-				$LeftOvers = $PDF->Image($_SESSION['part_pics_dir'] . '/' . $PriceList['stockid'] . '.jpg', $Left_Margin + 3, $Page_Height - $YPos, 36, 36);
+				$LeftOvers = $PDF->Image($ImageFile, $Left_Margin + 3, $Page_Height - $YPos, 36, 36);
 				$YPosImage = $YPos - 36;// Stores the $YPos of the image bottom (see bottom).
 			}
 			// Prints stockmaster.longdescription:

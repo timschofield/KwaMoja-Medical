@@ -1153,7 +1153,7 @@ if (!isset($_GET['Edit'])) {
 			<a class="FontSize" target="_blank" href="', $RootPath, '/Stocks.php">', _('Insert New Item'), '</a></td>
 		</tr>
 		<tr>
-			<td colspan="2" class="number">', _('Only items defined as from this Supplier'), '&nbsp;';
+			<td>' . _('Only items defined as from this Supplier');
 	if (isset($_POST['SupplierItemsOnly']) and $_POST['SupplierItemsOnly'] == 'on') {
 		echo '<input type="checkbox" name="SupplierItemsOnly" checked="checked"  />';
 	} else {
@@ -1199,11 +1199,14 @@ if (isset($SearchResult)) {
 			$k = 1;
 		}
 
-		$FileName = $MyRow['stockid'] . '.jpg';
-		if (file_exists($_SESSION['part_pics_dir'] . '/' . $FileName)) {
-			$ImageSource = '<img src="' . $RootPath . '/' . $_SESSION['part_pics_dir'] . '/' . $MyRow['stockid'] . '.jpg" width="50" height="50" />';
+		$SupportedImgExt = array('png', 'jpg', 'jpeg');
+		$ImageFile = reset((glob($_SESSION['part_pics_dir'] . '/' . $MyRow['stockid'] . '.{' . implode(",", $SupportedImgExt) . '}', GLOB_BRACE)));
+		if (extension_loaded('gd') and function_exists('gd_info') and file_exists ($ImageFile)) {
+			$ImageSource = '<img src="GetStockImage.php?automake=1&amp;textcolor=FFFFFF&amp;bgcolor=CCCCCC&StockID=' . urlencode($MyRow['stockid']) . '&text=&width=64&height=64" alt="" />';
+		} else if (file_exists ($ImageFile)) {
+			$ImageSource = '<img src="' . $ImageFile . '" height="100" width="100" />';
 		} else {
-			$ImageSource = '<i>' . _('No Image') . '</i>';
+			$ImageSource = _('No Image');
 		}
 
 		/*Get conversion factor and supplier units if any */

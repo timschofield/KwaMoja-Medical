@@ -22,11 +22,10 @@ if (isset($_GET['OldStockID']) or isset($_POST['OldStockID'])) { //we are clonin
 	$_POST['OldStockID'] = '';
 	$_POST['StockID'] = '';
 	$InputError = 1;
-	$Errors[0] = 'OldStockID';
 	prnMsg(_('To use this script it must be called with the Stock ID of the item to be cloned. Please use the "Clone This Item" option in the Items Menu.'), 'error');
 }
 
-$ItemDescriptionLanguagesArray = explode(',',$_SESSION['ItemDescriptionLanguages']);
+$ItemDescriptionLanguagesArray = explode(',', $_SESSION['ItemDescriptionLanguages']);
 
 if (isset($_POST['StockID']) and !empty($_POST['StockID']) and !isset($_POST['UpdateCategories'])) {
 	$SQL = "SELECT COUNT(stockid)
@@ -40,7 +39,6 @@ if (isset($_POST['StockID']) and !empty($_POST['StockID']) and !isset($_POST['Up
 		$_POST['New'] = 1;
 	} else {
 		prnMsg(_('The stock code entered is already in the database - duplicate stock codes are prohibited by the system. Try choosing an alternative stock code'), 'error');
-		$Errors[1] = 'DuplicateStockID';
 		$_POST['New'] = 0;
 		$_POST['StockID'] = $_POST['OldStockID'];
 	}
@@ -51,16 +49,36 @@ echo '<div class="toplink"><a href="' . $RootPath . '/SelectProduct.php">' . _('
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Stock') . '" alt="" />' . ' ' . $Title . '
 	</p>';
 echo '<div class="page_help_text">' . _('Cloning will create a new item with the same properties, image, cost, purchasing and pricing data as the selected item. Item image and general item details can be changed below prior to cloning.') . '</div>';
+
+$SupportedImgExt = array(
+	'png',
+	'jpg',
+	'jpeg'
+);
+
+// Check extention for existing old file
+foreach ($SupportedImgExt as $ext) {
+	$OldFile = $_SESSION['part_pics_dir'] . '/' . $_POST['OldStockID'] . '.' . $ext;
+	if (file_exists($OldFile)) {
+		break;
+		$ext = pathinfo($OldFile, PATHINFO_EXTENSION);
+	}
+}
+
 if (!empty($_POST['OldStockID'])) { //only show this if there is a valid call to this script
 	if (isset($_FILES['ItemPicture']) and $_FILES['ItemPicture']['name'] != '') { //we are uploading a new file
-		$newfilename = ($_POST['OldStockID'] == $_POST['StockID']) or $_POST['StockID'] == '' ? $_POST['OldStockID'] . '-TEMP' : $_POST['StockID']; //so we can add a new file but not remove an existing item file
+		$NewFileName = ($_POST['OldStockID'] == $_POST['StockID']) or $_POST['StockID'] == '' ? $_POST['OldStockID'] . '-TEMP' : $_POST['StockID']; //so we can add a new file but not remove an existing item file
 		$Result = $_FILES['ItemPicture']['error'];
 		$UploadTheFile = 'Yes'; //Assume all is well to start off with
-		$FileName = $_SESSION['part_pics_dir'] . '/' . $newfilename . '.jpg';
+		if (pathinfo($_FILES['ItemPicture']['name'], PATHINFO_EXTENSION) != $ext) {
+			$ext = pathinfo($_FILES['ItemPicture']['name'], PATHINFO_EXTENSION);
+		}
+
+		$FileName = $_SESSION['part_pics_dir'] . '/' . $NewFileName . '.' . $ext;
 
 		//But check for the worst
-		if (mb_strtoupper(mb_substr(trim($_FILES['ItemPicture']['name']), mb_strlen($_FILES['ItemPicture']['name']) - 3)) != 'JPG') {
-			prnMsg(_('Only jpg files are supported - a file extension of .jpg is expected'), 'warn');
+		if (!in_array($ext, $SupportedImgExt)) {
+			prnMsg(_('Only ' . implode(", ", $SupportedImgExt) . ' files are supported - a file extension of ' . implode(", ", $SupportedImgExt) . ' is expected'), 'warn');
 			$UploadTheFile = 'No';
 		} elseif ($_FILES['ItemPicture']['size'] > ($_SESSION['MaxImageSize'] * 1024)) { //File Size Check
 			prnMsg(_('The image file size is over the maximum allowed. The maximum size allowed in KB is') . ' ' . $_SESSION['MaxImageSize'], 'warn');
@@ -85,29 +103,26 @@ if (!empty($_POST['OldStockID'])) { //only show this if there is a valid call to
 			$Result = move_uploaded_file($_FILES['ItemPicture']['tmp_name'], $FileName);
 			$message = ($Result) ? _('File url') . '<a href="' . $FileName . '">' . $FileName . '</a>' : _('Something is wrong with uploading a file');
 		}
-	} elseif (!empty($_POST['StockID']) and ($_POST['StockID'] != $_POST['OldStockID']) and file_exists($_SESSION['part_pics_dir'] . '/' . $_POST['OldStockID'] . '-TEMP' . '.jpg')) {
+	} elseif (!empty($_POST['StockID']) and ($_POST['StockID'] != $_POST['OldStockID']) and file_exists($_SESSION['part_pics_dir'] . '/' . $_POST['OldStockID'] . '-TEMP' . '.' . $ext)) {
 		//rename the temp one to the new name
-		$oldfile = $_SESSION['part_pics_dir'] . '/' . $_POST['OldStockID'] . '-TEMP' . '.jpg';
-		if (!copy($oldfile, $_SESSION['part_pics_dir'] . '/' . $_POST['StockID'] . '.jpg')) {
+		$OldFile = $_SESSION['part_pics_dir'] . '/' . $_POST['OldStockID'] . '-TEMP' . '.' . $ext;
+		if (!copy($OldFile, $_SESSION['part_pics_dir'] . '/' . $_POST['StockID'] . '.' . $ext)) {
 			prnMsg(_('There was an image file to clone but there was an error copying. Please upload a new image if required.'), 'warn');
 		}
-		@unlink($_SESSION['part_pics_dir'] . '/' . $_POST['OldStockID'] . '-TEMP' . '.jpg');
-		if (is_file($_SESSION['part_pics_dir'] . '/' . $_POST['OldStockID'] . '-TEMP' . '.jpg')) {
+		@unlink($_SESSION['part_pics_dir'] . '/' . $_POST['OldStockID'] . '-TEMP' . '.' . $ext);
+		if (is_file($_SESSION['part_pics_dir'] . '/' . $_POST['OldStockID'] . '-TEMP' . '.' . $ext)) {
 			prnMsg(_('Unable to delete the temporary image file for cloned item.'), 'error');
 		} else {
 			$StockImgLink = _('No Image');
 		}
-	} elseif (isset($_POST['OldStockID']) and file_exists($_SESSION['part_pics_dir'] . '/' . $_POST['OldStockID'] . '.jpg') and !file_exists($_SESSION['part_pics_dir'] . '/' . $_POST['OldStockID'] . '-TEMP' . '.jpg')) {
+	} elseif (isset($_POST['OldStockID']) and file_exists($_SESSION['part_pics_dir'] . '/' . $_POST['OldStockID'] . '.' . $ext) and !file_exists($_SESSION['part_pics_dir'] . '/' . $_POST['OldStockID'] . '-TEMP' . '.' . $ext)) {
 		//we should copy
-		if (!copy($_SESSION['part_pics_dir'] . '/' . $_POST['OldStockID'] . '.jpg', $_SESSION['part_pics_dir'] . '/' . $_POST['StockID'] . '.jpg')) {
+		if (!copy($_SESSION['part_pics_dir'] . '/' . $_POST['OldStockID'] . '.' . $ext, $_SESSION['part_pics_dir'] . '/' . $_POST['StockID'] . '.' . $ext)) {
 			prnMsg(_('There was an image file to clone but there was an error copying. Please upload a new image if required.'), 'warn');
 		}
 	}
 }
-if (isset($Errors)) {
-	unset($Errors);
-}
-$Errors = array();
+
 $InputError = 0;
 if (isset($_POST['submit'])) {
 	//initialise no input errors assumed initially before we test
@@ -120,136 +135,92 @@ if (isset($_POST['submit'])) {
 	if (!isset($_POST['Description']) or mb_strlen($_POST['Description']) > 50 or mb_strlen($_POST['Description']) == 0) {
 		$InputError = 1;
 		prnMsg(_('The stock item description must be entered and be fifty characters or less long') . '. ' . _('It cannot be a zero length string either') . ' - ' . _('a description is required'), 'error');
-		$Errors[$i] = 'Description';
-		++$i;
 	}
 	if (mb_strlen($_POST['LongDescription']) == 0) {
 		$InputError = 1;
 		prnMsg(_('The stock item description cannot be a zero length string') . ' - ' . _('a long description is required'), 'error');
-		$Errors[$i] = 'LongDescription';
-		++$i;
 	}
 	if ($_POST['StockID'] == $_POST['OldStockID']) {
 		$InputError = 1;
 		prnMsg(_('The Stock Item code must be unique. Please re-enter a unique Stock Item code.'), 'error');
-		$Errors[$i] = 'StockID';
-		++$i;
 	}
 	if (mb_strlen($_POST['StockID']) == 0) {
 		$InputError = 1;
 		prnMsg(_('The Stock Item code cannot be empty. Please enter a unique Stock Item code.'), 'error');
-		$Errors[$i] = 'StockID';
-		++$i;
 	}
 	if (ContainsIllegalCharacters($_POST['StockID']) or mb_strpos($_POST['StockID'], ' ')) {
 		$InputError = 1;
 		prnMsg(_('The stock item code cannot contain any of the following characters') . " - ' &amp; + \" \\ ." . _('or a space'), 'error');
-		$Errors[$i] = 'StockID';
-		++$i;
 		$_POST['StockID'] = '';
 	}
 	if (mb_strlen($_POST['Units']) > 20) {
 		$InputError = 1;
 		prnMsg(_('The unit of measure must be 20 characters or less long'), 'error');
-		$Errors[$i] = 'Units';
-		++$i;
 	}
 	if (mb_strlen($_POST['BarCode']) > 20) {
 		$InputError = 1;
 		prnMsg(_('The barcode must be 20 characters or less long'), 'error');
-		$Errors[$i] = 'BarCode';
-		++$i;
 	}
 	if (!is_numeric(filter_number_format($_POST['Volume']))) {
 		$InputError = 1;
 		prnMsg(_('The volume of the packaged item in cubic metres must be numeric'), 'error');
-		$Errors[$i] = 'Volume';
-		++$i;
 	}
 	if (filter_number_format($_POST['Volume']) < 0) {
 		$InputError = 1;
 		prnMsg(_('The volume of the packaged item must be a positive number'), 'error');
-		$Errors[$i] = 'Volume';
-		++$i;
 	}
 	if (!is_numeric(filter_number_format($_POST['GrossWeight']))) {
 		$InputError = 1;
 		prnMsg(_('The weight of the packaged item in Gross Weight must be numeric'), 'error');
-		$Errors[$i] = 'GrossWeight';
-		++$i;
 	}
 	if (filter_number_format($_POST['GrossWeight']) < 0) {
 		$InputError = 1;
 		prnMsg(_('The weight of the packaged item must be a positive number'), 'error');
-		$Errors[$i] = 'GrossWeight';
-		++$i;
 	}
 	if (!is_numeric(filter_number_format($_POST['NetWeight']))) {
 		$InputError = 1;
 		prnMsg(_('The net weight of the item in Net Weight must be numeric'), 'error');
-		$Errors[$i] = 'NetWeight';
-		++$i;
 	}
 	if (filter_number_format($_POST['NetWeight']) < 0) {
 		$InputError = 1;
 		prnMsg(_('The net weight of the item must be a positive number'), 'error');
-		$Errors[$i] = 'NetWeight';
-		++$i;
 	}
 	if (!is_numeric(filter_number_format($_POST['EOQ']))) {
 		$InputError = 1;
 		prnMsg(_('The economic order quantity must be numeric'), 'error');
-		$Errors[$i] = 'EOQ';
-		++$i;
 	}
 	if (filter_number_format($_POST['EOQ']) < 0) {
 		$InputError = 1;
 		prnMsg(_('The economic order quantity must be a positive number'), 'error');
-		$Errors[$i] = 'EOQ';
-		++$i;
 	}
 	if ($_POST['Controlled'] == 0 and $_POST['Serialised'] == 1) {
 		$InputError = 1;
 		prnMsg(_('The item can only be serialised if there is lot control enabled already') . '. ' . _('Batch control') . ' - ' . _('with any number of items in a lot/bundle/roll is enabled when controlled is enabled') . '. ' . _('Serialised control requires that only one item is in the batch') . '. ' . _('For serialised control') . ', ' . _('both controlled and serialised must be enabled'), 'error');
-		$Errors[$i] = 'Serialised';
-		++$i;
 	}
 	if ($_POST['NextSerialNo'] != 0 and $_POST['Serialised'] == 0) {
 		$InputError = 1;
 		prnMsg(_('The item can only have automatically generated serial numbers if it is a serialised item'), 'error');
-		$Errors[$i] = 'NextSerialNo';
-		++$i;
 	}
 	if ($_POST['NextSerialNo'] != 0 and $_POST['MBFlag'] != 'M') {
 		$InputError = 1;
 		prnMsg(_('The item can only have automatically generated serial numbers if it is a manufactured item'), 'error');
-		$Errors[$i] = 'NextSerialNo';
-		++$i;
 	}
 	if (($_POST['MBFlag'] == 'A' or $_POST['MBFlag'] == 'K' or $_POST['MBFlag'] == 'D' or $_POST['MBFlag'] == 'G') and $_POST['Controlled'] == 1) {
 
 		$InputError = 1;
 		prnMsg(_('Assembly/Kitset/Phantom/Service/Labour items cannot also be controlled items') . '. ' . _('Assemblies/Dummies/Phantom and Kitsets are not physical items and batch/serial control is therefore not appropriate'), 'error');
-		$Errors[$i] = 'Controlled';
-		++$i;
 	}
 	if (trim($_POST['CategoryID']) == '') {
 		$InputError = 1;
 		prnMsg(_('There are no inventory categories defined. All inventory items must belong to a valid inventory category,'), 'error');
-		$Errors[$i] = 'CategoryID';
-		++$i;
 	}
 	if (!is_numeric(filter_number_format($_POST['Pansize']))) {
 		$InputError = 1;
 		prnMsg(_('Pansize quantity must be numeric'), 'error');
-		$Errors[$i] = 'Pansize';
-		++$i;
 	}
 	if (!is_numeric(filter_number_format($_POST['ShrinkFactor']))) {
 		$InputError = 1;
 		prnMsg(_('Shrinkage factor quantity must be numeric'), 'error');
-		$Errors[$i] = 'ShrinkFactor';
-		++$i;
 	}
 
 	if ($InputError != 1) {
@@ -264,7 +235,6 @@ if (isset($_POST['submit'])) {
 								WHERE stockid='" . $_POST['StockID'] . "'");
 			if (DB_num_rows($Result) == 1) {
 				prnMsg(_('The stock code entered is already in the database - duplicate stock codes are prohibited by the system. Try choosing an alternative stock code'), 'error');
-				$Errors[$i] = 'DuplicateStockID';
 			} else {
 				DB_Txn_Begin();
 				$SQL = "INSERT INTO stockmaster (stockid,
@@ -317,14 +287,14 @@ if (isset($_POST['submit'])) {
 					$DbgMsg = _('The SQL that was used to update the language description and failed was');
 					if (count($ItemDescriptionLanguagesArray) > 0) {
 						foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
-							if ($LanguageId!=''){
+							if ($LanguageId != '') {
 								$SQL = "INSERT INTO stockdescriptiontranslations (stockid,
 																				language_id,
 																				descriptiontranslation
 																			)VALUES(
 																				'" . $_POST['StockID'] . "',
 																				'" . $LanguageId . "',
-																				'" . $_POST['Description_' . str_replace('.','_',$LanguageId)]  . "'
+																				'" . $_POST['Description_' . str_replace('.', '_', $LanguageId)] . "'
 																			)";
 								$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 								$SQL = "INSERT INTO stocklongdescriptiontranslations (stockid,
@@ -333,7 +303,7 @@ if (isset($_POST['submit'])) {
 																				)VALUES(
 																					'" . $_POST['StockID'] . "',
 																					'" . $LanguageId . "',
-																					'" . $_POST['LongDescription_' . str_replace('.','_',$LanguageId)]. "'
+																					'" . $_POST['LongDescription_' . str_replace('.', '_', $LanguageId)] . "'
 																				)";
 								$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 							}
@@ -661,21 +631,21 @@ if (isset($_POST['Description'])) {
 }
 echo '<tr>
 			<td>' . _('Part Description') . ' (' . _('short') . '):</td>
-			<td><input ' . (in_array('Description', $Errors) ? 'class="inputerror"' : '') . ' type="text" name="Description" size="52" maxlength="50" value="' . $Description . '" /></td>
+			<td><input  type="text" name="Description" size="52" maxlength="50" value="' . $Description . '" /></td>
 		</tr>';
 
 foreach ($ItemDescriptionLanguagesArray as $LanguageId) {
 	if ($LanguageId != '') {
 		//unfortunately cannot have points in POST variables so have to mess with the language id
 		$PostVariableName = 'Description_' . str_replace('.', '_', $LanguageId);
-	    $LongDescriptionTranslated = 'LongDescription_' . str_replace('.','_',$LanguageId);
+		$LongDescriptionTranslated = 'LongDescription_' . str_replace('.', '_', $LanguageId);
 		if (!isset($_POST[$PostVariableName])) {
 			$_POST[$PostVariableName] = '';
 		}
 		echo '<tr>
 				<td>' . $LanguagesArray[$LanguageId]['LanguageName'] . ' ' . _('Description') . ':</td>
 				<td><input type="text" name="' . $PostVariableName . '" size="52" maxlength="50" value="' . $_POST[$PostVariableName] . '" /></td>
-				<td><input type="hidden" name="' . $LongDescriptionTranslated . '" value="' . $_POST['LongDescription_' . str_replace('.','_',$LanguageId)] . '" />
+				<td><input type="hidden" name="' . $LongDescriptionTranslated . '" value="' . $_POST['LongDescription_' . str_replace('.', '_', $LanguageId)] . '" />
 			</tr>';
 	}
 }
@@ -687,7 +657,7 @@ if (isset($_POST['LongDescription'])) {
 }
 echo '<tr>
 			<td>' . _('Part Description') . ' (' . _('long') . '):</td>
-			<td><textarea ' . (in_array('LongDescription', $Errors) ? 'class="texterror"' : '') . '  name="LongDescription" cols="40" rows="3">' . stripslashes($LongDescription) . '</textarea></td>
+			<td><textarea name="LongDescription" cols="40" rows="3">' . stripslashes($LongDescription) . '</textarea></td>
 		</tr>
 		<tr>
 			<td>' . _('Image File (.jpg)') . ':</td>
@@ -703,25 +673,25 @@ if (empty($_POST['StockID']) or ($_POST['StockID'] == $_POST['OldStockID'])) {
 	$tempid = $_POST['StockID'];
 }
 
-if (function_exists('imagecreatefromjpeg') and isset($tempfile)) {
-	$StockImgLink = '<img src="GetStockImage.php?automake=1&amp;textcolor=FFFFFF&amp;bgcolor=CCCCCC' . '&amp;StockID=' . urlencode($tempid) . '&amp;text=' . '&amp;width=100' . '&amp;height=100' . '" alt="" />';
+if (extension_loaded('gd') and function_exists('gd_info') and isset($tempfile)) {
+	$StockImgLink = '<img src="GetStockImage.php?automake=1&textcolor=FFFFFF&bgcolor=CCCCCC&StockID=' . urlencode($tempid) . '&text=&width=100&height=100" alt="" />';
 } else {
-	if (!empty($tempid) and file_exists($_SESSION['part_pics_dir'] . '/' . $tempid . '.jpg')) {
-		$StockImgLink = '<img src="' . $_SESSION['part_pics_dir'] . '/' . $tempid . '.jpg" height="100" width="100" />';
+	if (!empty($tempid) and file_exists($_SESSION['part_pics_dir'] . '/' . $tempid . '.' . $ext)) {
+		$StockImgLink = '<img src="' . $_SESSION['part_pics_dir'] . '/' . $tempid . '.' . $ext . '" height="100" width="100" />';
 		if (isset($_POST['ClearImage'])) {
 			//workaround for many variations of permission issues that could cause unlink fail
-			@unlink($_SESSION['part_pics_dir'] . '/' . $tempid . '.jpg');
-			if (is_file($_SESSION['part_pics_dir'] . '/' . $tempid . '.jpg')) {
+			@unlink($_SESSION['part_pics_dir'] . '/' . $tempid . '.' . $ext);
+			if (is_file($_SESSION['part_pics_dir'] . '/' . $tempid . '.' . $ext)) {
 				prnMsg(_('You do not have access to delete this item image file.'), 'error');
 			} else {
 				$StockImgLink = _('No Image');
 			}
 		}
-	} elseif (!empty($tempid) and !file_exists($_SESSION['part_pics_dir'] . '/' . $tempid . '.jpg') and file_exists($_SESSION['part_pics_dir'] . '/' . $_POST['OldStockID'] . '.jpg')) {
-		if (!copy($_SESSION['part_pics_dir'] . '/' . $_POST['OldStockID'] . '.jpg', $_SESSION['part_pics_dir'] . '/' . $_POST['OldStockID'] . '-TEMP' . '.jpg')) {
+	} elseif (!empty($tempid) and !file_exists($_SESSION['part_pics_dir'] . '/' . $tempid . '.' . $ext) and file_exists($_SESSION['part_pics_dir'] . '/' . $_POST['OldStockID'] . '.' . $ext)) {
+		if (!copy($_SESSION['part_pics_dir'] . '/' . $_POST['OldStockID'] . '.' . $ext, $_SESSION['part_pics_dir'] . '/' . $_POST['OldStockID'] . '-TEMP' . '.' . $ext)) {
 			$StockImgLink = _('No Image');
 		} else {
-			$StockImgLink = '<img src="' . $_SESSION['part_pics_dir'] . '/' . $_POST['OldStockID'] . '-TEMP' . '.jpg" height="100" width="100" />';
+			$StockImgLink = '<img src="' . $_SESSION['part_pics_dir'] . '/' . $_POST['OldStockID'] . '-TEMP' . '.' . $ext . '" height="100" width="100" />';
 		}
 	} else {
 		$StockImgLink = _('No Image');
@@ -796,24 +766,26 @@ if (!isset($_POST['NextSerialNo'])) {
 
 echo '<tr>
 			<td>' . _('Economic Order Quantity') . ':</td>
-			<td><input ' . (in_array('EOQ', $Errors) ? 'class="inputerror"' : '') . '   type="text" class="number" name="EOQ" size="12" maxlength="10" value="' . locale_number_format($_POST['EOQ'], 'Variable') . '" /></td></tr>';
+			<td><input type="text" class="number" name="EOQ" size="12" maxlength="10" value="' . locale_number_format($_POST['EOQ'], 'Variable') . '" /></td></tr>';
 
 echo '<tr>
 			<td>' . _('Packaged Volume (metres cubed)') . ':</td>
-			<td><input ' . (in_array('Volume', $Errors) ? 'class="inputerror"' : '') . '   type="text" class="number" name="Volume" size="12" maxlength="10" value="' . locale_number_format($_POST['Volume'], 'Variable') . '" /></td>
+			<td><input type="text" class="number" name="Volume" size="12" maxlength="10" value="' . locale_number_format($_POST['Volume'], 'Variable') . '" /></td>
 		</tr>';
 
 echo '<tr>
-			<td>' . _('Packaged Gross Weight (KGs)') . ':</td><td><input ' . (in_array('GrossWeight', $Errors) ? 'class="inputerror"' : '') . '   type="text" class="number" name="GrossWeight" size="12" maxlength="10" value="' . locale_number_format($_POST['GrossWeight'], 'Variable') . '" /></td>
+			<td>' . _('Packaged Gross Weight (KGs)') . ':</td>
+			<td><input type="text" class="number" name="GrossWeight" size="12" maxlength="10" value="' . locale_number_format($_POST['GrossWeight'], 'Variable') . '" /></td>
 		</tr>';
 
 echo '<tr>
-			<td>' . _('Net Weight (KGs)') . ':</td><td><input ' . (in_array('NetWeight', $Errors) ? 'class="inputerror"' : '') . '   type="text" class="number" name="NetWeight" size="12" maxlength="10" value="' . locale_number_format($_POST['NetWeight'], 'Variable') . '" /></td>
+			<td>' . _('Net Weight (KGs)') . ':</td>
+			<td><input type="text" class="number" name="NetWeight" size="12" maxlength="10" value="' . locale_number_format($_POST['NetWeight'], 'Variable') . '" /></td>
 		</tr>';
 
 echo '<tr>
 			<td>' . _('Units of Measure') . ':</td>
-			<td><select ' . (in_array('Description', $Errors) ? 'class="selecterror"' : '') . '  name="Units">';
+			<td><select name="Units">';
 
 $SQL = "SELECT unitname FROM unitsofmeasure ORDER by unitname";
 $UOMResult = DB_query($SQL);
@@ -903,7 +875,9 @@ if ($_POST['Controlled'] == 1) {
 }
 echo '</select></td></tr>';
 
-echo '<tr><td>' . _('Serialised') . ':</td><td><select ' . (in_array('Serialised', $Errors) ? 'class="selecterror"' : '') . '  name="Serialised">';
+echo '<tr>
+		<td>' . _('Serialised') . ':</td>
+		<td><select name="Serialised">';
 
 if ($_POST['Serialised'] == 0) {
 	echo '<option selected="selected" value="0">' . _('No') . '</option>';
@@ -921,7 +895,7 @@ echo '</select><i>' . _('Note') . ', ' . _('this has no effect if the item is no
 if ($_POST['Serialised'] == 1 and $_POST['MBFlag'] == 'M') {
 	echo '<tr>
 				<td>' . _('Next Serial No (>0 for auto numbering)') . ':</td>
-				<td><input ' . (in_array('NextSerialNo', $Errors) ? 'class="inputerror"' : '') . ' type="text" name="NextSerialNo" size="15" maxlength="15" value="' . $_POST['NextSerialNo'] . '" /></td></tr>';
+				<td><input type="text" name="NextSerialNo" size="15" maxlength="15" value="' . $_POST['NextSerialNo'] . '" /></td></tr>';
 } else {
 	echo '<tr><td><input type="hidden" name="NextSerialNo" value="0" /></td></tr>';
 }
@@ -954,7 +928,7 @@ if (isset($_POST['BarCode'])) {
 }
 echo '<tr>
 			<td>' . _('Bar Code') . ':</td>
-			<td><input ' . (in_array('BarCode', $Errors) ? 'class="inputerror"' : '') . '  type="text" name="BarCode" size="22" maxlength="20" value="' . $BarCode . '" /></td>
+			<td><input type="text" name="BarCode" size="22" maxlength="20" value="' . $BarCode . '" /></td>
 		</tr>';
 
 if (isset($_POST['DiscountCategory'])) {

@@ -366,10 +366,14 @@ if (isset($SearchResult)) {
 			$k = 1;
 		}
 
-		if (file_exists($_SESSION['part_pics_dir'] . '/' . $MyRow['stockid'] . '.jpg')) {
-			$ImageSource = '<img src="GetStockImage.php?automake=1&amp;textcolor=FFFFFF&amp;bgcolor=CCCCCC&amp;StockID=' . $MyRow['stockid'] . '&amp;text=&amp;width=50&amp;height=50" />';
+		$SupportedImgExt = array('png', 'jpg', 'jpeg');
+		$ImageFile = reset((glob($_SESSION['part_pics_dir'] . '/' . $MyRow['stockid'] . '.{' . implode(",", $SupportedImgExt) . '}', GLOB_BRACE)));
+		if (extension_loaded('gd') and function_exists('gd_info') and file_exists ($ImageFile)) {
+			$ImageSource = '<img src="GetStockImage.php?automake=1&textcolor=FFFFFF&bgcolor=CCCCCC&StockID='. urlencode($MyRow['stockid']) . '&text=&width=64&height=64" alt="" />';
+		} else if (file_exists ($ImageFile)) {
+			$ImageSource = '<img src="' . $ImageFile . '" height="100" width="100" />';
 		} else {
-			$ImageSource = '<i>' . _('No Image') . '</i>';
+			$ImageSource = _('No Image');
 		}
 
 		echo '<td>' . $MyRow['stockid'] . '</td>

@@ -133,7 +133,7 @@ if (isset($_POST['submit'])) {
 
 if (!isset($_GET['SelectedSectionID']) and !isset($_POST['SelectedSectionID'])) {
 
-	/* An account section could be posted when one has been edited and is being updated
+/*	An account section could be posted when one has been edited and is being updated
 	or GOT when selected for modification
 	SelectedSectionID will exist because it was sent with the page in a GET .
 	If its the first time the page has been displayed with no parameters
@@ -142,10 +142,10 @@ if (!isset($_GET['SelectedSectionID']) and !isset($_POST['SelectedSectionID'])) 
 	or deletion of the records*/
 
 	$SQL = "SELECT sectionid,
-			sectionname
-		FROM accountsection
-		WHERE language='" . $_SESSION['ChartLanguage'] . "'
-		ORDER BY sectionid";
+					sectionname
+				FROM accountsection
+				WHERE language='" . $_SESSION['ChartLanguage'] . "'
+				ORDER BY sectionid";
 
 	$ErrMsg = _('Could not get account group sections because');
 	$Result = DB_query($SQL, $ErrMsg);

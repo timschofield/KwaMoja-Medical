@@ -276,7 +276,7 @@ if (isset($_POST['submit'])) {
 } //isset($_GET['delete'])
 
 if (!isset($_GET['SelectedAccountGroup']) and !isset($_POST['SelectedAccountGroup'])) {
-	/* An account group could be posted when one has been edited and is being updated or GOT when selected for modification
+/*	An account group could be posted when one has been edited and is being updated or GOT when selected for modification
 	SelectedAccountGroup will exist because it was sent with the page in a GET .
 	If its the first time the page has been displayed with no parameters
 	then none of the above are true and the list of account groups will be displayed with

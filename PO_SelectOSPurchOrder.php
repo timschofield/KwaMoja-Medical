@@ -193,9 +193,22 @@ echo '</select>
 	' . _('Orders Between') . ':&nbsp;<input type="text" name="DateFrom" value="' . ConvertSQLDate($DateFrom) . '"  class="date" size="10" alt="' . $_SESSION['DefaultDateFormat'] . '"  />
 	' . _('and') . ':&nbsp;<input type="text" name="DateTo" value="' . ConvertSQLDate($DateTo) . '"  class="date" size="10" alt="' . $_SESSION['DefaultDateFormat'] . '"  />
 	<input type="submit" name="SearchOrders" value="' . _('Search Purchase Orders') . '" />
-	</td>
-	</tr>
-	</table>';
+	</td>';
+
+if (isset($_POST['PODetails'])) {
+	echo '<tr>
+			<td colspan="2" class="centre">' . _('Show PO Details') . '
+				<input type="checkbox" name="PODetails" checked="checked" />
+			</td>
+		</tr>';
+} else {
+	echo '<tr>
+			<td colspan="2" class="centre">' . _('Show PO Details') . '
+				<input type="checkbox" name="PODetails" />
+			</td>
+		</tr>';
+}
+echo '</table>';
 
 $SQL = "SELECT categoryid, categorydescription FROM stockcategory ORDER BY categorydescription";
 $Result1 = DB_query($SQL);
@@ -365,8 +378,11 @@ if (isset($StockItemsResult)) {
 					<th class="SortedColumn">' . _('Order Date') . '</th>
 					<th class="SortedColumn">' . _('Delivery Date') . '</th>
 					<th class="SortedColumn">' . _('Initiated by') . '</th>
-					<th class="SortedColumn">' . _('Supplier') . '</th>
-					<th>' . _('Currency') . '</th>';
+					<th class="SortedColumn">' . _('Supplier') . '</th>';
+	if (isset($_POST['PODetails'])) {
+		echo '<th class="SortedColumn">' . _('Balance') .' ('. _('Stock ID') . '--' . _('Quantity') . ' )</th>';
+	}
+	echo '<th>' . _('Currency') . '</th>';
 
 	if (in_array($PricesSecurity, $_SESSION['AllowedPageSecurityTokens']) or !isset($PricesSecurity)) {
 		echo '<th>' . _('Order Total') . '</th>';
@@ -380,6 +396,24 @@ if (isset($StockItemsResult)) {
 	$k = 0; //row colour counter
 	echo '<tbody>';
 	while ($MyRow = DB_fetch_array($PurchOrdersResult)) {
+		$Balance = '';
+		if (isset($_POST['PODetails'])) {
+			//lets retrieve the PO balance here to make it a standard sql query.
+			$BalanceSql = "SELECT itemcode, quantityord - quantityrecd as balance FROM purchorderdetails WHERE orderno = '" . $MyRow['orderno'] . "'";
+			$ErrMsg = _('Failed to retrieve purchorder details');
+			$BalanceResult  = DB_query($BalanceSql, $ErrMsg);
+			if (DB_num_rows($BalanceResult) > 0) {
+				while ($BalanceRow = DB_fetch_array($BalanceResult)) {
+					$Balance .= '<div>' . $BalanceRow['itemcode'] . ' -- ' . $BalanceRow['balance'] . '</div>';
+				}
+			}
+		}
+		if (isset($_POST['PODetails'])) {
+			$BalanceRow = '<td>' . $Balance . '</td>';
+		} else {
+			$BalanceRow = '';
+		}
+
 		if ($k == 1) {
 			/*alternate bgcolour of row for highlighting */
 			echo '<tr class="EvenTableRows">';
@@ -419,6 +453,7 @@ if (isset($StockItemsResult)) {
 			<td>', $FormatedDeliveryDate, '</td>
 			<td>', $InitiatorName, '</td>
 			<td>', $MyRow['suppname'], '</td>
+			' . $BalanceRow . '
 			<td>', $MyRow['currcode'], '</td>';
 		if (in_array($PricesSecurity, $_SESSION['AllowedPageSecurityTokens']) or !isset($PricesSecurity)) {
 			echo '<td class="number">', $FormatedOrderValue, '</td>';

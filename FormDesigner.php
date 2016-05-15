@@ -7,14 +7,14 @@
  */
 
 /*	General attributes for elements:
-	- x (X coordinate),
-	- y (Y coordinate),
-	- Width,
-	- Height,
-	- FontSize,
-	- Alignment,
-	- Show (to show or not an element).
- */
+- x (X coordinate),
+- y (Y coordinate),
+- Width,
+- Height,
+- FontSize,
+- Alignment,
+- Show (to show or not an element).
+*/
 
 // RCHACON: To Do: standardize the name of the parameters x, y, width, height, font-size, alignment and radius inside the xml files.
 // RCHACON: Question: The use or not of <label for="KeyId">KeyCaption</label> <input id="KeyId" name="KeyName" type="..." value="KeyValue"> for usability ?
@@ -31,36 +31,24 @@ include('includes/header.inc');
 /* Function to input the X coordinate from the left side of the sheet to the
 left side of the field in points (72 points = 25,4 mm). */
 function InputX($KeyName, $KeyValue) {
-	echo '<td class="number">' . _('x') . ' = ' .
-		'</td><td><input class="number" maxlength="4" name="' . $KeyName . 'x" size="4" title="' .
-		_('Distance from the left side of the sheet to the left side of the element in points') .
-		'" type="number" value="' . $KeyValue . '" /></td>';
+	echo '<td class="number">' . _('x') . ' = ' . '</td><td><input class="number" maxlength="4" name="' . $KeyName . 'x" size="4" title="' . _('Distance from the left side of the sheet to the left side of the element in points') . '" type="number" value="' . $KeyValue . '" /></td>';
 }
 
 /* Function to input the Y coordinate from the lower side of the sheet to the
 top side of the field in points (72 points = 25,4 mm). */
 function InputY($KeyName, $KeyValue) {
-	echo '<td class="number">' . _('y') . ' = ' .
-		'</td><td><input class="number" maxlength="4" name="' . $KeyName . 'y" size="4" title="'.
-		_('Distance from the lower side of the sheet to the top side of the element in points') .
-		'" type="number" value="' . $KeyValue . '" /></td>';
+	echo '<td class="number">' . _('y') . ' = ' . '</td><td><input class="number" maxlength="4" name="' . $KeyName . 'y" size="4" title="' . _('Distance from the lower side of the sheet to the top side of the element in points') . '" type="number" value="' . $KeyValue . '" /></td>';
 }
 
 /* Function to input the the width of the field in points (72 points = 25,4 mm).*/
 function InputWidth($KeyName, $KeyValue) {
-	echo '<td class="number">' . _('Width') . ' = ' .
-		'</td><td><input class="number" maxlength="4" name="' . $KeyName . 'Length" size="4" title="'.
-		_('Width of the element in points') .
-		'" type="number" value="' . $KeyValue . '" /></td>';
+	echo '<td class="number">' . _('Width') . ' = ' . '</td><td><input class="number" maxlength="4" name="' . $KeyName . 'Length" size="4" title="' . _('Width of the element in points') . '" type="number" value="' . $KeyValue . '" /></td>';
 	// Requires to standardize xml files from "Length" to "Width" before changing the html name.
 }
 
 /* Function to input the the height of the field in points (72 points = 25,4 mm).*/
 function InputHeight($KeyName, $KeyValue) {
-	echo '<td class="number">' . _('Height') . ' = ' .
-		'</td><td><input class="number" maxlength="4" name="' . $KeyName . 'height" size="4" title="'.
-		_('Height of the element in points') .
-		'" type="number" value="' . $KeyValue . '" /></td>';
+	echo '<td class="number">' . _('Height') . ' = ' . '</td><td><input class="number" maxlength="4" name="' . $KeyName . 'height" size="4" title="' . _('Height of the element in points') . '" type="number" value="' . $KeyValue . '" /></td>';
 	// Requires to standardize xml files from "height" to "Height" before changing the html name.
 }
 
@@ -75,13 +63,13 @@ function SelectAlignment($KeyName, $KeyValue) {
 	$Alignments['right']['Title'] = _('Text lines are rendered flush right');
 	$Alignments['full']['Caption'] = _('Justify');
 	$Alignments['full']['Title'] = _('Text lines are justified to both margins');
-	echo '<td>' . _('Alignment'). ' = </td><td><select name="' . $KeyName . 'Alignment">';
+	echo '<td>' . _('Alignment') . ' = </td><td><select name="' . $KeyName . 'Alignment">';
 	foreach ($Alignments as $AlignmentValue => $AlignmentOption) {
 		echo '<option';
 		if ($AlignmentValue == $KeyValue) {
 			echo ' selected="selected"';
 		}
-		echo ' title="' . $AlignmentOption['Title'] . '" value="'.$AlignmentValue.'">' . $AlignmentOption['Caption'] . '</option>';
+		echo ' title="' . $AlignmentOption['Title'] . '" value="' . $AlignmentValue . '">' . $AlignmentOption['Caption'] . '</option>';
 	}
 	echo '</select></td>';
 }
@@ -103,13 +91,13 @@ function SelectFontSize($KeyName, $KeyValue) {
 		22,
 		24
 	); //Possible font sizes
-	echo '<td>' . _('Font Size'). ' = </td><td><select name="' . $KeyName . 'FontSize">';
+	echo '<td>' . _('Font Size') . ' = </td><td><select name="' . $KeyName . 'FontSize">';
 	foreach ($FontSizes as $FontSize) {
 		echo '<option';
 		if ($FontSize == $KeyValue) {
 			echo ' selected="selected"';
 		}
-		echo ' title="'._('Font size in points') . '" value="'.$FontSize.'">' . $FontSize . '</option>';
+		echo ' title="' . _('Font size in points') . '" value="' . $FontSize . '">' . $FontSize . '</option>';
 	}
 	echo '</select></td>';
 }
@@ -120,11 +108,13 @@ function SelectShowElement($KeyName, $KeyValue) {
 	$Shows['No']['Title'] = _('Does not display this element');
 	$Shows['Yes']['Caption'] = _('Yes');
 	$Shows['Yes']['Title'] = _('Displays this element');
-	echo '<td>' . _('Show'). ' = </td><td><select name="' . $KeyName . 'Show">';
+	echo '<td>' . _('Show') . ' = </td><td><select name="' . $KeyName . 'Show">';
 	foreach ($Shows as $ShowValue => $ShowOption) {
 		echo '<option';
-		if ($ShowValue==$KeyValue) {echo ' selected="selected"';}
-		echo ' title="' . $ShowOption['Title'] . '" value="'.$ShowValue.'">' . $ShowOption['Caption'] . '</option>';
+		if ($ShowValue == $KeyValue) {
+			echo ' selected="selected"';
+		}
+		echo ' title="' . $ShowOption['Title'] . '" value="' . $ShowValue . '">' . $ShowOption['Caption'] . '</option>';
 	}
 	echo '</select></td>';
 }
@@ -149,13 +139,13 @@ if (isset($_POST['preview']) or isset($_POST['save'])) {
 	/*Iterate through the object filling in the values from
 	 * the POST variables */
 	foreach ($FormDesign as $Key) {
-		foreach ($Key as $subkey => $Value) {
+		foreach ($Key as $SubKey => $Value) {
 			if ($Key['type'] == 'ElementArray') {
-				foreach ($Value as $subsubkey => $subvalue) {
-					$Value->$subsubkey = $_POST[$Value['id'] . $subsubkey];
+				foreach ($Value as $SubSubKey => $subvalue) {
+					$Value->$SubSubKey = $_POST[$Value['id'] . $SubSubKey];
 				}
 			} else {
-				$Key->$subkey = $_POST[$Key['id'] . $subkey];
+				$Key->$SubKey = $_POST[$Key['id'] . $SubKey];
 			}
 		}
 	}
@@ -184,7 +174,7 @@ if (isset($_POST['preview']) or isset($_POST['save'])) {
 				echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/PDFFGLabel.php?WO=Preview">';
 				break;
 			case 'ShippingLabel.xml':
-				echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/PDFShipLabel.php?SO=Preview">';
+				echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/PDFShipLabel.php?ORD=Preview">';
 				break;
 		}
 	} else {
@@ -207,14 +197,14 @@ if (empty($_POST['FormName'])) {
 	echo '<td>' . _('Select the form to edit') . '</td><td><select name="FormName">';
 	/* Iterate throght the appropriate companies FormDesigns/ directory
 	 * and extract the form name from each of the xml files found */
-	if ($handle = opendir($PathPrefix . 'companies/' . $_SESSION['DatabaseName'] . '/FormDesigns/')) {
-		while (false !== ($file = readdir($handle))) {
-			if ($file[0] != '.') {
-				$FormDesign = simplexml_load_file($PathPrefix . 'companies/' . $_SESSION['DatabaseName'] . '/FormDesigns/' . $file);
-				echo '<option value="' . $file . '">' . _($FormDesign['name']) . '</option>';
+	if ($Handle = opendir($PathPrefix . 'companies/' . $_SESSION['DatabaseName'] . '/FormDesigns/')) {
+		while (false !== ($File = readdir($Handle))) {
+			if ($File[0] != '.') {
+				$FormDesign = simplexml_load_file($PathPrefix . 'companies/' . $_SESSION['DatabaseName'] . '/FormDesigns/' . $File);
+				echo '<option value="' . $File . '">' . _($FormDesign['name']->__toString()) . '</option>';
 			}
 		}
-		closedir($handle);
+		closedir($Handle);
 	}
 	echo '</select></td></tr></table>';
 	echo '<div class="centre"><input tabindex="6" type="submit" name="submit" value="' . _('Edit Form Layout') . '" /></div>';
@@ -227,12 +217,8 @@ if (empty($_POST['FormName'])) {
 if (empty($_POST['preview'])) {
 	$FormDesign = simplexml_load_file($PathPrefix . 'companies/' . $_SESSION['DatabaseName'] . '/FormDesigns/' . $_POST['FormName']);
 }
-echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/reports.png" title="' . _('Form Design') . '" alt="" />' . ' ' . _('Form Design') . '<br />' . $FormDesign['name'] . '</p>';
-echo '<div class="page_help_text">' .
-		_('Enter the changes that you want in the form layout below.')  . '<br /> '.
-		_('All measurements are in PostScript points (72 points = 25,4 mm).')  . '<br /> '.
-		_('All coordinates are measured from the lower left corner of the sheet to the top left corner of the field.') .
-	'</div><br />';
+echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/reports.png" title="' . _('Form Design') . '" alt="" />' . ' ' . _('Form Design') . '<br />' . $FormDesign['name']->__toString() . '</p>';
+echo '<div class="page_help_text">' . _('Enter the changes that you want in the form layout below.') . '<br /> ' . _('All measurements are in PostScript points (72 points = 25,4 mm).') . '<br /> ' . _('All coordinates are measured from the lower left corner of the sheet to the top left corner of the field.') . '</div><br />';
 
 $Papers = array(
 	'A4_Landscape',
@@ -270,7 +256,7 @@ foreach ($Papers as $Paper) {
 echo '</select></th>';
 /* and the standard line height for the form */
 echo '<th style="width:33%">' . _('Line Height') . '<input type="text" class="number" name="LineHeight" size="3" maxlength="3" value="' . $FormDesign->LineHeight . '" /></th></tr><tr>';
-$counter = 1; // Count how many sub tables are in the row
+$Counter = 1; // Count how many sub tables are in the row
 foreach ($FormDesign as $Key) {
 	switch ($Key['type']) {
 		case 'image':
@@ -279,111 +265,111 @@ foreach ($FormDesign as $Key) {
 			echo '<td colspan="1" valign="top">
 					<table width="100%" border="1">
 						<tr>
-							<th colspan="4">' . _($Key['name']) . '</th>
+							<th colspan="4">' . _($Key['name']->__toString()) . '</th>
 						</tr>
 						<tr>';
 			echo '</tr><tr>'; // New table row.
-			echo '<td class="number">' . _('Width').' = ' . '</td><td><input type="text" class="number" name="'.$Key['id'].'width" size="4" maxlength="4" value="'.$Key->width.'" /></td>';
+			echo '<td class="number">' . _('Width') . ' = ' . '</td><td><input type="text" class="number" name="' . $Key['id'] . 'width" size="4" maxlength="4" value="' . $Key->width . '" /></td>';
 			// InputWidth($Key['id'], $Key->width);// Requires to standardize xml files from "width" to "Width"
-			InputHeight($Key['id'], $Key->height);// Requires to standardize xml files from "height" to "Height"
+			InputHeight($Key['id'], $Key->height); // Requires to standardize xml files from "height" to "Height"
 			echo '</tr>
 				</table>
 			</td>';
-			$counter = $counter + 1;
+			$Counter = $Counter + 1;
 			break;
 		case 'SimpleText':
 			echo '<td colspan="1" valign="top">
 					<table width="100%" border="1">
 						<tr>
-							<th colspan="6">' . _($Key['name']) . '</th>
+							<th colspan="6">' . _($Key['name']->__toString()) . '</th>
 						</tr>
 						<tr>';
 			InputX($Key['id'], $Key->x);
 			InputY($Key['id'], $Key->y);
 			SelectFontSize($Key['id'], $Key->FontSize);
-	        echo '</tr>';
+			echo '</tr>';
 			echo '</table></td>';
-			$counter = $counter + 1;
+			$Counter = $Counter + 1;
 			break;
 		case 'MultiLineText':
 			echo '<td colspan="1" valign="top">
 					<table width="100%" border="1">
 						<tr>
-							<th colspan="8">' . _($Key['name']) . '</th>
+							<th colspan="8">' . _($Key['name']->__toString()) . '</th>
 						</tr>
 					<tr>';
 			InputX($Key['id'], $Key->x);
 			InputY($Key['id'], $Key->y);
 			InputWidth($Key['id'], $Key->Length);
 			SelectFontSize($Key['id'], $Key->FontSize);
-	        echo '</tr>';
+			echo '</tr>';
 			echo '</table></td>';
-			$counter = $counter + 1;
+			$Counter = $Counter + 1;
 			break;
 		case 'ElementArray':
 			echo '<td colspan="1" valign="top">
 					<table width="100%" border="1">
 						<tr>
-							<th colspan="7">' . _($Key['name']) . '</th>
+							<th colspan="7">' . _($Key['name']->__toString()) . '</th>
 						</tr>' . "\n";
-			foreach ($Key as $subkey) {
+			foreach ($Key as $SubKey) {
 				echo '<tr>';
-				if ($subkey['type'] == 'SimpleText') {
-					echo '<td>' . _($subkey['name']) . '</td>';
-					InputX($subkey['id'], $subkey->x);
-					InputY($subkey['id'], $subkey->y);
-					SelectFontSize($subkey['id'], $subkey->FontSize);
-				} elseif ($subkey['type']=='MultiLineText') { // This element (9 td) overflows the table size (7 td).
-					echo '<td>' . _($subkey['name']) . '</td>';
-					InputX($subkey['id'], $subkey->x);
-					InputY($subkey['id'], $subkey->y);
-					InputWidth($subkey['id'], $subkey->Length);
-					SelectFontSize($subkey['id'], $subkey->FontSize);
+				if ($SubKey['type'] == 'SimpleText') {
+					echo '<td>' . _($SubKey['name']) . '</td>';
+					InputX($SubKey['id'], $SubKey->x);
+					InputY($SubKey['id'], $SubKey->y);
+					SelectFontSize($SubKey['id'], $SubKey->FontSize);
+				} elseif ($SubKey['type'] == 'MultiLineText') { // This element (9 td) overflows the table size (7 td).
+					echo '<td>' . _($SubKey['name']) . '</td>';
+					InputX($SubKey['id'], $SubKey->x);
+					InputY($SubKey['id'], $SubKey->y);
+					InputWidth($SubKey['id'], $SubKey->Length);
+					SelectFontSize($SubKey['id'], $SubKey->FontSize);
 				} else {
-					if ($subkey['type'] == 'DataText') {
-						echo '<td>' . _($subkey['name']) . '</td>';
-						InputX($subkey['id'], $subkey->x);
-						InputWidth($subkey['id'], $subkey->Length);
-						SelectFontSize($subkey['id'], $subkey->FontSize);
-					} elseif ($subkey['type'] == 'StartLine') {
-						echo '<td colspan="3">' . _($subkey['name']) . ' = ' . '</td><td><input type="text" class="number" name="StartLine" size="4" maxlength="4" value="' . $Key->y . '" /></td>';
+					if ($SubKey['type'] == 'DataText') {
+						echo '<td>' . _($SubKey['name']) . '</td>';
+						InputX($SubKey['id'], $SubKey->x);
+						InputWidth($SubKey['id'], $SubKey->Length);
+						SelectFontSize($SubKey['id'], $SubKey->FontSize);
+					} elseif ($SubKey['type'] == 'StartLine') {
+						echo '<td colspan="3">' . _($SubKey['name']) . ' = ' . '</td><td><input type="text" class="number" name="StartLine" size="4" maxlength="4" value="' . $Key->y . '" /></td>';
 					}
 				}
 				echo '</tr>';
 			}
 			echo '</table></td>';
-			$counter = $counter + 1;
+			$Counter = $Counter + 1;
 			break;
 		case 'CurvedRectangle':
 			echo '<td colspan="1" valign="top">
 					<table width="100%" border="1">
 						<tr>
-							<th colspan="6">' . _($Key['name']) . '</th>
+							<th colspan="6">' . _($Key['name']->__toString()) . '</th>
 						</tr>
 						<tr>';
 			InputX($Key['id'], $Key->x);
 			InputY($Key['id'], $Key->y);
-			echo '<td class="number">' . _('Width').' = ' . '</td>
-				<td><input type="text" class="number" name="'.$Key['id'].'width" size="4" maxlength="4" value="'.$Key->width.'" /></td>';
-//			InputWidth($Key['id'], $Key->width);// Requires to standardize xml files from "width" to "Width"
+			echo '<td class="number">' . _('Width') . ' = ' . '</td>
+				<td><input type="text" class="number" name="' . $Key['id'] . 'width" size="4" maxlength="4" value="' . $Key->width . '" /></td>';
+			//			InputWidth($Key['id'], $Key->width);// Requires to standardize xml files from "width" to "Width"
 			echo '</tr><tr>'; // New table row.
-			InputHeight($Key['id'], $Key->height);// Requires to standardize xml files from "height" to "Height"
+			InputHeight($Key['id'], $Key->height); // Requires to standardize xml files from "height" to "Height"
 			echo '<td class="number">' . _('Radius') . ' = ' . '</td>
-					<td><input class="number" maxlength="4" name="' . $Key['id'] . 'radius" size="4" title="'. _('Radius of the rounded corners') . '" type="number" value="' . $Key->radius . '" /></td>';  // Requires to standardize xml files from "radius" to "Radius" before changing the html name.
+					<td><input class="number" maxlength="4" name="' . $Key['id'] . 'radius" size="4" title="' . _('Radius of the rounded corners') . '" type="number" value="' . $Key->radius . '" /></td>'; // Requires to standardize xml files from "radius" to "Radius" before changing the html name.
 
-/* RCHACON: Attributes to add:
-+				Show: To turn on/off the use of this rectangle.
-+			echo '</tr><tr>'; // New table row.
-+				Corners: Numbers of the corners to be rounded: 1, 2, 3, 4 or any combination (1=top left, 2=top right, 3=bottom right, 4=bottom left).
-+				Style: (draw/fill): D (default), F, FD or DF.
-+				Fill: Filling color.
-+*/
+			/* RCHACON: Attributes to add:
+			+				Show: To turn on/off the use of this rectangle.
+			+			echo '</tr><tr>'; // New table row.
+			+				Corners: Numbers of the corners to be rounded: 1, 2, 3, 4 or any combination (1=top left, 2=top right, 3=bottom right, 4=bottom left).
+			+				Style: (draw/fill): D (default), F, FD or DF.
+			+				Fill: Filling color.
+			+*/
 			echo '</tr>
 				</table>
 			</td>';
-			$counter = $counter + 1;
+			$Counter = $Counter + 1;
 			break;
-		case 'Rectangle':  // This case is probably included in CurvedRectangle
+		case 'Rectangle': // This case is probably included in CurvedRectangle
 			echo '<td colspan="1" valign="top">
 					<table width="100%" border="1">
 						<tr>
@@ -393,19 +379,19 @@ foreach ($FormDesign as $Key) {
 			InputX($Key['id'], $Key->x);
 			InputY($Key['id'], $Key->y);
 			echo '</tr><tr>'; // New table row.
-			echo '<td class="number">' . _('Width').' = ' . '</td><td><input type="text" class="number" name="'.$Key['id'].'width" size="4" maxlength="4" value="'.$Key->width.'" /></td>';
-//			InputWidth($Key['id'], $Key->width);// Requires to standardize xml files from "width" to "Width"
-			InputHeight($Key['id'], $Key->height);// Requires to standardize xml files from "height" to "Height"
+			echo '<td class="number">' . _('Width') . ' = ' . '</td><td><input type="text" class="number" name="' . $Key['id'] . 'width" size="4" maxlength="4" value="' . $Key->width . '" /></td>';
+			//			InputWidth($Key['id'], $Key->width);// Requires to standardize xml files from "width" to "Width"
+			InputHeight($Key['id'], $Key->height); // Requires to standardize xml files from "height" to "Height"
 			echo '</tr>
 				</table>
 			</td>';
-			$counter = $counter + 1;
+			$Counter = $Counter + 1;
 			break;
 		case 'Line':
 			echo '<td colspan="1" valign="top">
 					<table width="100%" border="1">
 						<tr>
-							<th colspan="6">' . _($Key['name']) . '</th>
+							<th colspan="6">' . _($Key['name']->__toString()) . '</th>
 						</tr>
 						<tr>
 							<td class="number">' . _('Start x co-ordinate') . ' = ' . '</td>
@@ -421,11 +407,11 @@ foreach ($FormDesign as $Key) {
 						</tr>
 					</table>
 				</td>';
-			$counter = $counter + 1;
+			$Counter = $Counter + 1;
 			break;
 	}
-	if ($counter == 4) { // If the row is full start a new one
-		$counter = 1;
+	if ($Counter == 4) { // If the row is full start a new one
+		$Counter = 1;
 		echo '</tr><tr>';
 	}
 }

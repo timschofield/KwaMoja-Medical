@@ -9,13 +9,26 @@ NOTE:
 This CSS is not yet fully optimized. Some styles maybe redundant and not supported by some browser.
 
 ***/
+@font-face {
+font-family: 'Ubuntu';
+font-style: normal;
+font-weight: 400;
+src: local('Ubuntu'), url(https://fonts.googleapis.com/css?family=Ubuntu);
+}
 
 body {
-	font-family:Arial, Verdana, Helvetica, sans-serif;
-	font-size:10pt;
-	margin:0;
-	padding:0;
-	background:#F1F1F1;
+font-family:Arial, Verdana, Helvetica, sans-serif;
+font-size:10pt;
+margin:0;
+padding:0;
+background:#F1F1F1;
+}
+
+div.toplink {
+padding-top:1%;
+padding-left:1%;
+margin-bottom:-1%;
+text-align:left
 }
 
 /*** Default Styles ***/

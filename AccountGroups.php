@@ -314,7 +314,7 @@ if (!isset($_GET['SelectedAccountGroup']) and !isset($_POST['SelectedAccountGrou
 					<th>', _('Profit and Loss'), '</th>
 					<th>', _('Parent Group Code'), '</th>
 					<th>', _('Parent Group Name'), '</th>
-					<th colspan="2"></th>
+					<th class="noPrint" colspan="2"></th>
 				</tr>
 			</thead>';
 
@@ -348,8 +348,8 @@ if (!isset($_GET['SelectedAccountGroup']) and !isset($_POST['SelectedAccountGrou
 			<td>', $PandLText, '</td>
 			<td>', $MyRow['parentgroupcode'], '</td>
 			<td>', $MyRow['parentgroupname'], '</td>
-			<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'] . '?SelectedAccountGroup=' . urlencode($MyRow['groupcode']), ENT_QUOTES, 'UTF-8'), '">', _('Edit'), '</a></td>
-			<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'] . '?SelectedAccountGroup=' . urlencode($MyRow['groupcode']), ENT_QUOTES, 'UTF-8'), '&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this account group?') . '\', \'Confirm Delete\', this);">', _('Delete'), '</a></td>
+			<td class="noPrint"><a href="', htmlspecialchars($_SERVER['PHP_SELF'] . '?SelectedAccountGroup=' . urlencode($MyRow['groupcode']), ENT_QUOTES, 'UTF-8'), '">', _('Edit'), '</a></td>
+			<td class="noPrint"><a href="', htmlspecialchars($_SERVER['PHP_SELF'] . '?SelectedAccountGroup=' . urlencode($MyRow['groupcode']), ENT_QUOTES, 'UTF-8'), '&amp;delete=1" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this account group?') . '\', \'Confirm Delete\', this);">', _('Delete'), '</a></td>
 		</tr>';
 
 	} //END WHILE LIST LOOP
@@ -359,7 +359,7 @@ if (!isset($_GET['SelectedAccountGroup']) and !isset($_POST['SelectedAccountGrou
 
 
 if (isset($_POST['SelectedAccountGroup']) or isset($_GET['SelectedAccountGroup'])) {
-	echo '<div class="toplink">
+	echo '<div class="toplink noPrint">
 			<a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '">', _('Review Account Groups'), '</a>
 		</div>';
 } //isset($_POST['SelectedAccountGroup']) or isset($_GET['SelectedAccountGroup'])
@@ -405,7 +405,7 @@ if (!isset($_GET['delete'])) {
 				<input type="hidden" name="OldGroupName" value="', $_POST['GroupName'], '" />
 				<input type="hidden" name="OldGroupCode" value="', $_POST['GroupCode'], '" />';
 
-		echo '<table class="selection">';
+		echo '<table class="noPrint selection">';
 		echo '<tr>
 				<th colspan="2">', _('Edit Account Group Details'), '</th>
 			</tr>';
@@ -521,7 +521,7 @@ if (!isset($_GET['delete'])) {
 
 	echo '</table>';
 
-	echo '<div class="centre">
+	echo '<div class="centre noPrint">
 			<input tabindex="6" type="submit" name="submit" value="', _('Enter Information'), '" />
 		</div>';
 

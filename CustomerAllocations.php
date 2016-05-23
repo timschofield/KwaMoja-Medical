@@ -264,7 +264,7 @@ if (isset($_GET['AllocTrans'])) {
 		$SQL .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
 	}
 
-	$SQL .= " ORDER BY debtortrans.trandate";
+	$SQL .= " ORDER BY debtortrans.trandate, debtortrans.transno";
 
 	$Result = DB_query($SQL);
 
@@ -296,7 +296,7 @@ if (isset($_GET['AllocTrans'])) {
 		$SQL .= " AND debtortrans.salesperson='" . $_SESSION['SalesmanLogin'] . "'";
 	}
 
-	$SQL .= " ORDER BY debtortrans.trandate";
+	$SQL .= " ORDER BY debtortrans.trandate, debtortrans.transno";
 
 	$Result = DB_query($SQL);
 

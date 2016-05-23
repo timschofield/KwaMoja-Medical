@@ -73,7 +73,7 @@ if (!isset($_GET['InvoiceNumber']) and !$_SESSION['ProcessingCredit']) {
 								ON stockmoves.loccode = locations.loccode
 							INNER JOIN locationusers
 								ON locationusers.loccode=locations.loccode
-								AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+								AND locationusers.userid='" . $_SESSION['UserID'] . "'
 								AND locationusers.canupd=1
 							WHERE debtortrans.transno = '" . intval($_GET['InvoiceNumber']) . "'
 								AND stockmoves.type=10";
@@ -215,14 +215,14 @@ if (isset($_POST['ChargeFreightCost'])) {
 }
 
 if ($_SESSION['SalesmanLogin'] == '') {
-	if (isset($_POST['SalesPerson'])){
+	if (isset($_POST['SalesPerson'])) {
 		$_SESSION['CreditItems' . $Identifier]->SalesPerson = $_POST['SalesPerson'];
 	}
 }
 
-foreach ($_SESSION['CreditItems' . $Identifier]->FreightTaxes as $FreightTaxLine) {
-	if (isset($_POST['FreightTaxRate' . $FreightTaxLine->TaxCalculationOrder])) {
-		$_SESSION['CreditItems' . $Identifier]->FreightTaxes[$FreightTaxLine->TaxCalculationOrder]->TaxRate = filter_number_format($_POST['FreightTaxRate' . $FreightTaxLine->TaxCalculationOrder]) / 100;
+foreach ($_SESSION['CreditItems' . $Identifier]->FreightTaxes as $FreightTaxKey => $FreightTaxLine) {
+	if (is_numeric(filter_number_format($_POST['FreightTaxRate' . $FreightTaxLine->TaxCalculationOrder]))) {
+		$_SESSION['CreditItems' . $Identifier]->FreightTaxes[$FreightTaxKey]->TaxRate = filter_number_format($_POST['FreightTaxRate' . $FreightTaxKey]) / 100;
 	}
 }
 
@@ -249,9 +249,9 @@ if ($_SESSION['CreditItems' . $Identifier]->ItemsOrdered > 0 or isset($_POST['Ne
 				$_SESSION['CreditItems' . $Identifier]->LineItems[$LineItem->LineNumber]->DiscountPercent = ($DiscountPercentage / 100);
 				$_SESSION['CreditItems' . $Identifier]->LineItems[$LineItem->LineNumber]->Narrative = $Narrative;
 			}
-			foreach ($LineItem->Taxes as $TaxLine) {
-				if (isset($_POST[$LineItem->LineNumber . $TaxLine->TaxCalculationOrder . '_TaxRate'])) {
-					$_SESSION['CreditItems' . $Identifier]->LineItems[$LineItem->LineNumber]->Taxes[$TaxLine->TaxCalculationOrder]->TaxRate = filter_number_format($_POST[$LineItem->LineNumber . $TaxLine->TaxCalculationOrder . '_TaxRate']) / 100;
+			foreach ($LineItem->Taxes as $TaxKey => $TaxLine) {
+				if (is_numeric(filter_number_format($_POST[$LineItem->LineNumber . $TaxLine->TaxCalculationOrder . '_TaxRate']))) {
+					$_SESSION['CreditItems' . $Identifier]->LineItems[$LineItem->LineNumber]->Taxes[$TaxKey]->TaxRate = filter_number_format($_POST[$LineItem->LineNumber . $TaxKey . '_TaxRate']) / 100;
 				}
 			}
 		}
@@ -479,7 +479,7 @@ if (isset($_POST['CreditType']) and ($_POST['CreditType'] == 'WriteOff' or $_POS
 		$ErrMsg = _('Failed to retrieve salesoderdetails to compare if the order has been invoiced and that it is possible that the credit note may not already have been done');
 		$DuplicateCreditResult = DB_query($SQL, $ErrMsg);
 		$MyRow1 = DB_fetch_row($DuplicateCreditResult);
-		if($MyRow1[0] == 0){
+		if ($MyRow1[0] == 0) {
 			prnMsg(_('The credit quantity for the line for') . ' ' . $CreditLine->StockID . ' ' . ('is more than the quantity invoiced. This check is made to ensure that the credit note is not duplicated.'), 'error');
 			$OKToProcess = false;
 			include('includes/footer.inc');
@@ -1541,7 +1541,7 @@ if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 					FROM locations
 					INNER JOIN locationusers
 						ON locationusers.loccode=locations.loccode
-						AND locationusers.userid='" .  $_SESSION['UserID'] . "'
+						AND locationusers.userid='" . $_SESSION['UserID'] . "'
 						AND locationusers.canupd=1";
 		$Result = DB_query($SQL);
 
@@ -1590,7 +1590,7 @@ if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 	}
 	++$j;
 	echo '<tr>
-			<td>' . _('Sales person'). ':</td>';
+			<td>' . _('Sales person') . ':</td>';
 
 	if ($_SESSION['SalesmanLogin'] != '') {
 		echo '<td>';
@@ -1600,8 +1600,8 @@ if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 		echo '<td><select tabindex="' . $j . '" name="SalesPerson">';
 		$SalesPeopleResult = DB_query("SELECT salesmancode, salesmanname FROM salesman WHERE current=1");
 		/* SalesPerson will be set because it is an invoice being credited and the order salesperson would/should have been retrieved */
-		while ($SalesPersonRow = DB_fetch_array($SalesPeopleResult)){
-			if ($SalesPersonRow['salesmancode'] == $_SESSION['CreditItems'.$Identifier]->SalesPerson){
+		while ($SalesPersonRow = DB_fetch_array($SalesPeopleResult)) {
+			if ($SalesPersonRow['salesmancode'] == $_SESSION['CreditItems' . $Identifier]->SalesPerson) {
 				echo '<option selected="selected" value="' . $SalesPersonRow['salesmancode'] . '">' . $SalesPersonRow['salesmanname'] . '</option>';
 			} else {
 				echo '<option value="' . $SalesPersonRow['salesmancode'] . '">' . $SalesPersonRow['salesmanname'] . '</option>';

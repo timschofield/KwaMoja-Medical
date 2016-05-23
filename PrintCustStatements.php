@@ -201,7 +201,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 
 						$LeftOvers = $PDF->addTextWrap($Left_Margin + 1, $YPos, 60, $FontSize, _($MyRow['typename']), 'left');
 						$LeftOvers = $PDF->addTextWrap($Left_Margin + 110, $YPos, 50, $FontSize, $MyRow['transno'], 'left');
-						$LeftOvers = $PDF->addTextWrap($Left_Margin + 211, $YPos, 50, $FontSize, ConvertSQLDate($MyRow['trandate']), 'left');
+						$LeftOvers = $PDF->addTextWrap($Left_Margin + 211, $YPos, 55, $FontSize, ConvertSQLDate($MyRow['trandate']), 'left');
 
 						$FontSize = 10;
 						if ($MyRow['total'] > 0) {
@@ -251,7 +251,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 					$FontSize = 9;
 					$LeftOvers = $PDF->addTextWrap($Left_Margin + 1, $YPos, 60, $FontSize, _($MyRow['typename']), 'left');
 					$LeftOvers = $PDF->addTextWrap($Left_Margin + 110, $YPos, 50, $FontSize, $MyRow['transno'], 'left');
-					$LeftOvers = $PDF->addTextWrap($Left_Margin + 211, $YPos, 50, $FontSize, ConvertSQLDate($MyRow['trandate']), 'left');
+					$LeftOvers = $PDF->addTextWrap($Left_Margin + 211, $YPos, 55, $FontSize, ConvertSQLDate($MyRow['trandate']), 'left');
 
 					$FontSize = 10;
 					if ($MyRow['total'] > 0) {

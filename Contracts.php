@@ -949,7 +949,8 @@ if (!isset($_SESSION['Contract' . $Identifier]->DebtorNo) or $_SESSION['Contract
 			<td><input type="file" id="Drawing" name="Drawing" />
 			</td>';
 
-	$ImageFile = reset((glob($_SESSION['part_pics_dir'] . '/' . $_SESSION['Contract' . $Identifier]->ContractRef . '.{' . implode(",", $SupportedImgExt) . '}', GLOB_BRACE)));
+	$ImageFileArray = glob($_SESSION['part_pics_dir'] . '/' . $_SESSION['Contract' . $Identifier]->ContractRef . '.{' . implode(",", $SupportedImgExt) . '}', GLOB_BRACE);
+	$ImageFile = reset($ImageFileArray);
 	echo '<td> ' . $ImageFile . '</td>';
 	echo '</tr>';
 

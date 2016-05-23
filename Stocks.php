@@ -1144,7 +1144,8 @@ echo '<tr>
 		<br /><input type="checkbox" name="ClearImage" id="ClearImage" value="1" > '._('Clear Image').'
 		</td>';
 
-$ImageFile = reset((glob($_SESSION['part_pics_dir'] . '/' . $StockID . '.{' . implode(",", $SupportedImgExt) . '}', GLOB_BRACE)));
+$ImageFileArray = glob($_SESSION['part_pics_dir'] . '/' . $StockID . '.{' . implode(",", $SupportedImgExt) . '}', GLOB_BRACE);
+$ImageFile = reset($ImageFileArray);
 if (extension_loaded('gd') and function_exists('gd_info') and isset($StockID) and !empty($StockID)) {
 	$StockImgLink = '<img src="GetStockImage.php?automake=1&amp;textcolor=FFFFFF&amp;bgcolor=CCCCCC' . '&amp;StockID=' . urlencode($StockId) . '&amp;text=' . '&amp;width=64' . '&amp;height=64' . '" alt="" />';
 } else if (file_exists ($ImageFile)) {

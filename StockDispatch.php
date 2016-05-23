@@ -220,7 +220,8 @@ if (isset($_POST['PrintPDF'])) {
 				//for full template
 				$PDF->addTextWrap(50, $YPos, 70, $FontSize, $MyRow['stockid'], '', 0, $fill);
 				$SupportedImgExt = array('png', 'jpg', 'jpeg');
-				$ImageFile = reset((glob($_SESSION['part_pics_dir'] . '/' . $MyRow['stockid'] . '.{' . implode(",", $SupportedImgExt) . '}', GLOB_BRACE)));
+				$ImageFileArray = glob($_SESSION['part_pics_dir'] . '/' . $MyRow['stockid'] . '.{' . implode(",", $SupportedImgExt) . '}', GLOB_BRACE);
+				$ImageFile = reset($ImageFileArray);
 				if (file_exists ($ImageFile) ) {
 					$PDF->Image($ImageFile, 135, $Page_Height - $Top_Margin - $YPos + 10, 35, 35);
 				}

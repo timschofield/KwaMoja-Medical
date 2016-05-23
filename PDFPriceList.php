@@ -238,7 +238,8 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 
 			// Prints item image:
 			$SupportedImgExt = array('png','jpg','jpeg');
-			$ImageFile = reset((glob($_SESSION['part_pics_dir'] . '/' . $PriceList['stockid'] . '.{' . implode(",", $SupportedImgExt) . '}', GLOB_BRACE)));
+			$ImageFileArray = glob($_SESSION['part_pics_dir'] . '/' . $PriceList['stockid'] . '.{' . implode(",", $SupportedImgExt) . '}', GLOB_BRACE);
+			$ImageFile = reset($ImageFileArray);
 			$YPosImage = $YPos;// Initializes the image bottom $YPos.
 
 			if (file_exists($ImageFile)) {

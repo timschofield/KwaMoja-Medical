@@ -178,7 +178,8 @@ if (count($_SESSION['PO' . $Identifier]->LineItems) > 0 and !isset($_POST['Proce
 		//Now Display LineItem
 
 		$SupportedImgExt = array('png', 'jpg', 'jpeg');
-		$ImageFile = reset((glob($_SESSION['part_pics_dir'] . '/' . $LnItm->StockID . '.{' . implode(",", $SupportedImgExt) . '}', GLOB_BRACE)));
+		$ImageFileArray = glob($_SESSION['part_pics_dir'] . '/' . $LnItm->StockID . '.{' . implode(",", $SupportedImgExt) . '}', GLOB_BRACE);
+		$ImageFile = reset($ImageFileArray);
 		if ($ImageFile) {
 			$ImageLink = '<a href="' . $ImageFile . '" target="_blank">' .  $LnItm->StockID . '</a>';
 		} else {

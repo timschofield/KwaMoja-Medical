@@ -237,7 +237,8 @@ if (!isset($SelectedManufacturer)) {
 				$k = 1;
 			}
 
-			$ImageFile = reset((glob($_SESSION['part_pics_dir'] . '/BRAND-' . $MyRow['manufacturers_id'] . '.{' . implode(",", $SupportedImgExt) . '}', GLOB_BRACE)));
+			$ImageFileArray = glob($_SESSION['part_pics_dir'] . '/BRAND-' . $MyRow['manufacturers_id'] . '.{' . implode(",", $SupportedImgExt) . '}', GLOB_BRACE);
+			$ImageFile = reset($ImageFileArray);
 			if (extension_loaded('gd') and function_exists('gd_info') and file_exists($ImageFile)) {
 				$BrandImgLink = '<img src="GetStockImage.php?automake=1&textcolor=FFFFFF&bgcolor=CCCCCC&StockID=' . urlencode('/BRAND-' . $MyRow['manufacturers_id']) . '&text=&width=120&height=120" alt="" />';
 			} else if (file_exists ($ImageFile)) {
@@ -337,7 +338,8 @@ if (!isset($_GET['delete'])) {
 	echo '</td>
 		</tr>';
 	if (isset($SelectedManufacturer)) {
-		$ImageFile = reset((glob($_SESSION['part_pics_dir'] . '/BRAND-' . $SelectedManufacturer . '.{' . implode(",", $SupportedImgExt) . '}', GLOB_BRACE)));
+		$ImageFileArray = glob($_SESSION['part_pics_dir'] . '/BRAND-' . $SelectedManufacturer . '.{' . implode(",", $SupportedImgExt) . '}', GLOB_BRACE);
+		$ImageFile = reset($ImageFileArray);
 		if (extension_loaded('xgd') and function_exists('gd_info') and file_exists($ImageFile)) {
 			$BrandImgLink = '<img src="GetStockImage.php?automake=1&textcolor=FFFFFF&bgcolor=CCCCCC&StockID=' . urlencode('/BRAND-' . $SelectedManufacturer) . '&text=&width=100&height=100" alt="" />';
 		} else {

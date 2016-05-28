@@ -168,6 +168,7 @@ Define('NoReadCustomerBranch', 1163);
 Define('NoReadItem', 1164);
 Define('MustBeReceiptOrCreditNote', 1165);
 Define('NoTransactionToAllocate', 1166);
+Define('InvalidQtyGreaterThan', 1167);
 
 
 /* Array of Descriptions of errors */
@@ -338,5 +339,6 @@ $ErrorDescription['1163'] = _('Unable to read customer and branch details');
 $ErrorDescription['1164'] = _('Unable to read credit note item details');
 $ErrorDescription['1165'] = _('Can only allocate receipts or a credit notes');
 $ErrorDescription['1166'] = _('No transaction found to allocate');
+$ErrorDescription['1167'] = _('Invalid supplier quantity break');
 
 ?>

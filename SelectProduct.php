@@ -387,7 +387,8 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 				<table>
 					<tr>
 						<th style="width:50%">', _('Supplier'), '</th>
-						<th style="width:15%">', _('Cost'), '</th>
+						<th style="width:15%">', _('Price'), '</th>
+						<th style="width:15%">', _('Qty Greater Than'), '</th>
 						<th style="width:5%">', _('Curr'), '</th>
 						<th style="width:15%">', _('Eff Date'), '</th>
 						<th style="width:10%">', _('Lead Time'), '</th>
@@ -398,22 +399,27 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 									suppliers.currcode,
 									suppliers.supplierid,
 									purchdata.price,
+									purchdata.qtygreaterthan,
 									purchdata.effectivefrom,
 									purchdata.leadtime,
 									purchdata.conversionfactor,
 									purchdata.minorderqty,
 									purchdata.preferred,
 									currencies.decimalplaces
-								FROM purchdata INNER JOIN suppliers
-								ON purchdata.supplierno=suppliers.supplierid
+								FROM purchdata
+								INNER JOIN suppliers
+									ON purchdata.supplierno=suppliers.supplierid
 								INNER JOIN currencies
-								ON suppliers.currcode=currencies.currabrev
+									ON suppliers.currcode=currencies.currabrev
 								WHERE purchdata.stockid = '" . $StockId . "'
-							ORDER BY purchdata.preferred DESC, purchdata.effectivefrom DESC");
+								ORDER BY purchdata.preferred DESC,
+								purchdata.effectivefrom DESC,
+								purchdata.qtygreaterthan ASC");
 		while ($SuppRow = DB_fetch_array($SuppResult)) {
 			echo '<tr>
 					<td class="select">', $SuppRow['suppname'], '</td>
 					<td class="select">', locale_number_format($SuppRow['price'] / $SuppRow['conversionfactor'], $SuppRow['decimalplaces']), '</td>
+					<td class="select number">', locale_number_format($SuppRow['qtygreaterthan'], 'Variable'), '</td>
 					<td class="select">', $SuppRow['currcode'], '</td>
 					<td class="select">', ConvertSQLDate($SuppRow['effectivefrom']), '</td>
 					<td class="select">', $SuppRow['leadtime'], '</td>
@@ -457,7 +463,7 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 
 		$SupportedImgExt = array('png', 'jpg', 'jpeg');
 		$ImageFileArray = glob($_SESSION['part_pics_dir'] . '/' . $StockId . '.{' . implode(",", $SupportedImgExt) . '}', GLOB_BRACE);
-		$ImageFile = reset($FileArray);
+		$ImageFile = reset($ImageFileArray);
 		echo '<a href="' . $RootPath . '/' . $ImageFile . '" target="_blank">' . _('Show Part Picture (if available)') . '</a>';
 	}
 	if ($Its_A_Dummy == false) {

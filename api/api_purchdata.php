@@ -13,6 +13,13 @@ function VerifySuppliersUOM($suppliersuom, $i, $Errors) {
 	return $Errors;
 }
 
+function VerifyQtyGreaterThan($qtygreaterthan, $i, $Errors) {
+	if ($qtygreaterthan<0) {
+		$Errors[$i] = InvalidQtyGreaterThan;
+	}
+	return $Errors;
+}
+
 /* Verify that the conversion factor figure is numeric */
 function VerifyConversionFactor($ConversionFactor, $i, $Errors) {
 	if (!is_numeric($ConversionFactor)) {
@@ -56,22 +63,25 @@ function InsertPurchData($PurchDataDetails, $user, $password) {
 	}
 	$Errors = VerifyStockCodeExists($PurchDataDetails['stockid'], sizeof($Errors), $Errors);
 	$Errors = VerifySupplierNoExists($PurchDataDetails['supplierno'], sizeof($Errors), $Errors);
-	if (isset($StockItemDetails['price'])) {
+	if (isset($PurchDataDetails['price'])) {
 		$Errors = VerifyUnitPrice($PurchDataDetails['price'], sizeof($Errors), $Errors);
 	}
-	if (isset($StockItemDetails['suppliersuom'])) {
+	if (isset($PurchDataDetails['qtygreaterthan'])) {
+		$Errors = VerifyQtyGreaterThan($PurchDataDetails['qtygreaterthan'], sizeof($Errors), $Errors);
+	}
+	if (isset($PurchDataDetails['suppliersuom'])) {
 		$Errors = VerifySuppliersUOM($PurchDataDetails['suppliersuom'], sizeof($Errors), $Errors);
 	}
-	if (isset($StockItemDetails['conversionfactor'])) {
+	if (isset($PurchDataDetails['conversionfactor'])) {
 		$Errors = VerifyConversionFactor($PurchDataDetails['conversionfactor'], sizeof($Errors), $Errors);
 	}
-	if (isset($StockItemDetails['supplierdescription'])) {
+	if (isset($PurchDataDetails['supplierdescription'])) {
 		$Errors = VerifySupplierDescription($PurchDataDetails['supplierdescription'], sizeof($Errors), $Errors);
 	}
-	if (isset($StockItemDetails['leadtime'])) {
+	if (isset($PurchDataDetails['leadtime'])) {
 		$Errors = VerifyLeadTime($PurchDataDetails['leadtime'], sizeof($Errors), $Errors);
 	}
-	if (isset($StockItemDetails['preferred'])) {
+	if (isset($PurchDataDetails['preferred'])) {
 		$Errors = VerifyPreferredFlag($PurchDataDetails['preferred'], sizeof($Errors), $Errors);
 	}
 	$FieldNames = '';

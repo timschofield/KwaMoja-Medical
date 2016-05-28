@@ -663,13 +663,18 @@ else {
 						purchdata.suppliers_partno,
 						purchdata.conversionfactor,
 						purchdata.leadtime,
-						stockcategory.stockact
-				FROM stockmaster INNER JOIN stockcategory
+						stockcategory.stockact,
+						MAX(purchdata.effectivefrom) AS latesteffectivefrom
+				FROM stockmaster
+				INNER JOIN stockcategory
 					ON stockmaster.categoryid=stockcategory.categoryid
 				LEFT JOIN purchdata
 					ON stockmaster.stockid = purchdata.stockid
 				WHERE stockmaster.stockid='" . $Purch_Item . "'
-				AND purchdata.supplierno ='" . $_GET['SelectedSupplier'] . "'";
+					AND qtygreaterthan<'" . $Qty . "'
+					AND purchdata.supplierno ='" . $_GET['SelectedSupplier'] . "'
+				ORDER BY latesteffectivefrom DESC,
+						qtygreaterthan DESC LIMIT 1";
 		$Result = DB_query($SQL);
 		$PurchItemRow = DB_fetch_array($Result);
 

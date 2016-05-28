@@ -93,6 +93,7 @@ if ((isset($_POST['AddRecord']) or isset($_POST['UpdateRecord'])) and isset($Sup
 		$SQL = "INSERT INTO purchdata (supplierno,
 										stockid,
 										price,
+										qtygreaterthan,
 										effectivefrom,
 										suppliersuom,
 										conversionfactor,
@@ -104,6 +105,7 @@ if ((isset($_POST['AddRecord']) or isset($_POST['UpdateRecord'])) and isset($Sup
 									VALUES ('" . DB_escape_string($SupplierID) . "',
 										'" . $StockId . "',
 										'" . filter_number_format($_POST['Price']) . "',
+										'" . filter_number_format($_POST['QtyGreaterThan']) . "',
 										'" . FormatDateForSQL($_POST['EffectiveFrom']) . "',
 										'" . $_POST['SuppliersUOM'] . "',
 										'" . filter_number_format($_POST['ConversionFactor']) . "',
@@ -119,6 +121,7 @@ if ((isset($_POST['AddRecord']) or isset($_POST['UpdateRecord'])) and isset($Sup
 	}
 	if ($InputError == 0 and isset($_POST['UpdateRecord'])) {
 		$SQL = "UPDATE purchdata SET price='" . filter_number_format($_POST['Price']) . "',
+									qtygreaterthan='" . filter_number_format($_POST['QtyGreaterThan']) . "',
 									effectivefrom='" . FormatDateForSQL($_POST['EffectiveFrom']) . "',
 									suppliersuom='" . $_POST['SuppliersUOM'] . "',
 									conversionfactor='" . filter_number_format($_POST['ConversionFactor']) . "',
@@ -129,7 +132,8 @@ if ((isset($_POST['AddRecord']) or isset($_POST['UpdateRecord'])) and isset($Sup
 									preferred='" . $_POST['Preferred'] . "'
 								WHERE purchdata.stockid='" . $StockId . "'
 									AND purchdata.supplierno='" . DB_escape_string($SupplierID) . "'
-									AND purchdata.effectivefrom='" . $_POST['WasEffectiveFrom'] . "'";
+									AND purchdata.effectivefrom='" . $_POST['WasEffectiveFrom'] . "'
+									AND qtygreaterthan='" . $_POST['OldQtyBreak'] . "'";
 		$ErrMsg = _('The supplier purchasing details could not be updated because');
 		$DbgMsg = _('The SQL that failed was');
 		$UpdResult = DB_query($SQL, $ErrMsg, $DbgMsg);
@@ -240,6 +244,7 @@ if (!isset($_GET['Edit'])) {
 	$SQL = "SELECT purchdata.supplierno,
 					suppliers.suppname,
 					purchdata.price,
+					purchdata.qtygreaterthan,
 					suppliers.currcode,
 					purchdata.effectivefrom,
 					purchdata.suppliersuom,
@@ -257,7 +262,8 @@ if (!isset($_GET['Edit'])) {
 					ON suppliers.currcode=currencies.currabrev
 				WHERE purchdata.stockid = '" . $StockId . "'
 				ORDER BY supplierno,
-					purchdata.effectivefrom DESC";
+					purchdata.effectivefrom DESC,
+					qtygreaterthan ASC";
 	$ErrMsg = _('The supplier purchasing details for the selected part could not be retrieved because');
 	$PurchDataResult = DB_query($SQL, $ErrMsg);
 	if (DB_num_rows($PurchDataResult) == 0 and $StockId != '') {
@@ -269,6 +275,7 @@ if (!isset($_GET['Edit'])) {
 					<tr>
 						<th class="SortedColumn">' . _('Supplier') . '</th>
 						<th>' . _('Price') . '</th>
+						<th>' . _('Qty Greater Than') . '</th>
 						<th>' . _('Supplier Unit') . '</th>
 						<th>' . _('Conversion Factor') . '</th>
 						<th>' . _('Cost Per Our Unit') . '</th>
@@ -302,6 +309,7 @@ if (!isset($_GET['Edit'])) {
 			$UPriceDecimalPlaces = max($MyRow['currdecimalplaces'], $_SESSION['StandardCostDecimalPlaces']);
 			printf('<td>%s</td>
 					<td class="number">%s</td>
+					<td class="number">%s</td>
 					<td>%s</td>
 					<td class="number">%s</td>
 					<td class="number">%s</td>
@@ -313,7 +321,7 @@ if (!isset($_GET['Edit'])) {
 					<td><a href="%s?StockID=%s&SupplierID=%s&Edit=1&EffectiveFrom=%s">' . _('Edit') . '</a></td>
 					<td><a href="%s?StockID=%s&SupplierID=%s&Copy=1&EffectiveFrom=%s">' . _('Copy') . '</a></td>
 					<td><a href="%s?StockID=%s&SupplierID=%s&Delete=1&EffectiveFrom=%s" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this suppliers price?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
-					</tr>', $MyRow['suppname'], locale_number_format($MyRow['price'], $UPriceDecimalPlaces), $MyRow['suppliersuom'], locale_number_format($MyRow['conversionfactor'], 'Variable'), locale_number_format($MyRow['price'] / $MyRow['conversionfactor'], $UPriceDecimalPlaces), $MyRow['currcode'], ConvertSQLDate($MyRow['effectivefrom']), locale_number_format($MyRow['minorderqty'], 'Variable'), locale_number_format($MyRow['leadtime'], 'Variable'), $DisplayPreferred, htmlspecialchars($_SERVER['PHP_SELF']), $StockId, $MyRow['supplierno'], $MyRow['effectivefrom'], htmlspecialchars($_SERVER['PHP_SELF']), $StockId, $MyRow['supplierno'], $MyRow['effectivefrom'], htmlspecialchars($_SERVER['PHP_SELF']), $StockId, $MyRow['supplierno'], $MyRow['effectivefrom']);
+					</tr>', $MyRow['suppname'], locale_number_format($MyRow['price'], $UPriceDecimalPlaces), $MyRow['qtygreaterthan'], $MyRow['suppliersuom'], locale_number_format($MyRow['conversionfactor'], 'Variable'), locale_number_format($MyRow['price'] / $MyRow['conversionfactor'], $UPriceDecimalPlaces), $MyRow['currcode'], ConvertSQLDate($MyRow['effectivefrom']), locale_number_format($MyRow['minorderqty'], 'Variable'), locale_number_format($MyRow['leadtime'], 'Variable'), $DisplayPreferred, htmlspecialchars($_SERVER['PHP_SELF']), $StockId, $MyRow['supplierno'], $MyRow['effectivefrom'], htmlspecialchars($_SERVER['PHP_SELF']), $StockId, $MyRow['supplierno'], $MyRow['effectivefrom'], htmlspecialchars($_SERVER['PHP_SELF']), $StockId, $MyRow['supplierno'], $MyRow['effectivefrom']);
 		} //end of while loop
 		echo '</tbody>';
 		echo '</table>';
@@ -490,6 +498,7 @@ if (!isset($SuppliersResult)) {
 		$SQL = "SELECT purchdata.supplierno,
 						suppliers.suppname,
 						purchdata.price,
+						purchdata.qtygreaterthan,
 						purchdata.effectivefrom,
 						suppliers.currcode,
 						purchdata.suppliersuom,
@@ -520,10 +529,15 @@ if (!isset($SuppliersResult)) {
 		if ($Edit == true) {
 			$_POST['EffectiveFrom'] = ConvertSQLDate($MyRow['effectivefrom']);
 			$_POST['Price'] = locale_number_format(round($MyRow['price'], $UPriceDecimalPlaces), $UPriceDecimalPlaces);
+			$_POST['QtyGreaterThan'] = locale_number_format($MyRow['qtygreaterthan'], 'Variable');
+			$_POST['OldQtyBreak'] = $MyRow['qtygreaterthan'];
 		} else {
 			$_POST['EffectiveFrom'] = Date($_SESSION['DefaultDateFormat']);
 			$_POST['Price'] = 0;
+			$_POST['QtyGreaterThan'] = 0;
+			$_POST['OldQtyBreak'] = 0;
 		}
+		$_POST['OldQtyBreak'] =
 		$CurrCode = $MyRow['currcode'];
 		$CurrDecimalPlaces = $MyRow['currdecimalplaces'];
 		$_POST['SuppliersUOM'] = $MyRow['suppliersuom'];
@@ -547,6 +561,7 @@ if (!isset($SuppliersResult)) {
 				<td>' . _('Supplier Name') . ':</td>
 				<td><input type="hidden" name="SupplierID" value="' . $SupplierID . '" />' . $SupplierID . ' - ' . $SuppName . '<input type="hidden" name="WasEffectiveFrom" value="' . $MyRow['effectivefrom'] . '" /></td>
 			</tr>';
+		echo '<input type="hidden" name="OldQtyBreak" value="' . $_POST['OldQtyBreak'] . '" />';
 	} else {
 		echo '<tr>
 				<td>' . _('Supplier Name') . ':</td>
@@ -568,6 +583,9 @@ if (!isset($SuppliersResult)) {
 	}
 	if (!isset($_POST['Price'])) {
 		$_POST['Price'] = 0;
+	}
+	if (!isset($_POST['QtyGreaterThan'])) {
+		$_POST['QtyGreaterThan'] = 0;
 	}
 	if (!isset($_POST['EffectiveFrom'])) {
 		$_POST['EffectiveFrom'] = Date($_SESSION['DefaultDateFormat']);
@@ -591,6 +609,10 @@ if (!isset($SuppliersResult)) {
 		<tr>
 			<td>' . _('Price') . ' (' . _('in Supplier Currency') . '):</td>
 			<td><input type="text" class="number" name="Price" required="required" maxlength="12" size="12" value="' . $_POST['Price'] . '" /></td>
+		</tr>
+		<tr>
+			<td>' . _('For quantities greater than') . ':</td>
+			<td><input type="text" class="number" name="QtyGreaterThan" required="required" maxlength="12" size="12" value="' . $_POST['QtyGreaterThan'] . '" /></td>
 		</tr>
 		<tr>
 			<td>' . _('Price Effective From') . ':</td>

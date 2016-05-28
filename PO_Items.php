@@ -27,7 +27,7 @@ if (!isset($_POST['Commit'])) {
 		</div>';
 } //!isset($_POST['Commit'])
 
-if (isset($_POST['UpdateLines']) or isset($_POST['Commit'])) {
+if (isset($_POST['UpdateLines']) or isset($_POST['Commit']) or isset($_POST['RefreshPrices'])) {
 	foreach ($_SESSION['PO' . $Identifier]->LineItems as $POLine) {
 		if ($POLine->Deleted == false) {
 			if (!is_numeric(filter_number_format($_POST['ConversionFactor' . $POLine->LineNo]))) {
@@ -54,6 +54,110 @@ if (isset($_POST['UpdateLines']) or isset($_POST['Commit'])) {
 		} //$POLine->Deleted == false
 	} //$_SESSION['PO' . $Identifier]->LineItems as $POLine
 } //isset($_POST['UpdateLines']) or isset($_POST['Commit'])
+
+//Refresh the prices
+if (isset($_POST['RefreshPrices'])) {
+	foreach ($_SESSION['PO' . $Identifier]->LineItems as $POLine) {
+		$SQL = "SELECT description,
+						longdescription,
+						stockid,
+						units,
+						decimalplaces,
+						stockact,
+						accountname
+					FROM stockmaster
+					INNER JOIN stockcategory
+						ON stockcategory.categoryid = stockmaster.categoryid
+					INNER JOIN chartmaster
+						ON chartmaster.accountcode = stockcategory.stockact
+					WHERE  stockmaster.stockid = '" . $POLine->StockID . "'
+						AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'";
+
+		$ErrMsg = _('The item details for') . ' ' . $POLine->StockID . ' ' . _('could not be retrieved because');
+		$DbgMsg = _('The SQL used to retrieve the item details but failed was');
+		$ItemResult = DB_query($SQL, $ErrMsg, $DbgMsg);
+		$ItemRow = DB_fetch_array($ItemResult);
+
+		$SQL = "SELECT price,
+						conversionfactor,
+						supplierdescription,
+						suppliersuom,
+						suppliers_partno,
+						leadtime,
+						MAX(purchdata.effectivefrom) AS latesteffectivefrom
+					FROM purchdata
+					WHERE purchdata.supplierno = '" . $_SESSION['PO' . $Identifier]->SupplierID . "'
+						AND purchdata.effectivefrom <=CURRENT_DATE
+						AND purchdata.stockid = '" . $POLine->StockID . "'
+						AND qtygreaterthan<'" . $POLine->Quantity . "'
+						GROUP BY purchdata.price,
+								purchdata.conversionfactor,
+								purchdata.supplierdescription,
+								purchdata.suppliersuom,
+								purchdata.suppliers_partno,
+								purchdata.leadtime
+						ORDER BY latesteffectivefrom DESC,
+								 qtygreaterthan DESC LIMIT 1";
+		$ErrMsg = _('The purchasing data for') . ' ' . $POLine->StockID . ' ' . _('could not be retrieved because');
+		$DbgMsg = _('The SQL used to retrieve the purchasing data but failed was');
+		$PurchDataResult = DB_query($SQL, $ErrMsg, $DbgMsg);
+		if (DB_num_rows($PurchDataResult) > 0) { //the purchasing data is set up
+			$PurchRow = DB_fetch_array($PurchDataResult);
+			/* Now to get the applicable discounts */
+			$SQL = "SELECT discountpercent,
+							discountamount
+						FROM supplierdiscounts
+						WHERE supplierno= '" . $_SESSION['PO' . $Identifier]->SupplierID . "'
+							AND effectivefrom <=CURRENT_DATE
+							AND effectiveto >=CURRENT_DATE
+							AND stockid = '" . $POLine->StockID . "'";
+
+			$ItemDiscountPercent = 0;
+			$ItemDiscountAmount = 0;
+			$ErrMsg = _('Could not retrieve the supplier discounts applicable to the item');
+			$DbgMsg = _('The SQL used to retrive the supplier discounts that failed was');
+			$DiscountResult = DB_query($SQL, $ErrMsg, $DbgMsg);
+			while ($DiscountRow = DB_fetch_array($DiscountResult)) {
+				$ItemDiscountPercent += $DiscountRow['discountpercent'];
+				$ItemDiscountAmount += $DiscountRow['discountamount'];
+			}
+			if ($ItemDiscountPercent != 0) {
+				prnMsg(_('Taken accumulated supplier percentage discounts of') . ' ' . locale_number_format($ItemDiscountPercent * 100, 2) . '%', 'info');
+			}
+			if ($ItemDiscountAmount != 0) {
+				prnMsg(_('Taken accumulated round sum supplier discount of') . ' ' . $_SESSION['PO' . $Identifier]->CurrCode . ' ' . locale_number_format($ItemDiscountAmount, $_SESSION['PO' . $Identifier]->CurrDecimalPlaces) . ' (' . _('per supplier unit') . ')', 'info');
+			}
+			$PurchPrice = ($PurchRow['price'] * (1 - $ItemDiscountPercent) - $ItemDiscountAmount) / $PurchRow['conversionfactor'];
+			$ConversionFactor = $PurchRow['conversionfactor'];
+			if (mb_strlen($PurchRow['supplierdescription']) > 2) {
+				$SupplierDescription = $PurchRow['supplierdescription'];
+			} //mb_strlen($PurchRow['supplierdescription']) > 2
+			else {
+				$SupplierDescription = $ItemRow['description'];
+			}
+			$SuppliersUnitOfMeasure = $PurchRow['suppliersuom'];
+			$SuppliersPartNo = $PurchRow['suppliers_partno'];
+			$LeadTime = $PurchRow['leadtime'];
+			/* Work out the delivery date based on today + lead time
+			 * if > header DeliveryDate then set DeliveryDate to today + leadtime
+			 */
+			$DeliveryDate = DateAdd(Date($_SESSION['DefaultDateFormat']), 'd', $LeadTime);
+			if (Date1GreaterThanDate2($_SESSION['PO' . $Identifier]->DeliveryDate, $DeliveryDate)) {
+				$DeliveryDate = $_SESSION['PO' . $Identifier]->DeliveryDate;
+			} //!Date1GreaterThanDate2($DeliveryDate, $_SESSION['PO' . $Identifier]->DeliveryDate)
+		} //DB_num_rows($PurchDataResult) > 0
+		else { // no purchasing data setup
+			$PurchPrice = 0;
+			$ConversionFactor = 1;
+			$SupplierDescription = $ItemRow['description'];
+			$SuppliersUnitOfMeasure = $ItemRow['units'];
+			$SuppliersPartNo = '';
+			$LeadTime = 1;
+			$DeliveryDate = $_SESSION['PO' . $Identifier]->DeliveryDate;
+		}
+		$POLine->Price = $PurchPrice;
+	}
+}
 
 if (isset($_POST['Commit'])) {
 	/*User wishes to commit the order to the database */
@@ -457,7 +561,7 @@ if (isset($_POST['EnterLine'])) {
 	 * [icedlava] GL Code is required for non stock item variance in price vs purchase order when supplier invoice generated even if stock not linked to GL, but AP is else
 	 * there will be an sql error  in SupplierInvoice.php without a valid GL Code
 	 */
-	if ($_SESSION['PO'.$Identifier]->GLLink == 1 or $_SESSION['CompanyRecord']['gllink_creditors'] == 1) {
+	if ($_SESSION['PO' . $Identifier]->GLLink == 1 or $_SESSION['CompanyRecord']['gllink_creditors'] == 1) {
 		$SQL = "SELECT accountname
 					FROM chartmaster
 					WHERE accountcode ='" . $_POST['GLCode'] . "'
@@ -483,7 +587,8 @@ if (isset($_POST['EnterLine'])) {
 			$MyRow = DB_fetch_row($GLValidResult);
 			$GLAccountName = $MyRow[0];
 		}
-	} /* dont bother checking the GL Code if there is no GL code to check ie not linked to GL */
+	}
+	/* dont bother checking the GL Code if there is no GL code to check ie not linked to GL */
 	else {
 		$_POST['GLCode'] = 0;
 	}
@@ -594,13 +699,15 @@ if (isset($_POST['NewItem']) and !empty($_POST['PO_ItemsResubmitFormValue']) and
 							WHERE purchdata.supplierno = '" . $_SESSION['PO' . $Identifier]->SupplierID . "'
 							AND purchdata.effectivefrom <=CURRENT_DATE
 							AND purchdata.stockid = '" . $ItemCode . "'
+							AND qtygreaterthan<'" . $Quantity . "'
 							GROUP BY purchdata.price,
 									purchdata.conversionfactor,
 									purchdata.supplierdescription,
 									purchdata.suppliersuom,
 									purchdata.suppliers_partno,
 									purchdata.leadtime
-							ORDER BY latesteffectivefrom DESC";
+							ORDER BY latesteffectivefrom DESC,
+									 qtygreaterthan DESC LIMIT 1";
 
 					$ErrMsg = _('The purchasing data for') . ' ' . $ItemCode . ' ' . _('could not be retrieved because');
 					$DbgMsg = _('The SQL used to retrieve the purchasing data but failed was');
@@ -777,6 +884,7 @@ if (count($_SESSION['PO' . $Identifier]->LineItems) > 0 and !isset($_GET['Edit']
 	</table>';
 	echo '<div class="centre">
 			<input type="submit" name="UpdateLines" value="', _('Update Order Lines'), '" />
+			&nbsp;<input type="submit" name="RefreshPrices" value="', _('Refresh Prices'), '" />
 			&nbsp;<input type="submit" name="Commit" value="', _('Process Order'), '" />
 		</div>';
 
@@ -795,7 +903,7 @@ if (isset($_POST['NonStockOrder'])) {
 	$SQL = "SELECT accountcode,
 				  accountname
 				FROM chartmaster
-				WHERE chartmaster.language='" . $_SESSION['ChartLanguage'] ."'
+				WHERE chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 				ORDER BY accountcode ASC";
 	$Result = DB_query($SQL);
 	echo '<tr>
@@ -1199,12 +1307,16 @@ if (isset($SearchResult)) {
 			$k = 1;
 		}
 
-		$SupportedImgExt = array('png', 'jpg', 'jpeg');
+		$SupportedImgExt = array(
+			'png',
+			'jpg',
+			'jpeg'
+		);
 		$ImageFileArray = glob($_SESSION['part_pics_dir'] . '/' . $MyRow['stockid'] . '.{' . implode(",", $SupportedImgExt) . '}', GLOB_BRACE);
 		$ImageFile = reset($ImageFileArray);
-		if (extension_loaded('gd') and function_exists('gd_info') and file_exists ($ImageFile)) {
+		if (extension_loaded('gd') and function_exists('gd_info') and file_exists($ImageFile)) {
 			$ImageSource = '<img src="GetStockImage.php?automake=1&amp;textcolor=FFFFFF&amp;bgcolor=CCCCCC&StockID=' . urlencode($MyRow['stockid']) . '&text=&width=64&height=64" alt="" />';
-		} else if (file_exists ($ImageFile)) {
+		} else if (file_exists($ImageFile)) {
 			$ImageSource = '<img src="' . $ImageFile . '" height="100" width="100" />';
 		} else {
 			$ImageSource = _('No Image');

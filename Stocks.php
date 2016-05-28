@@ -70,7 +70,7 @@ if (isset($_FILES['ItemPicture']) and $_FILES['ItemPicture']['name'] != '') {
 	$ImgExt = pathinfo($_FILES['ItemPicture']['name'], PATHINFO_EXTENSION);
 	$Result = $_FILES['ItemPicture']['error'];
 	$UploadTheFile = 'Yes'; //Assume all is well to start off with
-	$FileName = $_SESSION['part_pics_dir'] . '/' . $StockID . '.' . $ImgExt;
+	$FileName = $_SESSION['part_pics_dir'] . '/' . $StockId . '.' . $ImgExt;
 
 	//But check for the worst
 	if (!in_array ($ImgExt, $SupportedImgExt)) {
@@ -87,7 +87,7 @@ if (isset($_FILES['ItemPicture']) and $_FILES['ItemPicture']['name'] != '') {
 		$UploadTheFile ='No';
 	}
 	foreach ($SupportedImgExt as $ext) {
-		$File = $_SESSION['part_pics_dir'] . '/' . $StockID . '.' . $ext;
+		$File = $_SESSION['part_pics_dir'] . '/' . $StockId . '.' . $ext;
 		if (file_exists ($File) ) {
 			$Result = unlink($File);
 			if (!$Result){
@@ -492,27 +492,27 @@ if (isset($_POST['submit'])) {
 				if ($OldDescription != $_POST['Description'] or $OldLongDescription != $_POST['LongDescription']) {
 					$SQL = "UPDATE stockdescriptiontranslations
 						SET needsrevision = '0'
-						WHERE stockid='" . $StockID . "'";
+						WHERE stockid='" . $StockId . "'";
 					$ErrMsg = _('The stock description translations could not be updated because');
 					$DbgMsg = _('The SQL that was used to set the flag for translation revision failed was');
 					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 					$SQL = "UPDATE stocklongdescriptiontranslations
 						SET needsrevision = '0'
-						WHERE stockid='" . $StockID . "'";
+						WHERE stockid='" . $StockId . "'";
 					$ErrMsg = _('The stock description translations could not be updated because');
 					$DbgMsg = _('The SQL that was used to set the flag for translation revision failed was');
 					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 					$SQL = "UPDATE stockdescriptiontranslations SET descriptiontranslation='" . $_POST['Description'] . "'
-									WHERE stockid='" . $StockID . "'
+									WHERE stockid='" . $StockId . "'
 										AND language_id='" . $_SESSION['DefaultLanguage'] . "'";
 					$ErrMsg = _('The stock description translations could not be updated because');
 					$DbgMsg = _('The SQL that was used to set the flag for translation revision failed was');
 					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 					$SQL = "UPDATE stocklongdescriptiontranslations SET longdescriptiontranslation='" . $_POST['LongDescription'] . "'
-									WHERE stockid='" . $StockID . "'
+									WHERE stockid='" . $StockId . "'
 										AND language_id='" . $_SESSION['DefaultLanguage'] . "'";
 					$ErrMsg = _('The stock description translations could not be updated because');
 					$DbgMsg = _('The SQL that was used to set the flag for translation revision failed was');
@@ -1144,9 +1144,9 @@ echo '<tr>
 		<br /><input type="checkbox" name="ClearImage" id="ClearImage" value="1" > '._('Clear Image').'
 		</td>';
 
-$ImageFileArray = glob($_SESSION['part_pics_dir'] . '/' . $StockID . '.{' . implode(",", $SupportedImgExt) . '}', GLOB_BRACE);
+$ImageFileArray = glob($_SESSION['part_pics_dir'] . '/' . $StockId . '.{' . implode(",", $SupportedImgExt) . '}', GLOB_BRACE);
 $ImageFile = reset($ImageFileArray);
-if (extension_loaded('gd') and function_exists('gd_info') and isset($StockID) and !empty($StockID)) {
+if (extension_loaded('gd') and function_exists('gd_info') and isset($StockId) and !empty($StockId)) {
 	$StockImgLink = '<img src="GetStockImage.php?automake=1&amp;textcolor=FFFFFF&amp;bgcolor=CCCCCC' . '&amp;StockID=' . urlencode($StockId) . '&amp;text=' . '&amp;width=64' . '&amp;height=64' . '" alt="" />';
 } else if (file_exists ($ImageFile)) {
 	$StockImgLink = '<img src="' . $ImageFile . '" height="64" width="64" />';
@@ -1160,7 +1160,7 @@ if ($StockImgLink != _('No Image')) {
 
 if (isset($_POST['ClearImage'])) {
 	foreach ($SupportedImgExt as $ext) {
-		$File = $_SESSION['part_pics_dir'] . '/' . $StockID . '.' . $ext;
+		$File = $_SESSION['part_pics_dir'] . '/' . $StockId . '.' . $ext;
 		if (file_exists($File) ) {
 			//workaround for many variations of permission issues that could cause unlink fail
 			@unlink($File);

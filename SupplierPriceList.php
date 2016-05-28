@@ -298,6 +298,8 @@ foreach ($_POST as $Key => $Value) {
 		$Index = mb_substr($Key, 6, mb_strlen($Key) - 6);
 		$StockId = $_POST['StockID' . $Index];
 		$Price = $_POST['Price' . $Index];
+		$QtyGreaterThan = $_POST['QtyGreaterThan' . $Index];
+		$OldQtyGreaterThan = $_POST['OldQtyGreaterThan' . $Index];
 		$SuppUOM = $_POST['SuppUOM' . $Index];
 		$ConversionFactor = $_POST['ConversionFactor' . $Index];
 		$SupplierDescription = $_POST['SupplierDescription' . $Index];
@@ -314,6 +316,7 @@ foreach ($_POST as $Key => $Value) {
 		$SupplierPartNo = $_POST['SupplierPartNo' . $Index];
 		$MinOrderQty = $_POST['MinOrderQty' . $Index];
 		$SQL = "UPDATE purchdata SET price='" . $Price . "',
+									qtygreaterthan='" . $QtyGreaterThan . "',
 									suppliersuom='" . $SuppUOM . "',
 									conversionfactor='" . $ConversionFactor . "',
 									supplierdescription='" . $SupplierDescription . "',
@@ -323,7 +326,8 @@ foreach ($_POST as $Key => $Value) {
 									suppliers_partno='" . $SupplierPartNo . "',
 									minorderqty='" . $MinOrderQty . "'
 								WHERE supplierno='" . DB_escape_string($_POST['SupplierID']) . "'
-								AND stockid='" . $StockId . "'";
+									AND stockid='" . $StockId . "'
+									AND qtygreaterthan='" . $OldQtyGreaterThan . "'";
 		$Result = DB_query($SQL);
 	}
 	if (mb_substr($Key, 0, 6) == 'Insert') {
@@ -484,6 +488,7 @@ if (isset($_POST['SupplierID'])) {
 	$SQL = "SELECT purchdata.stockid,
 				stockmaster.description,
 				price,
+				qtygreaterthan,
 				suppliersuom,
 				conversionfactor,
 				supplierdescription,
@@ -516,6 +521,7 @@ if (isset($_POST['SupplierID'])) {
 				<th>' . _('StockID') . '</th>
 				<th>' . _('Description') . '</th>
 				<th>' . _('Price') . '</th>
+				<th>' . _('Quantity Greater Than') . '</th>
 				<th>' . _('Suppliers UOM') . '</th>
 				<th>' . _('Conversion Factor') . '</th>
 				<th>' . _('Suppliers Description') . '</th>
@@ -534,6 +540,7 @@ if (isset($_POST['SupplierID'])) {
 				<td><input type="hidden" value="' . $_POST['Select'] . '" name="StockID0" />' . $_POST['Select'] . '</td>
 				<td>' . $StockRow['description'] . '</td>
 				<td><input type="text" class="number" required="required" maxlength="11" size="11" value="0.0000" name="Price0" /></td>
+				<td><input type="text" class="number" required="required" maxlength="11" size="11" value="0.0000" name="QtyGreaterThan0" /></td>
 				<td><select required="required" name="SuppUOM0">';
 		while ($UOMRow = DB_fetch_array($UOMResult)) {
 			if (isset($StRowoc['units']) and ($UOMRow['unitname'] == $StRowoc['units'])) {
@@ -561,6 +568,8 @@ if (isset($_POST['SupplierID'])) {
 				<td><input type="hidden" value="' . $MyRow['stockid'] . '" name="StockID' . $RowCounter . '" />' . $MyRow['stockid'] . '</td>
 				<td>' . $MyRow['description'] . '</td>
 				<td><input type="text" class="number" size="11" value="' . $MyRow['price'] . '" name="Price' . $RowCounter . '" /></td>
+				<td><input type="text" class="number" size="11" value="' . $MyRow['qtygreaterthan'] . '" name="QtyGreaterThan' . $RowCounter . '" /></td>
+				<input type="hidden" value="' . $MyRow['qtygreaterthan'] . '" name="OldQtyGreaterThan' . $RowCounter . '" />
 				<td><select name="SuppUOM' . $RowCounter . '">';
 		DB_data_seek($UOMResult, 0);
 		while ($UOMRow = DB_fetch_array($UOMResult)) {

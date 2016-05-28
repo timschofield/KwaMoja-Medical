@@ -41,13 +41,15 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 							WHERE purchdata.supplierno = '" . $_POST['Supplier'] . "'
 								AND purchdata.effectivefrom <=CURRENT_DATE
 								AND purchdata.stockid = '" . $StockId . "'
+								AND qtygreaterthan<'" . $Quantity . "'
 							GROUP BY purchdata.price,
 									purchdata.conversionfactor,
 									purchdata.supplierdescription,
 									purchdata.suppliersuom,
 									purchdata.suppliers_partno,
 									purchdata.leadtime
-							ORDER BY latesteffectivefrom DESC";
+							ORDER BY latesteffectivefrom DESC,
+									qtygreaterthan DESC LIMIT 1";
 
 					$ErrMsg = _('The purchasing data for') . ' ' . $StockId . ' ' . _('could not be retrieved because');
 					$DbgMsg = _('The SQL used to retrieve the purchasing data but failed was');

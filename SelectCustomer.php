@@ -754,6 +754,7 @@ function initMap() {
 							<th class="SortedColumn">' . _('Role') . '</th>
 							<th class="SortedColumn">' . _('Phone Number') . '</th>
 							<th>' . _('Email') . '</th>
+							<th class="text">' . _('Statement') . '</th>
 							<th>' . _('Notes') . '</th>
 							<th>' . _('Edit') . '</th>
 							<th>' . _('Delete') . '</th>
@@ -771,14 +772,15 @@ function initMap() {
 					echo '<tr class="EvenTableRows">';
 					$k = 1;
 				}
-				echo '<td>' . $MyRow[2] . '</td>
-					<td>' . $MyRow[3] . '</td>
-					<td>' . $MyRow[4] . '</td>
-					<td><a href="mailto:' . $MyRow[6] . '">' . $MyRow[6] . '</a></td>
-					<td>' . $MyRow[5] . '</td>
-					<td><a href="AddCustomerContacts.php?Id=' . urlencode($MyRow[0]) . '&amp;DebtorNo=' . urlencode($MyRow[1]) . '">' . _('Edit') . '</a></td>
-					<td><a href="AddCustomerContacts.php?Id=' . urlencode($MyRow[0]) . '&amp;DebtorNo=' . urlencode($MyRow[1]) . '&amp;delete=1">' . _('Delete') . '</a></td>
-					</tr>';
+				echo '<td>', $MyRow[2], '</td>
+					<td>', $MyRow[3], '</td>
+					<td>', $MyRow[4], '</td>
+					<td><a href="mailto:', $MyRow[6], '">', $MyRow[6], '</a></td>
+					<td>', ($myrow[7]==0) ? _('No') : _('Yes'), '</td>
+					<td>', $MyRow[5], '</td>
+					<td><a href="AddCustomerContacts.php?Id=', urlencode($MyRow[0]), '&DebtorNo=', urlencode($MyRow[1]), '">', _('Edit'), '</a></td>
+					<td><a href="AddCustomerContacts.php?Id=', urlencode($MyRow[0]), '&DebtorNo=', urlencode($MyRow[1]), '&delete=1">', _('Delete'), '</a></td>
+				</tr>';
 			}// END WHILE LIST LOOP
 
 			// Customer Branch Contacts if selected

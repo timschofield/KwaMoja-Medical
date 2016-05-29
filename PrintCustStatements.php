@@ -122,25 +122,31 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 	}
 
 	while ($StmtHeader = DB_fetch_array($StatementResults)) {
-		/*loop through all the customers returned */
+
+		if (isset($RecipientArray)) {
+			unset($RecipientArray);
+		}
+		$RecipientArray = array();
+		$RecipientsResult = DB_query("SELECT email FROM custcontacts WHERE statement=1 AND debtorno='" . $StmtHeader['debtorno'] . "'");
+		while ($RecipientRow = DB_fetch_row($RecipientsResult)) {
+			if (IsEmailAddress($RecipientRow[0])){
+				$RecipientArray[] = $RecipientRow[0];
+			}
+		}
 
 		if ($_POST['EmailOrPrint'] == 'email') {
-			if (isset($RecipientArray)) {
-				unset($RecipientArray);
-			}
-			$RecipientArray = array();
 			include('includes/PDFStarter.php');
 			$PDF->addInfo('Title', $_SESSION['CompanyRecord']['coyname'] . ' - ' . _('Customer Statement'));
 			$PDF->addInfo('Subject', _('For customer') . ': ' . $StmtHeader['name']);
 			$PageNumber = 1;
-			$RecipientsResult = DB_query("SELECT email FROM custcontacts WHERE statement=1 AND debtorno='" . $StmtHeader['debtorno'] . "'");
-			while ($RecipientRow = DB_fetch_row($RecipientsResult)) {
-				if (IsEmailAddress($RecipientRow[0])) {
-					$RecipientArray[] = $RecipientRow[0];
-				}
-			}
 		}
-		if ($_POST['EmailOrPrint'] == 'print' or ($_POST['EmailOrPrint'] == 'email' and count($RecipientArray) > 0)) {
+
+		/* Only create the pdf for this customer if
+		 * set to print and there are no email addresses defined
+		 * OR
+		 * set to email and there are email addresses defined.
+		 */
+		if (($_POST['EmailOrPrint']=='print' and count($RecipientArray)==0) or ($_POST['EmailOrPrint'] == 'email' and count($RecipientArray) > 0)) {
 
 			$line_height = 16;
 

@@ -1359,7 +1359,6 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 			} //in_array(1000, $_SESSION['AllowedPageSecurityTokens'])
 			else {
 				echo '<td class="number">' . locale_number_format($OrderLine->Price, $_SESSION['Items' . $Identifier]->CurrDecimalPlaces);
-				echo '<input class="number" type="hidden" name="GPPercent_' . $OrderLine->LineNumber . '" size="4" required="required" maxlength="40" value="' . locale_number_format($OrderLine->GPPercent, 2) . '" />';
 				echo '<input type="hidden" name="Price_' . $OrderLine->LineNumber . '" value="' . locale_number_format($OrderLine->Price, $_SESSION['Items' . $Identifier]->CurrDecimalPlaces) . '" /></td>';
 			}
 			if ($_SESSION['Items' . $Identifier]->Some_Already_Delivered($OrderLine->LineNumber)) {

@@ -10,8 +10,16 @@ if (!$FirstPage) {
 
 $YPos = $Page_Height - $Top_Margin;
 
-// Company Logo
-$PDF->addJpegFromFile($_SESSION['LogoFile'], $Page_Width / 2 - 118, $YPos - 60, 0, 35);
+// Company Logo:
+/*$pdf->addJpegFromFile($_SESSION['LogoFile'], $Page_Width/2-118, $YPos-60, 0, 35);*/
+$PDF->Image(
+	$_SESSION['LogoFile'],// Name of the file containing the image.
+	$Page_Width / 2 - 118,// Abscissa from left border to the upper-left corner (LTR).
+	$Page_Height -($YPos - 60) -(35),// Ordinate from top border to the upper-left corner (LTR).
+	0,// Width of the image in the page. If not specified or equal to zero, it is automatically calculated.
+	35,// Height of the image in the page. If not specified or equal to zero, it is automatically calculated.
+	''// Image format. If not specified, the type is inferred from the file extension.
+);// Public function Image() in ~/includes/tcpdf/tcpdf.php.
 
 $FontSize = 15;
 if ($InvOrCredit == 'Invoice') {
@@ -29,23 +37,14 @@ $PDF->addTextWrap($Page_Width - $Left_Margin - 72, $YPos, 72, $FontSize, _('Page
 
 $XPos = $Page_Width - 265;
 $YPos -= 85;
-// Draws a nice curved corner box around the billing details:
-/*from the top right */
-$PDF->partEllipse($XPos + 225, $YPos + 67, 0, 90, 10, 10);
-/*line to the top left */
-$PDF->line($XPos + 225, $YPos + 77, $XPos, $YPos + 77);
-/*Do top left corner */
-$PDF->partEllipse($XPos, $YPos + 67, 90, 180, 10, 10);
-/*Do a line to the bottom left corner */
-$PDF->line($XPos - 10, $YPos + 67, $XPos - 10, $YPos - 10);
-/*Now do the bottom left corner 180 - 270 coming back west*/
-$PDF->partEllipse($XPos, $YPos - 10, 180, 270, 10, 10);
-/*Now a line to the bottom right */
-$PDF->line($XPos, $YPos - 20, $XPos + 225, $YPos - 20);
-/*Now do the bottom right corner */
-$PDF->partEllipse($XPos + 225, $YPos - 10, 270, 360, 10, 10);
-/*Finally join up to the top right corner where started */
-$PDF->line($XPos + 235, $YPos - 10, $XPos + 235, $YPos + 67);
+// Draws a rounded rectangle around billing details:
+$PDF->RoundRectangle(
+	$XPos - 10,// RoundRectangle $XPos.
+	$YPos + 77,// RoundRectangle $YPos.
+	245,// RoundRectangle $Width.
+	97,// RoundRectangle $Height.
+	10,// RoundRectangle $RadiusX.
+	10);// RoundRectangle $RadiusY.
 
 $YPos = $Page_Height - $Top_Margin - 10;
 
@@ -212,24 +211,14 @@ $PDF->addText($Left_Margin, $YPos - 8, $FontSize, _('All amounts stated in') . '
 
 $BoxHeight = $Page_Height - 282;
 
-// Draws a box with nice round corner for entering line items:
-/*90 degree arc at top right of box 0 degrees starts a bottom */
-$PDF->partEllipse($Page_Width - $Right_Margin - 10, $Bottom_Margin + $BoxHeight, 0, 90, 10, 10);
-/*line to the top left */
-$PDF->line($Page_Width - $Right_Margin - 10, $Bottom_Margin + $BoxHeight + 10, $Left_Margin + 10, $Bottom_Margin + $BoxHeight + 10);
-/*Dow top left corner */
-$PDF->partEllipse($Left_Margin + 10, $Bottom_Margin + $BoxHeight, 90, 180, 10, 10);
-/*Do a line to the bottom left corner */
-$PDF->line($Left_Margin, $Bottom_Margin + $BoxHeight, $Left_Margin, $Bottom_Margin + 10);
-/*Now do the bottom left corner 180 - 270 coming back west*/
-$PDF->partEllipse($Left_Margin + 10, $Bottom_Margin + 10, 180, 270, 10, 10);
-/*Now a line to the bottom right */
-$PDF->line($Left_Margin + 10, $Bottom_Margin, $Page_Width - $Right_Margin - 10, $Bottom_Margin);
-/*Now do the bottom right corner */
-$PDF->partEllipse($Page_Width - $Right_Margin - 10, $Bottom_Margin + 10, 270, 360, 10, 10);
-/*Finally join up to the top right corner where started */
-$PDF->line($Page_Width - $Right_Margin, $Bottom_Margin + 10, $Page_Width - $Right_Margin, $Bottom_Margin + $BoxHeight);
-
+// Draws a rounded rectangle around line items:
+$PDF->RoundRectangle(
+	$Left_Margin,// RoundRectangle $XPos.
+	$Bottom_Margin + $BoxHeight + 10,// RoundRectangle $YPos.
+	$Page_Width - $Right_Margin - $Left_Margin,// RoundRectangle $Width.
+	$BoxHeight + 10,// RoundRectangle $Height.
+	10,// RoundRectangle $RadiusX.
+	10);// RoundRectangle $RadiusY.
 
 $YPos -= 35;
 /*Set up headings */

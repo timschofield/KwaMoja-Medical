@@ -11,7 +11,14 @@ if ($PageNumber > 1) { // Inserts a page break if it is not the first page.
 }
 
 // Prints company logo:
-$PDF->addJpegFromFile($_SESSION['LogoFile'], 301, 520, 0, 60);
+$PDF->Image(
+	$_SESSION['LogoFile'],// Name of the file containing the image.
+	301,// Abscissa from left border to the upper-left corner (LTR).
+	$Page_Height -(520) -(60),// Ordinate from top border to the upper-left corner (LTR).
+	0,// Width of the image in the page. If not specified or equal to zero, it is automatically calculated.
+	60,// Height of the image in the page. If not specified or equal to zero, it is automatically calculated.
+	''// Image format. If not specified, the type is inferred from the file extension.
+);// Public function Image() in ~/includes/tcpdf/tcpdf.php.
 
 // Prints 'Quotation' title:
 $PDF->addTextWrap(0, $Page_Height - $Top_Margin - 18, $Page_Width, 18, _('Quotation'), 'center');
@@ -42,19 +49,20 @@ $XPos = 46;
 $YPos = 566;
 $FontSize = 14;
 $MyRow = array_map(html_entity_decode, $MyRow);
+$line_height = 15;
 $PDF->addText($XPos, $YPos, $FontSize, _('Delivery To') . ':');
-$PDF->addText($XPos, $YPos - 15, $FontSize, $MyRow['deliverto']);
-$PDF->addText($XPos, $YPos - 30, $FontSize, $MyRow['deladd1']);
-$PDF->addText($XPos, $YPos - 45, $FontSize, $MyRow['deladd2']);
-$PDF->addText($XPos, $YPos - 60, $FontSize, $MyRow['deladd3'] . ' ' . $MyRow['deladd4'] . ' ' . $MyRow['deladd5']);
+$PDF->addText($XPos, $YPos - ($line_height * 1), $FontSize, $MyRow['deliverto']);
+$PDF->addText($XPos, $YPos - ($line_height * 2), $FontSize, $MyRow['deladd1']);
+$PDF->addText($XPos, $YPos - ($line_height * 3), $FontSize, $MyRow['deladd2']);
+$PDF->addText($XPos, $YPos - ($line_height * 4), $FontSize, $MyRow['deladd3'] . ' ' . $MyRow['deladd4'] . ' ' . $MyRow['deladd5']);
 
 // Prints 'Quotation For' info:
 $YPos -= 80;
 $PDF->addText($XPos, $YPos, $FontSize, _('Quotation For') . ':');
-$PDF->addText($XPos, $YPos - 15, $FontSize, $MyRow['name']);
-$PDF->addText($XPos, $YPos - 30, $FontSize, $MyRow['address1']);
-$PDF->addText($XPos, $YPos - 45, $FontSize, $MyRow['address2']);
-$PDF->addText($XPos, $YPos - 60, $FontSize, $MyRow['address3'] . ' ' . $MyRow['address4'] . ' ' . $MyRow['address5']);
+$PDF->addText($XPos, $YPos - ($line_height * 1), $FontSize, $MyRow['name']);
+$PDF->addText($XPos, $YPos - ($line_height * 2), $FontSize, $MyRow['address1']);
+$PDF->addText($XPos, $YPos - ($line_height * 3), $FontSize, $MyRow['address2']);
+$PDF->addText($XPos, $YPos - ($line_height * 4), $FontSize, $MyRow['address3'] . ' ' . $MyRow['address4'] . ' ' . $MyRow['address5']);
 
 // Draws a box with round corners around 'Delivery To' info:
 $XPos = 50;

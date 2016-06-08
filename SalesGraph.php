@@ -342,6 +342,8 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 		_('Budget')
 	));
 
+	$graph->SetYDataLabelPos('plotin');
+
 	//Draw it
 	$graph->DrawGraph();
 	echo '<table class="selection" summary="' . _('Sales Report Graph') . '">

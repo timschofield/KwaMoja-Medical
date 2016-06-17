@@ -352,7 +352,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 								debtortrans.ovdiscount - debtortrans.alloc
 								ELSE 0 END
 							ELSE
-								CASE WHEN TO_DAYS(Now()) - TO_DAYS(DATE_ADD(DATE_ADD(debtortrans.trandate, " . interval('1', 'MONTH') . "), " . interval('(paymentterms.dayinfollowingmonth - DAYOFMONTH(debtortrans.trandate))', 'DAY') . ")) >= 0
+								CASE WHEN TO_DAYS(Now()) - TO_DAYS(ADDDATE(last_day(debtortrans.trandate), paymentterms.dayinfollowingmonth)) >= 0
 								THEN debtortrans.ovamount + debtortrans.ovgst + debtortrans.ovfreight +
 								debtortrans.ovdiscount - debtortrans.alloc
 								ELSE 0 END
@@ -365,7 +365,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 								debtortrans.ovdiscount - debtortrans.alloc
 								ELSE 0 END
 							ELSE
-								CASE WHEN (TO_DAYS(Now()) - TO_DAYS(DATE_ADD(DATE_ADD(debtortrans.trandate, " . interval('1', 'MONTH') . "), " . interval('(paymentterms.dayinfollowingmonth - DAYOFMONTH(debtortrans.trandate))', 'DAY') . ")) >= " . $_SESSION['PastDueDays1'] . ")
+								CASE WHEN (TO_DAYS(Now()) - TO_DAYS(ADDDATE(last_day(debtortrans.trandate), paymentterms.dayinfollowingmonth)) >= " . $_SESSION['PastDueDays1'] . ")
 								THEN debtortrans.ovamount + debtortrans.ovgst + debtortrans.ovfreight +
 								debtortrans.ovdiscount - debtortrans.alloc
 								ELSE 0 END
@@ -378,8 +378,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 								debtortrans.ovdiscount - debtortrans.alloc
 								ELSE 0 END
 							ELSE
-								CASE WHEN (TO_DAYS(Now()) - TO_DAYS(DATE_ADD(DATE_ADD(debtortrans.trandate, " . interval('1', 'MONTH') . "), " . interval('(paymentterms.dayinfollowingmonth - DAYOFMONTH(debtortrans.trandate))', 'DAY') . "))
-								>= " . $_SESSION['PastDueDays2'] . ")
+								CASE WHEN (TO_DAYS(Now()) - TO_DAYS(ADDDATE(last_day(debtortrans.trandate), paymentterms.dayinfollowingmonth))
 								THEN debtortrans.ovamount + debtortrans.ovgst + debtortrans.ovfreight +
 								debtortrans.ovdiscount - debtortrans.alloc
 								ELSE 0 END

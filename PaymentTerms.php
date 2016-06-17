@@ -35,39 +35,22 @@ if (isset($_POST['submit'])) {
 	if (mb_strlen($_POST['TermsIndicator']) < 1) {
 		$InputError = 1;
 		prnMsg(_('The payment terms name must exist'), 'error');
-		$Errors[$i] = 'TermsIndicator';
-		++$i;
 	}
 	if (mb_strlen(stripslashes($_POST['TermsIndicator'])) > 2) {
 		$InputError = 1;
 		prnMsg(_('The payment terms name must be two characters or less long'), 'error');
-		$Errors[$i] = 'TermsIndicator';
-		++$i;
 	}
 	if (empty($_POST['DayNumber']) or !is_numeric(filter_number_format($_POST['DayNumber'])) or filter_number_format($_POST['DayNumber']) <= 0) {
 		$InputError = 1;
 		prnMsg(_('The number of days or the day in the following month must be numeric'), 'error');
-		$Errors[$i] = 'DayNumber';
-		++$i;
 	}
 	if (empty($_POST['Terms']) or mb_strlen($_POST['Terms']) > 40) {
 		$InputError = 1;
 		prnMsg(_('The terms description must be forty characters or less long'), 'error');
-		$Errors[$i] = 'Terms';
-		++$i;
-	}
-
-	if ($_POST['DayNumber'] > 30 and empty($_POST['DaysOrFoll'])) {
-		$InputError = 1;
-		prnMsg(_('When the check box is not checked to indicate a day in the following month is the due date') . ', ' . _('the due date cannot be a day after the 30th') . '. ' . _('A number between 1 and 30 is expected'), 'error');
-		$Errors[$i] = 'DayNumber';
-		++$i;
 	}
 	if ($_POST['DayNumber'] > 360 and !empty($_POST['DaysOrFoll'])) {
 		$InputError = 1;
 		prnMsg(_('When the check box is checked to indicate that the term expects a number of days after which accounts are due') . ', ' . _('the number entered should be less than 361 days'), 'error');
-		$Errors[$i] = 'DayNumber';
-		++$i;
 	}
 
 	if (isset($SelectedTerms) and $InputError != 1) {

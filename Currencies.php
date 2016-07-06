@@ -59,42 +59,32 @@ if (isset($_POST['submit'])) {
 	if ($MyRow[0] != 0 and !isset($SelectedCurrency)) {
 		$InputError = 1;
 		prnMsg(_('The currency already exists in the database'), 'error');
-		$Errors[$i] = 'Abbreviation';
-		++$i;
 	}
 	if (!is_numeric(filter_number_format($_POST['ExchangeRate']))) {
 		$InputError = 1;
 		prnMsg(_('The exchange rate must be numeric'), 'error');
-		$Errors[$i] = 'ExchangeRate';
-		++$i;
 	}
 	if (!is_numeric(filter_number_format($_POST['DecimalPlaces']))) {
 		$InputError = 1;
 		prnMsg(_('The number of decimal places to display for amounts in this currency must be numeric'), 'error');
-		$Errors[$i] = 'DecimalPlaces';
-		++$i;
 	} elseif (filter_number_format($_POST['DecimalPlaces']) < 0) {
 		$InputError = 1;
 		prnMsg(_('The number of decimal places to display for amounts in this currency must be positive or zero'), 'error');
-		$Errors[$i] = 'DecimalPlaces';
-		++$i;
 	} elseif (filter_number_format($_POST['DecimalPlaces']) > 4) {
 		$InputError = 1;
 		prnMsg(_('The number of decimal places to display for amounts in this currency is expected to be 4 or less'), 'error');
-		$Errors[$i] = 'DecimalPlaces';
-		++$i;
 	}
 	if (mb_strlen($_POST['Country']) > 50) {
 		$InputError = 1;
 		prnMsg(_('The currency country must be 50 characters or less long'), 'error');
-		$Errors[$i] = 'Country';
-		++$i;
 	}
 	if (mb_strlen($_POST['HundredsName']) > 15) {
 		$InputError = 1;
 		prnMsg(_('The hundredths name must be 15 characters or less long'), 'error');
-		$Errors[$i] = 'HundredsName';
-		++$i;
+	}
+	if ($_POST['Symbol'] === '') {
+		$InputError = 1;
+		prnMsg(_('You must enter a symbol for this currency'), 'error');
 	}
 	if (($FunctionalCurrency != '') and (isset($SelectedCurrency) and $SelectedCurrency == $FunctionalCurrency)) {
 		$_POST['ExchangeRate'] = 1;
@@ -113,6 +103,8 @@ if (isset($_POST['submit'])) {
 		$SQL = "UPDATE currencies SET country='" . $_POST['Country'] . "',
 										currency='" . $CurrencyName[$_POST['Abbreviation']] . "',
 										hundredsname='" . $_POST['HundredsName'] . "',
+										symbol='" . $_POST['Symbol'] . "',
+										symbolbefore='" . $_POST['SymbolBefore'] . "',
 										decimalplaces='" . filter_number_format($_POST['DecimalPlaces']) . "',
 										rate='" . filter_number_format($_POST['ExchangeRate']) . "',
 										webcart='" . $_POST['webcart'] . "'
@@ -127,6 +119,8 @@ if (isset($_POST['submit'])) {
 										currabrev,
 										country,
 										hundredsname,
+										symbol,
+										symbolbefore,
 										decimalplaces,
 										rate,
 										webcart)
@@ -134,6 +128,8 @@ if (isset($_POST['submit'])) {
 										'" . $_POST['Abbreviation'] . "',
 										'" . $_POST['Country'] . "',
 										'" . $_POST['HundredsName'] . "',
+										'" . $_POST['Symbol'] . "',
+										'" . $_POST['SymbolBefore'] . "',
 										'" . filter_number_format($_POST['DecimalPlaces']) . "',
 										'" . filter_number_format($_POST['ExchangeRate']) . "',
 										'" . $_POST['webcart'] . "')";
@@ -293,6 +289,8 @@ if (!isset($SelectedCurrency)) {
 					currabrev,
 					country,
 					hundredsname,
+					symbol,
+					symbolbefore,
 					rate,
 					decimalplaces,
 					webcart
@@ -306,6 +304,8 @@ if (!isset($SelectedCurrency)) {
 			<th>' . _('Currency Name') . '</th>
 			<th>' . _('Country') . '</th>
 			<th>' . _('Hundredths Name') . '</th>
+			<th>' . _('Currency Symbol') . '</th>
+			<th>' . _('Symbol before Amount') . '</th>
 			<th>' . _('Decimal Places') . '</th>
 			<th>' . _('Show in webSHOP') . '</th>
 			<th>' . _('Exchange Rate') . '</th>
@@ -342,6 +342,11 @@ if (!isset($SelectedCurrency)) {
 		} else {
 			$ShowInWebText = _('No');
 		}
+		if ($MyRow['symbolbefore'] == 1) {
+			$MyRow['symbolbefore'] = _('Yes');
+		} else {
+			$MyRow['symbolbefore'] = _('No');
+		}
 
 		if ($MyRow['currabrev'] != $FunctionalCurrency) {
 			echo '<td><img src="' . $ImageFile . '" alt="" /></td>
@@ -349,6 +354,8 @@ if (!isset($SelectedCurrency)) {
 					<td>' . _($MyRow['currency']) . '</td>
 					<td>' . $MyRow['country'] . '</td>
 					<td>' . $MyRow['hundredsname'] . '</td>
+					<td>' . $MyRow['symbol'] . '</td>
+					<td>' . $MyRow['symbolbefore'] . '</td>
 					<td class="number">' . locale_number_format($MyRow['decimalplaces'], 0) . '</td>
 					<td>' . $ShowInWebText . '</td>
 					<td class="number">' . locale_number_format($MyRow['rate'], 8) . '</td>
@@ -364,6 +371,8 @@ if (!isset($SelectedCurrency)) {
 					<td>' . $MyRow['currency'] . '</td>
 					<td>' . $MyRow['country'] . '</td>
 					<td>' . $MyRow['hundredsname'] . '</td>
+					<td>' . $MyRow['symbol'] . '</td>
+					<td>' . $MyRow['symbolbefore'] . '</td>
 					<td class="number">' . locale_number_format($MyRow['decimalplaces'], 0) . '</td>
 					<td>' . $ShowInWebText . '</td>
 					<td class="number">1</td>
@@ -394,6 +403,8 @@ if (!isset($_GET['delete'])) {
 					currabrev,
 					country,
 					hundredsname,
+					symbol,
+					symbolbefore,
 					decimalplaces,
 					rate,
 					webcart
@@ -409,6 +420,8 @@ if (!isset($_GET['delete'])) {
 		$_POST['CurrencyName'] = $MyRow['currency'];
 		$_POST['Country'] = $MyRow['country'];
 		$_POST['HundredsName'] = $MyRow['hundredsname'];
+		$_POST['Symbol'] = $MyRow['symbol'];
+		$_POST['SymbolBefore'] = $MyRow['symbolbefore'];
 		$_POST['ExchangeRate'] = locale_number_format($MyRow['rate'], 8);
 		$_POST['DecimalPlaces'] = locale_number_format($MyRow['decimalplaces'], 0);
 		$_POST['webcart'] = $MyRow['webcart'];
@@ -449,24 +462,61 @@ if (!isset($_GET['delete'])) {
 		echo '<td>' . $_POST['Country'] . '</td>';
 		echo '<input type="hidden" name="Country" value="' . $_POST['Country'] . '" />';
 	}
-	echo '</tr>
-		<tr>
-			<td>' . _('Hundredths Name') . ':</td>
-			<td>';
+	echo '</tr>';
+
 	if (!isset($_POST['HundredsName'])) {
 		$_POST['HundredsName'] = '';
 	}
-	echo '<input type="text" name="HundredsName" size="10" required="required" maxlength="15" value="' . $_POST['HundredsName'] . '" /></td>
-		</tr>
-		<tr>
+	echo '<tr>
+			<td>' . _('Hundredths Name') . ':</td>
+			<td>
+				<input type="text" name="HundredsName" size="10" required="required" maxlength="15" value="' . $_POST['HundredsName'] . '" />
+			</td>
+		</tr>';
+
+	if (!isset($_POST['Symbol'])) {
+		$_POST['Symbol'] = '';
+	}
+	echo '<tr>
+			<td>' . _('Symbol') . ':</td>
+			<td>
+				<input type="text" name="Symbol" size="4" required="required" maxlength="4" value="' . $_POST['Symbol'] . '" />
+			</td>
+		</tr>';
+
+	if (!isset($_POST['SymbolBefore'])) {
+		$_POST['SymbolBefore'] = 1;
+	}
+	echo '<tr>
+			<td>' . _('Show symbol before amount') . ':</td>
+			<td><select name="SymbolBefore">';
+
+	if ($_POST['SymbolBefore'] == 1) {
+		echo '<option selected="selected" value="1">' . _('Yes') . '</option>';
+	} else {
+		echo '<option value="1">' . _('Yes') . '</option>';
+	}
+	if ($_POST['SymbolBefore'] == 0) {
+		echo '<option selected="selected" value="0">' . _('No') . '</option>';
+	} else {
+		echo '<option value="0">' . _('No') . '</option>';
+	}
+
+	echo '</select>
+				</td>
+			</tr>';
+
+	echo '<tr>
 			<td>' . _('Decimal Places to Display') . ':</td>
 			<td>';
 	if (!isset($_POST['DecimalPlaces'])) {
 		$_POST['DecimalPlaces'] = 2;
 	}
-	echo '<input class="integer" type="text" name="DecimalPlaces" size="2" required="required" maxlength="2" value="' . $_POST['DecimalPlaces'] . '" /></td>
-		</tr>
-		<tr>
+	echo '<input class="integer" type="text" name="DecimalPlaces" size="2" required="required" maxlength="2" value="' . $_POST['DecimalPlaces'] . '" />
+			</td>
+		</tr>';
+
+	echo '<tr>
 			<td>' . _('Exchange Rate') . ':</td>';
 	if (!isset($_POST['ExchangeRate'])) {
 		$_POST['ExchangeRate'] = 1;
@@ -478,10 +528,10 @@ if (!isset($_GET['delete'])) {
 		echo '<input type="hidden" class="number" name="ExchangeRate" value="' . $_POST['ExchangeRate'] . '" />';
 	}
 	echo '</tr>';
+
 	if (!isset($_POST['webcart'])) {
 		$_POST['webcart'] = 1;
 	}
-
 	echo '<tr>
 			<td>' . _('Show in webSHOP') . ':</td>
 			<td><select name="webcart">';

@@ -54,9 +54,9 @@ if (isset($_POST['submit'])) {
 			$GroupNameRow = DB_fetch_array($GroupNameResult);
 			$SQL = "UPDATE chartmaster SET accountname='" . htmlspecialchars($AccountName) . "',
 											group_='" . htmlspecialchars($GroupNameRow['groupname']) . "',
-											groupcode='" . $_POST['Group'] . "',
-											language='" . $AccountLanguage . "'
-										WHERE accountcode ='" . $SelectedAccount . "'";
+											groupcode='" . $_POST['Group'] . "'
+										WHERE accountcode ='" . $SelectedAccount . "'
+										AND language='" . $AccountLanguage . "'";
 
 			$ErrMsg = _('Could not update the account because');
 			$Result = DB_query($SQL, $ErrMsg);

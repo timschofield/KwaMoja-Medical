@@ -77,7 +77,7 @@ if (!isset($SelectedGLAccount)) { // If is NOT set a GL account for users.
 	$Result = DB_query($SQL);
 	$MyRow = DB_fetch_array($Result);
 	$SelectedGLAccountName = $MyRow['accountname'];
-	echo '<p class="page_title_text"><img alt="" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/user.png" title="', _('GL Account Authorised Users'), '" /> ', _('Authorised Users for'), ' ', $SelectedGLAccountName, '</p>'; // Page title.
+	echo '<p class="page_title_text"><img alt="" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/user.png" title="', _('GL Account Authorised Users'), '" /> ', _('Authorised Users for'), ' ', $SelectedGLAccount, ' - ',$SelectedGLAccountName, '</p>'; // Page title.
 
 	// BEGIN: Needs $SelectedGLAccount, $SelectedUser.
 	if (isset($_POST['submit'])) {

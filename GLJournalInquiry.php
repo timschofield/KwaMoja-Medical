@@ -71,7 +71,8 @@ if (!isset($_POST['Show'])) {
 				AND gltrans.typeno>='" . $_POST['NumberFrom'] . "'
 				AND gltrans.typeno<='" . $_POST['NumberTo'] . "'
 				AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
-			ORDER BY gltrans.typeno";
+			ORDER BY gltrans.typeno,
+					gltrans.account";
 
 	$Result = DB_query($SQL);
 	if (DB_num_rows($Result) == 0) {

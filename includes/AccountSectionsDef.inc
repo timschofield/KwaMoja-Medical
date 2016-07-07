@@ -1,7 +1,7 @@
 <?php
 
 $Sections = array();
-$SQL = 'SELECT sectionid, sectionname FROM accountsection ORDER by sectionid';
+$SQL = "SELECT sectionid, sectionname FROM accountsection WHERE language='" . $_SESSION['ChartLanguage'] . "' ORDER by sectionid";
 $SectionResult = DB_query($SQL);
 while ($secrow = DB_fetch_array($SectionResult)) {
 	$Sections[$secrow['sectionid']] = $secrow['sectionname'];

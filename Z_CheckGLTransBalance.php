@@ -20,8 +20,11 @@ $SQL = "SELECT gltrans.type,
 			gltrans.typeno,
 			periodno,
 			SUM(amount) AS nettot
-		FROM gltrans,
-			systypes
+		FROM gltrans
+		INNER JOIN chartmaster
+			ON gltrans.account=chartmaster.accountcode
+		INNER JOIN systypes
+			ON gltrans.type = systypes.typeid
 		WHERE gltrans.type = systypes.typeid
 		GROUP BY gltrans.type,
 			systypes.typename,

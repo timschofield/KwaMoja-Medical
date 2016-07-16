@@ -280,8 +280,10 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 		$Amount['0'] = 0;
 	}
 
-	echo '<tr><td colspan="2" class="number">' . _('Current balance') . ':</td>
-				<td class="number">' . locale_number_format($Amount['0'], $CurrDecimalPlaces) . '</td></tr>';
+	echo '<tr>
+			<td colspan="2" class="number">' . _('Current balance') . ':</td>
+			<td class="number">' . locale_number_format($Amount['0'], $CurrDecimalPlaces) . '</td>
+		</tr>';
 
 	// Do the postings
 	include('includes/GLPostings.inc');

@@ -344,7 +344,8 @@ if (!isset($SelectedTabs)) {
 		DB_free_result($Result);
 
 		$SQL = "SELECT pcexpenses.codeexpense,
-					pcexpenses.description
+					pcexpenses.description,
+					pctabs.defaulttag
 			FROM pctabexpenses, pcexpenses, pctabs
 			WHERE pctabexpenses.codeexpense = pcexpenses.codeexpense
 				AND pctabexpenses.typetabcode = pctabs.typetabcode
@@ -360,6 +361,7 @@ if (!isset($SelectedTabs)) {
 				echo '<option value="';
 			}
 			echo $MyRow['codeexpense'] . '">' . $MyRow['codeexpense'] . ' - ' . $MyRow['description'] . '</option>';
+			$DefaultTag = $MyRow['defaulttag'];
 
 		} //end while loop
 
@@ -376,9 +378,12 @@ if (!isset($SelectedTabs)) {
 			ORDER BY tagref";
 
 	$Result = DB_query($SQL);
+	if (!isset($_POST['Tag'])) {
+		$_POST['Tag'] = $DefaultTag;
+	}
 	echo '<option value="0">0 - ' . _('None') . '</option>';
 	while ($MyRow = DB_fetch_array($Result)) {
-		if (isset($_POST['Tag']) and $_POST['Tag'] == $MyRow['tagref']) {
+		if ($_POST['Tag'] == $MyRow['tagref']) {
 			echo '<option selected="selected" value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
 		} else {
 			echo '<option value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';

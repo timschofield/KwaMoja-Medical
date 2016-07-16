@@ -99,7 +99,8 @@ if (isset($_POST['Submit'])) {
 									authorizer = '" . $_POST['SelectAuthoriser'] . "',
 									authorizerexpenses = '" . $_POST['SelectAuthoriserExpenses'] . "',
 									glaccountassignment = '" . $_POST['GLAccountCash'] . "',
-									glaccountpcash = '" . $_POST['GLAccountPcashTab'] . "'
+									glaccountpcash = '" . $_POST['GLAccountPcashTab'] . "',
+									defaulttag = '" . $_POST['DefaultTag'] . "'
 				WHERE tabcode = '" . $SelectedTab . "'";
 
 		$Msg = _('The Petty Cash Tab') . ' ' . $SelectedTab . ' ' . _('has been updated');
@@ -128,8 +129,10 @@ if (isset($_POST['Submit'])) {
 										 tablimit,
 										 assigner,
 										 authorizer,
+										 authorizerexpenses,
 										 glaccountassignment,
-										 glaccountpcash)
+										 glaccountpcash,
+										 defaulttag)
 								VALUES ('" . $_POST['TabCode'] . "',
 									'" . $_POST['SelectUser'] . "',
 									'" . $_POST['SelectTabs'] . "',
@@ -137,8 +140,10 @@ if (isset($_POST['Submit'])) {
 									'" . filter_number_format($_POST['TabLimit']) . "',
 									'" . $_POST['SelectAssigner'] . "',
 									'" . $_POST['SelectAuthoriser'] . "',
+									'" . $_POST['SelectAuthoriserExpenses'] . "',
 									'" . $_POST['GLAccountCash'] . "',
-									'" . $_POST['GLAccountPcashTab'] . "')";
+									'" . $_POST['GLAccountPcashTab'] . "',
+									'" . $_POST['DefaultTag'] . "')";
 
 			$Msg = _('The Petty Cash Tab') . ' ' . $_POST['TabCode'] . ' ' . _('has been created');
 
@@ -188,6 +193,7 @@ if (!isset($SelectedTab)) {
 					authorizerexpenses,
 					glaccountassignment,
 					glaccountpcash,
+					defaulttag,
 					currencies.decimalplaces,
 					chartmaster1.accountname AS glactassigntname,
 					chartmaster2.accountname AS glactpcashname
@@ -200,8 +206,7 @@ if (!isset($SelectedTab)) {
 					pctabs.glaccountassignment = chartmaster1.accountcode
 				INNER JOIN chartmaster AS chartmaster2 ON
 					pctabs.glaccountpcash = chartmaster2.accountcode
-				WHERE chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
-					AND chartmaster1.language='" . $_SESSION['ChartLanguage'] . "'
+				WHERE chartmaster1.language='" . $_SESSION['ChartLanguage'] . "'
 					AND chartmaster2.language='" . $_SESSION['ChartLanguage'] . "'
 				ORDER BY tabcode";
 	$Result = DB_query($SQL);
@@ -218,6 +223,7 @@ if (!isset($SelectedTab)) {
 				<th>' . _('Authoriser - Expenses') . '</th>
 				<th>' . _('GL Account For Cash Assignment') . '</th>
 				<th>' . _('GL Account Petty Cash Tab') . '</th>
+				<th>' . _('Default Tag') . '</th>
 			</tr>';
 
 		$k = 0; //row colour counter
@@ -230,20 +236,24 @@ if (!isset($SelectedTab)) {
 				echo '<tr class="OddTableRows">';
 				$k = 1;
 			}
+			$TagSQL = "SELECT tagdescription FROM tags WHERE tagref='" . $MyRow['defaulttag'] . "'";
+			$TagResult = DB_query($TagSQL);
+			$TagRow = DB_fetch_array($TagResult);
 
-			printf('<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td class="number">%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td>%s</td>
-					<td><a href="%sSelectedTab=%s">' . _('Edit') . '</a></td>
-					<td><a href="%sSelectedTab=%s&amp;delete=yes" onclick=\' return MakeConfirm("' . _('Are you sure you wish to delete this tab code?') . '", \'Confirm Delete\', this);\'>' . _('Delete') . '</a></td>
-					</tr>', $MyRow['tabcode'], $MyRow['usercode'], $MyRow['typetabdescription'], $MyRow['currabrev'], locale_number_format($MyRow['tablimit'], $MyRow['decimalplaces']), $MyRow['assigner'], $MyRow['authorizer'],  $MyRow['authorizerexpenses'], $MyRow['glaccountassignment'] . ' - ' . $MyRow['glactassigntname'], $MyRow['glaccountpcash'] . ' - ' . $MyRow['glactpcashname'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['tabcode'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['tabcode']);
+			echo '<td>', $MyRow['tabcode'], '</td>
+					<td>', $MyRow['usercode'], '</td>
+					<td>', $MyRow['typetabdescription'], '</td>
+					<td>', $MyRow['currabrev'], '</td>
+					<td class="number">', locale_number_format($MyRow['tablimit'], $MyRow['decimalplaces']), '</td>
+					<td>', $MyRow['assigner'], '</td>
+					<td>', $MyRow['authorizer'], '</td>
+					<td>', $MyRow['authorizerexpenses'], '</td>
+					<td>', $MyRow['glaccountassignment'] . ' - ' . $MyRow['glactassigntname'], '</td>
+					<td>', $MyRow['glaccountpcash'] . ' - ' . $MyRow['glactpcashname'], '</td>
+					<td>', $TagRow['tagdescription'], '</td>
+					<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '?SelectedTab=', $MyRow['tabcode'], '">' . _('Edit') . '</a></td>
+					<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '?SelectedTab=', $MyRow['tabcode'], '&amp;delete=yes" onclick=\' return MakeConfirm("' . _('Are you sure you wish to delete this tab code?') . '", \'Confirm Delete\', this);\'>' . _('Delete') . '</a></td>
+				</tr>';
 		}
 		//END WHILE LIST LOOP
 		echo '</table>';
@@ -279,6 +289,7 @@ if (!isset($_GET['delete'])) {
 		$_POST['SelectAuthoriserExpenses'] = $MyRow['authorizerexpenses'];
 		$_POST['GLAccountCash'] = $MyRow['glaccountassignment'];
 		$_POST['GLAccountPcashTab'] = $MyRow['glaccountpcash'];
+		$_POST['DefaultTag'] = $MyRow['defaulttag'];
 
 
 		echo '<input type="hidden" name="SelectedTab" value="' . $SelectedTab . '" />';
@@ -501,13 +512,39 @@ if (!isset($_GET['delete'])) {
 
 	} //end while loop
 
-	echo '</select></td></tr>';
+	echo '</select>
+			</td>
+		</tr>';
+
+	//Select the tag
+
+	$SQL = "SELECT tagref,
+					tagdescription
+			FROM tags
+			ORDER BY tagref";
+	$Result = DB_query($SQL);
+	echo '<tr>
+			<td>' . _('Default Tag') . ':</td>
+			<td><select name="DefaultTag">';
+	echo '<option value="0">0 - ' . _('None') . '</option>';
+	while ($MyRow = DB_fetch_array($Result)) {
+		if (isset($_POST['DefaultTag']) and $_POST['DefaultTag'] == $MyRow['tagref']) {
+			echo '<option selected="selected" value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
+		} else {
+			echo '<option value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
+		}
+	}
+	echo '</select>
+			</td>
+		</tr>';
+	// End select tag
 	echo '</table>'; // close main table
 	DB_free_result($Result);
 
-	echo '<br /><div class="centre">
-		<input type="submit" name="Submit" value="' . _('Accept') . '" />
-		<input type="submit" name="Cancel" value="' . _('Cancel') . '" /></div>';
+	echo '<div class="centre">
+			<input type="submit" name="Submit" value="' . _('Accept') . '" />
+			<input type="submit" name="Cancel" value="' . _('Cancel') . '" />
+		</div>';
 
 	echo '</form>';
 

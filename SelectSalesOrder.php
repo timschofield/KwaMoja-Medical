@@ -479,7 +479,7 @@ if (isset($_POST['SearchParts'])) {
 				ON stockmaster.stockid=locstock.stockid
 			WHERE stockmaster.description " . LIKE . " '" . $SearchString . "'
 			AND stockmaster.stockid " . LIKE . " '%" . $_POST['StockCode'] . "%'
-			AND stockmaster.categoryid='" . $_POST['StockCat'] . "'
+			AND stockmaster.categoryid " . LIKE . " '%" . $_POST['StockCat'] . "%'
 			GROUP BY stockmaster.stockid,
 				stockmaster.description,
 				stockmaster.decimalplaces,
@@ -585,6 +585,7 @@ if (!isset($StockId)) {
 				<td>', _('Select a stock category'), ':
 						<select name="StockCat">';
 
+	echo '<option value="">' . _('All') . '</option>';
 	while ($MyRow1 = DB_fetch_array($Result1)) {
 		if (isset($_POST['StockCat']) and $_POST['StockCat'] == $MyRow1['categoryid']) {
 			echo '<option selected="selected" value="', $MyRow1['categoryid'], '">', $MyRow1['categorydescription'], '</option>';
@@ -607,7 +608,7 @@ if (!isset($StockId)) {
 			<input type="submit" name="ResetPart" value="', _('Show All'), '" />
 		</div>';
 
-	if (isset($StockItemsResult) and DB_num_rows($StockItemsResult) > 0) {
+	if (isset($StockItemsResult) and DB_num_rows($StockItemsResult) > 1) {
 
 		echo '<table cellpadding="2" class="selection">
 				<thead>

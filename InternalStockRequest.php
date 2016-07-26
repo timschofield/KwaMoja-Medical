@@ -195,7 +195,7 @@ foreach ($_POST as $Key => $Value) {
 	}
 }
 
-if (isset($_POST['Submit'])) {
+if (isset($_POST['Submit']) and (!empty($_SESSION['Request']->LineItems))) {
 	DB_Txn_Begin();
 	$InputError = 0;
 	if ($_SESSION['Request']->Department == '') {
@@ -299,6 +299,8 @@ if (isset($_POST['Submit'])) {
 	include('includes/footer.inc');
 	unset($_SESSION['Request']);
 	exit;
+} elseif(isset($_POST['Submit'])) {
+	prnMsg(_('There are no items added to this request'), 'warn');
 }
 
 if (isset($_GET['Edit'])) {

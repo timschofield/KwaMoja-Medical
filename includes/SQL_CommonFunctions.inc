@@ -13,9 +13,12 @@ function GetNextTransNo($TransType) {
 	*
 	*/
 
-	DB_query("LOCK TABLES systypes WRITE");
-
-	$SQL = "SELECT typeno FROM systypes WHERE typeid = '" . $TransType . "'";
+	DB_query("SELECT typeno FROM systypes WHERE typeid='" . $TransType ."' FOR UPDATE");
+	$SQL = "UPDATE systypes SET typeno = typeno + 1 WHERE typeid = '" . $TransType . "'";
+	$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The transaction number could not be incremented');
+	$DbgMsg =  _('The following SQL to increment the transaction number was used');
+	$UpdTransNoResult = DB_query($SQL,$ErrMsg,$DbgMsg);
+	$SQL = "SELECT typeno FROM systypes WHERE typeid= '" . $TransType . "'";
 
 	$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': <BR>' . _('The next transaction number could not be retrieved from the database because');
 	$DbgMsg = _('The following SQL to retrieve the transaction number was used');
@@ -23,14 +26,7 @@ function GetNextTransNo($TransType) {
 
 	$MyRow = DB_fetch_row($GetTransNoResult);
 
-	$SQL = "UPDATE systypes SET typeno = '" . ($MyRow[0] + 1) . "' WHERE typeid = '" . $TransType . "'";
-	$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The transaction number could not be incremented');
-	$DbgMsg = _('The following SQL to increment the transaction number was used');
-	$UpdTransNoResult = DB_query($SQL, $ErrMsg, $DbgMsg);
-
-	DB_query("UNLOCK TABLES");
-
-	return $MyRow[0] + 1;
+	return $MyRow[0];
 }
 
 function GetNextSupplierCode($SupplierType) {

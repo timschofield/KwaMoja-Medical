@@ -182,9 +182,9 @@ if (!class_exists('Cpdf', false)) {
 				}
 			}
 
-			$this->Cell($Width, $Height, mb_substr($s, 0, $sep), $b, 2, $Align, $fill);
+			$this->Cell($Width, $Height, mb_substr($s, 0, $sep, 'UTF-8'), $b, 2, $Align, $fill);
 			$this->x = $this->lMargin;
-			return mb_substr($s, $sep);
+			return mb_substr($s, $sep, null, 'UTF-8');
 		} // End function addTextWrap.
 
 		function addInfo($label, $Value) {

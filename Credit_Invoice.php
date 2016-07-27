@@ -206,12 +206,21 @@ if (isset($_POST['Location'])) {
 
 	$_SESSION['CreditItems' . $Identifier]->DispatchTaxProvince = $MyRow['taxprovinceid'];
 
+	$TotalQtyCredited = 0;
 	foreach ($_SESSION['CreditItems' . $Identifier]->LineItems as $LineItem) {
 		$_SESSION['CreditItems' . $Identifier]->GetTaxes($LineItem->LineNumber);
+		$TotalQtyCredited += $LineItem->QtyDispatched;
 	}
 }
+
 if (isset($_POST['ChargeFreightCost'])) {
 	$_SESSION['CreditItems' . $Identifier]->FreightCost = filter_number_format($_POST['ChargeFreightCost']);
+	if (($TotalQtyCredit + abs($_POST['ChargeFreightCost'])) <= 0) {
+		prnMsg(_('There are no item quantity or freight charge input'), 'error');
+		if (isset($_POST['ProcessCredit'])) {
+			unset($_POST['ProcessCredit']);
+		}
+	}
 }
 
 if ($_SESSION['SalesmanLogin'] == '') {

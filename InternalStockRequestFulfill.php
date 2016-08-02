@@ -20,7 +20,10 @@ if (isset($_POST['UpdateAll'])) {
 			$StockId = $_POST[$RequestID . 'StockID' . $LineID];
 			$Location = $_POST[$RequestID . 'Location' . $LineID];
 			$Department = $_POST[$RequestID . 'Department' . $LineID];
-			$Tag = $_POST[$RequestID . 'Tag' . $LineID];
+			$Tags = $_POST[$RequestID . 'Tag' . $LineID];
+			if (count($Tags) == 0) {
+				$Tags = array(0);
+			}
 			$RequestedQuantity = filter_number_format($_POST[$RequestID . 'RequestedQuantity' . $LineID]);
 			if (isset($_POST[$RequestID . 'Completed' . $LineID])) {
 				$Completed = True;
@@ -127,21 +130,25 @@ if (isset($_POST['UpdateAll'])) {
 												periodno,
 												account,
 												amount,
-												narrative,
-												tag)
+												narrative)
 											VALUES (17,
 												'" . $AdjustmentNumber . "',
 												'" . $SQLAdjustmentDate . "',
 												'" . $PeriodNo . "',
 												'" . $StockGLCodes['issueglact'] . "',
 												'" . $StandardCost * ($Quantity) . "',
-												'" . $Narrative . "',
-												'" . $Tag . "'
+												'" . $Narrative . "'
 											)";
-
 					$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The general ledger transaction entries could not be added because');
 					$DbgMsg = _('The following SQL to insert the GL entries was used');
 					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+					foreach($Tags as $Tag) {
+						$SQL = "INSERT INTO gltags VALUES ( LAST_INSERT_ID(),
+															'" . $Tag . "')";
+						$ErrMsg = _('Cannot insert a GL tag for the journal line because');
+						$DbgMsg = _('The SQL that failed to insert the GL tag record was');
+						$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+					}
 
 					$SQL = "INSERT INTO gltrans (type,
 												typeno,
@@ -149,21 +156,26 @@ if (isset($_POST['UpdateAll'])) {
 												periodno,
 												account,
 												amount,
-												narrative,
-												tag)
+												narrative)
 											VALUES (17,
 												'" . $AdjustmentNumber . "',
 												'" . $SQLAdjustmentDate . "',
 												'" . $PeriodNo . "',
 												'" . $StockGLCodes['stockact'] . "',
 												'" . $StandardCost * -$Quantity . "',
-												'" . $Narrative . "',
-												'" . $Tag . "'
+												'" . $Narrative . "'
 											)";
 
 					$Errmsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The general ledger transaction entries could not be added because');
 					$DbgMsg = _('The following SQL to insert the GL entries was used');
 					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+					foreach($Tags as $Tag) {
+						$SQL = "INSERT INTO gltags VALUES ( LAST_INSERT_ID(),
+															'" . $Tag . "')";
+						$ErrMsg = _('Cannot insert a GL tag for the journal line because');
+						$DbgMsg = _('The SQL that failed to insert the GL tag record was');
+						$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+					}
 				}
 
 				if (($Quantity >= $RequestedQuantity) or $Completed == True) {
@@ -336,12 +348,12 @@ if (isset($_POST['Location'])) {
 
 		while ($LineRow = DB_fetch_array($LineResult)) {
 			echo '<tr>
-					<td>' . $LineRow['description'] . '</td>
-					<td class="number">' . locale_number_format($LineRow['quantity'] - $LineRow['qtydelivered'], $LineRow['decimalplaces']) . '</td>
-					<td class="number"><input type="text" class="number" name="' . $LineRow['dispatchid'] . 'Qty' . $LineRow['dispatchitemsid'] . '" value="' . locale_number_format($LineRow['quantity'] - $LineRow['qtydelivered'], $LineRow['decimalplaces']) . '" /></td>
-					<td>' . $LineRow['uom'] . '</td>
-					<td><input type="checkbox" name="' . $LineRow['dispatchid'] . 'Completed' . $LineRow['dispatchitemsid'] . '" /></td>
-					<td><select name="' . $LineRow['dispatchid'] . 'Tag' . $LineRow['dispatchitemsid'] . '">';
+					<td valign="top">' . $LineRow['description'] . '</td>
+					<td valign="top" class="number">' . locale_number_format($LineRow['quantity'] - $LineRow['qtydelivered'], $LineRow['decimalplaces']) . '</td>
+					<td valign="top" class="number"><input type="text" class="number" name="' . $LineRow['dispatchid'] . 'Qty' . $LineRow['dispatchitemsid'] . '" value="' . locale_number_format($LineRow['quantity'] - $LineRow['qtydelivered'], $LineRow['decimalplaces']) . '" /></td>
+					<td valign="top">' . $LineRow['uom'] . '</td>
+					<td valign="top"><input type="checkbox" name="' . $LineRow['dispatchid'] . 'Completed' . $LineRow['dispatchitemsid'] . '" /></td>
+					<td valign="top"><select multiple="multiple" name="' . $LineRow['dispatchid'] . 'Tag' . $LineRow['dispatchitemsid'] . '[]">';
 
 			$SQL = "SELECT tagref,
 							tagdescription

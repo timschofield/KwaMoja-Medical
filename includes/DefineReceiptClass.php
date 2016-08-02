@@ -74,6 +74,9 @@ class Receipt {
 	function __construct($Amt, $Cust, $Disc, $Narr, $id, $GLCode, $PayeeBankDetail, $CustomerName, $tag) {
 
 		/* Constructor function to add a new Receipt object with passed params */
+		if (count($tag) == 0) {
+			$tag = array(0);
+		}
 		$this->Amount = $Amt;
 		$this->Customer = $Cust;
 		$this->CustomerName = $CustomerName;

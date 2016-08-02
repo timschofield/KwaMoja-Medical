@@ -131,8 +131,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 										periodno,
 										account,
 										narrative,
-										amount,
-										tag
+										amount
 									) VALUES (
 										'" . $_POST['TransactionType'] . "',
 										'" . $TransNo . "',
@@ -141,11 +140,14 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 										'" . $Period . "',
 										'" . $MyRow[1] . "',
 										'" . $MyRow[4] . "',
-										'" . round($MyRow[3] / $ExRate, 2) . "',
-										'" . $MyRow[5] . "'
+										'" . round($MyRow[3] / $ExRate, 2) . "'
 									)";
-
 			$Result = DB_query($SQL);
+			$SQL = "INSERT INTO gltags VALUES ( LAST_INSERT_ID(),
+												'" . $MyRow[5] . "')";
+			$ErrMsg = _('Cannot insert a GL tag for the invoice line because');
+			$DbgMsg = _('The SQL that failed to insert the GL tag record was');
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 			if ($_POST['TransactionType'] != 0 and IsBankAccount($MyRow[1])) {
 

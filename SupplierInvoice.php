@@ -782,8 +782,7 @@ if (!isset($_POST['PostInvoice'])) {
 
 	if ($_SESSION['SuppTrans']->GLLink_Creditors == 1) {
 		if (count($_SESSION['SuppTrans']->GLCodes) > 0) {
-			echo '<br />
-					<table class="selection">
+			echo '<table class="selection">
 					<tr>
 						<th colspan="5">' . _('General Ledger Analysis') . '</th>
 					</tr>
@@ -796,12 +795,27 @@ if (!isset($_POST['PostInvoice'])) {
 					</tr>';
 
 			foreach ($_SESSION['SuppTrans']->GLCodes as $EnteredGLCode) {
+
+				$TagDescription = '';
+				foreach ($EnteredGLCode->Tag as $Tag) {
+					$TagSQL = "SELECT tags.tagdescription
+								FROM tags
+								WHERE tags.tagref='" . $Tag . "'";
+					$TagResult = DB_query($TagSQL);
+					$TagRow = DB_fetch_array($TagResult);
+					if ($Tag == 0) {
+						$TagDescription .= '0 - None<br />';
+					} else {
+						$TagDescription .= $Tag . ' - ' . $TagRow['tagdescription'] . '<br />';
+					}
+				}
+
 				echo '<tr>
-						<td>' . $EnteredGLCode->GLCode . '</td>
-						<td>' . $EnteredGLCode->GLActName . '</td>
-						<td>' . $EnteredGLCode->Narrative . '</td>
-						<td>' . $EnteredGLCode->Tag . ' - ' . $EnteredGLCode->TagName . '</td>
-						<td class="number">' . locale_number_format($EnteredGLCode->Amount, $_SESSION['SuppTrans']->CurrDecimalPlaces) . '</td>
+						<td valign="top">' . $EnteredGLCode->GLCode . '</td>
+						<td valign="top">' . $EnteredGLCode->GLActName . '</td>
+						<td valign="top">' . $EnteredGLCode->Narrative . '</td>
+						<td valign="top">' . $TagDescription . '</td>
+						<td valign="top" class="number">' . locale_number_format($EnteredGLCode->Amount, $_SESSION['SuppTrans']->CurrDecimalPlaces) . '</td>
 					</tr>';
 
 				$TotalGLValue += $EnteredGLCode->Amount;
@@ -817,16 +831,14 @@ if (!isset($_POST['PostInvoice'])) {
 
 		$_SESSION['SuppTrans']->OvAmount = ($TotalGRNValue + $TotalGLValue + $TotalAssetValue + $TotalShiptValue + $TotalContractsValue);
 
-		echo '<br />
-				<table class="selection">
+		echo '<table class="selection">
 				<tr>
 					<td>' . _('Amount in supplier currency') . ':</td>
 					<td colspan="2" class="number">' . locale_number_format($_SESSION['SuppTrans']->OvAmount, $_SESSION['SuppTrans']->CurrDecimalPlaces) . '</td>
 				</tr>';
 	} //$_SESSION['SuppTrans']->GLLink_Creditors == 1
 	else {
-		echo '<br />
-				<table class="selection">
+		echo '<table class="selection">
 				<tr>
 					<td>' . _('Amount in supplier currency') . ':</td>
 					<td colspan="2" class="number"><input type="text" class="number" size="12" maxlength="10" name="OvAmount" value="' . locale_number_format($_SESSION['SuppTrans']->OvAmount, $_SESSION['SuppTrans']->CurrDecimalPlaces) . '" /></td>
@@ -1063,7 +1075,6 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 											periodno,
 											account,
 											narrative,
-											tag,
 											amount)
 									VALUES (20,
 										'" . $InvoiceNo . "',
@@ -1071,13 +1082,17 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 										'" . $PeriodNo . "',
 										'" . $EnteredGLCode->GLCode . "',
 										'" . $_SESSION['SuppTrans']->SupplierID . ' - ' . $EnteredGLCode->Narrative . "',
-										'" . $EnteredGLCode->Tag . "',
 										'" . $EnteredGLCode->Amount / $_SESSION['SuppTrans']->ExRate . "')";
-
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The general ledger transaction could not be added because');
 				$DbgMsg = _('The following SQL to insert the GL transaction was used');
-
 				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
+				foreach($EnteredGLCode->Tag as $Tag) {
+					$SQL = "INSERT INTO gltags VALUES ( LAST_INSERT_ID(),
+														'" . $Tag . "')";
+					$ErrMsg = _('Cannot insert a GL tag for the invoice line because');
+					$DbgMsg = _('The SQL that failed to insert the GL tag record was');
+					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+				}
 
 				$LocalTotal += $EnteredGLCode->Amount / $_SESSION['SuppTrans']->ExRate;
 			} //$_SESSION['SuppTrans']->GLCodes as $EnteredGLCode

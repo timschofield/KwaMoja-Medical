@@ -67,20 +67,26 @@ if (isset($_POST['CommitBatch']) and $_POST['CommitBatch'] == _('Accept and Proc
 									periodno,
 									account,
 									narrative,
-									amount,
-									tag)
+									amount)
 				VALUES ('0',
 					'" . $TransNo . "',
 					'" . FormatDateForSQL($_SESSION['JournalDetail']->JnlDate) . "',
 					'" . $PeriodNo . "',
 					'" . $JournalItem->GLCode . "',
 					'" . $JournalItem->Narrative . "',
-					'" . $JournalItem->Amount . "',
-					'" . $JournalItem->tag . "'
+					'" . $JournalItem->Amount . "'
 					)";
 		$ErrMsg = _('Cannot insert a GL entry for the journal line because');
 		$DbgMsg = _('The SQL that failed to insert the GL Trans record was');
 		$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+
+		foreach($JournalItem->tag as $Tag) {
+			$SQL = "INSERT INTO gltags VALUES ( LAST_INSERT_ID(),
+												'" . $Tag . "')";
+			$ErrMsg = _('Cannot insert a GL tag for the journal line because');
+			$DbgMsg = _('The SQL that failed to insert the GL tag record was');
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+		}
 
 		if ($_POST['JournalType'] == 'Reversing') {
 			$SQL = "INSERT INTO gltrans (type,
@@ -89,21 +95,27 @@ if (isset($_POST['CommitBatch']) and $_POST['CommitBatch'] == _('Accept and Proc
 										periodno,
 										account,
 										narrative,
-										amount,
-										tag)
+										amount)
 					VALUES ('0',
 						'" . $TransNo . "',
 						'" . FormatDateForSQL($_SESSION['JournalDetail']->JnlDate) . "',
 						'" . ($PeriodNo + 1) . "',
 						'" . $JournalItem->GLCode . "',
 						'" . _('Reversal') . " - " . $JournalItem->Narrative . "',
-						'" . -($JournalItem->Amount) . "',
-						'" . $JournalItem->tag . "'
+						'" . -($JournalItem->Amount) . "'
 						)";
 
 			$ErrMsg = _('Cannot insert a GL entry for the reversing journal because');
 			$DbgMsg = _('The SQL that failed to insert the GL Trans record was');
 			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+
+			foreach($JournalItem->tag as $Tag) {
+				$SQL = "INSERT INTO gltags VALUES ( LAST_INSERT_ID(),
+													'" . $Tag . "')";
+				$ErrMsg = _('Cannot insert a GL tag for the journal line because');
+				$DbgMsg = _('The SQL that failed to insert the GL tag record was');
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+			}
 		}
 	}
 
@@ -133,8 +145,8 @@ if (isset($_POST['CommitBatch']) and $_POST['CommitBatch'] == _('Accept and Proc
 
 } elseif (isset($_POST['Process']) and $_POST['Process'] == _('Accept')) { //user hit submit a new GL Analysis line into the journal
 	if ($_POST['GLCode'] != '') {
-		$extract = explode(' - ', $_POST['GLCode']);
-		$_POST['GLCode'] = $extract[0];
+		$Extract = explode(' - ', $_POST['GLCode']);
+		$_POST['GLCode'] = $Extract[0];
 	}
 	if ($_POST['Debit'] > 0) {
 		$_POST['GLAmount'] = filter_number_format($_POST['Debit']);
@@ -293,7 +305,8 @@ echo '<tr>
 
 //Select the tag
 echo '<tr>
-		<td><select name="tag">';
+		<td rowspan="4" valign="top">
+			<select multiple="multiple" name="tag[]">';
 
 $SQL = "SELECT tagref,
 				tagdescription
@@ -366,7 +379,6 @@ echo '<tr>
 	</tr>
 	<tr>
 		<td></td>
-		<td></td>
 		<th>' . _('Narrative') . '</th>
 	</tr>
 	<tr>
@@ -404,18 +416,22 @@ foreach ($_SESSION['JournalDetail']->GLEntries as $JournalItem) {
 		echo '<tr class="EvenTableRows">';
 		++$j;
 	}
-	$SQL = "SELECT tagdescription
-			FROM tags
-			WHERE tagref='" . $JournalItem->tag . "'";
-	$Result = DB_query($SQL);
-	$MyRow = DB_fetch_row($Result);
-	if ($JournalItem->tag == 0) {
-		$TagDescription = _('None');
-	} else {
-		$TagDescription = $MyRow[0];
+	echo '<td>';
+	foreach ($JournalItem->tag as $Tag) {
+		$SQL = "SELECT tagdescription
+				FROM tags
+				WHERE tagref='" . $Tag . "'";
+		$Result = DB_query($SQL);
+		$MyRow = DB_fetch_row($Result);
+		if ($Tag == 0) {
+			$TagDescription = _('None');
+		} else {
+			$TagDescription = $MyRow[0];
+		}
+		echo $Tag . ' - ' . $TagDescription . '<br />';
 	}
-	echo '<td>' . $JournalItem->tag . ' - ' . $TagDescription . '</td>
-		<td>' . $JournalItem->GLCode . ' - ' . $JournalItem->GLActName . '</td>';
+	echo '</td>';
+	echo '<td>' . $JournalItem->GLCode . ' - ' . $JournalItem->GLActName . '</td>';
 	if ($JournalItem->Amount > 0) {
 		echo '<td class="number">' . locale_number_format($JournalItem->Amount, $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
 				<td></td>';

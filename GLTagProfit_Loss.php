@@ -173,10 +173,16 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 			INNER JOIN accountgroups
 				ON chartmaster.groupcode = accountgroups.groupcode
 				AND chartmaster.language = accountgroups.language
-			INNER JOIN gltrans ON chartmaster.accountcode= gltrans.account
-			INNER JOIN glaccountusers ON glaccountusers.accountcode=chartmaster.accountcode AND glaccountusers.userid='" .  $_SESSION['UserID'] . "' AND glaccountusers.canview=1
+			INNER JOIN gltrans
+				ON chartmaster.accountcode= gltrans.account
+			INNER JOIN glaccountusers
+				ON glaccountusers.accountcode=chartmaster.accountcode
+				AND glaccountusers.userid='" .  $_SESSION['UserID'] . "'
+				AND glaccountusers.canview=1
+			INNER JOIN gltags
+				ON gltags.counterindex=gltrans.counterindex
 			WHERE accountgroups.pandl=1
-				AND gltrans.tag='" . $_POST['tag'] . "'
+				AND gltags.tagref='" . $_POST['tag'] . "'
 				AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 			GROUP BY accountgroups.sectioninaccounts,
 					accountgroups.groupname,
@@ -521,8 +527,10 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 				AND chartmaster.language = accountgroups.language
 			INNER JOIN gltrans
 				ON chartmaster.accountcode= gltrans.account
+			INNER JOIN gltags
+				ON gltags.counterindex=gltrans.counterindex
 			WHERE accountgroups.pandl=1
-				AND gltrans.tag='" . $_POST['tag'] . "'
+				AND gltags.tagref='" . $_POST['tag'] . "'
 				AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
 			GROUP BY accountgroups.sectioninaccounts,
 					accountgroups.groupname,

@@ -112,15 +112,28 @@ $TotalGLValue = 0;
 $i = 0;
 echo '<tbody>';
 foreach ($_SESSION['SuppTrans']->GLCodes as $EnteredGLCode) {
+	$TagDescription = '';
+	foreach ($EnteredGLCode->Tag as $Tag) {
+		$TagSQL = "SELECT tags.tagdescription
+					FROM tags
+					WHERE tags.tagref='" . $Tag . "'";
+		$TagResult = DB_query($TagSQL);
+		$TagRow = DB_fetch_array($TagResult);
+		if ($Tag == 0) {
+			$TagDescription .= '0 - None<br />';
+		} else {
+			$TagDescription .= $Tag . ' - ' . $TagRow['tagdescription'] . '<br />';
+		}
+	}
 
 	echo '<tr>
-			<td class="text">' . $EnteredGLCode->GLCode . '</td>
-			<td class="text">' . $EnteredGLCode->GLActName . '</td>
-			<td class="number">' . locale_number_format($EnteredGLCode->Amount, $_SESSION['SuppTrans']->CurrDecimalPlaces) . '</td>
-			<td class="text">' . $EnteredGLCode->Narrative . '</td>
-			<td class="text">' . $EnteredGLCode->Tag  . ' - ' . $EnteredGLCode->TagName . '</td>
-			<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Edit=' . $EnteredGLCode->Counter . '">' . _('Edit') . '</a></td>
-			<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Delete=' . $EnteredGLCode->Counter . '">' . _('Delete') . '</a></td>
+			<td valign="top" class="text">' . $EnteredGLCode->GLCode . '</td>
+			<td valign="top" class="text">' . $EnteredGLCode->GLActName . '</td>
+			<td valign="top" class="number">' . locale_number_format($EnteredGLCode->Amount, $_SESSION['SuppTrans']->CurrDecimalPlaces) . '</td>
+			<td valign="top" class="text">' . $EnteredGLCode->Narrative . '</td>
+			<td valign="top" class="text">' . $TagDescription . '</td>
+			<td valign="top"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Edit=' . $EnteredGLCode->Counter . '">' . _('Edit') . '</a></td>
+			<td valign="top"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Delete=' . $EnteredGLCode->Counter . '">' . _('Delete') . '</a></td>
 		</tr>';
 
 	$TotalGLValue += $EnteredGLCode->Amount;
@@ -155,27 +168,6 @@ echo '<br />
 if (!isset($_POST['GLCode'])) {
 	$_POST['GLCode'] = '';
 }
-
-echo '<tr>
-		<td>' . _('Select Tag') . ':</td>
-		<td><select name="Tag">';
-
-$SQL = "SELECT tagref,
-			tagdescription
-		FROM tags
-		ORDER BY tagref";
-
-$Result = DB_query($SQL);
-echo '<option value="0"></option>';
-while ($MyRow = DB_fetch_array($Result)) {
-	if (isset($_POST['Tag']) and $_POST['Tag'] == $MyRow['tagref']) {
-		echo '<option selected="selected" value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
-	} else {
-		echo '<option value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
-	}
-}
-echo '</select></td>
-	</tr>';
 
 echo '<tr>
 		<td>' . _('Account Code') . ':</td>
@@ -219,6 +211,29 @@ echo '<tr>
 if (!isset($_POST['Narrative'])) {
 	$_POST['Narrative'] = '';
 }
+
+echo '<tr>
+		<td>' . _('Select Tag') . ':</td>
+		<td><select name="Tag[]" multiple="multiple">';
+
+$SQL = "SELECT tagref,
+			tagdescription
+		FROM tags
+		ORDER BY tagref";
+
+$Result = DB_query($SQL);
+echo '<option value="0">0 - ' . _('None') . '</option>';
+while ($MyRow = DB_fetch_array($Result)) {
+	if (isset($_POST['Tag']) and $_POST['Tag'] == $MyRow['tagref']) {
+		echo '<option selected="selected" value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
+	} else {
+		echo '<option value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
+	}
+}
+echo '</select>
+		</td>
+	</tr>';
+
 echo '<tr>
 		<td>' . _('Narrative') . ':</td>
 		<td><textarea name="Narrative" cols="40" rows="2">' . $_POST['Narrative'] . '</textarea></td>

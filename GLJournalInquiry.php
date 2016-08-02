@@ -51,20 +51,17 @@ if (!isset($_POST['Show'])) {
 	echo '</form>';
 } else {
 
-	$SQL = "SELECT gltrans.typeno,
-				gltrans.trandate,
-				gltrans.account,
-				chartmaster.accountname,
-				gltrans.narrative,
-				gltrans.amount,
-				gltrans.tag,
-				tags.tagdescription,
-				gltrans.jobref
-			FROM gltrans
-			INNER JOIN chartmaster
-				ON gltrans.account=chartmaster.accountcode
-			LEFT JOIN tags
-				ON gltrans.tag=tags.tagref
+	$SQL = "SELECT gltrans.counterindex,
+					gltrans.typeno,
+					gltrans.trandate,
+					gltrans.account,
+					chartmaster.accountname,
+					gltrans.narrative,
+					gltrans.amount,
+					gltrans.jobref
+				FROM gltrans
+				INNER JOIN chartmaster
+					ON gltrans.account=chartmaster.accountcode
 			WHERE gltrans.type='0'
 				AND gltrans.trandate>='" . FormatDateForSQL($_POST['FromTransDate']) . "'
 				AND gltrans.trandate<='" . FormatDateForSQL($_POST['ToTransDate']) . "'
@@ -99,17 +96,30 @@ if (!isset($_POST['Show'])) {
 
 		while ($MyRow = DB_fetch_array($Result)) {
 
-			if ($MyRow['tag'] == 0) {
-				$MyRow['tagdescription'] = 'None';
+			$TagsSQL = "SELECT gltags.tagref,
+								tags.tagdescription
+							FROM gltags
+							INNER JOIN tags
+								ON gltags.tagref=tags.tagref
+							WHERE gltags.counterindex='" . $MyRow['counterindex'] . "'";
+			$TagsResult = DB_query($TagsSQL);
+
+			$TagDescriptions = '';
+			while ($TagRows = DB_fetch_array($TagsResult)) {
+				$TagDescriptions .= $TagRows['tagref'] . ' - ' . $TagRows['tagdescription'] . '<br />';
 			}
 
 			if ($MyRow['typeno'] != $LastJournal) {
-				echo '<tr><td colspan="8"</td></tr><tr>
-					<td>' . ConvertSQLDate($MyRow['trandate']) . '</td>
-					<td class="number">' . $MyRow['typeno'] . '</td>';
+				echo '<tr>
+						<td colspan="8"></td>
+					</tr>
+					<tr>
+						<td valign="top">' . ConvertSQLDate($MyRow['trandate']) . '</td>
+						<td valign="top" class="number">' . $MyRow['typeno'] . '</td>';
 
 			} else {
-				echo '<tr><td colspan="2"></td>';
+				echo '<tr>
+						<td valign="top" colspan="2"></td>';
 			}
 
 			// if user is allowed to see the account we show it, other wise we show "OTHERS ACCOUNTS"
@@ -122,20 +132,20 @@ if (!isset($_POST['Show'])) {
 			$CheckRow = DB_fetch_row($CheckResult);
 
 			if ($CheckRow[0] > 0) {
-				echo '<td>' . $MyRow['account'] . '</td>
-						<td>' . $MyRow['accountname'] . '</td>';
+				echo '<td valign="top">' . $MyRow['account'] . '</td>
+						<td valign="top">' . $MyRow['accountname'] . '</td>';
 			} else {
-				echo '<td>' . _('Others') . '</td>
-						<td>' . _('Other GL Accounts') . '</td>';
+				echo '<td valign="top">' . _('Others') . '</td>
+						<td valign="top">' . _('Other GL Accounts') . '</td>';
 			}
 
 
-			echo '<td>' . $MyRow['narrative']  . '</td>
-					<td class="number">' . locale_number_format($MyRow['amount'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
-					<td class="number">' . $MyRow['tag'] . ' - ' . $MyRow['tagdescription'] . '</td>';
+			echo '<td valign="top">' . $MyRow['narrative']  . '</td>
+					<td valign="top" class="number">' . locale_number_format($MyRow['amount'], $_SESSION['CompanyRecord']['decimalplaces']) . '</td>
+					<td valign="top" class="number">' . $TagDescriptions . '</td>';
 
 			if ($MyRow['typeno'] != $LastJournal) {
-				echo '<td class="number"><a href="PDFGLJournal.php?JournalNo=' . urlencode($MyRow['typeno']) . '">' . _('Print') . '</a></td></tr>';
+				echo '<td valign="top" class="number"><a href="PDFGLJournal.php?JournalNo=' . urlencode($MyRow['typeno']) . '">' . _('Print') . '</a></td></tr>';
 
 				$LastJournal = $MyRow['typeno'];
 			} else {

@@ -11,7 +11,7 @@ if (isset($_GET['SelectedTag'])) {
 	if ($_GET['Action'] == 'delete') {
 		//first off test there are no transactions created with this tag
 		$Result = DB_query("SELECT counterindex
-							FROM gltrans
+							FROM gltags
 							WHERE tag='" . $_GET['SelectedTag'] . "'");
 		if (DB_num_rows($Result) > 0) {
 			prnMsg(_('This tag cannot be deleted since there are already general ledger transactions created using it.'), 'error');

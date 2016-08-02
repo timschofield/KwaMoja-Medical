@@ -159,28 +159,31 @@ if (isset($_POST['Show'])) {
 		/*its a balance sheet account */
 	}
 
-	$SQL = "SELECT counterindex,
-				type,
-				typename,
-				gltrans.typeno,
-				trandate,
-				narrative,
-				chequeno,
-				amount,
-				periodno,
-				gltrans.tag,
-				tagdescription
-			FROM gltrans INNER JOIN systypes
-			ON systypes.typeid=gltrans.type
-			LEFT JOIN tags
-			ON gltrans.tag = tags.tagref
-			WHERE gltrans.account = '" . $SelectedAccount . "'
-			AND posted=1
-			AND periodno>='" . $FirstPeriodSelected . "'
-			AND periodno<='" . $LastPeriodSelected . "'";
+	$SQL = "SELECT  gltrans.counterindex,
+					type,
+					typename,
+					gltrans.typeno,
+					trandate,
+					narrative,
+					chequeno,
+					amount,
+					periodno,
+					gltags.tagref AS tag,
+					tagdescription
+				FROM gltrans
+				INNER JOIN systypes
+					ON systypes.typeid=gltrans.type
+				INNER JOIN gltags
+					ON gltrans.counterindex=gltags.counterindex
+				LEFT JOIN tags
+					ON gltags.tagref = tags.tagref
+				WHERE gltrans.account = '" . $SelectedAccount . "'
+					AND posted=1
+					AND periodno>='" . $FirstPeriodSelected . "'
+					AND periodno<='" . $LastPeriodSelected . "'";
 
 	if ($_POST['tag'] != 0) {
-		$SQL = $SQL . " AND tag='" . $_POST['tag'] . "'";
+		$SQL = $SQL . " AND gltags.tagref='" . $_POST['tag'] . "'";
 	}
 
 	$SQL = $SQL . " ORDER BY periodno, gltrans.trandate, counterindex";

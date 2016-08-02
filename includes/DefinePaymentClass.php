@@ -90,6 +90,9 @@ class PaymentGLAnalysis {
 	function __construct($Amt, $Narr, $id, $GLCode, $GLActName, $Tag, $Cheque) {
 
 		/* Constructor function to add a new PaymentGLAnalysis object with passed params */
+		if (count($Tag) == 0) {
+			$Tag = array(0);
+		}
 		$this->Amount = $Amt;
 		$this->Narrative = $Narr;
 		$this->GLCode = $GLCode;

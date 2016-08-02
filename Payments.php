@@ -389,8 +389,9 @@ if (isset($_POST['CommitBatch'])) {
 					/*The functional currency amount will be the
 					payment currenct amount  / the bank account currency exchange rate  - to get to the bank account currency
 					then / the functional currency exchange rate to get to the functional currency */
-					if ($PaymentItem->Cheque == '')
+					if ($PaymentItem->Cheque == '') {
 						$PaymentItem->Cheque = 0;
+					}
 					$SQL = "INSERT INTO gltrans (type,
 												typeno,
 												trandate,
@@ -398,20 +399,26 @@ if (isset($_POST['CommitBatch'])) {
 												account,
 												narrative,
 												amount,
-												chequeno,
-												tag) ";
-					$SQL = $SQL . "VALUES (1,
-						'" . $TransNo . "',
-						'" . FormatDateForSQL($_SESSION['PaymentDetail' . $Identifier]->DatePaid) . "',
-						'" . $PeriodNo . "',
-						'" . $PaymentItem->GLCode . "',
-						'" . $PaymentItem->Narrative . "',
-						'" . ($PaymentItem->Amount / $_SESSION['PaymentDetail' . $Identifier]->ExRate / $_SESSION['PaymentDetail' . $Identifier]->FunctionalExRate) . "',
-						'" . $PaymentItem->Cheque . "',
-						'" . $PaymentItem->Tag . "'
-						)";
+												chequeno
+											) VALUES (
+												1,
+												'" . $TransNo . "',
+												'" . FormatDateForSQL($_SESSION['PaymentDetail' . $Identifier]->DatePaid) . "',
+												'" . $PeriodNo . "',
+												'" . $PaymentItem->GLCode . "',
+												'" . $PaymentItem->Narrative . "',
+												'" . ($PaymentItem->Amount / $_SESSION['PaymentDetail' . $Identifier]->ExRate / $_SESSION['PaymentDetail' . $Identifier]->FunctionalExRate) . "',
+												'" . $PaymentItem->Cheque . "'
+											)";
 					$ErrMsg = _('Cannot insert a GL entry for the payment using the SQL');
 					$Result = DB_query($SQL, $ErrMsg, _('The SQL that failed was'), true);
+					foreach($PaymentItem->Tag as $Tag) {
+						$SQL = "INSERT INTO gltags VALUES ( LAST_INSERT_ID(),
+															'" . $Tag . "')";
+						$ErrMsg = _('Cannot insert a GL tag for the payment line because');
+						$DbgMsg = _('The SQL that failed to insert the GL tag record was');
+						$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+					}
 
 					$TotalAmount += $PaymentItem->Amount;
 				} //$_SESSION['PaymentDetail' . $Identifier]->GLItems as $PaymentItem
@@ -1090,30 +1097,6 @@ if ($_SESSION['CompanyRecord']['gllink_creditors'] == 1 and $_SESSION['PaymentDe
 			</th>
 		</tr>';
 
-	//Select the Tag
-	echo '<tr>
-			<td>' . _('Select Tag') . ':</td>
-			<td><select name="Tag">';
-
-	$SQL = "SELECT tagref,
-				tagdescription
-			FROM tags
-			ORDER BY tagref";
-
-	$Result = DB_query($SQL);
-	echo '<option value="0"></option>';
-	while ($MyRow = DB_fetch_array($Result)) {
-		if (isset($_POST['Tag']) and $_POST['Tag'] == $MyRow['tagref']) {
-			echo '<option selected="selected" value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
-		} //isset($_POST['Tag']) and $_POST['Tag'] == $MyRow['tagref']
-		else {
-			echo '<option value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
-		}
-	} //$MyRow = DB_fetch_array($Result)
-	echo '</select></td>
-		</tr>';
-	// End select Tag
-
 	/*now set up a GLCode field to select from avaialble GL accounts */
 	if (isset($_POST['GLManualCode'])) {
 		echo '<tr>
@@ -1228,6 +1211,30 @@ if ($_SESSION['CompanyRecord']['gllink_creditors'] == 1 and $_SESSION['PaymentDe
 			</tr>';
 	}
 
+	//Select the Tag
+	echo '<tr>
+			<td>' . _('Select Tag') . ':</td>
+			<td><select name="Tag[]" multiple="multiple">';
+
+	$SQL = "SELECT tagref,
+				tagdescription
+			FROM tags
+			ORDER BY tagref";
+
+	$Result = DB_query($SQL);
+	echo '<option value=0>0 - None</option>';
+	while ($MyRow = DB_fetch_array($Result)) {
+		if (isset($_POST['Tag']) and $_POST['Tag'] == $MyRow['tagref']) {
+			echo '<option selected="selected" value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
+		} //isset($_POST['Tag']) and $_POST['Tag'] == $MyRow['tagref']
+		else {
+			echo '<option value="' . $MyRow['tagref'] . '">' . $MyRow['tagref'] . ' - ' . $MyRow['tagdescription'] . '</option>';
+		}
+	} //$MyRow = DB_fetch_array($Result)
+	echo '</select></td>
+		</tr>';
+	// End select Tag
+
 	echo '</table><br />';
 	echo '<div class="centre">
 			<input type="submit" name="Process" value="' . _('Accept') . '" />
@@ -1247,23 +1254,26 @@ if ($_SESSION['CompanyRecord']['gllink_creditors'] == 1 and $_SESSION['PaymentDe
 
 		$PaymentTotal = 0;
 		foreach ($_SESSION['PaymentDetail' . $Identifier]->GLItems as $PaymentItem) {
-			$Tagsql = "SELECT tagdescription from tags where tagref='" . $PaymentItem->Tag . "'";
-			$TagResult = DB_query($Tagsql);
-			$TagMyrow = DB_fetch_row($TagResult);
-			if ($PaymentItem->Tag == 0) {
-				$TagName = 'None';
-			} //$PaymentItem->Tag == 0
-			else {
-				$TagName = $TagMyrow[0];
+			$TagDescription = '';
+			foreach ($PaymentItem->Tag as $Tag) {
+				$Tagsql = "SELECT tagdescription from tags where tagref='" . $Tag . "'";
+				$TagResult = DB_query($Tagsql);
+				$TagMyrow = DB_fetch_row($TagResult);
+				if ($PaymentItem->Tag == 0) {
+					$TagName = 'None';
+				} //$PaymentItem->Tag == 0
+				else {
+					$TagName = $TagMyrow[0];
+				}
+				$TagDescription .= $Tag . ' - ' . $TagName . '<br />';
 			}
-
 			echo '<tr>
-				<td>' . $PaymentItem->Cheque . '</td>
-				<td class="number">' . locale_number_format($PaymentItem->Amount, $_SESSION['PaymentDetail' . $Identifier]->CurrDecimalPlaces) . '</td>
-				<td>' . $PaymentItem->GLCode . ' - ' . $PaymentItem->GLActName . '</td>
-				<td>' . stripslashes($PaymentItem->Narrative) . '</td>
-				<td>' . $PaymentItem->Tag . ' - ' . $TagName . '</td>
-				<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?identifier=' . $Identifier) . '&amp;Delete=' . $PaymentItem->ID . '" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this payment analysis item?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
+					<td valign="top">' . $PaymentItem->Cheque . '</td>
+					<td valign="top" class="number">' . locale_number_format($PaymentItem->Amount, $_SESSION['PaymentDetail' . $Identifier]->CurrDecimalPlaces) . '</td>
+					<td valign="top">' . $PaymentItem->GLCode . ' - ' . $PaymentItem->GLActName . '</td>
+					<td valign="top">' . stripslashes($PaymentItem->Narrative) . '</td>
+					<td valign="top">' . $TagDescription . '</td>
+					<td valign="top"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'] . '?identifier=' . $Identifier) . '&amp;Delete=' . $PaymentItem->ID . '" onclick="return MakeConfirm(\'' . _('Are you sure you wish to delete this payment analysis item?') . '\', \'Confirm Delete\', this);">' . _('Delete') . '</a></td>
 				</tr>';
 			$PaymentTotal += $PaymentItem->Amount;
 		} //$_SESSION['PaymentDetail' . $Identifier]->GLItems as $PaymentItem

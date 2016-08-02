@@ -55,43 +55,49 @@ if (isset($_POST['RunReport'])) {
 		$LastPeriodSelected = max($SelectedPeriod);
 
 		if ($_POST['tag'] == 0) {
-			$SQL = "SELECT type,
-						typename,
-						gltrans.typeno,
-						gltrans.trandate,
-						gltrans.narrative,
-						gltrans.amount,
-						gltrans.periodno,
-						gltrans.tag
-					FROM gltrans INNER JOIN systypes
-					ON gltrans.type=systypes.typeid
-					WHERE gltrans.account = '" . $SelectedAccount . "'
-					AND posted=1
-					AND periodno>='" . $FirstPeriodSelected . "'
-					AND periodno<='" . $LastPeriodSelected . "'
-					ORDER BY periodno,
-						gltrans.trandate,
-						counterindex";
+			$SQL = "SELECT  type,
+							typename,
+							gltrans.typeno,
+							gltrans.trandate,
+							gltrans.narrative,
+							gltrans.amount,
+							gltrans.periodno,
+							gltags.tagref AS tag
+						FROM gltrans
+						INNER JOIN systypes
+							ON gltrans.type=systypes.typeid
+						INNER JOIN gltags
+							ON gltrans.counterindex=gltags.counterindex
+						WHERE gltrans.account = '" . $SelectedAccount . "'
+							AND posted=1
+							AND periodno>='" . $FirstPeriodSelected . "'
+							AND periodno<='" . $LastPeriodSelected . "'
+						ORDER BY periodno,
+							gltrans.trandate,
+							gltrans.counterindex";
 
 		} else {
-			$SQL = "SELECT gltrans.type,
-						typename,
-						gltrans.typeno,
-						gltrans.trandate,
-						gltrans.narrative,
-						gltrans.amount,
-						gltrans.periodno,
-						gltrans.tag
-					FROM gltrans INNER JOIN systypes
-					ON gltrans.type=systypes.typeid
-					WHERE gltrans.account = '" . $SelectedAccount . "'
-					AND posted=1
-					AND periodno>='" . $FirstPeriodSelected . "'
-					AND periodno<='" . $LastPeriodSelected . "'
-					AND tag='" . $_POST['tag'] . "'
-					ORDER BY periodno,
+			$SQL = "SELECT  gltrans.type,
+							typename,
+							gltrans.typeno,
 							gltrans.trandate,
-							counterindex";
+							gltrans.narrative,
+							gltrans.amount,
+							gltrans.periodno,
+							gltags.tagref AS tag
+						FROM gltrans
+						INNER JOIN systypes
+							ON gltrans.type=systypes.typeid
+						INNER JOIN gltags
+							ON gltrans.counterindex=gltags.counterindex
+						WHERE gltrans.account = '" . $SelectedAccount . "'
+							AND posted=1
+							AND periodno>='" . $FirstPeriodSelected . "'
+							AND periodno<='" . $LastPeriodSelected . "'
+							AND tagref='" . $_POST['tag'] . "'
+						ORDER BY periodno,
+								gltrans.trandate,
+								gltrans.counterindex";
 		}
 
 		$ErrMsg = _('The transactions for account') . ' ' . $SelectedAccount . ' ' . _('could not be retrieved because');

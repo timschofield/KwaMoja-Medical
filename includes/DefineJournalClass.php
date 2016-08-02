@@ -62,6 +62,9 @@ class JournalGLAnalysis {
 	function __construct($Amt, $Narr, $id, $GLCode, $GLActName, $tag, $assetid) {
 
 		/* Constructor function to add a new JournalGLAnalysis object with passed params */
+		if (count($tag) == 0) {
+			$tag = array(0);
+		}
 		$this->Amount = $Amt;
 		$this->Narrative = $Narr;
 		$this->GLCode = $GLCode;

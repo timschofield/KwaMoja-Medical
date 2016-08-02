@@ -26,23 +26,20 @@ $PDF->addInfo('Title', _('General Ledger Journal'));
 if ($JournalNo == 'Preview') {
 	$LineCount = 2; // UldisN
 } else {
-	$SQL = "SELECT gltrans.typeno,
-				gltrans.trandate,
-				gltrans.account,
-				chartmaster.accountname,
-				gltrans.narrative,
-				gltrans.amount,
-				gltrans.tag,
-				tags.tagdescription,
-				gltrans.jobref
-			FROM gltrans
-			INNER JOIN chartmaster
-				ON gltrans.account=chartmaster.accountcode
-			LEFT JOIN tags
-				ON gltrans.tag=tags.tagref
-			WHERE gltrans.type='0'
-				AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
-				AND gltrans.typeno='" . $JournalNo . "'";
+	$SQL = "SELECT gltrans.counterindex,
+					gltrans.typeno,
+					gltrans.trandate,
+					gltrans.account,
+					chartmaster.accountname,
+					gltrans.narrative,
+					gltrans.amount,
+					gltrans.jobref
+				FROM gltrans
+				INNER JOIN chartmaster
+					ON gltrans.account=chartmaster.accountcode
+				WHERE gltrans.type='0'
+					AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
+					AND gltrans.typeno='" . $JournalNo . "'";
 	$Result = DB_query($SQL);
 	$LineCount = DB_num_rows($Result); // UldisN
 	$MyRow = DB_fetch_array($Result);
@@ -63,15 +60,25 @@ while ($counter <= $LineCount) {
 		$JobRef = str_pad('', 25, 'x');
 	} else {
 		$MyRow = DB_fetch_array($Result);
-		if ($MyRow['tag'] == 0) {
-			$MyRow['tagdescription'] = 'None';
+		$TagSQL = "SELECT gltags.tagref,
+						tags.tagdescription
+					FROM gltags
+					INNER JOIN tags
+						ON tags.tagref=gltags.tagref
+					WHERE gltags.counterindex='" . $MyRow['counterindex'] . "'";
+		$TagResult = DB_query($TagSQL);
+		$Tag = '';
+		while ($TagRow = DB_fetch_array($TagResult)) {
+			if ($TagRow['tagref'] == 0) {
+				$Tag .= '0, ';
+			}
+			$Tag .= $TagRow['tagref'] . ', ';
 		}
 		$AccountCode = $MyRow['account'];
 		$Description = $MyRow['accountname'];
 		$Date = $MyRow['trandate'];
 		$Narrative = $MyRow['narrative'];
 		$Amount = $MyRow['amount'];
-		$Tag = $MyRow['tag'] . ' - ' . $MyRow['tagdescription'];
 		$JobRef = $MyRow['jobref'];
 	}
 	$LeftOvers = $PDF->addTextWrap($FormDesign->Data->Column1->x, $Page_Height - $YPos, $FormDesign->Data->Column1->Length, $FormDesign->Data->Column1->FontSize, $AccountCode);

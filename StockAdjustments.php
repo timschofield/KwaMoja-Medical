@@ -343,20 +343,26 @@ if (isset($_POST['EnterAdjustment']) and $_POST['EnterAdjustment'] != '') {
 										periodno,
 										account,
 										amount,
-										narrative,
-										tag)
+										narrative)
 								VALUES (17,
 									'" . $AdjustmentNumber . "',
 									'" . $SQLAdjustmentDate . "',
 									'" . $PeriodNo . "',
 									'" . $StockGLCodes['adjglact'] . "',
 									'" . round($_SESSION['Adjustment' . $Identifier]->StandardCost * -($_SESSION['Adjustment' . $Identifier]->Quantity), $_SESSION['CompanyRecord']['decimalplaces']) . "',
-									'" . $_SESSION['Adjustment' . $Identifier]->StockID . " x " . $_SESSION['Adjustment' . $Identifier]->Quantity . " @ " . $_SESSION['Adjustment' . $Identifier]->StandardCost . " " . $_SESSION['Adjustment' . $Identifier]->Narrative . "',
-									'" . $_SESSION['Adjustment' . $Identifier]->tag . "')";
+									'" . $_SESSION['Adjustment' . $Identifier]->StockID . " x " . $_SESSION['Adjustment' . $Identifier]->Quantity . " @ " . $_SESSION['Adjustment' . $Identifier]->StandardCost . " " . $_SESSION['Adjustment' . $Identifier]->Narrative . "'
+								)";
 
 			$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The general ledger transaction entries could not be added because');
 			$DbgMsg = _('The following SQL to insert the GL entries was used');
 			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+			foreach($_SESSION['Adjustment' . $Identifier]->tag as $Tag) {
+				$SQL = "INSERT INTO gltags VALUES ( LAST_INSERT_ID(),
+													'" . $Tag . "')";
+				$ErrMsg = _('Cannot insert a GL tag for the adjustment line because');
+				$DbgMsg = _('The SQL that failed to insert the GL tag record was');
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+			}
 
 			$SQL = "INSERT INTO gltrans (type,
 										typeno,
@@ -364,21 +370,26 @@ if (isset($_POST['EnterAdjustment']) and $_POST['EnterAdjustment'] != '') {
 										periodno,
 										account,
 										amount,
-										narrative,
-										tag)
+										narrative)
 								VALUES (17,
 									'" . $AdjustmentNumber . "',
 									'" . $SQLAdjustmentDate . "',
 									'" . $PeriodNo . "',
 									'" . $StockGLCodes['stockact'] . "',
 									'" . round($_SESSION['Adjustment' . $Identifier]->StandardCost * $_SESSION['Adjustment' . $Identifier]->Quantity, $_SESSION['CompanyRecord']['decimalplaces']) . "',
-									'" . $_SESSION['Adjustment' . $Identifier]->StockID . " x " . $_SESSION['Adjustment' . $Identifier]->Quantity . " @ " . $_SESSION['Adjustment' . $Identifier]->StandardCost . " " . $_SESSION['Adjustment' . $Identifier]->Narrative . "',
-									'" . $_SESSION['Adjustment' . $Identifier]->tag . "'
-									)";
+									'" . $_SESSION['Adjustment' . $Identifier]->StockID . " x " . $_SESSION['Adjustment' . $Identifier]->Quantity . " @ " . $_SESSION['Adjustment' . $Identifier]->StandardCost . " " . $_SESSION['Adjustment' . $Identifier]->Narrative . "'
+								)";
 
 			$Errmsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The general ledger transaction entries could not be added because');
 			$DbgMsg = _('The following SQL to insert the GL entries was used');
 			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+			foreach($_SESSION['Adjustment' . $Identifier]->tag as $Tag) {
+				$SQL = "INSERT INTO gltags VALUES ( LAST_INSERT_ID(),
+													'" . $Tag . "')";
+				$ErrMsg = _('Cannot insert a GL tag for the adjustment line because');
+				$DbgMsg = _('The SQL that failed to insert the GL tag record was');
+				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+			}
 		}
 
 		EnsureGLEntriesBalance(17, $AdjustmentNumber);
@@ -523,7 +534,7 @@ echo '</td></tr>';
 //Select the tag
 echo '<tr>
 		<td>' . _('Select Tag') . '</td>
-		<td><select name="tag">';
+		<td><select name="tag[]" multiple="multiple">';
 
 $SQL = "SELECT tagref,
 				tagdescription

@@ -703,22 +703,26 @@ if (isset($_POST['PostCreditNote'])) {
 											periodno,
 											account,
 											narrative,
-											amount,
-											tag)
+											amount)
 								 	VALUES (21,
 										'" . $CreditNoteNo . "',
 										'" . $SQLCreditNoteDate . "',
 										'" . $PeriodNo . "',
 										'" . $EnteredGLCode->GLCode . "',
 										'" . $_SESSION['SuppTrans']->SupplierID . " " . $EnteredGLCode->Narrative . "',
-								 		'" . -$EnteredGLCode->Amount / $_SESSION['SuppTrans']->ExRate . "',
-								 		'" . $EnteredGLCode->Tag . "' )";
-
+								 		'" . -$EnteredGLCode->Amount / $_SESSION['SuppTrans']->ExRate . "'
+								 	)";
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The general ledger transaction could not be added because');
-
 				$DbgMsg = _('The following SQL to insert the GL transaction was used');
-
 				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, True);
+
+				foreach($EnteredGLCode->Tag as $Tag) {
+					$SQL = "INSERT INTO gltags VALUES ( LAST_INSERT_ID(),
+														'" . $Tag . "')";
+					$ErrMsg = _('Cannot insert a GL tag for the invoice line because');
+					$DbgMsg = _('The SQL that failed to insert the GL tag record was');
+					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+				}
 
 				$LocalTotal += ($EnteredGLCode->Amount / $_SESSION['SuppTrans']->ExRate);
 			}

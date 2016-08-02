@@ -63,7 +63,9 @@ while ($MyRow = DB_fetch_array($Periods)) {
 echo '</select></td></tr>';
 
 //Select the tag
-echo '<tr><td>' . _('Select Tag') . ':</td><td><select name="tag">';
+echo '<tr>
+		<td>' . _('Select Tag') . ':</td>
+		<td><select name="tag">';
 
 $SQL = "SELECT tagref,
 		   tagdescription
@@ -82,9 +84,8 @@ while ($MyRow = DB_fetch_array($Result)) {
 echo '</select></td></tr>';
 // End select tag
 
-echo '</table><br />
+echo '</table>
 		<div class="centre"><input type="submit" name="MakeCSV" value="' . _('Make CSV File') . '" /></div>
-	</div>
 	</form>';
 
 /* End of the Form  rest of script is what happens if the show button is hit*/
@@ -140,39 +141,45 @@ if (isset($_POST['MakeCSV'])) {
 		$LastPeriodSelected = max($SelectedPeriod);
 
 		if ($_POST['tag'] == 0) {
-			$SQL = "SELECT type,
-					  typename,
-					  gltrans.typeno,
-					  gltrans.trandate,
-					  gltrans.narrative,
-		  				  gltrans.amount,
-					  gltrans.periodno,
-					  gltrans.tag
-				FROM gltrans, systypes
-				WHERE gltrans.account = '" . $SelectedAccount . "'
-				AND systypes.typeid=gltrans.type
-				AND posted=1
-				AND periodno>='" . $FirstPeriodSelected . "'
-				AND periodno<='" . $LastPeriodSelected . "'
-				ORDER BY periodno, gltrans.trandate, counterindex";
+			$SQL = "SELECT  type,
+							typename,
+							gltrans.typeno,
+							gltrans.trandate,
+							gltrans.narrative,
+							gltrans.amount,
+							gltrans.periodno,
+							gltags.tagref AS tag
+						FROM gltrans
+						INNER JOIN systypes
+							ON systypes.typeid=gltrans.type
+						INNER JOIN gltags
+							ON gltrans.counterindex=gltags.counterindex
+						WHERE gltrans.account = '" . $SelectedAccount . "'
+							AND posted=1
+							AND periodno>='" . $FirstPeriodSelected . "'
+							AND periodno<='" . $LastPeriodSelected . "'
+						ORDER BY periodno, gltrans.trandate, gltrans.counterindex";
 
 		} else {
-			$SQL = "SELECT gltrans.type,
-						typename,
-						gltrans.typeno,
-						gltrans.trandate,
-						gltrans.narrative,
-						gltrans.amount,
-						gltrans.periodno,
-						gltrans.tag
-					FROM gltrans, systypes
-					WHERE gltrans.account = '" . $SelectedAccount . "'
-					AND systypes.typeid=gltrans.type
-					AND posted=1
-					AND periodno>='" . $FirstPeriodSelected . "'
-					AND periodno<='" . $LastPeriodSelected . "'
-					AND tag='" . $_POST['tag'] . "'
-					ORDER BY periodno, gltrans.trandate, counterindex";
+			$SQL = "SELECT  gltrans.type,
+							typename,
+							gltrans.typeno,
+							gltrans.trandate,
+							gltrans.narrative,
+							gltrans.amount,
+							gltrans.periodno,
+							gltags.tagref AS tag
+						FROM gltrans
+						INNER JOIN systypes
+							ON systypes.typeid=gltrans.type
+						INNER JOIN gltags
+							ON gltrans.counterindex=gltags.counterindex
+						WHERE gltrans.account = '" . $SelectedAccount . "'
+							AND posted=1
+							AND periodno>='" . $FirstPeriodSelected . "'
+							AND periodno<='" . $LastPeriodSelected . "'
+							AND gltags.tagref='" . $_POST['tag'] . "'
+						ORDER BY periodno, gltrans.trandate, gltrans.counterindex";
 		}
 
 		$ErrMsg = _('The transactions for account') . ' ' . $SelectedAccount . ' ' . _('could not be retrieved because');

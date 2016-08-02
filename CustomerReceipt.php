@@ -304,8 +304,7 @@ if (isset($_POST['CommitBatch'])) {
 											periodno,
 											account,
 											narrative,
-											amount,
-											tag
+											amount
 										) VALUES (
 											12,
 											'" . $_SESSION['ReceiptBatch' . $Identifier]->BatchNo . "',
@@ -313,12 +312,18 @@ if (isset($_POST['CommitBatch'])) {
 											'" . $PeriodNo . "',
 											'" . $ReceiptItem->GLCode . "',
 											'" . $ReceiptItem->Narrative . "',
-											'" . -($ReceiptItem->Amount / $_SESSION['ReceiptBatch' . $Identifier]->ExRate / $_SESSION['ReceiptBatch' . $Identifier]->FunctionalExRate) . "',
-											'" . $ReceiptItem->tag . "'" . "
+											'" . -($ReceiptItem->Amount / $_SESSION['ReceiptBatch' . $Identifier]->ExRate / $_SESSION['ReceiptBatch' . $Identifier]->FunctionalExRate) . "'
 										)";
 				$ErrMsg = _('Cannot insert a GL entry for the receipt because');
 				$DbgMsg = _('The SQL that failed to insert the receipt GL entry was');
 				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+				foreach($ReceiptItem->tag as $Tag) {
+					$SQL = "INSERT INTO gltags VALUES ( LAST_INSERT_ID(),
+														'" . $Tag . "')";
+					$ErrMsg = _('Cannot insert a GL tag for the journal line because');
+					$DbgMsg = _('The SQL that failed to insert the GL tag record was');
+					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
+				}
 			}
 
 			/*check to see if this is a GL posting to another bank account (or the same one)
@@ -980,9 +985,13 @@ if (isset($_SESSION['ReceiptBatch' . $Identifier])) {
 
 	foreach ($_SESSION['ReceiptBatch' . $Identifier]->Items as $ReceiptItem) {
 
-		$TagSql = "SELECT tagdescription FROM tags WHERE tagref='" . $ReceiptItem->tag . "'";
-		$TagResult = DB_query($TagSql);
-		$TagRow = DB_fetch_array($TagResult);
+		$TagDescriptions = '';
+		foreach($ReceiptItem->tag as $Tag) {
+			$TagSql = "SELECT tagdescription FROM tags WHERE tagref='" . $Tag . "'";
+			$TagResult = DB_query($TagSql);
+			$TagRow = DB_fetch_array($TagResult);
+			$TagDescriptions .= $Tag . ' - ' . $TagRow['tagdescription'] . '<br />';
+		}
 
 		$SQL = "SELECT accountname
 					FROM chartmaster
@@ -997,7 +1006,7 @@ if (isset($_SESSION['ReceiptBatch' . $Identifier])) {
 				<td>', stripslashes($ReceiptItem->CustomerName), '</td>
 				<td>', $ReceiptItem->GLCode, ' - ', $MyRow['accountname'], '</td>
 				<td>', stripslashes($ReceiptItem->Narrative), '</td>
-				<td>', $TagRow['tagdescription'], '</td>
+				<td>',$TagDescriptions, '</td>
 				<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '?identifier=', $Identifier, '&Delete=', urlencode($ReceiptItem->ID), '&Type=', urlencode($_GET['Type']), '">', _('Delete'), '</a></td>
 			</tr>';
 		$BatchTotal = $BatchTotal + $ReceiptItem->Amount;
@@ -1074,30 +1083,6 @@ if (isset($_POST['GLEntry']) and isset($_SESSION['ReceiptBatch' . $Identifier]))
 				<th colspan="2">', _('General Ledger Receipt Entry'), '</th>
 			</tr>';
 
-	//Select the tag
-	echo '<tr>
-			<td>', _('Select Tag'), ':</td>
-			<td><select name="tag">';
-
-	$SQL = "SELECT tagref,
-					tagdescription
-				FROM tags
-				ORDER BY tagref";
-
-	$Result = DB_query($SQL);
-	echo '<option value="0"></option>';
-	while ($MyRow = DB_fetch_array($Result)) {
-		if (isset($_POST['tag']) and $_POST['tag'] == $MyRow['tagref']) {
-			echo '<option selected="selected" value="', $MyRow['tagref'], '">', $MyRow['tagref'], ' - ', $MyRow['tagdescription'], '</option>';
-		} else {
-			echo '<option value="', $MyRow['tagref'], '">', $MyRow['tagref'], ' - ', $MyRow['tagdescription'], '</option>';
-		}
-	}
-	echo '</select>
-			</td>
-		</tr>';
-	// End select tag
-
 	/*now set up a GLCode field to select from avaialble GL accounts */
 	echo '<tr>
 			<td>', _('GL Account'), ':</td>
@@ -1172,8 +1157,33 @@ if (((isset($_SESSION['CustomerRecord']) and isset($_POST['CustomerID']) and $_P
 		<tr>
 			<td>' . _('Narrative') . ':</td>
 			<td><textarea name="Narrative"  cols="40" rows="1"></textarea></td>
-		</tr>
-		</table>
+		</tr>';
+
+	//Select the tag
+	echo '<tr>
+			<td>', _('Select Tag'), ':</td>
+			<td><select multiple="multiple" name="tag[]">';
+
+	$SQL = "SELECT tagref,
+					tagdescription
+				FROM tags
+				ORDER BY tagref";
+
+	$Result = DB_query($SQL);
+	echo '<option value="0">0 - ', _('None'), '</option>';
+	while ($MyRow = DB_fetch_array($Result)) {
+		if (isset($_POST['tag']) and $_POST['tag'] == $MyRow['tagref']) {
+			echo '<option selected="selected" value="', $MyRow['tagref'], '">', $MyRow['tagref'], ' - ', $MyRow['tagdescription'], '</option>';
+		} else {
+			echo '<option value="', $MyRow['tagref'], '">', $MyRow['tagref'], ' - ', $MyRow['tagdescription'], '</option>';
+		}
+	}
+	echo '</select>
+			</td>
+		</tr>';
+	// End select tag
+
+	echo '</table>
 		<div class="centre">
 			<input tabindex="14" type="submit" name="Process" value="', _('Accept'), '" />
 			<input tabindex="15" type="submit" name="Cancel" value="', _('Cancel'), '" />

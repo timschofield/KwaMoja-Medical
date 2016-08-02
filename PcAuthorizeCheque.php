@@ -147,8 +147,7 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 											`narrative`,
 											`amount`,
 											`posted`,
-											`jobref`,
-											`tag`)
+											`jobref`)
 									VALUES (NULL,
 											'" . $type . "',
 											'" . $typeno . "',
@@ -159,10 +158,13 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 											'" . $Narrative . "',
 											'" . -$Amount . "',
 											0,
-											'',
-											'" . $TagTo . "')";
-
+											'')";
 			$ResultFrom = DB_Query($SQLFrom, '', '', true);
+			$SQL = "INSERT INTO gltags VALUES ( LAST_INSERT_ID(),
+												'" . $TagTo . "')";
+			$ErrMsg = _('Cannot insert a GL tag for the payment line because');
+			$DbgMsg = _('The SQL that failed to insert the GL tag record was');
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 			$SQLTo = "INSERT INTO `gltrans` (`counterindex`,
 										`type`,
@@ -174,9 +176,8 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 										`narrative`,
 										`amount`,
 										`posted`,
-										`jobref`,
-										`tag`)
-								VALUES (NULL,
+										`jobref`
+									) VALUES (NULL,
 										'" . $type . "',
 										'" . $typeno . "',
 										0,
@@ -186,10 +187,14 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 										'" . $Narrative . "',
 										'" . $Amount . "',
 										0,
-										'',
-										'" . $TagTo . "')";
-
+										''
+									)";
 			$ResultTo = DB_Query($SQLTo, '', '', true);
+			$SQL = "INSERT INTO gltags VALUES ( LAST_INSERT_ID(),
+												'" . $TagTo . "')";
+			$ErrMsg = _('Cannot insert a GL tag for the payment line because');
+			$DbgMsg = _('The SQL that failed to insert the GL tag record was');
+			$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 			if ($MyRow['codeexpense'] == 'ASSIGNCASH') {
 				// if it's a cash assignation we need to updated banktrans table as well.

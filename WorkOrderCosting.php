@@ -435,7 +435,11 @@ if (isset($_POST['Close'])) {
 
 			}
 
-			$NewCost = $WORow['currcost'] + (-$TotalVariance * $ShareProportion * $ProportionOnHand) / $TotalOnHand;
+			if ($TotalOnHand > 0) {//to avoid negative quantity make cost data abnormal
+				$NewCost = $WORow['currcost'] + (-$TotalVariance * $ShareProportion * $ProportionOnHand) / $TotalOnHand;
+			} else {
+				$NewCost = $WORow['currcost'];
+			}
 
 			/* Make the old cost record obsolete */
 			$SQL = "UPDATE stockcosts SET succeeded=1

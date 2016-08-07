@@ -158,8 +158,8 @@ if (!isset($Id)) {
 				<td class="text"><a href="mailto:', $MyRow['email'], '">', $MyRow['email'], '</a></td>
 				<td class="text">', ($MyRow['statement']==0) ? _('No') : _('Yes'), '</td>
 				<td class="text">', $MyRow['notes'], '</td>
-				<td class="noprint"><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', 'Id=', $MyRow['contid'], '&DebtorNo=', $MyRow['debtorno'], '">' . _('Edit') . '</a></td>
-				<td class="noprint"><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', 'Id=', $MyRow['contid'], '&DebtorNo=', $MyRow['debtorno'], '&delete=1" onclick="return confirm(\'' . _('Are you sure you wish to delete this contact?') . '\');">' . _('Delete'). '</a></td></tr>';
+				<td class="noPrint"><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', 'Id=', $MyRow['contid'], '&DebtorNo=', $MyRow['debtorno'], '">' . _('Edit') . '</a></td>
+				<td class="noPrint"><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', 'Id=', $MyRow['contid'], '&DebtorNo=', $MyRow['debtorno'], '&delete=1" onclick="return confirm(\'' . _('Are you sure you wish to delete this contact?') . '\');">' . _('Delete'). '</a></td></tr>';
 
 	}
 	//END WHILE LIST LOOP

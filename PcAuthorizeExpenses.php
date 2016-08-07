@@ -41,9 +41,9 @@ if (isset($_POST['Go'])) {
 }
 
 if (isset($SelectedTabs)) {
-	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Petty Cash') . '" alt="" />' . _('Authorisation Of Petty Cash Expenses') . ' ' . $SelectedTabs . '</p>';
+	echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Petty Cash') . '" alt="" />' . _('Authorisation Of Petty Cash Expenses') . ' ' . $SelectedTabs . '</p>';
 } else {
-	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Petty Cash') . '" alt="" />' . _('Authorisation Of Petty Cash Expenses') . '</p>';
+	echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Petty Cash') . '" alt="" />' . _('Authorisation Of Petty Cash Expenses') . '</p>';
 }
 if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) or isset($_POST['GO'])) {
 
@@ -301,11 +301,12 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
-	echo '<br /><table class="selection">'; //Main table
+	echo '<table class="selection">'; //Main table
 
 	$SQL = "SELECT tabcode
 		FROM pctabs
-		WHERE authorizerexpenses='" . $_SESSION['UserID'] . "'";
+		WHERE authorizerexpenses='" . $_SESSION['UserID'] . "'
+		ORDER BY tabcode";
 
 	$Result = DB_query($SQL);
 
@@ -323,12 +324,16 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 
 	} //end while loop get type of tab
 
-	echo '</select></td></tr>';
+	echo '</select>
+			</td>
+		</tr>';
 	echo '</table>'; // close main table
 	DB_free_result($Result);
 
-	echo '<br /><div class="centre"><input type="submit" name="Process" value="' . _('Accept') . '" />
-								<input type="submit" name="Cancel" value="' . _('Cancel') . '" /></div>';
+	echo '<div class="centre">
+			<input type="submit" name="Process" value="' . _('Accept') . '" />
+			<input type="submit" name="Cancel" value="' . _('Cancel') . '" />
+		</div>';
 	echo '</form>';
 }
 /*end of else not submit */

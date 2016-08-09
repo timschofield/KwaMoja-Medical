@@ -23,7 +23,10 @@ text-align:left
 
 input,textarea,select {
 background-color:#E9E8FA;
-border-radius: 3px;
+color:#080831;
+border-radius: 5px;
+border: 1px solid #1F1F57;
+padding:2px;
 }
 
 div.container {

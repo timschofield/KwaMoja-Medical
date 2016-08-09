@@ -423,27 +423,27 @@ while ($MyRow = DB_fetch_array($TransResult)) {
 					<td class="number">', locale_number_format($MyRow['totalamount'] - $MyRow['allocated'], $CustomerRecord['decimalplaces']), '</td>
 					<td class="noPrint">
 						<a href="', $RootPath, '/PrintCustTrans.php?FromTransNo=', urlencode($MyRow['transno']), '&amp;InvOrCredit=Credit">', _('HTML '), '
-							<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/preview.png" title="', _('Click to preview the credit note'), '" />
+							<img width="16px" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/preview.png" title="', _('Click to preview the credit note'), '" />
 						</a>
 					</td>
 					<td class="noPrint">
 						<a href="', $RootPath, '/', $PrintCustomerTransactionScript, '?FromTransNo=', urlencode($MyRow['transno']), '&amp;InvOrCredit=Credit&amp;PrintPDF=True">', _('PDF '), '
-							<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/pdf.png" title="', _('Click for PDF'), '" alt="" />
+							<img width="16px" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/pdf.png" title="', _('Click for PDF'), '" alt="" />
 						</a>
 					</td>
 					<td class="noPrint">
 						<a href="', $RootPath, '/EmailCustTrans.php?FromTransNo=', urlencode($MyRow['transno']), '&amp;InvOrCredit=Credit">', _('Email'), '
-							<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/email.png" title="', _('Click to email the credit note'), '" alt="" />
+							<img width="16px" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/email.png" title="', _('Click to email the credit note'), '" alt="" />
 						</a>
 					</td>
 					<td class="noPrint">
 						<a href="', $RootPath, '/CustomerAllocations.php?AllocTrans=', urlencode($MyRow['id']), '">', _('Allocation'), '
-							<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/allocation.png" title="', _('Click to allocate funds'), '" alt="" />
+							<img width="16px" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/allocation.png" title="', _('Click to allocate funds'), '" alt="" />
 						</a>
 					</td>
 					<td class="noPrint">
 						<a href="', $RootPath, '/GLTransInquiry.php?TypeID=', urlencode($MyRow['type']), '&amp;TransNo=', urlencode($MyRow['transno']), '">' . _('View the GL Entries') . '
-							<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/gl.png" title="', _('View the GL Entries'), '" alt="" />
+							<img width="16px" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/gl.png" title="', _('View the GL Entries'), '" alt="" />
 						</a>
 					</td>
 				</tr>';
@@ -465,22 +465,22 @@ while ($MyRow = DB_fetch_array($TransResult)) {
 					<td class="number">', locale_number_format($MyRow['totalamount'] - $MyRow['allocated'], $CustomerRecord['decimalplaces']), '</td>
 					<td class="noPrint">
 						<a href="', $RootPath, '/PrintCustTrans.php?FromTransNo=', urlencode($MyRow['transno']), '&amp;InvOrCredit=Credit">', _('HTML '), '
-							<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/preview.png" title="', _('Click to preview the credit note'), '" />
+							<img width="16px" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/preview.png" title="', _('Click to preview the credit note'), '" />
 						</a>
 					</td>
 					<td class="noPrint">
 						<a href="', $RootPath, '/', $PrintCustomerTransactionScript, '?FromTransNo=', urlencode($MyRow['transno']), '&amp;InvOrCredit=Credit&amp;PrintPDF=True">', _('PDF '), '
-							<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/pdf.png" title="', _('Click for PDF'), '" alt="" />
+							<img width="16px" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/pdf.png" title="', _('Click for PDF'), '" alt="" />
 						</a>
 					</td>
 					<td class="noPrint">
 						<a href="', $RootPath, '/EmailCustTrans.php?FromTransNo=', urlencode($MyRow['transno']), '&amp;InvOrCredit=Credit">', _('Email'), '
-							<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/email.png" title="', _('Click to email the credit note'), '" alt="" />
+							<img width="16px" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/email.png" title="', _('Click to email the credit note'), '" alt="" />
 						</a>
 					</td>
 					<td class="noPrint">
 						<a href="', $RootPath, '/CustomerAllocations.php?AllocTrans=', urlencode($MyRow['id']), '">', _('Allocation'), '
-							<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/allocation.png" title="', _('Click to allocate funds'), '" alt="" />
+							<img width="16px" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/allocation.png" title="', _('Click to allocate funds'), '" alt="" />
 						</a>
 					</td>
 					<td></td>
@@ -505,7 +505,7 @@ while ($MyRow = DB_fetch_array($TransResult)) {
 					<td class="number">', locale_number_format($MyRow['totalamount'] - $MyRow['allocated'], $CustomerRecord['decimalplaces']), '</td>
 					<td class="noPrint">
 						<a href="', $RootPath, '/CustomerAllocations.php?AllocTrans=', $MyRow['id'], '">', _('Allocation'), '
-							<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/allocation.png" title="', _('Click to allocate funds'), '" alt="" />
+							<img width="16px" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/allocation.png" title="', _('Click to allocate funds'), '" alt="" />
 						</a>
 					</td>
 					<td class="noPrint"></td>
@@ -513,7 +513,7 @@ while ($MyRow = DB_fetch_array($TransResult)) {
 					<td class="noPrint"></td>
 					<td class="noPrint">
 						<a href="', $RootPath, '/GLTransInquiry.php?TypeID=', urlencode($MyRow['type']), '&amp;TransNo=', urlencode($MyRow['transno']), '">', _('View the GL Entries'), '
-							<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/gl.png" title="', _('View the GL Entries'), '" alt="" />
+							<img width="16px" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/gl.png" title="', _('View the GL Entries'), '" alt="" />
 						</a>
 					</td>
 				</tr>';
@@ -535,7 +535,7 @@ while ($MyRow = DB_fetch_array($TransResult)) {
 					<td class="number">', locale_number_format($MyRow['totalamount'] - $MyRow['allocated'], $CustomerRecord['decimalplaces']), '</td>
 					<td class="noPrint">
 						<a href="', $RootPath, '/CustomerAllocations.php?AllocTrans=', urlencode($MyRow['id']), '">', _('Allocation'), '
-							<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/allocation.png" title="', _('Click to allocate funds'), '" alt="" />
+							<img width="16px" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/allocation.png" title="', _('Click to allocate funds'), '" alt="" />
 						</a>
 					</td>
 					<td class="noPrint"></td>

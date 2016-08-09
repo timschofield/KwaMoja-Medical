@@ -24,7 +24,7 @@ $BookMark = 'SupplierAllocations';// Anchor's id in the manual's html document.
 include('includes/header.inc');
 include('includes/SQL_CommonFunctions.inc');
 
-echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/transactions.png" title="' . _('Supplier Allocations') . '" alt="" />' . ' ' . _('Supplier Allocations') . '</p>';
+echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/allocation.png" title="' . _('Supplier Allocations') . '" alt="" />' . ' ' . _('Supplier Allocations') . '</p>';
 
 if (isset($_POST['UpdateDatabase']) or isset($_POST['RefreshAllocTotal'])) {
 

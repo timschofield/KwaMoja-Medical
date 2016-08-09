@@ -87,7 +87,17 @@ if ((isset($_POST['AddRecord']) or isset($_POST['UpdateRecord'])) and isset($Sup
 	if (!is_date($_POST['EffectiveFrom'])){
 		$InputError = 1;
 		unset($_POST['EffectiveFrom']);
-		prnMsg (_('The date this purchase price is to take effect from must be entered in the format') . ' ' . $_SESSION['DefaultDateFormat'],'error');
+		prnMsg (_('The date this purchase price is to take effect from must be entered in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
+	}
+	$DuplicateSQL = "SELECT stockid
+						FROM purchdata
+						WHERE purchdata.stockid='" . $StockId . "'
+							AND purchdata.supplierno='" . DB_escape_string($SupplierID) . "'
+							AND purchdata.effectivefrom='" . FormatDateForSQL($_POST['EffectiveFrom']) . "'";
+	$DuplicateResult = DB_query($DuplicateSQL);
+	if (DB_num_rows($DuplicateResult) > 0){
+		$InputError = 1;
+		prnMsg (_('There is already purchasing data set up for this criteria'), 'error');
 	}
 	if ($InputError == 0 and isset($_POST['AddRecord'])) {
 		$SQL = "INSERT INTO purchdata (supplierno,

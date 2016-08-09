@@ -92,7 +92,7 @@ if (isset($_GET['Delete'])) {
 echo '<table class="selection">
 		<thead>
 			<tr>
-				<th colspan="6"><h3>', _('Invoiced Goods Received Selected'), '</h3></th>
+				<th colspan="7"><h3>', _('Invoiced Goods Received Selected'), '</h3></th>
 			</tr>
 			<tr>
 				<th class="SortedColumn">', _('Sequence'), ' #</th>

@@ -76,10 +76,10 @@ if (isset($Title)) {
 	}
 	echo '<div id="AppInfoDiv">'; //===HJ===
 	echo '<div id="AppInfoCompanyDiv">';
-	echo '<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/company.png" title="', _('Company'), '" alt="', _('Company'), '"/>', stripslashes($_SESSION['CompanyRecord']['coyname']);
+	echo '<img style="padding-right:3px" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/company.png" title="', _('Company'), '" alt="', _('Company'), '"/>', stripslashes($_SESSION['CompanyRecord']['coyname']);
 	echo '</div>';
 	echo '<div id="AppInfoUserDiv">';
-	echo '<a  class="hint--bottom" data-hint="' . _('Change the settings for') . ' ' . $_SESSION['UsersRealName'] . '" href="', $RootPath, '/UserSettings.php"><img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/user.png" alt="', stripslashes($_SESSION['UsersRealName']), '" /></a>';
+	echo '<a  class="hint--bottom" data-hint="' . _('Change the settings for') . ' ' . $_SESSION['UsersRealName'] . '" href="', $RootPath, '/UserSettings.php"><img style="padding-right:3px" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/user.png" alt="', stripslashes($_SESSION['UsersRealName']), '" />', stripslashes($_SESSION['UsersRealName']), '</a>';
 	echo '</div>';
 	echo '<div id="AppInfoModuleDiv">';
 	// Make the title text a class, can be set to display:none is some themes
@@ -117,9 +117,9 @@ if (isset($Title)) {
 			}
 			if ($ScriptName != 'index.php') {
 				if (!isset($_SESSION['Favourites'][$ScriptName]) or $_SESSION['Favourites'][$ScriptName] == '') {
-					echo '<li><span class="hint--bottom" data-hint="', _('Add this script to your list of commonly used'), '"><img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/add.png" id="PlusMinus" onclick="AddScript(\'', $ScriptName, '\',\'', $Title, '\')"', '" alt="', _('Add to commonly used'), '" /></span></li>';
+					echo '<li><a class="hint--bottom" data-hint="', _('Add this script to your list of commonly used'), '"><img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/add.png" id="PlusMinus" onclick="AddScript(\'', $ScriptName, '\',\'', $Title, '\')"', '" alt="', _('Add to commonly used'), '" /></a></li>';
 				} else {
-					echo '<li><span class="hint--bottom" data-hint="', _('Remove this script from your list of commonly used'), '"><img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/subtract.png" id="PlusMinus" onclick="RemoveScript(\'', $ScriptName, '\')"', '" alt="', _('Remove from commonly used'), '" /></span></li>';
+					echo '<li><a class="hint--bottom" data-hint="', _('Remove this script from your list of commonly used'), '"><img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/subtract.png" id="PlusMinus" onclick="RemoveScript(\'', $ScriptName, '\')"', '" alt="', _('Remove from commonly used'), '" /></a></li>';
 				}
 			}
 			echo '<li><select name="Favourites" id="favourites" onchange="window.open (this.value,\'_self\',false)">';

@@ -776,7 +776,7 @@ function initMap() {
 					<td>', $MyRow[3], '</td>
 					<td>', $MyRow[4], '</td>
 					<td><a href="mailto:', $MyRow[6], '">', $MyRow[6], '</a></td>
-					<td>', ($myrow[7]==0) ? _('No') : _('Yes'), '</td>
+					<td>', ($MyRow[7]==0) ? _('No') : _('Yes'), '</td>
 					<td>', $MyRow[5], '</td>
 					<td><a href="AddCustomerContacts.php?Id=', urlencode($MyRow[0]), '&DebtorNo=', urlencode($MyRow[1]), '">', _('Edit'), '</a></td>
 					<td><a href="AddCustomerContacts.php?Id=', urlencode($MyRow[0]), '&DebtorNo=', urlencode($MyRow[1]), '&delete=1">', _('Delete'), '</a></td>

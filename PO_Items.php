@@ -986,6 +986,7 @@ if (isset($_POST['Search'])) {
 						AND stockmaster.discontinued<>1
 						AND purchdata.supplierno='" . $_SESSION['PO' . $Identifier]->SupplierID . "'
 						AND stockmaster.description " . LIKE . " '" . $SearchString . "'
+						GROUP BY stockmaster.stockid
 						ORDER BY stockmaster.stockid
 						LIMIT " . $_SESSION['DisplayRecordsMax'];
 			} //$_POST['SupplierItemsOnly'] == 'on'
@@ -1023,6 +1024,7 @@ if (isset($_POST['Search'])) {
 						AND stockmaster.discontinued<>1
 						AND stockmaster.description " . LIKE . " '" . $SearchString . "'
 						AND stockmaster.categoryid='" . $_POST['StockCat'] . "'
+						GROUP BY stockmaster.stockid
 						ORDER BY stockmaster.stockid
 						LIMIT " . $_SESSION['DisplayRecordsMax'];
 			} //$_POST['SupplierItemsOnly'] == 'on'
@@ -1064,6 +1066,7 @@ if (isset($_POST['Search'])) {
 						AND purchdata.supplierno='" . $_SESSION['PO' . $Identifier]->SupplierID . "'
 						AND stockmaster.discontinued<>1
 						AND stockmaster.stockid " . LIKE . " '" . $_POST['StockCode'] . "'
+						GROUP BY stockmaster.stockid
 						ORDER BY stockmaster.stockid
 						LIMIT " . $_SESSION['DisplayRecordsMax'];
 			} //$_POST['SupplierItemsOnly'] == 'on'
@@ -1100,6 +1103,7 @@ if (isset($_POST['Search'])) {
 						AND stockmaster.discontinued<>1
 						AND stockmaster.stockid " . LIKE . " '" . $_POST['StockCode'] . "'
 						AND stockmaster.categoryid='" . $_POST['StockCat'] . "'
+						GROUP BY stockmaster.stockid
 						ORDER BY stockmaster.stockid
 						LIMIT " . $_SESSION['DisplayRecordsMax'];
 			} //$_POST['SupplierItemsOnly'] == 'on'
@@ -1138,6 +1142,7 @@ if (isset($_POST['Search'])) {
 						AND stockmaster.mbflag<>'G'
 						AND purchdata.supplierno='" . $_SESSION['PO' . $Identifier]->SupplierID . "'
 						AND stockmaster.discontinued<>1
+						GROUP BY stockmaster.stockid
 						ORDER BY stockmaster.stockid
 						LIMIT " . $_SESSION['DisplayRecordsMax'];
 			} //isset($_POST['SupplierItemsOnly'])
@@ -1172,6 +1177,7 @@ if (isset($_POST['Search'])) {
 						AND purchdata.supplierno='" . $_SESSION['PO' . $Identifier]->SupplierID . "'
 						AND stockmaster.discontinued<>1
 						AND stockmaster.categoryid='" . $_POST['StockCat'] . "'
+						GROUP BY stockmaster.stockid
 						ORDER BY stockmaster.stockid
 						LIMIT " . $_SESSION['DisplayRecordsMax'];
 			} else {

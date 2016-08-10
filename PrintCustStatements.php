@@ -379,6 +379,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 								ELSE 0 END
 							ELSE
 								CASE WHEN (TO_DAYS(Now()) - TO_DAYS(ADDDATE(last_day(debtortrans.trandate), paymentterms.dayinfollowingmonth))
+								>= " . $_SESSION['PastDueDays2'] . ")
 								THEN debtortrans.ovamount + debtortrans.ovgst + debtortrans.ovfreight +
 								debtortrans.ovdiscount - debtortrans.alloc
 								ELSE 0 END

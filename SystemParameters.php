@@ -224,6 +224,9 @@ if (isset($_POST['submit'])) {
 		if ($_SESSION['AutoSupplierNo'] != $_POST['X_AutoSupplierNo']) {
 			$SQL[] = "UPDATE config SET confvalue = '" . ($_POST['X_AutoSupplierNo']) . "' WHERE confname = 'AutoSupplierNo'";
 		}
+		if ($_SESSION['AutoInvenoryNo'] != $_POST['X_AutoInvenoryNo']) {
+			$SQL[] = "UPDATE config SET confvalue = '" . ($_POST['X_AutoInvenoryNo']) . "' WHERE confname = 'AutoInvenoryNo'";
+		}
 		if ($_SESSION['HTTPS_Only'] != $_POST['X_HTTPS_Only']) {
 			$SQL[] = "UPDATE config SET confvalue = '" . ($_POST['X_HTTPS_Only']) . "' WHERE confname = 'HTTPS_Only'";
 		}
@@ -712,6 +715,21 @@ if ($_SESSION['AutoSupplierNo'] == 0) {
 }
 echo '</select></td>
 		<td>' . _('Set to Automatic - Supplier codes are automatically created - as a sequential number')  . '</td>
+	</tr>';
+
+echo '<tr style="outline: 1px solid">
+		<td>' . _('Create Inventory Codes Automatically') . ':</td>
+		<td><select name="X_AutoInvenoryNo">';
+
+if ($_SESSION['AutoInvenoryNo'] == 0) {
+	echo '<option selected="selected" value="0">' . _('Manual Entry') . '</option>';
+	echo '<option value="1">' . _('Automatic') . '</option>';
+} else {
+	echo '<option selected="selected" value="1">' . _('Automatic') . '</option>';
+	echo '<option value="0">' . _('Manual Entry') . '</option>';
+}
+echo '</select></td>
+		<td>' . _('Set to Automatic - Inventory codes are automatically created - as a sequential number')  . '</td>
 	</tr>';
 
 //==HJ== drop down list for tax category

@@ -132,7 +132,7 @@ if (isset($_POST['submit'])) {
 		$Errors[$i] = 'LongDescription';
 		$i++;
 	}
-	if (mb_strlen($StockId) == 0) {
+	if (mb_strlen($StockId) == 0 and $_SESSION['AutoInvenoryNo'] == 0) {
 		$InputError = 1;
 		prnMsg(_('The Stock Item code cannot be empty'), 'error');
 		$Errors[$i] = 'StockID';
@@ -658,6 +658,9 @@ if (isset($_POST['submit'])) {
 				$i++;
 			} else {
 				DB_Txn_Begin();
+				if ($_SESSION['AutoInvenoryNo'] == 1) {
+					$StockId = GetNextTransNo(700);
+				}
 				$SQL = "INSERT INTO stockmaster (stockid,
 												description,
 												longdescription,
@@ -997,10 +1000,17 @@ if (!isset($StockId) or $StockId == '' or isset($_POST['UpdateCategories'])) {
 		$StockId = '';
 	}
 	if ($New == 1) {
-		echo '<tr>
-				<td>' . _('Item Code') . ':</td>
-				<td><input type="text" value="' . $StockId . '" name="StockID" size="21" required="required" maxlength="20" /></td>
-			</tr>';
+		if ($_SESSION['AutoInvenoryNo'] == 0) {
+			echo '<tr>
+					<td>' . _('Item Code') . ':</td>
+					<td><input type="text" value="' . $StockId . '" name="StockID" size="21" required="required" maxlength="20" /></td>
+				</tr>';
+		} else {
+			echo '<tr>
+					<td>' . _('Item Code') . ':</td>
+					<td>N/A</td>
+				</tr>';
+		}
 	} else {
 		echo '<tr>
 				<td>' . _('Item Code') . ':</td>

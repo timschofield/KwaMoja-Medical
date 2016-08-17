@@ -179,7 +179,7 @@ if (isset($_POST['ShowResults']) and $_POST['TransNo'] != '') {
 			}
 			//end of while loop
 			echo '<tr>
-					<td colspan="5" class="number">', _('Total allocated'), '</td>
+					<td colspan="6" class="number">', _('Total allocated'), '</td>
 					<td class="number">', locale_number_format($AllocsTotal, $CurrDecimalPlaces), '</td>
 				</tr>
 			</table>

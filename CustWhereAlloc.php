@@ -13,33 +13,34 @@ if (isset($_GET['TransNo']) and isset($_GET['TransType'])) {
 	$_POST['ShowResults'] = true;
 }
 
-echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
-echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
+echo '<form action="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '" method="post">';
+echo '<input type="hidden" name="FormID" value="', $_SESSION['FormID'], '" />';
 
 echo '<p class="page_title_text noPrint" >
-		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/money_add.png" title="' . _('Customer Where Allocated') . '" alt="' . _('Customer Where Allocated') . '" />' . $Title . '
-	</p>
-	<table class="selection noPrint" summary="' . _('Select criteria for the where used inquiry') . '">
-	<tr>
-		<td>' . _('Type') . ':</td>
-		<td><select tabindex="1" name="TransType"> ';
+		<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/money_add.png" title="', _('Customer Where Allocated'), '" alt="', _('Customer Where Allocated'), '" />', $Title, '
+	</p>';
+echo '<table class="selection noPrint" summary="', _('Select criteria for the where used inquiry'), '">
+		<tr>
+			<td>', _('Type'), ':</td>
+			<td>
+				<select tabindex="1" name="TransType"> ';
 
 if (!isset($_POST['TransType'])) {
 	$_POST['TransType'] = '10';
 }
 
 if ($_POST['TransType'] == 10) {
-	 echo '<option selected="selected" value="10">' . _('Invoice') . '</option>
-			<option value="12">' . _('Receipt') . '</option>
-			<option value="11">' . _('Credit Note') . '</option>';
+	 echo '<option selected="selected" value="10">', _('Invoice'), '</option>
+			<option value="12">', _('Receipt'), '</option>
+			<option value="11">', _('Credit Note'), '</option>';
 } elseif ($_POST['TransType'] == 12) {
-	echo '<option selected="selected" value="12">' . _('Receipt') . '</option>
-			<option value="10">' . _('Invoice') . '</option>
-			<option value="11">' . _('Credit Note') . '</option>';
+	echo '<option selected="selected" value="12">', _('Receipt'), '</option>
+			<option value="10">', _('Invoice'), '</option>
+			<option value="11">', _('Credit Note'), '</option>';
 } elseif ($_POST['TransType'] == 11) {
-	echo '<option selected="selected" value="11">' . _('Credit Note') . '</option>
-		<option value="10">' . _('Invoice') . '</option>
-		<option value="12">' . _('Receipt') . '</option>';
+	echo '<option selected="selected" value="11">', _('Credit Note'), '</option>
+		<option value="10">', _('Invoice'), '</option>
+		<option value="12">', _('Receipt'), '</option>';
 }
 
 echo '</select>
@@ -48,14 +49,14 @@ echo '</select>
 if (!isset($_POST['TransNo'])) {
 	$_POST['TransNo'] = '';
 }
-echo '<td>' . _('Transaction Number') . ':</td>
-		<td><input class="number" tabindex="2" type="text" name="TransNo" required="required" maxlength="10" size="10" value="' . $_POST['TransNo'] . '" /></td>
+echo '<td>', _('Transaction Number'), ':</td>
+		<td><input class="number" tabindex="2" type="text" name="TransNo" required="required" maxlength="10" size="10" value="', $_POST['TransNo'], '" /></td>
 	</tr>
-	</table>
-	<div class="centre noPrint">
-		<input tabindex="3" type="submit" name="ShowResults" value="' . _('Show How Allocated') . '" />
+</table>';
+echo '<div class="centre noPrint">
+		<input tabindex="3" type="submit" name="ShowResults" value="', _('Show How Allocated'), '" />
 	</div>
-	</form>';
+</form>';
 
 if (isset($_POST['ShowResults']) and $_POST['TransNo'] == '') {
 	echo '<br />';
@@ -126,23 +127,24 @@ if (isset($_POST['ShowResults']) and $_POST['TransNo'] != '') {
 		} else {
 			$Printer = true;
 			echo '<div id="Report">';
-			echo '<table class="selection" summary="' . _('Allocations made against invoice number') . ' ' . $_POST['TransNo'] . '">';
+			echo '<table class="selection" summary="', _('Allocations made against invoice number'), ' ', $_POST['TransNo'], '">';
 
 			echo '<tr>
-					<th colspan="6">
+					<th colspan="7">
 					<div class="centre">
-						<b>' . _('Allocations made against') . ' ' . $TitleInfo . ' ' . _('number') . ' ' . $_POST['TransNo'] . '<br />' . _('Transaction Total') . ': ' . locale_number_format($MyRow['totamt'], $CurrDecimalPlaces) . ' ' . $CurrCode . '</b>
-						<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/printer.png" class="PrintIcon" title="' . _('Print') . '" alt="' . _('Print') . '" onclick="window.print();" />
+						<b>', _('Allocations made against'), ' ', $TitleInfo, ' ', _('number'), ' ', $_POST['TransNo'], '<br />', _('Transaction Total'), ': ', locale_number_format($MyRow['totamt'], $CurrDecimalPlaces), ' ', $CurrCode, '</b>
+						<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/printer.png" class="PrintIcon" title="', _('Print'), '" alt="', _('Print'), '" onclick="window.print();" />
 					</div>
 					</th>
 				</tr>
 				<tr>
-					<th>' . _('Type') . '</th>
-					<th>' . _('Number') . '</th>
-					<th>' . _('Reference') . '</th>
-					<th>' . _('Ex Rate') . '</th>
-					<th>' . _('Amount') . '</th>
-					<th>' . _('Alloc') . '</th>
+					<th>', _('Date'), '</th>
+					<th>', _('Type'), '</th>
+					<th>', _('Number'), '</th>
+					<th>', _('Reference'), '</th>
+					<th>', _('Ex Rate'), '</th>
+					<th>', _('Amount'), '</th>
+					<th>', _('Alloc'), '</th>
 				</tr>';
 
 			$k = 0; //row colour counter
@@ -164,20 +166,21 @@ if (isset($_POST['ShowResults']) and $_POST['TransNo'] != '') {
 				} else {
 					$TransType = _('Receipt');
 				}
-				echo '<td>' . $TransType . '</td>
-					<td>' . $MyRow['transno'] . '</td>
-					<td>' . $MyRow['reference'] . '</td>
-					<td>' . $MyRow['rate'] . '</td>
-					<td class="number">' . locale_number_format($MyRow['totalamt'], $CurrDecimalPlaces) . '</td>
-					<td class="number">' . locale_number_format($MyRow['amt'], $CurrDecimalPlaces) . '</td>
-					</tr>';
+				echo '<td>', ConvertSQLDate($MyRow['trandate']), '</td>
+					<td>', $TransType, '</td>
+					<td>', $MyRow['transno'], '</td>
+					<td>', $MyRow['reference'], '</td>
+					<td>', $MyRow['rate'], '</td>
+					<td class="number">', locale_number_format($MyRow['totalamt'], $CurrDecimalPlaces), '</td>
+					<td class="number">', locale_number_format($MyRow['amt'], $CurrDecimalPlaces), '</td>
+				</tr>';
 
 				$AllocsTotal += $MyRow['amt'];
 			}
 			//end of while loop
 			echo '<tr>
-					<td colspan="5" class="number">' . _('Total allocated') . '</td>
-					<td class="number">' . locale_number_format($AllocsTotal, $CurrDecimalPlaces) . '</td>
+					<td colspan="5" class="number">', _('Total allocated'), '</td>
+					<td class="number">', locale_number_format($AllocsTotal, $CurrDecimalPlaces), '</td>
 				</tr>
 			</table>
 		</div>';

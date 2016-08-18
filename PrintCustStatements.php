@@ -34,6 +34,10 @@ if (isset($_GET['ToCust'])) {
 	$_POST['ToCust'] = $_GET['ToCust'];
 }
 
+if (isset($_GET['EmailOrPrint'])) {
+	$_POST['EmailOrPrint'] = $_GET['EmailOrPrint'];
+}
+
 if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust'] != '') {
 	$_POST['FromCust'] = mb_strtoupper($_POST['FromCust']);
 
@@ -514,9 +518,19 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCust']) and $_POST['FromCust
 		$PDF->__destruct();
 	} elseif (!isset($PDF)) {
 		$Title = _('Print Statements') . ' - ' . _('No Statements Found');
-		include('includes/header.inc');
-		echo '<br /><br /><br />' . prnMsg(_('There were no statements to print'));
-		echo '<br /><br /><br />';
+		if ($_POST['EmailOrPrint'] == 'print') {
+			include('includes/header.inc');
+			echo '<br />
+				<br />
+				<br />' . prnMsg( _('There were no statements to print'), 'warn');
+		} else {
+			echo '<br />
+				<br />
+				<br />' . prnMsg( _('There were no statements to email'), 'warn');
+		}
+		echo'<br />
+				<br />
+				<br />';
 		include('includes/footer.inc');
 	}
 

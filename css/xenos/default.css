@@ -208,6 +208,22 @@ input[type='submit'], button {
 	-webkit-box-shadow: 1px 1px 1px #64BEF1 inset;
 	box-shadow:         1px 1px 1px #64BEF1 inset;
 }
+input[type='reset'], button {
+    background-color:#34a7e8;
+    border:thin outset #1992DA;
+    padding:6px 24px;
+    vertical-align:middle;
+    font-weight:bold;
+    color:#FFFFFF;
+    cursor: pointer;
+
+    -webkit-border-radius:  4px;
+    -moz-border-radius:     4px;
+    border-radius:          4px;
+    -moz-box-shadow:    1px 1px 1px #64BEF1 inset;
+	-webkit-box-shadow: 1px 1px 1px #64BEF1 inset;
+	box-shadow:         1px 1px 1px #64BEF1 inset;
+}
 select {
     background-color: white;
 }

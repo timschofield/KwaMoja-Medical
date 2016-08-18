@@ -476,6 +476,7 @@ if (isset($_POST['AllocTrans'])) {
 			<input type="hidden" name="TotalNumberOfAllocs" value="' . $Counter . '" />
 			<input type="submit" name="RefreshAllocTotal" value="' . _('Recalculate Total To Allocate') . '" />
 			<input type="submit" name="UpdateDatabase" value="' . _('Process Allocations') . '" />
+			<input type="reset" name="Cancel" value="' . _('Cancel') . '" />
 		</div>';
 
 } elseif (isset($_GET['SupplierID'])) {

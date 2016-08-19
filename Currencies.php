@@ -23,7 +23,7 @@ if (isset($Errors)) {
 
 $Errors = array();
 
-echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/money_add.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '</p>';
+echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/currency.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '</p>';
 
 $SQL = "SELECT count(currabrev)
 		FROM currencies";

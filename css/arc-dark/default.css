@@ -373,8 +373,8 @@ margin-bottom:4px;
 }
 
 .dpTbl {
-border:solid navy 1px;
-background:transparent;
+border:solid #2F343F 1px;
+background:#404552;
 }
 
 .dpTD {
@@ -388,7 +388,8 @@ cursor:pointer;
 .dpDayHighlight {
 border:0;
 width:20px;
-background-color:transparent;
+background-color:#1A1A1A;
+color:white;
 text-align:right;
 cursor:pointer;
 }
@@ -396,7 +397,8 @@ cursor:pointer;
 .dpTDHover {
 border:0;
 width:20px;
-background-color:transparent;
+background-color:#2F343F;
+color:white;
 text-align:right;
 cursor:pointer;
 }

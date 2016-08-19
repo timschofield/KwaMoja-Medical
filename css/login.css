@@ -1,6 +1,6 @@
 body {
-background:#fff;
-color:#616161;
+background:#404552;
+color:#A3B7FF;
 font-family:"Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
 font-size:10pt;
 margin:0;
@@ -9,13 +9,8 @@ text-align:center
 }
 
 #container {
--moz-box-shadow:0 0 15px #DADADA;
--webkit-box-shadow:0 0 15px #DADADA;
-background:linear-gradient(135deg,#ffffff0%,#f6f6f647%,#ededed100%);
 border:solid #A49999 1px;
 border-radius:15px;
-box-shadow:0 0 15px #DADADA;
-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff',endColorstr='#ededed',GradientType=1);
 margin:90px auto 0;
 opacity:1.0;
 padding:10px 0 36px;
@@ -37,7 +32,7 @@ padding-left: 0%;
 }
 
 #login_box {
-background:#E5E5E5;
+background:#404552;
 border:solid #A49999 1px;
 border-radius:15px;
 margin:0 10px 10px 20px;
@@ -75,7 +70,7 @@ border-color:gray;
 border-radius:3px;
 border-style:solid;
 border-width:1px;
-color:#616161;
+color:#A3B7FF;
 font-size:100%;
 margin:10px 0 0;
 width:auto
@@ -98,7 +93,7 @@ border-color:gray;
 border-radius:3px;
 border-style:solid;
 border-width:1px;
-color:#616161;
+color:#A3B7FF;
 font-size:100%;
 margin:10px 0 0;
 vertical-align:middle;
@@ -110,16 +105,15 @@ background-color:transparent;
 border-color:#000;
 border-style:solid;
 border-width:1px;
-box-shadow:0 0 5px #7E7575;
 font-size:100%;
 box-shadow:0 0 5px #7E7575
 }
 
 button {
-background:#E5E5E5;
+background:#404552;
 border:solid gray 1px;
 border-radius:7px;
-color:#8A8A8A;
+color:#A3B7FF;
 font-size:100%;
 font-weight:700;
 margin:10px 10px 10px 50px;
@@ -128,10 +122,10 @@ width:30%
 }
 
 button:hover {
-background:#BABABA;
-box-shadow:0 0 5px #7E7575;
-color:#382E2E;
-cursor:pointer
+background:transparent;
+color:#82BCF4;
+cursor:pointer;
+box-shadow:0 0 5px #7E7575
 }
 
 input.button:active {

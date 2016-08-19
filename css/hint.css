@@ -66,7 +66,7 @@
     z-index: 1000001; }
   .hint:after, [data-hint]:after {
     content: attr(data-hint);
-    background: #0E0866;
+    background: #2F343F;
     color: white;
     padding: 8px 10px;
     line-height: 10px;
@@ -87,16 +87,16 @@
  * set default color for tooltip arrows
  */
 .hint--top:before {
-  border-top-color: #0E0866; }
+  border-top-color: #2F343F; }
 
 .hint--bottom:before {
-  border-bottom-color: #0E0866; }
+  border-bottom-color: #2F343F; }
 
 .hint--left:before {
-  border-left-color: #0E0866; }
+  border-left-color: #2F343F; }
 
 .hint--right:before {
-  border-right-color: #0E0866; }
+  border-right-color: #2F343F; }
 
 /**
  * top tooltip

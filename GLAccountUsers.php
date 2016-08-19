@@ -243,7 +243,7 @@ if (!isset($SelectedGLAccount)) { // If is NOT set a GL account for users.
 		</table>';
 
 	echo '<div class="centre noPrint">
-			<a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '"><img alt="" src="', $RootPath, '/css/', $Theme, '/images/user.png" /> ', _('Select A Different GL account'), '</a>
+			<a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '"><img alt="" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/user.png" /> ', _('Select A Different GL account'), '</a>
 		</div>'; // "Select A Different User" button.
 	echo '</form>';
 }

@@ -43,7 +43,7 @@ for ($i = 0; $i < 3; $i++) {
 			  <td>' . ConvertSQLDate($MyRow['lastdate_in_period']) . '</td>
 			</tr>';
 		++$j;
-		if ($j == $PeriodsInTable) {
+		if (($j == $PeriodsInTable) or ($j == $PeriodsInTable * 2)) {
 			break;
 		}
 	}

@@ -320,22 +320,24 @@ echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />'
 /***************************************************************
 Line Item Display
 ***************************************************************/
-echo '<table width="90%" cellpadding="2" class="selection">
-	<tr>
-		<th>' . _('Item Code') . '</th>
-		<th>' . _('Item Description') . '</th>
-		<th>' . _('Ordered') . '</th>
-		<th>' . _('Units') . '</th>
-		<th>' . _('Already') . '<br />' . _('Sent') . '</th>
-		<th>' . _('This Dispatch') . '</th>
-		<th>' . _('Price') . '</th>
-		<th>' . _('Discount') . '</th>
-		<th>' . _('Total') . '<br />' . _('Excl Tax') . '</th>
-		<th>' . _('Tax Authority') . '</th>
-		<th>' . _('Tax %') . '</th>
-		<th>' . _('Tax') . '<br />' . _('Amount') . '</th>
-		<th>' . _('Total') . '<br />' . _('Incl Tax') . '</th>
-	</tr>';
+echo '<table class="selection">
+		<thead>
+			<tr>
+				<th>', _('Item Code'), '</th>
+				<th>', _('Item Description'), '</th>
+				<th>', _('Ordered'), '</th>
+				<th>', _('Units'), '</th>
+				<th>', _('Already'), '<br />', _('Sent'), '</th>
+				<th>', _('This Dispatch'), '</th>
+				<th>', _('Price'), '</th>
+				<th>', _('Discount'), '</th>
+				<th>', _('Total'), '<br />', _('Excl Tax'), '</th>
+				<th>', _('Tax Authority'), '</th>
+				<th>', _('Tax %'), '</th>
+				<th>', _('Tax'), '<br />', _('Amount'), '</th>
+				<th>', _('Total'), '<br />', _('Incl Tax'), '</th>
+			</tr>
+		</thead>';
 
 $_SESSION['Items' . $Identifier]->total = 0;
 $_SESSION['Items' . $Identifier]->totalVolume = 0;
@@ -348,6 +350,7 @@ $TaxTotal = 0;
 
 $k = 0; //row colour counter
 $j = 0;
+echo '<tbody>';
 foreach ($_SESSION['Items' . $Identifier]->LineItems as $LnItm) {
 	++$j;
 	if ($k == 1) {
@@ -603,7 +606,8 @@ if (!isset($_POST['DispatchDate']) or !is_date($_POST['DispatchDate'])) {
 	$DefaultDispatchDate = $_POST['DispatchDate'];
 }
 
-echo '</table>';
+echo '</tbody>
+	</table>';
 
 if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 

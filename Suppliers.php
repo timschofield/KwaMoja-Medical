@@ -859,7 +859,7 @@ echo '<tr>
 		</tr>';
 echo '<tr>
 			<td>' . _('Bank Account No') . ':</td>
-			<td><input type="text" name="BankAct" size="31" maxlength="30" value="' . $_POST['BankAct'] . '" /></td>
+			<td><input type="text" name="BankAct" size="31" maxlength="40" value="' . $_POST['BankAct'] . '" /></td>
 		</tr>';
 
 $Result = DB_query("SELECT terms, termsindicator FROM paymentterms");

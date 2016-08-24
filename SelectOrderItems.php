@@ -1289,8 +1289,8 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 			$ShowDiscountGP = 0;// Do NOT show 'Discount' and 'GP %'.
 		}
 
-		echo '<div class="page_help_text">' . _('Quantity (required) - Enter the number of units ordered.  Price (required) - Enter the unit price.  Discount (optional) - Enter a percentage discount.  GP% (optional) - Enter a percentage Gross Profit (GP) to add to the unit cost.  Due Date (optional) - Enter a date for delivery.') . '</div><br />';
-		echo '<table width="90%" cellpadding="2">
+		echo '<div class="page_help_text">' . _('Quantity (required) - Enter the number of units ordered.  Price (required) - Enter the unit price.  Discount (optional) - Enter a percentage discount.  GP% (optional) - Enter a percentage Gross Profit (GP) to add to the unit cost.  Due Date (optional) - Enter a date for delivery. Items bordered in red do not have enough stock to fulfil the order.') . '</div><br />';
+		echo '<table width="90%" cellpadding="2" style="border-collapse: collapse;">
 				<tr style="background-color:#800000">';
 		if($ShowPOLine) {
 			echo '<th>' . _('PO Line') . '</th>';
@@ -1324,7 +1324,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 
 			if ($OrderLine->QOHatLoc < $OrderLine->Quantity and ($OrderLine->MBflag == 'B' or $OrderLine->MBflag == 'M')) {
 				/*There is a stock deficiency in the stock location selected */
-				$RowStarter = '<tr style="background-color:#EEAABB">'; //rows show red where stock deficiency
+				$RowStarter = '<tr style="border:solid 2px #FF0000">'; //rows show red where stock deficiency
 
 			} //$OrderLine->QOHatLoc < $OrderLine->Quantity and ($OrderLine->MBflag == 'B' or $OrderLine->MBflag == 'M')
 			elseif ($k == 1) {

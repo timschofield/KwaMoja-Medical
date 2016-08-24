@@ -786,7 +786,11 @@ function CalcDueDate($TranDate, $DayInFollowingMonth, $DaysBeforeDue) {
 
 		} elseif ($DayInFollowingMonth >= 29) { //take the last day of month
 
-			$DayDue = 0;
+			if ($DayInFollowingMonth <= 31) {
+				$DayDue = 0;
+			} else {
+				$DayDue = $DayInFollowingMonth - 31;
+			}
 			$MonthDue = $Date_Array[1] + 2;
 			$YearDue = $Date_Array[2];
 		} else {
@@ -804,7 +808,11 @@ function CalcDueDate($TranDate, $DayInFollowingMonth, $DaysBeforeDue) {
 
 		} elseif ($DayInFollowingMonth >= 29) { //take the last day of month
 
-			$DayDue = 0;
+			if ($DayInFollowingMonth <= 31) {
+				$DayDue = 0;
+			} else {
+				$DayDue = $DayInFollowingMonth - 31;
+			}
 			$MonthDue = $Date_Array[0] + 2;
 			$YearDue = $Date_Array[2];
 		} else {
@@ -821,7 +829,11 @@ function CalcDueDate($TranDate, $DayInFollowingMonth, $DaysBeforeDue) {
 
 		} elseif ($DayInFollowingMonth >= 29) { //take the last day of month
 
-			$DayDue = 0;
+			if ($DayInFollowingMonth <= 31) {
+				$DayDue = 0;
+			} else {
+				$DayDue = $DayInFollowingMonth - 31;
+			}
 			$MonthDue = $Date_Array[1] + 2;
 			$YearDue = $Date_Array[0];
 		} else {

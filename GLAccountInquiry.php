@@ -244,9 +244,11 @@ if (isset($_POST['Show'])) {
 		}
 		$BfwdSQL = "SELECT sum(amount) as bfwd
 						FROM gltrans
+						INNER JOIN gltags
+							ON gltrans.counterindex=gltags.counterindex
 						WHERE account='" . $SelectedAccount . "'
 							AND periodno<" . $FirstPeriodSelected . "
-							AND tag like '" . $_POST['tag'] . "'";
+							AND gltags.tagref like '" . $_POST['tag'] . "'";
 		$BfwdResult = DB_query($BfwdSQL);
 		$BfwdRow = DB_fetch_array($BfwdResult);
 

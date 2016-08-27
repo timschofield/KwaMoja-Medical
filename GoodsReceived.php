@@ -441,7 +441,7 @@ if ($_SESSION['PO' . $Identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 			if ($OrderLine->StockID != '') { //Its a stock item line
 				/*Need to get the current standard cost as it is now so we can process GL jorunals later*/
 				$SQL = "SELECT stockcosts.materialcost + stockcosts.labourcost + stockcosts.overheadcost as stdcost,
-								mbflagg
+								mbflag
 							FROM stockcosts
 							INNER JOIN stockmaster
 								ON stockcosts.stockid=stockmaster.stockid

@@ -62,6 +62,7 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 
 	$SQL = "SELECT pcashdetails.counterindex,
 				pcashdetails.tabcode,
+				pcashdetails.tag,
 				pcashdetails.date,
 				pcashdetails.codeexpense,
 				pcashdetails.amount,
@@ -86,48 +87,58 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 	$Result = DB_query($SQL);
 
 	echo '<tr>
-		<th>' . _('Date') . '</th>
-		<th>' . _('Expense Code') . '</th>
-		<th>' . _('Amount') . '</th>
-		<th>' . _('Posted') . '</th>
-		<th>' . _('Notes') . '</th>
-		<th>' . _('Receipt') . '</th>
-		<th>' . _('Authorised') . '</th>
-	</tr>';
+			<th>' . _('Date') . '</th>
+			<th>' . _('Expense Code') . '</th>
+			<th>' . _('Amount') . '</th>
+			<th>' . _('Tag') . '</th>
+			<th>' . _('Posted') . '</th>
+			<th>' . _('Notes') . '</th>
+			<th>' . _('Receipt') . '</th>
+			<th>' . _('Authorised') . '</th>
+		</tr>';
 
 	$k = 0; //row colour counter
 
 	while ($MyRow = DB_fetch_array($Result)) {
 		$CurrDecimalPlaces = $MyRow['decimalplaces'];
 		//update database if update pressed
+
+		$PeriodNo = GetPeriod(ConvertSQLDate($MyRow['date']));
+
+		$TagSQL = "SELECT tagdescription FROM tags WHERE tagref='" . $MyRow['tag'] . "'";
+		$TagResult = DB_query($TagSQL);
+		$TagRow = DB_fetch_array($TagResult);
+		if ($MyRow['tag'] == 0) {
+			$TagRow['tagdescription'] = _('None');
+		}
+
+		if ($MyRow['rate'] == 1) { // functional currency
+			$Amount = $MyRow['amount'];
+		} else { // other currencies
+			$Amount = $MyRow['amount'] / $MyRow['rate'];
+		}
+
+		if ($MyRow['codeexpense'] == 'ASSIGNCASH') {
+			$type = 2;
+			$AccountFrom = $MyRow['glaccountassignment'];
+			$AccountTo = $MyRow['glaccountpcash'];
+			$TagTo = 0;
+			$TagDescription = '0 - ' . _('None');
+		} else {
+			$type = 1;
+			$Amount = -$Amount;
+			$AccountFrom = $MyRow['glaccountpcash'];
+			$SQLAccExp = "SELECT glaccount,
+								tag
+							FROM pcexpenses
+							WHERE codeexpense = '" . $MyRow['codeexpense'] . "'";
+			$ResultAccExp = DB_query($SQLAccExp);
+			$MyRowAccExp = DB_fetch_array($ResultAccExp);
+			$AccountTo = $MyRowAccExp['glaccount'];
+			$TagTo = $MyRow['tag'];
+			$TagDescription = $TagTo . ' - ' . $TagRow['tagdescription'];
+		}
 		if (isset($_POST['Submit']) and $_POST['Submit'] == _('Update') and isset($_POST[$MyRow['counterindex']])) {
-
-			$PeriodNo = GetPeriod(ConvertSQLDate($MyRow['date']));
-
-			if ($MyRow['rate'] == 1) { // functional currency
-				$Amount = $MyRow['amount'];
-			} else { // other currencies
-				$Amount = $MyRow['amount'] / $MyRow['rate'];
-			}
-
-			if ($MyRow['codeexpense'] == 'ASSIGNCASH') {
-				$type = 2;
-				$AccountFrom = $MyRow['glaccountassignment'];
-				$AccountTo = $MyRow['glaccountpcash'];
-				$TagTo = 0;
-			} else {
-				$type = 1;
-				$Amount = -$Amount;
-				$AccountFrom = $MyRow['glaccountpcash'];
-				$SQLAccExp = "SELECT glaccount,
-									tag
-								FROM pcexpenses
-								WHERE codeexpense = '" . $MyRow['codeexpense'] . "'";
-				$ResultAccExp = DB_query($SQLAccExp);
-				$MyRowAccExp = DB_fetch_array($ResultAccExp);
-				$AccountTo = $MyRowAccExp['glaccount'];
-				$TagTo = $MyRowAccExp['tag'];
-			}
 
 			//get typeno
 			$typeno = GetNextTransNo($type);
@@ -251,6 +262,7 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 		echo '<td>' . ConvertSQLDate($MyRow['date']) . '</td>
 			<td>' . $MyRow['codeexpense'] . '</td>
 			<td class="number">' . locale_number_format($MyRow['amount'], $CurrDecimalPlaces) . '</td>
+			<td>' . $TagDescription . '</td>
 			<td>' . $Posted . '</td>
 			<td>' . $MyRow['notes'] . '</td>
 			<td>' . $MyRow['receipt'] . '</td>';

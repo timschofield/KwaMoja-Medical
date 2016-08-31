@@ -76,10 +76,11 @@ if (isset($_POST['submit'])) {
 	if (isset($SelectedIndex) and $InputError != 1) {
 		$SQL = "UPDATE pcashdetails
 			SET date = '" . FormatDateForSQL($_POST['Date']) . "',
-			codeexpense = '" . $_POST['SelectedExpense'] . "',
-			amount = '" . -filter_number_format($_POST['Amount']) . "',
-			notes = '" . $_POST['Notes'] . "',
-			receipt = '" . $_POST['Receipt'] . "'
+				tag = '" . $_POST['Tag'] . "',
+				codeexpense = '" . $_POST['SelectedExpense'] . "',
+				amount = '" . -filter_number_format($_POST['Amount']) . "',
+				notes = '" . $_POST['Notes'] . "',
+				receipt = '" . $_POST['Receipt'] . "'
 			WHERE counterindex = '" . $SelectedIndex . "'";
 
 		$Msg = _('The Expense Claim on Tab') . ' ' . $SelectedTabs . ' ' . _('has been updated');
@@ -91,6 +92,7 @@ if (isset($_POST['submit'])) {
 
 		$SQL = "INSERT INTO pcashdetails (counterindex,
 										tabcode,
+										tag,
 										date,
 										codeexpense,
 										amount,
@@ -100,6 +102,7 @@ if (isset($_POST['submit'])) {
 										receipt)
 								VALUES (NULL,
 										'" . $_POST['SelectedTabs'] . "',
+										'" . $_POST['Tag'] . "',
 										'" . FormatDateForSQL($_POST['Date']) . "',
 										'" . $_POST['SelectedExpense'] . "',
 										'" . -filter_number_format($_POST['Amount']) . "',
@@ -119,6 +122,7 @@ if (isset($_POST['submit'])) {
 
 		unset($_POST['SelectedExpense']);
 		unset($_POST['Amount']);
+		unset($_POST['Tag']);
 		unset($_POST['Date']);
 		unset($_POST['Notes']);
 		unset($_POST['Receipt']);
@@ -221,10 +225,21 @@ if (!isset($SelectedTabs)) {
 			unset($_POST['Receipt']);
 		}
 
-		$SQL = "SELECT * FROM pcashdetails
-				WHERE tabcode='" . $SelectedTabs . "'
-					AND date >=DATE_SUB(CURDATE(), INTERVAL " . $Days . " DAY)
-				ORDER BY date, counterindex ASC";
+		$SQL = "SELECT counterindex,
+						tabcode,
+						tag,
+						date,
+						codeexpense,
+						amount,
+						authorized,
+						posted,
+						notes,
+						receipt
+					FROM pcashdetails
+					WHERE tabcode='" . $SelectedTabs . "'
+						AND date >=DATE_SUB(CURDATE(), INTERVAL " . $Days . " DAY)
+					ORDER BY date,
+							counterindex ASC";
 
 		$Result = DB_query($SQL);
 
@@ -233,13 +248,14 @@ if (!isset($SelectedTabs)) {
 				<th>' . _('Expense Description') . '</th>
 				<th>' . _('Amount') . '</th>
 				<th>' . _('Authorised') . '</th>
+				<th>' . _('Tag') . '</th>
 				<th>' . _('Notes') . '</th>
 				<th>' . _('Receipt') . '</th>
 			</tr>';
 
 		$k = 0; //row colour counter
 
-		while ($MyRow = DB_fetch_row($Result)) {
+		while ($MyRow = DB_fetch_array($Result)) {
 			if ($k == 1) {
 				echo '<tr class="EvenTableRows">';
 				$k = 0;
@@ -250,7 +266,7 @@ if (!isset($SelectedTabs)) {
 
 			$SQLDes = "SELECT description
 						FROM pcexpenses
-						WHERE codeexpense='" . $MyRow['3'] . "'";
+						WHERE codeexpense='" . $MyRow['codeexpense'] . "'";
 
 			$ResultDes = DB_query($SQLDes);
 			$Description = DB_fetch_array($ResultDes);
@@ -258,30 +274,38 @@ if (!isset($SelectedTabs)) {
 			if (!isset($Description['0'])) {
 				$Description['0'] = 'ASSIGNCASH';
 			}
-			if ($MyRow['5'] == '0000-00-00') {
+			if ($MyRow['authorized'] == '0000-00-00') {
 				$AuthorisedDate = _('Unauthorised');
 			} else {
-				$AuthorisedDate = ConvertSQLDate($MyRow['5']);
+				$AuthorisedDate = ConvertSQLDate($MyRow['authorized']);
 			}
-			if (($MyRow['5'] == '0000-00-00') and ($Description['0'] != 'ASSIGNCASH')) {
+			$TagSQL = "SELECT tagdescription FROM tags WHERE tagref='" . $MyRow['tag'] . "'";
+			$TagResult = DB_query($TagSQL);
+			$TagRow = DB_fetch_array($TagResult);
+			if ($MyRow['tag'] == 0) {
+				$TagRow['tagdescription'] = _('None');
+			}
+			if (($MyRow['authorized'] == '0000-00-00') and ($Description['0'] != 'ASSIGNCASH')) {
 				// only movements NOT authorised can be modified or deleted
-				printf('<td>%s</td>
-						<td>%s</td>
-						<td class="number">%s</td>
-						<td>%s</td>
-						<td>%s</td>
-						<td>%s</td>
-						<td><a href="%sSelectedIndex=%s&amp;SelectedTabs=' . $SelectedTabs . '&amp;Days=' . $Days . '&amp;edit=yes">' . _('Edit') . '</a></td>
-						<td><a href="%sSelectedIndex=%s&amp;SelectedTabs=' . $SelectedTabs . '&amp;Days=' . $Days . '&amp;delete=yes" onclick=\'return MakeConfirm("' . _('Are you sure you wish to delete this code and the expenses it may have set up?') . '", \'Confirm Delete\', this);\'>' . _('Delete') . '</a></td>
-					</tr>', ConvertSQLDate($MyRow['2']), $Description['0'], locale_number_format($MyRow['4'], $CurrDecimalPlaces), $AuthorisedDate, $MyRow['7'], $MyRow['8'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['0'], htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?', $MyRow['0']);
+				echo '<td>', ConvertSQLDate($MyRow['date']), '</td>
+						<td>', $Description['0'], '</td>
+						<td class="number">', locale_number_format($MyRow['amount'], $CurrDecimalPlaces), '</td>
+						<td>', $AuthorisedDate, '</td>
+						<td>', $MyRow['tag'], ' - ', $TagRow['tagdescription'], '</td>
+						<td>', $MyRow['notes'], '</td>
+						<td>', $MyRow['receipt'], '</td>
+						<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedIndex=', $MyRow['counterindex'], '&SelectedTabs=' . $SelectedTabs . '&amp;Days=' . $Days . '&amp;edit=yes">' . _('Edit') . '</a></td>
+						<td><a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?SelectedIndex=', $MyRow['counterindex'], '&amp;SelectedTabs=' . $SelectedTabs . '&amp;Days=' . $Days . '&amp;delete=yes" onclick=\'return MakeConfirm("' . _('Are you sure you wish to delete this code and the expenses it may have set up?') . '", \'Confirm Delete\', this);\'>' . _('Delete') . '</a></td>
+					</tr>';
 			} else {
-				printf('<td>%s</td>
-						<td>%s</td>
-						<td class="number">%s</td>
-						<td>%s</td>
-						<td>%s</td>
-						<td>%s</td>
-					</tr>', ConvertSQLDate($MyRow['2']), $Description['0'], locale_number_format($MyRow['4'], $CurrDecimalPlaces), $AuthorisedDate, $MyRow['7'], $MyRow['8']);
+				echo '<td>', ConvertSQLDate($MyRow['date']), '</td>
+						<td>', $Description['0'], '</td>
+						<td class="number">', locale_number_format($MyRow['amount'], $CurrDecimalPlaces), '</td>
+						<td>', $AuthorisedDate, '</td>
+						<td>', $MyRow['tag'], ' - ', $TagRow['tagdescription'], '</td>
+						<td>', $MyRow['notes'], '</td>
+						<td>', $MyRow['receipt'], '</td>
+					</tr>';
 
 			}
 
@@ -326,6 +350,7 @@ if (!isset($SelectedTabs)) {
 			$_POST['SelectedExpense'] = $MyRow['codeexpense'];
 			$_POST['Amount'] = -$MyRow['amount'];
 			$_POST['Notes'] = $MyRow['notes'];
+			$_POST['Tag'] = $MyRow['tag'];
 			$_POST['Receipt'] = $MyRow['receipt'];
 
 			echo '<input type="hidden" name="SelectedTabs" value="' . $SelectedTabs . '" />';

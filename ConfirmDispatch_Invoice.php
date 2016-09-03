@@ -835,7 +835,7 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 									'" . $DefaultDispatchDate . "',
 									'" . date('Y-m-d H-i-s') . "',
 									'" . $PeriodNo . "',
-									'',
+									'" . $_SESSION['Items' . $Identifier]->CustRef . "',
 									'" . $_SESSION['Items' . $Identifier]->DefaultSalesType . "',
 									'" . $_SESSION['ProcessingOrder'] . "',
 									'" . $_SESSION['Items' . $Identifier]->total . "',

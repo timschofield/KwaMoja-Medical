@@ -193,6 +193,30 @@ if (isset($_GET['SelectedParent'])) {
 	$SelectedParent = $_POST['SelectedParent'];
 }
 
+if (isset($_POST['renumber'])) {
+	$SQL = "SELECT parent,
+					sequence,
+					component,
+					workcentreadded,
+					loccode
+				FROM bom
+				WHERE parent='" . $SelectedParent . "'
+				ORDER BY sequence ASC";
+	$Result = DB_query($SQL);
+	$Sequence =10;
+	while ($MyRow = DB_fetch_array($Result)) {
+		$UpdateSQL = "UPDATE bom
+						SET sequence='" . $Sequence . "'
+					WHERE parent='" . $SelectedParent . "'
+						AND sequence='" . $MyRow['sequence'] . "'
+						AND component='" . $MyRow['component'] . "'
+						AND workcentreadded='" . $MyRow['workcentreadded'] . "'
+						AND loccode='" . $MyRow['loccode'] . "'";
+		$UpdateResult = DB_query($UpdateSQL);
+		$Sequence = $Sequence + 10;
+	}
+}
+
 /* SelectedComponent could also come from a post or a get */
 if (isset($_GET['SelectedComponent'])) {
 	$SelectedComponent = $_GET['SelectedComponent'];
@@ -656,6 +680,7 @@ if (isset($Select)) { //Parent Stock Item selected so display BOM or edit Compon
 		echo '<div class="centre">
 				<a href="' . $RootPath . '/CopyBOM.php?Item=' . urlencode($SelectedParent) . '">' . _('Copy this BOM') . '</a>
 			</div>';
+		echo '<input type="submit" name="renumber" value="Re-Sequence the BOM" />';
 		echo '<input type="hidden" name="SelectedParent" value="' . $SelectedParent . '" />';
 		/* echo "Enter the details of a new component in the fields below. <br />Click on 'Enter Information' to add the new component, once all fields are completed.";
 		 */

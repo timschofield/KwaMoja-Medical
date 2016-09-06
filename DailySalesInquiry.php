@@ -131,7 +131,7 @@ while ($DaySalesRow = DB_fetch_array($SalesResult)) {
 	} else {
 		$DaySalesArray[DayOfMonthFromSQLDate($DaySalesRow['trandate'])]['Sales'] = 0;
 	}
-	if ($DaySalesRow['salesvalue'] > 0) {
+	if ($DaySalesRow['salesvalue'] > 0.01) {
 		$DaySalesArray[DayOfMonthFromSQLDate($DaySalesRow['trandate'])]['GPPercent'] = ($DaySalesRow['salesvalue'] - $DaySalesRow['cost']) / $DaySalesRow['salesvalue'];
 	} else {
 		$DaySalesArray[DayOfMonthFromSQLDate($DaySalesRow['trandate'])]['GPPercent'] = 0;

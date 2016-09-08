@@ -111,7 +111,7 @@ if (isset($_POST['BatchNo']) and $_POST['BatchNo'] != '') {
 			amount
 		FROM gltrans
 		WHERE gltrans.typeno='" . $_POST['BatchNo'] . "'
-		AND gltrans.type=12 and gltrans.amount <0
+		AND gltrans.type=12
 		AND gltrans.account !='" . $MyRow['bankact'] . "'
 		AND gltrans.account !='" . $_SESSION['CompanyRecord']['debtorsact'] . "'";
 

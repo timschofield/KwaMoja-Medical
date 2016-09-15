@@ -24,7 +24,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 		$_POST['FromCriteria'] = $MyRow['fromcriteria'];
 	}
 	if ($_POST['ToCriteria']=='') {
-		$_POST['Toriteria'] = $MyRow['tocriteria'];
+		$_POST['ToCriteria'] = $MyRow['tocriteria'];
 	}
 
 	/*Now figure out the aged analysis for the Supplier range under review */

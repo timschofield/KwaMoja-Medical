@@ -2,20 +2,20 @@
 
 include('includes/DefineCartClass.php');
 
-/* Session started in session.inc for password checking and authorisation level check
-config.php is in turn included in session.inc $PageSecurity now comes from session.inc (and gets read in by GetConfig.php*/
+/* Session started in session.php for password checking and authorisation level check
+config.php is in turn included in session.php $PageSecurity now comes from session.php (and gets read in by GetConfig.php*/
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Counter Sales');
-/* Manual links before header.inc */
+/* Manual links before header.php */
 $ViewTopic = 'SalesOrders';
 $BookMark = 'SalesOrderCounterSales';
 
-include('includes/header.inc');
-include('includes/GetPrice.inc');
-include('includes/SQL_CommonFunctions.inc');
-include('includes/GetSalesTransGLCodes.inc');
+include('includes/header.php');
+include('includes/GetPrice.php');
+include('includes/SQL_CommonFunctions.php');
+include('includes/GetSalesTransGLCodes.php');
 
 $AlreadyWarnedAboutCredit = false;
 
@@ -84,14 +84,14 @@ if (!isset($_SESSION['Items' . $Identifier])) {
 	$Result = DB_query($SQL);
 	if (DB_num_rows($Result) == 0) {
 		prnMsg(_('Your user account does not have a valid default inventory location set up. Please see the system administrator to modify your user account.'), 'error');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} else {
 		$MyRow = DB_fetch_array($Result); //get the only row returned
 
 		if ($MyRow['cashsalecustomer'] == '' or $MyRow['cashsalebranch'] == '') {
 			prnMsg(_('To use this script it is first necessary to define a cash sales customer for the location that is your default location. The default cash sale customer is defined under set up ->Inventory Locations Maintenance. The customer should be entered using the customer code and a valid branch code of the customer entered.'), 'info');
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 		if (isset($_GET['DebtorNo'])) {
@@ -171,7 +171,7 @@ if (!isset($_SESSION['Items' . $Identifier])) {
 				if ($Debug == 1) {
 					echo '<br />' . _('The SQL that failed to get the branch details was') . ':<br />' . $SQL;
 				}
-				include('includes/footer.inc');
+				include('includes/footer.php');
 				exit;
 			}
 			// add echo
@@ -201,7 +201,7 @@ if (!isset($_SESSION['Items' . $Identifier])) {
 				} elseif ($_SESSION['CheckCreditLimits'] == 2 and $_SESSION['Items' . $Identifier]->CreditAvailable <= 0) {
 					prnMsg(_('No more orders can be placed by') . ' ' . $MyRow[0] . ' ' . _(' their account is currently at or over their credit limit'), 'warn');
 					$AlreadyWarnedAboutCredit = true;
-					include('includes/footer.inc');
+					include('includes/footer.php');
 					exit;
 				}
 			}
@@ -224,7 +224,7 @@ if (isset($_POST['CancelOrder'])) {
 	echo '<br /><br />';
 	prnMsg(_('This sale has been cancelled as requested'), 'success');
 	echo '<br /><br /><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Start a new Counter Sale') . '</a>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 
 } else {
@@ -467,7 +467,7 @@ if (isset($_POST['SelectingOrderItems']) or isset($_POST['QuickEntry']) or isset
 					$NewItem = $KitParts['component'];
 					$NewItemQty = $KitParts['quantity'] * $ParentQty;
 					$NewPOLine = 0;
-					include('includes/SelectOrderItems_IntoCart.inc');
+					include('includes/SelectOrderItems_IntoCart.php');
 					$_SESSION['Items' . $Identifier]->GetTaxes(($_SESSION['Items' . $Identifier]->LineCounter - 1));
 				}
 
@@ -479,7 +479,7 @@ if (isset($_POST['SelectingOrderItems']) or isset($_POST['QuickEntry']) or isset
 				prnMsg(_('Only items entered with a positive quantity can be added to the sale'), 'warn');
 			} else {
 				/*Its not a kit set item*/
-				include('includes/SelectOrderItems_IntoCart.inc');
+				include('includes/SelectOrderItems_IntoCart.php');
 				$_SESSION['Items' . $Identifier]->GetTaxes(($_SESSION['Items' . $Identifier]->LineCounter - 1));
 			}
 		}
@@ -624,7 +624,7 @@ if (isset($NewItem)) {
 				$NewItemQty = $KitParts['quantity'] * $ParentQty;
 				$NewPOLine = 0;
 				$NewItemDue = date($_SESSION['DefaultDateFormat']);
-				include('includes/SelectOrderItems_IntoCart.inc');
+				include('includes/SelectOrderItems_IntoCart.php');
 				$_SESSION['Items' . $Identifier]->GetTaxes(($_SESSION['Items' . $Identifier]->LineCounter - 1));
 			}
 
@@ -633,7 +633,7 @@ if (isset($NewItem)) {
 			$NewItemDue = date($_SESSION['DefaultDateFormat']);
 			$NewPOLine = 0;
 
-			include('includes/SelectOrderItems_IntoCart.inc');
+			include('includes/SelectOrderItems_IntoCart.php');
 			$_SESSION['Items' . $Identifier]->GetTaxes(($_SESSION['Items' . $Identifier]->LineCounter - 1));
 		}
 
@@ -681,7 +681,7 @@ if (isset($NewItemArray) and isset($_POST['SelectingOrderItems'])) {
 						$NewItemQty = $KitParts['quantity'] * $ParentQty;
 						$NewItemDue = date($_SESSION['DefaultDateFormat']);
 						$NewPOLine = 0;
-						include('includes/SelectOrderItems_IntoCart.inc');
+						include('includes/SelectOrderItems_IntoCart.php');
 						$_SESSION['Items' . $Identifier]->GetTaxes(($_SESSION['Items' . $Identifier]->LineCounter - 1));
 					}
 
@@ -689,7 +689,7 @@ if (isset($NewItemArray) and isset($_POST['SelectingOrderItems'])) {
 					/*Its not a kit set item*/
 					$NewItemDue = date($_SESSION['DefaultDateFormat']);
 					$NewPOLine = 0;
-					include('includes/SelectOrderItems_IntoCart.inc');
+					include('includes/SelectOrderItems_IntoCart.php');
 					$_SESSION['Items' . $Identifier]->GetTaxes(($_SESSION['Items' . $Identifier]->LineCounter - 1));
 				}
 			}
@@ -1068,7 +1068,7 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 		if ($_SESSION['CompanyRecord'] == 0) {
 			/*The company data and preferences could not be retrieved for some reason */
 			prnMsg(_('The company information and preferences could not be retrieved. See your system administrator'), 'error');
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 
@@ -1191,9 +1191,9 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 				$AssemblyDemandRow = DB_fetch_row($AssemblyDemandResult);
 				$QuantityAssemblyDemand = $AssemblyDemandRow[0];
 
-				// Get the QOO due to Purchase orders for all locations. Function defined in SQL_CommonFunctions.inc
+				// Get the QOO due to Purchase orders for all locations. Function defined in SQL_CommonFunctions.php
 				$QuantityPurchOrders = GetQuantityOnOrderDueToPurchaseOrders($StockItem->StockID);
-				// Get the QOO dues to Work Orders for all locations. Function defined in SQL_CommonFunctions.inc
+				// Get the QOO dues to Work Orders for all locations. Function defined in SQL_CommonFunctions.php
 				$QuantityWorkOrders = GetQuantityOnOrderDueToWorkOrders($StockItem->StockID);
 
 				//Now we have the data - do we need to make any more?
@@ -1309,7 +1309,7 @@ if (isset($_POST['ProcessSale']) and $_POST['ProcessSale'] != '') {
 		/* End of insertion of new sales order */
 
 		/*Now Get the next invoice number - GetNextTransNo() function in SQL_CommonFunctions
-		 * GetPeriod() in includes/DateFunctions.inc */
+		 * GetPeriod() in includes/DateFunctions.php */
 
 		$DefaultDispatchDate = Date('Y-m-d');
 
@@ -2210,9 +2210,9 @@ if (!isset($_POST['ProcessSale'])) {
 					$DemandQty = 0;
 				}
 
-				// Get the QOO due to Purchase orders for all locations. Function defined in SQL_CommonFunctions.inc
+				// Get the QOO due to Purchase orders for all locations. Function defined in SQL_CommonFunctions.php
 				$QOO = GetQuantityOnOrderDueToPurchaseOrders($MyRow['stockid']);
-				// Get the QOO dues to Work Orders for all locations. Function defined in SQL_CommonFunctions.inc
+				// Get the QOO dues to Work Orders for all locations. Function defined in SQL_CommonFunctions.php
 				$QOO += GetQuantityOnOrderDueToWorkOrders($MyRow['stockid']);
 
 				if ($k == 1) {
@@ -2378,9 +2378,9 @@ if (!isset($_POST['ProcessSale'])) {
 					$DemandQty = 0;
 				}
 
-				// Get the QOO due to Purchase orders for all locations. Function defined in SQL_CommonFunctions.inc
+				// Get the QOO due to Purchase orders for all locations. Function defined in SQL_CommonFunctions.php
 				$QOO = GetQuantityOnOrderDueToPurchaseOrders($MyRow['stockid']);
-				// Get the QOO dues to Work Orders for all locations. Function defined in SQL_CommonFunctions.inc
+				// Get the QOO dues to Work Orders for all locations. Function defined in SQL_CommonFunctions.php
 				$QOO += GetQuantityOnOrderDueToWorkOrders($MyRow['stockid']);
 
 				if ($k == 1) {
@@ -2484,5 +2484,5 @@ if (!isset($_POST['ProcessSale'])) {
 	}
 	echo '</form>';
 }
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

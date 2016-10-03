@@ -2,7 +2,7 @@
 
 include('includes/DefineProjectClass.php');
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Project Bill of Materials');
 
 $Identifier = $_GET['identifier'];
@@ -17,7 +17,7 @@ if (!isset($_SESSION['Project' . $Identifier])) {
 }
 $ViewTopic = 'Projects';
 $BookMark = 'AddToProject';
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_POST['UpdateLines']) or isset($_POST['BackToHeader'])) {
 	if ($_SESSION['Project' . $Identifier]->Status != 2) { //dont do anything if the customer has committed to the contract
@@ -38,7 +38,7 @@ if (isset($_POST['BackToHeader'])) {
 	echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/Projects.php?identifier=' . $Identifier . '" />';
 	echo '<br />';
 	prnMsg(_('You should automatically be forwarded to the Project page. If this does not happen perhaps the browser does not support META Refresh') . '<a href="' . $RootPath . '/Projects.php?identifier=' . urlencode($Identifier) . '">' . _('click here') . '</a> ' . _('to continue'), 'info');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -120,7 +120,7 @@ if (isset($_POST['NewItem'])) {
 				if ($Debug == 1) {
 					echo '<br />' . $SQL;
 				}
-				include('includes/footer.inc');
+				include('includes/footer.php');
 				exit;
 			}
 			/* end of if not already on the contract BOM */
@@ -321,5 +321,5 @@ if (isset($SearchResult)) {
 } #end if SearchResults to show
 
 echo '</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Tax Authorities Maintenance');
 $ViewTopic = 'Tax';// Filename in ManualContents.php's TOC.
 $BookMark = 'TaxAuthorities';// Anchor's id in the manual's html document.
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" >
 		<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/maintenance.png" title="', $Title, '" alt="" />', $Title, '
@@ -329,6 +329,6 @@ echo '<div class="centre">
 	</div>';
 
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

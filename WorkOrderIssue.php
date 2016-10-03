@@ -1,9 +1,9 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Issue Materials To Work Order');
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 if (isset($_GET['WO'])) {
 	$_POST['WO'] = $_GET['WO'];
@@ -27,7 +27,7 @@ if (!isset($_POST['WO']) or !isset($_POST['StockID'])) {
 	/* This page can only be called with a work order number for issuing stock to*/
 	echo '<div class="centre"><a href="' . $RootPath . '/SelectWorkOrder.php">' . _('Select a work order to issue materials to') . '</a></div>';
 	prnMsg(_('This page can only be opened if a work order has been selected. Please select a work order to issue materials to first'), 'info');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } else {
 	echo '<input type="hidden" name="WO" value="' . $_POST['WO'] . '" />';
@@ -64,7 +64,7 @@ if (isset($_POST['Process'])) { //user hit the process the work order issues ent
 
 	if (DB_num_rows($WOResult) == 0) {
 		prnMsg(_('The selected work order item cannot be retrieved from the database'), 'info');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 	$WORow = DB_fetch_array($WOResult);
@@ -313,7 +313,7 @@ if (isset($_POST['Process'])) { //user hit the process the work order issues ent
 
 			/*first the debit the WIP of the item being manufactured from the WO
 			the appropriate account was already retrieved into the $StockGLCode variable as the Processing code is kicked off
-			it is retrieved from the stock category record of the item by a function in SQL_CommonFunctions.inc*/
+			it is retrieved from the stock category record of the item by a function in SQL_CommonFunctions.php*/
 
 			$SQL = "INSERT INTO gltrans (type,
 							typeno,
@@ -383,7 +383,7 @@ if (isset($_POST['Process'])) { //user hit the process the work order issues ent
 		}
 		unset($_POST['Qty']);
 		/*end of process work order issues entry */
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} //end if there were not input errors reported - so the processing was allowed to continue
 } //end of if the user hit the process button
@@ -457,7 +457,7 @@ $WOHeaderResult = DB_query("SELECT workorders.loccode,
 
 if (DB_num_rows($WOHeaderResult) == 0) {
 	prnMsg(_('The selected work order item cannot be retrieved from the database'), 'info');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -486,7 +486,7 @@ echo '<table class="selection">
 
 if ($WOHeaderRow['closed'] == 1) {
 	prnMsg(_('The selected work order has been closed and variances calculated and posted. No more issues of materials and components can be made against this work order.'), 'info');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -826,5 +826,5 @@ if (!isset($_POST['IssueItem'])) { //no item selected to issue yet
 } //end if selecting new item to issue or entering the issued item quantities
 echo '</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

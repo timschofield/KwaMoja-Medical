@@ -1,8 +1,8 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Costed Bill Of Material');
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_GET['StockID'])) {
 	$StockId = trim(mb_strtoupper($_GET['StockID']));
@@ -242,5 +242,5 @@ if (isset($StockId) and $StockId != "") {
 	prnMsg(_('Enter a stock item code above') . ', ' . _('to view the costed bill of material for'), 'info');
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

@@ -1,8 +1,8 @@
 <?php
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Update Item Costs From CSV');
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Update Item Costs from CSV file') . '" />' . ' ' . _('Update Item Costs from CSV file') . '</p>';
 
 $FieldHeadings = array(
@@ -29,7 +29,7 @@ if (isset($_FILES['CostUpdateFile']) and $_FILES['CostUpdateFile']['name']) { //
 	if (count($HeadRow) != count($FieldHeadings)) {
 		prnMsg(_('File contains') . ' ' . count($HeadRow) . ' ' . _('columns, expected') . ' ' . count($FieldHeadings), 'error');
 		fclose($FileHandle);
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
@@ -39,7 +39,7 @@ if (isset($_FILES['CostUpdateFile']) and $_FILES['CostUpdateFile']['name']) { //
 		if (trim(mb_strtoupper($HeadField)) != trim(mb_strtoupper($FieldHeadings[$HeadingColumnNumber]))) {
 			prnMsg(_('The file to import the item cost updates from contains incorrect column headings') . ' ' . mb_strtoupper($HeadField) . ' != ' . mb_strtoupper($FieldHeadings[$HeadingColumnNumber]) . '<br />' . _('The column headings must be') . ' StockID, Material Cost, Labour Cost, Overhead Cost', 'error');
 			fclose($FileHandle);
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 		$HeadingColumnNumber++;
@@ -128,6 +128,6 @@ if (isset($_FILES['CostUpdateFile']) and $_FILES['CostUpdateFile']['name']) { //
 		</form>';
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

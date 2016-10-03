@@ -1,9 +1,9 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Purchase Order Authorisation Maintenance');
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/group_add.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
 
@@ -266,5 +266,5 @@ if (isset($_GET['Edit'])) {
 		</div>';
 }
 echo '</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

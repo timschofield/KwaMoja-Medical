@@ -1,11 +1,11 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Maintenance Of Petty Cash Tabs');
-/* Manual links before header.inc */
+/* Manual links before header.php */
 $ViewTopic = 'PettyCash';
 $BookMark = 'PCTabSetup';
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/money_add.png" title="' . _('Payment Entry') . '" alt="" />' . ' ' . $Title . '</p>';
 
@@ -550,5 +550,5 @@ if (!isset($_GET['delete'])) {
 
 } // end if user wish to delete
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

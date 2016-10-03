@@ -4,12 +4,12 @@
 
 /* This code is really ugly ... */
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Edit Remaining Items');// _('Edit Remaining Strings For This Language')
 $ViewTopic = 'SpecialUtilities';
 $BookMark = 'Z_poEditLangRemaining';// Anchor's id in the manual's html document.
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<div class="toplink">
 		<a href="' . $RootPath . '/Z_poAdmin.php">' . _('Back to the translation menu') . '</a>
@@ -154,6 +154,6 @@ if (isset($_POST['submit'])) {
 
 
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

@@ -4,11 +4,11 @@
 
 include('includes/DefineCartClass.php');
 include('includes/DefineSerialItems.php');
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Specify Picked Controlled Items');
 
-/* Session started in header.inc for password checking and authorisation level check */
-include('includes/header.inc');
+/* Session started in header.php for password checking and authorisation level check */
+include('includes/header.php');
 
 
 if (empty($_GET['identifier'])) {
@@ -27,7 +27,7 @@ if (isset($_GET['LineNo'])) {
 			<a href="' . $RootPath . '/PickingLists.php">' . _('Select a pick list line to process') . '</a>
 		</div>';
 	prnMsg(_('This page can only be opened if a pick list has been selected') . '. ' . _('Please do that first'), 'error');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -37,7 +37,7 @@ if (!isset($_SESSION['Items' . $Identifier]) OR !isset($_SESSION['ProcessingPick
 			<a href="' . $RootPath . '/SelectPickingLists.php">' . _('Select a a pick List to maintain') . '</a>
 		</div>';
 	prnMsg(_('This page can only be opened if a pick list has been selected'), 'error');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -50,7 +50,7 @@ $LineItem =& $_SESSION['Items' . $Identifier]->LineItems[$LineNo];
 if ($LineItem->Controlled != 1) {
 	echo '<div class="centre"><a href="' . $RootPath . '/PickingLists.php">' . _('Back to the Sales Order') . '</a></div>';
 	prnMsg(_('The line item must be defined as controlled to require input of the batch numbers or serial numbers being sold'), 'error');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -83,6 +83,6 @@ include('includes/InputSerialItems.php');
 of the item selected for dispatch */
 $_SESSION['Items' . $Identifier]->LineItems[$LineNo]->QtyDispatched = $TotalQuantity;
 
-include('includes/footer.inc');
+include('includes/footer.php');
 exit;
 ?>

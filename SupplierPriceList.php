@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Supplier Purchasing Data');
 
-include('includes/header.inc');
+include('includes/header.php');
 if (isset($_POST['SupplierID'])) {
 	$_POST['SupplierID'] = stripslashes($_POST['SupplierID']);
 }
@@ -56,7 +56,7 @@ if (isset($_POST['StockSearch'])) {
 	echo '</td></tr></table><br />';
 	echo '<div class="centre"><input type="submit" name="Search" value="' . _('Search Now') . '" /></div><br />';
 	echo '</form>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -288,7 +288,7 @@ if (isset($searchresult) and !isset($_POST['Select'])) {
 		echo '</table>
 			  <br />
 			  </form>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 }
@@ -402,7 +402,7 @@ if ((isset($SupplierID) and $SupplierID != '') and !isset($_POST['SearchSupplier
 		echo '</tr></table><br />';
 		echo '<div class="centre"><input type="submit" name="SearchSupplier" value="' . _('Find Suppliers Now') . '" /></div>';
 		echo '</form>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 }
@@ -476,7 +476,7 @@ if (isset($SuppliersResult)) {
 	echo '</tbody>
 	</table>
 </form>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 //end if results to show
@@ -597,7 +597,7 @@ if (isset($_POST['SupplierID'])) {
 	}
 	echo '</table>';
 	echo '</form>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 

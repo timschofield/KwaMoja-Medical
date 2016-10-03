@@ -1,13 +1,13 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Supplier Maintenance');
-/* Manual links before header.inc */
+/* Manual links before header.php */
 $ViewTopic = 'AccountsPayable';
 $BookMark = 'NewSupplier';
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 include('includes/CountriesArray.php');
 
 function Is_ValidAccount($ActNo) {
@@ -982,5 +982,5 @@ if (isset($_POST['New'])) {
 echo '</form>';
 // end of main ifs
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

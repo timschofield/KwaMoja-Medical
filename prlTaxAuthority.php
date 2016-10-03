@@ -1,11 +1,11 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Tax Authority Section');
 
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 include('includes/prlFunctions.php');
 
 if (isset($_POST['SelectedTaxAuthID'])) {
@@ -249,6 +249,6 @@ echo '</table>';
 
 echo '<div class="centre"><input type=submit name=submit value=' . _('Enter Information') . '></div></form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

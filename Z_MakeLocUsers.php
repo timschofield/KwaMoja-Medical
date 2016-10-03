@@ -2,9 +2,9 @@
 /* $Id: Z_MakeLocUsers.php 1 agaluski $*/
 /* Script to make user locations for all users that do not have user location records set up*/
 
-include ('includes/session.inc');
+include ('includes/session.php');
 $Title = _('Make locationusers Records');
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<br />' . _('This script to make user locations for all users that do not have user location records set up');
 
@@ -24,5 +24,5 @@ $Result = DB_query($SQL, $ErrMsg);
 
 prnMsg(_('Any users that may not have had user location records have now been given new location user records'), 'info');
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

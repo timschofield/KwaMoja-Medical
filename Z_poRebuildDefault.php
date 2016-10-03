@@ -9,12 +9,12 @@
 
 /* Steve Kitchen */
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Rebuild the System Default Language File');
 $ViewTopic = 'SpecialUtilities';// Filename in ManualContents.php's TOC.
 $BookMark = 'Z_poRebuildDefault';// Anchor's id in the manual's html document.
-include('includes/header.inc');
+include('includes/header.php');
 
 /* Your webserver user MUST have read/write access to here,	otherwise you'll be wasting your time */
 
@@ -30,7 +30,7 @@ echo '<div class="page_help_text">' . _('Utility page to rebuild the system defa
 otherwise you'll be wasting your time */
 
 $PathToDefault = './locale/en_GB.utf8/LC_MESSAGES/messages.pot';
-$FilesToInclude = '*.php api/*.php includes/*.inc includes/*.php install/*.php reportwriter/languages/en_US/reports.php';
+$FilesToInclude = '*.php api/*.php includes/*.php includes/*.php install/*.php reportwriter/languages/en_US/reports.php';
 $xgettextCmd = 'xgettext --no-wrap --from-code=utf-8 -L php -o ' . $PathToDefault . ' ' . $FilesToInclude;
 
 if (isset($_POST['submit'])) {
@@ -59,6 +59,6 @@ if (isset($_POST['submit'])) {
 
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

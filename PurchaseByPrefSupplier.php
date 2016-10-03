@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Preferred Supplier Purchasing');
-include('includes/header.inc');
+include('includes/header.php');
 if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
-	include('includes/SQL_CommonFunctions.inc');
+	include('includes/SQL_CommonFunctions.php');
 	$InputError = 0; //Always hope for the best
 
 	//Make an array of the Items to purchase
@@ -297,7 +297,7 @@ if (isset($_POST['CreatePO']) and isset($_POST['Supplier'])) {
 		prnMsg(_('Purchase Order') . ' ' . $OrderNo . ' ' . _('has been created.') . ' ' . _('Total order value of') . ': ' . locale_number_format($OrderValue, $SupplierRow['decimalplaces']) . ' ' . $SupplierRow['currcode'], 'success');
 		echo '<a href="' . $RootPath . '/PO_PDFPurchOrder.php?OrderNo=' . urlencode($OrderNo) . '">' . _('Print Order') . '</a>
 				<a href="' . $RootPath . '/PO_Header.php?ModifyOrderNumber=' . urlencode($OrderNo) . '">' . _('Edit Order') . '</a>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} else {
 		prnMsg(_('Unable to create the order'), 'error');
@@ -368,10 +368,10 @@ if (isset($_POST['Supplier']) and isset($_POST['ShowItems']) and $_POST['Supplie
 
 	if (DB_error_no() != 0) {
 		$Title = _('Supplier Ordering') . ' - ' . _('Problem Report') . '....';
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('The supplier inventory quantities could not be retrieved by the SQL because') . ' - ' . DB_error_msg(), 'error');
 		echo '<div class="toplink"><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a></div>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} else {
 		//head up a new table
@@ -415,10 +415,10 @@ if (isset($_POST['Supplier']) and isset($_POST['ShowItems']) and $_POST['Supplie
 
 			if (DB_error_no() != 0) {
 				$Title = _('Preferred supplier purchasing') . ' - ' . _('Problem Report') . '....';
-				include('includes/header.inc');
+				include('includes/header.php');
 				prnMsg(_('The sales quantities could not be retrieved by the SQL because') . ' - ' . DB_error_msg(), 'error');
 				echo '<div class="toplink"><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a></div>';
-				include('includes/footer.inc');
+				include('includes/footer.php');
 				exit;
 			}
 
@@ -436,10 +436,10 @@ if (isset($_POST['Supplier']) and isset($_POST['ShowItems']) and $_POST['Supplie
 
 			if (DB_error_no() != 0) {
 				$Title = _('Preferred supplier purchasing') . ' - ' . _('Problem Report') . '....';
-				include('includes/header.inc');
+				include('includes/header.php');
 				prnMsg(_('The sales order demand quantities could not be retrieved by the SQL because') . ' - ' . DB_error_msg(), 'error');
 				echo '<div class="toplink"><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a></div>';
-				include('includes/footer.inc');
+				include('includes/footer.php');
 				exit;
 			}
 
@@ -462,10 +462,10 @@ if (isset($_POST['Supplier']) and isset($_POST['ShowItems']) and $_POST['Supplie
 
 			if (DB_error_no() != 0) {
 				$Title = _('Preferred supplier purchasing') . ' - ' . _('Problem Report') . '....';
-				include('includes/header.inc');
+				include('includes/header.php');
 				prnMsg(_('The sales order demand quantities from parent assemblies could not be retrieved by the SQL because') . ' - ' . DB_error_msg(), 'error');
 				echo '<div class="toplink"><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a></div>';
-				include('includes/footer.inc');
+				include('includes/footer.php');
 				exit;
 			}
 
@@ -490,10 +490,10 @@ if (isset($_POST['Supplier']) and isset($_POST['ShowItems']) and $_POST['Supplie
 			$OnOrdResult = DB_query($SQL, '', '', false, false);
 			if (DB_error_no() != 0) {
 				$Title = _('Preferred supplier purchasing') . ' - ' . _('Problem Report') . '....';
-				include('includes/header.inc');
+				include('includes/header.php');
 				prnMsg(_('The purchase order quantities could not be retrieved by the SQL because') . ' - ' . DB_error_msg(), 'error');
 				echo '<div class="toplink"><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a></div>';
-				include('includes/footer.inc');
+				include('includes/footer.php');
 				exit;
 			}
 
@@ -530,6 +530,6 @@ if (isset($_POST['Supplier']) and isset($_POST['ShowItems']) and $_POST['Supplie
 
 echo '</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

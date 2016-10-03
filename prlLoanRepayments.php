@@ -1,11 +1,11 @@
 <?php
 /* $Revision: 1.0 $ */
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Employee Loan Repayments');
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/money_add.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '</p>';
 
@@ -103,7 +103,7 @@ if (isset($_POST['Process'])) {
 			}
 		}
 	}
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -182,6 +182,6 @@ if (!isset($_POST['PayPeriodID'])) {
 	}
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

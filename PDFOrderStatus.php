@@ -1,7 +1,7 @@
 <?php
 
-include('includes/session.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/session.php');
+include('includes/SQL_CommonFunctions.php');
 
 $InputError = 0;
 
@@ -19,7 +19,7 @@ if (isset($_POST['ToDate']) and !is_date($_POST['ToDate'])) {
 if (!isset($_POST['FromDate']) or !isset($_POST['ToDate'])) {
 
 	$Title = _('Order Status Report');
-	include('includes/header.inc');
+	include('includes/header.php');
 
 	if ($InputError == 1) {
 		prnMsg($Msg, 'error');
@@ -85,10 +85,10 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate'])) {
 		</div>';
 	echo '</form>';
 
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } else {
-	include('includes/ConnectDB.inc');
+	include('includes/ConnectDB.php');
 	include('includes/PDFStarter.php');
 	$PDF->addInfo('Title', _('Order Status Report'));
 	$PDF->addInfo('Subject', _('Orders from') . ' ' . $_POST['FromDate'] . ' ' . _('to') . ' ' . $_POST['ToDate']);
@@ -276,22 +276,22 @@ $SQL .= " ORDER BY salesorders.orderno";
 $Result = DB_query($SQL, '', '', false, false); //dont trap errors here
 
 if (DB_error_no() != 0) {
-	include('includes/header.inc');
+	include('includes/header.php');
 	echo '<br />' . _('An error occurred getting the orders details');
 	if ($Debug == 1) {
 		echo '<br />' . _('The SQL used to get the orders that failed was') . '<br />' . $SQL;
 	}
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } elseif (DB_num_rows($Result) == 0) {
 	$Title = _('Order Status Report - No Data');
-	include('includes/header.inc');
+	include('includes/header.php');
 	prnMsg(_('There were no orders found in the database within the period from') . ' ' . $_POST['FromDate'] . ' ' . _('to') . ' ' . $_POST['ToDate'] . '. ' . _('Please try again selecting a different date range'), 'info');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
-include('includes/PDFOrderStatusPageHeader.inc');
+include('includes/PDFOrderStatusPageHeader.php');
 
 $OrderNo = 0;
 /*initialise */
@@ -323,7 +323,7 @@ while ($MyRow = DB_fetch_array($Result)) {
 		if ($YPos - (2 * $line_height) < $Bottom_Margin) {
 			/*Then set up a new page */
 			$PageNumber++;
-			include('includes/PDFOrderStatusPageHeader.inc');
+			include('includes/PDFOrderStatusPageHeader.php');
 			$OrderNo = 0;
 		}
 		/*end of new page header  */
@@ -374,7 +374,7 @@ while ($MyRow = DB_fetch_array($Result)) {
 	if ($YPos - (2 * $line_height) < $Bottom_Margin) {
 		/*Then set up a new page */
 		$PageNumber++;
-		include('includes/PDFOrderStatusPageHeader.inc');
+		include('includes/PDFOrderStatusPageHeader.php');
 		$OrderNo = 0;
 	}
 	/*end of new page header  */

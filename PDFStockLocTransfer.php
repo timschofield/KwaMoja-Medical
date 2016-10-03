@@ -1,6 +1,6 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Stock Location Transfer Docket Error');
 
 include('includes/PDFStarter.php');
@@ -11,7 +11,7 @@ if (isset($_POST['TransferNo'])) {
 
 if (!isset($_GET['TransferNo'])) {
 
-	include('includes/header.inc');
+	include('includes/header.php');
 	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Reprint transfer docket') . '</p><br />';
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -25,7 +25,7 @@ if (!isset($_GET['TransferNo'])) {
 			<input type="submit" name="Print" value="' . _('Print') . '" />
 		  </div>';
 	echo '</form>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -69,15 +69,15 @@ $Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 
 if (DB_num_rows($Result) == 0) {
 
-	include('includes/header.inc');
+	include('includes/header.php');
 	prnMsg(_('The transfer reference selected does not appear to be set up') . ' - ' . _('enter the items to be transferred first'), 'error');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
 $TransferRow = DB_fetch_array($Result);
 
-include('includes/PDFStockLocTransferHeader.inc');
+include('includes/PDFStockLocTransferHeader.php');
 $line_height = 30;
 $FontSize = 10;
 
@@ -94,7 +94,7 @@ do {
 
 	if ($YPos < $Bottom_Margin + $line_height) {
 		$PageNumber++;
-		include('includes/PDFStockLocTransferHeader.inc');
+		include('includes/PDFStockLocTransferHeader.php');
 	}
 
 } while ($TransferRow = DB_fetch_array($Result));

@@ -3,7 +3,7 @@
 $DirectoryLevelsDeep = 1;
 $PathPrefix = '../';
 
-require($PathPrefix . 'includes/session.inc');
+require($PathPrefix . 'includes/session.php');
 
 // TBD The followiung line needs to be replace when more translations are available
 $ReportLanguage = 'en_US'; // default language file
@@ -12,7 +12,7 @@ define('DBRptFields', 'reportfields'); // name of the database holding the repor
 //define('FPDF_FONTPATH','../fonts/');  FPDF path to fonts directory
 define('DefRptPath', $PathPrefix . 'companies/' . $_SESSION['DatabaseName'] . '/reportwriter/'); // path to default reports
 // Fetch necessary include files - Host application specific (KwaMoja)
-require_once($PathPrefix . 'includes/DateFunctions.inc');
+require_once($PathPrefix . 'includes/DateFunctions.php');
 
 // Include files for ReportMaker.php
 require('languages/' . $ReportLanguage . '/reports.php'); // include translation before defaults.php
@@ -106,7 +106,7 @@ switch ($_POST['todo']) {
 		} // else use default settings, i.e. no overrides
 		// All done with setup, build the form
 		require($PathPrefix . 'includes/tcpdf.php'); // TCPDF class to generate reports
-		require('WriteForm.inc');
+		require('WriteForm.php');
 		// build the pdf pages (this function exits the script if successful; otherwise returns with error)
 		$success = BuildPDF($ReportID, $Prefs); // build and output form, should not return from this function
 		// if we are here, there's been an error, report it
@@ -135,12 +135,12 @@ switch ($_POST['todo']) {
 		break;
 } // end switch 'todo'
 
-include($PathPrefix . 'includes/header.inc');
+include($PathPrefix . 'includes/header.php');
 if ($usrMsg)
 	foreach ($usrMsg as $temp)
 		prnmsg($temp['message'], $temp['level']);
 include($IncludePage);
-include($PathPrefix . 'includes/footer.inc');
+include($PathPrefix . 'includes/footer.php');
 // End main body
 
 // Begin functions

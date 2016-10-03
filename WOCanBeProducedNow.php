@@ -1,8 +1,8 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('WO items can be produced with available stock');
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" align="center">
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/reports.png" title="' . _('Search') . '" alt="" />
@@ -195,5 +195,5 @@ function display() {
 
 } // End of function display()
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

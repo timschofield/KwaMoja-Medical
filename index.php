@@ -1,7 +1,7 @@
 <?php
 $PageSecurity = 0;
 
-include('includes/session.inc');
+include('includes/session.php');
 
 if (isset($_SESSION['FirstLogIn']) and $_SESSION['FirstLogIn'] == '1' and isset($_SESSION['DatabaseName'])) {
 	$_SESSION['FirstRun'] = true;
@@ -14,7 +14,7 @@ if (isset($_SESSION['FirstLogIn']) and $_SESSION['FirstLogIn'] == '1' and isset(
 $Title = _('Main Menu');
 
 if ($_SESSION['Theme'] == 'mobile') {
-	include('includes/header.inc');
+	include('includes/header.php');
 	if (!isset($_GET['Application']) or $_GET['Application'] == '') {
 		echo '<table id="MainMenuTable">
 				<tr>
@@ -158,7 +158,7 @@ if ($_SESSION['Theme'] == 'mobile') {
 			</table>';
 	}
 } else {
-	include('includes/header.inc');
+	include('includes/header.php');
 
 	if (!isset($_SESSION['MenuItems'])) {
 		include('includes/MainMenuLinksArray.php');
@@ -182,7 +182,7 @@ if ($_SESSION['Theme'] == 'mobile') {
 			</td>
 			</tr>
 		</table><br />';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} elseif (isset($SupplierLogin) and $SupplierLogin == 0) {
 		echo '<br /><table class="table_index">
@@ -203,7 +203,7 @@ if ($_SESSION['Theme'] == 'mobile') {
 			</tr>
 		</table><br />';
 
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
@@ -217,7 +217,7 @@ if ($_SESSION['Theme'] == 'mobile') {
 	echo '<div id="MainMenuDiv"><ul>'; //===HJ===
 	$i = 0;
 	while ($i < count($_SESSION['ModuleLink'])) {
-		// This determines if the user has display access to the module see config.php and header.inc
+		// This determines if the user has display access to the module see config.php and header.php
 		// for the authorisation and security code
 		if ($_SESSION['ModulesEnabled'][$i] == 1) {
 			// If this is the first time the application is loaded then it is possible that
@@ -331,7 +331,7 @@ if ($_SESSION['Theme'] == 'mobile') {
 	echo '</ul></div>'; // MaintenanceDive ===HJ===
 	echo '</div>'; // SubMenuDiv ===HJ===
 
-	include('includes/footer.inc');
+	include('includes/footer.php');
 }
 
 

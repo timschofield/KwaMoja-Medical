@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Run stock ranking analysis');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" >
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/rank.png" title="' . $Title . '" alt="' . $Title . '" />' . ' ' . $Title . '
@@ -15,7 +15,7 @@ if (isset($_POST['Submit'])) {
 	if (!isset($_POST['GroupID']) or $_POST['GroupID']=='') {
 		prnMsg( _('You must select an analysis group to use'), 'error');
 		echo '<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Return to selection criteria') . '</a>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
@@ -154,6 +154,6 @@ if (isset($_POST['Submit'])) {
 	prnMsg(_('Please note if you run an ABC analysis against a ranking group that has been used before, that analysis will be deleted and replaced by this one'), 'warn');
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

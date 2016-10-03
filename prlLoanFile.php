@@ -1,9 +1,9 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 include('includes/prlFunctions.php');
 $Title = _('Employees Loan Deduction Entry');
-include('includes/header.inc');
+include('includes/header.php');
 echo '<a href="' . $RootPath . '/prlSelectLoan.php">' . _('Back to View Loan File Records') . '</a><br />';
 if (isset($_GET['SelectedID'])) {
 	$SelectedID = $_GET['SelectedID'];
@@ -174,5 +174,5 @@ if (!isset($SelectedID)) {
 
 } // end of main ifs
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

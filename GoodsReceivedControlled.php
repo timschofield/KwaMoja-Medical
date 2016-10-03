@@ -3,11 +3,11 @@
 include('includes/DefinePOClass.php');
 include('includes/DefineSerialItems.php');
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Receive Controlled Items');
-/* Session started in header.inc for password checking and authorisation level check */
-include('includes/header.inc');
+/* Session started in header.php for password checking and authorisation level check */
+include('includes/header.php');
 
 if (empty($_GET['identifier'])) {
 	if (empty($_POST['identifier'])) {
@@ -27,7 +27,7 @@ if (!isset($_SESSION['PO' . $Identifier])) {
 		</div>
 		<br />';
 	prnMsg(_('This page can only be opened if a purchase order and line item has been selected') . '. ' . _('Please do that first'), 'error');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -40,7 +40,7 @@ if (isset($_GET['LineNo']) and $_GET['LineNo'] > 0) {
 			<a href="' . $RootPath . '/GoodsReceived.php">' . _('Select a line Item to Receive') . '</a>
 		</div>';
 	prnMsg(_('This page can only be opened if a Line Item on a PO has been selected') . '. ' . _('Please do that first'), 'error');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -54,7 +54,7 @@ if ($LineItem->Controlled != 1) {
 			<a href="' . $RootPath . '/GoodsReceived.php">' . _('Back to the Purchase Order') . '</a>
 		</div>';
 	prnMsg(_('The line being received must be controlled as defined in the item definition'), 'error');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -81,5 +81,5 @@ include('includes/InputSerialItems.php');
 of the item selected for dispatch */
 $_SESSION['PO' . $Identifier]->LineItems[$LineItem->LineNo]->ReceiveQty = $TotalQuantity;
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

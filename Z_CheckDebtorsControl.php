@@ -1,8 +1,8 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Debtors Control Integrity');
-include('includes/header.inc');
+include('includes/header.php');
 
 
 //
@@ -157,6 +157,6 @@ if (isset($_POST['Show'])) {
 echo '</div>
 		  </form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

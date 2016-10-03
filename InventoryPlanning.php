@@ -1,8 +1,8 @@
 <?php
 
-include('includes/session.inc');
-include('includes/SQL_CommonFunctions.inc');
-/* Manual links before header.inc */
+include('includes/session.php');
+include('includes/SQL_CommonFunctions.php');
+/* Manual links before header.php */
 $ViewTopic = 'Inventory';
 $BookMark = 'PlanningReport';
 
@@ -99,13 +99,13 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 
 	if (DB_error_no() != 0) {
 		$Title = _('Inventory Planning') . ' - ' . _('Problem Report') . '....';
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('The inventory quantities could not be retrieved by the SQL because') . ' - ' . DB_error_msg(), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($Debug == 1) {
 			echo '<br />' . $SQL;
 		}
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 	$Period_0_Name = GetMonthText(Date('m'));
@@ -115,7 +115,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 	$Period_4_Name = GetMonthText(Date('m') - 4);
 	$Period_5_Name = GetMonthText(Date('m') - 5);
 
-	include('includes/PDFInventoryPlanPageHeader.inc');
+	include('includes/PDFInventoryPlanPageHeader.php');
 
 	$Category = '';
 
@@ -183,14 +183,14 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 
 		if (DB_error_no() != 0) {
 			$Title = _('Inventory Planning') . ' - ' . _('Problem Report') . '....';
-			include('includes/header.inc');
+			include('includes/header.php');
 			prnMsg(_('The sales quantities could not be retrieved by the SQL because') . ' - ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 			if ($Debug == 1) {
 				echo '<br />' . $SQL;
 			}
 
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 
@@ -228,13 +228,13 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 
 		if (DB_error_no() != 0) {
 			$Title = _('Inventory Planning') . ' - ' . _('Problem Report') . '....';
-			include('includes/header.inc');
+			include('includes/header.php');
 			prnMsg(_('The sales order demand quantities could not be retrieved by the SQL because') . ' - ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 			if ($Debug == 1) {
 				echo '<br />' . $SQL;
 			}
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 
@@ -284,18 +284,18 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 
 		if (DB_error_no() != 0) {
 			$Title = _('Inventory Planning') . ' - ' . _('Problem Report') . '....';
-			include('includes/header.inc');
+			include('includes/header.php');
 			prnMsg(_('The sales order demand quantities from parent assemblies could not be retrieved by the SQL because') . ' - ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 			if ($Debug == 1) {
 				echo '<br />' . $SQL;
 			}
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 
-		// Get the QOO due to Purchase orders for all locations. Function defined in SQL_CommonFunctions.inc
-		// Get the QOO dues to Work Orders for all locations. Function defined in SQL_CommonFunctions.inc
+		// Get the QOO due to Purchase orders for all locations. Function defined in SQL_CommonFunctions.php
+		// Get the QOO dues to Work Orders for all locations. Function defined in SQL_CommonFunctions.php
 		if ($_POST['Location'] == 'All') {
 			$QOO = GetQuantityOnOrderDueToPurchaseOrders($InventoryPlan['stockid']);
 			$QOO += GetQuantityOnOrderDueToWorkOrders($InventoryPlan['stockid']);
@@ -347,7 +347,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 
 		if ($YPos < $Bottom_Margin + $LineHeight) {
 			$PageNumber++;
-			include('includes/PDFInventoryPlanPageHeader.inc');
+			include('includes/PDFInventoryPlanPageHeader.php');
 		}
 
 	}
@@ -359,10 +359,10 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 
 	if ($ListCount == 0) {
 		$Title = _('Print Inventory Planning Report Empty');
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('There were no items in the range and location specified'), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} else {
 		$PDF->OutputD($_SESSION['DatabaseName'] . '_Inventory_Planning_' . Date('Y-m-d') . '.pdf');
@@ -476,7 +476,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 	/*The option to print PDF was not hit */
 
 	$Title = _('Inventory Planning Reporting');
-	include('includes/header.inc');
+	include('includes/header.php');
 
 	echo '<p class="page_title_text" >
 			<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
@@ -548,7 +548,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 			<input type="submit" name="ExportToCSV" value="' . _('Export 24 months to CSV') . '" />
 		</div>
 		</form>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 
 }
 /*end of else not PrintPDF */

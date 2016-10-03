@@ -1,10 +1,10 @@
 <?php
 $PageSecurity = 1;
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Menu Manager');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 if (!isset($_POST['SecurityRole'])) {
 	$RoleSQL = "SELECT secroleid,
@@ -90,6 +90,6 @@ if (!isset($_POST['SecurityRole'])) {
 	echo '</form>';
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

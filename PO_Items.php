@@ -1,12 +1,12 @@
 <?php
 
 include('includes/DefinePOClass.php');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/SQL_CommonFunctions.php');
 
-/* Session started in header.inc for password checking
+/* Session started in header.php for password checking
  * and authorisation level check
  */
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Purchase Order Items');
 
 $Identifier = $_GET['identifier'];
@@ -19,7 +19,7 @@ if (!isset($_SESSION['PO' . $Identifier])) {
 	exit;
 } //end if (!isset($_SESSION['PO'.$Identifier]))
 
-include('includes/header.inc');
+include('includes/header.php');
 
 if (!isset($_POST['Commit'])) {
 	echo '<div class="toplink">
@@ -508,7 +508,7 @@ if (isset($_POST['Commit'])) {
 
 		unset($_SESSION['PO' . $Identifier]);
 		/*Clear the PO data to allow a newy to be input*/
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} //$InputError != 1
 
@@ -575,7 +575,7 @@ if (isset($_POST['EnterLine'])) {
 			if ($Debug == 1) {
 				prnMsg(_('The SQL used to validate the code entered was') . ' ' . $SQL, 'error');
 			} //$Debug == 1
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		} //DB_error_no() != 0
 		if (DB_num_rows($GLValidResult) == 0) {
@@ -774,7 +774,7 @@ if (isset($_POST['NewItem']) and !empty($_POST['PO_ItemsResubmitFormValue']) and
 					if ($Debug == 1) {
 						echo '<br />' . $SQL;
 					} //$Debug == 1
-					include('includes/footer.inc');
+					include('includes/footer.php');
 					exit;
 				}
 			} //$AlreadyOnThisOrder != 1 and filter_number_format($Quantity) > 0
@@ -1369,5 +1369,5 @@ if (isset($SearchResult)) {
 } //end if SearchResults to show
 
 echo '</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

@@ -1,9 +1,9 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Maintain Security Tokens');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_GET['SelectedToken'])) {
 	if ($_GET['Action'] == 'delete') {
@@ -131,5 +131,5 @@ while ($MyRow = DB_fetch_array($Result)) {
 
 echo '</table><br />';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

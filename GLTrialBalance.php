@@ -7,10 +7,10 @@
  * the system is posting any unposted transactions
  */
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Trial Balance');
-include('includes/SQL_CommonFunctions.inc');
-include('includes/AccountSectionsDef.inc'); //this reads in the Accounts Sections array
+include('includes/SQL_CommonFunctions.php');
+include('includes/AccountSectionsDef.php'); //this reads in the Accounts Sections array
 
 
 if (isset($_POST['FromPeriod']) and isset($_POST['ToPeriod']) and $_POST['FromPeriod'] > $_POST['ToPeriod']) {
@@ -23,7 +23,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 
 	$ViewTopic = 'GeneralLedger';
 	$BookMark = 'TrialBalance';
-	include('includes/header.inc');
+	include('includes/header.php');
 	echo '<p class="page_title_text" >
 			<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Trial Balance') . '" alt="' . _('Trial Balance') . '" />' . ' ' . $Title . '
 		</p>';
@@ -106,7 +106,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 
 	/*Now do the posting while the user is thinking about the period to select */
 
-	include('includes/GLPostings.inc');
+	include('includes/GLPostings.php');
 
 } else if (isset($_POST['PrintPDF'])) {
 
@@ -161,28 +161,28 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 		$Title = _('Trial Balance') . ' - ' . _('Problem Report') . '....';
 		$ViewTopic = 'GeneralLedger';
 		$BookMark = 'TrialBalance';
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('No general ledger accounts were returned by the SQL because') . ' - ' . DB_error_msg());
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($Debug == 1) {
 			echo '<br />' . $SQL;
 		}
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 	if (DB_num_rows($AccountsResult) == 0) {
 		$Title = _('Print Trial Balance Error');
 		$ViewTopic = 'GeneralLedger';
 		$BookMark = 'TrialBalance';
-		include('includes/header.inc');
+		include('includes/header.php');
 		echo '<p>';
 		prnMsg(_('There were no entries to print out for the selections specified'));
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
-	include('includes/PDFTrialBalancePageHeader.inc');
+	include('includes/PDFTrialBalancePageHeader.php');
 
 	$j = 1;
 	$Level = 1;
@@ -219,7 +219,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 
 				// Print heading if at end of page
 				if ($YPos < ($Bottom_Margin + (2 * $line_height))) {
-					include('includes/PDFTrialBalancePageHeader.inc');
+					include('includes/PDFTrialBalancePageHeader.php');
 				}
 				if ($MyRow['parentgroupname'] == $ActGrp) {
 					$Level++;
@@ -349,7 +349,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 
 		// Print heading if at end of page
 		if ($YPos < ($Bottom_Margin)) {
-			include('includes/PDFTrialBalancePageHeader.inc');
+			include('includes/PDFTrialBalancePageHeader.php');
 		}
 
 		// Print total for each account
@@ -400,14 +400,14 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 	$PDF->__destruct();
 	exit;
 } elseif (isset($_POST['ExportCSV'])) {
-	include('includes/header.inc');
+	include('includes/header.php');
 	echo '<div class="centre"><a href="GLTrialBalance.php">' . _('Select A Different Period') . '</a></div>';
 	echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/GLTrialBalance_csv.php?FromPeriod=' . $_POST['FromPeriod'] . '&ToPeriod=' . $_POST['ToPeriod'] . '">';
 } else {
 
 	$ViewTopic = 'GeneralLedger';
 	$BookMark = 'TrialBalance';
-	include('includes/header.inc');
+	include('includes/header.php');
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<input type="hidden" name="FromPeriod" value="' . $_POST['FromPeriod'] . '" />
@@ -721,6 +721,6 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 	echo '<div class="centre"><input type="submit" name="SelectADifferentPeriod" value="' . _('Select A Different Period') . '" /></div>';
 }
 echo '</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

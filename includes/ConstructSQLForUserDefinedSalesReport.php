@@ -178,19 +178,19 @@ $ColsResult = DB_query($GetColsSQL);
 
 if (DB_num_rows($ColsResult) == 0) {
 	$Title = _('User Defined Sales Analysis Problem') . ' ....';
-	include('includes/header.inc');
+	include('includes/header.php');
 	prnMsg(_('The report does not have any output columns') . '. ' . _('You need to set up the data columns that you wish to show in the report'), 'error', _('No Columns'));
 	echo '<br /><a href="' . $RootPath . '/SalesAnalReptCols.php?ReportID=' . urlencode($_GET['ReportID']) . '">' . _('Enter Columns for this report') . '</a>';
 	echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	Exit;
 } elseif (DB_num_rows($ColsResult) > 10) {
 	$Title = _('User Defined Sales Analysis Problem') . ' ....';
-	include('includes/header.inc');
+	include('includes/header.php');
 	prnMsg(_('The report cannot have more than 10 columns in it') . '. ' . _('Please delete one or more columns before attempting to run it'), 'error', _('Too Many Columns'));
 	echo '<br /><a href="' . $RootPath . '/SalesAnalReptCols.php?ReportID=' . urlencode($_GET['ReportID']) . '">' . _('Maintain Columns for this report') . '</a>';
 	echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -269,10 +269,10 @@ while ($Cols = DB_fetch_array($ColsResult)) {
 		if ($length_ColNum == 0) {
 
 			$Title = _('User Defined Sales Analysis Problem') . ' ....';
-			include('includes/header.inc');
+			include('includes/header.php');
 			prnMsg(_('Calculated fields must use columns defined in the report specification') . '. ' . _('The numerator column number entered for this calculation is not defined in the report'), 'error', _('Calculation With Undefined Column'));
 			echo '<br /><a href="' . $RootPath . '/SalesAnalReptCols.php?ReportID=' . urlencode($_GET['ReportID']) . '">' . _('Maintain Columns for this report') . '</a>';
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 		$strt_ColNum = 9;
@@ -350,11 +350,11 @@ $Result = DB_query($SQLTheLot, $ErrMsg, $DbgMsg);
 
 if (DB_num_rows($Result) == 0) {
 	$Title = _('User Defined Sales Analysis Problem') . ' ....';
-	include('includes/header.inc');
+	include('includes/header.php');
 	prnMsg(_('The user defined sales analysis SQL did not return any rows') . ' - ' . _('have another look at the criteria specified'), 'error', _('Nothing To Report'));
 	echo '<br /><a href="' . $RootPath . '/SalesAnalRepts.php?SelectedReport=' . urlencode($_GET['ReportID']) . '">' . _('Look at the design of this report') . '</a>';
 	echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 
 	exit;
 }

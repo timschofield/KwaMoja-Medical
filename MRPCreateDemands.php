@@ -2,9 +2,9 @@
 
 // MRPCreateDemands.php - Create mrpdemands based on sales order history
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('MRP Create Demands');
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_POST['submit'])) {
 	// Create mrpdemands based on sales order history
@@ -296,5 +296,5 @@ echo '<tr>
 	</div>';
 echo '</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

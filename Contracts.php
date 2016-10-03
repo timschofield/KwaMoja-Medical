@@ -1,7 +1,7 @@
 <?php
 
 include('includes/DefineContractClass.php');
-include('includes/session.inc');
+include('includes/session.php');
 
 if (isset($_GET['ModifyContractNo'])) {
 	$Title = _('Modify Contract') . ' ' . $_GET['ModifyContractNo'];
@@ -23,8 +23,8 @@ foreach ($_POST as $Name => $Value) {
 
 $ViewTopic = 'Contracts';
 $BookMark = 'CreateContract';
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 /*If the page is called is called without an identifier being set then
  * it must be either a new contract, or the start of a modification of an
@@ -89,14 +89,14 @@ if (isset($_SESSION['Contract' . $Identifier]) and (isset($_POST['EnterContractB
 		echo '<meta http-equiv="refresh" content="0; url=' . $RootPath . '/ContractBOM.php?identifier=' . $Identifier . '" />';
 		echo '<br />';
 		prnMsg(_('You should automatically be forwarded to the entry of the Contract line items page') . '. ' . _('If this does not happen') . ' (' . _('if the browser does not support META Refresh') . ') ' . '<a href="' . $RootPath . '/ContractBOM.php?identifier=' . urlencode($Identifier) . '">' . _('click here') . '</a> ' . _('to continue'), 'info');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 	if (isset($_POST['EnterContractRequirements']) and !$InputError) {
 		echo '<meta http-equiv="refresh" content="0; url=' . $RootPath . '/ContractOtherReqts.php?identifier=' . $Identifier . '" />';
 		echo '<br />';
 		prnMsg(_('You should automatically be forwarded to the entry of the Contract requirements page') . '. ' . _('If this does not happen') . ' (' . _('if the browser does not support META Refresh') . ') ' . '<a href="' . $RootPath . '/ContractOtherReqts.php?identifier=' . urlencode($Identifier) . '">' . _('click here') . '</a> ' . _('to continue'), 'info');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 }
@@ -755,7 +755,7 @@ if (isset($_POST['SelectedCustomer'])) {
 				prnMsg(_('The') . ' ' . $_SESSION['Contract' . $Identifier]->CustomerName . ' ' . _('account is currently at or over their credit limit'), 'warn');
 			} elseif ($_SESSION['CheckCreditLimits'] == 2 and $CreditAvailable <= 0) {
 				prnMsg(_('No more orders can be placed by') . ' ' . $MyRow[0] . ' ' . _(' their account is currently at or over their credit limit'), 'warn');
-				include('includes/footer.inc');
+				include('includes/footer.php');
 				exit;
 			}
 		}
@@ -921,7 +921,7 @@ if (!isset($_SESSION['Contract' . $Identifier]->DebtorNo) or $_SESSION['Contract
 	if (DB_num_rows($Result) == 0) {
 		prnMsg(_('There are no work centres set up yet') . '. ' . _('Please use the link below to set up work centres'), 'warn');
 		echo '<br /><a href="' . $RootPath . '/WorkCentres.php">' . _('Work Centre Maintenance') . '</a>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 	echo '<tr><td>' . _('Default Work Centre') . ': </td><td>';
@@ -1122,5 +1122,5 @@ if (!isset($_SESSION['Contract' . $Identifier]->DebtorNo) or $_SESSION['Contract
 }
 /*end of if customer selected  and entering contract header*/
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

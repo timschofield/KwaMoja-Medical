@@ -1,6 +1,6 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 if (isset($_POST['JournalNo'])) {
 	$JournalNo = $_POST['JournalNo'];
@@ -45,7 +45,7 @@ if ($JournalNo == 'Preview') {
 	$MyRow = DB_fetch_array($Result);
 	$JournalDate = $MyRow['trandate'];
 	DB_data_seek($Result, 0);
-	include('includes/PDFGLJournalHeader.inc');
+	include('includes/PDFGLJournalHeader.php');
 }
 $counter = 1;
 $YPos = $FormDesign->Data->y;
@@ -93,16 +93,16 @@ while ($counter <= $LineCount) {
 		/* We reached the end of the page so finsih off the page and start a newy */
 		$PageNumber++;
 		$YPos = $FormDesign->Data->y;
-		include('includes/PDFGrnHeader.inc');
+		include('includes/PDFGrnHeader.php');
 	} //end if need a new page headed up
 }
 
 if ($LineCount == 0) { //UldisN
 	$Title = _('Printing Error');
-	include('includes/header.inc');
+	include('includes/header.php');
 	prnMsg(_('There were no Journals to print'), 'warn');
 	echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } else {
 	$PDF->OutputD($_SESSION['DatabaseName'] . '_Journal_' . date('Y-m-d') . '.pdf'); //UldisN

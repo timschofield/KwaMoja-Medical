@@ -7,13 +7,13 @@ Asset additions are posted to the debit of fixed asset category cost account if 
 include('includes/DefineSuppTransClass.php');
 
 /* Session started here for password checking and authorisation level check */
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Fixed Asset Charges or Credits');
 
 $ViewTopic = 'FixedAssets';
 $BookMark = 'AssetInvoices';
-include('includes/header.inc');
+include('includes/header.php');
 
 if (!isset($_SESSION['SuppTrans'])) {
 	prnMsg(_('Fixed asset additions or credits are entered against supplier invoices or credit notes respectively') . '. ' . _('To enter supplier transactions the supplier must first be selected from the supplier selection screen') . ', ' . _('then the link to enter a supplier invoice or credit note must be clicked on'), 'info');

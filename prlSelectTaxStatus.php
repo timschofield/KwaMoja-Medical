@@ -1,9 +1,9 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Employee Tax Status Maintenance');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 ?>
 <a href="prlUserSettings.php">Back to User Settings
@@ -85,5 +85,5 @@ if (!isset($TaxStatusID)) {
 echo '</table>';
 //end of ifs and buts!
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

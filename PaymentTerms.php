@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Payment Terms Maintenance');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" >
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/money_add.png" title="' . _('Payment Terms') . '" alt="" />' . ' ' . $Title . '</p>';
@@ -283,5 +283,5 @@ if (!isset($_GET['delete'])) {
 	echo '</form>';
 } //end if record deleted no point displaying form to add record
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

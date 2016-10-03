@@ -1,11 +1,11 @@
 <?php
 /* $Revision: 1.0 $ */
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Bank Details Section');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/bank.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '</p>';
 
@@ -265,5 +265,5 @@ while ($MyRow = DB_fetch_array($Result)) {
 echo '</table>';
 /* End of listing of all bank details */
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

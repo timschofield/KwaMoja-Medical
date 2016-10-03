@@ -1,13 +1,13 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Payment Methods');
-/* Manual links before header.inc */
+/* Manual links before header.php */
 /* RChacon: This is a topic to create.*/
 $ViewTopic = 'ARTransactions';// Filename in ManualContents.php's TOC.
 $BookMark = 'PaymentMethods';// Anchor's id in the manual's html document.
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_GET['SelectedPaymentID'])) {
 	$SelectedPaymentID = $_GET['SelectedPaymentID'];
@@ -300,5 +300,5 @@ if (!isset($_GET['delete'])) {
 
 } //end if record deleted no point displaying form to add record
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

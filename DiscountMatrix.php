@@ -1,8 +1,8 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Discount Matrix Maintenance');
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($Errors)) {
 	unset($Errors);
@@ -183,5 +183,5 @@ while ($MyRow = DB_fetch_array($Result)) {
 echo '</table>
 	</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

@@ -1,8 +1,8 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Import Asterisk Data');
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . $Title . '" />' . ' ' . $Title . '</p>';
 
@@ -11,7 +11,7 @@ if (isset($_POST['Submit'])) { //start file processing
 	/* First check both file exist */
 	if (!file_exists($_POST['Day'])) {
 		prnMsg(_('The Asterisk data file does not exist for this date.'), 'error');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
@@ -23,7 +23,7 @@ if (isset($_POST['Submit'])) { //start file processing
 		if (count($MyRow) != 16) {
 			prnMsg(_('Row number') . ' ' . $i . ' ' . _('has') . ' ' . count($MyRow) . ' ' . _('columns, expected') . ' 16. ' . _('Download the template to see the expected columns.'), 'error');
 			fclose($FileHandle);
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 		++$i;
@@ -35,7 +35,7 @@ if (isset($_POST['Submit'])) { //start file processing
 					<a href="Customers.php" target="_blank">' . _('Create a new customer account.') . '</a>
 				</div>';
 			prnMsg(_('Account code') . ' ' . $MyRow[0] . ' ' . _('has not been created yet. Please create and import the file again.'), 'error');
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 	}
@@ -190,6 +190,6 @@ if (isset($_POST['Submit'])) { //start file processing
 
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

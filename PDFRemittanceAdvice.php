@@ -1,6 +1,6 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 if ((isset($_POST['PrintPDF'])) and isset($_POST['FromCriteria']) and mb_strlen($_POST['FromCriteria']) >= 1 and isset($_POST['ToCriteria']) and mb_strlen($_POST['ToCriteria']) >= 1) {
 	/*Now figure out the invoice less credits due for the Supplier range under review */
@@ -45,10 +45,10 @@ if ((isset($_POST['PrintPDF'])) and isset($_POST['FromCriteria']) and mb_strlen(
 	if (DB_num_rows($SuppliersResult) == 0) {
 		//then there aint awt to print
 		$Title = _('Print Remittance Advices Error');
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('There were no remittance advices to print out for the supplier range and payment date specified'), 'warn');
 		echo '<br /><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Back') . '</a>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 	/*then print the report */
@@ -89,13 +89,13 @@ if ((isset($_POST['PrintPDF'])) and isset($_POST['FromCriteria']) and mb_strlen(
 		$TransResult = DB_query($SQL, '', '', false, false);
 		if (DB_error_no() != 0) {
 			$Title = _('Remittance Advice Problem Report');
-			include('includes/header.inc');
+			include('includes/header.php');
 			prnMsg(_('The details of the payment to the supplier could not be retrieved because') . ' - ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 			if ($Debug == 1) {
 				echo '<br />' . _('The SQL that failed was') . ' ' . $SQL;
 			}
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 
@@ -142,7 +142,7 @@ if ((isset($_POST['PrintPDF'])) and isset($_POST['FromCriteria']) and mb_strlen(
 	/*The option to print PDF was not hit */
 
 	$Title = _('Remittance Advices');
-	include('includes/header.inc');
+	include('includes/header.php');
 
 	echo '<p class="page_title_text" ><img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/printer.png" title="', $Title, '" alt="" />', ' ', $Title, '</p>';
 	/* show form to allow input	*/
@@ -185,7 +185,7 @@ if ((isset($_POST['PrintPDF'])) and isset($_POST['FromCriteria']) and mb_strlen(
 
 	echo '</form>';
 
-	include('includes/footer.inc');
+	include('includes/footer.php');
 }
 /*end of else not PrintPDF */
 

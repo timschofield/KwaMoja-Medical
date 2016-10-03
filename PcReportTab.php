@@ -1,7 +1,7 @@
 <?php
 
-include('includes/session.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/session.php');
+include('includes/SQL_CommonFunctions.php');
 
 $Title = _('Petty Cash Management Report');
 
@@ -13,7 +13,7 @@ if (isset($_POST['SelectedTabs'])) {
 
 if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['SelectDifferentDate'])) {
 
-	include('includes/header.inc');
+	include('includes/header.php');
 
 	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/money_add.png" title="' . _('Payment Entry') . '" alt="" />' . ' ' . $Title . '</p>';
 
@@ -91,24 +91,24 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 	$TabDetail = DB_query($SQL);
 
 	if (DB_error_no() != 0) {
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('An error occurred getting the orders details'), '', _('Database Error'));
 		if ($Debug == 1) {
 			prnMsg(_('The SQL used to get the orders that failed was') . '<br />' . $SQL, '', _('Database Error'));
 		}
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} elseif (DB_num_rows($TabDetail) == 0) {
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('There were no expenses found in the database within the period from') . ' ' . $_POST['FromDate'] . ' ' . _('to') . ' ' . $_POST['ToDate'] . '. ' . _('Please try again selecting a different date range'), 'warn');
 		if ($Debug == 1) {
 			prnMsg(_('The SQL that returned no rows was') . '<br />' . $SQL, '', _('Database Error'));
 		}
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
-	include('includes/PDFTabReportHeader.inc');
+	include('includes/PDFTabReportHeader.php');
 
 	$SqlTabs = "SELECT * FROM pctabs
 			WHERE tabcode='" . $SelectedTabs . "'";
@@ -225,7 +225,7 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 	exit;
 } else {
 
-	include('includes/header.inc');
+	include('includes/header.php');
 
 	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/money_add.png" title="' . _('Payment Entry') . '" alt="" />' . ' ' . $Title . '</p>';
 
@@ -397,6 +397,6 @@ if ((!isset($_POST['FromDate']) and !isset($_POST['ToDate'])) or isset($_POST['S
 	echo '<div class="centre"><input type="submit" name="SelectDifferentDate" value="' . _('Select A Different Date') . '" /></div>';
 	echo '</form>';
 }
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

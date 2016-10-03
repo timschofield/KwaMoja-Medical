@@ -3,12 +3,12 @@
 include('includes/DefineSerialItems.php');
 include('includes/DefineStockTransfers.php');
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Inventory Transfer') . ' - ' . _('Receiving');// Screen identification.
 $ViewTopic = 'Inventory';// Filename's id in ManualContents.php's TOC.
 $BookMark = 'LocationTransfers';// Anchor's id in the manual's html document.
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 if (empty($_GET['identifier'])) {
 	/*unique session identifier to ensure that there is no conflict with other order entry sessions on the same machine  */
@@ -513,7 +513,7 @@ if (isset($_GET['Trf_ID'])) {
 
 	if (DB_num_rows($Result) == 0) {
 		echo '<h3>' . _('Transfer') . ' #' . $_GET['Trf_ID'] . ' ' . _('Does Not Exist') . '</h3><br />';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
@@ -736,5 +736,5 @@ function RecordItemCancelledInTransfer($TransferReference, $StockID, $CancelQty)
 	$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

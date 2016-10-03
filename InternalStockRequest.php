@@ -2,12 +2,12 @@
 
 include('includes/DefineStockRequestClass.php');
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Internal Materials Request');
 $ViewTopic = 'Inventory';
 $BookMark = 'CreateRequest';
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/transactions.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '</p>';
 
@@ -177,7 +177,7 @@ if (isset($_GET['Edit']) and $_GET['Edit'] == 'Yes') {
 	} //end while header loop
 	echo '</table>
 		</form>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -296,7 +296,7 @@ if (isset($_POST['Submit']) and (!empty($_SESSION['Request']->LineItems))) {
 		prnMsg(_('The internal stock request has been updated'), 'success');
 		echo '<br /><div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?Edit=Yes">' . _('Amend another request') . '</a></div>';
 	}
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	unset($_SESSION['Request']);
 	exit;
 } elseif(isset($_POST['Submit'])) {
@@ -336,7 +336,7 @@ if (isset($_GET['Edit'])) {
 			<input type="submit" name="Edit" value="' . _('Update Line') . '" />
 		</div>
 		</form>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -416,7 +416,7 @@ echo '<div class="centre">
 	</form>';
 
 if (!isset($_SESSION['Request']->Location)) {
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -481,7 +481,7 @@ if (DB_num_rows($Result1) == 0) {
 	echo '<p class="bad">' . _('Problem Report') . ': ' . _('There are no stock categories currently defined for which you are allowed to create stock requests') . '.</p>';
 	echo '<br />
 		<a href="' . $RootPath . '/StockCategories.php">' . _('Define Stock Categories') . '</a>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 echo '<table class="selection">
@@ -920,5 +920,5 @@ if (isset($SearchResult)) {
 } //end if SearchResults to show
 
 //*********************************************************************************************************
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

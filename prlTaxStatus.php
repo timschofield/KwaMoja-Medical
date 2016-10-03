@@ -1,11 +1,11 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Tax Status Maintenance');
 
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 if (isset($_GET['TaxStatusID'])) {
 	$TaxStatusID = strtoupper($_GET['TaxStatusID']);
@@ -192,5 +192,5 @@ if (!isset($TaxStatusID)) {
 	</form>';
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

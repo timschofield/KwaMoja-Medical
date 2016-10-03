@@ -1,6 +1,6 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST['Categories']) > 0) {
 
@@ -35,13 +35,13 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 		$Result = DB_query($SQL, '', '', false, false);
 		if (DB_error_no() != 0) {
 			$Title = _('Stock Count Sheets - Problem Report');
-			include('includes/header.inc');
+			include('includes/header.php');
 			prnMsg(_('The inventory quantities could not be added to the freeze file because') . ' ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 			if ($Debug == 1) {
 				echo '<br />' . $SQL;
 			}
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 	}
@@ -57,13 +57,13 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 		$Result = DB_query($SQL, '', '', false, false);
 		if (DB_error_no() != 0) {
 			$Title = _('Stock Freeze') . ' - ' . _('Problem Report') . '.... ';
-			include('includes/header.inc');
+			include('includes/header.php');
 			prnMsg(_('The old quantities could not be deleted from the freeze file because') . ' ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 			if ($Debug == 1) {
 				echo '<br />' . $SQL;
 			}
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 
@@ -88,20 +88,20 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 		$Result = DB_query($SQL, '', '', false, false);
 		if (DB_error_no() != 0) {
 			$Title = _('Stock Freeze - Problem Report');
-			include('includes/header.inc');
+			include('includes/header.php');
 			prnMsg(_('The inventory quantities could not be added to the freeze file because') . ' ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 			if ($Debug == 1) {
 				echo '<br />' . $SQL;
 			}
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		} else {
 			$Title = _('Stock Check Freeze Update');
-			include('includes/header.inc');
+			include('includes/header.php');
 			echo '<p><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Print Check Sheets') . '</a>';
 			prnMsg(_('Added to the stock check file successfully'), 'success');
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 	}
@@ -131,25 +131,25 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 
 	if (DB_error_no() != 0) {
 		$Title = _('Stock Sheets') . ' - ' . _('Problem Report') . '.... ';
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('The inventory quantities could not be retrieved by the SQL because') . ' ' . DB_error_msg(), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($Debug == 1) {
 			echo '<br />' . $SQL;
 		}
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 	if (DB_num_rows($InventoryResult) == 0) {
 		$Title = _('Stock Count Sheets - Problem Report');
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('Before stock count sheets can be printed, a copy of the stock quantities needs to be taken - the stock check freeze. Make a stock check data file first'), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
-	include('includes/PDFStockCheckPageHeader.inc');
+	include('includes/PDFStockCheckPageHeader.php');
 
 	$Category = '';
 
@@ -185,13 +185,13 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 
 			if (DB_error_no() != 0) {
 				$Title = _('Stock Check Sheets - Problem Report');
-				include('includes/header.inc');
+				include('includes/header.php');
 				prnMsg(_('The sales order demand quantities could not be retrieved by the SQL because') . ' ' . DB_error_msg(), 'error');
 				echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 				if ($Debug == 1) {
 					echo '<br />' . $SQL;
 				}
-				include('includes/footer.inc');
+				include('includes/footer.php');
 				exit;
 			}
 
@@ -241,7 +241,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 
 		if ($YPos < $Bottom_Margin + $line_height) {
 			$PageNumber++;
-			include('includes/PDFStockCheckPageHeader.inc');
+			include('includes/PDFStockCheckPageHeader.php');
 		}
 
 	}
@@ -253,7 +253,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 	/*The option to print PDF was not hit */
 
 	$Title = _('Stock Check Sheets');
-	include('includes/header.inc');
+	include('includes/header.php');
 
 	/*if $FromCriteria is not set then show a form to allow input	*/
 	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/printer.png" title="' . _('print') . '" alt="" />' . ' ' . $Title . '</p><br />';
@@ -353,7 +353,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 		<input type="submit" name="PrintPDF" value="' . _('Print and Process') . '" />
 	</div>
 	</form>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 
 }
 /*end of else not PrintPDF */

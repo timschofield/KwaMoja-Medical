@@ -1,11 +1,11 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('System Parameters');
 $ViewTopic = 'GettingStarted';
 $BookMark = 'SystemConfiguration';
-include('includes/header.inc');
+include('includes/header.php');
 include('includes/CountriesArray.php');
 echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Supplier Types') . '" alt="" />' . $Title . '</p>';
 
@@ -976,7 +976,7 @@ if ($_SESSION['DB_Maintenance'] == '-1') {
 }
 
 echo '</select></td>
-	<td>' . _('Uses the function DB_Maintenance defined in ConnectDB_XXXX.inc to perform database maintenance tasks, to run at regular intervals - checked at each and every user login') . '</td>
+	<td>' . _('Uses the function DB_Maintenance defined in ConnectDB_XXXX.php to perform database maintenance tasks, to run at regular intervals - checked at each and every user login') . '</td>
 	</tr>';
 
 $WikiApplications = array(
@@ -1252,5 +1252,5 @@ echo '</table>
 		<div class="centre"><input type="submit" name="submit" value="' . _('Update') . '" /></div>
 	</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

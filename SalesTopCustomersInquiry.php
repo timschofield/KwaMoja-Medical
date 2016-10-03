@@ -1,8 +1,8 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Top Customers Inquiry');
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/transactions.png" title="' . _('Sales Inquiry') . '" alt="" />' . ' ' . _('Top Customer Sales Inquiry') . '</p>';
 echo '<div class="page_help_text">' . _('Select the parameters for the report') . '</div>';
@@ -263,5 +263,5 @@ if (isset($_POST['ShowSales'])) {
 	echo '</table>';
 
 } //end of if user hit show sales
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

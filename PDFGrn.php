@@ -1,6 +1,6 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 if (isset($_GET['GRNNo'])) {
 	$GRNNo = $_GET['GRNNo'];
@@ -84,7 +84,7 @@ if ($GRNNo == 'Preview') {
 	} //$NoOfGRNs > 0
 } // get data to print
 if ($NoOfGRNs > 0) {
-	include('includes/PDFGrnHeader.inc'); //head up the page
+	include('includes/PDFGrnHeader.php'); //head up the page
 	$FooterPrintedInPage = 0;
 	$YPos = $FormDesign->Data->y;
 	for ($i = 1; $i <= $NoOfGRNs; $i++) {
@@ -132,7 +132,7 @@ if ($NoOfGRNs > 0) {
 			/* We reached the end of the page so finsih off the page and start a newy */
 			$FooterPrintedInPage = 0;
 			$YPos = $FormDesign->Data->y;
-			include('includes/PDFGrnHeader.inc');
+			include('includes/PDFGrnHeader.php');
 		} //end if need a new page headed up
 
 		/*resmart mods*/
@@ -160,7 +160,7 @@ if ($NoOfGRNs > 0) {
 				if ($YPos >= $FormDesign->LineAboveFooter->starty) {
 					$FooterPrintedInPage = 0;
 					$YPos = $FormDesign->Data->y;
-					include('includes/PDFGrnHeader.inc');
+					include('includes/PDFGrnHeader.php');
 				} //end if need a new page headed up
 			} //while SerialStockMoves
 			$LeftOvers = $PDF->addTextWrap($FormDesign->Data->Column2->x, $Page_Height - $YPos, $FormDesign->Data->Column2->Length, $FormDesign->Data->Column2->FontSize, ' ');
@@ -168,7 +168,7 @@ if ($NoOfGRNs > 0) {
 			if ($YPos >= $FormDesign->LineAboveFooter->starty) {
 				$FooterPrintedInPage = 0;
 				$YPos = $FormDesign->Data->y;
-				include('includes/PDFGrnHeader.inc');
+				include('includes/PDFGrnHeader.php');
 			} //end if need a new page headed up
 		} //controlled item*/
 		/*resmart ends*/
@@ -183,9 +183,9 @@ if ($NoOfGRNs > 0) {
 	$PDF->__destruct();
 } else { //there were not GRNs to print
 	$Title = _('GRN Error');
-	include('includes/header.inc');
+	include('includes/header.php');
 	prnMsg(_('There were no GRNs to print'), 'warn');
 	echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 }
 ?>

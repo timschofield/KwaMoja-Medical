@@ -3,12 +3,12 @@
 include('includes/DefineSerialItems.php');
 include('includes/DefineStockTransfers.php');
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Transfer Controlled Items');
 
-/* Session started in session.inc for password checking and authorisation level check */
+/* Session started in session.php for password checking and authorisation level check */
 
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Inventory') . '" alt="" /><b>' . $Title . '</b></p>';
 
@@ -26,7 +26,7 @@ if (!isset($_SESSION['Transfer' . $Identifier])) {
 	echo '<div class="centre"><a href="' . $RootPath . '/StockTransfers.php?NewTransfer=Yes">' . _('Enter A Stock Transfer') . '</a><br />';
 	prnMsg(_('This page can only be opened if a Stock Transfer for a Controlled Item has been initiated'), 'error');
 	echo '</div>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -55,7 +55,7 @@ if ($LineItem->Controlled != 1) {
 		echo '<div class="centre"><a href="' . $RootPath . '/StockTransfers.php?NewTransfer=Yes">' . _('Enter A Stock Transfer') . '</a></div>';
 	}
 	prnMsg(_('Notice') . ' - ' . _('The transferred item must be defined as controlled to require input of the batch numbers or serial numbers being transferred'), 'error');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -92,6 +92,6 @@ $LineItem->Quantity = $TotalQuantity;
 
 /*Also a multi select box for adding bundles to the Transfer without keying */
 
-include('includes/footer.inc');
+include('includes/footer.php');
 exit;
 ?>

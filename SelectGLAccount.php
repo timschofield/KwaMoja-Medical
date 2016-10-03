@@ -1,12 +1,12 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Search GL Accounts');
 
 $ViewTopic = 'GeneralLedger';
 $BookMark = 'GLAccountInquiry';
-include('includes/header.inc');
+include('includes/header.php');
 
 unset($Result);
 
@@ -123,5 +123,5 @@ if (isset($Result) and DB_num_rows($Result) > 0) {
 
 echo '</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

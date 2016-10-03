@@ -5,10 +5,10 @@
 include('includes/prlRegTimeClass.php');
 include('includes/DefineJournalClass.php');
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Normal Time Entry for Hourly Employees');
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 if (isset($_GET['NewRT']) == 'Yes' AND isset($_SESSION['RTDetail'])) {
 	unset($_SESSION['RTDetail']->RTEntries);
@@ -186,5 +186,5 @@ if (ABS($_SESSION['RTDetail']->RTTotal) > 0.001 and $_SESSION['RTDetail']->RTIte
 }
 
 echo '</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

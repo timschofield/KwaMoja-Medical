@@ -1,9 +1,9 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Supplier Offers');
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 if (isset($_POST['supplierid'])) {
 	$SQL = "SELECT suppname,
@@ -236,9 +236,9 @@ if (!isset($_POST['submit']) and isset($_POST['supplierid'])) {
 		$Recipients = GetMailList('OffersReceivedResultRecipients');
 		if (sizeOf($Recipients) == 0) {
 			$Title = _('Inventory Valuation') . ' - ' . _('Problem Report');
-			include('includes/header.inc');
+			include('includes/header.php');
 			prnMsg(_('There are no members of the Sales Analysis Report Recipients email group'), 'warn');
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 		array_push($Recipients, $Email);
@@ -278,9 +278,9 @@ if (!isset($_POST['submit']) and isset($_POST['supplierid'])) {
 		$Recipients = GetMailList('OffersReceivedResultRecipients');
 		if (sizeOf($Recipients) == 0) {
 			$Title = _('Inventory Valuation') . ' - ' . _('Problem Report');
-			include('includes/header.inc');
+			include('includes/header.php');
 			prnMsg(_('There are no members of the Sales Analysis Report Recipients email group'), 'warn');
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 		array_push($Recipients, $Email);
@@ -299,6 +299,6 @@ if (!isset($_POST['submit']) and isset($_POST['supplierid'])) {
 	}
 	prnMsg(_('All offers have been processed, and emails sent where appropriate'), 'success');
 }
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

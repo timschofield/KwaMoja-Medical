@@ -14,7 +14,7 @@
 	addText() and other functions. Use addText() instead of addTextWrap() to
 	print left aligned elements.*/
 
-include('includes/session.inc');
+include('includes/session.php');
 
 if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST['Categories']) > 0) {
 
@@ -43,21 +43,21 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 			$Title = _('Special price List - No Customer Selected');
 			$ViewTopic = 'SalesTypes';// Filename in ManualContents.php's TOC.
 			$BookMark = 'PDFPriceList';// Anchor's id in the manual's html document.
-			include('includes/header.inc');
+			include('includes/header.php');
 			echo '<br />';
 			prnMsg(_('The customer must first be selected from the select customer link') . '. ' . _('Re-run the price list once the customer has been selected'));
 			echo '<br /><br /><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Back') . '</a>';
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 		if (!is_date($_POST['EffectiveDate'])) {
 			$Title = _('Special price List - No Customer Selected');
 			$ViewTopic = 'SalesTypes';// Filename in ManualContents.php's TOC.
 			$BookMark = 'PDFPriceList';// Anchor's id in the manual's html document.
-			include('includes/header.inc');
+			include('includes/header.php');
 			prnMsg(_('The effective date must be entered in the format') . ' ' . $_SESSION['DefaultDateFormat'], 'error');
 			echo '<br /><br /><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Back') . '</a>';
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 
@@ -154,21 +154,21 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 	$PricesResult = DB_query($SQL, '', '', false, false);
 	if (DB_error_no() != 0) {
 		$Title = _('Price List') . ' - ' . _('Problem Report....');
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('The Price List could not be retrieved by the SQL because') . ' - ' . DB_error_msg(), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($Debug == 1) {
 			prnMsg(_('For debugging purposes the SQL used was') . ': ' . $SQL, 'error');
 		}
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 	if (DB_num_rows($PricesResult) == 0) {
 		$Title = _('Print Price List Error');
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('There were no price details to print out for the customer or category specified'), 'warn');
 		echo '<br /><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Back') . '</a>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
@@ -292,7 +292,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 	$Title = _('Price Listing');
 	$ViewTopic = 'SalesTypes';// Filename in ManualContents.php's TOC.
 	$BookMark = 'PDFPriceList';// Anchor's id in the manual's html document.
-	include('includes/header.inc');
+	include('includes/header.php');
 
 	echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/customer.png" title="' . _('Price List') . '" />' . ' ' . _('Print a price list by inventory category') . '</p>';
 
@@ -376,7 +376,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['Categories']) and sizeOf($_POST[
 			</div>';
 		echo '</form>';
 	}
-	include('includes/footer.inc');
+	include('includes/footer.php');
 
 }
 /*end of else not PrintPDF */

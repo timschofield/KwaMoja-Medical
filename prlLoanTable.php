@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Loan Table Section');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_GET['LoanTableID'])) {
 	$LoanTableID = $_GET['LoanTableID'];
@@ -149,5 +149,5 @@ if (!isset($LoanTableID)) {
 
 echo '</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

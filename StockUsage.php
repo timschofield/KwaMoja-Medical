@@ -1,6 +1,6 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Stock Usage');
 
@@ -18,7 +18,7 @@ if (isset($_POST['ShowGraphUsage'])) {
 	exit;
 }
 
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" >
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Dispatch') . '" alt="" />' . ' ' . $Title . '
@@ -190,6 +190,6 @@ echo '<div class="centre">
 	</div>';
 
 echo '</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

@@ -1,10 +1,10 @@
 <?php
 /* $Revision: 1.0 $ */
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('View Payroll Deductions');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 
 
@@ -83,5 +83,5 @@ if (!isset($Counter)) {
 echo '</table>';
 //end of ifs and buts!
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

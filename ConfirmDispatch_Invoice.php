@@ -2,21 +2,21 @@
 
 /* $Id: ConfirmDispatch_Invoice.php 6450 2013-11-28 15:19:14Z exsonqu $*/
 
-/* Session started in session.inc for password checking and authorisation level check */
+/* Session started in session.php for password checking and authorisation level check */
 include('includes/DefineCartClass.php');
 include('includes/DefineSerialItems.php');
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Confirm Dispatches and Invoice An Order');
 
-/* Manual links before header.inc */
+/* Manual links before header.php */
 $ViewTopic = 'ARTransactions';
 $BookMark = 'ConfirmInvoice';
 
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 include('includes/CountriesArray.php');
-include('includes/FreightCalculation.inc');
-include('includes/GetSalesTransGLCodes.inc');
+include('includes/FreightCalculation.php');
+include('includes/GetSalesTransGLCodes.php');
 
 
 if (empty($_GET['identifier'])) {
@@ -32,7 +32,7 @@ if (!isset($_GET['OrderNumber']) and !isset($_SESSION['ProcessingOrder'])) {
 			<a href="' . $RootPath . '/SelectSalesOrder.php">' . _('Select a sales order to invoice') . '</a>
 		</div>';
 	prnMsg(_('This page can only be opened if an order has been selected Please select an order first from the delivery details screen click on Confirm for invoicing'), 'error');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } elseif (isset($_GET['OrderNumber']) and $_GET['OrderNumber'] > 0) {
 
@@ -233,7 +233,7 @@ if (!isset($_GET['OrderNumber']) and !isset($_SESSION['ProcessingOrder'])) {
 			/* there are no line items that have a quantity to deliver */
 			echo '<br />';
 			prnMsg(_('There are no ordered items with a quantity left to deliver. There is nothing left to invoice'));
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 
 		} //end of checks on returned data set
@@ -243,7 +243,7 @@ if (!isset($_GET['OrderNumber']) and !isset($_SESSION['ProcessingOrder'])) {
 		/*end if the order was returned sucessfully */
 
 		echo '<br />' . prnMsg(_('This order item could not be retrieved. Please select another order'), 'warn');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} //valid order returned from the entered order number
 } else {
@@ -278,7 +278,7 @@ if (!isset($_GET['OrderNumber']) and !isset($_SESSION['ProcessingOrder'])) {
 			//Preventing from dispatched more than ordered. Since it's controlled items, users must select the batch/lot again.
 			if ($_SESSION['Items' . $Identifier]->LineItems[$Itm->LineNumber]->QtyDispatched > ($_SESSION['Items' . $Identifier]->LineItems[$Itm->LineNumber]->Quantity - $_SESSION['Items' . $Identifier]->LineItems[$Itm->LineNumber]->QtyInv)) {
 				prnMsg(_('Invoiceed quantity cannot not be more than the order balance') . '. ' . _('The invoiced quantity is') . ' ' . $_SESSION['Items' . $Identifier]->LineItems[$Itm->LineNumber]->QtyDispatched . ' ' . _('And the order balance is ') . ' ' . ($_SESSION['Items' . $Identifier]->LineItems[$Itm->LineNumber]->Quantity - $_SESSION['Items' . $Identifier]->LineItems[$Itm->LineNumber]->QtyInv), 'error');
-				include('includes/footer.inc');
+				include('includes/footer.php');
 				exit;
 			}
 		} else if (isset($_POST[$Itm->LineNumber . '_QtyDispatched'])) {
@@ -625,7 +625,7 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 	}
 	if (!$QuantityInvoicedIsPositive) {
 		prnMsg(_('There are no lines on this order with a quantity to invoice') . '. ' . _('No further processing has been done'), 'error');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
@@ -683,7 +683,7 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 			echo '</form>';
 			echo '<div class="centre">
 					<input type="submit" name="Update" value="' . _('Update') . '" /></div>';
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 
@@ -710,7 +710,7 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 	if ($_SESSION['CompanyRecord'] == 0) {
 		/*The company data and preferences could not be retrieved for some reason */
 		prnMsg(_('The company information and preferences could not be retrieved') . ' - ' . _('see your system administrator'), 'error');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
@@ -741,7 +741,7 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 		unset($_SESSION['Items' . $Identifier]->LineItems);
 		unset($_SESSION['Items' . $Identifier]);
 		unset($_SESSION['ProcessingOrder']);
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
@@ -761,7 +761,7 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 			unset($_SESSION['Items' . $Identifier]->LineItems);
 			unset($_SESSION['Items' . $Identifier]);
 			unset($_SESSION['ProcessingOrder']);
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 	}
@@ -1399,7 +1399,7 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 
 			if ($_SESSION['CompanyRecord']['gllink_stock'] == 1 and $OrderLine->StandardCost != 0 and !$IsAsset) {
 
-				/*first the cost of sales entry - GL accounts are retrieved using the function GetCOGSGLAccount from includes/GetSalesTransGLCodes.inc  */
+				/*first the cost of sales entry - GL accounts are retrieved using the function GetCOGSGLAccount from includes/GetSalesTransGLCodes.php  */
 
 				$SQL = "INSERT INTO gltrans (type,
 											typeno,
@@ -1833,5 +1833,5 @@ if (isset($_POST['ProcessInvoice']) and $_POST['ProcessInvoice'] != '') {
 }
 echo '</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

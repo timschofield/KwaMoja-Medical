@@ -4,9 +4,9 @@
 
 $Title = _('Geocoded Supplier Report');
 
-include ('includes/session.inc');
-include ('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include ('includes/session.php');
+include ('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 $SQL="SELECT * FROM geocode_param WHERE 1";
 $ErrMsg = _('An error occurred in retrieving the currency information');
@@ -116,6 +116,6 @@ function doNothing() {}
 </body>
 <?
 echo '<div class="centre"><a href="' . $RootPath . '/GeocodeSetup.php">' . _('Go to Geocode Setup') . '</a></div></p>';
-include ('includes/footer.inc');
+include ('includes/footer.php');
 ?>
 </html>

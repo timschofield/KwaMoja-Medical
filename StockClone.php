@@ -1,12 +1,12 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Clone Item');
-/* Manual links before header.inc */
+/* Manual links before header.php */
 $ViewTopic = 'Inventory';
 $BookMark = 'CloneItem';
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 if (isset($_GET['OldStockID']) or isset($_POST['OldStockID'])) { //we are cloning
 	$_POST['OldStockID'] = (isset($_GET['OldStockID']) and !empty($_GET['OldStockID'])) ? $_GET['OldStockID'] : $_POST['OldStockID'];
@@ -1068,6 +1068,6 @@ echo '<div class="centre"><input type="submit" name="submit" value="' . _('Inser
 echo '<input type="submit" name="UpdateCategories" style="visibility:hidden;width:1px" value="' . _('Categories') . '" /></div>';
 
 echo '</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

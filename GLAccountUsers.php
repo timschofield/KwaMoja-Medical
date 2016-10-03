@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('GL Account Authorised Users');
 $ViewTopic = 'GeneralLedger';
 $BookMark = 'GLAccountUsers';
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_POST['SelectedGLAccount']) and $_POST['SelectedGLAccount'] <> '') { //If POST not empty:
 	$SelectedGLAccount = mb_strtoupper($_POST['SelectedGLAccount']);
@@ -248,5 +248,5 @@ if (!isset($SelectedGLAccount)) { // If is NOT set a GL account for users.
 	echo '</form>';
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

@@ -3,12 +3,12 @@
 /* Steve Kitchen */
 /* Up front menu for language file maintenance */
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('UTILITY PAGE') . ' ' . _('that helps maintain language files');// _('Maintain Language Files')
 $ViewTopic = 'SpecialUtilities';// Filename in ManualContents.php's TOC.
 $BookMark = 'Z_poAdmin';// Anchor's id in the manual's html document.
-include('includes/header.inc');
+include('includes/header.php');
 echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Maintain Language Files') . '" />' . ' ' . _('Maintain Language Files') . '</p>';
 
 /* check if we have gettext - we're useless without it ... */
@@ -30,6 +30,6 @@ if (!is_writable('./locale/' . $_SESSION['Language'])) {
 	echo '<a href="' . $RootPath . '/locale/' . $_SESSION['Language'] . '/LC_MESSAGES/messages.mo">' . _('Download messages.mo file') . '</a>';
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

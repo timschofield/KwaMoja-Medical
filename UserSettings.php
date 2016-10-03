@@ -1,11 +1,11 @@
 <?php
 /* Allows the user to change system wide defaults for the theme - appearance, the number of records to show in searches and the language to display messages in */
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('User Settings');
 $ViewTopic = 'GettingStarted';
 $BookMark = 'UserSettings';
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" ><img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/user.png" title="', _('User Settings'), '" alt="" />', ' ', _('User Settings'), '</p>';
 
@@ -95,7 +95,7 @@ if (isset($_POST['Modify'])) {
 		// update the session variables to reflect user changes on-the-fly
 		$_SESSION['DisplayRecordsMax'] = $_POST['DisplayRecordsMax'];
 		$_SESSION['Theme'] = trim($_POST['Theme']);
-		/*already set by session.inc but for completeness */
+		/*already set by session.php but for completeness */
 		$_SESSION['Theme'] = $_SESSION['Theme'];
 		$_SESSION['Language'] = trim($_POST['Language']);
 		$_SESSION['PDFLanguage'] = $_POST['PDFLanguage'];
@@ -243,5 +243,5 @@ echo '<div class="centre">
 	</div>
 	</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

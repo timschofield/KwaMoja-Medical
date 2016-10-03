@@ -1,7 +1,7 @@
 <?php
 
-include('includes/SQL_CommonFunctions.inc');
-include('includes/session.inc');
+include('includes/SQL_CommonFunctions.php');
+include('includes/session.php');
 
 $InputError = 0;
 if (isset($_POST['Date']) and !is_date($_POST['Date'])) {
@@ -13,7 +13,7 @@ if (isset($_POST['Date']) and !is_date($_POST['Date'])) {
 if (!isset($_POST['Date'])) {
 
 	$Title = _('Supplier Transaction Listing');
-	include('includes/header.inc');
+	include('includes/header.php');
 
 	echo '<div class="centre"><p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/transactions.png" title="' . $Title . '" alt="" />' . ' ' . _('Supplier Transaction Listing') . '</p></div>';
 
@@ -44,11 +44,11 @@ if (!isset($_POST['Date'])) {
 			</div>';
 	echo '</form>';
 
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } else {
 
-	include('includes/ConnectDB.inc');
+	include('includes/ConnectDB.php');
 }
 
 $SQL = "SELECT type,
@@ -72,19 +72,19 @@ $Result = DB_query($SQL, '', '', false, false);
 
 if (DB_error_no() != 0) {
 	$Title = _('Payment Listing');
-	include('includes/header.inc');
+	include('includes/header.php');
 	prnMsg(_('An error occurred getting the payments'), 'error');
 	if ($Debug == 1) {
 		prnMsg(_('The SQL used to get the receipt header information that failed was') . ':<br />' . $SQL, 'error');
 	}
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } elseif (DB_num_rows($Result) == 0) {
 	$Title = _('Payment Listing');
-	include('includes/header.inc');
+	include('includes/header.php');
 	echo '<br />';
 	prnMsg(_('There were no transactions found in the database for the date') . ' ' . $_POST['Date'] . '. ' . _('Please try again selecting a different date'), 'info');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -98,7 +98,7 @@ $line_height = 12;
 $PageNumber = 1;
 $TotalCheques = 0;
 
-include('includes/PDFSuppTransListingPageHeader.inc');
+include('includes/PDFSuppTransListingPageHeader.php');
 
 while ($MyRow = DB_fetch_array($Result)) {
 	$CurrDecimalPlaces = $MyRow['currdecimalplaces'];
@@ -115,7 +115,7 @@ while ($MyRow = DB_fetch_array($Result)) {
 	if ($YPos - (2 * $line_height) < $Bottom_Margin) {
 		/*Then set up a new page */
 		$PageNumber++;
-		include('includes/PDFChequeListingPageHeader.inc');
+		include('includes/PDFChequeListingPageHeader.php');
 	}
 	/*end of new page header  */
 }

@@ -1,8 +1,8 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Upgrade to version 3.10.5');
-include('includes/header.inc');
+include('includes/header.php');
 
 
 prnMsg(_('This script will perform any modifications to the database since v 3.10 required to allow the additional functionality in version 3.10 scripts'), 'info');
@@ -80,5 +80,5 @@ if ($_POST['DoUpgrade'] == _('Perform Upgrade')) {
 	echo '</table>';
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

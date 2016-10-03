@@ -1,13 +1,13 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Fixed Asset Maintenance Tasks');
 
 $ViewTopic = 'FixedAssets';
 $BookMark = 'AssetMaintenance';
 
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/group_add.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p><br />';
 
@@ -236,5 +236,5 @@ if (isset($_GET['Edit'])) {
 		</div>';
 }
 echo '</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Shipment Costing');
-/* Session started in header.inc for password checking and authorisation level check */
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+/* Session started in header.php for password checking and authorisation level check */
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 echo '<p class="page_title_text" >
 		<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/magnifier.png" title="', _('Search'), '" alt="" />', ' ', $Title, '
@@ -17,7 +17,7 @@ if (isset($_GET['NewShipment']) and $_GET['NewShipment'] == 'Yes') {
 
 if (!isset($_GET['SelectedShipment'])) {
 	prnMsg(_('This page is expected to be called with the shipment number to show the costing for'), 'error');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -37,7 +37,7 @@ $GetShiptHdrResult = DB_query($ShipmentHeaderSQL, $ErrMsg);
 if (DB_num_rows($GetShiptHdrResult) == 0) {
 	echo '<br />';
 	prnMsg(_('Shipment') . ' ' . $_GET['SelectedShipment'] . ' ' . _('could not be located in the database'), 'error');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -75,7 +75,7 @@ $GetShiptCostsResult = DB_query($SQL, $ErrMsg);
 if (DB_num_rows($GetShiptCostsResult) == 0) {
 	echo '<br />';
 	prnMsg(_('No General Cost Records exist for Shipment') . ' ' . $_GET['SelectedShipment'] . ' ' . _('in the database'), 'error');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -95,7 +95,7 @@ $GetShiptCostsResult = DB_query($SQL);
 if (DB_error_no() != 0 or DB_num_rows($GetShiptCostsResult) == 0) {
 	echo '<br />';
 	prnMsg(_('No Item Cost Records exist for Shipment') . ' ' . $_GET['SelectedShipment'] . ' ' . _('in the database'), 'error');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -732,5 +732,5 @@ if (isset($_POST['Close'])) {
 	}
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

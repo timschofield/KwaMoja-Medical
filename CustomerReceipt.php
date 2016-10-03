@@ -1,11 +1,11 @@
 <?php
 
 include('includes/DefineReceiptClass.php');
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Receipt Entry');
 
-/* Manual links before header.inc */
+/* Manual links before header.php */
 if ($_GET['Type'] == 'GL') {
 	$ViewTopic = 'GeneralLedger';
 	$BookMark = 'GLReceipts';
@@ -13,8 +13,8 @@ if ($_GET['Type'] == 'GL') {
 	$ViewTopic = 'ARTransactions';
 	$BookMark = 'CustomerReceipts';
 }
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 if (empty($_GET['identifier'])) {
 	$Identifier = date('U');
@@ -74,7 +74,7 @@ if (!isset($_GET['Delete']) and isset($_SESSION['ReceiptBatch' . $Identifier])) 
 		unset($Result);
 	} elseif (DB_num_rows($Result) == 0 and !$BankAccountEmpty) {
 		prnMsg(_('The bank account number') . ' ' . $_POST['BankAccount'] . ' ' . _('is not set up as a bank account'), 'error');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
@@ -231,7 +231,7 @@ if (isset($_POST['CommitBatch'])) {
 
 	if ($_SESSION['CompanyRecord'] == 0) {
 		prnMsg(_('The company has not yet been set up properly') . ' - ' . _('this information is needed to process the batch') . '. ' . _('Processing has been cancelled'), 'error');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
@@ -583,7 +583,7 @@ if (isset($_POST['CommitBatch'])) {
 	echo '<p class="page_title_text"><a href="', $RootPath, '/CustomerReceipt.php?NewReceipt=Yes&Type=GL">', _('Enter GL Receipts'), '</a></p>';
 
 	unset($_SESSION['ReceiptBatch' . $Identifier]);
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 
 }
@@ -810,7 +810,7 @@ if (DB_num_rows($AccountsResults) == 0) {
 		</tr>
 	</table>';
 	prnMsg(_('Bank Accounts have not yet been defined') . '. ' . _('You must first') . ' ' . '<a href="' . $RootPath . '/BankAccounts.php">' . _('define the bank accounts') . '</a>' . _('and general ledger accounts to be affected'), 'info');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } else {
 	echo '<option value=""></option>';
@@ -1250,5 +1250,5 @@ if (isset($_SESSION['ReceiptBatch' . $Identifier]->Items) and count($_SESSION['R
 		</div>';
 }
 echo '</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

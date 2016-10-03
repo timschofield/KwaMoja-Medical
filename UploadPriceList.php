@@ -1,8 +1,8 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Import Sales Price List');
-include('includes/header.inc');
+include('includes/header.php');
 
 $FieldHeadings = array(
 	'StockID', //  0 'STOCKID',
@@ -31,7 +31,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 	if (count($HeadRow) != count($FieldHeadings)) {
 		prnMsg(_('File contains ' . count($HeadRow) . ' columns, expected ' . count($FieldHeadings) . '. Try downloading a new template.'), 'error');
 		fclose($FileHandle);
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
@@ -41,7 +41,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 		if (trim(mb_strtoupper($HeadField)) != trim(mb_strtoupper($FieldHeadings[$head]))) {
 			prnMsg(_('File contains incorrect headers ' . mb_strtoupper($HeadField) . ' != ' . mb_strtoupper($FieldHeadings[$head]) . '. Try downloading a new template.'), 'error');
 			fclose($FileHandle);
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 		$head++;
@@ -59,7 +59,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 		if ($FieldCount != $FieldTarget) {
 			prnMsg(_($FieldTarget . ' fields required, ' . $FieldCount . ' fields received'), 'error');
 			fclose($FileHandle);
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 
@@ -161,6 +161,6 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

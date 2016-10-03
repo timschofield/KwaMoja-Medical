@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Bank Matching');// Screen identificator.
 $ViewTopic = 'GeneralLedger';// Filename's id in ManualContents.php's TOC.
 $BookMark = 'BankMatching';// Filename's id in ManualContents.php's TOC.
-include('includes/header.inc');
+include('includes/header.php');
 
 if ((isset($_GET['Type']) and $_GET['Type'] == 'Receipts') or (isset($_POST['Type']) and $_POST['Type'] == 'Receipts')) {
 
@@ -25,7 +25,7 @@ if ((isset($_GET['Type']) and $_GET['Type'] == 'Receipts') or (isset($_POST['Typ
 } else {
 
 	prnMsg(_('This page must be called with a bank transaction type') . '. ' . _('It should not be called directly'), 'error');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -320,5 +320,5 @@ if ($InputError != 1 and isset($_POST['BankAccount']) and $_POST['BankAccount'] 
 			</div>';
 }
 echo '</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

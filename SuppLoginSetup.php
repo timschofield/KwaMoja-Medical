@@ -1,9 +1,9 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Supplier Login Configuration');
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 include('includes/LanguagesArray.php');
 
 
@@ -11,7 +11,7 @@ if (!isset($_SESSION['SupplierID'])) {
 	echo '<br />
 		<br />';
 	prnMsg(_('A supplier must first be selected before logins can be defined for it') . '<br /><br /><a href="' . $RootPath . '/SelectSupplier.php">' . _('Select A Supplier') . '</a>', 'info');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -95,7 +95,7 @@ if (isset($_POST['submit'])) {
 		$DbgMsg = _('The SQL that was used to insert the new user and failed was');
 		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 		prnMsg(_('A new supplier login has been created'), 'success');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 }
@@ -171,7 +171,7 @@ if (!$FoundTheSupplierRole) {
 	echo '</table>
 		  </form>';
 	prnMsg(_('The supplier login role is expected to contain just one token - number 9. There is no such role currently defined - so a supplier login cannot be set up until this role is defined'), 'error');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -290,5 +290,5 @@ echo '</select></td>
 	</div>
 	</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

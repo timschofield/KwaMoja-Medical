@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Search All Sales Orders');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" >
 		<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/magnifier.png" title="', _('Search'), '" alt="" /> ', ' ', _('Search Sales Orders'), '
@@ -500,6 +500,6 @@ if (isset($SalesOrdersResult)) {
 }
 
 echo '</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

@@ -1,13 +1,13 @@
 <?php
 /* Shows the stock on hand together with outstanding sales orders and outstanding purchase orders by stock location for all items in the selected stock category */
 
-include('includes/session.inc');
-include ('includes/SQL_CommonFunctions.inc');
+include('includes/session.php');
+include ('includes/SQL_CommonFunctions.php');
 $Title = _('All Stock Status By Location/Category');
 
 $ViewTopic = 'Inventory';
 $BookMark = 'StockLocStatus';
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_GET['StockID'])) {
 	$StockId = trim(mb_strtoupper($_GET['StockID']));
@@ -63,7 +63,7 @@ if (DB_num_rows($Result1) == 0) {
 	echo '</table><p>';
 	prnMsg(_('There are no stock categories currently defined please use the link below to set them up'), 'warn');
 	echo '<br /><a href="' . $RootPath . '/StockCategories.php">' . _('Define Stock Categories') . '</a>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -229,9 +229,9 @@ if (isset($_POST['ShowStatus'])) {
 			$DemandQty += $DemandRow[0];
 		}
 
-		// Get the QOO due to Purchase orders for all locations. Function defined in SQL_CommonFunctions.inc
+		// Get the QOO due to Purchase orders for all locations. Function defined in SQL_CommonFunctions.php
 		$QOO = GetQuantityOnOrderDueToPurchaseOrders($StockId, $MyRow['loccode']);
-		// Get the QOO dues to Work Orders for all locations. Function defined in SQL_CommonFunctions.inc
+		// Get the QOO dues to Work Orders for all locations. Function defined in SQL_CommonFunctions.php
 		$QOO += GetQuantityOnOrderDueToWorkOrders($StockId, $MyRow['loccode']);
 
 		if (($_POST['BelowReorderQuantity'] == 'Below' and ($MyRow['quantity'] - $MyRow['reorderlevel'] - $DemandQty) < 0) or $_POST['BelowReorderQuantity'] == 'All' or $_POST['BelowReorderQuantity'] == 'NotZero' or ($_POST['BelowReorderQuantity'] == 'OnOrder' and $QOO != 0)) {
@@ -324,6 +324,6 @@ if (isset($_POST['ShowStatus'])) {
 }
 /* Show status button hit */
 echo '</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

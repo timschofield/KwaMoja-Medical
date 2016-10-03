@@ -1,8 +1,8 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Search Pick Lists ');
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text">
 		<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/magnifier.png" title="', _('Pick Lists'), '" alt=""  />', ' ', _('Pick Lists'), '
@@ -480,5 +480,5 @@ if ($_POST['Status'] == 'New') {
 	//office is gnerating picks.  Warehouse needs to see latest "To Do" list so refresh every 5 minutes
 	echo '<meta http-equiv="refresh" content="300" url=', $RootPath, htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '" />';
 }
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

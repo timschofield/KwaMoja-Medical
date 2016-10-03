@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Other Income Section');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_GET['OthIncID'])) {
 	$OthIncID = $_GET['OthIncID'];
@@ -212,5 +212,5 @@ if (!isset($OthIncID)) {
 
 } // end of main ifs
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 include('includes/barcodepack/class.code128.php');
 
 $PtsPerMM = 2.83464567; //pdf points per mm (72 dpi / 25.4 mm per inch)
@@ -8,7 +8,7 @@ $PtsPerMM = 2.83464567; //pdf points per mm (72 dpi / 25.4 mm per inch)
 if ((isset($_POST['ShowLabels']) or isset($_POST['SelectAll'])) and isset($_POST['StockCategory']) and mb_strlen($_POST['StockCategory']) >= 1) {
 
 	$Title = _('Print Labels');
-	include('includes/header.inc');
+	include('includes/header.php');
 
 	$SQL = "SELECT prices.stockid,
 					stockmaster.description,
@@ -40,13 +40,13 @@ if ((isset($_POST['ShowLabels']) or isset($_POST['SelectAll'])) and isset($_POST
 		if ($debug == 1) {
 			prnMsg(_('For debugging purposes the SQL used was:') . $SQL, 'error');
 		}
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 	if (DB_num_rows($LabelsResult) == 0) {
 		prnMsg(_('There were no price labels to print out for the category specified'), 'warn');
 		echo '<br /><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Back') . '</a>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
@@ -105,7 +105,7 @@ if ((isset($_POST['ShowLabels']) or isset($_POST['SelectAll'])) and isset($_POST
 			<a href="' . $RootPath . '/Labels.php">' . _('Label Template Maintenance') . '</a>
 		</div>
 	</form>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -266,7 +266,7 @@ if (isset($_POST['PrintLabels']) and $NoOfLabels > 0) {
 	/*The option to print PDF was not hit */
 
 	$Title = _('Price Labels');
-	include('includes/header.inc');
+	include('includes/header.php');
 
 	echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/customer.png" title="' . _('Price Labels') . '" alt="" />
          ' . ' ' . _('Print Price Labels') . '</p>';
@@ -357,7 +357,7 @@ if (isset($_POST['PrintLabels']) and $NoOfLabels > 0) {
 				</form>';
 
 	}
-	include('includes/footer.inc');
+	include('includes/footer.php');
 
 }
 /*end of else not PrintPDF */

@@ -1,9 +1,9 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Emloyee Master Record Maintenance');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<div class="toplink"><a href="' . $RootPath . '/prlEmployeeMaster.php">' . _('Create a New Employee Record') . '</a></div>';
 
@@ -84,5 +84,5 @@ if (!isset($EmployeeID)) {
 	}
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

@@ -4,13 +4,13 @@
 
 /* This code is really ugly ... */
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Edit Module');// _('Edit a Language File Module')
 $ViewTopic = 'SpecialUtilities';
 $BookMark = 'Z_poEditLangModule';// Anchor's id in the manual's html document.
 
-include('includes/header.inc');
+include('includes/header.php');
 
 /* Your webserver user MUST have read/write access to here,	otherwise you'll be wasting your time */
 
@@ -40,7 +40,7 @@ if (isset($_POST['ReMergePO'])) {
 		/*first rebuild the en_GB default with xgettext */
 
 		$PathToDefault = './locale/en_GB.utf8/LC_MESSAGES/messages.po';
-		$FilesToInclude = '*php includes/*.php includes/*.inc';
+		$FilesToInclude = '*php includes/*.php includes/*.php';
 		$xgettextCmd = 'xgettext --no-wrap -L php -o ' . $PathToDefault . ' ' . $FilesToInclude;
 
 		system($xgettextCmd);
@@ -245,6 +245,6 @@ if (isset($_POST['module'])) {
 	}
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

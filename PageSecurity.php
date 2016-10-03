@@ -1,8 +1,8 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Page Security Levels');
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/security.png" title="' . _('Page Security Levels') . '" alt="" />' . ' ' . $Title . '</p><br />';
 
@@ -57,5 +57,5 @@ echo '<div class="centre">
 	</div>
 	</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

@@ -2,16 +2,16 @@
 
 /* $Id: PickingLists.php 1 2014-08-29 15:19:14Z agaluski $*/
 
-/* Session started in session.inc for password checking and authorisation level check */
+/* Session started in session.php for password checking and authorisation level check */
 include('includes/DefineCartClass.php');
 include('includes/DefineSerialItems.php');
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Picking List Maintenance');
 
 $ARSecurity = 3;
 
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 if (empty($_GET['identifier'])) {
 	/*unique session identifier to ensure that there is no conflict with other order entry sessions on the same machine  */
@@ -28,7 +28,7 @@ if (!isset($_GET['Prid']) and !isset($_SESSION['ProcessingPick'])) {
 		<br />
 		<br />';
 	prnMsg(_('This page can only be opened if a pick list has been selected Please select a pick list first'), 'error');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } elseif (isset($_GET['Prid']) and $_GET['Prid'] > 0) {
 
@@ -229,7 +229,7 @@ if (!isset($_GET['Prid']) and !isset($_SESSION['ProcessingPick'])) {
 					<a href="' . $RootPath . '/SelectPickingLists.php">' . _('Select a Pick List') . '</a>
 				</div>';
 			prnMsg(_('There are no ordered items with a quantity left to deliver. There is nothing left to invoice'));
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 
 		} //end of checks on returned data set
@@ -242,7 +242,7 @@ if (!isset($_GET['Prid']) and !isset($_SESSION['ProcessingPick'])) {
 				<a href="' . $RootPath . '/SelectPickingLists.php">' . _('Select a Pick List') . '</a>
 			</div>';
 		prnMsg(_('This pick list item could not be retrieved. Please select another pick list'), 'warn');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} //valid order returned from the entered pick number
 } else {
@@ -438,7 +438,7 @@ if (isset($_POST['ProcessPickList']) and $_POST['ProcessPickList'] != '') {
 			echo '<div class="centre">
 					<input type="submit" name="Update" value="' . _('Update') . '" />
 				</div>';
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 
@@ -465,7 +465,7 @@ if (isset($_POST['ProcessPickList']) and $_POST['ProcessPickList'] != '') {
 	if ($_SESSION['CompanyRecord'] == 0) {
 		/*The company data and preferences could not be retrieved for some reason */
 		prnMsg(_('The company information and preferences could not be retrieved') . ' - ' . _('see your system administrator'), 'error');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
@@ -502,7 +502,7 @@ if (isset($_POST['ProcessPickList']) and $_POST['ProcessPickList'] != '') {
 		unset($_SESSION['Items' . $Identifier]->LineItems);
 		unset($_SESSION['Items' . $Identifier]);
 		unset($_SESSION['ProcessingPick']);
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
@@ -519,7 +519,7 @@ if (isset($_POST['ProcessPickList']) and $_POST['ProcessPickList'] != '') {
 			unset($_SESSION['Items' . $Identifier]->LineItems);
 			unset($_SESSION['Items' . $Identifier]);
 			unset($_SESSION['ProcessingPick']);
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 	}
@@ -729,5 +729,5 @@ if (isset($_POST['ProcessPickList']) and $_POST['ProcessPickList'] != '') {
 }
 echo '</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

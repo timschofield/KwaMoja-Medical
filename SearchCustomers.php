@@ -1,9 +1,9 @@
 <?php
 
-/* Session started in session.inc for password checking and authorisation level check
-config.php is in turn included in session.inc $PageSecurity now comes from session.inc (and gets read in by GetConfig.php*/
+/* Session started in session.php for password checking and authorisation level check
+config.php is in turn included in session.php $PageSecurity now comes from session.php (and gets read in by GetConfig.php*/
 
-include('includes/session.inc');
+include('includes/session.php');
 echo '<script type="text/javascript" src = "' . $RootPath . '/javascripts/AjaxFunctions.js"></script>';
 $Title = _('Search for a Customer');
 
@@ -33,7 +33,7 @@ if (isset($_GET['Update']) and $_GET['Update'] == 'Details') {
 	ShowOptionLinks($_SESSION['DebtorNo'], $_SESSION['BranchNo'], $_SESSION['SingleOption']);
 	exit;
 }
-include('includes/header.inc');
+include('includes/header.php');
 
 unset($_SESSION['DebtorNo']);
 unset($_SESSION['BranchNo']);
@@ -103,7 +103,7 @@ if (!isset($_SESSION['BranchNo'])) {
 		</div>';
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 function CustomerBox($PartialCode = '', $PartialName = '', $PartialAddress = '') {
 	if ($PartialCode == '') {

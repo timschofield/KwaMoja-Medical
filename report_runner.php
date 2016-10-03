@@ -81,10 +81,10 @@ for ($i = 0; $i < count($Recipients); $i++) {
 }
 
 $AllowAnyone = true;
-include('includes/session.inc');
+include('includes/session.php');
 
-include('includes/ConstructSQLForUserDefinedSalesReport.inc');
-include('includes/PDFSalesAnalysis.inc');
+include('includes/ConstructSQLForUserDefinedSalesReport.php');
+include('includes/PDFSalesAnalysis.php');
 
 include('includes/htmlMimeMail.php');
 $Mail = new htmlMimeMail();

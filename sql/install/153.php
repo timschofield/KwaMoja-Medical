@@ -47,7 +47,7 @@ if (is_writable($PathPrefix . 'companies/' . $_SESSION['DatabaseName'])) {
 	$_SESSION['Updates']['Successes']++;
 } else {
 	prnMsg( _('The directory') . ' ' . $PathPrefix . 'companies/' . $_SESSION['DatabaseName'] . ' ' . _('must be writable by the web server'), 'error');
-	include($PathPrefix . 'includes/footer.inc');
+	include($PathPrefix . 'includes/footer.php');
 	$_SESSION['Updates']['Errors']++;
 	exit;
 }

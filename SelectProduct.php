@@ -4,14 +4,14 @@ $PricesSecurity = 1000; //don't show pricing info unless security token 1000 ava
 $CostSecurity = 1002; //don't show cost info unless security token 1002 available to user
 $SuppliersSecurity = 9; //don't show supplier purchasing info unless security token 9 available to user
 
-include('includes/session.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/session.php');
+include('includes/SQL_CommonFunctions.php');
 $Title = _('Search Inventory Items');
-/* Manual links before header.inc */
+/* Manual links before header.php */
 $ViewTopic = 'Inventory';
 $BookMark = 'SelectingInventory';
 
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_GET['StockID'])) {
 	//The page is called with a StockID
@@ -42,7 +42,7 @@ $SQL = "SELECT SQL_CACHE categoryid,
 $Result1 = DB_query($SQL);
 if (DB_num_rows($Result1) == 0) {
 	prnMsg( _('There are no stock categories currently defined please use the link below to set them up') . '<br /><a href="' . $RootPath . '/StockCategories.php">' . _('Define Stock Categories') . '</a>', 'warn');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 // end of showing search facilities
@@ -304,9 +304,9 @@ if (!isset($_POST['Search']) and (isset($_POST['Select']) or isset($_SESSION['Se
 			$QOHRow = DB_fetch_row($QOHResult);
 			$QOH = locale_number_format($QOHRow[0], $MyRow['decimalplaces']);
 
-			// Get the QOO due to Purchase orders for all locations. Function defined in SQL_CommonFunctions.inc
+			// Get the QOO due to Purchase orders for all locations. Function defined in SQL_CommonFunctions.php
 			$QOO = GetQuantityOnOrderDueToPurchaseOrders($StockId);
-			// Get the QOO dues to Work Orders for all locations. Function defined in SQL_CommonFunctions.inc
+			// Get the QOO dues to Work Orders for all locations. Function defined in SQL_CommonFunctions.php
 			$QOO += GetQuantityOnOrderDueToWorkOrders($StockId);
 
 			$QOO = locale_number_format($QOO, $MyRow['decimalplaces']);
@@ -781,5 +781,5 @@ if (isset($SearchResult) and !isset($_POST['Select'])) {
 	}
 }
 /* end display list if there is more than one record */
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

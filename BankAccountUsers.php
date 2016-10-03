@@ -1,11 +1,11 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Bank Account Users');;// Screen identificator.
 $ViewTopic = 'GeneralLedger';// Filename's id in ManualContents.php's TOC.
 /* To do this section in the manual.
 $BookMark = 'BankAccountUsers';// Anchor's id in the manual's html document.*/
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/money_add.png" title="' . _('Bank Account Authorised Users') . '" alt="" />' . ' ' . $Title . '</p>';
 
@@ -220,5 +220,5 @@ if (isset($_POST['process']) OR isset($SelectedBankAccount)) {
 	} // end if user wish to delete
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

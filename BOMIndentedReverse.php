@@ -3,7 +3,7 @@
 // BOMIndented.php - Reverse Indented Bill of Materials - From lowest level component to top level
 // assembly
 
-include('includes/session.inc');
+include('includes/session.php');
 
 if (isset($_POST['PrintPDF'])) {
 
@@ -136,14 +136,14 @@ if (isset($_POST['PrintPDF'])) {
 
 	if (DB_error_no() != 0) {
 		$Title = _('Indented BOM Listing') . ' - ' . _('Problem Report');
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('The Indented BOM Listing could not be retrieved by the SQL because') . ' ' . DB_error_msg(), 'error');
 		echo '<br />
 			<a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($Debug == 1) {
 			echo '<br />' . $SQL;
 		}
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
@@ -218,10 +218,10 @@ if (isset($_POST['PrintPDF'])) {
 	}
 	if ($ListCount == 0) {
 		$Title = _('Print Reverse Indented BOM Listing Error');
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('There were no items for the selected component'), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} else {
 		$PDF->OutputD($_SESSION['DatabaseName'] . '_Customer_trans_' . date('Y-m-d') . '.pdf');
@@ -232,7 +232,7 @@ if (isset($_POST['PrintPDF'])) {
 	/*The option to print PDF was not hit so display form */
 
 	$Title = _('Reverse Indented BOM Listing');
-	include('includes/header.inc');
+	include('includes/header.php');
 
 	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
 	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">
@@ -255,7 +255,7 @@ if (isset($_POST['PrintPDF'])) {
 		</div>
 		</form>';
 
-	include('includes/footer.inc');
+	include('includes/footer.php');
 
 }
 /*end of else not PrintPDF */

@@ -21,9 +21,9 @@
 
 /* BEGIN: Start common code division. */
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Form Designer');
-include('includes/header.inc');
+include('includes/header.php');
 /* END: Start common code division. */
 
 /* BEGIN: FUNCTIONS DIVISION. */
@@ -209,7 +209,7 @@ if (empty($_POST['FormName'])) {
 	echo '</select></td></tr></table>';
 	echo '<div class="centre"><input tabindex="6" type="submit" name="submit" value="' . _('Edit Form Layout') . '" /></div>';
 	echo '</form>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } // End of if (empty($_POST['FormName']))
 /* If we are not previewing the form then load up the simplexml
@@ -425,6 +425,6 @@ echo '</form>';
 /* END: PROCEDURE DIVISION. */
 
 /* BEGIN: Final common code division. */
-include('includes/footer.inc');
+include('includes/footer.php');
 /* END: Final common code division. */
 ?>

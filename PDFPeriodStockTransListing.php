@@ -1,7 +1,7 @@
 <?php
 
-include('includes/SQL_CommonFunctions.inc');
-include('includes/session.inc');
+include('includes/SQL_CommonFunctions.php');
+include('includes/session.php');
 
 $InputError = 0;
 if (isset($_POST['FromDate']) and !is_date($_POST['FromDate'])) {
@@ -13,7 +13,7 @@ if (isset($_POST['FromDate']) and !is_date($_POST['FromDate'])) {
 if (!isset($_POST['FromDate'])) {
 
 	$Title = _('Stock Transaction Listing');
-	include('includes/header.inc');
+	include('includes/header.php');
 
 	echo '<div class="centre">
 			<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/transactions.png" title="' . $Title . '" alt="" />' . ' ' . _('Stock Transaction Listing') . '</p>
@@ -87,11 +87,11 @@ if (!isset($_POST['FromDate'])) {
 			</div>';
 	echo '</form>';
 
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } else {
 
-	include('includes/ConnectDB.inc');
+	include('includes/ConnectDB.php');
 }
 
 
@@ -147,16 +147,16 @@ $Result = DB_query($SQL, '', '', false, false);
 
 if (DB_error_no() != 0) {
 	$Title = _('Transaction Listing');
-	include('includes/header.inc');
+	include('includes/header.php');
 	prnMsg(_('An error occurred getting the transactions'), 'error');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } elseif (DB_num_rows($Result) == 0) {
 	$Title = _('Transaction Listing');
-	include('includes/header.inc');
+	include('includes/header.php');
 	echo '<br />';
 	prnMsg(_('There were no transactions found in the database between the dates') . ' ' . $_POST['FromDate'] . ' ' . _('and') . ' ' . $_POST['ToDate'] . '<br />' . _('Please try again selecting a different date'), 'info');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -194,7 +194,7 @@ switch ($_POST['TransType']) {
 		break;
 }
 
-include('includes/PDFPeriodStockTransListingPageHeader.inc');
+include('includes/PDFPeriodStockTransListingPageHeader.php');
 
 while ($MyRow = DB_fetch_array($Result)) {
 
@@ -210,7 +210,7 @@ while ($MyRow = DB_fetch_array($Result)) {
 	if ($YPos - (2 * $line_height) < $Bottom_Margin) {
 		/*Then set up a new page */
 		$PageNumber++;
-		include('includes/PDFPeriodStockTransListingPageHeader.inc');
+		include('includes/PDFPeriodStockTransListingPageHeader.php');
 	}
 	/*end of new page header  */
 }

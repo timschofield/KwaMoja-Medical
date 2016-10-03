@@ -1,12 +1,12 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Authorisation of Petty Cash Expenses');
-/* Manual links before header.inc */
+/* Manual links before header.php */
 $ViewTopic = 'PettyCash';
 $BookMark = 'AuthorizeExpense';
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 if (isset($_POST['SelectedTabs'])) {
 	$SelectedTabs = mb_strtoupper($_POST['SelectedTabs']);
@@ -302,7 +302,7 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 		</tr>';
 
 	// Do the postings
-	include('includes/GLPostings.inc');
+	include('includes/GLPostings.php');
 	echo '</table><br /><div class="centre"><input type="submit" name="Submit" value="' . _('Update') . '" /></div>
 		  </form>';
 
@@ -349,5 +349,5 @@ if (isset($_POST['Submit']) or isset($_POST['update']) or isset($SelectedTabs) o
 	echo '</form>';
 }
 /*end of else not submit */
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

@@ -1,10 +1,10 @@
 <?php
 
 include('includes/DefineWOClass.php');
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Work Order Entry');
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 echo '<p class="page_title_text">
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/transactions.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '
@@ -54,7 +54,7 @@ if (isset($_POST['AddToOrder'])) {
 	if (is_null($LocRow['loccode']) or $LocRow['loccode'] == '') {
 		prnMsg(_('Your security settings do not allow you to create or update new Work Order at this location') . ' ' . $_SESSION['WorkOrder' . $Identifier]->LocationCode, 'error');
 		echo '<br /><a href="' . $RootPath . '/SelectWorkOrder.php">' . _('Select an existing work order') . '</a>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 	foreach ($_POST as $Key => $Value) {
@@ -242,7 +242,7 @@ if (isset($_POST['delete'])) {
 			unset($_POST['HasWOSerialNos' . $i]);
 			unset($_POST['WOComments' . $i]);
 		}
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 }
@@ -323,7 +323,7 @@ if (isset($_POST['WO']) and $_POST['WO'] != _('Not yet allocated')) {
 		if ($EditingExisting == true) {
 			prnMsg(_('Your location security settings do not allow you to Update this Work Order'), 'error');
 			echo '<br /><a href="' . $RootPath . '/SelectWorkOrder.php">' . _('Select an existing work order') . '</a>';
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 	}
@@ -622,5 +622,5 @@ if (isset($SearchResult)) {
 } //end if SearchResults to show
 
 echo '</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

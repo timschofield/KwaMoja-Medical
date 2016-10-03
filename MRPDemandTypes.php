@@ -1,8 +1,8 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('MRP Demand Types');
-include('includes/header.inc');
+include('includes/header.php');
 
 //SelectedDT is the Selected MRPDemandType
 if (isset($_POST['SelectedDT'])) {
@@ -180,5 +180,5 @@ echo '<tr>
 	</div>
 	</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

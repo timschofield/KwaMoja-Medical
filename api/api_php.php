@@ -1,21 +1,21 @@
 <?php
 
-/* Include session.inc, to allow database connection, and access to
+/* Include session.php, to allow database connection, and access to
 miscfunctions, and datefunctions.*/
 // FOLLOWING IS ALWAYS REQUIRED
 $api_DatabaseName = 'kwamoja';
 
 $AllowAnyone = true;
 $PathPrefix = dirname(__FILE__) . '/../';
-include('api_session.inc');
+include('api_session.php');
 
 include('api_errorcodes.php');
-/* Include SQL_CommonFunctions.inc, to use GetNextTransNo().*/
-include($PathPrefix . 'includes/SQL_CommonFunctions.inc');
+/* Include SQL_CommonFunctions.php, to use GetNextTransNo().*/
+include($PathPrefix . 'includes/SQL_CommonFunctions.php');
 /* Required for creating invoices/credits */
-include($PathPrefix . 'includes/GetSalesTransGLCodes.inc');
+include($PathPrefix . 'includes/GetSalesTransGLCodes.php');
 include($PathPrefix . 'includes/Z_POSDataCreation.php');
-include($PathPrefix . 'includes/GetPrice.inc');
+include($PathPrefix . 'includes/GetPrice.php');
 
 /* Get kwamoja authentication, and return a valid database
 connection */

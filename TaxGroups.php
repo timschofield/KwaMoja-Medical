@@ -1,11 +1,11 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Tax Group Maintenance');
 $ViewTopic = 'Tax';// Filename in ManualContents.php's TOC.
 $BookMark = 'TaxGroups';// Anchor's id in the manual's html document.
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_GET['SelectedGroup'])) {
 	$SelectedGroup = $_GET['SelectedGroup'];
@@ -427,6 +427,6 @@ echo '<div class="centre">
 		<a href="', $RootPath, '/TaxCategories.php">', _('Tax Category Maintenance'), '</a>
 	</div>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

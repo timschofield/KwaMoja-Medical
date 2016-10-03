@@ -1,9 +1,9 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 if ($_GET['InvOrCredit'] == 'Invoice') {
 	$TransactionType = _('Invoice');
@@ -75,5 +75,5 @@ echo '<div class="centre">
 		<input type="submit" name="DoIt" value="' . _('OK') . '" />
 	</div>
 </form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

@@ -11,8 +11,8 @@ define('DBRptFields', 'reportfields'); // name of the database table holding the
 //define('FPDF_FONTPATH','../fonts/');  FPDF path to fonts directory
 
 // Fetch necessary include files - Host application specific (KwaMoja)
-require($PathPrefix . 'includes/session.inc');
-require_once($PathPrefix . 'includes/DateFunctions.inc');
+require($PathPrefix . 'includes/session.php');
+require_once($PathPrefix . 'includes/DateFunctions.php');
 
 // Include files for ReportMaker.php
 require('languages/' . $ReportLanguage . '/reports.php'); // include translation before defaults.php
@@ -148,7 +148,7 @@ if (!isset($_GET['action']) or (!isset($_POST['ReportID']))) {
 			$Prefs = ReadPostData($ReportID, $Prefs);
 			// include the necessary files to build report
 			require($PathPrefix . 'includes/tcpdf/tcpdf.php'); // TCPDF class to generate reports
-			require('WriteReport.inc');
+			require('WriteReport.php');
 			$ReportData = '';
 			$success = BuildSQL($Prefs);
 			if ($success['level'] == 'success') { // Generate the output data array
@@ -192,12 +192,12 @@ if (!isset($_GET['action']) or (!isset($_POST['ReportID']))) {
 	} // end switch 'todo'
 } // end if (!isset($_POST['todo']))
 
-include($PathPrefix . 'includes/header.inc');
+include($PathPrefix . 'includes/header.php');
 if ($usrMsg)
 	foreach ($usrMsg as $temp)
 		prnmsg($temp['message'], $temp['level']);
 include($IncludePage);
-include($PathPrefix . 'includes/footer.inc');
+include($PathPrefix . 'includes/footer.php');
 // End main body
 
 // Begin functions

@@ -1,6 +1,6 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 if (isset($_GET['WO'])) {
 	$WO = filter_number_format($_GET['WO']);
@@ -118,11 +118,11 @@ if (isset($WO) and isset($StockId) and $WO != '') {
 		$PDF->__destruct();
 	} else {
 		$Title = _('WO Item production Slip');
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('There were no items with ready to produce'), 'info');
 		prnMsg($SQL);
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 
 	}

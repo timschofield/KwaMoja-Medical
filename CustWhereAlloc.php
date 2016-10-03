@@ -1,11 +1,11 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Customer How Paid Inquiry');
-/* Manual links before header.inc */
+/* Manual links before header.php */
 $ViewTopic = 'ARInquiries';
 $BookMark = 'WhereAllocated';
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_GET['TransNo']) and isset($_GET['TransType'])) {
 	$_POST['TransNo'] = (int)$_GET['TransNo'];
@@ -189,6 +189,6 @@ if (isset($_POST['ShowResults']) and $_POST['TransNo'] != '') {
 		prnMsg( _('This transaction does not exist as yet'), 'info');
 	}
 }
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

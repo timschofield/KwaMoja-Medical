@@ -1,5 +1,5 @@
 <?php
-/* $Id: GetPrice.inc 6941 2014-10-26 23:18:08Z daintree $*/
+/* $Id: GetPrice.php 6941 2014-10-26 23:18:08Z daintree $*/
 function GetPrice($StockID, $DebtorNo, $BranchCode, $OrderLineQty = 1, $ReportZeroPrice = 1) {
 
 	$Price = 0;

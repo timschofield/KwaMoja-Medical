@@ -1,12 +1,12 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Tax Categories Maintenance');
 $ViewTopic = 'Tax';// Filename in ManualContents.php's TOC.
 $BookMark = 'TaxCategories';// Anchor's id in the manual's html document.
 
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Supplier Types') . '" alt="" />' . $Title . '</p>';
 
@@ -254,5 +254,5 @@ echo '<div class="centre">
 		<a href="', $RootPath, '/TaxProvinces.php">', _('Dispatch Tax Province Maintenance'), '</a>
 	</div>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

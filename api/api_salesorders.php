@@ -1097,7 +1097,7 @@ function InvoiceSalesOrder($OrderNo, $User, $Password) {
 
 		if ($CompanyRecord['gllink_stock'] == 1 and $StandardCost != 0) {
 
-			/*first the cost of sales entry - GL accounts are retrieved using the function GetCOGSGLAccount from includes/GetSalesTransGLCodes.inc  */
+			/*first the cost of sales entry - GL accounts are retrieved using the function GetCOGSGLAccount from includes/GetSalesTransGLCodes.php  */
 
 			$SQL = "INSERT INTO gltrans (type,
 											typeno,

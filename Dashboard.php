@@ -2,9 +2,9 @@
 
 $PageSecurity = 0;
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Dashboard');
-include('includes/header.inc');
+include('includes/header.php');
 include('includes/MainMenuLinksArray.php');
 
 $SQL = "SELECT scripts FROM dashboard_users WHERE userid = '" . $_SESSION['UserID'] . "' ";
@@ -66,5 +66,5 @@ while ($MyRow = DB_fetch_array($Result)) {
 echo '</select></div>';
 echo '</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

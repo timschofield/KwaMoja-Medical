@@ -2,11 +2,11 @@
 
 $PricesSecurity = 9;
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Select an Asset');
 $ViewTopic = 'FixedAssets';
 $BookMark = 'AssetSelection';
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_GET['AssetID'])) {
 	//The page is called with a AssetID
@@ -36,7 +36,7 @@ $SQL = "SELECT categoryid,
 $Result = DB_query($SQL);
 if (DB_num_rows($Result) == 0) {
 	prnMsg( _('There are no asset categories currently defined please use the link below to set them up') . '<br /><a href="' . $RootPath . '/FixedAssetCategories.php">' . _('Define Asset Categories') . '</a>', 'warn');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 // end of showing search facilities
@@ -287,5 +287,5 @@ if (isset($SearchResult) and !isset($_POST['Select'])) {
 	} // there were records to list
 }
 /* end display list if there is more than one record */
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

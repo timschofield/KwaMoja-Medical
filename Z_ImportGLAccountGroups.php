@@ -1,10 +1,10 @@
 <?php
 /* $Id$*/
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Import Chart of Accounts');
-include('includes/header.inc');
-include('xmlrpc/lib/xmlrpc.inc');
+include('includes/header.php');
+include('xmlrpc/lib/xmlrpc.php');
 include('api/api_errorcodes.php');
 
 $user = $_SESSION['UserID'];
@@ -95,6 +95,6 @@ if (isset($_POST['update'])) {
 		  </form>';
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

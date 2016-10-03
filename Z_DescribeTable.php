@@ -1,8 +1,8 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Database table details');
-include('includes/header.inc');
+include('includes/header.php');
 
 $SQL = 'DESCRIBE ' . $_GET['table'];
 $Result = DB_query($SQL);
@@ -23,6 +23,6 @@ while ($MyRow = DB_fetch_row($Result)) {
 		/tr>';
 }
 echo '</table>';
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

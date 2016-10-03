@@ -1,11 +1,11 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Fixed Assets');
 $ViewTopic = 'FixedAssets';
 $BookMark = 'AssetItems';
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 echo '<div class="toplink"><a href="' . $RootPath . '/SelectAsset.php">' . _('Back to Select') . '</a></div>' . "\n";
 
@@ -687,5 +687,5 @@ if (isset($New)) {
 echo '</div>
 	  </div>
 	</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

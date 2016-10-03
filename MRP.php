@@ -2,9 +2,9 @@
 
 /* $Id: MRP.php 6986 2014-11-15 09:19:14Z exsonqu $*/
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Run MRP Calculation');
-include('includes/header.inc');
+include('includes/header.php');
 if (isset($_POST['submit'])) {
 
 	if (!isset($_POST['Leeway']) or !is_numeric(filter_number_format($_POST['Leeway']))) {
@@ -913,5 +913,5 @@ function CreateLowerLevelRequirement($TopPart, $TopDate, $TopQuantity, $TopMRPDe
 
 } // End of CreateLowerLevelRequirement
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

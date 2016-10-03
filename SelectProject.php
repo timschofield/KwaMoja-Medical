@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Select Project');
 $ViewTopic = 'Projects';
 $BookMark = 'SelectProject';
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<div class="toplink">
 		<a href="' . $RootPath . '/Projects.php">' . _('Create a New Project') . '</a>
@@ -196,5 +196,5 @@ while ($MyRow = DB_fetch_array($ProjectsResult)) {
 echo '</tbody>
 	</table>
 </form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

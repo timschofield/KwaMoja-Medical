@@ -4,8 +4,8 @@
 //$PageSecurity = 3;
 $Title = _('Geocode Generate XML');
 
-include ('includes/session.inc');
-include('includes/SQL_CommonFunctions.inc');
+include ('includes/session.php');
+include('includes/SQL_CommonFunctions.php');
 
 function parseToXML($htmlStr)
 {

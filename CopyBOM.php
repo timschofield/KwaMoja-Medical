@@ -5,13 +5,13 @@
  * Script to duplicate BoMs.
  */
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Copy a BOM to New Item Code');
 
-include('includes/header.inc');
+include('includes/header.php');
 
-include('includes/SQL_CommonFunctions.inc');
+include('includes/SQL_CommonFunctions.php');
 
 if (isset($_POST['Submit'])) {
 	$StockId = $_POST['StockID'];
@@ -207,6 +207,6 @@ if (isset($_POST['Submit'])) {
 	echo '<div class="centre"><input type="submit" name="Submit" value="Submit" /></div>
 		  </form>';
 
-	include('includes/footer.inc');
+	include('includes/footer.php');
 }
 ?>

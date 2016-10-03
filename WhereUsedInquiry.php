@@ -1,8 +1,8 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Where Used Inquiry');
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_GET['StockID'])) {
 	$StockId = trim(mb_strtoupper($_GET['StockID']));
@@ -23,7 +23,7 @@ if (isset($StockId)) {
 	$MyRow = DB_fetch_row($Result);
 	if (DB_num_rows($Result) == 0) {
 		prnMsg(_('The item code entered') . ' - ' . $StockId . ' ' . _('is not set up as an item in the system') . '. ' . _('Re-enter a valid item code or select from the Select Item link above'), 'error');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 	echo '<br />
@@ -110,5 +110,5 @@ if (isset($StockId)) {
 } // StockID is set
 
 echo '</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

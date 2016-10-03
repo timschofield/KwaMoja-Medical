@@ -2,10 +2,10 @@
 
 /* Script to import fixed assets into a specified period*/
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Import Fixed Assets');
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/fixed_assets.png" title="' . _('Import Fixed Assets from .csv file') . '" />' . ' ' . _('Import Fixed Assets from .csv file') . '</p>';
 
@@ -42,7 +42,7 @@ if ($_FILES['SelectedAssetFile']['name']) { //start file processing
 	if (count($HeaderRow) != count($FieldNames)) {
 		prnMsg(_('File contains') . ' ' . count($HeaderRow) . ' ' . _('columns, expected') . ' ' . count($FieldNames) . '. ' . _('Study a downloaded template to see the format for the file'), 'error');
 		fclose($FileHandle);
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
@@ -52,7 +52,7 @@ if ($_FILES['SelectedAssetFile']['name']) { //start file processing
 		if (mb_strtoupper($FieldName) != mb_strtoupper($FieldNames[$i])) {
 			prnMsg(_('The selected file contains fields in the incorrect order (' . mb_strtoupper($FieldName) . ' != ' . mb_strtoupper($FieldNames[$i]) . _('. Download a template and ensure that fields are in the same sequence as the template.')), 'error');
 			fclose($FileHandle);
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 		++$i;
@@ -70,7 +70,7 @@ if ($_FILES['SelectedAssetFile']['name']) { //start file processing
 		if ($FieldCount != count($FieldNames)) {
 			prnMsg(count($FieldNames) . ' ' . _('fields are required, but') . ' ' . $FieldCount . ' ' . _('fields were received'), 'error');
 			fclose($FileHandle);
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 
@@ -307,5 +307,5 @@ if ($_FILES['SelectedAssetFile']['name']) { //start file processing
 
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

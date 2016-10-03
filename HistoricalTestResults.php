@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Historical Test Results');
 $ViewTopic = 'QualityAssurance';// Filename in ManualContents.php's TOC.
 $BookMark = 'QA_HistoricalResults';// Anchor's id in the manual's html document.
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_GET['KeyValue'])) {
 	$KeyValue = mb_strtoupper($_GET['KeyValue']);
@@ -167,5 +167,5 @@ if (isset($KeyValue)) {
 		</div>';
 	}
 }
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

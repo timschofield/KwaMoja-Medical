@@ -10,12 +10,12 @@ if (isset($_GET['PayrollID'])) {
 $Status = GetOpenCloseStr(GetPayrollRow($PayrollID, 11));
 if ($Status == 'Closed') {
 	prnMsg(_('Payroll is Closed. Re-open first...'), 'warn');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 if (isset($_POST['submit'])) {
 	prnMsg(_('Contact Administrator...'), 'error');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } else {
 	$SQL = "UPDATE prlpayrolltrans SET grosspay=0

@@ -1,6 +1,6 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 include('includes/htmlMimeMail.php');
 
 $SQL = "SELECT 	description,
@@ -88,10 +88,10 @@ if (DB_num_rows($Result) > 0) {
 }
 
 $Title = _('Send Maintenance Email Reminders');
-include('includes/header.inc');
+include('includes/header.php');
 
 prnMsg( _('All reminders have been sent'), 'info');
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

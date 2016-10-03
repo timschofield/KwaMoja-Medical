@@ -1,11 +1,11 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Department of Company Section');
 
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 include('includes/prlFunctions.php');
 
 if (isset($_GET['DepartmentID'])) {
@@ -190,5 +190,5 @@ if (!isset($DepartmentID)) {
 
 } // end of main ifs
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

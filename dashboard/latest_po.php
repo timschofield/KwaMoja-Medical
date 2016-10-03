@@ -1,7 +1,7 @@
 <?php
 $PageSecurity = 0;
 $PathPrefix = '../';
-include('../includes/session.inc');
+include('../includes/session.php');
 
 $RootPath = '../';
 

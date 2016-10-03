@@ -1,15 +1,15 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $_SESSION['Updates']['Errors'] = 0;
 $_SESSION['Updates']['Successes'] = 0;
 $_SESSION['Updates']['Warnings'] = 0;
 
-include('includes/UpgradeDB_' . $DBType . '.inc');
+include('includes/UpgradeDB_' . $DBType . '.php');
 $Title = _('Uninstall a Plugin');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/plugin.png" width="24px" title="' . _('Uninstall Plugin') . '" alt="" />' . _('Uninstall Plugin') . '</p>';
 
@@ -217,6 +217,6 @@ function executeSQL($SQL, $TrapErrors = False) {
 	return $ErrorNumber;
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

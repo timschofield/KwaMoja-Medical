@@ -2,12 +2,12 @@
 
 /* Steve Kitchen */
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Edit Header');// _('Edit a Language File Header')
 $ViewTopic = 'SpecialUtilities';
 $BookMark = 'Z_poEditLangHeader';// Anchor's id in the manual's html document.
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<div class ="toplink"><a href="' . $RootPath . '/Z_poAdmin.php">' . _('Back to the translation menu') . '</a></div>';
 
@@ -113,6 +113,6 @@ if (isset($_POST['submit'])) {
 		echo '</form>';
 	}
 }
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

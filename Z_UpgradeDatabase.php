@@ -2,7 +2,7 @@
 
 $PageSecurity = 15;
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Database Upgrade');
 
@@ -12,7 +12,7 @@ if (!isset($_SESSION['DBVersion'])) {
 	header('Location: index.php');
 }
 
-include('includes/header.inc');
+include('includes/header.php');
 
 function executeSQL($SQL, $TrapErrors = False) {
 	global $SQLFile;
@@ -37,7 +37,7 @@ function updateDBNo($NewNumber) {
 	}
 }
 
-include('includes/UpgradeDB_' . $DBType . '.inc');
+include('includes/UpgradeDB_' . $DBType . '.php');
 
 echo '<div class="centre"><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title;
 
@@ -87,5 +87,5 @@ if (isset($SQLFile)) {
 	//		header('Location: Z_UpgradeDatabase.php'); //divert to the db upgrade if the table doesn't exist
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

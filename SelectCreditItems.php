@@ -5,18 +5,18 @@ some of the variable names refer to order - please think credit when you read or
 
 include('includes/DefineCartClass.php');
 include('includes/DefineSerialItems.php');
-/* Session started in session.inc for password checking and authorisation level check */
-include('includes/session.inc');
+/* Session started in session.php for password checking and authorisation level check */
+include('includes/session.php');
 
 $Title = _('Create Credit Note');
 
-/* Manual links before header.inc */
+/* Manual links before header.php */
 $ViewTopic = 'ARTransactions';
 $BookMark = 'CreditItems';
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
-include('includes/GetSalesTransGLCodes.inc');
-include('includes/GetPrice.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
+include('includes/GetSalesTransGLCodes.php');
+include('includes/GetPrice.php');
 
 
 if (empty($_GET['identifier'])) {
@@ -29,7 +29,7 @@ if (empty($_GET['identifier'])) {
 if (isset($_POST['ProcessCredit']) and !isset($_SESSION['CreditItems' . $Identifier])) {
 	prnMsg(_('This credit note has already been processed. Refreshing the page will not enter the credit note again') . '<br />' . _('Please use the navigation links provided rather than using the browser back button and then having to refresh'), 'info');
 	echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -387,7 +387,6 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 
 
 	/*Process Quick Entry */
-
 	if (isset($_POST['QuickEntry'])) {
 		/* get the item details from the database and hold them in the cart object make the quantity 1 by default then add it to the cart */
 		$i = 1;
@@ -472,7 +471,6 @@ if ($_SESSION['RequireCustomerSelection'] == 1 OR !isset($_SESSION['CreditItems'
 
 	/* setup system defaults for looking up prices and the number of ordered items
 	if an item has been selected for adding to the basket add it to the session arrays */
-
 	if ($_SESSION['CreditItems' . $Identifier]->ItemsOrdered > 0 or isset($_POST['NewItem'])) {
 
 		if (isset($_GET['Delete'])) {
@@ -1043,7 +1041,7 @@ if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 	if ($_SESSION['CompanyRecord']['gllink_stock'] == 1 and $_POST['CreditType'] == 'WriteOff' and (!isset($_POST['WriteOffGLCode']) or $_POST['WriteOffGLCode'] == '')) {
 
 		prnMsg(_('For credit notes created to write off the stock a general ledger account is required to be selected. Please select an account to write the cost of the stock off to then click on Process again'), 'error');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
@@ -1966,5 +1964,5 @@ if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 }
 /*end of process credit note */
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

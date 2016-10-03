@@ -1,8 +1,8 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Upgrade 3.08 - 3.09');
-include('includes/header.inc');
+include('includes/header.php');
 
 
 prnMsg(_('This script will run perform any modifications to the database since v 3.08 required to allow the additional functionality in version 3.09 scripts'), 'info');
@@ -52,5 +52,5 @@ if ($_POST['DoUpgrade'] == _('Perform Upgrade')) {
 }
 /*Dont do upgrade */
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

@@ -1,11 +1,11 @@
 <?php
 
 include('includes/DefineShiptClass.php');
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Shipments');
-include('includes/header.inc');
+include('includes/header.php');
 
-include('includes/SQL_CommonFunctions.inc');
+include('includes/SQL_CommonFunctions.php');
 
 if (isset($_GET['NewShipment']) and $_GET['NewShipment'] == 'Yes') {
 	unset($_SESSION['Shipment']->LineItems);
@@ -20,7 +20,7 @@ if (!isset($_SESSION['SupplierID']) and !isset($_SESSION['Shipment']) and !isset
 				<tr><td class="menu_group_item">
 				<li><a href="' . $RootPath . '/SelectSupplier.php">' . _('Select the Supplier') . '</a></li>
 				</td></tr></table></div>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -52,7 +52,7 @@ if (isset($_GET['SelectedShipment'])) {
 
 	if (DB_num_rows($GetShiptHdrResult) == 0) {
 		prnMsg(_('Unable to locate Shipment') . ' ' . $_GET['SelectedShipment'] . ' ' . _('in the database'), 'error');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit();
 	}
 
@@ -62,7 +62,7 @@ if (isset($_GET['SelectedShipment'])) {
 
 		if ($MyRow['closed'] == 1) {
 			prnMsg(_('Shipment No.') . ' ' . $_GET['SelectedShipment'] . ': ' . _('The selected shipment is already closed and no further modifications to the shipment are possible'), 'error');
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 		$_SESSION['Shipment']->ShiptRef = $_GET['SelectedShipment'];
@@ -105,7 +105,7 @@ if (isset($_GET['SelectedShipment'])) {
 
 		if (DB_num_rows($GetShiptHdrResult) == 0) {
 			prnMsg(_('Unable to locate lines for Shipment') . ' ' . $_GET['SelectedShipment'] . ' ' . _('in the database'), 'error');
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit();
 		}
 
@@ -524,5 +524,5 @@ if (DB_num_rows($Result) > 0) {
 
 echo '</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

@@ -1,11 +1,11 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Access Permissions Maintenance');// Screen identificator.
 $ViewTopic = 'SecuritySchema';// Filename's id in ManualContents.php's TOC.
 $BookMark = 'WWW_Access';// Anchor's id in the manual's html document.
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" >
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/group_add.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '
@@ -233,6 +233,6 @@ if (isset($SelectedRole)) {
 	echo '</table>';
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

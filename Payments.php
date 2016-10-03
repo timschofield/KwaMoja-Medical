@@ -1,7 +1,7 @@
 <?php
 
 include('includes/DefinePaymentClass.php');
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Payment Entry');
 
@@ -12,13 +12,13 @@ if (isset($_GET['SupplierID'])) {
 	$ViewTopic = 'GeneralLedger';
 	$BookMark = 'BankAccountPayments';
 }
-include('includes/header.inc');
+include('includes/header.php');
 
-include('includes/SQL_CommonFunctions.inc');
+include('includes/SQL_CommonFunctions.php');
 
 if (isset($_POST['PaymentCancelled'])) {
 	prnMsg(_('Payment Cancelled since cheque was not printed'), 'warning');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit();
 } //isset($_POST['PaymentCancelled'])
 if (empty($_GET['identifier'])) {
@@ -111,7 +111,7 @@ if (isset($_GET['SupplierID'])) {
 	$Result = DB_query($SQL);
 	if (DB_num_rows($Result) == 0) {
 		prnMsg(_('The supplier code that this payment page was called with is not a currently defined supplier code') . '. ' . _('If this page is called from the selectSupplier page then this assures that a valid supplier is selected'), 'warn');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} //DB_num_rows($Result) == 0
 	else {
@@ -318,13 +318,13 @@ if (isset($_POST['CommitBatch'])) {
 
 	if ($TotalAmount == 0 and ($_SESSION['PaymentDetail' . $Identifier]->Discount + $_SESSION['PaymentDetail' . $Identifier]->Amount) / $_SESSION['PaymentDetail' . $Identifier]->ExRate == 0) {
 		prnMsg(_('This payment has no amounts entered and will not be processed'), 'warn');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} //$TotalAmount == 0 and ($_SESSION['PaymentDetail' . $Identifier]->Discount + $_SESSION['PaymentDetail' . $Identifier]->Amount) / $_SESSION['PaymentDetail' . $Identifier]->ExRate == 0
 
 	if ($_POST['BankAccount'] == '') {
 		prnMsg(_('No bank account has been selected so this payment cannot be processed'), 'warn');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} //$_POST['BankAccount'] == ''
 
@@ -778,7 +778,7 @@ if (isset($_POST['CommitBatch'])) {
 		}
 	}
 
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 
 } elseif (isset($_GET['Delete'])) {
@@ -938,7 +938,7 @@ if (DB_num_rows($AccountsResults) == 0) {
 		</tr>
 		</table>';
 	prnMsg(_('Bank Accounts have not yet been defined. You must first') . ' <a href="' . $RootPath . '/BankAccounts.php">' . _('define the bank accounts') . '</a> ' . _('and general ledger accounts to be affected'), 'warn');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } else {
 	echo '<option value=""></option>';
@@ -1380,5 +1380,5 @@ if ($_SESSION['CompanyRecord']['gllink_creditors'] == 1 and $_SESSION['PaymentDe
 }
 echo '</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

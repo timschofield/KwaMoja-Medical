@@ -82,7 +82,7 @@ function VerifyTransactionDate($TranDate, $i, $Errors) {
 }
 
 /* Find the period number from the transaction date */
-/* Why use this function over GetPeriod we already have this function included in DateFunctions.inc
+/* Why use this function over GetPeriod we already have this function included in DateFunctions.php
  * This function doesn't create periods if required so there is the danger of not being able to insert transactions*/
 function GetPeriodFromTransactionDate($TranDate, $i, $Errors) {
 	$SQL = "SELECT confvalue FROM config WHERE confname='DefaultDateFormat'";
@@ -929,7 +929,7 @@ function CreateCreditNote($Header, $LineDetails, $User, $Password) {
 
 		if ($CompanyRecord['gllink_stock'] == 1 and $StandardCost != 0) {
 
-			/*first the cost of sales entry - GL accounts are retrieved using the function GetCOGSGLAccount from includes/GetSalesTransGLCodes.inc  */
+			/*first the cost of sales entry - GL accounts are retrieved using the function GetCOGSGLAccount from includes/GetSalesTransGLCodes.php  */
 
 			$SQL = "INSERT INTO gltrans (type,
 											typeno,

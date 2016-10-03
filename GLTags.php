@@ -1,11 +1,11 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Maintain General Ledger Tags');
 
 $ViewTopic = 'GeneralLedger';
 $BookMark = 'GLTags';
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_GET['SelectedTag'])) {
 	if ($_GET['Action'] == 'delete') {
@@ -94,6 +94,6 @@ while ($MyRow = DB_fetch_array($Result)) {
 
 echo '</table>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

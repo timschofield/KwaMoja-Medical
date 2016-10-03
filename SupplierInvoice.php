@@ -8,16 +8,15 @@ Also an array of shipment charges for charges to shipments to be apportioned acc
 include('includes/DefineSuppTransClass.php');
 include('includes/DefinePOClass.php'); //needed for auto receiving code
 
-/* Session started in header.inc for password checking and authorisation level check */
-include('includes/session.inc');
+/* Session started in header.php for password checking and authorisation level check */
+include('includes/session.php');
 
 $Title = _('Enter Supplier Invoice');
-/* Manual links before header.inc */
+/* Manual links before header.php */
 $ViewTopic = 'AccountsPayable';
 $BookMark = 'SupplierInvoice';
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
-
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 if (empty($_GET['identifier'])) {
 	$Identifier = date('U');
@@ -105,7 +104,7 @@ if (isset($_GET['SupplierID']) and $_GET['SupplierID'] != '') {
 
 	if (DB_num_rows($LocalTaxProvinceResult) == 0) {
 		prnMsg(_('The tax province associated with your user account has not been set up in this database. Tax calculations are based on the tax group of the supplier and the tax province of the user entering the invoice. The system administrator should redefine your account with a valid default stocking location and this location should refer to a valid tax province'), 'error');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} //DB_num_rows($LocalTaxProvinceResult) == 0
 
@@ -125,7 +124,7 @@ if (isset($_GET['SupplierID']) and $_GET['SupplierID'] != '') {
 elseif (!isset($_SESSION['SuppTrans'])) {
 	prnMsg(_('To enter a supplier invoice the supplier must first be selected from the supplier selection screen'), 'warn');
 	echo '<br /><a href="' . $RootPath . '/SelectSupplier.php">' . _('Select A Supplier to Enter an Invoice For') . '</a>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 
 	/*It all stops here if there ain't no supplier selected */
@@ -145,7 +144,7 @@ if (isset($_GET['ReceivePO']) and $_GET['ReceivePO'] != '') {
 		/* The user has permission to receive goods then lets go */
 
 		$_GET['ModifyOrderNumber'] = intval($_GET['ReceivePO']);
-		include('includes/PO_ReadInOrder.inc');
+		include('includes/PO_ReadInOrder.php');
 
 		if ($_SESSION['PO' . $Identifier]->Status == 'Authorised') {
 			$Result = DB_Txn_Begin();
@@ -1219,7 +1218,7 @@ else { // $_POST['PostInvoice'] is set so do the postings -and dont show the but
 						if (mb_strlen($EnteredGRN->ItemCode) > 0 or $EnteredGRN->ItemCode != '') {
 							/*so it is a stock item */
 
-							/*need to get the stock category record for this stock item - this is function in SQL_CommonFunctions.inc */
+							/*need to get the stock category record for this stock item - this is function in SQL_CommonFunctions.php */
 							$StockGLCode = GetStockGLCode($EnteredGRN->ItemCode);
 
 							/*We have stock item and a purchase price variance need to see whether we are using Standard or WeightedAverageCosting */
@@ -1905,5 +1904,5 @@ if (isset($InputError) and $InputError == true) { //add a link to return if user
 	echo '<div class="centre"><a href="' . $RootPath . '/SupplierInvoice.php" >' . _('Back to Invoice Entry') . '</a></div>';
 } //end of return link for input errors
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

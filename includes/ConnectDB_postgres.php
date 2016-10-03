@@ -76,7 +76,7 @@ function DB_query($SQL, $ErrorMessage = '', $DebugMessage = '', $Transaction = f
 	//if (DB_error_no($Conn) != 0){
 	if (!$Result and $TrapErrors) {
 		if ($TrapErrors) {
-			require_once($PathPrefix . 'includes/header.inc');
+			require_once($PathPrefix . 'includes/header.php');
 		}
 		prnMsg($ErrorMessage . '<br />' . DB_error_msg($Conn), 'error', _('DB ERROR:'));
 		if ($Debug == 1) {
@@ -90,7 +90,7 @@ function DB_query($SQL, $ErrorMessage = '', $DebugMessage = '', $Transaction = f
 			}
 		}
 		if ($TrapErrors) {
-			include($PathPrefix . 'includes/footer.inc');
+			include($PathPrefix . 'includes/footer.php');
 			exit;
 		}
 	}

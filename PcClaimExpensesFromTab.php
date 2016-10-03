@@ -1,11 +1,11 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Claim Petty Cash Expenses From Tab');
-/* Manual links before header.inc */
+/* Manual links before header.php */
 $ViewTopic = 'PettyCash';
 $BookMark = 'ExpenseClaim';
-include('includes/header.inc');
+include('includes/header.php');
 
 
 if (isset($_POST['SelectedTabs'])) {
@@ -459,5 +459,5 @@ if (!isset($SelectedTabs)) {
 
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

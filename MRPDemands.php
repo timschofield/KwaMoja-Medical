@@ -6,9 +6,9 @@
  * got error: Catchable fatal error: Object of class mysqli could not be converted to string
  */
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('MRP Demands');
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_POST['DemandID'])) {
 	$DemandID = $_POST['DemandID'];
@@ -427,5 +427,5 @@ function display(&$StockId, &$DemandID) { //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_
 
 } // End of function display()
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

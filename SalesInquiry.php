@@ -4,9 +4,9 @@
 // Inquiry on Sales Orders - if Date Type is Order Date, salesorderdetails is the main table
 // if Date Type is Invoice, stockmoves is the main table
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Sales Inquiry');
-include('includes/header.inc');
+include('includes/header.php');
 
 // Sets default date range for current month
 if (!isset($_POST['FromDate'])) {
@@ -1152,5 +1152,5 @@ function TempStockmoves() {
 
 } // End of function TempStockmoves
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

@@ -1,8 +1,8 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Label Templates');
-include('includes/header.inc');
+include('includes/header.php');
 
 //define PaperSize array sizes in mm
 $PaperSize = array();
@@ -526,6 +526,6 @@ echo '<div class="centre">
 		</div>
 	</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

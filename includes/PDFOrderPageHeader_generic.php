@@ -1,5 +1,5 @@
 <?php
-/* $Id: PDFOrderPageHeader_generic.inc 5816 2013-02-07 07:54:41Z daintree $*/
+/* $Id: PDFOrderPageHeader_generic.php 5816 2013-02-07 07:54:41Z daintree $*/
 /* pdf-php by R&OS code to set up a new sales order page */
 if ($PageNumber > 1) {
 	$PDF->newPage();

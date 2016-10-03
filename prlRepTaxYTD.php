@@ -4,8 +4,8 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['FSYear'])) {
 
 	include('config.php');
 	include('includes/PDFStarter.php');
-	include('includes/ConnectDB.inc');
-	include('includes/DateFunctions.inc');
+	include('includes/ConnectDB.php');
+	include('includes/DateFunctions.php');
 	include('includes/prlFunctions.php');
 
 	/* A4_Landscape */
@@ -42,7 +42,7 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['FSYear'])) {
 	$pdf->addinfo('Title', _('Alphalist'));
 	$pdf->addinfo('Subject', _('Alphalist'));
 	$line_height = 12;
-	include('includes/PDFTaxYTDPageHeader.inc');
+	include('includes/PDFTaxYTDPageHeader.php');
 	//list of all employees
 	$SQL = "SELECT employeeid
 			FROM prlemployeemaster
@@ -87,7 +87,7 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['FSYear'])) {
 				$LeftOvers = $pdf->addTextWrap(660, $YPos, 60, $FontSize, number_format($Refund, 2), 'right');
 				$YPos -= $line_height;
 				if ($YPos < ($Bottom_Margin)) {
-					include('includes/PDFTaxYTDPageHeader.inc');
+					include('includes/PDFTaxYTDPageHeader.php');
 				}
 			}
 		}
@@ -106,11 +106,11 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['FSYear'])) {
 	$len = strlen($pdfcode);
 	if ($len <= 20) {
 		$Title = _('Alphalist error');
-		include('includes/header.inc');
+		include('includes/header.php');
 		echo '<p>';
 		prnMsg(_('There were no entries to print out for the selections specified'));
 		echo '<br /><a href="' . $RootPath . '/index.php?">' . _('Back to the menu') . '</a>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} else {
 		header('Content-type: application/pdf');
@@ -126,18 +126,18 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['FSYear'])) {
 	exit;
 
 } elseif (isset($_POST['ShowPR'])) {
-	include('includes/session.inc');
+	include('includes/session.php');
 	$Title = _('Alphalist');
-	include('includes/header.inc');
+	include('includes/header.php');
 	echo 'Use PrintPDF instead';
 	echo "<br /><a href='" . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } else {
 	/*The option to print PDF was not hit */
-	include('includes/session.inc');
+	include('includes/session.php');
 	$Title = _('Alphalist');
-	include('includes/header.inc');
+	include('includes/header.php');
 	echo '<form method="post" action="' . $_SERVER['PHP_SELF'] . '">';
 	echo '<table>';
 	echo '</select></td></tr>';
@@ -149,7 +149,7 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['FSYear'])) {
 	echo '</select></td></tr>';
 	echo "</table><p><input type='Submit' name='ShowPR' value='" . _('Show Alpalist') . "'>";
 	echo "<p><input type='Submit' name='PrintPDF' value='" . _('PrintPDF') . "'>";
-	include('includes/footer.inc');
+	include('includes/footer.php');
 
 }
 /*end of else not PrintPDF */

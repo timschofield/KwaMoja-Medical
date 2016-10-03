@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Bank Account Users');
 $ViewTopic = 'GeneralLedger';
 $BookMark = 'UserBankAccounts';
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/money_add.png" title="' . _('User Authorised Bank Accounts') . '" alt="" />' . ' ' . $Title . '</p>';
 
@@ -224,5 +224,5 @@ if (isset($_POST['process']) or isset($SelectedUser)) {
 	} // end if user wish to delete
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

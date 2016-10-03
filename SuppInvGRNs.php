@@ -5,10 +5,10 @@ the SuppTrans class contains an array of GRNs objects - containing details of GR
 an array of GLCodes objects - only used if the AP - GL link is effective */
 
 include('includes/DefineSuppTransClass.php');
-/* Session started in header.inc for password checking and authorisation level check */
-include('includes/session.inc');
+/* Session started in header.php for password checking and authorisation level check */
+include('includes/session.php');
 $Title = _('Enter Supplier Invoice Against Goods Received');
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" >
 		<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/magnifier.png" title="', _('Dispatch'), '" alt="" />', ' ', $Title, '
@@ -18,7 +18,7 @@ $Complete = false;
 if (!isset($_SESSION['SuppTrans'])) {
 	prnMsg(_('To enter a supplier transactions the supplier must first be selected from the supplier selection screen') . ', ' . _('then the link to enter a supplier invoice must be clicked on'), 'info');
 	echo '<a href="', $RootPath, '/SelectSupplier.php">', _('Select A Supplier to Enter a Transaction For'), '</a>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 	/*It all stops here if there aint no supplier selected and invoice initiated ie $_SESSION['SuppTrans'] started off*/
 } //!isset($_SESSION['SuppTrans'])
@@ -172,7 +172,7 @@ if (DB_num_rows($GRNResults) == 0) {
 	echo '<div class="centre">
 			<a href="', $RootPath, '/PO_SelectOSPurchOrder.php?SupplierID=', urlencode($_SESSION['SuppTrans']->SupplierID), '">', _('Select Purchase Orders to Receive'), '</a>
 		</div>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } //DB_num_rows($GRNResults) == 0
 
@@ -317,5 +317,5 @@ else {
 }
 
 echo '</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

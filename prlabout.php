@@ -1,7 +1,7 @@
 <?php
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('About Anahaw Open Payroll System');
-include('includes/header.inc');
+include('includes/header.php');
 ?>
 <table width="75%"><tr><td>
 <br><br>

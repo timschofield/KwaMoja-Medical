@@ -1,12 +1,12 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Supplier How Paid Inquiry');
 
 $ViewTopic = 'APInquiries';
 $BookMark = 'WhereAllocated';
 
-include('includes/header.inc');
+include('includes/header.php');
 if (isset($_GET['TransNo']) and isset($_GET['TransType'])) {
 	$_POST['TransNo'] = (int) $_GET['TransNo'];
 	$_POST['TransType'] = (int) $_GET['TransType'];
@@ -186,6 +186,6 @@ if (isset($_POST['ShowResults']) and $_POST['TransNo'] != '') {
 }
 echo '</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

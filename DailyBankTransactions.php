@@ -1,11 +1,11 @@
 <?php
 /* Allows you to view all bank transactions for a selected date range, and the inquiry can be filtered by matched or unmatched transactions, or all transactions can be chosen. */
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Bank Transactions Inquiry');
 $ViewTopic = 'GeneralLedger';
 $BookMark = 'DailyBankTransactions';
-include('includes/header.inc');
+include('includes/header.php');
 
 if (!isset($_POST['Show'])) {
 
@@ -42,7 +42,7 @@ if (!isset($_POST['Show'])) {
 				</tr>
 			</table>';
 		prnMsg(_('Bank Accounts have not yet been defined. You must first') . ' <a href="' . $RootPath . '/BankAccounts.php">' . _('define the bank accounts') . '</a> ' . _('and general ledger accounts to be affected'), 'warn');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} else {
 		while ($MyRow = DB_fetch_array($AccountsResults)) {
@@ -249,6 +249,6 @@ if (!isset($_POST['Show'])) {
 	echo '<div class="centre"><input type="submit" name="Return" value="' . _('Select Another Date') . '" /></div>';
 	echo '</form>';
 }
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

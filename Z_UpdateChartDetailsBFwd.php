@@ -1,9 +1,9 @@
 <?php
 
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Recalculation of Brought Forward Balances in Chart Details Table');
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -63,7 +63,7 @@ if (!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) {
 		prnMsg(_('The selected period from is actually after the period to') . '. ' . _('Please re-select the reporting period'), 'error');
 		unset($_POST['FromPeriod']);
 		unset($_POST['ToPeriod']);
-		include('includes/footer.inc');
+		include('includes/footer.php');
 	}
 
 	for ($i = $_POST['FromPeriod']; $i <= $_POST['ToPeriod']; $i++) {
@@ -99,5 +99,5 @@ if (!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) {
 	/* end of for loop */
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

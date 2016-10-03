@@ -1,10 +1,10 @@
 <?php
 $PageSecurity=1;
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Report a bug to the project team');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 if (http_file_exists($HomePage . '/buggenie/thebuggenie/' . $DefaultDatabase)) {
 	echo '<script type="text/javascript">window.open(\'' . $HomePage . 'buggenie/thebuggenie/' . $DefaultDatabase . ');</script>';
@@ -12,6 +12,6 @@ if (http_file_exists($HomePage . '/buggenie/thebuggenie/' . $DefaultDatabase)) {
 } else {
 	prnMsg(_('You do not appear to have an internet connection. To use this function you require access to the internet'), 'warn');
 }
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

@@ -1,8 +1,8 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Monthly Bank Transactions Inquiry');
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" > <img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/money_add.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
 
@@ -35,7 +35,7 @@ if (!isset($_POST['Show'])) {
 		echo '</select></td>
 				</tr></table>';
 		prnMsg(_('Bank Accounts have not yet been defined. You must first') . ' <a href="' . $RootPath . '/BankAccounts.php">' . _('define the bank accounts') . '</a> ' . _('and general ledger accounts to be affected'), 'warn');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} else {
 		while ($MyRow = DB_fetch_array($AccountsResults)) {
@@ -211,6 +211,6 @@ if (!isset($_POST['Show'])) {
 	echo '<div class="centre"><input type="submit" name="Return" value="' . _('Select Another Date') . '" /></div>';
 	echo '</form>';
 }
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

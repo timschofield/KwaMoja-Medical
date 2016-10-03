@@ -5,7 +5,7 @@ if (isset($_POST['UserID']) and isset($_POST['ID'])) {
 		$_POST['Language'] = $_POST['UserLanguage'];
 	}
 }
-include('includes/session.inc');
+include('includes/session.php');
 
 include('includes/MainMenuLinksArray.php');
 
@@ -17,11 +17,11 @@ $PDFLanguages = array(
 );
 
 $Title = _('User Maintenance');
-/* Manual links before header.inc */
+/* Manual links before header.php */
 $ViewTopic = 'GettingStarted';
 $BookMark = 'UserMaintenance';
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/group_add.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
 
@@ -863,5 +863,5 @@ echo '</table>
 	</div>
 	</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

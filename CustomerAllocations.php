@@ -6,15 +6,15 @@
  * 3. No parameters to show all outstanding credits and receipts yet to be allocated.
  */
 
-include('includes/DefineCustAllocsClass.php');// Before includes/session.inc **********
+include('includes/DefineCustAllocsClass.php');// Before includes/session.php **********
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Customer Receipt') . '/' . _('Credit Note Allocations');
-/* Manual links before header.inc */
+/* Manual links before header.php */
 $ViewTopic = 'ARTransactions';
 $BookMark = 'CustomerAllocations';
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 if (isset($_POST['Cancel'])) {
 	unset($_POST['AllocTrans']);
@@ -24,7 +24,7 @@ if (isset($_POST['UpdateDatabase']) or isset($_POST['RefreshAllocTotal'])) {
 
 	if (!isset($_SESSION['Alloc'])) {
 		prnMsg(_('Allocations can not be processed again') . '. ' . _('If you hit refresh on this page after having just processed an allocation') . ', ' . _('try to use the navigation links provided rather than the back button') . ', ' . _('to avoid this message in future'), 'info');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
@@ -448,7 +448,7 @@ if (isset($_POST['AllocTrans'])) {
 
 	if (DB_num_rows($Result) == 0) {
 		prnMsg(_('No outstanding receipts or credits to be allocated for this customer'), 'info');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 	echo '<table class="selection">
@@ -604,6 +604,6 @@ if (isset($_POST['AllocTrans'])) {
 	echo '</table>';
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

@@ -1,12 +1,12 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Fixed Asset Category Maintenance');
 
 $ViewTopic = 'FixedAssets';
 $BookMark = 'AssetCategories';
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" >
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/money_add.png" title="' . _('Fixed Asset Categories') . '" alt="" />' . ' ' . $Title . '
@@ -337,5 +337,5 @@ echo '<div class="centre">
 	</div>
 	</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

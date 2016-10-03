@@ -1,7 +1,7 @@
 <?php
 /* $Revision: 1.0 $ */
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Status = array();
 $Status[0] = _('Pending Authorisation');
@@ -12,8 +12,8 @@ $Status[4] = _('Rejected');
 $Status[5] = _('Written Off');
 
 $Title = _('Issue Employee Loans');
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 if (isset($_POST['update'])) {
 	foreach ($_POST as $key=>$value) {
@@ -215,6 +215,6 @@ if (DB_num_rows($Result) > 0) {
 	prnMsg( _('There are no loans waiting to be issued.'), 'info');
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

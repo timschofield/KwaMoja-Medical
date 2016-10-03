@@ -4,8 +4,8 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['FSYear'])) {
 
 	include('config.php');
 	include('includes/PDFStarter.php');
-	include('includes/ConnectDB.inc');
-	include('includes/DateFunctions.inc');
+	include('includes/ConnectDB.php');
+	include('includes/DateFunctions.php');
 	include('includes/prlFunctions.php');
 
 	/* A4_Landscape */
@@ -42,7 +42,7 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['FSYear'])) {
 	$pdf->addinfo('Title', _('YTD Payroll Register'));
 	$pdf->addinfo('Subject', _('YTD Payroll Register'));
 	$line_height = 12;
-	include('includes/PDFPayRegYTDPageHeader.inc');
+	include('includes/PDFPayRegYTDPageHeader.php');
 	//list of all employees
 	$SQL = "SELECT employeeid
 			FROM prlemployeemaster
@@ -108,7 +108,7 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['FSYear'])) {
 				$LeftOvers = $pdf->addTextWrap(722, $YPos, 50, $FontSize, number_format($NetPay, 2), 'right');
 				$YPos -= $line_height;
 				if ($YPos < ($Bottom_Margin)) {
-					include('includes/PDFPayRegYTDPageHeader.inc');
+					include('includes/PDFPayRegYTDPageHeader.php');
 				}
 			}
 		}
@@ -137,11 +137,11 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['FSYear'])) {
 	$len = strlen($pdfcode);
 	if ($len <= 20) {
 		$Title = _('YTD Payroll Register Error');
-		include('includes/header.inc');
+		include('includes/header.php');
 		echo '<p>';
 		prnMsg(_('There were no entries to print out for the selections specified'));
 		echo '<br /><a href="' . $RootPath . '/index.php?">' . _('Back to the menu') . '</a>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} else {
 		header('Content-type: application/pdf');
@@ -157,18 +157,18 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['FSYear'])) {
 	exit;
 
 } elseif (isset($_POST['ShowPR'])) {
-	include('includes/session.inc');
+	include('includes/session.php');
 	$Title = _('PhilHealth Monthly Premium Listing');
-	include('includes/header.inc');
+	include('includes/header.php');
 	echo 'Use PrintPDF instead';
 	echo "<br /><a href='" . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } else {
 	/*The option to print PDF was not hit */
-	include('includes/session.inc');
+	include('includes/session.php');
 	$Title = _('YTD Payroll Register');
-	include('includes/header.inc');
+	include('includes/header.php');
 
 	echo '<form method="post" action="' . $_SERVER['PHP_SELF'] . '">';
 	echo '<table>';
@@ -183,7 +183,7 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['FSYear'])) {
 	echo "</table><p><input type='Submit' name='ShowPR' value='" . _('Show YTD Payroll Register') . "'>";
 	echo "<p><input type='Submit' name='PrintPDF' value='" . _('PrintPDF') . "'>";
 
-	include('includes/footer.inc');
+	include('includes/footer.php');
 
 }
 /*end of else not PrintPDF */

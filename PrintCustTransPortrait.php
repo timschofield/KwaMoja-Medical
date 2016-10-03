@@ -1,6 +1,6 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 if (isset($_GET['FromTransNo'])) {
 	$FromTransNo = filter_number_format($_GET['FromTransNo']);
@@ -237,13 +237,13 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 		if (DB_error_no() != 0) {
 
 			$Title = _('Transaction Print Error Report');
-			include('includes/header.inc');
+			include('includes/header.php');
 
 			prnMsg(_('There was a problem retrieving the invoice or credit note details for note number') . ' ' . $InvoiceToPrint . ' ' . _('from the database') . '. ' . _('To print an invoice, the sales order record, the customer transaction record and the branch record for the customer must not have been purged') . '. ' . _('To print a credit note only requires the customer, transaction, salesman and branch records be available'), 'error');
 			if ($Debug == 1) {
 				prnMsg(_('The SQL used to get this information that failed was') . '<br />' . $SQL, 'error');
 			}
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 		if (DB_num_rows($Result) == 1) {
@@ -296,12 +296,12 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 			$Result = DB_query($SQL);
 			if (DB_error_no() != 0) {
 				$Title = _('Transaction Print Error Report');
-				include('includes/header.inc');
+				include('includes/header.php');
 				echo '<br />' . _('There was a problem retrieving the invoice or credit note stock movement details for invoice number') . ' ' . $FromTransNo . ' ' . _('from the database');
 				if ($Debug == 1) {
 					echo '<br />' . _('The SQL used to get this information that failed was') . '<br />' . $SQL;
 				}
-				include('includes/footer.inc');
+				include('includes/footer.php');
 				exit;
 			}
 
@@ -311,7 +311,7 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 				$FontSize = 10;
 				$PageNumber = 1;
 
-				include('includes/PDFTransPageHeaderPortrait.inc');
+				include('includes/PDFTransPageHeaderPortrait.php');
 				$FirstPage = False;
 
 				while ($MyRow2 = DB_fetch_array($Result)) {
@@ -366,7 +366,7 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 									/* head up a new invoice/credit note page */
 									/*draw the vertical column lines right to the bottom */
 									PrintLinesToBottom();
-									include('includes/PDFTransPageHeaderPortrait.inc');
+									include('includes/PDFTransPageHeaderPortrait.php');
 								} //end if need a new page headed up
 							}
 						} else {
@@ -377,7 +377,7 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 									/* head up a new invoice/credit note page */
 									/*draw the vertical column lines right to the bottom */
 									PrintLinesToBottom();
-									include('includes/PDFTransPageHeaderPortrait.inc');
+									include('includes/PDFTransPageHeaderPortrait.php');
 								} //end if need a new page headed up
 							}
 						}
@@ -392,7 +392,7 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 								/* head up a new invoice/credit note page */
 								/*draw the vertical column lines right to the bottom */
 								PrintLinesToBottom();
-								include('includes/PDFTransPageHeaderPortrait.inc');
+								include('includes/PDFTransPageHeaderPortrait.php');
 							} //end if need a new page headed up
 							/*increment a line down for the next line item */
 							if (mb_strlen($lines[$i]) > 1) {
@@ -406,7 +406,7 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 						/* head up a new invoice/credit note page */
 						/*draw the vertical column lines right to the bottom */
 						PrintLinesToBottom();
-						include('includes/PDFTransPageHeaderPortrait.inc');
+						include('includes/PDFTransPageHeaderPortrait.php');
 					} //end if need a new page headed up
 				}
 				/*end while there are line items to print out*/
@@ -419,7 +419,7 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 			/* check to see enough space left to print the 4 lines for the totals/footer */
 			if (($YPos - $Bottom_Margin) < (2 * $line_height)) {
 				PrintLinesToBottom();
-				include('includes/PDFTransPageHeaderPortrait.inc');
+				include('includes/PDFTransPageHeaderPortrait.php');
 			}
 			/*Print a column vertical line  with enough space for the footer*/
 			/*draw the vertical column lines to 4 lines shy of the bottom
@@ -518,7 +518,7 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 
 	if (isset($_GET['Email'])) { //email the invoice to address supplied
 		$Title = _('Emailing') . ' ' . $InvOrCredit . ' ' . _('Number') . ' ' . $FromTransNo;
-		include('includes/header.inc');
+		include('includes/header.php');
 		include('includes/PHPMailer/PHPMailerAutoload.php');
 		$mail = new PHPMailer();
 		$mail->IsSMTP();
@@ -562,7 +562,7 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 		}
 
 		unlink($FileName); //delete the temporary file
-		include('includes/footer.inc');
+		include('includes/footer.php');
 
 		exit;
 
@@ -579,10 +579,10 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 	/*The option to print PDF was not hit */
 
 	$Title = _('Select Invoices/Credit Notes To Print');
-	/* Manual links before header.inc */
+	/* Manual links before header.php */
 	$ViewTopic = 'ARReports';
 	$BookMark = 'PrintInvoicesCredits';
-	include('includes/header.inc');
+	include('includes/header.php');
 
 	if (!isset($FromTransNo) or $FromTransNo == '') {
 
@@ -811,7 +811,7 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 					prnMsg(_('The SQL used to get this information that failed was') . '<br />' . $SQL, 'warn');
 				}
 				break;
-				include('includes/footer.inc');
+				include('includes/footer.php');
 				exit;
 			} elseif (DB_num_rows($Result) == 1) {
 
@@ -1188,7 +1188,7 @@ if (isset($PrintPDF) and $PrintPDF != '' and isset($FromTransNo) and isset($InvO
 		/* end loop to print invoices */
 	}
 	/*end of if FromTransNo exists */
-	include('includes/footer.inc');
+	include('includes/footer.php');
 
 }
 /*end of else not PrintPDF */

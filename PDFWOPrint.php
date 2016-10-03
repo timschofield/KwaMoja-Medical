@@ -2,8 +2,8 @@
 
 /* $Id: PDFWOPrint.php 6146 $*/
 
-include('includes/session.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/session.php');
+include('includes/SQL_CommonFunctions.php');
 if (isset($_GET['WO'])) {
 	$SelectedWO = $_GET['WO'];
 } elseif (isset($_POST['WO'])) {
@@ -108,7 +108,7 @@ if (isset($_GET['LabelLot'])) {
 
 if (!isset($_GET['WO']) and !isset($_POST['WO'])) {
 	$Title = _('Select a Work Order');
-	include('includes/header.inc');
+	include('includes/header.php');
 	prnMsg(_('Select a Work Order Number to Print before calling this page'), 'error');
 	echo '<table class="table_index">
 				<tr>
@@ -117,7 +117,7 @@ if (!isset($_GET['WO']) and !isset($_POST['WO'])) {
 					</td>
 				</tr>
 			</table>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit();
 
 	echo '<div class="centre">' . _('This page must be called with a Work order number to print');
@@ -132,9 +132,9 @@ if (isset($_GET['WO'])) {
 $Title = _('Print Work Order Number') . ' ' . $SelectedWO;
 if (isset($_POST['PrintOrEmail']) and isset($_POST['EmailTo'])) {
 	if ($_POST['PrintOrEmail'] == 'Email' and !IsEmailAddress($_POST['EmailTo'])) {
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('The email address entered does not appear to be valid. No emails have been sent.'), 'warn');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 }
@@ -194,7 +194,7 @@ if (isset($SelectedWO) and $SelectedWO != '' and $SelectedWO > 0 and $SelectedWO
 	if (DB_num_rows($Result) == 0) {
 		/*There is no order header returned */
 		$Title = _('Print Work Order Error');
-		include('includes/header.inc');
+		include('includes/header.php');
 		echo '<div class="centre">';
 		prnMsg(_('Unable to Locate Work Order Number') . ' : ' . $SelectedWO . ' ', 'error');
 		echo '<table class="table_index">
@@ -204,7 +204,7 @@ if (isset($SelectedWO) and $SelectedWO != '' and $SelectedWO > 0 and $SelectedWO
 				</tr>
 			</table>
 			</div>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit();
 	} elseif (DB_num_rows($Result) == 1) {
 		/*There is only one order header returned  (as it should be!)*/
@@ -344,7 +344,7 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 	}
 	if ($SelectedWO == 'Preview' or $i > 0) {
 		/*Yes there are line items to start the ball rolling with a page header */
-		include('includes/PDFWOPageHeader.inc');
+		include('includes/PDFWOPageHeader.php');
 		$YPos = $Page_Height - $FormDesign->Data->y;
 		$i = 0;
 		while ((isset($SelectedWO) and $SelectedWO == 'Preview') or (count($WOLine) > $i)) {
@@ -371,7 +371,7 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 			if ($YPos - (2 * $line_height) <= $Page_Height - $FormDesign->Comments->y) {
 				$PageNumber++;
 				$YPos = $Page_Height - $FormDesign->Data->y;
-				include('includes/PDFWOPageHeader.inc');
+				include('includes/PDFWOPageHeader.php');
 			}
 
 			/*display already issued and available qty and lots where applicable*/
@@ -403,7 +403,7 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 				if ($YPos - (2 * $line_height) <= $Page_Height - $FormDesign->Comments->y) {
 					$PageNumber++;
 					$YPos = $Page_Height - $FormDesign->Data->y;
-					include('includes/PDFWOPageHeader.inc');
+					include('includes/PDFWOPageHeader.php');
 				}
 			}
 
@@ -436,7 +436,7 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 						if ($YPos - (2 * $line_height) <= $Page_Height - $FormDesign->Comments->y) {
 							$PageNumber++;
 							$YPos = $Page_Height - $FormDesign->Data->y;
-							include('includes/PDFWOPageHeader.inc');
+							include('includes/PDFWOPageHeader.php');
 						}
 					}
 				}
@@ -450,13 +450,13 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 			if ($YPos - (2 * $line_height) <= $Page_Height - $FormDesign->Comments->y) {
 				$PageNumber++;
 				$YPos = $Page_Height - $FormDesign->Data->y;
-				include('includes/PDFWOPageHeader.inc');
+				include('includes/PDFWOPageHeader.php');
 			}
 		} //end while there are line items to print out
 
 		if ($YPos - (2 * $line_height) <= $Page_Height - $FormDesign->Comments->y) { // need to ensure space for totals
 			$PageNumber++;
-			include('includes/PDFWOPageHeader.inc');
+			include('includes/PDFWOPageHeader.php');
 		} //end if need a new page headed up
 	}
 	/*end if there are order details to show on the order - or its a preview*/
@@ -474,7 +474,7 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 		if ($YPos - $line_height <= $Bottom_Margin) {
 			$PageNumber++;
 			$YPos = $Page_Height - $FormDesign->Headings->Column1->y;
-			include('includes/PDFWOPageHeader.inc');
+			include('includes/PDFWOPageHeader.php');
 		}
 		$LeftOvers = $PDF->addTextWrap($FormDesign->Comments->x, $YPos, $FormDesign->Comments->Length, $FormDesign->Comments->FontSize, $LeftOvers, 'left');
 	}
@@ -507,27 +507,27 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 		} else {
 			prnMsg(_('The SMTP settings are wrong, please ask administrator for help'), 'error');
 			exit;
-			include('includes/footer.inc');
+			include('includes/footer.php');
 		}
 
 		if ($Success == 1) {
 			$Title = _('Email a Work Order');
-			include('includes/header.inc');
+			include('includes/header.php');
 			prnMsg(_('Work Order') . ' ' . $SelectedWO . ' ' . _('has been emailed to') . ' ' . $_POST['EmailTo'] . ' ' . _('as directed'), 'success');
 		} else { //email failed
 			$Title = _('Email a Work Order');
-			include('includes/header.inc');
+			include('includes/header.php');
 			prnMsg(_('Emailing Work order') . ' ' . $SelectedWO . ' ' . _('to') . ' ' . $_POST['EmailTo'] . ' ' . _('failed'), 'error');
 		}
 	}
-	include('includes/footer.inc');
+	include('includes/footer.php');
 } //isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)
 
 /* There was enough info to either print or email the Work order */
 else {
 	/**
 	/*the user has just gone into the page need to ask the question whether to print the order or email it */
-	include('includes/header.inc');
+	include('includes/header.php');
 
 	if (!isset($LabelItem)) {
 		$SQL = "SELECT workorders.wo,
@@ -738,6 +738,6 @@ else {
 			</div>
 			</form>';
 	}
-	include('includes/footer.inc');
+	include('includes/footer.php');
 }
 ?>

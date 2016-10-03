@@ -1,13 +1,13 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Account Groups');
 $ViewTopic = 'GeneralLedger';
 $BookMark = 'AccountGroups';
 
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 function CheckForRecursiveGroup($ParentGroupCode, $GroupCode) {
 	/* returns true ie 1 if the group contains the parent group as a child group
@@ -386,7 +386,7 @@ if (!isset($_GET['delete'])) {
 		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 		if (DB_num_rows($Result) == 0) {
 			prnMsg(_('The account group name does not exist in the database'), 'error');
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		} //DB_num_rows($Result) == 0
 		while ($MyRow = DB_fetch_array($Result)) {
@@ -528,5 +528,5 @@ if (!isset($_GET['delete'])) {
 	echo '</form>';
 
 } //end if record deleted no point displaying form to add record
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

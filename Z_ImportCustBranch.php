@@ -1,10 +1,10 @@
 <?php
 /* $Id: Z_ImportCustbranch.php 6068 2015-03-26 16:04:22Z exson $*/
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Import Debtors And branches');
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 if (!isset($_POST['UpdateIfExists'])) {
 	$_POST['UpdateIfExists'] = 0;
@@ -67,7 +67,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 	if (count($HeadRow) != count($FieldHeadings)) {
 		prnMsg(_('File contains ' . count($HeadRow) . ' columns, expected ' . count($FieldHeadings) . '. Try downloading a new template.'), 'error');
 		fclose($FileHandle);
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 	$Salesmen = array();
@@ -112,7 +112,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 		if (mb_strtoupper($HeadField) != mb_strtoupper($FieldHeadings[$Head])) {
 			prnMsg(_('File contains incorrect headers (' . mb_strtoupper($HeadField) . ' != ' . mb_strtoupper($Header[$Head]) . '. Try downloading a new template.'), 'error');
 			fclose($FileHandle);
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 		++$Head;
@@ -135,7 +135,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 		if ($FieldCount != $FieldTarget) {
 			prnMsg(_($FieldTarget . ' fields required, ' . $FieldCount . ' fields received'), 'error');
 			fclose($FileHandle);
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 
@@ -358,7 +358,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 					} else {
 						$NotExistDebtorNos[] = $_POST['DebtorNo'];
 						prnMsg(_('The Debtor No') . $_POST['DebtorNo'] . ' ' . _('has not existed, and its branches data cannot be imported'), 'error');
-						include('includes/footer.inc');
+						include('includes/footer.php');
 						exit;
 					}
 				}
@@ -550,5 +550,5 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 		</form>';
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

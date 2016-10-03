@@ -8,14 +8,14 @@ Call this page with:
 */
 
 include('includes/DefineCustAllocsClass.php');
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Automatic Customer Receipt') . '/' . _('Credit Note Allocations');
 
 $ViewTopic = 'ARTransactions';
 $BookMark = 'CustomerAllocations';
 
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 if (isset($_GET['DebtorNo'])) {
 	// Page called with customer code
@@ -49,7 +49,7 @@ if (isset($_GET['DebtorNo'])) {
 
 	if (DB_num_rows($Result) == 0) {
 		prnMsg(_('No outstanding receipts or credits to be allocated for this customer'), 'info');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 	echo '<table class="selection">';
@@ -103,7 +103,7 @@ if (isset($_GET['DebtorNo'])) {
 	echo '</table>';
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 function ProcessAllocation() {
 

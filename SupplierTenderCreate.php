@@ -1,8 +1,8 @@
 <?php
 
 include('includes/DefineTenderClass.php');
-include('includes/SQL_CommonFunctions.inc');
-include('includes/session.inc');
+include('includes/SQL_CommonFunctions.php');
+include('includes/session.php');
 
 if (empty($_GET['identifier'])) {
 	/*unique session identifier to ensure that there is no conflict with other supplier tender sessions on the same machine  */
@@ -17,19 +17,19 @@ if (isset($_GET['New']) and isset($_SESSION['tender' . $Identifier])) {
 
 if (isset($_GET['New']) and $_SESSION['CanCreateTender'] == 0) {
 	$Title = _('Authorisation Problem');
-	include('includes/header.inc');
+	include('includes/header.php');
 	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/supplier.png" title="' . $Title . '" alt="" />  ' . $Title . '</p>';
 	prnMsg(_('You do not have authority to create supplier tenders for this company.') . '<br />' . _('Please see your system administrator'), 'warn');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
 if (isset($_GET['Edit']) and $_SESSION['CanCreateTender'] == 0) {
 	$Title = _('Authorisation Problem');
-	include('includes/header.inc');
+	include('includes/header.php');
 	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/supplier.png" title="' . $Title . '" alt="" />  ' . $Title . '</p>';
 	prnMsg(_('You do not have authority to amend supplier tenders for this company.') . '<br />' . _('Please see your system administrator'), 'warn');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -107,7 +107,7 @@ if (isset($_GET['ID'])) {
 
 if (isset($_GET['Edit'])) {
 	$Title = _('Edit an Existing Supplier Tender Request');
-	include('includes/header.inc');
+	include('includes/header.php');
 	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/supplier.png" title="' . _('Purchase Order Tendering') . '" alt="" />  ' . $Title . '</p>';
 	$SQL = "SELECT tenderid,
 					location,
@@ -158,15 +158,15 @@ if (isset($_GET['Edit'])) {
 	}
 	echo '</tbody>';
 	echo '</table>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } else if (isset($_GET['ID']) or (isset($_SESSION['tender' . $Identifier]->TenderId))) {
 	$Title = _('Edit an Existing Supplier Tender Request');
-	include('includes/header.inc');
+	include('includes/header.php');
 	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/supplier.png" title="' . _('Purchase Order Tendering') . '" alt="" />' . $Title . '</p>';
 } else {
 	$Title = _('Create a New Supplier Tender Request');
-	include('includes/header.inc');
+	include('includes/header.php');
 	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/supplier.png" title="' . _('Purchase Order Tendering') . '" alt="" />' . $Title . '</p>';
 }
 
@@ -175,7 +175,7 @@ if (isset($_POST['Save'])) {
 	$_SESSION['tender' . $Identifier]->save();
 	$_SESSION['tender' . $Identifier]->EmailSuppliers();
 	prnMsg(_('The tender has been successfully saved'), 'success');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -467,7 +467,7 @@ if (!isset($_SESSION['tender' . $Identifier]) or isset($_POST['LookupDeliveryAdd
 			</div>';
 	}
 	echo '</form>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -761,6 +761,6 @@ if (isset($_POST['Search'])) {
 
 } //end of if search
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

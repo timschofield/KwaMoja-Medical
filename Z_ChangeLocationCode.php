@@ -1,16 +1,16 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('UTILITY PAGE Change A Location Code');// Screen identificator.
 $ViewTopic = 'SpecialUtilities'; // Filename's id in ManualContents.php's TOC.
 $BookMark = 'Z_ChangeLocationCode'; // Anchor's id in the manual's html document.
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text">
 		<img alt="" src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Change A Location Code') . '" /> ' . _('Change A Location Code') . '
 	</p>';// Page title.
 
-include('includes/SQL_CommonFunctions.inc');
+include('includes/SQL_CommonFunctions.php');
 
 if (isset($_POST['ProcessLocationChange'])) {
 
@@ -276,5 +276,5 @@ echo '<br />
 	</div>
 	</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

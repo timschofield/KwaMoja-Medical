@@ -1,9 +1,9 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Customer Login Configuration');
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 include('includes/LanguagesArray.php');
 
 
@@ -11,7 +11,7 @@ if (!isset($_SESSION['CustomerID'])) {
 	echo '<br />
 		<br />';
 	prnMsg(_('A customer must first be selected before logins can be defined for it') . '<br /><br /><a href="' . $RootPath . '/SelectCustomer.php">' . _('Select A Customer') . '</a>', 'info');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -113,7 +113,7 @@ if (isset($_POST['submit'])) {
 			$DbgMsg = _('The SQL that was used to insert the new user and failed was');
 			$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 			prnMsg(_('A new customer login has been created'), 'success');
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 	}
@@ -269,5 +269,5 @@ echo '</select></td>
 	</div>
 	</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

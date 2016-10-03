@@ -1,13 +1,13 @@
 <?php
 
-include('includes/session.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/session.php');
+include('includes/SQL_CommonFunctions.php');
 
 
 //Get Out if we have no order number to work with
 if (!isset($_GET['TransNo']) or $_GET['TransNo'] == "") {
 	$Title = _('Select Order To Print');
-	include('includes/header.inc');
+	include('includes/header.php');
 	prnMsg(_('Select an Order Number to Print before calling this page'), 'error');
 	echo '<table class="table_index">
 			<tr>
@@ -19,7 +19,7 @@ if (!isset($_GET['TransNo']) or $_GET['TransNo'] == "") {
 			</td>
 			</tr>
 			</table>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit();
 }
 
@@ -70,7 +70,7 @@ $Result = DB_query($SQL, $ErrMsg);
 //if there are no rows, there's a problem.
 if (DB_num_rows($Result) == 0) {
 	$Title = _('Print Packing Slip Error');
-	include('includes/header.inc');
+	include('includes/header.php');
 	prnMsg(_('Unable to Locate Order Number') . ' : ' . $_GET['TransNo'] . ' ', 'error');
 	echo '<table class="table_index">
 			<tr>
@@ -81,7 +81,7 @@ if (DB_num_rows($Result) == 0) {
 			</tr>
 			</table>';
 
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit();
 } elseif (DB_num_rows($Result) == 1) {
 	/*There is only one order header returned - thats good! */
@@ -92,7 +92,7 @@ if (DB_num_rows($Result) == 0) {
 	$DeliverBlind = $MyRow['deliverblind'];
 	if ($MyRow['printedpackingslip'] == 1 and ($_GET['Reprint'] != 'OK' or !isset($_GET['Reprint']))) {
 		$Title = _('Print Packing Slip Error');
-		include('includes/header.inc');
+		include('includes/header.php');
 		echo '<p>';
 		prnMsg(_('The packing slip for order number') . ' ' . $_GET['TransNo'] . ' ' . _('has previously been printed') . '. ' . _('It was printed on') . ' ' . ConvertSQLDate($MyRow['datepackingslipprinted']) . '<br />' . _('This check is there to ensure that duplicate packing slips are not produced and dispatched more than once to the customer'), 'warn');
 		echo '<p><a href="' . $RootPath . '/PrintCustOrder.php?TransNo=' . urlencode($_GET['TransNo']) . '&Reprint=OK">' . _('Do a Re-Print') . ' (' . _('On Pre-Printed Stationery') . ') ' . _('Even Though Previously Printed') . '</a><p>' . '<a href="' . $RootPath . '/PrintCustOrder_generic.php?TransNo=' . urlencode($_GET['TransNo']) . '&Reprint=OK">' . _('Do a Re-Print') . ' (' . _('Plain paper') . ' - ' . _('A4') . ' ' . _('landscape') . ') ' . _('Even Though Previously Printed') . '</a>';
@@ -107,7 +107,7 @@ if (DB_num_rows($Result) == 0) {
                         </tr>
                         </table>';
 
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} //packing slip has been printed.
 }
@@ -173,7 +173,7 @@ for ($i = 1; $i <= 2; $i++) {
 
 	if (DB_num_rows($Result) > 0) {
 		/*Yes there are line items to start the ball rolling with a page header */
-		include('includes/PDFOrderPageHeader_generic.inc');
+		include('includes/PDFOrderPageHeader_generic.php');
 
 		while ($MyRow2 = DB_fetch_array($Result)) {
 
@@ -197,7 +197,7 @@ for ($i = 1; $i <= 2; $i++) {
 			if ($YPos - $line_height <= 50) {
 				/* We reached the end of the page so finsih off the page and start a newy */
 				$PageNumber++;
-				include('includes/PDFOrderPageHeader_generic.inc');
+				include('includes/PDFOrderPageHeader_generic.php');
 			} //end if need a new page headed up
 			else {
 				/*increment a line down for the next line item */
@@ -209,7 +209,7 @@ for ($i = 1; $i <= 2; $i++) {
 				if ($YPos - $line_height <= 50) {
 					/* We reached the end of the page so finsih off the page and start a newy */
 					$PageNumber++;
-					include('includes/PDFOrderPageHeader_generic.inc');
+					include('includes/PDFOrderPageHeader_generic.php');
 				} //end if need a new page headed up
 				else {
 					/*increment a line down for the next line item */
@@ -241,7 +241,7 @@ for ($i = 1; $i <= 2; $i++) {
 					if ($YPos - $line_height <= 50) {
 						/* We reached the end of the page so finsih off the page and start a newy */
 						$PageNumber++;
-						include('includes/PDFOrderPageHeader_generic.inc');
+						include('includes/PDFOrderPageHeader_generic.php');
 					} //end if need a new page headed up
 					else {
 						/*increment a line down for the next line item */
@@ -266,7 +266,7 @@ for ($i = 1; $i <= 2; $i++) {
 					if ($YPos - $line_height <= 50) {
 						/* We reached the end of the page so finsih off the page and start a newy */
 						$PageNumber++;
-						include('includes/PDFOrderPageHeader_generic.inc');
+						include('includes/PDFOrderPageHeader_generic.php');
 					} //end if need a new page headed up
 					else {
 						/*increment a line down for the next line item */
@@ -286,10 +286,10 @@ for ($i = 1; $i <= 2; $i++) {
 
 if ($ListCount == 0) {
 	$Title = _('Print Packing Slip Error');
-	include('includes/header.inc');
+	include('includes/header.php');
 	echo '<p>' . _('There were no outstanding items on the order to deliver') . '. ' . _('A packing slip cannot be printed') . '<br /><a href="' . $RootPath . '/SelectSalesOrder.php">' . _('Print Another Packing Slip/Order') . '</a>
 			<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } else {
 	$PDF->OutputD($_SESSION['DatabaseName'] . '_PackingSlip_' . date('Y-m-d') . '.pdf');

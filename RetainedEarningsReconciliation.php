@@ -1,11 +1,11 @@
 <?php
 $PageSecurity=1;
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('General Ledger Retained Earnings Reconciliation');
 $ViewTopic = 'GeneralLedger';
 $BookMark = 'GLAccountInquiry';
-include('includes/header.inc');
-include('includes/GLPostings.inc');
+include('includes/header.php');
+include('includes/GLPostings.php');
 
 echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/transactions.png" title="' . $Title . '" alt="' . $Title . '" />' . ' ' . $Title . '</p>';
 
@@ -91,5 +91,5 @@ echo '<div class="centre">
 
 echo '</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

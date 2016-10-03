@@ -1,12 +1,12 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Process regular payments');
 $ViewTopic = 'GeneralLedger';
 $BookMark = 'RegularPayments';
 
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" >
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/money_add.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '
@@ -97,6 +97,6 @@ echo '<div class="centre">
 
 echo '</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

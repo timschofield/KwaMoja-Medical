@@ -1,7 +1,7 @@
 <?php
 
-include('includes/session.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/session.php');
+include('includes/SQL_CommonFunctions.php');
 
 if (isset($_GET['BatchNo'])) {
 	$_POST['BatchNo'] = $_GET['BatchNo'];
@@ -9,10 +9,10 @@ if (isset($_GET['BatchNo'])) {
 
 if (!isset($_POST['BatchNo'])) {
 	$Title = _('Create PDF Print Out For A Batch Of Receipts');
-	/* Manual links before header.inc */
+	/* Manual links before header.php */
 	$ViewTopic = 'ARReports';
 	$BookMark = 'BankingSummary';
-	include('includes/header.inc');
+	include('includes/header.php');
 
 	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . $Title . '" alt="' . $Title . '" />' . ' ' . $Title . '</p>';
 
@@ -42,7 +42,7 @@ if (!isset($_POST['BatchNo'])) {
 			</div>
 		</form>';
 
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -70,9 +70,9 @@ if (isset($_POST['BatchNo']) and $_POST['BatchNo'] != '') {
 
 	if (DB_num_rows($Result) == 0) {
 		$Title = _('Create PDF Print-out For A Batch Of Receipts');
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('The receipt batch number') . ' ' . $_POST['BatchNo'] . ' ' . _('was not found in the database') . '. ' . _('Please try again selecting a different batch number'), 'warn');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 	/* OK get the row of receipt batch header info from the BankTrans table */
@@ -99,12 +99,12 @@ if (isset($_POST['BatchNo']) and $_POST['BatchNo'] != '') {
 	$CustRecs = DB_query($SQL, '', '', false, false);
 	if (DB_error_no() != 0) {
 		$Title = _('Create PDF Print-out For A Batch Of Receipts');
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('An error occurred getting the customer receipts for batch number') . ' ' . $_POST['BatchNo'], 'error');
 		if ($Debug == 1) {
 			prnMsg(_('The SQL used to get the customer receipt information that failed was') . '<br />' . $SQL, 'error');
 		}
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 	$SQL = "SELECT narrative,
@@ -118,12 +118,12 @@ if (isset($_POST['BatchNo']) and $_POST['BatchNo'] != '') {
 	$GLRecs = DB_query($SQL, '', '', false, false);
 	if (DB_error_no() != 0) {
 		$Title = _('Create PDF Print-out For A Batch Of Receipts');
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('An error occurred getting the GL receipts for batch number') . ' ' . $_POST['BatchNo'], 'error');
 		if ($Debug == 1) {
 			prnMsg(_('The SQL used to get the GL receipt information that failed was') . ':<br />' . $SQL, 'error');
 		}
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
@@ -138,7 +138,7 @@ if (isset($_POST['BatchNo']) and $_POST['BatchNo'] != '') {
 	$PageNumber = 0;
 	$TotalBanked = 0;
 
-	include('includes/PDFBankingSummaryPageHeader.inc');
+	include('includes/PDFBankingSummaryPageHeader.php');
 
 	while ($MyRow = DB_fetch_array($CustRecs)) {
 
@@ -152,7 +152,7 @@ if (isset($_POST['BatchNo']) and $_POST['BatchNo'] != '') {
 
 		if ($YPos - (2 * $line_height) < $Bottom_Margin) {
 			/*Then set up a new page */
-			include('includes/PDFBankingSummaryPageHeader.inc');
+			include('includes/PDFBankingSummaryPageHeader.php');
 		}
 		/*end of new page header  */
 	}
@@ -168,7 +168,7 @@ if (isset($_POST['BatchNo']) and $_POST['BatchNo'] != '') {
 
 		if ($YPos - (2 * $line_height) < $Bottom_Margin) {
 			/*Then set up a new page */
-			include('includes/PDFBankingSummaryPageHeader.inc');
+			include('includes/PDFBankingSummaryPageHeader.php');
 		}
 		/*end of new page header  */
 	}

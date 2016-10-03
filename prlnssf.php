@@ -1,11 +1,11 @@
 <?php
 /* $Revision: 1.0 $ */
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Social Security System Section');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_GET['employeeno'])) {
 	$employeeno = $_GET['employeeno'];
@@ -509,5 +509,5 @@ if (!isset($employeeno)) {
 
 } // end of main ifs
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

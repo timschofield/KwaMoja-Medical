@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Select Contract');
 $ViewTopic = 'Contracts';
 $BookMark = 'SelectContract';
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/contract.png" title="' . _('Contracts') . '" alt="" />' . ' ' . _('Select A Contract') . '</p> ';
 
@@ -205,5 +205,5 @@ while ($MyRow = DB_fetch_array($ContractsResult)) {
 echo '</table>
 	</tbody>
 </form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

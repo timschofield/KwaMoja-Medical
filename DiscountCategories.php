@@ -1,12 +1,12 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Discount Categories Maintenance');
-/* Manual links before header.inc */
+/* Manual links before header.php */
 $ViewTopic = 'SalesOrders';
 $BookMark = 'DiscountMatrix';
-include('includes/header.inc');
+include('includes/header.php');
 echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p><br />';
 
 if (isset($_POST['stockID'])) {
@@ -68,7 +68,7 @@ if (isset($_POST['submit']) and !isset($_POST['SubmitCategory'])) {
 		$Result = DB_query($SQL);
 	} else {
 		prnMsg(_('There are no stock defined for this stock category, you must define stock for it first'), 'error');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 }
@@ -268,5 +268,5 @@ if (!isset($_POST['SelectChoice'])) {
 			</form>';
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

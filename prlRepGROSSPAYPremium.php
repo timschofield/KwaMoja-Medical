@@ -4,8 +4,8 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['FSMonth']) AND $_POST['FSMonth']
 
 	include('config.php');
 	include('includes/PDFStarter.php');
-	include('includes/ConnectDB.inc');
-	include('includes/DateFunctions.inc');
+	include('includes/ConnectDB.php');
+	include('includes/DateFunctions.php');
 	include('includes/prlFunctions.php');
 
 	$FontSize = 12;
@@ -17,18 +17,18 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['FSMonth']) AND $_POST['FSMonth']
 
 	if ($_POST['FSMonth'] == 0) {
 		$Title = _('Gross Pay Monthly Premuim Listing') . ' - ' . _('Problem Report');
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('Month not selected'), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 	if ($_POST['FSYear'] == 0) {
 		$Title = _('Gross pay Monthly Premuim Listing') . ' - ' . _('Problem Report');
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('Year not selected'), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 	$GROSSPAYMonth = $_POST['FSMonth'];
@@ -44,7 +44,7 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['FSMonth']) AND $_POST['FSMonth']
 	$GROSSPAYEE = 0;
 	$GROSSPAYTotal = 0;
 
-	include('includes/PDFHDMFPremiumPageHeader.inc');
+	include('includes/PDFHDMFPremiumPageHeader.php');
 
 	$sql = "SELECT employeeid,employergrosspay,employeegrosspay,total
 			FROM prlempgrosspayfile
@@ -74,7 +74,7 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['FSMonth']) AND $_POST['FSMonth']
 				$LeftOvers = $pdf->addTextWrap($Left_Margin + 460, $YPos, 50, $FontSize, number_format($GROSSPAYTotal, 2), 'right');
 				$YPos -= $line_height;
 				if ($YPos < ($Bottom_Margin)) {
-					include('includes/PDFHDMFPremiumPageHeader.inc');
+					include('includes/PDFHDMFPremiumPageHeader.php');
 				}
 			}
 		}
@@ -100,19 +100,19 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['FSMonth']) AND $_POST['FSMonth']
 	$pdf->stream();
 
 } elseif (isset($_POST['ShowPR'])) {
-	include('includes/session.inc');
+	include('includes/session.php');
 	$Title = _('Grosspay Monthly Premium Listing');
-	include('includes/header.inc');
+	include('includes/header.php');
 	echo 'Use PrintPDF instead';
 	echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } else {
 	/*The option to print PDF was not hit */
 
-	include('includes/session.inc');
+	include('includes/session.php');
 	$Title = _('Gross Pay Monthly Premium Listing');
-	include('includes/header.inc');
+	include('includes/header.php');
 
 	echo '<form method="post" action="' . $_SERVER['PHP_SELF'] . '">';
 	echo '<table>';
@@ -142,7 +142,7 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['FSMonth']) AND $_POST['FSMonth']
 	echo "</table><p><input type='Submit' name='ShowPR' value='" . _('Show Gross Pay Premium') . "'>";
 	echo "<p><input type='Submit' name='PrintPDF' value='" . _('PrintPDF') . "'>";
 
-	include('includes/footer.inc');
+	include('includes/footer.php');
 }
 /*end of else not PrintPDF */
 

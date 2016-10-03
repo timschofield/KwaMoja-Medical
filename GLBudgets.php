@@ -1,13 +1,13 @@
 <?php
 
-include('includes/session.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/session.php');
+include('includes/SQL_CommonFunctions.php');
 
 $Title = _('Create GL Budgets');
 
 $ViewTopic = 'GeneralLedger';
 $BookMark = 'GLBudgets';
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_POST['SelectedAccount'])) {
 	$SelectedAccount = $_POST['SelectedAccount'];
@@ -139,7 +139,7 @@ if (isset($SelectedAccount) and $SelectedAccount != '') {
 		$Period = GetPeriod(Date($_SESSION['DefaultDateFormat'], $MonthEnd), false);
 		$PeriodEnd[$Period] = Date('M Y', $MonthEnd);
 	}
-	include('includes/GLPostings.inc'); //creates chartdetails with correct values
+	include('includes/GLPostings.php'); //creates chartdetails with correct values
 	// End of create periods
 
 	$SQL = "SELECT period,
@@ -257,6 +257,6 @@ if (isset($SelectedAccount) and $SelectedAccount != '') {
 	</form>';
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

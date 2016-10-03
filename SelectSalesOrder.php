@@ -1,7 +1,7 @@
 <?php
 
 $PricesSecurity = 1000;
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Search Outstanding Sales Orders');
 
 if (isset($_GET['download'])) {
@@ -19,11 +19,11 @@ if (isset($_GET['download'])) {
 	echo $MyRow['content'];
 	exit;
 }
-/* Manual links before header.inc */
+/* Manual links before header.php */
 $ViewTopic = 'SalesOrders';
 $BookMark = 'SelectSalesOrder';
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 if (isset($_GET['SelectedStockItem'])) {
 	$SelectedStockItem = $_GET['SelectedStockItem'];
@@ -447,7 +447,7 @@ if (isset($OrderNumber) and $OrderNumber != '') {
 	if (!is_numeric($OrderNumber)) {
 		prnMsg(_('The Order Number entered MUST be numeric'), 'error');
 		unset($OrderNumber);
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} else {
 		echo _('Order Number'), '&nbsp;-&nbsp;', $OrderNumber;
@@ -956,5 +956,5 @@ if (!isset($StockId)) {
 
 } //end StockID already selected
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

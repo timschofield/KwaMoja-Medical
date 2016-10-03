@@ -1,12 +1,12 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Setup regular payments');
 $ViewTopic = 'GeneralLedger';
 $BookMark = 'RegularPayments';
 
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" >
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '
@@ -244,7 +244,7 @@ if (DB_num_rows($AccountsResults) == 0) {
 		</tr>
 		</table>';
 	prnMsg(_('Bank Accounts have not yet been defined. You must first') . ' <a href="' . $RootPath . '/BankAccounts.php">' . _('define the bank accounts') . '</a> ' . _('and general ledger accounts to be affected'), 'warn');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } else {
 	echo '<option value=""></option>';
@@ -469,6 +469,6 @@ if (DB_num_rows($Result) > 0 and !isset($_GET['Edit'])) {
 
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

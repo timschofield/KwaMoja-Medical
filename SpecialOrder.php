@@ -1,13 +1,13 @@
 <?php
 
 include('includes/DefineSpecialOrderClass.php');
-/* Session started in header.inc for password checking and authorisation level check */
-include('includes/session.inc');
-include('includes/SQL_CommonFunctions.inc');
+/* Session started in header.php for password checking and authorisation level check */
+include('includes/session.php');
+include('includes/SQL_CommonFunctions.php');
 
 $Title = _('Special Order Entry');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 if (empty($_GET['identifier'])) {
 	/*unique session identifier to ensure that there is no conflict with other supplier tender sessions on the same machine  */
@@ -26,7 +26,7 @@ if (isset($_GET['NewSpecial']) and $_GET['NewSpecial'] == 'yes') {
 if (!isset($_SESSION['SupplierID'])) {
 	prnMsg(_('To set up a special') . ', ' . _('the supplier must first be selected from the Select Supplier page'), 'info');
 	echo '<br /><a href="' . $RootPath . '/SelectSupplier.php">' . _('Select the supplier now') . '</a>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -34,7 +34,7 @@ if (!isset($_SESSION['CustomerID']) or $_SESSION['CustomerID'] == '') {
 	prnMsg( _('To set up a special') . ', ' . _('the customer must first be selected from the Select Customer page'), 'info');
 	echo '<br />
 		<a href="' . $RootPath . '/SelectCustomer.php">' . _('Select the customer now') . '</a>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -167,12 +167,12 @@ if (!isset($_SESSION['SPL' . $Identifier]->BranchCode)) {
 
 		echo '</table>';
 		echo '</form>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 
 	} else {
 		prnMsg(_('There are no branches defined for the customer selected') . '. ' . _('Please select a customer that has branches defined'), 'info');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 }
@@ -580,7 +580,7 @@ if (isset($_POST['Commit'])) {
 		unset($_SESSION['SPL' . $Identifier]);
 		/*Clear the PO data to allow a newy to be input*/
 		echo '<br /><br /><a href="' . $RootPath . '/SpecialOrder.php">' . _('Enter A New Special Order') . '</a>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 	/*end if there were no input errors trapped */
@@ -769,5 +769,5 @@ echo '<div class="centre">
 	</div>
 	</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

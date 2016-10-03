@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $PricesSecurity = 1000; //don't show pricing info unless security token 1000 available to user
 $Today =  time();
 $Title = _('Aged Controlled Inventory') . ' ' ._('as-of') .' ' . Date(($_SESSION['DefaultDateFormat']), $Today );
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text">
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Inventory') . '" alt="" /><b>' . $Title . '</b>
@@ -107,5 +107,5 @@ echo '<td colspan="3"><b>' . _('Total') . '</b></td>
 </tfoot>';
 echo '</table>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

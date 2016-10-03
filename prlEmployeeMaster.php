@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Employee Maintenance');
 
-include('includes/header.inc');
+include('includes/header.php');
 include('includes/CountriesArray.php');
 
 if (isset($_GET['EmployeeID'])) {
@@ -541,5 +541,5 @@ if (!isset($EmployeeID)) {
 		</form>';
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

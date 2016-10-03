@@ -1,11 +1,11 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Maintenance Of Petty Cash Type of Tabs');
-/* Manual links before header.inc */
+/* Manual links before header.php */
 $ViewTopic = 'PettyCash';
 $BookMark = 'PCTabTypes';
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/money_add.png" title="' . _('Payment Entry') . '" alt="" />' . ' ' . $Title . '</p>';
 
@@ -125,7 +125,7 @@ if (isset($_POST['submit'])) {
 		echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 		echo '<div class="centre"><input type="submit" name="Return" value="' . _('Return to list of tab types') . '" /></div>';
 		echo '</form>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} else {
 
@@ -244,5 +244,5 @@ if (!isset($_GET['delete'])) {
 
 } // end if user wish to delete
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

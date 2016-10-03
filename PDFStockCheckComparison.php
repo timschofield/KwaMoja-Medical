@@ -1,6 +1,6 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 
@@ -11,7 +11,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 	$line_height = 15;
 
 
-	include('includes/SQL_CommonFunctions.inc');
+	include('includes/SQL_CommonFunctions.php');
 
 
 	/*First off do the Inventory Comparison file stuff */
@@ -33,14 +33,14 @@ if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 		$StockChecks = DB_query($SQL, '', '', false, false);
 		if (DB_error_no() != 0) {
 			$Title = _('Stock Freeze') . ' - ' . _('Problem Report') . '....';
-			include('includes/header.inc');
+			include('includes/header.php');
 			echo '<br />';
 			prnMsg(_('The inventory check file could not be retrieved because') . ' - ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 			if ($Debug == 1) {
 				echo '<br />' . $SQL;
 			}
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 
@@ -59,14 +59,14 @@ if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 			$StockCounts = DB_query($SQL);
 			if (DB_error_no() != 0) {
 				$Title = _('Stock Count Comparison') . ' - ' . _('Problem Report') . '....';
-				include('includes/header.inc');
+				include('includes/header.php');
 				echo '<br />';
 				prnMsg(_('The inventory counts file could not be retrieved because') . ' - ' . DB_error_msg() . 'error');
 				echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 				if ($Debug == 1) {
 					echo '<br />' . $SQL;
 				}
-				include('includes/footer.inc');
+				include('includes/footer.php');
 				exit;
 			}
 
@@ -212,11 +212,11 @@ if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 
 	if (DB_num_rows($CheckedItems) == 0) {
 		$Title = _('Inventory Comparison Comparison Report');
-		include('includes/header.inc');
+		include('includes/header.php');
 		echo '<p>';
 		prnMsg(_('There is no inventory check data to report on'), 'warn');
 		echo '<p>' . _('To start an inventory check first run the') . ' <a href="' . $RootPath . '/StockCheck.php">' . _('inventory check sheets') . '</a> - ' . _('and select the option to create new Inventory Comparison data file');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
@@ -224,7 +224,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 	$LocationName = $FirstRow['locationname'];
 	DB_data_seek($CheckedItems,0);
 
-	include('includes/PDFStockComparisonPageHeader.inc');
+	include('includes/PDFStockComparisonPageHeader.php');
 
 	$Location = '';
 	$Category = '';
@@ -270,14 +270,14 @@ if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 
 		if (DB_error_no() != 0) {
 			$Title = _('Inventory Comparison') . ' - ' . _('Problem Report') . '.... ';
-			include('includes/header.inc');
+			include('includes/header.php');
 			echo '<br />';
 			prnMsg(_('The inventory counts could not be retrieved by the SQL because') . ' - ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 			if ($Debug == 1) {
 				echo '<br />' . $SQL;
 			}
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 
@@ -309,7 +309,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 
 				if ($YPos < $Bottom_Margin + $line_height) {
 					$PageNumber++;
-					include('includes/PDFStockComparisonPageHeader.inc');
+					include('includes/PDFStockComparisonPageHeader.php');
 				}
 			} // end of loop printing count information
 			$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 375 - $Left_Margin, $FontSize, _('Total for') . ': ' . $CheckItemRow['stockid'], 'right');
@@ -321,7 +321,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 
 		if ($YPos < $Bottom_Margin + $line_height) {
 			$PageNumber++;
-			include('includes/PDFStockComparisonPageHeader.inc');
+			include('includes/PDFStockComparisonPageHeader.php');
 		}
 
 	}
@@ -345,7 +345,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 	/*The option to print PDF was not hit */
 
 	$Title = _('Inventory Comparison Report');
-	include('includes/header.inc');
+	include('includes/header.php');
 
 	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/transactions.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '</p>';
 
@@ -386,7 +386,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['ReportOrClose'])) {
 		</div>';
 	echo '</form>';
 
-	include('includes/footer.inc');
+	include('includes/footer.php');
 
 }
 /*end of else not PrintPDF */

@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Pay Period Section');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_GET['PayPeriodID'])) {
 	$PayPeriodID = $_GET['PayPeriodID'];
@@ -206,5 +206,5 @@ if (!isset($PayPeriodID)) {
 		</form>';
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

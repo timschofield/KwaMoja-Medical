@@ -1,8 +1,8 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Search Purchase Orders');
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_GET['SelectedStockItem'])) {
 	$SelectedStockItem = stripslashes($_GET['SelectedStockItem']);
@@ -346,5 +346,5 @@ if (isset($StockItemsResult)) {
 	} // end if purchase orders to show
 }
 echo '</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Currency Debtor Balances');
 $ViewTopic = 'SpecialUtilities'; // Filename in ManualContents.php's TOC.
 $BookMark = 'Z_CurrencyDebtorsBalances'; // Anchor's id in the manual's html document.
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text">
 		<img alt="" src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/ar.png" title="' . _('Show Local Currency Total Debtors Balances') . '" /> ' . _('Debtors Balances By Currency Totals') . '
@@ -45,5 +45,5 @@ echo '<tr>
 
 echo '</table>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

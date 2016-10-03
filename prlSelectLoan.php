@@ -1,8 +1,8 @@
 <?php
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('View Employee Loan Master File');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_GET['SelectedID'])) {
 	$SelectedID = $_GET['SelectedID'];
@@ -69,5 +69,5 @@ if (!isset($SelectedID)) {
 echo '</table>';
 //end of ifs and buts!
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

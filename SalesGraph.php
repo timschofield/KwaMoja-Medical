@@ -1,12 +1,12 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 include('includes/phplot/phplot.php');
 $Title = _('Sales Report Graph');
-/* Manual links before header.inc */
+/* Manual links before header.php */
 $ViewTopic = 'ARInquiries';
 $BookMark = 'SalesGraph';
-include('includes/header.inc');
+include('includes/header.php');
 
 $SelectADifferentPeriod = '';
 
@@ -212,7 +212,7 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 
 	echo '<div class="centre"><input type="submit" name="ShowGraph" value="' . _('Show Sales Graph') . '" /></div>';
 	echo '</form>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 } else {
 
 	$graph = new PHPlot(950, 450);
@@ -308,12 +308,12 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 	if (DB_error_no() != 0) {
 
 		prnMsg(_('The sales graph data for the selected criteria could not be retrieved because') . ' - ' . DB_error_msg(), 'error');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 	if (DB_num_rows($SalesResult) == 0) {
 		prnMsg(_('There is not sales data for the criteria entered to graph'), 'info');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
@@ -358,6 +358,6 @@ if ((!isset($_POST['FromPeriod']) or !isset($_POST['ToPeriod'])) or $SelectADiff
 				</td>
 			</tr>
 		</table>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 }
 ?>

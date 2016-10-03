@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Stock Category Maintenance');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 // BEGIN: Stock Type Name array.
 $SQL = "SELECT type,
@@ -718,5 +718,5 @@ if (isset($SelectedCategory)) {
 	echo '<div style="text-align: right"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('Show All Stock Categories') . '</a></div>';
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

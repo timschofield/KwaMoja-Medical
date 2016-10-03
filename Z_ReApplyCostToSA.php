@@ -1,8 +1,8 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Apply Current Cost to Sales Analysis');
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '<br /></p>';
 
@@ -85,5 +85,5 @@ if (isset($_POST['UpdateSalesAnalysis']) and $_POST['PeriodNo'] != 0) {
 
 	prnMsg(_('Updated the sales analysis cost data for period') . ' ' . $_POST['PeriodNo'], 'success');
 }
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

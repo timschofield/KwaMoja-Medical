@@ -1,12 +1,12 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Item Maintenance');
-/* Manual links before header.inc */
+/* Manual links before header.php */
 $ViewTopic = 'Inventory';
 $BookMark = 'InventoryAddingItems';
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 /*If this form is called with the StockID then it is assumed that the stock item is to be modified */
 
@@ -1599,5 +1599,5 @@ if ($New == 1) {
 
 echo '</div>
 	</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

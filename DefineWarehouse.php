@@ -1,6 +1,6 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 if (!isset($_POST['Parent'])) {
 	$_POST['Parent'] = '';
@@ -21,7 +21,7 @@ if (isset($_GET['Location'])) {
 	 * show a selection form for the user to choose one
 	 */
 	$Title = _('Select Warehouse to Define');
-	include('includes/header.inc');
+	include('includes/header.php');
 	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/supplier.png" title="' . _('Inventory') . '" alt="" />' . ' ' . $Title . '</p>';
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -44,7 +44,7 @@ if (isset($_GET['Location'])) {
 		</div>';
 
 	echo '</form>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -165,7 +165,7 @@ $LocationRow = DB_fetch_array($Result);
 
 $Title = _('Define Warehouse at') . ' ' . $LocationRow['locationname'];
 
-include('includes/header.inc');
+include('includes/header.php');
 echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/supplier.png" title="' . _('Inventory') . '" alt="" />' . ' ' . $Title . '</p>';
 if (!isset($_GET['Edit'])) {
 function display_children($parent, $level, $LocationCode) {
@@ -483,6 +483,6 @@ if (!isset($_GET['Edit'])) {
 
 echo '</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

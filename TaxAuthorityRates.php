@@ -7,11 +7,11 @@ if (isset($_GET['TaxAuthority'])) {
 	$TaxAuthority = $_GET['TaxAuthority'];
 }
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Tax Rates Maintenance');
 $ViewTopic = 'Tax';// Filename in ManualContents.php's TOC.
 $BookMark = 'TaxAuthorityRates';// Anchor's id in the manual's html document.
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" >
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . $Title . '" alt="" />' . $Title . '
@@ -19,7 +19,7 @@ echo '<p class="page_title_text" >
 
 if (!isset($TaxAuthority)) {
 	prnMsg(_('This page can only be called after selecting the tax authority to edit the rates for') . '. ' . _('Please select the Rates link from the tax authority page') . '<br /><a href="' . $RootPath . '/TaxAuthorities.php">' . _('click here') . '</a> ' . _('to go to the Tax Authority page'), 'error');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -135,5 +135,5 @@ echo '<div class="centre">
 
 echo '</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

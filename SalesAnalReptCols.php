@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Sales Analysis Report Columns');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 
 function DataOptions($DataX) {
@@ -533,5 +533,5 @@ if (!isset($_GET['delete'])) {
 
 } //end if record deleted no point displaying form to add record
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

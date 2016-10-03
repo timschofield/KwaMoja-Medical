@@ -1,11 +1,11 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Bank Reconciliation');;// Screen identificator.
 $ViewTopic= 'GeneralLedger';// Filename's id in ManualContents.php's TOC.
 $BookMark = 'BankAccounts';// Anchor's id in the manual's html document.
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -44,7 +44,7 @@ if (isset($_POST['PostExchangeDifference']) and is_numeric(filter_number_format(
 
 		$ExchangeDifference = ($CalculatedBalance - filter_number_format($_POST['BankStatementBalance'])) / $CurrencyRow['rate'];
 
-		include('includes/SQL_CommonFunctions.inc');
+		include('includes/SQL_CommonFunctions.php');
 		$ExDiffTransNo = GetNextTransNo(36);
 		/*Post the exchange difference to the last day of the month prior to current date*/
 		$PostingDate = Date($_SESSION['DefaultDateFormat'], mktime(0, 0, 0, Date('m'), 0, Date('Y')));
@@ -115,7 +115,7 @@ if (DB_num_rows($AccountsResults) == 0) {
 			</tr>
 			</table>';
 	prnMsg( _('Bank Accounts have not yet been defined') . '. ' . _('You must first') . '<a href="' . $RootPath . '/BankAccounts.php">' . _('define the bank accounts') . '</a>' . ' ' . _('and general ledger accounts to be affected') . '.', 'warn');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } else {
 	while ($MyRow = DB_fetch_array($AccountsResults)) {
@@ -140,7 +140,7 @@ echo '<tr>
 	</tr>';
 /*Now do the posting while the user is thinking about the bank account to select */
 
-include('includes/GLPostings.inc');
+include('includes/GLPostings.php');
 
 echo '</table>
 	<div class="centre">
@@ -378,5 +378,5 @@ if (isset($_POST['BankAccount'])) {
 		</div>';
 }
 echo '</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

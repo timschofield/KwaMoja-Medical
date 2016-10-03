@@ -4,9 +4,9 @@
 //$PageSecurity = 3;
 $Title = _('Geocode Generate');
 
-include('includes/session.inc');
-include('includes/header.inc');
-//include ('includes/SQL_CommonFunctions.inc');
+include('includes/session.php');
+include('includes/header.php');
+//include ('includes/SQL_CommonFunctions.php');
 
 $SQL = "SELECT * FROM geocode_param WHERE 1";
 $ErrMsg = _('An error occurred in retrieving the information');
@@ -131,5 +131,5 @@ while ($row2 = DB_fetch_array($Result2)) {
 	}
 }
 echo '<br /><div class="centre"><a href="' . $RootPath . '/GeocodeSetup.php">' . _('Go back to Geocode Setup') . '</a></div>';
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

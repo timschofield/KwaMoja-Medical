@@ -1,9 +1,9 @@
 <?php
 $PageSecurity=1;
-include ('includes/session.inc');
+include ('includes/session.php');
 
 $Title = _('Donor Maintenance');
-/* Manual links before header.inc */
+/* Manual links before header.php */
 if (isset($_POST['Edit']) or isset($_GET['Edit']) or isset($_GET['DonorNo'])) {
 //	$ViewTopic = 'AccountsReceivable';
 //	$BookMark = 'AmendCustomer';
@@ -11,8 +11,8 @@ if (isset($_POST['Edit']) or isset($_GET['Edit']) or isset($_GET['DonorNo'])) {
 //	$ViewTopic = 'AccountsReceivable';
 //	$BookMark = 'NewCustomer';
 }
-include ('includes/header.inc');
-include ('includes/SQL_CommonFunctions.inc');
+include ('includes/header.php');
+include ('includes/SQL_CommonFunctions.php');
 include ('includes/CountriesArray.php');
 
 echo '<p class="page_title_text" >
@@ -64,7 +64,7 @@ if (isset($_POST['submit'])) {
 			$ErrMsg = _('The donor could not be updated because');
 			$Result = DB_query($SQL, $ErrMsg);
 			prnMsg(_('Donor updated'), 'success');
-			include ('includes/footer.inc');
+			include ('includes/footer.php');
 			exit;
 		} else { //it is a new customer
 			/* set the DonorNo if $AutoDonorNo in config.php has been set to
@@ -96,7 +96,7 @@ if (isset($_POST['submit'])) {
 			$ErrMsg = _('This donor could not be added because');
 			$Result = DB_query($SQL, $ErrMsg);
 			prnMsg(_('The donor was created successfuly'), 'success');
-			include ('includes/footer.inc');
+			include ('includes/footer.php');
 			exit;
 		}
 	} else {
@@ -290,5 +290,5 @@ if (isset($_POST['New']) and $_POST['New']) {
 
 echo '</form>';
 
-include ('includes/footer.inc');
+include ('includes/footer.php');
 ?>

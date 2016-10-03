@@ -1,7 +1,7 @@
 <?php
 /* $Id$*/
 /**
- * Filename.......: class.html.mime.mail.inc
+ * Filename.......: class.html.mime.mail.php
  * Project........: HTML Mime mail class
  * Last Modified..: $Date: 2007/11/02 21:39:47 $
  * CVS Revision...: $Revision: 1.6 $

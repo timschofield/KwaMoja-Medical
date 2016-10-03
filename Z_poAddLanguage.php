@@ -2,7 +2,7 @@
 
 /* Steve Kitchen/Kaill */
 
-include('includes/session.inc');
+include('includes/session.php');
 
 /* Was the Cancel button pressed the last time through ? */
 
@@ -14,7 +14,7 @@ if (isset($_POST['cancel'])) {
 $Title = _('New Language');// _('Add a New Language to the System')
 $ViewTopic = 'SpecialUtilities';
 $BookMark = 'Z_poAddLanguage';// Anchor's id in the manual's html document.
-include('includes/header.inc');
+include('includes/header.php');
 
 /* Your webserver user MUST have read/write access to here,	otherwise you'll be wasting your time */
 echo '<div class="toplink">
@@ -53,7 +53,7 @@ if (isset($_POST['submit']) and isset($_POST['NewLanguage'])) {
 		} else {
 			prnMsg(_('This language cannot be added because it already exists!'), 'error');
 			echo '</form>';
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 
@@ -63,7 +63,7 @@ if (isset($_POST['submit']) and isset($_POST['NewLanguage'])) {
 		prnMsg(_('Done. You should now change to your newly created language from the user settings link above. Then you can edit the new language file header and use the language module editor to translate the system strings'), 'info');
 
 		echo '</form>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
@@ -84,6 +84,6 @@ echo '<table>
 echo '<input type="submit" name="submit" value="' . _('Proceed') . '" />';
 echo '</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

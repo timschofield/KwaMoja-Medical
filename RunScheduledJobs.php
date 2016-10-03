@@ -1,6 +1,6 @@
 <?php
 $PageSecurity = 1;
-include('includes/session.inc');
+include('includes/session.php');
 $JobsSQL = "SELECT jobnumber, script, frequency FROM schedule WHERE nextrun<CURRENT_TIMESTAMP";
 $JobsResult = DB_query($JobsSQL);
 

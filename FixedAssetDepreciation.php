@@ -1,12 +1,12 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Depreciation Journal Entry');
 
 $ViewTopic = 'FixedAssets';
 $BookMark = 'AssetDepreciation';
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 
 /*Get the last period depreciation (depn is transtype =44) was posted for */
@@ -268,7 +268,7 @@ if (isset($_POST['CommitDepreciation']) and $InputError == false) {
 	unset($_POST['ProcessDate']);
 	echo '<br /><a href="index.php">' . _('Return to main menu') . '</a>';
 	/*And post the journal too */
-	include('includes/GLPostings.inc');
+	include('includes/GLPostings.php');
 } else {
 	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post" id="form">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -286,5 +286,5 @@ if (isset($_POST['CommitDepreciation']) and $InputError == false) {
 		</table>
 		</form>';
 }
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

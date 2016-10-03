@@ -1,10 +1,10 @@
 <?php
 
 include('includes/DefineProjectClass.php');
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Project Costing');
-/* Session started in header.inc for password checking and authorisation level check */
-include('includes/header.inc');
+/* Session started in header.php for password checking and authorisation level check */
+include('includes/header.php');
 
 if (empty($_GET['identifier'])) {
 	$Identifier = date('U');
@@ -15,7 +15,7 @@ if (empty($_GET['identifier'])) {
 if (!isset($_GET['SelectedProject'])) {
 	echo '<br />';
 	prnMsg(_('This page is expected to be called with the project reference to show the costing for'), 'error');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } else {
 	$ProjectRef = $_GET['SelectedProject'];
@@ -227,7 +227,7 @@ echo '</table>';
 //Do the processing here after the variances are all calculated above
 if (isset($_POST['CloseProject']) and $_SESSION['Project' . $Identifier]->Status == 2) {
 
-	include('includes/SQL_CommonFunctions.inc');
+	include('includes/SQL_CommonFunctions.php');
 
 	$GLCodes = GetStockGLCode($_SESSION['Project' . $Identifier]->ProjectRef);
 	//Compare actual costs to original budgeted project costs - if actual > budgeted - CR WIP and DR usage variance
@@ -372,7 +372,7 @@ if (isset($_POST['CloseProject']) and $_SESSION['Project' . $Identifier]->Status
 					/*GL integration with stock is activated so need the GL journals to make it so */
 					/*first the debit the finished stock of the item received from the WO
 					the appropriate account was already retrieved into the $StockGLCode variable as the Processing code is kicked off
-					it is retrieved from the stock category record of the item by a function in SQL_CommonFunctions.inc*/
+					it is retrieved from the stock category record of the item by a function in SQL_CommonFunctions.php*/
 
 					$SQL = "INSERT INTO gltrans (type,
 												typeno,
@@ -444,5 +444,5 @@ if ($_SESSION['Project' . $Identifier]->Status == 2) { //the project is an order
 	</form>';
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

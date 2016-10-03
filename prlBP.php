@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Basic Pay Section');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_GET['Bracket'])) {
 	$Bracket = $_GET['Bracket'];
@@ -234,5 +234,5 @@ while ($MyRow = DB_fetch_array($Result)) {
 } //END WHILE LIST LOOP
 echo '</table>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

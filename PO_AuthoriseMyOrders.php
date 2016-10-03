@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Authorise Purchase Orders');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/transactions.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '</p>';
 
@@ -146,5 +146,5 @@ echo '<div class="centre">
 		<input type="submit" name="UpdateAll" value="' . _('Update') . '" />
 	</div>
 	</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

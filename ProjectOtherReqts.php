@@ -2,7 +2,7 @@
 $PageSecurity=1;
 include('includes/DefineProjectClass.php');
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Project Other Requirements');
 
 $Identifier = $_GET['identifier'];
@@ -17,7 +17,7 @@ if (!isset($_SESSION['Project' . $Identifier])) {
 }
 $ViewTopic = 'Projects';
 $BookMark = 'AddToProject';
-include('includes/header.inc');
+include('includes/header.php');
 
 
 if (isset($_POST['UpdateLines']) or isset($_POST['BackToHeader'])) {
@@ -41,7 +41,7 @@ if (isset($_POST['BackToHeader'])) {
 	echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/Projects.php?identifier=' . $Identifier . '" />';
 	echo '<br />';
 	prnMsg(_('You should automatically be forwarded to the Project page. If this does not happen perhaps the browser does not support META Refresh') . '<a href="' . $RootPath . '/Projects.php?identifier=' . urlencode($Identifier) . '">' . _('click here') . '</a> ' . _('to continue'), 'info');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -169,5 +169,5 @@ echo '<table class="selection">
 		</div>
 		</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

@@ -1,9 +1,9 @@
 <?php
 /* $Id$*/
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Serial Item Research');
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" >
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Inventory') . '" alt="" /><b>' . $Title . '</b>
@@ -105,5 +105,5 @@ if ($SerialNo != '') {
 	} // ELSE THERE WHERE ROWS
 } //END OF POST IS SET
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

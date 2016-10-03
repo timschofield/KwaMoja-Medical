@@ -1,8 +1,8 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Upgrade 3.10 - 3.11');
-include('includes/header.inc');
+include('includes/header.php');
 
 
 if (empty($_POST['DoUpgrade'])) {
@@ -84,5 +84,5 @@ if ($_POST['DoUpgrade'] == _('Perform Upgrade')) {
 }
 /*Dont do upgrade */
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

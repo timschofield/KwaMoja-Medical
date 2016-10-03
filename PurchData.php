@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Supplier Purchasing Data');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_GET['SupplierID'])) {
 	$SupplierID = trim(mb_strtoupper(stripslashes($_GET['SupplierID'])));
@@ -387,7 +387,7 @@ if (isset($SupplierID) and $SupplierID != '' and !isset($_POST['SearchSupplier']
 					<input type="submit" name="SearchSupplier" value="' . _('Find Suppliers Now') . '" />
 				</div>
 			</form>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 }
@@ -446,7 +446,7 @@ if (isset($SuppliersResult)) {
 		if (DB_num_rows($Result) == 1) {
 			if ($MyRow[2] == 'D' or $MyRow[2] == 'A' or $MyRow[2] == 'K') {
 				prnMsg($StockId . ' - ' . $MyRow[0] . '<p> ' . _('The item selected is a dummy part or an assembly or kit set part') . ' - ' . _('it is not purchased') . '. ' . _('Entry of purchasing information is therefore inappropriate'), 'warn');
-				include('includes/footer.inc');
+				include('includes/footer.php');
 				exit;
 			} else {
 				//			   echo '<br /><b>' . $StockId . ' - ' . $MyRow[0] . ' </b>  (' . _('In Units of') . ' ' . $MyRow[1] . ' )';
@@ -763,5 +763,5 @@ if (!isset($SuppliersResult)) {
 	echo '</div></form>';
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

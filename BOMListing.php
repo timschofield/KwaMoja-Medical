@@ -1,6 +1,6 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_POST['FromCriteria']) >= 1 and isset($_POST['ToCriteria']) and mb_strlen($_POST['ToCriteria']) >= 1) {
 
@@ -39,24 +39,24 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 
 	if (DB_error_no() != 0) {
 		$Title = _('Bill of Materials Listing') . ' - ' . _('Problem Report');
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('The Bill of Material listing could not be retrieved by the SQL because'), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($Debug == 1) {
 			echo '<br />' . $SQL;
 		}
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 	if (DB_num_rows($BOMResult) == 0) {
 		$Title = _('Bill of Materials Listing') . ' - ' . _('Problem Report');
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('The Bill of Material listing has no bills to report on'), 'warn');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
-	include('includes/PDFBOMListingPageHeader.inc');
+	include('includes/PDFBOMListingPageHeader.php');
 
 	$ParentPart = '';
 
@@ -92,7 +92,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 		$LeftOvers = $PDF->addTextWrap(480, $YPos, 60, $FontSize, $DisplayQuantity, 'right');
 
 		if ($YPos < $Bottom_Margin + $line_height) {
-			include('includes/PDFBOMListingPageHeader.inc');
+			include('includes/PDFBOMListingPageHeader.php');
 		}
 
 	}
@@ -108,7 +108,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 	/*The option to print PDF was not hit */
 
 	$Title = _('Bill Of Material Listing');
-	include('includes/header.inc');
+	include('includes/header.php');
 
 	$SQL = "SELECT min(stockid) AS fromcriteria,
 					max(stockid) AS tocriteria
@@ -142,7 +142,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 			 </form>';
 
 	}
-	include('includes/footer.inc');
+	include('includes/footer.php');
 
 }
 /*end of else not PrintPDF */

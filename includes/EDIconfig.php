@@ -22,8 +22,8 @@ $EDI_MsgSent = 'EDI_Sent';
 
 
 //Testing variables
-include('includes/session.inc');
-include('includes/header.inc');
+include('includes/session.php');
+include('includes/header.php');
 $PartnerCode = 'WALMON';
 $MessageType = 'INVOIC';
 
@@ -31,7 +31,7 @@ $MessageType = 'INVOIC';
 
 /*end of testing variables / code */
 
-include('includes/SQL_CommonFunctions.inc');
+include('includes/SQL_CommonFunctions.php');
 
 $EDITrans = GetNextTransNo(99);
 
@@ -82,6 +82,6 @@ while ($LineDetails = DB_fetch_array($MessageLinesResult)) {
 
 fclose($fp);
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

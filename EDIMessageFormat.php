@@ -1,8 +1,8 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('EDI Message Format');
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_GET['PartnerCode'])) {
 	$PartnerCode = $_GET['PartnerCode'];
@@ -246,5 +246,5 @@ if (isset($_GET['SelectedMessageLine'])) {
 }
 echo '</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

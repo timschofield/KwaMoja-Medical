@@ -1,12 +1,12 @@
 <?php
 
-include('includes/session.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/session.php');
+include('includes/SQL_CommonFunctions.php');
 include('includes/DefinePOClass.php');
 
 if (!isset($_GET['OrderNo']) and !isset($_POST['OrderNo'])) {
 	$Title = _('Select a Purchase Order');
-	include('includes/header.inc');
+	include('includes/header.php');
 	prnMsg(_('Select a Purchase Order Number to Print before calling this page'), 'error');
 	echo '<table class="table_index">
 					<tr><td class="menu_group_item">
@@ -17,7 +17,7 @@ if (!isset($_GET['OrderNo']) and !isset($_POST['OrderNo'])) {
 
 	echo '<div class="centre">' . _('This page must be called with a purchase order number to print');
 	echo '<a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a></div>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } //!isset($_GET['OrderNo']) and !isset($_POST['OrderNo'])
 if (isset($_GET['OrderNo'])) {
@@ -30,9 +30,9 @@ $Title = _('Print Purchase Order Number') . ' ' . $OrderNo;
 
 if (isset($_POST['PrintOrEmail']) and isset($_POST['EmailTo'])) {
 	if ($_POST['PrintOrEmail'] == 'Email' and !IsEmailAddress($_POST['EmailTo'])) {
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('The email address entered does not appear to be valid. No emails have been sent.'), 'warn');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} //$_POST['PrintOrEmail'] == 'Email' and !IsEmailAddress($_POST['EmailTo'])
 } //isset($_POST['PrintOrEmail']) and isset($_POST['EmailTo'])
@@ -118,7 +118,7 @@ if (isset($OrderNo) and $OrderNo != '' and $OrderNo > 0 and $OrderNo != 'Preview
 	if (DB_num_rows($Result) == 0) {
 		/*There is no order header returned */
 		$Title = _('Print Purchase Order Error');
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('Unable to Locate Purchase Order Number') . ' : ' . $OrderNo . ' ', 'error');
 		echo '<table class="table_index">
 				<tr><td class="menu_group_item">
@@ -127,7 +127,7 @@ if (isset($OrderNo) and $OrderNo != '' and $OrderNo > 0 and $OrderNo != 'Preview
 				</td>
 				</tr>
 			</table>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit();
 	} //DB_num_rows($Result) == 0
 	elseif (DB_num_rows($Result) == 1) {
@@ -136,16 +136,16 @@ if (isset($OrderNo) and $OrderNo != '' and $OrderNo > 0 and $OrderNo != 'Preview
 		$POHeader = DB_fetch_array($Result);
 
 		if ($POHeader['status'] != 'Authorised' and $POHeader['status'] != 'Printed') {
-			include('includes/header.inc');
+			include('includes/header.php');
 			prnMsg(_('Purchase orders can only be printed once they have been authorised') . '. ' . _('This order is currently at a status of') . ' ' . _($POHeader['status']), 'warn');
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		} //$POHeader['status'] != 'Authorised' and $POHeader['status'] != 'Printed'
 
 		if (!isset($ViewingOnly)) {
 			if ($POHeader['allowprint'] == 0) {
 				$Title = _('Purchase Order Already Printed');
-				include('includes/header.inc');
+				include('includes/header.php');
 				echo '<p>';
 				prnMsg(_('Purchase Order Number') . ' ' . $OrderNo . ' ' . _('has previously been printed') . '. ' . _('It was printed on') . ' ' . ConvertSQLDate($POHeader['dateprinted']) . '<br />' . _('To re-print the order it must be modified to allow a reprint') . '<br />' . _('This check is there to ensure that duplicate purchase orders are not sent to the supplier resulting in several deliveries of the same supplies'), 'warn');
 
@@ -156,7 +156,7 @@ if (isset($OrderNo) and $OrderNo != '' and $OrderNo > 0 and $OrderNo != 'Preview
 						<a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>
 					</div>';
 
-				include('includes/footer.inc');
+				include('includes/footer.php');
 				exit;
 			} //AllowedToPrint
 		} //not ViewingOnly
@@ -227,7 +227,7 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 	} //$OrderNo != 'Preview'
 	if ($OrderNo == 'Preview' or DB_num_rows($Result) > 0) {
 		/*Yes there are line items to start the ball rolling with a page header */
-		include('includes/PO_PDFOrderPageHeader.inc');
+		include('includes/PO_PDFOrderPageHeader.php');
 		$YPos = $Page_Height - $FormDesign->Data->y;
 		$OrderTotal = 0;
 		while ((isset($OrderNo) and $OrderNo == 'Preview') or (isset($Result) and !is_bool($Result) and $POLine = DB_fetch_array($Result))) {
@@ -281,7 +281,7 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 					/* We reached the end of the page so finsih off the page and start a newy */
 					$PageNumber++;
 					$YPos = $Page_Height - $FormDesign->Data->y;
-					include('includes/PO_PDFOrderPageHeader.inc');
+					include('includes/PO_PDFOrderPageHeader.php');
 				} //end if we reached the end of page
 				$LeftOvers = $PDF->addTextWrap($FormDesign->Data->Column2->x, $YPos, $FormDesign->Data->Column2->Length, $FormDesign->Data->Column2->FontSize, $LeftOvers, 'left');
 			} //end if need a new page headed up
@@ -298,7 +298,7 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 				/* We reached the end of the page so finsih off the page and start a newy */
 				$PageNumber++;
 				$YPos = $Page_Height - $FormDesign->Data->y;
-				include('includes/PO_PDFOrderPageHeader.inc');
+				include('includes/PO_PDFOrderPageHeader.php');
 			} //end if need a new page headed up
 
 			/*increment a line down for the next line item */
@@ -311,7 +311,7 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 		} //end while there are line items to print out
 		if ($YPos - $line_height <= $Bottom_Margin) { // need to ensure space for totals
 			$PageNumber++;
-			include('includes/PO_PDFOrderPageHeader.inc');
+			include('includes/PO_PDFOrderPageHeader.php');
 		} //end if need a new page headed up
 		if ($_POST['ShowAmounts'] == 'Yes') {
 			$DisplayOrderTotal = locale_number_format($OrderTotal, $POHeader['currdecimalplaces']);
@@ -355,18 +355,18 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 		} else {
 			prnMsg(_('The SMTP settings are wrong, please ask administrator for help'), 'error');
 			exit;
-			include('includes/footer.inc');
+			include('includes/footer.php');
 		}
 		if ($Success == 1) {
 			$Title = _('Email a Purchase Order');
-			include('includes/header.inc');
+			include('includes/header.php');
 			echo '<div class="centre"><br /><br /><br />';
 			prnMsg(_('Purchase Order') . ' ' . $OrderNo . ' ' . _('has been emailed to') . ' ' . $_POST['EmailTo'] . ' ' . _('as directed'), 'success');
 
 		} //$Success == 1
 		else { //email failed
 			$Title = _('Email a Purchase Order');
-			include('includes/header.inc');
+			include('includes/header.php');
 			echo '<div class="centre"><br /><br /><br />';
 			prnMsg(_('Emailing Purchase order') . ' ' . $OrderNo . ' ' . _('to') . ' ' . $_POST['EmailTo'] . ' ' . _('failed'), 'error');
 		}
@@ -381,13 +381,13 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 				WHERE purchorders.orderno = '" . $OrderNo . "'";
 		$Result = DB_query($SQL);
 	} //$ViewingOnly == 0 and $Success == 1
-	include('includes/footer.inc');
+	include('includes/footer.php');
 } //isset($MakePDFThenDisplayIt) OR isset($MakePDFThenEmailIt)
 
 /* There was enough info to either print or email the purchase order */
 else {
 	/*the user has just gone into the page need to ask the question whether to print the order or email it to the supplier */
-	include('includes/header.inc');
+	include('includes/header.php');
 	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	if ($ViewingOnly == 1) {
@@ -471,6 +471,6 @@ else {
 		</div>
 	</form>';
 
-	include('includes/footer.inc');
+	include('includes/footer.php');
 }
 ?>

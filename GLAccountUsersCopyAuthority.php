@@ -1,13 +1,13 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('GLAccount - Users Authority Copy Authority'); // Screen identificator.
-include('includes/header.inc');
+include('includes/header.php');
 echo '<p class="page_title_text"><img alt="" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/maintenance.png" title="', // Icon image.
 	_('Copy Authority of GL Accounts from one user to another'), '" /> ', // Icon title.
 	_('Copy Authority of GL Accounts from one user to another'), '</p>'; // Page title.
 
-include('includes/SQL_CommonFunctions.inc');
+include('includes/SQL_CommonFunctions.php');
 
 if (isset($_POST['ProcessCopyAuthority'])) {
 
@@ -85,5 +85,5 @@ echo '</table>';
 echo '<input type="submit" name="ProcessCopyAuthority" value="' . _('Process Copy of Authority') . '" />
 	</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

@@ -1,12 +1,12 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Company Preferences');
-/* Manual links before header.inc */
+/* Manual links before header.php */
 $ViewTopic = 'CreatingNewSystem';
 $BookMark = 'CompanyParameters';
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($Errors)) {
 	unset($Errors);
@@ -590,5 +590,5 @@ echo '</table>
 	</div>';
 echo '</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

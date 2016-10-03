@@ -1,9 +1,9 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Customer Notes');
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 if (isset($_GET['Id'])) {
 	$Id = (int) $_GET['Id'];
@@ -234,5 +234,5 @@ if (!isset($_GET['delete'])) {
 
 } //end if record deleted no point displaying form to add record
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

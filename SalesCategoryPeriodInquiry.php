@@ -1,8 +1,8 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Sales Category Report');
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text">
 		<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/transactions.png" title="', _('Sales Report'), '" alt="" />', ' ', _('Sales Category Report'), '
@@ -237,5 +237,5 @@ if (isset($_POST['ShowSales'])) {
 	echo '</table>';
 
 } //end of if user hit show sales
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

@@ -2,8 +2,8 @@
 
 /* $Id: PDFCOA.php 1 2014-09-15 06:31:08Z agaluski $ */
 
-include('includes/session.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/session.php');
+include('includes/SQL_CommonFunctions.php');
 
 if (isset($_GET['LotKey'])) {
 	$SelectedCOA = $_GET['LotKey'];
@@ -25,7 +25,7 @@ if (isset($_GET['QASampleID'])) {
 //Get Out if we have no Certificate of Analysis
 if ((!isset($SelectedCOA) || $SelectedCOA == '') and (!isset($QASampleID) or $QASampleID == '')) {
 	$Title = _('Select Certificate of Analysis To Print');
-	include('includes/header.inc');
+	include('includes/header.php');
 	echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/printer.png" title="' . _('Print') . '" alt="" />' . ' ' . $Title . '</p>';
 	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -73,7 +73,7 @@ if ((!isset($SelectedCOA) || $SelectedCOA == '') and (!isset($QASampleID) or $QA
 			<input type="submit" name="pickspec" value="' . _('Submit') . '" />
 		</div>
 	</form>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit();
 }
 
@@ -128,12 +128,12 @@ $Result = DB_query($SQL, $ErrMsg);
 //If there are no rows, there's a problem.
 if (DB_num_rows($Result) == 0) {
 	$Title = _('Print Certificate of Analysis Error');
-	include('includes/header.inc');
+	include('includes/header.php');
 	prnMsg(_('Unable to Locate Lot') . ' : ' . $SelectedCOA . ' ', 'error');
 	echo '<div class="centre">
 			<a href="' . $RootPath . '/PDFCOA.php">' . _('Certificate of Analysis') . '</a></li></ul>
 		</div>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 $PaperSize = 'Letter';
@@ -252,7 +252,7 @@ while ($MyRow = DB_fetch_array($Result)) {
 	}
 	$TrailerPrinted = 1;
 	if ($HeaderPrinted == 0) {
-		include('includes/PDFCOAHeader.inc');
+		include('includes/PDFCOAHeader.php');
 		$HeaderPrinted = 1;
 	}
 
@@ -286,7 +286,7 @@ while ($MyRow = DB_fetch_array($Result)) {
 		if ($YPos < ($Bottom_Margin + 90)) { // Begins new page
 			$PrintTrailer = 0;
 			$PageNumber++;
-			include('includes/PDFCOAHeader.inc');
+			include('includes/PDFCOAHeader.php');
 		}
 		$LeftOvers = $PDF->addTextWrap($XPos, $YPos, 500, $FontSize, $SectionTitle, 'center');
 		$YPos -= $LineHeight;
@@ -342,7 +342,7 @@ while ($MyRow = DB_fetch_array($Result)) {
 		$PDF->line($XPos + 1, $YPos + $RectHeight, $XPos + 506, $YPos + $RectHeight);
 		$PrintTrailer = 0;
 		$PageNumber++;
-		include('includes/PDFCOAHeader.inc');
+		include('includes/PDFCOAHeader.php');
 	}
 	//echo 'PrintTrailer'.$PrintTrailer.' '.$PrevTrailer.'<br>' ;
 } //while loop
@@ -360,7 +360,7 @@ if ($SectionTrailer > '') {
 }
 if ($YPos < ($Bottom_Margin + 85)) { // Begins new page
 	$PageNumber++;
-	include('includes/PDFCOAHeader.inc');
+	include('includes/PDFCOAHeader.php');
 }
 
 $FontSize = 8;

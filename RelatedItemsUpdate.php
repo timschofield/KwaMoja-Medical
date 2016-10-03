@@ -1,11 +1,11 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Update Related Items');
 
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 //initialise no input errors assumed initially before we test
 $InputError = 0;
@@ -40,7 +40,7 @@ if (DB_num_rows($Result) == 0) {
 if (!isset($Item)) {
 	echo '<p>';
 	prnMsg(_('An item must first be selected before this page is called') . '. ' . _('The product selection page should call this page with a valid product code'), 'error');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -208,6 +208,6 @@ echo '<div class="centre">
 	</div>';
 
 echo '</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

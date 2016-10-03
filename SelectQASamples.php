@@ -1,12 +1,12 @@
 <?php
 /* $Id: SelectQASamples.php 1 2014-09-08 10:42:50Z agaluski $*/
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Select QA Samples');
 $ViewTopic = 'QualityAssurance';// Filename in ManualContents.php's TOC.
 $BookMark = 'QA_Samples';// Anchor's id in the manual's html document.
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 if (isset($_GET['SelectedSampleID'])) {
 	$SelectedSampleID = mb_strtoupper($_GET['SelectedSampleID']);
@@ -600,5 +600,5 @@ if (!isset($_GET['delete'])) {
 	}
 } //end if record deleted no point displaying form to add record
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

@@ -19,7 +19,7 @@ $FSPPID = GetPayrollRow($PayrollID, 2);
 $NumberofPayday = GetPayPeriodRow(GetPayrollRow($PayrollID, 2), 2);
 if (isset($_POST['submit'])) {
 	prnMsg(_('Contact Administrator...'), 'error');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } else {
 	//to determent number of payday this month

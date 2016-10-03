@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Upload a Plugin');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/upload.png" title="' . _('Upload Plugin') . '" alt="" />' . _('Upload Plugin') . '</p>';
 
@@ -23,7 +23,7 @@ if (isset($_POST['submit'])) {
 				}
 				move_uploaded_file($_FILES['pluginfile']['tmp_name'], 'plugins/' . $_FILES['pluginfile']['name']);
 				prnMsg(_('The plugin has been successfully uploaded to your plugins directory. Now you can install it.'), 'success');
-				include('includes/footer.inc');
+				include('includes/footer.php');
 				exit;
 			}
 			break;
@@ -107,7 +107,7 @@ if (!isset($_POST['submit'])) {
 	echo '</form><br />';
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 function IsPlugin($File) {
 	if ($File['type'] != 'application/zip') {

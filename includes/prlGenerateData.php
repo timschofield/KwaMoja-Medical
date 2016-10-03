@@ -9,12 +9,12 @@ if (isset($_GET['PayrollID'])) {
 $Status = GetOpenCloseStr(GetPayrollRow($PayrollID, 11));
 if ($Status == 'Closed') {
 	prnMsg( _('Payroll is Closed. Re-open first...'), 'info');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 if (isset($_POST['submit'])) {
 	prnMsg( _('Contact Administrator...'), 'error');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } else {
 	$SQL = "DELETE FROM prlpayrolltrans WHERE payrollid ='" . $PayrollID . "'";
@@ -52,7 +52,7 @@ if (isset($_POST['submit'])) {
 		$PostFSPeriod = DB_query($SQL);
 	} else {
 		prnMsg( _('No Employees Records Match....'), 'info');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 

@@ -1,12 +1,12 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Chart of Accounts Maintenance');
 
 $ViewTopic = 'GeneralLedger';
 $BookMark = 'GLAccounts';
 
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_POST['SelectedAccount'])) {
 	$SelectedAccount = $_POST['SelectedAccount'];
@@ -392,5 +392,5 @@ if (isset($SelectedAccount)) {
 		</div>';
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

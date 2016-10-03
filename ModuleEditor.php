@@ -1,11 +1,11 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Edit The Modules Menu');
 $ViewTopic = '';
 $BookMark = '';
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_POST['Save'])) {
 	foreach ($_POST as $Key=>$Value) {
@@ -85,6 +85,6 @@ if (!isset($_POST['SecurityRole'])) {
 		</form>';
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

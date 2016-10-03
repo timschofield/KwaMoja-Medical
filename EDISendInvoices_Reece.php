@@ -1,8 +1,8 @@
 <?php
 
-include('includes/session.inc');
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc'); //need for EDITransNo
+include('includes/session.php');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php'); //need for EDITransNo
 include('includes/htmlMimeMail.php'); // need for sending email attachments
 
 //Important: Default value for EDIsent in debtortrans should probably be 1 for non EDI customers
@@ -204,7 +204,7 @@ while ($CustDetails = DB_fetch_array($EDIInvCusts)) {
 
 				if ($LineDetails['section'] == 'Heading') {
 					$MsgLineText = $LineDetails['linetext'];
-					include('includes/EDIVariableSubstitution.inc');
+					include('includes/EDIVariableSubstitution.php');
 					$LastLine = 'Heading';
 				}
 
@@ -277,7 +277,7 @@ while ($CustDetails = DB_fetch_array($EDIInvCusts)) {
 						/*now work through the detail line segments */
 						foreach ($DetailLines as $DetailLineText) {
 							$MsgLineText = $DetailLineText;
-							include('includes/EDIVariableSubstitution.inc');
+							include('includes/EDIVariableSubstitution.php');
 						}
 
 
@@ -290,7 +290,7 @@ while ($CustDetails = DB_fetch_array($EDIInvCusts)) {
 
 				if ($LineDetails['section'] == 'Summary' and $LastLine == 'Detail') {
 					$MsgLineText = $LineDetails['linetext'];
-					include('includes/EDIVariableSubstitution.inc');
+					include('includes/EDIVariableSubstitution.php');
 				}
 			}
 			/*end while there are message lines to parse and substitute vbles for */
@@ -332,7 +332,7 @@ while ($CustDetails = DB_fetch_array($EDIInvCusts)) {
 				$login_result = ftp_login($conn_id, $CustDetails['ediserveruser'], $CustDetails['ediserverpwd']); // check connection
 				if ((!$conn_id) or (!$login_result)) {
 				prnMsg( _('Ftp connection has failed'). '<BR>' . _('Attempted to connect to') . ' ' . $CustDetails['ediaddress'] . ' ' ._('for user') . ' ' . $CustDetails['ediserveruser'],'error');
-				include('includes/footer.inc');
+				include('includes/footer.php');
 				exit;
 				}
 				$MessageSent = ftp_put($conn_id, $_SESSION['EDI_MsgPending'] . '/EDI_INV_' . $EDITransNo, 'EDI_INV_' . $EDITransNo, FTP_ASCII); // check upload status
@@ -370,5 +370,5 @@ while ($CustDetails = DB_fetch_array($EDIInvCusts)) {
 }
 /*loop around all the customers enabled for EDI Invoices */
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

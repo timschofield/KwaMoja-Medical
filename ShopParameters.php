@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Shop Configuration');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Shop Configuration') . '" alt="" />' . $Title . '</p>';
 
@@ -612,5 +612,5 @@ echo '</table>
 		<div class="centre"><input type="submit" name="submit" value="' . _('Update') . '" /></div>
 	</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

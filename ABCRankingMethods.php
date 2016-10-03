@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Maintain ABC ranking methods');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" >
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . $Title . '" alt="' . $Title . '" />' . ' ' . $Title . '
@@ -20,7 +20,7 @@ if (isset($_GET['Delete'])) {
 		echo '<div class="centre">
 				<a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">' . _('View all the ranking methods') . '</a>
 			</div>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} else {
 		prnMsg(_('ABC Ranking method number') . ' ' . $_GET['SelectedMethodID'] . ' ' . _('cannot be deleted as it is used ABC groups'), 'error');
@@ -45,7 +45,7 @@ if (isset($_POST['Submit'])) {
 	echo '<div class="centre">
 			<a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '">', _('View all the ranking methods'), '</a>
 		</div>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } else {
 	$SQL = "SELECT methodid,
@@ -116,6 +116,6 @@ if (isset($_POST['Submit'])) {
 	echo '</form>';
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

@@ -4,8 +4,8 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['PayrollID'])) {
 
 	include('config.php');
 	include('includes/PDFStarter.php');
-	include('includes/ConnectDB.inc');
-	include('includes/DateFunctions.inc');
+	include('includes/ConnectDB.php');
+	include('includes/DateFunctions.php');
 	include('includes/prlFunctions.php');
 
 	$FontSize = 12;
@@ -25,7 +25,7 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['PayrollID'])) {
 	$ATM = '';
 	$PayAmount = 0;
 	$PayAmountTotal = 0;
-	include('includes/PDFCashPageHeader.inc');
+	include('includes/PDFCashPageHeader.php');
 
 	$SQL = "SELECT employeeid,netpay
 			FROM prlpayrolltrans
@@ -45,7 +45,7 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['PayrollID'])) {
 				$LeftOvers = $pdf->addTextWrap($Left_Margin + 410, $YPos, 50, $FontSize, number_format($PayAmount, 2), 'right');
 				$YPos -= $line_height;
 				if ($YPos < ($Bottom_Margin)) {
-					include('includes/PDFCashPageHeader.inc');
+					include('includes/PDFCashPageHeader.php');
 				}
 			}
 		}
@@ -69,19 +69,19 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['PayrollID'])) {
 	$pdf->stream();
 
 } elseif (isset($_POST['ShowPR'])) {
-	include('includes/session.inc');
+	include('includes/session.php');
 	$Title = _('Bank Transmittal Listing');
-	include('includes/header.inc');
+	include('includes/header.php');
 	echo 'Use PrintPDF instead';
 	echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } else {
 	/*The option to print PDF was not hit */
 
-	include('includes/session.inc');
+	include('includes/session.php');
 	$Title = _('Over the Counter Listing');
-	include('includes/header.inc');
+	include('includes/header.php');
 
 	echo '<form method="POST" action="' . $_SERVER['PHP_SELF'] . '?">';
 	echo '<table><td><td>' . _('Select Payroll:') . '</td><td><select Name="PayrollID">';
@@ -100,7 +100,7 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['PayrollID'])) {
 	echo "</table><p><input type='Submit' name='ShowPR' value='" . _('Show Over the Counter Listing') . "'>";
 	echo "<p><input type='Submit' name='PrintPDF' value='" . _('PrintPDF') . "'>";
 
-	include('includes/footer.inc');
+	include('includes/footer.php');
 }
 /*end of else not PrintPDF */
 

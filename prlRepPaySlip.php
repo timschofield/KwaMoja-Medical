@@ -3,9 +3,9 @@
 If (isset($_POST['PrintPDF']) AND isset($_POST['PayrollID'])) {
 	//printerr($_POST['PayrollID']);
 	include('config.php');
-	include('includes/session.inc');
+	include('includes/session.php');
 	include('includes/PDFStarter.php');
-	include('includes/ConnectDB.inc');
+	include('includes/ConnectDB.php');
 	include('includes/prlFunctions.php');
 
 
@@ -313,11 +313,11 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['PayrollID'])) {
 	$len = strlen($pdfcode);
 	if ($len <= 20) {
 		$Title = _('Payroll Register Error');
-		include('includes/header.inc');
+		include('includes/header.php');
 		echo '<p>';
 		prnMsg(_('There were no entries to print out for the selections specified'));
 		echo '<br /><a href="' . $RootPath . '/index.php?">' . _('Back to the menu') . '</a>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} else {
 		header('Content-type: application/pdf');
@@ -333,19 +333,19 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['PayrollID'])) {
 	exit;
 
 } elseif (isset($_POST['ShowPR'])) {
-	include('includes/session.inc');
+	include('includes/session.php');
 	$Title = _('Pay Slip');
-	include('includes/header.inc');
+	include('includes/header.php');
 	echo 'Use PrintPDF instead';
 	echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } else {
 	/*The option to print PDF was not hit */
 
-	include('includes/session.inc');
+	include('includes/session.php');
 	$Title = _('Pay Slip');
-	include('includes/header.inc');
+	include('includes/header.php');
 	echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/employees.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '</p>';
 
 	echo '<form method="post" class="noPrint" id="PaySlip" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
@@ -369,7 +369,7 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['PayrollID'])) {
 	echo '</select>
 			</li>';
 	echo "</ul><input type='submit' name='PrintPDF' value='" . _('PrintPDF') . "' /></fieldset></form>";
-	include('includes/footer.inc');
+	include('includes/footer.php');
 }
 /*end of else not PrintPDF */
 

@@ -6,12 +6,12 @@ an array of GLCodes objects - only used if the AP - GL link is effective */
 
 
 include('includes/DefineSuppTransClass.php');
-/* Session started in header.inc for password checking and authorisation level check */
-include('includes/session.inc');
+/* Session started in header.php for password checking and authorisation level check */
+include('includes/session.php');
 
 $Title = _('Enter Supplier Credit Note Against Goods Received');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" >
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Dispatch') . '" alt="" />' . ' ' . $Title . '
@@ -21,7 +21,7 @@ if (!isset($_SESSION['SuppTrans'])) {
 	prnMsg(_('To enter a supplier transactions the supplier must first be selected from the supplier selection screen') . ', ' . _('then the link to enter a supplier credit note must be clicked on'), 'info');
 	echo '<br />
 		<a href="' . $RootPath . '/SelectSupplier.php">' . _('Select A Supplier to Enter a Transaction For') . '</a>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 	/*It all stops here if there aint no supplier selected and credit note initiated ie $_SESSION['SuppTrans'] started off*/
 }
@@ -315,5 +315,5 @@ else {
 	echo '</table>';
 }
 echo '</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

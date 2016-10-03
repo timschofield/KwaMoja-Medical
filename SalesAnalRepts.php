@@ -1,13 +1,13 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Sales Analysis Reports Maintenance');
-/* Manual links before header.inc */
+/* Manual links before header.php */
 $ViewTopic = 'SalesAnalysis';
 $BookMark = 'SalesAnalysis';
 
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/supplier.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
 
@@ -261,7 +261,7 @@ if (isset($_POST['submit'])) {
 
 	prnMsg(_('Report Deleted'), 'info');
 	unset($SelectedReport);
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 
 }
@@ -513,5 +513,5 @@ if (!isset($_GET['delete'])) {
 
 } //end if record deleted no point displaying form to add record
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

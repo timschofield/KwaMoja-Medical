@@ -2,13 +2,13 @@
 
 include('includes/DefineStockAdjustment.php');
 include('includes/DefineSerialItems.php');
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Stock Adjustments');
-/* Manual links before header.inc */
+/* Manual links before header.php */
 $ViewTopic = 'Inventory';
 $BookMark = 'InventoryAdjustments';
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 if (empty($_GET['identifier'])) {
 	/*unique session identifier to ensure that there is no conflict with other adjustment sessions on the same machine  */
@@ -160,7 +160,7 @@ if (isset($_POST['CheckCode'])) {
 	}
 	echo '</tbody>';
 	echo '</table>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -569,5 +569,5 @@ echo '<a href="' . $RootPath . '/SelectCompletedOrder.php?SelectedStockItem=' . 
 
 echo '</div>
 	  </form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

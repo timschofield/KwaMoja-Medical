@@ -11,19 +11,19 @@ function RelativeChange($SelectedPeriod, $PreviousPeriod) {
 	}
 }
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Horizontal Analysis of Statement of Comprehensive Income'); // Screen identification.
 $ViewTopic = 'GeneralLedger'; // Filename's id in ManualContents.php's TOC.
 $BookMark = 'AnalysisHorizontalIncome'; // Anchor's id in the manual's html document.
-include('includes/SQL_CommonFunctions.inc');
-include('includes/AccountSectionsDef.inc'); // This loads the $Sections variable
+include('includes/SQL_CommonFunctions.php');
+include('includes/AccountSectionsDef.php'); // This loads the $Sections variable
 
 if (isset($_POST['FromPeriod']) and ($_POST['FromPeriod'] > $_POST['ToPeriod'])) {
 	prnMsg(_('The selected period from is actually after the period to') . '! ' . _('Please reselect the reporting period'), 'error');
 	$_POST['SelectADifferentPeriod'] = 'Select A Different Period';
 }
 
-include('includes/header.inc');
+include('includes/header.php');
 
 if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POST['SelectADifferentPeriod'])) {
 
@@ -127,7 +127,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 			</div>';
 
 	// Now do the posting while the user is thinking about the period to select:
-	include('includes/GLPostings.inc');
+	include('includes/GLPostings.php');
 
 } else {
 
@@ -136,7 +136,7 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 	if ($NumberOfMonths > 12) {
 		echo '<br />';
 		prnMsg(_('A period up to 12 months in duration can be specified') . ' - ' . _('the system automatically shows a comparative for the same period from the previous year') . ' - ' . _('it cannot do this if a period of more than 12 months is specified') . '. ' . _('Please select an alternative period range'), 'error');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
@@ -544,5 +544,5 @@ if ((!isset($_POST['FromPeriod']) and !isset($_POST['ToPeriod'])) or isset($_POS
 			</div>';
 }
 echo '</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

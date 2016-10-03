@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Schedule tasks to run periodically');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
 
@@ -135,7 +135,7 @@ echo '<tr>
 			<select name="Script">
 				<option value=""></option>';
 foreach ($Files as $File) {
-	if( strpos(file_get_contents($File),"include_once('includes/session.inc')") !== false and $File != 'JobScheduler.php') {
+	if( strpos(file_get_contents($File),"include_once('includes/session.php')") !== false and $File != 'JobScheduler.php') {
 		if ($_POST['Script'] == $File) {
 			echo '<option selected="selected" value="' . $File . '">' . $File . '</option>';
 		} else {
@@ -197,6 +197,6 @@ if (isset($_GET['Edit'])) {
 }
 
 echo '</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

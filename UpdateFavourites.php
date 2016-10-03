@@ -1,6 +1,6 @@
 <?php
 $PageSecurity=1;
-include('includes/session.inc');
+include('includes/session.php');
 
 $SQL = "SELECT caption
 			FROM favourites

@@ -1,11 +1,11 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Customer Purchases');// Screen identificator.
 $ViewTopic = 'ARInquiries';// Filename's id in ManualContents.php's TOC.
 /* This help needs to be writing...
 $BookMark = 'CustomerPurchases';// Anchor's id in the manual's html document.*/
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_GET['DebtorNo'])) {
 	$DebtorNo = stripslashes($_GET['DebtorNo']);
@@ -15,7 +15,7 @@ else if (isset($_POST['DebtorNo'])) {
 } //isset($_POST['DebtorNo'])
 else {
 	prnMsg(_('This script must be called with a customer code.'), 'info');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -110,5 +110,5 @@ else {
 	echo '</table>';
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

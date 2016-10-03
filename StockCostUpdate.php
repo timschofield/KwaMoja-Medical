@@ -1,11 +1,11 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $UpdateSecurity = $_SESSION['PageSecurityArray']['PurchData.php'];
 $Title = _('Stock Cost Update');
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 echo '<script src="javascripts/Chart.js"></script>';
 if (isset($_GET['StockID'])) {
 	$StockId = trim(mb_strtoupper($_GET['StockID']));
@@ -164,7 +164,7 @@ if (($MyRow['mbflag'] == 'D' and $MyRow['stocktype'] != 'L') or $MyRow['mbflag']
 		echo '<br />' . $StockId . ' ' . _('is a kit set part');
 	}
 	prnMsg(_('Cost information cannot be modified for kits assemblies or service items') . '. ' . _('Please select a different part'), 'warn');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -304,5 +304,5 @@ if ($MyRow['mbflag'] != 'D') {
 		</div>';
 }
 echo '</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

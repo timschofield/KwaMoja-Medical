@@ -1,8 +1,8 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Check Period Sales Ledger Control Account');
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<table>';
 
@@ -56,5 +56,5 @@ while ($OutOfWackRow = DB_fetch_array($OutOfWackResult)) {
 }
 echo '</table>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

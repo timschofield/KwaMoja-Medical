@@ -1,8 +1,8 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Search Work Orders');
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<div class="toplink"><a href="' . $RootPath . '/WorkOrderEntry.php?New=True">' . _('New Work Order') . '</a></div>';
 echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
@@ -36,7 +36,7 @@ if (isset($SelectedWO) and $SelectedWO != '') {
 	if (!is_numeric($SelectedWO)) {
 		prnMsg(_('The work order number entered MUST be numeric'), 'warn');
 		unset($SelectedWO);
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} else {
 		echo _('Work Order Number') . ' - ' . $SelectedWO;
@@ -396,5 +396,5 @@ if (!isset($StockId)) {
 	echo '</form>';
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

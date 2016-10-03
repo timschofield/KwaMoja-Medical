@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Sales Category Maintenance');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text"><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
 
@@ -556,5 +556,5 @@ if ($Result) {
 	DB_free_result($Result);
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

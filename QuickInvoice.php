@@ -1,9 +1,9 @@
 <?php
 
-/* Session started in session.inc for password checking and authorisation level check
-config.php is in turn included in session.inc $PageSecurity now comes from session.inc (and gets read in by GetConfig.php*/
+/* Session started in session.php for password checking and authorisation level check
+config.php is in turn included in session.php $PageSecurity now comes from session.php (and gets read in by GetConfig.php*/
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $DebtorSQL = "SELECT name
 				FROM debtorsmaster
@@ -13,8 +13,8 @@ $DebtorInfo = DB_fetch_array($DebtorResult);
 
 $Title = _('Raise an invoice for') . ' ' . $DebtorInfo['name'];
 
-include('includes/header.inc');
+include('includes/header.php');
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

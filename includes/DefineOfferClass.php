@@ -83,7 +83,7 @@ class Offer {
 						$this->OfferMailText .= $LineItems->Quantity . ' ' . $LineItems->Units . ' ' . _('of') . ' ' . $LineItems->StockID . ' ' . _('at a price of') . ' ' . $this->CurrCode . number_format($LineItems->Price, 2) . "\n";
 					} else {
 						prnMsg(_('The offer for') . ' ' . $LineItems->StockID . ' ' . _('could not be inserted into the database'), 'error');
-						include('includes/footer.inc');
+						include('includes/footer.php');
 						exit;
 					}
 				}
@@ -104,7 +104,7 @@ class Offer {
 						$this->OfferMailText .= $LineItem->Quantity . ' ' . $LineItem->Units . ' ' . _('of') . ' ' . $LineItem->StockID . ' ' . _('at a price of') . ' ' . $this->CurrCode . $LineItem->Price . "\n";
 					} else {
 						prnMsg(_('The offer for') . ' ' . $LineItem->StockID . ' ' . _('could not be updated in the database'), 'error');
-						include('includes/footer.inc');
+						include('includes/footer.php');
 						exit;
 					}
 				} else { // the LineItem is Deleted flag is true so delete it

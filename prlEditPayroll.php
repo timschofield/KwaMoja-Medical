@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Payroll Records Maintenance');
 
-include('includes/header.inc');
+include('includes/header.php');
 include('includes/prlFunctions.php');
 
 if (isset($_GET['PayrollID'])){
@@ -294,5 +294,5 @@ if (!isset($PayrollID)) {
 
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

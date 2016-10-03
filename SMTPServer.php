@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('SMTP Server details');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/email.png" title="' . _('SMTP Server') . '" alt="" />' . ' ' . _('SMTP Server Settings') . '</p>';
 // First check if there are smtp server data or not
@@ -139,6 +139,6 @@ echo '<input type="submit" name="reload" value="Reload" hidden="hidden" />';
 echo '</table>
 	  </form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

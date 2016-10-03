@@ -1,9 +1,9 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Supplier Invoice and GRN inquiry');
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_GET['SelectedSupplier'])) {
 	$SupplierID = $_GET['SelectedSupplier'];
@@ -12,7 +12,7 @@ if (isset($_GET['SelectedSupplier'])) {
 } else {
 	prnMsg(_('The page must be called from suppliers selected interface, please click following link to select the supplier'), 'error');
 	echo '<a href="' . $RootPath . '/SelectSupplier.php">' . _('Select Supplier') . '</a>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -114,5 +114,5 @@ if (isset($_POST['Submit'])) {
 	}
 
 }
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

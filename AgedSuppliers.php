@@ -1,6 +1,6 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_POST['FromCriteria']) >= 1 and isset($_POST['ToCriteria']) and mb_strlen($_POST['ToCriteria']) >= 1) {
 
@@ -115,17 +115,17 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 
 	if (DB_error_no() != 0) {
 		$Title = _('Aged Supplier Account Analysis') . ' - ' . _('Problem Report');
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('The Supplier details could not be retrieved by the SQL because') . ' ' . DB_error_msg(), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($Debug == 1) {
 			echo '<br />' . $SQL;
 		}
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
-	include('includes/PDFAgedSuppliersPageHeader.inc');
+	include('includes/PDFAgedSuppliersPageHeader.php');
 	$TotBal = 0;
 	$TotDue = 0;
 	$TotCurr = 0;
@@ -160,7 +160,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 
 		$YPos -= $line_height;
 		if ($YPos < $Bottom_Margin + $line_height) {
-			include('includes/PDFAgedSuppliersPageHeader.inc');
+			include('includes/PDFAgedSuppliersPageHeader.php');
 		}
 
 		if ($_POST['DetailedReport'] == 'Yes') {
@@ -203,13 +203,13 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 			/*dont trap errors - trapped below*/
 			if (DB_error_no() != 0) {
 				$Title = _('Aged Supplier Account Analysis - Problem Report');
-				include('includes/header.inc');
+				include('includes/header.php');
 				prnMsg(_('The details of outstanding transactions for Supplier') . ' - ' . $AgedAnalysis['supplierid'] . ' ' . _('could not be retrieved because') . ' - ' . DB_error_msg(), 'error');
 				echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 				if ($Debug == 1) {
 					echo '<br />' . _('The SQL that failed was') . '<br />' . $SQL;
 				}
-				include('includes/footer.inc');
+				include('includes/footer.php');
 				exit;
 			}
 
@@ -235,7 +235,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 				$YPos -= $line_height;
 				if ($YPos < $Bottom_Margin + $line_height) {
 					$PageNumber++;
-					include('includes/PDFAgedSuppliersPageHeader.inc');
+					include('includes/PDFAgedSuppliersPageHeader.php');
 					$FontSize = 6;
 				}
 			}
@@ -251,7 +251,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 	$YPos -= $line_height;
 	if ($YPos < $Bottom_Margin + (2 * $line_height)) {
 		$PageNumber++;
-		include('includes/PDFAgedSuppliersPageHeader.inc');
+		include('includes/PDFAgedSuppliersPageHeader.php');
 	} elseif ($_POST['DetailedReport'] == 'Yes') {
 		//dont do a line if the totals have to go on a new page
 		$PDF->line($Page_Width - $Right_Margin, $YPos + 10, 220, $YPos + 10);
@@ -274,9 +274,9 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 
 	if ($ListCount == 0) {
 		$Title = _('Aged Supplier Analysis');
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('There are no results so the PDF is empty'));
-		include('includes/footer.inc');
+		include('includes/footer.php');
 	} else {
 		$PDF->OutputD($_SESSION['DatabaseName'] . '_AggedSupliers_' . date('Y-m-d') . '.pdf');
 	}
@@ -285,7 +285,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 	/*The option to print PDF was not hit */
 
 	$Title = _('Aged Supplier Analysis');
-	include('includes/header.inc');
+	include('includes/header.php');
 
 	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p><br />';
 
@@ -348,7 +348,7 @@ if (isset($_POST['PrintPDF']) and isset($_POST['FromCriteria']) and mb_strlen($_
 			</div>
 			</form>';
 	}
-	include('includes/footer.inc');
+	include('includes/footer.php');
 }
 /*end of else not PrintPDF */
 

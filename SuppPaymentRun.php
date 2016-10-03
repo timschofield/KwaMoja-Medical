@@ -10,8 +10,8 @@ class Allocation {
 	}
 }
 
-include('includes/session.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/session.php');
+include('includes/SQL_CommonFunctions.php');
 include('includes/GetPaymentMethods.php');
 
 
@@ -29,7 +29,7 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['PrintPDFAndProcess'])) and isset
 
 	/*Now figure out the invoice less credits due for the Supplier range under review */
 
-	include('includes/PDFPaymentRunPageHeader.inc');
+	include('includes/PDFPaymentRunPageHeader.php');
 
 	$SQL = "SELECT suppliers.supplierid,
 					currencies.decimalplaces AS currdecimalplaces,
@@ -101,20 +101,20 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['PrintPDFAndProcess'])) and isset
 		$TransResult = DB_query($SQL, '', '', false, false);
 		if (DB_error_no() != 0) {
 			$Title = _('Payment Run - Problem Report');
-			include('includes/header.inc');
+			include('includes/header.php');
 			prnMsg(_('The details of supplier invoices due could not be retrieved because') . ' - ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 			if ($Debug == 1) {
 				echo '<br />' . _('The SQL that failed was') . ' ' . $SQL;
 			}
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 		if (DB_num_rows($TransResult) == 0) {
-			include('includes/header.inc');
+			include('includes/header.php');
 			prnMsg(_('There are no outstanding supplier invoices to pay'), 'info');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 
@@ -172,14 +172,14 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['PrintPDFAndProcess'])) and isset
 				$ProcessResult = DB_query($SQL, '', '', false, false);
 				if (DB_error_no() != 0) {
 					$Title = _('Payment Processing - Problem Report') . '.... ';
-					include('includes/header.inc');
+					include('includes/header.php');
 					prnMsg(_('None of the payments will be processed since updates to the transaction records for') . ' ' . $SupplierName . ' ' . _('could not be processed because') . ' - ' . DB_error_msg(), 'error');
 					echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 					if ($Debug == 1) {
 						echo '<br />' . _('The SQL that failed was') . $SQL;
 					}
 					$ProcessResult = DB_Txn_Rollback();
-					include('includes/footer.inc');
+					include('includes/footer.php');
 					exit;
 				}
 			}
@@ -190,7 +190,7 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['PrintPDFAndProcess'])) and isset
 			$YPos -= $line_height;
 			if ($YPos < $Bottom_Margin + $line_height) {
 				$PageNumber++;
-				include('includes/PDFPaymentRunPageHeader.inc');
+				include('includes/PDFPaymentRunPageHeader.php');
 			}
 		}
 		/*end while there are detail transactions to show */
@@ -205,14 +205,14 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['PrintPDFAndProcess'])) and isset
 
 		if (DB_error_no() != 0) {
 			$Title = _('Payment Processing - Problem Report') . '.... ';
-			include('includes/header.inc');
+			include('includes/header.php');
 			prnMsg(_('None of the payments will be processed. Unfortunately, there was a problem committing the changes to the database because') . ' - ' . DB_error_msg(), 'error');
 			echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 			if ($Debug == 1) {
 				prnMsg(_('The SQL that failed was') . '<br />' . $SQL, 'error');
 			}
 			$ProcessResult = DB_Txn_Rollback();
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 
@@ -229,7 +229,7 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['PrintPDFAndProcess'])) and isset
 	/*The option to print PDF was not hit */
 
 	$Title = _('Payment Run');
-	include('includes/header.inc');
+	include('includes/header.php');
 
 	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Supplier Types') . '" alt="" />' . $Title . '</p>';
 
@@ -329,7 +329,7 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['PrintPDFAndProcess'])) and isset
 			</table>
 			<p>' . _('Bank Accounts have not yet been defined. You must first') . ' <a href="' . $RootPath . '/BankAccounts.php">' . _('define the bank accounts') . '</a> ' . _('and general ledger accounts to be affected') . '.
 			</p>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} else {
 		while ($MyRow = DB_fetch_array($AccountsResults)) {
@@ -370,7 +370,7 @@ if ((isset($_POST['PrintPDF']) or isset($_POST['PrintPDFAndProcess'])) and isset
 				<input type="submit" name="PrintPDFAndProcess" value="' . _('Print and Process Payments') . '" />
 			</div>';
 	echo '</form>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 }
 /*end of else not PrintPDF */
 ?>

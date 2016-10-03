@@ -28,7 +28,7 @@ $PDF->addInfo('Subject', _('Sales Analysis Report') . ' ' . $ReportSpec['reporth
 $PageNumber = 0;
 $line_height = 12;
 
-include('includes/PDFSalesAnalPageHeader.inc');
+include('includes/PDFSalesAnalPageHeader.php');
 
 $GrpData1 = '';
 $GrpData2 = '';
@@ -246,7 +246,7 @@ While ($MyRow = DB_fetch_array($Result)) {
 			/*Need a new heading for Level 1 */
 			$NewHeading = 1;
 			if ($ReportSpec['newpageafter1'] == 1) {
-				include('includes/PDFSalesAnalPageHeader.inc');
+				include('includes/PDFSalesAnalPageHeader.php');
 			}
 			$GroupHeadingText = mb_substr($MyRow['col1'] . ' - ' . $MyRow['col2'], 0, 50);
 			$LeftOvers = $PDF->addTextWrap(15, $Ypos, 205, $FontSize, $GroupHeadingText);
@@ -260,7 +260,7 @@ While ($MyRow = DB_fetch_array($Result)) {
 			/*Need a new heading for Level 2 */
 			$NewHeading = 1;
 			if ($ReportSpec['newpageafter2'] == 1) {
-				include('includes/PDFSalesAnalPageHeader.inc');
+				include('includes/PDFSalesAnalPageHeader.php');
 			}
 			$GroupHeadingText = mb_substr($MyRow['col3'] . ' - ' . $MyRow['col4'], 0, 46);
 			$LeftOvers = $PDF->addTextWrap(30, $Ypos, 190, $FontSize, $GroupHeadingText);
@@ -273,7 +273,7 @@ While ($MyRow = DB_fetch_array($Result)) {
 			/*Need a new heading for Level 3 */
 
 			if ($ReportSpec['newpageafter3'] == 1) {
-				include('includes/PDFSalesAnalPageHeader.inc');
+				include('includes/PDFSalesAnalPageHeader.php');
 			}
 			$GroupHeadingText = mb_substr($MyRow['col5'] . ' - ' . $MyRow['col6'], 0, 46);
 			$LeftOvers = $PDF->addTextWrap(30, $Ypos, 190, $FontSize, $GroupHeadingText);
@@ -311,7 +311,7 @@ While ($MyRow = DB_fetch_array($Result)) {
 		$Ypos -= $line_height;
 
 		if ($Ypos - (2 * $line_height) < $Bottom_Margin) {
-			include('includes/PDFSalesAnalPageHeader.inc');
+			include('includes/PDFSalesAnalPageHeader.php');
 		} //end if need a new page headed up
 		$GrpData1 = $MyRow['col1'];
 		$GrpData2 = $MyRow['col3'];
@@ -569,13 +569,13 @@ if (isset($_GET['ProduceCVSFile'])) {
 		}
 	}
 	$Title = _('Sales Analysis Comma Separated File (CSV) Generation');
-	include('includes/header.inc');
+	include('includes/header.php');
 
 	echo 'http://' . getenv(SERVER_NAME) . $RootPath . '/' . $_SESSION['reports_dir'] . '/SalesAnalysis.csv';
 	echo "<meta http-equiv='Refresh' content='0; url=http://" . getenv(SERVER_NAME) . $RootPath . '/' . $_SESSION['reports_dir'] . "/SalesAnalysis.csv'>";
 
 	echo '<p>' . _('You should automatically be forwarded to the CSV Sales Analysis file when it is ready') . '. ' . _('If this does not happen') . ' <a href="' . $RootPath . '/' . $_SESSION['reports_dir'] . '/SalesAnalysis.csv">' . _('click here') . '</a> ' . _('to continue') . '<br />';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 }
 
 ?>

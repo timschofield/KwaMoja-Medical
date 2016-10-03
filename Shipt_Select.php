@@ -1,8 +1,8 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Search Shipments');
-include('includes/header.inc');
+include('includes/header.php');
 echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/magnifier.png" title="' . _('Search') . '" alt="" />' . ' ' . $Title . '</p>';
 
 if (isset($_GET['SelectedStockItem'])) {
@@ -342,5 +342,5 @@ else {
 }
 
 echo '</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

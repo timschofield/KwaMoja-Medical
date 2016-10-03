@@ -2,10 +2,10 @@
 
 include('includes/prlTardinessClass.php');
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Late and Absenses Data Entry');
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 if (isset($_GET['NewTD']) == 'Yes' AND isset($_SESSION['TDDetail'])) {
 	unset($_SESSION['TDDetail']->TDEntries);
@@ -164,5 +164,5 @@ if ((ABS($_SESSION['TDDetail']->TDTotal) > 0.001 AND $_SESSION['TDDetail']->TDIt
 }
 
 echo '</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

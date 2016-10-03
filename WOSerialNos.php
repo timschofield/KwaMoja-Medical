@@ -9,7 +9,7 @@
  * Need to allow adding serial numbers/batches and deleting batches/serial numbers
  */
 
-include('includes/session.inc');
+include('includes/session.php');
 
 if (isset($_GET['StockID'])) { //the page was called for the first time - get variables into $_POST array
 	$StockId = $_GET['StockID'];
@@ -26,9 +26,9 @@ if (isset($_GET['StockID'])) { //the page was called for the first time - get va
 }
 if (!isset($WO) or $WO == '') {
 	$Title = _('Work order serial number entry problem');
-	include('includes/header.inc');
+	include('includes/header.php');
 	prnMsg(_('This page must to be called from the work order entry screen'), 'error');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 if ($Serialised == 1) {
@@ -37,7 +37,7 @@ if ($Serialised == 1) {
 	$Title = _('Work Order Batches in Progress');
 }
 
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" >
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/transactions.png" title="" alt="" />' . ' ' . _('For Work Order Number') . ' ' . $WO . ' ' . _('and output item') . ' ' . $StockId . ' - ' . $Description . '
@@ -337,6 +337,6 @@ echo '<br /><a href="' . $RootPath . '/WorkOrderEntry.php?WO=' . urlencode($WO) 
 
 echo '</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

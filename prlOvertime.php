@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Overtime Section');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_GET['OverTimeID'])) {
 	$OverTimeID = $_GET['OverTimeID'];
@@ -200,5 +200,5 @@ if (!isset($OverTimeID)) {
 
 } // end of main ifs
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

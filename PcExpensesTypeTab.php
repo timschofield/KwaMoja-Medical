@@ -1,8 +1,8 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Maintenance Of Petty Cash Expenses For a Type Tab');
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/money_add.png" title="' . _('Payment Entry') . '" alt="" />' . ' ' . $Title . '</p>';
 
@@ -233,5 +233,5 @@ if (isset($_POST['process']) or isset($SelectedTab)) {
 	} // end if user wish to delete
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

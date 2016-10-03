@@ -4,8 +4,8 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['PayrollID'])) {
 
 	include('config.php');
 	include('includes/PDFStarter.php');
-	include('includes/ConnectDB.inc');
-	include('includes/DateFunctions.inc');
+	include('includes/ConnectDB.php');
+	include('includes/DateFunctions.php');
 	include('includes/prlFunctions.php');
 
 	/* A4_Landscape */
@@ -59,7 +59,7 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['PayrollID'])) {
 	$Loan = 0;
 	$Tax = 0;
 	$Net = 0;
-	include('includes/PDFPayRegisterPageHeader.inc');
+	include('includes/PDFPayRegisterPageHeader.php');
 	$k = 0; //row colour counter
 	$SQL = "SELECT employeeid,basicpay,othincome,absent,late,otpay,grosspay,loandeduction,sss,hdmf,grosspay,tax,netpay
 			FROM prlpayrolltrans
@@ -110,7 +110,7 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['PayrollID'])) {
 			$LeftOvers = $pdf->addTextWrap(722, $YPos, 50, $FontSize, number_format($Net, 2), 'right');
 			$YPos -= $line_height;
 			if ($YPos < ($Bottom_Margin)) {
-				include('includes/PDFPayRegisterPageHeader.inc');
+				include('includes/PDFPayRegisterPageHeader.php');
 			}
 		}
 
@@ -140,11 +140,11 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['PayrollID'])) {
 	$len = strlen($pdfcode);
 	if ($len <= 20) {
 		$Title = _('Payroll Register Error');
-		include('includes/header.inc');
+		include('includes/header.php');
 		echo '<p>';
 		prnMsg(_('There were no entries to print out for the selections specified'));
 		echo '<br /><a href="' . $RootPath . '/index.php?">' . _('Back to the menu') . '</a>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} else {
 		header('Content-type: application/pdf');
@@ -160,19 +160,19 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['PayrollID'])) {
 	exit;
 
 } elseif (isset($_POST['ShowPR'])) {
-	include('includes/session.inc');
+	include('includes/session.php');
 	$Title = _('grosspay Monthly Premium Listing');
-	include('includes/header.inc');
+	include('includes/header.php');
 	echo 'Use PrintPDF instead';
 	echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } else {
 	/*The option to print PDF was not hit */
 
-	include('includes/session.inc');
+	include('includes/session.php');
 	$Title = _('Payroll Register');
-	include('includes/header.inc');
+	include('includes/header.php');
 
 	echo '<form method="POST" action="' . $_SERVER['PHP_SELF'] . '?">';
 	echo '<table><tr><td>' . _('Select Payroll:') . '</td><td><select Name="PayrollID">';
@@ -191,7 +191,7 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['PayrollID'])) {
 	echo "</table><p><input type='Submit' name='ShowPR' value='" . _('Show Payroll Register') . "'>";
 	echo "<p><input type='Submit' name='PrintPDF' value='" . _('PrintPDF') . "'>";
 
-	include('includes/footer.inc');
+	include('includes/footer.php');
 }
 /*end of else not PrintPDF */
 

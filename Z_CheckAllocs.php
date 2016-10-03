@@ -2,9 +2,9 @@
 
 /*This page adds the total of allocation records and compares this to the recorded allocation total in DebtorTrans table */
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Customer Allocations != DebtorTrans.Alloc');
-include('includes/header.inc');
+include('includes/header.php');
 
 /*First off get the DebtorTransID of all invoices where allocations dont agree to the recorded allocation */
 $SQL = "SELECT debtortrans.id,
@@ -102,6 +102,6 @@ while ($MyRow = DB_fetch_array($Result)) {
 		<br />';
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

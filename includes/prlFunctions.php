@@ -1,5 +1,5 @@
 <?php
-//include_once("ConnectDB_mysql.inc");
+//include_once("ConnectDB_mysql.php");
 
 // All functions
 // *************

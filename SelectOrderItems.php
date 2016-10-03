@@ -2,23 +2,23 @@
 
 include ('includes/DefineCartClass.php');
 
-/* Session started in session.inc for password checking and authorisation level check
- config.php is in turn included in session.inc*/
+/* Session started in session.php for password checking and authorisation level check
+ config.php is in turn included in session.php*/
 
-include ('includes/session.inc');
+include ('includes/session.php');
 
 if (isset($_GET['ModifyOrderNumber'])) {
 	$Title = _('Modifying Order') . ' ' . $_GET['ModifyOrderNumber'];
 } else {
 	$Title = _('Select Order Items');
 }
-/* Manual links before header.inc */
+/* Manual links before header.php */
 $ViewTopic = 'SalesOrders';
 $BookMark = 'SalesOrderEntry';
 
-include ('includes/header.inc');
-include ('includes/GetPrice.inc');
-include ('includes/SQL_CommonFunctions.inc');
+include ('includes/header.php');
+include ('includes/GetPrice.php');
+include ('includes/SQL_CommonFunctions.php');
 
 if (isset($_POST['QuickEntry'])) {
 	unset($_POST['PartSearch']);
@@ -143,13 +143,13 @@ if (isset($_GET['ModifyOrderNumber']) and $_GET['ModifyOrderNumber'] != '') {
 		if ($_SESSION['SalesmanLogin'] != '' and $_SESSION['SalesmanLogin'] != $MyRow['salesman']) {
 			prnMsg(_('Your account is set up to see only a specific salespersons orders. You are not authorised to modify this order'), 'error');
 
-			include ('includes/footer.inc');
+			include ('includes/footer.php');
 			exit;
 		} //$_SESSION['SalesmanLogin'] != '' and $_SESSION['SalesmanLogin'] != $MyRow['salesman']
 		$_SESSION['Items' . $Identifier]->OrderNo = $_GET['ModifyOrderNumber'];
 		$_SESSION['Items' . $Identifier]->DebtorNo = DB_escape_string($MyRow['debtorno']);
 		$_SESSION['Items' . $Identifier]->CreditAvailable = GetCreditAvailable($_SESSION['Items' . $Identifier]->DebtorNo);
-		/*CustomerID defined in header.inc */
+		/*CustomerID defined in header.php */
 		$_SESSION['Items' . $Identifier]->Branch = DB_escape_string($MyRow['branchcode']);
 		$_SESSION['Items' . $Identifier]->CustomerName = $MyRow['name'];
 		$_SESSION['Items' . $Identifier]->CustRef = $MyRow['customerref'];
@@ -406,7 +406,7 @@ if (isset($SelectedCustomer)) {
 
 		if ($_SESSION['SalesmanLogin'] != NULL and $_SESSION['SalesmanLogin'] != $MyRow['salesman']) {
 			prnMsg(_('Your login is only set up for a particular salesperson. This customer has a different salesperson.'), 'error');
-			include ('includes/footer.inc');
+			include ('includes/footer.php');
 			exit;
 		} //$_SESSION['SalesmanLogin'] != NULL and $_SESSION['SalesmanLogin'] != $MyRow['salesman']
 		$_SESSION['Items' . $Identifier]->DeliverTo = $MyRow['brname'];
@@ -442,7 +442,7 @@ if (isset($SelectedCustomer)) {
 			} //$_SESSION['CheckCreditLimits'] == 1 and $_SESSION['Items' . $Identifier]->CreditAvailable <= 0
 			elseif ($_SESSION['CheckCreditLimits'] == 2 and $_SESSION['Items' . $Identifier]->CreditAvailable <= 0) {
 				prnMsg(_('No more orders can be placed by') . ' ' . htmlspecialchars($MyRow[0], ENT_QUOTES, 'UTF-8', false) . ' ' . _(' their account is currently at or over their credit limit'), 'warn');
-				include ('includes/footer.inc');
+				include ('includes/footer.php');
 				exit;
 			} //$_SESSION['CheckCreditLimits'] == 2 and $_SESSION['Items' . $Identifier]->CreditAvailable <= 0
 
@@ -516,7 +516,7 @@ if (isset($SelectedCustomer)) {
 	} //$MyRow[1] == 0
 	else {
 		prnMsg(_('Sorry, your account has been put on hold for some reason, please contact the credit control personnel.'), 'warn');
-		include ('includes/footer.inc');
+		include ('includes/footer.php');
 		exit;
 	}
 } //!$_SESSION['Items' . $Identifier]->DefaultSalesType or $_SESSION['Items' . $Identifier]->DefaultSalesType == ''
@@ -640,7 +640,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 
 			$_SESSION['RequireCustomerSelection'] = 0;
 			prnMsg(_('This sales order has been cancelled as requested'), 'success');
-			include ('includes/footer.inc');
+			include ('includes/footer.php');
 			exit;
 		} //$OK_to_delete == 1
 
@@ -836,7 +836,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 						$NewItem = $KitParts['component'];
 						$NewItemQty = $KitParts['quantity'] * $ParentQty;
 						$NewPOLine = 0;
-						include ('includes/SelectOrderItems_IntoCart.inc');
+						include ('includes/SelectOrderItems_IntoCart.php');
 					} //$KitParts = DB_fetch_array($KitResult)
 
 				} //$MyRow['mbflag'] == 'K'
@@ -845,7 +845,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 				} //$MyRow['mbflag'] == 'G'
 				else {
 					/*Its not a kit set item*/
-					include ('includes/SelectOrderItems_IntoCart.inc');
+					include ('includes/SelectOrderItems_IntoCart.php');
 				}
 			} //$MyRow = DB_fetch_array($KitResult)
 
@@ -955,7 +955,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 				$NewPOLine = 0;
 			}
 			$NewItem = $AssetStockID;
-			include ('includes/SelectOrderItems_IntoCart.inc');
+			include ('includes/SelectOrderItems_IntoCart.php');
 		} //end if adding a fixed asset to the order
 
 	} //end if the fixed asset selection box was set
@@ -1153,7 +1153,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 					$NewItemQty = $KitParts['quantity'] * $ParentQty;
 					$NewPOLine = 0;
 					$NewItemDue = date($_SESSION['DefaultDateFormat']);
-					include ('includes/SelectOrderItems_IntoCart.inc');
+					include ('includes/SelectOrderItems_IntoCart.php');
 				} //$KitParts = DB_fetch_array($KitResult)
 
 			} //$MyRow['mbflag'] == 'K'
@@ -1162,7 +1162,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 				$NewItemDue = date($_SESSION['DefaultDateFormat']);
 				$NewPOLine = 0;
 
-				include ('includes/SelectOrderItems_IntoCart.inc');
+				include ('includes/SelectOrderItems_IntoCart.php');
 			}
 
 		} //$MyRow = DB_fetch_array($KitResult)
@@ -1208,7 +1208,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 							$NewItemQty = $KitParts['quantity'] * $ParentQty;
 							$NewItemDue = date($_SESSION['DefaultDateFormat']);
 							$NewPOLine = 0;
-							include ('includes/SelectOrderItems_IntoCart.inc');
+							include ('includes/SelectOrderItems_IntoCart.php');
 						} //$KitParts = DB_fetch_array($KitResult)
 
 					} //$MyRow['mbflag'] == 'K'
@@ -1216,7 +1216,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 						/*Its not a kit set item*/
 						$NewItemDue = date($_SESSION['DefaultDateFormat']);
 						$NewPOLine = 0;
-						include ('includes/SelectOrderItems_IntoCart.inc');
+						include ('includes/SelectOrderItems_IntoCart.php');
 					}
 				} //$MyRow = DB_fetch_array($KitResult)
 
@@ -1504,9 +1504,9 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 					$DemandQty = 0;
 				}
 
-				// Get the QOO due to Purchase orders for all locations. Function defined in SQL_CommonFunctions.inc
+				// Get the QOO due to Purchase orders for all locations. Function defined in SQL_CommonFunctions.php
 				$PurchQty = GetQuantityOnOrderDueToPurchaseOrders($MyRow['stockid']);
-				// Get the QOO dues to Work Orders for all locations. Function defined in SQL_CommonFunctions.inc
+				// Get the QOO dues to Work Orders for all locations. Function defined in SQL_CommonFunctions.php
 				$WoQty = GetQuantityOnOrderDueToWorkOrders($MyRow['stockid']);
 
 				if ($k == 1) {
@@ -1666,9 +1666,9 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 					$DemandQty = 0;
 				}
 
-				// Get the QOO due to Purchase orders for all locations. Function defined in SQL_CommonFunctions.inc
+				// Get the QOO due to Purchase orders for all locations. Function defined in SQL_CommonFunctions.php
 				$PurchQty = GetQuantityOnOrderDueToPurchaseOrders($MyRow['stockid']);
-				// Get the QOO dues to Work Orders for all locations. Function defined in SQL_CommonFunctions.inc
+				// Get the QOO dues to Work Orders for all locations. Function defined in SQL_CommonFunctions.php
 				$WoQty = GetQuantityOnOrderDueToWorkOrders($MyRow['stockid']);
 
 				if ($k == 1) {
@@ -1782,7 +1782,7 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 
 } //end of else not selecting a customer
 
-include ('includes/footer.inc');
+include ('includes/footer.php');
 
 function GetCustBranchDetails($Identifier) {
 	$SQL = "SELECT custbranch.brname,

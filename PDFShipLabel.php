@@ -2,7 +2,7 @@
 
 /* $Id: PDFShipLabel.php agaluski $*/
 
-include('includes/session.inc');
+include('includes/session.php');
 
 if (isset($_GET['ORD'])) {
 	$SelectedORD = $_GET['ORD'];
@@ -341,29 +341,29 @@ if ($NoOfLabels > 0) {
 		} else {
 			prnMsg(_('The SMTP settings are wrong, please ask administrator for help'), 'error');
 			exit;
-			include('includes/footer.inc');
+			include('includes/footer.php');
 		}
 
 		if ($Success == 1) {
 			$Title = _('Email a Work Order');
-			include('includes/header.inc');
+			include('includes/header.php');
 			echo '<div class="centre"><br /><br /><br />';
 			prnMsg(_('Work Order') . ' ' . $SelectedORD . ' ' . _('has been emailed to') . ' ' . $_POST['EmailTo'] . ' ' . _('as directed'), 'success');
 
 		} else { //email failed
 			$Title = _('Email a Work Order');
-			include('includes/header.inc');
+			include('includes/header.php');
 			echo '<div class="centre"><br /><br /><br />';
 			prnMsg(_('Emailing Work order') . ' ' . $SelectedORD . ' ' . _('to') . ' ' . $_POST['EmailTo'] . ' ' . _('failed'), 'error');
 		}
 	}
-	include('includes/footer.inc');
+	include('includes/footer.php');
 
 } else { //there were not labels to print
 	$Title = _('Label Error');
-	include('includes/header.inc');
+	include('includes/header.php');
 	prnMsg(_('There were no labels to print'), 'warn');
 	echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 }
 ?>

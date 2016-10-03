@@ -2,9 +2,9 @@
 
 $PageSecurity = 15; //hard coded in case database is old and PageSecurity stuff cannot be retrieved
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Backup Database');
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_GET['BackupFile'])) {
 	$BackupFiles = scandir('companies/' . $_SESSION['DatabaseName'], 0);
@@ -61,5 +61,5 @@ $Result = $Mail->send(array('"' . $_SESSION['UsersRealName'] . '" <' . $_SESSION
 prnMsg(_('A backup of the database has been taken and emailed to you'), 'info');
 unlink($BackupFile); // would be a security issue to leave it there for all to download/see
 */
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

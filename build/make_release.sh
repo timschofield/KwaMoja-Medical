@@ -7,7 +7,7 @@ MYSQL_PWD=;
 
 cd $BASE_DIR;
 
-xgettext --no-wrap --language=PHP -o locale/en_GB.utf8/LC_MESSAGES/messages.pot *php install/coa/*.php includes/*.php includes/*.inc reportwriter/*.php reportwriter/*.inc reportwriter/forms/*.html reportwriter/admin/*.php reportwriter/admin/*.inc reportwriter/admin/forms/*.html api/*.php
+xgettext --no-wrap --language=PHP -o locale/en_GB.utf8/LC_MESSAGES/messages.pot *php install/coa/*.php includes/*.php reportwriter/*.php reportwriter/forms/*.html reportwriter/admin/*.php reportwriter/admin/forms/*.html api/*.php
 
 msgmerge -UN --backup=off locale/ar_EG.utf8/LC_MESSAGES/messages.po locale/en_GB.utf8/LC_MESSAGES/messages.pot
 msgmerge -UN --backup=off locale/cs_CZ.utf8/LC_MESSAGES/messages.po locale/en_GB.utf8/LC_MESSAGES/messages.pot

@@ -2,10 +2,10 @@
 
 include('includes/prlOthIncomeClass.php');
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Other Income Data Entry');
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 include('includes/prlFunctions.php');
 
 if (isset($_GET['NewOI']) == 'Yes' AND isset($_SESSION['OIDetail'])) {
@@ -171,5 +171,5 @@ if ((ABS($_SESSION['OIDetail']->OITotal) > 0.001 AND $_SESSION['OIDetail']->OIIt
 }
 
 echo '</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

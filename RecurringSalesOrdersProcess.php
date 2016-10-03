@@ -13,15 +13,15 @@ if (isset($argc)) {
 		$_POST['CompanyNameField'] = $argv[1];
 	}
 }
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Recurring Orders Process');
-/* Manual links before header.inc */
+/* Manual links before header.php */
 $ViewTopic = 'SalesOrders';
 $BookMark = 'RecurringSalesOrders';
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
-include('includes/GetSalesTransGLCodes.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
+include('includes/GetSalesTransGLCodes.php');
 include('includes/htmlMimeMail.php');
 
 $SQL = "SELECT recurringsalesorders.recurrorderno,
@@ -76,7 +76,7 @@ $RecurrOrdersDueResult = DB_query($SQL, _('There was a problem retrieving the re
 
 if (DB_num_rows($RecurrOrdersDueResult) == 0) {
 	prnMsg(_('There are no recurring order templates that are due to have another recurring order created'), 'warn');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -736,5 +736,5 @@ while ($RecurrOrderRow = DB_fetch_array($RecurrOrdersDueResult)) {
 }
 /*end while there are recurring orders due to have a new order created */
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

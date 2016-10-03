@@ -1,12 +1,12 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Search Recurring Sales Orders');
-/* Manual links before header.inc */
+/* Manual links before header.php */
 $ViewTopic = 'SalesOrders';
 $BookMark = 'RecurringSalesOrders';
 
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" method="post">';
 echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
@@ -133,5 +133,5 @@ SUM(recurrsalesorderdetails.unitprice*recurrsalesorderdetails.quantity*(1-recurr
 }
 echo '</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

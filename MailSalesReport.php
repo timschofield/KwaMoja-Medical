@@ -15,21 +15,21 @@
 
 $_GET['ReportID'] = 2;
 
-include('includes/session.inc');
+include('includes/session.php');
 /*The company database to use */
 $DatabaseName = $_SESSION['DatabaseName'];
 /*The people to receive the emailed report */
 $Recipients = GetMailList('SalesAnalysisReportRecipients');
 if (sizeOf($Recipients) == 0) {
 	$Title = _('Inventory Valuation') . ' - ' . _('Problem Report');
-	include('includes/header.inc');
+	include('includes/header.php');
 	prnMsg(_('There are no members of the Sales Analysis Report Recipients email group'), 'warn');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
-include('includes/ConstructSQLForUserDefinedSalesReport.inc');
-include('includes/PDFSalesAnalysis.inc');
+include('includes/ConstructSQLForUserDefinedSalesReport.php');
+include('includes/PDFSalesAnalysis.php');
 
 include('includes/htmlMimeMail.php');
 $Mail = new htmlMimeMail();

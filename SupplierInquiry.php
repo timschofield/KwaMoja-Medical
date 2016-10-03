@@ -1,12 +1,12 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Supplier Inquiry');
 $ViewTopic = 'AccountsPayable';// Filename in ManualContents.php's TOC./* RChacon: Is there any content for Supplier Inquiry? */
 $BookMark = 'AccountsPayable';// Anchor's id in the manual's html document.
-include('includes/header.inc');
+include('includes/header.php');
 
-include('includes/SQL_CommonFunctions.inc');
+include('includes/SQL_CommonFunctions.php');
 
 // always figure out the SQL required from the inputs available
 
@@ -15,7 +15,7 @@ if (!isset($_GET['SupplierID']) and !isset($_SESSION['SupplierID'])) {
 			<div class="centre">
 				<a href="' . $RootPath . '/SelectSupplier.php">' . _('Select a Supplier to Inquire On') . '</a>
 			</div>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } else {
 	if (isset($_GET['SupplierID'])) {
@@ -193,7 +193,7 @@ $TransResult = DB_query($SQL, $ErrMsg, $DbgMsg);
 if (DB_num_rows($TransResult) == 0) {
 	echo '<br /><div class="centre">' . _('There are no transactions to display since') . ' ' . $_POST['TransAfterDate'];
 	echo '</div>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -335,5 +335,5 @@ while ($MyRow = DB_fetch_array($TransResult)) {
 
 echo '</tbody>';
 echo '</table>';
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

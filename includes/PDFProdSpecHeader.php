@@ -1,5 +1,5 @@
 <?php
-/* $Id: PDFCOAHeader.inc  1 2014-09-15 06:31:08Z agaluski $ */
+/* $Id: PDFProdSpecHeader.php  1 2014-09-15 06:31:08Z agaluski $ */
 
 if ($PageNumber > 1) {
 	$PDF->newPage();
@@ -18,6 +18,8 @@ $YPos -= $LineHeight;
 $LeftOvers = $PDF->addTextWrap($XPos, $YPos, 500, $FontSize, $_SESSION['CompanyRecord']['regoffice1'] . $_SESSION['CompanyRecord']['regoffice2'], 'center');
 $PDF->SetLineWidth(.2);
 
+
+
 $YPos = 720;
 $YPos -= $LineHeight;
 $YPos -= $LineHeight;
@@ -25,15 +27,18 @@ $PDF->addJpegFromFile($_SESSION['LogoFile'], $XPos, $YPos, 0, 70);
 $FontSize = 14;
 $LineHeight = $FontSize * 1.50;
 $YPos += $LineHeight;
-$LeftOvers = $PDF->addTextWrap($XPos + 330, $YPos, 140, $FontSize, _('Certificate of Analysis'));
+$LeftOvers = $PDF->addTextWrap($XPos + 330, $YPos, 140, $FontSize, _('Technical Data Sheet'));
 $YPos -= $LineHeight;
 $YPos -= $LineHeight;
 $PDF->setFont('', 'B');
-$LeftOvers = $PDF->addTextWrap($XPos + 1, $YPos, 210, $FontSize, $Spec);
+$Offset= array_sum($PDF->GetStringWidth(($Spec), '', '', 0, true)) + 2;
+$LeftOvers = $PDF->addTextWrap($XPos + 1, $YPos, $Offset, $FontSize, $Spec);
 $PDF->setFont('', '');
-$YPos -= $LineHeight;
-$YPos -= $LineHeight;
-$LeftOvers = $PDF->addTextWrap($XPos + 1, $YPos, 500, $FontSize, 'Certificate of Analysis for Lot' . ': ' . $SelectedCOA . '        ' . 'Date' . ': ' . $SampleDate, 'center');
+$LeftOvers = $PDF->addTextWrap($XPos + $Offset, $YPos, 500 - $Offset, $FontSize, '- ' . $SpecDesc);
+while (mb_strlen($LeftOvers) > 1) {
+	$YPos -= $LineHeight;
+	$LeftOvers = $PDF->addTextWrap($XPos + 60, $YPos, 445, $FontSize, $LeftOvers, 'left');
+}
 $FontSize = 12;
 $LineHeight = $FontSize * 1.25;
 $YPos -= $LineHeight;

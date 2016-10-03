@@ -1,9 +1,9 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('View Currency Trends');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 $FunctionalCurrency = $_SESSION['CompanyRecord']['currencydefault'];
 
@@ -70,5 +70,5 @@ echo '<table class="selection">
 		</tr>
 	</table>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

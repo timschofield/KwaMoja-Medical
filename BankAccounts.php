@@ -1,11 +1,11 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Bank Accounts');// Screen identificator.
 $ViewTopic= 'GeneralLedger';// Filename's id in ManualContents.php's TOC.
 $BookMark = 'BankAccounts';// Anchor's id in the manual's html document.
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/money_add.png" title="' . _('Bank') . '" alt="" />' . ' ' . $Title . '</p>';
 echo '<div class="page_help_text">' . _('Update Bank Account details.  Account Code is for SWIFT or BSB type Bank Codes.  Set Default for Invoices to Currency Default  or Fallback Default to print Account details on Invoices (only one account should be set to Fall Back Default).') . '.</div><br />';
@@ -454,5 +454,5 @@ echo '<div class="centre">
 		<input tabindex="7" type="submit" name="submit" value="' . _('Enter Information') . '" />
 	</div>';
 echo '</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

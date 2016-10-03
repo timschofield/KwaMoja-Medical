@@ -1,14 +1,14 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Search Suppliers');
 
-/* Manual links before header.inc */
+/* Manual links before header.php */
 $ViewTopic = 'AccountsPayable';
 $BookMark = 'SelectSupplier';
 
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 if (!isset($_SESSION['SupplierID'])) {
 	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/supplier.png" title="' . _('Search') . '" alt="" />' . ' ' . _('Suppliers') . '</p>';
 }
@@ -387,5 +387,5 @@ if (isset($_SESSION['SupplierID']) and $_SESSION['SupplierID'] != '') {
 	}
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

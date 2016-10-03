@@ -1,18 +1,19 @@
 <?php
 
+/* PeterMoulding.com
+20071102 Change from mysql to mysqli;
+20071102 Add $db to DB_escape_string();
+*/
+
 define('LIKE', 'LIKE');
 
-global $db; // Make sure it IS global, regardless of our context
 if (!isset($DBPort)) {
 	$DBPort = 3306;
 }
-
-if ($Debug == 1) {
-	$Result = DB_query('SET sql_mode = ANSI');
-}
+global $db; // Make sure it IS global, regardless of our context
 
 if (!isset($db)) {
-	$db = $db = mysql_pconnect($Host . ':' . $DBPort, $DBUser, $DBPassword);
+	$db = mysqli_connect('p:'.$Host, $DBUser, $DBPassword, $_SESSION['DatabaseName'], $DBPort);
 
 	//this statement sets the charset to be used for sending data to and from the db server
 	//if not set, both mysqli server and mysqli client/library may assume otherwise
@@ -20,23 +21,21 @@ if (!isset($db)) {
 	DB_set_timezone();
 }
 
-//$varabc =  mysql_client_encoding($db);
-//printf("client encoding is %s\n", $varabc);
+if ($Debug == 1) {
+	$Result = DB_query('SET sql_mode = ANSI');
+}
 
-
-if (!$db) {
-	echo '<br />' . _('The configuration in the file config.php for the database user name and password do not provide the information required to connect to the database server');
+/* check connection */
+if (mysqli_connect_errno()) {
+	printf("Connect failed: %s\n", mysqli_connect_error());
 	session_unset();
 	session_destroy();
 	echo '<p>' . _('Click') . ' ' . '<a href="index.php">' . _('here') . '</a>' . ' ' . _('to try logging in again') . '</p>';
-
-	exit;
+	exit();
 }
 
-if (! mysql_select_db($_SESSION['DatabaseName'],$db)) {
-	echo '<br />' . _('The company name entered does not correspond to a database on the database server specified in the config.php configuration file. Try logging in with a different company name');
-	echo '<br /><a href="index.php">' . _('Back to login page') . '</A>';
-	unset ($_SESSION['DatabaseName']);
+if (!$db) {
+	echo '<br />' . _('The configuration in the file config.php for the database user name and password do not provide the information required to connect to the database server');
 	exit;
 }
 
@@ -45,46 +44,18 @@ require_once($PathPrefix . 'includes/MiscFunctions.php');
 //DB wrapper functions to change only once for whole application
 
 function DB_connect($Host, $DBUser, $DBPassword, $DBPort) {
-	return mysql_connect($Host, $DBUser, $DBPassword, $_SESSION['DatabaseName'], $DBPort);
+	return mysqli_connect($Host, $DBUser, $DBPassword, $_SESSION['DatabaseName'], $DBPort);
 }
 
 function DB_query($SQL, $ErrorMessage = '', $DebugMessage = '', $Transaction = false, $TrapErrors = true) {
 
-	global $db;
 	global $Debug;
+	global $db;
 	global $PathPrefix;
 	global $RootPath;
 	global $Messages;
-
-	$Result = mysql_query($SQL, $db);
-	$_SESSION['LastInsertId'] = mysql_insert_id($db);
-
-	if ($DebugMessage == '') {
-		$DebugMessage = _('The SQL that failed was');
-	}
-
-	if (DB_error_no() != 0 and $TrapErrors == true) {
-		if ($TrapErrors) {
-			require_once($PathPrefix . 'includes/header.inc');
-		}
-		prnMsg($ErrorMessage . '<br />' . DB_error_msg(), 'error', _('Database Error') . ' ' . DB_error_no());
-		if ($Debug == 1) {
-			prnMsg($DebugMessage . '<br />' . $SQL . '<br />', 'error', _('Database SQL Failure'));
-		}
-		if ($Transaction) {
-			$SQL = 'rollback';
-			$Result = DB_query($SQL);
-			if (DB_error_no() != 0) {
-				prnMsg(_('Error Rolling Back Transaction'), 'error', _('Database Rollback Error') . ' ' . DB_error_no());
-			} else {
-				prnMsg(_('Rolling Back Transaction OK'), 'error', _('Database Rollback Due to Error Above'));
-			}
-		}
-		if ($TrapErrors) {
-			include($PathPrefix . 'includes/footer.inc');
-			exit;
-		}
-	} elseif (isset($_SESSION['MonthsAuditTrail']) and (DB_error_no() == 0 and $_SESSION['MonthsAuditTrail'] > 0)) {
+//echo $SQL;
+	if (isset($_SESSION['MonthsAuditTrail']) and (DB_error_no($db) == 0 and $_SESSION['MonthsAuditTrail'] > 0) and (DB_affected_rows($Result) > 0)) {
 
 		$SQLArray = explode(' ', $SQL);
 
@@ -101,8 +72,37 @@ function DB_query($SQL, $ErrorMessage = '', $DebugMessage = '', $Transaction = f
 													'" . $_SERVER['REMOTE_ADDR'] . "',
 													'" . DB_escape_string($SQL) . "')";
 
-				$AuditResult = mysql_query($AuditSQL, $db);
+				$AuditResult = mysqli_query($db, $AuditSQL);
 			}
+		}
+	}
+
+	$Result = mysqli_query($db, $SQL);
+
+	if ($DebugMessage == '') {
+		$DebugMessage = _('The SQL that failed was');
+	}
+
+	if (DB_error_no($db) != 0 and $TrapErrors == true) {
+		if ($TrapErrors) {
+			require_once($PathPrefix . 'includes/header.php');
+		}
+		prnMsg($ErrorMessage . '<br />' . DB_error_msg(), 'error', _('Database Error') . ' ' . DB_error_no());
+		if ($Debug == 1) {
+			prnMsg($DebugMessage . '<br />' . $SQL . '<br />', 'error', _('Database SQL Failure'));
+		}
+		if ($Transaction) {
+			$SQL = 'rollback';
+			$Result = DB_query($SQL);
+			if (DB_error_no() != 0) {
+				prnMsg(_('Error Rolling Back Transaction'), 'error', _('Database Rollback Error') . ' ' . DB_error_no());
+			} else {
+				prnMsg(_('Rolling Back Transaction OK'), 'error', _('Database Rollback Due to Error Above'));
+			}
+		}
+		if ($TrapErrors) {
+			include($PathPrefix . 'includes/footer.php');
+			exit;
 		}
 	}
 
@@ -112,19 +112,19 @@ function DB_query($SQL, $ErrorMessage = '', $DebugMessage = '', $Transaction = f
 
 function DB_fetch_row(&$ResultIndex) {
 
-	$RowPointer = mysql_fetch_row($ResultIndex);
+	$RowPointer = mysqli_fetch_row($ResultIndex);
 	return $RowPointer;
 }
 
 function DB_fetch_assoc(&$ResultIndex) {
 
-	$RowPointer = mysql_fetch_assoc($ResultIndex);
+	$RowPointer = mysqli_fetch_assoc($ResultIndex);
 	return $RowPointer;
 }
 
 function DB_fetch_array(&$ResultIndex) {
 
-	$RowPointer = mysql_fetch_array($ResultIndex);
+	$RowPointer = mysqli_fetch_array($ResultIndex);
 	return $RowPointer;
 }
 
@@ -135,33 +135,40 @@ function DB_fetch_all(&$ResultIndex) {
 }
 
 function DB_data_seek(&$ResultIndex, $Record) {
-	mysql_data_seek($ResultIndex, $Record);
+	mysqli_data_seek($ResultIndex, $Record);
 }
 
 function DB_free_result(&$ResultIndex) {
-	mysql_free_result($ResultIndex);
+	if (is_resource($ResultIndex)) {
+		mysqli_free_result($ResultIndex);
+	}
 }
 
 function DB_num_rows(&$ResultIndex) {
-	return mysql_num_rows($ResultIndex);
+	return mysqli_num_rows($ResultIndex);
 }
-// Added by MGT
+
 function DB_affected_rows(&$ResultIndex) {
-	return mysql_affected_rows($ResultIndex);
+
+	global $db;
+	return mysqli_affected_rows($db);
+
 }
 
 function DB_error_no() {
 	global $db;
-	return mysql_errno($db);
+	return mysqli_errno($db);
 }
 
 function DB_error_msg() {
 	global $db;
-	return mysql_error($db);
+	return mysqli_error($db);
 }
 
 function DB_Last_Insert_ID($Table, $FieldName) {
-	//	return mysql_insert_id($Conn);
+	global $db;
+	$_SESSION['LastInsertId'] = mysqli_insert_id($db);
+	//	return mysqli_insert_id($Conn);
 	if (isset($_SESSION['LastInsertId'])) {
 		$Last_Insert_ID = $_SESSION['LastInsertId'];
 	} else {
@@ -172,15 +179,18 @@ function DB_Last_Insert_ID($Table, $FieldName) {
 }
 
 function DB_escape_string($String) {
-	return mysql_real_escape_string($String);
+	global $db;
+	return mysqli_real_escape_string($db, $String);
 }
 
 function DB_show_tables($TableName = '%') {
+	global $db;
 	$Result = DB_query("SHOW TABLES WHERE Tables_in_" . $_SESSION['DatabaseName'] . " " . LIKE . "'" . $TableName . "'");
 	return $Result;
 }
 
 function DB_show_fields($TableName) {
+	global $db;
 	$Result = DB_query("DESCRIBE $TableName");
 	return $Result;
 }
@@ -191,6 +201,7 @@ function interval($Value, $Interval) {
 }
 
 function DB_Maintenance() {
+	global $db;
 
 	prnMsg(_('The system has just run the regular database administration and optimisation routine.'), 'info');
 
@@ -204,34 +215,33 @@ function DB_Maintenance() {
 				WHERE confname='DB_Maintenance_LastRun'");
 }
 
-
 function DB_Txn_Begin() {
 	global $db;
-	mysql_query("SET autocommit=0", $db);
-	mysql_query("START TRANSACTION", $db);
+	mysqli_query($db, 'SET autocommit=0');
+	mysqli_query($db, 'START TRANSACTION');
 }
 
 function DB_Txn_Commit() {
 	global $db;
-	mysql_query("COMMIT", $db);
-	mysql_query("SET autocommit=1", $db);
+	mysqli_query($db, 'COMMIT');
+	mysqli_query($db, 'SET autocommit=1');
 }
 
 function DB_Txn_Rollback() {
 	global $db;
-	mysql_query("ROLLBACK", $db);
+	mysqli_query($db, 'ROLLBACK');
 }
-
 function DB_IgnoreForeignKeys() {
 	global $db;
-	mysql_query("SET FOREIGN_KEY_CHECKS=0", $db);
+	mysqli_query($db, 'SET FOREIGN_KEY_CHECKS=0');
 }
 function DB_ReinstateForeignKeys() {
 	global $db;
-	mysql_query("SET FOREIGN_KEY_CHECKS=1", $db);
+	mysqli_query($db, 'SET FOREIGN_KEY_CHECKS=1');
 }
 
 function DB_table_exists($TableName) {
+	global $db;
 	$ShowSQL = "SHOW TABLES WHERE Tables_in_" . $_SESSION['DatabaseName'] . "='" . $TableName . "'";
 	$Result = DB_query($ShowSQL);
 	if (DB_num_rows($Result) > 0) {
@@ -243,7 +253,7 @@ function DB_table_exists($TableName) {
 
 function DB_select_database($DBName) {
 	global $db;
-	mysql_select_db($DBName, $db);
+	mysqli_select_db($db, $DBName);
 }
 
 function DB_set_timezone() {

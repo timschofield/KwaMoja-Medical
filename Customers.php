@@ -1,9 +1,9 @@
 <?php
 
-include ('includes/session.inc');
+include ('includes/session.php');
 
 $Title = _('Customer Maintenance');
-/* Manual links before header.inc */
+/* Manual links before header.php */
 if (isset($_POST['Edit']) or isset($_GET['Edit']) or isset($_GET['DebtorNo'])) {
 	$ViewTopic = 'AccountsReceivable';
 	$BookMark = 'AmendCustomer';
@@ -11,8 +11,8 @@ if (isset($_POST['Edit']) or isset($_GET['Edit']) or isset($_GET['DebtorNo'])) {
 	$ViewTopic = 'AccountsReceivable';
 	$BookMark = 'NewCustomer';
 }
-include ('includes/header.inc');
-include ('includes/SQL_CommonFunctions.inc');
+include ('includes/header.php');
+include ('includes/SQL_CommonFunctions.php');
 include ('includes/CountriesArray.php');
 
 echo '<p class="page_title_text" >
@@ -240,7 +240,7 @@ if (isset($_POST['submit'])) {
 			$BranchCode = mb_substr($_POST['DebtorNo'], 0, 4);
 			echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/CustomerBranches.php?DebtorNo=' . urlencode($_POST['DebtorNo']) . '">';
 			echo '<div class="centre">' . _('You should automatically be forwarded to the entry of a new Customer Branch page') . '. ' . _('If this does not happen') . ' (' . _('if the browser does not support META Refresh') . ') ' . '<a href="' . $RootPath . '/CustomerBranches.php?DebtorNo=' . urlencode($_POST['DebtorNo']) . '"></a></div>';
-			include ('includes/footer.inc');
+			include ('includes/footer.php');
 			exit;
 		}
 	} else {
@@ -303,7 +303,7 @@ if (isset($_POST['submit'])) {
 		$SQL = "DELETE FROM debtorsmaster WHERE debtorno='" . $_POST['DebtorNo'] . "'";
 		$Result = DB_query($SQL);
 		prnMsg(_('Customer') . ' ' . $_POST['DebtorNo'] . ' ' . _('has been deleted - together with all the associated branches and contacts'), 'success');
-		include ('includes/footer.inc');
+		include ('includes/footer.php');
 		unset($_SESSION['CustomerID']);
 		exit;
 	} //end if Delete Customer
@@ -394,7 +394,7 @@ if ($MyRow[0] == 0) {
 
 if ($SetupErrors > 0) {
 	echo '<br /><div class="centre"><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '" >' . _('Click here to continue') . '</a></div>';
-	include ('includes/footer.inc');
+	include ('includes/footer.php');
 	exit;
 } //$SetupErrors > 0
 
@@ -793,5 +793,5 @@ if (isset($_POST['New']) and $_POST['New']) {
 
 echo '</form>';
 
-include ('includes/footer.inc');
+include ('includes/footer.php');
 ?>

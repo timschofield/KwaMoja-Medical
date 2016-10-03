@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Audit Trail');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text">
 		<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/maintenance.png" title="', _('Search'), '" alt="" />', ' ', $Title, '
@@ -240,6 +240,6 @@ if (isset($_POST['View'])) {
 	echo '</tbody>
 		</table>';
 }
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

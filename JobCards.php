@@ -11,11 +11,11 @@ if (isset($_POST['BranchNo'])) {
 	$_GET['BranchNo'] = $_POST['BranchNo'];
 } //isset($_POST['BranchNo'])
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Customer Job Cards');
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
-include('includes/JobCards.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
+include('includes/JobCards.php');
 
 if (!isset($_POST['JobCPrint'])) {
 	$SQL = "SELECT name FROM debtorsmaster WHERE debtorno='" . $_GET['DebtorNo'] . "'";
@@ -281,6 +281,6 @@ if (!isset($_POST['SaveUpdateJob'])) {
 	echo "location.href = 'JobCards.php?DebtorNo=" . $_SESSION['CustomerID'] . '&BranchNo=' . $_GET['BranchNo'] . "'";
 	echo "</script>";
 }
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

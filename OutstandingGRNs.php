@@ -1,6 +1,6 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 if (isset($_POST['ShowReport'])) {
 
@@ -38,23 +38,23 @@ if (isset($_POST['ShowReport'])) {
 
 	if (DB_error_no() != 0) {
 		$Title = _('Outstanding GRN Valuation') . ' - ' . _('Problem Report');
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('The outstanding GRNs valuation details could not be retrieved by the SQL because') . ' - ' . DB_error_msg(), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 	if (DB_num_rows($GRNsResult) == 0) {
 		$Title = _('Outstanding GRN Valuation') . ' - ' . _('Problem Report');
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('No outstanding GRNs valuation details retrieved'), 'warn');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
 	$Title = _('Outstanding GRNs Report');
-	include('includes/header.inc');
+	include('includes/header.php');
 
 	echo '<p class="page_title_text"  align="center">
 			<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Goods Received but not invoiced Yet') . '" alt="" />' . _('Goods Received but not invoiced Yet') . '
@@ -120,7 +120,7 @@ if (isset($_POST['ShowReport'])) {
 
 	echo '</table>';
 
-	include('includes/footer.inc');
+	include('includes/footer.php');
 
 } else {
 
@@ -131,7 +131,7 @@ if (isset($_POST['ShowReport'])) {
 	$MyRow = DB_fetch_array($Result);
 
 	$Title = _('Outstanding GRNs Report');
-	include('includes/header.inc');
+	include('includes/header.php');
 
 	echo '<p class="page_title_text"  align="center">
 			<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . $Title . '" alt="" />' . $Title . '
@@ -157,7 +157,7 @@ if (isset($_POST['ShowReport'])) {
 		</div>
 		</form>';
 
-	include('includes/footer.inc');
+	include('includes/footer.php');
 
 }
 

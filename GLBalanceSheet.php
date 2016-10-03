@@ -7,17 +7,17 @@
  * date meanwhile the system is posting any unposted transactions
  */
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Balance Sheet');// Screen identification.
 $ViewTopic = 'GeneralLedger';// Filename's id in ManualContents.php's TOC.
 $BookMark = 'BalanceSheet';// Anchor's id in the manual's html document.
-include('includes/SQL_CommonFunctions.inc');
-include('includes/AccountSectionsDef.inc'); // This loads the $Sections variable
+include('includes/SQL_CommonFunctions.php');
+include('includes/AccountSectionsDef.php'); // This loads the $Sections variable
 
 if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod'])) {
 
 	/*Show a form to allow input of criteria for Balance Sheet to show */
-	include('includes/header.inc');
+	include('includes/header.php');
 
 	echo '<p class="page_title_text">
 			<img alt="" src="' . $RootPath.'/css/' . $_SESSION['Theme'] . '/images/printer.png" title="' . _('Print Statement of Financial Position') . '" />
@@ -75,7 +75,7 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 	echo '</form>';
 
 	/*Now do the posting while the user is thinking about the period to select */
-	include('includes/GLPostings.inc');
+	include('includes/GLPostings.php');
 
 } elseif (isset($_POST['PrintPDF'])) {
 
@@ -109,14 +109,14 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 	$AccumProfitResult = DB_query($SQL);
 	if (DB_error_no() != 0) {
 		$Title = _('Balance Sheet') . ' - ' . _('Problem Report') . '....';
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('The accumulated profits brought forward could not be calculated by the SQL because') . ' - ' . DB_error_msg());
 		echo '<br />
 				<a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($Debug == 1) {
 			echo '<br />' . $SQL;
 		}
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
@@ -157,19 +157,19 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 
 	if (DB_error_no() != 0) {
 		$Title = _('Balance Sheet') . ' - ' . _('Problem Report') . '....';
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('No general ledger accounts were returned by the SQL because') . ' - ' . DB_error_msg());
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($Debug == 1) {
 			echo '<br />' . $SQL;
 		}
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
 	$ListCount = DB_num_rows($AccountsResult); // UldisN
 
-	include('includes/PDFBalanceSheetPageHeader.inc');
+	include('includes/PDFBalanceSheetPageHeader.php');
 
 	$k = 0; //row colour counter
 	$Section = '';
@@ -212,7 +212,7 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 					$LYGroupTotal[$Level] = 0;
 					$Level--;
 					if ($YPos < $Bottom_Margin) {
-						include('includes/PDFBalanceSheetPageHeader.inc');
+						include('includes/PDFBalanceSheetPageHeader.php');
 					}
 				}
 				$YPos -= $line_height;
@@ -224,7 +224,7 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 				$LYGroupTotal[$Level] = 0;
 				$YPos -= $line_height;
 				if ($YPos < $Bottom_Margin) {
-					include('includes/PDFBalanceSheetPageHeader.inc');
+					include('includes/PDFBalanceSheetPageHeader.php');
 				}
 			}
 		}
@@ -239,7 +239,7 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 				$LeftOvers = $PDF->addTextWrap($Left_Margin + 350, $YPos, 100, $FontSize, locale_number_format($SectionBalanceLY, $_SESSION['CompanyRecord']['decimalplaces']), 'right');
 				$YPos -= (2 * $line_height);
 				if ($YPos < $Bottom_Margin) {
-					include('includes/PDFBalanceSheetPageHeader.inc');
+					include('includes/PDFBalanceSheetPageHeader.php');
 				}
 			}
 			$SectionBalanceLY = 0;
@@ -251,14 +251,14 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 				$LeftOvers = $PDF->addTextWrap($Left_Margin, $YPos, 200, $FontSize, $Sections[$MyRow['sectioninaccounts']]);
 				$YPos -= (2 * $line_height);
 				if ($YPos < $Bottom_Margin) {
-					include('includes/PDFBalanceSheetPageHeader.inc');
+					include('includes/PDFBalanceSheetPageHeader.php');
 				}
 			}
 		}
 
 		if ($MyRow['groupname'] != $ActGrp) {
 			if ($YPos < $Bottom_Margin + $line_height) {
-				include('includes/PDFBalanceSheetPageHeader.inc');
+				include('includes/PDFBalanceSheetPageHeader.php');
 			}
 			$FontSize = 8;
 			$PDF->setFont('', 'B');
@@ -335,10 +335,10 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 
 	if ($ListCount == 0) { //UldisN
 		$Title = _('Print Balance Sheet Error');
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('There were no entries to print out for the selections specified'));
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} else {
 		$PDF->OutputD($_SESSION['DatabaseName'] . '_GL_Balance_Sheet_' . date('Y-m-d') . '.pdf');
@@ -348,7 +348,7 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 } else {
 	$ViewTopic = 'GeneralLedger';
 	$BookMark = 'BalanceSheet';
-	include('includes/header.inc');
+	include('includes/header.php');
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '">';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<input type="hidden" name="BalancePeriodEnd" value="' . $_POST['BalancePeriodEnd'] . '" />';
@@ -711,5 +711,5 @@ if (!isset($_POST['BalancePeriodEnd']) or isset($_POST['SelectADifferentPeriod']
 	echo '</form>';
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Sales People Maintenance');
 $ViewTopic = 'SalesPeople';
 $BookMark = 'SalesPeople';
@@ -10,7 +10,7 @@ if (isset($_GET['SelectedSalesPerson'])) {
 if (isset($_GET['delete'])) {
 	$BookMark = 'SalespeopleDelete';
 }// For Delete's ERROR Message Report.
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_GET['SelectedSalesPerson'])) {
 	$SelectedSalesPerson = mb_strtoupper($_GET['SelectedSalesPerson']);
@@ -454,5 +454,5 @@ if (!isset($_GET['delete'])) {
 
 } //end if record deleted no point displaying form to add record
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

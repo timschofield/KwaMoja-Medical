@@ -2,11 +2,11 @@
 
 $PricesSecurity = 1000;
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Search Outstanding Purchase Orders');
 
-include('includes/header.inc');
+include('includes/header.php');
 include('includes/DefinePOClass.php');
 
 if (isset($_GET['SelectedStockItem'])) {
@@ -470,5 +470,5 @@ if (isset($StockItemsResult)) {
 }
 
 echo '</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

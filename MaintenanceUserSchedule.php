@@ -1,9 +1,9 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Fixed Assets Maintenance Schedule');
-include('includes/header.inc');
+include('includes/header.php');
 
 $ViewTopic = 'FixedAssets';
 $BookMark = 'AssetMaintenance';
@@ -74,5 +74,5 @@ while ($MyRow = DB_fetch_array($Result)) {
 
 echo '</table><br /><br />';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

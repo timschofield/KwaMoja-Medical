@@ -13,10 +13,10 @@
 //Page must be called with GLTrialBalance_csv.php?CompanyName=XXXXX&FromPeriod=Y&ToPeriod=Z
 //htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') = dirname(htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8')) .'/GLTrialBalance_csv.php?ToPeriod=' . $_GET['ToPeriod'] . '&FromPeriod=' . $_GET['FromPeriod'];
 
-include('includes/session.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/session.php');
+include('includes/SQL_CommonFunctions.php');
 
-include('includes/GLPostings.inc'); //do any outstanding posting
+include('includes/GLPostings.php'); //do any outstanding posting
 
 $NumberOfMonths = $_GET['ToPeriod'] - $_GET['FromPeriod'] + 1;
 

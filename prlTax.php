@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Tax Table Section');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_GET['Bracket'])) {
 	$Bracket = $_GET['Bracket'];
@@ -228,5 +228,5 @@ if (!isset($Bracket)) {
 
 } // end of main ifs
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

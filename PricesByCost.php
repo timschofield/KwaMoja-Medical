@@ -1,8 +1,8 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Update of Prices By A Multiple Of Cost');
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Inventory') . '" alt="" />' . ' ' . _('Update Price By Cost') . '</p>';
 
@@ -310,5 +310,5 @@ if (isset($_POST['submit']) or isset($_POST['update'])) {
 	echo '</form>';
 }
 /*end of else not submit */
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

@@ -1,9 +1,9 @@
 <?php
 /* $Id: TestPlanResults.php 1 2014-09-08 10:42:50Z agaluski $*/
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Test Plan Results');
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_GET['SelectedSampleID'])) {
 	$SelectedSampleID = mb_strtoupper($_GET['SelectedSampleID']);
@@ -318,7 +318,7 @@ if (isset($_GET['CopyResults']) or isset($_POST['CopyResults'])) {
 		}
 		echo '</div>' . _('Override existing Test values?') . '<input type="checkbox" name="OverRide"><input type="submit" name="Copy" value="' . _('Copy') . '" />
 			  </form>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} else {
 		$SQL = "SELECT sampleresults.testid,
@@ -565,7 +565,7 @@ if (isset($_GET['ListTests'])) {
 			<input type="submit" name="AddTests" value="' . _('Add') . '" />
 		</div>
 	</form>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } //ListTests
 if (isset($_POST['AddTests'])) {
@@ -691,7 +691,7 @@ if (!isset($SelectedSampleID)) {
 			<a href="' . $RootPath . '/SelectQASamples.php">' . _('Select a sample to enter results against') . '</a>
 		</div>';
 	prnMsg(_('This page can only be opened if a QA Sample has been selected. Please select a sample first'), 'info');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -957,5 +957,5 @@ if ($CanCert == 1) {
 	echo '<div class="centre"><a target="_blank" href="' . $RootPath . '/PDFCOA.php?LotKey=' . $LotKey . '&ProdSpec=' . $ProdSpec . '">' . _('Print COA') . '</a></div>';
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

@@ -1,15 +1,15 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Shipments Open Inquiry');
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/supplier.png" title="' . _('Supplier') . '" alt="" />' . ' ' . _('Open Shipments for') . ' ' . $_GET['SupplierName'] . '.</p>';
 
 if (!isset($_GET['SupplierID']) or !isset($_GET['SupplierName'])) {
 	echo '<br />';
 	prnMsg(_('This page must be given the supplier code to look for shipments for'), 'error');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -24,7 +24,7 @@ $ShiptsResult = DB_query($SQL, $ErrMsg);
 
 if (DB_num_rows($ShiptsResult) == 0) {
 	prnMsg(_('There are no open shipments currently set up for') . ' ' . $_GET['SupplierName'], 'warn');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 /*show a table of the shipments returned by the SQL */
@@ -59,6 +59,6 @@ while ($MyRow = DB_fetch_array($ShiptsResult)) {
 
 echo '</table>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

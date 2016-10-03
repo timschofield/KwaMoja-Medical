@@ -7,18 +7,18 @@
 
 include('includes/DefineCartClass.php');
 
-/* Session started in header.inc for password checking the session will
+/* Session started in header.php for password checking the session will
  * contain the details of the order from the Cart class object. The details
  * of the order come from SelectOrderItems.php
  */
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Order Delivery Details');
 $ViewTopic = 'SalesOrders';// Filename's id in ManualContents.php's TOC.
 $BookMark = 'DeliveryDetails';// Anchor's id in the manual's html document.
-include('includes/header.inc');
-include('includes/FreightCalculation.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/FreightCalculation.php');
+include('includes/SQL_CommonFunctions.php');
 include('includes/CountriesArray.php');
 
 if (isset($_GET['identifier'])) {
@@ -28,17 +28,17 @@ if (isset($_GET['identifier'])) {
 unset($_SESSION['WarnOnce']);
 if (!isset($_SESSION['Items' . $Identifier]) or !isset($_SESSION['Items' . $Identifier]->DebtorNo)) {
 	prnMsg(_('This page can only be read if an order has been entered') . '. ' . _('To enter an order select customer transactions then sales order entry'), 'error');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } //!isset($_SESSION['Items' . $Identifier]) or !isset($_SESSION['Items' . $Identifier]->DebtorNo)
 
 if ($_SESSION['Items' . $Identifier]->ItemsOrdered == 0) {
 	prnMsg(_('This page can only be read if an there are items on the order') . '. ' . _('To enter an order select customer transactions then sales order entry'), 'error');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } //$_SESSION['Items' . $Identifier]->ItemsOrdered == 0
 
-/*Calculate the earliest dispacth date in DateFunctions.inc */
+/*Calculate the earliest dispacth date in DateFunctions.php */
 
 $EarliestDispatch = CalcEarliestDispatchDate();
 
@@ -163,7 +163,7 @@ if (isset($_POST['Update']) or isset($_POST['BackToLineDetails']) or isset($_POS
 			if ($Debug == 1) {
 				echo '<br />' . _('The SQL that failed to get the branch details was') . ':<br />' . $SQL;
 			} //$Debug == 1
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		} //DB_num_rows($Result) == 0
 		if (!isset($_POST['SpecialInstructions'])) {
@@ -270,7 +270,7 @@ if (isset($_POST['Update']) or isset($_POST['BackToLineDetails']) or isset($_POS
 if (isset($_POST['MakeRecurringOrder']) and !$InputErrors) {
 	echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/RecurringSalesOrders.php?identifier=' . $Identifier . '&amp;NewRecurringOrder=Yes">';
 	prnMsg(_('You should automatically be forwarded to the entry of recurring order details page') . '. ' . _('if this does not happen') . '(' . _('if the browser does not support META Refresh') . ') ' . '<a href="' . $RootPath . '/RecurringOrders.php?identifier=' . urlencode($Identifier) . '&amp;NewRecurringOrder=Yes">' . _('click here') . '</a> ' . _('to continue'), 'info');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } //isset($_POST['MakeRecurringOrder']) and !$InputErrors
 
@@ -278,7 +278,7 @@ if (isset($_POST['MakeRecurringOrder']) and !$InputErrors) {
 if (isset($_POST['BackToLineDetails']) and $_POST['BackToLineDetails'] == _('Modify Order Lines')) {
 	echo '<meta http-equiv="Refresh" content="0; url=' . $RootPath . '/SelectOrderItems.php?identifier=' . $Identifier . '">';
 	prnMsg(_('You should automatically be forwarded to the entry of the order line details page') . '. ' . _('if this does not happen') . '(' . _('if the browser does not support META Refresh') . ') ' . '<a href="' . $RootPath . '/SelectOrderItems.php?identifier=' . urlencode($Identifier) . '">' . _('click here') . '</a> ' . _('to continue'), 'info');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 
 } //isset($_POST['BackToLineDetails']) and $_POST['BackToLineDetails'] == _('Modify Order Lines')
@@ -687,7 +687,7 @@ if (isset($OK_to_PROCESS) and $OK_to_PROCESS == 1 and $_SESSION['ExistingOrder' 
 
 	unset($_SESSION['Items' . $Identifier]->LineItems);
 	unset($_SESSION['Items' . $Identifier]);
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 
 } //isset($OK_to_PROCESS) and $OK_to_PROCESS == 1 and $_SESSION['ExistingOrder' . $Identifier] == 0
@@ -886,7 +886,7 @@ elseif (isset($OK_to_PROCESS) and ($OK_to_PROCESS == 1 and $_SESSION['ExistingOr
 		</tr>
 		</table>';
 	} //end of print orders
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } //isset($OK_to_PROCESS) and ($OK_to_PROCESS == 1 and $_SESSION['ExistingOrder' . $Identifier] != 0)
 
@@ -1274,5 +1274,5 @@ else {
 }
 
 echo '</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

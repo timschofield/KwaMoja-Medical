@@ -1,12 +1,12 @@
 <?php
 
 /* Shows the general ledger transactions for a specified account over a specified range of periods */
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('General Ledger Account Inquiry');
 $ViewTopic = 'GeneralLedger';
 $BookMark = 'GLAccountInquiry';
-include('includes/header.inc');
-include('includes/GLPostings.inc');
+include('includes/header.php');
+include('includes/GLPostings.php');
 
 echo '<p class="page_title_text">
 		<img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/transactions.png" title="', _('General Ledger Account Inquiry'), '" alt="', _('General Ledger Account Inquiry'), '" />', ' ', _('General Ledger Account Inquiry'), '
@@ -40,7 +40,7 @@ if (isset($_POST['Period'])) {
 if (isset($SelectedAccount) and $_SESSION['CompanyRecord']['retainedearnings'] == $SelectedAccount) {
 	prnMsg(_('The retained earnings account is managed separately by the system, and therefore cannot be inquired upon. See manual for details'), 'info');
 	echo '<a href="', htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'), '">', _('Select another account'), '</a>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -145,7 +145,7 @@ if (isset($_POST['Show'])) {
 
 	if (!isset($SelectedPeriod)) {
 		prnMsg(_('A period or range of periods must be selected from the list box'), 'info');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 	/*Is the account a balance sheet or a profit and loss account */
@@ -412,5 +412,5 @@ if (isset($ShowIntegrityReport) and $ShowIntegrityReport == True) {
 	prnMsg(_('There are differences between the sum of the transactions and the recorded movements in the ChartDetails table') . '. ' . _('A log of the account differences for the periods report shows below'), 'warn');
 	echo '<p>' . $IntegrityReport;
 }
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

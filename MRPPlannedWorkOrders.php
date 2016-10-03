@@ -4,15 +4,15 @@
  * work orders created for them
  */
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Result = DB_show_tables('mrprequirements');
 if (DB_num_rows($Result) == 0) {
 	$Title = _('MRP error');
-	include('includes/header.inc');
+	include('includes/header.php');
 	echo '<br />';
 	prnMsg(_('The MRP calculation must be run before you can run this report') . '<br />' . _('To run the MRP calculation click') . ' ' . '<a href="' . $RootPath . '/MRP.php">' . _('here') . '</a>', 'error');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 if (isset($_POST['PrintPDF']) or isset($_POST['Review'])) {
@@ -110,21 +110,21 @@ if (isset($_POST['PrintPDF']) or isset($_POST['Review'])) {
 
 	if (DB_error_no() != 0) {
 		$Title = _('MRP Planned Work Orders') . ' - ' . _('Problem Report');
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('The MRP planned work orders could not be retrieved by the SQL because') . ' ' . DB_error_msg(), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($Debug == 1) {
 			echo '<br />' . $SQL;
 		}
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 	if (DB_num_rows($Result) == 0) { //then there's nothing to print
 		$Title = _('MRP Planned Work Orders');
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('There were no items with demand greater than supply'), 'info');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
@@ -208,7 +208,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['Review'])) {
 
 			if ($YPos < $Bottom_Margin + $line_height) {
 				PrintHeader($PDF, $YPos, $PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin, $_POST['Consolidation'], $ReportDate);
-				// include('includes/MRPPlannedWorkOrdersPageHeader.inc');
+				// include('includes/MRPPlannedWorkOrdersPageHeader.php');
 			}
 
 		}
@@ -227,7 +227,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['Review'])) {
 
 		if ($YPos < $Bottom_Margin + $line_height) {
 			PrintHeader($PDF, $YPos, $PageNumber, $Page_Height, $Top_Margin, $Left_Margin, $Page_Width, $Right_Margin, $_POST['Consolidation'], $ReportDate);
-			// include('includes/MRPPlannedWorkOrdersPageHeader.inc');
+			// include('includes/MRPPlannedWorkOrdersPageHeader.php');
 		}
 		/*Print out the grand totals */
 		$PDF->addTextWrap($Left_Margin, $YPos, 120, $FontSize, _('Number of Work Orders') . ': ', 'left');
@@ -244,7 +244,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['Review'])) {
 	} else { // Review planned work orders
 
 		$Title = _('Review/Convert MRP Planned Work Orders');
-		include('includes/header.inc');
+		include('includes/header.php');
 		echo '<p class="page_title_text" >
 				<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Inventory') . '" alt="" />' . ' ' . $Title . '</p>';
 
@@ -310,7 +310,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['Review'])) {
 		echo '</form>';
 
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 
 	}
 
@@ -318,7 +318,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['Review'])) {
 	/*The option to print PDF was not hit so display form */
 
 	$Title = _('MRP Planned Work Orders Reporting');
-	include('includes/header.inc');
+	include('includes/header.php');
 	echo '<p class="page_title_text" >
 			<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/inventory.png" title="' . _('Inventory') . '" alt="" />' . ' ' . $Title . '</p>';
 
@@ -354,7 +354,7 @@ if (isset($_POST['PrintPDF']) or isset($_POST['Review'])) {
 		</div>
 	</form>';
 
-	include('includes/footer.inc');
+	include('includes/footer.php');
 
 }
 /*end of else not PrintPDF */

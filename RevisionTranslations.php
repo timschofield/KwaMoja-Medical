@@ -2,17 +2,17 @@
 /* $Id: RevisionTranslations.php 7040 2014-12-27 15:15:29Z tehonu $*/
 /* This script is to review the item description translations. */
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Review Translated Descriptions'); // Screen identificator.
 $ViewTopic = 'Inventory'; // Filename's id in ManualContents.php's TOC.
 $BookMark = 'ReviewTranslatedDescriptions'; // Anchor's id in the manual's html document.
-include('includes/header.inc');
+include('includes/header.php');
 echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . // Title icon.
 	_('Review Translated Descriptions') . '" />' . // Icon title.
 	_('Review Translated Descriptions') . '</p>'; // Page title.
 
-include('includes/SQL_CommonFunctions.inc');
+include('includes/SQL_CommonFunctions.php');
 
 //update database if update pressed
 if (isset($_POST['Submit'])) {
@@ -117,5 +117,5 @@ echo '</table>
 		</div>
 	</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

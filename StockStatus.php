@@ -1,11 +1,11 @@
 <?php
 
-include('includes/session.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/session.php');
+include('includes/SQL_CommonFunctions.php');
 
 $Title = _('Stock Status');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_GET['StockID'])) {
 	$StockId = trim(mb_strtoupper($_GET['StockID']));
@@ -175,9 +175,9 @@ while ($MyRow = DB_fetch_array($LocStockResult)) {
 
 	if ($Its_A_KitSet_Assembly_Or_Dummy == False) {
 
-		// Get the QOO due to Purchase orders for all locations. Function defined in SQL_CommonFunctions.inc
+		// Get the QOO due to Purchase orders for all locations. Function defined in SQL_CommonFunctions.php
 		$QOO = GetQuantityOnOrderDueToPurchaseOrders($StockId, $MyRow['loccode']);
-		// Get the QOO dues to Work Orders for all locations. Function defined in SQL_CommonFunctions.inc
+		// Get the QOO dues to Work Orders for all locations. Function defined in SQL_CommonFunctions.php
 		$QOO += GetQuantityOnOrderDueToWorkOrders($StockId, $MyRow['loccode']);
 
 		$InTransitSQL = "SELECT SUM(shipqty-recqty) as intransit
@@ -376,6 +376,6 @@ if ($Its_A_KitSet_Assembly_Or_Dummy == False) {
 }
 
 echo '</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

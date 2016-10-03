@@ -1,11 +1,11 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Enable Customer Branches');
 $ViewTopic = '';
 $BookMark = '';
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text">
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Enable Customer Branches') . '" alt="" />' . $Title . '
@@ -68,6 +68,6 @@ if (DB_num_rows($Result) > 0) {
 	prnMsg( _('There are no customer branches requiring authorisation'), 'info');
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

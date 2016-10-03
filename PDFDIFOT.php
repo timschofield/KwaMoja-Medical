@@ -1,7 +1,7 @@
 <?php
 
-include('includes/session.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/session.php');
+include('includes/SQL_CommonFunctions.php');
 
 $InputError = 0;
 
@@ -17,7 +17,7 @@ if (isset($_POST['ToDate']) and !is_date($_POST['ToDate'])) {
 if (!isset($_POST['FromDate']) or !isset($_POST['ToDate']) or $InputError == 1) {
 
 	$Title = _('Delivery In Full On Time (DIFOT) Report');
-	include('includes/header.inc');
+	include('includes/header.php');
 
 	echo '<p class="page_title_text" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/transactions.png" title="' . $Title . '" alt="" />' . ' ' . _('DIFOT Report') . '</p>';
 
@@ -93,10 +93,10 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate']) or $InputError == 1) 
 	if ($InputError == 1) {
 		prnMsg($Msg, 'error');
 	}
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } else {
-	include('includes/ConnectDB.inc');
+	include('includes/ConnectDB.php');
 }
 
 if ($_POST['CategoryID'] == 'All' and $_POST['Location'] == 'All') {
@@ -210,21 +210,21 @@ $Result = DB_query($SQL, '', '', false, false); //dont error check - see below
 
 if (DB_error_no() != 0) {
 	$Title = _('DIFOT Report Error');
-	include('includes/header.inc');
+	include('includes/header.php');
 	prnMsg(_('An error occurred getting the days between delivery requested and actual invoice'), 'error');
 	if ($Debug == 1) {
 		prnMsg(_('The SQL used to get the days between requested delivery and actual invoice dates was') . "<br />$SQL", 'error');
 	}
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } elseif (DB_num_rows($Result) == 0) {
 	$Title = _('DIFOT Report Error');
-	include('includes/header.inc');
+	include('includes/header.php');
 	prnMsg(_('There were no variances between deliveries and orders found in the database within the period from') . ' ' . $_POST['FromDate'] . ' ' . _('to') . ' ' . $_POST['ToDate'] . '. ' . _('Please try again selecting a different date range'), 'info');
 	if ($Debug == 1) {
 		prnMsg(_('The SQL that returned no rows was') . '<br />' . $SQL, 'error');
 	}
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -238,7 +238,7 @@ $line_height = 12;
 $PageNumber = 1;
 $TotalDiffs = 0;
 
-include('includes/PDFDIFOTPageHeader.inc');
+include('includes/PDFDIFOTPageHeader.php');
 
 while ($MyRow = DB_fetch_array($Result)) {
 
@@ -262,7 +262,7 @@ while ($MyRow = DB_fetch_array($Result)) {
 		if ($YPos - (2 * $line_height) < $Bottom_Margin) {
 			/*Then set up a new page */
 			$PageNumber++;
-			include('includes/PDFDIFOTPageHeader.inc');
+			include('includes/PDFDIFOTPageHeader.php');
 		}
 		/*end of new page header  */
 	}

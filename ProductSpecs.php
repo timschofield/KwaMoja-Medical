@@ -1,11 +1,11 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Product Specifications Maintenance');
 $ViewTopic = 'QualityAssurance'; // Filename in ManualContents.php's TOC.
 $BookMark = 'QA_ProdSpecs';// Anchor's id in the manual's html document.
 
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_GET['SelectedQATest'])) {
 	$SelectedQATest = mb_strtoupper($_GET['SelectedQATest']);
@@ -41,7 +41,7 @@ if (isset($_GET['CopySpec']) or isset($_POST['CopySpec'])) {
 					<input type="submit" name="CopySpec" value="' . _('Copy') . '" />
 			</div>
 		</form>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} else {
 		$SQL = "INSERT IGNORE INTO prodspecs
@@ -224,7 +224,7 @@ if (isset($_GET['ListTests'])) {
 			<input type="submit" name="AddTests" value="' . _('Add') . '" />
 		</div>
 	</form>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } //ListTests
 if (isset($_POST['AddTests'])) {
@@ -643,5 +643,5 @@ if (!isset($_GET['delete'])) {
 	}
 } //end if record deleted no point displaying form to add record
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

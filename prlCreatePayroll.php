@@ -1,10 +1,10 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Payroll Records Maintenance');
 
-include('includes/header.inc');
+include('includes/header.php');
 include('includes/prlFunctions.php');
 
 echo '<p class="page_title_text noPrint" ><img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/payrol.png" title="' . $Title . '" alt="" />' . ' ' . $Title . '</p>';
@@ -37,7 +37,7 @@ if (isset($_POST['Close']) and ($_POST['Close']) == _('Close Payroll Period')) {
 	$Status = GetOpenCloseStr(GetPayrollRow($PayrollID, 11));
 	if ($Status == 'Closed') {
 		prnMsg(_('Payroll is already closed. Re-open first...'), 'error');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} else {
 		$SQL = "UPDATE prlpayrollperiod SET payclosed=1
@@ -46,14 +46,14 @@ if (isset($_POST['Close']) and ($_POST['Close']) == _('Close Payroll Period')) {
 		$DbgMsg = _('The SQL that was used to update the payroll failed was');
 		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 		prnMsg(_('The payroll master record for') . ' ' . $PayrollID . ' ' . _('has been closed'), 'success');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 }
 
 if (isset($_POST['Purge']) and ($_POST['Purge']) == _('Purge Payroll Period')) {
 	prnMsg(_('Not implemented at this moment...'), 'info');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -61,7 +61,7 @@ if (isset($_POST['Reopen']) and ($_POST['Reopen']) == _('Re-open Payroll Period'
 	$Status = GetOpenCloseStr(GetPayrollRow($PayrollID, 11));
 	if ($Status == 'Open') {
 		prnMsg(_('Payroll is already open...'), 'warn');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} else {
 
@@ -71,7 +71,7 @@ if (isset($_POST['Reopen']) and ($_POST['Reopen']) == _('Re-open Payroll Period'
 		$DbgMsg = _('The SQL that was used to update the payroll failed was');
 		$Result = DB_query($SQL, $ErrMsg, $DbgMsg);
 		prnMsg(_('The payroll master record for') . ' ' . $PayrollID . ' ' . _('has been opened'), 'success');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 }
@@ -161,5 +161,5 @@ if (isset($PayrollID)) {
 </form>';
 } // end of main ifs
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

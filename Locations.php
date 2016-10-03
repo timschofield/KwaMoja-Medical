@@ -1,11 +1,11 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 
 $Title = _('Location Maintenance');
 $ViewTopic = 'Inventory';// Filename in ManualContents.php's TOC.
 $BookMark = 'Locations';// Anchor's id in the manual's html document.
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_GET['SelectedLocation'])) {
 	$SelectedLocation = $_GET['SelectedLocation'];
@@ -754,5 +754,5 @@ if (!isset($_GET['delete'])) {
 
 } //end if record deleted no point displaying form to add record
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

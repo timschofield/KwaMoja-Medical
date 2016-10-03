@@ -1,10 +1,10 @@
 <?php
 
-/* Session started in header.inc for password checking and authorisation level check */
+/* Session started in header.php for password checking and authorisation level check */
 include('includes/DefinePOClass.php');
 include('includes/DefineSerialItems.php');
-include('includes/session.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/session.php');
+include('includes/SQL_CommonFunctions.php');
 
 /*The identifier makes this goods received session unique so cannot get confused
  * with other sessions of goods received on the same machine/browser
@@ -18,7 +18,7 @@ if (empty($_GET['identifier'])) {
 	$Identifier = $_GET['identifier'];
 }
 $Title = _('Receive Purchase Orders');
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<div class="toplink">
 		<a href="' . $RootPath . '/PO_SelectOSPurchOrder.php">' . _('Back to Purchase Orders') . '</a>
@@ -31,13 +31,13 @@ if (isset($_GET['PONumber']) and $_GET['PONumber'] <= 0 and !isset($_SESSION['PO
 		</div>
 		<br />' . _('This page can only be opened if a purchase order has been selected. Please select a purchase order first');
 
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } elseif (isset($_GET['PONumber']) and !isset($_POST['Update'])) {
 	/*Update only occurs if the user hits the button to refresh the data and recalc the value of goods recd*/
 
 	$_GET['ModifyOrderNumber'] = intval($_GET['PONumber']);
-	include('includes/PO_ReadInOrder.inc');
+	include('includes/PO_ReadInOrder.php');
 } elseif (isset($_POST['Update']) or isset($_POST['ProcessGoodsReceived'])) {
 
 	/* if update quantities button is hit page has been called and ${$Line->LineNo} would have be
@@ -60,7 +60,7 @@ if (isset($_GET['PONumber']) and $_GET['PONumber'] <= 0 and !isset($_SESSION['PO
 
 if ($_SESSION['PO' . $Identifier]->Status != 'Printed') {
 	prnMsg(_('Purchase orders must have a status of Printed before they can be received') . '.<br />' . _('Order number') . ' ' . $_GET['PONumber'] . ' ' . _('has a status of') . ' ' . _($_SESSION['PO' . $Identifier]->Status), 'warn');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -324,7 +324,7 @@ if ($_SESSION['PO' . $Identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 		/*The company data and preferences could not be retrieved for some reason */
 		echo '</form>';
 		prnMsg(_('The company information and preferences could not be retrieved') . ' - ' . _('see your system administrator'), 'error');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
@@ -356,7 +356,7 @@ if ($_SESSION['PO' . $Identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 		unset($_SESSION['PO' . $Identifier]);
 		unset($_POST['ProcessGoodsReceived']);
 		echo '</form>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
@@ -412,7 +412,7 @@ if ($_SESSION['PO' . $Identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 			unset($_SESSION['PO' . $Identifier]);
 			unset($_POST['ProcessGoodsReceived']);
 			echo '</form>';
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 		$LineNo++;
@@ -818,7 +818,7 @@ if ($_SESSION['PO' . $Identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 		</div>';
 	/*end of process goods received entry */
 	echo '</form>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 
 } else {
@@ -835,5 +835,5 @@ if ($_SESSION['PO' . $Identifier]->SomethingReceived() == 0 and isset($_POST['Pr
 		</div>';
 }
 echo '</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

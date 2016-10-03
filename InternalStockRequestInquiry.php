@@ -1,8 +1,8 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Internal Stock Request Inquiry');
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text"><img src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/transactions.png" title="', $Title, '" alt="" />', $Title, '</p>';
 
@@ -59,7 +59,7 @@ if (!isset($_POST['SearchPart'])) { //The scripts is just opened or click a subm
 			</td>';
 	} else {
 		prnMsg(_('There are no locations which you have authority to inquire on'), 'info');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
@@ -117,7 +117,7 @@ if (!isset($_POST['SearchPart'])) { //The scripts is just opened or click a subm
 				</td>';
 	} else {
 		prnMsg(_('There are no internal request result available for you or your department'), 'warn');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
@@ -219,7 +219,7 @@ if (!isset($_POST['SearchPart'])) { //The scripts is just opened or click a subm
 	} else {
 		echo '<p class="bad">', _('Problem Report'), ':<br />', _('There are no stock categories currently defined please use the link below to set them up'), '</p>';
 		echo '<a href="', $RootPath, '/StockCategories.php">', _('Define Stock Categories'), '</a>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 	echo '<div class="centre">
@@ -443,7 +443,7 @@ if (isset($StockItemsResult)) {
 
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 function GetSearchItems($SQLConstraint = '') {
 	if ($_POST['Keywords'] and $_POST['StockCode']) {

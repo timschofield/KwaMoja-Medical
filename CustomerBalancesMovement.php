@@ -1,14 +1,14 @@
 <?php
 /* $Id: Z_CustomerBalancesMovements.php 6941 2014-10-26 23:18:08Z daintree $*/
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Customer Activity and Balances');
 /*To do: Info in the manual. RChacon.
 $ViewTopic = '';// Filename in ManualContents.php's TOC.
 $BookMark = '';// Anchor's id in the manual's html document.*/
 
 if (!isset($_POST['CreateCSV'])) {
-	include('includes/header.inc');
+	include('includes/header.php');
 
 	echo '<p class="page_title_text">
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/transactions.png" title="' . _('Customer Balances Movements') . '" alt="" />' . ' ' . _('Customer Balances Movements') . '
@@ -74,7 +74,7 @@ if (!isset($_POST['RunReport'])) {
 				<input tabindex="4" type="submit" name="RunReport" value="' . _('Show Customer Balance Movements') . '" />
 			</div>
 	</form>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 }
 
@@ -226,5 +226,5 @@ if (isset($_POST['CreateCSV'])){
 	exit;
 }
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

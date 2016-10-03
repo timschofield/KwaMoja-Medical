@@ -5,17 +5,17 @@
  *     $NewValue) from .../includes/MiscFunctions.php.
  */
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('UTILITY PAGE Change A Stock Code');// Screen identificator.
 $ViewTopic = 'SpecialUtilities'; // Filename in ManualContents.php's TOC.
 $BookMark = 'Z_ChangeStockCode'; // Anchor's id in the manual's html document.
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text">
 		<img alt="" src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Change An Inventory Item Code') . '" />' . ' ' . _('Change An Inventory Item Code') . '
 	</p>';
 
-include('includes/SQL_CommonFunctions.inc');
+include('includes/SQL_CommonFunctions.php');
 
 if (isset($_POST['ProcessStockChange'])) {
 
@@ -240,6 +240,6 @@ echo '<table>
 		<input type="submit" name="ProcessStockChange" value="' . _('Process') . '" />
 	</form>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

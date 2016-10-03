@@ -3,13 +3,13 @@
 /*	Please note that addTextWrap prints a font-size-height further down than
 addText and other functions.*/
 
-include('includes/session.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/session.php');
+include('includes/SQL_CommonFunctions.php');
 
 //Get Out if we have no order number to work with
 If (!isset($_GET['QuotationNo']) || $_GET['QuotationNo'] == "") {
 	$Title = _('Select Quotation To Print');
-	include('includes/header.inc');
+	include('includes/header.php');
 	prnMsg(_('Select a Quotation to Print before calling this page'), 'error');
 	echo '<table class="table_index">
 				<tr>
@@ -17,7 +17,7 @@ If (!isset($_GET['QuotationNo']) || $_GET['QuotationNo'] == "") {
 						<a href="' . $RootPath . '/SelectSalesOrder.php?Quotations=Quotes_Only">' . _('Quotations') . '</a></td>
 				</tr>
 			</table>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit();
 }
 
@@ -68,7 +68,7 @@ $Result = DB_query($SQL, $ErrMsg);
 //If there are no rows, there's a problem.
 if (DB_num_rows($Result) == 0) {
 	$Title = _('Print Quotation Error');
-	include('includes/header.inc');
+	include('includes/header.php');
 	prnMsg(_('Unable to Locate Quotation Number') . ' : ' . $_GET['QuotationNo'] . ' ', 'error');
 	echo '<table class="table_index">
 				<tr>
@@ -77,7 +77,7 @@ if (DB_num_rows($Result) == 0) {
 					</td>
 				</tr>
 				</table>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } elseif (DB_num_rows($Result) == 1) {
 	/*There is only one order header returned - thats good! */
@@ -121,7 +121,7 @@ $ListCount = 0;
 
 if (DB_num_rows($Result) > 0) {
 	/*Yes there are line items to start the ball rolling with a page header */
-	include('includes/PDFQuotationPageHeader.inc');
+	include('includes/PDFQuotationPageHeader.php');
 
 	$QuotationTotal = 0;
 	$QuotationTotalEx = 0;
@@ -135,7 +135,7 @@ if (DB_num_rows($Result) > 0) {
 
 		if ((mb_strlen($MyRow2['narrative']) > 200 AND $YPos - $line_height <= 75) OR (mb_strlen($MyRow2['narrative']) > 1 AND $YPos - $line_height <= 62) OR $YPos - $line_height <= 50) {
 			/* We reached the end of the page so finsih off the page and start a newy */
-			include('includes/PDFQuotationPageHeader.inc');
+			include('includes/PDFQuotationPageHeader.php');
 		} //end if need a new page headed up
 
 		$DisplayQty = locale_number_format($MyRow2['quantity'], $MyRow2['decimalplaces']);
@@ -197,7 +197,7 @@ if (DB_num_rows($Result) > 0) {
 		while (mb_strlen($LeftOvers) > 1) {
 			$YPos -= $FontSize2;
 			if ($YPos < ($Bottom_Margin)) { // Begins new page.
-				include('includes/PDFQuotationPageHeader.inc');
+				include('includes/PDFQuotationPageHeader.php');
 			}
 			$LeftOvers = $PDF->addTextWrap(145, $YPos, $Width2, $FontSize2, $LeftOvers);
 		}
@@ -210,7 +210,7 @@ if (DB_num_rows($Result) > 0) {
 
 	if ((mb_strlen($MyRow['comments']) > 200 AND $YPos - $line_height <= 75) OR (mb_strlen($MyRow['comments']) > 1 AND $YPos - $line_height <= 62) OR $YPos - $line_height <= 50) {
 		/* We reached the end of the page so finish off the page and start a newy */
-		include('includes/PDFQuotationPageHeader.inc');
+		include('includes/PDFQuotationPageHeader.php');
 	} //end if need a new page headed up
 
 	$FontSize = 10;
@@ -237,7 +237,7 @@ if (DB_num_rows($Result) > 0) {
 	while (mb_strlen($LeftOvers) > 1) {
 		$YPos -= $FontSize;
 		if ($YPos < ($Bottom_Margin)) { // Begins new page.
-			include('includes/PDFQuotationPageHeader.inc');
+			include('includes/PDFQuotationPageHeader.php');
 		}
 		$LeftOvers = $PDF->addTextWrap(40, $YPos, $Width2, $FontSize, $LeftOvers);
 	}
@@ -248,11 +248,11 @@ if (DB_num_rows($Result) > 0) {
 
 if ($ListCount == 0) {
 	$Title = _('Print Quotation Error');
-	include('includes/header.inc');
+	include('includes/header.php');
 	prnMsg(_('There were no items on the quotation') . '. ' . _('The quotation cannot be printed'), 'info');
 	echo '<br /><a href="' . $RootPath . '/SelectSalesOrder.php?Quotation=Quotes_only">' . _('Print Another Quotation') . '</a>
 			<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } else {
 	$PDF->OutputI($_SESSION['DatabaseName'] . '_Quotation_' . $_GET['QuotationNo'] . '_' . date('Y-m-d') . '.pdf');

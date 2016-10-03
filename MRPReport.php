@@ -2,7 +2,7 @@
 
 // MRPReport.php - Shows supply and demand for a part as determined by MRP
 
-include('includes/session.inc');
+include('includes/session.php');
 
 if (isset($_POST['Select'])) {
 	$_POST['Part'] = $_POST['Select'];
@@ -31,20 +31,20 @@ if (isset($_POST['PrintPDF']) and $_POST['Part'] != '') {
 	if (DB_error_no() != 0) {
 		$errors = 1;
 		$Title = _('Print MRP Report Error');
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('The MRP calculation must be run before this report will have any output. MRP requires set up of many parameters, including, EOQ, lead times, minimums, bills of materials, demand types, master schedule etc'), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
 	if (DB_num_rows($Result) == 0) {
 		$errors = 1;
 		$Title = _('Print MRP Report Warning');
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('The MRP calculation must be run before this report will have any output. MRP requires set up of many parameters, including, EOQ, lead times, minimums, bills of materials, demand types, master schedule, etc'), 'warn');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
@@ -143,13 +143,13 @@ if (isset($_POST['PrintPDF']) and $_POST['Part'] != '') {
 
 	if (isset($errors)) {
 		$Title = _('MRP Report') . ' - ' . _('Problem Report');
-		include('includes/header.inc');
+		include('includes/header.php');
 		prnMsg(_('The MRP Report could not be retrieved by the SQL because') . ' ' . DB_error_msg(), 'error');
 		echo '<br /><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a>';
 		if ($Debug == 1) {
 			echo '<br />' . $SQL;
 		}
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
@@ -516,7 +516,7 @@ if (isset($_POST['PrintPDF']) and $_POST['Part'] != '') {
 	/*The option to print PDF was not hit so display form */
 
 	$Title = _('MRP Report');
-	include('includes/header.inc');
+	include('includes/header.php');
 
 	if (isset($_POST['PrintPDF'])) {
 		prnMsg(_('This report shows the MRP calculation for a specific item - a part code must be selected'), 'warn');
@@ -580,7 +580,7 @@ if (isset($_POST['PrintPDF']) and $_POST['Part'] != '') {
 
 	echo '</form>';
 	if (!isset($_POST['Search'])) {
-		include('includes/footer.inc');
+		include('includes/footer.php');
 	}
 
 }
@@ -801,7 +801,7 @@ if (isset($searchresult) and !isset($_POST['Select'])) {
 			</form>';
 	}
 
-	include('includes/footer.inc');
+	include('includes/footer.php');
 }
 /* end display list if there is more than one record */
 

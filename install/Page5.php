@@ -29,9 +29,9 @@ if (!$DB) {
 	$Errors[] = _('Failed to connect the database management system');
 }
 
-include($PathPrefix . 'includes/ConnectDB_' . $_SESSION['Installer']['DBMS'] . '.inc');
-include($PathPrefix . 'includes/UpgradeDB_' . $_SESSION['Installer']['DBMS'] . '.inc');
-include($PathPrefix . 'includes/DateFunctions.inc');
+include($PathPrefix . 'includes/ConnectDB_' . $_SESSION['Installer']['DBMS'] . '.php');
+include($PathPrefix . 'includes/UpgradeDB_' . $_SESSION['Installer']['DBMS'] . '.php');
+include($PathPrefix . 'includes/DateFunctions.php');
 date_default_timezone_set($_SESSION['Installer']['TimeZone']);
 $Path_To_Root = '..';
 $Config_File = $Path_To_Root . '/config.php';

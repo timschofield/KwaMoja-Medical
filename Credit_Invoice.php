@@ -1,16 +1,16 @@
 <?php
 
 /*Functions to get the GL codes to post the transaction to */
-include('includes/GetSalesTransGLCodes.inc');
+include('includes/GetSalesTransGLCodes.php');
 /*defines the structure of the data required to hold the transaction as a session variable */
 include('includes/DefineCartClass.php');
 include('includes/DefineSerialItems.php');
-/* Session started in header.inc for password checking and authorisation level check */
-include('includes/session.inc');
+/* Session started in header.php for password checking and authorisation level check */
+include('includes/session.php');
 
 $Title = _('Credit An Invoice');
-include('includes/header.inc');
-include('includes/SQL_CommonFunctions.inc');
+include('includes/header.php');
+include('includes/SQL_CommonFunctions.php');
 
 if (empty($_GET['identifier'])) {
 	/*unique session identifier to ensure that there is no conflict with other credit entry sessions on the same machine  */
@@ -22,7 +22,7 @@ if (empty($_GET['identifier'])) {
 if (!isset($_GET['InvoiceNumber']) and !$_SESSION['ProcessingCredit']) {
 	/* This page can only be called with an invoice number for crediting*/
 	prnMsg(_('This page can only be opened if an invoice has been selected for crediting') . '. ' . _('Please select an invoice first') . ' - ' . _('from the customer inquiry screen click the link to credit an invoice'), 'info');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 
 } elseif (isset($_GET['InvoiceNumber'])) {
@@ -90,7 +90,7 @@ if (!isset($_GET['InvoiceNumber']) and !$_SESSION['ProcessingCredit']) {
 
 		$MyRow = DB_fetch_array($GetInvHdrResult);
 
-		/*CustomerID variable registered by header.inc */
+		/*CustomerID variable registered by header.php */
 		$_SESSION['CreditItems' . $Identifier]->DebtorNo = $MyRow['debtorno'];
 		$_SESSION['CreditItems' . $Identifier]->TransID = $MyRow['transid'];
 		$_SESSION['CreditItems' . $Identifier]->Branch = $MyRow['branchcode'];
@@ -186,13 +186,13 @@ if (!isset($_GET['InvoiceNumber']) and !$_SESSION['ProcessingCredit']) {
 
 			echo '<div class="centre"><a href="' . $RootPath . '/index.php">' . _('Back to the menu') . '</a></div>';
 			prnMsg(_('There are no line items that were retrieved for this invoice') . '. ' . _('The automatic credit program can not create a credit note from this invoice'), 'warn');
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		} //end of checks on returned data set
 		DB_free_result($LineItemsResult);
 	} else {
 		prnMsg(_('This invoice can not be credited using the automatic facility') . '<br />' . _('CRITICAL ERROR') . ': ' . _('Please report that a duplicate DebtorTrans header record was found for invoice') . ' ' . $SESSION['ProcessingCredit'], 'warn');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	} //valid invoice record returned from the entered invoice number
 
@@ -491,7 +491,7 @@ if (isset($_POST['CreditType']) and ($_POST['CreditType'] == 'WriteOff' or $_POS
 		if ($MyRow1[0] == 0) {
 			prnMsg(_('The credit quantity for the line for') . ' ' . $CreditLine->StockID . ' ' . ('is more than the quantity invoiced. This check is made to ensure that the credit note is not duplicated.'), 'error');
 			$OKToProcess = false;
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		}
 	}
@@ -521,7 +521,7 @@ if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 	if ($_SESSION['CompanyRecord'] == 0) {
 		/*The company data and preferences could not be retrieved for some reason */
 		prnMsg(_('The company information and preferences could not be retrieved') . ' - ' . _('see your system administrator'), 'error');
-		include('includes/footer.inc');
+		include('includes/footer.php');
 		exit;
 	}
 
@@ -1637,5 +1637,5 @@ if (isset($_POST['ProcessCredit']) and $OKToProcess == true) {
 		</div>';
 }
 echo '</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

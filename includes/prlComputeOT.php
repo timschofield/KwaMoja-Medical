@@ -9,7 +9,7 @@ if (isset($_GET['PayrollID'])) {
 
 if (isset($_POST['submit'])) {
 	prnMsg(_('Contact Administrator...'), 'error');
-	include('includes/footer.inc');
+	include('includes/footer.php');
 	exit;
 } else {
 	$FromPeriod = GetPayrollRow($PayrollID, 3);

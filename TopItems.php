@@ -1,11 +1,11 @@
 <?php
 
-/* Session started in session.inc for password checking and authorisation level check
-config.php is in turn included in session.inc*/
-include('includes/session.inc');
-include('includes/SQL_CommonFunctions.inc');
+/* Session started in session.php for password checking and authorisation level check
+config.php is in turn included in session.php*/
+include('includes/session.php');
+include('includes/SQL_CommonFunctions.php');
 $Title = _('Top Items Searching');
-include('includes/header.inc');
+include('includes/header.php');
 //check if input already
 if (!(isset($_POST['Search']))) {
 
@@ -211,9 +211,9 @@ if (!(isset($_POST['Search']))) {
 				$QohResult = DB_query($QohSql);
 				$QohRow = DB_fetch_row($QohResult);
 				$QOH = $QohRow[0];
-				// Get the QOO due to Purchase orders for all locations. Function defined in SQL_CommonFunctions.inc
+				// Get the QOO due to Purchase orders for all locations. Function defined in SQL_CommonFunctions.php
 				$QOO = GetQuantityOnOrderDueToPurchaseOrders($MyRow['stkcode']);
-				// Get the QOO dues to Work Orders for all locations. Function defined in SQL_CommonFunctions.inc
+				// Get the QOO dues to Work Orders for all locations. Function defined in SQL_CommonFunctions.php
 				$QOO += GetQuantityOnOrderDueToWorkOrders($MyRow['stkcode']);
 				break;
 		}
@@ -268,5 +268,5 @@ if (!(isset($_POST['Search']))) {
 			</div>
 		</form>';
 }
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

@@ -1,8 +1,8 @@
 <?php
 
-include('includes/session.inc');
+include('includes/session.php');
 $Title = _('Maintain Stock Types');
-include('includes/header.inc');
+include('includes/header.php');
 
 if (isset($_POST['SelectedType'])) {
 	$SelectedType = mb_strtoupper($_POST['SelectedType']);
@@ -257,5 +257,5 @@ if (!isset($_GET['delete'])) {
 
 } // end if user wish to delete
 
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

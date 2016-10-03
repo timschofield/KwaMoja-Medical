@@ -1,7 +1,7 @@
 <?php
 $PageSecurity = 15;
 
-include('includes/session.inc');
+include('includes/session.php');
 
 if (!isset($_SESSION['InitialScripts'])) {
 	$_SESSION['InitialScripts'][] = 'SystemParameters.php';
@@ -18,7 +18,7 @@ if (!isset($_SESSION['InitialScripts'])) {
 
 $Title = _('Initialise New Installation');
 
-include('includes/header.inc');
+include('includes/header.php');
 
 echo '<p class="page_title_text" >
 		<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/maintenance.png" title="' . _('Initialise New Installation') . '" alt="' . _('Initialise New Installation') . '" />' . $Title . '
@@ -112,6 +112,6 @@ echo '<div class="centre">
 		<a href="' . $RootPath . '/' . $ThisScript . '">' . _('Click here to continue') . '</a>
 	</div>';
 
-include('includes/footer.inc');
+include('includes/footer.php');
 
 ?>

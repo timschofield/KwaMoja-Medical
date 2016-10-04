@@ -96,8 +96,11 @@ if ($_SESSION['SuppTrans']->InvoiceOrCredit == 'Invoice') {
 	echo '<p class="page_title_text" >
 			<img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/transactions.png" title="' . _('General Ledger') . '" alt="" />' . ' ' . _('General Ledger Analysis of Credit Note From') . ' ' . $_SESSION['SuppTrans']->SupplierName;
 }
-echo '</p>
-	<table class="selection">
+
+$SupplierCodeSQL = "SELECT defaultgl FROM suppliers WHERE supplierid='" . $_SESSION['SuppTrans']->SupplierID . "'";
+$SupplierCodeResult = DB_query($SupplierCodeSQL);
+$SupplierCodeRow = DB_fetch_row($SupplierCodeResult);
+echo '<table class="selection">
 		<thead>
 			<tr>
 				<th class="SortedColumn">' . _('Account') . '</th>
@@ -180,12 +183,14 @@ echo '<tr>
 		<br />' . _('otherwise select the account from the list') . ')</td>
 	<td><select name="AcctSelection" onchange="return assignComboToInput(this,' . 'GLCode' . ')">';
 
+if (!isset($_POST['AcctSelection']) or $_POST['AcctSelection'] == '') {
+	$_POST['AcctSelection'] = $SupplierCodeRow[0];
+}
 $SQL = "SELECT accountcode,
 				accountname
 			FROM chartmaster
 			WHERE language='" . $_SESSION['ChartLanguage'] . "'
 			ORDER BY accountcode";
-
 $Result = DB_query($SQL);
 echo '<option value=""></option>';
 while ($MyRow = DB_fetch_array($Result)) {

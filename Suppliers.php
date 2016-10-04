@@ -471,6 +471,7 @@ if (isset($_POST['submit'])) {
 							lat='" . $latitude . "',
 							lng='" . $longitude . "',
 							defaultshipper='" . $_POST['DefaultShipper'] . "',
+							defaultgl='" . $_POST['DefaultGL'] . "',
 							taxref='" . $_POST['TaxRef'] . "'
 						WHERE supplierid = '" . DB_escape_string($SupplierID) . "'";
 			} else {
@@ -500,6 +501,7 @@ if (isset($_POST['submit'])) {
 							lat='" . $latitude . "',
 							lng='" . $longitude . "',
 							defaultshipper='" . $_POST['DefaultShipper'] . "',
+							defaultgl='" . $_POST['DefaultGL'] . "',
 							taxref='" . $_POST['TaxRef'] . "'
 						WHERE supplierid = '" . DB_escape_string($SupplierID) . "'";
 			}
@@ -543,6 +545,7 @@ if (isset($_POST['submit'])) {
 										lat,
 										lng,
 										defaultshipper,
+										defaultgl,
 										taxref)
 								 VALUES ('" . DB_escape_string($SupplierID) . "',
 								 	'" . $_POST['SuppName'] . "',
@@ -569,6 +572,7 @@ if (isset($_POST['submit'])) {
 									'" . $latitude . "',
 									'" . $longitude . "',
 									'" . $_POST['DefaultShipper'] . "',
+									'" . $_POST['DefaultGL'] . "',
 									'" . $_POST['TaxRef'] . "')";
 
 			$ErrMsg = _('The supplier') . ' ' . $_POST['SuppName'] . ' ' . _('could not be added because');
@@ -605,6 +609,7 @@ if (isset($_POST['submit'])) {
 			unset($_POST['TaxGroup']);
 			unset($_POST['FactorID']);
 			unset($_POST['DefaultShipper']);
+			unset($_POST['DefaultGL']);
 			unset($_POST['TaxRef']);
 
 		}
@@ -944,6 +949,31 @@ while ($MyRow = DB_fetch_array($Result)) {
 echo '</select>
 			</td>
 		</tr>';
+
+$Result = DB_query("SELECT accountcode,
+						accountname
+					FROM chartmaster
+					INNER JOIN accountgroups
+						ON chartmaster.groupcode=accountgroups.groupcode
+						AND chartmaster.language=accountgroups.language
+					WHERE accountgroups.pandl=1
+						AND chartmaster.language='" . $_SESSION['ChartLanguage'] . "'
+					ORDER BY chartmaster.accountcode");
+echo '<tr>
+		<td>' . _('Default GL Account') . ':</td>
+		<td><select tabindex="19" name="DefaultGL">';
+
+while ($MyRow = DB_fetch_row($Result)) {
+	if ($_POST['DefaultGL'] == $MyRow[0]) {
+		echo '<option selected="selected" value="' . $MyRow[0] . '">' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</option>';
+	} else {
+		echo '<option value="' . $MyRow[0] . '">' . htmlspecialchars($MyRow[1], ENT_QUOTES, 'UTF-8') . ' (' . $MyRow[0] . ')</option>';
+	}
+} //end while loop
+
+echo '</select>
+		</td>
+	</tr>';
 
 echo '<tr>
 			<td>' . _('Tax Group') . ':</td>

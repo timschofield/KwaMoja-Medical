@@ -142,13 +142,15 @@ if (isset($_POST['Save'])) {
 
 		// insert parent item info
 		foreach ($_SESSION['WorkOrder' . $Identifier]->Items as $Item) {
-			$CostResult = DB_query("SELECT SUM((materialcost+labourcost+overheadcost)*bom.quantity) AS cost
+			$CostResult = DB_query("SELECT SUM((materialcost+labourcost+overheadcost)*bom.quantity) AS cost,
+											bom.loccode
 										FROM stockcosts
 										INNER JOIN bom
 											ON stockcosts.stockid=bom.component
 										WHERE bom.parent='" . $Item->StockId . "'
-											AND bom.effectiveafter<='" . Date('Y-m-d') . "'
-											AND bom.effectiveto>='" . Date('Y-m-d') . "'");
+											AND bom.loccode=(SELECT loccode FROM workorders WHERE wo='" . $_SESSION['WorkOrder' . $Identifier]->OrderNumber . "')
+											AND bom.effectiveafter<=CURRENT_DATE
+											AND bom.effectiveto>=CURRENT_DATE");
 			$CostRow = DB_fetch_array($CostResult);
 			if (is_null($CostRow['cost']) or $CostRow['cost'] == 0) {
 				$Cost = 0;
@@ -189,6 +191,7 @@ if (isset($_POST['Save'])) {
 
 
 		$Result = DB_Txn_Commit();
+		prnMsg( _('The work order has been saved correctly'), 'success');
 
 		unset($NewItem);
 	} //end if there were no input errors
@@ -328,10 +331,10 @@ if (isset($_POST['WO']) and $_POST['WO'] != _('Not yet allocated')) {
 		}
 	}
 }
-echo '<input type="hidden" name="WO" value="' . $_POST['WO'] . '" />';
+echo '<input type="hidden" name="WO" value="' . $_SESSION['WorkOrder' . $Identifier]->OrderNumber . '" />';
 echo '<tr>
 		<td class="label">' . _('Work Order Reference') . ':</td>
-		<td>' . $_POST['WO'] . '</td>
+		<td>' . $_SESSION['WorkOrder' . $Identifier]->OrderNumber . '</td>
 	</tr>';
 echo '<tr>
 		<td class="label">' . _('Factory Location') . ':</td>

@@ -44,7 +44,7 @@ if (!isset($_POST['FromDate']) or !isset($_POST['ToDate']) or $InputError == 1) 
 			<td>' . _('Inventory Category') . '</td>
 			<td>';
 
-	$SQL = "SELECT categorydescription, categoryid FROM stockcategory WHERE stocktype<>'D' AND stocktype<>'L'";
+	$SQL = "SELECT categorydescription, categoryid FROM stockcategory";
 	$Result = DB_query($SQL);
 
 
@@ -378,8 +378,10 @@ while ($MyRow = DB_fetch_array($Result)) {
 	$SQL = "SELECT debtortrans.order_,
 					systypes.typename,
 					debtortrans.transno,
+					debtortrans.trandate,
 			 		stockmoves.price *(1-stockmoves.discountpercent) AS netprice,
-					-stockmoves.qty AS quantity
+					-stockmoves.qty AS quantity,
+					stockmoves.narrative
 				FROM debtortrans INNER JOIN stockmoves
 					ON debtortrans.type = stockmoves.type
 					AND debtortrans.transno=stockmoves.transno
@@ -389,22 +391,37 @@ while ($MyRow = DB_fetch_array($Result)) {
 
 	$InvoicesResult = DB_query($SQL);
 	if (DB_num_rows($InvoicesResult) > 0) {
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 60,  $YPos, 60, $FontSize, _('Date'), 'center');
 		$LeftOvers = $PDF->addTextWrap($Left_Margin + 150, $YPos, 90, $FontSize, _('Transaction Number'), 'center');
 		$LeftOvers = $PDF->addTextWrap($Left_Margin + 240, $YPos, 60, $FontSize, _('Quantity'), 'center');
 		$LeftOvers = $PDF->addTextWrap($Left_Margin + 300, $YPos, 60, $FontSize, _('Price'), 'center');
 		$LeftOvers = $PDF->addTextWrap($Left_Margin + 380, $YPos, 60, $FontSize, _('Total'), 'centre');
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 450, $YPos, 100, $FontSize, _('Narrative'), 'centre');
 		$YPos -= ($line_height);
 	}
 
 	while ($InvRow = DB_fetch_array($InvoicesResult)) {
 
 		$ValueInvoiced = $InvRow['netprice'] * $InvRow['quantity'];
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 60, $YPos, 60, $FontSize, ConvertSQLDate($InvRow['trandate']), 'center');
 
 		$LeftOvers = $PDF->addTextWrap($Left_Margin + 150, $YPos, 90, $FontSize, $InvRow['typename'] . ' ' . $InvRow['transno'], 'left');
 		$LeftOvers = $PDF->addTextWrap($Left_Margin + 240, $YPos, 60, $FontSize, locale_number_format($InvRow['quantity'], $MyRow['decimalplaces']), 'right');
 		$LeftOvers = $PDF->addTextWrap($Left_Margin + 300, $YPos, 60, $FontSize, locale_number_format($InvRow['netprice'], $_SESSION['CompanyRecord']['decimalplaces']), 'right');
 		$LeftOvers = $PDF->addTextWrap($Left_Margin + 360, $YPos, 80, $FontSize, locale_number_format($ValueInvoiced, $_SESSION['CompanyRecord']['decimalplaces']), 'right');
 
+		$LeftOvers = $PDF->addTextWrap($Left_Margin + 450, $YPos, 100, $FontSize, $InvRow['narrative'], 'center');
+		if (mb_strlen($LeftOvers) > 0) {
+
+		 	$YPos -= ($line_height);
+
+		 	if ($YPos - (2 * $line_height) < $Bottom_Margin) {
+				/*Then set up a new page */
+				$PageNumber++;
+				include ('includes/PDFOrdersInvoicedPageHeader.php');
+			} /*end of new page header  */
+			$LeftOvers = $PDF->addTextWrap($Left_Margin + 450, $YPos, 100, $FontSize, $LeftOvers, 'center');
+		}
 		$YPos -= ($line_height);
 
 		if ($YPos - (2 * $line_height) < $Bottom_Margin) {

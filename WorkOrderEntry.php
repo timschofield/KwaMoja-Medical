@@ -435,7 +435,7 @@ echo '</table>';
 
 echo '<div class="centre">
 		<input type="submit" name="Save" value="' . _('Save') . '" />
-		<input type="submit" name="delete" onclick="return MakeConfirm(\'', _('Are you sure?'), '\', \'', _('Confirm'), '\', this);" value="' . _('Cancel This Work Order') . '" />
+		<input type="submit" name="delete" value="' . _('Cancel This Work Order') . '" />
 	</div>';
 
 if (isset($_POST['Search']) or isset($_POST['Prev']) or isset($_POST['Next'])) {

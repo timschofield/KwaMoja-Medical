@@ -23,6 +23,9 @@ if (isset($_POST['submit'])) {
 
 		$SQL = array();
 
+		if ($_SESSION['Care2xDatabase'] != $_POST['X_Care2xDatabase']) {
+			$SQL[] = "UPDATE config SET confvalue = '" . $_POST['X_Care2xDatabase'] . "' WHERE confname = 'Care2xDatabase'";
+		}
 		if ($_SESSION['DispenseOnBill'] != $_POST['X_DispenseOnBill']) {
 			$SQL[] = "UPDATE config SET confvalue = '" . $_POST['X_DispenseOnBill'] . "' WHERE confname = 'DispenseOnBill'";
 		}
@@ -81,6 +84,37 @@ if ($_SESSION['DispenseOnBill'] == '0') {
 }
 echo '</select></td>
 		<td>' . _('Should items be deducted from stock automatically on production of the bill, or on actual dispensing?') . '</td>
+	</tr>';
+
+$SQL = "SHOW DATABASES";
+$Result = DB_query($SQL);
+while ($Database = DB_fetch_row($Result)) {
+	$SQL = "SHOW TABLES IN " . $Database[0] . " LIKE 'care_person'";
+	$TableResult = DB_query($SQL);
+	if (DB_num_rows($TableResult)) {
+		$AllDatabases[] = $Database[0];
+	}
+}
+
+echo '<tr>
+		<td>' . _('Care2x Database to link to') . '</td>
+		<td><select name="X_Care2xDatabase">';
+if ($_SESSION['Care2xDatabase'] == '') {
+	echo '<option selected="selected" value=""></option>';
+} else {
+	echo '<option value=""></option>';
+}
+
+foreach ($AllDatabases as $DatabaseName) {
+	if ($_SESSION['Care2xDatabase'] == $DatabaseName) {
+		echo '<option selected="selected" name="' . $DatabaseName . '">' . $DatabaseName . '</option>';
+	} else {
+		echo '<option name="' . $DatabaseName . '">' . $DatabaseName . '</option>';
+	}
+}
+echo '</select>
+		</td>
+		<td>' . _('The care2x database instance to be used with this KwaMoja instance') . '</td>
 	</tr>';
 
 echo '<tr>

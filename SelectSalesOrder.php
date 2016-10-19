@@ -46,12 +46,12 @@ if (isset($_POST['PlacePO'])) {
 
 	/*Note the button would not have been displayed if the user had no authority to create purchase orders */
 	$OrdersToPlacePOFor = '';
-	for ($i = 1; $i < count($_POST); $i++) {
-		if (isset($_POST['PlacePO_' . $i])) { //checkboxes only set if they are checked
+	for ($i = 0; $i <= count($_POST['PlacePO_']); $i++) {
+		if (isset($_POST['PlacePO_'][$i])) { //checkboxes only set if they are checked
 			if ($OrdersToPlacePOFor == '') {
-				$OrdersToPlacePOFor .= " orderno='" . $_POST['OrderNo_PO_' . $i] . "'";
+				$OrdersToPlacePOFor .= " orderno='" . $_POST['OrderNo_PO_'][$i] . "'";
 			} else {
-				$OrdersToPlacePOFor .= " OR orderno='" . $_POST['OrderNo_PO_' . $i] . "'";
+				$OrdersToPlacePOFor .= " OR orderno='" . $_POST['OrderNo_PO_'][$i] . "'";
 			}
 		}
 	}
@@ -875,22 +875,22 @@ if (!isset($StockId)) {
 
 					/*Check authority to create POs if user has authority then show the check boxes to select sales orders to place POs for otherwise don't provide this option */
 					if ($AuthRow['cancreate'] == 0 and $MyRow['poplaced'] == 0) { //cancreate==0 if the user can create POs and not already placed
-						printf('<td><a href="%s">%s</a></td>
-						<td><a href="%s">' . _('Acknowledge') . '</a>' . $PrintDummyFlag . '</td>
-						' . $PrintPickLabel . '
-						<td><a href="%s">' . _('Invoice') . '</a></td>
-        				<td><a href="%s">' . $PrintText . ' <img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/pdf.png" title="' . _('Click for PDF') . '" alt="" /></a></td>
-						<td><a href="%s">' . _('Labels') . '</a></td>
-        				<td>%s</td>
-        				<td>%s</td>
-        				<td>%s</td>
-        				<td>%s</td>
-        				<td>%s</td>
-        				<td>%s</td>
-        				<td class="number">%s</td>
-        				<td><input type="checkbox" name="PlacePO_%s" /><input type="hidden" name="OrderNo_PO_%s" value="%s" /></td>
-        				<td>' . $AttachmentText . '</td>
-        				</tr>', $ModifyPage, $MyRow['orderno'], $PrintAck, $PrintPickList, $Confirm_Invoice, $PrintDispatchNote, $PrintLabels, $MyRow['name'], $MyRow['brname'], $MyRow['customerref'], $FormatedOrderDate, $FormatedDelDate, html_entity_decode($MyRow['deliverto'], ENT_QUOTES, 'UTF-8'), $FormatedOrderValue, $i, $i, $MyRow['orderno']);
+						echo '<td><a href="', $ModifyPage, '">', $MyRow['orderno'], '</a></td>
+							<td><a href="', $PrintAck, '">' . _('Acknowledge') . '</a>' . $PrintDummyFlag . '</td>
+							' . $PrintPickLabel . '
+							<td><a href="', $Confirm_Invoice, '">' . _('Invoice') . '</a></td>
+							<td><a href="', $PrintDispatchNote, '">' . $PrintText . ' <img src="' . $RootPath . '/css/' . $_SESSION['Theme'] . '/images/pdf.png" title="' . _('Click for PDF') . '" alt="" /></a></td>
+							<td><a href="', $PrintLabels, '">' . _('Labels') . '</a></td>
+							<td>', $MyRow['name'], '</td>
+							<td>', $MyRow['brname'], '</td>
+							<td>', $MyRow['customerref'], '</td>
+							<td>', $FormatedOrderDate, '</td>
+							<td>', $FormatedDelDate, '</td>
+							<td>', html_entity_decode($MyRow['deliverto'], ENT_QUOTES, 'UTF-8'), '</td>
+							<td class="number">', $FormatedOrderValue, '</td>
+							<td><input type="checkbox" name="PlacePO_[]" /><input type="hidden" name="OrderNo_PO_[]" value="', $MyRow['orderno'], '" /></td>
+							<td>' . $AttachmentText . '</td>
+        				</tr>';
 					} else {
 						/*User is not authorised to create POs so don't even show the option */
 						printf('<td><a href="%s">%s</a></td>

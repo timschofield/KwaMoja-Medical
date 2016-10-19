@@ -466,4 +466,13 @@ function initial() {
 days = new Array("Su", "Mo", "Tu", "We", "Th", "Fr", "Sa");
 months = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
 dateDivID = "calendar";
+function AddAmount(t,Target,d) {
+	if (t.checked) {
+		document.getElementById(Target).value=Number(t.value);
+		if(d) document.getElementById(d).required="required";
+	} else {
+		document.getElementById(Target).value=Number(document.getElementById(Target).value)-Number(t.value);
+		if(d) document.getElementById(d).required="";
+	}
+}
 window.onload = initial

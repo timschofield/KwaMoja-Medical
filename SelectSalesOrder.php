@@ -587,6 +587,8 @@ if (!isset($StockId)) {
 
 		echo '</select>
 				</td>
+			</tr>
+			<tr>
 				<td>' . _('Due Date From') . '</td>
 				<td><input type="text" class="date" name="DueDateFrom" value="', $_POST['DueDateFrom'], '" alt="', $_SESSION['DefaultDateFormat'], '" size="10" /></td>
 				<td>', _('Due Date To'), '</td>

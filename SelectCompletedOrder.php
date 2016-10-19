@@ -446,6 +446,15 @@ if (isset($StockItemsResult)) {
 
 if (isset($SalesOrdersResult)) {
 
+	if (DB_num_rows($SalesOrdersResult) == 1) {
+		if (!isset($OrderNumber)) {
+			$OrderRow = DB_fetch_array($SalesOrdersResult);
+			$OrderNumber = $OrderRow['orderno'];
+		}
+		header('location:' . $RootPath .'/OrderDetails.php?OrderNumber=' . $OrderNumber);
+		exit;
+	}
+
 	/*show a table of the orders returned by the SQL */
 
 	echo '<table cellpadding="2" width="90%" class="selection">

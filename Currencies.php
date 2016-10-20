@@ -376,7 +376,7 @@ if (!isset($SelectedCurrency)) {
 					<td class="number">' . locale_number_format($MyRow['decimalplaces'], 0) . '</td>
 					<td>' . $ShowInWebText . '</td>
 					<td class="number">1</td>
-					<td colspan="2">' . _('Functional Currency') . '</td>
+					<td colspan="2"><a href="CompanyPreferences.php#CurrencyDefault">' . _('Functional Currency') . '</a></td>
 					<td><a href="' . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8') . '?&amp;SelectedCurrency=' . urlencode($MyRow['currabrev']) . '">' . _('Edit') . '</a></td>
 					<td colspan="2"></td>
 					</tr>';

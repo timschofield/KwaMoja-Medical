@@ -111,6 +111,7 @@ if (isset($_POST['submit'])) {
 											fax,
 											email,
 											currencydefault,
+											npo,
 											debtorsact,
 											pytdiscountact,
 											creditorsact,
@@ -138,6 +139,7 @@ if (isset($_POST['submit'])) {
 											'" . $_POST['Fax'] . "',
 											'" . $_POST['Email'] . "',
 											'" . $_POST['CurrencyDefault'] . "',
+											'" . $_POST['IsNPO'] . "',
 											'" . $_POST['DebtorsAct'] . "',
 											'" . $_POST['PytDiscountAct'] . "',
 											'" . $_POST['CreditorsAct'] . "',
@@ -166,6 +168,7 @@ if (isset($_POST['submit'])) {
 										fax='" . $_POST['Fax'] . "',
 										email='" . $_POST['Email'] . "',
 										currencydefault='" . $_POST['CurrencyDefault'] . "',
+										npo='" . $_POST['IsNPO'] . "',
 										debtorsact='" . $_POST['DebtorsAct'] . "',
 										pytdiscountact='" . $_POST['PytDiscountAct'] . "',
 										creditorsact='" . $_POST['CreditorsAct'] . "',
@@ -231,6 +234,7 @@ if ($InputError != 1) {
 					fax,
 					email,
 					currencydefault,
+					npo,
 					debtorsact,
 					pytdiscountact,
 					creditorsact,
@@ -264,6 +268,7 @@ if ($InputError != 1) {
 	$_POST['Fax'] = $MyRow['fax'];
 	$_POST['Email'] = $MyRow['email'];
 	$_POST['CurrencyDefault'] = $MyRow['currencydefault'];
+	$_POST['IsNPO'] = $MyRow['npo'];
 	$_POST['DebtorsAct'] = $MyRow['debtorsact'];
 	$_POST['PytDiscountAct'] = $MyRow['pytdiscountact'];
 	$_POST['CreditorsAct'] = $MyRow['creditorsact'];
@@ -349,8 +354,8 @@ echo '<tr>
 $Result = DB_query("SELECT currabrev, currency FROM currencies");
 
 echo '<tr>
-		<td>' . _('Home Currency') . ':</td>
-		<td><select tabindex="13" name="CurrencyDefault">';
+		<td><label for="CurrencyDefault">', _('Home Currency'), ':</label></td>
+		<td><select id="CurrencyDefault" name="CurrencyDefault" tabindex="13" >';
 
 while ($MyRow = DB_fetch_array($Result)) {
 	if ($_POST['CurrencyDefault'] == $MyRow['currabrev']) {
@@ -364,6 +369,21 @@ DB_free_result($Result);
 
 echo '</select></td>
 	</tr>';
+
+	echo '<tr>
+			<td>' . _('Is the organisation an NPO?') . ':</td>
+			<td><select tabindex="25" name="IsNPO">';
+
+	if ($_POST['IsNPO'] == '0') {
+		echo '<option selected="selected" value="0">' . _('No') . '</option>';
+		echo '<option value="1">' . _('Yes') . '</option>';
+	} else {
+		echo '<option selected="selected" value="1">' . _('Yes') . '</option>';
+		echo '<option value="0">' . _('No') . '</option>';
+	}
+
+	echo '</select></td>
+		</tr>';
 
 $Result = DB_query("SELECT accountcode,
 						accountname

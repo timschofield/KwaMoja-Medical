@@ -1,7 +1,8 @@
 body {
 font-family:"Ubuntu", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
 font-size:.85em;
-color:#0000;
+color:black;
+background:#ffff;
 font-weight:lighter;
 }
 
@@ -79,6 +80,11 @@ font-size:30%;
 li.toc {
 color:#03c;
 }
+
+li,p {
+color:black;
+}
+
 input[type=checkbox] {
 	visibility: hidden;
 }
@@ -170,3 +176,9 @@ margin-left: 2%;
 	filter: alpha(opacity=100);
 	opacity: 1;
 }
+
+pre {
+    font-size: 1.2em;
+    color:black;
+}
+

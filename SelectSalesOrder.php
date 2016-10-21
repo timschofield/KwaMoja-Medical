@@ -51,12 +51,10 @@ if (isset($_POST['PlacePO'])) {
 	/*Note the button would not have been displayed if the user had no authority to create purchase orders */
 	$OrdersToPlacePOFor = '';
 	for ($i = 0; $i <= count($_POST['PlacePO_']); $i++) {
-		if (isset($_POST['PlacePO_'][$i])) { //checkboxes only set if they are checked
-			if ($OrdersToPlacePOFor == '') {
-				$OrdersToPlacePOFor .= " orderno='" . $_POST['OrderNo_PO_'][$i] . "'";
-			} else {
-				$OrdersToPlacePOFor .= " OR orderno='" . $_POST['OrderNo_PO_'][$i] . "'";
-			}
+		if ($OrdersToPlacePOFor == '') {
+			$OrdersToPlacePOFor .= " orderno='" . $_POST['PlacePO_'][$i] . "'";
+		} else {
+			$OrdersToPlacePOFor .= " OR orderno='" . $_POST['PlacePO_'][$i] . "'";
 		}
 	}
 	if (mb_strlen($OrdersToPlacePOFor) == '') {
@@ -171,6 +169,7 @@ if (isset($_POST['PlacePO'])) {
 
 		/* We need the items to order to be in supplier order so that only a single order is created for a supplier - so need to sort the multi-dimensional array to ensure it is listed by supplier sequence. To use array_multisort we need to get arrays of supplier with the same keys as the main array of rows
 		 */
+		$SupplierArray = array();
 		foreach ($ItemArray as $Key => $row) {
 			//to make the Supplier array with the keys of the $ItemArray
 			$SupplierArray[$Key] = $row['supplierno'];
@@ -179,7 +178,9 @@ if (isset($_POST['PlacePO'])) {
 		/* Use array_multisort to Sort the ItemArray with supplierno ascending
 		Add $ItemArray as the last parameter, to sort by the common key
 		*/
-		array_multisort($SupplierArray, SORT_ASC, $ItemArray);
+		if (count($SupplierArray) > 1) {
+			array_multisort($SupplierArray, SORT_ASC, $ItemArray);
+		}
 
 		if (count($ItemArray) == 0) {
 			prnMsg(_('There might be no supplier purchasing data set up for any items on the selected sales order(s). No purchase orders have been created'), 'warn');
@@ -227,7 +228,7 @@ if (isset($_POST['PlacePO'])) {
 
 						$AuthResult = DB_query($AuthSQL);
 						$AuthRow = DB_fetch_array($AuthResult);
-						if ($AuthRow['authlevel'] = '') {
+						if ($AuthRow['authlevel'] == '') {
 							$AuthRow['authlevel'] = 0;
 						}
 
@@ -388,7 +389,7 @@ if (isset($_POST['PlacePO'])) {
 
 				$AuthResult = DB_query($AuthSQL);
 				$AuthRow = DB_fetch_array($AuthResult);
-				if ($AuthRow['authlevel'] = '') {
+				if ($AuthRow['authlevel'] == '') {
 					$AuthRow['authlevel'] = 0;
 				}
 
@@ -1044,7 +1045,7 @@ if (!isset($StockId)) {
 							<td>', $FormatedDelDate, '</td>
 							<td>', html_entity_decode($MyRow['deliverto'], ENT_QUOTES, 'UTF-8'), '</td>
 							<td class="number">', $FormatedOrderValue, '</td>
-							<td><input type="checkbox" name="PlacePO_[]" /><input type="hidden" name="OrderNo_PO_[]" value="', $MyRow['orderno'], '" /></td>
+							<td><input type="checkbox" name="PlacePO_[]" /></td>
 							<td>' . $AttachmentText . '</td>
         				</tr>';
 					} else {

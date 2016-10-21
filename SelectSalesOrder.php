@@ -1045,7 +1045,7 @@ if (!isset($StockId)) {
 							<td>', $FormatedDelDate, '</td>
 							<td>', html_entity_decode($MyRow['deliverto'], ENT_QUOTES, 'UTF-8'), '</td>
 							<td class="number">', $FormatedOrderValue, '</td>
-							<td><input type="checkbox" name="PlacePO_[]" /></td>
+							<td><input type="checkbox" name="PlacePO_[]" value="', $MyRow['orderno'], '" /></td>
 							<td>' . $AttachmentText . '</td>
         				</tr>';
 					} else {

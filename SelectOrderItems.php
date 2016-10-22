@@ -1476,9 +1476,12 @@ if ($_SESSION['RequireCustomerSelection'] == 1 or !isset($_SESSION['Items' . $Id
 				// This code needs sorting out, but until then :
 				$ImageSource = _('No Image');
 				// Find the quantity in stock at location
-				$QOHSQL = "SELECT sum(locstock.quantity) AS qoh
+				$QOHSQL = "SELECT SUM(locstock.quantity) AS qoh,
+								decimalplaces
 							FROM locstock
-							WHERE stockid='" . $MyRow['stockid'] . "'
+							INNER JOIN stockmaster
+								ON stockmaster.stockid=locstock.stockid
+							WHERE locstock.stockid='" . $MyRow['stockid'] . "'
 							AND loccode = '" . $_SESSION['Items' . $Identifier]->Location . "'";
 				$QOHResult = DB_query($QOHSQL);
 				$QOHRow = DB_fetch_array($QOHResult);

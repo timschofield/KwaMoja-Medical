@@ -33,6 +33,7 @@ if (isset($_GET['OrderNumber'])) {
 }
 if (isset($_GET['CustomerRef'])) {
 	$CustomerRef = $_GET['CustomerRef'];
+	$CustomerGet = 1;
 } elseif (isset($_POST['CustomerRef'])) {
 	$CustomerRef = $_POST['CustomerRef'];
 }
@@ -122,7 +123,7 @@ if (isset($_POST['SearchParts']) and $_POST['SearchParts'] != '') {
 		echo '<br />', _('For the part'), ': ', $SelectedStockItem, ' ', _('and'), ' <input type="hidden" name="SelectedStockItem" value="', $SelectedStockItem, '" />';
 	}
 
-} else if (isset($_POST['SearchOrders']) and is_date($_POST['OrdersAfterDate']) == 1) {
+} else if ((isset($_POST['SearchOrders']) and Is_Date($_POST['OrdersAfterDate'])==1) or (isset($CustomerGet))) {
 
 	//figure out the SQL required from the inputs available
 	if (isset($OrderNumber)) {
@@ -445,6 +446,15 @@ if (isset($StockItemsResult)) {
 //end if stock search results to show
 
 if (isset($SalesOrdersResult)) {
+
+	if (DB_num_rows($SalesOrdersResult) == 1) {
+		if (!isset($OrderNumber)) {
+			$OrderRow = DB_fetch_array($SalesOrdersResult);
+			$OrderNumber = $OrderRow['orderno'];
+		}
+		header('location:' . $RootPath .'/OrderDetails.php?OrderNumber=' . $OrderNumber);
+		exit;
+	}
 
 	/*show a table of the orders returned by the SQL */
 

@@ -10377,7 +10377,7 @@ msgid "Process Goods Received"
 msgstr "TESLIM ALINAN ÜRÜNLERI ISLE"
 
 #: index.php:9
-#: includes/header.inc:45
+#: includes/header.php:45
 msgid "Main Menu"
 msgstr "ANA MENÜ"
 
@@ -10561,7 +10561,7 @@ msgstr "YENI MÜSTERI EKLE"
 
 #: index.php:316
 #: SelectCustomer.php:17
-#: includes/header.inc:49
+#: includes/header.php:49
 #, fuzzy
 msgid "Customers"
 msgstr "MÜSTERI"
@@ -16190,7 +16190,7 @@ msgid "Group By 4"
 msgstr "4 ILE GRUPLANMIS"
 
 #: SalesAnalysis_UserDefined.php:19
-#: includes/session.inc:314
+#: includes/session.php:314
 msgid "The security settings on your account do not permit you to access this function"
 msgstr "KULLANICI GÜVENLIK AYARLARINIZ BU FONKSIYONU GÖRÜNTÜLEMENIZE IZIN VERMIYOR"
 
@@ -17983,7 +17983,7 @@ msgstr "TEDARIKCI ARA"
 
 #: SelectSupplier.php:13
 #: Suppliers.php:306
-#: includes/header.inc:53
+#: includes/header.php:53
 #, fuzzy
 msgid "Suppliers"
 msgstr "TEDARIKÇI"
@@ -21718,8 +21718,8 @@ msgstr "VERGI HESAPLAMA METODUNU DEGISTIR"
 #: SupplierInvoice.php:347
 #: SupplierInvoice.php:349
 #: SystemParameters.php:356
-#: includes/header.inc:55
-#: includes/header.inc:59
+#: includes/header.php:55
+#: includes/header.php:59
 msgid "Manual"
 msgstr "MANUAL"
 
@@ -27190,12 +27190,12 @@ msgid "Your webserver is configured to enable Magic Quotes. This may cause probl
 msgstr ""
 
 #: includes/Login.php:35
-#: includes/header.inc:40
+#: includes/header.php:40
 msgid "Company"
 msgstr "FIRMA"
 
 #: includes/Login.php:55
-#: includes/header.inc:40
+#: includes/header.php:40
 msgid "User name"
 msgstr "KULLANICI ADI"
 
@@ -27309,8 +27309,8 @@ msgid "iso-8859-15"
 msgstr "iso-8859-15"
 
 #: includes/ConnectDB_mysql.inc:139
-#: includes/header.inc:10
-#: includes/header.inc:19
+#: includes/header.php:10
+#: includes/header.php:19
 msgid "iso-8859-1"
 msgstr "iso-8859-15"
 
@@ -27434,12 +27434,12 @@ msgstr "DEGISKEN"
 msgid "is set to"
 msgstr "TANIMLANDI:"
 
-#: includes/footer.inc:21
-#: includes/footer.inc:26
+#: includes/footer.php:21
+#: includes/footer.php:26
 msgid "Copyright"
 msgstr ""
 
-#: includes/footer.inc:22
+#: includes/footer.php:22
 msgid "Version"
 msgstr "Versiyon"
 
@@ -27500,16 +27500,16 @@ msgstr "ILK PERIYOD TARIHI EKLENEMEDI"
 msgid "Could not insert second period"
 msgstr "ILK PERIYOD TARIHI EKLENEMEDI"
 
-#: includes/header.inc:51
+#: includes/header.php:51
 #, fuzzy
 msgid "Items"
 msgstr "ÜRÜN"
 
-#: includes/header.inc:68
+#: includes/header.php:68
 msgid "Are you sure you wish to logout?"
 msgstr "SISTEMDEN ÇIKMAK ISTEDIGINIZE EMIN MISINIZ?"
 
-#: includes/header.inc:68
+#: includes/header.php:68
 msgid "Logout"
 msgstr "ÇIKIS"
 
@@ -28104,41 +28104,41 @@ msgstr "BU SIPARISE BASKA SATIR EKLENEMEZ, MÜSTERI KREDI LIMITI ASILDI"
 msgid "does not have a cost set up and order entry is set up to prohibit sales of items with no cost data entered"
 msgstr ""
 
-#: includes/session.inc:138
-#: includes/session.inc:298
+#: includes/session.php:138
+#: includes/session.php:298
 msgid "Account Error Report"
 msgstr "HESAP HATA RAPORU"
 
-#: includes/session.inc:141
+#: includes/session.php:141
 msgid "Your user role does not have any access defined for KwaMoja. There is an error in the security setup for this user account"
 msgstr "KULLANICI HESABINIZ IÇIN TANIMLI BIR ROL YOK"
 
-#: includes/session.inc:167
+#: includes/session.php:167
 msgid "incorrect password"
 msgstr "GEÇERSIZ SIFRE"
 
-#: includes/session.inc:167
+#: includes/session.php:167
 msgid "The user/password combination"
 msgstr "KULLANICI ADI/SIFRE"
 
-#: includes/session.inc:167
+#: includes/session.php:167
 msgid "is not a valid user of the system"
 msgstr "GEÇERLI BIR SISTEM KULLANICISI DEGIL"
 
-#: includes/session.inc:196
+#: includes/session.php:196
 #, fuzzy
 msgid "There was a problem deleting expired audit-trail history"
 msgstr "VARSAYILAN NAKLIYECI TESTI SIRASINDA PROBLEM OLUSTU"
 
-#: includes/session.inc:285
+#: includes/session.php:285
 msgid "KwaMoja is configured to allow only secure socket connections. Pages must be called with https://"
 msgstr "KwaMoja SADECE GÜVENLI SOKET BAGLANTI ÜZERINDE ÇALIPMAK IÇIN AYARLANMIS, https:// KULLANINIZ"
 
-#: includes/session.inc:301
+#: includes/session.php:301
 msgid "Security settings have not been defined for your user account. Please advise your system administrator. It could also be that there is a session problem with your PHP web server"
 msgstr ""
 
-#: includes/session.inc:308
+#: includes/session.php:308
 msgid "Security Permissions Problem"
 msgstr "GÜVENLIK IZINLERI PROBLEMI"
 

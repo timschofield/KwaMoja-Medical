@@ -69,9 +69,9 @@
 	(WWW_users.php).
 </p>
 <p>
-	Access authority is checked in the session.inc script for all pages
+	Access authority is checked in the session.php script for all pages
 	(or PDF_Starter.inc for PDF pages). The variable $_SESSION['AccessLevel']
-	is retrieved from the database when the user logs on - in session.inc.
+	is retrieved from the database when the user logs on - in session.php.
 	This variable refers to the Security Role of the user.
 	The SESSION['AllowedPageSecurityTokens'] array of numbers is retrieved
 	from the database based on the users AccessLevel - or Security Role. Any page

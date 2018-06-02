@@ -4335,7 +4335,7 @@ msgstr "Nem lehet letölteni a mbflag"
 
 #: ConfirmDispatch_Invoice.php:984 CounterReturns.php:997
 #: CounterSales.php:1414 FixedAssetItems.php:651 SalesAnalReptCols.php:305
-#: Stocks.php:1384 includes/MiscFunctions.php:54 includes/footer.inc:21
+#: Stocks.php:1384 includes/MiscFunctions.php:54 includes/footer.php:21
 msgid "WARNING"
 msgstr "FIGYELMEZTETÉS"
 
@@ -5688,7 +5688,7 @@ msgstr "Árajánlat nyomtatás"
 msgid "Cancel and Delete Contract"
 msgstr "Mégsem törlése és szerződés"
 
-#: CopyBOM.php:10 includes/header.inc:25
+#: CopyBOM.php:10 includes/header.php:25
 msgid "Copy a BOM to New Item Code"
 msgstr "Másolása BOM Új pont Kód"
 
@@ -7483,7 +7483,7 @@ msgstr "Ügyfél Branch"
 msgid "has been added, add another branch, or return to the"
 msgstr "adtak, adjunk hozzá egy másik ága, vagy térjen vissza a <a href=index.php>Főmenü</a>"
 
-#: CustomerBranches.php:248 index.php:11 includes/header.inc:129
+#: CustomerBranches.php:248 index.php:11 includes/header.php:129
 msgid "Main Menu"
 msgstr "Főmenü"
 
@@ -8987,7 +8987,7 @@ msgstr "GP%"
 msgid "Avg Daily Sales"
 msgstr "Átlag napi értékesítési"
 
-#: Dashboard.php:6 includes/header.inc:126
+#: Dashboard.php:6 includes/header.php:126
 msgid "Dashboard"
 msgstr "műszerfal"
 
@@ -9753,7 +9753,7 @@ msgid "No occurrences so far"
 msgstr "Nincs események eddig"
 
 #: EDIProcessOrders.php:125 includes/MiscFunctions.php:47
-#: includes/footer.inc:13
+#: includes/footer.php:13
 msgid "ERROR"
 msgstr "HIBA"
 
@@ -23043,7 +23043,7 @@ msgstr "Csoportosítás 3"
 msgid "Group By 4"
 msgstr "Group 4-"
 
-#: SalesAnalysis_UserDefined.php:6 includes/session.inc:279
+#: SalesAnalysis_UserDefined.php:6 includes/session.php:279
 msgid "The security settings on your account do not permit you to access this function"
 msgstr "A biztonsági beállítások nem engedélyezik ezt a műveletet"
 
@@ -29237,8 +29237,8 @@ msgstr "Ár"
 msgid "Current Price"
 msgstr "Aktuális"
 
-#: SuppPriceList.php:150 includes/MiscFunctions.php:61 includes/footer.inc:13
-#: includes/footer.inc:21 includes/footer.inc:29
+#: SuppPriceList.php:150 includes/MiscFunctions.php:61 includes/footer.php:13
+#: includes/footer.php:21 includes/footer.php:29
 msgid "Report"
 msgstr "Jelentés"
 
@@ -38335,7 +38335,7 @@ msgstr "Belépés itt"
 msgid "Your webserver is configured to enable Magic Quotes. This may cause problems if you use punctuation (such as quotes) when doing data entry. You should contact your webmaster to disable Magic Quotes"
 msgstr "A webszerver úgy van beállítva, hogy Magic Quotes. Ez akkor okozhat problémát, ha használja központozás (például idézőjelek), amikor egy adatbevitel. Vegye fel a kapcsolatot a webmesterrel tiltani Magic Quotes"
 
-#: includes/Login.php:63 includes/header.inc:107
+#: includes/Login.php:63 includes/header.php:107
 msgid "Company"
 msgstr "Cég"
 
@@ -38383,15 +38383,15 @@ msgstr "Login"
 msgid "Message Report"
 msgstr "Üzenetek"
 
-#: includes/MiscFunctions.php:61 includes/footer.inc:29
+#: includes/MiscFunctions.php:61 includes/footer.php:29
 msgid "SUCCESS"
 msgstr "SIKERES"
 
-#: includes/MiscFunctions.php:68 includes/footer.inc:37
+#: includes/MiscFunctions.php:68 includes/footer.php:37
 msgid "INFORMATION"
 msgstr "INFORMÁCIÓ"
 
-#: includes/MiscFunctions.php:68 includes/footer.inc:37
+#: includes/MiscFunctions.php:68 includes/footer.php:37
 msgid "Message"
 msgstr "Üzenet"
 
@@ -39780,116 +39780,116 @@ msgstr "már e-mailben, hogy"
 msgid "could not be renamed to"
 msgstr "nem lehet e-mailben a"
 
-#: includes/footer.inc:59
+#: includes/footer.php:59
 #, fuzzy
 msgid "version"
 msgstr "Verzió"
 
-#: includes/header.inc:110
+#: includes/header.php:110
 msgid "Change settings for"
 msgstr "Beállításainak módosítása"
 
-#: includes/header.inc:126
+#: includes/header.php:126
 msgid "Show Dashboard"
 msgstr "Műszerfal megjelenítése"
 
-#: includes/header.inc:129
+#: includes/header.php:129
 msgid "Return to the main menu"
 msgstr "Vissza a főmenübe"
 
-#: includes/header.inc:140
+#: includes/header.php:140
 msgid "Add this script to your list of commonly used"
 msgstr "Add hozzá ezt a szkriptet a listát a leggyakrabban használt"
 
-#: includes/header.inc:140
+#: includes/header.php:140
 msgid "Add to commonly used"
 msgstr "Add hozzá a leggyakrabban használt"
 
-#: includes/header.inc:142
+#: includes/header.php:142
 msgid "Remove this script from your list of commonly used"
 msgstr "Távolítsa el ezt a szkriptet a listát a leggyakrabban használt"
 
-#: includes/header.inc:142
+#: includes/header.php:142
 msgid "Remove from commonly used"
 msgstr "Eltávolítás a leggyakrabban használt"
 
-#: includes/header.inc:152
+#: includes/header.php:152
 msgid "Commonly used"
 msgstr "általánosan használt"
 
-#: includes/header.inc:158 includes/header.inc:162
+#: includes/header.php:158 includes/header.php:162
 msgid "Read the manual page for this functionality"
 msgstr "Olvasd el a man oldalon ezt a funkciót"
 
-#: includes/header.inc:158 includes/header.inc:162
+#: includes/header.php:158 includes/header.php:162
 msgid "Help"
 msgstr "Segítség"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Logout"
 msgstr "Kilépés"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Are you sure you wish to logout?"
 msgstr "Biztosan ki akar lépni?"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Confirm Logout"
 msgstr "Kilépés megerősítése"
 
-#: includes/session.inc:117 includes/session.inc:254
+#: includes/session.php:117 includes/session.php:254
 msgid "Account Error Report"
 msgstr "Számla hibajelentés"
 
-#: includes/session.inc:120
+#: includes/session.php:120
 #, fuzzy
 msgid "Your user role does not have any access defined for KwaMoja. There is an error in the security setup for this user account"
 msgstr "A felhasználói jogok beállításánál nincs megadva érvényes jogosultság."
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "incorrect password"
 msgstr "Érvénytelen jelszó"
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "The user/password combination"
 msgstr "A felhasználó/jelszó páros"
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "is not a valid user of the system"
 msgstr "érvénytelen felhasználó a rendszerben"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 msgid "system maintenance"
 msgstr "Vevő karbantartás"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 #, fuzzy
 msgid "KwaMoja is not available right now"
 msgstr "KwaMoja nem áll most"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 msgid "during maintenance of the system"
 msgstr "érvénytelen felhasználó a rendszerben"
 
-#: includes/session.inc:244
+#: includes/session.php:244
 #, fuzzy
 msgid "KwaMoja is configured to allow only secure socket connections. Pages must be called with https://"
 msgstr "a rendszer biztonságos felületen érhető csak el. Az oldalak eléréséhez használja a https://.... formátumot"
 
-#: includes/session.inc:257
+#: includes/session.php:257
 msgid "Security settings have not been defined for your user account. Please advise your system administrator. It could also be that there is a session problem with your PHP web server"
 msgstr "Nincsenek biztonsági beállítások ehhez a felhasználóhoz. Lépjen kapcsolatba a rendszeradminisztrátorral. Lehet, hogy session hiba a PHP beállításoknál"
 
-#: includes/session.inc:273
+#: includes/session.php:273
 msgid "Security Permissions Problem"
 msgstr "Biztonsági hiba"
 
-#: includes/session.inc:321
+#: includes/session.php:321
 #, fuzzy
 msgid "Error in form verification"
 msgstr "Hiba a formában verificationm"
 
-#: includes/session.inc:323
+#: includes/session.php:323
 msgid "This form was not submitted with a correct ID"
 msgstr "Ez a forma nem került benyújtásra a megfelelő azonosító"
 

@@ -4339,7 +4339,7 @@ msgstr "Δεν είναι δυνατή η ανάκτηση του mbflag"
 
 #: ConfirmDispatch_Invoice.php:984 CounterReturns.php:997
 #: CounterSales.php:1414 FixedAssetItems.php:651 SalesAnalReptCols.php:305
-#: Stocks.php:1384 includes/MiscFunctions.php:54 includes/footer.inc:21
+#: Stocks.php:1384 includes/MiscFunctions.php:54 includes/footer.php:21
 msgid "WARNING"
 msgstr "ΠΡΟΕΙΔΟΠΟΙΗΣΗ"
 
@@ -5692,7 +5692,7 @@ msgstr "Δημιουργία Προσφορά"
 msgid "Cancel and Delete Contract"
 msgstr "Ακύρωση και Διαγραφή των συμβάσεων"
 
-#: CopyBOM.php:10 includes/header.inc:25
+#: CopyBOM.php:10 includes/header.php:25
 msgid "Copy a BOM to New Item Code"
 msgstr "Αντιγραφή BOM στη Νέα Θέση Κωδικός"
 
@@ -7488,7 +7488,7 @@ msgstr "Πελάτης Υποκατάστημα"
 msgid "has been added, add another branch, or return to the"
 msgstr "Έχει προστεθεί, προσθέστε ένα άλλο υποκατάστημα, ή να επιστρέψουν <a href=index.php>Κεντρικό Μενού</a>"
 
-#: CustomerBranches.php:248 index.php:11 includes/header.inc:129
+#: CustomerBranches.php:248 index.php:11 includes/header.php:129
 msgid "Main Menu"
 msgstr "Κεντρικό Μενού"
 
@@ -8992,7 +8992,7 @@ msgstr "GP%"
 msgid "Avg Daily Sales"
 msgstr "Μέση Ημερήσια Πωλήσεις"
 
-#: Dashboard.php:6 includes/header.inc:126
+#: Dashboard.php:6 includes/header.php:126
 msgid "Dashboard"
 msgstr "ταμπλό"
 
@@ -9758,7 +9758,7 @@ msgid "No occurrences so far"
 msgstr "Κανένα περιστατικό μέχρι τώρα"
 
 #: EDIProcessOrders.php:125 includes/MiscFunctions.php:47
-#: includes/footer.inc:13
+#: includes/footer.php:13
 msgid "ERROR"
 msgstr "ΣΦΑΛΜΑ"
 
@@ -23054,7 +23054,7 @@ msgstr "Ομαδοποίηση κατά 3"
 msgid "Group By 4"
 msgstr "Ομάδα Έως τις 4"
 
-#: SalesAnalysis_UserDefined.php:6 includes/session.inc:279
+#: SalesAnalysis_UserDefined.php:6 includes/session.php:279
 msgid "The security settings on your account do not permit you to access this function"
 msgstr "Οι ρυθμίσεις ασφαλείας στο λογαριασμό σας δεν σας επιτρέπουν την πρόσβαση σε αυτή τη λειτουργία"
 
@@ -29248,8 +29248,8 @@ msgstr "Όλες οι τιμές"
 msgid "Current Price"
 msgstr "Τρέχουσα Τιμή"
 
-#: SuppPriceList.php:150 includes/MiscFunctions.php:61 includes/footer.inc:13
-#: includes/footer.inc:21 includes/footer.inc:29
+#: SuppPriceList.php:150 includes/MiscFunctions.php:61 includes/footer.php:13
+#: includes/footer.php:21 includes/footer.php:29
 msgid "Report"
 msgstr "Έκθεση"
 
@@ -38344,7 +38344,7 @@ msgstr "Παρακαλώ πιέστε εδώ για Είσοδο"
 msgid "Your webserver is configured to enable Magic Quotes. This may cause problems if you use punctuation (such as quotes) when doing data entry. You should contact your webmaster to disable Magic Quotes"
 msgstr "webserver σας είναι ρυθμισμένος να επιτρέπει Magic Quotes. Αυτό μπορεί να προκαλέσει προβλήματα αν χρησιμοποιείτε σημεία στίξης (όπως τα εισαγωγικά), όταν κάνει την εισαγωγή δεδομένων. Θα πρέπει να επικοινωνήστε με τον webmaster σας για να απενεργοποιήσετε Magic Quotes"
 
-#: includes/Login.php:63 includes/header.inc:107
+#: includes/Login.php:63 includes/header.php:107
 msgid "Company"
 msgstr "Εταιρία"
 
@@ -38392,15 +38392,15 @@ msgstr "Είσοδος"
 msgid "Message Report"
 msgstr "Μήνυμα Έκθεση"
 
-#: includes/MiscFunctions.php:61 includes/footer.inc:29
+#: includes/MiscFunctions.php:61 includes/footer.php:29
 msgid "SUCCESS"
 msgstr "ΕΠΙΤΥΧΙΑ"
 
-#: includes/MiscFunctions.php:68 includes/footer.inc:37
+#: includes/MiscFunctions.php:68 includes/footer.php:37
 msgid "INFORMATION"
 msgstr "ΠΛΗΡΟΦΟΡΙΕΣ"
 
-#: includes/MiscFunctions.php:68 includes/footer.inc:37
+#: includes/MiscFunctions.php:68 includes/footer.php:37
 msgid "Message"
 msgstr "Μήνυμα"
 
@@ -39782,116 +39782,116 @@ msgstr "έχει αποσταλεί με email"
 msgid "could not be renamed to"
 msgstr "το email δεν ήταν δυνατό να σταλθεί στον/ην"
 
-#: includes/footer.inc:59
+#: includes/footer.php:59
 #, fuzzy
 msgid "version"
 msgstr "Έκδοση"
 
-#: includes/header.inc:110
+#: includes/header.php:110
 msgid "Change settings for"
 msgstr "Αλλαγή ρυθμίσεων για"
 
-#: includes/header.inc:126
+#: includes/header.php:126
 msgid "Show Dashboard"
 msgstr "Εμφάνιση ταμπλό"
 
-#: includes/header.inc:129
+#: includes/header.php:129
 msgid "Return to the main menu"
 msgstr "Επιστροφή στο κύριο μενού"
 
-#: includes/header.inc:140
+#: includes/header.php:140
 msgid "Add this script to your list of commonly used"
 msgstr "Προσθέστε αυτό το σενάριο στη λίστα που χρησιμοποιούνται συνήθως"
 
-#: includes/header.inc:140
+#: includes/header.php:140
 msgid "Add to commonly used"
 msgstr "Προσθήκη στα κοινώς χρησιμοποιούμενα"
 
-#: includes/header.inc:142
+#: includes/header.php:142
 msgid "Remove this script from your list of commonly used"
 msgstr "Αφαιρέστε αυτό το σενάριο από τη λίστα που χρησιμοποιούνται συνήθως"
 
-#: includes/header.inc:142
+#: includes/header.php:142
 msgid "Remove from commonly used"
 msgstr "Αφαιρέστε από το που χρησιμοποιούνται συνήθως"
 
-#: includes/header.inc:152
+#: includes/header.php:152
 msgid "Commonly used"
 msgstr "Συνήθως χρησιμοποιούνται"
 
-#: includes/header.inc:158 includes/header.inc:162
+#: includes/header.php:158 includes/header.php:162
 msgid "Read the manual page for this functionality"
 msgstr "Διαβάστε την σελίδα manual για αυτή τη λειτουργία"
 
-#: includes/header.inc:158 includes/header.inc:162
+#: includes/header.php:158 includes/header.php:162
 msgid "Help"
 msgstr "Βοήθεια"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Logout"
 msgstr "Έξοδος"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Are you sure you wish to logout?"
 msgstr "Είστε σίγουροι ότι θέλετε να αποσυνδεθείτε;"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Confirm Logout"
 msgstr "Επιβεβαιώστε Αποσύνδεση"
 
-#: includes/session.inc:117 includes/session.inc:254
+#: includes/session.php:117 includes/session.php:254
 msgid "Account Error Report"
 msgstr "Ο λογαριασμός Δήλωση λάθους"
 
-#: includes/session.inc:120
+#: includes/session.php:120
 #, fuzzy
 msgid "Your user role does not have any access defined for KwaMoja. There is an error in the security setup for this user account"
 msgstr "ρόλος χρήστη σας δεν έχει καμία πρόσβαση ορίζονται για KwaMoja. Υπάρχει ένα λάθος στη ρύθμιση της ασφάλειας για αυτό το λογαριασμό χρήστη"
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "incorrect password"
 msgstr "λανθασμένο κωδικό"
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "The user/password combination"
 msgstr "Ο χρήστης / συνδυασμός κωδικού πρόσβασης"
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "is not a valid user of the system"
 msgstr "δεν είναι ένας έγκυρος χρήστης του συστήματος"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 msgid "system maintenance"
 msgstr "συντήρησης του συστήματος"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 #, fuzzy
 msgid "KwaMoja is not available right now"
 msgstr "KwaMoja δεν είναι διαθέσιμη αυτή τη στιγμή"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 msgid "during maintenance of the system"
 msgstr "κατά τη συντήρηση του συστήματος"
 
-#: includes/session.inc:244
+#: includes/session.php:244
 #, fuzzy
 msgid "KwaMoja is configured to allow only secure socket connections. Pages must be called with https://"
 msgstr "KwaMoja έχει ρυθμιστεί ώστε να επιτρέπει μόνο ασφαλείς συνδέσεις πρίζα. Σελίδες πρέπει να κληθεί με https: / /"
 
-#: includes/session.inc:257
+#: includes/session.php:257
 msgid "Security settings have not been defined for your user account. Please advise your system administrator. It could also be that there is a session problem with your PHP web server"
 msgstr "Οι ρυθμίσεις ασφαλείας δεν έχουν καθοριστεί για το λογαριασμό χρήστη σας. Παρακαλείστε να ενημερώσετε το διαχειριστή του συστήματός σας. Θα μπορούσε επίσης να είναι ότι υπάρχει ένα πρόβλημα συνεδρία με PHP web server σας"
 
-#: includes/session.inc:273
+#: includes/session.php:273
 msgid "Security Permissions Problem"
 msgstr "Ασφάλεια Πρόβλημα Δικαιώματα"
 
-#: includes/session.inc:321
+#: includes/session.php:321
 #, fuzzy
 msgid "Error in form verification"
 msgstr "Σφάλμα στο verificationm μορφή"
 
-#: includes/session.inc:323
+#: includes/session.php:323
 msgid "This form was not submitted with a correct ID"
 msgstr "Το έντυπο αυτό δεν υποβλήθηκε με τη σωστή ταυτότητα"
 

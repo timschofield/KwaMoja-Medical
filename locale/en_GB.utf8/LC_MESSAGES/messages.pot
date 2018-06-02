@@ -4961,7 +4961,7 @@ msgstr ""
 #: prlLoanFile.php:168 prlnssf.php:506 prlOthIncTable.php:209
 #: prlOvertime.php:197 prlPaye.php:261 prlSC.php:177 prlSSC.php:240
 #: prlTax.php:225 SalesAnalReptCols.php:305 Stocks.php:1444
-#: includes/MiscFunctions.php:54 includes/footer.inc:21
+#: includes/MiscFunctions.php:54 includes/footer.php:21
 msgid "WARNING"
 msgstr ""
 
@@ -6357,7 +6357,7 @@ msgstr ""
 msgid "Cancel and Delete Contract"
 msgstr ""
 
-#: CopyBOM.php:10 includes/header.inc:17
+#: CopyBOM.php:10 includes/header.php:17
 msgid "Copy a BOM to New Item Code"
 msgstr ""
 
@@ -8547,7 +8547,7 @@ msgstr ""
 msgid "has been added, add another branch, or return to the"
 msgstr ""
 
-#: CustomerBranches.php:238 index.php:15 includes/header.inc:102
+#: CustomerBranches.php:238 index.php:15 includes/header.php:102
 msgid "Main Menu"
 msgstr ""
 
@@ -10920,7 +10920,7 @@ msgid "No occurrences so far"
 msgstr ""
 
 #: EDIProcessOrders.php:125 includes/MiscFunctions.php:47
-#: includes/footer.inc:13
+#: includes/footer.php:13
 msgid "ERROR"
 msgstr ""
 
@@ -27969,7 +27969,7 @@ msgstr ""
 msgid "Group By 4"
 msgstr ""
 
-#: SalesAnalysis_UserDefined.php:6 includes/session.inc:263
+#: SalesAnalysis_UserDefined.php:6 includes/session.php:263
 msgid "The security settings on your account do not permit you to access this function"
 msgstr ""
 
@@ -35660,8 +35660,8 @@ msgstr ""
 msgid "Current Price"
 msgstr ""
 
-#: SuppPriceList.php:150 includes/MiscFunctions.php:61 includes/footer.inc:13
-#: includes/footer.inc:21 includes/footer.inc:29
+#: SuppPriceList.php:150 includes/MiscFunctions.php:61 includes/footer.php:13
+#: includes/footer.php:21 includes/footer.php:29
 msgid "Report"
 msgstr ""
 
@@ -43501,7 +43501,7 @@ msgstr ""
 msgid "Your webserver is configured to enable Magic Quotes. This may cause problems if you use punctuation (such as quotes) when doing data entry. You should contact your webmaster to disable Magic Quotes"
 msgstr ""
 
-#: includes/Login.php:68 includes/header.inc:79
+#: includes/Login.php:68 includes/header.php:79
 msgid "Company"
 msgstr ""
 
@@ -43553,15 +43553,15 @@ msgstr ""
 msgid "Message Report"
 msgstr ""
 
-#: includes/MiscFunctions.php:61 includes/footer.inc:29
+#: includes/MiscFunctions.php:61 includes/footer.php:29
 msgid "SUCCESS"
 msgstr ""
 
-#: includes/MiscFunctions.php:68 includes/footer.inc:37
+#: includes/MiscFunctions.php:68 includes/footer.php:37
 msgid "INFORMATION"
 msgstr ""
 
-#: includes/MiscFunctions.php:68 includes/footer.inc:37
+#: includes/MiscFunctions.php:68 includes/footer.php:37
 msgid "Message"
 msgstr ""
 
@@ -44403,7 +44403,7 @@ msgstr ""
 msgid "is set to"
 msgstr ""
 
-#: includes/footer.inc:59
+#: includes/footer.php:59
 msgid "version"
 msgstr ""
 
@@ -44511,55 +44511,55 @@ msgstr ""
 msgid "The SQL that failed to mark all transactions as posted"
 msgstr ""
 
-#: includes/header.inc:82
+#: includes/header.php:82
 msgid "Change the settings for"
 msgstr ""
 
-#: includes/header.inc:99
+#: includes/header.php:99
 msgid "Show Dashboard"
 msgstr ""
 
-#: includes/header.inc:102
+#: includes/header.php:102
 msgid "Return to the main menu"
 msgstr ""
 
-#: includes/header.inc:117
+#: includes/header.php:117
 msgid "Add this script to your list of commonly used"
 msgstr ""
 
-#: includes/header.inc:117
+#: includes/header.php:117
 msgid "Add to commonly used"
 msgstr ""
 
-#: includes/header.inc:119
+#: includes/header.php:119
 msgid "Remove this script from your list of commonly used"
 msgstr ""
 
-#: includes/header.inc:119
+#: includes/header.php:119
 msgid "Remove from commonly used"
 msgstr ""
 
-#: includes/header.inc:123
+#: includes/header.php:123
 msgid "Commonly used"
 msgstr ""
 
-#: includes/header.inc:130 includes/header.inc:136
+#: includes/header.php:130 includes/header.php:136
 msgid "Read the manual page for this functionality"
 msgstr ""
 
-#: includes/header.inc:130 includes/header.inc:136
+#: includes/header.php:130 includes/header.php:136
 msgid "Help"
 msgstr ""
 
-#: includes/header.inc:143
+#: includes/header.php:143
 msgid "Logout"
 msgstr ""
 
-#: includes/header.inc:143
+#: includes/header.php:143
 msgid "Are you sure you wish to logout?"
 msgstr ""
 
-#: includes/header.inc:143
+#: includes/header.php:143
 msgid "Confirm Logout"
 msgstr ""
 
@@ -45194,55 +45194,55 @@ msgstr ""
 msgid "does not have a cost set up and order entry is set up to prohibit sales of items with no cost data entered"
 msgstr ""
 
-#: includes/session.inc:123 includes/session.inc:238
+#: includes/session.php:123 includes/session.php:238
 msgid "Account Error Report"
 msgstr ""
 
-#: includes/session.inc:126
+#: includes/session.php:126
 msgid "Your user role does not have any access defined for KwaMoja. There is an error in the security setup for this user account"
 msgstr ""
 
-#: includes/session.inc:131
+#: includes/session.php:131
 msgid "incorrect password"
 msgstr ""
 
-#: includes/session.inc:131
+#: includes/session.php:131
 msgid "The user/password combination"
 msgstr ""
 
-#: includes/session.inc:131
+#: includes/session.php:131
 msgid "is not a valid user of the system"
 msgstr ""
 
-#: includes/session.inc:135
+#: includes/session.php:135
 msgid "system maintenance"
 msgstr ""
 
-#: includes/session.inc:135
+#: includes/session.php:135
 msgid "KwaMoja is not available right now"
 msgstr ""
 
-#: includes/session.inc:135
+#: includes/session.php:135
 msgid "during maintenance of the system"
 msgstr ""
 
-#: includes/session.inc:228
+#: includes/session.php:228
 msgid "KwaMoja is configured to allow only secure socket connections. Pages must be called with https://"
 msgstr ""
 
-#: includes/session.inc:241
+#: includes/session.php:241
 msgid "Security settings have not been defined for your user account. Please advise your system administrator. It could also be that there is a session problem with your PHP web server"
 msgstr ""
 
-#: includes/session.inc:257
+#: includes/session.php:257
 msgid "Security Permissions Problem"
 msgstr ""
 
-#: includes/session.inc:311
+#: includes/session.php:311
 msgid "Error in form verification"
 msgstr ""
 
-#: includes/session.inc:313
+#: includes/session.php:313
 msgid "This form was not submitted with a correct ID"
 msgstr ""
 

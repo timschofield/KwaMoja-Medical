@@ -4322,7 +4322,7 @@ msgstr "Ei saa laadida mbflag"
 
 #: ConfirmDispatch_Invoice.php:984 CounterReturns.php:997
 #: CounterSales.php:1414 FixedAssetItems.php:651 SalesAnalReptCols.php:305
-#: Stocks.php:1384 includes/MiscFunctions.php:54 includes/footer.inc:21
+#: Stocks.php:1384 includes/MiscFunctions.php:54 includes/footer.php:21
 msgid "WARNING"
 msgstr "HOIATUS"
 
@@ -5673,7 +5673,7 @@ msgstr "Loo Tsitaat"
 msgid "Cancel and Delete Contract"
 msgstr "Loobu ja kustutamine Leping"
 
-#: CopyBOM.php:10 includes/header.inc:25
+#: CopyBOM.php:10 includes/header.php:25
 msgid "Copy a BOM to New Item Code"
 msgstr "KopeeriBom Uus Kood"
 
@@ -7431,7 +7431,7 @@ msgstr "Klientide kontaktid"
 msgid "has been added, add another branch, or return to the"
 msgstr "on lisatud BOM'i osale"
 
-#: CustomerBranches.php:248 index.php:11 includes/header.inc:129
+#: CustomerBranches.php:248 index.php:11 includes/header.php:129
 msgid "Main Menu"
 msgstr "Peamenüü"
 
@@ -8911,7 +8911,7 @@ msgstr "GP %"
 msgid "Avg Daily Sales"
 msgstr "Keskmine päevakäive"
 
-#: Dashboard.php:6 includes/header.inc:126
+#: Dashboard.php:6 includes/header.php:126
 msgid "Dashboard"
 msgstr "armatuurlaud"
 
@@ -9670,7 +9670,7 @@ msgid "No occurrences so far"
 msgstr "No sündmuste seni"
 
 #: EDIProcessOrders.php:125 includes/MiscFunctions.php:47
-#: includes/footer.inc:13
+#: includes/footer.php:13
 msgid "ERROR"
 msgstr "ERROR"
 
@@ -22704,7 +22704,7 @@ msgstr "Group Autor 3"
 msgid "Group By 4"
 msgstr "Group Autor 4"
 
-#: SalesAnalysis_UserDefined.php:6 includes/session.inc:279
+#: SalesAnalysis_UserDefined.php:6 includes/session.php:279
 msgid "The security settings on your account do not permit you to access this function"
 msgstr "Turvaseaded oma konto ei võimalda teil kasutada seda funktsiooni"
 
@@ -28821,8 +28821,8 @@ msgstr "Kõik hinnad"
 msgid "Current Price"
 msgstr "jooksevhind"
 
-#: SuppPriceList.php:150 includes/MiscFunctions.php:61 includes/footer.inc:13
-#: includes/footer.inc:21 includes/footer.inc:29
+#: SuppPriceList.php:150 includes/MiscFunctions.php:61 includes/footer.php:13
+#: includes/footer.php:21 includes/footer.php:29
 msgid "Report"
 msgstr "Raport"
 
@@ -37655,7 +37655,7 @@ msgstr "Palun Logi sisse siin"
 msgid "Your webserver is configured to enable Magic Quotes. This may cause problems if you use punctuation (such as quotes) when doing data entry. You should contact your webmaster to disable Magic Quotes"
 msgstr "Veebiserveri on konfigureeritud , et võimaldada Magic Quotes . "
 
-#: includes/Login.php:63 includes/header.inc:107
+#: includes/Login.php:63 includes/header.php:107
 msgid "Company"
 msgstr "ettevõte"
 
@@ -37703,15 +37703,15 @@ msgstr "logi"
 msgid "Message Report"
 msgstr "Sõnum aruanne"
 
-#: includes/MiscFunctions.php:61 includes/footer.inc:29
+#: includes/MiscFunctions.php:61 includes/footer.php:29
 msgid "SUCCESS"
 msgstr "EDU"
 
-#: includes/MiscFunctions.php:68 includes/footer.inc:37
+#: includes/MiscFunctions.php:68 includes/footer.php:37
 msgid "INFORMATION"
 msgstr "INFO"
 
-#: includes/MiscFunctions.php:68 includes/footer.inc:37
+#: includes/MiscFunctions.php:68 includes/footer.php:37
 msgid "Message"
 msgstr "sõnum"
 
@@ -39056,111 +39056,111 @@ msgstr "nimeks on"
 msgid "could not be renamed to"
 msgstr "ei saa ümber nimetada"
 
-#: includes/footer.inc:59
+#: includes/footer.php:59
 msgid "version"
 msgstr "versioon"
 
-#: includes/header.inc:110
+#: includes/header.php:110
 msgid "Change settings for"
 msgstr "Muuda seadeid"
 
-#: includes/header.inc:126
+#: includes/header.php:126
 msgid "Show Dashboard"
 msgstr "Näita Armatuurlaud"
 
-#: includes/header.inc:129
+#: includes/header.php:129
 msgid "Return to the main menu"
 msgstr "Tagasi peamenüü"
 
-#: includes/header.inc:140
+#: includes/header.php:140
 msgid "Add this script to your list of commonly used"
 msgstr "Lisa see skript oma nimekirja levinumaid"
 
-#: includes/header.inc:140
+#: includes/header.php:140
 msgid "Add to commonly used"
 msgstr "Lisa levinumaid"
 
-#: includes/header.inc:142
+#: includes/header.php:142
 msgid "Remove this script from your list of commonly used"
 msgstr "Eemalda see skript oma nimekirja levinumaid"
 
-#: includes/header.inc:142
+#: includes/header.php:142
 msgid "Remove from commonly used"
 msgstr "Eemalda levinud"
 
-#: includes/header.inc:152
+#: includes/header.php:152
 msgid "Commonly used"
 msgstr "tavaliselt kasutatakse"
 
-#: includes/header.inc:158 includes/header.inc:162
+#: includes/header.php:158 includes/header.php:162
 msgid "Read the manual page for this functionality"
 msgstr "Loemanuali seda funktsiooni"
 
-#: includes/header.inc:158 includes/header.inc:162
+#: includes/header.php:158 includes/header.php:162
 msgid "Help"
 msgstr "aitama"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Logout"
 msgstr "Logi välja"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Are you sure you wish to logout?"
 msgstr "Oled sa kindel, et soovid välja logida ?"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Confirm Logout"
 msgstr "Kinnita Logi"
 
-#: includes/session.inc:117 includes/session.inc:254
+#: includes/session.php:117 includes/session.php:254
 msgid "Account Error Report"
 msgstr "Konto Error Report"
 
-#: includes/session.inc:120
+#: includes/session.php:120
 msgid "Your user role does not have any access defined for KwaMoja. There is an error in the security setup for this user account"
 msgstr "Sinu kasutaja roll ei ole mingit juurdepääsu määratletud KwaMoja . "
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "incorrect password"
 msgstr "vale parool"
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "The user/password combination"
 msgstr "Kasutaja / parooli kombinatsiooni"
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "is not a valid user of the system"
 msgstr "ei ole kehtiv kasutaja süsteemi"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 msgid "system maintenance"
 msgstr "hooldus"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 msgid "KwaMoja is not available right now"
 msgstr "KwaMoja ei ole hetkel saadaval"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 msgid "during maintenance of the system"
 msgstr "hoolduse käigus süsteemi"
 
-#: includes/session.inc:244
+#: includes/session.php:244
 msgid "KwaMoja is configured to allow only secure socket connections. Pages must be called with https://"
 msgstr "KwaMoja on seadistatud lubama ainult secure socket ühendused . "
 
-#: includes/session.inc:257
+#: includes/session.php:257
 msgid "Security settings have not been defined for your user account. Please advise your system administrator. It could also be that there is a session problem with your PHP web server"
 msgstr "Turvaseaded ei ole määratletud oma kasutajakonto. "
 
-#: includes/session.inc:273
+#: includes/session.php:273
 msgid "Security Permissions Problem"
 msgstr "Security Permissions probleem"
 
-#: includes/session.inc:321
+#: includes/session.php:321
 msgid "Error in form verification"
 msgstr "Viga vormi kontrollimine"
 
-#: includes/session.inc:323
+#: includes/session.php:323
 msgid "This form was not submitted with a correct ID"
 msgstr "See vorm ei ole esitatud koosõige ID"
 

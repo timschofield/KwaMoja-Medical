@@ -4334,7 +4334,7 @@ msgstr "Nuk mund të rifitoj mbflag"
 
 #: ConfirmDispatch_Invoice.php:984 CounterReturns.php:997
 #: CounterSales.php:1414 FixedAssetItems.php:651 SalesAnalReptCols.php:305
-#: Stocks.php:1384 includes/MiscFunctions.php:54 includes/footer.inc:21
+#: Stocks.php:1384 includes/MiscFunctions.php:54 includes/footer.php:21
 msgid "WARNING"
 msgstr "KUJDES"
 
@@ -5687,7 +5687,7 @@ msgstr "Krijo Kuotim"
 msgid "Cancel and Delete Contract"
 msgstr "Anulo Delete kontratës dhe"
 
-#: CopyBOM.php:10 includes/header.inc:25
+#: CopyBOM.php:10 includes/header.php:25
 msgid "Copy a BOM to New Item Code"
 msgstr "Kopjoni një bom për Kodin e Ri Item"
 
@@ -7482,7 +7482,7 @@ msgstr "Customer Dega"
 msgid "has been added, add another branch, or return to the"
 msgstr "është shtuar, shtoni një degë tjetër, ose të kthehen në <a href=index.php>Main Menu</a>"
 
-#: CustomerBranches.php:248 index.php:11 includes/header.inc:129
+#: CustomerBranches.php:248 index.php:11 includes/header.php:129
 msgid "Main Menu"
 msgstr "Main Menu"
 
@@ -8986,7 +8986,7 @@ msgstr "% GP"
 msgid "Avg Daily Sales"
 msgstr "Avg Sales Daily"
 
-#: Dashboard.php:6 includes/header.inc:126
+#: Dashboard.php:6 includes/header.php:126
 msgid "Dashboard"
 msgstr "baltëpritëse"
 
@@ -9753,7 +9753,7 @@ msgid "No occurrences so far"
 msgstr "Nuk ndodhi deri tani"
 
 #: EDIProcessOrders.php:125 includes/MiscFunctions.php:47
-#: includes/footer.inc:13
+#: includes/footer.php:13
 msgid "ERROR"
 msgstr "GABIM"
 
@@ -23037,7 +23037,7 @@ msgstr "Grupi Nga 3"
 msgid "Group By 4"
 msgstr "Grupi Nga 4"
 
-#: SalesAnalysis_UserDefined.php:6 includes/session.inc:279
+#: SalesAnalysis_UserDefined.php:6 includes/session.php:279
 msgid "The security settings on your account do not permit you to access this function"
 msgstr "Parametrat e sigurisë në llogarinë tuaj nuk keni leje për të hyrë në këtë funksion"
 
@@ -29231,8 +29231,8 @@ msgstr "Të gjitha Çmimet"
 msgid "Current Price"
 msgstr "Çmimi aktual"
 
-#: SuppPriceList.php:150 includes/MiscFunctions.php:61 includes/footer.inc:13
-#: includes/footer.inc:21 includes/footer.inc:29
+#: SuppPriceList.php:150 includes/MiscFunctions.php:61 includes/footer.php:13
+#: includes/footer.php:21 includes/footer.php:29
 msgid "Report"
 msgstr "Raport"
 
@@ -38328,7 +38328,7 @@ msgstr "Ju lutemi identifikohuni këtu"
 msgid "Your webserver is configured to enable Magic Quotes. This may cause problems if you use punctuation (such as quotes) when doing data entry. You should contact your webmaster to disable Magic Quotes"
 msgstr "shërbyesi juaj është konfiguruar për të mundësuar Magic Quotes. Kjo mund të shkaktojë probleme në qoftë se ju përdorni shenjat e pikësimit (të tilla si kuotat) kur e bëjnë futjen e të dhënave. Ju duhet të kontaktoni webmaster tuaj të çaktivizuar Magic Quotes"
 
-#: includes/Login.php:63 includes/header.inc:107
+#: includes/Login.php:63 includes/header.php:107
 msgid "Company"
 msgstr "Kompania"
 
@@ -38376,15 +38376,15 @@ msgstr "Hyrje"
 msgid "Message Report"
 msgstr "Mesazh Report"
 
-#: includes/MiscFunctions.php:61 includes/footer.inc:29
+#: includes/MiscFunctions.php:61 includes/footer.php:29
 msgid "SUCCESS"
 msgstr "SUKSES"
 
-#: includes/MiscFunctions.php:68 includes/footer.inc:37
+#: includes/MiscFunctions.php:68 includes/footer.php:37
 msgid "INFORMATION"
 msgstr "INFORMACION"
 
-#: includes/MiscFunctions.php:68 includes/footer.inc:37
+#: includes/MiscFunctions.php:68 includes/footer.php:37
 msgid "Message"
 msgstr "Mesazh"
 
@@ -39774,116 +39774,116 @@ msgstr "ka qenë i dërguar me email për të"
 msgid "could not be renamed to"
 msgstr "nuk mund të jetë me email për të"
 
-#: includes/footer.inc:59
+#: includes/footer.php:59
 #, fuzzy
 msgid "version"
 msgstr "Version"
 
-#: includes/header.inc:110
+#: includes/header.php:110
 msgid "Change settings for"
 msgstr "Ndryshoni cilësimet për"
 
-#: includes/header.inc:126
+#: includes/header.php:126
 msgid "Show Dashboard"
 msgstr "Trego Paneli i drejtimit"
 
-#: includes/header.inc:129
+#: includes/header.php:129
 msgid "Return to the main menu"
 msgstr "Kthehu tek menuja kryesore"
 
-#: includes/header.inc:140
+#: includes/header.php:140
 msgid "Add this script to your list of commonly used"
 msgstr "Shto këtë dorëshkrim në listën tuaj të zakonshëm që përdoret"
 
-#: includes/header.inc:140
+#: includes/header.php:140
 msgid "Add to commonly used"
 msgstr "Add to përdoret zakonisht"
 
-#: includes/header.inc:142
+#: includes/header.php:142
 msgid "Remove this script from your list of commonly used"
 msgstr "Hiq këtë dorëshkrim nga lista juaj e zakonshëm që përdoret"
 
-#: includes/header.inc:142
+#: includes/header.php:142
 msgid "Remove from commonly used"
 msgstr "Hiq nga zakonisht përdoret"
 
-#: includes/header.inc:152
+#: includes/header.php:152
 msgid "Commonly used"
 msgstr "përdoret zakonisht"
 
-#: includes/header.inc:158 includes/header.inc:162
+#: includes/header.php:158 includes/header.php:162
 msgid "Read the manual page for this functionality"
 msgstr "Lexoni faqen manuale për këtë funksionalitet"
 
-#: includes/header.inc:158 includes/header.inc:162
+#: includes/header.php:158 includes/header.php:162
 msgid "Help"
 msgstr "Ndihmë"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Logout"
 msgstr "Logout"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Are you sure you wish to logout?"
 msgstr "A jeni i sigurt se doni të logout?"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Confirm Logout"
 msgstr "Konfirmo Logout"
 
-#: includes/session.inc:117 includes/session.inc:254
+#: includes/session.php:117 includes/session.php:254
 msgid "Account Error Report"
 msgstr "Raporti i llogarisë Gabim"
 
-#: includes/session.inc:120
+#: includes/session.php:120
 #, fuzzy
 msgid "Your user role does not have any access defined for KwaMoja. There is an error in the security setup for this user account"
 msgstr "Roli juaj përdorues nuk ka ndonjë qasje të përcaktuara për KwaMoja. Nuk është një gabim në përgatitje e sigurisë për këtë llogari përdoruesi"
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "incorrect password"
 msgstr "password i gabuar"
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "The user/password combination"
 msgstr "/ User password kombinim"
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "is not a valid user of the system"
 msgstr "nuk është një përdorues i vlefshëm i sistemit"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 msgid "system maintenance"
 msgstr "mirëmbajtjen e sistemit"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 #, fuzzy
 msgid "KwaMoja is not available right now"
 msgstr "KwaMoja nuk është në dispozicion tani për tani"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 msgid "during maintenance of the system"
 msgstr "gjatë mirëmbajtjen e sistemit të"
 
-#: includes/session.inc:244
+#: includes/session.php:244
 #, fuzzy
 msgid "KwaMoja is configured to allow only secure socket connections. Pages must be called with https://"
 msgstr "KwaMoja është konfiguruar për të lejuar vetëm lidhje të sigurt fole. Faqet duhet të quhet me https: / /"
 
-#: includes/session.inc:257
+#: includes/session.php:257
 msgid "Security settings have not been defined for your user account. Please advise your system administrator. It could also be that there is a session problem with your PHP web server"
 msgstr "Konfigurimet e Sigurimit nuk kanë qenë të përcaktuar për llogarinë tuaj të përdoruesit. Ju lutemi të këshillojë administratorin tuaj të sistemit. Kjo mund të jetë gjithashtu se ka një problem sesion me PHP web serverin tuaj"
 
-#: includes/session.inc:273
+#: includes/session.php:273
 msgid "Security Permissions Problem"
 msgstr "Sigurisë Permissions Problem"
 
-#: includes/session.inc:321
+#: includes/session.php:321
 #, fuzzy
 msgid "Error in form verification"
 msgstr "Gabim në formë verificationm"
 
-#: includes/session.inc:323
+#: includes/session.php:323
 msgid "This form was not submitted with a correct ID"
 msgstr "Kjo formë nuk është dorëzuar me një ID saktë"
 

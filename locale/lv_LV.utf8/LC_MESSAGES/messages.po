@@ -4329,7 +4329,7 @@ msgstr "Nevar paņemt mbflag"
 
 #: ConfirmDispatch_Invoice.php:984 CounterReturns.php:997
 #: CounterSales.php:1414 FixedAssetItems.php:651 SalesAnalReptCols.php:305
-#: Stocks.php:1384 includes/MiscFunctions.php:54 includes/footer.inc:21
+#: Stocks.php:1384 includes/MiscFunctions.php:54 includes/footer.php:21
 msgid "WARNING"
 msgstr "Uzmanību"
 
@@ -5682,7 +5682,7 @@ msgstr "Izveidot citāts"
 msgid "Cancel and Delete Contract"
 msgstr "Atcelt un Delete līgumu"
 
-#: CopyBOM.php:10 includes/header.inc:25
+#: CopyBOM.php:10 includes/header.php:25
 msgid "Copy a BOM to New Item Code"
 msgstr "Kopēt BOM uz New Vienības kodeksu"
 
@@ -7464,7 +7464,7 @@ msgstr "Klienta filiāle"
 msgid "has been added, add another branch, or return to the"
 msgstr "tika veiksmīgi pievienota, Jūs varat pievienotu citu filiāli, vai  atgriezties &amp;amp;lt;a href=index.php&amp;amp;gt;Galvenajā izvēlnē&amp;amp;lt;/a&amp;amp;gt;&amp;amp;lt;/I&amp;amp;gt;&amp;amp;lt;/TD&amp;amp;gt;"
 
-#: CustomerBranches.php:248 index.php:11 includes/header.inc:129
+#: CustomerBranches.php:248 index.php:11 includes/header.php:129
 msgid "Main Menu"
 msgstr "Galvenā izvēlne"
 
@@ -8968,7 +8968,7 @@ msgstr "GP %"
 msgid "Avg Daily Sales"
 msgstr "Vid Ikdienas Sales"
 
-#: Dashboard.php:6 includes/header.inc:126
+#: Dashboard.php:6 includes/header.php:126
 msgid "Dashboard"
 msgstr "mērinstrumentu panelis"
 
@@ -9735,7 +9735,7 @@ msgid "No occurrences so far"
 msgstr "Nav gadījumi līdz šim"
 
 #: EDIProcessOrders.php:125 includes/MiscFunctions.php:47
-#: includes/footer.inc:13
+#: includes/footer.php:13
 msgid "ERROR"
 msgstr "Kļūda"
 
@@ -22958,7 +22958,7 @@ msgstr "Grupēt pēc 3"
 msgid "Group By 4"
 msgstr "Grupa Līdz 4"
 
-#: SalesAnalysis_UserDefined.php:6 includes/session.inc:279
+#: SalesAnalysis_UserDefined.php:6 includes/session.php:279
 msgid "The security settings on your account do not permit you to access this function"
 msgstr "Jūsu lietotāja uzstādijumi liedz piekļuvi &#353;ai funkcionalitātei"
 
@@ -29131,8 +29131,8 @@ msgstr "Visas cenas"
 msgid "Current Price"
 msgstr "Tekošā cena"
 
-#: SuppPriceList.php:150 includes/MiscFunctions.php:61 includes/footer.inc:13
-#: includes/footer.inc:21 includes/footer.inc:29
+#: SuppPriceList.php:150 includes/MiscFunctions.php:61 includes/footer.php:13
+#: includes/footer.php:21 includes/footer.php:29
 msgid "Report"
 msgstr "Atskaite"
 
@@ -38154,7 +38154,7 @@ msgstr "Lūdzu ielogojieties &#353;eit"
 msgid "Your webserver is configured to enable Magic Quotes. This may cause problems if you use punctuation (such as quotes) when doing data entry. You should contact your webmaster to disable Magic Quotes"
 msgstr "Jūsu tīmekļa serveris ir konfigurēts , lai Magic Quotes . "
 
-#: includes/Login.php:63 includes/header.inc:107
+#: includes/Login.php:63 includes/header.php:107
 msgid "Company"
 msgstr "Uzņēmums"
 
@@ -38202,15 +38202,15 @@ msgstr "login"
 msgid "Message Report"
 msgstr "Ziņojuma atskaite"
 
-#: includes/MiscFunctions.php:61 includes/footer.inc:29
+#: includes/MiscFunctions.php:61 includes/footer.php:29
 msgid "SUCCESS"
 msgstr "Veiksmīgi"
 
-#: includes/MiscFunctions.php:68 includes/footer.inc:37
+#: includes/MiscFunctions.php:68 includes/footer.php:37
 msgid "INFORMATION"
 msgstr "Informācija"
 
-#: includes/MiscFunctions.php:68 includes/footer.inc:37
+#: includes/MiscFunctions.php:68 includes/footer.php:37
 msgid "Message"
 msgstr "Ziņa"
 
@@ -39593,115 +39593,115 @@ msgstr "tika dzēsta"
 msgid "could not be renamed to"
 msgstr "nevar pievienot"
 
-#: includes/footer.inc:59
+#: includes/footer.php:59
 #, fuzzy
 msgid "version"
 msgstr "Versija"
 
-#: includes/header.inc:110
+#: includes/header.php:110
 msgid "Change settings for"
 msgstr "Iestatījumu maiņa"
 
-#: includes/header.inc:126
+#: includes/header.php:126
 msgid "Show Dashboard"
 msgstr "Rādīt paneli"
 
-#: includes/header.inc:129
+#: includes/header.php:129
 msgid "Return to the main menu"
 msgstr "Atgriezties uz galveno izvēlni"
 
-#: includes/header.inc:140
+#: includes/header.php:140
 msgid "Add this script to your list of commonly used"
 msgstr "Pievienot šo skriptu, lai savu sarakstu , ko parasti izmanto"
 
-#: includes/header.inc:140
+#: includes/header.php:140
 msgid "Add to commonly used"
 msgstr "Pievienot parasti izmanto"
 
-#: includes/header.inc:142
+#: includes/header.php:142
 msgid "Remove this script from your list of commonly used"
 msgstr "Noņemt šo skriptu no jūsu saraksta , ko parasti izmanto"
 
-#: includes/header.inc:142
+#: includes/header.php:142
 msgid "Remove from commonly used"
 msgstr "Noņemt no parasti izmanto"
 
-#: includes/header.inc:152
+#: includes/header.php:152
 msgid "Commonly used"
 msgstr "parasti izmanto"
 
-#: includes/header.inc:158 includes/header.inc:162
+#: includes/header.php:158 includes/header.php:162
 msgid "Read the manual page for this functionality"
 msgstr "Lasīt manuālo lapu, lai šo funkcionalitāti"
 
-#: includes/header.inc:158 includes/header.inc:162
+#: includes/header.php:158 includes/header.php:162
 msgid "Help"
 msgstr "palīdzēt"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Logout"
 msgstr "Iziet"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Are you sure you wish to logout?"
 msgstr "Vai tie&#353;ām vēlaties iziet?"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Confirm Logout"
 msgstr "apstiprināt Iziet"
 
-#: includes/session.inc:117 includes/session.inc:254
+#: includes/session.php:117 includes/session.php:254
 msgid "Account Error Report"
 msgstr "Kontu kļudu atskaite"
 
-#: includes/session.inc:120
+#: includes/session.php:120
 #, fuzzy
 msgid "Your user role does not have any access defined for KwaMoja. There is an error in the security setup for this user account"
 msgstr "Lietotājam nav nodefinētas pieejas tiesības"
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "incorrect password"
 msgstr "nepareiza parole"
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "The user/password combination"
 msgstr "Lietotāja un paroles kombinācija"
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "is not a valid user of the system"
 msgstr "nepareizs lietotāja vārds"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 msgid "system maintenance"
 msgstr "sistēmas uzturēšana"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 msgid "KwaMoja is not available right now"
 msgstr "KwaMoja nav pieejama tieši tagad"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 msgid "during maintenance of the system"
 msgstr "laikā sistēmas uzturēšanai"
 
-#: includes/session.inc:244
+#: includes/session.php:244
 #, fuzzy
 msgid "KwaMoja is configured to allow only secure socket connections. Pages must be called with https://"
 msgstr "Pieejas ir atļautas tikai ar secure socket conection, www lapai ir jāsākas ar https://"
 
-#: includes/session.inc:257
+#: includes/session.php:257
 msgid "Security settings have not been defined for your user account. Please advise your system administrator. It could also be that there is a session problem with your PHP web server"
 msgstr "Dro&#353;ības uzstādijumi nav definēti Jūsu lietotājas, lūdzu sazinaties ar administrātoru."
 
-#: includes/session.inc:273
+#: includes/session.php:273
 msgid "Security Permissions Problem"
 msgstr "Pieejas tiesību problēma"
 
-#: includes/session.inc:321
+#: includes/session.php:321
 #, fuzzy
 msgid "Error in form verification"
 msgstr "Ievadīt informÄ�ciju"
 
-#: includes/session.inc:323
+#: includes/session.php:323
 msgid "This form was not submitted with a correct ID"
 msgstr "Šī veidlapa netika iesniegta ar pareizu ID,"
 

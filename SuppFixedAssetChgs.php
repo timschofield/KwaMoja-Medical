@@ -162,5 +162,5 @@ echo '<br />
 	</div>';
 
 echo '</form>';
-include('includes/footer.inc');
+include('includes/footer.php');
 ?>

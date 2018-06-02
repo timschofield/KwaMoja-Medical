@@ -4299,7 +4299,7 @@ msgstr "Tdk dapat mengambil mbflag yg"
 
 #: ConfirmDispatch_Invoice.php:984 CounterReturns.php:997
 #: CounterSales.php:1414 FixedAssetItems.php:651 SalesAnalReptCols.php:305
-#: Stocks.php:1384 includes/MiscFunctions.php:54 includes/footer.inc:21
+#: Stocks.php:1384 includes/MiscFunctions.php:54 includes/footer.php:21
 msgid "WARNING"
 msgstr "PERINGATAN"
 
@@ -5646,7 +5646,7 @@ msgstr "Buat Penawaran"
 msgid "Cancel and Delete Contract"
 msgstr "Batal dan Hapus Kontrak"
 
-#: CopyBOM.php:10 includes/header.inc:25
+#: CopyBOM.php:10 includes/header.php:25
 msgid "Copy a BOM to New Item Code"
 msgstr "Salin BOM ke Kode Item Baru"
 
@@ -7397,7 +7397,7 @@ msgstr "Cabang Customer"
 msgid "has been added, add another branch, or return to the"
 msgstr "telah ditambah, tambahkan cabang lainnya, atau kembali ke"
 
-#: CustomerBranches.php:248 index.php:11 includes/header.inc:129
+#: CustomerBranches.php:248 index.php:11 includes/header.php:129
 msgid "Main Menu"
 msgstr "Menu Utama"
 
@@ -8874,7 +8874,7 @@ msgstr "GP%"
 msgid "Avg Daily Sales"
 msgstr "Rata-rata Penjualan Harian"
 
-#: Dashboard.php:6 includes/header.inc:126
+#: Dashboard.php:6 includes/header.php:126
 msgid "Dashboard"
 msgstr "dasbor"
 
@@ -9620,7 +9620,7 @@ msgid "No occurrences so far"
 msgstr "Belum ada kejadian sejauh ini"
 
 #: EDIProcessOrders.php:125 includes/MiscFunctions.php:47
-#: includes/footer.inc:13
+#: includes/footer.php:13
 msgid "ERROR"
 msgstr "KESALAHAN"
 
@@ -22530,7 +22530,7 @@ msgstr "Grup Berdasarkan 3"
 msgid "Group By 4"
 msgstr "Grup Berdasarkan 4"
 
-#: SalesAnalysis_UserDefined.php:6 includes/session.inc:279
+#: SalesAnalysis_UserDefined.php:6 includes/session.php:279
 msgid "The security settings on your account do not permit you to access this function"
 msgstr "Pengaturan keamanan pada akun Anda tdk memperbolehkan Anda mengakses fungsi ini"
 
@@ -28608,8 +28608,8 @@ msgstr "Semua Harga"
 msgid "Current Price"
 msgstr "Harga Berlaku"
 
-#: SuppPriceList.php:150 includes/MiscFunctions.php:61 includes/footer.inc:13
-#: includes/footer.inc:21 includes/footer.inc:29
+#: SuppPriceList.php:150 includes/MiscFunctions.php:61 includes/footer.php:13
+#: includes/footer.php:21 includes/footer.php:29
 msgid "Report"
 msgstr "Laporan"
 
@@ -37402,7 +37402,7 @@ msgstr "Silahkan login disini"
 msgid "Your webserver is configured to enable Magic Quotes. This may cause problems if you use punctuation (such as quotes) when doing data entry. You should contact your webmaster to disable Magic Quotes"
 msgstr "Webserver Anda dikonfigurasi utk mengaktifkan Magic Quotes. Ini dapat mengakibatkan masalah jika Anda menggunakan tanda baca (seperti tanda kutip) saat melakukan pemasukkan data. Anda harus hubungi webmaster Anda utk menon-aktifkan Magic Quotes"
 
-#: includes/Login.php:63 includes/header.inc:107
+#: includes/Login.php:63 includes/header.php:107
 msgid "Company"
 msgstr "Perusahaan"
 
@@ -37450,15 +37450,15 @@ msgstr "Login"
 msgid "Message Report"
 msgstr "Laporan Pesan"
 
-#: includes/MiscFunctions.php:61 includes/footer.inc:29
+#: includes/MiscFunctions.php:61 includes/footer.php:29
 msgid "SUCCESS"
 msgstr "BERHASIL"
 
-#: includes/MiscFunctions.php:68 includes/footer.inc:37
+#: includes/MiscFunctions.php:68 includes/footer.php:37
 msgid "INFORMATION"
 msgstr "INFORMASI"
 
-#: includes/MiscFunctions.php:68 includes/footer.inc:37
+#: includes/MiscFunctions.php:68 includes/footer.php:37
 msgid "Message"
 msgstr "Pesan"
 
@@ -38802,111 +38802,111 @@ msgstr "telah diubah namanya menjadi"
 msgid "could not be renamed to"
 msgstr "tidak bisa diubah namanya menjadi"
 
-#: includes/footer.inc:59
+#: includes/footer.php:59
 msgid "version"
 msgstr "versi"
 
-#: includes/header.inc:110
+#: includes/header.php:110
 msgid "Change settings for"
 msgstr "Mengubah pengaturan untuk"
 
-#: includes/header.inc:126
+#: includes/header.php:126
 msgid "Show Dashboard"
 msgstr "Tampilkan Dashboard"
 
-#: includes/header.inc:129
+#: includes/header.php:129
 msgid "Return to the main menu"
 msgstr "Kembali ke menu utama"
 
-#: includes/header.inc:140
+#: includes/header.php:140
 msgid "Add this script to your list of commonly used"
 msgstr "Tambahkan script ini ke daftar umum digunakan"
 
-#: includes/header.inc:140
+#: includes/header.php:140
 msgid "Add to commonly used"
 msgstr "Tambahkan ke umum digunakan"
 
-#: includes/header.inc:142
+#: includes/header.php:142
 msgid "Remove this script from your list of commonly used"
 msgstr "Hapus script ini dari daftar umum digunakan"
 
-#: includes/header.inc:142
+#: includes/header.php:142
 msgid "Remove from commonly used"
 msgstr "Hapus dari umum digunakan"
 
-#: includes/header.inc:152
+#: includes/header.php:152
 msgid "Commonly used"
 msgstr "umumnya digunakan"
 
-#: includes/header.inc:158 includes/header.inc:162
+#: includes/header.php:158 includes/header.php:162
 msgid "Read the manual page for this functionality"
 msgstr "Baca halaman manual untuk fungsi ini"
 
-#: includes/header.inc:158 includes/header.inc:162
+#: includes/header.php:158 includes/header.php:162
 msgid "Help"
 msgstr "membantu"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Logout"
 msgstr "Logout"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Are you sure you wish to logout?"
 msgstr "Apakah Anda yakin ingin logout?"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Confirm Logout"
 msgstr "Konfirmasi Logout"
 
-#: includes/session.inc:117 includes/session.inc:254
+#: includes/session.php:117 includes/session.php:254
 msgid "Account Error Report"
 msgstr "Laporan Kesalahan Akun"
 
-#: includes/session.inc:120
+#: includes/session.php:120
 msgid "Your user role does not have any access defined for KwaMoja. There is an error in the security setup for this user account"
 msgstr "Posisi user Anda tdk memiliki akses dibuat KwaMoja. Ada kesalahan di pengaturan keamanan utk akun user ini"
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "incorrect password"
 msgstr "kata sandi salah"
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "The user/password combination"
 msgstr "Kombinasi user/kata sandi"
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "is not a valid user of the system"
 msgstr "bukan user berlaku di sistem"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 msgid "system maintenance"
 msgstr "pemeliharaan sistem"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 msgid "KwaMoja is not available right now"
 msgstr "KwaMoja tdk tersedia sekarang"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 msgid "during maintenance of the system"
 msgstr "selama pemeliharaan sistem"
 
-#: includes/session.inc:244
+#: includes/session.php:244
 msgid "KwaMoja is configured to allow only secure socket connections. Pages must be called with https://"
 msgstr "KwaMoja dikonfigurasi hanya terbatas utk koneksi dgn menggunakan socket secure. Halaman harus dipanggil dgn https://"
 
-#: includes/session.inc:257
+#: includes/session.php:257
 msgid "Security settings have not been defined for your user account. Please advise your system administrator. It could also be that there is a session problem with your PHP web server"
 msgstr "Pengaturan keamanan belum dibuat utk akun user Anda. Silahkan beritahu administrator sistem Anda. Dapat juga karena ada masalah session dgn web server PHP Anda"
 
-#: includes/session.inc:273
+#: includes/session.php:273
 msgid "Security Permissions Problem"
 msgstr "Masalah Izin Keamanan"
 
-#: includes/session.inc:321
+#: includes/session.php:321
 msgid "Error in form verification"
 msgstr "Kesalahan saat verifikasi formulir"
 
-#: includes/session.inc:323
+#: includes/session.php:323
 msgid "This form was not submitted with a correct ID"
 msgstr "Formulir ini tdk disampaikan dgn ID yg benar"
 

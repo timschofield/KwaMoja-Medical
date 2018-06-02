@@ -4326,7 +4326,7 @@ msgstr "Ne mogu dohvatiti mbflag"
 
 #: ConfirmDispatch_Invoice.php:984 CounterReturns.php:997
 #: CounterSales.php:1414 FixedAssetItems.php:651 SalesAnalReptCols.php:305
-#: Stocks.php:1384 includes/MiscFunctions.php:54 includes/footer.inc:21
+#: Stocks.php:1384 includes/MiscFunctions.php:54 includes/footer.php:21
 msgid "WARNING"
 msgstr "UPOZORENJE"
 
@@ -5678,7 +5678,7 @@ msgstr "Stvaranje ponudu"
 msgid "Cancel and Delete Contract"
 msgstr "Odustani i Obriši Ugovor"
 
-#: CopyBOM.php:10 includes/header.inc:25
+#: CopyBOM.php:10 includes/header.php:25
 msgid "Copy a BOM to New Item Code"
 msgstr "Kopirajte je troškovnik za New Šifra"
 
@@ -7447,7 +7447,7 @@ msgstr "Podružnica kupca"
 msgid "has been added, add another branch, or return to the"
 msgstr "dodan , dodajte još jednu podružnicu , ili se vratiti u"
 
-#: CustomerBranches.php:248 index.php:11 includes/header.inc:129
+#: CustomerBranches.php:248 index.php:11 includes/header.php:129
 msgid "Main Menu"
 msgstr "Glavni izbornik"
 
@@ -8948,7 +8948,7 @@ msgstr "GP %"
 msgid "Avg Daily Sales"
 msgstr "Prosječna dnevna prodaja"
 
-#: Dashboard.php:6 includes/header.inc:126
+#: Dashboard.php:6 includes/header.php:126
 msgid "Dashboard"
 msgstr "ploča s instrumentima"
 
@@ -9710,7 +9710,7 @@ msgid "No occurrences so far"
 msgstr "Nema pojave dosada"
 
 #: EDIProcessOrders.php:125 includes/MiscFunctions.php:47
-#: includes/footer.inc:13
+#: includes/footer.php:13
 msgid "ERROR"
 msgstr "POGREŠKA"
 
@@ -22829,7 +22829,7 @@ msgstr "Grupiraj po 3"
 msgid "Group By 4"
 msgstr "Grupiraj po 4"
 
-#: SalesAnalysis_UserDefined.php:6 includes/session.inc:279
+#: SalesAnalysis_UserDefined.php:6 includes/session.php:279
 msgid "The security settings on your account do not permit you to access this function"
 msgstr "Sigurnosne postavke na vašem računu ne dopustiti da pristup ovu funkciju"
 
@@ -28968,8 +28968,8 @@ msgstr "Sve cijene"
 msgid "Current Price"
 msgstr "trenutna cijena"
 
-#: SuppPriceList.php:150 includes/MiscFunctions.php:61 includes/footer.inc:13
-#: includes/footer.inc:21 includes/footer.inc:29
+#: SuppPriceList.php:150 includes/MiscFunctions.php:61 includes/footer.php:13
+#: includes/footer.php:21 includes/footer.php:29
 msgid "Report"
 msgstr "Izvješće"
 
@@ -37921,7 +37921,7 @@ msgstr "Prijava"
 msgid "Your webserver is configured to enable Magic Quotes. This may cause problems if you use punctuation (such as quotes) when doing data entry. You should contact your webmaster to disable Magic Quotes"
 msgstr "Vaš je web server konfiguriran za podršku Magic Quotes. Ovo može izazvati probleme pri korištenju navodnika kod unosa podataka. Kontaktirajte administratora kako bi isključio podršku za Magic Quotes"
 
-#: includes/Login.php:63 includes/header.inc:107
+#: includes/Login.php:63 includes/header.php:107
 msgid "Company"
 msgstr "Poduzeće"
 
@@ -37969,15 +37969,15 @@ msgstr "Prijava"
 msgid "Message Report"
 msgstr "Izvješće o porukama"
 
-#: includes/MiscFunctions.php:61 includes/footer.inc:29
+#: includes/MiscFunctions.php:61 includes/footer.php:29
 msgid "SUCCESS"
 msgstr "USPJEŠNO"
 
-#: includes/MiscFunctions.php:68 includes/footer.inc:37
+#: includes/MiscFunctions.php:68 includes/footer.php:37
 msgid "INFORMATION"
 msgstr "PODACI"
 
-#: includes/MiscFunctions.php:68 includes/footer.inc:37
+#: includes/MiscFunctions.php:68 includes/footer.php:37
 msgid "Message"
 msgstr "Poruka"
 
@@ -39360,113 +39360,113 @@ msgstr "je kreiran"
 msgid "could not be renamed to"
 msgstr "ne može biti kreirana zbog"
 
-#: includes/footer.inc:59
+#: includes/footer.php:59
 #, fuzzy
 msgid "version"
 msgstr "Štampanje"
 
-#: includes/header.inc:110
+#: includes/header.php:110
 msgid "Change settings for"
 msgstr "Promjena postavki za"
 
-#: includes/header.inc:126
+#: includes/header.php:126
 msgid "Show Dashboard"
 msgstr "Pokaži ploča"
 
-#: includes/header.inc:129
+#: includes/header.php:129
 msgid "Return to the main menu"
 msgstr "Povratak na glavni izbornik"
 
-#: includes/header.inc:140
+#: includes/header.php:140
 msgid "Add this script to your list of commonly used"
 msgstr "Dodaj ovu skriptu na popisu uobičajeno"
 
-#: includes/header.inc:140
+#: includes/header.php:140
 msgid "Add to commonly used"
 msgstr "Dodaj u uobičajeno"
 
-#: includes/header.inc:142
+#: includes/header.php:142
 msgid "Remove this script from your list of commonly used"
 msgstr "Ukloni ovaj scenarij s popisa koji se obično koriste"
 
-#: includes/header.inc:142
+#: includes/header.php:142
 msgid "Remove from commonly used"
 msgstr "Izvadite iz uobičajeno"
 
-#: includes/header.inc:152
+#: includes/header.php:152
 msgid "Commonly used"
 msgstr "Uobičajeno"
 
-#: includes/header.inc:158 includes/header.inc:162
+#: includes/header.php:158 includes/header.php:162
 msgid "Read the manual page for this functionality"
 msgstr "Pročitajte man stranicu za tu funkciju"
 
-#: includes/header.inc:158 includes/header.inc:162
+#: includes/header.php:158 includes/header.php:162
 msgid "Help"
 msgstr "pomoći"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Logout"
 msgstr "Odjava"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Are you sure you wish to logout?"
 msgstr "Jeste li sigurni da želite odjaviti ?"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Confirm Logout"
 msgstr "Potvrdi Odjava"
 
-#: includes/session.inc:117 includes/session.inc:254
+#: includes/session.php:117 includes/session.php:254
 msgid "Account Error Report"
 msgstr "Račun Izvješće o pogrešci"
 
-#: includes/session.inc:120
+#: includes/session.php:120
 msgid "Your user role does not have any access defined for KwaMoja. There is an error in the security setup for this user account"
 msgstr "Vaša uloga korisnik nema pristup bilo definirano za KwaMoja . "
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "incorrect password"
 msgstr "pogrešna lozinka"
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "The user/password combination"
 msgstr "Korisnik / lozinka kombinacija"
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "is not a valid user of the system"
 msgstr "nije važeća korisnik sustava"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 msgid "system maintenance"
 msgstr "održavanje sustava"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 msgid "KwaMoja is not available right now"
 msgstr "KwaMoja nije dostupan u ovom trenutku"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 msgid "during maintenance of the system"
 msgstr "tijekom održavanja sustava"
 
-#: includes/session.inc:244
+#: includes/session.php:244
 msgid "KwaMoja is configured to allow only secure socket connections. Pages must be called with https://"
 msgstr "KwaMoja se konfigurirati za dopustiti samo Secure Socket veze . "
 
-#: includes/session.inc:257
+#: includes/session.php:257
 msgid "Security settings have not been defined for your user account. Please advise your system administrator. It could also be that there is a session problem with your PHP web server"
 msgstr "Sigurnosne postavke nisu definirana za vaš korisnički račun . "
 
-#: includes/session.inc:273
+#: includes/session.php:273
 msgid "Security Permissions Problem"
 msgstr "Sigurnosne dozvole Problem"
 
-#: includes/session.inc:321
+#: includes/session.php:321
 #, fuzzy
 msgid "Error in form verification"
 msgstr "Unos podataka"
 
-#: includes/session.inc:323
+#: includes/session.php:323
 msgid "This form was not submitted with a correct ID"
 msgstr "Ovaj oblik nije dostavljen s ispravnom ID"
 

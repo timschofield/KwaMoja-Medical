@@ -4339,7 +4339,7 @@ msgstr "Kan niet ophalen van de mbflag"
 
 #: ConfirmDispatch_Invoice.php:984 CounterReturns.php:997
 #: CounterSales.php:1414 FixedAssetItems.php:651 SalesAnalReptCols.php:305
-#: Stocks.php:1384 includes/MiscFunctions.php:54 includes/footer.inc:21
+#: Stocks.php:1384 includes/MiscFunctions.php:54 includes/footer.php:21
 msgid "WARNING"
 msgstr "WAARSCHUWING"
 
@@ -5692,7 +5692,7 @@ msgstr "Maak Offerte"
 msgid "Cancel and Delete Contract"
 msgstr "Annuleren en verwijderen Contract"
 
-#: CopyBOM.php:10 includes/header.inc:25
+#: CopyBOM.php:10 includes/header.php:25
 msgid "Copy a BOM to New Item Code"
 msgstr "Kopieer een BOM naar New Item Code"
 
@@ -7487,7 +7487,7 @@ msgstr "Klanten Branch"
 msgid "has been added, add another branch, or return to the"
 msgstr "branch is toegevoegd, voeg nog een branch toe of ga terug naar"
 
-#: CustomerBranches.php:248 index.php:11 includes/header.inc:129
+#: CustomerBranches.php:248 index.php:11 includes/header.php:129
 msgid "Main Menu"
 msgstr "Hoofd Menu"
 
@@ -8991,7 +8991,7 @@ msgstr "GP%"
 msgid "Avg Daily Sales"
 msgstr "Gem dagelijkse verkopen"
 
-#: Dashboard.php:6 includes/header.inc:126
+#: Dashboard.php:6 includes/header.php:126
 msgid "Dashboard"
 msgstr "dashboard"
 
@@ -9757,7 +9757,7 @@ msgid "No occurrences so far"
 msgstr "Tot dusverre niet voorgekomen"
 
 #: EDIProcessOrders.php:125 includes/MiscFunctions.php:47
-#: includes/footer.inc:13
+#: includes/footer.php:13
 msgid "ERROR"
 msgstr "FOUT"
 
@@ -23039,7 +23039,7 @@ msgstr "Groepeer bij 3"
 msgid "Group By 4"
 msgstr "Groepeer bij 4"
 
-#: SalesAnalysis_UserDefined.php:6 includes/session.inc:279
+#: SalesAnalysis_UserDefined.php:6 includes/session.php:279
 msgid "The security settings on your account do not permit you to access this function"
 msgstr "U bent niet geauthoriseerd voor deze transactie"
 
@@ -29233,8 +29233,8 @@ msgstr "Alle prijzen"
 msgid "Current Price"
 msgstr "Huidige prijs"
 
-#: SuppPriceList.php:150 includes/MiscFunctions.php:61 includes/footer.inc:13
-#: includes/footer.inc:21 includes/footer.inc:29
+#: SuppPriceList.php:150 includes/MiscFunctions.php:61 includes/footer.php:13
+#: includes/footer.php:21 includes/footer.php:29
 msgid "Report"
 msgstr "Rapport"
 
@@ -38331,7 +38331,7 @@ msgstr "Hier aanmelden AUB"
 msgid "Your webserver is configured to enable Magic Quotes. This may cause problems if you use punctuation (such as quotes) when doing data entry. You should contact your webmaster to disable Magic Quotes"
 msgstr "Webserver configuratie laat Magic Quotes toe. Dit kan problemen veroorzaken als leestekens worden gebruikt bij gegevens invoer. Contacteer webmaster om Magic Quotes niet langer toe te laten"
 
-#: includes/Login.php:63 includes/header.inc:107
+#: includes/Login.php:63 includes/header.php:107
 msgid "Company"
 msgstr "Bedrijf"
 
@@ -38379,15 +38379,15 @@ msgstr "Aanmelden"
 msgid "Message Report"
 msgstr "Bericht Rapport"
 
-#: includes/MiscFunctions.php:61 includes/footer.inc:29
+#: includes/MiscFunctions.php:61 includes/footer.php:29
 msgid "SUCCESS"
 msgstr "GELUKT"
 
-#: includes/MiscFunctions.php:68 includes/footer.inc:37
+#: includes/MiscFunctions.php:68 includes/footer.php:37
 msgid "INFORMATION"
 msgstr "INFORMATIE"
 
-#: includes/MiscFunctions.php:68 includes/footer.inc:37
+#: includes/MiscFunctions.php:68 includes/footer.php:37
 msgid "Message"
 msgstr "Bericht"
 
@@ -39777,116 +39777,116 @@ msgstr "is gemailed naar"
 msgid "could not be renamed to"
 msgstr "kon niet worden verstuurd per e-mail naar"
 
-#: includes/footer.inc:59
+#: includes/footer.php:59
 #, fuzzy
 msgid "version"
 msgstr "Versie"
 
-#: includes/header.inc:110
+#: includes/header.php:110
 msgid "Change settings for"
 msgstr "Instellingen voor het wijzigen"
 
-#: includes/header.inc:126
+#: includes/header.php:126
 msgid "Show Dashboard"
 msgstr "Toon Dashboard"
 
-#: includes/header.inc:129
+#: includes/header.php:129
 msgid "Return to the main menu"
 msgstr "Terug naar het hoofdmenu"
 
-#: includes/header.inc:140
+#: includes/header.php:140
 msgid "Add this script to your list of commonly used"
 msgstr "Voeg dit script aan uw lijst met veelgebruikte"
 
-#: includes/header.inc:140
+#: includes/header.php:140
 msgid "Add to commonly used"
 msgstr "Toevoegen aan veelgebruikte"
 
-#: includes/header.inc:142
+#: includes/header.php:142
 msgid "Remove this script from your list of commonly used"
 msgstr "Verwijder dit script uit uw lijst met veelgebruikte"
 
-#: includes/header.inc:142
+#: includes/header.php:142
 msgid "Remove from commonly used"
 msgstr "Verwijderen uit veelgebruikte"
 
-#: includes/header.inc:152
+#: includes/header.php:152
 msgid "Commonly used"
 msgstr "veelgebruikte"
 
-#: includes/header.inc:158 includes/header.inc:162
+#: includes/header.php:158 includes/header.php:162
 msgid "Read the manual page for this functionality"
 msgstr "Lees de handleiding voor deze functionaliteit"
 
-#: includes/header.inc:158 includes/header.inc:162
+#: includes/header.php:158 includes/header.php:162
 msgid "Help"
 msgstr "Help"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Logout"
 msgstr "Afmelden"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Are you sure you wish to logout?"
 msgstr "Weet u zeker dat u wilt afmelden"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Confirm Logout"
 msgstr "bevestigen Afmelden"
 
-#: includes/session.inc:117 includes/session.inc:254
+#: includes/session.php:117 includes/session.php:254
 msgid "Account Error Report"
 msgstr "Account Foutrapport"
 
-#: includes/session.inc:120
+#: includes/session.php:120
 #, fuzzy
 msgid "Your user role does not have any access defined for KwaMoja. There is an error in the security setup for this user account"
 msgstr "Uw gerbuiker heeft geen toegang tot het systeem. Er is een fout in de authorisatie voor deze gebuiker"
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "incorrect password"
 msgstr "incorrect passwoord"
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "The user/password combination"
 msgstr "De gerbuiker / passwoord combinatie"
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "is not a valid user of the system"
 msgstr "is geen geldige gebruiker voor het systeem"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 msgid "system maintenance"
 msgstr "onderhoud van het systeem"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 #, fuzzy
 msgid "KwaMoja is not available right now"
 msgstr "KwaMoja is momenteel niet beschikbaar"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 msgid "during maintenance of the system"
 msgstr "tijdens het onderhoud van het systeem"
 
-#: includes/session.inc:244
+#: includes/session.php:244
 #, fuzzy
 msgid "KwaMoja is configured to allow only secure socket connections. Pages must be called with https://"
 msgstr "KwaMoja is zo opgezet dat er alleen een secure verbinding kan worden opgezet. Pagina's moeten worden opgeroepen met https://"
 
-#: includes/session.inc:257
+#: includes/session.php:257
 msgid "Security settings have not been defined for your user account. Please advise your system administrator. It could also be that there is a session problem with your PHP web server"
 msgstr "Authorisaties zijn niet gedefinieerd voor uw gebruikers account. Informeer uw systeem beherder. Het is ook mogelijk dat er een probleem is met uw PHP web server"
 
-#: includes/session.inc:273
+#: includes/session.php:273
 msgid "Security Permissions Problem"
 msgstr "Beveiligingsmachtigingen Probleem"
 
-#: includes/session.inc:321
+#: includes/session.php:321
 #, fuzzy
 msgid "Error in form verification"
 msgstr "Fout in de vorm verificationm"
 
-#: includes/session.inc:323
+#: includes/session.php:323
 msgid "This form was not submitted with a correct ID"
 msgstr "Dit formulier is niet bij een juiste ID"
 

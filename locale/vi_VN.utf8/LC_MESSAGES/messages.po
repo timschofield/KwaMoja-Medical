@@ -4335,7 +4335,7 @@ msgstr "Không thể lấy lại mbflag"
 
 #: ConfirmDispatch_Invoice.php:984 CounterReturns.php:997
 #: CounterSales.php:1414 FixedAssetItems.php:651 SalesAnalReptCols.php:305
-#: Stocks.php:1384 includes/MiscFunctions.php:54 includes/footer.inc:21
+#: Stocks.php:1384 includes/MiscFunctions.php:54 includes/footer.php:21
 msgid "WARNING"
 msgstr "cảnh báo"
 
@@ -5688,7 +5688,7 @@ msgstr "Thiết lập báo giá"
 msgid "Cancel and Delete Contract"
 msgstr "hủy và xóa hợp đồng"
 
-#: CopyBOM.php:10 includes/header.inc:25
+#: CopyBOM.php:10 includes/header.php:25
 msgid "Copy a BOM to New Item Code"
 msgstr "Sao chép một HĐQT mới Item Code"
 
@@ -7480,7 +7480,7 @@ msgstr "chi nhánh khách hàng <b>"
 msgid "has been added, add another branch, or return to the"
 msgstr "Đã được thêm vào giao dịch"
 
-#: CustomerBranches.php:248 index.php:11 includes/header.inc:129
+#: CustomerBranches.php:248 index.php:11 includes/header.php:129
 msgid "Main Menu"
 msgstr "Menu chính"
 
@@ -8984,7 +8984,7 @@ msgstr "GP%"
 msgid "Avg Daily Sales"
 msgstr "Lu?ng hàng bán trung mình m?i ngày"
 
-#: Dashboard.php:6 includes/header.inc:126
+#: Dashboard.php:6 includes/header.php:126
 msgid "Dashboard"
 msgstr "bảng điều khiển"
 
@@ -9751,7 +9751,7 @@ msgid "No occurrences so far"
 msgstr "Không xuất hiện cho đến nay"
 
 #: EDIProcessOrders.php:125 includes/MiscFunctions.php:47
-#: includes/footer.inc:13
+#: includes/footer.php:13
 msgid "ERROR"
 msgstr "LỖI"
 
@@ -23008,7 +23008,7 @@ msgstr "Nhóm theo 3"
 msgid "Group By 4"
 msgstr "Nhóm bởi 4"
 
-#: SalesAnalysis_UserDefined.php:6 includes/session.inc:279
+#: SalesAnalysis_UserDefined.php:6 includes/session.php:279
 msgid "The security settings on your account do not permit you to access this function"
 msgstr "Các thiết lập bảo mật tài khoản của bạn không cho phép bạn truy cập vào chức năng này"
 
@@ -29188,8 +29188,8 @@ msgstr "Toàn bộ giá cả"
 msgid "Current Price"
 msgstr "Giá hiện tại"
 
-#: SuppPriceList.php:150 includes/MiscFunctions.php:61 includes/footer.inc:13
-#: includes/footer.inc:21 includes/footer.inc:29
+#: SuppPriceList.php:150 includes/MiscFunctions.php:61 includes/footer.php:13
+#: includes/footer.php:21 includes/footer.php:29
 msgid "Report"
 msgstr "Báo cáo"
 
@@ -38241,7 +38241,7 @@ msgstr "Vui lòng đăng nhập ở đây"
 msgid "Your webserver is configured to enable Magic Quotes. This may cause problems if you use punctuation (such as quotes) when doing data entry. You should contact your webmaster to disable Magic Quotes"
 msgstr "Máy chủ web của bạn được cấu hình để cho phép thuật Giá . "
 
-#: includes/Login.php:63 includes/header.inc:107
+#: includes/Login.php:63 includes/header.php:107
 msgid "Company"
 msgstr "Công ty"
 
@@ -38289,15 +38289,15 @@ msgstr "đăng nhập"
 msgid "Message Report"
 msgstr "Báo cáo tin nhắn"
 
-#: includes/MiscFunctions.php:61 includes/footer.inc:29
+#: includes/MiscFunctions.php:61 includes/footer.php:29
 msgid "SUCCESS"
 msgstr "thành công"
 
-#: includes/MiscFunctions.php:68 includes/footer.inc:37
+#: includes/MiscFunctions.php:68 includes/footer.php:37
 msgid "INFORMATION"
 msgstr "Thông tin"
 
-#: includes/MiscFunctions.php:68 includes/footer.inc:37
+#: includes/MiscFunctions.php:68 includes/footer.php:37
 msgid "Message"
 msgstr "lời nhắn"
 
@@ -39684,113 +39684,113 @@ msgstr "Đã được gửi qua thư điện tử tới"
 msgid "could not be renamed to"
 msgstr "không thể gửi thư điện tử đến"
 
-#: includes/footer.inc:59
+#: includes/footer.php:59
 #, fuzzy
 msgid "version"
 msgstr "Phiên b?n"
 
-#: includes/header.inc:110
+#: includes/header.php:110
 msgid "Change settings for"
 msgstr "Thay đổi cài đặt cho"
 
-#: includes/header.inc:126
+#: includes/header.php:126
 msgid "Show Dashboard"
 msgstr "Bảng điều khiển hiển thị"
 
-#: includes/header.inc:129
+#: includes/header.php:129
 msgid "Return to the main menu"
 msgstr "Quay trở lại menu chính"
 
-#: includes/header.inc:140
+#: includes/header.php:140
 msgid "Add this script to your list of commonly used"
 msgstr "Thêm kịch bản này vào danh sách của bạn thường được sử dụng"
 
-#: includes/header.inc:140
+#: includes/header.php:140
 msgid "Add to commonly used"
 msgstr "Thêm vào thường được sử dụng"
 
-#: includes/header.inc:142
+#: includes/header.php:142
 msgid "Remove this script from your list of commonly used"
 msgstr "Loại bỏ kịch bản này từ danh sách của bạn thường được sử dụng"
 
-#: includes/header.inc:142
+#: includes/header.php:142
 msgid "Remove from commonly used"
 msgstr "Loại bỏ các từ thường được sử dụng"
 
-#: includes/header.inc:152
+#: includes/header.php:152
 msgid "Commonly used"
 msgstr "thường được sử dụng"
 
-#: includes/header.inc:158 includes/header.inc:162
+#: includes/header.php:158 includes/header.php:162
 msgid "Read the manual page for this functionality"
 msgstr "Đọc trang hướng dẫn cho chức năng này"
 
-#: includes/header.inc:158 includes/header.inc:162
+#: includes/header.php:158 includes/header.php:162
 msgid "Help"
 msgstr "giúp"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Logout"
 msgstr "đăng xuất"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Are you sure you wish to logout?"
 msgstr "Bạn có chắc chắn muốn thoát?"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Confirm Logout"
 msgstr "xác nhận Đăng xuất"
 
-#: includes/session.inc:117 includes/session.inc:254
+#: includes/session.php:117 includes/session.php:254
 msgid "Account Error Report"
 msgstr "Báo lỗi tài khoản"
 
-#: includes/session.inc:120
+#: includes/session.php:120
 msgid "Your user role does not have any access defined for KwaMoja. There is an error in the security setup for this user account"
 msgstr "Vai trò người dùng của bạn không có bất kỳ truy cập được xác định cho KwaMoja . "
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "incorrect password"
 msgstr "mật khẩu sai"
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "The user/password combination"
 msgstr "Tổ hợp Người sử dụng / Mật khẩu"
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "is not a valid user of the system"
 msgstr "không phải là người sử dụng hợp lệ của hệ thống"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 msgid "system maintenance"
 msgstr "Bảo trì hệ thống"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 msgid "KwaMoja is not available right now"
 msgstr "KwaMoja là không có sẵn ngay bây giờ"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 msgid "during maintenance of the system"
 msgstr "trong quá trình bảo trì hệ thống"
 
-#: includes/session.inc:244
+#: includes/session.php:244
 msgid "KwaMoja is configured to allow only secure socket connections. Pages must be called with https://"
 msgstr "KwaMoja được cấu hình để cho phép kết nối ổ cắm chỉ an toàn . "
 
-#: includes/session.inc:257
+#: includes/session.php:257
 msgid "Security settings have not been defined for your user account. Please advise your system administrator. It could also be that there is a session problem with your PHP web server"
 msgstr "Tài kho?n s? d?ng c?a b?n chua du?c xác d?nh các cài d?t an ninh. Vui lòng thông báo ban qu?n tr? h? th?ng. Cung có th? có v?n d? v?i máy ch? PHP c?a b?n"
 
-#: includes/session.inc:273
+#: includes/session.php:273
 msgid "Security Permissions Problem"
 msgstr "V?n d? cho phép an ninh"
 
-#: includes/session.inc:321
+#: includes/session.php:321
 #, fuzzy
 msgid "Error in form verification"
 msgstr "L?i trong m?u xác minh"
 
-#: includes/session.inc:323
+#: includes/session.php:323
 msgid "This form was not submitted with a correct ID"
 msgstr "M?u này không du?c n?p v?i ID dúng"
 

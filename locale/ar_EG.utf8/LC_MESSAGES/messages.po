@@ -4326,7 +4326,7 @@ msgstr "لا يمكن استرداد mbflag"
 
 #: ConfirmDispatch_Invoice.php:984 CounterReturns.php:997
 #: CounterSales.php:1414 FixedAssetItems.php:651 SalesAnalReptCols.php:305
-#: Stocks.php:1384 includes/MiscFunctions.php:54 includes/footer.inc:21
+#: Stocks.php:1384 includes/MiscFunctions.php:54 includes/footer.php:21
 msgid "WARNING"
 msgstr "تحذير"
 
@@ -5673,7 +5673,7 @@ msgstr "إنشاء اقتباس"
 msgid "Cancel and Delete Contract"
 msgstr "إلغاء و حذف العقد"
 
-#: CopyBOM.php:10 includes/header.inc:25
+#: CopyBOM.php:10 includes/header.php:25
 msgid "Copy a BOM to New Item Code"
 msgstr "نسخ BOM إلى جديد رمز المدينة"
 
@@ -7429,7 +7429,7 @@ msgstr "فرع العملاء"
 msgid "has been added, add another branch, or return to the"
 msgstr "تمت إضافة ، إضافة فرع آخر ، أو العودة إلى"
 
-#: CustomerBranches.php:248 index.php:11 includes/header.inc:129
+#: CustomerBranches.php:248 index.php:11 includes/header.php:129
 msgid "Main Menu"
 msgstr "القائمة الرئيسية"
 
@@ -8908,7 +8908,7 @@ msgstr "GP ٪"
 msgid "Avg Daily Sales"
 msgstr "المتوسط ​​اليومي المبيعات"
 
-#: Dashboard.php:6 includes/header.inc:126
+#: Dashboard.php:6 includes/header.php:126
 msgid "Dashboard"
 msgstr "لوحة أجهزة القياس"
 
@@ -9656,7 +9656,7 @@ msgid "No occurrences so far"
 msgstr "لا تكرارات حتى الآن"
 
 #: EDIProcessOrders.php:125 includes/MiscFunctions.php:47
-#: includes/footer.inc:13
+#: includes/footer.php:13
 msgid "ERROR"
 msgstr "خطأ"
 
@@ -22653,7 +22653,7 @@ msgstr "المجموعة بواسطة 3"
 msgid "Group By 4"
 msgstr "المجموعة بنسبة 4"
 
-#: SalesAnalysis_UserDefined.php:6 includes/session.inc:279
+#: SalesAnalysis_UserDefined.php:6 includes/session.php:279
 msgid "The security settings on your account do not permit you to access this function"
 msgstr "إعدادات الأمان على حسابك لا تسمح لك بالوصول إلى هذه الوظيفة"
 
@@ -28765,8 +28765,8 @@ msgstr "جميع الأسعار"
 msgid "Current Price"
 msgstr "السعر الحالي"
 
-#: SuppPriceList.php:150 includes/MiscFunctions.php:61 includes/footer.inc:13
-#: includes/footer.inc:21 includes/footer.inc:29
+#: SuppPriceList.php:150 includes/MiscFunctions.php:61 includes/footer.php:13
+#: includes/footer.php:21 includes/footer.php:29
 msgid "Report"
 msgstr "تقرير"
 
@@ -37604,7 +37604,7 @@ msgstr "الرجاء الدخول هنا"
 msgid "Your webserver is configured to enable Magic Quotes. This may cause problems if you use punctuation (such as quotes) when doing data entry. You should contact your webmaster to disable Magic Quotes"
 msgstr "يتم تكوين خادم الويب لتمكين اقتباسات ماجيك . "
 
-#: includes/Login.php:63 includes/header.inc:107
+#: includes/Login.php:63 includes/header.php:107
 msgid "Company"
 msgstr "شركة"
 
@@ -37652,15 +37652,15 @@ msgstr "دخول"
 msgid "Message Report"
 msgstr "الرسالة"
 
-#: includes/MiscFunctions.php:61 includes/footer.inc:29
+#: includes/MiscFunctions.php:61 includes/footer.php:29
 msgid "SUCCESS"
 msgstr "SUCCESS"
 
-#: includes/MiscFunctions.php:68 includes/footer.inc:37
+#: includes/MiscFunctions.php:68 includes/footer.php:37
 msgid "INFORMATION"
 msgstr "معلومات"
 
-#: includes/MiscFunctions.php:68 includes/footer.inc:37
+#: includes/MiscFunctions.php:68 includes/footer.php:37
 msgid "Message"
 msgstr "رسالة"
 
@@ -39030,112 +39030,112 @@ msgstr "تم حذف المجموعة"
 msgid "could not be renamed to"
 msgstr "لا يمكن إعادة تسمية"
 
-#: includes/footer.inc:59
+#: includes/footer.php:59
 msgid "version"
 msgstr "الإصدار"
 
-#: includes/header.inc:110
+#: includes/header.php:110
 msgid "Change settings for"
 msgstr "تغيير إعدادات"
 
-#: includes/header.inc:126
+#: includes/header.php:126
 msgid "Show Dashboard"
 msgstr "تظهر لوحة"
 
-#: includes/header.inc:129
+#: includes/header.php:129
 msgid "Return to the main menu"
 msgstr "عودة إلى القائمة الرئيسية"
 
-#: includes/header.inc:140
+#: includes/header.php:140
 msgid "Add this script to your list of commonly used"
 msgstr "إضافة هذا البرنامج النصي إلى قائمة استخداما"
 
-#: includes/header.inc:140
+#: includes/header.php:140
 msgid "Add to commonly used"
 msgstr "أضف إلى استخداما"
 
-#: includes/header.inc:142
+#: includes/header.php:142
 msgid "Remove this script from your list of commonly used"
 msgstr "إزالة هذا البرنامج النصي من قائمة استخداما"
 
-#: includes/header.inc:142
+#: includes/header.php:142
 msgid "Remove from commonly used"
 msgstr "إزالة من يشيع استخدامها"
 
-#: includes/header.inc:152
+#: includes/header.php:152
 msgid "Commonly used"
 msgstr "يشيع استخدامها"
 
-#: includes/header.inc:158 includes/header.inc:162
+#: includes/header.php:158 includes/header.php:162
 msgid "Read the manual page for this functionality"
 msgstr "قراءة الصفحات اليدوي ل هذه الوظيفة"
 
-#: includes/header.inc:158 includes/header.inc:162
+#: includes/header.php:158 includes/header.php:162
 msgid "Help"
 msgstr "مساعدة"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Logout"
 msgstr "تسجيل الخروج"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Are you sure you wish to logout?"
 msgstr "هل أنت متأكد أنك تريد الخروج؟"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Confirm Logout"
 msgstr "تأكيد تسجيل الخروج"
 
-#: includes/session.inc:117 includes/session.inc:254
+#: includes/session.php:117 includes/session.php:254
 msgid "Account Error Report"
 msgstr "تقرير خطأ حساب"
 
-#: includes/session.inc:120
+#: includes/session.php:120
 msgid "Your user role does not have any access defined for KwaMoja. There is an error in the security setup for this user account"
 msgstr "ليس لديها دور المستخدم الخاص بك أي وصول محددة ل KwaMoja . "
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "incorrect password"
 msgstr "كلمة السر غير صحيحة"
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "The user/password combination"
 msgstr "الجمع المستخدم / كلمة المرور"
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "is not a valid user of the system"
 msgstr "ليس مستخدم صالح النظام"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 msgid "system maintenance"
 msgstr "صيانة النظام"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 msgid "KwaMoja is not available right now"
 msgstr "KwaMoja غير متوفرة في الوقت الراهن"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 msgid "during maintenance of the system"
 msgstr "أثناء صيانة النظام"
 
-#: includes/session.inc:244
+#: includes/session.php:244
 msgid "KwaMoja is configured to allow only secure socket connections. Pages must be called with https://"
 msgstr "تم تكوين KwaMoja للسماح بالاتصالات المقابس الآمنة فقط . "
 
-#: includes/session.inc:257
+#: includes/session.php:257
 msgid "Security settings have not been defined for your user account. Please advise your system administrator. It could also be that there is a session problem with your PHP web server"
 msgstr "لم يتم تعريف إعدادات الأمان ل حساب المستخدم الخاص بك . "
 
-#: includes/session.inc:273
+#: includes/session.php:273
 msgid "Security Permissions Problem"
 msgstr "ضوابط الأمن مشكلة"
 
-#: includes/session.inc:321
+#: includes/session.php:321
 #, fuzzy
 msgid "Error in form verification"
 msgstr "أدخل المعلومات"
 
-#: includes/session.inc:323
+#: includes/session.php:323
 msgid "This form was not submitted with a correct ID"
 msgstr "لم يقدم هذا النموذج مع معرف الصحيح"
 

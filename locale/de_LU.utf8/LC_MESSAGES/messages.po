@@ -5101,7 +5101,7 @@ msgstr "Konnte das Beschaffungskenzeichen nicht abrufen"
 
 #: ConfirmDispatch_Invoice.php:1039 CounterReturns.php:1022
 #: CounterSales.php:1404 FixedAssetItems.php:651 SalesAnalReptCols.php:305
-#: Stocks.php:1444 includes/MiscFunctions.php:54 includes/footer.inc:21
+#: Stocks.php:1444 includes/MiscFunctions.php:54 includes/footer.php:21
 msgid "WARNING"
 msgstr "WARNUNG"
 
@@ -6662,7 +6662,7 @@ msgstr "Angebot anlegen"
 msgid "Cancel and Delete Contract"
 msgstr "Abbrechen und den Vertrag löschen"
 
-#: CopyBOM.php:10 includes/header.inc:17
+#: CopyBOM.php:10 includes/header.php:17
 msgid "Copy a BOM to New Item Code"
 msgstr "Eine Stückliste auf eine neue Artikelnummer kopieren"
 
@@ -9296,7 +9296,7 @@ msgstr ""
 "wurde hinzugefügt. Legen Sie eine weitere Niederlassung an oder kehren Sie "
 "zurück zum"
 
-#: CustomerBranches.php:238 index.php:15 includes/header.inc:102
+#: CustomerBranches.php:238 index.php:15 includes/header.php:102
 msgid "Main Menu"
 msgstr "Hauptmenü"
 
@@ -11947,7 +11947,7 @@ msgid "No occurrences so far"
 msgstr "Kein Vorkommen bisher"
 
 #: EDIProcessOrders.php:125 includes/MiscFunctions.php:47
-#: includes/footer.inc:13
+#: includes/footer.php:13
 msgid "ERROR"
 msgstr "FEHLER"
 
@@ -28117,7 +28117,7 @@ msgstr "Gruppenebene 3"
 msgid "Group By 4"
 msgstr "Gruppenebene 4"
 
-#: SalesAnalysis_UserDefined.php:6 includes/session.inc:263
+#: SalesAnalysis_UserDefined.php:6 includes/session.php:263
 msgid ""
 "The security settings on your account do not permit you to access this "
 "function"
@@ -37276,8 +37276,8 @@ msgstr "Alle Preise"
 msgid "Current Price"
 msgstr "Tagespreis"
 
-#: SuppPriceList.php:150 includes/MiscFunctions.php:61 includes/footer.inc:13
-#: includes/footer.inc:21 includes/footer.inc:29
+#: SuppPriceList.php:150 includes/MiscFunctions.php:61 includes/footer.php:13
+#: includes/footer.php:21 includes/footer.php:29
 msgid "Report"
 msgstr " "
 
@@ -46643,7 +46643,7 @@ msgstr ""
 "Sonderzeichen (wie Anführungsstriche) bei der Datenerfassung verwenden. "
 "Ersuchen Sie Ihren Webmaster darum, Magic Quotes auszuschalten"
 
-#: includes/Login.php:68 includes/header.inc:79
+#: includes/Login.php:68 includes/header.php:79
 msgid "Company"
 msgstr "Mandant"
 
@@ -46696,15 +46696,15 @@ msgstr "Gelb"
 msgid "Message Report"
 msgstr " "
 
-#: includes/MiscFunctions.php:61 includes/footer.inc:29
+#: includes/MiscFunctions.php:61 includes/footer.php:29
 msgid "SUCCESS"
 msgstr "ERFOLG"
 
-#: includes/MiscFunctions.php:68 includes/footer.inc:37
+#: includes/MiscFunctions.php:68 includes/footer.php:37
 msgid "INFORMATION"
 msgstr "INFORMATION"
 
-#: includes/MiscFunctions.php:68 includes/footer.inc:37
+#: includes/MiscFunctions.php:68 includes/footer.php:37
 msgid "Message"
 msgstr " "
 
@@ -47664,7 +47664,7 @@ msgstr "Die Variable"
 msgid "is set to"
 msgstr "ist gesetzt auf"
 
-#: includes/footer.inc:59
+#: includes/footer.php:59
 msgid "version"
 msgstr "Version"
 
@@ -47807,57 +47807,57 @@ msgstr ""
 msgid "The SQL that failed to mark all transactions as posted"
 msgstr "Die fehlerhafte Abfrage war"
 
-#: includes/header.inc:82
+#: includes/header.php:82
 #, fuzzy
 msgid "Change the settings for"
 msgstr "Ändern der Einstellungen für"
 
-#: includes/header.inc:99
+#: includes/header.php:99
 msgid "Show Dashboard"
 msgstr "Dashboard anzeigen"
 
-#: includes/header.inc:102
+#: includes/header.php:102
 msgid "Return to the main menu"
 msgstr "Zurück zum Hauptmenü"
 
-#: includes/header.inc:117
+#: includes/header.php:117
 msgid "Add this script to your list of commonly used"
 msgstr "Dieses Skript zu Ihrer Liste der am häufigsten verwendeten"
 
-#: includes/header.inc:117
+#: includes/header.php:117
 msgid "Add to commonly used"
 msgstr "In den häufig verwendeten"
 
-#: includes/header.inc:119
+#: includes/header.php:119
 msgid "Remove this script from your list of commonly used"
 msgstr ""
 "Entfernen Sie dieses Skript aus der Liste der am häufigsten verwendeten"
 
-#: includes/header.inc:119
+#: includes/header.php:119
 msgid "Remove from commonly used"
 msgstr "Entfernen von häufig verwendeten"
 
-#: includes/header.inc:123
+#: includes/header.php:123
 msgid "Commonly used"
 msgstr "Häufig verwendete"
 
-#: includes/header.inc:130 includes/header.inc:136
+#: includes/header.php:130 includes/header.php:136
 msgid "Read the manual page for this functionality"
 msgstr "Lesen Sie das Handbuch Seite für diese Funktionalität"
 
-#: includes/header.inc:130 includes/header.inc:136
+#: includes/header.php:130 includes/header.php:136
 msgid "Help"
 msgstr "Hilfe"
 
-#: includes/header.inc:143
+#: includes/header.php:143
 msgid "Logout"
 msgstr "Abmelden"
 
-#: includes/header.inc:143
+#: includes/header.php:143
 msgid "Are you sure you wish to logout?"
 msgstr "Wollen Sie sich wirklich abmelden?"
 
-#: includes/header.inc:143
+#: includes/header.php:143
 msgid "Confirm Logout"
 msgstr "bestätigen Abmelden"
 
@@ -48530,11 +48530,11 @@ msgstr ""
 "hat keine Kostenangaben und die Auftragserfassung ist eingerichtet, dass "
 "Verkäufe von Artikel ohne Kostenangaben verhindert werden"
 
-#: includes/session.inc:123 includes/session.inc:238
+#: includes/session.php:123 includes/session.php:238
 msgid "Account Error Report"
 msgstr "Benutzerkonto fehlerhaft"
 
-#: includes/session.inc:126
+#: includes/session.php:126
 #, fuzzy
 msgid ""
 "Your user role does not have any access defined for KwaMoja. There is an "
@@ -48543,32 +48543,32 @@ msgstr ""
 "Ihre Benutzerrolle hat keine Zugriffsberechtigungen für KwaMoja. Das ist ein "
 "Fehler in den Sicherheitseinstellungen für diesen Benutzer"
 
-#: includes/session.inc:131
+#: includes/session.php:131
 msgid "incorrect password"
 msgstr "ungültiges Passwort"
 
-#: includes/session.inc:131
+#: includes/session.php:131
 msgid "The user/password combination"
 msgstr "Die Kombination Benutzername/Passwort"
 
-#: includes/session.inc:131
+#: includes/session.php:131
 msgid "is not a valid user of the system"
 msgstr "ist kein gültiger Benutzername im System"
 
-#: includes/session.inc:135
+#: includes/session.php:135
 msgid "system maintenance"
 msgstr "Systempflege"
 
-#: includes/session.inc:135
+#: includes/session.php:135
 #, fuzzy
 msgid "KwaMoja is not available right now"
 msgstr "KwaMoja ist momentan wegen"
 
-#: includes/session.inc:135
+#: includes/session.php:135
 msgid "during maintenance of the system"
 msgstr "Systempflege nicht erreichbar"
 
-#: includes/session.inc:228
+#: includes/session.php:228
 #, fuzzy
 msgid ""
 "KwaMoja is configured to allow only secure socket connections. Pages must be "
@@ -48577,7 +48577,7 @@ msgstr ""
 "KwaMoja ist so konfiguriert, dass nur sichere Verbindungen zugelassen sind. "
 "Die Seiten müssen über aufgerufen werden über https://"
 
-#: includes/session.inc:241
+#: includes/session.php:241
 msgid ""
 "Security settings have not been defined for your user account. Please advise "
 "your system administrator. It could also be that there is a session problem "
@@ -48587,15 +48587,15 @@ msgstr ""
 "verständigen Sie Ihren Systemverwalter. Es könnte auch sein, dass es ein "
 "Problem mit Ihrer Anmeldung am PHP Webserver gibt"
 
-#: includes/session.inc:257
+#: includes/session.php:257
 msgid "Security Permissions Problem"
 msgstr "Berechtigungsproblem"
 
-#: includes/session.inc:311
+#: includes/session.php:311
 msgid "Error in form verification"
 msgstr "Fehler bei der Formularprüfung"
 
-#: includes/session.inc:313
+#: includes/session.php:313
 msgid "This form was not submitted with a correct ID"
 msgstr "Dieses Formular wurde nicht mit korrekter ID übermittelt"
 

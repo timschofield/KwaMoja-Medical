@@ -5446,7 +5446,7 @@ msgstr "Impossible de récupérer la mbflag"
 #: prlLoanFile.php:168 prlnssf.php:506 prlOthIncTable.php:209
 #: prlOvertime.php:197 prlPaye.php:261 prlSC.php:177 prlSSC.php:240
 #: prlTax.php:225 SalesAnalReptCols.php:305 Stocks.php:1444
-#: includes/MiscFunctions.php:54 includes/footer.inc:21
+#: includes/MiscFunctions.php:54 includes/footer.php:21
 msgid "WARNING"
 msgstr "AVERTISSEMENT"
 
@@ -7054,7 +7054,7 @@ msgstr "Créer un devis"
 msgid "Cancel and Delete Contract"
 msgstr "Annuler et supprimer un contrat"
 
-#: CopyBOM.php:10 includes/header.inc:17
+#: CopyBOM.php:10 includes/header.php:17
 msgid "Copy a BOM to New Item Code"
 msgstr "Copier une nomenclature à New Code article"
 
@@ -9771,7 +9771,7 @@ msgstr ""
 "a été ajoutée, ajoutez une autre agence ou retournez au <a href=index."
 "php>menu principal</a>"
 
-#: CustomerBranches.php:238 index.php:15 includes/header.inc:102
+#: CustomerBranches.php:238 index.php:15 includes/header.php:102
 msgid "Main Menu"
 msgstr "Menu principal"
 
@@ -12523,7 +12523,7 @@ msgid "No occurrences so far"
 msgstr "Nombre d'occurrences jusqu'ici"
 
 #: EDIProcessOrders.php:125 includes/MiscFunctions.php:47
-#: includes/footer.inc:13
+#: includes/footer.php:13
 msgid "ERROR"
 msgstr "ERREUR"
 
@@ -32897,7 +32897,7 @@ msgstr "Tri par 3"
 msgid "Group By 4"
 msgstr "Tri par 4"
 
-#: SalesAnalysis_UserDefined.php:6 includes/session.inc:263
+#: SalesAnalysis_UserDefined.php:6 includes/session.php:263
 msgid ""
 "The security settings on your account do not permit you to access this "
 "function"
@@ -42321,8 +42321,8 @@ msgstr "Tous les prix"
 msgid "Current Price"
 msgstr "Prix actuel"
 
-#: SuppPriceList.php:150 includes/MiscFunctions.php:61 includes/footer.inc:13
-#: includes/footer.inc:21 includes/footer.inc:29
+#: SuppPriceList.php:150 includes/MiscFunctions.php:61 includes/footer.php:13
+#: includes/footer.php:21 includes/footer.php:29
 msgid "Report"
 msgstr "Rapport"
 
@@ -51959,7 +51959,7 @@ msgstr ""
 "guillemets) lors de la saisie des données. Vous devez contacter votre "
 "webmaster pour désactiver les guillemets magiques?"
 
-#: includes/Login.php:68 includes/header.inc:79
+#: includes/Login.php:68 includes/header.php:79
 msgid "Company"
 msgstr "Société"
 
@@ -52012,15 +52012,15 @@ msgstr "Admis"
 msgid "Message Report"
 msgstr "message"
 
-#: includes/MiscFunctions.php:61 includes/footer.inc:29
+#: includes/MiscFunctions.php:61 includes/footer.php:29
 msgid "SUCCESS"
 msgstr "SUCCÈS"
 
-#: includes/MiscFunctions.php:68 includes/footer.inc:37
+#: includes/MiscFunctions.php:68 includes/footer.php:37
 msgid "INFORMATION"
 msgstr "INFORMATION"
 
-#: includes/MiscFunctions.php:68 includes/footer.inc:37
+#: includes/MiscFunctions.php:68 includes/footer.php:37
 msgid "Message"
 msgstr "Message"
 
@@ -53071,7 +53071,7 @@ msgstr "La variable"
 msgid "is set to"
 msgstr "prend la valeur"
 
-#: includes/footer.inc:59
+#: includes/footer.php:59
 #, fuzzy
 msgid "version"
 msgstr "Version"
@@ -53220,56 +53220,56 @@ msgstr "Saisir la date à laquelle les opérations seront listées"
 msgid "The SQL that failed to mark all transactions as posted"
 msgstr "Échec de la commande SQL d'ajoût de transaction bancaire:"
 
-#: includes/header.inc:82
+#: includes/header.php:82
 #, fuzzy
 msgid "Change the settings for"
 msgstr "Modifier les paramètres pour"
 
-#: includes/header.inc:99
+#: includes/header.php:99
 msgid "Show Dashboard"
 msgstr "Afficher Dashboard"
 
-#: includes/header.inc:102
+#: includes/header.php:102
 msgid "Return to the main menu"
 msgstr "Retour au menu principal"
 
-#: includes/header.inc:117
+#: includes/header.php:117
 msgid "Add this script to your list of commonly used"
 msgstr "Ajouter ce script à votre liste d' couramment utilisé"
 
-#: includes/header.inc:117
+#: includes/header.php:117
 msgid "Add to commonly used"
 msgstr "Ajouter à couramment utilisé"
 
-#: includes/header.inc:119
+#: includes/header.php:119
 msgid "Remove this script from your list of commonly used"
 msgstr "Retirer ce script depuis votre liste de couramment utilisé"
 
-#: includes/header.inc:119
+#: includes/header.php:119
 msgid "Remove from commonly used"
 msgstr "Retirer du couramment utilisé"
 
-#: includes/header.inc:123
+#: includes/header.php:123
 msgid "Commonly used"
 msgstr "couramment utilisé"
 
-#: includes/header.inc:130 includes/header.inc:136
+#: includes/header.php:130 includes/header.php:136
 msgid "Read the manual page for this functionality"
 msgstr "Lisez la page de manuel pour cette fonctionnalité"
 
-#: includes/header.inc:130 includes/header.inc:136
+#: includes/header.php:130 includes/header.php:136
 msgid "Help"
 msgstr "Aide"
 
-#: includes/header.inc:143
+#: includes/header.php:143
 msgid "Logout"
 msgstr "Déconnexion"
 
-#: includes/header.inc:143
+#: includes/header.php:143
 msgid "Are you sure you wish to logout?"
 msgstr "Voulez-vous vous déconnecter?"
 
-#: includes/header.inc:143
+#: includes/header.php:143
 msgid "Confirm Logout"
 msgstr "Confirmez Déconnexion"
 
@@ -53944,11 +53944,11 @@ msgstr ""
 "n'a pas de prix et la saisie de commande est paramétrée pour interdire la "
 "vente d'articles sans prix"
 
-#: includes/session.inc:123 includes/session.inc:238
+#: includes/session.php:123 includes/session.php:238
 msgid "Account Error Report"
 msgstr "Rapport d'une erreur de compte"
 
-#: includes/session.inc:126
+#: includes/session.php:126
 #, fuzzy
 msgid ""
 "Your user role does not have any access defined for KwaMoja. There is an "
@@ -53957,32 +53957,32 @@ msgstr ""
 "Votre rôle d'utilisateur ne dispose pas d'accès n'est défini pour KwaMoja. "
 "Il ya une erreur dans la configuration de sécurité de ce compte d'utilisateur"
 
-#: includes/session.inc:131
+#: includes/session.php:131
 msgid "incorrect password"
 msgstr "Mot de passe incorrect"
 
-#: includes/session.inc:131
+#: includes/session.php:131
 msgid "The user/password combination"
 msgstr "identifiant ou mot de passe"
 
-#: includes/session.inc:131
+#: includes/session.php:131
 msgid "is not a valid user of the system"
 msgstr "incorrect"
 
-#: includes/session.inc:135
+#: includes/session.php:135
 msgid "system maintenance"
 msgstr "la maintenance du système"
 
-#: includes/session.inc:135
+#: includes/session.php:135
 #, fuzzy
 msgid "KwaMoja is not available right now"
 msgstr "KwaMoja n'est pas disponible en ce moment"
 
-#: includes/session.inc:135
+#: includes/session.php:135
 msgid "during maintenance of the system"
 msgstr "lors de la maintenance du système"
 
-#: includes/session.inc:228
+#: includes/session.php:228
 #, fuzzy
 msgid ""
 "KwaMoja is configured to allow only secure socket connections. Pages must be "
@@ -53991,7 +53991,7 @@ msgstr ""
 "KwaMoja est configuré pour autoriser uniquement les connexions secure "
 "socket. Les pages doivent être appelés par https: / /"
 
-#: includes/session.inc:241
+#: includes/session.php:241
 msgid ""
 "Security settings have not been defined for your user account. Please advise "
 "your system administrator. It could also be that there is a session problem "
@@ -54002,16 +54002,16 @@ msgstr ""
 "pourrait également être qu'il ya un problème de session avec votre serveur "
 "web PHP"
 
-#: includes/session.inc:257
+#: includes/session.php:257
 msgid "Security Permissions Problem"
 msgstr "Problème de sécurité autorisations"
 
-#: includes/session.inc:311
+#: includes/session.php:311
 #, fuzzy
 msgid "Error in form verification"
 msgstr "Erreur dans le formulaire \"verificationm\""
 
-#: includes/session.inc:313
+#: includes/session.php:313
 msgid "This form was not submitted with a correct ID"
 msgstr "L'identifiant passé à ce formulaire n'est pas correct"
 

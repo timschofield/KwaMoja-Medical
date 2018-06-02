@@ -4334,7 +4334,7 @@ msgstr "Nie można pobrać mbflag"
 
 #: ConfirmDispatch_Invoice.php:984 CounterReturns.php:997
 #: CounterSales.php:1414 FixedAssetItems.php:651 SalesAnalReptCols.php:305
-#: Stocks.php:1384 includes/MiscFunctions.php:54 includes/footer.inc:21
+#: Stocks.php:1384 includes/MiscFunctions.php:54 includes/footer.php:21
 msgid "WARNING"
 msgstr "UWAGA"
 
@@ -5687,7 +5687,7 @@ msgstr "Tworzenie ofertowe"
 msgid "Cancel and Delete Contract"
 msgstr "Anuluj i usuwanie umowy"
 
-#: CopyBOM.php:10 includes/header.inc:25
+#: CopyBOM.php:10 includes/header.php:25
 msgid "Copy a BOM to New Item Code"
 msgstr "Skopiuj LM do Nowego KOD"
 
@@ -7482,7 +7482,7 @@ msgstr "Oddział Klienta"
 msgid "has been added, add another branch, or return to the"
 msgstr "został dodany dodać kolejny oddział lub powrót do <a href=index.php>menu głównego</a>"
 
-#: CustomerBranches.php:248 index.php:11 includes/header.inc:129
+#: CustomerBranches.php:248 index.php:11 includes/header.php:129
 msgid "Main Menu"
 msgstr "Menu Główne"
 
@@ -8986,7 +8986,7 @@ msgstr "% GP"
 msgid "Avg Daily Sales"
 msgstr "Średnia dzienna sprzedaż"
 
-#: Dashboard.php:6 includes/header.inc:126
+#: Dashboard.php:6 includes/header.php:126
 msgid "Dashboard"
 msgstr "tablica rozdzielcza"
 
@@ -9752,7 +9752,7 @@ msgid "No occurrences so far"
 msgstr "Brak wystąpień"
 
 #: EDIProcessOrders.php:125 includes/MiscFunctions.php:47
-#: includes/footer.inc:13
+#: includes/footer.php:13
 msgid "ERROR"
 msgstr "BŁĄD"
 
@@ -23032,7 +23032,7 @@ msgstr "Grupa 3"
 msgid "Group By 4"
 msgstr "Grupa 4"
 
-#: SalesAnalysis_UserDefined.php:6 includes/session.inc:279
+#: SalesAnalysis_UserDefined.php:6 includes/session.php:279
 msgid "The security settings on your account do not permit you to access this function"
 msgstr "Twój zakres uprawnień nie pozwala ci na dostęp do tej funkcji"
 
@@ -29225,8 +29225,8 @@ msgstr "Wszystkie ceny"
 msgid "Current Price"
 msgstr "Aktualna cena"
 
-#: SuppPriceList.php:150 includes/MiscFunctions.php:61 includes/footer.inc:13
-#: includes/footer.inc:21 includes/footer.inc:29
+#: SuppPriceList.php:150 includes/MiscFunctions.php:61 includes/footer.php:13
+#: includes/footer.php:21 includes/footer.php:29
 msgid "Report"
 msgstr "Raport"
 
@@ -38322,7 +38322,7 @@ msgstr "Zaloguj się tutaj"
 msgid "Your webserver is configured to enable Magic Quotes. This may cause problems if you use punctuation (such as quotes) when doing data entry. You should contact your webmaster to disable Magic Quotes"
 msgstr "Twój serwer WWW jest skonfigurowany w celu umożliwienia Magic Quotes. Może to powodować problemy, jeśli używasz znaków interpunkcyjnych (np. cudzysłów), kiedy robisz wprowadzania danych. Należy skontaktować się z webmasterem, aby wyłączyć Magic Quotes"
 
-#: includes/Login.php:63 includes/header.inc:107
+#: includes/Login.php:63 includes/header.php:107
 msgid "Company"
 msgstr "Firma"
 
@@ -38370,15 +38370,15 @@ msgstr "Wejdź"
 msgid "Message Report"
 msgstr "Raport wiadomości"
 
-#: includes/MiscFunctions.php:61 includes/footer.inc:29
+#: includes/MiscFunctions.php:61 includes/footer.php:29
 msgid "SUCCESS"
 msgstr "SUKCES"
 
-#: includes/MiscFunctions.php:68 includes/footer.inc:37
+#: includes/MiscFunctions.php:68 includes/footer.php:37
 msgid "INFORMATION"
 msgstr "INFORMACJA"
 
-#: includes/MiscFunctions.php:68 includes/footer.inc:37
+#: includes/MiscFunctions.php:68 includes/footer.php:37
 msgid "Message"
 msgstr "Wiadomość"
 
@@ -39768,116 +39768,116 @@ msgstr "zostało wysłane do"
 msgid "could not be renamed to"
 msgstr "nie może być wysłany emailem do"
 
-#: includes/footer.inc:59
+#: includes/footer.php:59
 #, fuzzy
 msgid "version"
 msgstr "Wersja"
 
-#: includes/header.inc:110
+#: includes/header.php:110
 msgid "Change settings for"
 msgstr "Zmień ustawienia"
 
-#: includes/header.inc:126
+#: includes/header.php:126
 msgid "Show Dashboard"
 msgstr "Pokaż Dashboard"
 
-#: includes/header.inc:129
+#: includes/header.php:129
 msgid "Return to the main menu"
 msgstr "Powrót do menu głównego"
 
-#: includes/header.inc:140
+#: includes/header.php:140
 msgid "Add this script to your list of commonly used"
 msgstr "Dodaj ten skrypt do listy powszechnie używane"
 
-#: includes/header.inc:140
+#: includes/header.php:140
 msgid "Add to commonly used"
 msgstr "Dodaj do powszechnie używane"
 
-#: includes/header.inc:142
+#: includes/header.php:142
 msgid "Remove this script from your list of commonly used"
 msgstr "Usuń ten skrypt z listy powszechnie używane"
 
-#: includes/header.inc:142
+#: includes/header.php:142
 msgid "Remove from commonly used"
 msgstr "Usuń z powszechnie używane"
 
-#: includes/header.inc:152
+#: includes/header.php:152
 msgid "Commonly used"
 msgstr "powszechnie stosowane"
 
-#: includes/header.inc:158 includes/header.inc:162
+#: includes/header.php:158 includes/header.php:162
 msgid "Read the manual page for this functionality"
 msgstr "Przeczytaj stronę podręcznika dla tej funkcji"
 
-#: includes/header.inc:158 includes/header.inc:162
+#: includes/header.php:158 includes/header.php:162
 msgid "Help"
 msgstr "pomoc"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Logout"
 msgstr "Logout"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Are you sure you wish to logout?"
 msgstr "Na pewno chcesz się wylogować?"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Confirm Logout"
 msgstr "Potwierdź Wyloguj"
 
-#: includes/session.inc:117 includes/session.inc:254
+#: includes/session.php:117 includes/session.php:254
 msgid "Account Error Report"
 msgstr "Raport błędu konta"
 
-#: includes/session.inc:120
+#: includes/session.php:120
 #, fuzzy
 msgid "Your user role does not have any access defined for KwaMoja. There is an error in the security setup for this user account"
 msgstr "Twoje stanowisko nie ma żadnego zdefiniowanego zakresu dostępu. Błąd w ustawieniach dostępu dla tego konta."
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "incorrect password"
 msgstr "nieprawidłowe hasło"
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "The user/password combination"
 msgstr "Kombinacja użytkownik/hasło"
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "is not a valid user of the system"
 msgstr "jest nieprawidłowa"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 msgid "system maintenance"
 msgstr "konserwacji systemu"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 #, fuzzy
 msgid "KwaMoja is not available right now"
 msgstr "KwaMoja nie jest dostępna w tej chwili"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 msgid "during maintenance of the system"
 msgstr "podczas konserwacji systemu"
 
-#: includes/session.inc:244
+#: includes/session.php:244
 #, fuzzy
 msgid "KwaMoja is configured to allow only secure socket connections. Pages must be called with https://"
 msgstr "KwaMoja jest skonfigurowany wyłącznie na bezpieczne połączenia sieciowe. Strony należy wywoływać z https://"
 
-#: includes/session.inc:257
+#: includes/session.php:257
 msgid "Security settings have not been defined for your user account. Please advise your system administrator. It could also be that there is a session problem with your PHP web server"
 msgstr "Nie zdefiniowano zakresu dostępu dla Twojego konta. Skontaktuj się z administratorem. Powodem może być również zarządzanie sesją w serwerze PHP."
 
-#: includes/session.inc:273
+#: includes/session.php:273
 msgid "Security Permissions Problem"
 msgstr "Problem z systemem dostępu"
 
-#: includes/session.inc:321
+#: includes/session.php:321
 #, fuzzy
 msgid "Error in form verification"
 msgstr "Błąd w verificationm formie"
 
-#: includes/session.inc:323
+#: includes/session.php:323
 msgid "This form was not submitted with a correct ID"
 msgstr "Formularz ten nie został złożony we właściwej ID"
 

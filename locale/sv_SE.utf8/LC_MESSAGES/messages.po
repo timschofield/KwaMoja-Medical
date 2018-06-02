@@ -4335,7 +4335,7 @@ msgstr "Kan inte hämta mbflag"
 
 #: ConfirmDispatch_Invoice.php:984 CounterReturns.php:997
 #: CounterSales.php:1414 FixedAssetItems.php:651 SalesAnalReptCols.php:305
-#: Stocks.php:1384 includes/MiscFunctions.php:54 includes/footer.inc:21
+#: Stocks.php:1384 includes/MiscFunctions.php:54 includes/footer.php:21
 msgid "WARNING"
 msgstr "VARNING"
 
@@ -5688,7 +5688,7 @@ msgstr "Skapa Offert"
 msgid "Cancel and Delete Contract"
 msgstr "Avbryt och ta bort kontrakt"
 
-#: CopyBOM.php:10 includes/header.inc:25
+#: CopyBOM.php:10 includes/header.php:25
 msgid "Copy a BOM to New Item Code"
 msgstr "Kopiera en BOM på Nytt objekt Code"
 
@@ -7483,7 +7483,7 @@ msgstr "Filialkontor"
 msgid "has been added, add another branch, or return to the"
 msgstr "har lagts till, lägga till en annan gren, eller återgå till <a href=index.php>huvudmenyn</a>"
 
-#: CustomerBranches.php:248 index.php:11 includes/header.inc:129
+#: CustomerBranches.php:248 index.php:11 includes/header.php:129
 msgid "Main Menu"
 msgstr "Huvudmeny"
 
@@ -8987,7 +8987,7 @@ msgstr "GP%"
 msgid "Avg Daily Sales"
 msgstr "Genomsnitslig daglig försäljning"
 
-#: Dashboard.php:6 includes/header.inc:126
+#: Dashboard.php:6 includes/header.php:126
 msgid "Dashboard"
 msgstr "instrumentbräda"
 
@@ -9753,7 +9753,7 @@ msgid "No occurrences so far"
 msgstr "Kodar [%2dm%.2ds hittills] %c"
 
 #: EDIProcessOrders.php:125 includes/MiscFunctions.php:47
-#: includes/footer.inc:13
+#: includes/footer.php:13
 msgid "ERROR"
 msgstr "FEL"
 
@@ -23039,7 +23039,7 @@ msgstr "Grupp"
 msgid "Group By 4"
 msgstr "Grupp"
 
-#: SalesAnalysis_UserDefined.php:6 includes/session.inc:279
+#: SalesAnalysis_UserDefined.php:6 includes/session.php:279
 msgid "The security settings on your account do not permit you to access this function"
 msgstr "Säkerhetsinställningarna på ditt konto inte tillåter dig att komma åt denna funktion"
 
@@ -29233,8 +29233,8 @@ msgstr "Alla priser"
 msgid "Current Price"
 msgstr "Aktuellt pris"
 
-#: SuppPriceList.php:150 includes/MiscFunctions.php:61 includes/footer.inc:13
-#: includes/footer.inc:21 includes/footer.inc:29
+#: SuppPriceList.php:150 includes/MiscFunctions.php:61 includes/footer.php:13
+#: includes/footer.php:21 includes/footer.php:29
 msgid "Report"
 msgstr "Rapport"
 
@@ -38332,7 +38332,7 @@ msgstr "Logga in här"
 msgid "Your webserver is configured to enable Magic Quotes. This may cause problems if you use punctuation (such as quotes) when doing data entry. You should contact your webmaster to disable Magic Quotes"
 msgstr "Din webbserver är konfigurerad för att möjliggöra Magic Quotes. Detta kan orsaka problem om du använder skiljetecken (t.ex. citat) när man gör datainmatning. Du bör kontakta din webbansvarige för att inaktivera Magic Quotes"
 
-#: includes/Login.php:63 includes/header.inc:107
+#: includes/Login.php:63 includes/header.php:107
 msgid "Company"
 msgstr "Företag"
 
@@ -38380,15 +38380,15 @@ msgstr "Logga in"
 msgid "Message Report"
 msgstr "Meddelande"
 
-#: includes/MiscFunctions.php:61 includes/footer.inc:29
+#: includes/MiscFunctions.php:61 includes/footer.php:29
 msgid "SUCCESS"
 msgstr "Lyckades!"
 
-#: includes/MiscFunctions.php:68 includes/footer.inc:37
+#: includes/MiscFunctions.php:68 includes/footer.php:37
 msgid "INFORMATION"
 msgstr "Information"
 
-#: includes/MiscFunctions.php:68 includes/footer.inc:37
+#: includes/MiscFunctions.php:68 includes/footer.php:37
 msgid "Message"
 msgstr "Meddelande"
 
@@ -39779,116 +39779,116 @@ msgstr "har epostats till"
 msgid "could not be renamed to"
 msgstr "kunde inte epostas till"
 
-#: includes/footer.inc:59
+#: includes/footer.php:59
 #, fuzzy
 msgid "version"
 msgstr "Version"
 
-#: includes/header.inc:110
+#: includes/header.php:110
 msgid "Change settings for"
 msgstr "Ändra inställningar för"
 
-#: includes/header.inc:126
+#: includes/header.php:126
 msgid "Show Dashboard"
 msgstr "Visa Dashboard"
 
-#: includes/header.inc:129
+#: includes/header.php:129
 msgid "Return to the main menu"
 msgstr "Återgå till huvudmenyn"
 
-#: includes/header.inc:140
+#: includes/header.php:140
 msgid "Add this script to your list of commonly used"
 msgstr "Lägg detta skript i din lista över vanliga"
 
-#: includes/header.inc:140
+#: includes/header.php:140
 msgid "Add to commonly used"
 msgstr "Lägg till som vanligen används"
 
-#: includes/header.inc:142
+#: includes/header.php:142
 msgid "Remove this script from your list of commonly used"
 msgstr "Ta bort detta skript från din lista över vanliga"
 
-#: includes/header.inc:142
+#: includes/header.php:142
 msgid "Remove from commonly used"
 msgstr "Ta bort från vanliga"
 
-#: includes/header.inc:152
+#: includes/header.php:152
 msgid "Commonly used"
 msgstr "vanligen används"
 
-#: includes/header.inc:158 includes/header.inc:162
+#: includes/header.php:158 includes/header.php:162
 msgid "Read the manual page for this functionality"
 msgstr "Läs manualsidan för denna funktion"
 
-#: includes/header.inc:158 includes/header.inc:162
+#: includes/header.php:158 includes/header.php:162
 msgid "Help"
 msgstr "Hjälp"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Logout"
 msgstr "Logga ut"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Are you sure you wish to logout?"
 msgstr "är du säker på att du vill logga ut?"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Confirm Logout"
 msgstr "bekräfta Logga ut"
 
-#: includes/session.inc:117 includes/session.inc:254
+#: includes/session.php:117 includes/session.php:254
 msgid "Account Error Report"
 msgstr "Fel när rapportering avbröts"
 
-#: includes/session.inc:120
+#: includes/session.php:120
 #, fuzzy
 msgid "Your user role does not have any access defined for KwaMoja. There is an error in the security setup for this user account"
 msgstr "Ditt användarnamn roll har inte någon tillgång definieras för KwaMoja. Det finns ett fel i säkerheten som upprättats för detta användarkonto"
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "incorrect password"
 msgstr "felaktigt lösenord"
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "The user/password combination"
 msgstr "Kombinationen användare/lösenord"
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "is not a valid user of the system"
 msgstr "är inte en giltigt användare"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 msgid "system maintenance"
 msgstr "Systemunderhåll"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 #, fuzzy
 msgid "KwaMoja is not available right now"
 msgstr "KwaMoja är inte tillgänglig just nu"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 msgid "during maintenance of the system"
 msgstr "under underhåll av systemet"
 
-#: includes/session.inc:244
+#: includes/session.php:244
 #, fuzzy
 msgid "KwaMoja is configured to allow only secure socket connections. Pages must be called with https://"
 msgstr "KwaMoja är konfigurerad så att endast secure socket anslutningar. Sidor måste anropas med https: / /"
 
-#: includes/session.inc:257
+#: includes/session.php:257
 msgid "Security settings have not been defined for your user account. Please advise your system administrator. It could also be that there is a session problem with your PHP web server"
 msgstr "Säkerhetsinställningar inte har definierats för ditt användarkonto. Vänligen meddela systemadministratören. Det kan också vara att det finns en session problem med din PHP webbserver"
 
-#: includes/session.inc:273
+#: includes/session.php:273
 msgid "Security Permissions Problem"
 msgstr "Security Permissions Problem"
 
-#: includes/session.inc:321
+#: includes/session.php:321
 #, fuzzy
 msgid "Error in form verification"
 msgstr "Fel i form verificationm"
 
-#: includes/session.inc:323
+#: includes/session.php:323
 msgid "This form was not submitted with a correct ID"
 msgstr "Denna form har inte skickats med en korrekt ID"
 

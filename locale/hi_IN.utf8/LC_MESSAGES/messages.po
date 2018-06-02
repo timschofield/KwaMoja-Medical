@@ -4336,7 +4336,7 @@ msgstr "mbflag पुनः प्राप्त नहीं कर सकत�
 
 #: ConfirmDispatch_Invoice.php:984 CounterReturns.php:997
 #: CounterSales.php:1414 FixedAssetItems.php:651 SalesAnalReptCols.php:305
-#: Stocks.php:1384 includes/MiscFunctions.php:54 includes/footer.inc:21
+#: Stocks.php:1384 includes/MiscFunctions.php:54 includes/footer.php:21
 msgid "WARNING"
 msgstr "चेतावनी"
 
@@ -5689,7 +5689,7 @@ msgstr "उद्धरण बनाएँ"
 msgid "Cancel and Delete Contract"
 msgstr "रद्द करें और हटाएँ अनुबंध"
 
-#: CopyBOM.php:10 includes/header.inc:25
+#: CopyBOM.php:10 includes/header.php:25
 msgid "Copy a BOM to New Item Code"
 msgstr "नई मद कोड को एक बीओएम कॉपी करें"
 
@@ -7484,7 +7484,7 @@ msgstr "ग्राहक शाखा"
 msgid "has been added, add another branch, or return to the"
 msgstr "है, जोड़ दिया गया के लिए एक और शाखा, या वापसी जोड़ने के <a href=index.php>मुख्य मेनू</a>"
 
-#: CustomerBranches.php:248 index.php:11 includes/header.inc:129
+#: CustomerBranches.php:248 index.php:11 includes/header.php:129
 msgid "Main Menu"
 msgstr "मुख्य मेनू"
 
@@ -8988,7 +8988,7 @@ msgstr "जीपी%"
 msgid "Avg Daily Sales"
 msgstr "दैनिक बिक्री औसत"
 
-#: Dashboard.php:6 includes/header.inc:126
+#: Dashboard.php:6 includes/header.php:126
 msgid "Dashboard"
 msgstr "डैशबोर्ड"
 
@@ -9755,7 +9755,7 @@ msgid "No occurrences so far"
 msgstr "कोई घटनाओं को अब तक"
 
 #: EDIProcessOrders.php:125 includes/MiscFunctions.php:47
-#: includes/footer.inc:13
+#: includes/footer.php:13
 msgid "ERROR"
 msgstr "त्रुटि"
 
@@ -23043,7 +23043,7 @@ msgstr "3 से समूह"
 msgid "Group By 4"
 msgstr "4 से समूह"
 
-#: SalesAnalysis_UserDefined.php:6 includes/session.inc:279
+#: SalesAnalysis_UserDefined.php:6 includes/session.php:279
 msgid "The security settings on your account do not permit you to access this function"
 msgstr "अपने खाते पर सुरक्षा सेटिंग्स की अनुमति नहीं करने के लिए इस समारोह का उपयोग करना"
 
@@ -29237,8 +29237,8 @@ msgstr "सभी कीमतें"
 msgid "Current Price"
 msgstr "वर्तमान मूल्य"
 
-#: SuppPriceList.php:150 includes/MiscFunctions.php:61 includes/footer.inc:13
-#: includes/footer.inc:21 includes/footer.inc:29
+#: SuppPriceList.php:150 includes/MiscFunctions.php:61 includes/footer.php:13
+#: includes/footer.php:21 includes/footer.php:29
 msgid "Report"
 msgstr "रिपोर्ट"
 
@@ -38331,7 +38331,7 @@ msgstr "यहां लॉग इन करें"
 msgid "Your webserver is configured to enable Magic Quotes. This may cause problems if you use punctuation (such as quotes) when doing data entry. You should contact your webmaster to disable Magic Quotes"
 msgstr "अपने वेब सर्वर पर जादू उद्धरण को सक्रिय कॉन्फ़िगर है. इस समस्याओं के कारण यदि आप विराम चिह्न का उपयोग करें (जैसे कि उद्धरण के रूप में) जब डेटा प्रविष्टि कर सकता है. आप को निष्क्रिय जादू उद्धरण को अपने वेबमास्टर से संपर्क करना चाहिए"
 
-#: includes/Login.php:63 includes/header.inc:107
+#: includes/Login.php:63 includes/header.php:107
 msgid "Company"
 msgstr "कंपनी"
 
@@ -38379,15 +38379,15 @@ msgstr "लॉग इन"
 msgid "Message Report"
 msgstr "रिपोर्ट संदेश"
 
-#: includes/MiscFunctions.php:61 includes/footer.inc:29
+#: includes/MiscFunctions.php:61 includes/footer.php:29
 msgid "SUCCESS"
 msgstr "सफलता"
 
-#: includes/MiscFunctions.php:68 includes/footer.inc:37
+#: includes/MiscFunctions.php:68 includes/footer.php:37
 msgid "INFORMATION"
 msgstr "सूचना"
 
-#: includes/MiscFunctions.php:68 includes/footer.inc:37
+#: includes/MiscFunctions.php:68 includes/footer.php:37
 msgid "Message"
 msgstr "संदेश"
 
@@ -39774,116 +39774,116 @@ msgstr "गया है कि ईमेल की गई"
 msgid "could not be renamed to"
 msgstr "हो सकता है ईमेल करने के लिए नहीं"
 
-#: includes/footer.inc:59
+#: includes/footer.php:59
 #, fuzzy
 msgid "version"
 msgstr "संस्करण"
 
-#: includes/header.inc:110
+#: includes/header.php:110
 msgid "Change settings for"
 msgstr "के लिए सेटिंग में बदलाव"
 
-#: includes/header.inc:126
+#: includes/header.php:126
 msgid "Show Dashboard"
 msgstr "डैशबोर्ड दिखाएँ"
 
-#: includes/header.inc:129
+#: includes/header.php:129
 msgid "Return to the main menu"
 msgstr "मुख्य मेनू पर लौटें"
 
-#: includes/header.inc:140
+#: includes/header.php:140
 msgid "Add this script to your list of commonly used"
 msgstr "आमतौर पर इस्तेमाल की अपनी सूची में इस स्क्रिप्ट जोड़ें"
 
-#: includes/header.inc:140
+#: includes/header.php:140
 msgid "Add to commonly used"
 msgstr "आमतौर पर इस्तेमाल करने के लिए जोड़ें"
 
-#: includes/header.inc:142
+#: includes/header.php:142
 msgid "Remove this script from your list of commonly used"
 msgstr "आमतौर पर इस्तेमाल की अपनी सूची से इस स्क्रिप्ट निकालें"
 
-#: includes/header.inc:142
+#: includes/header.php:142
 msgid "Remove from commonly used"
 msgstr "अधिक इस्तेमाल से निकालें"
 
-#: includes/header.inc:152
+#: includes/header.php:152
 msgid "Commonly used"
 msgstr "आमतौर पर इस्तेमाल किया"
 
-#: includes/header.inc:158 includes/header.inc:162
+#: includes/header.php:158 includes/header.php:162
 msgid "Read the manual page for this functionality"
 msgstr "इस कार्यक्षमता के लिए मैनुअल पेज पढ़ें"
 
-#: includes/header.inc:158 includes/header.inc:162
+#: includes/header.php:158 includes/header.php:162
 msgid "Help"
 msgstr "मदद"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Logout"
 msgstr "लॉगआउट"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Are you sure you wish to logout?"
 msgstr "क्या आप लॉग आउट करना चाहते हैं?"
 
-#: includes/header.inc:171
+#: includes/header.php:171
 msgid "Confirm Logout"
 msgstr "लॉगआउट की पुष्टि करें"
 
-#: includes/session.inc:117 includes/session.inc:254
+#: includes/session.php:117 includes/session.php:254
 msgid "Account Error Report"
 msgstr "खाता त्रुटि रिपोर्ट"
 
-#: includes/session.inc:120
+#: includes/session.php:120
 #, fuzzy
 msgid "Your user role does not have any access defined for KwaMoja. There is an error in the security setup for this user account"
 msgstr "आपके उपयोगकर्ता किसी भी भूमिका KwaMoja के लिए परिभाषित पहुँच नहीं है. इस उपयोगकर्ता खाते के लिए सुरक्षा व्यवस्था में एक त्रुटि है"
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "incorrect password"
 msgstr "गलत पासवर्ड"
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "The user/password combination"
 msgstr "उपयोगकर्ता / कूटशब्द संयोजन"
 
-#: includes/session.inc:125
+#: includes/session.php:125
 msgid "is not a valid user of the system"
 msgstr "प्रणाली की एक वैध उपयोगकर्ता नहीं है"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 msgid "system maintenance"
 msgstr "सिस्टम अनुरक्षण"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 #, fuzzy
 msgid "KwaMoja is not available right now"
 msgstr "KwaMoja अभी उपलब्ध नहीं है"
 
-#: includes/session.inc:129
+#: includes/session.php:129
 msgid "during maintenance of the system"
 msgstr "सिस्टम के रखरखाव के दौरान"
 
-#: includes/session.inc:244
+#: includes/session.php:244
 #, fuzzy
 msgid "KwaMoja is configured to allow only secure socket connections. Pages must be called with https://"
 msgstr "KwaMoja करने के लिए केवल सुरक्षित गर्तिका कनेक्शन की अनुमति कॉन्फ़िगर किया गया है. पृष्ठों https के साथ बुलाया जाना चाहिए: / /"
 
-#: includes/session.inc:257
+#: includes/session.php:257
 msgid "Security settings have not been defined for your user account. Please advise your system administrator. It could also be that there is a session problem with your PHP web server"
 msgstr "सुरक्षा सेटिंग्स आपके उपयोगकर्ता खाते के लिए परिभाषित नहीं किया गया है. कृपया अपने सिस्टम व्यवस्थापक से सलाह. यह भी हो सकता है कि वहाँ आपके PHP वेब सर्वर के साथ एक सत्र समस्या है हो सकता है"
 
-#: includes/session.inc:273
+#: includes/session.php:273
 msgid "Security Permissions Problem"
 msgstr "सुरक्षा अनुमतियाँ समस्या"
 
-#: includes/session.inc:321
+#: includes/session.php:321
 #, fuzzy
 msgid "Error in form verification"
 msgstr "प्रपत्र verificationm में त्रुटि"
 
-#: includes/session.inc:323
+#: includes/session.php:323
 msgid "This form was not submitted with a correct ID"
 msgstr "यह फार्म एक सही पहचान पत्र के साथ प्रस्तुत नहीं किया गया"
 
